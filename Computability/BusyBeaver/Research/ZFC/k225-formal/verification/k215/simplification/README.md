@@ -1,19 +1,19 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase7/README.md) validates the 187-module
+are unchanged. The [latest Lean check](phase8/README.md) validates the 188-module
 primary closure and both typed endpoint clients, using hash-bound predecessor
 objects for unchanged modules. All ten endpoint reports use only
 `propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
-| Lean dominated implication | 689,857 bytes | 26,770 bytes |
+| Lean dominated implication, core plus adapter | 689,857 bytes | 22,058 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
 | Lean register determinism | 17,209 bytes | 12,988 bytes |
-| Lean seed-model proof | 11,711 bytes | 10,710 bytes |
+| Lean seed semantics, both modules | 19,547 bytes | 13,793 bytes |
 | Rocq dominated implication | 921,691 bytes | 22,673 bytes |
 
 The main changes share mathematical arguments instead of repeating their
@@ -34,8 +34,14 @@ pointwise lifts and removes the unused distribution derivation. Its source drops
 from 517 to 454 lines. Four root interfaces and the retained offset checker pass
 a [fresh five-client audit](phase7/legacy/README.md) against all 202 providers;
 the 15 legacy modules retain their exact direct-dependency bindings.
+Phase eight abstracts numerical coding out of the implication proof and shares
+one semantic equivalence between both seed directions. The two proof groups
+shrink from 45,316 to 35,851 bytes, counting both the new core and its adapter.
+Its [legacy check](phase8/legacy/README.md) retains all 15 extra interfaces and
+reruns the five-client audit against 203 current providers.
 
-The [latest checkpoint](phase7/README.md),
+The [latest checkpoint](phase8/README.md),
+[seventh checkpoint](phase7/README.md),
 [sixth checkpoint](phase6/README.md),
 [fifth checkpoint](phase5/README.md),
 [fourth checkpoint](phase4/README.md),

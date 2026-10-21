@@ -14,10 +14,10 @@ a report at one of the destinations of section 2.
 
 ## Current Lean proof checkpoint
 
-The [seventh simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/README.md)
-checks the exact K215 endpoint over 187 project modules (two fresh, 185 reused),
+The [eighth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/README.md)
+checks the exact K215 endpoint over 188 project modules (8 fresh, 180 reused),
 both unchanged endpoint clients and a fresh five-client legacy audit. It adopts
-the independently reviewed pointwise-implication component; the report intake
+the independently reviewed generic implication core and shared seed semantics; the report intake
 and reconciliation statuses below remain separate.
 
 ## Current queue after upstream batch 211

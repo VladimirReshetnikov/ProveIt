@@ -5,21 +5,20 @@ import BusyBeaver.ZFC.Code254Models
 /-!
 The models that the completeness theorem of the 222/221 calculus quantifies over.
 
-The semantic round-trip proof below adapts the Affine Proof Cores and Transport
-packet in commit aa66d0a33f, extending the earlier Structural Proof Simplification
-proposal. Its three redundant formula inductions are replaced by the existing
-Code254Models.sat_encode_decode theorem and the double-negation code bound.
-
 `seed_of_bundle` is the converse of `KSeed222.bundle_of_seed` for ordinary roles: in an
 irreflexive structure a decoded seed bundle `dec (bundle222 a b c)` (with `a ≠ b`) says exactly
 that the seed property holds for the relation its matrix `dec c` defines.
 
 Take for `T` every named formula whose interpreted code is derivable (`DerivableNF`); then the
 first premise of `KEind222.c222_complete` holds by definition. Every equality-free named formula
-`ψ` is a matrix of some derivable bundle: its code `enc ψ` decodes back to `ψ` up to the alias
-`⊥ ↦ x₀ ∈ x₀`, which an irreflexive structure cannot tell apart, and the equality interpretation
-`th` fixes it. So a model of `T` has the seed property for every equality-free relation
-(`seed_eqFree`).
+`ψ` is the matrix of a derivable named bundle (`derivable_named_bundle`), whose decoded code means
+the same in an irreflexive structure (`Code254Models.sat_encode_decode`), and the equality
+interpretation `th` fixes it. So a model of `T` has the seed property for every equality-free
+relation (`seed_eqFree`).
+
+The semantic round trip retains the phase-six adaptation of the affine-cores packet
+(aa66d0a33f), extending the structural proposal; the shared bundle semantics `BundleSemantics.bundle_iff_seed` and `seedProp_congr`
+(proposal semantic-normal-forms) replace the separate decoding of the reverse direction.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.KSeed222
@@ -33,132 +32,16 @@ open NF
 universe u
 variable {V : Type u}
 
-theorem update_idem (e : Nat → V) (i : Nat) (d d' : V) : update (update e i d) i d' = update e i d' := by
-  funext n; by_cases h : n = i <;> simp [update, h]
-
-theorem update_self (e : Nat → V) (i : Nat) : update e i (e i) = e := by
-  funext n; by_cases h : n = i
-  · subst h; simp [update]
-  · simp [update, h]
-
 section Conv
 
 variable (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
 include hirr
 
-/-- The request `req b c c` at `E`: an output of the current input, answered in `E c`. -/
-theorem sat_req (E : Nat → V) (b c : Nat) (hcb : c ≠ b) :
-    Tarski.Sat mem E (dec (req b c c)) ↔
-      ∀ y, Tarski.Sat mem (update E b y) (dec c) →
-        ∃ z, Tarski.Sat mem (update E b z) (dec c) ∧ mem z (E c) := by
-  simp only [req, sat_wal, sat_wim, sat_wn mem hirr, sat_wel, update_idem, update_same,
-    update_other _ _ hcb]
-  refine forall_congr' fun y => imp_congr_right fun _ => ?_
-  constructor
-  · intro h
-    exact Classical.byContradiction fun hne => h fun z hz hzc => hne ⟨z, hz, hzc⟩
-  · rintro ⟨z, hz, hzc⟩ hall
-    exact hall z hz hzc
-
-omit hirr in
-/-- Reading the matrix at any valuation that agrees with the role assignment off the label. -/
-theorem matrix_iff {e E : Nat → V} {a b c : Nat} {x y : V}
-    (h : ∀ n, n ≠ c → E n = update (update e a x) b y n) :
-    Tarski.Sat mem E (dec c) ↔ matrixRel mem e a b c x y :=
-  sat_dec_agree mem c E _ h
-
 /-- **The bundle gives the seed property** (ordinary roles). -/
 theorem seed_of_bundle (e : Nat → V) (a b c : Nat) (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b)
     (h : Tarski.Sat mem e (dec (bundle222 a b c))) :
-    SeedProp mem (matrixRel mem e a b c) (e a) := by
-  simp only [bundle222] at h
-  rw [sat_wn mem hirr, sat_wim] at h
-  have hN : ¬ Tarski.Sat mem e (dec (nks a b c)) := fun hn => h fun _ => hn
-  simp only [nks] at hN
-  rw [sat_wal] at hN
-  obtain ⟨C, hC⟩ : ∃ C, ¬ Tarski.Sat mem (update e c C)
-      (dec (wim (clos a b c c) (wn (req b c c)))) :=
-    Classical.byContradiction fun hne => hN fun C => Classical.byContradiction fun hc => hne ⟨C, hc⟩
-  rw [sat_wim, sat_wn mem hirr] at hC
-  have hcl : Tarski.Sat mem (update e c C) (dec (clos a b c c)) :=
-    Classical.byContradiction fun hn => hC fun h' => absurd h' hn
-  have hrq : Tarski.Sat mem (update e c C) (dec (req b c c)) :=
-    Classical.byContradiction fun hn => hC fun _ => hn
-  have hac : a ≠ c := Ne.symm hca
-  have hbc : b ≠ c := Ne.symm hcb
-  have hba : b ≠ a := Ne.symm hab
-  refine ⟨C, ?_, ?_⟩
-  · -- the request at the input `e a`
-    intro y hy
-    have hy' : Tarski.Sat mem (update (update e c C) b y) (dec c) := by
-      refine (matrix_iff mem (x := e a) (y := y) ?_).mpr hy
-      intro n hn
-      by_cases hnb : n = b
-      · subst hnb; simp [update]
-      · by_cases hna : n = a
-        · subst hna; simp [update, hnb, hn]
-        · simp [update, hnb, hna, hn]
-    obtain ⟨z, hz, hzC⟩ := (sat_req mem hirr _ b c hcb).mp hrq y hy'
-    refine ⟨z, (matrix_iff mem ?_).mp hz, by rwa [update_same] at hzC⟩
-    intro n hn
-    by_cases hnb : n = b
-    · subst hnb; simp [update]
-    · by_cases hna : n = a
-      · subst hna; simp [update, hnb, hn]
-      · simp [update, hnb, hna, hn]
-  · -- the closure
-    intro y hyC
-    simp only [clos] at hcl
-    rw [sat_wal] at hcl
-    have h1 := hcl y
-    rw [sat_wim, sat_wel, update_same, update_other _ _ hcb, update_same, sat_wn mem hirr,
-      sat_wal] at h1
-    obtain ⟨x, hx⟩ : ∃ x, ¬ Tarski.Sat mem (update (update (update e c C) b y) a x)
-        (dec (wim c (wn (wal a (wim (wal c (wim (wel c a) (wel c b))) (req b c c)))))) :=
-      Classical.byContradiction fun hne => h1 hyC fun x => Classical.byContradiction fun hc =>
-        hne ⟨x, hc⟩
-    rw [sat_wim, sat_wn mem hirr] at hx
-    have hm : Tarski.Sat mem (update (update (update e c C) b y) a x) (dec c) :=
-      Classical.byContradiction fun hn => hx fun h' => absurd h' hn
-    have hall : Tarski.Sat mem (update (update (update e c C) b y) a x)
-        (dec (wal a (wim (wal c (wim (wel c a) (wel c b))) (req b c c)))) :=
-      Classical.byContradiction fun hn => hx fun _ => hn
-    refine ⟨x, (matrix_iff mem ?_).mp hm, ?_⟩
-    · intro n hn
-      by_cases hna : n = a
-      · subst hna; simp [update, hab]
-      · by_cases hnb : n = b
-        · subst hnb; simp [update, hna]
-        · simp [update, hna, hnb, hn]
-    · intro x' hsub y' hy'
-      rw [sat_wal] at hall
-      have h3 := hall x'
-      rw [sat_wim, update_idem] at h3
-      have hsub' : Tarski.Sat mem (update (update (update e c C) b y) a x')
-          (dec (wal c (wim (wel c a) (wel c b)))) := by
-        rw [sat_wal]
-        intro w
-        rw [sat_wim, sat_wel, sat_wel, update_same, update_other _ _ hac, update_other _ _ hbc,
-          update_same, update_other _ _ hba, update_same]
-        exact hsub w
-      have h4 := (sat_req mem hirr _ b c hcb).mp (h3 hsub')
-      have hy'' : Tarski.Sat mem (update (update (update (update e c C) b y) a x') b y') (dec c) := by
-        refine (matrix_iff mem (x := x') (y := y') ?_).mpr hy'
-        intro n hn
-        by_cases hnb : n = b
-        · subst hnb; simp [update]
-        · by_cases hna : n = a
-          · subst hna; simp [update, hnb]
-          · simp [update, hnb, hna, hn]
-      obtain ⟨z, hz, hzC⟩ := h4 y' hy''
-      refine ⟨z, (matrix_iff mem ?_).mp hz, ?_⟩
-      · intro n hn
-        by_cases hnb : n = b
-        · subst hnb; simp [update]
-        · by_cases hna : n = a
-          · subst hna; simp [update, hnb]
-          · simp [update, hnb, hna, hn]
-      · rwa [update_other _ _ hca, update_other _ _ hcb, update_same] at hzC
+    SeedProp mem (matrixRel mem e a b c) (e a) :=
+  (BundleSemantics.bundle_iff_seed mem hirr e a b c hab hca hcb).mp h
 
 end Conv
 
@@ -220,20 +103,13 @@ theorem seed_eqFree (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
       rw [← enc_bundleNF]
       exact (Code254Models.sat_encode_decode mem hirr _ e).mpr
         (hT _ (derivable_named_bundle ψ' hψ' 0 1 (by omega) (by omega)) e))
-  obtain ⟨C, h1, h2⟩ := hs
   have hiff : ∀ x y, matrixRel mem e 0 1 (enc ψ') x y ↔ Tarski.Sat mem (update (update e 0 x) 1 y) ψ := by
     intro x y
     unfold matrixRel
     rw [Code254Models.sat_encode_decode mem hirr]
     simp only [ψ', negNF, Tarski.Sat]
     exact ⟨fun h => Classical.byContradiction fun hn => h hn, fun h h' => h' h⟩
-  refine ⟨C, fun y hy => ?_, fun y hy => ?_⟩
-  · obtain ⟨z, hz, hzC⟩ := h1 y ((hiff _ _).mpr hy)
-    exact ⟨z, (hiff _ _).mp hz, hzC⟩
-  · obtain ⟨x, hx, hsub⟩ := h2 y hy
-    refine ⟨x, (hiff _ _).mp hx, fun x' hx' y' hy' => ?_⟩
-    obtain ⟨z, hz, hzC⟩ := hsub x' hx' y' ((hiff _ _).mpr hy')
-    exact ⟨z, (hiff _ _).mp hz, hzC⟩
+  exact (seedProp_congr mem (e 0) hiff).mp hs
 
 #print axioms seed_eqFree
 

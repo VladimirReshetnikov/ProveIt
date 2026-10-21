@@ -1,0 +1,90 @@
+{
+  "status": "PASS_READ_ONLY_PUBLICATION_CHAIN",
+  "helper_freeze_sha256": "f75d1b9e78ea6dc52a76e5fb1af3c0d9970708a8c6a85da52957d79246f2fed9",
+  "helper_peer_sha256": "fcc55b4fa97fc0cb525ea93d8aa6384ee168c733eca07853993d560ab421258f",
+  "commands": [
+    {
+      "name": "live",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/k215-phase8-legacy-publication/review.py",
+        "--run",
+        "/tmp/k215-phase8-legacy/run1",
+        "--preparation",
+        "/tmp/k215-phase8-legacy",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--stdout",
+        "/tmp/k215-phase8-legacy/run1.stdout",
+        "--output",
+        "/tmp/k215-phase8-legacy-publication/live-review-run1.json"
+      ],
+      "started_utc": "2026-10-21T21:51:36.447766+00:00",
+      "elapsed_seconds": 4.40660938154906,
+      "exit_code": 0,
+      "stdout": "/tmp/k215-phase8-legacy-publication/live.stdout.log",
+      "stdout_sha256": "aa8a3d43d5d57626381b1eeb2e3ede25e3c92f70b8a9deffeda01e4f1bab6075",
+      "stderr": "/tmp/k215-phase8-legacy-publication/live.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "publish",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/k215-phase8-legacy-publication/publish.py",
+        "--run",
+        "/tmp/k215-phase8-legacy/run1",
+        "--preparation",
+        "/tmp/k215-phase8-legacy",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--stdout",
+        "/tmp/k215-phase8-legacy/run1.stdout",
+        "--live-review",
+        "/tmp/k215-phase8-legacy-publication/live-review-run1.json",
+        "--out",
+        "/tmp/k215-phase8-legacy-publication/packet"
+      ],
+      "started_utc": "2026-10-21T21:51:40.854864+00:00",
+      "elapsed_seconds": 2.3187384698539972,
+      "exit_code": 0,
+      "stdout": "/tmp/k215-phase8-legacy-publication/publish.stdout.log",
+      "stdout_sha256": "fc0c87608c9003af5eb05299710e0008ee3a1ea143514baae61e1157af8e9564",
+      "stderr": "/tmp/k215-phase8-legacy-publication/publish.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "saved",
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/k215-phase8-legacy-publication/packet/review_saved.py",
+        "--packet",
+        "/tmp/k215-phase8-legacy-publication/packet",
+        "--basis-repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--output",
+        "/tmp/k215-phase8-legacy-publication/saved-review-run1.json"
+      ],
+      "started_utc": "2026-10-21T21:51:43.174078+00:00",
+      "elapsed_seconds": 2.291514373384416,
+      "exit_code": 0,
+      "stdout": "/tmp/k215-phase8-legacy-publication/saved.stdout.log",
+      "stdout_sha256": "e01c2622d1b59353851ff9ba37c2442856e887b2c24e63b16d59bf534bc2441d",
+      "stderr": "/tmp/k215-phase8-legacy-publication/saved.stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "compiler_invocations": [],
+  "helpers_unchanged": true,
+  "outputs": {
+    "live-review-run1.json": "aa8a3d43d5d57626381b1eeb2e3ede25e3c92f70b8a9deffeda01e4f1bab6075",
+    "saved-review-run1.json": "e01c2622d1b59353851ff9ba37c2442856e887b2c24e63b16d59bf534bc2441d",
+    "packet/result.json": "1de218152b735dbd9142793c76c3abacb48071bdf4ab73aebb7991f1b67184f9",
+    "packet/execution.tar.gz": "db061de5f0161b9fd0ca0b7f9033abf08e29f122affd8036fdf9418915d53442"
+  }
+}
