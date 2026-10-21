@@ -16,6 +16,14 @@ a report at one of the destinations of section 2.
 
 The exact K215 Lean endpoint passes the [phase-five simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase5/README.md): 184 modules, including 37 freshly compiled affected modules, and both endpoint audits with standard axioms only. Batches 205–207 below preserve proposals as delivered; those imports do not promote their prototypes to new formal results. Supplementary mathematical reconciliation and exact recovery records are being integrated separately. The active goal is simplifying the checked Lean proofs; earlier 214-state target and queue statements are historical.
 
+## Queue status after batch 209
+
+`K215_Automatic_Certificates_2026-10-21.zip` (arrival `5314ca0e6b`) was
+placed whole as delivered as
+[proposals/automatic-certificates](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md),
+omitting `search214/inputs/` (copies of 21 repository tables). It has no new
+tables. Nothing was rerun. The queue is clear.
+
 ## Queue status after batch 208
 
 Three K215 proof-simplification packets (arrival `aa66d0a33f`) were placed

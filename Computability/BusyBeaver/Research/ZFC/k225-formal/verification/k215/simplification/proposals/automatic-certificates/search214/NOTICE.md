@@ -1,0 +1,5 @@
+# Attribution and scope
+
+The 21 tables and invariant worklist generator are copied from Vladimir Reshetnikov's ProveIt repository, pinned at the commit in INPUTS.json. Exact file hashes and source URLs are included. These tables are **research inputs**, not newly constructed candidates. Upstream notices and the project MIT No Attribution license are retained. The notices preserve the earlier Mira-Cult / ProveIt, Jeff Ketchersid, Andrew James Wade, BusyCoq and Library of Undecidability ancestry within their respective scopes. No inherited contribution is relicensed by this packet.
+
+The predecessor-specific search, coordinated state-40 repair, independent literal controls and obstruction replay, prose, and audit wrapper were generated in this collaboration for incorporation into ProveIt. The mathematical local-join idea is standard simulation reasoning; no priority claim is made. None of these executable search receipts is a compiled Lean/Rocq endpoint. No 214-state construction, global minimum-state theorem, or unconditional nonhalting theorem is claimed.
