@@ -85,7 +85,7 @@ Nothing in this review changes the chosen primary 215 table, its calibration or 
 
 ## Appendix: Source 174, separately revised batch 206
 
-The archive `K215_Proof_Simplification_2026-10-21 (2).zip` arrived in `53269bcab1efc0f82d3022645bd7cf0c22d84959`, SHA256 `61a77ed1f34953fe7e8d059f18b9e8a0ccf88f429037fcbf650f011d0349684e`. It has 360 members and 4,255,981 expanded bytes. Upstream `69e6d97fc2ea6da87b718109b1c8614a0927a621` placed it at [k215-simplification-2][G]. A separate supplemental recovery map for Source 174 is still being prepared; the batch 205 recovery claim above covers Sources 168–173 only. Similar report filenames do not identify the same proof: its source lane is ordinary 2,240-entry bisimulation, not Source 168’s 1,426-entry normalized relation.
+The archive `K215_Proof_Simplification_2026-10-21 (2).zip` arrived in `53269bcab1efc0f82d3022645bd7cf0c22d84959`, SHA256 `61a77ed1f34953fe7e8d059f18b9e8a0ccf88f429037fcbf650f011d0349684e`. It has 360 members and 4,255,981 expanded bytes. Upstream `69e6d97fc2ea6da87b718109b1c8614a0927a621` placed it at [k215-simplification-2][G]. The [Source 174 recovery supplement][placement206] is committed in `dada10165ba367e8c0297ed872426b01906bcf90`. Its [map][map206] covers all 360 original members: 349 immutable Git references, six preserved raw logs and five arrival-ZIP fallbacks. The [streaming recovery control][recovery206] checks their exact original bytes; it does not replay the delivered proofs. The separate batch 205 recovery claim above covers Sources 168–173 only. Similar report filenames do not identify the same proof: its source lane is ordinary 2,240-entry bisimulation, not Source 168’s 1,426-entry normalized relation.
 
 The revised report and its included source-lane account were read completely, together with the generic 113-line `RMPlainCodec`, final source facade, abstract half-composition lemma and dense endpoint wrapper. The checker parameterizes decoding by an arbitrary function and reuses ordinary `RMBisim.Bisim.halts_iff`; its chosen `decodeAux n n []` removes a fixed fuel cap. Soundness needs no codec-completeness premise. Exact intended decoding remains a concrete data-binding obligation. Phase 5 already implements this generic separation with 512 fuel and the same all-register scope, so this is an independent delivered implementation, not an additional current simplification.
 
@@ -120,3 +120,9 @@ Its delivered CM215 theorem reaches the literal imported `KDense215.machine215` 
 [map205]: data/intake205-placement.json
 
 [recovery205]: data/intake205-recovery-control.json
+
+[placement206]: intake206-placement.md
+
+[map206]: data/intake206-placement.json
+
+[recovery206]: data/intake206-recovery-control.json
