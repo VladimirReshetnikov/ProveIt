@@ -11,3 +11,5 @@ The [exact merge boundary](retained-production.json) keeps 21 existing productio
 `merge.json` records source pins and unchanged upstream payload identities. `postmerge-saved-review.json` checks the maintained sources against the complete phase-seven primary evidence after resolution.
 
 Some source paths named in the verbatim upstream Rocq receipts are intentionally absent from the retained production tree. Recover those files from the exact upstream commit recorded in `retained-production.json`; the receipts are not a rerun instruction for this retained revision.
+
+A later [two-file seed-sharing proposal](seed-sharing-639e.json) from `639e34777e` is also merged as history with the checked production bytes retained. Its common bundle-semantics interface is queued for the next kernel check alongside the generic implication core.
