@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Produce the maintained representation-independent implication core and Nat adapter.
+"""Produce the phase-eight representation-independent implication core and Nat adapter.
+
+The maintained core is now rendered by rho8cd/generate_domrho8_cd.py --core from a 58-step
+condensed-detachment derivation (same public interface); the adapter is unchanged. This
+producer reproduces the phase-eight core, so its --check compares against that history.
 
 Adapted from the attributed proof-core proposal in e94206c09f. It verifies the
 thirteen schematic MP replacements and their acyclic dependency closure; Lean

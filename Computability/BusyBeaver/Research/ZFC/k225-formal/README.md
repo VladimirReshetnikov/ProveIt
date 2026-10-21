@@ -159,11 +159,12 @@ data in [`lean217/`](lean217/)).
 
 - **Calculus**: `CDom` restricts rho8 to `u ≤ a` ([`KCodeDom`](../../../Lean/BusyBeaver/ZFC/KCodeDom.lean)). It derives exactly
   `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) derives the unrestricted row through the
-  representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
-  ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)); the Rocq lane's `DomRho8.v` is a
-  52-step condensed-detachment derivation of Łukasiewicz's axiom (rho8) from its dominated instances
-  ([`rho8cd/`](rho8cd/README.md)). The replay of Source 149's 3,728-node certificate
-  ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) is history.
+  representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean),
+  a 58-step condensed-detachment derivation of Łukasiewicz's axiom (rho8), composition and prefixing from
+  modus ponens and the dominated rows alone ([`rho8cd/`](rho8cd/README.md)); the Rocq lane's `DomRho8.v` is
+  the 52-step derivation of the row. The replay of Source 149's 3,728-node certificate
+  ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) and its compression
+  ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)) are history.
 - **Enumerator**: [`EnumDom`](../../../Lean/BusyBeaver/ZFC/EnumDom.lean) is `Enum222` with the AX fields `z, y, x` read as
   `U = d + z`, `A = U + x`, `B = h + y` (GEN at `U`, rho8 at `(A, B, c, U)`); soundness is unchanged
   and the compiler builds `CDom` derivations, the rho8 leaf being `AX(c, u, b, a - u)`

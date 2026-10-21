@@ -1,12 +1,12 @@
 """Veroff-style proof shortening: rerun the hinted search without one hint at a time.
 
-  python shrink.py START.txt BEST.txt ROUNDS     (env MAXW, TMO, CPEN, JOBS)
+  python shrink.py START.txt BEST.txt ROUNDS     (env MAXW, TMO, CPEN, JOBS, EXE; NOZ and GOALS reach cdr)
 
 Hints are the formulas of the current best proof; random perturbations add a few
 formulas from the file named by EXTRA (say, the statements of an earlier derivation).  Untrusted."""
 import subprocess, sys, os, random, concurrent.futures as cf, shutil
 
-EXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'target', 'release', 'cdr')
+EXE = os.environ.get('EXE') or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'target', 'release', 'cdr')
 W = int(os.environ.get('MAXW', '40'))
 TMO = int(os.environ.get('TMO', '25'))
 CPEN = os.environ.get('CPEN', '3')
@@ -14,7 +14,7 @@ CPEN = os.environ.get('CPEN', '3')
 def formulas(path):
     lines = open(path).read().split('\n')
     i0 = next(i for i, l in enumerate(lines) if l.startswith('PROOF'))
-    return [l.split(' ')[3] for l in lines[i0 + 1:] if l.strip() and l.split(' ')[3] != 'Z']
+    return [l.split(' ')[3] for l in lines[i0 + 1:] if l.strip() and not l.startswith('#') and l.split(' ')[3] != 'Z']
 
 def run(hints, tag):
     hp = 'tmp/h_%s.txt' % tag

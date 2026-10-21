@@ -7,6 +7,8 @@
 // carry at most MAXC open side conditions and MAXW tokens; the weight is the length plus CPEN per
 // side condition, or HW when the clause generalizes a hint (Veroff's hints strategy).  Prints the
 // proof DAG as `i major minor formula [conditions]`, read by ../generate_domrho8_cd.py.
+// Environment: NOZ=1 drops the truth axiom Z; GOALS="F;G;..." adds goals (all must be proved;
+// `#GOAL i F` lines name the lemma proving each).
 // Untrusted: the kernels check the rendered derivation.
 //
 // Terms are Polish token vectors: 0 = Z, 1 = imp, v + 2 = variable v.
@@ -168,7 +170,9 @@ fn main() {
     let (p, q, r, s) = (2u32, 3u32, 4u32, 5u32);
     // ((p>q)>r)>((r>p)>(s>p))
     let ax: Tm = vec![IM, IM, IM, p, q, r, IM, IM, r, p, IM, s, p];
-    let goal = ax.clone();
+    let mut goals: Vec<Tm> = vec![ax.clone()];
+    if let Ok(g) = std::env::var("GOALS") { for l in g.split(';').filter(|l| !l.is_empty()) { let mut o = vec![]; let mut i = 0; parse(l.as_bytes(), &mut i, &mut o); goals.push(o); } }
+    let mut found: Vec<Option<usize>> = vec![None; goals.len()];
     let hints: Vec<Tm> = if args.len() > 5 { std::fs::read_to_string(&args[5]).unwrap().lines().filter(|l| !l.is_empty()).map(|l| { let mut o = vec![]; let mut i = 0; parse(l.as_bytes(), &mut i, &mut o); canon(&o, &vec![]).0 }).collect() } else { vec![] };
     let hw: usize = if args.len() > 6 { args[6].parse().unwrap() } else { 2 };
     eprintln!("hints {}", hints.len());
@@ -185,7 +189,7 @@ fn main() {
         pend.push(Thm { t, c, maj: th.maj, min: th.min });
         heap.push(Reverse((w, pend.len() - 1)));
     };
-    push(Thm { t: vec![ZT], c: vec![], maj: -1, min: -1 }, &mut seen, &mut heap, &mut pend);
+    if std::env::var("NOZ").is_err() { push(Thm { t: vec![ZT], c: vec![], maj: -1, min: -1 }, &mut seen, &mut heap, &mut pend); }
     push(Thm { t: ax.clone(), c: vec![(vec![q], vec![r])], maj: -2, min: -2 }, &mut seen, &mut heap, &mut pend);
     let t0 = std::time::Instant::now();
     let mut steps = 0;
@@ -195,12 +199,16 @@ fn main() {
         if kept.iter().any(|k| k.c.is_empty() && k.t.len() <= th.t.len() && matches(&k.t, &th.t)) { continue; }
         kept.push(th.clone());
         let me = kept.len() - 1;
-        if th.c.is_empty() && matches(&th.t, &goal) {
-            // print proof DAG
-            let mut need = vec![]; let mut st = vec![me];
+        if th.c.is_empty() {
+            for (g, f) in goals.iter().zip(found.iter_mut()) { if f.is_none() && matches(&th.t, g) { *f = Some(me); } }
+        }
+        if found.iter().all(|f| f.is_some()) {
+            // print the union proof DAG of all goals
+            let mut need = vec![]; let mut st: Vec<usize> = found.iter().map(|f| f.unwrap()).collect();
             while let Some(i) = st.pop() { if need.contains(&i) { continue; } need.push(i); if kept[i].maj >= 0 { st.push(kept[i].maj as usize); st.push(kept[i].min as usize); } }
             need.sort();
             println!("PROOF {} steps={} kept={} secs={}", need.len(), steps, kept.len(), t0.elapsed().as_secs());
+            for (g, f) in goals.iter().zip(found.iter()) { println!("#GOAL {} {}", f.unwrap(), show(g)); }
             for i in need {
                 let k = &kept[i];
                 let cs: Vec<String> = k.c.iter().map(|(a, b)| format!("{}<={}", show(a), show(b))).collect();
