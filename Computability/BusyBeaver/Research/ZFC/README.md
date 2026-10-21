@@ -1,9 +1,12 @@
 # Smaller machines for Con(ZFC)
 
-The current goal is to **complete and compile both Lean and Rocq correctness
-proofs for at least one 215-state construction**. The reference is the literal
-[K215 table](candidate-k215/README.md); its draft endpoints must pass their
-respective kernels before they are described as checked. The earlier target
+The literal [K215 machine](candidate-k215/README.md) now has **compiled Lean and Rocq
+correctness proofs**: blank-tape halting iff ZFC has a finite refutation, and
+nonhalting iff syntactic consistency of ZFC. Lean's full 204-module project closure
+and two explicit clients pass with standard axioms only; Rocq's 237 selected sources,
+four closed endpoint reports and recursive `coqchk` pass. See the
+[formal verification record](k225-formal/verification/k215/README.md).
+The earlier target
 of214 or fewer states remains a research direction, rather than the present
 completion criterion. The original target was fewer than254 states and equivalence
 provable in PA. An earlier search phase also permitted consistency of a
@@ -45,7 +48,7 @@ nine typed callers pass with zero warnings. The internal PA equivalence for
 this exact 240-state machine is now checked too
 ([`BinaryConsistencyRotation240`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/BinaryConsistencyRotation240.lean), 19 October 2026). See the [intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-170.md).
 
-The primary **ordinary** contender is now the [**215-state machine**](candidate-k215/README.md).
+The primary contender is the [**215-state machine**](candidate-k215/README.md).
 It combines the command-local field reader and command ordering of
 `d59b441882` with the partial selector from `6ec69081ca`. Both earlier
 marker folds remain valid. The source has 202 distinct subtrees; reallocation
@@ -57,8 +60,8 @@ in both native and dense formats and the entire final tape.
 
 The complete ordinary proof gives
 `ZFC ⊢ (¬Halt(K215, blank) ↔ Con(ZFC))` and reaches the requested 215-state
-target at the ordinary mathematical level. The active task is to compile
-the draft exact-K215 Lean and Rocq endpoints. The internal PA endpoint remains open; the
+target at the ordinary mathematical level. The exact-K215 external Lean and Rocq
+endpoints are now compiled and audited. The internal PA endpoint remains open; the
 formal 240-state result above retains its separate status. See the
 [proof and reproducible evidence](candidate-k215/proof.md).
 

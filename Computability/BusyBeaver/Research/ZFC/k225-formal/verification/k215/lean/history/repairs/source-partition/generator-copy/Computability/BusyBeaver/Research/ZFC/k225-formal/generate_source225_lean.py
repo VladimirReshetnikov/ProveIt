@@ -1,0 +1,186 @@
+"""Generate BusyBeaver/ZFC/KSource225.lean: the 225's source program and K230's halt alike.
+
+Both programs are read from their site lists (`candidate-k225/sites_logical.json` and Elliot
+Glazer's `sites230.json`, kept in `candidate-k228/ingredients/`) and hash-consed into DAGs exactly
+as Source 123's `source_data.program_text` does. The offset certificate comes from
+`gen_cert.py`, which reproduces Source 123's 226 certificate byte for byte. Everything emitted is
+untrusted: the kernel re-checks the certificate and its mirror in chunks (`RMOffsetBisim`).
+
+Usage (from the repository root):
+    python Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source225_lean.py [--check]
+"""
+import argparse, json, sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parents[4]
+sys.path.insert(0, str(HERE))
+sys.setrecursionlimit(100000)
+from gen_cert import load, Tree, generate  # noqa: E402
+
+TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource225.lean"
+SITES225 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k225/sites_logical.json"
+SITES230 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k228/ingredients/sites230.json"
+CHUNK_DEPTH = 4
+
+
+def dag(leaf):
+    """Post-order hash-consed DAG of the tree with leaves `leaf` (paths as bool tuples)."""
+    inner = {p[:i] for p in leaf for i in range(len(p))}
+    memo, nodes = {}, []
+    def rec(p):
+        if p in leaf:
+            return ("leaf", leaf[p])
+        assert p in inner
+        key = (rec(p + (False,)), rec(p + (True,)))
+        if key not in memo:
+            memo[key] = len(nodes); nodes.append(key)
+        return ("node", memo[key])
+    root = rec(())
+    return nodes, root[1]
+
+
+def edge(e):
+    if e[0] == "node":
+        return f"(.node {e[1]})"
+    op, a = e[1]
+    return {"EInc": f"(.inc {a})", "EDecnz": f"(.decnz {a})", "EBreak": f"(.brk {a})",
+            "EContinue": f"(.cont {a})", "EHalt": ".halt"}[op]
+
+
+def leaf_lean(e):
+    op, a = e
+    return {"EInc": f"(.inc {a})", "EDecnz": f"(.decnz {a})", "EBreak": f"(.brk {a})",
+            "EContinue": f"(.cont {a})", "EHalt": ".halt"}[op]
+
+
+def program(name, nodes, root, doc):
+    cases = "\n".join(f"  | {i} => ({edge(a)}, {edge(b)})" for i, (a, b) in enumerate(nodes))
+    return (f"/-- {doc} -/\ndef {name}Nodes : Nat → Edge × Edge\n{cases}\n  | _ => (.halt, .halt)\n\n"
+            f"def {name} : Program := ⟨{name}Nodes, {root}, {len(nodes)}⟩\n")
+
+
+def literal_tree(nodes, root):
+    def go(n):
+        a, b = nodes[n]
+        return f"(.node {child(a)} {child(b)})"
+    def child(e):
+        return go(e[1]) if e[0] == "node" else f"(.leaf {leaf_lean(e[1])})"
+    return go(root)
+
+
+def code(P):
+    return int("1" + "".join("1" if b else "0" for b in P), 2)
+
+
+def otree(entries, lo, hi):
+    if hi - lo == 1:
+        a, b, z, j, k = entries[lo]
+        return f".leaf ({code(a)}, {code(b)}, ({z} : Int), {j}, {k})"
+    mid = (lo + hi) // 2
+    return f".branch {mid - lo} ({otree(entries, lo, mid)})\n  ({otree(entries, mid, hi)})"
+
+
+def chunks(entries, depth):
+    n = len(entries); parts = 2 ** depth
+    bounds = [n * i // parts for i in range(parts + 1)]
+    return [(bounds[i], bounds[i + 1]) for i in range(parts)]
+
+
+def cert_block(prefix, entries, t1, t2):
+    out = []
+    cs = chunks(entries, CHUNK_DEPTH)
+    for i, (lo, hi) in enumerate(cs):
+        out.append(f"def {prefix}{i} : OTree :=\n  {otree(entries, lo, hi)}\n")
+    def assemble(lo, hi):
+        if hi - lo == 1:
+            return f"{prefix}{lo}"
+        mid = (lo + hi) // 2
+        size = cs[mid][0] - cs[lo][0]
+        return f".branch {size} ({assemble(lo, mid)}) ({assemble(mid, hi)})"
+    out.append(f"def {prefix}Cert : OTree := {assemble(0, len(cs))}\n")
+    out.append(f"abbrev {prefix}F : OEntry → Bool := oentryOk {t1} {t2} {prefix}Cert\n")
+    out.append(f"theorem {prefix}_start : obranchOk {t1} {t2} {prefix}Cert [] [] 0 0 = true := by decide +kernel\n")
+    for i in range(len(cs)):
+        out.append(f"theorem {prefix}_ok{i} : allO {prefix}F {prefix}{i} = true := by decide +kernel\n")
+    oks = ", ".join(f"{prefix}_ok{i}" for i in range(len(cs)))
+    out.append(f"theorem {prefix}_all : allO {prefix}F {prefix}Cert = true := by\n"
+               f"  unfold {prefix}Cert\n  simp only [allO, {oks}, Bool.and_self]\n")
+    return "\n".join(out)
+
+
+HEADER = """import BusyBeaver.ZFC.RMOffsetBisim
+
+/-!
+The source program of the 225-state K-family candidate and Elliot Glazer's K230 source halt alike.
+
+`p225` is the 5,121-leaf source of `candidate-k225` (Source 124 of the ZFC closure-kernels host);
+`p230` is the 5,125-leaf source of K230 (`elliotglazer/k230-rocq`, commit `3142e4d`,
+`machine/sites230.json`). Both are hash-consed DAGs, numbered in post order as in the Rocq
+`Prog230.v` / Source 123's `Prog226.v`. They differ by four rewrites of the transfer-plus-one loop and
+by closed reassociations, so an offset segment bisimulation (`RMOffsetBisim`) relates them:
+{n} pairs of register-test sites, {nz} of them with register 5 offset by one. The certificate was
+generated by `Computability/BusyBeaver/Research/ZFC/k225-formal/gen_cert.py` (untrusted; it
+reproduces Source 123's 226 certificate byte for byte) and is re-checked here by the kernel in
+{c} chunks, together with its mirror for the converse direction.
+-/
+
+namespace SetTheory.BusyBeaver.ZFC.KSource225
+
+open RegisterPath RMBisim RMOffsetBisim
+set_option maxRecDepth 65536
+set_option maxHeartbeats 8000000
+
+"""
+
+FOOTER = """
+theorem fwd_start' : obranchOk (ptree p225) (ptree p230) fwdCert [] [] 0 0 = true := by
+  rw [t225_eq, t230_eq]; exact fwd_start
+
+theorem fwd_all' : allO (oentryOk (ptree p225) (ptree p230) fwdCert) fwdCert = true := by
+  rw [t225_eq, t230_eq]; exact fwd_all
+
+theorem bwd_start' : obranchOk (ptree p230) (ptree p225) bwdCert [] [] 0 0 = true := by
+  rw [t225_eq, t230_eq]; exact bwd_start
+
+theorem bwd_all' : allO (oentryOk (ptree p230) (ptree p225) bwdCert) bwdCert = true := by
+  rw [t225_eq, t230_eq]; exact bwd_all
+
+/-- **The 225's source and K230's source halt alike**, from every register file. -/
+theorem p225_halts_iff (R : Registers) : Halts p225 ⟨[], R⟩ ↔ Halts p230 ⟨[], R⟩ :=
+  ⟨ocheck_halts fwd_start' fwd_all' R, ocheck_halts bwd_start' bwd_all' R⟩
+
+end SetTheory.BusyBeaver.ZFC.KSource225
+"""
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--out", type=Path, default=TARGET)
+    args = ap.parse_args()
+    L1, L2 = load(SITES225), load(SITES230)
+    n1, r1 = dag(L1); n2, r2 = dag(L2)
+    entries = generate(Tree(L1), Tree(L2))
+    mirror = [(b, a, -z, j, k) for a, b, z, j, k in entries]
+    nz = sum(1 for e in entries if e[2] != 0)
+    body = HEADER.format(n=len(entries), nz=nz, c=2 ** CHUNK_DEPTH)
+    body += program("p225", n1, r1, f"The 225's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
+    body += program("p230", n2, r2, f"K230's source as a {len(n2)}-node DAG (root {r2}).") + "\n"
+    body += "/-- The 225's decoder tree, written out. -/\ndef t225 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
+    body += "/-- K230's decoder tree, written out. -/\ndef t230 : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
+    body += "theorem t225_eq : ptree p225 = t225 := by rfl\n\ntheorem t230_eq : ptree p230 = t230 := by rfl\n\n"
+    body += "/-! ## Forward certificate (225 → K230) -/\n\n" + cert_block("fwd", entries, "t225", "t230")
+    body += "\n/-! ## Mirrored certificate (K230 → 225) -/\n\n" + cert_block("bwd", mirror, "t230", "t225")
+    body += FOOTER
+    if args.check:
+        assert args.out.read_text(encoding="utf-8") == body, "generated file differs"
+        print("KSource225.lean is up to date")
+        return
+    args.out.write_text(body, encoding="utf-8", newline="\n")
+    print(f"wrote {args.out}: {len(entries)} entries ({nz} offset), {len(n1)} / {len(n2)} DAG nodes, "
+          f"{len(body) // 1024} KB")
+
+
+if __name__ == "__main__":
+    main()

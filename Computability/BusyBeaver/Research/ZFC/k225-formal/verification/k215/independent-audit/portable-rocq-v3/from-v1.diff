@@ -1,0 +1,116 @@
+--- reviewed-portable-v1.py
++++ portable-v3.py
+@@ -18,16 +18,41 @@
+             i+=1
+     assert d==0
+     return ''.join(out)
++def endpoint_gate(name,output):
++    return name not in ('K215F.Correct215','K215F.CorrectDense215') or (
++        output.count('Closed under the global context')==2 and 'Axioms:' not in output)
++def reusable(old,inputs,obj):
++    if not (old.get('status')=='PASS' and old.get('exit_code')==0
++            and old.get('post_inputs_unchanged') is True and old.get('inputs')==inputs
++            and obj.exists() and sha(obj)==old.get('object_sha256')):
++        return False
++    log=Path(old['source_snapshot']).parent/'output.log'
++    return (log.is_file() and sha(log)==old.get('output_sha256')
++            and endpoint_gate(old['module'],log.read_text()))
++def bind_toolchain(path,current):
++    if path.exists():
++        assert json.loads(path.read_text())==current,'Toolchain changed: use a fresh output directory'
++    else:write(path,current)
++def stop_signal(signum,frame):
++    raise KeyboardInterrupt('Build terminated by signal '+str(signum))
+ def proof_process(cmd,env,cwd,log):
+-    proc=subprocess.Popen(cmd,env=env,cwd=cwd,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
++    proc=None
+     try:
++        # Block interruption only during spawn; the outer handler owns the child
++        # before pending SIGINT/SIGTERM is delivered on restoring the mask.
++        oldmask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGINT,signal.SIGTERM})
++        try:
++            proc=subprocess.Popen(cmd,env=env,cwd=cwd,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,
++                                  preexec_fn=lambda: signal.pthread_sigmask(signal.SIG_SETMASK,oldmask))
++        finally:signal.pthread_sigmask(signal.SIG_SETMASK,oldmask)
+         proc.wait()
+     except BaseException:
+-        try:os.killpg(proc.pid,signal.SIGTERM)
+-        except ProcessLookupError:pass
+-        try:proc.wait(timeout=10)
+-        except subprocess.TimeoutExpired:
+-            os.killpg(proc.pid,signal.SIGKILL);proc.wait()
++        if proc is not None:
++            try:os.killpg(proc.pid,signal.SIGTERM)
++            except ProcessLookupError:pass
++            try:proc.wait(timeout=10)
++            except subprocess.TimeoutExpired:
++                os.killpg(proc.pid,signal.SIGKILL);proc.wait()
+         raise
+     return proc
+ def main():
+@@ -41,6 +66,7 @@
+     ap.add_argument('--plan-only',action='store_true')
+     ap.add_argument('--kernel',action='store_true',help='Also recursively recheck the complete dense endpoint with coqchk')
+     a=ap.parse_args()
++    signal.signal(signal.SIGTERM,stop_signal)
+     ROOT=a.output.resolve();ROOT.mkdir(parents=True,exist_ok=True)
+     REF=a.reference.resolve();JEFF=a.jeff_reference.resolve()
+     WORK=ROOT/'work';WORK.mkdir(exist_ok=True)
+@@ -98,7 +124,16 @@
+     version=subprocess.check_output([str(COQC),'--version'],env=env,text=True).strip()
+     assert 'version 9.1.0' in version,version
+     stdlib=subprocess.check_output(['opam','list','--switch='+a.switch,'--installed','--short','--columns=version','--color=never','rocq-stdlib'],text=True).strip();assert stdlib=='9.0.0',stdlib
+-    write(ROOT/'toolchain.json',{'compiler':version,'stdlib':stdlib,'coqc_sha256':sha(COQC),'coqchk_sha256':sha(COQC.with_name('coqchk'))})
++    prefix=Path(env['OPAM_SWITCH_PREFIX']).resolve()
++    installed=prefix/'lib/coq'
++    library={str(p.relative_to(installed)):sha(p) for p in sorted(installed.rglob('*.vo'))}
++    assert library,'No installed Rocq library objects'
++    toolchain={'compiler':version,'stdlib':stdlib,'switch_prefix':str(prefix),
++               'coqc_sha256':sha(COQC),'coqchk_sha256':sha(COQC.with_name('coqchk')),
++               'rocqworker_sha256':sha(prefix/'lib/rocq-runtime/rocqworker'),
++               'installed_library_objects':library}
++    bind_toolchain(ROOT/'toolchain.json',toolchain)
++    toolchain_sha256=sha(ROOT/'toolchain.json')
+     records=ROOT/'records';records.mkdir(exist_ok=True);attempts=ROOT/'attempts';attempts.mkdir(exist_ok=True)
+     for idx,name in enumerate(order):
+         m=modules[name];src=Path(m['source']);dst=Path(m['target']);dst.parent.mkdir(parents=True,exist_ok=True)
+@@ -108,7 +143,7 @@
+         record=records/(name+'.json');obj=dst.with_suffix('.vo')
+         if record.exists():
+             old=json.loads(record.read_bytes())
+-            if old.get('exit_code')==0 and old.get('inputs')==inputs and obj.exists() and sha(obj)==old['object_sha256']:
++            if old.get('toolchain_sha256')==toolchain_sha256 and reusable(old,inputs,obj):
+                 print('REUSE',idx+1,name,flush=True);continue
+         shutil.copyfile(src,dst)
+         base=attempts/name;base.mkdir(exist_ok=True);number=len(list(base.glob('run*')))+1;run=base/f'run{number}';run.mkdir()
+@@ -116,7 +151,7 @@
+         opts=['-w','-deprecated,-notation-overridden']
+         if name.startswith('Undecidability.'):opts+=['-set','Default Proof Using = Type']
+         cmd=[str(COQC),*flags,*opts,str(dst)]
+-        item={'module':name,'argv':cmd,'inputs':inputs,'source_sha256':sha(src),'source_snapshot':str(run/src.name),'started_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'status':'WAITING_LOCK'}
++        item={'module':name,'argv':cmd,'inputs':inputs,'toolchain_sha256':toolchain_sha256,'source_sha256':sha(src),'source_snapshot':str(run/src.name),'started_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'status':'WAITING_LOCK'}
+         write(run/'record.json',item);print('WAIT',idx+1,name,flush=True)
+         with a.lock_file.open('a') as lock:
+             fcntl.flock(lock,fcntl.LOCK_EX); t=time.monotonic(); print('START',idx+1,name,flush=True)
+@@ -125,17 +160,19 @@
+             item.update(exit_code=proc.returncode,seconds=time.monotonic()-t,status='PASS' if proc.returncode==0 else 'FAIL')
+         item['post_inputs_unchanged']=all(Path(p).exists() and sha(p)==h for p,h in inputs.items());assert item['post_inputs_unchanged']
+         output=(run/'output.log').read_text();item['output_sha256']=sha(run/'output.log');item['closed_reports']=output.count('Closed under the global context')
++        item['assumption_gate_passed']=endpoint_gate(name,output)
++        if proc.returncode==0 and not item['assumption_gate_passed']:item['status']='FAIL_ASSUMPTIONS'
+         if proc.returncode==0:item['object_sha256']=sha(obj)
+         write(run/'record.json',item);write(record,item)
+         print(item['status'],name,round(item['seconds'],3),flush=True)
+         if proc.returncode: print(output[-12000:],flush=True);raise SystemExit(proc.returncode)
+-        if name in ('K215F.Correct215','K215F.CorrectDense215'):assert item['closed_reports']==2 and 'Axioms:' not in output,output
++        assert item['assumption_gate_passed'],output
+         time.sleep(.3)
+     if a.kernel:
+         base=ROOT/'kernel';base.mkdir(exist_ok=True);run=base/('run'+str(len(list(base.glob('run*')))+1));run.mkdir()
+         cmd=[str(COQC.with_name('coqchk')),*flags,'-silent','-o','K215F.CorrectDense215']
+         inputs={str(Path(modules[n]['target']).with_suffix('.vo')):sha(Path(modules[n]['target']).with_suffix('.vo')) for n in order}
+-        item={'argv':cmd,'inputs':inputs,'status':'WAITING_LOCK'};write(run/'record.json',item);print('WAIT coqchk',flush=True)
++        item={'argv':cmd,'inputs':inputs,'toolchain_sha256':toolchain_sha256,'status':'WAITING_LOCK'};write(run/'record.json',item);print('WAIT coqchk',flush=True)
+         with a.lock_file.open('a') as lock:
+             fcntl.flock(lock,fcntl.LOCK_EX);t=time.monotonic();print('START coqchk',flush=True)
+             with (run/'output.log').open('w') as log:proc=proof_process(cmd,env,WORK,log)

@@ -1,4 +1,46 @@
-# Rocq endpoints for the 221- and 225-state candidates
+# Rocq endpoints for the literal machine candidates
+
+## The 215
+
+The completed build checks `K215F.CorrectDense215` for the exact
+[candidate-k215](../../candidate-k215/README.md) table:
+
+```coq
+tm215_halts_iff_ZFC_inconsistent :
+  Dense.halts dense_tm Dense.c0 <-> StandardZFC ⊢TC ⊥.
+
+tm215_nonhalting_iff_ZFC_consistent :
+  (~ Dense.halts dense_tm Dense.c0) <-> ~(StandardZFC ⊢TC ⊥).
+```
+
+**Status: `PASS_CLOSED_KERNEL`** (2026-10-21). All 237 modules compiled, and the
+matching Rocq 9.1.0 `coqchk` recursively rechecked the dense endpoint. Both final
+sparse and dense files printed two `Closed under the global context` reports each.
+See the [actual receipt, raw logs and reproduction route](../verification/k215/rocq/README.md).
+The successful module compilations took 2,225.787 seconds in total; the independent
+kernel check took 1,648.988 seconds. These totals exclude lock waits, installation,
+and the preserved interrupted performance attempt.
+
+The 215 uses the dominated calculus, the command-permuted proof enumerator and its
+compiler, the exact 4,751-leaf source, a 95,714-step blank startup with next candidate 4,
+and its literal 215-state dense table. The proof connects these layers to the pinned
+reference's explicit `StandardZFC` theory. It does not infer correctness from the
+separate Python runtime checks.
+
+[The serial build driver](../verification/k215/rocq/build.py) builds the complete target
+closure directly: 195 pinned reference modules and 42 K215 modules. It needs source
+checkouts, not a previously compiled K230 endpoint. The driver records each attempt,
+checks imported object bindings before reuse, serializes proof kernels using the shared
+lock, requires two closed assumption reports from each final sparse/dense file, and with
+`--kernel` recursively checks `K215F.CorrectDense215` using the matching `coqchk`.
+See the [reproduction commands](rocq-extension/README.md#the-215-build-route).
+
+The recursive checker's global context lists `BusyCoq.LibTactics.inj_pair2`,
+`Stdlib.Logic.ProofIrrelevance.proof_irrelevance` and
+`Stdlib.Logic.Eqdep.Eq_rect_eq.eq_rect_eq`. The four endpoint statements depend on
+none of them, as their closed `Print Assumptions` reports show. The global report
+also lists no type-in-type constants, unsafe (co)fixpoints, or assumed positivity.
+This does not claim that every declaration in the imported libraries is axiom-free.
 
 ## The 221
 
@@ -10,8 +52,7 @@ K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent :
 ```
 
 Here `dense_tm` is the literal canonical table of
-[candidate-k221](../../candidate-k221/README.md) (SHA-256 `6457dce8…`), the smallest known
-candidate. The build counts both `Print Assumptions` reports of the final file, and both are
+[candidate-k221](../../candidate-k221/README.md) (SHA-256 `6457dce8…`). The build counts both `Print Assumptions` reports of the final file, and both are
 closed under the global context. `coqchk` then rechecked `K221F.CorrectDense221` independently
 against Elliot Glazer's compiled K230 development (1,514 s).
 

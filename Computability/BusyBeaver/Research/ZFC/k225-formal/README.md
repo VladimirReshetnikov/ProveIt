@@ -1,7 +1,13 @@
 # Formal endpoints for the K-family candidates
 
-**Current state (2026-10-20).** The [221](../candidate-k221/README.md) has two closed endpoints for
-its exact table:
+**Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
+has compiled correctness proofs in both Lean and Rocq. Lean's 204 project modules and
+two endpoint clients pass with only its three standard foundational axioms; Rocq's
+237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
+See the [215 verification record](verification/k215/README.md) for statements, evidence,
+repairs, and reproduction commands. The internal PA endpoint remains open.
+
+The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
 * **Rocq**: `K221F.CorrectDense221.tm221_halts_iff_ZFC_inconsistent`, which `coqchk`
   independently rechecked ([rocq/](rocq/README.md)); its calculus and program layer are in
@@ -11,9 +17,9 @@ its exact table:
 
 The newer [219-state candidate](../candidate-k219/README.md) also has a closed **Lean** endpoint,
 `KEndpoint219.blank_halts_iff_zfc_refutation` ([below](#the-219)); its Rocq and internal PA
-endpoints remain open. Lean and Rocq proof sources for the [217](../candidate-k217/README.md)
-and the [215](../candidate-k215/README.md) are written but not yet compiled
-([below](#the-217), [below](#the-215)). The rest of this page records the earlier 225/224 plan, except the Lean section, which
+endpoints remain open. The [217](../candidate-k217/README.md) proof sources remain
+unchecked ([below](#the-217)). The 215's layers are described [below](#the-215).
+The rest of this page records the earlier 225/224 plan, except the Lean section, which
 describes the 221's endpoint.
 
 
@@ -147,9 +153,12 @@ of up to 48 bits.
 
 ### The 215
 
-**Status: written, not yet kernel-checked.** The sources below have not been compiled; they are to
-be built on a machine with more memory. Until both builds pass, these are unchecked proof
-scripts, not theorems.
+**Lean and Rocq checked.** All 204 Lean project modules and both typed endpoint
+clients pass, with axioms `propext`, `Classical.choice`, and `Quot.sound` only.
+All 237 Rocq sources compiled, both sparse and dense endpoint files printed two
+closed assumption reports, and the matching `coqchk` recursively rechecked the dense endpoint. The
+[verification page](verification/k215/README.md) records the exact artifact, toolchains,
+evidence and serial reproduction commands.
 
 The [215](../candidate-k215/README.md) applies Source 159's command permutation to the 217's
 program ([`prepare_k215.py`](prepare_k215.py), data in [`lean215/`](lean215/)); its calculus is the
@@ -163,7 +172,10 @@ program ([`prepare_k215.py`](prepare_k215.py), data in [`lean215/`](lean215/)); 
 - **Program**: [`DagPerm`](../../../Lean/BusyBeaver/ZFC/DagPerm.lean) is `dagDom` with the root reading only the selector,
   MP reading its field (node 484), the AX word's read of `x` moved after its first `I`, and the
   permuted dispatch ([`make_dagperm.py`](make_dagperm.py)); the candidate's source relates to it by
-  2,240 certificate entries, none offset. [`L2Perm`](../../../Lean/BusyBeaver/ZFC/L2Perm.lean) transfers the `L2K` lemmas,
+  2,240 certificate entries, none offset. The Lean source proof uses
+  [`KSource215Data`](../../../Lean/BusyBeaver/ZFC/KSource215Data.lean), 32 independent kernel
+  checks, and the unchanged public [`KSource215`](../../../Lean/BusyBeaver/ZFC/KSource215.lean)
+  composition theorem. [`L2Perm`](../../../Lean/BusyBeaver/ZFC/L2Perm.lean) transfers the `L2K` lemmas,
   [`L2AxiomsPerm`](../../../Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean) is the regenerated AX word and
   [`L2RootPerm`](../../../Lean/BusyBeaver/ZFC/L2RootPerm.lean) the re-proved dispatch and root step.
 - **Machine**: the 95,714-step startup to the root with `nextproof = 4`, 65 zero cells before the

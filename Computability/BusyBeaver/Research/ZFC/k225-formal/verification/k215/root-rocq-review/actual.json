@@ -1,0 +1,35 @@
+{
+  "status": "PASS_ROOT_READ_ONLY_REVIEWS",
+  "scope": "Root read both helper sources, ran the live source/object/log review and the saved-record review; no compiler or recursive kernel rerun.",
+  "commands": [
+    [
+      "python3",
+      "-B",
+      "/tmp/k215-rocq-complete/review_actual.py",
+      "--build",
+      "/tmp/k215-rocq-complete",
+      "--output",
+      "/tmp/k215-root-rocq-live-review.json"
+    ],
+    [
+      "python3",
+      "-B",
+      "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/review_saved.py",
+      "--evidence",
+      "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/actual",
+      "--output",
+      "/tmp/k215-root-rocq-saved-review.json"
+    ]
+  ],
+  "helper_sha256": {
+    "/tmp/k215-rocq-complete/review_actual.py": "9718c791b54943f7026673cc38d772ab2540ba0efedf019fc4ca573899578ced",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/review_saved.py": "e5f3c241360ad1530ed5221599e06bd4ae44bde1598cda241c08ec5366984cf0"
+  },
+  "result_sha256": {
+    "live-review.json": "48028d59d82e75ec0cf3c6e0ab7e2a7d7a35a15460ca8d4ab4d18b8788678917",
+    "saved-review.json": "aed26733bbe069d507a0811a4a39a5c7dacfa550ffe24b62ed1c9807d9d8c0ce"
+  },
+  "endpoint_closed_reports": 4,
+  "compiled_project_modules": 237,
+  "scope_note": "The coqchk global imported context lists three utility axioms; all four endpoint dependency reports are closed."
+}

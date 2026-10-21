@@ -28,6 +28,8 @@ Definition sub (l : list nat) (i : nat) : nat := nth i l 0.
 Lemma wim00 : wim 0 0 = 0.
 Proof. reflexivity. Qed.
 
+Local Opaque wim.
+
 Definition cast_T {T : nat -> Prop} {x y : nat} (e : x = y) (H : T x) : T y :=
   match e in _ = z return T z with eq_refl => H end.
 

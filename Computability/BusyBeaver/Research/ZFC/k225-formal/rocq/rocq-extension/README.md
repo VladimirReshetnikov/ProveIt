@@ -1,6 +1,54 @@
-# Closed Rocq endpoint for the literal 226-state machine
+# Rocq endpoints for the literal machine variants
 
-The primary target in this directory is the exact dense binary table whose
+## The 215 build route
+
+The default `build.py` variant is now 215. The retained 226 construction below is
+selected explicitly with `--states 226`.
+
+The serial build from source uses Rocq 9.1.0, OCaml 4.14.2 and rocq-stdlib 9.0.0.
+It compiles the 237-module closure of `K215F.CorrectDense215` without first compiling
+an unrelated machine endpoint. On Linux, for example:
+
+```sh
+git clone https://github.com/elliotglazer/k230-rocq.git /tmp/k215-reference
+git -C /tmp/k215-reference checkout 3142e4dd980f0be12f4abb636c4ae2528afc17eb
+git clone https://github.com/jeff87654/busy-beaver.git /tmp/k215-jeff
+git -C /tmp/k215-jeff checkout c132d7eae8158cd3a9850ea3eb7251158c3dd821
+opam switch create proofs-rocq91 ocaml-base-compiler.4.14.2 --no-switch --yes
+opam install --switch=proofs-rocq91 coq-core.9.1.0 rocq-core.9.1.0 --yes
+flock /tmp/proveit-k215-proof-build.lock opam install --switch=proofs-rocq91 rocq-stdlib.9.0.0 --yes --jobs=1
+python3 -B ../../verification/k215/rocq/build.py --reference /tmp/k215-reference --jeff-reference /tmp/k215-jeff --output /tmp/k215-build --switch proofs-rocq91 --kernel
+```
+
+Run the last command from this directory. An existing matching switch can be supplied
+with `--switch`; existing exact source checkouts can replace the example paths. `--plan-only`
+checks the pinned reference sources and writes the dependency plan without compiling.
+The normal run preserves per-module source snapshots, raw compiler logs, exact imported
+object bindings, toolchain versions and hashes, and the recursive kernel check. An exact
+successful prior module can be reused; failed or changed inputs force a new attempt.
+No proof compiler runs concurrently with another process using the shared lock.
+
+The actual 215 build completed with `PASS_CLOSED_KERNEL`: 237 compiled modules,
+four closed endpoint assumption reports, and a successful recursive `coqchk`.
+The [actual records](../../verification/k215/rocq/README.md) preserve every attempt
+and the distinction between the executed runner and this reviewed portable successor.
+The endpoint statements and imported-context axiom policy are described in the
+[Rocq overview](../README.md#the-215).
+
+The fast literal-input check invokes no proof compiler:
+
+```sh
+python3 -B build.py --states 215 --check-only --reference /tmp/k215-reference --jeff-reference /tmp/k215-jeff
+```
+
+The encountered legacy variant-229 input pin was aligned with its committed JSON
+bytes so this whole-manifest check works. The input itself was not rewritten; its
+parsed source equals the pinned upstream input. The prior mismatch and narrow
+metadata correction are retained with the actual evidence.
+
+## Retained 226 endpoint
+
+The historical primary target in this directory is the exact dense binary table whose
 SHA-256 is
 
 ```text
@@ -32,7 +80,7 @@ Use Rocq 9.1.0 and rocq-stdlib 9.0.0. From the enclosing research package:
 
 ```sh
 python3 vendor/k230-rocq/build.py --reference vendor/jeff-reference --coqchk
-python3 rocq-extension/build.py
+python3 rocq-extension/build.py --states 226
 ```
 
 The first command freshly compiles all 216 pinned reference sources and
@@ -46,7 +94,7 @@ No compiled proof objects are required in the archive.
 For a nondefault layout, give both dependency paths explicitly:
 
 ```sh
-python3 rocq-extension/build.py --reference /path/to/k230-rocq --jeff-reference /path/to/jeff-reference
+python3 rocq-extension/build.py --states 226 --reference /path/to/k230-rocq --jeff-reference /path/to/jeff-reference
 ```
 
 `--coqc /path/to/coqc` selects the compiler. With an active opam switch,

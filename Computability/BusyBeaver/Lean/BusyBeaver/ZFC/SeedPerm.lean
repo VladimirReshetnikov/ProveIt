@@ -71,7 +71,8 @@ end SetTheory.BusyBeaver.ZFC.EnumPerm
 
 namespace SetTheory.BusyBeaver.ZFC.L2Perm
 
-open RMDag DagPerm Code254
+open RMDag DagPerm
+open Code254 (F)
 open L2K (enc)
 
 /-- The 215's boot registers: `nextproof = 4`. -/

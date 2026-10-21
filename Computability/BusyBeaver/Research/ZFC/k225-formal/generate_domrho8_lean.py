@@ -187,11 +187,11 @@ def conv(x, y):
             return name
         if ky[0] == "I":
             ca, cb = conv(kx[1], ky[1]), conv(kx[2], ky[2])
-            pf = f"congr (congrArg wim {arg(ca, kx[1])}) {arg(cb, kx[2])}"
+            pf = f"wim_congr {arg(ca, kx[1])} {arg(cb, kx[2])}"
         else:
             assert ky == ("T",)
             ca, cb = conv(kx[1], TT), conv(kx[2], TT)
-            pf = f"(congr (congrArg wim {arg(ca, kx[1])}) {arg(cb, kx[2])}).trans wim00"
+            pf = f"(wim_congr {arg(ca, kx[1])} {arg(cb, kx[2])}).trans wim00"
         name = f"c{x}_{y}"
         CL.append(f"theorem {name} (v : Nat → Nat) : t{x} v = t{y} v := {pf}")
         CONV[(x, y)] = name
@@ -271,6 +271,13 @@ for i, key in enumerate(X):
     w(f"def t{i} (v : Nat → Nat) : Nat := {body}")
 w("")
 w("theorem wim00 : wim 0 0 = 0 := by simp [wim, P, Cantor.toNat, Cantor.tri]")
+w("")
+w("attribute [local irreducible] wim")
+w("")
+w("theorem wim_congr {a b c d : Nat} (h : a = b) (k : c = d) : wim a c = wim b d := by")
+w("  cases h")
+w("  cases k")
+w("  rfl")
 w("")
 w("theorem cast_T {T : Nat → Prop} {x y : Nat} (e : x = y) (h : T x) : T y := e ▸ h")
 w("")

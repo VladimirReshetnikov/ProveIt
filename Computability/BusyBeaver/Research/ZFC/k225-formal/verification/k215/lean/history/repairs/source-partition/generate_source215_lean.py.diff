@@ -1,0 +1,19 @@
+--- generate_source215_lean.py.original
++++ generate_source215_lean.py
+@@ -19,6 +19,7 @@
+ sys.setrecursionlimit(100000)
+ from gen_cert import load, Tree, generate  # noqa: E402
+ from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402
++from partition_source215_lean import write_partition  # noqa: E402
+ 
+ TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean"
+ SITES215 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json"
+@@ -151,7 +152,7 @@
+ 
+ end SetTheory.BusyBeaver.ZFC.KSource215
+ """
+-    TARGET.write_text(out, encoding="utf-8", newline="\n")
++    write_partition(TARGET, out)
+     print(f"wrote {TARGET}: {len(entries)} entries ({nz} offset), {len(n1)} / {len(n2)} DAG nodes, "
+           f"root height {H[0]}, {len(out) // 1024} KB")
+ 
