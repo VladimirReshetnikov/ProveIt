@@ -1,0 +1,36 @@
+\subsection{A fixed successful candidate suffices at the literal cutoff}
+A further simplification concerns enumeration completeness, not the machine.
+The established compiler supplies a finite word
+\[
+ U=\mathrm{STORE}_0;\mathrm{STORE}_0;B_1;R;R
+\]
+that halts from every natural command-boundary work-store, possibly earlier
+than its final command. Its first command is $\mathrm{AX}(0;0,0)$, with
+opcode $2$, so its exact positive-continuation code is positive. The literal
+initializer leaves next candidate $1$ and an empty residual. Ordinary
+increment-by-one enumeration therefore reaches this one fixed successful
+candidate unless it has already halted. The varying-parameter
+$\mathrm{START}_Y$ family is unnecessary for this particular cutoff.
+
+An opcode-independent version follows from an already established fact:
+the credit proof gives $|W(n)|\le n+1$. The exact codec round trip, together
+with $|\mathrm{STORE}_0|=10$, yields
+\[
+ \operatorname{code}(U)\ge |U|-1=21+|B_1|\ge21.
+\]
+Thus no new length induction is needed for the literal application. More
+generally, for any codec satisfying
+$\operatorname{decode}(\operatorname{pack}(c,r))=(c,r)$ and
+$\operatorname{rest}(\operatorname{decode}(z))\le z$, one obtains
+$r\le\operatorname{pack}(c,r)$, and induction on the positive-continuation
+encoding proves $\operatorname{code}(v)\ge |v|-1$ for nonempty $v$.
+Prefixing a universally halting word by $N$ arbitrary commands gives a
+universally halting word with code at least $N$, provided every prefix
+command terminates normally or halts. This is a reusable arbitrary-cutoff
+lemma; it gives no hitting theorem for a skipping scheduler.
+
+The latest phase-four \texttt{EnumPerm} already has a four-line specialized
+code bound and a nine-line general completeness proof. The generic lemma is
+therefore an abstraction opportunity, not a demonstrated local source-size
+or compilation-time reduction. No sealed proof was changed and the proposed
+Lean adapter has not been compiled.

@@ -12,6 +12,17 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 207
+
+`K215_Proof_Simplification_2026-10-21(1).zip` (arrival `beaabc8e3b`), a third
+packet of that name, holds finite replays and uncompiled proof drafts for the
+K215 endpoints. Placed as delivered as
+[proposals/k215-simplification-3](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md),
+omitting `lean/snapshot/` (730 files mirroring this repository) and a copy of
+batch 204's archive. Its one table not in the repository, `common-pop215`, is a
+comparison input copied from an undelivered packet with no proof of its own,
+so it was not placed as an alternative. Nothing was rerun. The queue is clear.
+
 ## Queue status after batch 206
 
 `K215_Proof_Simplification_2026-10-21 (2).zip` (arrival `53269bcab1`) is a

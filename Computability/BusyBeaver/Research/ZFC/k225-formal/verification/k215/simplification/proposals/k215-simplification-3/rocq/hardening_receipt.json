@@ -1,0 +1,336 @@
+{
+  "status": "PASS_FAIL_CLOSED_REPRODUCIBILITY_CONTROLS_NOT_KERNEL_CHECK",
+  "scope": "Rocq-owned Python checkers only; no formal .v semantic changes or kernel execution.",
+  "source_pins": {
+    "Cert215Offsets.v": "32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728",
+    "Prog215.v": "6cc81c19652b26467b584e5a9f550becfea10e550a7cadd416d64a616c05b010",
+    "DagPerm.v": "ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1"
+  },
+  "all_tests_passed": true,
+  "test_count": 35,
+  "formal_v_files_unchanged": true,
+  "formal_v_sha256": {
+    "Source215Plain.v": "86304a0616a9f2982a495b7809e3b17ca1b09796ce54e100b587c54dc66fe420",
+    "PackedCert215.v": "6c2f45c4741f74d1c29ed0527b6a28808018ff4c6bcf627f6a02986e18f1f13d",
+    "PackedCertAudit.v": "3085319d8ca2ac350bc2e1d700ddf7134026cbaf55f63dc1e87a78cbdd006aa3"
+  },
+  "tests": [
+    {
+      "test": "ordinary_pinned_run",
+      "script": "prototype.py",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "optimization_rejection",
+      "script": "prototype.py",
+      "flag": "-O",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "optimization_rejection",
+      "script": "prototype.py",
+      "flag": "-OO",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "prototype.py",
+      "PYTHONOPTIMIZE": "0",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "prototype.py",
+      "PYTHONOPTIMIZE": "1",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "prototype.py",
+      "PYTHONOPTIMIZE": "2",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "ordinary_pinned_run",
+      "script": "compare_flat_cfg.py",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "optimization_rejection",
+      "script": "compare_flat_cfg.py",
+      "flag": "-O",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "optimization_rejection",
+      "script": "compare_flat_cfg.py",
+      "flag": "-OO",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "compare_flat_cfg.py",
+      "PYTHONOPTIMIZE": "0",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "compare_flat_cfg.py",
+      "PYTHONOPTIMIZE": "1",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "compare_flat_cfg.py",
+      "PYTHONOPTIMIZE": "2",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "ordinary_pinned_run",
+      "script": "analyze_cfg_rewrites.py",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "optimization_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "flag": "-O",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "optimization_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "flag": "-OO",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "PYTHONOPTIMIZE": "0",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "PYTHONOPTIMIZE": "1",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "environment_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "PYTHONOPTIMIZE": "2",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "optimized_helper_import_rejection",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "UNSAFE_PYTHON_OPTIMIZATION: run without -O/-OO and unset PYTHONOPTIMIZE; assertions are required.\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "prototype.py",
+      "source": "Cert215Offsets.v",
+      "mutation": "same_shape_offset",
+      "mutated_sha256": "0223e946a0d98b4006202a66a9dcb2363918a3e102ba25d3cabd15854edc2708",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Cert215Offsets.v; expected 32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728; got 0223e946a0d98b4006202a66a9dcb2363918a3e102ba25d3cabd15854edc2708\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "compare_flat_cfg.py",
+      "source": "Cert215Offsets.v",
+      "mutation": "same_shape_offset",
+      "mutated_sha256": "0223e946a0d98b4006202a66a9dcb2363918a3e102ba25d3cabd15854edc2708",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Cert215Offsets.v; expected 32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728; got 0223e946a0d98b4006202a66a9dcb2363918a3e102ba25d3cabd15854edc2708\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "source": "Cert215Offsets.v",
+      "mutation": "same_shape_offset",
+      "mutated_sha256": "0223e946a0d98b4006202a66a9dcb2363918a3e102ba25d3cabd15854edc2708",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Cert215Offsets.v; expected 32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728; got 0223e946a0d98b4006202a66a9dcb2363918a3e102ba25d3cabd15854edc2708\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "prototype.py",
+      "source": "Prog215.v",
+      "mutation": "same_shape_test_register",
+      "mutated_sha256": "b2c8ee8ed49041bc91bf46944bbed046e34270844e8d953f7f13cc6a95051554",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Prog215.v; expected 6cc81c19652b26467b584e5a9f550becfea10e550a7cadd416d64a616c05b010; got b2c8ee8ed49041bc91bf46944bbed046e34270844e8d953f7f13cc6a95051554\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "compare_flat_cfg.py",
+      "source": "Prog215.v",
+      "mutation": "same_shape_test_register",
+      "mutated_sha256": "b2c8ee8ed49041bc91bf46944bbed046e34270844e8d953f7f13cc6a95051554",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Prog215.v; expected 6cc81c19652b26467b584e5a9f550becfea10e550a7cadd416d64a616c05b010; got b2c8ee8ed49041bc91bf46944bbed046e34270844e8d953f7f13cc6a95051554\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "source": "Prog215.v",
+      "mutation": "same_shape_test_register",
+      "mutated_sha256": "b2c8ee8ed49041bc91bf46944bbed046e34270844e8d953f7f13cc6a95051554",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Prog215.v; expected 6cc81c19652b26467b584e5a9f550becfea10e550a7cadd416d64a616c05b010; got b2c8ee8ed49041bc91bf46944bbed046e34270844e8d953f7f13cc6a95051554\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "prototype.py",
+      "source": "DagPerm.v",
+      "mutation": "same_shape_increment_register",
+      "mutated_sha256": "8d239747f29383fe86cba93b468fae194339c402bbeed7ba8484a9910e32c91b",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: DagPerm.v; expected ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1; got 8d239747f29383fe86cba93b468fae194339c402bbeed7ba8484a9910e32c91b\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "compare_flat_cfg.py",
+      "source": "DagPerm.v",
+      "mutation": "same_shape_increment_register",
+      "mutated_sha256": "8d239747f29383fe86cba93b468fae194339c402bbeed7ba8484a9910e32c91b",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: DagPerm.v; expected ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1; got 8d239747f29383fe86cba93b468fae194339c402bbeed7ba8484a9910e32c91b\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "source": "DagPerm.v",
+      "mutation": "same_shape_increment_register",
+      "mutated_sha256": "8d239747f29383fe86cba93b468fae194339c402bbeed7ba8484a9910e32c91b",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: DagPerm.v; expected ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1; got 8d239747f29383fe86cba93b468fae194339c402bbeed7ba8484a9910e32c91b\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "prototype.py",
+      "source": "Cert215Offsets.v",
+      "mutation": "malformed_boolean_token",
+      "mutated_sha256": "84cd03b3c2031747eb2a683eceb77aa7337a009df58411e44f13097cf22f278c",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Cert215Offsets.v; expected 32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728; got 84cd03b3c2031747eb2a683eceb77aa7337a009df58411e44f13097cf22f278c\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "compare_flat_cfg.py",
+      "source": "Cert215Offsets.v",
+      "mutation": "malformed_boolean_token",
+      "mutated_sha256": "84cd03b3c2031747eb2a683eceb77aa7337a009df58411e44f13097cf22f278c",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Cert215Offsets.v; expected 32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728; got 84cd03b3c2031747eb2a683eceb77aa7337a009df58411e44f13097cf22f278c\n"
+    },
+    {
+      "test": "source_hash_rejection",
+      "script": "analyze_cfg_rewrites.py",
+      "source": "Cert215Offsets.v",
+      "mutation": "malformed_boolean_token",
+      "mutated_sha256": "84cd03b3c2031747eb2a683eceb77aa7337a009df58411e44f13097cf22f278c",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "SOURCE_SHA256_MISMATCH: Cert215Offsets.v; expected 32197f6f31bd3c7c7bf5fb94af0e721434f1238d64a64a715b8c9d2cbdd4e728; got 84cd03b3c2031747eb2a683eceb77aa7337a009df58411e44f13097cf22f278c\n"
+    },
+    {
+      "test": "strict_boolean_parser_rejection",
+      "passed": true,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/rocq-checker-hardening-8miy2g8q/prototype.py\", line 21, in paths\n    raise ValueError('INVALID_BOOLEAN_TOKEN: ' + s)\nValueError: INVALID_BOOLEAN_TOKEN: true;FALSE_NOT_A_COQ_BOOL\n"
+    },
+    {
+      "test": "ordinary_final_run",
+      "script": "prototype.py",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "ordinary_final_run",
+      "script": "compare_flat_cfg.py",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "test": "ordinary_final_run",
+      "script": "analyze_cfg_rewrites.py",
+      "passed": true,
+      "exit_code": 0
+    }
+  ]
+}
