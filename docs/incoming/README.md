@@ -12,6 +12,18 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Queue status after batch 203
+
+`Feedback_Scheduling_and_Corrected_217_2026-10-21.zip` (arrival `1083e2b5ff`)
+arrived while batch 202 was being pushed. It has no new working 215-state
+machine: its `feedback215` table, the earlier scratch-biased short-transfer
+experiment, is rejected by its own return-target counterexample. Its
+`companion217` is a working constant-bias/stride-two 217-state machine that
+is not a state renaming of K217 or of any repository table, so the packet
+was placed whole as delivered under
+[candidate-k217/alternatives/feedback-stride2/](../../Computability/BusyBeaver/Research/ZFC/candidate-k217/alternatives/feedback-stride2/INTAKE.md),
+with its feedback-scheduler theorem. Nothing was rerun. The queue is clear.
+
 ## Queue status after batch 202
 
 Batch 202 received six archives, all 215-state ZFC machines, and, at Vladimir's

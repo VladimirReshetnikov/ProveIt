@@ -1,0 +1,1 @@
+The stack-output MP compiler is an abstract all-natural result. These raw 217-state tables have no independent full runtime or blank-start proof and are NOT calibrated candidates. Pricing receipt scope is explicit in proofs/STACK_OUTPUT_MP_COMPILER.md.
