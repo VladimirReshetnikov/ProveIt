@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Generate DomRho8.lean: dominated rho8 instances derive every rho8 instance.
 
+Superseded: the maintained DomRho8.lean is rendered by rho8cd/generate_domrho8_cd.py from a
+52-step condensed-detachment derivation. This producer of the Source 149 replay is kept as history.
+
   python generate_domrho8_lean.py CERTIFICATE_JSON OUT_LEAN [--plan PLAN | --no-plan | --templates CD230_V]
 
 The exact Source149 input uses a guarded lemma hierarchy by default. Its pinned CD230

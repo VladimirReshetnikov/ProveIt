@@ -152,10 +152,11 @@ layers are new; everything else is generated as for the 218 ([`prepare_k217.py`]
 data in [`lean217/`](lean217/)).
 
 - **Calculus**: `CDom` restricts rho8 to `u ≤ a` ([`KCodeDom`](../../../Lean/BusyBeaver/ZFC/KCodeDom.lean)). It derives exactly
-  `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) checks Source 149's 3,728-node certificate
-  ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)): one definition per shared term, one
-  theorem per proof node, conversion lemmas where a step uses `I(T,T) = T`, and renamed valuations
-  where a step matches its conclusion up to variable renaming.
+  `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) is a 52-step condensed-detachment
+  derivation of Łukasiewicz's axiom (rho8) from its dominated instances, one lemma per step
+  ([`rho8cd/`](rho8cd/README.md), which also renders the Rocq `DomRho8.v`). It replaces the
+  replay of Source 149's 3,728-node certificate ([`generate_domrho8_lean.py`](generate_domrho8_lean.py),
+  118 lemmas in its last form).
 - **Enumerator**: [`EnumDom`](../../../Lean/BusyBeaver/ZFC/EnumDom.lean) is `Enum222` with the AX fields `z, y, x` read as
   `U = d + z`, `A = U + x`, `B = h + y` (GEN at `U`, rho8 at `(A, B, c, U)`); soundness is unchanged
   and the compiler builds `CDom` derivations, the rho8 leaf being `AX(c, u, b, a - u)`
