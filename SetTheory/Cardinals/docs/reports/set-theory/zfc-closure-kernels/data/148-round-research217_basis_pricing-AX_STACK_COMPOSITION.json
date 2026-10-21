@@ -1,0 +1,55 @@
+{
+  "status": "SOURCE_LEVEL_COMPOSITIONAL_STACK_CONTRACT",
+  "baseline_contract_file": "latest219_baseline/k225-formal/rocq224/src/Enum222.v",
+  "baseline_contract_sha256": "9fc1692e9f46b26db4d06149009b012e69601bd22fd8c1ca7270413510f5421d",
+  "baseline_definition": "Definition ax_stack (a h b c u t w : nat) : nat :=\n  P (rho1 a b) (P (rho2 a b c) (P (rho3 a b c) (P (rho4 a b c) (P (rho5 a b c)\n    (P (rho6 a c) (P (growG a b c) (P (rho8 a b c u) (P (wal a h) (P t w))))))))).",
+  "baseline_stack_top_first": [
+    "rho1",
+    "rho2",
+    "rho3",
+    "rho4",
+    "rho5",
+    "rho6",
+    "G",
+    "rho8",
+    "GEN",
+    "saved_previous_top"
+  ],
+  "new_H_then_PW_stack_top_first": [
+    "rho1",
+    "rho2",
+    "rho3",
+    "rho4",
+    "rho5",
+    "rho6",
+    "G",
+    "PW",
+    "H",
+    "GEN",
+    "saved_previous_top"
+  ],
+  "new_PW_then_H_stack_top_first": [
+    "rho1",
+    "rho2",
+    "rho3",
+    "rho4",
+    "rho5",
+    "rho6",
+    "G",
+    "H",
+    "PW",
+    "GEN",
+    "saved_previous_top"
+  ],
+  "literal_replaced_interval": [
+    135,
+    486
+  ],
+  "argument": "The complete later primitive word and outer CFG are preserved. Each unchanged parameter-push/Imp atom retains its inherited arbitrary-prior-stack contract. Postfix evaluation gives the two new formulas in declared order. Replacing the single emitted rho8 with two emitted rows therefore changes only the old slot8 to slots8/9 and shifts the older GEN/saved-top entries. The optional discard-reader is stack/top neutral by its independent loop invariant.",
+  "dependencies": [
+    "Inherited accepted baseline source-to-Enum222 and macro contracts",
+    "Exact postfix/formula checks and outside-CFG transport in this lane",
+    "DISCARD_READER_CONTRACT.json when the fourth field is retained"
+  ],
+  "scope": "Source-level compositional argument. No proof-assistant compilation, binary allocation, primitive runtime or blank-startup claim."
+}

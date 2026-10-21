@@ -1,0 +1,178 @@
+Readable finite cd59 proof
+All p_i are universally quantified natural-code metavariables; T means rawcode0.
+I(T,T)=T is the only normalization. Explicit substitution maps are in cd59_certificate.json.
+
+0. (((p0 -> p1) -> p1) -> ((p1 -> p0) -> (p2 -> p0)))
+   dominated_rho8; origin prior_fragment:1
+
+1. (((p0 -> p1) -> (p2 -> p1)) -> (((p2 -> p1) -> p0) -> (p3 -> p0)))
+   dominated_rho8; origin prior_fragment:2
+
+2. (((p0 -> p1) -> (p1 -> p2)) -> (((p1 -> p2) -> p0) -> (p3 -> p0)))
+   dominated_rho8; origin prior_fragment:3
+
+3. (((((p0 -> p1) -> p1) -> (p0 -> p1)) -> (p1 -> p1)) -> (p2 -> (p1 -> p1)))
+   MP with substitutions, major 1, minor 1; origin prior_fragment:8
+
+4. (((p0 -> (p1 -> p1)) -> (((p2 -> p1) -> p1) -> (p2 -> p1))) -> (p3 -> (((p2 -> p1) -> p1) -> (p2 -> p1))))
+   MP with substitutions, major 1, minor 3; origin prior_fragment:12
+
+5. (((p0 -> T) -> p1) -> ((p1 -> p0) -> (p2 -> p0)))
+   dominated_rho8; origin prior_fragment:0
+
+6. ((((T -> p0) -> (p1 -> p0)) -> (p0 -> T)) -> (p2 -> (p0 -> T)))
+   MP with substitutions, major 5, minor 5; origin prior_fragment:5
+
+7. (((p0 -> (p1 -> T)) -> ((T -> p1) -> (p2 -> p1))) -> (p3 -> ((T -> p1) -> (p2 -> p1))))
+   MP with substitutions, major 1, minor 6; origin prior_fragment:10
+
+8. (p0 -> T)
+   MP with substitutions, major 7, minor 6; origin prior_fragment:16
+
+9. ((T -> p0) -> (p1 -> p0))
+   MP with substitutions, major 5, minor 8; origin prior_fragment:17
+
+10. (p0 -> (((p1 -> p1) -> p1) -> (p1 -> p1)))
+   MP with substitutions, major 4, minor 9; origin prior_fragment:122
+
+11. T
+   truth; origin prior_fragment:4
+
+12. (((p0 -> p0) -> p0) -> (p0 -> p0))
+   MP with substitutions, major 10, minor 11; origin prior_fragment:125
+
+13. (((p0 -> p0) -> (p0 -> p0)) -> (p1 -> (p0 -> p0)))
+   MP with substitutions, major 1, minor 12; origin prior_fragment:127
+
+14. (p0 -> ((p1 -> p1) -> (p1 -> p1)))
+   MP with substitutions, major 13, minor 13; origin prior_fragment:128
+
+15. ((p0 -> p0) -> (p0 -> p0))
+   MP with substitutions, major 14, minor 11; origin prior_fragment:136
+
+16. (p0 -> (p1 -> p1))
+   MP with substitutions, major 13, minor 15; origin prior_fragment:138
+
+17. (p0 -> p0)
+   MP with substitutions, major 16, minor 11; origin prior_fragment:140
+
+18. (((p0 -> p1) -> p0) -> (p2 -> p0))
+   MP with substitutions, major 1, minor 17; origin prior_fragment:142
+
+19. (((p0 -> p1) -> (p1 -> p2)) -> (p3 -> (p1 -> p2)))
+   MP with substitutions, major 1, minor 18; origin prior_fragment:158
+
+20. (((p0 -> (p1 -> p2)) -> (p3 -> p1)) -> (p4 -> (p3 -> p1)))
+   MP with substitutions, major 1, minor 19; origin prior_fragment:222
+
+21. (p0 -> ((((p1 -> p2) -> p3) -> p2) -> (p1 -> p2)))
+   MP with substitutions, major 20, minor 5; origin prior_fragment:239
+
+22. ((((p0 -> p1) -> p2) -> p1) -> (p0 -> p1))
+   MP with substitutions, major 21, minor 11; origin prior_fragment:241
+
+23. (((p0 -> p1) -> ((p0 -> p1) -> p2)) -> (p3 -> ((p0 -> p1) -> p2)))
+   MP with substitutions, major 1, minor 22; origin prior_fragment:244
+
+24. (p0 -> (((p1 -> p2) -> p1) -> p1))
+   MP with substitutions, major 23, minor 18; origin prior_fragment:278
+
+25. (((p0 -> p1) -> p0) -> p0)
+   MP with substitutions, major 24, minor 11; origin prior_fragment:349
+
+26. ((p0 -> (p0 -> p1)) -> (p2 -> (p0 -> p1)))
+   MP with substitutions, major 0, minor 25; origin prior_fragment:351
+
+27. (p0 -> ((p1 -> (p1 -> p2)) -> (p1 -> p2)))
+   MP with substitutions, major 26, minor 26; origin prior_fragment:361
+
+28. ((p0 -> (p0 -> p1)) -> (p0 -> p1))
+   MP with substitutions, major 27, minor 11; origin prior_fragment:379
+
+29. (((p0 -> (p1 -> p2)) -> p1) -> (p3 -> p1))
+   MP with substitutions, major 1, minor 26; origin prior_fragment:362
+
+30. (((p0 -> (p1 -> p2)) -> p1) -> p1)
+   MP with substitutions, major 28, minor 29; origin prior_fragment:382
+
+31. (((p0 -> p1) -> (((p2 -> p1) -> p3) -> p4)) -> (((((p2 -> p1) -> p3) -> p4) -> p0) -> (p5 -> p0)))
+   dominated_rho8; origin context_depth3
+
+32. (((p0 -> p1) -> (p1 -> p2)) -> (p3 -> (p1 -> p2)))
+   MP with substitutions, major 1, minor 18; origin prover9:65
+
+33. ((p0 -> (p1 -> (p0 -> p2))) -> (p3 -> (p1 -> (p0 -> p2))))
+   MP with substitutions, major 0, minor 30; origin prover9:85
+
+34. (((p0 -> (p1 -> p2)) -> (p3 -> p1)) -> (p4 -> (p3 -> p1)))
+   MP with substitutions, major 1, minor 32; origin prover9:285
+
+35. ((p0 -> (p1 -> (p0 -> p2))) -> (p1 -> (p0 -> p2)))
+   MP with substitutions, major 28, minor 33; origin prover9:338
+
+36. (((p0 -> (p1 -> p2)) -> (p3 -> (p2 -> p4))) -> (p5 -> (p3 -> (p2 -> p4))))
+   MP with substitutions, major 1, minor 34; origin prover9:438
+
+37. ((p0 -> p1) -> (((p1 -> p0) -> p0) -> p1))
+   MP with substitutions, major 35, minor 0; origin prover9:481
+
+38. (p0 -> (((p1 -> p2) -> p3) -> (p2 -> p3)))
+   MP with substitutions, major 36, minor 2; origin prover9:630
+
+39. (((p0 -> p1) -> p2) -> (p1 -> p2))
+   MP with substitutions, major 38, minor 38; origin prover9:637
+
+40. (p0 -> ((p0 -> p1) -> (p2 -> p1)))
+   MP with substitutions, major 39, minor 0; origin prover9:682
+
+41. (p0 -> (((p1 -> p0) -> p2) -> (p3 -> p2)))
+   MP with substitutions, major 39, minor 40; origin prover9:685
+
+42. (((((p0 -> p1) -> p2) -> (p3 -> p2)) -> p0) -> (p4 -> p0))
+   MP with substitutions, major 31, minor 40; origin prover9:701
+
+43. (((((p0 -> p1) -> p0) -> (p2 -> p0)) -> p3) -> (p4 -> p3))
+   MP with substitutions, major 40, minor 18; origin prover9:763
+
+44. (((((p0 -> p1) -> p2) -> (p3 -> p2)) -> p0) -> p0)
+   MP with substitutions, major 28, minor 42; origin prover9:787
+
+45. ((p0 -> (((p0 -> p1) -> p2) -> (p3 -> p2))) -> (p4 -> (((p0 -> p1) -> p2) -> (p3 -> p2))))
+   MP with substitutions, major 0, minor 44; origin prover9:792
+
+46. (((((p0 -> p1) -> (p2 -> p1)) -> p0) -> p0) -> ((p0 -> p1) -> (p2 -> p1)))
+   MP with substitutions, major 37, minor 40; origin prover9:939
+
+47. (((p0 -> (((p1 -> p0) -> p2) -> (p3 -> p2))) -> p4) -> (p5 -> p4))
+   MP with substitutions, major 40, minor 41; origin prover9:1079
+
+48. (((((p0 -> p1) -> p0) -> (p2 -> p0)) -> p3) -> p3)
+   MP with substitutions, major 28, minor 43; origin prover9:2929
+
+49. (((p0 -> (((p1 -> p0) -> p2) -> (p3 -> p2))) -> p4) -> p4)
+   MP with substitutions, major 28, minor 47; origin prover9:16977
+
+50. (((p0 -> (((p1 -> p2) -> p3) -> (p4 -> p3))) -> p1) -> (p5 -> p1))
+   MP with substitutions, major 1, minor 45; origin prover9:28549
+
+51. (((p0 -> (((p1 -> p2) -> p3) -> (p4 -> p3))) -> p1) -> p1)
+   MP with substitutions, major 28, minor 50; origin prover9:45928
+
+52. ((p0 -> (p1 -> p2)) -> (((p0 -> p3) -> p2) -> (p1 -> p2)))
+   MP with substitutions, major 46, minor 51; origin prover9:45945
+
+53. (((p0 -> p1) -> (p2 -> p3)) -> (((p4 -> p0) -> p3) -> (p2 -> p3)))
+   MP with substitutions, major 49, minor 52; origin prover9:46030
+
+54. (((((p0 -> p1) -> p0) -> p2) -> p0) -> (p3 -> p0))
+   MP with substitutions, major 48, minor 52; origin prover9:46049
+
+55. (((p0 -> (((p1 -> p2) -> p1) -> p3)) -> p1) -> (p4 -> p1))
+   MP with substitutions, major 53, minor 54; origin prover9:85181
+
+56. (((p0 -> (((p1 -> p2) -> p1) -> p3)) -> p1) -> p1)
+   MP with substitutions, major 28, minor 55; origin prover9:88377
+
+57. ((p0 -> p1) -> (((p0 -> p2) -> p0) -> p1))
+   MP with substitutions, major 46, minor 56; origin prover9:88397
+

@@ -1,0 +1,733 @@
+{
+  "status": "EXACT_SOURCE_ROLES_AND_POSTFIXED_INVARIANT_TRANSPORT_CHECKED",
+  "source_sha256": "b0169f2d477d0584ac70f9bdb79c3a78ef2bc700d080b3cd80976210235b80d9",
+  "old_source_sha256": "0f6d9d991e36dda1a7449edab72a799bb2d8c3de3ff853a26178b89bd1bc8789",
+  "facts_sha256": "df0c94f02523d79569949ae1a33b4b289cec515edaef4e2f9d1068086d2475b4",
+  "unchanged_ordinal_control_graph": true,
+  "enabled_edges_checked": 6161,
+  "excluded_edges": [
+    [
+      4606,
+      1
+    ],
+    [
+      4607,
+      0
+    ],
+    [
+      4718,
+      1
+    ],
+    [
+      4719,
+      0
+    ],
+    [
+      4720,
+      0
+    ]
+  ],
+  "halt_site_still_nonbottom": true,
+  "equality_macro": [
+    [
+      [
+        [
+          "CD",
+          5
+        ],
+        [
+          [
+            [
+              "CD",
+              6
+            ],
+            [
+              "CC",
+              2
+            ]
+          ],
+          [
+            "CB",
+            1
+          ]
+        ]
+      ],
+      [
+        "CD",
+        6
+      ]
+    ],
+    [
+      [
+        [
+          "CD",
+          5
+        ],
+        [
+          "CC",
+          1
+        ]
+      ],
+      [
+        [
+          [
+            "CD",
+            6
+          ],
+          [
+            "CC",
+            2
+          ]
+        ],
+        [
+          "CB",
+          1
+        ]
+      ]
+    ]
+  ],
+  "roles": [
+    {
+      "name": "AX gate: c=b",
+      "meaning": "Compare b=h+y with selector payload c; clear top when equal.",
+      "macro_path": "1101001001110111000",
+      "indices": [
+        4567,
+        4572
+      ],
+      "first_cd5_old_decoder_role": 301,
+      "cleanup_cd5_old_decoder_role": 88,
+      "first_cd5_facts": [
+        1022,
+        273,
+        1023,
+        1,
+        1023,
+        1023,
+        1023,
+        1023,
+        1023
+      ],
+      "cleanup_cd5_facts": [
+        1022,
+        273,
+        1023,
+        1,
+        1023,
+        1023,
+        1023,
+        1023,
+        1023
+      ]
+    },
+    {
+      "name": "AX gate: c=a",
+      "meaning": "Compare a=d+x with retained c; clear top when equal.",
+      "macro_path": "110100100111011110",
+      "indices": [
+        4585,
+        4590
+      ],
+      "first_cd5_old_decoder_role": 301,
+      "cleanup_cd5_old_decoder_role": 88,
+      "first_cd5_facts": [
+        1022,
+        273,
+        1023,
+        1,
+        1,
+        1023,
+        1023,
+        1,
+        1023
+      ],
+      "cleanup_cd5_facts": [
+        1022,
+        273,
+        1023,
+        1,
+        1,
+        1023,
+        1023,
+        1,
+        1023
+      ]
+    },
+    {
+      "name": "NIP",
+      "meaning": "Compare incoming cache h with one; halt exactly on equality.",
+      "macro_path": "110100101100",
+      "indices": [
+        4599,
+        4604
+      ],
+      "first_cd5_old_decoder_role": 301,
+      "cleanup_cd5_old_decoder_role": 88,
+      "first_cd5_facts": [
+        1022,
+        1023,
+        1023,
+        1,
+        1023,
+        1023,
+        3,
+        1,
+        1023
+      ],
+      "cleanup_cd5_facts": [
+        1022,
+        1023,
+        1023,
+        1,
+        1023,
+        1023,
+        1,
+        1,
+        1023
+      ]
+    },
+    {
+      "name": "MP",
+      "meaning": "Compare incoming cache h with implication(top,d+x); select MP success.",
+      "macro_path": "11110",
+      "indices": [
+        4708,
+        4713
+      ],
+      "first_cd5_old_decoder_role": 301,
+      "cleanup_cd5_old_decoder_role": 88,
+      "first_cd5_facts": [
+        1022,
+        1,
+        1023,
+        1,
+        1023,
+        1023,
+        1023,
+        1,
+        1023
+      ],
+      "cleanup_cd5_facts": [
+        1022,
+        1,
+        1023,
+        1,
+        1023,
+        1023,
+        1023,
+        1,
+        1023
+      ]
+    }
+  ],
+  "local_prices": [
+    {
+      "name": "nip_special",
+      "source_nodes": 207,
+      "primitive_occurrences": 4738,
+      "contract": "Requires scratch6=0 at NIP entry; keeps the h=1 halting case.",
+      "remaining_exact_E_occurrences": 3,
+      "raw_physical_price": {
+        "states": 220,
+        "added": [
+          303,
+          304,
+          305,
+          306
+        ],
+        "reused_extinct_decoder_states": [
+          214,
+          185,
+          174,
+          142,
+          135,
+          11,
+          162,
+          26,
+          38
+        ],
+        "removed": [
+          53,
+          68
+        ],
+        "binding_failures": [],
+        "changes": [
+          {
+            "state": 38,
+            "read": 0,
+            "old": [
+              0,
+              1,
+              13
+            ],
+            "new": [
+              0,
+              1,
+              303
+            ]
+          },
+          {
+            "state": 38,
+            "read": 1,
+            "old": [
+              1,
+              1,
+              53
+            ],
+            "new": [
+              1,
+              1,
+              69
+            ]
+          },
+          {
+            "state": 303,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              45
+            ]
+          },
+          {
+            "state": 305,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              45
+            ]
+          },
+          {
+            "state": 306,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              122
+            ]
+          },
+          {
+            "state": 306,
+            "read": 1,
+            "old": null,
+            "new": [
+              0,
+              -1,
+              302
+            ]
+          },
+          {
+            "state": 305,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              306
+            ]
+          },
+          {
+            "state": 304,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              305
+            ]
+          },
+          {
+            "state": 304,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              254
+            ]
+          },
+          {
+            "state": 303,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              304
+            ]
+          }
+        ],
+        "decoder_states": 170,
+        "roles": 185,
+        "scope": "Raw decoder allocation only. Reused old states may retain arithmetic roles; complete primitive proof mandatory."
+      },
+      "raw_table_sha256": "2c7deef83b268f85759e7f296aaf8c2d513ec0ba22fdaaf4a2802c95c8152bbc"
+    },
+    {
+      "name": "nip_preserve_equality",
+      "source_nodes": 205,
+      "primitive_occurrences": 4744,
+      "contract": "Requires scratch6=0 at NIP entry; keeps the h=1 halting case.",
+      "remaining_exact_E_occurrences": 3,
+      "raw_physical_price": {
+        "states": 218,
+        "added": [
+          303
+        ],
+        "reused_extinct_decoder_states": [
+          214,
+          185,
+          174,
+          142,
+          135,
+          11,
+          162,
+          26,
+          38
+        ],
+        "removed": [
+          53
+        ],
+        "binding_failures": [],
+        "changes": [
+          {
+            "state": 38,
+            "read": 0,
+            "old": [
+              0,
+              1,
+              13
+            ],
+            "new": [
+              0,
+              1,
+              303
+            ]
+          },
+          {
+            "state": 38,
+            "read": 1,
+            "old": [
+              1,
+              1,
+              53
+            ],
+            "new": [
+              1,
+              1,
+              69
+            ]
+          },
+          {
+            "state": 303,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              45
+            ]
+          },
+          {
+            "state": 303,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              68
+            ]
+          }
+        ],
+        "decoder_states": 168,
+        "roles": 183,
+        "scope": "Raw decoder allocation only. Reused old states may retain arithmetic roles; complete primitive proof mandatory."
+      },
+      "raw_table_sha256": "70ee93e7c049ff44937883b8bad49c8a8dc01b4f8d2d618a1695c92829669066"
+    },
+    {
+      "name": "nip_skip_zero6_cleanup",
+      "source_nodes": 207,
+      "primitive_occurrences": 4742,
+      "contract": "Requires scratch6=0 at this cleanup entry, established by the transported invariant.",
+      "remaining_exact_E_occurrences": 3,
+      "raw_physical_price": {
+        "states": 220,
+        "added": [
+          303,
+          304
+        ],
+        "reused_extinct_decoder_states": [
+          214,
+          185,
+          174,
+          142,
+          135,
+          11,
+          162,
+          26,
+          38,
+          53,
+          68
+        ],
+        "removed": [],
+        "binding_failures": [],
+        "changes": [
+          {
+            "state": 68,
+            "read": 0,
+            "old": [
+              0,
+              1,
+              77
+            ],
+            "new": [
+              0,
+              1,
+              303
+            ]
+          },
+          {
+            "state": 303,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              87
+            ]
+          },
+          {
+            "state": 304,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              122
+            ]
+          },
+          {
+            "state": 304,
+            "read": 1,
+            "old": null,
+            "new": [
+              0,
+              -1,
+              302
+            ]
+          },
+          {
+            "state": 303,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              304
+            ]
+          }
+        ],
+        "decoder_states": 170,
+        "roles": 185,
+        "scope": "Raw decoder allocation only. Reused old states may retain arithmetic roles; complete primitive proof mandatory."
+      },
+      "raw_table_sha256": "48e30319d64351f500ae258c2783185dccf1d921f09a979871ac2c9a5bb1e9d6"
+    },
+    {
+      "name": "equality_scratch3",
+      "source_nodes": 207,
+      "primitive_occurrences": 4756,
+      "contract": "Given R3=0, transfer R5 into R3 and run equality on R3/R6. Both operands and R3 are cleared; the equality exit and other registers are preserved.",
+      "remaining_exact_E_occurrences": 0,
+      "raw_physical_price": {
+        "states": 221,
+        "added": [
+          303,
+          304,
+          305,
+          306
+        ],
+        "reused_extinct_decoder_states": [
+          214,
+          185,
+          174,
+          142,
+          135,
+          11,
+          162,
+          26,
+          37,
+          129,
+          134,
+          119,
+          228,
+          225,
+          117,
+          193,
+          195,
+          196,
+          77,
+          87,
+          88,
+          38,
+          53,
+          68,
+          143,
+          164
+        ],
+        "removed": [
+          301
+        ],
+        "binding_failures": [],
+        "changes": [
+          {
+            "state": 87,
+            "read": 0,
+            "old": [
+              0,
+              1,
+              301
+            ],
+            "new": [
+              0,
+              1,
+              45
+            ]
+          },
+          {
+            "state": 87,
+            "read": 1,
+            "old": [
+              1,
+              1,
+              21
+            ],
+            "new": [
+              1,
+              1,
+              141
+            ]
+          },
+          {
+            "state": 88,
+            "read": 0,
+            "old": [
+              0,
+              1,
+              122
+            ],
+            "new": [
+              0,
+              1,
+              303
+            ]
+          },
+          {
+            "state": 88,
+            "read": 1,
+            "old": [
+              1,
+              1,
+              103
+            ],
+            "new": [
+              1,
+              1,
+              305
+            ]
+          },
+          {
+            "state": 304,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              17
+            ]
+          },
+          {
+            "state": 304,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              103
+            ]
+          },
+          {
+            "state": 303,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              304
+            ]
+          },
+          {
+            "state": 303,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              21
+            ]
+          },
+          {
+            "state": 306,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              17
+            ]
+          },
+          {
+            "state": 306,
+            "read": 1,
+            "old": null,
+            "new": [
+              0,
+              -1,
+              1
+            ]
+          },
+          {
+            "state": 305,
+            "read": 0,
+            "old": null,
+            "new": [
+              0,
+              1,
+              306
+            ]
+          },
+          {
+            "state": 305,
+            "read": 1,
+            "old": null,
+            "new": [
+              1,
+              1,
+              103
+            ]
+          }
+        ],
+        "decoder_states": 171,
+        "roles": 185,
+        "scope": "Raw decoder allocation only. Reused old states may retain arithmetic roles; complete primitive proof mandatory."
+      },
+      "raw_table_sha256": "6bb5778ee9edaefe27f0dd3e3da7b1928a484d85d878916f7315c236815f9515"
+    }
+  ],
+  "scope": "All eight decrements remain abstractly capable of zero and positive branches. The proved NIP guard is scratch6=0, not cache!=1. Source-only or raw allocation prices are not verified machine candidates; full runtime and blank initialization would be separate obligations."
+}

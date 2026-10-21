@@ -1,0 +1,214 @@
+{
+  "status": "PASS",
+  "schema_semantics": "Arbitrary formulas may replace schematic variables; no restriction to propositional atoms. Each CD line is replayed as explicit substitutions followed by ordinary modus ponens.",
+  "fresh_variable_namespaces": true,
+  "occurs_checks": true,
+  "boolean_tautology_check_all_rows": true,
+  "axioms": [
+    "((tp -> tq) -> ((tq -> tr) -> (tp -> tr)))",
+    "(((tp -> tq) -> tp) -> (tr -> tp))"
+  ],
+  "tree_constructor_counts": [
+    5,
+    4
+  ],
+  "shared_dag_constructor_count": 8,
+  "total_cd_steps": 10,
+  "peirce_line": 10,
+  "k_line": 12,
+  "steps": [
+    {
+      "id": 3,
+      "parents": [
+        1,
+        1
+      ],
+      "substitution": {
+        "mp": "(tr -> tp)",
+        "mq": "((tp -> tq) -> (tr -> tq))",
+        "mr": "ts",
+        "np": "tr",
+        "nq": "tp",
+        "nr": "tq"
+      },
+      "major_instance": "(((tr -> tp) -> ((tp -> tq) -> (tr -> tq))) -> ((((tp -> tq) -> (tr -> tq)) -> ts) -> ((tr -> tp) -> ts)))",
+      "minor_instance": "((tr -> tp) -> ((tp -> tq) -> (tr -> tq)))",
+      "conclusion": "((((tp -> tq) -> (tr -> tq)) -> ts) -> ((tr -> tp) -> ts))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 4,
+      "parents": [
+        1,
+        2
+      ],
+      "substitution": {
+        "mp": "((tq -> ts) -> tq)",
+        "mq": "(tp -> tq)",
+        "mr": "tr",
+        "np": "tq",
+        "nq": "ts",
+        "nr": "tp"
+      },
+      "major_instance": "((((tq -> ts) -> tq) -> (tp -> tq)) -> (((tp -> tq) -> tr) -> (((tq -> ts) -> tq) -> tr)))",
+      "minor_instance": "(((tq -> ts) -> tq) -> (tp -> tq))",
+      "conclusion": "(((tp -> tq) -> tr) -> (((tq -> ts) -> tq) -> tr))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 5,
+      "parents": [
+        2,
+        2
+      ],
+      "substitution": {
+        "mp": "(tq -> tq)",
+        "mq": "tq",
+        "mr": "tp",
+        "np": "tq",
+        "nq": "tq",
+        "nr": "tq"
+      },
+      "major_instance": "((((tq -> tq) -> tq) -> (tq -> tq)) -> (tp -> (tq -> tq)))",
+      "minor_instance": "(((tq -> tq) -> tq) -> (tq -> tq))",
+      "conclusion": "(tp -> (tq -> tq))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 6,
+      "parents": [
+        1,
+        3
+      ],
+      "substitution": {
+        "mp": "(((tq -> tt) -> (tp -> tt)) -> tr)",
+        "mq": "((tp -> tq) -> tr)",
+        "mr": "ts",
+        "np": "tq",
+        "nq": "tt",
+        "nr": "tp",
+        "ns": "tr"
+      },
+      "major_instance": "(((((tq -> tt) -> (tp -> tt)) -> tr) -> ((tp -> tq) -> tr)) -> ((((tp -> tq) -> tr) -> ts) -> ((((tq -> tt) -> (tp -> tt)) -> tr) -> ts)))",
+      "minor_instance": "((((tq -> tt) -> (tp -> tt)) -> tr) -> ((tp -> tq) -> tr))",
+      "conclusion": "((((tp -> tq) -> tr) -> ts) -> ((((tq -> tt) -> (tp -> tt)) -> tr) -> ts))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 7,
+      "parents": [
+        2,
+        4
+      ],
+      "substitution": {
+        "mp": "(((tq -> tr) -> tq) -> tq)",
+        "mq": "tq",
+        "mr": "tp",
+        "np": "((tq -> tr) -> tq)",
+        "nq": "tq",
+        "nr": "tq",
+        "ns": "tr"
+      },
+      "major_instance": "((((((tq -> tr) -> tq) -> tq) -> tq) -> (((tq -> tr) -> tq) -> tq)) -> (tp -> (((tq -> tr) -> tq) -> tq)))",
+      "minor_instance": "(((((tq -> tr) -> tq) -> tq) -> tq) -> (((tq -> tr) -> tq) -> tq))",
+      "conclusion": "(tp -> (((tq -> tr) -> tq) -> tq))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 8,
+      "parents": [
+        1,
+        5
+      ],
+      "substitution": {
+        "mp": "tr",
+        "mq": "(tp -> tp)",
+        "mr": "tq",
+        "np": "tr",
+        "nq": "tp"
+      },
+      "major_instance": "((tr -> (tp -> tp)) -> (((tp -> tp) -> tq) -> (tr -> tq)))",
+      "minor_instance": "(tr -> (tp -> tp))",
+      "conclusion": "(((tp -> tp) -> tq) -> (tr -> tq))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 9,
+      "parents": [
+        6,
+        4
+      ],
+      "substitution": {
+        "mp": "tr",
+        "mq": "tp",
+        "mr": "ts",
+        "ms": "(((tp -> tt) -> tp) -> ts)",
+        "mt": "tq",
+        "np": "tr",
+        "nq": "tp",
+        "nr": "ts",
+        "ns": "tt"
+      },
+      "major_instance": "((((tr -> tp) -> ts) -> (((tp -> tt) -> tp) -> ts)) -> ((((tp -> tq) -> (tr -> tq)) -> ts) -> (((tp -> tt) -> tp) -> ts)))",
+      "minor_instance": "(((tr -> tp) -> ts) -> (((tp -> tt) -> tp) -> ts))",
+      "conclusion": "((((tp -> tq) -> (tr -> tq)) -> ts) -> (((tp -> tt) -> tp) -> ts))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 10,
+      "parents": [
+        7,
+        1
+      ],
+      "substitution": {
+        "mp": "((np -> nq) -> ((nq -> nr) -> (np -> nr)))",
+        "mq": "tp",
+        "mr": "tq"
+      },
+      "major_instance": "(((np -> nq) -> ((nq -> nr) -> (np -> nr))) -> (((tp -> tq) -> tp) -> tp))",
+      "minor_instance": "((np -> nq) -> ((nq -> nr) -> (np -> nr)))",
+      "conclusion": "(((tp -> tq) -> tp) -> tp)",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 11,
+      "parents": [
+        9,
+        8
+      ],
+      "substitution": {
+        "mp": "tp",
+        "mq": "tp",
+        "mr": "ts",
+        "ms": "(tr -> (ts -> tp))",
+        "mt": "tq",
+        "np": "tp",
+        "nq": "(ts -> tp)",
+        "nr": "tr"
+      },
+      "major_instance": "((((tp -> tp) -> (ts -> tp)) -> (tr -> (ts -> tp))) -> (((tp -> tq) -> tp) -> (tr -> (ts -> tp))))",
+      "minor_instance": "(((tp -> tp) -> (ts -> tp)) -> (tr -> (ts -> tp)))",
+      "conclusion": "(((tp -> tq) -> tp) -> (tr -> (ts -> tp)))",
+      "ordinary_mp_verified": true
+    },
+    {
+      "id": 12,
+      "parents": [
+        10,
+        11
+      ],
+      "substitution": {
+        "mp": "(tp -> (tq -> tp))",
+        "mq": "tp",
+        "np": "tp",
+        "nq": "(tq -> tp)",
+        "nr": "tp",
+        "ns": "tq"
+      },
+      "major_instance": "((((tp -> (tq -> tp)) -> tp) -> (tp -> (tq -> tp))) -> (tp -> (tq -> tp)))",
+      "minor_instance": "(((tp -> (tq -> tp)) -> tp) -> (tp -> (tq -> tp)))",
+      "conclusion": "(tp -> (tq -> tp))",
+      "ordinary_mp_verified": true
+    }
+  ]
+}

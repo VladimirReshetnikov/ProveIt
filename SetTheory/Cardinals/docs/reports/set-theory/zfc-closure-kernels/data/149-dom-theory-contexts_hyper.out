@@ -1,0 +1,512 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2017-11A (CIIRC), November 2017.
+Process 5 was started by root on 993b511198f7,
+Wed Oct 21 00:33:02 2026
+The command was "formalism_work/Prover9/provers.src/prover9 -f formalism_work/contexts_hyper.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file formalism_work/contexts_hyper.in
+
+clear(auto).
+    % clear(auto) -> clear(auto_inference).
+    % clear(auto) -> clear(auto_setup).
+    % clear(auto_setup) -> clear(predicate_elim).
+    % clear(auto_setup) -> assign(eq_defs, pass).
+    % clear(auto) -> clear(auto_limits).
+    % clear(auto_limits) -> assign(max_weight, "1000000000000.000").
+    % clear(auto_limits) -> assign(sos_limit, -1).
+    % clear(auto) -> clear(auto_denials).
+    % clear(auto) -> clear(auto_process).
+clear(ur_resolution).
+    % clear(ur_resolution) -> clear(pos_ur_resolution).
+    % clear(ur_resolution) -> clear(neg_ur_resolution).
+assign(max_seconds,300).
+assign(max_weight,45).
+assign(sos_limit,100000).
+assign(max_kept,500000).
+assign(pick_given_ratio,5).
+    % assign(pick_given_ratio, 5) -> assign(age_part, 1).
+    % assign(pick_given_ratio, 5) -> assign(weight_part, 5).
+    % assign(pick_given_ratio, 5) -> assign(false_part, 0).
+    % assign(pick_given_ratio, 5) -> assign(true_part, 0).
+    % assign(pick_given_ratio, 5) -> assign(random_part, 0).
+clear(print_given).
+set(hyper_resolution).
+    % set(hyper_resolution) -> set(pos_hyper_resolution).
+
+formulas(usable).
+-P(c(x,y)) | -P(x) | P(y).
+c(t,t) = t.
+end_of_list.
+
+formulas(sos).
+P(c(c(c(x0,t),x1),c(c(x1,x0),c(x2,x0)))) # label("checked_0").
+P(c(c(c(x0,x1),x1),c(c(x1,x0),c(x2,x0)))) # label("checked_1").
+P(c(c(c(x0,x1),c(x2,x1)),c(c(c(x2,x1),x0),c(x3,x0)))) # label("checked_2").
+P(c(c(c(x0,x1),c(x1,x2)),c(c(c(x1,x2),x0),c(x3,x0)))) # label("checked_3").
+P(t) # label("checked_4").
+P(c(x0,t)) # label("checked_16").
+P(c(c(t,x0),c(x1,x0))) # label("checked_17").
+P(c(c(c(x0,t),x1),c(x2,x1))) # label("checked_25").
+P(c(x0,x0)) # label("checked_140").
+P(c(c(c(x0,x1),x0),c(x2,x0))) # label("checked_142").
+P(c(x0,c(x1,x0))) # label("checked_160").
+P(c(c(c(c(x0,x1),x2),x1),c(x0,x1))) # label("checked_241").
+P(c(c(t,x0),x0)) # label("checked_341").
+P(c(c(c(x0,x1),x0),x0)) # label("checked_349").
+P(c(c(x0,c(x0,x1)),c(x0,x1))) # label("checked_379").
+P(c(c(c(x0,c(x1,x2)),x1),x1)) # label("checked_382").
+P(c(c(c(x0,x1),c(x1,x2)),c(x1,x2))) # label("checked_385").
+P(c(c(c(x0,c(x1,x2)),c(x3,x1)),c(x3,x1))) # label("checked_391").
+P(c(c(c(x0,x1),c(x2,x0)),c(x2,x0))) # label("checked_481").
+P(c(c(c(x0,x1),c(c(x1,x2),x3)),c(c(c(c(x1,x2),x3),x0),c(x4,x0)))) # label("subterm_context_0").
+P(c(c(c(x0,x1),c(x2,c(x1,x3))),c(c(c(x2,c(x1,x3)),x0),c(x4,x0)))) # label("subterm_context_1").
+P(c(c(c(x0,x1),c(c(x2,x1),x3)),c(c(c(c(x2,x1),x3),x0),c(x4,x0)))) # label("subterm_context_2").
+P(c(c(c(x0,x1),c(x2,c(x3,x1))),c(c(c(x2,c(x3,x1)),x0),c(x4,x0)))) # label("subterm_context_3").
+P(c(c(c(x0,x1),c(c(c(x1,x2),x3),x4)),c(c(c(c(c(x1,x2),x3),x4),x0),c(x5,x0)))) # label("subterm_context_4").
+P(c(c(c(x0,x1),c(x2,c(c(x1,x3),x4))),c(c(c(x2,c(c(x1,x3),x4)),x0),c(x5,x0)))) # label("subterm_context_5").
+P(c(c(c(x0,x1),c(c(x2,c(x1,x3)),x4)),c(c(c(c(x2,c(x1,x3)),x4),x0),c(x5,x0)))) # label("subterm_context_6").
+P(c(c(c(x0,x1),c(x2,c(x3,c(x1,x4)))),c(c(c(x2,c(x3,c(x1,x4))),x0),c(x5,x0)))) # label("subterm_context_7").
+P(c(c(c(x0,x1),c(c(c(x2,x1),x3),x4)),c(c(c(c(c(x2,x1),x3),x4),x0),c(x5,x0)))) # label("subterm_context_8").
+P(c(c(c(x0,x1),c(x2,c(c(x3,x1),x4))),c(c(c(x2,c(c(x3,x1),x4)),x0),c(x5,x0)))) # label("subterm_context_9").
+P(c(c(c(x0,x1),c(c(x2,c(x3,x1)),x4)),c(c(c(c(x2,c(x3,x1)),x4),x0),c(x5,x0)))) # label("subterm_context_10").
+P(c(c(c(x0,x1),c(x2,c(x3,c(x4,x1)))),c(c(c(x2,c(x3,c(x4,x1))),x0),c(x5,x0)))) # label("subterm_context_11").
+P(c(c(c(x0,x1),c(c(c(c(x1,x2),x3),x4),x5)),c(c(c(c(c(c(x1,x2),x3),x4),x5),x0),c(x6,x0)))) # label("subterm_context_12").
+P(c(c(c(x0,x1),c(x2,c(c(c(x1,x3),x4),x5))),c(c(c(x2,c(c(c(x1,x3),x4),x5)),x0),c(x6,x0)))) # label("subterm_context_13").
+P(c(c(c(x0,x1),c(c(x2,c(c(x1,x3),x4)),x5)),c(c(c(c(x2,c(c(x1,x3),x4)),x5),x0),c(x6,x0)))) # label("subterm_context_14").
+P(c(c(c(x0,x1),c(x2,c(x3,c(c(x1,x4),x5)))),c(c(c(x2,c(x3,c(c(x1,x4),x5))),x0),c(x6,x0)))) # label("subterm_context_15").
+P(c(c(c(x0,x1),c(c(c(x2,c(x1,x3)),x4),x5)),c(c(c(c(c(x2,c(x1,x3)),x4),x5),x0),c(x6,x0)))) # label("subterm_context_16").
+P(c(c(c(x0,x1),c(x2,c(c(x3,c(x1,x4)),x5))),c(c(c(x2,c(c(x3,c(x1,x4)),x5)),x0),c(x6,x0)))) # label("subterm_context_17").
+P(c(c(c(x0,x1),c(c(x2,c(x3,c(x1,x4))),x5)),c(c(c(c(x2,c(x3,c(x1,x4))),x5),x0),c(x6,x0)))) # label("subterm_context_18").
+P(c(c(c(x0,x1),c(x2,c(x3,c(x4,c(x1,x5))))),c(c(c(x2,c(x3,c(x4,c(x1,x5)))),x0),c(x6,x0)))) # label("subterm_context_19").
+P(c(c(c(x0,x1),c(c(c(c(x2,x1),x3),x4),x5)),c(c(c(c(c(c(x2,x1),x3),x4),x5),x0),c(x6,x0)))) # label("subterm_context_20").
+P(c(c(c(x0,x1),c(x2,c(c(c(x3,x1),x4),x5))),c(c(c(x2,c(c(c(x3,x1),x4),x5)),x0),c(x6,x0)))) # label("subterm_context_21").
+P(c(c(c(x0,x1),c(c(x2,c(c(x3,x1),x4)),x5)),c(c(c(c(x2,c(c(x3,x1),x4)),x5),x0),c(x6,x0)))) # label("subterm_context_22").
+P(c(c(c(x0,x1),c(x2,c(x3,c(c(x4,x1),x5)))),c(c(c(x2,c(x3,c(c(x4,x1),x5))),x0),c(x6,x0)))) # label("subterm_context_23").
+P(c(c(c(x0,x1),c(c(c(x2,c(x3,x1)),x4),x5)),c(c(c(c(c(x2,c(x3,x1)),x4),x5),x0),c(x6,x0)))) # label("subterm_context_24").
+P(c(c(c(x0,x1),c(x2,c(c(x3,c(x4,x1)),x5))),c(c(c(x2,c(c(x3,c(x4,x1)),x5)),x0),c(x6,x0)))) # label("subterm_context_25").
+P(c(c(c(x0,x1),c(c(x2,c(x3,c(x4,x1))),x5)),c(c(c(c(x2,c(x3,c(x4,x1))),x5),x0),c(x6,x0)))) # label("subterm_context_26").
+P(c(c(c(x0,x1),c(x2,c(x3,c(x4,c(x5,x1))))),c(c(c(x2,c(x3,c(x4,c(x5,x1)))),x0),c(x6,x0)))) # label("subterm_context_27").
+end_of_list.
+
+formulas(goals).
+P(c(c(x,y),c(c(c(x,z),x),y))).
+end_of_list.
+
+formulas(hints).
+P(c(c(c(x0,x1),x2),c(c(x2,x0),c(x3,x0)))) # label("cd0") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),c(x2,x1)),c(x1,x3)),c(x4,c(x1,x3)))) # label("cd1") # bsub_hint_wt(1).
+P(c(x0,c(c(x1,x2),c(x2,c(x1,x2))))) # label("cd2") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(x1,c(x0,x1)))) # label("cd3") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x0)),x1),c(x2,x1))) # label("cd4") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x2,c(x1,x2))),c(x3,c(x2,c(x1,x2))))) # label("cd5") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(x1,x1)))) # label("cd6") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x0,x0)),x1),c(x2,x1))) # label("cd7") # bsub_hint_wt(1).
+P(c(x0,c(c(x1,x1),c(x2,c(x1,x1))))) # label("cd8") # bsub_hint_wt(1).
+P(c(c(x0,x0),c(x1,c(x0,x0)))) # label("cd9") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x1)),x1),c(x2,x1))) # label("cd10") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x2,c(x1,x1))),c(x3,c(x2,c(x1,x1))))) # label("cd11") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(x2,x2)))) # label("cd12") # bsub_hint_wt(1).
+P(c(x0,c(x1,x1))) # label("cd13") # bsub_hint_wt(1).
+P(c(c(c(x0,x0),x1),c(x2,x1))) # label("cd14") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(x2,x1)))) # label("cd15") # bsub_hint_wt(1).
+P(c(x0,c(x1,x0))) # label("cd16") # bsub_hint_wt(1).
+P(c(x0,x0)) # label("cd17") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),x0),c(x2,x0))) # label("cd18") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x1,x2)),c(x3,c(x1,x2)))) # label("cd19") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x2)),c(x3,x1)),c(x4,c(x3,x1)))) # label("cd20") # bsub_hint_wt(1).
+P(c(x0,c(c(c(c(x1,x2),x3),x2),c(x1,x2)))) # label("cd21") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),x2),x1),c(x0,x1))) # label("cd22") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(c(x0,x1),x2)),c(x3,c(c(x0,x1),x2)))) # label("cd23") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,x2),x1),x1))) # label("cd24") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),x0),x0)) # label("cd25") # bsub_hint_wt(1).
+P(c(c(x0,c(x0,x1)),c(x2,c(x0,x1)))) # label("cd26") # bsub_hint_wt(1).
+P(c(x0,c(c(x1,c(x1,x2)),c(x1,x2)))) # label("cd27") # bsub_hint_wt(1).
+P(c(c(x0,c(x0,x1)),c(x0,x1))) # label("cd28") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x1,x2)),c(x1,x2))) # label("cd29") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x2,x0)),c(x3,c(x2,x0)))) # label("cd30") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(x2,x0)))) # label("cd31") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,c(x2,x3))),x2),c(x4,x2))) # label("cd32") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,c(x2,x3))),x2),x2)) # label("cd33") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,c(x2,c(x0,x3)))),c(x4,c(x1,c(x2,c(x0,x3)))))) # label("cd34") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,c(x2,c(x0,x3)))),c(x1,c(x2,c(x0,x3))))) # label("cd35") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),c(x1,c(x0,x1))),x2),c(x3,x2))) # label("cd36") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,c(x2,x1)),x2),c(x3,x2)))) # label("cd37") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,c(x1,x0)),x1),c(x2,x1)),x3),c(x4,x3))) # label("cd38") # bsub_hint_wt(1).
+P(c(x0,c(c(x1,x2),c(x3,c(x1,x2))))) # label("cd39") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(x2,c(x0,x1)))) # label("cd40") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x2)),x1),c(x3,x1))) # label("cd41") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,c(x2,x3)),x2),x2))) # label("cd42") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x2)),x1),x1)) # label("cd43") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,c(x0,x2))),c(x3,c(x1,c(x0,x2))))) # label("cd44") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,c(x0,x2))),c(x1,c(x0,x2)))) # label("cd45") # bsub_hint_wt(1).
+P(c(x0,c(c(x1,x2),c(c(c(x2,x3),x1),x2)))) # label("cd46") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(c(c(x1,x2),x0),x1))) # label("cd47") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x2)),c(x3,c(x2,x4))),c(x5,c(x3,c(x2,x4))))) # label("cd48") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,x2),x3),c(x2,x3)))) # label("cd49") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),x2),c(x1,x2))) # label("cd50") # bsub_hint_wt(1).
+P(c(x0,c(c(x0,x1),c(x2,x1)))) # label("cd51") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,x1),c(x2,x1)),x3),x0),c(c(x0,x1),c(x2,x1)))) # label("cd52") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),x2),c(c(x1,x3),x1)),c(x0,x1))) # label("cd53") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),x2),c(c(x3,c(x1,x4)),x1)),c(x0,x1))) # label("cd54") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,x1),x2),c(x3,x2)),x0),c(x4,x0))) # label("cd55") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,x1),x2),c(x3,x2)),x0),x0)) # label("cd56") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,c(c(x1,x2),x3)),c(x1,x2)),x4),x2),c(x1,x2))) # label("cd57") # bsub_hint_wt(1).
+P(c(c(c(x0,c(c(c(x1,x2),x1),x3)),c(c(x1,x2),x1)),x1)) # label("cd58") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(c(c(x0,x2),x0),x1))) # label("cd59") # bsub_hint_wt(1).
+P(c(c(c(c(x0,c(x1,x2)),x3),c(x1,c(x1,x2))),c(x0,c(x1,x2)))) # label("cd60") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),x0),c(c(x0,x2),c(x3,x2)))) # label("cd61") # bsub_hint_wt(1).
+P(c(x0,c(c(x0,x1),x1))) # label("cd62") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),x0),c(c(x0,x2),x2))) # label("cd63") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),x1),c(x0,x2)),c(x3,c(x0,x2)))) # label("cd64") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),x1),c(x0,x2)),c(x0,x2))) # label("cd65") # bsub_hint_wt(1).
+P(c(c(c(c(x0,c(x1,x2)),x3),x2),c(x0,c(x1,x2)))) # label("cd66") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(c(x0,x2),c(x3,x2))))) # label("cd67") # bsub_hint_wt(1).
+P(c(x0,c(c(c(c(x0,x1),x1),x2),c(x3,x2)))) # label("cd68") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),x1),x2),c(x0,x2))) # label("cd69") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x2,c(x1,x3))),c(x4,c(x2,c(x1,x3))))) # label("cd70") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x2,c(x1,x3))),c(x2,c(x1,x3)))) # label("cd71") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(c(c(x2,x0),x3),c(x4,x3))))) # label("cd72") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,c(c(x0,x2),x2)),x3),c(x4,x3)))) # label("cd73") # bsub_hint_wt(1).
+P(c(c(c(x0,c(c(c(x1,x2),x3),x3)),x4),c(x2,x4))) # label("cd74") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),x2),c(c(c(x3,x0),x2),x2))) # label("cd75") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,x1),x1),x2),x0),c(c(x0,x1),x1))) # label("cd76") # bsub_hint_wt(1).
+P(c(c(c(x0,x1),c(x2,x0)),c(x2,x0))) # label("cd77") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(c(x0,x2),x2)))) # label("cd78") # bsub_hint_wt(1).
+P(c(x0,c(x1,c(c(c(x2,x0),x3),x3)))) # label("cd79") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,c(c(x0,x2),x2)),x3),x3))) # label("cd80") # bsub_hint_wt(1).
+P(c(c(c(x0,c(c(c(x1,x2),x3),x3)),x1),x1)) # label("cd81") # bsub_hint_wt(1).
+P(c(c(x0,c(c(c(x0,x1),x2),x2)),c(c(c(x0,x1),x2),x2))) # label("cd82") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x2)),c(x3,x1)),c(x3,x1))) # label("cd83") # bsub_hint_wt(1).
+P(c(c(c(x0,c(c(c(x1,c(x2,x3)),x4),x4)),x2),x2)) # label("cd84") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(c(c(x2,c(x0,x3)),x1),x1))) # label("cd85") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),c(x0,x2)),x1),x1)) # label("cd86") # bsub_hint_wt(1).
+P(c(c(c(x0,c(c(x1,x2),c(x1,x3))),x2),x2)) # label("cd87") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,x2)),c(c(x1,x0),c(x1,x2)))) # label("cd88") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(x0,c(c(x1,x2),c(x3,x2))))) # label("cd89") # bsub_hint_wt(1).
+P(c(x0,c(c(x0,x1),c(c(x1,x2),c(x3,x2))))) # label("cd90") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(c(x1,x2),c(x0,x2)))) # label("cd91") # bsub_hint_wt(1).
+P(c(x0,c(c(c(x1,x0),x2),x2))) # label("cd92") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,c(x1,x2)),x3),x3),x1),c(x4,x1))) # label("cd93") # bsub_hint_wt(1).
+P(c(c(c(c(c(x0,c(x1,x2)),x3),x3),x1),x1)) # label("cd94") # bsub_hint_wt(1).
+P(c(c(c(x0,c(c(c(x1,c(x2,x3)),x2),x4)),x2),x2)) # label("cd95") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(c(c(x2,c(x0,x3)),x0),x1))) # label("cd96") # bsub_hint_wt(1).
+P(c(c(c(x0,c(x1,x2)),x1),c(c(x1,x3),c(x4,x3)))) # label("cd97") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),c(x2,x1)),x3),c(x0,x3))) # label("cd98") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(x0,c(x2,x1)))) # label("cd99") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(x2,c(x0,c(x3,x1))))) # label("cd100") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,x2)),c(x0,c(x1,c(x3,x2))))) # label("cd101") # bsub_hint_wt(1).
+P(c(x0,c(c(x0,c(x1,x2)),c(x1,c(x3,x2))))) # label("cd102") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,x2)),c(x1,c(x0,x2)))) # label("cd103") # bsub_hint_wt(1).
+P(c(c(c(c(x0,x1),c(x2,x1)),x3),c(c(x2,x0),x3))) # label("cd104") # bsub_hint_wt(1).
+P(c(c(x0,x1),c(c(x0,c(x1,x2)),c(x0,x2)))) # label("cd105") # bsub_hint_wt(1).
+P(c(c(x0,c(x1,x2)),c(c(x0,x1),c(x0,x2)))) # label("cd106") # bsub_hint_wt(1).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 P(c(c(x,y),c(c(c(x,z),x),y))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+-P(c(x,y)) | -P(x) | P(y).  [assumption].
+c(t,t) = t.  [assumption].
+end_of_list.
+
+formulas(sos).
+P(c(c(c(x,t),y),c(c(y,x),c(z,x)))) # label("checked_0").  [assumption].
+P(c(c(c(x,y),y),c(c(y,x),c(z,x)))) # label("checked_1").  [assumption].
+P(c(c(c(x,y),c(z,y)),c(c(c(z,y),x),c(u,x)))) # label("checked_2").  [assumption].
+P(c(c(c(x,y),c(y,z)),c(c(c(y,z),x),c(u,x)))) # label("checked_3").  [assumption].
+P(t) # label("checked_4").  [assumption].
+P(c(x,t)) # label("checked_16").  [assumption].
+P(c(c(t,x),c(y,x))) # label("checked_17").  [assumption].
+P(c(c(c(x,t),y),c(z,y))) # label("checked_25").  [assumption].
+P(c(x,x)) # label("checked_140").  [assumption].
+P(c(c(c(x,y),x),c(z,x))) # label("checked_142").  [assumption].
+P(c(x,c(y,x))) # label("checked_160").  [assumption].
+P(c(c(c(c(x,y),z),y),c(x,y))) # label("checked_241").  [assumption].
+P(c(c(t,x),x)) # label("checked_341").  [assumption].
+P(c(c(c(x,y),x),x)) # label("checked_349").  [assumption].
+P(c(c(x,c(x,y)),c(x,y))) # label("checked_379").  [assumption].
+P(c(c(c(x,c(y,z)),y),y)) # label("checked_382").  [assumption].
+P(c(c(c(x,y),c(y,z)),c(y,z))) # label("checked_385").  [assumption].
+P(c(c(c(x,c(y,z)),c(u,y)),c(u,y))) # label("checked_391").  [assumption].
+P(c(c(c(x,y),c(z,x)),c(z,x))) # label("checked_481").  [assumption].
+P(c(c(c(x,y),c(c(y,z),u)),c(c(c(c(y,z),u),x),c(w,x)))) # label("subterm_context_0").  [assumption].
+P(c(c(c(x,y),c(z,c(y,u))),c(c(c(z,c(y,u)),x),c(w,x)))) # label("subterm_context_1").  [assumption].
+P(c(c(c(x,y),c(c(z,y),u)),c(c(c(c(z,y),u),x),c(w,x)))) # label("subterm_context_2").  [assumption].
+P(c(c(c(x,y),c(z,c(u,y))),c(c(c(z,c(u,y)),x),c(w,x)))) # label("subterm_context_3").  [assumption].
+P(c(c(c(x,y),c(c(c(y,z),u),w)),c(c(c(c(c(y,z),u),w),x),c(v5,x)))) # label("subterm_context_4").  [assumption].
+P(c(c(c(x,y),c(z,c(c(y,u),w))),c(c(c(z,c(c(y,u),w)),x),c(v5,x)))) # label("subterm_context_5").  [assumption].
+P(c(c(c(x,y),c(c(z,c(y,u)),w)),c(c(c(c(z,c(y,u)),w),x),c(v5,x)))) # label("subterm_context_6").  [assumption].
+P(c(c(c(x,y),c(z,c(u,c(y,w)))),c(c(c(z,c(u,c(y,w))),x),c(v5,x)))) # label("subterm_context_7").  [assumption].
+P(c(c(c(x,y),c(c(c(z,y),u),w)),c(c(c(c(c(z,y),u),w),x),c(v5,x)))) # label("subterm_context_8").  [assumption].
+P(c(c(c(x,y),c(z,c(c(u,y),w))),c(c(c(z,c(c(u,y),w)),x),c(v5,x)))) # label("subterm_context_9").  [assumption].
+P(c(c(c(x,y),c(c(z,c(u,y)),w)),c(c(c(c(z,c(u,y)),w),x),c(v5,x)))) # label("subterm_context_10").  [assumption].
+P(c(c(c(x,y),c(z,c(u,c(w,y)))),c(c(c(z,c(u,c(w,y))),x),c(v5,x)))) # label("subterm_context_11").  [assumption].
+P(c(c(c(x,y),c(c(c(c(y,z),u),w),v5)),c(c(c(c(c(c(y,z),u),w),v5),x),c(v6,x)))) # label("subterm_context_12").  [assumption].
+P(c(c(c(x,y),c(z,c(c(c(y,u),w),v5))),c(c(c(z,c(c(c(y,u),w),v5)),x),c(v6,x)))) # label("subterm_context_13").  [assumption].
+P(c(c(c(x,y),c(c(z,c(c(y,u),w)),v5)),c(c(c(c(z,c(c(y,u),w)),v5),x),c(v6,x)))) # label("subterm_context_14").  [assumption].
+P(c(c(c(x,y),c(z,c(u,c(c(y,w),v5)))),c(c(c(z,c(u,c(c(y,w),v5))),x),c(v6,x)))) # label("subterm_context_15").  [assumption].
+P(c(c(c(x,y),c(c(c(z,c(y,u)),w),v5)),c(c(c(c(c(z,c(y,u)),w),v5),x),c(v6,x)))) # label("subterm_context_16").  [assumption].
+P(c(c(c(x,y),c(z,c(c(u,c(y,w)),v5))),c(c(c(z,c(c(u,c(y,w)),v5)),x),c(v6,x)))) # label("subterm_context_17").  [assumption].
+P(c(c(c(x,y),c(c(z,c(u,c(y,w))),v5)),c(c(c(c(z,c(u,c(y,w))),v5),x),c(v6,x)))) # label("subterm_context_18").  [assumption].
+P(c(c(c(x,y),c(z,c(u,c(w,c(y,v5))))),c(c(c(z,c(u,c(w,c(y,v5)))),x),c(v6,x)))) # label("subterm_context_19").  [assumption].
+P(c(c(c(x,y),c(c(c(c(z,y),u),w),v5)),c(c(c(c(c(c(z,y),u),w),v5),x),c(v6,x)))) # label("subterm_context_20").  [assumption].
+P(c(c(c(x,y),c(z,c(c(c(u,y),w),v5))),c(c(c(z,c(c(c(u,y),w),v5)),x),c(v6,x)))) # label("subterm_context_21").  [assumption].
+P(c(c(c(x,y),c(c(z,c(c(u,y),w)),v5)),c(c(c(c(z,c(c(u,y),w)),v5),x),c(v6,x)))) # label("subterm_context_22").  [assumption].
+P(c(c(c(x,y),c(z,c(u,c(c(w,y),v5)))),c(c(c(z,c(u,c(c(w,y),v5))),x),c(v6,x)))) # label("subterm_context_23").  [assumption].
+P(c(c(c(x,y),c(c(c(z,c(u,y)),w),v5)),c(c(c(c(c(z,c(u,y)),w),v5),x),c(v6,x)))) # label("subterm_context_24").  [assumption].
+P(c(c(c(x,y),c(z,c(c(u,c(w,y)),v5))),c(c(c(z,c(c(u,c(w,y)),v5)),x),c(v6,x)))) # label("subterm_context_25").  [assumption].
+P(c(c(c(x,y),c(c(z,c(u,c(w,y))),v5)),c(c(c(c(z,c(u,c(w,y))),v5),x),c(v6,x)))) # label("subterm_context_26").  [assumption].
+P(c(c(c(x,y),c(z,c(u,c(w,c(v5,y))))),c(c(c(z,c(u,c(w,c(v5,y)))),x),c(v6,x)))) # label("subterm_context_27").  [assumption].
+-P(c(c(c1,c2),c(c(c(c1,c3),c1),c2))).  [deny(1)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+% 107 hints input.
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, P ]).
+Function symbol precedence:  function_order([ t, c1, c2, c3, c ]).
+After inverse_order:  (no changes).
+
+kept:      4 P(c(c(c(x,t),y),c(c(y,x),c(z,x)))) # label("checked_0").  [assumption].
+kept:      5 P(c(c(c(x,y),y),c(c(y,x),c(z,x)))) # label("checked_1").  [assumption].
+kept:      6 P(c(c(c(x,y),c(z,y)),c(c(c(z,y),x),c(u,x)))) # label("checked_2").  [assumption].
+kept:      7 P(c(c(c(x,y),c(y,z)),c(c(c(y,z),x),c(u,x)))) # label("checked_3").  [assumption].
+kept:      8 P(t) # label("checked_4").  [assumption].
+kept:      9 P(c(x,t)) # label("checked_16").  [assumption].
+kept:      10 P(c(c(t,x),c(y,x))) # label("checked_17").  [assumption].
+kept:      11 P(c(c(c(x,t),y),c(z,y))) # label("checked_25").  [assumption].
+kept:      12 P(c(x,x)) # label("checked_140") # label("cd17").  [assumption].
+kept:      13 P(c(c(c(x,y),x),c(z,x))) # label("checked_142") # label("cd18").  [assumption].
+kept:      14 P(c(x,c(y,x))) # label("checked_160") # label("cd16").  [assumption].
+kept:      15 P(c(c(c(c(x,y),z),y),c(x,y))) # label("checked_241") # label("cd22").  [assumption].
+kept:      16 P(c(c(t,x),x)) # label("checked_341").  [assumption].
+kept:      17 P(c(c(c(x,y),x),x)) # label("checked_349") # label("cd25").  [assumption].
+kept:      18 P(c(c(x,c(x,y)),c(x,y))) # label("checked_379") # label("cd28").  [assumption].
+kept:      19 P(c(c(c(x,c(y,z)),y),y)) # label("checked_382") # label("cd43").  [assumption].
+kept:      20 P(c(c(c(x,y),c(y,z)),c(y,z))) # label("checked_385") # label("cd29").  [assumption].
+kept:      21 P(c(c(c(x,c(y,z)),c(u,y)),c(u,y))) # label("checked_391") # label("cd83").  [assumption].
+kept:      22 P(c(c(c(x,y),c(z,x)),c(z,x))) # label("checked_481") # label("cd77").  [assumption].
+kept:      23 P(c(c(c(x,y),c(c(y,z),u)),c(c(c(c(y,z),u),x),c(w,x)))) # label("subterm_context_0").  [assumption].
+kept:      24 P(c(c(c(x,y),c(z,c(y,u))),c(c(c(z,c(y,u)),x),c(w,x)))) # label("subterm_context_1").  [assumption].
+kept:      25 P(c(c(c(x,y),c(c(z,y),u)),c(c(c(c(z,y),u),x),c(w,x)))) # label("subterm_context_2").  [assumption].
+kept:      26 P(c(c(c(x,y),c(z,c(u,y))),c(c(c(z,c(u,y)),x),c(w,x)))) # label("subterm_context_3").  [assumption].
+kept:      27 P(c(c(c(x,y),c(c(c(y,z),u),w)),c(c(c(c(c(y,z),u),w),x),c(v5,x)))) # label("subterm_context_4").  [assumption].
+kept:      28 P(c(c(c(x,y),c(z,c(c(y,u),w))),c(c(c(z,c(c(y,u),w)),x),c(v5,x)))) # label("subterm_context_5").  [assumption].
+kept:      29 P(c(c(c(x,y),c(c(z,c(y,u)),w)),c(c(c(c(z,c(y,u)),w),x),c(v5,x)))) # label("subterm_context_6").  [assumption].
+kept:      30 P(c(c(c(x,y),c(z,c(u,c(y,w)))),c(c(c(z,c(u,c(y,w))),x),c(v5,x)))) # label("subterm_context_7").  [assumption].
+kept:      31 P(c(c(c(x,y),c(c(c(z,y),u),w)),c(c(c(c(c(z,y),u),w),x),c(v5,x)))) # label("subterm_context_8").  [assumption].
+kept:      32 P(c(c(c(x,y),c(z,c(c(u,y),w))),c(c(c(z,c(c(u,y),w)),x),c(v5,x)))) # label("subterm_context_9").  [assumption].
+kept:      33 P(c(c(c(x,y),c(c(z,c(u,y)),w)),c(c(c(c(z,c(u,y)),w),x),c(v5,x)))) # label("subterm_context_10").  [assumption].
+kept:      34 P(c(c(c(x,y),c(z,c(u,c(w,y)))),c(c(c(z,c(u,c(w,y))),x),c(v5,x)))) # label("subterm_context_11").  [assumption].
+kept:      35 P(c(c(c(x,y),c(c(c(c(y,z),u),w),v5)),c(c(c(c(c(c(y,z),u),w),v5),x),c(v6,x)))) # label("subterm_context_12").  [assumption].
+kept:      36 P(c(c(c(x,y),c(z,c(c(c(y,u),w),v5))),c(c(c(z,c(c(c(y,u),w),v5)),x),c(v6,x)))) # label("subterm_context_13").  [assumption].
+kept:      37 P(c(c(c(x,y),c(c(z,c(c(y,u),w)),v5)),c(c(c(c(z,c(c(y,u),w)),v5),x),c(v6,x)))) # label("subterm_context_14").  [assumption].
+kept:      38 P(c(c(c(x,y),c(z,c(u,c(c(y,w),v5)))),c(c(c(z,c(u,c(c(y,w),v5))),x),c(v6,x)))) # label("subterm_context_15").  [assumption].
+kept:      39 P(c(c(c(x,y),c(c(c(z,c(y,u)),w),v5)),c(c(c(c(c(z,c(y,u)),w),v5),x),c(v6,x)))) # label("subterm_context_16").  [assumption].
+kept:      40 P(c(c(c(x,y),c(z,c(c(u,c(y,w)),v5))),c(c(c(z,c(c(u,c(y,w)),v5)),x),c(v6,x)))) # label("subterm_context_17").  [assumption].
+kept:      41 P(c(c(c(x,y),c(c(z,c(u,c(y,w))),v5)),c(c(c(c(z,c(u,c(y,w))),v5),x),c(v6,x)))) # label("subterm_context_18").  [assumption].
+kept:      42 P(c(c(c(x,y),c(z,c(u,c(w,c(y,v5))))),c(c(c(z,c(u,c(w,c(y,v5)))),x),c(v6,x)))) # label("subterm_context_19").  [assumption].
+kept:      43 P(c(c(c(x,y),c(c(c(c(z,y),u),w),v5)),c(c(c(c(c(c(z,y),u),w),v5),x),c(v6,x)))) # label("subterm_context_20").  [assumption].
+kept:      44 P(c(c(c(x,y),c(z,c(c(c(u,y),w),v5))),c(c(c(z,c(c(c(u,y),w),v5)),x),c(v6,x)))) # label("subterm_context_21").  [assumption].
+kept:      45 P(c(c(c(x,y),c(c(z,c(c(u,y),w)),v5)),c(c(c(c(z,c(c(u,y),w)),v5),x),c(v6,x)))) # label("subterm_context_22").  [assumption].
+kept:      46 P(c(c(c(x,y),c(z,c(u,c(c(w,y),v5)))),c(c(c(z,c(u,c(c(w,y),v5))),x),c(v6,x)))) # label("subterm_context_23").  [assumption].
+kept:      47 P(c(c(c(x,y),c(c(c(z,c(u,y)),w),v5)),c(c(c(c(c(z,c(u,y)),w),v5),x),c(v6,x)))) # label("subterm_context_24").  [assumption].
+kept:      48 P(c(c(c(x,y),c(z,c(c(u,c(w,y)),v5))),c(c(c(z,c(c(u,c(w,y)),v5)),x),c(v6,x)))) # label("subterm_context_25").  [assumption].
+kept:      49 P(c(c(c(x,y),c(c(z,c(u,c(w,y))),v5)),c(c(c(c(z,c(u,c(w,y))),v5),x),c(v6,x)))) # label("subterm_context_26").  [assumption].
+kept:      50 P(c(c(c(x,y),c(z,c(u,c(w,c(v5,y))))),c(c(c(z,c(u,c(w,c(v5,y)))),x),c(v6,x)))) # label("subterm_context_27").  [assumption].
+kept:      51 -P(c(c(c1,c2),c(c(c(c1,c3),c1),c2))).  [deny(1)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+2 -P(c(x,y)) | -P(x) | P(y).  [assumption].
+3 c(t,t) = t.  [assumption].
+end_of_list.
+
+formulas(sos).
+4 P(c(c(c(x,t),y),c(c(y,x),c(z,x)))) # label("checked_0").  [assumption].
+5 P(c(c(c(x,y),y),c(c(y,x),c(z,x)))) # label("checked_1").  [assumption].
+6 P(c(c(c(x,y),c(z,y)),c(c(c(z,y),x),c(u,x)))) # label("checked_2").  [assumption].
+7 P(c(c(c(x,y),c(y,z)),c(c(c(y,z),x),c(u,x)))) # label("checked_3").  [assumption].
+8 P(t) # label("checked_4").  [assumption].
+9 P(c(x,t)) # label("checked_16").  [assumption].
+10 P(c(c(t,x),c(y,x))) # label("checked_17").  [assumption].
+11 P(c(c(c(x,t),y),c(z,y))) # label("checked_25").  [assumption].
+12 P(c(x,x)) # label("checked_140") # label("cd17").  [assumption].
+13 P(c(c(c(x,y),x),c(z,x))) # label("checked_142") # label("cd18").  [assumption].
+14 P(c(x,c(y,x))) # label("checked_160") # label("cd16").  [assumption].
+15 P(c(c(c(c(x,y),z),y),c(x,y))) # label("checked_241") # label("cd22").  [assumption].
+16 P(c(c(t,x),x)) # label("checked_341").  [assumption].
+17 P(c(c(c(x,y),x),x)) # label("checked_349") # label("cd25").  [assumption].
+18 P(c(c(x,c(x,y)),c(x,y))) # label("checked_379") # label("cd28").  [assumption].
+19 P(c(c(c(x,c(y,z)),y),y)) # label("checked_382") # label("cd43").  [assumption].
+20 P(c(c(c(x,y),c(y,z)),c(y,z))) # label("checked_385") # label("cd29").  [assumption].
+21 P(c(c(c(x,c(y,z)),c(u,y)),c(u,y))) # label("checked_391") # label("cd83").  [assumption].
+22 P(c(c(c(x,y),c(z,x)),c(z,x))) # label("checked_481") # label("cd77").  [assumption].
+23 P(c(c(c(x,y),c(c(y,z),u)),c(c(c(c(y,z),u),x),c(w,x)))) # label("subterm_context_0").  [assumption].
+24 P(c(c(c(x,y),c(z,c(y,u))),c(c(c(z,c(y,u)),x),c(w,x)))) # label("subterm_context_1").  [assumption].
+25 P(c(c(c(x,y),c(c(z,y),u)),c(c(c(c(z,y),u),x),c(w,x)))) # label("subterm_context_2").  [assumption].
+26 P(c(c(c(x,y),c(z,c(u,y))),c(c(c(z,c(u,y)),x),c(w,x)))) # label("subterm_context_3").  [assumption].
+27 P(c(c(c(x,y),c(c(c(y,z),u),w)),c(c(c(c(c(y,z),u),w),x),c(v5,x)))) # label("subterm_context_4").  [assumption].
+28 P(c(c(c(x,y),c(z,c(c(y,u),w))),c(c(c(z,c(c(y,u),w)),x),c(v5,x)))) # label("subterm_context_5").  [assumption].
+29 P(c(c(c(x,y),c(c(z,c(y,u)),w)),c(c(c(c(z,c(y,u)),w),x),c(v5,x)))) # label("subterm_context_6").  [assumption].
+30 P(c(c(c(x,y),c(z,c(u,c(y,w)))),c(c(c(z,c(u,c(y,w))),x),c(v5,x)))) # label("subterm_context_7").  [assumption].
+31 P(c(c(c(x,y),c(c(c(z,y),u),w)),c(c(c(c(c(z,y),u),w),x),c(v5,x)))) # label("subterm_context_8").  [assumption].
+32 P(c(c(c(x,y),c(z,c(c(u,y),w))),c(c(c(z,c(c(u,y),w)),x),c(v5,x)))) # label("subterm_context_9").  [assumption].
+33 P(c(c(c(x,y),c(c(z,c(u,y)),w)),c(c(c(c(z,c(u,y)),w),x),c(v5,x)))) # label("subterm_context_10").  [assumption].
+34 P(c(c(c(x,y),c(z,c(u,c(w,y)))),c(c(c(z,c(u,c(w,y))),x),c(v5,x)))) # label("subterm_context_11").  [assumption].
+35 P(c(c(c(x,y),c(c(c(c(y,z),u),w),v5)),c(c(c(c(c(c(y,z),u),w),v5),x),c(v6,x)))) # label("subterm_context_12").  [assumption].
+36 P(c(c(c(x,y),c(z,c(c(c(y,u),w),v5))),c(c(c(z,c(c(c(y,u),w),v5)),x),c(v6,x)))) # label("subterm_context_13").  [assumption].
+37 P(c(c(c(x,y),c(c(z,c(c(y,u),w)),v5)),c(c(c(c(z,c(c(y,u),w)),v5),x),c(v6,x)))) # label("subterm_context_14").  [assumption].
+38 P(c(c(c(x,y),c(z,c(u,c(c(y,w),v5)))),c(c(c(z,c(u,c(c(y,w),v5))),x),c(v6,x)))) # label("subterm_context_15").  [assumption].
+39 P(c(c(c(x,y),c(c(c(z,c(y,u)),w),v5)),c(c(c(c(c(z,c(y,u)),w),v5),x),c(v6,x)))) # label("subterm_context_16").  [assumption].
+40 P(c(c(c(x,y),c(z,c(c(u,c(y,w)),v5))),c(c(c(z,c(c(u,c(y,w)),v5)),x),c(v6,x)))) # label("subterm_context_17").  [assumption].
+41 P(c(c(c(x,y),c(c(z,c(u,c(y,w))),v5)),c(c(c(c(z,c(u,c(y,w))),v5),x),c(v6,x)))) # label("subterm_context_18").  [assumption].
+42 P(c(c(c(x,y),c(z,c(u,c(w,c(y,v5))))),c(c(c(z,c(u,c(w,c(y,v5)))),x),c(v6,x)))) # label("subterm_context_19").  [assumption].
+43 P(c(c(c(x,y),c(c(c(c(z,y),u),w),v5)),c(c(c(c(c(c(z,y),u),w),v5),x),c(v6,x)))) # label("subterm_context_20").  [assumption].
+44 P(c(c(c(x,y),c(z,c(c(c(u,y),w),v5))),c(c(c(z,c(c(c(u,y),w),v5)),x),c(v6,x)))) # label("subterm_context_21").  [assumption].
+45 P(c(c(c(x,y),c(c(z,c(c(u,y),w)),v5)),c(c(c(c(z,c(c(u,y),w)),v5),x),c(v6,x)))) # label("subterm_context_22").  [assumption].
+46 P(c(c(c(x,y),c(z,c(u,c(c(w,y),v5)))),c(c(c(z,c(u,c(c(w,y),v5))),x),c(v6,x)))) # label("subterm_context_23").  [assumption].
+47 P(c(c(c(x,y),c(c(c(z,c(u,y)),w),v5)),c(c(c(c(c(z,c(u,y)),w),v5),x),c(v6,x)))) # label("subterm_context_24").  [assumption].
+48 P(c(c(c(x,y),c(z,c(c(u,c(w,y)),v5))),c(c(c(z,c(c(u,c(w,y)),v5)),x),c(v6,x)))) # label("subterm_context_25").  [assumption].
+49 P(c(c(c(x,y),c(c(z,c(u,c(w,y))),v5)),c(c(c(c(z,c(u,c(w,y))),v5),x),c(v6,x)))) # label("subterm_context_26").  [assumption].
+50 P(c(c(c(x,y),c(z,c(u,c(w,c(v5,y))))),c(c(c(z,c(u,c(w,c(v5,y)))),x),c(v6,x)))) # label("subterm_context_27").  [assumption].
+51 -P(c(c(c1,c2),c(c(c(c1,c3),c1),c2))).  [deny(1)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+% 107 hints (107 processed, 0 redundant).
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+given #500 (W,wt=16): 2459 P(c(c(c(x,x),c(c(y,c(z,c(u,z))),x)),x)).  [hyper(2,a,480,a,b,798,a)].
+
+given #1000 (W,wt=18): 1612 P(c(x,c(c(c(y,c(c(z,z),y)),c(c(z,z),y)),y))).  [hyper(2,a,814,a,b,481,a)].
+
+given #1500 (W,wt=18): 7718 P(c(c(c(x,y),c(c(x,y),c(c(x,c(y,z)),x))),x)).  [hyper(2,a,461,a,b,4763,a)].
+
+given #2000 (W,wt=16): 42639 P(c(c(c(x,x),c(c(y,t),c(c(z,t),x))),x)).  [hyper(2,a,475,a,b,42568,a)].
+
+given #2500 (W,wt=16): 47494 P(c(c(c(x,y),c(c(c(c(x,z),x),y),x)),x)).  [hyper(2,a,476,a,b,47453,a)].
+
+Low Water (keep): wt=44.000, iters=33384
+
+Low Water (keep): wt=42.000, iters=33411
+
+Low Water (keep): wt=40.000, iters=33340
+
+Low Water (keep): wt=38.000, iters=33336
+
+given #3000 (W,wt=16): 55501 P(c(x,c(c(t,c(c(y,z),c(c(u,t),y))),y))).  [hyper(2,a,14,a,b,52074,a)].
+
+Low Water (keep): wt=36.000, iters=33432
+
+Low Water (keep): wt=34.000, iters=33348
+
+given #3500 (W,wt=18): 43167 P(c(x,c(c(c(y,t),c(c(z,t),c(c(y,u),y))),y))).  [hyper(2,a,14,a,b,42667,a)].
+
+Low Water (keep): wt=32.000, iters=33341
+-------- Proof 1 -------- 
+
+============================== PROOF =================================
+
+% Proof 1 at 65.35 (+ 2.16) seconds.
+% Length of proof is 37.
+% Level of proof is 17.
+% Maximum clause weight is 26.000.
+% Given clauses 3627 (213.353 givens/level).
+
+1 P(c(c(x,y),c(c(c(x,z),x),y))) # label(non_clause) # label(goal).  [goal].
+2 -P(c(x,y)) | -P(x) | P(y).  [assumption].
+5 P(c(c(c(x,y),y),c(c(y,x),c(z,x)))) # label("checked_1").  [assumption].
+6 P(c(c(c(x,y),c(z,y)),c(c(c(z,y),x),c(u,x)))) # label("checked_2").  [assumption].
+7 P(c(c(c(x,y),c(y,z)),c(c(c(y,z),x),c(u,x)))) # label("checked_3").  [assumption].
+13 P(c(c(c(x,y),x),c(z,x))) # label("checked_142") # label("cd18").  [assumption].
+18 P(c(c(x,c(x,y)),c(x,y))) # label("checked_379") # label("cd28").  [assumption].
+19 P(c(c(c(x,c(y,z)),y),y)) # label("checked_382") # label("cd43").  [assumption].
+31 P(c(c(c(x,y),c(c(c(z,y),u),w)),c(c(c(c(c(z,y),u),w),x),c(v5,x)))) # label("subterm_context_8").  [assumption].
+51 -P(c(c(c1,c2),c(c(c(c1,c3),c1),c2))).  [deny(1)].
+65 P(c(c(c(x,y),c(y,z)),c(u,c(y,z)))) # label("cd19").  [hyper(2,a,6,a,b,13,a)].
+85 P(c(c(x,c(y,c(x,z))),c(u,c(y,c(x,z))))) # label("cd44").  [hyper(2,a,5,a,b,19,a)].
+285 P(c(c(c(x,c(y,z)),c(u,y)),c(w,c(u,y)))) # label("cd20").  [hyper(2,a,6,a,b,65,a)].
+338 P(c(c(x,c(y,c(x,z))),c(y,c(x,z)))) # label("cd45").  [hyper(2,a,18,a,b,85,a)].
+438 P(c(c(c(x,c(y,z)),c(u,c(z,w))),c(v5,c(u,c(z,w))))) # label("cd48").  [hyper(2,a,6,a,b,285,a)].
+481 P(c(c(x,y),c(c(c(y,x),x),y))).  [hyper(2,a,338,a,b,5,a)].
+630 P(c(x,c(c(c(y,z),u),c(z,u)))) # label("cd49").  [hyper(2,a,438,a,b,7,a)].
+637 P(c(c(c(x,y),z),c(y,z))) # label("cd50").  [hyper(2,a,630,a,b,630,a)].
+682 P(c(x,c(c(x,y),c(z,y)))) # label("cd51").  [hyper(2,a,637,a,b,5,a)].
+685 P(c(x,c(c(c(y,x),z),c(u,z)))).  [hyper(2,a,637,a,b,682,a)].
+701 P(c(c(c(c(c(x,y),z),c(u,z)),x),c(w,x))) # label("cd55").  [hyper(2,a,31,a,b,682,a)].
+763 P(c(c(c(c(c(x,y),x),c(z,x)),u),c(w,u))).  [hyper(2,a,682,a,b,13,a)].
+787 P(c(c(c(c(c(x,y),z),c(u,z)),x),x)) # label("cd56").  [hyper(2,a,18,a,b,701,a)].
+792 P(c(c(x,c(c(c(x,y),z),c(u,z))),c(w,c(c(c(x,y),z),c(u,z))))).  [hyper(2,a,5,a,b,787,a)].
+939 P(c(c(c(c(c(x,y),c(z,y)),x),x),c(c(x,y),c(z,y)))).  [hyper(2,a,481,a,b,682,a)].
+1079 P(c(c(c(x,c(c(c(y,x),z),c(u,z))),w),c(v5,w))).  [hyper(2,a,682,a,b,685,a)].
+2929 P(c(c(c(c(c(x,y),x),c(z,x)),u),u)).  [hyper(2,a,18,a,b,763,a)].
+16977 P(c(c(c(x,c(c(c(y,x),z),c(u,z))),w),w)).  [hyper(2,a,18,a,b,1079,a)].
+28549 P(c(c(c(x,c(c(c(y,z),u),c(w,u))),y),c(v5,y))).  [hyper(2,a,6,a,b,792,a)].
+45928 P(c(c(c(x,c(c(c(y,z),u),c(w,u))),y),y)).  [hyper(2,a,18,a,b,28549,a)].
+45945 P(c(c(x,c(y,z)),c(c(c(x,u),z),c(y,z)))).  [hyper(2,a,939,a,b,45928,a)].
+46030 P(c(c(c(x,y),c(z,u)),c(c(c(w,x),u),c(z,u)))).  [hyper(2,a,16977,a,b,45945,a)].
+46049 P(c(c(c(c(c(x,y),x),z),x),c(u,x))).  [hyper(2,a,2929,a,b,45945,a)].
+85181 P(c(c(c(x,c(c(c(y,z),y),u)),y),c(w,y))).  [hyper(2,a,46030,a,b,46049,a)].
+88377 P(c(c(c(x,c(c(c(y,z),y),u)),y),y)).  [hyper(2,a,18,a,b,85181,a)].
+88397 P(c(c(x,y),c(c(c(x,z),x),y))) # label("cd59").  [hyper(2,a,939,a,b,88377,a)].
+88398 $F.  [resolve(88397,a,51,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=3627. Generated=7257060. Kept=88394. proofs=1.
+Usable=2876. Sos=71101. Demods=0. Limbo=17, Disabled=14449. Hints=107.
+Kept_by_rule=0, Deleted_by_rule=29990.
+Forward_subsumed=7048693. Back_subsumed=14401.
+Sos_limit_deleted=89983. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=147.62.
+User_CPU=65.35, System_CPU=2.16, Wall_clock=127.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+------ process 5 exit (max_proofs) ------
+
+Process 5 exit (max_proofs) Wed Oct 21 00:35:09 2026
