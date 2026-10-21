@@ -6,12 +6,12 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [subsequent simplification check](../simplification/phase9/README.md) rebuilds affected
-modules with explicit transitive source bindings and reruns both endpoint audits.
-The current endpoint closure has 192 project modules; five additional decoder-prefix
-modules are checked separately in its 197-module union. All nine site batches are fresh.
-Both audits retain zero warnings and the same three allowed axioms. The historical
-204-module receipts below are unchanged.
+The [current simplification check](../simplification/phase10/README.md) freshly checks
+eight affected modules and both endpoint clients after shortening the generic core.
+Its 197-module union contains the 192-module endpoint closure and five decoder-prefix
+modules; 189 providers retain exact phase-nine bindings. Both audits have zero
+warnings and the same three allowed axioms. The historical 204-module receipts
+below and the nine phase-nine site checks are unchanged.
 
 The portable driver rebuilds the exact project import closure of
 `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit

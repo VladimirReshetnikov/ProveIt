@@ -3,16 +3,12 @@ import Init
 /-!
 A representation-independent dominated implication theorem.
 
-The proof is an attributed compression of DomRho8 at ProveIt commit
-aa66d0a33f1f8237a348899eb8095b045a502832 (Source 149 / CD230 ancestry).
-Thirteen condensed-detachment shortcuts prune the inherited helper hierarchy.
-The final proof combines pointwise lifting with the generic core (e94206c09f);
-unused distribution schemas are omitted after a maintained-caller census.
-No formula decoder, injectivity, bottom element, or zero-collapse identity is
-assumed. The relation need only be reflexive and closed under insertion into
-either implication operand; transitivity is not a separate requirement.
-The private seed hypothesis is eliminated in each public theorem using a
-dominated axiom instance at its first argument.
+The 52-step condensed-detachment derivation is adapted from ProveIt commit
+4fdc59197a. Four discarded filler terms are chosen reflexively rather than at
+numeric zero, and five detachments use an arbitrary private seed. Thus no
+bottom element, injectivity, transitivity, or zero-collapse law is needed.
+The short semantic tail retains composition and pointwise lifting; the seed
+is discharged by a reflexive dominated instance in every public theorem.
 -/
 namespace SetTheory.BusyBeaver.ZFC.DominatedImplication
 
@@ -49,307 +45,260 @@ private theorem le_r {u y : A} (x : A) (h : u ≼ y) : u ≼ wim x y :=
 variable (h : WithSeed L τ T)
 include h
 
-private theorem b1 (v0 v1 v2 v3 : A) : T (wim (wim (wim v0 v1) (wim v2 v1)) (wim (wim (wim v2 v1) v0) (wim v3 v0))) :=
-  (show T (wim (wim (wim v0 v1) (wim v2 v1)) (wim (wim (wim v2 v1) v0) (wim v3 v0))) from by simpa only [rho8] using h.rho8 (wim v2 v1) v3 v0 v1 (le_r v2 (L.refl _)))
+private theorem d1 (v0 v1 v2 v3 v4 : A) (hb0 : v3 ≼ v0) :
+    T (wim (wim (wim (wim v0 v1) (wim v2 v1)) (wim v1 v3)) (wim v4 (wim v1 v3))) :=
+  h.mp (h.rho8 (wim (wim v0 v1) (wim v2 v1)) v4 (wim v1 v3) v0 (le_l (wim v2 v1) (le_l v1 (L.refl _)))) (h.rho8 v0 v2 v1 v3 hb0)
 
-private theorem b3 (v0 v1 v2 : A) : T (wim (wim (wim (wim (wim v0 v1) v1) (wim v0 v1)) (wim v1 v1)) (wim v2 (wim v1 v1))) :=
-  (h.mp (b1 h (wim v1 v1) (wim v0 v1) (wim (wim v0 v1) v1) v2) (b1 h v1 v1 v0 v0))
+private theorem d2 (v0 v1 v2 v3 v4 v5 : A) (hb0 : v2 ≼ v3) :
+    T (wim (wim (wim v0 (wim v1 v2)) (wim (wim v3 v1) (wim v4 v1))) (wim v5 (wim (wim v3 v1) (wim v4 v1)))) :=
+  h.mp (h.rho8 (wim v0 (wim v1 v2)) v5 (wim (wim v3 v1) (wim v4 v1)) (wim v1 v2) (le_r v0 (L.refl _))) (d1 h v3 v1 v4 v2 v0 hb0)
 
-private theorem b4 (v0 v1 v2 v3 : A) : T (wim (wim (wim v0 (wim v1 v1)) (wim (wim (wim v2 v1) v1) (wim v2 v1))) (wim v3 (wim (wim (wim v2 v1) v1) (wim v2 v1)))) :=
-  (h.mp (b1 h (wim (wim (wim v2 v1) v1) (wim v2 v1)) (wim v1 v1) v0 v3) (b3 h v2 v1 v0))
+private theorem d3 (v0 v1 v2 v3 : A) :
+    T (wim v0 (wim (wim (wim v1 v2) v1) (wim v3 v1))) :=
+  h.mp (d2 h (wim v1 (wim v1 v2)) v1 v2 (wim v1 v2) v3 v0 (le_r v1 (L.refl _))) (h.rho8 (wim v1 v2) v3 v1 (wim v1 v2) (L.refl _))
 
-private theorem b10 (v0 v1 : A) : T (wim v0 (wim (wim (wim v1 v1) v1) (wim v1 v1))) :=
-  (h.mp (b4 h (wim v1 v1) v1 v1 v0) (b1 h v1 v1 v1 v1))
+private theorem d4 (v0 v1 v2 : A) :
+    T (wim (wim (wim v0 v1) v0) (wim v2 v0)) :=
+  h.mp (d3 h τ v0 v1 v2) h.truth
 
-private theorem b12 (v0 : A) : T (wim (wim (wim v0 v0) v0) (wim v0 v0)) :=
-  (h.mp (b10 h τ v0) h.truth)
+private theorem d5 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 v1) (wim v1 v2)) (wim v3 (wim v1 v2))) :=
+  h.mp (h.rho8 (wim v0 v1) v3 (wim v1 v2) v1 (le_r v0 (L.refl _))) (d4 h v1 v2 v0)
 
-private theorem b13 (v0 v1 : A) : T (wim (wim (wim v0 v0) (wim v0 v0)) (wim v1 (wim v0 v0))) :=
-  (h.mp (b1 h (wim v0 v0) v0 v0 v1) (b12 h v0))
+private theorem d6 (v0 v1 v2 v3 v4 : A) :
+    T (wim (wim (wim v0 (wim v1 v2)) (wim v3 v1)) (wim v4 (wim v3 v1))) :=
+  h.mp (h.rho8 (wim v0 (wim v1 v2)) v4 (wim v3 v1) (wim v1 v2) (le_r v0 (L.refl _))) (d5 h v3 v1 v2 v0)
 
-private theorem b14 (v0 v1 : A) : T (wim v0 (wim (wim v1 v1) (wim v1 v1))) :=
-  (h.mp (b13 h (wim v1 v1) v0) (b13 h v1 (wim v1 v1)))
+private theorem d7 (v0 v1 v2 v3 : A) :
+    T (wim v0 (wim (wim (wim (wim v1 v2) v3) v2) (wim v1 v2))) :=
+  h.mp (d6 h (wim v2 (wim (wim v1 v2) v3)) (wim v1 v2) v3 (wim (wim (wim v1 v2) v3) v2) v0) (h.rho8 (wim (wim v1 v2) v3) v1 v2 (wim (wim v1 v2) v3) (L.refl _))
 
-private theorem b15 (v0 : A) : T (wim (wim v0 v0) (wim v0 v0)) :=
-  (h.mp (b14 h τ v0) h.truth)
+private theorem d8 (v0 v1 v2 v3 v4 v5 : A) :
+    T (wim (wim (wim v0 (wim v1 v2)) (wim v3 (wim v2 v4))) (wim v5 (wim v3 (wim v2 v4)))) :=
+  h.mp (h.rho8 (wim v0 (wim v1 v2)) v5 (wim v3 (wim v2 v4)) (wim v1 v2) (le_r v0 (L.refl _))) (d6 h v3 v2 v4 v1 v0)
 
-private theorem b16 (v0 v1 : A) : T (wim v0 (wim v1 v1)) :=
-  (h.mp (b13 h v1 v0) (b15 h v1))
+private theorem d9 (v0 v1 v2 : A) :
+    T (wim (wim (wim (wim v0 v1) v2) v1) (wim v0 v1)) :=
+  h.mp (d7 h τ v0 v1 v2) h.truth
 
-private theorem b17 (v0 : A) : T (wim v0 v0) :=
-  (h.mp (b16 h τ v0) h.truth)
+private theorem d10 (v0 v1 v2 v3 : A) :
+    T (wim v0 (wim (wim (wim v1 v2) v3) (wim v2 v3))) :=
+  h.mp (d8 h (wim v3 (wim v1 v2)) v1 v2 (wim (wim v1 v2) v3) v3 v0) (h.rho8 (wim v1 v2) v2 v3 (wim v1 v2) (L.refl _))
 
-private theorem b18 (v0 v1 v2 : A) : T (wim (wim (wim v0 v1) v0) (wim v2 v0)) :=
-  (h.mp (b1 h v0 v1 v0 v2) (b17 h (wim v0 v1)))
+private theorem d11 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 v1) (wim (wim v0 v1) v2)) (wim v3 (wim (wim v0 v1) v2))) :=
+  h.mp (h.rho8 (wim v0 v1) v3 (wim (wim v0 v1) v2) v1 (le_r v0 (L.refl _))) (d9 h v0 v1 v2)
 
-private theorem b31 (v0 v1 v2 v3 v4 v5 : A) : T (wim (wim (wim v0 v1) (wim (wim (wim v2 v1) v3) v4)) (wim (wim (wim (wim (wim v2 v1) v3) v4) v0) (wim v5 v0))) :=
-  (show T (wim (wim (wim v0 v1) (wim (wim (wim v2 v1) v3) v4)) (wim (wim (wim (wim (wim v2 v1) v3) v4) v0) (wim v5 v0))) from by simpa only [rho8] using h.rho8 (wim (wim (wim v2 v1) v3) v4) v5 v0 v1 (le_l v4 (le_l v3 (le_r v2 (L.refl _)))))
+private theorem d12 (v0 v1 : A) :
+    T (wim v0 (wim v1 v0)) :=
+  h.mp (d9 h v0 (wim v1 v0) v0) (d4 h v0 (wim v1 v0) v1)
 
-private theorem b19 (v0 v1 v2 v3 : A) : T (wim (wim (wim v0 v1) (wim v1 v2)) (wim v3 (wim v1 v2))) :=
-  (h.mp (b1 h (wim v1 v2) v1 v0 v3) (b18 h v1 v2 v0))
+private theorem d13 (v0 v1 v2 : A) :
+    T (wim (wim (wim v0 v1) v2) (wim v1 v2)) :=
+  h.mp (d10 h τ v0 v1 v2) h.truth
 
-private theorem b20 (v0 v1 v2 v3 v4 : A) : T (wim (wim (wim v0 (wim v1 v2)) (wim v3 v1)) (wim v4 (wim v3 v1))) :=
-  (h.mp (b1 h (wim v3 v1) (wim v1 v2) v0 v4) (b19 h v3 v1 v2 v0))
+private theorem d14 (v0 v1 v2 : A) :
+    T (wim v0 (wim (wim (wim v1 v2) v1) v1)) :=
+  h.mp (d11 h (wim v1 v2) v1 v1 v0) (d4 h v1 v2 (wim (wim v1 v2) v1))
 
-private theorem b36 (v0 v1 v2 v3 v4 v5 : A) : T (wim (wim (wim v0 (wim v1 v2)) (wim v3 (wim v2 v4))) (wim v5 (wim v3 (wim v2 v4)))) :=
-  (h.mp (b1 h (wim v3 (wim v2 v4)) (wim v1 v2) v0 v5) (b20 h v3 v2 v4 v1 v0))
+private theorem d15 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 (wim v1 v2)) v1) (wim v3 v1)) :=
+  h.mp (h.rho8 (wim v0 (wim v1 v2)) v3 v1 v2 (le_r v0 (le_r v1 (L.refl _)))) (d12 h (wim v1 v2) v0)
 
-private theorem b38 (v0 v1 v2 v3 : A) : T (wim v0 (wim (wim (wim v1 v2) v3) (wim v2 v3))) :=
-  (h.mp (b36 h (wim v3 v2) v1 v2 (wim (wim v1 v2) v3) v3 v0) (b1 h v3 v2 v1 v2))
+private theorem d16 (v0 v1 v2 : A) :
+    T (wim v0 (wim (wim v0 v1) (wim v2 v1))) :=
+  h.mp (d13 h (wim v1 v0) v0 (wim (wim v0 v1) (wim v2 v1))) (h.rho8 v0 v2 v1 v0 (L.refl _))
 
-private theorem b39 (v0 v1 v2 : A) : T (wim (wim (wim v0 v1) v2) (wim v1 v2)) :=
-  (h.mp (b38 h τ v0 v1 v2) h.truth)
-
-private theorem b0 (v0 v1 v2 : A) : T (wim (wim (wim v0 v1) v1) (wim (wim v1 v0) (wim v2 v0))) :=
-  (show T (wim (wim (wim v0 v1) v1) (wim (wim v1 v0) (wim v2 v0))) from by simpa only [rho8] using h.rho8 v1 v2 v0 v1 (L.refl _))
-
-private theorem b40 (v0 v1 v2 : A) : T (wim v0 (wim (wim v0 v1) (wim v2 v1))) :=
-  (h.mp (b39 h (wim v1 v0) v0 (wim (wim v0 v1) (wim v2 v1))) (b0 h v1 v0 v2))
-
-private theorem b42 (v0 v1 v2 v3 v4 : A) : T (wim (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0) (wim v4 v0)) :=
-  (h.mp (b31 h v0 v1 v0 v2 (wim v3 v2) v4) (b40 h (wim v0 v1) v2 v3))
-
-private theorem b21 (v0 v1 v2 v3 : A) : T (wim v0 (wim (wim (wim (wim v1 v2) v3) v2) (wim v1 v2))) :=
-  (h.mp (b18 h (wim (wim (wim (wim v1 v2) v3) v2) (wim v1 v2)) (wim v1 v2) v0) (b42 h (wim v1 v2) v3 v2 v1 (wim (wim (wim v1 v2) v3) v2)))
-
-private theorem b22 (v0 v1 v2 : A) : T (wim (wim (wim (wim v0 v1) v2) v1) (wim v0 v1)) :=
-  (h.mp (b21 h τ v0 v1 v2) h.truth)
-
-private theorem b23 (v0 v1 v2 v3 : A) : T (wim (wim (wim v0 v1) (wim (wim v0 v1) v2)) (wim v3 (wim (wim v0 v1) v2))) :=
-  (h.mp (b1 h (wim (wim v0 v1) v2) v1 v0 v3) (b22 h v0 v1 v2))
-
-private theorem b24 (v0 v1 v2 : A) : T (wim v0 (wim (wim (wim v1 v2) v1) v1)) :=
-  (h.mp (b23 h (wim v1 v2) v1 v1 v0) (b18 h v1 v2 (wim (wim v1 v2) v1)))
-
-private theorem b25 (v0 v1 : A) : T (wim (wim (wim v0 v1) v0) v0) :=
-  (h.mp (b24 h τ v0 v1) h.truth)
-
-private theorem b60 (v0 v1 : A) : T (wim v0 (wim v1 v0)) :=
-  (h.mp (b22 h v0 (wim v1 v0) v0) (b18 h v0 (wim v1 v0) v1))
-
-private theorem b26 (v0 v1 v2 : A) : T (wim (wim v0 (wim v0 v1)) (wim v2 (wim v0 v1))) :=
-  (h.mp (b0 h (wim v0 v1) v0 v2) (b25 h v0 v1))
-
-private theorem b27 (v0 v1 v2 : A) : T (wim v0 (wim (wim v1 (wim v1 v2)) (wim v1 v2))) :=
-  (h.mp (b26 h (wim v1 (wim v1 v2)) (wim v1 v2) v0) (b26 h v1 v2 (wim v1 (wim v1 v2))))
-
-private theorem b28 (v0 v1 : A) : T (wim (wim v0 (wim v0 v1)) (wim v0 v1)) :=
-  (h.mp (b27 h τ v0 v1) h.truth)
-
-private theorem cd0 (v0 v1 v2 v3 : A) (hb0 : v1 ≼ v2) :
-    T (wim (wim (wim v0 v1) v2) (wim (wim v2 v0) (wim v3 v0))) :=
-  (show T (wim (wim (wim v0 v1) v2) (wim (wim v2 v0) (wim v3 v0))) from by simpa only [rho8] using h.rho8 v2 v3 v0 v1 hb0)
-
-private theorem b29 (v0 v1 v2 v3 : A) : T (wim (wim (wim v0 (wim v1 v2)) v1) (wim v3 v1)) :=
-  (h.mp (b1 h v1 (wim v1 v2) v0 v3) (b26 h v1 v2 v0))
-
-private theorem b30 (v0 v1 v2 : A) : T (wim (wim (wim v0 (wim v1 v2)) v1) v1) :=
-  (h.mp (b28 h (wim (wim v0 (wim v1 v2)) v1) v1) (b29 h v0 v1 v2 (wim (wim v0 (wim v1 v2)) v1)))
-
-private theorem b33 (v0 v1 v2 v3 : A) : T (wim (wim v0 (wim v1 (wim v0 v2))) (wim v3 (wim v1 (wim v0 v2)))) :=
-  (h.mp (b0 h (wim v1 (wim v0 v2)) v0 v3) (b30 h v1 v0 v2))
-
-private theorem b35 (v0 v1 v2 : A) : T (wim (wim v0 (wim v1 (wim v0 v2))) (wim v1 (wim v0 v2))) :=
-  (h.mp (b28 h (wim v0 (wim v1 (wim v0 v2))) (wim v1 (wim v0 v2))) (b33 h v0 v1 v2 (wim v0 (wim v1 (wim v0 v2)))))
-
-private theorem b37 (v0 v1 : A) : T (wim (wim v0 v1) (wim (wim (wim v1 v0) v0) v1)) :=
-  (h.mp (b35 h (wim (wim v1 v0) v0) (wim v0 v1) v1) (b0 h v1 v0 (wim (wim v1 v0) v0)))
-
-private theorem b46 (v0 v1 v2 : A) : T (wim (wim (wim (wim (wim v0 v1) (wim v2 v1)) v0) v0) (wim (wim v0 v1) (wim v2 v1))) :=
-  (h.mp (b37 h v0 (wim (wim v0 v1) (wim v2 v1))) (b40 h v0 v1 v2))
-
-private theorem b44 (v0 v1 v2 v3 : A) : T (wim (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0) v0) :=
-  (h.mp (b28 h (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0) v0) (b42 h v0 v1 v2 v3 (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0)))
-
-private theorem b45 (v0 v1 v2 v3 v4 : A) : T (wim (wim v0 (wim (wim (wim v0 v1) v2) (wim v3 v2))) (wim v4 (wim (wim (wim v0 v1) v2) (wim v3 v2)))) :=
-  (h.mp (b0 h (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0 v4) (b44 h v0 v1 v2 v3))
-
-private theorem b50 (v0 v1 v2 v3 v4 v5 : A) : T (wim (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1) (wim v5 v1)) :=
-  (h.mp (b1 h v1 (wim (wim (wim v1 v2) v3) (wim v4 v3)) v0 v5) (b45 h v1 v2 v3 v4 v0))
-
-private theorem b51 (v0 v1 v2 v3 v4 : A) : T (wim (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1) v1) :=
-  (h.mp (b28 h (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1) v1) (b50 h v0 v1 v2 v3 v4 (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1)))
-
-private theorem b52 (v0 v1 v2 v3 : A) : T (wim (wim v0 (wim v1 v2)) (wim (wim (wim v0 v3) v2) (wim v1 v2))) :=
-  (h.mp (b46 h v0 (wim v1 v2) (wim (wim v0 v3) v2)) (b51 h (wim v0 (wim v1 v2)) v0 v3 v2 v1))
-
-private theorem cd46 (v0 v1 v2 v3 : A) (hb0 : v3 ≼ v1) :
-    T (wim v0 (wim (wim v1 v2) (wim (wim (wim v2 v3) v1) v2))) :=
-  (h.mp (b33 h (wim (wim v2 v3) v1) (wim v1 v2) v2 v0) (cd0 h v2 v3 v1 (wim (wim v2 v3) v1) hb0))
-
-private theorem cd47 (v0 v1 v2 : A) (hb0 : v2 ≼ v0) :
-    T (wim (wim v0 v1) (wim (wim (wim v1 v2) v0) v1)) :=
-  (h.mp (cd46 h τ v0 v1 v2 hb0) h.truth)
-
-private theorem cd60 (v0 v1 v2 v3 : A) (hb0 : v3 ≼ (wim v1 (wim v1 v2))) :
-    T (wim (wim (wim (wim v0 (wim v1 v2)) v3) (wim v1 (wim v1 v2))) (wim v0 (wim v1 v2))) :=
-  (h.mp (cd47 h (wim v1 (wim v1 v2)) (wim v0 (wim v1 v2)) v3 hb0) (b26 h v1 v2 v0))
-
-private theorem b41 (v0 v1 v2 v3 : A) : T (wim v0 (wim (wim (wim v1 v0) v2) (wim v3 v2))) :=
-  (h.mp (b39 h v1 v0 (wim (wim (wim v1 v0) v2) (wim v3 v2))) (b40 h (wim v1 v0) v2 v3))
-
-private theorem b53 (v0 v1 v2 v3 v4 : A) : T (wim (wim (wim v0 v1) (wim v2 v3)) (wim (wim (wim v4 v0) v3) (wim v2 v3))) :=
-  (h.mp (b52 h v0 (wim (wim v4 v0) v3) (wim v2 v3) v1) (b41 h v0 v4 v3 v2))
-
-private theorem b54 (v0 v1 v2 v3 : A) : T (wim (wim (wim (wim (wim v0 v1) v0) v2) v0) (wim v3 v0)) :=
-  (h.mp (b52 h (wim (wim v0 v1) v0) v3 v0 v2) (b18 h v0 v1 v3))
-
-private theorem b55 (v0 v1 v2 v3 v4 : A) : T (wim (wim (wim v0 (wim (wim (wim v1 v2) v1) v3)) v1) (wim v4 v1)) :=
-  (h.mp (b53 h (wim (wim (wim v1 v2) v1) v3) v1 v4 v1 v0) (b54 h v1 v2 v3 v4))
-
-private theorem b56 (v0 v1 v2 v3 : A) : T (wim (wim (wim v0 (wim (wim (wim v1 v2) v1) v3)) v1) v1) :=
-  (h.mp (b28 h (wim (wim v0 (wim (wim (wim v1 v2) v1) v3)) v1) v1) (b55 h v0 v1 v2 v3 (wim (wim v0 (wim (wim (wim v1 v2) v1) v3)) v1)))
-
-private theorem b57 (v0 v1 v2 : A) : T (wim (wim v0 v1) (wim (wim (wim v0 v2) v0) v1)) :=
-  (h.mp (b46 h v0 v1 (wim (wim v0 v2) v0)) (b56 h (wim v0 v1) v0 v2 v1))
-
-private theorem cd61 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim v0 v1) v0) (wim (wim v0 v2) (wim v3 v2))) :=
-  (h.mp (b57 h v0 (wim (wim v0 v2) (wim v3 v2)) v1) (b40 h v0 v2 v3))
-
-private theorem cd62 (v0 v1 : A)  :
-    T (wim v0 (wim (wim v0 v1) v1)) :=
-  (h.mp (cd60 h v0 (wim v0 v1) v1 v0 (le_l (wim (wim v0 v1) v1) (le_l v1 (L.refl _)))) (cd61 h v0 (wim (wim v0 v1) v1) v1 (wim v0 v1)))
-
-private theorem cd92 (v0 v1 v2 : A)  :
-    T (wim v0 (wim (wim (wim v1 v0) v2) v2)) :=
-  (h.mp (b39 h v1 v0 (wim (wim (wim v1 v0) v2) v2)) (cd62 h (wim v1 v0) v2))
-
-private theorem cd75 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim v0 v1) v2) (wim (wim (wim v3 v0) v2) v2)) :=
-  (h.mp (b52 h v0 (wim (wim v3 v0) v2) v2 v1) (cd92 h v0 v3 v2))
-
-private theorem cd33 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim v0 (wim v1 (wim v2 v3))) v2) v2) :=
-  (h.mp (cd75 h (wim v1 (wim v2 v3)) v2 v2 v0) (b30 h v1 v2 v3))
-
-private theorem cd34 (v0 v1 v2 v3 v4 : A)  :
-    T (wim (wim v0 (wim v1 (wim v2 (wim v0 v3)))) (wim v4 (wim v1 (wim v2 (wim v0 v3))))) :=
-  (h.mp (cd0 h (wim v1 (wim v2 (wim v0 v3))) v0 v0 v4 (L.refl _)) (cd33 h v1 v2 v0 v3))
-
-private theorem cd35 (v0 v1 v2 v3 : A)  :
-    T (wim (wim v0 (wim v1 (wim v2 (wim v0 v3)))) (wim v1 (wim v2 (wim v0 v3)))) :=
-  (h.mp (b28 h (wim v0 (wim v1 (wim v2 (wim v0 v3)))) (wim v1 (wim v2 (wim v0 v3)))) (cd34 h v0 v1 v2 v3 (wim v0 (wim v1 (wim v2 (wim v0 v3))))))
-
-private theorem cd63 (v0 v1 v2 : A)  :
-    T (wim (wim (wim v0 v1) v0) (wim (wim v0 v2) v2)) :=
-  (h.mp (b57 h v0 (wim (wim v0 v2) v2) v1) (cd62 h v0 v2))
-
-private theorem cd64 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim (wim v0 v1) v1) (wim v0 v2)) (wim v3 (wim v0 v2))) :=
-  (h.mp (cd0 h (wim v0 v2) v0 (wim (wim v0 v1) v1) v3 (le_l v1 (le_l v1 (L.refl _)))) (cd63 h v0 v2 v1))
-
-private theorem cd65 (v0 v1 v2 : A)  :
-    T (wim (wim (wim (wim v0 v1) v1) (wim v0 v2)) (wim v0 v2)) :=
-  (h.mp (b28 h (wim (wim (wim v0 v1) v1) (wim v0 v2)) (wim v0 v2)) (cd64 h v0 v1 v2 (wim (wim (wim v0 v1) v1) (wim v0 v2))))
-
-private theorem cd30 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim v0 v1) (wim v2 v0)) (wim v3 (wim v2 v0))) :=
-  (h.mp (b1 h (wim v2 v0) v1 v0 v3) (b39 h v2 v0 v1))
-
-private theorem cd31 (v0 v1 v2 : A)  :
+private theorem d17 (v0 v1 v2 : A) :
     T (wim v0 (wim v1 (wim v2 v0))) :=
-  (h.mp (b22 h v0 (wim v1 (wim v2 v0)) (wim v2 v0)) (cd30 h v0 (wim v1 (wim v2 v0)) v2 v1))
+  h.mp (d13 h v2 v0 (wim v1 (wim v2 v0))) (d12 h (wim v2 v0) v1)
 
-private theorem cd66 (v0 v1 v2 v3 : A) (hb0 : v3 ≼ v2) :
-    T (wim (wim (wim (wim v0 (wim v1 v2)) v3) v2) (wim v0 (wim v1 v2))) :=
-  (h.mp (cd47 h v2 (wim v0 (wim v1 v2)) v3 hb0) (cd31 h v2 v0 v1))
+private theorem d18 (v0 v1 : A) :
+    T (wim (wim (wim v0 v1) v0) v0) :=
+  h.mp (d14 h τ v0 v1) h.truth
 
-private theorem cd67 (v0 v1 v2 v3 : A)  :
-    T (wim v0 (wim v1 (wim (wim v0 v2) (wim v3 v2)))) :=
-  (h.mp (cd66 h v0 v1 (wim (wim v0 v2) (wim v3 v2)) v0 (le_l (wim v3 v2) (le_l v2 (L.refl _)))) (cd61 h v0 (wim v1 (wim (wim v0 v2) (wim v3 v2))) v2 v3))
+private theorem d19 (v0 v1 v2 v3 v4 : A) :
+    T (wim (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0) (wim v4 v0)) :=
+  h.mp (h.rho8 (wim (wim (wim v0 v1) v2) (wim v3 v2)) v4 v0 v1 (le_l (wim v3 v2) (le_l v2 (le_r v0 (L.refl _))))) (d16 h (wim v0 v1) v2 v3)
 
-private theorem cd68 (v0 v1 v2 v3 : A)  :
-    T (wim v0 (wim (wim (wim (wim v0 v1) v1) v2) (wim v3 v2))) :=
-  (h.mp (cd65 h v0 v1 (wim (wim (wim (wim v0 v1) v1) v2) (wim v3 v2))) (cd67 h (wim (wim v0 v1) v1) v0 v2 v3))
+private theorem d20 (v0 v1 v2 : A) :
+    T (wim (wim v0 (wim v0 v1)) (wim v2 (wim v0 v1))) :=
+  h.mp (h.rho8 v0 v2 (wim v0 v1) v0 (L.refl _)) (d18 h v0 v1)
 
-private theorem cd69 (v0 v1 v2 : A)  :
-    T (wim (wim (wim (wim v0 v1) v1) v2) (wim v0 v2)) :=
-  (h.mp (b35 h v0 (wim (wim (wim v0 v1) v1) v2) v2) (cd68 h v0 v1 v2 v0))
+private theorem d21 (v0 v1 v2 : A) :
+    T (wim v0 (wim (wim v1 (wim v1 v2)) (wim v1 v2))) :=
+  h.mp (d11 h v1 (wim v1 v2) (wim v1 v2) v0) (d20 h v1 v2 (wim v1 (wim v1 v2)))
 
-private theorem cd76 (v0 v1 v2 : A) (hb0 : v2 ≼ v0) :
-    T (wim (wim (wim (wim (wim v0 v1) v1) v2) v0) (wim (wim v0 v1) v1)) :=
-  (h.mp (cd47 h v0 (wim (wim v0 v1) v1) v2 hb0) (cd62 h v0 v1))
+private theorem d22 (v0 v1 : A) :
+    T (wim (wim v0 (wim v0 v1)) (wim v0 v1)) :=
+  h.mp (d21 h τ v0 v1) h.truth
 
-private theorem cd77 (v0 v1 v2 : A)  :
-    T (wim (wim (wim v0 v1) (wim v2 v0)) (wim v2 v0)) :=
-  (h.mp (b28 h (wim (wim v0 v1) (wim v2 v0)) (wim v2 v0)) (cd30 h v0 v1 v2 (wim (wim v0 v1) (wim v2 v0))))
+private theorem d23 (v0 v1 v2 : A) :
+    T (wim (wim (wim v0 (wim v1 v2)) v1) v1) :=
+  h.mp (d22 h (wim (wim v0 (wim v1 v2)) v1) v1) (d15 h v0 v1 v2 (wim (wim v0 (wim v1 v2)) v1))
 
-private theorem cd80 (v0 v1 v2 v3 : A)  :
-    T (wim v0 (wim (wim (wim v1 (wim (wim v0 v2) v2)) v3) v3)) :=
-  (h.mp (cd69 h v0 v2 (wim (wim (wim v1 (wim (wim v0 v2) v2)) v3) v3)) (cd92 h (wim (wim v0 v2) v2) v1 v3))
+private theorem d24 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0) v0) :=
+  h.mp (d22 h (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0) v0) (d19 h v0 v1 v2 v3 (wim (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0))
 
-private theorem cd81 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim v0 (wim (wim (wim v1 v2) v3) v3)) v1) v1) :=
-  (h.mp (cd77 h v1 v2 (wim (wim v0 (wim (wim (wim v1 v2) v3) v3)) v1)) (cd80 h (wim v1 v2) v0 v3 v1))
+private theorem d25 (v0 v1 v2 v3 : A) :
+    T (wim (wim v0 (wim v1 (wim v0 v2))) (wim v3 (wim v1 (wim v0 v2)))) :=
+  h.mp (h.rho8 v0 v3 (wim v1 (wim v0 v2)) v0 (L.refl _)) (d23 h v1 v0 v2)
 
-private theorem cd82 (v0 v1 v2 : A)  :
-    T (wim (wim v0 (wim (wim (wim v0 v1) v2) v2)) (wim (wim (wim v0 v1) v2) v2)) :=
-  (h.mp (cd76 h v0 (wim (wim (wim v0 v1) v2) v2) v0 (L.refl _)) (cd81 h (wim v0 (wim (wim (wim v0 v1) v2) v2)) v0 v1 v2))
+private theorem d26 (v0 v1 v2 v3 v4 : A) :
+    T (wim (wim v0 (wim (wim (wim v0 v1) v2) (wim v3 v2))) (wim v4 (wim (wim (wim v0 v1) v2) (wim v3 v2)))) :=
+  h.mp (h.rho8 v0 v4 (wim (wim (wim v0 v1) v2) (wim v3 v2)) v0 (L.refl _)) (d24 h v0 v1 v2 v3)
 
-private theorem cd83 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim v0 (wim v1 v2)) (wim v3 v1)) (wim v3 v1)) :=
-  (h.mp (b28 h (wim (wim v0 (wim v1 v2)) (wim v3 v1)) (wim v3 v1)) (b20 h v0 v1 v2 v3 (wim (wim v0 (wim v1 v2)) (wim v3 v1))))
+private theorem d27 (v0 v1 v2 : A) :
+    T (wim (wim v0 (wim v1 (wim v0 v2))) (wim v1 (wim v0 v2))) :=
+  h.mp (d22 h (wim v0 (wim v1 (wim v0 v2))) (wim v1 (wim v0 v2))) (d25 h v0 v1 v2 (wim v0 (wim v1 (wim v0 v2))))
 
-private theorem cd84 (v0 v1 v2 v3 v4 : A)  :
-    T (wim (wim (wim v0 (wim (wim (wim v1 (wim v2 v3)) v4) v4)) v2) v2) :=
-  (h.mp (cd83 h v1 v2 v3 (wim (wim v0 (wim (wim (wim v1 (wim v2 v3)) v4) v4)) v2)) (cd80 h (wim v1 (wim v2 v3)) v0 v4 v2))
+private theorem d28 (v0 v1 v2 v3 v4 v5 : A) :
+    T (wim (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1) (wim v5 v1)) :=
+  h.mp (h.rho8 (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v5 v1 (wim (wim (wim v1 v2) v3) (wim v4 v3)) (le_r v0 (L.refl _))) (d26 h v1 v2 v3 v4 v0)
 
-private theorem cd85 (v0 v1 v2 v3 : A)  :
+private theorem d29 (v0 v1 v2 v3 v4 : A) :
+    T (wim (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1) v1) :=
+  h.mp (d22 h (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1) v1) (d28 h v0 v1 v2 v3 v4 (wim (wim v0 (wim (wim (wim v1 v2) v3) (wim v4 v3))) v1))
+
+private theorem d30 (v0 v1 v2 : A) (hb0 : v2 ≼ v0) :
+    T (wim (wim v0 v1) (wim (wim (wim v1 v2) v0) v1)) :=
+  h.mp (d27 h (wim (wim v1 v2) v0) (wim v0 v1) v1) (h.rho8 v0 (wim (wim v1 v2) v0) v1 v2 hb0)
+
+private theorem d31 (v0 v1 v2 v3 : A) (hb0 : v3 ≼ v0) :
+    T (wim (wim (wim (wim (wim v0 v1) (wim v2 v1)) v3) v0) (wim (wim v0 v1) (wim v2 v1))) :=
+  h.mp (d30 h v0 (wim (wim v0 v1) (wim v2 v1)) v3 hb0) (d16 h v0 v1 v2)
+
+private theorem d32 (v0 v1 v2 v3 : A) :
+    T (wim (wim v0 (wim v1 v2)) (wim (wim (wim v0 v3) v2) (wim v1 v2))) :=
+  h.mp (d31 h v0 (wim v1 v2) (wim (wim v0 v3) v2) v0 (L.refl _)) (d29 h (wim v0 (wim v1 v2)) v0 v3 v2 v1)
+
+private theorem d33 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 v1) (wim v2 v3)) (wim (wim v0 v3) (wim v2 v3))) :=
+  h.mp (d32 h v0 (wim v0 v3) (wim v2 v3) v1) (d16 h v0 v3 v2)
+
+private theorem d34 (v0 v1 v2 v3 : A) (hb0 : v3 ≼ wim v1 (wim v1 v2)) :
+    T (wim (wim (wim (wim v0 (wim v1 v2)) v3) (wim v1 (wim v1 v2))) (wim v0 (wim v1 v2))) :=
+  h.mp (d30 h (wim v1 (wim v1 v2)) (wim v0 (wim v1 v2)) v3 hb0) (d20 h v1 v2 v0)
+
+private theorem d35 (v0 v1 : A) :
+    T (wim v0 (wim (wim v0 v1) v1)) :=
+  h.mp (d34 h v0 (wim v0 v1) v1 (wim (wim v0 v1) v1) (le_r (wim v0 v1) (L.refl _))) (d33 h v0 (wim (wim v0 v1) v1) (wim v0 v1) v1)
+
+private theorem d36 (v0 v1 v2 : A) :
+    T (wim v0 (wim (wim (wim v1 v0) v2) v2)) :=
+  h.mp (d13 h v1 v0 (wim (wim (wim v1 v0) v2) v2)) (d35 h (wim v1 v0) v2)
+
+private theorem d37 (v0 v1 v2 : A) :
+    T (wim (wim (wim v0 v1) v2) (wim (wim v0 v2) v2)) :=
+  h.mp (d32 h v0 (wim v0 v2) v2 v1) (d35 h v0 v2)
+
+private theorem d38 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 v1) v2) (wim (wim (wim v3 v0) v2) v2)) :=
+  h.mp (d32 h v0 (wim (wim v3 v0) v2) v2 v1) (d36 h v0 v3 v2)
+
+private theorem d39 (v0 v1 v2 v3 : A) :
     T (wim (wim v0 v1) (wim (wim (wim v2 (wim v0 v3)) v1) v1)) :=
-  (h.mp (b46 h v0 v1 (wim (wim v2 (wim v0 v3)) v1)) (cd84 h (wim v0 v1) v2 v0 v3 v1))
+  h.mp (d33 h v0 v3 (wim (wim v2 (wim v0 v3)) v1) v1) (d36 h (wim v0 v3) v2 v1)
 
-private theorem cd86 (v0 v1 v2 : A)  :
+private theorem d40 (v0 v1 v2 : A) :
+    T (wim (wim v0 (wim (wim (wim v0 v1) v2) v2)) (wim (wim (wim v0 v1) v2) v2)) :=
+  h.mp (d37 h v0 v1 (wim (wim (wim v0 v1) v2) v2)) (d35 h (wim v0 v1) v2)
+
+private theorem d41 (v0 v1 v2 : A) :
+    T (wim (wim (wim (wim (wim v0 v1) v2) v0) v2) v2) :=
+  h.mp (d40 h (wim (wim v0 v1) v2) v0 v2) (d38 h v0 v1 v2 (wim (wim v0 v1) v2))
+
+private theorem d42 (v0 v1 v2 : A) :
     T (wim (wim (wim (wim v0 v1) (wim v0 v2)) v1) v1) :=
-  (h.mp (cd82 h (wim v0 v1) (wim v0 v2) v1) (cd85 h v0 v1 (wim v0 v1) v2))
+  h.mp (d40 h (wim v0 v1) (wim v0 v2) v1) (d39 h v0 v1 (wim v0 v1) v2)
 
-private theorem cd87 (v0 v1 v2 v3 : A)  :
+private theorem d43 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 (wim (wim (wim v1 v2) v3) v1)) v3) v3) :=
+  h.mp (d38 h (wim (wim (wim v1 v2) v3) v1) v3 v3 v0) (d41 h v1 v2 v3)
+
+private theorem d44 (v0 v1 v2 v3 : A) :
     T (wim (wim (wim v0 (wim (wim v1 v2) (wim v1 v3))) v2) v2) :=
-  (h.mp (cd75 h (wim (wim v1 v2) (wim v1 v3)) v2 v2 v0) (cd86 h v1 v2 v3))
+  h.mp (d38 h (wim (wim v1 v2) (wim v1 v3)) v2 v2 v0) (d42 h v1 v2 v3)
 
-private theorem cd88 (v0 v1 v2 : A)  :
+private theorem d45 (v0 v1 v2 : A) :
+    T (wim (wim v0 v1) (wim (wim (wim v1 v2) v0) v1)) :=
+  h.mp (d31 h v0 v1 (wim (wim v1 v2) v0) v0 (L.refl _)) (d43 h (wim v0 v1) v1 v2 v0)
+
+private theorem d46 (v0 v1 v2 : A) :
     T (wim (wim v0 (wim v1 v2)) (wim (wim v1 v0) (wim v1 v2))) :=
-  (h.mp (b46 h v0 (wim v1 v2) (wim v1 v0)) (cd87 h (wim v0 (wim v1 v2)) v1 v0 v2))
+  h.mp (d31 h v0 (wim v1 v2) (wim v1 v0) v0 (L.refl _)) (d44 h (wim v0 (wim v1 v2)) v1 v0 v2)
 
-private theorem cd89 (v0 v1 v2 v3 : A)  :
-    T (wim (wim v0 v1) (wim v0 (wim (wim v1 v2) (wim v3 v2)))) :=
-  (h.mp (cd88 h v1 v0 (wim (wim v1 v2) (wim v3 v2))) (cd67 h v1 v0 v2 v3))
+private theorem d47 (v0 v1 v2 : A) :
+    T (wim (wim v0 v1) (wim v0 (wim v2 v1))) :=
+  h.mp (d46 h v1 v0 (wim v2 v1)) (d17 h v1 v0 v2)
 
-private theorem cd90 (v0 v1 v2 v3 : A)  :
-    T (wim v0 (wim (wim v0 v1) (wim (wim v1 v2) (wim v3 v2)))) :=
-  (h.mp (cd69 h v0 v1 (wim (wim v0 v1) (wim (wim v1 v2) (wim v3 v2)))) (cd89 h (wim v0 v1) v1 v2 v3))
+private theorem d48 (v0 v1 v2 v3 : A) :
+    T (wim (wim v0 v1) (wim v2 (wim v0 (wim v3 v1)))) :=
+  h.mp (d47 h (wim v0 v1) (wim v0 (wim v3 v1)) v2) (d47 h v0 v1 v3)
 
-private theorem cd91 (v0 v1 v2 : A)  :
-    T (wim (wim v0 v1) (wim (wim v1 v2) (wim v0 v2))) :=
-  (h.mp (cd35 h v0 (wim v0 v1) (wim v1 v2) v2) (cd90 h v0 v1 v2 v0))
+private theorem d49 (v0 v1 v2 v3 : A) :
+    T (wim (wim v0 (wim v1 v2)) (wim v0 (wim v1 (wim v3 v2)))) :=
+  h.mp (d46 h (wim v1 v2) v0 (wim v1 (wim v3 v2))) (d48 h v1 v2 v0 v3)
 
-private theorem cd104 (v0 v1 v2 v3 : A)  :
-    T (wim (wim (wim (wim v0 v1) (wim v2 v1)) v3) (wim (wim v2 v0) v3)) :=
-  (h.mp (cd91 h (wim v2 v0) (wim (wim v0 v1) (wim v2 v1)) v3) (cd91 h v2 v0 v1))
+private theorem d50 (v0 v1 v2 v3 : A) :
+    T (wim (wim v0 v1) (wim (wim (wim v1 v2) v0) (wim v3 v1))) :=
+  h.mp (d49 h (wim v0 v1) (wim (wim v1 v2) v0) v1 v3) (d45 h v0 v1 v2)
 
-private theorem cd103 (v0 v1 v2 : A)  :
-    T (wim (wim v0 (wim v1 v2)) (wim v1 (wim v0 v2))) :=
-  (h.mp (cd104 h (wim v1 v2) v2 v0 (wim v1 (wim v0 v2))) (cd69 h v1 v2 (wim v0 v2)))
+private theorem d51 (v0 v1 v2 : A) :
+    T (wim (wim (wim v0 v1) v2) (wim (wim v2 v0) v0)) :=
+  h.mp (d27 h (wim v2 v0) (wim (wim v0 v1) v2) v0) (d50 h v2 v0 v1 (wim v2 v0))
 
-private theorem basisK (a b : A) : T (wim a (wim b a)) := b60 h a b
-private theorem basisP (a b : A) : T (wim (wim (wim a b) a) a) := b25 h a b
+private theorem d52 (v0 v1 v2 v3 : A) :
+    T (wim (wim (wim v0 v1) v2) (wim (wim v2 v0) (wim v3 v0))) :=
+  h.mp (d49 h (wim (wim v0 v1) v2) (wim v2 v0) v0 v3) (d51 h v0 v1 v2)
 
-private theorem composition_seed (a b c : A) : T (wim (wim a b) (wim (wim b c) (wim a c))) := cd91 h a b c
-
-private theorem compose_derived {a b c : A}
-    (hab : T (wim a b)) (hbc : T (wim b c)) : T (wim a c) :=
-  h.mp (h.mp (composition_seed h a b c) hab) hbc
-
+/-- A proved implication lifts under any antecedent, by two detachments. -/
 private theorem under_antecedent (z : A) {x y : A}
     (hxy : T (wim x y)) : T (wim (wim z x) (wim z y)) :=
-  h.mp (h.mp (cd103 h (wim z x) (wim x y) (wim z y))
-    (composition_seed h z x y)) hxy
+  h.mp (d46 h x z y) (h.mp (d47 h x y z) hxy)
 
-/-- Lift Peirce followed by K twice, then apply composition. -/
-private theorem rho8_seed (a b c u : A) : T (rho8 L a b c u) := by
-  have hqd := compose_derived h (basisP h c u) (basisK h c b)
-  exact h.mp (under_antecedent h (wim (wim c u) a)
-    (under_antecedent h (wim a c) hqd)) (composition_seed h (wim c u) a c)
+/-- Insert an independent antecedent into the basic application row. -/
+private theorem insert_middle (a b c d : A) :
+    T (wim a (wim b (wim (wim a c) (wim d c)))) :=
+  h.mp (d47 h a (wim (wim a c) (wim d c)) b) (d16 h a c d)
+
+/-- Contract the double application context without a deduction theorem. -/
+private theorem application_contract (a b c : A) :
+    T (wim (wim (wim (wim a b) b) (wim a c)) (wim a c)) :=
+  h.mp (d22 h (wim (wim (wim a b) b) (wim a c)) (wim a c))
+    (h.mp (d52 h (wim a c) a (wim (wim a b) b)
+      (wim (wim (wim a b) b) (wim a c)))
+      (h.mp (under_antecedent h (wim (wim a c) a) (d35 h a b))
+        (d18 h a c)))
+
+/-- Transport application into the antecedent of a proved implication. -/
+private theorem application_transport (a b c : A) :
+    T (wim (wim (wim (wim a b) b) c) (wim a c)) :=
+  h.mp (d27 h a (wim (wim (wim a b) b) c) c)
+    (h.mp (application_contract h a b
+      (wim (wim (wim (wim a b) b) c) (wim a c)))
+      (insert_middle h (wim (wim a b) b) a c a))
+
+/-- Remove a repeated antecedent past two intervening arguments. -/
+private theorem repeated_antecedent (a b c d : A) :
+    T (wim (wim a (wim b (wim c (wim a d))))
+      (wim b (wim c (wim a d)))) :=
+  h.mp (d22 h (wim a (wim b (wim c (wim a d))))
+    (wim b (wim c (wim a d))))
+    (h.mp (h.rho8 a (wim a (wim b (wim c (wim a d))))
+      (wim b (wim c (wim a d))) a (L.refl a))
+      (h.mp (d38 h (wim c (wim a d)) a a b) (d23 h c a d)))
+
+private theorem composition_seed (a b c : A) :
+    T (wim (wim a b) (wim (wim b c) (wim a c))) := by
+  have happ : T (wim (wim (wim a b) b)
+      (wim (wim a b) (wim (wim b c) (wim a c)))) :=
+    h.mp (d46 h b (wim a b) (wim (wim b c) (wim a c)))
+      (insert_middle h b (wim a b) c a)
+  exact h.mp (repeated_antecedent h a (wim a b) (wim b c) c)
+    (h.mp (application_transport h a b
+      (wim (wim a b) (wim (wim b c) (wim a c)))) happ)
 
 end
 
@@ -363,7 +312,7 @@ private theorem withSeed (h : Restricted L T) (a : A) :
 
 /-- Restricted rows and modus ponens alone derive every unrestricted row. -/
 theorem rho8_all (h : Restricted L T) (a b c u : A) : T (rho8 L a b c u) :=
-  rho8_seed (withSeed h a) a b c u
+  d52 (withSeed h a) c u a b
 
 theorem composition (h : Restricted L T) (a b c : A) :
     T (L.imp (L.imp a b) (L.imp (L.imp b c) (L.imp a c))) :=

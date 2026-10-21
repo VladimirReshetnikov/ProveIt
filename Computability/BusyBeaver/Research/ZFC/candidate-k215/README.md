@@ -30,14 +30,13 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
-The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase9/README.md)
-checks the 192-module endpoint closure and five additional decoder-prefix modules.
-All nine site batches are freshly checked with a shared return proof. The union has
-20 fresh providers, 13 checked isolated providers and 164 direct phase-eight providers.
-Both unchanged endpoint clients pass with ten standard-axiom reports and zero audit
-warnings; project logs retain 21 linters. The literal machine and theorem statements
-are unchanged. The site checks take 16.41 minutes against a historical 27.49 minutes;
-this is an incremental checkpoint, not a fresh compilation of every dependency.
+The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase10/README.md)
+shortens the generic implication core by 23.94%, preserving its public interfaces.
+It checks the 192-module endpoint closure and five decoder-prefix modules: eight
+fresh providers and 189 exact phase-nine reuses. Both unchanged endpoint clients
+pass with ten standard-axiom reports and zero warnings. The nine site batches
+retain their phase-nine checks of all 6,176 branch outcomes; inherited project
+logs retain 21 linters. The machine and theorem statements are unchanged.
 
 The layers are described in [k225-formal](../k225-formal/README.md#the-215).
 

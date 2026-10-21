@@ -3,7 +3,7 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase9/README.md)
+[proof simplification checkpoint](verification/k215/simplification/phase10/README.md)
 checks the 192-module endpoint closure, five decoder-prefix modules and both closed
 endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
@@ -43,6 +43,11 @@ retaining all 6,176 branch outcomes. All nine site batches are freshly checked i
 16.41 minutes (historical phase-six total: 27.49 minutes). The exact source-to-zipper
 decoder prefix is checked separately; primitive factoring remains open. Both closed
 endpoint clients and the original executor API controls pass.
+
+Phase ten shortens the generic implication core by 4,639 bytes and 51 lines, with
+the numeric adapter and all public types preserved. Eight affected modules and
+both endpoint clients pass fresh checks; 189 providers retain exact phase-nine
+bindings in the 197-module union.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
@@ -167,8 +172,9 @@ data in [`lean217/`](lean217/)).
   `C222`'s codes: [`DomRho8`](../../../Lean/BusyBeaver/ZFC/DomRho8.lean) derives the unrestricted row through the
   representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
   ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)). The separate
-  [rho8cd proposal](rho8cd/PROVEIT_STATUS.md) gives a 52-step condensed-detachment derivation;
-  its shorter Lean core remains under review and the checked Rocq sources are retained.
+  [rho8cd derivation](rho8cd/PROVEIT_STATUS.md) now supplies the shorter generic Lean core;
+  the [phase-ten K215 check](verification/k215/simplification/phase10/README.md) preserves all public interfaces.
+  The checked Rocq sources are retained.
   The replay of Source 149's 3,728-node certificate
   ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) is history.
 - **Enumerator**: [`EnumDom`](../../../Lean/BusyBeaver/ZFC/EnumDom.lean) is `Enum222` with the AX fields `z, y, x` read as
