@@ -90,6 +90,8 @@ derive("generate_source219_lean.py", "generate_source215_lean.py", [
     ("t219", "t215"),
     ("the 219's", "the 215's"),
     ("generate_source219_lean.py", "generate_source215_lean.py"),
+    ('from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402', 'from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402\nfrom partition_source215_lean import write_partition  # noqa: E402'),
+    ('TARGET.write_text(out, encoding="utf-8", newline="\\n")', 'write_partition(TARGET, out)'),
 ])
 
 derive("generate_sites221_lean.py", "generate_sites215_lean.py", [

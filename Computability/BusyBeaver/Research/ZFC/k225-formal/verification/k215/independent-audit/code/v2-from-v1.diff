@@ -1,0 +1,34 @@
+--- history/monolithic-phase/code/literal_bindings.py
++++ code/literal_bindings_v2.py
+@@ -10,7 +10,7 @@
+ a=ap.parse_args();R=a.repo.resolve();output=a.output.resolve()
+ assert R.is_dir() and not output.exists()
+ assert output!=R and R not in output.parents, 'Output must be outside the audited repository'
+-expected=json.loads(Path(__file__).with_name('literal-inputs.json').read_text())['inputs']
++expected=json.loads(Path(__file__).with_name('literal-inputs-v2.json').read_text())['inputs']
+ C=R/'Computability/BusyBeaver/Research/ZFC/candidate-k215'; L=R/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC'; Q=R/'Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215'; F=R/'Computability/BusyBeaver/Research/ZFC/k225-formal'
+ pins={}
+ def read(p):
+@@ -48,7 +48,11 @@
+ assert sparse==nr
+ # Independent source expansion, parsing only literal node dictionaries.
+ ops={'inc':'CI','decnz':'CD','brk':'CB','cont':'CC','node':'CN','halt':'CH'}
+-ls=read(L/'KSource215.lean');body=block(ls,'def p215Nodes', 'def p215 :');nodes=[]
++facade=read(L/'KSource215.lean')
++expected_modules=['KSource215Data']+[f'KSource215{direction}Check{i:02d}'for direction in ['Fwd','Bwd']for i in range(16)]
++assert re.findall(r'^import BusyBeaver.ZFC.(\w+)$',facade,re.M)==expected_modules
++assert 'namespace SetTheory.BusyBeaver.ZFC.KSource215' in facade
++ls=read(L/'KSource215Data.lean');body=block(ls,'def p215Nodes', 'def p215 :');nodes=[]
+ for line in body.splitlines():
+  m=re.match(r'\s*\| (\d+) => (.*)',line)
+  if not m:continue
+@@ -81,7 +85,8 @@
+ out={'status':'PASS_LITERAL_BINDINGS','scope':'Own static literal parser only; no compiler, proof checker, or machine execution. Bootstrap mismatch is recorded separately from table/source PASS.','working_states':215,'actions':430,'dense_target_range':[0,215],'native_relabeling':ren,'lean_and_rocq_dense_tables_match_accepted':True,'lean_sparse_table_matches_native':True,'source_internal_decision_nodes':len(nodes),'distinct_primitive_leaf_kinds':23,'source_total_distinct_subtrees':202,'source_leaves':len(sites),'lean_rocq_source_equals_accepted':True,'cp13_physical_registers':vs[:9],'cp13_spares':40,'cp13_gap':65,'lean_boot_literal':literal,'lean_boot_matches_checkpoint':literal==vs[:9],'rocq_boot_matches_checkpoint':True,'pins':pins}
+ assert set(pins)==set(expected), 'Every pinned proof/data input must be consumed'
+ assert literal==vs[:9], 'Current final boot literal must match the decoded checkpoint'
+-out['scope']='Static pinned literal-only audit; no compiler, proof checker, or machine execution.'
++out['scope']='Static pinned literal-only audit after module partition; no compiler, proof checker, or machine execution.'
++out['source_layout']='KSource215Data plus32 independent proofs and KSource215 facade'
+ output.parent.mkdir(parents=True,exist_ok=True)
+ with output.open('x') as f:f.write(json.dumps(out,indent=2)+'\n')
+ print(json.dumps({k:v for k,v in out.items()if k!='pins'},indent=2))

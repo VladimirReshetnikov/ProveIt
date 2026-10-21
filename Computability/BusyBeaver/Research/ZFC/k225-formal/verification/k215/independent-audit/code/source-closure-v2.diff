@@ -1,0 +1,25 @@
+--- actual/endpoint/lean_source_closure.py
++++ code/source_closure_v2.py
+@@ -1,8 +1,11 @@
+ #!/usr/bin/env python3
+ """Read-only static Lean source/import/assumption census; no Lean invocation."""
+ from pathlib import Path
+-import re,json,hashlib
+-REPO=Path('/home/codex/.codex/worktrees/ec20/Proofs')
++import re,json,hashlib,argparse
++if not __debug__:raise RuntimeError('Run without Python -O')
++ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)
++a=ap.parse_args();REPO=a.repo.resolve();OUTPUT=a.output.resolve()
++assert REPO.is_dir() and not OUTPUT.exists() and REPO not in OUTPUT.parents and OUTPUT!=REPO
+ ROOTS=[REPO/'Computability/BusyBeaver/Lean',REPO/'Logic/FirstOrder/Lean',REPO/'SetTheory/ZF/Lean',REPO/'SetTheory/BoundedConsistency/Lean']
+ 
+ def strip(s):
+@@ -48,5 +51,7 @@
+     for im in imports:walk(im)
+ walk('BusyBeaver.ZFC.KEndpoint215')
+ result={'status':'STATIC_SOURCE_CENSUS','roots':[str(r) for r in ROOTS],'endpoint':'BusyBeaver.ZFC.KEndpoint215','project_modules':list(seen.values()),'project_count':len(seen),'external_imports':sorted(external),'lexical_findings':hits,'boundary':'Imports explicitly named in project files only; implicit Init/toolchain closure is external. Compiler Print axioms must establish the actual theorem dependency set.'}
+-p=Path('/tmp/k215-endpoint-audit/lean-source-closure.json');p.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
++assert len(seen)==204 and external=={'Init'} and not hits, 'Unexpected post-partition static closure'
++OUTPUT.parent.mkdir(parents=True,exist_ok=True)
++with OUTPUT.open('x')as f:f.write(json.dumps(result,indent=2,sort_keys=True)+'\n')
+ print(json.dumps({'project_count':len(seen),'external_imports':sorted(external),'lexical_findings':hits},indent=2))

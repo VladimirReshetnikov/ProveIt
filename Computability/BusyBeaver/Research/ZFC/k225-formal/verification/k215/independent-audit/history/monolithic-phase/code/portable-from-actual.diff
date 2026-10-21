@@ -1,0 +1,39 @@
+--- actual/endpoint/literal_bindings.py
++++ code/literal_bindings.py
+@@ -1,11 +1,22 @@
+ #!/usr/bin/env python3
+ """Independent literal-only cross-language/source/frame audit; invokes no compiler."""
+ from pathlib import Path
+-import json,re,hashlib
+-R=Path('/home/codex/.codex/worktrees/ec20/Proofs'); C=R/'Computability/BusyBeaver/Research/ZFC/candidate-k215'; L=R/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC'; Q=R/'Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215'; F=R/'Computability/BusyBeaver/Research/ZFC/k225-formal'
++import json,re,hashlib,argparse
++if not __debug__:
++ raise RuntimeError('Run without Python -O: this literal audit uses assertions.')
++ap=argparse.ArgumentParser(description=__doc__)
++ap.add_argument('--repo',type=Path,required=True)
++ap.add_argument('--output',type=Path,required=True,help='Fresh JSON path outside the repository')
++a=ap.parse_args();R=a.repo.resolve();output=a.output.resolve()
++assert R.is_dir() and not output.exists()
++assert output!=R and R not in output.parents, 'Output must be outside the audited repository'
++expected=json.loads(Path(__file__).with_name('literal-inputs.json').read_text())['inputs']
++C=R/'Computability/BusyBeaver/Research/ZFC/candidate-k215'; L=R/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC'; Q=R/'Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215'; F=R/'Computability/BusyBeaver/Research/ZFC/k225-formal'
+ pins={}
+ def read(p):
+- b=p.read_bytes();pins[str(p)]={'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b)};return b.decode()
++ b=p.read_bytes();rel=p.relative_to(R).as_posix();observed={'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b)}
++ assert rel in expected and observed==expected[rel], ('Input changed',rel,observed)
++ pins[rel]=observed;return b.decode()
+ def tm(p):
+  t={}
+  for ln in read(p).splitlines():
+@@ -68,4 +79,9 @@
+ boot=read(L/'KBoot215.lean');literal=list(map(int,re.findall(r'\d+',block(boot,'def bootVs : List Nat := [',']'))));assert literal in ([0,0,0,3,0,0,3,0,0],[0,0,0,0,0,0,4,0,0])
+ qboot=read(Q/'Boot230.v');qvs=list(map(int,re.findall(r'\d+',block(qboot,'Definition boot_regs : list nat := [',']'))));assert qvs==vs[:9]
+ out={'status':'PASS_LITERAL_BINDINGS','scope':'Own static literal parser only; no compiler, proof checker, or machine execution. Bootstrap mismatch is recorded separately from table/source PASS.','working_states':215,'actions':430,'dense_target_range':[0,215],'native_relabeling':ren,'lean_and_rocq_dense_tables_match_accepted':True,'lean_sparse_table_matches_native':True,'source_internal_decision_nodes':len(nodes),'distinct_primitive_leaf_kinds':23,'source_total_distinct_subtrees':202,'source_leaves':len(sites),'lean_rocq_source_equals_accepted':True,'cp13_physical_registers':vs[:9],'cp13_spares':40,'cp13_gap':65,'lean_boot_literal':literal,'lean_boot_matches_checkpoint':literal==vs[:9],'rocq_boot_matches_checkpoint':True,'pins':pins}
+-p=Path('/tmp/k215-endpoint-audit/literal-bindings.json');p.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items()if k!='pins'},indent=2))
++assert set(pins)==set(expected), 'Every pinned proof/data input must be consumed'
++assert literal==vs[:9], 'Current final boot literal must match the decoded checkpoint'
++out['scope']='Static pinned literal-only audit; no compiler, proof checker, or machine execution.'
++output.parent.mkdir(parents=True,exist_ok=True)
++with output.open('x') as f:f.write(json.dumps(out,indent=2)+'\n')
++print(json.dumps({k:v for k,v in out.items()if k!='pins'},indent=2))
