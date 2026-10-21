@@ -1,0 +1,31 @@
+Exact q13 acceleration lemma
+===========================
+
+Use the CB1 scheduler table, obtained by changing only native row (8,1)
+from (1,R,13) to (1,R,103). Its only transitions into state 13 are
+(38,0)=(0,R,13) and (42,0)=(0,R,13). Therefore every entry to 13 has
+a zero in the cell immediately left of the current head. The blank start
+state is 0, so no initial-entry exception exists.
+
+For current bit 0, the next three transitions are
+  (13,0)=(0,L,91), (91,0)=(0,R,82), (82,0)=(0,R,49).
+For current bit 1, they are
+  (13,1)=(1,L,31), (31,0)=(0,R,21), (21,1)=(0,R,60).
+
+Both traces preserve the left cell, write 0 in the original head cell,
+leave every other tape cell unchanged, and end with the head one cell
+to the right. Replace the two rows of state 13 by
+  (13,0)=(0,R,49), (13,1)=(0,R,60).
+
+Every accelerated step expands into exactly three original steps.
+Other steps are unchanged. The expansion is positive and finite,
+cannot pass through the halting state, and has the same endpoint.
+The incoming-marker invariant remains true because the incoming
+transitions were unchanged. This proves blank halting equivalence
+and blank nonhalting equivalence by a bounded stuttering simulation.
+It does not remove a state: both tables still have 215 working states.
+
+The reconstruction script checks every listed row, the incoming-edge
+census, the two complete finite microtraces, the source decoder and
+the resulting table hashes. The separate quantified runtime receipts
+cover every natural-valued primitive frame of the modified source.

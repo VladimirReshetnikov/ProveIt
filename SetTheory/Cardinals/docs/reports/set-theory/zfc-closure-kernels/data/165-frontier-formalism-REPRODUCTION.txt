@@ -1,0 +1,27 @@
+Theory artifacts: portable reproduction
+
+All scripts use Python 3's standard library. No absolute machine paths
+are embedded in the programs. Run them with explicit artifact paths:
+
+  python check_binders.py --output binder_certificate.json
+
+  python check_refill_source.py PATH_TO_ACCEPTED_sites215.json \
+      PATH_TO_q13_cb.sites.json --output refill_source_audit.json
+
+  python history_markers.py PATH_TO_NATIVE_TABLE --states 13 82 \
+      --depth 3 --output history_markers_result.json
+
+check_binders.py verifies exact polynomial identities, coefficient
+positivity, and a complete finite-support equality-pattern audit.
+check_refill_source.py verifies all finite CFG premises of the new
+scheduler theorem and the actual MP(0) seed reduction. Its fifteen
+other executions are separate spot checks, not the all-natural proof.
+history_markers.py enumerates every feasible finite predecessor history
+of the requested depth. Common final cells are universal after at least
+that many steps. Earlier blank-prefix cases must be checked separately.
+
+The include-only TeX sections state ordinary mathematical proofs and
+cite the exact inherited dependencies. They make no new compiled
+Lean/Rocq claim. The I3/Q0 constructor assignment remains uncalibrated
+in the lower direction because the old classical certificate uses
+I(0,0)=0. The realized revised scheduler still has 215 states.

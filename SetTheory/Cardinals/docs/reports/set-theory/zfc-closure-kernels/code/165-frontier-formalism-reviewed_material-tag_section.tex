@@ -1,0 +1,106 @@
+\section{Which constructor-tag changes preserve the calibration}
+\label{sec:constructor-tags}
+
+A low-level source saving is useful only after checking the numerical
+calculus it emits. The code tags affect both recursive interpretation
+and finite syntactic proofs; numerical domination alone is insufficient.
+
+\begin{proposition}[Safe equality--quantifier tag exchange]
+\label{prop:qe-tags}
+Keep $I(a,b)=4P(a,b)$, $R(a,b)=4P(a,b)+1$, truth $0$, falsity $1$,
+and all command and proof-list encodings. Exchange only the tags for
+quantification and equality:
+\[
+ Q_i(A)=4P(i,A)+3,\qquad E(a,b)=4P(a,b)+2.
+\]
+Rebuild every occurrence of these constructors in every axiom, the
+merged equality row, the gated seed bundle, and generalization.
+Retain the actual numerical domination condition $U\leq A$ and the
+actual bundle gate $c\ne a,b$. The resulting numerical calculus is
+again equiconsistent with ZFC, by ordinary reasoning formalizable in ZFC.
+\end{proposition}
+
+\begin{proof}
+The four residue classes still distinguish the four constructors, and
+the exceptional implication identity $I(0,0)=0$ is unchanged.
+Quantifier bodies are strictly smaller than their compound code, so
+the same recursion on natural codes interprets every raw number,
+including codes outside a chosen conventional formula grammar.
+The ordinary interpretations of implication, equality, membership,
+and quantification validate the rebuilt logical rows. The merged-row
+binder $R(a,b)$ is fresh exactly as before; the seed gate has exactly
+the same purpose. Thus the inherited set-model soundness argument
+repeats with the new decoder.
+
+For the lower direction, the entire finite dominated-$\rho_8$
+certificate uses only implication and truth, whose arithmetic is
+unchanged. It therefore supplies the same classical basis for every
+natural-code substitution. The equality, specialization, and
+indiscernibility derivations in the preceding binder theorem use
+constructor equations and logical rules, not the numeric ordering
+between the equality and quantifier tags. They repeat literally with
+these new constructor definitions. The equality-free first-order
+translation and the seed quotient argument therefore repeat as well.
+The lower seed construction still takes native roles $0,1$ and a
+padded matrix code $c>1$; rebuilding its syntax with the new tags and
+padding when needed preserves these inequalities and its exact
+matrix-code/private-variable coupling. This supplies the same
+interpretation of the seed theory and hence the ZFC refutability
+calibration.
+
+At the command level the implication matching test is unchanged.
+A generalization now has residue $3$, so it is still different from
+target $1$. All other generated logical stack entries remain
+implications, and the reset axiom still has a zero gate. Thus the
+existing strong command compiler and cofinal successful-word proof
+also repeat after every quantifier constructor call is updated.
+\end{proof}
+
+\paragraph{Scope.}
+This is a direct reproof, not an assertion of a global order-preserving
+isomorphism between raw code systems. Such an isomorphism would need
+extra work: $U\leq A$ is an arithmetic side condition, and the bundle
+uses the same natural number as a variable label and a formula code.
+The proposition covers the simultaneous constructor replacement just
+stated. Replacing only a convenient subset of constructor occurrences
+does not satisfy its premises.
+
+\subsection{An attractive encoding whose lower direction remains open}
+
+The source search also found a 202-node source DAG for
+\[
+ I(a,b)=4P(a,b)+3,\quad R(a,b)=4P(a,b)+1,\quad
+ Q_i(A)=4P(i,A),\quad E(a,b)=4P(a,b)+2,
+ \qquad\top=0,\quad\bot=1.
+\]
+Here the new zero alias is $Q_0(0)=0$. Assigning code zero the value
+true is compatible with that semantic identity, and implication still
+dominates both arguments. Those facts support an ordinary upper
+soundness proof, but they do \emph{not} transport the inherited lower
+calibration by themselves.
+
+The inherited finite dominated-$\rho_8$ checker explicitly normalizes
+\[
+ I(0,0)=0.
+\]
+Both its 3,681-node classical-basis certificate and its 3,728-node full
+certificate use that identity: replaying their exact substitutions in
+the free implication term algebra, where $I(\top,\top)$ is distinct
+from $\top$, first fails at node $8$, at the modus-ponens antecedent.
+This node is the claimed schema $p\to\top$. Merely retaining code zero
+as an explicit theorem does not repair that exact inference. A new
+classical derivation or another lower calibration is required before
+this tag assignment can be accepted as equiconsistent.
+
+The relevant inherited artifacts are
+\texttt{theory/check\_classical\_compact.py},
+\texttt{theory/classical\_basis\_certificate\_compact.json}, and
+\texttt{theory/dominated\_rho8\_full\_certificate.json} in the
+\texttt{K218\_Dominated\_Rho8\_2026-10-20} packet, introduced at repository
+commit \texttt{7071e5041ee316d087661b658362feed159901ef} as
+\texttt{docs/incoming/K218\_Dominated\_Rho8\_2026-10-20.zip}.
+The accepted dependency is described at current pin
+\texttt{2762b8a183830b1f5a30cf059ffb4d92e77cddde} in
+\texttt{candidate-k218/alternatives/dominated/proof.md}. No failure of
+this particular proof is asserted to be an impossibility theorem for
+the new encoding.

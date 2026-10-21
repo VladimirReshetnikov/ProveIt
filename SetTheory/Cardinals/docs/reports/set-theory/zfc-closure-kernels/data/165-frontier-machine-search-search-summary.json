@@ -1,0 +1,186 @@
+{
+  "status": "NO_CERTIFIED_214_STATE_MACHINE",
+  "scope": "Finite rejection searches over the specified restricted spaces; not a lower bound or an impossibility theorem.",
+  "finite_frames": {
+    "original": 6176,
+    "cb1": 6177,
+    "registers": "all zero, except the tested register is one in the positive CD branch",
+    "spares": [
+      0
+    ],
+    "gap": 0
+  },
+  "bounds": {
+    "tape_cells": 512,
+    "initial_head_index": 128,
+    "baseline_step_limit": 100000,
+    "candidate_step_limit": "max(10000, 6 * corresponding_baseline_steps + 300)"
+  },
+  "rejection_can_mean": [
+    "wrong clean-dispatch frame",
+    "wrong halting outcome",
+    "step bound exhausted",
+    "head left bounded tape",
+    "transition to unavailable state"
+  ],
+  "searches": [
+    {
+      "baseline": "original215",
+      "kind": "ordered direct state identification",
+      "tried": 46010,
+      "sample_pass": 64,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "original215",
+      "kind": "mixed-branch state identification",
+      "tried": 46010,
+      "sample_pass": 72,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "original215",
+      "kind": "target-only single-edge replacement",
+      "tried": 91806,
+      "sample_pass": 289,
+      "full_finite_pass": 115
+    },
+    {
+      "baseline": "original215",
+      "kind": "single-edge replacement with changed write or direction",
+      "tried": 276705,
+      "sample_pass": 841,
+      "full_finite_pass": 509
+    },
+    {
+      "baseline": "original215",
+      "kind": "composition of target-only edges, eliminating a state",
+      "tried": 1551,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "original215",
+      "kind": "composition of arbitrary passing edge replacements, eliminating a state",
+      "tried": 57667,
+      "full_finite_pass": 0,
+      "excluded_states": [
+        0,
+        84,
+        2,
+        302
+      ]
+    },
+    {
+      "baseline": "original215",
+      "kind": "relaxed primary-register/PC direct state identification",
+      "tried": 46010,
+      "sample_pass": 64,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "original215",
+      "kind": "relaxed primary-register/PC mixed state identification",
+      "tried": 46010,
+      "sample_pass": 72,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "original215",
+      "kind": "relaxed target-only single-edge replacement",
+      "tried": 91806,
+      "sample_pass": 292,
+      "full_finite_pass": 116
+    },
+    {
+      "baseline": "original215",
+      "kind": "relaxed single-edge replacement with changed write or direction",
+      "tried": 276705,
+      "sample_pass": 887,
+      "full_finite_pass": 517
+    },
+    {
+      "baseline": "original215",
+      "kind": "relaxed composition of passing edge replacements",
+      "tried": 57667,
+      "full_finite_pass": 0,
+      "excluded_states": [
+        0,
+        84,
+        2,
+        302
+      ]
+    },
+    {
+      "baseline": "cb1_215",
+      "kind": "ordered direct state identification",
+      "tried": 46010,
+      "sample_pass": 61,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "cb1_215",
+      "kind": "mixed-branch state identification",
+      "tried": 46010,
+      "sample_pass": 66,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "normalized215",
+      "kind": "ordered direct state identification",
+      "tried": 46010,
+      "sample_pass": 58,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "normalized215",
+      "kind": "mixed-branch state identification",
+      "tried": 46010,
+      "sample_pass": 62,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "normalized215",
+      "kind": "common-branch merge, arbitrary other row",
+      "pair_branch_cases": 267,
+      "tried": 229620,
+      "sample_pass": 110,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "normalized215",
+      "kind": "tag q13 incoming edges with one, merge into q82, arbitrary two rows",
+      "tried": 732736,
+      "sample_pass": 0,
+      "full_finite_pass": 0
+    },
+    {
+      "baseline": "normalized215",
+      "kind": "remove q13, arbitrary independent rewrites of incoming38/0 and42/0",
+      "tried": 732736,
+      "sample_pass": 0,
+      "full_finite_pass": 0
+    }
+  ],
+  "certified_intermediates": [
+    {
+      "table": "accepted/cb1_215.native.tm",
+      "working_states": 215,
+      "proved_cases": 6177,
+      "startup_steps": 88116
+    },
+    {
+      "table": "accepted/normalized215.native.tm",
+      "working_states": 215,
+      "proved_cases": 6177,
+      "startup_steps": 87920
+    }
+  ],
+  "scanner214": {
+    "status": "REJECTED_PRIMITIVE_CONTRACT",
+    "proved_cases": 6104,
+    "expected_cases": 6176,
+    "failed_cases": 72,
+    "failed_sites": 37,
+    "counterexample_site": 26
+  }
+}

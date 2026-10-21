@@ -1,0 +1,69 @@
+\section{A sufficient runtime contract that forgets spare storage}
+\label{sec:frame-quotient}
+
+The mathematical meaning of a represented source configuration is its
+control address and its nine primary register values. Gap size, head
+translation, and unused spare words can vary without changing that
+meaning. The following elementary simulation lemma makes this freedom
+precise; it does not assert that a particular unverified table satisfies
+its hypotheses.
+
+For source address $p$ and register tuple $r\in\mathbb N^9$, let
+$\mathcal F(p,r)$ be the class of whole-tape dispatcher configurations
+with the inherited canonical frame layout, address $p$, and primary
+registers $r$. Quantify existentially over the head location, every
+allowed natural gap, and every nonempty finite list of natural-valued
+spare words. The frame includes its left marker, header, separators,
+and complete zero exterior. Therefore merely preserving a selected
+finite tape window does not establish membership in $\mathcal F$.
+
+\begin{theorem}[Simulation through equivalence classes of frames]
+\label{thm:frame-quotient}
+Suppose a deterministic binary machine has the following properties.
+For every nonhalting guarded source step $(p,r)\mapsto(p',r')$, and
+\emph{every} $C\in\mathcal F(p,r)$, its execution has a positive finite
+segment from $C$ to some $C'\in\mathcal F(p',r')$. For every source
+halting step and every representing frame, it instead has a finite
+segment to its designated halt. Finally, blank execution has a finite
+prefix to a frame representing an accepted source seed. Then the binary
+machine halts on blank tape if and only if that source execution halts.
+\end{theorem}
+
+\begin{proof}
+Induct on finite source execution length. The current representing frame
+belongs to the quantified input class for the next step, regardless of
+which spare list or gap the preceding segment produced. Hence the next
+hypothesis supplies a representing endpoint and extends the binary
+execution. A source halt gives a finite binary halt by concatenation.
+
+If the source does not halt, this construction produces arbitrarily
+long prefixes of one binary execution. Each nonhalting source step
+contributes at least one binary transition, so the total binary lengths
+are unbounded. Determinism makes all these finite prefixes compatible.
+A binary halt cannot occur strictly within a prefix that continues to
+its asserted nonhalting endpoint, and cannot occur after all such
+prefixes because their lengths are unbounded. Thus the binary execution
+does not halt. Prepending the finite blank prefix proves the claim.
+\end{proof}
+
+\paragraph{Consequences for allocation.}
+The theorem does not require preserving the incoming spare-list tail,
+appending a particular spare value after an increment, preserving the
+gap, or preserving the absolute head coordinate. It requires that the
+resulting frame remain well formed with a nonempty spare list, correct
+primary values, and the correct next address. The endpoint need not be
+the first visit to the dispatcher's state label: an intermediate visit
+with another head position or a malformed address is allowed if an
+actual finite execution later reaches the required frame. Such a
+relaxation must be proved over all inputs in the stated class, or over
+a separately proved invariant subclass closed under every source step.
+A finite sample of successful frames does not establish this closure.
+
+The inherited exact-frame verifier is stronger than this theorem and
+therefore remains sufficient. Its source is
+\texttt{candidate-k215/code/runtime-inputs/runtime/symbolic\_runtime.py}
+and its whole-tape concrete frame definition is in the adjacent
+\texttt{independent\_runtime.py}, at repository commit
+\texttt{2762b8a183830b1f5a30cf059ffb4d92e77cddde}. The lemma itself is
+ordinary induction formalizable in ZFC, independent of proof-assistant
+availability.

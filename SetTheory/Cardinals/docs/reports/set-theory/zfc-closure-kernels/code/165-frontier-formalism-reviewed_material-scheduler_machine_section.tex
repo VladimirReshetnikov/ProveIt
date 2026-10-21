@@ -1,0 +1,59 @@
+\section{The verified 215-state realization of the revised scheduler}
+\label{sec:scheduler-realization}
+
+The revised scheduler has a complete 215-state binary realization in
+\texttt{q13\_cb215.native.tm}. Its source is
+\texttt{q13\_cb.sites.json}. This is a calibrated intermediate construction;
+its count does not meet the requested threshold of 214 states.
+
+The exact artifact hashes are
+\begin{center}\ttfamily\footnotesize
+source: 79425cf76b24b8739fd00e3fd091ca00de3b3379324f941158ba5e58061dc2b0\\
+table: c6ff22b5446bb7f14a9f8ea02828fa694291ce1b7c71cf1ea3cb488d03d30dc5.
+\end{center}
+The source contains 4,752 primitive occurrences and 202 distinct source
+DAG nodes. Its maximum address depth is 47 and maximum zero run is six.
+The runtime receipt proves all 6,177 guarded primitive cases, including
+arbitrary natural primary values, arbitrary natural gap, and an arbitrary
+nonempty finite spare list, with complete zero exterior. It reports
+215 working states and no failed cases. This is an ordinary mathematical
+runtime certificate, not a proof-assistant kernel artifact.
+
+Blank execution reaches dispatcher state $84$ after $88{,}116$ binary
+transitions, with head at $-12$, gap $5$, 45 unit-valued spare words, and
+logical register tuple
+\[
+ (N,T,W,A,D,H,X,Y,L)=(5,0,0,0,0,0,0,0,4).
+\]
+The complete tape is specified by the startup receipt, including its
+zero exterior. The nonzero list does not require a new soundness
+assumption: every theorem register and decoded stack head is zero.
+
+There is a particularly direct reduction of this actual seed to the
+accepted K215 seed. The first $G$ decrement changes $L=4$ to $3$.
+Since $P(2,0)=3$, the next decoder selects $\mathrm{MP}$, and its
+remaining field is zero. The command is therefore $\mathrm{MP}(0)$.
+Its comparison succeeds because $I(0,0)=0$ is the cached value, but its
+new top is zero and its new stack is $P(0,0)=0$; every other retained
+register stays zero. It returns after 65 source primitives to
+\[
+ (5,0,0,0,0,0,0,0,0).
+\]
+The portable source audit verifies this exact finite reduction. The
+counter-offset relation in Section~\ref{sec:refill-scheduler} now relates
+this root directly to the accepted source's root
+$(4,0,0,0,0,0,0,0,0)$. All subsequent command execution is matched by
+the proved stuttering simulation.
+
+Consequently the whole-tape runtime certificate, finite blank prefix,
+source simulation, and inherited calculus calibration give the ordinary
+ZFC theorem
+\[
+ \neg\operatorname{Halt}(\mathrm{q13\_cb215},\mathrm{blank})
+ \quad\longleftrightarrow\quad
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The construction exposes a different state-allocation opportunity:
+the source no longer needs state 13 as its unique decoder for the refill
+continuation. State 13 is still needed by the present engine realization,
+so deleting it requires an additional valid engine replacement.

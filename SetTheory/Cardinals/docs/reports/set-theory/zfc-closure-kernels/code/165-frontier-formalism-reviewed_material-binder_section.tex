@@ -1,0 +1,292 @@
+\section{A calibrated family of cheaper equality binders}
+\label{sec:binders}
+
+The machine's merged equality axiom uses a formula code as a fresh
+variable label. Its particular tag is not logically essential. The following
+result identifies exactly how much freedom the compiler has. This is a
+new ordinary mathematical generalization of the inherited calibration; it
+is not a newly compiled exact-table Lean theorem.
+
+Write
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=4P(a,b),\quad R(a,b)=4P(a,b)+1,
+\]
+\[
+ Q_i(A)=4P(i,A)+2,\qquad E(a,b)=4P(a,b)+3,
+ \qquad \bot=1,\quad \top=0.
+\]
+The exceptional identity $I(0,0)=0$ remains part of the numerical
+calculus. All the arguments below are about literal natural-number codes.
+
+\begin{theorem}[Equality binders fresh off the diagonal]
+\label{thm:flexible-binder}
+Let $f:\mathbb N^2\to\mathbb N$ be primitive recursive, and assume
+\begin{equation}
+ a\ne b\quad\Longrightarrow\quad
+ f(a,b)\ne a\ \hbox{ and }\ f(a,b)\ne b.
+ \label{eq:offdiag}
+\end{equation}
+Retain truth, numerical modus ponens, theorem-only generalization,
+the six rows $\rho_1,\ldots,\rho_6$, the exact gated seed bundle,
+and the dominated $\rho_8$ instances $U\le A$ of the accepted calculus.
+Replace only its merged equality row by
+\begin{equation}
+ G_f(a,b,c)=
+ E(c,a)\to\bigl(E(c,b)\to Q_{f(a,b)}E(a,b)\bigr).
+ \label{eq:gf}
+\end{equation}
+Call the resulting numerical calculus $C_f$. Uniformly in an index for
+$f$, ZFC proves that condition~\eqref{eq:offdiag} implies
+\[
+ \operatorname{Con}(C_f)\ \longleftrightarrow\
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+In particular, whenever ZFC proves condition~\eqref{eq:offdiag} for a
+chosen $f$, it proves the displayed equivalence without an additional
+premise. This applies to every explicit polynomial binder listed below.
+Here $\operatorname{Con}(C_f)$ means that native code $1$ is not derivable.
+The assertion is a refutability calibration; it does not identify all
+native theorem codes of $C_f$ with those of its parent.
+\end{theorem}
+
+\subsection{The equality derivations are independent of the binder}
+
+The inherited finite derivation from dominated $\rho_8$ recovers the
+unrestricted classical implicational axiom using only that row, truth, and
+modus ponens. It therefore works without change in $C_f$. The retained $\rho_6$
+then supplies explosion, as in \texttt{KCode222.c222\_efq}. In the following
+proof, classical deduction, contraposition, contraction, and conjunction
+manipulations abbreviate fixed Hilbert derivations from that basis.
+Only closed theorems are generalized.
+
+Put $\exists_rX=\neg Q_r\neg X$, with $\neg X=I(X,1)$. The retained
+$\rho_2$ and closed generalization give universal monotonicity, and
+contraposition gives existential monotonicity:
+\[
+ \vdash X\to Y\quad\Longrightarrow\quad
+ \vdash Q_rX\to Q_rY,\qquad
+ \vdash\exists_rX\to\exists_rY.
+\]
+They also give
+\begin{equation}
+ \vdash Q_r(X\to Y)\to(\exists_rX\to\exists_rY).
+ \label{eq:all-ex-binder}
+\end{equation}
+These are the literal \texttt{all\_ex} and \texttt{ex\_mono} constructions
+in \texttt{KEqCodes222.lean}.
+
+\paragraph{Reflexivity.}
+Fix $x$ and set $r=f(x,x)$. Contracting $G_f(x,x,r)$ gives
+\[
+ E(r,x)\to Q_rE(x,x).
+\]
+Existential monotonicity and $\rho_1(r,x)$ give
+$\exists_rQ_rE(x,x)$. Applying $\rho_6(r,E(x,x))$ yields $E(x,x)$.
+There is no freshness premise in this derivation: $r=x$ is permitted.
+
+\paragraph{The helper.}
+For $r=f(a,b)$, apply $G_f(a,b,a)$ to reflexivity $E(a,a)$. This gives
+\begin{equation}
+ \vdash E(a,b)\to Q_rE(a,b).
+ \label{eq:f-helper}
+\end{equation}
+
+\paragraph{Specialization at the helper binder.}
+The $K$ axiom and universal monotonicity give
+\[
+ Q_rE(a,b)\to Q_r\bigl(E(r,a)\to E(a,b)\bigr).
+\]
+Combine this with \eqref{eq:all-ex-binder} and $\rho_1(r,a)$ to derive
+$Q_rE(a,b)\to\exists_rE(a,b)$. Existential monotonicity applied to
+\eqref{eq:f-helper}, followed by $\rho_6$, now gives
+\begin{equation}
+ \vdash Q_rE(a,b)\to E(a,b).
+ \label{eq:f-spec}
+\end{equation}
+Composing $G_f$ with \eqref{eq:f-spec} recovers the unrestricted equality
+row
+\[
+ \rho_7(a,b,c)=E(c,a)\to\bigl(E(c,b)\to E(a,b)\bigr).
+\]
+Thus reflexivity, the helper, and $\rho_7$ are recovered for an
+\emph{arbitrary} function $f$. The numerical freshness condition enters
+only the next step and the semantic soundness argument.
+
+\subsection{The diagonal exception in the completeness argument}
+
+Let $\operatorname{Eind}(x,y)$ be the standard equality-free
+indiscernibility formula
+\[
+ \bigl[\forall v\,(R(v,x)\leftrightarrow R(v,y))\bigr]
+ \wedge
+ \bigl[\forall v\,(R(x,v)\leftrightarrow R(y,v))\bigr],
+\]
+where the displayed $v$ is the particular fresh label $x+y+1$.
+The connectives have the same implication/falsity expansion as
+\texttt{KEind222.lean}.
+
+The inherited equality-free vacuity, quantifier-free specialization,
+and alpha-renaming derivations use $\rho_1$--$\rho_6$, recovered
+$\rho_7$, equality reflexivity, membership vacuity, and the classical
+basis. They do not require equality vacuity at every fresh label.
+Membership vacuity remains a projection of the unchanged gated bundle.
+
+We prove
+\begin{equation}
+ \vdash E(x,y)\to\operatorname{Eind}(x,y).
+ \label{eq:eq-to-ind-f}
+\end{equation}
+For $x\ne y$, choose $w=f(x,y)$. Condition \eqref{eq:offdiag} makes
+$w$ different from both $x$ and $y$. The retained membership-substitution
+rows and equality symmetry give implications from $E(x,y)$ to both
+membership biconditionals with auxiliary label $w$. The helper
+\eqref{eq:f-helper} gives $E(x,y)\to Q_wE(x,y)$; universal monotonicity
+therefore puts both biconditionals under $Q_w$. Conjunction introduction
+and the existing equality-free alpha-renaming proof change $w$ to
+$x+y+1$, proving \eqref{eq:eq-to-ind-f}. This is the literal
+\texttt{KEind222.Eq\_Eind} proof with $f$ in place of $R$.
+
+For $x=y$, each biconditional $R(v,x)\leftrightarrow R(v,x)$ and
+$R(x,v)\leftrightarrow R(x,v)$ is a propositional theorem. Closed
+generalization and conjunction introduction give
+$\operatorname{Eind}(x,x)$ directly, and $K$ gives
+$E(x,x)\to\operatorname{Eind}(x,x)$. No freshness of $f(x,x)$ is
+needed. This explicit diagonal branch is what permits the compact
+choice $f(0,0)=0$.
+
+Existential monotonicity and $\rho_1$ applied to
+\eqref{eq:eq-to-ind-f} give $\exists_i\operatorname{Eind}(i,j)$.
+The other translated equality rules---Euclid, membership substitution,
+and arbitrary fresh vacuity of $\operatorname{Eind}$---use only the
+unchanged equality-free quantifier arguments. Consequently every finite
+ordinary Tarski derivation translates after replacing equality by
+$\operatorname{Eind}$, including a refutation translated to native code
+$1$.
+
+\paragraph{Dependency audit.}
+In the inspected \texttt{KThmK.lean}, the helper appears only in its rule
+definition and the proof of \texttt{eq\_refl}. In
+\texttt{KEind222.lean}, its only proof use is
+\texttt{Eq\_Eind}; the other occurrence is the compiler's direct helper
+case. The \texttt{eq\_refl} use is replaced by the arbitrary-$f$ reflexivity
+derivation above. The \texttt{Eq\_Eind} use is replaced by the explicit
+off-diagonal and diagonal arguments above. The compiler's helper case
+uses the directly derived formula~\eqref{eq:f-helper}. In particular,
+the alpha-renaming argument does not hide another fresh-helper
+assumption.
+
+\subsection{Transfer of the two consistency implications}
+
+For the lower implication, repeat the exact interface of
+\texttt{KEind222.c222\_complete} with $C_f$ in place of $C222$.
+Let $T$ consist of the named formulas whose equality interpretations have
+derivable native codes. If $C_f$ has no refutation, first-order
+completeness and the interpreted Tarski proof yield a nonempty
+irreflexive model of $T$.
+
+For every equality-free named matrix $\psi$, its equality interpretation
+is unchanged. Double-negation padding gives an equivalent matrix with
+code greater than the role labels $0,1$. The exact gated seed bundle at
+that code remains an axiom of $C_f$. Hence the entire argument of
+\texttt{KSeedModel222.seed\_eqFree}, including its native-code/private-label
+coupling and low-code treatment, remains valid. The model has the seed
+property for every equality-free relation.
+\texttt{KIndisc222.fullSeed\_quotient} takes the indiscernibility quotient
+and obtains the seed property for every named relation, equality included.
+The accepted lower seed-theory calibration then supplies
+$\operatorname{Con}(C_f)\to\operatorname{Con}(\mathrm{ZFC})$.
+
+This route deliberately does not substitute inside an arbitrary old
+numerical bundle: that would change both its matrix code and its private
+label. It uses the same exact equality-free bundles and semantic quotient
+as the accepted proof.
+
+For the upper implication, keep the original constructible-model
+interpretation of the exact seed bundles in
+\texttt{KUpper222.bundles\_in\_L}. All retained logical rows are unchanged.
+If $a\ne b$, condition \eqref{eq:offdiag} means that changing the binder
+of $Q_{f(a,b)}E(a,b)$ changes neither argument of the equality, so the two
+antecedent equalities imply its consequent. If $a=b$, the quantified
+consequent is reflexivity under every assignment, even when $f(a,a)=a$.
+Thus $G_f$ is valid in every ordinary structure. Numerical decoding,
+including the zero alias, and induction on finite derivations give
+$\operatorname{Con}(\mathrm{ZFC})\to\operatorname{Con}(C_f)$.
+This completes the proof of Theorem~\ref{thm:flexible-binder}.
+
+\subsection{Sharpness and cheap arithmetic choices}
+
+Condition \eqref{eq:offdiag} exactly characterizes validity of all $G_f$
+rows in ordinary structures. Suppose $a\ne b$ but $f(a,b)$ equals one of
+$a,b$. In a two-element structure, assign the initial value $0$ to every
+relevant label, including $c$. Both antecedent equalities are true. In the
+quantified consequent, assign value $1$ to the binder. Exactly one of the
+distinct labels $a,b$ changes, so the equality is false. Thus the condition
+is necessary as well as sufficient.
+
+Let $s=a+b$. Then $P(a,b)\ge s$. For every fixed integer $k\ge2$,
+\[
+ s>0\quad\Longrightarrow\quad kP(a,b)\ge ks>s\ge\max(a,b).
+\]
+The only exceptional pair is $(0,0)$, which lies on the permitted diagonal.
+Also $P(a,b)+1>\max(a,b)$ for all $a,b$. Therefore the following binders
+are calibrated:
+\[
+ 2P(a,b),\qquad 4P(a,b),\qquad P(a,b)+1,\qquad
+ 4P(a,b)+j\quad(j\ge1),\qquad a+b+1.
+\]
+The unshifted pairing $P$ is excluded: $P(1,0)=1$ collides with its first
+argument off the diagonal.
+
+The accompanying arithmetic verifier checks exact rational-polynomial
+identities and nonnegative coefficients after the exhaustive cases
+$s=0$ and $s=t+1$. It does not infer the all-natural statement from
+finite numerical samples. A separate finite equality-pattern audit has
+a finite-support proof: the validity of $G_f$ depends only on the equality
+pattern of the four labels $a,b,c,f(a,b)$ and at most four domain values,
+including the quantified value. Its exhaustive cases independently check
+the sharp structural condition above.
+
+\paragraph{Additional harmless orientation changes.}
+The two equality antecedents may be exchanged by classical implication
+exchange. Simultaneously exchanging the two arguments in the binder
+and the final equality is a global $a,b$ permutation of the schema,
+followed if necessary by that same antecedent exchange. These alternatives
+have the same calibrated refutations and may expose different repeated
+source subtrees. Exchanging only the equality body while leaving an
+asymmetric binder unchanged is not justified by this observation.
+
+\subsection{Source opportunity and remaining boundary}
+
+In the inspected K215 source, the complete merged-equality emitter occupies
+primitive ordinals $[479,888)$; its $R$-binder constructor occupies
+$[695,723)$. Its macro word is
+\begin{quote}\small\ttfamily
+168,166,182,168,121,182,166,121,181,166,121,182,180,119,119.
+\end{quote}
+The constructors $119,181,180,182$ mean $I,R,Q,E$, respectively, while
+$166,121,168$ load $a,b,c$. Replacing the sole $181$ by $119$ produces
+$G_{4P}$ and removes the relation-tag increment. Other binders need their
+own literal source construction. Shorter arithmetic does not by itself
+reduce the shared source DAG or physical state count; source association,
+allocation, complete runtime, and blank initialization remain separate
+obligations.
+
+Removing the seed-bundle freshness comparisons is a different unresolved
+problem. Restricting bundle emission to $a,b<c$ retains enough padded
+matrices for the seed extraction, but restricts the simultaneously emitted
+membership-vacuity schema. The existing completeness proof needs that
+schema at arbitrary fresh labels. Its alpha-renaming theorem already uses
+membership vacuity, so it cannot silently repair this restriction.
+
+\paragraph{Pinned inherited sources.}
+All cited modules and the literal source measurement refer to ProveIt
+revision \texttt{2762b8a183830b1f5a30cf059ffb4d92e77cddde}.
+The modules are under
+\texttt{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}; the machine source
+is \texttt{Research/ZFC/candidate-k215/sites215.json} relative to
+\texttt{Computability/BusyBeaver/}. The arbitrary-function binder theorem,
+the off-diagonal refinement, its sharpness argument, and the arithmetic
+certificate are additions of the present investigation. The seed
+calibration and the existing named/numerical proof infrastructure retain
+their original attribution.

@@ -1,0 +1,119 @@
+\section{Obstructions that rule out several tempting shortcuts}
+\label{sec:logical-obstructions}
+
+These examples distinguish failures of a proposed proof transfer from
+impossibility claims about all alternative calculi. They leave open a
+new calibration using additional strength of a redesigned seed theory.
+
+\subsection{The bundle's gate cannot simply be erased}
+
+Classically the actual bundle is a conjunction of its seed component
+and
+\[
+ R(a,b)\to Q_cR(a,b).
+\]
+Its native implementation writes this conjunction through implication
+and negation, but it has the same truth condition. Consequently an
+invalid vacuity conjunct cannot be repaired by the other conjunct,
+even when the same code $c$ also names the seed matrix.
+
+For an explicit collision, take native labels $c=a=1$ and $b=2$.
+Interpret membership in any model of ZFC and assign $x_1=\varnothing$,
+$x_2=\{\varnothing\}$. The antecedent $x_1\in x_2$ is true. Varying
+$x_1$ to $\{\varnothing\}$ makes it false, so
+$Q_1R(1,2)$ is false. The whole ungated bundle is therefore false,
+regardless of its seed component; the additional fact that matrix code
+$c=1$ is native falsity does not alter this conclusion. The existing
+set-model soundness proof genuinely needs the gate or a different
+bundle construction.
+
+\subsection{Cofinally fresh vacuity does not give all fresh vacuity}
+
+One proposed substitute emits $R(a,b)\to Q_cR(a,b)$ only when
+$c>\max(a,b)$, or only when $c>a+b$. Neither restriction recovers the
+full logical vacuity family from the retained logical rows alone.
+
+Here is an explicit assignment semantics. Let the domain have at least
+three elements. For an assignment $s:\mathbb N\to D$, define
+\[
+ \mu_s(v)=\min\{i:s(i)=v\}
+\]
+whenever $v$ is among the values read by the displayed atom, and set
+\[
+ R(a,b)[s]\quad\Longleftrightarrow\quad
+ \mu_s(s(a))<\mu_s(s(b)).
+\]
+Interpret equality as actual equality, implication classically, and
+$Q_i$ as quantification over replacement of coordinate $i$ of $s$.
+The relation $R(a,a)$ is always false. Equality congruence holds in
+both argument positions because equal coordinate values have equal
+first-occurrence indices. All the retained quantifier and equality
+rows, the merged equality row with a fresh binder, and classical
+implicational rows are valid under this semantics.
+
+If $c>\max(a,b)$, changing $s(c)$ cannot alter either first-occurrence
+index: each is already attained at an index at most $a$ or $b$.
+Thus every such restricted vacuity instance is valid. However, fix any
+$m$, put $a=m+2$, $b=m+3$, and $c=m$, and use three distinct domain
+values $A,B,C$. Assign all coordinates below $m$ the value $C$, and put
+\[
+ s(m)=A,\quad s(m+1)=B,\quad s(a)=A,\quad s(b)=B.
+\]
+Then $R(a,b)$ is true. Changing coordinate $m$ from $A$ to $B$ changes
+the first occurrences to $\mu(A)=m+2$ and $\mu(B)=m$, making the atom
+false. Hence $R(a,b)\to Q_cR(a,b)$ fails even though $c\ne a,b$.
+The counterexample works above every prescribed finite prefix of labels.
+It also satisfies the still weaker family with fixed native roles
+$a=0,b=1$ and $c\geq2$.
+
+This model refutes the suggested derivation from the \emph{logical}
+fragment. It is not claimed to satisfy the full seed theory. A scheme
+with fixed seed roles and restricted vacuity would need a new argument
+using its nonlogical axioms; an appeal to unrestricted variable
+renaming alone is insufficient.
+
+\subsection{Both directions of membership congruence occur in the proof}
+
+The current lower calibration uses both
+\[
+ \rho_3:\ E(a,b)\to(R(c,a)\to R(c,b)),\qquad
+ \rho_5:\ E(c,a)\to(R(c,b)\to R(a,b)).
+\]
+They are independent over the other logical ingredients. To see why
+$\rho_5$ cannot simply be dropped and later recovered, choose a family
+of unary predicates $P_i$ with $P_0$ empty and $P_1$ the whole nonempty
+domain, and interpret
+\[
+ R(i,j)[s]\quad\Longleftrightarrow\quad P_i(s(j)).
+\]
+Actual equality and ordinary assignment quantifiers validate $\rho_3$,
+all fresh vacuity instances, and the other retained logical rows.
+But $\rho_5$ fails when its equality premise identifies the values at
+labels $0$ and $1$: the predicates attached to the labels remain
+different. For the other direction use
+$R(i,j)[s]\Longleftrightarrow P_j(s(i))$, which validates $\rho_5$ and
+can falsify $\rho_3$. In either interpretation $R(0,0)$ is always false,
+so the native falsity alias is respected.
+
+There is also an exact dependency audit of the existing proof.
+\texttt{KThmK.rel\_L} is $\rho_5$ and
+\texttt{KThmK.rel\_R} is $\rho_3$;
+\texttt{atom\_subst}, \texttt{atom\_subst\_rev}, and the atomic case of
+\texttt{leibniz} use both.
+In \texttt{KEind222.Eq\_Eind}, the incoming-membership component uses
+$\rho_3$ and the outgoing-membership component uses $\rho_5$.
+In \texttt{KIndisc222.qmem}, quotient membership uses both components,
+first \texttt{hx.2 y} and then \texttt{hy.1 x'}.
+Thus the current quotient and first-order completeness route does not
+justify deleting either row. A different seed-theoretic quotient
+argument could still be a worthwhile separate research direction.
+
+\paragraph{Dependency pins and proof status.}
+The relevant modules are
+\texttt{KThmK.lean}, \texttt{KEind222.lean}, and
+\texttt{KIndisc222.lean} in the repository's set-theory closure-kernel
+formalization, read at commit
+\texttt{2762b8a183830b1f5a30cf059ffb4d92e77cddde}; the exact paths are
+listed with the binder theorem's dependencies. The new countermodels
+and scheduler lemmas are ordinary mathematical arguments. They were
+not newly compiled by a proof-assistant kernel in this work.
