@@ -3350,3 +3350,25 @@ permutation216, and new calibrated projection/residual interfaces. Placement
 audited complete215 runtime/startup and exact transfer. The host has164
 sources, the collection290 reports. The queue is clear at this checkpoint;
 the active214-state goal remains open. [Recovery](set-theory/zfc-closure-kernels/intake-199-reproduction.md).
+
+[Batch 204](set-theory/zfc-closure-kernels/intake-204.md) adds Source 167,
+`Proof_Simplification_and_GC-ZC215_2026-10-21.zip` from `05d063acef`.
+Placement `ec445a5246` accounts for all 82 members and retires only that ZIP:
+61 new ancillary files, 14 existing exact copies, four duplicates within the
+delivery and three archive-only manuscript files. The host has **167 numbered
+sources**; its written reconciliation covers Sources 1–164 and 167, while
+Source 165/166 follow-ups remain pending. This extends one existing report;
+the collection and category counts remain **290 reports**.
+
+The older offset-symmetry recommendation is already implemented in the compiled
+K215 proof. A new four-field zero-offset certificate proposal must retain the
+512-fuel decoder: 622 supplied pairs exceed the ordinary 128-fuel limit.
+The separate GC–ZC215 compiler/scheduler argument has submitted 6,177-case
+runtime and 117,004-step blank-root records, not a fresh intake replay or new
+Lean/Rocq endpoint. The nested correction rejects both SB215 variants for an
+incorrect source return and leaves FT215 unaffected. No delivered code ran;
+only the [exact-layout recovery helper](set-theory/zfc-closure-kernels/code/recover-intake204.py)
+was tested. The current completed K215 proofs retain their status. Other
+incoming archives remain pending; no smaller machine, lower bound or new
+internal-PA result is claimed. The reconciliation-note format needs no merged
+article/PDF rewrite; the collection catalogue is rebuilt separately.
