@@ -4,12 +4,13 @@ import BusyBeaver.ZFC.InternalOrd
 The cumulative hierarchy inside an arbitrary model of ZF with Foundation.
 
 `V_β = {z | z ⊆ V_γ for some γ ∈ β}` is built by transfinite recursion on
-the internal ordinals. An *approximation* on an ordinal `d` is a set of
+the internal ordinals, for any definable relation `R z T` in place of `z ⊆ T`
+(`TransRec` takes `z ∈ G T`). An *approximation* on an ordinal `d` is a set of
 Kuratowski pairs `⟨β, S⟩`, one for each `β ∈ d`, obeying that recursion
-(`Approx`). Approximations agree where both are defined (`approx_unique`,
-by ordinal induction), every ordinal carries one (`approx_exists`: extend
+(`RApprox`). Approximations agree where both are defined (`rapprox_unique`,
+by ordinal induction), every ordinal carries one (`rapprox_exists`: extend
 by one stage, then glue the approximations of the successors below by
-Replacement), and `V` is read off them (`IsV`).
+Replacement), and the stages are read off them (`RStage`; `IsV` for `R = Sub`).
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.InternalRank
@@ -88,18 +89,40 @@ theorem nsat_powF (ρ : Nat → V) (y t : Nat) :
 
 end Pairs
 
-/-! ## Approximations of the hierarchy -/
+/-! ## Recursion along the ordinals
 
-/-- `f` approximates the hierarchy on the ordinal `d`. -/
-def Approx (H : ZFAxioms mem) (f d : V) : Prop :=
+The development is generic in the relation `R z T` ("`z` enters a stage from the earlier
+stage `T`"), named by a formula `rF`: `Sub` gives the cumulative hierarchy below, and
+`TransRec` takes `z ∈ G T` for a definable operation `G`. -/
+
+variable {R : V → V → Prop} {rF : Nat → Nat → NForm}
+
+/-- `rF` names `R`. -/
+abbrev RDef (mem : V → V → Prop) (R : V → V → Prop) (rF : Nat → Nat → NForm) : Prop :=
+  ∀ (ρ : Nat → V) (z t : Nat), NSat mem ρ (rF z t) ↔ R (ρ z) (ρ t)
+
+/-- Every class `{z | R z T}` is a set. -/
+abbrev RSets (mem : V → V → Prop) (R : V → V → Prop) : Prop := ∀ T, ∃ P, ∀ z, mem z P ↔ R z T
+
+/-- `y = {z | R z t}`. -/
+def classF (rF : Nat → Nat → NForm) (y t : Nat) : NForm :=
+  .all (y + t + 1) ((NForm.mem (y + t + 1) y).iff (rF (y + t + 1) t))
+
+theorem nsat_classF (hrF : RDef mem R rF) (ρ : Nat → V) (y t : Nat) :
+    NSat mem ρ (classF rF y t) ↔ ∀ z, mem z (ρ y) ↔ R z (ρ t) := by
+  simp only [classF, NSat, nsat_iff, hrF]
+  simp (disch := omega) only [upd_same, upd_other]
+
+/-- `f` approximates the `R`-hierarchy on the ordinal `d`. -/
+def RApprox (H : ZFAxioms mem) (R : V → V → Prop) (f d : V) : Prop :=
   (∀ p, mem p f → ∃ b S, mem b d ∧ p = kpair H b S) ∧
   (∀ b, mem b d → ∃ S, mem (kpair H b S) f) ∧
   (∀ b S S', mem (kpair H b S) f → mem (kpair H b S') f → S = S') ∧
   (∀ b S, mem (kpair H b S) f →
-    ∀ z, mem z S ↔ ∃ c T, mem c b ∧ mem (kpair H c T) f ∧ Sub mem z T)
+    ∀ z, mem z S ↔ ∃ c T, mem c b ∧ mem (kpair H c T) f ∧ R z T)
 
-/-- The named formula for `Approx` (free names `f`, `d`). -/
-def approxF (f d : Nat) : NForm :=
+/-- The named formula for `RApprox` (free names `f`, `d`). -/
+def rapproxF (rF : Nat → Nat → NForm) (f d : Nat) : NForm :=
   let n := f + d + 1
   -- every member is a pair with first coordinate in `d`
   let c1 := NForm.all n (.imp (.mem n f) (.ex (n + 1) (.ex (n + 2)
@@ -111,14 +134,14 @@ def approxF (f d : Nat) : NForm :=
     (.imp (.and (pmemF f n (n + 1)) (pmemF f n (n + 2))) (.eq (n + 1) (n + 2)))))
   -- the recursion
   let rhs := NForm.ex (n + 3) (.ex (n + 4) (.and (.mem (n + 3) n)
-    (.and (pmemF f (n + 3) (n + 4)) (subF (n + 2) (n + 4)))))
+    (.and (pmemF f (n + 3) (n + 4)) (rF (n + 2) (n + 4)))))
   let c4 := NForm.all n (.all (n + 1) (.imp (pmemF f n (n + 1))
     (.all (n + 2) ((NForm.mem (n + 2) (n + 1)).iff rhs))))
   .and c1 (.and c2 (.and c3 c4))
 
-theorem nsat_approxF (H : ZFAxioms mem) (ρ : Nat → V) (f d : Nat) :
-    NSat mem ρ (approxF f d) ↔ Approx H (ρ f) (ρ d) := by
-  simp only [approxF, NSat, nsat_iff, nsat_kpairF H, nsat_pmemF H, nsat_subF, and_imp]
+theorem nsat_rapproxF (H : ZFAxioms mem) (hrF : RDef mem R rF) (ρ : Nat → V) (f d : Nat) :
+    NSat mem ρ (rapproxF rF f d) ↔ RApprox H R (ρ f) (ρ d) := by
+  simp only [rapproxF, NSat, nsat_iff, nsat_kpairF H, nsat_pmemF H, hrF, and_imp]
   simp (disch := omega) only [upd_same, upd_other]
   rfl
 
@@ -128,7 +151,7 @@ variable (H : ZFAxioms mem) (hR : Regular mem)
 include H hR
 
 /-- Two approximations agree wherever both are defined. -/
-theorem approx_unique {f g d e : V} (hf : Approx H f d) (hg : Approx H g e)
+theorem rapprox_unique {f g d e : V} (hf : RApprox H R f d) (hg : RApprox H R g e)
     (hd : Ord mem d) (he : Ord mem e) :
     ∀ b, Ord mem b → mem b d → mem b e →
       ∀ S S', mem (kpair H b S) f → mem (kpair H b S') g → S = S' := by
@@ -176,33 +199,33 @@ variable (H : ZFAxioms mem) (hR : Regular mem)
 include H hR
 
 /-- Approximations on the same ordinal are equal. -/
-theorem approx_eq {f g d : V} (hf : Approx H f d) (hg : Approx H g d) (hd : Ord mem d) :
+theorem rapprox_eq {f g d : V} (hf : RApprox H R f d) (hg : RApprox H R g d) (hd : Ord mem d) :
     f = g := by
   apply H.ext; intro p
   constructor
   · intro hp
     obtain ⟨b, S, hb, rfl⟩ := hf.1 p hp
     obtain ⟨S', hS'⟩ := hg.2.1 b hb
-    rwa [approx_unique H hR hf hg hd hd b (ord_of_mem hd hb) hb hb S S' hp hS']
+    rwa [rapprox_unique H hR hf hg hd hd b (ord_of_mem hd hb) hb hb S S' hp hS']
   · intro hp
     obtain ⟨b, S, hb, rfl⟩ := hg.1 p hp
     obtain ⟨S', hS'⟩ := hf.2.1 b hb
-    rwa [← approx_unique H hR hf hg hd hd b (ord_of_mem hd hb) hb hb S' S hS' hp]
+    rwa [← rapprox_unique H hR hf hg hd hd b (ord_of_mem hd hb) hb hb S' S hS' hp]
 
 omit hR in
 /-- First coordinates of pairs in an approximation lie in its domain. -/
-theorem approx_dom {f d b S : V} (hf : Approx H f d) (h : mem (kpair H b S) f) : mem b d := by
+theorem rapprox_dom {f d b S : V} (hf : RApprox H R f d) (h : mem (kpair H b S) f) : mem b d := by
   obtain ⟨b', S', hb', he⟩ := hf.1 _ h
   rw [(kpair_inj H _ _ _ _ he).1]; exact hb'
 
 omit hR in
-/-- The next stage `⋃ {P(T) | ⟨c, T⟩ ∈ f}` exists. -/
-theorem stage_exists (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a) {f b : V} (hf : Approx H f b) :
-    ∃ S, ∀ z, mem z S ↔ ∃ c T, mem c b ∧ mem (kpair H c T) f ∧ Sub mem z T := by
-  obtain ⟨Q, hQ⟩ := repl_of H (fun p P => ∃ c T, p = kpair H c T ∧ ∀ z, mem z P ↔ Sub mem z T)
-    (.ex 2 (.ex 3 (.and (kpairF 1 2 3) (powF 0 3)))) (fun _ => f)
+/-- The next stage `⋃ {{z | R z T} | ⟨c, T⟩ ∈ f}` exists. -/
+theorem rstage_exists (hrF : RDef mem R rF) (hS : RSets mem R) {f b : V} (hf : RApprox H R f b) :
+    ∃ S, ∀ z, mem z S ↔ ∃ c T, mem c b ∧ mem (kpair H c T) f ∧ R z T := by
+  obtain ⟨Q, hQ⟩ := repl_of H (fun p P => ∃ c T, p = kpair H c T ∧ ∀ z, mem z P ↔ R z T)
+    (.ex 2 (.ex 3 (.and (kpairF 1 2 3) (classF rF 0 3)))) (fun _ => f)
     (fun x y => by
-      simp only [NSat, nsat_kpairF H, nsat_powF]
+      simp only [NSat, nsat_kpairF H, nsat_classF hrF]
       simp (disch := omega) only [upd_same, upd_other])
     (fun p P1 P2 ⟨c, T, hp, h1⟩ ⟨c', T', hp', h2⟩ => by
       rw [hp] at hp'
@@ -213,19 +236,19 @@ theorem stage_exists (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a) {f b : 
   constructor
   · rintro ⟨P, hzP, hPQ⟩
     obtain ⟨p, hp, c, T, rfl, hPT⟩ := (hQ P).1 hPQ
-    exact ⟨c, T, approx_dom H hf hp, hp, (hPT z).1 hzP⟩
+    exact ⟨c, T, rapprox_dom H hf hp, hp, (hPT z).1 hzP⟩
   · rintro ⟨c, T, -, hcT, hzT⟩
-    obtain ⟨P, hPT⟩ := hP T
+    obtain ⟨P, hPT⟩ := hS T
     exact ⟨P, (hPT z).2 hzT, (hQ P).2 ⟨_, hcT, c, T, rfl, hPT⟩⟩
 
 /-- Extend an approximation on `b` by the stage `b`. -/
-theorem approx_extend {f b S : V} (hf : Approx H f b) (hb : Ord mem b)
-    (hS : ∀ z, mem z S ↔ ∃ c T, mem c b ∧ mem (kpair H c T) f ∧ Sub mem z T) :
-    Approx H (vcup H f (vsingle H (kpair H b S))) (vsucc H b) := by
+theorem rapprox_extend {f b S : V} (hf : RApprox H R f b) (hb : Ord mem b)
+    (hS : ∀ z, mem z S ↔ ∃ c T, mem c b ∧ mem (kpair H c T) f ∧ R z T) :
+    RApprox H R (vcup H f (vsingle H (kpair H b S))) (vsucc H b) := by
   have hg : ∀ p, mem p (vcup H f (vsingle H (kpair H b S))) ↔ mem p f ∨ p = kpair H b S := by
     intro p; rw [vcup_spec H _ _ p, vsingle_spec H _ p]
   -- no pair of `f` sits at `b`
-  have hnb : ∀ T, ¬ mem (kpair H b T) f := fun T h => mem_irrefl H hR b (approx_dom H hf h)
+  have hnb : ∀ T, ¬ mem (kpair H b T) f := fun T h => mem_irrefl H hR b (rapprox_dom H hf h)
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro p hp
     rcases (hg p).1 hp with hp | rfl
@@ -253,7 +276,7 @@ theorem approx_extend {f b S : V} (hf : Approx H f b) (hb : Ord mem b)
       · obtain ⟨rfl, -⟩ := kpair_inj H _ _ _ _ hT
         exact absurd (hb.1 x hx c' hc') (mem_irrefl H hR c')
     rcases (hg _).1 h1 with h1 | h1
-    · have hcb := approx_dom H hf h1
+    · have hcb := rapprox_dom H hf h1
       rw [hf.2.2.2 c S1 h1 z]
       constructor
       · rintro ⟨c', T, hc', hT, hz⟩; exact ⟨c', T, hc', (hg _).2 (Or.inl hT), hz⟩
@@ -269,19 +292,19 @@ theorem approx_extend {f b S : V} (hf : Approx H f b) (hb : Ord mem b)
           exact absurd hc' (mem_irrefl H hR _)
 
 /-- Glue the approximations on the successors below `d`. -/
-theorem approx_glue {d : V} (hd : Ord mem d) (h : ∀ b, mem b d → ∃ g, Approx H g (vsucc H b)) :
-    ∃ F, Approx H F d := by
-  obtain ⟨G, hG⟩ := repl_of H (fun b g => Ord mem b ∧ Approx H g (vsucc H b))
-    (.and (ordF 1) (.ex 2 (.and (succF 2 1) (approxF 0 2)))) (fun _ => d)
+theorem rapprox_glue (hrF : RDef mem R rF) {d : V} (hd : Ord mem d) (h : ∀ b, mem b d → ∃ g, RApprox H R g (vsucc H b)) :
+    ∃ F, RApprox H R F d := by
+  obtain ⟨G, hG⟩ := repl_of H (fun b g => Ord mem b ∧ RApprox H R g (vsucc H b))
+    (.and (ordF 1) (.ex 2 (.and (succF 2 1) (rapproxF rF 0 2)))) (fun _ => d)
     (fun x y => by
-      simp only [NSat, nsat_ordF, nsat_succF H, nsat_approxF H]
+      simp only [NSat, nsat_ordF, nsat_succF H, nsat_rapproxF H hrF]
       simp (disch := omega) only [upd_same, upd_other]
       constructor
       · rintro ⟨ho, m, rfl, hm⟩; exact ⟨ho, hm⟩
       · rintro ⟨ho, hm⟩; exact ⟨ho, _, rfl, hm⟩)
-    (fun _ _ _ h1 h2 => approx_eq H hR h1.2 h2.2 (ord_succ H h1.1)) d
+    (fun _ _ _ h1 h2 => rapprox_eq H hR h1.2 h2.2 (ord_succ H h1.1)) d
   have hF : ∀ p, mem p (vunion H G) ↔
-      ∃ b g, mem b d ∧ Approx H g (vsucc H b) ∧ mem p g := by
+      ∃ b g, mem b d ∧ RApprox H R g (vsucc H b) ∧ mem p g := by
     intro p; rw [vunion_spec H G p]
     constructor
     · rintro ⟨g, hpg, hgG⟩
@@ -289,13 +312,13 @@ theorem approx_glue {d : V} (hd : Ord mem d) (h : ∀ b, mem b d → ∃ g, Appr
       exact ⟨b, g, hb, hg, hpg⟩
     · rintro ⟨b, g, hb, hg, hpg⟩
       exact ⟨g, hpg, (hG g).2 ⟨b, hb, ord_of_mem hd hb, hg⟩⟩
-  have agree : ∀ b1 g1 b2 g2 c S1 S2, mem b1 d → Approx H g1 (vsucc H b1) → mem b2 d →
-      Approx H g2 (vsucc H b2) → mem (kpair H c S1) g1 → mem (kpair H c S2) g2 → S1 = S2 := by
+  have agree : ∀ b1 g1 b2 g2 c S1 S2, mem b1 d → RApprox H R g1 (vsucc H b1) → mem b2 d →
+      RApprox H R g2 (vsucc H b2) → mem (kpair H c S1) g1 → mem (kpair H c S2) g2 → S1 = S2 := by
     intro b1 g1 b2 g2 c S1 S2 hb1 hg1 hb2 hg2 h1 h2
-    have hc1 := approx_dom H hg1 h1
+    have hc1 := rapprox_dom H hg1 h1
     have ho1 := ord_succ H (ord_of_mem hd hb1)
-    exact approx_unique H hR hg1 hg2 ho1 (ord_succ H (ord_of_mem hd hb2)) c
-      (ord_of_mem ho1 hc1) hc1 (approx_dom H hg2 h2) S1 S2 h1 h2
+    exact rapprox_unique H hR hg1 hg2 ho1 (ord_succ H (ord_of_mem hd hb2)) c
+      (ord_of_mem ho1 hc1) hc1 (rapprox_dom H hg2 h2) S1 S2 h1 h2
   have succ_sub : ∀ b c, mem b d → mem c (vsucc H b) → mem c d := by
     intro b c hb hc
     rcases (vsucc_spec H b c).1 hc with hc | rfl
@@ -317,7 +340,7 @@ theorem approx_glue {d : V} (hd : Ord mem d) (h : ∀ b, mem b d → ∃ g, Appr
   · intro c S1 h1 z
     obtain ⟨b1, g1, hb1, hg1, h1⟩ := (hF _).1 h1
     rw [hg1.2.2.2 c S1 h1 z]
-    have hcs := approx_dom H hg1 h1
+    have hcs := rapprox_dom H hg1 h1
     constructor
     · rintro ⟨c', T, hc', hT, hz⟩
       exact ⟨c', T, hc', (hF _).2 ⟨b1, g1, hb1, hg1, hT⟩, hz⟩
@@ -329,80 +352,117 @@ theorem approx_glue {d : V} (hd : Ord mem d) (h : ∀ b, mem b d → ∃ g, Appr
       rwa [agree b1 g1 b2 g2 c' T1 T hb1 hg1 hb2 hg2 hT1 hT]
 
 /-- **Every ordinal carries an approximation of the hierarchy.** -/
-theorem approx_exists (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a) :
-    ∀ d, Ord mem d → ∃ f, Approx H f d :=
-  ord_induction H hR (fun d => ∃ f, Approx H f d) (.ex 1 (approxF 1 0)) (fun _ => vempty H)
+theorem rapprox_exists (hrF : RDef mem R rF) (hS : RSets mem R) :
+    ∀ d, Ord mem d → ∃ f, RApprox H R f d :=
+  ord_induction H hR (fun d => ∃ f, RApprox H R f d) (.ex 1 (rapproxF rF 1 0)) (fun _ => vempty H)
     (fun x => by
-      simp only [NSat, nsat_approxF H]
+      simp only [NSat, nsat_rapproxF H hrF]
       simp (disch := omega) only [upd_same, upd_other])
-    (fun d hd IH => approx_glue H hR hd fun b hb => by
+    (fun d hd IH => rapprox_glue H hR hrF hd fun b hb => by
       obtain ⟨f, hf⟩ := IH b hb
-      obtain ⟨S, hS⟩ := stage_exists H hP hf
-      exact ⟨_, approx_extend H hR hf (ord_of_mem hd hb) hS⟩)
+      obtain ⟨S, hS'⟩ := rstage_exists H hrF hS hf
+      exact ⟨_, rapprox_extend H hR hf (ord_of_mem hd hb) hS'⟩)
 
 end Exists
 
 /-! ## The hierarchy -/
 
-/-- `S = V_a`. -/
-def IsV (H : ZFAxioms mem) (a S : V) : Prop := ∃ f, Approx H f (vsucc H a) ∧ mem (kpair H a S) f
+/-- `S` is the stage `a` of the `R`-hierarchy. -/
+def RStage (H : ZFAxioms mem) (R : V → V → Prop) (a S : V) : Prop :=
+  ∃ f, RApprox H R f (vsucc H a) ∧ mem (kpair H a S) f
 
-/-- The named formula for `IsV` (free names `a`, `S`). -/
-def isVF (a S : Nat) : NForm :=
+/-- The named formula for `RStage` (free names `a`, `S`). -/
+def rstageF (rF : Nat → Nat → NForm) (a S : Nat) : NForm :=
   let n := a + S + 1
-  .ex n (.and (.ex (n + 1) (.and (succF (n + 1) a) (approxF n (n + 1)))) (pmemF n a S))
+  .ex n (.and (.ex (n + 1) (.and (succF (n + 1) a) (rapproxF rF n (n + 1)))) (pmemF n a S))
 
-theorem nsat_isVF (H : ZFAxioms mem) (ρ : Nat → V) (a S : Nat) :
-    NSat mem ρ (isVF a S) ↔ IsV H (ρ a) (ρ S) := by
-  simp only [isVF, NSat, nsat_succF H, nsat_approxF H, nsat_pmemF H]
+theorem nsat_rstageF (H : ZFAxioms mem) (hrF : RDef mem R rF) (ρ : Nat → V) (a S : Nat) :
+    NSat mem ρ (rstageF rF a S) ↔ RStage H R (ρ a) (ρ S) := by
+  simp only [rstageF, NSat, nsat_succF H, nsat_rapproxF H hrF, nsat_pmemF H]
   simp (disch := omega) only [upd_same, upd_other]
   constructor
   · rintro ⟨f, ⟨m, rfl, hf⟩, h⟩; exact ⟨f, hf, h⟩
   · rintro ⟨f, hf, h⟩; exact ⟨f, ⟨_, rfl, hf⟩, h⟩
+
+section Stages
+
+variable (H : ZFAxioms mem) (hR : Regular mem)
+include H hR
+
+theorem rstage_exists' (hrF : RDef mem R rF) (hS : RSets mem R) {a : V} (ha : Ord mem a) :
+    ∃ S, RStage H R a S := by
+  obtain ⟨f, hf⟩ := rapprox_exists H hR hrF hS _ (ord_succ H ha)
+  obtain ⟨S, hS⟩ := hf.2.1 a (vsucc_self H a)
+  exact ⟨S, f, hf, hS⟩
+
+theorem rstage_unique {a S S' : V} (ha : Ord mem a) (h : RStage H R a S) (h' : RStage H R a S') :
+    S = S' := by
+  obtain ⟨f, hf, hS⟩ := h
+  obtain ⟨g, hg, hS'⟩ := h'
+  have ho := ord_succ H ha
+  exact rapprox_unique H hR hf hg ho ho a ha (vsucc_self H a) (vsucc_self H a) S S' hS hS'
+
+/-- **The recursion equation:** `stage a = {z | R z (stage c) for some c ∈ a}`. -/
+theorem rstage_spec (hrF : RDef mem R rF) (hS : RSets mem R) {a S : V} (ha : Ord mem a)
+    (h : RStage H R a S) : ∀ z, mem z S ↔ ∃ c T, mem c a ∧ RStage H R c T ∧ R z T := by
+  obtain ⟨f, hf, hS0⟩ := h
+  have ho := ord_succ H ha
+  intro z
+  rw [hf.2.2.2 a S hS0 z]
+  constructor
+  · rintro ⟨c, T, hc, hcT, hz⟩
+    have hoc := ord_of_mem ha hc
+    obtain ⟨T', g, hg, hcg⟩ := rstage_exists' H hR hrF hS hoc
+    have e : T = T' := rapprox_unique H hR hf hg ho (ord_succ H hoc) c hoc
+      ((vsucc_spec H a c).2 (Or.inl hc)) (vsucc_self H c) T T' hcT hcg
+    exact ⟨c, T, hc, ⟨g, hg, by rw [e]; exact hcg⟩, hz⟩
+  · rintro ⟨c, T, hc, ⟨g, hg, hcg⟩, hz⟩
+    have hoc := ord_of_mem ha hc
+    obtain ⟨T0, hT0⟩ := hf.2.1 c ((vsucc_spec H a c).2 (Or.inl hc))
+    have e : T0 = T := rapprox_unique H hR hf hg ho (ord_succ H hoc) c hoc
+      ((vsucc_spec H a c).2 (Or.inl hc)) (vsucc_self H c) T0 T hT0 hcg
+    exact ⟨c, T0, hc, hT0, by rw [e]; exact hz⟩
+
+/-- Stages grow along the ordinals. -/
+theorem rstage_mono (hrF : RDef mem R rF) (hS : RSets mem R) {a c S T : V} (ha : Ord mem a)
+    (hc : mem c a) (hT : RStage H R c T) (hSa : RStage H R a S) : Sub mem T S := by
+  intro z hz
+  obtain ⟨c', T', hc', hT', hzT'⟩ := (rstage_spec H hR hrF hS (ord_of_mem ha hc) hT z).1 hz
+  exact (rstage_spec H hR hrF hS ha hSa z).2 ⟨c', T', ha.1 c hc c' hc', hT', hzT'⟩
+
+end Stages
+
+/-! ## The cumulative hierarchy: `R = Sub` -/
+
+/-- `S = V_a`. -/
+def IsV (H : ZFAxioms mem) (a S : V) : Prop := RStage H (Sub mem) a S
+
+/-- The named formula for `IsV` (free names `a`, `S`). -/
+def isVF (a S : Nat) : NForm := rstageF subF a S
+
+theorem nsat_isVF (H : ZFAxioms mem) (ρ : Nat → V) (a S : Nat) :
+    NSat mem ρ (isVF a S) ↔ IsV H (ρ a) (ρ S) :=
+  nsat_rstageF H nsat_subF ρ a S
 
 section Hierarchy
 
 variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
 include H hR hP
 
-theorem isV_exists {a : V} (ha : Ord mem a) : ∃ S, IsV H a S := by
-  obtain ⟨f, hf⟩ := approx_exists H hR hP _ (ord_succ H ha)
-  obtain ⟨S, hS⟩ := hf.2.1 a (vsucc_self H a)
-  exact ⟨S, f, hf, hS⟩
+theorem isV_exists {a : V} (ha : Ord mem a) : ∃ S, IsV H a S := rstage_exists' H hR nsat_subF hP ha
 
 omit hP in
-theorem isV_unique {a S S' : V} (ha : Ord mem a) (h : IsV H a S) (h' : IsV H a S') : S = S' := by
-  obtain ⟨f, hf, hS⟩ := h
-  obtain ⟨g, hg, hS'⟩ := h'
-  have ho := ord_succ H ha
-  exact approx_unique H hR hf hg ho ho a ha (vsucc_self H a) (vsucc_self H a) S S' hS hS'
+theorem isV_unique {a S S' : V} (ha : Ord mem a) (h : IsV H a S) (h' : IsV H a S') : S = S' :=
+  rstage_unique H hR ha h h'
 
 /-- **The recursion equation:** `V_a = {z | z ⊆ V_c for some c ∈ a}`. -/
 theorem isV_spec {a S : V} (ha : Ord mem a) (h : IsV H a S) :
-    ∀ z, mem z S ↔ ∃ c T, mem c a ∧ IsV H c T ∧ Sub mem z T := by
-  obtain ⟨f, hf, hS⟩ := h
-  have ho := ord_succ H ha
-  intro z
-  rw [hf.2.2.2 a S hS z]
-  constructor
-  · rintro ⟨c, T, hc, hcT, hz⟩
-    have hoc := ord_of_mem ha hc
-    obtain ⟨T', g, hg, hcg⟩ := isV_exists H hR hP hoc
-    have e : T = T' := approx_unique H hR hf hg ho (ord_succ H hoc) c hoc
-      ((vsucc_spec H a c).2 (Or.inl hc)) (vsucc_self H c) T T' hcT hcg
-    exact ⟨c, T, hc, ⟨g, hg, by rw [e]; exact hcg⟩, hz⟩
-  · rintro ⟨c, T, hc, ⟨g, hg, hcg⟩, hz⟩
-    have hoc := ord_of_mem ha hc
-    obtain ⟨T0, hT0⟩ := hf.2.1 c ((vsucc_spec H a c).2 (Or.inl hc))
-    have e : T0 = T := approx_unique H hR hf hg ho (ord_succ H hoc) c hoc
-      ((vsucc_spec H a c).2 (Or.inl hc)) (vsucc_self H c) T0 T hT0 hcg
-    exact ⟨c, T0, hc, hT0, by rw [e]; exact hz⟩
+    ∀ z, mem z S ↔ ∃ c T, mem c a ∧ IsV H c T ∧ Sub mem z T :=
+  rstage_spec H hR nsat_subF hP ha h
 
 theorem isV_mono {a c S T : V} (ha : Ord mem a) (hc : mem c a) (hT : IsV H c T)
-    (hS : IsV H a S) : Sub mem T S := by
-  intro z hz
-  obtain ⟨c', T', hc', hT', hzT'⟩ := (isV_spec H hR hP (ord_of_mem ha hc) hT z).1 hz
-  exact (isV_spec H hR hP ha hS z).2 ⟨c', T', ha.1 c hc c' hc', hT', hzT'⟩
+    (hS : IsV H a S) : Sub mem T S :=
+  rstage_mono H hR nsat_subF hP ha hc hT hS
 
 theorem isV_trans {a S : V} (ha : Ord mem a) (hS : IsV H a S) : Trans mem S := by
   intro z hz w hw
@@ -410,6 +470,5 @@ theorem isV_trans {a S : V} (ha : Ord mem a) (hS : IsV H a S) : Trans mem S := b
   exact isV_mono H hR hP ha hc hT hS w (hzT w hw)
 
 end Hierarchy
-
 
 end SetTheory.BusyBeaver.ZFC.InternalRank
