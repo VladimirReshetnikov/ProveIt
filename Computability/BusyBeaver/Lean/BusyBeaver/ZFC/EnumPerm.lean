@@ -1,4 +1,5 @@
-import BusyBeaver.ZFC.KCodeDom
+import BusyBeaver.ZFC.KCode222
+import BusyBeaver.ZFC.DomRho8
 
 /-!
 The abstract proof enumerator of the 215-state machine (Source 159's command-permuted
@@ -21,16 +22,16 @@ permuted:
 
 Main theorem `halts_iff`: from any state between candidates whose registers hold derivable codes,
 the enumerator halts iff the falsity code 1 is derivable in `C222`. Soundness is the stack
-invariant. Completeness compiles a derivation of the dominated calculus `KCodeDom.CDom` into
-command blocks (Source 159's compiler: the counter is set by `J u = MP u` from a cleared state,
-and a dominated rho8 leaf `rho8 a b c u` is `J u; AX(c; a - u, b)`) behind `START_Y = AX(0; 1, Y)`,
-whose candidate number is at least `Y`; `CDom` derives every `C222` code.
+invariant. Completeness compiles `C222` directly into command blocks, interpreting the generic
+dominated-implication theorem in the predicate `fun n => ∃ p, Contract p n`. Source 159's
+compiler sets the counter by `J u = MP u` from a cleared state; a dominated rho8 leaf
+`rho8 a b c u` is `J u; AX(c; a - u, b)`. The compiled block follows `START_Y = AX(0; 1, Y)`,
+whose candidate number is at least `Y`. No intermediate `CDom` derivation is constructed.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.EnumPerm
 
 open SetTheory.BusyBeaver.ZFC.Code254 SetTheory.BusyBeaver.ZFC.KCode222
-open SetTheory.BusyBeaver.ZFC.KCodeDom
 
 attribute [local irreducible] P
 
@@ -483,15 +484,20 @@ theorem mp_contract {A B : Nat} {pa pab : List Cmd} (ha : Contract pa A)
         · left; subst hB; xrun
         · right; xrun
 
-/-- Every code of the dominated calculus has a block computing it. -/
-theorem build : ∀ {n : Nat}, CDom n → ∃ p : List Cmd, Contract p n := by
+/-- Compile directly in the algebra of block contracts. The restricted rho8 theorem is
+interpreted here in `fun n => ∃ p, Contract p n`, eliminating the intermediate calculus. -/
+theorem build_c222 : ∀ {n : Nat}, C222 n → ∃ p : List Cmd, Contract p n := by
+  have hmp {A B : Nat} (hab : ∃ p : List Cmd, Contract p (wim A B))
+      (ha : ∃ p : List Cmd, Contract p A) : ∃ p : List Cmd, Contract p B := by
+    obtain ⟨pab, hab⟩ := hab
+    obtain ⟨pa, ha⟩ := ha
+    exact ⟨_, mp_contract ha hab⟩
+  have hrow (a b c u : Nat) (hu : u ≤ a) : ∃ p : List Cmd, Contract p (rho8 a b c u) :=
+    ⟨leaf 8 a b c u, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ hu]; xrun)⟩
   intro n h
   induction h with
   | truth => exact ⟨discard, fun T S => Or.inr (cexec_discard T S)⟩
-  | mp _ _ ih1 ih2 =>
-      obtain ⟨pa, ha⟩ := ih1
-      obtain ⟨pab, hab⟩ := ih2
-      exact ⟨_, mp_contract ha hab⟩
+  | mp _ _ ih1 ih2 => exact hmp ih2 ih1
   | gen a _ ih =>
       obtain ⟨p, hp⟩ := ih
       exact ⟨_, gen_contract a hp⟩
@@ -507,7 +513,9 @@ theorem build : ∀ {n : Nat}, CDom n → ∃ p : List Cmd, Contract p n := by
   | r5 a b c => exact ⟨leaf 5 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
   | r6 a b => exact ⟨leaf 6 a 0 b 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
   | rG a b c => exact ⟨leaf 7 a b c 0, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ (by omega)]; xrun)⟩
-  | r8 a b c u hu => exact ⟨leaf 8 a b c u, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ hu]; xrun)⟩
+  | r8 a b c u =>
+      exact DomRho8.rho8_all_of_restricted (T := fun n => ∃ p : List Cmd, Contract p n)
+        hmp hrow a b c u
 
 /-- `START_Y = AX(0; 1, Y)` resets the counter and cache from every state; with a block for 1
 and `DROP; NIP; NIP`, the list halts from every state. -/
@@ -528,7 +536,7 @@ theorem encL_ge (Y : Nat) (cs : List Cmd) : Y ≤ encL (.ax 0 1 Y) cs := by
 
 /-- Completeness: between candidates, a derivation of code 1 is eventually run. -/
 theorem complete {sd : St} (hpl : sd.pl = 0) (h : C222 F) : HaltsFrom sd := by
-  obtain ⟨p, hp⟩ := build (cdom_of_c222 h)
+  obtain ⟨p, hp⟩ := build_c222 h
   let cs := p ++ [.drop, .nip, .nip]
   have hN := encL_ge sd.np cs
   rcases reach sd hpl (encL (.ax 0 1 sd.np) cs - sd.np) with ⟨n, s, hr, hpl', hnp⟩ | hh
