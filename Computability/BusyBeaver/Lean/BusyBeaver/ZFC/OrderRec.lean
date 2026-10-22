@@ -92,9 +92,8 @@ def isWOSF (w : Nat) : NForm :=
 theorem nsat_isWOSF (ρ : Nat → V) (w : Nat) : NSat mem ρ (isWOSF w) ↔ IsWOS H (ρ w) := by
   simp only [isWOSF, NSat, nsat_pmemF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨h1, h2, h3, h4, h5⟩; exact ⟨h1, h2, h3, h4, h5⟩
-  · rintro ⟨h1, h2, h3, h4, h5⟩; exact ⟨h1, h2, h3, h4, h5⟩
+  exact ⟨fun ⟨h1, h2, h3, h4, h5⟩ => ⟨h1, h2, h3, h4, h5⟩,
+    fun ⟨h1, h2, h3, h4, h5⟩ => ⟨h1, h2, h3, h4, h5⟩⟩
 
 /-- Named formula for `EndExt` (free names `a`, `b`). -/
 def endExtF (a b : Nat) : NForm :=
@@ -134,20 +133,16 @@ theorem fld_step {W : V} (hW : IsWOS H W) (x : V) : Fld H (G W) x ↔ Fld H W x 
     · exact Or.inl h
     · exact Or.inr h
     · exact Or.inr (hG.ofld W hW x x h).1
-  · rintro (h | h)
-    · exact Or.inl h
-    · exact Or.inr (Or.inr ((hG.wo W hW).refl x h))
+  · exact fun h => h.imp_right fun h => Or.inr ((hG.wo W hW).refl x h)
 
 /-- **One step**: `G W` is a well-order end-extending `W`. -/
 theorem step_wos {W : V} (hW : IsWOS H W) : IsWOS H (G W) ∧ EndExt H W (G W) := by
   have hwo := wo_append hW.wo (hG.wo W hW) (fun x hx hy => hG.new W hW x hy hx)
-    (fun Z => by
-      obtain ⟨Z', hZ'⟩ := sep_of H (fun z => Fld H W z) (pmemF 1 0 0) (fun _ => W)
-        (fun z => by
-          simp only [nsat_pmemF H]
-          simp (disch := omega) only [upd_same, upd_other]
-          rfl) Z
-      exact ⟨Z', hZ'⟩)
+    (fun Z => sep_of H (fun z => Fld H W z) (pmemF 1 0 0) (fun _ => W)
+      (fun z => by
+        simp only [nsat_pmemF H]
+        simp (disch := omega) only [upd_same, upd_other]
+        rfl) Z)
   have hiff : ∀ x y, (Fld H W x ∨ mem x (N W)) → (Fld H W y ∨ mem y (N W)) →
       (((Fld H W x ∧ Fld H W y ∧ Le H W x y) ∨ (Fld H W x ∧ mem y (N W)) ∨
         (mem x (N W) ∧ mem y (N W) ∧ Le H (O W) x y)) ↔ Le H (G W) x y) := by
@@ -172,14 +167,12 @@ theorem step_wos {W : V} (hW : IsWOS H W) : IsWOS H (G W) ∧ EndExt H W (G W) :
     · exact ⟨Or.inl hx, Or.inr hy⟩
     · exact ⟨Or.inr (hG.ofld W hW x y h).1, Or.inr (hG.ofld W hW x y h).2⟩
   refine ⟨isWOS_of_wo H hwo' hf, fun x y => ?_, fun x y hx hy hny => ?_⟩
-  · constructor
-    · intro h
-      exact ⟨(hG.le_iff W hW x y).2 (Or.inl h), (hW.fld x y h).1, (hW.fld x y h).2⟩
-    · rintro ⟨h, hx, hy⟩
-      rcases (hG.le_iff W hW x y).1 h with h | ⟨_, h⟩ | h
-      · exact h
-      · exact absurd hy (hG.new W hW y h)
-      · exact absurd hx (hG.new W hW x (hG.ofld W hW x y h).1)
+  · refine ⟨fun h => ⟨(hG.le_iff W hW x y).2 (Or.inl h), hW.fld x y h⟩, ?_⟩
+    rintro ⟨h, hx, hy⟩
+    rcases (hG.le_iff W hW x y).1 h with h | ⟨_, h⟩ | h
+    · exact h
+    · exact absurd hy (hG.new W hW y h)
+    · exact absurd hx (hG.new W hW x (hG.ofld W hW x y h).1)
   · have hyN := ((fld_step H hG hW y).1 hy).resolve_left hny
     exact (hG.le_iff W hW x y).2 (Or.inr (Or.inl ⟨hx, hyN⟩))
 
@@ -237,12 +230,10 @@ theorem stage_wos : ∀ a, Ord mem a → ∀ W, IsStage H G a W →
       (Le H W x y ↔ Le H (G Wc) x y) := by
     intro c Wc x y hc h hx hy
     rw [hle]
-    constructor
-    · rintro ⟨c', Wc', hc', h', hxy⟩
-      rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
-      · exact (e.1 x y).2 ⟨hxy, hx, hy⟩
-      · exact ((e.1 x y).1 hxy).1
-    · intro hxy; exact ⟨c, Wc, hc, h, hxy⟩
+    refine ⟨fun ⟨c', Wc', hc', h', hxy⟩ => ?_, fun hxy => ⟨c, Wc, hc, h, hxy⟩⟩
+    rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
+    · exact (e.1 x y).2 ⟨hxy, hx, hy⟩
+    · exact ((e.1 x y).1 hxy).1
   -- two images have a common upper image
   have hjoin : ∀ c c' Wc Wc', mem c a → mem c' a → IsStage H G c Wc → IsStage H G c' Wc' →
       ∃ d Wd, mem d a ∧ IsStage H G d Wd ∧ (∀ x, Fld H (G Wc) x → Fld H (G Wd) x) ∧
@@ -272,9 +263,8 @@ theorem stage_wos : ∀ a, Ord mem a → ∀ W, IsStage H G a W →
     · obtain ⟨c, Wc, hc, h, hx'⟩ := (hfld x).1 hx
       obtain ⟨c', Wc', hc', h', hy'⟩ := (hfld y).1 hy
       obtain ⟨d, Wd, hd, hd', s1, s2⟩ := hjoin c c' Wc Wc' hc hc' h h'
-      rcases (hstepW d Wd hd hd').1.total x y (s1 x hx') (s2 y hy') with e | e
-      · exact Or.inl ((hle x y).2 ⟨d, Wd, hd, hd', e⟩)
-      · exact Or.inr ((hle y x).2 ⟨d, Wd, hd, hd', e⟩)
+      exact ((hstepW d Wd hd hd').1.total x y (s1 x hx') (s2 y hy')).imp
+        (fun e => (hle x y).2 ⟨d, Wd, hd, hd', e⟩) fun e => (hle y x).2 ⟨d, Wd, hd, hd', e⟩
     · obtain ⟨z0, hz0⟩ := hne
       obtain ⟨c, Wc, hc, h, hz0'⟩ := (hfld z0).1 (hZ z0 hz0)
       obtain ⟨Z', hZ'⟩ := sep_of H (fun z => Fld H (G Wc) z) (pmemF 1 0 0) (fun _ => G Wc)
@@ -293,12 +283,8 @@ theorem stage_wos : ∀ a, Ord mem a → ∀ W, IsStage H G a W →
         · exact (hle m z).2 ⟨c', Wc', hc', h', e.2 m z hmF hz' hzc⟩
         · exact absurd (e.fld H hz') hzc
   refine ⟨hW', fun c Wc hc h => ⟨fun x y => ?_, fun x y hx hy hny => ?_⟩⟩
-  · constructor
-    · intro hxy
-      have hf := (hstepW c Wc hc h).1.fld x y hxy
-      exact ⟨(hle x y).2 ⟨c, Wc, hc, h, hxy⟩, hf⟩
-    · rintro ⟨hxy, hx, hy⟩
-      exact (hread c Wc x y hc h hx hy).1 hxy
+  · exact ⟨fun hxy => ⟨(hle x y).2 ⟨c, Wc, hc, h, hxy⟩, (hstepW c Wc hc h).1.fld x y hxy⟩,
+      fun ⟨hxy, hx, hy⟩ => (hread c Wc x y hc h hx hy).1 hxy⟩
   · obtain ⟨c', Wc', hc', h', hy'⟩ := (hfld y).1 hy
     rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
     · exact (hle x y).2 ⟨c', Wc', hc', h', e.2 x y hx hy' hny⟩
