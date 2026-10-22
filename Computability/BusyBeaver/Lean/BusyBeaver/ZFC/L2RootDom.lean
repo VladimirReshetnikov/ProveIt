@@ -205,46 +205,4 @@ theorem iter_iff (s : EnumDom.St) :
     (fun _ => rfl) (fun n s => by cases h : EnumDom.enumStep s <;> simp only [EnumDom.run, h])
     (fun h => root_some h) (fun h => root_none h) s
 
-theorem iter_iff_halts : IterHalts dagDom (enc (toAS EnumDom.s0)) ↔ EnumDom.Halts := iter_iff _
-
-/-- The first two candidates (MP on truth, then DROP) lead to `nextproof = 2`
-with every other register zero: the state reached by the machine's boot. -/
-def s2 : EnumDom.St := ⟨0, 2, 0, 0, 0, 0⟩
-
-theorem run_s0_s2 : EnumDom.run 2 EnumDom.s0 = some s2 := by
-  have h0 : wim 0 0 = 0 := by simp [wim, P_zero_zero]
-  have hP : P 0 0 = 0 := P_zero_zero
-  have e1 : EnumDom.enumStep EnumDom.s0 = some ⟨0, 1, 0, 0, 0, 0⟩ := by
-    simp [EnumDom.enumStep, EnumDom.execAt, EnumDom.fetch, EnumDom.s0, h0, hP, Cantor.ofNat]
-  have e2 : EnumDom.enumStep ⟨0, 1, 0, 0, 0, 0⟩ = some s2 := by
-    simp [EnumDom.enumStep, EnumDom.execAt, EnumDom.fetch, s2, hP, Cantor.ofNat]
-  simp [EnumDom.run, e1, e2]
-
-/-- L2 from the boot register file `nextproof = 2`, all other registers zero. -/
-theorem iter_halts_boot : IterHalts dagDom (enc (toAS s2)) ↔ EnumDom.Halts := by
-  rw [iter_iff]
-  constructor
-  · rintro ⟨n, s', h1, h2⟩
-    exact ⟨2 + n, s', by rw [EnumDom.run_add 2 n _ _ run_s0_s2]; exact h1, h2⟩
-  · rintro ⟨n, s', h1, h2⟩
-    have hs0 : EnumDom.enumStep EnumDom.s0 = some ⟨0, 1, 0, 0, 0, 0⟩ := by
-      simp [EnumDom.enumStep, EnumDom.execAt, EnumDom.fetch, EnumDom.s0, wim, P_zero_zero, Cantor.ofNat]
-    have hs1 : EnumDom.enumStep ⟨0, 1, 0, 0, 0, 0⟩ = some s2 := by
-      simp [EnumDom.enumStep, EnumDom.execAt, EnumDom.fetch, s2, P_zero_zero, Cantor.ofNat]
-    match n, h1 with
-    | 0, h1 => simp [EnumDom.run] at h1; subst h1; rw [hs0] at h2; cases h2
-    | 1, h1 => simp [EnumDom.run, hs0] at h1; subst h1; rw [hs1] at h2; cases h2
-    | n + 2, h1 =>
-        refine ⟨n, s', ?_, h2⟩
-        simpa [EnumDom.run, hs0, hs1] using h1
-
-theorem enc_s2 : enc (toAS s2) = upd (fun _ => 0) 0 2 := by
-  funext i
-  rcases i with _ | _ | _ | _ | _ | _ | _ | _ | _ | i <;> simp [enc, toAS, s2, upd]
-
-/-- L2 composed with L1: the 217's program dagDom, iterated from the boot registers
-(`nextproof = 2`), halts iff the falsity code is derivable in the code calculus. -/
-theorem program_halts_iff : IterHalts dagDom (upd (fun _ => 0) 0 2) ↔ KCode222.C222 F := by
-  rw [← enc_s2, iter_halts_boot, EnumDom.enum_halts_iff]
-
 end SetTheory.BusyBeaver.ZFC.L2Dom
