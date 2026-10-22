@@ -1,0 +1,3 @@
+# Later recursion and report proposals
+
+Commit `c3caaf63a4e1b391426501b6bda21f4992d4465f` adds five proof-simplification archives. Its predecessor `55f600fe7e59c7ba0b6d227b87ed728d8ebd9dee`, co-authored by Claude Opus 5.5, proposes sharing the cumulative and G-hierarchy recursion. The exact two proposed Lean files are retained under `inputs/`; their maintained checked predecessors remain unchanged pending ordinary review and isolated kernel validation. The five archives enter the next intake batch separately. No submitted program, producer or proof compiler was run for this merge. [Bindings](merge.json).
