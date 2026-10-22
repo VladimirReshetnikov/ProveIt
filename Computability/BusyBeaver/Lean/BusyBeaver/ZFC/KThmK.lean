@@ -130,9 +130,8 @@ theorem eq_refl (x : Nat) : ThmK Ax (NF.eq x x) := by
 theorem eq_symm (x y : Nat) : ThmK Ax (imp (NF.eq x y) (NF.eq y x)) :=
   ded1 classical (.mp (.mp (.ax (.rho7 y x x)) h0) (.ax (eq_refl x)))
 
-theorem eq_trans (x y z : Nat) : ThmK Ax (imp (NF.eq x y) (imp (NF.eq y z) (NF.eq x z))) := by
-  apply ded2 classical
-  exact .mp (.mp (.ax (.rho7 x z y)) (.mp (.ax (eq_symm x y)) h1)) h0
+theorem eq_trans (x y z : Nat) : ThmK Ax (imp (NF.eq x y) (imp (NF.eq y z) (NF.eq x z))) :=
+  ded2 classical (.mp (.mp (.ax (.rho7 x z y)) (.mp (.ax (eq_symm x y)) h1)) h0)
 
 /-! ## Leibniz's law for quantifier-free membership formulas -/
 
@@ -149,15 +148,8 @@ theorem leibniz (x y : Nat) :
   | imp a b, hq, hf => by
       have ha := leibniz x y a hq.1 hf.1
       have hb := leibniz x y b hq.2 hf.2
-      constructor
-      · apply ded3 classical
-        have a0 : Der NF.imp (ThmK Ax) [rn x y a, imp a b, NF.eq x y] a :=
-          .mp (.mp (.ax ha.2) h2) h0
-        exact .mp (.mp (.ax hb.1) h2) (.mp h1 a0)
-      · apply ded3 classical
-        have a0 : Der NF.imp (ThmK Ax) [a, imp (rn x y a) (rn x y b), NF.eq x y] (rn x y a) :=
-          .mp (.mp (.ax ha.1) h2) h0
-        exact .mp (.mp (.ax hb.2) h2) (.mp h1 a0)
+      exact ⟨ded3 classical (.mp (.mp (.ax hb.1) h2) (.mp h1 (.mp (.mp (.ax ha.2) h2) h0))),
+        ded3 classical (.mp (.mp (.ax hb.2) h2) (.mp h1 (.mp (.mp (.ax ha.1) h2) h0)))⟩
   | all _ _, hq, _ => hq.elim
 
 theorem qf_bound {n : Nat} : ∀ {f : NF}, QF f → ¬ Bound n f
@@ -179,16 +171,12 @@ theorem spec {x y : Nat} (hxy : y ≠ x) {f : NF} (hq : QF f) (hf : EqFree f) :
       (imp (ex x (NF.eq x y)) (ex x (rn x y f)))) := all_imp_ex classical x _ _
   have elim : ThmK Ax (imp (ex x (rn x y f)) (rn x y f)) :=
     ex_elim x (eqFree_rn x y f hf) (not_occurs_rn hxy f (qf_bound hq))
-  apply ded1 classical
-  exact .mp (.ax elim) (.mp (.mp (.ax e) (.mp (.ax g) h0)) (.ax (.rho1 x y)))
+  exact ded1 classical (.mp (.ax elim) (.mp (.mp (.ax e) (.mp (.ax g) h0)) (.ax (.rho1 x y))))
 
 /-- Alpha-renaming of a binder to a fresh label, both directions. -/
 theorem alpha_fwd {x y : Nat} (hxy : y ≠ x) {f : NF} (hq : QF f) (hf : EqFree f)
     (hy : ¬ Occurs y f) : ThmK Ax (imp (all x f) (all y (rn x y f))) := by
-  have hyo : ¬ Occurs y (all x f) := by
-    simp only [Occurs]; intro o; cases o with
-    | inl o => exact hxy o
-    | inr o => exact hy o
+  have hyo : ¬ Occurs y (all x f) := by simp only [Occurs]; exact fun o => o.elim hxy hy
   exact syl classical (vac_of_not_occurs y _ hf hyo) (all_mono classical y (spec hxy hq hf))
 
 theorem qf_rn (x y : Nat) : ∀ f : NF, QF f → QF (rn x y f)
@@ -204,9 +192,8 @@ theorem alpha_bwd {x y : Nat} (hxy : y ≠ x) {f : NF} (hq : QF f) (hf : EqFree 
     spec (Ne.symm hxy) (qf_rn x y f hq) (eqFree_rn x y f hf)
   rw [rn_rn_fresh f hy] at s
   have hxo : ¬ Occurs x (all y (rn x y f)) := by
-    simp only [Occurs]; intro o; cases o with
-    | inl o => exact hxy o.symm
-    | inr o => exact not_occurs_rn hxy f (qf_bound hq) o
+    simp only [Occurs]
+    exact fun o => o.elim (fun o => hxy o.symm) (not_occurs_rn hxy f (qf_bound hq))
   exact syl classical (vac_of_not_occurs x _ (eqFree_rn x y f hf) hxo) (all_mono classical x s)
 
 #print axioms spec

@@ -181,10 +181,10 @@ theorem eq222' (s p : Nat) : Run Dag222.dag222 (.node 123) (setR R s p)
 def eqExit (R : Regs) : Exit := if R 6 = R 5 then .normal else .brk 1
 
 theorem eq219 : Run dag219 (.node 123) R (eqExit R) (setR R 0 0) := by
-  have := eq219' R (R 6) (R 5); rw [setR_self] at this; exact this
+  have := eq219' R (R 6) (R 5); rwa [setR_self] at this
 
 theorem eq222 : Run Dag222.dag222 (.node 123) R (eqExit R) (setR R 0 0) := by
-  have := eq222' R (R 6) (R 5); rw [setR_self] at this; exact this
+  have := eq222' R (R 6) (R 5); rwa [setR_self] at this
 
 end contracts
 

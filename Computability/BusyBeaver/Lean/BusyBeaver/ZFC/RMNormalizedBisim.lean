@@ -92,45 +92,23 @@ def entryOk (t1 t2 : Tree) (T : CTree) (x : Entry) : Bool :=
 theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
     (h : branchOk decode t1 t2 T A B j = true) : BranchGood t1 t2 (Rel decode T) A B := by
   unfold branchOk at h
-  revert h
-  cases h1 : seg t1 segFuel A with
-  | none => intro h; cases h
-  | some lP1 =>
-  cases h2 : seg t2 segFuel B with
-  | none => intro h; cases h
-  | some lP2 =>
-  cases h3 : getc decode T j with
-  | none => intro h; cases h
-  | some Q =>
-  intro h
-  obtain ⟨l1, P1⟩ := lP1
-  obtain ⟨l2, P2⟩ := lP2
-  obtain ⟨Q1, Q2⟩ := Q
-  simp only [Bool.and_eq_true] at h
-  obtain ⟨⟨hc, e1⟩, e2⟩ := h
-  exact ⟨l1, P1, l2, P2, h1, h2, cntEq_ok hc, j, Q1, Q2, h3,
-    ibeq_ok e1, ibeq_ok e2⟩
+  split at h
+  · simp only [Bool.and_eq_true] at h
+    obtain ⟨⟨hc, e1⟩, e2⟩ := h
+    exact ⟨_, _, _, _, ‹_›, ‹_›, cntEq_ok hc, j, _, _, ‹_›, ibeq_ok e1, ibeq_ok e2⟩
+  · cases h
 
 theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry}
     (h : entryOk decode t1 t2 T x = true) :
     EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) := by
   unfold entryOk at h
-  revert h
-  cases h1 : tsite t1 (decode x.1) with
-  | none => intro h; cases h
-  | some eQ1 =>
-  cases h2 : tsite t2 (decode x.2.1) with
-  | none => obtain ⟨e1, _⟩ := eQ1; cases e1 <;> intro h <;> cases h
-  | some eQ2 =>
-  obtain ⟨e1, Q1⟩ := eQ1
-  obtain ⟨e2, Q2⟩ := eQ2
-  cases e1 <;> cases e2 <;> intro h
-  all_goals first | (simp only [Bool.false_eq_true] at h; done) | skip
+  split at h
+  · exact Or.inl ⟨_, _, ‹_›, ‹_›⟩
   · simp only [Bool.and_eq_true] at h
     obtain ⟨⟨hr, hj⟩, hk⟩ := h
-    rw [Nat.eq_of_beq_eq_true hr] at h1
-    exact Or.inr ⟨_, Q1, Q2, h1, h2, branchOk_good decode hj, branchOk_good decode hk⟩
-  · exact Or.inl ⟨Q1, Q2, h1, h2⟩
+    obtain rfl := Nat.eq_of_beq_eq_true hr
+    exact Or.inr ⟨_, _, _, ‹_›, ‹_›, branchOk_good decode hj, branchOk_good decode hk⟩
+  · cases h
 
 theorem check_bisim {p1 p2 : Program} {T : CTree}
     (hs : branchOk decode (ptree p1) (ptree p2) T [] [] 0 = true)
@@ -149,8 +127,7 @@ theorem check_bisim {p1 p2 : Program} {T : CTree}
         obtain ⟨rfl, rfl⟩ := hj
         exact entryOk_good decode (x := (a, b, c, d)) (lookupC_all hl ha)
   unfold EntryGood at he ⊢
-  rw [tsite_ipeq p1 hPA, tsite_ipeq p2 hQB]
-  exact he
+  rwa [tsite_ipeq p1 hPA, tsite_ipeq p2 hQB]
 
 /-- A compressed, checked certificate proves the identical all-register
 halting equivalence as the original literal-path certificate. -/
