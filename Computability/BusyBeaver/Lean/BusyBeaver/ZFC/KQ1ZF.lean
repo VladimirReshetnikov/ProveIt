@@ -1,7 +1,7 @@
 import BusyBeaver.ZFC.KQ1Basic
 import BusyBeaver.ZFC.KQ1Replacement
 import BusyBeaver.ZFC.KQ1Collect
-import BusyBeaver.ZFC.WFTheory
+import BusyBeaver.ZFC.WFModel
 
 /-!
 ZF from the quotient interface `KQHyp.QHyp`.
