@@ -16,7 +16,7 @@ codes are derivable has no irreflexive model, the code 1 is derivable.
 
 namespace SetTheory.BusyBeaver.ZFC.KEind222
 
-open SetTheory.BusyBeaver.ZFC.Tarski (NF Thm rn rv complete)
+open SetTheory.BusyBeaver.ZFC.Tarski (NF Thm rn rv complete h0 h1 h2 ded1 ded2 syl dne all_mono ex_mono)
 open SetTheory.BusyBeaver.ZFC.Tarski.NF Kalmar SetTheory.BusyBeaver.ZFC.KThmK
 
 /-! ## The interpretation -/
@@ -41,14 +41,14 @@ variable {Ax : NF → Prop}
 /-! ## Conjunction -/
 
 theorem and_intro (A B : NF) : ThmK Ax (imp A (imp B (wa A B))) := by
-  apply ded2
+  apply ded2 classical
   apply deduction classical
   -- [A → ¬B, B, A] ⊢ ⊥
   exact .mp (.mp h0 h2) h1
 
 theorem and_l (A B : NF) : ThmK Ax (imp (wa A B) A) := by
-  apply syl _ (dne A)
-  apply ded1
+  apply syl classical _ (dne classical A)
+  apply ded1 classical
   apply deduction classical
   -- [¬A, wa A B] ⊢ ⊥
   have hn : Der NF.imp (ThmK Ax) [neg A, wa A B] (imp A (neg B)) := by
@@ -57,8 +57,8 @@ theorem and_l (A B : NF) : ThmK Ax (imp (wa A B) A) := by
   exact .mp h1 hn
 
 theorem and_r (A B : NF) : ThmK Ax (imp (wa A B) B) := by
-  apply syl _ (dne B)
-  apply ded1
+  apply syl classical _ (dne classical B)
+  apply ded1 classical
   apply deduction classical
   have hn : Der NF.imp (ThmK Ax) [neg B, wa A B] (imp A (neg B)) := by
     apply deduction classical
@@ -109,7 +109,7 @@ theorem all_bout_alpha {v w x y : Nat} (hx : x ≠ v) (hy : y ≠ v) (hwx : w �
 /-- `Ev v x y → Ev w x y` for labels outside `{x, y}`. -/
 theorem ev_alpha {v w x y : Nat} (hx : x ≠ v) (hy : y ≠ v) (hwx : w ≠ x) (hwy : w ≠ y) :
     ThmK Ax (imp (Ev v x y) (Ev w x y)) := by
-  apply ded1
+  apply ded1 classical
   have hin : Der NF.imp (ThmK Ax) [Ev v x y] (all w (Bin w x y)) :=
     .mp (.ax (all_bin_alpha hx hy hwx hwy)) (.mp (.ax (and_l _ _)) h0)
   have hout : Der NF.imp (ThmK Ax) [Ev v x y] (all w (Bout w x y)) :=
@@ -153,7 +153,7 @@ theorem Eind_el_r (a b c : Nat) : ThmK Ax (imp (Eind a b) (imp (rel c a) (rel c 
   have t := eind_to (Ax := Ax) h1 h2
   have s := bin_spec (Ax := Ax) (v := fresh3 a b c) (x := a) (y := b) (c := c) (Ne.symm h3)
     (Ne.symm h1) (Ne.symm h2)
-  apply ded1
+  apply ded1 classical
   have hev : Der NF.imp (ThmK Ax) [Eind a b] (Ev (fresh3 a b c) a b) := .mp (.ax t) h0
   have hb : Der NF.imp (ThmK Ax) [Eind a b] (biff (rel c a) (rel c b)) :=
     .mp (.ax s) (.mp (.ax (and_l _ _)) hev)
@@ -165,7 +165,7 @@ theorem Eind_el_l (a b c : Nat) : ThmK Ax (imp (Eind c a) (imp (rel c b) (rel a 
   have t := eind_to (Ax := Ax) h1 h2
   have s := bout_spec (Ax := Ax) (v := fresh3 c a b) (x := c) (y := a) (c := b) (Ne.symm h3)
     (Ne.symm h1) (Ne.symm h2)
-  apply ded1
+  apply ded1 classical
   have hev : Der NF.imp (ThmK Ax) [Eind c a] (Ev (fresh3 c a b) c a) := .mp (.ax t) h0
   have hb : Der NF.imp (ThmK Ax) [Eind c a] (biff (rel c b) (rel a b)) :=
     .mp (.ax s) (.mp (.ax (and_r _ _)) hev)
@@ -176,7 +176,7 @@ theorem Eind_el_l (a b c : Nat) : ThmK Ax (imp (Eind c a) (imp (rel c b) (rel a 
 /-- `(p ↔ q) → (p ↔ r) → (q ↔ r)`, propositionally. -/
 theorem biff_euclid (p q r : NF) :
     ThmK Ax (imp (biff p q) (imp (biff p r) (biff q r))) := by
-  apply ded2
+  apply ded2 classical
   have pq : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp p q) := .mp (.ax (and_l _ _)) h1
   have qp : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp q p) := .mp (.ax (and_r _ _)) h1
   have pr : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp p r) := .mp (.ax (and_l _ _)) h0
@@ -192,12 +192,12 @@ theorem biff_euclid (p q r : NF) :
 /-- Distribution of a two-premise implication under `∀`. -/
 theorem all_mono2 (i : Nat) {a b c : NF} (h : ThmK Ax (imp a (imp b c))) :
     ThmK Ax (imp (all i a) (imp (all i b) (all i c))) :=
-  syl (all_mono i h) (.rho2 i b c)
+  syl classical (all_mono classical i h) (.rho2 i b c)
 
 theorem ev_euclid (v x y z : Nat) : ThmK Ax (imp (Ev v x y) (imp (Ev v x z) (Ev v y z))) := by
   have hin := all_mono2 (Ax := Ax) v (biff_euclid (rel v x) (rel v y) (rel v z))
   have hout := all_mono2 (Ax := Ax) v (biff_euclid (rel x v) (rel y v) (rel z v))
-  apply ded2
+  apply ded2 classical
   have i1 : Der NF.imp (ThmK Ax) [Ev v x z, Ev v x y] (all v (Bin v y z)) :=
     .mp (.mp (.ax hin) (.mp (.ax (and_l _ _)) h1)) (.mp (.ax (and_l _ _)) h0)
   have o1 : Der NF.imp (ThmK Ax) [Ev v x z, Ev v x y] (all v (Bout v y z)) :=
@@ -209,7 +209,7 @@ theorem Eind_euclid (a b c : Nat) : ThmK Ax (imp (Eind c a) (imp (Eind c b) (Ein
   let w := fresh3 a b c
   obtain ⟨ha, hb, hc⟩ := fresh3_ne a b c
   have e := ev_euclid (Ax := Ax) w c a b
-  apply ded2
+  apply ded2 classical
   have x1 : Der NF.imp (ThmK Ax) [Eind c b, Eind c a] (Ev w c a) := .mp (.ax (eind_to hc ha)) h1
   have x2 : Der NF.imp (ThmK Ax) [Eind c b, Eind c a] (Ev w c b) := .mp (.ax (eind_to hc hb)) h0
   exact .mp (.ax (eind_of ha hb)) (.mp (.mp (.ax e) x1) x2)
@@ -221,26 +221,26 @@ theorem Eq_Eind (x y : Nat) : ThmK Ax (imp (NF.eq x y) (Eind x y)) := by
   have hwy : w ≠ y := Ne.symm (Nat.ne_of_lt (KCode222.lt_wel_right x y))
   -- x = y → (w ∈ x ↔ w ∈ y) and → (x ∈ w ↔ y ∈ w)
   have bi : ThmK Ax (imp (NF.eq x y) (Bin w x y)) := by
-    apply ded1
+    apply ded1 classical
     have f1 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel w x) (rel w y)) := .mp (.ax (.rho3 x y w)) h0
     have f2 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel w y) (rel w x)) :=
       .mp (.ax (.rho3 y x w)) (.mp (.ax (eq_symm x y)) h0)
     exact .mp (.mp (.ax (and_intro _ _)) f1) f2
   have bo : ThmK Ax (imp (NF.eq x y) (Bout w x y)) := by
-    apply ded1
+    apply ded1 classical
     have f1 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel x w) (rel y w)) := .mp (.ax (.rho5 y w x)) h0
     have f2 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel y w) (rel x w)) :=
       .mp (.ax (.rho5 x w y)) (.mp (.ax (eq_symm x y)) h0)
     exact .mp (.mp (.ax (and_intro _ _)) f1) f2
-  apply ded1
+  apply ded1 classical
   have hall : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (NF.eq x y)) := .mp (.ax (.helper x y)) h0
-  have i1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bin w x y)) := .mp (.ax (all_mono w bi)) hall
-  have o1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bout w x y)) := .mp (.ax (all_mono w bo)) hall
+  have i1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bin w x y)) := .mp (.ax (all_mono classical w bi)) hall
+  have o1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bout w x y)) := .mp (.ax (all_mono classical w bo)) hall
   exact .mp (.ax (eind_of hwx hwy)) (.mp (.mp (.ax (and_intro _ _)) i1) o1)
 
 /-- th(rho1): `∃i Eind(i, j)`. -/
 theorem Eind_ex (i j : Nat) : ThmK Ax (ex i (Eind i j)) :=
-  ThmK.mp (ex_mono i (Eq_Eind i j)) (.rho1 i j)
+  ThmK.mp (ex_mono classical i (Eq_Eind i j)) (.rho1 i j)
 
 /-- th(vacEq): `Eind a b → ∀c Eind a b` for `c ≠ a, b`. -/
 theorem Eind_vac (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :
@@ -250,7 +250,7 @@ theorem Eind_vac (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :
     obtain ⟨ha, hb, hwc⟩ := fresh3_ne a b c
     have v : ThmK Ax (imp (Ev w a b) (all c (Ev w a b))) :=
       vac_of_not_occurs c _ (ef_ev w a b) (occ_ev (Ne.symm hwc) hca hcb)
-    exact syl (syl (eind_to ha hb) v) (all_mono c (eind_of ha hb))
+    exact syl classical (syl classical (eind_to ha hb) v) (all_mono classical c (eind_of ha hb))
   · exact vac_of_not_occurs c _ (ef_ev _ a b) (occ_ev hc hca hcb)
 
 /-! ## The interpretation of derivations -/

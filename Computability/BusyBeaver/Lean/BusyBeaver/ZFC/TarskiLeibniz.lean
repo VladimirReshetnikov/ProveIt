@@ -144,14 +144,16 @@ theorem rn_self (x : Nat) : ∀ f : NF, rn x x f = f
 
 /-! ## Leibniz's law -/
 
-variable {Ax : NF → Prop}
+variable {Ax : NF → Prop} {T : NF → Prop}
 
-theorem rel_L (u v j : Nat) : Thm Ax (imp (NF.eq u v) (imp (rel u j) (rel v j))) := .rho5 v j u
-theorem rel_R (u v i : Nat) : Thm Ax (imp (NF.eq u v) (imp (rel i u) (rel i v))) := .rho3 u v i
+theorem rel_L [R : Rows T] (u v j : Nat) : T (imp (NF.eq u v) (imp (rel u j) (rel v j))) :=
+  R.rho5 v j u
+theorem rel_R [R : Rows T] (u v i : Nat) : T (imp (NF.eq u v) (imp (rel i u) (rel i v))) :=
+  R.rho3 u v i
 
-theorem eq_L (u v j : Nat) : Thm Ax (imp (NF.eq u v) (imp (NF.eq u j) (NF.eq v j))) :=
+theorem eq_L [R : Rows T] (u v j : Nat) : T (imp (NF.eq u v) (imp (NF.eq u j) (NF.eq v j))) :=
   -- rho7: u = v → (u = j → v = j)
-  .rho7 v j u
+  R.rho7 v j u
 
 
 /-- A label strictly above every label of a formula. -/
@@ -181,44 +183,64 @@ theorem not_occurs_of_top_le {n : Nat} : ∀ {f : NF}, top f ≤ n → ¬ Occurs
       | inl o => omega
       | inr o => exact not_occurs_of_top_le (by omega) o
 
-section Leibniz
+section Atoms
 
-variable (hC : Classical NF.imp NF.bot (Thm Ax))
+variable (hC : Classical NF.imp NF.bot T)
 include hC
 
 /-- Rewriting both places of a two-place atom along `x = y`. -/
 theorem atom_subst (P : Nat → Nat → NF)
-    (hL : ∀ u v j, Thm Ax (imp (NF.eq u v) (imp (P u j) (P v j))))
-    (hR : ∀ u v i, Thm Ax (imp (NF.eq u v) (imp (P i u) (P i v))))
-    (x y i j : Nat) : Thm Ax (imp (NF.eq x y) (imp (P i j) (P (rv x y i) (rv x y j)))) := by
-  have step1 : Thm Ax (imp (NF.eq x y) (imp (P i j) (P (rv x y i) j))) := by
+    (hL : ∀ u v j, T (imp (NF.eq u v) (imp (P u j) (P v j))))
+    (hR : ∀ u v i, T (imp (NF.eq u v) (imp (P i u) (P i v))))
+    (x y i j : Nat) : T (imp (NF.eq x y) (imp (P i j) (P (rv x y i) (rv x y j)))) := by
+  have step1 : T (imp (NF.eq x y) (imp (P i j) (P (rv x y i) j))) := by
     by_cases hi : i = x
     · subst hi; simp only [rv, if_true]; exact hL i y j
     · simp only [rv, hi, if_false]; exact ded2 hC h0
-  have step2 : Thm Ax (imp (NF.eq x y) (imp (P (rv x y i) j) (P (rv x y i) (rv x y j)))) := by
+  have step2 : T (imp (NF.eq x y) (imp (P (rv x y i) j) (P (rv x y i) (rv x y j)))) := by
     by_cases hj : j = x
     · subst hj; simp only [rv, if_true]; exact hR j y _
     · simp only [rv, hj, if_false]; exact ded2 hC h0
   apply ded2 hC
   exact .mp (.mp (.ax step2) h1) (.mp (.mp (.ax step1) h1) h0)
 
-/-- The reverse rewriting, through symmetry of equality. -/
-theorem atom_subst_rev (P : Nat → Nat → NF)
-    (hL : ∀ u v j, Thm Ax (imp (NF.eq u v) (imp (P u j) (P v j))))
-    (hR : ∀ u v i, Thm Ax (imp (NF.eq u v) (imp (P i u) (P i v))))
-    (x y i j : Nat) : Thm Ax (imp (NF.eq x y) (imp (P (rv x y i) (rv x y j)) (P i j))) := by
-  have step1 : Thm Ax (imp (NF.eq y x) (imp (P (rv x y i) (rv x y j)) (P i (rv x y j)))) := by
+/-- The reverse rewriting, through symmetry of equality (`hs`). -/
+theorem atom_subst_rev (hs : ∀ x y, T (imp (NF.eq x y) (NF.eq y x))) (P : Nat → Nat → NF)
+    (hL : ∀ u v j, T (imp (NF.eq u v) (imp (P u j) (P v j))))
+    (hR : ∀ u v i, T (imp (NF.eq u v) (imp (P i u) (P i v))))
+    (x y i j : Nat) : T (imp (NF.eq x y) (imp (P (rv x y i) (rv x y j)) (P i j))) := by
+  have step1 : T (imp (NF.eq y x) (imp (P (rv x y i) (rv x y j)) (P i (rv x y j)))) := by
     by_cases hi : i = x
     · subst hi; simp only [rv, if_true]; exact hL y i _
     · simp only [rv, hi, if_false]; exact ded2 hC h0
-  have step2 : Thm Ax (imp (NF.eq y x) (imp (P i (rv x y j)) (P i j))) := by
+  have step2 : T (imp (NF.eq y x) (imp (P i (rv x y j)) (P i j))) := by
     by_cases hj : j = x
     · subst hj; simp only [rv, if_true]; exact hR y j i
     · simp only [rv, hj, if_false]; exact ded2 hC h0
   apply ded2 hC
-  have hyx : Der NF.imp (Thm Ax) [P (rv x y i) (rv x y j), NF.eq x y] (NF.eq y x) :=
-    .mp (.ax (eq_symm hC x y)) h1
+  have hyx : Der NF.imp T [P (rv x y i) (rv x y j), NF.eq x y] (NF.eq y x) :=
+    .mp (.ax (hs x y)) h1
   exact .mp (.mp (.ax step2) hyx) (.mp (.mp (.ax step1) hyx) h0)
+
+/-- Object-level existential monotonicity: `∀i(a → b) → (∃i a → ∃i b)`. -/
+theorem all_imp_ex [R : Rows T] (i : Nat) (a b : NF) :
+    T (imp (all i (imp a b)) (imp (ex i a) (ex i b))) := by
+  have c1 : T (imp (all i (imp a b)) (all i (imp (neg b) (neg a)))) :=
+    all_mono hC i (contra_thm hC a b)
+  -- ∀i(a→b) → (∀i¬b → ∀i¬a), then contrapose the inner implication.
+  have c3 : T (imp (all i (imp a b)) (imp (all i (neg b)) (all i (neg a)))) :=
+    syl hC c1 (R.rho2 i (neg b) (neg a))
+  apply ded2 hC
+  -- hypotheses: ∀i(a→b), ∃i a = ¬∀i¬a; goal ∃i b = ¬∀i¬b
+  apply deduction hC
+  exact .mp h1 (.mp (.mp (.ax c3) h2) h0)
+
+end Atoms
+
+section Leibniz
+
+variable (hC : Classical NF.imp NF.bot (Thm Ax))
+include hC
 
 theorem eq_R (u v i : Nat) : Thm Ax (imp (NF.eq u v) (imp (NF.eq i u) (NF.eq i v))) := by
   apply ded2 hC
@@ -230,11 +252,11 @@ theorem leibniz (x y : Nat) :
       Thm Ax (imp (NF.eq x y) (imp f (rn x y f))) ∧
       Thm Ax (imp (NF.eq x y) (imp (rn x y f) f))
   | rel i j, _, _ =>
-      ⟨atom_subst hC rel (rel_L (Ax := Ax)) (rel_R (Ax := Ax)) x y i j,
-       atom_subst_rev hC rel (rel_L (Ax := Ax)) (rel_R (Ax := Ax)) x y i j⟩
+      ⟨atom_subst hC rel (rel_L (T := Thm Ax)) (rel_R (T := Thm Ax)) x y i j,
+       atom_subst_rev hC (eq_symm hC) rel (rel_L (T := Thm Ax)) (rel_R (T := Thm Ax)) x y i j⟩
   | NF.eq i j, _, _ =>
-      ⟨atom_subst hC NF.eq (eq_L (Ax := Ax)) (eq_R hC) x y i j,
-       atom_subst_rev hC NF.eq (eq_L (Ax := Ax)) (eq_R hC) x y i j⟩
+      ⟨atom_subst hC NF.eq (eq_L (T := Thm Ax)) (eq_R hC) x y i j,
+       atom_subst_rev hC (eq_symm hC) NF.eq (eq_L (T := Thm Ax)) (eq_R hC) x y i j⟩
   | NF.bot, _, _ => ⟨ded2 hC h0, ded2 hC h0⟩
   | imp a b, hx, hy => by
       have ha := leibniz x y a (fun h => hx (Or.inl h)) (fun h => hy (Or.inl h))
@@ -265,19 +287,6 @@ theorem leibniz (x y : Nat) :
       exact ⟨lift ha.1, lift ha.2⟩
 
 /-! ## Specialization and alpha-renaming -/
-
-/-- Object-level existential monotonicity: `∀i(a → b) → (∃i a → ∃i b)`. -/
-theorem all_imp_ex (i : Nat) (a b : NF) :
-    Thm Ax (imp (all i (imp a b)) (imp (ex i a) (ex i b))) := by
-  have c1 : Thm Ax (imp (all i (imp a b)) (all i (imp (neg b) (neg a)))) :=
-    all_mono hC i (contra_thm hC a b)
-  have c2 := Thm.rho2 (Ax := Ax) i (neg b) (neg a)
-  -- ∀i(a→b) → (∀i¬b → ∀i¬a), then contrapose the inner implication.
-  have c3 : Thm Ax (imp (all i (imp a b)) (imp (all i (neg b)) (all i (neg a)))) := syl hC c1 c2
-  apply ded2 hC
-  -- hypotheses: ∀i(a→b), ∃i a = ¬∀i¬a; goal ∃i b = ¬∀i¬b
-  apply deduction hC
-  exact .mp h1 (.mp (.mp (.ax c3) h2) h0)
 
 /-- Specialization: `∀x φ → φ[y/x]` when neither label is rebound and `y ≠ x`. -/
 theorem spec {x y : Nat} (hxy : y ≠ x) {f : NF} (hx : ¬ Bound x f) (hy : ¬ Bound y f) :
