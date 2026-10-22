@@ -30,7 +30,7 @@ The users of `t215` are the nine `KSites215Batch*` modules (`decide +kernel` on
 
 | Module | Literal `t215` | Computed `t215` |
 |---|---:|---:|
-| `KSource215Program` | — | 2.4 s |
+| `KSource215Program` | 38 s | 2.4 s |
 | `KSites215Batch004` | 185 s | 202 s |
 | `DecoderSourceBinding` | — | 14 s |
 | `KDecoderPrefix215` | — | 2.1 s |
