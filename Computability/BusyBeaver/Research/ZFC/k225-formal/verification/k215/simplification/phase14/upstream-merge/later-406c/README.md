@@ -1,0 +1,5 @@
+# Later upstream quotient and dense proposals
+
+Upstream `7f3942117fb54d6316fa84c501350504ab9e6f55` shares quotient syntax and derives relational-satisfaction congruence through quotient satisfaction; `406cb959dd6ad3bbd34af4a6d92ba8807575d60b` adopts Source192’s absorbing dense-run invariant. Both are co-authored by Claude Opus 5.5 and retain their attributed component-check claims. Those claims do not certify this selected exact K215 closure. [Exact inputs and existing Git aliases](merge.json) preserve every proposal; no source producer or compiler was run for this merge. Maintained Lean sources and generate_kq1.py remain at the checked phase14 versions pending a separate kernel check.
+
+Upstream placement `e1bd73f84a` concerns the same five c3caaf reports already placed and reconciled in this tree as Sources188–192. Its duplicate project-layout copies remain in Git history. The original archives and all1161 members remain recoverable through the host’s committed batch214 recovery map. No ZIP was retired again.
