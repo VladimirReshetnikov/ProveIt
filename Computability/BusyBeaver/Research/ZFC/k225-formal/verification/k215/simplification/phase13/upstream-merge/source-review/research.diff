@@ -1,0 +1,664 @@
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/README.md b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/README.md
+index df9430c085..985e2a06d7 100644
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/README.md
+@@ -21,5 +21,10 @@ Checked here (Rocq 9.1.0 / rocq-stdlib 9.0.0, K230 reference at its pinned sourc
+ * `DomRho8.v` 1.9 s and its user `ThmDom` 1.0 s, both closed under the global context.
+ 
+ Not run: a fresh compile of the whole closure and recursive `coqchk` with these files in place.
+-The Lean twins are maintained: `Lukasiewicz.lean` and `DominatedImplication.lean` are rendered by
+-the same producer.
++The Lean twins are proposals too: the maintained `DominatedImplication.lean` is the peer's checked
++phase-eleven core, and the shared-basis Lean rendering (with `Lukasiewicz` as an adapter) is in
++`3a7a61ee97` / `49e99c5b7c`.
++
++[`shared-core/`](shared-core/README.md) supersedes both rows above with one shared derivation: a generic
++`DominatedCore.v` and two thin instances (`DomRho8.v`, `CD222.v`), 45,538 -> 15,360 bytes over the two
++maintained files, compiled with the same users.
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/CD222.v b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/CD222.v
+new file mode 100644
+index 0000000000..0a4e7e1ccd
+--- /dev/null
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/CD222.v
+@@ -0,0 +1,31 @@
++(** * CD222: implicational theorems of thm222 from the Lukasiewicz row rho8 alone.
++
++    [DominatedCore] with the domination relation that always holds: every row is then a
++    restricted row, and the core's K, Peirce, composition and S are those of thm222. *)
++From K230L Require Import Codes230.
++From K215F Require Import Thm222.
++From K215F Require DominatedCore.
++
++Definition mp222 a b (hab : thm222 (wim a b)) (ha : thm222 a) : thm222 b := W_mp a b ha hab.
++Definition row222 a b c u (_ : True) : thm222 (rho8 a b c u) := W_r8 a b c u.
++
++Lemma thm_K (p q : nat) : thm222 (wim p (wim q p)).
++Proof.
++  exact (DominatedCore.k nat wim (fun _ _ => True) (fun _ => I) (fun _ _ _ _ => I)
++    (fun _ _ _ _ => I) thm222 mp222 row222 p q).
++Qed.
++Lemma thm_P (p q : nat) : thm222 (wim (wim (wim p q) p) p).
++Proof.
++  exact (DominatedCore.peirce nat wim (fun _ _ => True) (fun _ => I) (fun _ _ _ _ => I)
++    (fun _ _ _ _ => I) thm222 mp222 row222 p q).
++Qed.
++Lemma thm_B (p q r : nat) : thm222 (wim (wim p q) (wim (wim q r) (wim p r))).
++Proof.
++  exact (DominatedCore.composition nat wim (fun _ _ => True) (fun _ => I) (fun _ _ _ _ => I)
++    (fun _ _ _ _ => I) thm222 mp222 row222 p q r).
++Qed.
++Lemma thm_S (p q r : nat) : thm222 (wim (wim p (wim q r)) (wim (wim p q) (wim p r))).
++Proof.
++  exact (DominatedCore.s nat wim (fun _ _ => True) (fun _ => I) (fun _ _ _ _ => I)
++    (fun _ _ _ _ => I) thm222 mp222 row222 p q r).
++Qed.
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/DomRho8.v b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/DomRho8.v
+new file mode 100644
+index 0000000000..674634167d
+--- /dev/null
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/DomRho8.v
+@@ -0,0 +1,23 @@
++(** Dominated rho8 derives every rho8 instance: [DominatedCore] at natural codes, where
++    [u <= a] is the domination relation (implication codes dominate both inputs). *)
++From Stdlib Require Import Arith Lia.
++From K230L Require Import Codes230.
++From K215F Require DominatedCore.
++
++Record DomImp (T : nat -> Prop) : Prop := {
++  dtruth : T 0;
++  dmp : forall a b, T (wim a b) -> T a -> T b;
++  drho8 : forall a b c u, u <= a -> T (rho8 a b c u) }.
++Arguments dtruth {T} _.
++Arguments dmp {T} _ _ _ _ _.
++Arguments drho8 {T} _ _ _ _ _ _.
++
++Lemma le_l u x y : u <= x -> u <= wim x y.
++Proof. intro H. unfold wim. pose proof (P_ge_l x y). lia. Qed.
++Lemma le_r u y x : u <= y -> u <= wim x y.
++Proof. intro H. unfold wim. pose proof (P_ge_r x y). lia. Qed.
++
++(** Every rho8 instance follows from the dominated ones. *)
++Theorem rho8_all (T : nat -> Prop) (h : DomImp T) a b c u : T (rho8 a b c u).
++Proof. exact (DominatedCore.rho8_all nat wim le le_n le_l le_r T (dmp h) (drho8 h) a b c u). Qed.
++Print Assumptions rho8_all.
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/DominatedCore.v b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/DominatedCore.v
+new file mode 100644
+index 0000000000..31bb2c49b8
+--- /dev/null
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/DominatedCore.v
+@@ -0,0 +1,268 @@
++(** * DominatedCore: Lukasiewicz's axiom from its dominated instances, and the classical basis.
++
++    For any binary connective [imp] and any reflexive relation [below] preserved by insertion
++    into either operand of [imp], modus ponens and the rows [rho8 a b c u] with [below u a]
++    derive every row, composition, prefixing, K, Peirce and S. The 56 lemmas are the
++    condensed-detachment derivation of k225-formal/rho8cd/derivation_core.txt, rendered by
++    generate_domrho8_cd.py --rocq-core exactly as the Lean DominatedImplication. *)
++
++Section Core.
++Variable A : Type.
++Variable imp : A -> A -> A.
++Variable below : A -> A -> Prop.
++Hypothesis refl : forall a, below a a.
++Hypothesis le_l : forall {u x} y, below u x -> below u (imp x y).
++Hypothesis le_r : forall {u y} x, below u y -> below u (imp x y).
++
++Definition rho8 a b c u := imp (imp (imp c u) a) (imp (imp a c) (imp b c)).
++
++Variable T : A -> Prop.
++Hypothesis mp : forall a b, T (imp a b) -> T a -> T b.
++Hypothesis row : forall a b c u, below u a -> T (rho8 a b c u).
++
++Lemma d1 v0 v1 v2 v3 v4 (hb0 : below v3 v0) :
++  T (imp (imp (imp (imp v0 v1) (imp v2 v1)) (imp v1 v3)) (imp v4 (imp v1 v3))).
++Proof. exact (mp _ _ (row (imp (imp v0 v1) (imp v2 v1)) v4 (imp v1 v3) v0 (le_l (imp v2 v1) (le_l v1 (refl _)))) (row v0 v2 v1 v3 hb0)). Qed.
++
++Lemma d2 v0 v1 v2 v3 v4 v5 (hb0 : below v2 v3) :
++  T (imp (imp (imp v0 (imp v1 v2)) (imp (imp v3 v1) (imp v4 v1))) (imp v5 (imp (imp v3 v1) (imp v4 v1)))).
++Proof. exact (mp _ _ (row (imp v0 (imp v1 v2)) v5 (imp (imp v3 v1) (imp v4 v1)) (imp v1 v2) (le_r v0 (refl _))) (d1 v3 v1 v4 v2 v0 hb0)). Qed.
++
++Lemma d3 v0 v1 v2 v3 :
++  T (imp v0 (imp (imp (imp v1 v2) v1) (imp v3 v1))).
++Proof. exact (mp _ _ (d2 (imp v1 (imp v1 v2)) v1 v2 (imp v1 v2) v3 v0 (le_r v1 (refl _))) (row (imp v1 v2) v3 v1 (imp v1 v2) (refl _))). Qed.
++
++Lemma d4 v0 v1 v2 :
++  T (imp (imp (imp v0 v1) v0) (imp v2 v0)).
++Proof. exact (mp _ _ (d3 (imp (imp (imp v0 v0) v0) (imp (imp v0 v0) (imp v0 v0))) v0 v1 v2) (row v0 v0 v0 v0 (refl _))). Qed.
++
++Lemma d5 v0 v1 v2 v3 :
++  T (imp (imp (imp v0 v1) (imp v1 v2)) (imp v3 (imp v1 v2))).
++Proof. exact (mp _ _ (row (imp v0 v1) v3 (imp v1 v2) v1 (le_r v0 (refl _))) (d4 v1 v2 v0)). Qed.
++
++Lemma d6 v0 v1 v2 v3 v4 :
++  T (imp (imp (imp v0 (imp v1 v2)) (imp v3 v1)) (imp v4 (imp v3 v1))).
++Proof. exact (mp _ _ (row (imp v0 (imp v1 v2)) v4 (imp v3 v1) (imp v1 v2) (le_r v0 (refl _))) (d5 v3 v1 v2 v0)). Qed.
++
++Lemma d7 v0 v1 v2 v3 :
++  T (imp v0 (imp (imp (imp (imp v1 v2) v3) v2) (imp v1 v2))).
++Proof. exact (mp _ _ (d6 (imp v2 (imp (imp v1 v2) v3)) (imp v1 v2) v3 (imp (imp (imp v1 v2) v3) v2) v0) (row (imp (imp v1 v2) v3) v1 v2 (imp (imp v1 v2) v3) (refl _))). Qed.
++
++Lemma d8 v0 v1 v2 v3 v4 v5 :
++  T (imp (imp (imp v0 (imp v1 v2)) (imp v3 (imp v2 v4))) (imp v5 (imp v3 (imp v2 v4)))).
++Proof. exact (mp _ _ (row (imp v0 (imp v1 v2)) v5 (imp v3 (imp v2 v4)) (imp v1 v2) (le_r v0 (refl _))) (d6 v3 v2 v4 v1 v0)). Qed.
++
++Lemma d9 v0 v1 v2 :
++  T (imp (imp (imp (imp v0 v1) v2) v1) (imp v0 v1)).
++Proof. exact (mp _ _ (d7 (imp (imp (imp v0 v0) v0) (imp (imp v0 v0) (imp v0 v0))) v0 v1 v2) (row v0 v0 v0 v0 (refl _))). Qed.
++
++Lemma d10 v0 v1 v2 v3 :
++  T (imp v0 (imp (imp (imp v1 v2) v3) (imp v2 v3))).
++Proof. exact (mp _ _ (d8 (imp v3 (imp v1 v2)) v1 v2 (imp (imp v1 v2) v3) v3 v0) (row (imp v1 v2) v2 v3 (imp v1 v2) (refl _))). Qed.
++
++Lemma d11 v0 v1 v2 v3 :
++  T (imp (imp (imp v0 v1) (imp (imp v0 v1) v2)) (imp v3 (imp (imp v0 v1) v2))).
++Proof. exact (mp _ _ (row (imp v0 v1) v3 (imp (imp v0 v1) v2) v1 (le_r v0 (refl _))) (d9 v0 v1 v2)). Qed.
++
++Lemma d12 v0 v1 :
++  T (imp v0 (imp v1 v0)).
++Proof. exact (mp _ _ (d9 v0 (imp v1 v0) v0) (d4 v0 (imp v1 v0) v1)). Qed.
++
++Lemma d13 v0 v1 v2 :
++  T (imp (imp (imp v0 v1) v2) (imp v1 v2)).
++Proof. exact (mp _ _ (d10 (imp (imp (imp v0 v0) v0) (imp (imp v0 v0) (imp v0 v0))) v0 v1 v2) (row v0 v0 v0 v0 (refl _))). Qed.
++
++Lemma d14 v0 v1 v2 :
++  T (imp v0 (imp (imp (imp v1 v2) v1) v1)).
++Proof. exact (mp _ _ (d11 (imp v1 v2) v1 v1 v0) (d4 v1 v2 (imp (imp v1 v2) v1))). Qed.
++
++Lemma d15 v0 v1 v2 v3 :
++  T (imp (imp (imp v0 (imp v1 v2)) v1) (imp v3 v1)).
++Proof. exact (mp _ _ (row (imp v0 (imp v1 v2)) v3 v1 v2 (le_r v0 (le_r v1 (refl _)))) (d12 (imp v1 v2) v0)). Qed.
++
++Lemma d16 v0 v1 v2 :
++  T (imp v0 (imp (imp v0 v1) (imp v2 v1))).
++Proof. exact (mp _ _ (d13 (imp v1 v0) v0 (imp (imp v0 v1) (imp v2 v1))) (row v0 v2 v1 v0 (refl _))). Qed.
++
++Lemma d17 v0 v1 v2 :
++  T (imp v0 (imp v1 (imp v2 v0))).
++Proof. exact (mp _ _ (d13 v2 v0 (imp v1 (imp v2 v0))) (d12 (imp v2 v0) v1)). Qed.
++
++Lemma d18 v0 v1 :
++  T (imp (imp (imp v0 v1) v0) v0).
++Proof. exact (mp _ _ (d14 (imp (imp (imp v0 v0) v0) (imp (imp v0 v0) (imp v0 v0))) v0 v1) (row v0 v0 v0 v0 (refl _))). Qed.
++
++Lemma d19 v0 v1 v2 v3 v4 :
++  T (imp (imp (imp (imp (imp v0 v1) v2) (imp v3 v2)) v0) (imp v4 v0)).
++Proof. exact (mp _ _ (row (imp (imp (imp v0 v1) v2) (imp v3 v2)) v4 v0 v1 (le_l (imp v3 v2) (le_l v2 (le_r v0 (refl _))))) (d16 (imp v0 v1) v2 v3)). Qed.
++
++Lemma d20 v0 v1 v2 :
++  T (imp (imp v0 (imp v0 v1)) (imp v2 (imp v0 v1))).
++Proof. exact (mp _ _ (row v0 v2 (imp v0 v1) v0 (refl _)) (d18 v0 v1)). Qed.
++
++Lemma d21 v0 v1 v2 :
++  T (imp v0 (imp (imp v1 (imp v1 v2)) (imp v1 v2))).
++Proof. exact (mp _ _ (d11 v1 (imp v1 v2) (imp v1 v2) v0) (d20 v1 v2 (imp v1 (imp v1 v2)))). Qed.
++
++Lemma d22 v0 v1 :
++  T (imp (imp v0 (imp v0 v1)) (imp v0 v1)).
++Proof. exact (mp _ _ (d21 (imp (imp (imp v0 v0) v0) (imp (imp v0 v0) (imp v0 v0))) v0 v1) (row v0 v0 v0 v0 (refl _))). Qed.
++
++Lemma d23 v0 v1 v2 :
++  T (imp (imp (imp v0 (imp v1 v2)) v1) v1).
++Proof. exact (mp _ _ (d22 (imp (imp v0 (imp v1 v2)) v1) v1) (d15 v0 v1 v2 (imp (imp v0 (imp v1 v2)) v1))). Qed.
++
++Lemma d24 v0 v1 v2 v3 :
++  T (imp (imp (imp (imp (imp v0 v1) v2) (imp v3 v2)) v0) v0).
++Proof. exact (mp _ _ (d22 (imp (imp (imp (imp v0 v1) v2) (imp v3 v2)) v0) v0) (d19 v0 v1 v2 v3 (imp (imp (imp (imp v0 v1) v2) (imp v3 v2)) v0))). Qed.
++
++Lemma d25 v0 v1 v2 v3 :
++  T (imp (imp v0 (imp v1 (imp v0 v2))) (imp v3 (imp v1 (imp v0 v2)))).
++Proof. exact (mp _ _ (row v0 v3 (imp v1 (imp v0 v2)) v0 (refl _)) (d23 v1 v0 v2)). Qed.
++
++Lemma d26 v0 v1 v2 v3 v4 :
++  T (imp (imp v0 (imp (imp (imp v0 v1) v2) (imp v3 v2))) (imp v4 (imp (imp (imp v0 v1) v2) (imp v3 v2)))).
++Proof. exact (mp _ _ (row v0 v4 (imp (imp (imp v0 v1) v2) (imp v3 v2)) v0 (refl _)) (d24 v0 v1 v2 v3)). Qed.
++
++Lemma d27 v0 v1 v2 :
++  T (imp (imp v0 (imp v1 (imp v0 v2))) (imp v1 (imp v0 v2))).
++Proof. exact (mp _ _ (d22 (imp v0 (imp v1 (imp v0 v2))) (imp v1 (imp v0 v2))) (d25 v0 v1 v2 (imp v0 (imp v1 (imp v0 v2))))). Qed.
++
++Lemma d28 v0 v1 v2 v3 v4 v5 :
++  T (imp (imp (imp v0 (imp (imp (imp v1 v2) v3) (imp v4 v3))) v1) (imp v5 v1)).
++Proof. exact (mp _ _ (row (imp v0 (imp (imp (imp v1 v2) v3) (imp v4 v3))) v5 v1 (imp (imp (imp v1 v2) v3) (imp v4 v3)) (le_r v0 (refl _))) (d26 v1 v2 v3 v4 v0)). Qed.
++
++Lemma d29 v0 v1 v2 v3 v4 :
++  T (imp (imp (imp v0 (imp (imp (imp v1 v2) v3) (imp v4 v3))) v1) v1).
++Proof. exact (mp _ _ (d22 (imp (imp v0 (imp (imp (imp v1 v2) v3) (imp v4 v3))) v1) v1) (d28 v0 v1 v2 v3 v4 (imp (imp v0 (imp (imp (imp v1 v2) v3) (imp v4 v3))) v1))). Qed.
++
++Lemma d30 v0 v1 v2 (hb0 : below v2 v0) :
++  T (imp (imp v0 v1) (imp (imp (imp v1 v2) v0) v1)).
++Proof. exact (mp _ _ (d27 (imp (imp v1 v2) v0) (imp v0 v1) v1) (row v0 (imp (imp v1 v2) v0) v1 v2 hb0)). Qed.
++
++Lemma d31 v0 v1 v2 v3 (hb0 : below v3 v0) :
++  T (imp (imp (imp (imp (imp v0 v1) (imp v2 v1)) v3) v0) (imp (imp v0 v1) (imp v2 v1))).
++Proof. exact (mp _ _ (d30 v0 (imp (imp v0 v1) (imp v2 v1)) v3 hb0) (d16 v0 v1 v2)). Qed.
++
++Lemma d32 v0 v1 v2 v3 :
++  T (imp (imp v0 (imp v1 v2)) (imp (imp (imp v0 v3) v2) (imp v1 v2))).
++Proof. exact (mp _ _ (d31 v0 (imp v1 v2) (imp (imp v0 v3) v2) v0 (refl _)) (d29 (imp v0 (imp v1 v2)) v0 v3 v2 v1)). Qed.
++
++Lemma d33 v0 v1 v2 v3 :
++  T (imp (imp (imp v0 v1) (imp v2 v3)) (imp (imp v0 v3) (imp v2 v3))).
++Proof. exact (mp _ _ (d32 v0 (imp v0 v3) (imp v2 v3) v1) (d16 v0 v3 v2)). Qed.
++
++Lemma d34 v0 v1 v2 v3 (hb0 : below v3 v2) :
++  T (imp (imp (imp (imp v0 (imp v1 v2)) v3) v2) (imp v0 (imp v1 v2))).
++Proof. exact (mp _ _ (d30 v2 (imp v0 (imp v1 v2)) v3 hb0) (d17 v2 v0 v1)). Qed.
++
++Lemma d35 v0 v1 v2 v3 :
++  T (imp v0 (imp v1 (imp (imp v0 v2) (imp v3 v2)))).
++Proof. exact (mp _ _ (d34 v0 v1 (imp (imp v0 v2) (imp v3 v2)) (imp v3 v2) (le_r (imp v0 v2) (refl _))) (d33 v0 (imp v1 (imp (imp v0 v2) (imp v3 v2))) v3 v2)). Qed.
++
++Lemma d36 v0 v1 v2 v3 (hb0 : below v3 (imp v1 (imp v1 v2))) :
++  T (imp (imp (imp (imp v0 (imp v1 v2)) v3) (imp v1 (imp v1 v2))) (imp v0 (imp v1 v2))).
++Proof. exact (mp _ _ (d30 (imp v1 (imp v1 v2)) (imp v0 (imp v1 v2)) v3 hb0) (d20 v1 v2 v0)). Qed.
++
++Lemma d37 v0 v1 :
++  T (imp v0 (imp (imp v0 v1) v1)).
++Proof. exact (mp _ _ (d36 v0 (imp v0 v1) v1 (imp (imp v0 v1) v1) (le_r (imp v0 v1) (refl _))) (d33 v0 (imp (imp v0 v1) v1) (imp v0 v1) v1)). Qed.
++
++Lemma d38 v0 v1 v2 :
++  T (imp v0 (imp (imp (imp v1 v0) v2) v2)).
++Proof. exact (mp _ _ (d13 v1 v0 (imp (imp (imp v1 v0) v2) v2)) (d37 (imp v1 v0) v2)). Qed.
++
++Lemma d39 v0 v1 v2 :
++  T (imp (imp (imp v0 v1) v2) (imp (imp v0 v2) v2)).
++Proof. exact (mp _ _ (d32 v0 (imp v0 v2) v2 v1) (d37 v0 v2)). Qed.
++
++Lemma d40 v0 v1 v2 v3 :
++  T (imp (imp (imp v0 v1) v2) (imp (imp (imp v3 v0) v2) v2)).
++Proof. exact (mp _ _ (d32 v0 (imp (imp v3 v0) v2) v2 v1) (d38 v0 v3 v2)). Qed.
++
++Lemma d41 v0 v1 v2 v3 :
++  T (imp (imp v0 v1) (imp (imp (imp v2 (imp v0 v3)) v1) v1)).
++Proof. exact (mp _ _ (d33 v0 v3 (imp (imp v2 (imp v0 v3)) v1) v1) (d38 (imp v0 v3) v2 v1)). Qed.
++
++Lemma d42 v0 v1 v2 v3 :
++  T (imp (imp v0 (imp v1 (imp v2 (imp v0 v3)))) (imp v1 (imp v2 (imp v0 v3)))).
++Proof. exact (mp _ _ (d39 v0 v3 (imp v1 (imp v2 (imp v0 v3)))) (d17 (imp v0 v3) v1 v2)). Qed.
++
++Lemma d43 v0 v1 v2 :
++  T (imp (imp v0 (imp (imp (imp v0 v1) v2) v2)) (imp (imp (imp v0 v1) v2) v2)).
++Proof. exact (mp _ _ (d39 v0 v1 (imp (imp (imp v0 v1) v2) v2)) (d37 (imp v0 v1) v2)). Qed.
++
++Lemma d44 v0 v1 v2 :
++  T (imp (imp (imp (imp v0 v1) (imp v0 v2)) v1) v1).
++Proof. exact (mp _ _ (d43 (imp v0 v1) (imp v0 v2) v1) (d41 v0 v1 (imp v0 v1) v2)). Qed.
++
++Lemma d45 v0 v1 v2 v3 :
++  T (imp (imp (imp v0 (imp (imp v1 v2) (imp v1 v3))) v2) v2).
++Proof. exact (mp _ _ (d40 (imp (imp v1 v2) (imp v1 v3)) v2 v2 v0) (d44 v1 v2 v3)). Qed.
++
++Lemma d46 v0 v1 v2 :
++  T (imp (imp v0 (imp v1 v2)) (imp (imp v1 v0) (imp v1 v2))).
++Proof. exact (mp _ _ (d31 v0 (imp v1 v2) (imp v1 v0) v0 (refl _)) (d45 (imp v0 (imp v1 v2)) v1 v0 v2)). Qed.
++
++Lemma d47 v0 v1 v2 v3 :
++  T (imp (imp v0 v1) (imp v0 (imp (imp v1 v2) (imp v3 v2)))).
++Proof. exact (mp _ _ (d46 v1 v0 (imp (imp v1 v2) (imp v3 v2))) (d35 v1 v0 v2 v3)). Qed.
++
++Lemma d48 v0 v1 v2 v3 :
++  T (imp v0 (imp (imp (imp (imp v0 v1) v1) v2) (imp v3 v2))).
++Proof. exact (mp _ _ (d47 v0 (imp (imp v0 v1) v1) v2 v3) (d37 v0 v1)). Qed.
++
++Lemma d49 v0 v1 v2 :
++  T (imp (imp (imp (imp v0 v1) v1) v2) (imp v0 v2)).
++Proof. exact (mp _ _ (d27 v0 (imp (imp (imp v0 v1) v1) v2) v2) (d48 v0 v1 v2 v0)). Qed.
++
++Lemma d50 v0 v1 v2 v3 :
++  T (imp v0 (imp (imp v0 v1) (imp (imp v1 v2) (imp v3 v2)))).
++Proof. exact (mp _ _ (d49 v0 v1 (imp (imp v0 v1) (imp (imp v1 v2) (imp v3 v2)))) (d47 (imp v0 v1) v1 v2 v3)). Qed.
++
++Lemma d51 v0 v1 v2 :
++  T (imp (imp v0 v1) (imp (imp v1 v2) (imp v0 v2))).
++Proof. exact (mp _ _ (d42 v0 (imp v0 v1) (imp v1 v2) v2) (d50 v0 v1 v2 v0)). Qed.
++
++Lemma d52 v0 v1 v2 v3 :
++  T (imp (imp (imp (imp v0 v1) (imp v2 v1)) v3) (imp (imp v2 v0) v3)).
++Proof. exact (mp _ _ (d51 (imp v2 v0) (imp (imp v0 v1) (imp v2 v1)) v3) (d51 v2 v0 v1)). Qed.
++
++Lemma d53 v0 v1 v2 :
++  T (imp (imp v0 v1) (imp (imp v0 (imp v1 v2)) (imp v0 v2))).
++Proof. exact (mp _ _ (d52 v1 v2 v0 (imp (imp v0 (imp v1 v2)) (imp v0 v2))) (d46 (imp v1 v2) v0 v2)). Qed.
++
++Lemma d54 v0 v1 v2 :
++  T (imp (imp v0 (imp v1 v2)) (imp v1 (imp v0 v2))).
++Proof. exact (mp _ _ (d52 (imp v1 v2) v2 v0 (imp v1 (imp v0 v2))) (d49 v1 v2 (imp v0 v2))). Qed.
++
++Lemma d55 v0 v1 v2 :
++  T (imp (imp v0 v1) (imp (imp v2 v0) (imp v2 v1))).
++Proof. exact (mp _ _ (d49 (imp v0 v1) (imp v2 v1) (imp (imp v2 v0) (imp v2 v1))) (d52 v0 v1 v2 (imp v2 v1))). Qed.
++
++Lemma d57 v0 v1 v2 v3 :
++  T (imp (imp v0 (imp (imp v1 v2) v1)) (imp v0 (imp v3 v1))).
++Proof. exact (mp _ _ (d55 (imp (imp v1 v2) v1) (imp v3 v1) v0) (d4 v1 v2 v3)). Qed.
++
++(** Restricted rows and modus ponens alone derive every unrestricted row. *)
++Theorem rho8_all a b c u : T (rho8 a b c u).
++Proof. exact (mp _ _ (d52 a c (imp c u) (imp (imp a c) (imp b c))) (d57 (imp a c) c u b)). Qed.
++
++Theorem composition a b c : T (imp (imp a b) (imp (imp b c) (imp a c))).
++Proof. exact (d51 a b c). Qed.
++
++(** A proved implication lifts under any antecedent. *)
++Theorem lift_right a b (hab : T (imp a b)) x : T (imp (imp x a) (imp x b)).
++Proof. exact (mp _ _ (d55 a b x) hab). Qed.
++
++Theorem k a b : T (imp a (imp b a)).
++Proof. exact (d12 a b). Qed.
++
++Theorem peirce a b : T (imp (imp (imp a b) a) a).
++Proof. exact (d18 a b). Qed.
++
++Theorem s a b c : T (imp (imp a (imp b c)) (imp (imp a b) (imp a c))).
++Proof. exact (mp _ _ (d54 (imp a b) (imp a (imp b c)) (imp a c)) (d53 a b c)). Qed.
++
++End Core.
++Print Assumptions s.
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/README.md b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/README.md
+new file mode 100644
+index 0000000000..bf9e96cc7a
+--- /dev/null
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/README.md
+@@ -0,0 +1,35 @@
++# Rocq proposal: one shared implication core for DomRho8 and CD222
++
++Proposal for the peer's Rocq checkpoint; nothing here is wired into `regenerate215.py`. It is
++the Rocq counterpart of the Lean shared-basis proposal (`3a7a61ee97`, `49e99c5b7c`): one
++condensed-detachment derivation serves both the dominated calculus and the unrestricted one.
++
++| File | Role | Lines / bytes |
++|---|---|---:|
++| [`DominatedCore.v`](DominatedCore.v) | generic `Section`: any `imp`, any reflexive `below` closed under insertion into either operand, modus ponens and the restricted rows derive `rho8_all`, `composition`, `lift_right`, `k`, `peirce`, `s` | 268 / 12,943 |
++| [`DomRho8.v`](DomRho8.v) | replaces `coq/215/DomRho8.v` (reflective Source 149 replay): the core at natural codes with `<=`; same `DomImp` record and `rho8_all` statement | 23 / 1,009 |
++| [`CD222.v`](CD222.v) | replaces `coq/215/CD222.v` (107 ported CD254 certificates): the core with `below := True` over `thm222`; same `thm_K`, `thm_P`, `thm_B`, `thm_S` | 31 / 1,408 |
++
++The two maintained files total 1,399 lines / 45,538 bytes; the three proposed files 322 lines /
++15,360 bytes.
++
++`DominatedCore.v` is rendered from [`derivation_shared.txt`](derivation_shared.txt) (the 58-step,
++six-goal derivation of `3a7a61ee97`) by the renderer of `49e99c5b7c` with
++[`rocq-core.patch`](rocq-core.patch) applied:
++
++```sh
++git show 49e99c5b7c:Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py > gen.py
++patch gen.py rocq-core.patch
++python gen.py --derivation derivation_shared.txt --rocq-core DominatedCore.v
++```
++
++The adapters `Require` the core without `Import`, since its generic `rho8` would otherwise shadow
++`Codes230.rho8`.
++
++Checked (Rocq 9.1.0 / rocq-stdlib 9.0.0, K230 reference at its pinned sources, one `coqc` at a
++time in the `.build/215` tree): `DominatedCore` 1.3 s, `DomRho8` 0.8 s, `CD222` 0.7 s, each closed
++under the global context; then the maintained users `Prop222`, `G222`, `Interp222`, `Complete222`
++(31 s) and `ThmDom` against them. Not run: the full closure compile and recursive `coqchk`.
++
++Adoption needs `DominatedCore.v` added to `coq/215` and to the compile order before `CD222` and
++`DomRho8` (it has no project dependencies), and the regeneration and manifest records refreshed.
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/derivation_shared.txt b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/derivation_shared.txt
+new file mode 100644
+index 0000000000..fbf2180fb3
+--- /dev/null
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/derivation_shared.txt
+@@ -0,0 +1,66 @@
++# The dominated row, composition, prefixing, K, Peirce and S by condensed detachment, without truth: 58 steps (cdr NOZ=1 + shrink.py, 2026-10-21).
++#GOAL 61 (((a>b)>c)>((c>a)>(d>a)))
++#GOAL 52 ((a>b)>((b>c)>(a>c)))
++#GOAL 56 ((a>b)>((c>a)>(c>b)))
++#GOAL 12 (a>(b>a))
++#GOAL 18 (((a>b)>a)>a)
++#GOAL 58 ((a>(b>c))>((a>b)>(a>c)))
++0 -2 -2 (((a>b)>c)>((c>a)>(d>a))) [b<=c]
++1 0 0 ((((a>b)>(c>b))>(b>d))>(e>(b>d))) [d<=a]
++2 0 1 (((a>(b>c))>((d>b)>(e>b)))>(f>((d>b)>(e>b)))) [c<=d]
++3 2 0 (a>(((b>c)>b)>(d>b))) []
++4 3 0 (((a>b)>a)>(c>a)) []
++5 0 4 (((a>b)>(b>c))>(d>(b>c))) []
++6 0 5 (((a>(b>c))>(d>b))>(e>(d>b))) []
++7 6 0 (a>((((b>c)>d)>c)>(b>c))) []
++8 0 6 (((a>(b>c))>(d>(c>e)))>(f>(d>(c>e)))) []
++9 7 0 ((((a>b)>c)>b)>(a>b)) []
++10 8 0 (a>(((b>c)>d)>(c>d))) []
++11 0 9 (((a>b)>((a>b)>c))>(d>((a>b)>c))) []
++12 9 4 (a>(b>a)) []
++13 10 0 (((a>b)>c)>(b>c)) []
++14 11 4 (a>(((b>c)>b)>b)) []
++15 0 12 (((a>(b>c))>b)>(d>b)) []
++16 13 0 (a>((a>b)>(c>b))) []
++17 13 12 (a>(b>(c>a))) []
++18 14 0 (((a>b)>a)>a) []
++19 0 16 (((((a>b)>c)>(d>c))>a)>(e>a)) []
++20 0 18 ((a>(a>b))>(c>(a>b))) []
++21 11 20 (a>((b>(b>c))>(b>c))) []
++22 21 0 ((a>(a>b))>(a>b)) []
++23 22 15 (((a>(b>c))>b)>b) []
++24 22 19 (((((a>b)>c)>(d>c))>a)>a) []
++25 0 23 ((a>(b>(a>c)))>(d>(b>(a>c)))) []
++26 0 24 ((a>(((a>b)>c)>(d>c)))>(e>(((a>b)>c)>(d>c)))) []
++27 22 25 ((a>(b>(a>c)))>(b>(a>c))) []
++28 0 26 (((a>(((b>c)>d)>(e>d)))>b)>(f>b)) []
++29 22 28 (((a>(((b>c)>d)>(e>d)))>b)>b) []
++31 27 0 ((a>b)>(((b>c)>a)>b)) [c<=a]
++32 31 16 (((((a>b)>(c>b))>d)>a)>((a>b)>(c>b))) [d<=a]
++33 32 29 ((a>(b>c))>(((a>d)>c)>(b>c))) []
++34 33 16 (((a>b)>(c>d))>((a>d)>(c>d))) []
++35 31 17 ((((a>(b>c))>d)>c)>(a>(b>c))) [d<=c]
++36 35 34 (a>(b>((a>c)>(d>c)))) []
++37 31 20 ((((a>(b>c))>d)>(b>(b>c)))>(a>(b>c))) [d<=(b>(b>c))]
++38 37 34 (a>((a>b)>b)) []
++39 13 38 (a>(((b>a)>c)>c)) []
++40 33 38 (((a>b)>c)>((a>c)>c)) []
++41 33 39 (((a>b)>c)>(((d>a)>c)>c)) []
++42 34 39 ((a>b)>(((c>(a>d))>b)>b)) []
++43 40 17 ((a>(b>(c>(a>d))))>(b>(c>(a>d)))) []
++44 40 38 ((a>(((a>b)>c)>c))>(((a>b)>c)>c)) []
++45 44 42 ((((a>b)>(a>c))>b)>b) []
++46 41 45 (((a>((b>c)>(b>d)))>c)>c) []
++47 32 46 ((a>(b>c))>((b>a)>(b>c))) []
++48 47 36 ((a>b)>(a>((b>c)>(d>c)))) []
++49 48 38 (a>((((a>b)>b)>c)>(d>c))) []
++50 27 49 ((((a>b)>b)>c)>(a>c)) []
++51 50 48 (a>((a>b)>((b>c)>(d>c)))) []
++52 43 51 ((a>b)>((b>c)>(a>c))) []
++53 52 52 ((((a>b)>(c>b))>d)>((c>a)>d)) []
++54 53 47 ((a>b)>((a>(b>c))>(a>c))) []
++55 53 50 ((a>(b>c))>(b>(a>c))) []
++56 50 53 ((a>b)>((c>a)>(c>b))) []
++58 55 54 ((a>(b>c))>((a>b)>(a>c))) []
++59 56 4 ((a>((b>c)>b))>(a>(d>b))) []
++61 53 59 (((a>b)>c)>((c>a)>(d>a))) []
+diff --git a/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/rocq-core.patch b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/rocq-core.patch
+new file mode 100644
+index 0000000000..244918f928
+--- /dev/null
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/rocq-proposal/shared-core/rocq-core.patch
+@@ -0,0 +1,188 @@
++--- a/generate_domrho8_cd.py (49e99c5b7c)
+++++ b/generate_domrho8_cd.py
++@@ -276,14 +276,16 @@
++     def __init__(self, mode):
++         self.rocq = mode == 'rocq'
++         self.rcd = mode == 'rocqcd'
+++        self.rc = mode == 'rocqcore'
++         self.luk = mode in ('luk', 'rocqcd')
++-        self.core = mode in ('core', 'luk', 'rocqcd')
+++        self.core = mode in ('core', 'luk', 'rocqcd', 'rocqcore')
++ 
++     def term(self, t, top=True):
++         if isinstance(t, Var):
++             return t.name
++         if isinstance(t, tuple):
++-            s = '%s %s %s' % ('imp' if self.luk and not self.rcd else 'wim', self.term(t[0], False), self.term(t[1], False))
+++            s = '%s %s %s' % ('imp' if (self.luk and not self.rcd) or self.rc else 'wim',
+++                              self.term(t[0], False), self.term(t[1], False))
++             return s if top else '(' + s + ')'
++         return '0' if t == Z else 'v%d' % t
++ 
++@@ -293,7 +295,7 @@
++         if u == Z and not self.core:
++             return '(Nat.le_0_l _)' if self.rocq else '(Nat.zero_le _)'
++         if u == a:
++-            return '(le_n _)' if self.rocq else '(L.refl _)' if self.core else '(Nat.le_refl _)'
+++            return '(le_n _)' if self.rocq else '(refl _)' if self.rc else '(L.refl _)' if self.core else '(Nat.le_refl _)'
++         if isinstance(a, tuple) and subterm(u, a[0]):
++             return '(le_l %s %s)' % (self.term(a[1], False), self.le(u, a[0], hyps))
++         if isinstance(a, tuple) and subterm(u, a[1]):
++@@ -309,12 +311,14 @@
++             pa, q, r, s = (args + [Z] * 4)[:4]
++             if self.rcd:
++                 return '(W_r8 %s)' % ' '.join(self.term(x, False) for x in (r, s, pa, q))
+++            if self.rc:
+++                return '(row %s %s)' % (' '.join(self.term(x, False) for x in (r, s, pa, q)), self.le(q, r, hyps))
++             if self.luk:
++                 return '(h.rho8 %s)' % ' '.join(self.term(x, False) for x in (pa, q, r, s))
++             head = 'drho8 h' if self.rocq else 'h.rho8'
++             return '(%s %s %s)' % (head, ' '.join(self.term(x, False) for x in (r, s, pa, q)),
++                                    self.le(q, r, hyps))
++-        pieces = [name] + ([] if self.rocq or self.rcd else ['h']) + [self.term(x, False) for x in args]
+++        pieces = [name] + ([] if self.rocq or self.rcd or self.rc else ['h']) + [self.term(x, False) for x in args]
++         pieces += [self.le(u, a, hyps) for u, a in hb]
++         return '(' + ' '.join(pieces) + ')'
++ 
++@@ -324,15 +328,22 @@
++             variables(c[0], vs)
++             variables(c[1], vs)
++         binders = ' '.join('v%d' % v for v in sorted(vs))
++-        hyps = ''.join(' (hb%d : %s %s %s)' % (k, self.term(a), '<=' if self.rocq else '≼' if self.core else '≤',
++-                                                self.term(b))
++-                       for k, (a, b) in enumerate(cons))
+++        if self.rc:
+++            hyps = ''.join(' (hb%d : below %s %s)' % (k, self.term(a, False), self.term(b, False))
+++                           for k, (a, b) in enumerate(cons))
+++        else:
+++            hyps = ''.join(' (hb%d : %s %s %s)' % (k, self.term(a), '<=' if self.rocq else '≼' if self.core else '≤',
+++                                                    self.term(b))
+++                           for k, (a, b) in enumerate(cons))
++         mp = '%s %s' % (self.use(major, cons), self.use(minor, cons))
++         if self.rocq:
++             assert not (major[4] or minor[4]), 'Rocq rendering expects Z-normal instances'
++             return 'Lemma %s%s%s :\n  T (%s).\nProof. exact (dmp h _ _ %s). Qed.\n' % (
++                 name, ' ' + binders if binders else '', hyps, self.term(t), mp)
++         assert not (self.core and (major[4] or minor[4]))
+++        if self.rc:
+++            return 'Lemma %s%s%s :\n  T (%s).\nProof. exact (mp _ _ %s). Qed.\n' % (
+++                name, ' ' + binders if binders else '', hyps, self.term(t), mp)
++         if self.rcd:
++             assert not cons
++             return 'Lemma %s%s : thm222 (%s).\nProof. exact (W_mp _ _ %s %s). Qed.' % (
++@@ -455,7 +466,7 @@
++ 
++ def render(rows, goals, mode, keep=''):
++     syn = Syntax(mode)
++-    lemmas, names = steps(rows, mode in ('core', 'luk', 'rocqcd'))
+++    lemmas, names = steps(rows, mode in ('core', 'luk', 'rocqcd', 'rocqcore'))
++     body = [syn.lemma(*s) for s in lemmas]
++     if mode == 'rocqcd':
++         need = [(K, ['p', 'q']), (PEIRCE, ['p', 'q']), (COMPOSITION, ['p', 'q', 'r']), (S, ['p', 'q', 'r'])]
++@@ -464,7 +475,8 @@
++         need += [(COMPOSITION, ['a', 'b', 'c'])] if any(g == COMPOSITION for _, g in goals) else []
++     else:
++         need = [(ROW, ROW_NAMES)] + ([(COMPOSITION, ['a', 'b', 'c']), (PREFIX, ['a', 'b', 'x'])] if mode == 'core' else [])
++-        if mode == 'core':
+++        if mode in ('core', 'rocqcore'):
+++            need = [(ROW, ROW_NAMES), (COMPOSITION, ['a', 'b', 'c']), (PREFIX, ['a', 'b', 'x'])]
++             need += [(g, n) for g, n in ((K, ['a', 'b']), (PEIRCE, ['a', 'b']), (S, ['a', 'b', 'c']))
++                      if any(h == g for _, h in goals)]
++     use = {}
++@@ -474,18 +486,21 @@
++     for goal, vnames in need:
++         i = next(i for i, g in goals if g == goal)
++         assert not rows[i][3], 'a public statement has no side condition'
++-        if mode == 'core' and names[i] not in premises and goal_rows.count(i) == 1:
+++        if mode in ('core', 'rocqcore') and names[i] not in premises and goal_rows.count(i) == 1:
++             s = match(rows[i][2], goal, {})
++             named = {v: rename(t, lambda w: Var(vnames[w])) for v, t in s.items()}
++             at = lambda x: rename(x, lambda v: named[v])
++             lemma = next(l for l in lemmas if l[0] == names[i])
++             major, minor = ((k, n, [at(a) for a in args], [(at(u), at(b)) for u, b in hb], z)
++                             for k, n, args, hb, z in lemma[3:5])
++-            use[goal] = 'h.mp %s %s' % (syn.use(major, []), syn.use(minor, []))
+++            use[goal] = ('mp _ _ %s %s' if mode == 'rocqcore' else 'h.mp %s %s') % (syn.use(major, []), syn.use(minor, []))
++             body.remove(syn.lemma(*lemma))
++             continue
++-        use[goal] = '%s h %s' % (names[i], syn.instance(rows[i][2], goal, vnames)) if mode not in ('rocq', 'rocqcd') else \
+++        use[goal] = '%s h %s' % (names[i], syn.instance(rows[i][2], goal, vnames)) if mode not in ('rocq', 'rocqcd', 'rocqcore') else \
++             '%s %s' % (names[i], syn.instance(rows[i][2], goal, vnames))
+++    if mode == 'rocqcore':
+++        return RCORE_HEAD.format(n=len(body)) + '\n'.join(body) + '\n' + RCORE_TAIL.format(
+++            row=use[ROW], composition=use[COMPOSITION], prefix=use[PREFIX], k=use[K], peirce=use[PEIRCE], s=use[S])
++     if mode == 'rocqcd':
++         return RCD_HEAD.format(n=len(body)) + '\n'.join(body) + '\n' + RCD_TAIL.format(
++             k=use[K], p=use[PEIRCE], b=use[COMPOSITION], s=use[S])
++@@ -623,6 +638,53 @@
++ 
++ '''
++ 
+++RCORE_HEAD = '''(** * DominatedCore: Lukasiewicz's axiom from its dominated instances, and the classical basis.
+++
+++    For any binary connective [imp] and any reflexive relation [below] preserved by insertion
+++    into either operand of [imp], modus ponens and the rows [rho8 a b c u] with [below u a]
+++    derive every row, composition, prefixing, K, Peirce and S. The {n} lemmas are the
+++    condensed-detachment derivation of k225-formal/rho8cd/derivation_core.txt, rendered by
+++    generate_domrho8_cd.py --rocq-core exactly as the Lean DominatedImplication. *)
+++
+++Section Core.
+++Variable A : Type.
+++Variable imp : A -> A -> A.
+++Variable below : A -> A -> Prop.
+++Hypothesis refl : forall a, below a a.
+++Hypothesis le_l : forall {{u x}} y, below u x -> below u (imp x y).
+++Hypothesis le_r : forall {{u y}} x, below u y -> below u (imp x y).
+++
+++Definition rho8 a b c u := imp (imp (imp c u) a) (imp (imp a c) (imp b c)).
+++
+++Variable T : A -> Prop.
+++Hypothesis mp : forall a b, T (imp a b) -> T a -> T b.
+++Hypothesis row : forall a b c u, below u a -> T (rho8 a b c u).
+++
+++'''
+++RCORE_TAIL = '''(** Restricted rows and modus ponens alone derive every unrestricted row. *)
+++Theorem rho8_all a b c u : T (rho8 a b c u).
+++Proof. exact ({row}). Qed.
+++
+++Theorem composition a b c : T (imp (imp a b) (imp (imp b c) (imp a c))).
+++Proof. exact ({composition}). Qed.
+++
+++(** A proved implication lifts under any antecedent. *)
+++Theorem lift_right a b (hab : T (imp a b)) x : T (imp (imp x a) (imp x b)).
+++Proof. exact (mp _ _ ({prefix}) hab). Qed.
+++
+++Theorem k a b : T (imp a (imp b a)).
+++Proof. exact ({k}). Qed.
+++
+++Theorem peirce a b : T (imp (imp (imp a b) a) a).
+++Proof. exact ({peirce}). Qed.
+++
+++Theorem s a b c : T (imp (imp a (imp b c)) (imp (imp a b) (imp a c))).
+++Proof. exact ({s}). Qed.
+++
+++End Core.
+++Print Assumptions s.
+++'''
+++
++ RCD_HEAD = '''(** * CD222: implicational theorems of thm222 from the Lukasiewicz row rho8 alone.
++ 
++     The {n} lemmas are the condensed-detachment derivation of k225-formal/rho8cd/derivation_luk.txt,
++@@ -671,6 +733,7 @@
++     ap.add_argument('--rocq', type=Path)
++     ap.add_argument('--core', type=Path)
++     ap.add_argument('--rocq-cd', type=Path)
+++    ap.add_argument('--rocq-core', type=Path)
++     ap.add_argument('--luk', type=Path, help='Lukasiewicz.lean to rewrite in place (its tail is kept)')
++     a = ap.parse_args()
++     rows, goals = read(a.derivation)
++@@ -678,7 +741,8 @@
++         text = a.luk.read_text(encoding='utf-8')
++         keep = LUK_END + text.split(LUK_END, 1)[1]
++         a.luk.write_text(render(rows, goals, 'luk', keep), encoding='utf-8', newline='\n')
++-    for path, mode in ((a.lean, 'lean'), (a.rocq, 'rocq'), (a.core, 'core'), (a.rocq_cd, 'rocqcd')):
+++    for path, mode in ((a.lean, 'lean'), (a.rocq, 'rocq'), (a.core, 'core'), (a.rocq_cd, 'rocqcd'),
+++                       (a.rocq_core, 'rocqcore')):
++         if path:
++             path.write_text(render(rows, goals, mode), encoding='utf-8', newline='\n')
++ 
