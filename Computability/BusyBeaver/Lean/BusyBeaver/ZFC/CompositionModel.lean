@@ -100,7 +100,7 @@ theorem composition_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (
 theorem eqv_trans_of_model (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
     {x y z : V} (hxy : Eqv mem x y) (hyz : Eqv mem y z) : Eqv mem x z := by
   exact eqv_trans_of_instances mem
-    ((sat_containerForm mem (fun _ => witness)).mp (h.1 _))
+    (transContainers_of_containers ((sat_containerForm mem (fun _ => witness)).mp (h.1 _)))
     (orderedPairs_of_model mem witness h)
     (fiber_instance mem h.2) (composition_instance mem h.2) (union_instance mem h.2) hxy hyz
 
@@ -143,7 +143,7 @@ theorem backMatch_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (x 
 theorem eqv_extensionality_of_model (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
     (x y : V) (hMembers : ∀ z, Member mem z x ↔ Member mem z y) : Eqv mem x y := by
   exact eqv_extensionality_of_instances mem
-    ((sat_containerForm mem (fun _ => witness)).mp (h.1 _))
+    (transContainers_of_containers ((sat_containerForm mem (fun _ => witness)).mp (h.1 _)))
     (pairs_of_model mem witness h) (union_instance mem h.2)
     (match_instance mem h.2) (backMatch_instance mem h.2)
     (eqv_refl_of_model mem witness h)

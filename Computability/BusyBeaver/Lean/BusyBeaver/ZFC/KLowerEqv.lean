@@ -1,5 +1,5 @@
 import BusyBeaver.ZFC.KLowerTag
-import BusyBeaver.ZFC.KProfileTC
+import BusyBeaver.ZFC.ProfileComposition
 import BusyBeaver.ZFC.KQHyp
 
 /-!
@@ -9,13 +9,13 @@ Coded bisimilarity on the tagged domain (Elliot Glazer's `KQuot`, `KQuotSym`, `K
 The tagged domain has equality-free collection for every formula (`tag_gic`, from
 `tag_collection`), transitive containers and exact pairs. That is all the profile lemmas need:
 reflexivity (`bisim_refl_of_collection`), symmetry (`eqv_symm_of_instances`), and, through the
-transitive-container copies of `KProfileTC`, transitivity and extensionality of `Eqv`.
+transitive-container lemmas of `ProfileComposition`, transitivity and extensionality of `Eqv`.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.KLower
 
 open Form Profile ProfilePairs ProfileCollection ProfileComposition ProfileSyntax ProfileModel
-open CompositionModel DeepPositiveClosure KProfileTC
+open CompositionModel DeepPositiveClosure ProfileComposition
 
 universe u
 variable {V : Type u} {mem : V → V → Prop}
@@ -66,14 +66,14 @@ theorem tag_symm {x y : Tag mem t} (h : Eqv (tmem mem t) x y) : Eqv (tmem mem t)
 
 theorem tag_trans {x y z : Tag mem t} (h1 : Eqv (tmem mem t) x y) (h2 : Eqv (tmem mem t) y z) :
     Eqv (tmem mem t) x z :=
-  eqv_trans_of_instancesTC _ (tag_tc hs hirr ht) (tag_codes hs hirr ht)
+  eqv_trans_of_instances _ (tag_tc hs hirr ht) (tag_codes hs hirr ht)
     (fun r2 d => fiber_instance _ (tag_gic hs hirr ht) r2 d)
     (fun r1 r2 => composition_instance _ (tag_gic hs hirr ht) r1 r2)
     (fun f => union_instance _ (tag_gic hs hirr ht) f) h1 h2
 
 theorem tag_ext (x y : Tag mem t) (h : ∀ z, Member (tmem mem t) z x ↔ Member (tmem mem t) z y) :
     Eqv (tmem mem t) x y :=
-  eqv_extensionality_of_instancesTC _ (tag_tc hs hirr ht) (tag_pairs hs hirr ht)
+  eqv_extensionality_of_instances _ (tag_tc hs hirr ht) (tag_pairs hs hirr ht)
     (fun f => union_instance _ (tag_gic hs hirr ht) f)
     (fun a b => match_instance _ (tag_gic hs hirr ht) a b)
     (fun a b => backMatch_instance _ (tag_gic hs hirr ht) a b)
