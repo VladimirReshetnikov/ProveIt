@@ -1,6 +1,6 @@
 (** The 218's L2Root219.v (SHA256 b6bd9a70030fdc7d3fcf0b37cc35e2fb4b0277c744a2de3e805749adc3e9e435) for dagPerm and EnumPerm: ax1 is
     restated for the dominated AX word and the dispatch and root step are re-proved for the
-    permuted commands (rocqperm/L2RootPerm_dispatch.v, SHA256 092d3b7532cc5db19e1d76c25f2dd2610263d84d08ae92067705428baf22bc47). *)
+    permuted commands (rocqperm/L2RootPerm_dispatch.v, SHA256 0087489e646b3c249b42fb6cf7bc8b2f6b4470bf118292a3879814f4553e28e7). *)
 (** L2Root222.v (SHA256 79df561cc037743193dec640f481a0b1ad106004432d918e907efa6fea016d1d) renamed for dagPerm. *)
 (** Forked by gen_prog222.py from Elliot Glazer's k230-rocq (3142e4d) prog/L2Root230.v for dagPerm. *)
 (** Adapted from pinned m254 L2Root254.v for the exact K230 source. *)
@@ -76,35 +76,30 @@ Proof.
 Qed.
 
 (* selector >= 1: decrement, run the rest of the dispatch, break out of the switch *)
+Ltac disp_pos :=
+  intros H3 H [-> | ->];
+  [ eapply sem_car_break1; [reflexivity|];
+    eapply sem_cdr_break with (k := 0); [reflexivity | apply sem_decnz_pos; [lia | exact H3] |];
+    eapply sem_cdr_break with (k := 0); [reflexivity | exact H | apply sem_breakS]
+  | eapply sem_car_halt; [reflexivity|];
+    eapply sem_cdr_halt; [reflexivity | apply sem_decnz_pos; [lia | exact H3] |];
+    eapply sem_car_halt; [reflexivity | exact H] ].
+
+(* selector 0: take the case's own body *)
+Ltac disp_zero :=
+  intros H3 m' H; eapply sem_cdr_normal; [reflexivity | | exact H];
+  eapply sem_car_break1; [reflexivity | apply sem_decnz_zero, H3].
+
 Lemma disp_1 m v x m' : get m 3 = S v -> sem (ENode 144) (set m 3 v) x m' ->
   (x = XNormal \/ x = XHalt) -> sem (ENode 141) m x m'.
-Proof.
-  intros H3 H [-> | ->].
-  - eapply sem_car_break1; [reflexivity|].
-    eapply sem_cdr_break with (k := 0); [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_cdr_break with (k := 0); [reflexivity | exact H | apply sem_breakS].
-  - eapply sem_car_halt; [reflexivity|].
-    eapply sem_cdr_halt; [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_car_halt; [reflexivity | exact H].
-Qed.
+Proof. disp_pos. Qed.
 
 Lemma disp_drop m : get m 3 = 0 -> forall m', sem (ENode 121) m XNormal m' -> sem (ENode 144) m XNormal m'.
-Proof.
-  intros H3 m' H. eapply sem_cdr_normal; [reflexivity | | exact H].
-  eapply sem_car_break1; [reflexivity | apply sem_decnz_zero, H3].
-Qed.
+Proof. disp_zero. Qed.
 
 Lemma disp_2 m v x m' : get m 3 = S v -> sem (ENode 147) (set m 3 v) x m' ->
   (x = XNormal \/ x = XHalt) -> sem (ENode 144) m x m'.
-Proof.
-  intros H3 H [-> | ->].
-  - eapply sem_car_break1; [reflexivity|].
-    eapply sem_cdr_break with (k := 0); [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_cdr_break with (k := 0); [reflexivity | exact H | apply sem_breakS].
-  - eapply sem_car_halt; [reflexivity|].
-    eapply sem_cdr_halt; [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_car_halt; [reflexivity | exact H].
-Qed.
+Proof. disp_pos. Qed.
 
 (* mp() reads its own field: node 484 = (read_p1, mp body 150) *)
 Lemma mp484 m : get m 6 = 0 -> get m 7 = 0 -> sem (ENode 484) m XNormal
@@ -119,10 +114,7 @@ Proof.
 Qed.
 
 Lemma disp_mp m : get m 3 = 0 -> forall m', sem (ENode 484) m XNormal m' -> sem (ENode 147) m XNormal m'.
-Proof.
-  intros H3 m' H. eapply sem_cdr_normal; [reflexivity | | exact H].
-  eapply sem_car_break1; [reflexivity | apply sem_decnz_zero, H3].
-Qed.
+Proof. disp_zero. Qed.
 
 Lemma disp_ax m v m' : get m 3 = S v -> sem (ENode 236) (set m 3 v) XNormal m' -> sem (ENode 147) m XNormal m'.
 Proof.

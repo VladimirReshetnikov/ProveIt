@@ -1,0 +1,78 @@
+d47476021ebeb56420548639657ab245dd7c66f9 2026-10-22T14:28:16-07:00 K215 Rocq: drop the unused s0-based enumerator theorems
+K215 Rocq: drop the unused s0-based enumerator theorems
+
+The 215's completeness and soundness run from the bootstrap seed
+(SeedPerm.seedPerm_iff_thm, used by MainPerm), whose reach_from and
+halts_from_reached are the seed-general versions of L1_CompPerm's
+reach/halts_from_reach. The s0-based layer was never used:
+- EnumPerm.v: s0 and enum_halts;
+- L1_SoundPerm.v: Inv_s0 and enum_sound;
+- L1_CompPerm.v: reach, halts_from_reach and enum_complete.
+All are removed (rocqperm 513 -> 470 lines over the three files;
++22 -108 with the generated copies, net -86), and the two file headers
+now say what the files prove. coq/215 regenerated against the pinned
+K230 reference and the manifest re-registered.
+
+Checked: coqc of the compile-order slice EnumPerm .. MainPerm (EnumPerm,
+L1_SoundPerm, L1_CompPerm, SeedPerm, Regs215, DagPerm, ProgLibPerm,
+L2RootPerm, MainPerm) and of Correct215 and CorrectDense215 against the
+compiled K230 reference, all "Closed under the global context".
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+7bfe6499e270e7892d6c010e69dd7326827bc088 2026-10-22T14:21:10-07:00 K215 Rocq: one script each for the dispatch's paired cases
+K215 Rocq: one script each for the dispatch's paired cases
+
+rocqperm/L2RootPerm_dispatch.v (spliced into coq/215/L2RootPerm.v):
+disp_1/disp_2 and disp_drop/disp_mp were proved by the same tactic
+script twice each, differing only in the node numbers of their
+statements (the reflexivity steps check different node-table rows), so
+the scripts are now the local tactics disp_pos and disp_zero
+(146 -> 138 lines; +40 -57 with the generated copy, net -17).
+coq/215 regenerated against the pinned K230 reference and the manifest
+re-registered.
+
+Checked: coqc of L2RootPerm, MainPerm, Correct215 and CorrectDense215
+against the compiled K230 reference, all "Closed under the global
+context".
+
+Correction to 733e83e049: its RegisterPath bullet lost a backquoted
+snippet to shell command substitution. It should read:
+"read_writeRegisters is one
+`induction i generalizing R j <;> cases R <;> cases j <;>
+simp [writeRegisters, readRegisters, *]`".
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+733e83e049adf1bb8c5e8d8ba76927b138cf452c 2026-10-22T14:14:54-07:00 K215 Lean: golf of the Profile/syntax layer and RegisterPath
+K215 Lean: golf of the Profile/syntax layer and RegisterPath
+
+Proof-only edits; the eight Profile/syntax modules were drafted by a
+subagent and compiled here serially (all first time).
+- ProfileSyntax (208 -> 180), ProfileCollection (208 -> 178),
+  ProfileModel (164 -> 143), ProfileCongruence (136 -> 115),
+  ProfilePairs (134 -> 109): the sat_*Form and classMember/orderedPair
+  congruences as anonymous-constructor and match-fun terms; mirrored
+  constructor bullets as forall_congr'/exists_congr; merged identical
+  formula alternatives; instance_of_matrix applied as a term;
+  Exists.imp for witness re-packing; orderedPair_injective without its
+  duplicated union step; single-use haves inlined.
+- Code254Containers (133 -> 125), NamedForm254 (91 -> 84),
+  PowerSyntax (61 -> 54): term iffs, merged alternatives, simpa moved
+  into the refine tuples, by-exact removed.
+- RegisterPath (201 -> 193): read_writeRegisters is one
+  ;
+  read_writeRegisters_eq is a funext term; finiteExecute_sound merges
+  its four rfl alternatives.
++194 -349, net -155 lines (computed by awk over --numstat).
+
+Checked: lake build of each module from the worktree root in
+dependency order; serial rebuild of the KEndpoint closure (37 rebuilt,
+green); the out-of-closure importers whose other imports are current
+(Code254Models, DuplicateProfiles, PSCSaturation, RawPSCProfile,
+RawPSCModel, OutgoingProfile, EqualityGIC, NativeDecoded254) built one
+at a time. RegisterPath adds 13 modules to the end-of-iteration rebuild
+beyond those already pending; the Profile files add none.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+

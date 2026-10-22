@@ -34,10 +34,7 @@ theorem empty_of_collection (mem : V → V → Prop) (witness : V)
     (hCollect : CollectionInstance mem (fun _ _ => False)) :
     ∃ e, ∀ z, ¬ mem z e := by
   obtain ⟨e, hs, _⟩ := hCollect witness
-  refine ⟨e, ?_⟩
-  intro z hz
-  obtain ⟨_, hFalse⟩ := hs z hz
-  exact hFalse
+  exact ⟨e, fun z hz => (hs z hz).elim fun _ h => h⟩
 
 /-- An empty object and its power bound give distinct input profiles in one host. -/
 theorem two_indices_of_container (mem : V → V → Prop) (e : V)
@@ -61,31 +58,20 @@ theorem pair_of_collection (mem : V → V → Prop) (i j domain a b : V)
     ⟨a, Or.inl ⟨same_refl mem i, same_refl mem a⟩⟩
   obtain ⟨ub, hub, hjb⟩ := hCover j hj
     ⟨b, Or.inr ⟨same_refl mem j, same_refl mem b⟩⟩
-  have huaClass : Same mem ua a := by
-    rcases hia with hia | hia
-    · exact hia.2
-    · exact False.elim (hDifferent hia.1)
-  have hubClass : Same mem ub b := by
-    rcases hjb with hjb | hjb
-    · exact False.elim (hDifferent (same_symm mem hjb.1))
-    · exact hjb.2
-  refine ⟨p, ?_⟩
-  intro z
-  constructor
-  · rintro ⟨y, hy, hzy⟩
-    obtain ⟨x, hxy⟩ := hSupport y hy
-    rcases hxy with hxy | hxy
-    · exact Or.inl (same_trans mem hzy hxy.2)
-    · exact Or.inr (same_trans mem hzy hxy.2)
-  · intro hz
-    rcases hz with hza | hzb
-    · exact ⟨ua, hua, same_trans mem hza (same_symm mem huaClass)⟩
-    · exact ⟨ub, hub, same_trans mem hzb (same_symm mem hubClass)⟩
+  have huaClass : Same mem ua a := Or.elim hia And.right fun h => absurd h.1 hDifferent
+  have hubClass : Same mem ub b :=
+    Or.elim hjb (fun h => absurd (same_symm mem h.1) hDifferent) And.right
+  refine ⟨p, fun z => ⟨?_, fun hz => hz.elim
+    (fun hza => ⟨ua, hua, same_trans mem hza (same_symm mem huaClass)⟩)
+    (fun hzb => ⟨ub, hub, same_trans mem hzb (same_symm mem hubClass)⟩)⟩⟩
+  rintro ⟨y, hy, hzy⟩
+  obtain ⟨x, hxy⟩ := hSupport y hy
+  exact Or.elim hxy (fun h => Or.inl (same_trans mem hzy h.2))
+    (fun h => Or.inr (same_trans mem hzy h.2))
 
 theorem singleton_of_pair (mem : V → V → Prop) {a s : V} (h : Pair mem s a a) :
-    Singleton mem s a := by
-  intro z
-  exact (h z).trans ⟨fun h => h.elim id id, Or.inl⟩
+    Singleton mem s a :=
+  fun z => (h z).trans ⟨fun h => h.elim id id, Or.inl⟩
 
 theorem orderedPairs_of_pairs (mem : V → V → Prop)
     (hPairs : ∀ a b, ∃ p, Pair mem p a b) (a b : V) :
@@ -103,8 +89,7 @@ theorem pairs_of_instances (mem : V → V → Prop) (witness : V)
     ∀ a b, ∃ p, Pair mem p a b := by
   obtain ⟨e, he⟩ := empty_of_collection mem witness hFalse
   obtain ⟨domain, j, hei, hj, hDifferent⟩ := two_indices_of_container mem e he hContainers
-  intro a b
-  exact pair_of_collection mem e j domain a b hei hj hDifferent (hChoices e j a b)
+  exact fun a b => pair_of_collection mem e j domain a b hei hj hDifferent (hChoices e j a b)
 
 def App (mem : V → V → Prop) (r x y : V) : Prop :=
   ∃ c, mem c r ∧ OrderedPair mem x y c
@@ -136,25 +121,17 @@ theorem bisim_refl_of_collection (mem : V → V → Prop) (a domain : V)
   obtain ⟨r, hSupport, hCover⟩ := hCollect domain
   have hDiagonal (x : V) (hx : mem x domain) : App mem r x x := by
     obtain ⟨c, hc⟩ := hPairs x x
-    obtain ⟨d, hdr, hxd⟩ := hCover x hx ⟨c, hx, hc⟩
-    exact ⟨d, hdr, hxd.2⟩
+    exact (hCover x hx ⟨c, hx, hc⟩).imp fun _ h => ⟨h.1, h.2.2⟩
   have hShape (x y : V) (hxy : App mem r x y) :
       ∃ t, mem t domain ∧ Same mem x t ∧ Same mem y t := by
     obtain ⟨c, hcr, hxy⟩ := hxy
     obtain ⟨t, ht, htt⟩ := hSupport c hcr
-    obtain ⟨hxt, hyt⟩ := orderedPair_injective mem hxy htt
-    exact ⟨t, ht, hxt, hyt⟩
-  refine ⟨r, ?_, hDiagonal a ha⟩
-  intro x y hxy
+    exact ⟨t, ht, orderedPair_injective mem hxy htt⟩
+  refine ⟨r, fun x y hxy => ?_, hDiagonal a ha⟩
   obtain ⟨t, ht, hxt, hyt⟩ := hShape x y hxy
   have hsame : Same mem x y := same_trans mem hxt (same_symm mem hyt)
-  constructor
-  · intro u hu
-    have huD := hTrans t ht u ((hxt u).mp hu)
-    exact ⟨u, (hsame u).mp hu, hDiagonal u huD⟩
-  · intro u hu
-    have huD := hTrans t ht u ((hyt u).mp hu)
-    exact ⟨u, (hsame u).mpr hu, hDiagonal u huD⟩
+  exact ⟨fun u hu => ⟨u, (hsame u).mp hu, hDiagonal u (hTrans t ht u ((hxt u).mp hu))⟩,
+    fun u hu => ⟨u, (hsame u).mpr hu, hDiagonal u (hTrans t ht u ((hyt u).mp hu))⟩⟩
 
 def ReverseChoice (mem : V → V → Prop) (r d c : V) : Prop :=
   mem d r ∧ ∃ x y, OrderedPair mem x y d ∧ OrderedPair mem y x c
@@ -164,9 +141,7 @@ theorem reverse_of_collection (mem : V → V → Prop) (r : V)
     (hCollect : CollectionInstance mem (ReverseChoice mem r)) :
     ∃ s, ∀ x y, App mem s x y ↔ App mem r y x := by
   obtain ⟨s, hSupport, hCover⟩ := hCollect r
-  refine ⟨s, ?_⟩
-  intro x y
-  constructor
+  refine ⟨s, fun x y => ⟨?_, ?_⟩⟩
   · rintro ⟨c, hc, hxy⟩
     obtain ⟨d, hdr, p, q, hpq, hqp⟩ := hSupport c hc
     obtain ⟨hxq, hyp⟩ := orderedPair_injective mem hxy hqp
@@ -183,13 +158,8 @@ theorem bisim_reverse (mem : V → V → Prop) {r s : V}
     Bisim mem s := by
   intro x y hxy
   obtain ⟨hForth, hBack⟩ := hr y x ((hReverse x y).mp hxy)
-  constructor
-  · intro a ha
-    obtain ⟨b, hb, hba⟩ := hBack a ha
-    exact ⟨b, hb, (hReverse a b).mpr hba⟩
-  · intro b hb
-    obtain ⟨a, ha, hba⟩ := hForth b hb
-    exact ⟨a, ha, (hReverse a b).mpr hba⟩
+  exact ⟨fun a ha => (hBack a ha).imp fun b h => ⟨h.1, (hReverse a b).mpr h.2⟩,
+    fun b hb => (hForth b hb).imp fun a h => ⟨h.1, (hReverse a b).mpr h.2⟩⟩
 
 /-- Symmetry uses only the explicitly named reversal relation instances. -/
 theorem eqv_symm_of_instances (mem : V → V → Prop)

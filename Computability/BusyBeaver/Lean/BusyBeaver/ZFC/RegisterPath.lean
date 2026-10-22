@@ -125,16 +125,11 @@ def writeRegisters (R : List Nat) : Nat → Nat → List Nat
 theorem read_writeRegisters (R : List Nat) (i v j : Nat) :
     readRegisters (writeRegisters R i v) j =
       if j = i then v else readRegisters R j := by
-  induction i generalizing R j with
-  | zero =>
-      cases R <;> cases j <;> simp [writeRegisters, readRegisters]
-  | succ i ih =>
-      cases R <;> cases j <;> simp [writeRegisters, readRegisters, ih]
+  induction i generalizing R j <;> cases R <;> cases j <;> simp [writeRegisters, readRegisters, *]
 
 theorem read_writeRegisters_eq (R : List Nat) (i v : Nat) :
-    readRegisters (writeRegisters R i v) = update (readRegisters R) i v := by
-  funext j
-  exact read_writeRegisters R i v j
+    readRegisters (writeRegisters R i v) = update (readRegisters R) i v :=
+  funext (read_writeRegisters R i v)
 
 structure FiniteConfiguration where
   path : List Bool
@@ -170,15 +165,12 @@ def finiteRun (p : Program) : Nat → FiniteConfiguration → Option FiniteConfi
 theorem finiteExecute_sound (e : Edge) (P : List Bool) (R : List Nat) :
     execute e P (readRegisters R) = (finiteExecute e P R).map decode := by
   cases e with
-  | node _ => rfl
+  | node _ | brk _ | cont _ | halt => rfl
   | inc r => simp only [execute, finiteExecute, Option.map, decode, read_writeRegisters_eq]
   | decnz r =>
       cases h : readRegisters R r with
       | zero => simp only [execute, finiteExecute, h, Option.map, decode]
       | succ v => simp only [execute, finiteExecute, h, Option.map, decode, read_writeRegisters_eq]
-  | brk _ => rfl
-  | cont _ => rfl
-  | halt => rfl
 
 theorem finiteStep_sound (p : Program) (c : FiniteConfiguration) :
     step p (decode c) = (finiteStep p c).map decode := by

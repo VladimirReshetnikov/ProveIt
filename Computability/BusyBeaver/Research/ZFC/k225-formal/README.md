@@ -10,13 +10,14 @@ Its zero-offset proposal is reconciled as
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
 
-The [phase17 combined Lean check](verification/k215/simplification/phase17/README.md)
-passes on the integration with frozen main `140d832128`, preserving Claude Code's
-direct-seed lower chain and phase16's quotient cleanup. The endpoint selects 174
-modules / 1,749,188 source bytes. One reviewed report, `source_tree_eq`, changes
-from `[]` to `[propext]` through the existing tree computation; the other retained
-profiles match the frozen expectations. Independent result review and evidence capture pass; the linked checkpoint contains the exact records.
-The phase16 receipts above retain their historical scope.
+The [phase18 combined Lean check](verification/k215/simplification/phase18/README.md)
+passes for shared 222/254 macro proofs and Claude Code's nine Profile/syntax and
+RegisterPath simplifications. Across the same 199 selected project modules,
+source size falls by 27,373 bytes / 683 Lean lines. The endpoint imports four
+shared reference modules and grows from 174 to 178 modules. All retained profiles
+match exactly; independent result review and evidence capture pass. The
+[phase17 checkpoint](verification/k215/simplification/phase17/README.md) and
+historical Rocq receipts retain their accepted scopes.
 
 The supplemental reconciliations of
 [Sources 168–174](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-205.md)
@@ -209,7 +210,14 @@ derives K's ZF interpretation syntactically, the Lean lower chain works with mod
 
 The generators are in this directory: `generate_tables_lean.py`, `generate_dense221_lean.py`,
 `generate_boot221_lean.py`, `generate_sites221_lean.py`, and `generate_source221_lean.py`.
-Phase16 retires `generate_kq1.py`; its shared quotient proofs are maintained directly. Generated machine data is untrusted; the kernel re-checks it. The certificate decoder of `RMOffsetBisim` reads paths of up to 511 bits,
+Phase16 retires `generate_kq1.py`; its shared quotient proofs are maintained directly.
+The three `dag222` macro modules, `L2Lib222`, `L2Macros222` and `L2Control222`,
+are also maintained directly. Their common subroutine contracts reuse the native
+254 proofs through `RMTransfer` and a kernel-checked closed set of unchanged nodes;
+the rotated next-candidate loop and its fetch proof remain local. The former
+`generate_l2k222.py` textual fork producer is retired. Earlier verification packets
+retain their original producer snapshots and hashes as historical evidence.
+Generated machine data is untrusted; the kernel re-checks it. The certificate decoder of `RMOffsetBisim` reads paths of up to 511 bits,
 since the AX chain of `dag222` makes decoder paths 180 bits deep (`RMBisim.decode` stops at 127).
 
 Compile times on this machine: `KSource221` about 60 minutes, the boot chunks about 20 seconds

@@ -3,12 +3,13 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
-The [phase17 combined Lean check](phase17/README.md) passes on the merged sources:
-direct full seed on the original domain, direct `C222` compilation, computed
-decoder trees, shorter AX words and shared proof terms. The endpoint selects 174
-modules / 1,749,188 source bytes. One reviewed report changes from `[]` to
-`[propext]` for `source_tree_eq`, through the existing tree computation; the other
-retained profiles match the frozen expectations. Independent result review and evidence capture pass; the linked checkpoint contains the exact records.
+The [phase18 combined Lean check](phase18/README.md) passes for shared macro
+proofs and the upstream Profile/syntax cleanup. Across 199 selected project
+modules it removes 683 Lean lines / 27,373 bytes. Producer retirement and its
+companion repair bring net maintenance savings to 756 lines / 31,070 bytes.
+The endpoint imports four reference modules and grows from 174 to 178 modules.
+All retained assumption profiles match exactly; independent result review and
+evidence capture pass. The [phase17 record](phase17/README.md) retains its accepted scope.
 The table below retains its accepted source comparisons through phase16.
 
 | Proof source | Original | Checked through phase16 |
@@ -104,7 +105,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest accepted checkpoint](phase17/README.md),
+The [latest accepted checkpoint](phase18/README.md),
+[seventeenth checkpoint](phase17/README.md),
 [sixteenth checkpoint](phase16/README.md),
 [fifteenth checkpoint](phase15/README.md),
 [fourteenth checkpoint](phase14/README.md),

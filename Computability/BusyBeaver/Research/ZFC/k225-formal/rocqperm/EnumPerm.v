@@ -18,8 +18,6 @@ From NS Require Import Codes222.
 
 Record state : Type := mkState { pl : nat; np : nat; tw : nat; ws : nat; d : nat; h : nat }.
 
-Definition s0 : state := mkState 0 0 0 0 0 0.
-
 (** the stack after AX: [tw] pushed first, then GEN of the cache at [u], then rho8 .. rho1 *)
 Definition ax_stack (a h b c u t w : nat) : nat :=
   P (rho1 a b) (P (rho2 a b c) (P (rho3 a b c) (P (rho4 a b c) (P (rho5 a b c)
@@ -51,5 +49,3 @@ Fixpoint run (n : nat) (s : state) : option state :=
   | 0 => Some s
   | S n => match enum_step s with Some s' => run n s' | None => None end
   end.
-
-Definition enum_halts : Prop := exists n s, run n s0 = Some s /\ enum_step s = None.

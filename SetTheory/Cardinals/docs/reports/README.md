@@ -3562,3 +3562,16 @@ a recovery map (`PLACEMENT.md`), and retires all eight ZIPs; reconciliation
 `feadb33d20` records the overlap, bases, credits, tensions and merged open
 questions without a write. Nothing was rerun; no formalization, consistency
 proof, materialized coefficient or new universal operation bound is claimed.
+
+Batch 218 (arrival `7be2780f26`, "wave-2") replaces those eight packages in
+the same report by seven syntheses that, by Vladimir's direction, completely
+supersede them; the collection stays at **291 reports**. Placement
+`8a4b00b5bf` removes the wave-1 directories (recoverable from `084e120830`
+through its parent), places the seven packages as sources 09–15 and retires
+their ZIPs; reconciliation `505e0e0a30` replaces the README. The packages
+state 13 positive unknowns (84 operations, degree 571), 14 at degree 121, a
+15-unknown six-equation system of degree 28 in 61 operations found by six
+of them, degree-22 variants, 32-unknown quartic, 25-unknown sextic and
+20-unknown octic lifts, 29 unrestricted-integer unknowns and coefficients
+with B = 2^(5^18). Wave 1's 67-operation equation keeps the fewest
+operations. Same non-claims; nothing was rerun.

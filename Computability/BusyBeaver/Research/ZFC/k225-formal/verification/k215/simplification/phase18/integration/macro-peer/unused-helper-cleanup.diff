@@ -1,0 +1,39 @@
+--- prototype/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib222.lean
++++ cleanup-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib222.lean
+@@ -52,21 +52,6 @@
+   trCore (n := 162) rfl (L2.pair162 n st h)
+ abbrev body154 (st : AS) := trCore (n := 154) rfl (L2.body154 st)
+ 
+-/- This higher-order lemma quantifies over a dag222 body contract, so it remains
+-local rather than assuming a nonexistent reverse transfer for arbitrary bodies. -/
+-theorem while_AS {n r : Nat} {b : Edge} (hn : dag222.nodes n = (.decnz r, b)) (hr : r < 9)
+-    (g : AS → AS) (hg : ∀ st, enc (g st) r = enc st r)
+-    (hbody : ∀ st, Run dag222 b (enc st) (.cont 1) (enc (g st))) :
+-    ∀ (k : Nat) (st : AS), enc st r = k → Rn (.node n) st (loopAS g r k st)
+-  | 0, st, hk => skip hn (.decZero r (enc st) hk)
+-  | k + 1, st, hk => by
+-      have hdec := Run.decPos (p := dag222) r (enc st) k hk
+-      rw [upd_enc_AS st r k hr] at hdec
+-      apply restart hn hdec (hbody _)
+-      apply while_AS hn hr g hg hbody k
+-      rw [hg, enc_updAS_self st r k hr]
+-
+-
+ abbrev loop115 (st : AS) := trCore (n := 115) rfl (L2.loop115 st)
+ abbrev loop116 (st : AS) := trCore (n := 116) rfl (L2.loop116 st)
+ 
+--- prototype/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros222.lean
++++ cleanup-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros222.lean
+@@ -12,12 +12,6 @@
+     Rn (.node n) s0 s2 := seq hn ha hb
+ 
+ theorem rn_eq {e : Edge} {s s1 s2 : AS} (h : Rn e s s1) (he : s1 = s2) : Rn e s s2 := he ▸ h
+-
+-theorem inc_AS (r : Nat) (hr : r < 9) (st : AS) :
+-    Run dag222 (.inc r) (enc st) .normal (enc (updAS st r (enc st r + 1))) := by
+-  have := Run.inc (p := dag222) r (enc st)
+-  rwa [upd_enc_AS st r _ hr] at this
+-
+ 
+ abbrev pushwff (st : AS) (hc : Clean st) := trCore (n := 171) rfl (L2.pushwff st hc)
+ abbrev v1 (st : AS) (hc : Clean st) := trCore (n := 177) rfl (L2.v1 st hc)

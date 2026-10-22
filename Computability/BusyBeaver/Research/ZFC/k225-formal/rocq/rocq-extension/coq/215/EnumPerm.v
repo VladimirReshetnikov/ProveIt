@@ -1,4 +1,4 @@
-(** k225-formal/rocqperm/EnumPerm.v (SHA256 7906b2ab14f05fcfed2fd3911ce0525e47961af69c03ceca02b0897f92e337e3) under namespace K215F. *)
+(** k225-formal/rocqperm/EnumPerm.v (SHA256 f8016bdeb3e2eca4f80b32addb4ae8a2c622598e12e6aae91f37734d7bd530ab) under namespace K215F. *)
 (** * EnumPerm: the abstract proof enumerator of the 215 (Source 159's command-permuted
     commands on Source 149's dominated AX).
 
@@ -18,8 +18,6 @@ From K230L Require Import Codes230.
 From K215F Require Import Codes222.
 
 Record state : Type := mkState { pl : nat; np : nat; tw : nat; ws : nat; d : nat; h : nat }.
-
-Definition s0 : state := mkState 0 0 0 0 0 0.
 
 (** the stack after AX: [tw] pushed first, then GEN of the cache at [u], then rho8 .. rho1 *)
 Definition ax_stack (a h b c u t w : nat) : nat :=
@@ -52,5 +50,3 @@ Fixpoint run (n : nat) (s : state) : option state :=
   | 0 => Some s
   | S n => match enum_step s with Some s' => run n s' | None => None end
   end.
-
-Definition enum_halts : Prop := exists n s, run n s0 = Some s /\ enum_step s = None.

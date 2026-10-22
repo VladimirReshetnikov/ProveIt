@@ -1,0 +1,269 @@
+\section{Lower degree from the ordinary strong equation}
+\label{sec:ordinary-new}
+
+The inputless arithmetic of packages~06 and~08 can be combined with the
+ordinary strong equation used in package~02
+\cite{src02,src06,src08}. This improves degree while preserving the
+fifteen positive unknowns and the four fixed coefficient ports. Keep
+the previously defined polynomials
+\(q,C,X,Y,E,k,c,a,H,\Delta,D,R,V\), and keep the first, main, index and
+transport factors \(N_0,N_1,N_k,N_t\). Replace the strong and auxiliary
+block by the polynomial abbreviations
+\begin{equation}\label{eq:ordinary-data}
+ I=ic^2,\qquad W=\Delta(f^2-1),\qquad
+ N_a=W(V^2-y^2)+y^2.
+\end{equation}
+Here \(I,W\) are computed expressions, not additional unknowns. In
+particular, the strong equation is \(I^2=W\), rather than the
+normalized equation involving \((i\Delta c^2)^2\).
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & Unknowns & Equations & Operations & Degree\\
+\midrule
+Ordinary system & 15 & 6 & \(34M+27A=61\) & 28\\
+Grouped ordinary system & 15 & 4 & \(36M+27A=63\) & 28\\
+Four-square polynomial & 15 & 1 & \(40M+34A=74\) & 56\\
+Ordinary product & 15 & 1 & \(39M+30A=69\) & 99\\
+Quadratic lift & 33 & 24 & not optimized & 2\\
+Its sum of squares & 33 & 1 & not optimized & 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+All unknown counts in this table use the strictly positive domain.
+The operation model is unchanged: each binary addition, subtraction
+or multiplication costs one, including multiplication by a numeral.
+
+\subsection{Six equations, four equations, and one polynomial}
+
+The ordinary six-equation system is
+\begin{equation}\label{eq:ordinary-six}
+ \boxed{N_0=N_1=N_a=N_k=N_t=1,\qquad I^2=W.}
+\end{equation}
+Its literal circuit uses 61 operations, and its residual degrees, in
+the displayed order, are
+\[
+ 22,\quad18,\quad28,\quad7,\quad2,\quad22.
+\]
+The auxiliary coefficient \(W=\Delta(f^2-1)\) is intentionally used
+in~\eqref{eq:ordinary-data}. Replacing it off the zero set by its
+equal-on-solutions expression \(I^2\) would increase the degree of
+the auxiliary residual.
+
+\begin{proposition}[Grouping the unit factors]\label{prop:group-ordinary}
+Over positive integers, system~\eqref{eq:ordinary-six} is tuplewise
+equivalent to the four equations
+\begin{equation}\label{eq:ordinary-four}
+ \boxed{N_0N_t=1,\qquad N_1N_k=1,\qquad N_a=1,\qquad I^2=W.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Each factor in either product equation is an integer unit. The first
+factor has the form
+\(\tau^2-U(U+1)k^2\), where \(U=XY^2>1\); the
+consecutive-product negative Pell equation excludes the value \(-1\).
+Also \(\Delta=(a+2)^2-1\) is \(0\) or \(3\pmod4\), so
+\(N_1=D^2-\Delta c^2\) cannot be \(-1\pmod4\). Thus
+\(N_0=N_1=1\), and the product equations give \(N_t=N_k=1\).
+The converse is immediate.
+\end{proof}
+
+The grouped residuals have exact degrees \(24,25,28,22\). Therefore
+the particularly transparent single equation
+\begin{equation}\label{eq:ordinary-sos74}
+ \boxed{\begin{aligned}
+ Q_{56}={}&(N_0N_t-1)^2+(N_1N_k-1)^2\\
+         &+(N_a-1)^2+(I^2-W)^2=0
+ \end{aligned}}
+\end{equation}
+uses 74 operations and has degree 56. This is four operations fewer
+than the direct six-square finalizer, at the same degree and unknown
+count. The degree is exact uniformly in the permitted fixed constants.
+Write \(Q_0=\beta J\) and \(k_0=\eta+\zeta\) for highest homogeneous
+forms. The unique degree-28 residual, \(N_a-1\), has highest form
+\[
+ w^2k_0^2s^4Q_0^{14}T^2f^4.
+\]
+Consequently the degree-56 part of \(Q_{56}\) is
+\(w^4k_0^4s^8Q_0^{28}T^4f^8\), which is nonzero since \(\beta>0\).
+
+\subsection{Why the ordinary strong equation is sufficient}
+
+This reduction requires a different proof order from a purely normalized
+strong-norm argument. One cannot simply divide the supplied \(i\) by
+\(\Delta\). The relevant ordinary strong-rank theorem is the one proved
+in the repository's relaxed auxiliary note~\cite{relaxed} and used in
+package~02~\cite{src02}.
+
+First consider a positive solution of~\eqref{eq:ordinary-six}. Its exact
+transport equation forces \(C>0\). Indeed, if \(C\le0\), then
+\[
+ N_t=(K+w)C+1-F-(z-1)(q-1)\le0,
+\]
+contrary to \(N_t=1\). Thus \(F+C=q-\alpha<q\). The native mask bounds
+and the same packing identity as in the inputless construction give
+\begin{equation}\label{eq:ordinary-bounds}
+ (2q-1)(q^2-1)<R<q^4-q^3,\qquad
+ E\ge q^4>R+q^3,\qquad a>R+2.
+\end{equation}
+Set \(A=a+2\) and \(P_0=2XY^2+1\). The positive first and main norms
+supply indices \(n,p\ge1\) such that
+\[
+ k=2\psi_{P_0}(n),\qquad c=\psi_A(p),\qquad D=\chi_A(p).
+\]
+Since \(P_0>A\) and \(c>k\), parameter monotonicity gives \(p>n\).
+The first-index equation and \(P_0\equiv1\pmod E\) imply
+\(2n\equiv R+1\pmod E\). Since \(0<R+1<E\), one has
+\(n\ge(R+1)/2\). Elementary Pell growth therefore proves, before any
+auxiliary argument,
+\begin{equation}\label{eq:ordinary-large-c}
+ c>A\Delta^2,\qquad c>2p,\qquad c>2R.
+\end{equation}
+
+Now \(I^2=W\) implies
+\[
+ f^2=1+\frac{i^2c^4}{\Delta},\qquad
+ f>\frac{c^2}{A}>2c.
+\]
+Together with~\eqref{eq:ordinary-bounds}--\eqref{eq:ordinary-large-c},
+this yields
+\begin{equation}\label{eq:ordinary-gap}
+ W-(Rf^2+c)=(\Delta-R)f^2-\Delta-c>0.
+\end{equation}
+The auxiliary equation is \(WV^2-(W-1)y^2=1\). If \(|V|>1\), then
+\(V^2-1=(W-1)(y^2-V^2)\) gives \(|V|\ge2W-1\). But
+\(V=c(Tf-1)-Rf^2>-(Rf^2+c)>-W\), excluding negative such values.
+The values \(0,1,-1\) are excluded by the norm or by
+\(V\equiv-c\pmod f\) and \(2<c<f/2\). Hence \(V>1\).
+
+The relaxed strong-rank theorem now gives an index \(m\) with
+\begin{equation}\label{eq:ordinary-rank}
+ f=\chi_A(m),\quad p\mid m,\quad c\mid m,\quad
+ ic^2=\Delta\psi_A(m),\quad m\ge c>2p.
+\end{equation}
+In particular \(c^2\mid f^2-1\), since
+\(f^2-1=ic^2\psi_A(m)\). The proof-only integers
+\[
+ o=cT-Rf,\qquad j=Tf-R\frac{f^2-1}{c}-1
+\]
+are integral and positive: \(of=V+c>0\) and \(jc=V+R>0\).
+They restore precisely \(V=of-c=jc-R\).
+
+The retained odd auxiliary-index and signed step-down argument therefore
+applies using~\eqref{eq:ordinary-rank}; it needs \(c\mid m\), not the
+stronger and unjustified assertion \(c^2\mid\psi_A(m)\). It gives
+\(R\equiv\pm p\pmod c\). Since \(0<R,p<c/2\), this forces \(p=R\).
+The no-wrap argument gives \(2n=R+1\). The lower ratio estimate and main
+projection then recover \(X=2^R\), followed by \(q=2^t\), the retained
+\(q^3\)-divisibility of \(Y\), and the half-binomial population
+threshold. The native masks, synchronization and forced Start now decode
+the finite accepting computation exactly as in the inputless proof
+\cite{src06,src08}.
+
+For completeness, take the canonical normalized solution of the inputless
+construction and replace only
+\[
+ i_{\mathrm{ordinary}}=\Delta i_{\mathrm{normalized}}.
+\]
+Its strong equality becomes \(I^2=W\), and its auxiliary coefficient is
+unchanged. This is an existence-preserving map in the required direction;
+no division by \(\Delta\) or coordinatewise equivalence of arbitrary
+strong-norm tuples is asserted.
+
+\subsection{A 69-operation product of degree 99}
+
+The ordinary unit factor is \(N_s^{\mathrm{ord}}=1+I^2-W\). The equation
+\begin{equation}\label{eq:ordinary-product69}
+ \boxed{P_{69}=N_0N_1N_aN_kN_tN_s^{\mathrm{ord}}-1=0}
+\end{equation}
+has the same positive zero set as~\eqref{eq:ordinary-six}. It costs
+69 operations and has degree 99. Its factor degrees are
+\(22,18,28,7,2,22\), and its nonzero leading form is
+\[
+ 8\gamma h i^2w^7s^{16}k_0^9Q_0^{55}T^2f^4
+       \bigl(w(Q_0-F-\alpha)-zQ_0\bigr).
+\]
+
+Here the signed bootstrap must be stated separately. A zero makes every
+factor a unit. The first and main norm signs are positive as before.
+The factor \(N_s^{\mathrm{ord}}\) cannot be \(-1\pmod4\): when \(\Delta\equiv0\),
+it is \(1+I^2\), and when \(\Delta\equiv3\), it is \(I^2+f^2\).
+Thus \(I^2=W\), and the square coefficient in \(N_a\) also excludes
+its negative sign. Write \(N_k=\varepsilon\), \(N_t=\nu\), where
+\(\varepsilon,\nu\in\{1,-1\}\) and \(\varepsilon\nu=1\).
+
+Transport first gives only \(C\ge0\). Its exceptional zero case is
+\(C=0,F=2,z=1,\nu=-1\); retain it. The lower packing bound is still
+\((2q-1)(q^2-1)<R\): for \(C>0\), use \(F+C\le q-1\), while in
+the exceptional case \(q^2-C-qF=q^2-2q>2q-1\). For the upper bound,
+the weaker estimate \(q^2-C-qF\le q^2-q\) suffices and gives
+\[
+ R<q^4-q^3+q^2-1,\qquad
+ E\ge q^4>R+q^3-q^2+1>R+5.
+\]
+Now \(n\ge(R-1)/2\), \(p>n\), and \(k=R+\varepsilon+hE>2R\)
+give~\eqref{eq:ordinary-large-c}. The ordinary gap, rank, auxiliary
+restoration and step-down proofs remain valid and give \(p=R\).
+Writing \(2n=R+\varepsilon+vE\), \(v\ge0\), a positive \(v\) would
+force \(2n>2R\), contradicting \(n<p\). Thus \(2n=R+\varepsilon\).
+If \(\varepsilon=-1\), then \(p=2n+1\); Pell duplication with
+\(\chi_A(2)>P_0\) gives \(c>Ak>k(Y+1)\), contradicting the ratio
+slacks. Therefore \(\varepsilon=\nu=1\), eliminating the exceptional
+branch and proving all six equations. This proves the claimed equivalence
+without using \(C>0\) prematurely.
+
+\subsection{An explicit quartic in 33 positive unknowns}
+
+The ordinary strong equation also removes one register from the
+34-variable quadratic lift of package~08~\cite{src08}. Besides the
+original fifteen positive variables, introduce eighteen positive
+register variables
+\[
+ N,E,P,c,a,X,D,C_2,G,L,R,F_2,V_0,V,g,I,B_a,\Delta.
+\]
+In this subsection these letters are genuine unknowns. Only
+\(q=\beta J+1\), \(k=\eta+\zeta\), \(H=4a+3\), and
+\(C=q-F-\alpha\) are affine abbreviations. Impose the following
+24 quadratic equations:
+\begin{alignat}{2}\label{eq:quartic33-system}
+ L&=q^2-1,&\qquad N&=q(L+1),\notag\\
+ X&=wq,&a&=E+sN,\notag\\
+ E&=X(a-E),&c&=k(a-E)+\eta,\notag\\
+ P&=E(c-\eta)+k,&\tau^2&=P(P-k)+1,\notag\\
+ D&=X+ac+\gamma H,&\Delta&=a^2+H,\notag\\
+ C_2&=c^2,&D^2-\Delta C_2&=1,\notag\\
+ k&=R+1+hE,&G&=(q-1)(q-F)+\alpha,\notag\\
+ R&=LG+(M_C+qM_F)J,&\qquad(K+w)C+q-F-z(q-1)&=1,\notag\\
+ F_2&=f^2,&V_0&=Tf-1,\notag\\
+ V&=cV_0-RF_2,&g&=y^2-V^2,\notag\\
+ I&=iC_2,&B_a&=I^2,\notag\\
+ B_a&=\Delta(F_2-1),&y^2-B_ag&=1.
+\end{alignat}
+Every residual has degree at most two, since the four compiler ports are
+fixed coefficients. If \(e_1,\ldots,e_{24}\) are these residuals, the
+single polynomial is
+\begin{equation}\label{eq:quartic33}
+ \boxed{Q_{33}=\sum_{j=1}^{24}e_j^2=0.}
+\end{equation}
+Its degree is exactly four: the coefficient of \(\tau^4\) is 1.
+The artifact supplies every expanded residual and the expanded quartic,
+which has 224 formal terms before specializing its four coefficient ports.
+
+The first equations recover \(N=q^3\), \(X=wq\), \(a-E=sq^3\),
+\(E=X(a-E)\), and the original main Pell data. The last equations give
+\(B_a=I^2=\Delta(f^2-1)\) and the ordinary auxiliary norm. Projection
+therefore yields~\eqref{eq:ordinary-six}. Conversely, each ordinary
+solution has the displayed register extension. All registers are
+positive; the nontrivial cases are \(G>0\), \(V_0>0\), \(V>1\), and
+\(g>0\), the last following from
+\((W-1)(y^2-V^2)=V^2-1>0\). Thus positivity discards no solution.
+
+The register saved relative to package~08 is its
+\(K'=D^2-1=\Delta C_2\). That lift used \(I=iK'\), whereas the ordinary
+version uses \(I=iC_2\). Deleting \(K'\) and replacing its two equations
+by \(D^2-\Delta C_2=1\) gives precisely the one-variable, one-equation
+reduction. Shifting all 33 coordinates by 1 gives the same degree-four
+equation over nonnegative integers. These reductions inherit the stated
+compiler and K215 calibration; they do not constitute a new formal
+proof-assistant build or a proof of consistency.

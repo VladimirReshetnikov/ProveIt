@@ -1,0 +1,530 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{hyperref,xurl}
+\usepackage{enumitem}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black,pdftitle={Explicit Diophantine equations for the consistency of ZFC},pdfauthor={Technical research report}}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\bitlen}{\operatorname{bitlength}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\title{Explicit Diophantine equations for the consistency of ZFC}
+\author{An inputless certificate for the ProveIt repository}
+\date{22 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We specify one integer polynomial in fifteen positive unknowns whose lack of solutions is equivalent to syntactic consistency of ZFC. Its factored arithmetic circuit uses 67 binary operations and has total degree 155. A more transparent six-equation system uses the same fifteen unknowns and 61 operations; its sum-of-squares polynomial has degree 120. Every coefficient is fixed by a bounded, explicit construction from the literal 430-transition K215 machine at the pinned ProveIt revision. No coefficient is an unspecified universal-machine index, and no coefficient computation waits for that machine to halt. The huge numerals are specified, not expanded. A second explicit construction has 25 quadratic equations in 34 positive unknowns; their sum of squares is a single quartic with the same consistency equivalence.
+
+The main reduction removes the input entirely: a forced Start and an input-erasing machine suffice, while a harmless forbidden window replaces the End selector. We distinguish the mathematical proof, imported number-theoretic and machine-correctness theorems, independently reproduced finite checks, and the absent end-to-end proof-assistant build. These are concrete upper bounds under stated metrics, not a proof of global simplicity or minimality.
+\end{abstract}
+
+\section{The answer and the meaning of simplest}
+
+Let \(\N=\{0,1,2,\ldots\}\), and let \(\Con(\mathrm{ZFC})\) mean that there is no finite syntactic ZFC proof of a fixed contradiction in an effective first-order proof calculus. The choice of ordinary adequate calculus does not affect the statement, because finite proof translations are formalizable in ZFC. Our primary domain is \(\Pos\), not unrestricted signed integers.
+
+The package pins the repository to
+\[
+\texttt{cdd582bec13f908df3711fa9e05d1ddac368a5db}.
+\]
+The construction is defined by the expressions below, the finite coefficient recipe in Section~\ref{sec:constants}, and the included literal machine data. A fixed integer is allowed to have a finite exact description by sums, powers, and bounded enumeration. The theorem is not conditional on successful decimal expansion of those integers.
+
+\begin{theorem}[Main mathematical construction]\label{thm:main}
+For the four fixed integers \(\beta,K,M_C,M_F^*\) specified in Section~\ref{sec:constants}, the explicit polynomial \(P\) of Section~\ref{sec:poly} satisfies
+\[
+\mathrm{ZFC}\ \vdash\quad
+\bigl(\nexists\mathbf x\in\Pos^{15}\ P(\mathbf x)=0\bigr)
+\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The six comparisons in Section~\ref{sec:system} are equivalent to the same nonexistence statement. The assertion uses the ordinary mathematical proofs of the pinned machine endpoint and the inherited Pell/compiler lemmas, with the explicit specialization proved here. This package does not contain an internally encoded ZFC proof or a newly checked Lean/Rocq certificate of the composite theorem.
+\end{theorem}
+
+There is no canonical total ordering called ``simplest.'' Unknown count, degree, circuit size, coefficient bit length, number of comparisons, proof complexity and ease of formalization can favor different objects. We prioritize a completely specified instance, few arithmetic operations, and a visible correctness chain. The fixed coefficients are enormous. Treating a huge fixed numeral as a free circuit input is conventional for this metric, but emphatically does not make the bit complexity small. The included corrected Jones representation gives a nine-unknown universal bound with degree \(47216\cdot5^{58}+9728\), vastly larger than 155. Its parameters encode coefficients of an already constructed polynomial; a machine state count is not that encoding. We do not claim that fifteen is the least possible number of unknowns, or advertise that literature bound as a fully extracted competing instance in this archive.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Presentation & Positive unknowns & Equations & Operations & Degree\\
+\midrule
+Factored polynomial \(P\) & 15 & 1 & 67 & 155\\
+Comparison system & 15 & 6 & 61 & at most 60\\
+System sum of squares & 15 & 1 & 78 & 120\\
+Retained-index system & 18 & 9 & 61 & at most 34\\
+Its sum of squares & 18 & 1 & 87 & 68\\
+Quadratic system & 34 & 25 & --- & 2\\
+Quartic sum of squares & 34 & 1 & --- & 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+The retained-index rows are a separate fixed-input fallback, with the historical Start/End window order and its own six fixed ports. The complete nine-comparison circuit is supplied as \path{fixed_input_system61.json}; its constants must not be confused with the four-port inputless instance.
+
+Here one binary addition, subtraction or multiplication costs one operation, even if one operand is a fixed numeral; assignments, sharing, fixed numeral declarations, and equality comparisons are free. The sum-of-squares ledger is obtained from the 61-operation comparison source by forming six residuals, squaring them and adding them. Its exact count is verified by the package checker, not inferred by counting displayed abbreviations. All 15 coordinates and all four fixed ports are live.
+
+\section{The explicit polynomial}\label{sec:poly}
+
+The fifteen strictly positive unknowns, in the order used throughout, are
+\[
+(J,F,\alpha,z,f,h,i,o,s,w,\tau,\eta,\zeta,y,\gamma).
+\]
+The symbols on the left in the following definitions are abbreviations for polynomials, not extra unknowns. In particular no existential exponent, divisibility symbol, minimum, floor, proof predicate or unbounded computation occurs in the final polynomial.
+
+First define the shared expressions
+\begin{align}
+ q&=\beta J+1,& X&=wq,&Y&=sq^3,&E&=XY,\label{eq:shared1}\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&\Delta&=a^2+4a+3,\label{eq:shared2}\\
+ D&=X+ac+\gamma(4a+3),\label{eq:D}\\
+ C&=q-F-\alpha,\label{eq:C}\\
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F^*)J,\label{eq:R}\\
+ V&=c(of-1)-Rf^2,&L&=(i\Delta c^2)^2.\label{eq:aux}
+\end{align}
+Define six factors:
+\begin{align}
+ N_1&=\tau^2-(EkY)(EkY+k),\label{eq:N1}\\
+ N_2&=D^2-\Delta c^2,\label{eq:N2}\\
+ N_A&=L(V^2-y^2)+y^2,\label{eq:NA}\\
+ N_I&=k-hE-R,\label{eq:NI}\\
+ N_T&=(K+w)C+q-F-z(q-1),\label{eq:NT}\\
+ N_S&=\Delta f^2-L.\label{eq:NS}
+\end{align}
+The requested single equation is
+\begin{equation}\label{eq:P}
+\boxed{\quad P=N_1N_2N_AN_IN_TN_S-\Delta=0.\quad}
+\end{equation}
+Equations~\eqref{eq:shared1}--\eqref{eq:NS} give a finite factored expression in \(\Z[J,F,\alpha,z,f,h,i,o,s,w,\tau,\eta,\zeta,y,\gamma]\). Replacing each abbreviation by its definition gives the literal polynomial. The supplied 67-row JSON arithmetic directed acyclic graph specifies a fully paid sharing schedule. It is more precise for operation counting than visually expanding powers in the displayed formula.
+
+Two cautions are essential. The expression \(R\) is not assumed positive merely because the supplied coordinates are positive. Its needed properties are recovered in the proof. Also \(N_S\) is a scaled strong factor: it equals \(\Delta\), not 1, at intended solutions. The equation \(\prod N_\bullet=\Delta\) must not be treated as a product of six units without first cancelling the known multiplier as in Section~\ref{sec:proof}.
+
+\section{A more transparent system}\label{sec:system}
+
+Using precisely the same definitions and positive unknowns, replace the product equation by
+\begin{equation}\label{eq:system}
+\boxed{\qquad
+ N_1=N_2=N_A=N_I=N_T=1,\qquad N_S=\Delta.
+\qquad}
+\end{equation}
+These are six polynomial comparisons. It requires only 61 operations because the five factor-product multiplications and final subtraction are absent. Its residual degrees are
+\[
+22,\ 18,\ 60,\ 7,\ 2,\ 46.
+\]
+An alternative single equation with an especially transparent conjunction is
+\begin{align}\label{eq:sos}
+ P_{\rm sos}={}&(N_1-1)^2+(N_2-1)^2+(N_A-1)^2+(N_I-1)^2\notag\\
+ &+(N_T-1)^2+(N_S-\Delta)^2=0.
+\end{align}
+Over integers, a sum of squares vanishes exactly when all six comparisons hold. The exact total degree is 120. This trades a larger arithmetic circuit for a lower degree and a manifest conjunction. These are different answers to different reasonable simplicity preferences.
+
+\section{An explicit quartic alternative}\label{sec:quartic}
+
+If low degree is preferred to a small unknown count, the following system is often the cleaner answer. Keep the same four fixed constants and the original fifteen positive unknowns, and introduce nineteen further positive unknowns
+\[
+ N,E,P_1,c,a,X,D,C_2,A_c,G,L_q,R,F_2,V_0,V,g,I,B_a,\Delta.
+\]
+Here these are genuine unknowns, unlike the abbreviations in Section~\ref{sec:poly}. Only \(q=\beta J+1\) and \(k=\eta+\zeta\) remain linear abbreviations. Impose these 25 equations:
+\begin{alignat}{2}
+ L_q&=q^2-1,&\qquad N&=(L_q+1)q,\notag\\
+ X&=wq,&a&=E+Ns,\notag\\
+ E&=X(a-E),&c&=\eta+(a-E)k,\notag\\
+ P_1&=E(c-\eta)+k,&\tau^2&=P_1(P_1-k)+1,\notag\\
+ D&=X+ac+\gamma(4a+3),&A_c&=D^2-1,\notag\\
+ \Delta&=a^2+4a+3,&C_2&=c^2,\notag\\
+ A_c&=C_2\Delta,&k&=Eh+R+1,\notag\\
+ G&=(q-1)(q-F)+\alpha,\label{eq:quadratic1}\\
+ R&=GL_q+J(M_C+qM_F^*),\notag\\
+ (K+w)(q-F-\alpha)+q-F-z(q-1)&=1,\notag\\
+ F_2&=f^2,&V_0&=of-1,\notag\\
+ V&=cV_0-RF_2,&g&=y^2-V^2,\notag\\
+ I&=A_ci,&B_a&=I^2,\notag\\
+ B_a&=\Delta(F_2-1),&y^2-B_ag&=1.\notag
+\end{alignat}
+Every residual has total degree at most 2 in the 34 unknowns, since \(\beta,K,M_C,M_F^*\) are fixed coefficients. Let \(E_1,\ldots,E_{25}\) be left side minus right side, in displayed order, reading paired columns left then right. The single requested low-degree equation is
+\begin{equation}\label{eq:quartic}
+ \boxed{\qquad Q_{\rm quartic}=\sum_{j=1}^{25}E_j^2=0.\qquad}
+\end{equation}
+It has exactly degree 4: only the eighth residual contains \(\tau\), so the coefficient of \(\tau^4\) is 1. The expanded residuals, exact variable list, and independent coefficient-checking receipt are supplied in \path{start_only_quartic34.json}. Its names \texttt{K}, \texttt{L}, \texttt{P}, \texttt{Baux} correspond to \(A_c,L_q,P_1,B_a\) here; its fixed port \texttt{Kconstant} still means the fixed \(K\).
+
+\paragraph{Equivalence and positive extension.}
+The first equations force \(L_q=q^2-1\), \(N=q^3\), \(X=wq\), \(a-E=Ns=sq^3\), \(E=X(a-E)\), and \(c=k(a-E)+\eta\). The first norm becomes the \(P_1\) equation; the main norm is the pair \(A_c=D^2-1=C_2\Delta\). The packing, index and transport comparisons are unchanged. The last equations give \(B_a=(i\Delta c^2)^2\), the strong relation \(B_a=\Delta(f^2-1)\), and the auxiliary norm \(y^2-B_ag=1\) with \(g=y^2-V^2\). Thus projection gives exactly the six-equation system.
+
+Conversely, each original positive solution has the displayed extension. All nineteen new coordinates are positive. The only non-obvious differences are \(G=q^2-C-qF>0\), established by the packed-index bounds; \(V_0=of-1>0\); and \(g=y^2-V^2>0\), following from the positive auxiliary norm and \(V>1\). Therefore imposing positivity on the extra coordinates discards no original solution. Sum-of-squares equivalence now proves
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists\mathbf u\in\Pos^{34}\ Q_{\rm quartic}(\mathbf u)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+Replacing each positive coordinate by a nonnegative coordinate plus 1 retains 34 unknowns and degree 4. Four-square substitution instead gives 136 unrestricted integer unknowns and degree 8. No operation optimum or new universal \((34,4)\) record is claimed; this is an explicit fixed-assertion tradeoff derived from the audited inputless system.
+
+\section{Why no input marker is needed}\label{sec:proof}
+
+A universal polynomial must represent many assertions as an ordinary input varies. The present target is one sentence. Compile a fixed machine that erases every finite positive unary input and then simulates the blank K215 machine. Thus any initialized accepting computation already witnesses the desired assertion. The compiler must force the occurrence of a Start window, but it need not mark or measure the input's other endpoint.
+
+The change is more than deleting an equation. The old compiler's selector 1 denoted End and was forbidden in its unmarked word. We replace selector 1 by the explicit locally valid window \((7,7,\ldots,7)\), which never appears in a canonical initialized run. The actual old End remains an ordinary allowed window at a different selector. This changes the coefficient recipe. Mixing the old fixed-input coefficient \(K\) with the new polynomial is invalid. Section~\ref{sec:constants} specifies the new order and proves the marked-plane semantics.
+
+\subsection{Cancellation and individual norm equations}
+Set \(S=f^2-\Delta i^2c^4\). Since \(N_S=\Delta S\), identically
+\begin{equation}\label{eq:cancel}
+ P=\Delta\left(N_1N_2N_AN_IN_TS-1\right).
+\end{equation}
+The supplied positive coordinates give \(q,X,Y,a>0\) and
+\(\Delta=(a+1)(a+3)>0\). Thus a zero first gives a product of six integers equal to 1. Every unscaled factor is \(\pm1\).
+
+The discriminant \(\Delta\) is 0 or 3 modulo 4, so neither \(N_2\) nor \(S\) can be \(-1\). Since \(L\) is a square, \(N_A=L(V^2-y^2)+y^2\) is congruent modulo 4 either to \(y^2\) or to \(V^2\), and cannot be \(-1\). Finally set \(V_0=XY^2>1\). Then
+\[
+ N_1=\tau^2-V_0(V_0+1)k^2.
+\]
+The consecutive-product negative Pell equation has no solution: the inverse of the fundamental positive unit \(2V_0+1+2\sqrt{V_0(V_0+1)}\) would send a least positive negative-norm coefficient \(k\) to a strictly smaller positive coefficient. This is the standard descent used in the inherited kernel proof. Consequently
+\[
+ N_1=N_2=N_A=S=1,\qquad N_I=\varepsilon,\quad N_T=\nu,
+ \qquad \varepsilon,\nu\in\{\pm1\},\quad\varepsilon\nu=1.
+\]
+
+\subsection{The zero case in the raw bound}
+It would be circular to assume that the computed \(C=q-F-\alpha\) is positive. The transport unit supplies the missing information. If \(C<0\), then, since \(z\ge1\),
+\[
+ N_T=(K+w)C+q-F-z(q-1)\le -(K+w)+1-F<-1,
+\]
+which is impossible. Thus \(C\ge0\). If \(C=0\), the only unit possibility is \(F=2,z=1,N_T=-1\). This exceptional branch is retained until the index-sign argument rules it out. In every case \(F+C=q-\alpha<q\), and the exact packed expression is
+\[
+ R=(q^2-C-qF)(q^2-1)+(M_C+qM_F^*)J.
+\]
+The native-mask bounds give
+\begin{equation}\label{eq:outer}
+ (2q-1)(q^2-1)<R<q^4-q^3,\quad q\ge16,\quad
+ E\ge q^4>R+q^3,\quad a>R+2.
+\end{equation}
+No power-of-two or typed-word premise has been assumed.
+
+\subsection{Positive auxiliary restoration}
+The normalized strong relation gives
+\[
+ f^2=1+\Delta i^2c^4,\qquad f>c^2>2c,\qquad c>2.
+\]
+Moreover \(\Delta>R\), and
+\[
+ L-(Rf^2+c)=(\Delta-R)f^2-\Delta-c
+ \ge1+\Delta(i^2c^4-1)-c>0.
+\]
+From \(N_A=1\), \(V\ne0\). If \(v=|V|>1\), then
+\[
+ v^2-1=(L-1)(y^2-v^2).
+\]
+Thus \(y\ge v+1\), whence \(v\ge2L-1\). But
+\(V>-(Rf^2+c)>-L\), excluding a negative \(V\). The cases \(V=\pm1\) are impossible because \(V\equiv-c\pmod f\) and \(f>2c>4\). Hence \(V>1\).
+
+Define restored coordinates (not additional final unknowns)
+\[
+ o_{\rm old}=co-Rf,\qquad
+ j_{\rm old}=of-R\Delta i^2c^3-1.
+\]
+The strong identity implies \(o_{\rm old}f=V+c>0\) and
+\(j_{\rm old}c=V+R>0\), so both are positive integers, and
+\(V=o_{\rm old}f-c=j_{\rm old}c-R\). This proves auxiliary positivity before any appeal to rank or universality.
+
+\subsection{Recovering the exact main index}
+Write \(A=a+2\) and \(P_0=2XY^2+1\). Define the Pell sequences by
+\((A+\sqrt{A^2-1})^n=\chi_A(n)+\psi_A(n)\sqrt{A^2-1}\).
+The first and main positive norm equations yield
+\[
+ \tau=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n),\qquad
+ D=\chi_A(p),\quad c=\psi_A(p),\qquad n,p\ge1.
+\]
+Since \(P_0>A\) and \(c>k\), we have \(p>n\). The index unit and \(P_0\equiv1\pmod E\) give \(2n\equiv R+\varepsilon\pmod E\). Bounds~\eqref{eq:outer} imply \(n\ge(R-1)/2\ge24\), \(c>2p\), and \(c>2R\).
+
+The normalized strong norm gives \(f=\chi_A(m)\), \(\psi_A(m)=ic^2\). Reducing \(m\) modulo \(p\), using the coprimality of \(D,c\) and \(0\le\psi_A(r)<c\) for \(r<p\), shows \(p\mid m\). Write \(m=pv\). Expanding \((D+c\sqrt\Delta)^v\) modulo \(c^2\) gives
+\[
+ \psi_A(m)/c\equiv vD^{v-1}\pmod c.
+\]
+Thus \(c\mid v\), so \(pc\mid m\) and \(m>2p\). This uses the normalized strong relation, not an unjustified division in an older strong-norm tuple.
+
+Put \(S_0=\Delta ic^2\). The auxiliary norm is
+\[
+ (S_0V)^2-(S_0^2-1)y^2=1.
+\]
+Its positive Pell index \(\lambda\) is odd because \(S_0\mid\chi_{S_0}(\lambda)\). For \(\lambda=2r+1\), the odd-index polynomial \(Q_r\) satisfies
+\[
+ \chi_{S_0}(2r+1)=S_0Q_r(S_0^2),\quad
+ Q_r(1-A^2)=(-1)^r\psi_A(2r+1),\quad Q_r(0)=(-1)^r(2r+1).
+\]
+Since \(S_0^2=\Delta(f^2-1)\equiv1-A^2\pmod f\) and \(V\equiv-c\pmod f\), squaring the resulting Pell congruence yields
+\[\chi_A(2\lambda)\equiv\chi_A(2p)\pmod{\chi_A(m)}.\]
+The inherited signed Pell step-down lemma, with \(0<2p<m\), gives
+\(\lambda\equiv\pm p\pmod m\), hence modulo \(c\). Reducing
+\(Q_r(S_0^2)=V\equiv-R\pmod c\) now gives \(R\equiv\pm p\pmod c\). Because \(0<R,p<c/2\), this forces \(p=R\).
+
+Write \(2n=R+\varepsilon+vE\) with \(v\ge0\). If \(v\ge1\), then \(E>R+q^3\) gives \(2n>2R\), contradicting \(n<p=R\). Hence \(2n=R+\varepsilon\). If \(\varepsilon=-1\), then \(p=2n+1\). Pell duplication and monotonicity, with \(\chi_A(2)>P_0\), yield
+\[
+ c=\psi_A(2n+1)>Ak>k(Y+1),
+\]
+contradicting \(c=kY+\eta\) and \(0<\eta<k\). Therefore
+\[
+ \varepsilon=\nu=1,\qquad p=R,\qquad 2n=R+1.
+\]
+In particular the exceptional \(C=0\) branch has disappeared and \(C>0\). This proves the equality of the positive zero sets of the polynomial and the six-equation system.
+
+\subsection{Power recovery and the native word}
+For \(r=(R-1)/2\), the inherited half-binomial ratio estimate gives
+\[
+ \frac{c}{k/2}>\frac{(X+1)^{2r}}{X^r}.
+\]
+Together with \(c/k<Y+1\) it implies \(Y>X^r/3\) and \(a>2^R\). The main projection gives
+\(\chi_A(R)-a\psi_A(R)=X+\gamma(4a+3)\); its recurrence modulo \(4a+3\) therefore gives \(X\equiv2^R\pmod{4a+3}\). Both positive quantities are less than \(a\), so \(X=2^R\). Since \(q\mid X\), \(q=2^t\). The bound \(R>3q>3t\) gives \(q^3\mid X\), restoring the original symmetric-scale witness.
+
+The half-binomial population theorem now gives
+\(\pc(R)\ge3t+2\). The repunit equation and the order of 2 modulo \(2^d-1\) give \(d\mid t\), hence \(q=B^N\). Let
+\[
+ S'=(C-1)+qF,\qquad T'=M_CJ+1+q(M_FJ-1).
+\]
+The exact shifted packing identity is
+\(R=(q^2-S')(q^2-1)+T'\). The inverse population lemma forces
+\[
+ (C-1)\mathbin{\&}(M_CJ+1)=0,\qquad
+ F\mathbin{\&}(M_FJ-1)=0,
+\]
+where \(\&\) means bitwise conjunction in this proof only. These conditions type the native word, force an origin Start, forbid selector 1, and preserve all original field tests. The actual final polynomial has no bitwise operation.
+
+The transport coordinate can be restored as
+\(z_{\rm old}=z-1+wC>0\), giving exactly
+\((K+X)C=F+z_{\rm old}(q-1)\).
+The modified compiler's quarter-radix margin, two clean bands and anchor parity tests synchronize the temporal multiplier to a whole-cell rotation. Exact overlap then produces a valid periodic tile plane containing Start. The soundness argument in Section~\ref{sec:constants} extracts a finite initialized halting rectangle. Because the machine erases all input, this proves blank K215 halting. Neither an End marker nor an input-distance equation is used.
+
+\subsection{Completeness}
+Given a blank K215 halt, choose the canonical normalized computation on four unary ones, and independently enlarge the width and time height to sufficiently large powers of five. It has one Start and no forbidden window. The five-adic Boolean dummy adjustment preserves all actual transitions while controlling the packed index. Its native and field digits satisfy \(q-C-F>0\), so choose \(\alpha=q-C-F\). The positive half-binomial converse and canonical strong-norm normalization supply the remaining positive coordinates, with \(\gamma\) independent of the removed input loader. All six comparisons hold, hence \(P=0\).
+
+This is an existential completeness construction, possibly using fresh padding and new auxiliary Pell witnesses. It is not a claim that every tuple for the old universal polynomial maps bijectively to a tuple for the new one. We have proved
+\begin{equation}\label{eq:machine_equiv}
+ \exists\mathbf x\in\Pos^{15}\ P(\mathbf x)=0
+ \quad\Longleftrightarrow\quad\text{K215 halts on blank tape}.
+\end{equation}
+
+\section{The exact constants}\label{sec:constants}
+
+\subsection{Literal machine data rather than an unspecified index}
+The starting file is
+\begin{center}\small
+\texttt{Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm}
+\end{center}
+at the pinned revision. Its SHA-256 is
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{center}
+It contains exactly 430 rows, two for each working state \(0,\ldots,214\); target state 215 means halt. The initial tape is blank and the initial state is 0. The package includes these literal bytes. An independent parser checks all rows against the formal dense table and its concrete native projection. The different native file has a different byte checksum and is not substituted silently.
+
+Define a total machine with 435 states and ten symbols. Four prefix states mark the origin, sweep left erasing the finite unary input, return right to the marker, and enter the blank K215 simulation. Simulated state \(q\) and track \(t\in\{0,1\}\) are state \(4+2q+t\); state 434 is absorbing halt. At physical position \(-n\), track 0 stores logical position \(n\), and track 1 stores logical position \(-n-1\). Crossing logical positions \(0,-1\) switches tracks without moving physically. The four plain symbols encode pairs \(00,01,10,11\), four flagged symbols encode the same pairs at the permanent origin, and the remaining two are unary input and temporary origin. Malformed cases are explicitly nonhalting self-loops. The total machine and window predicate are in \path{explicit_constants.py}, newly authored code reading the literal table as data. The final coefficient-order and four-port export entry point is \path{start_only_constants.py}; its reordered enumeration must be used rather than the historical Start/End enumerator in the base module.
+
+This machine halts on the fixed input precisely when blank K215 halts. Its first step is stationary, as required by the window below. Its whole behavior is defined on every state/symbol pair, independently of any halting assumption.
+
+\subsection{A completely bounded tile alphabet}
+The underlying tiles have the actual size
+\[
+ a_0=4366=6+10\cdot436.
+\]
+Tile 0 is a vertical boundary \(V_b\); tile 1 is a horizontal boundary \(H_b\); tiles 2--5 are initialization phases \(L_b,I_b,Q_b,R_b\), carrying blank/no-head, input/no-head, input/initial-head, blank/no-head. Tile \(6+436s+h\) is a noninitial cell containing symbol \(s\), with no head if \(h=0\), and head state \(h-1\) otherwise.
+
+For a row-major \(3\times3\) window, the total predicate \texttt{allowed\_window} in the included coefficient source imposes the following centered clauses. Vertical boundary status propagates above and below, and vertical boundaries are not horizontally adjacent. Among nonvertical neighbors, horizontal boundary status is uniform; horizontal boundaries are not vertically adjacent. Initialization phases occur precisely below a horizontal boundary, begin with \(L_b\), end with \(R_b\), and have the allowed edges
+\[
+ (L_b,L_b),(L_b,I_b),(I_b,I_b),(I_b,Q_b),(Q_b,R_b),(R_b,R_b).
+\]
+The next symbol is the center's written symbol; the next head is the unique incoming head from left, center or right according to the total transition function. Escape through a vertical boundary and multiple incoming heads are rejected. A cell immediately above a horizontal boundary may contain no head or the absorbing halt head. The four corner entries are legal tiles but unused by this centered predicate; overlap binds them to neighboring centered tests.
+
+The first two windows, in order, are
+\[
+ S_0=\begin{pmatrix}H_b&H_b&H_b\\I_b&I_b&Q_b\\t(1)&t(1)&t(2,1)\end{pmatrix},\qquad
+ F_0=\begin{pmatrix}7&7&7\\7&7&7\\7&7&7\end{pmatrix}.
+\]
+Here \(t(s)\) is the headless tile and \(t(s,q)\) the tile with head state \(q\). The second window is locally valid: tile 7 is the ordinary blank tile carrying state 0, whose malformed blank transition is a stationary self-loop. It cannot occur in a canonical run: state 0 initially occurs only in the phase tile with input symbol 1, and every transition from another state avoids state 0. Thus forbidding this window discards no initialized computation. The old End window is retained among the other allowed windows. Append every other passing window in lexicographic order. This uniquely defines the finite list \(w_0,\ldots,w_{k-1}\). At most
+\[
+ U=4366^9=576439300316095098822468574875136
+\]
+tuples are examined. Thus \(k\) and every \(w_i\) are bounded sums of values of an explicitly total finite predicate. This is not a search for a halting computation, and its termination does not use \(\Con(\mathrm{ZFC})\) or its negation.
+
+\subsection{A finite formula for every coefficient}
+To avoid confusion with the polynomial parameter \(a\), this subsection uses \(a_0=4366\) throughout. Set
+\begin{align*}
+ \ell&=\max\{2,\bitlen(k+1)\},& A_0&=2^\ell,\\
+ e(r,c,s)&=k+3a_0+(2-r)3a_0+(2-c)a_0+s,\\
+ j(r,c,s)&=1+(3r+c)a_0+s.
+\end{align*}
+Indices range over \(0\le r,c<3\), \(0\le s<a_0\). Start with selector positions \(i<k\) and the nine-copy positions \(e(r,c,s)\), and define coefficients
+\begin{align*}
+ c_i&=1+\sum_{r,c<3}A_0^{j(r,c,w_i[3r+c])}
+              +\sum_{j=9a_0+1}^{9a_0+4}A_0^j,\\
+ c_{e(r,c,s)}&=A_0^{j(r,c,s)}.
+\end{align*}
+Let
+\begin{align*}
+ m_0&=2\ell+30a_0+8,&
+ p&=\max\left\{0,\left\lceil\frac{k+9a_0+4-m_0}{2}\right\rceil\right\},\\
+ m&=m_0+2p,& D_0&=m-k-9a_0-3,\\
+ \mu&=A_0-2+\sum_{j=1}^{9a_0+4+p}A_0^j.
+\end{align*}
+Add \(D_0\ge1\) zero-coefficient dummy positions \(k+12a_0,\ldots,k+12a_0+D_0-1\). Let \(E_0'\) be the selector/copy/dummy set. Put
+\[
+ M_0=\max E_0'+3a_0+1=k+15a_0+D_0
+\]
+and append four anchors \(M_0,3M_0,9M_0,27M_0\), whose coefficients are respectively \(A_0^{9a_0+1},\ldots,A_0^{9a_0+4}\). Call the resulting exponent set \(\mathcal E\). Then
+\begin{align*}
+ K_0&=|\mathcal E|=m+1,& E_{\max}&=27M_0,\\
+ H_0&=E_{\max}+24M_0+3a_0+1,\\
+ T_1&=H_0+2E_{\max}+a_0+1,&T_2&=T_1+2E_{\max}+1,\\
+ g&=T_2+E_{\max}+1.
+\end{align*}
+Let \(L_0\) be the least power of five greater than \(g+E_{\max}\). Define
+\[
+ M=(K_0+2)\left(2\sum_{e\in\mathcal E}c_e+6\right),\qquad
+ T=\max\{4M+8,2\mu+4,16\}.
+\]
+Let \(b\) be the least power of five with \(2^b\ge T\), and set
+\[
+ r_0=2^b,\qquad d=bL_0,\qquad B=2^d.
+\]
+All least-power choices are bounded integer computations. Define
+\begin{align*}
+ D_C^0(t)={}&t^{3a_0}+t^{H_0+a_0}+t^{8M_0}+t^{24M_0}\\
+ &+\sum_{e\in\mathcal E}c_e(t^{T_1-e}+t^{T_2-e}),\\
+ \epsilon={}&\begin{cases}1,&2D_C^0(2)-2^{H_0}\equiv0\pmod5,\\0,&\text{otherwise},\end{cases}\\
+ D_C={}&D_C^0(r_0)+\epsilon r_0^g,\qquad D_R=r_0^{H_0},\\
+ M_F^0={}&\mu(r_0^{T_1}+r_0^{T_2})
+ +\sum_{\substack{r<2,c<3\\s<a_0}}r_0^{e(r,c,s)}
+ +\sum_{\substack{r<3,c<2\\s<a_0}}r_0^{H_0+e(r,c,s)}
+ +r_0^{9M_0}+r_0^{27M_0},\\
+ e_*={}&k+12a_0,\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}r_0^e-2r_0^{e_*},
+ \qquad M_F=M_F^0+4.
+\end{align*}
+The four fixed ports in our final polynomial are exactly
+\begin{equation}\label{eq:constants}
+ \boxed{\quad
+ \beta=B-1,\quad K=D_C+BD_R,\quad M_C,\quad M_F^*=M_F+B-1.\quad}
+\end{equation}
+The distinction between the native mask \(M_F\) and source coefficient \(M_F^*\) is essential. In particular a bound \(M_F<B-1\) is not asserted for \(M_F^*\). The symbols \(r_0,D_0,L_0,K_0\) used here are coefficient-construction quantities, not extra unknowns in the final equation.
+
+\subsection{Why a periodic Start is a finite accepting computation}
+Exact horizontal and vertical window overlaps pull a cyclic word back to a plane by \(i=-x-hy\pmod N\). The resulting plane has axis periods \(N\), whether or not \(h\mid N\). A Start window contains an initialized head phase \(Q_b\) to its right. The phase graph has no directed cycle through \(Q_b\), so horizontal periodicity forces vertical boundary columns on both sides. Choose the nearest pair. Boundary propagation makes a finite-width strip. The horizontal boundary immediately above Start extends across that strip. Vertical periodicity gives a later horizontal boundary; choose the first one.
+
+The intervening region is a finite rectangle whose initial row is
+\(L_b^uI_b^vQ_bR_b^w\), with \(u,v,w\ge1\). The exact local updates and no-escape clauses preserve its single genuine head. The last-row rule requires that head to be in the absorbing halt. The input-erasing prefix therefore yields a blank K215 halt. Only an occurrence of Start is needed, not uniqueness or an End selector.
+
+Conversely, a finite halt has finite duration and finite visited width. Use three \(I_b\) cells before \(Q_b\), a sufficiently large left margin and two blank right cells. Enlarge the width \(h\) and time height \(H\) independently; pad the accepting tail with absorbing halt steps. For the base array \(G\), the extension
+\[
+ T(x,y)=G\bigl(x\bmod h,\ (y+\lfloor x/h\rfloor)\bmod H\bigr)
+\]
+has helical periods \((h,-1)\) and \((0,H)\), hence a cyclic word of length \(N=hH\). Boundary seams are valid because vertical boundary tiles are time-independent and stop horizontal propagation. Both \(h,H\) can be chosen as powers of five with \(H\ge25\), \(N>25d\), as required by the dummy-control theorem. This padding depends on an accepting run only in the completeness proof, never in the coefficient definitions.
+
+\subsection{Canonical positive slack}
+Including the low-dummy adjustment, native digits of \(C\) are Boolean. Each aligned field coefficient of \(F\) is at most \(M+1\le r_0/4-1\). Thus \(C+F\) has no carries and every base-\(B\) cell is at most \(B-2\). With \(q=B^N\), \(J=(q-1)/(B-1)\),
+\[
+ C+F\le(B-2)J,\qquad \alpha=q-C-F\ge J+1>0.
+\]
+This supplies the positive raw slack used in completeness. The stronger bound for the optional retained-index variant is recorded separately in the coefficient annex.
+
+\section{From the machine to consistency}
+
+The source endpoint gives the following chain of finite, syntactic assertions:
+\begin{align*}
+ \text{K215 halts blank}
+ &\ \Longleftrightarrow\ \texttt{KCode222.C222}(1),\\
+ &\ \Longleftrightarrow\ \text{ZF has a finite derivation of falsity},\\
+ &\ \Longleftrightarrow\ \text{ZFC has a finite derivation of falsity}.
+\end{align*}
+The principal named endpoints are \path{KEndpoint215.blank_halts_iff_zfc_refutation}, \path{KEndpoint.c222_iff_zf_refutation}, and \path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}; exact names and types are preserved in the source snapshots. The ZF/ZFC transport uses the constructible-inner-model consistency argument, not an assumption that a transitive or \(\omega\)-model exists. The proposition concerns finite proofs, not semantic truth in the intended universe.
+
+Combining this chain with~\eqref{eq:machine_equiv} and negating yields Theorem~\ref{thm:main}. No assumption of consistency is used to prove the equivalence. If ZFC is inconsistent, it trivially proves every sentence; the meaningful content is a uniform mathematical proof of the displayed equivalence, independent of which consistency alternative holds.
+
+\subsection{What provable in ZFC means here}
+The finite machine translations, bounded coefficient recipe, integer arithmetic, Pell and valuation arguments, and finite proof translations are ordinary mathematical constructions formalizable in ZFC. Finite strings, proofs and configurations are coded by natural numbers; sums, products and bounded predicates define unique integers; the required inductions are available in arithmetic inside ZFC. The logical endpoint is the standard syntactic refutability theorem of the numerical calculus, together with ZF/ZFC equiconsistency. Its semantic proof can be arithmetized using ordinary completeness and constructibility rather than a stronger model-existence hypothesis.
+
+This mathematical formalizability claim is distinct from a delivered formal proof object. The repository explicitly describes its assistant theorem as external, rather than an internally encoded PA/ZFC derivation. We have not compiled the complete Lean or Rocq chain afresh, and we do not relabel a reported kernel dependency list as an internal ZFC proof. The package's trust ledger identifies the imported results and the new specialization proof so that formalization can target the actual remaining obligations.
+
+\subsection{What the construction does not settle}
+Assuming ZFC is consistent and satisfies the standard hypotheses for its second incompleteness theorem, ZFC cannot prove the nonexistence of solutions to this equation: that would prove its own consistency. The equivalence does not decide whether a solution exists. Consistency alone also does not automatically establish that ZFC cannot prove the opposite existential assertion; such a two-sided independence statement needs additional soundness or consistency conditions. No bounded search for small solutions can certify nonexistence or verify the unbounded logical endpoint.
+
+\section{Domains and degree calculations}
+
+For nonnegative unknowns, substitute \(x_j=n_j+1\) in every one of the fifteen positive ports. This gives an equation over \(\N^{15}\) with the same solution-existence assertion and the same degree 155. The substitution has a cost if it is implemented as an arithmetic circuit; the original 67-operation figure is for positive ports, not the shifted implementation.
+
+For unrestricted integers use Lagrange's four-square theorem:
+\[
+ x_j=1+u_{j1}^2+u_{j2}^2+u_{j3}^2+u_{j4}^2.
+\]
+Every such value is positive and every positive integer has this form. Hence the resulting single integer polynomial in 60 signed variables has a zero exactly when \(P\) has a positive zero. Its total degree is 310. Applying the same substitution to \(P_{\rm sos}\) gives degree 240. This is a robust conversion, not a claim of an optimal signed-variable count. Merely allowing the original fifteen ports to be signed is invalid: \(\Delta\) can vanish off the positive domain, creating spurious zeros through~\eqref{eq:cancel}.
+
+With all coefficients fixed, the factors \((N_1,N_2,N_A,N_I,N_T,N_S)\) have exact degrees
+\[
+ (22,18,60,7,2,46).
+\]
+Their sum is 155, and subtraction of degree-12 \(\Delta\) cannot cancel the product's highest degree. The nonvanishing leading forms are uniform on every valid compiler slice because \(\beta=B-1>0\). Cancellations in the main Pell norm matter: a naive gate-degree propagation can produce only an upper bound. The independent checker records exact polynomial identities or modular coefficient diagnostics separately from the uniform mathematical degree argument. For the sum of squares, the degree-60 auxiliary residual gives degree 120 and cannot cancel against other squared leading forms over \(\Z\). Writing \(Q=\beta J\), the leading homogeneous form is explicitly
+\[
+ -8Q^{91}h\gamma i^4k^{13}w^{13}s^{26}o^2f^2
+ \bigl(w(Q-F-\alpha)-zQ\bigr).
+\]
+The monomial \(J^{92}h\gamma i^4\eta^{13}w^{13}s^{26}zo^2f^2\) has nonzero coefficient \(8\beta^{92}\). This proves exact degree uniformly, not just at diagnostic coefficient assignments.
+
+\section{A smaller source level target for future compression}
+
+The polynomial above compiles a very concrete machine. The formal source nevertheless exposes a much smaller semantic core: the twelve-rule numerical calculus \(D=\texttt{C222}\). It has truth, modus ponens, generalization, eight polynomial-coded axiom rows, and one gated seed bundle. The accompanying \texttt{direct\_stack\_core.tex} gives all twelve rules as explicit integer polynomials and a new one-natural-number stack verifier.
+
+For the injective positive pairing polynomial
+\[
+ \mathcal J(x,y)=(x+y)^2+y+1,
+\]
+there is a completely displayed local polynomial \(H(s,t;a,b,c,u,v)\) with one persistent state coordinate, five local witnesses, and twelve disjunctive branches. The note proves
+\[
+ \exists\text{ finite }H\text{-path from }0\text{ to }2
+ \quad\Longleftrightarrow\quad D(1)
+ \quad\Longleftrightarrow\quad\neg\Con(\mathrm{ZFC}).
+\]
+A product encodes the finite branch disjunction; sums of squares encode the multi-condition branches. No tape, proof enumeration scheduler, division, or unpairing algorithm is needed in this new core.
+
+This is a genuine simplification of the input to a future compiler, not already a fixed-arity Diophantine equation. One equation for every step in a path of existentially unbounded length has an unbounded number of variables. That history must still be compressed. The package also records a constructive Rocq AST route with actual iteration and elementary-Diophantine compiler interfaces. It is not built or extracted here. Conditional bounds in terms of its as-yet uncomputed AST size are not advertised as a numerical improvement over the explicit current polynomial.
+
+\section{Reproducibility and trust ledger}
+
+The archive contains TeX/PDF deliverables, an \texttt{evidence/} directory of source snapshots, owned checkers, JSON circuits and receipts, and a top-level \texttt{checks/} reproducer. Source hashes and a package manifest bind the exact input bytes. Repository Python and Lean files were read as inert source data, not executed. The default reproducer runs only newly authored standard-library checks; it never starts the astronomical full window enumeration.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Claim & Evidence and limit\\
+\midrule
+\endhead
+Literal K215 binding & Every one of the 430 dense actions checked against the formal/native table projection; source checksums verified. This is finite source binding, not a proof that the machine characterizes ZFC refutations.\\
+Normalized machine & All 4350 state/symbol actions are total; all 3440 folded transition cases checked; prefix erasure checked on lengths 2--30, plus finite helical/overlap diagnostics. General erasure/folding has a mathematical invariant proof.\\
+Exact coefficients & Fully bounded finite definition, literal window predicate, deterministic order and four-port export. Full alphabet and giant coefficient values were not materialized.\\
+Circuit metrics & All rows, ports, dependencies and operation counts checked on literal JSON. Finite algebraic evaluations and degree diagnostics are labeled as such.\\
+Inputless reduction & Mathematical audit of cancellation, the zero-raw-bound branch, sign/rank recovery, positive gamma, Start-only semantics and canonical slack. No fresh kernel certification of this proof.\\
+Pell/compiler theorem & Imported pinned mathematical proof chain and recorded reviews. Included sources permit inspection; finite checks alone do not prove universality.\\
+ZFC endpoint & Pinned proof-assistant source endpoint and repository build claims, plus the mathematical formalizability argument. No local complete Lean/Rocq rebuild or internally encoded ZFC proof supplied.\\
+\bottomrule
+\end{longtable}
+
+The README gives exact commands. A successful run reestablishes the finite evidence, not the truth of \(\Con(\mathrm{ZFC})\). It must not be described as a solver or as an independent proof-assistant verification of all imported mathematics.
+
+\section{Questions worth pursuing next}
+
+\begin{enumerate}
+\item Can the one-stack polynomial transition relation be compiled directly into the pinned constructive MRDP development, avoiding the 215-state tape and window layers while producing an actual final AST and coefficient file?
+\item Can the inputless Start-only compiler and independent positive gamma be formalized as reusable lemmas, including the exceptional zero-raw-bound case and the exact sign recovery?
+\item Which Pareto point is most useful for ProveIt: 67 operations and degree 155, the 61-operation comparison system, the explicit 34-variable quartic, or the retained-index lower-degree fallback? Coefficient bit length and proof burden should be recorded too.
+\item Can the finite window sum be evaluated symbolically using the local transition structure rather than enumerating \(4366^9\) tuples, while preserving the exact specified constants and order?
+\item Can the entire equivalence be expressed and checked inside the chosen arithmetic/set-theoretic object theory, rather than relying on an external assistant theorem plus a formalizability argument?
+\item Can signed-variable or low-variable universal representations be instantiated with equally explicit coefficients and comparably transparent proof obligations? A smaller published universal variable bound by itself is not an instantiated competing equation for this target.
+\end{enumerate}
+These are concrete research directions. None is needed to interpret the current fixed polynomial, and none is claimed completed here.
+
+\section*{Primary sources and provenance}
+All repository references below are pinned to the revision printed above. The manifest provides exact relative paths and hashes for included snapshots.
+\begin{enumerate}
+\item ProveIt, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cdd582bec13f908df3711fa9e05d1ddac368a5db/Computability/BusyBeaver}{BusyBeaver development}, in particular the K215 dense/native table, \path{KEndpoint215.lean}, \texttt{KEndpoint.lean}, and \texttt{ConstructibleChoice.lean}.
+\item ProveIt, \path{Computability/HilbertTenthProblem/Papers/1980/FIXED_RAW_UNIVERSAL_75_PROOF.md} and its linked half-binomial kernel and modified compiler proofs. Included snapshot basenames retain their source path components.
+\item ProveIt, \texttt{complete84\_scaled\_strong\_output.md}, its independent review, literal 84-operation packet, and the preceding auxiliary/sign/rank proofs in \texttt{research-wip/native-stream-queue}.
+\item The new inputless audit, explicit coefficient annex, direct stack note and owned checkers included in this package. These record precisely what was constructed and checked in this work.
+\end{enumerate}
+
+\end{document}
+

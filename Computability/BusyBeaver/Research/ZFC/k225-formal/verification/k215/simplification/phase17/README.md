@@ -1,5 +1,9 @@
 # Phase17: a shorter combined proof
 
+A [phase18 continuation](../phase18/README.md) shares macro proofs and preserves
+later upstream simplifications; its combined check and independent review pass.
+This phase17 record retains its original accepted scope.
+
 **The combined Lean check and independent evidence review pass.**
 This source selection combines the [checked phase16 checkpoint](../phase16/README.md),
 `d3ff74a6fa`, with frozen upstream `main` at

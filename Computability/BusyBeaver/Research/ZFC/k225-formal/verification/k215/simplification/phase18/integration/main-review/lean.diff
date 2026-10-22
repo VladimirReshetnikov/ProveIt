@@ -1,0 +1,936 @@
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean
+index cc64aef3a0..fa28b301df 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean
+@@ -71,12 +71,9 @@ theorem sat_conj (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+     (e : Nat → V) (f g : NF) :
+     Tarski.Sat mem e (conj f g) ↔ Tarski.Sat mem e f ∧ Tarski.Sat mem e g := by
+   change ((Tarski.Sat mem e f → Tarski.Sat mem e g → mem (e 0) (e 0)) → mem (e 0) (e 0)) ↔ _
+-  constructor
+-  · intro h
+-    exact ⟨Classical.byContradiction (fun hf => hirr _ (h (fun h' _ => (hf h').elim))),
+-      Classical.byContradiction (fun hg => hirr _ (h (fun _ h' => (hg h').elim)))⟩
+-  · rintro ⟨hf, hg⟩ h
+-    exact h hf hg
++  exact ⟨fun h => ⟨Classical.byContradiction fun hf => hirr _ (h fun h' _ => (hf h').elim),
++      Classical.byContradiction fun hg => hirr _ (h fun _ h' => (hg h').elim)⟩,
++    fun ⟨hf, hg⟩ h => h hf hg⟩
+ 
+ theorem sat_ex (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
+     (e : Nat → V) (i : Nat) (f : NF) :
+@@ -91,31 +88,26 @@ theorem container_at_of_namedC (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x
+         ∀ z, PositiveClosure.Sub mem z x → mem z p := by
+   obtain ⟨v, hv⟩ := (sat_ex mem hirr e 3 _).mp h
+   have hc := (sat_conj mem hirr (update e 3 v) _ _).mp hv
+-  refine ⟨v, ?_, ?_, ?_⟩
+-  · simpa [Tarski.Sat, update] using hc.2
+-  · intro x hx z hz
+-    let exEnv := update (update e 3 v) 2 x
++  refine ⟨v, by simpa [Tarski.Sat, update] using hc.2, fun x hx z hz => ?_, fun x hx => ?_⟩
++  · let exEnv := update (update e 3 v) 2 x
+     have hx' : Tarski.Sat mem exEnv (.rel 2 3) := by simpa [exEnv, Tarski.Sat, update] using hx
+     have hparts := (sat_conj mem hirr exEnv _ _).mp (hc.1 x hx')
+     have hz' : Tarski.Sat mem (update exEnv 1 z) (.rel 1 2) := by
+       simpa [exEnv, Tarski.Sat, update] using hz
+     simpa [exEnv, Tarski.Sat, update] using hparts.2 z hz'
+-  · intro x hx
+-    let exEnv := update (update e 3 v) 2 x
++  · let exEnv := update (update e 3 v) 2 x
+     have hx' : Tarski.Sat mem exEnv (.rel 2 3) := by simpa [exEnv, Tarski.Sat, update] using hx
+     have hparts := (sat_conj mem hirr exEnv _ _).mp (hc.1 x hx')
+     obtain ⟨p, hp⟩ := (sat_ex mem hirr exEnv 1 _).mp hparts.1
+     let epEnv := update exEnv 1 p
+     have hpower := (sat_conj mem hirr epEnv _ _).mp hp
+-    refine ⟨p, ?_, ?_⟩
+-    · simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.2
+-    · intro z hz
+-      have hsub : Tarski.Sat mem (update epEnv 3 z)
+-          (.all 1 (.imp (.rel 1 3) (.rel 1 2))) := by
+-        intro u hu
+-        have hu' : mem u z := by simpa [epEnv, exEnv, Tarski.Sat, update] using hu
+-        simpa [epEnv, exEnv, Tarski.Sat, update] using hz u hu'
+-      simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.1 z hsub
++    refine ⟨p, by simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.2, fun z hz => ?_⟩
++    have hsub : Tarski.Sat mem (update epEnv 3 z)
++        (.all 1 (.imp (.rel 1 3) (.rel 1 2))) := by
++      intro u hu
++      have hu' : mem u z := by simpa [epEnv, exEnv, Tarski.Sat, update] using hu
++      simpa [epEnv, exEnv, Tarski.Sat, update] using hz u hu'
++    simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.1 z hsub
+ 
+ /-- A genuine nonempty EncBundle model supplies the existing container resource.
+ The valuation is supplied explicitly; the empty-domain loophole is absent. -/
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean
+index ec86b2c2cd..aab11ba150 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean
+@@ -45,15 +45,11 @@ theorem sat_translate (mem : V → V → Prop) (f : NF) (slots : Nat → Nat)
+     SetTheory.Sat mem env (translate slots f) ↔
+       Tarski.Sat mem (fun i => env (slots i)) f := by
+   induction f generalizing slots env with
+-  | rel i j => rfl
+-  | eq i j => rfl
+-  | bot => rfl
++  | rel i j | eq i j | bot => rfl
+   | imp f g hf hg => exact imp_congr (hf slots env) (hg slots env)
+   | all i f ih =>
+     change (∀ x, SetTheory.Sat mem (scons x env) (translate (under slots i) f)) ↔ _
+-    apply forall_congr'
+-    intro x
+-    exact (ih (under slots i) (scons x env)).trans (by rw [under_env])
++    exact forall_congr' fun x => (ih (under slots i) (scons x env)).trans (by rw [under_env])
+ 
+ /-- Slot0 is input, slot1 is output, and slot2+i retains parameter name i. -/
+ def matrixSlots (a b i : Nat) : Nat :=
+@@ -67,21 +63,18 @@ theorem matrix_env (a b : Nat) (env : Nat → V) (x y : V) :
+   funext i
+   simp only [matrixSlots, Tarski.update]
+   by_cases hb : i = b
+-  · simp only [if_pos hb]
+-    rfl
++  · simp only [if_pos hb]; rfl
+   · simp only [if_neg hb]
+     by_cases ha : i = a
+-    · simp only [if_pos ha]
+-      rfl
+-    · simp only [if_neg ha]
+-      rfl
++    · simp only [if_pos ha]; rfl
++    · simp only [if_neg ha]; rfl
+ 
+ /-- The source schema's actual MatrixRelation, including the case a=b. -/
+ theorem sat_matrix (mem : V → V → Prop) (f : NF) (a b : Nat)
+     (env : Nat → V) (x y : V) :
+     DeepPositiveClosure.MatrixRelation mem (matrix f a b) env x y ↔
+-      Tarski.Sat mem (Tarski.update (Tarski.update env a x) b y) f := by
+-  exact (sat_translate mem f (matrixSlots a b) (scons x (scons y env))).trans
++      Tarski.Sat mem (Tarski.update (Tarski.update env a x) b y) f :=
++  (sat_translate mem f (matrixSlots a b) (scons x (scons y env))).trans
+     (by rw [matrix_env])
+ 
+ /-- No equality-free claim can hold for this translation's native equality atom. -/
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean
+index 05ebf08c85..3d8859404e 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean
+@@ -22,37 +22,30 @@ def subDForm (r a : Nat) : Form :=
+   fAll (fImp (fMem 0 (r + 1)) (classMemberForm 0 (a + 1)))
+ 
+ theorem sat_subDForm (mem : V → V → Prop) (env : Nat → V) (r a : Nat) :
+-    Sat mem env (subDForm r a) ↔ SubD mem (env r) (env a) := by
+-  constructor
+-  · intro h z hz
+-    exact (sat_classMemberForm mem _ 0 (a + 1)).mp (h z hz)
+-  · intro h z hz
+-    exact (sat_classMemberForm mem _ 0 (a + 1)).mpr (h z hz)
++    Sat mem env (subDForm r a) ↔ SubD mem (env r) (env a) :=
++  ⟨fun h z hz => (sat_classMemberForm mem _ 0 (a + 1)).mp (h z hz),
++    fun h z hz => (sat_classMemberForm mem _ 0 (a + 1)).mpr (h z hz)⟩
+ 
+-theorem equalityFree_subDForm (r a : Nat) : EqualityFree (subDForm r a) := by
+-  exact ⟨True.intro, equalityFree_classMemberForm 0 (a + 1)⟩
++theorem equalityFree_subDForm (r a : Nat) : EqualityFree (subDForm r a) :=
++  ⟨True.intro, equalityFree_classMemberForm 0 (a + 1)⟩
+ 
+ def powerChoiceForm : Form :=
+   fAnd (fMem 0 3) (fAnd (sameForm 1 0) (subDForm 0 2))
+ 
+-theorem equalityFree_powerChoiceForm : EqualityFree powerChoiceForm := by
+-  exact ⟨True.intro, ⟨equalityFree_sameForm 1 0, equalityFree_subDForm 0 2⟩⟩
++theorem equalityFree_powerChoiceForm : EqualityFree powerChoiceForm :=
++  ⟨True.intro, ⟨equalityFree_sameForm 1 0, equalityFree_subDForm 0 2⟩⟩
+ 
+ theorem power_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (a bound : V) :
+-    CollectionInstance mem (PowerChoice mem a bound) := by
+-  apply instance_of_matrix mem hModel powerChoiceForm equalityFree_powerChoiceForm
+-    (scons a (fun _ => bound)) _
+-  intro x y
+-  exact and_congr Iff.rfl
+-    (and_congr (sat_sameForm mem _ 1 0) (sat_subDForm mem _ 0 2))
++    CollectionInstance mem (PowerChoice mem a bound) :=
++  instance_of_matrix mem hModel powerChoiceForm equalityFree_powerChoiceForm
++    (scons a (fun _ => bound)) _ fun _ _ =>
++      and_congr Iff.rfl (and_congr (sat_sameForm mem _ 1 0) (sat_subDForm mem _ 0 2))
+ 
+ /-- Actual Form-indexed CP/GIC supplies the profile-power resource. -/
+ theorem power_profile_of_model (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
+     (a : V) : ∃ p, (∀ v, mem v p → SubD mem v a) ∧
+       ∀ r, SubD mem r a → ClassMember mem r p := by
+-  have hContainers : Containers mem :=
+-    (sat_containerForm mem (fun _ => witness)).mp (h.1 _)
+-  obtain ⟨bound, hBound⟩ := subD_bound mem a hContainers
++  obtain ⟨bound, hBound⟩ := subD_bound mem a ((sat_containerForm mem (fun _ => witness)).mp (h.1 _))
+   exact power_profile_of_instance mem a bound hBound (power_instance mem h.2 a bound)
+ 
+ #print axioms power_instance
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean
+index db5659e13b..740a5066e3 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean
+@@ -34,10 +34,7 @@ theorem empty_of_collection (mem : V → V → Prop) (witness : V)
+     (hCollect : CollectionInstance mem (fun _ _ => False)) :
+     ∃ e, ∀ z, ¬ mem z e := by
+   obtain ⟨e, hs, _⟩ := hCollect witness
+-  refine ⟨e, ?_⟩
+-  intro z hz
+-  obtain ⟨_, hFalse⟩ := hs z hz
+-  exact hFalse
++  exact ⟨e, fun z hz => (hs z hz).elim fun _ h => h⟩
+ 
+ /-- An empty object and its power bound give distinct input profiles in one host. -/
+ theorem two_indices_of_container (mem : V → V → Prop) (e : V)
+@@ -61,31 +58,20 @@ theorem pair_of_collection (mem : V → V → Prop) (i j domain a b : V)
+     ⟨a, Or.inl ⟨same_refl mem i, same_refl mem a⟩⟩
+   obtain ⟨ub, hub, hjb⟩ := hCover j hj
+     ⟨b, Or.inr ⟨same_refl mem j, same_refl mem b⟩⟩
+-  have huaClass : Same mem ua a := by
+-    rcases hia with hia | hia
+-    · exact hia.2
+-    · exact False.elim (hDifferent hia.1)
+-  have hubClass : Same mem ub b := by
+-    rcases hjb with hjb | hjb
+-    · exact False.elim (hDifferent (same_symm mem hjb.1))
+-    · exact hjb.2
+-  refine ⟨p, ?_⟩
+-  intro z
+-  constructor
+-  · rintro ⟨y, hy, hzy⟩
+-    obtain ⟨x, hxy⟩ := hSupport y hy
+-    rcases hxy with hxy | hxy
+-    · exact Or.inl (same_trans mem hzy hxy.2)
+-    · exact Or.inr (same_trans mem hzy hxy.2)
+-  · intro hz
+-    rcases hz with hza | hzb
+-    · exact ⟨ua, hua, same_trans mem hza (same_symm mem huaClass)⟩
+-    · exact ⟨ub, hub, same_trans mem hzb (same_symm mem hubClass)⟩
++  have huaClass : Same mem ua a := Or.elim hia And.right fun h => absurd h.1 hDifferent
++  have hubClass : Same mem ub b :=
++    Or.elim hjb (fun h => absurd (same_symm mem h.1) hDifferent) And.right
++  refine ⟨p, fun z => ⟨?_, fun hz => hz.elim
++    (fun hza => ⟨ua, hua, same_trans mem hza (same_symm mem huaClass)⟩)
++    (fun hzb => ⟨ub, hub, same_trans mem hzb (same_symm mem hubClass)⟩)⟩⟩
++  rintro ⟨y, hy, hzy⟩
++  obtain ⟨x, hxy⟩ := hSupport y hy
++  exact Or.elim hxy (fun h => Or.inl (same_trans mem hzy h.2))
++    (fun h => Or.inr (same_trans mem hzy h.2))
+ 
+ theorem singleton_of_pair (mem : V → V → Prop) {a s : V} (h : Pair mem s a a) :
+-    Singleton mem s a := by
+-  intro z
+-  exact (h z).trans ⟨fun h => h.elim id id, Or.inl⟩
++    Singleton mem s a :=
++  fun z => (h z).trans ⟨fun h => h.elim id id, Or.inl⟩
+ 
+ theorem orderedPairs_of_pairs (mem : V → V → Prop)
+     (hPairs : ∀ a b, ∃ p, Pair mem p a b) (a b : V) :
+@@ -103,8 +89,7 @@ theorem pairs_of_instances (mem : V → V → Prop) (witness : V)
+     ∀ a b, ∃ p, Pair mem p a b := by
+   obtain ⟨e, he⟩ := empty_of_collection mem witness hFalse
+   obtain ⟨domain, j, hei, hj, hDifferent⟩ := two_indices_of_container mem e he hContainers
+-  intro a b
+-  exact pair_of_collection mem e j domain a b hei hj hDifferent (hChoices e j a b)
++  exact fun a b => pair_of_collection mem e j domain a b hei hj hDifferent (hChoices e j a b)
+ 
+ def App (mem : V → V → Prop) (r x y : V) : Prop :=
+   ∃ c, mem c r ∧ OrderedPair mem x y c
+@@ -136,25 +121,17 @@ theorem bisim_refl_of_collection (mem : V → V → Prop) (a domain : V)
+   obtain ⟨r, hSupport, hCover⟩ := hCollect domain
+   have hDiagonal (x : V) (hx : mem x domain) : App mem r x x := by
+     obtain ⟨c, hc⟩ := hPairs x x
+-    obtain ⟨d, hdr, hxd⟩ := hCover x hx ⟨c, hx, hc⟩
+-    exact ⟨d, hdr, hxd.2⟩
++    exact (hCover x hx ⟨c, hx, hc⟩).imp fun _ h => ⟨h.1, h.2.2⟩
+   have hShape (x y : V) (hxy : App mem r x y) :
+       ∃ t, mem t domain ∧ Same mem x t ∧ Same mem y t := by
+     obtain ⟨c, hcr, hxy⟩ := hxy
+     obtain ⟨t, ht, htt⟩ := hSupport c hcr
+-    obtain ⟨hxt, hyt⟩ := orderedPair_injective mem hxy htt
+-    exact ⟨t, ht, hxt, hyt⟩
+-  refine ⟨r, ?_, hDiagonal a ha⟩
+-  intro x y hxy
++    exact ⟨t, ht, orderedPair_injective mem hxy htt⟩
++  refine ⟨r, fun x y hxy => ?_, hDiagonal a ha⟩
+   obtain ⟨t, ht, hxt, hyt⟩ := hShape x y hxy
+   have hsame : Same mem x y := same_trans mem hxt (same_symm mem hyt)
+-  constructor
+-  · intro u hu
+-    have huD := hTrans t ht u ((hxt u).mp hu)
+-    exact ⟨u, (hsame u).mp hu, hDiagonal u huD⟩
+-  · intro u hu
+-    have huD := hTrans t ht u ((hyt u).mp hu)
+-    exact ⟨u, (hsame u).mpr hu, hDiagonal u huD⟩
++  exact ⟨fun u hu => ⟨u, (hsame u).mp hu, hDiagonal u (hTrans t ht u ((hxt u).mp hu))⟩,
++    fun u hu => ⟨u, (hsame u).mpr hu, hDiagonal u (hTrans t ht u ((hyt u).mp hu))⟩⟩
+ 
+ def ReverseChoice (mem : V → V → Prop) (r d c : V) : Prop :=
+   mem d r ∧ ∃ x y, OrderedPair mem x y d ∧ OrderedPair mem y x c
+@@ -164,9 +141,7 @@ theorem reverse_of_collection (mem : V → V → Prop) (r : V)
+     (hCollect : CollectionInstance mem (ReverseChoice mem r)) :
+     ∃ s, ∀ x y, App mem s x y ↔ App mem r y x := by
+   obtain ⟨s, hSupport, hCover⟩ := hCollect r
+-  refine ⟨s, ?_⟩
+-  intro x y
+-  constructor
++  refine ⟨s, fun x y => ⟨?_, ?_⟩⟩
+   · rintro ⟨c, hc, hxy⟩
+     obtain ⟨d, hdr, p, q, hpq, hqp⟩ := hSupport c hc
+     obtain ⟨hxq, hyp⟩ := orderedPair_injective mem hxy hqp
+@@ -183,13 +158,8 @@ theorem bisim_reverse (mem : V → V → Prop) {r s : V}
+     Bisim mem s := by
+   intro x y hxy
+   obtain ⟨hForth, hBack⟩ := hr y x ((hReverse x y).mp hxy)
+-  constructor
+-  · intro a ha
+-    obtain ⟨b, hb, hba⟩ := hBack a ha
+-    exact ⟨b, hb, (hReverse a b).mpr hba⟩
+-  · intro b hb
+-    obtain ⟨a, ha, hba⟩ := hForth b hb
+-    exact ⟨a, ha, (hReverse a b).mpr hba⟩
++  exact ⟨fun a ha => (hBack a ha).imp fun b h => ⟨h.1, (hReverse a b).mpr h.2⟩,
++    fun b hb => (hForth b hb).imp fun a h => ⟨h.1, (hReverse a b).mpr h.2⟩⟩
+ 
+ /-- Symmetry uses only the explicitly named reversal relation instances. -/
+ theorem eqv_symm_of_instances (mem : V → V → Prop)
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean
+index e5c10f8a95..d4a0325b68 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean
+@@ -26,17 +26,14 @@ theorem same_symm {x y : V} (h : Same mem x y) : Same mem y x :=
+ theorem same_trans {x y z : V} (hxy : Same mem x y) (hyz : Same mem y z) :
+     Same mem x z := fun w => (hxy w).trans (hyz w)
+ 
+-theorem oneWay_iff_full : OneWay mem ↔ Full mem := by
+-  constructor
+-  · intro h x y hxy z
+-    exact ⟨h x y hxy z, h y x (same_symm mem hxy) z⟩
+-  · intro h x y hxy z
+-    exact (h x y hxy z).mp
++theorem oneWay_iff_full : OneWay mem ↔ Full mem :=
++  ⟨fun h x y hxy z => ⟨h x y hxy z, h y x (same_symm mem hxy) z⟩,
++    fun h x y hxy z => (h x y hxy z).mp⟩
+ 
+ theorem mem_congr (h : OneWay mem) {x x' y y' : V}
+     (hx : Same mem x x') (hy : Same mem y y') :
+-    mem x y ↔ mem x' y' := by
+-  exact ((oneWay_iff_full mem).mp h x x' hx y).trans (hy x')
++    mem x y ↔ mem x' y' :=
++  ((oneWay_iff_full mem).mp h x x' hx y).trans (hy x')
+ 
+ /-- The equality-free formula saying that variables `i,j` have equal members. -/
+ def sameForm (i j : Nat) : Form :=
+@@ -66,23 +63,16 @@ def ProfileSat (env : Nat → V) : Form → Prop
+ theorem sat_sameForm (env : Nat → V) (i j : Nat) :
+     Sat mem env (sameForm i j) ↔ Same mem (env i) (env j) := by
+   simp only [sameForm, Sat, fIff, scons, Same]
+-  constructor
+-  · intro h z
+-    exact ⟨(h z).1, (h z).2⟩
+-  · intro h z
+-    exact ⟨(h z).mp, (h z).mpr⟩
++  exact ⟨fun h z => ⟨(h z).1, (h z).2⟩, fun h z => ⟨(h z).mp, (h z).mpr⟩⟩
+ 
+ theorem sat_eraseEquality (f : Form) (env : Nat → V) :
+     Sat mem env (eraseEquality f) ↔ ProfileSat mem env f := by
+   induction f generalizing env with
+-  | fMem i j => rfl
++  | fMem i j | fBot => rfl
+   | fEq i j => exact sat_sameForm mem env i j
+-  | fBot => rfl
+-  | fImp a b iha ihb => simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
+-  | fAnd a b iha ihb => simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
+-  | fOr a b iha ihb => simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
+-  | fAll a ih => simp only [eraseEquality, Sat, ProfileSat, ih]
+-  | fEx a ih => simp only [eraseEquality, Sat, ProfileSat, ih]
++  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
++      simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
++  | fAll a ih | fEx a ih => simp only [eraseEquality, Sat, ProfileSat, ih]
+ 
+ /-- Profile-congruent assignments give the same truth value after equality erasure. -/
+ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
+@@ -91,17 +81,10 @@ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
+   induction f generalizing e e' with
+   | fMem i j => exact mem_congr mem h (he i) (he j)
+   | fEq i j =>
+-      constructor
+-      · intro hij
+-        exact same_trans mem (same_symm mem (he i)) (same_trans mem hij (he j))
+-      · intro hij
+-        exact same_trans mem (he i) (same_trans mem hij (same_symm mem (he j)))
++      exact ⟨fun hij => same_trans mem (same_symm mem (he i)) (same_trans mem hij (he j)),
++        fun hij => same_trans mem (he i) (same_trans mem hij (same_symm mem (he j)))⟩
+   | fBot => rfl
+-  | fImp a b iha ihb =>
+-      simp only [ProfileSat, iha e e' he, ihb e e' he]
+-  | fAnd a b iha ihb =>
+-      simp only [ProfileSat, iha e e' he, ihb e e' he]
+-  | fOr a b iha ihb =>
++  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
+       simp only [ProfileSat, iha e e' he, ihb e e' he]
+   | fAll a ih =>
+       have hc : ∀ x i, Same mem (scons x e i) (scons x e' i) := by
+@@ -110,9 +93,7 @@ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
+         | zero => exact same_refl mem x
+         | succ i => exact he i
+       simp only [ProfileSat]
+-      constructor
+-      · intro ha x; exact (ih _ _ (hc x)).mp (ha x)
+-      · intro ha x; exact (ih _ _ (hc x)).mpr (ha x)
++      exact forall_congr' fun x => ih _ _ (hc x)
+   | fEx a ih =>
+       have hc : ∀ x i, Same mem (scons x e i) (scons x e' i) := by
+         intro x i
+@@ -120,14 +101,12 @@ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
+         | zero => exact same_refl mem x
+         | succ i => exact he i
+       simp only [ProfileSat]
+-      constructor
+-      · rintro ⟨x, hx⟩; exact ⟨x, (ih _ _ (hc x)).mp hx⟩
+-      · rintro ⟨x, hx⟩; exact ⟨x, (ih _ _ (hc x)).mpr hx⟩
++      exact exists_congr fun x => ih _ _ (hc x)
+ 
+ theorem sat_eraseEquality_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
+     (he : ∀ i, Same mem (e i) (e' i)) :
+-    Sat mem e (eraseEquality f) ↔ Sat mem e' (eraseEquality f) := by
+-  exact (sat_eraseEquality mem f e).trans
++    Sat mem e (eraseEquality f) ↔ Sat mem e' (eraseEquality f) :=
++  (sat_eraseEquality mem f e).trans
+     ((profileSat_congr mem h f e e' he).trans (sat_eraseEquality mem f e').symm)
+ 
+ #print axioms oneWay_iff_full
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean
+index 0ccb77660a..7890c41279 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean
+@@ -34,25 +34,18 @@ theorem sat_containerForm (mem : V → V → Prop) (env : Nat → V) :
+   constructor
+   · intro h a
+     obtain ⟨v, hav, hClosure⟩ := h a
+-    refine ⟨v, hav, ?_, ?_⟩
+-    · intro x hx
+-      exact (sat_subsetForm mem _ 0 1).mp (hClosure x hx).1
+-    · intro x hx
+-      obtain ⟨p, hpv, hBound⟩ := (hClosure x hx).2
+-      refine ⟨p, hpv, ?_⟩
+-      intro z hz
+-      exact hBound z ((sat_subsetForm mem _ 0 2).mpr hz)
++    refine ⟨v, hav, fun x hx => (sat_subsetForm mem _ 0 1).mp (hClosure x hx).1, fun x hx => ?_⟩
++    obtain ⟨p, hpv, hBound⟩ := (hClosure x hx).2
++    exact ⟨p, hpv, fun z hz => hBound z ((sat_subsetForm mem _ 0 2).mpr hz)⟩
+   · intro h a
+     obtain ⟨v, hav, hTrans, hPower⟩ := h a
+-    refine ⟨v, hav, ?_⟩
+-    intro x hx
++    refine ⟨v, hav, fun x hx => ?_⟩
+     obtain ⟨p, hpv, hBound⟩ := hPower x hx
+-    refine ⟨(sat_subsetForm mem _ 0 1).mpr (hTrans x hx), p, hpv, ?_⟩
+-    intro z hz
+-    exact hBound z ((sat_subsetForm mem _ 0 2).mp hz)
++    exact ⟨(sat_subsetForm mem _ 0 1).mpr (hTrans x hx), p, hpv,
++      fun z hz => hBound z ((sat_subsetForm mem _ 0 2).mp hz)⟩
+ 
+-theorem equalityFree_containerForm : EqualityFree containerForm := by
+-  exact ⟨True.intro, ⟨True.intro, ⟨equalityFree_subsetForm 0 1,
++theorem equalityFree_containerForm : EqualityFree containerForm :=
++  ⟨True.intro, ⟨True.intro, ⟨equalityFree_subsetForm 0 1,
+     ⟨True.intro, ⟨equalityFree_subsetForm 0 2, True.intro⟩⟩⟩⟩⟩
+ 
+ theorem collectionInstance_congr (mem : V → V → Prop) (r s : V → V → Prop)
+@@ -60,83 +53,69 @@ theorem collectionInstance_congr (mem : V → V → Prop) (r s : V → V → Pro
+     CollectionInstance mem s := by
+   intro a
+   obtain ⟨b, hSupport, hCover⟩ := hr a
+-  refine ⟨b, ?_, ?_⟩
+-  · intro y hy
+-    obtain ⟨x, hxy⟩ := hSupport y hy
+-    exact ⟨x, (h x y).mp hxy⟩
+-  · intro x hx hSome
+-    obtain ⟨y, hxy⟩ := hSome
+-    obtain ⟨z, hz, hxz⟩ := hCover x hx ⟨y, (h x y).mpr hxy⟩
+-    exact ⟨z, hz, (h x z).mp hxz⟩
++  exact ⟨b, fun y hy => (hSupport y hy).imp fun x => (h x y).mp, fun x hx ⟨y, hxy⟩ =>
++    (hCover x hx ⟨y, (h x y).mpr hxy⟩).imp fun z hz => ⟨hz.1, (h x z).mp hz.2⟩⟩
+ 
+ /-- Transfer only the supplied, equality-free definable relation instance. -/
+ theorem instance_of_matrix (mem : V → V → Prop) (hModel : ModelsGIC mem)
+     (phi : Form) (hFree : EqualityFree phi) (env : Nat → V) (r : V → V → Prop)
+     (hRep : ∀ x y, MatrixRelation mem phi env x y ↔ r x y) :
+-    CollectionInstance mem r := by
+-  exact collectionInstance_congr mem _ r hRep
++    CollectionInstance mem r :=
++  collectionInstance_congr mem _ r hRep
+     ((sat_gicForm mem phi env).mp (hModel phi hFree env))
+ 
+ theorem false_instance (mem : V → V → Prop) (witness : V) (hModel : ModelsGIC mem) :
+-    CollectionInstance mem (fun _ _ => False) := by
+-  exact instance_of_matrix mem hModel fBot True.intro (fun _ => witness) _
++    CollectionInstance mem (fun _ _ => False) :=
++  instance_of_matrix mem hModel fBot True.intro (fun _ => witness) _
+     (fun _ _ => Iff.rfl)
+ 
+ def pairChoiceForm : Form :=
+   fOr (fAnd (sameForm 0 2) (sameForm 1 4))
+     (fAnd (sameForm 0 3) (sameForm 1 5))
+ 
+-theorem equalityFree_pairChoiceForm : EqualityFree pairChoiceForm := by
+-  exact ⟨⟨equalityFree_sameForm 0 2, equalityFree_sameForm 1 4⟩,
++theorem equalityFree_pairChoiceForm : EqualityFree pairChoiceForm :=
++  ⟨⟨equalityFree_sameForm 0 2, equalityFree_sameForm 1 4⟩,
+     ⟨equalityFree_sameForm 0 3, equalityFree_sameForm 1 5⟩⟩
+ 
+ theorem pairChoice_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (i j a b : V) :
+-    CollectionInstance mem (PairChoice mem i j a b) := by
+-  apply instance_of_matrix mem hModel pairChoiceForm equalityFree_pairChoiceForm
+-    (scons i (scons j (scons a (fun _ => b)))) _
+-  intro x y
+-  exact or_congr
+-    (and_congr (sat_sameForm mem _ 0 2) (sat_sameForm mem _ 1 4))
+-    (and_congr (sat_sameForm mem _ 0 3) (sat_sameForm mem _ 1 5))
++    CollectionInstance mem (PairChoice mem i j a b) :=
++  instance_of_matrix mem hModel pairChoiceForm equalityFree_pairChoiceForm
++    (scons i (scons j (scons a (fun _ => b)))) _ fun _ _ => or_congr
++      (and_congr (sat_sameForm mem _ 0 2) (sat_sameForm mem _ 1 4))
++      (and_congr (sat_sameForm mem _ 0 3) (sat_sameForm mem _ 1 5))
+ 
+ def diagonalChoiceForm : Form :=
+   fAnd (fMem 0 2) (orderedPairForm 0 0 1)
+ 
+-theorem equalityFree_diagonalChoiceForm : EqualityFree diagonalChoiceForm := by
+-  exact ⟨True.intro, equalityFree_orderedPairForm 0 0 1⟩
++theorem equalityFree_diagonalChoiceForm : EqualityFree diagonalChoiceForm :=
++  ⟨True.intro, equalityFree_orderedPairForm 0 0 1⟩
+ 
+ theorem diagonal_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (domain : V) :
+-    CollectionInstance mem (DiagonalChoice mem domain) := by
+-  apply instance_of_matrix mem hModel diagonalChoiceForm equalityFree_diagonalChoiceForm
+-    (fun _ => domain) _
+-  intro x y
+-  exact and_congr Iff.rfl (sat_orderedPairForm mem _ 0 0 1)
++    CollectionInstance mem (DiagonalChoice mem domain) :=
++  instance_of_matrix mem hModel diagonalChoiceForm equalityFree_diagonalChoiceForm
++    (fun _ => domain) _ fun _ _ => and_congr Iff.rfl (sat_orderedPairForm mem _ 0 0 1)
+ 
+ def reverseChoiceForm : Form :=
+   fAnd (fMem 0 2) (fEx (fEx (fAnd
+     (orderedPairForm 1 0 2) (orderedPairForm 0 1 3))))
+ 
+-theorem equalityFree_reverseChoiceForm : EqualityFree reverseChoiceForm := by
+-  exact ⟨True.intro, ⟨equalityFree_orderedPairForm 1 0 2,
++theorem equalityFree_reverseChoiceForm : EqualityFree reverseChoiceForm :=
++  ⟨True.intro, ⟨equalityFree_orderedPairForm 1 0 2,
+     equalityFree_orderedPairForm 0 1 3⟩⟩
+ 
+ theorem reverse_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (r : V) :
+-    CollectionInstance mem (ReverseChoice mem r) := by
+-  apply instance_of_matrix mem hModel reverseChoiceForm equalityFree_reverseChoiceForm
+-    (fun _ => r) _
+-  intro d c
+-  constructor
+-  · rintro ⟨hd, x, y, hxy, hyx⟩
+-    exact ⟨hd, x, y, (sat_orderedPairForm mem _ 1 0 2).mp hxy,
+-      (sat_orderedPairForm mem _ 0 1 3).mp hyx⟩
+-  · rintro ⟨hd, x, y, hxy, hyx⟩
+-    exact ⟨hd, x, y, (sat_orderedPairForm mem _ 1 0 2).mpr hxy,
+-      (sat_orderedPairForm mem _ 0 1 3).mpr hyx⟩
++    CollectionInstance mem (ReverseChoice mem r) :=
++  instance_of_matrix mem hModel reverseChoiceForm equalityFree_reverseChoiceForm
++    (fun _ => r) _ fun _ _ =>
++      ⟨fun ⟨hd, x, y, hxy, hyx⟩ => ⟨hd, x, y, (sat_orderedPairForm mem _ 1 0 2).mp hxy,
++        (sat_orderedPairForm mem _ 0 1 3).mp hyx⟩,
++      fun ⟨hd, x, y, hxy, hyx⟩ => ⟨hd, x, y, (sat_orderedPairForm mem _ 1 0 2).mpr hxy,
++        (sat_orderedPairForm mem _ 0 1 3).mpr hyx⟩⟩
+ 
+ /-- Actual first-order CP/GIC instances give the profile-pair resource. -/
+ theorem pairs_of_model (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem) :
+-    ∀ a b, ∃ p, Pair mem p a b := by
+-  exact pairs_of_instances mem witness
++    ∀ a b, ∃ p, Pair mem p a b :=
++  pairs_of_instances mem witness
+     ((sat_containerForm mem (fun _ => witness)).mp (h.1 _))
+     (false_instance mem witness h.2) (pairChoice_instance mem h.2)
+ 
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean
+index c2cd2eebd0..68ad8211b2 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean
+@@ -33,32 +33,23 @@ def OrderedPair (mem : V → V → Prop) (a b c : V) : Prop :=
+ 
+ theorem classMember_right_congr (mem : V → V → Prop) {a b : V}
+     (h : Same mem a b) (z : V) :
+-    ClassMember mem z a ↔ ClassMember mem z b := by
+-  constructor
+-  · rintro ⟨t, ht, hzt⟩
+-    exact ⟨t, (h t).mp ht, hzt⟩
+-  · rintro ⟨t, ht, hzt⟩
+-    exact ⟨t, (h t).mpr ht, hzt⟩
++    ClassMember mem z a ↔ ClassMember mem z b :=
++  ⟨fun ⟨t, ht, hzt⟩ => ⟨t, (h t).mp ht, hzt⟩, fun ⟨t, ht, hzt⟩ => ⟨t, (h t).mpr ht, hzt⟩⟩
+ 
+ theorem classMember_left_congr (mem : V → V → Prop) {a b : V}
+     (h : Same mem a b) (c : V) :
+-    ClassMember mem a c ↔ ClassMember mem b c := by
+-  constructor
+-  · rintro ⟨t, ht, hat⟩
+-    exact ⟨t, ht, same_trans mem (same_symm mem h) hat⟩
+-  · rintro ⟨t, ht, hbt⟩
+-    exact ⟨t, ht, same_trans mem h hbt⟩
++    ClassMember mem a c ↔ ClassMember mem b c :=
++  ⟨fun ⟨t, ht, hat⟩ => ⟨t, ht, same_trans mem (same_symm mem h) hat⟩,
++    fun ⟨t, ht, hbt⟩ => ⟨t, ht, same_trans mem h hbt⟩⟩
+ 
+ /-- Every inner member class of a Kuratowski code contains its first endpoint. -/
+ theorem orderedPair_first (mem : V → V → Prop) {a b c : V}
+     (h : OrderedPair mem a b c) (z : V) (hz : ClassMember mem z c) :
+     ClassMember mem a z := by
+   obtain ⟨s, p, hs, hp, hc⟩ := h
+-  rcases (hc z).mp hz with hzs | hzp
+-  · exact (classMember_right_congr mem hzs a).mpr
+-      ((hs a).mpr (same_refl mem a))
+-  · exact (classMember_right_congr mem hzp a).mpr
+-      ((hp a).mpr (Or.inl (same_refl mem a)))
++  exact ((hc z).mp hz).elim
++    (fun hzs => (classMember_right_congr mem hzs a).mpr ((hs a).mpr (same_refl mem a)))
++    (fun hzp => (classMember_right_congr mem hzp a).mpr ((hp a).mpr (Or.inl (same_refl mem a))))
+ 
+ /-- The union of the inner member classes is exactly the two endpoint classes. -/
+ theorem orderedPair_union (mem : V → V → Prop) {a b c : V}
+@@ -66,47 +57,35 @@ theorem orderedPair_union (mem : V → V → Prop) {a b c : V}
+     (∃ t, ClassMember mem t c ∧ ClassMember mem z t) ↔
+       Same mem z a ∨ Same mem z b := by
+   obtain ⟨s, p, hs, hp, hc⟩ := h
+-  constructor
+-  · rintro ⟨t, ht, hzt⟩
+-    rcases (hc t).mp ht with hts | htp
+-    · exact Or.inl ((hs z).mp ((classMember_right_congr mem hts z).mp hzt))
+-    · exact (hp z).mp ((classMember_right_congr mem htp z).mp hzt)
+-  · intro hz
+-    exact ⟨p, (hc p).mpr (Or.inr (same_refl mem p)), (hp z).mpr hz⟩
++  exact ⟨fun ⟨t, ht, hzt⟩ => ((hc t).mp ht).elim
++      (fun hts => Or.inl ((hs z).mp ((classMember_right_congr mem hts z).mp hzt)))
++      (fun htp => (hp z).mp ((classMember_right_congr mem htp z).mp hzt)),
++    fun hz => ⟨p, (hc p).mpr (Or.inr (same_refl mem p)), (hp z).mpr hz⟩⟩
+ 
+ /-- Endpoint uniqueness requires only raw profiles, without profile congruence. -/
+ theorem orderedPair_injective (mem : V → V → Prop) {a b a' b' c : V}
+     (h : OrderedPair mem a b c) (h' : OrderedPair mem a' b' c) :
+     Same mem a a' ∧ Same mem b b' := by
+-  obtain ⟨s', p', hs', hp', hc'⟩ := h'
+-  have hFirst : Same mem a a' := by
+-    apply (hs' a).mp
+-    exact orderedPair_first mem h s' ((hc' s').mpr (Or.inl (same_refl mem s')))
+-  have hAgain : OrderedPair mem a' b' c := ⟨s', p', hs', hp', hc'⟩
+   have hUnion (z : V) :
+       (Same mem z a ∨ Same mem z b) ↔ (Same mem z a' ∨ Same mem z b') :=
+-    (orderedPair_union mem h z).symm.trans (orderedPair_union mem hAgain z)
++    (orderedPair_union mem h z).symm.trans (orderedPair_union mem h' z)
++  obtain ⟨s', _, hs', _, hc'⟩ := h'
++  have hFirst : Same mem a a' :=
++    (hs' a).mp (orderedPair_first mem h s' ((hc' s').mpr (Or.inl (same_refl mem s'))))
+   refine ⟨hFirst, ?_⟩
+-  classical
+   by_cases hba : Same mem b a
+-  · have hb' : Same mem b' a ∨ Same mem b' b :=
+-      (hUnion b').mpr (Or.inr (same_refl mem b'))
+-    rcases hb' with hb'a | hb'b
+-    · exact same_trans mem hba (same_symm mem hb'a)
+-    · exact same_symm mem hb'b
+-  · rcases (hUnion b).mp (Or.inr (same_refl mem b)) with hba' | hbb'
+-    · exact False.elim (hba (same_trans mem hba' (same_symm mem hFirst)))
+-    · exact hbb'
++  · exact ((hUnion b').mpr (Or.inr (same_refl mem b'))).elim
++      (fun hb'a => same_trans mem hba (same_symm mem hb'a)) (same_symm mem)
++  · exact ((hUnion b).mp (Or.inr (same_refl mem b))).elim
++      (fun hba' => (hba (same_trans mem hba' (same_symm mem hFirst))).elim) id
+ 
+ theorem singleton_object_congr (mem : V → V → Prop) {s t a : V}
+-    (hst : Same mem s t) (hs : Singleton mem s a) : Singleton mem t a := by
+-  intro z
+-  exact (classMember_right_congr mem hst z).symm.trans (hs z)
++    (hst : Same mem s t) (hs : Singleton mem s a) : Singleton mem t a :=
++  fun z => (classMember_right_congr mem hst z).symm.trans (hs z)
+ 
+ theorem pair_object_congr (mem : V → V → Prop) {p q a b : V}
+-    (hpq : Same mem p q) (hp : Pair mem p a b) : Pair mem q a b := by
+-  intro z
+-  exact (classMember_right_congr mem hpq z).symm.trans (hp z)
++    (hpq : Same mem p q) (hp : Pair mem p a b) : Pair mem q a b :=
++  fun z => (classMember_right_congr mem hpq z).symm.trans (hp z)
+ 
+ theorem orderedPair_code_congr (mem : V → V → Prop) {a b c d : V}
+     (hcd : Same mem c d) (h : OrderedPair mem a b c) : OrderedPair mem a b d := by
+@@ -118,15 +97,11 @@ theorem orderedPair_endpoint_congr (mem : V → V → Prop) {a b a' b' c : V}
+     (ha : Same mem a a') (hb : Same mem b b') (h : OrderedPair mem a b c) :
+     OrderedPair mem a' b' c := by
+   obtain ⟨s, p, hs, hp, hc⟩ := h
+-  refine ⟨s, p, ?_, ?_, hc⟩
+-  · intro z
+-    exact (hs z).trans ⟨fun hz => same_trans mem hz ha,
+-      fun hz => same_trans mem hz (same_symm mem ha)⟩
+-  · intro z
+-    apply (hp z).trans
+-    exact or_congr
+-      ⟨fun hz => same_trans mem hz ha, fun hz => same_trans mem hz (same_symm mem ha)⟩
+-      ⟨fun hz => same_trans mem hz hb, fun hz => same_trans mem hz (same_symm mem hb)⟩
++  have hA (z : V) : Same mem z a ↔ Same mem z a' :=
++    ⟨fun hz => same_trans mem hz ha, fun hz => same_trans mem hz (same_symm mem ha)⟩
++  have hB (z : V) : Same mem z b ↔ Same mem z b' :=
++    ⟨fun hz => same_trans mem hz hb, fun hz => same_trans mem hz (same_symm mem hb)⟩
++  exact ⟨s, p, fun z => (hs z).trans (hA z), fun z => (hp z).trans (or_congr (hA z) (hB z)), hc⟩
+ 
+ #print axioms orderedPair_injective
+ #print axioms orderedPair_endpoint_congr
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean
+index b294748218..d41e02433a 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean
+@@ -32,50 +32,34 @@ def orderedPairForm (i j c : Nat) : Form :=
+     (fAnd (pairForm 0 (i + 2) (j + 2)) (pairForm (c + 2) 1 0))))
+ 
+ theorem sat_classMemberForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :
+-    Sat mem env (classMemberForm i j) ↔ ClassMember mem (env i) (env j) := by
+-  constructor
+-  · rintro ⟨z, hz, hSame⟩
+-    exact ⟨z, hz, (sat_sameForm mem (scons z env) (i + 1) 0).mp hSame⟩
+-  · rintro ⟨z, hz, hSame⟩
+-    exact ⟨z, hz, (sat_sameForm mem (scons z env) (i + 1) 0).mpr hSame⟩
++    Sat mem env (classMemberForm i j) ↔ ClassMember mem (env i) (env j) :=
++  ⟨fun ⟨z, hz, hSame⟩ => ⟨z, hz, (sat_sameForm mem (scons z env) (i + 1) 0).mp hSame⟩,
++    fun ⟨z, hz, hSame⟩ => ⟨z, hz, (sat_sameForm mem (scons z env) (i + 1) 0).mpr hSame⟩⟩
+ 
+ theorem sat_singletonForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :
+-    Sat mem env (singletonForm i j) ↔ Singleton mem (env i) (env j) := by
+-  constructor
+-  · intro h z
+-    exact (sat_classMemberForm mem (scons z env) 0 (i + 1)).symm.trans
+-      ((Sat_fIff.mp (h z)).trans (sat_sameForm mem (scons z env) 0 (j + 1)))
+-  · intro h z
+-    apply Sat_fIff.mpr
+-    exact (sat_classMemberForm mem (scons z env) 0 (i + 1)).trans
+-      ((h z).trans (sat_sameForm mem (scons z env) 0 (j + 1)).symm)
++    Sat mem env (singletonForm i j) ↔ Singleton mem (env i) (env j) :=
++  ⟨fun h z => (sat_classMemberForm mem (scons z env) 0 (i + 1)).symm.trans
++      ((Sat_fIff.mp (h z)).trans (sat_sameForm mem (scons z env) 0 (j + 1))),
++    fun h z => Sat_fIff.mpr ((sat_classMemberForm mem (scons z env) 0 (i + 1)).trans
++      ((h z).trans (sat_sameForm mem (scons z env) 0 (j + 1)).symm))⟩
+ 
+ theorem sat_pairForm (mem : V → V → Prop) (env : Nat → V) (p i j : Nat) :
+     Sat mem env (pairForm p i j) ↔ Pair mem (env p) (env i) (env j) := by
+   have hRight (z : V) := or_congr
+     (sat_sameForm mem (scons z env) 0 (i + 1))
+     (sat_sameForm mem (scons z env) 0 (j + 1))
+-  constructor
+-  · intro h z
+-    exact (sat_classMemberForm mem (scons z env) 0 (p + 1)).symm.trans
+-      ((Sat_fIff.mp (h z)).trans (hRight z))
+-  · intro h z
+-    apply Sat_fIff.mpr
+-    exact (sat_classMemberForm mem (scons z env) 0 (p + 1)).trans
+-      ((h z).trans (hRight z).symm)
++  exact ⟨fun h z => (sat_classMemberForm mem (scons z env) 0 (p + 1)).symm.trans
++      ((Sat_fIff.mp (h z)).trans (hRight z)),
++    fun h z => Sat_fIff.mpr ((sat_classMemberForm mem (scons z env) 0 (p + 1)).trans
++      ((h z).trans (hRight z).symm))⟩
+ 
+ theorem sat_orderedPairForm (mem : V → V → Prop) (env : Nat → V) (i j c : Nat) :
+     Sat mem env (orderedPairForm i j c) ↔
+-      OrderedPair mem (env i) (env j) (env c) := by
+-  constructor
+-  · rintro ⟨s, p, hs, hp, hc⟩
+-    exact ⟨s, p, (sat_singletonForm mem _ 1 (i + 2)).mp hs,
+-      (sat_pairForm mem _ 0 (i + 2) (j + 2)).mp hp,
+-      (sat_pairForm mem _ (c + 2) 1 0).mp hc⟩
+-  · rintro ⟨s, p, hs, hp, hc⟩
+-    exact ⟨s, p, (sat_singletonForm mem _ 1 (i + 2)).mpr hs,
+-      (sat_pairForm mem _ 0 (i + 2) (j + 2)).mpr hp,
+-      (sat_pairForm mem _ (c + 2) 1 0).mpr hc⟩
++      OrderedPair mem (env i) (env j) (env c) :=
++  ⟨fun ⟨s, p, hs, hp, hc⟩ => ⟨s, p, (sat_singletonForm mem _ 1 (i + 2)).mp hs,
++      (sat_pairForm mem _ 0 (i + 2) (j + 2)).mp hp, (sat_pairForm mem _ (c + 2) 1 0).mp hc⟩,
++    fun ⟨s, p, hs, hp, hc⟩ => ⟨s, p, (sat_singletonForm mem _ 1 (i + 2)).mpr hs,
++      (sat_pairForm mem _ 0 (i + 2) (j + 2)).mpr hp, (sat_pairForm mem _ (c + 2) 1 0).mpr hc⟩⟩
+ 
+ def appForm (r i j : Nat) : Form :=
+   fEx (fAnd (fMem 0 (r + 1)) (orderedPairForm (i + 1) (j + 1) 0))
+@@ -91,42 +75,34 @@ def eqvForm (i j : Nat) : Form :=
+   fEx (fAnd (bisimForm 0) (appForm 0 (i + 1) (j + 1)))
+ 
+ theorem sat_appForm (mem : V → V → Prop) (env : Nat → V) (r i j : Nat) :
+-    Sat mem env (appForm r i j) ↔ App mem (env r) (env i) (env j) := by
+-  constructor
+-  · rintro ⟨c, hc, hPair⟩
+-    exact ⟨c, hc, (sat_orderedPairForm mem _ (i + 1) (j + 1) 0).mp hPair⟩
+-  · rintro ⟨c, hc, hPair⟩
+-    exact ⟨c, hc, (sat_orderedPairForm mem _ (i + 1) (j + 1) 0).mpr hPair⟩
++    Sat mem env (appForm r i j) ↔ App mem (env r) (env i) (env j) :=
++  ⟨fun ⟨c, hc, hPair⟩ => ⟨c, hc, (sat_orderedPairForm mem _ (i + 1) (j + 1) 0).mp hPair⟩,
++    fun ⟨c, hc, hPair⟩ => ⟨c, hc, (sat_orderedPairForm mem _ (i + 1) (j + 1) 0).mpr hPair⟩⟩
+ 
+ theorem sat_bisimForm (mem : V → V → Prop) (env : Nat → V) (r : Nat) :
+     Sat mem env (bisimForm r) ↔ Bisim mem (env r) := by
+   constructor
+   · intro h x y hxy
+     obtain ⟨hForth, hBack⟩ := h x y ((sat_appForm mem _ (r + 2) 1 0).mpr hxy)
+-    constructor
+-    · intro a ha
+-      obtain ⟨b, hb, hEdge⟩ := hForth a ha
++    refine ⟨fun a ha => ?_, fun b hb => ?_⟩
++    · obtain ⟨b, hb, hEdge⟩ := hForth a ha
+       exact ⟨b, hb, (sat_appForm mem _ (r + 4) 1 0).mp hEdge⟩
+-    · intro b hb
+-      obtain ⟨a, ha, hEdge⟩ := hBack b hb
++    · obtain ⟨a, ha, hEdge⟩ := hBack b hb
+       exact ⟨a, ha, (sat_appForm mem _ (r + 4) 0 1).mp hEdge⟩
+   · intro h x y hxy
+     obtain ⟨hForth, hBack⟩ := h x y ((sat_appForm mem _ (r + 2) 1 0).mp hxy)
+-    constructor
+-    · intro a ha
+-      obtain ⟨b, hb, hEdge⟩ := hForth a ha
++    refine ⟨fun a ha => ?_, fun b hb => ?_⟩
++    · obtain ⟨b, hb, hEdge⟩ := hForth a ha
+       exact ⟨b, hb, (sat_appForm mem _ (r + 4) 1 0).mpr hEdge⟩
+-    · intro b hb
+-      obtain ⟨a, ha, hEdge⟩ := hBack b hb
++    · obtain ⟨a, ha, hEdge⟩ := hBack b hb
+       exact ⟨a, ha, (sat_appForm mem _ (r + 4) 0 1).mpr hEdge⟩
+ 
+ theorem sat_eqvForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :
+-    Sat mem env (eqvForm i j) ↔ Eqv mem (env i) (env j) := by
+-  constructor
+-  · rintro ⟨r, hr, hEdge⟩
+-    exact ⟨r, (sat_bisimForm mem _ 0).mp hr, (sat_appForm mem _ 0 (i + 1) (j + 1)).mp hEdge⟩
+-  · rintro ⟨r, hr, hEdge⟩
+-    exact ⟨r, (sat_bisimForm mem _ 0).mpr hr, (sat_appForm mem _ 0 (i + 1) (j + 1)).mpr hEdge⟩
++    Sat mem env (eqvForm i j) ↔ Eqv mem (env i) (env j) :=
++  ⟨fun ⟨r, hr, hEdge⟩ => ⟨r, (sat_bisimForm mem _ 0).mp hr,
++      (sat_appForm mem _ 0 (i + 1) (j + 1)).mp hEdge⟩,
++    fun ⟨r, hr, hEdge⟩ => ⟨r, (sat_bisimForm mem _ 0).mpr hr,
++      (sat_appForm mem _ 0 (i + 1) (j + 1)).mpr hEdge⟩⟩
+ 
+ /-- GIC's support and selected-image coverage, with universally closed parameters. -/
+ def gicForm (phi : Form) : Form :=
+@@ -141,12 +117,10 @@ theorem sat_gicForm (mem : V → V → Prop) (phi : Form) (env : Nat → V) :
+   constructor
+   · intro h a
+     obtain ⟨b, hSupport, hCover⟩ := h a
+-    refine ⟨b, ?_, ?_⟩
+-    · intro y hy
+-      obtain ⟨x, hxy⟩ := hSupport y hy
++    refine ⟨b, fun y hy => ?_, fun x hx hOutput => ?_⟩
++    · obtain ⟨x, hxy⟩ := hSupport y hy
+       exact ⟨x, (sat_support_matrix mem phi env a b y x).mp hxy⟩
+-    · intro x hx hOutput
+-      have hSome : Sat mem (scons x (scons b (scons a env)))
++    · have hSome : Sat mem (scons x (scons b (scons a env)))
+           (fEx (rename forwardRename phi)) := by
+         obtain ⟨y, hxy⟩ := hOutput
+         exact ⟨y, (sat_forward_matrix mem phi env a b x y).mpr hxy⟩
+@@ -154,25 +128,23 @@ theorem sat_gicForm (mem : V → V → Prop) (phi : Form) (env : Nat → V) :
+       exact ⟨y, hy, (sat_forward_matrix mem phi env a b x y).mp hxy⟩
+   · intro h a
+     obtain ⟨b, hSupport, hCover⟩ := h a
+-    refine ⟨b, ?_, ?_⟩
+-    · intro y hy
+-      obtain ⟨x, hxy⟩ := hSupport y hy
++    refine ⟨b, fun y hy => ?_, fun x hx hOutput => ?_⟩
++    · obtain ⟨x, hxy⟩ := hSupport y hy
+       exact ⟨x, (sat_support_matrix mem phi env a b y x).mpr hxy⟩
+-    · intro x hx hOutput
+-      have hSome : ∃ y, MatrixRelation mem phi env x y := by
++    · have hSome : ∃ y, MatrixRelation mem phi env x y := by
+         obtain ⟨y, hxy⟩ := hOutput
+         exact ⟨y, (sat_forward_matrix mem phi env a b x y).mp hxy⟩
+       obtain ⟨y, hy, hxy⟩ := hCover x hx hSome
+       exact ⟨y, hy, (sat_forward_matrix mem phi env a b x y).mpr hxy⟩
+ 
+-theorem equalityFree_sameForm (i j : Nat) : EqualityFree (sameForm i j) := by
+-  exact ⟨⟨True.intro, True.intro⟩, ⟨True.intro, True.intro⟩⟩
++theorem equalityFree_sameForm (i j : Nat) : EqualityFree (sameForm i j) :=
++  ⟨⟨True.intro, True.intro⟩, ⟨True.intro, True.intro⟩⟩
+ 
+-theorem equalityFree_classMemberForm (i j : Nat) : EqualityFree (classMemberForm i j) := by
+-  exact ⟨True.intro, equalityFree_sameForm (i + 1) 0⟩
++theorem equalityFree_classMemberForm (i j : Nat) : EqualityFree (classMemberForm i j) :=
++  ⟨True.intro, equalityFree_sameForm (i + 1) 0⟩
+ 
+-theorem equalityFree_singletonForm (i j : Nat) : EqualityFree (singletonForm i j) := by
+-  exact ⟨⟨equalityFree_classMemberForm 0 (i + 1), equalityFree_sameForm 0 (j + 1)⟩,
++theorem equalityFree_singletonForm (i j : Nat) : EqualityFree (singletonForm i j) :=
++  ⟨⟨equalityFree_classMemberForm 0 (i + 1), equalityFree_sameForm 0 (j + 1)⟩,
+     ⟨equalityFree_sameForm 0 (j + 1), equalityFree_classMemberForm 0 (i + 1)⟩⟩
+ 
+ theorem equalityFree_pairForm (p i j : Nat) : EqualityFree (pairForm p i j) := by
+@@ -180,24 +152,24 @@ theorem equalityFree_pairForm (p i j : Nat) : EqualityFree (pairForm p i j) := b
+   exact ⟨⟨equalityFree_classMemberForm 0 (p + 1), hRight⟩,
+     ⟨hRight, equalityFree_classMemberForm 0 (p + 1)⟩⟩
+ 
+-theorem equalityFree_orderedPairForm (i j c : Nat) : EqualityFree (orderedPairForm i j c) := by
+-  exact ⟨equalityFree_singletonForm 1 (i + 2),
++theorem equalityFree_orderedPairForm (i j c : Nat) : EqualityFree (orderedPairForm i j c) :=
++  ⟨equalityFree_singletonForm 1 (i + 2),
+     ⟨equalityFree_pairForm 0 (i + 2) (j + 2), equalityFree_pairForm (c + 2) 1 0⟩⟩
+ 
+-theorem equalityFree_appForm (r i j : Nat) : EqualityFree (appForm r i j) := by
+-  exact ⟨True.intro, equalityFree_orderedPairForm (i + 1) (j + 1) 0⟩
++theorem equalityFree_appForm (r i j : Nat) : EqualityFree (appForm r i j) :=
++  ⟨True.intro, equalityFree_orderedPairForm (i + 1) (j + 1) 0⟩
+ 
+-theorem equalityFree_bisimForm (r : Nat) : EqualityFree (bisimForm r) := by
+-  exact ⟨equalityFree_appForm (r + 2) 1 0,
++theorem equalityFree_bisimForm (r : Nat) : EqualityFree (bisimForm r) :=
++  ⟨equalityFree_appForm (r + 2) 1 0,
+     ⟨⟨True.intro, ⟨True.intro, equalityFree_appForm (r + 4) 1 0⟩⟩,
+       ⟨True.intro, ⟨True.intro, equalityFree_appForm (r + 4) 0 1⟩⟩⟩⟩
+ 
+-theorem equalityFree_eqvForm (i j : Nat) : EqualityFree (eqvForm i j) := by
+-  exact ⟨equalityFree_bisimForm 0, equalityFree_appForm 0 (i + 1) (j + 1)⟩
++theorem equalityFree_eqvForm (i j : Nat) : EqualityFree (eqvForm i j) :=
++  ⟨equalityFree_bisimForm 0, equalityFree_appForm 0 (i + 1) (j + 1)⟩
+ 
+ theorem equalityFree_gicForm (phi : Form) (h : EqualityFree phi) :
+-    EqualityFree (gicForm phi) := by
+-  exact ⟨⟨True.intro, equalityFree_rename phi supportRename h⟩,
++    EqualityFree (gicForm phi) :=
++  ⟨⟨True.intro, equalityFree_rename phi supportRename h⟩,
+     ⟨True.intro, ⟨equalityFree_rename phi forwardRename h,
+       ⟨True.intro, equalityFree_rename phi forwardRename h⟩⟩⟩⟩
+ 
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean
+index ee8b60a3c3..6435281a90 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean
+@@ -125,16 +125,11 @@ def writeRegisters (R : List Nat) : Nat → Nat → List Nat
+ theorem read_writeRegisters (R : List Nat) (i v j : Nat) :
+     readRegisters (writeRegisters R i v) j =
+       if j = i then v else readRegisters R j := by
+-  induction i generalizing R j with
+-  | zero =>
+-      cases R <;> cases j <;> simp [writeRegisters, readRegisters]
+-  | succ i ih =>
+-      cases R <;> cases j <;> simp [writeRegisters, readRegisters, ih]
++  induction i generalizing R j <;> cases R <;> cases j <;> simp [writeRegisters, readRegisters, *]
+ 
+ theorem read_writeRegisters_eq (R : List Nat) (i v : Nat) :
+-    readRegisters (writeRegisters R i v) = update (readRegisters R) i v := by
+-  funext j
+-  exact read_writeRegisters R i v j
++    readRegisters (writeRegisters R i v) = update (readRegisters R) i v :=
++  funext (read_writeRegisters R i v)
+ 
+ structure FiniteConfiguration where
+   path : List Bool
+@@ -170,15 +165,12 @@ def finiteRun (p : Program) : Nat → FiniteConfiguration → Option FiniteConfi
+ theorem finiteExecute_sound (e : Edge) (P : List Bool) (R : List Nat) :
+     execute e P (readRegisters R) = (finiteExecute e P R).map decode := by
+   cases e with
+-  | node _ => rfl
++  | node _ | brk _ | cont _ | halt => rfl
+   | inc r => simp only [execute, finiteExecute, Option.map, decode, read_writeRegisters_eq]
+   | decnz r =>
+       cases h : readRegisters R r with
+       | zero => simp only [execute, finiteExecute, h, Option.map, decode]
+       | succ v => simp only [execute, finiteExecute, h, Option.map, decode, read_writeRegisters_eq]
+-  | brk _ => rfl
+-  | cont _ => rfl
+-  | halt => rfl
+ 
+ theorem finiteStep_sound (p : Program) (c : FiniteConfiguration) :
+     step p (decode c) = (finiteStep p c).map decode := by

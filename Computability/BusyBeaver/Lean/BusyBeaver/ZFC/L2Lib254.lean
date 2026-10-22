@@ -1,5 +1,5 @@
 import BusyBeaver.ZFC.Dag254
-import BusyBeaver.ZFC.Enum254
+import BusyBeaver.ZFC.Code254
 
 /-!
 Subroutine semantics of the 219-node register program (L2, part 1).

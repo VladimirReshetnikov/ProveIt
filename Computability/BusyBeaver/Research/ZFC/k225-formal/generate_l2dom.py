@@ -56,7 +56,8 @@ NAMES = ["pushwff", "par1", "par2", "par3", "cons", "wel_m", "wal_m", "weq_m", "
          "wex_m", "read_p2", "read_p1", "read_ac", "loop192", "ifeq_clear", "loop211", "loop197",
          "fetch_zero", "fetch_pos", "mp_branch", "nip_branch", "nip_halt"]
 src = "".join((D / f).read_text(encoding="utf-8") for f in
-              ["L2Lib222.lean", "L2Macros222.lean", "L2Control222.lean"])
+              ["L2Lib222.lean", "L2Macros222.lean", "L2Control222.lean",
+               "L2Lib254.lean", "L2Macros254.lean", "L2Control254.lean"])
 lemmas = []
 for name in NAMES:
     m = re.search(r"^((?:/--(?:(?!-/).)*-/\n)?)theorem " + re.escape(name) + r" (.*?) :=(?: by)?\s*\n",
@@ -66,7 +67,7 @@ for name in NAMES:
     binders = re.findall(r"\((\w+) :", sig.split(" : Rn")[0].split(" :\n")[0])
     args = " ".join(binders)
     if "∃ R'" in sig:
-        sig = sig.replace("Run dag222", "Run dagDom")
+        sig = sig.replace("Run dag222", "Run dagDom").replace("Run dag254", "Run dagDom")
         pf = f"let ⟨R', h⟩ := L2K.{name} {args}\n  ⟨R', tr rfl h⟩"
     else:
         assert re.search(r": *\n? *Rn \(\.node \d+\)", sig), (name, sig)
