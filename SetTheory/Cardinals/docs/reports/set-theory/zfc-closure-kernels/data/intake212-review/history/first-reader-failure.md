@@ -1,0 +1,1 @@
+The first own literal parser exited at `assert actual == old`: its closing-list delimiter expected a newline before ], but KDense215 closes ] on the last row. It read two later default actions, giving432 versus430. All first430 actions matched. The successor stops at the first ], then requires exactly430. No delivery proof or machine failure is inferred.
