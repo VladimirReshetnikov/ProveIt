@@ -1,0 +1,54 @@
+{
+  "status": "PASS_THREE_EXPECTED_REJECTIONS",
+  "map_sha256": "9b0aaebc347b7f981529666f86efe35252c38eab81abde607e008074d76e80a1",
+  "helper_sha256": "5ff09b511df268b6d51640b9cde989c5aa275f401e4ee3300bced93bc1d30949",
+  "controls": [
+    {
+      "control": "changed-sha",
+      "expected_rejection": "Member bytes changed:",
+      "returncode": 1,
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake213-recover.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--map",
+        "/tmp/zfc-intake213-plan/negative-controls/changed-sha.json",
+        "--verify-only"
+      ],
+      "log_sha256": "92e891b895a91d33a3eb2dd240f1eb521a4158e221ad33a51377f277b63025a7"
+    },
+    {
+      "control": "missing-member",
+      "expected_rejection": "Missing/reordered map member",
+      "returncode": 1,
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake213-recover.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--map",
+        "/tmp/zfc-intake213-plan/negative-controls/missing-member.json",
+        "--verify-only"
+      ],
+      "log_sha256": "b01f34806494e3b8ed223dc604d7e6a7d22cf39013dfecbef1a64dd944503260"
+    },
+    {
+      "control": "wrong-alias",
+      "expected_rejection": "Member bytes changed:",
+      "returncode": 1,
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/intake213-recover.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--map",
+        "/tmp/zfc-intake213-plan/negative-controls/wrong-alias.json",
+        "--verify-only"
+      ],
+      "log_sha256": "92e891b895a91d33a3eb2dd240f1eb521a4158e221ad33a51377f277b63025a7"
+    }
+  ],
+  "supplied_code_or_compiler_executed": false,
+  "original_map_unchanged": true
+}
