@@ -1,0 +1,76 @@
+{
+  "base_commit": "57541fe0cfe3af62b4cb58747d8d1d7c16b338d5",
+  "lean_version": "4.32.0",
+  "minimal": {
+    "baseline": {
+      "sha256": "d674e2036d4eb6cfd9aa1135ddbc2e9d55c351b373880dbc723da42d1f73a97e",
+      "bytes": 8127,
+      "lines": 193,
+      "theorem_bytes": 2230,
+      "theorem_lines": 52,
+      "signature": "theorem blank_iff {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat \u2192 Nat} {H : Nat}\n    (hc : Commutes D M ex H) (hH : \u2200 b, M H b = none) :\n    BlankHalts D \u2194 Halts M (zc (ex 0) [] [])"
+    },
+    "candidate": {
+      "sha256": "ce03e85f85fd726ed241e56718efa0920e00a5b6d324ce271ddede731146b16e",
+      "bytes": 7323,
+      "lines": 170,
+      "theorem_bytes": 1426,
+      "theorem_lines": 29,
+      "signature": "theorem blank_iff {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat \u2192 Nat} {H : Nat}\n    (hc : Commutes D M ex H) (hH : \u2200 b, M H b = none) :\n    BlankHalts D \u2194 Halts M (zc (ex 0) [] [])"
+    },
+    "identical_signature": true,
+    "unchanged_imports": true,
+    "audit_logs_byte_identical": true,
+    "net_lines_saved": 23,
+    "net_bytes_saved": 804
+  },
+  "terminal_drain": {
+    "new_shared_modules": {
+      "TerminalDrain": {
+        "sha256": "ecb6361c98176c281b91c4c76b89c606078f3f6b1eaecbdfbe5d6fc1acb257a1",
+        "bytes": 6161,
+        "lines": 156
+      },
+      "KPartial": {
+        "sha256": "4582f64151a6fbef8b626295ef75174927fbdfd71013d7a9cfef6be08440fdd7",
+        "bytes": 1194,
+        "lines": 33
+      },
+      "RegisterPartial": {
+        "sha256": "980ed46e1128f136d9579b3410a1a6c14d682fc1854309b5497984095f473d8e",
+        "bytes": 1188,
+        "lines": 30
+      }
+    },
+    "existing_clients": {
+      "KDenseBridge": {
+        "baseline": {
+          "sha256": "d674e2036d4eb6cfd9aa1135ddbc2e9d55c351b373880dbc723da42d1f73a97e",
+          "bytes": 8127,
+          "lines": 193
+        },
+        "candidate": {
+          "sha256": "6066499c8c69049cd287c2894eb06a0f14d8036132f9b5ece3e1417d5484ea0d",
+          "bytes": 7127,
+          "lines": 166
+        }
+      },
+      "KSim": {
+        "baseline": {
+          "sha256": "3904e060d4ed082c2b7c0db56ebd820cab4d123a20b8f1ef387eee814fc7c2df",
+          "bytes": 16146,
+          "lines": 356
+        },
+        "candidate": {
+          "sha256": "2c334fe5f93a93438687d27c8951e899e7618a80393e34156e560de9d17524a6",
+          "bytes": 15319,
+          "lines": 336
+        }
+      }
+    },
+    "excludes_examples_and_audit_clients_from_production_metrics": true,
+    "net_line_change": 172,
+    "net_byte_change": 6716
+  },
+  "validation_scope": "Fresh standalone library plus actual KDenseBridge and KSim module checking; no full KEndpoint215 rebuild."
+}

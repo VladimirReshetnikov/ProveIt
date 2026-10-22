@@ -1,0 +1,166 @@
+{
+  "baseline_commit": "57541fe0cfe3af62b4cb58747d8d1d7c16b338d5",
+  "proposal_origin_commit": "49e99c5b7cc6c2e164331961de28bad3904361fd",
+  "method": "Scoped source-header comparison plus exact byte-block comparisons",
+  "scope": "No compilation or elaborated-type equivalence claimed. Private derivation bodies intentionally change.",
+  "files": {
+    "DominatedImplication": {
+      "baseline_path": "/workspace/scratch/ce9b30f32083/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "proposal_path": "/workspace/scratch/ce9b30f32083/logic-work/src/BusyBeaver/ZFC/DominatedImplication.lean",
+      "baseline_sha256": "a128ddd54eebe7a49f75ea25c513c6229f1304fb51a9d9b07539a89b8a094656",
+      "proposal_sha256": "bd07364a829e8a1535b0ecf1ee6ed0c292d5af35e01a6db8f152dd2610e247d8",
+      "removed_public_names": [],
+      "added_public_names": [
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.k",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.peirce",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.s"
+      ],
+      "common_public_declarations": [
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.DominatedImplication.Language",
+          "baseline_header": "structure Language (A : Type v)",
+          "proposal_header": "structure Language (A : Type v)",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.DominatedImplication.Restricted",
+          "baseline_header": "structure Restricted {A : Type v} (L : Language A) (T : A → Prop) : Prop",
+          "proposal_header": "structure Restricted {A : Type v} (L : Language A) (T : A → Prop) : Prop",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.DominatedImplication.composition",
+          "baseline_header": "theorem composition (a b c : A) :\n    T (L.imp (L.imp a b) (L.imp (L.imp b c) (L.imp a c)))",
+          "proposal_header": "theorem composition (a b c : A) :\n    T (L.imp (L.imp a b) (L.imp (L.imp b c) (L.imp a c)))",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.DominatedImplication.lift_right",
+          "baseline_header": "theorem lift_right {a b : A} (hab : T (L.imp a b)) (x : A) :\n    T (L.imp (L.imp x a) (L.imp x b))",
+          "proposal_header": "theorem lift_right {a b : A} (hab : T (L.imp a b)) (x : A) :\n    T (L.imp (L.imp x a) (L.imp x b))",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.DominatedImplication.rho8",
+          "baseline_header": "def rho8 {A : Type v} (L : Language A) (a b c u : A) : A",
+          "proposal_header": "def rho8 {A : Type v} (L : Language A) (a b c u : A) : A",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.DominatedImplication.rho8_all",
+          "baseline_header": "theorem rho8_all (a b c u : A) : T (rho8 L a b c u)",
+          "proposal_header": "theorem rho8_all (a b c u : A) : T (rho8 L a b c u)",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        }
+      ]
+    },
+    "Lukasiewicz": {
+      "baseline_path": "/workspace/scratch/ce9b30f32083/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "proposal_path": "/workspace/scratch/ce9b30f32083/logic-work/src/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "baseline_sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+      "proposal_sha256": "7d443a733b5c5ddd0d49728cf1ea7d855dd445f156934c13578bacc008c59874",
+      "removed_public_names": [],
+      "added_public_names": [],
+      "common_public_declarations": [
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Lukasiewicz.Implicational",
+          "baseline_header": "structure Implicational (imp : α → α → α) (T : α → Prop) : Prop",
+          "proposal_header": "structure Implicational (imp : α → α → α) (T : α → Prop) : Prop",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Lukasiewicz.composition",
+          "baseline_header": "theorem composition (h : Implicational imp T) (a b c : α) :\n    T (imp (imp a b) (imp (imp b c) (imp a c)))",
+          "proposal_header": "theorem composition (h : Implicational imp T) (a b c : α) :\n    T (imp (imp a b) (imp (imp b c) (imp a c)))",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Lukasiewicz.k",
+          "baseline_header": "theorem k (h : Implicational imp T) (a b : α) : T (imp a (imp b a))",
+          "proposal_header": "theorem k (h : Implicational imp T) (a b : α) : T (imp a (imp b a))",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Lukasiewicz.peirce",
+          "baseline_header": "theorem peirce (h : Implicational imp T) (a b : α) :\n    T (imp (imp (imp a b) a) a)",
+          "proposal_header": "theorem peirce (h : Implicational imp T) (a b : α) :\n    T (imp (imp (imp a b) a) a)",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Lukasiewicz.s",
+          "baseline_header": "theorem s (h : Implicational imp T) (a b c : α) :\n    T (imp (imp a (imp b c)) (imp (imp a b) (imp a c)))",
+          "proposal_header": "theorem s (h : Implicational imp T) (a b c : α) :\n    T (imp (imp a (imp b c)) (imp (imp a b) (imp a c)))",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Tarski.classical",
+          "baseline_header": "theorem classical (Ax : NF → Prop) : Kalmar.Classical NF.imp NF.bot (Thm Ax)",
+          "proposal_header": "theorem classical (Ax : NF → Prop) : Kalmar.Classical NF.imp NF.bot (Thm Ax)",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Tarski.complete",
+          "baseline_header": "theorem complete {Ax : NF → Prop} (f : NF)\n    (hval : ∀ (D : Type) (mem : D → D → Prop),\n      (∀ a, Ax a → ∀ e : Nat → D, Sat mem e a) → ∀ e : Nat → D, Sat mem e f) :\n    Thm Ax f",
+          "proposal_header": "theorem complete {Ax : NF → Prop} (f : NF)\n    (hval : ∀ (D : Type) (mem : D → D → Prop),\n      (∀ a, Ax a → ∀ e : Nat → D, Sat mem e a) → ∀ e : Nat → D, Sat mem e f) :\n    Thm Ax f",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.Tarski.ex_falso",
+          "baseline_header": "theorem ex_falso {Ax : NF → Prop} (a : NF) : Thm Ax (imp bot a)",
+          "proposal_header": "theorem ex_falso {Ax : NF → Prop} (a : NF) : Thm Ax (imp bot a)",
+          "exact_header_equal": true,
+          "whitespace_normalized_header_equal": true
+        }
+      ]
+    }
+  },
+  "exact_blocks": [
+    {
+      "file": "DominatedImplication.lean",
+      "block": "Language, rho8 and Restricted definitions",
+      "start_marker": "structure Language",
+      "end_marker": "\nsection",
+      "baseline_bytes": 591,
+      "proposal_bytes": 591,
+      "baseline_sha256": "bff2780e8cf77df99e4493517ce08e4492b62c6c391435c8581993eda1f49311",
+      "proposal_sha256": "bff2780e8cf77df99e4493517ce08e4492b62c6c391435c8581993eda1f49311",
+      "exact_byte_equal": true
+    },
+    {
+      "file": "Lukasiewicz.lean",
+      "block": "Implicational definition",
+      "start_marker": "structure Implicational",
+      "end_marker": "\nvariable {imp",
+      "baseline_bytes": 200,
+      "proposal_bytes": 200,
+      "baseline_sha256": "5a8fca815f9678678e6fc2b7c3473ad875519a7e0bff47bc4183c063553fe54f",
+      "proposal_sha256": "5a8fca815f9678678e6fc2b7c3473ad875519a7e0bff47bc4183c063553fe54f",
+      "exact_byte_equal": true
+    },
+    {
+      "file": "Lukasiewicz.lean",
+      "block": "Entire Tarski namespace tail",
+      "start_marker": "namespace SetTheory.BusyBeaver.ZFC.Tarski",
+      "end_marker": null,
+      "baseline_bytes": 1358,
+      "proposal_bytes": 1358,
+      "baseline_sha256": "8d736c831b6400585e9508df96a36e342c1bc7cbcc48c03cd57d9a6eb1b43a75",
+      "proposal_sha256": "8d736c831b6400585e9508df96a36e342c1bc7cbcc48c03cd57d9a6eb1b43a75",
+      "exact_byte_equal": true
+    }
+  ],
+  "passed": true
+}

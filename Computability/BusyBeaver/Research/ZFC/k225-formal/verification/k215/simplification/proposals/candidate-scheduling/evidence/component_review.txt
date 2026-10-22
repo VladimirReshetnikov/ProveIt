@@ -1,0 +1,152 @@
+INDEPENDENT REVIEW OF PROOF-SIMPLIFICATION CLAIMS
+Reviewer: Lean scheduler component agent; 2026-10-22.
+Baseline: 57541fe0cfe3af62b4cb58747d8d1d7c16b338d5.
+Scope: read the final Lean scheduler sources/audits, shared-basis sources and
+receipts, the quantifier counterexample, the Rocq scheduler sources/receipts,
+the evolving Rocq shared-core adapter, and the pinned KEndpoint215 source.
+This is source/evidence review, not a new full endpoint build.
+
+1. Mathematical contracts
+
+PASS: Both scheduler kernels use only exact candidate-index succession at
+pending=0 and strict pending decrease with fixed index at pending<>0, for
+successful steps. There is no refill-rank bound and no premise that the initial
+state is at a candidate boundary. The lexicographic measure
+(target-index(state), pending(state)) proves reach-target-or-halt; a step that
+halts is handled before any successor law is needed.
+
+PASS: complete_at fixes one target first and quantifies over boundary states
+actually reachable from the starting state. This avoids the invalid exchange
+of "for every payload there is a later candidate" with "there is a later
+candidate that works for every reachable payload". The parity counterexample
+has pending identically zero, advances at every successful step, satisfies
+payloadwise cofinal immediate halting, and nevertheless has a nonhalting aligned
+orbit. The source proofs and recorded axiom-free Lean check support this claim.
+
+PASS: Concrete EnumPerm completeness can start in an active candidate. Its
+fixed compiled candidate is selected using the original starting index and
+works uniformly for the boundary payload reached later. Soundness still needs
+the original invariant. Do not describe halts_iff_any/enum_from_iff as an
+equivalence for every arbitrary malformed register state without that premise.
+
+2. Consistency endpoint and proof-theoretic scope
+
+The pinned Lean endpoint literally states
+  BlankHalts machine215 <-> BProv ZFCax_s [] Form.fBot
+and, by negation,
+  (not BlankHalts machine215) <-> not BProv ZFCax_s [] Form.fBot.
+These are external proof-assistant theorems about the repository's exact
+finite-refutation predicate. They do not themselves exhibit a coded derivation
+inside ZFC or PA of the equivalence. The report should separate this checked
+external statement from the user's desired internal provability qualification.
+No unconditional Con(ZFC), nonhalting, machine minimization or lower bound is
+proved by these refactors. The literal 215-state machine is unchanged.
+
+Lean's standard axiom reports must not be called axiom-free. The generic
+scheduler reach/complete proofs report propext and Quot.sound; its invariant
+transport is axiom-free. Concrete Lean completeness clients additionally use
+Classical.choice. The shared abstract implication exports are axiom-free.
+Rocq component reports are closed under the global context. None of this alone
+supplies the separate internal arithmetization/provability result.
+
+3. Source accounting and attribution
+
+Lean shared-basis proof pair: 42,454 -> 18,243 bytes; 811 -> 401 lines.
+All six changed production files, including producer/renderer/data/template:
+80,277 -> 55,874 bytes; 1,747 -> 1,343 lines. These are different denominators.
+The mathematical shared six-goal derivation is existing repository work from
+49e99c5b7cc6c2e164331961de28bad3904361fd (earlier six-goal change 3a7a61ee...);
+the new work reconciles it with retained current HEAD, producers and checks.
+
+Lean scheduler, all four clients plus core: 109,663 -> 109,339 bytes;
+2,666 -> 2,659 lines. Net saving is only 324 bytes / 7 lines. For the K215
+EnumPerm lane alone, adding the generic core grows source by 3,411 bytes /
+95 lines. The separate structural improvement is 16 duplicated induction
+proofs replaced by three shared induction proofs; this is not a proof-term
+size, trust-base, kernel-time or full-build-time measurement.
+
+Rocq scheduler, two concrete modules plus new core: 18,100 -> 21,625 bytes;
+410 -> 511 lines. Net growth is 3,525 bytes / 101 lines. Counting only the two
+clients would omit the new shared library. Template/generated duplicates,
+producer maintenance and archive audit scripts are further distinct counts.
+
+The optional Rocq shared-implication patch is still being finalized as this
+review is written. Quote its final metrics.json and production-path census,
+not earlier provisional counts. Its maintained DomRho8 replacement eliminates
+the certificate replay implementation; it does not delete the archived
+certificate or all historical generator code from the repository.
+
+4. Validation and package boundaries
+
+The earlier separate Lean checks have overlapping provider closures; their
+15- and 20-module counts must not be added to claim 35 unique modules or a
+combined check. Both proposals have now passed together in a fresh standalone
+22-module tree (combined_lean/evidence/summary.json), with zero project-object
+reuse, 14 shared-basis typed clients and 10 scheduler typed clients. Only the
+six baseline TarskiComplete linter warnings remain. This combined check still
+excludes physical TM simulation and KEndpoint215.
+
+The Rocq scheduler receipt checks 11 component modules plus a typed client and
+recursive coqchk. The shared-core run adds one provider; use its final receipt
+for the exact combined count. Actual compiler is Coq 8.18.0 / OCaml 4.14.1,
+with Stdlib->Coq namespace compatibility copies where needed. This must not be
+presented as a fresh run of the pinned production Rocq 9.1.0 lane. Both refactors
+remain proposals awaiting the full affected production acceptance gate.
+
+Keep final accepted sources, hash-bound receipts/logs, reproducible scripts and
+patches in the archive. Exclude development failure trees and binary build
+objects. Historical absolute paths in receipts are fine if reproduction scripts
+accept portable explicit paths. Do not infer performance improvement from
+single-run timings or compare checks with different dependency scopes.
+
+The original 117 Lean executable declarations and 237 theorem statement texts
+were audited unchanged modulo comments/whitespace. Existing Enum222/EnumDom
+generators reproduce the new outputs exactly; no generator edits were needed
+for the scheduler. Shared-basis producer changes are necessary and included.
+Machine tables, source programs and final endpoint declarations remain intact.
+
+5. Rocq shared-core integration conditions
+
+The adapter must keep DomImp's dtruth/dmp/drho8 fields and argument directions,
+Codes230.rho8(a,b,c,u) with guard u<=a, and the native wim interpretation.
+The current adapter does so, retains dtruth solely for API compatibility, and
+proves the stronger rho8_all_of_restricted without it. The unchanged ThmDom
+consumer constructs the same DomImp instance and derives the same thmDom_iff.
+No implication injectivity or wim(0,0) normalization is required by the abstract
+core, so native numerical aliases do not invalidate the specialization.
+
+The actual axiom schema, thmDom constructors, enumerator rows and proof-to-
+program compiler must stay unchanged; replacing only the proof of unrestricted
+rho8 is sufficient. Shared parser/plan hashes, six goal formulas, generated
+module hashes, compile order and maintained producer must agree across the
+Lean and Rocq overlays. Rocq optional integration is ordered after the scheduler
+patch and requires the shared-basis parser/plan; its manifest records this.
+The final producer replay must bind the same proof bytes that were compiled.
+Generators and manifest checks remain untrusted conveniences; the proof
+assistants check the emitted proofs.
+
+6. Minor documentation review
+
+Reported to Rocq author and corrected: README formerly said three Lean clients;
+there are four. The shared-core header now explicitly identifies the restored
+six-goal plan instead of leaving current-head provenance ambiguous. No blocking
+mathematical defect was found in the reviewed scheduler or shared-basis proofs.
+7. Root report source review
+
+Read output/k215_proof_simplification/report.tex end-to-end after it appeared.
+No blocking mathematical or factual error found in the prose. Metrics macros
+were not yet present, so their eventual expansion remains outside this review.
+Reported these small clarifications to the author:
+
+* "58-step derivation" correctly counts the proof-data graph. The Lean source
+  contains 56 named private d-lemmas because final d56/d58 nodes are inlined into
+  public S/rho8 proofs. Do not equate derivation nodes with declaration count.
+* START_Y = AX(0;1,Y) clears counter d and cache h. Updated tw/ws may still depend
+  on the old payload; Contract p F quantifies over those arbitrary tw/ws values.
+  The existing report's uniform-reset adequacy claim is correct, but it should
+  not be restated as resetting the complete register tuple to one fixed state.
+* Title/header show 21 October; current review/work date is 22 October. The
+  final report should use a deliberate consistent date.
+* The completed combined 22-module fresh build should be prominent in the final
+  validation macro; earlier separate 15/20 scope descriptions remain historical
+  evidence rather than additive or whole-endpoint certification.

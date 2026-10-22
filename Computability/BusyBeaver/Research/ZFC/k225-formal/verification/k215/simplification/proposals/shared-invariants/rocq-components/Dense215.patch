@@ -1,0 +1,97 @@
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/Dense215.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/Dense215.v
+@@ -3,7 +3,7 @@
+     extra unreachable state in this dense presentation. *)
+ From Coq Require Import Lists.List Lists.Streams Bool.Bool Arith.Arith Lia.
+ From BusyCoq Require Import TM.
+-From K215F Require Import TM230 Table215.
++From K215F Require Import TM230 Table215 StateRelabel.
+ Import ListNotations.
+ 
+ Module Sparse := K215F.TM230.TM230.
+@@ -78,78 +78,15 @@
+ Lemma decode_initial : decode_conf Dense.c0 = Sparse.c0.
+ Proof. reflexivity. Qed.
+ 
+-Lemma dense_step_sparse c c' :
+-  Dense.step dense_tm c c' -> Sparse.step tm (decode_conf c) (decode_conf c').
+-Proof.
+-  intros H. destruct H as [q q' s s' l r E | q q' s s' l r E].
+-  - apply Sparse.step_left. rewrite transition_commutes.
+-    exact (f_equal (fun a => match a with None => None | Some (w,d,z) => Some (w,d,decode_state z) end) E).
+-  - apply Sparse.step_right. rewrite transition_commutes.
+-    exact (f_equal (fun a => match a with None => None | Some (w,d,z) => Some (w,d,decode_state z) end) E).
+-Qed.
+-
+-Lemma dense_halted_sparse c :
+-  Dense.halted dense_tm c -> Sparse.halted tm (decode_conf c).
+-Proof.
+-  destruct c as [q [[l b] r]].
+-  change (dense_tm (q,b) = None -> tm (decode_state q,b) = None).
+-  rewrite transition_commutes. intros E.
+-  exact (f_equal (fun a => match a with None => None | Some (w,d,z) => Some (w,d,decode_state z) end) E).
+-Qed.
+-
+-Lemma dense_multistep_sparse n c c' :
+-  Dense.multistep dense_tm n c c' ->
+-  Sparse.multistep tm n (decode_conf c) (decode_conf c').
+-Proof.
+-  intros H. induction H.
+-  - constructor.
+-  - eapply Sparse.multistep_S; [apply dense_step_sparse; exact H | exact IHmultistep].
+-Qed.
+-
+-Lemma dense_halts_sparse :
+-  Dense.halts dense_tm Dense.c0 -> Sparse.halts tm Sparse.c0.
+-Proof.
+-  intros (n & c & Hr & Hh). exists n, (decode_conf c). split.
+-  - rewrite <- decode_initial. apply dense_multistep_sparse, Hr.
+-  - apply dense_halted_sparse, Hh.
+-Qed.
+-
+-Lemma dense_next c :
+-  Dense.halted dense_tm c \/ exists c', Dense.step dense_tm c c'.
+-Proof.
+-  destruct c as [q [[l b] r]].
+-  destruct (dense_tm (q,b)) as [[[w d] q']|] eqn:E.
+-  - right. destruct d.
+-    + eexists. eapply Dense.step_left. exact E.
+-    + eexists. eapply Dense.step_right. exact E.
+-  - left. exact E.
+-Qed.
+-
+-(** No inverse-state axiom or excluded-middle assumption is used.  The
+-    finite transition identity lifts each dense step and reflects stopping. *)
+-Lemma sparse_halts_dense :
+-  Sparse.halts tm Sparse.c0 -> Dense.halts dense_tm Dense.c0.
+-Proof.
+-  intros HH.
+-  set (P := fun c : Ctx230.Q * bool_tape =>
+-      exists d, c = decode_conf d /\ Dense.evstep dense_tm Dense.c0 d).
+-  destruct (Sparse.progress_halts tm P
+-      (fun _ => Dense.halts dense_tm Dense.c0) Sparse.c0) as (c & _ & HZ).
+-  - intros c [d [-> Hr]].
+-    destruct (dense_next d) as [Hh | (d' & Hs)].
+-    + left. exact (Dense.halted_evstep_halts dense_tm Dense.c0 d Hr Hh).
+-    + right. exists (decode_conf d'). split.
+-      * exists d'. split; [reflexivity|].
+-        eapply Dense.evstep_trans; [exact Hr|].
+-        eapply Dense.evstep_step; [exact Hs|constructor].
+-      * apply Sparse.progress_base. apply dense_step_sparse, Hs.
+-  - exists Dense.c0. split; [reflexivity|constructor].
+-  - exact HH.
+-  - exact HZ.
+-Qed.
++Module Relabel.
++  Include StateRelabel.StateRelabel Ctx215 Ctx230 Dense Sparse.
++End Relabel.
+ 
+ Theorem dense_sparse_halts_iff :
+   Dense.halts dense_tm Dense.c0 <-> Sparse.halts tm Sparse.c0.
+-Proof. split; [exact dense_halts_sparse | exact sparse_halts_dense]. Qed.
++Proof.
++  change (Dense.halts dense_tm Dense.c0 <-> Sparse.halts tm (decode_conf Dense.c0)).
++  exact (Relabel.halts_iff dense_tm tm decode_state transition_commutes Dense.c0).
++Qed.
+ 
+ Print Assumptions dense_sparse_halts_iff.

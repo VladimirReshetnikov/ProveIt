@@ -1,0 +1,84 @@
+Lean scheduler refactor -- validated at ProveIt commit
+57541fe0cfe3af62b4cb58747d8d1d7c16b338d5
+
+The reusable theorem is CofinalScheduler.Dynamics.reach_or_halt.
+It assumes only:
+  successful boundary step -> candidate index increases by one;
+  successful active step -> pending rank decreases, index unchanged.
+There is no upper bound on the refilled pending rank. Its termination measure
+is the lexicographic pair (target - index, pending). It works from an arbitrary
+state whose index does not exceed the target. The target boundary is either
+reached or the process has already halted.
+
+complete_at composes that theorem with a stopping witness at ONE selected
+target. Its witness is needed only for boundary states actually reachable
+from the given starting state. This preserves the required order of
+quantifiers and avoids assuming that all payloads reach the same target.
+
+The concrete run functions stay literally unchanged. The Dynamics record
+stores each concrete step/run and proves its zero/successor equations; no
+conversion of executable semantics is needed. All four original clients
+retain run_inv, run_add, drain, reach, and their old endpoint types. The
+EnumPerm client additionally exports complete_any and halts_iff_any: the
+proof-list pointer need not be zero initially. Completeness itself does not
+require the soundness invariant; the equivalence does.
+
+Attribution: this is a generic proof-engineering factorization of the existing
+enumerator scheduling proofs. Arbitrary-state completeness, tail universality,
+and lexicographic scheduling are not claimed as novel mathematics. Earlier
+repository packets, particularly the checked-transport/further-interface
+work, already propose those directions. The contribution here is the checked
+weak scheduler contract, concrete production overlays, preserved interfaces,
+and successful regeneration of both maintained forked enumerators.
+
+Verification completed:
+  Lean 4.32.0, all 14 baseline provider modules freshly compiled by the root
+  reviewer, plus CofinalScheduler, EnumPerm, Enum254, Enum222, EnumDom, and a
+  typed SchedulerAudit client. That is 20 project modules in this focused
+  check. No KEndpoint215/full machine closure rebuild is claimed.
+  All six refactored/audit modules have zero warnings. Baseline TarskiComplete
+  has six preexisting linter warnings, retained in its provider logs.
+  Generic reach_or_halt and complete_at use propext and Quot.sound.
+  Generic run_invariant uses no axioms. Concrete endpoint reports contain
+  only propext, Classical.choice, Quot.sound. No sorry or new axiom is used.
+
+Static and regeneration gates:
+  117 original executable declarations unchanged after comments/whitespace
+  normalization; 237 old public theorem statement texts preserved.
+  generate_enum222.py and generate_enumdom.py are unmodified and reproduce
+  the delivered Enum222/EnumDom from the delivered Enum254 byte-for-byte.
+  scheduler-production.patch passes git apply --check at the pinned revision.
+
+Source accounting (all bytes include comments):
+  EnumPerm 22,788 -> 21,895 bytes; 545 -> 527 lines.
+  Enum254 29,375 -> 28,130 bytes; 718 -> 684 lines.
+  Enum222 28,778 -> 27,533 bytes; 704 -> 670 lines.
+  EnumDom 28,722 -> 27,477 bytes; 699 -> 665 lines.
+  New core: 4,304 bytes / 113 lines.
+  Four clients plus core: 109,663 -> 109,339 bytes; 2666 -> 2659 lines.
+  The immediate total saving is only 324 bytes and 7 lines. The main benefit
+  is replacing 16 separately maintained inductive proofs by three generic
+  inductive proofs. For K215 alone, the new core initially adds 3,411 bytes
+  and 95 lines to this selected source group. This is an interface and reuse
+  simplification; do not market it as a large current endpoint shrinkage.
+  Scripts, audit client, receipts, and report are separate artifact overhead.
+
+Artifacts:
+  proof/BusyBeaver/ZFC/*.lean -- four complete client overlays, generic core,
+                                and typed audit.
+  scheduler-production.patch -- four modified files plus new generic module.
+  tools/make_overlays.py -- deterministic overlay generator with revision pin.
+  tools/audit_sources.py -- declaration checks and existing producer replay.
+  tools/check_clients.py -- focused build using freshly checked providers.
+  evidence/final-check/verification.json and its logs -- accepted final run.
+  evidence/source-audit/source-audit.json -- accepted source/producer audit.
+
+Do not package stale development evidence in evidence/check or an earlier
+top-level CofinalScheduler.olean. Compiled objects are transient and should
+be omitted from the deliverable. The accepted final sources are exactly
+those named by the final-check receipt and source-audit hashes.
+
+Standalone reproduction in this archive uses ../../lean/check.py.
+tools/check_clients.py is the historical component driver and needs
+a separately prepared provider receipt/object directory. The combined
+standalone checker is the supported self-contained entry point.

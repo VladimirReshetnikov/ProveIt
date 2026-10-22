@@ -1,0 +1,20 @@
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_sites215_lean.py
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_sites215_lean.py
+@@ -5,7 +5,7 @@
+ 
+ The tree is cut into subtrees of at most LEAVES leaves. Each block uses a kernel
+ decision with the existing balanced table and transfers it through fast215 equality:
+-`allSites (checkEdge tm215) revPrefix (descend t215 P) = true`, PER_FILE of them per module
++`checkedSubtree (checkEdge tm215) t215 P`, PER_FILE of them per module
+ (`KSites215Batch<i>`). `KSites215` joins them with `allSites_join` up to the root, as in the 240's
+ coverage (`SitesRotation240`). The Rocq endpoint checks the same leaves with the same executor
+ (`Interpreter230Check.all_leaves_check`), so every block should pass.
+@@ -57,7 +57,7 @@
+ 
+ 
+ def stmt(P):
+-    return f"allSites {TEST} {bl(tuple(reversed(P)))}\n      (descend {T} {bl(P)}) = true"
++    return f"checkedSubtree {TEST} {T} {bl(P)}"
+ 
+ 
+ def main():

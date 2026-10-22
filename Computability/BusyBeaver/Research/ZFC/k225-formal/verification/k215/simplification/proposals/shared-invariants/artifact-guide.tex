@@ -1,0 +1,58 @@
+\begin{longtable}{@{}p{0.29\linewidth}p{0.67\linewidth}@{}}
+\toprule
+Path & Contents and purpose\\
+\midrule
+\endhead
+\path{report.tex}, \path{report.pdf} & This note, with its two included
+\TeX{} files, a \path{Makefile}, and pinned primary-source references.\\
+\path{shared-basis/} & Two proof-source replacements, a separate producer/input
+and documentation patch, 16 isolated Lean sources, the neutral derivation,
+renderer, reproduction script, static interface review, and successful component
+receipt and logs.\\
+\path{lean-bridge/} & The recommended small dense-bridge patch and a distinct
+optional finite-cleanup consolidation. Includes actual modules, typed audit,
+boundary examples, fresh-build driver, source measurements, and logs.\\
+\path{decoder-residual/} & Exact role-path selector and attachment proof,
+occurrence-specific finite certificates, semantic runtime facade, source pins,
+partition provenance, build driver, and a separate validation ledger.\\
+\path{rocq-components/} & Constructive finite-cleanup proof, generic relabeling
+experiment, concrete Dense215 adapter, reproduction instructions and receipts,
+plus the adoption map and exact patch for the existing implication proposals.\\
+\path{subtree-abbreviation/} & Independent uncompiled proposal and reproducible
+source estimate for eliminating duplicated path literals from the 105 maintained
+finite-check statements.\\
+\path{evidence/} & Current endpoint source closure, measured source comparisons,
+and additional review records. These are scoped measurements, not substitute
+proof certificates.\\
+\path{SHA256SUMS.json} & Whole-packet file integrity manifest. Recheck it with
+\path{verify_integrity.py}; it excludes itself and compiled reproduction outputs.\\
+\path{NOTICE.md}, \path{LICENSE} & Attribution, origin commits, scope,
+and the project's MIT No Attribution license.\\
+\bottomrule
+\end{longtable}
+
+\paragraph{Start with the independent production-source patches.}
+At the root of the pinned checkout, run \code{git apply --check} on
+\path{shared-basis/shared-basis.patch},
+\path{shared-basis/producer-wiring.patch}, and
+\path{lean-bridge/minimal.patch} using their actual extracted paths.
+These patches were checked together without changing the production checkout.
+The optional \path{lean-bridge/terminal-drain.patch} is an alternative to the
+minimal bridge patch and must not be stacked on it.
+The cleanup experiment and the residual architecture also use different
+\code{KSim} variants; their independent component builds do not certify a
+combination of those variants.
+
+\paragraph{Reproduce the checked components.}
+Each component's README gives the precise command and required compiler.
+The shared basis includes its entire 16-module source component; the bridge
+and runtime drivers read hash-pinned prerequisites from a local checkout.
+No compiler binaries or precompiled project objects are in the archive.
+Lean checks use version 4.32.0. Coq component checks use 8.18.0; the production
+Rocq 9.1.0 gate remains a separate adoption step.
+
+\paragraph{Rebuild the report.}
+Run \code{make report} from this directory with a \TeX{} installation containing
+the packages listed at the start of \path{report.tex}. This runs pdf\LaTeX{}
+twice so that references and page destinations settle. The report was also
+rendered to page images and visually inspected before release.
