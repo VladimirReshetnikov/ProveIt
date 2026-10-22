@@ -231,7 +231,7 @@ data in [`lean217/`](lean217/)).
   AX routine, so every other `L2K` lemma transfers by [`RMTransfer`](../../../Lean/BusyBeaver/ZFC/RMTransfer.lean)
   ([`L2Dom`](../../../Lean/BusyBeaver/ZFC/L2Dom.lean)); the AX word is a checked macro word, rendered from the 215's template by
   [`generate_l2axiomsdom.py`](generate_l2axiomsdom.py) ([`L2AxiomsDom`](../../../Lean/BusyBeaver/ZFC/L2AxiomsDom.lean)), and
-  the root step forked ([`L2RootDom`](../../../Lean/BusyBeaver/ZFC/L2RootDom.lean)).
+  the root step adapted from `L2Root222` ([`L2RootDom`](../../../Lean/BusyBeaver/ZFC/L2RootDom.lean)).
 - **Machine**: the source relates to `dagDom` by 2,239 certificate entries, none offset
   ([`KSource217`](../../../Lean/BusyBeaver/ZFC/KSource217.lean)); the 312,617-step startup ([`KBoot217`](../../../Lean/BusyBeaver/ZFC/KBoot217.lean)),
   all 4,751 decoder leaves ([`KSites217`](../../../Lean/BusyBeaver/ZFC/KSites217.lean); the source's paths reach 45 bits, so
