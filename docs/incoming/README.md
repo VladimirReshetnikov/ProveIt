@@ -14,11 +14,13 @@ a report at one of the destinations of section 2.
 
 ## Current Lean proof checkpoint
 
-The [eleventh simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase11/README.md)
-reduces the generic implication core to 13,723 bytes / 287 lines, with two single-use
-aliases inlined. Eight affected modules and both endpoint clients pass fresh checks
-in the 197-module union; 189 providers retain exact phase-ten bindings. The phase-nine Home/decoder and all 6,176 branch checks
-remain in place. Report intake and reconciliation statuses below remain separate.
+The [twelfth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase12/README.md)
+reduces the endpoint closure from 192 to 179 modules by splitting semantic interfaces.
+Fifteen affected modules and both endpoint clients pass fresh checks in the
+184-module union; 169 providers retain exact phase-eleven bindings. A separate
+67-module compatibility check with two clients preserves the older interfaces.
+The phase-nine Home/decoder and all 6,176 branch checks remain in place. Report
+intake and reconciliation statuses below remain separate.
 
 ## Current queue
 

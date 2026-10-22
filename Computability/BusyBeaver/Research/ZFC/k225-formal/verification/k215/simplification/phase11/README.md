@@ -1,5 +1,7 @@
 # Eleventh K215 proof-simplification checkpoint
 
+The [twelfth checkpoint](../phase12/README.md) subsequently splits the semantic import boundary while retaining this exact implication core and adapter. The records below describe this historical checkpoint. Its saved reader with `--repo` requires the original phase-eleven source bytes; use phase twelve to bind the current sources.
+
 The generic implication core is now **13,723 bytes / 287 lines**, down from 14,739 bytes / 330 lines: **1,016 bytes and 43 lines saved**. The 58-step derivation from `d93adc4174` removes the temporary seed wrapper and derives lifting and composition directly. Its final two single-use aliases are inlined into the public theorems, saving another 261 bytes / eight lines within that reduction. All six public declarations retain their types, and the numeric adapter remains byte-identical.
 
 The core has 56 private proof steps and three public MP bodies. The generic proof and its API clients use no axioms. The maintained self-contained producer reads the attributed proof as pinned data, checks the raw derivation, performs the two literal inlinings and checks every resulting proof body. Scratch generation/checking and the maintained default-path check reproduce the exact compiled bytes. Two unused prefix/suffix templates are retired after a caller census, with their old bytes preserved. Together with the smaller producer, the maintained core/producer/template files shrink by 6,463 bytes. These are source measurements.

@@ -6,11 +6,12 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [current simplification check](../simplification/phase11/README.md) freshly checks
-eight affected modules and both endpoint clients after shortening the generic core.
-Its 197-module union contains the 192-module endpoint closure and five decoder-prefix
-modules; 189 providers retain exact phase-ten bindings. Both audits have zero
-warnings and the same three allowed axioms. The historical 204-module receipts
+The [current simplification check](../simplification/phase12/README.md) freshly checks
+15 affected modules and both endpoint clients after splitting semantic interfaces.
+Its 184-module union contains the 179-module endpoint closure and five decoder-prefix
+modules; 169 providers retain exact phase-eleven bindings. Both audits have zero
+warnings and their exact prior standard-axiom profiles. A separate compatibility
+check covers 67 project modules and two clients. The historical 204-module receipts
 below and the nine phase-nine site checks are unchanged.
 
 The portable driver rebuilds the exact project import closure of
@@ -35,7 +36,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 192 project modules
+the compiler trust boundary. The current closure contains 179 project modules
 and only the external `Init` boundary. It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 

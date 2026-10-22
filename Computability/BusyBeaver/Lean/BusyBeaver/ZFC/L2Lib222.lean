@@ -1,6 +1,6 @@
 /- Forked by Research/ZFC/k225-formal/generate_l2k222.py from L2Lib254.lean for dag222 (Elliot Glazer's Dag230 with the 222's AX node). -/
 import BusyBeaver.ZFC.Dag222
-import BusyBeaver.ZFC.Enum254
+import BusyBeaver.ZFC.Code254
 
 /-!
 Subroutine semantics of the 219-node register program (L2, part 1).
