@@ -1,7 +1,7 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 21 October 2026. This report has **178 numbered sources**.
-The written reconciliations cover Sources 1–164 and 167–178; Sources 165–166 retain
+Intake findings through 21 October 2026. This report has **179 numbered sources**.
+The written reconciliations cover Sources 1–164 and 167–179; Sources 165–166 retain
 their earlier placements and separate follow-up work.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
@@ -10,6 +10,22 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 212](intake-212.md) adds Source 179 from `6f0d42d368` after
+placement `9740f2bd13`. All 862 members remain exactly recoverable, including
+32 ignored raw logs retained in the arrival archive. The submitted generic
+affine drain/contraction and literal graph binding give a reusable 367-control
+semantic interface; its larger data tables do not establish a smaller binary
+machine or build-speed improvement. CM215 keeps an existing six-row 215-state
+transport design; the new integration receipts belong to the delivery's older
+snapshot. Ordinary source review and independent literal parsing found no
+mathematical defect; no supplied program or proof compiler was run.
+The failed 214-state contracts and bounded searches retain their limitations.
+The maintained phase-nine decoder already closes the source/path/zipper-prefix
+gaps listed by the manuscript; primitive and return suffix factoring remains.
+The earlier batch-209–211 proposals are placed but their independent mathematical
+reconciliations remain pending, as do Sources 165–166. Historical pending-ZIP
+and proof-status statements below describe their earlier checkpoints.
 
 The [phase-five verification addendum](intake-204.md#verification-addendum-21-october-2026)
 records the completed 184-module Lean check, all 16 ordinary certificate chunks

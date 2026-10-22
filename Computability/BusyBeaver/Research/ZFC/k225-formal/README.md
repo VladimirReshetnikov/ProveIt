@@ -3,7 +3,7 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase10/README.md)
+[proof simplification checkpoint](verification/k215/simplification/phase11/README.md)
 checks the 192-module endpoint closure, five decoder-prefix modules and both closed
 endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
@@ -49,9 +49,17 @@ the numeric adapter and all public types preserved. Eight affected modules and
 both endpoint clients pass fresh checks; 189 providers retain exact phase-nine
 bindings in the 197-module union.
 
-The [later 58-step proposal](verification/k215/simplification/phase10/upstream-merge/README.md)
-removes the temporary seed wrapper and may save another 755 bytes and 35 lines.
-It is preserved as reviewed source; the checked phase-ten core and producer remain in place.
+Phase eleven adopts the [58-step derivation](verification/k215/simplification/phase11/README.md)
+with two single-use aliases inlined. Removing the temporary seed wrapper saves
+another 1,016 bytes and 43 lines in the core. The synchronized producer reproduces
+the checked source; two unused templates are retired with their old bytes preserved.
+Eight affected modules and both endpoint clients pass fresh checks, while 189
+providers retain exact phase-ten bindings. All public types remain unchanged.
+
+[Source 179](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-212.md)
+reconciles the affine-core and CM215 continuation separately. Its ordinary source
+review and submitted old-snapshot compiler receipts do not replace the maintained
+Lean checkpoint.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
@@ -177,7 +185,7 @@ data in [`lean217/`](lean217/)).
   representation-independent core [`DominatedImplication`](../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
   ([`generate_dominated_implication_lean.py`](generate_dominated_implication_lean.py)). The separate
   [rho8cd derivation](rho8cd/PROVEIT_STATUS.md) now supplies the shorter generic Lean core;
-  the [phase-ten K215 check](verification/k215/simplification/phase10/README.md) preserves all public interfaces.
+  the [phase-eleven K215 check](verification/k215/simplification/phase11/README.md) preserves all public interfaces.
   The checked Rocq sources are retained.
   The replay of Source 149's 3,728-node certificate
   ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) is history.

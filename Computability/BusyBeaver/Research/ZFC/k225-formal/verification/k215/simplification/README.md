@@ -1,15 +1,15 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase10/README.md) validates the 192-module
+are unchanged. The [latest Lean check](phase11/README.md) validates the 192-module
 endpoint closure, five decoder-prefix modules and both typed endpoint clients.
-Eight modules were freshly compiled; 189 providers retain exact phase-nine
+Eight modules were freshly compiled; 189 providers retain exact phase-ten
 transitive source/import bindings. All ten endpoint reports use only
 `propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
-| Lean dominated implication, core plus adapter | 689,857 bytes | 17,419 bytes |
+| Lean dominated implication, core plus adapter | 689,857 bytes | 16,403 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -44,8 +44,13 @@ Phase nine shares the Home return proof and checks exact source-to-zipper decode
 entry. Its nine fresh site batches retain all 6,176 outcomes and take 16.41 minutes,
 against a historical 27.49 minutes. Phase ten adopts the generic 52-step derivation
 and six compatibility lemmas, saving another 4,639 bytes and 51 lines in the core.
+Phase eleven removes the temporary seed wrapper and inlines two single-use aliases,
+saving another 1,016 bytes and 43 lines. Its self-contained producer reproduces the
+checked source; retiring two unused templates brings the maintained core, producer
+and template reduction to 6,463 bytes relative to phase ten.
 
-The [latest checkpoint](phase10/README.md),
+The [latest checkpoint](phase11/README.md),
+[tenth checkpoint](phase10/README.md),
 [ninth checkpoint](phase9/README.md),
 [eighth checkpoint](phase8/README.md),
 [seventh checkpoint](phase7/README.md),

@@ -6,10 +6,10 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [current simplification check](../simplification/phase10/README.md) freshly checks
+The [current simplification check](../simplification/phase11/README.md) freshly checks
 eight affected modules and both endpoint clients after shortening the generic core.
 Its 197-module union contains the 192-module endpoint closure and five decoder-prefix
-modules; 189 providers retain exact phase-nine bindings. Both audits have zero
+modules; 189 providers retain exact phase-ten bindings. Both audits have zero
 warnings and the same three allowed axioms. The historical 204-module receipts
 below and the nine phase-nine site checks are unchanged.
 

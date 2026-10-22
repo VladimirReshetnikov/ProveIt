@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Render the generic dominated-implication core and unchanged Nat adapter.
+"""Check the pinned generic 58-step proof data and emit the maintained Lean pair.
 
-Read the exact attributed 52-step Lean rendering and derivation as inert data.
-Replace four local numeric fillers by reflexive terms and five truth arguments
-by an arbitrary seed; check every explicit inference as free constructor syntax.
-No original renderer/search is imported or executed. Lean remains the kernel.
-The maintained CLI is --out LEAN_ROOT or --check (default).
+Only inert UTF-8 source/ancestry data is read; no upstream renderer is imported
+or executed. Explicit MP and relation guards are checked as free constructor
+syntax. This fixed-input diagnostic is not a proof kernel. The maintained CLI
+is --out LEAN_ROOT or --check (default).
 """
 from __future__ import annotations
 import argparse
@@ -15,219 +14,195 @@ from pathlib import Path
 import re
 
 HERE = Path(__file__).resolve().parent
-TEMPLATES = HERE / 'dominated_implication_templates'
 DEFAULT_OUT = (HERE / '../../../Lean').resolve()
-SOURCE = 'verification/k215/simplification/phase9/upstream-merge/source-review/DomRho8.4fdc.lean'
+SOURCE = 'verification/k215/simplification/phase10/upstream-merge/source-review/inputs/DominatedImplication.upstream.lean'
+ADAPTER = 'dominated_implication_templates/adapter.txt'
 INPUT_PINS = {
-    SOURCE: 'c0c9eb59ad7076b7753b1a5d7d690e26f96936229fdd875dad926bb210d6fb13',
-    'rho8cd/derivation.txt': '3cbf1ed6114ff44da836578e58c9d5308d347a8b1d664e83c1983e800d285776',
+    SOURCE: 'e91f5cf8e6583ba73221362bc21438b70897a8808329886dc615c166bb16edd7',
+    'rho8cd/derivation_core.txt': 'f0a2e60d3574615aefa8ce987e783b69a89dd95516dc7238caa569b4a938f116',
+    ADAPTER: '8fdbec0db9134070bee2dfa0a433aff66ab83c00007ea7b9aabd9192c506d378',
 }
-TEMPLATE_PINS = {
-    'adapter.txt': '8fdbec0db9134070bee2dfa0a433aff66ab83c00007ea7b9aabd9192c506d378',
-    'core-prefix.txt': '22d93bd8644f3288ea0d490e6d7ce66e03366bf3a8e0397902f3d1ad71368139',
-    'core-suffix.txt': 'c31f1521758c3b95d3f06ade403248cdb65e024ba7b0f0479bd29560fc43d973',
-}
-EXPECTED_CORE = '5e524b3fd128e91ae1be067ec12392978713b29c129a37b55272cc4091c9bf3f'
+EXPECTED_CORE = 'a128ddd54eebe7a49f75ea25c513c6229f1304fb51a9d9b07539a89b8a094656'
 
 if not __debug__:
     raise RuntimeError('Producer validation requires normal Python (without -O)')
 
-def sha(b):
-    return hashlib.sha256(b).hexdigest()
-
-def tokens(s):
-    return re.findall(r'[A-Za-z_][A-Za-z_0-9.]*|τ|≼|[()]', s)
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
 
 def imp(a, b):
     return ('imp', a, b)
 
-def subst(t, env):
-    return tuple(subst(x, env) for x in t) if isinstance(t, tuple) else env.get(t, t)
+def row(a, b, c, u):
+    return imp(imp(imp(c, u), a), imp(imp(a, c), imp(b, c)))
+
+def subst(term, env):
+    return tuple(subst(x, env) for x in term) if isinstance(term, tuple) else env.get(term, term)
 
 class Reader:
-    def __init__(self, s, env=None, facts=None):
-        self.ts = tokens(s)
+    def __init__(self, text, schemas, counts, facts=None):
+        self.ts = re.findall(r'[A-Za-z_][A-Za-z_0-9.]*|≼|[()]', text)
+        assert ''.join(self.ts) == re.sub(r'\s+', '', text), 'unsupported syntax'
         self.i = 0
-        self.env = env or {}
-        self.facts = facts or {}
+        self.schemas, self.counts, self.facts = schemas, counts, facts or {}
 
     def pop(self, want=None):
-        x = self.ts[self.i]
+        token = self.ts[self.i]
         self.i += 1
-        assert want is None or x == want, (want, x, self.ts[self.i:])
-        return x
+        assert want is None or token == want, (want, token)
+        return token
 
-    def group(self, fn):
+    def group(self, parse):
         if self.ts[self.i] == '(':
             self.pop('(')
-            out = fn()
+            result = parse()
             self.pop(')')
-            return out
-        return fn()
+            return result
+        return parse()
 
     def term(self):
-        return self.group(self.atom)
-
-    def atom(self):
-        x = self.pop()
-        if x in ('wim', 'L.imp'):
-            return imp(self.term(), self.term())
-        assert re.fullmatch(r'v\d+|[a-z]|τ|_', x), x
-        return self.env.get(x, x)
+        def atom():
+            name = self.pop()
+            if name in ('wim', 'L.imp'):
+                return imp(self.term(), self.term())
+            assert re.fullmatch(r'v\d+|[a-z]|_', name), name
+            return name
+        return self.group(atom)
 
     def guard(self, expected):
-        def core():
+        def parse():
             name = self.pop()
             u, a = expected
             if name == 'L.refl':
-                val = self.term()
-                assert u == a and (val == '_' or val == a), (name, expected, val)
-            elif name == 'le_l':
-                y = self.term()
-                assert isinstance(a, tuple) and a[0] == 'imp' and a[2] == y
-                self.guard((u, a[1]))
-            elif name == 'le_r':
-                x = self.term()
-                assert isinstance(a, tuple) and a[0] == 'imp' and a[1] == x
-                self.guard((u, a[2]))
+                value = self.term()
+                assert u == a and (value == '_' or value == a)
+            elif name in ('le_l', 'le_r'):
+                other = self.term()
+                assert isinstance(a, tuple) and a[0] == 'imp'
+                fixed, grown = (2, 1) if name == 'le_l' else (1, 2)
+                assert a[fixed] == other
+                self.guard((u, a[grown]))
             else:
-                assert self.facts[name] == expected, (name, self.facts, expected)
-            return expected
-        return self.group(core)
+                assert self.facts[name] == expected
+        self.group(parse)
 
     def proof(self):
-        def core():
+        def parse():
             name = self.pop()
             if name == 'h.mp':
                 major, minor = self.proof(), self.proof()
                 assert isinstance(major, tuple) and major[0] == 'imp'
-                assert major[1] == minor, ('MP mismatch', major[1], minor)
-                counts['mp'] += 1
+                assert major[1] == minor, ('MP mismatch', major, minor)
+                self.counts['mp'] += 1
                 return major[2]
             if name == 'h.rho8':
                 a, b, c, u = [self.term() for _ in range(4)]
                 self.guard((u, a))
-                counts['restricted_rows'] += 1
-                return imp(imp(imp(c, u), a), imp(imp(a, c), imp(b, c)))
-            if name == 'h.truth':
-                counts['seed_uses'] += 1
-                return 'τ'
-            if name == 'under_antecedent':
-                assert name in schemas
+                self.counts['restricted_rows'] += 1
+                return row(a, b, c, u)
+            if name in self.schemas:
                 self.pop('h')
-                z, xy = self.term(), self.proof()
-                assert isinstance(xy, tuple) and xy[0] == 'imp'
-                return imp(imp(z, xy[1]), imp(z, xy[2]))
-            if name in schemas:
-                self.pop('h')
-                args, conclusion, guards = schemas[name]
+                args, target, guards = self.schemas[name]
                 env = dict(zip(args, [self.term() for _ in args]))
                 for guard in guards:
                     self.guard(subst(guard, env))
-                return subst(conclusion, env)
+                return subst(target, env)
             assert name in self.facts, name
             return self.facts[name]
-        return self.group(core)
+        return self.group(parse)
 
     def end(self):
         assert self.i == len(self.ts), self.ts[self.i:]
 
-def audit(text):
-    global schemas, counts
-    matches = list(re.finditer(r'private theorem (d\d+|under_antecedent|insert_middle|application_contract|application_transport|repeated_antecedent|composition_seed)\b', text))
-    schemas = {}
-    counts = dict(mp=0, restricted_rows=0, seed_uses=0)
-    checked = []
+def audit(core, inlined=False):
+    schemas, counts = {}, {'mp': 0, 'restricted_rows': 0}
+    matches = list(re.finditer(r'private theorem (d\d+)\b', core))
+    expected = [f'd{i}' for i in range(1, 59) if not inlined or i not in (56, 58)]
+    assert [m.group(1) for m in matches] == expected
     for index, match in enumerate(matches):
-        name = match.group(1)
-        end = matches[index+1].start() if index+1 < len(matches) else text.index('\nend\n', match.end())
-        block = text[match.end():end]
-        header, body = block.split(':=', 1)
-        body = re.sub(r'/--.*?-/\s*$', '', body, flags=re.S).strip()
-        args = []
-        for group in re.findall(r'\(([^():]+) : A\)', header):
-            args.extend(group.split())
-        guard_text = re.findall(r'\(hb\d+ : (.*?)\)\s*:', header, re.S)
-        guards = []
-        for g in guard_text:
-            r = Reader(g)
+        end = matches[index + 1].start() if index + 1 < len(matches) else core.index('/-- Restricted rows', match.end())
+        header, body = core[match.end():end].split(':=', 1)
+        args = [a for group in re.findall(r'\(([^():]+) : A\)', header) for a in group.split()]
+        facts, guards = {}, []
+        for name, text in re.findall(r'\((hb\d+) : (.*?)\)\s*:', header, re.S):
+            r = Reader(text, schemas, counts)
             u = r.term(); r.pop('≼'); a = r.term(); r.end()
+            facts[name] = (u, a)
             guards.append((u, a))
-        # The conclusion starts at the final colon directly preceding T.
-        conclusion_text = re.split(r':\s*T\s+', header)[-1]
-        r = Reader(conclusion_text); conclusion = r.term(); r.end()
-        facts = {f'hb{i}': g for i, g in enumerate(guards)}
-        if name == 'under_antecedent':
-            facts['hxy'] = imp('x', 'y')
-        if name == 'composition_seed':
-            assert body.startswith('by\n  have happ : T ')
-            local, exact = body[len('by\n  have happ : T '):].split('\n  exact ', 1)
-            local_type, local_proof = local.split(':=', 1)
-            r = Reader(local_type); local_formula = r.term(); r.end()
-            r = Reader(local_proof); actual_local = r.proof(); r.end()
-            assert local_formula == actual_local
-            facts['happ'] = local_formula
-            body = exact
-        r = Reader(body, facts=facts)
-        actual = r.proof(); r.end()
-        assert actual == conclusion, (name, actual, conclusion)
-        schemas[name] = (args, conclusion, guards)
-        checked.append(name)
+        r = Reader(re.split(r':\s*T\s+', header)[-1], schemas, counts)
+        target = r.term(); r.end()
+        before = counts['mp']
+        r = Reader(body.strip(), schemas, counts, facts)
+        assert r.proof() == target, match.group(1)
+        r.end()
+        assert counts['mp'] == before + 1
+        schemas[match.group(1)] = (args, target, guards)
+    assert counts == {'mp': len(expected), 'restricted_rows': 23}
+    assert not re.search(r'WithSeed|h\.truth|\b0\b|Nat\.|sorry|native_decide', core)
+    assert not re.search(r'(?m)^\s*axiom\b', core)
+    targets = {
+        'rho8_all': row('a', 'b', 'c', 'u'),
+        'composition': imp(imp('a', 'b'), imp(imp('b', 'c'), imp('a', 'c'))),
+        'lift_right': imp(imp('x', 'a'), imp('x', 'b')),
+    }
+    public = list(re.finditer(r'(?m)^theorem (\w+)\b', core))
+    assert [m.group(1) for m in public] == list(targets)
+    for index, match in enumerate(public):
+        end = public[index + 1].start() if index + 1 < len(public) else core.index('\nend\n', match.end())
+        body = core[match.end():end].split(':=', 1)[1]
+        body = re.sub(r'/--.*?-/\s*$', '', body, flags=re.S).strip()
+        r = Reader(body, schemas, counts, {'hab': imp('a', 'b')})
+        assert r.proof() == targets[match.group(1)], match.group(1)
+        r.end()
+    assert counts == {'mp': 59, 'restricted_rows': 23}
+    return {'private_steps': len(expected), 'private_mp': len(expected), 'restricted_rows': 23,
+            'public_mp': 59 - len(expected), 'seed_uses': 0, 'public_targets': list(targets)}
 
-    assert checked[:52] == [f'd{i}' for i in range(1, 53)]
-    assert len(checked) == 58
-    assert counts['seed_uses'] == 5
-    assert not re.search(r'\b0\b|Nat\.|sorry|axiom |native_decide', text)
-    assert subst(schemas['d52'][1], dict(zip(schemas['d52'][0], ['c','u','a','b']))) == imp(imp(imp('c','u'),'a'),imp(imp('a','c'),imp('b','c')))
-    return checked, counts
-
-def pinned(path, expected):
-    raw = path.read_bytes()
-    assert sha(raw) == expected, 'input bytes differ: ' + str(path)
-    return raw.decode('utf-8')
+def render_core(raw_core):
+    core = raw_core
+    for name, args, pin in [
+        ('d56', ['c', 'u', 'a', 'b'], '4c5c289425be0a601f699f48b4ed5b9be91dc1fcc0684d9dabbc16e78200f753'),
+        ('d58', ['a', 'b', 'c'], 'd371f672d1b010dfe026b34443c53228f16864c5c7bd9cdacd84f10009f7cda4'),
+    ]:
+        match = re.search(r'private theorem ' + name + r'\b.*?(?=private theorem |/-- Restricted rows)', core, re.S)
+        block = match.group()
+        assert sha(block.encode()) == pin
+        env = {f'v{i}': a for i, a in enumerate(args)}
+        body = re.sub(r'\bv\d+\b', lambda m: env[m.group()], block.split(':=\n', 1)[1]).rstrip('\n')
+        core = core[:match.start()] + core[match.end():]
+        call = '  ' + name + ' h ' + ' '.join(args)
+        assert core.count(call) == 1 and len(re.findall(r'\b' + name + r'\b', core)) == 1
+        core = core.replace(call, body)
+    before = ('The 58 lemmas\nbelow are one condensed-detachment derivation of the unrestricted row, composition and\n'
+              'prefixing from modus ponens and the restricted rows alone, generated by')
+    after = ('The 58-step\ncondensed-detachment derivation of the unrestricted row, composition and\n'
+             'prefixing from modus ponens and the restricted rows alone was first rendered by')
+    assert core.count(before) == 1 and not re.search(r'\bd(?:56|58)\b', core)
+    return core.replace(before, after)
 
 def generate():
-    inputs = {name: pinned(HERE / name, pin) for name, pin in INPUT_PINS.items()}
-    templates = {name: pinned(TEMPLATES / name, pin) for name, pin in TEMPLATE_PINS.items()}
-    source = inputs[SOURCE]
-    body = source[source.index('private theorem d1 '):source.index('/-- Every rho8 instance')]
-    fillers = {3: '(wim v1 v2)', 7: '(wim (wim v1 v2) v3)', 10: '(wim v1 v2)', 16: 'v0'}
-    seeds = [4, 9, 13, 18, 22]
-    for number, filler in fillers.items():
-        match = re.search(r'(private theorem d%d .*?)(?=private theorem|\Z)' % number, body, re.S)
-        block = match.group(1)
-        assert len(re.findall(r'\b0\b', block)) == 2 and block.count('(Nat.zero_le _)') == 1
-        block = re.sub(r'\b0\b', lambda _: filler, block).replace('(Nat.zero_le _)', '(L.refl _)')
-        body = body[:match.start()] + block + body[match.end():]
-    for number in seeds:
-        match = re.search(r'(private theorem d%d .*?)(?=private theorem|\Z)' % number, body, re.S)
-        block = match.group(1)
-        assert len(re.findall(r'\b0\b', block)) == 1 and block.count('h.truth') == 1
-        body = body[:match.start()] + re.sub(r'\b0\b', 'τ', block) + body[match.end():]
-    body = body.replace(': Nat', ': A').replace(' ≤ ', ' ≼ ').replace('Nat.le_refl', 'L.refl')
-    core = templates['core-prefix.txt'] + body + templates['core-suffix.txt']
-    adapter = templates['adapter.txt']
-    checked, counts = audit(core)
-    assert sha(core.encode()) == EXPECTED_CORE, 'generated core differs from reviewed source'
-    metrics = {
-        'base_commit': '4fdc59197a45a6beb7e5a4ae7109fd13477b1d17',
-        'input_raw_sha256': INPUT_PINS, 'template_raw_sha256': TEMPLATE_PINS,
-        'generic_sha256': sha(core.encode()), 'adapter_sha256': sha(adapter.encode()),
-        'generic_bytes': len(core.encode()), 'adapter_bytes': len(adapter.encode()),
-        'combined_bytes': len((core + adapter).encode()),
-        'generic_lines': len(core.splitlines()), 'adapter_lines': len(adapter.splitlines()),
-        'numbered_helpers': 52, 'compatibility_helpers': 6,
-        'reflexive_fillers': fillers, 'arbitrary_seed_detachments': seeds,
-        'checked_private_lemmas': checked, 'counts': counts,
-        'certificate_status': '58 explicit inference bodies and all relation guards checked; no zero normalization',
-        'kernel_status': 'external build receipts; this Python script is not a proof kernel',
-    }
+    inputs = {}
+    for name, expected in INPUT_PINS.items():
+        raw = (HERE / name).read_bytes()
+        assert sha(raw) == expected, 'input bytes differ: ' + name
+        inputs[name] = raw.decode('utf-8')
+    raw_checked = audit(inputs[SOURCE])
+    core, adapter = render_core(inputs[SOURCE]), inputs[ADAPTER]
+    assert sha(core.encode()) == EXPECTED_CORE, 'output differs from reviewed core'
+    checked = audit(core, inlined=True)
+    metrics = {'input_raw_sha256': INPUT_PINS, 'generic_sha256': sha(core.encode()),
+               'adapter_sha256': sha(adapter.encode()), 'generic_bytes': len(core.encode()),
+               'adapter_bytes': len(adapter.encode()), 'combined_bytes': len((core + adapter).encode()),
+               'generic_lines': len(core.splitlines()), 'adapter_lines': len(adapter.splitlines()),
+               'raw_checked': raw_checked, 'checked': checked,
+               'derivation_role': 'Pinned ancestry data; no renderer execution.',
+               'kernel_status': 'External Lean receipts; this diagnostic is not a proof kernel.'}
     return core, adapter, metrics
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, help='write repo-layout Lean files under this directory')
-    parser.add_argument('--check', action='store_true', help='check exact delivered source bytes')
+    parser.add_argument('--check', action='store_true', help='check exact maintained source bytes')
     args = parser.parse_args()
     core, adapter, metrics = generate()
     target = (args.out or DEFAULT_OUT) / 'BusyBeaver/ZFC'

@@ -3381,7 +3381,7 @@ Upstream placements `35ba151c3b`, `69e6d97fc2` and `62f0f95e2b` are retained;
 supplements `0359ebda60` and `dada10165b` bind exact recovery of all 851,
 360 and 1,132 outer members, including original source and license variants.
 Nested archives are inventoried separately. These additions extend the same
-report; together with batch 208 below, the host has **178 numbered sources**,
+report; at the batch-208 checkpoint below, the host had **178 numbered sources**,
 written reconciliations for Sources **1–164 and 167–178**, and pending
 Source **165/166** follow-ups.
 The collection and category counts remain **290 reports**.
@@ -3419,3 +3419,27 @@ split, fast transition lookup and seed-model cleanup; reused providers remain
 bound to phase five. The two later `5314ca0e6b`/`b07002a86b` archives remain pending.
 These kernel checks are separate from intake. Placement or source review alone
 still supplies no smaller machine, whole-endpoint proof or performance result.
+
+
+[Batch 212](set-theory/zfc-closure-kernels/intake-212.md) adds Source 179 from
+`6f0d42d368`, after placement `9740f2bd13`. The existing host now has
+**179 numbered sources**, with written coverage of **1–164 and 167–179**;
+Sources **165–166** and the independent reconciliation of the already placed
+batch-209–211 proposals remain pending. The collection and category counts
+remain **290 reports**. All 862 delivery members remain exactly recoverable:
+338 new ancillary files, 462 immutable Git aliases, 24 delivery aliases and
+38 arrival-only members, including 32 logs excluded by existing ignore rules.
+
+The submission develops generic affine drain/contraction and literal
+source-to-graph proofs, with 1,059 drains and a 367-vertex retained interface
+inside the 1,426-vertex graph. Its generated graph/location data are larger;
+no smaller binary machine or measured full-build speedup follows. CM215's
+six-row transport is prior code; the packet adds integration evidence at its
+older pinned snapshot. Ordinary source review found no mathematical defect,
+and independent literal readers confirm the graph/rank facts and old430-action
+binding. No supplied script or proof compiler was run. Current phase-nine
+source/path/zipper-prefix theorems already close two reported decoder gaps;
+primitive and return suffix factoring remains open. The rejected214-state
+contracts and bounded searches retain their distinct scopes. This reconciliation
+preserves the base article and its labels; it does not alter the maintained
+Lean/Rocq endpoints or confer a new PA result.
