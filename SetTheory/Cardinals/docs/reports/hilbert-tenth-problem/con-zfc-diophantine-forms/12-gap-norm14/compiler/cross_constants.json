@@ -1,0 +1,205 @@
+{
+  "constants": {
+    "schema": "proveit-k215-cross-constants-v1",
+    "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "representation": "Four exact finite-expression integers; no binary expansion allocated",
+    "free_parameters": [],
+    "alphabet": 439,
+    "cross_count": 38256607897,
+    "cross_coordinates": [
+      "prior",
+      "left",
+      "center",
+      "right",
+      "following"
+    ],
+    "cross_order": {
+      "first": [
+        438,
+        434,
+        435,
+        436,
+        1
+      ],
+      "second": [
+        438,
+        0,
+        437,
+        438,
+        437
+      ],
+      "rest": "lexicographic 5-tuples in range(439), satisfying local_valid after insertion at positions 1,3,4,5,7 of a zero-corner 3x3 window; exclude first two"
+    },
+    "geometry": {
+      "alphabet": 439,
+      "crosses": 38256607897,
+      "ell": 36,
+      "padding": 19128301935,
+      "mu_top": 19128304134,
+      "m": 38256610096,
+      "native_positions": 38256610097,
+      "dummy_count": 1,
+      "dummy_start": 38256613165,
+      "anchor_unit": 38256614483,
+      "emax": 1032928591041,
+      "shift_H": 1951087339951,
+      "T1": 4016944522473,
+      "T2": 8148658886639,
+      "cell_length": 19073486328125,
+      "cell_length_power_five": 19,
+      "radix_bits": 762939453125,
+      "radix_bits_power_five": 17,
+      "radix_threshold": 688618948863,
+      "cell_bits": 14551915228366851806640625,
+      "cell_bits_power_five": 36,
+      "mask_population_MC": 14551915228366813550030528,
+      "mask_population_MF": 38256610097
+    },
+    "definitions": {
+      "A": "2^ell",
+      "mu": "A-2+sum(A^j,j=1..mu_top)",
+      "e(r,c,s)": "k+3a+(2-r)3a+(2-c)a+s, (r,c) in [(0,1),(1,0),(1,1),(1,2),(2,1)]",
+      "j(z,s)": "1+z*a+s, z=0..4 in the specified shape order",
+      "c_i": "1+sum(A^(1+z*a+W_i[z]),z=0..4)+sum(A^(5a+t),t=1..4)",
+      "c_e(r,c,s)": "A^(1+z*a+s), with (r,c)=SHAPE[z]",
+      "c_(3^(t-1)M)": "A^(5a+t),t=1..4",
+      "c_dummy": "0",
+      "positions": "0..k-1; all five cross payload blocks; dummy_start..dummy_start+dummy_count-1; M,3M,9M,27M",
+      "r": "2^radix_bits",
+      "B": "r^cell_length=2^cell_bits",
+      "DC": "r^(3a)+r^(H+a)+r^(8M)+r^(24M)+sum(c_e*(r^(T1-e)+r^(T2-e)),e in positions)",
+      "DR": "r^H",
+      "MF0": "mu*(r^T1+r^T2)+sum(r^e(r0,c,s),(r0,c) in [(0,1),(1,1)],s=0..a-1)+sum(r^(H+e(r0,c,s)),(r0,c) in [(1,0),(1,1)],s=0..a-1)+r^(9M)+r^(27M)",
+      "MC": "B-1-sum(r^e,e in positions except1)-2*r^dummy_start",
+      "MF_native": "MF0+4",
+      "Bm1": "B-1",
+      "Kconstant": "DC+B*DR",
+      "MF": "MF_native+B-1"
+    },
+    "polynomial_ports": [
+      "Bm1",
+      "Kconstant",
+      "MC",
+      "MF"
+    ],
+    "certificates": {
+      "MC_mod4": 2,
+      "MF_native_mod8": 4,
+      "pc_MC_plus_pc_MF": "cell_bits",
+      "2DC_minus_DR_mod5": 3
+    }
+  },
+  "verification": {
+    "status": "PASS",
+    "sparse_compilers": [
+      {
+        "alphabet": 3,
+        "crosses": 2,
+        "basis_checks": 2640,
+        "all_rotation_checks": true,
+        "unit_mod5": 3,
+        "layout": {
+          "alphabet": 3,
+          "crosses": 2,
+          "ell": 2,
+          "padding": 0,
+          "mu_top": 19,
+          "m": 54,
+          "native_positions": 55,
+          "dummy_count": 34,
+          "dummy_start": 38,
+          "anchor_unit": 81,
+          "emax": 2187,
+          "shift_H": 4141,
+          "T1": 8519,
+          "T2": 17269,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "radix_bits": 125,
+          "radix_bits_power_five": 3,
+          "radix_threshold": 57,
+          "cell_bits": 9765625,
+          "cell_bits_power_five": 10,
+          "mask_population_MC": 9765570,
+          "mask_population_MF": 55
+        }
+      },
+      {
+        "alphabet": 3,
+        "crosses": 3,
+        "basis_checks": 2736,
+        "all_rotation_checks": true,
+        "unit_mod5": 3,
+        "layout": {
+          "alphabet": 3,
+          "crosses": 3,
+          "ell": 3,
+          "padding": 0,
+          "mu_top": 19,
+          "m": 56,
+          "native_positions": 57,
+          "dummy_count": 35,
+          "dummy_start": 39,
+          "anchor_unit": 83,
+          "emax": 2241,
+          "shift_H": 4243,
+          "T1": 8729,
+          "T2": 17695,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "radix_bits": 125,
+          "radix_bits_power_five": 3,
+          "radix_threshold": 76,
+          "cell_bits": 9765625,
+          "cell_bits_power_five": 10,
+          "mask_population_MC": 9765568,
+          "mask_population_MF": 57
+        }
+      },
+      {
+        "alphabet": 7,
+        "crosses": 4,
+        "basis_checks": 10848,
+        "all_rotation_checks": true,
+        "unit_mod5": 3,
+        "layout": {
+          "alphabet": 7,
+          "crosses": 4,
+          "ell": 3,
+          "padding": 0,
+          "mu_top": 39,
+          "m": 112,
+          "native_positions": 113,
+          "dummy_count": 70,
+          "dummy_start": 88,
+          "anchor_unit": 179,
+          "emax": 4833,
+          "shift_H": 9151,
+          "T1": 18825,
+          "T2": 38159,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "radix_bits": 625,
+          "radix_bits_power_five": 4,
+          "radix_threshold": 138,
+          "cell_bits": 48828125,
+          "cell_bits_power_five": 11,
+          "mask_population_MC": 48828012,
+          "mask_population_MF": 113
+        }
+      }
+    ],
+    "reconstruction": {
+      "lift_checks": 26106,
+      "exhaustive_cross_sequences": 100384
+    },
+    "actual_giant_constants_materialized": false
+  },
+  "source_verification": {
+    "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "valid_crosses": 38256607897,
+    "center_categories": 13,
+    "helical_presentations": 32,
+    "helical_crosses": 1144
+  }
+}

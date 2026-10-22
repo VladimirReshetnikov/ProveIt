@@ -1,0 +1,324 @@
+{
+  "cardinality": {
+    "categories": [
+      {
+        "center": 437,
+        "direct_count": 192282,
+        "multiplicity": 1,
+        "name": "V",
+        "per_center": 192282,
+        "total": 192282
+      },
+      {
+        "center": 438,
+        "direct_count": 2634,
+        "multiplicity": 1,
+        "name": "H",
+        "per_center": 2634,
+        "total": 2634
+      },
+      {
+        "center": 0,
+        "direct_count": 355508,
+        "multiplicity": 1,
+        "name": "headless-0",
+        "per_center": 355508,
+        "total": 355508
+      },
+      {
+        "center": 432,
+        "direct_count": 223966,
+        "multiplicity": 1,
+        "name": "halt-0",
+        "per_center": 223966,
+        "total": 223966
+      },
+      {
+        "center": 1,
+        "direct_count": 355508,
+        "multiplicity": 1,
+        "name": "headless-1",
+        "per_center": 355508,
+        "total": 355508
+      },
+      {
+        "center": 433,
+        "direct_count": 223966,
+        "multiplicity": 1,
+        "name": "halt-1",
+        "per_center": 223966,
+        "total": 223966
+      },
+      {
+        "center": 4,
+        "direct_count": 162788,
+        "multiplicity": 51,
+        "name": "working-write0-move-1",
+        "per_center": 162788,
+        "total": 8302188
+      },
+      {
+        "center": 14,
+        "direct_count": 162788,
+        "multiplicity": 190,
+        "name": "working-write0-move1",
+        "per_center": 162788,
+        "total": 30929720
+      },
+      {
+        "center": 5,
+        "direct_count": 162788,
+        "multiplicity": 31,
+        "name": "working-write1-move-1",
+        "per_center": 162788,
+        "total": 5046428
+      },
+      {
+        "center": 2,
+        "direct_count": 162788,
+        "multiplicity": 158,
+        "name": "working-write1-move1",
+        "per_center": 162788,
+        "total": 25720504
+      },
+      {
+        "center": 434,
+        "direct_count": 1754,
+        "multiplicity": 1,
+        "name": "initial-L",
+        "per_center": 1754,
+        "total": 1754
+      },
+      {
+        "center": 435,
+        "direct_count": 437,
+        "multiplicity": 1,
+        "name": "initial-Q",
+        "per_center": 437,
+        "total": 437
+      },
+      {
+        "center": 436,
+        "direct_count": 1750,
+        "multiplicity": 1,
+        "name": "initial-R",
+        "per_center": 1750,
+        "total": 1750
+      }
+    ],
+    "incoming_from_left": 349,
+    "incoming_from_right": 82,
+    "independent_direct_count": true,
+    "nonincoming_from_left": 89,
+    "nonincoming_from_right": 356,
+    "tile_count": 71356645
+  },
+  "constants": {
+    "alphabet_size": 439,
+    "definitions": {
+      "A": "2^ell",
+      "B": "r^cell_length=2^cell_bits",
+      "Bm1": "B-1",
+      "DC": "r^(3*a)+r^(H+a)+r^(8*M)+r^(24*M)+sum(c_e*(r^(T1-e)+r^(T2-e)),e in positions)",
+      "DR": "r^H",
+      "Kconstant": "DC+B*DR",
+      "MC": "B-1-sum(r^e,e in positions except1)-2*r^dummy_start",
+      "MF": "MF_native+B-1",
+      "MF0": "mu*(r^T1+r^T2)+sum(r^e(1,1,s),s=0..a-1)+sum(r^(H+e(r0,c,s)),(r0,c)=(1,0),(1,1),s=0..a-1)+r^(9*M)+r^(27*M)",
+      "MF_native": "MF0+4",
+      "c_anchor(t)": "A^(4*a+t)",
+      "c_dummy": "0",
+      "c_payload(j,s)": "A^(1+j*a+s)",
+      "c_selector(i)": "1+sum(A^(1+j*a+tile_i[j]),j=0..3)+sum(A^(4*a+t),t=1..4)",
+      "e(r0,c,s)": "k+3*a+(2-r0)*3*a+(2-c)*a+s",
+      "mu": "A-2+sum(A^j,j=1..mu_top)",
+      "positions": "0..k-1; payload e for four slots and s=0..a-1; dummy_start..dummy_start+dummy_count-1; M,3M,9M,27M",
+      "r": "2^radix_bits",
+      "slots": "(1,0),(1,1),(1,2),(2,1) in this order; slot index j=0,1,2,3"
+    },
+    "expansions_materialized": false,
+    "free_parameters": [],
+    "key_certificates": {
+      "MC_mod4": 2,
+      "MF_native_mod8": 4,
+      "bit_length_Bm1": "cell_bits",
+      "population_sum": "cell_bits",
+      "unit_2DC_minus_DR_mod5": 3
+    },
+    "layout": {
+      "T1": 7493141013,
+      "T2": 15200369963,
+      "alphabet": 439,
+      "anchor_unit": 71363231,
+      "bit_length_K": 41695683867187500001,
+      "cell_bits": 37252902984619140625,
+      "cell_bits_power_five": 28,
+      "cell_length": 30517578125,
+      "cell_length_power_five": 15,
+      "dummy_count": 1,
+      "dummy_start": 71361913,
+      "ell": 27,
+      "emax": 1926807237,
+      "m": 71358405,
+      "mask_population_MC": 37252902984547782219,
+      "mask_population_MF": 71358406,
+      "mu_top": 35678517,
+      "native_positions": 71358406,
+      "padding": 35676757,
+      "radix_bits": 1220703125,
+      "radix_bits_power_five": 13,
+      "radix_threshold": 963319989,
+      "shift_H": 3639526099,
+      "tiles": 71356645
+    },
+    "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "polynomial_ports": [
+      "Bm1",
+      "Kconstant",
+      "MC",
+      "MF"
+    ],
+    "schema": "proveit-k215-four-cell-constants-v1",
+    "tile_count": 71356645,
+    "tile_order": {
+      "first": [
+        434,
+        435,
+        436,
+        1
+      ],
+      "rest": "lexicographic four-tuples (left,center,right,following) in range(439)^4 satisfying local_valid, excluding first and second",
+      "second": [
+        437,
+        437,
+        0,
+        437
+      ]
+    }
+  },
+  "machine_binding": {
+    "export_matches_dense_table": true,
+    "sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "transition_count": 430
+  },
+  "scope": "Finite data, support and semantic diagnostics supplement the parametric proofs; no giant coefficient or K215 halting witness is materialized.",
+  "semantics": {
+    "canonical_presentations": 32,
+    "excluded": [
+      437,
+      437,
+      0,
+      437
+    ],
+    "local_and_overlap_checks": 1144,
+    "nonhalting_truncation_rejected": true,
+    "start": [
+      434,
+      435,
+      436,
+      1
+    ]
+  },
+  "status": "PASS",
+  "toy_compilers": [
+    {
+      "all_rotation_support_checks": true,
+      "alphabet": 3,
+      "basis_checks": 1794,
+      "geometry": {
+        "T1": 7889,
+        "T2": 15991,
+        "alphabet": 3,
+        "anchor_unit": 75,
+        "bit_length_K": 10245001,
+        "cell_bits": 9765625,
+        "cell_bits_power_five": 10,
+        "cell_length": 78125,
+        "cell_length_power_five": 7,
+        "dummy_count": 28,
+        "dummy_start": 38,
+        "ell": 2,
+        "emax": 2025,
+        "m": 45,
+        "mask_population_MC": 9765579,
+        "mask_population_MF": 46,
+        "mu_top": 16,
+        "native_positions": 46,
+        "padding": 0,
+        "radix_bits": 125,
+        "radix_bits_power_five": 3,
+        "radix_threshold": 50,
+        "shift_H": 3835,
+        "tiles": 2
+      },
+      "tiles": 2,
+      "unit_mod5": 3
+    },
+    {
+      "all_rotation_support_checks": true,
+      "alphabet": 3,
+      "basis_checks": 1872,
+      "geometry": {
+        "T1": 8099,
+        "T2": 16417,
+        "alphabet": 3,
+        "anchor_unit": 77,
+        "bit_length_K": 10257751,
+        "cell_bits": 9765625,
+        "cell_bits_power_five": 10,
+        "cell_length": 78125,
+        "cell_length_power_five": 7,
+        "dummy_count": 29,
+        "dummy_start": 39,
+        "ell": 3,
+        "emax": 2079,
+        "m": 47,
+        "mask_population_MC": 9765577,
+        "mask_population_MF": 48,
+        "mu_top": 16,
+        "native_positions": 48,
+        "padding": 0,
+        "radix_bits": 125,
+        "radix_bits_power_five": 3,
+        "radix_threshold": 66,
+        "shift_H": 3937,
+        "tiles": 3
+      },
+      "tiles": 3,
+      "unit_mod5": 3
+    },
+    {
+      "all_rotation_support_checks": true,
+      "alphabet": 7,
+      "basis_checks": 6900,
+      "geometry": {
+        "T1": 17355,
+        "T2": 35177,
+        "alphabet": 7,
+        "anchor_unit": 165,
+        "bit_length_K": 10820251,
+        "cell_bits": 9765625,
+        "cell_bits_power_five": 10,
+        "cell_length": 78125,
+        "cell_length_power_five": 7,
+        "dummy_count": 56,
+        "dummy_start": 88,
+        "ell": 3,
+        "emax": 4455,
+        "m": 91,
+        "mask_population_MC": 9765533,
+        "mask_population_MF": 92,
+        "mu_top": 32,
+        "native_positions": 92,
+        "padding": 0,
+        "radix_bits": 125,
+        "radix_bits_power_five": 3,
+        "radix_threshold": 116,
+        "shift_H": 8437,
+        "tiles": 4
+      },
+      "tiles": 4,
+      "unit_mod5": 3
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "proveit-fixed-diophantine-coefficient-binding-v1",
+  "default_recipe": "compiler/tshape_constants.json",
+  "recipe_generator": "compiler/tshape_compiler_constants.py",
+  "local_relation": "compiler/tshape_helical.py:local_valid",
+  "machine": "compiler/k215.tm",
+  "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+  "source_commit": "3b201cdea32d2c816f5f3d20734051f25fd3ef14",
+  "ports": [
+    {
+      "names": [
+        "beta",
+        "Bm1"
+      ],
+      "definition": "B-1"
+    },
+    {
+      "names": [
+        "K0",
+        "Kconstant"
+      ],
+      "definition": "DC+B*DR"
+    },
+    {
+      "names": [
+        "MC"
+      ],
+      "definition": "MC: native low mask"
+    },
+    {
+      "names": [
+        "MF"
+      ],
+      "definition": "MF_native+B-1: shifted high mask"
+    }
+  ],
+  "free_parameters": [],
+  "scope": "All newly generated equation/system packets in arithmetic/ and low_degree/; the named inherited generator input packets retain their original provenance.",
+  "exclude_from_new_packet_binding": [
+    "arithmetic/p67_source.json",
+    "arithmetic/p80_source.json",
+    "arithmetic/p82_source.json"
+  ],
+  "alternative_complete_recipe": "compiler/cross_constants.json",
+  "proof": "Report sections8-9 and proofs/COEFFICIENT_REDUCTION_PROOF.md prove that the complete four-port compiler interface is preserved.",
+  "coefficient_materialization": false,
+  "notes": [
+    "All four ports must come from the same complete recipe.",
+    "The shifted MF port is not MF_native.",
+    "Arithmetic operation and degree counts treat these ports as fixed integer constants."
+  ]
+}
+

@@ -1,0 +1,398 @@
+{
+  "status": "PASS",
+  "repository_pin": "3b201cdea32d2c816f5f3d20734051f25fd3ef14",
+  "upstream_files_authenticated": [
+    "compiler/blank_helical.py",
+    "compiler/count_blank_alphabet.py",
+    "compiler/verify_k215.py",
+    "arithmetic/baseline67.json",
+    "upstream/blank_helical_proof.md",
+    "upstream/fixed_blank_67_proof.md",
+    "upstream/pell_lemma_audit.md",
+    "upstream/k215_audit_notes.md",
+    "upstream/KEndpoint215.lean",
+    "upstream/k215_verification_README.md",
+    "compiler/k215.tm",
+    "upstream/PELL_RELAXED_AUXILIARY_PROOF.md",
+    "upstream/FIXED_RAW_UNIVERSAL_75_PROOF.md",
+    "upstream/complete75_reversed_auxiliary89.md",
+    "upstream/complete75_asymmetric_scale_tradeoffs.md",
+    "upstream/complete75_coupled_index_linear88.md",
+    "upstream/pell_kernel_half_binomial42.md",
+    "upstream/complete75_half_binomial_compiler.md",
+    "LICENSE",
+    "upstream/K215_NOTICE.md",
+    "licenses/LICENSE.Wade",
+    "upstream/collection_README.md",
+    "upstream/FIXED_RAW_UNIVERSAL_76_PROOF.md",
+    "upstream/EXPLORATION_FIVE_ADIC_DUMMY_CONTROL.md"
+  ],
+  "steps": [
+    {
+      "name": "ordinary arithmetic",
+      "arguments": [
+        "arithmetic/build_improved.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/01.log"
+    },
+    {
+      "name": "root elimination",
+      "arguments": [
+        "arithmetic/build_fourteen.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/02.log"
+    },
+    {
+      "name": "auxiliary gap",
+      "arguments": [
+        "arithmetic/build_gap.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/03.log"
+    },
+    {
+      "name": "independent symbolic gap identities",
+      "arguments": [
+        "quadratic/check_gap_identities.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/04.log"
+    },
+    {
+      "name": "quadratic lift",
+      "arguments": [
+        "quadratic/build_quartic32.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/05.log"
+    },
+    {
+      "name": "cross compiler and source census",
+      "arguments": [
+        "compiler/cross_constants.py",
+        "--tm",
+        "compiler/k215.tm",
+        "--output",
+        "compiler/cross_constants.json"
+      ],
+      "exit_code": 0,
+      "log": "verification/06.log"
+    },
+    {
+      "name": "independent actual geometry",
+      "arguments": [
+        "compiler/review_cross_geometry.py",
+        "--source",
+        "compiler/cross_constants.json",
+        "--output",
+        "compiler/cross_geometry_review.json"
+      ],
+      "exit_code": 0,
+      "log": "verification/07.log"
+    }
+  ],
+  "arithmetic_presentations": [
+    {
+      "file": "arithmetic/blank14_gap_norm75.json",
+      "name": "blank14_gap_norm75",
+      "unknowns": 14,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 219,
+      "operations": 75,
+      "multiplications": 43,
+      "sha256": "7de845dcf15c3225c03e2a4f7ecb66f607bd6cae845e539c2390ce42de6835c4"
+    },
+    {
+      "file": "arithmetic/blank14_gap_norm75_over_Z32.json",
+      "name": "blank14_gap_norm75_over_Z32",
+      "unknowns": 32,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 434,
+      "operations": 138,
+      "multiplications": 70,
+      "sha256": "7c086beacef6882386aad717784d6b4449505f35758ddd66868c6f54da2bc35f"
+    },
+    {
+      "file": "arithmetic/blank14_gap_outer75.json",
+      "name": "blank14_gap_outer75",
+      "unknowns": 14,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 268,
+      "operations": 75,
+      "multiplications": 45,
+      "sha256": "adfa757536997589da87765f01c733c2682b14e5c48581e86141c9ff85f7b0e3"
+    },
+    {
+      "file": "arithmetic/blank14_gap_outer75_over_Z32.json",
+      "name": "blank14_gap_outer75_over_Z32",
+      "unknowns": 32,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 530,
+      "operations": 138,
+      "multiplications": 72,
+      "sha256": "d99283cf89b47b9c70a311a1c17b45311e9d5bc669b7dddec104b4d8160b134b"
+    },
+    {
+      "file": "arithmetic/blank14_norm75.json",
+      "name": "blank14_norm75",
+      "unknowns": 14,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 293,
+      "operations": 75,
+      "multiplications": 44,
+      "sha256": "44afc6638a681abc9fb1b0cc98bf9308e0413855711220a53792e86af43777f9"
+    },
+    {
+      "file": "arithmetic/blank14_norm75_over_Z32.json",
+      "name": "blank14_norm75_over_Z32",
+      "unknowns": 32,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 584,
+      "operations": 138,
+      "multiplications": 71,
+      "sha256": "76021e8b6b94f9e11d38d34096cdc030c514c30799456bcc3d8f5caba7b576a5"
+    },
+    {
+      "file": "arithmetic/blank14_outer73.json",
+      "name": "blank14_outer73",
+      "unknowns": 14,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 342,
+      "operations": 73,
+      "multiplications": 44,
+      "sha256": "617071bf590e431bad40bc1a9537efe9d3c1c2d626bf6afa3d1496c4c723df59"
+    },
+    {
+      "file": "arithmetic/blank14_outer73_over_Z32.json",
+      "name": "blank14_outer73_over_Z32",
+      "unknowns": 32,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 680,
+      "operations": 136,
+      "multiplications": 71,
+      "sha256": "9789d19056ba891be6c9c67104543bc01a0d8028eb51ffa2d6b0c18411880b48"
+    },
+    {
+      "file": "arithmetic/ordinary_blank69.json",
+      "name": "ordinary_blank69",
+      "unknowns": 15,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 99,
+      "operations": 69,
+      "multiplications": 39,
+      "sha256": "454efb5cf85f83e675d4faec81c252c6db8af4f2ebd8410a054d198b72f018ed"
+    },
+    {
+      "file": "arithmetic/ordinary_blank69_over_Z33.json",
+      "name": "ordinary_blank69_over_Z33",
+      "unknowns": 33,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 190,
+      "operations": 132,
+      "multiplications": 66,
+      "sha256": "b74b60f6247fef84a216b62536c5a94ba9b16936adf9c2b467d0c726dd28976a"
+    },
+    {
+      "file": "arithmetic/ordinary_blank_sos77.json",
+      "name": "ordinary_blank_sos77",
+      "unknowns": 15,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 56,
+      "operations": 77,
+      "multiplications": 40,
+      "sha256": "7a360d84651a0eb2b92e713cc4e977a3167b8055f06f3f94d96cfb2d4414ec3e"
+    },
+    {
+      "file": "arithmetic/ordinary_blank_sos77_over_Z33.json",
+      "name": "ordinary_blank_sos77_over_Z33",
+      "unknowns": 33,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 100,
+      "operations": 140,
+      "multiplications": 67,
+      "sha256": "42cfc5cda4c319b3db50c2776e88e629a2b0e91c86b174e90a8b189ef9adf225"
+    },
+    {
+      "file": "arithmetic/ordinary_blank_system60.json",
+      "name": "ordinary_blank_system60",
+      "unknowns": 15,
+      "domain": "strictly positive integers",
+      "equations": 6,
+      "degree": 28,
+      "operations": 60,
+      "multiplications": 34,
+      "sha256": "33ab7410c35ea52f67e152c0a4882ebcb3f197fb2fe741623127a67ebeb76036"
+    },
+    {
+      "file": "arithmetic/ordinary_blank_system60_over_Z33.json",
+      "name": "ordinary_blank_system60_over_Z33",
+      "unknowns": 33,
+      "domain": "all integers",
+      "equations": 6,
+      "degree": 50,
+      "operations": 123,
+      "multiplications": 61,
+      "sha256": "5b50a699340b55134e25eb87b5a6b7a3d214283cae13a1f7dc9a77d7f558f355"
+    },
+    {
+      "file": "arithmetic/ordinary_gap70.json",
+      "name": "ordinary_gap70",
+      "unknowns": 15,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 93,
+      "operations": 70,
+      "multiplications": 39,
+      "sha256": "78b8e12cbff952a52c0a9d5d6b546673c88553891eba5eb25662972a33d4fb6b"
+    },
+    {
+      "file": "arithmetic/ordinary_gap70_over_Z33.json",
+      "name": "ordinary_gap70_over_Z33",
+      "unknowns": 33,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 179,
+      "operations": 133,
+      "multiplications": 66,
+      "sha256": "f32ed25dc2f13b87e50814ac22216c6740ff8711a8515af4f3aaff422f1451a4"
+    },
+    {
+      "file": "arithmetic/ordinary_gap_sos78.json",
+      "name": "ordinary_gap_sos78",
+      "unknowns": 15,
+      "domain": "strictly positive integers",
+      "equations": 1,
+      "degree": 44,
+      "operations": 78,
+      "multiplications": 40,
+      "sha256": "3675df3919144976c1fe258bcfc59bd328c0e10e287be334622e702610d8ecc3"
+    },
+    {
+      "file": "arithmetic/ordinary_gap_sos78_over_Z33.json",
+      "name": "ordinary_gap_sos78_over_Z33",
+      "unknowns": 33,
+      "domain": "all integers",
+      "equations": 1,
+      "degree": 88,
+      "operations": 141,
+      "multiplications": 67,
+      "sha256": "471bfebe4d82fe5da1181ad8bc0ab58999c9c07ddc3308d00bca6287ffd7112e"
+    },
+    {
+      "file": "arithmetic/ordinary_gap_system61.json",
+      "name": "ordinary_gap_system61",
+      "unknowns": 15,
+      "domain": "strictly positive integers",
+      "equations": 6,
+      "degree": 22,
+      "operations": 61,
+      "multiplications": 34,
+      "sha256": "1b7772a0a958bd4acac7c3bb2905ab4328193374df910fe2d14d6f6298d5ab31"
+    },
+    {
+      "file": "arithmetic/ordinary_gap_system61_over_Z33.json",
+      "name": "ordinary_gap_system61_over_Z33",
+      "unknowns": 33,
+      "domain": "all integers",
+      "equations": 6,
+      "degree": 44,
+      "operations": 124,
+      "multiplications": 61,
+      "sha256": "2dc938743e7315fccedab0529cd0c8c91928fbfd1ed3549afa49595635cd0767"
+    }
+  ],
+  "coefficient_geometry": {
+    "alphabet": 439,
+    "crosses": 38256607897,
+    "ell": 36,
+    "padding": 19128301935,
+    "mu_top": 19128304134,
+    "m": 38256610096,
+    "native_positions": 38256610097,
+    "dummy_count": 1,
+    "dummy_start": 38256613165,
+    "anchor_unit": 38256614483,
+    "emax": 1032928591041,
+    "shift_H": 1951087339951,
+    "T1": 4016944522473,
+    "T2": 8148658886639,
+    "cell_length": 19073486328125,
+    "cell_length_power_five": 19,
+    "radix_bits": 762939453125,
+    "radix_bits_power_five": 17,
+    "radix_threshold": 688618948863,
+    "cell_bits": 14551915228366851806640625,
+    "cell_bits_power_five": 36,
+    "mask_population_MC": 14551915228366813550030528,
+    "mask_population_MF": 38256610097
+  },
+  "source_census": {
+    "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "valid_crosses": 38256607897,
+    "center_categories": 13,
+    "helical_presentations": 32,
+    "helical_crosses": 1144
+  },
+  "independent_geometry": {
+    "status": "PASS",
+    "independent_of_cross_constants_python": true,
+    "actual_selector_count": 38256607897,
+    "actual_native_position_count": 38256610097,
+    "interval_intersection_checks": 396,
+    "all_actual_positions_covered": true,
+    "exact_scalar_geometry_match": true,
+    "convolution_test_roles": true,
+    "high_band_exclusion": true,
+    "upper_dummy_spill_below_first_anchor": true,
+    "all_rotation_clean_band_inequalities": true,
+    "unique_anchor_difference": true,
+    "mask_population_identity": true,
+    "bit_length_B_minus_1_power_five": 36,
+    "mod5_unit": 3,
+    "claim_scope": "exact actual-instance support/geometry check; not Pell/compiler formalization"
+  },
+  "independent_gap_identities": {
+    "status": "PASS",
+    "arithmetic": "exact multivariate integer polynomial dictionaries",
+    "random_sampling_used": false,
+    "checks": [
+      "exact cancellation in the root coefficient A",
+      "norm cross term d*B^2 = 4*p*r^2",
+      "root remainder, including explicit factor d-f^2",
+      "outer root remainder, including explicit factor d-f^2",
+      "T=0 reduction to Q*b^2-(Q-1)*(e-b)^2",
+      "gap15 auxiliary polynomial identity"
+    ],
+    "proof_review": {
+      "r_nonzero": "0<b<Q-1 implies b+(Q-1)*e is nonzero for every integer e",
+      "T_nonzero": "T=0 gives the excluded auxiliary norm with 2<b<Q",
+      "rational_root": "nonzero B and A^2=dB^2 imply A/B is an integer",
+      "degree219": "A has leading term 2Qbe, degree85; K degree170; P4 degree49",
+      "weighted_degree434": "weights A169, K338, P4 96"
+    },
+    "scope": "identity checks and independent ordinary proof review; not a formal verification of inherited Pell/compiler theorems"
+  },
+  "formal_proof_status": "Ordinary mathematical proof with inherited dependencies; no new Lean or Rocq kernel proof.",
+  "scope": "Exact finite identities, circuit ledgers, degree diagnostics and certificates, table identity, local census, sparse compiler geometry, and bounded cyclic checks.",
+  "not_checked_by_this_program": [
+    "Unbounded Pell and native compiler theorems",
+    "A fresh Lean/Rocq build of the existing K215 endpoint",
+    "Any accepting computation of the actual K215 machine",
+    "The binary expansion of the astronomical fixed coefficients",
+    "Consistency or inconsistency of ZFC"
+  ]
+}

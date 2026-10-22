@@ -1,0 +1,730 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage{needspace}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!40!black,
+ pdftitle={Smaller Diophantine forms of Con(ZFC)},pdfauthor={Research collaboration for ProveIt}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Diophantine forms of ZFC consistency}\fancyhead[R]{\small 22 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\src}[1]{{\small\path{#1}}}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\pin}{3b201cdea32d2c816f5f3d20734051f25fd3ef14}
+\title{\textbf{Smaller Diophantine forms of \(\Con(\mathrm{ZFC})\)}\\[5pt]
+\large Lower degree, fewer unknowns, and smaller fixed coefficients}
+\author{Research synthesis prepared for ProveIt}
+\date{22 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We combine the eight fixed-input packages in ProveIt's
+\texttt{con-zfc-diophantine-forms} collection with its ordinary strong-Pell,
+signed-quotient, and quadratic-root-elimination arguments. The resulting
+improvements are explicit arithmetic circuits: a four-equation system in
+15 positive unknowns, of maximum degree 28 and 63 operations; its single
+degree-56 sum of squares, at 74 operations; single polynomials in 14 positive
+unknowns at 73 operations/degree 342 and 75 operations/degree 293; a quartic
+in 33 positive unknowns; and equations in 33 unrestricted integer unknowns.
+A separate finite-window reduction replaces nine-cell windows by projected
+crosses, reducing the exact coefficient-width parameter from \(5^{67}\) to
+\(5^{28}\). Each completed construction has a solution exactly when the
+literal K215 machine halts on blank tape. The established syntactic
+calibration therefore gives, by mathematics formalizable in ZFC, that
+unsolvability is equivalent to \(\Con(\mathrm{ZFC})\). This packet contains
+proofs, complete circuits, fixed coefficient definitions, and reproducible
+finite checks. It is not a new end-to-end Lean or Rocq verification, and it
+claims no global minimum.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Results, comparison criteria, and scope}
+
+\subsection{The theorem being constructed}
+
+Fix a conventional effective proof predicate for ZFC, with consistency
+meaning that no finite proof of falsity exists. All four coefficient ports
+in this report denote \emph{fixed integers}, supplied by the terminating
+recipe in Section~\ref{sec:coefficients}. There is no quantified program
+index, input, exponent, or computation predicate in the final equations.
+
+\begin{theorem}[Fixed Diophantine consistency forms]\label{thm:main}
+For each polynomial or system in Table~\ref{tab:new}, with its declared
+domain and the fixed coefficients of Section~\ref{sec:coefficients}, ZFC
+proves
+\[
+ \text{the equation or system has no solution}
+ \quad\Longleftrightarrow\quad \Con(\mathrm{ZFC}).
+\]
+The same arithmetic reductions also apply with the original valid
+inputless coefficients of package 06. The theorem does not assume
+\(\Con(\mathrm{ZFC})\).
+\end{theorem}
+
+The proof has three components. The new algebraic reductions preserve
+existence of a solution. The new coefficient recipe encodes exactly the
+same blank K215 computation problem. The repository's K215 calibration
+identifies blank halting with a ZFC refutation. The last step is used as
+ordinary formalizable mathematics, not as an appeal to the soundness of
+Lean from inside ZFC; see Section~\ref{sec:logic}.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{55mm}rrrr@{}}
+\toprule
+Construction & Unknowns & Equations & Degree & Ops\\
+\midrule
+Inherited \(P_{67}\), new coefficients & 15 & 1 & 155 & 67\\
+Ordinary strong system & 15 & 6 & 28 & 61\\
+Grouped ordinary system & 15 & 4 & 28 & 63\\
+Ordinary product \(P_{69}\) & 15 & 1 & 99 & 69\\
+Four-square polynomial \(Q_{56}\) & 15 & 1 & 56 & 74\\
+Root-eliminated \(\Psi_{14}\) & 14 & 1 & 342 & 73\\
+Root-eliminated \(\Phi_{14}\) & 14 & 1 & 293 & 75\\
+Root-eliminated system & 14 & 5 & 244 & 69\\
+Quadratic lift / its sum of squares & 33 & 24 / 1 & 2 / 4 & --\\
+Unrestricted-integer \(\widehat P_{67}\) & \(33\;\ZZ\) & 1 & 292 & 130\\
+Unrestricted-integer \(\widehat P_{68}\) & \(33\;\ZZ\) & 1 & 228 & 131\\
+\bottomrule
+\end{tabular}
+\caption{Newly combined tradeoffs. Unmarked domains are strictly positive
+integers. Degree for a system means the maximum residual degree.}
+\label{tab:new}
+\end{table}
+
+Every binary addition, subtraction, and multiplication is charged, including
+multiplication by a fixed numeral. Reading a fixed coefficient and reusing a
+register are free. In system counts, comparisons are free; their residual
+subtractions are charged when building a single polynomial. Fixed
+coefficients have degree zero. Circuit registers are polynomial
+abbreviations, not extra existential variables. Coefficient bit length is
+reported separately because the operation metric does not charge it.
+
+For a compact system, the four-equation version is the clearest main
+recommendation. For one polynomial with fewer primary unknowns, use
+\(\Psi_{14}\) or \(\Phi_{14}\). The 67-operation evaluator remains the
+smallest operation count validated in this comparison, now with smaller
+coefficient definitions. No result below 67 operations was established.
+Classical nine-unknown existence results remain relevant: the repository's
+\src{Jones1982.nine_unknowns} proves an existence statement over the naturals,
+without a degree in its theorem statement~\cite{nine,jones}. Thus fourteen
+is a local improvement over these delivered explicit circuits, not an
+absolute variable minimum.
+
+\Needspace{7\baselineskip}
+\subsection{What was already present}
+
+The source snapshot is pinned to commit
+\begin{center}\small\texttt{3b201cdea32d2c816f5f3d20734051f25fd3ef14}.\end{center}
+The eight packages had themselves been developed against the earlier pin
+\begin{center}\small\texttt{cdd582bec13f908df3711fa9e05d1ddac368a5db}.\end{center}
+The intake catalogue
+at the newer pin carefully distinguishes mathematical proofs from finite
+audits and proof-assistant builds~\cite{catalogue}. We preserve those
+distinctions.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lp{75mm}@{}}
+\toprule
+Package & Relevant contribution already present\\
+\midrule
+01 explicit82 & Fixed ordinary-input specialization; 18-unknown, 82-op polynomial.\\
+02 system63 & Ordinary strong Pell relation; 16 unknowns, seven equations, degree 28.\\
+03 system64 & Related 16-unknown system; root elimination yielding 15 unknowns.\\
+04 poly73 & Affine marker guard and a two-sided machine normalization.\\
+05 fixed15--16 & Explicit quadratic-norm root elimination; 15-unknown 80/82-op choices.\\
+06 blank67 & Raw K215, no ordinary input; 15 unknowns, six equations, 61 ops; polynomial 67.\\
+07 fixed70 & Signed factors and asymmetric scale choices; another low-degree system.\\
+08 start-only67 & Same 67-op arithmetic skeleton as 06; a 34-unknown quartic lift.\\
+\bottomrule
+\end{tabular}
+\caption{The existing ideas combined here. Detailed original metrics and
+credits remain in the pinned catalogue.}
+\end{table}
+
+Packages 06 and 08 already give the same 67-operation formula up to
+renaming, but use different coefficient integers. Packages 03 and 05 also
+share a 15-unknown root-elimination construction up to an affine slack
+change. We do not count either overlap as a new result. The changes here
+are the \emph{combinations}: ordinary strong with inputless arithmetic;
+unit-sign grouping; inputless root elimination; a wider signed-coordinate
+domain; and a smaller window alphabet. Coefficients from different
+compilers must never be interchanged without proving the corresponding
+compiler theorem.
+
+\section{A common arithmetic interface}\label{sec:interface}
+
+\subsection{Fixed ports and primary unknowns}
+
+Write the four fixed integer ports as
+\[
+ \beta=B-1,\qquad K=D_C+BD_R,\qquad M_C,\qquad
+ M_F=M_F^{\mathrm{nat}}+B-1.
+\]
+In particular, \(M_F\) is the \emph{shifted} source port. The recipe gives
+\(B=2^d\), \(d\ge4\), and
+\begin{gather}
+ 0<M_C,M_F^{\mathrm{nat}}<B-1,\qquad
+ M_C\equiv2\pmod4,\quad M_F^{\mathrm{nat}}\equiv4\pmod8,\label{eq:masks}\\
+ \pc(M_C)+\pc(M_F^{\mathrm{nat}})=d.\nonumber
+\end{gather}
+These numerical conditions are useful consequences of the full recipe;
+they do not by themselves characterize valid compiler coefficients.
+
+Initially let
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma\in\Pos.
+\]
+Here \(z\) is the transport quotient and \(T\) the auxiliary quotient.
+Define the following polynomial abbreviations:
+\begin{align}
+ q&=\beta J+1,& C&=q-F-\alpha,\nonumber\\
+ X&=wq,&Y&=sq^3,&E&=XY,\nonumber\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\nonumber\\
+ H&=4a+3,&\Delta&=a^2+H=(a+1)(a+3),\label{eq:core}\\
+ D&=X+ac+\gamma H,&L&=E(kY),\nonumber\\
+ G&=(q-1)(q-F)+\alpha=q(q-F)-C,\nonumber\\
+ R&=G(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ V&=c(Tf-1)-Rf^2.\nonumber
+\end{align}
+Fixed exponents such as \(q^3\) are ordinary polynomial operations.
+There are no variable exponents in any final circuit.
+
+Four factors are common to all constructions:
+\begin{align}
+ N_0&=\tau^2-L(L+k),&N_1&=D^2-\Delta c^2,\nonumber\\
+ N_k&=k-hE-R,&N_t&=(K+w)C+q-F-z(q-1).\label{eq:fourfactors}
+\end{align}
+For the inherited normalized strong block set
+\begin{equation}
+ S=\Delta ic^2,\quad Q=S^2,\quad
+ N_a^{\rm norm}=Q(V^2-y^2)+y^2,\quad
+ N_s=f^2-\Delta i^2c^4.\label{eq:normalized}
+\end{equation}
+The existing 67-operation polynomial is
+\begin{equation}
+ P_{67}=N_0N_1N_a^{\rm norm}N_kN_t(\Delta f^2-Q)-\Delta.
+ \label{eq:p67}
+\end{equation}
+The identity
+\[
+ P_{67}=\Delta(N_0N_1N_a^{\rm norm}N_kN_tN_s-1)
+\]
+holds in the polynomial ring. On the positive domain \(\Delta>0\), so
+every normalized factor at a zero is an integer unit. The first,
+main, auxiliary, and strong norms cannot be \(-1\); the index and
+transport signs are subsequently forced positive. The proof order matters:
+transport initially gives only \(C\ge0\). The boundary
+\(C=0,F=2,z=1,N_t=-1\) is not excluded until index recovery.
+
+The inherited coefficient-reduced companion \(P_{68}\) replaces only the
+auxiliary coefficient \(Q\) by \(\Delta(f^2-1)\), retaining \(Q\) in
+the scaled strong factor. It has degree 123. Every zero forces \(N_s=1\),
+so these coefficients agree at zeros. This is a zero-set argument, not a
+polynomial identity obtained by substituting an equation off its zero set.
+
+\subsection{A kernel fact used below}
+
+For an integer \(A\ge2\), write
+\[
+ \chi_A(n)+\psi_A(n)\sqrt{A^2-1}
+   =(A+\sqrt{A^2-1})^n.
+\]
+The repository's normalized and ordinary strong-rank lemmas, the
+half-binomial Pell ratio, and the native mask/convolution compiler are the
+inherited mathematical inputs~\cite{relaxed,normalized,masks,src06}.
+The new arguments below explain exactly where each is used. In particular,
+the signed-quotient proof is reproduced far enough to justify the
+root-eliminated polynomial's positive domain; no sign of a reconstructed
+root is assumed without proof.
+
+\input{sections/ordinary_section.tex}
+
+\section{Removing the strong root: fourteen positive unknowns}\label{sec:root14}
+
+Delete \(f\) from the fifteen-variable list, leaving
+\[
+ J,F,\alpha,z,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma\in\Pos.
+\]
+All definitions in~\eqref{eq:core} except \(V\) remain unchanged, as do
+the four factors~\eqref{eq:fourfactors}. Introduce polynomial abbreviations
+\begin{align}
+ u&=ic^2,& S&=\Delta u,&Q&=S^2,&\mathcal D&=1+uS,\nonumber\\
+ v&=cT,& b_*&=c+R\mathcal D,& P_4&=N_0N_1N_kN_t,\label{eq:rootdata}\\
+ \mathcal A&=Q(\mathcal Dv^2+b_*^2-y^2)+y^2-1,\nonumber\\
+ \mathcal B&=2Qvb_*,&\mathcal K&=\mathcal A^2-\mathcal D\mathcal B^2.\nonumber
+\end{align}
+The letter \(b_*\) here is a root-elimination expression, unrelated to the
+fixed radix width \(b\) in Section~\ref{sec:coefficients}.
+
+\begin{theorem}[Two explicit fourteen-unknown equations]\label{thm:root14}
+The following ordinary integer-coefficient polynomials have a positive
+zero exactly when K215 halts on blank tape:
+\begin{align}
+ \boxed{\Phi_{14}=P_4(1+\mathcal K)-1=0},\label{eq:phi14}\\
+ \boxed{\Psi_{14}=[P_4(\mathcal A+1)-1]^2
+                   -\mathcal D(P_4\mathcal B)^2=0}.\label{eq:psi14}
+\end{align}
+The supplied circuits use respectively \(75=44M+31A\) and
+\(73=44M+29A\) operations, of exact degrees 293 and 342.
+\end{theorem}
+
+This applies the quadratic norm of packages 03/05 to the smaller inputless
+base of 06/08~\cite{src05,src06,src08}. The formula for \(\mathcal B\) specifies an integer
+polynomial; the circuit shares products and need not explicitly compute
+that abbreviation. For example,
+\[
+ \mathcal D\mathcal B^2=4(Q\mathcal Dv^2)(Qb_*^2).
+\]
+
+\begin{proof}[Soundness of \(\Phi_{14}\)]
+At a positive zero, \(P_4\) and \(1+\mathcal K\) are integer units.
+Since \(\mathcal B\) is even,
+\[
+ 1+\mathcal K\equiv1+\mathcal A^2\pmod4,
+\]
+so this factor cannot be \(-1\). Consequently \(P_4=1\) and
+\(\mathcal A^2=\mathcal D\mathcal B^2\).
+
+The denominator \(\mathcal B\) is nonzero before any index decoding.
+Indeed \(Q,c,T>0\), and
+\(\mathcal D=1+\Delta i^2c^4>c>0\). If the integer expression
+\(c+R\mathcal D\) vanished, \(\mathcal D\) would divide \(c\), which
+is impossible. Thus
+\[
+ f=\mathcal A/\mathcal B\in\QQ,\qquad f^2=\mathcal D\in\Pos.
+\]
+A rational number with integral square is integral, by reducing its
+numerator and denominator to coprime terms. Thus \(f\) is a nonzero
+integer. With \(V=vf-b_*\), direct expansion gives
+\begin{align*}
+ f^2-\Delta i^2c^4&=1,\\
+ QV^2-(Q-1)y^2&=\mathcal A+1-\mathcal Bf=1.
+\end{align*}
+These equalities and \(P_4=1\) restore a zero of~\eqref{eq:p67},
+provisionally allowing \(f\) to be signed. The signed-domain theorem of
+Section~\ref{sec:signed} proves \(fT>0\); because the retained \(T\) is
+positive, the restored \(f\) is positive. The inputless compiler theorem
+therefore supplies an actual blank halting computation.
+\end{proof}
+
+\begin{proof}[Soundness of \(\Psi_{14}\)]
+Expansion of~\eqref{eq:psi14} shows that its constant term 1 is divisible
+by \(P_4\). Hence \(P_4=\pm1\), and
+\[
+ f=\frac{P_4(\mathcal A+1)-1}{P_4\mathcal B}
+   =\frac{\mathcal A+1-P_4}{\mathcal B}
+\]
+is a defined rational number whose square is \(\mathcal D\). It is again
+a nonzero integer. The restored auxiliary norm is
+\[
+ QV^2-(Q-1)y^2=\mathcal A+1-\mathcal Bf=P_4.
+\]
+Since \(Q\) is a square, this norm is congruent modulo four either to
+\(y^2\) or to \(V^2\); it cannot be \(-1\). Therefore
+\(P_4=1\), and the same restoration and signed-domain proof apply.
+\end{proof}
+
+Conversely, at any positive zero of \(P_{67}\), all six normalized
+factors are one. Thus \(f^2=\mathcal D\),
+\(\mathcal A=\mathcal Bf\), \(\mathcal K=0\), and \(P_4=1\).
+Deleting \(f\) gives a zero of both new polynomials. The inverse is
+unique because \(\mathcal B\ne0\). In particular, the two new equations
+have identical positive zero sets in their fourteen retained coordinates.
+The useful all-ring identity
+\begin{equation}
+ \Psi_{14}=P_4\Phi_{14}+(P_4-1)(2P_4\mathcal A-1)
+ \label{eq:rootidentity}
+\end{equation}
+is included in the algebra audit, but its identity alone would not prove
+the zero-set equivalence without the integer-unit argument.
+
+\subsection{A five-equation form}
+
+The equivalent system
+\[
+ N_0=N_1=N_k=N_t=1,\qquad \mathcal K=0
+\]
+has 14 positive unknowns, five equations, and a 69-operation shared
+evaluator. Its residual degrees are \(22,18,7,2,244\). It is useful when
+variable or equation count is the objective; the four-equation ordinary
+system has a substantially lower degree.
+
+\subsection{Exact degree and coefficient certificates}
+
+Put \(q_0=\beta J\), \(k_0=\eta+\zeta\), and
+\(t_0=w(q_0-F-\alpha)-zq_0\). Highest homogeneous parts give
+\begin{gather*}
+ (P_4)_{49}=8\gamma h k_0^3w^5s^8q_0^{29}t_0,\\
+ (\mathcal D)_{34}=i^2k_0^4w^2s^6q_0^{20},\qquad
+ (b_*)_{38}=i^2k_0^4w^2s^6q_0^{23}(q_0-F),\\
+ Q_{46}=i^2k_0^4w^4s^8q_0^{28},\qquad
+ (\mathcal A)_{122}=i^6k_0^{12}w^8s^{20}q_0^{74}(q_0-F)^2.
+\end{gather*}
+Here \(\deg(\mathcal D\mathcal B^2)=214<244=\deg(\mathcal A^2)\).
+Therefore
+\begin{align*}
+ (\Phi_{14})_{293}
+  &=8\gamma h i^{12}k_0^{27}w^{21}s^{48}q_0^{177}(q_0-F)^4t_0,\\
+ (\Psi_{14})_{342}
+  &=64\gamma^2h^2i^{12}k_0^{30}w^{26}s^{56}
+         q_0^{206}(q_0-F)^4t_0^2.
+\end{align*}
+Both are nonzero for every \(\beta>0\). For example the coefficient of
+\(J^{182}\gamma h i^{12}\eta^{27}w^{21}s^{48}z\) in \(\Phi_{14}\)
+is \(-8\beta^{182}\), and that of
+\(J^{212}\gamma^2h^2i^{12}\eta^{30}w^{26}s^{56}z^2\) in \(\Psi_{14}\)
+is \(64\beta^{212}\). These are uniform exact-degree certificates.
+
+\section{A larger signed domain and thirty-three integer unknowns}\label{sec:signed}
+
+The root-elimination proof needs a domain theorem, not a choice of sign
+for a square root. The following statement also improves the independent
+unrestricted-integer construction.
+
+\begin{theorem}[Six coordinates may be signed]\label{thm:signed}
+For either \(P_{67}\) or \(P_{68}\), allow
+\[
+ \tau,y,w,h,f,T\in\ZZ
+\]
+while keeping \(J,F,\alpha,z,i,s,\eta,\zeta,\gamma\) strictly positive.
+At every zero, \(w,h>0\), \(\tau yf\ne0\), and \(fT>0\).
+Replacing \((\tau,y,f,T)\) by
+\((|\tau|,|y|,|f|,\operatorname{sgn}(f)T)\) restores a positive zero.
+\end{theorem}
+
+We adapt the signed-quotient proof~\cite{signedabs,signedsound} to the
+inputless arithmetic and add an elementary argument for signed \(h\).
+The complete proof is also provided as \src{proofs/signed_domain.md}.
+
+\subsection{Automatic positivity before rank recovery}
+
+Because \(q\ge B\ge16\), \(Y=sq^3\ge q^3\), and
+\(a=Y(wq+1)\), integer \(w\) gives either \(a\ge Y\) or
+\(a\le-Y(q-1)\). Thus \(\Delta=(a+1)(a+3)>0\), even before
+\(w\) is known positive. The normalized product has integer-unit factors.
+
+If \(w\le-1\), then \(X,a,H<0\) and
+\(D=X+ac+\gamma H<ac<0\). Hence
+\(N_1> -Hc^2>1\), contradicting its being a unit. If \(w=0\),
+\[
+ N_1=H(2ac\gamma+\gamma^2H-c^2),\qquad H=4Y+3>1,
+\]
+again impossible for a unit. Consequently \(w>0\).
+
+The negative first norm is excluded by the consecutive-product Pell
+descent. For the main and strong norms, \(\Delta\equiv0,3\pmod4\)
+excludes \(-1\); the auxiliary norm is congruent to a square modulo four.
+All four norms are therefore \(+1\). This excludes \(\tau,y,f=0\).
+Apply the absolute-value and simultaneous \(f,T\) replacement; only
+\(f^2\) and \(Tf\) occur, so all polynomial values are unchanged.
+We can now take \(f,\tau,y>0\), keeping \(T\) signed.
+For \(P_{68}\), the strong unit first gives \(N_s=1\), after which its
+auxiliary coefficient equals \(Q\); the same argument applies.
+
+Write \(N_k=\epsilon\), \(N_t=\nu\), where
+\(\epsilon\nu=1\). The transport expression is
+\[
+ N_t=(K+w)C+1-F-(z-1)(q-1).
+\]
+Its being a unit forces \(C\ge0\). The actual mask bounds then give
+\begin{equation}
+ 3q+3<R<q^4-q^3+q^2-1<q^4-2,
+ \qquad E\ge q^4>R+2.\label{eq:weakbounds}
+\end{equation}
+The index factor gives \(k=hE+R+\epsilon\). A negative \(h\) makes
+\(k<0\), impossible. For \(h=0\), one would have \(2<k<q^4\).
+But the first Pell norm classifies
+\[
+ k=2\psi_{P}(n),\qquad P=2XY^2+1,\quad n\ge1.
+\]
+The value for \(n=1\) is 2, while \(n\ge2\) gives
+\(k\ge4P>q^4\). Hence \(h>0\).
+
+\subsection{Signed rank and the index signs}
+
+Put \(A=a+2\), so \(\Delta=A^2-1\). The main norm gives
+\(D=\chi_A(p)\), \(c=\psi_A(p)\). Since \(P>A\) and \(c>k\),
+\(p>n\). As \(P\equiv1\pmod E\),
+\[
+ 2n=R+\epsilon+v_0E,\qquad v_0\ge0.
+\]
+Thus \(p>n\ge(R-1)/2\ge24\), \(c>2p\), and the positive index
+quotient implies \(c>2R\).
+
+The normalized strong norm gives
+\(f=\chi_A(m)\), \(\psi_A(m)=ic^2\).
+Strong divisibility of the Pell sequence implies \(p\mid m\). Writing
+\(m=pj\), its addition formula yields
+\[
+ \psi_A(pj)/c\equiv jD^{j-1}\pmod c.
+\]
+The left side is divisible by \(c\), and \(\gcd(D,c)=1\), so
+\(c\mid j\). In particular \(c\mid m\) and \(m>2p\).
+
+The auxiliary norm classifies an odd index \(\ell=2v_1+1\) and a sign
+\(e\in\{\pm1\}\) such that
+\[
+ V=e\,C_{v_1}(S^2),\quad
+ C_{v_1}(0)=(-1)^{v_1}\ell,\quad
+ C_{v_1}(-\Delta)=(-1)^{v_1}\psi_A(\ell).
+\]
+Here \(C_j(s^2)=\chi_s(2j+1)/s\) is an integer polynomial in \(s^2\).
+The literal quotient expression, for either sign of \(T\), gives
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+As \(S^2\equiv-\Delta\pmod f\), squaring the first congruence and
+using the Pell doubling identity gives
+\(\chi_A(2\ell)\equiv\chi_A(2p)\pmod{\chi_A(m)}\).
+The plus-sign step-down gives
+\(2\ell\equiv\pm2p\pmod{4m}\). One proves this by reducing the
+index modulo \(2m\), reflecting it into \([0,m]\), and using
+\(2\chi_A(m-1)<\chi_A(m)\) to exclude a negative congruence between
+positive representatives. The endpoint \(m\) has residue zero and is
+also excluded. The second congruence, and \(c\mid S,m\), now give
+\(R\equiv\pm p\pmod c\). Since \(R,p\in(0,c/2)\), \(p=R\).
+
+The no-wrap bound~\eqref{eq:weakbounds} forces \(v_0=0\). If
+\(\epsilon=-1\), then \(p=2n+1\), whereas Pell duplication gives
+\[
+ \psi_A(2n)=2A\psi_{2A^2-1}(n)\ge Ak,
+\]
+because \(2A^2-1>P\). This contradicts
+\(c=\psi_A(2n+1)>Ak>k(Y+1)\). Thus both index and transport units are
+\(+1\); in particular \(C>0\), and \(R\) is odd.
+
+\subsection{Power recovery, masks, and the final sign}
+
+Write \(r=(R-1)/2\ge24\) and
+\(\xi=(X+1)^{2r}/X^r\). The elementary Pell estimates give
+\(c/(k/2)>\xi\), hence \(Y>X^r/3\) and \(a>2^R\).
+The projection recurrence gives
+\(\chi_A(R)-a\psi_A(R)\equiv2^R\pmod H\).
+The main-root definition therefore implies \(X\equiv2^R\pmod H\).
+Both positive quantities are below \(a<H\), so \(X=2^R\).
+Consequently \(q=2^t=B^N\), and \(q^3\mid X\).
+
+The upper ratio estimate uses only odd \(R\), not a positive \(V\):
+\[
+ 0<c/k-\xi/2<16r/(X+1)<1/2.
+\]
+Writing
+\[
+ \xi=M+\theta,\quad
+ M=\binom{2r}{r}+\sum_{j=1}^{r}\binom{2r}{r+j}X^j,
+ \quad0<\theta<1/4,
+\]
+one finds that \(M\) is even and \(Y=M/2\). The exact binomial
+valuation gives \(v_2(Y)=\pc(r)-1\), so \(q^3\mid Y\) implies
+\(\pc(R)\ge3t+2\).
+
+Define the finite binary words
+\[
+ S_w=C-1+qF,\qquad
+ T_w=(M_CJ+1)+q(M_F^{\mathrm{nat}}J-1).
+\]
+The packing identity is
+\[
+ R=(q^2-S_w)(q^2-1)+T_w,
+ \quad0<S_w<q^2,\quad\pc(T_w)=t+2.
+\]
+The inverse-population lemma gives \(\pc(R)\le3t+2\), with equality
+exactly when \(S_w\mathbin{\&}T_w=0\). Thus
+\((C-1)\mathbin{\&}(M_CJ+1)=0\).
+Because \(M_CJ+1\equiv3\pmod4\), this forces \(C\equiv1\pmod4\),
+and the literal packing identity gives \(R\equiv3\pmod4\).
+
+The stronger step-down above has
+\(\ell=\epsilon_0R+2mj_0\), \(\epsilon_0\in\{\pm1\}\).
+Substitution into \emph{both} unsquared auxiliary congruences gives
+\begin{align*}
+ e(-1)^{r+mj_0}R&\equiv-R\pmod c,\\
+ e(-1)^{r+(m+1)j_0}c&\equiv-c\pmod f.
+\end{align*}
+As \(c>2R\) and \(f>2c\), both signs must equal \(-1\). Their
+quotient forces \(j_0\) even. Since \(r\) is odd, \(e=1\), so \(V>0\).
+Finally \(cTf=V+c+Rf^2>0\) proves \(T>0\) in the transformed tuple,
+or \(fT>0\) before transformation. This proves Theorem~\ref{thm:signed}
+without applying a positive-domain compiler to a signed tuple.
+
+\subsection{Explicit conversion to unrestricted integers}
+
+Every positive integer is represented by
+\[
+ \operatorname{Pos}(u,v,t)=1+u^2+v^2+t(t+1),\qquad u,v,t\in\ZZ.
+\]
+This is always positive. Surjectivity follows from the three-square
+theorem applied to \(4n-3\): its residue modulo four forces exactly one
+odd square, giving the displayed formula. Substitute a disjoint copy for
+each of the nine still-positive coordinates and keep the other six signed.
+The result has \(9\cdot3+6=33\) unrestricted integer unknowns. Each
+substitution costs seven operations, so the counts are 130 and 131.
+
+The exact degrees are smaller than naive degree doubling. Giving weight
+two to the nine substituted coordinates and weight one to the six signed
+ones, the \(P_{67}\) factor degrees are
+\(42,34,112,12,4,88\), totaling 292. For \(P_{68}\), the auxiliary
+degree is 48, giving total 228. The nonzero top forms are respectively
+\begin{gather*}
+ 8q_0^{92}h\gamma i^4k_0^{13}w^{13}s^{26}T^2f^2z,\\
+ 8q_0^{72}h\gamma i^2k_0^9w^{11}s^{20}T^2f^4z.
+\end{gather*}
+Substitution of the disjoint positive quadratic forms preserves
+nonvanishing: setting the second and third new coordinates to zero gives
+the injective monomial substitution \(x\mapsto u_x^2\).
+
+\input{sections/projected_cross_section.tex}
+
+\section{Why ZFC proves the equivalence}\label{sec:logic}
+
+The literal machine is the 215-state binary K215 table whose SHA-256 is
+\begin{center}\scriptsize\texttt{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.\end{center}
+The inspected endpoint has the statements
+\begin{quote}\small\ttfamily
+KEndpoint215.blank\_halts\_iff\_zfc\_refutation\\
+KEndpoint215.nonhalting\_iff\_zfc\_consistency.
+\end{quote}
+They use the syntactic predicate \texttt{BProv ZFCax\_s [] Form.fBot}.
+The machine-specific proof invokes the common K endpoint and the
+constructible-choice equivalence between finite ZF and ZFC refutations;
+it is not an assertion that consistency is true~\cite{k215}.
+
+The resulting ordinary mathematical chain is
+\begin{align*}
+ \exists\text{ Diophantine solution}
+ &\ \Longleftrightarrow\ \exists\text{ finite accepting local tableau}\\
+ &\ \Longleftrightarrow\ \text{K215 halts on blank tape}\\
+ &\ \Longleftrightarrow\ \exists p\,\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+\end{align*}
+Negating this equivalence yields the theorem in the requested direction.
+The finite table, coefficient algorithms, polynomial manipulations,
+integer divisibility arguments, Pell recurrences, and finite-computation
+calibration can all be represented in ZFC. The mathematical argument does
+not require ZFC to prove that Lean or Rocq is sound. Nor does it infer a
+ZFC-internal proof merely from an external proof-assistant theorem:
+the intended internal proof is the ordinary syntactic calibration together
+with the explicitly described arithmetical reduction.
+
+\paragraph{Formal status.}
+This packet provides an ordinary proof using the pinned compiler/Pell
+development and the new lemmas proved here. It does not contain a new
+machine-checked term for the complete Diophantine theorem, or an encoded
+derivation in ZFC's own proof syntax. Lean and Rocq endpoint source and
+historical verification records were inspected; their full builds were
+not rerun. The native compiler itself is a mathematical research
+development, not a completed Lean compiler certificate. These are material
+verification boundaries, shared with the eight predecessor packages.
+
+\paragraph{Incompleteness.}
+If ZFC is consistent, the displayed equation really has no solution, but
+ZFC cannot prove that unsolvability statement without proving its own
+consistency. Mere consistency does not justify a claim that ZFC also
+cannot prove the opposite existential assertion; a corresponding
+soundness assumption is needed for that stronger two-sided independence
+claim. No consistency assumption is used in constructing the equivalence.
+
+\section{Reproducibility and what the checks establish}\label{sec:checks}
+
+The archive contains the literal K215 table, the four-port coefficient
+specification, every arithmetic instruction, the quadratic residuals and
+expanded quartic, proof notes, inherited evidence, and provenance hashes.
+Run
+\begin{quote}\ttfamily python3 code/verify.py\end{quote}
+to reproduce the bounded checks with Python's standard library. Rebuild
+this report with \texttt{make pdf}. The report's TeX and all section files
+are included. No network access is needed by verification.
+The default run checks and reuses the delivered exact local-predicate
+census; use \texttt{python3 code/verify.py -{}-full} to rerun all thirteen
+center classes and their left/right pairs.
+
+The checks cover the following independently auditable claims:
+\begin{enumerate}
+\item K215's exact table hash and the finite local-predicate census;
+projected alphabet counts by exact fiber sizes, rather than enumeration
+of all projected tiles.
+\item Actual-dimension interval support incidences, clause-band separation,
+anchor differences, mask population formulas, and the fixed modulo-five
+unit; smaller sparse examples exercise the same coefficient construction.
+\item Acyclic source binding, every live gate and port, exact operation
+counts, and exact source/formula identities on signed rational or integer
+diagnostic assignments.
+\item Exact sparse expansion of the 24 quadratic equations and their
+quartic, including the coefficient 1 on \(\tau^4\).
+\item Exact polynomial evaluation on generic lines over a finite field,
+corroborating degrees whose uniform upper bounds and nonzero leading
+forms are proved in the text.
+\end{enumerate}
+None of these finite checks is a test of consistency, a proof by sampling,
+or an exhibited K215 halting computation. The enormous coefficient integers
+are not materialized. The output is fully specified by finite expressions
+and algorithms; it is not a practical expanded decimal polynomial.
+
+\subsection{Recommended incorporation}
+
+Retain the four-equation system and \(Q_{56}\) as the readable low-degree
+entry point, \(\Psi_{14}\) and \(\Phi_{14}\) as the fourteen-variable
+alternatives, and the projected-cross recipe as an independent coefficient
+improvement. Keep the 67-operation circuit as a baseline. The source
+comments and proof notes distinguish the normalized strong coordinate
+from the ordinary strong coordinate: the conversion is an existence
+equivalence, and arbitrary ordinary solutions must not be divided by
+\(\Delta\) without the relaxed-rank proof.
+
+The next consequential formalization task is the common inputless
+compiler interface plus the signed-domain theorem. That would certify
+several of these tradeoffs at once. A search for fewer operations should
+work from the complete four-port circuit and its domain proof; deleting a
+Pell or population condition merely because it holds on a few examples
+does not establish a valid reduction.
+
+\begin{thebibliography}{99}\small
+\bibitem{catalogue} ProveIt contributors. \emph{Con(ZFC) in Diophantine form},
+ eight-package catalogue, pinned 22 October 2026.
+ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md}{Repository source}.
+\bibitem{src02} ProveIt contributors. \emph{A fixed Diophantine representation of Con(ZFC)},
+ package 02-system63, report and ordinary strong proofs, same pin.
+\bibitem{src05} ProveIt contributors. \emph{Fixed-input Diophantine forms of ZFC consistency},
+ package 05-fixed15-16, Sections 4--7 and emitted circuits, same pin.
+\bibitem{src06} ProveIt contributors. \emph{Explicit Diophantine equations for Con(ZFC)},
+ package 06-blank67, report, fixed-blank proof, helical proof, and coefficient compiler, same pin.
+\bibitem{src08} ProveIt contributors. \emph{Explicit Diophantine equations for the consistency of ZFC},
+ package 08-start-only67, including \src{start_only_quartic34_proof.md}, same pin.
+\bibitem{relaxed} ProveIt contributors. \emph{Pell relaxed auxiliary proof},
+ \src{Computability/HilbertTenthProblem/Papers/1980/PELL_RELAXED_AUXILIARY_PROOF.md}, same pin.
+\bibitem{normalized} ProveIt contributors. \emph{An auxiliary quotient gives a complete universal polynomial in 85 operations},
+ \src{complete85_auxiliary_bezout_projection.md}, native-stream-queue research notes, same pin.
+\bibitem{masks} ProveIt contributors. \emph{Modified native masks for the half-binomial complete75 compiler},
+ \src{complete75_half_binomial_compiler.md}, same pin.
+\bibitem{signedabs} ProveIt contributors. \emph{Signed auxiliary quotient absorption},
+ \src{complete84_signed_quotient_absorption.md}, especially Section 2, same pin.
+\bibitem{signedsound} ProveIt contributors. \emph{Signed auxiliary quotient: source-specific recovery of the positive domain},
+ \src{complete84_signed_quotient_soundness_scout.md}, and its independent review, same pin.
+\bibitem{k215} ProveIt contributors. K215 endpoint and verification records.
+ \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{KEndpoint215.lean};
+ \href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215}{verification directory}.
+\bibitem{nine} ProveIt contributors. \src{Jones1982.nine_unknowns},
+ \src{Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineMain.lean}, same pin.
+\bibitem{jones} J. P. Jones. Universal Diophantine equation.
+ \emph{Journal of Symbolic Logic} 47(3), 549--571 (1982).
+ \href{https://doi.org/10.2307/2273588}{doi:10.2307/2273588}.
+\end{thebibliography}
+\end{document}
