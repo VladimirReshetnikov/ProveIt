@@ -142,52 +142,37 @@ theorem blank_iff {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat} {
     BlankHalts D ↔ Halts M (zc (ex 0) [] []) := by
   have h0 : Rel ex H (D.run 0) (zc (ex 0) [] []) :=
     ⟨rfl, fun i => ⟨by simp [Machine.run, initial, Tape.read, zc], by simp [Machine.run, initial, Tape.read, zc]⟩⟩
+  -- Record both halting witnesses in the absorbing branch. One induction
+  -- then serves both directions of the equivalence.
+  have key : ∀ t, (BlankHalts D ∧ Halts M (zc (ex 0) [] [])) ∨
+      (∃ z, run M t (zc (ex 0) [] []) = some z ∧ Rel ex H (D.run t) z) := by
+    intro t
+    induction t with
+    | zero => exact Or.inr ⟨_, rfl, h0⟩
+    | succ t ih =>
+        rcases ih with hh | ⟨z, hz, hr⟩
+        · exact Or.inl hh
+        · cases hs : (D.run t).state with
+          | none => exact Or.inl ⟨⟨t, hs⟩, z, ⟨t, hz⟩, rel_halt hH hr hs⟩
+          | some q =>
+              obtain ⟨z', h1, h2⟩ := rel_step hc hr hs
+              exact Or.inr ⟨z', by rw [run_succ, hz]; exact h1, h2⟩
   constructor
   · rintro ⟨t, ht⟩
-    have key : ∀ t, (∃ y, Reach M (zc (ex 0) [] []) y ∧ step M y = none) ∨
-        (∃ z, run M t (zc (ex 0) [] []) = some z ∧ Rel ex H (D.run t) z) := by
-      intro t
-      induction t with
-      | zero => exact Or.inr ⟨_, rfl, h0⟩
-      | succ t ih =>
-          rcases ih with hh | ⟨z, hz, hr⟩
-          · exact Or.inl hh
-          · cases hs : (D.run t).state with
-            | none => exact Or.inl ⟨z, ⟨t, hz⟩, rel_halt hH hr hs⟩
-            | some q =>
-                obtain ⟨z', h1, h2⟩ := rel_step hc hr hs
-                exact Or.inr ⟨z', by rw [run_succ, hz]; exact h1, h2⟩
     rcases key t with hh | ⟨z, hz, hr⟩
-    · exact hh
+    · exact hh.2
     · exact ⟨z, ⟨t, hz⟩, rel_halt hH hr ht⟩
-  · rintro ⟨y, ⟨k, hk⟩, hy⟩
-    have key : ∀ s zs, run M s (zc (ex 0) [] []) = some zs → Rel ex H (D.run s) zs := by
-      intro s
-      induction s with
-      | zero => intro zs h; simp only [run, Option.some.injEq] at h; subst h; exact h0
-      | succ s ih =>
-          intro zs h
-          rw [run_succ] at h
-          cases hs : run M s (zc (ex 0) [] []) with
-          | none => rw [hs] at h; simp at h
-          | some y' =>
-              rw [hs] at h
-              try simp only at h
-              have hr := ih y' hs
-              cases hq : (D.run s).state with
-              | none => rw [rel_halt hH hr hq] at h; simp at h
-              | some q =>
-                  obtain ⟨z', h1, h2⟩ := rel_step hc hr hq
-                  rw [h1] at h
-                  simp only [Option.some.injEq] at h
-                  rw [← h]
-                  exact h2
-    have hr := key k y hk
-    refine ⟨k, ?_⟩
-    cases hq : (D.run k).state with
-    | none => rfl
-    | some q =>
-        obtain ⟨z', h1, _⟩ := rel_step hc hr hq
-        rw [hy] at h1; simp at h1
+  · rintro ⟨y, ⟨t, ht⟩, hy⟩
+    rcases key t with hh | ⟨z, hz, hr⟩
+    · exact hh.1
+    · have hzy : z = y := Option.some.inj (hz.symm.trans ht)
+      subst z
+      refine ⟨t, ?_⟩
+      cases hq : (D.run t).state with
+      | none => rfl
+      | some q =>
+          obtain ⟨z', h1, _⟩ := rel_step hc hr hq
+          rw [hy] at h1
+          contradiction
 
 end SetTheory.BusyBeaver.ZFC.KDenseBridge
