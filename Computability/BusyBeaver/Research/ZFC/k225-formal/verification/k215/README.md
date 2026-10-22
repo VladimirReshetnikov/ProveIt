@@ -3,12 +3,14 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. The current
-[Lean simplification checkpoint](simplification/phase12/README.md) reduces the
-endpoint closure to 179 modules, plus five decoder-prefix modules. Fifteen affected
-modules were freshly compiled; 169 providers retain exact phase-eleven bindings.
-Both endpoint clients pass with ten exact standard-axiom reports and zero audit
-warnings. A separate 67-module check with two clients preserves the older model
-interfaces. The nine site batches retain all their phase-nine branch checks.
+[Lean simplification checkpoint](simplification/phase13/README.md) shares one
+implication proof between both calculi, reducing the generic-core/Lukasiewicz pair
+by 24,211 bytes and 410 lines. The endpoint still imports 179 project modules,
+plus five decoder-prefix modules. With three API clients the primary check has
+187 providers: 36 fresh and 151 exact phase-twelve reuses. Both endpoint clients
+pass with ten exact standard-axiom reports and zero audit warnings. A separate
+68-module check with two clients preserves the older model interfaces. The nine
+site batches retain all their phase-nine branch checks.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |

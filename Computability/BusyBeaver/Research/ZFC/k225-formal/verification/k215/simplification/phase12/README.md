@@ -1,5 +1,7 @@
 # Twelfth K215 proof-simplification checkpoint
 
+This is the historical import-cut checkpoint. The [thirteenth checkpoint](../phase13/README.md) preserves this 179-module endpoint boundary and all seven import-split sources, while replacing the separate implication derivations with one shared proof. The original source and execution records below remain unchanged.
+
 The exact K215 Lean endpoint now imports **179 project modules**, down from 192. The semantic ZF-model theorem and the general well-founded-part construction move into `ZFModels` and `WFModelCore`. Two consumers import those semantic interfaces directly; the L2 library imports `Code254` without the old enumerator. All moved statements and proof bodies are preserved. The old `ZFNative` and `WFModel` paths remain compatibility wrappers with their public theorem types checked separately.
 
 The endpoint's selected sources shrink from **2,362,942 to 2,129,439 bytes**, a reduction of **233,503 bytes**. Fifteen old dependencies leave that closure and two shared modules enter it. The seven edited or new source files together grow by 491 bytes because the wrappers remain. This is a smaller dependency boundary; it is not a claim that those old files were deleted or that the build became faster. The generic implication core and its numeric adapter retain their exact phase-eleven bytes.

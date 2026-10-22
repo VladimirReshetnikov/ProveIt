@@ -1,0 +1,9 @@
+# Phase13 ten-document prose peer
+
+The ten current documents accurately distinguish the179-module endpoint, five extra decoder-prefix providers, three API clients, two endpoint clients and two compatibility clients. The187 primary and70 compatibility inventories and199-project union agree with the independently reviewed actual records. Fresh/reused counts and warning origins are correct; all seven freshly emitted warning occurrences match unchanged phase12 sources and warning messages. The generic and numerical axiom profiles remain distinct, and no total-zero-warning claim is made.
+
+The advertised24,211-byte/410-line saving is specifically the generic-core/Lukasiewicz pair. The source-only three-module alternative is compared rather than stacked. The generic core's own423-byte growth and core-plus-numeric total16,826 bytes are disclosed. The selected179-module source total2,105,228 bytes was independently recounted from the actual source snapshots. The raw Lean inference data and pinned ancestry derivation are correctly distinguished.
+
+The exact machine, endpoint statements and earlier Rocq production boundary are preserved. The documents do not claim a new internal PA proof, a fresh199-module build, a minimum-size result, or general primitive/return integration. The intake current-queue update is separated from intake execution claims; history after that paragraph remains byte-identical. The phase12 source/actual records retain their historical status.
+
+All33 newly introduced or rewritten local link occurrences were checked. Only the expressly pending phase13 lean/README.md target is absent. The overview explicitly withholds a saved-packet replay claim until publication. That link and the later status sentence need a final additive check after the packet is copied; there is no other finding.

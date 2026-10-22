@@ -6,13 +6,15 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [current simplification check](../simplification/phase12/README.md) freshly checks
-15 affected modules and both endpoint clients after splitting semantic interfaces.
-Its 184-module union contains the 179-module endpoint closure and five decoder-prefix
-modules; 169 providers retain exact phase-eleven bindings. Both audits have zero
-warnings and their exact prior standard-axiom profiles. A separate compatibility
-check covers 67 project modules and two clients. The historical 204-module receipts
-below and the nine phase-nine site checks are unchanged.
+The [current simplification check](../simplification/phase13/README.md) shares the
+implication proof between both calculi. Its primary scope is 184 project modules
+(the 179-module endpoint and five decoder-prefix modules) plus three API clients:
+36 fresh providers and 151 exact phase-twelve reuses. Both additional endpoint
+audits have zero warnings and their exact prior standard-axiom profiles. The new
+API clients separately check the axiom-free generic proof, numerical adapter and
+unchanged Lukasiewicz/Tarski interfaces. A compatibility check covers 68 project
+modules and two clients. The historical 204-module receipts below and the nine
+phase-nine site checks are unchanged.
 
 The portable driver rebuilds the exact project import closure of
 `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit

@@ -3,9 +3,11 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase12/README.md)
-checks the 179-module endpoint closure, five decoder-prefix modules and both closed
-endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
+[proof simplification checkpoint](verification/k215/simplification/phase13/README.md)
+shares the numerical and unrestricted implication proof, saving 24,211 bytes and
+410 lines across the generic-core/Lukasiewicz pair. It checks the unchanged
+179-module endpoint closure, five decoder-prefix modules, three API clients and
+both closed endpoint clients with exact predecessor bindings and no new axioms. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
@@ -69,6 +71,15 @@ two explicit clients preserves the old model/native interfaces. The seven edited
 or new proof files grow by 491 bytes; no proof body or endpoint type changes.
 [Sources 180–187](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-213.md)
 reconcile the eight later reports separately from this selected adoption.
+
+Phase thirteen realizes their shared-implication idea using the later upstream
+58-step derivation. The core exports K, Peirce and S; the unrestricted calculus
+uses the relation `True`, preserving its old interfaces and complete Tarski bridge.
+The primary check has 36 fresh providers (33 project modules and three API clients)
+and 151 phase-twelve reuses. A separate 68-module compatibility check with two
+clients passes. Both unchanged endpoint audits retain their exact profiles and
+zero warnings. The producer and ancestry input are synchronized; the supplied
+research renderer is preserved as data and was not executed.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
@@ -141,11 +152,12 @@ derives K's ZF interpretation syntactically, the Lean lower chain works with mod
 | **Simulation** | the register program halts iff the machine does, from related configurations | [`KSim`](../../../Lean/BusyBeaver/ZFC/KSim.lean) (`halts_iff`, port of `Sim230`/`Sim230Main`), with K230's register lemmas ([`KTape`](../../../Lean/BusyBeaver/ZFC/KTape.lean): every table that agrees with K230 on the 44 rows they read and ends the increment K230's way or the 219's way) and the symbolic executor ([`KRuntimeCore`](../../../Lean/BusyBeaver/ZFC/KRuntimeCore.lean)) |
 | **Source** | the 221's source halts from the boot registers iff `dag222` does iff `C222 F` | [`KSource221`](../../../Lean/BusyBeaver/ZFC/KSource221.lean) (WF tables, 2,247-entry offset certificate and mirror), [`Seed222`](../../../Lean/BusyBeaver/ZFC/Seed222.lean), [`L2Root222`](../../../Lean/BusyBeaver/ZFC/L2Root222.lean), [`Enum222`](../../../Lean/BusyBeaver/ZFC/Enum222.lean) |
 | **Upper bound** | `C222 F → ZF ⊢ ⊥` | [`KUpper222`](../../../Lean/BusyBeaver/ZFC/KUpper222.lean) (the seed property holds in L by reflection) |
-| **Lower chain** | `ZF ⊢ ⊥ → C222 F` | [`KEind222`](../../../Lean/BusyBeaver/ZFC/KEind222.lean) (`c222_complete`), [`KSeedModel222`](../../../Lean/BusyBeaver/ZFC/KSeedModel222.lean) (models of the derivable formulas have the seed property for equality-free relations), [`KIndisc222`](../../../Lean/BusyBeaver/ZFC/KIndisc222.lean) (indiscernibility quotient: all relations), [`KLowerSeed`](../../../Lean/BusyBeaver/ZFC/KLowerSeed.lean), [`KLowerRaw`](../../../Lean/BusyBeaver/ZFC/KLowerRaw.lean) (raw sets), [`KLowerRel`](../../../Lean/BusyBeaver/ZFC/KLowerRel.lean) / [`KLowerTag`](../../../Lean/BusyBeaver/ZFC/KLowerTag.lean) (the tagged domain `D_t`), [`KLowerEqv`](../../../Lean/BusyBeaver/ZFC/KLowerEqv.lean) / [`KLowerQHyp`](../../../Lean/BusyBeaver/ZFC/KLowerQHyp.lean) (coded bisimilarity; `D_t` satisfies [`KQHyp`](../../../Lean/BusyBeaver/ZFC/KQHyp.lean)), `KQ1*` (the repository's quotient modules re-run on that interface; the profile edge lemmas of [`ProfileComposition`](../../../Lean/BusyBeaver/ZFC/ProfileComposition.lean) need only transitive containers), [`KQ1ZF`](../../../Lean/BusyBeaver/ZFC/KQ1ZF.lean) (ZF in the well-founded part) |
+| **Lower chain** | `ZF ⊢ ⊥ → C222 F` | [`KEind222`](../../../Lean/BusyBeaver/ZFC/KEind222.lean) (`c222_complete`), [`KSeedModel222`](../../../Lean/BusyBeaver/ZFC/KSeedModel222.lean) (models of the derivable formulas have the seed property for equality-free relations), [`KIndisc222`](../../../Lean/BusyBeaver/ZFC/KIndisc222.lean) (indiscernibility quotient: all relations), [`KLowerSeed`](../../../Lean/BusyBeaver/ZFC/KLowerSeed.lean), [`KLowerRaw`](../../../Lean/BusyBeaver/ZFC/KLowerRaw.lean) (raw sets), [`KLowerRel`](../../../Lean/BusyBeaver/ZFC/KLowerRel.lean) / [`KLowerTag`](../../../Lean/BusyBeaver/ZFC/KLowerTag.lean) (the tagged domain `D_t`), [`KLowerEqv`](../../../Lean/BusyBeaver/ZFC/KLowerEqv.lean) / [`KLowerQHyp`](../../../Lean/BusyBeaver/ZFC/KLowerQHyp.lean) (coded bisimilarity; `D_t` satisfies [`KQHyp`](../../../Lean/BusyBeaver/ZFC/KQHyp.lean)), [`KProfileTC`](../../../Lean/BusyBeaver/ZFC/KProfileTC.lean) and `KQ1*` (the repository's quotient modules re-run on that interface), [`KQ1ZF`](../../../Lean/BusyBeaver/ZFC/KQ1ZF.lean) (ZF in the well-founded part) |
 | **Endpoint** | the composition, and ZF ↔ ZFC refutation | [`KEndpoint`](../../../Lean/BusyBeaver/ZFC/KEndpoint.lean) (generic: the lower chain `c222_of_zf_refutation` and the composition, once for every K machine), [`KEndpoint221`](../../../Lean/BusyBeaver/ZFC/KEndpoint221.lean) (the 221's five inputs) |
 
 The generators are in this directory: `generate_tables_lean.py`, `generate_dense221_lean.py`,
-`generate_boot221_lean.py`, `generate_sites221_lean.py`, `generate_source221_lean.py` and
+`generate_boot221_lean.py`, `generate_sites221_lean.py`, `generate_source221_lean.py`,
+`generate_profile_tc.py` (six profile lemmas weakened to transitive containers) and
 `generate_kq1.py` (the quotient modules on the `QHyp` interface). Generated data is untrusted;
 the kernel re-checks it. The certificate decoder of `RMOffsetBisim` reads paths of up to 511 bits,
 since the AX chain of `dag222` makes decoder paths 180 bits deep (`RMBisim.decode` stops at 127).

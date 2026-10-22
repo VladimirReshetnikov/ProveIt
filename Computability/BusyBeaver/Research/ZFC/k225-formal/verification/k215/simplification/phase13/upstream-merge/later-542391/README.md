@@ -1,0 +1,5 @@
+# Transitive-container profile factoring from `5423911775`
+
+This later proposal is preserved separately from the accepted [phase-thirteen proof](../../README.md). [The exact map](merge.json) records four upstream file versions and two proposed deletions. All six maintained paths, all 199 checked project sources and all five phase-thirteen adoptions retain their exact accepted bytes.
+
+The source diff weakens six profile-edge hypotheses from full containers to transitive containers and provides the two-line bridge from the former to the latter. The ordinary model uses that bridge; the tagged lower model calls the shared lemmas directly. It proposes removing the duplicated `KProfileTC` module and its generator. This can stack with the separate derived-rule proposal. Its changed public hypotheses, moved names and import/module deletion require local type and affected-closure checks before adoption. The upstream commit's selected compilation report remains an attributed claim. No compiler or submitted program ran in this merge.

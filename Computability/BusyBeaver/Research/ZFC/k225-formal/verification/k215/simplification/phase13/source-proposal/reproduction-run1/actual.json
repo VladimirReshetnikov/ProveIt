@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "jobs": [
+    {
+      "name": "controls",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-phase13-upstream-shared/controls.py"
+      ],
+      "cwd": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.11426546517759562,
+      "log": {
+        "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/01-controls/stdout.log",
+        "bytes": 3801,
+        "sha256": "d39afaea52070a4453c2da29092bd317e0d5dbc68f485927e0badb55351be96a"
+      }
+    },
+    {
+      "name": "generate",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_dominated_implication_lean.py",
+        "--out",
+        "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Lean"
+      ],
+      "cwd": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06401666346937418,
+      "log": {
+        "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/02-generate/stdout.log",
+        "bytes": 1401,
+        "sha256": "316c28c2b16175d7079c082d974745f84b3080857b17eb7f8b31af95f0315664"
+      }
+    },
+    {
+      "name": "explicit-output-check",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_dominated_implication_lean.py",
+        "--out",
+        "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Lean",
+        "--check"
+      ],
+      "cwd": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06399246491491795,
+      "log": {
+        "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/03-explicit-output-check/stdout.log",
+        "bytes": 1401,
+        "sha256": "316c28c2b16175d7079c082d974745f84b3080857b17eb7f8b31af95f0315664"
+      }
+    },
+    {
+      "name": "explicit-default-check",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_dominated_implication_lean.py",
+        "--check"
+      ],
+      "cwd": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06395766418427229,
+      "log": {
+        "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/04-explicit-default-check/stdout.log",
+        "bytes": 1401,
+        "sha256": "316c28c2b16175d7079c082d974745f84b3080857b17eb7f8b31af95f0315664"
+      }
+    },
+    {
+      "name": "implicit-default-check",
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_dominated_implication_lean.py"
+      ],
+      "cwd": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Research/ZFC/k225-formal",
+      "timeout_seconds": 30,
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.06399356573820114,
+      "log": {
+        "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/05-implicit-default-check/stdout.log",
+        "bytes": 1401,
+        "sha256": "316c28c2b16175d7079c082d974745f84b3080857b17eb7f8b31af95f0315664"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "bytes": 14146,
+      "sha256": "bd07364a829e8a1535b0ecf1ee6ed0c292d5af35e01a6db8f152dd2610e247d8"
+    },
+    {
+      "path": "/tmp/k215-phase13-upstream-shared/reproduction-run1/layout/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DomRho8.lean",
+      "bytes": 2680,
+      "sha256": "8fdbec0db9134070bee2dfa0a433aff66ab83c00007ea7b9aabd9192c506d378"
+    }
+  ],
+  "all_before_input_bytes_unchanged": true,
+  "source_freeze_sha256": "1626c437e96a1958f5264e2ca0bf2803c877cbdcbe37d9c789b6c168c50290d8",
+  "peer_sha256": "31ac1786fc4b9a367cfd6bf750651d93f2b0555817518b12cfbdd5a1a416fdd7",
+  "supplied_renderer_executions": 0,
+  "compiler_invocations": 0,
+  "canonical_writes": 0,
+  "scope": "Own producer/source diagnostic and five CLI/control invocations, no kernel or full endpoint claim."
+}

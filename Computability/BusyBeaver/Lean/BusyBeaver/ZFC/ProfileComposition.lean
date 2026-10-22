@@ -18,15 +18,6 @@ open Profile ProfilePairs ProfileCollection
 universe u
 variable {V : Type u}
 
-/-- Every set lies in a transitive set: the half of `Containers` that the edge lemmas read.
-(The tagged domain of the lower chain has these but no literal power containers.) -/
-def TransContainers (mem : V → V → Prop) : Prop :=
-  ∀ a, ∃ v, mem a v ∧ PositiveClosure.Transitive mem v
-
-theorem transContainers_of_containers {mem : V → V → Prop} (h : Containers mem) :
-    TransContainers mem :=
-  fun a => let ⟨v, hav, ht, _⟩ := h a; ⟨v, hav, ht⟩
-
 theorem orderedPair_code_congr (mem : V → V → Prop) {a b c d : V}
     (hcd : Same mem c d) (hc : OrderedPair mem a b c) : OrderedPair mem a b d := by
   obtain ⟨s, p, hs, hp, hOuter⟩ := hc
@@ -45,10 +36,10 @@ def UnionChoice (mem : V → V → Prop) (family x y : V) : Prop :=
 
 /-- Approximate raw Union is exact at the represented edge relation. -/
 theorem union_edges_of_instance (mem : V → V → Prop) (family : V)
-    (hContainers : TransContainers mem)
+    (hContainers : Containers mem)
     (hCollect : CollectionInstance mem (UnionChoice mem family)) :
     ∃ s, ∀ a b, App mem s a b ↔ ∃ r, mem r family ∧ App mem r a b := by
-  obtain ⟨domain, hFamily, hTrans⟩ := hContainers family
+  obtain ⟨domain, hFamily, hTrans, _⟩ := hContainers family
   obtain ⟨s, hSupport, hCover⟩ := hCollect domain
   refine ⟨s, ?_⟩
   intro a b
@@ -97,7 +88,7 @@ def CompositionChoice (mem : V → V → Prop) (r1 r2 d s : V) : Prop :=
 
 /-- Two GIC layers plus the named approximate-union instance compose App exactly. -/
 theorem composition_of_instances (mem : V → V → Prop) (r1 r2 : V)
-    (hContainers : TransContainers mem)
+    (hContainers : Containers mem)
     (hCodes : ∀ a b, ∃ c, OrderedPair mem a b c)
     (hFibers : ∀ d, CollectionInstance mem (FiberChoice mem r2 d))
     (hComposition : CollectionInstance mem (CompositionChoice mem r1 r2))
@@ -140,7 +131,7 @@ theorem bisim_composition (mem : V → V → Prop) {r1 r2 s : V}
 
 /-- Bisimulation transitivity from the three fixed collection-template families. -/
 theorem eqv_trans_of_instances (mem : V → V → Prop)
-    (hContainers : TransContainers mem)
+    (hContainers : Containers mem)
     (hCodes : ∀ a b, ∃ c, OrderedPair mem a b c)
     (hFibers : ∀ r2 d, CollectionInstance mem (FiberChoice mem r2 d))
     (hCompositions : ∀ r1 r2, CollectionInstance mem (CompositionChoice mem r1 r2))
@@ -153,7 +144,7 @@ theorem eqv_trans_of_instances (mem : V → V → Prop)
   exact ⟨s, bisim_composition mem h1 h2 hs, (hs x z).mpr ⟨y, hxy, hyz⟩⟩
 
 theorem join_edges_of_instances (mem : V → V → Prop) (r1 r2 : V)
-    (hContainers : TransContainers mem)
+    (hContainers : Containers mem)
     (hPairs : ∀ a b, ∃ p, Pair mem p a b)
     (hUnions : ∀ family, CollectionInstance mem (UnionChoice mem family)) :
     ∃ s, ∀ a b, App mem s a b ↔ App mem r1 a b ∨ App mem r2 a b := by
@@ -231,7 +222,7 @@ def BackMatchChoice (mem : V → V → Prop) (x y b r : V) : Prop :=
 
 /-- Collect entire forward and backward matching bisimulations, then adjoin the root edge. -/
 theorem eqv_matching_of_instances (mem : V → V → Prop) (x y : V)
-    (hContainers : TransContainers mem)
+    (hContainers : Containers mem)
     (hPairs : ∀ a b, ∃ p, Pair mem p a b)
     (hUnions : ∀ family, CollectionInstance mem (UnionChoice mem family))
     (hForwardCollection : CollectionInstance mem (MatchChoice mem x y))
@@ -298,7 +289,7 @@ def Member (mem : V → V → Prop) (x y : V) : Prop :=
 
 /-- Quotient Extensionality uses only the two explicit matching templates and App union. -/
 theorem eqv_extensionality_of_instances (mem : V → V → Prop)
-    (hContainers : TransContainers mem)
+    (hContainers : Containers mem)
     (hPairs : ∀ a b, ∃ p, Pair mem p a b)
     (hUnions : ∀ family, CollectionInstance mem (UnionChoice mem family))
     (hForwardCollection : ∀ x y, CollectionInstance mem (MatchChoice mem x y))

@@ -1,15 +1,17 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase12/README.md) validates the 179-module
-endpoint closure, five decoder-prefix modules and both typed endpoint clients.
-Fifteen modules were freshly compiled; 169 providers retain exact phase-eleven
-transitive source/import bindings. All ten endpoint reports use only
-`propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
+are unchanged. The [latest Lean check](phase13/README.md) shares one implication
+proof between both calculi and validates the 179-module endpoint, five decoder-prefix
+modules and three API clients. Thirty-six providers were freshly compiled; 151
+retain exact phase-twelve transitive source/import bindings. Both additional endpoint
+clients pass with ten exact reports using only `propext`, `Classical.choice`, and
+`Quot.sound`; both audits have zero warnings.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
-| Lean dominated implication, core plus adapter | 689,857 bytes | 16,403 bytes |
+| Lean dominated implication, core plus adapter | 689,857 bytes | 16,826 bytes |
+| Lean generic core plus Lukasiewicz (phase-twelve comparison) | 42,454 bytes | 18,243 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -53,8 +55,15 @@ Phase twelve separates the semantic interfaces from older clients, reducing the
 endpoint closure from 192 to 179 modules and its selected sources by 233,503 bytes.
 A separate compatibility check preserves the old model/native interfaces. The
 seven edited or new proof sources grow by 491 bytes; their bodies are unchanged.
+Phase thirteen shares the numerical and unrestricted implication derivation,
+removing 24,211 bytes and 410 lines across the generic-core/Lukasiewicz pair.
+The generic core grows by 423 bytes to export K, Peirce and S, while the unrestricted
+module becomes a short adapter with its complete Tarski bridge preserved. The
+179-module endpoint's selected sources fall to 2,105,228 bytes. Its old model/native
+interfaces pass a separate 68-module check with two clients; no module is added.
 
-The [latest checkpoint](phase12/README.md),
+The [latest checkpoint](phase13/README.md),
+[twelfth checkpoint](phase12/README.md),
 [eleventh checkpoint](phase11/README.md),
 [tenth checkpoint](phase10/README.md),
 [ninth checkpoint](phase9/README.md),

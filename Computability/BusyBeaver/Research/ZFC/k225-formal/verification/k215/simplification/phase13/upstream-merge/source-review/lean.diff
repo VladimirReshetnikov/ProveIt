@@ -1,0 +1,805 @@
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean
+index 0fdcffbc32..d7db93e8fe 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean
+@@ -16,7 +16,7 @@ codes are derivable has no irreflexive model, the code 1 is derivable.
+ 
+ namespace SetTheory.BusyBeaver.ZFC.KEind222
+ 
+-open SetTheory.BusyBeaver.ZFC.Tarski (NF Thm rn rv complete)
++open SetTheory.BusyBeaver.ZFC.Tarski (NF Thm rn rv complete h0 h1 h2 ded1 ded2 syl dne all_mono ex_mono)
+ open SetTheory.BusyBeaver.ZFC.Tarski.NF Kalmar SetTheory.BusyBeaver.ZFC.KThmK
+ 
+ /-! ## The interpretation -/
+@@ -41,14 +41,14 @@ variable {Ax : NF → Prop}
+ /-! ## Conjunction -/
+ 
+ theorem and_intro (A B : NF) : ThmK Ax (imp A (imp B (wa A B))) := by
+-  apply ded2
++  apply ded2 classical
+   apply deduction classical
+   -- [A → ¬B, B, A] ⊢ ⊥
+   exact .mp (.mp h0 h2) h1
+ 
+ theorem and_l (A B : NF) : ThmK Ax (imp (wa A B) A) := by
+-  apply syl _ (dne A)
+-  apply ded1
++  apply syl classical _ (dne classical A)
++  apply ded1 classical
+   apply deduction classical
+   -- [¬A, wa A B] ⊢ ⊥
+   have hn : Der NF.imp (ThmK Ax) [neg A, wa A B] (imp A (neg B)) := by
+@@ -57,8 +57,8 @@ theorem and_l (A B : NF) : ThmK Ax (imp (wa A B) A) := by
+   exact .mp h1 hn
+ 
+ theorem and_r (A B : NF) : ThmK Ax (imp (wa A B) B) := by
+-  apply syl _ (dne B)
+-  apply ded1
++  apply syl classical _ (dne classical B)
++  apply ded1 classical
+   apply deduction classical
+   have hn : Der NF.imp (ThmK Ax) [neg B, wa A B] (imp A (neg B)) := by
+     apply deduction classical
+@@ -109,7 +109,7 @@ theorem all_bout_alpha {v w x y : Nat} (hx : x ≠ v) (hy : y ≠ v) (hwx : w 
+ /-- `Ev v x y → Ev w x y` for labels outside `{x, y}`. -/
+ theorem ev_alpha {v w x y : Nat} (hx : x ≠ v) (hy : y ≠ v) (hwx : w ≠ x) (hwy : w ≠ y) :
+     ThmK Ax (imp (Ev v x y) (Ev w x y)) := by
+-  apply ded1
++  apply ded1 classical
+   have hin : Der NF.imp (ThmK Ax) [Ev v x y] (all w (Bin w x y)) :=
+     .mp (.ax (all_bin_alpha hx hy hwx hwy)) (.mp (.ax (and_l _ _)) h0)
+   have hout : Der NF.imp (ThmK Ax) [Ev v x y] (all w (Bout w x y)) :=
+@@ -153,7 +153,7 @@ theorem Eind_el_r (a b c : Nat) : ThmK Ax (imp (Eind a b) (imp (rel c a) (rel c
+   have t := eind_to (Ax := Ax) h1 h2
+   have s := bin_spec (Ax := Ax) (v := fresh3 a b c) (x := a) (y := b) (c := c) (Ne.symm h3)
+     (Ne.symm h1) (Ne.symm h2)
+-  apply ded1
++  apply ded1 classical
+   have hev : Der NF.imp (ThmK Ax) [Eind a b] (Ev (fresh3 a b c) a b) := .mp (.ax t) h0
+   have hb : Der NF.imp (ThmK Ax) [Eind a b] (biff (rel c a) (rel c b)) :=
+     .mp (.ax s) (.mp (.ax (and_l _ _)) hev)
+@@ -165,7 +165,7 @@ theorem Eind_el_l (a b c : Nat) : ThmK Ax (imp (Eind c a) (imp (rel c b) (rel a
+   have t := eind_to (Ax := Ax) h1 h2
+   have s := bout_spec (Ax := Ax) (v := fresh3 c a b) (x := c) (y := a) (c := b) (Ne.symm h3)
+     (Ne.symm h1) (Ne.symm h2)
+-  apply ded1
++  apply ded1 classical
+   have hev : Der NF.imp (ThmK Ax) [Eind c a] (Ev (fresh3 c a b) c a) := .mp (.ax t) h0
+   have hb : Der NF.imp (ThmK Ax) [Eind c a] (biff (rel c b) (rel a b)) :=
+     .mp (.ax s) (.mp (.ax (and_r _ _)) hev)
+@@ -176,7 +176,7 @@ theorem Eind_el_l (a b c : Nat) : ThmK Ax (imp (Eind c a) (imp (rel c b) (rel a
+ /-- `(p ↔ q) → (p ↔ r) → (q ↔ r)`, propositionally. -/
+ theorem biff_euclid (p q r : NF) :
+     ThmK Ax (imp (biff p q) (imp (biff p r) (biff q r))) := by
+-  apply ded2
++  apply ded2 classical
+   have pq : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp p q) := .mp (.ax (and_l _ _)) h1
+   have qp : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp q p) := .mp (.ax (and_r _ _)) h1
+   have pr : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp p r) := .mp (.ax (and_l _ _)) h0
+@@ -192,12 +192,12 @@ theorem biff_euclid (p q r : NF) :
+ /-- Distribution of a two-premise implication under `∀`. -/
+ theorem all_mono2 (i : Nat) {a b c : NF} (h : ThmK Ax (imp a (imp b c))) :
+     ThmK Ax (imp (all i a) (imp (all i b) (all i c))) :=
+-  syl (all_mono i h) (.rho2 i b c)
++  syl classical (all_mono classical i h) (.rho2 i b c)
+ 
+ theorem ev_euclid (v x y z : Nat) : ThmK Ax (imp (Ev v x y) (imp (Ev v x z) (Ev v y z))) := by
+   have hin := all_mono2 (Ax := Ax) v (biff_euclid (rel v x) (rel v y) (rel v z))
+   have hout := all_mono2 (Ax := Ax) v (biff_euclid (rel x v) (rel y v) (rel z v))
+-  apply ded2
++  apply ded2 classical
+   have i1 : Der NF.imp (ThmK Ax) [Ev v x z, Ev v x y] (all v (Bin v y z)) :=
+     .mp (.mp (.ax hin) (.mp (.ax (and_l _ _)) h1)) (.mp (.ax (and_l _ _)) h0)
+   have o1 : Der NF.imp (ThmK Ax) [Ev v x z, Ev v x y] (all v (Bout v y z)) :=
+@@ -209,7 +209,7 @@ theorem Eind_euclid (a b c : Nat) : ThmK Ax (imp (Eind c a) (imp (Eind c b) (Ein
+   let w := fresh3 a b c
+   obtain ⟨ha, hb, hc⟩ := fresh3_ne a b c
+   have e := ev_euclid (Ax := Ax) w c a b
+-  apply ded2
++  apply ded2 classical
+   have x1 : Der NF.imp (ThmK Ax) [Eind c b, Eind c a] (Ev w c a) := .mp (.ax (eind_to hc ha)) h1
+   have x2 : Der NF.imp (ThmK Ax) [Eind c b, Eind c a] (Ev w c b) := .mp (.ax (eind_to hc hb)) h0
+   exact .mp (.ax (eind_of ha hb)) (.mp (.mp (.ax e) x1) x2)
+@@ -221,26 +221,26 @@ theorem Eq_Eind (x y : Nat) : ThmK Ax (imp (NF.eq x y) (Eind x y)) := by
+   have hwy : w ≠ y := Ne.symm (Nat.ne_of_lt (KCode222.lt_wel_right x y))
+   -- x = y → (w ∈ x ↔ w ∈ y) and → (x ∈ w ↔ y ∈ w)
+   have bi : ThmK Ax (imp (NF.eq x y) (Bin w x y)) := by
+-    apply ded1
++    apply ded1 classical
+     have f1 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel w x) (rel w y)) := .mp (.ax (.rho3 x y w)) h0
+     have f2 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel w y) (rel w x)) :=
+       .mp (.ax (.rho3 y x w)) (.mp (.ax (eq_symm x y)) h0)
+     exact .mp (.mp (.ax (and_intro _ _)) f1) f2
+   have bo : ThmK Ax (imp (NF.eq x y) (Bout w x y)) := by
+-    apply ded1
++    apply ded1 classical
+     have f1 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel x w) (rel y w)) := .mp (.ax (.rho5 y w x)) h0
+     have f2 : Der NF.imp (ThmK Ax) [NF.eq x y] (imp (rel y w) (rel x w)) :=
+       .mp (.ax (.rho5 x w y)) (.mp (.ax (eq_symm x y)) h0)
+     exact .mp (.mp (.ax (and_intro _ _)) f1) f2
+-  apply ded1
++  apply ded1 classical
+   have hall : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (NF.eq x y)) := .mp (.ax (.helper x y)) h0
+-  have i1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bin w x y)) := .mp (.ax (all_mono w bi)) hall
+-  have o1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bout w x y)) := .mp (.ax (all_mono w bo)) hall
++  have i1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bin w x y)) := .mp (.ax (all_mono classical w bi)) hall
++  have o1 : Der NF.imp (ThmK Ax) [NF.eq x y] (all w (Bout w x y)) := .mp (.ax (all_mono classical w bo)) hall
+   exact .mp (.ax (eind_of hwx hwy)) (.mp (.mp (.ax (and_intro _ _)) i1) o1)
+ 
+ /-- th(rho1): `∃i Eind(i, j)`. -/
+ theorem Eind_ex (i j : Nat) : ThmK Ax (ex i (Eind i j)) :=
+-  ThmK.mp (ex_mono i (Eq_Eind i j)) (.rho1 i j)
++  ThmK.mp (ex_mono classical i (Eq_Eind i j)) (.rho1 i j)
+ 
+ /-- th(vacEq): `Eind a b → ∀c Eind a b` for `c ≠ a, b`. -/
+ theorem Eind_vac (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :
+@@ -250,7 +250,7 @@ theorem Eind_vac (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :
+     obtain ⟨ha, hb, hwc⟩ := fresh3_ne a b c
+     have v : ThmK Ax (imp (Ev w a b) (all c (Ev w a b))) :=
+       vac_of_not_occurs c _ (ef_ev w a b) (occ_ev (Ne.symm hwc) hca hcb)
+-    exact syl (syl (eind_to ha hb) v) (all_mono c (eind_of ha hb))
++    exact syl classical (syl classical (eind_to ha hb) v) (all_mono classical c (eind_of ha hb))
+   · exact vac_of_not_occurs c _ (ef_ev _ a b) (occ_ev hc hca hcb)
+ 
+ /-! ## The interpretation of derivations -/
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean
+index 2a97626de1..10ace115c7 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean
+@@ -9,8 +9,9 @@ It is the Tarski calculus `Thm` with one change: equality vacuity is available o
+ helper binder, `Eq(a,b) → ∀_{wel a b} Eq(a,b)` (the merged row G gives exactly this, and rho7;
+ `KEqCodes222`). Membership vacuity stays at every fresh binder.
+ 
+-The derived rules of `TarskiDerived` and `TarskiLeibniz` are re-proved here with the same
+-proofs, except where `Thm` used equality vacuity at an arbitrary binder:
++The derived rules of `TarskiDerived` and `TarskiLeibniz` that do not use equality vacuity
++apply to `ThmK` directly (its `classical` basis and `Rows` instance). The rest are re-proved
++here where `Thm` used equality vacuity at an arbitrary binder:
+ 
+ * `vac_of_not_occurs` and `ex_elim` are stated for equality-free formulas;
+ * Leibniz's law, specialization and alpha-renaming are stated for quantifier-free,
+@@ -88,73 +89,20 @@ theorem classical : Classical NF.imp NF.bot (ThmK Ax) where
+   peirce := Lukasiewicz.peirce implicational
+   efq := ex_falso
+ 
+-/-! ## Propositional layer (as `TarskiDerived`) -/
+-
+-theorem h0 {G : List NF} {a : NF} : Der NF.imp (ThmK Ax) (a :: G) a := .hyp (List.mem_cons_self ..)
+-theorem h1 {G : List NF} {a b : NF} : Der NF.imp (ThmK Ax) (b :: a :: G) a :=
+-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
+-theorem h2 {G : List NF} {a b c : NF} : Der NF.imp (ThmK Ax) (c :: b :: a :: G) a :=
+-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
+-
+-theorem thm_of_der0 {a : NF} (d : Der NF.imp (ThmK Ax) [] a) : ThmK Ax a :=
+-  d.sound classical (fun _ hx => absurd hx List.not_mem_nil)
+-
+-theorem ded1 {a c : NF} (d : Der NF.imp (ThmK Ax) [a] c) : ThmK Ax (imp a c) :=
+-  thm_of_der0 (deduction classical d)
+-
+-theorem ded2 {a b c : NF} (d : Der NF.imp (ThmK Ax) [b, a] c) : ThmK Ax (imp a (imp b c)) :=
+-  thm_of_der0 (deduction classical (deduction classical d))
+-
+-theorem ded3 {a b c d : NF} (dd : Der NF.imp (ThmK Ax) [c, b, a] d) :
+-    ThmK Ax (imp a (imp b (imp c d))) :=
+-  thm_of_der0 (deduction classical (deduction classical (deduction classical dd)))
+-
+-theorem syl {a b c : NF} (hab : ThmK Ax (imp a b)) (hbc : ThmK Ax (imp b c)) :
+-    ThmK Ax (imp a c) :=
+-  ded1 (.mp (.ax hbc) (.mp (.ax hab) h0))
+-
+-theorem contra_thm (a b : NF) : ThmK Ax (imp (imp a b) (imp (neg b) (neg a))) :=
+-  ded3 (.mp h1 (.mp h2 h0))
+-
+-theorem contra {a b : NF} (h : ThmK Ax (imp a b)) : ThmK Ax (imp (neg b) (neg a)) :=
+-  ThmK.mp (contra_thm a b) h
+-
+-theorem dne (a : NF) : ThmK Ax (imp (neg (neg a)) a) := by
+-  apply ded1
+-  have inner : Der NF.imp (ThmK Ax) [neg (neg a)] (imp (imp a NF.bot) a) :=
+-    deduction classical (.mp (.ax (ex_falso a)) (.mp h1 h0))
+-  exact .mp (.ax (classical.peirce a NF.bot)) inner
+-
+-theorem dni (a : NF) : ThmK Ax (imp a (neg (neg a))) :=
+-  ded2 (.mp h0 h1)
+-
+-theorem imp_cases (a b c : NF) :
+-    ThmK Ax (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
+-  apply ded3
+-  have inner : Der NF.imp (ThmK Ax) [neg c, imp a b, imp b c, imp (neg a) c] c := by
+-    have na : Der NF.imp (ThmK Ax) [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
+-      deduction classical (.mp (Der.hyp (a := neg c) (by simp))
+-        (.mp (Der.hyp (a := imp b c) (by simp)) (.mp (Der.hyp (a := imp a b) (by simp)) h0)))
+-    exact .mp (Der.hyp (a := imp (neg a) c) (by simp)) na
+-  exact .mp (.ax (classical.peirce c NF.bot)) (deduction classical inner)
+-
+-/-! ## Quantifiers -/
+-
+-theorem all_mono (i : Nat) {a b : NF} (h : ThmK Ax (imp a b)) :
+-    ThmK Ax (imp (all i a) (all i b)) :=
+-  ThmK.mp (.rho2 i a b) (.gen i h)
+-
+-theorem ex_mono (i : Nat) {a b : NF} (h : ThmK Ax (imp a b)) :
+-    ThmK Ax (imp (ex i a) (ex i b)) :=
+-  contra (all_mono i (contra h))
+-
+-theorem ex_elim_of_vac {i : Nat} {a : NF} (h : ThmK Ax (imp a (all i a))) :
+-    ThmK Ax (imp (ex i a) a) :=
+-  syl (ex_mono i h) (.rho6 i a)
+-
+-theorem vac_neg {i : Nat} {a : NF} (h : ThmK Ax (imp a (all i a))) :
+-    ThmK Ax (imp (neg a) (all i (neg a))) :=
+-  syl (contra (ex_elim_of_vac h)) (dne (all i (neg a)))
++/-- The rows shared with `Thm`: the propositional and quantifier rules of `TarskiDerived`
++and `TarskiLeibniz` apply to `ThmK` through `classical` and this instance. -/
++instance : Rows (ThmK Ax) where
++  gen := .gen
++  rho2 := .rho2
++  rho4 := .rho4
++  rho6 := .rho6
++  rho1 := .rho1
++  rho7 := .rho7
++  rho5 := .rho5
++  rho3 := .rho3
++  vacRel := .vacRel
++
++/-! ## Vacuity and equality at the helper binder -/
+ 
+ /-- Vacuity for every equality-free formula not containing the label. -/
+ theorem vac_of_not_occurs (i : Nat) :
+@@ -162,110 +110,56 @@ theorem vac_of_not_occurs (i : Nat) :
+   | rel a b, _, h => .vacRel a b i (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+   | NF.eq _ _, hf, _ => hf.elim
+   | NF.bot, _, _ => ex_falso _
+-  | imp a b, hf, h => by
+-      have ha := vac_of_not_occurs i a hf.1 (fun o => h (Or.inl o))
+-      have hb := vac_of_not_occurs i b hf.2 (fun o => h (Or.inr o))
+-      have hna : ThmK Ax (imp (neg a) (all i (imp a b))) :=
+-        syl (vac_neg ha) (all_mono i (ded2 (.mp (.ax (ex_falso b)) (.mp h1 h0))))
+-      have hbb : ThmK Ax (imp b (all i (imp a b))) :=
+-        syl hb (all_mono i (classical.k b a))
+-      exact ThmK.mp (ThmK.mp (imp_cases a b (all i (imp a b))) hna) hbb
+-  | all j a, hf, h => by
+-      have ha := vac_of_not_occurs i a hf (fun o => h (Or.inr o))
+-      exact syl (all_mono j ha) (.rho4 j i a)
++  | imp a b, hf, h => vac_imp classical (vac_of_not_occurs i a hf.1 (fun o => h (Or.inl o)))
++      (vac_of_not_occurs i b hf.2 (fun o => h (Or.inr o)))
++  | all _ a, hf, h => vac_all classical (vac_of_not_occurs i a hf (fun o => h (Or.inr o)))
+ 
+ theorem ex_elim (i : Nat) {a : NF} (hf : EqFree a) (h : ¬ Occurs i a) :
+     ThmK Ax (imp (ex i a) a) :=
+-  ex_elim_of_vac (vac_of_not_occurs i a hf h)
+-
+-/-! ## Equality -/
++  ex_elim_of_vac classical (vac_of_not_occurs i a hf h)
+ 
+ theorem eq_refl (x : Nat) : ThmK Ax (NF.eq x x) := by
+   have h7 : ThmK Ax (imp (NF.eq (Code254.wel x x) x) (NF.eq x x)) := by
+     have r : ThmK Ax (imp (NF.eq (Code254.wel x x) x)
+         (imp (NF.eq (Code254.wel x x) x) (NF.eq x x))) := .rho7 x x (Code254.wel x x)
+-    exact ded1 (.mp (.mp (.ax r) h0) h0)
++    exact ded1 classical (.mp (.mp (.ax r) h0) h0)
+   have hex : ThmK Ax (ex (Code254.wel x x) (NF.eq x x)) :=
+-    ThmK.mp (ex_mono (Code254.wel x x) h7) (.rho1 (Code254.wel x x) x)
+-  exact ThmK.mp (ex_elim_of_vac (.helper x x)) hex
++    ThmK.mp (ex_mono classical (Code254.wel x x) h7) (.rho1 (Code254.wel x x) x)
++  exact ThmK.mp (ex_elim_of_vac classical (.helper x x)) hex
+ 
+ theorem eq_symm (x y : Nat) : ThmK Ax (imp (NF.eq x y) (NF.eq y x)) :=
+-  ded1 (.mp (.mp (.ax (.rho7 y x x)) h0) (.ax (eq_refl x)))
++  ded1 classical (.mp (.mp (.ax (.rho7 y x x)) h0) (.ax (eq_refl x)))
+ 
+ theorem eq_trans (x y z : Nat) : ThmK Ax (imp (NF.eq x y) (imp (NF.eq y z) (NF.eq x z))) := by
+-  apply ded2
++  apply ded2 classical
+   exact .mp (.mp (.ax (.rho7 x z y)) (.mp (.ax (eq_symm x y)) h1)) h0
+ 
+-theorem rel_L (u v j : Nat) : ThmK Ax (imp (NF.eq u v) (imp (rel u j) (rel v j))) := .rho5 v j u
+-theorem rel_R (u v i : Nat) : ThmK Ax (imp (NF.eq u v) (imp (rel i u) (rel i v))) := .rho3 u v i
+-
+ /-! ## Leibniz's law for quantifier-free membership formulas -/
+ 
+-theorem atom_subst (P : Nat → Nat → NF)
+-    (hL : ∀ u v j, ThmK Ax (imp (NF.eq u v) (imp (P u j) (P v j))))
+-    (hR : ∀ u v i, ThmK Ax (imp (NF.eq u v) (imp (P i u) (P i v))))
+-    (x y i j : Nat) : ThmK Ax (imp (NF.eq x y) (imp (P i j) (P (rv x y i) (rv x y j)))) := by
+-  have step1 : ThmK Ax (imp (NF.eq x y) (imp (P i j) (P (rv x y i) j))) := by
+-    by_cases hi : i = x
+-    · subst hi; simp only [rv, if_true]; exact hL i y j
+-    · simp only [rv, hi, if_false]; exact ded2 h0
+-  have step2 : ThmK Ax (imp (NF.eq x y) (imp (P (rv x y i) j) (P (rv x y i) (rv x y j)))) := by
+-    by_cases hj : j = x
+-    · subst hj; simp only [rv, if_true]; exact hR j y _
+-    · simp only [rv, hj, if_false]; exact ded2 h0
+-  apply ded2
+-  exact .mp (.mp (.ax step2) h1) (.mp (.mp (.ax step1) h1) h0)
+-
+-theorem atom_subst_rev (P : Nat → Nat → NF)
+-    (hL : ∀ u v j, ThmK Ax (imp (NF.eq u v) (imp (P u j) (P v j))))
+-    (hR : ∀ u v i, ThmK Ax (imp (NF.eq u v) (imp (P i u) (P i v))))
+-    (x y i j : Nat) : ThmK Ax (imp (NF.eq x y) (imp (P (rv x y i) (rv x y j)) (P i j))) := by
+-  have step1 : ThmK Ax (imp (NF.eq y x) (imp (P (rv x y i) (rv x y j)) (P i (rv x y j)))) := by
+-    by_cases hi : i = x
+-    · subst hi; simp only [rv, if_true]; exact hL y i _
+-    · simp only [rv, hi, if_false]; exact ded2 h0
+-  have step2 : ThmK Ax (imp (NF.eq y x) (imp (P i (rv x y j)) (P i j))) := by
+-    by_cases hj : j = x
+-    · subst hj; simp only [rv, if_true]; exact hR y j i
+-    · simp only [rv, hj, if_false]; exact ded2 h0
+-  apply ded2
+-  have hyx : Der NF.imp (ThmK Ax) [P (rv x y i) (rv x y j), NF.eq x y] (NF.eq y x) :=
+-    .mp (.ax (eq_symm x y)) h1
+-  exact .mp (.mp (.ax step2) hyx) (.mp (.mp (.ax step1) hyx) h0)
+-
+ /-- Leibniz's law for quantifier-free, equality-free formulas. -/
+ theorem leibniz (x y : Nat) :
+     ∀ f : NF, QF f → EqFree f →
+       ThmK Ax (imp (NF.eq x y) (imp f (rn x y f))) ∧
+       ThmK Ax (imp (NF.eq x y) (imp (rn x y f) f))
+   | rel i j, _, _ =>
+-      ⟨atom_subst rel rel_L rel_R x y i j, atom_subst_rev rel rel_L rel_R x y i j⟩
++      ⟨atom_subst classical rel rel_L rel_R x y i j,
++       atom_subst_rev classical eq_symm rel rel_L rel_R x y i j⟩
+   | NF.eq _ _, _, hf => hf.elim
+-  | NF.bot, _, _ => ⟨ded2 h0, ded2 h0⟩
++  | NF.bot, _, _ => ⟨ded2 classical h0, ded2 classical h0⟩
+   | imp a b, hq, hf => by
+       have ha := leibniz x y a hq.1 hf.1
+       have hb := leibniz x y b hq.2 hf.2
+       constructor
+-      · apply ded3
++      · apply ded3 classical
+         have a0 : Der NF.imp (ThmK Ax) [rn x y a, imp a b, NF.eq x y] a :=
+           .mp (.mp (.ax ha.2) h2) h0
+         exact .mp (.mp (.ax hb.1) h2) (.mp h1 a0)
+-      · apply ded3
++      · apply ded3 classical
+         have a0 : Der NF.imp (ThmK Ax) [a, imp (rn x y a) (rn x y b), NF.eq x y] (rn x y a) :=
+           .mp (.mp (.ax ha.1) h2) h0
+         exact .mp (.mp (.ax hb.2) h2) (.mp h1 a0)
+   | all _ _, hq, _ => hq.elim
+ 
+-theorem all_imp_ex (i : Nat) (a b : NF) :
+-    ThmK Ax (imp (all i (imp a b)) (imp (ex i a) (ex i b))) := by
+-  have c1 : ThmK Ax (imp (all i (imp a b)) (all i (imp (neg b) (neg a)))) :=
+-    all_mono i (contra_thm a b)
+-  have c2 := ThmK.rho2 (Ax := Ax) i (neg b) (neg a)
+-  have c3 : ThmK Ax (imp (all i (imp a b)) (imp (all i (neg b)) (all i (neg a)))) := syl c1 c2
+-  apply ded2
+-  apply deduction classical
+-  exact .mp h1 (.mp (.mp (.ax c3) h2) h0)
+-
+ theorem qf_bound {n : Nat} : ∀ {f : NF}, QF f → ¬ Bound n f
+   | rel _ _, _ => id
+   | NF.eq _ _, _ => id
+@@ -278,13 +172,14 @@ theorem spec {x y : Nat} (hxy : y ≠ x) {f : NF} (hq : QF f) (hf : EqFree f) :
+     ThmK Ax (imp (all x f) (rn x y f)) := by
+   have L := (leibniz (Ax := Ax) x y f hq hf).1
+   have shuffle : ThmK Ax (imp f (imp (NF.eq x y) (rn x y f))) :=
+-    ded2 (.mp (.mp (.ax L) h0) h1)
+-  have g : ThmK Ax (imp (all x f) (all x (imp (NF.eq x y) (rn x y f)))) := all_mono x shuffle
++    ded2 classical (.mp (.mp (.ax L) h0) h1)
++  have g : ThmK Ax (imp (all x f) (all x (imp (NF.eq x y) (rn x y f)))) :=
++    all_mono classical x shuffle
+   have e : ThmK Ax (imp (all x (imp (NF.eq x y) (rn x y f)))
+-      (imp (ex x (NF.eq x y)) (ex x (rn x y f)))) := all_imp_ex x _ _
++      (imp (ex x (NF.eq x y)) (ex x (rn x y f)))) := all_imp_ex classical x _ _
+   have elim : ThmK Ax (imp (ex x (rn x y f)) (rn x y f)) :=
+     ex_elim x (eqFree_rn x y f hf) (not_occurs_rn hxy f (qf_bound hq))
+-  apply ded1
++  apply ded1 classical
+   exact .mp (.ax elim) (.mp (.mp (.ax e) (.mp (.ax g) h0)) (.ax (.rho1 x y)))
+ 
+ /-- Alpha-renaming of a binder to a fresh label, both directions. -/
+@@ -294,7 +189,7 @@ theorem alpha_fwd {x y : Nat} (hxy : y ≠ x) {f : NF} (hq : QF f) (hf : EqFree
+     simp only [Occurs]; intro o; cases o with
+     | inl o => exact hxy o
+     | inr o => exact hy o
+-  exact syl (vac_of_not_occurs y _ hf hyo) (all_mono y (spec hxy hq hf))
++  exact syl classical (vac_of_not_occurs y _ hf hyo) (all_mono classical y (spec hxy hq hf))
+ 
+ theorem qf_rn (x y : Nat) : ∀ f : NF, QF f → QF (rn x y f)
+   | rel _ _, _ => trivial
+@@ -312,7 +207,7 @@ theorem alpha_bwd {x y : Nat} (hxy : y ≠ x) {f : NF} (hq : QF f) (hf : EqFree
+     simp only [Occurs]; intro o; cases o with
+     | inl o => exact hxy o.symm
+     | inr o => exact not_occurs_rn hxy f (qf_bound hq) o
+-  exact syl (vac_of_not_occurs x _ (eqFree_rn x y f hf) hxo) (all_mono x s)
++  exact syl classical (vac_of_not_occurs x _ (eqFree_rn x y f hf) hxo) (all_mono classical x s)
+ 
+ #print axioms spec
+ #print axioms alpha_bwd
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
+index e7fa0c278a..b0d14de08d 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
+@@ -4,11 +4,14 @@ import BusyBeaver.ZFC.TarskiCalculus
+ /-!
+ Derived rules of the machines' Tarski calculus.
+ 
+-Everything here is relative to a hypothesis `hC` that the theorem predicate
+-`Thm Ax` is classical for `imp`/`bot` (K, S, Peirce and ex falso under MP).
+-`Lukasiewicz.lean` and `Tarski.classical` discharge that hypothesis from the
+-row `rho8` alone; keeping it abstract here separates the propositional search
+-certificates from the quantifier argument.
++The propositional and quantifier rules below hold for any theorem predicate `T`
++that is classical for `imp`/`bot` (`hC`: K, S, Peirce and ex falso under MP) and,
++for the quantifier rules, has the rows of `Rows` (generalization, rho1–rho7 and
++atomic membership vacuity). Both the Tarski calculus `Thm` and the restricted
++calculus `KThmK.ThmK` are instances, so these proofs are shared. `Lukasiewicz.lean`
++and `Tarski.classical` discharge `hC` from the row `rho8` alone; keeping it
++abstract here separates the propositional search certificates from the
++quantifier argument.
+ 
+ Main results:
+ 
+@@ -24,116 +27,155 @@ namespace SetTheory.BusyBeaver.ZFC.Tarski
+ 
+ open NF Kalmar
+ 
+-variable {Ax : NF → Prop}
++/-- The quantifier and atomic rows shared by `Thm` and the restricted calculus `ThmK`
++(everything but equality vacuity, which the two calculi grant at different binders). -/
++class Rows (T : NF → Prop) : Prop where
++  gen (i : Nat) {a : NF} : T a → T (all i a)
++  rho2 (i : Nat) (b c : NF) : T (imp (all i (imp b c)) (imp (all i b) (all i c)))
++  rho4 (i j : Nat) (c : NF) : T (imp (all i (all j c)) (all j (all i c)))
++  rho6 (i : Nat) (b : NF) : T (imp (ex i (all i b)) b)
++  rho1 (i j : Nat) : T (ex i (NF.eq i j))
++  rho7 (a b c : Nat) : T (imp (NF.eq c a) (imp (NF.eq c b) (NF.eq a b)))
++  rho5 (a b c : Nat) : T (imp (NF.eq c a) (imp (rel c b) (rel a b)))
++  rho3 (a b c : Nat) : T (imp (NF.eq a b) (imp (rel c a) (rel c b)))
++  vacRel (a b c : Nat) : c ≠ a → c ≠ b → T (imp (rel a b) (all c (rel a b)))
++
++instance {Ax : NF → Prop} : Rows (Thm Ax) where
++  gen := .gen
++  rho2 := .rho2
++  rho4 := .rho4
++  rho6 := .rho6
++  rho1 := .rho1
++  rho7 := .rho7
++  rho5 := .rho5
++  rho3 := .rho3
++  vacRel := .vacRel
++
++variable {Ax : NF → Prop} {T : NF → Prop}
+ 
+ /-- Hypothesis `k` of a list, as a derivation. -/
+-theorem h0 {G : List NF} {a : NF} : Der NF.imp (Thm Ax) (a :: G) a := .hyp (List.mem_cons_self ..)
+-theorem h1 {G : List NF} {a b : NF} : Der NF.imp (Thm Ax) (b :: a :: G) a :=
++theorem h0 {G : List NF} {a : NF} : Der NF.imp T (a :: G) a := .hyp (List.mem_cons_self ..)
++theorem h1 {G : List NF} {a b : NF} : Der NF.imp T (b :: a :: G) a :=
+   .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
+-theorem h2 {G : List NF} {a b c : NF} : Der NF.imp (Thm Ax) (c :: b :: a :: G) a :=
++theorem h2 {G : List NF} {a b c : NF} : Der NF.imp T (c :: b :: a :: G) a :=
+   .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
+ 
+ section PropLayer
+ 
+-variable (hC : Classical NF.imp NF.bot (Thm Ax))
++variable (hC : Classical NF.imp NF.bot T)
+ include hC
+ 
+ /-- Derivations from hypotheses discharge into theorems. -/
+-theorem of_der {G : List NF} {a : NF} (d : Der NF.imp (Thm Ax) G a)
+-    (hG : ∀ x, x ∈ G → Thm Ax x) : Thm Ax a :=
++theorem of_der {G : List NF} {a : NF} (d : Der NF.imp T G a)
++    (hG : ∀ x, x ∈ G → T x) : T a :=
+   d.sound hC hG
+ 
+-theorem thm_of_der0 {a : NF} (d : Der NF.imp (Thm Ax) [] a) : Thm Ax a :=
++theorem thm_of_der0 {a : NF} (d : Der NF.imp T [] a) : T a :=
+   of_der hC d (fun _ hx => absurd hx List.not_mem_nil)
+ 
+ /-- Two-hypothesis deduction. -/
+-theorem ded2 {a b c : NF} (d : Der NF.imp (Thm Ax) [b, a] c) : Thm Ax (imp a (imp b c)) :=
++theorem ded2 {a b c : NF} (d : Der NF.imp T [b, a] c) : T (imp a (imp b c)) :=
+   thm_of_der0 hC (deduction hC (deduction hC d))
+ 
+-theorem ded1 {a c : NF} (d : Der NF.imp (Thm Ax) [a] c) : Thm Ax (imp a c) :=
++theorem ded1 {a c : NF} (d : Der NF.imp T [a] c) : T (imp a c) :=
+   thm_of_der0 hC (deduction hC d)
+ 
+-theorem ded3 {a b c d : NF} (dd : Der NF.imp (Thm Ax) [c, b, a] d) :
+-    Thm Ax (imp a (imp b (imp c d))) :=
++theorem ded3 {a b c d : NF} (dd : Der NF.imp T [c, b, a] d) :
++    T (imp a (imp b (imp c d))) :=
+   thm_of_der0 hC (deduction hC (deduction hC (deduction hC dd)))
+ 
+-theorem syl {a b c : NF} (hab : Thm Ax (imp a b)) (hbc : Thm Ax (imp b c)) :
+-    Thm Ax (imp a c) :=
++theorem syl {a b c : NF} (hab : T (imp a b)) (hbc : T (imp b c)) : T (imp a c) :=
+   ded1 hC (.mp (.ax hbc) (.mp (.ax hab) h0))
+ 
+ /-- `(a → b) → (¬b → ¬a)` -/
+-theorem contra_thm (a b : NF) : Thm Ax (imp (imp a b) (imp (neg b) (neg a))) :=
++theorem contra_thm (a b : NF) : T (imp (imp a b) (imp (neg b) (neg a))) :=
+   ded3 hC (.mp h1 (.mp h2 h0))
+ 
+-theorem contra {a b : NF} (h : Thm Ax (imp a b)) : Thm Ax (imp (neg b) (neg a)) :=
++theorem contra {a b : NF} (h : T (imp a b)) : T (imp (neg b) (neg a)) :=
+   hC.mp (contra_thm hC a b) h
+ 
+-theorem dne (a : NF) : Thm Ax (imp (neg (neg a)) a) := by
++theorem dne (a : NF) : T (imp (neg (neg a)) a) := by
+   -- Peirce at `bot`: from `¬a → a`, which `¬¬a` and ex falso supply.
+   apply ded1 hC
+-  have inner : Der NF.imp (Thm Ax) [neg (neg a)] (imp (imp a NF.bot) a) :=
++  have inner : Der NF.imp T [neg (neg a)] (imp (imp a NF.bot) a) :=
+     deduction hC (.mp (.ax (hC.efq a)) (.mp h1 h0))
+   exact .mp (.ax (hC.peirce a NF.bot)) inner
+ 
+-theorem dni (a : NF) : Thm Ax (imp a (neg (neg a))) :=
++theorem dni (a : NF) : T (imp a (neg (neg a))) :=
+   ded2 hC (.mp h0 h1)
+ 
+ /-- Classical contraposition in the reverse direction. -/
+-theorem contra_rev {a b : NF} (h : Thm Ax (imp (neg a) (neg b))) : Thm Ax (imp b a) := by
++theorem contra_rev {a b : NF} (h : T (imp (neg a) (neg b))) : T (imp b a) := by
+   have h' := contra hC h
+   exact syl hC (syl hC (dni hC b) h') (dne hC a)
+ 
+ /-- Case split: `(¬a → c) → ((b → c) → ((a → b) → c))`. -/
+ theorem imp_cases (a b c : NF) :
+-    Thm Ax (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
++    T (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
+   apply ded3 hC
+   -- hypotheses: (¬a → c), (b → c), (a → b); goal c, by Peirce at bot on c.
+-  have inner : Der NF.imp (Thm Ax) [neg c, imp a b, imp b c, imp (neg a) c] c := by
+-    have na : Der NF.imp (Thm Ax) [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
++  have inner : Der NF.imp T [neg c, imp a b, imp b c, imp (neg a) c] c := by
++    have na : Der NF.imp T [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
+       deduction hC (.mp (Der.hyp (a := neg c) (by simp))
+         (.mp (Der.hyp (a := imp b c) (by simp)) (.mp (Der.hyp (a := imp a b) (by simp)) h0)))
+     exact .mp (Der.hyp (a := imp (neg a) c) (by simp)) na
+   exact .mp (.ax (hC.peirce c NF.bot)) (deduction hC inner)
+ 
++theorem vac_bot (i : Nat) : T (imp NF.bot (all i NF.bot)) := hC.efq _
++
+ end PropLayer
+ 
+ /-! ## Quantifier basics -/
+ 
+ section Quant
+ 
+-variable (hC : Classical NF.imp NF.bot (Thm Ax))
++variable (hC : Classical NF.imp NF.bot T) [R : Rows T]
+ include hC
+ 
+-theorem all_mono (i : Nat) {a b : NF} (h : Thm Ax (imp a b)) :
+-    Thm Ax (imp (all i a) (all i b)) :=
+-  hC.mp (.rho2 i a b) (.gen i h)
++theorem all_mono (i : Nat) {a b : NF} (h : T (imp a b)) : T (imp (all i a) (all i b)) :=
++  hC.mp (R.rho2 i a b) (R.gen i h)
+ 
+-theorem ex_mono (i : Nat) {a b : NF} (h : Thm Ax (imp a b)) :
+-    Thm Ax (imp (ex i a) (ex i b)) :=
++theorem ex_mono (i : Nat) {a b : NF} (h : T (imp a b)) : T (imp (ex i a) (ex i b)) :=
+   contra hC (all_mono hC i (contra hC h))
+ 
+ /-- The B axiom of each quantifier: `a → ∀i ∃i a`. -/
+-theorem b_axiom (i : Nat) (a : NF) : Thm Ax (imp a (all i (ex i a))) := by
+-  have h6 : Thm Ax (imp (ex i (all i (neg a))) (neg a)) := .rho6 i (neg a)
+-  have h' : Thm Ax (imp a (neg (ex i (all i (neg a))))) :=
++theorem b_axiom (i : Nat) (a : NF) : T (imp a (all i (ex i a))) := by
++  have h6 : T (imp (ex i (all i (neg a))) (neg a)) := R.rho6 i (neg a)
++  have h' : T (imp a (neg (ex i (all i (neg a))))) :=
+     syl hC (dni hC a) (contra hC h6)
+   -- ¬ ex i (∀i ¬a) = ¬¬ ∀i ¬∀i ¬a, and ∀i ¬∀i ¬a = ∀i ∃i a.
+-  have := syl hC h' (dne hC (all i (neg (all i (neg a)))))
+-  exact this
++  exact syl hC h' (dne hC (all i (neg (all i (neg a)))))
+ 
+ /-- If `a → ∀i a` then `∃i a → a`. -/
+-theorem ex_elim_of_vac {i : Nat} {a : NF} (h : Thm Ax (imp a (all i a))) :
+-    Thm Ax (imp (ex i a) a) :=
+-  syl hC (ex_mono hC i h) (.rho6 i a)
++theorem ex_elim_of_vac {i : Nat} {a : NF} (h : T (imp a (all i a))) : T (imp (ex i a) a) :=
++  syl hC (ex_mono hC i h) (R.rho6 i a)
+ 
+ /-- If `a → ∀i a` then `¬a → ∀i ¬a`. -/
+-theorem vac_neg {i : Nat} {a : NF} (h : Thm Ax (imp a (all i a))) :
+-    Thm Ax (imp (neg a) (all i (neg a))) := by
+-  have e := ex_elim_of_vac hC h
++theorem vac_neg {i : Nat} {a : NF} (h : T (imp a (all i a))) :
++    T (imp (neg a) (all i (neg a))) :=
+   -- ¬a → ¬∃i a = ¬¬∀i¬a → ∀i¬a
+-  exact syl hC (contra hC e) (dne hC (all i (neg a)))
++  syl hC (contra hC (ex_elim_of_vac hC h)) (dne hC (all i (neg a)))
++
++/-- Vacuity for an implication from vacuity of its two sides. -/
++theorem vac_imp {i : Nat} {a b : NF} (ha : T (imp a (all i a))) (hb : T (imp b (all i b))) :
++    T (imp (imp a b) (all i (imp a b))) := by
++  have hna : T (imp (neg a) (all i (imp a b))) :=
++    syl hC (vac_neg hC ha) (all_mono hC i (ded2 hC (.mp (.ax (hC.efq b)) (.mp h1 h0))))
++  have hbb : T (imp b (all i (imp a b))) :=
++    syl hC hb (all_mono hC i (hC.k b a))
++  exact hC.mp (hC.mp (imp_cases hC a b (all i (imp a b))) hna) hbb
++
++/-- Vacuity under a quantifier, by commuting the two. -/
++theorem vac_all {i j : Nat} {a : NF} (ha : T (imp a (all i a))) :
++    T (imp (all j a) (all i (all j a))) :=
++  syl hC (all_mono hC j ha) (R.rho4 j i a)
++
++end Quant
+ 
+-theorem vac_bot (i : Nat) : Thm Ax (imp NF.bot (all i NF.bot)) := hC.efq _
++section Fresh
++
++variable (hC : Classical NF.imp NF.bot (Thm Ax))
++include hC
+ 
+ /-- Vacuity for every formula not containing the label. -/
+ theorem vac_of_not_occurs (i : Nat) :
+@@ -141,17 +183,9 @@ theorem vac_of_not_occurs (i : Nat) :
+   | rel a b, h => .vacRel a b i (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+   | NF.eq a b, h => .vacEq a b i (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+   | NF.bot, _ => vac_bot hC i
+-  | imp a b, h => by
+-      have ha := vac_of_not_occurs i a (fun o => h (Or.inl o))
+-      have hb := vac_of_not_occurs i b (fun o => h (Or.inr o))
+-      have hna : Thm Ax (imp (neg a) (all i (imp a b))) :=
+-        syl hC (vac_neg hC ha) (all_mono hC i (ded2 hC (.mp (.ax (hC.efq b)) (.mp h1 h0))))
+-      have hbb : Thm Ax (imp b (all i (imp a b))) :=
+-        syl hC hb (all_mono hC i (hC.k b a))
+-      exact hC.mp (hC.mp (imp_cases hC a b (all i (imp a b))) hna) hbb
+-  | all j a, h => by
+-      have ha := vac_of_not_occurs i a (fun o => h (Or.inr o))
+-      exact syl hC (all_mono hC j ha) (.rho4 j i a)
++  | imp a b, h => vac_imp hC (vac_of_not_occurs i a (fun o => h (Or.inl o)))
++      (vac_of_not_occurs i b (fun o => h (Or.inr o)))
++  | all _ a, h => vac_all hC (vac_of_not_occurs i a (fun o => h (Or.inr o)))
+ 
+ /-- `∃i a → a` when `i` does not occur in `a`. -/
+ theorem ex_elim (i : Nat) {a : NF} (h : ¬ Occurs i a) : Thm Ax (imp (ex i a) a) :=
+@@ -178,6 +212,6 @@ theorem eq_trans (x y z : Nat) : Thm Ax (imp (NF.eq x y) (imp (NF.eq y z) (NF.eq
+   apply ded2 hC
+   exact .mp (.mp (.ax (.rho7 x z y)) (.mp (.ax (eq_symm hC x y)) h1)) h0
+ 
+-end Quant
++end Fresh
+ 
+ end SetTheory.BusyBeaver.ZFC.Tarski
+diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean
+index 2295d5ef31..673a564fc9 100644
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean
+@@ -144,14 +144,16 @@ theorem rn_self (x : Nat) : ∀ f : NF, rn x x f = f
+ 
+ /-! ## Leibniz's law -/
+ 
+-variable {Ax : NF → Prop}
++variable {Ax : NF → Prop} {T : NF → Prop}
+ 
+-theorem rel_L (u v j : Nat) : Thm Ax (imp (NF.eq u v) (imp (rel u j) (rel v j))) := .rho5 v j u
+-theorem rel_R (u v i : Nat) : Thm Ax (imp (NF.eq u v) (imp (rel i u) (rel i v))) := .rho3 u v i
++theorem rel_L [R : Rows T] (u v j : Nat) : T (imp (NF.eq u v) (imp (rel u j) (rel v j))) :=
++  R.rho5 v j u
++theorem rel_R [R : Rows T] (u v i : Nat) : T (imp (NF.eq u v) (imp (rel i u) (rel i v))) :=
++  R.rho3 u v i
+ 
+-theorem eq_L (u v j : Nat) : Thm Ax (imp (NF.eq u v) (imp (NF.eq u j) (NF.eq v j))) :=
++theorem eq_L [R : Rows T] (u v j : Nat) : T (imp (NF.eq u v) (imp (NF.eq u j) (NF.eq v j))) :=
+   -- rho7: u = v → (u = j → v = j)
+-  .rho7 v j u
++  R.rho7 v j u
+ 
+ 
+ /-- A label strictly above every label of a formula. -/
+@@ -181,45 +183,65 @@ theorem not_occurs_of_top_le {n : Nat} : ∀ {f : NF}, top f ≤ n → ¬ Occurs
+       | inl o => omega
+       | inr o => exact not_occurs_of_top_le (by omega) o
+ 
+-section Leibniz
++section Atoms
+ 
+-variable (hC : Classical NF.imp NF.bot (Thm Ax))
++variable (hC : Classical NF.imp NF.bot T)
+ include hC
+ 
+ /-- Rewriting both places of a two-place atom along `x = y`. -/
+ theorem atom_subst (P : Nat → Nat → NF)
+-    (hL : ∀ u v j, Thm Ax (imp (NF.eq u v) (imp (P u j) (P v j))))
+-    (hR : ∀ u v i, Thm Ax (imp (NF.eq u v) (imp (P i u) (P i v))))
+-    (x y i j : Nat) : Thm Ax (imp (NF.eq x y) (imp (P i j) (P (rv x y i) (rv x y j)))) := by
+-  have step1 : Thm Ax (imp (NF.eq x y) (imp (P i j) (P (rv x y i) j))) := by
++    (hL : ∀ u v j, T (imp (NF.eq u v) (imp (P u j) (P v j))))
++    (hR : ∀ u v i, T (imp (NF.eq u v) (imp (P i u) (P i v))))
++    (x y i j : Nat) : T (imp (NF.eq x y) (imp (P i j) (P (rv x y i) (rv x y j)))) := by
++  have step1 : T (imp (NF.eq x y) (imp (P i j) (P (rv x y i) j))) := by
+     by_cases hi : i = x
+     · subst hi; simp only [rv, if_true]; exact hL i y j
+     · simp only [rv, hi, if_false]; exact ded2 hC h0
+-  have step2 : Thm Ax (imp (NF.eq x y) (imp (P (rv x y i) j) (P (rv x y i) (rv x y j)))) := by
++  have step2 : T (imp (NF.eq x y) (imp (P (rv x y i) j) (P (rv x y i) (rv x y j)))) := by
+     by_cases hj : j = x
+     · subst hj; simp only [rv, if_true]; exact hR j y _
+     · simp only [rv, hj, if_false]; exact ded2 hC h0
+   apply ded2 hC
+   exact .mp (.mp (.ax step2) h1) (.mp (.mp (.ax step1) h1) h0)
+ 
+-/-- The reverse rewriting, through symmetry of equality. -/
+-theorem atom_subst_rev (P : Nat → Nat → NF)
+-    (hL : ∀ u v j, Thm Ax (imp (NF.eq u v) (imp (P u j) (P v j))))
+-    (hR : ∀ u v i, Thm Ax (imp (NF.eq u v) (imp (P i u) (P i v))))
+-    (x y i j : Nat) : Thm Ax (imp (NF.eq x y) (imp (P (rv x y i) (rv x y j)) (P i j))) := by
+-  have step1 : Thm Ax (imp (NF.eq y x) (imp (P (rv x y i) (rv x y j)) (P i (rv x y j)))) := by
++/-- The reverse rewriting, through symmetry of equality (`hs`). -/
++theorem atom_subst_rev (hs : ∀ x y, T (imp (NF.eq x y) (NF.eq y x))) (P : Nat → Nat → NF)
++    (hL : ∀ u v j, T (imp (NF.eq u v) (imp (P u j) (P v j))))
++    (hR : ∀ u v i, T (imp (NF.eq u v) (imp (P i u) (P i v))))
++    (x y i j : Nat) : T (imp (NF.eq x y) (imp (P (rv x y i) (rv x y j)) (P i j))) := by
++  have step1 : T (imp (NF.eq y x) (imp (P (rv x y i) (rv x y j)) (P i (rv x y j)))) := by
+     by_cases hi : i = x
+     · subst hi; simp only [rv, if_true]; exact hL y i _
+     · simp only [rv, hi, if_false]; exact ded2 hC h0
+-  have step2 : Thm Ax (imp (NF.eq y x) (imp (P i (rv x y j)) (P i j))) := by
++  have step2 : T (imp (NF.eq y x) (imp (P i (rv x y j)) (P i j))) := by
+     by_cases hj : j = x
+     · subst hj; simp only [rv, if_true]; exact hR y j i
+     · simp only [rv, hj, if_false]; exact ded2 hC h0
+   apply ded2 hC
+-  have hyx : Der NF.imp (Thm Ax) [P (rv x y i) (rv x y j), NF.eq x y] (NF.eq y x) :=
+-    .mp (.ax (eq_symm hC x y)) h1
++  have hyx : Der NF.imp T [P (rv x y i) (rv x y j), NF.eq x y] (NF.eq y x) :=
++    .mp (.ax (hs x y)) h1
+   exact .mp (.mp (.ax step2) hyx) (.mp (.mp (.ax step1) hyx) h0)
+ 
++/-- Object-level existential monotonicity: `∀i(a → b) → (∃i a → ∃i b)`. -/
++theorem all_imp_ex [R : Rows T] (i : Nat) (a b : NF) :
++    T (imp (all i (imp a b)) (imp (ex i a) (ex i b))) := by
++  have c1 : T (imp (all i (imp a b)) (all i (imp (neg b) (neg a)))) :=
++    all_mono hC i (contra_thm hC a b)
++  -- ∀i(a→b) → (∀i¬b → ∀i¬a), then contrapose the inner implication.
++  have c3 : T (imp (all i (imp a b)) (imp (all i (neg b)) (all i (neg a)))) :=
++    syl hC c1 (R.rho2 i (neg b) (neg a))
++  apply ded2 hC
++  -- hypotheses: ∀i(a→b), ∃i a = ¬∀i¬a; goal ∃i b = ¬∀i¬b
++  apply deduction hC
++  exact .mp h1 (.mp (.mp (.ax c3) h2) h0)
++
++end Atoms
++
++section Leibniz
++
++variable (hC : Classical NF.imp NF.bot (Thm Ax))
++include hC
++
+ theorem eq_R (u v i : Nat) : Thm Ax (imp (NF.eq u v) (imp (NF.eq i u) (NF.eq i v))) := by
+   apply ded2 hC
+   exact .mp (.mp (.ax (eq_trans hC i u v)) h0) h1
+@@ -230,11 +252,11 @@ theorem leibniz (x y : Nat) :
+       Thm Ax (imp (NF.eq x y) (imp f (rn x y f))) ∧
+       Thm Ax (imp (NF.eq x y) (imp (rn x y f) f))
+   | rel i j, _, _ =>
+-      ⟨atom_subst hC rel (rel_L (Ax := Ax)) (rel_R (Ax := Ax)) x y i j,
+-       atom_subst_rev hC rel (rel_L (Ax := Ax)) (rel_R (Ax := Ax)) x y i j⟩
++      ⟨atom_subst hC rel (rel_L (T := Thm Ax)) (rel_R (T := Thm Ax)) x y i j,
++       atom_subst_rev hC (eq_symm hC) rel (rel_L (T := Thm Ax)) (rel_R (T := Thm Ax)) x y i j⟩
+   | NF.eq i j, _, _ =>
+-      ⟨atom_subst hC NF.eq (eq_L (Ax := Ax)) (eq_R hC) x y i j,
+-       atom_subst_rev hC NF.eq (eq_L (Ax := Ax)) (eq_R hC) x y i j⟩
++      ⟨atom_subst hC NF.eq (eq_L (T := Thm Ax)) (eq_R hC) x y i j,
++       atom_subst_rev hC (eq_symm hC) NF.eq (eq_L (T := Thm Ax)) (eq_R hC) x y i j⟩
+   | NF.bot, _, _ => ⟨ded2 hC h0, ded2 hC h0⟩
+   | imp a b, hx, hy => by
+       have ha := leibniz x y a (fun h => hx (Or.inl h)) (fun h => hy (Or.inl h))
+@@ -266,19 +288,6 @@ theorem leibniz (x y : Nat) :
+ 
+ /-! ## Specialization and alpha-renaming -/
+ 
+-/-- Object-level existential monotonicity: `∀i(a → b) → (∃i a → ∃i b)`. -/
+-theorem all_imp_ex (i : Nat) (a b : NF) :
+-    Thm Ax (imp (all i (imp a b)) (imp (ex i a) (ex i b))) := by
+-  have c1 : Thm Ax (imp (all i (imp a b)) (all i (imp (neg b) (neg a)))) :=
+-    all_mono hC i (contra_thm hC a b)
+-  have c2 := Thm.rho2 (Ax := Ax) i (neg b) (neg a)
+-  -- ∀i(a→b) → (∀i¬b → ∀i¬a), then contrapose the inner implication.
+-  have c3 : Thm Ax (imp (all i (imp a b)) (imp (all i (neg b)) (all i (neg a)))) := syl hC c1 c2
+-  apply ded2 hC
+-  -- hypotheses: ∀i(a→b), ∃i a = ¬∀i¬a; goal ∃i b = ¬∀i¬b
+-  apply deduction hC
+-  exact .mp h1 (.mp (.mp (.ax c3) h2) h0)
+-
+ /-- Specialization: `∀x φ → φ[y/x]` when neither label is rebound and `y ≠ x`. -/
+ theorem spec {x y : Nat} (hxy : y ≠ x) {f : NF} (hx : ¬ Bound x f) (hy : ¬ Bound y f) :
+     Thm Ax (imp (all x f) (rn x y f)) := by
