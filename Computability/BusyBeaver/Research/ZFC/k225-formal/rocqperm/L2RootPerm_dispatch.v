@@ -10,35 +10,30 @@ Proof.
 Qed.
 
 (* selector >= 1: decrement, run the rest of the dispatch, break out of the switch *)
+Ltac disp_pos :=
+  intros H3 H [-> | ->];
+  [ eapply sem_car_break1; [reflexivity|];
+    eapply sem_cdr_break with (k := 0); [reflexivity | apply sem_decnz_pos; [lia | exact H3] |];
+    eapply sem_cdr_break with (k := 0); [reflexivity | exact H | apply sem_breakS]
+  | eapply sem_car_halt; [reflexivity|];
+    eapply sem_cdr_halt; [reflexivity | apply sem_decnz_pos; [lia | exact H3] |];
+    eapply sem_car_halt; [reflexivity | exact H] ].
+
+(* selector 0: take the case's own body *)
+Ltac disp_zero :=
+  intros H3 m' H; eapply sem_cdr_normal; [reflexivity | | exact H];
+  eapply sem_car_break1; [reflexivity | apply sem_decnz_zero, H3].
+
 Lemma disp_1 m v x m' : get m 3 = S v -> sem (ENode 144) (set m 3 v) x m' ->
   (x = XNormal \/ x = XHalt) -> sem (ENode 141) m x m'.
-Proof.
-  intros H3 H [-> | ->].
-  - eapply sem_car_break1; [reflexivity|].
-    eapply sem_cdr_break with (k := 0); [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_cdr_break with (k := 0); [reflexivity | exact H | apply sem_breakS].
-  - eapply sem_car_halt; [reflexivity|].
-    eapply sem_cdr_halt; [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_car_halt; [reflexivity | exact H].
-Qed.
+Proof. disp_pos. Qed.
 
 Lemma disp_drop m : get m 3 = 0 -> forall m', sem (ENode 121) m XNormal m' -> sem (ENode 144) m XNormal m'.
-Proof.
-  intros H3 m' H. eapply sem_cdr_normal; [reflexivity | | exact H].
-  eapply sem_car_break1; [reflexivity | apply sem_decnz_zero, H3].
-Qed.
+Proof. disp_zero. Qed.
 
 Lemma disp_2 m v x m' : get m 3 = S v -> sem (ENode 147) (set m 3 v) x m' ->
   (x = XNormal \/ x = XHalt) -> sem (ENode 144) m x m'.
-Proof.
-  intros H3 H [-> | ->].
-  - eapply sem_car_break1; [reflexivity|].
-    eapply sem_cdr_break with (k := 0); [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_cdr_break with (k := 0); [reflexivity | exact H | apply sem_breakS].
-  - eapply sem_car_halt; [reflexivity|].
-    eapply sem_cdr_halt; [reflexivity | apply sem_decnz_pos; [lia | exact H3] |].
-    eapply sem_car_halt; [reflexivity | exact H].
-Qed.
+Proof. disp_pos. Qed.
 
 (* mp() reads its own field: node 484 = (read_p1, mp body 150) *)
 Lemma mp484 m : get m 6 = 0 -> get m 7 = 0 -> sem (ENode 484) m XNormal
@@ -53,10 +48,7 @@ Proof.
 Qed.
 
 Lemma disp_mp m : get m 3 = 0 -> forall m', sem (ENode 484) m XNormal m' -> sem (ENode 147) m XNormal m'.
-Proof.
-  intros H3 m' H. eapply sem_cdr_normal; [reflexivity | | exact H].
-  eapply sem_car_break1; [reflexivity | apply sem_decnz_zero, H3].
-Qed.
+Proof. disp_zero. Qed.
 
 Lemma disp_ax m v m' : get m 3 = S v -> sem (ENode 236) (set m 3 v) XNormal m' -> sem (ENode 147) m XNormal m'.
 Proof.
