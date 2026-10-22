@@ -1,0 +1,48 @@
+Serial per-module check, 2026-10-21, Lean 4.32.0, one lean.exe at a time.
+
+Tree: the Lean sources of 406cb959dd (which already contain phase 14's Lean changes) with the
+13 files of lean/ in place. Relative to that tree, the only Lean differences of current main are
+the restored phase-14 KQ1Model.lean and QuotientModel.lean, which these files replace whole.
+
+Selection: the reverse import closure of KQHyp/KQ1Model (51 modules). A module was built when every
+import outside the selection was up to date (`lake build --no-build`); 26 modules were skipped
+because they also import machine-specific modules that were already stale in this checkout
+(KEndpoint215/217/218/219/221, the 240-254 binary/rotation/routing/prefix endpoints, WFTheory,
+Endpoint254, ProgramZF0, ZFCBoundPerm252, ChoiceCalibration254, BinaryZFC252, LogicalSeed246,
+the BusyBeaver.ZFC facade). None of the skipped modules uses a removed name (repository grep).
+
+One `lake build <module>` per line, in dependency order; rebuilt = modules Lake compiled.
+
+BusyBeaver.ZFC.KQHyp rc=0 rebuilt=1 3s
+BusyBeaver.ZFC.KQ1Model rc=0 rebuilt=1 3s
+BusyBeaver.ZFC.KQ1Separation rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.KQ1Power rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientModel rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientSeparation rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.KQ1Basic rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientBasic rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.SingletonInfinity rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.FiniteSets rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientPower rc=0 rebuilt=1 3s
+BusyBeaver.ZFC.KQ1Collect rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientCPGIC rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.WellFoundedPart rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.WFRelativization rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.WFModelCore rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.KQ1Replacement rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientReplacement rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.InductiveAttempts rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.QuotientZF0 rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.WFModel rc=0 rebuilt=1 3s
+BusyBeaver.ZFC.KLowerEqv rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.KQ1ZF rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.KLowerQHyp rc=0 rebuilt=1 4s
+BusyBeaver.ZFC.KEndpoint rc=0 rebuilt=1 4s
+DONE
+
+Assumption reports printed by the changed modules:
+  QuotientModel.sat_quotient          [propext, Classical.choice, Quot.sound]  (as recorded before)
+  QuotientModel.quotient_extensional  [propext, Classical.choice, Quot.sound]  (as recorded before)
+  QuotientModel.equalityFree_translate  no axioms
+  KQ1Model.sat_quotient / quotient_extensional  [propext, Quot.sound]
+  KQ1Model.equalityFree_translate  no axioms
