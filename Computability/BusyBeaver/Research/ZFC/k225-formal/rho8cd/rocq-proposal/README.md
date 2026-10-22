@@ -21,8 +21,9 @@ Checked here (Rocq 9.1.0 / rocq-stdlib 9.0.0, K230 reference at its pinned sourc
 * `DomRho8.v` 1.9 s and its user `ThmDom` 1.0 s, both closed under the global context.
 
 Not run: a fresh compile of the whole closure and recursive `coqchk` with these files in place.
-The Lean twins are maintained: `Lukasiewicz.lean` and `DominatedImplication.lean` are rendered by
-the same producer.
+The Lean twins are proposals too: the maintained `DominatedImplication.lean` is the peer's checked
+phase-eleven core, and the shared-basis Lean rendering (with `Lukasiewicz` as an adapter) is in
+`3a7a61ee97` / `49e99c5b7c`.
 
 [`shared-core/`](shared-core/README.md) supersedes both rows above with one shared derivation: a generic
 `DominatedCore.v` and two thin instances (`DomRho8.v`, `CD222.v`), 45,538 -> 15,360 bytes over the two
