@@ -46,9 +46,8 @@ theorem IsWO.congr {r r' : V → V → Prop} {P : V → Prop} (h : IsWO mem r P)
     fun x y z hx hy hz h1 h2 => (hr x z hx hz).1
       (h.trans x y z hx hy hz ((hr x y hx hy).2 h1) ((hr y z hy hz).2 h2)),
     fun x y hx hy => (h.total x y hx hy).imp (hr x y hx hy).1 (hr y x hy hx).1,
-    fun Z hne hZ => by
-      obtain ⟨m, hm, hmin⟩ := h.least Z hne hZ
-      exact ⟨m, hm, fun z hz => (hr m z (hZ m hm) (hZ z hz)).1 (hmin z hz)⟩⟩
+    fun Z hne hZ => (h.least Z hne hZ).imp fun m ⟨hm, hmin⟩ =>
+      ⟨hm, fun z hz => (hr m z (hZ m hm) (hZ z hz)).1 (hmin z hz)⟩⟩
 
 /-- The least element is unique. -/
 theorem IsWO.least_unique {r : V → V → Prop} {P : V → Prop} (h : IsWO mem r P) {Z m m' : V}
@@ -75,16 +74,10 @@ theorem wo_nat (hR : Regular mem) :
       · exact Or.inl (nat_transitive H z hz y h2 x h1)
       · exact Or.inl h1
     · exact h2
-  · rcases nat_linear H x hx y hy with h | h | h
-    · exact Or.inl (Or.inl h)
-    · exact Or.inl (Or.inr h)
-    · exact Or.inr (Or.inl h)
+  · exact (nat_linear H x hx y hy).elim (fun h => Or.inl (Or.inl h)) (Or.imp Or.inr Or.inl)
   · obtain ⟨m, hm, hmin⟩ := hR Z hne
-    refine ⟨m, hm, fun z hz => ?_⟩
-    rcases nat_linear H m (hZ m hm) z (hZ z hz) with h | h | h
-    · exact Or.inl h
-    · exact Or.inr h
-    · exact absurd ⟨z, h, hz⟩ hmin
+    exact ⟨m, hm, fun z hz => (nat_linear H m (hZ m hm) z (hZ z hz)).elim Or.inl fun h =>
+      h.elim Or.inr fun h => absurd ⟨z, h, hz⟩ hmin⟩
 
 /-- The members of members of members of `Z` (pair components live there). -/
 theorem comp_mem_uu {Z a b : V} (h : mem (kpair H a b) Z) :
@@ -102,9 +95,7 @@ theorem firsts_exists (Z : V) : ∃ A, ∀ a, mem a A ↔ ∃ b, mem (kpair H a 
     (fun _ => Z) (fun a => by
       simp only [NSat, nsat_pmemF H]
       simp (disch := omega) only [upd_same, upd_other]) (vunion H (vunion H Z))
-  exact ⟨A, fun a => by
-    rw [hA a]
-    exact ⟨fun h => h.2, fun ⟨b, hb⟩ => ⟨(comp_mem_uu H hb).1, b, hb⟩⟩⟩
+  exact ⟨A, fun a => (hA a).trans ⟨fun h => h.2, fun ⟨b, hb⟩ => ⟨(comp_mem_uu H hb).1, b, hb⟩⟩⟩
 
 /-- The second components of the pairs in `Z` with first component `a`. -/
 theorem fibre_exists (Z a : V) : ∃ B, ∀ b, mem b B ↔ mem (kpair H a b) Z := by
@@ -113,9 +104,7 @@ theorem fibre_exists (Z a : V) : ∃ B, ∀ b, mem b B ↔ mem (kpair H a b) Z :
       simp only [nsat_pmemF H]
       simp (disch := omega) only [upd_same, upd_other]
       rfl) (vunion H (vunion H Z))
-  exact ⟨B, fun b => by
-    rw [hB b]
-    exact ⟨fun h => h.2, fun h => ⟨(comp_mem_uu H h).2, h⟩⟩⟩
+  exact ⟨B, fun b => (hB b).trans ⟨fun h => h.2, fun h => ⟨(comp_mem_uu H h).2, h⟩⟩⟩
 
 /-- Pairs whose first component lies in `P1` and second in the fibre `P2 a`. -/
 def LexP (P1 : V → Prop) (P2 : V → V → Prop) (p : V) : Prop :=
@@ -127,12 +116,10 @@ def LexR (r1 : V → V → Prop) (r2 : V → V → V → Prop) (p q : V) : Prop 
 
 theorem lexR_iff {r1 : V → V → Prop} {r2 : V → V → V → Prop} (a b a' b' : V) :
     LexR H r1 r2 (kpair H a b) (kpair H a' b') ↔ ((r1 a a' ∧ a ≠ a') ∨ (a = a' ∧ r2 a b b')) := by
-  constructor
-  · rintro ⟨x, y, x', y', e1, e2, h⟩
-    obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e1
-    obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e2
-    exact h
-  · intro h; exact ⟨a, b, a', b', rfl, rfl, h⟩
+  refine ⟨fun ⟨x, y, x', y', e1, e2, h⟩ => ?_, fun h => ⟨a, b, a', b', rfl, rfl, h⟩⟩
+  obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e1
+  obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e2
+  exact h
 
 /-- **Lexicographic order.** A well-ordered class of first components, with a
 well-ordered fibre over each, gives a well-ordered class of pairs. -/
@@ -162,19 +149,15 @@ theorem wo_lex {P1 : V → Prop} {r1 : V → V → Prop} (h1 : IsWO mem r1 P1)
     rw [lexR_iff, lexR_iff]
     by_cases e : a = a'
     · subst e
-      rcases (h2 a ha).total b b' hb hb' with h | h
-      · exact Or.inl (Or.inr ⟨rfl, h⟩)
-      · exact Or.inr (Or.inr ⟨rfl, h⟩)
-    · rcases h1.total a a' ha ha' with h | h
-      · exact Or.inl (Or.inl ⟨h, e⟩)
-      · exact Or.inr (Or.inl ⟨h, fun e' => e e'.symm⟩)
+      exact ((h2 a ha).total b b' hb hb').imp (fun h => Or.inr ⟨rfl, h⟩) fun h => Or.inr ⟨rfl, h⟩
+    · exact (h1.total a a' ha ha').imp (fun h => Or.inl ⟨h, e⟩)
+        fun h => Or.inl ⟨h, fun e' => e e'.symm⟩
   · intro Z ⟨z0, hz0⟩ hZ
     obtain ⟨A, hA⟩ := firsts_exists H Z
     have hAP : ∀ a, mem a A → P1 a := fun a ha => by
       obtain ⟨b, hb⟩ := (hA a).1 ha
       obtain ⟨x, y, e, hx, -⟩ := hZ _ hb
-      rw [(kpair_inj H _ _ _ _ e).1]; exact hx
-    obtain ⟨a0, b0', -, -, -⟩ := hZ z0 hz0
+      rwa [(kpair_inj H _ _ _ _ e).1]
     obtain ⟨x0, y0, e0, -, -⟩ := hZ z0 hz0
     obtain ⟨a, ha, hamin⟩ := h1.least A ⟨x0, (hA x0).2 ⟨y0, e0 ▸ hz0⟩⟩ hAP
     obtain ⟨B, hB⟩ := fibre_exists H Z a
@@ -215,9 +198,8 @@ theorem wo_pull {PY PK : V → Prop} {Key : V → V → Prop} {rk : V → V → 
     exact ⟨m, (hKS' m).1 hm, fun k' hk' => hmin k' ((hKS' k').2 hk')⟩
   refine ⟨fun y hy => hlk y hy, ?_, ?_, ?_, ?_⟩
   · rintro y y' hy hy' ⟨k, hk, hk'⟩ ⟨k', hk2, hk2'⟩
-    have := hK.antisymm k k' (hkK y k hy hk) (hkK y' k' hy' hk2) (hk' k' hk2) (hk2' k hk)
-    subst this
-    exact huniq y y' k hy hy' hk hk2
+    obtain rfl := hK.antisymm k k' (hkK y k hy hk) (hkK y' k' hy' hk2) (hk' k' hk2) (hk2' k hk)
+    exact huniq y y' _ hy hy' hk hk2
   · rintro y y' y'' hy hy' hy'' ⟨k, hk, hk'⟩ ⟨k', hk2, hk2'⟩
     exact ⟨k, hk, fun k'' hk'' => hK.trans k k' k'' (hkK y k hy hk) (hkK y' k' hy' hk2)
       (hkK y'' k'' hy'' hk'') (hk' k' hk2) (hk2' k'' hk'')⟩
@@ -232,9 +214,8 @@ theorem wo_pull {PY PK : V → Prop} {Key : V → V → Prop} {rk : V → V → 
   · intro Z ⟨z0, hz0⟩ hZ
     obtain ⟨KS, hKS⟩ := hset Z hZ
     obtain ⟨k0, hk0⟩ := hex z0 (hZ z0 hz0)
-    obtain ⟨m, hm, hmin⟩ := hK.least KS ⟨k0, (hKS k0).2 ⟨z0, hz0, hk0⟩⟩ fun k hk => by
-      obtain ⟨y, hy, hky⟩ := (hKS k).1 hk
-      exact hkK y k (hZ y hy) hky
+    obtain ⟨m, hm, hmin⟩ := hK.least KS ⟨k0, (hKS k0).2 ⟨z0, hz0, hk0⟩⟩ fun k hk =>
+      let ⟨y, hy, hky⟩ := (hKS k).1 hk; hkK y k (hZ y hy) hky
     obtain ⟨y, hy, hmy⟩ := (hKS m).1 hm
     exact ⟨y, hy, fun z hz => ⟨m, hmy, fun k' hk' => hmin k' ((hKS k').2 ⟨z, hz, hk'⟩)⟩⟩
 
@@ -261,15 +242,11 @@ theorem wo_append {PA PB : V → Prop} {rA rB : V → V → Prop} (hA : IsWO mem
   · intro x y z _ _ _ h1 h2
     rcases h1 with ⟨hx, hy, h1⟩ | ⟨hx, hy⟩ | ⟨hx, hy, h1⟩ <;>
       rcases h2 with ⟨hy', hz, h2⟩ | ⟨hy', hz⟩ | ⟨hy', hz, h2⟩
-    · exact Or.inl ⟨hx, hz, hA.trans x y z hx hy hz h1 h2⟩
-    · exact Or.inr (Or.inl ⟨hx, hz⟩)
-    · exact Or.inr (Or.inl ⟨hx, hz⟩)
-    · exact (hdis y hy' hy).elim
-    · exact (hdis y hy' hy).elim
-    · exact Or.inr (Or.inl ⟨hx, hz⟩)
-    · exact (hdis y hy' hy).elim
-    · exact (hdis y hy' hy).elim
-    · exact Or.inr (Or.inr ⟨hx, hz, hB.trans x y z hx hy hz h1 h2⟩)
+    all_goals first
+      | exact Or.inr (Or.inl ⟨hx, hz⟩)
+      | exact (hdis y hy' hy).elim
+      | exact Or.inl ⟨hx, hz, hA.trans x y z hx hy hz h1 h2⟩
+      | exact Or.inr (Or.inr ⟨hx, hz, hB.trans x y z hx hy hz h1 h2⟩)
   · rintro x y (hx | hx) (hy | hy)
     · exact (hA.total x y hx hy).imp (fun h => Or.inl ⟨hx, hy, h⟩) (fun h => Or.inl ⟨hy, hx, h⟩)
     · exact Or.inl (Or.inr (Or.inl ⟨hx, hy⟩))
