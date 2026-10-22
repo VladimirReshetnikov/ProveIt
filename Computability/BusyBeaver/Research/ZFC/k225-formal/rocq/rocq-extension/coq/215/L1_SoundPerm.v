@@ -1,5 +1,5 @@
-(** k225-formal/rocqperm/L1_SoundPerm.v (SHA256 b31de84939e17f30f5bc2997983d8754ba64b891d9dda277477c7c1b3c5d9756) under namespace K215F. *)
-(** * L1_SoundPerm: if the 215's enumerator halts, then [thm222 1].
+(** k225-formal/rocqperm/L1_SoundPerm.v (SHA256 24da86a2195bb2cf74bdea06a9b1252f4ce7ebf5319dbb1ccc363c9d41e58080) under namespace K215F. *)
+(** * L1_SoundPerm: a halting step of the 215's enumerator yields [thm222 1].
 
     As L1_Sound222: the current formula, the cache and every entry of the stack stream are
     theorems (stream entries past the end read as 0 = truth). *)
@@ -35,9 +35,6 @@ Proof.
 Qed.
 
 Definition Inv (s : state) : Prop := thm222 (tw s) /\ thm222 (h s) /\ goodstack (ws s).
-
-Lemma Inv_s0 : Inv s0.
-Proof. repeat split; [exact W_true | exact W_true | exact good_0]. Qed.
 
 Lemma gate_thm a b c : thm222 (gate a b c).
 Proof.
@@ -90,9 +87,4 @@ Proof.
     + destruct (unP (ws s)); discriminate.
   - destruct (unP pl2). discriminate.
   - destruct (unP pl2) as [y pl3]. destruct (unP pl3). discriminate.
-Qed.
-
-Theorem enum_sound : enum_halts -> thm222 1.
-Proof.
-  intros [n [s [H1 H2]]]. exact (halt_step s (Inv_run n s0 s Inv_s0 H1) H2).
 Qed.

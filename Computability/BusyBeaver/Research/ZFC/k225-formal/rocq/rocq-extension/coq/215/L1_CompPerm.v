@@ -1,13 +1,13 @@
-(** k225-formal/rocqperm/L1_CompPerm.v (SHA256 f074df28539f5fe49dc0a8591a4408c88e343bf472f8c9a484f817a08f5c1f52) under namespace K215F. *)
-(** * L1_CompPerm: [thm222 1] implies that the 215's enumerator halts.
+(** k225-formal/rocqperm/L1_CompPerm.v (SHA256 a10f9816a93721869179a901ba64833751c6239bfda00e43b37ca56fb6528469) under namespace K215F. *)
+(** * L1_CompPerm: [thm222 1] compiles to a command list that halts the 215's enumerator.
 
     As L1_Comp222, for Source 159's commands: a derivation of [thm222] compiles directly to a command list
     by interpreting dominated implication in block contracts.  Block contract for a code X:
         [blk X L] :  for all T w,  exec L (T, w, 0, 0) is a halt or ends in (X, w, 0, 0).
     The counter is set from a cleared state by [J u = MP u] ([J 0] is empty); a dominated rho8
     leaf is [Discard; J u; AX(c; a - u, b); NIP^8; DROP; NIP^3]. The program
-    START_Y ++ Build_F ++ [DROP; NIP; NIP] halts from every retained state, and every candidate
-    number is reached unless the enumerator halts earlier. *)
+    START_Y ++ Build_F ++ [DROP; NIP; NIP] halts from every retained state; SeedPerm shows that
+    every candidate number is reached from the seed unless the enumerator halts earlier. *)
 From Coq Require Import Arith Lia Bool List.
 From K230L Require Import Codes230.
 From K215F Require Import Codes222 EnumPerm Thm222 DomRho8.
@@ -99,7 +99,7 @@ Proof.
   - exists 0, s. split; [reflexivity | exact E].
 Qed.
 
-(** ** Every candidate is reached (unless the enumerator halts earlier) *)
+(** ** Finishing a candidate (unless the enumerator halts earlier) *)
 Lemma step_pl s s' : enum_step s = Some s' ->
   pl s' <= (if Nat.eqb (pl s) 0 then np s else pred (pl s)) /\
   np s' = (if Nat.eqb (pl s) 0 then S (np s) else np s).
@@ -143,27 +143,6 @@ Proof.
         -- left. exact (halts_from_step s s1 E Hh).
         -- right. exists (S n), s2. cbn. rewrite E. split; [exact R|]. split; [exact P0|]. lia.
       * left. exists 0, s. split; [reflexivity | exact E].
-Qed.
-
-Lemma reach m : enum_halts \/ exists n s, run n s0 = Some s /\ pl s = 0 /\ np s = m.
-Proof.
-  induction m as [|m [Hh | [n [s [R [P0 N0]]]]]].
-  - right. exists 0, s0. repeat split.
-  - left. exact Hh.
-  - destruct (enum_step s) as [s1|] eqn:E.
-    + pose proof (step_pl s s1 E) as [H1 H2]. rewrite P0 in H1, H2. cbn in H1, H2.
-      destruct (drain (pl s1) s1 (le_n _)) as [[k [s2 [R2 H2']]] | [k [s2 [R2 [P2 N2]]]]].
-      * left. exists (n + S k), s2. split; [|exact H2'].
-        rewrite run_add, R. cbn. now rewrite E.
-      * right. exists (n + S k), s2. split; [rewrite run_add, R; cbn; now rewrite E|].
-        split; [exact P2 | lia].
-    + left. exists n, s. now split.
-Qed.
-
-Lemma halts_from_reach n s : run n s0 = Some s -> halts_from s -> enum_halts.
-Proof.
-  intros R [k [s' [R' H]]]. exists (n + k), s'. split; [|exact H].
-  rewrite run_add, R. exact R'.
 Qed.
 
 (** ** Facts used by the block computations *)
@@ -349,14 +328,4 @@ Proof.
   destruct (HL (gate (dd + 1) (hh + Y) 0) (ax_stack (dd + 1) hh (hh + Y) 0 dd t w)) as [-> | ->];
     [reflexivity|].
   unfold SUFFIX. rewrite ex_drop, ex_nip by lia. apply ex_nip1.
-Qed.
-
-Theorem enum_complete : thm222 1 -> enum_halts.
-Proof.
-  intro H. destruct (compile_direct 1 H) as [L HL].
-  set (N := enc_fields (fields (START 0)) (enc_tail (L ++ SUFFIX))).
-  destruct (reach N) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
-  apply (halts_from_reach n s R).
-  apply (run_first (START 0) (L ++ SUFFIX) s P0 N0).
-  apply program_halts. exact HL.
 Qed.
