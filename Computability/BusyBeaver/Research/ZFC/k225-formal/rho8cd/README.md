@@ -12,7 +12,8 @@ lists of lemmas, and renders them for both lanes:
   alone. `--core` renders it as
   [`Lean/BusyBeaver/ZFC/DominatedImplication.lean`](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean):
   any binary connective with a reflexive `below` relation closed under insertion into either operand.
-  Its six public theorems depend on no axioms. Two thin adapters use it: `DomRho8.lean` (codes, `≤`)
+  Its six public theorems depend on no axioms; a goal lemma that nothing else uses is inlined into
+  its public theorem (as phase eleven did by hand). Two thin adapters use it: `DomRho8.lean` (codes, `≤`)
   and the `Lukasiewicz` namespace of `Lukasiewicz.lean`, where `below` holds everywhere, so every row
   is restricted and the same derivation gives the unrestricted calculus its K, Peirce, S and
   composition (the shared-core proposal of batch 212, with K, Peirce and S folded into the search).

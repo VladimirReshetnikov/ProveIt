@@ -468,9 +468,22 @@ def render(rows, goals, mode, keep=''):
             need += [(g, n) for g, n in ((K, ['a', 'b']), (PEIRCE, ['a', 'b']), (S, ['a', 'b', 'c']))
                      if any(h == g for _, h in goals)]
     use = {}
+    # core: a goal's lemma that nothing else uses is inlined into its public theorem
+    premises = [p[1] for l in lemmas for p in l[3:5]]
+    goal_rows = [next(i for i, g in goals if g == goal) for goal, _ in need]
     for goal, vnames in need:
         i = next(i for i, g in goals if g == goal)
         assert not rows[i][3], 'a public statement has no side condition'
+        if mode == 'core' and names[i] not in premises and goal_rows.count(i) == 1:
+            s = match(rows[i][2], goal, {})
+            named = {v: rename(t, lambda w: Var(vnames[w])) for v, t in s.items()}
+            at = lambda x: rename(x, lambda v: named[v])
+            lemma = next(l for l in lemmas if l[0] == names[i])
+            major, minor = ((k, n, [at(a) for a in args], [(at(u), at(b)) for u, b in hb], z)
+                            for k, n, args, hb, z in lemma[3:5])
+            use[goal] = 'h.mp %s %s' % (syn.use(major, []), syn.use(minor, []))
+            body.remove(syn.lemma(*lemma))
+            continue
         use[goal] = '%s h %s' % (names[i], syn.instance(rows[i][2], goal, vnames)) if mode not in ('rocq', 'rocqcd') else \
             '%s %s' % (names[i], syn.instance(rows[i][2], goal, vnames))
     if mode == 'rocqcd':
