@@ -6,15 +6,15 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [current simplification check](../simplification/phase13/README.md) shares the
-implication proof between both calculi. Its primary scope is 184 project modules
-(the 179-module endpoint and five decoder-prefix modules) plus three API clients:
-36 fresh providers and 151 exact phase-twelve reuses. Both additional endpoint
-audits have zero warnings and their exact prior standard-axiom profiles. The new
-API clients separately check the axiom-free generic proof, numerical adapter and
-unchanged Lukasiewicz/Tarski interfaces. A compatibility check covers 68 project
-modules and two clients. The historical 204-module receipts below and the nine
-phase-nine site checks are unchanged.
+The [current simplification check](../simplification/phase14/README.md) shares
+derived-rule and profile proofs. Its primary scope is 183 project modules
+(the 178-module endpoint and five decoder-prefix modules) plus seven API clients.
+It retains 65 successful fresh compilations from the first attempt and 124 exact
+phase-thirteen providers; the retry freshly checks the corrected audit client
+and both endpoint clients. All endpoint profiles are unchanged and all client
+audits have zero warnings. A separate check covers 68 project modules and two
+compatibility clients. The historical 204-module receipts below and the nine
+phase-nine site checks are unchanged; the failed first audit client is preserved.
 
 The portable driver rebuilds the exact project import closure of
 `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit
@@ -38,7 +38,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 179 project modules
+the compiler trust boundary. The current closure contains 178 project modules
 and only the external `Init` boundary. It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 

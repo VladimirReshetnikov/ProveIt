@@ -1,0 +1,17 @@
+--- upstream/TarskiDerived.lean
++++ candidate/TarskiDerived.lean
+@@ -65,13 +65,8 @@
+ variable (hC : Classical NF.imp NF.bot T)
+ include hC
+ 
+-/-- Derivations from hypotheses discharge into theorems. -/
+-theorem of_der {G : List NF} {a : NF} (d : Der NF.imp T G a)
+-    (hG : ∀ x, x ∈ G → T x) : T a :=
+-  d.sound hC hG
+-
+ theorem thm_of_der0 {a : NF} (d : Der NF.imp T [] a) : T a :=
+-  of_der hC d (fun _ hx => absurd hx List.not_mem_nil)
++  d.sound hC (fun _ hx => absurd hx List.not_mem_nil)
+ 
+ /-- Two-hypothesis deduction. -/
+ theorem ded2 {a b c : NF} (d : Der NF.imp T [b, a] c) : T (imp a (imp b c)) :=

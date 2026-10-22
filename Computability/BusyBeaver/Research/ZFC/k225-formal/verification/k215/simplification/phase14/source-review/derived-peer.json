@@ -1,0 +1,96 @@
+{
+  "status": "PASS_SOURCE_ONLY_INDEPENDENT_CROSS_REVIEW",
+  "reviewer": "drop_contract",
+  "candidate_freeze": {
+    "path": "/tmp/k215-phase14-derived/freeze.json",
+    "sha256": "392d3c0c7e69ddb4a743800ffa62d41635f1b6ad528a9a7bee6c7ee1a8c18341",
+    "listed_files_rehashed": 36
+  },
+  "inputs": {
+    "/tmp/k215-phase14-derived/comparison.json": "cac61a2b792a72e153d14d534c0ae6e278c6616bfd1cfe1f2248227a712a8c30",
+    "/tmp/k215-phase14-derived/clients.json": "28fafa1160bbb422559ee213b38cc7a7ab4849cadb99d97b39872da920837af0",
+    "/tmp/k215-phase14-derived/inlining.diff": "ffc29b0748c9ec86fe66f4a2843d45e4850511a95d1bc915a8e0df2f22da740f",
+    "/tmp/k215-phase14-derived/README.md": "9ad709844d3644d696f08cfff2e8e904b8586cface6f732437ffe5add2c8bd7e"
+  },
+  "prior_upstream_review": {
+    "path": "/tmp/k215-upstream565-review/review.json",
+    "sha256": "c27279da1877cbc6f57d8f8cbd83a91611562bad99ead8f9506a61b0c1082e26"
+  },
+  "candidate_sources": [
+    {
+      "module": "BusyBeaver.ZFC.TarskiDerived",
+      "candidate": "/tmp/k215-phase14-derived/candidate/BusyBeaver/ZFC/TarskiDerived.lean",
+      "candidate_sha256": "af15c7f2946d2d2f335d540acc33f69afca4bd884cf4dfe7bfcbc323707e4b19",
+      "target": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+      "current_sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiLeibniz",
+      "candidate": "/tmp/k215-phase14-derived/candidate/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "candidate_sha256": "bf57b911ce313037bce71ef6f680a36bb54ce7be9d504d6533c612bd4d9831e7",
+      "target": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "current_sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KThmK",
+      "candidate": "/tmp/k215-phase14-derived/candidate/BusyBeaver/ZFC/KThmK.lean",
+      "candidate_sha256": "396779f2da512975580d8a34e322cd589fbf22c33018cfd5b389b99c4398b4dc",
+      "target": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean",
+      "current_sha256": "ecd29cd2e769841aa58f2d482a7c1fc994aea09f105c47a88b1e9be7057f2cb2"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEind222",
+      "candidate": "/tmp/k215-phase14-derived/candidate/BusyBeaver/ZFC/KEind222.lean",
+      "candidate_sha256": "090f7bbb58295d186f9dd10ee86041f8b65d2f4ebea6d496bafdd88f2d56b507",
+      "target": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "current_sha256": "1a825b843a2d1da11486ae428bdab5b64785615a7ce2edf3c1a9090078eda036"
+    }
+  ],
+  "typed_clients": [
+    {
+      "module": "DerivedRows14Api",
+      "source": "/tmp/k215-phase14-derived/clients/DerivedRows14Api.lean",
+      "sha256": "443566615356b7a4888fc427e47e699258f603df92b655c007865c024232dd49",
+      "reports": [
+        "DerivedRows14Api.deduction",
+        "DerivedRows14Api.vacuity",
+        "DerivedRows14Api.atomic_rewrite"
+      ]
+    },
+    {
+      "module": "ThmKDerived14Api",
+      "source": "/tmp/k215-phase14-derived/clients/ThmKDerived14Api.lean",
+      "sha256": "e8c8843673883dfb903f902aa6a081be11bec782734188f18502fda9da0ee8fe",
+      "reports": [
+        "ThmKDerived14Api.reflexivity",
+        "ThmKDerived14Api.leibniz",
+        "ThmKDerived14Api.specialization",
+        "ThmKDerived14Api.alpha"
+      ]
+    },
+    {
+      "module": "KEindDerived14Api",
+      "source": "/tmp/k215-phase14-derived/clients/KEindDerived14Api.lean",
+      "sha256": "c9552f693ba231640b60cdc1b67621836240e991e67d93ac60a41d4a40c64645",
+      "reports": [
+        "KEindDerived14Api.interpretation",
+        "KEindDerived14Api.completeness"
+      ]
+    }
+  ],
+  "ordinary_findings": [
+    "Read the complete current-to-candidate mathematical delta and all three clients; exact upstream bytes match ac61181dda, except the separately verified one-use of_der substitution.",
+    "Rows supplies exactly nine existing logical/atomic constructors; it excludes equality vacuity. Both concrete instances merely supply existing constructors.",
+    "Shared vac_imp and vac_all retain their input vacuity premises. The ordinary calculus retains vacEq; ThmK retains EqFree induction and its equality case remains impossible.",
+    "Atomic reverse transport requires explicit equality symmetry. Restricted Leibniz retains QF and EqFree; specialization retains y != x; alpha retains these and destination nonoccurrence. The helper remains precisely Code254.wel a b.",
+    "ThmK syntax/constructors and KEind interpretation definitions are unchanged. The complete KEind diff only supplies the shared classical argument and opens the shared helper names; thm_th and c222_complete endpoint types and final code-calculus proof are unchanged.",
+    "Removing of_der is literal beta-expansion of d.sound hC hG at its sole caller. Targeted maintained BusyBeaver Lean census finds only its declaration and that call; no external maintained consumer is removed.",
+    "The three clients explicitly retain the intended guards and both Rows instances. Their nine reports are prospective, with no claimed exact axiom profiles before compilation."
+  ],
+  "limitations": [
+    "This is source and metadata review, not elaboration or kernel acceptance.",
+    "Generalized shared helper types and 22 removed KThmK helpers are intentional API changes, with maintained caller census; unknown external clients are outside scope."
+  ],
+  "blocking_findings": [],
+  "execution_scope": "Only own read-only hashes/Git blob comparisons and source census; no compiler, generator, submitted code, canonical mutation or Git mutation."
+}

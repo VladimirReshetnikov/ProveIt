@@ -3,14 +3,14 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. The current
-[Lean simplification checkpoint](simplification/phase13/README.md) shares one
-implication proof between both calculi, reducing the generic-core/Lukasiewicz pair
-by 24,211 bytes and 410 lines. The endpoint still imports 179 project modules,
-plus five decoder-prefix modules. With three API clients the primary check has
-187 providers: 36 fresh and 151 exact phase-twelve reuses. Both endpoint clients
-pass with ten exact standard-axiom reports and zero audit warnings. A separate
-68-module check with two clients preserves the older model interfaces. The nine
-site batches retain all their phase-nine branch checks.
+[Lean simplification checkpoint](simplification/phase14/README.md) shares derived
+rules and profile contracts, reducing the endpoint to 178 project modules plus
+five decoder-prefix modules. Seven API clients give 190 primary providers:
+65 earlier successful fresh compilations, one corrected audit-client compilation
+and 124 exact phase-thirteen reuses. Both additional endpoint clients pass with
+ten exact reports and zero audit warnings. A separate 68-project-module check
+with two clients preserves the older model interfaces. The original client-only
+failure is retained; the nine phase-nine site checks are unchanged.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ applies the state-renaming equivalence to its sparse
 endpoint. The large literal tables and arithmetic certificates are kernel-checked
 data, while these final compositions stay small.
 
-The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 179
+The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 178
 project modules and then two explicit endpoint clients; the original fresh build
 selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,

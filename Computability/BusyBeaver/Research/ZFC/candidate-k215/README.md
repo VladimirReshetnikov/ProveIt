@@ -30,13 +30,12 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
-The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase13/README.md)
-shares one implication proof between the numerical and unrestricted calculi,
-removing 24,211 bytes and 410 lines from the generic-core/Lukasiewicz pair.
-The endpoint still imports 179 project modules, with five additional decoder-prefix
-modules. Its check adds three API clients: 36 providers are freshly compiled and
-151 retain exact phase-twelve bindings. Both endpoint clients pass with ten exact
-standard-axiom reports and zero audit warnings. A separate 68-project-module check
+The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase14/README.md)
+shares derived rules between the two named calculi and proves the profile contracts
+once under transitive containers. It removes a duplicated proof module, reducing
+the endpoint from 179 to 178 project modules and its sources by 12,116 bytes.
+The primary check covers 183 project modules and seven API clients; both additional
+endpoint clients pass with ten exact reports. A separate 68-project-module check
 with two clients preserves the older model/native interfaces. The nine site batches
 retain all 6,176 outcomes. The machine and theorem statements are unchanged.
 

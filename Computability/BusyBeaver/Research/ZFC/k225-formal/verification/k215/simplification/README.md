@@ -1,17 +1,18 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase13/README.md) shares one implication
-proof between both calculi and validates the 179-module endpoint, five decoder-prefix
-modules and three API clients. Thirty-six providers were freshly compiled; 151
-retain exact phase-twelve transitive source/import bindings. Both additional endpoint
-clients pass with ten exact reports using only `propext`, `Classical.choice`, and
-`Quot.sound`; both audits have zero warnings.
+are unchanged. The [latest Lean check](phase14/README.md) shares derived rules
+and profile contracts, reducing the endpoint to 178 project modules. It checks
+183 project modules plus seven API clients, with 65 earlier successful fresh
+compilations, one corrected client and 124 exact phase-thirteen reuses. Both
+additional endpoint clients retain their ten exact standard-axiom profiles and
+zero warnings. The preserved first failure concerns only the audit client's binders.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
 | Lean dominated implication, core plus adapter | 689,857 bytes | 16,826 bytes |
 | Lean generic core plus Lukasiewicz (phase-twelve comparison) | 42,454 bytes | 18,243 bytes |
+| Lean shared derived/profile sources (phase-thirteen comparison) | 87,279 bytes | 75,163 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -62,7 +63,16 @@ module becomes a short adapter with its complete Tarski bridge preserved. The
 179-module endpoint's selected sources fall to 2,105,228 bytes. Its old model/native
 interfaces pass a separate 68-module check with two clients; no module is added.
 
-The [latest checkpoint](phase13/README.md),
+Phase fourteen shares propositional, quantifier and atomic-rewriting proofs
+between the ordinary and equality-restricted named calculi. Its single-use wrapper
+is inlined. The profile contracts use transitive containers directly, removing the
+duplicate `KProfileTC` module and its generator. Lean sources shrink by another
+12,116 bytes and 243 lines; the retired generator removes 3,067 bytes and 71 lines.
+The 178-module endpoint selects 2,093,112 bytes. Primary and compatibility checks
+cover 198 distinct project modules and preserve all endpoint assumptions.
+
+The [latest checkpoint](phase14/README.md),
+[thirteenth checkpoint](phase13/README.md),
 [twelfth checkpoint](phase12/README.md),
 [eleventh checkpoint](phase11/README.md),
 [tenth checkpoint](phase10/README.md),

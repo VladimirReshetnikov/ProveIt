@@ -1,0 +1,5 @@
+# Ordinary source reviews
+
+These source-only reviews predate the selected phase14 Lean runs. Their prospective wording is historical; actual acceptance is recorded by the parent checkpoint and its execution packet. The shared-rule proposal is attributed to `ac61181dda126bf0be9f5ccd4e2843193f9ab9e9`; the transitive-container proposal to `5423911775bcde5da872f76d27561c3b9c680fcc`. Their immutable inputs remain in the preceding checkpoint’s upstream-merge directories. The local five-line inlining removes the only maintained use of Tarski.of_der.
+
+[Derived rules](derived.md), [independent derived-rule peer](derived-peer.json), and [profile proof review](profile.md) explain the mathematical scope. Their comparison records bind the inspected bytes. Original scratch packet names describe preparation; the adopted before bytes live under ../integration/before, and the accepted candidate sources are bound by ../integration/current-review.json and the Lean packet. Removed helper names have no remaining maintained callers; no compatibility promise is made for unknown external users.

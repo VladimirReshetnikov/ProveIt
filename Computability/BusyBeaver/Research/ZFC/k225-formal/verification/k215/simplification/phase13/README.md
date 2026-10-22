@@ -1,5 +1,10 @@
 # Thirteenth K215 proof-simplification checkpoint
 
+The [phase-fourteen successor](../phase14/README.md) now supplies the current
+shared derived/profile proofs. This page and its execution packet remain an exact
+historical checkpoint. The packet's optional `--repo` check requires these frozen
+phase-thirteen sources; use its historical-source mode after later adoptions.
+
 One implication derivation now serves both the numerical and unrestricted calculi. `DominatedImplication` exports K, Peirce and S alongside its existing unrestricted-row, composition and lifting theorems. `Lukasiewicz` instantiates the same proof with domination always true, preserving its old public types and the complete Tarski bridge. The exact machine and both endpoint statements are unchanged.
 
 The generic core and Lukasiewicz module shrink together from **42,454 bytes / 811 lines to 18,243 bytes / 401 lines**: **24,211 bytes and 410 lines fewer**. The 179-module endpoint's selected sources shrink from **2,129,439 to 2,105,228 bytes**. Its module count and the five additional decoder-prefix modules remain unchanged. The generic core itself grows by 423 bytes; core plus unchanged numerical adapter is now **16,826 bytes**, against 16,403 before this change. The saving comes from sharing the formerly separate unrestricted derivation.
