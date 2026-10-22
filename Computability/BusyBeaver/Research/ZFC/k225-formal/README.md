@@ -253,8 +253,8 @@ data in [`lean217/`](lean217/)).
   literal [`Machine 217`](../../../Lean/BusyBeaver/ZFC/KDense217.lean), composed in [`KEndpoint217`](../../../Lean/BusyBeaver/ZFC/KEndpoint217.lean).
 
 Rocq: variant `K217F` of [`rocq/rocq-extension`](rocq/rocq-extension/README.md) (`regenerate217.py`;
-the certificate rendered from the Lean file by [`generate_domrho8_rocq.py`](generate_domrho8_rocq.py)
-into [`rocqdom/`](rocqdom/)), with the same three new layers and K230's runtime forked with paths
+`rocqdom/DomRho8.v` is an adapter of the shared implication core `rocq224/src/DominatedCore.v`,
+which also gives `CD222`), with the same three new layers and K230's runtime forked with paths
 of up to 48 bits.
 
 ### The 215

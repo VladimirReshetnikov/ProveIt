@@ -4,7 +4,7 @@
 The 215 runs Source 159's command-permuted commands on Source 149's dominated AX:
 
 - calculus: as for the 217 (rocq224's 222 files and ThmDom from regenerate217).
-  DomRho8 is a compact kernel-checked symbolic certificate replay. The enumerator EnumPerm, L1_SoundPerm, L1_CompPerm and SeedPerm are hand-written
+  DomRho8 and CD222 are adapters of the shared implication core DominatedCore. The enumerator EnumPerm, L1_SoundPerm, L1_CompPerm and SeedPerm are hand-written
   (k225-formal/rocqperm/): NIP 0, DROP 1, MP 2 (with its own field), AX 3 + c (fields y, x;
   U = d); the compiler sets the counter with J u = MP u; the seed is candidate 4;
 - program: dagPerm (k225-formal/lean215/dagperm_nodes.json, make_dagperm.py) is dagDom with the
@@ -58,12 +58,8 @@ def ns(text):
 
 def calculus_files(output):
     for name in R217.CALCULUS + ["DomRho8", "ThmDom"]:
-        if name == "DomRho8":
-            subprocess.run([sys.executable, str(KF / "generate_domrho8_rocq_compact.py"),
-                            "--output", str(output / "DomRho8.v")], check=True)
-        else:
-            body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
-            (output / f"{name}.v").write_text(body, encoding="utf-8", newline="\n")
+        body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
+        (output / f"{name}.v").write_text(body, encoding="utf-8", newline="\n")
     for name in ["EnumPerm", "L1_SoundPerm", "L1_CompPerm", "SeedPerm"]:
         src = PERM_DIR / f"{name}.v"
         (output / f"{name}.v").write_text(

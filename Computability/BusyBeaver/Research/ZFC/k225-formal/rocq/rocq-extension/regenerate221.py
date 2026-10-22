@@ -28,7 +28,7 @@ V = 221
 DELETED = [79, 140, 175, 191, 192, 208, 219, 226, 229]
 BOOT_STEPS = 409835
 NS = "K221F"
-CALCULUS = ["Codes222", "Thm222", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta",
+CALCULUS = ["Codes222", "Thm222", "DominatedCore", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta",
             "L224E", "Interp222", "Enum222", "L1_Sound222", "L1_Comp222", "L1_222", "Seed222",
             "Sound222", "Complete222", "Dag222", "ProgLib222", "L2Root222", "Main222"]
 CALC_DIR = ROOT.parent.parent / "rocq224" / "src"

@@ -33,7 +33,7 @@ BOOT_STEPS = 312909
 NS = "K218F"
 KF = ROOT.parent.parent
 CALC_DIR = KF / "rocq224" / "src"
-CALCULUS = ["Codes222", "Thm222", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta",
+CALCULUS = ["Codes222", "Thm222", "DominatedCore", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta",
             "L224E", "Interp222", "Enum222", "L1_Sound222", "L1_Comp222", "L1_222", "Seed222",
             "Sound222", "Complete222"]
 PROGRAM = ["Dag219", "ProgLib219", "L2Root219", "Main219"]
