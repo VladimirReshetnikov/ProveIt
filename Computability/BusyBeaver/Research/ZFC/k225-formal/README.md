@@ -223,8 +223,9 @@ data in [`lean217/`](lean217/)).
   ([`generate_domrho8_lean.py`](generate_domrho8_lean.py)) is history.
 - **Enumerator**: [`EnumDom`](../../../Lean/BusyBeaver/ZFC/EnumDom.lean) is `Enum222` with the AX fields `z, y, x` read as
   `U = d + z`, `A = U + x`, `B = h + y` (GEN at `U`, rho8 at `(A, B, c, U)`); soundness is unchanged
-  and the compiler builds `CDom` derivations, the rho8 leaf being `AX(c, u, b, a - u)`
-  ([`generate_enumdom.py`](generate_enumdom.py)); [`SeedDom`](../../../Lean/BusyBeaver/ZFC/SeedDom.lean) is the seed argument.
+  and the compiler builds `CDom` derivations, the rho8 leaf being `AX(c, u, b, a - u)`. As for the
+  215, `EnumDom.halts_iff` holds from every state between candidates with derivable registers, so
+  [`SeedDom`](../../../Lean/BusyBeaver/ZFC/SeedDom.lean) is its instance at the seed.
 - **Program**: [`DagDom`](../../../Lean/BusyBeaver/ZFC/DagDom.lean) is `dag219` with the AX word's prefix replaced
   ([`make_dagdom.py`](make_dagdom.py)). Only the root, the reads and the dispatch (13 nodes) reach the
   AX routine, so every other `L2K` lemma transfers by [`RMTransfer`](../../../Lean/BusyBeaver/ZFC/RMTransfer.lean)

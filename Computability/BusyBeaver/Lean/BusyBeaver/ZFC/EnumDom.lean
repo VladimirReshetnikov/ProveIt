@@ -1,4 +1,3 @@
-/- Forked by Research/ZFC/k225-formal/generate_enumdom.py from Enum222.lean: the 217's dominated AX command (Source 149). -/
 import BusyBeaver.ZFC.KCodeDom
 
 /-!
@@ -15,11 +14,12 @@ fields `z, y, x` as
 
 so every emitted rho8 instance has its fourth argument at most its first.
 
-Main theorem `enum_halts_iff`: the enumerator halts from the zero state iff the falsity code 1
-is derivable in `C222`. Soundness is `Enum222`'s stack invariant. Completeness compiles a
-derivation of the dominated calculus `KCodeDom.CDom` into command blocks (a dominated rho8 leaf
-`rho8 a b c u`, `u ≤ a`, is `AX(c, u, b, a - u)`), and `CDom` derives every `C222` code.
-Forked from `Enum222.lean` by `Research/ZFC/k225-formal/generate_enumdom.py`.
+Main theorem `halts_iff`: from any state between candidates whose registers hold derivable
+codes, the enumerator halts iff the falsity code 1 is derivable in `C222`. Soundness is
+`Enum222`'s stack invariant. Completeness compiles a derivation of the dominated calculus
+`KCodeDom.CDom` into command blocks (a dominated rho8 leaf `rho8 a b c u`, `u ≤ a`, is
+`AX(c, u, b, a - u)`) behind `START_Y = AX(0, 1, Y, 0)`, whose candidate number is at least `Y`;
+`CDom` derives every `C222` code.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.EnumDom
@@ -118,8 +118,8 @@ def run : Nat → St → Option St
     | some s' => run n s'
     | none => none
 
-/-- The enumerator halts: some reachable state takes a halting step. -/
-def Halts : Prop := ∃ n s, run n s0 = some s ∧ enumStep s = none
+/-- The enumerator halts from `s`: some reachable state takes a halting step. -/
+def HaltsFrom (s : St) : Prop := ∃ n s', run n s = some s' ∧ enumStep s' = none
 
 /-! ## Soundness -/
 
@@ -214,10 +214,10 @@ theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv
         exact run_inv n (step_inv hs h1) h
       · cases h
 
-/-- Soundness of the enumerator: halting yields a derivation of code 1. -/
-theorem sound : Halts → C222 F := by
-  rintro ⟨n, s, hrun, hstep⟩
-  exact halt_step (run_inv n ⟨C222.truth, C222.truth, good_zero⟩ hrun) hstep
+/-- Soundness of the enumerator: from derivable registers, halting yields a derivation of 1. -/
+theorem sound {s : St} (hs : Inv s) : HaltsFrom s → C222 F := by
+  rintro ⟨n, s', hrun, hstep⟩
+  exact halt_step (run_inv n hs hrun) hstep
 
 /-! ## Completeness: compiling derivations into candidates -/
 
@@ -350,30 +350,24 @@ theorem drain : ∀ (m : Nat) (s : St), s.pl ≤ m →
             · exact Or.inl ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1, h2.trans hnp⟩
             · exact Or.inr ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1⟩
 
-theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts
-  | 0 => Or.inl ⟨0, s0, rfl, rfl, rfl⟩
-  | N + 1 => by
-      rcases reach N with ⟨n, s, hr, hpl, hnp⟩ | hh
+/-- From a state between candidates, every later candidate is reached unless the run halts. -/
+theorem reach (sd : St) (hpl : sd.pl = 0) : ∀ k : Nat,
+    (∃ n s, run n sd = some s ∧ s.pl = 0 ∧ s.np = sd.np + k) ∨ HaltsFrom sd
+  | 0 => Or.inl ⟨0, sd, rfl, hpl, rfl⟩
+  | k + 1 => by
+      rcases reach sd hpl k with ⟨n, s, hr, hpl', hnp⟩ | hh
       · match hs : enumStep s with
         | none => exact Or.inr ⟨n, s, hr, hs⟩
         | some s1 =>
-          have hnp1 : s1.np = N + 1 := by rw [step_start hpl hs, hnp]
-          have hr1 : run (n + 1) s0 = some s1 := by
-            rw [run_add n 1 s0 s hr]; simp only [run, hs]
-          rcases drain s1.pl s1 (Nat.le_refl _) with ⟨k, s', hr', h1, h2⟩ | ⟨k, s', hr', h1⟩
+          have hnp1 : s1.np = sd.np + (k + 1) := by rw [step_start hpl' hs, hnp]; omega
+          have hr1 : run (n + 1) sd = some s1 := by
+            rw [run_add n 1 sd s hr]; simp only [run, hs]
+          rcases drain s1.pl s1 (Nat.le_refl _) with ⟨j, s', hr', h1, h2⟩ | ⟨j, s', hr', h1⟩
           · left
-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1, h2.trans hnp1⟩
+            exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1, h2.trans hnp1⟩
           · right
-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1⟩
+            exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1⟩
       · exact Or.inr hh
-
-/-- Any command list that halts from every register state is eventually executed. -/
-theorem halts_of_cexec (c : Cmd) (cs : List Cmd) (hall : ∀ w, cexec (c :: cs) w = none) : Halts := by
-  rcases reach (encL c cs) with ⟨n, s, hr, hpl, hnp⟩ | hh
-  · have hf : (fetch s).1 = encL c cs := by simp [fetch, hpl, hnp]
-    obtain ⟨k, s', hr', hs'⟩ := exec_list cs c s hf (hall _)
-    exact ⟨n + k, s', by rw [run_add n k s0 s hr]; exact hr', hs'⟩
-  · exact hh
 
 /-! ### Block contracts -/
 
@@ -676,14 +670,13 @@ theorem build : ∀ {n : Nat}, CDom n → ∃ p : List Cmd, Contract p n := by
   | r8 a b c u hu => exact ⟨_, leaf8 a b c u hu⟩
   | bundle a b c h1 h2 => exact ⟨_, bundle_contract a b c h1 h2⟩
 
-/-- Completeness of the enumerator. -/
-theorem complete (h : C222 F) : Halts := by
-  obtain ⟨p, hp⟩ := build (cdom_of_c222 h)
-  apply halts_of_cexec (.ax 0 1 1 0) (p ++ [.drop 0, .nip 0, .nip 0])
-  intro w
-  obtain ⟨t, S, d, hh⟩ := w
-  rw [cexec_cons_some (cstep_ax 0 1 1 0 t S d hh), cexec_append]
-  rcases hp (gate (d + 1 + 0) (hh + 1) 0) (axStack (d + 1 + 0) hh (hh + 1) 0 (d + 1) t S) with hn | hs
+/-- `START_Y = AX(0, 1, Y, 0)` clears the counter and the cache from every state; with a block
+for 1 and `DROP; NIP; NIP`, the list halts from every state. -/
+theorem program_none (Y : Nat) (p : List Cmd) (hp : Contract p F) :
+    ∀ w, cexec (.ax 0 1 Y 0 :: (p ++ [.drop 0, .nip 0, .nip 0])) w = none := by
+  rintro ⟨t, S, d, hh⟩
+  rw [cexec_cons_some (cstep_ax 0 1 Y 0 t S d hh), cexec_append]
+  rcases hp (gate (d + 1 + 0) (hh + Y) 0) (axStack (d + 1 + 0) hh (hh + Y) 0 (d + 1) t S) with hn | hs
   · rw [hn]
   · rw [hs]
     simp only
@@ -693,7 +686,26 @@ theorem complete (h : C222 F) : Halts := by
     simp only [unP_P', Nat.add_zero]
     exact cexec_cons_none (cstep_nip_one 0 0 _ 0)
 
-/-- L1: the enumerator halts from the zero state iff code 1 is derivable. -/
-theorem enum_halts_iff : Halts ↔ C222 F := ⟨sound, complete⟩
+theorem encL_ge (Y : Nat) (cs : List Cmd) : Y ≤ encL (.ax 0 1 Y 0) cs := by
+  have key : ∀ r, Y ≤ pack (.ax 0 1 Y 0) r := fun r =>
+    Nat.le_trans (le_P_left Y (P 0 r)) (Nat.le_trans (le_P_right 1 (P Y (P 0 r)))
+      (le_P_right (0 + 3) (P 1 (P Y (P 0 r)))))
+  cases cs <;> exact key _
+
+/-- Completeness: between candidates, a derivation of code 1 is eventually run. -/
+theorem complete {sd : St} (hpl : sd.pl = 0) (h : C222 F) : HaltsFrom sd := by
+  obtain ⟨p, hp⟩ := build (cdom_of_c222 h)
+  let cs := p ++ [.drop 0, .nip 0, .nip 0]
+  have hN := encL_ge sd.np cs
+  rcases reach sd hpl (encL (.ax 0 1 sd.np 0) cs - sd.np) with ⟨n, s, hr, hpl', hnp⟩ | hh
+  · have hf : (fetch s).1 = encL (.ax 0 1 sd.np 0) cs := by simp only [fetch, hpl', if_true]; omega
+    obtain ⟨k, s', hr', hs'⟩ := exec_list cs (.ax 0 1 sd.np 0) s hf (program_none sd.np p hp _)
+    exact ⟨n + k, s', by rw [run_add n k sd s hr]; exact hr', hs'⟩
+  · exact hh
+
+/-- L1: between candidates, with derivable registers, the enumerator halts iff code 1 is
+derivable. -/
+theorem halts_iff {s : St} (hpl : s.pl = 0) (hs : Inv s) : HaltsFrom s ↔ C222 F :=
+  ⟨sound hs, complete hpl⟩
 
 end SetTheory.BusyBeaver.ZFC.EnumDom
