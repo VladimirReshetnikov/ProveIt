@@ -1,7 +1,7 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 21 October 2026. This report has **187 numbered sources**.
-The written reconciliations cover Sources 1–164 and 167–187; Sources 165–166 retain
+Intake findings through 21 October 2026. This report has **192 numbered sources**.
+The written reconciliations cover Sources 1–164 and 167–192; Sources 165–166 retain
 their earlier placements and separate follow-up work.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
@@ -10,6 +10,27 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 214](intake-214.md) reconciles Sources 188–192 from `c3caaf63a4`,
+placed in `ec9d52b818`. All 1,161 members are recoverable: 799 immutable Git
+aliases, 44 delivery aliases, 67 arrival-only members and 251 new ancillary
+files. The shared implication pair repeated in Sources 191–192 is already
+accepted in phase13. New proposals concern shared weak quotient hypotheses,
+direct full-seed semantics, exact positive residual execution, and independent
+PowerSets/dense-bridge simplifications. Component receipts retain their submitted
+scope; no supplied code or proof compiler ran for this intake. The base article
+and labels are unchanged, and the collection remains 290 reports.
+The note's dated addendum separately records the accepted local phase14
+190-provider primary and 70-provider compatibility checks, with a 178-module
+endpoint; its failure/retry history and the new proposals remain distinct.
+
+| Source | Manuscript | Main contribution |
+|---|---|---|
+| 188 | Further Proof Interface Simplification | Weak quotient sharing and conditional opaque-prefix Home templates. |
+| 189 | Direct Seed and Shared Normalization | Seed-only named semantics and freshness, continuing Source 186. |
+| 190 | Proof Simplification (1) | Alternative shared basis and exact-port positive residual execution. |
+| 191 | Proof Simplification | Repeated phase13 basis, direct-seed implementation and separate Rocq experiments. |
+| 192 | Proof Simplification, 2026-10-21 (2) | Repeated basis, dense-bridge induction and PowerSets import boundary. |
 
 [Batch 213](intake-213.md) reconciles Sources 180–187 from `4b16429bf6`,
 already placed upstream under its batch-212 heading. Supplemental placement
