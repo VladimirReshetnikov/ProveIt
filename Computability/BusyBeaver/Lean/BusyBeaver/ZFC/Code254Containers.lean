@@ -71,12 +71,9 @@ theorem sat_conj (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
     (e : Nat → V) (f g : NF) :
     Tarski.Sat mem e (conj f g) ↔ Tarski.Sat mem e f ∧ Tarski.Sat mem e g := by
   change ((Tarski.Sat mem e f → Tarski.Sat mem e g → mem (e 0) (e 0)) → mem (e 0) (e 0)) ↔ _
-  constructor
-  · intro h
-    exact ⟨Classical.byContradiction (fun hf => hirr _ (h (fun h' _ => (hf h').elim))),
-      Classical.byContradiction (fun hg => hirr _ (h (fun _ h' => (hg h').elim)))⟩
-  · rintro ⟨hf, hg⟩ h
-    exact h hf hg
+  exact ⟨fun h => ⟨Classical.byContradiction fun hf => hirr _ (h fun h' _ => (hf h').elim),
+      Classical.byContradiction fun hg => hirr _ (h fun _ h' => (hg h').elim)⟩,
+    fun ⟨hf, hg⟩ h => h hf hg⟩
 
 theorem sat_ex (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
     (e : Nat → V) (i : Nat) (f : NF) :
@@ -91,31 +88,26 @@ theorem container_at_of_namedC (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x 
         ∀ z, PositiveClosure.Sub mem z x → mem z p := by
   obtain ⟨v, hv⟩ := (sat_ex mem hirr e 3 _).mp h
   have hc := (sat_conj mem hirr (update e 3 v) _ _).mp hv
-  refine ⟨v, ?_, ?_, ?_⟩
-  · simpa [Tarski.Sat, update] using hc.2
-  · intro x hx z hz
-    let exEnv := update (update e 3 v) 2 x
+  refine ⟨v, by simpa [Tarski.Sat, update] using hc.2, fun x hx z hz => ?_, fun x hx => ?_⟩
+  · let exEnv := update (update e 3 v) 2 x
     have hx' : Tarski.Sat mem exEnv (.rel 2 3) := by simpa [exEnv, Tarski.Sat, update] using hx
     have hparts := (sat_conj mem hirr exEnv _ _).mp (hc.1 x hx')
     have hz' : Tarski.Sat mem (update exEnv 1 z) (.rel 1 2) := by
       simpa [exEnv, Tarski.Sat, update] using hz
     simpa [exEnv, Tarski.Sat, update] using hparts.2 z hz'
-  · intro x hx
-    let exEnv := update (update e 3 v) 2 x
+  · let exEnv := update (update e 3 v) 2 x
     have hx' : Tarski.Sat mem exEnv (.rel 2 3) := by simpa [exEnv, Tarski.Sat, update] using hx
     have hparts := (sat_conj mem hirr exEnv _ _).mp (hc.1 x hx')
     obtain ⟨p, hp⟩ := (sat_ex mem hirr exEnv 1 _).mp hparts.1
     let epEnv := update exEnv 1 p
     have hpower := (sat_conj mem hirr epEnv _ _).mp hp
-    refine ⟨p, ?_, ?_⟩
-    · simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.2
-    · intro z hz
-      have hsub : Tarski.Sat mem (update epEnv 3 z)
-          (.all 1 (.imp (.rel 1 3) (.rel 1 2))) := by
-        intro u hu
-        have hu' : mem u z := by simpa [epEnv, exEnv, Tarski.Sat, update] using hu
-        simpa [epEnv, exEnv, Tarski.Sat, update] using hz u hu'
-      simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.1 z hsub
+    refine ⟨p, by simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.2, fun z hz => ?_⟩
+    have hsub : Tarski.Sat mem (update epEnv 3 z)
+        (.all 1 (.imp (.rel 1 3) (.rel 1 2))) := by
+      intro u hu
+      have hu' : mem u z := by simpa [epEnv, exEnv, Tarski.Sat, update] using hu
+      simpa [epEnv, exEnv, Tarski.Sat, update] using hz u hu'
+    simpa [epEnv, exEnv, Tarski.Sat, update] using hpower.1 z hsub
 
 /-- A genuine nonempty EncBundle model supplies the existing container resource.
 The valuation is supplied explicitly; the empty-domain loophole is absent. -/

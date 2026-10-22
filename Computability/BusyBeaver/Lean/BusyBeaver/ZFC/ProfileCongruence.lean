@@ -26,17 +26,14 @@ theorem same_symm {x y : V} (h : Same mem x y) : Same mem y x :=
 theorem same_trans {x y z : V} (hxy : Same mem x y) (hyz : Same mem y z) :
     Same mem x z := fun w => (hxy w).trans (hyz w)
 
-theorem oneWay_iff_full : OneWay mem ↔ Full mem := by
-  constructor
-  · intro h x y hxy z
-    exact ⟨h x y hxy z, h y x (same_symm mem hxy) z⟩
-  · intro h x y hxy z
-    exact (h x y hxy z).mp
+theorem oneWay_iff_full : OneWay mem ↔ Full mem :=
+  ⟨fun h x y hxy z => ⟨h x y hxy z, h y x (same_symm mem hxy) z⟩,
+    fun h x y hxy z => (h x y hxy z).mp⟩
 
 theorem mem_congr (h : OneWay mem) {x x' y y' : V}
     (hx : Same mem x x') (hy : Same mem y y') :
-    mem x y ↔ mem x' y' := by
-  exact ((oneWay_iff_full mem).mp h x x' hx y).trans (hy x')
+    mem x y ↔ mem x' y' :=
+  ((oneWay_iff_full mem).mp h x x' hx y).trans (hy x')
 
 /-- The equality-free formula saying that variables `i,j` have equal members. -/
 def sameForm (i j : Nat) : Form :=
@@ -66,23 +63,16 @@ def ProfileSat (env : Nat → V) : Form → Prop
 theorem sat_sameForm (env : Nat → V) (i j : Nat) :
     Sat mem env (sameForm i j) ↔ Same mem (env i) (env j) := by
   simp only [sameForm, Sat, fIff, scons, Same]
-  constructor
-  · intro h z
-    exact ⟨(h z).1, (h z).2⟩
-  · intro h z
-    exact ⟨(h z).mp, (h z).mpr⟩
+  exact ⟨fun h z => ⟨(h z).1, (h z).2⟩, fun h z => ⟨(h z).mp, (h z).mpr⟩⟩
 
 theorem sat_eraseEquality (f : Form) (env : Nat → V) :
     Sat mem env (eraseEquality f) ↔ ProfileSat mem env f := by
   induction f generalizing env with
-  | fMem i j => rfl
+  | fMem i j | fBot => rfl
   | fEq i j => exact sat_sameForm mem env i j
-  | fBot => rfl
-  | fImp a b iha ihb => simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
-  | fAnd a b iha ihb => simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
-  | fOr a b iha ihb => simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
-  | fAll a ih => simp only [eraseEquality, Sat, ProfileSat, ih]
-  | fEx a ih => simp only [eraseEquality, Sat, ProfileSat, ih]
+  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
+      simp only [eraseEquality, Sat, ProfileSat, iha, ihb]
+  | fAll a ih | fEx a ih => simp only [eraseEquality, Sat, ProfileSat, ih]
 
 /-- Profile-congruent assignments give the same truth value after equality erasure. -/
 theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
@@ -91,17 +81,10 @@ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
   induction f generalizing e e' with
   | fMem i j => exact mem_congr mem h (he i) (he j)
   | fEq i j =>
-      constructor
-      · intro hij
-        exact same_trans mem (same_symm mem (he i)) (same_trans mem hij (he j))
-      · intro hij
-        exact same_trans mem (he i) (same_trans mem hij (same_symm mem (he j)))
+      exact ⟨fun hij => same_trans mem (same_symm mem (he i)) (same_trans mem hij (he j)),
+        fun hij => same_trans mem (he i) (same_trans mem hij (same_symm mem (he j)))⟩
   | fBot => rfl
-  | fImp a b iha ihb =>
-      simp only [ProfileSat, iha e e' he, ihb e e' he]
-  | fAnd a b iha ihb =>
-      simp only [ProfileSat, iha e e' he, ihb e e' he]
-  | fOr a b iha ihb =>
+  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
       simp only [ProfileSat, iha e e' he, ihb e e' he]
   | fAll a ih =>
       have hc : ∀ x i, Same mem (scons x e i) (scons x e' i) := by
@@ -110,9 +93,7 @@ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
         | zero => exact same_refl mem x
         | succ i => exact he i
       simp only [ProfileSat]
-      constructor
-      · intro ha x; exact (ih _ _ (hc x)).mp (ha x)
-      · intro ha x; exact (ih _ _ (hc x)).mpr (ha x)
+      exact forall_congr' fun x => ih _ _ (hc x)
   | fEx a ih =>
       have hc : ∀ x i, Same mem (scons x e i) (scons x e' i) := by
         intro x i
@@ -120,14 +101,12 @@ theorem profileSat_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
         | zero => exact same_refl mem x
         | succ i => exact he i
       simp only [ProfileSat]
-      constructor
-      · rintro ⟨x, hx⟩; exact ⟨x, (ih _ _ (hc x)).mp hx⟩
-      · rintro ⟨x, hx⟩; exact ⟨x, (ih _ _ (hc x)).mpr hx⟩
+      exact exists_congr fun x => ih _ _ (hc x)
 
 theorem sat_eraseEquality_congr (h : OneWay mem) (f : Form) (e e' : Nat → V)
     (he : ∀ i, Same mem (e i) (e' i)) :
-    Sat mem e (eraseEquality f) ↔ Sat mem e' (eraseEquality f) := by
-  exact (sat_eraseEquality mem f e).trans
+    Sat mem e (eraseEquality f) ↔ Sat mem e' (eraseEquality f) :=
+  (sat_eraseEquality mem f e).trans
     ((profileSat_congr mem h f e e' he).trans (sat_eraseEquality mem f e').symm)
 
 #print axioms oneWay_iff_full

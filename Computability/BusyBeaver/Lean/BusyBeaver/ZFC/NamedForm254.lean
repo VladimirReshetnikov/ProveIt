@@ -45,15 +45,11 @@ theorem sat_translate (mem : V → V → Prop) (f : NF) (slots : Nat → Nat)
     SetTheory.Sat mem env (translate slots f) ↔
       Tarski.Sat mem (fun i => env (slots i)) f := by
   induction f generalizing slots env with
-  | rel i j => rfl
-  | eq i j => rfl
-  | bot => rfl
+  | rel i j | eq i j | bot => rfl
   | imp f g hf hg => exact imp_congr (hf slots env) (hg slots env)
   | all i f ih =>
     change (∀ x, SetTheory.Sat mem (scons x env) (translate (under slots i) f)) ↔ _
-    apply forall_congr'
-    intro x
-    exact (ih (under slots i) (scons x env)).trans (by rw [under_env])
+    exact forall_congr' fun x => (ih (under slots i) (scons x env)).trans (by rw [under_env])
 
 /-- Slot0 is input, slot1 is output, and slot2+i retains parameter name i. -/
 def matrixSlots (a b i : Nat) : Nat :=
@@ -67,21 +63,18 @@ theorem matrix_env (a b : Nat) (env : Nat → V) (x y : V) :
   funext i
   simp only [matrixSlots, Tarski.update]
   by_cases hb : i = b
-  · simp only [if_pos hb]
-    rfl
+  · simp only [if_pos hb]; rfl
   · simp only [if_neg hb]
     by_cases ha : i = a
-    · simp only [if_pos ha]
-      rfl
-    · simp only [if_neg ha]
-      rfl
+    · simp only [if_pos ha]; rfl
+    · simp only [if_neg ha]; rfl
 
 /-- The source schema's actual MatrixRelation, including the case a=b. -/
 theorem sat_matrix (mem : V → V → Prop) (f : NF) (a b : Nat)
     (env : Nat → V) (x y : V) :
     DeepPositiveClosure.MatrixRelation mem (matrix f a b) env x y ↔
-      Tarski.Sat mem (Tarski.update (Tarski.update env a x) b y) f := by
-  exact (sat_translate mem f (matrixSlots a b) (scons x (scons y env))).trans
+      Tarski.Sat mem (Tarski.update (Tarski.update env a x) b y) f :=
+  (sat_translate mem f (matrixSlots a b) (scons x (scons y env))).trans
     (by rw [matrix_env])
 
 /-- No equality-free claim can hold for this translation's native equality atom. -/
