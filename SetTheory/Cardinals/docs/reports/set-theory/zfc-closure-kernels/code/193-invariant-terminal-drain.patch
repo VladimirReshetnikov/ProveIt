@@ -1,0 +1,369 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDenseBridge.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDenseBridge.lean
+@@ -1,5 +1,5 @@
+ import BusyBeaver.Core
+-import BusyBeaver.ZFC.KZip
++import BusyBeaver.ZFC.KPartial
+ 
+ /-!
+ From a dense `Machine n` to a sparse-label zipper table (the analogue of the Rocq endpoints'
+@@ -142,52 +142,25 @@
+     BlankHalts D ↔ Halts M (zc (ex 0) [] []) := by
+   have h0 : Rel ex H (D.run 0) (zc (ex 0) [] []) :=
+     ⟨rfl, fun i => ⟨by simp [Machine.run, initial, Tape.read, zc], by simp [Machine.run, initial, Tape.read, zc]⟩⟩
+-  constructor
+-  · rintro ⟨t, ht⟩
+-    have key : ∀ t, (∃ y, Reach M (zc (ex 0) [] []) y ∧ step M y = none) ∨
+-        (∃ z, run M t (zc (ex 0) [] []) = some z ∧ Rel ex H (D.run t) z) := by
+-      intro t
+-      induction t with
+-      | zero => exact Or.inr ⟨_, rfl, h0⟩
+-      | succ t ih =>
+-          rcases ih with hh | ⟨z, hz, hr⟩
+-          · exact Or.inl hh
+-          · cases hs : (D.run t).state with
+-            | none => exact Or.inl ⟨z, ⟨t, hz⟩, rel_halt hH hr hs⟩
+-            | some q =>
+-                obtain ⟨z', h1, h2⟩ := rel_step hc hr hs
+-                exact Or.inr ⟨z', by rw [run_succ, hz]; exact h1, h2⟩
+-    rcases key t with hh | ⟨z, hz, hr⟩
+-    · exact hh
+-    · exact ⟨z, ⟨t, hz⟩, rel_halt hH hr ht⟩
+-  · rintro ⟨y, ⟨k, hk⟩, hy⟩
+-    have key : ∀ s zs, run M s (zc (ex 0) [] []) = some zs → Rel ex H (D.run s) zs := by
+-      intro s
+-      induction s with
+-      | zero => intro zs h; simp only [run, Option.some.injEq] at h; subst h; exact h0
+-      | succ s ih =>
+-          intro zs h
+-          rw [run_succ] at h
+-          cases hs : run M s (zc (ex 0) [] []) with
+-          | none => rw [hs] at h; simp at h
+-          | some y' =>
+-              rw [hs] at h
+-              try simp only at h
+-              have hr := ih y' hs
+-              cases hq : (D.run s).state with
+-              | none => rw [rel_halt hH hr hq] at h; simp at h
+-              | some q =>
+-                  obtain ⟨z', h1, h2⟩ := rel_step hc hr hq
+-                  rw [h1] at h
+-                  simp only [Option.some.injEq] at h
+-                  rw [← h]
+-                  exact h2
+-    have hr := key k y hk
+-    refine ⟨k, ?_⟩
+-    cases hq : (D.run k).state with
+-    | none => rfl
+-    | some q =>
+-        obtain ⟨z', h1, _⟩ := rel_step hc hr hq
+-        rw [hy] at h1; simp at h1
++  let done := fun t => (D.run t).state = none
++  have sim : TerminalDrain.Simulation (TerminalDrain.counter done) (step M)
++      (fun t z => Rel ex H (D.run t) z) := by
++    constructor
++    · intro t z hr ht
++      exact TerminalDrain.halt_now (rel_halt hH hr (by
++        simpa [TerminalDrain.counter, done] using ht))
++    · intro t z t' hr ht
++      cases hq : (D.run t).state with
++      | none => simp [TerminalDrain.counter, done, hq] at ht
++      | some q =>
++          have he : t + 1 = t' := by
++            simpa [TerminalDrain.counter, done, hq] using ht
++          subst t'
++          obtain ⟨z', hz', hr'⟩ := rel_step hc hr hq
++          exact ⟨1, z', by decide, by simp [TerminalDrain.run, hz'], hr'⟩
++  exact (TerminalDrain.counter_halts_iff done).symm.trans
++    ((sim.halts_iff h0).trans (KPartial.halts_iff M _))
++
++#print axioms blank_iff
+ 
+ end SetTheory.BusyBeaver.ZFC.KDenseBridge
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KPartial.lean
+@@ -0,0 +1,33 @@
++import BusyBeaver.ZFC.KZip
++import BusyBeaver.ZFC.TerminalDrain
++
++/-! The existing zipper definitions are retained. These equalities provide
++the adapter to the generic deterministic partial-transition theorem. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KPartial
++
++theorem run_eq (M : KZip.TMN) (n : Nat) (c : KZip.Conf) :
++    TerminalDrain.run (KZip.step M) n c = KZip.run M n c := by
++  induction n generalizing c with
++  | zero => rfl
++  | succ n ih =>
++      simp only [TerminalDrain.run, KZip.run]
++      cases KZip.step M c with
++      | none => rfl
++      | some d => exact ih d
++
++theorem halts_iff (M : KZip.TMN) (c : KZip.Conf) :
++    TerminalDrain.Halts (KZip.step M) c ↔ KZip.Halts M c := by
++  constructor
++  · rintro ⟨n, d, hn, hd⟩
++    exact ⟨d, ⟨n, (run_eq M n c) ▸ hn⟩, hd⟩
++  · rintro ⟨d, ⟨n, hn⟩, hd⟩
++    exact ⟨n, d, (run_eq M n c).symm ▸ hn, hd⟩
++
++theorem halts_of_reach {M : KZip.TMN} {a b : KZip.Conf}
++    (h : KZip.Reach M a b) (ha : KZip.Halts M a) : KZip.Halts M b := by
++  obtain ⟨n, hn⟩ := h
++  exact (halts_iff M b).mp ((TerminalDrain.halts_iff_of_run
++    ((run_eq M n a).symm ▸ hn)).mp ((halts_iff M a).mpr ha))
++
++end SetTheory.BusyBeaver.ZFC.KPartial
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
+@@ -1,3 +1,5 @@
++import BusyBeaver.ZFC.KPartial
++import BusyBeaver.ZFC.RegisterPartial
+ import BusyBeaver.ZFC.KHomeReady
+ import BusyBeaver.ZFC.RegisterPathClean
+ import BusyBeaver.ZFC.SiteCoverage
+@@ -317,39 +319,17 @@
+ /-- **Simulation.** The register program halts iff the machine halts, from related configurations. -/
+ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
+     RegisterPath.Halts p c ↔ KZip.Halts M T := by
+-  constructor
+-  · rintro ⟨N, c', hr, hh⟩
+-    induction N generalizing c T with
+-    | zero =>
+-        simp only [RegisterPath.run, Option.some.injEq] at hr
+-        subst hr
+-        exact sim_halt B hcov hNH hc hh
+-    | succ N ih =>
+-        simp only [RegisterPath.run] at hr
+-        cases hs : step p c with
+-        | none => rw [hs] at hr; simp at hr
+-        | some c1 =>
+-            rw [hs] at hr
+-            obtain ⟨T1, h1, hR⟩ := sim_step B hcov hc hs
+-            exact Halts.of_reach hR.reach (ih h1 hr)
+-  · rintro ⟨cf, ⟨t, ht⟩, hstop⟩
+-    induction t using Nat.strongRecOn generalizing c T with
+-    | ind t ih =>
+-        cases hs : step p c with
+-        | none => exact ⟨0, c, rfl, sim_stop hcov hs⟩
+-        | some c1 =>
+-            obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
+-            have hle : j + 1 ≤ t := by
+-              refine Nat.not_lt.mp fun hlt => ?_
+-              have e1 : j + 1 = t + (j + 1 - t) := by omega
+-              rw [e1, KZip.run_add, ht] at hj
+-              obtain ⟨m, hm⟩ : ∃ m, j + 1 - t = m + 1 := ⟨j - t, by omega⟩
+-              rw [hm] at hj
+-              simp [KZip.run, hstop] at hj
+-            have e2 : t = (j + 1) + (t - (j + 1)) := by omega
+-            rw [e2, KZip.run_add, hj] at ht
+-            obtain ⟨N, c', hr, hh⟩ := ih (t - (j + 1)) (by omega) h1 ht
+-            exact ⟨N + 1, c', by simp only [RegisterPath.run, hs]; exact hr, hh⟩
++  have sim : TerminalDrain.Simulation (RegisterPath.step p) (KZip.step M) (Rel p) := by
++    constructor
++    · intro a b hab hs
++      exact (KPartial.halts_iff M b).mpr (sim_halt B hcov hNH hab (sim_stop hcov hs))
++    · intro a b a' hab hs
++      obtain ⟨b', hab', k, hk⟩ := sim_step B hcov hab hs
++      exact ⟨k + 1, b', by omega, (KPartial.run_eq M (k + 1) b).symm ▸ hk, hab'⟩
++  exact (RegisterPartial.halts_iff (sim_stop hcov) c).symm.trans
++    ((sim.halts_iff hc).trans (KPartial.halts_iff M T))
++
++#print axioms halts_iff
+ 
+ end Sim
+ 
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPartial.lean
+@@ -0,0 +1,30 @@
++import BusyBeaver.ZFC.RegisterPath
++import BusyBeaver.ZFC.TerminalDrain
++
++/-! Explicitly keep literal source halting distinct from failed decoding.
++`halts_iff` requires evidence that every stuck configuration is a halt leaf. -/
++
++namespace SetTheory.BusyBeaver.ZFC.RegisterPartial
++
++theorem run_eq (p : RegisterPath.Program) (n : Nat) (c : RegisterPath.Configuration) :
++    TerminalDrain.run (RegisterPath.step p) n c = RegisterPath.run p n c := by
++  induction n generalizing c with
++  | zero => rfl
++  | succ n ih =>
++      simp only [TerminalDrain.run, RegisterPath.run]
++      cases RegisterPath.step p c with
++      | none => rfl
++      | some d => exact ih d
++
++theorem halts_iff {p : RegisterPath.Program}
++    (hstop : ∀ {c}, RegisterPath.step p c = none → RegisterPath.AtHalt p c)
++    (c : RegisterPath.Configuration) :
++    TerminalDrain.Halts (RegisterPath.step p) c ↔ RegisterPath.Halts p c := by
++  constructor
++  · rintro ⟨n, d, hn, hd⟩
++    exact ⟨n, d, (run_eq p n c) ▸ hn, hstop hd⟩
++  · rintro ⟨n, d, hn, k, hk⟩
++    refine ⟨n, d, (run_eq p n c).symm ▸ hn, ?_⟩
++    simp [RegisterPath.step, hk, RegisterPath.execute]
++
++end SetTheory.BusyBeaver.ZFC.RegisterPartial
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TerminalDrain.lean
+@@ -0,0 +1,156 @@
++import Init
++
++/-!
++Positive simulation with a finite terminal drain.
++
++Adapted from the checked PositiveStutter proposal in ProveIt's
++`k215-transport/formal/PositiveStutter.lean` (snapshot 57541fe0cfe3).
++The immediate terminal-agreement field is replaced by `finish`: the source
++may stop before the target completes its finite epilogue. Reflection uses
++only `advance`, and in particular needs no reverse simulation.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.TerminalDrain
++
++universe u v
++
++def run {C : Type u} (next : C → Option C) : Nat → C → Option C
++  | 0, c => some c
++  | n + 1, c => (next c).bind (run next n)
++
++def Halts {C : Type u} (next : C → Option C) (c : C) : Prop :=
++  ∃ n d, run next n c = some d ∧ next d = none
++
++theorem run_add {C : Type u} (next : C → Option C) (n m : Nat) (c : C) :
++    run next (n + m) c = (run next n c).bind (run next m) := by
++  induction n generalizing c with
++  | zero => simp only [Nat.zero_add, run, Option.bind_some]
++  | succ n ih =>
++      simp only [Nat.succ_add, run]
++      cases hc : next c with
++      | none => rfl
++      | some c' => exact ih c'
++
++theorem halts_of_run {C : Type u} {next : C → Option C}
++    {n : Nat} {c d : C} (h : run next n c = some d) (hd : Halts next d) : Halts next c := by
++  obtain ⟨m, e, hm, he⟩ := hd
++  exact ⟨n + m, e, by rw [run_add, h]; exact hm, he⟩
++
++theorem halt_now {C : Type u} {next : C → Option C} {c : C}
++    (h : next c = none) : Halts next c := ⟨0, c, rfl, h⟩
++
++/-- A successful prefix cannot pass a terminal endpoint. -/
++theorem terminal_suffix {C : Type u} {next : C → Option C}
++    (k : Nat) {n : Nat} {c c' d : C}
++    (hwhole : run next n c = some d) (hd : next d = none)
++    (hprefix : run next k c = some c') :
++    ∃ m, n = k + m ∧ run next m c' = some d := by
++  induction k generalizing n c with
++  | zero =>
++      simp only [run, Option.some.injEq] at hprefix
++      subst c'
++      exact ⟨n, by omega, hwhole⟩
++  | succ k ih =>
++      cases n with
++      | zero =>
++          simp only [run, Option.some.injEq] at hwhole
++          subst d
++          simp only [run, hd, Option.bind_none] at hprefix
++          contradiction
++      | succ n =>
++          cases hc : next c with
++          | none =>
++              simp only [run, hc, Option.bind_none] at hwhole
++              contradiction
++          | some c1 =>
++              simp only [run, hc, Option.bind_some] at hwhole hprefix
++              obtain ⟨m, hm, hr⟩ := ih hwhole hprefix
++              exact ⟨m, by omega, hr⟩
++
++theorem halts_iff_of_run {C : Type u} {next : C → Option C}
++    {n : Nat} {c d : C} (h : run next n c = some d) : Halts next c ↔ Halts next d := by
++  constructor
++  · rintro ⟨m, e, hm, he⟩
++    obtain ⟨k, _, hk⟩ := terminal_suffix n hm he h
++    exact ⟨k, e, hk, he⟩
++  · exact halts_of_run h
++
++/-- Every source step consumes a positive target run. A source terminal
++configuration may require a finite target epilogue. -/
++structure Simulation {A : Type u} {B : Type v}
++    (stepA : A → Option A) (stepB : B → Option B) (R : A → B → Prop) : Prop where
++  finish : ∀ {a b}, R a b → stepA a = none → Halts stepB b
++  advance : ∀ {a b a'}, R a b → stepA a = some a' →
++    ∃ k b', 0 < k ∧ run stepB k b = some b' ∧ R a' b'
++
++variable {A : Type u} {B : Type v}
++variable {stepA : A → Option A} {stepB : B → Option B} {R : A → B → Prop}
++
++theorem Simulation.preserves_halts (hS : Simulation stepA stepB R)
++    {a b} (hab : R a b) (ha : Halts stepA a) : Halts stepB b := by
++  obtain ⟨n, d, hn, hd⟩ := ha
++  induction n generalizing a b with
++  | zero =>
++      simp only [run, Option.some.injEq] at hn
++      subst d
++      exact hS.finish hab hd
++  | succ n ih =>
++      cases he : stepA a with
++      | none =>
++          simp only [run, he, Option.bind_none] at hn
++          contradiction
++      | some a' =>
++          simp only [run, he, Option.bind_some] at hn
++          obtain ⟨k, b', _, hk, hab'⟩ := hS.advance hab he
++          exact halts_of_run hk (ih hab' hn)
++
++/-- Positivity alone suffices to reflect termination. `finish` is not used. -/
++theorem reflects_halts
++    (advance : ∀ {a b a'}, R a b → stepA a = some a' →
++      ∃ k b', 0 < k ∧ run stepB k b = some b' ∧ R a' b')
++    {a b} (hab : R a b) (hb : Halts stepB b) : Halts stepA a := by
++  obtain ⟨n, d, hn, hd⟩ := hb
++  induction n using Nat.strongRecOn generalizing a b with
++  | ind n ih =>
++      cases he : stepA a with
++      | none => exact halt_now he
++      | some a' =>
++          obtain ⟨k, b', hkpos, hk, hab'⟩ := advance hab he
++          obtain ⟨m, hnm, hm⟩ := terminal_suffix k hn hd hk
++          have ha' : Halts stepA a' := ih m (by omega) hab' hm
++          exact halts_of_run (n := 1) (by simp only [run, he, Option.bind_some]) ha'
++
++theorem Simulation.halts_iff (hS : Simulation stepA stepB R)
++    {a b} (hab : R a b) : Halts stepA a ↔ Halts stepB b :=
++  ⟨hS.preserves_halts hab, reflects_halts hS.advance hab⟩
++
++/-- Partialize a deterministic time counter at the first accepted time. -/
++def counter (done : Nat → Prop) [DecidablePred done] (n : Nat) : Option Nat :=
++  if done n then none else some (n + 1)
++
++theorem counter_halts_of_later (done : Nat → Prop) [DecidablePred done]
++    (k n : Nat) (h : done (n + k)) : Halts (counter done) n := by
++  induction k generalizing n with
++  | zero =>
++      simp only [Nat.add_zero] at h
++      exact halt_now (by simp [counter, h])
++  | succ k ih =>
++      by_cases hn : done n
++      · exact halt_now (by simp [counter, hn])
++      · apply halts_of_run (n := 1) (d := n + 1)
++        · simp [run, counter, hn]
++        · exact ih (n + 1) (by simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using h)
++
++/-- Halting of the counter is exactly existence of an accepted time. -/
++theorem counter_halts_iff (done : Nat → Prop) [DecidablePred done] :
++    Halts (counter done) 0 ↔ ∃ n, done n := by
++  constructor
++  · rintro ⟨_, n, _, hn⟩
++    exact ⟨n, by simpa [counter] using hn⟩
++  · rintro ⟨n, hn⟩
++    exact counter_halts_of_later done n 0 (by simpa using hn)
++
++#print axioms Simulation.halts_iff
++#print axioms counter_halts_iff
++
++end SetTheory.BusyBeaver.ZFC.TerminalDrain

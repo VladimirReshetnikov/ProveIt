@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "base_commit": "57541fe0cfe3af62b4cb58747d8d1d7c16b338d5",
+  "scope": "Patch ordering and exact source/producer correspondence only; proof compilation is recorded in separate component evidence.",
+  "checker_sha256": "8f536dd08f022d9889959b2069fd3902f8cb8c8d272e3ddbd76a503f119b076e",
+  "manifest_sha256": "efd0c7d832105265e2c9474d8371c97566701a58fa9860d0ec73ba06b2811053",
+  "rocq_producer_helper_sha256": "d47a57e49a918f7d447a77078f68ad66b859582584eb0a8c6fe7159cce836ef4",
+  "started_utc": "2026-10-22T02:34:54.144113+00:00",
+  "status": "passed",
+  "baseline_paths_checked": 45,
+  "baseline_files_copied": 38,
+  "operations": [
+    {
+      "label": "01_apply_check",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "PATCHES/01_shared_implication_lean.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.0024947409983724356,
+      "log": "logs/01_apply_check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "01_apply",
+      "command": [
+        "git",
+        "apply",
+        "PATCHES/01_shared_implication_lean.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.002363402003538795,
+      "log": "logs/01_apply.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "02_apply_check",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "PATCHES/02_scheduler_lean.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.002285765003762208,
+      "log": "logs/02_apply_check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "02_apply",
+      "command": [
+        "git",
+        "apply",
+        "PATCHES/02_scheduler_lean.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.008232504995248746,
+      "log": "logs/02_apply.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "03_apply_check",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "PATCHES/03_scheduler_rocq.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.0024230430062743835,
+      "log": "logs/03_apply_check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "03_apply",
+      "command": [
+        "git",
+        "apply",
+        "PATCHES/03_scheduler_rocq.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.0027994210031465627,
+      "log": "logs/03_apply.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "04_apply_check",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "PATCHES/04_shared_implication_rocq.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.002449191997584421,
+      "log": "logs/04_apply_check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "04_apply",
+      "command": [
+        "git",
+        "apply",
+        "PATCHES/04_shared_implication_rocq.patch"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.0026909869993687607,
+      "log": "logs/04_apply.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "lean_shared_basis_producer",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "STAGING/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_dominated_implication_lean.py",
+        "--out",
+        "STAGING/Computability/BusyBeaver/Lean",
+        "--check"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.08206970700121019,
+      "log": "logs/lean_shared_basis_producer.log",
+      "log_sha256": "c1f2a613969d0e708e51087bfb897033e64438f699e2384b0cacd89626aa3fdf",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "lean_Enum222_producer",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "STAGING/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_enum222.py"
+      ],
+      "cwd": "TEMP/producer-work/lean-forks",
+      "exit_code": 0,
+      "seconds": 0.02199949000350898,
+      "log": "logs/lean_Enum222_producer.log",
+      "log_sha256": "d86bfd397c9f80dfa8d826d621e4f476ede8efdceb7c7a983ebe5617bd834774",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "lean_EnumDom_producer",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "STAGING/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_enumdom.py"
+      ],
+      "cwd": "TEMP/producer-work/lean-forks",
+      "exit_code": 0,
+      "seconds": 0.02402174100279808,
+      "log": "logs/lean_EnumDom_producer.log",
+      "log_sha256": "0a0fa1f32cc31ed54631554973b673ba2454297f6f8160c7c6580d3e799b1121",
+      "temporary_paths_normalized": true
+    },
+    {
+      "label": "rocq_calculus_producer",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "CHECKER/check_rocq_producer.py",
+        "--repo",
+        "STAGING",
+        "--out",
+        "TEMP/producer-work/rocq-producer"
+      ],
+      "cwd": "STAGING",
+      "exit_code": 0,
+      "seconds": 0.08715018699876964,
+      "log": "logs/rocq_calculus_producer.log",
+      "log_sha256": "babca2a546103ff58c52946b723b74fb115cd73c723d5cf0dd61b824758a8e13",
+      "temporary_paths_normalized": true
+    }
+  ],
+  "patches": [
+    {
+      "filename": "01_shared_implication_lean.patch",
+      "patch_sha256": "16bd8dd9c95089d8e1dddab38d5feabfef14240376a15cac0419223fc14bde9e",
+      "changed_paths": 6,
+      "apply_check_passed": true,
+      "applied": true,
+      "all_output_hashes_match": true
+    },
+    {
+      "filename": "02_scheduler_lean.patch",
+      "patch_sha256": "6a25623c44802e95a6f88db3a5c1efe0593523c4cfeb79b7d92b0bd512fb83ce",
+      "changed_paths": 5,
+      "apply_check_passed": true,
+      "applied": true,
+      "all_output_hashes_match": true
+    },
+    {
+      "filename": "03_scheduler_rocq.patch",
+      "patch_sha256": "8592d1ab2c0a0bc049066de18b7a2d5c58e553cd51074920c4ca6c79aa134edb",
+      "changed_paths": 8,
+      "apply_check_passed": true,
+      "applied": true,
+      "all_output_hashes_match": true
+    },
+    {
+      "filename": "04_shared_implication_rocq.patch",
+      "patch_sha256": "0ea7bfded1edc0b6a27b0db2a7eb8c3e41d7bd683fd0d5f234d582ac8565f950",
+      "changed_paths": 6,
+      "apply_check_passed": true,
+      "applied": true,
+      "all_output_hashes_match": true
+    }
+  ],
+  "checked_component_source_matches": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "source_sha256": "bd07364a829e8a1535b0ecf1ee6ed0c292d5af35e01a6db8f152dd2610e247d8",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.DominatedImplication",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "source_sha256": "7d443a733b5c5ddd0d49728cf1ea7d855dd445f156934c13578bacc008c59874",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.Lukasiewicz",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DomRho8.lean",
+      "source_sha256": "8fdbec0db9134070bee2dfa0a433aff66ab83c00007ea7b9aabd9192c506d378",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.DomRho8",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CofinalScheduler.lean",
+      "source_sha256": "59538988e09e56ce1ea01a98dd85db54a137ac15e247543fbb36370d41c1f54e",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.CofinalScheduler",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum222.lean",
+      "source_sha256": "a56dfddaad46ecef3c1ad77121b8a8bb7fdaaecb65e9c255768e2a090a4cadcd",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.Enum222",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean",
+      "source_sha256": "2613d8abb9eb113b6f1b36d6b29a0acc6b143191ca8a6c1ad3332095fe081646",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.Enum254",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumDom.lean",
+      "source_sha256": "fe4742f6b4b7c6fca8ccb40b333c3cff78c64a7a833f6eb44e245f60b71724ea",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.EnumDom",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean",
+      "source_sha256": "4e2f5466020c740e032ae59d95dd46279b97dbf6c917b152527e83bbd3c7e108",
+      "component": "Lean combined22-module build",
+      "module": "BusyBeaver.ZFC.EnumPerm",
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/DominatedImplication.v",
+      "source_sha256": "a2bbd92b03ddc1aefc407de8efde58c360d49d7086fc6294c92dc9a5d6703b7c",
+      "component": "Rocq combined implication-and-scheduler component build",
+      "module": "K215F.DominatedImplication",
+      "compiled_with_Stdlib_namespace_alias": false,
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/DomRho8.v",
+      "source_sha256": "3fe22f84ae26f5bfe596fd09b1b53c51f1b41b2e600f5a0be5531203fdb056d7",
+      "component": "Rocq combined implication-and-scheduler component build",
+      "module": "K215F.DomRho8",
+      "compiled_with_Stdlib_namespace_alias": true,
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/CandidateScheduler.v",
+      "source_sha256": "1c95512e993e104231f338f94e922d00564c61a3a0289b2247e8ecc67903c063",
+      "component": "Rocq combined implication-and-scheduler component build",
+      "module": "K215F.CandidateScheduler",
+      "compiled_with_Stdlib_namespace_alias": false,
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/L1_CompPerm.v",
+      "source_sha256": "f681b698bcc1e9f53445f32dd14a99b0c32f96156ea35b4ff504a1ff4a2e2db2",
+      "component": "Rocq combined implication-and-scheduler component build",
+      "module": "K215F.L1_CompPerm",
+      "compiled_with_Stdlib_namespace_alias": false,
+      "byte_equal": true
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/SeedPerm.v",
+      "source_sha256": "635acc100a9a012832327e1a766b26f719d23620ee9c52627d5d095139638544",
+      "component": "Rocq combined implication-and-scheduler component build",
+      "module": "K215F.SeedPerm",
+      "compiled_with_Stdlib_namespace_alias": false,
+      "byte_equal": true
+    }
+  ],
+  "producer_checks": [
+    {
+      "producer": "Lean shared implication basis",
+      "outputs_byte_equal": 3,
+      "status": "passed"
+    },
+    {
+      "producer": "generate_enum222.py",
+      "module": "Enum222",
+      "source_sha256": "a56dfddaad46ecef3c1ad77121b8a8bb7fdaaecb65e9c255768e2a090a4cadcd",
+      "byte_equal": true,
+      "status": "passed"
+    },
+    {
+      "producer": "generate_enumdom.py",
+      "module": "EnumDom",
+      "source_sha256": "fe4742f6b4b7c6fca8ccb40b333c3cff78c64a7a833f6eb44e245f60b71724ea",
+      "byte_equal": true,
+      "status": "passed"
+    },
+    {
+      "producer": "patched regenerate215.calculus_files",
+      "outputs_byte_equal": 5,
+      "status": "passed",
+      "scope": "calculus_files only; not full machine regeneration"
+    }
+  ],
+  "original_checkout_source_pins_unchanged": true,
+  "temporary_staging_removed_on_exit": true,
+  "elapsed_seconds": 0.25359553300222615,
+  "completed_utc": "2026-10-22T02:34:54.397856+00:00"
+}

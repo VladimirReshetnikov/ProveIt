@@ -1,0 +1,592 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.KCodeDom
++import BusyBeaver.ZFC.CofinalScheduler
+ 
+ /-!
+ The abstract proof enumerator of the 215-state machine (Source 159's command-permuted
+@@ -127,6 +128,9 @@
+ 
+ /-- The enumerator halts from `s`: some reachable state takes a halting step. -/
+ def HaltsFrom (s : St) : Prop := ∃ n s', run n s = some s' ∧ enumStep s' = none
++
++private abbrev scheduler : CofinalScheduler.Dynamics St :=
++  ⟨enumStep, run, fun _ => rfl, fun n s => by cases h : enumStep s <;> simp only [run, h]⟩
+ 
+ /-! ## Soundness -/
+ 
+@@ -211,14 +215,8 @@
+       obtain ⟨w, hw, rfl⟩ := h
+       exact cstep_inv _ hs hw
+ 
+-theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv (toW s) → run n s = some s' → Inv (toW s')
+-  | 0, s, s', hs, h => by cases h; exact hs
+-  | n + 1, s, s', hs, h => by
+-      unfold run at h
+-      split at h
+-      · rename_i s1 h1
+-        exact run_inv n (by simpa only [h1] using step_sound hs) h
+-      · cases h
++theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv (toW s) → run n s = some s' → Inv (toW s') :=
++  fun n s s' => scheduler.run_invariant (fun s => Inv (toW s)) (fun s t hi ht => by change enumStep s = some t at ht; simpa only [ht] using step_sound hi) n s s'
+ 
+ /-- Soundness: halting yields a derivation of code 1. -/
+ theorem sound {s : St} (hs : Inv (toW s)) : HaltsFrom s → C222 F := by
+@@ -277,18 +275,8 @@
+ 
+ /-! ### Every later candidate is reached -/
+ 
+-theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1
+-  | 0, m, s, s1, h => by
+-      simp only [run] at h; cases h; simp
+-  | n + 1, m, s, s1, h => by
+-      simp only [run] at h
+-      split at h
+-      · rename_i s2 h2
+-        have := run_add n m s2 s1 h
+-        rw [show n + 1 + m = (n + m) + 1 by omega]
+-        simp only [run, h2]
+-        exact this
+-      · cases h
++theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1 :=
++  scheduler.run_add
+ 
+ theorem step_eq {s s1 : St} (h : enumStep s = some s1) :
+     s1.pl = (decode (fetch s).1).2 ∧ s1.np = (fetch s).2 := by
+@@ -296,43 +284,28 @@
+   obtain ⟨w, -, rfl⟩ := h
+   exact ⟨rfl, rfl⟩
+ 
++private theorem scheduler_laws : scheduler.Laws St.pl St.np where
++  advance := by
++    intro s t hs hp
++    rw [(step_eq hs).2]
++    simp only [fetch, hp, if_true]
++  descend := by
++    intro s t hs hp
++    obtain ⟨h1, h2⟩ := step_eq hs
++    have hd := decode_le (fetch s).1
++    simp only [fetch, hp, if_false] at h1 h2 hd
++    exact ⟨by omega, h2⟩
++
+ /-- A candidate in progress finishes or the enumerator halts. -/
+ theorem drain : ∀ (m : Nat) (s : St), s.pl ≤ m →
+-    (∃ n s', run n s = some s' ∧ s'.pl = 0 ∧ s'.np = s.np) ∨ HaltsFrom s
+-  | m, s, hm => by
+-      by_cases hpl : s.pl = 0
+-      · exact Or.inl ⟨0, s, rfl, hpl, rfl⟩
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨0, s, rfl, hs⟩
+-        | some s1 =>
+-          obtain ⟨h1, h2⟩ := step_eq hs
+-          have := decode_le (fetch s).1
+-          simp only [fetch, hpl, if_false] at h1 h2 this
+-          cases m with
+-          | zero => omega
+-          | succ m =>
+-            rcases drain m s1 (by omega) with ⟨n, s', hr, h3, h4⟩ | ⟨n, s', hr, h3⟩
+-            · exact Or.inl ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h3, h4.trans h2⟩
+-            · exact Or.inr ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h3⟩
++    (∃ n s', run n s = some s' ∧ s'.pl = 0 ∧ s'.np = s.np) ∨ HaltsFrom s :=
++  fun _ s _ => (scheduler.reach_or_halt scheduler_laws s.np s (Nat.le_refl _)).symm
+ 
+ theorem reach (sd : St) (hpl : sd.pl = 0) : ∀ k : Nat,
+-    (∃ n s, run n sd = some s ∧ s.pl = 0 ∧ s.np = sd.np + k) ∨ HaltsFrom sd
+-  | 0 => Or.inl ⟨0, sd, rfl, hpl, rfl⟩
+-  | k + 1 => by
+-      rcases reach sd hpl k with ⟨n, s, hr, hpl', hnp⟩ | hh
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨n, s, hr, hs⟩
+-        | some s1 =>
+-          have hnp1 : s1.np = sd.np + (k + 1) := by
+-            rw [(step_eq hs).2]; simp only [fetch, hpl', if_true]; omega
+-          have hr1 : run (n + 1) sd = some s1 := by
+-            rw [run_add n 1 sd s hr]; simp only [run, hs]
+-          rcases drain s1.pl s1 (Nat.le_refl _) with ⟨j, s', hr', h1, h2⟩ | ⟨j, s', hr', h1⟩
+-          · left
+-            exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1, h2.trans hnp1⟩
+-          · right
+-            exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1⟩
+-      · exact Or.inr hh
++    (∃ n s, run n sd = some s ∧ s.pl = 0 ∧ s.np = sd.np + k) ∨ HaltsFrom sd := by
++  intro k
++  have _ := hpl
++  exact (scheduler.reach_or_halt scheduler_laws (sd.np + k) sd (by omega)).symm
+ 
+ /-! ### Block contracts, by symbolic execution -/
+ 
+@@ -526,20 +499,29 @@
+     Nat.le_trans (le_P_left Y (P 1 r)) (le_P_right (0 + 3) (P Y (P 1 r)))
+   cases cs <;> exact key _
+ 
+-/-- Completeness: between candidates, a derivation of code 1 is eventually run. -/
+-theorem complete {sd : St} (hpl : sd.pl = 0) (h : C222 F) : HaltsFrom sd := by
++/-- Completeness from every starting state, including an active candidate. -/
++theorem complete_any {sd : St} (h : C222 F) : HaltsFrom sd := by
+   obtain ⟨p, hp⟩ := build (cdom_of_c222 h)
+   let cs := p ++ [.drop, .nip, .nip]
+-  have hN := encL_ge sd.np cs
+-  rcases reach sd hpl (encL (.ax 0 1 sd.np) cs - sd.np) with ⟨n, s, hr, hpl', hnp⟩ | hh
+-  · have hf : (fetch s).1 = encL (.ax 0 1 sd.np) cs := by simp only [fetch, hpl', if_true]; omega
+-    obtain ⟨k, s', hr', hs'⟩ := exec_list cs (.ax 0 1 sd.np) s hf (program_none sd.np p hp _)
+-    exact ⟨n + k, s', by rw [run_add n k sd s hr]; exact hr', hs'⟩
+-  · exact hh
++  apply scheduler.complete_at scheduler_laws sd (encL (.ax 0 1 sd.np) cs) (encL_ge sd.np cs)
++  intro _ s _ hpl hnp
++  have hf : (fetch s).1 = encL (.ax 0 1 sd.np) cs := by simp only [fetch, hpl, if_true, hnp]
++  exact exec_list cs (.ax 0 1 sd.np) s hf (program_none sd.np p hp _)
++
++theorem complete {sd : St} (hpl : sd.pl = 0) (h : C222 F) : HaltsFrom sd := by
++  have _ := hpl
++  exact complete_any h
+ 
+ /-- L1: between candidates, with derivable registers, the enumerator halts iff code 1 is
+ derivable. -/
+ theorem halts_iff {s : St} (hpl : s.pl = 0) (hs : Inv (toW s)) : HaltsFrom s ↔ C222 F :=
+   ⟨sound hs, complete hpl⟩
+ 
++/-- From any invariant state, including an active candidate, halting is refutability. -/
++theorem halts_iff_any {s : St} (hs : Inv (toW s)) : HaltsFrom s ↔ C222 F :=
++  ⟨sound hs, complete_any⟩
++
++#print axioms complete_any
++#print axioms halts_iff_any
++
+ end SetTheory.BusyBeaver.ZFC.EnumPerm
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum222.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum222.lean
+@@ -1,5 +1,6 @@
+ /- Forked by Research/ZFC/k225-formal/generate_enum222.py from Enum254.lean: Elliot Glazer's Enum230 step with the 222's rows (rho6 a c, growG, bundle222) and calculus C222. -/
+ import BusyBeaver.ZFC.KCode222
++import BusyBeaver.ZFC.CofinalScheduler
+ 
+ /-!
+ The abstract proof enumerator of the base-4 ZFC machines, and L1.
+@@ -126,6 +127,9 @@
+ 
+ /-- The enumerator halts: some reachable state takes a halting step. -/
+ def Halts : Prop := ∃ n s, run n s0 = some s ∧ enumStep s = none
++
++private abbrev scheduler : CofinalScheduler.Dynamics St :=
++  ⟨enumStep, run, fun _ => rfl, fun n s => by cases h : enumStep s <;> simp only [run, h]⟩
+ 
+ /-! ## Soundness -/
+ 
+@@ -211,14 +215,8 @@
+     · cases h
+   · cases h
+ 
+-theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv s'
+-  | 0, s, s', hs, h => by cases h; exact hs
+-  | n + 1, s, s', hs, h => by
+-      unfold run at h
+-      split at h
+-      · rename_i s1 h1
+-        exact run_inv n (step_inv hs h1) h
+-      · cases h
++theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv s' :=
++  fun n s s' => scheduler.run_invariant Inv (fun _ _ hi ht => step_inv hi ht) n s s'
+ 
+ /-- Soundness of the enumerator: halting yields a derivation of code 1. -/
+ theorem sound : Halts → C222 F := by
+@@ -295,18 +293,8 @@
+ 
+ /-! ### Every candidate is reached -/
+ 
+-theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1
+-  | 0, m, s, s1, h => by
+-      simp only [run] at h; cases h; simp
+-  | n + 1, m, s, s1, h => by
+-      simp only [run] at h
+-      split at h
+-      · rename_i s2 h2
+-        have := run_add n m s2 s1 h
+-        rw [show n + 1 + m = (n + m) + 1 by omega]
+-        simp only [run, h2]
+-        exact this
+-      · cases h
++theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1 :=
++  scheduler.run_add
+ 
+ theorem unP_le (z : Nat) : (unP z).1 ≤ z ∧ (unP z).2 ≤ z := ofNat_le z
+ 
+@@ -338,40 +326,18 @@
+     · cases h; rfl
+   · cases h; rfl
+ 
++private theorem scheduler_laws : scheduler.Laws St.pl St.np where
++  advance := fun _ _ hs hp => step_start hp hs
++  descend := fun _ _ hs hp => step_pl hp hs
++
+ /-- A candidate in progress finishes or the enumerator halts. -/
+ theorem drain : ∀ (m : Nat) (s : St), s.pl ≤ m →
+     (∃ n s', run n s = some s' ∧ s'.pl = 0 ∧ s'.np = s.np) ∨
+-    (∃ n s', run n s = some s' ∧ enumStep s' = none)
+-  | m, s, hm => by
+-      by_cases hpl : s.pl = 0
+-      · exact Or.inl ⟨0, s, rfl, hpl, rfl⟩
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨0, s, rfl, hs⟩
+-        | some s1 =>
+-          obtain ⟨hlt, hnp⟩ := step_pl hpl hs
+-          cases m with
+-          | zero => omega
+-          | succ m =>
+-            rcases drain m s1 (by omega) with ⟨n, s', hr, h1, h2⟩ | ⟨n, s', hr, h1⟩
+-            · exact Or.inl ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1, h2.trans hnp⟩
+-            · exact Or.inr ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1⟩
+-
+-theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts
+-  | 0 => Or.inl ⟨0, s0, rfl, rfl, rfl⟩
+-  | N + 1 => by
+-      rcases reach N with ⟨n, s, hr, hpl, hnp⟩ | hh
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨n, s, hr, hs⟩
+-        | some s1 =>
+-          have hnp1 : s1.np = N + 1 := by rw [step_start hpl hs, hnp]
+-          have hr1 : run (n + 1) s0 = some s1 := by
+-            rw [run_add n 1 s0 s hr]; simp only [run, hs]
+-          rcases drain s1.pl s1 (Nat.le_refl _) with ⟨k, s', hr', h1, h2⟩ | ⟨k, s', hr', h1⟩
+-          · left
+-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1, h2.trans hnp1⟩
+-          · right
+-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1⟩
+-      · exact Or.inr hh
++    (∃ n s', run n s = some s' ∧ enumStep s' = none) :=
++  fun _ s _ => (scheduler.reach_or_halt scheduler_laws s.np s (Nat.le_refl _)).symm
++
++theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts :=
++  fun N => (scheduler.reach_or_halt scheduler_laws N s0 (Nat.zero_le _)).symm
+ 
+ /-- Any command list that halts from every register state is eventually executed. -/
+ theorem halts_of_cexec (c : Cmd) (cs : List Cmd) (hall : ∀ w, cexec (c :: cs) w = none) : Halts := by
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumDom.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumDom.lean
+@@ -1,5 +1,6 @@
+ /- Forked by Research/ZFC/k225-formal/generate_enumdom.py from Enum222.lean: the 217's dominated AX command (Source 149). -/
+ import BusyBeaver.ZFC.KCodeDom
++import BusyBeaver.ZFC.CofinalScheduler
+ 
+ /-!
+ The abstract proof enumerator of the 217-state machine (Source 149's dominated AX), and L1.
+@@ -120,6 +121,9 @@
+ 
+ /-- The enumerator halts: some reachable state takes a halting step. -/
+ def Halts : Prop := ∃ n s, run n s0 = some s ∧ enumStep s = none
++
++private abbrev scheduler : CofinalScheduler.Dynamics St :=
++  ⟨enumStep, run, fun _ => rfl, fun n s => by cases h : enumStep s <;> simp only [run, h]⟩
+ 
+ /-! ## Soundness -/
+ 
+@@ -205,14 +209,8 @@
+     · cases h
+   · cases h
+ 
+-theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv s'
+-  | 0, s, s', hs, h => by cases h; exact hs
+-  | n + 1, s, s', hs, h => by
+-      unfold run at h
+-      split at h
+-      · rename_i s1 h1
+-        exact run_inv n (step_inv hs h1) h
+-      · cases h
++theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv s' :=
++  fun n s s' => scheduler.run_invariant Inv (fun _ _ hi ht => step_inv hi ht) n s s'
+ 
+ /-- Soundness of the enumerator: halting yields a derivation of code 1. -/
+ theorem sound : Halts → C222 F := by
+@@ -289,18 +287,8 @@
+ 
+ /-! ### Every candidate is reached -/
+ 
+-theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1
+-  | 0, m, s, s1, h => by
+-      simp only [run] at h; cases h; simp
+-  | n + 1, m, s, s1, h => by
+-      simp only [run] at h
+-      split at h
+-      · rename_i s2 h2
+-        have := run_add n m s2 s1 h
+-        rw [show n + 1 + m = (n + m) + 1 by omega]
+-        simp only [run, h2]
+-        exact this
+-      · cases h
++theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1 :=
++  scheduler.run_add
+ 
+ theorem unP_le (z : Nat) : (unP z).1 ≤ z ∧ (unP z).2 ≤ z := ofNat_le z
+ 
+@@ -332,40 +320,18 @@
+     · cases h; rfl
+   · cases h; rfl
+ 
++private theorem scheduler_laws : scheduler.Laws St.pl St.np where
++  advance := fun _ _ hs hp => step_start hp hs
++  descend := fun _ _ hs hp => step_pl hp hs
++
+ /-- A candidate in progress finishes or the enumerator halts. -/
+ theorem drain : ∀ (m : Nat) (s : St), s.pl ≤ m →
+     (∃ n s', run n s = some s' ∧ s'.pl = 0 ∧ s'.np = s.np) ∨
+-    (∃ n s', run n s = some s' ∧ enumStep s' = none)
+-  | m, s, hm => by
+-      by_cases hpl : s.pl = 0
+-      · exact Or.inl ⟨0, s, rfl, hpl, rfl⟩
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨0, s, rfl, hs⟩
+-        | some s1 =>
+-          obtain ⟨hlt, hnp⟩ := step_pl hpl hs
+-          cases m with
+-          | zero => omega
+-          | succ m =>
+-            rcases drain m s1 (by omega) with ⟨n, s', hr, h1, h2⟩ | ⟨n, s', hr, h1⟩
+-            · exact Or.inl ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1, h2.trans hnp⟩
+-            · exact Or.inr ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1⟩
+-
+-theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts
+-  | 0 => Or.inl ⟨0, s0, rfl, rfl, rfl⟩
+-  | N + 1 => by
+-      rcases reach N with ⟨n, s, hr, hpl, hnp⟩ | hh
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨n, s, hr, hs⟩
+-        | some s1 =>
+-          have hnp1 : s1.np = N + 1 := by rw [step_start hpl hs, hnp]
+-          have hr1 : run (n + 1) s0 = some s1 := by
+-            rw [run_add n 1 s0 s hr]; simp only [run, hs]
+-          rcases drain s1.pl s1 (Nat.le_refl _) with ⟨k, s', hr', h1, h2⟩ | ⟨k, s', hr', h1⟩
+-          · left
+-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1, h2.trans hnp1⟩
+-          · right
+-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1⟩
+-      · exact Or.inr hh
++    (∃ n s', run n s = some s' ∧ enumStep s' = none) :=
++  fun _ s _ => (scheduler.reach_or_halt scheduler_laws s.np s (Nat.le_refl _)).symm
++
++theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts :=
++  fun N => (scheduler.reach_or_halt scheduler_laws N s0 (Nat.zero_le _)).symm
+ 
+ /-- Any command list that halts from every register state is eventually executed. -/
+ theorem halts_of_cexec (c : Cmd) (cs : List Cmd) (hall : ∀ w, cexec (c :: cs) w = none) : Halts := by
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.Code254
++import BusyBeaver.ZFC.CofinalScheduler
+ 
+ /-!
+ The abstract proof enumerator of the base-4 ZFC machines, and L1.
+@@ -125,6 +126,9 @@
+ 
+ /-- The enumerator halts: some reachable state takes a halting step. -/
+ def Halts : Prop := ∃ n s, run n s0 = some s ∧ enumStep s = none
++
++private abbrev scheduler : CofinalScheduler.Dynamics St :=
++  ⟨enumStep, run, fun _ => rfl, fun n s => by cases h : enumStep s <;> simp only [run, h]⟩
+ 
+ /-! ## Soundness -/
+ 
+@@ -210,14 +214,8 @@
+     · cases h
+   · cases h
+ 
+-theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv s'
+-  | 0, s, s', hs, h => by cases h; exact hs
+-  | n + 1, s, s', hs, h => by
+-      unfold run at h
+-      split at h
+-      · rename_i s1 h1
+-        exact run_inv n (step_inv hs h1) h
+-      · cases h
++theorem run_inv : ∀ (n : Nat) {s s' : St}, Inv s → run n s = some s' → Inv s' :=
++  fun n s s' => scheduler.run_invariant Inv (fun _ _ hi ht => step_inv hi ht) n s s'
+ 
+ /-- Soundness of the enumerator: halting yields a derivation of code 1. -/
+ theorem sound : Halts → C254 F := by
+@@ -294,18 +292,8 @@
+ 
+ /-! ### Every candidate is reached -/
+ 
+-theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1
+-  | 0, m, s, s1, h => by
+-      simp only [run] at h; cases h; simp
+-  | n + 1, m, s, s1, h => by
+-      simp only [run] at h
+-      split at h
+-      · rename_i s2 h2
+-        have := run_add n m s2 s1 h
+-        rw [show n + 1 + m = (n + m) + 1 by omega]
+-        simp only [run, h2]
+-        exact this
+-      · cases h
++theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m) s = run m s1 :=
++  scheduler.run_add
+ 
+ theorem unP_le (z : Nat) : (unP z).1 ≤ z ∧ (unP z).2 ≤ z := ofNat_le z
+ 
+@@ -337,40 +325,18 @@
+     · cases h; rfl
+   · cases h; rfl
+ 
++private theorem scheduler_laws : scheduler.Laws St.pl St.np where
++  advance := fun _ _ hs hp => step_start hp hs
++  descend := fun _ _ hs hp => step_pl hp hs
++
+ /-- A candidate in progress finishes or the enumerator halts. -/
+ theorem drain : ∀ (m : Nat) (s : St), s.pl ≤ m →
+     (∃ n s', run n s = some s' ∧ s'.pl = 0 ∧ s'.np = s.np) ∨
+-    (∃ n s', run n s = some s' ∧ enumStep s' = none)
+-  | m, s, hm => by
+-      by_cases hpl : s.pl = 0
+-      · exact Or.inl ⟨0, s, rfl, hpl, rfl⟩
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨0, s, rfl, hs⟩
+-        | some s1 =>
+-          obtain ⟨hlt, hnp⟩ := step_pl hpl hs
+-          cases m with
+-          | zero => omega
+-          | succ m =>
+-            rcases drain m s1 (by omega) with ⟨n, s', hr, h1, h2⟩ | ⟨n, s', hr, h1⟩
+-            · exact Or.inl ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1, h2.trans hnp⟩
+-            · exact Or.inr ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h1⟩
+-
+-theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts
+-  | 0 => Or.inl ⟨0, s0, rfl, rfl, rfl⟩
+-  | N + 1 => by
+-      rcases reach N with ⟨n, s, hr, hpl, hnp⟩ | hh
+-      · match hs : enumStep s with
+-        | none => exact Or.inr ⟨n, s, hr, hs⟩
+-        | some s1 =>
+-          have hnp1 : s1.np = N + 1 := by rw [step_start hpl hs, hnp]
+-          have hr1 : run (n + 1) s0 = some s1 := by
+-            rw [run_add n 1 s0 s hr]; simp only [run, hs]
+-          rcases drain s1.pl s1 (Nat.le_refl _) with ⟨k, s', hr', h1, h2⟩ | ⟨k, s', hr', h1⟩
+-          · left
+-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1, h2.trans hnp1⟩
+-          · right
+-            exact ⟨n + 1 + k, s', by rw [run_add (n + 1) k s0 s1 hr1]; exact hr', h1⟩
+-      · exact Or.inr hh
++    (∃ n s', run n s = some s' ∧ enumStep s' = none) :=
++  fun _ s _ => (scheduler.reach_or_halt scheduler_laws s.np s (Nat.le_refl _)).symm
++
++theorem reach : ∀ N : Nat, (∃ n s, run n s0 = some s ∧ s.pl = 0 ∧ s.np = N) ∨ Halts :=
++  fun N => (scheduler.reach_or_halt scheduler_laws N s0 (Nat.zero_le _)).symm
+ 
+ /-- Any command list that halts from every register state is eventually executed. -/
+ theorem halts_of_cexec (c : Cmd) (cs : List Cmd) (hall : ∀ w, cexec (c :: cs) w = none) : Halts := by
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CofinalScheduler.lean
+@@ -0,0 +1,113 @@
++import Init
++
++/-!
++A scheduler kernel for partial deterministic enumerators.
++
++Only two successful-step facts are needed. At a boundary the candidate index
++increases by one. Inside a candidate, the pending rank strictly decreases and
++the index stays fixed. There is no bound on the pending rank after a refill.
++The run equations are parameters, so client transition and run definitions
++can remain literally unchanged.
++-/
++namespace SetTheory.BusyBeaver.ZFC.CofinalScheduler
++
++universe u
++
++structure Dynamics (S : Type u) where
++  step : S → Option S
++  run : Nat → S → Option S
++  zero : ∀ s, run 0 s = some s
++  succ : ∀ n s, run (n + 1) s =
++    match step s with
++    | some t => run n t
++    | none => none
++
++namespace Dynamics
++variable {S : Type u} (M : Dynamics S)
++
++def Halts (s : S) : Prop := ∃ n t, M.run n s = some t ∧ M.step t = none
++
++theorem run_add : ∀ n m s t,
++    M.run n s = some t → M.run (n + m) s = M.run m t
++  | 0, m, s, t, h => by
++      rw [M.zero] at h
++      cases h
++      simp only [Nat.zero_add]
++  | n + 1, m, s, t, h => by
++      rw [M.succ] at h
++      cases hs : M.step s with
++      | none => simp only [hs] at h; cases h
++      | some v =>
++          simp only [hs] at h
++          rw [show n + 1 + m = (n + m) + 1 by omega, M.succ, hs]
++          exact run_add n m v t h
++
++theorem prepend {s t : S} (h : M.step s = some t) {n : Nat} {v : S}
++    (hr : M.run n t = some v) : M.run (n + 1) s = some v := by
++  rw [M.succ, h]
++  exact hr
++
++theorem halts_prepend {s t : S} (h : M.step s = some t) : M.Halts t → M.Halts s := by
++  rintro ⟨n, v, hr, hv⟩
++  exact ⟨n + 1, v, M.prepend h hr, hv⟩
++
++theorem halts_of_run {s t : S} {n : Nat} (h : M.run n s = some t) :
++    M.Halts t → M.Halts s := by
++  rintro ⟨m, v, hr, hv⟩
++  exact ⟨n + m, v, (M.run_add n m s t h).trans hr, hv⟩
++
++theorem run_invariant (I : S → Prop)
++    (preserves : ∀ s t, I s → M.step s = some t → I t) :
++    ∀ n s t, I s → M.run n s = some t → I t
++  | 0, s, t, hi, hr => by rw [M.zero] at hr; cases hr; exact hi
++  | n + 1, s, t, hi, hr => by
++      rw [M.succ] at hr
++      cases hs : M.step s with
++      | none => simp only [hs] at hr; cases hr
++      | some v =>
++          simp only [hs] at hr
++          exact run_invariant I preserves n v t (preserves s v hi hs) hr
++
++structure Laws (pending index : S → Nat) : Prop where
++  advance : ∀ s t, M.step s = some t → pending s = 0 → index t = index s + 1
++  descend : ∀ s t, M.step s = some t → pending s ≠ 0 →
++    pending t < pending s ∧ index t = index s
++
++variable {pending index : S → Nat} (L : M.Laws pending index)
++include L
++
++/-- Reach a requested later boundary or halt first, even from an active candidate. -/
++theorem reach_or_halt (target : Nat) (s : S) (hle : index s ≤ target) :
++    M.Halts s ∨ ∃ n t, M.run n s = some t ∧ pending t = 0 ∧ index t = target := by
++  by_cases hp : pending s = 0
++  · by_cases hi : index s = target
++    · exact Or.inr ⟨0, s, M.zero s, hp, hi⟩
++    · cases hs : M.step s with
++      | none => exact Or.inl ⟨0, s, M.zero s, hs⟩
++      | some t =>
++          have ht := L.advance s t hs hp
++          have hle' : index t ≤ target := by omega
++          rcases reach_or_halt target t hle' with hh | ⟨n, v, hr, hv, hi⟩
++          · exact Or.inl (M.halts_prepend hs hh)
++          · exact Or.inr ⟨n + 1, v, M.prepend hs hr, hv, hi⟩
++  · cases hs : M.step s with
++    | none => exact Or.inl ⟨0, s, M.zero s, hs⟩
++    | some t =>
++        obtain ⟨hp', hi⟩ := L.descend s t hs hp
++        have hle' : index t ≤ target := by omega
++        rcases reach_or_halt target t hle' with hh | ⟨n, v, hr, hv, hi'⟩
++        · exact Or.inl (M.halts_prepend hs hh)
++        · exact Or.inr ⟨n + 1, v, M.prepend hs hr, hv, hi'⟩
++termination_by (target - index s, pending s)
++decreasing_by all_goals simp_wf; omega
++
++/-- A fixed later target must work for each reachable payload at that boundary. -/
++theorem complete_at (s : S) (target : Nat) (hge : index s ≤ target)
++    (hit : ∀ n t, M.run n s = some t → pending t = 0 →
++      index t = target → M.Halts t) : M.Halts s := by
++  rcases M.reach_or_halt L target s hge with hh | ⟨n, t, hr, hp, hi⟩
++  · exact hh
++  · exact M.halts_of_run hr (hit n t hr hp hi)
++
++end Dynamics
++end SetTheory.BusyBeaver.ZFC.CofinalScheduler
