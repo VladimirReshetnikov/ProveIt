@@ -65,10 +65,7 @@ theorem sat_disj (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
     by_cases hf : Tarski.Sat mem e f
     · exact Or.inl hf
     · exact Or.inr (h (fun h' => (hf h').elim))
-  · intro h hn
-    cases h with
-    | inl hf => exact (hirr _ (hn hf)).elim
-    | inr hg => exact hg
+  · exact fun h hn => h.elim (fun hf => (hirr _ (hn hf)).elim) id
 
 /-- Every source environment has the intended interpretation under its name map. -/
 theorem sat_toNamed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
@@ -76,13 +73,11 @@ theorem sat_toNamed (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
     (h : ∀ i, e' (names d i) = e i) :
     Tarski.Sat mem e' (toNamed d f) ↔ SetTheory.Sat mem e f := by
   induction f generalizing d e e' with
-  | fMem i j => simp only [toNamed, Tarski.Sat, SetTheory.Sat, h i, h j]
-  | fEq i j => simp only [toNamed, Tarski.Sat, SetTheory.Sat, h i, h j]
+  | fMem i j | fEq i j => simp only [toNamed, Tarski.Sat, SetTheory.Sat, h i, h j]
   | fBot =>
     change mem (e' 0) (e' 0) ↔ False
     exact ⟨hirr _, False.elim⟩
-  | fImp f g ihf ihg =>
-    exact imp_congr (ihf d e e' h) (ihg d e e' h)
+  | fImp f g ihf ihg => exact imp_congr (ihf d e e' h) (ihg d e e' h)
   | fAnd f g ihf ihg =>
     exact (sat_conj mem hirr e' _ _).trans (and_congr (ihf d e e' h) (ihg d e e' h))
   | fOr f g ihf ihg =>
@@ -181,10 +176,8 @@ def namedRelation (mem : V → V → Prop) (f : NF) (e : Nat → V) (x y : V) : 
   Tarski.Sat mem (Tarski.update (Tarski.update e 1 x) 3 y) f
 
 private theorem free_ne (f : NF) (c : Nat) (h : ¬ NF.Free c f)
-    (n : Nat) (hn : NF.Free n f) : n ≠ c := by
-  intro he
-  subst n
-  exact h hn
+    (n : Nat) (hn : NF.Free n f) : n ≠ c :=
+  fun he => h (he ▸ hn)
 
 theorem forward_matrix (mem : V → V → Prop) (f : NF) (e : Nat → V)
     (c : Nat) (v x y : V) (h : ¬ NF.Free c f) :
@@ -232,8 +225,7 @@ theorem collection_at_of_namedG (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x
       simpa [Tarski.Sat, Tarski.update, h3] using hy
     obtain ⟨x, hxy⟩ := (sat_ex mem hirr _ 1 _).mp (hg.2 y hy')
     exact ⟨x, (support_matrix mem f e c v x y hf).mp hxy⟩
-  · intro x hx hSome
-    obtain ⟨y, hxy⟩ := hSome
+  · rintro x hx ⟨y, hxy⟩
     have hx' : Tarski.Sat mem (Tarski.update (Tarski.update e c v) 1 x) (.rel 1 3) := by
       simpa [Tarski.Sat, Tarski.update, Ne.symm h3] using hx
     have hxy' := (forward_matrix mem f e c v x y hf).mpr hxy
@@ -265,8 +257,7 @@ theorem collection_of_model (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
   · intro y hy
     obtain ⟨x, hxy⟩ := hs y hy
     exact ⟨x, (domain_relation mem (pad f) e a x y).mp hxy⟩
-  · intro x hx hSome
-    obtain ⟨y, hxy⟩ := hSome
+  · rintro x hx ⟨y, hxy⟩
     obtain ⟨z, hz, hxz⟩ := hv x (by simpa [ea, Tarski.update] using hx)
       ⟨y, (domain_relation mem (pad f) e a x y).mpr hxy⟩
     exact ⟨z, hz, (domain_relation mem (pad f) e a x z).mp hxz⟩
@@ -311,9 +302,8 @@ theorem collection_of_matrix (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
 theorem modelsGIC_of_encBundle (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x)
     (valuation : Nat → V)
     (hB : ∀ f, Code254.EncBundle f → ∀ e : Nat → V, Tarski.Sat mem e f) :
-    ProfileModel.ModelsGIC mem := by
-  intro f _ env
-  exact (ProfileSyntax.sat_gicForm mem f env).mpr
+    ProfileModel.ModelsGIC mem :=
+  fun f _ env => (ProfileSyntax.sat_gicForm mem f env).mpr
     (collection_of_matrix mem hirr valuation hB f env)
 
 /-- The EncBundle theory supplies the existing equality-free CP/GIC model interface. -/

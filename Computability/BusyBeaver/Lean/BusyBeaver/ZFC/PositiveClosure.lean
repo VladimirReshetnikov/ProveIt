@@ -69,18 +69,10 @@ theorem constant_exact_of_instance (mem : V → V → Prop) (seed : V → V → 
     (hInstance : ClosureInstance mem seed (fun _ y => theta y)) :
     ∃ e, Exact mem theta e := by
   obtain ⟨b, hb⟩ := hBound
-  have hLocal : SubsetBounded mem (fun _ y => theta y) := by
-    intro _
-    exact ⟨b, hb⟩
-  obtain ⟨e, hClosed, hSupport⟩ := hInstance hLocal witness
-  refine ⟨e, ?_⟩
-  intro y
-  constructor
-  · intro hy
-    obtain ⟨_, hTheta⟩ := hSupport y hy
-    exact hTheta
-  · intro hTheta
-    exact hClosed witness y (Or.inl (hSeed witness)) hTheta
+  obtain ⟨e, hClosed, hSupport⟩ := hInstance (fun _ => ⟨b, hb⟩) witness
+  refine ⟨e, fun y => ⟨fun hy => ?_, hClosed witness y (Or.inl (hSeed witness))⟩⟩
+  obtain ⟨_, hTheta⟩ := hSupport y hy
+  exact hTheta
 
 /-- Singleton formation uses only its own exact constant-relation instances. -/
 theorem singletons_of_instances (mem : V → V → Prop) (seed : V → V → Prop)
@@ -88,11 +80,7 @@ theorem singletons_of_instances (mem : V → V → Prop) (seed : V → V → Pro
     (hInstance : ∀ t : V, ClosureInstance mem seed (fun _ y => y = t)) :
     SingletonsExact mem := by
   intro t
-  have hBound : ∃ b, ∀ y : V, y = t → Sub mem y b := by
-    refine ⟨t, ?_⟩
-    intro y hy
-    subst y
-    exact sub_refl mem t
+  have hBound : ∃ b, ∀ y : V, y = t → Sub mem y b := ⟨t, fun _ hy => hy ▸ sub_refl mem _⟩
   exact constant_exact_of_instance mem seed witness hSeed
     (fun y => y = t) hBound (hInstance t)
 
@@ -100,10 +88,9 @@ theorem singletons_of_instances (mem : V → V → Prop) (seed : V → V → Pro
 theorem power_of_instance (mem : V → V → Prop) (seed : V → V → Prop)
     (witness : V) (hSeed : ∀ a, seed a a) (a : V)
     (hInstance : ClosureInstance mem seed (fun _ y => Sub mem y a)) :
-    ∃ p, ∀ y, mem y p ↔ Sub mem y a := by
-  apply constant_exact_of_instance mem seed witness hSeed (fun y => Sub mem y a)
-  · exact ⟨a, fun _ h => h⟩
-  · exact hInstance
+    ∃ p, ∀ y, mem y p ↔ Sub mem y a :=
+  constant_exact_of_instance mem seed witness hSeed (fun y => Sub mem y a) ⟨a, fun _ h => h⟩
+    hInstance
 
 /-- The gate ensures each local fiber has one bound, without assuming Union. -/
 theorem switch_subset_bounded (mem : V → V → Prop) :
@@ -112,15 +99,12 @@ theorem switch_subset_bounded (mem : V → V → Prop) :
   intro x
   by_cases hSingle : ∃ t, Sing mem x t
   · obtain ⟨t, ht⟩ := hSingle
-    refine ⟨t, ?_⟩
-    intro y hy
+    refine ⟨t, fun y hy => ?_⟩
     rcases hy with hy | hy
-    · have hyt : y = t := (ht y).mp ((hy y).mpr rfl)
-      subst y
-      exact sub_refl mem t
+    · obtain rfl := (ht y).mp ((hy y).mpr rfl)
+      exact sub_refl mem _
     · exact False.elim (hy.1 ⟨t, ht⟩)
-  · refine ⟨x, ?_⟩
-    intro y hy
+  · refine ⟨x, fun y hy => ?_⟩
     rcases hy with hy | hy
     · exact False.elim (hSingle ⟨y, hy⟩)
     · exact hy.2
@@ -134,17 +118,10 @@ theorem switch_closed_transitive (mem : V → V → Prop)
   intro x hx y hy
   by_cases hSingle : ∃ t, Sing mem x t
   · obtain ⟨t, ht⟩ := hSingle
-    have hyt : y = t := (ht y).mp hy
-    subst y
-    exact hClosed x t hx (Or.inl ht)
+    exact (ht y).mp hy ▸ hClosed x t hx (Or.inl ht)
   · obtain ⟨s, hs⟩ := hSingletons y
-    have hsub : Sub mem s x := by
-      intro z hz
-      have hzy : z = y := (hs z).mp hz
-      subst z
-      exact hy
-    have hsC : mem s c := hClosed x s hx (Or.inr ⟨hSingle, hsub⟩)
-    exact hClosed s y hsC (Or.inl hs)
+    have hsub : Sub mem s x := fun z hz => (hs z).mp hz ▸ hy
+    exact hClosed s y (hClosed x s hx (Or.inr ⟨hSingle, hsub⟩)) (Or.inl hs)
 
 /-- Initial Switch outputs suffice to cover members of A; A need not be in C. -/
 theorem switch_root_covers (mem : V → V → Prop)
@@ -156,17 +133,10 @@ theorem switch_root_covers (mem : V → V → Prop)
   intro y hy
   by_cases hSingle : ∃ t, Sing mem a t
   · obtain ⟨t, ht⟩ := hSingle
-    have hyt : y = t := (ht y).mp hy
-    subst y
-    exact hInitial t (Or.inl ht)
+    exact (ht y).mp hy ▸ hInitial t (Or.inl ht)
   · obtain ⟨s, hs⟩ := hSingletons y
-    have hsub : Sub mem s a := by
-      intro z hz
-      have hzy : z = y := (hs z).mp hz
-      subst z
-      exact hy
-    have hsC : mem s c := hInitial s (Or.inr ⟨hSingle, hsub⟩)
-    exact hClosed s y hsC (Or.inl hs)
+    have hsub : Sub mem s a := fun z hz => (hs z).mp hz ▸ hy
+    exact hClosed s y (hInitial s (Or.inr ⟨hSingle, hsub⟩)) (Or.inl hs)
 
 /-- The new bootstrap: a positive decoder hull is a transitive cover of A. -/
 theorem positive_decoder_cover (mem : V → V → Prop) (seed : V → V → Prop)
@@ -174,14 +144,10 @@ theorem positive_decoder_cover (mem : V → V → Prop) (seed : V → V → Prop
     (hInstance : ClosureInstance mem seed (Switch mem)) (a : V) :
     ∃ c, Transitive mem c ∧ Sub mem a c := by
   obtain ⟨c, hClosed, _hSupport⟩ := hInstance (switch_subset_bounded mem) a
-  have hStep : ∀ x y, mem x c → Switch mem x y → mem y c := by
-    intro x y hx hr
-    exact hClosed x y (Or.inr hx) hr
-  refine ⟨c, switch_closed_transitive mem hSingletons c hStep, ?_⟩
-  apply switch_root_covers mem hSingletons a c
-  · intro y hr
-    exact hClosed a y (Or.inl (hSeed a)) hr
-  · exact hStep
+  have hStep : ∀ x y, mem x c → Switch mem x y → mem y c :=
+    fun x y hx => hClosed x y (Or.inr hx)
+  exact ⟨c, switch_closed_transitive mem hSingletons c hStep,
+    switch_root_covers mem hSingletons a c (fun y => hClosed a y (Or.inl (hSeed a))) hStep⟩
 
 /-- Separation needs the decoder instance and this precise constant instance.
 P is a semantic predicate parameter; no claim of a global first-order proof
@@ -193,9 +159,7 @@ theorem separation_of_instances (mem : V → V → Prop) (seed : V → V → Pro
     ∃ s, ∀ y, mem y s ↔ mem y a ∧ p y := by
   obtain ⟨c, hTrans, hCover⟩ := positive_decoder_cover mem seed hSeed hSingletons hSwitch a
   apply constant_exact_of_instance mem seed witness hSeed (fun y => mem y a ∧ p y)
-  · refine ⟨c, ?_⟩
-    intro y hy
-    exact hTrans y (hCover y hy.1)
+  · exact ⟨c, fun y hy => hTrans y (hCover y hy.1)⟩
   · exact hConstant
 
 /-- Union likewise needs no prior Union, Separation, Foundation, or Collection. -/
@@ -206,11 +170,7 @@ theorem union_of_instances (mem : V → V → Prop) (seed : V → V → Prop)
     ∃ s, ∀ y, mem y s ↔ ∃ x, mem x a ∧ mem y x := by
   obtain ⟨c, hTrans, hCover⟩ := positive_decoder_cover mem seed hSeed hSingletons hSwitch a
   apply constant_exact_of_instance mem seed witness hSeed (fun y => ∃ x, mem x a ∧ mem y x)
-  · refine ⟨c, ?_⟩
-    intro y hy
-    obtain ⟨x, hxA, hyx⟩ := hy
-    have hyC : mem y c := hTrans x (hCover x hxA) y hyx
-    exact hTrans y hyC
+  · exact ⟨c, fun y ⟨x, hxA, hyx⟩ => hTrans y (hTrans x (hCover x hxA) y hyx)⟩
   · exact hConstant
 
 end SetTheory.BusyBeaver.ZFC.PositiveClosure
