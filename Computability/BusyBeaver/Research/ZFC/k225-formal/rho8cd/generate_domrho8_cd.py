@@ -18,7 +18,8 @@ which must then generalize that row with no side condition).
 representation-independent DominatedImplication module: an arbitrary binary
 connective with a reflexive `below` relation closed under insertion into either
 operand.  Its goals are the row, composition ((a>b)>((b>c)>(a>c))) and
-prefixing ((a>b)>((c>a)>(c>b))).
+prefixing ((a>b)>((c>a)>(c>b))), and, when the derivation has them, K, Peirce
+and S (exported as k, peirce, s for the unrestricted Lukasiewicz adapter).
 
 --luk renders a derivation from the unrestricted row (no side conditions, no
 truth) as the Lukasiewicz namespace of Lukasiewicz.lean: K, Peirce, S and, when
@@ -463,6 +464,9 @@ def render(rows, goals, mode, keep=''):
         need += [(COMPOSITION, ['a', 'b', 'c'])] if any(g == COMPOSITION for _, g in goals) else []
     else:
         need = [(ROW, ROW_NAMES)] + ([(COMPOSITION, ['a', 'b', 'c']), (PREFIX, ['a', 'b', 'x'])] if mode == 'core' else [])
+        if mode == 'core':
+            need += [(g, n) for g, n in ((K, ['a', 'b']), (PEIRCE, ['a', 'b']), (S, ['a', 'b', 'c']))
+                     if any(h == g for _, h in goals)]
     use = {}
     for goal, vnames in need:
         i = next(i for i, g in goals if g == goal)
@@ -478,8 +482,11 @@ def render(rows, goals, mode, keep=''):
             tail = tail.replace(LUK_S_DOC, LUK_COMPOSITION.format(composition=use[COMPOSITION]) + LUK_S_DOC)
         return LUK_HEAD.format(n=len(body)) + '\n'.join(body) + '\n' + tail + keep
     head, tail = {'lean': (LEAN_HEAD, LEAN_TAIL), 'rocq': (ROCQ_HEAD, ROCQ_TAIL), 'core': (CORE_HEAD, CORE_TAIL)}[mode]
+    if mode == 'core' and K in use:
+        tail = tail.replace(CORE_END, CORE_BASIS + CORE_END).replace(CORE_AXIOMS, CORE_AXIOMS + CORE_BASIS_AXIOMS)
     return head.format(n=len(body)) + '\n'.join(body) + '\n' + tail.format(
-        row=use[ROW], composition=use.get(COMPOSITION), prefix=use.get(PREFIX))
+        row=use[ROW], composition=use.get(COMPOSITION), prefix=use.get(PREFIX),
+        k=use.get(K), peirce=use.get(PEIRCE), s=use.get(S))
 
 
 CORE_HEAD = '''import Init
@@ -549,6 +556,21 @@ end
 end SetTheory.BusyBeaver.ZFC.DominatedImplication
 '''
 
+
+CORE_END = 'end\n#print axioms rho8_all\n'
+CORE_AXIOMS = '#print axioms lift_right\n'
+CORE_BASIS = '''/-- The classical basis K, Peirce and S, from the same derivation. -/
+theorem k (a b : A) : T (L.imp a (L.imp b a)) :=
+  {k}
+
+theorem peirce (a b : A) : T (L.imp (L.imp (L.imp a b) a) a) :=
+  {peirce}
+
+theorem s (a b c : A) : T (L.imp (L.imp a (L.imp b c)) (L.imp (L.imp a b) (L.imp a c))) :=
+  {s}
+
+'''
+CORE_BASIS_AXIOMS = '#print axioms k\n#print axioms peirce\n#print axioms s\n'
 
 LUK_HEAD = '''import BusyBeaver.ZFC.TarskiComplete
 

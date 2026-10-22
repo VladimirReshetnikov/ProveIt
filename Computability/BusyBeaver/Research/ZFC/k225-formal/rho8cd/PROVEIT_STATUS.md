@@ -7,3 +7,9 @@ The current [phase-ten Lean checkpoint](../verification/k215/simplification/phas
 The live Rocq `DomRho8.v`, regeneration record, manifest and `regenerate215.py` retain the exact earlier checked bytes. The proposed four-file change remains recoverable in Git history. Consequently, this directory's command examples do not imply that the live regeneration route has adopted the new derivation. The [merge record](../verification/k215/simplification/phase9/upstream-merge/README.md) binds this boundary.
 
 The newer 58-step proposal internalizes lifting and composition and removes the private seed wrapper. A [static comparison](../verification/k215/simplification/phase10/upstream-merge/source-review/review.md) finds another 755-byte / 35-line reduction with the same public interface and assumptions. Its kernel check and maintained-producer adaptation remain pending; the current checked core and self-contained producer retain their phase-ten bytes. The delivered `--core` command describes that separate proposal.
+
+**Update (shared core, after batch 212).** `DominatedImplication.lean` is now rendered from the 58-step
+[`derivation_core.txt`](derivation_core.txt), whose goals also include K, Peirce and S, and the
+`Lukasiewicz` namespace is an adapter over it (domination holding everywhere), replacing that module's
+separate derivation. `lake build` of `DominatedImplication`, `DomRho8`, `KCodeDom`, `Lukasiewicz`, its
+importers and `KEndpoint` passes; this supersedes the phase-ten core bytes above.
