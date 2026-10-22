@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "fixed-input circuits",
+      "arguments": [
+        "python3",
+        "artifacts/fixed_input.py",
+        "--output",
+        "artifacts/fixed_input.json"
+      ],
+      "returncode": 0,
+      "output": "artifacts/verification/check_1.txt",
+      "output_sha256": "417a97cb4e0ccc11ff56e7fab7b8f89255df1af0409fb51a3bb74f850d1af626"
+    },
+    {
+      "name": "explicit domain conversions",
+      "arguments": [
+        "python3",
+        "artifacts/domain_variants.py",
+        "--output",
+        "artifacts/domain_variants.json"
+      ],
+      "returncode": 0,
+      "output": "artifacts/verification/check_2.txt",
+      "output_sha256": "40e5456fd8caa9216521952c6da7d0d3c4bec48df63dbfc8655a61e012d62dc8"
+    },
+    {
+      "name": "explicit normalizer",
+      "arguments": [
+        "python3",
+        "artifacts/compiler/k215_one_sided.py"
+      ],
+      "returncode": 0,
+      "output": "artifacts/verification/check_3.txt",
+      "output_sha256": "2a4acffd72e2a965468dc8caf95079d7aa8827a944d4005b7d8130b834bb6579"
+    },
+    {
+      "name": "finite census and layout",
+      "arguments": [
+        "python3",
+        "artifacts/compiler/finite_window_constants.py"
+      ],
+      "returncode": 0,
+      "output": "artifacts/verification/check_4.txt",
+      "output_sha256": "72456cdb2a22cc4c12ebfd254c2c8eef115d671cabdb36fd872270bd5aff4e14"
+    },
+    {
+      "name": "independent circuit and controller review",
+      "arguments": [
+        "python3",
+        "artifacts/review/review_fixed70.py"
+      ],
+      "returncode": 0,
+      "output": "artifacts/verification/check_5.txt",
+      "output_sha256": "324ca88be54b619a910c0cba5d2693a66d74f9a0185e514ac2570219d024d16f"
+    }
+  ],
+  "scope": "Finite arithmetic, circuit, local-controller and compressed-census checks. No proof-assistant build, giant coefficient expansion, complete window enumeration, or consistency decision."
+}

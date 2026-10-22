@@ -1,0 +1,385 @@
+{
+  "status": "PASS",
+  "source_snapshot": "cdd582bec13f908df3711fa9e05d1ddac368a5db",
+  "source_and_notice_hashes_checked": 28,
+  "checks": {
+    "source_arithmetic": {
+      "status": "pass",
+      "parent_validations": "pass",
+      "variants": [
+        {
+          "file": "fixed_input72_square_marker.json",
+          "ledger": {
+            "multiplication": 41,
+            "addition_subtraction": 31,
+            "total": 72
+          },
+          "positive_unknowns": 16,
+          "exact_degree": 157,
+          "signed_source_fixtures": 64
+        },
+        {
+          "file": "fixed_input74_ordinary_square_marker.json",
+          "ledger": {
+            "multiplication": 41,
+            "addition_subtraction": 33,
+            "total": 74
+          },
+          "positive_unknowns": 16,
+          "exact_degree": 101,
+          "signed_source_fixtures": 64
+        }
+      ],
+      "scope": "Literal source, exact algebra, degree and elementary slack checks. Semantic proof is SQUARED_MARKER_PROOF.md.",
+      "diagnostic_constants_are_not_a_compiled_ZFC_program": true
+    },
+    "independent_marker": {
+      "status": "PASS",
+      "variants": [
+        {
+          "source": "fixed_input72_square_marker.json",
+          "sha256": "ff6e5a4d624cf22525cdbf149281cb17c1519b040f98c65d4793774040bc25e9",
+          "reviewed_parent_sha256": "4d405f6377b8a6d8fd094919342db912d5626bb8c229dd933b7cee4874c90d40",
+          "positive_unknowns": 16,
+          "fixed_numerals": 5,
+          "multiplications": 41,
+          "additions_subtractions": 31,
+          "total_gates": 72,
+          "exact_degree": 157,
+          "all_gates_and_inputs_live": true,
+          "all_retained_factors_independent_of_alpha": true,
+          "independent_signed_identity_fixtures": 64,
+          "exact_univariate_replay": true,
+          "multivariate_degree_argument": "Same leading homogeneous form as reviewed parent; removed summand has degree two less"
+        },
+        {
+          "source": "fixed_input74_ordinary_square_marker.json",
+          "sha256": "323bb6a161e21bb11c050822e6c96666939144caaaec6142bbc5b7f85ba3a0af",
+          "reviewed_parent_sha256": "af930c639b29b0a62937f696ec0d777560119bc5baee0503e6d1378c6cb50718",
+          "positive_unknowns": 16,
+          "fixed_numerals": 5,
+          "multiplications": 41,
+          "additions_subtractions": 33,
+          "total_gates": 74,
+          "exact_degree": 101,
+          "all_gates_and_inputs_live": true,
+          "all_retained_factors_independent_of_alpha": true,
+          "independent_signed_identity_fixtures": 64,
+          "exact_univariate_replay": true,
+          "multivariate_degree_argument": "Same leading homogeneous form as reviewed parent; removed summand has degree two less"
+        }
+      ],
+      "proof_note_sha256": "b5a1d3d0ec28c88a16ee0a7ca9a74fd4f915976b17c38b5e2f3226bbf6df380a",
+      "diagnostic_coefficients_are_valid_compiler_slice": false,
+      "scope": "Independent literal replay plus mathematical marker-slack review; no positive K215 solution or kernel proof claimed",
+      "seven_equation_system_and_quadratic_lift_modified": false
+    },
+    "machine_normalization": {
+      "status": "PASS_FINITE_NORMALIZATION_CHECKS",
+      "source_commit": "cdd582bec13f908df3711fa9e05d1ddac368a5db",
+      "k215_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+      "normalized_states": 436,
+      "tape_symbols": 8,
+      "transition_rows": 3488,
+      "original_tile_alphabet": 3502,
+      "exact_window_count": {
+        "movement_counts": {
+          "-1": 1722,
+          "0": 904,
+          "1": 862
+        },
+        "left_noarrival": 2639,
+        "right_noarrival": 1779,
+        "cross_parts": {
+          "vertical": 42936278004,
+          "horizontal": 85848028000,
+          "terminal": 686784301040,
+          "successor": 135633605274191
+        },
+        "valid_crosses": 136449173881235,
+        "allowed_windows": 20522746353535702537070419760,
+        "selector_radix_bits": 95
+      },
+      "start_window": [
+        1,
+        1,
+        1,
+        3499,
+        3499,
+        3500,
+        439,
+        439,
+        878
+      ],
+      "end_window": [
+        1,
+        1,
+        1,
+        3498,
+        3499,
+        3499,
+        2,
+        439,
+        439
+      ],
+      "exhaustive_folded_transition_checks": 5160,
+      "initializations": [
+        {
+          "initialization_steps": 8,
+          "simulation_steps": 1000,
+          "halted": false
+        },
+        {
+          "initialization_steps": 10,
+          "simulation_steps": 1000,
+          "halted": false
+        },
+        {
+          "initialization_steps": 12,
+          "simulation_steps": 1000,
+          "halted": false
+        },
+        {
+          "initialization_steps": 26,
+          "simulation_steps": 1000,
+          "halted": false
+        }
+      ],
+      "long_prefix": {
+        "initialization_steps": 10,
+        "simulation_steps": 95714,
+        "halted": false
+      },
+      "full_window_enumeration_performed": false,
+      "scope": "Finite implementation checks; general simulation proof is in the report; no ZFC consistency or nonhalting claim."
+    },
+    "window_counts": {
+      "status": "PASS",
+      "actual_window_count": {
+        "movement_counts": {
+          "-1": 1722,
+          "0": 904,
+          "1": 862
+        },
+        "left_noarrival": 2639,
+        "right_noarrival": 1779,
+        "cross_parts": {
+          "vertical": 42936278004,
+          "horizontal": 85848028000,
+          "terminal": 686784301040,
+          "successor": 135633605274191
+        },
+        "valid_crosses": 136449173881235,
+        "allowed_windows": 20522746353535702537070419760,
+        "selector_radix_bits": 95
+      },
+      "small_exhaustive_fixtures": [
+        {
+          "mixed": false,
+          "alphabet_size": 18,
+          "brute_cross_candidates": 1889568,
+          "counts": {
+            "vertical": 5508,
+            "horizontal": 10368,
+            "terminal": 31316,
+            "successor": 73973
+          }
+        },
+        {
+          "mixed": true,
+          "alphabet_size": 18,
+          "brute_cross_candidates": 1889568,
+          "counts": {
+            "vertical": 5508,
+            "horizontal": 10368,
+            "terminal": 31316,
+            "successor": 79929
+          }
+        }
+      ],
+      "actual_K215_window_list_enumerated": false
+    },
+    "fixed_compiler": {
+      "status": "PASS",
+      "snapshot": "cdd582bec13f908df3711fa9e05d1ddac368a5db",
+      "reference_sha256": {
+        "explore_fixed_raw_universal_76.py": "809688579104b43d07d76cb44dc9d5a998fbf981b8a1a2a8506cfca6416079f2",
+        "complete75_half_binomial_compiler.py": "787a7a35e49651df0be4475d988cb1cbe47ccb894aab99ee5e060a04804a6984"
+      },
+      "fixtures": [
+        {
+          "windows": 2,
+          "alphabet": 2,
+          "high_correction": 0,
+          "inner_bits": 125,
+          "cell_bits": 9765625,
+          "all_reference_fields_equal": true,
+          "constants_mod_1000000007": {
+            "B": 299550229,
+            "DC": 369675217,
+            "DR": 958659122,
+            "MC": 402985443,
+            "MF_native": 597184003,
+            "Bm1": 299550228,
+            "Kconstant": 887548256,
+            "twice_cell_bits": 19531250,
+            "inner_bits": 125,
+            "MF": 896734231,
+            "W0": 500474726
+          }
+        },
+        {
+          "windows": 3,
+          "alphabet": 2,
+          "high_correction": 0,
+          "inner_bits": 125,
+          "cell_bits": 9765625,
+          "all_reference_fields_equal": true,
+          "constants_mod_1000000007": {
+            "B": 299550229,
+            "DC": 423070427,
+            "DR": 89427912,
+            "MC": 295278545,
+            "MF_native": 88624862,
+            "Bm1": 299550228,
+            "Kconstant": 754145218,
+            "twice_cell_bits": 19531250,
+            "inner_bits": 125,
+            "MF": 388175090,
+            "W0": 500474726
+          }
+        },
+        {
+          "windows": 100,
+          "alphabet": 2,
+          "high_correction": 0,
+          "inner_bits": 625,
+          "cell_bits": 48828125,
+          "all_reference_fields_equal": true,
+          "constants_mod_1000000007": {
+            "B": 572910737,
+            "DC": 420607511,
+            "DR": 942421844,
+            "MC": 980552097,
+            "MF_native": 688736595,
+            "Bm1": 572910736,
+            "Kconstant": 852081416,
+            "twice_cell_bits": 97656250,
+            "inner_bits": 625,
+            "MF": 261647324,
+            "W0": 726385951
+          }
+        },
+        {
+          "windows": 3,
+          "alphabet": 3,
+          "high_correction": 0,
+          "inner_bits": 125,
+          "cell_bits": 9765625,
+          "all_reference_fields_equal": true,
+          "constants_mod_1000000007": {
+            "B": 299550229,
+            "DC": 734835172,
+            "DR": 700814477,
+            "MC": 727185890,
+            "MF_native": 129910418,
+            "Bm1": 299550228,
+            "Kconstant": 337196453,
+            "twice_cell_bits": 19531250,
+            "inner_bits": 125,
+            "MF": 429460646,
+            "W0": 500474726
+          }
+        },
+        {
+          "windows": 3,
+          "alphabet": 2,
+          "high_correction": 1,
+          "inner_bits": 125,
+          "cell_bits": 9765625,
+          "all_reference_fields_equal": true,
+          "constants_mod_1000000007": {
+            "B": 299550229,
+            "DC": 207713420,
+            "DR": 89427912,
+            "MC": 295278545,
+            "MF_native": 88624862,
+            "Bm1": 299550228,
+            "Kconstant": 538788211,
+            "twice_cell_bits": 19531250,
+            "inner_bits": 125,
+            "MF": 388175090,
+            "W0": 500474726
+          }
+        }
+      ],
+      "reference_function_equivalence_fixtures": 5,
+      "fully_materialized_small_fixture": true,
+      "materialized_small_fixture_W0_bit_length": 19531376,
+      "modular_exports_checked": 6,
+      "malformed_inputs_rejected": 5,
+      "K215_window_alphabet_enumerated": false,
+      "K215_numerals_materialized": false
+    },
+    "quartic_generation": {
+      "status": "PASS",
+      "lifted_natural_variables": 79,
+      "quadratic_equations": 70,
+      "exact_quartic_degree": 4,
+      "expanded_quartic_terms": 286,
+      "exact_auxiliary_sign_identity": true,
+      "signed_all_value_circuit_checks": 64,
+      "gate_equations_checked": 4032,
+      "final_comparisons_checked": 448,
+      "expanded_quartic_evaluations_checked": 64,
+      "nonnegativity_audit": "QUADRATIC_LIFT.md; proved at solutions on admissible coefficient slices",
+      "diagnostic_coefficients_are_valid_compiler_slice": false,
+      "actual_K215_positive_solution_constructed": false,
+      "source_sha256": "fae15df15460d41868db8fbc96e4d7619004e9ac04b390dcc44379a8e9ff1bfb"
+    },
+    "independent_quartic": {
+      "status": "PASS",
+      "review_method": "Independent exponent-vector reconstruction; no producer import",
+      "positive_source_unknowns": 16,
+      "nonnegative_lifted_unknowns": 79,
+      "gate_equations": 63,
+      "final_comparisons": 7,
+      "exact_residuals_compared": 70,
+      "maximum_residual_degree": 2,
+      "expanded_quartic_formal_terms_compared": 286,
+      "exact_quartic_degree": 4,
+      "v_tau_root_power_4_coefficient": 1,
+      "all_79_unknowns_occur": true,
+      "subtractions_covered_by_mathematical_positivity_audit": 14,
+      "source_sha256": "fae15df15460d41868db8fbc96e4d7619004e9ac04b390dcc44379a8e9ff1bfb",
+      "lift_sha256": "f4c658256e36df4b988d414adae7a10d0f545f3d7f8c77c8a520ce8858a0c3bd",
+      "producer_sha256": "c0437ddaf06177a00d0ed34425ece4ba731a0f3ae894a23004de5c3cdc8c05cc",
+      "proof_note_sha256": "4c729eefee76ccdc6fe2f232b013fd00207028666226c80af3019b0dd6af466a",
+      "scope": "Natural-variable equivalence uses the accompanying zero-set positivity proof; no K215 solution or kernel proof claimed"
+    },
+    "integer_domain": {
+      "status": "PASS",
+      "positive_variables": 16,
+      "positive_degree": 56,
+      "positive_operations": {
+        "multiplication": 41,
+        "addition_subtraction": 42,
+        "total": 83
+      },
+      "integer_variables": 64,
+      "integer_degree": 112,
+      "integer_operations": {
+        "multiplication": 105,
+        "addition_subtraction": 106,
+        "total": 211
+      },
+      "signed_assignment_checks": 64,
+      "diagnostic_constants_are_not_a_compiled_ZFC_program": true,
+      "scope": "Exact arithmetic source lift; surjectivity uses Lagrange four-square theorem."
+    }
+  },
+  "actual_K215_window_list_enumerated": false,
+  "actual_K215_giant_numerals_materialized": false,
+  "new_Lean_or_Rocq_build": false,
+  "scope": "Finite arithmetic, source and implementation checks; mathematical theorem in report.pdf."
+}
