@@ -51,18 +51,15 @@ theorem and_l (A B : NF) : ThmK Ax (imp (wa A B) A) := by
   apply ded1 classical
   apply deduction classical
   -- [¬A, wa A B] ⊢ ⊥
-  have hn : Der NF.imp (ThmK Ax) [neg A, wa A B] (imp A (neg B)) := by
-    apply deduction classical
-    exact .mp (.ax (ex_falso (neg B))) (.mp h1 h0)
+  have hn : Der NF.imp (ThmK Ax) [neg A, wa A B] (imp A (neg B)) :=
+    deduction classical (.mp (.ax (ex_falso (neg B))) (.mp h1 h0))
   exact .mp h1 hn
 
 theorem and_r (A B : NF) : ThmK Ax (imp (wa A B) B) := by
   apply syl classical _ (dne classical B)
   apply ded1 classical
   apply deduction classical
-  have hn : Der NF.imp (ThmK Ax) [neg B, wa A B] (imp A (neg B)) := by
-    apply deduction classical
-    exact h1
+  have hn : Der NF.imp (ThmK Ax) [neg B, wa A B] (imp A (neg B)) := deduction classical h1
   exact .mp h1 hn
 
 /-! ## Syntax facts -/
@@ -181,12 +178,10 @@ theorem biff_euclid (p q r : NF) :
   have qp : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp q p) := .mp (.ax (and_r _ _)) h1
   have pr : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp p r) := .mp (.ax (and_l _ _)) h0
   have rp : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp r p) := .mp (.ax (and_r _ _)) h0
-  have qr : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp q r) := by
-    apply deduction classical
-    exact .mp pr.weaken (.mp qp.weaken h0)
-  have rq : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp r q) := by
-    apply deduction classical
-    exact .mp pq.weaken (.mp rp.weaken h0)
+  have qr : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp q r) :=
+    deduction classical (.mp pr.weaken (.mp qp.weaken h0))
+  have rq : Der NF.imp (ThmK Ax) [biff p r, biff p q] (imp r q) :=
+    deduction classical (.mp pq.weaken (.mp rp.weaken h0))
   exact .mp (.mp (.ax (and_intro _ _)) qr) rq
 
 /-- Distribution of a two-premise implication under `∀`. -/
@@ -310,11 +305,7 @@ theorem c222_complete (T : NF → Prop) (hT : ∀ f, T f → C222 (enc (th f)))
   have hbot : Thm Ax NF.bot := by
     apply complete
     intro D mem hAx e
-    have hirr : ∀ x, ¬ mem x x := by
-      intro x hx
-      have := hAx irNF (Or.inr rfl) e x
-      exact this hx
-    exact (hnone D mem hirr (fun f hf => hAx f (Or.inl hf)) e).elim
+    exact (hnone D mem (fun x => hAx irNF (Or.inr rfl) e x) (fun f hf => hAx f (Or.inl hf)) e).elim
   have hK := thm_th hbot
   have := c222_of_thmK (T := fun g => ∃ a, Ax a ∧ th a = g) (by
     rintro g ⟨a, ha | rfl, rfl⟩
