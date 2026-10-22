@@ -61,14 +61,10 @@ theorem bound_cl (K : Nat) : ∀ (d : Nat) (f : NF) (n : Nat), Bound n (cl K d f
       simp only [cl, Bound] at h
       cases h with
       | inl h => omega
-      | inr h =>
-          have := bound_cl K (d + 1) a n ((bound_rn i (K + d) n _).mp h)
-          omega
+      | inr h => have := bound_cl K (d + 1) a n ((bound_rn i (K + d) n _).mp h); omega
   | d, imp a b, n, h => by
       simp only [cl, Bound] at h
-      cases h with
-      | inl h => exact bound_cl K d a n h
-      | inr h => exact bound_cl K d b n h
+      exact h.elim (fun h => bound_cl K d a n h) (fun h => bound_cl K d b n h)
   | _, rel _ _, _, h => h.elim
   | _, NF.eq _ _, _, h => h.elim
   | _, NF.bot, _, h => h.elim
@@ -83,22 +79,13 @@ theorem occurs_rn_cases {x y n : Nat} : ∀ {f : NF}, Occurs n (rn x y f) → Oc
   | NF.bot, h => h.elim
   | imp a b, h => by
       simp only [rn, Occurs] at h
-      cases h with
-      | inl h => cases occurs_rn_cases h with
-          | inl h => exact Or.inl (Or.inl h)
-          | inr h => exact Or.inr h
-      | inr h => cases occurs_rn_cases h with
-          | inl h => exact Or.inl (Or.inr h)
-          | inr h => exact Or.inr h
+      exact h.elim (fun h => (occurs_rn_cases h).imp_left Or.inl)
+        (fun h => (occurs_rn_cases h).imp_left Or.inr)
   | all i a, h => by
       by_cases hi : i = x
       · simp only [rn, hi, if_true] at h; subst hi; exact Or.inl h
       · simp only [rn, hi, if_false, Occurs] at h
-        cases h with
-        | inl h => exact Or.inl (Or.inl h)
-        | inr h => cases occurs_rn_cases h with
-            | inl h => exact Or.inl (Or.inr h)
-            | inr h => exact Or.inr h
+        exact h.elim (fun h => Or.inl (Or.inl h)) (fun h => (occurs_rn_cases h).imp_left Or.inr)
 
 theorem occurs_lt_top {n : Nat} : ∀ {f : NF}, Occurs n f → n < top f
   | rel i j, h => by simp only [Occurs] at h; simp only [top]; omega
@@ -107,8 +94,7 @@ theorem occurs_lt_top {n : Nat} : ∀ {f : NF}, Occurs n f → n < top f
   | imp a b, h => by
       simp only [top]
       cases h with
-      | inl h => have := occurs_lt_top h; omega
-      | inr h => have := occurs_lt_top h; omega
+      | inl h | inr h => have := occurs_lt_top h; omega
   | all i a, h => by
       simp only [top]
       cases h with
@@ -124,20 +110,13 @@ theorem occurs_cl (K : Nat) : ∀ (d : Nat) (f : NF) (n : Nat),
       | inl h => omega
       | inr h =>
           cases occurs_rn_cases h with
-          | inl h =>
-              cases occurs_cl K (d + 1) a n h with
-              | inl h => left; simp only [top]; omega
-              | inr h => right; omega
+          | inl h => have := occurs_cl K (d + 1) a n h; simp only [top]; omega
           | inr h => omega
   | d, imp a b, n, h => by
       simp only [cl, Occurs] at h
       cases h with
-      | inl h => cases occurs_cl K d a n h with
-          | inl h => left; simp only [top]; omega
-          | inr h => exact Or.inr h
-      | inr h => cases occurs_cl K d b n h with
-          | inl h => left; simp only [top]; omega
-          | inr h => exact Or.inr h
+      | inl h => exact (occurs_cl K d a n h).imp_left (fun h => by simp only [top]; omega)
+      | inr h => exact (occurs_cl K d b n h).imp_left (fun h => by simp only [top]; omega)
   | _, rel i j, n, h => Or.inl (occurs_lt_top h)
   | _, NF.eq i j, n, h => Or.inl (occurs_lt_top h)
   | _, NF.bot, _, h => h.elim
@@ -187,10 +166,9 @@ theorem sat_rn (mem : V → V → Prop) (x c : Nat) :
       have hix : i ≠ x := fun h => hx (Or.inl h.symm)
       have hic : i ≠ c := fun h => hc (Or.inl h.symm)
       simp only [rn, hix, if_false, Sat]
-      apply forall_congr'
-      intro d
-      rw [sat_rn mem x c a (update e i d) (fun h => hx (Or.inr h)) (fun h => hc (Or.inr h))]
-      rw [update_other e d (Ne.symm hic), update_comm e hix]
+      refine forall_congr' fun d => ?_
+      rw [sat_rn mem x c a (update e i d) (fun h => hx (Or.inr h)) (fun h => hc (Or.inr h)),
+        update_other e d (Ne.symm hic), update_comm e hix]
 
 /-! ## Provable equivalence with the clean form -/
 
@@ -214,12 +192,10 @@ theorem cl_equiv (K : Nat) : ∀ (d : Nat) (f : NF), top f ≤ K →
       have ih := cl_equiv K (d + 1) a (by omega)
       let a' := cl K (d + 1) a
       have hne : K + d ≠ i := by omega
-      have hb : ¬ Bound i a' := fun b => by
-        have := bound_cl K (d + 1) a i b; omega
+      have hb : ¬ Bound i a' := fun b => by have := bound_cl K (d + 1) a i b; omega
       have ho : ¬ Occurs (K + d) a' := fun o => by
         cases occurs_cl K (d + 1) a (K + d) o with
-        | inl h => omega
-        | inr h => omega
+        | inl h | inr h => omega
       simp only [cl]
       exact ⟨syl hC (all_mono hC i ih.1) (alpha_fwd hC hne hb ho),
         syl hC (alpha_bwd hC hne hb ho) (all_mono hC i ih.2)⟩

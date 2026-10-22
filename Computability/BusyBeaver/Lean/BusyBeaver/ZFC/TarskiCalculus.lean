@@ -109,10 +109,7 @@ theorem sat_ext (mem : V → V → Prop) :
         sat_ext mem b e e' (fun n hn => h n (Or.inr hn))]
   | all i a, e, e', h => by
       simp only [Sat]
-      apply forall_congr'
-      intro d
-      apply sat_ext mem a
-      intro n hn
+      refine forall_congr' fun d => sat_ext mem a _ _ fun n hn => ?_
       by_cases hni : n = i
       · subst hni; simp [update]
       · simp only [update, hni, if_false]; exact h n ⟨hni, hn⟩
@@ -120,13 +117,8 @@ theorem sat_ext (mem : V → V → Prop) :
 theorem sat_ex (mem : V → V → Prop) (e : Nat → V) (i : Nat) (a : NF) :
     Sat mem e (ex i a) ↔ ∃ d, Sat mem (update e i d) a := by
   simp only [ex, neg, Sat]
-  constructor
-  · intro h
-    apply Classical.byContradiction
-    intro hn
-    exact h (fun d hd => hn ⟨d, hd⟩)
-  · rintro ⟨d, hd⟩ h
-    exact h d hd
+  exact ⟨fun h => Classical.byContradiction fun hn => h fun d hd => hn ⟨d, hd⟩,
+    fun ⟨d, hd⟩ h => h d hd⟩
 
 /-! ## The calculus -/
 
@@ -157,18 +149,13 @@ theorem soundness {Ax : NF → Prop} {mem : V → V → Prop}
   | mp _ _ ih1 ih2 => exact fun e => ih1 e (ih2 e)
   | gen i _ ih => exact fun e d => ih _
   | rho8 c u a b =>
-      intro e
-      simp only [luk, Sat]
-      intro h1 h2 _
-      exact Classical.byContradiction fun hnc => hnc (h2 (h1 fun hc => absurd hc hnc))
-  | rho2 i b c =>
-      intro e h1 h2 d
-      exact h1 d (h2 d)
+      exact fun e h1 h2 _ =>
+        Classical.byContradiction fun hnc => hnc (h2 (h1 fun hc => absurd hc hnc))
+  | rho2 i b c => exact fun e h1 h2 d => h1 d (h2 d)
   | rho4 i j c =>
       intro e h dj di
       by_cases hij : i = j
-      · subst hij
-        exact h dj di
+      · subst hij; exact h dj di
       · have hh : update (update e i di) j dj = update (update e j dj) i di := by
           funext n
           simp only [update]
@@ -177,17 +164,14 @@ theorem soundness {Ax : NF → Prop} {mem : V → V → Prop}
           · simp [hn, hij]
           · simp [hm, Ne.symm hij]
           · simp [hn, hm]
-        rw [← hh]
-        exact h di dj
+        rw [← hh]; exact h di dj
   | rho6 i b =>
       intro e h
-      rw [sat_ex] at h
-      obtain ⟨d, hd⟩ := h
+      obtain ⟨d, hd⟩ := (sat_ex mem e i _).mp h
       have := hd (e i)
       have hh : update (update e i d) i (e i) = e := by
         funext n; by_cases hn : n = i <;> simp [update, hn]
-      rw [hh] at this
-      exact this
+      rwa [hh] at this
   | rho1 i j =>
       intro e
       rw [sat_ex]
@@ -199,19 +183,11 @@ theorem soundness {Ax : NF → Prop} {mem : V → V → Prop}
       intro e h1 h2
       simp only [Sat] at h1 h2 ⊢
       rw [← h1, ← h2]
-  | rho5 a b c =>
+  | rho5 a b c | rho3 a b c =>
       intro e h1 h2
       simp only [Sat] at h1 h2 ⊢
-      rw [← h1]; exact h2
-  | rho3 a b c =>
-      intro e h1 h2
-      simp only [Sat] at h1 h2 ⊢
-      rw [← h1]; exact h2
-  | vacRel a b c hca hcb =>
-      intro e h d
-      simp only [Sat, update, if_neg (Ne.symm hca), if_neg (Ne.symm hcb)]
-      exact h
-  | vacEq a b c hca hcb =>
+      rwa [← h1]
+  | vacRel a b c hca hcb | vacEq a b c hca hcb =>
       intro e h d
       simp only [Sat, update, if_neg (Ne.symm hca), if_neg (Ne.symm hcb)]
       exact h

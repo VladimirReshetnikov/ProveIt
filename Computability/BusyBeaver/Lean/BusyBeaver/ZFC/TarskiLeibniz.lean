@@ -67,17 +67,12 @@ theorem not_occurs_rn {x y : Nat} (hxy : y ≠ x) :
   | NF.bot, _ => id
   | imp a b, hb => by
       simp only [rn, Occurs]
-      intro h
-      cases h with
-      | inl h => exact not_occurs_rn hxy a (fun h' => hb (Or.inl h')) h
-      | inr h => exact not_occurs_rn hxy b (fun h' => hb (Or.inr h')) h
+      exact fun o => o.elim (not_occurs_rn hxy a fun h' => hb (Or.inl h'))
+        (not_occurs_rn hxy b fun h' => hb (Or.inr h'))
   | all i a, hb => by
       have hix : i ≠ x := fun e => hb (Or.inl e.symm)
       simp only [rn, hix, if_false, Occurs]
-      intro h
-      cases h with
-      | inl h => exact hix h.symm
-      | inr h => exact not_occurs_rn hxy a (fun h' => hb (Or.inr h')) h
+      exact fun o => o.elim (fun e => hix e.symm) (not_occurs_rn hxy a fun h' => hb (Or.inr h'))
 
 /-- Labels other than `x` and `y` occur after renaming iff they occurred before. -/
 theorem occurs_rn_of_ne {x y n : Nat} (hx : n ≠ x) (hy : n ≠ y) :
@@ -133,7 +128,7 @@ theorem rn_rn_fresh {x z : Nat} : ∀ f : NF, ¬ Occurs z f → rn z x (rn x z f
       by_cases hix : i = x
       · rw [show rn x z (all i a) = all i a by simp [rn, hix]]
         simp [rn, Ne.symm hiz, rn_not_occurs a (fun o => h (Or.inr o))]
-      · simp only [rn, hix, if_false, Ne.symm hiz, if_false, rn_rn_fresh a (fun o => h (Or.inr o))]
+      · simp only [rn, hix, if_false, Ne.symm hiz, rn_rn_fresh a (fun o => h (Or.inr o))]
 
 theorem rn_self (x : Nat) : ∀ f : NF, rn x x f = f
   | rel i j => by simp only [rn, rv]; by_cases hi : i = x <;> by_cases hj : j = x <;> simp [hi, hj]
@@ -173,8 +168,7 @@ theorem not_occurs_of_top_le {n : Nat} : ∀ {f : NF}, top f ≤ n → ¬ Occurs
       simp only [Occurs]
       intro o
       cases o with
-      | inl o => exact not_occurs_of_top_le (by omega) o
-      | inr o => exact not_occurs_of_top_le (by omega) o
+      | inl o | inr o => exact not_occurs_of_top_le (by omega) o
   | all i a, h => by
       simp only [top] at h
       simp only [Occurs]
@@ -201,8 +195,7 @@ theorem atom_subst (P : Nat → Nat → NF)
     by_cases hj : j = x
     · subst hj; simp only [rv, if_true]; exact hR j y _
     · simp only [rv, hj, if_false]; exact ded2 hC h0
-  apply ded2 hC
-  exact .mp (.mp (.ax step2) h1) (.mp (.mp (.ax step1) h1) h0)
+  exact ded2 hC (.mp (.mp (.ax step2) h1) (.mp (.mp (.ax step1) h1) h0))
 
 /-- The reverse rewriting, through symmetry of equality (`hs`). -/
 theorem atom_subst_rev (hs : ∀ x y, T (imp (NF.eq x y) (NF.eq y x))) (P : Nat → Nat → NF)
@@ -217,10 +210,9 @@ theorem atom_subst_rev (hs : ∀ x y, T (imp (NF.eq x y) (NF.eq y x))) (P : Nat 
     by_cases hj : j = x
     · subst hj; simp only [rv, if_true]; exact hR y j i
     · simp only [rv, hj, if_false]; exact ded2 hC h0
-  apply ded2 hC
   have hyx : Der NF.imp T [P (rv x y i) (rv x y j), NF.eq x y] (NF.eq y x) :=
     .mp (.ax (hs x y)) h1
-  exact .mp (.mp (.ax step2) hyx) (.mp (.mp (.ax step1) hyx) h0)
+  exact ded2 hC (.mp (.mp (.ax step2) hyx) (.mp (.mp (.ax step1) hyx) h0))
 
 /-- Object-level existential monotonicity: `∀i(a → b) → (∃i a → ∃i b)`. -/
 theorem all_imp_ex [R : Rows T] (i : Nat) (a b : NF) :
@@ -230,10 +222,8 @@ theorem all_imp_ex [R : Rows T] (i : Nat) (a b : NF) :
   -- ∀i(a→b) → (∀i¬b → ∀i¬a), then contrapose the inner implication.
   have c3 : T (imp (all i (imp a b)) (imp (all i (neg b)) (all i (neg a)))) :=
     syl hC c1 (R.rho2 i (neg b) (neg a))
-  apply ded2 hC
   -- hypotheses: ∀i(a→b), ∃i a = ¬∀i¬a; goal ∃i b = ¬∀i¬b
-  apply deduction hC
-  exact .mp h1 (.mp (.mp (.ax c3) h2) h0)
+  exact ded2 hC (deduction hC (.mp h1 (.mp (.mp (.ax c3) h2) h0)))
 
 end Atoms
 
@@ -242,9 +232,8 @@ section Leibniz
 variable (hC : Classical NF.imp NF.bot (Thm Ax))
 include hC
 
-theorem eq_R (u v i : Nat) : Thm Ax (imp (NF.eq u v) (imp (NF.eq i u) (NF.eq i v))) := by
-  apply ded2 hC
-  exact .mp (.mp (.ax (eq_trans hC i u v)) h0) h1
+theorem eq_R (u v i : Nat) : Thm Ax (imp (NF.eq u v) (imp (NF.eq i u) (NF.eq i v))) :=
+  ded2 hC (.mp (.mp (.ax (eq_trans hC i u v)) h0) h1)
 
 /-- Leibniz's law for formulas without rebinding of either label. -/
 theorem leibniz (x y : Nat) :
@@ -261,16 +250,13 @@ theorem leibniz (x y : Nat) :
   | imp a b, hx, hy => by
       have ha := leibniz x y a (fun h => hx (Or.inl h)) (fun h => hy (Or.inl h))
       have hb := leibniz x y b (fun h => hx (Or.inr h)) (fun h => hy (Or.inr h))
-      constructor
-      · apply ded3 hC
-        -- hypotheses: x = y, a → b, a'; goal b'
-        have a0 : Der NF.imp (Thm Ax) [rn x y a, imp a b, NF.eq x y] a :=
-          .mp (.mp (.ax ha.2) h2) h0
-        exact .mp (.mp (.ax hb.1) h2) (.mp h1 a0)
-      · apply ded3 hC
-        have a0 : Der NF.imp (Thm Ax) [a, imp (rn x y a) (rn x y b), NF.eq x y] (rn x y a) :=
-          .mp (.mp (.ax ha.1) h2) h0
-        exact .mp (.mp (.ax hb.2) h2) (.mp h1 a0)
+      -- hypotheses: x = y, a → b, a'; goal b'
+      have a0 : Der NF.imp (Thm Ax) [rn x y a, imp a b, NF.eq x y] a :=
+        .mp (.mp (.ax ha.2) h2) h0
+      have a1 : Der NF.imp (Thm Ax) [a, imp (rn x y a) (rn x y b), NF.eq x y] (rn x y a) :=
+        .mp (.mp (.ax ha.1) h2) h0
+      exact ⟨ded3 hC (.mp (.mp (.ax hb.1) h2) (.mp h1 a0)),
+        ded3 hC (.mp (.mp (.ax hb.2) h2) (.mp h1 a1))⟩
   | all i a, hx, hy => by
       have hix : i ≠ x := fun e => hx (Or.inl e.symm)
       have hiy : i ≠ y := fun e => hy (Or.inl e.symm)
@@ -280,10 +266,8 @@ theorem leibniz (x y : Nat) :
           Thm Ax (imp (NF.eq x y) (imp (all i p) (all i q))) := by
         intro p q h
         have g : Thm Ax (imp (all i (NF.eq x y)) (all i (imp p q))) := all_mono hC i h
-        have v : Thm Ax (imp (NF.eq x y) (all i (NF.eq x y))) :=
-          .vacEq x y i hix hiy
-        apply ded2 hC
-        exact .mp (.mp (.ax (.rho2 i p q)) (.mp (.ax g) (.mp (.ax v) h1))) h0
+        have v : Thm Ax (imp (NF.eq x y) (all i (NF.eq x y))) := .vacEq x y i hix hiy
+        exact ded2 hC (.mp (.mp (.ax (.rho2 i p q)) (.mp (.ax g) (.mp (.ax v) h1))) h0)
       exact ⟨lift ha.1, lift ha.2⟩
 
 /-! ## Specialization and alpha-renaming -/
@@ -291,17 +275,15 @@ theorem leibniz (x y : Nat) :
 /-- Specialization: `∀x φ → φ[y/x]` when neither label is rebound and `y ≠ x`. -/
 theorem spec {x y : Nat} (hxy : y ≠ x) {f : NF} (hx : ¬ Bound x f) (hy : ¬ Bound y f) :
     Thm Ax (imp (all x f) (rn x y f)) := by
-  have L := (leibniz hC x y f hx hy).1
   -- ∀x(x = y → f') from ∀x f
   have shuffle : Thm Ax (imp f (imp (NF.eq x y) (rn x y f))) :=
-    ded2 hC (.mp (.mp (.ax L) h0) h1)
+    ded2 hC (.mp (.mp (.ax (leibniz hC x y f hx hy).1) h0) h1)
   have g : Thm Ax (imp (all x f) (all x (imp (NF.eq x y) (rn x y f)))) := all_mono hC x shuffle
-  have e : Thm Ax (imp (all x (imp (NF.eq x y) (rn x y f))) (imp (ex x (NF.eq x y)) (ex x (rn x y f)))) :=
-    all_imp_ex hC x _ _
+  have e : Thm Ax (imp (all x (imp (NF.eq x y) (rn x y f)))
+      (imp (ex x (NF.eq x y)) (ex x (rn x y f)))) := all_imp_ex hC x _ _
   have elim : Thm Ax (imp (ex x (rn x y f)) (rn x y f)) :=
     ex_elim hC x (not_occurs_rn hxy f hx)
-  apply ded1 hC
-  exact .mp (.ax elim) (.mp (.mp (.ax e) (.mp (.ax g) h0)) (.ax (.rho1 x y)))
+  exact ded1 hC (.mp (.ax elim) (.mp (.mp (.ax e) (.mp (.ax g) h0)) (.ax (.rho1 x y))))
 
 /-- The T axiom `∀x φ → φ`, for `φ` without rebinding of `x`. -/
 theorem spec_self {x : Nat} {f : NF} (hx : ¬ Bound x f) : Thm Ax (imp (all x f) f) := by
@@ -312,10 +294,7 @@ theorem spec_self {x : Nat} {f : NF} (hx : ¬ Bound x f) : Thm Ax (imp (all x f)
   -- ∀x f → f[z/x]
   have s1 : Thm Ax (imp (all x f) (rn x z f)) := spec hC hzx hx hzb
   -- ∀x f → ∀z ∀x f → ∀z f[z/x]
-  have hzo : ¬ Occurs z (all x f) := by
-    simp only [Occurs]; intro o; cases o with
-    | inl o => exact hzx o
-    | inr o => exact hz o
+  have hzo : ¬ Occurs z (all x f) := by simp only [Occurs]; exact fun o => o.elim hzx hz
   have s2 : Thm Ax (imp (all x f) (all z (rn x z f))) :=
     syl hC (vac_of_not_occurs hC z _ hzo) (all_mono hC z s1)
   -- ∀z f[z/x] → f[z/x][x/z] = f
@@ -329,10 +308,7 @@ theorem spec_self {x : Nat} {f : NF} (hx : ¬ Bound x f) : Thm Ax (imp (all x f)
 theorem alpha_fwd {x y : Nat} (hxy : y ≠ x) {f : NF} (hx : ¬ Bound x f) (hy : ¬ Occurs y f) :
     Thm Ax (imp (all x f) (all y (rn x y f))) := by
   have hyb : ¬ Bound y f := fun b => hy (bound_occurs b)
-  have hyo : ¬ Occurs y (all x f) := by
-    simp only [Occurs]; intro o; cases o with
-    | inl o => exact hxy o
-    | inr o => exact hy o
+  have hyo : ¬ Occurs y (all x f) := by simp only [Occurs]; exact fun o => o.elim hxy hy
   exact syl hC (vac_of_not_occurs hC y _ hyo) (all_mono hC y (spec hC hxy hx hyb))
 
 /-- Alpha-renaming of a binder to a fresh label, backward direction. -/
@@ -343,9 +319,7 @@ theorem alpha_bwd {x y : Nat} (hxy : y ≠ x) {f : NF} (hx : ¬ Bound x f) (hy :
   have s : Thm Ax (imp (all y (rn x y f)) (rn y x (rn x y f))) := spec hC (Ne.symm hxy) hyb hxb
   rw [rn_rn_fresh f hy] at s
   have hxo : ¬ Occurs x (all y (rn x y f)) := by
-    simp only [Occurs]; intro o; cases o with
-    | inl o => exact hxy o.symm
-    | inr o => exact not_occurs_rn hxy f hx o
+    simp only [Occurs]; exact fun o => o.elim (fun e => hxy e.symm) (not_occurs_rn hxy f hx)
   exact syl hC (vac_of_not_occurs hC x _ hxo) (all_mono hC x s)
 
 end Leibniz

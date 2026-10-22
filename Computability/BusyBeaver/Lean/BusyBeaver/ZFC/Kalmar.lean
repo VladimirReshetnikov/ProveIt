@@ -61,16 +61,13 @@ theorem self_imp (h : Classical imp bot T) (a : α) : T (imp a a) :=
 theorem deduction_aux (h : Classical imp bot T) {a : α} {G' : List α} {b : α}
     (d : Der imp T G' b) : ∀ G : List α, G' = a :: G → Der imp T G (imp a b) := by
   induction d with
-  | ax hb => intro G _; exact .mp (.ax (h.k _ a)) (.ax hb)
+  | ax hb => exact fun G _ => .mp (.ax (h.k _ a)) (.ax hb)
   | hyp hm =>
-      intro G hG
-      subst hG
-      cases List.mem_cons.mp hm with
-      | inl he => subst he; exact .ax (self_imp h _)
-      | inr hin => exact .mp (.ax (h.k _ a)) (.hyp hin)
-  | mp _ _ ih1 ih2 =>
-      intro G hG
-      exact .mp (.mp (.ax (h.s _ _ _)) (ih1 G hG)) (ih2 G hG)
+      rintro G rfl
+      rcases List.mem_cons.mp hm with rfl | hin
+      · exact .ax (self_imp h _)
+      · exact .mp (.ax (h.k _ a)) (.hyp hin)
+  | mp _ _ ih1 ih2 => exact fun G hG => .mp (.mp (.ax (h.s _ _ _)) (ih1 G hG)) (ih2 G hG)
 
 /-- The deduction theorem. -/
 theorem deduction (h : Classical imp bot T) {G : List α} {a b : α}
@@ -90,10 +87,9 @@ theorem cases_on (h : Classical imp bot T) {G : List α} {p c : α}
   have hp : Der imp T G (imp p c) := deduction h d1
   have hn : Der imp T G (imp (imp p bot) c) := deduction h d0
   have inner : Der imp T (imp c bot :: G) c := by
-    have notp : Der imp T (imp c bot :: G) (imp p bot) := by
-      apply deduction h
-      have hc : Der imp T (p :: imp c bot :: G) c := .mp hp.weaken.weaken .cons_head
-      exact .mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))) hc
+    have notp : Der imp T (imp c bot :: G) (imp p bot) :=
+      deduction h (.mp (.hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
+        (.mp hp.weaken.weaken .cons_head))
     exact .mp hn.weaken notp
   exact .mp (.ax (h.peirce c bot)) (deduction h inner)
 
@@ -161,8 +157,7 @@ theorem hyps_congr (σ : Nat → α) (v w : Nat → Bool) :
 theorem kalmar (h : Classical imp bot T) (σ : Nat → α) (v : Nat → Bool) (n : Nat) :
     ∀ f : PF, PF.Bounded n f →
       Der imp T (hyps imp bot σ v n) (lit imp bot (PF.truth v f) (PF.eval imp bot σ f))
-  | .var m, hb => by
-      exact .hyp (lit_mem_hyps σ v hb)
+  | .var m, hb => .hyp (lit_mem_hyps σ v hb)
   | .bot, _ => by
       simp only [PF.truth, PF.eval, lit]
       exact .ax (self_imp h bot)
@@ -173,12 +168,10 @@ theorem kalmar (h : Classical imp bot T) (σ : Nat → α) (v : Nat → Bool) (n
         simp only [hta, htb, lit, PF.truth, PF.eval, Bool.not_false, Bool.not_true,
           Bool.true_or, Bool.false_or, if_true] at da db ⊢
       · -- a false: from ¬a derive a → b through ex falso.
-        apply deduction h
-        exact .mp (.ax (h.efq _)) (.mp da.weaken .cons_head)
+        exact deduction h (.mp (.ax (h.efq _)) (.mp da.weaken .cons_head))
       · exact .mp (.ax (h.k _ _)) db
       · -- a true, b false: refute a → b.
-        apply deduction h
-        exact .mp db.weaken (.mp .cons_head da.weaken)
+        exact deduction h (.mp db.weaken (.mp .cons_head da.weaken))
       · exact .mp (.ax (h.k _ _)) db
 
 /-- Elimination of the literal hypotheses, one variable at a time. -/
@@ -186,8 +179,7 @@ theorem eliminate (h : Classical imp bot T) (σ : Nat → α) (c : α) :
     ∀ n, (∀ v : Nat → Bool, Der imp T (hyps imp bot σ v n) c) → Der imp T [] c
   | 0, hall => hall (fun _ => false)
   | n + 1, hall => by
-      apply eliminate h σ c n
-      intro v
+      refine eliminate h σ c n fun v => ?_
       have h1 := hall (fun m => if m = n then true else v m)
       have h0 := hall (fun m => if m = n then false else v m)
       simp only [hyps] at h1 h0
@@ -199,11 +191,8 @@ theorem tautology_complete (h : Classical imp bot T) (f : PF) (n : Nat)
     (hb : PF.Bounded n f) (ht : PF.Tautology f) (σ : Nat → α) :
     T (PF.eval imp bot σ f) := by
   have d : Der imp T [] (PF.eval imp bot σ f) := by
-    apply eliminate h σ _ n
-    intro v
-    have hk := kalmar h σ v n f hb
-    simp only [ht v, lit, if_true] at hk
-    exact hk
+    refine eliminate h σ _ n fun v => ?_
+    simpa only [ht v, lit, if_true] using kalmar h σ v n f hb
   exact d.sound h (fun _ hx => absurd hx (List.not_mem_nil))
 
 end Kalmar

@@ -91,18 +91,16 @@ theorem contra {a b : NF} (h : T (imp a b)) : T (imp (neg b) (neg a)) :=
 
 theorem dne (a : NF) : T (imp (neg (neg a)) a) := by
   -- Peirce at `bot`: from `¬a → a`, which `¬¬a` and ex falso supply.
-  apply ded1 hC
   have inner : Der NF.imp T [neg (neg a)] (imp (imp a NF.bot) a) :=
     deduction hC (.mp (.ax (hC.efq a)) (.mp h1 h0))
-  exact .mp (.ax (hC.peirce a NF.bot)) inner
+  exact ded1 hC (.mp (.ax (hC.peirce a NF.bot)) inner)
 
 theorem dni (a : NF) : T (imp a (neg (neg a))) :=
   ded2 hC (.mp h0 h1)
 
 /-- Classical contraposition in the reverse direction. -/
-theorem contra_rev {a b : NF} (h : T (imp (neg a) (neg b))) : T (imp b a) := by
-  have h' := contra hC h
-  exact syl hC (syl hC (dni hC b) h') (dne hC a)
+theorem contra_rev {a b : NF} (h : T (imp (neg a) (neg b))) : T (imp b a) :=
+  syl hC (syl hC (dni hC b) (contra hC h)) (dne hC a)
 
 /-- Case split: `(¬a → c) → ((b → c) → ((a → b) → c))`. -/
 theorem imp_cases (a b c : NF) :
@@ -135,9 +133,8 @@ theorem ex_mono (i : Nat) {a b : NF} (h : T (imp a b)) : T (imp (ex i a) (ex i b
 
 /-- The B axiom of each quantifier: `a → ∀i ∃i a`. -/
 theorem b_axiom (i : Nat) (a : NF) : T (imp a (all i (ex i a))) := by
-  have h6 : T (imp (ex i (all i (neg a))) (neg a)) := R.rho6 i (neg a)
   have h' : T (imp a (neg (ex i (all i (neg a))))) :=
-    syl hC (dni hC a) (contra hC h6)
+    syl hC (dni hC a) (contra hC (R.rho6 i (neg a)))
   -- ¬ ex i (∀i ¬a) = ¬¬ ∀i ¬∀i ¬a, and ∀i ¬∀i ¬a = ∀i ∃i a.
   exact syl hC h' (dne hC (all i (neg (all i (neg a)))))
 
@@ -190,9 +187,8 @@ theorem ex_elim (i : Nat) {a : NF} (h : ¬ Occurs i a) : Thm Ax (imp (ex i a) a)
 
 theorem eq_refl (x : Nat) : Thm Ax (NF.eq x x) := by
   -- Choose a label `c` different from `x`; `rho1` gives `∃c (c = x)`.
-  have h7 : Thm Ax (imp (NF.eq (x + 1) x) (NF.eq x x)) := by
-    have r : Thm Ax (imp (NF.eq (x + 1) x) (imp (NF.eq (x + 1) x) (NF.eq x x))) := .rho7 x x (x + 1)
-    exact ded1 hC (.mp (.mp (.ax r) h0) h0)
+  have h7 : Thm Ax (imp (NF.eq (x + 1) x) (NF.eq x x)) :=
+    ded1 hC (.mp (.mp (.ax (.rho7 x x (x + 1))) h0) h0)
   have hex : Thm Ax (ex (x + 1) (NF.eq x x)) := hC.mp (ex_mono hC (x + 1) h7) (.rho1 (x + 1) x)
   have hno : ¬ Occurs (x + 1) (NF.eq x x) := by
     simp only [Occurs]; omega
@@ -202,10 +198,9 @@ theorem eq_symm (x y : Nat) : Thm Ax (imp (NF.eq x y) (NF.eq y x)) :=
   -- rho7: x = y → (x = x → y = x)
   ded1 hC (.mp (.mp (.ax (.rho7 y x x)) h0) (.ax (eq_refl hC x)))
 
-theorem eq_trans (x y z : Nat) : Thm Ax (imp (NF.eq x y) (imp (NF.eq y z) (NF.eq x z))) := by
+theorem eq_trans (x y z : Nat) : Thm Ax (imp (NF.eq x y) (imp (NF.eq y z) (NF.eq x z))) :=
   -- y = x and y = z give x = z by rho7.
-  apply ded2 hC
-  exact .mp (.mp (.ax (.rho7 x z y)) (.mp (.ax (eq_symm hC x y)) h1)) h0
+  ded2 hC (.mp (.mp (.ax (.rho7 x z y)) (.mp (.ax (eq_symm hC x y)) h1)) h0)
 
 end Fresh
 
