@@ -1134,17 +1134,20 @@ published to support further work toward 214.
 
 ## Intake and theory minimization
 
-**Diophantine form of the K215 endpoint** (not formalized). Intake batch 217
-placed eight independent packages as the research report
+**Diophantine form of the K215 endpoint** (not formalized). Intake batch 218
+placed seven wave-2 packages, superseding batch 217's eight, as the research
+report
 [`con-zfc-diophantine-forms`](../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
-(placement `084e120830`, reconciliation `feadb33d20`). Each one turns
+(placement `8a4b00b5bf`, reconciliation `505e0e0a30`). Each one turns
 the K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation`
-into an explicit polynomial with fixed integer coefficients. The route is to fold or normalize
-[`candidate-k215/k215.tm`](candidate-k215/k215.tm) and compile its blank run
-with the Hilbert's-tenth native-window/Pell compiler at a fixed input. By an
-ordinary argument, ZFC then proves "no positive solution" ↔ Con(ZFC). The
-smallest has 15 positive unknowns, 67 operations and degree 155. The
-coefficients are finite recipes and are not materialized. Only the machine
+into an explicit polynomial with fixed integer coefficients. The route is
+to compile a local tile language of the blank run of
+[`candidate-k215/k215.tm`](candidate-k215/k215.tm) with the Hilbert's-tenth
+native-window/Pell compiler at a fixed input. By an ordinary argument, ZFC
+then proves "no solution" ↔ Con(ZFC). As the packages state them, the
+fewest positive unknowns are 13 (84 operations, degree 571), and the fewest
+operations remain 67 (15 unknowns, degree 155). The smallest coefficient
+recipe has B = 2^(5^18); all recipes are finite and none is materialized. Only the machine
 endpoint is checked in Lean/Rocq; the Diophantine bridge is not. The
 ZFC-provability claim rests on the ordinary calibration argument, not on
 Lean's soundness.
