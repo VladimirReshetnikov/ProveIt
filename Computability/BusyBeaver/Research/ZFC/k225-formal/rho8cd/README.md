@@ -1,61 +1,51 @@
 # rho8 by condensed detachment
 
-`rho8 a b c u = ((c → u) → a) → ((a → c) → (b → c))` is Łukasiewicz's single axiom of the
-implicational calculus. The dominated calculus of the K215/K217 endpoints grants it only when
-`u ≤ a`; `rho8_all` derives every instance from modus ponens and the dominated rows. This
-directory holds condensed-detachment derivations of that fact, short enough to be read as
-lists of lemmas, and renders them for both lanes:
+`rho8 a b c u = ((c → u) → a) → ((a → c) → (b → c))` is Łukasiewicz's single
+axiom for the implicational calculus. The dominated calculus grants it only
+when `u` is below `a`. One 58-step derivation now supplies both calculi in the
+[checked phase-thirteen Lean proof](../verification/k215/simplification/phase13/README.md).
 
-* [`derivation_core.txt`](derivation_core.txt) (58 steps, no truth constant): the unrestricted
-  row, composition `(a → b) → ((b → c) → (a → c))` and prefixing `(a → b) → ((c → a) → (c → b))`
-  from modus ponens and the restricted rows alone. `--core` renders it as a proposed
-  [`Lean/BusyBeaver/ZFC/DominatedImplication.lean`](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
-  (built with `DomRho8` and `KCodeDom` in `d93adc4174`; the maintained core is phase eleven's checked
-  adaptation with two aliases inlined, see [the status note](PROVEIT_STATUS.md)):
-  any binary connective with a reflexive `below` relation closed under insertion into either
-  operand, the interface of the representation-independent core (phase eight). Its three public
-  theorems depend on no axioms; `DomRho8.lean` is the unchanged Nat adapter.
-* [`derivation.txt`](derivation.txt) (52 steps, uses truth `Z` = the code 0): the row alone.
-  `--rocq` renders a Rocq `DomRho8.v` (11,190 bytes; compiled with `ThmDom`, closed under the global
-  context; adopted in `4fdc59197a`, while the maintained Rocq tree keeps its checked certificate replay,
-  see [the status note](PROVEIT_STATUS.md)); `--lean` renders the same derivation as a drop-in Nat
-  `DomRho8.lean` (built with `KCodeDom` in `4fdc59197a`).
+The [generic core](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
+assumes only modus ponens, the restricted rows, reflexivity of `below` and
+closure under insertion into either implication operand. It derives every
+unrestricted row, composition, lifting, K, Peirce and S, with no Lean axioms.
+The [unrestricted adapter](../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean)
+sets `below` to `True`; its public basis theorems call the same core. Its
+Tarski proof remains verbatim, including the original rho6 use for ex falso.
+The two files total 18,243 bytes / 401 lines instead of 42,454 bytes / 811 lines.
+`DomRho8.lean` remains the exact numeric adapter.
 
-* [`derivation_luk.txt`](derivation_luk.txt) (56 steps, unrestricted row, no truth): K, Peirce,
-  composition and S. `--luk` rewrites the `Lukasiewicz` namespace of
-  [`Lean/BusyBeaver/ZFC/Lukasiewicz.lean`](../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean) (it ported the
-  107-step CD254 DAG; the Tarski bridge after the namespace is kept verbatim); `--rocq-cd` renders the
-  Rocq `CD222.v` with `thm_K`, `thm_P`, `thm_B`, `thm_S`.
-
-[`rocq-proposal/`](rocq-proposal/README.md) holds the two Rocq renderings, compiled with their users,
-as proposals for the peer's Rocq checkpoint.
-
-Format: one line per formula, `i major minor F [side conditions]`. Leaf `-1` is truth `Z`, leaf
-`-2` the dominated row `(((a>b)>c)>((c>a)>(d>a))) [b<=c]`; every other line follows from its major
-and minor premise by modus ponens after the most general unifier; `#GOAL i F` names the line
-proving each public statement.
-
-[`generate_domrho8_cd.py`](generate_domrho8_cd.py) recomputes each unifier, so every lemma states
-its formula and applies its premises at explicit instances. Each side condition `u ≤ a` is proved
-because `u` is a literal subterm of `a` (`le_l`/`le_r`, from reflexivity), is `0` (Nat and Rocq
-only), or is a hypothesis of the lemma. Nothing it does is trusted; the kernels check every step.
-
-[`search/`](search) is the untrusted search: a given-clause prover (`cdr`, Rust) with side-condition
-tracking and Veroff's hints, and the hint-deletion loop `shrink.py`. Hints from the 111 statements
-of the earlier derivation ([`hints_source149.txt`](search/hints_source149.txt), Source 149's
-certificate as compressed to 118 lemmas) gave an 86-step proof in six seconds; rerunning with the
-proof's own formulas as hints, each time without one of them, shortened it to 52 steps (with
-truth) and, with `NOZ=1` and the two extra `GOALS`, to the 58-step core.
+The maintained regeneration route is the
+[self-contained producer](../generate_dominated_implication_lean.py). It reads
+an [attributed raw Lean proof](../verification/k215/simplification/phase12/upstream-merge/inputs/raw58-DominatedImplication.lean)
+as pinned inert data, checks all explicit MP instances and relation guards,
+then inlines the two single-use goal lemmas. It does not import or execute the
+research renderer. From this directory, check the maintained files with:
 
 ```sh
-python generate_domrho8_cd.py --derivation derivation_core.txt --core ../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean
-python generate_domrho8_cd.py --derivation derivation_luk.txt --luk ../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean
-python generate_domrho8_cd.py --rocq DomRho8.v       # the Rocq renderings (not in regenerate215.py)
-python generate_domrho8_cd.py --derivation derivation_luk.txt --rocq-cd CD222.v
-python generate_domrho8_cd.py --lean DomRho8.lean    # the drop-in Nat rendering
-
-cd search && cargo build --release
-./target/release/cdr 40 1 3000000 3 HINTS.txt 1 > proof.txt     # one hinted run
-NOZ=1 GOALS="((a>b)>((b>c)>(a>c)));((a>b)>((c>a)>(c>b)))" \
-  python shrink.py proof.txt best.txt 30                          # hint deletion, core goals
+python3 -B ../generate_dominated_implication_lean.py --check
 ```
+
+The current [ancestry input](derivation_core.txt) is the six-goal derivation
+`4141248e…`, introduced with the shared core in `3a7a61ee97`; `49e99c5b7c`
+inlines its two goal aliases. The previous three-goal input `f0a2e60d…` is
+preserved in Git and the preceding checkpoint. The explicit raw Lean bodies,
+rather than an executed search or renderer, are the maintained inference-audit
+input. See the [status note](PROVEIT_STATUS.md) for actual checks and boundaries.
+
+The other derivations remain research history:
+
+- [derivation.txt](derivation.txt): 52 steps using the numerical truth code,
+  originally proposed for numerical Lean and Rocq renderings.
+- [derivation_luk.txt](derivation_luk.txt): a separate 56-step unrestricted
+  derivation of K, Peirce, composition and S, superseded by the shared core.
+- [rocq-proposal](rocq-proposal/README.md): attributed source proposals and their
+  historical focused-build reports. The maintained Rocq checkpoint is unchanged.
+
+Each ancestry row records a formula, its two premises and side conditions.
+The [research renderer](generate_domrho8_cd.py) computes unifiers and explicit
+instances. The [search](search) contains the original condensed-detachment
+prover and hint-deletion tools. They are preserved as source data and were not
+executed for the maintained adoption. Their historical command examples remain
+recoverable in Git; the checked source and reproduction route are identified
+above.

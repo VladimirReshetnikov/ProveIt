@@ -3,9 +3,11 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase12/README.md)
-checks the 179-module endpoint closure, five decoder-prefix modules and both closed
-endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
+[proof simplification checkpoint](verification/k215/simplification/phase13/README.md)
+shares the numerical and unrestricted implication proof, saving 24,211 bytes and
+410 lines across the generic-core/Lukasiewicz pair. It checks the unchanged
+179-module endpoint closure, five decoder-prefix modules, three API clients and
+both closed endpoint clients with exact predecessor bindings and no new axioms. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
@@ -69,6 +71,15 @@ two explicit clients preserves the old model/native interfaces. The seven edited
 or new proof files grow by 491 bytes; no proof body or endpoint type changes.
 [Sources 180–187](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-213.md)
 reconcile the eight later reports separately from this selected adoption.
+
+Phase thirteen realizes their shared-implication idea using the later upstream
+58-step derivation. The core exports K, Peirce and S; the unrestricted calculus
+uses the relation `True`, preserving its old interfaces and complete Tarski bridge.
+The primary check has 36 fresh providers (33 project modules and three API clients)
+and 151 phase-twelve reuses. A separate 68-module compatibility check with two
+clients passes. Both unchanged endpoint audits retain their exact profiles and
+zero warnings. The producer and ancestry input are synchronized; the supplied
+research renderer is preserved as data and was not executed.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 
