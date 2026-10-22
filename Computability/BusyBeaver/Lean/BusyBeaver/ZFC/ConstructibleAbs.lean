@@ -279,19 +279,21 @@ theorem val_applyV_env {A E n : {x // InL H hP x}} (hE : IsEnvOn H A.1 E.1)
     (hn : mem n.1 (omegaV H)) : (applyV (L_zfAxioms H hR hP) E n).1 = applyV H E.1 n.1 :=
   val_applyV H hR hP hE.1.1 (applyV_mem H (hE.1.2.1 n.1 hn))
 
+theorem inL_nat {n : V} (hn : mem n (omegaV H)) : InL H hP n :=
+  inL_trans H hR hP (inL_omega H hR hP) hn
+
+theorem inL_kpair_of {a b : V} (ha : InL H hP a) (hb : InL H hP b) : InL H hP (kpair H a b) :=
+  inL_pair H hR hP (inL_pair H hR hP ha ha) (inL_pair H hR hP ha hb)
+
 theorem val_econs {d E : {x // InL H hP x}}
     (hfun : ∀ a b b', mem (kpair H a b) E.1 → mem (kpair H a b') E.1 → b = b') :
     (econs (L_zfAxioms H hR hP) d E).1 = econs H d.1 E.1 := by
   have hfunN := (functional_iff H hR hP E).2 hfun
   refine val_eq H hR hP (fun z hz => ?_) fun z => ?_
   · rcases (econs_spec H hfun d.1 z).1 hz with rfl | ⟨n, hn, y, hy, rfl⟩
-    · exact inL_pair H hR hP (inL_pair H hR hP (inL_ord H hR hP (ord_of_mem (ord_omega H)
-        (vempty_in_omega H))) (inL_ord H hR hP (ord_of_mem (ord_omega H) (vempty_in_omega H))))
-        (inL_pair H hR hP (inL_ord H hR hP (ord_of_mem (ord_omega H) (vempty_in_omega H))) d.2)
-    · have hnL := (inL_of_kpair_mem H hR hP E.2 hy)
-      have hs : InL H hP (vsucc H n) :=
-        inL_ord H hR hP (ord_succ H (ord_of_mem (ord_omega H) hn))
-      exact inL_pair H hR hP (inL_pair H hR hP hs hs) (inL_pair H hR hP hs hnL.2)
+    · exact inL_kpair_of H hR hP (inL_nat H hR hP (vempty_in_omega H)) d.2
+    · exact inL_kpair_of H hR hP (inL_ord H hR hP (ord_succ H (ord_of_mem (ord_omega H) hn)))
+        (inL_of_kpair_mem H hR hP E.2 hy).2
   · rw [show mem z.1 (econs (L_zfAxioms H hR hP) d E).1 ↔ _ from
       econs_spec (L_zfAxioms H hR hP) hfunN d z, econs_spec H hfun d.1 z.1,
       kpairN_eq H hR hP, val_vempty H hR hP]
@@ -320,12 +322,6 @@ theorem inL_satTriple {c e b : V} (h : InL H hP (satTriple H c e b)) :
   obtain ⟨hc, h2⟩ := inL_kpair H hR hP h
   obtain ⟨he, hb⟩ := inL_kpair H hR hP h2
   exact ⟨hc, he, hb⟩
-
-theorem inL_nat {n : V} (hn : mem n (omegaV H)) : InL H hP n :=
-  inL_trans H hR hP (inL_omega H hR hP) hn
-
-theorem inL_kpair_of {a b : V} (ha : InL H hP a) (hb : InL H hP b) : InL H hP (kpair H a b) :=
-  inL_pair H hR hP (inL_pair H hR hP ha ha) (inL_pair H hR hP ha hb)
 
 theorem codeEq_iff (t : Nat) (c x : {x // InL H hP x}) :
     c = kpair (L_zfAxioms H hR hP) (natV (L_zfAxioms H hR hP) t) x ↔
@@ -557,9 +553,8 @@ theorem nsat_codeNF_aux (ρ : Nat → V) (x : Nat) :
 theorem nsat_codeNF (ρ : Nat → V) (x : Nat) :
     NSat mem ρ (codeNF H hP x) ↔ ∃ h : InL H hP (ρ x), IsFormCodeSem (L_zfAxioms H hR hP) ⟨ρ x, h⟩ := by
   rw [nsat_codeNF_aux]
-  constructor
-  · rintro ⟨h, hc⟩; exact ⟨h, (codeN_iff H hR hP _ h).2 hc⟩
-  · rintro ⟨h, hc⟩; exact ⟨h, (codeN_iff H hR hP _ h).1 hc⟩
+  exact ⟨fun ⟨h, hc⟩ => ⟨h, (codeN_iff H hR hP _ h).2 hc⟩,
+    fun ⟨h, hc⟩ => ⟨h, (codeN_iff H hR hP _ h).1 hc⟩⟩
 
 theorem codeN_congr {x y : {x // InL H hP x}} (hxy : x.1 = y.1)
     (h : IsFormCodeSem (L_zfAxioms H hR hP) y) : IsFormCodeSem (L_zfAxioms H hR hP) x :=
@@ -678,11 +673,9 @@ theorem code_down (c : {x // InL H hP x}) (hc : IsFormCodeSem (L_zfAxioms H hR h
   apply hnx
   rcases code_shape (L_zfAxioms H hR hP) ⟨x, hx⟩ hcx with
     ⟨i, j, hi, hj, h | h⟩ | h | ⟨a, b, ha, hb, h | h | h⟩ | ⟨a, ha, h | h⟩
-  · have e : x = _ := (codeEq2_iff H hR hP 0 _ i j).1 h
-    rw [e]
+  · rw [show x = _ from (codeEq2_iff H hR hP 0 _ i j).1 h]
     exact isFormCodeSem_memAtom H ((mem_omegaN H hR hP i).1 hi) ((mem_omegaN H hR hP j).1 hj)
-  · have e : x = _ := (codeEq2_iff H hR hP 1 _ i j).1 h
-    rw [e]
+  · rw [show x = _ from (codeEq2_iff H hR hP 1 _ i j).1 h]
     exact isFormCodeSem_eqAtom H ((mem_omegaN H hR hP i).1 hi) ((mem_omegaN H hR hP j).1 hj)
   · have e : x = kpair H (natV H 2) (vempty H) := by
       have := congrArg Subtype.val h
