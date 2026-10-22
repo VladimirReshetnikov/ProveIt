@@ -256,8 +256,7 @@ theorem box_mark (q r : Nat) (l : List Bool) (vs : List Nat) (hq : skipTarget q 
   cases pre with
   | nil => exact Reach.refl M _
   | cons p pre' =>
-      have h3 : markExit (p :: pre').length = 3 := by simp [markExit]
-      rw [h3]
+      rw [show markExit (p :: pre').length = 3 by simp [markExit]]
       exact ret_file (qa := 2) (qb := 3) (hA.row (by decide) rfl) (hA.row (by decide) rfl)
         (hA.row (by decide) rfl) l _ (List.cons_ne_nil _ _) (hA.row (by decide) rfl)
 

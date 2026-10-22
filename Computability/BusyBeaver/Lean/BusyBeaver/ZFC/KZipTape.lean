@@ -24,8 +24,7 @@ private theorem getD_trim : ∀ (l : List Bool) (i : Nat),
       rw [trim_cons]
       split
       · rename_i h
-        obtain ⟨hb, ht⟩ := h
-        subst hb
+        obtain ⟨rfl, ht⟩ := h
         cases i with
         | zero => rfl
         | succ i => simpa [ht] using (getD_trim l i).symm
@@ -133,9 +132,8 @@ private theorem trim_eq_of_getD (l r : List Bool)
     cases r with
     | nil => exact trim_nil_of_false (b :: l) h
     | cons c r =>
-      have hb : b = c := h 0
-      subst c
-      exact trim_cons_congr b (ih r (fun i => by simpa using h (i+1)))
+      obtain rfl : b = c := h 0
+      exact trim_cons_congr _ (ih r (fun i => by simpa using h (i+1)))
 
 /-- Normalized zipper configurations representing the same full tape are equal. -/
 theorem rel_unique {c : FramedWindow.Full} {z z' : Conf} (h : Rel c z) (h' : Rel c z')
@@ -165,8 +163,7 @@ private theorem run_normal {M : TMN} {n : Nat} {z z' : Conf}
       unfold KZip.step at he
       split at he
       · simp at he
-      · cases he; exact ⟨trim_trim _, trim_trim _⟩
-      · cases he; exact ⟨trim_trim _, trim_trim _⟩
+      all_goals (cases he; exact ⟨trim_trim _, trim_trim _⟩)
 
 /-- Reflect a full-tape endpoint when its two zipper representations are normalized. -/
 theorem run_reflect {M : TMN} {c d : FramedWindow.Full} {z z' : Conf}

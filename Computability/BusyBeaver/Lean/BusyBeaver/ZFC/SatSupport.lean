@@ -129,12 +129,9 @@ omit hS in
 theorem agreeP_econs {n e e' d : V} (hn : mem n (omegaV H)) (he : IsEnvOn H A e)
     (he' : IsEnvOn H A e') (hd : mem d A) (h : AgreeP H n e e') :
     AgreeP H n (econs H d e) (econs H d e') := by
-  have hce := econs_isEnvOn H he hd
-  have hce' := econs_isEnvOn H he' hd
   have hag := (agreeP_iff H hn he he').1 h
-  refine (agreeP_iff H hn hce hce').2 fun i hi => ?_
-  have hiω : mem i (omegaV H) := ConstructibleZF.omega_trans H n hn i hi
-  rcases nat_zero_or_succ H i hiω with rfl | ⟨k, hk, rfl⟩
+  refine (agreeP_iff H hn (econs_isEnvOn H he hd) (econs_isEnvOn H he' hd)).2 fun i hi => ?_
+  rcases nat_zero_or_succ H i (ConstructibleZF.omega_trans H n hn i hi) with rfl | ⟨k, hk, rfl⟩
   · rw [econs_zero H he.1.1, econs_zero H he'.1.1]
   · rw [econs_succ H he d hk, econs_succ H he' d hk]
     exact hag k (nat_transitive H n hn _ hi k (vsucc_self H k))

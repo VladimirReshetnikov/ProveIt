@@ -90,7 +90,7 @@ inductive IterHalts (p : Prog) : Regs → Prop
 theorem run_det {p : Prog} {e : Edge} {R : Regs} {x : Exit} {R' : Regs}
     (h : Run p e R x R') : ∀ {y : Exit} {R'' : Regs}, Run p e R y R'' → x = y ∧ R' = R'' := by
   induction h with
-  | inc r R => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
+  | inc | brk0 | brkS | contS | halt => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
   | decPos r R v hv =>
       intro y R'' h2
       cases h2 with
@@ -101,10 +101,6 @@ theorem run_det {p : Prog} {e : Edge} {R : Regs} {x : Exit} {R' : Regs}
       cases h2 with
       | decPos _ _ v' hv' => rw [hz] at hv'; cases hv'
       | decZero => exact ⟨rfl, rfl⟩
-  | brk0 => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
-  | brkS => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
-  | contS => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
-  | halt => intro y R'' h2; cases h2; exact ⟨rfl, rfl⟩
   -- A non-normal car fixes the whole node result.
   | carBrk1 _ _ _ _ ih
   | carBrkS _ _ _ _ _ ih
@@ -159,46 +155,46 @@ variable {p : Prog}
 /-- Sequencing: both halves finish normally. -/
 theorem seq {n : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 R2 : Regs}
     (ha : Run p a R .normal R1) (hb : Run p b R1 .normal R2) : Run p (.node n) R .normal R2 :=
-  .cdrNormal n R R1 R2 (by rw [hn]; exact ha) (by rw [hn]; exact hb)
+  .cdrNormal n R R1 R2 (by rwa [hn]) (by rwa [hn])
 
 /-- A car that breaks one level skips the cdr. -/
 theorem skip {n : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 : Regs}
     (ha : Run p a R (.brk 1) R1) : Run p (.node n) R .normal R1 :=
-  .carBrk1 n R R1 (by rw [hn]; exact ha)
+  .carBrk1 n R R1 (by rwa [hn])
 
 /-- Halting in the car. -/
 theorem halt_car {n : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 : Regs}
     (ha : Run p a R .halt R1) : Run p (.node n) R .halt R1 :=
-  .carHalt n R R1 (by rw [hn]; exact ha)
+  .carHalt n R R1 (by rwa [hn])
 
 /-- Halting in the cdr. -/
 theorem halt_cdr {n : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 R2 : Regs}
     (ha : Run p a R .normal R1) (hb : Run p b R1 .halt R2) : Run p (.node n) R .halt R2 :=
-  .cdrHalt n R R1 R2 (by rw [hn]; exact ha) (by rw [hn]; exact hb)
+  .cdrHalt n R R1 R2 (by rwa [hn]) (by rwa [hn])
 
 /-- A cdr breaking `k+1` levels breaks the node `k+1` levels, except that one level is consumed
 when the node is the target of the break. -/
 theorem brk_cdr {n k : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 R2 : Regs}
     (ha : Run p a R .normal R1) (hb : Run p b R1 (.brk (k + 1)) R2) :
     Run p (.node n) R (.brk (k + 1)) R2 :=
-  .cdrBrk n k R R1 R2 (by rw [hn]; exact ha) (by rw [hn]; exact hb)
+  .cdrBrk n k R R1 R2 (by rwa [hn]) (by rwa [hn])
 
 /-- A car breaking `k+2` levels breaks the node `k+1` levels. -/
 theorem brk_car {n k : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 : Regs}
     (ha : Run p a R (.brk (k + 2)) R1) : Run p (.node n) R (.brk (k + 1)) R1 :=
-  .carBrkS n k R R1 (by rw [hn]; exact ha)
+  .carBrkS n k R R1 (by rwa [hn])
 
 /-- A cdr continuing `k+2` levels continues the node `k+1` levels. -/
 theorem cont_cdr {n k : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 R2 : Regs}
     (ha : Run p a R .normal R1) (hb : Run p b R1 (.cont (k + 2)) R2) :
     Run p (.node n) R (.cont (k + 1)) R2 :=
-  .cdrContS n k R R1 R2 (by rw [hn]; exact ha) (by rw [hn]; exact hb)
+  .cdrContS n k R R1 R2 (by rwa [hn]) (by rwa [hn])
 
 /-- A cdr continuing one level restarts the node. -/
 theorem restart {n : Nat} {a b : Edge} (hn : p.nodes n = (a, b)) {R R1 R2 R' : Regs} {x : Exit}
     (ha : Run p a R .normal R1) (hb : Run p b R1 (.cont 1) R2)
     (hrest : Run p (.node n) R2 x R') : Run p (.node n) R x R' :=
-  .cdrCont1 n R R1 R2 R' x (by rw [hn]; exact ha) (by rw [hn]; exact hb) hrest
+  .cdrCont1 n R R1 R2 R' x (by rwa [hn]) (by rwa [hn]) hrest
 
 /-! ## Loops -/
 
@@ -237,7 +233,7 @@ theorem transfer {n m src dst : Nat} (hn : p.nodes n = (.decnz src, .node m))
   have h := while_loop hn (fun R => upd R dst (R dst + 1)) (fun R => upd_other R _ hsd) hbody
     (R src) R rfl
   suffices e : ∀ k R, R src = k → loopRes (fun R => upd R dst (R dst + 1)) src k R =
-      upd (upd R dst (R dst + k)) src 0 by rw [e (R src) R rfl] at h; exact h
+      upd (upd R dst (R dst + k)) src 0 by rwa [e (R src) R rfl] at h
   intro k
   induction k with
   | zero =>
@@ -269,7 +265,7 @@ theorem copy2 {n m m' src d1 d2 : Nat} (hn : p.nodes n = (.decnz src, .node m))
     intro R; simp only [g]; rw [upd_other _ _ h2, upd_other _ _ h1]
   have h := while_loop hn g hg hbody (R src) R rfl
   suffices e : ∀ k R, R src = k → loopRes g src k R =
-      upd (upd (upd R d1 (R d1 + k)) d2 (R d2 + k)) src 0 by rw [e (R src) R rfl] at h; exact h
+      upd (upd (upd R d1 (R d1 + k)) d2 (R d2 + k)) src 0 by rwa [e (R src) R rfl] at h
   intro k
   induction k with
   | zero =>
@@ -288,8 +284,7 @@ theorem clear {n r : Nat} (hn : p.nodes n = (.decnz r, .cont 1)) :
     ∀ R : Regs, Run p (.node n) R .normal (upd R r 0) := by
   intro R
   have h := while_loop hn (fun R => R) (fun _ => rfl) (fun R => .contS 0 R) (R r) R rfl
-  suffices e : ∀ k R, R r = k → loopRes (fun R => R) r k R = upd R r 0 by
-    rw [e (R r) R rfl] at h; exact h
+  suffices e : ∀ k R, R r = k → loopRes (fun R => R) r k R = upd R r 0 by rwa [e (R r) R rfl] at h
   intro k
   induction k with
   | zero => intro R hR; simp only [loopRes]; rw [← hR, upd_self]

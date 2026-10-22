@@ -86,12 +86,8 @@ theorem domain_power (hc : ClosedWF mem) (hp : PSCCalibration.PowerSets mem)
     hc x fun z hz => wf_mem a.property ((hp x).mp hx z hz)
   refine ⟨⟨p, hwp⟩, fun x => ?_⟩
   constructor
-  · intro hx z hz
-    exact (hp x.val).mp hx z.val hz
-  · intro hx
-    apply (hp x.val).mpr
-    intro z hz
-    exact hx ⟨z, wf_mem x.property hz⟩ hz
+  · exact fun hx z hz => (hp x.val).mp hx z.val hz
+  · exact fun hx => (hp x.val).mpr fun z hz => hx ⟨z, wf_mem x.property hz⟩ hz
 
 /-- Separating WF from an inductive set gives an inductive WF set. -/
 theorem domain_infinity (H : ZFAxioms mem) (hc : ClosedWF mem) :
@@ -106,8 +102,7 @@ theorem domain_infinity (H : ZFAxioms mem) (hc : ClosedWF mem) :
   have hwJ : WF mem J := hc J fun x hx => ((hJ' x).mp hx).2
   have hwe : WF mem e := wf_empty (finiteBase H) e he
   refine ⟨⟨J, hwJ⟩, ⟨⟨e, hwe⟩, (hJ' e).mpr ⟨heI, hwe⟩, ?_⟩, ?_⟩
-  · intro z
-    exact he z.val
+  · exact fun z => he z.val
   · intro x hx
     obtain ⟨sx, hsI, hs⟩ := hsucc x.val ((hJ' x.val).mp hx).1
     have hws : WF mem sx := hc sx fun z hz => by
@@ -139,9 +134,7 @@ private theorem raw_rel_iff (phi : Form) (env : Nat → Domain mem)
     Sat mem (scons y.val (scons x.val (liftEnv mem env))) (translate phi) ↔
       relOf (domainMem mem) phi env y x := by
   have he : scons y.val (scons x.val (liftEnv mem env)) = liftEnv mem (scons y (scons x env)) :=
-    funext fun i => by cases i with
-      | zero => rfl
-      | succ i => cases i <;> rfl
+    funext fun i => by rcases i with _ | _ | _ <;> rfl
   rw [he]
   exact sat_translate mem phi (scons y (scons x env))
 
@@ -154,10 +147,9 @@ theorem domain_replacement (H : ZFAxioms mem) (hc : ClosedWF mem)
     intro x y1 y2 h1 h2
     obtain ⟨hy1, hx, h1⟩ := (replacementForm_spec phi env y1 x).mp h1
     obtain ⟨hy2, _, h2⟩ := (replacementForm_spec phi env y2 x).mp h2
-    have he := hf ⟨x, hx⟩ ⟨y1, hy1⟩ ⟨y2, hy2⟩
+    exact congrArg Subtype.val (hf ⟨x, hx⟩ ⟨y1, hy1⟩ ⟨y2, hy2⟩
       ((raw_rel_iff phi env ⟨y1, hy1⟩ ⟨x, hx⟩).mp h1)
-      ((raw_rel_iff phi env ⟨y2, hy2⟩ ⟨x, hx⟩).mp h2)
-    exact congrArg Subtype.val he
+      ((raw_rel_iff phi env ⟨y2, hy2⟩ ⟨x, hx⟩).mp h2))
   obtain ⟨r, hr⟩ := H.repl (replacementForm phi) (liftEnv mem env) hfun a.val
   have hwr : WF mem r := hc r fun y hy => by
     obtain ⟨x, _, hrel⟩ := (hr y).mp hy
