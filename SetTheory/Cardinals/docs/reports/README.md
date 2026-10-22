@@ -2,7 +2,7 @@
 
 # Research reports
 
-Two hundred and ninety independent mathematical research packages, unpacked
+Two hundred and ninety-one independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Most directories
 hold a typeset article with its LaTeX source, a `README.md`, and in most cases
@@ -11,7 +11,7 @@ The closure-kernel reconciliation retains the base TeX source; its delivered
 PDFs remain recoverable from the committed arrival archives.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all two hundred and ninety reports, names the problem each one attacks
+numbers all two hundred and ninety-one reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or fully machine-checked. The manifest
@@ -31,11 +31,11 @@ records their claims and identifies the limited scope of checked components.
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant; explicit Diophantine forms of Con(ZFC) | 13 |
 | [`convex-geometry/`](convex-geometry) — optimal simplex products for projection-body volume | 1 |
 | [`probability/`](probability) — tree-broadcast renormalization, longest progressions in random sets, a Bose-gas crossover, random reshuffling, exponential tilting and contingency-table sampling, nonuniform coupon collection, total variation of product laws, Gaussian quadratic forms | 9 |
 | [`set-theory/`](set-theory) — closure kernels equiconsistent with ZFC and small inconsistency-search machines | 1 |
-| **Total** | **290** |
+| **Total** | **291** |
 
 ## Later deliveries
 
@@ -3544,3 +3544,20 @@ These are maintenance and source-size comparisons, not measured runtime gains.
 Submitted component compiler records remain attributed, Rocq proposals stay
 inert under the Lean-only goal, and no supplied code or proof compiler ran for
 intake. Current machine and accepted endpoint statements are unchanged.
+
+Batch 217 (arrival `2fd49a1a9d`, "Con(ZFC) in Diophantine form") opens a
+thirteenth Hilbert's-tenth report,
+[`con-zfc-diophantine-forms`](hilbert-tenth-problem/con-zfc-diophantine-forms/README.md),
+bringing the collection to **291 reports**. Its eight packages, all of
+22 October 2026 and pinned to `cdd582bec1`, prove the same theorem
+independently: an explicit polynomial with fixed integer coefficients whose
+positive-integer unsolvability ZFC proves equivalent to Con(ZFC), obtained
+by fixing the ordinary input of the research tree's native-window/Pell
+compiler on the blank run of the 215-state machine. The smallest single
+polynomial (15 positive unknowns, 67 operations, exact degree 155) was
+found twice with different coefficients. Placement `084e120830` keeps each
+package whole with its PDF, omits 264 byte-identical repository copies with
+a recovery map (`PLACEMENT.md`), and retires all eight ZIPs; reconciliation
+`feadb33d20` records the overlap, bases, credits, tensions and merged open
+questions without a write. Nothing was rerun; no formalization, consistency
+proof, materialized coefficient or new universal operation bound is claimed.

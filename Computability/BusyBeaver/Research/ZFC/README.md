@@ -1134,6 +1134,19 @@ published to support further work toward 214.
 
 ## Intake and theory minimization
 
+**Diophantine form of the K215 endpoint** (not formalized). Intake batch 217
+placed eight independent packages as the research report
+[`con-zfc-diophantine-forms`](../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
+(placement `084e120830`, reconciliation `feadb33d20`). Each one turns
+`KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
+with fixed integer coefficients. The route is to fold or normalize
+[`candidate-k215/k215.tm`](candidate-k215/k215.tm) and compile its blank run
+with the Hilbert's-tenth native-window/Pell compiler at a fixed input. By an
+ordinary argument, ZFC then proves "no positive solution" ↔ Con(ZFC). The
+smallest has 15 positive unknowns, 67 operations and degree 155. The
+coefficients are finite recipes and are not materialized. Only the machine
+endpoint is checked in Lean/Rocq; the Diophantine bridge is not.
+
 [Intake batch 143](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
 was completed before this research: placement `b07d1a27b`, reconciliation
 `83ef1da6b`, catalogue `1ce7ab050`. The three source archives remain

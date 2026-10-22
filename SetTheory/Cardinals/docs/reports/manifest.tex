@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 290 independent mathematical research packages}}
+  pdfsubject={Catalogue of 291 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -55,20 +55,20 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large Two hundred and ninety independent mathematical research packages,\\
+  {\large Two hundred and ninety-one independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 21 October 2026}
+  {\normalsize 22 October 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the two hundred and ninety research packages stored
+This document catalogues the two hundred and ninety-one research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other one hundred and eighty-eight came through ProveIt's incoming-reports procedure
+other one hundred and eighty-nine came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
 batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
@@ -79,8 +79,8 @@ batch~102, four each in batches~103, 104 and~105, seven in batch~106,
 five in batch~107, ten in batch~108, eight each in batches~109 and~110,
 five in batch~111, seven in batch~112, eight in batch~113, five in
 batch~114, two outside the numbered batches (Report~274 and a
-two-way automata manuscript of 7~October), twelve in batch~138 and one in
-batch~143 --- whose
+two-way automata manuscript of 7~October), twelve in batch~138, one in
+batch~143 and one in batch~217 --- whose
 archives remain in the repository's history.  Batches~100--113 are clusters of one session bundle
 of numbered Research Reports (arrival \texttt{60f54ea06}); batch~114 is the
 seven other archives of two arrivals of the same day.  Later batches
@@ -181,7 +181,10 @@ Sources~165--166 still await their written follow-up. The later batch~212
 reconciles affine-core and CM215 integration evidence without executing supplied
 programs or compilers. Batches~209--211 have been placed separately; their
 independent mathematical reconciliation remains pending.
-The collection remains 290 reports.
+Batch~217 (arrival \texttt{2fd49a1a9d}) opens a thirteenth report in
+\dir{hilbert-tenth-problem}: eight independent packages on explicit
+Diophantine forms of $\mathrm{Con}(\mathrm{ZFC})$, placed with a
+reconciliation README and no write.  The collection now has 291 reports.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
 were unified, and the finite-height transfinite-word report was integrated
@@ -298,7 +301,7 @@ original archive names are recorded with every entry.
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\dir{hilbert-tenth-problem} & --- & 12\\
+\dir{hilbert-tenth-problem} & --- & 13\\
 \midrule
 \dir{convex-geometry} & --- & 1\\
 \midrule
@@ -306,7 +309,7 @@ original archive names are recorded with every entry.
 \midrule
 \dir{set-theory} & --- & 1\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{290}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{291}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -6977,7 +6980,7 @@ the constant matching resolvent.}
 
 \section{Hilbert's tenth problem}
 
-Twelve reports on Diophantine representations of computation that control
+Thirteen reports on Diophantine representations of computation that control
 their witnesses, beside the formal project
 \dir{Computability/HilbertTenthProblem}, which proves MRDP in both
 directions in Lean, the universal pair $(58,4)$ and the single-fold unary
@@ -7007,8 +7010,10 @@ canonical certificates (fixed-arity sandpile polynomials), Part~VI of the
 group-substrate report (a chronological matrix certificate), Parts~IX--XIII
 of the signal-machine report and Part~VII of the five-particle report
 (smaller recognition radii); its two OEIS manuscripts became
-\dir{a196460-clipping-tables}.  The last three entries below
-are batch~82's and~83's new reports.  None of the
+\dir{a196460-clipping-tables}.  The last four entries below
+are batch~82's and~83's new reports and batch~217's eight fixed-input
+specializations of the programme's native compiler to the 215-state
+ZFC machine.  None of the
 reports' own theorems is formalized; each README names the project
 declarations it builds on or relates to.
 
@@ -7720,6 +7725,34 @@ Part~XXI of \dir{canonical-diophantine-certificates}, Part~VI of
 From six manuscripts,
 each reviewed by the programme without a defect (it certified only what it
 read); not a Lean formalization.}
+
+\entry{Con(ZFC) in Diophantine form: eight fixed-input specializations of the native compiler}
+{hilbert-tenth-problem/con-zfc-diophantine-forms}
+{README.md}{batch~217 (arrival \texttt{2fd49a1a9d}): ZFC\_Diophantine\_Explicit\_82\_2026-10-22.zip, zfc\_diophantine.zip, zfc-diophantine.zip, zfc\_diophantine~(1).zip, ZFC\_Diophantine\_15\_16\_2026-10-22.zip, zfc\_diophantine\_67.zip, zfc\_diophantine\_fixed70.zip, diophantine\_zfc\_cdd582b.zip}
+{Eight independent packages, all of 22~October 2026 and pinned to
+\texttt{cdd582bec1}, each construct an explicit polynomial (or small system)
+with fixed integer coefficients and prove, by ordinary mathematics
+formalizable in ZFC, that ZFC proves ``no solution in positive integers''
+equivalent to $\mathrm{Con}(\mathrm{ZFC})$.  All specialize the research
+tree's native-window/Pell compiler (the 84-operation universal polynomial
+and its relatives) to the blank run of the literal 215-state machine of
+\dir{Computability/BusyBeaver/Research/ZFC/candidate-k215}, whose Lean
+endpoint \texttt{KEndpoint215} they cite; fixing the ordinary input removes
+the input Pell block, and the deleted witnesses are restored on every
+solution.  The smallest single polynomial, found independently by two
+packages with different coefficients, has 15 positive unknowns, 67
+operations and exact degree~155; a seven-equation system in 16 unknowns
+reaches maximum degree~28 at 63 operations; the smallest quartic lift has
+34 unknowns.  The eight packages normalize K215 differently, so their
+coefficients are different integers and not interchangeable.  Placed
+without a write: each package keeps its delivered layout and PDF in a
+numbered directory, 264 byte-identical copies of repository files are
+omitted with a recovery map, and a reconciliation README records the
+overlap, bases, credits, unresolved tensions and merged open questions.
+Nothing was rerun at intake.  Coefficients are defined by finite recipes
+but not materialized; no consistency proof, optimality, new universal
+operation bound or Lean/Rocq formalization of the Diophantine bridge is
+claimed.  Unrefereed.}
 
 \section{Convex geometry}
 

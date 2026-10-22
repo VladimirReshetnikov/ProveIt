@@ -13,6 +13,23 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1982 | J. P. Jones | Universal Diophantine Equation | *J. Symbolic Logic* 47, 549–571 | XeLaTeX |
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
+**Fixed-input specializations for Con(ZFC)** (not formalized). The research
+report
+[`con-zfc-diophantine-forms`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
+(batch 217, eight independent packages pinned to `cdd582bec1`) fixes the
+ordinary input of the native-window/Pell compiler below on the blank run of
+the 215-state ZFC machine
+(`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`). It
+gives explicit polynomials with fixed integer coefficients for which, by an
+ordinary argument formalizable in ZFC, ZFC proves "no positive solution" ↔
+Con(ZFC). The smallest has 15 positive unknowns, 67 operations and exact
+degree 155; a seven-equation system in 16 unknowns reaches maximum degree 28
+at 63 operations. These are fixed-instance results, so the universal
+operation bounds stated below are unchanged. Neither the Diophantine bridge
+nor the compiler is formalized; the Lean development proves MRDP and
+`Jones1982.nine_unknowns`, which the packages cite as the nine-unknown
+comparison.
+
 The established arithmetic bounds are **74 operations for a complete
 certificate and 84 for one universal polynomial**. The
 [factored first-norm certificate](Papers/research-wip/native-stream-queue/complete74_factored_first_norm.md)
