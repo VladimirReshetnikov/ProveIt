@@ -1,5 +1,7 @@
 # Tenth K215 proof-simplification checkpoint
 
+The [eleventh checkpoint](../phase11/README.md) supersedes this core with a checked 58-step adaptation and two inlined aliases. The sources, raw receipts and measurements below describe this exact historical checkpoint; its saved reader with `--repo` requires those original source bytes. Use the phase-eleven packet to bind the current maintained sources.
+
 The generic implication core now uses the attributed 52-step condensed-detachment derivation from `4fdc59197a`, with six small compatibility lemmas. It shrinks from **19,378 bytes / 381 lines to 14,739 bytes / 330 lines**, saving **4,639 bytes (23.94%) and 51 lines**. The unchanged numeric adapter brings the pair to 17,419 bytes / 403 lines. All six generic public declarations retain their types; composition, lifting and the truth-free numeric interface remain available.
 
 Four local filler terms are chosen by reflexivity, and five truth detachments use an arbitrary seed. A restricted row then supplies that seed. The proof requires only the existing reflexive relation and its two growth laws. The generic core and its typed clients use no axioms.

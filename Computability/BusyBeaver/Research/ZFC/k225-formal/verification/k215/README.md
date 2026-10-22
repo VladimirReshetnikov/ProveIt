@@ -3,10 +3,10 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. The current
-[Lean simplification checkpoint](simplification/phase10/README.md) retains a
+[Lean simplification checkpoint](simplification/phase11/README.md) retains a
 192-module endpoint closure plus five decoder-prefix modules. Eight modules were
-freshly compiled after shortening the generic implication core by 23.94%; 189
-providers retain exact phase-nine source/import bindings. Both endpoint clients
+freshly compiled after reducing the generic implication core to 13,723 bytes /
+287 lines; 189 providers retain exact phase-ten source/import bindings. Both endpoint clients
 were freshly checked with ten standard-axiom reports and zero warnings. The nine
 site batches retain their phase-nine checks; inherited project logs have 21 linters.
 

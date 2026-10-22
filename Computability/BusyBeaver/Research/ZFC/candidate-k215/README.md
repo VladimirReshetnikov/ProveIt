@@ -30,10 +30,11 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
-The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase10/README.md)
-shortens the generic implication core by 23.94%, preserving its public interfaces.
-It checks the 192-module endpoint closure and five decoder-prefix modules: eight
-fresh providers and 189 exact phase-nine reuses. Both unchanged endpoint clients
+The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase11/README.md)
+shortens the generic implication core to 13,723 bytes / 287 lines, preserving its
+public interfaces. It removes the temporary seed wrapper and inlines two single-use
+aliases. The 192-module endpoint closure and five decoder-prefix modules have eight
+fresh providers and 189 exact phase-ten reuses. Both unchanged endpoint clients
 pass with ten standard-axiom reports and zero warnings. The nine site batches
 retain their phase-nine checks of all 6,176 branch outcomes; inherited project
 logs retain 21 linters. The machine and theorem statements are unchanged.
