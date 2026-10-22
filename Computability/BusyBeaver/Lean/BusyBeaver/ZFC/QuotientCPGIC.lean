@@ -62,42 +62,29 @@ theorem strong_trace (mem : V → V → Prop) (witness : V)
       Member mem z a ∧ QuotientModel.RelSat mem (scons z env) phi := by
   have hInv (x y : V) (hxy : Eqv mem x y) :
       QuotientModel.RelSat mem (scons x env) phi ↔
-        QuotientModel.RelSat mem (scons y env) phi := by
-    apply QuotientModel.relSat_congr mem witness h phi
-    intro n
-    cases n with
-    | zero => exact hxy
-    | succ n => exact eqv_refl_of_model mem witness h (env n)
+        QuotientModel.RelSat mem (scons y env) phi :=
+    QuotientModel.relSat_congr mem witness h phi _ _ fun n => by
+      cases n with | zero => exact hxy | succ n => exact eqv_refl_of_model mem witness h (env n)
   obtain ⟨r, hSupport, hCover⟩ := strongTrace_instance mem h.2 a phi env a
-  refine ⟨r, ?_, ?_⟩
-  · intro y hyr
-    obtain ⟨x, _, hya, _, _⟩ := hSupport y hyr
-    exact hya
-  · intro z
-    constructor
-    · rintro ⟨y, hyr, hzy⟩
-      obtain ⟨x, _, hya, hyx, hpx⟩ := hSupport y hyr
-      have hzx := eqv_trans_of_model mem witness h hzy
-        (same_eqv mem (eqv_refl_of_model mem witness h) hyx)
-      exact ⟨⟨y, hya, hzy⟩, (hInv z x hzx).mpr hpx⟩
-    · rintro ⟨⟨x, hxa, hzx⟩, hpz⟩
-      obtain ⟨y, hyr, _, _, hyx, _⟩ := hCover x hxa
-        ⟨x, hxa, hxa, same_refl mem x, (hInv z x hzx).mp hpz⟩
-      exact ⟨y, hyr, eqv_trans_of_model mem witness h hzx
-        (same_eqv mem (eqv_refl_of_model mem witness h) (same_symm mem hyx))⟩
+  refine ⟨r, fun y hyr => (hSupport y hyr).elim fun _ hx => hx.2.1, fun z => ⟨?_, ?_⟩⟩
+  · rintro ⟨y, hyr, hzy⟩
+    obtain ⟨x, _, hya, hyx, hpx⟩ := hSupport y hyr
+    have hzx := eqv_trans_of_model mem witness h hzy
+      (same_eqv mem (eqv_refl_of_model mem witness h) hyx)
+    exact ⟨⟨y, hya, hzy⟩, (hInv z x hzx).mpr hpx⟩
+  · rintro ⟨⟨x, hxa, hzx⟩, hpz⟩
+    obtain ⟨y, hyr, _, _, hyx, _⟩ := hCover x hxa
+      ⟨x, hxa, hxa, same_refl mem x, (hInv z x hzx).mp hpz⟩
+    exact ⟨y, hyr, eqv_trans_of_model mem witness h hzx
+      (same_eqv mem (eqv_refl_of_model mem witness h) (same_symm mem hyx))⟩
 
 /-- Every interpreted subset has an equivalent representative literally inside a. -/
 theorem literal_subset_representative (mem : V → V → Prop) (witness : V)
     (h : ModelsCPGIC mem) (a z : V) (hz : InterpretedSub mem z a) :
     ∃ r, PositiveClosure.Sub mem r a ∧ Eqv mem z r := by
   obtain ⟨r, hrSub, hr⟩ := strong_trace mem witness h a (fMem 0 1) (fun _ => z)
-  refine ⟨r, hrSub, eqv_extensionality_of_model mem witness h z r ?_⟩
-  intro t
-  constructor
-  · intro htz
-    exact (hr t).mpr ⟨hz t htz, htz⟩
-  · intro htr
-    exact ((hr t).mp htr).2
+  exact ⟨r, hrSub, eqv_extensionality_of_model mem witness h z r fun t =>
+    ⟨fun htz => (hr t).mpr ⟨hz t htz, htz⟩, fun htr => ((hr t).mp htr).2⟩⟩
 
 /-- Raw transitivity becomes transitivity for interpreted membership. -/
 theorem interpreted_transitive (mem : V → V → Prop) (witness : V)
@@ -132,10 +119,9 @@ theorem quotient_containers (mem : V → V → Prop) (witness : V)
         intro z hz
         induction z using Quotient.ind with
         | _ z =>
-          have hzx : InterpretedSub mem z x :=
-            (QuotientPower.quotient_sub mem witness h z x).mp hz
           have hzx' : InterpretedSub mem z x' := fun t ht =>
-            (QuotientModel.member_right_congr mem witness h hxx').mp (hzx t ht)
+            (QuotientModel.member_right_congr mem witness h hxx').mp
+              ((QuotientPower.quotient_sub mem witness h z x).mp hz t ht)
           obtain ⟨r, hrSub, hzr⟩ := literal_subset_representative mem witness h x' z hzx'
           exact ⟨r, hp r hrSub, hzr⟩
 

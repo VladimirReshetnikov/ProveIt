@@ -39,9 +39,7 @@ theorem nsat_tagF (H : ZFAxioms mem) (ρ : Nat → V) (c t x : Nat) :
     NSat mem ρ (tagF c t x) ↔ ρ c = kpair H (natV H t) (ρ x) := by
   simp only [tagF, NSat, ConstructibleReflect.nsat_natF H, nsat_kpairF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨m, rfl, h⟩; exact h
-  · intro h; exact ⟨_, rfl, h⟩
+  exact ⟨fun ⟨_, rfl, h⟩ => h, fun h => ⟨_, rfl, h⟩⟩
 
 /-- `c = ⟨t, ⟨a, b⟩⟩`. -/
 def tag2F (c t a b : Nat) : NForm :=
@@ -51,9 +49,7 @@ theorem nsat_tag2F (H : ZFAxioms mem) (ρ : Nat → V) (c t a b : Nat) :
     NSat mem ρ (tag2F c t a b) ↔ ρ c = kpair H (natV H t) (kpair H (ρ a) (ρ b)) := by
   simp only [tag2F, NSat, nsat_kpairF H, nsat_tagF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨m, rfl, h⟩; exact h
-  · intro h; exact ⟨_, rfl, h⟩
+  exact ⟨fun ⟨_, rfl, h⟩ => h, fun h => ⟨_, rfl, h⟩⟩
 
 /-- The possible shapes of a formula code. -/
 def CodeShape (H : ZFAxioms mem) (c : V) : Prop :=
@@ -80,18 +76,15 @@ theorem nsat_shapeF (H : ZFAxioms mem) (ρ : Nat → V) :
   simp only [shapeF, NSat, ConstructibleDef.nsat_isCodeF H, SatSupport.nsat_inOmegaF H,
     nsat_tag2F H, nsat_tagF H]
   simp (disch := omega) only [upd_same, upd_other]
-  refine and_congr_right fun _ => or_congr Iff.rfl (or_congr ?_ Iff.rfl)
-  constructor
-  · rintro ⟨z, hz, h⟩
-    rw [h, show z = vempty H from H.ext _ _ fun w =>
-      ⟨fun hw => absurd hw (hz w), fun hw => absurd hw (vempty_spec H w)⟩]
-  · intro h
-    exact ⟨vempty H, fun w hw => vempty_spec H w hw, h⟩
+  refine and_congr_right fun _ => or_congr Iff.rfl (or_congr
+    ⟨fun ⟨z, hz, h⟩ => ?_, fun h => ⟨vempty H, fun w hw => vempty_spec H w hw, h⟩⟩ Iff.rfl)
+  rw [h, show z = vempty H from H.ext _ _ fun w =>
+    ⟨fun hw => absurd hw (hz w), fun hw => absurd hw (vempty_spec H w)⟩]
 
 /-- **Inversion**: every internal formula code is an atom, `⊥`, or a constructor
 applied to internal codes. -/
-theorem code_shape (H : ZFAxioms mem) : ∀ c, IsFormCodeSem H c → CodeShape H c := by
-  have key := isFormCodeSem_ind' H (fun c => IsFormCodeSem H c ∧ CodeShape H c)
+theorem code_shape (H : ZFAxioms mem) : ∀ c, IsFormCodeSem H c → CodeShape H c :=
+  fun c hc => (isFormCodeSem_ind' H (fun c => IsFormCodeSem H c ∧ CodeShape H c)
     (toForm id shapeF) (fun _ => vempty H)
     (fun y => by rw [sat_toForm, nsat_shapeF H]; rfl)
     (fun a b ha hb => ⟨isFormCodeSem_memAtom H ha hb, Or.inl ⟨a, b, ha, hb, Or.inl rfl⟩⟩)
@@ -105,7 +98,7 @@ theorem code_shape (H : ZFAxioms mem) : ∀ c, IsFormCodeSem H c → CodeShape H
       Or.inr (Or.inr (Or.inl ⟨a, b, ha.1, hb.1, Or.inr (Or.inr rfl)⟩))⟩)
     (fun a ha => ⟨isFormCodeSem_all H ha.1, Or.inr (Or.inr (Or.inr ⟨a, ha.1, Or.inl rfl⟩))⟩)
     (fun a ha => ⟨isFormCodeSem_ex H ha.1, Or.inr (Or.inr (Or.inr ⟨a, ha.1, Or.inr rfl⟩))⟩)
-  exact fun c hc => (key c hc).2
+    c hc).2
 
 end Inversion
 section Ops
@@ -131,9 +124,7 @@ theorem val_eq {u : {x // InL H hP x}} {v : V} (hv : ∀ z, mem z v → InL H hP
 theorem val_vpair (a b : {x // InL H hP x}) :
     (vpair (L_zfAxioms H hR hP) a b).1 = vpair H a.1 b.1 := by
   refine val_eq H hR hP (fun z hz => ?_) fun z => ?_
-  · rcases (vpair_spec H _ _ z).1 hz with rfl | rfl
-    · exact a.2
-    · exact b.2
+  · exact ((vpair_spec H _ _ z).1 hz).elim (· ▸ a.2) (· ▸ b.2)
   · rw [show mem z.1 (vpair (L_zfAxioms H hR hP) a b).1 ↔ _ from
       vpair_spec (L_zfAxioms H hR hP) a b z, vpair_spec H, Subtype.ext_iff, Subtype.ext_iff]
 
@@ -187,12 +178,9 @@ theorem val_omegaV : (omegaV (L_zfAxioms H hR hP)).1 = omegaV H := by
   refine val_eq H hR hP (fun z hz => inL_trans H hR hP (inL_omega H hR hP) hz) fun z => ?_
   rw [show mem z.1 (omegaV (L_zfAxioms H hR hP)).1 ↔ _ from
     mem_omega_iff (L_zfAxioms H hR hP) z, mem_omega_iff H]
-  constructor
-  · intro h c hc
-    have := h ⟨omegaV H, inL_omega H hR hP⟩ ((inductive_iff H hR hP _).2 (omega_inductive H))
-    exact (mem_omega_iff H z.1).1 this c hc
-  · intro h c hc
-    exact h c.1 ((inductive_iff H hR hP c).1 hc)
+  exact ⟨fun h c hc => (mem_omega_iff H z.1).1 (h ⟨omegaV H, inL_omega H hR hP⟩
+    ((inductive_iff H hR hP _).2 (omega_inductive H))) c hc,
+    fun h c hc => h c.1 ((inductive_iff H hR hP c).1 hc)⟩
 
 theorem mem_omegaN (n : {x // InL H hP x}) :
     mem n.1 (omegaV (L_zfAxioms H hR hP)).1 ↔ mem n.1 (omegaV H) := by
@@ -222,58 +210,43 @@ theorem functional_iff (F : {x // InL H hP x}) :
     (∀ x y y' : {x // InL H hP x}, memL H hP (kpair (L_zfAxioms H hR hP) x y) F →
       memL H hP (kpair (L_zfAxioms H hR hP) x y') F → y = y') ↔
     (∀ x y y', mem (kpair H x y) F.1 → mem (kpair H x y') F.1 → y = y') := by
-  constructor
-  · intro h x y y' hy hy'
-    obtain ⟨hx, hyL⟩ := inL_of_kpair_mem H hR hP F.2 hy
-    obtain ⟨-, hy'L⟩ := inL_of_kpair_mem H hR hP F.2 hy'
-    have := h ⟨x, hx⟩ ⟨y, hyL⟩ ⟨y', hy'L⟩ ((kpairN_mem H hR hP _ _ _).2 hy)
-      ((kpairN_mem H hR hP _ _ _).2 hy')
-    exact congrArg Subtype.val this
-  · intro h x y y' hy hy'
-    exact Subtype.ext (h x.1 y.1 y'.1 ((kpairN_mem H hR hP _ _ _).1 hy)
-      ((kpairN_mem H hR hP _ _ _).1 hy'))
+  refine ⟨fun h x y y' hy hy' => ?_, fun h x y y' hy hy' => Subtype.ext (h x.1 y.1 y'.1
+    ((kpairN_mem H hR hP _ _ _).1 hy) ((kpairN_mem H hR hP _ _ _).1 hy'))⟩
+  obtain ⟨hx, hyL⟩ := inL_of_kpair_mem H hR hP F.2 hy
+  obtain ⟨-, hy'L⟩ := inL_of_kpair_mem H hR hP F.2 hy'
+  exact congrArg Subtype.val (h ⟨x, hx⟩ ⟨y, hyL⟩ ⟨y', hy'L⟩ ((kpairN_mem H hR hP _ _ _).2 hy)
+    ((kpairN_mem H hR hP _ _ _).2 hy'))
 
 theorem isFunctionOn_iff (F d : {x // InL H hP x}) :
     IsFunctionOn (L_zfAxioms H hR hP) F d ↔ IsFunctionOn H F.1 d.1 := by
   unfold IsFunctionOn
-  refine and_congr (functional_iff H hR hP F) (and_congr ?_ ?_)
-  · constructor
-    · intro h x hx
-      obtain ⟨y, hy⟩ := h ⟨x, inL_trans H hR hP d.2 hx⟩ hx
-      exact ⟨y.1, (kpairN_mem H hR hP _ _ _).1 hy⟩
-    · intro h x hx
-      obtain ⟨y, hy⟩ := h x.1 hx
-      exact ⟨⟨y, (inL_of_kpair_mem H hR hP F.2 hy).2⟩, (kpairN_mem H hR hP _ _ _).2 hy⟩
-  · constructor
-    · intro h p hp
-      obtain ⟨x, y, hx, he⟩ := h ⟨p, inL_trans H hR hP F.2 hp⟩ hp
-      exact ⟨x.1, y.1, hx, (kpairN_eq H hR hP _ _ _).1 he⟩
-    · intro h p hp
-      obtain ⟨x, y, hx, he⟩ := h p.1 hp
-      have hxy := inL_kpair H hR hP (he ▸ p.2)
-      exact ⟨⟨x, hxy.1⟩, ⟨y, hxy.2⟩, hx, (kpairN_eq H hR hP _ _ _).2 he⟩
+  refine and_congr (functional_iff H hR hP F) (and_congr ⟨fun h x hx => ?_, fun h x hx => ?_⟩
+    ⟨fun h p hp => ?_, fun h p hp => ?_⟩)
+  · obtain ⟨y, hy⟩ := h ⟨x, inL_trans H hR hP d.2 hx⟩ hx
+    exact ⟨y.1, (kpairN_mem H hR hP _ _ _).1 hy⟩
+  · obtain ⟨y, hy⟩ := h x.1 hx
+    exact ⟨⟨y, (inL_of_kpair_mem H hR hP F.2 hy).2⟩, (kpairN_mem H hR hP _ _ _).2 hy⟩
+  · obtain ⟨x, y, hx, he⟩ := h ⟨p, inL_trans H hR hP F.2 hp⟩ hp
+    exact ⟨x.1, y.1, hx, (kpairN_eq H hR hP _ _ _).1 he⟩
+  · obtain ⟨x, y, hx, he⟩ := h p.1 hp
+    have hxy := inL_kpair H hR hP (he ▸ p.2)
+    exact ⟨⟨x, hxy.1⟩, ⟨y, hxy.2⟩, hx, (kpairN_eq H hR hP _ _ _).2 he⟩
 
 theorem isEnvOn_iff (A E : {x // InL H hP x}) :
     IsEnvOn (L_zfAxioms H hR hP) A E ↔ IsEnvOn H A.1 E.1 := by
   unfold IsEnvOn
   rw [isFunctionOn_iff H hR hP]
-  refine and_congr ?_ ?_
-  · exact Iff.of_eq (congrArg (IsFunctionOn H E.1) (val_omegaV H hR hP))
-  · constructor
-    · intro h n y hy
-      obtain ⟨hn, hyL⟩ := inL_of_kpair_mem H hR hP E.2 hy
-      exact h ⟨n, hn⟩ ⟨y, hyL⟩ ((kpairN_mem H hR hP _ _ _).2 hy)
-    · intro h n y hy
-      exact h n.1 y.1 ((kpairN_mem H hR hP _ _ _).1 hy)
+  refine and_congr (Iff.of_eq (congrArg (IsFunctionOn H E.1) (val_omegaV H hR hP)))
+    ⟨fun h n y hy => ?_, fun h n y hy => h n.1 y.1 ((kpairN_mem H hR hP _ _ _).1 hy)⟩
+  obtain ⟨hn, hyL⟩ := inL_of_kpair_mem H hR hP E.2 hy
+  exact h ⟨n, hn⟩ ⟨y, hyL⟩ ((kpairN_mem H hR hP _ _ _).2 hy)
 
 /-- Application agrees on a graph with a recorded value. -/
 theorem val_applyV {F x : {x // InL H hP x}}
     (hfun : ∀ a b b', mem (kpair H a b) F.1 → mem (kpair H a b') F.1 → b = b')
     {y : V} (hy : mem (kpair H x.1 y) F.1) : (applyV (L_zfAxioms H hR hP) F x).1 = y := by
-  have hyL := (inL_of_kpair_mem H hR hP F.2 hy).2
-  have := applyV_eq (L_zfAxioms H hR hP) ((functional_iff H hR hP F).2 hfun)
-    (x := x) (y := ⟨y, hyL⟩) ((kpairN_mem H hR hP _ _ _).2 hy)
-  rw [this]
+  rw [applyV_eq (L_zfAxioms H hR hP) ((functional_iff H hR hP F).2 hfun) (x := x)
+    (y := ⟨y, (inL_of_kpair_mem H hR hP F.2 hy).2⟩) ((kpairN_mem H hR hP _ _ _).2 hy)]
 
 theorem val_applyV_env {A E n : {x // InL H hP x}} (hE : IsEnvOn H A.1 E.1)
     (hn : mem n.1 (omegaV H)) : (applyV (L_zfAxioms H hR hP) E n).1 = applyV H E.1 n.1 :=
@@ -305,7 +278,7 @@ theorem val_econs {d E : {x // InL H hP x}}
       have hnL := inL_of_kpair_mem H hR hP E.2 hy
       refine ⟨⟨n, hnL.1⟩, (mem_omegaN H hR hP _).2 hn, ⟨y, hnL.2⟩,
         (kpairN_mem H hR hP _ _ _).2 hy, ?_⟩
-      rw [kpairN_eq H hR hP, val_vsucc H hR hP]; exact he
+      rwa [kpairN_eq H hR hP, val_vsucc H hR hP]
 
 theorem val_vbit (p : Prop) : (vbit (L_zfAxioms H hR hP) p).1 = vbit H p := by
   by_cases hp : p
@@ -318,10 +291,8 @@ theorem val_satTriple (c e b : {x // InL H hP x}) :
   rw [val_kpair H hR hP, val_kpair H hR hP]
 
 theorem inL_satTriple {c e b : V} (h : InL H hP (satTriple H c e b)) :
-    InL H hP c ∧ InL H hP e ∧ InL H hP b := by
-  obtain ⟨hc, h2⟩ := inL_kpair H hR hP h
-  obtain ⟨he, hb⟩ := inL_kpair H hR hP h2
-  exact ⟨hc, he, hb⟩
+    InL H hP c ∧ InL H hP e ∧ InL H hP b :=
+  ⟨(inL_kpair H hR hP h).1, inL_kpair H hR hP (inL_kpair H hR hP h).2⟩
 
 theorem codeEq_iff (t : Nat) (c x : {x // InL H hP x}) :
     c = kpair (L_zfAxioms H hR hP) (natV (L_zfAxioms H hR hP) t) x ↔
@@ -361,14 +332,12 @@ theorem atom_clause (t : Nat) (QN : {x // InL H hP x} → {x // InL H hP x} → 
         (kpair (L_zfAxioms H hR hP) i j) ∧ b = vbit (L_zfAxioms H hR hP) (QN i j)) ↔
     (∃ i j, mem i (omegaV H) ∧ mem j (omegaV H) ∧ c.1 = kpair H (natV H t) (kpair H i j) ∧
       b.1 = vbit H (Q i j)) := by
-  constructor
-  · rintro ⟨i, j, hi, hj, hc, hb⟩
-    have hi' := (mem_omegaN H hR hP i).1 hi
+  refine ⟨fun ⟨i, j, hi, hj, hc, hb⟩ => ?_, fun ⟨i, j, hi, hj, hc, hb⟩ => ?_⟩
+  · have hi' := (mem_omegaN H hR hP i).1 hi
     have hj' := (mem_omegaN H hR hP j).1 hj
     exact ⟨i.1, j.1, hi', hj', (codeEq2_iff H hR hP t c i j).1 hc,
       (bitEq_iff H hR hP b _ _ (hQ i j hi' hj')).1 hb⟩
-  · rintro ⟨i, j, hi, hj, hc, hb⟩
-    let i' : {x // InL H hP x} := ⟨i, inL_nat H hR hP hi⟩
+  · let i' : {x // InL H hP x} := ⟨i, inL_nat H hR hP hi⟩
     let j' : {x // InL H hP x} := ⟨j, inL_nat H hR hP hj⟩
     exact ⟨i', j', (mem_omegaN H hR hP i').2 hi, (mem_omegaN H hR hP j').2 hj,
       (codeEq2_iff H hR hP t c i' j').2 hc, (bitEq_iff H hR hP b _ _ (hQ i' j' hi hj)).2 hb⟩
@@ -385,23 +354,19 @@ theorem bin_clause (t : Nat) (op : Prop → Prop → Prop) :
     (∃ c1 c2 b1 b2, c.1 = kpair H (natV H t) (kpair H c1 c2) ∧
       mem (satTriple H c1 e.1 b1) S.1 ∧ mem (satTriple H c2 e.1 b2) S.1 ∧
       b.1 = vbit H (op (b1 = natV H 1) (b2 = natV H 1))) := by
-  constructor
-  · rintro ⟨c1, c2, b1, b2, hc, h1, h2, hb⟩
-    refine ⟨c1.1, c2.1, b1.1, b2.1, (codeEq2_iff H hR hP t c c1 c2).1 hc,
+  refine ⟨fun ⟨c1, c2, b1, b2, hc, h1, h2, hb⟩ => ?_, fun ⟨c1, c2, b1, b2, hc, h1, h2, hb⟩ => ?_⟩
+  · exact ⟨c1.1, c2.1, b1.1, b2.1, (codeEq2_iff H hR hP t c c1 c2).1 hc,
       (tripleMem_iff H hR hP _ _ _ _).1 h1, (tripleMem_iff H hR hP _ _ _ _).1 h2,
-      (bitEq_iff H hR hP b _ _ ?_).1 hb⟩
-    rw [natEq_iff H hR hP, natEq_iff H hR hP]
-  · rintro ⟨c1, c2, b1, b2, hc, h1, h2, hb⟩
-    have t1 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h1)
+      (bitEq_iff H hR hP b _ _ (by rw [natEq_iff H hR hP, natEq_iff H hR hP])).1 hb⟩
+  · have t1 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h1)
     have t2 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h2)
     let c1' : {x // InL H hP x} := ⟨c1, t1.1⟩
     let c2' : {x // InL H hP x} := ⟨c2, t2.1⟩
     let b1' : {x // InL H hP x} := ⟨b1, t1.2.2⟩
     let b2' : {x // InL H hP x} := ⟨b2, t2.2.2⟩
-    refine ⟨c1', c2', b1', b2', (codeEq2_iff H hR hP t c c1' c2').2 hc,
+    exact ⟨c1', c2', b1', b2', (codeEq2_iff H hR hP t c c1' c2').2 hc,
       (tripleMem_iff H hR hP c1' e b1' S).2 h1, (tripleMem_iff H hR hP c2' e b2' S).2 h2,
-      (bitEq_iff H hR hP b _ _ ?_).2 hb⟩
-    rw [natEq_iff H hR hP, natEq_iff H hR hP]
+      (bitEq_iff H hR hP b _ _ (by rw [natEq_iff H hR hP, natEq_iff H hR hP])).2 hb⟩
 
 theorem quant_clause (t u v : Nat) :
     (∃ c1 : {x // InL H hP x}, c = kpair (L_zfAxioms H hR hP) (natV (L_zfAxioms H hR hP) t) c1 ∧
@@ -429,9 +394,7 @@ theorem quant_clause (t u v : Nat) :
   have hex (c1 : {x // InL H hP x}) := exists_memL_iff H hR hP A
     (fun d => mem (satTriple H c1.1 (econs H d e.1) (natV H v)) S.1)
   simp only [hall, hex]
-  constructor
-  · rintro ⟨c1, hc, h⟩; exact ⟨c1.1, hc, h⟩
-  · rintro ⟨c1, hc, h⟩; exact ⟨⟨c1, hc1 c1 hc⟩, hc, h⟩
+  exact ⟨fun ⟨c1, hc, h⟩ => ⟨c1.1, hc, h⟩, fun ⟨c1, hc, h⟩ => ⟨⟨c1, hc1 c1 hc⟩, hc, h⟩⟩
 
 /-- **The certificate step relation is absolute** (at a genuine environment). -/
 theorem justified_iff :
@@ -458,14 +421,12 @@ end Clauses
 
 theorem satClosed_iff (A R S : {x // InL H hP x}) :
     SatClosed (L_zfAxioms H hR hP) A R S ↔ SatClosed H A.1 R.1 S.1 := by
-  constructor
-  · intro h c e b hm
-    obtain ⟨hc, he, hb⟩ := inL_satTriple H hR hP (inL_trans H hR hP S.2 hm)
+  refine ⟨fun h c e b hm => ?_, fun h c e b hm => ?_⟩
+  · obtain ⟨hc, he, hb⟩ := inL_satTriple H hR hP (inL_trans H hR hP S.2 hm)
     obtain ⟨hE, hJ⟩ := h ⟨c, hc⟩ ⟨e, he⟩ ⟨b, hb⟩ ((tripleMem_iff H hR hP _ _ _ _).2 hm)
     have hE' := (isEnvOn_iff H hR hP A ⟨e, he⟩).1 hE
     exact ⟨hE', (justified_iff H hR hP hE').1 hJ⟩
-  · intro h c e b hm
-    obtain ⟨hE, hJ⟩ := h c.1 e.1 b.1 ((tripleMem_iff H hR hP _ _ _ _).1 hm)
+  · obtain ⟨hE, hJ⟩ := h c.1 e.1 b.1 ((tripleMem_iff H hR hP _ _ _ _).1 hm)
     exact ⟨(isEnvOn_iff H hR hP A e).2 hE, (justified_iff H hR hP hE).2 hJ⟩
 
 theorem certifies_iff (A R S c e b : {x // InL H hP x}) :
@@ -475,18 +436,14 @@ theorem certifies_iff (A R S c e b : {x // InL H hP x}) :
 
 theorem isSetStructure_iff (A R : {x // InL H hP x}) :
     IsSetStructure (L_zfAxioms H hR hP) A R ↔ IsSetStructure H A.1 R.1 := by
-  constructor
-  · intro h
-    refine ⟨?_, fun p hp => ?_⟩
-    · obtain ⟨d, hd⟩ := h.nonempty; exact ⟨d.1, hd⟩
-    · obtain ⟨x, y, hx, hy, he⟩ := h.pairs ⟨p, inL_trans H hR hP R.2 hp⟩ hp
-      exact ⟨x.1, y.1, hx, hy, (kpairN_eq H hR hP _ _ _).1 he⟩
-  · intro h
-    refine ⟨?_, fun p hp => ?_⟩
-    · obtain ⟨d, hd⟩ := h.nonempty; exact ⟨⟨d, inL_trans H hR hP A.2 hd⟩, hd⟩
-    · obtain ⟨x, y, hx, hy, he⟩ := h.pairs p.1 hp
-      exact ⟨⟨x, inL_trans H hR hP A.2 hx⟩, ⟨y, inL_trans H hR hP A.2 hy⟩, hx, hy,
-        (kpairN_eq H hR hP _ _ _).2 he⟩
+  refine ⟨fun h => ⟨?_, fun p hp => ?_⟩, fun h => ⟨?_, fun p hp => ?_⟩⟩
+  · obtain ⟨d, hd⟩ := h.nonempty; exact ⟨d.1, hd⟩
+  · obtain ⟨x, y, hx, hy, he⟩ := h.pairs ⟨p, inL_trans H hR hP R.2 hp⟩ hp
+    exact ⟨x.1, y.1, hx, hy, (kpairN_eq H hR hP _ _ _).1 he⟩
+  · obtain ⟨d, hd⟩ := h.nonempty; exact ⟨⟨d, inL_trans H hR hP A.2 hd⟩, hd⟩
+  · obtain ⟨x, y, hx, hy, he⟩ := h.pairs p.1 hp
+    exact ⟨⟨x, inL_trans H hR hP A.2 hx⟩, ⟨y, inL_trans H hR hP A.2 hy⟩, hx, hy,
+      (kpairN_eq H hR hP _ _ _).2 he⟩
 
 /-- **Satisfaction is absolute** for codes of both models and genuine environments. -/
 theorem satIn_iff {A R c e : {x // InL H hP x}} (hS : IsSetStructure H A.1 R.1)
@@ -509,25 +466,18 @@ theorem satIn_iff {A R c e : {x // InL H hP x}} (hS : IsSetStructure H A.1 R.1)
 
 theorem memRel_iff (X R : {x // InL H hP x}) :
     MemRel (L_zfAxioms H hR hP) X R ↔ MemRel H X.1 R.1 := by
-  constructor
-  · intro h p
-    constructor
-    · intro hp
-      obtain ⟨a, b, ha, hb, hab, he⟩ := (h ⟨p, inL_trans H hR hP R.2 hp⟩).1 hp
-      exact ⟨a.1, b.1, ha, hb, hab, (kpairN_eq H hR hP _ _ _).1 he⟩
-    · rintro ⟨a, b, ha, hb, hab, rfl⟩
-      have haL := inL_trans H hR hP X.2 ha
-      have hbL := inL_trans H hR hP X.2 hb
-      exact (h ⟨_, inL_kpair_of H hR hP haL hbL⟩).2
-        ⟨⟨a, haL⟩, ⟨b, hbL⟩, ha, hb, hab, (kpairN_eq H hR hP _ _ _).2 rfl⟩
-  · intro h p
-    rw [show memL H hP p R ↔ mem p.1 R.1 from Iff.rfl, h p.1]
-    constructor
-    · rintro ⟨a, b, ha, hb, hab, he⟩
-      exact ⟨⟨a, inL_trans H hR hP X.2 ha⟩, ⟨b, inL_trans H hR hP X.2 hb⟩, ha, hb, hab,
-        (kpairN_eq H hR hP _ _ _).2 he⟩
-    · rintro ⟨a, b, ha, hb, hab, he⟩
-      exact ⟨a.1, b.1, ha, hb, hab, (kpairN_eq H hR hP _ _ _).1 he⟩
+  refine ⟨fun h p => ⟨fun hp => ?_, ?_⟩, fun h p => ?_⟩
+  · obtain ⟨a, b, ha, hb, hab, he⟩ := (h ⟨p, inL_trans H hR hP R.2 hp⟩).1 hp
+    exact ⟨a.1, b.1, ha, hb, hab, (kpairN_eq H hR hP _ _ _).1 he⟩
+  · rintro ⟨a, b, ha, hb, hab, rfl⟩
+    have haL := inL_trans H hR hP X.2 ha
+    have hbL := inL_trans H hR hP X.2 hb
+    exact (h ⟨_, inL_kpair_of H hR hP haL hbL⟩).2
+      ⟨⟨a, haL⟩, ⟨b, hbL⟩, ha, hb, hab, (kpairN_eq H hR hP _ _ _).2 rfl⟩
+  · rw [show memL H hP p R ↔ mem p.1 R.1 from Iff.rfl, h p.1]
+    exact ⟨fun ⟨a, b, ha, hb, hab, he⟩ => ⟨⟨a, inL_trans H hR hP X.2 ha⟩,
+      ⟨b, inL_trans H hR hP X.2 hb⟩, ha, hb, hab, (kpairN_eq H hR hP _ _ _).2 he⟩,
+      fun ⟨a, b, ha, hb, hab, he⟩ => ⟨a.1, b.1, ha, hb, hab, (kpairN_eq H hR hP _ _ _).1 he⟩⟩
 
 /-! ### Formula codes -/
 
@@ -636,8 +586,7 @@ theorem rankBelow_of_mem {α S z y : V} (hα : Ord mem α) (hS : IsV H α S) (hz
 and inversion of codes inside `N`. -/
 theorem code_down (c : {x // InL H hP x}) (hc : IsFormCodeSem (L_zfAxioms H hR hP) c) :
     IsFormCodeSem H c.1 := by
-  apply Classical.byContradiction
-  intro hnc
+  refine Classical.byContradiction fun hnc => ?_
   let Q : V → Prop := fun α => ∃ S x, IsV H α S ∧ mem x S ∧
     (∃ h : InL H hP x, IsFormCodeSem (L_zfAxioms H hR hP) ⟨x, h⟩) ∧ ¬ IsFormCodeSem H x
   obtain ⟨α0, S0, hα0, hS0, hcS0⟩ := ZFRank.ranked H hR hP c.1
@@ -655,8 +604,7 @@ theorem code_down (c : {x // InL H hP x}) (hc : IsFormCodeSem (L_zfAxioms H hR h
   have below : ∀ y : {x // InL H hP x}, RankBelow H m y.1 →
       IsFormCodeSem (L_zfAxioms H hR hP) y → IsFormCodeSem H y.1 := by
     intro y ⟨γ, T, hγ, hT, hyT⟩ hcy
-    apply Classical.byContradiction
-    intro hny
+    refine Classical.byContradiction fun hny => ?_
     rcases hmin γ (ord_of_mem hm hγ) ⟨T, y.1, hT, hyT, ⟨y.2, hcy⟩, hny⟩ with rfl | h
     · exact mem_irrefl H hR _ hγ
     · exact mem_irrefl H hR _ (hm.1 γ hγ m h)
@@ -677,10 +625,8 @@ theorem code_down (c : {x // InL H hP x}) (hc : IsFormCodeSem (L_zfAxioms H hR h
     exact isFormCodeSem_memAtom H ((mem_omegaN H hR hP i).1 hi) ((mem_omegaN H hR hP j).1 hj)
   · rw [show x = _ from (codeEq2_iff H hR hP 1 _ i j).1 h]
     exact isFormCodeSem_eqAtom H ((mem_omegaN H hR hP i).1 hi) ((mem_omegaN H hR hP j).1 hj)
-  · have e : x = kpair H (natV H 2) (vempty H) := by
-      have := congrArg Subtype.val h
-      rwa [val_kpair H hR hP, val_natV H hR hP, val_vempty H hR hP] at this
-    rw [e]; exact isFormCodeSem_bot H
+  · rw [show x = _ from (codeEq_iff H hR hP 2 _ _).1 h, val_vempty H hR hP]
+    exact isFormCodeSem_bot H
   all_goals first
     | (have e : x = _ := (codeEq2_iff H hR hP _ _ a b).1 h
        obtain ⟨ra, rb⟩ := r2 _ _ _ e
@@ -730,9 +676,8 @@ theorem res_inL {A e : V} (hA : InL H hP A) (he : IsEnvOn H A e) :
     exact iff_of_false (vempty_spec H p) fun ⟨_, i, _, hi, _⟩ => vempty_spec H i hi
   · obtain ⟨t, htL, ht⟩ := (hφ m).1 ih
     refine (hφ _).2 ⟨vcup H t (vsingle H (kpair H m (applyV H e m))), ?_, fun p => ?_⟩
-    · have hv : InL H hP (applyV H e m) := inL_trans H hR hP hA (isEnvOn_apply H he hm)
-      have hk : InL H hP (kpair H m (applyV H e m)) :=
-        inL_kpair_of H hR hP (inL_nat H hR hP hm) hv
+    · have hk : InL H hP (kpair H m (applyV H e m)) :=
+        inL_kpair_of H hR hP (inL_nat H hR hP hm) (inL_trans H hR hP hA (isEnvOn_apply H he hm))
       exact inL_union H hR hP (inL_pair H hR hP htL (inL_pair H hR hP hk hk))
     · rw [vcup_spec H t _ p, vsingle_spec H _ p, ht p]
       constructor
@@ -751,7 +696,7 @@ theorem kpair_mem_pp {W : Type u} {memW : W → W → Prop} (HW : ZFAxioms memW)
     (ha : memW a U) (hb : memW b U) : memW (kpair HW a b) P2 := by
   refine (h2 _).2 fun q hq => (h1 q).2 ?_
   rcases (kpair_mem HW a b q).1 hq with rfl | rfl
-  · intro z hz; rw [(vsingle_spec HW a z).1 hz]; exact ha
+  · intro z hz; rwa [(vsingle_spec HW a z).1 hz]
   · intro z hz; rcases (vpair_spec HW a b z).1 hz with rfl | rfl <;> assumption
 
 /-- **Constructible environments with a prescribed finite part.** -/
@@ -782,14 +727,10 @@ theorem env_in_L (X : {x // InL H hP x}) {e n : V} (he : IsEnvOn H X.1 e)
   -- membership in `s`, read in `M`
   have hsM : ∀ p, mem p s.1 ↔ ∃ i y, mem i (omegaV H) ∧ mem y X.1 ∧ p = kpair H i y ∧
       ((mem i n ∧ mem p t) ∨ (¬ mem i n ∧ y = applyV H e (vempty H))) := by
-    intro p
-    constructor
-    · intro hp
-      obtain ⟨-, i, y, hi, hy, he', hc⟩ := (hs ⟨p, inL_trans H hR hP s.2 hp⟩).1 hp
-      refine ⟨i.1, y.1, hi, hy, (kpairN_eq H hR hP _ _ _).1 he', ?_⟩
-      rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
-      · exact Or.inl ⟨h1, h2⟩
-      · exact Or.inr ⟨h1, congrArg Subtype.val h2⟩
+    refine fun p => ⟨fun hp => ?_, ?_⟩
+    · obtain ⟨-, i, y, hi, hy, he', hc⟩ := (hs ⟨p, inL_trans H hR hP s.2 hp⟩).1 hp
+      exact ⟨i.1, y.1, hi, hy, (kpairN_eq H hR hP _ _ _).1 he',
+        hc.imp (fun ⟨h1, h2⟩ => ⟨h1, h2⟩) fun ⟨h1, h2⟩ => ⟨h1, congrArg Subtype.val h2⟩⟩
     · rintro ⟨i, y, hi, hy, rfl, hc⟩
       have hiL := inL_nat H hR hP hi
       have hyL := inL_trans H hR hP X.2 hy
@@ -799,10 +740,9 @@ theorem env_in_L (X : {x // InL H hP x}) {e n : V} (he : IsEnvOn H X.1 e)
           memL H hP z (vcup HN ωN X) := fun z hz => (vcup_spec HN ωN X z).2 hz
       have hmem := kpair_mem_pp HN hP1 hP2 (hU iN (Or.inl hi)) (hU yN (Or.inr hy))
       have hpq : (kpair HN iN yN).1 = kpair H i y := val_kpair H hR hP iN yN
-      have := (hs (kpair HN iN yN)).2 ⟨hmem, iN, yN, hi, hy, rfl, by
-        rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
-        · exact Or.inl ⟨h1, show mem (kpair HN iN yN).1 t by rw [hpq]; exact h2⟩
-        · exact Or.inr ⟨h1, Subtype.ext h2⟩⟩
+      have := (hs (kpair HN iN yN)).2 ⟨hmem, iN, yN, hi, hy, rfl, hc.imp
+        (fun ⟨h1, h2⟩ => ⟨h1, show mem (kpair HN iN yN).1 t by rwa [hpq]⟩)
+        fun ⟨h1, h2⟩ => ⟨h1, Subtype.ext h2⟩⟩
       exact hpq ▸ this
   have hte : ∀ p, mem p t → mem p e := fun p hp => ((ht p).1 hp).1
   have hfun : ∀ a b b', mem (kpair H a b) s.1 → mem (kpair H a b') s.1 → b = b' := by
@@ -816,11 +756,9 @@ theorem env_in_L (X : {x // InL H hP x}) {e n : V} (he : IsEnvOn H X.1 e)
     · exact absurd hi hi'
     · exact absurd hi' hi
     · rfl
-  have hin : ∀ i, mem i (omegaV H) → mem i n → mem (kpair H i (applyV H e i)) s.1 := by
-    intro i hi hin
-    have hpe := applyV_mem H (he.1.2.1 i hi)
-    exact (hsM _).2 ⟨i, _, hi, isEnvOn_apply H he hi, rfl,
-      Or.inl ⟨hin, (ht _).2 ⟨hpe, i, _, hin, rfl⟩⟩⟩
+  have hin : ∀ i, mem i (omegaV H) → mem i n → mem (kpair H i (applyV H e i)) s.1 :=
+    fun i hi hin => (hsM _).2 ⟨i, _, hi, isEnvOn_apply H he hi, rfl,
+      Or.inl ⟨hin, (ht _).2 ⟨applyV_mem H (he.1.2.1 i hi), i, _, hin, rfl⟩⟩⟩
   refine ⟨s, ⟨⟨hfun, fun i hi => ?_, fun p hp => ?_⟩, fun i y hy => ?_⟩, fun i hi => ?_⟩
   · by_cases hin' : mem i n
     · exact ⟨_, hin i hi hin'⟩
@@ -828,9 +766,8 @@ theorem env_in_L (X : {x // InL H hP x}) {e n : V} (he : IsEnvOn H X.1 e)
   · obtain ⟨i, y, hi, -, rfl, -⟩ := (hsM p).1 hp
     exact ⟨i, y, hi, rfl⟩
   · obtain ⟨i', y', -, hy', e1, -⟩ := (hsM _).1 hy
-    rw [(kpair_inj H _ _ _ _ e1).2]; exact hy'
-  · have hiω := ConstructibleZF.omega_trans H n hn i hi
-    exact (applyV_eq H hfun (hin i hiω hi)).symm
+    rwa [(kpair_inj H _ _ _ _ e1).2]
+  · exact (applyV_eq H hfun (hin i (ConstructibleZF.omega_trans H n hn i hi) hi)).symm
 
 /-! ### Definability and `Def` -/
 
@@ -879,7 +816,7 @@ theorem def_up (X : {x // InL H hP x}) {S : V} (hd : DefinableIn H X.1 S) :
         rw [nsat_econsAtomF (L_zfAxioms H hR hP) _ _ _ _ (by
           simp (disch := omega) only [upd_other]; exact he'N.1.1)] at hE
         simp (disch := omega) only [upd_same, upd_other] at hE
-        rw [hE] at hsat; exact hsat
+        rwa [hE] at hsat
       · intro hsat
         refine ⟨_, ?_, hsat⟩
         rw [nsat_econsAtomF (L_zfAxioms H hR hP) _ _ _ _ (by
@@ -894,9 +831,8 @@ theorem def_up (X : {x // InL H hP x}) {S : V} (hd : DefinableIn H X.1 S) :
     have hEe : IsEnvOn H X.1 (econs H z.1 e'.1) := econs_isEnvOn H he' hz
     rw [satIn_iff H hR hP (eR ▸ hS) hcode hc (by rw [val_econs H hR hP he'.1.1]; exact hEe),
       val_econs H hR hP he'.1.1, eR]
-    refine hsup _ _ hEe (econs_isEnvOn H he hz) ?_
-    refine SatSupport.agreeP_econs H hn he' he hz ?_
-    exact (SatSupport.agreeP_iff H hn he' he).2 fun i hi => (hag i hi).symm
+    exact hsup _ _ hEe (econs_isEnvOn H he hz) (SatSupport.agreeP_econs H hn he' he hz
+      ((SatSupport.agreeP_iff H hn he' he).2 fun i hi => (hag i hi).symm))
   refine ⟨S', H.ext _ _ fun z => ⟨fun hz => ?_, fun hz => ?_⟩, ⟨RN, cN, e', hRN, hcode, he'N, hS'⟩⟩
   · obtain ⟨hzX, hsat⟩ := (hS' ⟨z, inL_trans H hR hP S'.2 hz⟩).1 hz
     exact (hspec z).2 ⟨hzX, (key _ hzX).1 hsat⟩
@@ -915,12 +851,10 @@ theorem gdef_eq (X : {x // InL H hP x}) :
       exact S'.2
   · rw [show mem S.1 (Gdef (L_zfAxioms H hR hP) (L_power H hR hP) X).1 ↔ _ from
       gdef_spec (L_zfAxioms H hR hP) (L_power H hR hP) X S, gdef_spec H hP]
-    refine and_congr ?_ (or_congr ?_ ?_)
-    · exact forall_memL_iff H hR hP S (fun z => mem z X.1)
-    · exact forall_memL_iff H hR hP S (fun _ => False)
-    · refine ⟨def_down H hR hP X S, fun h => ?_⟩
-      obtain ⟨S', hS', hdef⟩ := def_up H hR hP X h
-      rwa [show S' = S from Subtype.ext hS'] at hdef
+    refine and_congr (forall_memL_iff H hR hP S (fun z => mem z X.1))
+      (or_congr (forall_memL_iff H hR hP S (fun _ => False)) ⟨def_down H hR hP X S, fun h => ?_⟩)
+    obtain ⟨S', hS', hdef⟩ := def_up H hR hP X h
+    rwa [show S' = S from Subtype.ext hS'] at hdef
 
 /-! ### The hierarchy, and `V = L` in `L` -/
 
@@ -939,16 +873,14 @@ theorem approx_down (f d : {x // InL H hP x})
       ((kpairN_mem H hR hP _ _ _).2 hS) ((kpairN_mem H hR hP _ _ _).2 hS'))
   · obtain ⟨hbL, hSL⟩ := inL_of_kpair_mem H hR hP f.2 hbS
     have h4' := h4 ⟨b, hbL⟩ ⟨S, hSL⟩ ((kpairN_mem H hR hP _ _ _).2 hbS)
-    constructor
-    · intro hz
-      obtain ⟨c, T, hc, hcT, hzT⟩ := (h4' ⟨z, inL_trans H hR hP hSL hz⟩).1 hz
+    refine ⟨fun hz => ?_, fun ⟨c, T, hc, hcT, hzT⟩ => ?_⟩
+    · obtain ⟨c, T, hc, hcT, hzT⟩ := (h4' ⟨z, inL_trans H hR hP hSL hz⟩).1 hz
       refine ⟨c.1, T.1, hc, (kpairN_mem H hR hP _ _ _).1 hcT, ?_⟩
       have : mem z (Gdef (L_zfAxioms H hR hP) (L_power H hR hP) T).1 := hzT
       rwa [gdef_eq H hR hP] at this
-    · rintro ⟨c, T, hc, hcT, hzT⟩
-      obtain ⟨hcL, hTL⟩ := inL_of_kpair_mem H hR hP f.2 hcT
+    · obtain ⟨hcL, hTL⟩ := inL_of_kpair_mem H hR hP f.2 hcT
       have hz' : mem z (Gdef (L_zfAxioms H hR hP) (L_power H hR hP) ⟨T, hTL⟩).1 := by
-        rw [gdef_eq H hR hP]; exact hzT
+        rwa [gdef_eq H hR hP]
       have hzL := inL_trans H hR hP (Gdef (L_zfAxioms H hR hP) (L_power H hR hP) ⟨T, hTL⟩).2 hz'
       exact (h4' ⟨z, hzL⟩).2 ⟨⟨c, hcL⟩, ⟨T, hTL⟩, hc, (kpairN_mem H hR hP _ _ _).2 hcT, hz'⟩
 
@@ -978,7 +910,7 @@ theorem vEqL (x : {x // InL H hP x}) : InL (L_zfAxioms H hR hP) (L_power H hR hP
   have haN : Ord (memL H hP) aN := (ord_iff H hR hP aN).2 ha
   obtain ⟨S', hS'⟩ := isL_exists (L_zfAxioms H hR hP) (L_regular H hR hP) (L_power H hR hP) haN
   have e : S'.1 = S := isL_unique H hR hP ha (isL_down H hR hP aN S' hS') hS
-  exact ⟨aN, S', haN, hS', show mem x.1 S'.1 by rw [e]; exact hxS⟩
+  exact ⟨aN, S', haN, hS', show mem x.1 S'.1 by rwa [e]⟩
 
 end Ops
 
