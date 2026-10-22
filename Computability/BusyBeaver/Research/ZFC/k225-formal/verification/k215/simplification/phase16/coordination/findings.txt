@@ -1,0 +1,32 @@
+Snapshot: live main 140d832128fd43873f16e385766cd3cee08df8a9, observed with git ls-remote; exact object fetched without updating tracking refs or FETCH_HEAD. Cached origin/main remains b019487d0c. Local main worktree is still 68ce65f18e, and no registered worktree is on a Claude branch. The named remote Claude branch remains the old 0ec9a2191a (Oct 19), so the evidence of current Claude work is the co-authored main history and its Claude branch merge messages. No relevant AGENTS.md or CLAUDE.md was found in the target ancestry.
+
+Overlap: Claude already landed the same quotient construction in 8e46744a76 (Oct 22 08:55 PDT), explicitly acknowledging peer checkpoint cd67e7bade. Both lanes retire generate_kq1.py. Our unpublished phase16 independently checks a smaller selection of that proposal. Remote retaining optional original helpers is not a compatibility restoration in response to our cleanup.
+
+Exact actual phase16 versus remote 140d: five byte-identical files are KQ1Basic, KQ1Separation, KQHyp, QuotientBasic, QuotientPower. Eight differences:
+  KQ1Collect: one rwa compression.
+  KQ1Model: two rwa compressions.
+  KQ1Replacement: one rwa compression.
+  KQ1Power: remote retains original trace_instance, PowerSyntax import, and original trace/filter prose.
+  QuotientModel: remote retains mk_scons, calls trace_instance, and gets PowerSyntax transitively; ours inlines trace and imports PowerSyntax here.
+  QuotientSeparation: remote retains original separation_instance/liftEnv/mk_liftEnv forwarders.
+  QuotientReplacement: remote retains six original forwarders and their import/open context.
+  QuotientCPGIC: remote retains rel_matrix_congr/translated_instance and has later proof compression in strong_trace/literal_subset_representative/quotient_containers (a7b8f1ae67).
+
+Fresh comment-aware census at exact remote 140d, over BusyBeaver/Lean, Logic/FirstOrder/Lean, SetTheory/ZF/Lean, SetTheory/BoundedConsistency/Lean: no outside callers of the twelve strong optional wrappers. Internal optional-wrapper calls remain only for liftEnv and replacementChoiceForm. Weak KQ1Power.trace_instance still has only QuotientModel.ofCPGIC as caller. Thus no newer caller invalidates the already checked trimming choice. mapping.json records all target names, caller locations, pins and exact relative paths; quotient-eight-files.diff contains the full eight-file delta.
+
+Newer proof changes worth integrating as their own check:
+  775267c38a: computed t215 and tD plus the 217-225 trees, synchronized source generators. This expands the earlier three-path proposal substantially. Reuse /tmp/k215-late-b019-review for the earlier t215 source review; it does not cover tD/the expanded producer changes or constitute fresh acceptance.
+  fa92b88f8e: EnumPerm/EnumDom compile C222 directly; KCodeDom leaves the endpoint closures.
+  4fb82d6f84: AX macro words infer successors from the program, with synchronized generator.
+  ff928ef0ec: full seed on original model; KSeedDirect222/KSeedInterface222 added, KSeedModel222/KIndisc222 deleted.
+  Remaining commits through140d compress many current proofs, including generic machine semantics, quotient clients, constructibility, Tarski/Kalmar and L2 macro libraries; the 222 macro fork and its producer are synchronized.
+  Parallel Rocq changes include the shared implication core (85cbbc9651), normalized one-sided source certificate (16a674f360), and direct thm222 compilation (7b4ee981be).
+  Relative to actual checked phase16, 83 of its 199 project sources differ or disappear (81 changed,2 deleted); mapping.json gives every path. A broad merge cannot inherit the current receipts.
+
+Available Claude validation is attributed data, not a check run here: original proposal evidence/build.txt records a 25-module serial quotient check; 8e46744a76 reports that same 25-module reverse closure green, explicitly excluding machine-specific endpoints/WFTheory/ProgramZF0/facade. dabeca4dc5 reports eight direct module builds plus KEndpoint/SeedPerm/SeedDom. a7b8f1ae67 reports quotient-client builds and 14-module KEndpoint rebuild, excluding full endpoint stacks. 775267c38a reports KSource215Program/KSource215Data/KSource215FwdCheck00 and earlier single-site/decoder checks; remaining certificate/site batches are deferred. Latest 140d reports the two macro lanes, selected 215 program modules, and 12-module KEndpoint rebuild; other dependent stacks remain deferred. These are not a fresh accepted full KEndpoint215 closure. Exact relevant commit bodies are preserved in build-evidence.json.
+
+Cooperative next step: preserve independently checked phase16 as its own branch checkpoint before any source integration. Keep Claude's main intact. For a combined successor, retain our optional-helper trimming (census still permits it), apply the three rwa-only file changes and later QuotientCPGIC proof compression, then reconcile all newer sources/producers and run one fresh combined closure/compatibility check with new receipts. Attribute the common construction to Claude and the independently checked selection/validation to this branch. Do not reimplement either contribution.
+
+Narrow repo-visible note: add a short 'Concurrent work' paragraph to the new phase16/README.md, with one link from simplification/README.md. Suggested wording: 'This checkpoint independently checks the selected quotient-unification sources against phase15 (199 pinned project modules; primary 195 and compatibility 78). Claude subsequently landed the same construction in 8e46744a76 and continued simplifying main through 140d832128. This branch also removes twelve unused forwarding helpers and inlines the sole weak trace helper. The newer main changes are preserved for a separately checked combined successor; this checkpoint's receipts describe only its pinned sources.' Avoid broad status rewrites in Claude's independently moving README/proposal index.
+
+No checkout, merge, stage, compilation, producer execution, canonical write, other-worktree mutation, or external message was performed. Only /tmp review artifacts and fetched Git objects were written.

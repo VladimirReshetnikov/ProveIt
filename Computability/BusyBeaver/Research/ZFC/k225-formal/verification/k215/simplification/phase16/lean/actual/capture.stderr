@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/k215-phase16-publication/review.py", line 102, in <module>
+    result = capture(a.packet, a.basis_repo) if a.mode == 'capture' else saved(a.packet, a.basis_repo, a.repo)
+             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/k215-phase16-publication/review.py", line 54, in capture
+    if p not in binaries and '.olean' not in Path(p).suffixes: add(p, pin)
+                                                               ~~~^^^^^^^^
+  File "/tmp/k215-phase16-publication/review.py", line 37, in add
+    path = str(path); h.safe(Path(path).name); actual = history.get(path, path)
+                      ~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/lean/packet.py", line 59, in safe
+    assert not set(p.suffixes) & (BINARY | {'.gz', '.zip', '.tar'})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

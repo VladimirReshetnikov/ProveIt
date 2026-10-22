@@ -1,12 +1,11 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase15/README.md) shares recursion and
-quotient syntax, separates PowerSets and shortens the dense bridge. The endpoint
-now has 176 project modules. The 194-provider primary check and 71-provider
-compatibility check bind 199 distinct project modules. Both additional endpoint
-clients preserve ten exact profiles and zero warnings; all 62 API reports pass.
-Two failed primary attempts remain separate from the accepted records.
+are unchanged. The [accepted phase16 check](phase16/README.md) shares one weak
+quotient with a CP/GIC adapter. Both incremental checks pass, and exact adoption
+is verified. The thirteen Lean files lose 23,847 bytes/519 lines; retiring the
+5,990-byte/103-line duplicate-proof generator brings the maintenance reduction to
+29,837 bytes/622 lines. The endpoint remains at 176 project modules.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
@@ -14,6 +13,7 @@ Two failed primary attempts remain separate from the accepted records.
 | Lean generic core plus Lukasiewicz (phase-twelve comparison) | 42,454 bytes | 18,243 bytes |
 | Lean shared derived/profile sources (phase-thirteen comparison) | 87,279 bytes | 75,163 bytes |
 | Lean recursion hierarchy pair (phase-fourteen comparison) | 33,002 bytes | 24,329 bytes |
+| Lean quotient construction and adapters (phase-fifteen comparison) | 76,405 bytes | 52,558 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -82,7 +82,17 @@ lines, for a net maintenance reduction of 10,502 bytes/271 lines. The 176-module
 endpoint selects 2,052,142 source bytes, 40,970 fewer than phase14. This dependency
 saving and the physical-file saving measure different scopes.
 
-The [latest checkpoint](phase15/README.md),
+Phase sixteen replaces the parallel quotient developments by one `QHyp`
+construction. Its CP/GIC adapter supplies the existing weak interface; native
+axiom and collection proofs are shared without adding hypotheses. Removing twelve
+unused forwarding helpers and inlining the sole trace instance reduces the thirteen
+Lean sources from 76,405 to 52,558 bytes. Including the retired generator, the
+maintenance reduction is 29,837 bytes/622 lines. The endpoint selects 2,028,295
+source bytes. The successful primary and compatibility checks bind 199 project
+modules and retain all exact endpoint/API profiles and 6,176 inherited site outcomes.
+
+The [latest accepted checkpoint](phase16/README.md),
+[fifteenth checkpoint](phase15/README.md),
 [fourteenth checkpoint](phase14/README.md),
 [thirteenth checkpoint](phase13/README.md),
 [twelfth checkpoint](phase12/README.md),

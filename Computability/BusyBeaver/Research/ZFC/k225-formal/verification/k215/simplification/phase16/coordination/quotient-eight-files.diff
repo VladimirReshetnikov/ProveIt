@@ -1,0 +1,291 @@
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean
+@@ -50,8 +50,7 @@
+         (KQ1Model.mk mem witness h x) (KQ1Model.mk mem witness h y) ↔
+       KQ1Model.RelSat mem (scons x (scons y rawEnv)) phi := by
+     have hs := KQ1Model.sat_quotient mem witness h phi (scons x (scons y rawEnv))
+-    rw [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
+-    exact hs
++    rwa [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
+   intro a
+   induction a using Quotient.ind with
+   | _ a =>
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean
+@@ -148,8 +148,7 @@
+       induction q using Quotient.ind with
+       | _ x =>
+         have hx := (ih (scons x env)).mpr (hall x)
+-        rw [mk_scons] at hx
+-        exact hx
++        rwa [mk_scons] at hx
+   | fEx a ih =>
+     constructor
+     · rintro ⟨q, hq⟩
+@@ -160,8 +159,7 @@
+     · rintro ⟨x, hx⟩
+       refine ⟨mk mem witness h x, ?_⟩
+       have hqx := (ih (scons x env)).mpr hx
+-      rw [mk_scons] at hqx
+-      exact hqx
++      rwa [mk_scons] at hqx
+ 
+ /-- Satisfaction respects bisimilar environments, via their equal quotient images. -/
+ theorem relSat_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean
+@@ -1,10 +1,19 @@
+ import BusyBeaver.ZFC.KQ1Separation
++import BusyBeaver.ZFC.PowerSyntax
+ 
+ /-!
+-The Power Set axiom in the quotient of a `QHyp` structure.
++The actual quotient Power Set axiom of a `QHyp` structure.
+ 
+-The hypothesis already supplies interpreted power. Quotient induction identifies
+-interpreted subsets with subsets of the quotient, and `bridge_Pow` gives `Pow_form`.
++The trace instances are the literal SeparationChoice matrices for the
++formula Mem(0,1). The power filter is PowerSyntax.powerChoiceForm.
++No collection assumption for arbitrary semantic predicates is added.
++Quotient induction turns interpreted subset into the actual quotient
++subset relation, and bridge_Pow gives the repository's Pow_form.
++
++This follows the trace/filter construction in upstream S_ax.v:S_power,
++297ab8df7e5de329605c3875b4934643b371a5e3, using the existing
++equality-free profile resources. No other ZF axiom or machine endpoint
++is inferred from this one axiom.
+ -/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.KQ1Power
+@@ -16,6 +25,12 @@
+ 
+ universe u
+ variable {V : Type u}
++
++/-- These traces use the actual source formula z in x, with x a parameter. -/
++theorem trace_instance (mem : V → V → Prop) (h : ModelsGIC mem) (a x : V) :
++    CollectionInstance mem (SeparationChoice mem a (fun z => Member mem z x)) :=
++  KQ1Separation.separation_instance mem h a (.fMem 0 1) (fun _ => x)
++
+ 
+ /-- Quantification over all quotient elements is exactly interpreted subset. -/
+ theorem quotient_sub (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Replacement.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Replacement.lean
+@@ -97,8 +97,7 @@
+     exact KQ1Separation.mk_liftEnv mem witness h env i
+   have hs := KQ1Model.sat_quotient mem witness h phi
+     (scons y (scons x (KQ1Separation.liftEnv mem witness h env)))
+-  rw [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
+-  exact hs
++  rwa [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
+ 
+ /-- The full quotient satisfies the actual semantic `ZFAxioms.repl` interface. -/
+ theorem quotient_replacement (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean
+@@ -62,42 +62,29 @@
+       Member mem z a ∧ QuotientModel.RelSat mem (scons z env) phi := by
+   have hInv (x y : V) (hxy : Eqv mem x y) :
+       QuotientModel.RelSat mem (scons x env) phi ↔
+-        QuotientModel.RelSat mem (scons y env) phi := by
+-    apply QuotientModel.relSat_congr mem witness h phi
+-    intro n
+-    cases n with
+-    | zero => exact hxy
+-    | succ n => exact eqv_refl_of_model mem witness h (env n)
++        QuotientModel.RelSat mem (scons y env) phi :=
++    QuotientModel.relSat_congr mem witness h phi _ _ fun n => by
++      cases n with | zero => exact hxy | succ n => exact eqv_refl_of_model mem witness h (env n)
+   obtain ⟨r, hSupport, hCover⟩ := strongTrace_instance mem h.2 a phi env a
+-  refine ⟨r, ?_, ?_⟩
+-  · intro y hyr
+-    obtain ⟨x, _, hya, _, _⟩ := hSupport y hyr
+-    exact hya
+-  · intro z
+-    constructor
+-    · rintro ⟨y, hyr, hzy⟩
+-      obtain ⟨x, _, hya, hyx, hpx⟩ := hSupport y hyr
+-      have hzx := eqv_trans_of_model mem witness h hzy
+-        (same_eqv mem (eqv_refl_of_model mem witness h) hyx)
+-      exact ⟨⟨y, hya, hzy⟩, (hInv z x hzx).mpr hpx⟩
+-    · rintro ⟨⟨x, hxa, hzx⟩, hpz⟩
+-      obtain ⟨y, hyr, _, _, hyx, _⟩ := hCover x hxa
+-        ⟨x, hxa, hxa, same_refl mem x, (hInv z x hzx).mp hpz⟩
+-      exact ⟨y, hyr, eqv_trans_of_model mem witness h hzx
+-        (same_eqv mem (eqv_refl_of_model mem witness h) (same_symm mem hyx))⟩
++  refine ⟨r, fun y hyr => (hSupport y hyr).elim fun _ hx => hx.2.1, fun z => ⟨?_, ?_⟩⟩
++  · rintro ⟨y, hyr, hzy⟩
++    obtain ⟨x, _, hya, hyx, hpx⟩ := hSupport y hyr
++    have hzx := eqv_trans_of_model mem witness h hzy
++      (same_eqv mem (eqv_refl_of_model mem witness h) hyx)
++    exact ⟨⟨y, hya, hzy⟩, (hInv z x hzx).mpr hpx⟩
++  · rintro ⟨⟨x, hxa, hzx⟩, hpz⟩
++    obtain ⟨y, hyr, _, _, hyx, _⟩ := hCover x hxa
++      ⟨x, hxa, hxa, same_refl mem x, (hInv z x hzx).mp hpz⟩
++    exact ⟨y, hyr, eqv_trans_of_model mem witness h hzx
++      (same_eqv mem (eqv_refl_of_model mem witness h) (same_symm mem hyx))⟩
+ 
+ /-- Every interpreted subset has an equivalent representative literally inside a. -/
+ theorem literal_subset_representative (mem : V → V → Prop) (witness : V)
+     (h : ModelsCPGIC mem) (a z : V) (hz : InterpretedSub mem z a) :
+     ∃ r, PositiveClosure.Sub mem r a ∧ Eqv mem z r := by
+   obtain ⟨r, hrSub, hr⟩ := strong_trace mem witness h a (fMem 0 1) (fun _ => z)
+-  refine ⟨r, hrSub, eqv_extensionality_of_model mem witness h z r ?_⟩
+-  intro t
+-  constructor
+-  · intro htz
+-    exact (hr t).mpr ⟨hz t htz, htz⟩
+-  · intro htr
+-    exact ((hr t).mp htr).2
++  exact ⟨r, hrSub, eqv_extensionality_of_model mem witness h z r fun t =>
++    ⟨fun htz => (hr t).mpr ⟨hz t htz, htz⟩, fun htr => ((hr t).mp htr).2⟩⟩
+ 
+ /-- Raw transitivity becomes transitivity for interpreted membership. -/
+ theorem interpreted_transitive (mem : V → V → Prop) (witness : V)
+@@ -132,12 +119,26 @@
+         intro z hz
+         induction z using Quotient.ind with
+         | _ z =>
+-          have hzx : InterpretedSub mem z x :=
+-            (QuotientPower.quotient_sub mem witness h z x).mp hz
+           have hzx' : InterpretedSub mem z x' := fun t ht =>
+-            (QuotientModel.member_right_congr mem witness h hxx').mp (hzx t ht)
++            (QuotientModel.member_right_congr mem witness h hxx').mp
++              ((QuotientPower.quotient_sub mem witness h z x).mp hz t ht)
+           obtain ⟨r, hrSub, hzr⟩ := literal_subset_representative mem witness h x' z hzx'
+           exact ⟨r, hp r hrSub, hzr⟩
++
++/-- Matrix satisfaction respects both bisimulation-equivalent inputs. -/
++theorem rel_matrix_congr (mem : V → V → Prop) (witness : V)
++    (h : ModelsCPGIC mem) (phi : Form) (env : Nat → V)
++    {x x' y y' : V} (hxx' : Eqv mem x x') (hyy' : Eqv mem y y') :
++    QuotientModel.RelSat mem (scons x (scons y env)) phi ↔
++      QuotientModel.RelSat mem (scons x' (scons y' env)) phi :=
++  KQ1Collect.rel_matrix_congr mem witness (QuotientModel.ofCPGIC mem witness h) phi env hxx' hyy'
++
++/-- The raw instance is always the equality-free translation of an actual Form. -/
++theorem translated_instance (mem : V → V → Prop) (h : ModelsGIC mem)
++    (phi : Form) (env : Nat → V) :
++    CollectionInstance mem
++      (fun x y => QuotientModel.RelSat mem (scons x (scons y env)) phi) :=
++  KQ1Collect.translated_instance mem h phi env
+ 
+ /-- Full native-equality matrices are covered, with an arbitrary quotient valuation. -/
+ theorem quotient_collection (mem : V → V → Prop) (witness : V)
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean
+@@ -1,5 +1,4 @@
+ import BusyBeaver.ZFC.KQ1Power
+-import BusyBeaver.ZFC.PowerSyntax
+ 
+ /-!
+ The actual quotient structure of an equality-free CP/GIC model.
+@@ -30,8 +29,7 @@
+     pairs_of_model mem witness h,
+     fun a => union_of_instance mem a hc refl trans (union_instance mem h.2 a),
+     fun a => power_of_instances mem a hc refl symm trans
+-      (eqv_extensionality_of_model mem witness h)
+-      (fun x => KQ1Separation.separation_instance mem h.2 a (.fMem 0 1) (fun _ => x))
++      (eqv_extensionality_of_model mem witness h) (KQ1Power.trace_instance mem h.2 a)
+       (PowerSyntax.power_instance mem h.2 a),
+     fun root => singleton_closed_of_containers mem root hc (pairs_of_model mem witness h)
+       refl symm trans⟩
+@@ -72,6 +70,12 @@
+     mk mem witness h x = mk mem witness h y ↔ Eqv mem x y :=
+   KQ1Model.mk_eq_iff mem witness (ofCPGIC mem witness h) x y
+ 
++theorem mk_scons (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
++    (x : V) (env : Nat → V) :
++    (fun i => mk mem witness h (scons x env i)) =
++      scons (mk mem witness h x) (fun i => mk mem witness h (env i)) :=
++  KQ1Model.mk_scons mem witness (ofCPGIC mem witness h) x env
++
+ theorem sat_quotient (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
+     (phi : Form) (env : Nat → V) :
+     Sat (quotientMember mem witness h) (fun i => mk mem witness h (env i)) phi ↔
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean
+@@ -1,14 +1,55 @@
+-import BusyBeaver.ZFC.QuotientModel
++import BusyBeaver.ZFC.QuotientSeparation
+ import BusyBeaver.ZFC.KQ1Replacement
+ 
+ /-! Actual formula-indexed Replacement in the CP/GIC bisimulation quotient (`KQ1Replacement`). -/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.QuotientReplacement
+ 
+-open ProfileModel
++open Form ProfileCollection ProfileComposition ProfileAxioms ProfileModel CompositionModel
++open DeepPositiveClosure
+ 
+ universe u
+ variable {V : Type u}
++
++abbrev replacementChoiceForm := KQ1Replacement.replacementChoiceForm
++
++theorem equalityFree_replacementChoiceForm (phi : Form) :
++    EqualityFree (replacementChoiceForm phi) :=
++  KQ1Replacement.equalityFree_replacementChoiceForm phi
++
++theorem sat_replacementChoiceForm (mem : V → V → Prop) (phi : Form)
++    (a : V) (env : Nat → V) (x y : V) :
++    MatrixRelation mem (replacementChoiceForm phi) (scons a env) x y ↔
++      ReplacementChoice mem a
++        (fun u v => QuotientModel.RelSat mem (scons v (scons u env)) phi) x y :=
++  KQ1Replacement.sat_replacementChoiceForm mem phi a env x y
++
++theorem replacement_instance (mem : V → V → Prop) (h : ModelsGIC mem)
++    (a : V) (phi : Form) (env : Nat → V) :
++    CollectionInstance mem (ReplacementChoice mem a
++      (fun x y => QuotientModel.RelSat mem (scons y (scons x env)) phi)) :=
++  KQ1Replacement.replacement_instance mem h a phi env
++
++/-- Partial functionality on the interpreted domain suffices for this image. -/
++theorem interpreted_replacement (mem : V → V → Prop) (witness : V)
++    (h : ModelsCPGIC mem) (a : V) (phi : Form) (env : Nat → V)
++    (hFunctional : ∀ x y z, Member mem x a →
++      QuotientModel.RelSat mem (scons y (scons x env)) phi →
++      QuotientModel.RelSat mem (scons z (scons x env)) phi → Eqv mem y z) :
++    ∃ b, ∀ z, Member mem z b ↔ ∃ x, Member mem x a ∧
++      QuotientModel.RelSat mem (scons z (scons x env)) phi :=
++  KQ1Replacement.interpreted_replacement mem witness (QuotientModel.ofCPGIC mem witness h)
++    a phi env hFunctional
++
++/-- Formula relations under any quotient valuation agree with their lifted
++interpretations; source slot0 is output and slot1 is input. -/
++theorem quotient_relOf (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
++    (phi : Form) (env : Nat → QuotientModel.Domain mem witness h) (x y : V) :
++    relOf (QuotientModel.quotientMember mem witness h) phi env
++      (QuotientModel.mk mem witness h y) (QuotientModel.mk mem witness h x) ↔
++    QuotientModel.RelSat mem
++      (scons y (scons x (QuotientSeparation.liftEnv mem witness h env))) phi :=
++  KQ1Replacement.quotient_relOf mem witness (QuotientModel.ofCPGIC mem witness h) phi env x y
+ 
+ /-- The full quotient satisfies the actual semantic `ZFAxioms.repl` interface. -/
+ theorem quotient_replacement (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
+--- checked-phase16/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean
++++ 140d832128/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean
+@@ -10,6 +10,22 @@
+ variable {V : Type u}
+ 
+ abbrev separationRename := KQ1Separation.separationRename
++
++theorem separation_instance (mem : V → V → Prop) (h : ModelsGIC mem)
++    (a : V) (phi : Form) (env : Nat → V) :
++    CollectionInstance mem
++      (SeparationChoice mem a (fun z => QuotientModel.RelSat mem (scons z env) phi)) :=
++  KQ1Separation.separation_instance mem h a phi env
++
++/-- Only a sequence of representatives of an already supplied quotient environment. -/
++noncomputable abbrev liftEnv (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
++    (env : Nat → QuotientModel.Domain mem witness h) : Nat → V :=
++  KQ1Separation.liftEnv mem witness (QuotientModel.ofCPGIC mem witness h) env
++
++theorem mk_liftEnv (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
++    (env : Nat → QuotientModel.Domain mem witness h) (i : Nat) :
++    QuotientModel.mk mem witness h (liftEnv mem witness h env i) = env i :=
++  KQ1Separation.mk_liftEnv mem witness (QuotientModel.ofCPGIC mem witness h) env i
+ 
+ /-- The full quotient has Separation for every actual formula and parameter valuation.
+ This has exactly the semantic shape of the repository's ZFAxioms.sep field. -/

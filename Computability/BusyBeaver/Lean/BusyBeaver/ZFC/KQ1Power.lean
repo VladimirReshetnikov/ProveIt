@@ -1,20 +1,10 @@
-/- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientPower.lean onto the KQHyp.QHyp interface; do not edit. -/
 import BusyBeaver.ZFC.KQ1Separation
-import BusyBeaver.ZFC.PowerSyntax
 
 /-!
-The actual quotient Power Set axiom from the existing CP/GIC model.
+The Power Set axiom in the quotient of a `QHyp` structure.
 
-The trace instances are the literal SeparationChoice matrices for the
-formula Mem(0,1). The power filter is PowerSyntax.powerChoiceForm.
-No collection assumption for arbitrary semantic predicates is added.
-Quotient induction turns interpreted subset into the actual quotient
-subset relation, and bridge_Pow gives the repository's Pow_form.
-
-This follows the trace/filter construction in upstream S_ax.v:S_power,
-297ab8df7e5de329605c3875b4934643b371a5e3, using the existing
-equality-free profile resources. No other ZF axiom or machine endpoint
-is inferred from this one axiom.
+The hypothesis already supplies interpreted power. Quotient induction identifies
+interpreted subsets with subsets of the quotient, and `bridge_Pow` gives `Pow_form`.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.KQ1Power
@@ -26,17 +16,6 @@ open ProfileModel CompositionModel
 
 universe u
 variable {V : Type u}
-
-/-- These traces use the actual source formula z in x, with x a parameter. -/
-theorem trace_instance (mem : V → V → Prop) (h : ModelsGIC mem) (a x : V) :
-    CollectionInstance mem (SeparationChoice mem a (fun z => Member mem z x)) :=
-  KQ1Separation.separation_instance mem h a (.fMem 0 1) (fun _ => x)
-
-theorem interpreted_power (mem : V → V → Prop) (witness : V)
-    (h : QHyp mem) (a : V) :
-    ∃ p, ∀ x, Member mem x p ↔ InterpretedSub mem x a :=
-  h.power a
-
 
 /-- Quantification over all quotient elements is exactly interpreted subset. -/
 theorem quotient_sub (mem : V → V → Prop) (witness : V) (h : QHyp mem)
@@ -58,7 +37,7 @@ theorem quotient_power (mem : V → V → Prop) (witness : V) (h : QHyp mem)
       SetTheory.Sub (KQ1Model.quotientMember mem witness h) x a := by
   induction a using Quotient.ind with
   | _ a =>
-    obtain ⟨p, hp⟩ := interpreted_power mem witness h a
+    obtain ⟨p, hp⟩ := h.power a
     refine ⟨KQ1Model.mk mem witness h p, ?_⟩
     intro x
     induction x using Quotient.ind with

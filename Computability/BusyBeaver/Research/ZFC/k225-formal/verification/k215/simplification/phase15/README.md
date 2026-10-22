@@ -1,5 +1,7 @@
 # Fifteenth K215 proof-simplification checkpoint
 
+The [accepted phase16 successor](../phase16/README.md) shares one quotient construction with both checks and exact adoption verified; this page and its evidence remain the historical phase15 record.
+
 Both incremental checks pass for shared transfinite recursion, shared quotient
 syntax, a smaller PowerSets import boundary and the shorter dense-machine proof.
 The exact 215-state machine and both endpoint statements are unchanged.

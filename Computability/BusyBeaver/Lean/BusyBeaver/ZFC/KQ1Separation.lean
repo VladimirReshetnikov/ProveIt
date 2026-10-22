@@ -1,10 +1,9 @@
-/- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientSeparation.lean onto the KQHyp.QHyp interface; do not edit. -/
 import BusyBeaver.ZFC.KQ1Model
 import BusyBeaver.ZFC.ProfileAxioms
 import ZF.Zf
 
 /-!
-Actual formula-indexed Separation in the bisimulation quotient of CP/GIC.
+Actual formula-indexed Separation in the bisimulation quotient of a `QHyp` structure.
 
 The collection instance below is a literal equality-free Form matrix;
 there is no collection hypothesis for arbitrary semantic predicates.
@@ -67,8 +66,7 @@ theorem interpreted_separation (mem : V → V → Prop) (witness : V)
     ∃ b, SubD mem b a ∧ ∀ z, Member mem z b ↔
       Member mem z a ∧ KQ1Model.RelSat mem (scons z env) phi := by
   apply separation_of_instance mem a (fun z => KQ1Model.RelSat mem (scons z env) phi)
-    (h.refl)
-    (fun _ _ _ hxy hyz => h.trans hxy hyz) _
+    h.refl (fun _ _ _ => h.trans) _
     (separation_instance mem h.gic a phi env)
   intro x y hxy
   apply KQ1Model.relSat_congr mem witness h phi (scons x env) (scons y env)

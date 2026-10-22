@@ -6,16 +6,18 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [current simplification check](../simplification/phase15/README.md) shares
-recursion and quotient syntax, separates PowerSets and shortens the dense bridge.
-Its 184 project modules include the 176-module endpoint, five decoder-prefix modules
-and three full-calibration continuity modules. Ten API clients give 194 providers:
-45 fresh records (19 from run1, 25 from run2, one from run3) and 149 exact phase14
-providers. The two additional endpoint clients retain their ten exact profiles
-and zero warnings. Compatibility checks 69 project modules and two clients, with
-six fresh, 54 primary and 11 phase14 records. All 199 distinct project modules are
-bound. The two failed primary attempts are retained, and every API client is clean.
-The historical 204-module receipts and nine phase-nine site checks are unchanged.
+The [accepted phase16 simplification check](../simplification/phase16/README.md)
+shares one weak quotient with a CP/GIC adapter and verifies exact source adoption.
+It retains the 176-module endpoint and both unchanged endpoint clients. The
+successful primary scope has 184 project modules plus eleven API clients: 27 fresh
+and 168 phase15 providers. Compatibility has 76 project modules plus two clients:
+four fresh, 61 primary and 13 phase15 providers. The union has 199 project modules.
+All 70 API reports, ten endpoint reports, ten compatibility reports and five
+WFTheory reports have exact checked profiles. Primary has 17 warning occurrences
+(six fresh, eleven reused); compatibility has eleven, all reused. The fresh
+warning messages already occur in earlier logs. All clients and audits have zero
+warnings. Historical 204-module receipts and all nine phase-nine site checks
+remain unchanged.
 
 The portable driver rebuilds the exact project import closure of
 `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit

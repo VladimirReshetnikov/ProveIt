@@ -1,8 +1,8 @@
-/- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientReplacement.lean onto the KQHyp.QHyp interface; do not edit. -/
 import BusyBeaver.ZFC.KQ1Separation
 
 /-!
-Actual formula-indexed Replacement in the CP/GIC bisimulation quotient.
+Actual formula-indexed Replacement in the bisimulation quotient of a `QHyp`
+structure.
 
 The collection matrix is a literal equality-free formula, guarded by raw
 membership in the domain. The requested formula uses the repository's

@@ -2,15 +2,14 @@
 
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
-The fresh full builds below were recorded at `613f9cf28a`. The current
-[Lean simplification checkpoint](simplification/phase15/README.md) shares recursion
-and quotient syntax, separates PowerSets and shortens the dense bridge. The endpoint
-has 176 project modules, with five decoder-prefix modules checked separately. Three
-full-calibration continuity modules and ten API clients bring the primary scope to
-194 providers: 45 fresh records (19, 25 and one across the retained attempts) and
-149 phase14 reuses. Both additional endpoint clients have ten unchanged reports
-and zero warnings. The separate 71-provider compatibility scope passes. Both failed
-primary attempts remain failures; the nine phase-nine site checks are unchanged.
+The fresh full builds below were recorded at `613f9cf28a`. The
+[accepted phase16 Lean checkpoint](simplification/phase16/README.md) shares one
+weak quotient with a CP/GIC adapter and verifies exact source adoption. Its
+195-provider primary and 78-provider compatibility checks pass across 199 project
+modules. The endpoint retains 176 modules and both unchanged endpoint clients.
+Seventy API reports, ten endpoint reports, ten compatibility reports and five
+WFTheory reports have exact checked profiles. All clients and audits have zero
+warnings; the nine inherited site batches retain all 6,176 outcomes.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |

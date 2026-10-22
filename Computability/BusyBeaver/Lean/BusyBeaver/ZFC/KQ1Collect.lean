@@ -1,7 +1,6 @@
-/- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientCPGIC (collection part).lean onto the KQHyp.QHyp interface; do not edit. -/
 import BusyBeaver.ZFC.KQ1Power
 
-/-! Every Form has collection in the quotient (the GIC half of `QuotientCPGIC`). -/
+/-! Every Form has collection in the quotient of a `QHyp` structure. -/
 
 namespace SetTheory.BusyBeaver.ZFC.KQ1Collect
 

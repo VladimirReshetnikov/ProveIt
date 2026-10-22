@@ -1,0 +1,283 @@
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase16/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase16/README.md
+@@ -0,0 +1,83 @@
++# Sixteenth K215 proof-simplification checkpoint
++
++Both incremental checks pass, and the exact checked quotient-unification successor
++is adopted. It proves the quotient construction once under `KQHyp.QHyp`.
++`QuotientModel.ofCPGIC` supplies that weak interface from an inhabited CP/GIC model;
++the strong quotient carrier, constructor and membership are abbreviations of the
++same weak construction. Their original setoid relations agree, and proof
++irrelevance identifies the proof fields. No new transport hypothesis is needed.
++The weak lane keeps its existing hypotheses: it does not acquire CP/GIC premises.
++
++The adapter constructs interpreted union, power and singleton-closed containers
++from the original CP/GIC resources. The common quotient proofs then establish the
++native axioms, including full collection. Equality, functionality, inhabitation
++and resource guards remain in force. Membership well-definedness precedes the
++satisfaction theorem; the sharing introduces no circular proof or import.
++
++The thirteen Lean files shrink from **76,405 bytes / 1,699 lines** to
++**52,558 bytes / 1,180 lines**, saving **23,847 bytes and 519 Lean lines** against
++phase15. The now-unused **5,990-byte / 103-line** `generate_kq1.py` is retired, with
++its exact before-bytes preserved. The maintenance reduction is **29,837 bytes and
++622 lines**. The `KQ1*` modules are maintained source. The endpoint remains at
++**176 project modules**, selecting **2,028,295 source bytes**. These are
++physical-source and selected-closure measures, respectively; they are not additive
++savings.
++
++The original [quotient-unification proposal](../proposals/quotient-unification/README.md)
++is from `eb931b07ad8de83ba1a1d21dc84abe5a1c98364e`, by Vladimir Reshetnikov and
++Claude Opus 5.5. Its submitted component build is separate from this checkpoint's
++successful local endpoint checks. Bounded local integration cleanup removes twelve
++unused strong forwarding helpers and inlines the sole `KQ1Power.trace_instance`
++use into the adapter. This saves a further 5,008 bytes and 91 lines against the
++exact proposal. `PowerSyntax` is imported by the adapter; the weak power proof
++uses the power field already supplied by `QHyp`. All maintained axiom/form/full-CPGIC
++conclusions and `mk_eq_iff` remain. The previous explicit Completeness import in
++`KQ1ZF` is retained unchanged.
++
++These receipts bind the selected sources on `codex/zfc-small-machine`. The parallel
++Claude Code line landed quotient unification separately at `8e46744a76`; later main
++at `140d832128` includes further changes. The twelve-helper cleanup and trace
++inlining recorded here belong to this checked tree. These receipts do not certify
++that later main tree; reconciliation requires a separate check.
++
++| Scope | Successful provider selection | Exact reports |
++| --- | --- | --- |
++| Primary: 184 project modules plus eleven API clients (195 providers) | 27 fresh; 168 phase15 | 70 API reports: 62 retained plus eight new; two additional endpoint audits with ten unchanged reports |
++| Compatibility: 76 project modules plus two clients (78 providers) | Four fresh; 61 current-primary; 13 phase15 | Ten retained model/native client reports and five unchanged WFTheory reports |
++
++The successful scopes bind **199 distinct project modules**. The endpoint,
++five decoder-prefix modules and three full-calibration continuity modules account
++for the primary project scope. The nine site batches and their **6,176 outcomes**
++retain their exact source/import/object bindings. Changed source ancestry forced
++dependent modules to be checked even when an intermediate object was byte-identical.
++
++The existing quotient-sharing client adds only an explicit `QuotientModel`
++import; all seven statement/proof bodies are unchanged. The eight new
++`QuotientUnified16Api` reports check `legacy_carrier`, `legacy_constructor`,
++`weak_carrier`, `weak_constructor`, `weak_membership`, `cp_gic_supplies_weak`,
++`weak_native_gic` and `strong_cp_gic`. Each reports exactly `Classical.choice`,
++`Quot.sound` and `propext`. All 62 retained API reports, ten endpoint reports,
++ten compatibility reports and five WFTheory reports keep their previous exact
++assumption profiles.
++
++The primary selection has **17 warning occurrences**: six in fresh records and
++eleven in reused records. All six fresh messages already occur in earlier logs.
++Compatibility has **eleven warning occurrences**, all reused: ten from the current
++primary check and one from phase15; its four fresh records have zero warnings.
++Every API client, compatibility client and endpoint audit has zero warnings.
++Both actual results are `PASS`, with successful exits checked independently:
++
++- Primary result SHA-256: `3ded969c86762960cda923b7d9aee63953125185a2bb3f64c535d5fe4104462f`.
++- Compatibility result SHA-256: `f16fa4191d1d27864449582d0c40f3ba28eed34a821d53776b75ef2eb6582ddb`.
++
++Independent adoption review confirms all 199 current project-source bindings,
++the thirteen exact Lean writes and the generator retirement. Before-bytes and the
++exact proposal/intermediate selections are retained. Historical proof/compiler
++failures keep their original statuses. The literal machine and all original
++endpoint types are unchanged. No supplied code, compiler, generator or Rocq
++production was executed as part of the record review or documentation work; no
++internal PA endpoint or minimum-state theorem is asserted.
++
++**Saved evidence package:** publication of the runtime evidence packet is pending.
++Its saved-reader checks and publication will be recorded here separately from the
++accepted actual results and exact source adoption above.
+--- a/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md
+@@ -30,15 +30,13 @@
+   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
+   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
+ 
+-The [current Lean simplification checkpoint](../k225-formal/verification/k215/simplification/phase15/README.md)
+-shares transfinite recursion and quotient syntax, separates the small PowerSets
+-interface, and shortens the dense-machine proof. The endpoint now has 176 project
+-modules. Primary and compatibility checks cover 199 distinct project modules;
+-both additional endpoint clients preserve all ten exact axiom reports. Nine Lean
+-files shrink by 11,809 bytes/283 lines; including the larger synchronized producer,
+-the maintenance reduction is 10,502 bytes/271 lines. Both failed primary attempts
+-and narrow repairs are retained. The nine inherited site batches still cover all
+-6,176 outcomes. The literal machine and theorem statements are unchanged.
++The [accepted phase16 quotient-unification checkpoint](../k225-formal/verification/k215/simplification/phase16/README.md)
++shares one weak quotient with a CP/GIC adapter. Its primary and compatibility
++checks pass across 199 project modules, and the exact checked sources are adopted.
++The thirteen Lean files lose 23,847 bytes/519 lines; retiring the duplicate-proof
++generator brings the maintenance reduction to 29,837 bytes/622 lines. The endpoint
++remains at 176 project modules, with the same literal machine, endpoint statements
++and all 6,176 inherited site outcomes.
+ 
+ The layers are described in [k225-formal](../k225-formal/README.md#the-215).
+ 
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/README.md
+@@ -1,14 +1,14 @@
+ # Formal endpoints for the K-family candidates
+ 
+-**Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
++**Current state (2026-10-22).** The exact [215-state machine](../candidate-k215/README.md)
+ has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
+ build checked 204 project modules; the current
+-[proof simplification checkpoint](verification/k215/simplification/phase15/README.md)
+-shares recursion and quotient syntax, separates PowerSets from the full calibration,
+-and shortens the dense bridge. It checks the 176-module endpoint, five decoder-prefix
+-modules, three full-calibration continuity modules, ten API clients and both endpoint
+-clients. The nine Lean files remove 11,809 bytes/283 lines; the synchronized producer
+-adds 1,307 bytes/12 lines. All previous endpoint profiles are preserved.
++[accepted phase16 proof simplification checkpoint](verification/k215/simplification/phase16/README.md)
++checks the 176-module endpoint and both unchanged endpoint clients. It shares one
++weak quotient and instantiates it through a CP/GIC adapter. The primary and
++compatibility checks pass across 199 project modules, and exact source adoption
++is verified. It removes 23,847 Lean bytes/519 lines, or 29,837 bytes/622 maintained
++lines including the retired duplicate-proof generator.
+ Its zero-offset proposal is reconciled as
+ [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
+ 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
+@@ -108,6 +108,17 @@
+ reconcile exact residual contracts and shared scheduler proofs. Only the selected
+ dense ending enters this checkpoint; residual integration, subtree abbreviation
+ and scheduler sharing keep their separate proof and reproduction obligations.
++
++Phase sixteen adopts a single `QHyp` quotient development and a CP/GIC adapter,
++removing duplicated construction and axiom proofs. Twelve unused strong forwarding
++helpers are removed and a one-use trace instance is inlined into the adapter.
++The successful 195-provider primary and 78-provider compatibility checks bind 199
++project modules, with the same 176-module endpoint and 2,028,295 selected source
++bytes. Seventy API reports, ten endpoint reports, ten compatibility reports and
++five WFTheory reports retain their exact checked profiles. All clients and endpoint
++audits have zero warnings; all observed production warning messages already occur
++in earlier logs. The original proposal is credited to Vladimir Reshetnikov and
++Claude Opus 5.5 at `eb931b07ad8de83ba1a1d21dc84abe5a1c98364e`.
+ 
+ The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
+ 
+@@ -180,13 +191,12 @@
+ | **Simulation** | the register program halts iff the machine does, from related configurations | [`KSim`](../../../Lean/BusyBeaver/ZFC/KSim.lean) (`halts_iff`, port of `Sim230`/`Sim230Main`), with K230's register lemmas ([`KTape`](../../../Lean/BusyBeaver/ZFC/KTape.lean): every table that agrees with K230 on the 44 rows they read and ends the increment K230's way or the 219's way) and the symbolic executor ([`KRuntimeCore`](../../../Lean/BusyBeaver/ZFC/KRuntimeCore.lean)) |
+ | **Source** | the 221's source halts from the boot registers iff `dag222` does iff `C222 F` | [`KSource221`](../../../Lean/BusyBeaver/ZFC/KSource221.lean) (WF tables, 2,247-entry offset certificate and mirror), [`Seed222`](../../../Lean/BusyBeaver/ZFC/Seed222.lean), [`L2Root222`](../../../Lean/BusyBeaver/ZFC/L2Root222.lean), [`Enum222`](../../../Lean/BusyBeaver/ZFC/Enum222.lean) |
+ | **Upper bound** | `C222 F → ZF ⊢ ⊥` | [`KUpper222`](../../../Lean/BusyBeaver/ZFC/KUpper222.lean) (the seed property holds in L by reflection) |
+-| **Lower chain** | `ZF ⊢ ⊥ → C222 F` | [`KEind222`](../../../Lean/BusyBeaver/ZFC/KEind222.lean) (`c222_complete`), [`KSeedModel222`](../../../Lean/BusyBeaver/ZFC/KSeedModel222.lean) (models of the derivable formulas have the seed property for equality-free relations), [`KIndisc222`](../../../Lean/BusyBeaver/ZFC/KIndisc222.lean) (indiscernibility quotient: all relations), [`KLowerSeed`](../../../Lean/BusyBeaver/ZFC/KLowerSeed.lean), [`KLowerRaw`](../../../Lean/BusyBeaver/ZFC/KLowerRaw.lean) (raw sets), [`KLowerRel`](../../../Lean/BusyBeaver/ZFC/KLowerRel.lean) / [`KLowerTag`](../../../Lean/BusyBeaver/ZFC/KLowerTag.lean) (the tagged domain `D_t`), [`KLowerEqv`](../../../Lean/BusyBeaver/ZFC/KLowerEqv.lean) / [`KLowerQHyp`](../../../Lean/BusyBeaver/ZFC/KLowerQHyp.lean) (coded bisimilarity; `D_t` satisfies [`KQHyp`](../../../Lean/BusyBeaver/ZFC/KQHyp.lean)), [`ProfileComposition`](../../../Lean/BusyBeaver/ZFC/ProfileComposition.lean) (shared contracts under transitive containers) and `KQ1*` (the repository's quotient modules re-run on that interface), [`KQ1ZF`](../../../Lean/BusyBeaver/ZFC/KQ1ZF.lean) (ZF in the well-founded part) |
++| **Lower chain** | `ZF ⊢ ⊥ → C222 F` | [`KEind222`](../../../Lean/BusyBeaver/ZFC/KEind222.lean) (`c222_complete`), [`KSeedModel222`](../../../Lean/BusyBeaver/ZFC/KSeedModel222.lean) (models of the derivable formulas have the seed property for equality-free relations), [`KIndisc222`](../../../Lean/BusyBeaver/ZFC/KIndisc222.lean) (indiscernibility quotient: all relations), [`KLowerSeed`](../../../Lean/BusyBeaver/ZFC/KLowerSeed.lean), [`KLowerRaw`](../../../Lean/BusyBeaver/ZFC/KLowerRaw.lean) (raw sets), [`KLowerRel`](../../../Lean/BusyBeaver/ZFC/KLowerRel.lean) / [`KLowerTag`](../../../Lean/BusyBeaver/ZFC/KLowerTag.lean) (the tagged domain `D_t`), [`KLowerEqv`](../../../Lean/BusyBeaver/ZFC/KLowerEqv.lean) / [`KLowerQHyp`](../../../Lean/BusyBeaver/ZFC/KLowerQHyp.lean) (coded bisimilarity; `D_t` satisfies [`KQHyp`](../../../Lean/BusyBeaver/ZFC/KQHyp.lean)), [`ProfileComposition`](../../../Lean/BusyBeaver/ZFC/ProfileComposition.lean) (shared contracts under transitive containers) and `KQ1*` (the maintained quotient development on that interface; phase16 makes the CP/GIC lane its adapter), [`KQ1ZF`](../../../Lean/BusyBeaver/ZFC/KQ1ZF.lean) (ZF in the well-founded part) |
+ | **Endpoint** | the composition, and ZF ↔ ZFC refutation | [`KEndpoint`](../../../Lean/BusyBeaver/ZFC/KEndpoint.lean) (generic: the lower chain `c222_of_zf_refutation` and the composition, once for every K machine), [`KEndpoint221`](../../../Lean/BusyBeaver/ZFC/KEndpoint221.lean) (the 221's five inputs) |
+ 
+ The generators are in this directory: `generate_tables_lean.py`, `generate_dense221_lean.py`,
+-`generate_boot221_lean.py`, `generate_sites221_lean.py`, `generate_source221_lean.py`,
+-and `generate_kq1.py` (the quotient modules on the `QHyp` interface). Generated data is untrusted;
+-the kernel re-checks it. The certificate decoder of `RMOffsetBisim` reads paths of up to 511 bits,
++`generate_boot221_lean.py`, `generate_sites221_lean.py`, and `generate_source221_lean.py`.
++Phase16 retires `generate_kq1.py`; its shared quotient proofs are maintained directly. Generated machine data is untrusted; the kernel re-checks it. The certificate decoder of `RMOffsetBisim` reads paths of up to 511 bits,
+ since the AX chain of `dag222` makes decoder paths 180 bits deep (`RMBisim.decode` stops at 127).
+ 
+ Compile times on this machine: `KSource221` about 60 minutes, the boot chunks about 20 seconds
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md
+@@ -2,15 +2,14 @@
+ 
+ **Both proof lanes pass** (2026-10-21), for the same literal machine.
+ 
+-The fresh full builds below were recorded at `613f9cf28a`. The current
+-[Lean simplification checkpoint](simplification/phase15/README.md) shares recursion
+-and quotient syntax, separates PowerSets and shortens the dense bridge. The endpoint
+-has 176 project modules, with five decoder-prefix modules checked separately. Three
+-full-calibration continuity modules and ten API clients bring the primary scope to
+-194 providers: 45 fresh records (19, 25 and one across the retained attempts) and
+-149 phase14 reuses. Both additional endpoint clients have ten unchanged reports
+-and zero warnings. The separate 71-provider compatibility scope passes. Both failed
+-primary attempts remain failures; the nine phase-nine site checks are unchanged.
++The fresh full builds below were recorded at `613f9cf28a`. The
++[accepted phase16 Lean checkpoint](simplification/phase16/README.md) shares one
++weak quotient with a CP/GIC adapter and verifies exact source adoption. Its
++195-provider primary and 78-provider compatibility checks pass across 199 project
++modules. The endpoint retains 176 modules and both unchanged endpoint clients.
++Seventy API reports, ten endpoint reports, ten compatibility reports and five
++WFTheory reports have exact checked profiles. All clients and audits have zero
++warnings; the nine inherited site batches retain all 6,176 outcomes.
+ 
+ | System | Completed checks | Endpoint assumptions |
+ | --- | --- | --- |
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/README.md
+@@ -6,16 +6,18 @@
+ The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
+ neither audit has warnings. The project sources retain 34 linter warnings.
+ 
+-The [current simplification check](../simplification/phase15/README.md) shares
+-recursion and quotient syntax, separates PowerSets and shortens the dense bridge.
+-Its 184 project modules include the 176-module endpoint, five decoder-prefix modules
+-and three full-calibration continuity modules. Ten API clients give 194 providers:
+-45 fresh records (19 from run1, 25 from run2, one from run3) and 149 exact phase14
+-providers. The two additional endpoint clients retain their ten exact profiles
+-and zero warnings. Compatibility checks 69 project modules and two clients, with
+-six fresh, 54 primary and 11 phase14 records. All 199 distinct project modules are
+-bound. The two failed primary attempts are retained, and every API client is clean.
+-The historical 204-module receipts and nine phase-nine site checks are unchanged.
++The [accepted phase16 simplification check](../simplification/phase16/README.md)
++shares one weak quotient with a CP/GIC adapter and verifies exact source adoption.
++It retains the 176-module endpoint and both unchanged endpoint clients. The
++successful primary scope has 184 project modules plus eleven API clients: 27 fresh
++and 168 phase15 providers. Compatibility has 76 project modules plus two clients:
++four fresh, 61 primary and 13 phase15 providers. The union has 199 project modules.
++All 70 API reports, ten endpoint reports, ten compatibility reports and five
++WFTheory reports have exact checked profiles. Primary has 17 warning occurrences
++(six fresh, eleven reused); compatibility has eleven, all reused. The fresh
++warning messages already occur in earlier logs. All clients and audits have zero
++warnings. Historical 204-module receipts and all nine phase-nine site checks
++remain unchanged.
+ 
+ The portable driver rebuilds the exact project import closure of
+ `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/README.md
+@@ -1,12 +1,11 @@
+ # Shorter checked K215 proofs
+ 
+ The literal 215-state machine and its halting and nonhalting endpoint statements
+-are unchanged. The [latest Lean check](phase15/README.md) shares recursion and
+-quotient syntax, separates PowerSets and shortens the dense bridge. The endpoint
+-now has 176 project modules. The 194-provider primary check and 71-provider
+-compatibility check bind 199 distinct project modules. Both additional endpoint
+-clients preserve ten exact profiles and zero warnings; all 62 API reports pass.
+-Two failed primary attempts remain separate from the accepted records.
++are unchanged. The [accepted phase16 check](phase16/README.md) shares one weak
++quotient with a CP/GIC adapter. Both incremental checks pass, and exact adoption
++is verified. The thirteen Lean files lose 23,847 bytes/519 lines; retiring the
++5,990-byte/103-line duplicate-proof generator brings the maintenance reduction to
++29,837 bytes/622 lines. The endpoint remains at 176 project modules.
+ 
+ | Proof source | Original | Current |
+ | --- | ---: | ---: |
+@@ -14,6 +13,7 @@
+ | Lean generic core plus Lukasiewicz (phase-twelve comparison) | 42,454 bytes | 18,243 bytes |
+ | Lean shared derived/profile sources (phase-thirteen comparison) | 87,279 bytes | 75,163 bytes |
+ | Lean recursion hierarchy pair (phase-fourteen comparison) | 33,002 bytes | 24,329 bytes |
++| Lean quotient construction and adapters (phase-fifteen comparison) | 76,405 bytes | 52,558 bytes |
+ | Lean AX routine | 202,222 bytes | 7,563 bytes |
+ | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
+ | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
+@@ -82,7 +82,17 @@
+ endpoint selects 2,052,142 source bytes, 40,970 fewer than phase14. This dependency
+ saving and the physical-file saving measure different scopes.
+ 
+-The [latest checkpoint](phase15/README.md),
++Phase sixteen replaces the parallel quotient developments by one `QHyp`
++construction. Its CP/GIC adapter supplies the existing weak interface; native
++axiom and collection proofs are shared without adding hypotheses. Removing twelve
++unused forwarding helpers and inlining the sole trace instance reduces the thirteen
++Lean sources from 76,405 to 52,558 bytes. Including the retired generator, the
++maintenance reduction is 29,837 bytes/622 lines. The endpoint selects 2,028,295
++source bytes. The successful primary and compatibility checks bind 199 project
++modules and retain all exact endpoint/API profiles and 6,176 inherited site outcomes.
++
++The [latest accepted checkpoint](phase16/README.md),
++[fifteenth checkpoint](phase15/README.md),
+ [fourteenth checkpoint](phase14/README.md),
+ [thirteenth checkpoint](phase13/README.md),
+ [twelfth checkpoint](phase12/README.md),
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md
+@@ -1,4 +1,6 @@
+ # Fifteenth K215 proof-simplification checkpoint
++
++The [accepted phase16 successor](../phase16/README.md) shares one quotient construction with both checks and exact adoption verified; this page and its evidence remain the historical phase15 record.
+ 
+ Both incremental checks pass for shared transfinite recursion, shared quotient
+ syntax, a smaller PowerSets import boundary and the shorter dense-machine proof.

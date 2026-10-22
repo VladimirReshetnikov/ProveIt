@@ -4,12 +4,12 @@ import BusyBeaver.ZFC.ProfileAxioms
 /-!
 The interface of the bisimulation quotient for the 221's lower chain.
 
-The repository's quotient (`QuotientModel` … `QuotientCPGIC`) starts from a CP/GIC model, whose
-literal power containers the tagged domain of Elliot Glazer's K lacks. `QHyp mem` lists exactly
-what the quotient's ZF proof uses, at the level of interpreted membership `Member` and coded
-bisimilarity `Eqv`: equality-free collection, the equivalence laws and extensionality of `Eqv`,
-profile pairs, and interpreted union, power and singleton-closed containers. The `KQ1*` modules
-are the quotient modules re-run on this interface.
+A CP/GIC model has literal power containers, which the tagged domain of Elliot Glazer's K lacks.
+`QHyp mem` lists exactly what the quotient's ZF proof uses, at the level of interpreted
+membership `Member` and coded bisimilarity `Eqv`: equality-free collection, the equivalence laws
+and extensionality of `Eqv`, profile pairs, and interpreted union, power and singleton-closed
+containers. The `KQ1*` modules build the quotient on this interface; a CP/GIC model supplies it
+through `QuotientModel.ofCPGIC`.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.KQHyp
