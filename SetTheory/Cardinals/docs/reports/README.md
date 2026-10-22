@@ -3476,3 +3476,41 @@ being prepared at this catalogue's cutoff. These selected checks do not adopt
 the other proposals, alter the machine/source program or remove any of the
 4,751 leaves and 6,176 guarded obligations. The written intake preserves the
 base article and labels; no new internal PA result follows.
+
+
+[Batch 214](set-theory/zfc-closure-kernels/intake-214.md) reconciles Sources
+188–192 from `c3caaf63a4`, placed in `ec9d52b818`. All 1,161 outer members
+remain recoverable through 799 immutable Git aliases, 44 delivery aliases,
+67 arrival-only members and 251 new ancillary files. The host has **192 numbered
+sources**, with written coverage of **1–164 and 167–192**. Sources 165–166 and the
+independent batch-209–211 reconciliations remain pending. The collection count
+stays **290 reports**; the base article and its labels are unchanged.
+
+These five manuscripts review the older `57541fe0cf` tree. Their shared-basis
+pair in Sources 191–192 is already accepted in phase13, so its reduction is not
+new. The useful next proposals are one quotient implementation under weak QHyp
+hypotheses, a direct seed on the original named domain, and exact-port residual
+execution. The quotient adapter must avoid an import cycle; the direct route
+must preserve literal equality, freshness and gate cases; every residual suffix
+must restore the complete frame with positive progress. Conditional opaque-prefix
+templates retain all 6,176 cheap coverage instances, and their Home/interpreter
+soundness is still open.
+
+The independent dense-bridge induction saves 600 bytes and 15 lines. Extracting
+the identical PowerSets definition removes unrelated imports; an own hypothetical
+census combining both changes with the held phase14 overlay gives 178 to 176
+modules and 2,093,112 to 2,063,671 selected-source bytes. This is a source/import
+measurement, not a checked 176-module endpoint. Gross fork sizes and selected
+closure cuts are not net repository savings. Submitted component records and
+Rocq 8.18 experiments remain attributed evidence; no supplied script, generator
+or proof compiler ran for intake, and no new Rocq work, machine reduction or
+internal-PA endpoint is claimed.
+
+A separate verification addendum records the accepted local phase14 adaptation:
+190 primary providers (65 earlier successful fresh checks, one corrected client
+on retry and 124 phase13 reuses), both endpoint clients, and 70 compatibility
+providers (16 fresh, 53 primary and one earlier provider). The exact selected
+endpoint has 178 project modules. Seven Lean edits and two retirements save
+15,183 bytes and 314 lines; no machine or endpoint statement changes. The failed
+first client attempt is retained. This acceptance does not promote any of the
+new direct-seed, residual, opaque-prefix or 176-module proposals.
