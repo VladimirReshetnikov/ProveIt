@@ -3,8 +3,8 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase11/README.md)
-checks the 192-module endpoint closure, five decoder-prefix modules and both closed
+[proof simplification checkpoint](verification/k215/simplification/phase12/README.md)
+checks the 179-module endpoint closure, five decoder-prefix modules and both closed
 endpoint clients with only the three standard axioms and exact predecessor bindings. Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
@@ -60,6 +60,15 @@ providers retain exact phase-ten bindings. All public types remain unchanged.
 reconciles the affine-core and CM215 continuation separately. Its ordinary source
 review and submitted old-snapshot compiler receipts do not replace the maintained
 Lean checkpoint.
+
+Phase twelve splits the semantic interfaces from their older clients. The endpoint
+closure falls from 192 to 179 modules, removing 233,503 bytes from its selected
+sources. Fifteen affected modules and both endpoint clients pass fresh Lean checks;
+169 providers retain exact phase-eleven bindings. A separate 67-module check with
+two explicit clients preserves the old model/native interfaces. The seven edited
+or new proof files grow by 491 bytes; no proof body or endpoint type changes.
+[Sources 180–187](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-213.md)
+reconcile the eight later reports separately from this selected adoption.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 

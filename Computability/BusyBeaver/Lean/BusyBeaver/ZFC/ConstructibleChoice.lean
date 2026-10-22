@@ -1,5 +1,5 @@
 import BusyBeaver.ZFC.ConstructibleOrder
-import BusyBeaver.ZFC.ZFModelSemantics
+import BusyBeaver.ZFC.ZFModels
 
 /-!
 Gödel's theorem: the constructible class of a model of ZF is a model of ZFC,

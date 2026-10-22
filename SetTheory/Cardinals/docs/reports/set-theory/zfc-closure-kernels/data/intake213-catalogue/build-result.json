@@ -1,0 +1,190 @@
+{
+  "status": "PDF_VALIDATED_AWAITING_VISUAL_REVIEW",
+  "source_sha256": "d81c0e970f686547b29f9c04e7b00f7620443730dbf0cd2d5edb46c3a8044401",
+  "builder_sha256": "a62e4a934bfcb436fe0625e0b109fa6ab37844eadd0c03e0c41bd161027259e8",
+  "jobs": [
+    {
+      "name": "pdflatex-version",
+      "argv": [
+        "pdflatex",
+        "--version"
+      ],
+      "exit_code": 0,
+      "seconds": 0.003945041447877884,
+      "stdout_sha256": "5ed4d12bfc8b37387ea53ec9537396e987ec3dd557bcc1a766c2e515bd6b15b0"
+    },
+    {
+      "name": "pass1",
+      "argv": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "-no-shell-escape",
+        "-jobname=manifest",
+        "-output-directory",
+        "/tmp/zfc-intake213-catalogue/run1",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/manifest.tex"
+      ],
+      "exit_code": 0,
+      "seconds": 2.172307857312262,
+      "stdout_sha256": "2b35880b551046328a3d8ac5f604e77c1d3d542f999c36f1fb2546dbf1cdff0c"
+    },
+    {
+      "name": "pass2",
+      "argv": [
+        "pdflatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        "-no-shell-escape",
+        "-jobname=manifest",
+        "-output-directory",
+        "/tmp/zfc-intake213-catalogue/run1",
+        "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/manifest.tex"
+      ],
+      "exit_code": 0,
+      "seconds": 2.11783669795841,
+      "stdout_sha256": "db69349eff7a09ed46772dfecaddf33d5bb79f17a0f72ec156a0799bf7b461b0"
+    },
+    {
+      "name": "pdfinfo",
+      "argv": [
+        "pdfinfo",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf"
+      ],
+      "exit_code": 0,
+      "seconds": 0.06439387891441584,
+      "stdout_sha256": "56d679cfe8047d663b9ba8fb0a1902e5884fecca6408224fa20f793435fe0f2f"
+    },
+    {
+      "name": "pdffonts",
+      "argv": [
+        "pdffonts",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf"
+      ],
+      "exit_code": 0,
+      "seconds": 1.0157536994665861,
+      "stdout_sha256": "04c8ea727775e4b11ffcfb343fe407a85f64cf21e62311efd11f6580965c6aee"
+    },
+    {
+      "name": "pdftotext",
+      "argv": [
+        "pdftotext",
+        "-layout",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.txt"
+      ],
+      "exit_code": 0,
+      "seconds": 1.2664120439440012,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "render-2",
+      "argv": [
+        "pdftoppm",
+        "-f",
+        "2",
+        "-l",
+        "2",
+        "-r",
+        "110",
+        "-png",
+        "-singlefile",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf",
+        "/tmp/zfc-intake213-catalogue/run1/page-2"
+      ],
+      "exit_code": 0,
+      "seconds": 0.41486737225204706,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "render-123",
+      "argv": [
+        "pdftoppm",
+        "-f",
+        "123",
+        "-l",
+        "123",
+        "-r",
+        "110",
+        "-png",
+        "-singlefile",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf",
+        "/tmp/zfc-intake213-catalogue/run1/page-123"
+      ],
+      "exit_code": 0,
+      "seconds": 0.36478184536099434,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "render-141",
+      "argv": [
+        "pdftoppm",
+        "-f",
+        "141",
+        "-l",
+        "141",
+        "-r",
+        "110",
+        "-png",
+        "-singlefile",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf",
+        "/tmp/zfc-intake213-catalogue/run1/page-141"
+      ],
+      "exit_code": 0,
+      "seconds": 0.36474834475666285,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "render-142",
+      "argv": [
+        "pdftoppm",
+        "-f",
+        "142",
+        "-l",
+        "142",
+        "-r",
+        "110",
+        "-png",
+        "-singlefile",
+        "/tmp/zfc-intake213-catalogue/run1/manifest.pdf",
+        "/tmp/zfc-intake213-catalogue/run1/page-142"
+      ],
+      "exit_code": 0,
+      "seconds": 0.31464081723243,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "proof_compiler_or_delivered_execution": false,
+  "canonical_pdf_changed": false,
+  "pdf_sha256": "21f254b12d509cca867d0066bbf1e6afee261d70d4f27bc2d53c479307496d3b",
+  "pdf_bytes": 1310693,
+  "pages": 142,
+  "entries": 290,
+  "all_page_footers_correct": true,
+  "all_fonts_embedded": true,
+  "diagnostics": 0,
+  "rendered": [
+    {
+      "page": 2,
+      "path": "/tmp/zfc-intake213-catalogue/run1/page-2.png",
+      "sha256": "2af98209652a0cbe5ccd1d40a64fc0a359b4c869daf5fb5e25434571e2cb5111"
+    },
+    {
+      "page": 123,
+      "path": "/tmp/zfc-intake213-catalogue/run1/page-123.png",
+      "sha256": "f8b6a8f4e14032ef1996f0486e6465b3e8cfdb1dadf3a8c72d976b980212c3c7"
+    },
+    {
+      "page": 141,
+      "path": "/tmp/zfc-intake213-catalogue/run1/page-141.png",
+      "sha256": "f76f9b1b22a8d39a0d0cc608d1ad5c07a5722d62cb62424058bf5d268dfc1022"
+    },
+    {
+      "page": 142,
+      "path": "/tmp/zfc-intake213-catalogue/run1/page-142.png",
+      "sha256": "b1a74f78189f0d79ad9bc70aa50060f02ca9305dc4503cfb6a35bfb3f0c8cf3e"
+    }
+  ]
+}

@@ -1,7 +1,8 @@
+import BusyBeaver.ZFC.InductiveAttempts
 import BusyBeaver.ZFC.KQ1Basic
 import BusyBeaver.ZFC.KQ1Replacement
 import BusyBeaver.ZFC.KQ1Collect
-import BusyBeaver.ZFC.WFModel
+import BusyBeaver.ZFC.WFModelCore
 
 /-!
 ZF from the quotient interface `KQHyp.QHyp`.

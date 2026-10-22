@@ -2,6 +2,7 @@ import BusyBeaver.ZFC.InductiveAttempts
 import BusyBeaver.ZFC.QuotientPower
 import BusyBeaver.ZFC.PSCCalibration
 import BusyBeaver.ZFC.Code254Models
+import BusyBeaver.ZFC.Enum254
 
 /-!
 The complete model-side CP/GIC quotient comparison with ZF0.
@@ -80,5 +81,15 @@ theorem c254_of_zf0_refutation (hf : BProv PSCCalibration.ZF0Ax [] .fBot) :
   intro D mem hirr hBundle valuation
   exact zf0_consistent_of_model mem (valuation 0)
     (Code254GIC.modelsCPGIC_of_encBundle mem hirr valuation hBundle) hf
+
+/-- This is the abstract six-register enumerator, not Prog254 or the binary TM. -/
+theorem enum_halts_of_zf0_refutation (hf : BProv PSCCalibration.ZF0Ax [] .fBot) :
+    Enum254.Halts :=
+  Enum254.complete (c254_of_zf0_refutation hf)
+
+/-- The corresponding one-way consistency statement, at the abstract level. -/
+theorem zf0_consistent_of_enum_nonhalting (h : ¬ Enum254.Halts) :
+    ¬ BProv PSCCalibration.ZF0Ax [] .fBot :=
+  fun hf => h (enum_halts_of_zf0_refutation hf)
 
 end SetTheory.BusyBeaver.ZFC.QuotientZF0

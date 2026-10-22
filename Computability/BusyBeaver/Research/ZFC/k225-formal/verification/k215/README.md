@@ -3,12 +3,12 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. The current
-[Lean simplification checkpoint](simplification/phase11/README.md) retains a
-192-module endpoint closure plus five decoder-prefix modules. Eight modules were
-freshly compiled after reducing the generic implication core to 13,723 bytes /
-287 lines; 189 providers retain exact phase-ten source/import bindings. Both endpoint clients
-were freshly checked with ten standard-axiom reports and zero warnings. The nine
-site batches retain their phase-nine checks; inherited project logs have 21 linters.
+[Lean simplification checkpoint](simplification/phase12/README.md) reduces the
+endpoint closure to 179 modules, plus five decoder-prefix modules. Fifteen affected
+modules were freshly compiled; 169 providers retain exact phase-eleven bindings.
+Both endpoint clients pass with ten exact standard-axiom reports and zero audit
+warnings. A separate 67-module check with two clients preserves the older model
+interfaces. The nine site batches retain all their phase-nine branch checks.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |
@@ -53,7 +53,7 @@ applies the state-renaming equivalence to its sparse
 endpoint. The large literal tables and arithmetic certificates are kernel-checked
 data, while these final compositions stay small.
 
-The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 192
+The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 179
 project modules and then two explicit endpoint clients; the original fresh build
 selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,

@@ -12,8 +12,8 @@ from pathlib import Path
 
 D = Path("BusyBeaver/ZFC")
 SUBS = [
-    ("import BusyBeaver.ZFC.Dag254", "import BusyBeaver.ZFC.Dag222"),
     ("import BusyBeaver.ZFC.Enum254", "import BusyBeaver.ZFC.Code254"),
+    ("import BusyBeaver.ZFC.Dag254", "import BusyBeaver.ZFC.Dag222"),
     ("import BusyBeaver.ZFC.L2Lib254", "import BusyBeaver.ZFC.L2Lib222"),
     ("import BusyBeaver.ZFC.L2Macros254", "import BusyBeaver.ZFC.L2Macros222"),
     ("namespace SetTheory.BusyBeaver.ZFC.L2\n", "namespace SetTheory.BusyBeaver.ZFC.L2K\n"),

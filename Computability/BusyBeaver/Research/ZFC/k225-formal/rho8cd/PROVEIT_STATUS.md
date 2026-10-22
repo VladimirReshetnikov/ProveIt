@@ -9,11 +9,3 @@ The live Rocq `DomRho8.v`, regeneration record, manifest and `regenerate215.py` 
 The 58-step proposal internalizes lifting and composition and removes the private seed wrapper. Its [original static comparison](../verification/k215/simplification/phase10/upstream-merge/source-review/review.md) measured 755 bytes / 35 lines saved before the two inlinings. The adopted core saves 1,016 bytes / 43 lines over phase ten, with the same public interface and assumptions. Kernel/API, affected endpoint and producer-reproduction checks now pass. The delivered `--core` command remains a historical rendering route; the maintained producer uses pinned source data without running that renderer.
 
 The later `88c8114d21` research merge also proposes a separate 56-step `Lukasiewicz` proof. Its exact source is preserved in the [phase-eleven merge record](../verification/k215/simplification/phase11/upstream-merge/README.md); the maintained Lean module retains its checked bytes pending comparison with shared-basis proposals and local API/endpoint checks. New research renderers and Rocq files were imported as data and were not executed.
-
-**Update (shared basis, after batch 212).** The shared-basis proposal is now applied on the Lean side:
-[`derivation_core.txt`](derivation_core.txt) is a 58-step derivation whose goals are the row,
-composition, prefixing, K, Peirce and S; `DominatedImplication.lean` renders it with `k`, `peirce` and
-`s` exported, and the `Lukasiewicz` namespace is an adapter over it (domination holding everywhere),
-replacing that module's separate derivation (both files: 811 → 409 lines against phase eleven's bytes).
-`lake build` of `DominatedImplication`, `DomRho8`, `KCodeDom`, `Lukasiewicz`, its importers and
-`KEndpoint` passes.

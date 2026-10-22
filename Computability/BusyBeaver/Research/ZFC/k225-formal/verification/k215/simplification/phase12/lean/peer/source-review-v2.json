@@ -1,0 +1,35 @@
+{
+  "status": "PASS_NARROW_HELPER_SUCCESSOR_REVIEW",
+  "freeze_sha256": "23d05264e1ac30bdcb6b978526c8b3eb584d7c4d604ff68e432763a2dbfbbf45",
+  "prior_peer_sha256": "fea9b7533e966e74beb8c5043934fcc5a41adce17074fa3faf74d13585800b29",
+  "packet_sha256": "0486e491091cc032fdda88f09f7cff4492c8adae18254c1eea0ccbb957b87847",
+  "exact_delta_checked": true,
+  "unchanged_runtime_helpers": [
+    "basis.py",
+    "collect.py",
+    "review_saved.py"
+  ],
+  "files_rehashed": 12,
+  "context_files_rehashed": 107,
+  "actual_inventory_observation": [
+    {
+      "run": "primary",
+      "inventory_sha256": "55627b67c5e25f81794532a4879287d82c71e681b6ef5de4c637de097bb6ae6a",
+      "explicit_external_imports": [
+        "Init"
+      ]
+    },
+    {
+      "run": "compatibility",
+      "inventory_sha256": "f8e52c82be81f378c4a78b74a51111fa2237cbde44604475e5be6d6a99714c2c",
+      "explicit_external_imports": []
+    }
+  ],
+  "owner_controls_read": {
+    "positive": 10,
+    "negative": 29,
+    "own_rerun": false
+  },
+  "findings": [],
+  "scope": "The only validator change derives the exact explicit external import set and permits a subset of Init; all source graph, transitive reuse, object/log/client/producer/adoption gates remain unchanged. The failed first capture is preserved and was not a proof/compiler failure. No collector, saved-reader, compiler or producer invoked by this successor peer."
+}

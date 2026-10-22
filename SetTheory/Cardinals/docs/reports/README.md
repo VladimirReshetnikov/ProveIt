@@ -3443,3 +3443,36 @@ primitive and return suffix factoring remains open. The rejected214-state
 contracts and bounded searches retain their distinct scopes. This reconciliation
 preserves the base article and its labels; it does not alter the maintained
 Lean/Rocq endpoints or confer a new PA result.
+
+
+[Supplemental batch 213](set-theory/zfc-closure-kernels/intake-213.md) reconciles
+Sources 180–187 from `4b16429bf6`, already placed upstream `d789bf0a28` as part
+of its batch 212. Supplement `0388d93df6` recovers all 788 original members:
+676 immutable Git aliases, 42 delivery aliases, 69 arrival-only members and one
+exact ancillary source. No ZIP was retired twice. The host now has **187 numbered
+sources**, with written coverage of **1–164 and 167–187**; Sources **165–166**
+and the independent batch-209–211 reconciliations remain pending. Category and
+collection counts remain **290 reports**. Earlier status paragraphs retain their
+historical cutoffs.
+
+The immediate proposals are a broader semantic import cut, a shared implication
+basis and exact semantic prefix/suffix contracts. The import cut removes
+233,503 bytes from the selected imported source closure, while its seven
+changed/new Lean files grow by 491 bytes; this is not a repository-wide or
+proof-term reduction. The shared 45-line Lukasiewicz bridge uses a larger core
+and must preserve the maintained two inlinings. Its complete delivered basis
+totals and the competing independent proof remain separately attributed.
+Complete runtime suffix coverage is still open despite the submitted two-branch
+example and residual-record counts. The direct full-seed proposal preserves
+literal named equality and the private-binder freshness argument; it remains
+a separate potential simplification. All eight ordinary reviews and their
+limitations are retained; no supplied program or compiler ran for intake.
+
+Separate selected phase-twelve checks now pass for the 184-module primary union
+(179 endpoint providers plus five prefix providers), with 15 fresh and 169 reused
+modules, and for the 67-provider compatibility closure plus two clients. The
+exact import adaptation is locally adopted; its full evidence publication is
+being prepared at this catalogue's cutoff. These selected checks do not adopt
+the other proposals, alter the machine/source program or remove any of the
+4,751 leaves and 6,176 guarded obligations. The written intake preserves the
+base article and labels; no new internal PA result follows.

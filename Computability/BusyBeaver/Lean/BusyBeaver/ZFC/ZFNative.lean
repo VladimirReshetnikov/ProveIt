@@ -1,6 +1,6 @@
+import BusyBeaver.ZFC.ZFModels
 import BusyBeaver.ZFC.ZFRank
 import BusyBeaver.ZFC.NativeTheory254
-import BusyBeaver.ZFC.ZFModelSemantics
 import BoundedZFCConsistency.Choice
 
 /-!
@@ -30,6 +30,8 @@ open NativeTheory254 InternalOrd
 
 universe u
 variable {V : Type u}
+
+-- models_ZF is provided by ZFModels with its original name.
 
 /-- **Every model of ZF is a model of the native theory.** -/
 theorem native_of_zf (mem : V → V → Prop) (v : Nat → V) (h : ∀ f, ZFax_s f → Sat mem v f) :

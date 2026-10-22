@@ -1,9 +1,9 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase11/README.md) validates the 192-module
+are unchanged. The [latest Lean check](phase12/README.md) validates the 179-module
 endpoint closure, five decoder-prefix modules and both typed endpoint clients.
-Eight modules were freshly compiled; 189 providers retain exact phase-ten
+Fifteen modules were freshly compiled; 169 providers retain exact phase-eleven
 transitive source/import bindings. All ten endpoint reports use only
 `propext`, `Classical.choice`, and `Quot.sound`; both audits have zero warnings.
 
@@ -49,7 +49,13 @@ saving another 1,016 bytes and 43 lines. Its self-contained producer reproduces 
 checked source; retiring two unused templates brings the maintained core, producer
 and template reduction to 6,463 bytes relative to phase ten.
 
-The [latest checkpoint](phase11/README.md),
+Phase twelve separates the semantic interfaces from older clients, reducing the
+endpoint closure from 192 to 179 modules and its selected sources by 233,503 bytes.
+A separate compatibility check preserves the old model/native interfaces. The
+seven edited or new proof sources grow by 491 bytes; their bodies are unchanged.
+
+The [latest checkpoint](phase12/README.md),
+[eleventh checkpoint](phase11/README.md),
 [tenth checkpoint](phase10/README.md),
 [ninth checkpoint](phase9/README.md),
 [eighth checkpoint](phase8/README.md),

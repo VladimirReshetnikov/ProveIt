@@ -6,26 +6,26 @@ implicational calculus. The dominated calculus of the K215/K217 endpoints grants
 directory holds condensed-detachment derivations of that fact, short enough to be read as
 lists of lemmas, and renders them for both lanes:
 
-* [`derivation_core.txt`](derivation_core.txt) (58 steps, no truth constant): the restricted row's
-  unrestricted form, composition `(a → b) → ((b → c) → (a → c))`, prefixing
-  `(a → b) → ((c → a) → (c → b))`, and K, Peirce and S, from modus ponens and the restricted rows
-  alone. `--core` renders it as
-  [`Lean/BusyBeaver/ZFC/DominatedImplication.lean`](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean):
-  any binary connective with a reflexive `below` relation closed under insertion into either operand.
-  Its six public theorems depend on no axioms; a goal lemma that nothing else uses is inlined into
-  its public theorem (as phase eleven did by hand). Two thin adapters use it: `DomRho8.lean` (codes, `≤`)
-  and the `Lukasiewicz` namespace of `Lukasiewicz.lean`, where `below` holds everywhere, so every row
-  is restricted and the same derivation gives the unrestricted calculus its K, Peirce, S and
-  composition (the shared-core proposal of batch 212, with K, Peirce and S folded into the search).
+* [`derivation_core.txt`](derivation_core.txt) (58 steps, no truth constant): the unrestricted
+  row, composition `(a → b) → ((b → c) → (a → c))` and prefixing `(a → b) → ((c → a) → (c → b))`
+  from modus ponens and the restricted rows alone. `--core` renders it as a proposed
+  [`Lean/BusyBeaver/ZFC/DominatedImplication.lean`](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
+  (built with `DomRho8` and `KCodeDom` in `d93adc4174`; the maintained core is phase eleven's checked
+  adaptation with two aliases inlined, see [the status note](PROVEIT_STATUS.md)):
+  any binary connective with a reflexive `below` relation closed under insertion into either
+  operand, the interface of the representation-independent core (phase eight). Its three public
+  theorems depend on no axioms; `DomRho8.lean` is the unchanged Nat adapter.
 * [`derivation.txt`](derivation.txt) (52 steps, uses truth `Z` = the code 0): the row alone.
   `--rocq` renders a Rocq `DomRho8.v` (11,190 bytes; compiled with `ThmDom`, closed under the global
   context; adopted in `4fdc59197a`, while the maintained Rocq tree keeps its checked certificate replay,
   see [the status note](PROVEIT_STATUS.md)); `--lean` renders the same derivation as a drop-in Nat
   `DomRho8.lean` (built with `KCodeDom` in `4fdc59197a`).
 
-* [`derivation_luk.txt`](derivation_luk.txt) (56 steps, unrestricted row): K, Peirce, composition and
-  S on their own. `--rocq-cd` renders the Rocq `CD222.v` proposal from it; `--luk` rendered the Lean
-  `Lukasiewicz` namespace before the shared core replaced it (`e79d52decb`).
+* [`derivation_luk.txt`](derivation_luk.txt) (56 steps, unrestricted row, no truth): K, Peirce,
+  composition and S. `--luk` rewrites the `Lukasiewicz` namespace of
+  [`Lean/BusyBeaver/ZFC/Lukasiewicz.lean`](../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean) (it ported the
+  107-step CD254 DAG; the Tarski bridge after the namespace is kept verbatim); `--rocq-cd` renders the
+  Rocq `CD222.v` with `thm_K`, `thm_P`, `thm_B`, `thm_S`.
 
 [`rocq-proposal/`](rocq-proposal/README.md) holds the two Rocq renderings, compiled with their users,
 as proposals for the peer's Rocq checkpoint.
@@ -49,6 +49,7 @@ truth) and, with `NOZ=1` and the two extra `GOALS`, to the 58-step core.
 
 ```sh
 python generate_domrho8_cd.py --derivation derivation_core.txt --core ../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean
+python generate_domrho8_cd.py --derivation derivation_luk.txt --luk ../../../../Lean/BusyBeaver/ZFC/Lukasiewicz.lean
 python generate_domrho8_cd.py --rocq DomRho8.v       # the Rocq renderings (not in regenerate215.py)
 python generate_domrho8_cd.py --derivation derivation_luk.txt --rocq-cd CD222.v
 python generate_domrho8_cd.py --lean DomRho8.lean    # the drop-in Nat rendering

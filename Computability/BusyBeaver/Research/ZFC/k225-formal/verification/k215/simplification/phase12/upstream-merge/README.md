@@ -1,0 +1,11 @@
+# Shared implication core and alternate semantic cut
+
+The merge of `49e99c5b7c` retains the exact [phase-twelve checkpoint](../README.md). All ten upstream file versions are preserved as inert data in [inputs](inputs/); [merge.json](merge.json) records their original paths, Git blobs, commits and SHA256 hashes. The raw 58-step generic proof from `3a7a61ee97` is also retained for a possible maintained-producer successor. No current proof, producer, derivation input or research renderer changes in this merge. All 199 checked project sources and twelve protected files were rehashed against the accepted checkpoint.
+
+The alternate `ZFModelSemantics` extraction overlaps the broader checked `ZFModels`/`WFModelCore` split. Its model theorem has the same statement and body; its duplicate declaration remains outside the canonical import graph.
+
+The substantive new idea is one implication derivation for both calculi. The generic core additionally exports K, Peirce and S. Taking domination to hold everywhere then gives the old unrestricted interface through a short adapter. The exact proposed pair is 18,243 bytes and 401 lines, versus the checked pair’s 42,454 bytes and 811 lines: 24,211 bytes and 410 lines fewer. This improves on the separate three-module shared-basis prototype by 164 bytes and 17 lines; the alternatives do not give additive savings. Mathematical/API source review, maintained reproduction and Lean integration remain distinct checks.
+
+The current producer31fdd pins the original f0a2 derivation input. The upstream six-goal input has different bytes and cannot replace it alone. A successor must validate both the raw and inlined proof data, reproduce the exact generic core and unchanged numeric adapter, and pass the affected closure and old public-type checks before adoption. Upstream build statements in the archived documents remain attributed reports. Their renderer was not executed.
+
+The [independent boundary census](source-peer/review.json) and its frozen helper are source/Git checks only. Paths in that exact peer receipt describe its original scratch layout; the canonical input destinations are the explicit map in `merge.json`. The preserved reader histories concern metadata readers, not proof failures.
