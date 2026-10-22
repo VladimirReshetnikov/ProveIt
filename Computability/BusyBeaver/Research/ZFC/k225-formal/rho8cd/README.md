@@ -8,8 +8,10 @@ lists of lemmas, and renders them for both lanes:
 
 * [`derivation_core.txt`](derivation_core.txt) (58 steps, no truth constant): the unrestricted
   row, composition `(a → b) → ((b → c) → (a → c))` and prefixing `(a → b) → ((c → a) → (c → b))`
-  from modus ponens and the restricted rows alone. `--core` renders it as
-  [`Lean/BusyBeaver/ZFC/DominatedImplication.lean`](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean):
+  from modus ponens and the restricted rows alone. `--core` renders it as a proposed
+  [`Lean/BusyBeaver/ZFC/DominatedImplication.lean`](../../../../Lean/BusyBeaver/ZFC/DominatedImplication.lean)
+  (built with `DomRho8` and `KCodeDom` in `d93adc4174`; the maintained core is phase ten's checked
+  adaptation of the 52-step derivation, see [the status note](PROVEIT_STATUS.md)):
   any binary connective with a reflexive `below` relation closed under insertion into either
   operand, the interface of the representation-independent core (phase eight). Its three public
   theorems depend on no axioms; `DomRho8.lean` is the unchanged Nat adapter.
