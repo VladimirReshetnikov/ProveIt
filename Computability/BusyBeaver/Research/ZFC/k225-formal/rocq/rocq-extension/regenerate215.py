@@ -62,7 +62,7 @@ def calculus_files(output):
         body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
         (output / f"{name}.v").write_text(body, encoding="utf-8", newline="\n")
     for name in ["EnumPerm", "L1_SoundPerm", "L1_CompPerm", "SeedPerm",
-                 "PathCodec", "BisimMirror", "NormalizedBisim"]:
+                 "PathCodec", "NormalizedBisim"]:
         src = PERM_DIR / f"{name}.v"
         (output / f"{name}.v").write_text(
             f"(** k225-formal/rocqperm/{name}.v (SHA256 {sha(src)}) under namespace {NS}. *)\n"
