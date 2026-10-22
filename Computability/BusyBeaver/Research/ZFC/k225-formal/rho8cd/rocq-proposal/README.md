@@ -23,3 +23,7 @@ Checked here (Rocq 9.1.0 / rocq-stdlib 9.0.0, K230 reference at its pinned sourc
 Not run: a fresh compile of the whole closure and recursive `coqchk` with these files in place.
 The Lean twins are maintained: `Lukasiewicz.lean` and `DominatedImplication.lean` are rendered by
 the same producer.
+
+[`shared-core/`](shared-core/README.md) supersedes both rows above with one shared derivation: a generic
+`DominatedCore.v` and two thin instances (`DomRho8.v`, `CD222.v`), 45,538 -> 15,360 bytes over the two
+maintained files, compiled with the same users.
