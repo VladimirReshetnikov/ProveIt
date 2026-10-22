@@ -1,9 +1,8 @@
-/- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientBasic.lean onto the KQHyp.QHyp interface; do not edit. -/
 import BusyBeaver.ZFC.KQ1Separation
 
 /-!
 Empty Set, Pairing, Union and singleton-closed containers in the actual
-CP/GIC quotient. Every resource comes from the existing formula-indexed
+quotient of a `QHyp` structure. Every resource comes from the existing formula-indexed
 collection instances. Equality in the quotient is actual Lean equality.
 
 SingletonClosed and singletonClosedForm express the upstream INF_lib
@@ -54,8 +53,7 @@ theorem interpreted_pair (mem : V → V → Prop) (witness : V)
     (h : QHyp mem) (a b : V) :
     ∃ p, ∀ z, Member mem z p ↔ Eqv mem z a ∨ Eqv mem z b := by
   obtain ⟨p, hp⟩ := h.pairs a b
-  exact ⟨p, pair_of_profile mem (h.refl)
-    (fun _ _ _ hxy hyz => h.trans hxy hyz) a b p hp⟩
+  exact ⟨p, pair_of_profile mem h.refl (fun _ _ _ => h.trans) a b p hp⟩
 
 theorem quotient_pair (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     (a b : KQ1Model.Domain mem witness h) :
@@ -74,11 +72,6 @@ theorem quotient_pair_form (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     ∀ env, Sat (KQ1Model.quotientMember mem witness h) env Pair_form :=
   bridge_Pair.mpr (quotient_pair mem witness h)
 
-theorem interpreted_union (mem : V → V → Prop) (witness : V)
-    (h : QHyp mem) (a : V) :
-    ∃ b, ∀ z, Member mem z b ↔ ∃ x, Member mem x a ∧ Member mem z x :=
-  h.union a
-
 
 theorem quotient_union (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     (a : KQ1Model.Domain mem witness h) :
@@ -87,7 +80,7 @@ theorem quotient_union (mem : V → V → Prop) (witness : V) (h : QHyp mem)
         KQ1Model.quotientMember mem witness h x a := by
   induction a using Quotient.ind with
   | _ a =>
-    obtain ⟨b, hb⟩ := interpreted_union mem witness h a
+    obtain ⟨b, hb⟩ := h.union a
     refine ⟨KQ1Model.mk mem witness h b, ?_⟩
     intro z
     induction z using Quotient.ind with
@@ -118,19 +111,13 @@ theorem sat_singletonClosedForm (mem : V → V → Prop) (env : Nat → V) :
     Sat mem env singletonClosedForm ↔ SingletonClosed mem := by
   simp only [singletonClosedForm, SingletonClosed, Sat, Sat_fIff, scons]
 
-theorem interpreted_singleton_closed (mem : V → V → Prop) (witness : V)
-    (h : QHyp mem) (root : V) :
-    ∃ v, Member mem root v ∧ ∀ x, Member mem x v →
-      ∃ s, Member mem s v ∧ ∀ z, Member mem z s ↔ Eqv mem z x :=
-  h.singleton root
-
 
 theorem quotient_singleton_closed (mem : V → V → Prop) (witness : V)
     (h : QHyp mem) : SingletonClosed (KQ1Model.quotientMember mem witness h) := by
   intro root
   induction root using Quotient.ind with
   | _ root =>
-    obtain ⟨v, hrv, hv⟩ := interpreted_singleton_closed mem witness h root
+    obtain ⟨v, hrv, hv⟩ := h.singleton root
     refine ⟨KQ1Model.mk mem witness h v, hrv, ?_⟩
     intro x
     induction x using Quotient.ind with

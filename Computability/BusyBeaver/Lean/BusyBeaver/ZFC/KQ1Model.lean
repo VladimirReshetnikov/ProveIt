@@ -1,9 +1,8 @@
-/- Forked by Research/ZFC/k225-formal/generate_kq1.py from QuotientModel.lean onto the KQHyp.QHyp interface; do not edit. -/
 import BusyBeaver.ZFC.KQHyp
-import BusyBeaver.ZFC.QuotientModel
 
 /-!
-The actual quotient structure of an equality-free CP/GIC model.
+The actual quotient structure of a `KQHyp.QHyp` structure, for instance an
+equality-free CP/GIC model (`QuotientModel.ofCPGIC`).
 
 Bisimilarity is an equivalence and interpreted membership respects it in
 both arguments. The quotient has actual equality and satisfies Extensionality.
@@ -40,36 +39,70 @@ theorem member_right_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     exact ⟨z', hz', h.trans hxz ⟨r, hr, hzz'⟩⟩
   · rintro ⟨z', hz', hxz'⟩
     obtain ⟨z, hz, hzz'⟩ := hBack z' hz'
-    exact ⟨z, hz, h.trans hxz'
-      (h.symm ⟨r, hr, hzz'⟩)⟩
+    exact ⟨z, hz, h.trans hxz' (h.symm ⟨r, hr, hzz'⟩)⟩
 
 theorem member_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     {x x' y y' : V} (hxx' : Eqv mem x x') (hyy' : Eqv mem y y') :
     Member mem x y ↔ Member mem x' y' :=
   (member_left_congr mem witness h hxx').trans (member_right_congr mem witness h hyy')
 
-abbrev memberForm := QuotientModel.memberForm
-
-abbrev translate := QuotientModel.translate
-
-abbrev RelSat (mem : V → V → Prop) (env : Nat → V) := QuotientModel.RelSat mem env
+def memberForm (i j : Nat) : Form :=
+  fEx (fAnd (fMem 0 (j + 1)) (eqvForm (i + 1) 0))
 
 theorem sat_memberForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :
-    Sat mem env (memberForm i j) ↔ Member mem (env i) (env j) :=
-  QuotientModel.sat_memberForm mem env i j
+    Sat mem env (memberForm i j) ↔ Member mem (env i) (env j) := by
+  constructor
+  · rintro ⟨z, hz, hE⟩
+    exact ⟨z, hz, (sat_eqvForm mem _ (i + 1) 0).mp hE⟩
+  · rintro ⟨z, hz, hE⟩
+    exact ⟨z, hz, (sat_eqvForm mem _ (i + 1) 0).mpr hE⟩
+
+def translate : Form → Form
+  | fMem i j => memberForm i j
+  | fEq i j => eqvForm i j
+  | fBot => fBot
+  | fImp a b => fImp (translate a) (translate b)
+  | fAnd a b => fAnd (translate a) (translate b)
+  | fOr a b => fOr (translate a) (translate b)
+  | fAll a => fAll (translate a)
+  | fEx a => fEx (translate a)
+
+def RelSat (mem : V → V → Prop) (env : Nat → V) : Form → Prop
+  | fMem i j => Member mem (env i) (env j)
+  | fEq i j => Eqv mem (env i) (env j)
+  | fBot => False
+  | fImp a b => RelSat mem env a → RelSat mem env b
+  | fAnd a b => RelSat mem env a ∧ RelSat mem env b
+  | fOr a b => RelSat mem env a ∨ RelSat mem env b
+  | fAll a => ∀ x, RelSat mem (scons x env) a
+  | fEx a => ∃ x, RelSat mem (scons x env) a
 
 theorem sat_translate (mem : V → V → Prop) (phi : Form) (env : Nat → V) :
-    Sat mem env (translate phi) ↔ RelSat mem env phi :=
-  QuotientModel.sat_translate mem phi env
+    Sat mem env (translate phi) ↔ RelSat mem env phi := by
+  induction phi generalizing env with
+  | fMem i j => exact sat_memberForm mem env i j
+  | fEq i j => exact sat_eqvForm mem env i j
+  | fBot => exact Iff.rfl
+  | fImp a b iha ihb => exact imp_congr (iha env) (ihb env)
+  | fAnd a b iha ihb => exact and_congr (iha env) (ihb env)
+  | fOr a b iha ihb => exact or_congr (iha env) (ihb env)
+  | fAll a ih => exact forall_congr' (fun x => ih (scons x env))
+  | fEx a ih => exact exists_congr (fun x => ih (scons x env))
 
-theorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) :=
-  QuotientModel.equalityFree_translate phi
+theorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) := by
+  induction phi with
+  | fMem i j => exact ⟨True.intro, equalityFree_eqvForm (i + 1) 0⟩
+  | fEq i j => exact equalityFree_eqvForm i j
+  | fBot => trivial
+  | fImp _ _ iha ihb => exact ⟨iha, ihb⟩
+  | fAnd _ _ iha ihb => exact ⟨iha, ihb⟩
+  | fOr _ _ iha ihb => exact ⟨iha, ihb⟩
+  | fAll _ ih => exact ih
+  | fEx _ ih => exact ih
 
 def modelSetoid (mem : V → V → Prop) (witness : V) (h : QHyp mem) : Setoid V where
   r := Eqv mem
-  iseqv := ⟨h.refl,
-    fun hxy => h.symm hxy,
-    fun hxy hyz => h.trans hxy hyz⟩
+  iseqv := ⟨h.refl, h.symm, h.trans⟩
 
 abbrev Domain (mem : V → V → Prop) (witness : V) (h : QHyp mem) :=
   Quotient (modelSetoid mem witness h)

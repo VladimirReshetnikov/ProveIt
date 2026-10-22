@@ -1,4 +1,5 @@
 import BusyBeaver.ZFC.QuotientPower
+import BusyBeaver.ZFC.KQ1Collect
 
 /-!
 CP and all native-Form GIC instances in the actual bisimulation quotient.
@@ -143,77 +144,29 @@ theorem rel_matrix_congr (mem : V → V → Prop) (witness : V)
     (h : ModelsCPGIC mem) (phi : Form) (env : Nat → V)
     {x x' y y' : V} (hxx' : Eqv mem x x') (hyy' : Eqv mem y y') :
     QuotientModel.RelSat mem (scons x (scons y env)) phi ↔
-      QuotientModel.RelSat mem (scons x' (scons y' env)) phi := by
-  apply QuotientModel.relSat_congr mem witness h phi
-  intro n
-  cases n with
-  | zero => exact hxx'
-  | succ n =>
-    cases n with
-    | zero => exact hyy'
-    | succ n => exact eqv_refl_of_model mem witness h (env n)
+      QuotientModel.RelSat mem (scons x' (scons y' env)) phi :=
+  KQ1Collect.rel_matrix_congr mem witness (QuotientModel.ofCPGIC mem witness h) phi env hxx' hyy'
 
 /-- The raw instance is always the equality-free translation of an actual Form. -/
 theorem translated_instance (mem : V → V → Prop) (h : ModelsGIC mem)
     (phi : Form) (env : Nat → V) :
     CollectionInstance mem
       (fun x y => QuotientModel.RelSat mem (scons x (scons y env)) phi) :=
-  instance_of_matrix mem h (QuotientModel.translate phi)
-    (QuotientModel.equalityFree_translate phi) env _
-    (fun x y => QuotientModel.sat_translate mem phi (scons x (scons y env)))
+  KQ1Collect.translated_instance mem h phi env
 
 /-- Full native-equality matrices are covered, with an arbitrary quotient valuation. -/
 theorem quotient_collection (mem : V → V → Prop) (witness : V)
     (h : ModelsCPGIC mem) (phi : Form)
     (env : Nat → QuotientModel.Domain mem witness h) :
     CollectionInstance (QuotientModel.quotientMember mem witness h)
-      (MatrixRelation (QuotientModel.quotientMember mem witness h) phi env) := by
-  let rawEnv := QuotientSeparation.liftEnv mem witness h env
-  have he : (fun i => QuotientModel.mk mem witness h (rawEnv i)) = env := by
-    funext i
-    exact QuotientSeparation.mk_liftEnv mem witness h env i
-  have hSat (x y : V) :
-      MatrixRelation (QuotientModel.quotientMember mem witness h) phi env
-        (QuotientModel.mk mem witness h x) (QuotientModel.mk mem witness h y) ↔
-      QuotientModel.RelSat mem (scons x (scons y rawEnv)) phi := by
-    have hs := QuotientModel.sat_quotient mem witness h phi (scons x (scons y rawEnv))
-    rw [QuotientModel.mk_scons, QuotientModel.mk_scons, he] at hs
-    exact hs
-  intro a
-  induction a using Quotient.ind with
-  | _ a =>
-    obtain ⟨b, hSupport, hCover⟩ := translated_instance mem h.2 phi rawEnv a
-    refine ⟨QuotientModel.mk mem witness h b, ?_, ?_⟩
-    · intro y hy
-      induction y using Quotient.ind with
-      | _ y =>
-        obtain ⟨v, hvb, hyv⟩ := hy
-        obtain ⟨x, hxv⟩ := hSupport v hvb
-        refine ⟨QuotientModel.mk mem witness h x, (hSat x y).mpr ?_⟩
-        exact (rel_matrix_congr mem witness h phi rawEnv
-          (eqv_refl_of_model mem witness h x)
-          (eqv_symm_of_model mem witness h hyv)).mp hxv
-    · intro x hx hSome
-      induction x using Quotient.ind with
-      | _ x =>
-        obtain ⟨u, hua, hxu⟩ := hx
-        obtain ⟨y, hxy⟩ := hSome
-        obtain ⟨y, rfl⟩ := Quotient.exists_rep y
-        have huy := (rel_matrix_congr mem witness h phi rawEnv hxu
-          (eqv_refl_of_model mem witness h y)).mp ((hSat x y).mp hxy)
-        obtain ⟨v, hvb, huv⟩ := hCover u hua ⟨y, huy⟩
-        refine ⟨QuotientModel.mk mem witness h v,
-          raw_member mem (eqv_refl_of_model mem witness h) hvb, (hSat x v).mpr ?_⟩
-        exact (rel_matrix_congr mem witness h phi rawEnv
-          (eqv_symm_of_model mem witness h hxu)
-          (eqv_refl_of_model mem witness h v)).mp huv
+      (MatrixRelation (QuotientModel.quotientMember mem witness h) phi env) :=
+  KQ1Collect.quotient_collection mem witness (QuotientModel.ofCPGIC mem witness h) phi env
 
 /-- This schema includes native Eq, with no EqualityFree premise on phi. -/
 theorem quotient_fullGIC (mem : V → V → Prop) (witness : V)
     (h : ModelsCPGIC mem) :
-    ∀ phi env, Sat (QuotientModel.quotientMember mem witness h) env (gicForm phi) := by
-  intro phi env
-  exact (sat_gicForm _ phi env).mpr (quotient_collection mem witness h phi env)
+    ∀ phi env, Sat (QuotientModel.quotientMember mem witness h) env (gicForm phi) :=
+  KQ1Collect.quotient_fullGIC mem witness (QuotientModel.ofCPGIC mem witness h)
 
 /-- Actual CP plus every native-Form GIC instance, rather than only EF instances. -/
 theorem quotient_fullCPGIC (mem : V → V → Prop) (witness : V)
