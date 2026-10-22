@@ -1,7 +1,7 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 21 October 2026. This report has **179 numbered sources**.
-The written reconciliations cover Sources 1–164 and 167–179; Sources 165–166 retain
+Intake findings through 21 October 2026. This report has **187 numbered sources**.
+The written reconciliations cover Sources 1–164 and 167–187; Sources 165–166 retain
 their earlier placements and separate follow-up work.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
@@ -10,6 +10,21 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 213](intake-213.md) reconciles Sources 180–187 from `4b16429bf6`,
+already placed upstream under its batch-212 heading. Supplemental placement
+`0388d93df6` recovers all 788 members without another ZIP retirement. Complete
+ordinary reviews identify three immediate opportunities: a broader semantic
+import cut, a shared implication basis and exact semantic prefix/suffix contracts.
+The import cut removes 233,503 bytes from the selected source closure while its
+seven changed/new files grow by 491 bytes. The 45-line Lukasiewicz proposal is a
+bridge to a larger shared core, not the whole proof. Direct full-seed semantics
+and tape-independent decoder clocks offer further simplification. Complete
+runtime suffix coverage remains open. Separate phase-twelve import checks have
+passed and the exact adaptation is locally adopted; the dated addendum distinguishes that work from the submitted
+receipts while the full evidence publication is prepared.
+No supplied archive program or proof compiler ran for these ordinary reviews.
+Sources 165–166 and the independent batch-209–211 reconciliations remain pending.
 
 [Batch 212](intake-212.md) adds Source 179 from `6f0d42d368` after
 placement `9740f2bd13`. All 862 members remain exactly recoverable, including

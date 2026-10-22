@@ -1,0 +1,3 @@
+The current intake note and new index paragraphs are faithful within this bounded prose/status review. Historical quotations now resolve to their pinned cutoff record, while the addendum links the moved current declarations. The selected-source byte count, compatibility scope, ordinary-versus-kernel distinction and open primitive suffix obligations are stated accurately. No mathematical or status blocker remains in the reviewed prose.
+
+This receipt is not a fresh full proof review of every delivered archive and does not validate the pending phase12 saved evidence packet. No supplied program, compiler, producer or canonical edit was used.
