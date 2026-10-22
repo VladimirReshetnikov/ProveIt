@@ -2,12 +2,28 @@
     Derived from the pinned K230P.Bisim230 soundness proof.  Certificate
     pointers are compared modulo their implicit infinite false suffix.
     The program, segment executor, register semantics, and exact halting
-    predicate are unchanged.  No register offset is used. *)
+    predicate are unchanged.  No register offset is used.  One forward certificate gives
+    both directions: [check_mirror] flips it ([flip_plain], [mirror]). *)
 From Coq Require Import List Bool Arith Lia NArith.
 From K230 Require Import RM RMEquiv.
 From K230P Require Import Bisim230.
-From NS Require Import BisimMirror.
 Import ListNotations.
+
+Definition flip_plain (x : entry) : entry :=
+  let '(a,b,j,k) := x in (b,a,j,k).
+
+Lemma cnt_eq_mirror l1 l2 : cnt_eq l1 l2 = true -> cnt_eq l2 l1 = true.
+Proof.
+  intros H. unfold cnt_eq. apply forallb_forall. intros i _.
+  apply Nat.eqb_eq. symmetry. now apply cnt_eq_ok.
+Qed.
+
+Lemma getc_mirror C j : getc (mirror C) j =
+  match getc C j with Some (a,b) => Some (b,a) | None => None end.
+Proof.
+  unfold getc, mirror, entry in *. rewrite nth_error_map.
+  destruct (nth_error C (N.to_nat j)) as [[[[a b] k] l]|]; reflexivity.
+Qed.
 
 Module NCheck.
 
@@ -165,10 +181,8 @@ Proof.
   destruct (tsite t2 P2) as [[e2 Q2]|]; [|destruct e1; discriminate].
   destruct e1; try discriminate; destruct e2; try discriminate.
   - repeat rewrite andb_true_iff. intros [[Hr Hj] Hk].
-    apply Nat.eqb_eq in Hr. subst. repeat split.
-    + apply Nat.eqb_refl.
-    + apply branch_ok_mirror. exact Hj.
-    + apply branch_ok_mirror. exact Hk.
+    apply Nat.eqb_eq in Hr. subst.
+    repeat split; [apply Nat.eqb_refl | apply branch_ok_mirror; assumption ..].
   - reflexivity.
 Qed.
 
@@ -186,9 +200,8 @@ Theorem check_one_sided_iff p1 p2 C :
   check (ptree p1) (ptree p2) C = true ->
   forall R, rm_halts p1 ([],R) <-> rm_halts p2 ([],R).
 Proof.
-  intros H R. split.
-  - exact (check_sound p1 p2 C H R).
-  - exact (check_sound p2 p1 (mirror C) (check_mirror _ _ _ H) R).
+  intros H R. split; [exact (check_sound p1 p2 C H R)|].
+  exact (check_sound p2 p1 (mirror C) (check_mirror _ _ _ H) R).
 Qed.
 
 Print Assumptions ibeq_ok.
