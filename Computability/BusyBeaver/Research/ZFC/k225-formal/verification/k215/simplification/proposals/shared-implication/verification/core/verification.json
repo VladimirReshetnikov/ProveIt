@@ -1,0 +1,250 @@
+{
+  "schema": "proveit-k215-shared-implication-verification-v1",
+  "pinned_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "required_lean_version": "4.32.0",
+  "started_utc": "2026-10-21T23:46:48.350954+00:00",
+  "status": "PASS_STANDALONE_KERNEL_CHECKS",
+  "checks": [
+    {
+      "check": "pinned_commit",
+      "passed": true
+    },
+    {
+      "check": "public_basis_interfaces_identical",
+      "passed": true,
+      "normalized_headers": {
+        "k": "theorem k (h : Implicational imp T) (a b : α) : T (imp a (imp b a)) :=",
+        "peirce": "theorem peirce (h : Implicational imp T) (a b : α) : T (imp (imp (imp a b) a) a) :=",
+        "composition": "theorem composition (h : Implicational imp T) (a b c : α) : T (imp (imp a b) (imp (imp b c) (imp a c))) :=",
+        "s": "theorem s (h : Implicational imp T) (a b c : α) : T (imp (imp a (imp b c)) (imp (imp a b) (imp a c))) :="
+      },
+      "normalized_structure": "structure Implicational (imp : α → α → α) (T : α → Prop) : Prop where mp : ∀ {a b}, T (imp a b) → T a → T b rho8 : ∀ c u a b, T (imp (imp (imp c u) a) (imp (imp a c) (imp b c)))"
+    },
+    {
+      "check": "tarski_suffix_byte_identical",
+      "passed": true,
+      "bytes": 1358,
+      "sha256": "8d736c831b6400585e9508df96a36e342c1bc7cbcc48c03cd57d9a6eb1b43a75"
+    },
+    {
+      "check": "core_regeneration_byte_identical",
+      "passed": true,
+      "sha256": "2dc3aad0e9a58b1786c8c8a782ab8e944478d19c83245ceeeff09a1417f52d3b",
+      "bytes": 15383
+    },
+    {
+      "check": "old_nat_lean_rendering_byte_identical",
+      "passed": true,
+      "sha256": "c0c9eb59ad7076b7753b1a5d7d690e26f96936229fdd875dad926bb210d6fb13",
+      "bytes": 11974
+    },
+    {
+      "check": "old_nat_rocq_rendering_byte_identical",
+      "passed": true,
+      "sha256": "55b636205423006248eef06ecc6321064a3c4bafe5a7e11a8fcf32db74b65103",
+      "bytes": 11190
+    },
+    {
+      "check": "standalone_exact_projection",
+      "passed": true,
+      "source": {
+        "path": "/workspace/scratch/0d03914d9672/proof_core/verification/SharedImplicationCore.lean",
+        "bytes": 17369,
+        "sha256": "1a8e1403e44bea9752aaa16b4b869b88e55abdffadf3de98bdf51341b99ec308"
+      }
+    }
+  ],
+  "compilations": [
+    {
+      "command": [
+        "/tmp/k215-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M12288",
+        "-o",
+        "/workspace/scratch/0d03914d9672/proof_core/verification/SharedImplicationCore.olean",
+        "/workspace/scratch/0d03914d9672/proof_core/verification/SharedImplicationCore.lean"
+      ],
+      "cwd": "/workspace/scratch/0d03914d9672/proof_core/verification",
+      "started_utc": "2026-10-21T23:46:48.415576+00:00",
+      "elapsed_seconds": 0.672584,
+      "returncode": 0,
+      "log": {
+        "path": "/workspace/scratch/0d03914d9672/proof_core/verification/SharedImplicationCore.lean.log",
+        "bytes": 810,
+        "sha256": "52df0f80c9089a7252eab149dcb70091ca00cd42439b073e004e00be9b9df2c6"
+      },
+      "source": {
+        "path": "/workspace/scratch/0d03914d9672/proof_core/verification/SharedImplicationCore.lean",
+        "bytes": 17369,
+        "sha256": "1a8e1403e44bea9752aaa16b4b869b88e55abdffadf3de98bdf51341b99ec308"
+      },
+      "axiom_reports": {
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.rho8_all": [],
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.composition": [],
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.lift_right": [],
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.k": [],
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.peirce": [],
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.s": [],
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.k": [],
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.peirce": [],
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.composition": [],
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.s": []
+      },
+      "expected_axiom_reports": [
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.rho8_all",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.composition",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.lift_right",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.k",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.peirce",
+        "SetTheory.BusyBeaver.ZFC.DominatedImplication.s",
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.k",
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.peirce",
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.composition",
+        "SetTheory.BusyBeaver.ZFC.Lukasiewicz.s"
+      ],
+      "outputs": [
+        {
+          "path": "/workspace/scratch/0d03914d9672/proof_core/verification/SharedImplicationCore.olean",
+          "bytes": 358176,
+          "sha256": "1d40652f203759bfec5553bdd3ca829fdf8497291bb71ce5cd786a11db349606"
+        }
+      ],
+      "all_expected_reports_present": true,
+      "all_expected_reports_axiom_free": true,
+      "passed": true
+    },
+    {
+      "command": [
+        "/tmp/k215-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M12288",
+        "-o",
+        "/workspace/scratch/0d03914d9672/proof_core/verification/DiagonalCountermodel.olean",
+        "/workspace/scratch/0d03914d9672/proof_core/verification/DiagonalCountermodel.lean"
+      ],
+      "cwd": "/workspace/scratch/0d03914d9672/proof_core/verification",
+      "started_utc": "2026-10-21T23:46:49.089335+00:00",
+      "elapsed_seconds": 0.258227,
+      "returncode": 0,
+      "log": {
+        "path": "/workspace/scratch/0d03914d9672/proof_core/verification/DiagonalCountermodel.lean.log",
+        "bytes": 349,
+        "sha256": "26b1e24da38510f72fe7d1467d1c598206099f8f28d41297d8a216ec282f9c2e"
+      },
+      "source": {
+        "path": "/workspace/scratch/0d03914d9672/proof_core/verification/DiagonalCountermodel.lean",
+        "bytes": 1583,
+        "sha256": "39e2fa17d88ca838111fedeb30e8abd5ed656e68ba21a52261c73f9e060a6e3f"
+      },
+      "axiom_reports": {
+        "ProofSimplification.DiagonalCountermodel.mp": [],
+        "ProofSimplification.DiagonalCountermodel.diagonal": [],
+        "ProofSimplification.DiagonalCountermodel.unrestricted_fails": [],
+        "ProofSimplification.DiagonalCountermodel.diagonal_does_not_suffice": []
+      },
+      "expected_axiom_reports": [
+        "ProofSimplification.DiagonalCountermodel.mp",
+        "ProofSimplification.DiagonalCountermodel.diagonal",
+        "ProofSimplification.DiagonalCountermodel.unrestricted_fails",
+        "ProofSimplification.DiagonalCountermodel.diagonal_does_not_suffice"
+      ],
+      "outputs": [
+        {
+          "path": "/workspace/scratch/0d03914d9672/proof_core/verification/DiagonalCountermodel.olean",
+          "bytes": 157968,
+          "sha256": "4a37ef95b55ecc06aae89108bfb3199b6c6a80f877231b58034b1755b993f9b5"
+        }
+      ],
+      "all_expected_reports_present": true,
+      "all_expected_reports_axiom_free": true,
+      "passed": true
+    }
+  ],
+  "verifier": {
+    "path": "/workspace/scratch/0d03914d9672/proof_core/verify_refactor.py",
+    "bytes": 14001,
+    "sha256": "36049d4d4253e252aa7374e2f123750d7101bc21078f7b66a825167f91c7aad0"
+  },
+  "scope": "Exact changed mathematical core and generic adapters; no full K215 endpoint build.",
+  "full_endpoint_rebuilt": false,
+  "repository": "/workspace/scratch/0d03914d9672/ProveIt",
+  "observed_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "baseline_sources": [
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py",
+      "bytes": 19174,
+      "sha256": "e52c7963983d270c32c71400c750b748edb1d977f64e988f058525aa7f85406a"
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/derivation_core.txt",
+      "bytes": 2414,
+      "sha256": "f0a2e60d3574615aefa8ce987e783b69a89dd95516dc7238caa569b4a938f116"
+    },
+    {
+      "path": "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/derivation.txt",
+      "bytes": 2062,
+      "sha256": "3cbf1ed6114ff44da836578e58c9d5308d347a8b1d664e83c1983e800d285776"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "bytes": 13984,
+      "sha256": "e91f5cf8e6583ba73221362bc21438b70897a8808329886dc615c166bb16edd7"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "bytes": 28731,
+      "sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3"
+    }
+  ],
+  "proposed_sources": [
+    {
+      "path": "/workspace/scratch/0d03914d9672/proof_core/refactor/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py",
+      "bytes": 19966,
+      "sha256": "a7c634fbe9234b128a12f258b343d03bf8792737d1c02703ad3d9cf2c2e1ada6"
+    },
+    {
+      "path": "/workspace/scratch/0d03914d9672/proof_core/refactor/Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/derivation_core.txt",
+      "bytes": 2850,
+      "sha256": "df8459736a10d994c0a18c3f23b3a417763777af04e1656553d6cf6ecc1f9b2e"
+    },
+    {
+      "path": "/workspace/scratch/0d03914d9672/proof_core/refactor/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "bytes": 15383,
+      "sha256": "2dc3aad0e9a58b1786c8c8a782ab8e944478d19c83245ceeeff09a1417f52d3b"
+    },
+    {
+      "path": "/workspace/scratch/0d03914d9672/proof_core/refactor/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "bytes": 4291,
+      "sha256": "6fcaca8c1eac6e7bd4614ca01f28159219c7c75de0f475eaabef9e70c6891f5d"
+    }
+  ],
+  "countermodel_source": {
+    "path": "/workspace/scratch/0d03914d9672/proof_core/verification/DiagonalCountermodel.lean",
+    "bytes": 1583,
+    "sha256": "39e2fa17d88ca838111fedeb30e8abd5ed656e68ba21a52261c73f9e060a6e3f"
+  },
+  "lean_executable": {
+    "path": "/tmp/k215-toolchain/lean-4.32.0-linux/bin/lean",
+    "bytes": 9024,
+    "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+  },
+  "build_lock": "/tmp/proveit-k215-proof-build.lock",
+  "lean_version": {
+    "command": [
+      "/tmp/k215-toolchain/lean-4.32.0-linux/bin/lean",
+      "--version"
+    ],
+    "cwd": "/workspace/scratch/0d03914d9672/proof_core/verification",
+    "started_utc": "2026-10-21T23:46:48.382812+00:00",
+    "elapsed_seconds": 0.032401,
+    "returncode": 0,
+    "log": {
+      "path": "/workspace/scratch/0d03914d9672/proof_core/verification/lean-version.log",
+      "bytes": 106,
+      "sha256": "98e0981047bbf5c7289f7eb988532a4e923f301d2014b5633936cba0b1ffbc0a"
+    },
+    "text": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+  },
+  "validation_level": "changed_mathematical_core_and_adapters_plus_countermodel",
+  "finished_utc": "2026-10-21T23:46:49.348335+00:00"
+}

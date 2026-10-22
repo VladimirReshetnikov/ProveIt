@@ -1,0 +1,86 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean
+@@ -160,45 +160,7 @@
+ 
+ /-! ## Derivable bundles for every equality-free matrix -/
+ 
+-theorem enc_pos : ∀ f : NF, 0 < enc f
+-  | rel i j => by simp [enc, wel]
+-  | NF.eq i j => by simp [enc, weq]
+-  | NF.bot => by simp [enc, F]
+-  | imp a b => by
+-      have h1 := enc_pos a
+-      have h2 := le_P_left (enc a) (enc b)
+-      simp only [enc, wim]; omega
+-  | all i a => by simp [enc, wal]
+-
+-/-- Codes of named formulas decode back, up to the alias `⊥ ↦ x₀ ∈ x₀`, which re-encodes to `F`. -/
+-theorem enc_dec_enc : ∀ f : NF, enc (dec (enc f)) = enc f
+-  | rel i j => by simp only [enc]; rw [dec_wel]; rfl
+-  | NF.eq i j => by simp only [enc]; rw [dec_weq]; rfl
+-  | NF.bot => by simp only [enc]; rw [dec_F]; exact wel_zero_zero
+-  | imp a b => by
+-      have h := enc_pos a
+-      simp only [enc]
+-      rw [dec_wim (by omega)]
+-      simp only [enc, enc_dec_enc a, enc_dec_enc b]
+-  | all i a => by
+-      simp only [enc]
+-      rw [dec_wal]
+-      simp only [enc, enc_dec_enc a]
+-
+-theorem eqFree_dec_enc : ∀ f : NF, EqFree f → EqFree (dec (enc f))
+-  | rel i j, _ => by simp only [enc]; rw [dec_wel]; trivial
+-  | NF.eq _ _, h => h.elim
+-  | NF.bot, _ => by simp only [enc]; rw [dec_F]; trivial
+-  | imp a b, h => by
+-      have hp := enc_pos a
+-      simp only [enc]
+-      rw [dec_wim (by omega)]
+-      exact ⟨eqFree_dec_enc a h.1, eqFree_dec_enc b h.2⟩
+-  | all i a, h => by
+-      simp only [enc]
+-      rw [dec_wal]
+-      exact eqFree_dec_enc a h
+-
++/-- Equality interpretation fixes equality-free named formulas. -/
+ theorem th_eqFree : ∀ f : NF, EqFree f → KEind222.th f = f
+   | rel _ _, _ => rfl
+   | NF.eq _ _, h => h.elim
+@@ -227,11 +189,11 @@
+ /-- Named formulas whose interpreted codes are derivable in the 222/221 calculus. -/
+ def DerivableNF (f : NF) : Prop := C222 (enc (KEind222.th f))
+ 
+-theorem derivable_bundle (ψ : NF) (hψ : EqFree ψ) (a b : Nat) (ha : enc ψ ≠ a) (hb : enc ψ ≠ b) :
+-    DerivableNF (dec (bundle222 a b (enc ψ))) := by
++theorem derivable_named_bundle (ψ : NF) (hψ : EqFree ψ) (a b : Nat)
++    (ha : enc ψ ≠ a) (hb : enc ψ ≠ b) :
++    DerivableNF (bundleNF a b (enc ψ) ψ) := by
+   unfold DerivableNF
+-  rw [← enc_bundleNF, th_eqFree _ (eqFree_dec_enc _ (eqFree_bundleNF _ _ _ hψ)), enc_dec_enc,
+-    enc_bundleNF]
++  rw [th_eqFree _ (eqFree_bundleNF _ _ _ hψ), enc_bundleNF]
+   exact C222.bundle a b (enc ψ) ha hb
+ 
+ /-- **A model of the derivable formulas has the seed property for every equality-free relation**,
+@@ -243,12 +205,15 @@
+   let ψ' := negNF (negNF ψ)
+   have hψ' : EqFree ψ' := ⟨⟨hψ, trivial⟩, trivial⟩
+   have hbig : 1 < enc ψ' := by
+-    have h1 := enc_pos ψ
+-    have h2 := le_P_left (enc (negNF ψ)) F
+-    have h3 := le_P_left (enc ψ) F
+-    simp only [ψ', negNF, enc, wim] at h2 h3 ⊢; omega
++    have h := le_P_right (enc (negNF ψ)) F
++    change 1 < 4 * P (enc (negNF ψ)) F
++    unfold F at h ⊢
++    omega
+   have hs := seed_of_bundle mem hirr e 0 1 (enc ψ') (by omega) (by omega) (by omega)
+-    (hT _ (derivable_bundle ψ' hψ' 0 1 (by omega) (by omega)) e)
++    (by
++      rw [← enc_bundleNF]
++      exact (Code254Models.sat_encode_decode mem hirr _ e).mpr
++        (hT _ (derivable_named_bundle ψ' hψ' 0 1 (by omega) (by omega)) e))
+   obtain ⟨C, h1, h2⟩ := hs
+   have hiff : ∀ x y, matrixRel mem e 0 1 (enc ψ') x y ↔ Tarski.Sat mem (update (update e 0 x) 1 y) ψ := by
+     intro x y

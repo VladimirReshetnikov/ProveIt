@@ -1,0 +1,87 @@
+{
+  "scope": "generic core and numerical adapter, archived arithmetic dependencies, Coq 8 import compatibility",
+  "production_endpoint_rebuilt": false,
+  "production_rocq91_checked": false,
+  "original_adapter_sha256": "78c3d41ba9f900d1f961f0904a73d764cdacdae59beeddc335dc25f74cc72187",
+  "compatibility_edit": "From Stdlib Require Import Arith Lia. -> From Coq Require Import Arith Lia.",
+  "sources": {
+    "K230S/KCode230.v": "bf7f032ca4408f50dcee14d2b49d113fb442a717b585f0cfdfe48bf14e4908be",
+    "K230L/Codes230.v": "09ad45fa4d67885f293a0709e13a7e0ea0e16b5d2094bbc1bb98aea0e7bce06a",
+    "K215F/DominatedImplication.v": "91b4be29acc9c405394a119c5789191abd6a2c8af4fdc6a2d7b470cc30f74d39",
+    "K215F/DomRho8.v": "a10067768bcc862398a2e3334e564f2eaa5721cbd1953c9ad5e29eb27be2fb88"
+  },
+  "runs": [
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K230S/KCode230.v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K230L/Codes230.v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K215F/DominatedImplication.v"
+      ],
+      "exit_code": 0,
+      "stdout": "Closed under the global context\nClosed under the global context\nClosed under the global context\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K215F/DomRho8.v"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "File \"./K215F/DomRho8.v\", line 32, characters 14-19:\nError:\nIn environment\nT : nat -> Prop\nh : DomImp T\nThe term \"dmp h\" has type \"forall a b : nat, T (wim a b) -> T a -> T b\"\nwhile it is expected to have type\n \"forall a b : nat, T (DI.imp ?L a b) -> T a -> T b\" (cannot satisfy\nconstraint \"T (DI.imp ?L a b)\" == \"T (wim a b)\").\n\n"
+    }
+  ]
+}

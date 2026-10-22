@@ -1,0 +1,181 @@
+K215 runtime proof review
+=========================
+Pinned repository commit: 2ca3a5c16f0876d2cab842056353c03a1ed2f5f0.
+No production source has been edited by this investigation.
+
+1. What is already accomplished
+-------------------------------
+The maintained KSim.runTo calls KHomeReady.exec, not the original KRuntimeCore
+executor directly. KHomeReady proves a table gate from fifteen scan rows and
+one eighteen-step finite window before using KHome.home. A failed gate uses
+the original sstep. The shortcut is positively progressing for every natural
+gap, every valid register list and the full preserved right frame. This is
+already phase-nine work, so suggesting a shared Home-return proof is stale.
+
+K215Decoder already contains 202 source-DAG nodes, 281 local blocks, 234 roles
+and kernel-checked structural/table certificates. DecoderPaths and
+DecoderSourceBinding already prove arbitrary-tape source-path traversal.
+KDecoderPrefix215.leaf_prefix and .walk_prefix already reach the exact zipper
+leafPort retaining the complete reverse prefix. This is more than a Python
+census. However these five auxiliary modules remain outside the 192-module
+endpoint dependency closure: every maintained checkEdge still starts from
+KSim.start Q and executes its entire prefix. The present API is the blockage.
+
+The phase-nine README records 984.608 seconds for the nine fresh site batches
+versus 1,649.340 seconds in the historical phase-six records. This is an
+upstream historical comparison, not a controlled benchmark rerun here.
+
+The production Rocq Source215.v at this pin still imports OffsetBisim230 and
+Cert215Offsets, computes forward and mirrored backward ocheck, and applies
+ocheck_iff. It does not yet use the Lean normalized one-sided check. A separate
+recorded normalized Rocq branch exists in history; assess bytes at the chosen
+baseline rather than assuming a commit-message result is active in main.
+
+2. New finite evidence
+----------------------
+decoder_prefix_census.py parses exact literal K215Decoder and KTable215,
+checks their SHA-256 pins, verifies each local block against the actual table,
+walks every source/role occurrence, and directly runs every complete decoder
+prefix. Reading outside the assigned prefix/marker window is rejected, and
+all tape cells must be restored. It uses no repository generator code.
+
+The 4,751 leaf occurrences consist of 1,900 increments, 1,425 decrements,
+1,327 continues, 98 breaks and one halt. Counting both decrement branches
+gives 6,176 outcomes. All source words have length 3 through 47. Their exact
+prefix clocks range from 2 through 55, with no zero-clock prefix. Prefix
+clocks sum to 165,876 once per leaf, or 213,945 weighted by branch outcomes.
+These are physical decoder-prefix step counts, not symbolic-executor or
+Lean-kernel operation counts. They imply no compiler speedup percentage.
+
+Checking each of the 281 distinct local block traces once uses 353 physical
+steps. Traversing each internal source edge occurrence once uses 5,721 steps
+on 4,749 edges. There are 97 exposed primitive-role edges. Those are context
+interfaces, not 97 proved arbitrary-context primitive theorems.
+
+The largest repeated primitive families are CI1 at state57/read0 and CC2 at
+state57/read1, each 267 occurrences; CI6/CC3 at state62 similarly each 257.
+These are attractive later pilots. The old CB1 pilot has 86 occurrences and
+remains useful as an easier already-designed case, but its existence does
+not establish any tail contract for the larger families.
+
+3. Precise semantic interface
+-----------------------------
+Introduce a proposition EdgeRealizes M Q e whose first field is Q.length<=48.
+For inc r it additionally requires r<9 and, for every n and vs with
+Valid none vs, positive Reach1 from conc n vs (start Q) to
+conc n vs (tgtConf (incPath Q) (allOnes Q) (plain (inc (physOf r)))).
+For decnz r include r<9 and the two exact contracts already appearing in
+checkEdge: the Valid(some(physOf r,true)) branch reaches breakPath1 with no
+register effect, and the false branch reaches incPath with dec effect and
+the existing growth adjustment. For brk/cont use their present target
+expressions unchanged. For halt require Halts of the start concretization
+for every n and every vs of length>=10. For node require False.
+
+Then define SemanticCovered M p as:
+  for every P, there exist e,d with the exact RegisterPath.walk result and
+  EdgeRealizes M (consume P d) e.
+
+The crucial source word is consume P d, including implicit zero padding;
+neither the raw input P nor P.take d alone is an acceptable replacement.
+
+The present checkEdge_sound is a direct packaging of checkEdge_length,
+runTo_sound and runHalt_sound. It yields Covered.to_semantic from the old
+Boolean Covered assumption, with the same BoxLemmas and halt-row premises.
+Refactor sim_step and sim_halt to consume EdgeRealizes. Their arithmetic,
+register-update, spill-list and Clean proofs remain identical. sim_stop
+still needs total walk coverage and exclusion of node leaves. The public
+old halts_iff is a wrapper around the semantic theorem, preserving clients.
+
+This interface change is what permits alternate checked proof producers.
+Replacing the source algorithm wholesale is unnecessary. Do not define the
+semantic interface merely as 'checkEdge=true' under another name.
+
+4. Exact prefix plus checked residual tail
+------------------------------------------
+For each full source word Q, carry its certified data (pre,lastBit,q,op,arg)
+with Q=pre++[lastBit] and RoutedEntry, and the exact leafPort from the existing
+prefix theorem. A tail checker starts at this leafPort and checks the same
+full tgtConf as the present checkEdge. Keep all 4,751 occurrence obligations
+and 6,176 branch outcomes initially. Only the repeated prefix is factored.
+This is a smaller adoption step than proving all 97 parameterized primitive
+interfaces simultaneously.
+
+Define runTailTo with KHomeReady.exec, exact current target predicate,
+unchanged fuel 4000, and moved=true. Its soundness theorem requires only
+Reach, using the second component of exec_sound. The independently certified
+prefix has length>=2, so prefix Reach1 followed by tail Reach yields the
+whole positive macrostep. It is safe to allow a reflexive tail because the
+already-run prefix supplies progress. A portable implementation must carry
+the positive-prefix premise; a source with a depth-one leaf need not have it.
+Keep the halt branch exact and keep both decrement polarity assumptions.
+
+For a mixed rollout, a semantic disjunction lets each occurrence use either
+the old full check or the new prefix/tail check. Thus one existing site batch
+can be benchmarked before regenerating all batches. Deterministic macrostep
+halting transfer needs positive physical progress for every nonterminal
+source step; the fact that symbolic 'steps' may be administrative makes this
+obligation essential. The existing KSim proof already handles it correctly.
+
+5. Uniform source-derived clock and port
+----------------------------------------
+Current source_path_chain_routed exposes its existential steps,q,lastBit
+inside universal a,t. Current KDecoderPrefix215.entry_uniform fixes a port by
+running entry_run at n=0,vs=[], then proves rolePath_unique, snoc_unique and
+routed_control_unique to identify ports returned for other n,vs. It leaves
+the exact clock existential inside the universal quantifier.
+
+The source/role route and each block.steps are syntactic data, independent of
+the tape. Strengthen the source-path induction to return steps,q,lastBit and
+RoutedEntry BEFORE forall a,t. In the primitive branch choose 0,r.state,bit.
+In the internal branch, select the next role and block from EdgeSpec, call
+the induction hypothesis before introducing a,t, and choose block.steps plus
+the returned tail clock. Only the semantic body then constructs Before,
+Reads and Chain witnesses. No choice principle or uniqueness reconstruction
+is necessary. Carry clock bounds by the same induction using 1<=steps<=7
+for each block.
+
+The resulting zipper theorem can state:
+  exists pre,bit,q,op,arg,N,
+    Q=pre++[bit] and RoutedEntry(...) and
+    pre.length<=N<=7*pre.length and
+    for all n,vs, run tm215 N (conc n vs (start Q))
+      = some(conc n vs (leafPort pre bit q)).
+
+This gives stronger reusable information than the current per-tape clock,
+shortens the uniformity adapter, and directly supports the positive-prefix
+argument. The exact new minimum-depth fact should be kernel-checked from
+the literal sourceRoot/sourceNodes, with no trusted Python assertion. The
+finite census here verifies the proposed fact and binds its source bytes;
+it does not itself prove the Lean integration theorem.
+
+6. Limits and recommended order
+-------------------------------
+First add semantic coverage and preserve old clients. Next move source-route
+existentials outward and prove minimum leaf depth 3. Then wire one existing
+batch through exact prefix plus tail. Only after this works should primitive
+families be generalized. A two-bit predecessor context is proven sufficient
+for INTERNAL decoder blocks only. It must not be silently used to erase the
+whole prefix in a primitive return contract: break/continue depend on ancestor
+boundaries, and overflow can move the marker. The Home guard must retain its
+all-natural gap behavior, including true runs which can vanish when n=0.
+
+Port ordinary normalized source correspondence to Rocq as a separate change,
+reusing its recorded branch carefully. Do not bundle runtime-interface and
+calculus-source replacements into one unreviewable full rebuild.
+
+Exact source anchors
+---------------------
+Lean/BusyBeaver/ZFC/KSim.lean: start, tgtConf, checkEdge, Covered, sim_step,
+sim_stop, sim_halt, halts_iff.
+Lean/BusyBeaver/ZFC/KRuntimeCore.lean: StepOk, execWith_sound, exec_sound.
+Lean/BusyBeaver/ZFC/KHomeReady.lean: ready, stepper_sound, exec_sound.
+Lean/BusyBeaver/ZFC/K215Decoder.lean: sourceNodes, blocks, roles, counts.
+Lean/BusyBeaver/ZFC/DecoderPaths.lean: source_path_chain_routed,
+reaches_primitive_routed.
+Lean/BusyBeaver/ZFC/DecoderSourceBinding.lean: source_tree_eq,
+upstream_leaf_reaches_routed, upstream_walk_reaches_routed.
+Lean/BusyBeaver/ZFC/KDecoderPrefix215.lean: leafPort, entry_run,
+entry_uniform, leaf_prefix, walk_prefix.
+Research/ZFC/k225-formal/verification/k215/simplification/phase9/README.md.
+Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/Source215.v.
+All paths are relative to Computability/BusyBeaver/.

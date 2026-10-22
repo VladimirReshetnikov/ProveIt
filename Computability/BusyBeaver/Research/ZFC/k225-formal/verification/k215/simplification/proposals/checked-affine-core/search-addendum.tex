@@ -1,0 +1,109 @@
+There is a positive, quantified sub-contract. Change the native row
+\[
+ 66/0:\quad 1\,R\,198\quad\longmapsto\quad 0\,L\,54
+\]
+and delete native state 198 (dense state 189). The resulting research table has
+214 listed working labels and 428 rows; 212 working labels remain reachable
+in its transition graph. The inherited symbolic runtime checker proves
+all 1,900 literal increment occurrences with the exact logical increment and
+continuation, while leaving the arbitrary nonempty spare suffix unchanged.
+Its induction rules cover arbitrary natural register values, arbitrary natural
+gap and arbitrary finite spare data; this is stronger than bounded testing.
+The run uses 672,539 symbolic rules. It is an ordinary quantified symbolic
+argument checked by a Python verifier, not a proof-assistant kernel theorem.
+
+The same table fails a concrete zero-decrement contract. At zero-based source
+index 2 (the third leaf),
+address \texttt{0100}, command \texttt{CD0}, take all nine registers zero,
+spare suffix $[0]$ and gap zero. The parent returns after 640 transitions with
+all logical registers zero and continuation one-bits at positions $[1,2]$.
+The research table first returns after 3,966 transitions with continuation
+one-bits at $[1,3,4,5]$ and register values
+\[
+ [0,0,0,0,0,1,0,0,2].
+\]
+An independent simulator replays this mismatch. Thus the 214-state table is
+delivered only as a rejected uniform-runtime experiment, with its failed
+obligation prominently identified. It is not delivered as a verified solution
+to the consistency machine problem; its blank-run calibration remains
+unestablished.
+
+All 856 direct write/direction/target replacements for the incoming row also
+fail the stated relaxed short screen. A targeted 856-choice provider experiment
+likewise finds no sampled full-contract survivor. These are bounded
+observations, not global impossibility results for a joint rewrite of the
+shared region.
+
+\subsection{Coordinated reuse of an existing provider}
+
+A further fixed family redirects dense row $66/0$ to another provider $p$ and
+copies either or both outgoing rows of state 189 into $p$, then deletes 189.
+Excluding providers 66 and 189 gives $213\cdot3=639$ tables. All 109 survivors
+of the short screen fail the subsequent complete-source sample refinement.
+An independent simulator audits the whole family, with the following results.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Observed obstruction or remaining bound & Tables\\\midrule
+Wrong first-redispatch output & 338\\
+Outward motion into the infinite blank exterior & 223\\
+Literal repeated configuration & 5\\
+Unexpected halt during a nonhalting primitive & 2\\
+Unresolved at the 20,000-transition bound & 71\\\bottomrule
+\end{tabular}
+\end{center}
+
+Thus 568 tables have explicit primitive-contract obstructions; the remaining
+71 have only bounded failures. The ray checks verify a read-zero self-loop
+moving away from every nonzero cell, and the cycle checks compare complete
+configurations. These conclusions are stronger than timeouts but remain
+specific to the stated primitive contract.
+
+Three variants, using providers 95, 188 and 213 with both rows replaced, are
+particularly informative. Each has 214 listed and graph-reachable working
+states. Their first decoded blank-start frames match the parent's complete
+tape and head: at 79,633 transitions for the first two, and 79,639 for the
+third. This experimental first decoded frame is distinct from the maintained
+formal bootstrap endpoint. They pass respectively 5,944, 5,936 and 5,918
+guarded source cases before their first failed case. None of those finite
+successes establishes correctness.
+
+Their failures occur at zero-based source indices 4,578, 4,572 and 4,560.
+The bad prefixes read only positions $-10$ through 14, 15 or 21 relative to
+the initial head. Every input cell depending on registers, gap or spare data
+lies at position at least 64. The returned continuation differs from both
+branches of the source decrement. The same finite prefix therefore fails for
+every natural register file and every legal gap and spare suffix at that
+address. A rescue by a stronger input invariant must exclude the address
+itself; excluding only the displayed zero-register valuation is insufficient.
+The independently replayed tables and witnesses are retained as rejected
+experiments in \texttt{state\_search/forced\_provider189/}.
+
+The addresses also have a useful source-level explanation. They lie in the
+mandatory final gate of the AX routine: the first comparison, restoration of
+its saved value, and the second comparison. Direct graph replay reaches a
+\texttt{Clean} AX entry after 180 checkpoint transitions from the supplied
+initial decoded frame. The inherited total macro-run theorems then reach the
+gate with registers $[7,T,W,0,0,0,0,0,0]$ for finite $T,W$. The literal graph
+visits source indices 4,560, 4,572 and 4,578 at offsets $1$, $T+4$ and $T+6$
+from gate entry. Thus an ordinary argument from inherited totality and the
+checked literal mapping establishes their eventual occurrence in the parent
+source run; a long bounded trace was merely still doing earlier arithmetic.
+This argument is documented in
+\texttt{state\_search/source\_reachability/}. It is not a new kernel
+reachability theorem, and it does not establish that any altered physical
+machine follows the parent to those controls or has a different blank-tape
+halting behavior.
+
+The overwritten providers are source-address decoder controls. Provider 188
+is especially localized: it separates two closed transfer loops, from
+register 7 to 6 and from register 4 to 5. Three simple swaps or reassociations
+of this region preserve 202 distinct source DAG nodes; the corresponding
+literal two-node rewires each still have 215 working states and no ordinary
+Mealy-state merge. The source transformations are justified by closed-block
+sequencing and the disjoint register pairs. They do not certify those physical
+rewires: a changed intermediate decoder context still needs its own runtime
+proof. This small experiment saves no state. A more substantial joint
+implementation of the two transfers, their decoder and the shared
+append/restoration interface remains a concrete synthesis target.

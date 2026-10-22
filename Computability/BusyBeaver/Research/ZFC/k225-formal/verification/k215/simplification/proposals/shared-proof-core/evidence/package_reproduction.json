@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "scope": "Focused component checks, not the full K215 endpoint.",
+  "records": [
+    {
+      "name": "lean_source_comparison",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/lean_inputs/inspect_refactoring.py",
+        "--repo",
+        "/workspace/scratch/228e1bca0631/ProveIt"
+      ],
+      "returncode": 0,
+      "seconds": 0.153754150000168,
+      "log": "logs/lean_source_comparison.log"
+    },
+    {
+      "name": "lean_logic",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/lean_inputs/verify_closure.py",
+        "--repo",
+        "/workspace/scratch/228e1bca0631/ProveIt",
+        "--lean",
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean"
+      ],
+      "returncode": 0,
+      "seconds": 19.87036401700243,
+      "log": "logs/lean_logic.log"
+    },
+    {
+      "name": "semantic_source_comparison",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/semantic_inputs/verify_invariants.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.037142581000807695,
+      "log": "logs/semantic_source_comparison.log"
+    },
+    {
+      "name": "lean_semantic",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/semantic_inputs/build_semantic.py",
+        "--lean",
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "--out",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/semantic_build"
+      ],
+      "returncode": 0,
+      "seconds": 22.132084364999173,
+      "log": "logs/lean_semantic.log"
+    },
+    {
+      "name": "rocq_baseline_and_candidate",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/rocq_inputs/reproduce.py",
+        "--out",
+        "/workspace/scratch/228e1bca0631/packet_reproduction/rocq_build"
+      ],
+      "returncode": 0,
+      "seconds": 100.18221909299973,
+      "log": "logs/rocq_baseline_and_candidate.log"
+    },
+    {
+      "name": "positive_progress_example",
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "/workspace/scratch/228e1bca0631/output/K215_Shared_Proof_Core_2026-10-21/explanatory/ProgressBoundary.lean"
+      ],
+      "returncode": 0,
+      "seconds": 1.2451397580007324,
+      "log": "logs/positive_progress_example.log"
+    }
+  ]
+}

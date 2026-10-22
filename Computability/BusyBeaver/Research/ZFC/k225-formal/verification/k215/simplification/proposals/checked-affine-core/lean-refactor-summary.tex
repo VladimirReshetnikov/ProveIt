@@ -1,0 +1,34 @@
+The concrete change removes \texttt{enc\_pos}, \texttt{enc\_dec\_enc} and
+\texttt{eqFree\_dec\_enc}. These were used to take a named formula through
+encoding, decoding, equality-freeness and re-encoding before applying the
+bundle rule. Instead, construct the equality-free named bundle $\varphi$
+directly and prove that its interpreted code is derivable using
+\texttt{C222.bundle}. The existing hypothesis about a model of all derivable
+named formulas then gives $\operatorname{Sat}(\varphi)$. Apply the already proved
+semantic round trip
+\[
+ \operatorname{Sat}_{\mathrm{mem},e}
+       (\operatorname{dec}(\operatorname{enc}(\varphi)))
+ \ \Longleftrightarrow\
+ \operatorname{Sat}_{\mathrm{mem},e}(\varphi)
+\]
+from \texttt{Code254Models.sat\_encode\_decode}. Its existing irreflexivity
+hypothesis handles the bottom-formula alias. No new interpretation theorem or
+import is needed. The one remaining numerical lower bound follows from
+\texttt{le\_P\_right} and $F=1$, rather than induction on a formula.
+
+On the pinned source, the module decreases from 269 to 234 lines
+(35 lines, $13.0\%$) and from 11,711 to 10,436 bytes
+(1,275 bytes, $10.9\%$). The patch changes no machine table or source program.
+The public \texttt{seed\_eqFree} theorem and the endpoint statements retain
+their types. The helper API does change: \texttt{derivable\_bundle} becomes
+\texttt{derivable\_named\_bundle}, and the three redundant helpers are removed.
+Any additional consumers outside the checked endpoint closure would need to
+use the new interface or retain a compatibility layer.
+
+The verification component rebuilds the exact ten affected project modules
+and four endpoint clients in a separate overlay after checking the declared
+184-module baseline, including the four proof-only batching overlays.
+This makes the acceptance criterion dependent theorem compilation,
+not merely a text diff or an isolated tactic check. The final outcomes and
+assumption reports are recorded in the accompanying receipts.

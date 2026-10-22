@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-21",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "baseline_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "candidate_table": {
+    "path": "Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm",
+    "sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090"
+  },
+  "production_checkout_modified": false,
+  "full_endpoint_rebuilt": false,
+  "internally_encoded_zfc_derivation_supplied": false,
+  "production_speedup_measured": false,
+  "checked_lean_decoder": {
+    "status": "PASS",
+    "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "original_modules": 23,
+    "new_modules": 2,
+    "receipt": "evidence/lean-uniform/uniform_decoder_verification.json",
+    "result": "One exact decoder clock and entry port before every tape/head and every gap/register interpretation; prefix clock at least two.",
+    "new_proof_sources": {
+      "proofs/UniformDecoder.lean": "25d6fc90c214c841c350f2074a7fbc6e63c76a884f92b00c02fdfd6bf9942f4b",
+      "proofs/UniformZipper.lean": "264e57bb92ed7c9fc48a4b54d92b4ff075a83a5fe9f2fd5ef2d1acc2853ef855"
+    },
+    "concrete_theorem_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "production_site_migration_completed": false
+  },
+  "checked_standalone_lean": {
+    "compiler": "Lean 4.32.0",
+    "axiom_free_printed_results": 10,
+    "files": {
+      "proofs/OptionContracts.lean": "c641965aa1c65eb48062092d4d46ba94504380330c9a1fd19250d24b23f3bba1",
+      "proofs/FairSearch.lean": "876d80548b14e0726bdeba90ffa5a1abcf9e8327628ebddec56dae09c1ae5c3c"
+    },
+    "logs": [
+      "evidence/lean-standalone/OptionContracts.log",
+      "evidence/lean-standalone/FairSearch.log"
+    ],
+    "concrete_enumerator_instantiation_completed": false
+  },
+  "checked_rocq_implication": {
+    "compiler": "Coq 8.18.0",
+    "generic_core_coqc_exit": 0,
+    "generic_core_coqchk_exit": 0,
+    "generic_public_results_closed": 3,
+    "focused_adapter_compilations": 4,
+    "focused_adapter_coqchk_exit": 0,
+    "focused_adapter_public_result_closed": true,
+    "compatibility_edit": "From Stdlib Require Import Arith Lia. -> From Coq Require Import Arith Lia.",
+    "production_rocq_9_1_checked": false,
+    "proof_source_bytes": {
+      "current_production_replay": 22673,
+      "new_generic_core": 14655,
+      "new_numeric_adapter": 1389,
+      "new_combined": 16044,
+      "reduction": 6629,
+      "existing_numeric_52_step_proposal": 11190
+    },
+    "receipts": [
+      "rocq/coq_core_check.json",
+      "rocq/adapter_check.json",
+      "rocq/lean_control.json",
+      "rocq/checker_validation.json"
+    ],
+    "attribution": "Exact current Lean 58-step derivation inherited; new work is generic Rocq port and explicit-instance audit."
+  },
+  "decoder_census": {
+    "status": "FINITE_SOURCE_AND_LITERAL_TRACE_CHECKS_PASS",
+    "scope": "Decoder prefixes only; no primitive-tail/kernel check or speedup benchmark.",
+    "leaves": 4751,
+    "branch_outcomes": 6176,
+    "primitive_role_interfaces": 97,
+    "prefix_physical_step_sum_per_branch": 213945,
+    "clock_min": 2,
+    "clock_max": 55,
+    "receipt": "evidence/decoder_prefix_metrics.json"
+  },
+  "import_proposal": {
+    "status": "SOURCE_GRAPH_PROJECTION_NOT_KERNEL_CHECKED",
+    "patch_applies_at_baseline": true,
+    "kernel_compiled": false,
+    "local_modules_before": 180,
+    "local_modules_after": 167,
+    "net_source_reduction": {
+      "lines": 3965,
+      "bytes": 233503
+    },
+    "external_boundary_names_unchanged": true,
+    "receipt": "evidence/import_boundaries.json"
+  },
+  "semantic_coverage": {
+    "status": "DESIGN_PROPOSAL_NOT_IMPLEMENTED",
+    "proved_support": "proofs/UniformZipper.lean: prefix_tail_sound",
+    "remaining": [
+      "EdgeRealizes and SemanticCovered definitions",
+      "soundness adapter from current Boolean checkEdge",
+      "refactor simulation consumers",
+      "residual-tail checker and one production site batch",
+      "same-machine paired benchmark and endpoint rebuild"
+    ]
+  },
+  "report": {
+    "tex": "report.tex",
+    "pdf": "report.pdf",
+    "pages": 13,
+    "tex_sha256": "8530083c296ee9bc04256deecd323c3536349835764ce9d64a9eeab70f10cee9",
+    "pdf_sha256": "9090ace391a7797e186ad6b08e671d024f477b2286617e902de1eee64a5ee300",
+    "layout": "All 13 pages rendered and visually reviewed; final LaTeX log has no overfull boxes or undefined references."
+  }
+}

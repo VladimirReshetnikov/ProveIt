@@ -1,0 +1,89 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFModelSemantics.lean
+@@ -0,0 +1,32 @@
++import BusyBeaver.ZFC.InternalOrd
++
++/-! The semantic fields of a ZF model, independent of every enumerator
++and register program. The original `ZFNative.models_ZF` name is retained.
++The theorem body is moved verbatim from ZFNative.lean. -/
++
++namespace SetTheory.BusyBeaver.ZFC.ZFNative
++
++open InternalOrd
++
++universe u
++variable {V : Type u}
++
++/-- The semantic content of a model of `ZFax_s`. -/
++theorem models_ZF (mem : V → V → Prop) (v : Nat → V) (h : ∀ f, ZFax_s f → Sat mem v f) :
++    ZFAxioms mem ∧ (∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a) ∧ Regular mem := by
++  have hE := extract ZFax_s v Ext_form h (Or.inl rfl)
++  have hReg := extract ZFax_s v Reg_form h (Or.inr (Or.inl rfl))
++  have hP := extract ZFax_s v Pow_form h (Or.inr (Or.inr (Or.inl rfl)))
++  have hPair := extract ZFax_s v Pair_form h (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
++  have hU := extract ZFax_s v Union_form h (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
++  have hI := extract ZFax_s v Inf_form h
++    (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))
++  have hS (phi : Form) := extract ZFax_s v (Sep_form phi) h
++    (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨phi, rfl⟩)))))))
++  have hR (psi : Form) := extract ZFax_s v (Repl_form psi) h
++    (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨psi, rfl⟩)))))))
++  exact ⟨⟨bridge_Ext.mp hE, bridge_Sep.mp hS, bridge_Pair.mp hPair, bridge_Union.mp hU,
++      bridge_Inf_fwd v (hI v), bridge_Repl_fwd hR⟩,
++    bridge_Pow.mp hP, bridge_Reg.mp hReg⟩
++
++end SetTheory.BusyBeaver.ZFC.ZFNative
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean
+@@ -1,5 +1,6 @@
+ import BusyBeaver.ZFC.ZFRank
+ import BusyBeaver.ZFC.NativeTheory254
++import BusyBeaver.ZFC.ZFModelSemantics
+ import BoundedZFCConsistency.Choice
+ 
+ /-!
+@@ -29,24 +30,6 @@
+ 
+ universe u
+ variable {V : Type u}
+-
+-/-- The semantic content of a model of `ZFax_s`. -/
+-theorem models_ZF (mem : V → V → Prop) (v : Nat → V) (h : ∀ f, ZFax_s f → Sat mem v f) :
+-    ZFAxioms mem ∧ (∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a) ∧ Regular mem := by
+-  have hE := extract ZFax_s v Ext_form h (Or.inl rfl)
+-  have hReg := extract ZFax_s v Reg_form h (Or.inr (Or.inl rfl))
+-  have hP := extract ZFax_s v Pow_form h (Or.inr (Or.inr (Or.inl rfl)))
+-  have hPair := extract ZFax_s v Pair_form h (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
+-  have hU := extract ZFax_s v Union_form h (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
+-  have hI := extract ZFax_s v Inf_form h
+-    (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))))
+-  have hS (phi : Form) := extract ZFax_s v (Sep_form phi) h
+-    (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨phi, rfl⟩)))))))
+-  have hR (psi : Form) := extract ZFax_s v (Repl_form psi) h
+-    (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨psi, rfl⟩)))))))
+-  exact ⟨⟨bridge_Ext.mp hE, bridge_Sep.mp hS, bridge_Pair.mp hPair, bridge_Union.mp hU,
+-      bridge_Inf_fwd v (hI v), bridge_Repl_fwd hR⟩,
+-    bridge_Pow.mp hP, bridge_Reg.mp hReg⟩
+ 
+ /-- **Every model of ZF is a model of the native theory.** -/
+ theorem native_of_zf (mem : V → V → Prop) (v : Nat → V) (h : ∀ f, ZFax_s f → Sat mem v f) :
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean
+@@ -1,5 +1,5 @@
+ import BusyBeaver.ZFC.ConstructibleOrder
+-import BusyBeaver.ZFC.ZFNative
++import BusyBeaver.ZFC.ZFModelSemantics
+ 
+ /-!
+ Gödel's theorem: the constructible class of a model of ZF is a model of ZFC,
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean
+@@ -1,7 +1,7 @@
+ import BusyBeaver.ZFC.KQ1Basic
+ import BusyBeaver.ZFC.KQ1Replacement
+ import BusyBeaver.ZFC.KQ1Collect
+-import BusyBeaver.ZFC.WFTheory
++import BusyBeaver.ZFC.WFModel
+ 
+ /-!
+ ZF from the quotient interface `KQHyp.QHyp`.

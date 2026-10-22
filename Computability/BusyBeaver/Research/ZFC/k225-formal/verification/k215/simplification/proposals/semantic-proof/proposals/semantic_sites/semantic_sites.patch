@@ -1,0 +1,632 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCB1Contract.lean
+@@ -0,0 +1,68 @@
++import BusyBeaver.ZFC.KCB1Suffix
++
++/-! A concrete first producer for the semantic port interface.
++The all-prefix LeftWord guard remains explicit; this does not yet discharge
++routing and guard coverage for all 86 CB1 source occurrences. -/
++namespace SetTheory.BusyBeaver.ZFC.KCB1Contract
++open KZip KRuntimeCore KSim RegisterPath KDecoderPrefix215 KCB1Suffix
++open SiteCoverage DecoderPaths DecoderSourceBinding K215Decoder
++
++theorem cb1_strip (A : List Bool) :
++    stripPath false 1 (A ++ [false, false, true]) = A ++ [false] := by
++  simp [stripPath, stripRev, List.reverse_append, List.reverse_cons]
++
++theorem cb1_path (A : List Bool) :
++    breakPath 1 (A ++ [false, false, true]) = A ++ [true] := by
++  rw [breakPath, cb1_strip]
++  simp [incPath, incRev, List.reverse_append, List.reverse_cons]
++
++theorem cb1_overflow (A : List Bool) :
++    allOnes (stripPath false 1 (A ++ [false, false, true])) = false := by
++  rw [cb1_strip]
++  simp [allOnes]
++
++theorem ready_checked : KHomeReady.ready KTableCore.tm215 = true := by decide +kernel
++
++/-- Full CB1 suffix contract for the maintained table, all gaps and registers.
++Only a finite read-only traversal guard depends on the complete prefix A. -/
++theorem port_contract (A : List Bool)
++    (hw : leftCheck KTableCore.tm215 1 (A.reverse ++ [true]) 2 = true)
++    (hlen : A.length + 3 ≤ 48) :
++    PortContract KTableCore.tm215 (leafPort (A ++ [false, false]) true 108)
++      (A ++ [false, false, true]) (.brk 1) := by
++  refine ⟨by simpa using hlen, ?_⟩
++  intro n vs _
++  have h := cb1_leafPort (M := KTableCore.tm215) rfl rfl rfl
++    (KHomeReady.ready_sound ready_checked).2 A (leftCheck_sound hw)
++    (by unfold D0; omega) n vs
++  simpa only [cb1_path, cb1_overflow] using h
++
++/-- For a source leaf routed through q108/true, the existing decoder theorem
++and one guarded CB1 contract supply semantic dispatch coverage. -/
++theorem edge_contract (A : List Bool)
++    (leaf : LeafAt KSource215.t215 (A ++ [false, false, true]) (.brk 1))
++    (route : RoutedEntry formal sourceNodes roles 0 (A ++ [false, false, true]) 108 true 2 1)
++    (hw : leftCheck KTableCore.tm215 1 (A.reverse ++ [true]) 2 = true)
++    (hlen : A.length + 3 ≤ 48) :
++    EdgeContract KTableCore.tm215 (A ++ [false, false, true]) (.brk 1) := by
++  obtain ⟨pre, b, q, op, arg, hsplit, _, hr, hprefix⟩ := leaf_prefix leaf
++  obtain ⟨hq, hb⟩ := routed_control_unique route hr
++  cases hq
++  cases hb
++  have he : (A ++ [false, false]) ++ [true] = pre ++ [true] := by
++    simpa only [List.append_assoc, List.cons_append, List.nil_append] using hsplit
++  have hr : true :: (A ++ [false, false]).reverse = true :: pre.reverse := by
++    simpa using congrArg List.reverse he
++  have hp : A ++ [false, false] = pre := by
++    simpa only [List.reverse_reverse] using congrArg List.reverse (List.cons.inj hr).2
++  cases hp
++  apply PortContract.precompose (port := leafPort (A ++ [false, false]) true 108)
++  · intro n vs
++    obtain ⟨steps, _, _, hrun⟩ := hprefix n vs
++    exact ⟨steps, hrun⟩
++  · exact port_contract A hw hlen
++
++#print axioms cb1_strip
++#print axioms port_contract
++#print axioms edge_contract
++end SetTheory.BusyBeaver.ZFC.KCB1Contract
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCB1Suffix.lean
+@@ -0,0 +1,115 @@
++import BusyBeaver.ZFC.KDecoderPrefix215
++import BusyBeaver.ZFC.KHomeReady
++
++/-! Adapted from the preserved phase9 uncompiled CB1Suffix proposal.
++A finite unchanged-word witness turns the q1 return into one all-frame theorem.
++The actual CB1 family retains the complete prefix A, not just its last two bits.
++See the accompanying compilation receipt for the validation status. -/
++namespace SetTheory.BusyBeaver.ZFC.KCB1Suffix
++open KZip KRuntimeCore KSim KDecoderPrefix215
++
++/-- Check exactly a leftward unchanged-word traversal.  The final marker is
++part of the checked word, so A=[] reaches the boundary without a special case. -/
++def leftCheck (M : TMN) : Nat → List Bool → Nat → Bool
++  | q, [], q' => decide (q = q')
++  | q, b :: word, q' =>
++    match M q b with
++    | some (w, false, r) => decide (w = b) && leftCheck M r word q'
++    | _ => false
++
++theorem leftCheck_sound {M : TMN} {q q' : Nat} {word : List Bool}
++    (h : leftCheck M q word q' = true) : KHome.LeftWord M q word q' := by
++  induction word generalizing q with
++  | nil =>
++    have he : q = q' := by simpa only [leftCheck, decide_eq_true_eq] using h
++    subst q'
++    exact .nil _
++  | cons b word ih =>
++    cases ht : M q b with
++    | none => simp [leftCheck, ht] at h
++    | some t =>
++      obtain ⟨w, dir, r⟩ := t
++      cases dir with
++      | true => simp [leftCheck, ht] at h
++      | false =>
++        have hh : w = b ∧ leftCheck M r word q' = true := by
++          simpa only [leftCheck, ht, Bool.and_eq_true, decide_eq_true_eq] using h
++        obtain ⟨rfl, hr⟩ := hh
++        exact .cons ht (ih hr)
++
++/-- A q1 return, including the marker read, followed by the already-proved
++blank-left boundary.  R is completely arbitrary and is never inspected. -/
++theorem return1 {M : TMN} (hb : KHome.Boundary M) (A R : List Bool)
++    (hw : KHome.LeftWord M 1 (A.reverse ++ [true]) 2) :
++    Reach1 M (zl 1 (A.reverse ++ [true]) R) (zc 84 [true] (A ++ R)) := by
++  have hs := hw.sound [] R
++  have he : Reach M (zl 1 (A.reverse ++ [true]) R)
++      (zl 2 [] (true :: (A ++ R))) := by
++    simpa only [List.append_nil, List.reverse_append, List.reverse_cons,
++      List.reverse_nil, List.reverse_reverse, List.nil_append,
++      List.singleton_append, List.append_assoc, List.cons_append] using hs
++  exact he.trans_reach1 (hb (A ++ R))
++
++/-- The common CB1 suffix: the three steps rewrite A001 to A100, then q1
++returns over the unchanged A.  This preserves every possible right frame R. -/
++theorem cb1_frame {M : TMN}
++    (h108 : M 108 true = some (false, false, 10))
++    (h10 : M 10 false = some (false, false, 16))
++    (h16 : M 16 false = some (true, false, 1))
++    (hb : KHome.Boundary M) (A R : List Bool)
++    (hw : KHome.LeftWord M 1 (A.reverse ++ [true]) 2) :
++    Reach1 M (zc 108 (false :: false :: (A.reverse ++ [true])) (true :: R))
++      (zc 84 [true] (A ++ (true :: false :: false :: R))) := by
++  have h1 : Reach1 M
++      (zc 108 (false :: false :: (A.reverse ++ [true])) (true :: R))
++      (zc 10 (false :: (A.reverse ++ [true])) (false :: false :: R)) := by
++    apply Reach1.of_step
++    simpa only [zl_cons] using
++      (zL (l := false :: false :: (A.reverse ++ [true])) (r := R) h108)
++  have h2 : Reach M
++      (zc 10 (false :: (A.reverse ++ [true])) (false :: false :: R))
++      (zc 16 (A.reverse ++ [true]) (false :: false :: false :: R)) := by
++    apply Reach.of_step
++    simpa only [zl_cons] using
++      (zL (l := false :: (A.reverse ++ [true])) (r := false :: R) h10)
++  have h3 : Reach M
++      (zc 16 (A.reverse ++ [true]) (false :: false :: false :: R))
++      (zl 1 (A.reverse ++ [true]) (true :: false :: false :: R)) :=
++    Reach.of_step (zL (l := A.reverse ++ [true]) (r := false :: false :: R) h16)
++  exact (h1.trans_reach (h2.trans h3)).trans_reach
++    (return1 hb A (true :: false :: false :: R) hw).reach
++
++/-- The exact old CB1 target, for all gap parameters and register lists.  There
++is no BoxLemmas premise or validity/length condition on vs: no box is touched. -/
++theorem cb1_leafPort {M : TMN}
++    (h108 : M 108 true = some (false, false, 10))
++    (h10 : M 10 false = some (false, false, 16))
++    (h16 : M 16 false = some (true, false, 1))
++    (hb : KHome.Boundary M) (A : List Bool)
++    (hw : KHome.LeftWord M 1 (A.reverse ++ [true]) 2)
++    (hlen : A.length + 3 ≤ D0) (n : Nat) (vs : List Nat) :
++    Reach1 M (conc n vs (leafPort (A ++ [false, false]) true 108))
++      (conc n vs (tgtConf (A ++ [true]) false (.plain .none))) := by
++  have hgap : n + (D0 - (A.length + 3)) + 2 = n + (D0 - (A.length + 1)) := by omega
++  have hr := cb1_frame h108 h10 h16 hb A
++    (List.replicate (n + (D0 - (A.length + 3))) false ++ true :: sepsR vs) hw
++  have hs : conc n vs (leafPort (A ++ [false, false]) true 108) =
++      zc 108 (false :: false :: (A.reverse ++ [true]))
++        (true :: (List.replicate (n + (D0 - (A.length + 3))) false ++ true :: sepsR vs)) := by
++    simp only [conc_leafPort, List.reverse_append, List.reverse_cons, List.reverse_nil,
++      List.nil_append, List.cons_append, List.length_append, List.length_cons,
++      List.length_nil, List.append_assoc, Nat.add_assoc, Nat.zero_add]
++  have ht : conc n vs (tgtConf (A ++ [true]) false (.plain .none)) =
++      zc 84 [true] (A ++ (true :: false :: false ::
++        (List.replicate (n + (D0 - (A.length + 3))) false ++ true :: sepsR vs))) := by
++    rw [conc_target]
++    simp only [growth, boxList, Bool.false_eq_true, if_false, Nat.add_zero,
++      List.length_append, List.length_cons, List.length_nil, Nat.zero_add,
++      List.append_assoc, List.singleton_append]
++    rw [← hgap]
++    simp only [List.replicate_succ, List.cons_append]
++  rw [hs, ht]
++  exact hr
++
++
++end SetTheory.BusyBeaver.ZFC.KCB1Suffix
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSemanticSites215.lean
+@@ -0,0 +1,56 @@
++import BusyBeaver.ZFC.KDecoderPrefix215
++
++/-!
++Semantic coverage for K215 from the maintained exact decoder-prefix theorem.
++This module is a generic integration boundary. It does not assert that the
++primitive families have already been proved, and contains no assumptions hidden
++as axioms: `PrimitiveContracts` is an explicit hypothesis of its theorems.
++Requires the accompanying KSim refactor.
++-/
++namespace SetTheory.BusyBeaver.ZFC.KSemanticSites215
++open KZip KRuntimeCore KSim RegisterPath RMBisim SiteCoverage
++open KDecoderPrefix215 DecoderSourceBinding DecoderPaths K215Decoder
++
++/-- Every routed primitive port must implement its full source continuation.
++The source word is retained in the obligation, even when physical entry states
++or the decoder's two-bit role suffixes coincide. -/
++def PrimitiveContracts : Prop :=
++  ∀ {word : List Bool} {e : RegisterPath.Edge}, LeafAt KSource215.t215 word e →
++    ∀ pre bit q op arg,
++      word = pre ++ [bit] → e = primitive op arg →
++      RoutedEntry formal sourceNodes roles 0 word q bit op arg →
++      PortContract KTableCore.tm215 (leafPort pre bit q) word e
++
++/-- Only the finite source shape is reduced; no symbolic TM executor runs here. -/
++theorem shape_checked : allSites (fun _ _ => true) [] KSource215.t215 = true := by
++  decide +kernel
++
++/-- Decoder-prefix composition supplies the exact old edge specification. -/
++theorem leaf_contract (contracts : PrimitiveContracts)
++    {word : List Bool} {e : RegisterPath.Edge} (leaf : LeafAt KSource215.t215 word e) :
++    EdgeContract KTableCore.tm215 word e := by
++  obtain ⟨pre, bit, q, op, arg, hword, hedge, hroute, hprefix⟩ := leaf_prefix leaf
++  apply PortContract.precompose (port := leafPort pre bit q)
++  · intro n vs
++    obtain ⟨steps, _, _, run⟩ := hprefix n vs
++    exact ⟨steps, run⟩
++  · exact contracts leaf pre bit q op arg hword hedge hroute
++
++/-- Once parametric primitive families are supplied, no `checkEdge=true`
++conclusion is needed to feed the register-machine simulation. -/
++theorem covered (contracts : PrimitiveContracts) :
++    SemanticCovered KTableCore.tm215 KSource215.p215 :=
++  SemanticCovered.of_leaves KSource215.t215_eq shape_checked (leaf_contract contracts)
++
++/-- Directly usable machine/source equivalence with explicit primitive input. -/
++theorem halts_iff (contracts : PrimitiveContracts)
++    (haltRows : ∀ b, KTableCore.tm215 230 b = none)
++    {c : Configuration} {T : Conf} (related : Rel KSource215.p215 c T) :
++    RegisterPath.Halts KSource215.p215 c ↔ KZip.Halts KTableCore.tm215 T :=
++  Semantic.halts_iff (covered contracts) haltRows related
++
++#print axioms shape_checked
++#print axioms leaf_contract
++#print axioms covered
++#print axioms halts_iff
++end SetTheory.BusyBeaver.ZFC.KSemanticSites215
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
+@@ -11,8 +11,7 @@
+ the program counter (the walk path), a gap of blanks, a `1`, and the register file. `checkEdge M Q e`
+ runs the certified symbolic executor from the site `Q` and confirms it reaches the dispatch
+ configuration of the successor path with the register file updated as the edge says (or, for a
+-halt leaf, the terminal state 230). `halts_iff`: for every table with K230's register lemmas whose
+-decoder sites all check, the register program halts iff the machine does, from every related
++halt leaf, the terminal state 230). `halts_iff`: for every table with semantic contracts for its decoder leaves, the register program halts iff the machine does, from every related
+ pair of configurations. Nothing here is specific to one table or one program.
+ -/
+ 
+@@ -117,20 +116,115 @@
+       rw [← sMatches_conc n vs hm]
+       exact h1 rfl
+ 
+-theorem runHalt_sound (hNH : ∀ b, M 230 b = none) {Q : List Bool} (h : runHalt M Q = true)
+-    (n : Nat) {vs : List Nat} (hv : 10 ≤ vs.length) : Halts M (conc n vs (start Q)) := by
++/-- A semantic halt contract stops at the designated terminal state.  The
++terminal-row premise is used only when converting this reachability into halting. -/
++def HaltAt (M : TMN) (source : SConf) : Prop :=
++  ∀ (n : Nat) {vs : List Nat}, 10 ≤ vs.length →
++    ∃ T, Reach M (conc n vs source) T ∧ T.q = 230
++
++theorem runHalt_at {Q : List Bool} (h : runHalt M Q = true) : HaltAt M (start Q) := by
++  intro n vs hv
+   unfold runHalt at h
+   cases hx : KHomeReady.exec M none isHalt FUEL (start Q) false with
+   | none => rw [hx] at h; simp at h
+   | some s =>
+       obtain ⟨hh, h0, _⟩ := KHomeReady.exec_sound B n (br := none) ⟨hv, trivial⟩ FUEL (start Q) false s hx
+-      refine ⟨_, h0, ?_⟩
++      refine ⟨conc n vs s, h0, ?_⟩
+       obtain ⟨q, onl, l, r⟩ := s
+       simp only [isHalt, beq_iff_eq] at hh
+-      subst hh
+-      cases onl <;> simp [conc, zl, step_zc, hNH]
++      cases onl <;> simpa [conc, zl, zc] using hh
++
++omit B in
++theorem HaltAt.halts {source : SConf} (h : HaltAt M source) (hNH : ∀ b, M 230 b = none)
++    (n : Nat) {vs : List Nat} (hv : 10 ≤ vs.length) : Halts M (conc n vs source) := by
++  obtain ⟨T, hT, hq⟩ := h n hv
++  exact ⟨T, hT, by simp only [KZip.step, hq, hNH]⟩
++
++theorem runHalt_sound (hNH : ∀ b, M 230 b = none) {Q : List Bool} (h : runHalt M Q = true)
++    (n : Nat) {vs : List Nat} (hv : 10 ≤ vs.length) : Halts M (conc n vs (start Q)) :=
++  (runHalt_at B h).halts hNH n hv
+ 
+ end Sound
++
++/-! ## Semantic admission boundary
++
++The simulation consumes proof-valued edge contracts.  The bounded Boolean
++executor is one producer of such contracts; compositional primitive proofs may
++supply them directly.  No completeness of `runTo` or `runHalt` is assumed. -/
++
++/-- An edge must make positive physical progress for every allowed register
++valuation and every natural gap. -/
++def RunContract (M : TMN) (br : Branch) (source target : SConf) : Prop :=
++  ∀ (n : Nat) {vs : List Nat}, Valid br vs →
++    Reach1 M (conc n vs source) (conc n vs target)
++
++/-- The exact semantic obligations previously discharged inside `checkEdge`.
++The path is the full consumed source word, not a role suffix. -/
++def PortContract (M : TMN) (source : SConf) (Q : List Bool) : Edge → Prop
++  | .inc r => (Q.length ≤ 48 ∧ r < 9) ∧
++      RunContract M none source (tgtConf (incPath Q) (allOnes Q) (.plain (.inc (physOf r))))
++  | .decnz r => ((Q.length ≤ 48 ∧ r < 9) ∧
++      RunContract M (some (physOf r, true)) source
++        (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (.plain .none))) ∧
++      RunContract M (some (physOf r, false)) source
++        (tgtConf (incPath Q) (allOnes Q) (.plain (.dec (physOf r))))
++  | .brk k => Q.length ≤ 48 ∧
++      RunContract M none source (tgtConf (breakPath k Q) (allOnes (stripPath false k Q)) (.plain .none))
++  | .cont k => Q.length ≤ 48 ∧
++      RunContract M none source (tgtConf (continuePath k Q) false (.plain .none))
++  | .halt => Q.length ≤ 48 ∧ HaltAt M source
++  | .node _ => False
++
++/-- Dispatch-entry specialization of a primitive-port contract. -/
++abbrev EdgeContract (M : TMN) (Q : List Bool) (e : Edge) : Prop :=
++  PortContract M (start Q) Q e
++
++/-- Decoder prefixes may take zero steps. Positive progress is supplied by
++nonhalting primitive contracts and is preserved under this composition. -/
++theorem PortContract.precompose {M : TMN} {source port : SConf} {Q : List Bool} {e : Edge}
++    (hprefix : ∀ n vs, Reach M (conc n vs source) (conc n vs port))
++    (suffix : PortContract M port Q e) : PortContract M source Q e := by
++  have next {br : Branch} {target : SConf} (h : RunContract M br port target) :
++      RunContract M br source target := by
++    intro n vs hv
++    exact (hprefix n vs).trans_reach1 (h n hv)
++  have halt (h : HaltAt M port) : HaltAt M source := by
++    intro n vs hv
++    obtain ⟨T, hr, hq⟩ := h n hv
++    exact ⟨T, (hprefix n vs).trans hr, hq⟩
++  cases e with
++  | node _ => exact suffix
++  | inc r => exact ⟨suffix.1, next suffix.2⟩
++  | decnz r => exact ⟨⟨suffix.1.1, next suffix.1.2⟩, next suffix.2⟩
++  | brk k | cont k => exact ⟨suffix.1, next suffix.2⟩
++  | halt => exact ⟨suffix.1, halt suffix.2⟩
++
++theorem EdgeContract.length {M : TMN} {Q : List Bool} {e : Edge}
++    (h : EdgeContract M Q e) : Q.length ≤ 48 := by
++  cases e <;> simp_all [EdgeContract, PortContract]
++
++/-- Compatibility adapter: every existing Boolean site certificate supplies
++semantic coverage, without changing a single checker computation. -/
++theorem checkEdge_contract {M : TMN} (B : BoxLemmas M) {Q : List Bool} {e : Edge}
++    (h : checkEdge M Q e = true) : EdgeContract M Q e := by
++  cases e with
++  | node _ => simp [checkEdge] at h
++  | inc r =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n {vs} hv => runTo_sound B h.2 n hv⟩
++  | decnz r =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨⟨h.1.1, fun n {vs} hv => runTo_sound B h.1.2 n hv⟩,
++        fun n {vs} hv => runTo_sound B h.2 n hv⟩
++  | brk k =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n {vs} hv => runTo_sound B h.2 n hv⟩
++  | cont k =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n {vs} hv => runTo_sound B h.2 n hv⟩
++  | halt =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, runHalt_at B h.2⟩
+ 
+ /-! ## Registers on the tape -/
+ 
+@@ -189,6 +283,34 @@
+   intro P
+   obtain ⟨e, d, hw⟩ := SiteCoverage.allSites_walk_total (checkEdge M) p t ht hs P
+   exact ⟨e, d, hw, SiteCoverage.allSites_walk (checkEdge M) p t ht hs P e d hw⟩
++
++/-- Proof-valued coverage is the interface consumed by the simulation.
++It can mix existing checked leaves with new parametric primitive contracts. -/
++def SemanticCovered (M : TMN) (p : Program) : Prop :=
++  ∀ P, ∃ e d, walk p (p.nnodes + 1) p.root P 0 = some (e, d) ∧
++    EdgeContract M (consume P d) e
++
++theorem Covered.toSemantic {M : TMN} {p : Program} (h : Covered M p)
++    (B : BoxLemmas M) : SemanticCovered M p := by
++  intro P
++  obtain ⟨e, d, hw, hc⟩ := h P
++  exact ⟨e, d, hw, checkEdge_contract B hc⟩
++
++/-- The source-shape check only excludes failed decoder branches. Runtime
++correctness is supplied by `leaf`, without evaluating the old bounded executor. -/
++theorem SemanticCovered.of_leaves {M : TMN} {p : Program} {t : RMBisim.Tree}
++    (ht : RMBisim.ptree p = t)
++    (shape : SiteCoverage.allSites (fun _ _ => true) [] t = true)
++    (leaf : ∀ {Q e}, SiteCoverage.LeafAt t Q e → EdgeContract M Q e) :
++    SemanticCovered M p := by
++  intro P
++  obtain ⟨e, d, hw⟩ := SiteCoverage.allSites_walk_total (fun _ _ => true) p t ht shape P
++  have htw : RMBisim.twalk t P 0 = some (e, d) := by
++    simpa only [← ht, ← RMBisim.walk_root] using hw
++  have hl := (SiteCoverage.twalk_leafAt t P 0 e d htw).2
++  have hc : EdgeContract M (consume P d) e := leaf (by
++    simpa only [Nat.sub_zero, RMEquiv.consume_eq] using hl)
++  exact ⟨e, d, hw, hc⟩
+ 
+ /-- A register configuration and the dispatch configuration that represents it. -/
+ def Rel (p : Program) (c : Configuration) (T : Conf) : Prop :=
+@@ -212,16 +334,16 @@
+   have e : c.path.length + k - d = c.path.length + k - D0 + (D0 - d) := by unfold D0 at hk ⊢; omega
+   rw [e]
+ 
+-section Sim
+-
+-variable {M : TMN} (B : BoxLemmas M) {p : Program} (hcov : Covered M p)
+-include B hcov
++namespace Semantic
++
++variable {M : TMN} {p : Program} (hcov : SemanticCovered M p)
++include hcov
+ 
+ theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p c = some c') :
+     ∃ T', Rel p c' T' ∧ Reach1 M T T' := by
+   have hcl' : Clean p c'.path := step_clean p c c' hs
+   obtain ⟨e, d, hw, hck⟩ := hcov c.path
+-  have hd := checkEdge_length hck
++  have hd := EdgeContract.length hck
+   rw [consume_length] at hd
+   obtain ⟨k, ext, hk, hext, hT⟩ := rel_view hc hw hd
+   have hex : execute e (consume c.path d) c.registers = some c' := by
+@@ -232,21 +354,21 @@
+   generalize c.path.length + k - D0 = n at hT
+   subst hT
+   cases e with
+-  | node _ => simp [checkEdge] at hck
++  | node _ => simp [EdgeContract, PortContract] at hck
+   | halt => simp [execute] at hex
+   | inc r =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract, PortContract] at hck
+       obtain ⟨⟨_, hr⟩, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + (if allOnes Q then 1 else 0) + 0 - (incPath Q).length), ext ++ [1],
+         ?_, by simp, rfl⟩, ?_⟩
+       · simp only [incPath_length, hQ]; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList, incr_vregs _ _ hr, List.append_assoc] using this
+   | decnz r =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract, PortContract] at hck
+       obtain ⟨⟨⟨_, hr⟩, h0⟩, h1⟩ := hck
+       cases hv : c.registers r with
+       | zero =>
+@@ -255,7 +377,7 @@
+           refine ⟨_, ⟨hcl', n + (D0 + (if allOnes (stripPath false 1 Q) then 1 else 0) + 0 -
+             (breakPath 1 Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+           · have := breakPath_length 1 Q; simp only; unfold D0; omega
+-          · have := runTo_sound B h0 n (vs := vregs c.registers ++ ext)
++          · have := h0 n (vs := vregs c.registers ++ ext)
+               (valid_z hl (by rw [getD_vregs _ _ hr, hv]))
+             rw [conc_target] at this
+             simpa [growth, boxList] using this
+@@ -265,39 +387,38 @@
+           refine ⟨_, ⟨hcl', n + (D0 + (if allOnes Q then 1 else 0) + 1 - (incPath Q).length), ext,
+             ?_, hext, rfl⟩, ?_⟩
+           · simp only [incPath_length, hQ]; unfold D0; omega
+-          · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext)
++          · have := h1 n (vs := vregs c.registers ++ ext)
+               (valid_nz hl (by rw [getD_vregs _ _ hr, hv]; omega))
+             rw [conc_target] at this
+             have hd' := decr_vregs c.registers ext hr
+             rw [hv] at hd'
+             simpa [growth, boxList, hd'] using this
+   | brk k' =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract, PortContract] at hck
+       obtain ⟨_, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + (if allOnes (stripPath false k' Q) then 1 else 0) + 0 -
+         (breakPath k' Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+       · have := breakPath_length k' Q; simp only; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList] using this
+   | cont k' =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract, PortContract] at hck
+       obtain ⟨_, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + 0 + 0 - (continuePath k' Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+       · have := stripPath_length true k' Q; simp only [continuePath]; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList] using this
+ 
+-omit B in
+ theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
+   obtain ⟨e, d, hw, hck⟩ := hcov c.path
+   cases e with
+-  | node _ => simp [checkEdge] at hck
++  | node _ => simp [EdgeContract, PortContract] at hck
+   | halt => exact ⟨d, hw⟩
+   | inc r | brk r | cont r => simp [RegisterPath.step, hw, execute] at hs
+   | decnz r => cases hv : c.registers r <;> simp [RegisterPath.step, hw, execute, hv] at hs
+@@ -308,11 +429,11 @@
+   obtain ⟨e, d', hw', hck⟩ := hcov c.path
+   rw [hw] at hw'
+   cases hw'
+-  have hd := checkEdge_length hck
++  have hd := EdgeContract.length hck
+   rw [consume_length] at hd
+   obtain ⟨k, ext, _, hext, rfl⟩ := rel_view hc hw hd
+-  simp only [checkEdge, Bool.and_eq_true] at hck
+-  exact runHalt_sound B hNH hck.2 _ (vregs_length _ hext)
++  simp only [EdgeContract, PortContract] at hck
++  exact hck.2.halts hNH _ (vregs_length _ hext)
+ 
+ /-- **Simulation.** The register program halts iff the machine halts, from related configurations. -/
+ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
+@@ -323,14 +444,14 @@
+     | zero =>
+         simp only [RegisterPath.run, Option.some.injEq] at hr
+         subst hr
+-        exact sim_halt B hcov hNH hc hh
++        exact sim_halt hcov hNH hc hh
+     | succ N ih =>
+         simp only [RegisterPath.run] at hr
+         cases hs : step p c with
+         | none => rw [hs] at hr; simp at hr
+         | some c1 =>
+             rw [hs] at hr
+-            obtain ⟨T1, h1, hR⟩ := sim_step B hcov hc hs
++            obtain ⟨T1, h1, hR⟩ := sim_step hcov hc hs
+             exact Halts.of_reach hR.reach (ih h1 hr)
+   · rintro ⟨cf, ⟨t, ht⟩, hstop⟩
+     induction t using Nat.strongRecOn generalizing c T with
+@@ -338,7 +459,7 @@
+         cases hs : step p c with
+         | none => exact ⟨0, c, rfl, sim_stop hcov hs⟩
+         | some c1 =>
+-            obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
++            obtain ⟨T1, h1, j, hj⟩ := sim_step hcov hc hs
+             have hle : j + 1 ≤ t := by
+               refine Nat.not_lt.mp fun hlt => ?_
+               have e1 : j + 1 = t + (j + 1 - t) := by omega
+@@ -351,6 +472,35 @@
+             obtain ⟨N, c', hr, hh⟩ := ih (t - (j + 1)) (by omega) h1 ht
+             exact ⟨N + 1, c', by simp only [RegisterPath.run, hs]; exact hr, hh⟩
+ 
++
++end Semantic
++
++/-! Existing public interfaces are retained as thin compatibility adapters. -/
++section Sim
++variable {M : TMN} (B : BoxLemmas M) {p : Program} (hcov : Covered M p)
++include B hcov
++
++theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p c = some c') :
++    ∃ T', Rel p c' T' ∧ Reach1 M T T' :=
++  Semantic.sim_step (hcov.toSemantic B) hc hs
++
++omit B in
++theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
++  obtain ⟨e, d, hw, hck⟩ := hcov c.path
++  cases e with
++  | node _ => simp [checkEdge] at hck
++  | halt => exact ⟨d, hw⟩
++  | inc r | brk r | cont r => simp [RegisterPath.step, hw, execute] at hs
++  | decnz r => cases hv : c.registers r <;> simp [RegisterPath.step, hw, execute, hv] at hs
++
++theorem sim_halt (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T)
++    (hh : AtHalt p c) : Halts M T :=
++  Semantic.sim_halt (hcov.toSemantic B) hNH hc hh
++
++theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
++    RegisterPath.Halts p c ↔ KZip.Halts M T :=
++  Semantic.halts_iff (hcov.toSemantic B) hNH hc
++
+ end Sim
+ 
+ end SetTheory.BusyBeaver.ZFC.KSim
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSimCompatibility.lean
+@@ -0,0 +1,33 @@
++import BusyBeaver.ZFC.KSim
++
++/-! Existing public theorem types, checked without a concrete site evaluation. -/
++namespace SetTheory.BusyBeaver.ZFC.KSimCompatibility
++open KZip KRuntimeCore KSim RegisterPath
++
++example {M : TMN} (B : BoxLemmas M) {p : Program} (coverage : Covered M p)
++    {c c' : Configuration} {T : Conf} (related : Rel p c T)
++    (transition : RegisterPath.step p c = some c') :
++    ∃ T', Rel p c' T' ∧ Reach1 M T T' := sim_step B coverage related transition
++
++example {M : TMN} {p : Program} (coverage : Covered M p)
++    {c : Configuration} (stopped : RegisterPath.step p c = none) : AtHalt p c :=
++  sim_stop coverage stopped
++
++example {M : TMN} (B : BoxLemmas M) {p : Program} (coverage : Covered M p)
++    (haltRows : ∀ b, M 230 b = none) {c : Configuration} {T : Conf}
++    (related : Rel p c T) (stopped : AtHalt p c) : KZip.Halts M T :=
++  sim_halt B coverage haltRows related stopped
++
++example {M : TMN} (B : BoxLemmas M) {p : Program} (coverage : Covered M p)
++    (haltRows : ∀ b, M 230 b = none) {c : Configuration} {T : Conf}
++    (related : Rel p c T) : RegisterPath.Halts p c ↔ KZip.Halts M T :=
++  halts_iff B coverage haltRows related
++
++#print axioms PortContract.precompose
++#print axioms Covered.toSemantic
++#print axioms SemanticCovered.of_leaves
++#print axioms Semantic.sim_step
++#print axioms Semantic.sim_halt
++#print axioms Semantic.halts_iff
++#print axioms KSim.halts_iff
++end SetTheory.BusyBeaver.ZFC.KSimCompatibility

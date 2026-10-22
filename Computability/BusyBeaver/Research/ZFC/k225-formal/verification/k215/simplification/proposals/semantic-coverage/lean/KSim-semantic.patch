@@ -1,0 +1,283 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
+@@ -212,16 +212,115 @@
+   have e : c.path.length + k - d = c.path.length + k - D0 + (D0 - d) := by unfold D0 at hk ⊢; omega
+   rw [e]
+ 
+-section Sim
+-
+-variable {M : TMN} (B : BoxLemmas M) {p : Program} (hcov : Covered M p)
+-include B hcov
++
++/-! ## Semantic site contracts
++
++The simulator needs a positive physical realization of each edge, not evidence
++that one particular fuel-limited Boolean checker accepts it.  These contracts
++allow direct prefix/suffix proofs and symbolic-checker certificates to share
++the same simulation induction.  The existing Boolean API remains below.
++-/
++
++/-- The exact semantic conclusion of `runTo_sound`, retaining both the branch
++guard and uniform quantification over the gap and register-file parameters. -/
++def RunContract (M : TMN) (br : Branch) (Q : List Bool) (e : SConf) : Prop :=
++  ∀ (n : Nat) (vs : List Nat), Valid br vs →
++    Reach1 M (conc n vs (start Q)) (conc n vs e)
++
++/-- A halt contract retains the existing generic theorem's state-230 premise. -/
++def HaltContract (M : TMN) (Q : List Bool) : Prop :=
++  (∀ b, M 230 b = none) → ∀ (n : Nat) (vs : List Nat), 10 ≤ vs.length →
++    Halts M (conc n vs (start Q))
++
++/-- Exactly the length, register-index, branch, and positive-run information
++consumed by the simulation.  `node` is deliberately excluded. -/
++def EdgeContract (M : TMN) (Q : List Bool) : Edge → Prop
++  | .inc r => (Q.length ≤ 48 ∧ r < 9) ∧
++      RunContract M none Q (tgtConf (incPath Q) (allOnes Q) (.plain (.inc (physOf r))))
++  | .decnz r => ((Q.length ≤ 48 ∧ r < 9) ∧
++      RunContract M (some (physOf r, true)) Q
++        (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (.plain .none))) ∧
++      RunContract M (some (physOf r, false)) Q
++        (tgtConf (incPath Q) (allOnes Q) (.plain (.dec (physOf r))))
++  | .brk k => Q.length ≤ 48 ∧
++      RunContract M none Q
++        (tgtConf (breakPath k Q) (allOnes (stripPath false k Q)) (.plain .none))
++  | .cont k => Q.length ≤ 48 ∧
++      RunContract M none Q (tgtConf (continuePath k Q) false (.plain .none))
++  | .halt => Q.length ≤ 48 ∧ HaltContract M Q
++  | .node _ => False
++
++theorem edgeContract_length {M : TMN} {Q : List Bool} {e : Edge}
++    (h : EdgeContract M Q e) : Q.length ≤ 48 := by
++  cases e <;> simp_all [EdgeContract]
++
++/-- The old checker is one producer of semantic edge contracts.  No
++completeness of its finite fuel bound is assumed or needed. -/
++theorem checkEdge_contract {M : TMN} (B : BoxLemmas M) {Q : List Bool} {e : Edge}
++    (h : checkEdge M Q e = true) : EdgeContract M Q e := by
++  cases e with
++  | inc r =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n vs hv => runTo_sound B h.2 n hv⟩
++  | decnz r =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨⟨h.1.1, fun n vs hv => runTo_sound B h.1.2 n hv⟩,
++        fun n vs hv => runTo_sound B h.2 n hv⟩
++  | brk k | cont k =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n vs hv => runTo_sound B h.2 n hv⟩
++  | halt =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun hNH n vs hv => runHalt_sound B hNH h.2 n hv⟩
++  | node _ => simp [checkEdge] at h
++
++/-- Every decoder input reaches a leaf with a semantic realization. -/
++def SemanticCovered (M : TMN) (p : Program) : Prop :=
++  ∀ P, ∃ e d, walk p (p.nnodes + 1) p.root P 0 = some (e, d) ∧
++    EdgeContract M (consume P d) e
++
++theorem Covered.semantic {M : TMN} (B : BoxLemmas M) {p : Program}
++    (h : Covered M p) : SemanticCovered M p := by
++  intro P
++  obtain ⟨e, d, hw, hc⟩ := h P
++  exact ⟨e, d, hw, checkEdge_contract B hc⟩
++
++/-- Generic finite coverage for any decidable producer of edge contracts. -/
++theorem semanticCovered_of_allSites (M : TMN) (p : Program) (t : RMBisim.Tree)
++    (ht : RMBisim.ptree p = t) (test : List Bool → Edge → Bool)
++    (sound : ∀ Q e, test Q e = true → EdgeContract M Q e)
++    (hs : SiteCoverage.allSites test [] t = true) : SemanticCovered M p := by
++  intro P
++  obtain ⟨e, d, hw⟩ := SiteCoverage.allSites_walk_total test p t ht hs P
++  exact ⟨e, d, hw, sound _ _ (SiteCoverage.allSites_walk test p t ht hs P e d hw)⟩
++
++/-- A selected family may use direct contracts while every remaining site
++keeps the existing symbolic checker.  The shared branch must be proved sound;
++merely selecting a leaf does not discharge its physical execution obligation. -/
++theorem semanticCovered_of_mixedSites {M : TMN} (B : BoxLemmas M)
++    (p : Program) (t : RMBisim.Tree) (ht : RMBisim.ptree p = t)
++    (shared : List Bool → Edge → Bool)
++    (sound : ∀ Q e, shared Q e = true → EdgeContract M Q e)
++    (hs : SiteCoverage.allSites (fun Q e => shared Q e || checkEdge M Q e) [] t = true) :
++    SemanticCovered M p := by
++  apply semanticCovered_of_allSites M p t ht (fun Q e => shared Q e || checkEdge M Q e) _ hs
++  intro Q e h
++  have hh : shared Q e = true ∨ checkEdge M Q e = true := by
++    simpa only [Bool.or_eq_true] using h
++  cases hh with
++  | inl hshared => exact sound Q e hshared
++  | inr hchecked => exact checkEdge_contract B hchecked
++
++namespace Semantic
++
++variable {M : TMN} {p : Program} (hcov : SemanticCovered M p)
++include hcov
+ 
+ theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p c = some c') :
+     ∃ T', Rel p c' T' ∧ Reach1 M T T' := by
+   have hcl' : Clean p c'.path := step_clean p c c' hs
+   obtain ⟨e, d, hw, hck⟩ := hcov c.path
+-  have hd := checkEdge_length hck
++  have hd := edgeContract_length hck
+   rw [consume_length] at hd
+   obtain ⟨k, ext, hk, hext, hT⟩ := rel_view hc hw hd
+   have hex : execute e (consume c.path d) c.registers = some c' := by
+@@ -232,21 +331,21 @@
+   generalize c.path.length + k - D0 = n at hT
+   subst hT
+   cases e with
+-  | node _ => simp [checkEdge] at hck
++  | node _ => simp [EdgeContract] at hck
+   | halt => simp [execute] at hex
+   | inc r =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨⟨_, hr⟩, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + (if allOnes Q then 1 else 0) + 0 - (incPath Q).length), ext ++ [1],
+         ?_, by simp, rfl⟩, ?_⟩
+       · simp only [incPath_length, hQ]; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList, incr_vregs _ _ hr, List.append_assoc] using this
+   | decnz r =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨⟨⟨_, hr⟩, h0⟩, h1⟩ := hck
+       cases hv : c.registers r with
+       | zero =>
+@@ -255,7 +354,7 @@
+           refine ⟨_, ⟨hcl', n + (D0 + (if allOnes (stripPath false 1 Q) then 1 else 0) + 0 -
+             (breakPath 1 Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+           · have := breakPath_length 1 Q; simp only; unfold D0; omega
+-          · have := runTo_sound B h0 n (vs := vregs c.registers ++ ext)
++          · have := h0 n (vregs c.registers ++ ext)
+               (valid_z hl (by rw [getD_vregs _ _ hr, hv]))
+             rw [conc_target] at this
+             simpa [growth, boxList] using this
+@@ -265,39 +364,38 @@
+           refine ⟨_, ⟨hcl', n + (D0 + (if allOnes Q then 1 else 0) + 1 - (incPath Q).length), ext,
+             ?_, hext, rfl⟩, ?_⟩
+           · simp only [incPath_length, hQ]; unfold D0; omega
+-          · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext)
++          · have := h1 n (vregs c.registers ++ ext)
+               (valid_nz hl (by rw [getD_vregs _ _ hr, hv]; omega))
+             rw [conc_target] at this
+             have hd' := decr_vregs c.registers ext hr
+             rw [hv] at hd'
+             simpa [growth, boxList, hd'] using this
+   | brk k' =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨_, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + (if allOnes (stripPath false k' Q) then 1 else 0) + 0 -
+         (breakPath k' Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+       · have := breakPath_length k' Q; simp only; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList] using this
+   | cont k' =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨_, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + 0 + 0 - (continuePath k' Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+       · have := stripPath_length true k' Q; simp only [continuePath]; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList] using this
+ 
+-omit B in
+ theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
+   obtain ⟨e, d, hw, hck⟩ := hcov c.path
+   cases e with
+-  | node _ => simp [checkEdge] at hck
++  | node _ => simp [EdgeContract] at hck
+   | halt => exact ⟨d, hw⟩
+   | inc r | brk r | cont r => simp [RegisterPath.step, hw, execute] at hs
+   | decnz r => cases hv : c.registers r <;> simp [RegisterPath.step, hw, execute, hv] at hs
+@@ -308,11 +406,11 @@
+   obtain ⟨e, d', hw', hck⟩ := hcov c.path
+   rw [hw] at hw'
+   cases hw'
+-  have hd := checkEdge_length hck
++  have hd := edgeContract_length hck
+   rw [consume_length] at hd
+   obtain ⟨k, ext, _, hext, rfl⟩ := rel_view hc hw hd
+-  simp only [checkEdge, Bool.and_eq_true] at hck
+-  exact runHalt_sound B hNH hck.2 _ (vregs_length _ hext)
++  simp only [EdgeContract] at hck
++  exact hck.2 hNH _ _ (vregs_length _ hext)
+ 
+ /-- **Simulation.** The register program halts iff the machine halts, from related configurations. -/
+ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
+@@ -323,14 +421,14 @@
+     | zero =>
+         simp only [RegisterPath.run, Option.some.injEq] at hr
+         subst hr
+-        exact sim_halt B hcov hNH hc hh
++        exact sim_halt hcov hNH hc hh
+     | succ N ih =>
+         simp only [RegisterPath.run] at hr
+         cases hs : step p c with
+         | none => rw [hs] at hr; simp at hr
+         | some c1 =>
+             rw [hs] at hr
+-            obtain ⟨T1, h1, hR⟩ := sim_step B hcov hc hs
++            obtain ⟨T1, h1, hR⟩ := sim_step hcov hc hs
+             exact Halts.of_reach hR.reach (ih h1 hr)
+   · rintro ⟨cf, ⟨t, ht⟩, hstop⟩
+     induction t using Nat.strongRecOn generalizing c T with
+@@ -338,7 +436,7 @@
+         cases hs : step p c with
+         | none => exact ⟨0, c, rfl, sim_stop hcov hs⟩
+         | some c1 =>
+-            obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
++            obtain ⟨T1, h1, j, hj⟩ := sim_step hcov hc hs
+             have hle : j + 1 ≤ t := by
+               refine Nat.not_lt.mp fun hlt => ?_
+               have e1 : j + 1 = t + (j + 1 - t) := by omega
+@@ -351,6 +449,37 @@
+             obtain ⟨N, c', hr, hh⟩ := ih (t - (j + 1)) (by omega) h1 ht
+             exact ⟨N + 1, c', by simp only [RegisterPath.run, hs]; exact hr, hh⟩
+ 
++end Semantic
++
++/-! ## Compatibility wrappers for the maintained Boolean API -/
++section Sim
++
++variable {M : TMN} (B : BoxLemmas M) {p : Program} (hcov : Covered M p)
++include B hcov
++
++theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p c = some c') :
++    ∃ T', Rel p c' T' ∧ Reach1 M T T' :=
++  Semantic.sim_step (hcov.semantic B) hc hs
++
++omit B in
++theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
++  obtain ⟨e, d, hw, hck⟩ := hcov c.path
++  cases e with
++  | node _ => simp [checkEdge] at hck
++  | halt => exact ⟨d, hw⟩
++  | inc r | brk r | cont r => simp [RegisterPath.step, hw, execute] at hs
++  | decnz r => cases hv : c.registers r <;> simp [RegisterPath.step, hw, execute, hv] at hs
++
++
++theorem sim_halt (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T)
++    (hh : AtHalt p c) : Halts M T :=
++  Semantic.sim_halt (hcov.semantic B) hNH hc hh
++
++/-- The original public theorem, with exactly its original hypotheses. -/
++theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
++    RegisterPath.Halts p c ↔ KZip.Halts M T :=
++  Semantic.halts_iff (hcov.semantic B) hNH hc
++
+ end Sim
+ 
+ end SetTheory.BusyBeaver.ZFC.KSim

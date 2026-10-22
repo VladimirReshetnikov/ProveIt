@@ -1,0 +1,430 @@
+{
+  "status": "PASS",
+  "scope": "KSim source closure and semantic/old-API typed audit only",
+  "base_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "toolchain": {
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "binary_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "library_sha256": "52c37024db38569f7e8911cfbc6819a2d97d0a8c336e74c3da8590e2cc1e099b",
+    "Init_olean_sha256": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e"
+  },
+  "modules": [
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "source_sha256": "35170a1145cb2fc74e5faba3a922da13bb2d05aa6fe98fafe1593a4ba22c498a",
+      "imports": [],
+      "source_closure": "1b1a6a35063561f9791d39aaabf4fb85bdec6fba8807fa9e09b008d03defc323",
+      "dependencies": {},
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.8807901990003302,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KZip.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KZip.lean"
+      ],
+      "log": "BusyBeaver.ZFC.KZip.attempt1.log",
+      "log_sha256": "2fb6198667334257a6b498e0383cba89c245164ddc1c407e2f2fe9e5633742cb",
+      "object_sha256": "a207762bf9595e5552f3164ad3218e4d852bb482968c7d0f28ee60b082a389f4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "source_sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "source_closure": "db61ab267d1fded387e0bb7779c16b5563aa0f76a226e68a17122bfafb9ba1b7",
+      "dependencies": {
+        "BusyBeaver.ZFC.KZip": {
+          "source_closure": "1b1a6a35063561f9791d39aaabf4fb85bdec6fba8807fa9e09b008d03defc323",
+          "object_sha256": "a207762bf9595e5552f3164ad3218e4d852bb482968c7d0f28ee60b082a389f4"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 4.249768033001601,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KRuntimeCore.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KRuntimeCore.lean"
+      ],
+      "log": "BusyBeaver.ZFC.KRuntimeCore.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "85e0c602f320e52037521dd90d0d19bf3aa3a396d545c7fce8680b6968ebb930"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "source_sha256": "ff0c42e5bb0f639a2d59a7cefbbd1e07109545b6ccda23f84af4c467f01b25c5",
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "source_closure": "2a0debd6720f226fd166b0f733c0021e4d3a0396f08aa1e4dfa90d175f021a86",
+      "dependencies": {
+        "BusyBeaver.ZFC.KRuntimeCore": {
+          "source_closure": "db61ab267d1fded387e0bb7779c16b5563aa0f76a226e68a17122bfafb9ba1b7",
+          "object_sha256": "85e0c602f320e52037521dd90d0d19bf3aa3a396d545c7fce8680b6968ebb930"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 4.006046045000403,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KHome.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KHome.lean"
+      ],
+      "log": "BusyBeaver.ZFC.KHome.attempt1.log",
+      "log_sha256": "377c84ad2807f431874243baa151b6cedfc166310f924f21e106e0660206ec56",
+      "object_sha256": "a2bb9ef7bdd07bcc7c9aca86c7d461e14c9b41f331720529a3dc552b5c74b0d4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.FramedWindow",
+      "source_sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+      "imports": [
+        "Init"
+      ],
+      "source_closure": "82dbdeeb79157c4728183ac0eec9c94488bc87a5858342381854378f2156da87",
+      "dependencies": {},
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 2.1270508560010057,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/FramedWindow.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/FramedWindow.lean"
+      ],
+      "log": "BusyBeaver.ZFC.FramedWindow.attempt1.log",
+      "log_sha256": "50655dfd16e62a9030cba16f19ee8ec3661d0766068142a53e4b107bc5751f4d",
+      "object_sha256": "e9ae784537a6c76cc9c51f26b6a8d124543a2c6f66b0dc886602ec092507278c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZipTape",
+      "source_sha256": "3067129a23767249f7870ac9ebf7335bf88f1995184701a6b2539ca3cccd8392",
+      "imports": [
+        "BusyBeaver.ZFC.KZip",
+        "BusyBeaver.ZFC.FramedWindow"
+      ],
+      "source_closure": "1b3c07ea0f6d0cadbec73d17e32c4a3c5ec26d46a90be161918b09f16d34991d",
+      "dependencies": {
+        "BusyBeaver.ZFC.KZip": {
+          "source_closure": "1b1a6a35063561f9791d39aaabf4fb85bdec6fba8807fa9e09b008d03defc323",
+          "object_sha256": "a207762bf9595e5552f3164ad3218e4d852bb482968c7d0f28ee60b082a389f4"
+        },
+        "BusyBeaver.ZFC.FramedWindow": {
+          "source_closure": "82dbdeeb79157c4728183ac0eec9c94488bc87a5858342381854378f2156da87",
+          "object_sha256": "e9ae784537a6c76cc9c51f26b6a8d124543a2c6f66b0dc886602ec092507278c"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.5712444849996245,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KZipTape.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KZipTape.lean"
+      ],
+      "log": "BusyBeaver.ZFC.KZipTape.attempt1.log",
+      "log_sha256": "dd97edcaecece41af160007477d50ea4d0d9a61796f7b0926f91539ac5ab4204",
+      "object_sha256": "d96f053f57a6e062cdef08516c9d1016905052d5af9ad5b5e0c5c25ce8a7841f"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHomeReady",
+      "source_sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+      "imports": [
+        "BusyBeaver.ZFC.KHome",
+        "BusyBeaver.ZFC.KZipTape"
+      ],
+      "source_closure": "8cab7c4d79a0c9d04bbdcc0f5d6615e446dad65cf0e202ca2a738815fff9e745",
+      "dependencies": {
+        "BusyBeaver.ZFC.KHome": {
+          "source_closure": "2a0debd6720f226fd166b0f733c0021e4d3a0396f08aa1e4dfa90d175f021a86",
+          "object_sha256": "a2bb9ef7bdd07bcc7c9aca86c7d461e14c9b41f331720529a3dc552b5c74b0d4"
+        },
+        "BusyBeaver.ZFC.KZipTape": {
+          "source_closure": "1b3c07ea0f6d0cadbec73d17e32c4a3c5ec26d46a90be161918b09f16d34991d",
+          "object_sha256": "d96f053f57a6e062cdef08516c9d1016905052d5af9ad5b5e0c5c25ce8a7841f"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.8668293090013321,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KHomeReady.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KHomeReady.lean"
+      ],
+      "log": "BusyBeaver.ZFC.KHomeReady.attempt1.log",
+      "log_sha256": "2aa075f17f7097b1fa84897f873f5cd32f3019c7b39f9716545781dceac04450",
+      "object_sha256": "2295dda7b0b6ab1d30ba02a6faf3364f9a2f7262724cf8d181a3e24d6cc9b254"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source_sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+      "imports": [
+        "Init"
+      ],
+      "source_closure": "76a0568db080307902d188a3e46885bfd60c831ebf580b240bb5a78c9a5584d3",
+      "dependencies": {},
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.6211209569992207,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RegisterPath.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RegisterPath.lean"
+      ],
+      "log": "BusyBeaver.ZFC.RegisterPath.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "a79741d33e4007df10f6ed17e6518f6bdc618024f36861acf326ae23b779e036"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDag",
+      "source_sha256": "55a47480da9cb00e5420b896c3a8c72ec1f51081d610874903f932311231076d",
+      "imports": [],
+      "source_closure": "ea9e76b51200c3dea39dd7ab27ed3a779a062873f34c45df3cdce0156c609c65",
+      "dependencies": {},
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 2.827560268000525,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RMDag.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RMDag.lean"
+      ],
+      "log": "BusyBeaver.ZFC.RMDag.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMEquiv",
+      "source_sha256": "9827f418c472ae76f35105245074aa7653aa232b3a8b1680e09c9a9cebad9c9e",
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "source_closure": "4cf3fd018a6bfc02faaae1187b9dbaedcfaf5e93fbc68b3ef8181d1791522ee8",
+      "dependencies": {
+        "BusyBeaver.ZFC.RegisterPath": {
+          "source_closure": "76a0568db080307902d188a3e46885bfd60c831ebf580b240bb5a78c9a5584d3",
+          "object_sha256": "a79741d33e4007df10f6ed17e6518f6bdc618024f36861acf326ae23b779e036"
+        },
+        "BusyBeaver.ZFC.RMDag": {
+          "source_closure": "ea9e76b51200c3dea39dd7ab27ed3a779a062873f34c45df3cdce0156c609c65",
+          "object_sha256": "7ded8c01bafaf2e35b7f77192361c03045b887411b66214cc6ee407f8fbb8fc4"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 4.180547715001012,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RMEquiv.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RMEquiv.lean"
+      ],
+      "log": "BusyBeaver.ZFC.RMEquiv.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "ed14eea974f22b2a8e3b9ac1001f1617edc36590929fa3a6ac0ab844f323df61"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPathClean",
+      "source_sha256": "5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69",
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "source_closure": "20f26a0723c2110bbabe509717b7e7b36ed03fe24609c6f151b1b18fbf7168f2",
+      "dependencies": {
+        "BusyBeaver.ZFC.RMEquiv": {
+          "source_closure": "4cf3fd018a6bfc02faaae1187b9dbaedcfaf5e93fbc68b3ef8181d1791522ee8",
+          "object_sha256": "ed14eea974f22b2a8e3b9ac1001f1617edc36590929fa3a6ac0ab844f323df61"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 1.5193514940001478,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RegisterPathClean.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RegisterPathClean.lean"
+      ],
+      "log": "BusyBeaver.ZFC.RegisterPathClean.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "c505ed9e107fdba8053dbbb5fe718bcb388ee603d5824dfb44290048498ba7fd"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMBisim",
+      "source_sha256": "de8e3419a500f1c9e06edc4f04d8251cff55c022365f7ce330b4f95c8035d228",
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "source_closure": "18b16224727ba1e97cf5aa63975556ecb6884f673ab93df276cea9382f8e36dd",
+      "dependencies": {
+        "BusyBeaver.ZFC.RMEquiv": {
+          "source_closure": "4cf3fd018a6bfc02faaae1187b9dbaedcfaf5e93fbc68b3ef8181d1791522ee8",
+          "object_sha256": "ed14eea974f22b2a8e3b9ac1001f1617edc36590929fa3a6ac0ab844f323df61"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 2.8763695289999305,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RMBisim.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/RMBisim.lean"
+      ],
+      "log": "BusyBeaver.ZFC.RMBisim.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "e2a21222f6ff24b90bbf20f94efa9013201b6997e088acf0b5499c0f2ff7e596"
+    },
+    {
+      "module": "BusyBeaver.ZFC.SiteCoverage",
+      "source_sha256": "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4",
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim",
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "source_closure": "5af8201476d2b36d76f90e808fef1789085bc1c7666bc814f3925c31a895bbc2",
+      "dependencies": {
+        "BusyBeaver.ZFC.RMEquiv": {
+          "source_closure": "4cf3fd018a6bfc02faaae1187b9dbaedcfaf5e93fbc68b3ef8181d1791522ee8",
+          "object_sha256": "ed14eea974f22b2a8e3b9ac1001f1617edc36590929fa3a6ac0ab844f323df61"
+        },
+        "BusyBeaver.ZFC.RMBisim": {
+          "source_closure": "18b16224727ba1e97cf5aa63975556ecb6884f673ab93df276cea9382f8e36dd",
+          "object_sha256": "e2a21222f6ff24b90bbf20f94efa9013201b6997e088acf0b5499c0f2ff7e596"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 3.445524425002077,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/SiteCoverage.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/SiteCoverage.lean"
+      ],
+      "log": "BusyBeaver.ZFC.SiteCoverage.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "cd6ba57f4a52920aa3d5bd9b7410f2ba1ea2e5aa176fc6453648e703ba687838"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSim",
+      "source_sha256": "d5b5f502c3ea0529d9c2aaf26a33d13d65e9f91a6da2cb4b3c774a9c2ac5dcd7",
+      "imports": [
+        "BusyBeaver.ZFC.KHomeReady",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ],
+      "source_closure": "0789c61592f336873709f99ca1d6d7a2138e1e0e659326364678ec078f5f3a45",
+      "dependencies": {
+        "BusyBeaver.ZFC.KHomeReady": {
+          "source_closure": "8cab7c4d79a0c9d04bbdcc0f5d6615e446dad65cf0e202ca2a738815fff9e745",
+          "object_sha256": "2295dda7b0b6ab1d30ba02a6faf3364f9a2f7262724cf8d181a3e24d6cc9b254"
+        },
+        "BusyBeaver.ZFC.RegisterPathClean": {
+          "source_closure": "20f26a0723c2110bbabe509717b7e7b36ed03fe24609c6f151b1b18fbf7168f2",
+          "object_sha256": "c505ed9e107fdba8053dbbb5fe718bcb388ee603d5824dfb44290048498ba7fd"
+        },
+        "BusyBeaver.ZFC.SiteCoverage": {
+          "source_closure": "5af8201476d2b36d76f90e808fef1789085bc1c7666bc814f3925c31a895bbc2",
+          "object_sha256": "cd6ba57f4a52920aa3d5bd9b7410f2ba1ea2e5aa176fc6453648e703ba687838"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 4.719484321998607,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KSim.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/BusyBeaver/ZFC/KSim.lean"
+      ],
+      "log": "BusyBeaver.ZFC.KSim.attempt1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "f7e474fd59c8b728829ead546c00617d0f04040b55d2eb5c5c10c3a1c99ef41e"
+    },
+    {
+      "module": "SemanticCoverageAudit",
+      "source_sha256": "dae28b3ff83dea12249e003ba0a465956b989e8fdc8dcc9d1e6999497f9385ad",
+      "imports": [
+        "BusyBeaver.ZFC.KSim"
+      ],
+      "source_closure": "5573d9c4523fbd2ae6aeda8ef94ca347d3b999464f7403bd4119ec20f7707a08",
+      "dependencies": {
+        "BusyBeaver.ZFC.KSim": {
+          "source_closure": "0789c61592f336873709f99ca1d6d7a2138e1e0e659326364678ec078f5f3a45",
+          "object_sha256": "f7e474fd59c8b728829ead546c00617d0f04040b55d2eb5c5c10c3a1c99ef41e"
+        }
+      },
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 0.7953602300003695,
+      "command": [
+        "/tmp/proveit-tools/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace",
+        "-o",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/SemanticCoverageAudit.olean",
+        "/workspace/scratch/e82b6bf73289/lean_work/snapshot_replay/workspace/SemanticCoverageAudit.lean"
+      ],
+      "log": "SemanticCoverageAudit.attempt1.log",
+      "log_sha256": "dec6347619ef2974de4295e8a9e768a42222e0fe740f2a7b1f0126b3febe3716",
+      "object_sha256": "a91405d269a5495691bf98c30aaecca5855cf34f37960297f462507c108a5a43"
+    }
+  ],
+  "external_imports": [
+    "Init"
+  ],
+  "project_module_count": 13,
+  "typed_clients": 1
+}
