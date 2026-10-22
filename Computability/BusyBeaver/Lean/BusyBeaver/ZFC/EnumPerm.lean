@@ -205,8 +205,7 @@ theorem step_sound {s : St} (hs : Inv (toW s)) :
   | none =>
       simp only [enumStep, execAt, Option.map_eq_none_iff] at h
       have hh := hs.2.1
-      rw [cstep_none _ h] at hh
-      exact hh
+      rwa [cstep_none _ h] at hh
   | some s' =>
       simp only [enumStep, execAt, Option.map_eq_some_iff] at h
       obtain ⟨w, hw, rfl⟩ := h

@@ -91,11 +91,7 @@ theorem tag_sep (a : Tag mem t) (φ : Form) (env : Nat → Tag mem t) :
   intro z
   refine and_congr Iff.rfl ?_
   rw [sat_top]
-  refine (Sat_rename_ext _ _ _ _ fun n => ?_).symm
-  match n with
-  | 0 => rfl
-  | 1 => rfl
-  | n + 2 => rfl
+  exact (Sat_rename_ext _ _ _ _ fun n => by rcases n with _ | _ | _ <;> rfl).symm
 
 /-- Pairing in `D_t`. -/
 theorem tag_pair (a b : Tag mem t) :
