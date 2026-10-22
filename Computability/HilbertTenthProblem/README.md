@@ -26,9 +26,10 @@ Con(ZFC). The smallest has 15 positive unknowns, 67 operations and exact
 degree 155; a seven-equation system in 16 unknowns reaches maximum degree 28
 at 63 operations. These are fixed-instance results, so the universal
 operation bounds stated below are unchanged. Neither the Diophantine bridge
-nor the compiler is formalized; the Lean development proves MRDP and
-`Jones1982.nine_unknowns`, which the packages cite as the nine-unknown
-comparison.
+nor the compiler is formalized. The Lean development proves MRDP and
+`Jones1982.nine_unknowns`, the existence of a nine-unknown representation
+without a degree bound. Package 02 cites it; the others compare with
+Jones's papers.
 
 The established arithmetic bounds are **74 operations for a complete
 certificate and 84 for one universal polynomial**. The

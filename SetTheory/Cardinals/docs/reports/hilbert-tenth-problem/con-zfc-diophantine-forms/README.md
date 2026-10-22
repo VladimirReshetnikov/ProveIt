@@ -20,8 +20,9 @@ from the packages and labelled as theirs; the few facts checked at intake
 say so.
 
 [`PLACEMENT.md`](PLACEMENT.md) is the recovery map: 600 archive members,
-329 staged, 264 omitted as byte-identical copies of repository files (each
-mapped to a repository path with the same bytes) and 7 checksum ledgers
+329 staged, 264 omitted as byte-identical (up to line ends) copies of
+repository files (each mapped to a repository path with the same bytes) and
+7 checksum ledgers
 excluded by the root `.gitignore`.
 
 ## The common theorem
@@ -39,7 +40,9 @@ The route is the same in all eight:
 
 1. the blank run of K215 halts iff ZFC has a finite refutation (the
    repository's machine endpoint, see below);
-2. the machine is folded or normalized into a local "window" language and
+2. the machine is turned into a local "window" language (folded into a
+   one-sided normalized machine by 01, 02, 03, 05, 07 and 08; by a two-sided
+   normalizer in 04; read on raw K215 with no auxiliary machine in 06) and
    compiled by the repository's native-window/Pell compiler
    ([`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md));
 3. the universal compiler's **ordinary input is fixed** (to x = 1, a blank
@@ -87,17 +90,22 @@ What each one adds beyond the common route (as the packages describe it):
   input x = 1, keeps all 18 witnesses, and gives a nine-equation
   specialization of complete74. Its `tag/` directory is a second, different
   route through the repository's Lean tag-system chain (`Sys91`): a 240-state
-  TM0 adapter and a 131,144-slot counter program, whose new adapters are
-  "not kernel-checked here" (`report.tex:26`).
+  TM0 adapter and a 131,144-slot counter program. Its adapters and
+  composite endpoint are "not newly compiled" (`README.txt:29-31`), and the
+  native construction's own adapters "have not been kernel-checked here"
+  (`report.tex:26`).
 - **02** replaces the variable-input Pell bridge by a fixed marker
   W0 = 2^(2d+b), merges two witnesses (γ = ρ + σ) and drops the 2d
   subtraction by restoring the raw slack; its 72/74 single polynomials use a
   squared budget residual and are equivalent to the system only in
   *existence* of solutions, not tuple by tuple (`README.md:31-35`).
-- **03** reaches the same 16-unknown, seven-equation system as 02 by a
-  different proof order (restoring δ, ρ, σ before power recovery), one
-  operation dearer throughout; it then eliminates the strong root f by the
-  complete92 norm trick to get **P15**, 15 unknowns.
+- **03** reaches 02's 16-unknown, seven-equation system up to the shift
+  α ↦ α + 2d, by a different proof order (restoring δ, ρ, σ before power
+  recovery). 02 absorbs that 2d into α (C = Z + W0) and 03 keeps it
+  (C = q − F − Z − α − 2d), so 03's system and its sum of squares cost one
+  operation more. 03's products are one operation dearer than 02's parent
+  products 73/75 and two dearer than its final P72/P74. 03 then eliminates
+  the strong root f by the complete92 norm trick to get **P15**, 15 unknowns.
 - **04** forces the marker by an affine unit guard N0 = 3W + 1 − 3W0 instead
   of a squared factor, and uses a two-sided normalizer (220 states, three
   symbols) instead of a folded one-sided tape.
@@ -107,16 +115,20 @@ What each one adds beyond the common route (as the packages describe it):
   emits every circuit, including two all-integer forms, in `arithmetic/`.
 - **06** removes the input entirely ("fixed blank computation"): Start is
   K215's actual first transition, selector 1 is a locally valid but globally
-  impossible window, and no normalized machine is built (a 439-symbol
-  alphabet on raw K215). Its layout satisfies 2D_C − D_R ≡ 3 (mod 5), so no
-correction bit is needed (`report.tex:545-549`).
+  impossible window, and no normalized or auxiliary machine is built: the
+  439-symbol cell alphabet is read directly on raw K215 (216 states with
+  the padded halt, 2 symbols; `report.tex:224-233`). Its layout satisfies
+  2D_C − D_R ≡ 3 (mod 5), so no correction bit is needed
+  (`report.tex:545-549`).
 - **07** keeps the factor U0 = q − βJ signed and proves its sign only after
   X = 2^R is recovered, and changes the first scale to X = wq²; P70 is its
   smallest evaluator.
 - **08** is "inputless" as well: an input-erasing normalized machine with a
   forced Start, so no End marker is needed and selector 1 becomes the window
-  (7,…,7). It also gives the lowest-degree complete lift of the eight
-  (25 quadratics in 34 unknowns, one quartic) and a **retained-index
+  (7,…,7). It also gives the smallest quadratic lift of the eight in
+  positive unknowns (25 quadratics in 34 positive unknowns, one quartic;
+  over all integers it becomes 136 unknowns at degree 8,
+  `diophantine_zfc.tex:162`) and a **retained-index
   fallback** (18 unknowns, 9 equations, 61 ops) that uses the historical
   Start/End ordering and must not be mixed with its new K
   (`README.md:16-20`).
@@ -126,7 +138,8 @@ correction bit is needed (`report.tex:545-549`).
 - **Smallest single polynomial: P67, 15 unknowns, 67 = 39M+28A, exact
   degree 155, found twice.** 06 and 08 display the same polynomial and the
   same 61-operation six-equation system symbol for symbol, up to renaming
-  (T→o, N_K→N_I, S→L), with the same factor degrees 22, 18, 60, 7, 2, 46 and
+  (06 → 08: T→o, N_K→N_I, S→L, N_0→N_1, N_1→N_2, m→β, M_F^src→M_F^*, with
+  06's L_0 inlined in 08), with the same factor degrees 22, 18, 60, 7, 2, 46 and
   the same leading form (06 `report.tex:157-187, 1081`; 08
   `diophantine_zfc.tex:79-111, 464`). Their fixed coefficients are built
   independently and are **different integers**. 06 works on raw K215 with a
@@ -136,22 +149,35 @@ correction bit is needed (`report.tex:545-549`).
   **Base: 06**, because its coefficient recipe is fully numeric and needs no
   correction bit; 08 is credited with the same arithmetic skeleton, found
   independently.
-- **Fewest unknowns: 15**, in 03 (P15, 82 ops), 05 (Φ15 at 82 ops; Ψ15 at
-  80), 06 and 08 (P67 at 67 ops). The 67-operation polynomial dominates the
-  others on operations and degree.
+- **A second polynomial found twice: the 15-unknown, 82-operation product
+  of degree 295.** 03's P15 = N_f·N_m·N_w·N_k·N_t·(N + 1) − 1
+  (`report.tex:283-293`) and 05's Φ15 = P4·(1 + Λ²)·(1 + 𝒦) − 1
+  (`paper/fixed_input_zfc.tex:360-368`) are the same construction. Both use
+  the same root-elimination data A, B, D, Q, a marker factor 1 + (W − W*)²
+  (Λ = W − W0 in 05), 46M+36A = 82 operations, exact degree 295 and the same
+  45-integer, degree-590 conversion. They differ by the α ↦ α + 2d shift
+  described above (05 uses C = Z + W0) and in their coefficients. Neither
+  cites the other; both are credited. **Base: 05**, which also gives the
+  80-operation variant Ψ15 and emits every circuit.
+- **Fewest unknowns: 15**, in 03 and 05 (the product above, 82 ops; 05's
+  Ψ15 at 80) and in 06 and 08 (P67 at 67 ops). The 67-operation polynomial
+  beats the others on both operations and degree.
 - **Lowest-degree small system: 16 unknowns, seven equations, maximum degree
-  28**, in 02 (63 ops) and 03 (64 ops), with its sum of squares at degree 56
-  (83 and 84 ops). 07's eight-equation system also reaches degree ≤28 and
-  61 ops, but with 17 unknowns. **Base: 02.**
+  28**, in 02 (63 ops) and 03 (64 ops, the same system up to the 2d shift),
+  with its sum of squares at degree 56 (83 and 84 ops). 07's eight-equation
+  system also reaches degree ≤28 and 61 ops, but with 17 unknowns.
+  **Base: 02.**
 - **Quartic forms.** Every package that gives one lifts its circuit to
-  quadratics and takes a sum of squares: 08 (34 unknowns) < 02 (79
-  naturals) < 04 (83 integers) < 03 (128 integers) < 01 (180 naturals).
+  quadratic equations (degree 2) and takes their sum of squares (degree 4).
+  Unknown counts are comparable only within one domain (01 `report.tex:228`).
+  In positive unknowns: 08, 34. In natural numbers: 02, 79; 01, 180. In all
+  integers: 04, 83; 03, 128; 08, 136 at degree 8 after substitution.
 - **Sixteen-unknown single polynomials**: 07's P70 (70 ops, degree 169),
   02's P72 (72, 157), 04's P73 (73, 156), and the 74/75/76 products of 02,
   03 and 05. 04's degree-156 product is 02/03's degree-157 normalized
   product with the degree-2 marker factor replaced by the degree-1 affine
   guard.
-- **The coefficients are not interchangeable.** Every package normalizes
+- **The coefficients are not interchangeable.** Every package compiles
   K215 differently, so its four to six coefficient "ports" are its own
   integers:
 
@@ -162,24 +188,34 @@ correction bit is needed (`report.tex:545-549`).
   | 03 | 436 states, 6 symbols | 2628 | 5^42, 5^85 |
   | 04 | 220 states, 3 symbols (two-sided) | 669 | 5^35, 5^71 |
   | 05 | 436 states, 10 symbols | 4376 | 5^45, 5^90 |
-  | 06 | raw K215, 439 symbols | — | 5^33, 5^67 |
+  | 06 | raw K215 (216 states with padded halt, 2 symbols) | 439 | 5^33, 5^67 |
   | 07 | 435 states, 10 symbols | 4366 | 5^44, 5^89 |
   | 08 | 435 states, 10 symbols | 4366 | by formula only |
 
-  All eight agree that the source port `MF` is the **shifted** mask
-  M_F + B − 1, not the native mask. A circuit from one package evaluated with
-  another's coefficients means nothing.
-- **Tensions noted, not adjudicated at intake.** 01 and 03 warn against the
-  older complete76 masks, while 04 says it uses "the exact complete76
-  compiler layout" (`provenance/COEFFICIENT_RECIPE.md:3-5`) with the
-  strengthened complete75 bound, so this looks like a clash of wording, not
-  of substance. 04 says a folded one-sided simulation is unnecessary, while
-  01, 02, 03 fold. 07 makes Start unique through a marker bijection, while
-  06 and 08 prove uniqueness unnecessary. 06 and 08 state different upper
-  bounds for the same R (06 `report.tex:600`, 08 `diophantine_zfc.tex:199`).
-  05 describes the removed input bridge as one Pell norm with three
-  witnesses, 07 as a four-equation block with five coordinates. These may be
-  different layers of the same source.
+  All eight agree that the source port `MF` is the **shifted** value
+  (native high mask) + B − 1, not the native mask itself. Their symbols
+  differ: in 01, M_F already denotes the shifted value
+  (`report.tex:161-163`), while 08 writes the native mask M_F and the port
+  M_F^* (`diophantine_zfc.tex:403-407`). A circuit from one package
+  evaluated with another's coefficients means nothing.
+- **Tensions noted, not adjudicated at intake.**
+  - 01 says that changing its radix to "the older 76 choice is not
+    justified" (`report.tex:151`), and 03 that its masks "must not be
+    replaced by the older complete76 masks" (`report.tex:754-756`).
+    Meanwhile 04 says it uses "the exact complete76 compiler layout"
+    together with "the complete75 half-binomial mask correction"
+    (`provenance/COEFFICIENT_RECIPE.md:3-5`). This looks like a clash of
+    wording, not of substance.
+  - 04 says a folded one-sided simulation is unnecessary; 01, 02, 03, 05, 07
+    and 08 fold, and 06 needs no normalized machine at all.
+  - 07 makes Start unique through a marker bijection, while 06 and 08 prove
+    uniqueness unnecessary.
+  - 05 describes the removed input bridge as one Pell norm with three
+    witnesses, 07 as a four-equation block with five coordinates. These may
+    be different layers of the same source.
+  - Not a tension: 08's bound R < q⁴ − q³ (`diophantine_zfc.tex:199`) is
+    sharper than 06's R < q⁴ − q³ + q² − 1 (`report.tex:600`), which 06
+    calls deliberately weak (`report.tex:603-605`).
 
 ## What is not claimed
 
@@ -191,47 +227,62 @@ Every package says, in its own words:
   of the machine endpoint were not rerun.
 - **No consistency proof.** The theorem is an equivalence. It neither
   assumes nor decides Con(ZFC), and if ZFC is consistent, ZFC does not prove
-  that P has no solutions. Several packages add that passing from mere
-  consistency to the stronger "neither side is provable" needs an extra
-  soundness hypothesis such as Σ₁-soundness.
+  that P has no solutions. All eight decline the stronger claim that
+  neither side is provable: passing to it from mere consistency needs an
+  extra soundness hypothesis such as Σ₁-soundness.
+- **Positive domain only.** Each polynomial is stated over strictly positive
+  integers and must not be read over ℤ. Every package warns of this (e.g. 01
+  `README.txt:37`, 04 `README.md:178-179`, 08 `diophantine_zfc.tex:455`,
+  where Δ can vanish off the positive domain). The integer versions in the
+  table substitute a positive-valued form (Pos(a,b,c) or one plus four
+  squares) for each unknown, and nonnegative versions shift by one.
 - **No materialized coefficients.** Each coefficient is a specific integer
   defined by a terminating finite recipe, with no free program index or
   oracle. None is expanded: B alone has about 5^67 to 5^90 binary digits,
   and the window enumerations (from about 1.4·10^21 windows in 06 to about
-1.2·10^29 in 05) were not run. The
-  finite checks use small or synthetic coefficients and are algebra and
-  machine diagnostics, not accepting computations or Pell witnesses.
+  1.2·10^29 in 05) were not run. The finite checks use small or synthetic
+  coefficients, apart from toy fixtures (an accepting toy tableau in 04 and
+  one small materialized instance in 05). They are algebra and machine
+  diagnostics: no accepting K215 computation and no full Pell witness is
+  exhibited.
 - **No optimality.** No global minimum over Diophantine constructions is
   claimed for unknowns, degree, operations or coefficient height, which are
-  different criteria. The repository's own Lean theorem
-  `Jones1982.nine_unknowns`
-  (`Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineMain.lean`,
-  checked at intake) already gives nine unknowns at astronomically larger
-  degree.
+  different criteria. Classical universal equations use nine unknowns at
+  far larger degree: 05 (`paper/fixed_input_zfc.tex:79`) and 08
+  (`diophantine_zfc.tex:50`) cite Jones's degree about 1.64·10^45. The
+  repository's Lean theorem `Jones1982.nine_unknowns`
+  (`Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineMain.lean:140`,
+  present at `HEAD`), which 02 cites, proves only that such a nine-unknown
+  polynomial over the naturals *exists*; it states no degree and gives no
+  explicit polynomial.
 - **No new universal bound.** Fixing the input is not a varying-input
   universal construction. The repository's universal operation frontier
   (**84 operations, 18 witnesses, degree 187**, recorded in
   `Computability/HilbertTenthProblem/README.md` and the native-stream-queue
-  README) is unchanged; 01, 03, 04 and 07 say so explicitly.
+  README) is unchanged; 01, 02, 03, 04, 07 and 08 say so explicitly.
 
 ## Relation to the formal developments
 
-- **Machine endpoint (Busy Beaver ZFC).** All eight rest on the repository's
-  checked K215 endpoint,
+- **Machine endpoint (Busy Beaver ZFC).** All eight cite the repository's
+  K215 endpoint,
   `KEndpoint215.blank_halts_iff_zfc_refutation` and
   `KEndpoint215.nonhalting_iff_zfc_consistency`
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean:44,49`,
-  both present at `HEAD`, checked at intake), together with
+  present at `HEAD`; not rebuilt at intake), together with
   `ConstructibleChoice.zf_refutation_iff_zfc_refutation` and
   `KEndpoint.c222_iff_zf_refutation`. That endpoint is a Lean/Rocq theorem
-  about the proof predicate `BProv`. The step from it to "ZFC proves the
-  Diophantine equivalence" is the packages' ordinary argument and is not
-  formalized here.
+  about the proof predicate `BProv`. The packages' claim that **ZFC proves**
+  the Diophantine equivalence does not go through Lean's soundness. It rests
+  on the formalizability in ZFC of the ordinary K215 calibration argument,
+  which the Lean/Rocq theorems mirror (01 `report.tex:200-202`, 02
+  `report.tex:720-725`, 03 `report.tex:917-926`). Neither that step nor the
+  Diophantine bridge is formalized here.
 - **Hilbert's tenth problem.** The compiler, its Pell lemmas and its masks
   are the research-wip notes under
   `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`,
-  which are themselves not Lean-formalized; the formal project proves MRDP
-  and Jones's nine-unknown theorem, but not this compiler.
+  which are themselves not Lean-formalized. The formal project proves MRDP
+  and the existence form of Jones's nine-unknown theorem, but not this
+  compiler.
 - **None of the eight packages' own theorems is formalized.** Neither
   project gains formal status from this report.
 
@@ -269,16 +320,18 @@ These are disclosed here and were not fixed in the delivered files:
   fixed-arity encoding and not compiled in Lean or Rocq.
   `evidence/diophantine_zfc_encoding/constructive_compiler_fallback.md` is
   "not a completed build". It targets Glazer's **K230** machine
-  (`machine/k230.tm`, omitted here as identical to
+  (`machine/k230.tm` in Glazer's repository; the delivered copy
+  `evidence/diophantine_zfc_encoding/k230.tm` is omitted here as identical to
   `Computability/BusyBeaver/Research/ZFC/candidate-k228/ingredients/k230.tm`),
   not K215, and claims no count.
-- **Minor internal inconsistencies, as found by the intake dossiers.**
+- **Minor inconsistencies, as found by the intake dossiers and audit.**
   - 05's §1 table omits rows that its appendix and README give.
   - 07's `artifacts/fixed_input_notes.md:461-465` says "degree at most 338"
     where its TeX says exact.
-  - 08's README omits its two SOS rows.
-  - 05 and 06 call Jones's nine unknowns "nonnegative" and "positive"
-    respectively.
+  - 08's README omits the 15-unknown sum of squares (78 ops, degree 120)
+    and the 87-operation count of its retained-index sum of squares.
+  - Across packages: 06 calls Jones's nine unknowns "positive"
+    (`report.tex:144-145`), where 03, 04 and 05 say nonnegative or natural.
 
 ## Further questions and research
 
@@ -292,16 +345,18 @@ These are the open problems the packages list, merged and credited:
    normalization. Proposed by 02 (`normalization.md:230-252`), 05, 07 and 08,
    whose `direct_stack_core` is a first step.
 3. **Coefficient height.** Find smaller machine, tableau or register-machine
-   encodings, or charge coefficient size in the metric. Proposed by 03, 04
-   and 07.
+   encodings, or charge coefficient size in the metric. Proposed by 03, 04,
+   05, 06, 07 and 08.
 4. **Fewer unknowns.** Remove the F or α slack, or the positivity witnesses
    and Pell scales (05, 06, 07). Find an effective nine-variable
    specialization (06) or instantiate low-variable universal forms (08).
 5. **Pareto front.** Optimize degree, operations and unknowns jointly
    (05, 07, 08); give a symbolic window sum (08); shorten the signed-root
    proof (05).
-6. **Arithmetic internalization.** State the equivalence in PA rather than
-   ZFC, which needs a separate arithmetization (03, 07).
+6. **Internalization.** Check the construction internally, or state the
+   equivalence in PA, which needs a separate arithmetization. Proposed by 07
+   (internalize in PA) and 08 (internal checking); 03 only notes that a PA
+   claim would need this (`proofs/FORMAL_STATUS.md:122-126`).
 7. **Generic fixed-marker theorem** for the native parent compiler (04).
 
 ## Licence and provenance

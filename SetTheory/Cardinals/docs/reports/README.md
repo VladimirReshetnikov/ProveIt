@@ -3555,8 +3555,9 @@ positive-integer unsolvability ZFC proves equivalent to Con(ZFC), obtained
 by fixing the ordinary input of the research tree's native-window/Pell
 compiler on the blank run of the 215-state machine. The smallest single
 polynomial (15 positive unknowns, 67 operations, exact degree 155) was
-found twice with different coefficients. Placement `084e120830` keeps each
-package whole with its PDF, omits 264 byte-identical repository copies with
+found twice with different coefficients, as was a 15-unknown, 82-operation
+product of degree 295. Placement `084e120830` keeps each package whole with
+its PDF, omits 264 repository copies (byte-identical up to line ends) with
 a recovery map (`PLACEMENT.md`), and retires all eight ZIPs; reconciliation
 `feadb33d20` records the overlap, bases, credits, tensions and merged open
 questions without a write. Nothing was rerun; no formalization, consistency
