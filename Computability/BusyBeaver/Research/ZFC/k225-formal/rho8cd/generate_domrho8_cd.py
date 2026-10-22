@@ -3,6 +3,8 @@
 
   python generate_domrho8_cd.py [--derivation derivation.txt] [--lean OUT.lean] [--rocq OUT.v]
   python generate_domrho8_cd.py --derivation derivation_core.txt --core DominatedImplication.lean
+  python generate_domrho8_cd.py --derivation derivation_luk.txt --luk Lukasiewicz.lean
+  python generate_domrho8_cd.py --derivation derivation_luk.txt --rocq-cd CD222.v
 
 The derivation (found by the untrusted search in search/) lists formulas over
 implication `>`, the code `Z` = 0 (with Z > Z = Z) and variables a, b, ...  Line
@@ -17,6 +19,12 @@ representation-independent DominatedImplication module: an arbitrary binary
 connective with a reflexive `below` relation closed under insertion into either
 operand.  Its goals are the row, composition ((a>b)>((b>c)>(a>c))) and
 prefixing ((a>b)>((c>a)>(c>b))).
+
+--luk renders a derivation from the unrestricted row (no side conditions, no
+truth) as the Lukasiewicz namespace of Lukasiewicz.lean: K, Peirce, S and, when
+the derivation has that goal, composition.  The rest of the file (the Tarski
+bridge after the namespace) is kept verbatim.  --rocq-cd renders the same
+derivation as the Rocq lane's CD222.v (thm_K, thm_P, thm_B, thm_S over thm222).
 
 Each step becomes one lemma.  The renderer recomputes the most general unifier,
 so the premises' instances are explicit and every `u <= a` is proved from
@@ -266,13 +274,15 @@ class Var:
 class Syntax:
     def __init__(self, mode):
         self.rocq = mode == 'rocq'
-        self.core = mode == 'core'
+        self.rcd = mode == 'rocqcd'
+        self.luk = mode in ('luk', 'rocqcd')
+        self.core = mode in ('core', 'luk', 'rocqcd')
 
     def term(self, t, top=True):
         if isinstance(t, Var):
             return t.name
         if isinstance(t, tuple):
-            s = 'wim %s %s' % (self.term(t[0], False), self.term(t[1], False))
+            s = '%s %s %s' % ('imp' if self.luk and not self.rcd else 'wim', self.term(t[0], False), self.term(t[1], False))
             return s if top else '(' + s + ')'
         return '0' if t == Z else 'v%d' % t
 
@@ -296,10 +306,14 @@ class Syntax:
             return '(dtruth h)' if self.rocq else 'h.truth'
         if kind == 'row':
             pa, q, r, s = (args + [Z] * 4)[:4]
+            if self.rcd:
+                return '(W_r8 %s)' % ' '.join(self.term(x, False) for x in (r, s, pa, q))
+            if self.luk:
+                return '(h.rho8 %s)' % ' '.join(self.term(x, False) for x in (pa, q, r, s))
             head = 'drho8 h' if self.rocq else 'h.rho8'
             return '(%s %s %s)' % (head, ' '.join(self.term(x, False) for x in (r, s, pa, q)),
                                    self.le(q, r, hyps))
-        pieces = [name] + ([] if self.rocq else ['h']) + [self.term(x, False) for x in args]
+        pieces = [name] + ([] if self.rocq or self.rcd else ['h']) + [self.term(x, False) for x in args]
         pieces += [self.le(u, a, hyps) for u, a in hb]
         return '(' + ' '.join(pieces) + ')'
 
@@ -318,6 +332,15 @@ class Syntax:
             return 'Lemma %s%s%s :\n  T (%s).\nProof. exact (dmp h _ _ %s). Qed.\n' % (
                 name, ' ' + binders if binders else '', hyps, self.term(t), mp)
         assert not (self.core and (major[4] or minor[4]))
+        if self.rcd:
+            assert not cons
+            return 'Lemma %s%s : thm222 (%s).\nProof. exact (W_mp _ _ %s %s). Qed.' % (
+                name, ' (%s : nat)' % binders if binders else '', self.term(t),
+                self.use(minor, cons), self.use(major, cons))
+        if self.luk:
+            assert not cons
+            return 'private theorem %s (h : Implicational imp T)%s :\n    T (%s) :=\n  h.mp %s\n' % (
+                name, ' (%s : α)' % binders if binders else '', self.term(t), mp)
         body = ('by simpa only [wim00] using h.mp ' if major[4] or minor[4] else 'h.mp ') + mp
         return 'private theorem %s%s%s :\n    T (%s) :=\n  %s\n' % (
             name, ' (%s : %s)' % (binders, 'A' if self.core else 'Nat') if binders else '', hyps,
@@ -423,17 +446,37 @@ PREFIX = parse('((a>b)>((c>a)>(c>b)))')
 ROW_NAMES = ['c', 'u', 'a', 'b']       # rho8 a b c u = ((c > u) > a) > ((a > c) > (b > c))
 
 
-def render(rows, goals, mode):
+K = parse('(a>(b>a))')
+PEIRCE = parse('(((a>b)>a)>a)')
+S = parse('((a>(b>c))>((a>b)>(a>c)))')
+LUK_END = 'end SetTheory.BusyBeaver.ZFC.Lukasiewicz\n'
+
+
+def render(rows, goals, mode, keep=''):
     syn = Syntax(mode)
-    lemmas, names = steps(rows, mode == 'core')
+    lemmas, names = steps(rows, mode in ('core', 'luk', 'rocqcd'))
     body = [syn.lemma(*s) for s in lemmas]
-    need = [(ROW, ROW_NAMES)] + ([(COMPOSITION, ['a', 'b', 'c']), (PREFIX, ['a', 'b', 'x'])] if mode == 'core' else [])
+    if mode == 'rocqcd':
+        need = [(K, ['p', 'q']), (PEIRCE, ['p', 'q']), (COMPOSITION, ['p', 'q', 'r']), (S, ['p', 'q', 'r'])]
+    elif mode == 'luk':
+        need = [(K, ['a', 'b']), (PEIRCE, ['a', 'b']), (S, ['a', 'b', 'c'])]
+        need += [(COMPOSITION, ['a', 'b', 'c'])] if any(g == COMPOSITION for _, g in goals) else []
+    else:
+        need = [(ROW, ROW_NAMES)] + ([(COMPOSITION, ['a', 'b', 'c']), (PREFIX, ['a', 'b', 'x'])] if mode == 'core' else [])
     use = {}
     for goal, vnames in need:
         i = next(i for i, g in goals if g == goal)
         assert not rows[i][3], 'a public statement has no side condition'
-        use[goal] = '%s h %s' % (names[i], syn.instance(rows[i][2], goal, vnames)) if mode != 'rocq' else \
+        use[goal] = '%s h %s' % (names[i], syn.instance(rows[i][2], goal, vnames)) if mode not in ('rocq', 'rocqcd') else \
             '%s %s' % (names[i], syn.instance(rows[i][2], goal, vnames))
+    if mode == 'rocqcd':
+        return RCD_HEAD.format(n=len(body)) + '\n'.join(body) + '\n' + RCD_TAIL.format(
+            k=use[K], p=use[PEIRCE], b=use[COMPOSITION], s=use[S])
+    if mode == 'luk':
+        tail = LUK_TAIL.format(k=use[K], peirce=use[PEIRCE], s=use[S])
+        if COMPOSITION in use:
+            tail = tail.replace(LUK_S_DOC, LUK_COMPOSITION.format(composition=use[COMPOSITION]) + LUK_S_DOC)
+        return LUK_HEAD.format(n=len(body)) + '\n'.join(body) + '\n' + tail + keep
     head, tail = {'lean': (LEAN_HEAD, LEAN_TAIL), 'rocq': (ROCQ_HEAD, ROCQ_TAIL), 'core': (CORE_HEAD, CORE_TAIL)}[mode]
     return head.format(n=len(body)) + '\n'.join(body) + '\n' + tail.format(
         row=use[ROW], composition=use.get(COMPOSITION), prefix=use.get(PREFIX))
@@ -507,15 +550,100 @@ end SetTheory.BusyBeaver.ZFC.DominatedImplication
 '''
 
 
+LUK_HEAD = '''import BusyBeaver.ZFC.TarskiComplete
+
+/-!
+Finite implicational certificates and the unconditional Tarski logic bridge.
+
+K, S and Peirce follow from modus ponens and Lukasiewicz's single axiom rho8
+((c → u) → a) → ((a → c) → (b → c)) alone. The {n} lemmas below are one
+condensed-detachment derivation, generated by
+`Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py --luk` from
+`rho8cd/derivation_luk.txt` and found by the untrusted search in `rho8cd/search/`,
+seeded with the statements of the 107-step DAG of Jeff's `ZF/m254/coq/logic/CD254.v`
+(busy-beaver commit `297ab8df7e5de329605c3875b4934643b371a5e3`, Mira-Cult's
+machine) that this module previously ported. No implication injectivity or
+assumption about falsity is used.
+
+Ex falso additionally uses the original rho6, whose existential is defined
+relative to `NF.bot`. Thus `Tarski.classical` supplies both explicit hypotheses
+of the previously conditional `Tarski.completeness`, for any theory predicate `Ax`.
+
+This concerns the named syntax with primitive falsity. It does not identify
+that syntax with numerical machine codes, justify the runtime falsity
+alias, verify a theory bundle, or prove a binary machine consistency endpoint.
+-/
+
+namespace SetTheory.BusyBeaver.ZFC.Lukasiewicz
+
+universe u
+variable {{α : Type u}}
+
+/-- Only the actual implicational row and its inference rule. -/
+structure Implicational (imp : α → α → α) (T : α → Prop) : Prop where
+  mp : ∀ {{a b}}, T (imp a b) → T a → T b
+  rho8 : ∀ c u a b, T (imp (imp (imp c u) a) (imp (imp a c) (imp b c)))
+
+variable {{imp : α → α → α}} {{T : α → Prop}}
+
+'''
+
+RCD_HEAD = '''(** * CD222: implicational theorems of thm222 from the Lukasiewicz row rho8 alone.
+
+    The {n} lemmas are the condensed-detachment derivation of k225-formal/rho8cd/derivation_luk.txt,
+    rendered by generate_domrho8_cd.py --rocq-cd exactly as the Lean Lukasiewicz.lean (the search
+    that found it, seeded with the statements of the pinned m254/CD254.v, is untrusted). *)
+From K230L Require Import Codes230.
+From K215F Require Import Thm222.
+
+'''
+RCD_TAIL = '''
+Lemma thm_K (p q : nat) : thm222 (wim p (wim q p)).
+Proof. exact ({k}). Qed.
+Lemma thm_P (p q : nat) : thm222 (wim (wim (wim p q) p) p).
+Proof. exact ({p}). Qed.
+Lemma thm_B (p q r : nat) : thm222 (wim (wim p q) (wim (wim q r) (wim p r))).
+Proof. exact ({b}). Qed.
+Lemma thm_S (p q r : nat) : thm222 (wim (wim p (wim q r)) (wim (wim p q) (wim p r))).
+Proof. exact ({s}). Qed.
+'''
+
+LUK_S_DOC = '/-- S follows from rho8 alone. -/\n'
+LUK_COMPOSITION = '''/-- Implication composition. -/
+theorem composition (h : Implicational imp T) (a b c : α) :
+    T (imp (imp a b) (imp (imp b c) (imp a c))) := {composition}
+
+'''
+LUK_TAIL = '''/-- K follows from rho8 alone. -/
+theorem k (h : Implicational imp T) (a b : α) : T (imp a (imp b a)) :=
+  {k}
+
+/-- Peirce follows from rho8 alone. -/
+theorem peirce (h : Implicational imp T) (a b : α) :
+    T (imp (imp (imp a b) a) a) := {peirce}
+
+/-- S follows from rho8 alone. -/
+theorem s (h : Implicational imp T) (a b c : α) :
+    T (imp (imp a (imp b c)) (imp (imp a b) (imp a c))) := {s}
+
+'''
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--derivation', type=Path, default=HERE / 'derivation.txt')
     ap.add_argument('--lean', type=Path)
     ap.add_argument('--rocq', type=Path)
     ap.add_argument('--core', type=Path)
+    ap.add_argument('--rocq-cd', type=Path)
+    ap.add_argument('--luk', type=Path, help='Lukasiewicz.lean to rewrite in place (its tail is kept)')
     a = ap.parse_args()
     rows, goals = read(a.derivation)
-    for path, mode in ((a.lean, 'lean'), (a.rocq, 'rocq'), (a.core, 'core')):
+    if a.luk:
+        text = a.luk.read_text(encoding='utf-8')
+        keep = LUK_END + text.split(LUK_END, 1)[1]
+        a.luk.write_text(render(rows, goals, 'luk', keep), encoding='utf-8', newline='\n')
+    for path, mode in ((a.lean, 'lean'), (a.rocq, 'rocq'), (a.core, 'core'), (a.rocq_cd, 'rocqcd')):
         if path:
             path.write_text(render(rows, goals, mode), encoding='utf-8', newline='\n')
 
