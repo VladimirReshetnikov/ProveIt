@@ -1,0 +1,329 @@
+\section{Complete finite recipe for the five coefficients}
+\label{app:coefficient-recipe}
+
+This appendix specifies all five fixed integers in the main polynomial.
+Its powers, finite sums, and finite case distinctions concern only fixed
+coefficients: none contains a Diophantine unknown. The complete window
+list and the binary expansions of the resulting integers are not
+materialized. The correction bit defined below is likewise retained as
+an exact finite arithmetic expression, rather than claimed to have been
+numerically evaluated.
+
+The literal K215 table and its normalized transition function are fixed
+in Section~\ref{sec:controller}. For this appendix, denote that normalized
+function by
+\[
+ \delta(q,s)=(q',s',D),\qquad
+ q,q'\in\{0,\ldots,434\},\quad
+ s,s'\in\{0,\ldots,9\},\quad D\in\{-1,0,1\}.
+\]
+Its start state is $0$, its erase state is $1$, its absorbing halt is $4$,
+and its blank symbol is $0$. In particular $\delta(0,1)=(1,2,0)$.
+The archive supplies the entire 4,350-row table, so this use of $\delta$
+does not introduce an unspecified universal-machine index.
+
+\subsection{The complete ordered tile alphabet and local predicate}
+\label{app:tile-predicate}
+
+Write $\bot$ for an absent payload, phase, or head, as appropriate.
+A tile has four fields $(v,h,\pi,\varphi)$: two boundary bits, a payload,
+and a phase. A payload is $(s,q)$, with a tape symbol $s$ and a state
+$q$ or $\bot$. The ordered tile alphabet is as follows:
+\begin{enumerate}
+\item Tile $0$ is $\mathsf V=(1,0,\bot,\bot)$ and tile $1$ is
+$\mathsf H=(0,1,\bot,\bot)$.
+\item For $s=0,\ldots,9$ and $q=\bot,0,\ldots,434$, in this order,
+include $(0,0,(s,q),\bot)$. Its tile index is
+\[
+ 2+436s+\eta(q),\qquad
+ \eta(\bot)=0,\quad \eta(q)=q+1\quad(q\ne\bot).
+\]
+\item Tiles $4362,4363,4364,4365$ have phases
+$\mathsf L,\mathsf I,\mathsf Q,\mathsf R$, respectively. Their boundary
+bits are zero, and their respective payloads are
+\[
+ (0,\bot),\quad(1,\bot),\quad(1,0),\quad(0,\bot).
+\]
+\end{enumerate}
+Thus the alphabet has $a_c=4366$ elements. All the fields of every tile
+are fixed finite data.
+
+Here is the complete cross predicate used to select windows. Let
+$t,t_{\ell},t_r,t_d,t_u$ be the center, left, right, down, and up tiles.
+Subscripts on fields mean that they are read from the corresponding tile.
+First impose
+\begin{equation}\label{app:boundary-clause}
+ v=v_u,\qquad vv_r=0,\qquad hh_u=0,\qquad
+ (v=v_r=0\ \Longrightarrow\ h=h_r).
+\end{equation}
+If the center is $\mathsf V$ or $\mathsf H$, these are its entire tests.
+For a nonboundary center, impose all the following additional conditions.
+\begin{enumerate}
+\item If $h_d=1$, its phase belongs to
+$\{\mathsf L,\mathsf I,\mathsf Q,\mathsf R\}$ and its payload is the
+one prescribed above. A left $\mathsf V$ requires phase $\mathsf L$;
+a right $\mathsf V$ requires phase $\mathsf R$. If the right neighbor is
+not $\mathsf V$, the two phases must form one of the six pairs
+\[
+ (\mathsf L,\mathsf L),\ (\mathsf L,\mathsf I),\
+ (\mathsf I,\mathsf I),\ (\mathsf I,\mathsf Q),\
+ (\mathsf Q,\mathsf R),\ (\mathsf R,\mathsf R).
+\]
+If $h_d=0$, the center phase must instead be $\bot$.
+\item If the center carries a head, its transition may not move left
+through a left $\mathsf V$ or right through a right $\mathsf V$.
+If $h_u=1$, that head, if present, must be in halt state $4$.
+\item If $h_u=0$, each non-$\mathsf V$ left or right neighbor must have
+a payload. Treat a neighboring $\mathsf V$ as payload $(0,\bot)$.
+The next center symbol is its current symbol when headless, and its written
+symbol under $\delta$ otherwise. Form the list of incoming states from
+the left head moving right, the center head staying, and the right head
+moving left. There must be at most one such state. The up payload must
+be the next center symbol together with that state, or with $\bot$ if
+the list is empty.
+\end{enumerate}
+This is the literal predicate in the standalone
+\path{artifacts/compiler/finite_window_constants.py}; it retains every
+initialization, collision, no-escape, and final-row test of the inherited
+helical relation~\cite{CompilerDetails}.
+
+A $3\times3$ window is allowed exactly when its central cross satisfies
+these tests. Its four corner entries are unrestricted. Write entries in
+row-major order, with row $0$ supplying the down neighbor and row $2$
+supplying the up neighbor. The two distinguished windows, expressed
+entirely in tile indices, are
+\[
+ \mathsf S=
+ \begin{pmatrix}
+ 1&1&1\\4363&4363&4364\\438&438&876
+ \end{pmatrix},\qquad
+ \mathsf E=
+ \begin{pmatrix}
+ 1&1&1\\4362&4363&4363\\2&438&438
+ \end{pmatrix}.
+\]
+Both pass the predicate; they are the Start and End windows. The ordered
+list $w_0,\ldots,w_{k_c-1}$ begins with $\mathsf S,\mathsf E$ and then
+contains every other allowed nine-tuple in lexicographic tile-index order.
+This defines a terminating enumeration with at most $4366^9$ predicate
+tests, independent of whether the machine halts. Its exact size is
+\begin{equation}\label{app:window-count}
+ k_c=113175624520853754856480928432.
+\end{equation}
+The exact compressed census is the sum of
+$311471256024587$ allowed central crosses, each with $4366^4$ choices
+of corners. It is a finite partition count, not a sample estimate.
+
+\subsection{Evaluated fixed layout parameters}
+
+The following parameters determine the native positions, clause bands,
+and radices. The subscript $c$ distinguishes compiler parameters from the
+Pell variables in the main polynomial.
+\begin{center}
+\small
+\begin{tabular}{@{}lr@{}}
+\toprule
+Parameter & Fixed value\\
+\midrule
+$a_c$ & $4366$\\
+$\ell_c$ & $97$\\
+$p_c$ & $56587812260426877428240418274$\\
+$m_c$ & $113175624520853754856480967730$\\
+$U_c$ & $113175624520853754856480993923$\\
+$H_c$ & $5771956850563541497680530703172$\\
+$T_{c,1}$ & $11883440574689644259930504379381$\\
+$T_{c,2}$ & $17994924298815747022180478051224$\\
+$g_c$ & $21050666160878798403305464887146$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Put
+\begin{equation}\label{app:fixed-radices}
+ A_c=2^{\ell_c},\qquad b=5^{44},\qquad L_c=5^{45},\qquad
+ d=bL_c=5^{89},\qquad R_0=2^b,\qquad B=R_0^{L_c}=2^d.
+\end{equation}
+These values reproduce the deterministic layout rule:
+\begin{align*}
+ \ell_c&=\max\{2,\operatorname{bitlength}(k_c+1)\},&
+ m_0&=2\ell_c+30a_c+8,\\
+ p_c&=\max\left\{0,\left\lceil
+       \frac{k_c+9a_c+4-m_0}{2}\right\rceil\right\},&
+ m_c&=m_0+2p_c,\\
+ U_c&=m_c+6a_c-3,&H_c&=51U_c+3a_c+1,\\
+ T_{c,1}&=105U_c+4a_c+2,&T_{c,2}&=159U_c+4a_c+3,\\
+ g_c&=186U_c+4a_c+4.
+\end{align*}
+The least power of five at least $213U_c+4a_c+5$ is $L_c$.
+The radix choice is justified after the clause coefficients are defined.
+
+\subsection{Native positions and all clause coefficients}
+
+For $r,s\in\{0,1,2\}$ and $u\in\{0,\ldots,a_c-1\}$, define
+\begin{align}
+ j_c(r,s,u)&=1+3a_cr+a_cs+u,\label{app:clause-index}\\
+ e_c(r,s,u)&=k_c+3a_c+(2-r)3a_c+(2-s)a_c+u.
+ \label{app:payload-position}
+\end{align}
+There is exactly one ignored dummy position,
+\[
+ e_* = k_c+12a_c =113175624520853754856480980824.
+\]
+The complete finite native position set is
+\begin{align}
+ \mathcal E_c={}&\{0,\ldots,k_c-1\}
+ \cup\{e_c(r,s,u):0\leq r,s\leq2,\ 0\leq u<a_c\}
+ \nonumber\\
+ &\cup\{e_*\}\cup\{U_c,3U_c,9U_c,27U_c\}.
+ \label{app:native-positions}
+\end{align}
+Its members are distinct, and $|\mathcal E_c|=m_c+1$.
+
+Define a nonnegative fixed coefficient $c_e$ at each position. For a
+selector position $0\leq i<k_c$, set
+\begin{equation}\label{app:selector-coefficient}
+ c_i=1+
+ \sum_{r=0}^{2}\sum_{s=0}^{2}
+ A_c^{\,j_c(r,s,(w_i)_{3r+s})}
+ +\sum_{h=1}^{4}A_c^{\,9a_c+h}.
+\end{equation}
+Here $(w_i)_t$ is the tile index at entry $t$ of the already specified
+fixed window $w_i$. At the remaining positions put
+\begin{align}
+ c_{e_c(r,s,u)}&=A_c^{j_c(r,s,u)},&c_{e_*}&=0,\nonumber\\
+ c_{U_c}&=A_c^{9a_c+1},&c_{3U_c}&=A_c^{9a_c+2},\nonumber\\
+ c_{9U_c}&=A_c^{9a_c+3},&c_{27U_c}&=A_c^{9a_c+4}.
+ \label{app:other-coefficients}
+\end{align}
+The clause mask, including its fixed zero-expression padding clauses, is
+\begin{equation}\label{app:clause-mask}
+ \mu_c=A_c-2+\sum_{j=1}^{9a_c+4+p_c}A_c^j.
+\end{equation}
+Omitting the padding summands would change the mask population and would
+not be the inherited compiler instance.
+
+For clarity, the least-power-of-five radix rule can now be stated exactly.
+Let $C_\Sigma=\sum_{e\in\mathcal E_c}c_e$. Its target is
+\[
+ T_{\mathrm{radix}}=
+ \max\{4(m_c+3)(2C_\Sigma+6)+8,\ 2\mu_c+4,\ 16\}.
+\]
+Choose $b$ to be the least power of five at least
+$\operatorname{bitlength}(T_{\mathrm{radix}}-1)$.
+For this instance,
+\[
+ C_\Sigma<(14k_c+9a_c+5)A_c^{9a_c+4}<2^{3812007},
+\]
+so the first member of the maximum is below $2^{3812108}$.
+The second member dominates. Its exact bit-length contribution is
+\begin{align*}
+ \operatorname{bitlength}(2\mu_c+3)
+ &=\ell_c(9a_c+4+p_c)+2\\
+ &=5489017789261407110539324384486.
+\end{align*}
+Its least power-of-five majorant is $5^{44}$, as asserted
+in~\eqref{app:fixed-radices}. No giant power has to be expanded to verify
+these inequalities.
+
+\subsection{Convolution coefficients and the fixed correction bit}
+
+The uncorrected center coefficient and the right coefficient are
+\begin{align}
+ D_{C,0}={}&R_0^{3a_c}+R_0^{H_c+a_c}
+             +R_0^{8U_c}+R_0^{24U_c}\nonumber\\
+ &+\sum_{e\in\mathcal E_c}c_e
+       \bigl(R_0^{T_{c,1}-e}+R_0^{T_{c,2}-e}\bigr),
+ \label{app:center-convolution}\\
+ D_R={}&R_0^{H_c}.
+ \label{app:right-convolution}
+\end{align}
+All exponents are nonnegative fixed integers. Define the single fixed bit
+\begin{equation}\label{app:epsilon}
+ \epsilon_c=
+ \begin{cases}
+ 1,&2D_{C,0}-D_R\equiv0\pmod5,\\
+ 0,&2D_{C,0}-D_R\not\equiv0\pmod5,
+ \end{cases}
+ \qquad
+ D_C=D_{C,0}+\epsilon_c R_0^{g_c}.
+\end{equation}
+This is a finite arithmetic decision on uniquely defined fixed integers.
+It is not a Diophantine variable, an unspecified choice of coefficient,
+or a query about consistency. Since $b$ is a power of five,
+$R_0\equiv2\pmod5$. The added monomial has nonzero residue after
+multiplication by $2$, so the definition guarantees
+\[
+ 2D_C-D_R\not\equiv0\pmod5.
+\]
+It can in principle be evaluated using modular exponentiation and the
+fixed finite sums. This packet does not claim to have evaluated
+$\epsilon_c$ or the window-dependent sum in~\eqref{app:center-convolution}.
+
+\subsection{Native masks, shifted field mask, and final ports}
+
+Define the old field mask by the exact finite expression
+\begin{align}
+ M_{F,0}={}&\mu_c\bigl(R_0^{T_{c,1}}+R_0^{T_{c,2}}\bigr)
+ \nonumber\\
+ &+\sum_{r=0}^{1}\sum_{s=0}^{2}\sum_{u=0}^{a_c-1}
+       R_0^{e_c(r,s,u)}
+ \nonumber\\
+ &+\sum_{r=0}^{2}\sum_{s=0}^{1}\sum_{u=0}^{a_c-1}
+       R_0^{H_c+e_c(r,s,u)}
+       +R_0^{9U_c}+R_0^{27U_c}.
+ \label{app:old-field-mask}
+\end{align}
+The modified half-binomial masks are
+\begin{align}
+ M_C&=B-1-\sum_{\substack{e\in\mathcal E_c\\e\ne1}}R_0^e
+           -2R_0^{e_*},\label{app:native-mask}\\
+ M_F&=M_{F,0}+4.\label{app:field-mask}
+\end{align}
+The first modification frees the second bit at the ignored dummy position;
+the second adds the low verification bit. These are the modifications of
+the reviewed compiler export~\cite{CompilerDetails}. In particular
+\begin{gather*}
+ 0<M_C,M_F<B-1,\qquad
+ M_C\equiv2\pmod4,\qquad M_F\equiv4\pmod8,\\
+ \pop(M_C)+\pop(M_F)=d.
+\end{gather*}
+
+The five coefficients supplied to the main polynomial are now exactly
+\begin{equation}\label{app:five-final-coefficients}
+ \boxed{
+ \begin{aligned}
+ \beta&=B-1,&K&=D_C+BD_R,\\
+ M&=M_C,&N&=M_F+B-1,\\
+ W&=R_0B^2=2^{\,2\cdot5^{89}+5^{44}}.
+ \end{aligned}}
+\end{equation}
+The source coefficient $N$ is already shifted. It is \emph{not} the
+native one-cell mask $M_F$; replacing one by the other changes the
+polynomial. The endpoint $W$ inserts the End selector at cyclic cell $2$,
+giving the three-I initialization run and four unary ones already proved
+equivalent to blank K215.
+
+\subsection{Explicitness and the representation boundary}
+
+Every summation bound, finite set, field lookup, and exponent in this
+appendix is fixed before the sixteen unknowns of the main polynomial
+are chosen. Substitution of~\eqref{app:five-final-coefficients} therefore
+produces one ordinary integer-coefficient polynomial. No variable power,
+bounded universal quantifier, sequence parameter, or acceptance test
+remains in that polynomial.
+
+The compressed representation is essential for practical delivery:
+$B$ alone has $5^{89}+1$ binary digits. This coefficient height is not
+included in the 70-operation evaluation count. The count assumes access
+to the five fixed numerals, as stated in the main theorem; it does not
+assert that their construction or storage is inexpensive. The companion
+\path{artifacts/compiler/COEFFICIENTS.md}, source code, and pinned
+manifests give the same recipe in machine-readable and prose forms.
+
+All compiler formulas in this appendix are the lazy form of the retained
+construction
+\[
+ \texttt{new\_constants(compile\_windows(windows,a))}.
+\]
+The new explicit controller instantiation does not replace the inherited
+proof of that compiler, and the exact finite specification must not be
+confused with a claim that all its giant integers have been expanded.

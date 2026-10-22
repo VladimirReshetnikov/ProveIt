@@ -56,13 +56,12 @@ theorem memRel_exists (H : ZFAxioms mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ 
       simp (disch := omega) only [upd_same, upd_other]) P2
   refine ⟨R, fun p => ?_⟩
   rw [hR p]
-  constructor
-  · exact fun h => h.2
-  · rintro ⟨a, b, ha, hb, hab, rfl⟩
-    refine ⟨(hP2 _).2 fun q hq => (hP1 q).2 ?_, a, b, ha, hb, hab, rfl⟩
-    rcases (kpair_mem H a b q).1 hq with rfl | rfl
-    · intro z hz; rw [(vsingle_spec H a z).1 hz]; exact ha
-    · intro z hz; rcases (vpair_spec H a b z).1 hz with rfl | rfl <;> assumption
+  refine ⟨fun h => h.2, ?_⟩
+  rintro ⟨a, b, ha, hb, hab, rfl⟩
+  refine ⟨(hP2 _).2 fun q hq => (hP1 q).2 ?_, a, b, ha, hb, hab, rfl⟩
+  rcases (kpair_mem H a b q).1 hq with rfl | rfl
+  · intro z hz; rwa [(vsingle_spec H a z).1 hz]
+  · intro z hz; rcases (vpair_spec H a b z).1 hz with rfl | rfl <;> assumption
 
 /-! ## Internal satisfaction as a named formula -/
 
@@ -80,9 +79,7 @@ theorem nsat_oneF (H : ZFAxioms mem) (ρ : Nat → V) (b : Nat) :
   have h1 : ∀ z, mem z (natV H 1) ↔ z = vempty H := fun z => by
     rw [natV_succ, natV_zero, vsucc_spec H (vempty H) z]
     exact ⟨fun h => h.elim (fun h => absurd h (vempty_spec H z)) id, Or.inr⟩
-  constructor
-  · intro h; exact H.ext _ _ fun z => by rw [h z, hz, h1]
-  · intro h z; rw [h, h1, hz]
+  exact ⟨fun h => H.ext _ _ fun z => by rw [h z, hz, h1], fun h z => by rw [h, h1, hz]⟩
 
 /-! ### Embedded certificate formulas -/
 
@@ -122,9 +119,7 @@ theorem nsat_satInF (H : ZFAxioms mem) (ρ : Nat → V) (A R c e : Nat) :
     NSat mem ρ (satInF A R c e) ↔ SatIn H (ρ A) (ρ R) (ρ c) (ρ e) := by
   simp only [satInF, NSat, nsat_oneF H, nsat_satClosedF H, nsat_tripleMemF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨S, b, rfl, hc, hh⟩; exact ⟨S, hc, hh⟩
-  · rintro ⟨S, hc, hh⟩; exact ⟨S, _, rfl, hc, hh⟩
+  exact ⟨fun ⟨S, _, rfl, hc, hh⟩ => ⟨S, hc, hh⟩, fun ⟨S, hc, hh⟩ => ⟨S, _, rfl, hc, hh⟩⟩
 
 /-! ## Definable subsets -/
 
@@ -154,9 +149,8 @@ theorem nsat_definableF (H : ZFAxioms mem) (ρ : Nat → V) (X S : Nat) :
     intro e'
     rw [nsat_econsAtomF H _ _ _ _ (by simp (disch := omega) only [upd_same, upd_other]; exact hE.1.1)]
     simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨e', he', hs⟩; rw [(key e').1 he'] at hs; exact hs
-  · intro hs; exact ⟨_, (key _).2 rfl, hs⟩
+  refine ⟨fun ⟨e', he', hs⟩ => ?_, fun hs => ⟨_, (key _).2 rfl, hs⟩⟩
+  rwa [(key e').1 he'] at hs
 
 /-! ## The stage operation -/
 

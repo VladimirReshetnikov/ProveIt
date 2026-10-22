@@ -1,0 +1,7 @@
+Independent direct reading passes for the captured phase17 evidence. The [final source-map review](resumed-config-review.json) binds the exact final config before capture; [actual-review.json](actual-review.json) records this subsequent read.
+
+Read every regular tar member directly, without filesystem extraction, and checked its name, type, metadata, size, and SHA-256. Reconstructed every alias from the frozen config and raw copy plan, checked the index's complete source-alias mapping, and compared captured bytes with their pinned source files. All905 logical entries,891 source aliases,579 blobs (8394375 uncompressed bytes), and16 external ancestor boundaries match. The archive is1662882 bytes with SHA-256 `5aa2c1f9a0ca891cb1427400c43d4a638ac3ad78f7abdd5a193e4b009e50270d`.
+
+The capture retains the743-file accepted raw subset,54 frozen-input aliases,10 before snapshots,92 context entries, and the owned capture inputs. Original policy failure and the later metadata-audit failure remain verbatim, alongside the guarded one-profile exception, successful actual audit, and independent acceptance. Ancestor packets remain exact external hash boundaries. No object files, captured code execution, or additional proof replay is involved.
+
+The owned reader is [read_capture.py](read_capture.py). It reads the newly created tar/index only; it imports no captured helper and runs no compiler or supplied generator.

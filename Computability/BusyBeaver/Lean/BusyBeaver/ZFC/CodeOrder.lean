@@ -183,11 +183,9 @@ theorem le_setO (W x y : V) : Le H (setO H hP W) x y ↔
       (¬ EmptyFld H W ∧ LexR H (Le H W) (fun _ => Le H W) x y)) := by
   unfold Le
   rw [setO_spec H hP]
-  constructor
-  · rintro ⟨a, b, e, h⟩
-    obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e
-    exact h
-  · intro h; exact ⟨x, y, rfl, h⟩
+  refine ⟨fun ⟨a, b, e, h⟩ => ?_, fun h => ⟨x, y, rfl, h⟩⟩
+  obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e
+  exact h
 
 variable (hR : Regular mem)
 include hR
@@ -219,17 +217,14 @@ theorem appendOp : AppendOp H (stepG H hP) (setN H hP) (setO H hP) := by
           · exact Or.inr (Or.inr h)
     have := key.trans (or_congr Iff.rfl (or_congr Iff.rfl hO))
     unfold Le at this ⊢
-    rw [stepG_spec H hP, setN_spec H hP]
-    exact this
+    rwa [stepG_spec H hP, setN_spec H hP]
   · rcases (setN_spec H hP W y).1 hy with ⟨he, -⟩ | ⟨-, hn, -⟩
     · exact he y hy'
     · exact hn hy'
   · by_cases he : EmptyFld H W
     · have hnat := wo_nat H hR
       refine (hnat.mono fun y hy => ?_).congr fun x y hx hy => ?_
-      · rcases (setN_spec H hP W y).1 hy with ⟨-, h⟩ | ⟨h, -⟩
-        · exact h
-        · exact absurd he h
+      · exact (((setN_spec H hP W y).1 hy).resolve_right fun h => h.1 he).2
       · rw [le_setO]
         constructor
         · intro h; exact ⟨(setN_spec H hP W x).1 hx, (setN_spec H hP W y).1 hy, Or.inl ⟨he, h⟩⟩
@@ -360,13 +355,7 @@ theorem tag_cw {CW : V} (hCW : IsCodeOrder H hP CW) (t : Nat) {x : V}
 /-- **Every internal formula code lies in the field of the code order.** -/
 theorem code_mem {CW : V} (hCW : IsCodeOrder H hP CW) :
     ∀ c, IsFormCodeSem H c → Fld H CW c := by
-  have h1 : mem (vempty H) (vsucc H (vempty H)) := vsucc_self H _
   have h1ω := omega_succ H _ (vempty_in_omega H)
-  have hnat : ∀ n, mem n (omegaV H) → FldS H hP (vsucc H (vempty H)) n := fun n hn =>
-    omega_fldS_one H hR hP hn
-  have hpair : ∀ a b, FldS H hP (vsucc H (vempty H)) a → FldS H hP (vsucc H (vempty H)) b →
-      ∃ m, mem m (omegaV H) ∧ mem (vempty H) m ∧ FldS H hP m (kpair H a b) := fun a b ha hb =>
-    ⟨_, omega_succ H _ h1ω, (vsucc_spec H _ _).2 (Or.inl h1), pair_fldS H hR hP h1ω h1 ha hb⟩
   have hbin : ∀ (t : Nat) a b, Fld H CW a → Fld H CW b →
       Fld H CW (kpair H (natV H t) (kpair H a b)) := by
     intro t a b ha hb
@@ -378,7 +367,7 @@ theorem code_mem {CW : V} (hCW : IsCodeOrder H hP CW) :
     obtain ⟨m, hm, h0, hma, -⟩ := common_stage H hR hP hCW ha ha
     exact tag_cw H hR hP hCW t ⟨m, hm, h0, hma⟩
   have hω : ∀ n, mem n (omegaV H) → Fld H CW n := fun n hn =>
-    cw_of_fldS H hR hP hCW h1ω (hnat n hn)
+    cw_of_fldS H hR hP hCW h1ω (omega_fldS_one H hR hP hn)
   refine isFormCodeSem_ind' H _ (toForm id (pmemF 1 0 0)) (fun _ => CW)
     (fun y => by
       rw [sat_toForm, nsat_pmemF H]

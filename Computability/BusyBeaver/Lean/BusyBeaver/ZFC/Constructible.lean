@@ -35,9 +35,7 @@ def RSat (mem : V → V → Prop) (X : V) : (Nat → V) → Form → Prop
   | e, .fEx a => ∃ d, mem d X ∧ RSat mem X (scons d e) a
 
 theorem rsat_congr (X : V) (φ : Form) {e e' : Nat → V} (h : ∀ n, e n = e' n) :
-    RSat mem X e φ ↔ RSat mem X e' φ := by
-  have : e = e' := funext h
-  subst this; exact Iff.rfl
+    RSat mem X e φ ↔ RSat mem X e' φ := by rw [funext h]
 
 /-- The values of an internal environment, as an external one. -/
 noncomputable def envVals (H : ZFAxioms mem) (e : V) : Nat → V := fun n => applyV H e (natV H n)
@@ -60,13 +58,10 @@ theorem satIn_formCode (H : ZFAxioms mem) {X R : V} (hS : IsSetStructure H X R)
       (SatIn H X R (formCode H φ) e ↔ RSat mem X (envVals H e) φ)
   | .fMem i j, e, he => by
       rw [formCode_fMem, satIn_memAtom H hS (natV_mem_omega H i) (natV_mem_omega H j) he, hR]
-      constructor
-      · rintro ⟨a, b, -, -, hab, hp⟩
-        obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ hp
-        exact hab
-      · intro h
-        exact ⟨_, _, isEnvOn_apply H he (natV_mem_omega H i), isEnvOn_apply H he (natV_mem_omega H j),
-          h, rfl⟩
+      refine ⟨fun ⟨a, b, _, _, hab, hp⟩ => ?_, fun h => ⟨_, _,
+        isEnvOn_apply H he (natV_mem_omega H i), isEnvOn_apply H he (natV_mem_omega H j), h, rfl⟩⟩
+      obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ hp
+      exact hab
   | .fEq i j, e, he => by
       rw [formCode_fEq, satIn_eqAtom H hS (natV_mem_omega H i) (natV_mem_omega H j) he]
       rfl
@@ -105,10 +100,9 @@ include H hP
 
 omit hP in
 theorem constEnv_apply {d n : V} (hn : mem n (omegaV H)) : applyV H (constEnv H d) n = d := by
-  obtain ⟨y, hy⟩ := (constEnv_isEnvOn H (A := vsingle H d) ((vsingle_spec H d d).2 rfl)).1.2.1 n hn
-  have h1 := applyV_eq H (constEnv_isEnvOn H (A := vsingle H d) ((vsingle_spec H d d).2 rfl)).1.1 hy
-  have h2 := (constEnv_isEnvOn H (A := vsingle H d) ((vsingle_spec H d d).2 rfl)).2 n y hy
-  rw [h1]; exact (vsingle_spec H d y).1 h2
+  have he := constEnv_isEnvOn H (A := vsingle H d) ((vsingle_spec H d d).2 rfl)
+  obtain ⟨y, hy⟩ := he.1.2.1 n hn
+  rw [applyV_eq H he.1.1 hy]; exact (vsingle_spec H d y).1 (he.2 n y hy)
 
 /-- A set definable over `X` by a standard formula with one parameter. -/
 theorem definable_formCode {X a : V} (ha : mem a X) (φ : Form) (S : V)
@@ -243,9 +237,7 @@ theorem isL_ord : ∀ a, Ord mem a → ∀ S, IsL H hP a S → ∀ x, (mem x S �
     have hsub : Sub mem x T := ((gdef_spec H hP T x).1 hxT).1
     have hle := le_of_sub H hR hx (ord_of_mem ha hc) fun y hy =>
       (IH c hc T hT y).1 ⟨hsub y hy, ord_of_mem hx hy⟩
-    rcases hle with rfl | h
-    · exact hc
-    · exact ha.1 c hc x h
+    exact hle.elim (fun e => e ▸ hc) fun h => ha.1 c hc x h
   · intro hxa
     have hx := ord_of_mem ha hxa
     obtain ⟨T, hT⟩ := isL_exists H hR hP hx
@@ -254,13 +246,10 @@ theorem isL_ord : ∀ a, Ord mem a → ∀ S, IsL H hP a S → ∀ x, (mem x S �
     refine (gdef_spec H hP T x).2 ⟨fun y hy => ((IH x hxa T hT y).2 hy).1, ?_⟩
     by_cases hne : ∃ d, mem d T
     · obtain ⟨d, hd⟩ := hne
-      refine Or.inr (definable_env H hP (constEnv_isEnvOn H (A := T) hd) ordForm x fun y => ?_)
-      constructor
-      · intro hy
-        have h' := (IH x hxa T hT y).2 hy
-        exact ⟨h'.1, (rsat_ordForm hTt h'.1 _).2 h'.2⟩
-      · rintro ⟨hyT, hy⟩
-        exact (IH x hxa T hT y).1 ⟨hyT, (rsat_ordForm hTt hyT _).1 hy⟩
+      exact Or.inr (definable_env H hP (constEnv_isEnvOn H (A := T) hd) ordForm x fun y =>
+        ⟨fun hy => ((IH x hxa T hT y).2 hy).elim fun hyT hyo =>
+          ⟨hyT, (rsat_ordForm hTt hyT _).2 hyo⟩,
+          fun ⟨hyT, hy⟩ => (IH x hxa T hT y).1 ⟨hyT, (rsat_ordForm hTt hyT _).1 hy⟩⟩)
     · exact Or.inl fun z hz => hne ⟨z, ((IH x hxa T hT z).2 hz).1⟩
 
 /-- Every ordinal is constructible: `a ∈ L_{a+1}`. -/
@@ -312,13 +301,12 @@ theorem stage_bound {A : V} (hA : ∀ x, mem x A → InL H hP x) :
   have hLst : ∀ x, mem x A → ∃ a, Lst x a := by
     intro x hx
     obtain ⟨a, S, ha, hS, hxS⟩ := hA x hx
-    obtain ⟨m, hm, hQm, hmin⟩ := least_ord H hR (Q x)
+    exact least_ord H hR (Q x)
       (.ex 1 (.and (isStageF (defOp H hP) 0 1) (.mem 2 1))) (fun _ => x)
       (fun y => by
         simp only [NSat, nsat_isStageF H (defOp H hP)]
         simp (disch := omega) only [upd_same, upd_other]
         rfl) ha ⟨S, hS, hxS⟩
-    exact ⟨m, hm, hQm, hmin⟩
   obtain ⟨B, hB⟩ := repl_of H Lst
     (.and (ordF 0) (.and (.ex 2 (.and (isStageF (defOp H hP) 0 2) (.mem 1 2)))
       (.all 3 (.imp (.and (ordF 3) (.ex 4 (.and (isStageF (defOp H hP) 3 4) (.mem 1 4))))
@@ -327,14 +315,10 @@ theorem stage_bound {A : V} (hA : ∀ x, mem x A → InL H hP x) :
       simp only [NSat, nsat_ordF, nsat_isStageF H (defOp H hP), and_imp]
       simp (disch := omega) only [upd_same, upd_other]
       rfl)
-    (fun x a1 a2 h1 h2 => by
-      rcases h1.2.2 a2 h2.1 h2.2.1 with h | h
-      · exact h
-      · rcases h2.2.2 a1 h1.1 h1.2.1 with h' | h'
-        · exact h'.symm
-        · exact absurd (h1.1.1 a2 h' a1 h) (mem_irrefl H hR a1)) A
-  have hBord : ∀ a, mem a B → Ord mem a := by
-    intro a ha; obtain ⟨_, _, h⟩ := (hB a).1 ha; exact h.1
+    (fun x a1 a2 h1 h2 => (h1.2.2 a2 h2.1 h2.2.1).elim id fun h =>
+      (h2.2.2 a1 h1.1 h1.2.1).elim Eq.symm fun h' =>
+        absurd (h1.1.1 a2 h' a1 h) (mem_irrefl H hR a1)) A
+  have hBord : ∀ a, mem a B → Ord mem a := fun a ha => ((hB a).1 ha).elim fun _ h => h.2.1
   have hβ := ord_vunion H hBord
   obtain ⟨T, hT⟩ := isL_exists H hR hP hβ
   refine ⟨_, T, hβ, hT, fun x hx => ?_⟩
@@ -393,11 +377,8 @@ theorem inL_union {x : V} (hx : InL H hP x) : InL H hP (vunion H x) := by
     exact hTt w (hTt x hxT w hwx) z hzw
   · rw [vunion_spec H x z]
     simp only [RSat, scons, h0]
-    constructor
-    · rintro ⟨w, hzw, hwx⟩
-      exact ⟨hTt w (hTt x hxT w hwx) z hzw, w, hTt x hxT w hwx, hwx, hzw⟩
-    · rintro ⟨-, w, -, hwx, hzw⟩
-      exact ⟨w, hzw, hwx⟩
+    exact ⟨fun ⟨w, hzw, hwx⟩ => ⟨hTt w (hTt x hxT w hwx) z hzw, w, hTt x hxT w hwx, hwx, hzw⟩,
+      fun ⟨_, w, _, hwx, hzw⟩ => ⟨w, hzw, hwx⟩⟩
 
 /-- **Power in L**: the constructible subsets of a constructible set form a constructible set. -/
 theorem inL_power {x : V} (hx : InL H hP x) :
@@ -407,10 +388,8 @@ theorem inL_power {x : V} (hx : InL H hP x) :
   obtain ⟨Q, hQ⟩ := sep_of H (InL H hP) (inLF H hP 0) (fun _ => x)
     (fun z => by rw [nsat_inLF H hP]; rfl) P
   obtain ⟨b, T, hb, hT, hQT⟩ := stage_bound H hR hP (A := vcup H Q (vsingle H x))
-    (fun z hz => by
-      rcases (vcup_spec H Q _ z).1 hz with hz | hz
-      · exact ((hQ z).1 hz).2
-      · rw [(vsingle_spec H x z).1 hz]; exact hx)
+    (fun z hz => ((vcup_spec H Q _ z).1 hz).elim (fun hz => ((hQ z).1 hz).2) fun hz => by
+      rwa [(vsingle_spec H x z).1 hz])
   have hxT : mem x T := hQT x ((vcup_spec H Q _ x).2 (Or.inr ((vsingle_spec H x x).2 rfl)))
   have hTt := isL_trans H hR hP hb hT
   obtain ⟨he, h0, -⟩ := env2 H hxT hxT

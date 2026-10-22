@@ -42,11 +42,7 @@ theorem tag_formula {t : V} (φ : Form) (env : Nat → Tag mem t) (z : Tag mem t
     Sat mem (scons z.1 (scons t (fun i => (env i).1))) (rename swap01 (relT 0 φ)) ↔
       Sat (tmem mem t) (scons z env) φ := by
   rw [sat_top]
-  refine Sat_rename_ext _ _ _ _ fun n => ?_
-  match n with
-  | 0 => rfl
-  | 1 => rfl
-  | n + 2 => rfl
+  exact Sat_rename_ext _ _ _ _ fun n => by rcases n with _ | _ | _ <;> rfl
 
 section QHyp
 
@@ -74,16 +70,8 @@ theorem tsing_exists (x : V) : ∃ v, IsTSing mem t x v := by
   obtain ⟨B, hB⟩ := raw_singleton hs x
   have hBt : B ≠ t := fun e => ht x (e ▸ (hB x).mpr rfl)
   obtain ⟨S, hS⟩ := raw_tagged hs hirr ht B hBt (fEq 0 0) (fun _ => t)
-  refine ⟨S, B, hB, fun w => (hS w).trans ?_⟩
-  constructor
-  · rintro (h | h | ⟨h, -⟩)
-    · exact Or.inl h
-    · exact Or.inr (Or.inl h)
-    · exact Or.inr (Or.inr ((hB w).mp h))
-  · rintro (h | h | h)
-    · exact Or.inl h
-    · exact Or.inr (Or.inl h)
-    · exact Or.inr (Or.inr ⟨(hB w).mpr h, rfl⟩)
+  exact ⟨S, B, hB, fun w => (hS w).trans (or_congr Iff.rfl (or_congr Iff.rfl
+    ⟨fun h => (hB w).mp h.1, fun h => ⟨(hB w).mpr h, rfl⟩⟩))⟩
 
 /-! ### Union -/
 
@@ -111,10 +99,7 @@ theorem dt_comp_env (U E : V) (hEt : E ≠ t) (htE : ¬ mem t E)
   obtain ⟨S, hS⟩ := raw_tagged hs hirr ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
     (scons U ρ)
   refine ⟨S, (hS t).mpr (Or.inr (Or.inl rfl)), fun w hw => ?_, fun z hz => ?_⟩
-  · rcases (hS w).mp hw with h | h | ⟨-, h, -⟩
-    · exact Or.inl h
-    · exact Or.inr (Or.inl h)
-    · exact Or.inr (Or.inr h)
+  · exact ((hS w).mp hw).imp_right (Or.imp_right fun h => h.2.1)
   · have hzE : z ≠ E := fun e => htE (e ▸ hz)
     have hzt : z ≠ t := fun e => hirr t (e ▸ hz)
     rw [hS z]

@@ -111,7 +111,7 @@ theorem runTo_sound {br : Branch} {Q : List Bool} {e : SConf} (h : runTo M br Q 
     (n : Nat) {vs : List Nat} (hv : Valid br vs) : Reach1 M (conc n vs (start Q)) (conc n vs e) := by
   unfold runTo at h
   cases hx : KHomeReady.exec M br (fun s => sMatches s e) FUEL (start Q) false with
-  | none => rw [hx] at h; simp at h
+  | none => simp [hx] at h
   | some s =>
       obtain ⟨hm, _, h1⟩ := KHomeReady.exec_sound B n hv FUEL (start Q) false s hx
       rw [← sMatches_conc n vs hm]
@@ -121,7 +121,7 @@ theorem runHalt_sound (hNH : ∀ b, M 230 b = none) {Q : List Bool} (h : runHalt
     (n : Nat) {vs : List Nat} (hv : 10 ≤ vs.length) : Halts M (conc n vs (start Q)) := by
   unfold runHalt at h
   cases hx : KHomeReady.exec M none isHalt FUEL (start Q) false with
-  | none => rw [hx] at h; simp at h
+  | none => simp [hx] at h
   | some s =>
       obtain ⟨hh, h0, _⟩ := KHomeReady.exec_sound B n (br := none) ⟨hv, trivial⟩ FUEL (start Q) false s hx
       refine ⟨_, h0, ?_⟩
@@ -165,9 +165,7 @@ theorem valid_nz {r : Nat} {vs : List Nat} (hl : 10 ≤ vs.length) (h : vs.getD 
 /-! ## Path lengths -/
 
 theorem incPath_length (P : List Bool) : (incPath P).length = P.length := by
-  rcases incPath_shape P with ⟨m, hp, hi⟩ | ⟨m, A, hp, hi⟩
-  · rw [hi, hp]; simp
-  · rw [hi, hp]; simp
+  rcases incPath_shape P with ⟨m, hp, hi⟩ | ⟨m, A, hp, hi⟩ <;> rw [hi, hp] <;> simp
 
 theorem stripPath_length (b : Bool) (k : Nat) (P : List Bool) : (stripPath b k P).length ≤ P.length := by
   obtain ⟨T, hT⟩ := stripPath_prefix b k P

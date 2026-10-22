@@ -81,30 +81,20 @@ include H hR
 /-- **∈-induction** for a property defined by a named formula (name `0`). -/
 theorem eps_induction (P : V → Prop) (φ : NForm) (ρ : Nat → V)
     (hP : ∀ x, NSat mem (upd ρ 0 x) φ ↔ P x) (step : ∀ x, (∀ z, mem z x → P z) → P x) :
-    ∀ x, P x := by
-  intro x0
-  apply Classical.byContradiction
-  intro hn
+    ∀ x, P x := fun x0 => Classical.byContradiction fun hn => by
   obtain ⟨t, ht, hx0⟩ := trans_container H x0
   obtain ⟨S, hS⟩ := sep_of H (fun x => ¬ P x) φ.neg ρ (fun x => by rw [nsat_neg, hP]) t
   obtain ⟨m, hm, hmin⟩ := hR S ⟨x0, (hS x0).2 ⟨hx0, hn⟩⟩
   obtain ⟨hmt, hPm⟩ := (hS m).1 hm
-  apply hPm
-  apply step
-  intro z hz
-  apply Classical.byContradiction
-  intro hnz
-  exact hmin ⟨z, hz, (hS z).2 ⟨ht m hmt z hz, hnz⟩⟩
+  exact hPm (step m fun z hz => Classical.byContradiction fun hnz =>
+    hmin ⟨z, hz, (hS z).2 ⟨ht m hmt z hz, hnz⟩⟩)
 
 /-- Least elements are unique. -/
 theorem least_unique {P : V → Prop} {a b : V} (ha : Ord mem a) (hb : Ord mem b)
     (h1 : ∀ c, Ord mem c → P c → a = c ∨ mem a c) (h2 : ∀ c, Ord mem c → P c → b = c ∨ mem b c)
-    (hPa : P a) (hPb : P b) : a = b := by
-  rcases h1 b hb hPb with h | h
-  · exact h
-  · rcases h2 a ha hPa with h' | h'
-    · exact h'.symm
-    · exact absurd (ha.1 b h' a h) (mem_irrefl H hR a)
+    (hPa : P a) (hPb : P b) : a = b :=
+  (h1 b hb hPb).elim id fun h => (h2 a ha hPa).elim Eq.symm fun h' =>
+    absurd (ha.1 b h' a h) (mem_irrefl H hR a)
 
 variable (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
 include hP
@@ -132,12 +122,11 @@ theorem ranked : ∀ x, ∃ a S, Ord mem a ∧ IsV H a S ∧ mem x S := by
   have hL : ∀ z, mem z x → ∃ a, L z a := by
     intro z hz
     obtain ⟨a, S, ha, hS, hzS⟩ := IH z hz
-    obtain ⟨m, hm, hQm, hmin⟩ := least_ord H hR (fun a => ∃ S, IsV H a S ∧ mem z S)
+    exact least_ord H hR (fun a => ∃ S, IsV H a S ∧ mem z S)
       (.ex 1 (.and (isVF 0 1) (.mem 2 1))) (fun _ => z)
       (fun y => by
         simp only [NSat, nsat_isVF H]
         simp (disch := omega) only [upd_same, upd_other]) ha ⟨S, hS, hzS⟩
-    exact ⟨m, hm, hQm, hmin⟩
   obtain ⟨A, hA⟩ := repl_of H L
     (.and (ordF 0) (.and (.ex 2 (.and (isVF 0 2) (.mem 1 2)))
       (.all 3 (.imp (.and (ordF 3) (.ex 4 (.and (isVF 3 4) (.mem 1 4)))) (.or (.eq 0 3) (.mem 0 3))))))
@@ -181,11 +170,7 @@ theorem params_upd {env ρ : Nat → V} (h : Params env ρ) {x : Nat} (hx : x < 
 omit H hR hP in
 theorem sat_margs {env ρ : Nat → V} (h : Params env ρ) (phi : Form) (x y : Nat) :
     Sat mem (fun i => ρ (margs x y i)) phi ↔ Sat mem (scons (ρ x) (scons (ρ y) env)) phi :=
-  Sat_ext phi _ _ fun i => by
-    rcases i with _ | _ | k
-    · rfl
-    · rfl
-    · exact h k
+  Sat_ext phi _ _ fun i => by rcases i with _ | _ | k <;> first | rfl | exact h k
 
 /-- `∃ S y, S = V_a ∧ y ∈ S ∧ matrix(x, y)`. -/
 def witF (phi : Form) (a x : Nat) : NForm :=

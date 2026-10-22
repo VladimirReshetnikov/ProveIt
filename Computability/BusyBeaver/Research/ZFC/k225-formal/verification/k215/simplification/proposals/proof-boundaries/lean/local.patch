@@ -1,0 +1,267 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsDom.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsDom.lean
+@@ -80,24 +80,26 @@
+   | .readp2 => L2Dom.read_p2 st hc
+   | .readp1 => L2Dom.read_p1 st hc
+ 
+-/-- Each pair names a macro and the next program node; the suffix is the gate. -/
+-def axWordCheck : Nat → List (AXAtom × Nat) → Bool
++/-- The literal program supplies successors; the certificate names only semantic macros. -/
++def axWordCheck : Nat → List AXAtom → Bool
+   | n, [] => decide (n = 457)
+-  | n, (a, next) :: rest =>
+-    decide (dagDom.nodes n = (.node a.node, .node next)) && axWordCheck next rest
++  | n, a :: rest =>
++    match dagDom.nodes n with
++    | (.node m, .node next) => decide (m = a.node) && axWordCheck next rest
++    | _ => false
+ 
+-def axWordEval : List (AXAtom × Nat) → AS → AS
++def axWordEval : List AXAtom → AS → AS
+   | [], st => gateF st
+-  | (a, _) :: rest, st => axWordEval rest (a.effect st)
++  | a :: rest, st => axWordEval rest (a.effect st)
+ 
+ /-- No macro touches the scratch registers. -/
+-theorem axWordClean (word : List (AXAtom × Nat)) (st : AS) (hc : Clean st) :
++theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) :
+     Clean (axWordEval word st) := by
+   induction word generalizing st with
+   | nil => exact hc
+-  | cons a rest ih => exact ih _ (by cases a.1 <;> exact hc)
++  | cons a rest ih => exact ih _ (by cases a <;> exact hc)
+ 
+-theorem axWordRun (word : List (AXAtom × Nat)) {n : Nat}
++theorem axWordRun (word : List AXAtom) {n : Nat}
+     (h : axWordCheck n word = true) (st : AS) (hc : Clean st) :
+     Rn (.node n) st (axWordEval word st) := by
+   induction word generalizing n st with
+@@ -106,37 +108,29 @@
+     subst n
+     exact l457 st hc
+   | cons a rest ih =>
+-    rcases a with ⟨a, next⟩
+-    simp only [axWordCheck, Bool.and_eq_true, decide_eq_true_eq] at h
+-    exact seqAS h.1 (AXAtom.run st hc a) (ih h.2 _ (by cases a <;> exact hc))
++    simp only [axWordCheck] at h
++    split at h
++    · rename_i m next hn
++      simp only [Bool.and_eq_true, decide_eq_true_eq] at h
++      rcases h with ⟨hm, hr⟩
++      subst m
++      exact seq hn (AXAtom.run st hc a) (ih hr _ (by cases a <;> exact hc))
++    · contradiction
+ 
+-def axWord : List (AXAtom × Nat) := [
+-  (.par1, 467), (.par2, 468), (.wal, 469), (.par3, 470), (.par1, 471), (.readp2, 472),
+-  (.readp1, 473), (.cons, 474), (.par1, 475), (.cons, 476), (.par1, 477), (.par3, 478),
+-  (.cons, 479), (.par2, 480), (.par3, 481), (.cons, 482), (.cons, 483), (.cons, 319),
+-  (.par3, 320), (.par1, 321), (.weq, 322), (.par3, 323), (.par2, 324), (.weq, 325),
+-  (.par1, 326), (.par2, 327), (.wel, 328), (.par1, 329), (.par2, 330), (.weq, 331),
+-  (.wal, 332), (.cons, 333), (.cons, 334), (.par1, 335), (.par1, 336), (.par3, 337),
+-  (.wal, 338), (.wex, 339), (.par3, 340), (.cons, 341), (.par3, 342), (.par1, 343),
+-  (.weq, 344), (.par3, 345), (.par2, 346), (.wel, 347), (.par1, 348), (.par2, 349),
+-  (.wel, 350), (.cons, 351), (.cons, 352), (.par1, 353), (.par2, 354), (.par3, 355),
+-  (.wal, 356), (.wal, 357), (.par2, 358), (.par1, 359), (.par3, 360), (.wal, 361),
+-  (.wal, 362), (.cons, 363), (.par1, 364), (.par2, 365), (.weq, 366), (.par3, 367),
+-  (.par1, 368), (.wel, 369), (.par3, 370), (.par2, 371), (.wel, 372), (.cons, 373),
+-  (.cons, 374), (.par1, 375), (.par2, 376), (.par3, 377), (.cons, 378), (.wal, 379),
+-  (.par1, 380), (.par2, 381), (.wal, 382), (.par1, 383), (.par3, 384), (.wal, 385),
+-  (.cons, 386), (.cons, 387), (.par1, 388), (.par1, 389), (.par2, 390), (.weq, 391),
+-  (.wex, 392), (.par1, 393), (.par2, 394), (.wel, 395), (.par3, 396), (.par1, 397),
+-  (.par2, 398), (.wel, 399), (.wal, 400), (.cons, 401), (.par3, 402), (.par2, 403),
+-  (.par2, 404), (.par3, 405), (.wel, 406), (.par1, 407), (.par3, 408), (.par1, 409),
+-  (.par3, 410), (.par3, 411), (.par1, 412), (.wel, 413), (.par3, 414), (.par2, 415),
+-  (.wel, 416), (.cons, 417), (.wal, 418), (.par2, 419), (.par3, 420), (.par2, 421),
+-  (.par3, 422), (.par2, 423), (.par3, 424), (.wel, 425), (.wn, 426), (.cons, 427),
+-  (.wal, 428), (.wn, 429), (.cons, 430), (.wal, 431), (.cons, 432), (.wal, 433),
+-  (.wn, 434), (.cons, 435), (.wal, 436), (.wn, 437), (.cons, 438), (.wal, 439),
+-  (.par2, 440), (.par3, 441), (.par2, 442), (.par3, 443), (.par2, 444), (.par3, 445),
+-  (.wel, 446), (.wn, 447), (.cons, 448), (.wal, 449), (.wn, 450), (.cons, 451),
+-  (.wal, 452), (.wn, 453), (.cons, 454), (.wal, 455), (.cons, 456), (.wn, 457)]
++def axWord : List AXAtom := [
++  .par1, .par2, .wal, .par3, .par1, .readp2, .readp1, .cons, .par1, .cons, .par1, .par3,
++  .cons, .par2, .par3, .cons, .cons, .cons, .par3, .par1, .weq, .par3, .par2, .weq,
++  .par1, .par2, .wel, .par1, .par2, .weq, .wal, .cons, .cons, .par1, .par1, .par3,
++  .wal, .wex, .par3, .cons, .par3, .par1, .weq, .par3, .par2, .wel, .par1, .par2,
++  .wel, .cons, .cons, .par1, .par2, .par3, .wal, .wal, .par2, .par1, .par3, .wal,
++  .wal, .cons, .par1, .par2, .weq, .par3, .par1, .wel, .par3, .par2, .wel, .cons,
++  .cons, .par1, .par2, .par3, .cons, .wal, .par1, .par2, .wal, .par1, .par3, .wal,
++  .cons, .cons, .par1, .par1, .par2, .weq, .wex, .par1, .par2, .wel, .par3, .par1,
++  .par2, .wel, .wal, .cons, .par3, .par2, .par2, .par3, .wel, .par1, .par3, .par1,
++  .par3, .par3, .par1, .wel, .par3, .par2, .wel, .cons, .wal, .par2, .par3, .par2,
++  .par3, .par2, .par3, .wel, .wn, .cons, .wal, .wn, .cons, .wal, .cons, .wal,
++  .wn, .cons, .wal, .wn, .cons, .wal, .par2, .par3, .par2, .par3, .par2, .par3,
++  .wel, .wn, .cons, .wal, .wn, .cons, .wal, .wn, .cons, .wal, .cons, .wn]
+ 
+ theorem axWord_checked : axWordCheck 236 axWord = true := by decide +kernel
+ 
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean
+@@ -80,24 +80,26 @@
+   | .readp2 => L2Perm.read_p2 st hc
+   | .readp1 => L2Perm.read_p1 st hc
+ 
+-/-- Each pair names a macro and the next program node; the suffix is the gate. -/
+-def axWordCheck : Nat → List (AXAtom × Nat) → Bool
++/-- The literal program supplies successors; the certificate names only semantic macros. -/
++def axWordCheck : Nat → List AXAtom → Bool
+   | n, [] => decide (n = 457)
+-  | n, (a, next) :: rest =>
+-    decide (dagPerm.nodes n = (.node a.node, .node next)) && axWordCheck next rest
++  | n, a :: rest =>
++    match dagPerm.nodes n with
++    | (.node m, .node next) => decide (m = a.node) && axWordCheck next rest
++    | _ => false
+ 
+-def axWordEval : List (AXAtom × Nat) → AS → AS
++def axWordEval : List AXAtom → AS → AS
+   | [], st => gateF st
+-  | (a, _) :: rest, st => axWordEval rest (a.effect st)
++  | a :: rest, st => axWordEval rest (a.effect st)
+ 
+ /-- No macro touches the scratch registers. -/
+-theorem axWordClean (word : List (AXAtom × Nat)) (st : AS) (hc : Clean st) :
++theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) :
+     Clean (axWordEval word st) := by
+   induction word generalizing st with
+   | nil => exact hc
+-  | cons a rest ih => exact ih _ (by cases a.1 <;> exact hc)
++  | cons a rest ih => exact ih _ (by cases a <;> exact hc)
+ 
+-theorem axWordRun (word : List (AXAtom × Nat)) {n : Nat}
++theorem axWordRun (word : List AXAtom) {n : Nat}
+     (h : axWordCheck n word = true) (st : AS) (hc : Clean st) :
+     Rn (.node n) st (axWordEval word st) := by
+   induction word generalizing n st with
+@@ -106,37 +108,29 @@
+     subst n
+     exact l457 st hc
+   | cons a rest ih =>
+-    rcases a with ⟨a, next⟩
+-    simp only [axWordCheck, Bool.and_eq_true, decide_eq_true_eq] at h
+-    exact seqAS h.1 (AXAtom.run st hc a) (ih h.2 _ (by cases a <;> exact hc))
++    simp only [axWordCheck] at h
++    split at h
++    · rename_i m next hn
++      simp only [Bool.and_eq_true, decide_eq_true_eq] at h
++      rcases h with ⟨hm, hr⟩
++      subst m
++      exact seq hn (AXAtom.run st hc a) (ih hr _ (by cases a <;> exact hc))
++    · contradiction
+ 
+-def axWord : List (AXAtom × Nat) := [
+-  (.par1, 467), (.par2, 468), (.wal, 469), (.par3, 470), (.par1, 471), (.readp2, 485),
+-  (.cons, 486), (.readp1, 474), (.par1, 475), (.cons, 476), (.par1, 477), (.par3, 478),
+-  (.cons, 479), (.par2, 480), (.par3, 481), (.cons, 482), (.cons, 483), (.cons, 319),
+-  (.par3, 320), (.par1, 321), (.weq, 322), (.par3, 323), (.par2, 324), (.weq, 325),
+-  (.par1, 326), (.par2, 327), (.wel, 328), (.par1, 329), (.par2, 330), (.weq, 331),
+-  (.wal, 332), (.cons, 333), (.cons, 334), (.par1, 335), (.par1, 336), (.par3, 337),
+-  (.wal, 338), (.wex, 339), (.par3, 340), (.cons, 341), (.par3, 342), (.par1, 343),
+-  (.weq, 344), (.par3, 345), (.par2, 346), (.wel, 347), (.par1, 348), (.par2, 349),
+-  (.wel, 350), (.cons, 351), (.cons, 352), (.par1, 353), (.par2, 354), (.par3, 355),
+-  (.wal, 356), (.wal, 357), (.par2, 358), (.par1, 359), (.par3, 360), (.wal, 361),
+-  (.wal, 362), (.cons, 363), (.par1, 364), (.par2, 365), (.weq, 366), (.par3, 367),
+-  (.par1, 368), (.wel, 369), (.par3, 370), (.par2, 371), (.wel, 372), (.cons, 373),
+-  (.cons, 374), (.par1, 375), (.par2, 376), (.par3, 377), (.cons, 378), (.wal, 379),
+-  (.par1, 380), (.par2, 381), (.wal, 382), (.par1, 383), (.par3, 384), (.wal, 385),
+-  (.cons, 386), (.cons, 387), (.par1, 388), (.par1, 389), (.par2, 390), (.weq, 391),
+-  (.wex, 392), (.par1, 393), (.par2, 394), (.wel, 395), (.par3, 396), (.par1, 397),
+-  (.par2, 398), (.wel, 399), (.wal, 400), (.cons, 401), (.par3, 402), (.par2, 403),
+-  (.par2, 404), (.par3, 405), (.wel, 406), (.par1, 407), (.par3, 408), (.par1, 409),
+-  (.par3, 410), (.par3, 411), (.par1, 412), (.wel, 413), (.par3, 414), (.par2, 415),
+-  (.wel, 416), (.cons, 417), (.wal, 418), (.par2, 419), (.par3, 420), (.par2, 421),
+-  (.par3, 422), (.par2, 423), (.par3, 424), (.wel, 425), (.wn, 426), (.cons, 427),
+-  (.wal, 428), (.wn, 429), (.cons, 430), (.wal, 431), (.cons, 432), (.wal, 433),
+-  (.wn, 434), (.cons, 435), (.wal, 436), (.wn, 437), (.cons, 438), (.wal, 439),
+-  (.par2, 440), (.par3, 441), (.par2, 442), (.par3, 443), (.par2, 444), (.par3, 445),
+-  (.wel, 446), (.wn, 447), (.cons, 448), (.wal, 449), (.wn, 450), (.cons, 451),
+-  (.wal, 452), (.wn, 453), (.cons, 454), (.wal, 455), (.cons, 456), (.wn, 457)]
++def axWord : List AXAtom := [
++  .par1, .par2, .wal, .par3, .par1, .readp2, .cons, .readp1, .par1, .cons, .par1, .par3,
++  .cons, .par2, .par3, .cons, .cons, .cons, .par3, .par1, .weq, .par3, .par2, .weq,
++  .par1, .par2, .wel, .par1, .par2, .weq, .wal, .cons, .cons, .par1, .par1, .par3,
++  .wal, .wex, .par3, .cons, .par3, .par1, .weq, .par3, .par2, .wel, .par1, .par2,
++  .wel, .cons, .cons, .par1, .par2, .par3, .wal, .wal, .par2, .par1, .par3, .wal,
++  .wal, .cons, .par1, .par2, .weq, .par3, .par1, .wel, .par3, .par2, .wel, .cons,
++  .cons, .par1, .par2, .par3, .cons, .wal, .par1, .par2, .wal, .par1, .par3, .wal,
++  .cons, .cons, .par1, .par1, .par2, .weq, .wex, .par1, .par2, .wel, .par3, .par1,
++  .par2, .wel, .wal, .cons, .par3, .par2, .par2, .par3, .wel, .par1, .par3, .par1,
++  .par3, .par3, .par1, .wel, .par3, .par2, .wel, .cons, .wal, .par2, .par3, .par2,
++  .par3, .par2, .par3, .wel, .wn, .cons, .wal, .wn, .cons, .wal, .cons, .wal,
++  .wn, .cons, .wal, .wn, .cons, .wal, .par2, .par3, .par2, .par3, .par2, .par3,
++  .wel, .wn, .cons, .wal, .wn, .cons, .wal, .wn, .cons, .wal, .cons, .wn]
+ 
+ theorem axWord_checked : axWordCheck 236 axWord = true := by decide +kernel
+ 
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2axiomsdom.py
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2axiomsdom.py
+@@ -144,24 +144,26 @@
+   | .readp2 => L2Perm.read_p2 st hc
+   | .readp1 => L2Perm.read_p1 st hc
+ 
+-/-- Each pair names a macro and the next program node; the suffix is the gate. -/
+-def axWordCheck : Nat → List (AXAtom × Nat) → Bool
++/-- The literal program supplies successors; the certificate names only semantic macros. -/
++def axWordCheck : Nat → List AXAtom → Bool
+   | n, [] => decide (n = @G0@)
+-  | n, (a, next) :: rest =>
+-    decide (dagPerm.nodes n = (.node a.node, .node next)) && axWordCheck next rest
+-
+-def axWordEval : List (AXAtom × Nat) → AS → AS
++  | n, a :: rest =>
++    match dagPerm.nodes n with
++    | (.node m, .node next) => decide (m = a.node) && axWordCheck next rest
++    | _ => false
++
++def axWordEval : List AXAtom → AS → AS
+   | [], st => gateF st
+-  | (a, _) :: rest, st => axWordEval rest (a.effect st)
++  | a :: rest, st => axWordEval rest (a.effect st)
+ 
+ /-- No macro touches the scratch registers. -/
+-theorem axWordClean (word : List (AXAtom × Nat)) (st : AS) (hc : Clean st) :
++theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) :
+     Clean (axWordEval word st) := by
+   induction word generalizing st with
+   | nil => exact hc
+-  | cons a rest ih => exact ih _ (by cases a.1 <;> exact hc)
+-
+-theorem axWordRun (word : List (AXAtom × Nat)) {n : Nat}
++  | cons a rest ih => exact ih _ (by cases a <;> exact hc)
++
++theorem axWordRun (word : List AXAtom) {n : Nat}
+     (h : axWordCheck n word = true) (st : AS) (hc : Clean st) :
+     Rn (.node n) st (axWordEval word st) := by
+   induction word generalizing n st with
+@@ -170,11 +172,16 @@
+     subst n
+     exact l@G0@ st hc
+   | cons a rest ih =>
+-    rcases a with ⟨a, next⟩
+-    simp only [axWordCheck, Bool.and_eq_true, decide_eq_true_eq] at h
+-    exact seqAS h.1 (AXAtom.run st hc a) (ih h.2 _ (by cases a <;> exact hc))
+-
+-def axWord : List (AXAtom × Nat) := [
++    simp only [axWordCheck] at h
++    split at h
++    · rename_i m next hn
++      simp only [Bool.and_eq_true, decide_eq_true_eq] at h
++      rcases h with ⟨hm, hr⟩
++      subst m
++      exact seq hn (AXAtom.run st hc a) (ih hr _ (by cases a <;> exact hc))
++    · contradiction
++
++def axWord : List AXAtom := [
+ @WORD@
+ 
+ theorem axWord_checked : axWordCheck 236 axWord = true := by decide +kernel
+@@ -202,7 +209,7 @@
+ 
+ 
+ word = [(LEAF[atoms[i]][1][:-1], chain[i + 1]) for i in range(G)]
+-rows = [", ".join(f"(.{a}, {n})" for a, n in word[i:i + 6]) for i in range(0, len(word), 6)]
++rows = [", ".join(f".{a}" for a, _ in word[i:i + 12]) for i in range(0, len(word), 12)]
+ text = PERM_TEMPLATE.replace("@WORD@", ",\n".join("  " + r for r in rows) + "]")
+ for k in range(4):
+     text = text.replace(f"@G{k}@", str(chain[G + k]))

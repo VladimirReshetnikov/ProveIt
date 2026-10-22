@@ -30,13 +30,15 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
-The [accepted phase16 quotient-unification checkpoint](../k225-formal/verification/k215/simplification/phase16/README.md)
-shares one weak quotient with a CP/GIC adapter. Its primary and compatibility
-checks pass across 199 project modules, and the exact checked sources are adopted.
-The thirteen Lean files lose 23,847 bytes/519 lines; retiring the duplicate-proof
-generator brings the maintenance reduction to 29,837 bytes/622 lines. The endpoint
-remains at 176 project modules, with the same literal machine, endpoint statements
-and all 6,176 inherited site outcomes.
+The [phase17 combined Lean check](../k225-formal/verification/k215/simplification/phase17/README.md)
+passes for the merged direct-seed, direct-`C222`, computed-tree and AX-word sources,
+with phase16's quotient cleanup retained. Its endpoint selects 174 modules and
+1,749,188 source bytes; the combined check covers 199 project modules and fourteen
+typed clients, with all nine 215 site batches fresh. One reviewed report changes:
+`source_tree_eq` now reports `[propext]` instead of `[]` through the existing tree
+computation. Other retained profiles match the frozen expectations.
+Earlier quotient-unification evidence is retained in [phase16](../k225-formal/verification/k215/simplification/phase16/README.md).
+Independent result review and evidence capture pass; the linked checkpoint contains the exact records.
 
 The layers are described in [k225-formal](../k225-formal/README.md#the-215).
 

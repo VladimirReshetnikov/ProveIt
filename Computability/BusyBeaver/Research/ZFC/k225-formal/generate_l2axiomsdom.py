@@ -144,24 +144,26 @@ theorem AXAtom.run (st : AS) (hc : Clean st) : ∀ a : AXAtom, Rn (.node a.node)
   | .readp2 => L2Perm.read_p2 st hc
   | .readp1 => L2Perm.read_p1 st hc
 
-/-- Each pair names a macro and the next program node; the suffix is the gate. -/
-def axWordCheck : Nat → List (AXAtom × Nat) → Bool
+/-- The literal program supplies successors; the certificate names only semantic macros. -/
+def axWordCheck : Nat → List AXAtom → Bool
   | n, [] => decide (n = @G0@)
-  | n, (a, next) :: rest =>
-    decide (dagPerm.nodes n = (.node a.node, .node next)) && axWordCheck next rest
+  | n, a :: rest =>
+    match dagPerm.nodes n with
+    | (.node m, .node next) => decide (m = a.node) && axWordCheck next rest
+    | _ => false
 
-def axWordEval : List (AXAtom × Nat) → AS → AS
+def axWordEval : List AXAtom → AS → AS
   | [], st => gateF st
-  | (a, _) :: rest, st => axWordEval rest (a.effect st)
+  | a :: rest, st => axWordEval rest (a.effect st)
 
 /-- No macro touches the scratch registers. -/
-theorem axWordClean (word : List (AXAtom × Nat)) (st : AS) (hc : Clean st) :
+theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) :
     Clean (axWordEval word st) := by
   induction word generalizing st with
   | nil => exact hc
-  | cons a rest ih => exact ih _ (by cases a.1 <;> exact hc)
+  | cons a rest ih => exact ih _ (by cases a <;> exact hc)
 
-theorem axWordRun (word : List (AXAtom × Nat)) {n : Nat}
+theorem axWordRun (word : List AXAtom) {n : Nat}
     (h : axWordCheck n word = true) (st : AS) (hc : Clean st) :
     Rn (.node n) st (axWordEval word st) := by
   induction word generalizing n st with
@@ -170,11 +172,16 @@ theorem axWordRun (word : List (AXAtom × Nat)) {n : Nat}
     subst n
     exact l@G0@ st hc
   | cons a rest ih =>
-    rcases a with ⟨a, next⟩
-    simp only [axWordCheck, Bool.and_eq_true, decide_eq_true_eq] at h
-    exact seqAS h.1 (AXAtom.run st hc a) (ih h.2 _ (by cases a <;> exact hc))
+    simp only [axWordCheck] at h
+    split at h
+    · rename_i m next hn
+      simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+      rcases h with ⟨hm, hr⟩
+      subst m
+      exact seq hn (AXAtom.run st hc a) (ih hr _ (by cases a <;> exact hc))
+    · contradiction
 
-def axWord : List (AXAtom × Nat) := [
+def axWord : List AXAtom := [
 @WORD@
 
 theorem axWord_checked : axWordCheck 236 axWord = true := by decide +kernel
@@ -202,7 +209,7 @@ end SetTheory.BusyBeaver.ZFC.L2Perm
 
 
 word = [(LEAF[atoms[i]][1][:-1], chain[i + 1]) for i in range(G)]
-rows = [", ".join(f"(.{a}, {n})" for a, n in word[i:i + 6]) for i in range(0, len(word), 6)]
+rows = [", ".join(f".{a}" for a, _ in word[i:i + 12]) for i in range(0, len(word), 12)]
 text = PERM_TEMPLATE.replace("@WORD@", ",\n".join("  " + r for r in rows) + "]")
 for k in range(4):
     text = text.replace(f"@G{k}@", str(chain[G + k]))

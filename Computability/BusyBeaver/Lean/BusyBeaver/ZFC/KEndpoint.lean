@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.KSeedDirect222
 import BusyBeaver.ZFC.KLowerQHyp
 import BusyBeaver.ZFC.KUpper222
 import BusyBeaver.ZFC.KSim
@@ -21,11 +22,11 @@ composes them:
 The calculus is machine-independent: `KUpper222.zf_refutation_of_c222` is the upper bound, and the
 lower chain `c222_of_zf_refutation` is semantic. Take for the completeness theorem
 `KEind222.c222_complete` the named formulas whose interpreted codes are derivable
-(`DerivableNF`). In any irreflexive model of them every equality-free relation has Elliot Glazer's
-seed property (`seed_eqFree`); the indiscernibility quotient extends it to every relation
-(`fullSeed_of_derivable`, `formSeed_of_fullSeed`); and the bisimulation quotient of the tagged
-domain of such a model has a well-founded part satisfying ZF (`zf_consistent_of_formSeed`). So a
-ZF refutation leaves no model, and the code 1 is derivable.
+(`DerivableNF`). A fresh-label named bundle gives every named relation, including literal
+equality, Elliot Glazer's seed property on this original domain
+(`seed_direct`, `formSeed_of_fullSeed`). The bisimulation quotient of its
+tagged domain has a well-founded part satisfying ZF (`zf_consistent_of_formSeed`). So a ZF
+refutation leaves no model, and the code 1 is derivable.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.KEndpoint
@@ -36,8 +37,8 @@ open KZip KRuntimeCore KDenseBridge LeanProofs.BoundedZFCConsistency KSeed222 KI
 theorem c222_of_zf_refutation (hf : BProv ZFax_s [] Form.fBot) : KCode222.C222 Code254.F := by
   apply KEind222.c222_complete DerivableNF (fun _ h => h)
   intro D mem hirr hT e
-  have hfull := fullSeed_of_derivable mem hirr hT
-  exact zf_consistent_of_formSeed (formSeed_of_fullSeed hfull) hfull.irr (KIndisc222.mk mem (e 0)) hf
+  have hfull : FullSeed mem := ⟨hirr, seed_direct mem hT⟩
+  exact zf_consistent_of_formSeed (formSeed_of_fullSeed hfull) hfull.irr (e 0) hf
 
 /-- The 222 calculus derives the code 1 iff ZF is refutable. -/
 theorem c222_iff_zf_refutation : KCode222.C222 Code254.F ↔ BProv ZFax_s [] Form.fBot :=

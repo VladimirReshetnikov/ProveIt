@@ -1,0 +1,275 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedFunctional.lean
+@@ -0,0 +1,44 @@
++import BusyBeaver.ZFC.KSeed222
++
++/-!
++Functional seed relations need no repeated choice of an equal output.
++This module is an additive proposal against ProveIt 6d9800d1ca67.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.KSeed222
++
++universe u
++variable {V : Type u} {mem Q : V → V → Prop} {A C : V}
++
++/-- A seed container for a single-valued relation: retain every requested output,
++record the origin of each member, and close under requests below members. -/
++structure SeedClosure (mem Q : V → V → Prop) (A C : V) : Prop where
++  root : ∀ y, Q A y → mem y C
++  image : ∀ y, mem y C → ∃ x, Q x y
++  step : ∀ y, mem y C → ∀ x, (∀ w, mem w x → mem w y) → ∀ z, Q x z → mem z C
++
++/-- Exact, constructive normalization of the existing seed property. -/
++theorem seedProp_iff_closure
++    (hQ : ∀ x y z, Q x y → Q x z → y = z) :
++    SeedProp mem Q A ↔ ∃ C, SeedClosure mem Q A C := by
++  constructor
++  · rintro ⟨C, hroot, hstep⟩
++    refine ⟨C, ?_, ?_, ?_⟩
++    · intro y hy
++      obtain ⟨z, hz, hzC⟩ := hroot y hy
++      exact hQ A z y hz hy ▸ hzC
++    · intro y hy
++      obtain ⟨x, hx, -⟩ := hstep y hy
++      exact ⟨x, hx⟩
++    · intro y hy x hxy z hz
++      obtain ⟨_, _, hcl⟩ := hstep y hy
++      obtain ⟨z', hz', hz'C⟩ := hcl x hxy z hz
++      exact hQ x z' z hz' hz ▸ hz'C
++  · rintro ⟨C, h⟩
++    exact ⟨C, fun y hy => ⟨y, hy, h.root y hy⟩,
++      fun y hy => let ⟨x, hx⟩ := h.image y hy
++        ⟨x, hx, fun x' hsub z hz => ⟨z, hz, h.step y hy x' hsub z hz⟩⟩⟩
++
++#print axioms seedProp_iff_closure
++
++end SetTheory.BusyBeaver.ZFC.KSeed222
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.KLowerSeed
++import BusyBeaver.ZFC.KSeedFunctional
+ 
+ /-!
+ Raw set constructions in a seed model (the semantic counterpart of Elliot Glazer's `KPRaw`,
+@@ -53,51 +54,40 @@
+   exact ⟨C, fun z hz => by obtain ⟨_, hx, -⟩ := h2 z hz; exact hx⟩
+ 
+ theorem raw_singleton (x : V) : ∃ s, IsSing mem s x := by
+-  obtain ⟨C, h1, h2⟩ := hs (fEq 0 2) (fun _ => x) x
+-  refine ⟨C, fun z => ⟨fun hz => ?_, ?_⟩⟩
+-  · obtain ⟨_, hx, -⟩ := h2 z hz; exact hx
+-  · intro hzx
+-    obtain ⟨w, hw, hwC⟩ := h1 x rfl
+-    have hwx : w = x := hw
+-    rw [hzx, ← hwx]
+-    exact hwC
++  obtain ⟨C, h⟩ := (seedProp_iff_closure (mem := mem)
++    (fun _ _ _ hy hz => hy.trans hz.symm)).mp (hs (fEq 0 2) (fun _ => x) x)
++  exact ⟨C, fun z => ⟨fun hz => (h.image z hz).elim (fun _ hx => hx), fun hz => h.root z hz⟩⟩
+ 
+ theorem raw_pair {t : V} (ht : ∀ z, ¬ mem z t) (x y : V) :
+     ∃ p, ∀ z, mem z p ↔ z = x ∨ z = y := by
+   obtain ⟨A0, hA0⟩ := raw_singleton hs t
+   have hA0t : A0 ≠ t := fun e => ht t (e ▸ (hA0 t).mpr rfl)
+   let env : Nat → V := scons A0 (scons x (scons t (scons y (fun _ => t))))
+-  obtain ⟨C, h1, h2⟩ := hs (fOr (fAnd (fEq 1 2) (fEq 0 3)) (fAnd (fEq 1 4) (fEq 0 5))) env A0
+-  have hx : mem x C := by
+-    obtain ⟨z, hz, hzC⟩ := h1 x (Or.inl ⟨rfl, rfl⟩)
+-    rcases hz with ⟨-, hz⟩ | ⟨hz, -⟩
+-    · exact (show z = x from hz) ▸ hzC
+-    · exact absurd hz hA0t
++  have hfun : ∀ u v w, ((u = A0 ∧ v = x) ∨ (u = t ∧ v = y)) →
++      ((u = A0 ∧ w = x) ∨ (u = t ∧ w = y)) → v = w := by
++    rintro u v w (⟨hu, hv⟩ | ⟨hu, hv⟩) (⟨hu', hw⟩ | ⟨hu', hw⟩)
++    · exact hv.trans hw.symm
++    · exact (hA0t (hu.symm.trans hu')).elim
++    · exact (hA0t (hu'.symm.trans hu)).elim
++    · exact hv.trans hw.symm
++  obtain ⟨C, h⟩ := (seedProp_iff_closure hfun).mp
++    (hs (fOr (fAnd (fEq 1 2) (fEq 0 3)) (fAnd (fEq 1 4) (fEq 0 5))) env A0)
++  have hx := h.root x (Or.inl ⟨rfl, rfl⟩)
+   refine ⟨C, fun z => ⟨fun hz => ?_, ?_⟩⟩
+-  · obtain ⟨_, hu, -⟩ := h2 z hz
+-    rcases hu with ⟨-, hu⟩ | ⟨-, hu⟩
+-    · exact Or.inl hu
+-    · exact Or.inr hu
++  · exact (h.image z hz).elim fun _ hu => hu.imp And.right And.right
+   · rintro (rfl | rfl)
+     · exact hx
+-    · obtain ⟨_, -, hcl⟩ := h2 x hx
+-      obtain ⟨z', hz', hzC⟩ := hcl t (fun w hw => (ht w hw).elim) z (Or.inr ⟨rfl, rfl⟩)
+-      rcases hz' with ⟨hz', -⟩ | ⟨-, hz'⟩
+-      · exact absurd hz'.symm hA0t
+-      · exact (show z' = z from hz') ▸ hzC
++    · exact h.step x hx t (fun w hw => (ht w hw).elim) z (Or.inr ⟨rfl, rfl⟩)
+ 
+ theorem raw_transitive (a : V) : ∃ v, mem a v ∧ ∀ y, mem y v → ∀ z, mem z y → mem z v := by
+   obtain ⟨sa, hsa⟩ := raw_singleton hs a
+-  obtain ⟨C, h1, h2⟩ := hs (singF 1 0) (fun _ => a) sa
+   have hR : ∀ x y, Sat mem (scons y (scons x (fun _ => a))) (singF 1 0) ↔ IsSing mem x y :=
+     fun x y => sat_singF _ 1 0
+-  refine ⟨C, ?_, fun y hy z hzy => ?_⟩
+-  · obtain ⟨z, hz, hzC⟩ := h1 a ((hR _ _).mpr hsa)
+-    exact ((hsa.unique ((hR _ _).mp hz)).symm ▸ hzC : mem a C)
+-  · obtain ⟨_, -, hcl⟩ := h2 y hy
+-    obtain ⟨sz, hsz⟩ := raw_singleton hs z
+-    obtain ⟨z', hz', hzC⟩ := hcl sz (fun w hw => ((hsz w).mp hw) ▸ hzy) z ((hR _ _).mpr hsz)
+-    exact ((hsz.unique ((hR _ _).mp hz')).symm ▸ hzC : mem z C)
++  obtain ⟨C, h⟩ := (seedProp_iff_closure (fun x y z hy hz =>
++    ((hR x y).mp hy).unique ((hR x z).mp hz))).mp (hs (singF 1 0) (fun _ => a) sa)
++  refine ⟨C, h.root a ((hR sa a).mpr hsa), fun y hy z hzy => ?_⟩
++  obtain ⟨sz, hsz⟩ := raw_singleton hs z
++  exact h.step y hy sz (fun w hw => ((hsz w).mp hw) ▸ hzy) z ((hR sz z).mpr hsz)
+ 
+ include hirr
+ 
+@@ -105,56 +95,59 @@
+   obtain ⟨A0, hA0⟩ := raw_singleton hs a
+   have hA0a : ¬ ∀ w, mem w A0 → mem w a := fun h => hirr a (h a ((hA0 a).mpr rfl))
+   let env : Nat → V := scons A0 (scons a (fun _ => a))
+-  obtain ⟨C, h1, h2⟩ := hs (fOr (fAnd (fEq 1 2) (fEq 0 3))
+-    (fAnd (fAll (fImp (fMem 0 2) (fMem 0 4))) (fEq 0 1))) env A0
+-  have ha : mem a C := by
+-    obtain ⟨z, hz, hzC⟩ := h1 a (Or.inl ⟨rfl, rfl⟩)
+-    rcases hz with ⟨-, hz⟩ | ⟨hz, -⟩
+-    · exact (show z = a from hz) ▸ hzC
+-    · exact absurd hz hA0a
++  have hfun : ∀ u v w, ((u = A0 ∧ v = a) ∨ ((∀ z, mem z u → mem z a) ∧ v = u)) →
++      ((u = A0 ∧ w = a) ∨ ((∀ z, mem z u → mem z a) ∧ w = u)) → v = w := by
++    rintro u v w (⟨hu, hv⟩ | ⟨hu, hv⟩) (⟨hu', hw⟩ | ⟨hu', hw⟩)
++    · exact hv.trans hw.symm
++    · exact (hA0a (hu ▸ hu')).elim
++    · exact (hA0a (hu' ▸ hu)).elim
++    · exact hv.trans hw.symm
++  obtain ⟨C, h⟩ := (seedProp_iff_closure hfun).mp (hs (fOr (fAnd (fEq 1 2) (fEq 0 3))
++    (fAnd (fAll (fImp (fMem 0 2) (fMem 0 4))) (fEq 0 1))) env A0)
++  have ha := h.root a (Or.inl ⟨rfl, rfl⟩)
+   refine ⟨C, fun z => ⟨fun hz => ?_, fun hsub => ?_⟩⟩
+-  · obtain ⟨u, hu, -⟩ := h2 z hz
++  · obtain ⟨u, hu⟩ := h.image z hz
+     rcases hu with ⟨-, hu⟩ | ⟨hu, he⟩
+     · exact (show z = a from hu) ▸ fun w hw => hw
+     · exact (show z = u from he) ▸ hu
+-  · obtain ⟨_, -, hcl⟩ := h2 a ha
+-    obtain ⟨z', hz', hzC⟩ := hcl z hsub z (Or.inr ⟨hsub, rfl⟩)
+-    rcases hz' with ⟨hz', -⟩ | ⟨-, hz'⟩
+-    · exact absurd ((show z = A0 from hz') ▸ hsub) hA0a
+-    · exact (show z' = z from hz') ▸ hzC
++  · exact h.step a ha z hsub z (Or.inr ⟨hsub, rfl⟩)
+ 
+-theorem raw_aug (a : V) (θ : Form) (ρ : Nat → V) :
++omit hirr in
++/-- Augmented separation needs no irreflexivity: overlapping root/singleton
++branches still have the same unique output. -/
++theorem raw_aug_core (a : V) (θ : Form) (ρ : Nat → V) :
+     ∃ b, ∀ z, mem z b ↔ z = a ∨ (mem z a ∧ Sat mem (scons z ρ) θ) := by
+   obtain ⟨A0, hA0⟩ := raw_singleton hs a
+   let env : Nat → V := scons A0 (scons a ρ)
+   have hθ : ∀ x y, Sat mem (scons y (scons x env)) (rename (shiftAfter 2) θ) ↔
+       Sat mem (scons y ρ) θ := fun x y =>
+     Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
+-  obtain ⟨C, h1, h2⟩ := hs (fOr (fAnd (fEq 1 2) (fEq 0 3))
+-    (fAnd (singF 1 0) (fAnd (fMem 0 3) (rename (shiftAfter 2) θ)))) env A0
+-  -- the root's only image is `a`
+-  have hroot : ∀ z, IsSing mem A0 z → mem z a → False := fun z hz hza =>
+-    hirr a ((hA0.unique hz) ▸ hza)
+-  have ha : mem a C := by
+-    obtain ⟨z, hz, hzC⟩ := h1 a (Or.inl ⟨rfl, rfl⟩)
+-    rcases hz with ⟨-, hz⟩ | ⟨hz, hza, -⟩
+-    · exact (show z = a from hz) ▸ hzC
+-    · exact (hroot z ((sat_singF _ 1 0).mp hz) hza).elim
++  let φ := fOr (fAnd (fEq 1 2) (fEq 0 3))
++    (fAnd (singF 1 0) (fAnd (fMem 0 3) (rename (shiftAfter 2) θ)))
++  have hfun : ∀ u v w, Sat mem (scons v (scons u env)) φ →
++      Sat mem (scons w (scons u env)) φ → v = w := by
++    rintro u v w (⟨hu, hv⟩ | ⟨hv, -⟩) (⟨hu', hw⟩ | ⟨hw, -⟩)
++    · exact hv.trans hw.symm
++    · exact hv.trans (hA0.unique ((show u = A0 from hu) ▸ (sat_singF _ 1 0).mp hw))
++    · exact (((sat_singF _ 1 0).mp hv).unique (hu'.symm ▸ hA0)).trans hw.symm
++    · exact ((sat_singF _ 1 0).mp hv).unique ((sat_singF _ 1 0).mp hw)
++  obtain ⟨C, h⟩ := (seedProp_iff_closure hfun).mp (hs φ env A0)
++  have ha := h.root a (Or.inl ⟨rfl, rfl⟩)
+   refine ⟨C, fun z => ⟨fun hz => ?_, ?_⟩⟩
+-  · obtain ⟨_, hu, -⟩ := h2 z hz
++  · obtain ⟨_, hu⟩ := h.image z hz
+     rcases hu with ⟨-, hu⟩ | ⟨-, hza, hθz⟩
+     · exact Or.inl hu
+     · exact Or.inr ⟨hza, (hθ _ _).mp hθz⟩
+   · rintro (rfl | ⟨hza, hθz⟩)
+     · exact ha
+-    · obtain ⟨_, -, hcl⟩ := h2 a ha
+-      obtain ⟨sz, hsz⟩ := raw_singleton hs z
+-      obtain ⟨z', hz', hzC⟩ := hcl sz (fun w hw => ((hsz w).mp hw) ▸ hza) z
++    · obtain ⟨sz, hsz⟩ := raw_singleton hs z
++      exact h.step a ha sz (fun w hw => ((hsz w).mp hw) ▸ hza) z
+         (Or.inr ⟨(sat_singF _ 1 0).mpr hsz, hza, (hθ _ _).mpr hθz⟩)
+-      rcases hz' with ⟨hz', -⟩ | ⟨hz', -⟩
+-      · have : z = a := hsz.unique ((show sz = A0 from hz') ▸ hA0)
+-        exact (hirr a (this ▸ hza)).elim
+-      · exact ((hsz.unique ((sat_singF _ 1 0).mp hz')).symm ▸ hzC : mem z C)
++
++/-- Compatibility with the maintained public signature. -/
++theorem raw_aug (a : V) (θ : Form) (ρ : Nat → V) :
++    ∃ b, ∀ z, mem z b ↔ z = a ∨ (mem z a ∧ Sat mem (scons z ρ) θ) :=
++  raw_aug_core hs a θ ρ
+ 
+ theorem raw_tagged {t : V} (ht : ∀ z, ¬ mem z t) (B : V) (hBt : B ≠ t) (θ : Form) (ρ : Nat → V) :
+     ∃ S, ∀ z, mem z S ↔ z = B ∨ z = t ∨ (mem z B ∧ Sat mem (scons z ρ) θ) := by
+@@ -167,35 +160,35 @@
+   have hθ : ∀ x y, Sat mem (scons y (scons x env)) (rename (shiftAfter 3) θ) ↔
+       Sat mem (scons y ρ) θ := fun x y =>
+     Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
+-  obtain ⟨C, h1, h2⟩ := hs (fOr (fAnd (fEq 1 2) (fEq 0 3)) (fOr (fAnd (fEq 1 4) (fEq 0 4))
+-    (fAnd (singF 1 0) (fAnd (fMem 0 3) (rename (shiftAfter 3) θ))))) env r0
+-  have hB : mem B C := by
+-    obtain ⟨z, hz, hzC⟩ := h1 B (Or.inl ⟨rfl, rfl⟩)
+-    rcases hz with ⟨-, hz⟩ | ⟨hz, -⟩ | ⟨hz, -⟩
+-    · exact (show z = B from hz) ▸ hzC
+-    · exact absurd hz hr0t
+-    · exact (hr0s z ((sat_singF _ 1 0).mp hz)).elim
+-  obtain ⟨_, -, hcl⟩ := h2 B hB
++  let φ := fOr (fAnd (fEq 1 2) (fEq 0 3)) (fOr (fAnd (fEq 1 4) (fEq 0 4))
++    (fAnd (singF 1 0) (fAnd (fMem 0 3) (rename (shiftAfter 3) θ))))
++  have hfun : ∀ u v w, Sat mem (scons v (scons u env)) φ →
++      Sat mem (scons w (scons u env)) φ → v = w := by
++    rintro u v w (⟨hu, hv⟩ | ⟨hu, hv⟩ | ⟨hv, -⟩)
++      (⟨hu', hw⟩ | ⟨hu', hw⟩ | ⟨hw, -⟩)
++    · exact hv.trans hw.symm
++    · exact (hr0t (hu.symm.trans hu')).elim
++    · exact (hr0s w ((show u = r0 from hu) ▸ (sat_singF _ 1 0).mp hw)).elim
++    · exact (hr0t (hu'.symm.trans hu)).elim
++    · exact hv.trans hw.symm
++    · exact (hts w ((show u = t from hu) ▸ (sat_singF _ 1 0).mp hw)).elim
++    · exact (hr0s v ((show u = r0 from hu') ▸ (sat_singF _ 1 0).mp hv)).elim
++    · exact (hts v ((show u = t from hu') ▸ (sat_singF _ 1 0).mp hv)).elim
++    · exact ((sat_singF _ 1 0).mp hv).unique ((sat_singF _ 1 0).mp hw)
++  obtain ⟨C, h⟩ := (seedProp_iff_closure hfun).mp (hs φ env r0)
++  have hB := h.root B (Or.inl ⟨rfl, rfl⟩)
+   refine ⟨C, fun z => ⟨fun hz => ?_, ?_⟩⟩
+-  · obtain ⟨_, hu, -⟩ := h2 z hz
++  · obtain ⟨_, hu⟩ := h.image z hz
+     rcases hu with ⟨-, hu⟩ | ⟨-, hu⟩ | ⟨-, hzB, hθz⟩
+     · exact Or.inl hu
+     · exact Or.inr (Or.inl hu)
+     · exact Or.inr (Or.inr ⟨hzB, (hθ _ _).mp hθz⟩)
+   · rintro (rfl | rfl | ⟨hzB, hθz⟩)
+     · exact hB
+-    · obtain ⟨z', hz', hzC⟩ := hcl z (fun w hw => (ht w hw).elim) z (Or.inr (Or.inl ⟨rfl, rfl⟩))
+-      rcases hz' with ⟨hz', -⟩ | ⟨-, hz'⟩ | ⟨hz', -⟩
+-      · exact absurd hz'.symm hr0t
+-      · exact (show z' = z from hz') ▸ hzC
+-      · exact (hts z' ((sat_singF _ 1 0).mp hz')).elim
++    · exact h.step B hB z (fun w hw => (ht w hw).elim) z (Or.inr (Or.inl ⟨rfl, rfl⟩))
+     · obtain ⟨sz, hsz⟩ := raw_singleton hs z
+-      obtain ⟨z', hz', hzC⟩ := hcl sz (fun w hw => ((hsz w).mp hw) ▸ hzB) z
++      exact h.step B hB sz (fun w hw => ((hsz w).mp hw) ▸ hzB) z
+         (Or.inr (Or.inr ⟨(sat_singF _ 1 0).mpr hsz, hzB, (hθ _ _).mpr hθz⟩))
+-      rcases hz' with ⟨hz', -⟩ | ⟨hz', -⟩ | ⟨hz', -⟩
+-      · exact (hr0s z ((show sz = r0 from hz') ▸ hsz)).elim
+-      · exact (hts z ((show sz = t from hz') ▸ hsz)).elim
+-      · exact ((hsz.unique ((sat_singF _ 1 0).mp hz')).symm ▸ hzC : mem z C)
+ 
+ end Raw
+ 

@@ -57,11 +57,7 @@ theorem csat_iff_sat : ∀ (φ : Form) (e : Nat → V), CSat mem (InL H hP) e φ
   | .fMem _ _, _ => Iff.rfl
   | .fEq _ _, _ => Iff.rfl
   | .fBot, _ => Iff.rfl
-  | .fImp a b, e => by
-      simp only [CSat, Sat]; rw [csat_iff_sat a e, csat_iff_sat b e]
-  | .fAnd a b, e => by
-      simp only [CSat, Sat]; rw [csat_iff_sat a e, csat_iff_sat b e]
-  | .fOr a b, e => by
+  | .fImp a b, e | .fAnd a b, e | .fOr a b, e => by
       simp only [CSat, Sat]; rw [csat_iff_sat a e, csat_iff_sat b e]
   | .fAll a, e => by
       simp only [CSat, Sat]
@@ -128,17 +124,10 @@ theorem seed_in_VL (φ : Form) (e : Nat → V) (A : V) :
   have htrans : Trans mem Tβ := isL_trans H hR hP hβ hTβ
   have hA : mem A Tβ := hT0β _ (hvT0 0)
   have he' : ∀ k, mem (e' k) Tβ := fun k => hT0β _ (hvT0 (k + 1))
-  have hscons : ∀ x y, mem x Tβ → mem y Tβ → ∀ n, mem (scons y (scons x e') n) Tβ := by
-    intro x y hx hy n
-    match n with
-    | 0 => exact hy
-    | 1 => exact hx
-    | k + 2 => exact he' k
-  have hscons1 : ∀ x, mem x Tβ → ∀ n, mem (scons x e' n) Tβ := by
-    intro x hx n
-    match n with
-    | 0 => exact hx
-    | k + 1 => exact he' k
+  have hscons : ∀ x y, mem x Tβ → mem y Tβ → ∀ n, mem (scons y (scons x e') n) Tβ :=
+    fun _ _ hx hy n => match n with | 0 => hy | 1 => hx | k + 2 => he' k
+  have hscons1 : ∀ x, mem x Tβ → ∀ n, mem (scons x e' n) Tβ :=
+    fun _ hx n => match n with | 0 => hx | k + 1 => he' k
   have hΘ1 : ∀ θ ∈ qbodies (fEx φ), θ ∈ Θ := fun θ h => List.mem_append_left _ h
   have hΘφ : ∀ θ ∈ qbodies φ, θ ∈ Θ := fun θ h =>
     hΘ1 θ (by simp only [qbodies]; exact List.mem_cons_of_mem _ (List.mem_cons_of_mem _ h))
@@ -169,11 +158,8 @@ theorem seed_in_VL (φ : Form) (e : Nat → V) (A : V) :
       simp only [scons]; exact hp z
     rw [← csat_iff_sat H hP hVL] at hpow
     obtain ⟨P', hP'T, hP'⟩ := (reflect H hR hP hC hTβ powF hΘp _ (hscons1 u hu)).1 hpow
-    have henv : ∀ n, mem (scons P' (scons u e') n) Tβ := by
-      intro n
-      match n with
-      | 0 => exact hP'T
-      | k + 1 => exact hscons1 u hu k
+    have henv : ∀ n, mem (scons P' (scons u e') n) Tβ := fun n =>
+      match n with | 0 => hP'T | k + 1 => hscons1 u hu k
     have hreal := (reflect H hR hP hC hTβ powBody hΘb _ henv).2 hP'
     rw [csat_iff_sat H hP hVL, sat_powBody] at hreal
     have hx'P : mem x' P' := (hreal x').2 hsub
@@ -189,12 +175,7 @@ theorem seed_in_VL (φ : Form) (e : Nat → V) (A : V) :
     simp only [σ, Sat, scons]
     refine exists_congr fun x => and_congr_right fun _ => ?_
     rw [Sat_rename]
-    apply Sat_ext
-    intro n
-    match n with
-    | 0 => rfl
-    | 1 => rfl
-    | k + 2 => rfl
+    exact Sat_ext _ _ _ fun n => by rcases n with _ | _ | _ <;> rfl
   refine ⟨C, ?_, ?_⟩
   · intro y hy
     obtain ⟨z, hz, hzφ⟩ := answer A hA y hy
@@ -239,8 +220,7 @@ theorem bundles_in_L (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) (e : Nat → 
     apply propext
     rw [NamedForm254.sat_translate, roleSlots_env]
     rfl
-  rw [hQ] at hS
-  exact hS
+  exact hQ ▸ hS
 
 end Model
 

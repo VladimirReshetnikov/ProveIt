@@ -48,8 +48,7 @@ theorem shows_scons {t : V} {d : Nat} {e : Nat → Tag mem t} {e' : Nat → V}
   cases i with
   | zero => simp [sh, scons]
   | succ i =>
-      have : sh (d + 1) (i + 1) = sh d i + 1 := by unfold sh; split <;> split <;> omega
-      rw [this]
+      rw [show sh (d + 1) (i + 1) = sh d i + 1 by unfold sh; split <;> split <;> omega]
       exact h i
 
 theorem sat_relT {t : V} : ∀ (φ : Form) (d : Nat) (e : Nat → Tag mem t) (e' : Nat → V),
@@ -66,19 +65,13 @@ theorem sat_relT {t : V} : ∀ (φ : Form) (d : Nat) (e : Nat → Tag mem t) (e'
   | fAll a, d, e, e', h, ht => by
       show (∀ x, Sat (tmem mem t) (scons x e) a) ↔ ∀ y, (mem (e' d) y → _)
       rw [ht]
-      constructor
-      · intro hx y hy
-        exact (sat_relT a (d + 1) _ _ (shows_scons h ⟨y, hy⟩) ht).mp (hx ⟨y, hy⟩)
-      · intro hy x
-        exact (sat_relT a (d + 1) _ _ (shows_scons h x) ht).mpr (hy x.1 x.2)
+      exact ⟨fun hx y hy => (sat_relT a (d + 1) _ _ (shows_scons h ⟨y, hy⟩) ht).mp (hx ⟨y, hy⟩),
+        fun hy x => (sat_relT a (d + 1) _ _ (shows_scons h x) ht).mpr (hy x.1 x.2)⟩
   | fEx a, d, e, e', h, ht => by
       show (∃ x, Sat (tmem mem t) (scons x e) a) ↔ ∃ y, (mem (e' d) y ∧ _)
       rw [ht]
-      constructor
-      · rintro ⟨x, hx⟩
-        exact ⟨x.1, x.2, (sat_relT a (d + 1) _ _ (shows_scons h x) ht).mp hx⟩
-      · rintro ⟨y, hy, hr⟩
-        exact ⟨⟨y, hy⟩, (sat_relT a (d + 1) _ _ (shows_scons h ⟨y, hy⟩) ht).mpr hr⟩
+      exact ⟨fun ⟨x, hx⟩ => ⟨x.1, x.2, (sat_relT a (d + 1) _ _ (shows_scons h x) ht).mp hx⟩,
+        fun ⟨y, hy, hr⟩ => ⟨⟨y, hy⟩, (sat_relT a (d + 1) _ _ (shows_scons h ⟨y, hy⟩) ht).mpr hr⟩⟩
 
 /-- The top-level raw valuation: the marker, then the underlying values. -/
 def topEnv (t : V) (e : Nat → Tag mem t) : Nat → V := scons t (fun i => (e i).1)

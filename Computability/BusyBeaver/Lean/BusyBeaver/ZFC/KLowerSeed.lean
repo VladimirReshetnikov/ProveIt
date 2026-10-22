@@ -1,4 +1,4 @@
-import BusyBeaver.ZFC.KIndisc222
+import BusyBeaver.ZFC.KSeedInterface222
 import BusyBeaver.ZFC.Code254GIC
 
 /-!
@@ -22,11 +22,6 @@ variable {V : Type u}
 def FormSeed (mem : V → V → Prop) : Prop :=
   ∀ (φ : Form) (env : Nat → V) (A : V),
     SeedProp mem (fun x y => Sat mem (scons y (scons x env)) φ) A
-
-theorem seedProp_congr {mem : V → V → Prop} {R R' : V → V → Prop} {A : V}
-    (h : ∀ x y, R x y ↔ R' x y) (hs : SeedProp mem R A) : SeedProp mem R' A := by
-  have e : R = R' := funext fun x => funext fun y => propext (h x y)
-  exact e ▸ hs
 
 /-- **Every full seed model has the seed property for every `Form`.** -/
 theorem formSeed_of_fullSeed {mem : V → V → Prop} (h : FullSeed mem) : FormSeed mem := by
@@ -60,7 +55,7 @@ theorem formSeed_of_fullSeed {mem : V → V → Prop} (h : FullSeed mem) : FormS
   have hs := h.seed ψ e
   have he0 : e 0 = A := by simp [e]
   rw [he0] at hs
-  exact seedProp_congr key hs
+  exact (KSeed222.seedProp_congr mem A key).mp hs
 
 #print axioms formSeed_of_fullSeed
 

@@ -6,18 +6,22 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [accepted phase16 simplification check](../simplification/phase16/README.md)
-shares one weak quotient with a CP/GIC adapter and verifies exact source adoption.
-It retains the 176-module endpoint and both unchanged endpoint clients. The
-successful primary scope has 184 project modules plus eleven API clients: 27 fresh
-and 168 phase15 providers. Compatibility has 76 project modules plus two clients:
-four fresh, 61 primary and 13 phase15 providers. The union has 199 project modules.
-All 70 API reports, ten endpoint reports, ten compatibility reports and five
-WFTheory reports have exact checked profiles. Primary has 17 warning occurrences
-(six fresh, eleven reused); compatibility has eleven, all reused. The fresh
-warning messages already occur in earlier logs. All clients and audits have zero
-warnings. Historical 204-module receipts and all nine phase-nine site checks
-remain unchanged.
+[Phase16](../simplification/phase16/README.md) retains the preceding accepted quotient-unification check.
+
+The [phase17 combined check](../simplification/phase17/README.md) passes on the
+merged sources: 213 providers comprising 199 project modules and fourteen typed
+clients, with 171 freshly checked providers and 42 exact-source reuses, plus two endpoint
+audits. All nine 215 site batches were checked fresh. The thirteen existing
+clients retain exact source bytes; the new client checks original-domain
+`FullSeed`, literal equality without irreflexivity, and `FormSeed`. One reviewed
+profile changes from `[]` to `[propext]` for `source_tree_eq`, through the existing
+tree computation. The other retained profiles match the frozen expectations.
+Both endpoint audits retain their ten standard-axiom reports. All three new
+direct-seed client reports use exactly `propext`, `Classical.choice` and
+`Quot.sound`. Accepted provider records contain 18 warning occurrences (17 fresh,
+one reused); all fourteen clients and both endpoint audits have zero warnings.
+Independent result review and evidence capture pass; the linked checkpoint contains the exact records.
+Earlier receipts retain their historical scopes.
 
 The portable driver rebuilds the exact project import closure of
 `BusyBeaver.ZFC.KEndpoint215` from current source, then checks two explicit
@@ -41,8 +45,9 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current closure contains 176 project modules
-and only the external `Init` boundary. It checks the exact final module set and
+the compiler trust boundary. The current source selection contains 174 project
+modules and only the external `Init` boundary.
+It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 
 Each command compiles one Lean module with one worker and a 12,288 MiB cap. The

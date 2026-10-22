@@ -28,17 +28,12 @@ theorem transContainers_of_containers {mem : V → V → Prop} (h : Containers m
   fun a => let ⟨v, hav, ht, _⟩ := h a; ⟨v, hav, ht⟩
 
 theorem orderedPair_code_congr (mem : V → V → Prop) {a b c d : V}
-    (hcd : Same mem c d) (hc : OrderedPair mem a b c) : OrderedPair mem a b d := by
-  obtain ⟨s, p, hs, hp, hOuter⟩ := hc
-  exact ⟨s, p, hs, hp, pair_object_congr mem hcd hOuter⟩
+    (hcd : Same mem c d) (hc : OrderedPair mem a b c) : OrderedPair mem a b d :=
+  let ⟨s, p, hs, hp, hOuter⟩ := hc; ⟨s, p, hs, hp, pair_object_congr mem hcd hOuter⟩
 
 theorem app_object_congr (mem : V → V → Prop) {r s : V}
-    (hrs : Same mem r s) (a b : V) : App mem r a b ↔ App mem s a b := by
-  constructor
-  · rintro ⟨c, hc, hab⟩
-    exact ⟨c, (hrs c).mp hc, hab⟩
-  · rintro ⟨c, hc, hab⟩
-    exact ⟨c, (hrs c).mpr hc, hab⟩
+    (hrs : Same mem r s) (a b : V) : App mem r a b ↔ App mem s a b :=
+  ⟨fun ⟨c, hc, hab⟩ => ⟨c, (hrs c).mp hc, hab⟩, fun ⟨c, hc, hab⟩ => ⟨c, (hrs c).mpr hc, hab⟩⟩
 
 def UnionChoice (mem : V → V → Prop) (family x y : V) : Prop :=
   (∃ r, mem r family ∧ mem x r) ∧ Same mem y x
@@ -50,15 +45,13 @@ theorem union_edges_of_instance (mem : V → V → Prop) (family : V)
     ∃ s, ∀ a b, App mem s a b ↔ ∃ r, mem r family ∧ App mem r a b := by
   obtain ⟨domain, hFamily, hTrans⟩ := hContainers family
   obtain ⟨s, hSupport, hCover⟩ := hCollect domain
-  refine ⟨s, ?_⟩
-  intro a b
+  refine ⟨s, fun a b => ?_⟩
   constructor
   · rintro ⟨c, hcs, hcode⟩
     obtain ⟨d, ⟨r, hrFamily, hdr⟩, hcd⟩ := hSupport c hcs
     exact ⟨r, hrFamily, d, hdr, orderedPair_code_congr mem hcd hcode⟩
   · rintro ⟨r, hrFamily, d, hdr, hcode⟩
-    have hdDomain : mem d domain := hTrans r (hTrans family hFamily r hrFamily) d hdr
-    obtain ⟨c, hcs, _, hcd⟩ := hCover d hdDomain
+    obtain ⟨c, hcs, _, hcd⟩ := hCover d (hTrans r (hTrans family hFamily r hrFamily) d hdr)
       ⟨d, ⟨r, hrFamily, hdr⟩, same_refl mem d⟩
     exact ⟨c, hcs, orderedPair_code_congr mem (same_symm mem hcd) hcode⟩
 
@@ -75,8 +68,7 @@ theorem fiber_of_instance (mem : V → V → Prop) (r2 d : V)
     (hCollect : CollectionInstance mem (FiberChoice mem r2 d)) :
     ∃ s, FiberProfile mem r2 d s := by
   obtain ⟨s, hSupport, hCover⟩ := hCollect r2
-  refine ⟨s, ?_⟩
-  intro a b
+  refine ⟨s, fun a b => ?_⟩
   constructor
   · rintro ⟨e, hes, hab⟩
     obtain ⟨c, hcr2, p, q, u, hpq, hqu, hpu⟩ := hSupport e hes
@@ -87,10 +79,9 @@ theorem fiber_of_instance (mem : V → V → Prop) (r2 d : V)
     obtain ⟨e, hae⟩ := hCodes a b
     obtain ⟨f, hfs, _, p, q, u, hpq, hqu, hpu⟩ :=
       hCover c hcr2 ⟨e, hcr2, a, t, b, hat, htb, hae⟩
-    obtain ⟨hap, _⟩ := orderedPair_injective mem hat hpq
-    obtain ⟨_, hbu⟩ := orderedPair_injective mem htb hqu
     exact ⟨f, hfs, orderedPair_endpoint_congr mem
-      (same_symm mem hap) (same_symm mem hbu) hpu⟩
+      (same_symm mem (orderedPair_injective mem hat hpq).1)
+      (same_symm mem (orderedPair_injective mem htb hqu).2) hpu⟩
 
 def CompositionChoice (mem : V → V → Prop) (r1 r2 d s : V) : Prop :=
   mem d r1 ∧ FiberProfile mem r2 d s
@@ -105,8 +96,7 @@ theorem composition_of_instances (mem : V → V → Prop) (r1 r2 : V)
     ∃ s, ∀ a b, App mem s a b ↔ ∃ t, App mem r1 a t ∧ App mem r2 t b := by
   obtain ⟨family, hSupport, hCover⟩ := hComposition r1
   obtain ⟨s, hs⟩ := union_edges_of_instance mem family hContainers (hUnions family)
-  refine ⟨s, ?_⟩
-  intro a b
+  refine ⟨s, fun a b => ?_⟩
   constructor
   · intro hab
     obtain ⟨fiber, hfFamily, habFiber⟩ := (hs a b).mp hab
@@ -117,8 +107,7 @@ theorem composition_of_instances (mem : V → V → Prop) (r1 r2 : V)
     obtain ⟨fiber, hFiber⟩ := fiber_of_instance mem r2 d hCodes (hFibers d)
     obtain ⟨selected, hSelected, _, hSelectedFiber⟩ :=
       hCover d hdr1 ⟨fiber, hdr1, hFiber⟩
-    apply (hs a b).mpr
-    exact ⟨selected, hSelected, (hSelectedFiber a b).mpr ⟨t, hat, htb⟩⟩
+    exact (hs a b).mpr ⟨selected, hSelected, (hSelectedFiber a b).mpr ⟨t, hat, htb⟩⟩
 
 theorem bisim_composition (mem : V → V → Prop) {r1 r2 s : V}
     (h1 : Bisim mem r1) (h2 : Bisim mem r2)
@@ -128,13 +117,11 @@ theorem bisim_composition (mem : V → V → Prop) {r1 r2 s : V}
   obtain ⟨t, hat, htb⟩ := (hComp a b).mp hab
   obtain ⟨hF1, hB1⟩ := h1 a t hat
   obtain ⟨hF2, hB2⟩ := h2 t b htb
-  constructor
-  · intro x hx
-    obtain ⟨y, hy, hxy⟩ := hF1 x hx
+  refine ⟨fun x hx => ?_, fun z hz => ?_⟩
+  · obtain ⟨y, hy, hxy⟩ := hF1 x hx
     obtain ⟨z, hz, hyz⟩ := hF2 y hy
     exact ⟨z, hz, (hComp x z).mpr ⟨y, hxy, hyz⟩⟩
-  · intro z hz
-    obtain ⟨y, hy, hyz⟩ := hB2 z hz
+  · obtain ⟨y, hy, hyz⟩ := hB2 z hz
     obtain ⟨x, hx, hxy⟩ := hB1 y hy
     exact ⟨x, hx, (hComp x z).mpr ⟨y, hxy, hyz⟩⟩
 
@@ -159,16 +146,14 @@ theorem join_edges_of_instances (mem : V → V → Prop) (r1 r2 : V)
     ∃ s, ∀ a b, App mem s a b ↔ App mem r1 a b ∨ App mem r2 a b := by
   obtain ⟨p, hp⟩ := hPairs r1 r2
   obtain ⟨s, hs⟩ := union_edges_of_instance mem p hContainers (hUnions p)
-  refine ⟨s, ?_⟩
-  intro a b
+  refine ⟨s, fun a b => ?_⟩
   constructor
   · intro hab
     obtain ⟨r, hrp, hrab⟩ := (hs a b).mp hab
     rcases (hp r).mp ⟨r, hrp, same_refl mem r⟩ with hr1 | hr2
     · exact Or.inl ((app_object_congr mem hr1 a b).mp hrab)
     · exact Or.inr ((app_object_congr mem hr2 a b).mp hrab)
-  · intro hab
-    rcases hab with h1 | h2
+  · rintro (h1 | h2)
     · obtain ⟨r, hrp, hr1⟩ := (hp r1).mpr (Or.inl (same_refl mem r1))
       exact (hs a b).mpr ⟨r, hrp, (app_object_congr mem hr1 a b).mp h1⟩
     · obtain ⟨r, hrp, hr2⟩ := (hp r2).mpr (Or.inr (same_refl mem r2))
@@ -179,8 +164,7 @@ theorem singleton_edges (mem : V → V → Prop) (k p : V) (hp : Pair mem p k k)
   intro a b
   constructor
   · rintro ⟨c, hcp, hab⟩
-    have hck : Same mem c k := ((hp c).mp ⟨c, hcp, same_refl mem c⟩).elim id id
-    exact orderedPair_code_congr mem hck hab
+    exact orderedPair_code_congr mem (((hp c).mp ⟨c, hcp, same_refl mem c⟩).elim id id) hab
   · intro hab
     obtain ⟨c, hcp, hkc⟩ := (hp k).mpr (Or.inl (same_refl mem k))
     exact ⟨c, hcp, orderedPair_code_congr mem hkc hab⟩
@@ -192,12 +176,10 @@ theorem bisim_union_edges (mem : V → V → Prop) (family s : V)
   intro a b hab
   obtain ⟨r, hr, hrab⟩ := (hUnion a b).mp hab
   obtain ⟨hForth, hBack⟩ := hFamily r hr a b hrab
-  constructor
-  · intro x hx
-    obtain ⟨y, hy, hxy⟩ := hForth x hx
+  refine ⟨fun x hx => ?_, fun y hy => ?_⟩
+  · obtain ⟨y, hy, hxy⟩ := hForth x hx
     exact ⟨y, hy, (hUnion x y).mpr ⟨r, hr, hxy⟩⟩
-  · intro y hy
-    obtain ⟨x, hx, hxy⟩ := hBack y hy
+  · obtain ⟨x, hx, hxy⟩ := hBack y hy
     exact ⟨x, hx, (hUnion x y).mpr ⟨r, hr, hxy⟩⟩
 
 theorem bisim_join_edges (mem : V → V → Prop) {r1 r2 s : V}
@@ -207,20 +189,16 @@ theorem bisim_join_edges (mem : V → V → Prop) {r1 r2 s : V}
   intro a b hab
   rcases (hJoin a b).mp hab with hab1 | hab2
   · obtain ⟨hForth, hBack⟩ := h1 a b hab1
-    constructor
-    · intro x hx
-      obtain ⟨y, hy, hxy⟩ := hForth x hx
+    refine ⟨fun x hx => ?_, fun y hy => ?_⟩
+    · obtain ⟨y, hy, hxy⟩ := hForth x hx
       exact ⟨y, hy, (hJoin x y).mpr (Or.inl hxy)⟩
-    · intro y hy
-      obtain ⟨x, hx, hxy⟩ := hBack y hy
+    · obtain ⟨x, hx, hxy⟩ := hBack y hy
       exact ⟨x, hx, (hJoin x y).mpr (Or.inl hxy)⟩
   · obtain ⟨hForth, hBack⟩ := h2 a b hab2
-    constructor
-    · intro x hx
-      obtain ⟨y, hy, hxy⟩ := hForth x hx
+    refine ⟨fun x hx => ?_, fun y hy => ?_⟩
+    · obtain ⟨y, hy, hxy⟩ := hForth x hx
       exact ⟨y, hy, (hJoin x y).mpr (Or.inr hxy)⟩
-    · intro y hy
-      obtain ⟨x, hx, hxy⟩ := hBack y hy
+    · obtain ⟨x, hx, hxy⟩ := hBack y hy
       exact ⟨x, hx, (hJoin x y).mpr (Or.inr hxy)⟩
 
 def MatchChoice (mem : V → V → Prop) (x y a r : V) : Prop :=
@@ -242,18 +220,11 @@ theorem eqv_matching_of_instances (mem : V → V → Prop) (x y : V)
   obtain ⟨bf, hSupportB, hCoverB⟩ := hBackCollection y
   obtain ⟨fr, hUnionF⟩ := union_edges_of_instance mem ff hContainers (hUnions ff)
   obtain ⟨br, hUnionB⟩ := union_edges_of_instance mem bf hContainers (hUnions bf)
-  have hBisF : Bisim mem fr := by
-    apply bisim_union_edges mem ff fr ?_ hUnionF
-    intro r hr
-    obtain ⟨a, _, b, _, hBis, _⟩ := hSupportF r hr
-    exact hBis
-  have hBisB : Bisim mem br := by
-    apply bisim_union_edges mem bf br ?_ hUnionB
-    intro r hr
-    obtain ⟨b, _, a, _, hBis, _⟩ := hSupportB r hr
-    exact hBis
+  have hBisF : Bisim mem fr := bisim_union_edges mem ff fr (fun r hr => by
+    obtain ⟨a, _, b, _, hBis, _⟩ := hSupportF r hr; exact hBis) hUnionF
+  have hBisB : Bisim mem br := bisim_union_edges mem bf br (fun r hr => by
+    obtain ⟨b, _, a, _, hBis, _⟩ := hSupportB r hr; exact hBis) hUnionB
   obtain ⟨joined, hJoin⟩ := join_edges_of_instances mem fr br hContainers hPairs hUnions
-  have hBisJoined : Bisim mem joined := bisim_join_edges mem hBisF hBisB hJoin
   have hRootF : ∀ a, mem a x → ∃ b, mem b y ∧ App mem joined a b := by
     intro a ha
     obtain ⟨b, hb, r, hr, hab⟩ := hForward a ha
@@ -273,24 +244,19 @@ theorem eqv_matching_of_instances (mem : V → V → Prop) (x y : V)
   have hSingleEdges := singleton_edges mem k single hSingle
   obtain ⟨r, hRootJoin⟩ :=
     join_edges_of_instances mem joined single hContainers hPairs hUnions
-  refine ⟨r, ?_, (hRootJoin x y).mpr (Or.inr ((hSingleEdges x y).mpr hk))⟩
-  intro a b hab
+  refine ⟨r, fun a b hab => ?_, (hRootJoin x y).mpr (Or.inr ((hSingleEdges x y).mpr hk))⟩
   rcases (hRootJoin a b).mp hab with hOld | hRoot
-  · obtain ⟨hForth, hBack⟩ := hBisJoined a b hOld
-    constructor
-    · intro u hu
-      obtain ⟨v, hv, huv⟩ := hForth u hu
+  · obtain ⟨hForth, hBack⟩ := bisim_join_edges mem hBisF hBisB hJoin a b hOld
+    refine ⟨fun u hu => ?_, fun v hv => ?_⟩
+    · obtain ⟨v, hv, huv⟩ := hForth u hu
       exact ⟨v, hv, (hRootJoin u v).mpr (Or.inl huv)⟩
-    · intro v hv
-      obtain ⟨u, hu, huv⟩ := hBack v hv
+    · obtain ⟨u, hu, huv⟩ := hBack v hv
       exact ⟨u, hu, (hRootJoin u v).mpr (Or.inl huv)⟩
   · obtain ⟨hax, hby⟩ := orderedPair_injective mem ((hSingleEdges a b).mp hRoot) hk
-    constructor
-    · intro u hu
-      obtain ⟨v, hv, huv⟩ := hRootF u ((hax u).mp hu)
+    refine ⟨fun u hu => ?_, fun v hv => ?_⟩
+    · obtain ⟨v, hv, huv⟩ := hRootF u ((hax u).mp hu)
       exact ⟨v, (hby v).mpr hv, (hRootJoin u v).mpr (Or.inl huv)⟩
-    · intro v hv
-      obtain ⟨u, hu, huv⟩ := hRootB v ((hby v).mp hv)
+    · obtain ⟨u, hu, huv⟩ := hRootB v ((hby v).mp hv)
       exact ⟨u, (hax u).mpr hu, (hRootJoin u v).mpr (Or.inl huv)⟩
 
 def Member (mem : V → V → Prop) (x y : V) : Prop :=
@@ -308,8 +274,7 @@ theorem eqv_extensionality_of_instances (mem : V → V → Prop)
     (x y : V) (hMembers : ∀ z, Member mem z x ↔ Member mem z y) : Eqv mem x y := by
   apply eqv_matching_of_instances mem x y hContainers hPairs hUnions
     (hForwardCollection x y) (hBackCollection x y)
-  · intro a ha
-    exact (hMembers a).mp ⟨a, ha, hRefl a⟩
+  · exact fun a ha => (hMembers a).mp ⟨a, ha, hRefl a⟩
   · intro b hb
     obtain ⟨a, ha, hba⟩ := (hMembers b).mpr ⟨b, hb, hRefl b⟩
     exact ⟨a, ha, hSymm b a hba⟩

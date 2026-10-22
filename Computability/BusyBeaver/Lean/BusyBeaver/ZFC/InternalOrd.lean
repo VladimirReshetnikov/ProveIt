@@ -58,14 +58,12 @@ include H hR
 
 theorem mem_irrefl (x : V) : ¬ mem x x := by
   obtain ⟨m, hm, hmin⟩ := hR (vsingle H x) ⟨x, (vsingle_spec H x x).2 rfl⟩
-  have hmx : m = x := (vsingle_spec H x m).1 hm
-  subst hmx
-  intro hxx
-  exact hmin ⟨m, hxx, hm⟩
+  obtain rfl := (vsingle_spec H x m).1 hm
+  exact fun hxx => hmin ⟨m, hxx, hm⟩
 
 omit H hR in
-theorem ord_of_mem {a x : V} (ha : Ord mem a) (hx : mem x a) : Ord mem x := by
-  refine ⟨ha.2 x hx, fun y hy => ha.2 y (ha.1 x hx y hy)⟩
+theorem ord_of_mem {a x : V} (ha : Ord mem a) (hx : mem x a) : Ord mem x :=
+  ⟨ha.2 x hx, fun y hy => ha.2 y (ha.1 x hx y hy)⟩
 
 omit hR in
 theorem trans_succ {a : V} (ha : Trans mem a) : Trans mem (vsucc H a) := by
@@ -75,44 +73,28 @@ theorem trans_succ {a : V} (ha : Trans mem a) : Trans mem (vsucc H a) := by
   · exact (vsucc_spec H x z).2 (Or.inl hz)
 
 omit hR in
-theorem ord_succ {a : V} (ha : Ord mem a) : Ord mem (vsucc H a) := by
-  refine ⟨trans_succ H ha.1, fun x hx => ?_⟩
-  rcases (vsucc_spec H a x).1 hx with hx | rfl
-  · exact ha.2 x hx
-  · exact ha.1
+theorem ord_succ {a : V} (ha : Ord mem a) : Ord mem (vsucc H a) :=
+  ⟨trans_succ H ha.1, fun x hx => ((vsucc_spec H a x).1 hx).elim (ha.2 x) fun e => e ▸ ha.1⟩
 
 omit hR in
 theorem ord_vunion {A : V} (hA : ∀ x, mem x A → Ord mem x) : Ord mem (vunion H A) := by
-  refine ⟨?_, ?_⟩
-  · intro x hx z hz
-    obtain ⟨y, hxy, hyA⟩ := (vunion_spec H A x).1 hx
-    exact (vunion_spec H A z).2 ⟨y, (hA y hyA).1 x hxy z hz, hyA⟩
-  · intro x hx
-    obtain ⟨y, hxy, hyA⟩ := (vunion_spec H A x).1 hx
-    exact (hA y hyA).2 x hxy
+  refine ⟨fun x hx z hz => ?_, fun x hx => ?_⟩ <;> obtain ⟨y, hxy, hyA⟩ := (vunion_spec H A x).1 hx
+  · exact (vunion_spec H A z).2 ⟨y, (hA y hyA).1 x hxy z hz, hyA⟩
+  · exact (hA y hyA).2 x hxy
 
 /-- **Ordinal induction** for a property defined by a named formula
 (name `0` is the ordinal; the other names are parameters from `ρ`). -/
 theorem ord_induction (P : V → Prop) (φ : NForm) (ρ : Nat → V)
     (hP : ∀ x, NSat mem (upd ρ 0 x) φ ↔ P x)
     (step : ∀ a, Ord mem a → (∀ b, mem b a → P b) → P a) :
-    ∀ a, Ord mem a → P a := by
-  intro a0 ha0
-  apply Classical.byContradiction
-  intro hna0
+    ∀ a, Ord mem a → P a := fun a0 ha0 => Classical.byContradiction fun hna0 => by
   obtain ⟨S, hS⟩ := sep_of H (fun x => ¬ P x) φ.neg ρ
     (fun x => by rw [nsat_neg, hP]) (vsucc H a0)
   obtain ⟨m, hm, hmin⟩ := hR S ⟨a0, (hS a0).2 ⟨vsucc_self H a0, hna0⟩⟩
   obtain ⟨hmS, hnPm⟩ := (hS m).1 hm
-  have hOm : Ord mem m := by
-    rcases (vsucc_spec H a0 m).1 hmS with h | rfl
-    · exact ord_of_mem ha0 h
-    · exact ha0
-  apply hnPm
-  refine step m hOm fun b hb => ?_
-  apply Classical.byContradiction
-  intro hnb
-  exact hmin ⟨b, hb, (hS b).2 ⟨(ord_succ H ha0).1 m hmS b hb, hnb⟩⟩
+  have hOm : Ord mem m := ((vsucc_spec H a0 m).1 hmS).elim (ord_of_mem ha0) fun e => e ▸ ha0
+  exact hnPm (step m hOm fun b hb => Classical.byContradiction fun hnb =>
+    hmin ⟨b, hb, (hS b).2 ⟨(ord_succ H ha0).1 m hmS b hb, hnb⟩⟩)
 
 /-! ## Trichotomy -/
 
@@ -146,14 +128,9 @@ theorem trichotomy : ∀ a, Ord mem a → ∀ b, Ord mem b → mem a b ∨ a = b
         · subst h; exact Or.inl hb'
       -- Otherwise `a` and `b` have the same members.
       refine Or.inr (Or.inl (H.ext a b fun x => ⟨fun hx => ?_, fun hx => ?_⟩))
-      · rcases IHa x hx b hb with h | h | h
-        · exact h
-        · exact absurd ⟨x, hx, Or.inl h⟩ h1
-        · exact absurd ⟨x, hx, Or.inr h⟩ h1
-      · rcases IHb x hx with h | h | h
-        · exact absurd ⟨x, hx, Or.inl h⟩ h2
-        · exact absurd ⟨x, hx, Or.inr h⟩ h2
-        · exact h
+      · exact (IHa x hx b hb).elim id fun h => absurd ⟨x, hx, h⟩ h1
+      · exact (IHb x hx).elim (fun h => absurd ⟨x, hx, Or.inl h⟩ h2) fun h =>
+          h.resolve_left fun h => h2 ⟨x, hx, Or.inr h⟩
 
 omit H hR in
 theorem sub_of_le {a b : V} (hb : Ord mem b) (h : a = b ∨ mem a b) : ∀ x, mem x a → mem x b := by
@@ -163,11 +140,9 @@ theorem sub_of_le {a b : V} (hb : Ord mem b) (h : a = b ∨ mem a b) : ∀ x, me
 
 /-- A transitive subset relation between ordinals is `≤`. -/
 theorem le_of_sub {a b : V} (ha : Ord mem a) (hb : Ord mem b) (h : ∀ x, mem x a → mem x b) :
-    a = b ∨ mem a b := by
-  rcases trichotomy H hR a ha b hb with h' | h' | h'
-  · exact Or.inr h'
-  · exact Or.inl h'
-  · exact absurd (h b h') (mem_irrefl H hR b)
+    a = b ∨ mem a b :=
+  (trichotomy H hR a ha b hb).elim Or.inr fun h' =>
+    h'.elim Or.inl fun h' => absurd (h b h') (mem_irrefl H hR b)
 
 /-- **Least elements.** A definable property holding of some ordinal holds
 of an ordinal below or equal to every ordinal having it. -/
@@ -177,15 +152,9 @@ theorem least_ord (P : V → Prop) (φ : NForm) (ρ : Nat → V)
   obtain ⟨S, hS⟩ := sep_of H P φ ρ hP (vsucc H a)
   obtain ⟨m, hm, hmin⟩ := hR S ⟨a, (hS a).2 ⟨vsucc_self H a, hPa⟩⟩
   obtain ⟨hmA, hPm⟩ := (hS m).1 hm
-  have hOm : Ord mem m := by
-    rcases (vsucc_spec H a m).1 hmA with h | rfl
-    · exact ord_of_mem ha h
-    · exact ha
-  refine ⟨m, hOm, hPm, fun b hb hPb => ?_⟩
-  rcases trichotomy H hR m hOm b hb with h | h | h
-  · exact Or.inr h
-  · exact Or.inl h
-  · exact absurd ⟨b, h, (hS b).2 ⟨(ord_succ H ha).1 m hmA b h, hPb⟩⟩ hmin
+  have hOm : Ord mem m := ((vsucc_spec H a m).1 hmA).elim (ord_of_mem ha) fun e => e ▸ ha
+  exact ⟨m, hOm, hPm, fun b hb hPb => (trichotomy H hR m hOm b hb).elim Or.inr fun h =>
+    h.elim Or.inl fun h => absurd ⟨b, h, (hS b).2 ⟨(ord_succ H ha).1 m hmA b h, hPb⟩⟩ hmin⟩
 
 end Basics
 

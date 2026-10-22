@@ -1,0 +1,184 @@
+{
+  "status": "PASS_SOURCE_TEXT_INVARIANTS_NOT_A_PROOF_BUILD",
+  "sources_sha256": "6f35fa9f5c774d14ee511d5436bee42b699725bd828e1a2ddeb2b8eeca39b5e3",
+  "theorem_header_deltas": [
+    {
+      "file": "EnumDom.lean",
+      "changes": {
+        "build": {
+          "before": "theorem build : \u2200 {n : Nat}, CDom n \u2192 \u2203 p : List Cmd, Contract p n",
+          "after": "theorem build : \u2200 {n : Nat}, C222 n \u2192 \u2203 p : List Cmd, Contract p n"
+        }
+      }
+    },
+    {
+      "file": "EnumPerm.lean",
+      "changes": {
+        "build": {
+          "before": "theorem build : \u2200 {n : Nat}, CDom n \u2192 \u2203 p : List Cmd, Contract p n",
+          "after": null
+        },
+        "build_c222": {
+          "before": null,
+          "after": "theorem build_c222 : \u2200 {n : Nat}, C222 n \u2192 \u2203 p : List Cmd, Contract p n"
+        }
+      }
+    },
+    {
+      "file": "L2AxiomsDom.lean",
+      "changes": {
+        "axWordRun": {
+          "before": "theorem axWordRun (word : List (AXAtom \u00d7 Nat)) {n : Nat} (h : axWordCheck n word = true) (st : AS) (hc : Clean st) : Rn (.node n) st (axWordEval word st)",
+          "after": "theorem axWordRun (word : List AXAtom) {n : Nat} (h : axWordCheck n word = true) (st : AS) (hc : Clean st) : Rn (.node n) st (axWordEval word st)"
+        },
+        "axWordClean": {
+          "before": "theorem axWordClean (word : List (AXAtom \u00d7 Nat)) (st : AS) (hc : Clean st) : Clean (axWordEval word st)",
+          "after": "theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) : Clean (axWordEval word st)"
+        }
+      }
+    },
+    {
+      "file": "L2AxiomsPerm.lean",
+      "changes": {
+        "axWordRun": {
+          "before": "theorem axWordRun (word : List (AXAtom \u00d7 Nat)) {n : Nat} (h : axWordCheck n word = true) (st : AS) (hc : Clean st) : Rn (.node n) st (axWordEval word st)",
+          "after": "theorem axWordRun (word : List AXAtom) {n : Nat} (h : axWordCheck n word = true) (st : AS) (hc : Clean st) : Rn (.node n) st (axWordEval word st)"
+        },
+        "axWordClean": {
+          "before": "theorem axWordClean (word : List (AXAtom \u00d7 Nat)) (st : AS) (hc : Clean st) : Clean (axWordEval word st)",
+          "after": "theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) : Clean (axWordEval word st)"
+        }
+      }
+    }
+  ],
+  "computed_tree_boundaries": [
+    {
+      "file": "KSource215Program.lean",
+      "trees": {
+        "t215": "ptree p215"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    },
+    {
+      "file": "KSource215Data.lean",
+      "trees": {
+        "tD": "ptree pathDagPerm"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    },
+    {
+      "file": "KSource217.lean",
+      "trees": {
+        "t217": "ptree p217",
+        "tD": "ptree pathDagDom"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    },
+    {
+      "file": "KSource218.lean",
+      "trees": {
+        "t218": "ptree p218",
+        "tD": "ptree pathDag219"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    },
+    {
+      "file": "KSource219.lean",
+      "trees": {
+        "t219": "ptree p219",
+        "tD": "ptree pathDag219"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    },
+    {
+      "file": "KSource221.lean",
+      "trees": {
+        "t221": "ptree p221",
+        "tD": "ptree pathDag222"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    },
+    {
+      "file": "KSource225.lean",
+      "trees": {
+        "t225": "ptree p225",
+        "t230": "ptree p230"
+      },
+      "all_noncomment_remaining_bytes_equal_after_whitespace_normalization": true
+    }
+  ],
+  "macro_fork_relations": [
+    {
+      "source": "L2Lib254.lean",
+      "target": "L2Lib222.lean",
+      "literal_substitution_relation_exact": true
+    },
+    {
+      "source": "L2Macros254.lean",
+      "target": "L2Macros222.lean",
+      "literal_substitution_relation_exact": true
+    },
+    {
+      "source": "L2Control254.lean",
+      "target": "L2Control222.lean",
+      "literal_substitution_relation_exact": true
+    }
+  ],
+  "ax_template_relations": [
+    {
+      "file": "L2AxiomsDom.lean",
+      "atom_projection_identical": true,
+      "atom_count": 156,
+      "final_old_successor": 457,
+      "producer_literal_template_exact_given_same_word": true
+    },
+    {
+      "file": "L2AxiomsPerm.lean",
+      "atom_projection_identical": true,
+      "atom_count": 156,
+      "final_old_successor": 457,
+      "producer_literal_template_exact_given_same_word": true
+    }
+  ],
+  "computed_tree_producer_expressions": [
+    {
+      "file": "generate_source215_lean.py",
+      "source_tree": "ptree p215",
+      "target_tree": "ptree pathDagPerm",
+      "literal_output_expressions_present": true
+    },
+    {
+      "file": "generate_source217_lean.py",
+      "source_tree": "ptree p217",
+      "target_tree": "ptree pathDagDom",
+      "literal_output_expressions_present": true
+    },
+    {
+      "file": "generate_source218_lean.py",
+      "source_tree": "ptree p218",
+      "target_tree": "ptree pathDag219",
+      "literal_output_expressions_present": true
+    },
+    {
+      "file": "generate_source219_lean.py",
+      "source_tree": "ptree p219",
+      "target_tree": "ptree pathDag219",
+      "literal_output_expressions_present": true
+    },
+    {
+      "file": "generate_source221_lean.py",
+      "source_tree": "ptree p221",
+      "target_tree": "ptree pathDag222",
+      "literal_output_expressions_present": true
+    },
+    {
+      "file": "generate_source225_lean.py",
+      "source_tree": "ptree p225",
+      "target_tree": "ptree p230",
+      "literal_output_expressions_present": true
+    }
+  ],
+  "changed_trust_tokens": [],
+  "compiler_invoked": false,
+  "reviewed_python_imported_or_executed": false
+}

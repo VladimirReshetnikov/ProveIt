@@ -50,8 +50,7 @@ theorem quotient_collection (mem : V → V → Prop) (witness : V)
         (KQ1Model.mk mem witness h x) (KQ1Model.mk mem witness h y) ↔
       KQ1Model.RelSat mem (scons x (scons y rawEnv)) phi := by
     have hs := KQ1Model.sat_quotient mem witness h phi (scons x (scons y rawEnv))
-    rw [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
-    exact hs
+    rwa [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
   intro a
   induction a using Quotient.ind with
   | _ a =>

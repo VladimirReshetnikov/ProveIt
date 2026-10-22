@@ -1,0 +1,128 @@
+{
+  "status": "PASS_INDEPENDENT_MATHEMATICAL_REVIEW_OF_SINGLE_PROFILE_EXCEPTION",
+  "base": "d3ff74a6fadba99e05576fe844f1f5ace9eab648",
+  "upstream_computed_tree_commit": "775267c38acd60f24d24c9512de54e4bc52f2d0d",
+  "module": "BusyBeaver.ZFC.DecoderSourceBinding",
+  "changed_report": {
+    "name": "SetTheory.BusyBeaver.ZFC.DecoderSourceBinding.source_tree_eq",
+    "old": [],
+    "selected": [
+      "propext"
+    ]
+  },
+  "other_two_reports": {
+    "profiles": "Exact STD3 retained",
+    "compiler_exit": 0,
+    "warnings": 0
+  },
+  "complete_body_checks": [
+    {
+      "item": "def toTree (",
+      "same_complete_body": true,
+      "sha256": "339493e226469ddd0d1af7b33a8ef9cffbdd3191b5b191f49bf02a7080428621"
+    },
+    {
+      "item": "def ptree (",
+      "same_complete_body": true,
+      "sha256": "983f90ce866ccee1e6859956f4c68de0306b1c4d563bea5a5c2bc9ea9a77978e"
+    },
+    {
+      "item": "p215Nodes complete declaration",
+      "same_complete_body": true,
+      "sha256": "f5b8edb1f878e598db4adffed1edb386790138353d29f4f22d73165af1148d09"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean",
+      "before_sha256": "de8e3419a500f1c9e06edc4f04d8251cff55c022365f7ce330b4f95c8035d228",
+      "selected_sha256": "c18b757a0b981a6e78c7a1fbe449fe6d53f38039f7d99cdf0021b2a151166f81",
+      "same_whole_file": false
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean",
+      "before_sha256": "b8fd9b854ea00e68999491990c432effc08c6636c2262567a0a4b01262d3bee8",
+      "selected_sha256": "7ab40d3faf9ddb976cdac2f77727e9e43b99b13a81fb45a340ad99abdfcd8310",
+      "same_whole_file": false
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderSourceBinding.lean",
+      "before_sha256": "6fa157ef9030371af52c9d101f175c624ed8e5e2edc05e6026b6644f0af15beb",
+      "selected_sha256": "6fa157ef9030371af52c9d101f175c624ed8e5e2edc05e6026b6644f0af15beb",
+      "same_whole_file": true
+    }
+  ],
+  "finding": [
+    "The entire DecoderSourceBinding source, including source_tree_eq statement and by-rfl proof, is unchanged from the accepted parent.",
+    "toTree and ptree complete source definitions are unchanged from parent. p215Nodes complete literal declaration is unchanged.",
+    "The computed-tree change replaces t215 expanded literal with ptree p215. The same equality now mentions a computed constant whose existing transitive dependencies include propext.",
+    "Root diagnostic separately reports toTree, ptree, t215 and source_tree_eq with exactly propext, while p215Nodes and independent sourceTree have no axioms. The elaborated toTree body uses Nat.brecOn.",
+    "This is a real change in the transitive printed axiom profile and must be disclosed. It is compatible with standard permitted Lean propext and does not create a custom axiom, admission, additional theorem premise or machine change.",
+    "The compiler succeeds with zero warnings. Original policyFAIL is an exact-profile gate rejection, not a failed proof elaboration. Preserve it and revise only this one expected report under a newly frozen plan.",
+    "The evidence does not separately print Nat.brecOn axioms or its internal helper. Wording should attribute the dependency to the existing elaborated toTree recursion, without claiming finer localization than the diagnostic proves.",
+    "Final endpoint/audit profiles and every other legacy profile remain pending for the final actual result. This review does not waive their exact-match requirements."
+  ],
+  "required_policy": "Only source_tree_eq []\u2192[propext] is reviewed as an exception. No allow-all-STD3 or general subset/superset tolerance.",
+  "actual_acceptance": "Pending final resumed build and independent actual result review. This is not overall PASS.",
+  "diagnostic_binding": {
+    "source_and_log_hashes_verified": true,
+    "exit_code": 0,
+    "object_dependencies": "Root diagnostic LEAN_PATH points to the existing build-run1 objects; this peer verifies DecoderSourceBinding object exact hash but does not repeat a transitive compiler audit."
+  },
+  "pins": [
+    {
+      "source": "/tmp/k215-phase17-profile-diagnostic/ProfileDiagnostic.lean",
+      "path": "diagnostic/ProfileDiagnostic.lean",
+      "sha256": "687568bc289dbaaacdb582279382e2f0292a9b66d3feeb910223e922a29c9afa",
+      "bytes": 313
+    },
+    {
+      "source": "/tmp/k215-phase17-profile-diagnostic/compiler.log",
+      "path": "diagnostic/compiler.log",
+      "sha256": "ed2590e5b8181129426739fa4493ed2bcdf37419afb3788f60846418efecbe12",
+      "bytes": 671
+    },
+    {
+      "source": "/tmp/k215-phase17-profile-diagnostic/record.json",
+      "path": "diagnostic/record.json",
+      "sha256": "12446a786d66039eabbd4ec2eca110a1bef9474656d5a6e1fa3ce14f3905093a",
+      "bytes": 728
+    },
+    {
+      "source": "/tmp/k215-phase17-profile-diagnostic/run.py",
+      "path": "diagnostic/run.py",
+      "sha256": "c8381250598ae7422d25b2b19e93489bf4cf39b698c4819d5d80dacdff4f0c73",
+      "bytes": 1180
+    },
+    {
+      "source": "/tmp/k215-phase17-check/build-run1/attempts/137-BusyBeaver.ZFC.DecoderSourceBinding/DecoderSourceBinding.lean",
+      "path": "original-attempt137/DecoderSourceBinding.lean",
+      "sha256": "6fa157ef9030371af52c9d101f175c624ed8e5e2edc05e6026b6644f0af15beb",
+      "bytes": 4456
+    },
+    {
+      "source": "/tmp/k215-phase17-check/build-run1/attempts/137-BusyBeaver.ZFC.DecoderSourceBinding/compiler.log",
+      "path": "original-attempt137/compiler.log",
+      "sha256": "15d74212475e42d3091edddd7d05aa97a73ef3a3a1edcb60553b63318d0028c3",
+      "bytes": 368
+    },
+    {
+      "source": "/tmp/k215-phase17-check/build-run1/attempts/137-BusyBeaver.ZFC.DecoderSourceBinding/record.json",
+      "path": "original-attempt137/record.json",
+      "sha256": "23d85d5f9b21e87ab0b17b9a741ae00b0b2266df6513967f6b39429f112c4700",
+      "bytes": 2306
+    },
+    {
+      "source": "/tmp/k215-phase17-check/build-run1/attempts/137-BusyBeaver.ZFC.DecoderSourceBinding/assumption-profile-discrepancy.json",
+      "path": "original-attempt137/assumption-profile-discrepancy.json",
+      "sha256": "35b77fdeaae7b54252f36d7c665b3f80e4057a1825652b0a3e34636ea6a4fc8a",
+      "bytes": 1142
+    }
+  ],
+  "actions": {
+    "compilers_run": 0,
+    "source_edits": 0,
+    "supplied_code_run": 0,
+    "canonical_writes": 0
+  }
+}

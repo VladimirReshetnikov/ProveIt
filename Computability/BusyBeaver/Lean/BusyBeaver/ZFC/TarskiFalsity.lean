@@ -117,13 +117,8 @@ variable {V : Type u}
 theorem sat_exF (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x) (e : Nat → V) (i : Nat) (a : NF) :
     Sat mem e (NF.exF (rel 0 0) i a) ↔ ∃ d, Sat mem (update e i d) a := by
   simp only [NF.exF, Sat]
-  constructor
-  · intro h
-    apply Classical.byContradiction
-    intro hn
-    exact hirr _ (h (fun d hd => absurd ⟨d, hd⟩ hn))
-  · rintro ⟨d, hd⟩ h
-    exact absurd (h d hd) (hirr _)
+  exact ⟨fun h => Classical.byContradiction fun hn => hirr _ (h fun d hd => absurd ⟨d, hd⟩ hn),
+    fun ⟨d, hd⟩ h => absurd (h d hd) (hirr _)⟩
 
 theorem alias_sound {Ax : NF → Prop} {mem : V → V → Prop} (hirr : ∀ x, ¬ mem x x)
     (hAx : ∀ a, Ax a → ∀ e : Nat → V, Sat mem e a) :
@@ -134,25 +129,17 @@ theorem alias_sound {Ax : NF → Prop} {mem : V → V → Prop} (hirr : ∀ x, �
   | mp _ _ ih1 ih2 => exact fun e => ih1 e (ih2 e)
   | gen i _ ih => exact fun e d => ih _
   | rho8 c u a b =>
-      intro e
-      simp only [luk, Sat]
-      intro h1 h2 _
-      exact Classical.byContradiction fun hnc => hnc (h2 (h1 fun hc => absurd hc hnc))
-  | rho2 i b c =>
-      intro e h1 h2 d
-      exact h1 d (h2 d)
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho8 c u a b)
+  | rho2 i b c => exact fun e h1 h2 d => h1 d (h2 d)
   | rho4 i j c =>
-      intro e
-      exact (soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho4 i j c)) e
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho4 i j c)
   | rho6 i b =>
       intro e h
-      rw [sat_exF mem hirr] at h
-      obtain ⟨d, hd⟩ := h
+      obtain ⟨d, hd⟩ := (sat_exF mem hirr e i _).mp h
       have := hd (e i)
       have hh : update (update e i d) i (e i) = e := by
         funext n; by_cases hn : n = i <;> simp [update, hn]
-      rw [hh] at this
-      exact this
+      rwa [hh] at this
   | rho1 i j =>
       intro e
       rw [sat_exF mem hirr]
@@ -161,20 +148,15 @@ theorem alias_sound {Ax : NF → Prop} {mem : V → V → Prop} (hirr : ∀ x, �
       · subst hij; simp [Sat, update]
       · simp [Sat, update, hij]
   | rho7 a b c =>
-      intro e
-      exact (soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho7 a b c)) e
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho7 a b c)
   | rho5 a b c =>
-      intro e
-      exact (soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho5 a b c)) e
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho5 a b c)
   | rho3 a b c =>
-      intro e
-      exact (soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho3 a b c)) e
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.rho3 a b c)
   | vacRel a b c h1 h2 =>
-      intro e
-      exact (soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.vacRel a b c h1 h2)) e
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.vacRel a b c h1 h2)
   | vacEq a b c h1 h2 =>
-      intro e
-      exact (soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.vacEq a b c h1 h2)) e
+      exact soundness (Ax := fun _ => False) (mem := mem) (fun _ h => h.elim) (.vacEq a b c h1 h2)
 
 /-! ## Completeness with the relative falsity -/
 
@@ -199,16 +181,14 @@ theorem alias_complete {Ax : NF → Prop} (hbf : ∀ a, Ax a → BotFree a) {f :
   rw [tau_botFree _ f hf] at hG
   apply ThmG.elim _ hG
   rintro g ⟨a, ha, rfl⟩
-  cases ha with
-  | inl ha => rw [tau_botFree _ a (hbf a ha)]; exact .ax ha
-  | inr he =>
-      subst he
-      -- τ(∀0 ¬ 0∈0) = ∀0 (F → F), a generalized identity.
-      have k := Lukasiewicz.k (implicationalG (rel 0 0) Ax)
-      have s := Lukasiewicz.s (implicationalG (rel 0 0) Ax)
-      have id : ThmG (rel 0 0) Ax (imp (rel 0 0) (rel 0 0)) :=
-        .mp (.mp (s (rel 0 0) (imp (rel 0 0) (rel 0 0)) (rel 0 0))
-          (k (rel 0 0) (imp (rel 0 0) (rel 0 0)))) (k (rel 0 0) (rel 0 0))
-      exact .gen 0 id
+  rcases ha with ha | rfl
+  · rw [tau_botFree _ a (hbf a ha)]; exact .ax ha
+  · -- τ(∀0 ¬ 0∈0) = ∀0 (F → F), a generalized identity.
+    have k := Lukasiewicz.k (implicationalG (rel 0 0) Ax)
+    have s := Lukasiewicz.s (implicationalG (rel 0 0) Ax)
+    have id : ThmG (rel 0 0) Ax (imp (rel 0 0) (rel 0 0)) :=
+      .mp (.mp (s (rel 0 0) (imp (rel 0 0) (rel 0 0)) (rel 0 0))
+        (k (rel 0 0) (imp (rel 0 0) (rel 0 0)))) (k (rel 0 0) (rel 0 0))
+    exact .gen 0 id
 
 end SetTheory.BusyBeaver.ZFC.Tarski

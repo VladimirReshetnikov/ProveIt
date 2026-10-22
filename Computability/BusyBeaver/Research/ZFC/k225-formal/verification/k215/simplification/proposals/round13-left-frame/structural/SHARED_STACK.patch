@@ -1,0 +1,278 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumStack.lean
+@@ -0,0 +1,70 @@
++import BusyBeaver.ZFC.KCode222
++
++/-! Stack semantics common to the dominated and command-permuted enumerators.
++No command decoder, scheduler, state type or new semantic parameter is introduced. -/
++
++namespace SetTheory.BusyBeaver.ZFC.EnumStack
++
++open SetTheory.BusyBeaver.ZFC.Code254 SetTheory.BusyBeaver.ZFC.KCode222
++
++attribute [local irreducible] P
++
++abbrev unP (z : Nat) : Nat × Nat := Cantor.ofNat z
++
++theorem unP_P' (x y : Nat) : unP (P x y) = (x, y) := unP_P x y
++
++/-- The stack after AX: `tw` first, then GEN of the cache at `u`, then rho8 … rho1. -/
++def axStack (a h b c u t w : Nat) : Nat :=
++  P (rho1 a b) (P (rho2 a b c) (P (rho3 a b c) (P (rho4 a b c) (P (rho5 a b c)
++    (P (rho6 a c) (P (growG a b c) (P (rho8 a b c u) (P (wal u h) (P t w)))))))))
++
++def gate (a b c : Nat) : Nat := if c = a ∨ c = b then 0 else bundle222 a b c
++
++/-- The stream after dropping `k` entries. -/
++def tailN : Nat → Nat → Nat
++  | 0, z => z
++  | k + 1, z => tailN k (unP z).2
++
++/-- Every entry of a stream is derivable. -/
++def Good (z : Nat) : Prop := ∀ k, C222 (unP (tailN k z)).1
++
++theorem tailN_zero : ∀ k, tailN k 0 = 0
++  | 0 => rfl
++  | k + 1 => by
++      have h0 : (unP 0).2 = 0 := rfl
++      simp only [tailN, h0, tailN_zero k]
++
++theorem good_zero : Good 0 := fun k => by rw [tailN_zero k]; exact C222.truth
++
++theorem good_cons {x z : Nat} (hx : C222 x) (hz : Good z) : Good (P x z) := by
++  intro k
++  cases k with
++  | zero => simpa [tailN, unP_P'] using hx
++  | succ k => simpa [tailN, unP_P'] using hz k
++
++theorem gate_good (a b c : Nat) : C222 (gate a b c) := by
++  unfold gate
++  split
++  · exact C222.truth
++  · rename_i h
++    exact C222.bundle a b c (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
++
++theorem axStack_good (a h b c u t w : Nat) (hh : C222 h) (ht : C222 t) (hw : Good w) :
++    Good (axStack a h b c u t w) :=
++  good_cons (C222.r1 a b) <| good_cons (C222.r2 a b c) <| good_cons (C222.r3 a b c) <|
++    good_cons (C222.r4 a b c) <| good_cons (C222.r5 a b c) <| good_cons (C222.r6 a c) <|
++    good_cons (C222.rG a b c) <| good_cons (C222.r8 a b c u) <| good_cons (C222.gen u hh) <|
++    good_cons ht hw
++
++theorem wim_ne_one (a b : Nat) : wim a b ≠ 1 := by simp only [wim]; omega
++
++theorem wal_ne_one (a b : Nat) : wal a b ≠ 1 := by simp only [wal]; omega
++
++theorem gate_ne_one (a b c : Nat) : gate a b c ≠ 1 := by
++  unfold gate; split
++  · omega
++  · exact wim_ne_one _ _
++
++theorem gate_self (a b : Nat) : gate a b a = 0 := by simp [gate]
++
++end SetTheory.BusyBeaver.ZFC.EnumStack
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumDom.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumDom.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.KCodeDom
++import BusyBeaver.ZFC.EnumStack
+ 
+ /-!
+ The abstract proof enumerator of the 217-state machine (Source 149's dominated AX), and L1.
+@@ -31,9 +32,8 @@
+    the pairing must never be evaluated, only manipulated through its lemmas. -/
+ attribute [local irreducible] P
+ 
+-abbrev unP (z : Nat) : Nat × Nat := Cantor.ofNat z
+-
+-theorem unP_P' (x y : Nat) : unP (P x y) = (x, y) := unP_P x y
++export EnumStack (unP unP_P' axStack gate tailN Good tailN_zero good_zero good_cons
++  gate_good axStack_good wim_ne_one wal_ne_one gate_ne_one gate_self)
+ 
+ structure St where
+   pl : Nat
+@@ -44,13 +44,6 @@
+   h : Nat
+ 
+ def s0 : St := ⟨0, 0, 0, 0, 0, 0⟩
+-
+-/-- The stack after AX: `tw` first, then GEN of the cache at `u`, then rho8 … rho1. -/
+-def axStack (a h b c u t w : Nat) : Nat :=
+-  P (rho1 a b) (P (rho2 a b c) (P (rho3 a b c) (P (rho4 a b c) (P (rho5 a b c)
+-    (P (rho6 a c) (P (growG a b c) (P (rho8 a b c u) (P (wal u h) (P t w)))))))))
+-
+-def gate (a b c : Nat) : Nat := if c = a ∨ c = b then 0 else bundle222 a b c
+ 
+ /-- The register-level effect of one command, without the proof-list pointer. -/
+ inductive Cmd where
+@@ -123,50 +116,11 @@
+ 
+ /-! ## Soundness -/
+ 
+-/-- The stream after dropping `k` entries. -/
+-def tailN : Nat → Nat → Nat
+-  | 0, z => z
+-  | k + 1, z => tailN k (unP z).2
+-
+-/-- Every entry of a stream is derivable. -/
+-def Good (z : Nat) : Prop := ∀ k, C222 (unP (tailN k z)).1
+-
+-theorem tailN_zero : ∀ k, tailN k 0 = 0
+-  | 0 => rfl
+-  | k + 1 => by
+-      have h0 : (unP 0).2 = 0 := rfl
+-      simp only [tailN, h0, tailN_zero k]
+-
+-theorem good_zero : Good 0 := by
+-  intro k
+-  rw [tailN_zero k]; exact C222.truth
+-
+-theorem good_cons {x z : Nat} (hx : C222 x) (hz : Good z) : Good (P x z) := by
+-  intro k
+-  cases k with
+-  | zero => simpa [tailN, unP_P'] using hx
+-  | succ k => simpa [tailN, unP_P'] using hz k
+-
+ theorem good_head {z : Nat} (hz : Good z) : C222 (unP z).1 := hz 0
+ 
+ theorem good_tail {z : Nat} (hz : Good z) : Good (unP z).2 := fun k => hz (k + 1)
+ 
+ def Inv (s : St) : Prop := C222 s.tw ∧ C222 s.h ∧ Good s.ws
+-
+-theorem gate_good (a b c : Nat) : C222 (gate a b c) := by
+-  unfold gate
+-  split
+-  · exact C222.truth
+-  · rename_i h
+-    exact C222.bundle a b c (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+-
+-theorem axStack_good (a h b c u t w : Nat) (hh : C222 h) (ht : C222 t) (hw : Good w) :
+-    Good (axStack a h b c u t w) := by
+-  unfold axStack
+-  exact good_cons (C222.r1 a b) <| good_cons (C222.r2 a b c) <| good_cons (C222.r3 a b c) <|
+-    good_cons (C222.r4 a b c) <| good_cons (C222.r5 a b c) <| good_cons (C222.r6 a c) <|
+-    good_cons (C222.rG a b c) <| good_cons (C222.r8 a b c u) <| good_cons (C222.gen u hh) <|
+-    good_cons ht hw
+ 
+ theorem step_inv {s s' : St} (hs : Inv s) (h : enumStep s = some s') : Inv s' := by
+   obtain ⟨ht, hh, hw⟩ := hs
+@@ -398,14 +352,6 @@
+       exact cexec_nips t S d L x last (hL x (List.mem_cons_self ..))
+         (fun y hy => hL y (List.mem_cons_of_mem _ hy))
+ 
+-theorem wim_ne_one (a b : Nat) : wim a b ≠ 1 := by simp only [wim]; omega
+-theorem wal_ne_one (a b : Nat) : wal a b ≠ 1 := by simp only [wal]; omega
+-
+-theorem gate_ne_one (a b c : Nat) : gate a b c ≠ 1 := by
+-  unfold gate; split
+-  · omega
+-  · exact wim_ne_one _ _
+-
+ /-- The first nine entries pushed by AX, top first; the tenth is the old `tw`. -/
+ def axList (a h b c u : Nat) : List Nat :=
+   [rho1 a b, rho2 a b c, rho3 a b c, rho4 a b c, rho5 a b c, rho6 a c, growG a b c,
+@@ -433,8 +379,6 @@
+ theorem cstep_ax (c x y u t S d h : Nat) :
+     cstep (.ax c x y u) ⟨t, S, d, h⟩ =
+       some ⟨gate (d + x + u) (h + y) c, axStack (d + x + u) h (h + y) c (d + x) t S, 0, 0⟩ := rfl
+-
+-theorem gate_self (a b : Nat) : gate a b a = 0 := by simp [gate]
+ 
+ theorem cexec_discard (T S : Nat) : cexec discard ⟨T, S, 0, 0⟩ = some ⟨0, S, 0, 0⟩ := by
+   have hw : wim T (0 + 1) ≠ 0 := by
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.KCodeDom
++import BusyBeaver.ZFC.EnumStack
+ 
+ /-!
+ The abstract proof enumerator of the 215-state machine (Source 159's command-permuted
+@@ -34,9 +35,8 @@
+ 
+ attribute [local irreducible] P
+ 
+-abbrev unP (z : Nat) : Nat × Nat := Cantor.ofNat z
+-
+-theorem unP_P' (x y : Nat) : unP (P x y) = (x, y) := unP_P x y
++export EnumStack (unP unP_P' axStack gate tailN Good tailN_zero good_zero good_cons
++  gate_good axStack_good wim_ne_one wal_ne_one gate_ne_one gate_self)
+ 
+ structure St where
+   pl : Nat
+@@ -45,13 +45,6 @@
+   ws : Nat
+   d : Nat
+   h : Nat
+-
+-/-- The stack after AX: `tw` first, then GEN of the cache at `u`, then rho8 … rho1. -/
+-def axStack (a h b c u t w : Nat) : Nat :=
+-  P (rho1 a b) (P (rho2 a b c) (P (rho3 a b c) (P (rho4 a b c) (P (rho5 a b c)
+-    (P (rho6 a c) (P (growG a b c) (P (rho8 a b c u) (P (wal u h) (P t w)))))))))
+-
+-def gate (a b c : Nat) : Nat := if c = a ∨ c = b then 0 else bundle222 a b c
+ 
+ /-- The register-level effect of one command, without the proof-list pointer. -/
+ inductive Cmd where
+@@ -130,44 +123,8 @@
+ 
+ /-! ## Soundness -/
+ 
+-/-- The stream after dropping `k` entries. -/
+-def tailN : Nat → Nat → Nat
+-  | 0, z => z
+-  | k + 1, z => tailN k (unP z).2
+-
+-/-- Every entry of a stream is derivable. -/
+-def Good (z : Nat) : Prop := ∀ k, C222 (unP (tailN k z)).1
+-
+-theorem tailN_zero : ∀ k, tailN k 0 = 0
+-  | 0 => rfl
+-  | k + 1 => by
+-      have h0 : (unP 0).2 = 0 := rfl
+-      simp only [tailN, h0, tailN_zero k]
+-
+-theorem good_zero : Good 0 := fun k => by rw [tailN_zero k]; exact C222.truth
+-
+-theorem good_cons {x z : Nat} (hx : C222 x) (hz : Good z) : Good (P x z) := by
+-  intro k
+-  cases k with
+-  | zero => simpa [tailN, unP_P'] using hx
+-  | succ k => simpa [tailN, unP_P'] using hz k
+-
+ /-- The current formula, the cache and every stack entry are derivable. -/
+ def Inv (w : W) : Prop := C222 w.tw ∧ C222 w.h ∧ Good w.ws
+-
+-theorem gate_good (a b c : Nat) : C222 (gate a b c) := by
+-  unfold gate
+-  split
+-  · exact C222.truth
+-  · rename_i h
+-    exact C222.bundle a b c (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+-
+-theorem axStack_good (a h b c u t w : Nat) (hh : C222 h) (ht : C222 t) (hw : Good w) :
+-    Good (axStack a h b c u t w) :=
+-  good_cons (C222.r1 a b) <| good_cons (C222.r2 a b c) <| good_cons (C222.r3 a b c) <|
+-    good_cons (C222.r4 a b c) <| good_cons (C222.r5 a b c) <| good_cons (C222.r6 a c) <|
+-    good_cons (C222.rG a b c) <| good_cons (C222.r8 a b c u) <| good_cons (C222.gen u hh) <|
+-    good_cons ht hw
+ 
+ theorem cstep_inv : ∀ (c : Cmd) {w w' : W}, Inv w → cstep c w = some w' → Inv w'
+   | .nip, ⟨_, _, _, h⟩, _, ⟨ht, _, hw⟩, e => by
+@@ -367,16 +324,6 @@
+ theorem ex_mp_fail {x T S d h : Nat} {cs : List Cmd} (hw : wim T (d + x) ≠ h) :
+     cexec (.mp x :: cs) ⟨T, S, d, h⟩ = cexec cs ⟨0, S, d + x, 0⟩ := by
+   simp [cexec, cstep, hw]
+-
+-theorem wim_ne_one (a b : Nat) : wim a b ≠ 1 := by simp only [wim]; omega
+-theorem wal_ne_one (a b : Nat) : wal a b ≠ 1 := by simp only [wal]; omega
+-
+-theorem gate_ne_one (a b c : Nat) : gate a b c ≠ 1 := by
+-  unfold gate; split
+-  · omega
+-  · exact wim_ne_one _ _
+-
+-theorem gate_self (a b : Nat) : gate a b a = 0 := by simp [gate]
+ 
+ /-- Every pushed row is a `wim` or a `wal`, so none is the falsity code. These are stated once
+ with variables: the symbolic runs below must never ask the kernel to unfold a row at numerals,

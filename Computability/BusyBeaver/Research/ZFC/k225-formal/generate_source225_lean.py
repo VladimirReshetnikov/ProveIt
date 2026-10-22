@@ -48,25 +48,10 @@ def edge(e):
             "EContinue": f"(.cont {a})", "EHalt": ".halt"}[op]
 
 
-def leaf_lean(e):
-    op, a = e
-    return {"EInc": f"(.inc {a})", "EDecnz": f"(.decnz {a})", "EBreak": f"(.brk {a})",
-            "EContinue": f"(.cont {a})", "EHalt": ".halt"}[op]
-
-
 def program(name, nodes, root, doc):
     cases = "\n".join(f"  | {i} => ({edge(a)}, {edge(b)})" for i, (a, b) in enumerate(nodes))
     return (f"/-- {doc} -/\ndef {name}Nodes : Nat → Edge × Edge\n{cases}\n  | _ => (.halt, .halt)\n\n"
             f"def {name} : Program := ⟨{name}Nodes, {root}, {len(nodes)}⟩\n")
-
-
-def literal_tree(nodes, root):
-    def go(n):
-        a, b = nodes[n]
-        return f"(.node {child(a)} {child(b)})"
-    def child(e):
-        return go(e[1]) if e[0] == "node" else f"(.leaf {leaf_lean(e[1])})"
-    return go(root)
 
 
 def code(P):
@@ -167,8 +152,8 @@ def main():
     body = HEADER.format(n=len(entries), nz=nz, c=2 ** CHUNK_DEPTH)
     body += program("p225", n1, r1, f"The 225's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
     body += program("p230", n2, r2, f"K230's source as a {len(n2)}-node DAG (root {r2}).") + "\n"
-    body += "/-- The 225's decoder tree, written out. -/\ndef t225 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
-    body += "/-- K230's decoder tree, written out. -/\ndef t230 : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
+    body += "/-- The 225's decoder tree, computed from the program. -/\ndef t225 : Tree := ptree p225\n\n"
+    body += "/-- K230's decoder tree, computed from the program. -/\ndef t230 : Tree := ptree p230\n\n"
     body += "theorem t225_eq : ptree p225 = t225 := by rfl\n\ntheorem t230_eq : ptree p230 = t230 := by rfl\n\n"
     body += "/-! ## Forward certificate (225 → K230) -/\n\n" + cert_block("fwd", entries, "t225", "t230")
     body += "\n/-! ## Mirrored certificate (K230 → 225) -/\n\n" + cert_block("bwd", mirror, "t230", "t225")

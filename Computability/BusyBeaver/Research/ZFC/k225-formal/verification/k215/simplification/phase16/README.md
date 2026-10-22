@@ -1,5 +1,9 @@
 # Sixteenth K215 proof-simplification checkpoint
 
+The [phase17 successor](../phase17/README.md) passes its combined Lean check,
+including one reviewed `source_tree_eq` profile change from `[]` to `[propext]`.
+This page retains the exact accepted phase16 sources and historical evidence.
+
 Both incremental checks pass, and the exact checked quotient-unification successor
 is adopted. It proves the quotient construction once under `KQHyp.QHyp`.
 `QuotientModel.ofCPGIC` supplies that weak interface from an inhabited CP/GIC model;

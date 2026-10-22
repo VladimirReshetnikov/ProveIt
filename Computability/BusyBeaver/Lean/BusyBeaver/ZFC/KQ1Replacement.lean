@@ -97,8 +97,7 @@ theorem quotient_relOf (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     exact KQ1Separation.mk_liftEnv mem witness h env i
   have hs := KQ1Model.sat_quotient mem witness h phi
     (scons y (scons x (KQ1Separation.liftEnv mem witness h env)))
-  rw [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
-  exact hs
+  rwa [KQ1Model.mk_scons, KQ1Model.mk_scons, he] at hs
 
 /-- The full quotient satisfies the actual semantic `ZFAxioms.repl` interface. -/
 theorem quotient_replacement (mem : V → V → Prop) (witness : V) (h : QHyp mem)

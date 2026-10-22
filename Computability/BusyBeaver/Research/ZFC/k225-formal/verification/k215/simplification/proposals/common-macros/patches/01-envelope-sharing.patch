@@ -1,0 +1,151 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean
+@@ -30,6 +30,42 @@
+ 
+ variable (hs : FormSeed mem) (hirr : ∀ x, ¬ mem x x) {t : V} (ht : ∀ z, ¬ mem z t)
+ include hs hirr ht
++
++/-- An untagged envelope of any raw bound distinct from the empty marker. -/
++theorem raw_envelope (a : V) (hat : a ≠ t) :
++    ∃ E, E ≠ t ∧ ¬ mem t E ∧ ∀ z, mem t z → mem z a → mem z E := by
++  obtain ⟨E, hE⟩ := raw_aug hs hirr a (fMem 1 0) (scons t (fun _ => t))
++  refine ⟨E, fun e => ht a (e ▸ (hE a).mpr (Or.inl rfl)), fun h => ?_,
++    fun z hz hza => (hE z).mpr (Or.inr ⟨hza, hz⟩)⟩
++  rcases (hE t).mp h with h | ⟨-, h⟩
++  · exact hat h.symm
++  · exact hirr t h
++
++/-- Comprehension over `U` with a prescribed envelope `E`; the result's raw members are `E`, `t`
++and members of `U`. -/
++theorem dt_comp_env (U E : V) (hEt : E ≠ t) (htE : ¬ mem t E)
++    (hUE : ∀ z, mem t z → mem z U → mem z E) (θ : Form) (ρ : Nat → V) :
++    ∃ S, mem t S ∧ (∀ w, mem w S → w = E ∨ w = t ∨ mem w U) ∧
++      ∀ z, mem t z → (mem z S ↔ mem z U ∧ Sat mem (scons z ρ) θ) := by
++  have hθ : ∀ z, Sat mem (scons z (scons U ρ)) (rename (shiftAfter 0) θ) ↔ Sat mem (scons z ρ) θ :=
++    fun z => Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
++  obtain ⟨S, hS⟩ := raw_tagged hs hirr ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
++    (scons U ρ)
++  refine ⟨S, (hS t).mpr (Or.inr (Or.inl rfl)), fun w hw => ?_, fun z hz => ?_⟩
++  · rcases (hS w).mp hw with h | h | ⟨-, h, -⟩
++    · exact Or.inl h
++    · exact Or.inr (Or.inl h)
++    · exact Or.inr (Or.inr h)
++  · have hzE : z ≠ E := fun e => htE (e ▸ hz)
++    have hzt : z ≠ t := fun e => hirr t (e ▸ hz)
++    rw [hS z]
++    constructor
++    · rintro (h | h | ⟨-, hzU, hθz⟩)
++      · exact absurd h hzE
++      · exact absurd h hzt
++      · exact ⟨hzU, (hθ z).mp hθz⟩
++    · rintro ⟨hzU, hθz⟩
++      exact Or.inr (Or.inr ⟨hUE z hz hzU, hzU, (hθ z).mpr hθz⟩)
+ 
+ /-- **Comprehension in `D_t` over a raw bound.** -/
+ theorem dt_comp (U : V) (θ : Form) (ρ : Nat → V) :
+@@ -40,28 +76,9 @@
+     refine ⟨S, (hS U).mpr rfl, fun z hz => ⟨fun hzS => ?_, fun h => (ht z h.1).elim⟩⟩
+     have : z = U := (hS z).mp hzS
+     exact (hirr U (this ▸ hz)).elim
+-  · -- the envelope of `U`
+-    obtain ⟨E, hE⟩ := raw_aug hs hirr U (fMem 1 0) (scons t (fun _ => t))
+-    have hEt : E ≠ t := fun e => ht U (e ▸ (hE U).mpr (Or.inl rfl))
+-    have htE : ¬ mem t E := fun h => by
+-      rcases (hE t).mp h with h | ⟨-, h⟩
+-      · exact hU h.symm
+-      · exact hirr t h
+-    have hθ : ∀ z, Sat mem (scons z (scons U ρ)) (rename (shiftAfter 0) θ) ↔ Sat mem (scons z ρ) θ :=
+-      fun z => Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
+-    obtain ⟨S, hS⟩ := raw_tagged hs hirr ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
+-      (scons U ρ)
+-    refine ⟨S, (hS t).mpr (Or.inr (Or.inl rfl)), fun z hz => ?_⟩
+-    have hzE : z ≠ E := fun e => htE (e ▸ hz)
+-    have hzt : z ≠ t := fun e => hirr t (e ▸ hz)
+-    rw [hS z]
+-    constructor
+-    · rintro (h | h | ⟨-, hzU, hθz⟩)
+-      · exact absurd h hzE
+-      · exact absurd h hzt
+-      · exact ⟨hzU, (hθ z).mp hθz⟩
+-    · rintro ⟨hzU, hθz⟩
+-      exact Or.inr (Or.inr ⟨(hE z).mpr (Or.inr ⟨hzU, hz⟩), hzU, (hθ z).mpr hθz⟩)
++  · obtain ⟨E, hEt, htE, hUE⟩ := raw_envelope hs hirr ht U hU
++    obtain ⟨S, htS, -, hS⟩ := dt_comp_env hs hirr ht U E hEt htE hUE θ ρ
++    exact ⟨S, htS, hS⟩
+ 
+ /-- A tagged set exists. -/
+ theorem tag_inhabited : ∃ x, mem t x := by
+@@ -159,14 +176,9 @@
+     have e : topEnv t (scons y (scons x env)) = scons t (scons y.1 (scons x.1 vals)) :=
+       funext fun n => by rcases n with _ | _ | _ | n <;> rfl
+     rw [e]
+-  -- the envelope of `a` and the root pair
+-  obtain ⟨E, hE⟩ := raw_aug hs hirr a.1 (fMem 1 0) (scons t (fun _ => t))
+-  have hat : a.1 ≠ t := fun e => hirr t (by have h := a.2; rw [e] at h; exact h)
+-  have hEt : E ≠ t := fun e => ht a.1 (e ▸ (hE a.1).mpr (Or.inl rfl))
+-  have htE : ¬ mem t E := fun h => by
+-    rcases (hE t).mp h with h | ⟨-, h⟩
+-    · exact hat h.symm
+-    · exact hirr t h
++  -- One shared envelope contract also supplies the bound used by collection.
++  have hat : a.1 ≠ t := fun e => hirr t (by simpa only [e] using a.2)
++  obtain ⟨E, hEt, htE, hEa⟩ := raw_envelope hs hirr ht a.1 hat
+   obtain ⟨r0, hr0⟩ := raw_pair hs ht E t
+   have hr0t : r0 ≠ t := fun e => ht E (e ▸ (hr0 E).mpr (Or.inl rfl))
+   have hr0s : ∀ v, ¬ IsSing mem r0 v := fun v hv =>
+@@ -199,7 +211,7 @@
+     · exact (hirr t (by have h := y.2; rw [show y.1 = t from hu] at h; exact h)).elim
+     · exact ⟨⟨x', htx'⟩, (hR _ _).mpr ((hθ _ _ _).mp hrel)⟩
+   · obtain ⟨sx, hsx⟩ := raw_singleton hs x.1
+-    have hxE : mem x.1 E := (hE x.1).mpr (Or.inr ⟨hx, x.2⟩)
++    have hxE : mem x.1 E := hEa x.1 x.2 hx
+     obtain ⟨z, hz, hzC⟩ := hcl sx (fun w hw => ((hsx w).mp hw) ▸ hxE) y.1
+       (Or.inr (Or.inr ⟨x.1, x.2, (sat_singF _ 2 0).mpr hsx, y.2, (hθ _ _ _).mpr ((hR _ _).mp hxy)⟩))
+     rcases hz with ⟨hz, -⟩ | ⟨hz, -⟩ | ⟨x', -, hsx', htz, hrel⟩
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean
+@@ -100,42 +100,10 @@
+ 
+ /-! ### Power -/
+ 
+-/-- Comprehension over `U` with a prescribed envelope `E`; the result's raw members are `E`, `t`
+-and members of `U`. -/
+-theorem dt_comp_env (U E : V) (hEt : E ≠ t) (htE : ¬ mem t E)
+-    (hUE : ∀ z, mem t z → mem z U → mem z E) (θ : Form) (ρ : Nat → V) :
+-    ∃ S, mem t S ∧ (∀ w, mem w S → w = E ∨ w = t ∨ mem w U) ∧
+-      ∀ z, mem t z → (mem z S ↔ mem z U ∧ Sat mem (scons z ρ) θ) := by
+-  have hθ : ∀ z, Sat mem (scons z (scons U ρ)) (rename (shiftAfter 0) θ) ↔ Sat mem (scons z ρ) θ :=
+-    fun z => Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
+-  obtain ⟨S, hS⟩ := raw_tagged hs hirr ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
+-    (scons U ρ)
+-  refine ⟨S, (hS t).mpr (Or.inr (Or.inl rfl)), fun w hw => ?_, fun z hz => ?_⟩
+-  · rcases (hS w).mp hw with h | h | ⟨-, h, -⟩
+-    · exact Or.inl h
+-    · exact Or.inr (Or.inl h)
+-    · exact Or.inr (Or.inr h)
+-  · have hzE : z ≠ E := fun e => htE (e ▸ hz)
+-    have hzt : z ≠ t := fun e => hirr t (e ▸ hz)
+-    rw [hS z]
+-    constructor
+-    · rintro (h | h | ⟨-, hzU, hθz⟩)
+-      · exact absurd h hzE
+-      · exact absurd h hzt
+-      · exact ⟨hzU, (hθ z).mp hθz⟩
+-    · rintro ⟨hzU, hθz⟩
+-      exact Or.inr (Or.inr ⟨hUE z hz hzU, hzU, (hθ z).mpr hθz⟩)
+-
+ /-- An untagged envelope of a tagged set. -/
+ theorem envelope (a : V) (ha : mem t a) :
+-    ∃ E, E ≠ t ∧ ¬ mem t E ∧ ∀ z, mem t z → mem z a → mem z E := by
+-  obtain ⟨E, hE⟩ := raw_aug hs hirr a (fMem 1 0) (scons t (fun _ => t))
+-  have hat : a ≠ t := fun e => hirr t (e ▸ ha)
+-  refine ⟨E, fun e => ht a (e ▸ (hE a).mpr (Or.inl rfl)), fun h => ?_,
+-    fun z hz hza => (hE z).mpr (Or.inr ⟨hza, hz⟩)⟩
+-  rcases (hE t).mp h with h | ⟨-, h⟩
+-  · exact hat h.symm
+-  · exact hirr t h
++    ∃ E, E ≠ t ∧ ¬ mem t E ∧ ∀ z, mem t z → mem z a → mem z E :=
++  raw_envelope hs hirr ht a (fun e => hirr t (e ▸ ha))
+ 
+ theorem tag_power_member (a : Tag mem t) :
+     ∃ p, ∀ x, Member (tmem mem t) x p ↔ InterpretedSub (tmem mem t) x a := by

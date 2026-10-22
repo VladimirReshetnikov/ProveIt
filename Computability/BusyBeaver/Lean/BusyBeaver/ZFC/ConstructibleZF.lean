@@ -32,7 +32,7 @@ theorem inL_common (v : Nat → V) :
   | zero =>
       intro hv
       obtain ⟨γ, T, hγ, hT, hx⟩ := hv 0 (by omega)
-      exact ⟨γ, T, hγ, hT, fun k hk => by rw [show k = 0 by omega]; exact hx⟩
+      exact ⟨γ, T, hγ, hT, fun k hk => by rwa [show k = 0 by omega]⟩
   | succ m ih =>
       intro hv
       obtain ⟨γ1, T1, ho1, hT1, h1⟩ := ih fun k hk => hv k (by omega)
@@ -93,8 +93,7 @@ theorem inL_sep (φ : Form) (e : Nat → V) (he : ∀ n, InL H hP (e n)) {a : V}
   obtain ⟨β, hαβ, hC⟩ := closed_exists H hR hP (qbodies φ) hα0
   obtain ⟨Tβ, hTβ⟩ := isL_exists H hR hP hC.1
   have hsub := isL_mono H hR hP hC.1 hαβ hT0 hTβ
-  have haT : mem a Tβ := by
-    have := hsub _ (hvT0 m (by omega)); simpa [v] using this
+  have haT : mem a Tβ := by simpa [v] using hsub _ (hvT0 m (by omega))
   obtain ⟨E, hE, hEv⟩ := mk_env H haT (m + 1) v fun k hk => hsub _ (hvT0 k hk)
   obtain ⟨R, hR'⟩ := memRel_exists H hP Tβ
   let φ' : Form := .fAnd (.fMem 0 (m + 1)) φ
@@ -134,11 +133,7 @@ theorem csat_rename (P : V → Prop) :
   | .fMem _ _, _, _ => Iff.rfl
   | .fEq _ _, _, _ => Iff.rfl
   | .fBot, _, _ => Iff.rfl
-  | .fImp a b, r, e => by
-      simp only [rename, CSat, csat_rename P a r e, csat_rename P b r e]
-  | .fAnd a b, r, e => by
-      simp only [rename, CSat, csat_rename P a r e, csat_rename P b r e]
-  | .fOr a b, r, e => by
+  | .fImp a b, r, e | .fAnd a b, r, e | .fOr a b, r, e => by
       simp only [rename, CSat, csat_rename P a r e, csat_rename P b r e]
   | .fAll a, r, e => by
       simp only [rename, CSat]
@@ -151,6 +146,10 @@ theorem csat_rename (P : V → Prop) :
       rw [csat_rename P a]
       exact Iff.of_eq (congrArg (fun e' => CSat mem P e' a) (funext fun n => up_env r d e n))
 
+theorem vals_scons (P : V → Prop) (x : {x // P x}) (e : Nat → {x // P x}) :
+    (fun n => (scons x e n).1) = scons x.1 (fun n => (e n).1) :=
+  funext fun n => by cases n <;> rfl
+
 /-- Satisfaction in the substructure on a class is satisfaction relativized to it. -/
 theorem sat_sub (P : V → Prop) :
     ∀ (φ : Form) (e : Nat → {x // P x}),
@@ -158,35 +157,14 @@ theorem sat_sub (P : V → Prop) :
   | .fMem _ _, _ => Iff.rfl
   | .fEq _ _, e => ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩
   | .fBot, _ => Iff.rfl
-  | .fImp a b, e => by simp only [Sat, CSat, sat_sub P a e, sat_sub P b e]
-  | .fAnd a b, e => by simp only [Sat, CSat, sat_sub P a e, sat_sub P b e]
-  | .fOr a b, e => by simp only [Sat, CSat, sat_sub P a e, sat_sub P b e]
+  | .fImp a b, e | .fAnd a b, e | .fOr a b, e => by
+      simp only [Sat, CSat, sat_sub P a e, sat_sub P b e]
   | .fAll a, e => by
-      simp only [Sat, CSat]
-      constructor
-      · intro h d hd
-        have hv : (fun n => (scons (⟨d, hd⟩ : {x // P x}) e n).1) = scons d (fun n => (e n).1) :=
-          funext fun n => by cases n <;> rfl
-        have := (sat_sub P a (scons ⟨d, hd⟩ e)).1 (h ⟨d, hd⟩)
-        rw [hv] at this; exact this
-      · intro h d
-        have hv : (fun n => (scons d e n).1) = scons d.1 (fun n => (e n).1) :=
-          funext fun n => by cases n <;> rfl
-        refine (sat_sub P a (scons d e)).2 ?_
-        rw [hv]; exact h d.1 d.2
+      have key d := (sat_sub P a (scons d e)).trans (by rw [vals_scons P d e])
+      exact ⟨fun h d hd => (key ⟨d, hd⟩).1 (h ⟨d, hd⟩), fun h d => (key d).2 (h d.1 d.2)⟩
   | .fEx a, e => by
-      simp only [Sat, CSat]
-      constructor
-      · rintro ⟨d, hd⟩
-        have hv : (fun n => (scons d e n).1) = scons d.1 (fun n => (e n).1) :=
-          funext fun n => by cases n <;> rfl
-        have := (sat_sub P a (scons d e)).1 hd
-        rw [hv] at this; exact ⟨d.1, d.2, this⟩
-      · rintro ⟨d, hd, h⟩
-        have hv : (fun n => (scons (⟨d, hd⟩ : {x // P x}) e n).1) = scons d (fun n => (e n).1) :=
-          funext fun n => by cases n <;> rfl
-        refine ⟨⟨d, hd⟩, (sat_sub P a _).2 ?_⟩
-        rw [hv]; exact h
+      have key d := (sat_sub P a (scons d e)).trans (by rw [vals_scons P d e])
+      exact ⟨fun ⟨d, hd⟩ => ⟨d.1, d.2, (key d).1 hd⟩, fun ⟨d, hd, h⟩ => ⟨⟨d, hd⟩, (key _).2 h⟩⟩
 
 
 /-! ## Replacement and the model -/
@@ -208,10 +186,8 @@ theorem omega_trans : ∀ n, mem n (omegaV H) → ∀ y, mem y n → mem y (omeg
     rfl
   intro n hn
   refine (hspec n).1 (key ((hspec _).2 fun y hy => absurd hy (vempty_spec H y))
-    (fun m hm ih => (hspec _).2 fun y hy => ?_) n hn)
-  rcases (vsucc_spec H m y).1 hy with hy | rfl
-  · exact (hspec m).1 ih y hy
-  · exact hm
+    (fun m hm ih => (hspec _).2 fun y hy =>
+      ((vsucc_spec H m y).1 hy).elim ((hspec m).1 ih y) fun e => e ▸ hm) n hn)
 
 omit hR hP in
 theorem ord_omega : Ord mem (omegaV H) :=
@@ -257,10 +233,7 @@ theorem inL_repl (psi : Form) (e : Nat → V) (he : ∀ n, InL H hP (e n))
       simp (disch := omega) only [upd_same, upd_other]
       refine and_congr_right fun _ => and_congr_right fun _ => ?_
       rw [nsat_relT (InL H hP) (inLF H hP) (nsat_inLF H hP) psi _ _ _ fun i => by
-        rcases i with _ | _ | k
-        · simp only [rslots]; omega
-        · simp only [rslots]; omega
-        · simp only [rslots]; split <;> omega]
+        rcases i with _ | _ | k <;> simp only [rslots] <;> first | omega | (split <;> omega)]
       refine csat_ext_free _ psi _ _ fun n hn => ?_
       have hlt := free_lt_bound psi n hn
       rcases n with _ | _ | k
@@ -273,13 +246,11 @@ theorem inL_repl (psi : Form) (e : Nat → V) (he : ∀ n, InL H hP (e n))
         rw [upd_other _ _ (by omega), upd_other _ _ (by omega)]
         simp)
     (fun x y1 y2 h1 h2 => hfun x y1 y2 h1.1 h1.2.1 h2.2.1 h1.2.2 h2.2.2) a
-  obtain ⟨β, T, hβ, hT, hImgT⟩ := stage_bound H hR hP (A := Img) fun y hy => by
-    obtain ⟨x, -, h⟩ := (hImg y).1 hy; exact h.2.1
+  obtain ⟨β, T, hβ, hT, hImgT⟩ := stage_bound H hR hP (A := Img) fun y hy =>
+    ((hImg y).1 hy).elim fun _ h => h.2.2.1
   obtain ⟨s, hs, hsspec⟩ := inL_sep H hR hP (.fEx (.fAnd (.fMem 0 2) (rename swapRen psi)))
-    (scons a e) (fun n => by
-      cases n with
-      | zero => exact ha
-      | succ n => exact he n) (inL_stage H hR hP hβ hT)
+    (scons a e) (fun n => by cases n with | zero => exact ha | succ n => exact he n)
+    (inL_stage H hR hP hβ hT)
   refine ⟨s, hs, fun y hy => ?_⟩
   rw [hsspec y]
   have hren : ∀ x, CSat mem (InL H hP) (scons x (scons y (scons a e))) (rename swapRen psi) ↔
@@ -300,10 +271,6 @@ end Model
 def memL (H : ZFAxioms mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a) :
     {x // InL H hP x} → {x // InL H hP x} → Prop := fun a b => mem a.1 b.1
 
-theorem vals_scons (P : V → Prop) (x : {x // P x}) (e : Nat → {x // P x}) :
-    (fun n => (scons x e n).1) = scons x.1 (fun n => (e n).1) :=
-  funext fun n => by cases n <;> rfl
-
 section ModelAxioms
 
 variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
@@ -319,10 +286,8 @@ theorem L_zfAxioms : ZFAxioms (memL H hP) where
     refine ⟨⟨s, hs⟩, fun x => ?_⟩
     show mem x.1 s ↔ mem x.1 a.1 ∧ _
     rw [hspec x.1]
-    refine and_congr_right fun _ => ?_
-    have h := sat_sub (mem := mem) (InL H hP) phi (scons x e)
-    rw [vals_scons (InL H hP) x e] at h
-    exact h.symm
+    exact and_congr_right fun _ => ((sat_sub (mem := mem) (InL H hP) phi (scons x e)).trans
+      (by rw [vals_scons (InL H hP) x e])).symm
   pair a b := by
     refine ⟨⟨_, inL_pair H hR hP a.2 b.2⟩, fun x => ?_⟩
     show mem x.1 (vpair H a.1 b.1) ↔ _
@@ -331,9 +296,8 @@ theorem L_zfAxioms : ZFAxioms (memL H hP) where
     refine ⟨⟨_, inL_union H hR hP u.2⟩, fun x => ?_⟩
     show mem x.1 (vunion H u.1) ↔ _
     rw [vunion_spec H u.1 x.1]
-    constructor
-    · rintro ⟨v, hxv, hvu⟩; exact ⟨⟨v, inL_trans H hR hP u.2 hvu⟩, hxv, hvu⟩
-    · rintro ⟨v, hxv, hvu⟩; exact ⟨v.1, hxv, hvu⟩
+    exact ⟨fun ⟨v, hxv, hvu⟩ => ⟨⟨v, inL_trans H hR hP u.2 hvu⟩, hxv, hvu⟩,
+      fun ⟨v, hxv, hvu⟩ => ⟨v.1, hxv, hvu⟩⟩
   inf := by
     have hω := inL_ord H hR hP (ord_omega H)
     have he0 := inL_ord H hR hP (ord_of_mem (ord_omega H) (vempty_in_omega H))
@@ -356,11 +320,8 @@ theorem L_zfAxioms : ZFAxioms (memL H hP) where
     refine ⟨⟨r, hr⟩, fun y => ?_⟩
     show mem y.1 r ↔ _
     rw [hspec y.1 y.2]
-    constructor
-    · rintro ⟨x, hxa, hx⟩
-      exact ⟨⟨x, inL_trans H hR hP a.2 hxa⟩, hxa, (hrel _ _).2 hx⟩
-    · rintro ⟨x, hxa, hx⟩
-      exact ⟨x.1, hxa, (hrel _ _).1 hx⟩
+    exact ⟨fun ⟨x, hxa, hx⟩ => ⟨⟨x, inL_trans H hR hP a.2 hxa⟩, hxa, (hrel _ _).2 hx⟩,
+      fun ⟨x, hxa, hx⟩ => ⟨x.1, hxa, (hrel _ _).1 hx⟩⟩
 
 theorem L_power : ∀ a : {x // InL H hP x}, ∃ p : {x // InL H hP x}, ∀ x : {x // InL H hP x},
     memL H hP x p ↔ Sub (memL H hP) x a := by

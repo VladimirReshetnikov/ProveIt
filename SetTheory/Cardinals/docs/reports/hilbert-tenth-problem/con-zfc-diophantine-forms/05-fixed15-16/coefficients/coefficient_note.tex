@@ -1,0 +1,259 @@
+\section{A completely specified coefficient instance}
+\label{sec:coefficient-instance}
+
+The coefficients in this construction are fixed integers, not existential
+parameters. Their binary expansions are too long to print or materialize.
+This section defines them by finite sums and fixed integer powers. The
+attached standard-library programs implement precisely the same definition.
+Every loop in coefficient construction is bounded before the computation
+starts; no test of whether K215 halts enters the definition.
+
+\subsection{The literal machine and its one-sided normalization}
+
+We pin ProveIt at commit
+\texttt{cdd582bec13f908df3711fa9e05d1ddac368a5db}.
+The delivered native table has 215 working states, start 0 and halt 254.
+Its dense presentation has start 0, working states 0 through 214, and halt
+215. The supplied \texttt{canonicalization.json} is checked against all
+430 transition rows in both directions; its two table hashes are checked
+against literal expected hashes. Thus normalization begins with a state
+renaming of the exact dense machine, not with a related candidate.
+
+Fold the original tape onto the nonpositive physical coordinates. At
+physical position $n\leq0$, the two stored bits represent original
+positions $-n$ and $n-1$, respectively. Four ordinary symbols represent
+the bit pairs $00,01,10,11$; four marked versions represent the same pairs
+at the origin. Ordinary $00$ is blank symbol 0. Add input symbol 1 and
+temporary origin flag 2, giving ten tape symbols in total.
+For each native working state $q$ and track $s\in\{0,1\}$, introduce a
+state $(q,s)$. On track 0 an original right move becomes a physical left
+move, and an original left move becomes a physical right move except at
+the marked origin, where it stays and changes to track 1. On track 1
+these directions are interchanged; an original right move at the marked
+origin stays and changes to track 0. Only the selected bit is overwritten.
+An original transition into 254 enters the single normalized halt state.
+
+There are six additional states: $q_0,q_1$, erase, return, halt and trap.
+The first instruction on input 1 writes flag 2 and \emph{stays} in the
+distinct nonhalting state $q_1$. It then moves left, erases every remaining
+initial 1, reverses at the first blank, returns to flag 2, replaces it by
+marked $00$, and starts the folded native state $(0,0)$. Halt and trap are
+absorbing stay states; unspecified malformed cases enter trap.
+On an initial block of $n\geq1$ ones ending at the origin, this prelude
+takes exactly $2n+2$ instructions and leaves a completely blank folded
+tape with one marked origin. It never visits a positive coordinate.
+
+The resulting machine has 436 states and 4360 total instructions. A
+direct induction on source steps proves its halting equivalence with
+blank K215, for every input-block length. The finite checker additionally
+checks every one of the 3440 combinations of native state, track, pair
+and origin status, as well as 32 prelude lengths. The machine need not
+reject odd input lengths: our fixed arithmetic instance selects four
+initial ones, so behavior on the other lengths is immaterial.
+
+\subsection{The fixed window alphabet}
+
+Use the helical tableau clauses from the repository's
+\texttt{EXPLORATION\_HELICAL\_UNARY\_TABLEAU.md}, with the subsequent
+stay-step markers of \texttt{FIXED\_RAW\_UNIVERSAL\_81\_PROOF.md}.
+There are the two boundary tiles $V,H$; for every tape symbol and each
+head state or no head, there is an ordinary unphased tile; finally there
+are the four initial phase tiles $L,I,Q,R$. Order these respectively as
+$V,H$, then symbol first and head second (no head first), then $L,I,Q,R$.
+This is an explicitly ordered alphabet of size
+\[
+        a=2+10(436+1)+4=4376.
+\]
+
+The complete local predicate is given by \texttt{local\_valid} in
+\texttt{fixed\_machine.py}. Its clauses propagate vertical boundaries,
+propagate horizontal boundaries only between non-$V$ cells, disallow
+adjacent boundaries, enforce initialization $L^rI^uQR^s$, enforce the
+exact three-neighbor head update, forbid a head escaping a vertical
+boundary, and require a halted head in the last interior row. These are
+exactly finite radius-one conditions. The three-by-three window's four
+corner entries are not tested by its center predicate; they are retained
+and identified by the exact overlap conditions of the lifted system.
+
+Let $S$ be the Start window
+\[
+\begin{array}{ccc}
+H&H&H\\
+(1,\varnothing,I)&(1,\varnothing,I)&(1,q_0,Q)\\
+(1,\varnothing)&(1,\varnothing)&(2,q_1)
+\end{array}
+\]
+and let $E_0$ be the End window
+\[
+\begin{array}{ccc}
+H&H&H\\
+(0,\varnothing,L)&(1,\varnothing,I)&(1,\varnothing,I)\\
+(0,\varnothing)&(1,\varnothing)&(1,\varnothing).
+\end{array}
+\]
+Both satisfy the actual predicate. Enumerate admissible windows by
+$W_0=S$, $W_1=E_0$, followed by all remaining admissible windows in the
+lexicographic order of their nine tile indices. Define $k$ to be their
+number. Factoring the five-cell cross predicate by the incoming-head
+histograms gives
+\[
+ \#\{\hbox{admissible crosses}\}=314330772961757,
+ \qquad
+ k=115264654755851622862362693632.
+\]
+The latter is the former multiplied by $a^4$, for the free corners.
+The attached counter is also compared with direct enumeration on four
+small machines, covering 995328 cross assignments. The mathematical
+definition of $k$ remains the displayed finite window enumeration.
+
+The repository's marked helical tableau argument applies to this
+alphabet. A cyclic word with exactly one Start at position 0, an End at
+position 2, and the exact lifted relation at offsets $0,-1,-h$ decodes a
+finite halting run from $L^rI^3QR^s$. Thus there are four initial ones.
+Conversely any such halting run has a padded helical presentation with
+independently enlargeable spatial width and time height. This is the
+precise semantic input needed below.
+
+\subsection{The exact coefficient formulas}
+
+Choose the clause radix $A=2^{100}$ and write $\ell=100$.
+In the formulas below $r,c\in\{0,1,2\}$ and $s\in\{0,\ldots,a-1\}$.
+Define
+\[
+ j(r,c,s)=1+(3r+c)a+s,\qquad
+ p(r,c,s)=k+3a+(2-r)3a+(2-c)a+s.
+\]
+Put
+\begin{align*}
+ J_0&=9a+4,&m_0&=2\ell+30a+8,\\
+ p_0&=\max\!\left(0,\left\lceil\frac{k+9a+4-m_0}{2}\right\rceil\right),
+ &J_*&=J_0+p_0,\\
+ m&=m_0+2p_0,&K&=m+1.
+\end{align*}
+For this instance $K=k+9a+5$, so exactly one ignored dummy is used.
+Its position is $e_*=k+12a$. Set
+\[
+ M=k+15a+1,\quad
+ (v_1,v_2,v_3,v_4)=(M,3M,9M,27M),\quad E_{max}=27M,
+\]
+and let $\mathcal E$ be the disjoint union of selector positions
+$0,\ldots,k-1$, all $p(r,c,s)$, $e_*$, and the four $v_i$.
+The nonzero center-clause coefficients are
+\begin{align*}
+ c_i&=1+\sum_{r,c}A^{1+(3r+c)a+W_i[3r+c]}
+               +\sum_{l=1}^4A^{9a+l} &&(0\leq i<k),\\
+ c_{p(r,c,s)}&=A^{j(r,c,s)},&
+ c_{v_l}&=A^{9a+l} &&(1\leq l\leq4).
+\end{align*}
+Every other $c_e$, in particular $c_{e_*}$, is zero. Define
+\[
+ \mu=A-2+\sum_{j=1}^{J_*}A^j,
+ \quad H=51M+3a+1,
+ \quad T_1=H+2E_{max}+a+1,
+ \quad T_2=T_1+2E_{max}+1.
+\]
+Take
+\[
+ b=L=5^{45},\qquad d=bL=5^{90},\qquad
+ R=2^b,\qquad B=R^L=2^d.
+\]
+The exact remaining integers are
+\begin{align*}
+ D_C={}&R^{3a}+R^{H+a}+R^{8M}+R^{24M}
+       +\sum_e c_e\bigl(R^{T_1-e}+R^{T_2-e}\bigr),\\
+ D_R={}&R^H,\\
+ M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}R^e-2R^{e_*},\\
+ M_F^{\rm nat}={}&\mu(R^{T_1}+R^{T_2})
+       +\sum_{r=0}^1\sum_{c=0}^2\sum_{s=0}^{a-1}R^{p(r,c,s)}\\
+       &+\sum_{r=0}^2\sum_{c=0}^1\sum_{s=0}^{a-1}R^{H+p(r,c,s)}
+       +R^{9M}+R^{27M}+4.
+\end{align*}
+Thus the fixed ports used by the specialized polynomial can be set to
+\[
+ B-1,\quad D_C+BD_R,\quad M_C,\quad M_F^{\rm nat}+B-1,
+ \quad W_0=2^{2\cdot5^{90}+5^{45}},\quad W_0+2\cdot5^{90}.
+\]
+All sums have specified finite ranges, and every exponent is a fixed
+integer. None is an exponentiation of an unknown in the resulting
+Diophantine equation.
+
+\subsection{Why these are admissible compiler parameters}
+
+The repository programs choose small sufficient clause and native
+radices; their mathematical proofs only require the stated inequalities.
+Here $A>k+1$, so every selector sum and selector-plus-copy clause has
+radix-$A$ digits below $A$. The low digit $A-2$ and the remaining unit
+digits of $\mu$ consequently implement exactly the same clause tests.
+Moreover
+\[
+ \operatorname{popcount}(\mu)=\ell-1+J_*,\qquad
+ m=2\operatorname{popcount}(\mu)+12a+2,
+ \qquad |\mathcal E|=m+1.
+\]
+Padding clauses have identically zero expressions and create no extra
+condition on actual windows. The one extra dummy has zero coefficient
+in every tested field.
+
+For an explicit sufficient radix bound put $n_c=k+9a+4$ and
+$G=128(K+2)n_c+16$. Each $c_e\leq14A^{J_*}$, hence
+$\sum_e c_e\leq14n_cA^{J_*}$, while $\mu<A^{J_*+1}$.
+The delivered numerical geometry checks
+\[
+ b\geq\ell(J_*+2)+\operatorname{bitlength}(G).
+\]
+It follows that $R>A^{J_*+2}G$ and therefore
+\[
+ R\geq\max\{4(K+2)(2\sum_ec_e+6)+8,\;2\mu+4,\;16\}.
+\]
+This is the stronger half-binomial compiler margin, including the
+possible extra upper dummy bit. All unshifted raw coefficients are at
+most $R/4-2$; a rotated native digit is at most $3R/4$, or $R/2+1$ at
+the spill residue. Thus no carry is hidden by the chosen larger radix.
+
+Set $g=T_2+E_{max}+1$. The explicit value $L=5^{45}$ satisfies
+$L>g+E_{max}$. The two center-clause bands are separated by
+$2E_{max}+1$, and their complementary cyclic gap exceeds $E_{max}$.
+The four anchors retain the unique difference $18M$, and
+$e_*+1<E_{max}$, so the original synchronization proof, including the
+half-binomial dummy-spill case, applies verbatim to these positions.
+
+Here $A\equiv1\pmod5$, so every selector coefficient is $14$ modulo
+5 and every payload or anchor coefficient is 1 modulo 5. Both $k$ and
+$a$ are divisible by 4. The contiguous selector and payload intervals
+therefore vanish in each weighted sum modulo 5. Since $M\equiv1\pmod4$,
+the anchor exponents have residues $1,3,1,3$, which also cancel.
+The four low shifts in $D_C$ are each 0 modulo 4. Because $b$ is a
+power of 5, $R\equiv2\pmod5$, and hence
+\[
+      D_C\equiv4,\qquad D_R\equiv1,\qquad
+      2D_C-D_R\equiv2\pmod5.
+\]
+No optional high correction monomial is needed. This verifies the
+five-adic unit used to adjust the actual packed index.
+
+Finally $0<M_C,M_F^{\rm nat}<B-1$, $M_C$ is even, and
+$M_F^{\rm nat}\equiv4\pmod8$. The baseline low mask has $d-m$ set bits;
+clearing the second dummy bit decreases that by one. The baseline high
+mask has $m$ set bits; adding its previously absent bit 2 increases
+that by one. Consequently
+\[
+       \operatorname{popcount}(M_C)+
+       \operatorname{popcount}(M_F^{\rm nat})=d.
+\]
+The source coefficient is the shifted $M_F^{\rm nat}+B-1$, as required
+by the complete75 and subsequent polynomial interfaces. Treating that
+shifted coefficient itself as a one-cell mask would be incorrect.
+
+\subsection{Reproducibility and limits of the checks}
+
+\texttt{fixed\_machine.py} reproduces the normalized table and machine
+receipt. \texttt{coefficient\_recipe.py} reproduces the compact exact
+coefficient specification. \texttt{verify\_bridge.py} reruns their finite
+checks, the direct cross-counter comparisons, and one fully materialized
+small compiler example. The function \texttt{materialize\_k215} gives a
+literal terminating coefficient algorithm but is intentionally not run:
+already $B=2^{5^{90}}$ would require about $5^{90}$ bits.
+These checks establish finite interface facts and corroborate the
+mathematical compiler proof. They are not a proof-assistant check of the
+entire Diophantine equivalence, and no halting run or full Pell witness
+for K215 is asserted or numerically materialized.

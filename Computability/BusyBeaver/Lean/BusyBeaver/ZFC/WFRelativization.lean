@@ -94,8 +94,7 @@ theorem sat_translate (mem : V → V → Prop) (phi : Form) :
     · intro h x hx
       let y : Domain mem := ⟨x, (sat_guard mem (liftEnv mem env) x).mp hx⟩
       have hy := (ih (scons y env)).mpr (h y)
-      rw [liftEnv_scons] at hy
-      exact hy
+      rwa [liftEnv_scons] at hy
   | fEx a ih =>
     intro env
     change (∃ x : V, Sat mem (scons x (liftEnv mem env)) (wfForm 0) ∧
@@ -110,8 +109,7 @@ theorem sat_translate (mem : V → V → Prop) (phi : Form) :
     · rintro ⟨x, hx⟩
       refine ⟨x.val, (sat_guard mem (liftEnv mem env) x.val).mpr x.property, ?_⟩
       have ha := (ih (scons x env)).mpr hx
-      rw [liftEnv_scons] at ha
-      exact ha
+      rwa [liftEnv_scons] at ha
 
 theorem sat_translate_of_wf (mem : V → V → Prop) (phi : Form)
     (env : Nat → V) (hWF : ∀ i, WF mem (env i)) :

@@ -1,10 +1,10 @@
-(** k225-formal/rocqperm/SeedPerm.v (SHA256 723bd2fa87a5c5cfd4b6f29a5374ca1e6713de7f673a51e0380c436cbc197802) under namespace K215F. *)
+(** k225-formal/rocqperm/SeedPerm.v (SHA256 f278322ff9bc8a8868e3be21efd0b50f610b40af18bebf30ac8bcd571f4f4de2) under namespace K215F. *)
 (** * SeedPerm: the 215's bootstrap starts candidate 4 with every other register zero.
     The proof search is complete from that state (Source 159's cofinal argument): the program
     START 4 ++ Build_F ++ SUFFIX has candidate number P 3 (P 4 (P 1 r)) >= 4. *)
 From Coq Require Import Arith Lia List.
 From K230L Require Import Codes230.
-From K215F Require Import Codes222 Thm222 ThmDom EnumPerm L1_SoundPerm L1_CompPerm.
+From K215F Require Import Codes222 Thm222 EnumPerm L1_SoundPerm L1_CompPerm.
 Import ListNotations.
 
 Definition seedPerm : state := mkState 0 4 0 0 0 0.
@@ -34,7 +34,7 @@ Qed.
 
 Theorem seedPerm_complete : thm222 1 -> halts_from seedPerm.
 Proof.
-  intros H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
+  intros H. destruct (compile_direct 1 H) as [L HL].
   set (N := enc_fields (fields (START 4)) (enc_tail (L ++ SUFFIX))).
   assert (HN : 4 <= N).
   { unfold N, START, fields, enc_fields. cbn [fold_right].

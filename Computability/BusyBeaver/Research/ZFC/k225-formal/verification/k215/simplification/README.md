@@ -1,13 +1,17 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [accepted phase16 check](phase16/README.md) shares one weak
-quotient with a CP/GIC adapter. Both incremental checks pass, and exact adoption
-is verified. The thirteen Lean files lose 23,847 bytes/519 lines; retiring the
-5,990-byte/103-line duplicate-proof generator brings the maintenance reduction to
-29,837 bytes/622 lines. The endpoint remains at 176 project modules.
+are unchanged.
 
-| Proof source | Original | Current |
+The [phase17 combined Lean check](phase17/README.md) passes on the merged sources:
+direct full seed on the original domain, direct `C222` compilation, computed
+decoder trees, shorter AX words and shared proof terms. The endpoint selects 174
+modules / 1,749,188 source bytes. One reviewed report changes from `[]` to
+`[propext]` for `source_tree_eq`, through the existing tree computation; the other
+retained profiles match the frozen expectations. Independent result review and evidence capture pass; the linked checkpoint contains the exact records.
+The table below retains its accepted source comparisons through phase16.
+
+| Proof source | Original | Checked through phase16 |
 | --- | ---: | ---: |
 | Lean dominated implication, core plus adapter | 689,857 bytes | 16,826 bytes |
 | Lean generic core plus Lukasiewicz (phase-twelve comparison) | 42,454 bytes | 18,243 bytes |
@@ -91,7 +95,17 @@ maintenance reduction is 29,837 bytes/622 lines. The endpoint selects 2,028,295
 source bytes. The successful primary and compatibility checks bind 199 project
 modules and retain all exact endpoint/API profiles and 6,176 inherited site outcomes.
 
-The [latest accepted checkpoint](phase16/README.md),
+Phase seventeen preserves the twelve-wrapper and trace cleanup while combining
+Claude Code's frozen main `140d832128` with checked parent `d3ff74a6fa`. The static
+89-file Lean comparison across variants removes 1,252 lines and 1,522,387 bytes;
+this source-review measure does not claim compilation of every variant. Local
+cleanup accounts for 18 Lean lines/690 bytes and 15 producer lines/488 bytes.
+The successful 213-provider check preserves all thirteen earlier clients, adds
+the direct-seed client and checks all nine 215 site batches fresh. The selected
+closure and physical-file savings measure different scopes and are not additive.
+
+The [latest accepted checkpoint](phase17/README.md),
+[sixteenth checkpoint](phase16/README.md),
 [fifteenth checkpoint](phase15/README.md),
 [fourteenth checkpoint](phase14/README.md),
 [thirteenth checkpoint](phase13/README.md),

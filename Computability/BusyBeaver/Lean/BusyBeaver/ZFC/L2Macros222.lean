@@ -47,22 +47,22 @@ theorem pushwff (st : AS) (hc : Clean st) :
     Rn (.node 171) st { st with tw := 0, ws := P st.tw st.ws } :=
   rn_eq (seqAS (n := 171) rfl (loop216 st) (seqAS (n := 172) rfl (loop217 _)
     (seqAS (n := 173) rfl (pair162 _ _ rfl) (loop212 _)))) (by
-      obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+      obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 theorem v1 (st : AS) (hc : Clean st) : Rn (.node 177) st { st with tw := 1, ws := P st.tw st.ws } :=
   rn_eq (seqAS (n := 177) rfl (pushwff st hc) (inc_AS 1 (by omega) _)) (by simp [updAS, enc])
 
 theorem par1 (st : AS) (hc : Clean st) : Rn (.node 166) st { st with tw := st.p1, ws := P st.tw st.ws } :=
   rn_eq (seqAS (n := 166) rfl (pushwff st hc) (seqAS (n := 167) rfl (loop198 _) (loop205 _))) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 theorem par2 (st : AS) (hc : Clean st) : Rn (.node 121) st { st with tw := st.p2, ws := P st.tw st.ws } :=
   rn_eq (seqAS (n := 121) rfl (pushwff st hc) (seqAS (n := 122) rfl (loop200 _) (loop207 _))) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 theorem par3 (st : AS) (hc : Clean st) : Rn (.node 168) st { st with tw := st.ac, ws := P st.tw st.ws } :=
   rn_eq (seqAS (n := 168) rfl (pushwff st hc) (seqAS (n := 169) rfl (loop193 _) (loop201 _))) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 /-! ## Constructors -/
 
@@ -94,13 +94,13 @@ theorem loop117 (st : AS) : Rn (.node 117) st { st with tw := st.tw + 4 * st.s2,
 theorem pop110 (st : AS) (hc : Clean st) :
     Rn (.node 160) st { st with ws := (Cantor.ofNat st.ws).2, s1 := (Cantor.ofNat st.ws).1 } :=
   rn_eq (seqAS (n := 160) rfl (loop116 st) (loop212 _)) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp [P_zero_zero])
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp [P_zero_zero])
 
 /-- `cons`: `tw := Imp(top, tw)`, popping the stack. -/
 theorem cons (st : AS) (hc : Clean st) :
     Rn (.node 119) st { st with tw := wim (Cantor.ofNat st.ws).1 st.tw, ws := (Cantor.ofNat st.ws).2 } :=
   rn_eq (seqAS (n := 119) rfl (pop110 st hc) (seqAS (n := 120) rfl (pair162 _ _ rfl) (loop117 _))) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp [wim])
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp [wim])
 
 theorem cons_clean {st : AS} (hc : Clean st) :
     Clean { st with tw := wim (Cantor.ofNat st.ws).1 st.tw, ws := (Cantor.ofNat st.ws).2 } := hc
@@ -139,26 +139,26 @@ theorem wex_m (st : AS) (hc : Clean st) :
 theorem read108 (st : AS) (hc : Clean st) :
     Rn (.node 158) st { st with pl := (Cantor.ofNat st.pl).2, s1 := (Cantor.ofNat st.pl).1 } :=
   rn_eq (seqAS (n := 158) rfl (loop115 st) (loop209 _)) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp [P_zero_zero])
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp [P_zero_zero])
 
 theorem read_ac (st : AS) (hc : Clean st) :
     Rn (.node 174) st { st with pl := (Cantor.ofNat st.pl).2, ac := st.ac + (Cantor.ofNat st.pl).1 } :=
   rn_eq (seqAS (n := 174) rfl (read108 st hc) (loop201 _)) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 theorem read_p1 (st : AS) (hc : Clean st) :
     Rn (.node 175) st { st with pl := (Cantor.ofNat st.pl).2, p1 := st.p1 + (Cantor.ofNat st.pl).1 } :=
   rn_eq (seqAS (n := 175) rfl (read108 st hc) (loop205 _)) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 theorem read_p2 (st : AS) (hc : Clean st) :
     Rn (.node 176) st { st with pl := (Cantor.ofNat st.pl).2, p2 := st.p2 + (Cantor.ofNat st.pl).1 } :=
   rn_eq (seqAS (n := 176) rfl (read108 st hc) (loop207 _)) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 theorem pop_p2 (st : AS) (hc : Clean st) :
     Rn (.node 170) st { st with ws := (Cantor.ofNat st.ws).2, p2 := st.p2 + (Cantor.ofNat st.ws).1 } :=
   rn_eq (seqAS (n := 170) rfl (pop110 st hc) (loop207 _)) (by
-    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1; subst h2; simp)
+    obtain ⟨h1, h2⟩ := hc; cases st; simp only at h1 h2; subst h1 h2; simp)
 
 end SetTheory.BusyBeaver.ZFC.L2K

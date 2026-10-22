@@ -1,0 +1,63 @@
+{
+  "baseline_commit": "6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95",
+  "production_checkout_unchanged": true,
+  "validation_scope": "Additive checked proposal components and a source census. No full machine-to-ZFC endpoint rebuild, production deletion patch, timing comparison, or proof-term-size measurement.",
+  "components": [
+    {
+      "name": "Lean collection-first and WF reuse",
+      "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "modules": 35,
+      "new_modules": 5,
+      "repository_dependencies": 30,
+      "all_final_exit_codes_zero": true,
+      "shipped_source_hashes_match_receipt": true,
+      "receipt": "code/lean/collection-first/repository-check.json"
+    },
+    {
+      "name": "Lean generic word and actual AX effect equality",
+      "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "modules": 33,
+      "new_modules": 3,
+      "repository_dependencies": 30,
+      "all_final_exit_codes_zero": true,
+      "shipped_source_hashes_match_receipt": true,
+      "receipt": "code/lean/macro-word/receipt.json",
+      "note": "The recorded first AXWordsEqual attempt hit the recursion limit; the included source sets maxRecDepth 4096 and its final check passed."
+    },
+    {
+      "name": "Rocq macro-slice transport",
+      "compiler": "Coq 8.18.0 / OCaml 4.14.1",
+      "modules": 6,
+      "new_modules": 2,
+      "pinned_dependencies": 4,
+      "recursive_coqchk_passed": true,
+      "all_exit_codes_zero": true,
+      "shipped_source_hashes_match_receipt": true,
+      "receipt": "code/rocq/macro-slice/build_receipt.json"
+    },
+    {
+      "name": "Constructive semantic collection core",
+      "compiler": "Coq 8.18.0 / OCaml 4.14.1",
+      "modules": 1,
+      "recursive_coqchk_passed": true,
+      "all_exit_codes_zero": true,
+      "shipped_source_hash_matches_receipt": true,
+      "receipt": "code/rocq/collection-first/receipt.json",
+      "scope": "Host-Prop theorem; not an object-language ZFC derivation."
+    }
+  ],
+  "maintained_rocq_toolchain_for_adoption": "Rocq 9.1.0 / rocq-stdlib 9.0.0; not run in this review",
+  "inventory": {
+    "modules": 178,
+    "utf8_bytes": 2093112,
+    "physical_lines": 40517,
+    "every_source_hash_matches_pinned_checkout": true,
+    "scope": "Source census, not compilation"
+  },
+  "receipt_sha256": {
+    "code/lean/collection-first/repository-check.json": "ebf7ce044c83bdcf25138ce81126371015fa3cb30cecf3560b24d12661096809",
+    "code/lean/macro-word/receipt.json": "a7bb77783021c1d623c6098943b37ec0b46c814143c4036e2d2451cd1e3c0019",
+    "code/rocq/macro-slice/build_receipt.json": "fb6e278b9a6f437142a22045821b74573e41161dd8a0a44a7df9efb427000b78",
+    "code/rocq/collection-first/receipt.json": "75649f884921f94268406b9add565bafb5b00e5812f8826ffc38b0630b41c960"
+  }
+}

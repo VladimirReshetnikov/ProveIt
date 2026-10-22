@@ -159,14 +159,12 @@ theorem root_step (s : EnumPerm.St) :
 theorem root_some {s s' : EnumPerm.St} (h : EnumPerm.enumStep s = some s') :
     Run dagPerm (.node dagPerm.root) (enc (toAS s)) .normal (enc (toAS s')) := by
   have := root_step s
-  rw [h] at this
-  exact this
+  rwa [h] at this
 
 theorem root_none {s : EnumPerm.St} (h : EnumPerm.enumStep s = none) :
     ∃ R', Run dagPerm (.node dagPerm.root) (enc (toAS s)) .halt R' := by
   have := root_step s
-  rw [h] at this
-  exact this
+  rwa [h] at this
 
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : EnumPerm.St) :

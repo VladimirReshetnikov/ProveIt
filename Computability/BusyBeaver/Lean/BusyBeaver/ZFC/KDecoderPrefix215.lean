@@ -53,8 +53,7 @@ theorem reads_of_rel (word : List Bool) {q : Nat} {a : Int} {t : FramedWindow.Ta
     have h := (hr.2 0).1
     simp only [Int.natCast_zero, Int.add_zero] at h
     change t a = (trim (bit :: (word ++ r))).getD 0 false at h
-    rw [← List.headD_eq_getD, headD_trim] at h
-    exact h
+    rwa [← List.headD_eq_getD, headD_trim] at h
 
 /-- The role graph is deterministic even when several roles share a physical
 state.  The full role path, not the state or its short suffix, determines entry. -/
@@ -122,8 +121,7 @@ theorem entry_run {word : List Bool} {e : RegisterPath.Edge} (entry : FullEntry 
   have hm : t (-1) = true := by
     have h := (hrel.2 0).2
     change t (-1) = (trim [true]).getD 0 false at h
-    rw [← List.headD_eq_getD, headD_trim] at h
-    exact h
+    rwa [← List.headD_eq_getD, headD_trim] at h
   have hw : Reads t 0 word := reads_of_rel word hrel
   obtain ⟨op,arg,steps,q,bit,he,lo,hi,hs,hbit,hentry⟩ := entry t hm hw
   obtain ⟨pre,hsplit⟩ : ∃ pre, word = pre ++ [bit] := by

@@ -148,8 +148,7 @@ theorem sat_quotient (mem : V → V → Prop) (witness : V) (h : QHyp mem)
       induction q using Quotient.ind with
       | _ x =>
         have hx := (ih (scons x env)).mpr (hall x)
-        rw [mk_scons] at hx
-        exact hx
+        rwa [mk_scons] at hx
   | fEx a ih =>
     constructor
     · rintro ⟨q, hq⟩
@@ -160,8 +159,7 @@ theorem sat_quotient (mem : V → V → Prop) (witness : V) (h : QHyp mem)
     · rintro ⟨x, hx⟩
       refine ⟨mk mem witness h x, ?_⟩
       have hqx := (ih (scons x env)).mpr hx
-      rw [mk_scons] at hqx
-      exact hqx
+      rwa [mk_scons] at hqx
 
 /-- Satisfaction respects bisimilar environments, via their equal quotient images. -/
 theorem relSat_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)

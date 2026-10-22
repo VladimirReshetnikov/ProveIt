@@ -1,0 +1,83 @@
+--- main/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py
++++ combined/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py
+@@ -20,7 +20,7 @@
+ sys.path.insert(0, str(HERE))
+ sys.setrecursionlimit(100000)
+ from gen_cert import load, Tree, generate  # noqa: E402
+-from generate_source225_lean import dag, program, literal_tree, code, chunks  # noqa: E402
++from generate_source225_lean import dag, program, code, chunks  # noqa: E402
+ from partition_source215_lean import write_partition  # noqa: E402
+ 
+ TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean"
+--- main/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source217_lean.py
++++ combined/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source217_lean.py
+@@ -18,7 +18,7 @@
+ sys.path.insert(0, str(HERE))
+ sys.setrecursionlimit(100000)
+ from gen_cert import load, Tree, generate  # noqa: E402
+-from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402
++from generate_source225_lean import dag, program, cert_block  # noqa: E402
+ 
+ TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource217.lean"
+ SITES217 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k217/sites217.json"
+--- main/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source218_lean.py
++++ combined/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source218_lean.py
+@@ -18,7 +18,7 @@
+ sys.path.insert(0, str(HERE))
+ sys.setrecursionlimit(100000)
+ from gen_cert import load, Tree, generate  # noqa: E402
+-from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402
++from generate_source225_lean import dag, program, cert_block  # noqa: E402
+ 
+ TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource218.lean"
+ SITES218 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k218/sites218.json"
+--- main/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source219_lean.py
++++ combined/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source219_lean.py
+@@ -18,7 +18,7 @@
+ sys.path.insert(0, str(HERE))
+ sys.setrecursionlimit(100000)
+ from gen_cert import load, Tree, generate  # noqa: E402
+-from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402
++from generate_source225_lean import dag, program, cert_block  # noqa: E402
+ 
+ TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource219.lean"
+ SITES219 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k219/sites219.json"
+--- main/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source221_lean.py
++++ combined/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source221_lean.py
+@@ -18,7 +18,7 @@
+ sys.path.insert(0, str(HERE))
+ sys.setrecursionlimit(100000)
+ from gen_cert import load, Tree, generate  # noqa: E402
+-from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402
++from generate_source225_lean import dag, program, cert_block  # noqa: E402
+ 
+ TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource221.lean"
+ SITES221 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k221/sites_logical.json"
+--- main/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source225_lean.py
++++ combined/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source225_lean.py
+@@ -48,25 +48,10 @@
+             "EContinue": f"(.cont {a})", "EHalt": ".halt"}[op]
+ 
+ 
+-def leaf_lean(e):
+-    op, a = e
+-    return {"EInc": f"(.inc {a})", "EDecnz": f"(.decnz {a})", "EBreak": f"(.brk {a})",
+-            "EContinue": f"(.cont {a})", "EHalt": ".halt"}[op]
+-
+-
+ def program(name, nodes, root, doc):
+     cases = "\n".join(f"  | {i} => ({edge(a)}, {edge(b)})" for i, (a, b) in enumerate(nodes))
+     return (f"/-- {doc} -/\ndef {name}Nodes : Nat → Edge × Edge\n{cases}\n  | _ => (.halt, .halt)\n\n"
+             f"def {name} : Program := ⟨{name}Nodes, {root}, {len(nodes)}⟩\n")
+-
+-
+-def literal_tree(nodes, root):
+-    def go(n):
+-        a, b = nodes[n]
+-        return f"(.node {child(a)} {child(b)})"
+-    def child(e):
+-        return go(e[1]) if e[0] == "node" else f"(.leaf {leaf_lean(e[1])})"
+-    return go(root)
+ 
+ 
+ def code(P):

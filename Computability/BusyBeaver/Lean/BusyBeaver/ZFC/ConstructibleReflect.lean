@@ -40,20 +40,10 @@ def CSat (mem : V → V → Prop) (P : V → Prop) : (Nat → V) → Form → Pr
 theorem csat_ext_free (P : V → Prop) :
     ∀ (φ : Form) (e1 e2 : Nat → V), (∀ n, Free n φ → e1 n = e2 n) →
       (CSat mem P e1 φ ↔ CSat mem P e2 φ)
-  | .fMem i j, e1, e2, h => by
-      simp only [CSat]; rw [h i (Or.inl rfl), h j (Or.inr rfl)]
-  | .fEq i j, e1, e2, h => by
+  | .fMem i j, e1, e2, h | .fEq i j, e1, e2, h => by
       simp only [CSat]; rw [h i (Or.inl rfl), h j (Or.inr rfl)]
   | .fBot, _, _, _ => Iff.rfl
-  | .fImp a b, e1, e2, h => by
-      simp only [CSat]
-      rw [csat_ext_free P a e1 e2 fun n hn => h n (Or.inl hn),
-        csat_ext_free P b e1 e2 fun n hn => h n (Or.inr hn)]
-  | .fAnd a b, e1, e2, h => by
-      simp only [CSat]
-      rw [csat_ext_free P a e1 e2 fun n hn => h n (Or.inl hn),
-        csat_ext_free P b e1 e2 fun n hn => h n (Or.inr hn)]
-  | .fOr a b, e1, e2, h => by
+  | .fImp a b, e1, e2, h | .fAnd a b, e1, e2, h | .fOr a b, e1, e2, h => by
       simp only [CSat]
       rw [csat_ext_free P a e1 e2 fun n hn => h n (Or.inl hn),
         csat_ext_free P b e1 e2 fun n hn => h n (Or.inr hn)]
@@ -92,14 +82,8 @@ def relT (C : Nat → NForm) : (Nat → Nat) → Nat → Form → NForm
 theorem nsat_relT (P : V → Prop) (C : Nat → NForm) (hC : ∀ ρ x, NSat mem ρ (C x) ↔ P (ρ x)) :
     ∀ (φ : Form) (s : Nat → Nat) (f : Nat) (ρ : Nat → V), (∀ i, s i < f) →
       (NSat mem ρ (relT C s f φ) ↔ CSat mem P (fun i => ρ (s i)) φ)
-  | .fMem _ _, _, _, _, _ => Iff.rfl
-  | .fEq _ _, _, _, _, _ => Iff.rfl
-  | .fBot, _, _, _, _ => Iff.rfl
-  | .fImp a b, s, f, ρ, hs => by
-      simp only [relT, NSat, CSat, nsat_relT P C hC a s f ρ hs, nsat_relT P C hC b s f ρ hs]
-  | .fAnd a b, s, f, ρ, hs => by
-      simp only [relT, NSat, CSat, nsat_relT P C hC a s f ρ hs, nsat_relT P C hC b s f ρ hs]
-  | .fOr a b, s, f, ρ, hs => by
+  | .fMem _ _, _, _, _, _ | .fEq _ _, _, _, _, _ | .fBot, _, _, _, _ => Iff.rfl
+  | .fImp a b, s, f, ρ, hs | .fAnd a b, s, f, ρ, hs | .fOr a b, s, f, ρ, hs => by
       simp only [relT, NSat, CSat, nsat_relT P C hC a s f ρ hs, nsat_relT P C hC b s f ρ hs]
   | .fAll a, s, f, ρ, hs => by
       simp only [relT, NSat, CSat, hC, upd_same]
@@ -202,7 +186,7 @@ theorem bindVals_spec (H : ZFAxioms mem) (E b : Nat) (hE : E < b) {A : V} :
   | 0, _, _, _, _ => Iff.rfl
   | j + 1, k, ρ, body, hEnv => by
       have hE' : ∀ v, upd ρ (b + k) v E = ρ E := fun v => upd_other _ _ (by omega)
-      have hEnv' : ∀ v, IsEnvOn H A (upd ρ (b + k) v E) := fun v => by rw [hE' v]; exact hEnv
+      have hEnv' : ∀ v, IsEnvOn H A (upd ρ (b + k) v E) := fun v => by rwa [hE' v]
       simp only [bindVals, NSat, fillVals]
       constructor
       · rintro ⟨v, hv, hb⟩
@@ -296,7 +280,7 @@ theorem nsat_witF (θ : Form) {c E : Nat} (hc : c < 10) (hE : E < 10) (ρ : Nat 
   simp only [witF, NSat, nsat_isStageF H (defOp H hP)]
   refine exists_congr fun T => exists_congr fun x => ?_
   have hEnv' : IsEnvOn H A (upd (upd ρ 10 T) 11 x E) := by
-    rw [upd_other _ _ (by omega), upd_other _ _ (by omega)]; exact hEnv
+    rwa [upd_other _ _ (by omega), upd_other _ _ (by omega)]
   rw [nsat_envSatF H (InL H hP) (inLF H hP) (nsat_inLF H hP) θ (by omega) (by omega) _ hEnv']
   simp (disch := omega) only [upd_same, upd_other]
   rfl
@@ -307,7 +291,7 @@ theorem nsat_leastWitF (θ : Form) {c E : Nat} (hc : c < 9) (hE : E < 9) (ρ : N
   simp only [leastWitF, NSat, nsat_ordF]
   rw [nsat_witF H hP θ (by omega) (by omega) ρ hEnv]
   refine and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun c' => ?_
-  have hEnv' : IsEnvOn H A (upd ρ 9 c' E) := by rw [upd_other _ _ (by omega)]; exact hEnv
+  have hEnv' : IsEnvOn H A (upd ρ 9 c' E) := by rwa [upd_other _ _ (by omega)]
   rw [nsat_witF H hP θ (by omega) (by omega) _ hEnv']
   simp (disch := omega) only [upd_same, upd_other, and_imp]
 
@@ -484,7 +468,7 @@ theorem common_stage {β Tβ : V} (hβ : Ord mem β) (hlim : ∀ γ, mem γ β �
   | zero =>
       intro hv
       obtain ⟨γ, T, hγ, hT, hx⟩ := one (v 0) (hv 0 (by omega))
-      exact ⟨γ, T, hγ, hT, fun k hk => by rw [show k = 0 by omega]; exact hx⟩
+      exact ⟨γ, T, hγ, hT, fun k hk => by rwa [show k = 0 by omega]⟩
   | succ m ih =>
       intro hv
       obtain ⟨γ1, T1, hγ1, hT1, h1⟩ := ih fun k hk => hv k (by omega)
@@ -538,18 +522,8 @@ bodies are among `Θ`. -/
 theorem reflect {Θ : List Form} {β Tβ : V} (hC : Closed H hP Θ β) (hTβ : IsL H hP β Tβ) :
     ∀ φ : Form, (∀ θ ∈ qbodies φ, θ ∈ Θ) → ∀ e : Nat → V, (∀ n, mem (e n) Tβ) →
       (CSat mem (InL H hP) e φ ↔ RSat mem Tβ e φ)
-  | .fMem _ _, _, _, _ => Iff.rfl
-  | .fEq _ _, _, _, _ => Iff.rfl
-  | .fBot, _, _, _ => Iff.rfl
-  | .fImp a b, hq, e, he => by
-      simp only [CSat, RSat]
-      rw [reflect hC hTβ a (fun θ h => hq θ (List.mem_append_left _ h)) e he,
-        reflect hC hTβ b (fun θ h => hq θ (List.mem_append_right _ h)) e he]
-  | .fAnd a b, hq, e, he => by
-      simp only [CSat, RSat]
-      rw [reflect hC hTβ a (fun θ h => hq θ (List.mem_append_left _ h)) e he,
-        reflect hC hTβ b (fun θ h => hq θ (List.mem_append_right _ h)) e he]
-  | .fOr a b, hq, e, he => by
+  | .fMem _ _, _, _, _ | .fEq _ _, _, _, _ | .fBot, _, _, _ => Iff.rfl
+  | .fImp a b, hq, e, he | .fAnd a b, hq, e, he | .fOr a b, hq, e, he => by
       simp only [CSat, RSat]
       rw [reflect hC hTβ a (fun θ h => hq θ (List.mem_append_left _ h)) e he,
         reflect hC hTβ b (fun θ h => hq θ (List.mem_append_right _ h)) e he]
@@ -577,8 +551,7 @@ theorem reflect {Θ : List Form} {β Tβ : V} (hC : Closed H hP Θ β) (hTβ : I
       · intro hall x hx
         exact (reflect hC hTβ a hqa _ (hext x hx)).1 (hall x ⟨β, Tβ, hC.1, hTβ, hx⟩)
       · intro hall d hd
-        apply Classical.byContradiction
-        intro hnd
+        refine Classical.byContradiction fun hnd => ?_
         obtain ⟨x, hx, hxa⟩ := closure_witness H hR hP hC hTβ (θ := .fImp a .fBot)
           (hq _ (by simp [qbodies])) he ⟨d, hd, hnd⟩
         exact hxa ((reflect hC hTβ a hqa _ (hext x hx)).2 (hall x hx))
@@ -609,10 +582,7 @@ theorem gstep_ord {Θ : List Form} {x : V} (hx : Ord mem x) :
     Ord mem (Gstep H hP hR Θ x) ∧ mem x (Gstep H hP hR Θ x) := by
   have hu := (uspec_exists H hR hP Θ x).choose_spec
   obtain ⟨huo, hxu⟩ := uspec_ord H hP hx hu
-  refine ⟨ord_succ H huo, (vsucc_spec H _ x).2 ?_⟩
-  rcases le_of_sub H hR hx huo hxu with h | h
-  · exact Or.inr h
-  · exact Or.inl h
+  exact ⟨ord_succ H huo, (vsucc_spec H _ x).2 (le_of_sub H hR hx huo hxu).symm⟩
 
 theorem gstep_wit {Θ : List Form} {x T E c : V} (hx : Ord mem x) {θ : Form} (hθ : θ ∈ Θ)
     (hT : IsL H hP x T) (hE : IsEnvOn H T E) (hc : LeastWit H hP θ E c) :
@@ -620,10 +590,7 @@ theorem gstep_wit {Θ : List Form} {x T E c : V} (hx : Ord mem x) {θ : Form} (h
   have hu := (uspec_exists H hR hP Θ x).choose_spec
   obtain ⟨huo, -⟩ := uspec_ord H hP hx hu
   have hcu := le_of_sub H hR hc.1 huo fun z hz => (hu z).2 (Or.inr ⟨hx, θ, hθ, T, E, c, hT, hE, hc, hz⟩)
-  refine (vsucc_spec H _ c).2 ?_
-  rcases hcu with h | h
-  · exact Or.inr h
-  · exact Or.inl h
+  exact (vsucc_spec H _ c).2 hcu.symm
 
 omit hR hP in
 theorem isEnvOn_mono {T T' E : V} (hE : IsEnvOn H T E) (h : Sub mem T T') : IsEnvOn H T' E :=
@@ -648,9 +615,8 @@ theorem closed_exists (Θ : List Form) {a : V} (ha : Ord mem a) : ∃ β, mem a 
     · intro y hy
       rw [← applyV_eq H hF.1 hy, h0]; exact ord_succ H ha
     · intro y hy
-      have ih' := (hP' m).1 ih
       rw [← applyV_eq H hF.1 hy, hs m hm]
-      exact (gstep_ord H hR hP (ih' _ (applyV_mem H (hF.2.1 m hm)))).1
+      exact (gstep_ord H hR hP ((hP' m).1 ih _ (applyV_mem H (hF.2.1 m hm)))).1
   have hord : ∀ n, mem n (omegaV H) → Ord mem (applyV H F n) :=
     fun n hn => hPall n hn _ (applyV_mem H (hF.2.1 n hn))
   have hRgOrd : ∀ y, mem y Rg → Ord mem y := by
@@ -667,7 +633,7 @@ theorem closed_exists (Θ : List Form) {a : V} (ha : Ord mem a) : ∃ β, mem a 
       mem z (vunion H Rg) := by
     intro n hn z hz
     refine (vunion_spec H Rg z).2 ⟨_, ?_, hmemRg _ (omega_succ H n hn)⟩
-    rw [hs n hn]; exact hz
+    rwa [hs n hn]
   refine ⟨vunion H Rg, (vunion_spec H Rg a).2 ⟨_, ?_, hmemRg _ (vempty_in_omega H)⟩, hβ, ?_, ?_⟩
   · rw [h0]; exact vsucc_self H a
   · intro γ hγ
@@ -681,7 +647,7 @@ theorem closed_exists (Θ : List Form) {a : V} (ha : Ord mem a) : ∃ β, mem a 
     obtain ⟨hGo, hFG⟩ := gstep_ord H hR hP (Θ := Θ) hFn
     refine hnext n hn _ ?_
     rcases hle with h | h
-    · rw [h]; exact hFG
+    · rwa [h]
     · exact hGo.1 _ hFG _ h
   · intro γ hγ T E c θ hθ hT hE hc
     obtain ⟨n, hn, hγn⟩ := hin γ hγ

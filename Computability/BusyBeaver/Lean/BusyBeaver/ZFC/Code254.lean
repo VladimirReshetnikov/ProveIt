@@ -152,10 +152,7 @@ theorem decF_stable : ∀ (f g n : Nat), n < f → n < g → decF f n = decF g n
 theorem dec_zero : dec 0 = T0 := rfl
 
 theorem dec_wim {x y : Nat} (h : ¬ (x = 0 ∧ y = 0)) : dec (wim x y) = imp (dec x) (dec y) := by
-  have hP : 0 < P x y := by
-    rcases Nat.eq_zero_or_pos (P x y) with h0 | h0
-    · exact absurd (P_eq_zero h0) h
-    · exact h0
+  have hP : 0 < P x y := Nat.pos_of_ne_zero fun h0 => h (P_eq_zero h0)
   have hx := le_P_left x y
   have hy := le_P_right x y
   obtain ⟨m, hm⟩ : ∃ m, wim x y = m + 1 := ⟨wim x y - 1, by simp only [wim]; omega⟩
@@ -239,24 +236,16 @@ theorem sat_wa (e : Nat → V) (a b : Nat) :
     Tarski.Sat mem e (dec (wa a b)) ↔ Tarski.Sat mem e (dec a) ∧ Tarski.Sat mem e (dec b) := by
   simp only [wa]
   rw [sat_wn mem hirr, sat_wim, sat_wn mem hirr]
-  constructor
-  · intro h
-    exact ⟨Classical.byContradiction fun ha => h fun ha' => absurd ha' ha,
-      Classical.byContradiction fun hb => h fun _ => hb⟩
-  · rintro ⟨ha, hb⟩ h
-    exact h ha hb
+  exact ⟨fun h => ⟨Classical.byContradiction fun ha => h fun ha' => absurd ha' ha,
+    Classical.byContradiction fun hb => h fun _ => hb⟩, fun ⟨ha, hb⟩ h => h ha hb⟩
 
 theorem sat_wex (e : Nat → V) (x a : Nat) :
     Tarski.Sat mem e (dec (wex x a)) ↔ ∃ d, Tarski.Sat mem (update e x d) (dec a) := by
   simp only [wex]
   rw [sat_wn mem hirr, sat_wal]
-  constructor
-  · intro h
-    apply Classical.byContradiction
-    intro hn
-    exact h fun d => (sat_wn mem hirr _ a).mpr fun hd => hn ⟨d, hd⟩
-  · rintro ⟨d, hd⟩ h
-    exact (sat_wn mem hirr _ a).mp (h d) hd
+  exact ⟨fun h => Classical.byContradiction fun hn =>
+      h fun d => (sat_wn mem hirr _ a).mpr fun hd => hn ⟨d, hd⟩,
+    fun ⟨d, hd⟩ h => (sat_wn mem hirr _ a).mp (h d) hd⟩
 
 end Irreflexive
 
@@ -278,9 +267,7 @@ theorem rows_valid (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x) (e : Nat 
     rw [sat_wex mem hirr]
     refine ⟨e b, ?_⟩
     rw [sat_weq]
-    by_cases hab : b = a
-    · subst hab; simp [update]
-    · simp [update, hab]
+    by_cases hab : b = a <;> simp [update, hab]
   · intro a b c
     simp only [rho2]
     rw [sat_wim, sat_wal, sat_wim, sat_wal, sat_wal]
@@ -289,7 +276,7 @@ theorem rows_valid (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x) (e : Nat 
   · intro a b c
     simp only [rho3]
     rw [sat_wim, sat_weq, sat_wim, sat_wel, sat_wel]
-    intro h1 h2; rw [← h1]; exact h2
+    intro h1 h2; rwa [← h1]
   · intro a b c
     simp only [rho4]
     rw [sat_wim]
@@ -310,21 +297,19 @@ theorem rows_valid (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x) (e : Nat 
         · simp [hn, Ne.symm hab]
         · simp [hm, hab]
         · simp [hn, hm]
-      rw [← hcomm]; exact hh
+      rwa [hcomm] at hh
   · intro a b c
     simp only [rho5]
     rw [sat_wim, sat_weq, sat_wim, sat_wel, sat_wel]
-    intro h1 h2; rw [← h1]; exact h2
+    intro h1 h2; rwa [← h1]
   · intro a b
     simp only [rho6]
     rw [sat_wim, sat_wex mem hirr]
     rintro ⟨d, hd⟩
     rw [sat_wal] at hd
-    have := hd (e a)
     have hh : update (update e a d) a (e a) = e := by
       funext n; by_cases hn : n = a <;> simp [update, hn]
-    rw [hh] at this
-    exact this
+    simpa only [hh] using hd (e a)
   · intro a b c
     simp only [rho7]
     rw [sat_wim, sat_weq, sat_wim, sat_weq, sat_weq]
@@ -453,10 +438,8 @@ satisfies every universally quantified bundle vacuously. This theorem
 preserves that counterexample; it is not a consistency claim. -/
 theorem empty_domain_counterexample :
     ¬ (∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
-      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → False) := by
-  intro h
-  exact h Empty (fun _ _ => False) (fun x => Empty.elim x)
-    (fun _ _ e => Empty.elim (e 0))
+      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → False) :=
+  fun h => h Empty (fun _ _ => False) (fun x => Empty.elim x) (fun _ _ e => Empty.elim (e 0))
 
 /-- Completeness: if the encodable bundles have no irreflexive model with
 a valuation (equivalently, with a nonempty domain), falsity is derivable.
@@ -466,13 +449,10 @@ theorem c254_complete
       (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) →
       (Nat → D) → False) :
     C254 F := by
-  have hT : ThmG (rel 0 0) EncBundle (rel 0 0) := by
-    apply alias_complete (f := rel 0 0) (fun f hf => hf.1) trivial
-    intro D mem hirr hAx e
-    exact (hnone D mem hirr hAx e).elim
-  have := c254_of_thmG (fun f hf => by
-    obtain ⟨_, a, b, c, h1, h2, he⟩ := hf
-    rw [he]; exact C254.bundle a b c h1 h2) hT
+  have hT : ThmG (rel 0 0) EncBundle (rel 0 0) :=
+    alias_complete (f := rel 0 0) (fun f hf => hf.1) trivial
+      fun D mem hirr hAx e => (hnone D mem hirr hAx e).elim
+  have := c254_of_thmG (fun f ⟨_, a, b, c, h1, h2, he⟩ => he ▸ C254.bundle a b c h1 h2) hT
   simpa [enc, wel_zero_zero] using this
 
 end SetTheory.BusyBeaver.ZFC.Code254

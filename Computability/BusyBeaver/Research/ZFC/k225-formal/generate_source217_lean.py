@@ -18,7 +18,7 @@ REPO = HERE.parents[4]
 sys.path.insert(0, str(HERE))
 sys.setrecursionlimit(100000)
 from gen_cert import load, Tree, generate  # noqa: E402
-from generate_source225_lean import dag, program, literal_tree, cert_block  # noqa: E402
+from generate_source225_lean import dag, program, cert_block  # noqa: E402
 
 TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource217.lean"
 SITES217 = REPO / "Computability/BusyBeaver/Research/ZFC/candidate-k217/sites217.json"
@@ -125,8 +125,8 @@ theorem path_iff_iter (R : RMDag.Regs) :
 
 """
     out += program("p217", n1, r1, f"The 219's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
-    out += "/-- The 219's decoder tree, written out. -/\ndef t217 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
-    out += "/-- dagDom's decoder tree, written out. -/\ndef tD : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
+    out += "/-- The 217's decoder tree, computed from the program. -/\ndef t217 : Tree := ptree p217\n\n"
+    out += "/-- dagDom's decoder tree, computed from the program. -/\ndef tD : Tree := ptree pathDagDom\n\n"
     out += "theorem t217_eq : ptree p217 = t217 := by rfl\n\ntheorem tD_eq : ptree pathDagDom = tD := by rfl\n\n"
     out += "/-! ## Forward certificate (219 → dagDom) -/\n\n" + cert_block("fwd", entries, "t217", "tD")
     out += "\n/-! ## Mirrored certificate (dagDom → 219) -/\n\n" + cert_block("bwd", mirror, "tD", "t217")

@@ -1,0 +1,1440 @@
+{
+  "status": "PASS_SOURCE_REVIEW_WITH_FOUR_UNCOMPILED_CANDIDATES",
+  "base": "d3ff74a6fadba99e05576fe844f1f5ace9eab648",
+  "upstream_snapshot": "140d832128fd43873f16e385766cd3cee08df8a9",
+  "scope_roots": [
+    "Computability/BusyBeaver/Lean",
+    "Logic/FirstOrder/Lean",
+    "SetTheory/ZF/Lean",
+    "SetTheory/BoundedConsistency/Lean"
+  ],
+  "scope_count": 48,
+  "supplemental_path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+  "method": "Read every hunk of complete 4682-line no-renames model diff for the48paths; inspect full old/new seed path, full endpoint migration and full QuotientCPGIC source; compare existing declaration headers and7moved complete bodies, inspect caller results across4roots. This is source review, not Lean elaboration.",
+  "metrics": {
+    "base_lines": 11604,
+    "main_lines": 10945,
+    "net_lines_removed": 659,
+    "candidate_additional_lines_removed": 18,
+    "candidate_additional_bytes_removed": 690
+  },
+  "findings": [
+    "No mathematical blocker found. Outside seed-route replacement and intentional helper availability differences, common declarations retain identical normalized explicit source headers.",
+    "Seven declarations moved unchanged including complete bodies, comments/whitespace ignored. The shared FullSeed namespace is retained for lower-chain callers.",
+    "Fresh-label construction preserves literal equality. k=enc(th(negNF(negNF psi))) is greater than1; free_th and free_lt_enc show k is not free in the semantic matrix.",
+    "th_bundleNF commutes equality interpretation only to establish interpreted-code derivability. Satisfaction of the named bundle comes from hT itself, so no unjustified semantic equality interpretation is used.",
+    "named_bundle_iff_seed needs distinct roles and a fresh matrix label; named_req_iff/named_clos_iff explicitly carry the update-distinctness hypotheses. It does not assume irreflexivity. Endpoint separately supplies hirr in FullSeed.",
+    "Endpoint migration uses original inhabitant e0, removing the indiscernibility quotient. The later tagged bisimulation quotient and well-founded interpretation remain.",
+    "a7b8f1ae67 quotient changes only shorten proof terms; they preserve raw-output guards, literal subset representative construction, arbitrary native Form parameters, and explicit inhabitant. No raw irreflexivity is transported across bisimilarity.",
+    "Phase16 twelve unused strong forwarder retirements and sole-caller weak trace inline remain compatible with the frozen main source census. Main retained helpers are original proposal APIs, not new dependencies.",
+    "Extra4file candidate removes two sole-caller/duplicate helpers and stale prose without changing endpoint statement or shared FullSeed structure."
+  ],
+  "risks_and_required_checks": [
+    "This review does not prove compilation. Fresh combined source closure and API/endpoint axiom profiles are required; phase16 receipts do not apply to changed modules.",
+    "Equality transport, inferred implicit arguments, merged tactic branches and concrete declaration identities must be elaborated by Lean. Header comparison cannot detect implicit dependency changes.",
+    "The old KSeedModel222/KIndisc222 modules are intentionally absent. Maintained imports migrate; frozen historical evidence must not be rewritten as if old retired-route APIs still compile.",
+    "Direct proof needs a typed client for arbitrary named psi and separately a native equality instance or generic FullSeed construction. No EqFree psi premise should be introduced.",
+    "Combined quotient source must keep explicit PowerSyntax import in QuotientModel after keeping phase16 trace helper retirement."
+  ],
+  "caller_migration": {
+    "retired_module_imports_in_four_roots": 0,
+    "retired_namespace_preserved": "SetTheory.BusyBeaver.ZFC.KIndisc222.FullSeed",
+    "upstream_migrations": [
+      {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+        "old": "fullSeed_of_derivable on qmem; KIndisc222.mk mem (e0)",
+        "new": "seed_direct on original mem; inhabitant e0"
+      },
+      {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+        "old_import": "BusyBeaver.ZFC.KIndisc222",
+        "new_import": "BusyBeaver.ZFC.KSeedInterface222"
+      }
+    ],
+    "candidate_retirements": [
+      {
+        "name": "KIndisc222.fullSeed_direct_of_derivable",
+        "only_semantic_caller": "KEndpoint.c222_of_zf_refutation",
+        "replacement": "have hfull : FullSeed mem := \u27e8hirr, seed_direct mem hT\u27e9"
+      },
+      {
+        "name": "KLower.seedProp_congr",
+        "only_caller": "KLower.formSeed_of_fullSeed",
+        "replacement": "(KSeed222.seedProp_congr mem A key).mp hs"
+      }
+    ]
+  },
+  "candidates": {
+    "status": "SOURCE_REVIEWED_UNCOMPILED_CANDIDATE",
+    "main": "140d832128fd43873f16e385766cd3cee08df8a9",
+    "files": [
+      {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean",
+        "main_sha256": "671c413d14ec8b75d2c80f51ca8acb35acaf408fb8d0f4581df42e6fdc9f92af",
+        "candidate_sha256": "6616630b8e6707a5fab1e59d5a540b86d0b9ab03d2545cd0871bce73e9669d13",
+        "before_bytes": 6875,
+        "after_bytes": 6480,
+        "before_lines": 165,
+        "after_lines": 153
+      },
+      {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+        "main_sha256": "ef411c36c16ec10fb0f28de21ae5f72b57df1b9479fd1e6392cddce161367165",
+        "candidate_sha256": "4af3a71099fc066001f1663c6cabb139037ec5f54a1ca9c3acdf3af4e684949e",
+        "before_bytes": 2866,
+        "after_bytes": 2631,
+        "before_lines": 67,
+        "after_lines": 62
+      },
+      {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+        "main_sha256": "04965b2e82b0f22cdbb11910c17ddf82efafe26123040d6b1b01a88707ec8175",
+        "candidate_sha256": "7f63ca9764d7f93e31905a19dca9b320f37178d6e44ca1eee788c060a19da8fc",
+        "before_bytes": 4004,
+        "after_bytes": 3992,
+        "before_lines": 81,
+        "after_lines": 81
+      },
+      {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean",
+        "main_sha256": "0ac1d3e3a2071fe04865502dcf0decb22fa9a32dfcceb7fa2e9c33c72cfc188e",
+        "candidate_sha256": "6c0860c7c763b2d71c111bdcc27c2eabc569c6f2674c411f93d6349a164f1170",
+        "before_bytes": 1682,
+        "after_bytes": 1634,
+        "before_lines": 42,
+        "after_lines": 41
+      }
+    ],
+    "bytes_removed": 690,
+    "lines_removed": 18
+  },
+  "other_single_use_helpers_considered": [
+    {
+      "name": "KSeed222.th_bundleNF",
+      "decision": "Keep for now. Names the exact syntactic commuting square used for derivability; inlining risks making the key direct-seed argument less clear."
+    },
+    {
+      "name": "KSeed222.sat_update_fresh",
+      "decision": "Keep. Small reusable semantic freshness fact used by simp under several matrix contexts, even if only one source line calls it."
+    },
+    {
+      "name": "KSeed222.named_clos_iff",
+      "decision": "Keep. Long semantic normalization statement isolates update/binder side conditions and keeps named_bundle_iff_seed readable."
+    },
+    {
+      "name": "KSeed222.free_th/free_lt_enc",
+      "decision": "Keep. Recursive mathematical freshness lemmas; single external use is not a reason to duplicate their inductions."
+    }
+  ],
+  "static_scan": {
+    "files": 46,
+    "forbidden_token_hits": 0,
+    "scope": "48path review minus2absentretirements, not entire repository"
+  },
+  "files": [
+    {
+      "module": "BusyBeaver.ZFC.CodeOrder",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+      "base": {
+        "sha256": "7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03",
+        "bytes": 19348,
+        "lines": 427
+      },
+      "main": {
+        "sha256": "dad7258176530b381ee630504e7a5b2cac60fd9f3f86514d13e6ece711b17556",
+        "bytes": 18808,
+        "lines": 416
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: streamline pair witnesses and append order; remove unused local hpair/h1; inline hnat use. Formula-code order statement unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.Constructible",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "base": {
+        "sha256": "c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71",
+        "bytes": 19296,
+        "lines": 431
+      },
+      "main": {
+        "sha256": "2c3aea758b591dd3deb3f154a96f4fbd52e2c6d9600f7506058f593670bfd2d6",
+        "bytes": 18843,
+        "lines": 410
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: pointwise environment congruence, least-stage witness reuse, pair/union cases. The definitions of RSat, IsL, InL and power-in-L are unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleAbs",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "base": {
+        "sha256": "b2436520ee70a8fec29e6e45ad30f958b5740415588ab7004bcc5f73b292047d",
+        "bytes": 52054,
+        "lines": 992
+      },
+      "main": {
+        "sha256": "3a1166a1879f5895671cb2d023130410d7c380a5134b0990ea0d9415719d3756",
+        "bytes": 50827,
+        "lines": 917
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms plus moving unchanged inL_nat/inL_kpair_of earlier for reuse in val_econs. Internal-code inversion/rank argument and satisfaction absoluteness retain their premises and conclusions."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleDef",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "base": {
+        "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699",
+        "bytes": 9490,
+        "lines": 198
+      },
+      "main": {
+        "sha256": "28b93a2d4340c8ade31b8bf30a2709419ba4846478381a5ec02112b1b0fd3d34",
+        "bytes": 9410,
+        "lines": 192
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms in named satisfaction/definability lemmas; no definitions or semantics changed."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleOrder",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+      "base": {
+        "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74",
+        "bytes": 28426,
+        "lines": 587
+      },
+      "main": {
+        "sha256": "7f19fe8d9c6c6aa5bf160e46715c364adb395f6bb12092380510a1e8deddfc0d",
+        "bytes": 28316,
+        "lines": 583
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: return Separation witness directly, compress pair inversion and rewrites. No choice/order premise changes."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleReflect",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "base": {
+        "sha256": "07ad377189fdb57c73b0b9058c04820d2d03dfe3863406d1933ae03179cc7a15",
+        "bytes": 32253,
+        "lines": 695
+      },
+      "main": {
+        "sha256": "b844bddeeebe4d009d92edc16a79225e81e5ef8ce0626b2b78c02c6fc3fd3108",
+        "bytes": 31015,
+        "lines": 661
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: merge congruence induction branches, inline environment and ordinal helpers. Reflection still requires finite body coverage and Closed."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleZF",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+      "base": {
+        "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c",
+        "bytes": 18455,
+        "lines": 404
+      },
+      "main": {
+        "sha256": "00ff2869b1313643c83a0124abc3cf8bf6e0b3e9d590e768ff8488ab7dd3cc6c",
+        "bytes": 17255,
+        "lines": 365
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms and moving unchanged vals_scons earlier. sat_sub quantifier cases share the same subtype environment equation; ZFAxioms fields unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.DeepPositiveClosure",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+      "base": {
+        "sha256": "4174b82c10665bf1f7385b70c0e2cfc9bb61dbdd887d3bc19a57de42076bdccb",
+        "bytes": 8726,
+        "lines": 214
+      },
+      "main": {
+        "sha256": "375725bbc3c96a6f677b93d25384d734360433956a1790808d758cedce63dab7",
+        "bytes": 7953,
+        "lines": 184
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: use exists/forall/imp congruence for actual indexed formula semantics; no arbitrary semantic relation schema substituted."
+    },
+    {
+      "module": "BusyBeaver.ZFC.FiniteSets",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+      "base": {
+        "sha256": "a7598510348f597412e269d1df9ac8da5110f96e699d58aaa0eec081a2960702",
+        "bytes": 7350,
+        "lines": 199
+      },
+      "main": {
+        "sha256": "19ef992d5968c0a908fd7b794649da419798491ec325079d5da1e6d3baf25a1f",
+        "bytes": 6839,
+        "lines": 163
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct equality transports and existential witnesses. Kuratowski pair injectivity and formula contracts unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.InductiveAttempts",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+      "base": {
+        "sha256": "b84f21e85367cecc74a7c3b52a83930099f5bb07a95f1dd10089c08d36a7f74f",
+        "bytes": 18624,
+        "lines": 397
+      },
+      "main": {
+        "sha256": "25a28fd48106e22d6855cac5a850012816c9ec9083d8b70f3c9ede1dc002c111",
+        "bytes": 17819,
+        "lines": 347
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: inline local agreement/domain witnesses; congruence for formula semantics. Agreement/existence cuts and partial-functional image assumptions remain explicit."
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalOrd",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "base": {
+        "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616",
+        "bytes": 7525,
+        "lines": 192
+      },
+      "main": {
+        "sha256": "973f0f0ac7b2c88e7d93ce60f2785a806be1e98c61fdbbe9f69d094c5ea93a29",
+        "bytes": 7140,
+        "lines": 161
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: compress ordinal/least-element case analysis. Ord, Regular and formula-definability hypotheses unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalRank",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "base": {
+        "sha256": "f58d808ed2516595bf476ab6df80049b76c179dd7f117b6eebbe08e93fa41ff5",
+        "bytes": 20994,
+        "lines": 474
+      },
+      "main": {
+        "sha256": "052a1d3e294781944e52d52bb86a8f3d1968ffc987f1808bf8c0cc3ca8700b0f",
+        "bytes": 20720,
+        "lines": 457
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: pass induction directly and inline domain/stage witnesses. Definable recursion resources retained."
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalWO",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+      "base": {
+        "sha256": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858",
+        "bytes": 15765,
+        "lines": 311
+      },
+      "main": {
+        "sha256": "344bd30704aad42e53efcf86dcff59a931a00e80ba46949a95f725305ba69a40",
+        "bytes": 15315,
+        "lines": 288
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct Exists.imp/Or.imp, least-key witnesses and branch sharing. Set-internal least-element property remains the same."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEind222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "base": {
+        "sha256": "090f7bbb58295d186f9dd10ee86041f8b65d2f4ebea6d496bafdd88f2d56b507",
+        "bytes": 15502,
+        "lines": 329
+      },
+      "main": {
+        "sha256": "5bf55169d07ef0e5b41fe0e21b3bbb72f3c3063538dd0f36afb60b99bb6b0602",
+        "bytes": 15343,
+        "lines": 320
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: deduction applications and inline irreflexivity witness in c222_complete. Completeness statement unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEqCodes222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean",
+      "base": {
+        "sha256": "05cf02d5c5f58e61fa35b3c14bf61cc8198bff5533c0f932e0878950e1f4d008",
+        "bytes": 4750,
+        "lines": 101
+      },
+      "main": {
+        "sha256": "1e2e768af99cbf3fe1cae0f4f41e93c229e77f8ea4937ceab9884a93ff8071cb",
+        "bytes": 4735,
+        "lines": 100
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof term: rho7_222 directly applies ded2; formula code unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KIndisc222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KIndisc222.lean",
+      "base": {
+        "sha256": "c3f95b4c789175c259bdf3b0b94a6cf85966227e7fe6ca34e1d809a29df80120",
+        "bytes": 7069,
+        "lines": 151
+      },
+      "main": null,
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Retired old indiscernibility quotient. FullSeed is moved unchanged into KSeedInterface222; old quotient-specific helpers are no longer needed by maintained source callers."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerEqv",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerEqv.lean",
+      "base": {
+        "sha256": "7d8646d8e043223a1653456d44138053e347517b30b21f3989ec326376cc7d12",
+        "bytes": 4395,
+        "lines": 101
+      },
+      "main": {
+        "sha256": "0531258acfdd868577e1f23eaf5feb64441273472d762df3632601cada8f83e4",
+        "bytes": 4200,
+        "lines": 97
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: eta contractions/direct tag_transitive, preserving exact weak quotient hypotheses."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerQHyp",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean",
+      "base": {
+        "sha256": "60161176b8b6fad02c744cb597ac5178a8b98d3cff64995e6445bf238afb0c6a",
+        "bytes": 12635,
+        "lines": 263
+      },
+      "main": {
+        "sha256": "b574256e642a30021ab62b050c55703a1e7b694fab2c76da9563530305bf6e92",
+        "bytes": 12366,
+        "lines": 248
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: environment case enumeration and direct Or congruence/projections; tagged singleton/union resource statements unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerRaw",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean",
+      "base": {
+        "sha256": "50215ec937d5246012d54e9eb222b3b2dc1c4c4d7f12ad78977743e520236cbd",
+        "bytes": 9381,
+        "lines": 202
+      },
+      "main": {
+        "sha256": "9c4d606be83bdb5da13115f7bbe05b84c8aee1a1f5a2b85518fa6dd4327ec5b7",
+        "bytes": 9368,
+        "lines": 201
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof term: rwa preserves the original raw_singleton equality transport."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerRel",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRel.lean",
+      "base": {
+        "sha256": "8fbc57492941d029cfdac96a96e349b00a926bb61d6ed553561769947f41ee57",
+        "bytes": 3996,
+        "lines": 94
+      },
+      "main": {
+        "sha256": "85d04c59c5a731186da5d682f0be67e4f0a128ddc248e0a56d1e3b268ed3e5a1",
+        "bytes": 3908,
+        "lines": 87
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: inline index equation, directly construct subtype quantifier witnesses. Relativization definition and premise unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerSeed",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+      "base": {
+        "sha256": "2c0bc6802bb29ecb978aa88ae2b1aa9af65b64b2ff4a464f1824bc36e89d89c6",
+        "bytes": 2859,
+        "lines": 67
+      },
+      "main": {
+        "sha256": "ef411c36c16ec10fb0f28de21ae5f72b57df1b9479fd1e6392cddce161367165",
+        "bytes": 2866,
+        "lines": 67
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Import migrates from retired KIndisc222 to KSeedInterface222. FullSeed-to-FormSeed proof unchanged upstream; extra candidate removes duplicate one-use relation-congruence helper."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerTag",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean",
+      "base": {
+        "sha256": "5ad0fb016530fe97a22444dfddd71981dd1e72e8f749a712b7fb030c51c6c24c",
+        "bytes": 9945,
+        "lines": 214
+      },
+      "main": {
+        "sha256": "488d24e58a1a78a1f4963eb0476b6abe73a9e0e82fd37cc0e8a81f9f68bcaee8",
+        "bytes": 9918,
+        "lines": 210
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof term: combine environment cases in tag_sep; no formula change."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Collect",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean",
+      "base": {
+        "sha256": "48963a9ac77830955291662a191df4b8aaaddf5db5046cfd411b3abe0c6e6bb6",
+        "bytes": 3830,
+        "lines": 91
+      },
+      "main": {
+        "sha256": "7e0bd508c644964cba186be9aea5561c7afd6ca8d537cbfd1ee09064f7ec51d0",
+        "bytes": 3818,
+        "lines": 90
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof term: rw/exact to rwa for quotient matrix semantics."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Model",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean",
+      "base": {
+        "sha256": "ce4abea5e8a21fb0a2c9c7fa0c439e67a34abbbd1edee7df159583784035fd38",
+        "bytes": 7553,
+        "lines": 192
+      },
+      "main": {
+        "sha256": "284f5c1a9ac828bd2b773fbfe365ec1d5b2471f7f6088e2b0f82abfc0fbfcd2a",
+        "bytes": 7522,
+        "lines": 190
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: rw/exact to rwa in two quantified satisfaction branches."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Power",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean",
+      "base": {
+        "sha256": "bd112ce0e758f9210939afdf9d5d8e2207755888f69ce8aa9f2b01a806a540e7",
+        "bytes": 1871,
+        "lines": 51
+      },
+      "main": {
+        "sha256": "c2cafb493b2893e3345edac24e1bc2ac2981d056983828f1836c2286cfe24c5b",
+        "bytes": 2626,
+        "lines": 66
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Main retains the original trace_instance helper/import/prose from the shared quotient proposal; phase16 sole-caller inline cleanup can remain."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Replacement",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Replacement.lean",
+      "base": {
+        "sha256": "671c356dba5e7a2eea61ae7ac9ecd775187ea9f3d82aade719b1329654176a8b",
+        "bytes": 6650,
+        "lines": 143
+      },
+      "main": {
+        "sha256": "42f4b3c736f74fdc0737a35ce12d876e83d8cb068afe2f5633d1521e14ea73ae",
+        "bytes": 6640,
+        "lines": 142
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof term: rw/exact to rwa for quotient_relOf."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeed222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean",
+      "base": {
+        "sha256": "fb411210e069e9697de5b097775595e35483560e4abbbb4fae5cc7583fec2423",
+        "bytes": 8645,
+        "lines": 195
+      },
+      "main": {
+        "sha256": "f1edf98f4bcd6f548f8e7b8ca59afdf4f01fc8307c1fdab19b21d95afb9543e8",
+        "bytes": 8449,
+        "lines": 184
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: merge decoded-label induction branches and compress seed semantics witnesses. SeedProp and bundle semantics definitions unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedDirect222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean",
+      "base": null,
+      "main": {
+        "sha256": "671c413d14ec8b75d2c80f51ca8acb35acaf408fb8d0f4581df42e6fdc9f92af",
+        "bytes": 6875,
+        "lines": 165
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "New original-domain proof of seed for all named formulas, including literal equality, using a fresh label chosen from translated code. Extra candidate removes sole-caller FullSeed constructor wrapper."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedInterface222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean",
+      "base": null,
+      "main": {
+        "sha256": "0ac1d3e3a2071fe04865502dcf0decb22fa9a32dfcceb7fa2e9c33c72cfc188e",
+        "bytes": 1682,
+        "lines": 42
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Seven full declarations moved unchanged from retired route modules: negNF, reqNF, closNF, bundleNF, enc_bundleNF, DerivableNF, FullSeed. Extra candidate fixes stale optional-quotient prose."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedModel222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean",
+      "base": {
+        "sha256": "4043068fdebe5fb40f4fd31986b4fcc6a1b98e8c60fc6cd7e241dda5e93f1d0a",
+        "bytes": 5148,
+        "lines": 116
+      },
+      "main": null,
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Retired old equality-free seed / semantic encode-decode route. Six bundle/theory declarations move unchanged into shared interface; obsolete equality-free bridge lemmas disappear."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KThmK",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean",
+      "base": {
+        "sha256": "396779f2da512975580d8a34e322cd589fbf22c33018cfd5b389b99c4398b4dc",
+        "bytes": 8997,
+        "lines": 215
+      },
+      "main": {
+        "sha256": "35b485200a181eceba3098a3ed837bc51c9f1e448bc3d2bb3e77b1d4d52b87c3",
+        "bytes": 8661,
+        "lines": 202
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct deduction applications and inline local Leibniz derivations/freshness disjunctions. Axiom constructor use and statements unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.KUpper222",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean",
+      "base": {
+        "sha256": "158be77743b807125759bf2f39424e4697bbb7f194b9f3110bacab5fd6d0f53f",
+        "bytes": 11534,
+        "lines": 259
+      },
+      "main": {
+        "sha256": "1c5a7f8abe2a245e5d3e3682e7eeea95402cfe6f4d0d698729f80eb58330f2ea",
+        "bytes": 11249,
+        "lines": 239
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: merge semantic induction branches and inline environment witnesses. Constructible seed/upper consistency argument and hypotheses unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedZF",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "base": {
+        "sha256": "b477039b6308048559a03b3db363513ec20ae84b724f1788939fc8b162a5d249",
+        "bytes": 7319,
+        "lines": 175
+      },
+      "main": {
+        "sha256": "07a7b77602e217e365920a179f9523ac11d527ecdef052fefa801820f093b247",
+        "bytes": 7068,
+        "lines": 166
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: funext rewrite, merged connective induction cases, direct Replacement witness. NSat/toForm/NForm unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.OrderRec",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+      "base": {
+        "sha256": "397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038",
+        "bytes": 15025,
+        "lines": 309
+      },
+      "main": {
+        "sha256": "19bcf592efcef5647a53e9796db590aad1585e3b19f25445aeb6272d1e50eeb2",
+        "bytes": 14773,
+        "lines": 295
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: return Separation witness directly, simplify field/end-extension witnesses. Stage recursion and ordering contracts unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.PositiveClosure",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+      "base": {
+        "sha256": "5cfa7e72c82fcb7d9f98d03e1c489d490ead15c5353ebebba68af5dab0a49676",
+        "bytes": 9510,
+        "lines": 223
+      },
+      "main": {
+        "sha256": "0d912c69e90902102335dc045d4426fa94681ed353f9c8750d692fc4608561e5",
+        "bytes": 8923,
+        "lines": 183
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct instance witnesses and inline switch/subset constructions. Semantic predicate parameters remain explicitly local instance inputs."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileAxioms",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+      "base": {
+        "sha256": "e052a69b89da6eb36f480ed87633236b2b811868ad01b45a7ddb0a5ed072481c",
+        "bytes": 12531,
+        "lines": 281
+      },
+      "main": {
+        "sha256": "4004fd4401c505bc42e1a299d92ae0220df00bb80fb4fbe3853e3fed83488a1b",
+        "bytes": 12245,
+        "lines": 250
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: inline profile/trace witnesses and equality transports. Containers/CollectionInstance premises unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileComposition",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+      "base": {
+        "sha256": "2d2af6f596cef80f52c8463a40089be53f55d3b7c0d5ecc09742180a6e00f8cf",
+        "bytes": 14966,
+        "lines": 322
+      },
+      "main": {
+        "sha256": "2c51eda4e0c175e66345ffd8bee9fe2ac0a9f74e7d63a044ff6b0b06b1b9c73a",
+        "bytes": 14663,
+        "lines": 287
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct witnesses and inline derived bisimulation join proof. Matching/composition resources and formula-specific instance assumptions retained."
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientCPGIC",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+      "base": {
+        "sha256": "c5f2bde4270a78a0956b02bc9101687d64ab1b9841f449767433aa0361c6727c",
+        "bytes": 8358,
+        "lines": 170
+      },
+      "main": {
+        "sha256": "09d9ede6e904cea89bc70482279924a2eb141b6ce70aa285fc4fb8c70e0ed2ed",
+        "bytes": 9028,
+        "lines": 171
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Retains phase16 mathematical structure; a7b8f1ae67 shortens strong_trace, subset representative and quotient container proofs. Two unused strong forwarders remain upstream and can still be removed."
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientModel",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean",
+      "base": {
+        "sha256": "d13a4227d40ddf196ee1526c2472c9154022ee039b9a0a3276a9bfe6a62b4cac",
+        "bytes": 4403,
+        "lines": 96
+      },
+      "main": {
+        "sha256": "4c1c4766091b4c987c97f8f81d6530f1c74bfce0665d94a16a728c410dc0e06b",
+        "bytes": 4614,
+        "lines": 100
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Main retains old mk_scons forwarder and the weak trace helper call. Preserve phase16 cleanup; ofCPGIC QHyp construction itself is the same."
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientReplacement",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+      "base": {
+        "sha256": "cfb4cab3d129e44cc7c88374719b9fed29555c70c61b4fac434db026eb9ac844",
+        "bytes": 1390,
+        "lines": 29
+      },
+      "main": {
+        "sha256": "d1f8394a868abf9325eafb83d3ba919ecef5e8ec5f7ebd478d457508d2f738c7",
+        "bytes": 3686,
+        "lines": 70
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Main retains six old unused strong forwarders; no new callers justify restoration. Preserve phase16 cleanup and narrower import."
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientSeparation",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+      "base": {
+        "sha256": "7f55d7535fcc14caa42bfae5cbc6d9b7501317a8cfd60749a4668fe8f17cc64d",
+        "bytes": 1440,
+        "lines": 29
+      },
+      "main": {
+        "sha256": "48b3fd0fb672134207f57f2dddecda33335c65725e185986b5af2bf85d2bb29f",
+        "bytes": 2359,
+        "lines": 45
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Main retains three old unused strong forwarders; useful actual quotient separation interface unchanged. Preserve phase16 cleanup."
+    },
+    {
+      "module": "BusyBeaver.ZFC.SatSupport",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "base": {
+        "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226",
+        "bytes": 9418,
+        "lines": 193
+      },
+      "main": {
+        "sha256": "6c373873159691fa767e518917874410201b7cec2b42d5add25a93e7495b24bd",
+        "bytes": 9347,
+        "lines": 190
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: inline environment closure and omega-transitivity arguments in agreeP_econs."
+    },
+    {
+      "module": "BusyBeaver.ZFC.SingletonInfinity",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+      "base": {
+        "sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974",
+        "bytes": 7480,
+        "lines": 177
+      },
+      "main": {
+        "sha256": "9b09ad55d12beee90753552b7a4bb47dc09ee6af729473ec308de0ece4b8ee52",
+        "bytes": 7259,
+        "lines": 154
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct equality transport and quotient index witness; set-represented induction restriction unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.TupleOrder",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+      "base": {
+        "sha256": "fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a",
+        "bytes": 15760,
+        "lines": 327
+      },
+      "main": {
+        "sha256": "176e2be87b0c071d5d6b3f886acb702f0864c76175c0f4fa26c557d604edd39a",
+        "bytes": 15497,
+        "lines": 320
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: first difference/least-order witnesses and direct restriction Separation, eta contraction of wellorder fields. Tuple definitions unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFModelCore",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+      "base": {
+        "sha256": "390b3d8d662ce5d8fb62dd9cabc628e11afd08872b60dbd0e4a522cc17db73f5",
+        "bytes": 9064,
+        "lines": 204
+      },
+      "main": {
+        "sha256": "59a40978561071d79c289024b8e13119ccbc9b90032b4300867d6b318873709d",
+        "bytes": 8991,
+        "lines": 196
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: inline Domain/subtype witnesses and raw relation equality. Internally well-founded class model interpretation unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFRelativization",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "base": {
+        "sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d",
+        "bytes": 6858,
+        "lines": 168
+      },
+      "main": {
+        "sha256": "261dbb7ef8df89af2ac77855d8201f4259e88d8dda3d2d8e88684437d82e618a",
+        "bytes": 6830,
+        "lines": 166
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: rw/exact to rwa in quantifier cases. Guard/lift/translate definitions unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.WellFoundedPart",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+      "base": {
+        "sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b",
+        "bytes": 11546,
+        "lines": 258
+      },
+      "main": {
+        "sha256": "f925f911d89e78298838d7009fc51aaa353fa7ff27414575f03870857fc1f390",
+        "bytes": 10873,
+        "lines": 235
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: semantic equivalences use quantifier/imp congruence; direct intersection witness; inline collection support projection. Internal well-foundedness meaning unchanged."
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFRank",
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "base": {
+        "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858",
+        "bytes": 15645,
+        "lines": 338
+      },
+      "main": {
+        "sha256": "df0b9faf58e80e51a390dd8ec15944eecdfe462c0cc1ec94d1a29eab36f6d388",
+        "bytes": 15497,
+        "lines": 323
+      },
+      "review": "PASS_SOURCE_REVIEW_ONLY",
+      "finding": "Only proof terms: direct definable induction/least-stage witness and compact environment cases. Rank resources and ordinal assumptions unchanged."
+    }
+  ],
+  "actions": {
+    "canonical_edits": 0,
+    "other_worktree_edits": 0,
+    "compilers_run": 0,
+    "generators_run": 0,
+    "supplied_code_run": 0,
+    "external_messages": 0
+  },
+  "preparation_note": "An inert metadata script completed its three output files then failed in its final print because a local Path variable shadowed the process variable. Separate readback verified all three files and reported scan0/moved7. No Lean or candidate source failure.",
+  "artifacts": [
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+      "sha256": "7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03",
+      "bytes": 19348
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "sha256": "c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71",
+      "bytes": 19296
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "sha256": "b2436520ee70a8fec29e6e45ad30f958b5740415588ab7004bcc5f73b292047d",
+      "bytes": 52054
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699",
+      "bytes": 9490
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+      "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74",
+      "bytes": 28426
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "sha256": "07ad377189fdb57c73b0b9058c04820d2d03dfe3863406d1933ae03179cc7a15",
+      "bytes": 32253
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+      "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c",
+      "bytes": 18455
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+      "sha256": "4174b82c10665bf1f7385b70c0e2cfc9bb61dbdd887d3bc19a57de42076bdccb",
+      "bytes": 8726
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+      "sha256": "a7598510348f597412e269d1df9ac8da5110f96e699d58aaa0eec081a2960702",
+      "bytes": 7350
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+      "sha256": "b84f21e85367cecc74a7c3b52a83930099f5bb07a95f1dd10089c08d36a7f74f",
+      "bytes": 18624
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616",
+      "bytes": 7525
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "sha256": "f58d808ed2516595bf476ab6df80049b76c179dd7f117b6eebbe08e93fa41ff5",
+      "bytes": 20994
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+      "sha256": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858",
+      "bytes": 15765
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "sha256": "090f7bbb58295d186f9dd10ee86041f8b65d2f4ebea6d496bafdd88f2d56b507",
+      "bytes": 15502
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean",
+      "sha256": "05cf02d5c5f58e61fa35b3c14bf61cc8198bff5533c0f932e0878950e1f4d008",
+      "bytes": 4750
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KIndisc222.lean",
+      "sha256": "c3f95b4c789175c259bdf3b0b94a6cf85966227e7fe6ca34e1d809a29df80120",
+      "bytes": 7069
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerEqv.lean",
+      "sha256": "7d8646d8e043223a1653456d44138053e347517b30b21f3989ec326376cc7d12",
+      "bytes": 4395
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean",
+      "sha256": "60161176b8b6fad02c744cb597ac5178a8b98d3cff64995e6445bf238afb0c6a",
+      "bytes": 12635
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean",
+      "sha256": "50215ec937d5246012d54e9eb222b3b2dc1c4c4d7f12ad78977743e520236cbd",
+      "bytes": 9381
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRel.lean",
+      "sha256": "8fbc57492941d029cfdac96a96e349b00a926bb61d6ed553561769947f41ee57",
+      "bytes": 3996
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+      "sha256": "2c0bc6802bb29ecb978aa88ae2b1aa9af65b64b2ff4a464f1824bc36e89d89c6",
+      "bytes": 2859
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean",
+      "sha256": "5ad0fb016530fe97a22444dfddd71981dd1e72e8f749a712b7fb030c51c6c24c",
+      "bytes": 9945
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean",
+      "sha256": "48963a9ac77830955291662a191df4b8aaaddf5db5046cfd411b3abe0c6e6bb6",
+      "bytes": 3830
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean",
+      "sha256": "ce4abea5e8a21fb0a2c9c7fa0c439e67a34abbbd1edee7df159583784035fd38",
+      "bytes": 7553
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean",
+      "sha256": "bd112ce0e758f9210939afdf9d5d8e2207755888f69ce8aa9f2b01a806a540e7",
+      "bytes": 1871
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Replacement.lean",
+      "sha256": "671c356dba5e7a2eea61ae7ac9ecd775187ea9f3d82aade719b1329654176a8b",
+      "bytes": 6650
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean",
+      "sha256": "fb411210e069e9697de5b097775595e35483560e4abbbb4fae5cc7583fec2423",
+      "bytes": 8645
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean",
+      "sha256": "4043068fdebe5fb40f4fd31986b4fcc6a1b98e8c60fc6cd7e241dda5e93f1d0a",
+      "bytes": 5148
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean",
+      "sha256": "396779f2da512975580d8a34e322cd589fbf22c33018cfd5b389b99c4398b4dc",
+      "bytes": 8997
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean",
+      "sha256": "158be77743b807125759bf2f39424e4697bbb7f194b9f3110bacab5fd6d0f53f",
+      "bytes": 11534
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "sha256": "b477039b6308048559a03b3db363513ec20ae84b724f1788939fc8b162a5d249",
+      "bytes": 7319
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+      "sha256": "397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038",
+      "bytes": 15025
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+      "sha256": "5cfa7e72c82fcb7d9f98d03e1c489d490ead15c5353ebebba68af5dab0a49676",
+      "bytes": 9510
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+      "sha256": "e052a69b89da6eb36f480ed87633236b2b811868ad01b45a7ddb0a5ed072481c",
+      "bytes": 12531
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+      "sha256": "2d2af6f596cef80f52c8463a40089be53f55d3b7c0d5ecc09742180a6e00f8cf",
+      "bytes": 14966
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+      "sha256": "c5f2bde4270a78a0956b02bc9101687d64ab1b9841f449767433aa0361c6727c",
+      "bytes": 8358
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean",
+      "sha256": "d13a4227d40ddf196ee1526c2472c9154022ee039b9a0a3276a9bfe6a62b4cac",
+      "bytes": 4403
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+      "sha256": "cfb4cab3d129e44cc7c88374719b9fed29555c70c61b4fac434db026eb9ac844",
+      "bytes": 1390
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+      "sha256": "7f55d7535fcc14caa42bfae5cbc6d9b7501317a8cfd60749a4668fe8f17cc64d",
+      "bytes": 1440
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226",
+      "bytes": 9418
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+      "sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974",
+      "bytes": 7480
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+      "sha256": "fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a",
+      "bytes": 15760
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+      "sha256": "390b3d8d662ce5d8fb62dd9cabc628e11afd08872b60dbd0e4a522cc17db73f5",
+      "bytes": 9064
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d",
+      "bytes": 6858
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+      "sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b",
+      "bytes": 11546
+    },
+    {
+      "path": "base/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858",
+      "bytes": 15645
+    },
+    {
+      "path": "candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+      "sha256": "7f63ca9764d7f93e31905a19dca9b320f37178d6e44ca1eee788c060a19da8fc",
+      "bytes": 3992
+    },
+    {
+      "path": "candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+      "sha256": "4af3a71099fc066001f1663c6cabb139037ec5f54a1ca9c3acdf3af4e684949e",
+      "bytes": 2631
+    },
+    {
+      "path": "candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean",
+      "sha256": "6616630b8e6707a5fab1e59d5a540b86d0b9ab03d2545cd0871bce73e9669d13",
+      "bytes": 6480
+    },
+    {
+      "path": "candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean",
+      "sha256": "6c0860c7c763b2d71c111bdcc27c2eabc569c6f2674c411f93d6349a164f1170",
+      "bytes": 1634
+    },
+    {
+      "path": "candidate-map.json",
+      "sha256": "3da31f6bf816df675b3bd8f39a20d2caf28b5e837243e0a17cb659c3c3b90b0d",
+      "bytes": 1701
+    },
+    {
+      "path": "candidate.diff",
+      "sha256": "8313b6e2091523ece5d025f8766f13d92cc5cc1504b43da4c7521d90aa5a0898",
+      "bytes": 3504
+    },
+    {
+      "path": "clients/DirectSeed17Api.lean",
+      "sha256": "194bbd119e630c9c294b706eda25120ee8b9912dc80ffc171b43836a23442e21",
+      "bytes": 1014
+    },
+    {
+      "path": "declaration-header-delta.json",
+      "sha256": "cf24060da5e7557225ebaf6f7e09bb41c5ff92fb2d25d28ad8210071abcde3e7",
+      "bytes": 3020
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+      "sha256": "dad7258176530b381ee630504e7a5b2cac60fd9f3f86514d13e6ece711b17556",
+      "bytes": 18808
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "sha256": "2c3aea758b591dd3deb3f154a96f4fbd52e2c6d9600f7506058f593670bfd2d6",
+      "bytes": 18843
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "sha256": "3a1166a1879f5895671cb2d023130410d7c380a5134b0990ea0d9415719d3756",
+      "bytes": 50827
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "sha256": "28b93a2d4340c8ade31b8bf30a2709419ba4846478381a5ec02112b1b0fd3d34",
+      "bytes": 9410
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+      "sha256": "7f19fe8d9c6c6aa5bf160e46715c364adb395f6bb12092380510a1e8deddfc0d",
+      "bytes": 28316
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "sha256": "b844bddeeebe4d009d92edc16a79225e81e5ef8ce0626b2b78c02c6fc3fd3108",
+      "bytes": 31015
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+      "sha256": "00ff2869b1313643c83a0124abc3cf8bf6e0b3e9d590e768ff8488ab7dd3cc6c",
+      "bytes": 17255
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+      "sha256": "375725bbc3c96a6f677b93d25384d734360433956a1790808d758cedce63dab7",
+      "bytes": 7953
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+      "sha256": "19ef992d5968c0a908fd7b794649da419798491ec325079d5da1e6d3baf25a1f",
+      "bytes": 6839
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+      "sha256": "25a28fd48106e22d6855cac5a850012816c9ec9083d8b70f3c9ede1dc002c111",
+      "bytes": 17819
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "sha256": "973f0f0ac7b2c88e7d93ce60f2785a806be1e98c61fdbbe9f69d094c5ea93a29",
+      "bytes": 7140
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "sha256": "052a1d3e294781944e52d52bb86a8f3d1968ffc987f1808bf8c0cc3ca8700b0f",
+      "bytes": 20720
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+      "sha256": "344bd30704aad42e53efcf86dcff59a931a00e80ba46949a95f725305ba69a40",
+      "bytes": 15315
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "sha256": "5bf55169d07ef0e5b41fe0e21b3bbb72f3c3063538dd0f36afb60b99bb6b0602",
+      "bytes": 15343
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+      "sha256": "04965b2e82b0f22cdbb11910c17ddf82efafe26123040d6b1b01a88707ec8175",
+      "bytes": 4004
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean",
+      "sha256": "1e2e768af99cbf3fe1cae0f4f41e93c229e77f8ea4937ceab9884a93ff8071cb",
+      "bytes": 4735
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerEqv.lean",
+      "sha256": "0531258acfdd868577e1f23eaf5feb64441273472d762df3632601cada8f83e4",
+      "bytes": 4200
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean",
+      "sha256": "b574256e642a30021ab62b050c55703a1e7b694fab2c76da9563530305bf6e92",
+      "bytes": 12366
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean",
+      "sha256": "9c4d606be83bdb5da13115f7bbe05b84c8aee1a1f5a2b85518fa6dd4327ec5b7",
+      "bytes": 9368
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRel.lean",
+      "sha256": "85d04c59c5a731186da5d682f0be67e4f0a128ddc248e0a56d1e3b268ed3e5a1",
+      "bytes": 3908
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+      "sha256": "ef411c36c16ec10fb0f28de21ae5f72b57df1b9479fd1e6392cddce161367165",
+      "bytes": 2866
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean",
+      "sha256": "488d24e58a1a78a1f4963eb0476b6abe73a9e0e82fd37cc0e8a81f9f68bcaee8",
+      "bytes": 9918
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean",
+      "sha256": "7e0bd508c644964cba186be9aea5561c7afd6ca8d537cbfd1ee09064f7ec51d0",
+      "bytes": 3818
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean",
+      "sha256": "284f5c1a9ac828bd2b773fbfe365ec1d5b2471f7f6088e2b0f82abfc0fbfcd2a",
+      "bytes": 7522
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean",
+      "sha256": "c2cafb493b2893e3345edac24e1bc2ac2981d056983828f1836c2286cfe24c5b",
+      "bytes": 2626
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Replacement.lean",
+      "sha256": "42f4b3c736f74fdc0737a35ce12d876e83d8cb068afe2f5633d1521e14ea73ae",
+      "bytes": 6640
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean",
+      "sha256": "f1edf98f4bcd6f548f8e7b8ca59afdf4f01fc8307c1fdab19b21d95afb9543e8",
+      "bytes": 8449
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean",
+      "sha256": "671c413d14ec8b75d2c80f51ca8acb35acaf408fb8d0f4581df42e6fdc9f92af",
+      "bytes": 6875
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean",
+      "sha256": "0ac1d3e3a2071fe04865502dcf0decb22fa9a32dfcceb7fa2e9c33c72cfc188e",
+      "bytes": 1682
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean",
+      "sha256": "35b485200a181eceba3098a3ed837bc51c9f1e448bc3d2bb3e77b1d4d52b87c3",
+      "bytes": 8661
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean",
+      "sha256": "1c5a7f8abe2a245e5d3e3682e7eeea95402cfe6f4d0d698729f80eb58330f2ea",
+      "bytes": 11249
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "sha256": "07a7b77602e217e365920a179f9523ac11d527ecdef052fefa801820f093b247",
+      "bytes": 7068
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+      "sha256": "19bcf592efcef5647a53e9796db590aad1585e3b19f25445aeb6272d1e50eeb2",
+      "bytes": 14773
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+      "sha256": "0d912c69e90902102335dc045d4426fa94681ed353f9c8750d692fc4608561e5",
+      "bytes": 8923
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+      "sha256": "4004fd4401c505bc42e1a299d92ae0220df00bb80fb4fbe3853e3fed83488a1b",
+      "bytes": 12245
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+      "sha256": "2c51eda4e0c175e66345ffd8bee9fe2ac0a9f74e7d63a044ff6b0b06b1b9c73a",
+      "bytes": 14663
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+      "sha256": "09d9ede6e904cea89bc70482279924a2eb141b6ce70aa285fc4fb8c70e0ed2ed",
+      "bytes": 9028
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean",
+      "sha256": "4c1c4766091b4c987c97f8f81d6530f1c74bfce0665d94a16a728c410dc0e06b",
+      "bytes": 4614
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+      "sha256": "d1f8394a868abf9325eafb83d3ba919ecef5e8ec5f7ebd478d457508d2f738c7",
+      "bytes": 3686
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+      "sha256": "48b3fd0fb672134207f57f2dddecda33335c65725e185986b5af2bf85d2bb29f",
+      "bytes": 2359
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "sha256": "6c373873159691fa767e518917874410201b7cec2b42d5add25a93e7495b24bd",
+      "bytes": 9347
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+      "sha256": "9b09ad55d12beee90753552b7a4bb47dc09ee6af729473ec308de0ece4b8ee52",
+      "bytes": 7259
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+      "sha256": "176e2be87b0c071d5d6b3f886acb702f0864c76175c0f4fa26c557d604edd39a",
+      "bytes": 15497
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+      "sha256": "59a40978561071d79c289024b8e13119ccbc9b90032b4300867d6b318873709d",
+      "bytes": 8991
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "sha256": "261dbb7ef8df89af2ac77855d8201f4259e88d8dda3d2d8e88684437d82e618a",
+      "bytes": 6830
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+      "sha256": "f925f911d89e78298838d7009fc51aaa353fa7ff27414575f03870857fc1f390",
+      "bytes": 10873
+    },
+    {
+      "path": "main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "sha256": "df0b9faf58e80e51a390dd8ec15944eecdfe462c0cc1ec94d1a29eab36f6d388",
+      "bytes": 15497
+    },
+    {
+      "path": "model.diff",
+      "sha256": "da2b4f2eba6277e581cf66e58de476b5a0121eed33d562e6053f000175afba59",
+      "bytes": 240663
+    },
+    {
+      "path": "moved-constants.json",
+      "sha256": "537c456e6e1c292926f204d1eb922f99b80e242f4cc01c8e8098675f45636db5",
+      "bytes": 2518
+    },
+    {
+      "path": "scope.json",
+      "sha256": "5012b58844c466c86e924e5ddbcf6faa86c1cb15e016a39b87ed71f5fad6eaab",
+      "bytes": 21181
+    },
+    {
+      "path": "seed-callers.txt",
+      "sha256": "20df458bb64f4bc56590bddd9e913a7eec27ff9801602fab28d37a6311e1aecd",
+      "bytes": 3894
+    },
+    {
+      "path": "source-scan.json",
+      "sha256": "e9c163195c8e93df1632904e78af30750bd503e5f25794c1c9c139ace102973e",
+      "bytes": 9156
+    },
+    {
+      "path": "typed-client-review.json",
+      "sha256": "4b1ec7ed5895025c18a854a8117b3c89af6545f77ea1a0674c7724cf79bee86e",
+      "bytes": 1452
+    }
+  ],
+  "typed_client_review": {
+    "path": "typed-client-review.json",
+    "sha256": "4b1ec7ed5895025c18a854a8117b3c89af6545f77ea1a0674c7724cf79bee86e",
+    "client_sha256": "194bbd119e630c9c294b706eda25120ee8b9912dc80ffc171b43836a23442e21",
+    "status": "PASS_SOURCE_REVIEW_AWAITING_ROOT_COMPILATION"
+  }
+}

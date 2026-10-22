@@ -89,8 +89,7 @@ theorem walk_follow (p : Program) (f n : Nat) (P : List Bool) (i : Nat)
   | zero => simp [walk] at hw
   | succ f ih =>
     have hd := (walk_gt p (f + 1) n P i e d hw).1
-    have hlen : d - i = (d - (i + 1)) + 1 := by omega
-    rw [hlen]
+    rw [show d - i = (d - (i + 1)) + 1 by omega]
     simp only [RMEquiv.pre, follow, bit_drop, Nat.add_zero,
       ← List.drop_add_one_eq_tail_drop]
     rw [walk_succ] at hw
@@ -136,9 +135,8 @@ theorem walk_ge (p : Program) (f n : Nat) (P : List Bool) (i : Nat)
       | node m =>
         rw [hc] at hw hf
         have hg := ih f m (i + 1) e' hw hf (fun j hj => by
-          have hh := ha (j + 1) (by simp; omega)
           simpa only [RMEquiv.bit_cons_succ,
-            show i + (j + 1) = i + 1 + j by omega] using hh)
+            show i + (j + 1) = i + 1 + j by omega] using ha (j + 1) (by simp; omega))
         simp only [List.length_cons]
         omega
       | inc r | decnz r | brk k | cont k | halt =>
@@ -237,8 +235,7 @@ theorem clean_inc (p : Program) (Q : List Bool) (e : Edge) (S T : List Bool)
     Clean p (incPath S) := by
   rcases incPath_shape S with ⟨m, _, hi⟩ | ⟨m, A, hs, hi⟩
   · rw [hi]
-    intro e' d hw i hd
-    exact bit_false_replicate m i
+    exact fun _ _ _ i _ => bit_false_replicate m i
   · have hf' : follow p (.node p.root)
         (A ++ (false :: List.replicate m true ++ T)) = some e := by
       simpa only [he, hs, List.append_assoc] using hf
@@ -298,12 +295,9 @@ theorem execute_clean (p : Program) (e : Edge) (Q : List Bool) (R : Registers)
 /-- Successful execution removes stray bits even if its input was not clean. -/
 theorem step_clean (p : Program) (c c' : Configuration)
     (hs : step p c = some c') : Clean p c'.path := by
-  cases hw : walk p (p.nnodes + 1) p.root c.path 0 with
-  | none => simp [step, hw] at hs
-  | some result =>
-    rcases result with ⟨e, d⟩
-    have hf := walk_follow_consume p c.path e d hw
-    exact execute_clean p e (consume c.path d) c.registers c' hf
+  rcases hw : walk p (p.nnodes + 1) p.root c.path 0 with _ | ⟨e, d⟩
+  · simp [step, hw] at hs
+  · exact execute_clean p e (consume c.path d) c.registers c' (walk_follow_consume p c.path e d hw)
       (by simpa only [step, hw] using hs)
 
 theorem run_reach (p : Program) (N : Nat) (c c' : Configuration)
@@ -316,14 +310,11 @@ theorem run_reach (p : Program) (N : Nat) (c c' : Configuration)
     cases hs : step p c with
     | none => simp [run, hs] at hr
     | some c1 =>
-      have hr' : run p N c1 = some c' := by simpa only [run, hs] using hr
-      rcases ih c1 hr' with he | he
+      rcases ih c1 (by simpa only [run, hs] using hr) with he | he
       · exact Or.inr ⟨c, by simpa only [he] using hs⟩
       · exact Or.inr he
 
-theorem clean_nil (p : Program) : Clean p [] := by
-  intro e d hw i hi
-  rfl
+theorem clean_nil (p : Program) : Clean p [] := fun _ _ _ _ _ => rfl
 
 theorem run_clean (p : Program) (N : Nat) (c c' : Configuration)
     (hc : Clean p c.path) (hr : run p N c = some c') : Clean p c'.path := by

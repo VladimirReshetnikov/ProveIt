@@ -70,7 +70,7 @@ theorem tup_val {n t i : V} (ht : IsTup H W n t) (hi : mem i n) :
 
 theorem tup_dom {n t i u : V} (ht : IsTup H W n t) (h : mem (kpair H i u) t) : mem i n := by
   obtain ⟨i', u', hi', e⟩ := ht.1.2.2 _ h
-  rw [(kpair_inj H _ _ _ _ e).1]; exact hi'
+  rwa [(kpair_inj H _ _ _ _ e).1]
 
 /-- Tuples that agree everywhere are equal. -/
 theorem tup_ext {n t t' : V} (ht : IsTup H W n t) (ht' : IsTup H W n t')
@@ -96,21 +96,17 @@ theorem first_diff {n t t' : V} (hn : mem n (omegaV H)) (ht : IsTup H W n t)
       simp only [NSat, nsat_neg, nsat_pmemF H]
       simp (disch := omega) only [upd_same, upd_other]
       rfl) n
-  have hne' : ∃ k, mem k D := by
-    apply Classical.byContradiction
-    intro hno
-    exact hne (tup_ext H ht ht' fun i u u' hi hu hu' => Classical.byContradiction fun h =>
+  have hne' : ∃ k, mem k D := Classical.byContradiction fun hno =>
+    hne (tup_ext H ht ht' fun i u u' hi hu hu' => Classical.byContradiction fun h =>
       hno ⟨i, (hD i).2 ⟨hi, u, u', hu, hu', h⟩⟩)
   obtain ⟨k, hk, hmin⟩ := (wo_nat H hR).least D hne' fun k hk =>
     ConstructibleZF.omega_trans H n hn k ((hD k).1 hk).1
   obtain ⟨hkn, u, u', hu, hu', huu⟩ := (hD k).1 hk
-  refine ⟨k, u, u', hkn, fun i v v' hi hv hv' => ?_, hu, hu', huu⟩
-  apply Classical.byContradiction
-  intro h
-  have hin : mem i n := nat_transitive H n hn k hkn i hi
-  rcases hmin i ((hD i).2 ⟨hin, v, v', hv, hv', h⟩) with h' | rfl
-  · exact mem_irrefl H hR k (nat_transitive H n hn k hkn |> fun _ =>
-      (ord_of_mem (ConstructibleZF.ord_omega H) (ConstructibleZF.omega_trans H n hn k hkn)).1 i hi k h')
+  refine ⟨k, u, u', hkn, fun i v v' hi hv hv' => Classical.byContradiction fun h => ?_, hu, hu',
+    huu⟩
+  rcases hmin i ((hD i).2 ⟨nat_transitive H n hn k hkn i hi, v, v', hv, hv', h⟩) with h' | rfl
+  · exact mem_irrefl H hR k ((ord_of_mem (ConstructibleZF.ord_omega H)
+      (ConstructibleZF.omega_trans H n hn k hkn)).1 i hi k h')
   · exact mem_irrefl H hR k hi
 
 omit hR in
@@ -191,12 +187,11 @@ section Least
 
 variable (H : ZFAxioms mem) (hR : Regular mem) {W : V}
 
-theorem res_exists (t n : V) : ∃ s, ConstructibleAbs.IsRes H t n s := by
-  obtain ⟨s, hs⟩ := sep_of H (fun p => ∃ i y, mem i n ∧ p = kpair H i y)
+theorem res_exists (t n : V) : ∃ s, ConstructibleAbs.IsRes H t n s :=
+  sep_of H (fun p => ∃ i y, mem i n ∧ p = kpair H i y)
     (.ex 2 (.ex 3 (.and (.mem 2 1) (kpairF 0 2 3)))) (fun _ => n) (fun p => by
       simp only [NSat, nsat_kpairF H]
       simp (disch := omega) only [upd_same, upd_other]) t
-  exact ⟨s, hs⟩
 
 theorem res_tup {n t s : V} (ht : IsTup H W (vsucc H n) t) (hs : ConstructibleAbs.IsRes H t n s) :
     IsTup H W n s := by
@@ -318,9 +313,7 @@ theorem lexN_least (hW : IsWOS H W) : ∀ n, mem n (omegaV H) → ∀ Z, (∃ z,
 theorem wo_lexN (hW : IsWOS H W) {n : V} (hn : mem n (omegaV H)) :
     IsWO mem (LexN H W n) (IsTup H W n) := by
   obtain ⟨htot, hanti, htrans⟩ := lexN_order H hR hW hn
-  exact ⟨fun _ _ => Or.inl rfl, fun t t' ht ht' => hanti t t' ht ht',
-    fun t t' t'' ht ht' ht'' => htrans t t' t'' ht ht' ht'', htot,
-    fun Z hne hZ => lexN_least H hW n hn Z hne hZ⟩
+  exact ⟨fun _ _ => Or.inl rfl, hanti, htrans, htot, lexN_least H hW n hn⟩
 
 end Least
 

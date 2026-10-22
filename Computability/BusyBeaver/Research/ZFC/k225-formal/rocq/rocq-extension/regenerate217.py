@@ -6,8 +6,8 @@ TM layer is the 218's:
 
 - calculus: rocq224's seed-K 222 files are copied (Codes222 ... Interp222, Sound222, Complete222:
   the judgment thm222 and its ZFC calibration). The dominated calculus thmDom (ThmDom.v: rho8
-  restricted to u <= a) derives exactly thm222's codes, by Source 149's certificate (DomRho8.v,
-  rendered from DomRho8.lean). The enumerator EnumDom.v is Enum222.v with the dominated AX
+  restricted to u <= a) derives exactly thm222's codes, by the shared implication core
+  (rocq224's DominatedCore.v at natural codes, rocqdom/DomRho8.v). The enumerator EnumDom.v is Enum222.v with the dominated AX
   command (fields z, y, x: U = d + z, A = U + x, B = h + y; GEN of the cache at U; rho8 at
   (A, B, c, U)); L1_SoundDom, L1_CompDom and SeedDom are Enum222's companions with the
   compiler's rho8 leaf AX(c, u, b, a - u);
@@ -39,7 +39,7 @@ KF = ROOT.parent.parent
 CALC_DIR = KF / "rocq224" / "src"
 DOM_DIR = KF / "rocqdom"
 V218 = ROOT / "coq" / "218"
-CALCULUS = ["Codes222", "Thm222", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta",
+CALCULUS = ["Codes222", "Thm222", "DominatedCore", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta",
             "L224E", "Interp222", "Sound222", "Complete222"]
 DOMINATED = ["DomRho8", "ThmDom", "EnumDom", "L1_SoundDom", "L1_CompDom", "SeedDom"]
 PROGRAM = ["DagDom", "ProgLibDom", "L2RootDom", "MainDom"]

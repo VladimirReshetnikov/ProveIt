@@ -1,0 +1,81 @@
+\begingroup\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{rll}
+\toprule
+No. & Output register & Operation \\
+\midrule
+\endfirsthead
+\toprule
+No. & Output register & Operation \\
+\midrule
+\endhead
+\bottomrule\endfoot
+1 & \src{tau_square} & \src{tau_root * tau_root} \\
+2 & \src{repunit} & \src{Bm1 * Jrep} \\
+3 & \src{q} & \src{repunit + 1} \\
+4 & \src{Lbig} & \src{q * q} \\
+5 & \src{n2} & \src{Lbig * q} \\
+6 & \src{wn2} & \src{w * q} \\
+7 & \src{sn2} & \src{s * n2} \\
+8 & \src{UM} & \src{wn2 * sn2} \\
+9 & \src{R10b} & \src{eta + zeta} \\
+10 & \src{ksn2} & \src{R10b * sn2} \\
+11 & \src{first_root_base} & \src{UM * ksn2} \\
+12 & \src{first_next} & \src{first_root_base + R10b} \\
+13 & \src{first_product} & \src{first_root_base * first_next} \\
+14 & \src{norm_first} & \src{tau_square - first_product} \\
+15 & \src{R10a} & \src{ksn2 + eta} \\
+16 & \src{R12} & \src{UM + sn2} \\
+17 & \src{cam2} & \src{R10a * R12} \\
+18 & \src{D1} & \src{wn2 + cam2} \\
+19 & \src{a4} & \src{4 * R12} \\
+20 & \src{a4m5} & \src{a4 + 3} \\
+21 & \src{gam} & \src{gamma * a4m5} \\
+22 & \src{R14} & \src{D1 + gam} \\
+23 & \src{L15} & \src{R14 * R14} \\
+24 & \src{a_square} & \src{R12 * R12} \\
+25 & \src{A} & \src{a_square + a4m5} \\
+26 & \src{c2} & \src{R10a * R10a} \\
+27 & \src{Ac2} & \src{A * c2} \\
+28 & \src{norm_main} & \src{L15 - Ac2} \\
+29 & \src{norm_pair} & \src{norm_first * norm_main} \\
+30 & \src{q_minus_F} & \src{q - F} \\
+31 & \src{C} & \src{q_minus_F - alpha} \\
+32 & \src{aux_y2} & \src{y_aux * y_aux} \\
+33 & \src{hpm1} & \src{h * UM} \\
+34 & \src{index_difference} & \src{R10b - hpm1} \\
+35 & \src{gap_product} & \src{repunit * q_minus_F} \\
+36 & \src{gap} & \src{gap_product + alpha} \\
+37 & \src{Lm1} & \src{Lbig - 1} \\
+38 & \src{rproduct} & \src{gap * Lm1} \\
+39 & \src{qMF} & \src{q * MF} \\
+40 & \src{mask_factor} & \src{MC + qMF} \\
+41 & \src{mask} & \src{mask_factor * Jrep} \\
+42 & \src{r_lhs} & \src{rproduct + mask} \\
+43 & \src{norm_index} & \src{index_difference - r_lhs} \\
+44 & \src{kinner} & \src{Kconstant + w} \\
+45 & \src{innerC} & \src{kinner * C} \\
+46 & \src{transport_partial} & \src{innerC + q_minus_F} \\
+47 & \src{local_rhs} & \src{transport_quotient * repunit} \\
+48 & \src{norm_transport} & \src{transport_partial - local_rhs} \\
+49 & \src{L16} & \src{f * f} \\
+50 & \src{auxiliary_Tf} & \src{auxiliary_quotient * f} \\
+51 & \src{auxiliary_Tf_minus_one} & \src{auxiliary_Tf - 1} \\
+52 & \src{auxiliary_c_Tf} & \src{R10a * auxiliary_Tf_minus_one} \\
+53 & \src{auxiliary_R_f2} & \src{r_lhs * L16} \\
+54 & \src{aux_u_rhs} & \src{auxiliary_c_Tf - auxiliary_R_f2} \\
+55 & \src{H2} & \src{aux_u_rhs * aux_u_rhs} \\
+56 & \src{aux_square_gap} & \src{H2 - aux_y2} \\
+57 & \src{aux_coefficient_root} & \src{i * Ac2} \\
+58 & \src{R16} & \src{aux_coefficient_root * aux_coefficient_root} \\
+59 & \src{scaled_f_square} & \src{A * L16} \\
+60 & \src{norm_strong} & \src{scaled_f_square - R16} \\
+61 & \src{L17} & \src{R16 * aux_square_gap} \\
+62 & \src{norm_aux} & \src{L17 + aux_y2} \\
+63 & \src{norm_four} & \src{norm_pair * norm_aux} \\
+64 & \src{norm_product} & \src{norm_four * norm_index} \\
+65 & \src{all_units} & \src{norm_product * norm_transport} \\
+66 & \src{seven_units} & \src{all_units * norm_strong} \\
+67 & \src{polynomial} & \src{seven_units - A} \\
+\end{longtable}
+\endgroup

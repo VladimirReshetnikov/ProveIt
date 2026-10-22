@@ -3,7 +3,7 @@
     START 4 ++ Build_F ++ SUFFIX has candidate number P 3 (P 4 (P 1 r)) >= 4. *)
 From Coq Require Import Arith Lia List.
 From K230L Require Import Codes230.
-From NS Require Import Codes222 Thm222 ThmDom EnumPerm L1_SoundPerm L1_CompPerm.
+From NS Require Import Codes222 Thm222 EnumPerm L1_SoundPerm L1_CompPerm.
 Import ListNotations.
 
 Definition seedPerm : state := mkState 0 4 0 0 0 0.
@@ -33,7 +33,7 @@ Qed.
 
 Theorem seedPerm_complete : thm222 1 -> halts_from seedPerm.
 Proof.
-  intros H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
+  intros H. destruct (compile_direct 1 H) as [L HL].
   set (N := enc_fields (fields (START 4)) (enc_tail (L ++ SUFFIX))).
   assert (HN : 4 <= N).
   { unfold N, START, fields, enc_fields. cbn [fold_right].

@@ -1,0 +1,75 @@
+--- main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean
++++ candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean
+@@ -151,15 +151,3 @@
+ #print axioms seed_direct
+ 
+ end SetTheory.BusyBeaver.ZFC.KSeed222
+-
+-namespace SetTheory.BusyBeaver.ZFC.KIndisc222
+-open Tarski KSeed222
+-universe u
+-
+-theorem fullSeed_direct_of_derivable {V : Type u} (mem : V → V → Prop)
+-    (hirr : ∀ x, ¬ mem x x)
+-    (hT : ∀ f, DerivableNF f → ∀ e : Nat → V, Tarski.Sat mem e f) : FullSeed mem :=
+-  ⟨hirr, seed_direct mem hT⟩
+-
+-#print axioms fullSeed_direct_of_derivable
+-end SetTheory.BusyBeaver.ZFC.KIndisc222
+--- main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean
++++ candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean
+@@ -22,11 +22,6 @@
+ def FormSeed (mem : V → V → Prop) : Prop :=
+   ∀ (φ : Form) (env : Nat → V) (A : V),
+     SeedProp mem (fun x y => Sat mem (scons y (scons x env)) φ) A
+-
+-theorem seedProp_congr {mem : V → V → Prop} {R R' : V → V → Prop} {A : V}
+-    (h : ∀ x y, R x y ↔ R' x y) (hs : SeedProp mem R A) : SeedProp mem R' A := by
+-  have e : R = R' := funext fun x => funext fun y => propext (h x y)
+-  exact e ▸ hs
+ 
+ /-- **Every full seed model has the seed property for every `Form`.** -/
+ theorem formSeed_of_fullSeed {mem : V → V → Prop} (h : FullSeed mem) : FormSeed mem := by
+@@ -60,7 +55,7 @@
+   have hs := h.seed ψ e
+   have he0 : e 0 = A := by simp [e]
+   rw [he0] at hs
+-  exact seedProp_congr key hs
++  exact (KSeed222.seedProp_congr mem A key).mp hs
+ 
+ #print axioms formSeed_of_fullSeed
+ 
+--- main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean
++++ candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean
+@@ -24,7 +24,7 @@
+ `KEind222.c222_complete` the named formulas whose interpreted codes are derivable
+ (`DerivableNF`). A fresh-label named bundle gives every named relation, including literal
+ equality, Elliot Glazer's seed property on this original domain
+-(`fullSeed_direct_of_derivable`, `formSeed_of_fullSeed`). The bisimulation quotient of its
++(`seed_direct`, `formSeed_of_fullSeed`). The bisimulation quotient of its
+ tagged domain has a well-founded part satisfying ZF (`zf_consistent_of_formSeed`). So a ZF
+ refutation leaves no model, and the code 1 is derivable.
+ -/
+@@ -37,7 +37,7 @@
+ theorem c222_of_zf_refutation (hf : BProv ZFax_s [] Form.fBot) : KCode222.C222 Code254.F := by
+   apply KEind222.c222_complete DerivableNF (fun _ h => h)
+   intro D mem hirr hT e
+-  have hfull := fullSeed_direct_of_derivable mem hirr hT
++  have hfull : FullSeed mem := ⟨hirr, seed_direct mem hT⟩
+   exact zf_consistent_of_formSeed (formSeed_of_fullSeed hfull) hfull.irr (e 0) hf
+ 
+ /-- The 222 calculus derives the code 1 iff ZF is refutable. -/
+--- main/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean
++++ candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean
+@@ -1,9 +1,8 @@
+ import BusyBeaver.ZFC.KSeed222
+ import BusyBeaver.ZFC.KEind222
+ 
+-/-! Shared named seed syntax and semantic interface. Definitions are moved unchanged
+-from KSeedModel222 and KIndisc222 so the direct and optional quotient routes use
+-exactly the same public constants. -/
++/-! Shared named bundle syntax and full-seed interface, moved unchanged from
++KSeedModel222 and KIndisc222 for the direct proof and semantic lower chain. -/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.KSeed222
+ open Tarski Code254 KCode222 NF

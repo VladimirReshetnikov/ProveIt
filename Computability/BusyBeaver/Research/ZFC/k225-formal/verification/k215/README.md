@@ -2,14 +2,22 @@
 
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
-The fresh full builds below were recorded at `613f9cf28a`. The
-[accepted phase16 Lean checkpoint](simplification/phase16/README.md) shares one
-weak quotient with a CP/GIC adapter and verifies exact source adoption. Its
-195-provider primary and 78-provider compatibility checks pass across 199 project
-modules. The endpoint retains 176 modules and both unchanged endpoint clients.
-Seventy API reports, ten endpoint reports, ten compatibility reports and five
-WFTheory reports have exact checked profiles. All clients and audits have zero
-warnings; the nine inherited site batches retain all 6,176 outcomes.
+The original fresh full builds below were recorded at `613f9cf28a`.
+[Phase16](simplification/phase16/README.md) retains the preceding accepted
+quotient-unification snapshot and its exact source, profile and warning records.
+
+The [phase17 combined Lean check](simplification/phase17/README.md) passes on the
+merged direct-seed, direct-`C222`, computed-tree and AX-word sources. It covers 213
+providers (199 project modules and fourteen typed clients): 171 fresh and 42 exact
+source reuses, plus two endpoint audits; all nine 215 site batches were fresh.
+The endpoint selects 174 modules / 1,749,188 source bytes. All thirteen existing
+clients retain exact source bytes. One reviewed profile changes: `source_tree_eq`
+now reports `[propext]`, previously `[]`, through the existing tree computation.
+The other retained profiles match the frozen expectations. Accepted provider
+records contain 18 warning occurrences (17 fresh, one reused); all fourteen
+clients and both endpoint audits have zero warnings.
+Independent result review and evidence capture pass; the linked checkpoint contains the exact records.
+The completed builds below retain their historical scopes.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |
@@ -54,9 +62,9 @@ applies the state-renaming equivalence to its sparse
 endpoint. The large literal tables and arithmetic certificates are kernel-checked
 data, while these final compositions stay small.
 
-The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 176
-project modules and then two explicit endpoint clients; the original fresh build
-selected 204. The
+The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, selects 174
+project modules from the current phase17 sources and then two explicit endpoint
+clients. The original fresh build selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
 selects 237 sources: 195 from the pinned reference and 42 for K215. Both use the
 same compiler lock and run one proof compiler at a time. Lean's shipped core and

@@ -17,7 +17,7 @@ s = s.replace('"""Cleanly compile and kernel-check the isolated 218/221/225/226/
 b.write_text(s, encoding="utf-8", newline="\n")
 
 regen = json.loads((EXT / "coq/regeneration217.json").read_text(encoding="utf-8"))
-calc = ["Codes222", "Thm222", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta", "L224E",
+calc = ["Codes222", "Thm222", "DominatedCore", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta", "L224E",
         "Interp222", "Sound222", "Complete222", "DomRho8", "ThmDom", "EnumDom", "L1_SoundDom",
         "L1_CompDom", "SeedDom", "DagDom", "ProgLibDom", "L2RootDom", "MainDom"]
 order = calc + ["Prog217", "OffsetBisim230", "Cert217Offsets", "Source217", "Table230", "TM230", "Zip",

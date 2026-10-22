@@ -62,9 +62,7 @@ def NSat (mem : V → V → Prop) : (Nat → V) → NForm → Prop
 
 /-- Satisfaction depends on the environment only pointwise. -/
 theorem nsat_congr (mem : V → V → Prop) (φ : NForm) {ρ ρ' : Nat → V} (h : ∀ i, ρ i = ρ' i) :
-    NSat mem ρ φ ↔ NSat mem ρ' φ := by
-  have : ρ = ρ' := funext h
-  subst this; exact Iff.rfl
+    NSat mem ρ φ ↔ NSat mem ρ' φ := by rw [funext h]
 
 /-! ## Translation into De Bruijn formulas -/
 
@@ -92,11 +90,7 @@ theorem sat_toForm (mem : V → V → Prop) :
   | .mem _ _, _, _ => Iff.rfl
   | .eq _ _, _, _ => Iff.rfl
   | .bot, _, _ => Iff.rfl
-  | .imp a b, slots, env => by
-      simp only [toForm, Sat, NSat, sat_toForm mem a slots env, sat_toForm mem b slots env]
-  | .and a b, slots, env => by
-      simp only [toForm, Sat, NSat, sat_toForm mem a slots env, sat_toForm mem b slots env]
-  | .or a b, slots, env => by
+  | .imp a b, slots, env | .and a b, slots, env | .or a b, slots, env => by
       simp only [toForm, Sat, NSat, sat_toForm mem a slots env, sat_toForm mem b slots env]
   | .all x a, slots, env => by
       simp only [toForm, Sat, NSat]
@@ -153,14 +147,11 @@ theorem replN (H : ZFAxioms mem) (φ : NForm) (ρ : Nat → V)
     (hF : ∀ x y1 y2, NSat mem (upd (upd ρ 1 x) 0 y1) φ → NSat mem (upd (upd ρ 1 x) 0 y2) φ →
       y1 = y2) (a : V) :
     ∃ r, ∀ y, mem y r ↔ ∃ x, mem x a ∧ NSat mem (upd (upd ρ 1 x) 0 y) φ := by
-  have hfun : Functional (relOf mem (toForm id φ) (fun i => ρ (i + 2))) := by
-    intro x y1 y2 h1 h2
+  have hfun : Functional (relOf mem (toForm id φ) (fun i => ρ (i + 2))) := fun x y1 y2 h1 h2 => by
     simp only [relOf, sat_toForm, scons_shift2] at h1 h2
     exact hF x y1 y2 h1 h2
   obtain ⟨r, hr⟩ := H.repl (toForm id φ) (fun i => ρ (i + 2)) hfun a
-  refine ⟨r, fun y => ?_⟩
-  rw [hr y]
-  simp only [relOf, sat_toForm, scons_shift2]
+  exact ⟨r, fun y => by rw [hr y]; simp only [relOf, sat_toForm, scons_shift2]⟩
 
 /-- Replacement for any functional relation that a named formula defines. -/
 theorem repl_of (H : ZFAxioms mem) (R : V → V → Prop) (φ : NForm) (ρ : Nat → V)

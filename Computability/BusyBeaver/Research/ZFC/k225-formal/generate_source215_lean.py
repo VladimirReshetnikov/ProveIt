@@ -20,7 +20,7 @@ REPO = HERE.parents[4]
 sys.path.insert(0, str(HERE))
 sys.setrecursionlimit(100000)
 from gen_cert import load, Tree, generate  # noqa: E402
-from generate_source225_lean import dag, program, literal_tree, code, chunks  # noqa: E402
+from generate_source225_lean import dag, program, code, chunks  # noqa: E402
 from partition_source215_lean import write_partition  # noqa: E402
 
 TARGET = REPO / "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean"
@@ -200,8 +200,8 @@ theorem path_iff_iter (R : RMDag.Regs) :
 
 """
     out += program("p215", n1, r1, f"The 215's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
-    out += "/-- The 215's decoder tree, written out. -/\ndef t215 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
-    out += "/-- dagPerm's decoder tree, written out. -/\ndef tD : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
+    out += "/-- The 215's decoder tree, computed from the program. -/\ndef t215 : Tree := ptree p215\n\n"
+    out += "/-- dagPerm's decoder tree, computed from the program. -/\ndef tD : Tree := ptree pathDagPerm\n\n"
     out += "theorem t215_eq : ptree p215 = t215 := by rfl\n\ntheorem tD_eq : ptree pathDagPerm = tD := by rfl\n\n"
     out += "/-! ## Forward certificate (215 → dagPerm) -/\n\n"
     out += "def decode215 (n : Nat) : List Bool := decodeAux 512 n []\n\n"

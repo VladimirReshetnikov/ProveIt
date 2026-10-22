@@ -45,16 +45,11 @@ theorem singleton_unique (B : Base mem) (a s : V)
 
 theorem singleton_injective (B : Base mem) : Function.Injective (singleton B) := by
   intro a b hab
-  have ha : mem a (singleton B a) := (singleton_spec B a a).mpr rfl
-  rw [hab] at ha
-  exact (singleton_spec B b a).mp ha
+  exact (singleton_spec B b a).mp (hab ▸ (singleton_spec B a a).mpr rfl)
 
 theorem empty_not_singleton (B : Base mem) (e : V) (he : ∀ z, ¬ mem z e) (a : V) :
-    singleton B a ≠ e := by
-  intro h
-  have ha : mem a (singleton B a) := (singleton_spec B a a).mpr rfl
-  rw [h] at ha
-  exact he a ha
+    singleton B a ≠ e :=
+  fun h => he a (h ▸ (singleton_spec B a a).mpr rfl)
 
 def Closed (B : Base mem) (X : V) : Prop :=
   ∀ x, mem x X → mem (singleton B x) X
@@ -76,17 +71,10 @@ theorem sat_singForm (B : Base mem) (env : Nat → V) (i j : Nat) :
     Sat mem env (singForm i j) ↔ env j = singleton B (env i) := by
   change (∀ z, Sat mem (scons z env)
     (fIff (fMem 0 (j + 1)) (fEq 0 (i + 1)))) ↔ _
-  constructor
-  · intro hs
-    apply B.ext
-    intro z
-    exact ((Sat_fIff (mem := mem)).mp (hs z)).trans
-      (singleton_spec B (env i) z).symm
-  · intro hs z
-    apply (Sat_fIff (mem := mem)).mpr
-    change mem z (env j) ↔ z = env i
-    rw [hs]
-    exact singleton_spec B (env i) z
+  exact ⟨fun hs => B.ext _ _ fun z => ((Sat_fIff (mem := mem)).mp (hs z)).trans
+      (singleton_spec B (env i) z).symm,
+    fun hs z => (Sat_fIff (mem := mem)).mpr (show mem z (env j) ↔ z = env i by
+      rw [hs]; exact singleton_spec B (env i) z)⟩
 
 def closedForm (i : Nat) : Form :=
   fAll (fImp (fMem 0 (i + 1))
@@ -96,13 +84,11 @@ theorem sat_closedForm (B : Base mem) (env : Nat → V) (i : Nat) :
     Sat mem env (closedForm i) ↔ Closed B (env i) := by
   change (∀ x, mem x (env i) → ∃ s, mem s (env i) ∧
     Sat mem (scons s (scons x env)) (singForm 1 0)) ↔ _
-  constructor
-  · intro hc x hx
-    obtain ⟨s, hs, hSing⟩ := hc x hx
-    have heq : s = singleton B x := (sat_singForm B _ 1 0).mp hSing
-    simpa only [heq] using hs
-  · intro hc x hx
-    exact ⟨singleton B x, hc x hx, (sat_singForm B _ 1 0).mpr rfl⟩
+  refine ⟨fun hc x hx => ?_,
+    fun hc x hx => ⟨singleton B x, hc x hx, (sat_singForm B _ 1 0).mpr rfl⟩⟩
+  obtain ⟨s, hs, hSing⟩ := hc x hx
+  have heq : s = singleton B x := (sat_singForm B _ 1 0).mp hSing
+  simpa only [heq] using hs
 
 /-- Membership in every singleton-closed set containing the distinguished root. -/
 def zMemForm (z e : Nat) : Form :=
@@ -112,11 +98,8 @@ theorem sat_zMemForm (B : Base mem) (env : Nat → V) (z e : Nat) :
     Sat mem env (zMemForm z e) ↔ LeastMember B (env e) (env z) := by
   change (∀ X, mem (env e) X ∧ Sat mem (scons X env) (closedForm 0) →
     mem (env z) X) ↔ _
-  constructor
-  · intro h X he hc
-    exact h X ⟨he, (sat_closedForm B _ 0).mpr hc⟩
-  · intro h X hx
-    exact h X hx.1 ((sat_closedForm B _ 0).mp hx.2)
+  exact ⟨fun h X he hc => h X ⟨he, (sat_closedForm B _ 0).mpr hc⟩,
+    fun h X hx => h X hx.1 ((sat_closedForm B _ 0).mp hx.2)⟩
 
 /-- Induction here quantifies over represented sets; it is not unrestricted
 induction over external semantic predicates. -/
@@ -131,14 +114,10 @@ theorem index_of_container (B : Base mem) (e Y : V) (heY : mem e Y)
   obtain ⟨N, hN⟩ := B.sep (zMemForm 0 1) (fun _ => e) Y
   have hSpec (z : V) : mem z N ↔ mem z Y ∧ LeastMember B e z :=
     (hN z).trans (and_congr Iff.rfl (sat_zMemForm B _ 0 1))
-  refine ⟨N, ?_, ?_, ?_⟩
-  · exact (hSpec e).mpr ⟨heY, fun _ he _ => he⟩
-  · intro z hz
-    obtain ⟨hzY, hzLeast⟩ := (hSpec z).mp hz
-    exact (hSpec (singleton B z)).mpr
-      ⟨hY z hzY, fun X heX hX => hX z (hzLeast X heX hX)⟩
-  · intro X heX hX z hz
-    exact ((hSpec z).mp hz).2 X heX hX
+  refine ⟨N, (hSpec e).mpr ⟨heY, fun _ he _ => he⟩, fun z hz => ?_,
+    fun X heX hX z hz => ((hSpec z).mp hz).2 X heX hX⟩
+  obtain ⟨hzY, hzLeast⟩ := (hSpec z).mp hz
+  exact (hSpec (singleton B z)).mpr ⟨hY z hzY, fun X heX hX => hX z (hzLeast X heX hX)⟩
 
 /-- Formula induction uses the actual source formula's Separation instance. -/
 theorem index_formula_induction (B : Base mem) {e N : V} (hN : Index B e N)
@@ -152,8 +131,7 @@ theorem index_formula_induction (B : Base mem) {e N : V} (hN : Index B e N)
     intro x hx
     obtain ⟨hxN, hPhi⟩ := (hX x).mp hx
     exact (hX (singleton B x)).mpr ⟨hN.closed x hxN, hStep x hxN hPhi⟩
-  intro x hx
-  exact ((hX x).mp (hN.least X heX hcX x hx)).2
+  exact fun x hx => ((hX x).mp (hN.least X heX hcX x hx)).2
 
 theorem quotientBase (rawMem : V → V → Prop) (witness : V)
     (h : ProfileModel.ModelsCPGIC rawMem) :
@@ -170,8 +148,7 @@ theorem quotient_index (rawMem : V → V → Prop) (witness : V)
       Index (quotientBase rawMem witness h) e N := by
   obtain ⟨Y, ⟨e, heY, he⟩, hY⟩ :=
     QuotientBasic.quotient_empty_singleton_container rawMem witness h
-  obtain ⟨N, hN⟩ := index_of_container (quotientBase rawMem witness h) e Y heY
-    (closed_of_exact_singletons (quotientBase rawMem witness h) Y hY)
-  exact ⟨e, N, he, hN⟩
+  exact ⟨e, (index_of_container (quotientBase rawMem witness h) e Y heY
+    (closed_of_exact_singletons (quotientBase rawMem witness h) Y hY)).imp fun _ hN => ⟨he, hN⟩⟩
 
 end SetTheory.BusyBeaver.ZFC.SingletonInfinity

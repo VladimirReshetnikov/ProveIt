@@ -1,0 +1,671 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.93in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr,lastpage}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Shorter K215 Proofs through Smaller Interfaces},pdfauthor={Research proposal for ProveIt}}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{paperblue}{HTML}{EFF4F8}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt}
+\setlength{\headheight}{14pt}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}K215 proof simplification}
+\fancyhead[R]{\small October 21, 2026}
+\fancyfoot[L]{\small ProveIt research proposal}
+\fancyfoot[R]{\small\thepage\ / \pageref*{LastPage}}
+\lstset{basicstyle=\small\ttfamily,backgroundcolor=\color{paperblue},frame=single,
+  rulecolor=\color{paperblue},breaklines=true,columns=fullflexible,keepspaces=true,
+  showstringspaces=false,xleftmargin=4pt,xrightmargin=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Seed}{\operatorname{Seed}}
+\newcommand{\Succ}{\operatorname{Succ}}
+\newcommand{\mem}{\mathrel{\varepsilon}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pin}{6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}
+\input{metrics.tex}
+
+\begin{document}
+\thispagestyle{empty}
+{\color{ink}\LARGE\bfseries Shorter K215 Proofs\par}
+{\color{ink}\LARGE\bfseries through Smaller Interfaces\par}
+\vspace{6pt}
+{\large A pinned review, checked AX refactors, a Rocq command adapter,\par
+and a direct route from the seed property to Infinity\par}
+\vspace{9pt}
+{\small Research proposal for the ProveIt repository\hfill October 21, 2026\par}
+\vspace{5pt}\hrule\vspace{7pt}
+
+\textbf{Reviewed revision.} \nolinkurl{\pin}. The checkout was obtained from the
+GitHub repository and pinned before experimentation. All comparisons in this report
+refer to that revision, rather than a moving branch or a historical proposal copy.
+
+\textbf{Recommendation.} Adopt the small AX certificate refactor first: obtain
+successor addresses from the literal program instead of storing them a second time.
+For the maintained pair of dominated/permuted AX developments, share the semantic
+proof as well: their only operation-order difference is a commuting pair with
+disjoint register footprints. Bring Rocq's enumerator to the command/codec interface
+already used by Lean. The larger mathematical opportunity is to derive ordinary
+Infinity directly from the seed property, bypassing the singleton-index construction
+on the K215 lower route.
+
+\begin{center}\small
+\begin{tabular}{p{0.28\linewidth}p{0.31\linewidth}p{0.32\linewidth}}
+\toprule
+Change & Concrete result & Validation boundary \\
+\midrule
+Local AX annotation erasure & K215: \OldPermBytes{} to \LocalPermBytes{} bytes; no new project module & Targeted Lean check with unchanged root/seed clients \\
+Shared AX alternative & \OldPairLines{} to \SharedLines{} lines across both lanes & One semantic evaluation, two literal bindings, both root clients \\
+Rocq command/codec interface & Exact factorization on every natural-valued state & Eleven-module compatibility build; recursive \code{coqchk} \\
+Direct Infinity route & Ordinary Infinity in the actual Lean quotient & 40-module fresh check; independent Rocq core; endpoint integration remains separate \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two AX patches are \emph{alternatives}, not additive savings. The Rocq adapter
+is an additive pilot, not a claimed net source reduction. No new complete K215
+endpoint build is claimed for this packet. The source audit and compiler receipts
+in the archive distinguish the checks performed here from the repository's existing
+endpoint evidence.
+
+\section{What is already proved, and what is actually large}
+
+The maintained Lean endpoint states
+\[
+ \Halt(K_{215},\mathrm{blank})
+ \quad\longleftrightarrow\quad
+ \operatorname{BProv}(\mathrm{ZFCax}_{s},[\,],\bot).
+\]
+Negating both sides gives nonhalting if and only if syntactic consistency. The
+corresponding Rocq endpoint concerns the same literal two-symbol, 215-working-state
+machine. The dense table has 430 actions and includes its initialization in the
+working-state count. Its SHA-256 is
+\begin{center}\small\nolinkurl{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.\end{center}
+These statements and their existing proof receipts are recorded in the repository's
+K215 verification directory~\cite{verification,endpoint}.
+
+An important distinction survives every simplification proposed here. The existing
+results are external Lean/Rocq theorems about a syntactic ZFC proof predicate. The
+repository explicitly says that it has not supplied an internal PA proof or a
+derivation encoded in ZFC's own syntax~\cite{verification}. A refactor should preserve
+the exact currently checked theorem; it should not silently promote that theorem
+to the separate internal-formalization milestone.
+
+\subsection{An independently reproduced current census}
+
+The supplied read-only audit follows project imports from
+\code{BusyBeaver.ZFC.KEndpoint215}. It finds \textbf{178 project modules},
+\textbf{2,093,112 source bytes}, and \textbf{40,517 physical lines}. The only external
+import it encounters is the shipped Lean \code{Init} boundary. The module count and
+byte total exactly reproduce phase fourteen's published census~\cite{phase14}.
+Physical lines include comments and literal data; they are not a count of logical
+inferences or a measure of proof-term size.
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Current source & Physical lines & Bytes \\
+\midrule
+\code{KEndpoint215.lean} & 54 & 2,653 \\
+\code{CorrectDense215.v} & 18 & 718 \\
+\code{EnumPerm.lean} & 545 & 22,788 \\
+\code{L2AxiomsPerm.lean} & 161 & 7,563 \\
+\code{L2AxiomsDom.lean} & 161 & 7,536 \\
+\code{KSource215Data.lean} & 1,575 & 239,254 \\
+\code{KSource215Program.lean} & 200 & 129,741 \\
+\code{InductiveAttempts.lean} & 397 & 18,624 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The final compositions are already short. Most prospective savings must come from
+repeated semantics, administrative certificate data, or a mathematical detour in
+the imported development. Compressing the final biconditional is therefore a low
+priority.
+
+\subsection{Recent work that should be credited and reused}
+
+Phase fourteen already shares derived rules for the two named calculi and proves
+profile contracts under transitive-container assumptions. Earlier maintained
+checkpoints normalized source correspondence, separated stable program data from
+proof dependencies, shared implication derivations and reduced repeated runtime
+work. Those are completed reductions, not fresh opportunities~\cite{phase14}.
+
+The latest reviewed commits also give \code{EnumDom} an arbitrary-state
+\code{halts\_iff}, shorten its seed proof, and replace its per-node AX proof by the
+same checked-word template already used for \code{EnumPerm}. The proposal queue
+contains a QHyp-based quotient unification patch, normalized/balanced Rocq source
+certificates, shared implication cores, scheduler abstractions, decoder-prefix
+contracts and direct seed-model constructions~\cite{history,proposals,quotient}.
+The present work builds on that state. In particular, the existing quotient
+unification and the older \code{relSat\_congr}-through-\code{sat\_quotient} idea
+should receive their existing attribution when adopted.
+
+\section{First reduction: infer successor annotations from the program}
+
+\subsection{The redundant information}
+
+The current AX certificate is a list of pairs
+\[
+ [(a_0,n_1),(a_1,n_2),\ldots,(a_{155},n_{156})].
+\]
+An atom names a previously verified register macro. The second component is the
+address of the next node. At each step, the current checker compares the literal
+program node with that pair of macro and successor addresses. But the program
+already contains the successor. Storing it again makes the certificate longer and
+creates an extra generated representation to maintain~\cite{axioms}.
+
+The proposed certificate is simply
+\[
+ [a_0,a_1,\ldots,a_{155}].
+\]
+The checker reads the successor from the literal program. In schematic form:
+\begin{lstlisting}
+check p n []       = (n == gate)
+check p n (a::as)  =
+  match p.nodes n with
+  | (node m, node next) => (m == a.node) && check p next as
+  | _                  => false
+\end{lstlisting}
+The resulting statement still concerns the literal program. The data generator
+does not choose an unchecked successor, and the checker does not substitute an
+abstract program for the existing one.
+
+\subsection{The soundness theorem}
+
+Let $\operatorname{Clean}(s)$ express the scratch-register invariant. For each
+atom $a$, suppose the established macro contract is
+\[
+ \operatorname{Clean}(s)\Longrightarrow
+ \operatorname{Run}_{p}(a.\operatorname{node},s,a.\operatorname{effect}(s)),
+\]
+and that its effect preserves cleanliness. Supply the gate contract at node 457.
+Then one induction on the atom list proves
+\[
+ \operatorname{check}(p,n,w)=\mathrm{true}\ \land\ \operatorname{Clean}(s)
+ \Longrightarrow
+ \operatorname{Run}_{p}(n,s,\operatorname{eval}(w,s)).
+\]
+The empty case uses the gate contract. In the nonempty case the checker exposes
+the exact two children of the literal node. The first macro contract and the
+induction hypothesis compose through the existing sequencing theorem. This is
+the same proof obligation as before, with fewer certificate fields.
+
+\subsection{Measured result and adoption scope}
+
+The local-only variant changes \code{L2AxiomsPerm.lean} from \OldPermLines{} lines /
+\OldPermBytes{} bytes to \LocalPermLines{} lines / \LocalPermBytes{} bytes. The saving is
+\LocalSavedBytes{} bytes (\LocalPercent{} percent) in that file. There is no additional
+project module. This is a small change, but its reduction is genuine for K215's
+own selected source closure.
+
+The archive includes the replacement sources, an applicable patch, the synchronized
+generator, a replay driver, and typed clients for the exported results. The literal
+word remains kernel-checked. The producer reproduces both proposed AX files byte
+for byte. Including the two files and producer, the local option changes 537 lines /
+23,903 bytes to 532 lines / 21,926 bytes. Before production adoption, run the
+repository's affected-descendant and endpoint audits. The included check establishes
+the component and its targeted clients;
+it does not stand in for the physical-site certificate checks.
+
+This pattern is reusable: a certificate should carry semantic choices that the
+checker cannot infer cheaply. It need not repeat control-flow fields already
+available in the literal object being checked. Applying that principle to another
+certificate requires a new soundness argument; it is not a license to omit
+independent obligations.
+
+\section{Second reduction: one AX semantic proof for two programs}
+
+\subsection{The exact difference between the words}
+
+After erasing addresses, the dominated and permuted AX words have 156 atoms each.
+They agree except at zero-based positions 6 and 7:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Word & Position 6 & Position 7 \\
+\midrule
+Dominated & \code{readp1} & \code{cons} \\
+Permuted & \code{cons} & \code{readp1} \\
+\bottomrule
+\end{tabular}
+\end{center}
+The original annotated lists differ in three tuples around that swap, including
+two successor addresses. The source audit reports the exact tuples. The semantic distinction is not
+a swap of two decoded fields: it is commuting one parameter read past one formula
+constructor.
+
+The read updates only $(\code{pl},\code{p1})$, using those fields. The constructor
+updates only $(\code{tw},\code{ws})$, using those fields. Thus for every abstract
+state $s$,
+\[
+ \operatorname{cons}(\operatorname{readp1}(s))
+ =\operatorname{readp1}(\operatorname{cons}(s)).
+\]
+In the delivered Lean development this equality is \code{rfl}: both sides reduce
+to the same record. There is no valid-code hypothesis, zero-register hypothesis,
+or bounded test set.
+
+The two whole-word evaluations consequently agree for every abstract state. The
+proof \code{eval\_permuted} is a Boolean case split followed by reflexivity. The
+large symbolic evaluation of the AX routine is performed once and reused by
+both compatibility modules. In addition to testing a wrong start node, a truncated
+word and a wrong first atom, the shared audit rejects each program paired with
+the other program's word. Equal effects do not erase the separate literal binding.
+
+\subsection{The shared interface}
+
+The new \code{AXWord} module contains the atom meanings, cleanliness preservation,
+generic checked-word theorem, shared word, commutation lemma and symbolic AX
+evaluation. Each lane supplies its existing transferred macro contracts and its
+own kernel-checked binding to the literal DAG. The four downstream interfaces
+remain available: \code{f236}, \code{l236}, \code{c236}, and \code{ax\_eval}.
+
+This is sharing inside the formal development. The current Python producer already
+shares a template; template sharing alone still leaves two separately maintained
+formal definitions and two checked mathematical derivations. The common module
+removes that logical duplication.
+
+\subsection{Two different size objectives}
+
+\begin{center}\small
+\begin{tabular}{p{0.48\linewidth}rr}
+\toprule
+Selected boundary & Before & After \\
+\midrule
+AX sources for both programs: lines & \OldPairLines{} & \SharedLines{} \\
+AX sources for both programs: bytes & \OldPairBytes{} & \SharedBytes{} \\
+K215 AX source boundary alone: lines & \OldPermLines{} & \SharedPermLines{} \\
+K215 AX source boundary alone: bytes & \OldPermBytes{} & \SharedPermBytes{} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the two-lane maintenance boundary, sharing saves \SharedSavedLines{} lines and
+\SharedSavedBytes{} bytes. For a consumer interested only in the current K215
+closure, the shared module plus its Perm adapter is larger by \SharedPermExtraBytes{}
+bytes and \SharedPermExtraLines{} lines than the current single file. This is why
+the local annotation-erasure variant is the first recommendation when K215 alone
+is the size objective. Choose the common core when sharing the two developments
+is the desired maintenance objective. Do not add the savings from these
+mutually exclusive patches. Including the synchronized generator, the shared
+alternative changes 537 lines / 23,903 bytes to 296 lines / 12,546 bytes.
+
+\section{Rocq: separate the codec from the command semantics}
+
+\subsection{Where duplication remains}
+
+The maintained Lean \code{EnumPerm} separates a command datatype, the working
+registers, \code{cstep}, \code{pack}, \code{decode}, \code{fetch} and
+\code{execAt}. Several Rocq clients still inspect the same numerical command
+fields independently. The new \code{CommandFactor.v} checks the Lean-style
+organization against the current Rocq definitions; this is a cross-language
+transfer of an existing successful design~\cite{enumerator}.
+
+Let $\operatorname{fetch}(s)=(z,n)$ and
+$\operatorname{decode}(z)=(c,r)$. The checked theorem states
+\[
+ \operatorname{enum\_step}(s)=
+ \operatorname{map}\bigl(\operatorname{restore}(r,n),
+                         \operatorname{xstep}(c,\operatorname{tupof}(s))\bigr).
+\]
+It is an equality of the actual current definitions, for all natural-valued
+states. It does not assume that a formula code decodes to a well-formed formula.
+That unrestricted domain matters because the enumerator intentionally processes
+arbitrary numerical candidates.
+
+\subsection{Two codec laws replace repeated case splits}
+
+The adapter proves
+\[
+ \operatorname{decode}(\operatorname{enc\_fields}(\operatorname{fields}(c),r))=(c,r)
+ \quad\text{and}\quad
+ \pi_2(\operatorname{decode}(z))\le z.
+\]
+The first law supports execution of a compiled command list. The second controls
+the proof-list pointer in candidate draining. Command case analysis is confined
+to the codec proof and the command semantics; clients can use those laws instead
+of reopening nested pairing inverses.
+
+For a predicate $I$ on working registers, preservation by every \code{xstep}
+lifts to preservation by the encoded enumerator. Likewise, if an \code{xstep}
+halting result from $I$ implies $P$, then an enumerator halting result from $I$
+implies $P$. The concrete stack invariant and falsity conclusion instantiate
+these general lifting theorems. Their proofs do not appeal to the old
+enumerator-level invariant theorem, so the apparent simplification is not circular.
+
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Client declaration through its \code{Qed} & Existing lines & Factored lines \\
+\midrule
+\code{step\_read} & 20 & 10 \\
+\code{step\_pl} & 22 & 9 \\
+\code{Inv\_step} & 24 & 2 \\
+\code{halt\_step} & 12 & 2 \\
+\midrule
+Total & 78 & 23 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The complete additive adapter is 145 lines / 6,312 bytes. The four smaller client
+bodies do \emph{not} establish a net 55-line reduction. A production saving must be
+measured after moving the common command definitions into a shared module and
+removing the displaced decoder cases. The supplied pilot establishes the
+equivalence needed to perform that relocation safely.
+
+\subsection{Verification and next integration boundary}
+
+Eleven modules were freshly compiled with Coq 8.18.0, all seven selected adapter
+assumption reports are closed, and recursive \code{coqchk CommandFactor} passed.
+The driver reads ten bound dependencies from the pinned repository: eight exact
+K215 sources and two arithmetic support files. The latter were independently
+verified against the production-pinned K230 reference; they differ only by
+CRLF-to-LF line endings, with definitions and proofs unchanged. In disposable
+compatibility copies only, \code{Stdlib} import prefixes are translated to
+\code{Coq}; original and compiled hashes are recorded. This is not a fresh Rocq
+9.1.0 production endpoint build.
+
+The next integration should place the command type, working-register tuple,
+codec, and execution in one module; let soundness, completeness and the L2 root
+simulation consume it; preserve public aliases where necessary; and regenerate
+the affected files. The main benefit is that correctness of the field decoder
+has one owner. This makes the current proof shorter and makes later opcode or
+field-order changes easier to review.
+
+\section{A larger mathematical simplification: direct Infinity}
+
+The current lower chain derives a singleton-closed collection, constructs an
+indexing apparatus, and then obtains ordinary Infinity through
+\code{InductiveAttempts}. There is a more direct route: use the seed property on
+the relation that takes a tagged set to a raw von Neumann successor. The seed's
+closure clause already permits the reflexive subset. That supplies the successor
+closure needed by Infinity without building a separate sequence of indices.
+This section proves the mathematical core and identifies the exact repository
+adapters~\cite{seed,lower,attempts}.
+
+\subsection{The seed property}
+
+Work with an arbitrary domain $V$ and binary membership relation $\mem$. Write
+$X\subseteq_{\mem}Y$ for $\forall w\,(w\mem X\Rightarrow w\mem Y)$. The relevant
+seed property for a relation $R$ and root $a$ is
+\begin{align*}
+\Seed_{\mem}(R,a)\ \equiv\ \exists C\;[&
+ (\forall y\;R(a,y)\Rightarrow\exists z\;(R(a,z)\land z\mem C))\\
+ &\land\ \forall y\mem C\;\exists x\;[R(x,y)\land\\[-3pt]
+ &\hspace{35mm}\forall x'\subseteq_{\mem}y\;\forall y'\;
+       R(x',y')\Rightarrow\exists z\;(R(x',z)\land z\mem C)]] .
+\end{align*}
+The standalone files reproduce this exact shape. No extensionality, foundation,
+choice, or uniqueness of witnesses is assumed in the next lemma.
+
+\begin{lemma}[A serial relation already has a closed seed container]
+Let $P\subseteq V$, let $P(a)$ hold, and assume
+\[
+ R(x,y)\Rightarrow P(y),\qquad
+ P(x)\Rightarrow\exists y\;R(x,y),\qquad
+ \Seed_{\mem}(R,a).
+\]
+There is $C$ such that some $R$-successor of $a$ belongs to $C$, every member of
+$C$ satisfies $P$, and
+\[
+ y\mem C\quad\Longrightarrow\quad
+ \exists z\;(R(y,z)\land z\mem C).
+\]
+\end{lemma}
+\begin{proof}
+Take a seed witness $C$. For $y\mem C$, the seed gives $x$ with $R(x,y)$, hence
+$P(y)$. Seriality gives a witness to $R(a,-)$, and the seed's first clause places
+some such witness in $C$. For closure, take $y\mem C$, choose a witness to
+$R(y,-)$ by seriality, and apply the seed's closure clause with $x'=y$.
+The required inclusion is $y\subseteq_{\mem}y$, proved by the identity implication.
+\end{proof}
+
+This is the conceptual reduction. The seed condition has substantial strength
+already at the reflexive-subset instance. A proof of successor closure need not
+use a more elaborate special relation merely to manufacture an index object.
+
+\subsection{Tagged raw successors}
+
+Fix a marker $t$ with no raw members, and write $T(x)$ for $t\mem x$. Define
+\[
+ \Succ_{\mem}(x,y)\ \equiv\
+ \forall z\;[z\mem y\longleftrightarrow z\mem x\lor z=x].
+\]
+Thus $y$ is an exact raw successor of $x$. If $T(x)$ and $\Succ_{\mem}(x,y)$,
+then $T(y)$, by inserting $z=t$ in the displayed biconditional.
+
+Take
+\[
+ R(x,y)\equiv T(x)\land\Succ_{\mem}(x,y).
+\]
+The existing \code{raw\_aug} theorem, with a true matrix, supplies successors.
+The existing \code{raw\_singleton} supplies $e=\{t\}$: it is tagged and has no
+tagged members, since $t$ itself is untagged. The serial-container lemma gives a
+raw collection $C$ of tagged sets, containing a successor of each member and a
+successor of $e$.
+
+Bounded tagged comprehension gives a tagged $I$ whose tagged members are exactly
+\[
+ \{e\}\cup\{z:T(z)\land z\mem C\}.
+\]
+The existing raw pair/transitive-bound lemmas provide a bound for that
+comprehension. If $x=e$, the seed's root clause supplies a successor in $C$.
+If $x\mem C$, the closure lemma supplies one. Thus $I$ is inductive on the tagged
+domain, with an empty tagged witness $e$.
+
+There is no equality-free obstacle at this stage. \code{KLowerSeed.FormSeed}
+quantifies over arbitrary first-order \code{Form}, including literal equality;
+the earlier indiscernibility bridge has already established that interface.
+With output in slot 0, input in slot 1, and the marker in parameter slot 2, the
+successor relation can be written as
+\begin{lstlisting}
+succF := fAll (fIff (fMem 0 1)
+                  (fOr (fMem 0 2) (fEq 0 2)))
+relF  := fAnd (fMem 2 1) succF
+\end{lstlisting}
+The additional binder shifts output/input to slots 1/2 in \code{succF}. The
+delivered actual-library adapter checks the precise satisfaction equation and
+connects this formula to the relation used in the seed theorem.
+
+\subsection{Passing to the quotient}
+
+Let $q:A\twoheadrightarrow B$ be a surjection. Suppose raw membership $r$ on $A$
+and interpreted membership $E$ on $B$ have the presentation
+\[
+ E(q(a),q(b))\quad\longleftrightarrow\quad
+ \exists z\;(r(z,b)\land q(a)=q(z)). \tag{*}
+\]
+This is exactly the shape of membership obtained by saturating raw membership
+under the bisimulation quotient. Its establishment in the repository is a
+separate adapter, using the existing quotient-membership and equality lemmas;
+that adapter is included and checked here.
+
+\begin{proposition}[Raw successors descend to genuine successors]
+If $\Succ_r(x,y)$, then
+\[
+ \forall b\in B\quad
+ E(b,q(y))\longleftrightarrow E(b,q(x))\lor b=q(x).
+\]
+\end{proposition}
+\begin{proof}
+Write $b=q(a)$ using surjectivity. Expand both membership statements using $(*)$.
+A witness $z$ belonging rawly to $y$ either belongs rawly to $x$, or equals $x$.
+The two cases give the two disjuncts. Conversely, a witness for membership in
+$q(x)$ also belongs rawly to $y$; if $q(a)=q(x)$, use the raw witness $z=x$.
+\end{proof}
+
+\begin{theorem}[Infinity descends]
+If $e$ has no raw members, $r(e,I)$, and every raw member $x$ of $I$ has an exact
+raw successor $y$ which is also a member of $I$, then $q(e)$ is empty and $q(I)$
+is inductive under $E$.
+\end{theorem}
+\begin{proof}
+An $E$-member of $q(e)$ would give a raw member of $e$ by $(*)$, a contradiction.
+The raw witness $e$ shows $E(q(e),q(I))$. For $b\in_E q(I)$, use $(*)$ to find
+$x\in_r I$ with $b=q(x)$. Choose a raw successor $y\in_r I$. The previous
+proposition gives the required successor of $b$, and the witness $y$ places
+$q(y)$ in $q(I)$.
+\end{proof}
+
+\subsection{What this can remove, and what remains to be done}
+
+The archive contains checked generic seed-closure and quotient-transport results,
+and their actual-library Lean adapters. Their formal parameters make the
+integration boundary visible. The production integration should expose a
+ZF-model constructor taking ordinary Infinity as an
+explicit input. K215 can then provide that input directly; the existing
+singleton/index route can remain as a compatibility client for the older general
+interface.
+
+\code{InductiveAttempts.lean} is 397 lines / 18,624 bytes and is in K215's current
+closure. Those numbers are a description of the possible detour, not a measured
+net saving: another import may keep the module reachable, and the new adapters
+also occupy source. \code{FiniteSets} and singleton material are used elsewhere,
+including the well-founded-part development. Their disappearance must not be
+assumed. Likewise, the current \code{QHyp} record contains a singleton field;
+merely proving direct Infinity does not remove the obligation to build that field.
+Splitting a smaller base interface or changing the final constructor is necessary
+before claiming removal of the singleton proof.
+
+\input{infinity-status.tex}
+
+\section{Validation policy and reproducibility}
+
+\subsection{The exact boundaries in this packet}
+
+\begin{enumerate}
+\item \textbf{Source audit.} A read-only script reproduces the endpoint import
+closure and hashes the relevant production files. It independently checks the
+156-atom lists and their exact two-operation swap.
+\item \textbf{Lean AX components.} The local and shared alternatives are checked
+separately: 35 project modules for the local variant and 36 for the shared variant.
+The build receipts bind the source files and their imported objects; the targeted
+root/seed and API clients are included. The package reports the
+selected component scope, not a new 178-module machine endpoint build.
+\item \textbf{Rocq command adapter.} A fresh compatibility build and recursive
+kernel check establish the new adapter against exact current definitions.
+The standard-library namespace rewrite is explicit and occurs only in temporary
+copies, with both hashes retained.
+\item \textbf{Direct Infinity.} Generic lemmas are formally checked; the separate
+status note above identifies how much of the actual repository adapter was
+compiled. Ordinary Infinity, the complete ZF-model endpoint, and an internally
+encoded PA/ZFC derivation are different acceptance boundaries.
+\end{enumerate}
+
+Every compiler result in the archive is attached to an identified source and
+toolchain. No numerical simulation is used to certify nonhalting. Finite checks
+serve only their stated role: binding a literal program or checking a finite
+certificate that is connected to a universal theorem.
+
+\subsection{Reproduction commands}
+
+The archive's \code{README.md} gives exact replay commands and the directory
+layout. The essential sequence is:
+\begin{lstlisting}
+git checkout 6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95
+python3 tools/audit_snapshot.py /path/to/ProveIt --output audit.json
+# Run one AX alternative with its supplied Lean driver.
+# Run the Rocq adapter driver against the same checkout.
+# Replay the direct-Infinity core using its supplied commands.
+pdflatex -halt-on-error report.tex
+pdflatex -halt-on-error report.tex
+\end{lstlisting}
+Proof tools should be serialized on a constrained machine, as the maintained
+repository's verification drivers already require. A clean targeted build is
+preferable to accepting stale descendants because their source files happen to
+be unchanged. Full endpoint acceptance should follow the repository's existing
+source-transitive verification procedure.
+
+\section{Suggested order of work}
+
+\textbf{First: adopt the local AX erasure if K215 source size is the goal.}
+It is small, has a direct inductive soundness argument, reduces an actual selected
+source, and preserves the meaningful downstream interfaces. Its producer is
+already synchronized and its output replayed. Recheck the affected endpoint closure
+at the chosen final revision.
+
+\textbf{Second: choose the shared AX core when maintaining both lanes.}
+The all-state commutation proof is unusually simple and removes duplicate
+symbolic reasoning. Keep its two literal bindings separate. Use the two-lane
+size boundary when reporting its benefit.
+
+\textbf{Third: move Rocq's decoder behind one command interface.}
+The additive adapter proves the transition equivalence required for the move.
+Complete the relocation, rewrite the L2 root against the same interface, then
+measure the complete changed source boundary. This is a natural way to align
+the two proof developments without forcing them to use identical tactics.
+
+\textbf{Fourth: integrate the direct seed-to-Infinity route.}
+The central mathematical observation, actual formula, tagged comprehension and
+quotient presentation are now formalized: reflexive subset in the seed closure
+gives a closed collection for any serial relation, and successors give ordinary
+Infinity. Supply this theorem to the final well-founded-model adapter and check
+the resulting endpoint before retiring old imports. A closure comparison should
+then determine the real reduction.
+
+The existing quotient-unification and normalized Rocq certificate proposals
+remain complementary; adopt them with their recorded provenance and final
+validation gates.
+
+\section*{Artifact and attribution notes}
+
+All proof changes in this packet are proposals against the pinned revision.
+The GitHub repository was not modified. The archive contains the report source
+and compiled PDF, replacement Lean sources and patches, the Rocq adapter,
+direct-Infinity prototypes, replay tools, source hashes and compiler receipts.
+Temporary dependency trees and compiled object caches are excluded.
+
+The machine, existing proof infrastructure, and borrowed definitions remain
+attributed to ProveIt and the contributors identified in its notices. The Rocq
+command interface is explicitly adapted from the maintained Lean design. The
+shared AX refactor extends the repository's existing checked-word method. The
+direct successor application of the seed property is presented as the new
+mathematical proposal in this packet, without a claim of literature-wide priority.
+
+\begin{thebibliography}{10}\small
+\bibitem{verification} ProveIt contributors. \emph{Formal correctness of the exact
+215-state machine}. Pinned K215 verification record.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{Repository verification README}.
+\bibitem{phase14} ProveIt contributors. \emph{Fourteenth K215 proof-simplification
+checkpoint}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase14/README.md}{Phase-fourteen evidence and source census}.
+\bibitem{endpoint} ProveIt contributors. \code{KEndpoint215.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{Exact Lean endpoint and assumptions}.
+\bibitem{history} ProveIt commits \code{ab6ceabe32ee} and \code{6d9800d1ca67}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/ab6ceabe32eefb196d81154d0cb3a811ed9a38a1}{Checked AX word for the dominated program};
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}{Arbitrary-state EnumDom halting theorem}.
+\bibitem{proposals} ProveIt contributors. \emph{K215 proof-simplification proposals}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md}{Proposal index}; some introductory checkpoint descriptions in the index are historical.
+\bibitem{quotient} ProveIt contributors. \emph{One quotient development through the
+QHyp interface}. \href{https://github.com/VladimirReshetnikov/ProveIt/commit/eb931b07ad8de83ba1a1d21dc84abe5a1c98364e}{Attributed quotient-unification proposal}.
+\bibitem{axioms} ProveIt contributors. \code{L2AxiomsPerm.lean} and
+\code{L2AxiomsDom.lean}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean}{Pinned Perm AX word};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsDom.lean}{Pinned Dom AX word}.
+\bibitem{enumerator} ProveIt contributors. \code{EnumPerm.lean} and current
+\code{K215F} Rocq enumerator modules. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean}{Lean command/codec organization};
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215}{Rocq K215 modules}.
+\bibitem{seed} ProveIt contributors. \code{KLowerSeed.lean}, \code{KLowerRaw.lean},
+\code{KLowerTag.lean}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean}{FormSeed with literal equality};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean}{Bounded tagged comprehension}.
+\bibitem{lower} ProveIt contributors. \code{KLowerQHyp.lean} and \code{KQ1ZF.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean}{Current tagged quotient interface};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean}{Current ZF-model endpoint}.
+\bibitem{attempts} ProveIt contributors. \code{InductiveAttempts.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean}{Existing singleton-index-to-Infinity development}.
+\end{thebibliography}
+\end{document}

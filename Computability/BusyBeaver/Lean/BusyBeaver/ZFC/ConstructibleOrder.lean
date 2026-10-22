@@ -75,7 +75,7 @@ theorem nsat_definesF (ρ : Nat → V) (f c n t x : Nat) :
     rw [nsat_econsAtomF H _ _ _ _ (by simp (disch := omega) only [upd_same, upd_other]; exact hE.1.1)]
     simp (disch := omega) only [upd_same, upd_other]
   constructor
-  · rintro ⟨e', he', hs⟩; rw [(key e').1 he'] at hs; exact hs
+  · rintro ⟨e', he', hs⟩; rwa [(key e').1 he'] at hs
   · intro hs; exact ⟨_, (key _).2 rfl, hs⟩
 
 def keyPF (w cw k : Nat) : NForm :=
@@ -194,7 +194,7 @@ theorem env_of_tup {W F d0 n t : V} (hF : ∀ z, mem z F ↔ Fld H W z) (hd0 : m
     exact ⟨i, y, hi, rfl⟩
   · obtain ⟨hpC, -⟩ := (he _).1 h
     obtain ⟨i', y', -, hy', e'⟩ := (hC _).1 hpC
-    rw [(kpair_inj H _ _ _ _ e').2]; exact hy'
+    rwa [(kpair_inj H _ _ _ _ e').2]
   · rcases hval i u hu with ⟨-, h1⟩ | ⟨h, -⟩
     · exact ht.1.1 i u u' h1 hu'
     · exact absurd hi h
@@ -320,12 +320,11 @@ def InGL (W p : V) : Prop :=
     (∃ a b, p = kpair H a b ∧ NewP H hP W a ∧ NewP H hP W b ∧
       NewLe H W (fldSet H W) (codeOrd H hR hP) a b)
 
-theorem setNew_exists (W : V) : ∃ N, ∀ b, mem b N ↔ NewP H hP W b := by
-  obtain ⟨N, hN⟩ := sep_of H (fun b => ¬ mem b (fldSet H W)) (.neg (.mem 0 1))
+theorem setNew_exists (W : V) : ∃ N, ∀ b, mem b N ↔ NewP H hP W b :=
+  sep_of H (fun b => ¬ mem b (fldSet H W)) (.neg (.mem 0 1))
     (fun _ => fldSet H W) (fun b => by
       simp only [NSat, nsat_neg]
       simp (disch := omega) only [upd_same, upd_other]) (Gdef H hP (fldSet H W))
-  exact ⟨N, hN⟩
 
 theorem setOrd_exists (W : V) : ∃ O, ∀ p, mem p O ↔ ∃ a b, p = kpair H a b ∧
     NewP H hP W a ∧ NewP H hP W b ∧ NewLe H W (fldSet H W) (codeOrd H hR hP) a b := by
@@ -380,11 +379,9 @@ theorem le_setOrd (W x y : V) : Le H (setOrd H hR hP W) x y ↔
     NewP H hP W x ∧ NewP H hP W y ∧ NewLe H W (fldSet H W) (codeOrd H hR hP) x y := by
   unfold Le
   rw [setOrd_spec H hR hP]
-  constructor
-  · rintro ⟨a, b, e, h⟩
-    obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e
-    exact h
-  · intro h; exact ⟨x, y, rfl, h⟩
+  refine ⟨fun ⟨a, b, e, h⟩ => ?_, fun h => ⟨x, y, rfl, h⟩⟩
+  obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ e
+  exact h
 
 /-- The step appends the new elements, ordered by least keys. -/
 theorem appendOpL : AppendOp H (stepL H hR hP) (setNew H hP) (setOrd H hR hP) := by
@@ -483,8 +480,7 @@ theorem nsat_inGLF (ρ : Nat → V) (x p : Nat) :
       have hnew : ∀ (ρ' : Nat → V) (b : Nat), ρ' x = ρ x → ρ' (x + p + 1) = fldSet H (ρ x) →
           (NSat mem ρ' (newF x (x + p + 1) b) ↔ NewP H hP (ρ x) (ρ' b)) := by
         intro ρ' b h1 h2
-        rw [nsat_newF H hP _ _ _ _ (by rw [h1, h2])]
-        rw [h1]
+        rw [nsat_newF H hP _ _ _ _ (by rw [h1, h2]), h1]
       rcases h with h | ⟨a, b, e, ha, hb⟩ | ⟨a, b, e, ha, hb, hl⟩
       · exact Or.inl h
       · refine Or.inr (Or.inl ⟨a, b, e, ha, ?_⟩)
@@ -554,7 +550,7 @@ theorem lord_fld : ∀ a, Ord mem a → ∀ W S, IsStage H (stepL H hR hP) a W �
     refine ⟨c, Wc, hc, hWc, (fld_step H (appendOpL H hR hP) hWco x).2 ?_⟩
     by_cases hxT : mem x T
     · exact Or.inl ((hfl x).2 hxT)
-    · exact Or.inr ((setNew_spec H hP Wc x).2 ⟨by rw [hfs]; exact hx, by rw [hfs]; exact hxT⟩)
+    · exact Or.inr ((setNew_spec H hP Wc x).2 ⟨by rwa [hfs], by rwa [hfs]⟩)
 
 include hR in
 /-- **Choice under `V = L`.** In a model of ZF in which every set is

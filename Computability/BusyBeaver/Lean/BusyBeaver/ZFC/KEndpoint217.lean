@@ -19,8 +19,8 @@ The machine-specific inputs of `KEndpoint.blank_halts_iff_zfc_refutation`:
 * `p217_boot_iff`: the source halts from the boot registers iff `dagDom`, iterated, does
   (`KSource217`), iff Source 149's dominated enumerator halts from the seed
   (`L2Dom.dagDom_seed_iff`), iff the code 1 is derivable in `C222`: the enumerator compiles
-  derivations of the dominated calculus `KCodeDom.CDom`, which derives exactly `C222`'s codes
-  (`DomRho8.rho8_all`).
+  `C222` derivations directly, its rho8 rows through the dominated-implication theorem
+  (`DomRho8.rho8_all_of_restricted`).
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.KEndpoint217

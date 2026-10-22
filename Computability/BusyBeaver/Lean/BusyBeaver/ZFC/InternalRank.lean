@@ -55,32 +55,27 @@ variable (H : ZFAxioms mem)
 
 theorem nsat_singF (ρ : Nat → V) (s x : Nat) : NSat mem ρ (singF s x) ↔ ρ s = vsingle H (ρ x) := by
   simp (disch := omega) only [singF, NSat, nsat_iff, upd_same, upd_other]
-  constructor
-  · intro h; exact H.ext _ _ fun d => (h d).trans (vsingle_spec H _ d).symm
-  · intro h d; rw [h]; exact vsingle_spec H _ d
+  exact ⟨fun h => H.ext _ _ fun d => (h d).trans (vsingle_spec H _ d).symm,
+    fun h d => by rw [h]; exact vsingle_spec H _ d⟩
 
 theorem nsat_upairF (ρ : Nat → V) (p x y : Nat) :
     NSat mem ρ (upairF p x y) ↔ ρ p = vpair H (ρ x) (ρ y) := by
   simp (disch := omega) only [upairF, NSat, nsat_iff, upd_same, upd_other]
-  constructor
-  · intro h; exact H.ext _ _ fun d => (h d).trans (vpair_spec H _ _ d).symm
-  · intro h d; rw [h]; exact vpair_spec H _ _ d
+  exact ⟨fun h => H.ext _ _ fun d => (h d).trans (vpair_spec H _ _ d).symm,
+    fun h d => by rw [h]; exact vpair_spec H _ _ d⟩
 
 theorem nsat_kpairF (ρ : Nat → V) (p x y : Nat) :
     NSat mem ρ (kpairF p x y) ↔ ρ p = kpair H (ρ x) (ρ y) := by
   simp only [kpairF, NSat, nsat_iff, nsat_singF H, nsat_upairF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · intro h; exact H.ext _ _ fun d => (h d).trans (kpair_mem H _ _ d).symm
-  · intro h d; rw [h]; exact kpair_mem H _ _ d
+  exact ⟨fun h => H.ext _ _ fun d => (h d).trans (kpair_mem H _ _ d).symm,
+    fun h d => by rw [h]; exact kpair_mem H _ _ d⟩
 
 theorem nsat_pmemF (ρ : Nat → V) (f x y : Nat) :
     NSat mem ρ (pmemF f x y) ↔ mem (kpair H (ρ x) (ρ y)) (ρ f) := by
   simp only [pmemF, NSat, nsat_kpairF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨d, rfl, h⟩; exact h
-  · intro h; exact ⟨_, rfl, h⟩
+  exact ⟨fun ⟨_, rfl, h⟩ => h, fun h => ⟨_, rfl, h⟩⟩
 
 theorem nsat_powF (ρ : Nat → V) (y t : Nat) :
     NSat mem ρ (powF y t) ↔ ∀ z, mem z (ρ y) ↔ Sub mem z (ρ t) := by
@@ -155,7 +150,7 @@ theorem rapprox_unique {f g d e : V} (hf : RApprox H R f d) (hg : RApprox H R g 
     (hd : Ord mem d) (he : Ord mem e) :
     ∀ b, Ord mem b → mem b d → mem b e →
       ∀ S S', mem (kpair H b S) f → mem (kpair H b S') g → S = S' := by
-  have key := ord_induction H hR
+  exact ord_induction H hR
     (fun b => mem b d → mem b e → ∀ S S', mem (kpair H b S) f → mem (kpair H b S') g → S = S')
     (.imp (.mem 0 3) (.imp (.mem 0 4) (.all 5 (.all 6
       (.imp (.and (pmemF 1 0 5) (pmemF 2 0 6)) (.eq 5 6))))))
@@ -178,7 +173,6 @@ theorem rapprox_unique {f g d e : V} (hf : RApprox H R f d) (hg : RApprox H R g 
         have hce : mem c e := he.1 a hae c hca
         obtain ⟨T, hT⟩ := hf.2.1 c hcd
         exact ⟨c, T, hca, hT, (IH c hca hcd hce T T' hT hcT') ▸ hzT⟩)
-  exact key
 
 end Unique
 
@@ -189,9 +183,8 @@ def succF (m a : Nat) : NForm :=
 theorem nsat_succF (H : ZFAxioms mem) (ρ : Nat → V) (m a : Nat) :
     NSat mem ρ (succF m a) ↔ ρ m = vsucc H (ρ a) := by
   simp (disch := omega) only [succF, NSat, nsat_iff, upd_same, upd_other]
-  constructor
-  · intro h; exact H.ext _ _ fun d => (h d).trans (vsucc_spec H _ d).symm
-  · intro h d; rw [h]; exact vsucc_spec H _ d
+  exact ⟨fun h => H.ext _ _ fun d => (h d).trans (vsucc_spec H _ d).symm,
+    fun h d => by rw [h]; exact vsucc_spec H _ d⟩
 
 section Exists
 
@@ -216,7 +209,7 @@ omit hR in
 /-- First coordinates of pairs in an approximation lie in its domain. -/
 theorem rapprox_dom {f d b S : V} (hf : RApprox H R f d) (h : mem (kpair H b S) f) : mem b d := by
   obtain ⟨b', S', hb', he⟩ := hf.1 _ h
-  rw [(kpair_inj H _ _ _ _ he).1]; exact hb'
+  rwa [(kpair_inj H _ _ _ _ he).1]
 
 omit hR in
 /-- The next stage `⋃ {{z | R z T} | ⟨c, T⟩ ∈ f}` exists. -/
@@ -276,11 +269,9 @@ theorem rapprox_extend {f b S : V} (hf : RApprox H R f b) (hb : Ord mem b)
       · obtain ⟨rfl, -⟩ := kpair_inj H _ _ _ _ hT
         exact absurd (hb.1 x hx c' hc') (mem_irrefl H hR c')
     rcases (hg _).1 h1 with h1 | h1
-    · have hcb := rapprox_dom H hf h1
-      rw [hf.2.2.2 c S1 h1 z]
-      constructor
-      · rintro ⟨c', T, hc', hT, hz⟩; exact ⟨c', T, hc', (hg _).2 (Or.inl hT), hz⟩
-      · rintro ⟨c', T, hc', hT, hz⟩; exact ⟨c', T, hc', back c hcb c' T hc' hT, hz⟩
+    · rw [hf.2.2.2 c S1 h1 z]
+      exact ⟨fun ⟨c', T, hc', hT, hz⟩ => ⟨c', T, hc', (hg _).2 (Or.inl hT), hz⟩,
+        fun ⟨c', T, hc', hT, hz⟩ => ⟨c', T, hc', back c (rapprox_dom H hf h1) c' T hc' hT, hz⟩⟩
     · obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ h1
       rw [hS z]
       constructor
@@ -299,9 +290,7 @@ theorem rapprox_glue (hrF : RDef mem R rF) {d : V} (hd : Ord mem d) (h : ∀ b, 
     (fun x y => by
       simp only [NSat, nsat_ordF, nsat_succF H, nsat_rapproxF H hrF]
       simp (disch := omega) only [upd_same, upd_other]
-      constructor
-      · rintro ⟨ho, m, rfl, hm⟩; exact ⟨ho, hm⟩
-      · rintro ⟨ho, hm⟩; exact ⟨ho, _, rfl, hm⟩)
+      exact ⟨fun ⟨ho, _, rfl, hm⟩ => ⟨ho, hm⟩, fun ⟨ho, hm⟩ => ⟨ho, _, rfl, hm⟩⟩)
     (fun _ _ _ h1 h2 => rapprox_eq H hR h1.2 h2.2 (ord_succ H h1.1)) d
   have hF : ∀ p, mem p (vunion H G) ↔
       ∃ b g, mem b d ∧ RApprox H R g (vsucc H b) ∧ mem p g := by
@@ -319,11 +308,8 @@ theorem rapprox_glue (hrF : RDef mem R rF) {d : V} (hd : Ord mem d) (h : ∀ b, 
     have ho1 := ord_succ H (ord_of_mem hd hb1)
     exact rapprox_unique H hR hg1 hg2 ho1 (ord_succ H (ord_of_mem hd hb2)) c
       (ord_of_mem ho1 hc1) hc1 (rapprox_dom H hg2 h2) S1 S2 h1 h2
-  have succ_sub : ∀ b c, mem b d → mem c (vsucc H b) → mem c d := by
-    intro b c hb hc
-    rcases (vsucc_spec H b c).1 hc with hc | rfl
-    · exact hd.1 b hb c hc
-    · exact hb
+  have succ_sub : ∀ b c, mem b d → mem c (vsucc H b) → mem c d := fun b c hb hc =>
+    ((vsucc_spec H b c).1 hc).elim (hd.1 b hb c) fun (e : c = b) => e ▸ hb
   refine ⟨vunion H G, ?_, ?_, ?_, ?_⟩
   · intro p hp
     obtain ⟨b, g, hb, hg, hpg⟩ := (hF p).1 hp
@@ -340,14 +326,13 @@ theorem rapprox_glue (hrF : RDef mem R rF) {d : V} (hd : Ord mem d) (h : ∀ b, 
   · intro c S1 h1 z
     obtain ⟨b1, g1, hb1, hg1, h1⟩ := (hF _).1 h1
     rw [hg1.2.2.2 c S1 h1 z]
-    have hcs := rapprox_dom H hg1 h1
     constructor
     · rintro ⟨c', T, hc', hT, hz⟩
       exact ⟨c', T, hc', (hF _).2 ⟨b1, g1, hb1, hg1, hT⟩, hz⟩
     · rintro ⟨c', T, hc', hT, hz⟩
       obtain ⟨b2, g2, hb2, hg2, hT⟩ := (hF _).1 hT
-      have hc's : mem c' (vsucc H b1) := (ord_succ H (ord_of_mem hd hb1)).1 c hcs c' hc'
-      obtain ⟨T1, hT1⟩ := hg1.2.1 c' hc's
+      obtain ⟨T1, hT1⟩ :=
+        hg1.2.1 c' ((ord_succ H (ord_of_mem hd hb1)).1 c (rapprox_dom H hg1 h1) c' hc')
       refine ⟨c', T1, hc', hT1, ?_⟩
       rwa [agree b1 g1 b2 g2 c' T1 T hb1 hg1 hb2 hg2 hT1 hT]
 
@@ -380,9 +365,7 @@ theorem nsat_rstageF (H : ZFAxioms mem) (hrF : RDef mem R rF) (ρ : Nat → V) (
     NSat mem ρ (rstageF rF a S) ↔ RStage H R (ρ a) (ρ S) := by
   simp only [rstageF, NSat, nsat_succF H, nsat_rapproxF H hrF, nsat_pmemF H]
   simp (disch := omega) only [upd_same, upd_other]
-  constructor
-  · rintro ⟨f, ⟨m, rfl, hf⟩, h⟩; exact ⟨f, hf, h⟩
-  · rintro ⟨f, hf, h⟩; exact ⟨f, ⟨_, rfl, hf⟩, h⟩
+  exact ⟨fun ⟨f, ⟨_, rfl, hf⟩, h⟩ => ⟨f, hf, h⟩, fun ⟨f, hf, h⟩ => ⟨f, ⟨_, rfl, hf⟩, h⟩⟩
 
 section Stages
 
@@ -415,13 +398,13 @@ theorem rstage_spec (hrF : RDef mem R rF) (hS : RSets mem R) {a S : V} (ha : Ord
     obtain ⟨T', g, hg, hcg⟩ := rstage_exists' H hR hrF hS hoc
     have e : T = T' := rapprox_unique H hR hf hg ho (ord_succ H hoc) c hoc
       ((vsucc_spec H a c).2 (Or.inl hc)) (vsucc_self H c) T T' hcT hcg
-    exact ⟨c, T, hc, ⟨g, hg, by rw [e]; exact hcg⟩, hz⟩
+    exact ⟨c, T, hc, ⟨g, hg, by rwa [e]⟩, hz⟩
   · rintro ⟨c, T, hc, ⟨g, hg, hcg⟩, hz⟩
     have hoc := ord_of_mem ha hc
     obtain ⟨T0, hT0⟩ := hf.2.1 c ((vsucc_spec H a c).2 (Or.inl hc))
     have e : T0 = T := rapprox_unique H hR hf hg ho (ord_succ H hoc) c hoc
       ((vsucc_spec H a c).2 (Or.inl hc)) (vsucc_self H c) T0 T hT0 hcg
-    exact ⟨c, T0, hc, hT0, by rw [e]; exact hz⟩
+    exact ⟨c, T0, hc, hT0, by rwa [e]⟩
 
 /-- Stages grow along the ordinals. -/
 theorem rstage_mono (hrF : RDef mem R rF) (hS : RSets mem R) {a c S T : V} (ha : Ord mem a)

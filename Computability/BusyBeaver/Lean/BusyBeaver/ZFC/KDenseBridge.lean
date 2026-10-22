@@ -36,8 +36,7 @@ theorem getD_trim : ∀ (l : List Bool) (i : Nat), (trim l).getD i false = l.get
       rw [trim_cons]
       split
       · rename_i h
-        obtain ⟨hb, ht⟩ := h
-        subst hb
+        obtain ⟨rfl, ht⟩ := h
         cases i with
         | zero => rfl
         | succ i => simpa [ht] using (getD_trim l i).symm
@@ -141,7 +140,7 @@ theorem blank_iff {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat} {
     (hc : Commutes D M ex H) (hH : ∀ b, M H b = none) :
     BlankHalts D ↔ Halts M (zc (ex 0) [] []) := by
   have h0 : Rel ex H (D.run 0) (zc (ex 0) [] []) :=
-    ⟨rfl, fun i => ⟨by simp [Machine.run, initial, Tape.read, zc], by simp [Machine.run, initial, Tape.read, zc]⟩⟩
+    ⟨rfl, fun _ => by constructor <;> simp [Machine.run, initial, Tape.read, zc]⟩
   -- Remember both sides' halting in the stopped branch. This one invariant
   -- supplies both directions; a second induction over the sparse run is unnecessary.
   have key : ∀ t, (BlankHalts D ∧ Halts M (zc (ex 0) [] [])) ∨
@@ -156,7 +155,7 @@ theorem blank_iff {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat} {
           | none => exact Or.inl ⟨⟨t, hs⟩, z, ⟨t, hz⟩, rel_halt hH hr hs⟩
           | some q =>
               obtain ⟨z', h1, h2⟩ := rel_step hc hr hs
-              exact Or.inr ⟨z', by rw [run_succ, hz]; exact h1, h2⟩
+              exact Or.inr ⟨z', by rwa [run_succ, hz], h2⟩
   constructor
   · rintro ⟨t, ht⟩
     rcases key t with hh | ⟨z, hz, hr⟩

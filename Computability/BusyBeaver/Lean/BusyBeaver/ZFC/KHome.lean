@@ -26,8 +26,7 @@ theorem LeftWord.sound {M : TMN} {q q' : Nat} {W : List Bool}
   | @cons q q1 q2 b W hrow htail ih =>
     rw [List.cons_append, zl_cons]
     have hs : step M (zc q (W ++ L) (b :: R)) = some (zl q1 (W ++ L) (b :: R)) := zL hrow
-    have ht := ih L (b :: R)
-    simpa [List.reverse_cons, List.append_assoc] using (Reach.of_step hs).trans ht
+    simpa [List.reverse_cons, List.append_assoc] using (Reach.of_step hs).trans (ih L (b :: R))
 
 def state : Nat → Nat
   | 0 => 2 | 1 => 3 | 2 => 5 | 3 => 9 | 4 => 15 | 5 => 23 | 6 => 34 | 7 => 50 | _ => 2
@@ -45,9 +44,8 @@ theorem home_word {M : TMN} (hb : Boundary M) (U R : List Bool) (k : Nat)
     Reach1 M (zl 2 ((U ++ [true]) ++ List.replicate k false) R)
       (zc 84 [true] (U.reverse ++ R)) := by
   rw [zl_padl]
-  have hs := hw.sound [] R
   have hs' : Reach M (zl 2 (U ++ [true]) R) (zl 2 [] (true :: (U.reverse ++ R))) := by
-    simpa [List.reverse_append, List.append_assoc] using hs
+    simpa [List.reverse_append, List.append_assoc] using hw.sound [] R
   exact hs'.trans_reach1 (hb (U.reverse ++ R))
 
 private theorem zeros {M : TMN} (rows : Rows M) : ∀ k i, i + k < 8 →
@@ -55,8 +53,8 @@ private theorem zeros {M : TMN} (rows : Rows M) : ∀ k i, i + k < 8 →
   | 0, i, _ => by simpa using LeftWord.nil (M := M) (state i)
   | k + 1, i, h => by
     have ht := zeros rows k (i + 1) (by omega)
-    have hr := LeftWord.cons (rows.next i (by omega)) ht
-    simpa [List.replicate_succ, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using hr
+    simpa [List.replicate_succ, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using
+      LeftWord.cons (rows.next i (by omega)) ht
 
 private theorem ones {M : TMN} (rows : Rows M) {k i : Nat} (hi : i < 8) (hk : 0 < k) :
     LeftWord M (state i) (List.replicate k true) (state 0) := by
@@ -96,12 +94,12 @@ theorem scanBound_sound {M : TMN} (rows : Rows M) (n : Nat) (vs : List Nat)
       cases b with
       | true =>
         obtain ⟨j', hk, h8, ht⟩ := ih h (by decide : 0 < 8) (Nat.le_refl 0)
-        exact ⟨j', hk, h8, by simpa [flat_cons, segList] using (LeftWord.cons (rows.reset j (by omega)) ht)⟩
+        exact ⟨j', hk, h8, by simpa [flat_cons, segList] using LeftWord.cons (rows.reset j (by omega)) ht⟩
       | false =>
         by_cases hb : i + 1 < 8
         · simp only [scanBound, hb, if_true] at h
           obtain ⟨j', hk, h8, ht⟩ := ih h hb (Nat.succ_le_succ hj)
-          exact ⟨j', hk, h8, by simpa [flat_cons, segList] using (LeftWord.cons (rows.next j (by omega)) ht)⟩
+          exact ⟨j', hk, h8, by simpa [flat_cons, segList] using LeftWord.cons (rows.next j (by omega)) ht⟩
         · simp [scanBound, hb] at h
     | run b a c =>
       cases b with
@@ -118,11 +116,9 @@ theorem scanBound_sound {M : TMN} (rows : Rows M) (n : Nat) (vs : List Nat)
       | false =>
         by_cases hb : a = 0 ∧ i + c < 8
         · simp only [scanBound, hb] at h
-          obtain ⟨ha, hi'⟩ := hb
-          subst a
+          obtain ⟨rfl, hi'⟩ := hb
           obtain ⟨j', hk, h8, ht⟩ := ih h hi' (Nat.add_le_add_right hj c)
-          have hp := zeros rows c j (by omega)
-          exact ⟨j', hk, h8, by simpa [flat_cons, segList] using hp.append ht⟩
+          exact ⟨j', hk, h8, by simpa [flat_cons, segList] using (zeros rows c j (by omega)).append ht⟩
         · simp [scanBound, hb] at h
     | box x => simp [scanBound] at h
 
@@ -157,8 +153,7 @@ theorem flat_reverse {n : Nat} {vs : List Nat} {i k : Nat} {xs : List Seg}
     have ⟨j, hj⟩ := scanBound_tail h
     cases x with
     | box x => simp [scanBound] at h
-    | bit b => simp [List.reverse_cons, flat_append, flat_cons, flat_nil, segList, ih hj]
-    | run b a c => simp [List.reverse_cons, flat_append, flat_cons, flat_nil, segList, ih hj]
+    | bit b | run b a c => simp [List.reverse_cons, flat_append, flat_cons, flat_nil, segList, ih hj]
 
 /-- Inspect the left list in reverse: discard only blank exterior segments,
 then remove one literal marker. The result is the reversed scanned prefix. -/
@@ -236,8 +231,8 @@ theorem home_sound {M : TMN} (rows : Rows M) (hb : Boundary M) (n : Nat) (vs : L
         subst t
         obtain ⟨p, he, hp⟩ := stripBlank_shape hs
         have hl : l = u.reverse ++ [.bit true] ++ p.reverse := by
-          have hh := congrArg List.reverse he
-          simpa [List.reverse_append, List.reverse_cons, List.append_assoc] using hh
+          simpa [List.reverse_append, List.reverse_cons, List.append_assoc] using
+            congrArg List.reverse he
         obtain ⟨z, hz⟩ := hp n vs
         obtain ⟨j, _, hj, hw⟩ := scanBound_sound rows n vs hg (by decide) (Nat.le_refl 0)
         have ht : LeftWord M 2 (flat n vs u.reverse ++ [true]) 2 :=

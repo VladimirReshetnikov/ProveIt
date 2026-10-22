@@ -1,7 +1,7 @@
 (** * L1_CompPerm: [thm222 1] implies that the 215's enumerator halts.
 
-    As L1_Comp222, for Source 159's commands: a derivation of the dominated calculus [thmDom]
-    compiles to a command list.  Block contract for a code X:
+    As L1_Comp222, for Source 159's commands: a derivation of [thm222] compiles directly to a command list
+    by interpreting dominated implication in block contracts.  Block contract for a code X:
         [blk X L] :  for all T w,  exec L (T, w, 0, 0) is a halt or ends in (X, w, 0, 0).
     The counter is set from a cleared state by [J u = MP u] ([J 0] is empty); a dominated rho8
     leaf is [Discard; J u; AX(c; a - u, b); NIP^8; DROP; NIP^3]. The program
@@ -9,7 +9,7 @@
     number is reached unless the enumerator halts earlier. *)
 From Coq Require Import Arith Lia Bool List.
 From K230L Require Import Codes230.
-From NS Require Import Codes222 EnumPerm Thm222 ThmDom.
+From NS Require Import Codes222 EnumPerm Thm222 DomRho8.
 Import ListNotations.
 
 (** ** Commands and their encoding *)
@@ -308,11 +308,22 @@ Proof.
   rewrite (ex_nip _ _ _ _ _ _ EB). xrun. right. reflexivity.
 Qed.
 
-(** ** Compilation of derivations of the dominated calculus *)
-Lemma compile X : thmDom X -> exists L, blk X L.
+(** ** Compile directly into the algebra of block contracts. *)
+Definition Compilable (X : nat) : Prop := exists L, blk X L.
+
+Lemma compilable_dom_imp : DomImp Compilable.
+Proof.
+  constructor.
+  - exists DISCARD. exact blk_true.
+  - intros a b [LI HI] [LA HA].
+    exists (mpb b LA LI). exact (blk_mp a b LA LI HA HI).
+  - intros a b c u Hu. exists (leaf 8 a b c u). now apply blk_r8.
+Qed.
+
+Lemma compile_direct X : thm222 X -> exists L, blk X L.
 Proof.
   induction 1 as [| t b _ [LA HA] _ [LI HI] | a hh _ [L HL]
-                  | a b | a b c | a b c | a b c | a b c | a b | a b c | a b c u Hu | a b c H1 H2].
+                  | a b | a b c | a b c | a b c | a b c | a b | a b c | a b c u | a b c H1 H2].
   - exists DISCARD. exact blk_true.
   - exists (mpb b LA LI). exact (blk_mp t b LA LI HA HI).
   - exists (genb a L). exact (blk_gen a hh L HL).
@@ -323,7 +334,7 @@ Proof.
   - exists (leaf 5 a b c 0). apply blk_r5.
   - exists (leaf 6 a 0 b 0). apply blk_r6.
   - exists (leaf 7 a b c 0). apply blk_r7.
-  - exists (leaf 8 a b c u). now apply blk_r8.
+  - exact (rho8_all Compilable compilable_dom_imp a b c u).
   - exists (leafB a b c). now apply blk_bundle.
 Qed.
 
@@ -341,7 +352,7 @@ Qed.
 
 Theorem enum_complete : thm222 1 -> enum_halts.
 Proof.
-  intro H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
+  intro H. destruct (compile_direct 1 H) as [L HL].
   set (N := enc_fields (fields (START 0)) (enc_tail (L ++ SUFFIX))).
   destruct (reach N) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
   apply (halts_from_reach n s R).

@@ -4,7 +4,7 @@
 The 215 runs Source 159's command-permuted commands on Source 149's dominated AX:
 
 - calculus: as for the 217 (rocq224's 222 files and ThmDom from regenerate217).
-  DomRho8 is a compact kernel-checked symbolic certificate replay. The enumerator EnumPerm, L1_SoundPerm, L1_CompPerm and SeedPerm are hand-written
+  DomRho8 and CD222 are adapters of the shared implication core DominatedCore. The enumerator EnumPerm, L1_SoundPerm, L1_CompPerm and SeedPerm are hand-written
   (k225-formal/rocqperm/): NIP 0, DROP 1, MP 2 (with its own field), AX 3 + c (fields y, x;
   U = d); the compiler sets the counter with J u = MP u; the seed is candidate 4;
 - program: dagPerm (k225-formal/lean215/dagperm_nodes.json, make_dagperm.py) is dagDom with the
@@ -13,7 +13,8 @@ The 215 runs Source 159's command-permuted commands on Source 149's dominated AX
   the AX lemma restated (as for the 217) and the dispatch and root step re-proved
   (rocqperm/L2RootPerm_dispatch.v), MainPerm.v the 218's Main219.v from the 215's boot registers
   R0p (nextproof = 4, Regs215.v);
-- the 215's source is related to dagPerm by an offset bisimulation (Cert215Offsets);
+- the 215's source is related to dagPerm by a normalized one-sided bisimulation certificate
+  (inputs/215/NormalizedCert215.v, rocqperm/NormalizedBisim.v);
 - the TM side is K230's runtime with the unused labels disabled, the 215's startup (95,714 steps
   to the root with R0p, a gap of 65 cells and 40 spare blocks) and site paths of up to 48 bits.
 
@@ -57,14 +58,11 @@ def ns(text):
 
 
 def calculus_files(output):
-    for name in R217.CALCULUS + ["DomRho8", "ThmDom"]:
-        if name == "DomRho8":
-            subprocess.run([sys.executable, str(KF / "generate_domrho8_rocq_compact.py"),
-                            "--output", str(output / "DomRho8.v")], check=True)
-        else:
-            body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
-            (output / f"{name}.v").write_text(body, encoding="utf-8", newline="\n")
-    for name in ["EnumPerm", "L1_SoundPerm", "L1_CompPerm", "SeedPerm"]:
+    for name in R217.CALCULUS + ["DomRho8"]:
+        body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
+        (output / f"{name}.v").write_text(body, encoding="utf-8", newline="\n")
+    for name in ["EnumPerm", "L1_SoundPerm", "L1_CompPerm", "SeedPerm",
+                 "PathCodec", "NormalizedBisim"]:
         src = PERM_DIR / f"{name}.v"
         (output / f"{name}.v").write_text(
             f"(** k225-formal/rocqperm/{name}.v (SHA256 {sha(src)}) under namespace {NS}. *)\n"
@@ -134,7 +132,7 @@ def regenerate(reference, output):
     assert sha(ref / "manifest.json") == manifest["reference_manifest_sha256"]
     rm = json.loads((ref / "manifest.json").read_text(encoding="utf-8"))
     inp = {"dense": ROOT / "inputs/215/table.tm", "sparse": ROOT / "inputs/215/table_k230labels.tm",
-           "sites": ROOT / "inputs/215/sites.json", "certificate": ROOT / "inputs/215/Cert215Offsets.v"}
+           "sites": ROOT / "inputs/215/sites.json", "certificate": ROOT / "inputs/215/NormalizedCert215.v"}
     sparse, dense, old = parse(inp["sparse"]), parse(inp["dense"]), parse(ref / "machine/k230.tm")
     used = {q for q, _ in sparse}
     deleted = set(range(230)) - used
@@ -204,23 +202,22 @@ def regenerate(reference, output):
                                       encoding="utf-8", newline="\n")
     (output / "Table215.v").write_text(table_text(dense, V, "table215", inp["dense"]), encoding="utf-8",
                                        newline="\n")
-    shutil.copyfile(ROOT / "templates/OffsetBisim230.v", output / "OffsetBisim230.v")
     cert = inp["certificate"].read_text(encoding="utf-8")
-    assert "Definition Cert215 :" in cert
-    shutil.copyfile(inp["certificate"], output / "Cert215Offsets.v")
+    assert "Definition normalized_certificate" in cert
+    shutil.copyfile(inp["certificate"], output / "NormalizedCert215.v")
     (output / "Source215.v").write_text(f"""(** Kernel-checked equivalence of the 215's source with dagPerm, for every natural-valued
-    register file. *)
+    register file. The normalized certificate compares pointers modulo their implicit false
+    suffix (1,426 entries) and is checked in one direction; the mirror lemma gives the other. *)
 From Coq Require Import List.
-From K230 Require Import RM Prog230.
+From K230 Require Import RM.
 From K230P Require Import Bisim230.
-From {NS} Require Import Prog215 OffsetBisim230 Cert215Offsets DagPerm.
+From {NS} Require Import Prog215 DagPerm NormalizedBisim NormalizedCert215.
 Import ListNotations.
-Lemma certificate_forward : ocheck (ptree p215) (ptree dagPerm) Cert215 = true.
-Proof. Time vm_compute. reflexivity. Qed.
-Lemma certificate_backward : ocheck (ptree dagPerm) (ptree p215) (omirror Cert215) = true.
-Proof. Time vm_compute. reflexivity. Qed.
+Lemma certificate_normalized :
+  NCheck.check (ptree p215) (ptree dagPerm) normalized_certificate = true.
+Proof. vm_compute. reflexivity. Qed.
 Theorem p215_dagPerm R : rm_halts p215 ([],R) <-> rm_halts dagPerm ([],R).
-Proof. exact (ocheck_iff p215 dagPerm Cert215 certificate_forward certificate_backward R). Qed.
+Proof. exact (NCheck.check_one_sided_iff p215 dagPerm normalized_certificate certificate_normalized R). Qed.
 Print Assumptions p215_dagPerm.
 """, encoding="utf-8", newline="\n")
     (output / "Correct215.v").write_text(f"""(** Closed endpoint for the sparse-label 215-state runtime. *)

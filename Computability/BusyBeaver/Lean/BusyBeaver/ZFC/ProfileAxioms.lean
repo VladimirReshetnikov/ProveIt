@@ -43,20 +43,19 @@ theorem member_right (mem : V → V → Prop)
 theorem member_left_iff (mem : V → V → Prop)
     (hSymm : ∀ x y, Eqv mem x y → Eqv mem y x)
     (hTrans : ∀ x y z, Eqv mem x y → Eqv mem y z → Eqv mem x z)
-    {x x' y : V} (hxx' : Eqv mem x x') : Member mem x y ↔ Member mem x' y := by
-  exact ⟨member_left mem hSymm hTrans hxx',
+    {x x' y : V} (hxx' : Eqv mem x x') : Member mem x y ↔ Member mem x' y :=
+  ⟨member_left mem hSymm hTrans hxx',
     member_left mem hSymm hTrans (hSymm x x' hxx')⟩
 
 theorem member_right_iff (mem : V → V → Prop)
     (hSymm : ∀ x y, Eqv mem x y → Eqv mem y x)
     (hTrans : ∀ x y z, Eqv mem x y → Eqv mem y z → Eqv mem x z)
-    {x y y' : V} (hyy' : Eqv mem y y') : Member mem x y ↔ Member mem x y' := by
-  exact ⟨member_right mem hTrans hyy', member_right mem hTrans (hSymm y y' hyy')⟩
+    {x y y' : V} (hyy' : Eqv mem y y') : Member mem x y ↔ Member mem x y' :=
+  ⟨member_right mem hTrans hyy', member_right mem hTrans (hSymm y y' hyy')⟩
 
 theorem empty_of_raw_empty (mem : V → V → Prop) (e : V)
-    (he : ∀ z, ¬ mem z e) : ∀ z, ¬ Member mem z e := by
-  rintro z ⟨a, hae, _⟩
-  exact he a hae
+    (he : ∀ z, ¬ mem z e) : ∀ z, ¬ Member mem z e :=
+  fun _ ⟨a, hae, _⟩ => he a hae
 
 theorem pair_of_profile (mem : V → V → Prop)
     (hRefl : ∀ x, Eqv mem x x)
@@ -69,8 +68,7 @@ theorem pair_of_profile (mem : V → V → Prop)
     rcases (hp v).mp ⟨v, hvp, same_refl mem v⟩ with hva | hvb
     · exact Or.inl (hTrans z v a hzv (same_eqv mem hRefl hva))
     · exact Or.inr (hTrans z v b hzv (same_eqv mem hRefl hvb))
-  · intro hz
-    rcases hz with hza | hzb
+  · rintro (hza | hzb)
     · obtain ⟨v, hvp, hav⟩ := (hp a).mpr (Or.inl (same_refl mem a))
       exact ⟨v, hvp, hTrans z a v hza (same_eqv mem hRefl hav)⟩
     · obtain ⟨v, hvp, hbv⟩ := (hp b).mpr (Or.inr (same_refl mem b))
@@ -83,15 +81,13 @@ theorem union_profile_of_instance (mem : V → V → Prop) (a : V)
     ∃ b, ∀ z, ClassMember mem z b ↔ ∃ x, mem x a ∧ ClassMember mem z x := by
   obtain ⟨domain, haDomain, hTrans, _⟩ := hContainers a
   obtain ⟨b, hSupport, hCover⟩ := hCollect domain
-  refine ⟨b, ?_⟩
-  intro z
+  refine ⟨b, fun z => ?_⟩
   constructor
   · rintro ⟨v, hvb, hzv⟩
     obtain ⟨d, ⟨x, hxa, hdx⟩, hvd⟩ := hSupport v hvb
     exact ⟨x, hxa, d, hdx, same_trans mem hzv hvd⟩
   · rintro ⟨x, hxa, d, hdx, hzd⟩
-    have hdDomain : mem d domain := hTrans x (hTrans a haDomain x hxa) d hdx
-    obtain ⟨v, hvb, _, hvd⟩ := hCover d hdDomain
+    obtain ⟨v, hvb, _, hvd⟩ := hCover d (hTrans x (hTrans a haDomain x hxa) d hdx)
       ⟨d, ⟨x, hxa, hdx⟩, same_refl mem d⟩
     exact ⟨v, hvb, same_trans mem hzd (same_symm mem hvd)⟩
 
@@ -102,8 +98,7 @@ theorem union_of_instance (mem : V → V → Prop) (a : V)
     (hCollect : CollectionInstance mem (UnionChoice mem a)) :
     ∃ b, ∀ z, Member mem z b ↔ ∃ x, Member mem x a ∧ Member mem z x := by
   obtain ⟨b, hb⟩ := union_profile_of_instance mem a hContainers hCollect
-  refine ⟨b, ?_⟩
-  intro z
+  refine ⟨b, fun z => ?_⟩
   constructor
   · rintro ⟨v, hvb, hzv⟩
     obtain ⟨x, hxa, d, hdx, hvd⟩ := (hb v).mp ⟨v, hvb, same_refl mem v⟩
@@ -131,20 +126,17 @@ theorem separation_of_instance (mem : V → V → Prop) (a : V) (p : V → Prop)
     (hCollect : CollectionInstance mem (SeparationChoice mem a p)) :
     ∃ b, SubD mem b a ∧ ∀ z, Member mem z b ↔ Member mem z a ∧ p z := by
   obtain ⟨b, hSupport, hCover⟩ := hCollect a
-  refine ⟨b, ?_, ?_⟩
-  · intro v hvb
-    obtain ⟨x, hxa, hvx, _⟩ := hSupport v hvb
+  refine ⟨b, fun v hvb => ?_, fun z => ⟨?_, ?_⟩⟩
+  · obtain ⟨x, hxa, hvx, _⟩ := hSupport v hvb
     exact ⟨x, hxa, hvx⟩
-  · intro z
-    constructor
-    · rintro ⟨v, hvb, hzv⟩
-      obtain ⟨x, hxa, hvx, hpx⟩ := hSupport v hvb
-      have hzx := hTrans z v x hzv (same_eqv mem hRefl hvx)
-      exact ⟨⟨x, hxa, hzx⟩, (hInvariant z x hzx).mpr hpx⟩
-    · rintro ⟨⟨x, hxa, hzx⟩, hpz⟩
-      obtain ⟨v, hvb, _, hvx, _⟩ := hCover x hxa
-        ⟨x, hxa, same_refl mem x, (hInvariant z x hzx).mp hpz⟩
-      exact ⟨v, hvb, hTrans z x v hzx (same_eqv mem hRefl (same_symm mem hvx))⟩
+  · rintro ⟨v, hvb, hzv⟩
+    obtain ⟨x, hxa, hvx, hpx⟩ := hSupport v hvb
+    have hzx := hTrans z v x hzv (same_eqv mem hRefl hvx)
+    exact ⟨⟨x, hxa, hzx⟩, (hInvariant z x hzx).mpr hpx⟩
+  · rintro ⟨⟨x, hxa, hzx⟩, hpz⟩
+    obtain ⟨v, hvb, _, hvx, _⟩ := hCover x hxa
+      ⟨x, hxa, same_refl mem x, (hInvariant z x hzx).mp hpz⟩
+    exact ⟨v, hvb, hTrans z x v hzx (same_eqv mem hRefl (same_symm mem hvx))⟩
 
 /-- All profile traces of a have a common raw-membership bound. -/
 theorem subD_bound (mem : V → V → Prop) (a : V) (hContainers : Containers mem) :
@@ -153,14 +145,9 @@ theorem subD_bound (mem : V → V → Prop) (a : V) (hContainers : Containers me
   obtain ⟨w, hvw, _, hPowerW⟩ := hContainers v
   obtain ⟨b, hbw, hb⟩ := hPowerW v hvw
   obtain ⟨q, _, hq⟩ := hPowerW b hbw
-  refine ⟨q, ?_⟩
-  intro r hr
-  apply hq r
-  intro z hzr
+  refine ⟨q, fun r hr => hq r fun z hzr => ?_⟩
   obtain ⟨x, hxa, hzx⟩ := hr z hzr
-  apply hb z
-  intro t htz
-  exact hTransV x (hTransV a hav x hxa) t ((hzx t).mp htz)
+  exact hb z fun t htz => hTransV x (hTransV a hav x hxa) t ((hzx t).mp htz)
 
 def PowerChoice (mem : V → V → Prop) (a bound x y : V) : Prop :=
   mem x bound ∧ Same mem y x ∧ SubD mem x a
@@ -171,13 +158,10 @@ theorem power_profile_of_instance (mem : V → V → Prop) (a bound : V)
     ∃ p, (∀ v, mem v p → SubD mem v a) ∧
       ∀ r, SubD mem r a → ClassMember mem r p := by
   obtain ⟨p, hSupport, hCover⟩ := hCollect bound
-  refine ⟨p, ?_, ?_⟩
-  · intro v hvp
-    obtain ⟨r, _, hvr, hr⟩ := hSupport v hvp
-    intro z hzv
+  refine ⟨p, fun v hvp z hzv => ?_, fun r hr => ?_⟩
+  · obtain ⟨r, _, hvr, hr⟩ := hSupport v hvp
     exact hr z ((hvr z).mp hzv)
-  · intro r hr
-    obtain ⟨v, hvp, _, hvr, _⟩ := hCover r (hBound r hr)
+  · obtain ⟨v, hvp, _, hvr, _⟩ := hCover r (hBound r hr)
       ⟨r, hBound r hr, same_refl mem r, hr⟩
     exact ⟨v, hvp, same_symm mem hvr⟩
 
@@ -194,8 +178,7 @@ theorem power_of_instances (mem : V → V → Prop) (a : V)
     ∃ p, ∀ x, Member mem x p ↔ InterpretedSub mem x a := by
   obtain ⟨bound, hBound⟩ := subD_bound mem a hContainers
   obtain ⟨p, hSupport, hCover⟩ := power_profile_of_instance mem a bound hBound (hPowers bound)
-  refine ⟨p, ?_⟩
-  intro x
+  refine ⟨p, fun x => ?_⟩
   constructor
   · rintro ⟨v, hvp, hxv⟩ z hzx
     obtain ⟨t, htv, hzt⟩ := member_right mem hTrans hxv hzx
@@ -204,13 +187,8 @@ theorem power_of_instances (mem : V → V → Prop) (a : V)
   · intro hx
     obtain ⟨r, hrTrace, hr⟩ := separation_of_instance mem a (fun z => Member mem z x)
       hRefl hTrans (fun u v huv => member_left_iff mem hSymm hTrans huv) (hTraces x)
-    have hxr : Eqv mem x r := hExt x r (by
-      intro z
-      constructor
-      · intro hz
-        exact (hr z).mpr ⟨hx z hz, hz⟩
-      · intro hz
-        exact ((hr z).mp hz).2)
+    have hxr : Eqv mem x r :=
+      hExt x r fun z => ⟨fun hz => (hr z).mpr ⟨hx z hz, hz⟩, fun hz => ((hr z).mp hz).2⟩
     obtain ⟨v, hvp, hrv⟩ := hCover r hrTrace
     exact ⟨v, hvp, hTrans x r v hxr (same_eqv mem hRefl hrv)⟩
 
@@ -226,8 +204,7 @@ theorem replacement_of_instance (mem : V → V → Prop) (a : V) (r : V → V �
     (hCollect : CollectionInstance mem (ReplacementChoice mem a r)) :
     ∃ b, ∀ z, Member mem z b ↔ ∃ x, Member mem x a ∧ r x z := by
   obtain ⟨b, hSupport, hCover⟩ := hCollect a
-  refine ⟨b, ?_⟩
-  intro z
+  refine ⟨b, fun z => ?_⟩
   constructor
   · rintro ⟨v, hvb, hzv⟩
     obtain ⟨x, hxa, hxv⟩ := hSupport v hvb
@@ -253,23 +230,15 @@ theorem singleton_closed_of_containers (mem : V → V → Prop) (root : V)
   obtain ⟨s, hs⟩ := hPairs u u
   obtain ⟨w1, hw1v, hw1⟩ := hPowerV u huv
   obtain ⟨w2, hw2v, hw2⟩ := hPowerV w1 hw1v
-  have hsw2 : mem s w2 := by
-    apply hw2 s
-    intro z hzs
-    apply hw1 z
-    have hzu : Same mem z u :=
-      ((hs z).mp ⟨z, hzs, same_refl mem z⟩).elim id id
-    intro t htz
-    exact (hzu t).mp htz
-  refine ⟨s, raw_member mem hRefl (hTransV w2 hw2v s hsw2), ?_⟩
-  intro z
+  have hsw2 : mem s w2 := hw2 s fun z hzs => hw1 z fun t htz =>
+    ((((hs z).mp ⟨z, hzs, same_refl mem z⟩).elim id id : Same mem z u) t).mp htz
+  refine ⟨s, raw_member mem hRefl (hTransV w2 hw2v s hsw2), fun z => ?_⟩
   constructor
   · intro hzs
     have hzu : Eqv mem z u := ((pair_of_profile mem hRefl hTrans u u s hs z).mp hzs).elim id id
     exact hTrans z u x hzu (hSymm x u hxu)
   · intro hzx
-    apply (pair_of_profile mem hRefl hTrans u u s hs z).mpr
-    exact Or.inl (hTrans z x u hzx hxu)
+    exact (pair_of_profile mem hRefl hTrans u u s hs z).mpr (Or.inl (hTrans z x u hzx hxu))
 
 #print axioms same_eqv
 #print axioms separation_of_instance

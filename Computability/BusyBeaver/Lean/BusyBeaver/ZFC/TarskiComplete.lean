@@ -59,17 +59,7 @@ def decode : Nat → Nat → NF
 
 theorem decode_code (f : NF) : ∀ fuel, code f < fuel → decode fuel (code f) = f := by
   induction f with
-  | rel i j =>
-    intro fuel hlt
-    match fuel with
-    | 0 => omega
-    | fuel + 1 => simp [code, decode, Cantor.ofNat_toNat]
-  | eq i j =>
-    intro fuel hlt
-    match fuel with
-    | 0 => omega
-    | fuel + 1 => simp [code, decode, Cantor.ofNat_toNat]
-  | bot =>
+  | rel _ _ | eq _ _ | bot =>
     intro fuel hlt
     match fuel with
     | 0 => omega
@@ -140,10 +130,7 @@ include hC
 theorem cons_neg {G : List NF} {p : NF} (hG : Cons Ax G) (hp : ¬ Cons Ax (p :: G)) :
     Cons Ax (neg p :: G) := by
   intro d
-  apply hG
-  have d1 : Der NF.imp (Thm Ax) G (neg p) := deduction hC (Classical.byContradiction hp)
-  have d2 : Der NF.imp (Thm Ax) G (neg (neg p)) := deduction hC d
-  exact .mp d2 d1
+  exact hG (.mp (deduction hC d) (deduction hC (Classical.byContradiction hp)))
 
 /-- Adding a fresh witness of a refuted universal formula keeps consistency. -/
 theorem cons_witness {G : List NF} {a c : Nat} {χ : NF}
@@ -155,21 +142,14 @@ theorem cons_witness {G : List NF} {a c : Nat} {χ : NF}
   let G' := neg (all a χ) :: G
   have hfresh : ∀ g, g ∈ G' → ¬ Occurs c g := by
     intro g hg
-    cases List.mem_cons.mp hg with
-    | inl he =>
-        subst he
-        simp only [neg, Occurs]
-        intro o
-        rcases o with (o | o) | o
-        · exact hca o
-        · exact hcχ o
-        · exact o
-    | inr hg => exact hcG g hg
+    rcases List.mem_cons.mp hg with rfl | hg
+    · simp only [neg, Occurs]
+      exact fun o => o.elim (fun o => o.elim hca hcχ) id
+    · exact hcG g hg
   have d1 : Der NF.imp (Thm Ax) G' (rn a c χ) :=
     .mp (.ax (dne hC _)) (deduction hC d)
-  have d2 := der_gen hC c d1 hfresh
-  have d3 : Der NF.imp (Thm Ax) G' (all a χ) := .mp (.ax (alpha_bwd hC hca hb hcχ)) d2
-  exact .mp (.hyp (List.mem_cons_self ..)) d3
+  exact .mp (.hyp (List.mem_cons_self ..))
+    (.mp (.ax (alpha_bwd hC hca hb hcχ)) (der_gen hC c d1 hfresh))
 
 end Lists
 
@@ -257,9 +237,8 @@ theorem step_cons {G : List NF} (m : Nat) (hG : Cons Ax G) : Cons Ax (step Ax G 
             have := top_le_topL (g := all a χ) (G := all a χ :: G) (List.mem_cons_self ..)
             omega
           simp only [top] at hc
-          apply cons_witness hC hn hb (by omega) (not_occurs_of_top_le (by omega))
-          intro g hg
-          apply not_occurs_of_top_le
+          refine cons_witness hC hn hb (by omega) (not_occurs_of_top_le (by omega))
+            fun g hg => not_occurs_of_top_le ?_
           have := top_le_topL (g := g) (G := all a χ :: G) (List.mem_cons_of_mem _ hg)
           omega
     | _ => exact hn
@@ -301,69 +280,46 @@ theorem gam_complete (g : NF) : Gam Ax f0 g ∨ Gam Ax f0 (neg g) := by
   have hm : enumF (Cantor.ofNat m).1 = g := by
     simp only [m, Cantor.ofNat_toNat, enumF_code]
   by_cases hc : Cons Ax (g :: chain Ax f0 m)
-  · left
-    refine ⟨m + 1, ?_⟩
+  · refine .inl ⟨m + 1, ?_⟩
     simp only [chain, step, hm, hc, if_true]
     exact List.mem_cons_self ..
-  · right
-    refine ⟨m + 1, ?_⟩
+  · refine .inr ⟨m + 1, ?_⟩
     simp only [chain, step, hm, hc, if_false]
     exact neg_mem_reject _ _ _
 
 theorem gam_closed {L : List NF} {g : NF} (hL : ∀ x, x ∈ L → Gam Ax f0 x)
-    (d : Der NF.imp (Thm Ax) L g) : Gam Ax f0 g := by
-  cases gam_complete hC f0 hz g with
-  | inl h => exact h
-  | inr h =>
-      exfalso
-      apply gam_consistent hC f0 hz (L := neg g :: L)
-      · intro x hx
-        cases List.mem_cons.mp hx with
-        | inl he => subst he; exact h
-        | inr hx => exact hL x hx
-      · exact .mp (.hyp (List.mem_cons_self ..)) d.weaken
+    (d : Der NF.imp (Thm Ax) L g) : Gam Ax f0 g :=
+  (gam_complete hC f0 hz g).resolve_right fun h => gam_consistent hC f0 hz (L := neg g :: L)
+    (List.forall_mem_cons.2 ⟨h, hL⟩) (.mp (.hyp (List.mem_cons_self ..)) d.weaken)
 
 theorem gam_thm {g : NF} (h : Thm Ax g) : Gam Ax f0 g :=
   gam_closed hC f0 hz (L := []) (fun _ hx => absurd hx List.not_mem_nil) (.ax h)
 
 theorem gam_mp {a b : NF} (hab : Gam Ax f0 (imp a b)) (ha : Gam Ax f0 a) : Gam Ax f0 b :=
   gam_closed hC f0 hz (L := [imp a b, a])
-    (fun x hx => by
-      cases List.mem_cons.mp hx with
-      | inl he => subst he; exact hab
-      | inr hx => cases List.mem_cons.mp hx with
-        | inl he => subst he; exact ha
-        | inr hx => exact absurd hx List.not_mem_nil)
+    (List.forall_mem_cons.2 ⟨hab,
+      List.forall_mem_cons.2 ⟨ha, fun _ hx => absurd hx List.not_mem_nil⟩⟩)
     (.mp (.hyp (List.mem_cons_self ..)) (.hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))))
 
 theorem gam_not_both {g : NF} (h1 : Gam Ax f0 g) (h2 : Gam Ax f0 (neg g)) : False :=
   gam_consistent hC f0 hz (L := [neg g, g])
-    (fun x hx => by
-      cases List.mem_cons.mp hx with
-      | inl he => subst he; exact h2
-      | inr hx => cases List.mem_cons.mp hx with
-        | inl he => subst he; exact h1
-        | inr hx => exact absurd hx List.not_mem_nil)
+    (List.forall_mem_cons.2 ⟨h2,
+      List.forall_mem_cons.2 ⟨h1, fun _ hx => absurd hx List.not_mem_nil⟩⟩)
     (.mp (.hyp (List.mem_cons_self ..)) (.hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))))
 
 theorem gam_bot : ¬ Gam Ax f0 NF.bot := fun h =>
   gam_consistent hC f0 hz (L := [NF.bot])
-    (fun x hx => by
-      cases List.mem_cons.mp hx with
-      | inl he => subst he; exact h
-      | inr hx => exact absurd hx List.not_mem_nil)
+    (List.forall_mem_cons.2 ⟨h, fun _ hx => absurd hx List.not_mem_nil⟩)
     (.hyp (List.mem_cons_self ..))
 
 theorem gam_imp_iff (a b : NF) : Gam Ax f0 (imp a b) ↔ (Gam Ax f0 a → Gam Ax f0 b) := by
-  constructor
-  · exact fun h ha => gam_mp hC f0 hz h ha
-  · intro h
-    cases gam_complete hC f0 hz a with
-    | inl ha => exact gam_mp hC f0 hz (gam_thm hC f0 hz (hC.k b a)) (h ha)
-    | inr hna =>
-        have t : Thm Ax (imp (neg a) (imp a b)) :=
-          ded2 hC (.mp (.ax (hC.efq b)) (.mp h1 h0))
-        exact gam_mp hC f0 hz (gam_thm hC f0 hz t) hna
+  refine ⟨gam_mp hC f0 hz, fun h => ?_⟩
+  cases gam_complete hC f0 hz a with
+  | inl ha => exact gam_mp hC f0 hz (gam_thm hC f0 hz (hC.k b a)) (h ha)
+  | inr hna =>
+      have t : Thm Ax (imp (neg a) (imp a b)) :=
+        ded2 hC (.mp (.ax (hC.efq b)) (.mp h1 h0))
+      exact gam_mp hC f0 hz (gam_thm hC f0 hz t) hna
 
 /-- Every refuted universal formula has witnesses above every bound. -/
 theorem gam_witness {a : Nat} {χ : NF} (hn : ¬ Gam Ax f0 (all a χ)) (hb : ¬ Bound a χ)
@@ -375,9 +331,7 @@ theorem gam_witness {a : Nat} {χ : NF} (hn : ¬ Gam Ax f0 (all a χ)) (hb : ¬ 
     have := Cantor.add_le_toNat (code (all a χ)) N
     omega
   have hc : ¬ Cons Ax (all a χ :: chain Ax f0 m) := by
-    intro hc
-    apply hn
-    refine ⟨m + 1, ?_⟩
+    refine fun hc => hn ⟨m + 1, ?_⟩
     simp only [chain, step, hm, hc, if_true]
     exact List.mem_cons_self ..
   let c := max (topL (all a χ :: chain Ax f0 m)) m
@@ -385,10 +339,8 @@ theorem gam_witness {a : Nat} {χ : NF} (hn : ¬ Gam Ax f0 (all a χ)) (hb : ¬ 
     have := top_le_topL (g := all a χ) (G := all a χ :: chain Ax f0 m) (List.mem_cons_self ..)
     omega
   simp only [top] at htop
-  refine ⟨c, by omega, by omega, not_occurs_of_top_le (by omega), ?_⟩
-  intro hg
-  apply gam_not_both hC f0 hz hg
-  refine ⟨m + 1, ?_⟩
+  refine ⟨c, by omega, by omega, not_occurs_of_top_le (by omega), fun hg =>
+    gam_not_both hC f0 hz hg ⟨m + 1, ?_⟩⟩
   simp [chain, step, hm, hc, reject, hb]
   exact Or.inl rfl
 
@@ -404,9 +356,7 @@ theorem gam_rich (j N : Nat) : ∃ c, N ≤ c ∧ Gam Ax f0 (NF.eq c j) := by
   have hr : rn a c (neg (NF.eq a j)) = neg (NF.eq c j) := by
     simp [rn, neg, rv, hja]
   rw [hr] at hc
-  cases gam_complete hC f0 hz (NF.eq c j) with
-  | inl h => exact h
-  | inr h => exact absurd h hc
+  exact (gam_complete hC f0 hz (NF.eq c j)).resolve_right hc
 
 end Maximal
 
@@ -426,10 +376,9 @@ def eqvSetoid (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [n
 def Dom (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [neg f0]) : Type := Quotient (eqvSetoid hC f0 hz)
 
 theorem rel_congr (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [neg f0]) {a1 b1 a2 b2 : Nat} (ha : Gam Ax f0 (NF.eq a1 a2))
-    (hb : Gam Ax f0 (NF.eq b1 b2)) (h : Gam Ax f0 (rel a1 b1)) : Gam Ax f0 (rel a2 b2) := by
-  have s1 : Gam Ax f0 (rel a2 b1) :=
-    gam_mp hC f0 hz (gam_mp hC f0 hz (gam_thm hC f0 hz (.rho5 a2 b1 a1)) ha) h
-  exact gam_mp hC f0 hz (gam_mp hC f0 hz (gam_thm hC f0 hz (.rho3 b1 b2 a2)) hb) s1
+    (hb : Gam Ax f0 (NF.eq b1 b2)) (h : Gam Ax f0 (rel a1 b1)) : Gam Ax f0 (rel a2 b2) :=
+  gam_mp hC f0 hz (gam_mp hC f0 hz (gam_thm hC f0 hz (.rho3 b1 b2 a2)) hb)
+    (gam_mp hC f0 hz (gam_mp hC f0 hz (gam_thm hC f0 hz (.rho5 a2 b1 a1)) ha) h)
 
 def memD (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [neg f0]) : Dom hC f0 hz → Dom hC f0 hz → Prop :=
   Quotient.lift₂ (s₁ := eqvSetoid hC f0 hz) (s₂ := eqvSetoid hC f0 hz)
@@ -447,35 +396,29 @@ theorem truth (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [n
   | n + 1, NF.eq i j, _, _ => by
       simp only [Sat, e0]
       exact ⟨fun h => Quotient.exact h, fun h => Quotient.sound h⟩
-  | n + 1, NF.bot, _, _ => by
-      simp only [Sat]
-      exact ⟨False.elim, gam_bot hC f0 hz⟩
+  | n + 1, NF.bot, _, _ => ⟨False.elim, gam_bot hC f0 hz⟩
   | n + 1, imp a b, hs, hcl => by
       simp only [size] at hs
       simp only [Sat]
-      rw [truth hC f0 hz n a (by omega) hcl.1, truth hC f0 hz n b (by omega) hcl.2, gam_imp_iff hC f0 hz]
+      rw [truth hC f0 hz n a (by omega) hcl.1, truth hC f0 hz n b (by omega) hcl.2,
+        gam_imp_iff hC f0 hz]
   | n + 1, all a χ, hs, hcl => by
       simp only [size] at hs
       obtain ⟨hb, hcχ⟩ := hcl
       simp only [Sat]
-      constructor
-      · intro hsat
-        apply Classical.byContradiction
-        intro hn
-        obtain ⟨c, _, hca, hco, hg⟩ := gam_witness hC f0 hz hn hb 0
+      refine ⟨fun hsat => Classical.byContradiction fun hn => ?_, fun hg d => ?_⟩
+      · obtain ⟨c, _, hca, hco, hg⟩ := gam_witness hC f0 hz hn hb 0
         apply hg
         have hcb : ¬ Bound c χ := fun b => hco (bound_occurs b)
         rw [← truth hC f0 hz n (rn a c χ) (by rw [size_rn]; omega) (clean_rn a c χ hcχ),
           sat_rn _ a c χ _ hb hcb]
         exact hsat _
-      · intro hg d
-        induction d using Quotient.inductionOn with
+      · induction d using Quotient.inductionOn with
         | h j =>
           obtain ⟨c, hNc, hcj⟩ := gam_rich hC f0 hz j (top (all a χ))
           simp only [top] at hNc
           have hca : c ≠ a := by omega
-          have hco : ¬ Occurs c χ := not_occurs_of_top_le (by omega)
-          have hcb : ¬ Bound c χ := fun b => hco (bound_occurs b)
+          have hcb : ¬ Bound c χ := fun b => not_occurs_of_top_le (by omega) (bound_occurs b)
           have hd : (Quotient.mk (eqvSetoid hC f0 hz) j : Dom hC f0 hz) = e0 hC f0 hz c :=
             Quotient.sound ((eqvSetoid hC f0 hz).iseqv.symm hcj)
           rw [hd, ← sat_rn _ a c χ _ hb hcb,
@@ -510,8 +453,7 @@ theorem sat_close {V : Type} (mem : V → V → Prop) :
       have h2 := h1 (e' n)
       have : update (update e' n (e n)) n (e' n) = e' := by
         funext k; by_cases hk : k = n <;> simp [update, hk]
-      rw [this] at h2
-      exact h2
+      rwa [this] at h2
 
 theorem free_lt_top {n : Nat} {g : NF} (h : NF.Free n g) : n < top g :=
   occurs_lt_top (NF.Free.occurs h)
@@ -522,8 +464,7 @@ theorem completeness (hC : Classical NF.imp NF.bot (Thm Ax))
     (hval : ∀ (D : Type) (mem : D → D → Prop),
       (∀ a, Ax a → ∀ e : Nat → D, Sat mem e a) → ∀ e : Nat → D, Sat mem e f) :
     Thm Ax f := by
-  apply Classical.byContradiction
-  intro hnot
+  refine Classical.byContradiction fun hnot => ?_
   -- The clean form of the target.
   have hE : ∀ (K : Nat) (g : NF), top g ≤ K →
       Thm (fun _ => False) (imp g (cl K 0 g)) ∧ Thm (fun _ => False) (imp (cl K 0 g) g) :=
@@ -531,35 +472,29 @@ theorem completeness (hC : Classical NF.imp NF.bot (Thm Ax))
   have semE : ∀ (K : Nat) (g : NF), top g ≤ K → ∀ {D : Type} (mem : D → D → Prop) (e : Nat → D),
       Sat mem e g ↔ Sat mem e (cl K 0 g) := by
     intro K g h D mem e
-    have s1 := soundness (mem := mem) (Ax := fun _ => False) (fun _ h => h.elim) (hE K g h).1 e
-    have s2 := soundness (mem := mem) (Ax := fun _ => False) (fun _ h => h.elim) (hE K g h).2 e
-    exact ⟨s1, s2⟩
+    exact ⟨soundness (mem := mem) (Ax := fun _ => False) (fun _ h => h.elim) (hE K g h).1 e,
+      soundness (mem := mem) (Ax := fun _ => False) (fun _ h => h.elim) (hE K g h).2 e⟩
   let f0 := cl (top f) 0 f
   have hz : Cons Ax [neg f0] := by
     intro d
     apply hnot
-    have t : Thm Ax f0 := by
-      have d1 : Der NF.imp (Thm Ax) [] (neg (neg f0)) := deduction hC d
-      exact hC.mp (dne hC f0) (thm_of_der0 hC d1)
-    exact hC.mp (Thm.mono (fun _ h => h.elim) (hE (top f) f (Nat.le_refl _)).2) t
+    exact hC.mp (Thm.mono (fun _ h => h.elim) (hE (top f) f (Nat.le_refl _)).2)
+      (hC.mp (dne hC f0) (thm_of_der0 hC (deduction hC d)))
   -- The model satisfies the theory.
   have hAx : ∀ a, Ax a → ∀ e : Nat → Dom hC f0 hz, Sat (memD hC f0 hz) e a := by
     intro a ha e
     let g := close (top a) a
     have hclean : Clean (cl (top g) 0 g) := clean_cl _ 0 g
-    have hg : Gam Ax f0 (cl (top g) 0 g) := by
-      apply gam_thm hC f0 hz
-      exact hC.mp (Thm.mono (fun _ h => h.elim) (hE (top g) g (Nat.le_refl _)).1)
-        (thm_close _ (.ax ha))
+    have hg : Gam Ax f0 (cl (top g) 0 g) :=
+      gam_thm hC f0 hz (hC.mp (Thm.mono (fun _ h => h.elim) (hE (top g) g (Nat.le_refl _)).1)
+        (thm_close _ (.ax ha)))
     have hs := (truth hC f0 hz (size (cl (top g) 0 g) + 1) _ (Nat.lt_succ_self _) hclean).mpr hg
     rw [← semE (top g) g (Nat.le_refl _)] at hs
     let e' : Nat → Dom hC f0 hz := fun k => if k < top a then e k else e0 hC f0 hz k
     have h1 := sat_close (memD hC f0 hz) (top a) a (e0 hC f0 hz) hs e' (by
       intro k hk; simp only [e']; simp [Nat.not_lt.mpr hk])
-    apply (sat_ext (memD hC f0 hz) a e e' _).mpr h1
-    intro n hn
-    have := free_lt_top hn
-    simp only [e', this, if_true]
+    refine (sat_ext (memD hC f0 hz) a e e' fun n hn => ?_).mpr h1
+    simp only [e', free_lt_top hn, if_true]
   have hf := hval (Dom hC f0 hz) (memD hC f0 hz) hAx (e0 hC f0 hz)
   rw [semE (top f) f (Nat.le_refl _)] at hf
   have hin := (truth hC f0 hz (size f0 + 1) f0 (Nat.lt_succ_self _) (clean_cl _ 0 f)).mp hf
