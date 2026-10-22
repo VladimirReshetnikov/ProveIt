@@ -1,7 +1,7 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings through 21 October 2026. This report has **192 numbered sources**.
-The written reconciliations cover Sources 1–164 and 167–192; Sources 165–166 retain
+Intake findings through 21 October 2026. This report has **194 numbered sources**.
+The written reconciliations cover Sources 1–164 and 167–194; Sources 165–166 retain
 their earlier placements and separate follow-up work.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
@@ -10,6 +10,27 @@ the delivered base article is preserved, rather than rewritten as a unified arti
 No merged PDF is built. These are ordinary mathematical arguments and finite
 regression checks. The deliveries confer no formal status; subsequent Lean
 results and their exact scope are listed below.
+
+[Batch 215](intake-215.md) reconciles Sources 193–194 from `1b16269c48`,
+placed in `6bd7e8ff01`. All 508 members remain recoverable through 231 immutable
+Git aliases, 49 delivery aliases, 50 arrival-only members and 178 new ancillary
+files. The shared implication basis repeats accepted phase13 work. Source193
+closes the universal residual-suffix premise in a submitted 51-module component,
+while production endpoint integration remains open. Its dense successor saves
+a further eight lines over the initial phase15 candidate and is being checked
+separately; its transparent subtree abbreviation saves 18,565 source bytes but
+is uncompiled. Source194 shares candidate progress across four enumerators,
+retaining a fixed-target reachable-payload condition and the soundness invariant.
+The four-client saving is only 324 bytes/seven lines; the K215-only group grows
+by 3,411 bytes/95 lines. Optional finite-cleanup transports and Rocq alternatives
+keep their separate scopes and costs. No supplied program or proof compiler ran
+for intake. The base article and labels are unchanged; the collection remains
+290 reports.
+
+| Source | Manuscript | Main contribution |
+|---|---|---|
+| 193 | Shorter proofs through shared invariants and exact runtime contracts | Exact residual-port attachment, dense successor, optional terminal cleanup and uncompiled subtree abbreviation. |
+| 194 | One proof per mechanism | Shared scheduler progress, concrete adapters and the payload/candidate quantifier counterexample. |
 
 [Batch 214](intake-214.md) reconciles Sources 188–192 from `c3caaf63a4`,
 placed in `ec9d52b818`. All 1,161 members are recoverable: 799 immutable Git
