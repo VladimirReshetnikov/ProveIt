@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "description": "Both unchanged upstream T4 scripts were executed for this delivery, including through reproduce.py --full-t4 before the final arithmetic-only replay.",
+  "commands": [
+    [
+      "python3",
+      "upstream/t4/bridge/check_t4.py"
+    ],
+    [
+      "python3",
+      "upstream/t4/review/independent_t4_checks.py"
+    ]
+  ],
+  "files": [
+    {
+      "path": "upstream/t4/bridge/t4_verification.json",
+      "sha256": "646e79cf6a94788293681a985eedf858849d25a2e8b7c1da5efb1823ac8a5a8b"
+    },
+    {
+      "path": "upstream/t4/review/INDEPENDENT_T4_CHECKS.json",
+      "sha256": "a3a1edbd6248974163376e89f9aba62b64c7d82f4569cd3ffbdb0bff3250976a"
+    },
+    {
+      "path": "verification/t4_enumeration.log",
+      "sha256": "646e79cf6a94788293681a985eedf858849d25a2e8b7c1da5efb1823ac8a5a8b"
+    },
+    {
+      "path": "verification/t4_independent.log",
+      "sha256": "a3a1edbd6248974163376e89f9aba62b64c7d82f4569cd3ffbdb0bff3250976a"
+    }
+  ],
+  "scope": "Finite alphabet, geometry and control checks; not an unbounded compiler proof."
+}

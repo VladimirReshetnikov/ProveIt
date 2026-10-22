@@ -1,0 +1,358 @@
+\section{A polynomial in twelve positive unknowns}\label{sec:twelve}
+
+The supplied coordinates are exactly
+\[
+ \boxed{J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\Pos.}
+\]
+The four former coordinates $\gamma,\tau,f,y$ are replaced by one coordinate
+$t$. The polynomials in \eqref{eq:prefix}--\eqref{eq:units} are retained.
+
+\subsection{The divisibility adjustment and the separating weights}
+
+Define
+\begin{align}
+ G&=Hic^2,&D&=1+\Delta G^2,& Q&=\Delta(D-1)=(\Delta G)^2,
+ &d&=Q-1,\notag\\
+ v&=cT,&b&=c+RD,&e&=Q(Dv^2+b^2)-1,&B_0&=2Qvb.
+ \label{eq:aux12}
+\end{align}
+The four equations whose witnesses will be eliminated are
+\begin{equation}
+ (P+H\gamma)^2=S,\qquad \tau^2=A,\qquad f^2=D,
+ \qquad dy^2=e-B_0f.\label{eq:fourroots}
+\end{equation}
+The last equality is equivalent, when $f^2=D$, to
+\[
+ Q(vf-b)^2-(Q-1)y^2=1.
+\]
+This is the original normalized system with $i_0=Hi$, since
+$vf-b=c(Tf-1)-Rf^2$. The factor $H$ in $G$ is the new divisibility
+adjustment. Its role is the exact identity
+\begin{equation}
+ Q\equiv0\pmod{H^2},\qquad \gcd(H,d)=1.\label{eq:coprime}
+\end{equation}
+Completeness of this restriction will be proved below.
+
+Use the positive polynomial weights
+\begin{align}
+ M&=1+8THic^2+16REH^2i^2c^3,\notag\\
+ N&=1+2HM.\label{eq:weights12}
+\end{align}
+The coordinate $t$ is intended to encode
+\begin{equation}
+ t=y+M\tau+N\gamma.\label{eq:trace}
+\end{equation}
+In particular $N\equiv1\pmod H$. Neither weight is a new unknown.
+
+\subsection{An explicit formula using only polynomial operations}
+
+Set $W=Ht+NP$ and $m=HM$. Define the scalar polynomials
+\begin{align}
+ a_0&=d(W^2+m^2A+N^2S)-H^2e,\notag\\
+ a_1&=-2dWm,&a_2&=-2dWN,&a_3&=2dmN,\label{eq:normcoeff1}\\
+ f_0&=a_0^2+Aa_1^2+S(a_2^2+Aa_3^2)-H^4B_0^2D,\notag\\
+ f_1&=2(a_0a_1+Sa_2a_3),\notag\\
+ f_2&=2(a_0a_2+Aa_1a_3),\notag\\
+ f_3&=2(a_0a_3+a_1a_2).\label{eq:normcoeff2}
+\end{align}
+Finally put
+\begin{align}
+ U&=f_0^2+Af_1^2-S(f_2^2+Af_3^2),\notag\\
+ V&=2(f_0f_1-Sf_2f_3),\notag\\
+ \Norm&=U^2-AV^2.\label{eq:norm12}
+\end{align}
+The requested single equation is
+\begin{equation}
+ \boxed{\quad P_{12}=N_kN_t(1+\Norm)-1=0.\quad}\label{eq:final12}
+\end{equation}
+An equivalent existence condition is the particularly transparent system
+\begin{equation}
+ \boxed{\quad N_k=1,\qquad N_t=1,\qquad \Norm=0.\quad}
+ \label{eq:system12}
+\end{equation}
+Every formula here is an ordinary polynomial with integer coefficients.
+The formulas contain no variable exponent, division, congruence test,
+root operation, or hidden quantified parameter. The symbols used in the
+proof for eliminated roots do not occur as unknowns in the final equation.
+The emitted shared circuit computes $-f_1$ and $-f_2$
+to avoid unnecessary negation gates, and factors
+$H^4B_0^2D$ as $4(H^2Q)^2(Dv^2)b^2$.
+
+The construction is two successive quadratic norms. In the algebra with
+formal symbols $r,u$ satisfying $r^2=A$ and $u^2=S$, the expression
+\[
+ \bigl[d(W-mr-Nu)^2-H^2e\bigr]^2-H^4B_0^2D
+\]
+reduces to $f_0+f_1r+f_2u+f_3ru$. Taking its norm first in $u$ and then in
+$r$ gives \eqref{eq:norm12}. This explanation is not part of the evaluator;
+the scalar equations above define the polynomial directly.
+
+\subsection{Separation of all algebraic branches}
+
+The first task is to show that an integer root of the eliminated equation
+does not merely encode a collection of irrational or rational nonintegral
+witnesses. We prove separation before any Pell root is reconstructed.
+
+\begin{lemma}[Separating inequalities]\label{lem:separation}
+Under the positive input assumptions and the weak bounds
+\eqref{eq:weak}, every algebraic branch of \eqref{eq:fourroots} satisfies
+\[
+ |y|<M\sqrt A,\qquad S>A,\qquad
+ \frac{N\sqrt S}{H}>M\sqrt A+|y|.
+\]
+The absolute value is the complex absolute value; the first and last
+inequalities include nonreal auxiliary branches.
+\end{lemma}
+\begin{proof}
+All of $G,D,Q,v,b$ are positive and $Q>1$. Since $G>1$,
+\[
+ \sqrt D<(a+2)G<2EG.
+\]
+Put $Z_0=v\sqrt D+b>1$. For either sign of $f=\pm\sqrt D$,
+\[
+ |y|^2
+ \le\frac{QZ_0^2+1}{Q-1}
+ \le2Z_0^2+1<4Z_0^2.
+\]
+Thus $|y|<2(v\sqrt D+b)$. The right side is bounded above by
+\[
+ 4cTEG+2c+8RE^2G^2.
+\]
+On the other hand, $\sqrt A>L=EkY>Ec/2$. Division by this positive
+quantity gives
+\begin{align*}
+ \frac{|y|}{\sqrt A}
+ &<8TG+\frac4E+16RE\frac{G^2}{c}\\
+ &=8THic^2+\frac4E+16REH^2i^2c^3<M,
+\end{align*}
+since $E\ge16^4>4$.
+
+For the second claim, $c>kY$ and $\Delta-E^2>2EY$ imply
+\[
+ \Delta c^2>k^2Y^2\Delta
+ >k^2(E^2Y^2+EY)=A-1.
+\]
+Here $2EY^3>EY$, as $Y\ge1$. Consequently $S>A$. Finally
+\[
+ \frac{N\sqrt S}{H}>2M\sqrt S>2M\sqrt A>M\sqrt A+|y|.
+\]
+\end{proof}
+
+\begin{lemma}[Injective weighted encoding]\label{lem:injective}
+The map $(\gamma,\tau,f,y)\mapsto y+M\tau+N\gamma$ is injective
+on the finite algebraic solution set of \eqref{eq:fourroots}.
+\end{lemma}
+\begin{proof}
+If two tuples have different $\gamma$, the absolute difference of their
+$N\gamma$ terms is $2N\sqrt S/H$. By Lemma~\ref{lem:separation}, this
+strictly exceeds $2M\sqrt A+|y_1|+|y_2|$, which bounds the remaining
+possible cancellation. If $\gamma$ agrees but $\tau$ differs, the
+$M\tau$ difference has magnitude $2M\sqrt A>|y_1|+|y_2|$.
+If both agree and the encoded value agrees, then $y$ agrees. The equality
+$dy^2=e-B_0f$, with $B_0>0$, forces $f$ to agree as well.
+\end{proof}
+
+\subsection{Rationality and the integrality repair}
+
+Over an algebraic closure, with multiplicities, the exact factorization is
+\begin{equation}
+ \Norm=d^8H^{16}
+ \prod_{(\gamma,\tau,f,y)}
+ \bigl(t-y-M\tau-N\gamma\bigr),\label{eq:factorization}
+\end{equation}
+where the sixteen branches are those of \eqref{eq:fourroots}.
+Indeed, for fixed $r=\tau$ and $u=P+H\gamma$, the inner polynomial first
+factors over the two values of $f$ and then over the two values of $y$;
+each of its four linear factors contributes the indicated power of $H$,
+and its leading coefficient in $t$ is $d^2H^4$. Multiplying over the four
+choices of $r,u$ gives \eqref{eq:factorization}.
+
+Suppose $\Norm=0$ at integer inputs satisfying the weak bounds. As $d,H$
+are nonzero, one of the algebraic tuples in \eqref{eq:factorization} has
+the specified integer value $t$. Choose a finite normal extension of
+$\mathbb Q$ containing all its coordinates. Every automorphism over
+$\mathbb Q$ sends it to another allowed tuple and fixes its encoded value.
+Lemma~\ref{lem:injective} forces the whole tuple to be fixed. The fixed
+field theorem therefore makes all four coordinates rational. This argument
+does not assume that the square roots generate independent extensions.
+
+Rationality is only the first half of the argument. Since
+\[
+ \tau^2=A,\qquad f^2=D,\qquad (P+H\gamma)^2=S
+\]
+are monic square equations with integer right sides, $\tau,f,u=P+H\gamma$
+are integers. Hence the reduced denominator of $\gamma$ divides $H$.
+If $y=r_0/s_0$ in lowest terms, then $dy^2=e-B_0f\in\Z$ implies
+$s_0^2\mid d$. Thus the denominators of $\gamma$ and $y$ are coprime by
+\eqref{eq:coprime}. But
+\[
+ N\gamma+y=t-M\tau\in\Z,\qquad \gcd(N,H)=1.
+\]
+Multiplication by $N$ cannot cancel a denominator dividing $H$, and the
+remaining two coprime denominators cannot cancel each other. Both therefore
+equal one. All four reconstructed witnesses are integers.
+
+This last step is the reason for strengthening the Pell multiplier by $H$.
+A bare resultant, or a rationality argument without this denominator
+separation, would leave a real soundness gap.
+
+\subsection{Soundness of the system and the single equation}
+
+For \eqref{eq:system12}, the weak bootstrap holds directly. The preceding
+argument restores \eqref{eq:fourroots}, and
+\[
+ vf-b=c(Tf-1)-Rf^2.
+\]
+The ordinary strong multiplier
+\[
+ i_{\rm ord}=\Delta Hi>0
+\]
+satisfies
+\[
+ (i_{\rm ord}c^2)^2=\Delta(f^2-1)=Q.
+\]
+The reconstructed tuple therefore satisfies the signed ordinary-strong
+interface exactly. Its positive ports remain positive; $f,\tau,y,\gamma$
+may be signed, as permitted by the direct signed theorem in
+\src{upstream/signed_domain_core.md}. The witnesses $\tau,y$ cannot be zero:
+$A>1$, while $y=0$ would give $Q(vf-b)^2=1$ with $Q>1$.
+The inherited rank, extraction, and compiler proof gives a blank K215 halt.
+
+For \eqref{eq:final12}, all three integer factors are units. By
+\eqref{eq:norm12}, $V$ is even and
+\[
+ \Norm\equiv U^2\pmod4.
+\]
+Thus $1+\Norm$ cannot equal $-1$, whose residue is 3. It equals 1, so
+$\Norm=0$ and $N_k=N_t=\varepsilon$ for a common sign. The weak bootstrap
+was explicitly proved for these unit signs; the reconstruction consequently
+remains valid. Applying the signed parent proof resolves
+$\varepsilon=1$ and yields the same blank halt. No sign assumption was
+silently used in the root elimination.
+
+\subsection{Completeness of the strengthened multiplier}\label{sec:complete12}
+
+Start from a canonical accepting blank tableau and its original first/main
+Pell witnesses. Its actual rank satisfies $R\equiv3\pmod4$, and
+$c=\psi_{a+2}(R)$. Put $A_0=a+2$. Consider the matrix
+\[
+ \mathcal M=\begin{pmatrix}A_0&\Delta\\1&A_0\end{pmatrix}.
+\]
+Its determinant is $A_0^2-\Delta=1$. Therefore its powers in the finite
+group of invertible matrices modulo $Hc^2$ are periodic. Choose $m_0>0$
+to be a sufficiently large common multiple of this period and $R$.
+Then $\psi_{A_0}(m_0)$ is a positive multiple of $Hc^2$. Set
+\begin{equation}
+ i=\frac{\psi_{A_0}(m_0)}{Hc^2},\qquad
+ f=\chi_{A_0}(m_0),\qquad
+ \rho=\Delta\psi_{A_0}(m_0).\label{eq:periodic}
+\end{equation}
+All are positive integers and $\rho^2=Q$.
+
+To construct the auxiliary witness explicitly, use
+\begin{equation}
+ V_* =\frac{\chi_\rho(R)}{\rho},\qquad y=\psi_\rho(R).
+ \label{eq:auxcomplete}
+\end{equation}
+Because $R$ is odd, $\chi_x(R)$ is divisible by $x$ as an integer polynomial.
+Write $R=2j+1$ and $\chi_x(R)=xQ_j(x^2)$. The inherited elementary
+Chebyshev identities are
+\[
+ Q_j(0)=(-1)^jR,\qquad
+ Q_j(1-A_0^2)=(-1)^j\psi_{A_0}(R).
+\]
+Now $j$ is odd. Moreover $\rho^2\equiv0\pmod c$ and
+$\rho^2\equiv1-A_0^2\pmod f$. Consequently
+\begin{equation}
+ V_*\equiv-R\pmod c,\qquad V_*\equiv-c\pmod f.\label{eq:quotients}
+\end{equation}
+The quantities
+\[
+ o=\frac{V_*+c}{f},\qquad T=\frac{o+Rf}{c}
+\]
+are positive integers. To verify the second integrality claim, note that
+$of=V_*+c\equiv-R\pmod c$, $f^2\equiv1\pmod c$, and $\gcd(f,c)=1$.
+Hence $(o+Rf)f\equiv0\pmod c$, so $c\mid o+Rf$.
+Substitution gives
+\[
+ c(Tf-1)-Rf^2=V_*.
+\]
+The Pell identity for \eqref{eq:auxcomplete} gives
+$Q V_*^2-(Q-1)y^2=1$. All other canonical positive coordinates are
+unchanged. Thus the stronger system has a positive witness whenever the
+machine halts. No parity restriction on $m_0$ or on the new $i$ was needed.
+
+Finally take $t=y+M\tau+N\gamma>0$ using the canonical positive roots.
+One factor of \eqref{eq:factorization} vanishes, so both the system and
+the single equation have a positive solution. Together with soundness and
+the machine calibration, this proves Theorem~\ref{thm:main}.
+
+\subsection{Exact degree and arithmetic size}
+
+All supplied unknowns have degree one. The relevant degrees are
+\begin{center}\small
+\begin{tabular}{lrrrrrrrrrrrr}
+\toprule
+Expression &$c$&$E,a,H$&$\Delta$&$R$&$A,S$&$G$&$D$&$Q,d$&$b$&$M$&$N$\\
+\midrule
+Degree &5&6&12&4&22&17&46&58&50&39&45\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact total degree of $\Norm$ is 1360; its degree in $t$ is 16.
+Here is a uniform certificate, rather than a purely syntactic degree bound.
+
+Scale all twelve unknowns by a formal parameter, keeping the fixed
+coefficients constant. The leading homogeneous forms satisfy
+\[
+ A_{\rm top}=S_{\rm top}=E_{\rm top}^{,2}c_{\rm top}^{,2}.
+\]
+The branches of $M\tau$ have leading terms $\pm16b_{\rm top}$ of degree 50.
+The quadratic equation for $\gamma$ is
+\[
+ H^2\gamma^2+2HP\gamma+(P^2-S)=0,
+\]
+where the three coefficient degrees are 12, 17, and 16; the cancellation
+\[
+ P^2-S=X^2+2Xac-Hc^2-1
+\]
+is essential. Its branches have orders 5 and $-1$ in the scaling parameter.
+The large branch contributes $-64b_{\rm top}$ to $N\gamma$ at degree 50;
+the small branch contributes only degree 44. Each $y$ branch contributes
+$\pm b_{\rm top}$ at degree 50, independently of the leading choice of $f$.
+Thus the sixteen linear factors in \eqref{eq:factorization} have nonzero
+leading magnitudes
+\[
+ 15,17,15,17,15,17,15,17,
+ 47,49,79,81,47,49,79,81
+\]
+times $b_{\rm top}$. Equivalently,
+\begin{equation}
+ \Norm_{1360}=C_0d_{\rm top}^{,8}H_{\rm top}^{,16}b_{\rm top}^{,16},
+ \qquad C_0=15^4 17^4(47\cdot49\cdot79\cdot81)^2>0.
+ \label{eq:leader}
+\end{equation}
+The degree is $8\cdot58+16\cdot6+16\cdot50=1360$.
+This may be interpreted as a formal Laurent-series calculation over the
+field of rational functions in the unscaled coordinates. No numerical
+approximation to an algebraic root is being used. All leading factors are
+nonzero for every valid fixed coefficient binding with $\beta>0$.
+
+The leading forms of $N_k,N_t$ have degrees 7 and 2 and are nonzero, so
+$\deg P_{12}=1369$. The sum of the three squared residuals has exact degree
+2720. The emitted live circuits have the following ledgers:
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Presentation & Multiplications & Add/subtract & Total & Degree\\
+\midrule
+Three free comparisons &95&45&140&1360\\
+Three explicit residuals &95&47&142&1360\\
+Single product &97&47&144&1369\\
+Sum of squares &98&49&147&2720\\
+\bottomrule
+\end{tabular}
+\end{center}
+The degree and coefficient in \eqref{eq:leader} are additionally checked
+by a modular univariate specialization. The general leading-form argument
+establishes uniformity on the actual astronomical coefficient slice.

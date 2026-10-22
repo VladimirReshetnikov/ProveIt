@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-22",
+  "status": "PASS",
+  "python_version": "3.12.14",
+  "repository_snapshot": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "root_reproduction": [
+    {
+      "command": "make verify",
+      "status": "PASS"
+    },
+    {
+      "command": "make degrees",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 -O verification/check_package.py --skip-manifest",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 -O compiler/coefficient_residues.py --modulus 1000000007 --verify",
+      "status": "PASS"
+    },
+    {
+      "command": "make pdf",
+      "status": "PASS"
+    }
+  ],
+  "pdf": {
+    "pages": 20,
+    "overfull_boxes": 0,
+    "underfull_boxes": 0,
+    "undefined_references": 0,
+    "visual_review": "All 20 rendered pages inspected; modified closing pages re-rendered and inspected."
+  },
+  "source_authentication": {
+    "files": 26,
+    "sha256_checked": true,
+    "git_blob_sha1_compared_to_pinned_tree": true,
+    "all_byte_exact": true
+  },
+  "proof_review": {
+    "primitive12": "proofs/PRIMITIVE12_INDEPENDENT_REVIEW.md",
+    "integer26": "proofs/INTEGER26_INDEPENDENT_REVIEW.md",
+    "integer27": "proofs/INTEGER27_INDEPENDENT_REVIEW.md"
+  },
+  "scope": "New ordinary mathematical synthesis with exact finite checks. No new proof-assistant build, coefficient expansion, accepting K215 run, or proof of Con(ZFC)."
+}

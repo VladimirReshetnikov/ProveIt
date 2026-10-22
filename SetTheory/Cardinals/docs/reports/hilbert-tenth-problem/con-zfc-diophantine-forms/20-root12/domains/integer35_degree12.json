@@ -1,0 +1,147 @@
+{
+  "name": "integer35_degree12",
+  "domain": "unrestricted integers",
+  "variables": [
+    "Jrep",
+    "f",
+    "h",
+    "r",
+    "auxiliary_quotient",
+    "tau_root",
+    "y_aux",
+    "gamma",
+    "E",
+    "c",
+    "a",
+    "V",
+    "I",
+    "Jrep_pos1",
+    "Jrep_pos2",
+    "Jrep_pos3",
+    "F_pos1",
+    "F_pos2",
+    "F_pos3",
+    "alpha_pos1",
+    "alpha_pos2",
+    "alpha_pos3",
+    "transport_quotient_pos1",
+    "transport_quotient_pos2",
+    "transport_quotient_pos3",
+    "s_pos1",
+    "s_pos2",
+    "s_pos3",
+    "eta_pos1",
+    "eta_pos2",
+    "eta_pos3",
+    "zeta_pos1",
+    "zeta_pos2",
+    "zeta_pos3",
+    "u"
+  ],
+  "variable_count": 35,
+  "fixed_numerals": [
+    "Bm1",
+    "Kconstant",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding": {
+    "tuple_id": "T4-4094-binary-copy-zero-padding-5pow11",
+    "tuple_sha256": "726ac1d0ae1957f75f71966a65c8730403998a1f719e927f6894babea12cf938",
+    "recipe": "../coefficients/COEFFICIENTS.json",
+    "aliases": {
+      "Bm1": "beta",
+      "Kconstant": "K",
+      "MC": "MC",
+      "MF": "MF_source"
+    },
+    "numeric_encoding": "unsigned minimal-width big-endian binary; leading unused bits are zero",
+    "numeric_coefficients": {
+      "beta": {
+        "file": "../coefficients/expanded/beta.bin",
+        "bit_length": 48828125,
+        "bit_population": 48828125,
+        "size_bytes": 6103516,
+        "sha256": "9987351490e0fc1e66c25ef8c670a11f663a355456a76920d46cb316fdf6cbf7"
+      },
+      "K": {
+        "file": "../coefficients/expanded/K.bin",
+        "bit_length": 56885626,
+        "bit_population": 133545,
+        "size_bytes": 7110704,
+        "sha256": "ed6254abb5e038c63691b7f6ff9661c1400cd6db8164b896cd60ac882c69034d"
+      },
+      "MC": {
+        "file": "../coefficients/expanded/MC.bin",
+        "bit_length": 48828125,
+        "bit_population": 48823982,
+        "size_bytes": 6103516,
+        "sha256": "edd8ad633b5fc48b729de6ee301449083dafd5d697d325ee30c3aed6c8e8758b"
+      },
+      "MF_source": {
+        "file": "../coefficients/expanded/MF_source.bin",
+        "bit_length": 48828126,
+        "bit_population": 4145,
+        "size_bytes": 6103516,
+        "sha256": "bca8a558dbf4fddf107f9524c364c3590053a164d83243236ab9b2bb86a99904"
+      }
+    },
+    "transfer_proof": "../coefficients/COEFFICIENT_PROOF.md",
+    "note": "Whole-tuple substitution only; MF denotes the shifted source port, never the unshifted native mask."
+  },
+  "historical_source_provenance": {
+    "old_binding": "ORIGINAL_COEFFICIENTS.json, coherent original blank67 tuple",
+    "role": "Historical parent only; the complete selected tuple is in coefficient_binding"
+  },
+  "source_commit": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "parent_file": "sources/15-release/evidence/diophantine_zfc_round2/quadratic/ordinary_octic20.json",
+  "parent_sha256": "54026867d1244d55bddcc46f1d5db5dad82d3bc297fd8b8a7faaf8ff7f4f02cc",
+  "direct_substitutions": {
+    "F": "F_pos1**2 + F_pos2**2 + F_pos3**2 + F_pos3 + 1",
+    "alpha": "alpha_pos1**2 + alpha_pos2**2 + alpha_pos3**2 + alpha_pos3 + 1",
+    "transport_quotient": "transport_quotient_pos1**2 + transport_quotient_pos2**2 + transport_quotient_pos3**2 + transport_quotient_pos3 + 1",
+    "s": "s_pos1**2 + s_pos2**2 + s_pos3**2 + s_pos3 + 1",
+    "eta": "eta_pos1**2 + eta_pos2**2 + eta_pos3**2 + eta_pos3 + 1",
+    "zeta": "zeta_pos1**2 + zeta_pos2**2 + zeta_pos3**2 + zeta_pos3 + 1",
+    "w": "u**2"
+  },
+  "odd_multiplier": "2*r + 1",
+  "retained_guard_coordinates": [
+    "Jrep"
+  ],
+  "residuals": [
+    "-Bm1**3*Jrep**3*s_pos1**2 - Bm1**3*Jrep**3*s_pos2**2 - Bm1**3*Jrep**3*s_pos3**2 - Bm1**3*Jrep**3*s_pos3 - 3*Bm1**2*Jrep**2*s_pos1**2 - 3*Bm1**2*Jrep**2*s_pos2**2 - 3*Bm1**2*Jrep**2*s_pos3**2 - Bm1**3*Jrep**3 - 3*Bm1**2*Jrep**2*s_pos3 - 3*Bm1*Jrep*s_pos1**2 - 3*Bm1*Jrep*s_pos2**2 - 3*Bm1*Jrep*s_pos3**2 - 3*Bm1**2*Jrep**2 - 3*Bm1*Jrep*s_pos3 - 3*Bm1*Jrep - s_pos1**2 - s_pos2**2 - s_pos3**2 - E + a - s_pos3 - 1",
+    "Bm1*E*Jrep*u**2 - Bm1*Jrep*a*u**2 + E*u**2 - a*u**2 + E",
+    "E*eta_pos1**2 + E*eta_pos2**2 + E*eta_pos3**2 + E*zeta_pos1**2 + E*zeta_pos2**2 + E*zeta_pos3**2 - a*eta_pos1**2 - a*eta_pos2**2 - a*eta_pos3**2 - a*zeta_pos1**2 - a*zeta_pos2**2 - a*zeta_pos3**2 + E*eta_pos3 + E*zeta_pos3 - a*eta_pos3 - a*zeta_pos3 - eta_pos1**2 - eta_pos2**2 - eta_pos3**2 + 2*E - 2*a + c - eta_pos3 - 1",
+    "-2*E**2*eta_pos1**2*eta_pos2**2 - 2*E**2*eta_pos1**2*eta_pos3**2 - E**2*eta_pos1**4 - 2*E**2*eta_pos2**2*eta_pos3**2 - E**2*eta_pos2**4 - E**2*eta_pos3**4 + 2*E*eta_pos1**2*eta_pos2**2 + 2*E*eta_pos1**2*eta_pos3**2 + E*eta_pos1**2*zeta_pos1**2 + E*eta_pos1**2*zeta_pos2**2 + E*eta_pos1**2*zeta_pos3**2 + E*eta_pos1**4 + 2*E*eta_pos2**2*eta_pos3**2 + E*eta_pos2**2*zeta_pos1**2 + E*eta_pos2**2*zeta_pos2**2 + E*eta_pos2**2*zeta_pos3**2 + E*eta_pos2**4 + E*eta_pos3**2*zeta_pos1**2 + E*eta_pos3**2*zeta_pos2**2 + E*eta_pos3**2*zeta_pos3**2 + E*eta_pos3**4 + 2*E**2*c*eta_pos1**2 + 2*E**2*c*eta_pos2**2 + 2*E**2*c*eta_pos3**2 - 2*E**2*eta_pos1**2*eta_pos3 - 2*E**2*eta_pos2**2*eta_pos3 - 2*E**2*eta_pos3**3 - E*c*eta_pos1**2 - E*c*eta_pos2**2 - E*c*eta_pos3**2 - E*c*zeta_pos1**2 - E*c*zeta_pos2**2 - E*c*zeta_pos3**2 + 2*E*eta_pos1**2*eta_pos3 + E*eta_pos1**2*zeta_pos3 + 2*E*eta_pos2**2*eta_pos3 + E*eta_pos2**2*zeta_pos3 + E*eta_pos3*zeta_pos1**2 + E*eta_pos3*zeta_pos2**2 + E*eta_pos3*zeta_pos3**2 + E*eta_pos3**2*zeta_pos3 + 2*E*eta_pos3**3 + 2*E**2*c*eta_pos3 - E**2*c**2 - 2*E**2*eta_pos1**2 - 2*E**2*eta_pos2**2 - 3*E**2*eta_pos3**2 - E*c*eta_pos3 - E*c*zeta_pos3 + 3*E*eta_pos1**2 + 3*E*eta_pos2**2 + E*eta_pos3*zeta_pos3 + 4*E*eta_pos3**2 + E*zeta_pos1**2 + E*zeta_pos2**2 + E*zeta_pos3**2 + 2*E**2*c - 2*E**2*eta_pos3 - 2*E*c + 3*E*eta_pos3 + E*zeta_pos3 - E**2 + tau_root**2 + 2*E - 1",
+    "Bm1**2*Jrep**2*u**4 + 2*Bm1*Jrep*a*c*u**2 + 8*Bm1*Jrep*a*gamma*u**2 + 2*Bm1*Jrep*u**4 + 6*Bm1*Jrep*gamma*u**2 + 2*a*c*u**2 + 8*a*gamma*u**2 + 8*a**2*c*gamma + 16*a**2*gamma**2 + u**4 + 6*a*c*gamma - 4*a*c**2 + 24*a*gamma**2 + 6*gamma*u**2 - 3*c**2 + 9*gamma**2 - 1",
+    "Bm1**3*F_pos1**2*Jrep**3 + Bm1**3*F_pos2**2*Jrep**3 + Bm1**3*F_pos3**2*Jrep**3 - Bm1**4*Jrep**4 + Bm1**3*F_pos3*Jrep**3 + 2*Bm1**2*F_pos1**2*Jrep**2 + 2*Bm1**2*F_pos2**2*Jrep**2 + 2*Bm1**2*F_pos3**2*Jrep**2 - Bm1**2*Jrep**2*alpha_pos1**2 - Bm1**2*Jrep**2*alpha_pos2**2 - Bm1**2*Jrep**2*alpha_pos3**2 - 2*Bm1**3*Jrep**3 + 2*Bm1**2*F_pos3*Jrep**2 - Bm1**2*Jrep**2*alpha_pos3 - 2*Bm1*Jrep*alpha_pos1**2 - 2*Bm1*Jrep*alpha_pos2**2 - 2*Bm1*Jrep*alpha_pos3**2 - Bm1*Jrep**2*MF - Bm1**2*Jrep**2 - 2*Bm1*Jrep*alpha_pos3 - 2*Bm1*Jrep - E*h - Jrep*MC - Jrep*MF + eta_pos1**2 + eta_pos2**2 + eta_pos3**2 + zeta_pos1**2 + zeta_pos2**2 + zeta_pos3**2 + eta_pos3 + zeta_pos3 + 1",
+    "-Bm1*Jrep*transport_quotient_pos1**2 - Bm1*Jrep*transport_quotient_pos2**2 - Bm1*Jrep*transport_quotient_pos3**2 + Bm1*Jrep*u**2 - F_pos1**2*u**2 - F_pos2**2*u**2 - F_pos3**2*u**2 - alpha_pos1**2*u**2 - alpha_pos2**2*u**2 - alpha_pos3**2*u**2 + Bm1*Jrep*Kconstant - Bm1*Jrep*transport_quotient_pos3 - F_pos1**2*Kconstant - F_pos2**2*Kconstant - F_pos3*u**2 - F_pos3**2*Kconstant - Kconstant*alpha_pos1**2 - Kconstant*alpha_pos2**2 - Kconstant*alpha_pos3**2 - alpha_pos3*u**2 - F_pos1**2 - F_pos2**2 - F_pos3*Kconstant - F_pos3**2 - Kconstant*alpha_pos3 - u**2 - F_pos3 - Kconstant - 1",
+    "-E*f**2*h + eta_pos1**2*f**2 + eta_pos2**2*f**2 + eta_pos3**2*f**2 + f**2*zeta_pos1**2 + f**2*zeta_pos2**2 + f**2*zeta_pos3**2 - auxiliary_quotient*c*f + eta_pos3*f**2 + f**2*zeta_pos3 + f**2 + V + c",
+    "-2*c**2*r - c**2 + I",
+    "-a**2*f**2 - 4*a*f**2 + I**2 + a**2 - 3*f**2 + 4*a + 3",
+    "I**2*V**2 - I**2*y_aux**2 + y_aux**2 - 1",
+    "-Jrep_pos1**2 - Jrep_pos2**2 - Jrep_pos3**2 + Jrep - Jrep_pos3 - 1"
+  ],
+  "equation_count": 12,
+  "residual_degrees": [
+    5,
+    4,
+    3,
+    6,
+    6,
+    5,
+    4,
+    4,
+    3,
+    4,
+    4,
+    2
+  ],
+  "exact_degree": 12,
+  "single_polynomial": "sum of squares of the listed residuals",
+  "exact_degree_certificate": {},
+  "expanded_symbolic_terms": 2341,
+  "proof": "DOMAIN_REDUCTION_PROOF.md, Low-degree elimination frontier appendix",
+  "scope": "Exact sparse-polynomial audit plus ordinary signed-domain proof; not kernel checked"
+}

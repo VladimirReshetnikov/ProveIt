@@ -1,0 +1,152 @@
+\section{Smaller fixed coefficients: 5,263 tiles and $B=2^{5^{16}}$}
+\label{sec:coefficient5263}
+
+The arithmetic construction can use a new coefficient tuple with the same
+inputless compiler interface.  The previous smallest coefficient backend,
+package~11's T4 construction, had 37,075 tiles and $B=2^{5^{18}}$.
+The following refinement has 5,263 tiles and $B=2^{5^{16}}$.
+In particular, the bit length of $B-1$ decreases by a factor of 25.
+All four coefficient ports change together.
+
+\subsection{A smaller local language}
+Keep the original 439 cell symbols and exact completed K215 transition
+table.  The symbols $0,1$ are headless tape bits; $2(q+1)+b$ represents a
+head in state $q\in\{0,\ldots,215\}$ reading bit $b$; and
+\[
+L_0=434,\quad Q_0=435,\quad R_0=436,\quad V_0=437,\quad H_0=438
+\]
+are the initialization and boundary symbols.  Keep Start
+$S=(434,435,436,1)$ first and the forbidden tile
+$E=(438,0,0,438)$ second.  Otherwise retain precisely the old T4 tiles
+$(l,c,r,n)$ satisfying three additional conditions:
+\begin{enumerate}
+\item Both horizontal pairs $(l,c)$ and $(c,r)$ satisfy the phase and
+boundary adjacency rules.  Apart from $V_0$, adjacent cells agree on
+being $H_0$ and on being initialization phases; phase edges are
+$L_0L_0,L_0Q_0,Q_0R_0,R_0R_0$.  Immediately after $V_0$ a phase must be
+$L_0$, immediately before it $R_0$; two adjacent $V_0$'s are forbidden.
+\item If $V_0$ occurs in the horizontal triple, every ordinary cell in
+that triple is blank and headless, and $Q_0$ is absent.
+\item If $n=H_0$, every head in the horizontal triple is halted.
+\end{enumerate}
+Order all remaining tiles lexicographically.  There are exactly
+\[
+1751+1744+1720+16+5+5+1+9+12=5263
+\]
+tiles, classified respectively by center $0$, center $1$, working-head
+centers, halted-head centers, $L_0,R_0,Q_0,V_0,H_0$.
+For example, each ordinary headless center has
+$4+2\cdot432\cdot2=1732$ ordinary successors and
+$4+2\cdot2\cdot2=12$ terminal successors without a vertical boundary.
+Center~0 has six additional boundary cases and the single forbidden tile.
+
+Every retained tile is an old T4 tile, so soundness is inherited.  The
+extra tile $E$ remains globally impossible: a left neighbor centered at
+$H_0$ cannot have ordinary right neighbor 0.  Conversely, any finite
+halting run admits two untouched blank headless cells between all visited
+head positions and each boundary.  Its canonical tableau satisfies the
+new rules, including at helical seams.  Width and height remain arbitrarily
+large independent powers of five.  Thus the new language has a marked
+periodic tableau exactly when blank K215 halts.
+
+\subsection{The complete finite coefficient recipe}
+Let $w_i=(l_i,c_i,r_i,n_i)$ be the ordered tiles and set
+\[
+A_c=8192,\qquad \rho=2^{78125},\qquad
+B=\rho^{1953125}=2^{152587890625}=2^{5^{16}}.
+\]
+For $0\le u\le438$, define
+\[
+e_l(u)=6580+u,\quad e_c(u)=6141+u,\quad
+e_r(u)=5702+u,\quad e_n(u)=5263+u.
+\]
+The support $\mathcal E$ consists of $0,\ldots,5262$, these four intervals,
+the dummy position 7019, and the anchors
+\[
+7021,\quad21063,\quad63189,\quad189567.
+\]
+It has 7024 elements.  Put
+\[
+\mu=A_c-2+\sum_{j=1}^{2840}A_c^j.
+\]
+Define the selector, copy, anchor, and dummy coefficients by
+\begin{align*}
+v_i&=1+A_c^{1+l_i}+A_c^{440+c_i}+A_c^{879+r_i}
+       +A_c^{1318+n_i}+\sum_{t=1}^{4}A_c^{1756+t},\\
+v_{e_l(u)}&=A_c^{1+u},&v_{e_c(u)}&=A_c^{440+u},\\
+v_{e_r(u)}&=A_c^{879+u},&v_{e_n(u)}&=A_c^{1318+u},\\
+v_{3^{t-1}7021}&=A_c^{1756+t}\quad(1\le t\le4),&v_{7019}&=0.
+\end{align*}
+With $T_1=738963$, $T_2=1118101$, and $H_c=359389$, set
+\begin{align*}
+D_C={}&\rho^{878}+\rho^{359828}+\rho^{56168}+\rho^{168504}
+ +\sum_{e\in\mathcal E}v_e
+       \bigl(\rho^{T_1-e}+\rho^{T_2-e}\bigr),\\
+D_R={}&\rho^{H_c},\\
+M_F^0={}&\mu(\rho^{T_1}+\rho^{T_2})+
+       \sum_{u=0}^{438}\rho^{6141+u}+\rho^{63189}+\rho^{189567}\\
+ &+\sum_{u=0}^{438}
+       \bigl(\rho^{H_c+6580+u}+\rho^{H_c+6141+u}\bigr),\\
+M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+              -2\rho^{7019},\qquad
+M_F^{\rm nat}=M_F^0+4.
+\end{align*}
+The inseparable four-tuple is
+\[
+\boxed{\beta=B-1,\quad K=D_C+BD_R,\quad M_C,\quad
+M_F^{\rm src}=M_F^{\rm nat}+B-1.}
+\]
+Every exponent and finite summation limit here is a fixed integer.  These
+definitions therefore specify ordinary integer coefficients, without
+introducing exponential unknowns.
+
+\subsection{Why the compressed layout preserves the compiler}
+Writing $M_0=7021$ and $E_{\max}=27M_0$, the two clause bands satisfy
+\[
+T_2-T_1=2E_{\max}+4\equiv2\pmod4,\qquad
+T_2+2E_{\max}+2=1497237<1953125.
+\]
+The support and upper dummy spill lie below the same radius $E_{\max}$;
+all nonanchor positions, including that spill, lie below $M_0$.
+Thus the original two-band synchronization and anchor-pair argument apply
+to every rotation.  In particular, $(9M_0,27M_0)$ remains the unique
+support pair separated by $18M_0$.
+
+The only changed temporal-copy shift is $878=2\cdot439$: it sends the
+next-copy position to the center-copy position.  The spatial shift remains
+$H_c+439$.  Direct finite set checks verify all 1319 copy/anchor targets,
+including absence of unintended convolution hits.  The mask population
+and low-bit invariants are
+\[
+\operatorname{pc}(M_F^{\rm nat})=7024,\quad
+\operatorname{pc}(M_C)=5^{16}-7024,\quad
+M_C\equiv2\pmod4,\quad M_F^{\rm nat}\equiv4\pmod8.
+\]
+The sufficient carry threshold requires radix exponent only 36936,
+whereas the chosen exponent is 78125.
+
+The five-adic unit changes, but remains valid:
+\[
+D_C\equiv D_R\equiv2\pmod5,\qquad 2D_C-D_R\equiv2\pmod5.
+\]
+For power-of-five width $w$, height $H$, and $N=wH$, one has
+$B\equiv q=B^N\equiv B^w\equiv2\pmod5$.  Consequently the exact
+dummy-bit coefficient
+\[
+\Gamma=\rho^{7019}(q^2-1)
+       \bigl[1+q(D_C+BD_R+B^w)\bigr]
+\]
+satisfies $\Gamma\equiv3\pmod5$ and is a unit modulo $5^{16}N$.
+The inherited subset adjustment therefore tunes the actual packed rank
+to the same temporal displacement.  It does not introduce a separately
+chosen exponent.  Start remains selector~0, the forbidden tile selector~1,
+and the shifted high mask remains essential.
+
+The accompanying standard-library program independently enumerates
+2,289,385 successor candidates, checks the exact scalar geometry and
+carry bounds, and verifies 18 finite control tableaux with 927 windows.
+These finite checks support the adapter above; the universal native
+compiler and Pell theorems remain mathematical dependencies.  No new
+end-to-end kernel proof is claimed.  The largest coefficient $K$ has
+180,665,156,251 bits; its exact finite recipe, rather than its expansion,
+is supplied.

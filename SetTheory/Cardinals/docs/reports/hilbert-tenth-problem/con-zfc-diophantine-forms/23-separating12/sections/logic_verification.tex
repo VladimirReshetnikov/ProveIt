@@ -1,0 +1,168 @@
+\section{Logical meaning, verification, and reproduction}\label{sec:logic}
+
+\subsection{The equivalence proved in ZFC}
+
+The dependency chain is
+\[
+ \text{integer solution}
+ \ \longleftrightarrow\ \text{finite accepted blank tableau}
+ \ \longleftrightarrow\ \operatorname{Halt}(K215,\mathrm{blank})
+ \ \longleftrightarrow\ \ZFCRef.
+\]
+The first equivalence consists of the root reconstruction, the signed-domain
+arguments, the inherited Pell compiler, and the finite coefficient adapter.
+Completeness runs through the chain in the opposite direction. All integer
+exponents in the coefficient recipe denote fixed integers; none is a hidden
+exponentiation in an unknown. Each displayed final object is consequently
+an ordinary polynomial, or a finite system of ordinary polynomials, over
+$\Z$.
+
+The final endpoint is the theorem
+\begin{quote}\small\ttfamily
+blank\_halts\_iff\_zfc\_refutation :\\
+BlankHalts machine215 $\leftrightarrow$ BProv ZFCax\_s [] Form.fBot
+\end{quote}
+in \src{KEndpoint215.lean}. It has no consistency hypothesis or remaining
+machine-specific theorem parameter. The Rocq development gives the
+corresponding equivalence with its \src{StandardZFC} theory~\cite{endpoint}.
+
+For precision, \src{BProv} means existence of a finite list of background
+axioms and a finitary first-order derivation from them. The letter B refers
+to the background theory; it does not impose a numerical bound on proof
+length. The namespace \src{BoundedZFCConsistency} in some imported modules
+does not change this endpoint into a bounded-consistency statement.
+The axiom predicate includes all instances of Separation and Replacement
+and a standard selector formulation of Choice. We may define
+$\Con(\mathrm{ZFC})$ using this exact effective presentation. The usual
+finite proof translations between standard equivalent presentations give
+the same result for another conventional coding~\cite{endpoint,t4}.
+
+The machine calibration uses finitary syntax, first-order completeness,
+constructible-universe arguments, and a well-founded quotient-model
+construction. These are ordinary mathematical constructions available in
+ZFC; they do not require assuming $\Con(\mathrm{ZFC})$. The new algebraic
+steps use finite extension fields, automorphisms of a finite normal closure,
+elementary Pell arithmetic, and finite computation. They too are
+formalizable in ZFC. Composing those proofs gives Theorem~\ref{thm:main},
+and classical negation gives its unsolvability version.
+
+This formulation deliberately separates two claims. We supply an ordinary
+mathematical proof of a theorem provable in ZFC. We do not supply a new
+machine-checked derivation in an encoded ZFC proof calculus, or a new
+end-to-end Lean/Rocq formalization of the Diophantine reductions. The
+external proof-assistant endpoint by itself is not such a translation.
+No stronger internalization in PA is asserted here.
+
+If ZFC is consistent, the displayed polynomial has no solution in the
+standard positive integers, or in the standard integers for its signed
+variants. Under the usual hypotheses of the second incompleteness theorem,
+ZFC then cannot prove this lack of solutions: the proved equivalence would
+turn such a proof into a proof of its own consistency. The construction
+does not determine whether a solution exists. Nor do we infer from mere
+consistency that ZFC cannot prove the opposite assertion; that stronger
+independence conclusion would require an additional argument or hypothesis.
+
+\subsection{What was checked, and what was imported}
+
+The source snapshot is pinned to the full Git commit in the abstract.
+Files in \src{upstream/} preserve the inherited texts and their original
+historical snapshot notices. \src{SOURCE_MANIFEST.json} records their
+retrieval paths, Git blob identities, and SHA-256 hashes. The literal
+430-transition machine table is included and compared with the exported
+transition list before the finite compiler is regenerated.
+
+The archive also preserves two \emph{inherited} endpoint audit logs.
+The Lean log reports only \src{propext}, \src{Classical.choice}, and
+\src{Quot.sound}; the Rocq log reports closure under the global context.
+We inspected these records and the endpoint source. We did not execute a
+fresh Lean or Rocq build in preparing this archive. Their limited size
+does not make them a substitute for the complete upstream developments.
+
+The new executable checks are standard-library Python. They verify:
+\begin{enumerate}
+\item Circuit register discipline, liveness, exact operation counts,
+  consistency with independently evaluated norm formulas, and specialized
+  polynomial degree certificates. Structural leading-form arguments in
+  the proofs establish the uniform exact degrees for the authentic fixed
+  coefficient tuple.
+\item The signed substitutions, the negative-parameter Pell projection
+  identities, the population identity used to make $s$ odd, and explicit
+  small negative-scale Pell tuples with both main-root signs excluded.
+\item The 26-integer norm by a separate implementation of multiplication
+  and conjugation in $\Z[r,u]/(r^2-A,u^2-S)$. This checks the expanded
+  circuit without copying its scalar norm formulas, including $T=0$,
+  $X=0$, and negative-$s$ cases.
+\item Every candidate successor for the refined admissible horizontal
+  triples, the exact 5263-tile enumeration, clause/copy geometry, carry
+  bounds, synchronization anchors, mask populations, and the modular unit
+  needed to tune the actual rank. Eighteen finite control tableaux check
+  927 seam and boundary windows.
+\end{enumerate}
+
+Finite tests support the arithmetic specification and catch implementation
+errors. They do not establish the universal Pell lemmas, the unbounded
+tableau theorem, or consistency. In particular, the synthetic exact-root
+fixtures are tests of the algebraic norm identity; they are not claimed
+solutions for the K215 coefficients. The Galois reconstruction and signed
+zero-case arguments are proved in the text and independent audit notes,
+not inferred from testing a sample of integers.
+
+\subsection{Files and reproducible commands}
+
+From the extracted archive root, run
+\begin{quote}\ttfamily
+python3 reproduce.py\\
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{quote}
+The first command needs Python 3.10 or later and its standard library only.
+It builds the new arithmetic packets and the finite compiler in a temporary
+directory, compares them with the bundled artifacts, checks the literal
+machine binding, runs the separate quotient-algebra audit, and writes a
+verification receipt. It does not expand the enormous fixed coefficients.
+The second command uses a standard TeX installation to rebuild this PDF.
+The corresponding \src{Makefile} provides \src{verify}, \src{pdf}, and
+\src{clean} targets.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.6cm}p{8.6cm}}
+\toprule
+Path & Purpose\\
+\midrule
+\src{report.tex}, \src{sections/} & Complete article sources.\\
+\src{data/polynomial12.json} & Fully substituted 12-positive-variable product.\\
+\src{data/system12.json} & Its three comparisons.\\
+\src{data/integer26/} & 26-integer product, system, and sum of squares.\\
+\src{data/integer27/} & Five lower-degree 27-integer alternatives.\\
+\src{code/} & Deterministic circuit builders and independent norm audit.\\
+\src{coefficients/} & Literal machine, 5263 tiles, coefficient recipe,
+  finite verifier, and inherited endpoint evidence.\\
+\src{COEFFICIENT_BINDING.json} & Exact mapping from each circuit's port names
+  to the one complete coefficient tuple.\\
+\src{proofs/}, \src{upstream/} & New proof/audit notes and inherited proof dependencies.\\
+\src{comparison.csv} & Machine-readable comparison of the stated alternatives.\\
+\src{SOURCE_MANIFEST.json} & Pinned source provenance.\\
+\src{MANIFEST.sha256} & SHA-256 checksums for the distributed files.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Which form to use}
+
+For the fewest positive unknowns in this reviewed family, use
+\src{polynomial12.json}; its three-equation system is slightly shorter to
+evaluate. For unrestricted integer unknowns, the new 26-integer equation
+uses the fewest coordinates among the explicitly bound variants presented
+here. If degree or arithmetic size matters more, the 27-integer ordinary
+system has degree 46 and 107 operations, while its single ordinary product
+has degree 172 and 116 operations. The unchanged 15-positive-variable
+product remains the shortest known evaluator in this repository comparison,
+at 67 operations. A degree-four target still favors the existing quartic
+lift. The refined coefficient tuple can be used coherently with any version
+whose complete blank-compiler interface is proved.
+
+The new reductions therefore add points to a tradeoff table. They do not
+make one equation uniformly simplest. Further useful work would be to
+formalize the separating-map and denominator lemmas, reduce the large
+weights while retaining their signed bounds, or compile the smaller
+numerical proof calculus directly. Those directions are not treated as
+results of this report.

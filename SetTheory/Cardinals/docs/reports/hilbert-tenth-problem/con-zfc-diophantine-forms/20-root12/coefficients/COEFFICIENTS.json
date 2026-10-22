@@ -1,0 +1,142 @@
+{
+  "schema": "proveit-k215-t4-binary-copy-fixed-coefficients-v1",
+  "status": "Audited ordinary mathematical adapter with fully materialized numeric coefficients; no fresh end-to-end kernel proof",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "repository_commit": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "machine": "raw blank-input K215, original430 transitions plus stationary halt padding",
+  "transition_file": "sources/k215_transitions.json",
+  "transition_sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755",
+  "tiles_file": "tiles4094.json",
+  "tiles_sha256": "d36129e15ecde1704c865d94486c1d485f7edc4a16d311e66a96e30b0daea20b",
+  "scalars": {
+    "k": 4094,
+    "a": 11,
+    "ell": 12,
+    "A": 4096,
+    "copy_offsets": [
+      4182,
+      4171,
+      4160,
+      4138
+    ],
+    "dummy": 4226,
+    "M": 4260,
+    "anchors": [
+      4260,
+      4272,
+      4282,
+      8565
+    ],
+    "Emax": 8565,
+    "Hc": 12892,
+    "T1": 30034,
+    "T2": 47168,
+    "bare_shifts": [
+      33,
+      12903,
+      22,
+      4293
+    ],
+    "support_size": 4143,
+    "mu_top": 48,
+    "mu_population": 59,
+    "mu_bit_length": 577,
+    "padding_count": 3989,
+    "padding_start": 55734,
+    "padding_stop": 59723,
+    "bmin": 604,
+    "b": 625,
+    "b_exponent": 4,
+    "L": 78125,
+    "L_exponent": 7,
+    "d": 48828125,
+    "d_exponent": 11,
+    "beta_bit_length": 48828125,
+    "K_bit_length": 56885626,
+    "MF_source_bit_length": 48828126,
+    "MC_bit_length": 48828125,
+    "mass_threshold_bit_length": 604,
+    "mod5_unit": 1,
+    "convolution_targets": 35,
+    "all_rotation_anchor_check": true,
+    "all_rotation_clean_band_check": true,
+    "population_MF": 4143,
+    "population_MC": 48823982
+  },
+  "code": "chi(s)=(bit0(s),...,bit8(s),1,0)",
+  "definitions": {
+    "rho": "2^625",
+    "B": "rho^78125 = 2^(5^11)",
+    "A": "4096",
+    "mu": "A-2+sum(A^j,j=1..48)",
+    "E": "0..4093;4182..4192;4171..4181;4160..4170;4138..4148;4226;4260,4272,4282,8565",
+    "v_selector(i)": "1+sum(chi(tile_i[j])[t]*A^(1+11*j+t),j=0..3,t=0..10)+sum(A^(44+t),t=1..4)",
+    "v_copy(j,t)": "A^(1+11*j+t), at copy_offsets[j]+t",
+    "v_anchor(t)": "A^(44+t), at anchors[t-1],t=1..4",
+    "v_dummy": "0",
+    "DC": "rho^33+rho^12903+rho^22+rho^4293+sum(v_e*(rho^(30034-e)+rho^(47168-e)),e in E)",
+    "DR": "rho^12892",
+    "MF0": "mu*(rho^30034+rho^47168)+sum(rho^(4171+t)+rho^(17074+t)+rho^(17063+t),t=0..10)+rho^4282+rho^8565+sum(rho^z,z=55734..59722)",
+    "MC": "B-1-sum(rho^e,e in E except1)-2*rho^4226",
+    "MF_native": "MF0+4",
+    "beta": "B-1",
+    "K": "DC+B*DR",
+    "MF_source": "MF_native+B-1"
+  },
+  "polynomial_ports": [
+    "beta",
+    "K",
+    "MC",
+    "MF_source"
+  ],
+  "expanded_directory": "expanded",
+  "expanded_manifest": "expanded/MANIFEST.json",
+  "proof": "COEFFICIENT_PROOF.md",
+  "old_beta_bit_length": 3814697265625,
+  "new_beta_bit_length": 48828125,
+  "beta_bit_length_improvement_factor": 78125,
+  "tuple_id": "T4-4094-binary-copy-zero-padding-5pow11",
+  "canonical_witness_contract": {
+    "d_and_N": "odd powers of5",
+    "R_mod4": 3,
+    "rank_population": "3*d*N+2",
+    "actual_rank_congruence": "R=d*width mod d*N",
+    "dummy_unit_mod5": 1,
+    "power_scale": "w_scale=2^(R-d*N), a positive integer square",
+    "auxiliary_multiplier": "can be chosen positive and odd by strong index c*R"
+  },
+  "numeric_encoding": "unsigned minimal-width big-endian binary; leading unused bits are zero",
+  "numeric_coefficients": {
+    "beta": {
+      "file": "expanded/beta.bin",
+      "bit_length": 48828125,
+      "bit_population": 48828125,
+      "size_bytes": 6103516,
+      "sha256": "9987351490e0fc1e66c25ef8c670a11f663a355456a76920d46cb316fdf6cbf7"
+    },
+    "K": {
+      "file": "expanded/K.bin",
+      "bit_length": 56885626,
+      "bit_population": 133545,
+      "size_bytes": 7110704,
+      "sha256": "ed6254abb5e038c63691b7f6ff9661c1400cd6db8164b896cd60ac882c69034d"
+    },
+    "MC": {
+      "file": "expanded/MC.bin",
+      "bit_length": 48828125,
+      "bit_population": 48823982,
+      "size_bytes": 6103516,
+      "sha256": "edd8ad633b5fc48b729de6ee301449083dafd5d697d325ee30c3aed6c8e8758b"
+    },
+    "MF_source": {
+      "file": "expanded/MF_source.bin",
+      "bit_length": 48828126,
+      "bit_population": 4145,
+      "size_bytes": 6103516,
+      "sha256": "bca8a558dbf4fddf107f9524c364c3590053a164d83243236ab9b2bb86a99904"
+    }
+  },
+  "numeric_total_bytes": 25421252,
+  "tuple_sha256": "726ac1d0ae1957f75f71966a65c8730403998a1f719e927f6894babea12cf938",
+  "tuple_sha256_definition": "SHA256 of ASCII concatenation of the four lowercase file SHA256 hex strings in polynomial_ports order"
+}

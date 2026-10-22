@@ -1,0 +1,256 @@
+\section{Twenty-seven unrestricted integers by an odd scale}
+\label{sec:integer27}\label{sec:integer}
+
+The ordinary and normalized fifteen-coordinate certificates admit a
+smaller integer-domain conversion than the seven-positive-port conversion
+in package~14. Require positivity only for
+\[
+ J,F,\alpha,z,\eta,\zeta,
+\]
+put $i=2r+1$, $s=2v+1$, and $w=u^2$, and allow
+$r,v,u,f,h,T,\tau,y,\gamma$ to be arbitrary integers. Replacing each of
+the six positive ports by its own copy of
+\[
+ \operatorname{Pos}(x,y,z)=1+x^2+y^2+z(z+1)
+\]
+gives $6\cdot3+9=27$ unrestricted integer unknowns. The map is positive
+and onto the positive integers: represent $4n-3$ by three squares and
+separate its one odd square from its two even squares.
+
+The new point is the signed scale $s$. The source formulas still give
+$q\ge16$, $C\ge0$, $q(q^2-1)<R<q^4-2$, and $|Y|\ge q^3$.
+The usual unit arguments use squares and remain valid for signed roots.
+The main norm excludes $X=0$: then $D_{\rm main}=ac+\gamma H$ and
+$\Delta=a^2+H$ would imply $0\equiv1\pmod H$. Hence $X\ge q$.
+
+Suppose $Y=-Z<0$. Define
+\[
+ B=(X+1)Z-2,\qquad c_0=-c=kZ-\eta,\qquad P_0=2XZ^2+1.
+\]
+Then $k(Z-1)<c_0<kZ$, $P_0>B$, and $c_0>k$. The first and main
+Pell equations yield
+\[
+ k=2\psi_{P_0}(n),\qquad c_0=\psi_B(p),\qquad p>n,
+ \qquad 2n=R+\varepsilon+v_0|E|,
+\]
+where $v_0\ge0$ and $\varepsilon\in\{-1,1\}$. Thus
+$n\ge(R-1)/2\ge24$, $c_0>B(B^2-1)^2$, and $c_0>2p,2R$.
+The normalized strong-rank argument, or its ordinary counterpart, and
+the two signed auxiliary congruences give $p=R$. The sign change
+$c=-c_0$ changes only a sign removed when the first congruence is squared.
+The bound $|E|>R+2$ excludes wrapping. If $\varepsilon=-1$, Pell
+duplication and $\chi_B(2)>P_0$ give
+$c_0=\psi_B(2n+1)>Bk>kZ$, a contradiction. Therefore
+$R=2n-1=2r_0+1$.
+
+The elementary Pell growth estimates now imply
+\[
+ Z>\frac{c_0}{k}\ge
+ \frac12\left(\frac{(2B-1)^2}{2P_0}\right)^{r_0}
+ >\frac{X^{r_0}}2>2^R.
+\]
+The strict middle inequality is justified by
+\[
+ (2B-1)^2-2P_0X
+ =4(2X+1)Z^2-20(X+1)Z+25-2X>0.
+\]
+At $Z=4$ its value is $46X+9$, and it increases thereafter; here
+$X\ge16$ and $Z\ge4096$.
+For the original negative Pell parameter $a+2=-B$, the two Pell projections
+modulo $H=4a+3$ remain $2^R$ and $2^{-R}$. Since $R$ is odd and
+$c=-\psi_B(R)$, the two signs of the main root respectively imply
+\[
+ X+2^R\equiv0\pmod H
+ \quad\hbox{or}\quad
+ X2^R\equiv1\pmod H.
+\]
+They contradict $0<X+2^R<|H|$ and $1<X2^R<XZ<|H|$. Thus $s>0$.
+The inherited signed compiler theorem now applies. This exclusion only
+needs a nonzero strong multiplier; the odd parametrization guarantees
+that requirement.
+
+Completeness follows from an exact parity identity, rather than an
+additional padding conjecture. Write $q=2^t$, $M_0=q^2$, and
+\[
+ S_0=(C-1)+qF,\qquad
+ T_0=(M_CJ+1)+q(M_F^{\rm nat}J-1),
+\]
+where $M_F^{\rm nat}$ is the unshifted mask. Native mask disjointness gives
+$S_0\mathbin{\&}T_0=0$, and
+$\operatorname{popcount}(T_0)=t+2$. Consequently
+\[
+ R=(M_0-1-S_0)M_0+(S_0+T_0),\qquad
+ \operatorname{popcount}(R)=3t+2.
+\]
+The half-binomial identity gives $v_2(Y)=3t$, so $s=Y/q^3$ is odd.
+The existing odd-multiplier and square-$w$ completeness choices are
+unchanged. The new substitution costs $6\cdot7+2+2+1=47$ gates.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Construction & Equations & Degree & Gates\\
+\hline
+Normalized product & 1 & 274 & 114\\
+Reduced normalized product & 1 & 216 & 115\\
+Ordinary product & 1 & 172 & 116\\
+Shifted ordinary system & 6 & 46 & 107\\
+Ordinary sum of squares & 1 & 92 & 124\\
+\hline
+\end{tabular}
+\end{center}
+All rows use 27 unrestricted integers. The full signed proof, emitted
+circuits, and reproducible arithmetic checks accompany the report in
+\src{proofs/ODD_SCALE_27_PROOF.md}. The inherited signed and ordinary
+rank arguments are those of packages 14 and 12~\cite{signed29,gap}.
+
+The degrees are uniform over every fixed $\beta>0$. To see this without
+a numerical coefficient specialization, write $p_*$ for the highest
+homogeneous part of a substituted port, and set
+\[
+ Q_*=\beta J_*,\quad k_*=\eta_*+\zeta_*,\quad
+ C_*=Q_*-F_*-\alpha_*,\quad
+ N_{t,*}=w_*C_*-z_*Q_*.
+\]
+Here $w_*=u^2$, $s_*=2v$, and $i_*=2r$. Each guarded highest part is
+a sum of three squares in its own disjoint variables. In particular
+$N_{t,*}\ne0$, because its specialization at $u=0$ is $-z_*Q_*\ne0$.
+The highest parts of the three product polynomials in table order are
+\[
+\begin{aligned}
+ -8Q_*^{91}h\gamma i_*^4k_*^{13}w_*^{13}s_*^{26}T^2f^2N_{t,*},\\
+ -8Q_*^{71}h\gamma i_*^2k_*^9w_*^{11}s_*^{20}T^2f^4N_{t,*},\\
+  8Q_*^{55}h\gamma i_*^2k_*^9w_*^7s_*^{16}T^2f^4N_{t,*}.
+\end{aligned}
+\]
+These are nonzero polynomials of degrees 274, 216, and 172. The unique
+degree-46 system residual has highest part $a_*^2c_*^2T^2f^4$,
+where $a_*=w_*s_*Q_*^4$ and $c_*=k_*s_*Q_*^3$; its square gives
+the exact SOS degree 92. No value of the other fixed coefficient ports
+affects these conclusions.
+
+\section{Twenty-six unrestricted integers by robust separating weights}
+\label{sec:integer26}
+
+The twelve-coordinate norm also admits an integer-domain refinement.
+Keep seven positive ports
+$J,F,\alpha,z,i,\eta,\zeta$, replace them by disjoint copies of
+$\operatorname{Pos}$, put $s=2v+1$ and $w=u^2$, and leave $h,T,t,v,u$
+unrestricted. This uses $7\cdot3+5=26$ integers. In this construction
+$i$ is positive, with no assertion that it is odd. That distinction is
+necessary because the normalized multiplier is constrained to be
+divisible by $H$.
+
+Use the common prefix and write
+\[
+ \begin{gathered}
+ P=X+ac,\quad S=1+\Delta c^2,\quad
+ L=EkY,\quad A=1+L(L+k),\\
+ G=Hic^2,\quad D=1+\Delta G^2,\quad
+ Q=\Delta(D-1),\quad d=Q-1,\\
+ v_0=cT,\quad b=c+RD,\quad
+ e=Q(Dv_0^2+b^2)-1,\quad B_0=2Qv_0b.
+ \end{gathered}
+\]
+Replace the positive-domain separating weights by
+\[
+ \begin{split}
+ U_0&=(T^2+1)(a^2+5)H^2ic^4,\\
+ M&=1+2(U_0+b),\qquad N=1+H^2M(A+1).
+ \end{split}
+\]
+Use these weights in the same explicitly expanded two-quadratic-norm
+polynomial, denoted $\mathcal N_{26}$. The formulations are
+\[
+ N_k=1,\quad N_t=1,\quad\mathcal N_{26}=0,
+ \qquad\hbox{or}\qquad
+ N_kN_t(1+\mathcal N_{26})-1=0.
+\]
+
+Here are the additional signed-domain details. The unit guard is valid
+because the inner norm coefficient is even, so $\mathcal N_{26}$ is a
+square modulo four. Weak transport therefore gives $C\ge0$ and
+$0<R<q^4-2$ before roots are recovered. Even if $X=0$, the odd scale
+ensures $|a|\ge q^3$, $|c|>1$, and
+\[
+ \Delta\ge(q^3-1)(q^3-3)>q^4>R,
+ \qquad S>1,\quad A\ge1.
+\]
+Also $D>\Delta+|c|$, which gives the crucial interval
+\[
+ 1<b<Q,
+ \qquad Q-b=(\Delta-R)D-\Delta-c>0.
+\]
+
+Consider the algebraic triples satisfying
+\[
+ (P+H\gamma)^2=S,\qquad \tau^2=A,\qquad
+ (dy^2-e)^2=B_0^2D.
+\]
+Every complex auxiliary branch obeys
+$|y|<2(|v_0|\sqrt D+b)<M$. Indeed
+$\sqrt D<|a+2|\,|G|$, and the factors in $U_0$ bound respectively
+$|T|$, $|a+2|$, $|H|$, and $|c|^3$ by integer polynomials.
+Furthermore
+\[
+ \frac{N\sqrt S}{|H|}>M(A+1)
+ \ge M\sqrt A+M>M\sqrt A+|y|.
+\]
+Thus $(\gamma,\tau,y)\mapsto y+M\tau+N\gamma$ is injective on
+distinct triples, including at $A=1$ and when the auxiliary quartic
+has repeated roots. The exact norm factorization and Galois invariance
+of the supplied integer $t$ imply that $\gamma,\tau,y$ are rational.
+
+Both $\tau$ and $P+H\gamma$ are integers, so the denominator of
+$\gamma$ divides $H$. For $y=r/s$ in lowest terms, the quartic
+\[
+ d^2y^4-2dey^2+e^2-B_0^2D=0
+\]
+shows that every prime dividing $s$ divides $d$. Because $Q$ is
+divisible by $H^2$, $\gcd(d,H)=1$. The identity
+$y+N\gamma=t-M\tau$ therefore makes $y$ integral, and
+$N\equiv1\pmod H$ then makes $\gamma$ integral. This argument
+does not assume that $T$ or $B_0$ is nonzero.
+
+If $T=0$, then $dy^2=Qb^2-1$, hence
+\[
+ d(y^2-b^2)=b^2-1>0.
+\]
+Integrality gives $|y|\ge b+1$, whereas $b<Q$ gives $d\ge b$.
+The left side is then at least $b(2b+1)>b^2-1$, a contradiction.
+Therefore $B_0\ne0$, and
+\[
+ f=\frac{e-dy^2}{B_0},\qquad f^2=D
+\]
+is an integer. The full normalized strong and auxiliary equations have
+now been recovered. The main norm excludes $X=0$ modulo $H$. The
+negative-scale argument of the preceding section applies to the nonzero
+normalized multiplier $Hi$ and excludes $s<0$. The inherited signed
+compiler theorem then proves soundness.
+
+For completeness, retain the canonical square $w$ and odd $s$. Choose
+the strong Pell index to be a common multiple of $R$ and a period of
+the invertible Pell matrix modulo $Hc^2$. This gives a positive
+$i=\psi_{a+2}(m)/(Hc^2)$ and the required auxiliary quotient, without
+requiring odd $i$. The canonical roots make
+$t=y+M\tau+N\gamma$ an integer, and all seven positive ports have
+$\operatorname{Pos}$ representations.
+
+The exact integer degrees are
+\[
+ \deg d=106,\quad \deg b=\deg M=92,\quad\deg N=154,
+ \quad \deg(P^2-S)=29.
+\]
+The two main-root branches have degrees $9$ and $-2$; therefore the
+$N\gamma$ term dominates every linear factor of the norm. Its leading
+form is
+\[
+ (\mathcal N_{26})_{3544}
+ =d_{\rm top}^{8}N_{\rm top}^{16}
+   (H_{\rm top}c_{\rm top}^{2})^8\ne0.
+\]
+The comparison system has degree 3544 and 195 gates; the product has
+degree 3560 and 199 gates. A sum of squares has degree 7088 and 202
+gates. All counts include the 52 substitution gates. These constructions
+provide a variable-count improvement at a substantial degree and circuit
+cost; the 27-integer degree-92 polynomial remains a useful alternative.

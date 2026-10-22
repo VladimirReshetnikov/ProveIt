@@ -1,0 +1,297 @@
+\section{A direct construction with twelve positive unknowns}
+\label{sec:radical-twelve}
+
+The nine-variable compiler and the smaller arithmetic circuits optimize
+different measures.  Here is a further direct reduction
+of the native/Pell family: twelve strictly positive unknowns, three
+equations of maximum degree $1600$, or one equation of degree $1609$.
+The emitted single-equation evaluator has $151$ binary operations
+($97$ multiplications and $54$ additions or subtractions); the system
+uses $147$.  Thus it improves the thirteen-variable direct construction
+in variable count at the cost of degree and arithmetic size.
+All four coefficient ports below are bound together to the fixed T4 tuple
+specified earlier.  No ports from different compiler recipes are mixed.
+
+This section uses two established interface facts from the source
+packages.  Package~09 proves its weak-sign bootstrap and weighted-root
+inequality for the native four-port interface.  Package~14 proves the
+signed-core soundness argument, including recovery of the main-root sign.
+In that soundness argument the old strong multiplier need only be nonzero
+and the scale $w$ positive.  Oddness of that multiplier and squareness of
+$w$ are sufficient conditions used in its particular unrestricted-integer
+parameterization, and are not additional hypotheses on the positive
+construction below.  These arithmetic interface arguments transfer with
+the whole T4 tuple.
+
+\subsection{The polynomial}
+
+The unknowns are
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\mathbb Z_{>0}.
+\]
+All other symbols in this subsection abbreviate polynomials.  Write
+$\beta=B-1$ and let $K_0,M_C,M_F$ be the other three fixed ports,
+with the shifted $M_F$ convention.  Define
+\begin{align*}
+ q&=\beta J+1,& C_w&=q-F-\alpha,& X&=wq,&Y&=sq^3,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1.
+\end{align*}
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k&=k-hE-R,&
+ N_t&=(K_0+w)C_w+q-F-z(q-1),\\
+ L_0&=EkY,& A&=1+L_0(L_0+k).
+\end{align*}
+The new strong multiplier is the old multiplier restricted to $Hi$:
+\begin{align*}
+ I&=Hic^2,& D&=1+\Delta I^2,&Q&=\Delta^2I^2,&d&=Q-1,\\
+ v&=cT,&z_0&=c+RD,& e&=Q(Dv^2+z_0^2)-1,&b&=2Qvz_0,\\
+ M&=2(D+v^2),&G&=1+\Delta c^2.
+\end{align*}
+For the separating weight put
+\begin{align*}
+ T_*&=L_0+k+1,&F_*&=(a+2)I+1,\\
+ Y_*&=2(vF_*+z_0),&U_*&=MT_*+Y_*,\\
+ \ell&=1+HU_*,&S&=Ht+\ell(ac+X),&W&=HM.
+\end{align*}
+
+The following fixed computation defines a polynomial without introducing
+an unknown.  Work formally modulo $r^2-G$ and form
+\begin{align*}
+ Z&=S-\ell r,\\
+ U&=d(Z^2+W^2A)-H^2e,& V&=2dWZ,\\
+ F_0&=U^2+AV^2-H^4b^2D,&F_1&=2UV,\\
+ F_0^2-AF_1^2&=E_0+E_1r\pmod{r^2-G},\\
+ \mathcal R_{12}&=E_0^2-GE_1^2.
+\end{align*}
+Every reduction replaces $r^2$ by $G$, so $E_0,E_1$ are ordinary
+integer polynomials in the twelve supplied unknowns.  This is a finite
+arithmetic recipe, not an existential use of $r$.  The supplied JSON
+circuit performs it with coefficient pairs; in particular it evaluates
+$H^4b^2D$ as $4H^4(QDv^2)(Qz_0^2)$.
+
+Our system and single equation are respectively
+\begin{equation}
+ N_k=1,\qquad N_t=1,\qquad\mathcal R_{12}=0,
+ \label{eq:twelve-system}
+\end{equation}
+and
+\begin{equation}
+ \boxed{\mathcal P_{12}=N_kN_t(1+\mathcal R_{12})-1=0.}
+ \label{eq:twelve-product}
+\end{equation}
+
+\begin{theorem}
+With the stated fixed coefficient binding, each of
+\eqref{eq:twelve-system} and \eqref{eq:twelve-product} has a positive
+integer solution exactly when K215 halts on blank tape.  Consequently
+ZFC proves that its absence of positive integer solutions is equivalent
+to $\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+
+\subsection{Soundness: separating and recovering four roots}
+
+We prove soundness under the more general assumptions
+$N_k=N_t=\varepsilon\in\{1,-1\}$ and $\mathcal R_{12}=0$;
+this also covers the product finalizer.  The inherited weak-sign
+bootstrap gives
+\[
+ q\ge16,\quad 0<R<q^4-2,\quad E\ge q^4>R+2,\quad k>R,
+\]
+and, with $M_0=D+v^2$, the inequality
+\[
+ dM_0^2A>Q(Dv^2+z_0^2)=e+1.
+\]
+These steps do not use the main root or its discarded coordinate
+$\gamma$.  Since $M=2M_0$, they imply
+\begin{equation}
+ dM^2A>4(e+1),\qquad b\sqrt D\le e+1.
+ \label{eq:twelve-domination}
+\end{equation}
+The second inequality is $2v z_0\sqrt D\le Dv^2+z_0^2$.
+All quantities used as positive bounds are positive, with $d\ge1$ and
+$D,G,A>1$.
+
+For proof purposes, $\mathcal R_{12}$ is the product over the eight
+choices $r=\pm\sqrt G$, $f=\pm\sqrt D$, and
+$\tau=\pm\sqrt A$ of
+\begin{equation}
+ d(S-\ell r-HM\tau)^2-H^2(e-bf).
+ \label{eq:twelve-branch-factor}
+\end{equation}
+Taking the quadratic norms first in $f$, then in $\tau$, then in $r$
+gives exactly the displayed polynomial computation.  Its zero supplies
+a real algebraic tuple satisfying
+\begin{equation}
+ r^2=G,\quad f^2=D,\quad\tau^2=A,\quad
+ dy^2=e-bf,\quad S=\ell r+H(M\tau+y).
+ \label{eq:twelve-radicals}
+\end{equation}
+Indeed the first three radicals are real, and the last equality defines
+a real $y$.
+
+There is at most one such tuple for the given rational $S$.  First,
+$\sqrt A<T_*$ and $\sqrt D<F_*$.  Moreover
+\[
+ y^2=\frac{Q(vf-z_0)^2-1}{Q-1}
+       <2(v\sqrt D+z_0)^2,
+ \qquad |y|<Y_*.
+\]
+It follows that $|M\tau+y|<U_*$.  Two different signs of $r$ would
+therefore change $\ell r$ by $2\ell\sqrt G>2HU_*$, more than the
+remaining contribution can change.  Thus $r$ is unique.  Next,
+\eqref{eq:twelve-domination} gives
+\[
+ M^2 A>\frac{e+b\sqrt D}{d}\ge y^2.
+\]
+Two different signs of $\tau$ cannot give the same $M\tau+y$,
+because their difference $2M\sqrt A$ exceeds the possible difference
+of the $y$ terms.  Therefore $\tau$, then $y$, then $f$ are unique;
+the last conclusion uses $b\ne0$.
+
+Every algebraic embedding of the field generated by this tuple fixes
+$S$ and the integer coefficients, and produces another tuple in
+\eqref{eq:twelve-radicals}.  Its $r,f,\tau$ are real; the last equality
+forces its $y$ to be real as well.  Uniqueness fixes every generator
+under every embedding.  Characteristic-zero separability, or the fixed
+field theorem in a normal closure, now implies that all four roots are
+rational.
+
+The rational numbers $r,f,\tau$ have integer squares and hence are
+integers.  The last equality in \eqref{eq:twelve-radicals} makes $Hy$
+an integer.  If $y=u/v_0$ is in lowest terms, then $v_0\mid H$ and
+$v_0^2\mid d$.  But
+\[
+ Q=\Delta^2H^2i^2c^4,\qquad \gcd(H,Q-1)=1.
+\]
+Thus $y$ is an integer.  Set
+\[
+ \gamma=(r-ac-X)/H.
+\]
+The same equality yields $t=\ell\gamma+M\tau+y$, so
+$\ell\gamma$ is an integer.  Since $\gcd(\ell,H)=1$, $\gamma$ is
+an integer too.  We have restored the exact equations
+\begin{align*}
+ (ac+X+\gamma H)^2-\Delta c^2&=1,\\
+ f^2-\Delta(Hi)^2c^4&=1,\\
+ \tau^2&=1+L_0(L_0+k),\\
+ QV_a^2-(Q-1)y^2&=1,
+ \qquad V_a=c(Tf-1)-Rf^2.
+\end{align*}
+Here $e-bf=Q(vf-z_0)^2-1$ because $f^2=D$.
+Also $y\ne0$: otherwise $QV_a^2=1$ would contradict $Q>1$.
+Taking absolute values restores positive $\tau,y$.
+
+The signed-core soundness argument cited above applies to the possibly
+signed $f,\gamma$ (equivalently signed $T$ after changing the sign of
+$f$).  Its normalized rank step uses only the nonzero multiplier $Hi$.
+It recovers the main index $p=R$, the positive main-root branch,
+$\varepsilon=1$, and the native masks.  Thus it decodes a blank
+accepting K215 tableau.  This use of signed-core soundness is essential:
+the older theorem restricted to positive $\gamma$ alone would not
+justify this step.
+
+\subsection{Completeness with the new divisibility restriction}
+
+Take the canonical positive witnesses supplied by a blank accepting
+tableau.  They have $R\equiv3\pmod4$,
+$c=\psi_{a+2}(R)$ and main root $\chi_{a+2}(R)$, where
+$\chi_A(n)+\psi_A(n)\sqrt{A^2-1}=(A+\sqrt{A^2-1})^n$.
+Keep the basic coordinates, main $\gamma$, and $\tau$.  We must
+rechoose the strong and auxiliary witnesses; an arbitrary old witness
+need not have its multiplier divisible by $H$.
+
+Let $N=Hc^2$.  The matrix
+\[
+ \begin{pmatrix}
+ \chi_{a+2}(R)&\Delta\psi_{a+2}(R)\\
+ \psi_{a+2}(R)&\chi_{a+2}(R)
+ \end{pmatrix}
+\]
+has determinant one.  Modulo $N$ it belongs to the finite group
+$\mathrm{SL}_2(\mathbb Z/N\mathbb Z)$, whose cardinality is at most
+$N^4$.  Its order divides $(N^4)!$.  Consequently, for
+$m=R(N^4)!$, the Pell multiplication law gives
+$Hc^2\mid\psi_{a+2}(m)$.  Put
+\[
+ i=\frac{\psi_{a+2}(m)}{Hc^2},\quad
+ f=\chi_{a+2}(m),\quad \rho=\Delta\psi_{a+2}(m),\quad
+ V_a=\frac{\chi_\rho(R)}\rho,\quad y=\psi_\rho(R).
+\]
+These are positive integers; oddness of $R$ gives integrality of $V_a$.
+The odd Chebyshev quotient identities, using $R\equiv3\pmod4$,
+give
+\[
+ V_a\equiv-c\pmod f,\qquad V_a\equiv-R\pmod c,
+ \qquad f^2\equiv1\pmod c.
+\]
+For clarity, their inputs are
+$\rho^2\equiv-\Delta=1-(a+2)^2\pmod f$ and
+$\rho^2\equiv0\pmod c$; they do not require the old auxiliary index.
+Thus
+\[
+ o=(V_a+c)/f,\qquad T=(o+Rf)/c
+\]
+are positive integers.  The second divisibility follows by multiplying
+$of\equiv-R\pmod c$ by $f$ and using $f^2\equiv1\pmod c$.
+They restore exactly $V_a=c(Tf-1)-Rf^2$.
+Finally choose $t=\ell\gamma+M\tau+y>0$.  Then
+\eqref{eq:twelve-radicals} holds, proving completeness.
+
+For the single equation, a zero of \eqref{eq:twelve-product} makes
+all three factors integer units.  Since $\Delta\equiv0$ or $3\pmod4$,
+we have $G\equiv0$ or $1\pmod4$.  Therefore
+$\mathcal R_{12}=E_0^2-GE_1^2$ cannot be $2\pmod4$:
+the factor $1+\mathcal R_{12}$ cannot be $-1$.  It must be $1$,
+and $N_k,N_t$ have equal signs.  The soundness proof deliberately
+allowed those signs, and so proves the product claim as well.
+Composing with the K215/refutation equivalence proves the theorem.
+
+\subsection{Degree, reproducibility, and further questions}
+
+The degrees relevant to the calculation are
+\[
+\begin{array}{c|rrrrrrrrrr}
+ \text{quantity}&c&a&\Delta&L_0&A&I&D&Q&z_0&e\\ \hline
+ \deg&5&6&12&11&22&17&46&58&50&158
+\end{array}
+\]
+and
+\[
+ \deg b=114,\quad\deg M=46,\quad\deg U_*=57,\quad
+ \deg\ell=63,\quad\deg S=74,\quad\deg W=52.
+\]
+For an exact certificate, replace every unknown by $\lambda$ times
+an independent indeterminate and work with formal Laurent series at
+infinity.  The two roots of $G$ have expansions
+$r_+=ac+2c+\text{terms of degree below }5$ and $r_-=-r_+$.
+Thus $Z_+=S-\ell r_+$ has degree $68$, with leading form
+$-2\ell_{\rm top}c_{\rm top}$, and $Z_-$ has degree $74$, with
+leading form $2\ell_{\rm top}a_{\rm top}c_{\rm top}$.
+The term $W\tau$ has degree $63$; the terms $H^2e$ and $H^2bf$
+have degrees $170$ and $149$.  Hence the leading term of each factor
+\eqref{eq:twelve-branch-factor} is $dZ^2$, of degree $194$ or $206$.
+There are four of each.  This proves
+\[
+ \deg\mathcal R_{12}=4(194)+4(206)=1600,
+ \qquad\deg\mathcal P_{12}=1600+7+2=1609.
+\]
+The leading form of $\mathcal R_{12}$ is the nonzero polynomial
+$2^{16}d_{\rm top}^{8}\ell_{\rm top}^{16}
+a_{\rm top}^{8}c_{\rm top}^{16}$, so the claim is uniform for valid
+fixed coefficients.
+
+The generator emits every gate.  A separate verifier compares the circuit
+with multiplication in the eight-dimensional algebra generated by
+$r,f,\tau$ on $48$ signed assignments.  Two modular line restrictions
+give degrees $1600$ and $1609$, agreeing with the uniform proof above.
+These are finite arithmetic audits; neither they nor the machine's formal
+endpoint constitute a proof-assistant formalization of this new reduction.
+
+The main remaining opportunities are to lower the degree of the
+coprimality-enforcing multiplier restriction, to replace the three norms
+by a less expensive elimination, and to combine the twelve-variable
+construction with the sharper signed-domain analysis.  Formalizing the
+branch separation and denominator argument would isolate a small reusable
+lemma from the longer inherited native compiler proof.

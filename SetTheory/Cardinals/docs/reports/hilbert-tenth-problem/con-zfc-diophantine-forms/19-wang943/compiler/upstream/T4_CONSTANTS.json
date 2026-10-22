@@ -1,0 +1,193 @@
+{
+  "schema": "proveit-k215-t4-fixed-coefficients-v1",
+  "status": "mathematical adapter with independently checked finite alphabet and scalar geometry; no end-to-end formalization",
+  "primary_binding": "T4 one-head filtered raw blank-input K215; four coefficient ports replace historical report constants",
+  "fallback_binding": "Literal report06 blank67 four coefficients can be used with report08 quartic34 without this new adapter; do not mix ports between bindings",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "repository_commit": "3b201cdea32d2c816f5f3d20734051f25fd3ef14",
+  "inherited_report_source_commit": "cdd582bec13f908df3711fa9e05d1ddac368a5db",
+  "table_source_path": "Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm",
+  "table_source_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+  "literal_transition_json": "sources/k215_transitions.json",
+  "literal_transition_json_sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755",
+  "machine": {
+    "working_states": 215,
+    "initial_state": 0,
+    "halt_state": 215,
+    "blank_symbol": 0,
+    "tape": "two-sided",
+    "first_transition": [
+      0,
+      0,
+      1,
+      1,
+      93
+    ],
+    "halt_padding": "(215,b) -> write b, move 0, state 215; retain every original transition including movement entering halt"
+  },
+  "cell_alphabet": {
+    "size": 439,
+    "ordinary_headless": "code b for b in {0,1}",
+    "ordinary_head": "code 2(q+1)+b for q in 0..215 and b in {0,1}",
+    "L": 434,
+    "Q": 435,
+    "R": 436,
+    "V": 437,
+    "H": 438,
+    "phase_payloads": {
+      "L": [
+        0,
+        null
+      ],
+      "Q": [
+        0,
+        0
+      ],
+      "R": [
+        0,
+        null
+      ]
+    }
+  },
+  "tiles": {
+    "count": 37075,
+    "shape": [
+      "left",
+      "center",
+      "right",
+      "next"
+    ],
+    "start": [
+      434,
+      435,
+      436,
+      1
+    ],
+    "forbidden": [
+      438,
+      0,
+      0,
+      438
+    ],
+    "order": "Start first, forbidden second, then all other passing tuples lexicographically in the displayed shape order",
+    "predicate": "check_t4.py:valid; full mathematical statement in BRIDGE_AUDIT.md section2",
+    "file": "t4_windows.json",
+    "sha256": "9c2e473b5dbc5b3dc1468a31aefdbec6a901d6ba1e6b1ec9212698d41e1d84b1"
+  },
+  "scalars": {
+    "k": 37075,
+    "ell": 16,
+    "p": 16983,
+    "m": 38835,
+    "dummy_count": 1,
+    "dummy_start": 42343,
+    "M": 43661,
+    "Emax": 1178847,
+    "Hc": 2228029,
+    "T1": 4586163,
+    "T2": 6943861,
+    "bmin": 299907,
+    "b": 390625,
+    "L": 9765625,
+    "d": 3814697265625,
+    "native_support": 38836,
+    "target_positions": 1319,
+    "mod5_unit": 3,
+    "band_and_anchor_all_rotation_checks": true,
+    "convolution_target_checks": true,
+    "A": 65536,
+    "jmax": 18743,
+    "mu_population": 18758,
+    "b_exponent_five": 8,
+    "L_exponent_five": 10,
+    "d_exponent_five": 18,
+    "beta_bit_length": 3814697265625,
+    "K_bit_length": 4685021093751,
+    "mu_bit_length": 299889,
+    "clause_mass_bit_length": 28176,
+    "carry_threshold_bit_length": 28194,
+    "T2_gap": "2*Emax+4; Emax is odd; gap is greater than2*Emax and congruent2 mod4"
+  },
+  "positions": {
+    "selectors": {
+      "start": 0,
+      "stop_exclusive": 37075
+    },
+    "copy_offsets": {
+      "left": 40587,
+      "center": 40148,
+      "right": 39709,
+      "next": 38831
+    },
+    "copy_symbol_range": [
+      0,
+      438
+    ],
+    "dummy": [
+      42343
+    ],
+    "anchors": [
+      43661,
+      130983,
+      392949,
+      1178847
+    ]
+  },
+  "definitions": {
+    "A": "2^16",
+    "rho": "2^390625",
+    "B": "rho^9765625 = 2^(5^18)",
+    "E": "selectors 0..37074 union four copy intervals [offset,offset+438] union {42343,43661,130983,392949,1178847}",
+    "mu": "A-2 + sum(A^j, j=1..18743)",
+    "v_selector(i)": "1+A^(1+w_i.left)+A^(440+w_i.center)+A^(879+w_i.right)+A^(1318+w_i.next)+sum(A^(1756+t),t=1..4)",
+    "v_copy_left(u)": "A^(1+u)",
+    "v_copy_center(u)": "A^(440+u)",
+    "v_copy_right(u)": "A^(879+u)",
+    "v_copy_next(u)": "A^(1318+u)",
+    "v_anchor(t)": "A^(1756+t) at exponent 3^(t-1)*43661 for t=1..4",
+    "v_dummy": "0 at exponent42343",
+    "DC": "rho^1317+rho^2228468+rho^349288+rho^1047864+sum(v_e*(rho^(4586163-e)+rho^(6943861-e)),e in E)",
+    "DR": "rho^2228029",
+    "MF0": "mu*(rho^4586163+rho^6943861)+sum(rho^(40148+u),u=0..438)+sum(rho^(2228029+40587+u)+rho^(2228029+40148+u),u=0..438)+rho^392949+rho^1178847",
+    "MC": "B-1-sum(rho^e,e in E excluding1)-2*rho^42343",
+    "MF_native": "MF0+4",
+    "beta": "B-1",
+    "K": "DC+B*DR",
+    "MF_source": "MF_native+B-1"
+  },
+  "polynomial_ports": [
+    "beta",
+    "K",
+    "MC",
+    "MF_source"
+  ],
+  "compiler_invariants": {
+    "MC_mod4": 2,
+    "MF_native_mod8": 4,
+    "MC_population": "d-38836",
+    "MF_native_population": 38836,
+    "population_sum": "d",
+    "mod5_unit_2DC_minusDR": 3,
+    "coefficient_height_warning": "Final four integers are specified exactly but not expanded; beta alone needs about477 decimalGB in binary"
+  },
+  "artifacts": {
+    "proof": "BRIDGE_AUDIT.md",
+    "exact_enumeration_and_geometry_receipt": "t4_verification.json",
+    "independent_class_count": "cross_count_receipt.json"
+  },
+  "no_external_code_executed": true,
+  "frozen_main_version": "T4-37075-tightband-5pow18",
+  "report06_port_binding": {
+    "Bm1": "beta",
+    "Kconstant": "K",
+    "MC": "MC",
+    "MF": "MF_source"
+  },
+  "report08_port_binding": {
+    "beta": "beta",
+    "K": "K",
+    "M_C": "MC",
+    "M_F^*": "MF_source"
+  }
+}
+

@@ -1,0 +1,393 @@
+\section{A direct polynomial in twenty-seven unrestricted integers}
+\label{sec:integer27}
+
+The preceding nine-variable construction minimizes the number of nonnegative
+unknowns among the constructions supplied here, but it has a very large degree.
+We now give a direct signed-coordinate alternative. Combining the weighted
+three-root elimination of package~09 with the signed-core argument of
+package~14 reduces that direct family's unrestricted-integer count from
+$29$ to $27$. Two versions have exact degrees $1004$ and $1116$, with
+$137$ and $136$ arithmetic operations, respectively. The reduction below is
+an ordinary mathematical proof; the new specialized circuits have not been
+formalized in Lean or Rocq.
+
+Throughout this section, $(\beta,K,M_C,M_F)$ is the complete four-port T4
+coefficient tuple defined earlier, with $\beta=B-1$ and with $M_F$ the
+\emph{shifted} mask. The proof uses the established native compiler interface
+and its canonical padding by independent powers of five. The complete older
+package-06 tuple is an alternative binding with the same properties; individual
+ports from different tuples must not be combined.
+
+\subsection{The polynomial and its domain}
+
+Temporarily retain seven positive coordinates
+\[
+ J,F,\alpha,z,s,\eta,\zeta>0
+\]
+and six unrestricted integer coordinates
+\[
+ h,r,T,u,\gamma,t\in\mathbb Z.
+\]
+Set $i=2r+1$ and $w=u^2$, and use the following polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& X&=wq,& Y&=sq^3,& E&=XY,& k&=\eta+\zeta,\\
+ c&=kY+\eta,& a&=E+Y,& H&=4a+3,& \Delta&=a^2+H.
+\end{align*}
+The main root, packed index, and three outer factors are
+\begin{align*}
+ D_{\rm main}&=X+ac+\gamma H,\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_{\rm main}&=D_{\rm main}^2-\Delta c^2,\\
+ N_k&=k-hE-R,\\
+ N_t&=(K+w)(q-F-\alpha)+q-F-z(q-1).
+\end{align*}
+For the eliminated roots define
+\begin{align*}
+ L_0&=EkY,& A&=1+L_0(L_0+k),& I&=ic^2,\\
+ D&=1+\Delta I^2,& Q&=\Delta(D-1),& d&=Q-1,\\
+ v&=cT,& z_0&=c+RD,& W_0&=Dv^2+z_0^2,\\
+ e&=QW_0-1,& B_0&=2Qvz_0.
+\end{align*}
+The two admissible weights are
+\[
+ M_{\rm full}=D+v^2,
+ \qquad M_{\rm low}=kI^2+T^2.
+\]
+For either choice $M$ put
+\begin{align}
+ C&=d(t^2+M^2A)-e,\nonumber\\
+ U&=C^2+DB_0^2-4d^2t^2M^2A,\nonumber\\
+ \mathcal R&=U^2-D(2CB_0)^2,\label{eq:i27-resultant}\\
+ P_{27}&=N_{\rm main}N_kN_t(1+\mathcal R)-1.
+ \label{eq:i27-polynomial}
+\end{align}
+All displayed symbols are substituted polynomials, not further quantified
+unknowns. The alternative four-equation system is
+\begin{equation}
+ N_{\rm main}=N_k=N_t=1,\qquad \mathcal R=0.
+ \label{eq:i27-system}
+\end{equation}
+
+To obtain literally $27$ unrestricted unknowns, replace each of the seven
+positive coordinates $x$ by an independent block
+\begin{equation}
+ x=\operatorname{Pos}(a_x,b_x,c_x)
+   =a_x^2+a_x+b_x^2+c_x^2+1.
+ \label{eq:i27-pos}
+\end{equation}
+This is positive for every integer triple and represents every positive
+integer. Indeed, $4x-3$ is positive and congruent to $1$ modulo $4$, so
+Legendre's three-square theorem represents it as a sum of three squares.
+Exactly one of those squares is odd and two are even; writing the three
+roots as $2a_x+1,2b_x,2c_x$ gives \eqref{eq:i27-pos}. Thus the total is
+$7\cdot3+6=27$, with no extra variable for a sign or a denominator.
+
+\paragraph{Claim.}
+For either weight, \eqref{eq:i27-polynomial} after
+\eqref{eq:i27-pos}, and likewise \eqref{eq:i27-system}, has an integer
+solution if and only if K215 halts on the blank tape. Consequently the
+absence of integer solutions is equivalent in ZFC to
+$\operatorname{Con}(\mathsf{ZFC})$.
+
+\subsection{Unit extraction and bounds before restoring roots}
+
+At a zero of $P_{27}$, all four factors are integer units. Since
+$\Delta\equiv0$ or $3\pmod4$, the main norm cannot be $-1$.
+Moreover $\mathcal R\equiv U^2\pmod4$, so $1+\mathcal R$ cannot be
+$-1$. Therefore
+\begin{equation}
+ N_{\rm main}=1,\quad \mathcal R=0,\quad
+ N_k=\epsilon,\quad N_t=\nu,\quad
+ \epsilon,\nu\in\{-1,1\},\quad\epsilon\nu=1.
+ \label{eq:i27-units}
+\end{equation}
+The system is the special case $\epsilon=\nu=1$.
+
+Initially $X\ge0$, while $Y,k,c,a,H,\Delta$ are positive. If $u=0$,
+then $X=E=0$, $a=Y$, and
+\[
+ N_{\rm main}
+   =H(2ac\gamma+\gamma^2H-c^2).
+\]
+This cannot equal $1$ because $H=4Y+3>1$. Thus $u\ne0$, $w\ge1$,
+and $X\ge q\ge16$. The inherited weak-transport argument and exact
+mask bounds give
+\begin{equation}
+ q-F-\alpha\ge0,\qquad
+ q(q^2-1)<R<q^4-2,\qquad E\ge q^4>R+2,
+ \qquad a>R+2.
+ \label{eq:i27-outer}
+\end{equation}
+These bounds use only the transport/index units and the coefficient
+interface, not any of the deleted roots. A negative $h$ would give
+$k=R+\epsilon+hE<0$, so $h\ge0$. Also $Y\ge q^3\ge4096$ and
+$c<k(Y+1)$.
+
+\subsection{The main norm already forces a positive index quotient}
+
+This additional observation is needed to use the lower weight without
+assuming the deleted first norm. Let $A_0=a+2$, so
+$\Delta=A_0^2-1$. Write the standard Pell sequences as
+\[
+ \chi_{A_0}(n)+\psi_{A_0}(n)\sqrt{A_0^2-1}
+   =(A_0+\sqrt{A_0^2-1})^n.
+\]
+The main norm gives
+$c=\psi_{A_0}(p)$ and $|D_{\rm main}|=\chi_{A_0}(p)$ for $p\ge1$.
+Since $c>1$, $p\ne1$.
+
+If $p=2$ and $D_{\rm main}>0$, then
+$D_{\rm main}-ac=H+4$. Its defining congruence would give
+$X\equiv4\pmod H$, impossible because $16\le X<H$. If $p=2$ and
+$D_{\rm main}<0$, direct expansion gives
+$4(D_{\rm main}-ac)\equiv-1\pmod H$. This would give
+$4X\equiv-1\pmod H$, impossible because $0<4X+1<H$.
+Thus $p\ge3$ and
+\[
+ c\ge\psi_{A_0}(3)=4A_0^2-1.
+\]
+If $k\le E$, then
+\[
+ c<k(Y+1)\le E(Y+1)\le E(E+1)<4(E+2)^2-1<4A_0^2-1,
+\]
+a contradiction. Hence $k>E$. In view of \eqref{eq:i27-outer},
+$h=0$ would imply $k=R+\epsilon<E$. We have therefore proved
+\begin{equation}
+ h\ge1,\qquad k>E,\qquad k>R
+ \label{eq:i27-hpositive}
+\end{equation}
+before restoring the first Pell root.
+
+\subsection{Strict domination for both weights}
+
+We establish
+\begin{equation}
+ AM^2>4W_0,\qquad dM^2A>2QW_0.
+ \label{eq:i27-domination}
+\end{equation}
+The second follows from the first because $Q\ge2$ and
+$d=Q-1\ge Q/2$.
+
+For the full weight, \eqref{eq:i27-hpositive} implies
+\[
+ c^2+R^2<k^2((Y+1)^2+1)\le5k^2Y^2,
+ \qquad A>L_0^2=k^2X^2Y^4>16(c^2+R^2).
+\]
+Here $X\ge16$ and $Y\ge1$ give the last strict inequality. Since
+$M^2\ge4Dv^2$, $M^2\ge D^2$ and
+$z_0^2\le2D^2(c^2+R^2)$,
+\[
+ 4W_0\le M^2\bigl(1+8(c^2+R^2)\bigr)<AM^2.
+\]
+
+For the lower weight, $A_0<2E$, $c<2kY$ and $L_0=kEY$ give
+\begin{equation}
+ A>\frac{A_0^2c^2}{16},\qquad
+ A>\frac{A_0^4Y^2}{16}>32A_0^4.
+ \label{eq:i27-low-estimates}
+\end{equation}
+The second uses $k>E$, already proved, and $Y\ge4096$.
+Furthermore $I^2=i^2c^4>c$, so
+\[
+ D<A_0^2I^2,
+ \qquad z_0=c+RD<2kA_0^2I^2.
+\]
+The inequalities $M\ge kI^2$ and $M^2\ge4kI^2T^2$, together with
+$k>R>3q\ge48$ and the first estimate in
+\eqref{eq:i27-low-estimates}, imply $AM^2>8Dv^2$; when $T=0$ this is
+immediate. The second estimate gives $AM^2>8z_0^2$. Adding and dividing
+by two proves \eqref{eq:i27-domination}. In particular, for every
+integer $t$,
+\begin{equation}
+ C=d t^2+dM^2A-(QW_0-1)>d t^2+QW_0+1>0.
+ \label{eq:i27-Cpositive}
+\end{equation}
+
+\subsection{Excluding the two new exceptional branches}
+
+The original positive-variable elimination assumed $t,T>0$. Here they
+are unrestricted, so their possible zeros require proof.
+
+\paragraph{The branch $t=0$.}
+At $t=0$, the resultant is
+\[
+ \mathcal R=(C^2-DB_0^2)^2.
+\]
+But $DB_0^2=4Q^2Dv^2z_0^2\le Q^2W_0^2$, whereas
+\eqref{eq:i27-Cpositive} gives $C>QW_0+1$. Thus $\mathcal R>0$,
+contradicting \eqref{eq:i27-units}. Hence $t\ne0$.
+
+\paragraph{The branch $T=0$.}
+First observe that
+\begin{equation}
+ 2<z_0<Q-1.
+ \label{eq:i27-zgap}
+\end{equation}
+The lower bound is immediate, and, because $\Delta>R$,
+\begin{align*}
+ Q-z_0
+   &=(\Delta-R)D-\Delta-c\\
+   &\ge D-\Delta-c
+     =1+\Delta(i^2c^4-1)-c>1.
+\end{align*}
+If $T=0$, then $v=B_0=0$, and $\mathcal R=0$ gives
+$C^2=4d^2t^2M^2A$. Since $d,t,M$ are nonzero,
+$\tau=C/(2dtM)$ is rational with square $A\in\mathbb Z$ and hence
+is an integer. Put $y=t-M\tau$. The definition of $C$ gives
+$dy^2=e=Qz_0^2-1$, so
+\[
+ (Q-1)(y^2-z_0^2)=z_0^2-1>0.
+\]
+Integrality implies $|y|\ge z_0+1$. Using
+\eqref{eq:i27-zgap} then yields the contradiction
+\[
+ z_0^2-1\ge(Q-1)(2z_0+1)>z_0(2z_0+1)>z_0^2-1.
+\]
+Therefore $T\ne0$, and hence $vB_0\ne0$. Every denominator in the
+following reconstruction has now been proved nonzero.
+
+\subsection{Restoring the signed source equations}
+
+Define the proof-only rational numbers
+\[
+ f=-\frac{U}{2CB_0},\qquad
+ \tau=\frac{C+B_0f}{2dtM},\qquad
+ y=t-M\tau.
+\]
+Equation $\mathcal R=0$ gives $f^2=D$. The definition of $U$ then
+gives $(C+B_0f)^2=4d^2t^2M^2A$, hence $\tau^2=A$. A rational number
+whose square is an integer is integral, as follows by reducing its
+fraction to lowest terms. Thus $f,\tau,y$ are integers. Expansion gives
+\[
+ dy^2=e-B_0f=Q(vf-z_0)^2-1.
+\]
+Since $f^2=D$, the expression $vf-z_0$ is exactly
+\[
+ V=c(Tf-1)-Rf^2.
+\]
+We have restored all three normalized equations
+\begin{equation}
+ \tau^2-L_0(L_0+k)=1,
+ \qquad f^2-\Delta i^2c^4=1,
+ \qquad QV^2-(Q-1)y^2=1.
+ \label{eq:i27-restored}
+\end{equation}
+Together with \eqref{eq:i27-units}, these are exactly the normalized
+source product equations. The recovered $f,\tau,y$ may have signs.
+
+We now reuse package~14's \emph{signed-core soundness argument}: its
+seven positive ports are retained, the multiplier $i=2r+1$ is nonzero,
+the square scale $w=u^2$ has already been proved positive, and all the
+source equations have been restored. That argument classifies absolute
+Pell roots, uses the two auxiliary congruences to recover the exact main
+index $p=R$, excludes the negative main-root branch by its short residue
+interval, and recovers the native masks and the blank tableau. It allows
+$f,h,T,\tau,y,\gamma$ to be signed; it does not infer soundness by
+evaluating the positive-domain theorem at a signed tuple. In particular,
+it forces the two remaining unit signs to be positive. The result is a
+blank halting run of K215. This imported argument is invoked only after
+\eqref{eq:i27-restored}, never to establish the reconstruction denominators.
+
+\subsection{Completeness, including the T4 coefficient binding}
+
+The canonical compiler witness has $R\equiv3\pmod4$ and
+$c=\psi_{a+2}(R)$ odd. As in package~14, choose the strong index
+$m=cR$ and put
+\[
+ f=\chi_{a+2}(m),\qquad i=\frac{\psi_{a+2}(m)}{c^2}.
+\]
+The expansion of
+$(\chi_{a+2}(R)+c\sqrt\Delta)^c$ shows
+$c^2\mid\psi_{a+2}(m)$. Since $m$ is odd, both the numerator and
+$c^2$ are odd, so $i$ is a positive odd integer. The standard odd quotient
+identities at $R\equiv3\pmod4$ give the required positive auxiliary
+witnesses and the exact polynomial $V$.
+
+The canonical spatial and temporal dimensions may independently be
+sufficiently large powers of five. Their product $N$ is odd. For T4,
+$B=2^{d_0}$ with $d_0=5^{18}$ odd, so
+\[
+ q=2^{d_0N},\qquad w=2^{R-d_0N}
+\]
+is a positive square: $R-d_0N$ is positive and even. This is the precise
+reason that package~14's square-scale completeness survives the T4
+replacement. The whole tuple has the same compiler interface; no port is
+changed in isolation. The older package-06 value $d_0=5^{67}$ has the same
+parity property.
+
+Choose integers $r,u$ with $i=2r+1$ and $w=u^2$. For either weight set
+$t=M\tau+y$. The forward identities give $\mathcal R=0$, while the
+three outer factors equal $1$. Finally use the surjectivity of
+\eqref{eq:i27-pos} to choose the seven independent integer triples.
+This proves completeness for the literal $27$-integer polynomial and
+system. The stated equivalence with consistency now follows from the
+earlier K215 calibration; it is not a proof of consistency itself.
+
+\subsection{Exact degrees, circuit lengths, and evidence}
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Weight and form & Variables & Equations & Exact degree & Operations\\
+\hline
+Full product & $27$ in $\mathbb Z$ & $1$ & $1116$ & $136$\\
+Lower product & $27$ in $\mathbb Z$ & $1$ & $1004$ & $137$\\
+Full system & $27$ in $\mathbb Z$ & $4$ & $1064$ maximum & $130$\\
+Lower system & $27$ in $\mathbb Z$ & $4$ & $952$ maximum & $131$\\
+\hline
+\end{tabular}
+\end{center}
+
+The source products have $84$ and $85$ operations. Each of seven
+positivity substitutions costs seven, the odd multiplier costs two, and
+the square scale costs one; the increment is therefore $52$. Every binary
+addition, subtraction and multiplication is counted, including a product
+by a fixed numeral. The lower product has $73$ multiplications and
+$64$ additions or subtractions. Removing the six finalizer gates gives
+the corresponding systems.
+
+For an exact degree proof, assign weight two to the seven positive source
+ports and $w$, and weight one to $i,h,T,\gamma,t$. The relevant degrees are
+\[
+\begin{array}{c|rrrrrrrrr}
+\text{expression}&q&X&Y&E&k&c&a&\Delta&R\\ \hline
+\text{degree}&2&4&8&12&2&10&12&24&8
+\end{array}
+\]
+and
+\[
+\begin{array}{c|rrrrrrr}
+\text{expression}&A&I&D&Q&v&z_0&e\\ \hline
+\text{degree}&44&21&66&90&11&74&238.
+\end{array}
+\]
+The outer factor degrees are $35,13,4$. For the lower weight, $M$ has
+degree $44$, and the unique leading term of $C$ is $-e_{\rm top}$.
+The unique leaders of $U$ and $\mathcal R$ are then $C_{\rm top}^2$
+and $U_{\rm top}^2$, giving degrees $238,476,952$; the competing last
+norm term has degree $892$. Hence the product degree is
+$952+35+13+4=1004$. For the full weight, $M$ has degree $66$, and
+$dM^2A$ dominates $C$. The successive degrees are $266,532,1064$, giving
+the product degree $1116$.
+
+There is no hidden cancellation of the outer leaders. They are respectively
+\[
+ 8\gamma a_{\rm top}^{,2}c_{\rm top},\qquad
+ -hE_{\rm top},\qquad
+ w(q_{\rm top}-F_{\rm top}-\alpha_{\rm top})-z_{\rm top}q_{\rm top}.
+\]
+Each is nonzero, and their product with the resultant leader is nonzero.
+The top parts of \eqref{eq:i27-pos}, $i=2r+1$, and $w=u^2$ preserve
+nonvanishing: set the second and third variable of every positivity block
+to zero, leaving an injective substitution into distinct square variables
+and the nonzero scalar substitution $i\mapsto2r$. These degrees are exact
+for every valid fixed $\beta>0$.
+
+The supplied generator emits all four literal circuits, checks operation
+counts and complete liveness, and compares both weights with an independent
+formula on $96$ signed assignments each. It also checks $144$ isolated
+signed root reconstructions, $6786$ finite instances of the gap inequality,
+and two modular degree diagnostics per circuit. Both ordinary and optimized
+Python runs passed. These are finite algebraic checks; the universal proof
+is the argument above, and the inherited compiler and K215 calibration
+remain explicit mathematical dependencies.

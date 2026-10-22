@@ -1,0 +1,326 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Twelve positive unknowns for the consistency of ZFC},
+ pdfauthor={Prepared for Vladimir Reshetnikov},
+ pdfsubject={Explicit Diophantine constructions in 12 positive or 26 integer unknowns}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine forms of $\operatorname{Con}(\mathrm{ZFC})$}
+\fancyhead[R]{\small Twelve positive unknowns}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\ZFCRef}{\operatorname{Ref}_{\mathrm{ZFC}}}
+\newcommand{\Norm}{\mathcal R}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{\textbf{Twelve positive unknowns for the consistency of ZFC}\\[6pt]
+\large A separating root construction, 26 integer unknowns,\\and a smaller finite coefficient compiler}
+\author{Prepared for Vladimir Reshetnikov\\\small AI-assisted mathematical research synthesis}
+\date{22 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We combine the current ProveIt blank-machine Diophantine constructions and
+give further reductions in three measures. First, an explicitly specified polynomial in
+\textbf{12 positive integer unknowns}, of exact total degree \textbf{1369},
+has a fully charged \textbf{144-operation} evaluator. Its solvability is
+equivalent, by ordinary mathematics formalizable in ZFC, to a finite ZFC
+refutation. Its three-equation version has maximum degree 1360 and uses
+140 operations. The new step combines four auxiliary witnesses into one
+weighted integer. A divisibility adjustment to a Pell multiplier makes the
+reconstructed rational witnesses integers; this is essential to soundness.
+Second, robust separating weights give \textbf{26 unrestricted integer
+unknowns}, degree 3560 and 199 operations; an independent signed-scale
+argument gives lower-degree alternatives in \textbf{27 integer unknowns}.
+Third, a refined local alphabet
+and compressed layout reduce the distinguished coefficient from
+$B=2^{5^{18}}$ to \textbf{$B=2^{5^{16}}$}; the new alphabet has 5263 tiles.
+The archive contains the complete arithmetic circuits, coefficient recipe,
+finite verification programs, source provenance, and proof notes.
+
+The comparison is pinned to ProveIt commit
+\src{f0ae4e0991ca44a7bb4e5671d42e33d775e48035}.
+These are reductions in specified measures, not a proof of an absolute
+minimum, a new universal-pair theorem, or a proof of ZFC consistency.
+The new Diophantine proofs are not kernel checked. The inherited exact-machine
+endpoint has Lean and Rocq evidence, which is kept distinct from the new work.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Outcome, comparison, and conventions}\label{sec:results}
+
+There is no single ordering of the constructions by simplicity. The fewest
+unknowns, lowest degree, shortest arithmetic evaluator, and smallest fixed
+coefficients favor different presentations. The main new result is a further
+reduction in the number of positive unknowns, together with independent
+improvements for unrestricted integers and coefficient size.
+
+\begin{theorem}[Fixed-coefficient consistency equation]\label{thm:main}
+Bind the four coefficient ports $(\beta,\kappa,M_C,M_F)$ to the complete
+5263-tile recipe of Section~\ref{sec:coefficients}. Let $P_{12}$ be the
+ordinary integer polynomial defined in Section~\ref{sec:twelve}. Then
+\[
+ \mathrm{ZFC}\vdash
+ \left(\exists\mathbf x\in\Pos^{12}\;P_{12}(\mathbf x)=0\right)
+ \longleftrightarrow \ZFCRef.
+\]
+Consequently,
+\[
+ \boxed{\quad\mathrm{ZFC}\vdash
+ \left(\forall\mathbf x\in\Pos^{12}\;P_{12}(\mathbf x)\ne0\right)
+ \longleftrightarrow\Con(\mathrm{ZFC}).\quad}
+\]
+The same existence equivalence holds for the stated three-equation system
+and for each of the five 27-integer constructions in Section~\ref{sec:integer},
+as well as the 26-integer constructions in Section~\ref{sec:integer26}.
+\end{theorem}
+
+Here $\ZFCRef$ means existence of a finite syntactic proof of contradiction from
+an ordinary effective presentation of ZFC, and $\Con(\mathrm{ZFC})$ is its
+negation. Section~\ref{sec:logic} explains the imported calibration and the
+formalization boundary.
+
+\subsection{The current repository frontier}
+
+The supplied collection now contains seven wave-2 packages, numbered 09--15.
+They supersede eight earlier packages. Its latest audited reconciliation
+explicitly distinguishes several coincident discoveries and corrects earlier
+degree, domain, and coefficient-binding descriptions~\cite{catalogue}.
+We compare against that wave-2 tree, not the superseded wave-1 frontier.
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{5.2cm}rrrr}
+\toprule
+Construction & Unknowns & Equations & Degree & Ops\\
+\midrule
+Existing minimum-operation product & $15\Pos$ &1&155&67\\
+Existing ordinary system (package 12)&$15\Pos$&6&28&60\\
+Existing lowest-degree 15-variable system&$15\Pos$&6&22&61\\
+Existing weighted root product (09)&$13\Pos$&1&515&85\\
+Existing shorter root product (09)&$13\Pos$&1&571&84\\
+Existing quartic lift (09,12)&$32\Pos$&1&4&---\\
+Existing integer ordinary product (14)&$29\Z$&1&188&121\\
+\midrule
+\textbf{New separating-root product}&$\mathbf{12\Pos}$&1&1369&144\\
+\textbf{New separating-root system}&$\mathbf{12\Pos}$&3&1360&140\\
+New 12-variable sum of squares&$12\Pos$&1&2720&147\\
+\textbf{New robust integer product}&$\mathbf{26\Z}$&1&3560&199\\
+New robust integer system&$26\Z$&3&3544&195\\
+New robust integer sum of squares&$26\Z$&1&7088&202\\
+\textbf{New integer ordinary product}&$\mathbf{27\Z}$&1&172&116\\
+New integer ordinary system&$27\Z$&6&46&107\\
+New integer ordinary sum of squares&$27\Z$&1&92&124\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The symbol $n\Pos$ means $n$ strictly positive integer unknowns; $n\Z$ means
+$n$ unrestricted integer unknowns. For a system, degree is the maximum degree
+of its residuals after all abbreviations are substituted. The comparison
+counts every binary addition, subtraction, and multiplication, including
+multiplication by a fixed numeral. Register reuse, constants, and final
+comparisons are free. If a system is required to output residuals rather than
+compare its expressions to constants, the new 12-variable residual evaluator
+costs 142 operations instead of 140. This distinction is recorded explicitly.
+
+The 12-variable result improves the reviewed explicit positive-variable
+frontier, but its degree and evaluator are larger than those of the
+13-variable products. The 26-integer version further reduces the integer
+coordinate count, at a substantial degree and operation cost.
+The 27-integer ordinary product improves the previous
+29-integer ordinary product in all three displayed numerical measures.
+Neither change improves the 67-operation positive-variable evaluator.
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Coefficient backend & Local tiles & $B$ & Bits of $B-1$\\
+\midrule
+Existing T4 (11)&37075&$2^{5^{18}}$&3814697265625\\
+New refined T4&5263&$2^{5^{16}}$&152587890625\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new base coefficient has exactly 25 times fewer bits. It is still far too
+large for a convenient expanded numeral: the base alone takes about 19.1 GB
+in binary. We therefore specify the four integers by exact terminating finite
+recipes and bind each arithmetic circuit to the whole tuple. A compact recipe
+does not make these coefficients numerically small.
+
+Classical nine-variable constructions over the nonnegative integers exist
+(and translate to positive integers), at much larger general degree
+bounds, and relation combining is a classical technique~\cite{mr75,jones82,bayer}.
+The new result concerns this explicitly bound K215 compiler and the displayed
+circuit. It is not a claim that twelve is the minimum possible number of
+unknowns, nor that $(12,1369)$ is a universal pair for all Diophantine sets.
+
+\section{The inherited arithmetic interface}\label{sec:interface}
+
+The coefficient contract uses $\beta=B-1$, a transport coefficient $\kappa$,
+a low mask $M_C$, and a \emph{shifted} high mask $M_F$. If the native high mask
+is $M_F^{\rm nat}$, then $M_F=M_F^{\rm nat}+B-1$. In particular
+\begin{gather}
+ B\ge16,\quad 0<M_C<B-1,\quad0<M_F^{\rm nat}<B-1,\notag\\
+ M_C\equiv2\pmod4,\quad M_F^{\rm nat}\equiv4\pmod8,\quad
+ \pc(M_C)+\pc(M_F^{\rm nat})=\log_2B.\label{eq:maskcontract}
+\end{gather}
+Those arithmetic properties accompany the full local-tableau, carry,
+synchronization, and canonical-witness contract. They alone would not be
+sufficient to encode a machine.
+
+With the common positive coordinates, put
+\begin{align}
+q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,&Y&=sq^3,\notag\\
+E&=XY,& k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\notag\\
+H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\label{eq:prefix}\\
+P&=X+ac,&S&=1+\Delta c^2,& L&=EkY,&A&=1+L(L+k).
+\notag
+\end{align}
+Define the actual packed rank and the two retained factors by
+\begin{align}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)J,
+ \label{eq:rank}\\
+ N_k&=k-hE-R,&
+ N_t&=(\kappa+w)C+(q-F)-z(q-1).\label{eq:units}
+\end{align}
+All capitalized expressions are abbreviations for substituted polynomials,
+not additional unknowns.
+
+The earlier normalized construction uses fifteen positive coordinates
+\[
+ J,F,\alpha,z,f,h,i_0,T,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+Its system can be written
+\begin{gather}
+ \tau^2=A,\qquad (P+H\gamma)^2=S,\qquad
+ f^2=1+\Delta i_0^2c^4,\notag\\
+ Q_0\bigl(c(Tf-1)-Rf^2\bigr)^2-(Q_0-1)y^2=1,
+ \qquad Q_0=(\Delta i_0c^2)^2,\label{eq:parent}\\
+ N_k=N_t=1.\notag
+\end{gather}
+The inherited theorem identifies existence of such a tuple with a blank
+halting run of the literal K215 machine~\cite{blank,rank,signed29}.
+
+\subsection{What is used from the signed theorem}
+
+The soundness argument also permits $f,T,\tau,y,\gamma,h$ to be signed,
+provided the compiler coordinates $J,F,\alpha,z,s,w,\eta,\zeta$ are positive
+and the normalized multiplier is nonzero. The direct nine-positive, six-signed theorem is proved in package 11's
+\src{reduction/SIGNED_DOMAIN_PROOF.md}, copied here as
+\src{upstream/signed_domain_core.md}. It also proves the ordinary-strong
+version. Its hypothesis is met by the positive multiplier used below.
+The related 29-integer theorem in package 14 adds oddness and a square
+scale for a different parametrization; those extra restrictions are not
+needed for the 12-variable reduction.
+
+For the unit-product version, it is enough initially to have
+$N_k=N_t=\varepsilon\in\{1,-1\}$, with the four norm equations equal to one.
+The proof establishes $\varepsilon=1$ after recovering the Pell indices.
+In particular it does not assume the index or transport sign before the
+required witnesses have been restored.
+
+Here are the main logical steps of that imported arithmetic proof. Write
+$\chi_U(n)+\psi_U(n)\sqrt{U^2-1}=(U+\sqrt{U^2-1})^n$ for integer $U\ge2$.
+The first and main equations classify the relevant roots as
+$k=2\psi_{2XY^2+1}(n)$ and $c=\psi_{a+2}(p)$. The index equation bounds $n$;
+the main norm and normalized strong divisibility give a larger index $m$
+with $pc\mid m$. The two literal auxiliary congruences, modulo $f$ and $c$,
+give $R\equiv\pm p\pmod c$. Growth bounds force $p=R$.
+The first-index wrap and the negative sign are then excluded.
+The lower Pell-ratio estimate and the congruence modulo $H$ give $X=2^R$.
+Half-binomial extraction and population inversion recover the two native
+masks, and the coefficient compiler decodes an actual finite computation.
+The signed main root is controlled by the separate signed-$\gamma$ argument:
+its wrong sign would give $X2^R\equiv-1\pmod H$ in a strict interval too small
+to permit that congruence. These statements, their hypotheses, and the
+supporting source proofs are included in \src{upstream/}.
+
+\subsection{Bounds available before restoring any root}
+
+Suppose only that $N_t$ is a unit. Since
+\[
+ N_t=(\kappa+w)C+1-F-(z-1)(q-1),
+\]
+one has $C\ge0$. The boundary $C=0,F=2,z=1$ can yield $N_t=-1$,
+so strict positivity cannot yet be used. The authentic mask bounds give
+\begin{gather}
+ q(q^2-1)<R<q^4-q^3+q^2-1<q^4-2,\notag\\
+ q\ge16,\qquad X\ge q,\qquad Y\ge q^3\ge4096,
+ \qquad E\ge q^4>R+2.\label{eq:weak}
+\end{gather}
+Also $kY<c<k(Y+1)<2kY$, $c>1$, and $a+2<2E$.
+These bounds use no eliminated root. That fact makes the proof in the next
+section noncircular.
+
+\input{sections/twelve.tex}
+\input{sections/integer27.tex}
+\input{sections/coefficients.tex}
+\input{sections/logic_verification.tex}
+
+\begin{thebibliography}{20}\small
+\bibitem{catalogue} V. Reshetnikov, ProveIt contributors.
+\emph{Con(ZFC) in Diophantine form}, wave-2 reconciliation and audit.
+Snapshot \src{f0ae4e0991ca}, 22 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f0ae4e0991ca44a7bb4e5671d42e33d775e48035/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md}{Pinned collection README}.
+\bibitem{blank} ProveIt, wave-1 package 06.
+\emph{The 67-operation blank-input polynomial} and
+\emph{Blank helical proof}. Authenticated copies in this archive:
+\src{upstream/normalized_blank_proof.md} and \src{upstream/blank_helical_proof.md}.
+\bibitem{rank} ProveIt, native-window/Pell development.
+\emph{Pell lemma audit}, ordinary strong-rank interface, and signed auxiliary
+congruence proofs. Copies in \src{upstream/}; exact source paths and hashes
+in \src{SOURCE_MANIFEST.json}.
+\bibitem{root13} ProveIt, package 09.
+\emph{Smaller Diophantine descriptions of ZFC consistency}; root amalgamation
+and the 13-variable weighted construction, 22 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f0ae4e0991ca44a7bb4e5671d42e33d775e48035/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/09-combined13}{Pinned package 09}.
+\bibitem{t4} ProveIt, package 11.
+\emph{T4 bridge audit} and exact coefficient recipe, 22 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f0ae4e0991ca44a7bb4e5671d42e33d775e48035/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/11-t4}{Pinned package 11}.
+\bibitem{gap} ProveIt, package 12.
+\emph{Smaller Diophantine forms of ZFC consistency}, ordinary strong and gap
+constructions, 22 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f0ae4e0991ca44a7bb4e5671d42e33d775e48035/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/12-gap-norm14}{Pinned package 12}.
+\bibitem{signed29} ProveIt, package 14.
+\emph{Signed-domain proof} and 29-integer construction, 22 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f0ae4e0991ca44a7bb4e5671d42e33d775e48035/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/14-integer29/proofs/signed_domain_proof.md}{Pinned signed-domain proof}.
+\bibitem{endpoint} ProveIt.
+\emph{KEndpoint215.lean} and the K215 verification records.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f0ae4e0991ca44a7bb4e5671d42e33d775e48035/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215}{Pinned verification directory}.
+\bibitem{mr75} Yu. Matiyasevich and J. Robinson.
+Reduction of an arbitrary Diophantine equation to one in 13 unknowns.
+\emph{Acta Arithmetica} 27 (1975), 521--553.
+\href{https://doi.org/10.4064/aa-27-1-521-553}{doi:10.4064/aa-27-1-521-553}.
+\bibitem{jones82} J. P. Jones.
+Universal Diophantine equation.
+\emph{Journal of Symbolic Logic} 47(3) (1982), 549--571.
+\href{https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/abs/universal-diophantine-equation/113EBF3D928DFC6011C52BECAE81A087}{Publisher record}.
+\bibitem{bayer} J. Bayer, M. David, M. Hassler, Yu. Matiyasevich, D. Schleicher.
+Diophantine equations over $\Z$: universal bounds and parallel formalization.
+\href{https://arxiv.org/abs/2506.20909v2}{arXiv:2506.20909v2}, 2025.
+See also the authors' \href{https://isa-afp.org/entries/Diophantine_Universal_Pairs.html}{Archive of Formal Proofs development}.
+\end{thebibliography}
+\end{document}

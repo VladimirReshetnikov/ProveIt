@@ -1,0 +1,70 @@
+{
+  "schema": "proveit-conzfc-9-12-27-coefficient-binding-v1",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "repository_pin": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "binding": "The whole T4-37075-tightband-5pow18 tuple; all ports are fixed constants, not unknowns.",
+  "recipe_copy": "coefficients/T4_CONSTANTS.upstream.json",
+  "recipe_original_layout": "upstream/t4/bridge/T4_CONSTANTS.json",
+  "ordered_tiles": "coefficients/t4_windows.json",
+  "literal_transition_data": "upstream/t4/bridge/sources/k215_transitions.json",
+  "modular_evaluator": "code/fixed_coefficients.py:t4_ports",
+  "common_port_order": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "ports": {
+    "beta": "B-1",
+    "K0": "D_C+B*D_R",
+    "MC": "M_C as defined in the T4 recipe",
+    "MF": "M_F_native+B-1 = M_F0+4+B-1"
+  },
+  "upstream_recipe_port_names": {
+    "beta": "beta",
+    "K": "K0",
+    "MC": "MC",
+    "MF_source": "MF"
+  },
+  "circuit_aliases": {
+    "Bm1": "beta",
+    "Kconstant": "K0",
+    "K": "K0",
+    "beta": "beta",
+    "K0": "K0",
+    "MC": "MC",
+    "MF": "MF"
+  },
+  "nine_fixed_leaves": {
+    "recipe": "nine/generated/constants.json",
+    "bound": "nine/generated/index_bound_s.json",
+    "meaning": "z_index=2^s; y_index=e_star(2*z_index); c0000..c0345 are the stated weighted quartic coefficients.",
+    "unknowns": 9,
+    "fixed_leaf_count": 348
+  },
+  "quartic_origin": "09-combined13/low_degree/quartic32.json, positive domain; all32 variables shifted by+1 for Jones.",
+  "do_not_mix": "Do not substitute the unshifted native MF or combine ports from different tile layouts.",
+  "authenticated_files": [
+    {
+      "path": "base/quartic32.upstream.json",
+      "sha256": "149eacd479896a113d869c5b74163efa4dab2cabaca8b581a6405cc9f580ca60"
+    },
+    {
+      "path": "coefficients/T4_CONSTANTS.upstream.json",
+      "sha256": "9330bd41b22de3adae3f4eb2fb708d863736b5799e6f5984063df6dbf829e4af"
+    },
+    {
+      "path": "coefficients/t4_windows.json",
+      "sha256": "9c2e473b5dbc5b3dc1468a31aefdbec6a901d6ba1e6b1ec9212698d41e1d84b1"
+    },
+    {
+      "path": "upstream/machine/k215.tm",
+      "sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090"
+    },
+    {
+      "path": "upstream/t4/bridge/sources/k215_transitions.json",
+      "sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755"
+    }
+  ],
+  "proof_status": "Ordinary mathematical compiler transfer and reductions; finite checks do not replace imported semantic theorems."
+}

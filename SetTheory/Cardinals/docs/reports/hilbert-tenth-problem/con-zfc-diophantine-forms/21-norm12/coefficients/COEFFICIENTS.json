@@ -1,0 +1,145 @@
+{
+  "schema": "proveit-k215-strict-dense-t4-fixed-coefficients-v1",
+  "status": "Explicit finite recipe with mathematical adapter and finite checks; not end-to-end kernel formalized",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "repository_commit": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "baseline_package": "SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/11-t4",
+  "machine": {
+    "tm_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "json_sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755",
+    "transitions_semantic_sha256": "c6075157c74077e27fbcea05b35ab8b3a6ef0a976c08f442653f809eb1fe2d61",
+    "literal_tm_matches_transition_rows": true,
+    "states": 215,
+    "transitions": 430,
+    "initial_state": 0,
+    "halt_state": 215,
+    "blank_symbol": 0
+  },
+  "free_parameters": [],
+  "coefficient_ports": [
+    "beta",
+    "K",
+    "M_C",
+    "M_F_src"
+  ],
+  "scalars": {
+    "alphabet": 439,
+    "tiles": 5280,
+    "ell": 13,
+    "A": 8192,
+    "padding": 1089,
+    "mu_top": 2849,
+    "mu_population": 2861,
+    "mu_bit_length": 37038,
+    "m": 7041,
+    "native_positions": 7042,
+    "dummy_count": 2,
+    "dummy_start": 7475,
+    "copy_offsets": {
+      "left": 7036,
+      "center": 6597,
+      "right": 6158,
+      "next": 5280
+    },
+    "anchor_order": [
+      7480,
+      22440,
+      14960,
+      44880
+    ],
+    "M": 7480,
+    "Emax": 44880,
+    "Hc": 68638,
+    "T1": 158838,
+    "T2": 248600,
+    "bmin": 37053,
+    "b": 78125,
+    "L": 390625,
+    "d": 30517578125,
+    "beta_bit_length": 30517578125,
+    "K_bit_length": 35879921876,
+    "bare_shifts": [
+      1317,
+      69077,
+      7480,
+      22440
+    ],
+    "carry_threshold_bit_length": 22909,
+    "mod5_unit": 3,
+    "convolution_targets": 1319,
+    "all_rotation_band_and_anchor_checks": true
+  },
+  "tiles": {
+    "count": 5280,
+    "file": "reduced_t4_windows.json",
+    "sha256": "2715256c7335f6fd228d806c3d9a5c6cac3db6c0754bd6bdea7ee7cbdb38b5b1",
+    "start": [
+      434,
+      435,
+      436,
+      1
+    ],
+    "forbidden": [
+      438,
+      0,
+      0,
+      438
+    ],
+    "order": "Start first, Forbidden second, then every other strict tile lexicographically",
+    "predicate": "explore_t4.strict(w,3), with old check_t4.valid; Forbidden is separately included",
+    "ordinary_head_code": "2*(q+1)+b, q=0,...,215, b=0,1",
+    "ordinary_headless_codes": [
+      0,
+      1
+    ],
+    "L": 434,
+    "Q": 435,
+    "R": 436,
+    "V": 437,
+    "H": 438
+  },
+  "definitions": {
+    "A": "8192 = 2^13",
+    "rho": "2^78125",
+    "B": "rho^390625 = 2^(5^15)",
+    "E": "{0,...,5279} union {7036+u,6597+u,6158+u,5280+u : u=0,...,438} union {7475,7476,7480,22440,14960,44880}",
+    "e_left(u)": "7036+u",
+    "e_center(u)": "6597+u",
+    "e_right(u)": "6158+u",
+    "e_next(u)": "5280+u",
+    "mu": "A-2+sum(A^j,j=1,...,2849)",
+    "v_selector(i)": "1+A^(1+w_i.left)+A^(440+w_i.center)+A^(879+w_i.right)+A^(1318+w_i.next)+sum(A^(1756+t),t=1,...,4)",
+    "v_left_copy(u)": "A^(1+u)",
+    "v_center_copy(u)": "A^(440+u)",
+    "v_right_copy(u)": "A^(879+u)",
+    "v_next_copy(u)": "A^(1318+u)",
+    "v_anchor(t)": "A^(1756+t) at e=(7480,22440,14960,44880)[t-1], t=1,...,4",
+    "v_dummy": "0 at positions7475 and7476",
+    "D_C": "rho^1317+rho^69077+rho^7480+rho^22440+sum(v_e*(rho^(158838-e)+rho^(248600-e)),e in E)",
+    "D_R": "rho^68638",
+    "M_F0": "mu*(rho^158838+rho^248600)+sum(rho^(6597+u),u=0,...,438)+sum(rho^(68638+7036+u)+rho^(68638+6597+u),u=0,...,438)+rho^14960+rho^44880",
+    "M_C": "B-1-sum(rho^e,e in E except1)-2*rho^7475",
+    "M_F_nat": "M_F0+4",
+    "beta": "B-1",
+    "K": "D_C+B*D_R",
+    "M_F_src": "M_F_nat+B-1"
+  },
+  "compiler_invariants": {
+    "M_C_mod4": 2,
+    "M_F_nat_mod8": 4,
+    "M_C_population": "d-7042",
+    "M_F_nat_population": 7042,
+    "population_sum": "d=5^15",
+    "mod5_unit_2D_C_minus_D_R": 3
+  },
+  "source_files": {
+    "tm": "sources/k215.tm",
+    "transitions": "sources/k215_transitions.json"
+  },
+  "verification": {
+    "checker": "check_reduced.py",
+    "receipt": "reduced_t4_receipt.json",
+    "mathematical_proof": "REDUCED_T4_PROOF.md"
+  },
+  "warning": "Use the complete four-tuple. The four enormous integers are fully specified but not expanded."
+}

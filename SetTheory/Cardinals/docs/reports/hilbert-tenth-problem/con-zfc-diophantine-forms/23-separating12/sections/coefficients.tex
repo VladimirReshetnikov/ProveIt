@@ -1,0 +1,419 @@
+\section{A 5263-tile compiler and smaller fixed coefficients}
+\label{sec:coefficients}
+
+This section supplies the complete coefficient tuple used in
+Theorem~\ref{thm:main}.  It combines two independent changes: a smaller
+finite local language and a more compact placement of its copy fields.
+The arithmetic equations in the preceding sections do not change.
+Relative to package~11's T4 backend, the tile count falls from 37075 to
+5263 and the fixed base falls from $2^{5^{18}}$ to $2^{5^{16}}$.
+The general native compiler and its Pell interface are inherited from
+the established blank-input construction~\cite{blank,t4,rank}; the new
+work below verifies the local language and all changed layout hypotheses.
+
+The exact machine table is included as \src{coefficients/k215.tm}, with
+its literal 430-action projection in
+\src{coefficients/k215_transitions.json}.  The ordered new alphabet is
+\src{coefficients/windows5263.json}; its generating predicate and finite
+checks are in \src{coefficients/compiler5263.py}.  These files give a
+terminating finite definition of the coefficients, without running K215
+until it halts.  In particular, the definition does not assume that a
+ZFC refutation exists.
+
+\subsection{The finite local language}
+
+There are 439 cell symbols.  Codes 0 and 1 denote headless tape bits.
+For $q\in\{0,\ldots,215\}$ and $b\in\{0,1\}$, code $2(q+1)+b$
+denotes bit $b$ carrying a head in state $q$.  Use the five additional
+symbols
+\[
+ L_0=434,\quad Q_0=435,\quad R_0=436,\quad V_0=437,\quad H_0=438.
+\]
+The first three are initialization phases, all with blank payload;
+only $Q_0$ carries a head, in state 0.  The symbols $V_0,H_0$ are the
+vertical and horizontal boundaries and carry no tape payload.  The
+literal transition entering state 215 retains its original write and
+movement.  Only after entering state 215 do we use the completion
+$(215,b)\mapsto(b,0,215)$ for padding.
+
+A tile is a tuple $(l,c,r,n)$ giving left, center, right, and next-time
+center cells.  The following horizontal pair rule will be used on both
+$(l,c)$ and $(c,r)$:
+\begin{enumerate}
+\item Two $V_0$ cells cannot be adjacent.  Immediately right of $V_0$ an
+initialization phase must be $L_0$; immediately left of $V_0$ it must be
+$R_0$.
+\item If neither member is $V_0$, the pair agrees on being $H_0$ and
+agrees on being an initialization phase.  When both are phases, the
+allowed ordered pairs are $L_0L_0,L_0Q_0,Q_0R_0,R_0R_0$.
+\end{enumerate}
+Apart from the exceptional forbidden tile specified below, admit exactly
+the tuples with these properties:
+\begin{enumerate}
+\item At most one of $l,c,r$ carries a head, and both horizontal pair
+rules hold.
+\item If $V_0$ occurs in $l,c,r$, every ordinary cell in that triple is
+the blank headless cell 0, and $Q_0$ is absent.
+\item The center $c$ is $V_0$ if and only if $n$ is $V_0$.  A center
+$V_0$ imposes no further transition condition.
+\item If $c=H_0$, then $n\in\{L_0,Q_0,R_0\}$.
+\item At an interior center, a head cannot move into an adjacent
+$V_0$.  If $n=H_0$, every head in the horizontal triple is in state 215.
+\item Otherwise, at an interior center, $n$ is an ordinary nonphase
+cell given by the exact deterministic three-neighbor update.  Its bit
+is the bit written at the center, or the unchanged bit if the center
+is headless.  Its head, if any, is the unique incoming head from the
+left, center, or right according to the completed transition table.
+Here $V_0$ is interpreted as blank and headless, and $H_0$ cannot supply
+an interior update.
+\end{enumerate}
+The retained original one-head restriction makes the successor unambiguous.
+The blank-margin restriction also excludes a head next to a vertical
+boundary, so the no-escape clause is redundant for such triples; it is
+stated to make the relationship to the original T4 predicate explicit.
+
+Put the two distinguished tiles first:
+\begin{equation}
+ S_0=(434,435,436,1),\qquad E_0=(438,0,0,438).
+ \label{eq:compiler-distinguished}
+\end{equation}
+The tile $S_0$ passes the displayed rules: K215's first action is
+$(0,0)\mapsto(1,+1,93)$.  Admit $E_0$ as the sole exception to the
+additional restrictions.  It was already a valid original T4 tile, but
+it has no global extension: a tile immediately to its left would have
+center $H_0$ and right neighbor 0.  Such a tile is not $E_0$ and violates
+the horizontal pair rule.  Thus using $E_0$ as selector 1, which the
+arithmetic forbids, discards no actual computation.
+
+Order $S_0$ first, $E_0$ second, and all remaining passing tuples
+lexicographically in the displayed coordinate order.  The finite rule,
+the literal transition table, and this ordering determine the alphabet
+completely.
+
+\begin{proposition}[Exact alphabet size]
+The ordered alphabet has exactly 5263 tiles.
+\end{proposition}
+\begin{proof}
+For a headless ordinary center and no vertical boundary, the two
+neighbors give
+$2^2+2\cdot432\cdot2=1732$ ordinary successor tiles.  A terminal
+successor allows only the two halted headed symbols, giving
+$2^2+2\cdot2\cdot2=12$ further tiles.  Center~0 additionally has the
+three boundary neighborhoods $(V_0,0,0),(0,0,V_0),(V_0,0,V_0)$, each
+with an ordinary and a terminal successor, and the single exceptional
+$E_0$.  Thus center~0 contributes 1751 tiles and center~1 contributes
+1744.
+
+Each of the 430 ordinary working-head center symbols has four choices
+of its two headless neighbors and one successor, contributing 1720.
+Each of the two halted-head center symbols has four ordinary and four
+terminal cases, contributing 16.  The centers $L_0,R_0$ each have three
+ordinary and two terminal cases; $Q_0$ has just $S_0$.  A $V_0$ center
+has three admissible cells independently on either side, hence nine
+cases.  An $H_0$ center has two neighbor choices on either side and
+three phase successors, hence twelve cases.  Summing gives
+\[
+ 1751+1744+1720+16+5+5+1+9+12=5263.
+\]
+This classification is independent of the exhaustive program.  The
+program separately checks all 5215 permitted horizontal triples
+against all 439 successors, or 2289385 cases, before adding $E_0$.
+\end{proof}
+
+\subsection{Why the restricted language still describes a blank halt}
+
+Every new tile, including $E_0$, is an old T4 tile.  Therefore every new
+marked periodic plane is an old marked periodic plane.  The inherited
+finite-strip argument supplies a blank K215 computation ending in halt.
+This is the soundness direction; restricting the alphabet cannot create
+an accepting computation.
+
+For completeness, suppose a finite blank halting computation is given.
+Choose two untouched blank headless tape cells between every visited
+head position and each vertical boundary.  A canonical strip has a full
+$H_0$ row, then an initialization row $L_0^uQ_0R_0^v$, then the true
+computation, and an arbitrarily long absorbing halted tail.  All new
+horizontal conditions hold.  A row immediately before an $H_0$ row is
+halted, so the terminal-neighbor condition also holds.
+
+The inherited helical presentation changes the time coordinate by one
+when crossing a vertical seam.  Within distance two of the seam, cells
+are blank headless symbols, the appropriate boundary-adjacent phases,
+or $H_0$.  They therefore satisfy the new restriction even when the
+two sides represent different times.  The symbol $V_0$ separates them,
+so their phases need not agree across the seam.  Width and height remain
+arbitrarily large independent integers, and may still be chosen as
+powers of five.  This presentation has one canonical Start and no
+$E_0$.  Uniqueness of Start is used for this chosen completeness
+witness, not assumed for arbitrary putative solutions.
+
+\subsection{The four fixed integers}
+
+Use a subscript $c$ for the clause radix, to distinguish it from the
+polynomial $A$ in Section~\ref{sec:interface}.  Put
+\begin{gather}
+ A_c=8192=2^{13},\qquad \rho=2^{78125},\qquad
+ B=\rho^{1953125}=2^{152587890625}=2^{5^{16}},\label{eq:newbase}\\
+ M_0=7021,\qquad H_c=359389,\qquad
+ T_1=738963,\qquad T_2=1118101.\notag
+\end{gather}
+Write $b_c=78125$ for the binary radix exponent and $L_c=1953125$
+for the cell length, so $\rho=2^{b_c}$ and $B=\rho^{L_c}$.
+For $0\le u\le438$, define the copy positions
+\begin{align}
+ e_l(u)&=6580+u,& e_c(u)&=6141+u,\notag\\
+ e_r(u)&=5702+u,& e_n(u)&=5263+u.\label{eq:newcopies}
+\end{align}
+The support $\mathcal E$ consists of the selector positions
+$0,\ldots,5262$, the four copy intervals in \eqref{eq:newcopies}, the
+dummy position 7019, and the four anchors
+\[
+ M_0,3M_0,9M_0,27M_0=7021,21063,63189,189567.
+\]
+Thus $|\mathcal E|=7024$.  The possible upper dummy spill is position
+7020, still strictly below the first anchor.  Set
+\begin{equation}
+ \mu=A_c-2+\sum_{j=1}^{2840}A_c^j.\label{eq:newmu}
+\end{equation}
+For the $i$th tile $w_i=(l_i,c_i,r_i,n_i)$, define
+\begin{align}
+ v_i={}&1+A_c^{1+l_i}+A_c^{440+c_i}+A_c^{879+r_i}
+       +A_c^{1318+n_i}+\sum_{t=1}^4 A_c^{1756+t},\notag\\
+ v_{e_l(u)}={}&A_c^{1+u},&v_{e_c(u)}={}&A_c^{440+u},\notag\\
+ v_{e_r(u)}={}&A_c^{879+u},&v_{e_n(u)}={}&A_c^{1318+u},\notag\\
+ v_{3^{t-1}M_0}={}&A_c^{1756+t}\quad(1\le t\le4),&v_{7019}={}&0.
+ \label{eq:newclauses}
+\end{align}
+These cases have disjoint index sets.  Now put
+\begin{align}
+ D_C={}&\rho^{878}+\rho^{359828}+\rho^{56168}+\rho^{168504}
+       +\sum_{e\in\mathcal E}v_e
+          \bigl(\rho^{T_1-e}+\rho^{T_2-e}\bigr),\notag\\
+ D_R={}&\rho^{H_c},\notag\\
+ M_F^0={}&\mu(\rho^{T_1}+\rho^{T_2})
+       +\sum_{u=0}^{438}\rho^{6141+u}
+       +\rho^{63189}+\rho^{189567}\notag\\
+ &+\sum_{u=0}^{438}
+       \bigl(\rho^{H_c+6580+u}+\rho^{H_c+6141+u}\bigr),\notag\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+             -2\rho^{7019},\qquad M_F^{\rm nat}=M_F^0+4.
+ \label{eq:newmasks}
+\end{align}
+The four ports used everywhere in this article are exactly
+\begin{equation}
+ \boxed{\quad\beta=B-1,\qquad \kappa=D_C+BD_R,\qquad
+ M_C,\qquad M_F=M_F^{\rm nat}+B-1.\quad}
+ \label{eq:coefficientbinding}
+\end{equation}
+The canonical machine-readable specification is
+\src{coefficients/T5263_CONSTANTS.json}.  Its labels \src{K} and
+\src{MF_source} mean $\kappa$ and $M_F$ in this article.
+No individual coefficient may be substituted from another recipe.
+All exponents and summation limits in
+\eqref{eq:newbase}--\eqref{eq:coefficientbinding} are fixed integers.
+They define ordinary integer coefficients, with no variable exponent
+or extra quantified parameter.
+
+\subsection{Population and carry conditions}
+
+In the standard compiler notation, the new values are
+\[
+ \ell=13,\quad p_c=1080,\quad m_c=7023,
+ \qquad m_c=2\ell+11\cdot439+8+2p_c.
+\]
+There is one dummy because
+$m_c+1-5263-4\cdot439-4=1$.  The clause mask has population
+\[
+ \pc(\mu)=\ell-1+2840=2852.
+\]
+The two clause bands, three copy-overlap groups, and two tested anchors
+are disjoint.  The extra bit~2 of $M_F^{\rm nat}$ is disjoint from all
+of them.  Hence
+\begin{align}
+ \pc(M_F^{\rm nat})&=2\cdot2852+3\cdot439+2+1=7024,\notag\\
+ \pc(M_C)&=5^{16}-7024.\label{eq:newpopulation}
+\end{align}
+For the low mask, omitting selector position~1 restores one otherwise
+removed bit, while subtracting $2\rho^{7019}$ removes the upper dummy
+bit.  Thus its missing population is exactly $7024$.  The same
+disjointness and unused high positions give
+\[
+ 0<M_C,M_F^{\rm nat}<B-1,\qquad
+ M_C\equiv2\pmod4,\qquad M_F^{\rm nat}\equiv4\pmod8.
+\]
+This verifies the numerical portion \eqref{eq:maskcontract} of the
+compiler contract.
+
+To state the carry bound explicitly, let
+$\Sigma=\sum_{e\in\mathcal E}v_e$ and
+$\mathcal M=(7024+2)(2\Sigma+6)$.  Every selector coefficient has
+nine $A_c$-monomials counting its constant term, while each copy and
+anchor coefficient has one.  Therefore the inherited sufficient radix
+exponent can be expressed using the fixed integer
+\[
+ U_c=4(7023+3)(18(5263+4\cdot439+4)+6)+8.
+\]
+It is
+\begin{align*}
+ b_{\min}=\max\{&13(4\cdot439+5+1080)+3,\\
+ &13(4\cdot439+4)+\operatorname{bitlength}(U_c)+1,\ 4\}\\
+ ={}&36936.
+\end{align*}
+Our exponent $78125$ exceeds it.  An exact integer calculation also
+gives
+\[
+ \operatorname{bitlength}(\mu)=36921,\qquad
+ \operatorname{bitlength}(4\mathcal M+8)=22909.
+\]
+Thus $\rho>2\mu+4$ and $\rho>4\mathcal M+8$, with ample room.  These
+are the original sufficient carry bounds, including rotations and the
+optional upper dummy bit; a comparison only of the displayed scalar
+exponents would not have established that fact.
+
+\subsection{Convolution fields and synchronization}
+
+At target $e_c(u)$, the bare shift $878=2\cdot439$ has exactly the
+source $e_n(u)$.  At the targets $H_c+e_l(u)$ and $H_c+e_c(u)$, the bare
+shift $H_c+439$ has sources $e_c(u)$ and $e_r(u)$; multiplication by
+$D_R$ has sources $e_l(u)$ and $e_c(u)$.  The two other bare shifts,
+$8M_0$ and $24M_0$, have precisely the anchor source/target pairs
+$(M_0,9M_0)$ and $(3M_0,27M_0)$.  Exact finite set calculations verify
+all 1319 targets and exclude every unintended hit there.
+
+Set $E_{\max}=27M_0=189567$.  Every copy or anchor target is below
+$T_1-E_{\max}$.  At each clause band $T_j$, no bare term contributes
+and the other clause band cannot contribute.  Consequently the same
+clause tests select either an empty cell or one tile together with its
+four matching copies and four anchors.  The field tests yield exactly
+\[
+ w_i(r)=w_{i-1}(c),\qquad w_i(c)=w_{i-1}(l),\qquad
+ w_i(n)=w_{i-h_0}(c).
+\]
+Writing $a_i=w_i(c)$, they imply
+$w_i=(a_{i+1},a_i,a_{i-1},a_{i-h_0})$.  Thus cyclic data pull back to
+the actual plane $a_{-x-h_0t}$ for arbitrary stride $h_0$.  No
+coprimality or divisibility assumption on that stride is introduced.
+
+The synchronization check must cover arbitrary bit rotations.  Here
+\begin{gather}
+ T_2-T_1=379138=2E_{\max}+4\equiv2\pmod4,\notag\\
+ T_2+2E_{\max}+2=1497237<1953125.\label{eq:newseparation}
+\end{gather}
+The support, including the upper dummy spill, lies in
+$[0,E_{\max}]$.  The two possible clause-band contamination sets are
+therefore disjoint modulo the cell length.  The inherited clean-band
+argument always has an uncontaminated band available.
+
+For a binary rotation $b_ct+\epsilon$, $0\le\epsilon<b_c$, the carry bound
+shows that a nonzero remainder cannot satisfy both odd anchor tests:
+for $1\le\epsilon\le b_c-2$ the rotated digits are even, and for
+$\epsilon=b_c-1$ only the single upper dummy spill can be odd.  Therefore
+$\epsilon=0$.  For a radix-aligned rotation, the two tests require a
+support pair separated by $18M_0$.  The only such pair is
+$(9M_0,27M_0)$, because all nonanchor support is below $M_0$ and the
+other anchor differences are distinct.  The circumference is too large
+to introduce a second pair by wrapping.  Hence the radix rotation is
+zero modulo the cell length.  These are precisely the two original
+synchronization steps, with their hypotheses rechecked for the new
+support.
+
+\subsection{Five-adic control of the actual packed rank}
+
+The change of copy spacing also changes the residue used in the
+dummy-bit adjustment, so it must be recalculated.  Since $78125$ is a
+power of five, $\rho\equiv2\pmod5$.  By
+\eqref{eq:newseparation}, each paired clause contribution cancels
+modulo five, independently of its coefficient $v_e$.  The four bare
+exponents in $D_C$ are respectively $2,0,0,0$ modulo four.  Hence
+\begin{equation}
+ D_C\equiv D_R\equiv2\pmod5,
+ \qquad 2D_C-D_R\equiv2\pmod5.\label{eq:newunit}
+\end{equation}
+The former residue 3 is not required; the relevant property is
+invertibility modulo five.
+
+For clarity, use $w_0$ for the spatial width, $H_0^{\rm time}$ for the
+temporal height, and $n_0=w_0H_0^{\rm time}$ for their product, to
+distinguish these quantities from the polynomial coordinates.  Choose
+all three as powers of five, with $H_0^{\rm time}\ge25$ and
+$n_0>25d$, where $d=5^{16}$.  The canonical packed base is
+$q=B^{n_0}$.  Switching on the free low dummy bit in cell $j$ changes
+the \emph{actual} packed rank by $-\Gamma B^j$, where
+\begin{equation}
+ \Gamma=\rho^{7019}(q^2-1)
+       \bigl[1+q(D_C+BD_R+B^{w_0})\bigr].\label{eq:newgamma}
+\end{equation}
+This formula has the original no-wrap conditions $j+1,j+w_0<n_0$.
+Because all relevant exponents are powers of five,
+$B\equiv q\equiv B^{w_0}\equiv2\pmod5$.  The bracket in
+\eqref{eq:newgamma} is therefore
+\[
+ 1+2(D_C+2D_R+2)\equiv2D_C-D_R\equiv2\pmod5.
+\]
+Also $\rho^{7019}\equiv3$ and $q^2-1\equiv3$ modulo five, so
+\begin{equation}
+ \Gamma\equiv3\pmod5,\qquad \gcd(\Gamma,dn_0)=1.
+ \label{eq:gammatuning}
+\end{equation}
+The unchanged Boolean subset-adjustment theorem on the cells
+$\{4j:0\le j<n_0/5\}\cup\{1\}$ therefore supplies the required
+congruence $R\equiv dw_0\pmod{dn_0}$.  Width and height padding gives
+all size and no-wrap conditions.  This is a congruence adjustment to
+the packed expression \eqref{eq:rank}, not the selection of an
+independent formal exponent.
+
+The canonical origin test still sees Start at selector 0 and the
+forbidden tile at selector 1.  Every copy and dummy position is
+positive, so their new placement does not change the unit selector
+contribution at the origin.  Dummy changes preserve all tile choices
+and overlaps.  The original positive-slack argument and carry bounds
+complete the arithmetic witnesses.  The odd exponent $d=5^{16}$ and
+the canonical rank congruence $R\equiv3\pmod4$ are preserved; these
+are the padding and parity properties used in the integer construction
+of Section~\ref{sec:integer}.
+
+\begin{proposition}[Complete replacement of the coefficient tuple]
+The four integers in \eqref{eq:coefficientbinding} satisfy the full
+blank-input compiler contract used in Section~\ref{sec:interface}.
+In particular, substituting this whole tuple into the new arithmetic
+circuits preserves their equivalence with a blank K215 halt.
+\end{proposition}
+\begin{proof}
+The local language has the required marked-tableau soundness and
+padded-helical completeness.  Equations
+\eqref{eq:newpopulation}--\eqref{eq:newseparation} and the exact target
+checks verify the numerical, carry, field, and synchronization
+hypotheses of the inherited native compiler.  Equations
+\eqref{eq:newgamma}--\eqref{eq:gammatuning} verify the actual-rank
+tuning hypothesis.  The original Start-origin and slack arguments are
+unchanged.  The blank-input compiler theorem and the arithmetic
+equivalences therefore apply to this entire tuple~\cite{blank,t4,rank}.
+\end{proof}
+
+\subsection{Size and evidence boundary}
+
+The coefficient $\beta$ has exactly $152587890625$ bits.  The largest
+port is $\kappa$, with exactly
+\[
+ d+78125H_c+1=180665156251
+\]
+bits, because $D_C<B$ while $BD_R$ has its highest bit at
+$d+78125H_c$.  Thus even this improved tuple has enormous expanded
+numerals.  The supplied finite recipes are exact; the expansions were
+not materialized.
+
+The program recomputes the complete alphabet, verifies its inclusion
+in the original T4 alphabet, checks the impossibility of the forbidden
+tile through every adjacent candidate, and verifies all carry and
+support conditions above.  It also checks 18 finite control tableaux
+containing 927 windows, including helical seams.  Those controls use
+specified altered transitions to create finite examples and do not
+assert a halting run of literal K215.  The archive records the finite
+checks separately from the universal mathematical proof.
+
+The arithmetic, finite combinatorics, recurrence arguments, and
+coefficient definitions used here are formalizable in ZFC.  The
+general compiler and Pell results remain imported mathematical
+dependencies.  Neither these finite checks nor inspection of the
+archived endpoint reports constitutes a new end-to-end Lean or Rocq
+verification of the Diophantine equation.

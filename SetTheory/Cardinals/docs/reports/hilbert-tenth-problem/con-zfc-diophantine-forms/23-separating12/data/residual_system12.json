@@ -1,0 +1,1172 @@
+{
+  "format": "named-binary-arithmetic-circuit-v1",
+  "domain": "strictly positive integers",
+  "variables": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "h",
+    "i",
+    "T",
+    "s",
+    "w",
+    "eta",
+    "zeta",
+    "t"
+  ],
+  "coefficient_ports": [
+    "beta",
+    "kappa",
+    "MC",
+    "MF"
+  ],
+  "gates": [
+    {
+      "name": "q0",
+      "op": "*",
+      "args": [
+        "beta",
+        "J"
+      ]
+    },
+    {
+      "name": "q",
+      "op": "+",
+      "args": [
+        "q0",
+        1
+      ]
+    },
+    {
+      "name": "q2",
+      "op": "*",
+      "args": [
+        "q",
+        "q"
+      ]
+    },
+    {
+      "name": "q3",
+      "op": "*",
+      "args": [
+        "q2",
+        "q"
+      ]
+    },
+    {
+      "name": "qF",
+      "op": "-",
+      "args": [
+        "q",
+        "F"
+      ]
+    },
+    {
+      "name": "Cword",
+      "op": "-",
+      "args": [
+        "qF",
+        "alpha"
+      ]
+    },
+    {
+      "name": "X",
+      "op": "*",
+      "args": [
+        "w",
+        "q"
+      ]
+    },
+    {
+      "name": "Y",
+      "op": "*",
+      "args": [
+        "s",
+        "q3"
+      ]
+    },
+    {
+      "name": "E",
+      "op": "*",
+      "args": [
+        "X",
+        "Y"
+      ]
+    },
+    {
+      "name": "k",
+      "op": "+",
+      "args": [
+        "eta",
+        "zeta"
+      ]
+    },
+    {
+      "name": "kY",
+      "op": "*",
+      "args": [
+        "k",
+        "Y"
+      ]
+    },
+    {
+      "name": "c",
+      "op": "+",
+      "args": [
+        "kY",
+        "eta"
+      ]
+    },
+    {
+      "name": "c2",
+      "op": "*",
+      "args": [
+        "c",
+        "c"
+      ]
+    },
+    {
+      "name": "c3",
+      "op": "*",
+      "args": [
+        "c2",
+        "c"
+      ]
+    },
+    {
+      "name": "a",
+      "op": "+",
+      "args": [
+        "E",
+        "Y"
+      ]
+    },
+    {
+      "name": "foura",
+      "op": "*",
+      "args": [
+        4,
+        "a"
+      ]
+    },
+    {
+      "name": "H",
+      "op": "+",
+      "args": [
+        "foura",
+        3
+      ]
+    },
+    {
+      "name": "a2",
+      "op": "*",
+      "args": [
+        "a",
+        "a"
+      ]
+    },
+    {
+      "name": "Delta",
+      "op": "+",
+      "args": [
+        "a2",
+        "H"
+      ]
+    },
+    {
+      "name": "ac",
+      "op": "*",
+      "args": [
+        "a",
+        "c"
+      ]
+    },
+    {
+      "name": "P",
+      "op": "+",
+      "args": [
+        "X",
+        "ac"
+      ]
+    },
+    {
+      "name": "Delta_c2",
+      "op": "*",
+      "args": [
+        "Delta",
+        "c2"
+      ]
+    },
+    {
+      "name": "Sroot",
+      "op": "+",
+      "args": [
+        "Delta_c2",
+        1
+      ]
+    },
+    {
+      "name": "L",
+      "op": "*",
+      "args": [
+        "E",
+        "kY"
+      ]
+    },
+    {
+      "name": "Lk",
+      "op": "+",
+      "args": [
+        "L",
+        "k"
+      ]
+    },
+    {
+      "name": "Lprod",
+      "op": "*",
+      "args": [
+        "L",
+        "Lk"
+      ]
+    },
+    {
+      "name": "Aroot",
+      "op": "+",
+      "args": [
+        "Lprod",
+        1
+      ]
+    },
+    {
+      "name": "rprefix",
+      "op": "*",
+      "args": [
+        "q0",
+        "qF"
+      ]
+    },
+    {
+      "name": "rprefix_alpha",
+      "op": "+",
+      "args": [
+        "rprefix",
+        "alpha"
+      ]
+    },
+    {
+      "name": "q2m1",
+      "op": "-",
+      "args": [
+        "q2",
+        1
+      ]
+    },
+    {
+      "name": "rlow",
+      "op": "*",
+      "args": [
+        "rprefix_alpha",
+        "q2m1"
+      ]
+    },
+    {
+      "name": "qMF",
+      "op": "*",
+      "args": [
+        "q",
+        "MF"
+      ]
+    },
+    {
+      "name": "mask",
+      "op": "+",
+      "args": [
+        "MC",
+        "qMF"
+      ]
+    },
+    {
+      "name": "maskJ",
+      "op": "*",
+      "args": [
+        "mask",
+        "J"
+      ]
+    },
+    {
+      "name": "R",
+      "op": "+",
+      "args": [
+        "rlow",
+        "maskJ"
+      ]
+    },
+    {
+      "name": "hE",
+      "op": "*",
+      "args": [
+        "h",
+        "E"
+      ]
+    },
+    {
+      "name": "k_hE",
+      "op": "-",
+      "args": [
+        "k",
+        "hE"
+      ]
+    },
+    {
+      "name": "Nk",
+      "op": "-",
+      "args": [
+        "k_hE",
+        "R"
+      ]
+    },
+    {
+      "name": "kappaw",
+      "op": "+",
+      "args": [
+        "kappa",
+        "w"
+      ]
+    },
+    {
+      "name": "transport",
+      "op": "*",
+      "args": [
+        "kappaw",
+        "Cword"
+      ]
+    },
+    {
+      "name": "transport_qF",
+      "op": "+",
+      "args": [
+        "transport",
+        "qF"
+      ]
+    },
+    {
+      "name": "zq0",
+      "op": "*",
+      "args": [
+        "z",
+        "q0"
+      ]
+    },
+    {
+      "name": "Nt",
+      "op": "-",
+      "args": [
+        "transport_qF",
+        "zq0"
+      ]
+    },
+    {
+      "name": "Hi",
+      "op": "*",
+      "args": [
+        "H",
+        "i"
+      ]
+    },
+    {
+      "name": "G",
+      "op": "*",
+      "args": [
+        "Hi",
+        "c2"
+      ]
+    },
+    {
+      "name": "G2",
+      "op": "*",
+      "args": [
+        "G",
+        "G"
+      ]
+    },
+    {
+      "name": "D0",
+      "op": "*",
+      "args": [
+        "Delta",
+        "G2"
+      ]
+    },
+    {
+      "name": "D",
+      "op": "+",
+      "args": [
+        "D0",
+        1
+      ]
+    },
+    {
+      "name": "Qstrong",
+      "op": "*",
+      "args": [
+        "Delta",
+        "D0"
+      ]
+    },
+    {
+      "name": "d",
+      "op": "-",
+      "args": [
+        "Qstrong",
+        1
+      ]
+    },
+    {
+      "name": "v",
+      "op": "*",
+      "args": [
+        "c",
+        "T"
+      ]
+    },
+    {
+      "name": "v2",
+      "op": "*",
+      "args": [
+        "v",
+        "v"
+      ]
+    },
+    {
+      "name": "RD",
+      "op": "*",
+      "args": [
+        "R",
+        "D"
+      ]
+    },
+    {
+      "name": "b",
+      "op": "+",
+      "args": [
+        "c",
+        "RD"
+      ]
+    },
+    {
+      "name": "b2",
+      "op": "*",
+      "args": [
+        "b",
+        "b"
+      ]
+    },
+    {
+      "name": "Dv2",
+      "op": "*",
+      "args": [
+        "D",
+        "v2"
+      ]
+    },
+    {
+      "name": "sum_Dv2_b2",
+      "op": "+",
+      "args": [
+        "Dv2",
+        "b2"
+      ]
+    },
+    {
+      "name": "Qsum",
+      "op": "*",
+      "args": [
+        "Qstrong",
+        "sum_Dv2_b2"
+      ]
+    },
+    {
+      "name": "e",
+      "op": "-",
+      "args": [
+        "Qsum",
+        1
+      ]
+    },
+    {
+      "name": "Hi2",
+      "op": "*",
+      "args": [
+        "Hi",
+        "Hi"
+      ]
+    },
+    {
+      "name": "W0",
+      "op": "*",
+      "args": [
+        "Hi2",
+        "c3"
+      ]
+    },
+    {
+      "name": "RW0",
+      "op": "*",
+      "args": [
+        "R",
+        "W0"
+      ]
+    },
+    {
+      "name": "TG",
+      "op": "*",
+      "args": [
+        "T",
+        "G"
+      ]
+    },
+    {
+      "name": "eightTG",
+      "op": "*",
+      "args": [
+        8,
+        "TG"
+      ]
+    },
+    {
+      "name": "ERW0",
+      "op": "*",
+      "args": [
+        "E",
+        "RW0"
+      ]
+    },
+    {
+      "name": "sixteenERW0",
+      "op": "*",
+      "args": [
+        16,
+        "ERW0"
+      ]
+    },
+    {
+      "name": "Mpartial",
+      "op": "+",
+      "args": [
+        1,
+        "eightTG"
+      ]
+    },
+    {
+      "name": "weightM",
+      "op": "+",
+      "args": [
+        "Mpartial",
+        "sixteenERW0"
+      ]
+    },
+    {
+      "name": "HM",
+      "op": "*",
+      "args": [
+        "H",
+        "weightM"
+      ]
+    },
+    {
+      "name": "twoHM",
+      "op": "*",
+      "args": [
+        2,
+        "HM"
+      ]
+    },
+    {
+      "name": "weightN",
+      "op": "+",
+      "args": [
+        "twoHM",
+        1
+      ]
+    },
+    {
+      "name": "H2",
+      "op": "*",
+      "args": [
+        "H",
+        "H"
+      ]
+    },
+    {
+      "name": "Ht",
+      "op": "*",
+      "args": [
+        "H",
+        "t"
+      ]
+    },
+    {
+      "name": "NP",
+      "op": "*",
+      "args": [
+        "weightN",
+        "P"
+      ]
+    },
+    {
+      "name": "W",
+      "op": "+",
+      "args": [
+        "Ht",
+        "NP"
+      ]
+    },
+    {
+      "name": "W2",
+      "op": "*",
+      "args": [
+        "W",
+        "W"
+      ]
+    },
+    {
+      "name": "HM2",
+      "op": "*",
+      "args": [
+        "HM",
+        "HM"
+      ]
+    },
+    {
+      "name": "HM2A",
+      "op": "*",
+      "args": [
+        "HM2",
+        "Aroot"
+      ]
+    },
+    {
+      "name": "N2",
+      "op": "*",
+      "args": [
+        "weightN",
+        "weightN"
+      ]
+    },
+    {
+      "name": "N2S",
+      "op": "*",
+      "args": [
+        "N2",
+        "Sroot"
+      ]
+    },
+    {
+      "name": "diagonal1",
+      "op": "+",
+      "args": [
+        "W2",
+        "HM2A"
+      ]
+    },
+    {
+      "name": "diagonal",
+      "op": "+",
+      "args": [
+        "diagonal1",
+        "N2S"
+      ]
+    },
+    {
+      "name": "ddiagonal",
+      "op": "*",
+      "args": [
+        "d",
+        "diagonal"
+      ]
+    },
+    {
+      "name": "H2e",
+      "op": "*",
+      "args": [
+        "H2",
+        "e"
+      ]
+    },
+    {
+      "name": "a0",
+      "op": "-",
+      "args": [
+        "ddiagonal",
+        "H2e"
+      ]
+    },
+    {
+      "name": "twod",
+      "op": "*",
+      "args": [
+        2,
+        "d"
+      ]
+    },
+    {
+      "name": "twodW",
+      "op": "*",
+      "args": [
+        "twod",
+        "W"
+      ]
+    },
+    {
+      "name": "p",
+      "op": "*",
+      "args": [
+        "twodW",
+        "HM"
+      ]
+    },
+    {
+      "name": "qcoef",
+      "op": "*",
+      "args": [
+        "twodW",
+        "weightN"
+      ]
+    },
+    {
+      "name": "twodHM",
+      "op": "*",
+      "args": [
+        "twod",
+        "HM"
+      ]
+    },
+    {
+      "name": "r",
+      "op": "*",
+      "args": [
+        "twodHM",
+        "weightN"
+      ]
+    },
+    {
+      "name": "H2Q",
+      "op": "*",
+      "args": [
+        "H2",
+        "Qstrong"
+      ]
+    },
+    {
+      "name": "H2Q2",
+      "op": "*",
+      "args": [
+        "H2Q",
+        "H2Q"
+      ]
+    },
+    {
+      "name": "constant1",
+      "op": "*",
+      "args": [
+        "H2Q2",
+        "Dv2"
+      ]
+    },
+    {
+      "name": "constant2",
+      "op": "*",
+      "args": [
+        "constant1",
+        "b2"
+      ]
+    },
+    {
+      "name": "constant",
+      "op": "*",
+      "args": [
+        4,
+        "constant2"
+      ]
+    },
+    {
+      "name": "a02",
+      "op": "*",
+      "args": [
+        "a0",
+        "a0"
+      ]
+    },
+    {
+      "name": "p2",
+      "op": "*",
+      "args": [
+        "p",
+        "p"
+      ]
+    },
+    {
+      "name": "Ap2",
+      "op": "*",
+      "args": [
+        "Aroot",
+        "p2"
+      ]
+    },
+    {
+      "name": "qcoef2",
+      "op": "*",
+      "args": [
+        "qcoef",
+        "qcoef"
+      ]
+    },
+    {
+      "name": "r2",
+      "op": "*",
+      "args": [
+        "r",
+        "r"
+      ]
+    },
+    {
+      "name": "Ar2",
+      "op": "*",
+      "args": [
+        "Aroot",
+        "r2"
+      ]
+    },
+    {
+      "name": "q2Ar2",
+      "op": "+",
+      "args": [
+        "qcoef2",
+        "Ar2"
+      ]
+    },
+    {
+      "name": "Sblock",
+      "op": "*",
+      "args": [
+        "Sroot",
+        "q2Ar2"
+      ]
+    },
+    {
+      "name": "f0partial",
+      "op": "+",
+      "args": [
+        "a02",
+        "Ap2"
+      ]
+    },
+    {
+      "name": "f0pre",
+      "op": "+",
+      "args": [
+        "f0partial",
+        "Sblock"
+      ]
+    },
+    {
+      "name": "f0",
+      "op": "-",
+      "args": [
+        "f0pre",
+        "constant"
+      ]
+    },
+    {
+      "name": "a0p",
+      "op": "*",
+      "args": [
+        "a0",
+        "p"
+      ]
+    },
+    {
+      "name": "qr",
+      "op": "*",
+      "args": [
+        "qcoef",
+        "r"
+      ]
+    },
+    {
+      "name": "Sqr",
+      "op": "*",
+      "args": [
+        "Sroot",
+        "qr"
+      ]
+    },
+    {
+      "name": "p1half",
+      "op": "+",
+      "args": [
+        "a0p",
+        "Sqr"
+      ]
+    },
+    {
+      "name": "p1",
+      "op": "*",
+      "args": [
+        2,
+        "p1half"
+      ]
+    },
+    {
+      "name": "a0q",
+      "op": "*",
+      "args": [
+        "a0",
+        "qcoef"
+      ]
+    },
+    {
+      "name": "pr",
+      "op": "*",
+      "args": [
+        "p",
+        "r"
+      ]
+    },
+    {
+      "name": "Apr",
+      "op": "*",
+      "args": [
+        "Aroot",
+        "pr"
+      ]
+    },
+    {
+      "name": "p2half",
+      "op": "+",
+      "args": [
+        "a0q",
+        "Apr"
+      ]
+    },
+    {
+      "name": "p2coef",
+      "op": "*",
+      "args": [
+        2,
+        "p2half"
+      ]
+    },
+    {
+      "name": "a0r",
+      "op": "*",
+      "args": [
+        "a0",
+        "r"
+      ]
+    },
+    {
+      "name": "pq",
+      "op": "*",
+      "args": [
+        "p",
+        "qcoef"
+      ]
+    },
+    {
+      "name": "f3half",
+      "op": "+",
+      "args": [
+        "a0r",
+        "pq"
+      ]
+    },
+    {
+      "name": "f3",
+      "op": "*",
+      "args": [
+        2,
+        "f3half"
+      ]
+    },
+    {
+      "name": "f02",
+      "op": "*",
+      "args": [
+        "f0",
+        "f0"
+      ]
+    },
+    {
+      "name": "p12",
+      "op": "*",
+      "args": [
+        "p1",
+        "p1"
+      ]
+    },
+    {
+      "name": "Ap12",
+      "op": "*",
+      "args": [
+        "Aroot",
+        "p12"
+      ]
+    },
+    {
+      "name": "p22",
+      "op": "*",
+      "args": [
+        "p2coef",
+        "p2coef"
+      ]
+    },
+    {
+      "name": "f32",
+      "op": "*",
+      "args": [
+        "f3",
+        "f3"
+      ]
+    },
+    {
+      "name": "Af32",
+      "op": "*",
+      "args": [
+        "Aroot",
+        "f32"
+      ]
+    },
+    {
+      "name": "normblock",
+      "op": "+",
+      "args": [
+        "p22",
+        "Af32"
+      ]
+    },
+    {
+      "name": "Snormblock",
+      "op": "*",
+      "args": [
+        "Sroot",
+        "normblock"
+      ]
+    },
+    {
+      "name": "normdiag",
+      "op": "+",
+      "args": [
+        "f02",
+        "Ap12"
+      ]
+    },
+    {
+      "name": "normU",
+      "op": "-",
+      "args": [
+        "normdiag",
+        "Snormblock"
+      ]
+    },
+    {
+      "name": "f0p1",
+      "op": "*",
+      "args": [
+        "f0",
+        "p1"
+      ]
+    },
+    {
+      "name": "p2f3",
+      "op": "*",
+      "args": [
+        "p2coef",
+        "f3"
+      ]
+    },
+    {
+      "name": "Sp2f3",
+      "op": "*",
+      "args": [
+        "Sroot",
+        "p2f3"
+      ]
+    },
+    {
+      "name": "normVhalf",
+      "op": "-",
+      "args": [
+        "f0p1",
+        "Sp2f3"
+      ]
+    },
+    {
+      "name": "normV",
+      "op": "*",
+      "args": [
+        2,
+        "normVhalf"
+      ]
+    },
+    {
+      "name": "normU2",
+      "op": "*",
+      "args": [
+        "normU",
+        "normU"
+      ]
+    },
+    {
+      "name": "normV2",
+      "op": "*",
+      "args": [
+        "normV",
+        "normV"
+      ]
+    },
+    {
+      "name": "AnormV2",
+      "op": "*",
+      "args": [
+        "Aroot",
+        "normV2"
+      ]
+    },
+    {
+      "name": "Norm12",
+      "op": "-",
+      "args": [
+        "normU2",
+        "AnormV2"
+      ]
+    },
+    {
+      "name": "index_residual",
+      "op": "-",
+      "args": [
+        "Nk",
+        1
+      ]
+    },
+    {
+      "name": "transport_residual",
+      "op": "-",
+      "args": [
+        "Nt",
+        1
+      ]
+    }
+  ],
+  "outputs": [
+    "index_residual",
+    "transport_residual",
+    "Norm12"
+  ],
+  "operations": 142,
+  "multiplications": 95,
+  "additions_subtractions": 47,
+  "maximum_total_degree": 1360,
+  "equations": "Every output equals zero."
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "proveit-con-zfc-norm12-binding-v1",
+  "default_recipe": "coefficients/COEFFICIENTS.json",
+  "default_alphabet": "coefficients/reduced_t4_windows.json",
+  "adapter_proof": "proofs/REDUCED_T4_PROOF.md",
+  "independent_review": "proofs/COEFFICIENT_ADAPTER_REVIEW.md",
+  "alphabet_sha256": "2715256c7335f6fd228d806c3d9a5c6cac3db6c0754bd6bdea7ee7cbdb38b5b1",
+  "repository_commit": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+  "ports": {
+    "beta": "B-1",
+    "K0": "D_C+B*D_R",
+    "MC": "M_C",
+    "MF": "M_F_native+B-1"
+  },
+  "alternate_complete_tuple": "upstream/T4_CONSTANTS.json",
+  "binding_rule": "Use one whole tuple. Do not splice coefficient ports or replace the shifted MF by the native mask.",
+  "applies_to": "All nine new arithmetic JSON circuits; the inherited PRODUCT67 circuit uses the aliases below.",
+  "formalization_status": "Ordinary mathematical proof with independent finite audits; no new end-to-end kernel certificate.",
+  "inherited_low_operation_circuit": {
+    "path": "upstream/PRODUCT67.json",
+    "port_aliases": {
+      "Bm1": "beta",
+      "Kconstant": "K0",
+      "MC": "MC",
+      "MF": "MF"
+    },
+    "operations": 67,
+    "unknowns": 15,
+    "domain": "strictly positive integers",
+    "exact_degree": 155,
+    "recipe_override": "Bind all four ports to this file's default recipe. The unchanged upstream JSON records its original T4 recipe in its own metadata."
+  }
+}

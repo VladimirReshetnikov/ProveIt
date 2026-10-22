@@ -1,0 +1,33 @@
+{
+  "schema": "proveit-con-zfc-twelve-coefficient-binding-v1",
+  "recipe": "coefficients/T5263_CONSTANTS.json",
+  "machine": "coefficients/k215.tm",
+  "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+  "tiles": "coefficients/windows5263.json",
+  "tiles_sha256": "40044724fa9e33d8352b7185769d63a960f28e94270ea3925fa74220ec45e7ec",
+  "source_commit": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "definitions": {
+    "beta": "B - 1",
+    "kappa": "D_C + B*D_R",
+    "MC": "M_C from the complete recipe",
+    "MF": "M_F_native + B - 1"
+  },
+  "families": [
+    {
+      "files": ["data/polynomial12.json", "data/system12.json", "data/residual_system12.json", "data/sos12.json"],
+      "port_to_recipe_name": {"beta": "beta", "kappa": "K", "MC": "MC", "MF": "MF_source"}
+    },
+    {
+      "files": ["data/integer26/polynomial26.json", "data/integer26/system26.json", "data/integer26/residual_system26.json", "data/integer26/sos26.json"],
+      "port_to_recipe_name": {"beta": "beta", "kappa": "K", "MC": "MC", "MF": "MF_source"}
+    },
+    {
+      "files": ["data/integer27/normalized27_poly114.json", "data/integer27/normalized27_poly115.json", "data/integer27/ordinary27_poly116.json", "data/integer27/ordinary27_system107.json", "data/integer27/ordinary27_sos124.json"],
+      "port_to_recipe_name": {"Bm1": "beta", "Kconstant": "K", "MC": "MC", "MF": "MF_source"}
+    }
+  ],
+  "whole_tuple_required": true,
+  "coefficient_adapter_proof": "coefficients/REFINED_COMPILER_PROOF.md",
+  "independent_adapter_audit": "proofs/INDEPENDENT_COEFFICIENT_AUDIT.md",
+  "qualification": "The four coefficients are fixed integers, not unknowns. Small coefficient values used by finite circuit diagnostics are algebraic test inputs only and are not asserted to encode K215."
+}
