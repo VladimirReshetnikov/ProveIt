@@ -1,4 +1,5 @@
 import BusyBeaver.ZFC.DefinableClosure
+import BusyBeaver.ZFC.PowerSets
 import ZF.Zf
 import FirstOrder.Completeness
 
@@ -19,9 +20,6 @@ open Form DeepPositiveClosure DefinableClosure
 
 universe u
 variable {V : Type u}
-
-def PowerSets (mem : V → V → Prop) : Prop :=
-  ∀ a, ∃ p, ∀ y, mem y p ↔ SetTheory.Sub mem y a
 
 def swapArgs : Nat → Nat
   | 0 => 1

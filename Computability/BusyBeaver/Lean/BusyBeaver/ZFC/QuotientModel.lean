@@ -98,40 +98,6 @@ theorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) := by
   | fAll _ ih => exact ih
   | fEx _ ih => exact ih
 
-theorem relSat_congr (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
-    (phi : Form) (env env' : Nat → V) (he : ∀ i, Eqv mem (env i) (env' i)) :
-    RelSat mem env phi ↔ RelSat mem env' phi := by
-  induction phi generalizing env env' with
-  | fMem i j => exact member_congr mem witness h (he i) (he j)
-  | fEq i j =>
-    constructor
-    · intro hij
-      exact eqv_trans_of_model mem witness h (eqv_symm_of_model mem witness h (he i))
-        (eqv_trans_of_model mem witness h hij (he j))
-    · intro hij
-      exact eqv_trans_of_model mem witness h (he i)
-        (eqv_trans_of_model mem witness h hij (eqv_symm_of_model mem witness h (he j)))
-  | fBot => exact Iff.rfl
-  | fImp a b iha ihb => exact imp_congr (iha env env' he) (ihb env env' he)
-  | fAnd a b iha ihb => exact and_congr (iha env env' he) (ihb env env' he)
-  | fOr a b iha ihb => exact or_congr (iha env env' he) (ihb env env' he)
-  | fAll a ih =>
-    apply forall_congr'
-    intro x
-    apply ih
-    intro n
-    cases n with
-    | zero => exact eqv_refl_of_model mem witness h x
-    | succ n => exact he n
-  | fEx a ih =>
-    apply exists_congr
-    intro x
-    apply ih
-    intro n
-    cases n with
-    | zero => exact eqv_refl_of_model mem witness h x
-    | succ n => exact he n
-
 def modelSetoid (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem) : Setoid V where
   r := Eqv mem
   iseqv := ⟨eqv_refl_of_model mem witness h,
@@ -197,6 +163,16 @@ theorem sat_quotient (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem
       rw [mk_scons] at hqx
       exact hqx
 
+/-- Satisfaction respects bisimilar environments, via their equal quotient images. -/
+theorem relSat_congr (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
+    (phi : Form) (env env' : Nat → V) (he : ∀ i, Eqv mem (env i) (env' i)) :
+    RelSat mem env phi ↔ RelSat mem env' phi := by
+  have henv : (fun i => mk mem witness h (env i)) =
+      (fun i => mk mem witness h (env' i)) :=
+    funext fun i => (mk_eq_iff mem witness h (env i) (env' i)).mpr (he i)
+  rw [← sat_quotient mem witness h phi env,
+    ← sat_quotient mem witness h phi env', henv]
+
 theorem quotient_extensional (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
     (x y : Domain mem witness h)
     (hMembers : ∀ z, quotientMember mem witness h z x ↔ quotientMember mem witness h z y) :
@@ -213,3 +189,4 @@ theorem quotient_extensional (mem : V → V → Prop) (witness : V) (h : ModelsC
 #print axioms equalityFree_translate
 
 end SetTheory.BusyBeaver.ZFC.QuotientModel
+

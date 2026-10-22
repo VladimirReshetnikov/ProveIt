@@ -3,11 +3,12 @@
 **Current state (2026-10-21).** The exact [215-state machine](../candidate-k215/README.md)
 has compiled correctness proofs in both Lean and Rocq. The original fresh Lean
 build checked 204 project modules; the current
-[proof simplification checkpoint](verification/k215/simplification/phase14/README.md)
-shares derived rules and profile contracts, removing 12,116 bytes and 243 lines
-of Lean proof source plus a 3,067-byte generator. It checks the 178-module endpoint,
-five decoder-prefix modules, seven API clients and both closed endpoint clients.
-The exact previous endpoint axiom profiles are preserved.
+[proof simplification checkpoint](verification/k215/simplification/phase15/README.md)
+shares recursion and quotient syntax, separates PowerSets from the full calibration,
+and shortens the dense bridge. It checks the 176-module endpoint, five decoder-prefix
+modules, three full-calibration continuity modules, ten API clients and both endpoint
+clients. The nine Lean files remove 11,809 bytes/283 lines; the synchronized producer
+adds 1,307 bytes/12 lines. All previous endpoint profiles are preserved.
 Its zero-offset proposal is reconciled as
 [Source 167](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-204.md). Rocq's
 237 sources compile with closed endpoint assumption reports and recursive `coqchk`.
@@ -93,6 +94,20 @@ an audit-client binder omission, corrected without changing a production proof.
 reconcile the later DenseBridge, PowerSets, direct-seed and quotient-sharing
 proposals separately. Those proposals are not part of this phase-fourteen adoption;
 their source censuses do not establish another checked endpoint.
+
+Phase fifteen proves transfinite recursion once for a general relation and
+specializes it to both existing hierarchies. The weak quotient shares only
+hypothesis-free syntax with the strong lane and retains its weaker QHyp assumptions.
+The PowerSets import cut preserves the full calibration through an explicit client;
+Source193 supplies the shorter dense ending. The primary 194-provider and
+compatibility 71-provider checks pass, binding 199 distinct project modules. The
+endpoint selects 2,052,142 source bytes, 40,970 fewer than phase14. Two failed primary
+attempts and their narrow import/client repairs remain excluded from acceptance.
+
+[Sources 193–194](../../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-215.md)
+reconcile exact residual contracts and shared scheduler proofs. Only the selected
+dense ending enters this checkpoint; residual integration, subtree abbreviation
+and scheduler sharing keep their separate proof and reproduction obligations.
 
 The [221](../candidate-k221/README.md) also has two closed endpoints for its exact table:
 

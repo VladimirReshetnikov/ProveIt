@@ -3514,3 +3514,33 @@ endpoint has 178 project modules. Seven Lean edits and two retirements save
 15,183 bytes and 314 lines; no machine or endpoint statement changes. The failed
 first client attempt is retained. This acceptance does not promote any of the
 new direct-seed, residual, opaque-prefix or 176-module proposals.
+
+
+[Batch 215](set-theory/zfc-closure-kernels/intake-215.md) reconciles Sources
+193–194 from `1b16269c48`, placed in `6bd7e8ff01`. Its 508 members recover through
+231 immutable Git aliases, 49 earlier-delivery aliases, 50 arrival-only members
+and 178 new ancillary files. The host now has **194 numbered sources**, with
+written coverage of **1–164 and 167–194**; Sources 165–166 and the independent
+batch-209–211 reconciliations remain pending. The collection stays at **290
+reports**. The base article and all prior labels remain unchanged.
+
+Both papers repeat the already adopted phase13 implication basis. Source193
+supplies exact route-to-port attachment and all-leaf residual coverage: its
+submitted 51-module component removes the universal suffix premise from the
+source-halting theorem, but does not establish the old Boolean checker or a
+new maintained endpoint. All 105 blocks retain complete paths; positive suffix
+progress and every primitive/return frame still matter. Its source-only subtree
+abbreviation saves 18,565 Lean bytes, excludes generator changes, and remains
+uncompiled. Its small dense successor saves eight more lines than the initial
+phase15 candidate, whose combined check is pending at this cutoff. The optional
+terminal-cleanup framework grows by 6,716 bytes/172 lines in the measured scope.
+
+Source194 shares three progress/composition inductions across four enumerators.
+A single target must work for all reachable boundary payloads; a parity scheduler
+refutes payload-wise cofinality as a substitute. Arbitrary-active completeness
+retains the concrete invariant for soundness. Four clients plus core save only
+324 bytes/seven lines; EnumPerm plus core alone grows 3,411 bytes/95 lines.
+These are maintenance and source-size comparisons, not measured runtime gains.
+Submitted component compiler records remain attributed, Rocq proposals stay
+inert under the Lean-only goal, and no supplied code or proof compiler ran for
+intake. Current machine and accepted endpoint statements are unchanged.

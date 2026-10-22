@@ -1,5 +1,10 @@
 # Fourteenth K215 proof-simplification checkpoint
 
+The [phase-fifteen successor](../phase15/README.md) now provides the current
+recursion, quotient-syntax and small-interface proofs. This page and its packet
+remain the exact phase14 record. Its optional current-repository check requires
+the frozen phase14 sources; use historical mode after later adoptions.
+
 The named calculi now share their derived-rule proofs, and the profile contracts
 are proved once under transitive containers. This removes repeated mathematical
 arguments and the generated `KProfileTC` duplicate. The exact 215-state machine,

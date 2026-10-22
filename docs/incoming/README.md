@@ -14,26 +14,20 @@ a report at one of the destinations of section 2.
 
 ## Current Lean proof checkpoint
 
-The [fourteenth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase14/README.md)
-shares derived rules and profile contracts, removing 12,116 bytes and 243 lines of
-Lean proof source plus a 3,067-byte generator. The endpoint now uses 178 project
-modules, plus five decoder-prefix modules. The primary check covers those modules
-and seven API clients; both endpoint clients and the separate 68-project-module
-compatibility scope with two clients pass. The initial audit-client binder failure
-and its successful narrow retry are preserved. All 6,176 phase-nine branch checks
-remain in place. Report intake and reconciliation statuses below remain separate.
+The [fifteenth simplification checkpoint](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md)
+shares transfinite recursion and quotient syntax, separates PowerSets and shortens
+the dense bridge. Both primary 194 and compatibility 71 provider checks pass, binding
+199 project modules. The endpoint now has 176 project modules plus five separate
+prefix modules; the primary also retains three full-calibration continuity modules
+and ten API clients. Nine Lean files remove 11,809 bytes/283 lines; including the
+larger synchronized producer, the net reduction is 10,502 bytes/271 lines. Both
+failed primary attempts and narrow repairs are retained. All 6,176 inherited
+phase-nine branch outcomes remain in place. Report reconciliation and proof
+publication keep their separate scopes.
 
 ## Current queue
 
-## Queue status after batch 215
-
-The two K215 proof-simplification packets from `1b16269c48` are placed under
-[proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md)
-(`shared-invariants`, `candidate-scheduling`). Each file byte-identical to a repository blob at
-`HEAD` or at the packets' pin `57541fe0cf` is omitted (231 in all); logs stay outside Git under
-the existing `*.log` rule and are recoverable from the arrival commit. Neither packet contains a
-new machine table. Nothing was rerun at intake. The ZIPs are retired.
-
+Two further proof-simplification reports from `1b16269c48` are placed as [Sources 193–194, batch 215](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake215-placement.md). All 508 members recover through 231 immutable Git aliases, 49 delivery aliases, 50 arrival-only members and 178 new ancillary files. Placement `6bd7e8ff01` retired both ZIPs; the [written reconciliation](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-215.md) is published in `22a3d74d97` and the catalogue in `00fc7a5ded`. The host has 194 sources, written coverage 1–164 and 167–194, and the collection remains 290 reports. Its dated addendum distinguishes the selected phase15 dense proof from unadopted residual, abbreviation and scheduler proposals. No supplied program or proof compiler ran for intake.
 
 Five further proof-simplification reports from `c3caaf63a4` are placed as [Sources 188–192, batch 214](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake214-placement.md). All 1,161 members recover through 799 immutable Git aliases, 44 earlier-delivery aliases, 67 arrival-only members and 251 new ancillary files. The five ZIPs are retired. The [written reconciliation](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-214.md) is published in `61b75ef2fc`, and the catalogue in `bb3c04d1fa`; the collection remains 290 reports. No supplied code or proof compiler ran for intake.
 

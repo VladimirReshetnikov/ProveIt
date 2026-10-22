@@ -50,9 +50,20 @@ def replace_theorem(text, name, new):
 HEAD = ("/- Forked by Research/ZFC/k225-formal/generate_kq1.py from {src}.lean onto the "
         "KQHyp.QHyp interface; do not edit. -/\n")
 
+MODEL_SYNTAX_ALIASES = 'abbrev memberForm := QuotientModel.memberForm\n\nabbrev translate := QuotientModel.translate\n\nabbrev RelSat (mem : V → V → Prop) (env : Nat → V) := QuotientModel.RelSat mem env\n\ntheorem sat_memberForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :\n    Sat mem env (memberForm i j) ↔ Member mem (env i) (env j) :=\n  QuotientModel.sat_memberForm mem env i j\n\ntheorem sat_translate (mem : V → V → Prop) (phi : Form) (env : Nat → V) :\n    Sat mem env (translate phi) ↔ RelSat mem env phi :=\n  QuotientModel.sat_translate mem phi env\n\ntheorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) :=\n  QuotientModel.equalityFree_translate phi\n\n'
+
 for f in FORKS:
     t = (D / f"Quotient{f}.lean").read_text(encoding="utf-8")
     t = transform(t)
+    if f == "Model":
+        # These definitions and proofs use no model hypothesis. Reuse, do not fork.
+        # Run after transform, which would otherwise rewrite QuotientModel aliases.
+        start = t.index("def memberForm ")
+        end = t.index("def modelSetoid ", start)
+        assert "theorem relSat_congr " not in t[start:end], "Apply the source theorem relocation first"
+        t = t[:start] + MODEL_SYNTAX_ALIASES + t[end:]
+        t = t.replace("import BusyBeaver.ZFC.KQHyp",
+                      "import BusyBeaver.ZFC.KQHyp\nimport BusyBeaver.ZFC.QuotientModel", 1)
     if f == "Basic":
         t = replace_theorem(t, "interpreted_union", """theorem interpreted_union (mem : V → V → Prop) (witness : V)
     (h : QHyp mem) (a : V) :
@@ -89,3 +100,4 @@ out = (HEAD.format(src="QuotientCPGIC (collection part)") + hdr.split("/-!")[0] 
        "universe u\nvariable {V : Type u}\n\n" + body + "end SetTheory.BusyBeaver.ZFC.KQ1Collect\n")
 (D / "KQ1Collect.lean").write_text(out, encoding="utf-8", newline="\n")
 print("wrote KQ1Collect.lean")
+
