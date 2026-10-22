@@ -1,0 +1,16 @@
+/-- K is already present in the maintained dominated derivation. -/
+theorem basisK (a b : A) : T (wim a (wim b a)) :=
+  d12 h a b
+
+/-- Peirce is already present in the maintained dominated derivation. -/
+theorem basisPeirce (a b : A) : T (wim (wim (wim a b) a) a) :=
+  d18 h a b
+
+/-- S uses only two further modus-ponens applications. -/
+theorem basisS (a b c : A) :
+    T (wim (wim a (wim b c)) (wim (wim a b) (wim a c))) :=
+  h.mp
+    (h.mp (d34 h (wim b c) c (wim a (wim b c))
+      (wim (wim a b) (wim a c))) (d57 h (wim b c) c a (wim a b)))
+    (d55 h b c a)
+

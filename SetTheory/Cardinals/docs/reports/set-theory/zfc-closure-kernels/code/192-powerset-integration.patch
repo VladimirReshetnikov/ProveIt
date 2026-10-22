@@ -1,0 +1,44 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSets.lean
+@@ -0,0 +1,14 @@
++import ZF.Zf
++
++/-! The exact power-set interface shared by semantic model constructions.
++The declaration retains its original name and body from PSCCalibration. -/
++
++namespace SetTheory.BusyBeaver.ZFC.PSCCalibration
++
++universe u
++variable {V : Type u}
++
++def PowerSets (mem : V → V → Prop) : Prop :=
++  ∀ a, ∃ p, ∀ y, mem y p ↔ SetTheory.Sub mem y a
++
++end SetTheory.BusyBeaver.ZFC.PSCCalibration
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.DefinableClosure
++import BusyBeaver.ZFC.PowerSets
+ import ZF.Zf
+ import FirstOrder.Completeness
+ 
+@@ -19,9 +20,6 @@
+ 
+ universe u
+ variable {V : Type u}
+-
+-def PowerSets (mem : V → V → Prop) : Prop :=
+-  ∀ a, ∃ p, ∀ y, mem y p ↔ SetTheory.Sub mem y a
+ 
+ def swapArgs : Nat → Nat
+   | 0 => 1
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean
+@@ -1,5 +1,5 @@
+ import BusyBeaver.ZFC.WFRelativization
+-import BusyBeaver.ZFC.PSCCalibration
++import BusyBeaver.ZFC.PowerSets
+ 
+ /-! The general well-founded-part model construction.
+ Declarations are copied verbatim from WFModel; the CPGIC specialization

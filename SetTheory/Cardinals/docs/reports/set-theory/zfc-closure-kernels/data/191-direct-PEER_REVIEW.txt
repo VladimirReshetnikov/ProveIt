@@ -1,0 +1,163 @@
+Independent source and architecture review
+==========================================
+
+Baseline
+--------
+Repository: VladimirReshetnikov/ProveIt
+Pinned main: 57541fe0cfe3af62b4cb58747d8d1d7c16b338d5
+Shared-basis proposal: 49e99c5b7cc6c2e164331961de28bad3904361fd
+
+The pinned main branch preserves the accepted phase-twelve production sources.
+Several recent side-branch commits describe other successful builds, but the
+later merge preserved those sources as inert proposal data. Reading the commit
+messages alone gives the wrong baseline. The actual production pair is:
+
+  DominatedImplication.lean  287 lines, 13,723 bytes
+  Lukasiewicz.lean           524 lines, 28,731 bytes
+  Combined                  811 lines, 42,454 bytes
+
+All 199 project source hashes in phase12/integration/current-review.json match
+the current checkout. This includes the compatibility scope, not just the
+endpoint. The endpoint itself has 179 project modules (167 BusyBeaver modules)
+and 2,129,439 selected source bytes. Its only non-project import is Init.
+The source audit does not inspect stored object bytes or rerun the compiler.
+
+Shared-basis patch
+------------------
+The proposed pair is exactly the already-preserved branch49 source:
+
+  DominatedImplication.lean  300 lines, 14,146 bytes
+  Lukasiewicz.lean           101 lines,  4,097 bytes
+  Combined                  401 lines, 18,243 bytes
+
+The reduction is 410 physical lines and 24,211 UTF-8 bytes (57.03% of the
+two-file byte total). The core grows slightly because it now supplies K,
+Peirce and S as well as unrestricted rho8, composition and implication lifting.
+The unrestricted calculus is the same abstract core at the everywhere-true
+domination relation. The 107 old private cd_ lemmas are then unnecessary.
+
+All fourteen old public declaration headers in the two files are unchanged
+as normalized source text. The three new public declarations are k, peirce,
+and s in DominatedImplication. The entire final Tarski namespace section of
+Lukasiewicz is byte-identical. Structures retain the same fields; the new
+private adapter simply supplies True for every domination obligation.
+These are source/API observations, not a substitute for elaborated type checks.
+
+The two changed modules have 33 transitively affected modules within the
+endpoint import closure. The expensive KSites215Batch files and the source
+certificate modules are outside that affected set. Reusing their already
+accepted evidence is reasonable only with the usual exact source/import/object
+binding checks; no new endpoint build follows just from this source audit.
+The projected selected-source total is 2,105,228 bytes if the closure remains
+the same. This is not a build-time or object-size measurement.
+
+Maintained producer successor
+-----------------------------
+The producer patch changes its pinned input to the preserved six-goal raw
+58-lemma source and pins the unrestricted adapter. The unchanged numerical
+adapter is copied byte-for-byte. The small parser checks every raw private
+proof as one modus-ponens application, validates relation guards, and checks
+all six public conclusion bodies. It then inlines the two single-use aliases
+and repeats the audit on the 56-lemma output. The separate derivation text
+is pinned ancestry data: the producer does not claim to parse or validate
+that text, and executes no historical renderer.
+
+The generated core and unrestricted adapter match the proposed pair exactly;
+the generated numerical adapter matches the baseline exactly. The integration
+patch applies cleanly at the pinned main revision. Counting both Lean files
+and the maintained producer, the touched set is 52,651 -> 28,760 bytes and
+1,032 -> 631 lines, saving 23,891 bytes and 401 lines. The producer's extra
+320 bytes are therefore included rather than hidden.
+
+The producer remains an untrusted reproducibility diagnostic. Its source
+parser and SHA256 pins do not replace Lean's kernel; fresh compilation of the
+emitted proof terms and the old public interfaces is the proof authority.
+Normal Python is required because the validation uses assertions and rejects
+execution under -O. All inputs are inert UTF-8 text. No new logical axiom,
+admission or native reduction is introduced by the producer change.
+
+One documentation detail should be explicit in the integration report: the
+exact historical core header names rho8cd/derivation_core.txt, while the new
+maintained producer intentionally reads the preserved phase12 six-goal input.
+The canonical old derivation is not silently overwritten. Give the maintained
+producer's --check/--out command as the authoritative reproduction workflow.
+
+Semantic contraction
+--------------------
+The proposed direct full-seed construction is mathematically well-founded.
+KEind222.c222_complete (lines305-323 of the baseline) gives satisfaction of
+the ORIGINAL named theory with literal equality, not just satisfaction of its
+equality translation. Thus a derivable translated bundle can establish the
+full named seed property on the original model. The construction requires
+free-name preservation under the equality translation and a private label
+equal to the code of a double-negated translated matrix. The code bound then
+makes the private label fresh and distinct from the two role labels. Named
+falsity is literal False, so the named-bundle normalization itself requires
+no irreflexivity hypothesis; the numerical decoding theorem still does.
+
+Only the preliminary indiscernibility quotient is bypassed. The tagged-domain
+bisimulation quotient, well-founded-part model construction and ordinary
+completeness theorem remain. Existing Rocq Complete222 already uses the
+corresponding direct construction, so credit the earlier cross-lane proposal
+and Rocq architecture. Any net source saving must count the new freshness and
+named-semantics proofs and retained compatibility modules.
+
+A subsequent experiment can state the direct named seed lemma for arbitrary
+distinct input/output labels. Choosing input3/output1 then matches the odd
+name map used by Code254GIC.toNamed: slot1 maps to3, slot0 to1. This would derive
+FormSeed directly and avoid KLowerSeed's additional equality binder moving
+the input from3 to0. The same double-negation code is positive and divisible
+by4, hence exceeds3. This is an unimplemented next step; its interface split
+and net maintenance cost must be measured before any deletion is claimed.
+
+Review of the concrete six-file direct-seed overlay
+-------------------------------------------------
+The implementation in lean_work/src was independently read after the preceding
+mathematical review. It follows the construction just described. In particular,
+not_free_enc_th applies existing occurs_lt_enc to th(m) only after free_th has
+transported the free-name premise. It does not assume that semantic equality and
+the equality interpretation coincide on the original domain. The hT assumption
+already provides satisfaction of the original bundle. The final witness is e0
+in that same original domain. The named bundle theorem remains free of any
+irreflexivity assumption; the wrapper retains hirr for FullSeed. There is no
+import cycle through the old quotient or the endpoint.
+
+The extracted definitions retain their original namespaces and statement types.
+Scanning the maintained BusyBeaver Lean sources found no unexpected consumer of
+the old quotient or equality-free bridge: the endpoint and KLowerSeed are the
+relevant production consumers. Old Code254Models still has legacy254 and
+QuotientZF0/DuplicateProfiles clients, so its source must remain available.
+
+The six-file overlay alone changes the selected K215 endpoint closure from179
+to178 project modules and from2,129,439 to2,121,905 source bytes, a reduction of
+7,534 bytes and150 lines. Besides KIndisc222 and KSeedModel222, Code254Models
+leaves the closure. KSeedDirect222 and KSeedInterface222 enter. The existing
+KLowerSeed and KEndpoint proofs are adjusted as described. Counting all six
+new/modified files, including retained compatibility modules, the maintenance
+set grows from19,104 to25,899 bytes:6,795 bytes. These are different metrics.
+
+Combining this semantic overlay with the shared implication pair yields a
+projected178-module selected closure of2,097,694 bytes,31,745 below the baseline.
+This is a source-graph calculation. The direct_seed_peer_review.json receipt
+pins the six exact source hashes reviewed. The Lean worker supplies fresh
+compilation receipts; this source review does not claim a machine-specific
+endpoint rebuild.
+
+Rocq boundary refactor
+---------------------
+The generic enumerator-completeness theorem inspected in the sibling patch
+has the right strength. At a boundary pl(seed)=0, the reach theorem finds
+each candidate np(seed)+k or has already halted. Choose Y=np(seed) and
+N=P3(PY(P1 tail)); pairing bounds give Y<=N, so k=N-Y is valid. The reset/start
+prefix and universal run_first theorem handle arbitrary remaining registers.
+The theorem is completeness-only: arbitrary initial registers need not obey
+the invariant required for soundness. Existing zero and seed endpoints are
+specializations, and their statements remain intact. Compilation and recursive
+kernel checks are owned by the Rocq worker, not claimed by this review.
+
+Reproduction
+------------
+Run audit_current.py against the pinned repository with the sibling branch49
+directory. It emits current_source_audit.json, including exact source hashes,
+the 179-module graph, the public-header comparisons, and all33 affected modules.
+The supplied JSON is an observed source-audit result, not a fresh proof receipt.
