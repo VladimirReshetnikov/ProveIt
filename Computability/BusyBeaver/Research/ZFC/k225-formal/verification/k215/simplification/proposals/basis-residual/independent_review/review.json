@@ -1,0 +1,29 @@
+{
+  "scope": "Independent mathematical/source audit; one fresh Coq 8.18 extension check; no full endpoint build",
+  "two_mp_extension": {
+    "source": "TwoMPSAudit.v",
+    "sha256": "712d831e504131247c39797ef80417729d42653c3fdcf3cd139366482f68a8c2",
+    "compiler": "Coq 8.18.0, OCaml 4.14.1",
+    "command": [
+      "coqc",
+      "TwoMPSAudit.v"
+    ],
+    "exit_code": 0,
+    "stdout": "Closed under the global context\n",
+    "generic_premises": [
+      "mp",
+      "d34",
+      "d55",
+      "d57"
+    ],
+    "proves": "S from those three schematic theorems in two MP applications",
+    "whole_endpoint_checked": false
+  },
+  "source_review": "shared_basis_review.json",
+  "baseline_review": "baseline_audit.json",
+  "conclusion": "No defect found in the two-MP substitution, universal-relation specialization, preserved Tarski bridge, source savings accounting, exact residual-prefix/suffix contract, complete literal coverage, or final focused compiler bindings. Full ZFC endpoint integration remains separately uncompiled.",
+  "focused_lean_execution_review": "lean_execution_review.json",
+  "residual_execution_review": "residual_review.json",
+  "portable_residual_packet_review": "residual_packet_review.json",
+  "longer_term_direct_seed_review": "direct_seed_review.json"
+}

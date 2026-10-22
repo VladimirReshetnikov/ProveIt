@@ -1,0 +1,1169 @@
+(** Compact replay of Source 149's dominated-rho8 certificate.
+    Certificate SHA256: eb2970e1e4b86c1f0d26ec81bab59373e56f596f5c6359d57beec920cc6994bf.
+    Retained original nodes: 629; instructions: 735;
+    symbolic DAG entries: 272. The generator is untrusted. *)
+
+(** Generic, purely syntactic certificate soundness for dominated implication. *)
+From Stdlib Require Import Arith Lia List Bool NArith.
+From K230L Require Import Codes230.
+Import ListNotations.
+
+Record DomImp (T : nat -> Prop) : Prop := {
+  dtruth : T 0;
+  dmp : forall a b, T (wim a b) -> T a -> T b;
+  drho8 : forall a b c u, u <= a -> T (rho8 a b c u) }.
+Arguments dtruth {T} _.
+Arguments dmp {T} _ _ _ _ _.
+Arguments drho8 {T} _ _ _ _ _ _.
+
+(** Implementation details stay qualified; the public interface is DomImp and rho8_all. *)
+Module Certificate.
+
+Inductive expr := Z | V (i : nat) | I (a b : expr).
+(** This is the only normalization used by the certificate. Its semantic law
+    below proves that the native alias wim 0 0 = 0 is respected. *)
+Definition imp a b := match a,b with Z,Z => Z | _,_ => I a b end.
+Fixpoint eval (v : nat -> nat) (a : expr) : nat :=
+  match a with Z => 0 | V i => v i | I b c => wim (eval v b) (eval v c) end.
+Lemma eval_imp v a b : eval v (imp a b) = wim (eval v a) (eval v b).
+Proof. destruct a,b; reflexivity. Qed.
+
+Fixpoint eqb (a b : expr) : bool :=
+  match a,b with
+  | Z,Z => true | V i,V j => Nat.eqb i j
+  | I a b,I c d => eqb a c && eqb b d
+  | _,_ => false end.
+Lemma eqb_sound a b : eqb a b = true -> a = b.
+Proof.
+ revert b; induction a; intros b H; destruct b; simpl in H; try discriminate; auto.
+ - apply Nat.eqb_eq in H. now subst.
+ - apply andb_true_iff in H as [H1 H2]. now rewrite (IHa1 _ H1), (IHa2 _ H2).
+Qed.
+
+Fixpoint subst (env : list expr) (a : expr) : expr :=
+ match a with Z => Z | V i => nth i env Z | I b c => imp (subst env b) (subst env c) end.
+Lemma eval_subst v env a : eval v (subst env a) = eval (fun i => eval v (nth i env Z)) a.
+Proof. induction a; simpl; auto. now rewrite eval_imp, IHa1, IHa2. Qed.
+
+Fixpoint subterm (u a : expr) : bool :=
+ eqb u a || match a with I b c => subterm u b || subterm u c | _ => false end.
+Definition dominated u a := eqb u Z || subterm u a.
+Lemma subterm_sound u a : subterm u a = true -> forall v, eval v u <= eval v a.
+Proof.
+ induction a; simpl; intros H v; apply orb_true_iff in H as [H|H].
+ - apply eqb_sound in H. subst; simpl; lia.
+ - discriminate.
+ - apply eqb_sound in H. subst; simpl; lia.
+ - discriminate.
+ - apply eqb_sound in H. subst; simpl; lia.
+ - apply orb_true_iff in H as [H|H]; simpl.
+   + specialize (IHa1 H v). unfold wim. pose proof (P_ge_l (eval v a1) (eval v a2)). lia.
+   + specialize (IHa2 H v). unfold wim. pose proof (P_ge_r (eval v a1) (eval v a2)). lia.
+Qed.
+Lemma dominated_sound u a : dominated u a = true -> forall v, eval v u <= eval v a.
+Proof.
+ unfold dominated. intros H v. apply orb_true_iff in H as [H|H].
+ - apply eqb_sound in H. subst; simpl; lia.
+ - now apply subterm_sound.
+Qed.
+Local Opaque wim.
+Definition rho a b c u := imp (imp (imp c u) a) (imp (imp a c) (imp b c)).
+Lemma eval_rho v a b c u : eval v (rho a b c u) = rho8 (eval v a) (eval v b) (eval v c) (eval v u).
+Proof. unfold rho, rho8. repeat rewrite eval_imp. reflexivity. Qed.
+
+(** The term table is a DAG: references are backward distances. Out-of-range
+    indices mean truth, so malformed input cannot introduce an assumption. *)
+Inductive term := TZero | TVar (i : nat) | TImp (a b : nat).
+Definition term_expr (seen : list expr) (t : term) :=
+ match t with TZero => Z | TVar i => V i | TImp a b => I (nth a seen Z) (nth b seen Z) end.
+Definition decode (ts : list term) : list expr :=
+ fold_left (fun seen t => term_expr seen t :: seen) ts [].
+
+Definition get (xs : list expr) (i : nat) := nth i xs Z.
+Inductive rule := Truth | Ax (a b c u : nat) | MP (major minor : nat) | Inst (parent : nat) (env : list nat).
+(** Every instruction is sound, including malformed ones: a rejected axiom or
+    detachment returns truth. Hence checking the final symbolic result suffices. *)
+Definition derive (ts seen : list expr) (r : rule) : expr :=
+ match r with
+ | Truth => Z
+ | Ax a b c u =>
+   if dominated (get ts u) (get ts a)
+   then rho (get ts a) (get ts b) (get ts c) (get ts u) else Z
+ | MP major minor =>
+   match get seen major with
+   | I a b => if eqb a (get seen minor) then b else Z
+   | _ => Z end
+ | Inst p env => subst (map (get ts) env) (get seen p)
+ end.
+Fixpoint run (ts : list expr) (steps : list rule) (seen : list expr) : list expr :=
+ match steps with [] => seen | s :: ss => run ts ss (derive ts seen s :: seen) end.
+Definition check ts steps goal := eqb (get (run ts steps []) 0) goal.
+
+Section Soundness.
+Variable T : nat -> Prop.
+Variable h : DomImp T.
+Definition valid a := forall v, T (eval v a).
+Lemma valid_truth : valid Z.
+Proof. intros v; apply (dtruth h). Qed.
+Lemma get_valid xs i : Forall valid xs -> valid (get xs i).
+Proof.
+ unfold get; intros H; revert i. induction H; intros [|i]; simpl; auto using valid_truth.
+Qed.
+Lemma inst_valid env a : valid a -> valid (subst env a).
+Proof. intros H v; rewrite eval_subst; apply H. Qed.
+Lemma derive_sound ts seen r : Forall valid seen -> valid (derive ts seen r).
+Proof.
+ intros Hs; destruct r; cbn [derive].
+ - apply valid_truth.
+ - destruct (dominated (get ts u) (get ts a)) eqn:Hd; [|apply valid_truth].
+   intros v. rewrite eval_rho. apply (drho8 h). now apply dominated_sound.
+ - pose proof (get_valid seen major Hs) as Hmaj.
+   destruct (get seen major) as [|i|a b]; try apply valid_truth.
+   destruct (eqb a (get seen minor)) eqn:He; [|apply valid_truth].
+   apply eqb_sound in He. intros v. specialize (Hmaj v). cbn [eval] in Hmaj.
+   rewrite He in Hmaj. exact (dmp h _ _ Hmaj (get_valid seen minor Hs v)).
+ - apply inst_valid. now apply get_valid.
+Qed.
+Lemma run_sound ts steps seen : Forall valid seen -> Forall valid (run ts steps seen).
+Proof.
+ revert seen. induction steps as [|s ss IH]; intros seen Hs; simpl; [exact Hs|].
+ apply IH. constructor; [now apply derive_sound|exact Hs].
+Qed.
+Theorem check_sound ts steps goal : check ts steps goal = true -> valid goal.
+Proof.
+ unfold check; intros H; apply eqb_sound in H; rewrite <- H.
+ apply get_valid. apply run_sound. constructor.
+Qed.
+End Soundness.
+
+
+
+Definition ti (a b : N) := TImp (N.to_nat a) (N.to_nat b).
+Definition ax (a b c u : N) := Ax (N.to_nat a) (N.to_nat b) (N.to_nat c) (N.to_nat u).
+Definition mp (major minor : N) := MP (N.to_nat major) (N.to_nat minor).
+Definition inst (parent : N) (env : list N) := Inst (N.to_nat parent) (map N.to_nat env).
+
+Definition term_data : list term := [
+TVar 0;
+TVar 1;
+ti 1 0;
+ti 0 1;
+ti 2 3;
+TVar 2;
+ti 0 5;
+ti 1 5;
+ti 5 0;
+TVar 3;
+ti 0 9;
+ti 9 5;
+ti 10 10;
+TVar 5;
+ti 6 12;
+ti 0 7;
+TVar 4;
+TZero;
+ti 17 0;
+ti 1 18;
+ti 0 15;
+ti 19 3;
+ti 4 20;
+ti 0 15;
+ti 11 22;
+ti 24 24;
+ti 23 25;
+ti 0 20;
+ti 27 16;
+ti 19 27;
+ti 18 20;
+ti 0 25;
+ti 29 26;
+ti 21 31;
+ti 32 22;
+ti 6 33;
+ti 28 26;
+ti 0 20;
+ti 37 32;
+ti 37 0;
+ti 39 0;
+ti 35 24;
+ti 32 0;
+ti 38 42;
+ti 27 34;
+ti 39 35;
+ti 41 40;
+ti 37 41;
+ti 1 0;
+ti 48 0;
+ti 17 2;
+ti 0 50;
+ti 35 51;
+ti 25 43;
+ti 4 37;
+ti 9 49;
+ti 25 11;
+ti 56 0;
+ti 0 56;
+ti 58 49;
+ti 0 54;
+ti 58 15;
+ti 9 52;
+ti 0 17;
+ti 2 0;
+ti 38 59;
+ti 0 65;
+ti 0 56;
+ti 34 58;
+ti 68 0;
+ti 0 68;
+ti 32 70;
+ti 70 69;
+ti 61 34;
+ti 71 0;
+ti 73 0;
+ti 0 74;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 76 5;
+ti 0 79;
+ti 0 80;
+ti 79 0;
+ti 0 81;
+ti 0 82;
+ti 5 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 9 5;
+ti 9 10;
+ti 0 90;
+ti 0 91;
+ti 15 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 19 5;
+ti 7 22;
+ti 28 23;
+ti 0 103;
+ti 0 104;
+ti 24 0;
+ti 0 106;
+ti 0 27;
+ti 5 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 9 5;
+ti 35 9;
+ti 117 43;
+ti 38 0;
+ti 119 0;
+ti 117 0;
+ti 0 118;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 123 122;
+ti 126 123;
+ti 0 127;
+ti 0 2;
+ti 3 2;
+ti 92 56;
+ti 58 0;
+ti 58 132;
+ti 105 95;
+ti 0 123;
+ti 0 124;
+ti 108 0;
+ti 0 137;
+ti 0 138;
+ti 5 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 9 5;
+ti 9 10;
+ti 0 119;
+ti 0 120;
+ti 15 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 19 5;
+ti 7 22;
+ti 84 23;
+ti 0 147;
+ti 0 148;
+ti 24 0;
+ti 0 150;
+ti 0 27;
+ti 5 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 9 5;
+ti 35 9;
+ti 169 37;
+ti 170 134;
+ti 39 135;
+ti 0 1;
+ti 147 2;
+ti 1 0;
+ti 149 0;
+ti 4 0;
+ti 0 5;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 49 8;
+ti 50 8;
+ti 8 0;
+ti 0 52;
+ti 0 12;
+ti 4 0;
+ti 0 55;
+ti 0 56;
+ti 0 4;
+ti 17 6;
+ti 21 17;
+ti 9 18;
+ti 0 1;
+ti 62 2;
+ti 1 0;
+ti 64 0;
+ti 4 0;
+ti 0 5;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 19 8;
+ti 20 8;
+ti 8 0;
+ti 0 22;
+ti 0 12;
+ti 4 0;
+ti 0 25;
+ti 0 26;
+ti 0 4;
+ti 17 6;
+ti 42 80;
+ti 0 21;
+ti 0 82;
+ti 0 83;
+ti 3 0;
+ti 0 47;
+ti 0 48;
+ti 5 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 9 5;
+ti 9 10;
+ti 0 14;
+ti 0 15;
+ti 15 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 19 5;
+ti 7 22;
+ti 42 23;
+ti 0 106;
+ti 0 107;
+ti 24 0;
+ti 0 109;
+ti 0 27;
+ti 5 0;
+ti 3 0;
+ti 0 4;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 9 5;
+ti 35 9;
+ti 251 59;
+ti 38 0;
+ti 253 0;
+ti 41 0;
+ti 0 42;
+ti 0 3;
+ti 4 2;
+ti 4 0;
+ti 88 67;
+ti 86 0;
+ti 69 261;
+ti 219 264;
+ti 227 210;
+ti 228 261;
+ti 1 0;
+ti 230 257;
+ti 2 0;
+ti 265 253].
+Definition proof_data : list rule := [
+ax 270 266 271 270;
+ax 264 262 271 270;
+inst 0 [259; 269; 268; 266]%N;
+inst 1 [270; 270; 271; 271]%N;
+mp 1 0;
+inst 3 [256; 259; 271; 262]%N;
+inst 1 [266; 270; 271]%N;
+mp 1 0;
+ax 270 266 271 254;
+inst 0 [253; 251; 266]%N;
+inst 1 [271; 254; 270]%N;
+mp 1 0;
+inst 10 [248; 250; 271; 262]%N;
+inst 1 [270; 266; 271]%N;
+mp 1 0;
+inst 0 [254; 254; 254; 271]%N;
+inst 4 [254; 254; 254]%N;
+mp 1 0;
+inst 9 [271; 254; 270]%N;
+inst 1 [253]%N;
+mp 1 0;
+inst 13 [254; 270; 270; 271]%N;
+inst 1 [259; 247]%N;
+mp 1 0;
+Truth;
+inst 1 [254; 271]%N;
+inst 1 []%N;
+mp 1 0;
+inst 26 [246; 271; 271; 270]%N;
+inst 1 [271]%N;
+mp 1 0;
+inst 0 [259; 271]%N;
+inst 1 [270; 259]%N;
+mp 1 0;
+inst 0 [254; 271]%N;
+inst 10 []%N;
+mp 1 0;
+inst 6 [270; 271]%N;
+inst 1 [270]%N;
+mp 1 0;
+inst 0 [254; 271]%N;
+inst 16 []%N;
+mp 1 0;
+inst 41 [271; 270; 271; 266]%N;
+inst 1 [269]%N;
+mp 1 0;
+inst 44 [260; 270; 271; 262]%N;
+inst 1 [270; 266; 271]%N;
+mp 1 0;
+inst 47 [242; 260; 271; 255]%N;
+inst 1 [262; 270; 266; 271]%N;
+mp 1 0;
+inst 0 [0; 260; 262; 240; 271]%N;
+inst 44 [266; 241; 270]%N;
+mp 1 0;
+inst 0 [254; 271; 270; 266]%N;
+inst 31 []%N;
+mp 1 0;
+inst 56 [239; 270; 271; 262]%N;
+inst 1 [271; 270; 266]%N;
+mp 1 0;
+inst 0 [260; 270; 270; 271]%N;
+inst 16 [270; 266; 238]%N;
+mp 1 0;
+inst 0 [254; 271; 270]%N;
+inst 40 []%N;
+mp 1 0;
+inst 66 [269; 271; 266]%N;
+inst 1 [271; 270]%N;
+mp 1 0;
+inst 0 [237; 260; 271]%N;
+inst 1 [270; 266; 237]%N;
+mp 1 0;
+inst 0 [254; 271; 270]%N;
+inst 49 []%N;
+mp 1 0;
+inst 0 [17; 77]%N;
+inst 76 [77; 269; 17]%N;
+inst 2 [7; 269]%N;
+ax 77 7 269 233;
+inst 22 [98; 77; 95]%N;
+inst 80 [95; 9; 99]%N;
+inst 6 [8; 9]%N;
+inst 34 [243; 98; 77; 8]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+mp 9 0;
+mp 11 0;
+mp 13 0;
+inst 89 [270; 260; 271; 262]%N;
+inst 22 [270; 266; 271]%N;
+mp 1 0;
+inst 18 [236; 270]%N;
+inst 1 [271; 270; 266; 236]%N;
+mp 1 0;
+inst 96 [232; 271; 262]%N;
+inst 1 [270; 271; 266]%N;
+mp 1 0;
+inst 24 [231; 232]%N;
+inst 1 [271; 270; 266; 231]%N;
+mp 1 0;
+inst 0 [269; 55; 77]%N;
+inst 28 [14; 15]%N;
+ax 56 14 15 269;
+inst 3 [228; 269; 270]%N;
+inst 106 [270; 271; 228]%N;
+mp 1 0;
+inst 57 [271; 270; 266; 262; 255]%N;
+inst 108 [229; 260; 271; 258]%N;
+inst 1 [262; 266; 255; 270; 271]%N;
+mp 1 0;
+ax 260 262 271 270;
+inst 1 [242; 270; 266; 241; 262; 271]%N;
+inst 1 [262; 270; 266; 266]%N;
+mp 1 0;
+inst 0 [254; 271; 270; 266]%N;
+inst 1 [254; 254; 254; 254]%N;
+mp 1 0;
+inst 0 [267; 271; 263]%N;
+inst 120 [270; 271; 266]%N;
+mp 1 0;
+inst 14 [271; 263]%N;
+inst 1 [271; 270; 266]%N;
+mp 1 0;
+inst 6 [270; 271; 223]%N;
+inst 4 [267; 266; 262]%N;
+mp 1 0;
+inst 6 [222; 255; 258]%N;
+inst 1 [271; 270; 266; 262]%N;
+mp 1 0;
+inst 56 [217; 255]%N;
+inst 1 [271; 270; 266; 262; 255; 217]%N;
+mp 1 0;
+ax 234 258 271 270;
+inst 0 [271; 270; 271; 266; 224; 255]%N;
+inst 14 [269; 266; 262]%N;
+mp 1 0;
+inst 63 [220; 271]%N;
+inst 1 [271; 270; 266; 262; 220]%N;
+mp 1 0;
+inst 141 [221; 271; 255]%N;
+inst 1 [271; 270; 266; 262]%N;
+mp 1 0;
+inst 143 [270; 215; 271; 258]%N;
+inst 1 [270; 266; 262; 255; 271]%N;
+mp 1 0;
+inst 72 [213; 270]%N;
+inst 1 [271; 270; 266; 262; 255; 213]%N;
+mp 1 0;
+inst 25 [271; 260; 211]%N;
+inst 1 [243; 271; 262; 266; 270]%N;
+mp 1 0;
+inst 19 [271; 255; 262; 266; 207]%N;
+inst 1 [271; 209; 226; 270]%N;
+mp 1 0;
+inst 34 [244; 262; 255]%N;
+inst 112 [271; 270; 266]%N;
+mp 1 0;
+inst 84 [218; 262]%N;
+inst 1 [271; 270; 266; 262; 218]%N;
+mp 1 0;
+inst 0 [271; 270; 262; 204]%N;
+inst 10 [245; 262; 271; 266]%N;
+mp 1 0;
+inst 9 [203; 270; 255; 270; 271]%N;
+inst 1 [270; 266; 262; 255]%N;
+mp 1 0;
+inst 93 [201; 270]%N;
+inst 1 [271; 270; 266; 262; 201]%N;
+mp 1 0;
+inst 46 [271; 270; 200]%N;
+inst 1 [269; 271; 266; 270]%N;
+mp 1 0;
+inst 0 [269; 56; 16]%N;
+inst 76 [142; 141; 144; 254]%N;
+ax 145 142 144 271;
+mp 1 0;
+mp 0 154;
+inst 119 [271; 270; 270; 271]%N;
+mp 1 0;
+inst 7 [271; 145; 268]%N;
+inst 60 [271; 270; 269]%N;
+mp 1 0;
+mp 3 0;
+inst 0 [269; 137]%N;
+mp 11 0;
+mp 82 0;
+mp 84 0;
+inst 90 [12; 11; 14; 254]%N;
+ax 16 12 14 56;
+mp 1 0;
+mp 0 168;
+inst 136 [16; 14; 15]%N;
+inst 194 [15; 11; 56]%N;
+inst 120 [10; 11]%N;
+inst 148 [269; 16; 14; 10]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 27 [56; 16; 15]%N;
+inst 80 [270; 266; 271]%N;
+inst 81 [56; 77; 269]%N;
+mp 2 0;
+mp 4 0;
+mp 17 0;
+mp 104 0;
+inst 83 [137; 77; 56]%N;
+inst 110 [26; 18; 28; 254]%N;
+inst 209 [28; 137; 55; 26]%N;
+mp 1 0;
+mp 0 188;
+inst 91 [54; 137; 30]%N;
+mp 1 0;
+inst 140 [25; 26]%N;
+inst 215 [26; 55; 74; 25]%N;
+inst 124 [27; 55; 137; 74]%N;
+mp 1 0;
+mp 3 0;
+inst 145 [19; 25]%N;
+ax 29 19 25 31;
+inst 48 [31; 29; 26]%N;
+inst 38 [31; 137]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 108 [53; 29; 25]%N;
+inst 129 [22; 21; 24; 254]%N;
+ax 26 22 24 28;
+mp 1 0;
+mp 0 207;
+inst 175 [26; 24; 25]%N;
+inst 233 [25; 21; 28]%N;
+inst 159 [20; 21]%N;
+inst 187 [31; 26; 24; 20]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 66 [28; 26; 25]%N;
+inst 119 [28; 137; 55]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 26 0;
+mp 32 0;
+inst 140 [56; 42]%N;
+inst 64 [56; 53]%N;
+mp 1 0;
+inst 176 [39; 40]%N;
+inst 252 [40; 55; 39]%N;
+inst 178 [32; 55]%N;
+inst 206 [41; 56; 77; 32]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 183 [33; 39]%N;
+ax 53 33 39 55;
+inst 86 [55; 53; 40]%N;
+inst 76 [55; 137]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 146 [52; 53; 39]%N;
+inst 167 [36; 35; 38; 254]%N;
+ax 40 36 38 42;
+mp 1 0;
+mp 0 245;
+inst 213 [40; 38; 39]%N;
+inst 271 [39; 35; 42]%N;
+inst 197 [34; 35]%N;
+inst 225 [55; 40; 38; 34]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 104 [42; 40; 39]%N;
+inst 94 [42; 56]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 26 0;
+mp 34 0;
+inst 161 [99; 137; 54]%N;
+inst 212 [49; 50]%N;
+inst 237 [56; 99; 95; 51; 49]%N;
+mp 1 0;
+inst 215 [43; 49]%N;
+ax 53 43 49 55;
+inst 118 [55; 53; 50]%N;
+mp 0 31;
+mp 2 0;
+mp 4 0;
+inst 177 [56; 53; 49]%N;
+inst 198 [46; 45; 48; 254]%N;
+ax 50 46 48 52;
+mp 1 0;
+mp 0 276;
+inst 244 [50; 48; 49]%N;
+inst 302 [49; 45; 52]%N;
+inst 228 [44; 45]%N;
+inst 256 [55; 50; 48; 44]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 135 [52; 50; 49]%N;
+inst 125 [52; 99]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 25 0;
+mp 29 0;
+mp 31 0;
+mp 70 0;
+mp 110 0;
+inst 221 [62; 57; 64; 254]%N;
+ax 75 62 64 86;
+mp 1 0;
+mp 0 299;
+inst 202 [75; 74; 86]%N;
+mp 1 0;
+inst 201 [86; 75; 63]%N;
+inst 219 [63; 59]%N;
+inst 235 [73; 86; 74; 60]%N;
+mp 1 0;
+inst 255 [58; 63]%N;
+ax 59 58 63 75;
+inst 213 [66; 62; 59]%N;
+inst 148 [61; 86]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+mp 11 0;
+inst 217 [86; 95; 99]%N;
+mp 1 0;
+mp 15 0;
+inst 240 [137; 75; 77]%N;
+inst 268 [71; 72]%N;
+ax 76 71 72 137;
+inst 171 [137; 76; 73]%N;
+inst 161 [137; 95]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 251 [69; 68; 71; 254]%N;
+ax 73 69 71 76;
+mp 1 0;
+mp 0 329;
+inst 297 [73; 71; 72]%N;
+inst 355 [72; 68; 76]%N;
+inst 281 [67; 68]%N;
+inst 309 [137; 73; 71; 67]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 188 [76; 73; 72]%N;
+inst 241 [76; 77; 137]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 24 0;
+mp 26 0;
+inst 270 [83; 78; 85; 254]%N;
+ax 96 83 85 137;
+mp 1 0;
+mp 0 348;
+inst 251 [96; 95; 137]%N;
+mp 1 0;
+inst 250 [137; 96; 84]%N;
+inst 268 [84; 80]%N;
+inst 284 [94; 137; 95; 81]%N;
+mp 1 0;
+inst 304 [79; 84]%N;
+ax 80 79 84 96;
+inst 262 [87; 83; 80]%N;
+inst 197 [82; 137]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+mp 11 0;
+inst 266 [137; 233; 269]%N;
+mp 1 0;
+mp 15 0;
+inst 289 [243; 96; 98]%N;
+inst 317 [92; 93]%N;
+ax 97 92 93 243;
+inst 220 [243; 97; 94]%N;
+inst 210 [243; 233]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 300 [90; 89; 92; 254]%N;
+ax 94 90 92 97;
+mp 1 0;
+mp 0 378;
+inst 346 [94; 92; 93]%N;
+inst 404 [93; 89; 97]%N;
+inst 330 [88; 89]%N;
+inst 358 [243; 94; 92; 88]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 237 [97; 94; 93]%N;
+inst 290 [97; 98; 243]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 24 0;
+mp 26 0;
+mp 49 0;
+mp 99 0;
+mp 212 0;
+mp 331 0;
+inst 347 [153; 197]%N;
+inst 423 [197; 271; 153]%N;
+inst 349 [138; 271]%N;
+ax 197 138 271 266;
+inst 369 [233; 197; 198]%N;
+inst 427 [198; 140; 269]%N;
+inst 353 [139; 140]%N;
+inst 381 [260; 233; 197; 139]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+mp 9 0;
+mp 11 0;
+mp 13 0;
+inst 335 [271; 191; 197]%N;
+inst 363 [150; 151]%N;
+ax 268 150 151 271;
+inst 266 [271; 268; 152]%N;
+mp 0 256;
+mp 2 0;
+mp 4 0;
+inst 345 [148; 147; 150; 254]%N;
+ax 152 148 150 268;
+mp 1 0;
+mp 0 423;
+inst 391 [152; 150; 151]%N;
+inst 449 [151; 147; 268]%N;
+inst 375 [146; 147]%N;
+inst 403 [271; 152; 150; 146]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 282 [268; 152; 151]%N;
+inst 335 [268; 197; 271]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 23 0;
+inst 337 [270; 197; 268]%N;
+inst 364 [162; 154; 164; 254]%N;
+inst 463 [164; 270; 191; 162]%N;
+mp 1 0;
+mp 0 442;
+inst 345 [190; 270; 166]%N;
+mp 1 0;
+inst 394 [161; 162]%N;
+inst 469 [162; 191; 196; 161]%N;
+inst 378 [163; 191; 270; 196]%N;
+mp 1 0;
+mp 3 0;
+inst 399 [155; 161]%N;
+ax 165 155 161 167;
+inst 302 [167; 165; 162]%N;
+inst 292 [167; 270]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 362 [189; 165; 161]%N;
+inst 383 [158; 157; 160; 254]%N;
+ax 162 158 160 164;
+mp 1 0;
+mp 0 461;
+inst 429 [162; 160; 161]%N;
+inst 487 [161; 157; 164]%N;
+inst 413 [156; 157]%N;
+inst 441 [167; 162; 160; 156]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 320 [164; 162; 161]%N;
+inst 373 [164; 270; 191]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 26 0;
+mp 32 0;
+inst 394 [268; 178]%N;
+inst 318 [268; 189]%N;
+mp 1 0;
+inst 430 [175; 176]%N;
+inst 506 [176; 191; 175]%N;
+inst 432 [168; 191]%N;
+inst 460 [177; 268; 197; 168]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 437 [169; 175]%N;
+ax 189 169 175 191;
+inst 340 [191; 189; 176]%N;
+inst 330 [191; 270]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 400 [188; 189; 175]%N;
+inst 421 [172; 171; 174; 254]%N;
+ax 176 172 174 178;
+mp 1 0;
+mp 0 499;
+inst 467 [176; 174; 175]%N;
+inst 525 [175; 171; 178]%N;
+inst 451 [170; 171]%N;
+inst 479 [191; 176; 174; 170]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 358 [178; 176; 175]%N;
+inst 348 [178; 268]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 26 0;
+mp 34 0;
+inst 415 [269; 270; 190]%N;
+inst 466 [185; 186]%N;
+inst 491 [268; 269; 198; 187; 185]%N;
+mp 1 0;
+inst 469 [179; 185]%N;
+ax 189 179 185 191;
+inst 372 [191; 189; 186]%N;
+mp 0 31;
+mp 2 0;
+mp 4 0;
+inst 431 [268; 189; 185]%N;
+inst 452 [182; 181; 184; 254]%N;
+ax 186 182 184 188;
+mp 1 0;
+mp 0 530;
+inst 498 [186; 184; 185]%N;
+inst 556 [185; 181; 188]%N;
+inst 482 [180; 181]%N;
+inst 510 [191; 186; 184; 180]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 389 [188; 186; 185]%N;
+inst 379 [188; 269]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 25 0;
+mp 29 0;
+mp 31 0;
+mp 70 0;
+mp 110 0;
+inst 475 [194; 193; 196; 254]%N;
+ax 198 194 196 270;
+mp 1 0;
+mp 0 553;
+inst 521 [198; 196; 197]%N;
+inst 579 [197; 193; 270]%N;
+inst 505 [192; 193]%N;
+inst 533 [269; 198; 196; 192]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 412 [270; 198; 197]%N;
+mp 0 384;
+mp 2 0;
+mp 15 0;
+mp 128 0;
+mp 154 0;
+inst 0 [269; 198; 137]%N;
+mp 0 1;
+inst 469 [260; 233; 243]%N;
+inst 496 [108; 100; 110; 254]%N;
+inst 595 [110; 260; 137; 108]%N;
+mp 1 0;
+mp 0 574;
+inst 477 [136; 260; 112]%N;
+mp 1 0;
+inst 526 [107; 108]%N;
+inst 601 [108; 137; 198; 107]%N;
+inst 510 [109; 137; 260; 198]%N;
+mp 1 0;
+mp 3 0;
+inst 531 [101; 107]%N;
+ax 111 101 107 113;
+inst 434 [113; 111; 108]%N;
+inst 424 [113; 260]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 494 [135; 111; 107]%N;
+inst 515 [104; 103; 106; 254]%N;
+ax 108 104 106 110;
+mp 1 0;
+mp 0 593;
+inst 561 [108; 106; 107]%N;
+inst 619 [107; 103; 110]%N;
+inst 545 [102; 103]%N;
+inst 573 [113; 108; 106; 102]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 452 [110; 108; 107]%N;
+inst 505 [110; 260; 137]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 26 0;
+mp 32 0;
+inst 526 [243; 124]%N;
+inst 450 [243; 135]%N;
+mp 1 0;
+inst 562 [121; 122]%N;
+inst 638 [122; 137; 121]%N;
+inst 564 [114; 137]%N;
+inst 592 [123; 243; 233; 114]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 569 [115; 121]%N;
+ax 135 115 121 137;
+inst 472 [137; 135; 122]%N;
+inst 462 [137; 260]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 532 [134; 135; 121]%N;
+inst 553 [118; 117; 120; 254]%N;
+ax 122 118 120 124;
+mp 1 0;
+mp 0 631;
+inst 599 [122; 120; 121]%N;
+inst 657 [121; 117; 124]%N;
+inst 583 [116; 117]%N;
+inst 611 [137; 122; 120; 116]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 490 [124; 122; 121]%N;
+inst 480 [124; 243]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 26 0;
+mp 34 0;
+inst 547 [271; 260; 136]%N;
+inst 598 [131; 132]%N;
+inst 623 [243; 271; 266; 133; 131]%N;
+mp 1 0;
+inst 601 [125; 131]%N;
+ax 135 125 131 137;
+inst 504 [137; 135; 132]%N;
+mp 0 31;
+mp 2 0;
+mp 4 0;
+inst 563 [243; 135; 131]%N;
+inst 584 [128; 127; 130; 254]%N;
+ax 132 128 130 134;
+mp 1 0;
+mp 0 662;
+inst 630 [132; 130; 131]%N;
+inst 688 [131; 127; 134]%N;
+inst 614 [126; 127]%N;
+inst 642 [137; 132; 130; 126]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+mp 7 0;
+inst 521 [134; 132; 131]%N;
+inst 511 [134; 271]%N;
+mp 1 0;
+mp 3 0;
+mp 16 0;
+mp 18 0;
+mp 25 0;
+mp 29 0;
+mp 31 0;
+mp 70 0;
+mp 110 0;
+mp 112 0;
+mp 285 0;
+inst 0 [6; 4; 2]%N;
+inst 708 [199; 269; 268; 266]%N;
+inst 710 [270; 269; 271]%N;
+mp 1 0;
+inst 0 [266; 270; 271]%N;
+inst 668 [264; 270; 270]%N;
+mp 1 0;
+inst 0 [254; 271; 270]%N;
+inst 692 []%N;
+mp 1 0;
+inst 0 [1; 6]%N;
+inst 11 [233; 266; 260]%N;
+inst 5 [233; 266; 270]%N;
+mp 1 0;
+mp 3 0;
+mp 14 0;
+inst 16 [6; 5; 4]%N;
+inst 7 [3; 6]%N;
+inst 18 [233; 216; 266]%N;
+inst 664 [233; 266; 262]%N;
+mp 1 0;
+mp 3 0;
+mp 5 0;
+inst 139 [226; 271; 266]%N;
+mp 1 0;
+mp 9 0].
+Definition target := rho (V 0) (V 1) (V 2) (V 3).
+Lemma certificate_checked : check (decode term_data) proof_data target = true.
+Proof. vm_compute. reflexivity. Qed.
+End Certificate.
+Print Assumptions Certificate.check_sound.
+
+(** Every rho8 instance follows from the dominated instances. *)
+Theorem rho8_all (T : nat -> Prop) (h : DomImp T) a b c u : T (rho8 a b c u).
+Proof.
+ pose proof (Certificate.check_sound T h (Certificate.decode Certificate.term_data)
+   Certificate.proof_data Certificate.target Certificate.certificate_checked) as H.
+ specialize (H (fun i => nth i [a;b;c;u] 0)).
+ unfold Certificate.target in H. rewrite Certificate.eval_rho in H. exact H.
+Qed.
+Print Assumptions rho8_all.

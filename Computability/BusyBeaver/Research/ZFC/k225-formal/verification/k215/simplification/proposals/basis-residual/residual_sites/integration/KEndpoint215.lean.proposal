@@ -1,0 +1,54 @@
+import BusyBeaver.ZFC.KSource215
+import BusyBeaver.ZFC.KEndpointSemantic
+import BusyBeaver.ZFC.KTape
+import BusyBeaver.ZFC.KDense215
+import BusyBeaver.ZFC.KBoot215
+import BusyBeaver.ZFC.KResidualSites215
+import BusyBeaver.ZFC.SeedPerm
+
+/-!
+**The 215-state machine halts iff ZFC is inconsistent.**
+
+The machine-specific inputs of `KEndpoint.Semantic.blank_halts_iff_zfc_refutation`:
+
+* `KDense215.commutes`: the literal dense `Machine 215` is the K230-label table, relabelled.
+* `tm215_box`: the table agrees with K230 on the rows the register routines read and
+  ends the increment with the 219's bypass `198/0 → 1 L 40`, so K230's register lemmas hold for it.
+* `KBoot215.boot`: from the blank tape the table reaches the dispatch configuration of the empty
+  path with the boot registers (`nextproof = 4`) and 40 spare register blocks.
+* `KResidualSites215.covered`: shared decoder prefix plus residual checks covers every source leaf.
+* `p215_boot_iff`: the source halts from the boot registers iff `dagPerm`, iterated, does
+  (`KSource215`), iff Source 159's command-permuted enumerator halts from the seed
+  (`L2Perm.dagPerm_seed_iff`), iff the code 1 is derivable in `C222`: the enumerator compiles
+  derivations of the dominated calculus `KCodeDom.CDom`, which derives exactly `C222`'s codes
+  (`DomRho8.rho8_all`).
+-/
+
+namespace SetTheory.BusyBeaver.ZFC.KEndpoint215
+
+open KZip KTableCore KDenseBridge KDense215 KBoot215 KTape LeanProofs.BoundedZFCConsistency
+
+theorem tm215_box : KRuntimeCore.BoxLemmas tm215 := boxLemmas (by decide) (.inr rfl)
+
+theorem boot_rel : KSim.Rel KSource215.p215 ⟨[], L2Perm.bootRegs⟩ (zc 84 [true] bootRight) := by
+  refine ⟨RegisterPathClean.clean_nil _, 65, List.replicate 40 1, by decide, by simp, ?_⟩
+  rfl
+
+/-- **Program layer.** The 215's source halts from the boot registers iff the code 1 is
+derivable. -/
+theorem p215_boot_iff :
+    RegisterPath.Halts KSource215.p215 ⟨[], L2Perm.bootRegs⟩ ↔ KCode222.C222 Code254.F :=
+  (KSource215.p215_halts_iff _).trans ((KSource215.path_iff_iter _).trans L2Perm.dagPerm_seed_iff)
+
+/-- **The 215-state machine halts on the blank tape iff ZFC is refutable.** -/
+theorem blank_halts_iff_zfc_refutation : BlankHalts machine215 ↔ BProv ZFCax_s [] Form.fBot :=
+  KEndpoint.Semantic.blank_halts_iff_zfc_refutation commutes terminal
+    (KResidualSites215.covered tm215_box) boot boot_rel p215_boot_iff
+
+/-- **The 215-state machine runs forever iff ZFC is consistent.** -/
+theorem nonhalting_iff_zfc_consistency : (¬ BlankHalts machine215) ↔ ¬ BProv ZFCax_s [] Form.fBot :=
+  not_congr blank_halts_iff_zfc_refutation
+
+#print axioms blank_halts_iff_zfc_refutation
+
+end SetTheory.BusyBeaver.ZFC.KEndpoint215

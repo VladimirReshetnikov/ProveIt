@@ -1,0 +1,1529 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean
+@@ -212,16 +212,115 @@
+   have e : c.path.length + k - d = c.path.length + k - D0 + (D0 - d) := by unfold D0 at hk ⊢; omega
+   rw [e]
+ 
+-section Sim
+-
+-variable {M : TMN} (B : BoxLemmas M) {p : Program} (hcov : Covered M p)
+-include B hcov
++
++/-! ## Semantic site contracts
++
++The simulator needs a positive physical realization of each edge, not evidence
++that one particular fuel-limited Boolean checker accepts it.  These contracts
++allow direct prefix/suffix proofs and symbolic-checker certificates to share
++the same simulation induction.  The existing Boolean API remains below.
++-/
++
++/-- The exact semantic conclusion of `runTo_sound`, retaining both the branch
++guard and uniform quantification over the gap and register-file parameters. -/
++def RunContract (M : TMN) (br : Branch) (Q : List Bool) (e : SConf) : Prop :=
++  ∀ (n : Nat) (vs : List Nat), Valid br vs →
++    Reach1 M (conc n vs (start Q)) (conc n vs e)
++
++/-- A halt contract retains the existing generic theorem's state-230 premise. -/
++def HaltContract (M : TMN) (Q : List Bool) : Prop :=
++  (∀ b, M 230 b = none) → ∀ (n : Nat) (vs : List Nat), 10 ≤ vs.length →
++    Halts M (conc n vs (start Q))
++
++/-- Exactly the length, register-index, branch, and positive-run information
++consumed by the simulation.  `node` is deliberately excluded. -/
++def EdgeContract (M : TMN) (Q : List Bool) : Edge → Prop
++  | .inc r => (Q.length ≤ 48 ∧ r < 9) ∧
++      RunContract M none Q (tgtConf (incPath Q) (allOnes Q) (.plain (.inc (physOf r))))
++  | .decnz r => ((Q.length ≤ 48 ∧ r < 9) ∧
++      RunContract M (some (physOf r, true)) Q
++        (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (.plain .none))) ∧
++      RunContract M (some (physOf r, false)) Q
++        (tgtConf (incPath Q) (allOnes Q) (.plain (.dec (physOf r))))
++  | .brk k => Q.length ≤ 48 ∧
++      RunContract M none Q
++        (tgtConf (breakPath k Q) (allOnes (stripPath false k Q)) (.plain .none))
++  | .cont k => Q.length ≤ 48 ∧
++      RunContract M none Q (tgtConf (continuePath k Q) false (.plain .none))
++  | .halt => Q.length ≤ 48 ∧ HaltContract M Q
++  | .node _ => False
++
++theorem edgeContract_length {M : TMN} {Q : List Bool} {e : Edge}
++    (h : EdgeContract M Q e) : Q.length ≤ 48 := by
++  cases e <;> simp_all [EdgeContract]
++
++/-- The old checker is one producer of semantic edge contracts.  No
++completeness of its finite fuel bound is assumed or needed. -/
++theorem checkEdge_contract {M : TMN} (B : BoxLemmas M) {Q : List Bool} {e : Edge}
++    (h : checkEdge M Q e = true) : EdgeContract M Q e := by
++  cases e with
++  | inc r =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n vs hv => runTo_sound B h.2 n hv⟩
++  | decnz r =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨⟨h.1.1, fun n vs hv => runTo_sound B h.1.2 n hv⟩,
++        fun n vs hv => runTo_sound B h.2 n hv⟩
++  | brk k | cont k =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun n vs hv => runTo_sound B h.2 n hv⟩
++  | halt =>
++      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at h
++      exact ⟨h.1, fun hNH n vs hv => runHalt_sound B hNH h.2 n hv⟩
++  | node _ => simp [checkEdge] at h
++
++/-- Every decoder input reaches a leaf with a semantic realization. -/
++def SemanticCovered (M : TMN) (p : Program) : Prop :=
++  ∀ P, ∃ e d, walk p (p.nnodes + 1) p.root P 0 = some (e, d) ∧
++    EdgeContract M (consume P d) e
++
++theorem Covered.semantic {M : TMN} (B : BoxLemmas M) {p : Program}
++    (h : Covered M p) : SemanticCovered M p := by
++  intro P
++  obtain ⟨e, d, hw, hc⟩ := h P
++  exact ⟨e, d, hw, checkEdge_contract B hc⟩
++
++/-- Generic finite coverage for any decidable producer of edge contracts. -/
++theorem semanticCovered_of_allSites (M : TMN) (p : Program) (t : RMBisim.Tree)
++    (ht : RMBisim.ptree p = t) (test : List Bool → Edge → Bool)
++    (sound : ∀ Q e, test Q e = true → EdgeContract M Q e)
++    (hs : SiteCoverage.allSites test [] t = true) : SemanticCovered M p := by
++  intro P
++  obtain ⟨e, d, hw⟩ := SiteCoverage.allSites_walk_total test p t ht hs P
++  exact ⟨e, d, hw, sound _ _ (SiteCoverage.allSites_walk test p t ht hs P e d hw)⟩
++
++/-- A selected family may use direct contracts while every remaining site
++keeps the existing symbolic checker.  The shared branch must be proved sound;
++merely selecting a leaf does not discharge its physical execution obligation. -/
++theorem semanticCovered_of_mixedSites {M : TMN} (B : BoxLemmas M)
++    (p : Program) (t : RMBisim.Tree) (ht : RMBisim.ptree p = t)
++    (shared : List Bool → Edge → Bool)
++    (sound : ∀ Q e, shared Q e = true → EdgeContract M Q e)
++    (hs : SiteCoverage.allSites (fun Q e => shared Q e || checkEdge M Q e) [] t = true) :
++    SemanticCovered M p := by
++  apply semanticCovered_of_allSites M p t ht (fun Q e => shared Q e || checkEdge M Q e) _ hs
++  intro Q e h
++  have hh : shared Q e = true ∨ checkEdge M Q e = true := by
++    simpa only [Bool.or_eq_true] using h
++  cases hh with
++  | inl hshared => exact sound Q e hshared
++  | inr hchecked => exact checkEdge_contract B hchecked
++
++namespace Semantic
++
++variable {M : TMN} {p : Program} (hcov : SemanticCovered M p)
++include hcov
+ 
+ theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p c = some c') :
+     ∃ T', Rel p c' T' ∧ Reach1 M T T' := by
+   have hcl' : Clean p c'.path := step_clean p c c' hs
+   obtain ⟨e, d, hw, hck⟩ := hcov c.path
+-  have hd := checkEdge_length hck
++  have hd := edgeContract_length hck
+   rw [consume_length] at hd
+   obtain ⟨k, ext, hk, hext, hT⟩ := rel_view hc hw hd
+   have hex : execute e (consume c.path d) c.registers = some c' := by
+@@ -232,21 +331,21 @@
+   generalize c.path.length + k - D0 = n at hT
+   subst hT
+   cases e with
+-  | node _ => simp [checkEdge] at hck
++  | node _ => simp [EdgeContract] at hck
+   | halt => simp [execute] at hex
+   | inc r =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨⟨_, hr⟩, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + (if allOnes Q then 1 else 0) + 0 - (incPath Q).length), ext ++ [1],
+         ?_, by simp, rfl⟩, ?_⟩
+       · simp only [incPath_length, hQ]; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList, incr_vregs _ _ hr, List.append_assoc] using this
+   | decnz r =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨⟨⟨_, hr⟩, h0⟩, h1⟩ := hck
+       cases hv : c.registers r with
+       | zero =>
+@@ -255,7 +354,7 @@
+           refine ⟨_, ⟨hcl', n + (D0 + (if allOnes (stripPath false 1 Q) then 1 else 0) + 0 -
+             (breakPath 1 Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+           · have := breakPath_length 1 Q; simp only; unfold D0; omega
+-          · have := runTo_sound B h0 n (vs := vregs c.registers ++ ext)
++          · have := h0 n (vregs c.registers ++ ext)
+               (valid_z hl (by rw [getD_vregs _ _ hr, hv]))
+             rw [conc_target] at this
+             simpa [growth, boxList] using this
+@@ -265,39 +364,38 @@
+           refine ⟨_, ⟨hcl', n + (D0 + (if allOnes Q then 1 else 0) + 1 - (incPath Q).length), ext,
+             ?_, hext, rfl⟩, ?_⟩
+           · simp only [incPath_length, hQ]; unfold D0; omega
+-          · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext)
++          · have := h1 n (vregs c.registers ++ ext)
+               (valid_nz hl (by rw [getD_vregs _ _ hr, hv]; omega))
+             rw [conc_target] at this
+             have hd' := decr_vregs c.registers ext hr
+             rw [hv] at hd'
+             simpa [growth, boxList, hd'] using this
+   | brk k' =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨_, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + (if allOnes (stripPath false k' Q) then 1 else 0) + 0 -
+         (breakPath k' Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+       · have := breakPath_length k' Q; simp only; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList] using this
+   | cont k' =>
+-      simp only [checkEdge, Bool.and_eq_true, decide_eq_true_eq] at hck
++      simp only [EdgeContract] at hck
+       obtain ⟨_, h1⟩ := hck
+       simp only [execute, Option.some.injEq] at hex
+       subst hex
+       refine ⟨_, ⟨hcl', n + (D0 + 0 + 0 - (continuePath k' Q).length), ext, ?_, hext, rfl⟩, ?_⟩
+       · have := stripPath_length true k' Q; simp only [continuePath]; unfold D0; omega
+-      · have := runTo_sound B h1 n (vs := vregs c.registers ++ ext) ⟨hl, trivial⟩
++      · have := h1 n (vregs c.registers ++ ext) ⟨hl, trivial⟩
+         rw [conc_target] at this
+         simpa [growth, boxList] using this
+ 
+-omit B in
+ theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
+   obtain ⟨e, d, hw, hck⟩ := hcov c.path
+   cases e with
+-  | node _ => simp [checkEdge] at hck
++  | node _ => simp [EdgeContract] at hck
+   | halt => exact ⟨d, hw⟩
+   | inc r | brk r | cont r => simp [RegisterPath.step, hw, execute] at hs
+   | decnz r => cases hv : c.registers r <;> simp [RegisterPath.step, hw, execute, hv] at hs
+@@ -308,11 +406,11 @@
+   obtain ⟨e, d', hw', hck⟩ := hcov c.path
+   rw [hw] at hw'
+   cases hw'
+-  have hd := checkEdge_length hck
++  have hd := edgeContract_length hck
+   rw [consume_length] at hd
+   obtain ⟨k, ext, _, hext, rfl⟩ := rel_view hc hw hd
+-  simp only [checkEdge, Bool.and_eq_true] at hck
+-  exact runHalt_sound B hNH hck.2 _ (vregs_length _ hext)
++  simp only [EdgeContract] at hck
++  exact hck.2 hNH _ _ (vregs_length _ hext)
+ 
+ /-- **Simulation.** The register program halts iff the machine halts, from related configurations. -/
+ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
+@@ -323,14 +421,14 @@
+     | zero =>
+         simp only [RegisterPath.run, Option.some.injEq] at hr
+         subst hr
+-        exact sim_halt B hcov hNH hc hh
++        exact sim_halt hcov hNH hc hh
+     | succ N ih =>
+         simp only [RegisterPath.run] at hr
+         cases hs : step p c with
+         | none => rw [hs] at hr; simp at hr
+         | some c1 =>
+             rw [hs] at hr
+-            obtain ⟨T1, h1, hR⟩ := sim_step B hcov hc hs
++            obtain ⟨T1, h1, hR⟩ := sim_step hcov hc hs
+             exact Halts.of_reach hR.reach (ih h1 hr)
+   · rintro ⟨cf, ⟨t, ht⟩, hstop⟩
+     induction t using Nat.strongRecOn generalizing c T with
+@@ -338,7 +436,7 @@
+         cases hs : step p c with
+         | none => exact ⟨0, c, rfl, sim_stop hcov hs⟩
+         | some c1 =>
+-            obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
++            obtain ⟨T1, h1, j, hj⟩ := sim_step hcov hc hs
+             have hle : j + 1 ≤ t := by
+               refine Nat.not_lt.mp fun hlt => ?_
+               have e1 : j + 1 = t + (j + 1 - t) := by omega
+@@ -351,6 +449,37 @@
+             obtain ⟨N, c', hr, hh⟩ := ih (t - (j + 1)) (by omega) h1 ht
+             exact ⟨N + 1, c', by simp only [RegisterPath.run, hs]; exact hr, hh⟩
+ 
++end Semantic
++
++/-! ## Compatibility wrappers for the maintained Boolean API -/
++section Sim
++
++variable {M : TMN} (B : BoxLemmas M) {p : Program} (hcov : Covered M p)
++include B hcov
++
++theorem sim_step {c c' : Configuration} {T : Conf} (hc : Rel p c T) (hs : step p c = some c') :
++    ∃ T', Rel p c' T' ∧ Reach1 M T T' :=
++  Semantic.sim_step (hcov.semantic B) hc hs
++
++omit B in
++theorem sim_stop {c : Configuration} (hs : step p c = none) : AtHalt p c := by
++  obtain ⟨e, d, hw, hck⟩ := hcov c.path
++  cases e with
++  | node _ => simp [checkEdge] at hck
++  | halt => exact ⟨d, hw⟩
++  | inc r | brk r | cont r => simp [RegisterPath.step, hw, execute] at hs
++  | decnz r => cases hv : c.registers r <;> simp [RegisterPath.step, hw, execute, hv] at hs
++
++
++theorem sim_halt (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T)
++    (hh : AtHalt p c) : Halts M T :=
++  Semantic.sim_halt (hcov.semantic B) hNH hc hh
++
++/-- The original public theorem, with exactly its original hypotheses. -/
++theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (hc : Rel p c T) :
++    RegisterPath.Halts p c ↔ KZip.Halts M T :=
++  Semantic.halts_iff (hcov.semantic B) hNH hc
++
+ end Sim
+ 
+ end SetTheory.BusyBeaver.ZFC.KSim
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidual215.lean
+@@ -0,0 +1,189 @@
++import BusyBeaver.ZFC.KDecoderPrefix215
++
++/-!
++Residual execution after the shared K215 decoder prefix.
++
++The semantic coverage API is inherited from the semantic-coverage proposal.
++The executable residual definitions and the connection to the maintained
++decoder-prefix theorem are checked here. Every residual starts with progress
++FALSE; a positive suffix supplies the progress used by backward simulation.
++-/
++namespace SetTheory.BusyBeaver.ZFC.KResidual215
++
++open KZip KRuntimeCore KSim KDecoderPrefix215 RegisterPath
++open DecoderCertificate DecoderPaths DecoderSourceBinding K215Decoder SiteCoverage
++
++/-- A shared prefix reaches the exact symbolic input, for every gap/register file. -/
++def Prefix (M : TMN) (Q : List Bool) (input : SConf) : Prop :=
++  ∀ n vs, Reach M (conc n vs (start Q)) (conc n vs input)
++
++def runFrom (M : TMN) (br : Branch) (input target : SConf) : Bool :=
++  (KHomeReady.exec M br (fun s => sMatches s target) FUEL input false).isSome
++
++def haltFrom (M : TMN) (input : SConf) : Bool :=
++  (KHomeReady.exec M none isHalt FUEL input false).isSome
++
++theorem runFrom_sound {M : TMN} (B : BoxLemmas M) {br : Branch}
++    {input target : SConf} (h : runFrom M br input target = true)
++    (n : Nat) {vs : List Nat} (hv : Valid br vs) :
++    Reach1 M (conc n vs input) (conc n vs target) := by
++  unfold runFrom at h
++  cases hx : KHomeReady.exec M br (fun s => sMatches s target) FUEL input false with
++  | none => rw [hx] at h; simp at h
++  | some s =>
++    obtain ⟨hm, _, hp⟩ := KHomeReady.exec_sound B n hv FUEL input false s hx
++    rw [← sMatches_conc n vs hm]
++    exact hp rfl
++
++theorem haltFrom_sound {M : TMN} (B : BoxLemmas M)
++    (hNH : ∀ b, M 230 b = none) {input : SConf}
++    (h : haltFrom M input = true) (n : Nat) {vs : List Nat}
++    (hv : 10 ≤ vs.length) : Halts M (conc n vs input) := by
++  unfold haltFrom at h
++  cases hx : KHomeReady.exec M none isHalt FUEL input false with
++  | none => rw [hx] at h; simp at h
++  | some s =>
++    obtain ⟨hh, h0, _⟩ := KHomeReady.exec_sound B n (br := none) ⟨hv, trivial⟩
++      FUEL input false s hx
++    refine ⟨_, h0, ?_⟩
++    obtain ⟨q, onl, l, r⟩ := s
++    simp only [isHalt, beq_iff_eq] at hh
++    subst hh
++    cases onl <;> simp [conc, zl, step_zc, hNH]
++
++/-- The edge checker retains the entire original path, both decrement guards,
++all register bounds, and the exact targets from the existing simulator. -/
++def checkFrom (M : TMN) (Q : List Bool) (input : SConf) : RegisterPath.Edge → Bool
++  | .inc r => decide (Q.length ≤ 48) && decide (r < 9) &&
++      runFrom M none input (tgtConf (incPath Q) (allOnes Q) (.plain (.inc (physOf r))))
++  | .decnz r => decide (Q.length ≤ 48) && decide (r < 9) &&
++      runFrom M (some (physOf r, true)) input
++        (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (.plain .none)) &&
++      runFrom M (some (physOf r, false)) input
++        (tgtConf (incPath Q) (allOnes Q) (.plain (.dec (physOf r))))
++  | .brk k => decide (Q.length ≤ 48) &&
++      runFrom M none input
++        (tgtConf (breakPath k Q) (allOnes (stripPath false k Q)) (.plain .none))
++  | .cont k => decide (Q.length ≤ 48) &&
++      runFrom M none input (tgtConf (continuePath k Q) false (.plain .none))
++  | .halt => decide (Q.length ≤ 48) && haltFrom M input
++  | .node _ => false
++
++theorem runFrom_contract {M : TMN} (B : BoxLemmas M) {Q : List Bool}
++    {input target : SConf} (hpre : Prefix M Q input) {br : Branch}
++    (h : runFrom M br input target = true) : RunContract M br Q target := by
++  intro n vs hv
++  exact (hpre n vs).trans_reach1 (runFrom_sound B h n hv)
++
++theorem checkFrom_contract {M : TMN} (B : BoxLemmas M) {Q : List Bool}
++    {input : SConf} (hpre : Prefix M Q input) {e : RegisterPath.Edge}
++    (h : checkFrom M Q input e = true) : EdgeContract M Q e := by
++  cases e with
++  | inc r =>
++    simp only [checkFrom, Bool.and_eq_true, decide_eq_true_eq] at h
++    exact ⟨h.1, runFrom_contract B hpre h.2⟩
++  | decnz r =>
++    simp only [checkFrom, Bool.and_eq_true, decide_eq_true_eq] at h
++    exact ⟨⟨h.1.1, runFrom_contract B hpre h.1.2⟩, runFrom_contract B hpre h.2⟩
++  | brk k | cont k =>
++    simp only [checkFrom, Bool.and_eq_true, decide_eq_true_eq] at h
++    exact ⟨h.1, runFrom_contract B hpre h.2⟩
++  | halt =>
++    simp only [checkFrom, Bool.and_eq_true, decide_eq_true_eq] at h
++    exact ⟨h.1, fun hNH n vs hv => Halts.of_reach (hpre n vs) (haltFrom_sound B hNH h.2 n hv)⟩
++  | node _ => simp [checkFrom] at h
++
++/-- Follow the certified role graph, not merely the physical control state. -/
++def followRoles (rs : Array Role) : Nat → List Bool → Option Nat
++  | first, [] => some first
++  | first, bit :: pre =>
++    match rs[first]? with
++    | none => none
++    | some r =>
++      match (if bit then r.one else r.zero) with
++      | .internal next _ => followRoles rs next pre
++      | .primitive _ _ => none
++
++def portState (rs : Array Role) (first : Nat) (pre : List Bool) : Option Nat :=
++  match followRoles rs first pre with
++  | none => none
++  | some last => match rs[last]? with
++    | none => none
++    | some r => some r.state
++
++theorem followRoles_of_path {rs : Array Role} {first last : Nat} {pre : List Bool}
++    (h : RolePath rs first pre last) : followRoles rs first pre = some last := by
++  induction h with
++  | nil => rfl
++  | cons hat hedge _ ih => simpa only [followRoles,hat,hedge] using ih
++
++private theorem snoc_pre {pre pre' : List Bool} {bit : Bool}
++    (h : pre ++ [bit] = pre' ++ [bit]) : pre = pre' := by
++  have hr : bit :: pre.reverse = bit :: pre'.reverse := by
++    simpa using congrArg List.reverse h
++  exact List.reverse_inj.mp (List.cons.inj hr).2
++
++theorem portState_of_entry {Q pre : List Bool} {bit : Bool} {q op arg : Nat}
++    (split : Q = pre ++ [bit])
++    (entry : RoutedEntry formal sourceNodes roles 0 Q q bit op arg) :
++    portState roles 0 pre = some q := by
++  obtain ⟨pre',rid,r,n,action,split',path,hat,hq,_,_,_⟩ := entry
++  have hp : pre = pre' := snoc_pre (split.symm.trans split')
++  subst pre'
++  simp only [portState,followRoles_of_path path,hat,hq]
++
++/-- The finite checker computes the exact port and runs only the suffix.
++An absent/short role path is rejected; an empty instruction word is rejected. -/
++def residualTest (M : TMN) (Q : List Bool) (e : RegisterPath.Edge) : Bool :=
++  match Q.reverse with
++  | [] => false
++  | bit :: revPre =>
++    match portState roles 0 revPre.reverse with
++    | none => false
++    | some q => checkFrom M Q (leafPort revPre.reverse bit q) e
++
++theorem residualTest_at_port {M : TMN} {Q pre : List Bool} {bit : Bool}
++    {q op arg : Nat} (split : Q = pre ++ [bit])
++    (entry : RoutedEntry formal sourceNodes roles 0 Q q bit op arg)
++    (e : RegisterPath.Edge) :
++    residualTest M Q e = checkFrom M Q (leafPort pre bit q) e := by
++  have hp := portState_of_entry split entry
++  simp only [residualTest,split,List.reverse_append,List.reverse_cons,List.reverse_nil,
++    List.nil_append,List.singleton_append,List.reverse_reverse,hp]
++
++theorem walk_contract (B : BoxLemmas KTableCore.tm215) (P : List Bool)
++    (e : RegisterPath.Edge) (d : Nat)
++    (hw : walk KSource215.p215 (KSource215.p215.nnodes+1) KSource215.p215.root P 0 = some (e,d))
++    (hc : residualTest KTableCore.tm215 (consume P d) e = true) :
++    EdgeContract KTableCore.tm215 (consume P d) e := by
++  obtain ⟨pre,bit,q,op,arg,split,_,entry,runs⟩ := walk_prefix P e d hw
++  rw [residualTest_at_port split entry e] at hc
++  apply checkFrom_contract B _ hc
++  intro n vs
++  obtain ⟨steps,_,_,hr⟩ := runs n vs
++  exact ⟨steps,hr⟩
++
++/-- All-site residual certificates imply the original physical simulation's
++semantic premise. The source relation and both simulation directions are reused. -/
++theorem covered_of_residual (B : BoxLemmas KTableCore.tm215)
++    (hs : allSites (residualTest KTableCore.tm215) [] KSource215.t215 = true) :
++    SemanticCovered KTableCore.tm215 KSource215.p215 := by
++  intro P
++  obtain ⟨e,d,hw⟩ := allSites_walk_total (residualTest KTableCore.tm215)
++    KSource215.p215 KSource215.t215 KSource215.t215_eq hs P
++  have hc := allSites_walk (residualTest KTableCore.tm215)
++    KSource215.p215 KSource215.t215 KSource215.t215_eq hs P e d hw
++  exact ⟨e,d,hw,walk_contract B P e d hw hc⟩
++
++theorem allSites_of_fast {revPrefix : List Bool} {t : RMBisim.Tree}
++    (h : allSites (residualTest (KBoot.fastOf KBoot215.tt215)) revPrefix t = true) :
++    allSites (residualTest KTableCore.tm215) revPrefix t = true := by
++  have he : KBoot.fastOf KBoot215.tt215 = KTableCore.tm215 :=
++    funext fun q => funext fun b => KBoot215.fast215 q b
++  rw [← he]
++  exact h
++
++#print axioms checkFrom_contract
++#print axioms walk_contract
++#print axioms covered_of_residual
++end SetTheory.BusyBeaver.ZFC.KResidual215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch000.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 0 to 11 (319 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 9 leaves. -/
++theorem block_0 :
++    allSites (KResidual215.residualTest tm215) [false]
++      (descend KSource215.t215 [false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 14 leaves. -/
++theorem block_1 :
++    allSites (KResidual215.residualTest tm215) [false, true]
++      (descend KSource215.t215 [true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_2 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true]
++      (descend KSource215.t215 [true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_3 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_4 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_5 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_6 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_7 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 14 leaves. -/
++theorem block_8 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 27 leaves. -/
++theorem block_9 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 67 leaves. -/
++theorem block_10 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_11 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch001.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 12 to 23 (515 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 79 leaves. -/
++theorem block_12 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 54 leaves. -/
++theorem block_13 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 27 leaves. -/
++theorem block_14 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_15 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 2 leaves. -/
++theorem block_16 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_17 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 2 leaves. -/
++theorem block_18 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_19 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_20 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_21 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_22 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_23 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch002.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 24 to 35 (579 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 80 leaves. -/
++theorem block_24 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_25 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_26 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 20 leaves. -/
++theorem block_27 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_28 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_29 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 26 leaves. -/
++theorem block_30 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, true, false, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, false, true, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 27 leaves. -/
++theorem block_31 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_32 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 2 leaves. -/
++theorem block_33 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_34 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_35 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch003.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 36 to 47 (515 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 80 leaves. -/
++theorem block_36 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_37 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_38 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 2 leaves. -/
++theorem block_39 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 26 leaves. -/
++theorem block_40 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_41 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_42 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_43 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_44 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_45 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_46 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, false, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, false, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_47 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch004.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 48 to 59 (592 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 80 leaves. -/
++theorem block_48 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_49 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_50 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_51 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_52 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_53 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_54 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_55 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_56 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_57 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 29 leaves. -/
++theorem block_58 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_59 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, true, true, false, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, false, true, true, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch005.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 60 to 71 (681 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 20 leaves. -/
++theorem block_60 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_61 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_62 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_63 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 26 leaves. -/
++theorem block_64 :
++    allSites (KResidual215.residualTest tm215) [false, false, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_65 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_66 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_67 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_68 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_69 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_70 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_71 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch006.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 72 to 83 (685 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 80 leaves. -/
++theorem block_72 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, false, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, false, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_73 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_74 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_75 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_76 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_77 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_78 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_79 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, true, true, true, false, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, false, true, true, true, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_80 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_81 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_82 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_83 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch007.lean
+@@ -0,0 +1,83 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 84 to 95 (674 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 47 leaves. -/
++theorem block_84 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_85 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_86 :
++    allSites (KResidual215.residualTest tm215) [false, false, true, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, true, false, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 52 leaves. -/
++theorem block_87 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 80 leaves. -/
++theorem block_88 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_89 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_90 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_91 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, true, true, true, true, true, true, false, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, false, true, true, true, true, true, true, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_92 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 47 leaves. -/
++theorem block_93 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 56 leaves. -/
++theorem block_94 :
++    allSites (KResidual215.residualTest tm215) [false, true, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 78 leaves. -/
++theorem block_95 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, false, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, false, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215Batch008.lean
+@@ -0,0 +1,65 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidual215
++
++/-! Residual K215 decoder sites, blocks 96 to 104 (191 leaves).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py. -/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++/-- 12 leaves. -/
++theorem block_96 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 6 leaves. -/
++theorem block_97 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 13 leaves. -/
++theorem block_98 :
++    allSites (KResidual215.residualTest tm215) [true, true, true, true, false, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 70 leaves. -/
++theorem block_99 :
++    allSites (KResidual215.residualTest tm215) [false, true, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, true, false]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 36 leaves. -/
++theorem block_100 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_101 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 26 leaves. -/
++theorem block_102 :
++    allSites (KResidual215.residualTest tm215) [true, false, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, false, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 1 leaves. -/
++theorem block_103 :
++    allSites (KResidual215.residualTest tm215) [true, true, false, true, true]
++      (descend KSource215.t215 [true, true, false, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++/-- 26 leaves. -/
++theorem block_104 :
++    allSites (KResidual215.residualTest tm215) [true, true, true]
++      (descend KSource215.t215 [true, true, true]) = true := by
++  exact KResidual215.allSites_of_fast (by decide +kernel)
++
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualSites215.lean
+@@ -0,0 +1,248 @@
++import BusyBeaver.ZFC.KSource215Program
++import BusyBeaver.ZFC.KResidualSites215Batch000
++import BusyBeaver.ZFC.KResidualSites215Batch001
++import BusyBeaver.ZFC.KResidualSites215Batch002
++import BusyBeaver.ZFC.KResidualSites215Batch003
++import BusyBeaver.ZFC.KResidualSites215Batch004
++import BusyBeaver.ZFC.KResidualSites215Batch005
++import BusyBeaver.ZFC.KResidualSites215Batch006
++import BusyBeaver.ZFC.KResidualSites215Batch007
++import BusyBeaver.ZFC.KResidualSites215Batch008
++
++/-!
++The 215's decoder-site coverage: every leaf of the source tree passes the residual site check
++`KResidual215.residualTest tm215` (4751 leaves in 105 kernel blocks, joined to the root).
++Partition inherited unchanged from generate_sites215_lean.py; checker changed by adapt_sites.py.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualSites215
++
++open RegisterPath RMBisim SiteCoverage KTableCore
++
++theorem all_sites : allSites (KResidual215.residualTest tm215) [] KSource215.t215 = true :=
++  (allSites_join _ _ _ _
++    block_0
++    (allSites_join _ _ _ _
++      block_1
++      (allSites_join _ _ _ _
++        (allSites_join _ _ _ _
++          block_2
++          (allSites_join _ _ _ _
++            (allSites_join _ _ _ _
++              (allSites_join _ _ _ _
++                block_3
++                (allSites_join _ _ _ _
++                  (allSites_join _ _ _ _
++                    (allSites_join _ _ _ _
++                      block_4
++                      (allSites_join _ _ _ _
++                        (allSites_join _ _ _ _
++                          block_5
++                          block_6)
++                        (allSites_join _ _ _ _
++                          block_7
++                          (allSites_join _ _ _ _
++                            (allSites_join _ _ _ _
++                              (allSites_join _ _ _ _
++                                block_8
++                                (allSites_join _ _ _ _
++                                  block_9
++                                  (allSites_join _ _ _ _
++                                    block_10
++                                    block_11)))
++                              (allSites_join _ _ _ _
++                                (allSites_join _ _ _ _
++                                  block_12
++                                  (allSites_join _ _ _ _
++                                    (allSites_join _ _ _ _
++                                      block_13
++                                      (allSites_join _ _ _ _
++                                        (allSites_join _ _ _ _
++                                          block_14
++                                          (allSites_join _ _ _ _
++                                            block_15
++                                            (allSites_join _ _ _ _
++                                              block_16
++                                              block_17)))
++                                        (allSites_join _ _ _ _
++                                          (allSites_join _ _ _ _
++                                            (allSites_join _ _ _ _
++                                              (allSites_join _ _ _ _
++                                                (allSites_join _ _ _ _
++                                                  block_18
++                                                  (allSites_join _ _ _ _
++                                                    block_19
++                                                    (allSites_join _ _ _ _
++                                                      (allSites_join _ _ _ _
++                                                        block_20
++                                                        block_21)
++                                                      block_22)))
++                                                (allSites_join _ _ _ _
++                                                  block_23
++                                                  (allSites_join _ _ _ _
++                                                    block_24
++                                                    (allSites_join _ _ _ _
++                                                      (allSites_join _ _ _ _
++                                                        block_25
++                                                        block_26)
++                                                      (allSites_join _ _ _ _
++                                                        (allSites_join _ _ _ _
++                                                          block_27
++                                                          (allSites_join _ _ _ _
++                                                            block_28
++                                                            block_29))
++                                                        block_30)))))
++                                              (allSites_join _ _ _ _
++                                                (allSites_join _ _ _ _
++                                                  (allSites_join _ _ _ _
++                                                    block_31
++                                                    (allSites_join _ _ _ _
++                                                      block_32
++                                                      (allSites_join _ _ _ _
++                                                        block_33
++                                                        block_34)))
++                                                  (allSites_join _ _ _ _
++                                                    block_35
++                                                    (allSites_join _ _ _ _
++                                                      block_36
++                                                      block_37)))
++                                                (allSites_join _ _ _ _
++                                                  block_38
++                                                  (allSites_join _ _ _ _
++                                                    (allSites_join _ _ _ _
++                                                      (allSites_join _ _ _ _
++                                                        (allSites_join _ _ _ _
++                                                          (allSites_join _ _ _ _
++                                                            block_39
++                                                            (allSites_join _ _ _ _
++                                                              (allSites_join _ _ _ _
++                                                                (allSites_join _ _ _ _
++                                                                  block_40
++                                                                  (allSites_join _ _ _ _
++                                                                    (allSites_join _ _ _ _
++                                                                      block_41
++                                                                      block_42)
++                                                                    (allSites_join _ _ _ _
++                                                                      block_43
++                                                                      (allSites_join _ _ _ _
++                                                                        (allSites_join _ _ _ _
++                                                                          block_44
++                                                                          block_45)
++                                                                        block_46))))
++                                                                (allSites_join _ _ _ _
++                                                                  block_47
++                                                                  block_48))
++                                                              (allSites_join _ _ _ _
++                                                                block_49
++                                                                block_50)))
++                                                          (allSites_join _ _ _ _
++                                                            block_51
++                                                            (allSites_join _ _ _ _
++                                                              (allSites_join _ _ _ _
++                                                                block_52
++                                                                block_53)
++                                                              (allSites_join _ _ _ _
++                                                                (allSites_join _ _ _ _
++                                                                  block_54
++                                                                  block_55)
++                                                                (allSites_join _ _ _ _
++                                                                  block_56
++                                                                  (allSites_join _ _ _ _
++                                                                    (allSites_join _ _ _ _
++                                                                      block_57
++                                                                      block_58)
++                                                                    block_59))))))
++                                                        (allSites_join _ _ _ _
++                                                          block_60
++                                                          (allSites_join _ _ _ _
++                                                            block_61
++                                                            block_62)))
++                                                      (allSites_join _ _ _ _
++                                                        block_63
++                                                        (allSites_join _ _ _ _
++                                                          (allSites_join _ _ _ _
++                                                            (allSites_join _ _ _ _
++                                                              block_64
++                                                              (allSites_join _ _ _ _
++                                                                block_65
++                                                                block_66))
++                                                            (allSites_join _ _ _ _
++                                                              block_67
++                                                              block_68))
++                                                          (allSites_join _ _ _ _
++                                                            (allSites_join _ _ _ _
++                                                              block_69
++                                                              (allSites_join _ _ _ _
++                                                                block_70
++                                                                (allSites_join _ _ _ _
++                                                                  block_71
++                                                                  block_72)))
++                                                            (allSites_join _ _ _ _
++                                                              (allSites_join _ _ _ _
++                                                                block_73
++                                                                (allSites_join _ _ _ _
++                                                                  (allSites_join _ _ _ _
++                                                                    block_74
++                                                                    block_75)
++                                                                  block_76))
++                                                              (allSites_join _ _ _ _
++                                                                block_77
++                                                                (allSites_join _ _ _ _
++                                                                  block_78
++                                                                  block_79)))))))
++                                                    (allSites_join _ _ _ _
++                                                      block_80
++                                                      (allSites_join _ _ _ _
++                                                        block_81
++                                                        (allSites_join _ _ _ _
++                                                          (allSites_join _ _ _ _
++                                                            block_82
++                                                            (allSites_join _ _ _ _
++                                                              block_83
++                                                              block_84))
++                                                          (allSites_join _ _ _ _
++                                                            (allSites_join _ _ _ _
++                                                              block_85
++                                                              (allSites_join _ _ _ _
++                                                                (allSites_join _ _ _ _
++                                                                  block_86
++                                                                  block_87)
++                                                                block_88))
++                                                            (allSites_join _ _ _ _
++                                                              block_89
++                                                              (allSites_join _ _ _ _
++                                                                block_90
++                                                                block_91))))))))))
++                                            (allSites_join _ _ _ _
++                                              block_92
++                                              block_93))
++                                          (allSites_join _ _ _ _
++                                            block_94
++                                            block_95))))
++                                    block_96))
++                                block_97))
++                            block_98))))
++                    (allSites_join _ _ _ _
++                      block_99
++                      block_100))
++                  block_101))
++              block_102)
++            block_103))
++        block_104)))
++
++theorem covered (B : KRuntimeCore.BoxLemmas tm215) :
++    KSim.SemanticCovered tm215 KSource215.p215 :=
++  KResidual215.covered_of_residual B all_sites
++
++/-- The same concrete relation and both halting directions, now using the
++shared prefix once and checked residual executions at all source leaves. -/
++theorem halts_iff (B : KRuntimeCore.BoxLemmas tm215)
++    (hNH : ∀ b, tm215 230 b = none) {c : Configuration} {T : KZip.Conf}
++    (hc : KSim.Rel KSource215.p215 c T) :
++    RegisterPath.Halts KSource215.p215 c ↔ KZip.Halts tm215 T :=
++  KSim.Semantic.halts_iff (covered B) hNH hc
++
++#print axioms all_sites
++#print axioms covered
++#print axioms halts_iff
++end SetTheory.BusyBeaver.ZFC.KResidualSites215
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KResidualAudit.lean
+@@ -0,0 +1,44 @@
++import BusyBeaver.ZFC.KResidualSites215
++
++namespace SetTheory.BusyBeaver.ZFC.KResidualAudit
++open KZip KRuntimeCore KSim RegisterPath RMBisim KTableCore
++
++set_option maxHeartbeats 0
++set_option maxRecDepth 65536
++
++def leaves : Tree → Nat
++  | .none => 0
++  | .leaf _ => 1
++  | .node a b => leaves a + leaves b
++
++def guards : Tree → Nat
++  | .none => 0
++  | .leaf (.decnz _) => 2
++  | .leaf _ => 1
++  | .node a b => guards a + guards b
++
++/-- Counts are tied directly to the maintained literal tree. -/
++theorem concrete_counts : leaves KSource215.t215 = 4751 ∧ guards KSource215.t215 = 6176 := by
++  decide +kernel
++
++/-- Exact original API retained by the inherited semantic-interface refactor. -/
++theorem old_simulation_api {M : TMN} (B : BoxLemmas M) {p : Program}
++    (hcov : Covered M p) (hNH : ∀ b, M 230 b = none)
++    {c : Configuration} {T : Conf} (hc : Rel p c T) :
++    RegisterPath.Halts p c ↔ KZip.Halts M T :=
++  KSim.halts_iff B hcov hNH hc
++
++/-- Same relation and both directions for the exact K215 source and table. -/
++theorem residual_simulation_api (B : BoxLemmas tm215)
++    (hNH : ∀ b, tm215 230 b = none) {c : Configuration} {T : Conf}
++    (hc : Rel KSource215.p215 c T) :
++    RegisterPath.Halts KSource215.p215 c ↔ KZip.Halts tm215 T :=
++  KResidualSites215.halts_iff B hNH hc
++
++theorem rejects_empty : KResidual215.residualTest tm215 [] .halt = false := rfl
++
++#print axioms concrete_counts
++#print axioms old_simulation_api
++#print axioms residual_simulation_api
++#print axioms rejects_empty
++end SetTheory.BusyBeaver.ZFC.KResidualAudit

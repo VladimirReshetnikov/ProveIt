@@ -1,0 +1,484 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Further simplification of the K215 correctness proofs},pdfauthor={ProveIt research and implementation note}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small K215 proof simplification}
+\fancyhead[R]{\small 21 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,framerule=0.2pt,rulecolor=\color{black!25},backgroundcolor=\color{black!2},xleftmargin=4pt,xrightmargin=4pt,aboveskip=9pt,belowskip=9pt}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Imp}{\mathbin{\Rightarrow}}
+\newcommand{\Below}{\mathrel{\preccurlyeq}}
+\newcommand{\Th}{\mathsf{T}}
+\newcommand{\Halts}{\operatorname{Halts}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\RocqAfterBytes}{18,708}
+\newcommand{\RocqAfterLines}{394}
+\newcommand{\RocqSavedBytes}{26,830}
+
+\title{Further simplification of the K215 correctness proofs\\[5pt]
+\large Shared implication derivations, one run invariant,\\and a smaller semantic interface}
+\author{Research and implementation note for the ProveIt repository}
+\date{21 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The checked K215 development has already removed much of the original proof duplication. A useful next step is to reduce the number of mathematical arguments and the dependencies needed to state them. This note supplies three concrete changes against ProveIt commit \texttt{57541fe0cfe3}: a shared implication core for both the dominated and unrestricted calculi; one strengthened invariant replacing two inductions in the Lean dense-to-sparse machine bridge; and an exact extraction of the power-set predicate from a larger calibration module. The shared-core plan is attributed existing work: the new Rocq implementation connects both of its actual client families to the archived six-goal, 58-detachment derivation. The two Lean changes identify additional opportunities in the current checked tree. Focused baseline and replacement checks, typed interface audits, and recursive Rocq kernel checks are supplied. All Lean changes also compile together in a fresh 47-module closure. The combined Lean endpoint source census decreases by 53,652 bytes and two modules. These are source, interface, and dependency results; the full machine endpoints have not been rebuilt for these replacements, and no new state-count or internal-arithmetization result is claimed.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Recommendation and exact baseline}
+
+\textbf{Recommended order: adopt the small interface and invariant changes first, then integrate the shared implication core in both proof assistants.} Each change has a separate patch and a separate verification record. Their proof obligations are small enough to review directly, and the combined Lean check demonstrates that the delivered replacements compose.
+
+The source snapshot examined throughout is
+\begin{center}
+\texttt{57541fe0cfe3af62b4cb58747d8d1d7c16b338d5}.
+\end{center}
+The repository checkout was left unchanged. The archive contains proposals for incorporation, not a publication of changed production proof status.
+
+\subsection{Why reading the current tree matters}
+
+Recent intermediate commits describe a six-goal shared implication core and several import cuts. Subsequent merges preserve the checked checkpoint and retain some of those changes as proposals. The phase-twelve checkpoint explicitly says that the shared implication-basis and direct full-seed proposals remain separate work~\cite{phase12}. Therefore a commit message alone does not establish which implementation the checked endpoint currently uses.
+
+At the pinned revision, the production generic core has 287 physical lines. Its numeric adapter has 73 lines, and the unrestricted \texttt{Lukasiewicz.lean} module has 524 lines. The latter still carries the independent 107-certificate implicational proof. The archived six-goal replacement is available under the phase-twelve upstream-merge inputs~\cite{archivedcore}. The current production Rocq pair contains 1,169 lines in \texttt{DomRho8.v} and 230 in \texttt{CD222.v}.
+
+The current checkpoint records 179 project modules in the Lean endpoint import closure. Its accepted check freshly compiled 15 modules and retained exact dependency bindings for 169 providers in its larger 184-module primary scope. It is an incremental accepted check, not a new full build of every provider~\cite{phase12}. The Rocq endpoint documentation records a separate successful 237-module build and recursive kernel check with Rocq 9.1.0~\cite{rocqstatus}. Those historical results remain evidence about their own recorded sources.
+
+\subsection{The result being preserved}
+
+The machine-level objective is the equivalence
+\[
+  \Halts(M_{215},\mathrm{blank})
+  \quad\longleftrightarrow\quad
+  \text{there exists a finite ZFC refutation},
+\]
+and hence, by negation,
+\[
+  \neg\Halts(M_{215},\mathrm{blank})\quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+The current Lean endpoint composes the literal-table relabelling, startup, runtime simulation, source-program equivalence, calculus equivalence, and ZF/ZFC calibration~\cite{endpoint}. The proposed replacements operate inside that chain. They do not alter the 215-state table or supply a new proof that the machine actually runs forever.
+
+There is also a distinction between an external Lean/Rocq theorem about finite ZFC proofs and an encoded ZFC or PA derivation of that theorem. The repository checkpoint expressly records this distinction. This packet preserves the former interface and does not close the latter formalization task. That qualification matters when interpreting the user's eventual requirement that the equivalence be provable \emph{in ZFC}.
+
+\subsection{What is new here}
+
+The shared implication idea and six-goal proof plan were already present in the repository. This work contributes the concrete Rocq bridge to \emph{both} proof families, checked together, plus a fresh check of the corresponding archived Lean proposal against the current baseline. The strengthened dense-bridge invariant and the precise \texttt{PowerSets} extraction are additional changes identified in the current tree. These contributions are implementation and proof-organization results; no new logical completeness theorem or shorter Turing machine is asserted.
+
+\section{One implication proof for two calculi}
+
+\subsection{The smallest useful interface}
+
+Let $A$ be any type, let $a\Imp b$ be an arbitrary binary operation on $A$, and let $\Below$ be a relation satisfying
+\begin{align*}
+u&\Below u,\\
+u\Below x&\Longrightarrow u\Below(x\Imp y),\\
+u\Below y&\Longrightarrow u\Below(x\Imp y).
+\end{align*}
+No transitivity or antisymmetry is required. These are simply the three operations that discharge the side conditions in the checked derivation.
+
+Write
+\[
+ R(a,b,c,u)=((c\Imp u)\Imp a)\Imp((a\Imp c)\Imp(b\Imp c)).
+\]
+For a predicate $\Th:A\to\mathsf{Prop}$, the \emph{restricted interface} consists of
+\begin{align*}
+\Th(a\Imp b),\ \Th(a)&\Longrightarrow\Th(b),\\
+u\Below a&\Longrightarrow\Th(R(a,b,c,u)).
+\end{align*}
+This interface is exactly the representation-independent \texttt{Language}/\texttt{Restricted} interface used in the supplied proof sources.
+
+\begin{theorem}[Checked shared implication basis]\label{thm:basis}
+For every such interface, all instances of $R$ are derivable, without the side condition $u\Below a$. The following five additional schemata are derivable:
+\begin{align*}
+\mathrm{K}:&\quad a\Imp(b\Imp a),\\
+\mathrm{P}:&\quad ((a\Imp b)\Imp a)\Imp a,\\
+\mathrm{B}:&\quad(a\Imp b)\Imp((b\Imp c)\Imp(a\Imp c)),\\
+\mathrm{Prefix}:&\quad(a\Imp b)\Imp((x\Imp a)\Imp(x\Imp b)),\\
+\mathrm{S}:&\quad(a\Imp(b\Imp c))\Imp((a\Imp b)\Imp(a\Imp c)).
+\end{align*}
+\end{theorem}
+
+\begin{proof}[Proof certificate and its checking rule]
+The supplied plan has one restricted-axiom row and 58 condensed-detachment rows. A detachment row specifies a major and minor premise. The untrusted renderer computes their substitutions and emits a theorem whose proof applies the interface's modus-ponens field to those explicit instances. Every remaining domination premise is either a local hypothesis or follows by reflexivity and insertion into an implication operand. The Lean and Rocq kernels check the emitted terms.
+
+Induction over the topological order of the rows proves the invariant: every emitted schema holds under exactly its displayed domination hypotheses. The axiom row follows from the restricted-row field. The induction step is modus ponens after substitution, together with the checked proofs of its side conditions. Six designated rows have no outstanding domination hypotheses and are the schemata in the theorem. Their plan identifiers are shown in Table~\ref{tab:goals}. Both renderings and their actual kernel records are included, so the finite part of this proof is supplied as executable proof terms rather than an appeal to the search program.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrll}
+\toprule
+Export & Plan node & Lean facade & Rocq facade\\
+\midrule
+Unrestricted row & 61 & \texttt{rho8\_all} & \texttt{rho8\_all}\\
+Composition & 52 & \texttt{composition} & \texttt{composition}\\
+Prefixing schema & 56 & used by \texttt{lift\_right} & \texttt{prefix}\\
+K & 12 & \texttt{k} & \texttt{basisK}\\
+Peirce & 18 & \texttt{peirce} & \texttt{basisPeirce}\\
+S & 58 & \texttt{s} & \texttt{basisS}\\
+\bottomrule
+\end{tabular}
+\caption{Goal identifiers are inherited from the archived plan and need not be consecutive. The public prefixing rule adds one modus-ponens application to an already proved implication.}
+\label{tab:goals}
+\end{table}
+
+The complete plan's SHA-256 is
+\begin{center}\small
+\path{4141248ed90a6813c07f274351336963acde1d82f6ea463a33e5f7d64bed8005}.
+\end{center}
+The maintained source of this plan is the archived upstream proposal, not the current production three-goal plan. Its discovery and the initial generic renderer are prior work, attributed in the packet's provenance records~\cite{sharedprior,archivedcore}.
+
+\subsection{Why the abstraction is safe for numerical codes}
+
+The proof does not decode $A$ as formulas. It does not assume that implication is injective, that different expressions have different values, or that a truth constant exists. This is useful because the machine's arithmetic codes have special aliases and need not all decode as conventional formulas. All uses of the connective are through substitution and modus ponens; arbitrary collisions in the interpretation of the connective do not invalidate those steps.
+
+For the dominated numeric calculus, instantiate $A$ with natural numbers, implication with \texttt{wim}, and $\Below$ with $\leq$. The existing Cantor-pairing growth lemmas provide the two insertion laws. The old \texttt{DomImp} truth field is retained at the compatibility boundary, but the shared proof does not use it. This avoids forcing an unrelated interface migration on callers.
+
+For the unrestricted Lean calculus, use
+\[
+  u\Below a\quad:\Longleftrightarrow\quad\mathsf{True}.
+\]
+Every unrestricted row then supplies a restricted row, and the relation laws are immediate. K, S, Peirce, and composition become direct instances of Theorem~\ref{thm:basis}. The part of \texttt{Lukasiewicz.lean} after the \texttt{Tarski} namespace boundary is byte-identical to the baseline. In particular, the proof of ex falso still uses its original additional quantifier row; it is not silently inferred from positive implication alone.
+
+\subsection{The Rocq implementation and its compatibility limit}
+
+The supplied Rocq implementation has three proof files: the generic core, a numeric \texttt{DomRho8} adapter, and a \texttt{CD222} adapter. The checked adapter uses the universal relation $\mathsf{True}$, importing the generic core directly without the numeric adapter. In it, \texttt{thm222}'s unrestricted \texttt{W\_r8} supplies the restricted row by ignoring its side-condition argument, and \texttt{W\_mp} supplies modus ponens. Both proof families consequently use the same core. The four consumed \texttt{CD222} exports are
+\[
+\texttt{thm\_K},\qquad\texttt{thm\_P},\qquad\texttt{thm\_B},\qquad\texttt{thm\_S}.
+\]
+Their exact types are checked explicitly. The unchanged \texttt{ThmDom} client is also compiled, as is a verbatim segment of the production \texttt{Prop222} development containing identity, the derivation datatype, deduction, discharge, and weakening. The client segment has a smaller import prelude; it is not represented as a build of all of \texttt{Prop222}, \texttt{G222}, \texttt{Interp222}, or \texttt{Complete222}.
+
+The old certificate interpreter and the generated names \texttt{cd\_0} through \texttt{cd\_106} are removed. The selected production K215 clients do not use them. A wider consumer of those implementation names needs a migration or a compatibility file. Thus the claim is preservation of the checked public facades and their actual clients, not preservation of every accidentally exported declaration.
+
+\subsection{Source savings and what they do not measure}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Selected proof sources & Before & After & Saved\\
+\midrule
+Lean bytes & 42,454 & 18,243 & 24,211\\
+Lean physical lines & 811 & 401 & 410\\
+Rocq bytes & 45,538 & \RocqAfterBytes & \RocqSavedBytes\\
+Rocq physical lines & 1,399 & \RocqAfterLines & 1,005\\
+\bottomrule
+\end{tabular}
+\caption{Lean counts the core plus \texttt{Lukasiewicz}; the numeric adapter is unchanged. Rocq counts both replaced files before, and the new core plus both adapters after. All new shared proof source is included.}
+\label{tab:logic}
+\end{table}
+
+The Lean byte reduction is 57.03\%; the Rocq byte reduction is 58.92\%. These counts exclude generators, test clients, dependencies, evidence, and archived inputs on both sides. They are not proof-term sizes or whole-project speed measurements. In particular, the old Rocq certificate's 735 replay instructions and the new proof's 58 detachments are different units: some explicit substitution work becomes ordinary proof-term instantiation.
+
+The receipts record single-run timings in a shared environment; they do not establish a compilation-speed improvement. The case for the change is the smaller and shared mathematical argument. The universal-relation Rocq adapter costs nine lines and 348 bytes more than routing ordinary logic through the numeric adapter. This modest cost removes that dependency and matches the Lean instantiation. The table includes the chosen adapter and uses production \texttt{Stdlib} spelling on both sides. The checked Coq 8.18 variants are three bytes smaller on each side, with the same saving.
+
+\section{A single invariant for the dense-to-sparse bridge}
+
+\subsection{The duplicated argument}
+
+\texttt{KDenseBridge.blank\_iff} proves that a dense \texttt{Machine (m+1)} halts on its blank tape exactly when its relabelled sparse zipper machine halts. The baseline proof performs one time induction for the forward implication, then another to reconstruct the same correspondence for the reverse implication~\cite{densebridge}.
+
+The first induction already has enough information to record both halting witnesses. Its terminal branch records only the sparse witness, however, so the reverse direction has to recover information that was discarded. Strengthening that branch removes the second induction without introducing a new simulation framework.
+
+\subsection{The precise invariant}
+
+Let $d_t$ be the dense run after $t$ steps and $s_0$ the sparse initial configuration. Write $R(d,z)$ for the existing tape/state correspondence, $H_D$ for dense blank halting, and $H_S$ for sparse halting from $s_0$. Maintain
+\begin{equation}\label{eq:invariant}
+  (H_D\land H_S)
+  \quad\lor\quad
+  \exists z\;\bigl(\operatorname{run}_S(t,s_0)=\operatorname{some}(z)
+                    \land R(d_t,z)\bigr).
+\end{equation}
+The right branch means that a corresponding sparse configuration is \emph{present}. It does not assert that either configuration is nonterminal. In this development, the dense run may already have state \texttt{none} while the sparse run still returns \texttt{some z} for a terminal configuration. The sparse run becomes \texttt{none} only after an attempted next step. This detail prevents an off-by-one error in the argument.
+
+\begin{lemma}[Absorbing correspondence invariant]
+Under the existing row-commutation and sparse-terminal hypotheses of \texttt{blank\_iff}, equation~\eqref{eq:invariant} holds for every $t$.
+\end{lemma}
+
+\begin{proof}
+At $t=0$, use the existing blank-tape correspondence. Suppose the invariant holds at $t$. If both halting witnesses have already been obtained, retain them. Otherwise choose the corresponding configuration $z$. If the dense state is terminal, $t$ witnesses $H_D$, and the existing \texttt{rel\_halt} lemma shows that $z$ has no sparse successor, providing $H_S$. If the dense state is a working state, \texttt{rel\_step} supplies a sparse successor $z'$ and the correspondence with $d_{t+1}$. The existing sparse \texttt{run\_succ} equation gives the required present configuration at $t+1$.
+\end{proof}
+
+\begin{proposition}[Both directions from one induction]
+The invariant proves $H_D\leftrightarrow H_S$ with the original hypotheses and theorem type.
+\end{proposition}
+
+\begin{proof}
+Given a dense halting witness at time $t$, inspect~\eqref{eq:invariant}. Its first branch provides $H_S$. Its second branch and \texttt{rel\_halt} produce the sparse terminal witness at $t$.
+
+Conversely, suppose the sparse run reaches $y$ at time $t$ and its next step is absent. Inspect the invariant at the same $t$. Its first branch provides $H_D$. In its second branch, functionality of the sparse run gives $z=y$. If $d_t$ were a working state, \texttt{rel\_step} would give a successor of $y$, contradicting its terminality. Therefore $d_t$ is terminal, and $t$ witnesses $H_D$.
+\end{proof}
+
+The replacement has the same inputs, imports, and theorem statement. Every byte before the theorem body is preserved. Only the proof body changes.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Scope & Before & After & Saved\\
+\midrule
+\texttt{blank\_iff} physical lines & 52 & 37 & 15\\
+\texttt{blank\_iff} bytes & 2,230 & 1,630 & 600\\
+Whole module physical lines & 193 & 178 & 15\\
+Whole module bytes & 8,127 & 7,527 & 600\\
+\bottomrule
+\end{tabular}
+\caption{The replacement includes two explanatory comment lines. Its theorem body is 28.85\% shorter by physical lines and 26.91\% shorter by bytes.}
+\end{table}
+
+The baseline and replacement compile with Lean 4.32.0. Both exact typed audits report precisely \texttt{[propext, Quot.sound]}. There is no additional axiom dependency. This proof pattern is useful elsewhere when two directions reconstruct the same synchronized run: preserve both terminal witnesses in the shared induction before writing a second induction.
+
+\section{Extract the power-set interface}
+
+\subsection{The unnecessary dependency}
+
+At the pinned revision, \texttt{WFModelCore} imports \texttt{PSCCalibration} solely for a two-line definition:
+\begin{lstlisting}
+def PowerSets (mem : V -> V -> Prop) : Prop :=
+  forall a, exists p, forall y, mem y p <-> SetTheory.Sub mem y a
+\end{lstlisting}
+Here \texttt{Sub mem y a} expresses that all members of $y$ are members of $a$. The two uses of the predicate occur in the hypotheses of \texttt{WFModel.domain\_power} and \texttt{WFModel.domain\_models\_ZF}. No PSC calibration theorem is needed in that module~\cite{wfcore,psc}.
+
+The patch creates \texttt{BusyBeaver.ZFC.PowerSets}, imports only \texttt{ZF.Zf}, and moves this exact declaration into the new file. It retains the fully qualified name
+\begin{center}\texttt{SetTheory.BusyBeaver.ZFC.PSCCalibration.PowerSets}.
+\end{center}
+The namespace is a stable name; it need not determine which file physically contains the definition. \texttt{PSCCalibration} imports the small file for its legacy clients, while \texttt{WFModelCore} imports the small file directly.
+
+\subsection{Preservation is definitional}
+
+The new declaration has the same universe parameters, implicit carrier, membership-relation parameter, and defining expression. An explicit audit proves equality with the original defining expression by \texttt{rfl}. After removing the old declaration and changing the necessary imports, every remaining declaration and proof body in the two existing modules is byte-identical. This is a relocation of an interface, not an alternate proof of power-set existence and not an additional semantic assumption.
+
+The typed audit also invokes \texttt{domain\_models\_ZF} with the original hypothesis type. Both that theorem and \texttt{psc\_iff\_zfAxioms} retain the recorded standard axiom profile \texttt{[propext, Classical.choice, Quot.sound]}; the definitional interface equality has no axioms.
+
+\subsection{The exact import cut}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Effect on endpoint closure & Modules & Bytes\\
+\midrule
+Remove \texttt{Bootstrap} & $-1$ & $-9,174$\\
+Remove \texttt{DefinableClosure} & $-1$ & $-11,950$\\
+Remove \texttt{PSCCalibration} & $-1$ & $-8,112$\\
+Add \texttt{PowerSets} & $+1$ & $+400$\\
+Shorter \texttt{WFModelCore} import & $0$ & $-5$\\
+\midrule
+Net & $-2$ & $-28,841$\\
+\bottomrule
+\end{tabular}
+\caption{All project roots are included in the census, including bounded-ZFC consistency. \texttt{FirstOrder.Completeness} remains required through the separate Choice chain.}
+\end{table}
+
+The extraction alone changes the endpoint closure from 179 to 177 project modules and from 2,129,439 to 2,100,598 selected source bytes. The edited and new source files together \emph{grow} by 320 bytes and 12 lines. The older calibration modules remain in the repository for their other clients. The improvement is a smaller dependency boundary for the endpoint, not deletion of 28,841 bytes from the repository and not a measured build-time gain.
+
+A fresh check compiled all 29 project modules in the union of the modified \texttt{WFModelCore} closure and the compatibility \texttt{PSCCalibration} closure, followed by the typed audit. A separate reviewer independently reproduced the 179-to-177 import count and checked the exact declaration move.
+
+\section{Verification and combined measurements}
+
+\subsection{What was actually executed}
+
+The archive includes the raw logs, source digests, source comparisons, compiler versions, and reproduction drivers. Table~\ref{tab:checks} distinguishes the executed scopes.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.21\linewidth}>{\raggedright\arraybackslash}p{0.48\linewidth}>{\raggedright\arraybackslash}p{0.21\linewidth}}
+\toprule
+Component & Executed check & Result\\
+\midrule
+Lean shared logic & 16 project modules per variant; common exact-type/axiom audit; additional candidate basis audit & Pass; common audit identical\\[3pt]
+Lean dense bridge & Complete small dependency closure, original and replacement; original theorem type and axiom audit & Pass; same axiom profile\\[3pt]
+Lean power-set split & 29 project modules, including legacy calibration consumer; definitional and theorem-type audit & Pass\\[3pt]
+Combined Lean & All replacements together; 47 fresh project modules and four typed audit clients & Pass\\[3pt]
+Rocq shared logic & Nine baseline and ten candidate modules; facade and real client-fragment audits; recursive \texttt{coqchk} on both & Pass; candidate 24 closed reports\\
+\bottomrule
+\end{tabular}
+\caption{These are focused source/interface checks, not an execution of the entire modified K215 endpoint.}
+\label{tab:checks}
+\end{table}
+
+Lean checks use the official 4.32.0 release, commit
+\texttt{8c9756b28d64dab099da31a4c09229a9e6a2ef35}.
+The Rocq-source checks use Coq 8.18.0 with OCaml 4.14.1. In inherited production sources, the standard-library prefix \texttt{Stdlib} is normalized to \texttt{Coq} for that checker. This is disclosed in the reproduction script. A production adoption must still use the pinned Rocq 9.1 toolchain and its endpoint audit.
+
+The generic implication exports have no axiom dependencies in either checker. Lean's numerical compatibility results retain their existing standard dependencies; the Tarski completeness result retains \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}. The common audit output is byte-identical before and after the Lean logic replacement. The Rocq candidate's 24 reports cover the generic exports, adapters, unchanged \texttt{ThmDom} result, real propositional client fragment, and explicit facade audits; every one is closed under the global context.
+
+\subsection{All changes compose}
+
+The combined check builds the union of the affected Lean closures from source in one fresh output directory, using all delivered replacements. It does not copy previously compiled project objects. Four clients then check the common logic API, the additional generic exports, the dense-bridge type, and the semantic interface. The common logic and semantic audit outputs match their earlier exact records.
+
+The combined static endpoint census is
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Metric & Baseline & Combined & Difference\\
+\midrule
+Project modules & 179 & 177 & $-2$\\
+Selected source bytes & 2,129,439 & 2,075,787 & $-53,652$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The source-byte reduction decomposes without overlap:
+\[
+  53,652=24,211\;\text{(logic)}+600\;\text{(bridge)}+28,841\;\text{(imports)}.
+\]
+The removed modules are the three listed in the power-set table; the only added module is \texttt{PowerSets}. The Rocq source saving is separate and is not added to the Lean endpoint census.
+
+All four proof-source patches pass \texttt{git apply --check} together against the pinned baseline. The root checkout remains clean. This establishes that the delivered edits have a concrete, consistent application point, not merely that isolated examples are plausible.
+
+\subsection{Remaining integration checks}
+
+The modified full Lean machine endpoint was not rebuilt. Nor was the modified 237-module Rocq endpoint rebuilt with Rocq 9.1. The expensive machine-specific certificates and startup proof have their existing recorded checks, but this packet does not relabel those records as evidence for new transitive dependencies. Production adoption should rebuild affected descendants and refresh source/import bindings through the repository's normal process.
+
+No result here measures a minimum proof length, a minimum state count, a new 214-state machine, a controlled compilation speedup, or a completed internal PA/ZFC derivation. Those would require separate arguments and evidence.
+
+\section{Integration plan and reproduction}
+
+\subsection{Small changes first}
+
+\begin{enumerate}
+\item Apply the semantic-interface patch. It moves one definition and changes two import boundaries. Check the endpoint import census and legacy \texttt{PSCCalibration} consumer.
+\item Apply the dense-bridge patch. Review the single strengthened invariant and its reverse-direction contradiction. Its public theorem type is unchanged.
+\item Adopt the archived six-goal Lean core and the short \texttt{Lukasiewicz} adapter. Preserve the unchanged Tarski tail, keep the numeric facade, and synchronize the maintained generator with the six-goal plan.
+\item Integrate the Rocq generic core and both facades. Add the new module before its consumers in the source/build order. Update \texttt{regenerate215.py} and the applicable manifests so regeneration reproduces the new source tree.
+\item Rebuild the real endpoint clients with the pinned production toolchains, inspect their exact axiom reports, recursively check the Rocq endpoint, and publish new receipts bound to those exact sources.
+\end{enumerate}
+
+The Rocq patch is a proof-source patch. It deliberately does not pretend that the production generator, module-order manifests, and 237-module receipts have already been updated and verified. Likewise the provided Lean patch should be incorporated together with the maintained producer, rather than allowing a subsequent regeneration to restore the older core.
+
+\subsection{Archive layout}
+
+\begin{center}\small
+\begin{tabular}{lp{0.69\linewidth}}
+\toprule
+Directory & Contents\\
+\midrule
+\texttt{article/} & This LaTeX source and its compiled PDF.\\
+\texttt{lean\_logic/} & The two proposed modules, patch, typed clients, focused checker, baseline/candidate logs.\\
+\texttt{dense\_bridge/} & Replacement module, patch, exact-type audit, reproduction driver, evidence.\\
+\texttt{semantic\_interface/} & Exact definition extraction, patch, import census, source checks, compiler evidence.\\
+\texttt{rocq\_shared/} & Shared core, both adapters, dependencies, attributed plan and renderer, patch, recursive kernel records.\\
+\texttt{tools/} & Integrity checker, combined Lean checker, and ordered reproduction entry point.\\
+\texttt{evidence/} & Combined check, plan identity, review notes, and integration measurements.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Compiled proof objects are omitted. The archive retains proof sources and the evidence of the actual runs. A SHA-256 inventory detects accidental changes but is not a substitute for kernel checking.
+
+With Python 3.11 or newer, a pristine checkout at the pinned revision, Lean 4.32.0, and Coq 8.18's \texttt{coqc}/\texttt{coqchk} on \texttt{PATH}:
+\begin{lstlisting}
+python3 tools/verify_packet.py
+python3 tools/reproduce_all.py \
+  --repo /absolute/path/to/ProveIt \
+  --lean /absolute/path/to/lean-4.32.0/bin/lean \
+  --out /tmp/k215-simplification-recheck
+\end{lstlisting}
+The output directory must not exist. The driver keeps the checkout and distributed evidence unchanged; a private copy is used for the semantic-interface checker. Its scope is the focused checks in this report. It does not download dependencies or launch a full machine endpoint build.
+
+To rebuild the article:
+\begin{lstlisting}
+cd article
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+
+\section{Further research questions}
+
+\subsection{Can simulation proofs share terminal information more widely?}
+
+The dense bridge is a concrete instance of a broader review question: do the two directions of an equivalence induct over the same deterministic run while recording different terminal facts? The useful next experiment is to inspect other dense/sparse or source/runtime bridges, strengthen the shared invariant, and measure the net change in the actual consumer proofs. A new abstract framework is worthwhile only if several clients become shorter after counting that framework.
+
+For simulations in which one source step corresponds to several target steps, retaining a terminal witness alone does not establish progress. Existing positive-step or well-founded rank conditions must remain. Allowing zero target steps indefinitely can make a nonterminating source simulate a halted target, so that generalization requires a precise progress argument.
+
+\subsection{Can the next interface cuts be found by declaration use?}
+
+The \texttt{PowerSets} example suggests a systematic search for a module imported only to obtain one definition. Import-graph analysis should be paired with a scan of actual declaration use and a compilation of both direct and legacy consumers. A graph alone can mislead: \texttt{FirstOrder.Completeness} initially appears removable on a partial graph but remains required through the bounded-ZFC/Choice chain when every root is included.
+
+Candidate extractions should preserve fully qualified names and definitional bodies whenever possible. This keeps compatibility checks small. The objective is to separate minimal semantic assumptions from theorems proving that a large construction satisfies them, rather than merely distributing the same dependencies among more files.
+
+\subsection{Can one plan be the maintained source for both kernels?}
+
+The same six-goal DAG now has checked renderings for Lean and Rocq. A useful maintenance task is to make the plan, its goal formulas, and its two renderers the explicit shared production input. Goal lookup should use formulas rather than incidental node numbers. Regeneration checks should reject changed exports or new assumptions, and producer/source digests should be tied to the corresponding kernel records.
+
+This does not make the producer trusted. The kernels continue to validate ordinary proofs. It reduces the chance that a later change updates only one language or leaves a compatibility facade pointing to an obsolete derivation.
+
+\subsection{Can repeated primitive and return suffixes be shared?}
+
+The repository already contains proposals for semantic site contracts and primitive/return factoring~\cite{sharedprior,phase12}. Those should be treated as existing research, not rediscovered. The next useful deliverable would replace one complete family of repeated symbolic executions with a checked positive contract, preserving exact dispatch entry, frame assumptions, exit path, and the leaf/branch coverage boundary.
+
+A successful pilot must report both the added generic contract and the removed per-site work. It must retain the current machine-specific obligations or prove that the new contract covers them. Counting fewer generated lines without counting a new checker or a weakened hypothesis would not establish a genuine simplification.
+
+\subsection{How much of the external proof can be internalized economically?}
+
+The user's ultimate ZFC-provability objective invites a separate study of proof translation and arithmetization. The present interface reductions may help by shrinking the executable and semantic dependencies that must be represented. A concrete next question is which of the remaining correctness lemmas can be uniformly formalized in a weak arithmetic theory, and what explicit encoding is needed to turn the external equivalence into an object-theory proof.
+
+This question should have its own theorem statement and audit. It must not be treated as automatically solved by an axiom-free external theorem or by a successful finite execution check.
+
+\section{Provenance and interpretation of the contribution}
+
+The initial inputs were obtained through the selected GitHub connection and a pinned public checkout. Existing proof plans, adapters, and producer code are attributed in the component provenance files; the earlier shared-core packet and archived upstream proposal are expressly acknowledged. The new dense-bridge invariant and exact \texttt{PowerSets} extraction were developed against the current source tree. Independent review checked the declaration move, import count, and the halting-convention detail in the invariant.
+
+The practical contribution is a reviewable path from the current checked proofs to smaller shared arguments. It includes actual replacement sources, application patches, local proof checks, exact quantitative results, and a clear remaining production-integration boundary. The reductions do not depend on changing the mathematical meaning of the endpoint or the literal machine whose correctness is being studied.
+
+\begin{thebibliography}{9}
+\bibitem{phase12}
+ProveIt, \emph{Twelfth K215 proof-simplification checkpoint}, pinned revision \texttt{57541fe0cfe3}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase12/README.md}{Pinned checkpoint and its source/evidence links}.
+
+\bibitem{endpoint}
+ProveIt, \texttt{KEndpoint215.lean} and \texttt{KEndpoint.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{Literal 215-state endpoint};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}{Shared K-family endpoint composition}.
+
+\bibitem{rocqstatus}
+ProveIt, \emph{Rocq endpoints for the literal machine candidates}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/README.md}{Recorded production build and kernel-check scope}.
+
+\bibitem{archivedcore}
+ProveIt, phase-twelve upstream-merge inputs, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase12/upstream-merge/inputs}{Archived six-goal plan, producer, and Lean core/adapters}.
+Related originating commit:
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/3a7a61ee973a32777f2c5e07b8a304e6f4418b37}{\texttt{3a7a61ee973a}, one 58-step derivation for both implication calculi}.
+
+\bibitem{sharedprior}
+ProveIt, \emph{K215: one shared implication core and semantic site contracts}, prior proposal retained at the pinned revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/shared-proof-core}{Prior shared-core package and its Rocq renderer/adapter}.
+
+\bibitem{densebridge}
+ProveIt, \texttt{KDenseBridge.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDenseBridge.lean}{Baseline dense/sparse equivalence proof}.
+
+\bibitem{wfcore}
+ProveIt, \texttt{WFModelCore.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean}{Well-founded model construction and its power-set hypotheses}.
+
+\bibitem{psc}
+ProveIt, \texttt{PSCCalibration.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean}{Original power-set definition and calibration consumers}.
+\end{thebibliography}
+
+\end{document}

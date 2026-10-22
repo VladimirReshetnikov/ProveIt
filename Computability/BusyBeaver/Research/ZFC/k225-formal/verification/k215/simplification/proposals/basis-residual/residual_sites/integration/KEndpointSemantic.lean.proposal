@@ -1,0 +1,24 @@
+import BusyBeaver.ZFC.KEndpoint
+
+/- Proposed endpoint adapter; not included in the focused runtime build. -/
+namespace SetTheory.BusyBeaver.ZFC.KEndpoint.Semantic
+open KZip KRuntimeCore KDenseBridge LeanProofs.BoundedZFCConsistency
+
+section
+variable {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat}
+  {p : RegisterPath.Program} {T : Conf} {R0 : RegisterPath.Registers}
+  (hD : Commutes D M ex 230) (hH : ∀ b, M 230 b = none)
+  (hcov : KSim.SemanticCovered M p)
+  (hboot : Reach M (zc (ex 0) [] []) T) (hrel : KSim.Rel p ⟨[], R0⟩ T)
+  (hsrc : RegisterPath.Halts p ⟨[], R0⟩ ↔ KCode222.C222 Code254.F)
+include hD hH hcov hboot hrel hsrc
+
+theorem blank_halts_iff_c222 : BlankHalts D ↔ KCode222.C222 Code254.F := by
+  rw [blank_iff hD hH, ← hsrc, KSim.Semantic.halts_iff hcov hH hrel]
+  exact ⟨KEndpoint.halts_of_reach hboot, Halts.of_reach hboot⟩
+
+theorem blank_halts_iff_zfc_refutation : BlankHalts D ↔ BProv ZFCax_s [] Form.fBot :=
+  ((blank_halts_iff_c222 hD hH hcov hboot hrel hsrc).trans
+    KEndpoint.c222_iff_zf_refutation).trans ConstructibleChoice.zf_refutation_iff_zfc_refutation
+end
+end SetTheory.BusyBeaver.ZFC.KEndpoint.Semantic

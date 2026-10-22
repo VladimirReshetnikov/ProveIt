@@ -25,6 +25,17 @@ place. Report intake and reconciliation statuses below remain separate.
 
 ## Current queue
 
+## Queue status after batch 214
+
+Five K215 proof-simplification packets from `c3caaf63a4` were placed whole under
+[proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md)
+(`interface-sharing`, `direct-seed-report`, `basis-residual`, `direct-seed`, `dense-bridge`),
+omitting directories that copy repository files, baselines, repository verification records or
+licenses, and shortening mirrored repository paths to stay within the path budget (each listed in
+the index). The only machine table is the existing K215 table. Nothing was rerun at intake. The
+ZIPs are retired; the queue is clear.
+
+
 The eight proof-simplification archives from `4b16429bf6` were placed by upstream `d789bf0a28` under `proposals/` and retired there, together with its parallel placement of the affine/CM215 packet. [Supplemental batch 213](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake213-placement.md) accounts for these same arrivals as Sources 180–187: all 788 members recover through 676 immutable Git aliases, 42 delivery aliases, 69 arrival-only members and one new ancillary source. It duplicates no ZIP retirement. Placement `0388d93df6` is committed, and the [written reconciliation](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-213.md) covers all eight manuscripts with attributed ordinary reviews. The catalogue and phase-twelve import-check evidence are now published. The later phase-thirteen checkpoint separately checks the selected shared-implication successor; semantic coverage and the other proposals retain their own adoption gates. No supplied executable or proof compiler ran for the intake reviews.
 
 Batch 212 reconciles `K215_Checked_Affine_Core_and_CM215_2026-10-21.zip` (arrival `6f0d42d368`) as [Source 179](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-212.md). Placement `9740f2bd13` retired only this ZIP. All 862 members recover through 338 new ancillary files, 462 exact immutable Git aliases, 24 delivery aliases and 38 arrival-only members (six manuscript members and 32 logs excluded by existing Git ignore rules). The ordinary affine/CM215 review and independent literal checks are distinguished from submitted old-snapshot compiler receipts; no supplied executable or compiler was run. The collection remains 290 reports. The [arrival inventory](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/upstream-merge/incoming-pending.json) retains its earlier pending status.

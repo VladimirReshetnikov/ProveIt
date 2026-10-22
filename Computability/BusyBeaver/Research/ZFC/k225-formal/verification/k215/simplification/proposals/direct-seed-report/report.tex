@@ -1,0 +1,145 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[10pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\pagestyle{fancy}\fancyhf{}\lhead{K215: direct seeds and shared normalization}\rhead{22 October 2026}\cfoot{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=4em
+\setlist[itemize]{label=$\bullet$,leftmargin=*,nosep}\setlist[enumerate]{leftmargin=*,nosep}
+\newcommand{\code}[1]{\texttt{#1}}
+\newtheorem{proposition}{Proposition}
+\begin{document}
+\begin{center}{\Large\bfseries Use a smaller seed theory, not another quotient}\\[6pt]
+Further Rocq and Lean proof simplification for ProveIt\\22 October 2026\end{center}
+\textbf{Recommendation.} In Lean, instantiate completeness with only the original named seed bundles, derive full seed semantics on that same model, and bypass the first indiscernibility quotient. In Rocq, that direct interpreted-seed route already exists: simplify its duplicated bundle normalization instead of removing a quotient it does not have. This report makes the asymmetry explicit and gives a smaller proposed freshness interface.
+
+\textbf{Review boundary.} Main is pinned to
+\code{57541fe0cfe3af62b4cb58747d8d1d7c16b338d5}, 22 October, 01:00 UTC.
+The review inspected source, commit history and upstream documentation. No proof assistant, incoming verifier or generator was run. Proposed changes below are not compiled patches; no machine or repository source was changed.
+
+\section*{1. Recent changes: adoption is not the same as merge history}
+The maintained phase-twelve Lean checkpoint already separates \code{ZFModels} and \code{WFModelCore}, retains compatibility wrappers and removes the unwanted enumerator import from the L2 library. Its documented endpoint closure is \textbf{179 project modules}, down from 192; the endpoint-plus-decoder union is 184, with 15 freshly compiled and 169 source-bound reused providers. The separate 67-module compatibility scope does not make this a fresh 199-module build. These are inspected upstream records, not our replay.
+
+The latest merges preserve those checked sources. The later enumerator-corollary relocation is retained as a proposal outside the selected endpoint after the broader cut; it is not another additive endpoint saving. Shared implication-basis alternatives are also distinguished from the retained phase-eleven core in the maintained checkpoint. Proposing these already catalogued changes as new would obscure the actual next obligation.
+
+The maintained Rocq lane still has the older 42-module source boundary with the offset certificate. Historical normalized-source receipts do not certify different maintained files. This review does not propose a new source-certificate migration.
+
+\textbf{What the new review adds.} Source 186 already proposes a direct full seed for Lean. The current Rocq \code{Complete222.v} already supplies a closely corresponding interpreted-seed proof spine. The useful next step is therefore a carefully scoped Lean port, strengthened by (i) a narrow seed-only theory and (ii) one structural bound for freshness. Separately, Rocq can share its soundness/completeness bundle normalization at the pure named-logic level.
+
+\section*{2. The important asymmetry between the two assistants}
+Lean's current path is:
+\[
+\text{model of DerivableNF}\ \Longrightarrow\ \text{equality-free seed}\
+\Longrightarrow\ \text{indiscernibility quotient}\ \Longrightarrow\ \text{FullSeed}.
+\]
+In \code{KEndpoint.c222\_of\_zf\_refutation}, the proof calls
+\code{fullSeed\_of\_derivable}, obtains \code{FullSeed (qmem mem)}, and passes the witness
+\code{KIndisc222.mk mem (e 0)} to the lower model construction.
+The original completeness continuation, however, already supplies satisfaction of the
+\emph{original named formulas}, including their literal equality, not merely satisfaction of their equality translations.
+\newpage
+Rocq's \code{Complete222.v} already exploits the interpreted predicate
+\[
+Q(a) := \operatorname{thm222}(\tau(\operatorname{th}(a))).
+\]
+Its sequence is \code{tau\_fr}, \code{th\_fr}, \code{seed\_matrix},
+\code{seed\_code}, \code{seed\_code\_fresh}, \code{Q\_seed},
+\code{named\_seed\_to\_seeded}, then \code{TB\_kp0} and the ordinary K0 lower chain.
+It does \emph{not} use Lean's first semantic indiscernibility quotient. Rocq's
+\code{L224E} is the syntactic equality interpretation needed by \code{Q\_of\_lprov}; it must not be deleted as though it were that quotient.
+
+\section*{3. A narrow direct-seed completeness instance for Lean}
+For each arbitrary named formula $\psi$, put
+\[
+p_\psi=\neg\neg\psi,\qquad c_\psi=\operatorname{enc}(\operatorname{th}(p_\psi)),
+\qquad B_\psi=\operatorname{bundleNF}(0,1,c_\psi,p_\psi).
+\]
+Use the theory
+\[
+\operatorname{SeedAx}(f)\quad:\!\!\Longleftrightarrow\quad \exists\psi,\ f=B_\psi
+\]
+in \code{KEind222.c222\_complete}, rather than the theory of all formulas with derivable interpreted codes. This is an interface reduction, not a change to the numerical calculus: each required interpreted seed axiom is still a literal enabled native bundle.
+
+\textbf{Four obligations.}
+\begin{enumerate}
+\item \textbf{Syntactic commutation.} The bundle's fixed atoms are membership atoms, so
+$\operatorname{th}(\operatorname{bundleNF}(a,b,c,p))$
+is the same named bundle with matrix $\operatorname{th}(p)$.
+Applying \code{enc\_bundleNF} at $c=\operatorname{enc}(\operatorname{th}(p))$ gives the native bundle code. No semantic invariance under equality translation is assumed.
+\item \textbf{Enabled gate and freshness.} Double negation makes $c_\psi>1$, so the public-role inequalities hold. Prove that the container label $c_\psi$ does not occur freely in $p_\psi$; the next section gives a potentially smaller sufficient lemma.
+\item \textbf{Original named semantics.} The model continuation satisfies $B_\psi$ itself because $\operatorname{SeedAx}(B_\psi)$ holds. Prove a named-bundle normalization theorem for an arbitrary fresh matrix, yielding the seed property for the relation defined by $p_\psi$.
+\item \textbf{Remove padding semantically.} Classical double-negation equivalence and \code{seedProp\_congr} give the seed property for $\psi$. As $\psi$ is arbitrary, this is \code{FullSeed mem}, on the original domain.
+\end{enumerate}
+
+\textbf{What disappears from this route.} There is no need to restrict the matrix to \code{EqFree}, choose representatives of quotient parameters, prove the satisfaction translation \code{sat\_mk}, or transport the seed witnesses and subset clauses through \code{qmem}. The decoded/named round trip used by the old seed extraction is also unnecessary for this direct extraction. These declarations can remain in legacy modules; their removal from the selected dependency path requires a caller audit.
+
+\textbf{Crucial logical distinction.} The argument uses
+$\operatorname{Sat}(f)$ supplied by completeness together with derivability of
+$\operatorname{enc}(\operatorname{th}(f))$. It never uses the generally unjustified statement
+$\operatorname{Sat}(\operatorname{th}(f))\leftrightarrow\operatorname{Sat}(f)$ on an arbitrary original model. For example, two distinct elements with empty membership are membership-indiscernible, so the translated equality is true while their literal equality is false. This example is not claimed to satisfy the seed theory.
+\newpage
+\section*{4. One structural bound can replace two freshness inductions}
+The Rocq proof separately proves preservation of free names by the equality interpretation and a bound on free names by the encoding. A Lean port need not copy both intermediate interfaces.
+
+The smallest useful single invariant is
+\[
+\operatorname{Free}(i,f)\ \Longrightarrow\ i<\operatorname{enc}(\operatorname{th}(f)).
+\]
+Applying it to $i=c_\psi$ and $f=p_\psi$ would give $c_\psi<c_\psi$ if the private label were free. Hence $\neg\operatorname{Free}(c_\psi,p_\psi)$. The existing \code{Tarski.sat\_ext} then removes the container update from the matrix; a second semantic-invariance induction is unnecessary.
+
+\textbf{Proposed proof.} Induct on the original named formula. Membership uses the coordinate bounds for the pairing code. Falsity has no free names. Implication and universal quantification use \code{le\_P\_left}/\code{le\_P\_right} and the encoding factors; a free name under a binder remains free in its body. At equality, expand only the fixed \code{Eind} template: its auxiliary binder $x+y+1$ differs from both original names, which remain in membership atoms. Keep pairing arithmetic opaque except for the established component bounds.
+
+A stronger alternative is $\operatorname{top}(f)\leq\operatorname{enc}(\operatorname{th}(f))$, followed by the existing \code{not\_occurs\_of\_top\_le}. It also handles bound labels, which the seed argument does not require. Prefer the smaller free-name contract unless the stronger bound has independent clients.
+
+These are mathematical proof contracts, not compiled lemmas. Compare the direct proof with Rocq's two small inductions before claiming a net size saving. In particular, \code{sat\_encode\_decode} alone cannot establish freshness of the original formula from its translation.
+
+\textbf{Minimal integration.}
+\begin{itemize}
+\item Put \code{FullSeed} in a neutral seed-interface module, preserving its qualified name via a wrapper if needed. Currently \code{KLowerSeed} imports \code{KIndisc222} for this interface.
+\item Keep \code{formSeed\_of\_fullSeed} unchanged. Its actual argument becomes the direct full seed, and the endpoint witness becomes $e(0)$ instead of the quotient representative $\operatorname{mk}(e(0))$.
+\item Keep irreflexivity and the explicit valuation/nonempty-domain witness. Keep the later tagged-domain construction, bisimulation quotient, and well-founded-part construction. This removes only the \emph{first} quotient.
+\end{itemize}
+The 151-line \code{KIndisc222} is a candidate dependency removal, not a forecast of 151 net lines saved: the new named-bundle and support proofs have costs, and the old API may remain for compatibility. Nor does removal of one quotient imply removal of \code{Quot.sound} or classical choice from the complete endpoint.
+
+\section*{5. Rocq: normalize the bundle once, at the lowest level}
+\code{Sound222.v} proves \code{E\_dn}, \code{E\_req}, \code{E\_clos}, \code{E\_seed} for decoded validity. \code{Complete222.v} proves a parallel \code{L\_dn}, \code{L\_req}, \code{L\_clos}, \code{L\_seed}, with a double-negated matrix. Their common content is pure named-formula equivalence.
+
+Prove one family parametrically in a global named equivalence:
+\[
+\operatorname{leqv}(p,q)\Longrightarrow
+\operatorname{leqv}(\operatorname{SeedN}(a,b,c,p),
+                    \operatorname{SeedY}(a,b,c,q)).
+\]
+Analogous request and closure lemmas are internal steps of the same normalization proof.
+\newpage
+\textbf{Proof and instances.} Expand the request and closure templates. Lift the supplied equivalence through implication, negation and universal quantification using the existing \code{kleqv} congruence lemmas; discharge the fixed double-negation/conjunction normalizations once. The seed theorem is their composition.
+\begin{itemize}
+\item Soundness: instantiate $p=q$ and reflexivity, then transport the two pure implications through \code{V\_lprov} to obtain the existing \code{E}-equivalence interface.
+\item Completeness: instantiate $p=\neg\neg q$ and the existing pure double-negation equivalence. The current \code{L\_seed} is a corollary.
+\end{itemize}
+No freshness, encoding, irreflexivity, or $a\ne b$ is needed by this \emph{pure normalization} lemma. Those hypotheses are still required where applicable in the outer decoding and seed-to-model adapters. This is theorem-level equivalence, not equivalence derived under arbitrary temporary assumptions; universal congruence must not smuggle in an invalid generalization rule.
+
+\textbf{Dependency layout.} Move the shared named bundle syntax and normalization to a lower module imported by both soundness and completeness. Do not make \code{Sound222} import \code{Complete222}, which already imports soundness. Retain the old lemma names as wrappers until downstream clients and the maintained generator/import lists are checked.
+
+\textbf{Why this is a useful next step.} It removes duplicated normalization arguments and provides a precise cross-assistant template for the Lean named-seed port. It does not remove the separate \code{named\_seed\_to\_seeded} binding/freshness argument or Rocq's syntactic equality interpretation. Net source size and checking time remain unmeasured.
+
+\section*{6. Acceptance order}
+\begin{enumerate}
+\item Check the pure Rocq normalization module and its two old-interface wrappers. Compile both \code{Sound222} and \code{Complete222}; print their endpoint assumptions and perform recursive checking on the resulting exact sources.
+\item In Lean first prove the named-bundle interpretation and one suitable freshness lemma, then derive direct \code{FullSeed} from the narrow \code{SeedAx} model continuation. Test equality-containing matrices, not just equality-free examples.
+\item Change the lower seed import and endpoint construction only after the direct theorem compiles. Preserve the explicit witness, ordinary consistency notion, lower tagged quotient, and the unchanged binary machine/program.
+\item Rebuild the source-transitively affected endpoint closure and compatibility clients. Report fresh and reused providers separately and audit generator/source correspondence. Do not transfer phase-twelve receipts to modified sources.
+\item Measure handwritten proof size, selected dependency size, proof objects and checking time separately. Choose between the combined and split freshness proofs on actual results.
+\end{enumerate}
+
+\section*{Sources and attribution}
+\small
+All current-source references are pinned to \href{https://github.com/VladimirReshetnikov/ProveIt/commit/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5}{57541fe0cfe3}. The direct Lean full-seed idea is credited to Source 186 in \href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-213.md}{intake 213}; the narrower seed-only interface combines earlier seed-interface work with that route. The combined free-name bound and shared Rocq normalization are proposals developed in this review.
+\begin{itemize}
+\item Lean directory \path{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}: \code{KEind222.lean}, \code{KSeedModel222.lean}, \code{KIndisc222.lean}, \code{KLowerSeed.lean}, \code{KEndpoint.lean}, \code{KLowerQHyp.lean}, \code{TarskiLeibniz.lean}.
+\item Rocq directory \path{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/}: \code{Complete222.v}, \code{Sound222.v}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase12/README.md}{Phase-twelve checkpoint}; \href{https://github.com/VladimirReshetnikov/ProveIt/commit/57541fe0cfe3af62b4cb58747d8d1d7c16b338d5}{latest maintained/proposal merge distinction}.
+\end{itemize}
+\end{document}

@@ -1,0 +1,129 @@
+--- a/RMBisim.lean
++++ b/RMBisim.lean
+@@ -456,6 +456,40 @@
+ 
+ /-! A certificate denotes exactly the paths returned by its decoder. Soundness
+ requires no numeric size bound or other property of that decoder. -/
++/-- Certificate entry checking is independent of the branch-check implementation. -/
++def entryCheckWith (decode : Nat → List Bool) (t1 t2 : Tree)
++    (branch : List Bool → List Bool → Nat → Bool) (x : Entry) : Bool :=
++  match tsite t1 (decode x.1), tsite t2 (decode x.2.1) with
++  | some (.halt, _), some (.halt, _) => true
++  | some (.decnz r1, Q1), some (.decnz r2, Q2) =>
++      Nat.beq r1 r2 && branch (incPath Q1) (incPath Q2) x.2.2.1 &&
++        branch (breakPath 1 Q1) (breakPath 1 Q2) x.2.2.2
++  | _, _ => false
++
++theorem entryCheckWith_good (decode : Nat → List Bool)
++    {t1 t2 : Tree} {S : List Bool → List Bool → Prop}
++    (branch : List Bool → List Bool → Nat → Bool)
++    (hbranch : ∀ {A B j}, branch A B j = true → BranchGood t1 t2 S A B)
++    {x : Entry} (h : entryCheckWith decode t1 t2 branch x = true) :
++    EntryGood t1 t2 S (decode x.1) (decode x.2.1) := by
++  unfold entryCheckWith at h
++  revert h
++  cases h1 : tsite t1 (decode x.1) with
++  | none => intro h; cases h
++  | some eQ1 =>
++  cases h2 : tsite t2 (decode x.2.1) with
++  | none => obtain ⟨e1, _⟩ := eQ1; cases e1 <;> intro h <;> cases h
++  | some eQ2 =>
++  obtain ⟨e1, Q1⟩ := eQ1
++  obtain ⟨e2, Q2⟩ := eQ2
++  cases e1 <;> cases e2 <;> intro h
++  all_goals first | (simp only [Bool.false_eq_true] at h; done) | skip
++  · simp only [Bool.and_eq_true] at h
++    obtain ⟨⟨hr, hj⟩, hk⟩ := h
++    rw [Nat.eq_of_beq_eq_true hr] at h1
++    exact Or.inr ⟨_, Q1, Q2, h1, h2, hbranch hj, hbranch hk⟩
++  · exact Or.inl ⟨Q1, Q2, h1, h2⟩
++
+ namespace WithDecoder
+ 
+ variable (decode : Nat → List Bool)
+@@ -471,12 +505,7 @@
+   | _, _, _ => false
+ 
+ def entryOk (t1 t2 : Tree) (T : CTree) (x : Entry) : Bool :=
+-  match tsite t1 (decode x.1), tsite t2 (decode x.2.1) with
+-  | some (.halt, _), some (.halt, _) => true
+-  | some (.decnz r1, Q1), some (.decnz r2, Q2) =>
+-      Nat.beq r1 r2 && branchOk decode t1 t2 T (incPath Q1) (incPath Q2) x.2.2.1 &&
+-        branchOk decode t1 t2 T (breakPath 1 Q1) (breakPath 1 Q2) x.2.2.2
+-  | _, _ => false
++  entryCheckWith decode t1 t2 (branchOk decode t1 t2 T) x
+ 
+ /-- The relation a certificate tree denotes: the pairs its lookup returns. -/
+ def Rel (T : CTree) (P1 P2 : List Bool) : Prop := ∃ j, getc decode T j = some (P1, P2)
+@@ -504,24 +533,9 @@
+   exact ⟨l1, P1, l2, P2, h1, h2, cntEq_ok hc, j, h3⟩
+ 
+ theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry} (h : entryOk decode t1 t2 T x = true) :
+-    EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) := by
+-  unfold entryOk at h
+-  revert h
+-  cases h1 : tsite t1 (decode x.1) with
+-  | none => intro h; cases h
+-  | some eQ1 =>
+-  cases h2 : tsite t2 (decode x.2.1) with
+-  | none => obtain ⟨e1, _⟩ := eQ1; cases e1 <;> intro h <;> cases h
+-  | some eQ2 =>
+-  obtain ⟨e1, Q1⟩ := eQ1
+-  obtain ⟨e2, Q2⟩ := eQ2
+-  cases e1 <;> cases e2 <;> intro h
+-  all_goals first | (simp only [Bool.false_eq_true] at h; done) | skip
+-  · simp only [Bool.and_eq_true] at h
+-    obtain ⟨⟨hr, hj⟩, hk⟩ := h
+-    rw [Nat.eq_of_beq_eq_true hr] at h1
+-    exact Or.inr ⟨_, Q1, Q2, h1, h2, branchOk_good decode hj, branchOk_good decode hk⟩
+-  · exact Or.inl ⟨Q1, Q2, h1, h2⟩
++    EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) :=
++  entryCheckWith_good decode (branchOk decode t1 t2 T)
++    (fun hb => branchOk_good decode hb) h
+ 
+ def check (t1 t2 : Tree) (T : CTree) : Bool :=
+   branchOk decode t1 t2 T [] [] 0 && allC (entryOk decode t1 t2 T) T
+--- a/RMNormalizedBisim.lean
++++ b/RMNormalizedBisim.lean
+@@ -82,12 +82,7 @@
+   | _, _, _ => false
+ 
+ def entryOk (t1 t2 : Tree) (T : CTree) (x : Entry) : Bool :=
+-  match tsite t1 (decode x.1), tsite t2 (decode x.2.1) with
+-  | some (.halt, _), some (.halt, _) => true
+-  | some (.decnz r1, Q1), some (.decnz r2, Q2) =>
+-      Nat.beq r1 r2 && branchOk decode t1 t2 T (incPath Q1) (incPath Q2) x.2.2.1 &&
+-        branchOk decode t1 t2 T (breakPath 1 Q1) (breakPath 1 Q2) x.2.2.2
+-  | _, _ => false
++  entryCheckWith decode t1 t2 (branchOk decode t1 t2 T) x
+ 
+ theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
+     (h : branchOk decode t1 t2 T A B j = true) : BranchGood t1 t2 (Rel decode T) A B := by
+@@ -113,24 +108,9 @@
+ 
+ theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry}
+     (h : entryOk decode t1 t2 T x = true) :
+-    EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) := by
+-  unfold entryOk at h
+-  revert h
+-  cases h1 : tsite t1 (decode x.1) with
+-  | none => intro h; cases h
+-  | some eQ1 =>
+-  cases h2 : tsite t2 (decode x.2.1) with
+-  | none => obtain ⟨e1, _⟩ := eQ1; cases e1 <;> intro h <;> cases h
+-  | some eQ2 =>
+-  obtain ⟨e1, Q1⟩ := eQ1
+-  obtain ⟨e2, Q2⟩ := eQ2
+-  cases e1 <;> cases e2 <;> intro h
+-  all_goals first | (simp only [Bool.false_eq_true] at h; done) | skip
+-  · simp only [Bool.and_eq_true] at h
+-    obtain ⟨⟨hr, hj⟩, hk⟩ := h
+-    rw [Nat.eq_of_beq_eq_true hr] at h1
+-    exact Or.inr ⟨_, Q1, Q2, h1, h2, branchOk_good decode hj, branchOk_good decode hk⟩
+-  · exact Or.inl ⟨Q1, Q2, h1, h2⟩
++    EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) :=
++  entryCheckWith_good decode (branchOk decode t1 t2 T)
++    (fun hb => branchOk_good decode hb) h
+ 
+ theorem check_bisim {p1 p2 : Program} {T : CTree}
+     (hs : branchOk decode (ptree p1) (ptree p2) T [] [] 0 = true)

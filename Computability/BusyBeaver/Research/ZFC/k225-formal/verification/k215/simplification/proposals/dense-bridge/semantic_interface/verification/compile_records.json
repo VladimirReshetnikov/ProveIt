@@ -1,0 +1,335 @@
+{
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "records": [
+    {
+      "module": "FirstOrder.Fol",
+      "source_sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "imports": [],
+      "exit_code": 0,
+      "elapsed_seconds": 2.209089269003016,
+      "log": "verification/logs/FirstOrder.Fol.log",
+      "olean_sha256": "cacf1698575083566f959bedba34fefe15997d0d835de989f38d463433376fe4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileCongruence",
+      "source_sha256": "e368b337567c8d316624f53ca13cc7700bf74de0257d9acc31783e355c95a86b",
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8004104279971216,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfileCongruence.log",
+      "olean_sha256": "8cdb73af0797dfc4fe0e711378bbb972c8c2695d91c80f4d8aef806a02db7210"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfilePairs",
+      "source_sha256": "cca62fc34f5c431ed48dd49a6349da7b6038380d79698d107ceb9e18a8102add",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCongruence"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.4268467369984137,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfilePairs.log",
+      "olean_sha256": "108fad02bc8df5354841e543410b68ab148383031b17312c285b66e7901554c2"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PositiveClosure",
+      "source_sha256": "5cfa7e72c82fcb7d9f98d03e1c489d490ead15c5353ebebba68af5dab0a49676",
+      "imports": [],
+      "exit_code": 0,
+      "elapsed_seconds": 0.437166370000341,
+      "log": "verification/logs/BusyBeaver.ZFC.PositiveClosure.log",
+      "olean_sha256": "1ebf41190db1f89c1e6f689f2b055132909cc8c7d498b3a18aedf7808bc611b5"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileCollection",
+      "source_sha256": "c65afa1b9fe0da24c9574afe7c2167bd2a9aba033d63c7e337ec41fe12db2abb",
+      "imports": [
+        "BusyBeaver.ZFC.ProfilePairs",
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7258732310001506,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfileCollection.log",
+      "olean_sha256": "632b6e04e687dcf5b5350263eb1a3f6e1a1065e4d92c35ca3d5502c650aa7ba7"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DeepPositiveClosure",
+      "source_sha256": "4174b82c10665bf1f7385b70c0e2cfc9bb61dbdd887d3bc19a57de42076bdccb",
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7046284239986562,
+      "log": "verification/logs/BusyBeaver.ZFC.DeepPositiveClosure.log",
+      "olean_sha256": "d14f8df432840d608b22ab5cee46cd5541bddc590a2aea997713dae630befcbe"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileSyntax",
+      "source_sha256": "89ad80658825506770ba458f4d8df8296b8d6352936f156a299f14317160d8a9",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCollection",
+        "BusyBeaver.ZFC.DeepPositiveClosure"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6537569529973553,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfileSyntax.log",
+      "olean_sha256": "f8e03f2857788765021bba1ff55b5dd35d2156f22a6ee984c48df2f704480380"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileModel",
+      "source_sha256": "d31215ed6642ff1482640767a84f194ad898f7b1752dc5523948f6dfdd971aa3",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileSyntax"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5375075500051025,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfileModel.log",
+      "olean_sha256": "1d3987ae97cdfdb7d5f63531b3f53aa50019dfb100354cef64872c5a3d8e93cf"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileComposition",
+      "source_sha256": "cd75522ef4222f008fefe23b3c664ffd6dee25b13c4a3b23e2e4c77ec0e21727",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCollection"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.554722225999285,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfileComposition.log",
+      "olean_sha256": "c1b783f7edbcd2391a1c8c4e1f652c6dcbbd1eef2f360da59065190cd726ed8c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.CompositionModel",
+      "source_sha256": "d4d391f5b23891a1d39c0ba706b58152e7853c154c6039f2e09f9bbdbdb07cf0",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileModel",
+        "BusyBeaver.ZFC.ProfileComposition"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5104132690030383,
+      "log": "verification/logs/BusyBeaver.ZFC.CompositionModel.log",
+      "olean_sha256": "6f7ffed9a007a242db3b970daff48da92b807f3f677fb2414aba7e582c0dc453"
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientModel",
+      "source_sha256": "8bbc62e568c9bd53a5e20cb1f890a93b3ea5e2ea105f3ed70c0bf04ff91dd85f",
+      "imports": [
+        "BusyBeaver.ZFC.CompositionModel"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5092871689994354,
+      "log": "verification/logs/BusyBeaver.ZFC.QuotientModel.log",
+      "olean_sha256": "caffe19840700efc458b6de5024e6894c28dff82380b8cdb3bfcdde09985ad50"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileAxioms",
+      "source_sha256": "e052a69b89da6eb36f480ed87633236b2b811868ad01b45a7ddb0a5ed072481c",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileComposition"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5042492459979258,
+      "log": "verification/logs/BusyBeaver.ZFC.ProfileAxioms.log",
+      "olean_sha256": "615caab699578d49e616bba346d537b46036f8ae56d41a7485399d229c0d0387"
+    },
+    {
+      "module": "FirstOrder.Calculus",
+      "source_sha256": "6d61edd50c7062213be2e34a3b6a1efdb67d0f8072e75d4ff5dea20b41f549be",
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.685391774000891,
+      "log": "verification/logs/FirstOrder.Calculus.log",
+      "olean_sha256": "d289ef7f399deaf59e7f210725dc38c10e8c2a2139ddcc481f6d9f3632668e99"
+    },
+    {
+      "module": "ZF.Zf",
+      "source_sha256": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa",
+      "imports": [
+        "FirstOrder.Calculus"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.9004310550008086,
+      "log": "verification/logs/ZF.Zf.log",
+      "olean_sha256": "54f68e842c612c79f73feeeae6c2d61bb2a4552deb4c09948043e29808b63783"
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientSeparation",
+      "source_sha256": "64ab6b82c643534de6e7d082717f0d798812ca78b7145d82c5e1c9ca5e857e65",
+      "imports": [
+        "BusyBeaver.ZFC.QuotientModel",
+        "BusyBeaver.ZFC.ProfileAxioms",
+        "ZF.Zf"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.4537142369954381,
+      "log": "verification/logs/BusyBeaver.ZFC.QuotientSeparation.log",
+      "olean_sha256": "1af4119fbf5dc7b3432dd0f604d320d3fd591d05b40c6c66bff5c80dc21558c3"
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientBasic",
+      "source_sha256": "966c269abe7552895d97cc943582db7f53cc5a487a59d695a0a84922fb8cc412",
+      "imports": [
+        "BusyBeaver.ZFC.QuotientSeparation"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.40234374399733497,
+      "log": "verification/logs/BusyBeaver.ZFC.QuotientBasic.log",
+      "olean_sha256": "fcbb565a4dc53bb97c9d11d03b71a1ca16fbf599d6d99b3402aedb1443cd1c07"
+    },
+    {
+      "module": "BusyBeaver.ZFC.SingletonInfinity",
+      "source_sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974",
+      "imports": [
+        "BusyBeaver.ZFC.QuotientBasic"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.45238132200029213,
+      "log": "verification/logs/BusyBeaver.ZFC.SingletonInfinity.log",
+      "olean_sha256": "54e001866ea2ca42a90da1c0564ea7a1073b86c2cf65059cbdc1696289fab64d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.FiniteSets",
+      "source_sha256": "a7598510348f597412e269d1df9ac8da5110f96e699d58aaa0eec081a2960702",
+      "imports": [
+        "BusyBeaver.ZFC.SingletonInfinity"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.47133449299872154,
+      "log": "verification/logs/BusyBeaver.ZFC.FiniteSets.log",
+      "olean_sha256": "a5dedf3e5292611f1059e746906ac009bff945e666219392c32523b6d827508a"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PowerSyntax",
+      "source_sha256": "afffc621f5abd0a53138a5637c7d2866f89d33d4116db7a18461e9d90f94d503",
+      "imports": [
+        "BusyBeaver.ZFC.ProfileAxioms",
+        "BusyBeaver.ZFC.ProfileModel"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3636708659978467,
+      "log": "verification/logs/BusyBeaver.ZFC.PowerSyntax.log",
+      "olean_sha256": "bb8138c0332d24d4f65afafd0109b430a7f0194a9a452f011eec2a3e9c0543aa"
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientPower",
+      "source_sha256": "d911fcca763a0e8a1e2b6e85e2222ac62c2ae92d8c7177991d8f2a1e2563235e",
+      "imports": [
+        "BusyBeaver.ZFC.QuotientSeparation",
+        "BusyBeaver.ZFC.PowerSyntax"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3299461349961348,
+      "log": "verification/logs/BusyBeaver.ZFC.QuotientPower.log",
+      "olean_sha256": "0a052e1174f743f9c2265f11cefc4d855aeabc0e1dbf074a74da2d26bae05fd7"
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientCPGIC",
+      "source_sha256": "dc580ae54d8c2f05657dfa34e187adcf206bf1f72b5479690ac347f79da6d146",
+      "imports": [
+        "BusyBeaver.ZFC.QuotientPower"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5246671530039748,
+      "log": "verification/logs/BusyBeaver.ZFC.QuotientCPGIC.log",
+      "olean_sha256": "832a1b9bb8f09eda60ddce8a359259e975daff5ea1567e66c852a6a76f65a300"
+    },
+    {
+      "module": "BusyBeaver.ZFC.WellFoundedPart",
+      "source_sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b",
+      "imports": [
+        "BusyBeaver.ZFC.FiniteSets",
+        "BusyBeaver.ZFC.QuotientCPGIC",
+        "ZF.Zf"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6975484720023815,
+      "log": "verification/logs/BusyBeaver.ZFC.WellFoundedPart.log",
+      "olean_sha256": "077a3ac96e3c03390f4e72e4f49d17d5704d2820f16cd5b116d006c2951997c0"
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFRelativization",
+      "source_sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d",
+      "imports": [
+        "BusyBeaver.ZFC.WellFoundedPart"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.43274255400319817,
+      "log": "verification/logs/BusyBeaver.ZFC.WFRelativization.log",
+      "olean_sha256": "83bfffd26fcf96a3ca1915c5ff1ac4b319ee72cefdc7b348a41aeaf9c9533aaa"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PowerSets",
+      "source_sha256": "fe2f9aa8deb9a4bebb96c0685858b3df6f8c5ade3fba7b524468a61dbcfbac98",
+      "imports": [
+        "ZF.Zf"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.25225204399612267,
+      "log": "verification/logs/BusyBeaver.ZFC.PowerSets.log",
+      "olean_sha256": "4e8c7176f5de2cb79969df22e4614905faf4c4994e330f4d6cb4a7252b57c05d"
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFModelCore",
+      "source_sha256": "390b3d8d662ce5d8fb62dd9cabc628e11afd08872b60dbd0e4a522cc17db73f5",
+      "imports": [
+        "BusyBeaver.ZFC.WFRelativization",
+        "BusyBeaver.ZFC.PowerSets"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6281525759986835,
+      "log": "verification/logs/BusyBeaver.ZFC.WFModelCore.log",
+      "olean_sha256": "19871a2e78ff2db8925acbfa855cb79cdf435a91698b58f3fadc38e7d66f1383"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Bootstrap",
+      "source_sha256": "a2a3599021fd4a933440366ed87f195df4155d9b7330d2cd2dc76efe7c622e97",
+      "imports": [
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.39352878399949986,
+      "log": "verification/logs/BusyBeaver.ZFC.Bootstrap.log",
+      "olean_sha256": "5c55e248395ee71a78bf5ac9dae5d40da55f24013081023efb2b32a06ff44e31"
+    },
+    {
+      "module": "BusyBeaver.ZFC.DefinableClosure",
+      "source_sha256": "2e05a77cf35a8cd1d2a3cd10b110a4b23d3f7fa8e04dabade77602d25e9ca36a",
+      "imports": [
+        "BusyBeaver.ZFC.DeepPositiveClosure",
+        "BusyBeaver.ZFC.Bootstrap"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.4795598940036143,
+      "log": "verification/logs/BusyBeaver.ZFC.DefinableClosure.log",
+      "olean_sha256": "38b14e905fbfcd6ff9c32b764dcc475f9735101587c4c877b262ac8e67c6ff6f"
+    },
+    {
+      "module": "FirstOrder.Completeness",
+      "source_sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299",
+      "imports": [
+        "FirstOrder.Calculus"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.1646355690027121,
+      "log": "verification/logs/FirstOrder.Completeness.log",
+      "olean_sha256": "9e22648a91c134c3fc440abb01ad56e0694b1a89b6560d9738a75b56ceca9ca4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.PSCCalibration",
+      "source_sha256": "b5fe4fc694a00304acc057c17789c4f9334909ffa7c88dfa0db661cdf1c4159d",
+      "imports": [
+        "BusyBeaver.ZFC.DefinableClosure",
+        "BusyBeaver.ZFC.PowerSets",
+        "ZF.Zf",
+        "FirstOrder.Completeness"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5252859419997549,
+      "log": "verification/logs/BusyBeaver.ZFC.PSCCalibration.log",
+      "olean_sha256": "157dce39c4616fa2bb6b632dcdf1b25db2603c1d14e6be7ee730c990f077befb"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "scope": "Independent mathematical and source-graph peer review; fresh Lean receipts are separate.",
+  "status": "PASS_SOURCE_AND_MATHEMATICAL_REVIEW",
+  "baseline_commit": "57541fe0cfe3af62b4cb58747d8d1d7c16b338d5",
+  "endpoint_before": {
+    "project_modules": 179,
+    "busybeaver_modules": 167,
+    "selected_source_bytes": 2129439,
+    "external_imports": [
+      "Init"
+    ]
+  },
+  "endpoint_after": {
+    "project_modules": 178,
+    "selected_source_bytes": 2121905,
+    "removed_modules": [
+      "BusyBeaver.ZFC.Code254Models",
+      "BusyBeaver.ZFC.KIndisc222",
+      "BusyBeaver.ZFC.KSeedModel222"
+    ],
+    "added_modules": [
+      "BusyBeaver.ZFC.KSeedDirect222",
+      "BusyBeaver.ZFC.KSeedInterface222"
+    ]
+  },
+  "reviewed_sources": [
+    {
+      "module": "BusyBeaver.ZFC.KSeedDirect222",
+      "bytes": 6295,
+      "lines": 142,
+      "sha256": "81c67224f63a26fb5430ba0da2eaa9845d6fd08af71c7bf70d8dca2fa6b2fd26",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222",
+        "BusyBeaver.ZFC.Code254GIC"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedInterface222",
+      "bytes": 1718,
+      "lines": 46,
+      "sha256": "a255fa319056e538d0db2f1e8a8ed06d9111047d08d51e21e64fe437946e943c",
+      "imports": [
+        "BusyBeaver.ZFC.KSeed222",
+        "BusyBeaver.ZFC.KEind222"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedModel222",
+      "bytes": 4267,
+      "lines": 97,
+      "sha256": "40ee387ec86e9b7197196952506ef4d628bea14bbea17d05d39f242a8454b122",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222",
+        "BusyBeaver.ZFC.Code254Models"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KIndisc222",
+      "bytes": 6771,
+      "lines": 145,
+      "sha256": "fe67ef8c8e002f22ccbec3a9edc6da00693d93a6ef45346b349acb56ba71e6a4",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedModel222"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerSeed",
+      "bytes": 2866,
+      "lines": 67,
+      "sha256": "ef411c36c16ec10fb0f28de21ae5f72b57df1b9479fd1e6392cddce161367165",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222",
+        "BusyBeaver.ZFC.Code254GIC"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEndpoint",
+      "bytes": 3982,
+      "lines": 81,
+      "sha256": "f8b1467e2fff5f88145b866ac49a14b504246df80fc5dde83c02800591a3eabe",
+      "imports": [
+        "BusyBeaver.ZFC.KSeedDirect222",
+        "BusyBeaver.ZFC.KLowerQHyp",
+        "BusyBeaver.ZFC.KUpper222",
+        "BusyBeaver.ZFC.KSim",
+        "BusyBeaver.ZFC.KDenseBridge"
+      ]
+    }
+  ],
+  "preserved_claims": [
+    "Original-formula satisfaction with literal equality, not an illicit reflection from translated satisfaction",
+    "Private marker fresh by free-support preservation and code domination",
+    "Double negation preserves the relation and makes marker distinct from roles0 and1",
+    "Named bundle semantics needs no irreflexivity; FullSeed retains it",
+    "Original-domain inhabitant is supplied by valuation e0",
+    "No circular import or dependence on preliminary indiscernibility quotient",
+    "Later tagged-domain bisimulation quotient and well-founded model remain"
+  ],
+  "verification_limits": [
+    "No new Lean compilation performed by this review",
+    "No machine-specific endpoint rebuild claimed",
+    "Net global maintenance bytes may grow when optional compatibility modules remain"
+  ]
+}

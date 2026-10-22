@@ -1,0 +1,31 @@
+import BusyBeaver.ZFC.KHome
+import BusyBeaver.ZFC.KSim
+
+/- Owned proof sketch using existing scanner theorem. UNCOMPILED.
+   This isolates the unbounded crossing lemma, not full template soundness. -/
+namespace SetTheory.BusyBeaver.ZFC.KHome
+open KZip KRuntimeCore
+
+theorem opaque_prefix_guard {M : TMN} (rows : Rows M)
+    (P tail : List Bool) (hrev : P.reverse = true :: tail)
+    {k j : Nat} (hs : scanBound 0 (P.reverse.map Seg.bit) = some k) (hj : j < 8) :
+    LeftWord M (state j) (P.reverse ++ [true]) 2 := by
+  have hs' : scanBound j (P.reverse.map Seg.bit) = some k := by
+    simpa only [hrev, List.map_cons, scanBound] using hs
+  obtain ⟨j', _, hj', hword⟩ := scanBound_sound rows 0 [] hs' hj (Nat.le_refl j)
+  have hw : LeftWord M (state j) P.reverse (state j') := by
+    simpa only [KSim.flat_bits] using hword
+  exact hw.append (LeftWord.cons (rows.reset j' hj') (LeftWord.nil 2))
+
+/-- Prefix reset composes with any already-certified explicit suffix scan. -/
+theorem opaque_home {M : TMN} (rows : Rows M) (hb : Boundary M)
+    (S P tail R : List Bool) (blanks : Nat)
+    (hrev : P.reverse = true :: tail) {k j : Nat}
+    (hs : scanBound 0 (P.reverse.map Seg.bit) = some k)
+    (hj : j < 8) (suffix : LeftWord M 2 S (state j)) :
+    Reach1 M (zl 2 (((S ++ P.reverse) ++ [true]) ++ List.replicate blanks false) R)
+      (zc 84 [true] ((S ++ P.reverse).reverse ++ R)) := by
+  apply home_word hb
+  simpa only [List.append_assoc] using
+    suffix.append (opaque_prefix_guard rows P tail hrev hs hj)
+end SetTheory.BusyBeaver.ZFC.KHome
