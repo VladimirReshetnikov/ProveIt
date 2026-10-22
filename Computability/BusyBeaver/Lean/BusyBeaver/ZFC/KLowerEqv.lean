@@ -39,9 +39,7 @@ theorem tag_gic : ModelsGIC (tmem mem t) := by
   · obtain ⟨z, hz, hxz⟩ := h2 x hx ⟨y, (hsw x y).mpr hy⟩
     exact ⟨z, hz, (hsw x z).mp hxz⟩
 
-theorem tag_tc : TransContainers (tmem mem t) := fun a => by
-  obtain ⟨v, hav, hv⟩ := tag_transitive hs hirr ht a
-  exact ⟨v, hav, fun y hy z hz => hv y hy z hz⟩
+theorem tag_tc : TransContainers (tmem mem t) := tag_transitive hs hirr ht
 
 theorem tag_pairs : ∀ a b : Tag mem t, ∃ p, Pair (tmem mem t) p a b := fun a b => by
   obtain ⟨p, hp⟩ := tag_pair hs hirr ht a b
@@ -67,17 +65,15 @@ theorem tag_symm {x y : Tag mem t} (h : Eqv (tmem mem t) x y) : Eqv (tmem mem t)
 theorem tag_trans {x y z : Tag mem t} (h1 : Eqv (tmem mem t) x y) (h2 : Eqv (tmem mem t) y z) :
     Eqv (tmem mem t) x z :=
   eqv_trans_of_instances _ (tag_tc hs hirr ht) (tag_codes hs hirr ht)
-    (fun r2 d => fiber_instance _ (tag_gic hs hirr ht) r2 d)
-    (fun r1 r2 => composition_instance _ (tag_gic hs hirr ht) r1 r2)
-    (fun f => union_instance _ (tag_gic hs hirr ht) f) h1 h2
+    (fiber_instance _ (tag_gic hs hirr ht)) (composition_instance _ (tag_gic hs hirr ht))
+    (union_instance _ (tag_gic hs hirr ht)) h1 h2
 
 theorem tag_ext (x y : Tag mem t) (h : ∀ z, Member (tmem mem t) z x ↔ Member (tmem mem t) z y) :
     Eqv (tmem mem t) x y :=
   eqv_extensionality_of_instances _ (tag_tc hs hirr ht) (tag_pairs hs hirr ht)
-    (fun f => union_instance _ (tag_gic hs hirr ht) f)
-    (fun a b => match_instance _ (tag_gic hs hirr ht) a b)
-    (fun a b => backMatch_instance _ (tag_gic hs hirr ht) a b)
-    (tag_refl hs hirr ht) (fun _ _ h => tag_symm hs hirr ht h) x y h
+    (union_instance _ (tag_gic hs hirr ht)) (match_instance _ (tag_gic hs hirr ht))
+    (backMatch_instance _ (tag_gic hs hirr ht)) (tag_refl hs hirr ht)
+    (fun _ _ => tag_symm hs hirr ht) x y h
 
 /-! ## Interpreted membership respects `Eqv` -/
 

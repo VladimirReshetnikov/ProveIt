@@ -59,8 +59,7 @@ theorem raw_singleton (x : V) : ∃ s, IsSing mem s x := by
   · intro hzx
     obtain ⟨w, hw, hwC⟩ := h1 x rfl
     have hwx : w = x := hw
-    rw [hzx, ← hwx]
-    exact hwC
+    rwa [hzx, ← hwx]
 
 theorem raw_pair {t : V} (ht : ∀ z, ¬ mem z t) (x y : V) :
     ∃ p, ∀ z, mem z p ↔ z = x ∨ z = y := by
