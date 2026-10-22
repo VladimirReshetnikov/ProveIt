@@ -78,8 +78,7 @@ theorem drop_nil_bit : ∀ {P : List Bool} {i : Nat}, P.drop i = [] →
   | _ :: _, 0, h => by simp at h
   | _ :: P, i + 1, h => by
       simp only [List.drop_succ_cons] at h
-      have := drop_nil_bit h
-      simpa [bit] using this
+      simpa [bit] using drop_nil_bit h
 
 theorem drop_cons_bit : ∀ {P : List Bool} {i : Nat} {c : Bool} {rest : List Bool},
     P.drop i = c :: rest → bit P i = c ∧ P.drop (i + 1) = rest
@@ -90,8 +89,7 @@ theorem drop_cons_bit : ∀ {P : List Bool} {i : Nat} {c : Bool} {rest : List Bo
       simp [bit]
   | _ :: P, i + 1, _, _, h => by
       simp only [List.drop_succ_cons] at h
-      have := drop_cons_bit h
-      simpa [bit] using this
+      simpa [bit] using drop_cons_bit h
 
 theorem walk_tree (p : Program) : ∀ (f n : Nat) (P : List Bool) (i : Nat),
     walk p f n P i = twalk (toTree p f n) (P.drop i) i
@@ -137,9 +135,7 @@ theorem step_tsite (p : Program) (P : List Bool) (R : Registers) :
       | none => none := by
   unfold step tsite
   rw [walk_root]
-  cases twalk (ptree p) P 0 with
-  | none => rfl
-  | some ed => rfl
+  cases twalk (ptree p) P 0 <;> rfl
 
 theorem atHalt_tsite (p : Program) (P : List Bool) (R : Registers) :
     AtHalt p ⟨P, R⟩ ↔ ∃ Q, tsite (ptree p) P = some (.halt, Q) := by
@@ -148,21 +144,18 @@ theorem atHalt_tsite (p : Program) (P : List Bool) (R : Registers) :
   constructor
   · rintro ⟨d, hd⟩; rw [hd]; exact ⟨_, rfl⟩
   · rintro ⟨Q, hQ⟩
-    revert hQ
-    cases h : twalk (ptree p) P 0 with
-    | none => intro hQ; cases hQ
-    | some ed =>
-        intro hQ
-        obtain ⟨e, d⟩ := ed
-        simp only [Option.some.injEq, Prod.mk.injEq] at hQ
-        exact ⟨d, by rw [hQ.1]⟩
+    split at hQ
+    · simp only [Option.some.injEq, Prod.mk.injEq] at hQ
+      obtain ⟨rfl, -⟩ := hQ
+      exact ⟨_, ‹_›⟩
+    · cases hQ
 
 /-! ## Halting -/
 
 theorem halts_pre {p : Program} {n : Nat} {c c' : Configuration} (h1 : run p n c = some c')
     (h2 : Halts p c') : Halts p c := by
   obtain ⟨m, c'', h, ha⟩ := h2
-  exact ⟨n + m, c'', by rw [run_add, h1]; exact h, ha⟩
+  exact ⟨n + m, c'', by rwa [run_add, h1], ha⟩
 
 /-- A halt leaf has no outgoing transition. -/
 theorem atHalt_step {p : Program} {c : Configuration} (h : AtHalt p c) :
@@ -279,20 +272,11 @@ theorem seg_run (p : Program) : ∀ (f : Nat) (P : List Bool) (l : List Nat) (P'
                   refine ⟨n + 1, R', ?_, fun i => ?_⟩
                   · simp only [run, hstep, execute]; exact hr
                   · rw [hR, update_succ, cnt]; omega
-          | brk k =>
+          | brk k | cont k =>
               intro h
               obtain ⟨n, R', hr, hR⟩ := seg_run p f _ _ _ R h
               exact ⟨n + 1, R', by simp only [run, hstep, execute]; exact hr, hR⟩
-          | cont k =>
-              intro h
-              obtain ⟨n, R', hr, hR⟩ := seg_run p f _ _ _ R h
-              exact ⟨n + 1, R', by simp only [run, hstep, execute]; exact hr, hR⟩
-          | decnz r =>
-              intro h
-              simp only [Option.some.injEq, Prod.mk.injEq] at h
-              obtain ⟨rfl, rfl⟩ := h
-              exact ⟨0, R, rfl, fun i => by simp [cnt]⟩
-          | halt =>
+          | decnz r | halt =>
               intro h
               simp only [Option.some.injEq, Prod.mk.injEq] at h
               obtain ⟨rfl, rfl⟩ := h
@@ -332,10 +316,9 @@ theorem BranchGood.symm {t1 t2 : Tree} {S : List Bool → List Bool → Prop} {A
 
 theorem Bisim.symm {t1 t2 : Tree} {S : List Bool → List Bool → Prop} (h : Bisim t1 t2 S) :
     Bisim t2 t1 (fun a b => S b a) := by
-  refine ⟨h.start.symm, fun P2 P1 hS => ?_⟩
-  rcases h.step P1 P2 hS with ⟨Q1, Q2, h1, h2⟩ | ⟨r, Q1, Q2, h1, h2, hj, hk⟩
-  · exact Or.inl ⟨Q2, Q1, h2, h1⟩
-  · exact Or.inr ⟨r, Q2, Q1, h2, h1, hj.symm, hk.symm⟩
+  refine ⟨h.start.symm, fun P2 P1 hS => (h.step P1 P2 hS).imp
+    (fun ⟨Q1, Q2, h1, h2⟩ => ⟨Q2, Q1, h2, h1⟩)
+    fun ⟨r, Q1, Q2, h1, h2, hj, hk⟩ => ⟨r, Q2, Q1, h2, h1, hj.symm, hk.symm⟩⟩
 
 section Sound
 
@@ -444,8 +427,7 @@ theorem cnt_zero : ∀ {l : List Nat} {i : Nat}, i ∉ l → cnt l i = 0
   | [], _, _ => rfl
   | r :: l, i, h => by
       simp only [List.mem_cons, not_or] at h
-      have : Nat.beq r i = false := beq_false (Ne.symm h.1)
-      simp [cnt, this, cnt_zero h.2]
+      simp [cnt, beq_false (Ne.symm h.1), cnt_zero h.2]
 
 theorem cntEq_ok {l1 l2 : List Nat} (h : cntEq l1 l2 = true) (i : Nat) : cnt l1 i = cnt l2 i := by
   simp only [cntEq, List.all_eq_true] at h
@@ -484,44 +466,24 @@ def Rel (T : CTree) (P1 P2 : List Bool) : Prop := ∃ j, getc decode T j = some 
 theorem branchOk_good {t1 t2 : Tree} {T : CTree} {A B : List Bool} {j : Nat}
     (h : branchOk decode t1 t2 T A B j = true) : BranchGood t1 t2 (Rel decode T) A B := by
   unfold branchOk at h
-  revert h
-  cases h1 : seg t1 segFuel A with
-  | none => intro h; cases h
-  | some lP1 =>
-  cases h2 : seg t2 segFuel B with
-  | none => intro h; cases h
-  | some lP2 =>
-  cases h3 : getc decode T j with
-  | none => intro h; cases h
-  | some Q =>
-  intro h
-  obtain ⟨l1, P1⟩ := lP1
-  obtain ⟨l2, P2⟩ := lP2
-  obtain ⟨Q1, Q2⟩ := Q
-  simp only [Bool.and_eq_true] at h
-  obtain ⟨⟨hc, e1⟩, e2⟩ := h
-  rw [← lbeq_ok e1, ← lbeq_ok e2] at h3
-  exact ⟨l1, P1, l2, P2, h1, h2, cntEq_ok hc, j, h3⟩
+  split at h
+  · simp only [Bool.and_eq_true] at h
+    obtain ⟨⟨hc, e1⟩, e2⟩ := h
+    obtain rfl := lbeq_ok e1
+    obtain rfl := lbeq_ok e2
+    exact ⟨_, _, _, _, ‹_›, ‹_›, cntEq_ok hc, j, ‹_›⟩
+  · cases h
 
 theorem entryOk_good {t1 t2 : Tree} {T : CTree} {x : Entry} (h : entryOk decode t1 t2 T x = true) :
     EntryGood t1 t2 (Rel decode T) (decode x.1) (decode x.2.1) := by
   unfold entryOk at h
-  revert h
-  cases h1 : tsite t1 (decode x.1) with
-  | none => intro h; cases h
-  | some eQ1 =>
-  cases h2 : tsite t2 (decode x.2.1) with
-  | none => obtain ⟨e1, _⟩ := eQ1; cases e1 <;> intro h <;> cases h
-  | some eQ2 =>
-  obtain ⟨e1, Q1⟩ := eQ1
-  obtain ⟨e2, Q2⟩ := eQ2
-  cases e1 <;> cases e2 <;> intro h
-  all_goals first | (simp only [Bool.false_eq_true] at h; done) | skip
+  split at h
+  · exact Or.inl ⟨_, _, ‹_›, ‹_›⟩
   · simp only [Bool.and_eq_true] at h
     obtain ⟨⟨hr, hj⟩, hk⟩ := h
-    rw [Nat.eq_of_beq_eq_true hr] at h1
-    exact Or.inr ⟨_, Q1, Q2, h1, h2, branchOk_good decode hj, branchOk_good decode hk⟩
-  · exact Or.inl ⟨Q1, Q2, h1, h2⟩
+    obtain rfl := Nat.eq_of_beq_eq_true hr
+    exact Or.inr ⟨_, _, _, ‹_›, ‹_›, branchOk_good decode hj, branchOk_good decode hk⟩
+  · cases h
 
 def check (t1 t2 : Tree) (T : CTree) : Bool :=
   branchOk decode t1 t2 T [] [] 0 && allC (entryOk decode t1 t2 T) T
@@ -530,15 +492,11 @@ theorem check_bisim {t1 t2 : Tree} {T : CTree} (hs : branchOk decode t1 t2 T [] 
     (ha : allC (entryOk decode t1 t2 T) T = true) : Bisim t1 t2 (Rel decode T) := by
   refine ⟨branchOk_good decode hs, fun P1 P2 ⟨j, hj⟩ => ?_⟩
   unfold getc at hj
-  revert hj
-  cases hl : lookupC T j with
-  | none => intro hj; cases hj
-  | some x =>
-      intro hj
-      obtain ⟨a, b, c, d⟩ := x
-      simp only [Option.some.injEq, Prod.mk.injEq] at hj
-      obtain ⟨rfl, rfl⟩ := hj
-      exact entryOk_good decode (x := (a, b, c, d)) (lookupC_all hl ha)
+  split at hj
+  · simp only [Option.some.injEq, Prod.mk.injEq] at hj
+    obtain ⟨rfl, rfl⟩ := hj
+    exact entryOk_good decode (lookupC_all ‹_› ha)
+  · cases hj
 
 /-- **Checked certificates give halting equivalence**, in both directions. -/
 theorem check_halts_iff {p1 p2 : Program} {T : CTree}

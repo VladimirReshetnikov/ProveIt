@@ -296,16 +296,13 @@ def HN (q : RegisterPath.Program) (N : Nat) (c : Configuration) : Prop :=
 theorem hn_pre {q : RegisterPath.Program} {N1 N2 : Nat} {c c1 : Configuration}
     (h1 : run q N1 c = some c1) (h2 : HN q N2 c1) : HN q (N1 + N2) c := by
   obtain ⟨c', h, ha⟩ := h2
-  exact ⟨c', by rw [run_add, h1]; exact h, ha⟩
+  exact ⟨c', by rwa [run_add, h1], ha⟩
 
 theorem hn_succ {q : RegisterPath.Program} {N : Nat} {c : Configuration} (h : HN q (N + 1) c) :
     ∃ c1, step q c = some c1 ∧ HN q N c1 := by
   obtain ⟨c', hr, ha⟩ := h
   simp only [run] at hr
-  revert hr
-  cases step q c with
-  | none => intro hr; cases hr
-  | some c1 => intro hr; exact ⟨c1, rfl, c', hr, ha⟩
+  split at hr <;> first | exact ⟨_, ‹_›, c', hr, ha⟩ | cases hr
 
 theorem hn_ipeq {q : RegisterPath.Program} {N : Nat} {P P' : List Bool} {R : Regs}
     (E : ipeq P P') (h : HN q N ⟨P, R⟩) : HN q N ⟨P', R⟩ := by
@@ -314,12 +311,12 @@ theorem hn_ipeq {q : RegisterPath.Program} {N : Nat} {P P' : List Bool} {R : Reg
       obtain ⟨c', hr, d, hd⟩ := h
       simp only [run, Option.some.injEq] at hr
       subst hr
-      exact ⟨⟨P', R⟩, rfl, d, by rw [← walk_ipeq q E]; exact hd⟩
+      exact ⟨⟨P', R⟩, rfl, d, by rwa [← walk_ipeq q E]⟩
   | succ N =>
       obtain ⟨c', hr, ha⟩ := h
       refine ⟨c', ?_, ha⟩
       simp only [run] at hr ⊢
-      rw [← step_ipeq q E]; exact hr
+      rwa [← step_ipeq q E]
 
 theorem run_one {q : RegisterPath.Program} {c c' : Configuration} (h : step q c = some c') :
     run q 1 c = some c' := by
@@ -401,7 +398,7 @@ theorem reaches_pre {N : Nat} {c c1 : Configuration} {Q : List Bool} {x : Exit} 
   | halt => obtain ⟨N2, hn⟩ := h; exact ⟨N + N2, hn_pre h1 hn⟩
   | _ =>
       obtain ⟨N2, P', h2, E⟩ := h
-      exact ⟨N + N2, P', by rw [run_add, h1]; exact h2, E⟩
+      exact ⟨N + N2, P', by rwa [run_add, h1], E⟩
 
 theorem fwd (W : WF p nn) {e : Edge} {R : Regs} {x : Exit} {R' : Regs} (h : Run p e R x R') :
     ∀ Q P, fol p (.node p.root) Q = some e → ipeq P Q → Reaches p nn ⟨P, R⟩ Q x R' := by
@@ -618,9 +615,7 @@ root (as the overflowing instruction pointer does) reaches `halt`. -/
 theorem halts_iff_iterHalts (W : WF p nn) (R : Regs) :
     Halts (ofDag p nn) ⟨[], R⟩ ↔ IterHalts p R := by
   constructor
-  · rintro ⟨N, c', hr, ha⟩
-    have hN : HN (ofDag p nn) N ⟨[], R⟩ := ⟨c', hr, ha⟩
-    clear c' hr ha
+  · rintro ⟨N, hN⟩
     induction N using Nat.strongRecOn generalizing R with
     | ind N IHN =>
       obtain ⟨x, R', hr, hx⟩ := bwd W N (.node p.root) [] [] R rfl (ipeq.refl _) hN
@@ -631,15 +626,11 @@ theorem halts_iff_iterHalts (W : WF p nn) (R : Regs) :
       · exact .halt R R' hr
   · intro h
     induction h with
-    | halt R R' hr =>
-        obtain ⟨N, c', h1, h2⟩ := fwd W hr [] [] rfl (ipeq.refl _)
-        exact ⟨N, c', h1, h2⟩
+    | halt R R' hr => exact fwd W hr [] [] rfl (ipeq.refl _)
     | next R R' hr _ ih =>
         obtain ⟨N1, P1, hr1, E1⟩ := fwd W hr [] [] rfl (ipeq.refl _)
-        obtain ⟨N2, c', hr2, ha⟩ := ih
-        have E1' : ipeq P1 [] := E1
-        obtain ⟨c'', h1, h2⟩ := hn_pre hr1 (hn_ipeq E1'.symm ⟨c', hr2, ha⟩)
-        exact ⟨N1 + N2, c'', h1, h2⟩
+        obtain ⟨N2, hN2⟩ := ih
+        exact ⟨N1 + N2, hn_pre hr1 (hn_ipeq (E1 : ipeq P1 []).symm hN2)⟩
 
 /-! ## A Boolean well-formedness check -/
 
@@ -670,14 +661,10 @@ theorem wfCheck_sound {H B C : Nat → Nat} (h : wfCheck p nn H B C = true) : WF
   refine ⟨hr, ?_, ⟨H, hH, ?_⟩, ⟨B, C, hB, hC, ?_⟩⟩
   · intro n b hlt
     obtain ⟨⟨⟨⟨⟨⟨⟨h1, h2⟩, _⟩, _⟩, _⟩, _⟩, _⟩, _⟩ := hn n hlt
-    cases b
-    · exact edgeOkb_ok h1
-    · exact edgeOkb_ok h2
+    cases b <;> exact edgeOkb_ok ‹_›
   · intro n b hlt
     obtain ⟨⟨⟨⟨⟨⟨⟨_, _⟩, h3⟩, h4⟩, _⟩, _⟩, _⟩, _⟩ := hn n hlt
-    cases b
-    · exact h3
-    · exact h4
+    cases b <;> assumption
   · intro n hlt
     obtain ⟨⟨⟨⟨⟨⟨⟨_, _⟩, _⟩, _⟩, h5⟩, h6⟩, h7⟩, h8⟩ := hn n hlt
     exact ⟨h5, h6, h7, h8⟩
