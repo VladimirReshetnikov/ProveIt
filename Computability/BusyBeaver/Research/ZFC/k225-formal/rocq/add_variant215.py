@@ -18,7 +18,7 @@ b.write_text(s, encoding="utf-8", newline="\n")
 
 regen = json.loads((EXT / "coq/regeneration215.json").read_text(encoding="utf-8"))
 calc = ["Codes222", "Thm222", "DominatedCore", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta", "L224E",
-        "Interp222", "Sound222", "Complete222", "DomRho8", "ThmDom", "EnumPerm", "L1_SoundPerm",
+        "Interp222", "Sound222", "Complete222", "DomRho8", "EnumPerm", "L1_SoundPerm",
         "L1_CompPerm", "SeedPerm", "Regs215", "DagPerm", "ProgLibPerm", "L2RootPerm", "MainPerm"]
 order = calc + ["Prog215", "PathCodec", "BisimMirror", "NormalizedBisim", "NormalizedCert215", "Source215", "Table230", "TM230", "Zip",
                 "Boot230", "Runtime230Core", "Tape230Blocks", "Tape230Carry", "Interpreter230Sites",

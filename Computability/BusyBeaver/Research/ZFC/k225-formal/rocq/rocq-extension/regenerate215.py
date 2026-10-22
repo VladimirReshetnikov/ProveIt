@@ -58,7 +58,7 @@ def ns(text):
 
 
 def calculus_files(output):
-    for name in R217.CALCULUS + ["DomRho8", "ThmDom"]:
+    for name in R217.CALCULUS + ["DomRho8"]:
         body = ns((V217 / f"{name}.v").read_text(encoding="utf-8"))
         (output / f"{name}.v").write_text(body, encoding="utf-8", newline="\n")
     for name in ["EnumPerm", "L1_SoundPerm", "L1_CompPerm", "SeedPerm",
