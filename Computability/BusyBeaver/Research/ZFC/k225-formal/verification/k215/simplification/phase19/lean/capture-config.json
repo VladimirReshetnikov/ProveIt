@@ -1,0 +1,978 @@
+{
+  "actual_review": {
+    "sha256": "829374ee6bfc13f52026c9f0d93c25c1719508f856273e35f1e7f8c3f93dde27",
+    "source": "/tmp/k215-phase19-actual-peer/actual-readback.json"
+  },
+  "actual_review_helper": {
+    "sha256": "9559d40c2f4b98cc82c6740ab932ae5ea421c50ebcd24ecf830bd6f7c6bd8341",
+    "source": "/tmp/k215-phase19-actual-peer/review_actual.py"
+  },
+  "baseline_review": {
+    "sha256": "543b35ffba8edb1be648747eb7f27aa5416345ee9e2e872b0e74385c8af46a57",
+    "source": "/tmp/k215-phase19-baseline-peer/baseline-readback.json"
+  },
+  "baseline_review_helper": {
+    "sha256": "c77fcf332bd4dd2f3ad557844832a93dc7787993ba78d35fb0d516fa76cf8c10",
+    "source": "/tmp/k215-phase19-baseline-peer/review_actual_v2.py"
+  },
+  "capture_helper_sha256": "480a76e3fe9598fb3d5f3d75b1a52771cb27a100d6b4bdcf1ad4025f696711cd",
+  "external_boundaries": [
+    {
+      "logical": "external/phase18/lean/README.md",
+      "sha256": "bc1ada1495dbf22172018cef4dfc22c8cecd3dfd6b624f7d6ff634875d964e19",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/README.md"
+    },
+    {
+      "logical": "external/phase18/lean/capture-config.json",
+      "sha256": "b91b6772210bfecef56e4c1f6bccc9488aae81c19ea4fa5ab0e4227180a47776",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/capture-config.json"
+    },
+    {
+      "logical": "external/phase18/lean/capture.json",
+      "sha256": "e4eba344701fedfb199b16a431e31785498e834e68d04e759e6161575c2b0fc5",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/capture.json"
+    },
+    {
+      "logical": "external/phase18/lean/capture.py",
+      "sha256": "b0d8758b2e248135a99088035c0f0047ef6008a1289d882a70a6b2133c97ff10",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/capture.py"
+    },
+    {
+      "logical": "external/phase18/lean/check-plan.json",
+      "sha256": "df0dbde51be55370f466af3a61f777f81ecda2748b319396a3270f8ff1026977",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/check-plan.json"
+    },
+    {
+      "logical": "external/phase18/lean/check.py",
+      "sha256": "71bd42b1cad2f485581620bb9b8c7d196e30447a101546077767642d065e0c1a",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/check.py"
+    },
+    {
+      "logical": "external/phase18/lean/evidence.tar.gz",
+      "sha256": "6b3d8326f9d13c4889975e865e6a1a4c94bba1e6593e4576673f0a2d41b3909c",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/evidence.tar.gz"
+    },
+    {
+      "logical": "external/phase18/lean/index.json",
+      "sha256": "2dd0d1730039fb94c7f5fb9733d249366cfb370f8d1a3567ac85322332ce87e1",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/index.json"
+    },
+    {
+      "logical": "external/phase18/lean/result-review.json",
+      "sha256": "9412ead457bac58ec51448a78cc14d3983e339323fc4d7e2bd78affda4978b45",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/result-review.json"
+    },
+    {
+      "logical": "external/phase18/lean/result.json",
+      "sha256": "6cfb92d6fc4a42ada1652b9ba20a614e6fefe32d67be0af97d6a547ba8e32670",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/result.json"
+    },
+    {
+      "logical": "external/phase18/lean/review_actual.py",
+      "sha256": "ba427dbbebc7700b46b0262bc1addc6a570f60463b5202904b3ace5a216753ca",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase18/lean/review_actual.py"
+    }
+  ],
+  "files": [
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean",
+      "role": "reviewed_source_before",
+      "sha256": "10e012486cf62a79f54a9268ac0840795896950156e3ca23a1499ef02e150929",
+      "source": "/tmp/k215-phase19-transfer-aliases/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "47fed633badbae4e45fbfea3e21a2f778f871bd8c904ec81bdf01f8944d6981b",
+      "source": "/tmp/k215-phase19-transfer-aliases/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean",
+      "role": "reviewed_source_before",
+      "sha256": "4878210adfab47e802d3f369f18d9944a47bc93a290e00b492a7d3ba4283398b",
+      "source": "/tmp/k215-phase19-transfer-aliases/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "31229737a8d4abd0fabf57e0b26a8b267b6caec73e5bc6241e20d03541246bf7",
+      "source": "/tmp/k215-phase19-transfer-aliases/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py",
+      "logical": "source-before/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py",
+      "role": "reviewed_source_before",
+      "sha256": "ed95a235509219df22cf07aa59d732d249d724571a3537cb436359487136fc64",
+      "source": "/tmp/k215-phase19-transfer-aliases/before/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py",
+      "logical": "source-candidate/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py",
+      "role": "reviewed_source_candidate",
+      "sha256": "4453ac9a3745b4525575945d0aab506f270bbbbbbcf52c09a160f6c60f2ecd38",
+      "source": "/tmp/k215-phase19-transfer-aliases/candidate/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+      "role": "reviewed_source_before",
+      "sha256": "5dec681f5a4dcb8d25c1f42fea34f9fdb524a215b43036212f13fde949767bcf",
+      "source": "/tmp/k215-next-single-use/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "9c761a9e6e961d1592a2e6be662da2c39f52f74a606626f90b6aafa3d0f3a979",
+      "source": "/tmp/k215-next-single-use/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean",
+      "role": "reviewed_source_before",
+      "sha256": "011575570162579513cb15415ab14c33d700d9efe02c35bb1a48b74dd69e8b79",
+      "source": "/tmp/k215-next-single-use/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "d92586a142a487ff989d6115717782291132057097969ec1c8529a46bad8715f",
+      "source": "/tmp/k215-next-single-use/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean",
+      "role": "reviewed_source_before",
+      "sha256": "77c6dd2495310f2174a3def220b9b6641f7f56af23619889d299ec798faae888",
+      "source": "/tmp/k215-next-single-use/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "54b59135b16d5f724fd26057e958c8c0678ee9d1ef48d3c3b12a65f487b12811",
+      "source": "/tmp/k215-next-single-use/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean",
+      "role": "reviewed_source_before",
+      "sha256": "2c98345de00b156864c3fb93f7e4295b6ed67f04a226e457be351a0d80339886",
+      "source": "/tmp/k215-next-single-use/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "a8515c592d14d58488d5d684023cd6d166c1e24e4a2e3af9d74e717076b9c3ac",
+      "source": "/tmp/k215-next-single-use/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "logical": "source-before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "role": "reviewed_source_before",
+      "sha256": "90672f5b2f207e92f0c822088b73e1f5107e514974d710c6a3cd9c82c2352c00",
+      "source": "/tmp/k215-next-single-use/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean"
+    },
+    {
+      "historical_source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "logical": "source-candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "role": "reviewed_source_candidate",
+      "sha256": "edef68116d200da87fe74a990bcaaab737fc86103cfa8e669beb15cd6f06b1f7",
+      "source": "/tmp/k215-next-single-use/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean"
+    },
+    {
+      "logical": "context/transfer-aliases/README.md",
+      "role": "transfer_alias_source_review",
+      "sha256": "9a574723b5a833bf74f31113099b3a0c3e68b8caa72d4608a9aa363b062551f4",
+      "source": "/tmp/k215-phase19-transfer-aliases/README.md"
+    },
+    {
+      "logical": "context/transfer-aliases/candidate-map.json",
+      "role": "transfer_alias_source_review",
+      "sha256": "626f100599936baee5bfc20081e6a8cbb1a2313dd6860340a12af262cac0f5be",
+      "source": "/tmp/k215-phase19-transfer-aliases/candidate-map.json"
+    },
+    {
+      "logical": "context/transfer-aliases/declaration-checks.json",
+      "role": "transfer_alias_source_review",
+      "sha256": "7eade65042326c89d1299757d3f76034263a5f3760b2aacc6daa305b57c7be69",
+      "source": "/tmp/k215-phase19-transfer-aliases/declaration-checks.json"
+    },
+    {
+      "logical": "context/transfer-aliases/caller-and-imports.json",
+      "role": "transfer_alias_source_review",
+      "sha256": "c57c227d3420a86c69b81eb45add860111479aa29478bdf840bb4302efe2ca29",
+      "source": "/tmp/k215-phase19-transfer-aliases/caller-and-imports.json"
+    },
+    {
+      "logical": "context/transfer-aliases/L2Perm.diff",
+      "role": "transfer_alias_source_review",
+      "sha256": "a836ad8ebd13de253d1fcebaeb98a88dcf9754ae12d933fb802326d02b098015",
+      "source": "/tmp/k215-phase19-transfer-aliases/L2Perm.diff"
+    },
+    {
+      "logical": "context/transfer-aliases/L2Dom.diff",
+      "role": "transfer_alias_source_review",
+      "sha256": "4dae2a2e5125f15eb92f8e25b39ced714fa18a5135ec0ffb8be4af9982c210de",
+      "source": "/tmp/k215-phase19-transfer-aliases/L2Dom.diff"
+    },
+    {
+      "logical": "context/transfer-aliases/producer.diff",
+      "role": "transfer_alias_source_review",
+      "sha256": "ae8f5259a6ff2d36f5db46853342bb0593e47096fa18e06c04dbf717bca07e1d",
+      "source": "/tmp/k215-phase19-transfer-aliases/producer.diff"
+    },
+    {
+      "logical": "context/transfer-aliases/prepare_candidate.py",
+      "role": "transfer_alias_source_review",
+      "sha256": "915c3172200b9f5e21a22bd2e1c714a2c7ef7b461efbe90b08c9a41497ceb345",
+      "source": "/tmp/k215-phase19-transfer-aliases/prepare_candidate.py"
+    },
+    {
+      "logical": "context/transfer-aliases/peer/review.json",
+      "role": "transfer_alias_source_review",
+      "sha256": "2a1857b408b4e656e9182537a5e4bcdc8e7199934709790a923f5a3700eadc6b",
+      "source": "/tmp/k215-phase19-transfer-aliases/peer/review.json"
+    },
+    {
+      "logical": "context/transfer-aliases/peer/review.py",
+      "role": "transfer_alias_source_review",
+      "sha256": "eafbf4b7d703446c9e2e1eac902a7cd34ff30fa73a3479580074582758af1de2",
+      "source": "/tmp/k215-phase19-transfer-aliases/peer/review.py"
+    },
+    {
+      "logical": "context/transfer-aliases/peer/README.md",
+      "role": "transfer_alias_source_review",
+      "sha256": "f53476077dcd090f4f9f9d044eeaa400fc5c08be098dc8003092a5ed3f553aaa",
+      "source": "/tmp/k215-phase19-transfer-aliases/peer/README.md"
+    },
+    {
+      "logical": "context/root-iteration/README.md",
+      "role": "root_projection_source_review",
+      "sha256": "b5980dabd6508f80273c565ede1746b077be5c68f06ceb6e449e00eeda58f20b",
+      "source": "/tmp/k215-next-single-use/README.md"
+    },
+    {
+      "logical": "context/root-iteration/candidate-map.json",
+      "role": "root_projection_source_review",
+      "sha256": "fd4c9493d136127b9366cc7fb4cde29c0e87b2c62a6ea5c1679d9147c3d04725",
+      "source": "/tmp/k215-next-single-use/candidate-map.json"
+    },
+    {
+      "logical": "context/root-iteration/caller-census.json",
+      "role": "root_projection_source_review",
+      "sha256": "46bd1af990cdb64225e53030bc050fb5886a23699812f0f9dfbf4213da7670a6",
+      "source": "/tmp/k215-next-single-use/caller-census.json"
+    },
+    {
+      "logical": "context/root-iteration/prepare_and_audit.py",
+      "role": "root_projection_source_review",
+      "sha256": "505404153c386cec305365235b9f90f3e737262df476b128b8e0343da703f677",
+      "source": "/tmp/k215-next-single-use/prepare_and_audit.py"
+    },
+    {
+      "logical": "context/root-iteration/L2Root254.diff",
+      "role": "root_projection_source_review",
+      "sha256": "b1a979313f486886aa81c8542b7fc770c036a9865ed7388890470e6ed81970d2",
+      "source": "/tmp/k215-next-single-use/L2Root254.diff"
+    },
+    {
+      "logical": "context/root-iteration/L2Root222.diff",
+      "role": "root_projection_source_review",
+      "sha256": "3b69dde3adbf556172c1944dfffc85a29343231a84a5baaf06718a26b6240671",
+      "source": "/tmp/k215-next-single-use/L2Root222.diff"
+    },
+    {
+      "logical": "context/root-iteration/L2Root219.diff",
+      "role": "root_projection_source_review",
+      "sha256": "bfcebf93299d009f18fd27ee23d47eee27e2884267b831d2481d88e59230459f",
+      "source": "/tmp/k215-next-single-use/L2Root219.diff"
+    },
+    {
+      "logical": "context/root-iteration/L2RootDom.diff",
+      "role": "root_projection_source_review",
+      "sha256": "87d33de4067cb37df482ad808ff5ba781756b321470348cdc9da0832fcdc3607",
+      "source": "/tmp/k215-next-single-use/L2RootDom.diff"
+    },
+    {
+      "logical": "context/root-iteration/L2RootPerm.diff",
+      "role": "root_projection_source_review",
+      "sha256": "65d3fedcf01a5490af06e2f5c0590b177bbbc1797f132aee612b990ff454ae4d",
+      "source": "/tmp/k215-next-single-use/L2RootPerm.diff"
+    },
+    {
+      "logical": "context/publication/source-metrics.json",
+      "role": "owned_publication_source_review",
+      "sha256": "e4db62434725de258d61d37b4d832f82cc35997774dc413c0c0554e99848a6cc",
+      "source": "/tmp/k215-phase19-publication-draft/source-metrics.json"
+    },
+    {
+      "logical": "context/publication/audit_source_metrics.py",
+      "role": "owned_publication_source_review",
+      "sha256": "299b06f54d6eb5699d97bd5de3448f1d2dcf8758d230d309816b3af388696eb9",
+      "source": "/tmp/k215-phase19-publication-draft/audit_source_metrics.py"
+    },
+    {
+      "logical": "context/publication/phase18-boundaries.json",
+      "role": "owned_publication_source_review",
+      "sha256": "46c37e63cf3f46059f077da9188fd31fef9fcd79a22291f75ffd89adb58213bc",
+      "source": "/tmp/k215-phase19-publication-draft/phase18-boundaries.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/001-BusyBeaver.ZFC.L2Dom/L2Dom.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "4878210adfab47e802d3f369f18d9944a47bc93a290e00b492a7d3ba4283398b",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/001-BusyBeaver.ZFC.L2Dom/L2Dom.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/001-BusyBeaver.ZFC.L2Dom/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/001-BusyBeaver.ZFC.L2Dom/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/001-BusyBeaver.ZFC.L2Dom/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "5f04ade30676de42b995571695164f50947e033bc4976d8b343e524eb885191c",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/001-BusyBeaver.ZFC.L2Dom/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/002-BusyBeaver.ZFC.EnumDom/EnumDom.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "78bf388271e021682a0f9d952c5919f8d4b3c1dbf636238c96801ca16dc77fcd",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/002-BusyBeaver.ZFC.EnumDom/EnumDom.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/002-BusyBeaver.ZFC.EnumDom/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/002-BusyBeaver.ZFC.EnumDom/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/002-BusyBeaver.ZFC.EnumDom/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "cdcc46651a79dfc5ac5560f4118d1645bdb4157e970c928f25d12122303a1c33",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/002-BusyBeaver.ZFC.EnumDom/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/003-BusyBeaver.ZFC.L2AxiomsDom/L2AxiomsDom.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "10a56551c295e75a33e5155d00858597062e1c925af0432bda2b88e560cdb1a7",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/003-BusyBeaver.ZFC.L2AxiomsDom/L2AxiomsDom.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/003-BusyBeaver.ZFC.L2AxiomsDom/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "8acb144ddee500ffb21be3addb6a5eff661a1e0644f31e53de1dc4a219fb6952",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/003-BusyBeaver.ZFC.L2AxiomsDom/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/003-BusyBeaver.ZFC.L2AxiomsDom/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "14c48965c43f1813a8655e67f9383b599879996b387577d3962968456d15b125",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/003-BusyBeaver.ZFC.L2AxiomsDom/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/004-BusyBeaver.ZFC.L2RootDom/L2RootDom.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "2c98345de00b156864c3fb93f7e4295b6ed67f04a226e457be351a0d80339886",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/004-BusyBeaver.ZFC.L2RootDom/L2RootDom.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/004-BusyBeaver.ZFC.L2RootDom/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/004-BusyBeaver.ZFC.L2RootDom/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/004-BusyBeaver.ZFC.L2RootDom/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "04befb9d5d806ddc9ac5438bc0de79da138c5a933a8a12351d754fa74eac523a",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/004-BusyBeaver.ZFC.L2RootDom/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/005-BusyBeaver.ZFC.Enum222/Enum222.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "a8479e58d12ed7a1fe52737a57037bf748c0ab1c68598027577535a9bbffd1c2",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/005-BusyBeaver.ZFC.Enum222/Enum222.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/005-BusyBeaver.ZFC.Enum222/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/005-BusyBeaver.ZFC.Enum222/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/005-BusyBeaver.ZFC.Enum222/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "2aa826c6289c22f50b2fa3743401651760dbc43633466f5f60c227ca3aef77e9",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/005-BusyBeaver.ZFC.Enum222/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/006-BusyBeaver.ZFC.L2Axioms222/L2Axioms222.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "348cae92d229b787f9c8500c2179375bb98c2b2740f27fe3efc4f59f54fe1b8e",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/006-BusyBeaver.ZFC.L2Axioms222/L2Axioms222.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/006-BusyBeaver.ZFC.L2Axioms222/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/006-BusyBeaver.ZFC.L2Axioms222/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/006-BusyBeaver.ZFC.L2Axioms222/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "a2367c1ebffe1ddae138333493b5fb479dc10f2ac8a25e99848a22e279bff2c0",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/006-BusyBeaver.ZFC.L2Axioms222/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/007-BusyBeaver.ZFC.L2Root222/L2Root222.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "011575570162579513cb15415ab14c33d700d9efe02c35bb1a48b74dd69e8b79",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/007-BusyBeaver.ZFC.L2Root222/L2Root222.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/007-BusyBeaver.ZFC.L2Root222/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/007-BusyBeaver.ZFC.L2Root222/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/007-BusyBeaver.ZFC.L2Root222/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "102a81a1b31e0cc91e7a09079849915620fc15f50e63155630572767a4e59864",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/007-BusyBeaver.ZFC.L2Root222/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/008-BusyBeaver.ZFC.L2Lib219/L2Lib219.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "218446ec9190bc75135f672466c0c62f989ee39195c3ecb08344c7c93fff5068",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/008-BusyBeaver.ZFC.L2Lib219/L2Lib219.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/008-BusyBeaver.ZFC.L2Lib219/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/008-BusyBeaver.ZFC.L2Lib219/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/008-BusyBeaver.ZFC.L2Lib219/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "1568ed774dbb62a8563a010fe4f7a15d9cd4c9c4d0c3fea78f1bd0ab0bcd3d76",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/008-BusyBeaver.ZFC.L2Lib219/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/009-BusyBeaver.ZFC.L2Macros219/L2Macros219.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "56451d755639c608e0e3bb3dd6dac81e61a72eb6dc6c8fbada01847e85114db3",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/009-BusyBeaver.ZFC.L2Macros219/L2Macros219.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/009-BusyBeaver.ZFC.L2Macros219/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/009-BusyBeaver.ZFC.L2Macros219/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/009-BusyBeaver.ZFC.L2Macros219/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "342ff0b046d188ab74802195fad55166b5d7553897458a90f18ff251fd0240af",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/009-BusyBeaver.ZFC.L2Macros219/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/010-BusyBeaver.ZFC.L2Control219/L2Control219.lean",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "19c156319d07a8b2ffa8f3d64defd76eaf61d60e3009431e73b654f8f7e3b672",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/010-BusyBeaver.ZFC.L2Control219/L2Control219.lean"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/010-BusyBeaver.ZFC.L2Control219/compiler.log",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "1c58dd2f745e3600e7c41849835580a7f88769ff0de835cd7911abd04995fdcf",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/010-BusyBeaver.ZFC.L2Control219/compiler.log"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/attempts/010-BusyBeaver.ZFC.L2Control219/record.json",
+      "role": "original_failed_old_baseline_raw",
+      "sha256": "72e71a300acf6cfebfde211f0952661a622658047a8f89e7c5e3ff0279b31562",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/attempts/010-BusyBeaver.ZFC.L2Control219/record.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/before.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "1260c90d39e892edd1dc48bffff329fc51b46a907beea30372da5f922aecdcea",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/before.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/inventory.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "5dc1056528b559ccc58d19a09dcd4d77c5a54933a71054dc664a4005f6f5ace9",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/inventory.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/completed.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "36c74d635ecb592ba9bf511217b04456123a013fe4811bff4ba28c1bb559ce3b",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/completed.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/toolchain.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "d65727850c08f80fbfc8880f05688fdecca54260e4bca3c08d991b67541709bd",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-run1/toolchain.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/old-baseline-v3-outer.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "283e58b05dd5f2741852413ee67a12bcc7412f8d99238a8c3e04da64dae57179",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3-outer.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/old-baseline-v3.stdout",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "56d2b2b954980c7a5884701ac5558ec7111b349c218cb46d9d143845cd524a2d",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3.stdout"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/old-baseline-v3.stderr",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "9e4525d434f8d2fb45a1e6139b6f9ade8e8b6d02633f5fec3b21209c2c747355",
+      "source": "/tmp/k215-phase19-check/old-baseline-v3.stderr"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/old-plan.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "900ea5daae9590baf7d2ae6eb9e10c70716e54da1cdc8d6e80a3f93c11b2ef95",
+      "source": "/tmp/k215-phase19-check/old-plan.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/build-old.py",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "804bd5abf501fd2ffa3fde6e5558e3626b16ec3cf58849bd223b0bc893d9d6a3",
+      "source": "/tmp/k215-phase19-check/build-old.py"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/old-freeze.json",
+      "role": "original_failed_old_baseline_metadata",
+      "sha256": "46ae4909fb94be9e33774ff1d80fbe6e437e6358c979f35a8a18dec4c43dd3af",
+      "source": "/tmp/k215-phase19-check/old-freeze.json"
+    },
+    {
+      "logical": "context/failed-old-baseline-v3/context-review.json",
+      "role": "owned_failed_baseline_context_review",
+      "sha256": "db204d681e06aaff38cc70f87bb26e390124c64cb69262a3ebef3e7309307a43",
+      "source": "/tmp/k215-phase19-publication-draft/failed-baseline-context.json"
+    },
+    {
+      "logical": "context/root-integration/adoption.json",
+      "role": "root_source_adoption_and_runtime_review",
+      "sha256": "2eaa70d646c679a72c349e1ae48f354fee5457d7b421d9133cc82b18493e6b78",
+      "source": "/tmp/k215-phase19-integration/adoption.json"
+    },
+    {
+      "logical": "context/root-integration/combined-source-review.json",
+      "role": "root_source_adoption_and_runtime_review",
+      "sha256": "379878d1bf6a14500e4746cae4dae6bdb98014cb1e6c90786537cf081c2ea92f",
+      "source": "/tmp/k215-phase19-integration/combined-source-review.json"
+    },
+    {
+      "logical": "context/root-integration/candidate-terminal.json",
+      "role": "root_source_adoption_and_runtime_review",
+      "sha256": "87d82aba0a78fc860dc6cb1f9ebf1400bac839d348dbe1e8d685773984aa4268",
+      "source": "/tmp/k215-phase19-integration/candidate-terminal.json"
+    },
+    {
+      "logical": "context/root-integration/old-baseline-warning-failure.json",
+      "role": "root_source_adoption_and_runtime_review",
+      "sha256": "4dc439cd46300861e48131ff1271904b84d73d9e552c690798d895da5c4073bc",
+      "source": "/tmp/k215-phase19-integration/old-baseline-warning-failure.json"
+    },
+    {
+      "logical": "context/root-integration/run_once.py",
+      "role": "root_source_adoption_and_runtime_review",
+      "sha256": "aa918520265d74b6ead920801eab561012ff8aa9cedf4879216fa3059587375b",
+      "source": "/tmp/k215-phase19-integration/run_once.py"
+    },
+    {
+      "logical": "context/runtime/old-freeze-v5.json",
+      "role": "accepted_runtime_owner_freeze",
+      "sha256": "296ffada336a975afc6b11db9cd192132e112e6777bee1c67ee16fec464a79e3",
+      "source": "/tmp/k215-phase19-check/old-freeze-v5.json"
+    },
+    {
+      "logical": "context/runtime/candidate-freeze.json",
+      "role": "accepted_runtime_owner_freeze",
+      "sha256": "c582d095d241f3aa51169ed32612be18d2db070066eda40d10149107849382ad",
+      "source": "/tmp/k215-phase19-check/candidate-freeze.json"
+    },
+    {
+      "logical": "context/baseline-peer/review_actual.py",
+      "role": "preserved_owned_baseline_review_failure_and_fix",
+      "sha256": "e83b4126305abe7bb1074fc550fd83f282e9f8c225e244169d58cfa0eed09b62",
+      "source": "/tmp/k215-phase19-baseline-peer/review_actual.py"
+    },
+    {
+      "logical": "context/baseline-peer/first-attempt-failure.json",
+      "role": "preserved_owned_baseline_review_failure_and_fix",
+      "sha256": "4b932d1203d767b3a3a12ca6841e51dfa5140907068d60d1e8d8fa4e61139454",
+      "source": "/tmp/k215-phase19-baseline-peer/first-attempt-failure.json"
+    },
+    {
+      "logical": "context/baseline-peer/review_actual_v2.diff",
+      "role": "preserved_owned_baseline_review_failure_and_fix",
+      "sha256": "e2ee4b3dba0cdd1620b853f7984cb142da9189e996c7fc86567a4258972b96ca",
+      "source": "/tmp/k215-phase19-baseline-peer/review_actual_v2.diff"
+    },
+    {
+      "logical": "context/actual-peer/ACTUAL_READBACK.md",
+      "role": "independent_actual_candidate_terminal_evidence",
+      "sha256": "05a8d05925674f3e0e901ff3e5db0a0ae92e4cfd8a255e718e4c655f33e697ab",
+      "source": "/tmp/k215-phase19-actual-peer/ACTUAL_READBACK.md"
+    },
+    {
+      "logical": "context/actual-peer/actual-readback-outer.json",
+      "role": "independent_actual_candidate_terminal_evidence",
+      "sha256": "3ba6e1dc19bf623a93a2d2f171e2402f3fb968ecebd32e8457fa2f0525f9c68c",
+      "source": "/tmp/k215-phase19-actual-peer/actual-readback-outer.json"
+    },
+    {
+      "logical": "context/actual-peer/actual-readback.stdout",
+      "role": "independent_actual_candidate_terminal_evidence",
+      "sha256": "cfe10f3f8bfa412548edbcf6135e6a187bde5e376cf2ccf36e48a95174cfb88a",
+      "source": "/tmp/k215-phase19-actual-peer/actual-readback.stdout"
+    },
+    {
+      "logical": "context/actual-peer/actual-readback.stderr",
+      "role": "independent_actual_candidate_terminal_evidence",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "/tmp/k215-phase19-actual-peer/actual-readback.stderr"
+    },
+    {
+      "logical": "context/actual-peer/run_readback_once.py",
+      "role": "independent_actual_candidate_terminal_evidence",
+      "sha256": "e7442cf9f4d2888c999f58621b7648206e5351c081c0e88a8cf55e1d172687d9",
+      "source": "/tmp/k215-phase19-actual-peer/run_readback_once.py"
+    },
+    {
+      "logical": "context/root-peer/README.md",
+      "role": "independent_root_source_review",
+      "sha256": "21cf1729cfa68fcd5fc5125e810541a9ee9df3b1af16acc6f85e454cab0d25a7",
+      "source": "/tmp/k215-phase19-root-peer/README.md"
+    },
+    {
+      "logical": "context/root-peer/review.py",
+      "role": "independent_root_source_review",
+      "sha256": "5647be8da6ebca452ce9d0752466abdfa99c805932547965d2701a32769dcc42",
+      "source": "/tmp/k215-phase19-root-peer/review.py"
+    },
+    {
+      "logical": "context/root-peer/review.json",
+      "role": "independent_root_source_review",
+      "sha256": "eb47eddec7d2c4945788f6e7baa1117c82aa0960a00d5fbf6bf085bb7655cef9",
+      "source": "/tmp/k215-phase19-root-peer/review.json"
+    },
+    {
+      "logical": "context/root-peer/caller-census.json",
+      "role": "independent_root_source_review",
+      "sha256": "526a90fb251f3d87c68b7127b23c859cb49c85b9a3afff6e3253758df31959af",
+      "source": "/tmp/k215-phase19-root-peer/caller-census.json"
+    },
+    {
+      "logical": "context/contract-peer/README.md",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "b1c4ca0afdab8339a1d69ac8aff00bcb53db6be4cebccf37c3dc18b54c3c6e70",
+      "source": "/tmp/k215-phase19-contract-peer/README.md"
+    },
+    {
+      "logical": "context/contract-peer/review.py",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "d1697de3fd726631f1c9308069417f22e27b3483644f63bcaeb032bd662ab90e",
+      "source": "/tmp/k215-phase19-contract-peer/review.py"
+    },
+    {
+      "logical": "context/contract-peer/review.json",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "3cedb34681fa890b0cbaa1e8c75311b37ca89f6ad2b89c5282f853b0304f8aaf",
+      "source": "/tmp/k215-phase19-contract-peer/review.json"
+    },
+    {
+      "logical": "context/contract-peer/review-v1.py",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "15d16bd198f6fd2eec9cafd690eed1c1908cd82079d344072e8a592a22e1236b",
+      "source": "/tmp/k215-phase19-contract-peer/review-v1.py"
+    },
+    {
+      "logical": "context/contract-peer/review-v2.py",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "eb3782b82eec18c9dc4c2cac11974749d65b9e0b4414e336ba8a96919ce48d17",
+      "source": "/tmp/k215-phase19-contract-peer/review-v2.py"
+    },
+    {
+      "logical": "context/contract-peer/initial-review-failure.json",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "3c85dca6bea25e91f19fd8567967bf08a8569869199ef03bdc1629af68e5da3d",
+      "source": "/tmp/k215-phase19-contract-peer/initial-review-failure.json"
+    },
+    {
+      "logical": "context/contract-peer/second-review-failure.json",
+      "role": "independent_contract_source_review_and_original_failures",
+      "sha256": "7844d7e17bb1efaf5c3d8600e42116ed1f1fecfaaae39719ac536b7f9d83f2b2",
+      "source": "/tmp/k215-phase19-contract-peer/second-review-failure.json"
+    },
+    {
+      "logical": "context/runner-peer/README.md",
+      "role": "historical_runner_source_review_and_original_failure",
+      "sha256": "fba971c6092f885c001a8244a660a824724c521b04f2cc09c02c2c52e44ba50e",
+      "source": "/tmp/k215-phase19-runner-peer/README.md"
+    },
+    {
+      "logical": "context/runner-peer/review.py",
+      "role": "historical_runner_source_review_and_original_failure",
+      "sha256": "0a2e1250eb8c8496a30d1c4924a4a46139635b8853bf665fbc15dc2a10850ed0",
+      "source": "/tmp/k215-phase19-runner-peer/review.py"
+    },
+    {
+      "logical": "context/runner-peer/review.json",
+      "role": "historical_runner_source_review_and_original_failure",
+      "sha256": "2dd2701fa95cae1ccdd6508bddbe70495a408d7b6c1afb4430319eb484946b25",
+      "source": "/tmp/k215-phase19-runner-peer/review.json"
+    },
+    {
+      "logical": "context/runner-peer/review-v1.py",
+      "role": "historical_runner_source_review_and_original_failure",
+      "sha256": "e3426855e68c7c108596e313bee20ef41bf79c06d1750ab58d7a5fa8e4730a92",
+      "source": "/tmp/k215-phase19-runner-peer/review-v1.py"
+    },
+    {
+      "logical": "context/runner-peer/initial-review-failure.json",
+      "role": "historical_runner_source_review_and_original_failure",
+      "sha256": "dad112072012a755b2ef10bd3cb1c45523c512c352a9add79c2d398ddf4e22e2",
+      "source": "/tmp/k215-phase19-runner-peer/initial-review-failure.json"
+    },
+    {
+      "logical": "context/expanded-runner-peer/README.md",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "389992d8571140892fd0eb4a3406fa0b54f1b7ff387fd5a09ad277dd15341a42",
+      "source": "/tmp/k215-phase19-expanded-runner-peer/README.md"
+    },
+    {
+      "logical": "context/expanded-runner-peer/review.py",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "da66a3884db94fee68ff39e36519f39de78977c084e4d6e18747b2a1ddc9780a",
+      "source": "/tmp/k215-phase19-expanded-runner-peer/review.py"
+    },
+    {
+      "logical": "context/expanded-runner-peer/review.json",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "c7249268aefb315a734d5cc9782b0d4a4478b290fba999d509e06681c52d8fe2",
+      "source": "/tmp/k215-phase19-expanded-runner-peer/review.json"
+    },
+    {
+      "logical": "context/warning-peer/README.md",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "6b745bfb6e2dfc1b09f6eb27b09e8da544cc822c9e97e2607a31be3b76c54b2f",
+      "source": "/tmp/k215-phase19-warning-peer/README.md"
+    },
+    {
+      "logical": "context/warning-peer/review.py",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "8642610ddde99eed661faf9e0e6f06bcd68556d1ba1e2613cdc5b2e65951a15c",
+      "source": "/tmp/k215-phase19-warning-peer/review.py"
+    },
+    {
+      "logical": "context/warning-peer/review.json",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "5929eeca9cc38dceeb5c9ec56bb37290ecd2b94822c73af0243048125d6cdf4f",
+      "source": "/tmp/k215-phase19-warning-peer/review.json"
+    },
+    {
+      "logical": "context/concrete-peer/README.md",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "42f247ecc22c589832b7a7ea7ab1418848e1ef8499f6db418e842941e9e13413",
+      "source": "/tmp/k215-phase19-concrete-peer/README.md"
+    },
+    {
+      "logical": "context/concrete-peer/review.py",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "aebd8fc36a8ff7d18d9f4d134bbe2783cf86baf5cabc63ae97da8b4084120ac1",
+      "source": "/tmp/k215-phase19-concrete-peer/review.py"
+    },
+    {
+      "logical": "context/concrete-peer/review.json",
+      "role": "independent_final_plan_peer_review",
+      "sha256": "bf7035589dbf9c1afb3f886f596049e23fb9a3a821985255427abf42427c53e8",
+      "source": "/tmp/k215-phase19-concrete-peer/review.json"
+    },
+    {
+      "logical": "context/docs-peer/review.json",
+      "role": "independent_surrounding_documentation_review",
+      "sha256": "83fed6eea8499501ddb6f0c9868758d64d511cdc48d516dd949d6149f2cfe1f3",
+      "source": "/tmp/k215-phase19-docs-peer/review.json"
+    },
+    {
+      "logical": "frozen-inputs/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py",
+      "role": "candidate_frozen_present_input",
+      "sha256": "4453ac9a3745b4525575945d0aab506f270bbbbbbcf52c09a160f6c60f2ecd38",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py"
+    },
+    {
+      "logical": "frozen-inputs/tmp/k215-phase19-transfer-aliases/producer-review/review.json",
+      "role": "candidate_frozen_present_input",
+      "sha256": "8b0db7a59107a4113c04d21b618266a001ea1cc127332f5ec2558aa87397f54d",
+      "source": "/tmp/k215-phase19-transfer-aliases/producer-review/review.json"
+    },
+    {
+      "logical": "frozen-inputs/tmp/k215-phase19-transfer-aliases/producer-review/signature-review.json",
+      "role": "candidate_frozen_present_input",
+      "sha256": "d71690a5281ce1970aeefbb2133a514dc762fea42c54f1edbc3b6c2d1ad844bf",
+      "source": "/tmp/k215-phase19-transfer-aliases/producer-review/signature-review.json"
+    },
+    {
+      "logical": "frozen-inputs/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm",
+      "role": "candidate_frozen_present_input",
+      "sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm"
+    },
+    {
+      "logical": "frozen-inputs/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.native.tm",
+      "role": "candidate_frozen_present_input",
+      "sha256": "9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.native.tm"
+    },
+    {
+      "logical": "frozen-inputs/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json",
+      "role": "candidate_frozen_present_input",
+      "sha256": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json"
+    },
+    {
+      "logical": "frozen-inputs/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDagIteration.lean",
+      "role": "candidate_frozen_present_input",
+      "sha256": "cc13e5431b2c61483a765adaac788de7d1bce36a450a7e68474ee8c780943389",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDagIteration.lean"
+    },
+    {
+      "logical": "frozen-inputs/tmp/k215-phase19-check-draft/expanded-client-census.json",
+      "role": "candidate_frozen_present_input",
+      "sha256": "397ce14eae5e210cafbeb5c50769accd55aef3721f15e908d81232e30ba95c4a",
+      "source": "/tmp/k215-phase19-check-draft/expanded-client-census.json"
+    },
+    {
+      "logical": "frozen-inputs/tmp/k215-phase19-check-draft/prepare_plans_v5.py",
+      "role": "candidate_frozen_present_input",
+      "sha256": "9a1e459212a09cc3e4f14e197b564d2e4cc601568ce55b05bff2d795104b8112",
+      "source": "/tmp/k215-phase19-check-draft/prepare_plans_v5.py"
+    },
+    {
+      "logical": "context/publication/build_config.py",
+      "role": "owned_capture_configuration_provenance",
+      "sha256": "583b59da71860cb142c6662a812a1cd5c276bd9427886133c34b3a2a39976d17",
+      "source": "/tmp/k215-phase19-publication-draft/build_config-final.py"
+    },
+    {
+      "logical": "context/publication/runtime-bindings.json",
+      "role": "owned_capture_configuration_provenance",
+      "sha256": "bda9d6166791dafb1940fde8772af4b0f09c0211811d30b6e146b6984a009ff3",
+      "source": "/tmp/k215-phase19-publication-draft/runtime-bindings-final-v2.json"
+    },
+    {
+      "logical": "context/publication/config-template.json",
+      "role": "owned_capture_configuration_provenance",
+      "sha256": "d20c33d3fce3af250fe6b3f75478589b01bdb6fc5f38fdca7692d9d64e96bfdf",
+      "source": "/tmp/k215-phase19-publication-draft/capture-config.template.json"
+    }
+  ],
+  "raw_copy_plan": {
+    "sha256": "3c8dca3e6e3a6202ef4a5c6024a2c8a4b3fee6f3ed675962e575509ee29f33b2",
+    "source": "/tmp/k215-phase19-publication-config/raw-copy-plan.json"
+  },
+  "runs": {
+    "baseline": {
+      "before": {
+        "sha256": "4c774b0f28a7b238546144546c98cb8938382eed65493111f7fc7629ff7daae2",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5-run1/before.json"
+      },
+      "completed": {
+        "sha256": "18acd7f5ddec3d809a4548fa3ed1930471a089178114a75ef78129dd77a10a59",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5-run1/completed.json"
+      },
+      "inventory": {
+        "sha256": "a18b299b786060b5d27c1fab29a1f77d707f58d4bc6dbf049750a3d3ec86017b",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5-run1/inventory.json"
+      },
+      "outer": {
+        "sha256": "18c6215cad73333617d61dc4509e3da75786b7995e2398f05e7d16527b50063c",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5-outer.json"
+      },
+      "plan": {
+        "sha256": "cdb4bfc039d5e0fec1241044dc52b14615d58ba66a48206e3c5c06265260306d",
+        "source": "/tmp/k215-phase19-check/old-plan-v5.json"
+      },
+      "result": {
+        "sha256": "2e30c85410a32f4737c7a7e306c995d5d69d95fd4ba765b4c17123713d55d911",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5-run1/result.json"
+      },
+      "runner": {
+        "sha256": "804bd5abf501fd2ffa3fde6e5558e3626b16ec3cf58849bd223b0bc893d9d6a3",
+        "source": "/tmp/k215-phase19-check/build-old.py"
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5.stderr"
+      },
+      "stdout": {
+        "sha256": "14dc305b181b3c8e6b0b3a87c6c755933f4d11ac9e26e34537a955adafff13c6",
+        "source": "/tmp/k215-phase19-check/old-baseline-v5.stdout"
+      },
+      "workspace": "/tmp/k215-phase19-check/old-baseline-v5-run1/workspace"
+    },
+    "candidate": {
+      "before": {
+        "sha256": "cb3d285ba5b32d8d82a36b884c2866dc39a52c90e65b2adbe691fb4520914ae4",
+        "source": "/tmp/k215-phase19-check/candidate-build-run1/before.json"
+      },
+      "completed": {
+        "sha256": "8a9d0cc458ea885ace01ad66ae7fbd50c39674e2d8e46ddfcc1494eeadb68d2a",
+        "source": "/tmp/k215-phase19-check/candidate-build-run1/completed.json"
+      },
+      "inventory": {
+        "sha256": "4e931edbe080d3ba8469f7fed4ffc097e227cb56226e6331028c4838a984ffdc",
+        "source": "/tmp/k215-phase19-check/candidate-build-run1/inventory.json"
+      },
+      "outer": {
+        "sha256": "f6b3946f296d27233390a614d2245b482274d1380bb90676d439e13ed4f82131",
+        "source": "/tmp/k215-phase19-check/candidate-build-outer.json"
+      },
+      "plan": {
+        "sha256": "ac08a89974cc4f0a0db7a720dcad396e168124b3a880a3d38c9a85e79d0aa7f7",
+        "source": "/tmp/k215-phase19-check/candidate-plan.json"
+      },
+      "result": {
+        "sha256": "b898e1b69b8fe389fa773b7939d08bd611f2aef9aeb983d0551a64c1c65bc38a",
+        "source": "/tmp/k215-phase19-check/candidate-build-run1/result.json"
+      },
+      "runner": {
+        "sha256": "53aac37722ca3c376c4fa02c09a063e7ecced1c7b807c8addac99c2e96201184",
+        "source": "/tmp/k215-phase19-check/build-candidate.py"
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source": "/tmp/k215-phase19-check/candidate-build.stderr"
+      },
+      "stdout": {
+        "sha256": "30797ccd6caf3f1357956c51afd7ea408ff0acd45d8c935d54f6649183d824e0",
+        "source": "/tmp/k215-phase19-check/candidate-build.stdout"
+      },
+      "workspace": "/tmp/k215-phase19-check/candidate-build-run1/workspace"
+    }
+  },
+  "scope": "Phase19 only. Add all final candidate present pins and named actual independent reviews before freezing. Old canonical paths are historical identities; snapshot source rows supply immutable before bytes.",
+  "status": "FROZEN_FOR_CAPTURE_AFTER_ACTUAL_PASS"
+}

@@ -1,5 +1,9 @@
 # Phase18: shared macro proofs
 
+The [phase19 successor](../phase19/README.md) checks the subsequent forwarding
+and root iteration simplification. This phase18 record retains its accepted scope
+and its eleven immutable Lean evidence files.
+
 **The combined Lean check, independent result review and evidence capture pass.**
 This continues [phase17](../phase17/README.md), parent
 `7a1273555ba3c2d4f6db087567309f692660ec72`, and preserves upstream main

@@ -183,24 +183,13 @@ theorem root_step (s : Enum222.St) :
 
 /-! ## Iteration -/
 
-theorem root_some {s s' : Enum222.St} (h : Enum222.enumStep s = some s') :
-    Run dag222 (.node dag222.root) (enc (toAS s)) .normal (enc (toAS s')) := by
-  have := root_step s
-  rw [h] at this
-  exact this
-
-theorem root_none {s : Enum222.St} (h : Enum222.enumStep s = none) :
-    ∃ R', Run dag222 (.node dag222.root) (enc (toAS s)) .halt R' := by
-  have := root_step s
-  rw [h] at this
-  exact this
-
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : Enum222.St) :
     IterHalts dag222 (enc (toAS s)) ↔ ∃ n s', Enum222.run n s = some s' ∧ Enum222.enumStep s' = none :=
   RMDag.iter_halts_iff Enum222.enumStep Enum222.run (fun s => enc (toAS s))
     (fun _ => rfl) (fun n s => by cases h : Enum222.enumStep s <;> simp only [Enum222.run, h])
-    (fun h => root_some h) (fun h => root_none h) s
+    (fun {s s'} h => by have := root_step s; rwa [h] at this)
+    (fun {s} h => by have := root_step s; rwa [h] at this) s
 
 theorem iter_iff_halts : IterHalts dag222 (enc (toAS Enum222.s0)) ↔ Enum222.Halts := iter_iff _
 

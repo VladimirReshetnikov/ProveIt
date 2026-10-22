@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.RMDagIteration
 import BusyBeaver.ZFC.Enum254
 import BusyBeaver.ZFC.L2AxiomsEval254
 
@@ -191,57 +192,13 @@ theorem root_step (s : Enum254.St) :
 
 /-! ## Iteration -/
 
-theorem root_some {s s' : Enum254.St} (h : Enum254.enumStep s = some s') :
-    Run dag254 (.node dag254.root) (enc (toAS s)) .normal (enc (toAS s')) := by
-  have := root_step s
-  rw [h] at this
-  exact this
-
-theorem root_none {s : Enum254.St} (h : Enum254.enumStep s = none) :
-    ∃ R', Run dag254 (.node dag254.root) (enc (toAS s)) .halt R' := by
-  have := root_step s
-  rw [h] at this
-  exact this
-
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : Enum254.St) :
-    IterHalts dag254 (enc (toAS s)) ↔ ∃ n s', Enum254.run n s = some s' ∧ Enum254.enumStep s' = none := by
-  constructor
-  · intro h
-    suffices H : ∀ R, IterHalts dag254 R → ∀ s, R = enc (toAS s) →
-        ∃ n s', Enum254.run n s = some s' ∧ Enum254.enumStep s' = none from H _ h s rfl
-    intro R hR
-    induction hR with
-    | halt R R' hrun =>
-        intro s hs
-        subst hs
-        match he : Enum254.enumStep s with
-        | none => exact ⟨0, s, rfl, he⟩
-        | some s1 => exact absurd (run_det hrun (root_some he)).1 (by simp)
-    | next R R' hrun _ ih =>
-        intro s hs
-        subst hs
-        match he : Enum254.enumStep s with
-        | none =>
-            obtain ⟨R'', h''⟩ := root_none he
-            exact absurd (run_det hrun h'').1 (by simp)
-        | some s1 =>
-            have e := (run_det hrun (root_some he)).2
-            obtain ⟨n, s', h1, h2⟩ := ih s1 e
-            exact ⟨n + 1, s', by simp only [Enum254.run, he]; exact h1, h2⟩
-  · rintro ⟨n, s', hrun, hstep⟩
-    induction n generalizing s with
-    | zero =>
-        simp only [Enum254.run] at hrun
-        cases hrun
-        obtain ⟨R', h'⟩ := root_none hstep
-        exact IterHalts.halt _ _ h'
-    | succ n ih =>
-        simp only [Enum254.run] at hrun
-        split at hrun
-        · rename_i s1 he
-          exact IterHalts.next _ _ (root_some he) (ih s1 hrun)
-        · cases hrun
+    IterHalts dag254 (enc (toAS s)) ↔ ∃ n s', Enum254.run n s = some s' ∧ Enum254.enumStep s' = none :=
+  RMDag.iter_halts_iff Enum254.enumStep Enum254.run (fun s => enc (toAS s))
+    (fun _ => rfl) (fun n s => by cases h : Enum254.enumStep s <;> simp only [Enum254.run, h])
+    (fun {s s'} h => by have := root_step s; rwa [h] at this)
+    (fun {s} h => by have := root_step s; rwa [h] at this) s
 
 /-- The enumerator's own halting predicate, from the zero state. -/
 theorem iter_iff_halts : IterHalts dag254 (enc (toAS Enum254.s0)) ↔ Enum254.Halts := iter_iff _

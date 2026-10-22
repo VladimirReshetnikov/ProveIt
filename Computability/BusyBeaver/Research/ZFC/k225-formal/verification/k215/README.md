@@ -6,6 +6,13 @@ The original fresh full builds below were recorded at `613f9cf28a`.
 [Phase16](simplification/phase16/README.md) retains the preceding accepted
 quotient-unification snapshot and its exact source, profile and warning records.
 
+The [phase19 Lean check](simplification/phase19/README.md) passes for 226
+providers: 211 project modules and fifteen typed clients. Sixteen affected providers
+compile fresh, 210 reuse exact source and dependency bindings, and both endpoint
+audits compile fresh. All retained assumption profiles match exactly. Seven Lean
+files lose 169 lines / 6,449 bytes; the 178-module endpoint selects 1,765,109 bytes.
+The record preserves an initial baseline stop on two inherited linter warnings.
+
 The [phase18 combined Lean check](simplification/phase18/README.md) passes for
 214 providers: 199 project modules and fifteen typed clients, with 107 fresh
 compilations and 107 exact-source reuses, plus two fresh endpoint audits. All nine
@@ -60,7 +67,7 @@ endpoint. The large literal tables and arithmetic certificates are kernel-checke
 data, while these final compositions stay small.
 
 The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, selects 178
-project modules from the current phase18 sources and then two explicit endpoint
+project modules from the current phase19 sources and then two explicit endpoint
 clients. The original fresh build selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
 selects 237 sources: 195 from the pinned reference and 42 for K215. Both use the

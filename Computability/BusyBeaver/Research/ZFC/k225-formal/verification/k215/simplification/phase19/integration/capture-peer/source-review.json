@@ -1,0 +1,44 @@
+{
+  "status": "PASS_SOURCE_HELPERS_AND_TEMPLATE_REVIEW_RUNTIME_BINDINGS_PENDING",
+  "helpers": [
+    {
+      "path": "/tmp/k215-phase19-publication-draft/capture-final.py",
+      "sha256": "480a76e3fe9598fb3d5f3d75b1a52771cb27a100d6b4bdcf1ad4025f696711cd",
+      "bytes": 12461
+    },
+    {
+      "path": "/tmp/k215-phase19-publication-draft/build_config-final.py",
+      "sha256": "583b59da71860cb142c6662a812a1cd5c276bd9427886133c34b3a2a39976d17",
+      "bytes": 7197
+    }
+  ],
+  "template": {
+    "path": "/tmp/k215-phase19-publication-draft/capture-config.template.json",
+    "sha256": "d20c33d3fce3af250fe6b3f75478589b01bdb6fc5f38fdca7692d9d64e96bfdf",
+    "bytes": 34517
+  },
+  "external_boundary_manifest": {
+    "path": "/tmp/k215-phase19-publication-draft/phase18-boundaries.json",
+    "sha256": "46c37e63cf3f46059f077da9188fd31fef9fcd79a22291f75ffd89adb58213bc",
+    "bytes": 3623
+  },
+  "source_rows": 80,
+  "external_boundaries": 11,
+  "source_before_after_snapshots": 16,
+  "failed_attempt_triples": 10,
+  "failed_runtime_metadata": 10,
+  "expected_runtime_raw_files": 562,
+  "runtime_raw_formula": "2×226 workspace sources + (12+16)×3 accepted fresh source/log/record files + 2×3 candidate audit files + 2×10 metadata files",
+  "reviewed_properties": [
+    "Exact candidate and baseline receipt schemas gated before capture.",
+    "Baseline old canonical producer pin resolves through ed95 snapshot alias while current candidate producer4453 remains exact.",
+    "All candidate current present pins must bind; baseline pins may bind verified historical snapshots.",
+    "Only explicitly named inert files; no object paths or prior packet internal aliases; 11 exact phase18 external boundaries.",
+    "New-only output, content-addressed deduplicated blobs, sorted USTAR members and zero metadata; gzip mtime0.",
+    "Archive members rehashed by extraction into memory only; no filesystem extraction or supplied-code execution.",
+    "Failed old-baseline-v3 retains all ten attempt triples and original metadata; unaccepted Control219 raw remains historical context."
+  ],
+  "limits": "Final runtime-bindings JSON and the generated concrete capture config still require source/map review before capture. This receipt approves the named helper source and existing template only; it is not a capture result.",
+  "no_builder_capture_Lean_or_supplied_helper_execution": true,
+  "no_canonical_or_staging_writes": true
+}

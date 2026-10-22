@@ -3,6 +3,13 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
+The [phase19 Lean check](phase19/README.md) passes for concise forwarding proofs
+and five root interfaces sharing the existing iteration argument. Seven Lean files
+lose 169 lines / 6,449 bytes. Including the synchronized producer gives net
+maintenance savings of 167 lines / 6,241 bytes. The check covers 226 providers and
+two fresh endpoint audits with exact retained profiles. The endpoint stays at 178
+modules and selects 1,765,109 source bytes.
+
 The [phase18 combined Lean check](phase18/README.md) passes for shared macro
 proofs and the upstream Profile/syntax cleanup. Across 199 selected project
 modules it removes 683 Lean lines / 27,373 bytes. Producer retirement and its
@@ -105,7 +112,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest accepted checkpoint](phase18/README.md),
+The [latest accepted checkpoint](phase19/README.md),
+[eighteenth checkpoint](phase18/README.md),
 [seventeenth checkpoint](phase17/README.md),
 [sixteenth checkpoint](phase16/README.md),
 [fifteenth checkpoint](phase15/README.md),

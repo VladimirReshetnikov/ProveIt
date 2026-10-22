@@ -10,6 +10,13 @@ Its zero-offset proposal is reconciled as
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
 
+The [phase19 Lean check](verification/k215/simplification/phase19/README.md)
+passes for concise forwarding proofs and a shared iteration argument across five
+roots. Seven Lean sources lose 169 lines / 6,449 bytes; including the synchronized
+producer gives 167 lines / 6,241 bytes of maintenance savings. It checks 226
+providers and two endpoint audits with exact retained profiles. The 178-module
+endpoint selects 1,765,109 source bytes.
+
 The [phase18 combined Lean check](verification/k215/simplification/phase18/README.md)
 passes for shared 222/254 macro proofs and Claude Code's nine Profile/syntax and
 RegisterPath simplifications. Across the same 199 selected project modules,

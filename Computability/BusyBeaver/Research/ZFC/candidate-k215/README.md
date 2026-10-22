@@ -30,6 +30,12 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
+The [phase19 Lean check](../k225-formal/verification/k215/simplification/phase19/README.md)
+passes after shortening forwarding proofs and sharing the root iteration argument.
+Seven Lean files lose 169 lines / 6,449 bytes. The check covers 211 project modules
+and fifteen typed clients, with exact retained assumption profiles and two endpoint
+audits. The machine remains at 215 states.
+
 The [phase18 combined Lean check](../k225-formal/verification/k215/simplification/phase18/README.md)
 passes for shared 222/254 macro proofs and the upstream Profile/syntax cleanup.
 It covers 199 project modules and fifteen typed clients; all retained assumption

@@ -163,23 +163,12 @@ theorem root_step (s : EnumDom.St) :
 
 /-! ## Iteration -/
 
-theorem root_some {s s' : EnumDom.St} (h : EnumDom.enumStep s = some s') :
-    Run dagDom (.node dagDom.root) (enc (toAS s)) .normal (enc (toAS s')) := by
-  have := root_step s
-  rw [h] at this
-  exact this
-
-theorem root_none {s : EnumDom.St} (h : EnumDom.enumStep s = none) :
-    ∃ R', Run dagDom (.node dagDom.root) (enc (toAS s)) .halt R' := by
-  have := root_step s
-  rw [h] at this
-  exact this
-
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : EnumDom.St) :
     IterHalts dagDom (enc (toAS s)) ↔ ∃ n s', EnumDom.run n s = some s' ∧ EnumDom.enumStep s' = none :=
   RMDag.iter_halts_iff EnumDom.enumStep EnumDom.run (fun s => enc (toAS s))
     (fun _ => rfl) (fun n s => by cases h : EnumDom.enumStep s <;> simp only [EnumDom.run, h])
-    (fun h => root_some h) (fun h => root_none h) s
+    (fun {s s'} h => by have := root_step s; rwa [h] at this)
+    (fun {s} h => by have := root_step s; rwa [h] at this) s
 
 end SetTheory.BusyBeaver.ZFC.L2Dom

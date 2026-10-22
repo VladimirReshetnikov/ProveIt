@@ -6,6 +6,15 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
+The [phase19 check](../simplification/phase19/README.md) passes for 226 providers
+(211 project modules and fifteen typed clients): 16 fresh and 210 exact-source
+reuses, plus two fresh endpoint audits. All retained profiles match exactly. The
+forwarding proofs infer repeated conclusions, and five root interfaces share the
+existing iteration theorem. The two unused projection wrappers in each root are
+retired after a caller census. The initial old-source baseline stopped on two
+inherited `L2Control219` warnings; its failure and the successful successor remain
+separate. Every typed client and both endpoint audits have zero warnings.
+
 The [phase18 combined check](../simplification/phase18/README.md) passes for
 214 providers (199 project modules and fifteen typed clients): 107 fresh and
 107 exact-source reuses, plus two fresh endpoint audits. All nine 215 site batches

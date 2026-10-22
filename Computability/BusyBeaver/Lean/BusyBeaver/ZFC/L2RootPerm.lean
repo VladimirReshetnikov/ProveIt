@@ -156,22 +156,13 @@ theorem root_step (s : EnumPerm.St) :
 
 /-! ## Iteration -/
 
-theorem root_some {s s' : EnumPerm.St} (h : EnumPerm.enumStep s = some s') :
-    Run dagPerm (.node dagPerm.root) (enc (toAS s)) .normal (enc (toAS s')) := by
-  have := root_step s
-  rwa [h] at this
-
-theorem root_none {s : EnumPerm.St} (h : EnumPerm.enumStep s = none) :
-    ∃ R', Run dagPerm (.node dagPerm.root) (enc (toAS s)) .halt R' := by
-  have := root_step s
-  rwa [h] at this
-
 /-- L2: iterating the program root halts iff the enumerator halts. -/
 theorem iter_iff (s : EnumPerm.St) :
     IterHalts dagPerm (enc (toAS s)) ↔
       ∃ n s', EnumPerm.run n s = some s' ∧ EnumPerm.enumStep s' = none :=
   RMDag.iter_halts_iff EnumPerm.enumStep EnumPerm.run (fun s => enc (toAS s))
     (fun _ => rfl) (fun n s => by cases h : EnumPerm.enumStep s <;> simp only [EnumPerm.run, h])
-    (fun h => root_some h) (fun h => root_none h) s
+    (fun {s s'} h => by have := root_step s; rwa [h] at this)
+    (fun {s} h => by have := root_step s; rwa [h] at this) s
 
 end SetTheory.BusyBeaver.ZFC.L2Perm
