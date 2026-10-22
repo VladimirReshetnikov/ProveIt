@@ -1,0 +1,439 @@
+{
+  "constants": {
+    "alphabet_size": 439,
+    "cross_order": {
+      "first": [
+        1,
+        434,
+        435,
+        436,
+        1
+      ],
+      "rest": "lexicographic tuples in {0,1} x range(439)^4 satisfying projected_valid, excluding first two",
+      "second": [
+        1,
+        0,
+        437,
+        438,
+        437
+      ]
+    },
+    "definitions": {
+      "A": "2^ell",
+      "B": "rho^cell_length=2^cell_bits",
+      "Bm1": "B-1",
+      "DC": "rho^(3*a)+rho^(shift_H+a)+rho^(8*M)+rho^(24*M)+sum(c_e*(rho^(T1-e)+rho^(T2-e)),e in positions)",
+      "DR": "rho^shift_H",
+      "Kconstant": "DC+B*DR",
+      "M": "anchor_unit",
+      "MC": "B-1-sum(rho^e,e in positions except1)-2*rho^dummy_start",
+      "MF": "MF_native+B-1",
+      "MF0": "mu*(rho^T1+rho^T2)+sum(rho^(k+4*a+s),s=0..a-1)+sum(rho^(k+10*a+s),s=0..1)+sum(rho^(shift_H+k+u*a+s),u=4..5,s=0..a-1)+rho^(9*M)+rho^(27*M)",
+      "MF_native": "MF0+4",
+      "a": "alphabet_size",
+      "c_anchor(u)": "A^(4*a+4+u),u=1..4",
+      "c_dummy": "0",
+      "c_payload(t,s)": "A^payload_j(t,s)",
+      "c_selector(i)": "1+sum(A^payload_j(t,payload_value(i,t)),t=0..5)+sum(A^(4*a+4+u),u=1..4)",
+      "k": "projected_cross_count",
+      "mu": "A-2+sum(A^j,j=1..mu_top)",
+      "payload_e(t,s)": "slot_data[t].exponent_offset+s",
+      "payload_j(t,s)": "1+slot_data[t].clause_exponent_offset+s",
+      "payload_value(i,t)": "W_i[t] for t<5; int(W_i[2]==438) for t=5",
+      "positions": "selectors 0..k-1; all six payload slots; dummy_start..dummy_start+dummy_count-1; M,3M,9M,27M",
+      "rho": "2^radix_bits"
+    },
+    "formal_status": "Mathematical proof and finite checks; no new Lean/Rocq theorem",
+    "free_parameters": [],
+    "inherited_endpoint": "KEndpoint215.blank_halts_iff_zfc_refutation",
+    "key_certificates": {
+      "MC_mod4": 2,
+      "MF_native_mod8": 4,
+      "bit_length_Bm1": "cell_bits",
+      "native_mask_population_sum": "cell_bits",
+      "uniform_unit_2DC_minus_DR_mod5": 3
+    },
+    "layout": {
+      "T1": 9232625193,
+      "T2": 18729037871,
+      "alphabet": 439,
+      "anchor_unit": 87929747,
+      "cell_bits": 37252902984619140625,
+      "cell_bits_power_five": 28,
+      "cell_length": 30517578125,
+      "cell_length_power_five": 15,
+      "crosses": 87923161,
+      "dummy_count": 1,
+      "dummy_start": 87928429,
+      "ell": 27,
+      "emax": 2374103169,
+      "m": 87924925,
+      "mask_population_MC": 37252902984531215699,
+      "mask_population_MF": 87924926,
+      "mu_top": 43961776,
+      "native_positions": 87924926,
+      "padding": 43960012,
+      "radix_bits": 1220703125,
+      "radix_bits_power_five": 13,
+      "radix_threshold": 1186967982,
+      "shift_H": 4484418415
+    },
+    "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "polynomial_ports": [
+      "Bm1",
+      "Kconstant",
+      "MC",
+      "MF"
+    ],
+    "projected_cross_count": 87923161,
+    "representation": "closed finite integer expressions; expansions not materialized",
+    "schema": "proveit-k215-projected-cross-constants-v1",
+    "slot_data": [
+      [
+        "prior_H",
+        2,
+        87927551,
+        0
+      ],
+      [
+        "left",
+        439,
+        87925356,
+        2
+      ],
+      [
+        "center",
+        439,
+        87924917,
+        441
+      ],
+      [
+        "right",
+        439,
+        87924478,
+        880
+      ],
+      [
+        "following",
+        439,
+        87923600,
+        1319
+      ],
+      [
+        "center_H",
+        2,
+        87926234,
+        1758
+      ]
+    ],
+    "slot_order": [
+      "prior_H",
+      "left",
+      "center",
+      "right",
+      "following",
+      "center_H"
+    ]
+  },
+  "local_projection": {
+    "actual_nonhalting_prefix_rejected_steps": 20,
+    "excluded_predecessor_vertical_contradiction": true,
+    "halting_control_presentations": 32,
+    "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "projected_windows_and_overlaps": 1144,
+    "scope": "Finite checks; arbitrary-run theorem is proved in the manuscript",
+    "start_and_excluded_locally_valid": true,
+    "status": "PASS"
+  },
+  "projected_count": {
+    "categories": [
+      {
+        "fiber": "439 old choices -> 2 H-bits",
+        "full_crosses": 84411798,
+        "name": "V",
+        "projected_crosses": 384564
+      },
+      {
+        "fiber": "439 old choices -> 2 H-bits",
+        "full_crosses": 168438154,
+        "name": "H",
+        "projected_crosses": 767372
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 184091400,
+        "name": "headless-0",
+        "projected_crosses": 420300
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 98097108,
+        "name": "halt-0",
+        "projected_crosses": 223966
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 155712504,
+        "name": "headless-1",
+        "projected_crosses": 355508
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 98097108,
+        "name": "halt-1",
+        "projected_crosses": 223966
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 5067777384,
+        "name": "nonhalt-write0-move-1",
+        "projected_crosses": 11570268
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 18924061560,
+        "name": "nonhalt-write0-move1",
+        "projected_crosses": 43205620
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 2210335464,
+        "name": "nonhalt-write1-move-1",
+        "projected_crosses": 5046428
+      },
+      {
+        "fiber": "438 old choices -> 1 H-bit",
+        "full_crosses": 11265580752,
+        "name": "nonhalt-write1-move1",
+        "projected_crosses": 25720504
+      },
+      {
+        "fiber": "1 old choice -> 1 H-bit",
+        "full_crosses": 2118,
+        "name": "initial-L",
+        "projected_crosses": 2118
+      },
+      {
+        "fiber": "1 old choice -> 1 H-bit",
+        "full_crosses": 437,
+        "name": "initial-Q",
+        "projected_crosses": 437
+      },
+      {
+        "fiber": "1 old choice -> 1 H-bit",
+        "full_crosses": 2110,
+        "name": "initial-R",
+        "projected_crosses": 2110
+      }
+    ],
+    "projected_crosses": 87923161,
+    "proof": "The predecessor is used only through equality with H. Full predecessor fibers have sizes 1 and 438."
+  },
+  "verification": {
+    "actual_dimension_support": {
+      "anchor_pair": [
+        [
+          "anchor9",
+          "anchor27",
+          791367723,
+          791367723
+        ]
+      ],
+      "dimension_scope": "actual K215 projected-cross layout",
+      "fixed_field_incidences": [
+        {
+          "source": [
+            "vertical",
+            "following",
+            87923600,
+            87924038
+          ],
+          "test": "center_vertical"
+        },
+        {
+          "source": [
+            "vertical",
+            "center_H",
+            87926234,
+            87926235
+          ],
+          "test": "prior_vertical"
+        },
+        {
+          "source": [
+            "horizontal",
+            "center",
+            87924917,
+            87925355
+          ],
+          "test": "left_horizontal"
+        },
+        {
+          "source": [
+            "horizontal",
+            "right",
+            87924478,
+            87924916
+          ],
+          "test": "center_horizontal"
+        },
+        {
+          "source": [
+            "anchor1",
+            "anchor1",
+            87929747,
+            87929747
+          ],
+          "test": "anchor9"
+        },
+        {
+          "source": [
+            "anchor2",
+            "anchor3",
+            263789241,
+            263789241
+          ],
+          "test": "anchor27"
+        }
+      ],
+      "giant_coefficients_evaluated": false,
+      "proof_method": "Exact integer interval intersections and band separation",
+      "selector_intervals_enumerated": false,
+      "status": "PASS"
+    },
+    "actual_giant_crosses_or_numerals_materialized": false,
+    "projected_reconstruction_checks": 1538,
+    "scope": "Finite implementation checks; universal equivalence is proved separately.",
+    "status": "PASS",
+    "toy_sparse_compilers": [
+      {
+        "all_rotation_band_and_anchor_checks": true,
+        "alphabet": 3,
+        "basis_checks": 2520,
+        "layout": {
+          "T1": 8519,
+          "T2": 17269,
+          "alphabet": 3,
+          "anchor_unit": 81,
+          "cell_bits": 9765625,
+          "cell_bits_power_five": 10,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "crosses": 2,
+          "dummy_count": 34,
+          "dummy_start": 38,
+          "ell": 2,
+          "emax": 2187,
+          "m": 55,
+          "mask_population_MC": 9765569,
+          "mask_population_MF": 56,
+          "mu_top": 20,
+          "native_positions": 56,
+          "padding": 0,
+          "radix_bits": 125,
+          "radix_bits_power_five": 3,
+          "radix_threshold": 58,
+          "shift_H": 4141
+        },
+        "projected_crosses": 2,
+        "unit_mod5": 3
+      },
+      {
+        "all_rotation_band_and_anchor_checks": true,
+        "alphabet": 3,
+        "basis_checks": 2610,
+        "layout": {
+          "T1": 8729,
+          "T2": 17695,
+          "alphabet": 3,
+          "anchor_unit": 83,
+          "cell_bits": 9765625,
+          "cell_bits_power_five": 10,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "crosses": 3,
+          "dummy_count": 35,
+          "dummy_start": 39,
+          "ell": 3,
+          "emax": 2241,
+          "m": 57,
+          "mask_population_MC": 9765567,
+          "mask_population_MF": 58,
+          "mu_top": 20,
+          "native_positions": 58,
+          "padding": 0,
+          "radix_bits": 125,
+          "radix_bits_power_five": 3,
+          "radix_threshold": 78,
+          "shift_H": 4243
+        },
+        "projected_crosses": 3,
+        "unit_mod5": 3
+      },
+      {
+        "all_rotation_band_and_anchor_checks": true,
+        "alphabet": 7,
+        "basis_checks": 8262,
+        "layout": {
+          "T1": 17985,
+          "T2": 36455,
+          "alphabet": 7,
+          "anchor_unit": 171,
+          "cell_bits": 48828125,
+          "cell_bits_power_five": 11,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "crosses": 4,
+          "dummy_count": 62,
+          "dummy_start": 88,
+          "ell": 3,
+          "emax": 4617,
+          "m": 101,
+          "mask_population_MC": 48828023,
+          "mask_population_MF": 102,
+          "mu_top": 36,
+          "native_positions": 102,
+          "padding": 0,
+          "radix_bits": 625,
+          "radix_bits_power_five": 4,
+          "radix_threshold": 128,
+          "shift_H": 8743
+        },
+        "projected_crosses": 4,
+        "unit_mod5": 3
+      },
+      {
+        "all_rotation_band_and_anchor_checks": true,
+        "alphabet": 3,
+        "basis_checks": 2610,
+        "layout": {
+          "T1": 8729,
+          "T2": 17695,
+          "alphabet": 3,
+          "anchor_unit": 83,
+          "cell_bits": 9765625,
+          "cell_bits_power_five": 10,
+          "cell_length": 78125,
+          "cell_length_power_five": 7,
+          "crosses": 3,
+          "dummy_count": 35,
+          "dummy_start": 39,
+          "ell": 3,
+          "emax": 2241,
+          "m": 57,
+          "mask_population_MC": 9765567,
+          "mask_population_MF": 58,
+          "mu_top": 20,
+          "native_positions": 58,
+          "padding": 0,
+          "radix_bits": 125,
+          "radix_bits_power_five": 3,
+          "radix_threshold": 78,
+          "shift_H": 4243
+        },
+        "projected_crosses": 3,
+        "unit_mod5": 3
+      }
+    ]
+  }
+}

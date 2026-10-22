@@ -1,0 +1,1375 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=24mm]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor,listings,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+ pdftitle={Smaller Diophantine descriptions of ZFC consistency},pdfauthor={Research contribution prepared for ProveIt}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\src}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{\texttt{3b201cdea32d2c816f5f3d20734051f25fd3ef14}}
+\newcommand{\Parent}{\mathcal S_{\mathrm{norm}}}
+\newcommand{\rgt}{\operatorname{right}}
+\newcommand{\dn}{\operatorname{next}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single}
+\title{\textbf{Smaller Diophantine descriptions of ZFC consistency}\\[5pt]
+\large Thirteen positive unknowns, a smaller quartic,\\
+and a four-site computation compiler}
+\author{Research contribution prepared for the ProveIt repository}
+\date{22 October 2026\\[3pt]\small Repository snapshot \pin}
+\begin{document}
+\maketitle
+\begin{abstract}
+We combine and extend the eight fixed-input constructions currently collected
+in ProveIt's \emph{Con(ZFC) in Diophantine form} report. The main new equation
+has thirteen strictly positive integer unknowns, total degree $571$, and an
+explicit $84$-operation arithmetic circuit. Its unsolvability is equivalent,
+provably in ZFC, to $\Con(\mathrm{ZFC})$. A four-equation presentation uses
+$78$ operations. The key algebraic step replaces three square-root witnesses
+by a single weighted sum, with a proof that the eliminated roots remain
+integers and that the resultant has no degenerate denominator branch.
+
+Other combinations improve different measures: a fifteen-variable,
+six-equation system has degree $28$ and $61$ operations; its single
+product has degree $99$ and $69$ operations. A direct lift gives $23$
+quadratic equations in $32$ positive unknowns and hence one quartic. An
+explicit domain refinement gives a quartic in $62$ unrestricted integer
+unknowns. Finally, replacing nine-site windows by four-site windows reduces
+the local alphabet to $71\,356\,645$ and the bit length of the distinguished
+coefficient $B-1$ from $5^{67}$ to $5^{28}$, with the same four coefficient ports.
+
+Every coefficient is fixed by a terminating finite recipe and the literal
+K215 table. The enormous coefficients are not expanded. The new results
+are ordinary mathematical proofs, accompanied by explicit circuits and
+finite algebra and compiler checks; they are not newly checked Lean or
+Rocq theorems. The constructions improve the reviewed collection in
+specified measures, without claiming a global minimum, a new universal
+operation bound, or a proof of ZFC consistency.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Results and comparison}
+\label{sec:results}
+
+Write $\mathrm{Ref}_{\mathrm{ZFC}}$ for the arithmetic assertion that there
+exists a finite derivation of a contradiction from ZFC. Throughout,
+$\Con(\mathrm{ZFC})$ means $\neg\mathrm{Ref}_{\mathrm{ZFC}}$ for an ordinary
+effective presentation. The machine calibration and its internalization
+are discussed in Section~\ref{sec:logical}.
+
+\begin{theorem}[Main result]\label{thm:main}
+Let $(\beta,K_0,M_C,M_F)$ be the four fixed integers of
+Section~\ref{sec:coefficients}, obtained from the literal blank-input K215
+machine. For the polynomial $P_{13}$ defined in
+Section~\ref{sec:thirteen},
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\exists\mathbf x\in\Pos^{13}\ P_{13}(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \mathrm{Ref}_{\mathrm{ZFC}}.
+\]
+Consequently,
+\[
+ \boxed{\quad\mathrm{ZFC}\vdash
+ \bigl(\forall\mathbf x\in\Pos^{13}\ P_{13}(\mathbf x)\ne0\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).\quad}
+\]
+The same assertion holds for each alternative explicitly defined below,
+in its stated domain. In particular there is a specified quartic in
+$32$ positive unknowns and a specified quartic in $62$ unrestricted
+integer unknowns with the corresponding equivalence.
+\end{theorem}
+
+The eight packages are numbered 01--08 in the repository's reconciliation
+note~\cite{catalogue}. The best existing arithmetic baseline is the
+independently obtained $15$-variable, $67$-operation polynomial of 06
+and 08. Its degree is $155$. The four coefficients differ between those
+packages; the same circuit shape does not make their numerals
+interchangeable. We use 06's raw-K215 semantics as the base and prove a
+new coefficient recipe for it.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Construction & Positive variables & Equations & Degree & Operations\\
+\midrule
+Existing 06/08 product &15&1&155&67\\
+Existing 06 basic system &15&6&60&61\\
+Existing 02 ordinary system &16&7&28&63\\
+Existing 08 quadratic lift &34&25&2&---\\
+\midrule
+New ordinary system &15&6&28&61\\
+New ordinary product $P_{15}$ &15&1&99&69\\
+New retained-auxiliary system &16&7&24&60\\
+New amalgamated system &14&5&72&67\\
+New amalgamated product $P_{14}$ &14&1&121&76\\
+New weighted system &13&4&544&78\\
+New weighted product $P_{13}$ &13&1&571&84\\
+New alternative-weight product &13&1&515&85\\
+New quadratic lift &32&23&2&---\\
+New quartic $Q_{32}$ &32&1&4&---\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a system, ``degree'' means the maximum residual degree. Every
+displayed degree is exact. Arithmetic counts charge every binary
+$+$, $-$, or $\times$, including multiplication by a numeral. Reuse of
+an already computed register and the final equality comparison are free.
+The sum-of-squares alternatives are $78$ operations/degree $56$ for the
+ordinary fifteen-variable system, $80$/degree $48$ for the retained
+sixteen-variable system, $81$/degree $144$ for the fourteen-variable
+system, and $89$/degree $1088$ for the thirteen-variable system.
+
+There is a genuine tradeoff. The new thirteen-variable equation uses fewer
+unknowns than all eight explicit packages, but does not beat the
+$67$-operation evaluator. The new ordinary system lowers degree from
+$60$ to $28$ at the same variable and operation counts. The quartic
+reduces the positive-variable count from $34$ to $32$. In the unrestricted
+integer domain our $62$-variable quartic improves the $83$-variable
+quartic reported by 04; comparisons across different domains would be
+misleading. Classical nine-variable existence results remain relevant
+and prevent any claim that thirteen is an absolute minimum; the
+repository's \src{Jones1982.nine_unknowns} is an existence theorem,
+not an emitted polynomial with a stated degree~\cite{nine}.
+
+\section{Common polynomials and the inherited interface}
+\label{sec:common}
+
+All free variables in Sections~\ref{sec:common}--\ref{sec:fourteen} are
+strictly positive integers. A capitalized abbreviation does not introduce
+an additional existential variable. Define
+\begin{align}
+ q&=\beta J+1,& C_0&=q-F-\alpha,&X&=wq,&Y&=sq^3,\notag\\
+ E&=XY,& k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\notag\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,&
+ D_0&=X+ac+\gamma H. \label{eq:common}
+\end{align}
+Put
+\begin{align}
+ G&=(q-1)(q-F)+\alpha,&
+ R&=G(q^2-1)+(M_C+qM_F)J,\notag\\
+ L_0&=E(kY),& A&=1+L_0(L_0+k), \label{eq:pack}\\
+ N_1&=D_0^2-\Delta c^2,&
+ N_k&=k-hE-R,\notag\\
+ N_t&=(K_0+w)C_0+(q-F)-z(q-1). \label{eq:units}
+\end{align}
+Here $z$ is the transport quotient, while $T$ below is a different
+auxiliary quotient. The coefficient $M_F$ is the \emph{shifted} source
+mask, not the native one-cell high mask.
+
+For comparison, package 06's normalized system uses the fifteen
+unknowns
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma
+\]
+and, with
+\[
+ Q=(\Delta i c^2)^2,\qquad V=c(Tf-1)-Rf^2,
+\]
+has the six equations
+\begin{equation}
+ \tau^2=A,\quad N_1=N_k=N_t=1,\quad
+ f^2=1+\Delta i^2c^4,\quad
+ QV^2-(Q-1)y^2=1. \label{eq:normalized}
+\end{equation}
+This system is denoted $\Parent$. Package 06 proves that its positive
+solvability is equivalent to the blank halting of K215~\cite{blank}.
+Sections~\ref{sec:coefficients}--\ref{sec:compilerproof} prove that the
+new four-site coefficients satisfy the same compiler interface, so the
+same arithmetic theorem applies to them.
+
+The following bounds will be used before any computation is decoded.
+Suppose $N_t\in\{1,-1\}$. Since
+\[
+ N_t=(K_0+w)C_0+1-F-(z-1)(q-1),
+\]
+one has $C_0\ge0$; $C_0\le-1$ would make $N_t\le-2$.
+One cannot yet assert $C_0>0$: the boundary
+$C_0=0,F=2,z=1$ permits $N_t=-1$. With the authentic mask bounds,
+\begin{gather}
+ q\ge B\ge16,\qquad q\le G\le q^2-q,\notag\\
+ 0<(M_C+qM_F)J<(q-1)(1+2q),\notag\\
+ q(q^2-1)<R<q^4-q^3+q^2-1<q^4-2,\label{eq:weakbounds}\\
+ R>3q+1,\qquad E\ge q^4>R+2,\qquad a>R+2.\notag
+\end{gather}
+These follow directly from $q-F=C_0+\alpha>0$ and
+$0<M_C<B-1$, $0<M_F<2(B-1)$, $J=(q-1)/(B-1)$.
+If $N_k=\varepsilon\in\{1,-1\}$, then
+$k=R+\varepsilon+hE>R$. The literal split of $c$ always gives
+\begin{equation}
+ kY<c<k(Y+1). \label{eq:ratio}
+\end{equation}
+
+\section{The thirteen-variable equation}
+\label{sec:thirteen}
+
+Supply exactly
+\[
+ \boxed{\quad J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,\gamma,t\in\Pos.\quad}
+\]
+The three coordinates $f,\tau,y$ of \eqref{eq:normalized} are absent.
+Using \eqref{eq:common}--\eqref{eq:units}, define
+\begin{align}
+ Q&=(\Delta i c^2)^2,&D&=1+\Delta i^2c^4,&v&=cT,&z_0&=c+RD,\notag\\
+ d_0&=Q-1,&M&=D+v^2,&P&=QDv^2,&Z&=Qz_0^2,\notag\\
+ e&=P+Z-1,&L&=d_0t^2,&N&=d_0M^2A,&C&=L+N-e,\notag\\
+ a_0&=PZ,&b_0&=LN,&U&=C^2+4(a_0-b_0),\notag\\
+ \mathcal R&=U^2-16C^2a_0.\label{eq:13defs}
+\end{align}
+The requested single equation can be taken to be
+\begin{equation}
+ \boxed{\quad P_{13}=N_1N_kN_t(1+\mathcal R)-1=0.\quad}
+ \label{eq:P13}
+\end{equation}
+An equivalent existence condition is the four-equation system
+\begin{equation}
+ \boxed{\quad N_1=N_k=N_t=1,\qquad U^2=16C^2a_0.\quad}
+ \label{eq:S13}
+\end{equation}
+All symbols in these displays are ordinary polynomial abbreviations.
+There is no variable exponentiation, division, bit operation, primality
+test, or implicit program parameter in the evaluated polynomial.
+The proof uses rational expressions only to recover eliminated integer
+witnesses.
+
+\subsection{The weighted root lemma}
+\begin{lemma}[Three roots represented by one integer]\label{lem:merge}
+Let $A,D,Q,v,z_0,M$ be positive integers with $A,D,Q>1$, $v,z_0>0$,
+and put $d_0=Q-1$, $e=Q(Dv^2+z_0^2)-1$.
+Assume $d_0M^2A>e$. For $t>0$, set
+\[
+ C=d_0(t^2+M^2A)-e,\quad B_0=2Qvz_0,\quad
+ U=C^2+DB_0^2-4d_0^2t^2M^2A.
+\]
+Then
+\[
+ U^2-D(2CB_0)^2=0
+\]
+implies the existence of nonzero integers $f,\tau,y$ satisfying
+\[
+ f^2=D,\quad\tau^2=A,\quad
+ Q(vf-z_0)^2-(Q-1)y^2=1,\quad t=M\tau+y.
+\]
+Conversely any such roots with $t=M\tau+y>0$ give the resultant equation.
+\end{lemma}
+\begin{proof}
+The hypothesis makes $C>0$, so $2CB_0\ne0$. Define
+$f=-U/(2CB_0)$. The resultant gives $f^2=D$. A rational number whose
+square is an integer is itself an integer: write it in lowest terms
+and compare the denominator in the squared equation. Thus $f$ is an
+integer and is nonzero. Expanding $U+2CB_0f=0$ gives
+\[
+ (C+B_0f)^2=4d_0^2t^2M^2A.
+\]
+Hence $\tau=(C+B_0f)/(2d_0tM)$ is a rational number with square $A$,
+so it is a nonzero integer. Set $y=t-M\tau$. Then
+\[
+ d_0y^2=e-B_0f=Q(vf-z_0)^2-1.
+\]
+The value $y=0$ would imply that a multiple of $Q>1$ equals $1$.
+The reverse implication follows by the same identities. No algebraic
+number field or unproved rational-to-integer step is needed.
+\end{proof}
+
+\subsection{Why the chosen weight works}
+At a zero of \eqref{eq:P13}, each of its four factors is an integer
+unit. Since $\Delta$ is $0$ or $3$ modulo $4$, $N_1$ cannot equal
+$-1$. Also $\mathcal R\equiv U^2\pmod4$, so $1+\mathcal R$ cannot
+equal $-1$. Therefore $N_1=1$, $\mathcal R=0$, and
+$N_k=N_t=\varepsilon\in\{1,-1\}$. The weak bounds above are
+available at precisely this stage.
+
+Write $U_0=XY^2$. Then
+\[
+ A=1+k^2U_0(U_0+1)>k^2Y^4>8k^2((Y+1)^2+1)>8(c^2+R^2).
+\]
+The middle inequality holds for $Y\ge4$, while here $Y\ge4096$.
+For $M=D+v^2$,
+\[
+ M^2\ge4Dv^2,\qquad M^2\ge D^2,\qquad
+ z_0^2=(c+RD)^2\le2D^2(c^2+R^2).
+\]
+Splitting $AM^2$ into two halves proves
+$AM^2>2(Dv^2+z_0^2)$. Since $Q\ge2$ and $d_0\ge Q/2$,
+\begin{equation}
+ d_0AM^2>Q(Dv^2+z_0^2)=e+1.\label{eq:weight}
+\end{equation}
+Thus the lemma applies without already knowing the eliminated roots.
+The weight is substantive: an unweighted elimination can have a
+vanishing coefficient of $f$, so its resultant alone need not force
+$D$ to be a square.
+
+The shorter evaluator \eqref{eq:13defs} is the lemma's resultant because
+$DB_0^2=4PZ$ and $d_0^2t^2M^2A=LN$.
+
+\subsection{Soundness of the signed reconstructed roots}
+The lemma restores \eqref{eq:normalized}, with $N_k,N_t$ still units
+of equal sign and with $f,\tau,y$ provisionally signed. Replace
+$\tau,y$ by their nonzero absolute values. If $f<0$, replace both
+$f,T$ by their negatives; every relevant expression uses $f$ only
+through $f^2$ and $Tf$. This makes $f>0$ while allowing $T$ to be
+an arbitrary signed integer. It is essential to justify this domain
+extension instead of applying a positive-$T$ theorem silently.
+
+For an integer $A_0\ge2$, define the Pell sequences by
+\[
+ \chi_{A_0}(r)+\psi_{A_0}(r)\sqrt{A_0^2-1}
+ =(A_0+\sqrt{A_0^2-1})^r.
+\]
+Use $A_0=a+2$ and $P_0=2XY^2+1$. The first and main norms imply
+\[
+ \tau=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n),\quad
+ D_0=\chi_{A_0}(p),\quad c=\psi_{A_0}(p).
+\]
+The index congruence gives $2n\equiv R+\varepsilon\pmod E$.
+Since $0<R+\varepsilon<E$, it follows that
+$n\ge(R-1)/2\ge24$. Since $P_0>A_0$ and $c>k$, Pell growth gives
+$p>n$ and $c>2p$. Also $k>R$ implies $c>2R$.
+
+The normalized strong equation gives
+$f=\chi_{A_0}(m)$ and $\psi_{A_0}(m)=ic^2$. Strong divisibility of
+$\psi$ implies $p\mid m$. Writing $m=pj$ and expanding
+$(D_0+c\sqrt\Delta)^j$ modulo $c^2$ gives
+\[
+ \psi_{A_0}(pj)/c\equiv jD_0^{j-1}\pmod c.
+\]
+Because $\gcd(D_0,c)=1$, one obtains $c\mid j$; hence
+$pc\mid m$ and $m>2p$.
+
+Put $S=\Delta ic^2$ and retain the sign of $V$. The auxiliary norm
+classifies $|SV|=\chi_S(\ell)$, $y=\psi_S(\ell)$ with odd
+$\ell=2r+1$. If $\chi_X(2r+1)=X C_r(X^2)$, the recurrence gives
+\[
+ C_r(0)=(-1)^r\ell,\qquad C_r(-\Delta)=(-1)^r\psi_{A_0}(\ell).
+\]
+The literal congruences $V\equiv-c\pmod f$ and
+$V\equiv-R\pmod c$, together with $S^2\equiv-\Delta\pmod f$,
+give $R\equiv\pm p\pmod c$ by the signed Pell step-down argument.
+For completeness, squaring the first congruence yields
+\[
+ \chi_{A_0}(2\ell)\equiv\chi_{A_0}(2p)\pmod{\chi_{A_0}(m)}.
+\]
+Reduction of the index modulo $2m$, reflection, and
+$2\chi_{A_0}(m-1)<\chi_{A_0}(m)$ force
+$\ell\equiv\pm p\pmod m$. The second congruence then gives the
+claim modulo $c$. Since $0<R,p<c/2$, this forces $p=R$.
+This argument uses $|V|$, and never assumes $T,V>0$
+\cite{signed,scout}.
+
+Now write $2n=R+\varepsilon+jE$ with $j\ge0$.
+The bound $E>R+2$ excludes $j\ge1$, because $n<p=R$.
+If $\varepsilon=-1$, then $p=2n+1$. Pell duplication, with
+$\chi_{A_0}(2)>P_0$, would give
+$c=\psi_{A_0}(2n+1)>A_0 k>k(Y+1)$, contrary to
+\eqref{eq:ratio}. Thus $\varepsilon=1$, and $C_0>0$ follows.
+
+The remaining exterior argument uses no sign of $V$ or $T$.
+The lower Pell-ratio estimate gives $2^R<a$; the main-root
+congruence modulo $H=4a+3$ gives $X\equiv2^R\pmod H$.
+Since $0<X,2^R<a<H$, one has $X=2^R$. Hence $q\mid X$ makes
+$q$ a power of two; the repunit relation makes $q=B^n$ for some
+$n>0$. The bound $R>3q$ restores $q^3\mid X$.
+The half-binomial extraction gives
+\[
+ \nu_2(Y)=\pc(R)-2,\qquad \pc(R)\ge3dn+2.
+\]
+The shifted-mask population identity supplies the reverse bound and
+therefore the exact low and high masks. Their native convolution,
+anchor alignment, and overlap constraints decode a blank halting
+tableau. These exterior arguments are stated with their sign-independent
+hypotheses in the inherited notes~\cite{scout,half,blank}; the new
+tableau and coefficient interface is proved below. No numerical-input
+Pell bridge is needed.
+
+Conversely, a blank halting run supplies a positive solution of
+\eqref{eq:normalized}. Set $t=M\tau+y>0$ in the lemma; then
+\eqref{eq:S13} and \eqref{eq:P13} hold. This proves both directions.
+
+\subsection{Degree and operation certificates}
+\begin{center}\small
+\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Expression & Degree & Expression & Degree\\
+\midrule
+$c,a,\Delta,R$ &$5,6,12,4$&$A,Q,D,v,z_0$&$22,46,34,6,38$\\
+$P,Z,M$&$92,122,34$&$L,N,C$&$48,136,136$\\
+$a_0,b_0,U$&$214,184,272$&$\mathcal R$&$544$\\
+$N_1,N_k,N_t$&$18,7,2$&$P_{13}$&$571$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The highest homogeneous part of $C$ comes uniquely from $N$;
+that of $U$ comes from $C^2$; and that of $\mathcal R$ comes from
+$U^2$. All are nonzero for every $\beta>0$. For $N_1$, canceling
+the apparent top degree in $D_0^2-\Delta c^2$ leaves the nonzero
+degree-$18$ leading term $8\gamma a_{\rm top}^2c_{\rm top}$.
+The product of nonzero leading forms in an integer polynomial ring
+is nonzero. Hence $\deg P_{13}=18+7+2+544=571$ uniformly on the
+actual coefficient slice.
+
+The archive emits all $84=49M+35A$ live gates. Removing its final
+unit-product gates and comparing $U^2$ with $16C^2a_0$ gives
+$78=46M+32A$ operations for \eqref{eq:S13}. Adding four squared
+residuals costs $11$ more operations and gives degree $1088$.
+Modular univariate diagnostics supplement these symbolic leading-form
+proofs; they are not the justification of uniform exact degree.
+
+\subsection{One extra operation lowers the degree to 515}
+There is a useful second weight. Put $I=ic^2$ and replace $M$ in
+\eqref{eq:13defs} by
+\[
+ M=kI^2+T^2.
+\]
+All other polynomial definitions remain the same. For efficient evaluation,
+compute $D=1+\Delta I^2$, $Q=\Delta(D-1)$, and $v^2=c^2T^2$.
+These are identities with the earlier definitions, not new equations.
+The resulting product uses $85=50M+35A$ operations and has degree
+$515$; its four-equation system uses $79$ operations with maximum
+degree $488$. The sum of squared residuals uses $90$ operations
+and has degree $976$.
+
+Here is the additional domination check. Write $A_0=a+2<2E$.
+The weak bounds give $k>E$, $c<2kY$, $k>48$, and
+\[
+ L_0=kEY>A_0c/4,\qquad L_0>E^2Y>4A_0^2.
+\]
+Thus $A>A_0^2c^2/16$ and $A>16A_0^4$. Since $I>1$,
+\[
+ D<A_0^2I^2,\qquad M^2\ge4kI^2T^2,\qquad
+ M\ge kI^2,\qquad z_0<2kA_0^2I^2.
+\]
+The first set of inequalities gives $AM^2>4Dv^2$; the second gives
+$AM^2>4z_0^2$. Hence the same strict bound
+$AM^2>2(Dv^2+z_0^2)$ proves $C>0$, so the whole restoration and
+signed soundness argument applies unchanged. Now $\deg M=23$,
+$\deg N=114$, while $e$ has degree $122$. The leading form of
+$C$ is $-e_{\rm top}$; that of the resultant is $C_{\rm top}^4$.
+Consequently its degree is $488$ and the product's degree is
+$488+18+7+2=515$. The archive includes both weights; the first
+has the shorter proof and cheaper evaluator.
+
+\section{Lower degree with the ordinary strong equation}
+\label{sec:ordinary}
+
+Package 02's ordinary strong equation can be combined with 06's inputless
+compiler. This changes the scaling of one witness, so the equivalence is
+an equivalence of existence conditions, not a coordinatewise identity.
+Retain the fifteen variables of \eqref{eq:normalized} and set
+\[
+ I=ic^2,\qquad K=\Delta(f^2-1),\qquad V=c(Tf-1)-Rf^2.
+\]
+The new system is
+\begin{equation}
+ \boxed{\quad
+ \tau^2=A,\quad N_1=N_k=N_t=1,\quad
+ I^2=K,\quad K(V^2-y^2)+y^2=1.\quad}
+ \label{eq:ordinary}
+\end{equation}
+It has six equations, with exact residual degrees
+$22,18,28,7,2,22$ in first/main/auxiliary/index/transport/strong order.
+Its shared evaluator has $61=34M+27A$ operations. Define
+\[
+ N_0=\tau^2-L_0(L_0+k),\quad
+ N_a=K(V^2-y^2)+y^2,\quad N_s=1+I^2-K.
+\]
+An equivalent single equation is
+\begin{equation}
+ \boxed{\quad P_{15}=N_0N_1N_aN_kN_tN_s-1=0.\quad}
+ \label{eq:P15}
+\end{equation}
+It has $69=39M+30A$ operations and exact degree $99$.
+The sum of the six squared residuals has $78$ operations and degree $56$.
+
+\subsection{Why the relaxed equation is sufficient}
+Completeness is immediate from the normalized system: replace its
+$i$ by $\Delta i$. Then the new $I^2=\Delta(f^2-1)$ equals the
+old auxiliary coefficient $(\Delta ic^2)^2$, preserving all other
+coordinates and equations.
+
+Soundness uses the following independently established interface
+\cite{ordinary,relaxed}.
+\begin{lemma}[Ordinary strong rank]\label{lem:ordinaryrank}
+Let $A_0\ge2$, $\Delta=A_0^2-1$, $c=\psi_{A_0}(p)$, and
+$c>A_0\Delta^2$. If positive integers $i,f$ satisfy
+$(ic^2)^2=\Delta(f^2-1)$, there is $m>0$ such that
+\[
+ f=\chi_{A_0}(m),\quad ic^2=\Delta\psi_{A_0}(m),
+ \qquad p\mid m,\quad c\mid m.
+\]
+In particular $c^2\mid f^2-1$.
+\end{lemma}
+\begin{proof}[Proof mechanism]
+Factor $\Delta$ into its squarefree part times a square and use the
+fundamental norm-one unit in the integer-coefficient quadratic ring.
+If $A_0=\chi_F(e)$ and $S=\psi_F(e)$, then
+$\Delta=(F^2-1)S^2$ and $\psi_F(ep)=Sc$.
+For the auxiliary index $n$, strong divisibility gives
+$h=\psi_F(\gcd(n,ep))\ge c/\Delta$. If $\gcd(n,ep)<ep$,
+the proper-divisor bound and Pell doubling give
+$h^2<A_0c/2$, contradicting $c>A_0\Delta^2$.
+Thus $ep\mid n$, recovering an integral Pell solution at $A_0$.
+Writing $m=pj$, the binomial expansion modulo $c$ yields
+$c\mid\Delta j$. Finally
+$\gcd(c,\Delta)=\gcd(p,\Delta)\mid p$, so $c\mid pj=m$.
+The full elementary proof, including squarefree divisibility and the
+fundamental-unit argument, is included in the archive~\cite{relaxed}.
+\end{proof}
+
+The first/main norms and the index congruence establish
+$p>n\ge24$, $c>(a+2)\Delta^2$, $c>2p$, and $c>2R$
+before this lemma is used. This ordering matters: the individual relaxed
+norm can have extra rational Pell solutions without these hypotheses.
+The lemma gives $m\ge c>2p$. It also gives $f>2c$ and
+\[
+ K-(Rf^2+c)=(\Delta-R)f^2-\Delta-c>0.
+\]
+The auxiliary norm excludes $V=0$. If $|V|>1$, it implies
+$|V|\ge2K-1$ by comparing consecutive squares. But $T>0$ gives
+$V>-Rf^2-c>-K$, excluding negative $V$ of magnitude greater than
+one. The congruence $V\equiv-c\pmod f$, with $f>2c$, excludes
+$V=\pm1$. Hence $V>1$.
+
+The integers
+\[
+ o=cT-Rf,\qquad j=Tf-1-R(f^2-1)/c
+\]
+are positive because $of=V+c$ and $jc=V+R$. The quotient in the
+definition of $j$ is integral by Lemma~\ref{lem:ordinaryrank}.
+The two congruences $V=of-c=jc-R$ give $p=R$ by the same auxiliary
+step-down, now with coefficient $I^2$. The exterior power, population,
+and tableau decoding follows as before.
+
+For \eqref{eq:P15}, first infer integer units. The consecutive-product
+negative Pell descent excludes $N_0=-1$; modulo $4$ excludes
+$N_1=-1$. Since $K=\Delta(f^2-1)$ is $0$ or $1$ modulo $4$,
+$N_s=1+I^2-K$ cannot be $-1$. Thus $K=I^2$, and $N_a$ is also
+a square modulo $4$, so $N_a=1$. The remaining equal signs on
+$N_k,N_t$ are resolved with the weak $C_0\ge0$ bounds, ordinary rank,
+and the same index-sign argument used above. This proves product
+soundness without prematurely assuming $C_0>0$.
+
+\subsection{Retaining two auxiliary witnesses}
+Replace $T$ by positive $o,j$, put $V=of-c$, and append
+$V=jc-R$ to \eqref{eq:ordinary}. This gives sixteen variables and
+seven equations. The residual degrees are $22,18,24,7,2,22,6$;
+the evaluator costs $60=33M+27A$ operations. Its soundness proof is
+shorter: once $f>2c$, the inequality $V=of-c>c>1$ is immediate.
+The sum of squares has degree $48$ and $80$ operations. These
+retained witnesses provide the useful starting point for the quartic.
+
+\section{A fourteen-variable intermediate option}
+\label{sec:fourteen}
+
+The ordinary system also permits a less costly root combination.
+Remove $\tau,y$ and retain $f$, supplying one positive integer $t$.
+Let $I,K,V,A$ have their ordinary meanings and put
+\[
+ d=K-1,\quad e=KV^2-1,\quad L=dt^2,\quad N=dA,\quad
+ u=L+N-e,\quad \mathcal R_{14}=u^2-4LN.
+\]
+The five equations are
+\[
+ N_1=N_k=N_t=1,\qquad I^2=K,\qquad u^2=4LN.
+\]
+They use $67=38M+29A$ operations and have maximum degree $72$.
+At a solution $K=I^2>1$, and
+\[
+ \tau=\frac{u}{2dt},\qquad \tau^2=A,\qquad y=t-\tau
+\]
+recover integral nonzero $\tau,y$ and $dy^2=e$.
+Their absolute values give an ordinary-system solution. Conversely,
+$t=\tau+y$ gives the five equations.
+
+The product
+\[
+ \boxed{\quad P_{14}=N_1N_kN_t(1+I^2-K)(1+\mathcal R_{14})-1=0\quad}
+\]
+has $76=42M+34A$ operations and degree $121$.
+Both new unit factors exclude $-1$ modulo $4$; therefore the same
+reconstruction and ordinary sign proof apply. Its sum-of-squares
+alternative has $81$ operations and degree $144$.
+The archive additionally records the inputless specialization of 05's
+$f$-elimination: fourteen-variable products at $73$ operations/degree
+$342$ and $75$/degree $293$. These offer other arithmetic tradeoffs,
+but are not the main result here.
+
+\section{An explicit quartic in 32 positive unknowns}
+\label{sec:quartic}
+
+Retain the sixteen primary unknowns
+\[
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma
+\]
+and adjoin sixteen positive register unknowns
+\[
+ N,E,P,c,a,X,D_0,C_2,G,L,F_2,V,g,I,K,\Delta.
+\]
+Only $q=\beta J+1$, $k=\eta+\zeta$, $H=4a+3$, and
+$C_0=q-F-\alpha$ remain abbreviations. They are affine in the
+unknowns. Here the symbol $L$ means $q^2-1$, and $P=L_0+k$;
+these register names are local to this section.
+
+The following are the complete $23$ quadratic equations:
+\begin{align}
+ L&=q^2-1,&N&=q(L+1),\notag\\
+ X&=wq,&a&=E+sN,\notag\\
+ E&=X(a-E),&c&=k(a-E)+\eta,\notag\\
+ P&=E(c-\eta)+k,&\tau^2&=P(P-k)+1,\notag\\
+ D_0&=X+ac+\gamma H,&\Delta&=a^2+H,\notag\\
+ C_2&=c^2,&D_0^2&=\Delta C_2+1,\notag\\
+ k&=jc-V+1+hE,&G&=(q-1)(q-F)+\alpha,\notag\\
+ jc-V&=LG+(M_C+qM_F)J,&&\notag\\
+ (K_0+w)C_0+(q-F)-z(q-1)&=1,&&\notag\\
+ F_2&=f^2,&V&=of-c,\notag\\
+ g&=y^2-V^2,&I&=iC_2,\notag\\
+ K&=I^2,&K&=\Delta(F_2-1),\notag\\
+ y^2-Kg&=1.&&\label{eq:quad23}
+\end{align}
+Let $r_1,\ldots,r_{23}$ be their left sides minus right sides. Then
+\begin{equation}
+ \boxed{\qquad Q_{32}=\sum_{j=1}^{23}r_j^2=0.\qquad}
+ \label{eq:quartic32}
+\end{equation}
+This is a single polynomial of exact total degree $4$. Only the first
+Pell residual contains $\tau$, with coefficient $1$ on $\tau^2$,
+so the coefficient of $\tau^4$ in $Q_{32}$ is $1$.
+
+To project a solution, set $Y=a-E=sq^3>0$ and $R=jc-V$.
+The packing equation forces the original expression for $R$; the
+transport equation forces $C_0>0$, hence $R>0$.
+Every equation of the retained-auxiliary system is recovered.
+Conversely its positive solutions extend to all sixteen registers.
+For the less immediate sign, the auxiliary norm gives
+\[
+ (K-1)(y^2-V^2)=V^2-1>0,
+\]
+so $g>0$. All other register signs follow from their displayed
+definitions and the earlier budget bounds. Thus positive solvability
+is equivalent in both directions.
+
+The two-register saving over 08 has a specific explanation.
+Ordinary scaling removes the separate register for $\Delta c^2$ used
+by the normalized strong multiplier. Replacing $T$ by $o,j$ costs
+one primary variable but removes the register $Tf-1$. Finally,
+$R=jc-V$ removes the packed-index register and its defining equation
+without increasing any residual's degree. The final count is $32$
+unknowns and $23$ quadratics instead of $34$ and $25$.
+
+\section{Domains: natural numbers and unrestricted integers}
+\label{sec:domains}
+
+\subsection{Natural-number forms}
+To obtain a polynomial over $\N=\{0,1,2,\ldots\}$, replace every
+positive coordinate $x$ by $x+1$. This preserves the number of
+unknowns and the exact degree. It changes the displayed evaluation
+cost if the extra additions are charged; no positive-domain count
+is silently reused for the shifted evaluator.
+
+\subsection{A quartic in 62 unrestricted integer unknowns}
+In \eqref{eq:quad23}, positivity need be explicitly imposed only on
+the following ten primary coordinates:
+\begin{equation}
+ \mathcal P=\{J,F,\alpha,z,i,s,w,\eta,\zeta,\gamma\}.
+ \label{eq:tenpositive}
+\end{equation}
+The six coordinates $f,h,o,j,\tau,y$ and all sixteen registers
+can be allowed to range over $\Z$. This relaxation requires a
+soundness proof; it is not a rule that arbitrary auxiliary signs
+may be discarded.
+
+With \eqref{eq:tenpositive}, the quadratic definitions force
+$q,X,Y,E,k,c,a,\Delta,D_0,I,K>0$ and $K>1$.
+The transport equation forces $C_0>0$, giving $0<R<E-2$.
+Since $k=R+1+hE>0$, an integer $h\le-1$ is impossible.
+Thus $h\ge0$ and $k>R$, which are all that the rank bootstrap needs.
+The first norm makes $\tau\ne0$, and ordinary strong scaling
+makes $|f|>1$. Apply Lemma~\ref{lem:ordinaryrank} to $|f|$.
+The auxiliary norm makes $y,V\ne0$ and gives the two congruences
+\[
+ V\equiv-c\pmod{|f|},\qquad V\equiv-R\pmod c.
+\]
+Classifying the absolute auxiliary Pell root gives $p=R$ with
+exactly the signed step-down used in Section~\ref{sec:thirteen}.
+Neither $o$ nor $j$ needs a sign in these congruences. The no-wrap
+argument gives $2n=R+1$; in fact $k=2\psi_{P_0}(n)>2n=R+1$
+then restores $h>0$.
+
+For exterior decoding, use only the forward ratio, half-binomial
+extraction, and valuation statements that depend on $p=R$,
+$2n=R+1$, and positive $X,Y,c,k$. They do not require $V>0$ or a
+prior assertion $R\equiv3\pmod4$. The resulting population threshold
+forces the native masks and hence the same blank tableau. One must not
+invoke the complete positive-domain kernel on this signed tuple
+without this qualification. Positive completeness is unchanged.
+
+Every positive integer has the division-free representation
+\begin{equation}
+ \operatorname{Pos}(u,v,w)=1+u^2+v^2+w(w+1),\qquad u,v,w\in\Z.
+ \label{eq:pos}
+\end{equation}
+Its values are positive. For surjectivity, the three-square theorem
+applied to $4n-3\equiv1\pmod4$ gives one odd square and two even
+squares; write them as $(2w+1)^2,(2u)^2,(2v)^2$.
+For each $x\in\mathcal P$, append the quadratic equation
+\[
+ x-\operatorname{Pos}(u_x,v_x,w_x)=0.
+\]
+There are $32+3\cdot10=62$ unrestricted integer unknowns and
+$23+10=33$ quadratic equations. Define
+\begin{equation}
+ \boxed{\quad Q_{62,\Z}=\sum_{j=1}^{23}r_j^2+
+ \sum_{x\in\mathcal P}
+ \bigl(x-1-u_x^2-v_x^2-w_x(w_x+1)\bigr)^2=0.\quad}
+ \label{eq:quartic62}
+\end{equation}
+This is an ordinary integer polynomial of exact degree $4$; the
+$\tau^4$ coefficient is still $1$. The preceding signed-domain
+argument proves
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf z\in\Z^{62}\ Q_{62,\Z}(\mathbf z)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+
+\subsection{A 39-variable integer version of the main equation}
+Substituting a separate copy of \eqref{eq:pos} for each of the
+thirteen positive coordinates of $P_{13}$ gives a specified
+polynomial in $39$ unrestricted integer variables. Its degree is
+exactly $1142$, and its evaluator has $84+13\cdot7=175$
+operations. Each substitution uses three multiplications and four
+additions. Nonvanishing of the highest homogeneous part follows
+by setting the second and third coordinates of each block to zero;
+the remaining substitution $x_j\mapsto u_j^2$ is injective on
+monomials. This offers fewer unrestricted unknowns than the
+$41$-variable integer products of 06, at a larger degree.
+\section{Fixed coefficients from four-site windows}
+\label{sec:coefficients}
+
+This section specifies the four integers used by every new construction.
+Only coefficient construction uses finite enumerations, exponentiation,
+and bit lengths. Once constructed, these are fixed integers, not extra
+unknowns or additional operations in the displayed polynomial circuit.
+
+\subsection{The exact machine and tile relation}
+
+Use the literal \src{compiler/k215.tm} supplied with this archive. Its
+SHA-256 digest is
+\[
+\texttt{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.
+\]
+The source has $215$ working states $0,\ldots,214$, binary symbols,
+and halt state $215$. Complete the halt state by staying put and
+preserving its scanned symbol. The first transition is
+$(0,0)\mapsto(93,1,\mathrm{right})$.
+This is the raw machine calibrated in the K215 endpoint, with no added
+input or initialization machine~\cite{endpoint,blank}.
+
+Let $a_t=439$. The tile alphabet has headless bits $0,1$, head-bearing
+tiles $2(s+1)+b$ for $0\le s\le215$ and $b\in\{0,1\}$, and
+\[
+ L=434,\quad Q_{\rm init}=435,\quad R_{\rm init}=436,\quad
+ V_{\rm bdry}=437,\quad H_{\rm bdry}=438.
+\]
+The three phase tiles have blank payloads, with an initial state-$0$
+head only at $Q_{\rm init}$. $V_{\rm bdry}$ has the vertical boundary
+flag; $H_{\rm bdry}$ has the horizontal boundary flag. All other
+tiles have neither flag.
+
+The original nine-site local relation inspects only its cross
+$(N,W,C,E,S)$. Moreover, its only use of $N$ is the initialization
+presence test: an interior center has a phase if and only if $N$
+is a horizontal boundary. Translate that test one time step forward:
+an interior $S$ has a phase if and only if $C$ is a horizontal
+boundary. All other rules can be stated on the four-site tuple
+$(W,C,E,S)$:
+\begin{enumerate}
+\item The vertical flag of $C$ equals that of $S$. Two horizontally
+adjacent vertical boundaries and two temporally adjacent horizontal
+boundaries are forbidden. Away from vertical boundaries the horizontal
+flag propagates to the right.
+\item If $S$ is interior, its phase is present exactly when $C$ is a
+horizontal boundary. After this test, a boundary center has no
+further center rule.
+\item At a phase center, a left vertical boundary requires phase $L$,
+and a right vertical boundary requires phase $R_{\rm init}$.
+If the right neighbor is not a vertical boundary, the phase pair is
+one of
+$(L,L),(L,Q_{\rm init}),(Q_{\rm init},R_{\rm init}),
+(R_{\rm init},R_{\rm init})$.
+\item A head immediately before a horizontal boundary must be halted.
+A moving head cannot escape through a neighboring vertical boundary.
+\item When $S$ is not a horizontal boundary, its payload is the
+deterministic successor of the three payloads at $W,C,E$.
+Vertical boundary neighbors count as headless blanks; other neighbors
+must have payloads. A center writes according to its transition;
+incoming heads from either neighbor and a staying center head are
+combined only if at most one head arrives.
+\end{enumerate}
+The executable predicate is \src{compiler/tshape_helical.py:local_valid}.
+It implements exactly these clauses, using the literal completed table.
+
+\begin{lemma}[Translation of one local test]\label{lem:translate}
+A tile plane satisfies the four-site relation at every center if and
+only if it satisfies the original nine-site relation at every center.
+The statement holds on the full integer plane and on every periodic
+plane, including presentations whose spatial and temporal shifts
+are not independent.
+\end{lemma}
+\begin{proof}
+The four corners of the original window are unused. All remaining
+clauses are unchanged except for the single presence test. Temporal
+translation is a bijection of either plane, so requiring that test
+at every center is equivalent to requiring its translate at every
+center. No primitivity or distinct-offset assumption enters.
+\end{proof}
+
+The distinguished Start tuple and the excluded tuple are
+\[
+ U_0=(434,435,436,1),\qquad U_1=(437,438,437,435).
+\]
+Both satisfy their own local predicate. Start is forced at every
+initialized head, by its phase neighbors and the literal first
+transition. The excluded tuple has no global extension: its left
+vertical boundary propagates to the following row, where the
+following initialized $Q_{\rm init}$ would have a vertical boundary
+on its left, violating the phase endpoint rule.
+
+\subsection{Exact local alphabet count}
+
+There are $349$ symbols sending a head from the left, including
+$Q_{\rm init}$, and $82$ sending one from the right. Among the $438$
+non-horizontal-boundary symbols this leaves $89$ and $356$
+nonincoming choices, respectively. The following census is exhaustive.
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Center type & Multiplicity & Valid tuples per center\\
+\midrule
+Vertical boundary &1&192\,282\\
+Horizontal boundary &1&2\,634\\
+Headless bit &2&355\,508\\
+Halted head &2&223\,966\\
+Working head &430&162\,788\\
+Initial $L$ &1&1\,754\\
+Initial $Q_{\rm init}$ &1&437\\
+Initial $R_{\rm init}$ &1&1\,750\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example the headless count is
+\[
+ 439\cdot438+89\cdot356+349\cdot356+82\cdot89.
+\]
+The first term ends the row at a horizontal boundary; the other terms
+allow zero or one incoming head and then determine the next payload.
+For a working head, its escape direction excludes one boundary
+choice. The left-moving count is
+\[
+ (89-1)356+349\cdot356+82(89-1)=162\,788,
+\]
+and the right-moving count has the same value. The phase pair graph
+and the endpoint rules give the last three rows. Thus the alphabet
+of valid four-site tuples has exactly
+\[
+ \boxed{\ \kappa=71\,356\,645.\ }
+\]
+The archive independently checks the formulas against the actual
+predicate for every left/right pair in each of thirteen exhaustive
+center categories. Enumerate valid tuples with $U_0$ first,
+$U_1$ second, and all remaining tuples in lexicographic order.
+This defines their selector numbers without any arbitrary choice.
+
+\subsection{Three overlaps suffice}
+
+For selected tuples $U_i$, indexed cyclically by $\Z/N\Z$, impose
+\begin{equation}
+ U_i.E=U_{i-1}.C,\qquad
+ U_i.C=U_{i-1}.W,\qquad
+ U_i.S=U_{i-h}.C. \label{eq:overlaps}
+\end{equation}
+Putting $a_i=U_i.C$ recovers
+\[
+ U_i=(a_{i+1},a_i,a_{i-1},a_{i-h}).
+\]
+The pullback plane at spatial/time coordinates $(x,y)$ is
+$a_{-x-hy}$. Every actual neighborhood is therefore valid. This works
+for arbitrary $N,h$, with no assumption that $h\mid N$ or
+$\gcd(N,h)=1$. Start rules out $h=0$ modulo $N$ because its center
+and following symbols differ.
+
+Lemma~\ref{lem:translate} now gives the same finite-strip soundness
+as 06. Scanning horizontally from an initialized head finds vertical
+boundaries on both sides; the phase chains cannot pass through that
+head and close. The boundary tracks persist in time. In the finite
+cyclic time orbit, an initializing horizontal boundary eventually
+recurs; the first recurrence ends a genuine bounded blank computation,
+whose last head must be halted. Conversely a finite halting run admits
+the independently padded helical presentations of 06. Their Start
+and absence of the excluded selector survive the projection
+\cite{blank,helical}.
+
+\subsection{Complete finite recipe for the four integers}
+
+Use the spatial payload set and copy-target sets
+\[
+ \mathcal P=((1,0),(1,1),(1,2),(2,1)),\qquad
+ \mathcal V=((1,1)),\qquad
+ \mathcal H=((1,0),(1,1)).
+\]
+Here $\mathcal P$ is ordered as written. For a positive integer $x$,
+$\bits(x)$ is its binary length. Put
+\begin{align*}
+ \ell&=\max(2,\bits(\kappa+1)),& A_b&=2^\ell,\\
+ p_d&=\max\left(0,\left\lceil
+            \frac{\kappa-2\ell-7a_t-4}{2}\right\rceil\right),&
+ j_{\max}&=4a_t+4+p_d,\\
+ \mu&=A_b-2+\sum_{j=1}^{j_{\max}}A_b^j,&
+ m_0&=2\ell+11a_t+8+2p_d,\\
+ n_{\rm pos}&=m_0+1,&
+ n_{\rm dum}&=n_{\rm pos}-\kappa-4a_t-4,\\
+ e_*&=\kappa+12a_t,&
+ M_0&=\kappa+15a_t+n_{\rm dum},\\
+ E_{\max}&=27M_0,&
+ H_c&=E_{\max}+24M_0+3a_t+1,\\
+ T_1&=H_c+2E_{\max}+a_t+1,&
+ T_2&=T_1+4E_{\max}+2.
+\end{align*}
+Let $L_{\rm cell}$ be the least power of $5$ at least
+$T_2+2E_{\max}+2$. For $(r,c)\in\mathcal P$ and $0\le u<a_t$, put
+\begin{align*}
+ e(r,c,u)&=\kappa+3a_t+(2-r)3a_t+(2-c)a_t+u,\\
+ j(r,c,u)&=1+a_t\,\operatorname{index}_{\mathcal P}(r,c)+u,
+\end{align*}
+with indices starting at zero. Form the disjoint set $\mathcal E$
+of native positions from the $\kappa$ selectors $0,\ldots,\kappa-1$,
+the $4a_t$ retained payload positions, $n_{\rm dum}$ consecutive
+dummy positions beginning at $e_*$, and anchors
+$M_0,3M_0,9M_0,27M_0$.
+
+At each $e\in\mathcal E$ give a clause coefficient $c_e$ as follows:
+\begin{align*}
+ c_i&=1+\sum_{(r,c)\in\mathcal P}A_b^{j(r,c,U_i[r,c])}
+               +\sum_{t=1}^{4}A_b^{4a_t+t}
+       &&(0\le i<\kappa),\\
+ c_{e(r,c,u)}&=A_b^{j(r,c,u)},&
+ c_{3^{t-1}M_0}&=A_b^{4a_t+t}\quad(1\le t\le4),\\
+ c_e&=0&&\text{at a dummy position}.
+\end{align*}
+Here $U_i[r,c]$ is its corresponding $W,C,E,S$ component.
+Define
+\begin{align*}
+ U_{\rm bd}&=4(n_{\rm pos}+2)\bigl(28(\kappa+4a_t+4)+6\bigr)+8,\\
+ b_{\min}&=\max\bigl(\ell(j_{\max}+1)+3,\,
+              \ell(4a_t+4)+\bits(U_{\rm bd})+1,\,4\bigr).
+\end{align*}
+Let $b$ be the least power of $5$ at least $b_{\min}$ and put
+\[
+ \rho=2^b,\qquad d=bL_{\rm cell},\qquad B=\rho^{L_{\rm cell}}=2^d.
+\]
+Finally set
+\begin{align}
+ D_C={}&\rho^{3a_t}+\rho^{H_c+a_t}+\rho^{8M_0}+\rho^{24M_0}
+       +\sum_{e\in\mathcal E}c_e
+          \bigl(\rho^{T_1-e}+\rho^{T_2-e}\bigr),\notag\\
+ D_R={}&\rho^{H_c},\notag\\
+ M_{F,0}={}&\mu(\rho^{T_1}+\rho^{T_2})
+       +\sum_{\substack{(r,c)\in\mathcal V\\0\le u<a_t}}\rho^{e(r,c,u)}
+       +\sum_{\substack{(r,c)\in\mathcal H\\0\le u<a_t}}
+                      \rho^{H_c+e(r,c,u)}
+       +\rho^{9M_0}+\rho^{27M_0},\notag\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e-2\rho^{e_*},
+       \qquad M_{F,\mathrm{native}}=M_{F,0}+4. \label{eq:coeffrecipe}
+\end{align}
+The promised four ports are
+\begin{equation}
+ \boxed{\quad
+ \beta=B-1,\qquad K_0=D_C+BD_R,\qquad
+ M_C,\qquad M_F=M_{F,\mathrm{native}}+B-1.\quad}
+ \label{eq:ports}
+\end{equation}
+This is a closed specification of four particular natural numbers.
+It uses the complete finite transition table and finite alphabet only;
+it does not run K215 or consult whether ZFC is consistent.
+
+For clarity, the geometry evaluates to
+\begin{center}\small
+\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Quantity & Exact value & Quantity & Exact value\\
+\midrule
+$\ell$&27&$p_d$&35\,676\,757\\
+$j_{\max}$&35\,678\,517&$m_0$&71\,358\,405\\
+$n_{\rm pos}$&71\,358\,406&$n_{\rm dum}$&1\\
+$M_0$&71\,363\,231&$E_{\max}$&1\,926\,807\,237\\
+$H_c$&3\,639\,526\,099&$T_1$&7\,493\,141\,013\\
+$T_2$&15\,200\,369\,963&$b_{\min}$&963\,319\,989\\
+$b$&$5^{13}$&$L_{\rm cell}$&$5^{15}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular,
+\begin{equation}
+ \boxed{\ d=5^{28}=37\,252\,902\,984\,619\,140\,625.\ }
+ \label{eq:newd}
+\end{equation}
+The exact inequalities
+\[
+ 5^{12}<963\,319\,989\le5^{13},\qquad
+ 5^{14}<19\,053\,984\,439\le5^{15}
+\]
+verify the two least-power choices. The integers are intentionally
+specified by recipe: expanding even $B-1$ would require $d$ bits.
+
+\section{Why the smaller coefficient recipe is sound}
+\label{sec:compilerproof}
+
+Merely checking mask congruences is insufficient to replace the
+compiler constants. We verify the actual supports, clause fields,
+alignment, and completeness hypotheses of 06. The full parent
+compiler proof and helical proof are included under \src{upstream};
+the following identifies every changed component.
+
+\subsection{Clause matching, copy fields, and mask balance}
+
+The payloads retain their former spatial exponents. At a vertical
+target $e(r,c,u)$, multiplication by $\rho^{3a_t}$ selects exactly
+$e(r+1,c,u)$. At a horizontal target $H_c+e(r,c,u)$,
+multiplication by $\rho^{H_c+a_t}$ selects exactly $e(r,c+1,u)$,
+whereas $D_R$ selects the next window's $e(r,c,u)$. All three
+source/target pairs belong to $\mathcal P$. Thus these are precisely
+the three equalities in \eqref{eq:overlaps}. The selectors stop below
+$\kappa$; payloads stop below $\kappa+12a_t$; dummies lie above the
+payloads. None creates an extra source at a retained copy target.
+
+Compact clause indices remove only unused fields. A selected tuple
+supplies one selector, its four matching tile indicators, and the
+four anchors. The same two repeated clause bands therefore enforce
+exact selector/payload agreement. There are $3a_t$ copy parity tests,
+and
+\[
+ \pc(\mu)=\ell+4a_t+3+p_d,\qquad
+ \pc(M_{F,0})=2\pc(\mu)+3a_t+2=m_0.
+\]
+The native-position census $n_{\rm pos}=m_0+1$ gives exactly
+\begin{equation}
+\begin{gathered}
+ \pc(M_C)+\pc(M_{F,\mathrm{native}})=d,\qquad
+ 0<M_C,M_{F,\mathrm{native}}<B-1,\\
+ M_C\equiv2\pmod4,\qquad
+ M_{F,\mathrm{native}}\equiv4\pmod8.
+\end{gathered}\label{eq:maskproperties}
+\end{equation}
+These are equalities about the newly constructed masks, not
+hypotheses checked only on example masks.
+
+\subsection{Carry control and synchronization}
+
+The coefficient mass estimate used in the parent proof becomes
+\[
+ \sum_{e\in\mathcal E}c_e
+ \le14(\kappa+4a_t+4)A_b^{4a_t+4}.
+\]
+There are at most $\kappa$ selector terms, $4a_t$ payload terms,
+and four anchor terms; bounding each by its positive geometric
+sum gives the displayed estimate. The choice of $b_{\min}$
+supplies the same quarter-radix carry margin as in 06.
+
+Every native position is in $[0,E_{\max}]$. The inequalities
+\[
+ T_2-T_1>2E_{\max},\quad
+ L_{\rm cell}-(T_2-T_1)>E_{\max},\quad
+ T_2+E_{\max}<L_{\rm cell}
+\]
+separate the two clause bands and their rotations. Also $e_*+1<E_{\max}$.
+The clean-band argument consequently synchronizes a transport field
+to a whole-cell temporal shift before any copy equality is decoded.
+The anchor pair $9M_0,27M_0$ still has the required unique difference
+$18M_0$. Omitting corner and north payloads changes neither assertion.
+A selected tuple has one tile indicator at every retained position;
+an empty cell has none. The horizontal $E/C$ copy equality propagates
+occupancy from the marked Start throughout the cyclic word.
+
+The sparse checker evaluates these support and coefficient statements
+for every native basis bit at every tested position in its finite
+fixtures. The general argument above supplies their parameter-uniform
+justification; small fixtures do not certify an enormous enumeration.
+
+\subsection{Actual-index completeness}
+
+The five-adic correction remains exactly
+\[
+ 2D_C-D_R\equiv3\pmod5.
+\]
+Indeed $T_2-T_1=4E_{\max}+2$ makes the two clause-band sums cancel
+modulo $5$. The four unpaired monomials, $a_t=439\equiv3\pmod4$,
+and $\rho\equiv2\pmod5$ give the displayed residue.
+
+Hence the parent's ignored-dummy argument still adjusts the
+\emph{actual final} packed index to the desired temporal stride.
+The one dummy position supplies an independently selectable bit in
+each word cell. Its Boolean subset argument uses the same unit
+coefficient modulo the five-power padding modulus. Canonical
+helical tableaux have one Start and nonzero temporal stride; these
+ensure the exceptional origin mask test. The dummies remain above
+the low selector fields. The same canonical carry estimate gives
+$2C_0+F<q/3$, so $\alpha=q-C_0-F>0$.
+Only after this adjustment is the positive Pell converse invoked,
+at that final index. This avoids assuming a converse at an index
+that was later changed.
+
+Thus both directions of the genuine native-compiler interface hold
+with \eqref{eq:ports}. Composing it with the arithmetic proofs
+establishes the new constructions. The intermediate five-site
+cross compiler, also included in the archive, needs no translated
+test and gives $\kappa=38\,256\,607\,897$ and $d=5^{36}$.
+The original nine-site alphabet is exactly the cross alphabet
+times $439^4$, because its four corners are unconstrained.
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Window & Local alphabet size & Payload groups & $\bits(B-1)$\\
+\midrule
+Original nine-site &1\,420\,903\,358\,357\,108\,792\,377&9&$5^{67}$\\
+Five-site cross &38\,256\,607\,897&5&$5^{36}$\\
+New four-site &71\,356\,645&4&$5^{28}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The final reduction in the distinguished coefficient's bit length
+is a factor of $5^{39}$. It remains an enormous constant. This is
+a reduction in coefficient height, not a practical claim that the
+expanded polynomial can be stored.
+
+\section{The ZFC equivalence and its verification status}
+\label{sec:logical}
+
+\subsection{Logical calibration}
+
+At the pinned snapshot, the Lean source \src{KEndpoint215.lean}
+states the exact endpoint
+\begin{lstlisting}
+theorem blank_halts_iff_zfc_refutation :
+  BlankHalts machine215 <-> BProv ZFCax_s [] Form.fBot
+\end{lstlisting}
+and obtains its nonhalting counterpart by taking negations
+\cite{endpoint}. Here \src{BProv} names the repository's finitary
+proof relation; this endpoint is not a bound on the length of the
+refutation. The formal source calibrates the raw table used here.
+
+All the newly used arguments are ordinary finite mathematics available
+in ZFC: arithmetic circuits, finite tableaux, Pell recurrences,
+elementary divisibility and bounds, finite Boolean subset constructions,
+and the classical three-square theorem for the integer-domain conversion.
+Their assertions about witness existence, integer signs, and the fixed
+machine can be arithmetized inside ZFC. The machine simulation and proof
+enumeration establish the ordinary effective equivalence between
+blank halting and existence of a finite ZFC refutation. Changing between
+the repository's axiom enumeration and a conventional effective
+presentation of ZFC does not change that consistency statement: the
+finitary proof translations are provable in ZFC.
+
+The proof is therefore the following chain, in the stated domain:
+\begin{align*}
+ \exists\mathbf x\ P(\mathbf x)=0
+ &\ \longleftrightarrow\
+ \text{the four-site native masks encode a valid blank tableau}\\
+ &\ \longleftrightarrow\ \mathrm{BlankHalts}(\mathrm{K215})\\
+ &\ \longleftrightarrow\ \mathrm{Ref}_{\mathrm{ZFC}}.
+\end{align*}
+Taking negations yields Theorem~\ref{thm:main}. This does not infer
+ZFC provability from the soundness of a proof assistant: the
+mathematical reductions themselves are available in ZFC. The inherited
+formal endpoint documents the machine calibration; it is not a
+newly compiled formalization of the changed Diophantine reductions.
+
+There is no claim here to prove $\Con(\mathrm{ZFC})$. Subject to
+the usual consistency assumption and the standard hypotheses of
+the second incompleteness theorem, ZFC cannot prove the asserted
+absence of solutions. The equivalence is a theorem about which
+arithmetic assertion expresses that consistency statement.
+No accepting run of the literal K215 machine, and no solution of
+the final equation, was found or used.
+
+\subsection{What was checked, and what remains mathematical}
+
+The archive makes the following distinctions explicit.
+\begin{enumerate}
+\item \textbf{Inherited formal endpoint.}
+The exact table and the statement of the Lean endpoint were inspected
+at the pinned commit. The whole Lean/Rocq project was not rebuilt
+in this work, and no claim of a fresh kernel check is made.
+\item \textbf{New mathematical arguments.}
+Weighted root restoration, the signed quotient extension, the
+ordinary-strong combination, the smaller quadratic lift, the
+ten-coordinate positivity reduction, and both smaller neighborhood
+compilers are proved in this report and supporting notes.
+The delicate denominator and signed-domain arguments received
+independent review.
+\item \textbf{Exact finite computation.}
+Standard-library Python scripts check arithmetic-circuit dependency
+graphs, full register liveness, operation counts, exact sparse
+identities and residual degrees, the literal transition-table hash,
+the local alphabet counts by exhaustive center categories, and
+sparse native layout identities.
+\item \textbf{Supplementary diagnostics.}
+Random signed assignments and modular line restrictions check emitted
+circuits against independently written formulas. Toy halting tableaux,
+mutated periodic planes, and isolated root-restoration examples check
+implementations. They are not substitutes for the general proofs or
+witnesses for the final consistency equation.
+\end{enumerate}
+The ordinary strong rank lemma and the native mask compiler are
+substantial inherited dependencies. Their precise hypotheses and
+uses are recorded here and in the included upstream audit notes.
+The new results should be reviewed as a mathematical contribution
+with reproducible checks, not advertised as already formalized.
+
+\section{Archive layout and reproduction}
+\label{sec:reproduction}
+
+The root \src{README.md} gives the recommended integration entry points.
+The principal artifacts are:
+\begin{itemize}
+\item \src{con_zfc_reductions.tex} and its compiled PDF: this report.
+\item \src{arithmetic/polynomial13_84.json} and
+\src{arithmetic/polynomial13_lowweight85.json}: the complete live
+circuits for the two thirteen-variable equations.
+\item \src{arithmetic/system13_78.json},
+\src{arithmetic/amalgam14_system67.json}, and associated product/SOS
+packets: the lower-variable alternatives.
+\item \src{low_degree/ordinary15_system61.json} and
+\src{low_degree/retained16_system60.json}: full comparison circuits
+and their single-polynomial forms.
+\item \src{low_degree/quartic32.json} and
+\src{low_degree/integer_quartic62.json}: all expanded quadratic
+residuals defining the positive and unrestricted quartics.
+\item \src{compiler/tshape_constants.json} and its generator:
+the complete four-site coefficient recipe and evaluated scalar geometry.
+The cross version provides a simpler intermediate compiler comparison.
+\item \src{proofs/}: derivation notes and independent reviews.
+\src{upstream/}: pinned dependencies, machine endpoint, source
+comparison, and provenance. \src{SOURCE_PINS.json} and the hash
+manifest identify the distributed source files.
+\end{itemize}
+
+From the extracted archive directory run
+\begin{lstlisting}
+python3 verify_arithmetic.py
+python3 verify_compiler.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error con_zfc_reductions.tex
+\end{lstlisting}
+The mathematical checks require only Python's standard library and
+local files. Typesetting requires a conventional TeX installation
+with the packages named in the preamble. No network access, external
+algebra service, giant coefficient materialization, or search for
+a ZFC refutation is needed.
+
+Operation counts refer to the archived circuits with their four
+coefficient ports. These ports are bound by the new recipe in
+\eqref{eq:ports}; they are not universally quantified parameters.
+Some inherited circuit source packets retain their original
+coefficient labels for provenance. Renaming their four ports
+does not alter the formulas or evaluation cost. The manifest
+distinguishes inherited inputs from newly emitted constructions.
+
+\section{Conclusions and sensible next targets}
+
+For incorporation, the $13$-variable, $84$-operation product is the
+recommended compact equation, with the degree-$515$ alternative
+available at one additional operation. If low degree is primary,
+the $32$-positive-variable quartic and $62$-integer-variable quartic
+are the useful outputs. If evaluation cost dominates, the old
+$67$-operation product remains competitive; the new $61$-operation
+system improves its degree without lowering its cost.
+
+The gains arise at different layers and compose cleanly:
+ordinary strong scaling changes an existential Pell multiplier;
+weighted root amalgamation removes witnesses while guarding the
+zero-denominator branch; register elimination lowers the quartic's
+variable count; translating one local test removes a neighborhood
+coordinate and shrinks the native compiler. None requires changing
+the underlying proof-search machine.
+
+Natural further work is to formalize the weighted-root lemma and
+signed-domain extension, then the three-overlap compiler, before
+attempting new optimization claims. A search over still smaller
+tile presentations or a different exact coefficient layout could
+improve coefficient height again. This report establishes concrete
+improvements over the reviewed packages, not a theorem that any
+one displayed measure is globally minimal.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{catalogue}
+V. Reshetnikov and contributors, \emph{Con(ZFC) in Diophantine form:
+comparison of the eight report packages}, ProveIt repository,
+snapshot \pin.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b201cdea32d2c816f5f3d20734051f25fd3ef14/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}{Pinned comparison and packages 01--08}.
+
+\bibitem{blank}
+ProveIt, package 06, \emph{The 67-operation blank-input polynomial},
+including \src{report.tex}, \src{proofs/fixed_blank_67_proof.md},
+\src{proofs/pell_lemma_audit.md}, and \src{code/blank_helical.py}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b201cdea32d2c816f5f3d20734051f25fd3ef14/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/06-blank67}{Pinned package 06}.
+
+\bibitem{ordinary}
+ProveIt, package 02, \src{FIXED_INPUT75_ORDINARY_PROOF.md} and
+\src{PELL_INTERFACE_LEMMAS.md}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b201cdea32d2c816f5f3d20734051f25fd3ef14/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/02-system63}{Pinned ordinary-strong package}.
+
+\bibitem{relaxed}
+ProveIt, \src{Papers/1980/PELL_RELAXED_AUXILIARY_PROOF.md},
+ordinary strong rank lemma and Pell divisibility.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/HilbertTenthProblem/Papers/1980/PELL_RELAXED_AUXILIARY_PROOF.md}{Pinned proof note}.
+
+\bibitem{signed}
+ProveIt, \src{complete84_signed_quotient_absorption.md},
+signed auxiliary-root step-down.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete84_signed_quotient_absorption.md}{Pinned signed-quotient note}.
+
+\bibitem{scout}
+ProveIt, \src{complete84_signed_quotient_soundness_scout.md},
+sign-independent forward power, extraction, and population arguments.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/complete84_signed_quotient_soundness_scout.md}{Pinned soundness note}.
+
+\bibitem{half}
+ProveIt, \src{pell_kernel_half_binomial42.md},
+strong half-binomial Pell kernel.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/pell_kernel_half_binomial42.md}{Pinned kernel note}.
+
+\bibitem{helical}
+ProveIt, package 06, \src{proofs/blank_helical_proof.md},
+finite-strip soundness and padded helical completeness.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b201cdea32d2c816f5f3d20734051f25fd3ef14/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/06-blank67/proofs}{Pinned compiler proofs}.
+
+\bibitem{endpoint}
+ProveIt, \src{KEndpoint215.lean} and the K215 verification package,
+\src{blank_halts_iff_zfc_refutation} and
+\src{nonhalting_iff_zfc_consistency}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215}{Pinned K215 verification}.
+The local endpoint source is included in \src{upstream/logic}.
+
+\bibitem{nine}
+ProveIt, \src{Diophantine/Paper1982/NineMain.lean},
+\src{Jones1982.nine_unknowns}, and its formalized dependencies.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3b201cdea32d2c816f5f3d20734051f25fd3ef14/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineMain.lean}{Pinned nine-unknowns existence theorem}.
+\end{thebibliography}
+\end{document}
+
+
+
