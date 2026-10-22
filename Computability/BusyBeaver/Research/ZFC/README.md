@@ -1143,7 +1143,8 @@ the K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation`
 into an explicit polynomial with fixed integer coefficients. The route is
 to compile a local tile language of the blank run of
 [`candidate-k215/k215.tm`](candidate-k215/k215.tm) with the Hilbert's-tenth
-native-window/Pell compiler at a fixed input. By an ordinary argument, ZFC
+native-window/Pell compiler with its input interface removed. By an
+ordinary argument, ZFC
 then proves "no solution" ↔ Con(ZFC). As the packages state them, the
 fewest positive unknowns are 13 (84 operations, degree 571), and the fewest
 operations remain 67 (15 unknowns, degree 155). The smallest coefficient

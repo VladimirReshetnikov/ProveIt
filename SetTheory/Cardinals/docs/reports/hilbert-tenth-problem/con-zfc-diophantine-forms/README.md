@@ -15,15 +15,23 @@ citing them by their numbers 01–08, and adds reductions of its own.
 **Wave 1 is superseded.** By Vladimir's direction the wave-2 packages
 completely supersede the eight batch-217 packages, so directories
 `01-explicit82/` … `08-start-only67/` were removed from the tree when wave 2
-was placed. They, their recovery map and the wave-1 version of this README
-are recoverable from any commit from `084e120830` to `f3af223ef7` (for
-example `git show f3af223ef7:<this directory>/README.md`), and their archives
-remain in arrival `2fd49a1a9d`. Wave-1 numbers 01–08 are kept as source
-numbers only because the wave-2 texts use them; the wave-2 directories
-continue the sequence as 09–15. Two packages bundle a copy of the wave-1
-README: `14-integer29/dependencies/upstream_comparison.md` and
-`15-release/evidence/diophantine_zfc_round2/review/README.upstream.md`. Both
-copies describe the superseded wave.
+was placed. Their directories and recovery map are in every commit from
+`084e120830` to `8a4b00b5bf^`. The final, audited wave-1 version of this
+README is in every commit from `f3af223ef7` to `8a4b00b5bf^`, for example
+`git show f3af223ef7:<this directory>/README.md`; `feadb33d20` holds its
+pre-audit text. Their archives remain in arrival `2fd49a1a9d`. Wave-1
+numbers 01–08 are kept as source numbers only because the wave-2 texts use
+them; the wave-2 directories continue the sequence as 09–15.
+
+Five packages bundle a copy of the audited wave-1 README (identical up to a
+final newline, checked at intake), and all five describe the superseded
+wave:
+
+- `09-combined13/upstream/COMPARISON_AT_PIN.md`;
+- `11-t4/comparison/overview_README.md`;
+- `12-gap-norm14/upstream/collection_README.md`;
+- `14-integer29/dependencies/upstream_comparison.md`;
+- `15-release/evidence/diophantine_zfc_round2/review/README.upstream.md`.
 
 The wave-2 packages overlap heavily, and several reach the same
 construction independently. They are therefore **placed, not written**,
@@ -46,8 +54,8 @@ ledgers and log files excluded by the root `.gitignore`.
 
 ## The common theorem
 
-Each package defines polynomials or small systems with four (sometimes up to
-nine) **fixed integer coefficient ports**. They are determined by a finite
+Each package defines polynomials or small systems with four **fixed integer
+coefficient ports**. They are determined by a finite
 recipe from the literal 215-state machine
 [`candidate-k215/k215.tm`](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm),
 and the package proves, by ordinary mathematics formalizable in ZFC, that
@@ -68,7 +76,8 @@ On that route wave 2 combines three things:
 - **02's ordinary strong Pell norm**, which brings the 15-unknown system
   from degree 60 to degree 28;
 - **05's signed quadratic-root elimination**, which gives 14 unknowns;
-- **08's quadratic lift**, now one register and one equation smaller.
+- **08's quadratic lift**, now one register and one equation smaller
+  (33 / 24), or two (32 / 23).
 
 It adds new reductions:
 
@@ -87,13 +96,13 @@ marked ℤ (unrestricted integers).
 
 | Dir | Archive | Title as printed | Distinctive constructions (unknowns / equations / degree / ops) |
 |---|---|---|---|
-| [`09-combined13/`](09-combined13/) | `con-zfc-combined-reductions.zip` | *Smaller Diophantine descriptions of ZFC consistency* | **P₁₃ 13 / 1 / 571 / 84**; 13 / 1 / 515 / 85; 13 / 4 / 544 / 78; **P₁₄ 14 / 1 / 121 / 76**; 14 / 5 / 72 / 67; 16 / 7 / 24 / 60; quadratic lift 32 / 23 / 2; 62ℤ quartic; P₁₃ over 39ℤ, degree 1142 |
+| [`09-combined13/`](09-combined13/) | `con-zfc-combined-reductions.zip` | *Smaller Diophantine descriptions of ZFC consistency* | **P₁₃ 13 / 1 / 571 / 84**; 13 / 1 / 515 / 85; 13 / 4 / 544 / 78; **P₁₄ (09's) 14 / 1 / 121 / 76**; 14 / 5 / 72 / 67; Φ₁₄ and Ψ₁₄; 16 / 7 / 24 / 60; quadratic lift 32 / 23 / 2; 62ℤ quartic; P₁₃ over 39ℤ / 1 / 1142 / 175 |
 | [`10-synthesis14/`](10-synthesis14/) | `con-zfc-diophantine-synthesis-2026-10-22.zip` | *Smaller Diophantine forms of Con(ZFC)* | grouped system 15 / 4 / 28 / 63; Q₅₆ 15 / 1 / 56 / 74; Ψ₁₄ 14 / 1 / 342 / 73; Φ₁₄ 14 / 1 / 293 / 75; 14 / 5 / 244 / 69; P₆₇ rebound to new coefficients; 33ℤ lifts of P₆₇/P₆₈ |
-| [`11-t4/`](11-t4/) | `ZFC_Diophantine_Combined_T4_2026-10-22.zip` | *Combining explicit Diophantine encodings of ZFC consistency* | **T4 coefficients (B = 2^(5^18))**; ordinary system and P₆₉; two 33-unknown quartic lifts; 31ℤ forms (product 188 / 127, SOS 100 / 136, system 6 / 50 / 119) |
-| [`12-gap-norm14/`](12-gap-norm14/) | `ProveIt_ConZFC_Diophantine_Synthesis_2026-10-22.zip` | *Smaller Diophantine forms of ZFC consistency* | **gap norm Φ₁₄^gap 14 / 1 / 219 / 75**; Ψ₁₄; S₆₀ 15 / 6 / 28 / 60; **gap system 15 / 6 / 22 / 61**; gap product 15 / 1 / 93 / 70; gap SOS 15 / 1 / 44 / 78; quadratic lift 32 / 23 / 2 |
+| [`11-t4/`](11-t4/) | `ZFC_Diophantine_Combined_T4_2026-10-22.zip` | *Combining explicit Diophantine encodings of ZFC consistency* | **T4 coefficients (B = 2^(5^18))**; ordinary system and P₆₉; two 33-unknown quartic lifts; 31ℤ forms (31ℤ / 1 / 188 / 127; SOS 31ℤ / 1 / 100 / 136; 31ℤ / 6 / 50 / 119); P₆₇ rebound to T4 |
+| [`12-gap-norm14/`](12-gap-norm14/) | `ProveIt_ConZFC_Diophantine_Synthesis_2026-10-22.zip` | *Smaller Diophantine forms of ZFC consistency* | **gap norm Φ₁₄^gap 14 / 1 / 219 / 75**; Ψ₁₄; S₆₀ 15 / 6 / 28 / 60; **gap system 15 / 6 / 22 / 61**; gap product 15 / 1 / 93 / 70; gap SOS 15 / 1 / 44 / 78; quadratic lift 32 / 23 / 2; 32ℤ gap norm 32ℤ / 1 / 434 / 138; Φ₁₄ and Ψ₁₄ over 32ℤ (584 / 138, 680 / 136) |
 | [`13-four-cell14/`](13-four-cell14/) | `ConZFC_Synthesis_14vars_2026-10-22.zip` | *Smaller Diophantine formulations of Con(ZFC)* | S₁₅ 15 / 6 / 28 / 61; P₆₉; SOS 15 / 1 / 56 / 78; Ψ₁₄; Φ₁₄; Q₃₃; four-cell coefficients (d = 5^28) |
-| [`14-integer29/`](14-integer29/) | `con_zfc_synthesis_2026-10-22.zip` | *Smaller Diophantine forms of ZFC consistency* | ordinary system, P₆₉, SOS, Q₃₃ on 06's coefficients; **29ℤ forms**: system 6 / 50 / 113, product 188 / 121, SOS 100 / 130, products 300 / 119 and 236 / 120 |
-| [`15-release/`](15-release/) | `combined_con_zfc_3b201cd.zip` | *Combining explicit Diophantine constructions for the consistency of ZFC* | P₁₄ 14 / 1 / 293 / 75; 14 / 5 / 244 / 69; double-gap product 15 / 1 / 83 / 71 and system 15 / 6 / 22 / 63; **sextic 25 / 16 / 6, octic 20 / 11 / 8**; 32ℤ (584 / 138) and 33ℤ (159 / 134) polynomials; 60ℤ quartic |
+| [`14-integer29/`](14-integer29/) | `con_zfc_synthesis_2026-10-22.zip` | *Smaller Diophantine forms of ZFC consistency* | ordinary system, P₆₉, SOS, Q₃₃ on 06's coefficients; **29ℤ forms**: 29ℤ / 6 / 50 / 113; 29ℤ / 1 / 188 / 121; SOS 29ℤ / 1 / 100 / 130; 29ℤ / 1 / 300 / 119 and 29ℤ / 1 / 236 / 120 |
+| [`15-release/`](15-release/) | `combined_con_zfc_3b201cd.zip` | *Combining explicit Diophantine constructions for the consistency of ZFC* | P₁₄ (15's, = Φ₁₄) 14 / 1 / 293 / 75; 14 / 5 / 244 / 69; double-gap product 15 / 1 / 83 / 71 and system 15 / 6 / 22 / 63; **sextic 25 / 16 / 6, octic 20 / 11 / 8**; 32ℤ / 1 / 584 / 138 (the same circuit as 12's) and 33ℤ / 1 / 159 / 134 polynomials; a 38ℤ degree-16 form; 60ℤ quartic |
 
 Directory numbers follow the archives' arrival (file-time) order. Each
 directory's delivered `README.md` (`README.txt` for 11) is its entry point.
@@ -112,21 +121,26 @@ the package to cite when several prove the same thing.
 
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
-| Fewest positive unknowns | **13** (P₁₃: 84 ops, degree 571; 85 ops at 515; 4-equation system 78 ops) | 09 only | 09 |
-| 14 unknowns, lowest degree | **P₁₄ degree 121, 76 ops**; its 5-equation system degree 72, 67 ops | 09 only | 09 |
-| 14 unknowns, via root elimination | Φ₁₄ 75 / 293 and Ψ₁₄ 73 / 342 (same formulas and leading forms); gap norm 75 / 219 | Φ₁₄, Ψ₁₄: 10, 12, 13; Φ₁₄ also 15 (as P₁₄); 09 emits both metrics as 05's elimination; gap norm: 12 only | 10; gap norm 12 |
-| 15-unknown six-equation system | **61 ops, maximum degree 28**, symbol for symbol the same in 09, 10, 11, 13, 14 and 15; 12's S₆₀ shifts the transport quotient (z₀ = z + 1) and saves one op | six packages; S₆₀: 12 | 13; S₆₀ 12 |
+| Fewest positive unknowns | **13**: P₁₃ (degree 571, 84 ops); degree 515 at 85 ops; 4-equation system degree 544, 78 ops | 09 only | 09 |
+| 14 unknowns, lowest degree | **09's P₁₄: degree 121, 76 ops**; its 5-equation system degree 72, 67 ops | 09 only | 09 |
+| 14 unknowns, via root elimination | Φ₁₄ (degree 293, 75 ops) and Ψ₁₄ (degree 342, 73 ops), same formulas and leading forms; gap norm Φ₁₄^gap (degree 219, 75 ops) | Φ₁₄, Ψ₁₄: 09, 10, 12, 13; Φ₁₄ also 15 (its P₁₄); gap norm: 12 only | 09; gap norm 12 |
+| 15-unknown six-equation system | **degree 28, 61 ops**, the same residuals in 09, 10, 11, 13, 14 and 15; 12's S₆₀ shifts the transport quotient (z₀ = z + 1) and saves one op | six packages; S₆₀: 12 | 09; S₆₀ 12 |
 | Lowest-degree 15-unknown system | **degree 22**: 12's gap system (61 ops), 15's double-gap system (63 ops) | 12, 15 | 12 |
-| Fewest operations, any single equation | **67** (P₆₇, degree 155, wave-1 06/08). No package claims fewer; 10 rebinds it to new coefficients | inherited | (wave-1 06) |
-| 15-unknown single equation, low degree | P₆₉ 69 / 99 in all seven (gate lists of 11 and 12 byte-identical); 12's gap product 70 / 93; 15's double-gap product 71 / 83 | all; 12; 15 | 13; 15 for degree 83 |
-| Smallest system | 60 ops: 12's S₆₀ (15 / 6 / 28) and 09's retained-auxiliary system (16 / 7 / 24) | 12; 09 | — |
-| Low-degree lifts (positive) | quartic: **32 unknowns / 23 quadratics** (09, 12: same unknowns, different R-elimination); 33 / 24 (10, 11, 13, 14, 15: one register and one equation fewer than 08); sextic 25 / 16 and octic 20 / 11 | 09, 12; five packages; 15 | 09; 15 |
-| Fewest unrestricted integers | **29ℤ** (14); then 31ℤ (11), 32ℤ (15), 33ℤ (10, 12, 15), 38ℤ (13), 39ℤ (09) | 14 | 14 |
-| Integer quartic | 60ℤ (15), 62ℤ (09); 11 notes that its 99ℤ quartic does not improve wave-1 04's 83 | 15, 09 | 15 |
+| Fewest operations, any single equation | **67** (P₆₇, degree 155, wave-1 06/08). No package claims fewer | inherited | (wave-1 06) |
+| 15-unknown single equation, low degree | products: P₆₉ (degree 99, 69 ops) in all seven (gate lists of 11 and 12 identical); 12's gap product (93, 70); 15's double-gap product (83, 71). Sums of squares: degree 56 at 74 ops (10's Q₅₆), 77 (12's S₇₇) or 78 (09, 11, 13, 14, 15); **degree 44** at 78 ops (12's gap SOS) or 80 (15) | all; 12; 15; 12, 15 | 09; 12; 15; 12 |
+| Smallest system | 60 ops: 12's S₆₀ (15 unknowns, 6 equations, degree 28) and 09's retained-auxiliary system (16, 7, degree 24) | 12; 09 | — |
+| Low-degree lifts (positive) | quartic: **32 unknowns / 23 quadratics** (09, 12: same unknowns, different R-elimination; two registers and equations fewer than 08's 34 / 25); 33 / 24 (10, 11, 13, 14, 15: one fewer); sextic 25 / 16 and octic 20 / 11 | 09, 12; five packages; 15 | 09; 15 |
+| Fewest unrestricted integers | **29ℤ** (14); then 31ℤ (11), 32ℤ (12, 15), 33ℤ (10, 11, 12, 15), 38ℤ (13, 15), 39ℤ (09) | 14 | 14 |
+| Integer quartic | 60ℤ (15), 62ℤ (09); 11 notes that its 99ℤ degree-8 form does not improve wave-1 04's 83ℤ quartic | 15, 09 | 15 |
 | Smallest coefficients | **T4: B = 2^(5^18)**, 37,075 tiles (11) | 11 | 11 |
 
-Wave 2 claims no result below 67 operations, so wave-1 06/08's
-P₆₇ remains the minimum-operation equation; 10 and 15 carry it as a baseline.
+The base is the earliest-arriving package that presents the construction in
+full; where only one package has it, that package.
+
+Wave 2 claims no result below 67 operations, so wave-1 06/08's P₆₇ remains
+the minimum-operation equation. 10 and 11 rebind it to their new
+coefficients (11 at B = 2^(5^18)); 10, 11, 12 and 15 carry it as a
+baseline, and 13 notes that it can also use the new coefficients.
 
 ### Coefficient recipes: use one whole tuple
 
@@ -148,16 +162,22 @@ These recipes are interchangeable only **as whole tuples**, and only where
 a package proves its compiler interface for that tuple:
 
 - 10, 12 and 13 prove that wave-1 06's whole tuple also serves their new
-  arithmetic, and 11 keeps it as a separate fallback. Wave 1's blanket
-  warning ("a circuit from one package evaluated with another's coefficients
-  means nothing") is therefore too broad for 06's tuple, though still right
+  arithmetic; 14 runs all of its arithmetic on 06's tuple; 09 first derived
+  its arithmetic on 06's ports; 11 keeps 06's tuple as a separate fallback
+  and uses it in 08's quartic (`bridge/BRIDGE_AUDIT.md:5`). Conversely,
+  wave 1's P₆₇ circuit is rebound to new tuples (10, 11, 13, 15). Wave 1's
+  blanket warning ("a circuit from one package evaluated with another's
+  coefficients means nothing") is therefore too broad in both directions
+  wherever an interface proof covers the whole tuple, though still right
   about splicing ports.
 - 09's alternative five-cell recipe coincides with 12's default (the same
   start tuples, ordering and layout scalars, per the dossier).
 - 11's unfiltered T variant has 09's tile count and d but a different layout,
   so its integers differ.
-- 09 and 13 report the same tile count and scales. Their layouts were not
-  compared at intake.
+- 09 and 13 have the same tile count, layout scalars and Start tile, but
+  different second (forbidden) tiles ([437, 438, 437, 435] in 09,
+  [437, 437, 0, 437] in 13, per the audit), so D_C and the coefficient
+  tuples differ.
 
 ### Tensions, not adjudicated at intake
 
@@ -169,15 +189,17 @@ a package proves its compiler interface for that tuple:
   delivers it as its primary recipe.
 - The signed-domain reductions keep different sets of coordinates positive:
   - 14: seven coordinates, plus i odd and w a square;
-  - 15: nine ports;
-  - 13: twelve or thirteen;
+  - 11, 12 and 15: the same nine ports J, F, α, z, i, s, w, η, ζ (signing
+    h, f, T, γ, τ, y);
   - 10: signs {τ, y, w, h, f, T};
-  - 11 and 12: sign {h, f, T, γ, τ, y}.
+  - 09's 62ℤ quartic: ten;
+  - 13: twelve or thirteen.
 
-  The 14-unknown polynomial over ℤ is 586 / 159 in 13 and 584 / 138 in 15,
-  by different substitutions.
+  Φ₁₄ over ℤ is degree 586 with 159 ops in 13 and degree 584 with 138 ops
+  in 12 and 15 (the same circuit), by different substitutions.
 - 11's `comparison/COMPARISON.md` (around line 164) still recommends 08's
-  34 / 25 lift and never mentions T4. Its `bridge/BRIDGE_AUDIT.md:5` uses
+  34 / 25 lift "(further improvement under separate review)" and never
+  mentions T4. Its `bridge/BRIDGE_AUDIT.md:5` uses
   06's coefficients in 08's quartic.
 - 15 itself flags that inherited "Input-ignoring machine" contract wording
   in older packets describes the normalized-machine template, not raw K215
@@ -210,18 +232,21 @@ The packages say, in their own words (exceptions noted):
   `Jones1982.nine_unknowns` proves only the existence of a nine-unknown
   representation, with no degree. The packages compare with Jones's papers
   and leave a concrete nine-unknown specialization open.
-- **No new universal bound.** 09 and 14 say so explicitly, and the others
-  do not address it. In any case, fixed-input constructions do not change the
+- **No new universal bound.** 09 and 14 say so explicitly, and 13 says its
+  integer lifts do not improve the classical universal frontier; the
+  others do not address it. In any case, fixed-input constructions do not change the
   universal 84-operation, 18-witness, degree-187 frontier recorded in
   `Computability/HilbertTenthProblem/README.md`.
 
 ## Relation to the formal developments
 
-- **Machine endpoint.** All seven cite
+- **Machine endpoint.** 09–13 cite
   `KEndpoint215.blank_halts_iff_zfc_refutation` and
   `KEndpoint215.nonhalting_iff_zfc_consistency`
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean:44,49`,
-  present at `HEAD`, not rebuilt at intake). The claim that **ZFC proves**
+  present at `HEAD`, not rebuilt at intake). 14 cites the file, and 15
+  only "the K215 endpoint"; the theorem names appear in their bundled
+  wave-1 copies. The claim that **ZFC proves**
   the Diophantine equivalence does not go through Lean's soundness. It
   rests on the formalizability in ZFC of the ordinary K215 calibration
   argument, which the Lean/Rocq theorems mirror.
@@ -243,10 +268,13 @@ These are disclosed here and were not fixed in the delivered files.
   - 10's `machine/` and `evidence/lean/`;
   - 14's `dependencies/`.
 
-  The ignored checksum ledgers and logs are also absent, so 11's
-  `verify_all.py` (whose first step checks the hash manifest) and 12's
-  `reproduce.py` (which authenticates retained source files) fail in place.
-  Rerun from the arrival commit, as `PLACEMENT.md` explains.
+  The ignored checksum ledgers and logs are also absent. Every package's
+  driver reads omitted copies or manifests, so all seven fail in place
+  (read from the code at audit, not run). Examples: 09's
+  `verify_compiler.py`, 10's `code/verify.py`, 11's `verify_all.py`, 12's
+  `reproduce.py`, 13's `verify.py --manifest-only`, 14's `src/reproduce.py`
+  and 15's `run_checks.py`. Rerun from the arrival commit, as
+  `PLACEMENT.md` explains.
 - **Table differences inside a package.**
   - 12's README recommends the degree-22 gap system, while its abstract and
     theorem centre S₆₀ (degree 28), and its README omits several integer
@@ -274,7 +302,7 @@ These are the open problems the packages list, merged and credited:
    signed-domain and rank lemmas, the quadratic-lift equivalence and the
    compiler interfaces (09, 10, 11, 12, 13, 14, 15).
 2. **Fewer unknowns without a degree explosion**: below 13 or 14 unknowns,
-   or a concrete nine-unknown specialization (09, 12, 13, 15).
+   or a concrete nine-unknown specialization (12, 13, 14, 15).
 3. **Smaller tile languages and coefficients**: head-side marking, further
    globally sound pruning, the projected layout, a materializable benchmark,
    and charging coefficient bit length (09, 12, 13, 14, 15).
@@ -285,7 +313,7 @@ These are the open problems the packages list, merged and credited:
    quadratic systems (13, 14, 15).
 7. **Better finalizers and combinations**: fewer operations from the
    four-port circuit (10), 07's signed repunit with the X = wq scale (15),
-   root elimination with the ordinary strong equation (15), and a better
+   root elimination with the ordinary strong equation (12, 13, 15), and a better
    product finalizer (14).
 8. **Internalization in PA** or weaker arithmetic (12).
 
@@ -296,7 +324,7 @@ The licence and notice files each package ships are kept in place.
 
 | Pin | Arrival | Placement | Superseded wave 1 |
 |---|---|---|---|
-| `3b201cdea32d2c816f5f3d20734051f25fd3ef14` | `7be2780f26` | `8a4b00b5bf` | arrival `2fd49a1a9d`; placement `084e120830` to audit fixes `f3af223ef7` |
+| `3b201cdea32d2c816f5f3d20734051f25fd3ef14` | `7be2780f26` | `8a4b00b5bf` | arrival `2fd49a1a9d`; tree `084e120830`…`8a4b00b5bf^`; audited README `f3af223ef7`…`8a4b00b5bf^` |
 
 ## Files
 

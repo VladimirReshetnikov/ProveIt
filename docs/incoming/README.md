@@ -34,7 +34,7 @@ The seven wave-2 archives of `7be2780f26` ("Con(ZFC) in Diophantine form
 direction, completely supersede them. Placement `8a4b00b5bf` removes the
 wave-1 directories from
 [con-zfc-diophantine-forms](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
-(recoverable from `084e120830`–`f3af223ef7`), places the seven packages there
+(recoverable from `084e120830` through its parent), places the seven packages there
 as sources 09–15 (535 files; 93 repository copies outside the report omitted,
 byte-identical up to line ends; 12 ignored ledgers and logs) and retires all
 seven ZIPs. Reconciliation `505e0e0a30` replaces the report README. The

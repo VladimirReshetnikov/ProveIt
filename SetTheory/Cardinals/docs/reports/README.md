@@ -3567,7 +3567,7 @@ Batch 218 (arrival `7be2780f26`, "wave-2") replaces those eight packages in
 the same report by seven syntheses that, by Vladimir's direction, completely
 supersede them; the collection stays at **291 reports**. Placement
 `8a4b00b5bf` removes the wave-1 directories (recoverable from `084e120830`
-to `f3af223ef7`), places the seven packages as sources 09–15 and retires
+through its parent), places the seven packages as sources 09–15 and retires
 their ZIPs; reconciliation `505e0e0a30` replaces the README. The packages
 state 13 positive unknowns (84 operations, degree 571), 14 at degree 121, a
 15-unknown six-equation system of degree 28 in 61 operations found by six

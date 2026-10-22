@@ -17,8 +17,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 report
 [`con-zfc-diophantine-forms`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
 (batch 218, seven wave-2 packages pinned to `3b201cdea3`, superseding
-batch 217's eight) fixes the ordinary input of the native-window/Pell
-compiler below on the blank run of the 215-state ZFC machine
+batch 217's eight) applies the native-window/Pell compiler below, with its
+input interface removed, to the blank run of the 215-state ZFC machine
 (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`). It
 gives explicit polynomials with fixed integer coefficients for which, by an
 ordinary argument formalizable in ZFC, ZFC proves "no solution" ↔
