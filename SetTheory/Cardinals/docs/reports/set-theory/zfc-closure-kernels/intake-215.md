@@ -260,3 +260,30 @@ unconditional nonhalting, an internal PA/ZFC endpoint or a new consistency resul
 No minimum derivation or controlled runtime speedup follows. The open work is to
 choose and check the relevant adapters and regeneration paths, preserving the
 exact endpoints rather than combining overlapping source counts.
+
+
+## Verification addendum — 21 October 2026
+
+After this ordinary review, the separate
+[phase15 integration](../../../../../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md)
+checks and adopts Source193's exact shorter dense proof. It preserves
+`KDenseBridge.blank_iff` and all preceding generic interfaces, with the stated
+204-byte/eight-line improvement over the initial Source192 candidate. This
+acceptance belongs to the local combined proof check, not the submitted receipt.
+
+The primary 194-provider check selects 45 successful fresh records (19 from the
+first attempt, 25 from the second and one from the third) and 149 phase14 records,
+then freshly checks both endpoint clients with ten unchanged reports. The separate
+compatibility 71-provider check passes with six fresh, 54 primary and 11 earlier
+providers; both scopes bind 199 project modules. The two failed primary attempts
+remain failures: one needed an explicit completeness import after the import cut,
+and the other needed namespace openings in an API client. No failed object or
+admission report is accepted. The selected endpoint has 176 project modules,
+with five decoder-prefix modules separate and the full calibration still tested.
+
+The same checkpoint shares recursion and quotient syntax and moves PowerSets into
+a small module. These are separate proposals with their own provenance. It does
+not adopt Source193's residual replacement, subtree abbreviation or optional
+terminal-cleanup infrastructure, nor Source194's scheduler. Their component,
+uncompiled and timing qualifications above remain in force. The main article,
+labels, literal machine and maintained endpoint statements are unchanged.

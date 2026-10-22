@@ -1,0 +1,110 @@
+{
+  "status": "PASS_INDEPENDENT_PURE_METADATA_CONTROLS",
+  "freeze_sha256": "74b946c91936eac542b0ddc334d2fe664f2b3023838446406d4a1ef95f82ca24",
+  "helper_pins": {
+    "basis.py": "89575df018e3a94d618591da030cbcdc802339fac4f96fce9ad258af8bbeca73",
+    "basis-reference.json": "94351fa5c2c03f42888edfe596f772cebb7c40d865927ec1c9f2f43805031493",
+    "packet.py": "468e428831510704591dcc1e2f606ea06a72aa93e4fa8607cb82efcbf6c287f6",
+    "collect.py": "e84c4fed13bf59571b6fb0fa01849b2a2b314ec6dbaab9b1e56033613edf91a3",
+    "review_saved.py": "931d3dd03b42935d59a594dce5d3a824dbad6d5fe1334f4cf1bab37ff4135a79",
+    "controls.py": "e87cdf59c2c3bcdea86b2338adafa048c0ee55ed41547b0240465e512487fcb9",
+    "README.md": "4af3b4c0ece189642972a9dec86b77ff36abf83261d56c7d27d7540d62873bdf",
+    "prepare_config.py": "bae00e552bb64b476740f9bae699cf652e5e96dcb7a1c7923718b51e7b85e6ae",
+    "prepare_draft.py": "cb851b7a371ce912d6be431ce85a338eaa7ae58957ef2abfa3518c847401475b",
+    "config.json": "1551704778b23a5d34c40aa56ee4e06af861066ce7df69f4373c21d9bea2c1dc",
+    "controls-result.json": "4a72230925943a586ce4b6f5477b91cd22d1a3a8520fa631568486238eb7c76c",
+    "controls.stdout.log": "4a72230925943a586ce4b6f5477b91cd22d1a3a8520fa631568486238eb7c76c",
+    "controls.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "context_files": 329,
+  "checks": [
+    {
+      "name": "safe source path",
+      "expected_accept": true,
+      "matched": true
+    },
+    {
+      "name": "reject /absolute",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject a/../b",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject x.olean.server",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject ancestor.tar.gz",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "exact successful resume",
+      "expected_accept": true,
+      "matched": true
+    },
+    {
+      "name": "reject failed resume",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject changed resumed object",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "exact transitive source closure",
+      "expected_accept": true,
+      "matched": true
+    },
+    {
+      "name": "reject source change masked by identical object",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject changed import closure",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "exact PQ report",
+      "expected_accept": true,
+      "matched": true
+    },
+    {
+      "name": "reject added choice in exact PQ profile",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject sorryAx report",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "reject changed report name",
+      "expected_accept": false,
+      "matched": true
+    },
+    {
+      "name": "Init-only external import",
+      "expected_accept": true,
+      "matched": true
+    },
+    {
+      "name": "reject unknown provider",
+      "expected_accept": false,
+      "matched": true
+    }
+  ],
+  "positive": 5,
+  "negative": 12,
+  "scope": "Frozen source/config rehash and extracted pure metadata functions only; no collector/saved reader/compiler/producer."
+}

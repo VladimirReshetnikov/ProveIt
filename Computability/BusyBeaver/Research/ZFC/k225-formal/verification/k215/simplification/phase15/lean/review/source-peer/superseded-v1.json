@@ -1,0 +1,16 @@
+{
+  "status": "SOURCE_PEER_SUPERSEDED_BEFORE_CAPTURE",
+  "prior_review_sha256": "9a2c7a22aab37cb78cb815038349594237e125e9d3b5d6b0f30a6ca7e884699b",
+  "prior_freeze_sha256": "74b946c91936eac542b0ddc334d2fe664f2b3023838446406d4a1ef95f82ca24",
+  "finding": "Collector unconditionally reads original source paths in run1 inventory and postcheck. KQ1ZF was canonical non-override there; after adoption its live bytes are new, whereas the record requires historical old bytes. Historical route preload would collide.",
+  "independent_collision_census": {
+    "historical_paths_in_config_file_list": [],
+    "run1_historical_source_rows": [
+      "BusyBeaver.ZFC.KQ1ZF"
+    ],
+    "other_runs_historical_source_rows": []
+  },
+  "reported_by": "root before collector authorization",
+  "collector_executed": false,
+  "required_successor": "Historical resolver for default add source and live inventory source hash; keep separate current-adoption gate. Direct collision control and narrow re-review."
+}

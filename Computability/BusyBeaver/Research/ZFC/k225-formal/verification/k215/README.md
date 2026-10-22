@@ -3,14 +3,14 @@
 **Both proof lanes pass** (2026-10-21), for the same literal machine.
 
 The fresh full builds below were recorded at `613f9cf28a`. The current
-[Lean simplification checkpoint](simplification/phase14/README.md) shares derived
-rules and profile contracts, reducing the endpoint to 178 project modules plus
-five decoder-prefix modules. Seven API clients give 190 primary providers:
-65 earlier successful fresh compilations, one corrected audit-client compilation
-and 124 exact phase-thirteen reuses. Both additional endpoint clients pass with
-ten exact reports and zero audit warnings. A separate 68-project-module check
-with two clients preserves the older model interfaces. The original client-only
-failure is retained; the nine phase-nine site checks are unchanged.
+[Lean simplification checkpoint](simplification/phase15/README.md) shares recursion
+and quotient syntax, separates PowerSets and shortens the dense bridge. The endpoint
+has 176 project modules, with five decoder-prefix modules checked separately. Three
+full-calibration continuity modules and ten API clients bring the primary scope to
+194 providers: 45 fresh records (19, 25 and one across the retained attempts) and
+149 phase14 reuses. Both additional endpoint clients have ten unchanged reports
+and zero warnings. The separate 71-provider compatibility scope passes. Both failed
+primary attempts remain failures; the nine phase-nine site checks are unchanged.
 
 | System | Completed checks | Endpoint assumptions |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ applies the state-renaming equivalence to its sparse
 endpoint. The large literal tables and arithmetic certificates are kernel-checked
 data, while these final compositions stay small.
 
-The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 178
+The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, now selects 176
 project modules and then two explicit endpoint clients; the original fresh build
 selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,

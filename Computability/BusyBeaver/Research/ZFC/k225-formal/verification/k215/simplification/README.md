@@ -1,18 +1,19 @@
 # Shorter checked K215 proofs
 
 The literal 215-state machine and its halting and nonhalting endpoint statements
-are unchanged. The [latest Lean check](phase14/README.md) shares derived rules
-and profile contracts, reducing the endpoint to 178 project modules. It checks
-183 project modules plus seven API clients, with 65 earlier successful fresh
-compilations, one corrected client and 124 exact phase-thirteen reuses. Both
-additional endpoint clients retain their ten exact standard-axiom profiles and
-zero warnings. The preserved first failure concerns only the audit client's binders.
+are unchanged. The [latest Lean check](phase15/README.md) shares recursion and
+quotient syntax, separates PowerSets and shortens the dense bridge. The endpoint
+now has 176 project modules. The 194-provider primary check and 71-provider
+compatibility check bind 199 distinct project modules. Both additional endpoint
+clients preserve ten exact profiles and zero warnings; all 62 API reports pass.
+Two failed primary attempts remain separate from the accepted records.
 
 | Proof source | Original | Current |
 | --- | ---: | ---: |
 | Lean dominated implication, core plus adapter | 689,857 bytes | 16,826 bytes |
 | Lean generic core plus Lukasiewicz (phase-twelve comparison) | 42,454 bytes | 18,243 bytes |
 | Lean shared derived/profile sources (phase-thirteen comparison) | 87,279 bytes | 75,163 bytes |
+| Lean recursion hierarchy pair (phase-fourteen comparison) | 33,002 bytes | 24,329 bytes |
 | Lean AX routine | 202,222 bytes | 7,563 bytes |
 | Lean source data, including stable program | 653,569 bytes | 368,995 bytes |
 | Lean site-coverage facade | 107,243 bytes | 14,956 bytes |
@@ -71,7 +72,18 @@ duplicate `KProfileTC` module and its generator. Lean sources shrink by another
 The 178-module endpoint selects 2,093,112 bytes. Primary and compatibility checks
 cover 198 distinct project modules and preserve all endpoint assumptions.
 
-The [latest checkpoint](phase14/README.md),
+Phase fifteen abstracts relation-parametric transfinite recursion and reuses it
+for the cumulative and operation hierarchies. Quotient syntax is shared without
+strengthening the weak model hypotheses; quotient-environment equality replaces
+repeated congruence inductions. A small PowerSets module removes unrelated imports,
+and the dense proof uses one stopped-or-synchronized invariant. Nine Lean files
+shrink by 11,809 bytes/283 lines; the synchronized producer grows by 1,307 bytes/12
+lines, for a net maintenance reduction of 10,502 bytes/271 lines. The 176-module
+endpoint selects 2,052,142 source bytes, 40,970 fewer than phase14. This dependency
+saving and the physical-file saving measure different scopes.
+
+The [latest checkpoint](phase15/README.md),
+[fourteenth checkpoint](phase14/README.md),
 [thirteenth checkpoint](phase13/README.md),
 [twelfth checkpoint](phase12/README.md),
 [eleventh checkpoint](phase11/README.md),

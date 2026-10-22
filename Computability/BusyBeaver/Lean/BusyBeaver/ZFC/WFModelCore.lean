@@ -1,5 +1,5 @@
 import BusyBeaver.ZFC.WFRelativization
-import BusyBeaver.ZFC.PSCCalibration
+import BusyBeaver.ZFC.PowerSets
 
 /-! The general well-founded-part model construction.
 Declarations are copied verbatim from WFModel; the CPGIC specialization
