@@ -37,11 +37,8 @@ theorem closed_of_contract {p q : Prog} {ok : Nat → Bool} {N n0 : Nat}
     (hN : ∀ n, ok n = true → n < N)
     (h : ∀ n < N, ok n = true → n ≠ n0 →
       p.nodes n = q.nodes n ∧ inside ok (p.nodes n).1 = true ∧ inside ok (p.nodes n).2 = true)
-    (h0 : ∀ R x R', Run p (.node n0) R x R' → Run q (.node n0) R x R') : Closed p q ok := by
-  intro n hn
-  by_cases e : n = n0
-  · subst e; exact Or.inr h0
-  · exact Or.inl (h n (hN n hn) hn e)
+    (h0 : ∀ R x R', Run p (.node n0) R x R' → Run q (.node n0) R x R') : Closed p q ok :=
+  fun n hn => if e : n = n0 then e ▸ Or.inr h0 else Or.inl (h n (hN n hn) hn e)
 
 section
 
@@ -52,13 +49,8 @@ include hc
 theorem run_transfer {e : Edge} {R : Regs} {x : Exit} {R' : Regs} (h : Run p e R x R') :
     inside ok e = true → Run q e R x R' := by
   induction h with
-  | inc r R => exact fun _ => .inc r R
-  | decPos r R v hv => exact fun _ => .decPos r R v hv
-  | decZero r R hz => exact fun _ => .decZero r R hz
-  | brk0 R => exact fun _ => .brk0 R
-  | brkS k R => exact fun _ => .brkS k R
-  | contS k R => exact fun _ => .contS k R
-  | halt R => exact fun _ => .halt R
+  | inc | decPos | decZero | brk0 | brkS | contS | halt =>
+      exact fun _ => by constructor <;> assumption
   | carBrk1 n R R' h ih =>
       intro hb; rcases hc n hb with ⟨e, h1, -⟩ | hn
       · exact .carBrk1 _ _ _ (e ▸ ih h1)
@@ -113,8 +105,7 @@ end
 /-- A contract node: `p` runs it as `q` does when both runs are total and deterministic. -/
 theorem contract {p q : Prog} {n : Nat} (out : Regs → Exit) (res : Regs → Regs)
     (hp : ∀ R, Run p (.node n) R (out R) (res R)) (hq : ∀ R, Run q (.node n) R (out R) (res R)) :
-    ∀ R x R', Run p (.node n) R x R' → Run q (.node n) R x R' := by
-  intro R x R' h
+    ∀ R x R', Run p (.node n) R x R' → Run q (.node n) R x R' := fun R x R' h => by
   obtain ⟨rfl, rfl⟩ := run_det h (hp R)
   exact hq R
 

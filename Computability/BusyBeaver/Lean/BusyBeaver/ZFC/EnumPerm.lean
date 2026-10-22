@@ -272,8 +272,8 @@ theorem exec_list (cs : List Cmd) : ∀ (c : Cmd) (s : St), (fetch s).1 = encL c
       | some w =>
         let s1 : St := ⟨encL c' cs' + 1, (fetch s).2, w.tw, w.ws, w.d, w.h⟩
         have hstep : enumStep s = some s1 := by simp [enumStep, hf, encL, execAt_pack, hw, s1]
-        obtain ⟨n, s', hr, hs'⟩ := ih c' s1 (by simp [fetch, s1]) (by rw [cexec_cons_some hw] at hx; exact hx)
-        exact ⟨n + 1, s', by rw [run_succ n s s1 hstep]; exact hr, hs'⟩
+        obtain ⟨n, s', hr, hs'⟩ := ih c' s1 (by simp [fetch, s1]) (by rwa [cexec_cons_some hw] at hx)
+        exact ⟨n + 1, s', by rwa [run_succ n s s1 hstep], hs'⟩
 
 /-! ### Every later candidate is reached -/
 
@@ -284,10 +284,9 @@ theorem run_add : ∀ (n m : Nat) (s s1 : St), run n s = some s1 → run (n + m)
       simp only [run] at h
       split at h
       · rename_i s2 h2
-        have := run_add n m s2 s1 h
         rw [show n + 1 + m = (n + m) + 1 by omega]
         simp only [run, h2]
-        exact this
+        exact run_add n m s2 s1 h
       · cases h
 
 theorem step_eq {s s1 : St} (h : enumStep s = some s1) :
@@ -312,8 +311,8 @@ theorem drain : ∀ (m : Nat) (s : St), s.pl ≤ m →
           | zero => omega
           | succ m =>
             rcases drain m s1 (by omega) with ⟨n, s', hr, h3, h4⟩ | ⟨n, s', hr, h3⟩
-            · exact Or.inl ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h3, h4.trans h2⟩
-            · exact Or.inr ⟨n + 1, s', by rw [run_succ n s s1 hs]; exact hr, h3⟩
+            · exact Or.inl ⟨n + 1, s', by rwa [run_succ n s s1 hs], h3, h4.trans h2⟩
+            · exact Or.inr ⟨n + 1, s', by rwa [run_succ n s s1 hs], h3⟩
 
 theorem reach (sd : St) (hpl : sd.pl = 0) : ∀ k : Nat,
     (∃ n s, run n sd = some s ∧ s.pl = 0 ∧ s.np = sd.np + k) ∨ HaltsFrom sd
@@ -328,10 +327,8 @@ theorem reach (sd : St) (hpl : sd.pl = 0) : ∀ k : Nat,
           have hr1 : run (n + 1) sd = some s1 := by
             rw [run_add n 1 sd s hr]; simp only [run, hs]
           rcases drain s1.pl s1 (Nat.le_refl _) with ⟨j, s', hr', h1, h2⟩ | ⟨j, s', hr', h1⟩
-          · left
-            exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1, h2.trans hnp1⟩
-          · right
-            exact ⟨n + 1 + j, s', by rw [run_add (n + 1) j sd s1 hr1]; exact hr', h1⟩
+          · exact Or.inl ⟨n + 1 + j, s', by rwa [run_add (n + 1) j sd s1 hr1], h1, h2.trans hnp1⟩
+          · exact Or.inr ⟨n + 1 + j, s', by rwa [run_add (n + 1) j sd s1 hr1], h1⟩
       · exact Or.inr hh
 
 /-! ### Block contracts, by symbolic execution -/
@@ -487,19 +484,15 @@ theorem mp_contract {A B : Nat} {pa pab : List Cmd} (ha : Contract pa A)
 interpreted here in `fun n => ∃ p, Contract p n`, eliminating the intermediate calculus. -/
 theorem build_c222 : ∀ {n : Nat}, C222 n → ∃ p : List Cmd, Contract p n := by
   have hmp {A B : Nat} (hab : ∃ p : List Cmd, Contract p (wim A B))
-      (ha : ∃ p : List Cmd, Contract p A) : ∃ p : List Cmd, Contract p B := by
-    obtain ⟨pab, hab⟩ := hab
-    obtain ⟨pa, ha⟩ := ha
-    exact ⟨_, mp_contract ha hab⟩
+      (ha : ∃ p : List Cmd, Contract p A) : ∃ p : List Cmd, Contract p B :=
+    hab.elim fun _ hab => ha.elim fun _ ha => ⟨_, mp_contract ha hab⟩
   have hrow (a b c u : Nat) (hu : u ≤ a) : ∃ p : List Cmd, Contract p (rho8 a b c u) :=
     ⟨leaf 8 a b c u, fun T S => Or.inr (by rw [leaf, cexec_discard_ax _ _ _ _ _ _ hu]; xrun)⟩
   intro n h
   induction h with
   | truth => exact ⟨discard, fun T S => Or.inr (cexec_discard T S)⟩
   | mp _ _ ih1 ih2 => exact hmp ih2 ih1
-  | gen a _ ih =>
-      obtain ⟨p, hp⟩ := ih
-      exact ⟨_, gen_contract a hp⟩
+  | gen a _ ih => exact ih.elim fun _ hp => ⟨_, gen_contract a hp⟩
   | bundle a b c h1 h2 =>
       refine ⟨bundleLeaf a b c, fun T S => Or.inr ?_⟩
       rw [bundleLeaf, cexec_discard_ax T S a b c 0 (Nat.zero_le a)]
@@ -541,7 +534,7 @@ theorem complete {sd : St} (hpl : sd.pl = 0) (h : C222 F) : HaltsFrom sd := by
   rcases reach sd hpl (encL (.ax 0 1 sd.np) cs - sd.np) with ⟨n, s, hr, hpl', hnp⟩ | hh
   · have hf : (fetch s).1 = encL (.ax 0 1 sd.np) cs := by simp only [fetch, hpl', if_true]; omega
     obtain ⟨k, s', hr', hs'⟩ := exec_list cs (.ax 0 1 sd.np) s hf (program_none sd.np p hp _)
-    exact ⟨n + k, s', by rw [run_add n k sd s hr]; exact hr', hs'⟩
+    exact ⟨n + k, s', by rwa [run_add n k sd s hr], hs'⟩
   · exact hh
 
 /-- L1: between candidates, with derivable registers, the enumerator halts iff code 1 is
