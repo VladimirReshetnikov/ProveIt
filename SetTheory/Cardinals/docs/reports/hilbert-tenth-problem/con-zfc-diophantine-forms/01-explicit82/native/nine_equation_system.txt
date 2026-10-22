@@ -1,0 +1,88 @@
+NINE-EQUATION NATIVE SYSTEM FOR Con(ZFC)
+
+Domain: all 20 supplied unknowns are strictly positive integers:
+
+  J, F, alpha, z, f, h, i, j, o, r, s, w, tau, eta, zeta, y, Z, delta, rho, sigma.
+
+The six fixed integer coefficients beta, K, t, u, MC, MF are uniquely defined
+by k215_native_definition.py. They are not unknowns:
+
+  beta = B - 1,
+  K    = DC + B*DR,
+  t    = 2d,
+  u    = 2d + b,
+  MC   = the modified native low mask,
+  MF   = the modified native high mask + B - 1.
+
+Use these polynomial abbreviations; they are not extra variables:
+
+  q     = beta*J + 1
+  X     = w*q^3
+  Y     = s*q^3
+  E     = X*Y
+  k     = eta + zeta
+  c     = k*Y + eta
+  a     = E + Y
+  H     = 4a + 3
+  Delta = a^2 + H
+  D     = X + a*c + (rho + sigma)*H
+  C     = q - alpha - t
+  W     = C - Z
+  kappa = u + delta*Delta
+  mu    = W + a*kappa + rho*H
+  Ridx  = (q^2 - Z - q*F)*(q^2 - 1) + (MC + q*MF)*J
+  L     = E*(k*Y).
+
+The nine equations are:
+
+  (1)  (K + X)*C = F + z*(q - 1)
+
+  (2)  r = Ridx
+
+  (3)  L*(L + k) = tau^2 - 1
+
+  (4)  k = r + 1 + h*E
+
+  (5)  D^2 = 1 + Delta*c^2
+
+  (6)  (i*c^2)^2 = Delta*(f^2 - 1)
+
+  (7)  (i*c^2)^2*((j*c - r)^2 - y^2) = 1 - y^2
+
+  (8)  j*c - r = o*f - c
+
+  (9)  mu^2 = 1 + Delta*kappa^2.
+
+The lack of a positive solution is equivalent to Con(ZFC), with the
+mathematical equivalence provable in ZFC by the reductions in report.pdf.
+This statement is not an unconditional consistency or no-solution proof.
+
+The shared-expression schedule in k215_native72_system.json evaluates the
+comparison operands in 72 operations: 39 multiplications and 33 additions
+or subtractions. Equality tests are recorded separately. The number 72
+is therefore not the operation count of a single-polynomial evaluator.
+
+For a single equation, let E_l be the left side minus the right side of
+comparison (l), and use
+
+  E_1^2 + E_2^2 + ... + E_9^2 = 0.
+
+Over the integers this is equivalent to all nine comparisons. The complete
+sum-of-squares schedule uses 98 operations and has exact degree 84. Each
+comparison residual has degree at most 42.
+
+Important distinctions from the separate 82-operation main polynomial:
+
+  Here X = w*q^3, whereas that polynomial uses X = w*q.
+  Here C = q - alpha - t, whereas that polynomial uses
+  C = q - F - Z - alpha - t.
+
+The two sets of abbreviations must not be mixed. All 20 supplied witnesses
+remain positive even though derived quantities C or W can be signed away
+from the solution set. The inherited signed-intermediate projection theorem
+recovers their necessary positivity on solutions.
+
+For nonnegative unknowns substitute v = n + 1 in every positive witness.
+For unrestricted integer unknowns substitute v = 1 + a^2 + b^2 + c^2 + d^2.
+These domain changes preserve solvability, but their arithmetic gates are
+not included in the 72 or 98 counts above.
