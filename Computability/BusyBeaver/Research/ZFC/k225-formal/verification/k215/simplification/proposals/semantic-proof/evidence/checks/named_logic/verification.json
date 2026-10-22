@@ -1,0 +1,482 @@
+{
+  "kind": "targeted Lean source-closure check",
+  "repo": "/workspace/scratch/d123f4d5c9d8/ProveIt",
+  "commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "compiler": {
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "binary_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "shared_sha256": "52c37024db38569f7e8911cfbc6819a2d97d0a8c336e74c3da8590e2cc1e099b"
+  },
+  "targets": [
+    "BusyBeaver.ZFC.NamedDerivedAudit",
+    "BusyBeaver.ZFC.KEind222"
+  ],
+  "external_imports": [],
+  "overlay_roots": [
+    "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof"
+  ],
+  "modules": [
+    {
+      "module": "BusyBeaver.ZFC.Kalmar",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143",
+      "imports": [],
+      "transitive_source_sha256": "240837f40691d402a45387fcd2ad543052112897b132f327b8cb6f3505c36535",
+      "status": "REUSED",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/Kalmar.olean",
+          "sha256": "277a27cc6131e906b88aa0aac5e604877f8aa4f8466ca49652072167e2d4b364"
+        }
+      ],
+      "origin_log": "/workspace/scratch/d123f4d5c9d8/checks/base/logs/BusyBeaver.ZFC.Kalmar.001.log"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiCalculus",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06",
+      "imports": [],
+      "transitive_source_sha256": "e081e44e4752e8f1c86e030e37e320ff311a8549c8b1c2c0429cfc6247b8c61e",
+      "status": "REUSED",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiCalculus.olean",
+          "sha256": "4337484639134ff2f884823522973cf95bfb26ddb8a7866ba3ebeba35f553b9b"
+        }
+      ],
+      "origin_log": "/workspace/scratch/d123f4d5c9d8/checks/base/logs/BusyBeaver.ZFC.TarskiCalculus.001.log"
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedDerived",
+      "source": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/NamedDerived.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+      "source_sha256": "667e49a56c658a3401cc723408b2a92f1f8ddc8b01d96cc379dc022f5a4202fd",
+      "imports": [
+        "BusyBeaver.ZFC.Kalmar",
+        "BusyBeaver.ZFC.TarskiCalculus"
+      ],
+      "transitive_source_sha256": "09fb81517b7539f84fc3c321cf6b3d911bcc60de30d4de946bc6ecd30e36b09f",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.46548454000003403,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/NamedDerived.olean",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/NamedDerived.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.NamedDerived.001.log",
+      "log_sha256": "3d9372af60e4251a0f047f217b84db6cc127c09bb66adf634d49ac486ac57ebb",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/NamedDerived.olean",
+          "sha256": "803e89d57c27154a900c00867fcde51be6cca8bd54f0d309a4aa4c870dd5e080"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiDerived",
+      "source": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/TarskiDerived.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+      "source_sha256": "1af36844d27b13b146cb8793cdcc3fa55fb2e352077721696de48b620a83c339",
+      "imports": [
+        "BusyBeaver.ZFC.NamedDerived",
+        "BusyBeaver.ZFC.Kalmar",
+        "BusyBeaver.ZFC.TarskiCalculus"
+      ],
+      "transitive_source_sha256": "a8792496b52aa45e6e365c8582cf1e2569ad6b1df3e1e9df00a11def8eb69231",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.3150038299972948,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiDerived.olean",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/TarskiDerived.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.TarskiDerived.001.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiDerived.olean",
+          "sha256": "3a3f083b2a9e99beb76ae6bafaee758d45ca7bd3e856ab80e09d4b1c77c1220d"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiLeibniz",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiDerived"
+      ],
+      "transitive_source_sha256": "a20c0ee39fb71faa4a43fc6e1ab241adc7c8b00cb2666fd9fcc709b61255b558",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.2687793910008622,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiLeibniz.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.TarskiLeibniz.001.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiLeibniz.olean",
+          "sha256": "488592a72bd527ad96bb9b0fc175b80dccfe86d5bad8aeebf339e7877652db9a"
+        }
+      ]
+    },
+    {
+      "module": "FirstOrder.Fol",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Logic/FirstOrder/Lean",
+      "source_sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "imports": [],
+      "transitive_source_sha256": "323520df6106de6b4e3601d3fb262936d2ef5ce65f3bc1e6be09a31641807330",
+      "status": "REUSED",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/FirstOrder/Fol.olean",
+          "sha256": "cacf1698575083566f959bedba34fefe15997d0d835de989f38d463433376fe4"
+        }
+      ],
+      "origin_log": "/workspace/scratch/d123f4d5c9d8/checks/base/logs/FirstOrder.Fol.001.log"
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiClean",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiLeibniz"
+      ],
+      "transitive_source_sha256": "88af478cbb2bf64a64990b39ce4d5b38cb6031363d8dc2898a94ac5c17669b61",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.2215693529979035,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiClean.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.TarskiClean.001.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiClean.olean",
+          "sha256": "8dce698e35641cdeb0278284a636bcaa691a1f9fa551009317dfd990067038e9"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiComplete",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae",
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.TarskiClean"
+      ],
+      "transitive_source_sha256": "0b27ba6f51d576203166ef3b810b3f718167ca8c1820e8f359a370e6d550220a",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.2192103669985954,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiComplete.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.TarskiComplete.001.log",
+      "log_sha256": "0f886585c9549e42a3ca6d0a8c8bb6b2838c2b92bb3c8bbac3be4b3b9302e0a8",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiComplete.olean",
+          "sha256": "16200d469ff58ac7af014be54df98f68a8a448f747491322aecd81ba9bf20965"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.Lukasiewicz",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+      "imports": [
+        "BusyBeaver.ZFC.TarskiComplete"
+      ],
+      "transitive_source_sha256": "284452ccfdf1b266e384cf3c7f204f9b94f9ab0e11e2fcdde0bfe33232bc78c9",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.6166204799992556,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/Lukasiewicz.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.Lukasiewicz.001.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/Lukasiewicz.olean",
+          "sha256": "6e8b3ef4aeb64fce7959c5c662386278741845584cb055df20cb192a52f38cff"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiFalsity",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215",
+      "imports": [
+        "BusyBeaver.ZFC.Lukasiewicz"
+      ],
+      "transitive_source_sha256": "baca1ba781864b1c38597ffc18064e17e52c0b667e0f463ee0ce17af57da5baf",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.41540268899916555,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiFalsity.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.TarskiFalsity.001.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/TarskiFalsity.olean",
+          "sha256": "ccc578dfd9dbb5149fa8d0341375a33acbf08dcf3adaf5e7faa1d626cc5e8fab"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.TarskiFalsity"
+      ],
+      "transitive_source_sha256": "228b4210e6dccf0f6ec6cbf0e37751290a5825818ff16845f716cf30f87c371a",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 2.3712346679967595,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/Code254.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.Code254.001.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/Code254.olean",
+          "sha256": "d86c5c954f5cc7c421fda2bd696a652c20344f83c1a36b13e1ede84a16372528"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KThmK",
+      "source": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/KThmK.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+      "source_sha256": "87975bdbe777852892917ddcc8192a14b982c49559ca5897dae18f90d09016f4",
+      "imports": [
+        "BusyBeaver.ZFC.NamedDerived",
+        "BusyBeaver.ZFC.TarskiLeibniz",
+        "BusyBeaver.ZFC.Lukasiewicz",
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "transitive_source_sha256": "ce4c68db9de83934b4a0e6a8e9b522858538da9743727f067f5cdb4039bd1587",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.5660373280006752,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KThmK.olean",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/KThmK.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.KThmK.001.log",
+      "log_sha256": "40fde0240ea0228e5b073b47dfc26f9abbbd6580d96ab5241285ff16e6a4d74f",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KThmK.olean",
+          "sha256": "9ab0345766fa4a6f16d565a43496ff3f46b4c0a8deb44c9b9c25f7d22ec795e3"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedDerivedAudit",
+      "source": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/NamedDerivedAudit.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+      "source_sha256": "b798121ccd99eda97212a6839554b1bbc5fdff306463eaf29d6f185a07fe687b",
+      "imports": [
+        "BusyBeaver.ZFC.KThmK"
+      ],
+      "transitive_source_sha256": "aaf757a53591f798ba393471d25102d8f850bf2094782d84fbfeceffe388c668",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 0.36507314900154597,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/logic_analysis/proof",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/NamedDerivedAudit.olean",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/proof/BusyBeaver/ZFC/NamedDerivedAudit.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.NamedDerivedAudit.001.log",
+      "log_sha256": "31012a2d9234f40c784276304d580a0923ec4903316b564bf6c70110b0f7a087",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/NamedDerivedAudit.olean",
+          "sha256": "bd8c14b5b0437f8782fcbeb17ac2a38caaa9df0f495d023bbc593c63b1c36de2"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KCode222",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "c12239ab4f2a12333187ff1b1d3b1375500362e6e0fad7ad708c057674e71a08",
+      "imports": [
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "transitive_source_sha256": "1b3cc185697f690afbb58ca9db0f956a7e2125f57b28b07e889883a07bc69783",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 1.1174360389995854,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KCode222.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.KCode222.001.log",
+      "log_sha256": "770316aab916df93600a4222b2e7f0e9aa23e1dce0bbf118e26008944c8f080d",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KCode222.olean",
+          "sha256": "dcfe08b33efe4ea43b453f66254561365fa0b59568a8060f9902b9b8bb576c32"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEqCodes222",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "05cf02d5c5f58e61fa35b3c14bf61cc8198bff5533c0f932e0878950e1f4d008",
+      "imports": [
+        "BusyBeaver.ZFC.KCode222"
+      ],
+      "transitive_source_sha256": "36f2d75f775ebd29743921be122ac16ca736d0a9b87dc9248415ebee16220f72",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 18.558102408002014,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KEqCodes222.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.KEqCodes222.001.log",
+      "log_sha256": "ed7f574cb0a5c19da0fc0487ce5be35226bdc3816ba553f7f5ded2cba9b48e86",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KEqCodes222.olean",
+          "sha256": "cf9b9de1dad738811c17f7de29992de3d8b1f099420d133744ac7cee4e91cc45"
+        }
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEind222",
+      "source": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "source_root": "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+      "source_sha256": "1a825b843a2d1da11486ae428bdab5b64785615a7ce2edf3c1a9090078eda036",
+      "imports": [
+        "BusyBeaver.ZFC.KThmK",
+        "BusyBeaver.ZFC.KEqCodes222"
+      ],
+      "transitive_source_sha256": "8099d2a6d582cb4540a1ccfec4dc5b7000eb7a7bd16c0067bd9804662309a706",
+      "status": "PASS",
+      "exit_code": 0,
+      "timed_out": false,
+      "seconds": 3.14333017899844,
+      "command": [
+        "/tmp/k215-proof-toolchain/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M8192",
+        "--root=/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean",
+        "-o",
+        "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KEind222.olean",
+        "/workspace/scratch/d123f4d5c9d8/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean"
+      ],
+      "log": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/logs/BusyBeaver.ZFC.KEind222.001.log",
+      "log_sha256": "cf394c50ee8d770f7e474b8ce9bc4b7b748afd887ba4ab84913c3b196c32bd07",
+      "artifacts": [
+        {
+          "path": "/workspace/scratch/d123f4d5c9d8/logic_analysis/checks/objects/BusyBeaver/ZFC/KEind222.olean",
+          "sha256": "ad2f1a87e62ec6884febc0ea34c848e29d03fc445fca1f12a594abfa3a114bff"
+        }
+      ]
+    }
+  ],
+  "status": "PASS",
+  "seconds": 31.661812768001255
+}

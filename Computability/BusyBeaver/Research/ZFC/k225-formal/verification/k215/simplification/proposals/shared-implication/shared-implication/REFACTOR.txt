@@ -1,0 +1,100 @@
+SHARE THE DOMINATED AND UNRESTRICTED IMPLICATION PROOFS
+
+Pinned baseline: ProveIt 2ca3a5c16f0876d2cab842056353c03a1ed2f5f0.
+All repository paths below are under Computability/BusyBeaver.
+
+FINDING
+
+Lean/BusyBeaver/ZFC/DominatedImplication.lean already proves unrestricted
+rho8, composition, and prefixing in 58 modus-ponens steps, from restricted
+rho8 rows. The same derivation already includes K (d12), Peirce (d18), and
+application (d36). Separately, Lukasiewicz.lean contains 107 cd_ helpers:
+one unrestricted-row leaf and 106 MP steps deriving K, Peirce, composition,
+and S. Both developments are in the K215 dependency closure.
+
+Extend the shared core by five MP steps to derive S. Export K, Peirce and
+S, and instantiate its relation as True to recover the unrestricted
+Implicational interface. Replace all old cd_ helpers with four adapters.
+The original Implicational structure, public theorem types, and full
+Tarski bridge after the generic namespace remain unchanged.
+
+MATHEMATICAL CERTIFICATE
+
+Write -> for the arbitrary binary operation (not Lean's proposition arrow),
+and [F] for T(F). The three existing universally proved schemata used here are:
+
+  A(a,b) = a -> ((a -> b) -> b)                     [old d36]
+  B(a,b,c) = (a -> b) -> ((b -> c) -> (a -> c))     [old d58]
+  D(a,b,c) = (a -> (b -> c)) ->
+             ((b -> a) -> (b -> c))                [old d47]
+
+The five new schemata, each obtained by one MP step, are:
+
+  Q(a,b,c) = (((a -> b) -> b) -> c) -> (a -> c)
+    MP B(a, (a -> b) -> b, c), A(a,b).
+
+  E(a,b,c,d) = (((a -> b) -> (c -> b)) -> d) ->
+               ((c -> a) -> d)
+    MP B(c -> a, (a -> b) -> (c -> b), d), B(c,a,b).
+
+  V(a,b,c) = (a -> b) -> ((a -> (b -> c)) -> (a -> c))
+    MP E(b,c,a, (a -> (b -> c)) -> (a -> c)), D(b -> c,a,c).
+
+  C(a,b,c) = (a -> (b -> c)) -> (b -> (a -> c))
+    MP E(b -> c,c,a, b -> (a -> c)), Q(b,c,a -> c).
+
+  S(a,b,c) = (a -> (b -> c)) -> ((a -> b) -> (a -> c))
+    MP C(a -> b, a -> (b -> c), a -> c), V(a,b,c).
+
+These are generated as new d59 through d63. This is a sharing refactor,
+not a claim of a novel implicational axiom or a shortest possible proof.
+
+For an unrestricted Implicational structure h, choose:
+
+  imp := the original connective
+  below := fun _ _ => True
+  refl, grow_left, grow_right := the unique trivial proof obligations
+  restricted.mp := h.mp
+  restricted.rho8 a b c u _ := h.rho8 c u a b
+
+Thus the same abstract theorem supplies the former unrestricted basis.
+There is no truth constant, formula decoder, arithmetic, implication
+injectivity, semantic completeness theorem, or new axiom involved.
+
+MEASURED SOURCE CHANGES
+
+DominatedImplication.lean: 295 -> 330 lines; 13,984 -> 15,383 bytes.
+Lukasiewicz.lean:          524 -> 105 lines; 28,731 -> 4,291 bytes.
+Combined proof files:     819 -> 435 lines; 42,715 -> 19,674 bytes.
+Reduction: 384 lines (46.9%) and 23,041 bytes (53.9%).
+The renderer adds 21 lines and the derivation data adds 10 lines, so the
+net across all four changed files is 353 lines and 21,813 bytes removed.
+The combined derivations remove 106 old MP steps and add five: 101 fewer.
+
+DELIVERABLES
+
+make_refactor.py reads a pinned checkout and writes reviewable replacements
+and shared-implication.patch to a separate output directory. It never edits
+the checkout. Example:
+
+  python3 make_refactor.py /path/to/ProveIt ./refactor
+
+The generated SharedImplicationCore.lean contains the complete generated
+63-step core followed by exactly the replacement generic Lukasiewicz
+section. It imports only Init and prints axiom dependencies for all six
+core exports and all four unrestricted wrappers. It deliberately excludes
+the unchanged Tarski bridge, whose full build needs project dependencies.
+
+The updated renderer continues to generate the old 52-step Nat Lean and
+Rocq proposals byte for byte. The core itself is generated from the updated
+derivation_core.txt, not edited independently of its producer.
+
+VALIDATION SCOPE
+
+A standalone kernel check establishes the shared mathematical core and
+all changed generic adapter proofs. It is not a full K215 endpoint rebuild.
+After applying the patch, regenerate DominatedImplication.lean, build
+Lukasiewicz and affected downstream clients, rebuild both K215 endpoints,
+and retain the repository's exact-artifact and assumption checks. The
+patch makes no machine-table or enumerator changes and claims no state
+count improvement.

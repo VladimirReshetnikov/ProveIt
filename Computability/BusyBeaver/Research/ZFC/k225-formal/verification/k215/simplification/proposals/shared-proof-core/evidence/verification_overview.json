@@ -1,0 +1,55 @@
+{
+  "source_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "status": "PASS_FOCUSED_COMPONENTS",
+  "lean_logic": {
+    "dependency_modules": 15,
+    "audit_clients": 2,
+    "complete": true,
+    "audits_status": "PASS",
+    "generic_core_and_basis_axioms": [],
+    "receipt": "lean_shared/verification/closure.json",
+    "audit_receipt": "lean_shared/verification/audits.json"
+  },
+  "lean_semantic": {
+    "dependency_modules": 13,
+    "audit_clients": 1,
+    "status": "PASS",
+    "semantic_halts_iff_axioms": [
+      "propext",
+      "Quot.sound"
+    ],
+    "legacy_halts_iff_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "original_definitions_unchanged": 15,
+    "receipt": "semantic_sites/verification/build_result.json"
+  },
+  "rocq_local": {
+    "toolchain": "Coq 8.18.0 / OCaml 4.14.1",
+    "modules": 8,
+    "closed_assumption_reports": 11,
+    "recursive_coqchk_exit": 0,
+    "receipt": "rocq_core/evidence/final_receipt.json",
+    "production_toolchain_not_rebuilt": "Rocq 9.1.0 / rocq-stdlib 9.0.0"
+  },
+  "source_metrics": {
+    "logic_mp_before": 164,
+    "logic_mp_after": 63,
+    "mp_convention": "Excludes common one-MP lift_right rule. Including it gives165->64.",
+    "lean_logic_before_bytes": 42715,
+    "lean_logic_after_bytes": 18668,
+    "rocq_logic_before_bytes": 22673,
+    "rocq_logic_after_bytes": 17617,
+    "semantic_interface_added_bytes": 5849,
+    "selected_lean_logic_plus_runtime_before_bytes": 58861,
+    "selected_lean_logic_plus_runtime_after_bytes": 40663
+  },
+  "limitations": [
+    "No new full K215 machine endpoint build.",
+    "No source branch obligations removed.",
+    "No claimed new build-time speedup.",
+    "No encoded internal ZFC or PA proof."
+  ]
+}

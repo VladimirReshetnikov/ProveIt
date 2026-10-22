@@ -1,0 +1,27 @@
+THE DIAGONAL GUARD IS TOO WEAK
+
+Carrier {0,1,2}; designated values {0}; implication table (rows antecedent,
+columns consequent):
+
+       0 1 2
+  0    0 1 1
+  1    0 0 0
+  2    0 0 1
+
+Let R(a,b,c,u)=((c -> u) -> a) -> ((a -> c) -> (b -> c)).
+Every diagonal row R(a,b,c,a) is designated, and modus ponens preserves
+designation. But R(1,0,2,2)=1 is not designated.
+
+Consequently no theorem about arbitrary implication operations can replace
+all subterm-dominated rows with diagonal rows alone. This is a local obstruction
+to an abstract proof-interface weakening; it says nothing about the consistency
+of ZFC or the existence of a smaller Turing machine.
+
+The current DominatedImplication interface already avoids totality,
+antisymmetry, transitivity, a truth constant, formula injectivity, and decoding.
+Its two growth rules provide more than reflexivity alone. The countermodel
+does not prove either growth rule independently necessary.
+
+DiagonalCountermodel.lean states the exact universal failure and can be
+checked with Lean 4 and Init only. check_countermodel.py checks all finite
+cases independently, but the Python result is not a formal proof receipt.

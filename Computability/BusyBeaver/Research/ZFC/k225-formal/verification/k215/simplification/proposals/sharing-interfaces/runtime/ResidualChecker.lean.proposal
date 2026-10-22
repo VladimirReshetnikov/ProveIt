@@ -1,0 +1,36 @@
+import BusyBeaver.ZFC.KDecoderPrefix215
+
+/- Owned proposed checker definitions. NOT compiled. This is not yet a Coverage adapter. -/
+namespace SetTheory.BusyBeaver.ZFC.ResidualChecker
+open KZip KRuntimeCore KSim KDecoderPrefix215 RegisterPath
+
+/-- `q` must also have a separately checked RoutedEntry for this source leaf. -/
+def runFromPort (M : TMN) (br : Branch) (pre : List Bool) (bit : Bool)
+    (q : Nat) (e : SConf) : Bool :=
+  (KHomeReady.exec M br (fun s => sMatches s e) FUEL
+    (leafPort pre bit q) false).isSome
+
+def haltFromPort (M : TMN) (pre : List Bool) (bit : Bool) (q : Nat) : Bool :=
+  (KHomeReady.exec M none isHalt FUEL (leafPort pre bit q) false).isSome
+
+/-- Residual counterpart of checkEdge, preserving the FULL consumed PC. -/
+def checkResidual (M : TMN) (pre : List Bool) (bit : Bool) (q : Nat) : Edge → Bool :=
+  let Q := pre ++ [bit]
+  fun e => match e with
+  | .inc r => decide (Q.length ≤ 48) && decide (r < 9) &&
+      runFromPort M none pre bit q
+        (tgtConf (incPath Q) (allOnes Q) (.plain (.inc (physOf r))))
+  | .decnz r => decide (Q.length ≤ 48) && decide (r < 9) &&
+      runFromPort M (some (physOf r, true)) pre bit q
+        (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (.plain .none)) &&
+      runFromPort M (some (physOf r, false)) pre bit q
+        (tgtConf (incPath Q) (allOnes Q) (.plain (.dec (physOf r))))
+  | .brk k => decide (Q.length ≤ 48) &&
+      runFromPort M none pre bit q
+        (tgtConf (breakPath k Q) (allOnes (stripPath false k Q)) (.plain .none))
+  | .cont k => decide (Q.length ≤ 48) &&
+      runFromPort M none pre bit q
+        (tgtConf (continuePath k Q) false (.plain .none))
+  | .halt => decide (Q.length ≤ 48) && haltFromPort M pre bit q
+  | .node _ => false
+end SetTheory.BusyBeaver.ZFC.ResidualChecker

@@ -1,0 +1,11 @@
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py
+@@ -232,7 +232,7 @@
+         identities = {}
+         for suffix, flag in [('version', '--version'), ('prefix', '--print-prefix')]:
+             log = session / ('toolchain-' + suffix + '.log')
+-            row = {'command': ['lake', 'env', 'lean', flag], 'timeout_seconds': 30}
++            row = {'command': ['lake', '-q', 'env', 'lean', flag], 'timeout_seconds': 30}
+             assert run_locked(row['command'], workspace, env, args.lock, log, 30,
+                               row, session / ('toolchain-' + suffix + '.json'))
+             identities[suffix] = log.read_text().strip()

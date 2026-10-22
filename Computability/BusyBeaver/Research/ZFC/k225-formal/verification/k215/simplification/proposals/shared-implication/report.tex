@@ -1,0 +1,848 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,enumitem,listings,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small K215 proof simplification}
+\fancyhead[R]{\small 21 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.55em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\emergencystretch=2em
+\definecolor{ink}{HTML}{17324D}
+\definecolor{shade}{HTML}{F1F5F9}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{shade},frame=single,
+rulecolor=\color{black!15},breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Reach}{\operatorname{Reach}}
+\newcommand{\Reachp}{\operatorname{Reach}^{+}}
+\newcommand{\Spec}{\operatorname{SiteSpec}}
+\newcommand{\Contract}{\operatorname{SiteContract}}
+\newcommand{\below}{\preccurlyeq}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pin}{\texttt{2ca3a5c16f0876d2cab842056353c03a1ed2f5f0}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2ca3a5c16f0876d2cab842056353c03a1ed2f5f0/#1}{#2}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\title{\color{ink}\bfseries Shortening the K215 Correctness Proofs\\[0.4em]
+\large One implication core and semantic instruction contracts}
+\author{Research and implementation proposal for ProveIt}
+\date{21 October 2026}
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+The most useful immediate shortening is to share two implicational derivations
+that remain separate in the current proof. The maintained 58-step dominated
+implication core already contains most of the unrestricted basis used elsewhere.
+Five additional modus-ponens steps derive its missing S theorem. Instantiating
+the shared core with the always-true guard then replaces a separate 107-helper
+derivation in \code{Lukasiewicz.lean}. The two proof files shrink from 819 to 435
+lines and from 42,715 to 19,674 bytes. The combined derivations use 101 fewer
+modus-ponens steps.
+
+A complementary change makes register-machine simulation consume semantic
+instruction contracts. The existing Boolean site checker becomes one provider
+of those contracts. This makes separately proved decoder, primitive and return
+contracts usable without proving completeness of a fixed-fuel checker.
+An isolated Lean implementation preserves all four legacy simulation interfaces
+and proves the same halting equivalence through the semantic interface.
+
+The new implication proofs and adapters were checked with Lean 4.32.0 and have
+no axiom dependencies. The semantic refactor, its 13-module project closure and
+typed compatibility clients were checked as well. These are focused checks of
+proposed changes, not a fresh build of the complete K215 endpoint. The packet
+contains patches, exact replacements, reproducible verification drivers, raw logs
+and a clearly labelled, uncompiled Rocq interface draft.
+\end{abstract}
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.62\textwidth}}
+\toprule
+Result & Status in this delivery\\
+\midrule
+Shared implication proof & 63-step core and exact generic adapters kernel-checked\\
+Semantic simulation interface & Replacement module and old/new clients kernel-checked\\
+Diagonal-guard obstruction & Three-element countermodel, with Lean and Python checks\\
+Full K215 endpoint after patches & Integration and complete downstream rebuild remain\\
+Rocq interface implementation & Design draft only; no new Rocq compilation claimed\\
+Machine and source & Same K215 target; this work changes proof infrastructure\\
+\bottomrule
+\end{tabular}
+\end{center}
+\newpage\setcounter{tocdepth}{1}\tableofcontents\newpage
+
+\section{Snapshot, scope and remaining duplication}
+
+\subsection{A fixed baseline}
+
+The reviewed snapshot is ProveIt commit
+\begin{center}\small\pin\end{center}
+All source comparisons and patches use that commit. A subsequent check found
+\code{6f0d42d36850}; its only change was an incoming
+ZIP under \code{docs/incoming}. The proof sources used here were unchanged.
+
+The maintained machine has 215 working states and 430 actions. Its dense-table
+SHA-256 is
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090
+\end{center}
+and its source JSON SHA-256 is
+\begin{center}\small\ttfamily
+17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba
+\end{center}
+Both were recomputed locally and agree with the repository verification record
+\cite{verification}. Neither artifact is modified by these patches.
+
+The established endpoint is the external proof-assistant theorem
+\[
+ \Halt(K215,\text{blank})\quad\longleftrightarrow\quad
+ \operatorname{Refutable}(\mathrm{ZFC}),
+\]
+where refutability means the existence of a finite derivation of falsity.
+Negation gives the nonhalting/syntactic-consistency equivalence. The repository
+explicitly distinguishes this from an internal PA proof or a derivation encoded
+in ZFC's own proof syntax \cite{verification}. The user's intended internal ZFC
+equivalence remains the metatheoretic target; shortening the external correctness
+development does not itself close that separate formalization task.
+
+\subsection{What the recent commits already accomplished}
+
+Several substantial improvements are already present and should be credited:
+\begin{itemize}
+\item Lean's dominated implication argument is a representation-independent
+58-step condensed-detachment derivation. It uses reflexivity and growth into
+either implication operand; it already needs no transitivity, formula decoder,
+injectivity or object-language truth constant.
+\item Lean's source correspondence uses 1,426 normalized certificate entries,
+balanced storage and one-sided checking.
+\item The seed directions share bundle semantics.
+\item The Home return scanner has a shared proof. Phase nine retains all 4,751
+leaves and 6,176 branch outcomes and reports 984.608 seconds for nine fresh site
+batches. Its comparison with the historical 1,649.340 seconds is historical,
+not a controlled paired benchmark.
+\item The decoder has a checked, exact source-bound prefix theorem. It reaches
+a primitive entry port while retaining the whole consumed word. Primitive
+factoring remains open.
+\end{itemize}
+These statements are grounded in the maintained sources and status records
+\cite{core,phase9,decoder,rho-status}.
+
+The production Rocq tree is at a different implementation boundary. Its
+\code{DomRho8.v} retains the older checked certificate replay; the newer 52-step
+rendering is a proposal. Its live \code{Source215.v} still invokes the signed
+offset checker in both directions. A normalized Rocq implementation exists in
+a separate proposal package \cite{rho-status,rocq-source,normalized}. Intermediate
+commit messages alone do not identify the current maintained implementation.
+
+\subsection{Three meanings of shortening}
+
+A proof improvement can remove mathematical duplication, reduce the source and
+dependency surface, or reduce kernel computation and rebuild time. These are
+different measurements. The shared implication change demonstrates the first
+two. No endpoint timing gain is claimed. The semantic interface enables future
+improvements but initially adds code. Neither source-line counts nor symbolic
+operation counts should be presented as a wall-clock measurement.
+
+\section{Immediate shortening: share the implication proofs}
+\label{sec:sharing}
+
+\subsection{The duplication}
+
+At the baseline, \code{DominatedImplication.lean} contains 58 numbered MP lemmas.
+Separately, \code{Lukasiewicz.lean} contains 107 private \code{cd\_} helpers:
+one axiom leaf and 106 MP steps. The latter derives K, Peirce, composition and S
+from unrestricted rho8 \cite{core,lukasiewicz}.
+
+The shared core already proves K at \code{d12}, Peirce at \code{d18}, and
+composition at \code{d58}. Its public exports are rho8, composition and prefixing.
+Thus most of the second derivation is available inside the first. Its missing
+public S theorem requires only five additional steps.
+
+This targets duplication at a mathematical boundary. The surviving proof keeps
+short, named nodes; there is no wholesale inlining of large substitution terms.
+The separation between an abstract implication argument and its numerical
+interpretation is retained.
+
+\subsection{The abstract interface}
+
+Let \(A\) be an arbitrary type, \(a\Rightarrow b\) an arbitrary binary operation,
+and \(T\subseteq A\) the designated predicate. Write
+\[
+ R(a,b,c,u)=((c\Rightarrow u)\Rightarrow a)
+ \Rightarrow((a\Rightarrow c)\Rightarrow(b\Rightarrow c)).
+\]
+The core assumes a relation \(\below\) with
+\[
+ a\below a,\qquad
+ u\below x\Longrightarrow u\below(x\Rightarrow y),\qquad
+ u\below y\Longrightarrow u\below(x\Rightarrow y),
+\]
+and inference data
+\[
+ T(a\Rightarrow b)\land T(a)\Longrightarrow T(b),
+ \qquad
+ u\below a\Longrightarrow T(R(a,b,c,u)).
+\]
+The operation need not be injective, and elements of \(A\) need not decode as
+syntax. This is useful for numerical code systems that admit junk codes.
+
+To recover \code{Lukasiewicz.Implicational}, take
+\[
+ u\below a\quad:\Longleftrightarrow\quad\top.
+\]
+The unrestricted rho8 field supplies the restricted field by ignoring its
+trivial guard. The connective and predicate remain unchanged. Here \(\top\)
+is a proposition in the metalanguage, not an object-language truth constant.
+
+The essential adapter is:
+\begin{lstlisting}
+private def fullLanguage (imp) where
+  imp := imp
+  below := fun _ _ => True
+  refl := fun _ => True.intro
+  grow_left := fun _ _ => True.intro
+  grow_right := fun _ _ => True.intro
+\end{lstlisting}
+The packet contains the complete typed version. The original
+\code{Implicational} structure and four public theorem types are preserved.
+
+\subsection{Exact source reduction}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Proof source & Before & After & Line change\\
+\midrule
+\code{DominatedImplication.lean} & 295 & 330 & \(+35\)\\
+\code{Lukasiewicz.lean} & 524 & 105 & \(-419\)\\
+\midrule
+Combined & 819 & 435 & \(-384\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The combined byte count changes from 42,715 to 19,674: 23,041 bytes removed,
+approximately \(53.9\%\). The line reduction is approximately \(46.9\%\).
+These measurements concern the two deployed proof sources, not the archive,
+which also includes patches and verification copies.
+
+The renderer adds 21 lines and derivation data adds 10. Including these producers,
+the four-file change removes 353 lines and 21,813 bytes. The old developments
+contain \(58+106=164\) MP steps, versus 63 in the shared core: 101 explicit
+MP steps eliminated. This does not assert minimality of 63 or an analogous
+reduction in compiled objects or endpoint time.
+
+The Tarski section after the generic \code{Lukasiewicz} namespace is byte-identical:
+1,358 bytes. Its ex-falso argument continues to use rho6. The refactor does not
+claim that rho8 alone proves arbitrary falsity elimination.
+
+\section{The five-step extension, with explicit proof}
+\label{sec:five}
+
+Write \(a\to b\) for the abstract connective. Every schema below is designated
+under \(T\); MP uses the supplied inference field, without a semantic
+interpretation of the arrows. The old core supplies
+\begin{align*}
+ A(a,b)&=a\to((a\to b)\to b), &&\text{\code{d36}},\\
+ B(a,b,c)&=(a\to b)\to((b\to c)\to(a\to c)), &&\text{\code{d58}},\\
+ D(a,b,c)&=(a\to(b\to c))\to((b\to a)\to(b\to c)), &&\text{\code{d47}}.
+\end{align*}
+
+\begin{lemma}
+The following five schemata follow by one MP step each in the displayed order:
+\begin{align}
+ Q(a,b,c)&=(((a\to b)\to b)\to c)\to(a\to c),\label{eq:q}\\
+ E(a,b,c,d)&=(((a\to b)\to(c\to b))\to d)\to((c\to a)\to d),\label{eq:e}\\
+ V(a,b,c)&=(a\to b)\to((a\to(b\to c))\to(a\to c)),\label{eq:v}\\
+ C(a,b,c)&=(a\to(b\to c))\to(b\to(a\to c)),\label{eq:c}\\
+ S(a,b,c)&=(a\to(b\to c))\to((a\to b)\to(a\to c)).\label{eq:s}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+For \eqref{eq:q}, apply MP to
+\(B(a,(a\to b)\to b,c)\) and \(A(a,b)\).
+For \eqref{eq:e}, apply MP to
+\[
+ B(c\to a,(a\to b)\to(c\to b),d)
+ \quad\text{and}\quad B(c,a,b).
+\]
+For \eqref{eq:v}, use
+\[
+ E(b,c,a,(a\to(b\to c))\to(a\to c))
+ \quad\text{and}\quad D(b\to c,a,c).
+\]
+For \eqref{eq:c}, use
+\[
+ E(b\to c,c,a,b\to(a\to c))
+ \quad\text{and}\quad Q(b,c,a\to c).
+\]
+Finally use
+\[
+ C(a\to b,a\to(b\to c),a\to c)
+ \quad\text{and}\quad V(a,b,c).
+\]
+Each first premise has the second as its antecedent after the displayed
+substitution. The generated proof terms give the substitutions explicitly.
+\end{proof}
+
+These become \code{d59} through \code{d63}. K and Peirce are exported from their
+existing nodes. The rho8, composition and prefixing exports keep their statements.
+
+\begin{theorem}[Shared unrestricted basis]
+For every type \(A\), binary operation \(\to\) and predicate \(T\), closure under
+MP and all unrestricted rho8 instances imply K, Peirce, composition and S.
+The implementation obtains all four from the same 63-step dominated core via
+the always-true relation adapter.
+\end{theorem}
+
+This theorem is mathematically familiar. The concrete result is the sharing
+refactor against this repository snapshot and the five-step extension that
+makes it economical. A standalone Lean file contains the entire generated core
+followed by the exact replacement generic adapter section. It imports only
+\code{Init}. All six core exports and all four adapter theorems were kernel-checked
+and report no axioms.
+
+The producer is synchronized: regenerating the core gives the proposed file
+byte for byte. The non-core Nat Lean and Rocq renderings are compared with the
+baseline renderer on their original derivation. Their existing output is unchanged.
+
+\section{Semantic instruction contracts}
+\label{sec:sites}
+
+\subsection{Why the Boolean boundary obstructs sharing}
+
+The maintained \code{KSim.Covered} requires every decoder walk to produce an edge
+with \code{checkEdge = true}. The \code{runTo} and \code{runHalt} checks invoke
+a symbolic executor with \code{FUEL = 4000}. Simulation unfolds the Boolean tests
+and invokes their soundness lemmas instruction by instruction \cite{ksim}.
+
+A semantic proof that a decoder and primitive tail reach the intended
+configuration does not imply that this fixed-fuel evaluator returns
+\code{true}. Soundness is not the converse completeness theorem. Thus a separately
+proved macro cannot simply replace an accepted Boolean result.
+
+An earlier incoming proposal already identified this boundary
+\cite{prior-contracts}. This packet implements the semantic interface,
+its adapters and simulation theorem, and checks old and new clients.
+The conceptual proposal is credited; the checked implementation is the advance.
+
+\subsection{Separate specification from producer}
+
+Define \(\Contract(M,E,Q,e)\) as the prescribed effect of edge \(e\), with full
+consumed word \(Q\), from symbolic entry port \(E\). The entry is a parameter
+so a decoder prefix can be composed with a primitive and return proof. Define
+\[
+ \Spec(M,Q,e)\quad:\Longleftrightarrow\quad
+ |Q|\le48\ \land\ \Contract(M,\operatorname{start}(Q),Q,e).
+\]
+The Lean implementation uses a structure with fields \code{length} and
+\code{effect}. It reuses the exact existing \code{tgtConf}, physical register
+map, growth, overflow and branch predicates.
+
+For returning instructions, the contract gives positive reachability
+\(\Reachp\) for every natural gap \(n\) and every register list satisfying the
+old \code{Valid} predicate. There are two producers:
+\begin{enumerate}
+\item \code{checkEdge\_sound} converts accepted old checks into semantic contracts,
+using the existing box-lemma hypothesis.
+\item Shared mathematical proofs construct contracts directly, by composing
+decoder, primitive and continuation facts.
+\end{enumerate}
+Only the first producer depends on the old evaluator.
+
+The new coverage predicate states
+\[
+\begin{split}
+ \operatorname{SemanticCovered}(M,p)\ :\Longleftrightarrow\
+ \forall P\,\exists e,d,\;&
+ \operatorname{walk}(p,p.\mathrm{nnodes}+1,p.\mathrm{root},P,0)
+       =\operatorname{some}(e,d)\\
+ &{}\land\Spec(M,\operatorname{consume}(P,d),e).
+\end{split}
+\]
+The stored path and consumed word are deliberately different: \code{consume}
+can include implicit zero padding.
+
+\subsection{Exact effects}
+
+Let \(q\) be the consumed word and \(r^\ast=\operatorname{physOf}(r)\).
+All returning rows below assert positive reachability to the existing target.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{p{0.13\textwidth}p{0.20\textwidth}X}
+\toprule
+Edge & Premise & Arguments to \code{tgtConf}\\
+\midrule
+\code{inc r} & \(r<9\), \code{Valid none} &
+\code{incPath q}, \code{allOnes q}, increment \(r^\ast\)\\
+\code{decnz r}, zero & \(r<9\), register \(r^\ast=0\) &
+\code{breakPath 1 q}, \code{allOnes (stripPath false 1 q)}, no effect\\
+\code{decnz r}, positive & \(r<9\), register \(r^\ast\ne0\) &
+\code{incPath q}, \code{allOnes q}, decrement \(r^\ast\)\\
+\code{brk k} & \code{Valid none} &
+\code{breakPath k q}, \code{allOnes (stripPath false k q)}, no effect\\
+\code{cont k} & \code{Valid none} &
+\code{continuePath k q}, no overflow, no effect\\
+\code{halt} & At least ten registers; state-230 terminal rows &
+Concrete halting from the entry configuration\\
+\code{node} & Impossible as an instruction leaf & \(\bot\)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The halt case retains the terminal-row premise. The Boolean halt checker only
+recognizes state 230, so it cannot prove terminality for arbitrary tables.
+For returning branches, positivity is part of the specification.
+
+\subsection{One simulation, with compatibility wrappers}
+
+The new theorem gives
+\[
+ \operatorname{RegisterPath.Halts}(p,c)
+ \longleftrightarrow\operatorname{KZip.Halts}(M,T)
+\]
+from \code{SemanticCovered}, the old terminal-row premise and the unchanged
+relation \code{Rel p c T}. It takes no \code{BoxLemmas} premise. A producer may
+need box lemmas, but the simulation only needs the contract they establish.
+
+The proof is the existing simulation with Boolean plumbing replaced by
+contract elimination. Register arithmetic, path cleanliness and full-tape
+reconstruction remain. The old public functions retain their types:
+\[
+ \code{sim\_step},\quad\code{sim\_stop},\quad
+ \code{sim\_halt},\quad\code{halts\_iff}.
+\]
+The step, halt and equivalence functions wrap semantic versions through
+\code{Covered.to\_semantic}. The short stop proof remains independent because
+its old public interface never needed box lemmas.
+
+The exact same typed legacy client compiles against original and replacement
+modules. The semantic audit exercises the new endpoint and composition rule.
+Matching legacy-client object hashes are supplementary evidence only, not
+equality of complete simulation proofs or endpoint artifacts.
+
+\section{Positive progress and exact continuation context}
+
+\subsection{Why the reverse direction needs a positive clock}
+
+Suppose the represented machine configuration halts after \(t\) physical steps.
+If the register program can step, simulation yields \(j+1\) physical steps to
+the next related configuration. Determinism and absence of a successor from
+the terminal configuration imply \(j+1\le t\). The remaining run has length
+\[
+ t-(j+1)<t,
+\]
+so strong induction on actual machine time proves a finite register-program
+halting run.
+
+If macros could simulate each source step with zero physical steps, this
+measure would not decrease. For example, a self-looping source configuration
+could be related to an already halted target, and reflexive reachability would
+vacuously simulate each source step. That would not preserve halting equivalence.
+
+The decoder prefix may be empty. The verified composition rule is therefore
+\[
+ \Reach(M,s,u)\land\Reachp(M,u,v)\Longrightarrow\Reachp(M,s,v).
+\]
+For halt, use
+\(\Reach(M,s,u)\land\Halt(M,u)\Rightarrow\Halt(M,s)\).
+The new \code{SiteContract.prepend} proves these compositions for every edge.
+
+\subsection{Keep the full consumed word}
+
+For \(Q=P\mathbin{+\!\!+}[b]\), the checked decoder reaches the zipper
+\[
+ \operatorname{zc}\!\left(
+ q,\operatorname{reverse}(P)\mathbin{+\!\!+}[\mathrm{true}],
+ b::0^{\,n+(64-|Q|)}
+ \mathbin{+\!\!+}(\mathrm{true}::\operatorname{sepsR}(vs))
+ \right).
+\]
+This is \code{leafPort pre bit q}. The consumed prefix is part of the
+continuation: return logic can revisit it, and break/continue depend on it.
+
+Sharing only by physical state, read bit or short suffix would discard
+continuation information. Existing decoder research already finds a failure
+of unqualified state/read-bit sharing \cite{decoder-research}. A valid primitive
+contract must retain the exact accepted role path and quantify over the whole
+prefix, gap, register list and branch. A short suffix can suffice inside a
+local decoder block with a proved frame theorem; that does not establish a
+complete primitive and return contract.
+
+The useful quantifier order is
+\[
+ \exists\text{ source-determined port}\quad
+ \forall n,vs\quad\exists\text{ run clock}.
+\]
+Choosing a separate unrelated port for each tape instance is too weak for a
+finite shared interface. The maintained \code{entry\_uniform} already provides
+the desired order \cite{decoder}.
+
+\subsection{Bounds and frame conditions remain mathematical obligations}
+
+The \(48\)-bit bound and \(64\)-cell \code{D0} parameter justify arithmetic in
+\code{rel\_view}. The \(r<9\) hypothesis links logical registers to the physical
+map. Increment appends a spare block; positive decrement changes the growth
+term. Those effects are preserved exactly by retaining \code{tgtConf}.
+
+Every gap value, including zero, is quantified. A symbolic true run may disappear
+at gap zero and join neighboring blank runs. The checked Home guard already
+handles that case. Neither the semantic refactor nor tests at a few sample
+gaps replace its universal argument.
+
+\section{Gradual migration to shared primitive proofs}
+
+The patch adds \code{semantic\_covered\_of\_allSites}. Given a Boolean classifier
+\code{test} and a proof
+\[
+ \forall Q,e,\quad\code{test}(Q,e)=\mathrm{true}
+ \Longrightarrow\Spec(M,Q,e),
+\]
+the existing structural \code{allSites} machinery supplies semantic coverage.
+This reuses tree totality and walk lemmas while allowing a different proof
+producer.
+
+For a first primitive family, take a mixed provider:
+\[
+ \code{test}(Q,e)=
+ \begin{cases}
+ \mathrm{true},&\code{selected}(Q,e),\\
+ \code{checkEdge}(M,Q,e),&\text{otherwise}.
+ \end{cases}
+\]
+Its soundness requires an explicit theorem
+\(\code{selected}(Q,e)\Rightarrow\Spec(M,Q,e)\); the fallback uses
+\code{checkEdge\_sound}. The semantic audit typechecks this migration pattern.
+
+A bounded first integration is:
+\begin{enumerate}
+\item Choose a primitive family with a manageable continuation invariant.
+The phase-nine packet identifies a first CB1 suffix proposal with 86 literal
+occurrences, explicitly source-only and uncompiled \cite{phase9}.
+\item Prove its tail theorem from the exact \code{leafPort}, with the full
+role-path guard and old target configuration.
+\item Compose the checked decoder prefix with the positive tail.
+\item Route that family through the new provider, retaining old checks elsewhere.
+\item Rebuild affected coverage and endpoint clients; benchmark old and mixed
+providers on the same table, source, compiler and machine.
+\end{enumerate}
+
+The semantic module grows from 356 to 482 lines, an increase of 126. It removes
+none of the 6,176 outcomes in this delivery. That added interface is valuable
+because future shared proofs can now feed the endpoint without manufacturing
+old fixed-fuel Boolean results. The first complete primitive family should show
+a practical reduction before broadening the approach.
+
+A decoder-role count or number of distinct first transitions is not a count
+of complete primitive contracts. This report does not assert that a few dozen
+proved runtime contracts already replace the entire site corpus.
+
+\section{The Rocq route}
+
+\subsection{Current production files}
+
+The reviewed live files under \code{rocq/rocq-extension/coq/215/} are:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+File & Bytes & Lines\\
+\midrule
+\code{DomRho8.v} & 22,673 & 1,169\\
+\code{Cert215Offsets.v} & 1,499,170 & 2,245\\
+\code{Source215.v} & 768 & 14\\
+\bottomrule
+\end{tabular}
+\end{center}
+The facade checks \code{ocheck} forward and on the mirrored relation. Its
+generator still produces that checked route. These are measurements of live
+pinned files, not historical alternative sources.
+
+\subsection{Semantic contracts in the current runtime}
+
+Rocq has the same coupling. \code{Interpreter230Sites} defines
+\code{run\_to}, \code{run\_halt} and \code{check\_site}.
+\code{Sim230.inv\_view}, \code{inv\_step} and \code{inv\_halt} carry Boolean
+facts into the simulation and unpack them branch by branch.
+
+Define
+\[
+\begin{split}
+ \operatorname{RunSpec}(br,Q,P,ovf,x):=\forall n,vs,\;&
+ \operatorname{valid}(br,vs)\Longrightarrow\\
+ &\operatorname{conc}(n,vs,\operatorname{start}(Q))
+ \mathrel{\longrightarrow^{+}}
+ \operatorname{conc}(n,vs,\operatorname{tgt\_conf}(P,ovf,x)).
+\end{split}
+\]
+The halt specification reaches a terminal configuration. \code{EdgeSpec}
+combines depth, register bounds, both decrement outcomes and the exact effect.
+Existing \code{run\_to\_sound} and \code{site\_halt} supply the old-checker adapter.
+
+Preserve the coverage index
+\[
+ \operatorname{firstn}
+ \bigl(d,P\mathbin{+\!\!+}\operatorname{repeat}(\mathrm{false},d)\bigr),
+\]
+including implicit zero padding. The existing tape invariant and public endpoint
+can remain while consumers eliminate \code{EdgeSpec} instead of Boolean gates.
+
+The machine-to-register direction of \code{Sim230Main.tm230\_rm} invokes
+\code{progress\_halts}, whose positive premise comes from \code{inv\_step}.
+The reason for strict progress is thus identical in both systems.
+
+The packet's \code{SemanticSites.proposal.v} supplies concrete definitions and
+proposed adapter scripts. It is uncompiled and does not yet edit the simulation
+consumers. It must not be cited as a new Rocq kernel result.
+
+\subsection{Share derivation data, retain independent kernel checking}
+
+A Rocq record with carrier, implication, reflexive growth relation, MP and
+restricted rho8 expresses the same generic theorem. Render the same 63-step
+data into explicit proof terms in each assistant, and connect each concrete
+Nat adapter independently.
+
+The initial recommendation is direct replay. Unification and search stay
+untrusted; each kernel checks every explicit step. A reflective interpreter may
+later be useful, but its correctness proof could outweigh the benefit for a
+63-step derivation.
+
+The current 52-step row-only proposal and a shared 63-step core have different
+interfaces. The latter also supplies composition, prefixing and K/Peirce/S.
+An isolated shortest row count is not the right metric for total duplicated
+mathematics across the endpoint.
+
+\subsection{Existing normalized correspondence is a separate adoption}
+
+The earlier normalized Rocq package records:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Representation & Entries & Source bytes\\
+\midrule
+Current offset certificate & 2,240 & 1,499,170\\
+Compact ordinary certificate and codec & 2,240 & 173,003\\
+Normalized ordinary certificate and codec & 1,426 & 109,958\\
+\bottomrule
+\end{tabular}
+\end{center}
+It contains \code{ncheck\_mirror} and \code{ncheck\_one\_sided\_iff}, removing
+the second traversal by theorem \cite{normalized}. These are prior contributions.
+
+Adopt the generator, facade and manifest together, then rebuild the affected
+Rocq closure, endpoint assumption reports and recursive \code{coqchk}. A checked
+theorem in an incoming package does not establish that the maintained endpoint
+imports it. Keep this integration separate from the semantic refactor so the
+acceptance question remains clear.
+
+\section{An obstruction to diagonal-only simplification}
+
+A tempting shortcut keeps only rho8 instances with \(u=a\), removing the
+growth relation. This is invalid for the abstract interface.
+
+\begin{proposition}
+MP and all diagonal \(R(a,b,c,a)\) do not imply every unrestricted rho8 instance
+for arbitrary carriers and operations.
+\end{proposition}
+\begin{proof}
+Let \(A=\{0,1,2\}\), designate only \(0\), and define
+\begin{center}
+\begin{tabular}{c|ccc}
+\(\to\)&0&1&2\\ \hline
+0&0&1&1\\
+1&0&0&0\\
+2&0&0&1
+\end{tabular}
+\end{center}
+MP preserves designation: with designated antecedent \(0\), the first row
+is designated only when the consequent is \(0\). All 27 diagonal instances are
+designated, by a finite case split. But \(R(1,0,2,2)=1\) is not designated.
+\end{proof}
+
+An \code{Init}-only Lean theorem proves the universal failure, and an independent
+Python checker verifies all nine MP cases and 27 diagonal instances. This is
+an algebraic countermodel for an abstract propositional inference, not a model
+of ZFC. It rules out the diagonal-only shortcut; it does not prove independent
+necessity of each growth operation.
+
+The always-true adapter is different: its unrestricted premise supplies every
+row. It does not weaken a restricted premise to diagonal rows. Keeping that
+distinction prevents an apparent interface simplification from silently changing
+the theorem.
+
+\section{Validation and limits}
+
+\subsection{Checks performed}
+
+The compiler is Lean 4.32.0, release commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}, matching \code{lean-toolchain}.
+Proof compilers ran serially. The delivered drivers use one worker, a
+12,288 MiB cap and the shared compiler-lock convention.
+
+The checks cover:
+\begin{enumerate}
+\item The full 63-step generic core and exact replacement generic
+\code{Lukasiewicz} section. Ten named reports have no axiom dependencies.
+\item The diagonal countermodel and universal obstruction. Four named reports
+have no axiom dependencies.
+\item The 13-module simulation closure, including runtime, path, source-tree
+and framing dependencies.
+\item Original \code{KSim} and a typed legacy client, then replacement
+\code{KSim} and the exact same client.
+\item A semantic client for halting equivalence, prefix composition and mixed
+coverage.
+\item Exact regeneration, preserved public headers and structure, unchanged
+Tarski tail, unchanged non-core renderer outputs, patch applicability and
+source hashes.
+\end{enumerate}
+
+In the semantic audit, \code{semantic\_halts\_iff} uses only
+\code{propext} and \code{Quot.sound}. The legacy wrapper includes
+\code{Classical.choice} through the old provider. This local observation does
+not imply that the complete ZFC endpoint loses choice.
+
+The final semantic run has 17 compiler invocations. No machine-specific site
+batch is re-evaluated in that focused run. Its recorded elapsed seconds are
+verification receipts, not an endpoint performance comparison.
+
+\subsection{What production acceptance still requires}
+
+The standalone implication projection excludes the unchanged Tarski bridge and
+its wider dependencies. It validates all changed mathematical proofs and generic
+adapters, but the full replacement \code{Lukasiewicz.lean} still needs project
+integration. The semantic checks similarly validate a generic interface,
+not missing primitive contracts or the entire closed K215 endpoint.
+
+After applying the changes:
+\begin{enumerate}
+\item Regenerate the core. Compile the full \code{Lukasiewicz},
+\code{DomRho8}, \code{KCodeDom} and affected descendants with exact source/import
+bindings.
+\item Rebuild affected simulation descendants and rerun both closed Lean
+endpoint clients.
+\item Retain dense-table, source, boot and assumption checks.
+\item Apply separate generator and endpoint gates to any Rocq adoption;
+this packet has no new Rocq compiler receipt.
+\end{enumerate}
+
+Proof changes invalidate downstream compiled artifacts even when executable
+definitions remain unchanged. Phase nine documents why valid reuse must follow
+source/import ancestry rather than an unchanged intermediate object
+\cite{phase9}. Accordingly, the complete modified endpoint is not labelled
+checked here.
+
+\subsection{Reproduction}
+
+The packet includes exact replacements, patches, derivation and renderer,
+drivers, metrics and raw logs. It omits compiled objects; the drivers create
+isolated build directories.
+
+\begin{lstlisting}
+python3 verify_all.py --repo /path/to/ProveIt --lean /path/to/lean
+\end{lstlisting}
+The checkout must have the pinned HEAD. Verification does not edit it and does
+not download tools. These focused checks use the pinned project sources and
+Lean's \code{Init}, with no Mathlib download.
+
+Before applying:
+\begin{lstlisting}
+git -C /path/to/ProveIt apply --check /path/to/combined.patch
+\end{lstlisting}
+Raw compiler logs establish compilation claims. Metrics and finite checks are
+recorded separately. The provenance notice retains upstream attribution.
+
+\section{Recommended integration order}
+
+Adopt the shared implication change first. It is a coherent mathematical
+refactor with a measured reduction, a five-step extension readable by hand,
+synchronized producers and a dependency-light kernel check. The numerical
+adapter need not be redesigned.
+
+Next adopt semantic simulation with its compatibility wrappers and retain the
+existing Boolean provider. Its additional 126 lines provide an explicit
+mathematical boundary for composition.
+
+Then prove one complete primitive and return family from the exact decoder
+port. Use mixed coverage to substitute that family, check identical branch
+targets and all-gap semantics, and measure clean and incremental compilation
+cost. Extend only after that first family demonstrates useful savings.
+
+For Rocq, reconcile the maintained boundary with existing normalized and shorter
+implication proposals in separate changes. Share mathematical contracts and
+derivation data while each kernel checks its own proof terms. This concentrates
+future work on obligations that actually differ between representations.
+
+\appendix
+\section{Source and evidence map}
+All repository references are pinned. \code{source-pins.json} records primary
+source hashes. Proof metrics, compiler receipts and controls are in the
+implementation directories and \code{verification/}.
+
+\begin{longtable}{p{0.25\textwidth}p{0.66\textwidth}}
+\toprule
+Artifact & Purpose\\ \midrule\endhead
+\code{shared-implication/} & Four-file refactor, derivation, renderer, standalone
+projection, replay driver and metrics.\\
+\code{semantic-sites/} & Replacement \code{KSim}, driver and old/new typed clients.\\
+\code{countermodel/} & Three-element algebra, Lean obstruction and Python check.\\
+\code{rocq-design/} & Explicitly uncompiled interface draft and integration notes.\\
+\code{verification/core/} & Core/countermodel logs, hashes and source controls.\\
+\code{verification/sites/} & Semantic receipt and original/replacement client logs.\\
+\code{combined.patch} & Independent implication and simulation changes together.\\
+\code{verify\_all.py} & Serial focused verification against the pinned checkout.\\
+\code{NOTICE.txt} & Attribution and boundary between new and inherited work.\\
+\bottomrule
+\end{longtable}
+
+\newpage
+\begin{thebibliography}{99}
+\bibitem{verification}
+ProveIt, \emph{Formal correctness of the exact 215-state machine}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{Verification record},
+with exact hashes, endpoint statements and internal-proof boundary.
+\bibitem{phase9}
+ProveIt, \emph{Ninth K215 proof-simplification checkpoint}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/README.md}{Phase-nine record},
+including Home, decoder prefix, retained outcomes and timing qualifications.
+\bibitem{core}
+ProveIt, \repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean}{\code{DominatedImplication.lean}},
+the maintained 58-step core.
+\bibitem{lukasiewicz}
+ProveIt, \repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean}{\code{Lukasiewicz.lean}},
+the 107-helper derivation and Tarski bridge.
+\bibitem{rho-status}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/PROVEIT_STATUS.md}{\code{rho8cd/PROVEIT\_STATUS.md}},
+distinguishing maintained Lean and Rocq boundaries.
+\bibitem{ksim}
+ProveIt, \repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean}{\code{KSim.lean}},
+original checker, coverage and simulation.
+\bibitem{decoder}
+ProveIt, \repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDecoderPrefix215.lean}{\code{KDecoderPrefix215.lean}},
+exact zipper entry and uniform leaf/walk prefixes.
+\bibitem{prior-contracts}
+ProveIt, \emph{Context factoring and a universal return-to-dispatch contract}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/further-simplifications/runtime_contexts/README.md}{Earlier runtime-context proposal},
+including the semantic site-specification design.
+\bibitem{decoder-research}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/decoder-sharing-research/README.md}{Context-aware decoder-sharing research},
+local frames and limitations of state/read-bit sharing.
+\bibitem{rocq-source}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/Source215.v}{Rocq \code{Source215.v}}
+and \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/DomRho8.v}{\code{DomRho8.v}},
+plus the matching generator.
+\bibitem{normalized}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/checked-simplifications/normalized_rocq/README.md}{Normalized Rocq correspondence proposal},
+with 1,426 entries and the one-sided equivalence theorem.
+\bibitem{generator}
+ProveIt, \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/derivation_core.txt}{Core derivation}
+and \repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py}{renderer}.
+The packet supplies synchronized successors.
+\end{thebibliography}
+\end{document}
+

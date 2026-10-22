@@ -1,0 +1,38 @@
+--- SourceGraphBridge.v
++++ SourceGraphBridge.v
+@@ -1,7 +1,7 @@
+ From Coq Require Import Lists.List Bool Arith Lia NArith.
+ From K230 Require Import RM RMEquiv.
+ From K230P Require Import Bisim230.
+-Require Import NormalizedBisim DrainCore.
++Require Import PathEq DrainCore.
+ Import ListNotations.
+ 
+ (** The graph certificate is checked against the literal program tree.
+@@ -27,7 +27,7 @@
+ Definition branch_ok (t : Bisim230.tree) (L : N -> list bool)
+     (A : list bool) (a : arc) : bool :=
+   match seg t seg_fuel A with
+-  | Some (l,P) => cnt_eq l (expand (adds a)) && NormalizedBisim.ibeq P (L (destination a))
++  | Some (l,P) => cnt_eq l (expand (adds a)) && PathEq.ibeq P (L (destination a))
+   | None => false
+   end.
+ 
+@@ -52,7 +52,7 @@
+   unfold branch_ok; destruct (seg t seg_fuel A) as [[l P]|] eqn:E; [|discriminate].
+   rewrite andb_true_iff; intros [C B]; exists l,P; split; [reflexivity|]; split.
+   - intro i; rewrite (cnt_eq_ok _ _ C), cnt_expand; reflexivity.
+-  - apply NormalizedBisim.ibeq_ok; assumption.
++  - apply PathEq.ibeq_ok; assumption.
+ Qed.
+ 
+ Section Adequacy.
+@@ -91,7 +91,7 @@
+   intros B E H; destruct (branch_ok_spec _ _ _ _ B) as (l & P & Seg & C & Loc).
+   destruct (seg_run p _ _ _ _ R Seg) as (n & S & Run & Eq).
+   eapply halts_pre; [exact Run|].
+-  apply (NormalizedBisim.halts_ipeq p (L (destination a)) P S (ipeq_sym _ _ Loc)).
++  apply (PathEq.halts_ipeq p (L (destination a)) P S (ipeq_sym _ _ Loc)).
+   apply H; intro i; rewrite E, Eq, C; reflexivity.
+ Qed.
+ 

@@ -1,0 +1,103 @@
+Independent source review: UniformDecoder.lean
+==============================================
+Reviewed file:
+/workspace/scratch/c50db32552ed/k215-proof-simplification-2026-10-21/proofs/UniformDecoder.lean
+Reviewed SHA-256:
+25d6fc90c214c841c350f2074a7fbc6e63c76a884f92b00c02fdfd6bf9942f4b
+Baseline imports: ProveIt 2ca3a5c16f0876d2cab842056353c03a1ed2f5f0.
+Review type: independent source/logical review. This review did not run Lean.
+The author reports an earlier uniform theorem compiled; the depth addition
+was not yet compiled when this version was reviewed. Use the final author's
+compiler receipt for any later compilation claim.
+
+Conclusion
+----------
+No mathematical or specification flaw was found in this version. The new
+uniformity assertion is genuinely stronger than the imported predecessor:
+the exact step count, exit control state, last bit and RoutedEntry witness
+are selected before the universal head-position/tape quantifiers. The proof
+constructs them from the finite source and role data. It does not move an
+existential across a universal by an unjustified logical implication.
+
+Uniform route induction
+-----------------------
+The source leaf case is impossible because good requires both edge specs
+for the supplied role, whose source node must be a fork. This is already
+the original theorem's necessary boundary: the decoder starts at a fork
+and stops before the primitive terminal transition.
+
+In the primitive case, the next source child is a leaf, so the remaining
+word is exactly one bit. Clock 0, current state and that bit are fixed
+without consulting a tape. The assembled RoutedEntry identifies the same
+source leaf and verifies its physical primitive row through EdgeSpec.
+Chain.done supplies the unchanged tape and zero displacement, matching
+the stated final head a+1-1=a.
+
+In the internal case, target role and block are selected from finite arrays
+before tape quantification. The induction hypothesis fixes the tail clock
+and final control. The returned clock is b.steps+tailSteps. RoutedEntry
+nonemptiness supplies w.length>0, which is necessary for the natural
+subtraction bound. Bounds then follow from 1<=b.steps<=7 and the tail's
+length-minus-one bounds. No accidental truncated-subtraction case remains.
+
+Only the semantic body introduces a,t. It extends Before by the actual
+read bit, restricts to the block's checked window, forms the next suffix,
+and calls the fixed tail plan. The block starts at the current head,
+restores the whole tape, and advances exactly one cell. Chain.more adds
+the exact clocks and the final integer head arithmetic is correct.
+
+The final K215 instance uses the actual checked block and structural
+certificates. Its run is on fullStep formal with formal bound to the
+maintained sparse table; no copied or unspecified table is introduced.
+The entire tape t is identical in the start and end configurations.
+It permits all integer starting positions and every matching full tape,
+with no hidden register, finite-support or gap assumption.
+
+Depth check
+-----------
+atLeastDepth nodes 0 node=true intentionally imposes no condition. Its
+soundness statement still requires an actual SourcePath, and the claimed
+0<=word.length is unconditional. For positive depth the checker insists
+on a fork and both child checks. A SourcePath leaf contradicts that check;
+a SourcePath fork selects exactly the appropriate checked child. The
+induction then gives k<=tail.length and successor monotonicity yields the
+stated bound for the leading bit. This argument is independent of K215's
+intended semantics and does not depend on well-founded node numbering.
+
+source_depth_three checks only the exact literal finite source. The
+Boolean test is suitable for kernel evaluation. At this pin its result is
+also confirmed by an independent parse and full occurrence census, but
+that Python result is not used as a theorem assumption.
+
+Progress corollary
+------------------
+The revised positive corollary is valid and removes the unnecessary
+caller depth hypothesis: source_path_length gives word.length>=3,
+while the uniform route's lower bound gives word.length-1<=steps;
+therefore 2<=steps. It retains the same uniform port and uses the first
+component of the exact semantic result. The source-depth fact is now
+discharged once rather than repeated by every future caller.
+The author made this small improvement during the review, and the hash
+above identifies the revised source reviewed here.
+
+Implications for the zipper adapter
+----------------------------------
+The existing entry_run first gets a port inside each tape instance.
+entry_uniform fixes one using n=0,vs=[] and route/word uniqueness proofs.
+The new theorem already fixes the port and clock. A zipper lifting can
+therefore extract RoutedEntry once, obtaining the split word=pre++[bit],
+then introduce n,vs, construct its tape and apply the SAME step count.
+The existing reads_of_rel, rel_word and KZipTape.run_reflect bridge supply
+the required equality. No second invocation on a sample empty register
+list and no route-unicity comparison are needed.
+
+This supports removing that reconstruction from a replacement adapter.
+It does not by itself justify deleting public uniqueness lemmas: existing
+clients and their external API uses must be checked, or compatibility
+wrappers retained. It also does not establish any primitive tail theorem,
+SemanticCovered instance, new endpoint closure, or measured speedup.
+
+The proposed tail checker may use moved=true only after composition with
+the certified positive prefix; its Reach result alone would be inadequate
+for the reverse halting simulation. The strengthened fixed-clock theorem
+and exact depth bound provide the missing positivity uniformly.

@@ -1,0 +1,106 @@
+{
+  "scope": "generic core and numerical adapter, archived arithmetic dependencies, Coq 8 import compatibility",
+  "production_endpoint_rebuilt": false,
+  "production_rocq91_checked": false,
+  "original_adapter_sha256": "392a9e8f1e72b20fbac66a048fd37ca477e05ebda82091ca86d3a3a99cee4659",
+  "compatibility_edit": "From Stdlib Require Import Arith Lia. -> From Coq Require Import Arith Lia.",
+  "sources": {
+    "K230S/KCode230.v": "bf7f032ca4408f50dcee14d2b49d113fb442a717b585f0cfdfe48bf14e4908be",
+    "K230L/Codes230.v": "09ad45fa4d67885f293a0709e13a7e0ea0e16b5d2094bbc1bb98aea0e7bce06a",
+    "K215F/DominatedImplication.v": "91b4be29acc9c405394a119c5789191abd6a2c8af4fdc6a2d7b470cc30f74d39",
+    "K215F/DomRho8.v": "8d0229f1975000de6a5db53a026330d8e44fed187c8894aacf3b7dfa85c65574"
+  },
+  "runs": [
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K230S/KCode230.v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K230L/Codes230.v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K215F/DominatedImplication.v"
+      ],
+      "exit_code": 0,
+      "stdout": "Closed under the global context\nClosed under the global context\nClosed under the global context\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqc",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K215F/DomRho8.v"
+      ],
+      "exit_code": 0,
+      "stdout": "Closed under the global context\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/c50db32552ed/toolchains/coq818/usr/bin/coqchk",
+        "-silent",
+        "-Q",
+        "K230S",
+        "K230S",
+        "-Q",
+        "K230L",
+        "K230L",
+        "-Q",
+        "K215F",
+        "K215F",
+        "K215F.DomRho8"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[10pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\pagestyle{fancy}\fancyhf{}\lhead{K215: further proof simplification}\rhead{21 October 2026}\cfoot{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\newtheorem{proposition}{Proposition}
+\newcommand{\code}[1]{\texttt{#1}}
+\emergencystretch=4em
+\setlist[itemize]{label=$\bullet$}
+\begin{document}
+\begin{center}{\Large\bfseries Simplify interfaces before shrinking certificates}\\[6pt]
+A further Rocq and Lean proof review for ProveIt\\21 October 2026\end{center}
+\textbf{Recommendation.} First extract one calculus-independent enumeration/fairness theorem in each assistant. Next separate the decoder's finite route and clock from its tape semantics. For the newly supplied affine lane, replace bespoke numerical halting budgets with a reusable reachable-suffix induction principle. These simplify repeated arguments without changing a machine, calculus, or public consistency statement.
+
+\textbf{Pinned review.} This report concerns main at
+\code{6f0d42d368506bc29c70ace1c992ed88b2651346} (23:28 UTC).
+It is a source review and ordinary mathematical proposal, not a new kernel build.
+No incoming executable was run. No source patch was committed.
+
+\section*{1. What is already done, and what is not}
+The recent Lean changes must not be proposed again:
+\begin{itemize}[leftmargin=*,nosep]
+\item Phase eight shares implication and seed semantics.
+\item The phase-nine return/prefix work already constructs decoder chains from source paths and provides exact arbitrary-gap/register prefix execution.
+\item Commit \code{d93adc41745b} replaces the generic implication core by a 58-step condensed-detachment derivation. The latest merge retains that core; its Nat adapter is unchanged.
+\end{itemize}
+The maintained Rocq files and the receipts imported from other branches are different evidence boundaries. The latest merge explicitly retains the older checked Rocq replay. A recorded normalized-source recursive check at \code{9bac1c40} must not be attributed to different source bytes merely because its receipts occur in the history.
+
+The newest incoming packet supplies a checked 367-control affine source lane and CM215 integration evidence. It explicitly says that generated graph/rank/location sources (284,987 bytes) exceed the earlier normalized certificate (109,958 bytes). Thus fewer graph vertices are not by themselves a shorter proof or a better maintained default. Its seed cleanup and CM215 design are inherited, not new discoveries of this review.
+
+\textbf{Scope of improvement.} The targets below concern proof organization and reusable lemmas. No wall-clock, memory, compiled-proof-size saving, or smaller-than-215-state machine is established here. Exact savings require an implementation and a pinned rebuild.
+
+\section*{2. First priority: one enumeration/fairness core}
+Lean's \code{Enum222}, \code{EnumDom}, and \code{EnumPerm} repeat the same scheduler argument around different command semantics. In Rocq, \code{L1\_CompPerm} and \code{SeedPerm} repeat candidate-index reachability and halting transport. The natural abstraction is the scheduler, not the entire proof calculus.
+
+Let $S$ be states, $\delta:S\to\operatorname{option}(S)$ the step function,
+and $p,n:S\to\mathbb N$ the program remainder and next candidate index.
+Require only these successful-step laws:
+\[
+\delta(s)=\operatorname{Some}(t),\ p(s)>0
+ \Longrightarrow p(t)<p(s)\ \land\ n(t)=n(s),
+\]
+\[
+\delta(s)=\operatorname{Some}(t),\ p(s)=0
+ \Longrightarrow n(t)=n(s)+1.
+\]
+No uniform bound on $p(t)$ is needed at a boundary step. The new rank is a natural number and can be drained separately.
+\newpage
+\begin{proposition}[Drain and cofinal boundary reachability]
+Every state either reaches a halting state or reaches a boundary $p=0$ without changing its candidate index. Starting at a boundary $s_0$, for each $k\in\mathbb N$, either the machine halts or it reaches a boundary $s_k$ with $n(s_k)=n(s_0)+k$.
+\end{proposition}
+\begin{proof}
+For the first claim use strong induction on $p(s)$. Rank zero is already a boundary. Otherwise inspect $\delta(s)$: failure gives halting, while success strictly decreases rank and preserves the index. For the second claim induct on $k$. At a reached boundary inspect one step, retaining the possibility of halting; otherwise the index increments once, and the first claim supplies the next boundary. Compose the finite runs. This proof does not inspect an axiom, formula code, theorem stack, or command decoder.
+\end{proof}
+
+\textbf{Completeness interface.} Suppose inconsistency supplies, for every lower bound $N$, an encoded command list of code $M\geq N$ that halts from \emph{every} payload state. Boundary reachability reaches candidate $M$ (or has already halted), and the command-list execution lemma finishes. Arbitrary initial payload is essential here: soundness may require an invariant, but this completeness argument does not.
+
+\textbf{Concrete refactor.}
+\begin{enumerate}[leftmargin=*,nosep]
+\item Put generic run composition, drain and cofinal reachability in one small module in each language. Keep concrete definitions and their old public theorem names as wrappers initially. These are maintenance-wide savings; the current K215 endpoint need not import every older enumerator.
+\item In Lean instantiate the scheduler for all three enumerators. Retain the variant-specific \code{step\_pl}/\code{step\_start} or \code{step\_eq}/\code{decode\_le} adapters, command execution and axiom contracts.
+\item In Rocq generalize \code{reach} to a boundary seed with arbitrary initial index; make \code{reach\_from} a wrapper. Unify \code{halts\_from\_reach} and \code{halts\_from\_reached}. A single cofinal completeness theorem then specializes to the ordinary and seeded enumerators.
+\end{enumerate}
+The padded candidate construction must remain in the concrete adapter: prove its code is at least the starting index and that its execution contract holds for all payloads. Do not replace this by a vague assertion that enumeration is fair. Preserve early-halting disjunctions, including on malformed codes; do not quietly add a well-formed-input assumption.
+
+\section*{3. Lean: choose the decoder route before the tape}
+The new \code{KDecoderPrefix215.entry\_uniform} first calls \code{entry\_run} at gap $0$ and register list $[]$ to select a port. For an arbitrary gap/register list it calls the execution theorem again, then aligns the results through \code{routed\_control\_unique}, \code{rolePath\_unique} and \code{snoc\_unique}. This is correct, but it derives a syntactic fact through two semantic executions.
+
+Instead strengthen the source-path result to the following quantifier order:
+\[
+\exists\,\text{route},q,b,\mathrm{op},\mathrm{arg},k,\quad
+ \forall a,t,\quad \text{Before}(a,t)\land\text{Reads}(a,t,w)
+ \Longrightarrow \operatorname{run}^{k}(84,a,t)
+       =(q,a+|w|-1,t).
+\]
+Here the route, entry port and clock depend on the source path and checked block data, not on $t$. They may be a dependent record or a pure existential; an executable route function is not necessary for the first refactor.
+\newpage
+\textbf{Construction and proof.} Split the existing source-path induction into two parts:
+\begin{enumerate}[leftmargin=*,nosep]
+\item Construct a finite routed block chain using the source path, role lookup and checked edges. The primitive case contributes zero internal decoder steps. At an internal node add the chosen block's fixed step count to the child's count.
+\item Prove the route sound for every tape satisfying its guards. Each local block restores the tape and advances the head as specified, so the prefix-reading and short-history guards pass to the next block. Compose existing framed-window block correctness.
+\end{enumerate}
+Then the zipper bridge is applied once parametrically in the gap and registers. \code{entry\_uniform} becomes a projection of this stronger statement: no sample execution, second existential selection, or port-identification transport is needed. Moreover the exact same clock $k$ works for all those payloads, stronger than the current per-payload existential clock.
+
+\textbf{Guardrails.} The whole source path determines the role; a physical state or two-bit suffix does not identify every role. Keep the terminal source bit and full routed-entry witness. The clock stops at primitive entry: it is not a fixed cost for primitive execution or the return scan. Do not conclude this strengthening from the current abstract \code{FullEntry} interface alone, which has tape-dependent existentials. Prove it from the checked route construction, then derive \code{FullEntry} for compatibility. Remove uniqueness helpers only after a caller census. A route in a computational type must be built from decidable data or explicit indices, not by forbidden elimination of a general proposition-valued path proof into a natural-number clock.
+
+\section*{4. Rocq: avoid a second numerical halting semantics}
+The incoming affine lane's \code{CoreContraction.v} introduces \code{within}, a bounded halting predicate, solely to justify completeness after normalizing several transitions. It then develops budget raising, step and multi-step cancellation, normalization preservation and conversion from halting to a budget.
+
+A reusable induction principle can express exactly what is needed. Write $s\to^*t$ for finite reachability and $H(s)$ for inductively defined halting. For an ordinary deterministic transition relation, assume halting states have no successors. Let $P$ satisfy
+\[
+\operatorname{Halt}(s)\Rightarrow P(s),
+\qquad
+s\to t\ \land\bigl(\forall u,\ t\to^*u\Rightarrow P(u)\bigr)
+\Rightarrow P(s).
+\]
+\begin{proposition}[Reachable-suffix halting induction]
+Under these assumptions, $H(s)\Rightarrow P(s)$.
+\end{proposition}
+\begin{proof}
+Strengthen the induction on the derivation of $H(s)$ to
+$\forall u,\ s\to^*u\Rightarrow P(u)$. At a halted state every reachable suffix is the state itself, since no first step exists. At a step $s\to t$, the induction hypothesis supplies $P$ on every suffix of $t$, hence the step premise supplies $P(s)$. A nonempty path from $s$ has the same first successor by determinism and is therefore covered by the induction hypothesis; the empty path uses $P(s)$.
+\end{proof}
+For the concrete register semantics, determinism is only up to \code{req}, pointwise register equality. Strengthen the conclusion over all reachable endpoints. At a zero-step suffix, transport the original first edge to the extensionally equal register file using \code{step\_source\_ext}; at a nonempty suffix transport its first successor using determinism up to \code{req}. No extra extensionality premise on $P$ is needed. The zero-step constructor already permits \code{req}. Do not replace pointwise equality by equality of functions or add functional extensionality.
+\newpage
+\textbf{Application to the core.} Prove once that normalization is a reachable state:
+\[
+\exists m,\quad s\to^{m}\operatorname{normalize}(f,s).
+\]
+Induct on fuel; each recognized drain uses the existing \code{drain\_exact\_steps}, and each unrecognized node or exhausted fuel is a zero-step result. Instantiate $P$ by \code{core\_halts}. Its step constructor asks for $P$ at the normalized successor, supplied directly by the reachable-suffix premise. The strengthened induction handles \code{req} through source transport rather than a new equality axiom.
+
+This replaces the \code{within} family, \code{accelerate\_within},
+\code{normalize\_within}, \code{halts\_has\_budget} and the separate budget induction.
+Soundness still expands the exact finite macro path. It does not need the number of contracted steps, a rank certificate, or a claim that normalization always finds a retained vertex. Finite-core membership remains a separate checked fact.
+
+This is an ordinary proof proposal, not a compiled replacement. The helper theorem has an initial cost; measure total maintained proof size after both this application and other deterministic macro proofs use it. The source-to-graph bridge is a possible later client, but its cross-semantics correspondence obligations must not be removed merely by analogy.
+
+\section*{5. Acceptance plan and priorities}
+\begin{enumerate}[leftmargin=*,nosep]
+\item Implement scheduler extraction first, keeping concrete state/step functions definitionally unchanged. Check all three Lean enumerator clients and both Rocq completeness specializations. Preserve public theorem types.
+\item Add the stronger tape-independent decoder-route theorem. Derive the old prefix interface as a corollary; bind the same literal table, source tree and role data. Check the full prefix-to-zipper clients.
+\item Prototype reachable-suffix induction in the auxiliary affine lane. Keep old/new public equivalence statements side by side until both compile with the same assumptions.
+\item Rebuild the exact affected dependency closure, print endpoint assumptions and run recursive Rocq checking on the exact final sources. Record fresh versus reused modules. Maintain generator/source byte bindings wherever generated modules change.
+\item Compare handwritten proof lines, generated bytes, peak memory, compilation and kernel-check time separately. A shorter statement, fewer graph vertices, or smaller compressed archive does not establish all these improvements.
+\end{enumerate}
+\textbf{Bottom line.} The most conservative common improvement is to prove scheduling once. The highest-leverage new Lean interface is a tape-independent decoder certificate with a fixed internal clock. The affine Rocq lane offers a clean test case for replacing explicit halting budgets with a general suffix-closed induction rule. None requires a new axiomatization or a machine-state reduction.
+
+\section*{Pinned sources}
+\small
+All paths are relative to ProveIt at \href{https://github.com/VladimirReshetnikov/ProveIt/commit/6f0d42d368506bc29c70ace1c992ed88b2651346}{review cutoff 6f0d42d36850}.
+\begin{itemize}[leftmargin=*,nosep]
+\item Lean: \path{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}:
+\code{Enum222.lean}, \code{EnumDom.lean}, \code{EnumPerm.lean},
+\code{KDecoderPrefix215.lean}, \code{DecoderPaths.lean}, \code{DominatedImplication.lean}.
+\item Rocq: \path{Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/}:
+\code{L1\_CompPerm.v}, \code{SeedPerm.v}.
+\item Incoming: \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6f0d42d368506bc29c70ace1c992ed88b2651346/docs/incoming/K215_Checked_Affine_Core_and_CM215_2026-10-21.zip}{checked affine core and CM215 packet};\newline 
+\code{affine\_core/CoreContraction.v}, \code{DrainCore.v}, \code{SourceGraphBridge.v}.
+\item History: \href{https://github.com/VladimirReshetnikov/ProveIt/commit/507ccc5db72bd8448347e928016bded6df084d04}{shared return and decoder prefixes};
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/d93adc41745b28830efd865d2b9898be36988ef5}{58-step generic implication};
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/2ca3a5c16f0876d2cab842056353c03a1ed2f5f0}{merge boundary}.
+\end{itemize}
+\end{document}

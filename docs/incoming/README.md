@@ -22,7 +22,18 @@ remain in place. Report intake and reconciliation statuses below remain separate
 
 ## Current queue
 
-`K215_Checked_Affine_Core_and_CM215_2026-10-21.zip` arrived in `6f0d42d368` and is pending intake. Its [arrival inventory](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase10/upstream-merge/incoming-pending.json) records the exact archive; it remains here until placement and review.
+## Queue status after batch 212
+
+Nine K215 proof-simplification packets (`K215_Checked_Affine_Core_and_CM215`, arrival
+`6f0d42d368`, and eight from `4b16429bf6`) were placed whole under
+[proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md)
+(`checked-affine-core`, `further-interface`, `proof-contracts`, `uniform-decoder`,
+`semantic-coverage`, `semantic-proof`, `shared-proof-core`, `sharing-interfaces`,
+`shared-implication`), omitting directories that copy repository files or licenses, baseline
+compile evidence and failed-attempt logs (each listed in the index). No new 215-state machine:
+the two CM215 tables are already in the repository, and every 214-state table of the
+state-reduction experiments is rejected with a replayed counterexample. Nothing was rerun at
+intake. The ZIPs are retired; the queue is clear.
 
 Before this arrival there were no loose ZIPs after upstream batch 211. Upstream
 placements `32d378522c`, `05eaa1d466` and `d7105dd57d` extracted and retired

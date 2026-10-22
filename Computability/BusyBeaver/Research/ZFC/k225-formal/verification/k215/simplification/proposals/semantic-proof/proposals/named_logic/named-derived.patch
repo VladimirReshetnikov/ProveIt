@@ -1,0 +1,494 @@
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedDerived.lean
+@@ -0,0 +1,168 @@
++import BusyBeaver.ZFC.Kalmar
++import BusyBeaver.ZFC.TarskiCalculus
++
++/-!
++Common derived rules for named calculi.  The admissibility argument keeps
++atomic equality vacuity explicit; it cannot silently strengthen ThmK.
++The propositional proofs are factored from TarskiDerived.lean and KThmK.lean.
++-/
++namespace SetTheory.BusyBeaver.ZFC.NamedDerived
++open Tarski Tarski.NF Kalmar
++variable {D : NF → Prop}
++
++structure QuantifierRules (D : NF → Prop) : Prop where
++  gen : ∀ i {a}, D a → D (all i a)
++  distribute : ∀ i a b, D (imp (all i (imp a b)) (imp (all i a) (all i b)))
++  commute : ∀ i j a, D (imp (all i (all j a)) (all j (all i a)))
++  eliminate : ∀ i a, D (imp (ex i (all i a)) a)
++
++/-- Which equality atoms have the atomic vacuity required by this client. -/
++def Admissible (eqAllowed : Nat → Nat → Prop) : NF → Prop
++  | .rel _ _ => True
++  | .eq a b => eqAllowed a b
++  | .bot => True
++  | .imp a b => Admissible eqAllowed a ∧ Admissible eqAllowed b
++  | .all _ a => Admissible eqAllowed a
++
++theorem admissible_all : ∀ f : NF, Admissible (fun _ _ => True) f
++  | .rel _ _ => trivial
++  | .eq _ _ => trivial
++  | .bot => trivial
++  | .imp a b => ⟨admissible_all a, admissible_all b⟩
++  | .all _ a => admissible_all a
++
++/-- Hypothesis `k` of a list, as a derivation. -/
++theorem h0 {G : List NF} {a : NF} : Der NF.imp (D) (a :: G) a := .hyp (List.mem_cons_self ..)
++theorem h1 {G : List NF} {a b : NF} : Der NF.imp (D) (b :: a :: G) a :=
++  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
++theorem h2 {G : List NF} {a b c : NF} : Der NF.imp (D) (c :: b :: a :: G) a :=
++  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
++
++section PropLayer
++
++variable (hC : Classical NF.imp NF.bot D)
++include hC
++
++/-- Derivations from hypotheses discharge into theorems. -/
++theorem of_der {G : List NF} {a : NF} (d : Der NF.imp (D) G a)
++    (hG : ∀ x, x ∈ G → D x) : D a :=
++  d.sound hC hG
++
++theorem thm_of_der0 {a : NF} (d : Der NF.imp (D) [] a) : D a :=
++  of_der hC d (fun _ hx => absurd hx List.not_mem_nil)
++
++/-- Two-hypothesis deduction. -/
++theorem ded2 {a b c : NF} (d : Der NF.imp (D) [b, a] c) : D (imp a (imp b c)) :=
++  thm_of_der0 hC (deduction hC (deduction hC d))
++
++theorem ded1 {a c : NF} (d : Der NF.imp (D) [a] c) : D (imp a c) :=
++  thm_of_der0 hC (deduction hC d)
++
++theorem ded3 {a b c d : NF} (dd : Der NF.imp (D) [c, b, a] d) :
++    D (imp a (imp b (imp c d))) :=
++  thm_of_der0 hC (deduction hC (deduction hC (deduction hC dd)))
++
++theorem syl {a b c : NF} (hab : D (imp a b)) (hbc : D (imp b c)) :
++    D (imp a c) :=
++  ded1 hC (.mp (.ax hbc) (.mp (.ax hab) h0))
++
++/-- `(a → b) → (¬b → ¬a)` -/
++theorem contra_thm (a b : NF) : D (imp (imp a b) (imp (neg b) (neg a))) :=
++  ded3 hC (.mp h1 (.mp h2 h0))
++
++theorem contra {a b : NF} (h : D (imp a b)) : D (imp (neg b) (neg a)) :=
++  hC.mp (contra_thm hC a b) h
++
++theorem dne (a : NF) : D (imp (neg (neg a)) a) := by
++  -- Peirce at `bot`: from `¬a → a`, which `¬¬a` and ex falso supply.
++  apply ded1 hC
++  have inner : Der NF.imp (D) [neg (neg a)] (imp (imp a NF.bot) a) :=
++    deduction hC (.mp (.ax (hC.efq a)) (.mp h1 h0))
++  exact .mp (.ax (hC.peirce a NF.bot)) inner
++
++theorem dni (a : NF) : D (imp a (neg (neg a))) :=
++  ded2 hC (.mp h0 h1)
++
++/-- Classical contraposition in the reverse direction. -/
++theorem contra_rev {a b : NF} (h : D (imp (neg a) (neg b))) : D (imp b a) := by
++  have h' := contra hC h
++  exact syl hC (syl hC (dni hC b) h') (dne hC a)
++
++/-- Case split: `(¬a → c) → ((b → c) → ((a → b) → c))`. -/
++theorem imp_cases (a b c : NF) :
++    D (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
++  apply ded3 hC
++  -- hypotheses: (¬a → c), (b → c), (a → b); goal c, by Peirce at bot on c.
++  have inner : Der NF.imp (D) [neg c, imp a b, imp b c, imp (neg a) c] c := by
++    have na : Der NF.imp (D) [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
++      deduction hC (.mp (Der.hyp (a := neg c) (by simp))
++        (.mp (Der.hyp (a := imp b c) (by simp)) (.mp (Der.hyp (a := imp a b) (by simp)) h0)))
++    exact .mp (Der.hyp (a := imp (neg a) c) (by simp)) na
++  exact .mp (.ax (hC.peirce c NF.bot)) (deduction hC inner)
++
++end PropLayer
++
++/-! ## Quantifier basics -/
++
++section Quant
++
++variable (hC : Classical NF.imp NF.bot D) (hQ : QuantifierRules D)
++include hC hQ
++
++theorem all_mono (i : Nat) {a b : NF} (h : D (imp a b)) :
++    D (imp (all i a) (all i b)) :=
++  hC.mp (hQ.distribute i a b) (hQ.gen i h)
++
++theorem ex_mono (i : Nat) {a b : NF} (h : D (imp a b)) :
++    D (imp (ex i a) (ex i b)) :=
++  contra hC (all_mono hC hQ i (contra hC h))
++
++/-- The B axiom of each quantifier: `a → ∀i ∃i a`. -/
++theorem b_axiom (i : Nat) (a : NF) : D (imp a (all i (ex i a))) := by
++  have h6 : D (imp (ex i (all i (neg a))) (neg a)) := hQ.eliminate i (neg a)
++  have h' : D (imp a (neg (ex i (all i (neg a))))) :=
++    syl hC (dni hC a) (contra hC h6)
++  -- ¬ ex i (∀i ¬a) = ¬¬ ∀i ¬∀i ¬a, and ∀i ¬∀i ¬a = ∀i ∃i a.
++  have := syl hC h' (dne hC (all i (neg (all i (neg a)))))
++  exact this
++
++/-- If `a → ∀i a` then `∃i a → a`. -/
++theorem ex_elim_of_vac {i : Nat} {a : NF} (h : D (imp a (all i a))) :
++    D (imp (ex i a) a) :=
++  syl hC (ex_mono hC hQ i h) (hQ.eliminate i a)
++
++/-- If `a → ∀i a` then `¬a → ∀i ¬a`. -/
++theorem vac_neg {i : Nat} {a : NF} (h : D (imp a (all i a))) :
++    D (imp (neg a) (all i (neg a))) := by
++  have e := ex_elim_of_vac hC hQ h
++  -- ¬a → ¬∃i a = ¬¬∀i¬a → ∀i¬a
++  exact syl hC (contra hC e) (dne hC (all i (neg a)))
++
++omit hQ in
++theorem vac_bot (i : Nat) : D (imp NF.bot (all i NF.bot)) := hC.efq _
++
++/-- Atomic vacuity extends structurally, with exactly the client's equality guard. -/
++theorem vac_of_not_occurs (i : Nat) (eqAllowed : Nat → Nat → Prop)
++    (hRel : ∀ a b, i ≠ a → i ≠ b → D (imp (rel a b) (all i (rel a b))))
++    (hEq : ∀ a b, eqAllowed a b → i ≠ a → i ≠ b →
++      D (imp (NF.eq a b) (all i (NF.eq a b)))) :
++    ∀ f : NF, Admissible eqAllowed f → ¬ Occurs i f → D (imp f (all i f))
++  | rel a b, _, h => hRel a b (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
++  | NF.eq a b, hf, h => hEq a b hf (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
++  | NF.bot, _, _ => hC.efq _
++  | imp a b, hf, h => by
++      have ha := vac_of_not_occurs i eqAllowed hRel hEq a hf.1 (fun o => h (Or.inl o))
++      have hb := vac_of_not_occurs i eqAllowed hRel hEq b hf.2 (fun o => h (Or.inr o))
++      have hna : D (imp (neg a) (all i (imp a b))) :=
++        syl hC (vac_neg hC hQ ha)
++          (all_mono hC hQ i (ded2 hC (.mp (.ax (hC.efq b)) (.mp h1 h0))))
++      have hbb : D (imp b (all i (imp a b))) :=
++        syl hC hb (all_mono hC hQ i (hC.k b a))
++      exact hC.mp (hC.mp (imp_cases hC a b (all i (imp a b))) hna) hbb
++  | all j a, hf, h => by
++      have ha := vac_of_not_occurs i eqAllowed hRel hEq a hf (fun o => h (Or.inr o))
++      exact syl hC (all_mono hC hQ j ha) (hQ.commute j i a)
++
++end Quant
++#print axioms vac_of_not_occurs
++end SetTheory.BusyBeaver.ZFC.NamedDerived
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean
+@@ -1,3 +1,4 @@
++import BusyBeaver.ZFC.NamedDerived
+ import BusyBeaver.ZFC.Kalmar
+ import BusyBeaver.ZFC.TarskiCalculus
+ 
+@@ -27,11 +28,11 @@
+ variable {Ax : NF → Prop}
+ 
+ /-- Hypothesis `k` of a list, as a derivation. -/
+-theorem h0 {G : List NF} {a : NF} : Der NF.imp (Thm Ax) (a :: G) a := .hyp (List.mem_cons_self ..)
+-theorem h1 {G : List NF} {a b : NF} : Der NF.imp (Thm Ax) (b :: a :: G) a :=
+-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
+-theorem h2 {G : List NF} {a b c : NF} : Der NF.imp (Thm Ax) (c :: b :: a :: G) a :=
+-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
++abbrev h0 := @NamedDerived.h0 (Thm Ax)
++
++abbrev h1 := @NamedDerived.h1 (Thm Ax)
++
++abbrev h2 := @NamedDerived.h2 (Thm Ax)
+ 
+ section PropLayer
+ 
+@@ -39,61 +40,33 @@
+ include hC
+ 
+ /-- Derivations from hypotheses discharge into theorems. -/
+-theorem of_der {G : List NF} {a : NF} (d : Der NF.imp (Thm Ax) G a)
+-    (hG : ∀ x, x ∈ G → Thm Ax x) : Thm Ax a :=
+-  d.sound hC hG
++abbrev of_der := @NamedDerived.of_der (Thm Ax) hC
+ 
+-theorem thm_of_der0 {a : NF} (d : Der NF.imp (Thm Ax) [] a) : Thm Ax a :=
+-  of_der hC d (fun _ hx => absurd hx List.not_mem_nil)
++abbrev thm_of_der0 := @NamedDerived.thm_of_der0 (Thm Ax) hC
+ 
+ /-- Two-hypothesis deduction. -/
+-theorem ded2 {a b c : NF} (d : Der NF.imp (Thm Ax) [b, a] c) : Thm Ax (imp a (imp b c)) :=
+-  thm_of_der0 hC (deduction hC (deduction hC d))
++abbrev ded2 := @NamedDerived.ded2 (Thm Ax) hC
+ 
+-theorem ded1 {a c : NF} (d : Der NF.imp (Thm Ax) [a] c) : Thm Ax (imp a c) :=
+-  thm_of_der0 hC (deduction hC d)
++abbrev ded1 := @NamedDerived.ded1 (Thm Ax) hC
+ 
+-theorem ded3 {a b c d : NF} (dd : Der NF.imp (Thm Ax) [c, b, a] d) :
+-    Thm Ax (imp a (imp b (imp c d))) :=
+-  thm_of_der0 hC (deduction hC (deduction hC (deduction hC dd)))
++abbrev ded3 := @NamedDerived.ded3 (Thm Ax) hC
+ 
+-theorem syl {a b c : NF} (hab : Thm Ax (imp a b)) (hbc : Thm Ax (imp b c)) :
+-    Thm Ax (imp a c) :=
+-  ded1 hC (.mp (.ax hbc) (.mp (.ax hab) h0))
++abbrev syl := @NamedDerived.syl (Thm Ax) hC
+ 
+ /-- `(a → b) → (¬b → ¬a)` -/
+-theorem contra_thm (a b : NF) : Thm Ax (imp (imp a b) (imp (neg b) (neg a))) :=
+-  ded3 hC (.mp h1 (.mp h2 h0))
++abbrev contra_thm := @NamedDerived.contra_thm (Thm Ax) hC
+ 
+-theorem contra {a b : NF} (h : Thm Ax (imp a b)) : Thm Ax (imp (neg b) (neg a)) :=
+-  hC.mp (contra_thm hC a b) h
++abbrev contra := @NamedDerived.contra (Thm Ax) hC
+ 
+-theorem dne (a : NF) : Thm Ax (imp (neg (neg a)) a) := by
+-  -- Peirce at `bot`: from `¬a → a`, which `¬¬a` and ex falso supply.
+-  apply ded1 hC
+-  have inner : Der NF.imp (Thm Ax) [neg (neg a)] (imp (imp a NF.bot) a) :=
+-    deduction hC (.mp (.ax (hC.efq a)) (.mp h1 h0))
+-  exact .mp (.ax (hC.peirce a NF.bot)) inner
++abbrev dne := @NamedDerived.dne (Thm Ax) hC
+ 
+-theorem dni (a : NF) : Thm Ax (imp a (neg (neg a))) :=
+-  ded2 hC (.mp h0 h1)
++abbrev dni := @NamedDerived.dni (Thm Ax) hC
+ 
+ /-- Classical contraposition in the reverse direction. -/
+-theorem contra_rev {a b : NF} (h : Thm Ax (imp (neg a) (neg b))) : Thm Ax (imp b a) := by
+-  have h' := contra hC h
+-  exact syl hC (syl hC (dni hC b) h') (dne hC a)
++abbrev contra_rev := @NamedDerived.contra_rev (Thm Ax) hC
+ 
+ /-- Case split: `(¬a → c) → ((b → c) → ((a → b) → c))`. -/
+-theorem imp_cases (a b c : NF) :
+-    Thm Ax (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
+-  apply ded3 hC
+-  -- hypotheses: (¬a → c), (b → c), (a → b); goal c, by Peirce at bot on c.
+-  have inner : Der NF.imp (Thm Ax) [neg c, imp a b, imp b c, imp (neg a) c] c := by
+-    have na : Der NF.imp (Thm Ax) [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
+-      deduction hC (.mp (Der.hyp (a := neg c) (by simp))
+-        (.mp (Der.hyp (a := imp b c) (by simp)) (.mp (Der.hyp (a := imp a b) (by simp)) h0)))
+-    exact .mp (Der.hyp (a := imp (neg a) c) (by simp)) na
+-  exact .mp (.ax (hC.peirce c NF.bot)) (deduction hC inner)
++abbrev imp_cases := @NamedDerived.imp_cases (Thm Ax) hC
+ 
+ end PropLayer
+ 
+@@ -101,57 +74,37 @@
+ 
+ section Quant
+ 
++private theorem quantifierRules : NamedDerived.QuantifierRules (Thm Ax) where
++  gen := Thm.gen
++  distribute := Thm.rho2
++  commute := Thm.rho4
++  eliminate := Thm.rho6
++
++
+ variable (hC : Classical NF.imp NF.bot (Thm Ax))
+ include hC
+ 
+-theorem all_mono (i : Nat) {a b : NF} (h : Thm Ax (imp a b)) :
+-    Thm Ax (imp (all i a) (all i b)) :=
+-  hC.mp (.rho2 i a b) (.gen i h)
++abbrev all_mono := @NamedDerived.all_mono (Thm Ax) hC quantifierRules
+ 
+-theorem ex_mono (i : Nat) {a b : NF} (h : Thm Ax (imp a b)) :
+-    Thm Ax (imp (ex i a) (ex i b)) :=
+-  contra hC (all_mono hC i (contra hC h))
++abbrev ex_mono := @NamedDerived.ex_mono (Thm Ax) hC quantifierRules
+ 
+ /-- The B axiom of each quantifier: `a → ∀i ∃i a`. -/
+-theorem b_axiom (i : Nat) (a : NF) : Thm Ax (imp a (all i (ex i a))) := by
+-  have h6 : Thm Ax (imp (ex i (all i (neg a))) (neg a)) := .rho6 i (neg a)
+-  have h' : Thm Ax (imp a (neg (ex i (all i (neg a))))) :=
+-    syl hC (dni hC a) (contra hC h6)
+-  -- ¬ ex i (∀i ¬a) = ¬¬ ∀i ¬∀i ¬a, and ∀i ¬∀i ¬a = ∀i ∃i a.
+-  have := syl hC h' (dne hC (all i (neg (all i (neg a)))))
+-  exact this
++abbrev b_axiom := @NamedDerived.b_axiom (Thm Ax) hC quantifierRules
+ 
+ /-- If `a → ∀i a` then `∃i a → a`. -/
+-theorem ex_elim_of_vac {i : Nat} {a : NF} (h : Thm Ax (imp a (all i a))) :
+-    Thm Ax (imp (ex i a) a) :=
+-  syl hC (ex_mono hC i h) (.rho6 i a)
++abbrev ex_elim_of_vac := @NamedDerived.ex_elim_of_vac (Thm Ax) hC quantifierRules
+ 
+ /-- If `a → ∀i a` then `¬a → ∀i ¬a`. -/
+-theorem vac_neg {i : Nat} {a : NF} (h : Thm Ax (imp a (all i a))) :
+-    Thm Ax (imp (neg a) (all i (neg a))) := by
+-  have e := ex_elim_of_vac hC h
+-  -- ¬a → ¬∃i a = ¬¬∀i¬a → ∀i¬a
+-  exact syl hC (contra hC e) (dne hC (all i (neg a)))
++abbrev vac_neg := @NamedDerived.vac_neg (Thm Ax) hC quantifierRules
+ 
+-theorem vac_bot (i : Nat) : Thm Ax (imp NF.bot (all i NF.bot)) := hC.efq _
++abbrev vac_bot := @NamedDerived.vac_bot (Thm Ax) hC
+ 
+ /-- Vacuity for every formula not containing the label. -/
+-theorem vac_of_not_occurs (i : Nat) :
+-    ∀ f : NF, ¬ Occurs i f → Thm Ax (imp f (all i f))
+-  | rel a b, h => .vacRel a b i (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+-  | NF.eq a b, h => .vacEq a b i (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+-  | NF.bot, _ => vac_bot hC i
+-  | imp a b, h => by
+-      have ha := vac_of_not_occurs i a (fun o => h (Or.inl o))
+-      have hb := vac_of_not_occurs i b (fun o => h (Or.inr o))
+-      have hna : Thm Ax (imp (neg a) (all i (imp a b))) :=
+-        syl hC (vac_neg hC ha) (all_mono hC i (ded2 hC (.mp (.ax (hC.efq b)) (.mp h1 h0))))
+-      have hbb : Thm Ax (imp b (all i (imp a b))) :=
+-        syl hC hb (all_mono hC i (hC.k b a))
+-      exact hC.mp (hC.mp (imp_cases hC a b (all i (imp a b))) hna) hbb
+-  | all j a, h => by
+-      have ha := vac_of_not_occurs i a (fun o => h (Or.inr o))
+-      exact syl hC (all_mono hC j ha) (.rho4 j i a)
++theorem vac_of_not_occurs (i : Nat) (f : NF) (h : ¬ Occurs i f) :
++    Thm Ax (imp f (all i f)) :=
++  NamedDerived.vac_of_not_occurs hC quantifierRules i (fun _ _ => True)
++    (fun a b => Thm.vacRel a b i) (fun a b _ => Thm.vacEq a b i)
++    f (NamedDerived.admissible_all f) h
+ 
+ /-- `∃i a → a` when `i` does not occur in `a`. -/
+ theorem ex_elim (i : Nat) {a : NF} (h : ¬ Occurs i a) : Thm Ax (imp (ex i a) a) :=
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean
+@@ -1,3 +1,4 @@
++import BusyBeaver.ZFC.NamedDerived
+ import BusyBeaver.ZFC.TarskiLeibniz
+ import BusyBeaver.ZFC.Lukasiewicz
+ import BusyBeaver.ZFC.Code254
+@@ -90,89 +91,63 @@
+ 
+ /-! ## Propositional layer (as `TarskiDerived`) -/
+ 
+-theorem h0 {G : List NF} {a : NF} : Der NF.imp (ThmK Ax) (a :: G) a := .hyp (List.mem_cons_self ..)
+-theorem h1 {G : List NF} {a b : NF} : Der NF.imp (ThmK Ax) (b :: a :: G) a :=
+-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
+-theorem h2 {G : List NF} {a b c : NF} : Der NF.imp (ThmK Ax) (c :: b :: a :: G) a :=
+-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
+-
+-theorem thm_of_der0 {a : NF} (d : Der NF.imp (ThmK Ax) [] a) : ThmK Ax a :=
+-  d.sound classical (fun _ hx => absurd hx List.not_mem_nil)
+-
+-theorem ded1 {a c : NF} (d : Der NF.imp (ThmK Ax) [a] c) : ThmK Ax (imp a c) :=
+-  thm_of_der0 (deduction classical d)
+-
+-theorem ded2 {a b c : NF} (d : Der NF.imp (ThmK Ax) [b, a] c) : ThmK Ax (imp a (imp b c)) :=
+-  thm_of_der0 (deduction classical (deduction classical d))
+-
+-theorem ded3 {a b c d : NF} (dd : Der NF.imp (ThmK Ax) [c, b, a] d) :
+-    ThmK Ax (imp a (imp b (imp c d))) :=
+-  thm_of_der0 (deduction classical (deduction classical (deduction classical dd)))
+-
+-theorem syl {a b c : NF} (hab : ThmK Ax (imp a b)) (hbc : ThmK Ax (imp b c)) :
+-    ThmK Ax (imp a c) :=
+-  ded1 (.mp (.ax hbc) (.mp (.ax hab) h0))
+-
+-theorem contra_thm (a b : NF) : ThmK Ax (imp (imp a b) (imp (neg b) (neg a))) :=
+-  ded3 (.mp h1 (.mp h2 h0))
+-
+-theorem contra {a b : NF} (h : ThmK Ax (imp a b)) : ThmK Ax (imp (neg b) (neg a)) :=
+-  ThmK.mp (contra_thm a b) h
+-
+-theorem dne (a : NF) : ThmK Ax (imp (neg (neg a)) a) := by
+-  apply ded1
+-  have inner : Der NF.imp (ThmK Ax) [neg (neg a)] (imp (imp a NF.bot) a) :=
+-    deduction classical (.mp (.ax (ex_falso a)) (.mp h1 h0))
+-  exact .mp (.ax (classical.peirce a NF.bot)) inner
+-
+-theorem dni (a : NF) : ThmK Ax (imp a (neg (neg a))) :=
+-  ded2 (.mp h0 h1)
+-
+-theorem imp_cases (a b c : NF) :
+-    ThmK Ax (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
+-  apply ded3
+-  have inner : Der NF.imp (ThmK Ax) [neg c, imp a b, imp b c, imp (neg a) c] c := by
+-    have na : Der NF.imp (ThmK Ax) [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
+-      deduction classical (.mp (Der.hyp (a := neg c) (by simp))
+-        (.mp (Der.hyp (a := imp b c) (by simp)) (.mp (Der.hyp (a := imp a b) (by simp)) h0)))
+-    exact .mp (Der.hyp (a := imp (neg a) c) (by simp)) na
+-  exact .mp (.ax (classical.peirce c NF.bot)) (deduction classical inner)
++abbrev h0 := @NamedDerived.h0 (ThmK Ax)
++
++abbrev h1 := @NamedDerived.h1 (ThmK Ax)
++
++abbrev h2 := @NamedDerived.h2 (ThmK Ax)
++
++abbrev thm_of_der0 := @NamedDerived.thm_of_der0 (ThmK Ax) classical
++
++abbrev ded1 := @NamedDerived.ded1 (ThmK Ax) classical
++
++abbrev ded2 := @NamedDerived.ded2 (ThmK Ax) classical
++
++abbrev ded3 := @NamedDerived.ded3 (ThmK Ax) classical
++
++abbrev syl := @NamedDerived.syl (ThmK Ax) classical
++
++abbrev contra_thm := @NamedDerived.contra_thm (ThmK Ax) classical
++
++abbrev contra := @NamedDerived.contra (ThmK Ax) classical
++
++abbrev dne := @NamedDerived.dne (ThmK Ax) classical
++
++abbrev dni := @NamedDerived.dni (ThmK Ax) classical
++
++abbrev imp_cases := @NamedDerived.imp_cases (ThmK Ax) classical
+ 
+ /-! ## Quantifiers -/
+ 
+-theorem all_mono (i : Nat) {a b : NF} (h : ThmK Ax (imp a b)) :
+-    ThmK Ax (imp (all i a) (all i b)) :=
+-  ThmK.mp (.rho2 i a b) (.gen i h)
+-
+-theorem ex_mono (i : Nat) {a b : NF} (h : ThmK Ax (imp a b)) :
+-    ThmK Ax (imp (ex i a) (ex i b)) :=
+-  contra (all_mono i (contra h))
+-
+-theorem ex_elim_of_vac {i : Nat} {a : NF} (h : ThmK Ax (imp a (all i a))) :
+-    ThmK Ax (imp (ex i a) a) :=
+-  syl (ex_mono i h) (.rho6 i a)
+-
+-theorem vac_neg {i : Nat} {a : NF} (h : ThmK Ax (imp a (all i a))) :
+-    ThmK Ax (imp (neg a) (all i (neg a))) :=
+-  syl (contra (ex_elim_of_vac h)) (dne (all i (neg a)))
++private theorem quantifierRules : NamedDerived.QuantifierRules (ThmK Ax) where
++  gen := ThmK.gen
++  distribute := ThmK.rho2
++  commute := ThmK.rho4
++  eliminate := ThmK.rho6
++
++private theorem admissible_eqFree : ∀ f : NF, EqFree f →
++    NamedDerived.Admissible (fun _ _ => False) f
++  | rel _ _, _ => trivial
++  | NF.eq _ _, h => h.elim
++  | NF.bot, _ => trivial
++  | imp a b, h => ⟨admissible_eqFree a h.1, admissible_eqFree b h.2⟩
++  | all _ a, h => admissible_eqFree a h
++
++
++abbrev all_mono := @NamedDerived.all_mono (ThmK Ax) classical quantifierRules
++
++abbrev ex_mono := @NamedDerived.ex_mono (ThmK Ax) classical quantifierRules
++
++abbrev ex_elim_of_vac := @NamedDerived.ex_elim_of_vac (ThmK Ax) classical quantifierRules
++
++abbrev vac_neg := @NamedDerived.vac_neg (ThmK Ax) classical quantifierRules
+ 
+ /-- Vacuity for every equality-free formula not containing the label. -/
+-theorem vac_of_not_occurs (i : Nat) :
+-    ∀ f : NF, EqFree f → ¬ Occurs i f → ThmK Ax (imp f (all i f))
+-  | rel a b, _, h => .vacRel a b i (fun e => h (Or.inl e)) (fun e => h (Or.inr e))
+-  | NF.eq _ _, hf, _ => hf.elim
+-  | NF.bot, _, _ => ex_falso _
+-  | imp a b, hf, h => by
+-      have ha := vac_of_not_occurs i a hf.1 (fun o => h (Or.inl o))
+-      have hb := vac_of_not_occurs i b hf.2 (fun o => h (Or.inr o))
+-      have hna : ThmK Ax (imp (neg a) (all i (imp a b))) :=
+-        syl (vac_neg ha) (all_mono i (ded2 (.mp (.ax (ex_falso b)) (.mp h1 h0))))
+-      have hbb : ThmK Ax (imp b (all i (imp a b))) :=
+-        syl hb (all_mono i (classical.k b a))
+-      exact ThmK.mp (ThmK.mp (imp_cases a b (all i (imp a b))) hna) hbb
+-  | all j a, hf, h => by
+-      have ha := vac_of_not_occurs i a hf (fun o => h (Or.inr o))
+-      exact syl (all_mono j ha) (.rho4 j i a)
++theorem vac_of_not_occurs (i : Nat) (f : NF) (hf : EqFree f) (h : ¬ Occurs i f) :
++    ThmK Ax (imp f (all i f)) :=
++  NamedDerived.vac_of_not_occurs classical quantifierRules i (fun _ _ => False)
++    (fun a b => ThmK.vacRel a b i) (fun _ _ h => h.elim)
++    f (admissible_eqFree f hf) h
+ 
+ theorem ex_elim (i : Nat) {a : NF} (hf : EqFree a) (h : ¬ Occurs i a) :
+     ThmK Ax (imp (ex i a) a) :=

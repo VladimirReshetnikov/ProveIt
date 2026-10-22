@@ -1,0 +1,102 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "reviewed_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+  "date": "2026-10-21",
+  "remote_repository_changed": false,
+  "machine_changed": false,
+  "full_endpoint_rebuilt": false,
+  "machine_inputs": {
+    "k215.tm": {
+      "bytes": 5542,
+      "sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090"
+    },
+    "sites215.json": {
+      "bytes": 217322,
+      "sha256": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba"
+    },
+    "k215.native.tm": {
+      "bytes": 5545,
+      "sha256": "9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2"
+    }
+  },
+  "lean": {
+    "status": "PASS_FOCUSED_SOURCE_AND_TYPED_AUDIT",
+    "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "project_modules": 13,
+    "audit_modules": 1,
+    "standalone_replay_passed": true,
+    "metrics": {
+      "base_commit": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+      "baseline_source_sha256": "3904e060d4ed082c2b7c0db56ebd820cab4d123a20b8f1ef387eee814fc7c2df",
+      "candidate_source_sha256": "d5b5f502c3ea0529d9c2aaf26a33d13d65e9f91a6da2cb4b3c774a9c2ac5dcd7",
+      "baseline_lines": 356,
+      "candidate_lines": 485,
+      "baseline_bytes": 16146,
+      "candidate_bytes": 21988,
+      "line_delta": 129,
+      "byte_delta": 5842,
+      "unchanged_original_prefix_through": "rel_view",
+      "unchanged_original_prefix_bytes": 9648,
+      "original_executable_definitions_preserved": true,
+      "old_public_api_wrappers": [
+        "sim_step",
+        "sim_stop",
+        "sim_halt",
+        "halts_iff"
+      ],
+      "new_checked_core": [
+        "EdgeContract",
+        "checkEdge_contract",
+        "SemanticCovered",
+        "Covered.semantic",
+        "semanticCovered_of_allSites",
+        "semanticCovered_of_mixedSites",
+        "Semantic.sim_step",
+        "Semantic.sim_stop",
+        "Semantic.sim_halt",
+        "Semantic.halts_iff"
+      ],
+      "project_modules_checked": 13,
+      "typed_audit_modules": 1,
+      "full_endpoint_rebuilt": false,
+      "concrete_K215_leaf_checks_replaced": 0,
+      "claimed_time_speedup": null
+    },
+    "source_receipt_bindings_rechecked_by_parent": 14
+  },
+  "rocq": {
+    "status": "PASS_COQ818_CALCULUS_SLICE_AND_RECURSIVE_COQCHK",
+    "compiler": "The Coq Proof Assistant, version 8.18.0\ncompiled with OCaml 4.14.1",
+    "compatibility": "From Stdlib Require -> From Coq Require",
+    "project_modules": 7,
+    "public_api_probe_passed": true,
+    "production_rocq91_tested": false,
+    "generic_lines": 281,
+    "adapter_lines": 36,
+    "total_lines": 317,
+    "baseline_lines": 1169,
+    "generic_bytes": 14252,
+    "adapter_bytes": 1374,
+    "total_bytes": 15626,
+    "baseline_bytes": 22673,
+    "claimed_compile_time_speedup": null,
+    "source_and_compatibility_hash_bindings_rechecked_by_parent": 7
+  },
+  "reachability": {
+    "status": "FINITE_ABSTRACT_INTERPRETATION_NOT_KERNEL_PROOF",
+    "source_sites": 4751,
+    "site_obligations": 6176,
+    "runs": 15,
+    "least_remaining_obligations": 6171,
+    "most_removed_obligations": 5,
+    "parent_independent_replay_exact_json_match": true
+  },
+  "remaining_gates": [
+    "Rocq9.1 production compilation",
+    "synchronize maintained generators and manifests",
+    "prove a nontrivial shared primitive family",
+    "integrate mixed concrete coverage",
+    "compile affected endpoint descendants and both typed endpoint clients",
+    "controlled before/after measurements"
+  ]
+}

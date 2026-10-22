@@ -1,0 +1,116 @@
+[
+  {
+    "module": "BusyBeaver.ZFC.KZip",
+    "path": "checked-sources/BusyBeaver/ZFC/KZip.lean",
+    "sha256": "35170a1145cb2fc74e5faba3a922da13bb2d05aa6fe98fafe1593a4ba22c498a",
+    "imports": []
+  },
+  {
+    "module": "BusyBeaver.ZFC.KRuntimeCore",
+    "path": "checked-sources/BusyBeaver/ZFC/KRuntimeCore.lean",
+    "sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+    "imports": [
+      "BusyBeaver.ZFC.KZip"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.KHome",
+    "path": "checked-sources/BusyBeaver/ZFC/KHome.lean",
+    "sha256": "ff0c42e5bb0f639a2d59a7cefbbd1e07109545b6ccda23f84af4c467f01b25c5",
+    "imports": [
+      "BusyBeaver.ZFC.KRuntimeCore"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.FramedWindow",
+    "path": "checked-sources/BusyBeaver/ZFC/FramedWindow.lean",
+    "sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+    "imports": [
+      "Init"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.KZipTape",
+    "path": "checked-sources/BusyBeaver/ZFC/KZipTape.lean",
+    "sha256": "3067129a23767249f7870ac9ebf7335bf88f1995184701a6b2539ca3cccd8392",
+    "imports": [
+      "BusyBeaver.ZFC.KZip",
+      "BusyBeaver.ZFC.FramedWindow"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.KHomeReady",
+    "path": "checked-sources/BusyBeaver/ZFC/KHomeReady.lean",
+    "sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+    "imports": [
+      "BusyBeaver.ZFC.KHome",
+      "BusyBeaver.ZFC.KZipTape"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.RegisterPath",
+    "path": "checked-sources/BusyBeaver/ZFC/RegisterPath.lean",
+    "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+    "imports": [
+      "Init"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.RMDag",
+    "path": "checked-sources/BusyBeaver/ZFC/RMDag.lean",
+    "sha256": "55a47480da9cb00e5420b896c3a8c72ec1f51081d610874903f932311231076d",
+    "imports": []
+  },
+  {
+    "module": "BusyBeaver.ZFC.RMEquiv",
+    "path": "checked-sources/BusyBeaver/ZFC/RMEquiv.lean",
+    "sha256": "9827f418c472ae76f35105245074aa7653aa232b3a8b1680e09c9a9cebad9c9e",
+    "imports": [
+      "BusyBeaver.ZFC.RegisterPath",
+      "BusyBeaver.ZFC.RMDag"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.RegisterPathClean",
+    "path": "checked-sources/BusyBeaver/ZFC/RegisterPathClean.lean",
+    "sha256": "5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69",
+    "imports": [
+      "BusyBeaver.ZFC.RMEquiv"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.RMBisim",
+    "path": "checked-sources/BusyBeaver/ZFC/RMBisim.lean",
+    "sha256": "de8e3419a500f1c9e06edc4f04d8251cff55c022365f7ce330b4f95c8035d228",
+    "imports": [
+      "BusyBeaver.ZFC.RMEquiv"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.SiteCoverage",
+    "path": "checked-sources/BusyBeaver/ZFC/SiteCoverage.lean",
+    "sha256": "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4",
+    "imports": [
+      "BusyBeaver.ZFC.RMBisim",
+      "BusyBeaver.ZFC.RMEquiv"
+    ]
+  },
+  {
+    "module": "BusyBeaver.ZFC.KSim",
+    "path": "checked-sources/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "d5b5f502c3ea0529d9c2aaf26a33d13d65e9f91a6da2cb4b3c774a9c2ac5dcd7",
+    "imports": [
+      "BusyBeaver.ZFC.KHomeReady",
+      "BusyBeaver.ZFC.RegisterPathClean",
+      "BusyBeaver.ZFC.SiteCoverage"
+    ]
+  },
+  {
+    "module": "SemanticCoverageAudit",
+    "path": "checked-sources/SemanticCoverageAudit.lean",
+    "sha256": "dae28b3ff83dea12249e003ba0a465956b989e8fdc8dcc9d1e6999497f9385ad",
+    "imports": [
+      "BusyBeaver.ZFC.KSim"
+    ]
+  }
+]

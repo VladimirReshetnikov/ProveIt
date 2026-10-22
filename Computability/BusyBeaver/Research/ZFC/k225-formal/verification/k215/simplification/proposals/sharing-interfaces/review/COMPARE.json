@@ -1,0 +1,509 @@
+{
+  "pin": "6f0d42d368506bc29c70ace1c992ed88b2651346",
+  "checked": "2026-10-21T23:29:49.488403+00:00",
+  "ahead": 50,
+  "commits": [
+    {
+      "sha": "221aefb4a91ccc672b818cede64cf408222ab258",
+      "message": "Reconcile normalized-path and decoder-context proof proposals"
+    },
+    {
+      "sha": "dada10165ba367e8c0297ed872426b01906bcf90",
+      "message": "Preserve exact supplemental records for proof batches 206 and 207"
+    },
+    {
+      "sha": "18e622f6b939b45b980a44d9a864bababe83c695",
+      "message": "Merge remote-tracking branch 'origin/main' into codex/zfc-small-machine"
+    },
+    {
+      "sha": "d1b55dde4598f06cfb1814d0b403d2ab5ceba49b",
+      "message": "Write batches 206 and 207: reconcile proof refinements and Lean opportunities"
+    },
+    {
+      "sha": "8e3066c70bc98a40bce254df605e4eb2f52ea72f",
+      "message": "Place batch 208: three K215 proof-simplification packets, retire 3 archives\n\nArrival aa66d0a33f. Placed whole and byte-identical under k225-formal/verification/k215/simplification/proposals/ (logs stay out by the ignore rules) and indexed there: checked-simplifications (compiled 1,426-entry normalized Rocq source checker with the exact theorem and a same-name facade; compiled Lean framed-window decoder library; Rocq zero-credit codec), certificate-refinements (balanced-tree Rocq certificate lookup proved equal to the list checker; one checker for the M124/FM215/M125 marker variants), affine-cores (drain-loop contraction research; an uncompiled patch removing three formula inductions from KSeedModel222). The tables not in the repository, FM215 and M125, are provider choices of the M124 marker variant and were not placed as alternatives. Nothing rerun; the queue is clear.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "5314ca0e6bad1b3f848fbcea28d59450c6329b87",
+      "message": "Proof simplification proposal"
+    },
+    {
+      "sha": "b07002a86bcc96e76a31b57dce23d3b8c2b76fa6",
+      "message": "Proof simplification proposal"
+    },
+    {
+      "sha": "df67839df1e137c8d9ec6be6e65f43db88319ccd",
+      "message": "Place batch 208: preserve proof refinements and retire three archives"
+    },
+    {
+      "sha": "32d378522cb650285926d27bb4d1c07442f06ea5",
+      "message": "Place batch 209: K215 automatic-certificates packet, retire its archive\n\nArrival 5314ca0e6b. Placed whole and byte-identical as k225-formal/verification/k215/simplification/proposals/automatic-certificates/, omitting search214/inputs/ (copies of 21 repository tables, one of them past the path-length limit); logs stay out by the ignore rules. Indexed in proposals/README.md: the normalized Rocq source checker with an application-tested integration patch, a Lean generator that infers the source correspondence from the literal trees (kernel-checked, also accepted by the Rocq checker), and ZC215 codec/credit proofs. No new tables; nothing rerun; the queue is clear.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "56e487ce8fa4cf63ad169ffe0cd2944e9fc62dd3",
+      "message": "Merge remote-tracking branch 'origin/main' into claude/busy-beaver-zfc-formalization-e75dc8"
+    },
+    {
+      "sha": "aecdc78a8b01aae7d03b055cb6ef944f8b9b45c0",
+      "message": "Complete batch 208 placement with exact logs and archive retirement"
+    },
+    {
+      "sha": "eb2ca5e82b27af132ddc88c302069129be057435",
+      "message": "Merge remote-tracking branch 'origin/main' into codex/zfc-small-machine"
+    },
+    {
+      "sha": "b0663213602b3635258150c58ffe105a2e0ba44f",
+      "message": "K215 Lean: KSeedModel222 reuses the semantic round trip\n\nAdopts proposals/affine-cores/calculus/REMOVE_THREE_INDUCTIONS.patch (batch 208, arrival aa66d0a33f). The equality-free seed bundle needed the matrix's code to decode back to an equality-free formula; three formula inductions proved that syntactically (enc_pos, enc_dec_enc, eqFree_dec_enc). The existing semantic round trip Code254Models.sat_encode_decode already gives the satisfaction fact that is used, so the bundle lemma is stated for the named formula itself (derivable_bundle -> derivable_named_bundle) and the three inductions go. No other module used the removed or renamed names. 269 -> 235 lines; seed_eqFree has an unchanged statement.\n\nChecked with lake build BusyBeaver.ZFC.KIndisc222 (Lean 4.32.0; KSeedModel222's only importer): seed_eqFree and KIndisc222.fullSeed_of_derivable depend on [propext, Classical.choice, Quot.sound]. The warnings it prints are at lines 59-153, outside the patch. The patch was uncompiled as delivered; this is its first build.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "7e320f376c6222ef50da06bf723a05b0e46ce5ea",
+      "message": "Reconcile parallel batch 208 placements without duplicate payloads"
+    },
+    {
+      "sha": "1937bbc8a56522d178f4390f107c87ee4527ca76",
+      "message": "Write batch 208: reconcile affine, certificate and framed decoder proposals"
+    },
+    {
+      "sha": "834bddda1ba9c4ddf2be93498b65a6828a73c021",
+      "message": "Proof simplification proposals"
+    },
+    {
+      "sha": "5a09be9b09214082b5ff9ff13fd92c90a2ebcd14",
+      "message": "K215 Rocq: normalized one-sided source certificate\n\nAdopts the normalized Rocq source checker of proposals/checked-simplifications\nand proposals/automatic-certificates (batches 208/209; its namespace-adapted\nintegration patch, compiled there only with Coq 8.18). The source/dagPerm\ncorrespondence is now checked modulo the implicit false suffix of pointers\n(RMEquiv.ipeq): 1,426 certificate entries instead of 2,240, checked in one\ndirection only, with BisimMirror giving the reverse from the same check. The\noffset machinery is gone from the 215: OffsetBisim230.v and the 1.5 MB\nCert215Offsets.v leave its closure. The public theorem\nSource215.p215_dagPerm keeps its exact statement.\n\nSources of the source layer: 1,507,824 -> 122,314 bytes. New hand-written\nmodules live in k225-formal/rocqperm/ (PathCodec, BisimMirror,\nNormalizedBisim), the data in inputs/215/NormalizedCert215.v (trailing blanks\nstripped); regenerate215.py copies them and emits the one-check Source215.v.\nadd_variant215.py registers the new compile order and now also prunes stale\n215 manifest entries; build.py compares the certificate input with the\ngenerated file of the same name (the other variants' Cert{v}Offsets.v checks\nare unchanged; --check-only passes for 215, 217 and 221). Every other\ngenerated 215 file regenerates byte-identically.\n\nChecked with Rocq 9.1.0 / rocq-stdlib 9.0.0 (fresh local switch, K230\nreference rebuilt from its pinned sources):\n  python build.py --states 215 --compile-only   -> PASS_CLOSED_COMPILE\nall 44 modules, both endpoint files with their closed reports and no Axioms\nreport, 521 s (the unchanged closure: 607 s). Recursive coqchk was not rerun.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "f29a3855e2936fdd9dc59cadd1817d7eaea988f1",
+      "message": "Merge remote-tracking branch 'origin/main' into claude/busy-beaver-zfc-formalization-e75dc8"
+    },
+    {
+      "sha": "af67cd05253958f4e94d8531b1110cdc2983bcf0",
+      "message": "Proof simplification proposal"
+    },
+    {
+      "sha": "05eaa1d466655ec010a0bb4f9bbdd4bb5c15f0de",
+      "message": "Place batch 210: five K215 proof-simplification packets, retire 5 archives\n\nFour arrivals of 834bddda1b and K215_Proof_and_Quotient_Detachment_2026-10-21.zip, placed whole and byte-identical under k225-formal/verification/k215/simplification/proposals/ (quotient-detachment, proof-refinements, composition-address-bounds, further-simplifications, rocq-composition), omitting copies of repository content (further-simplifications recent_commits/sources/ and recent_commits/phase5_refresh/production/, rocq-composition review/automatic/); logs stay out by the ignore rules. Indexed in proposals/README.md, notably a smaller direct DomRho8 proof (Lean 517 -> 453 lines, generator patch; direct Rocq mirror). No new tables; nothing rerun; the queue is clear.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "c9a5b351dd279d245be630a533509d25a7d90c34",
+      "message": "Merge remote-tracking branch 'origin/main' into claude/busy-beaver-zfc-formalization-e75dc8"
+    },
+    {
+      "sha": "465923c184d102206d8701d7a15d69334578d166",
+      "message": "Proof simplification proposal"
+    },
+    {
+      "sha": "dc411f558f7a20e78ccf248fde217014c9851c98",
+      "message": "K215/K217 Lean: DomRho8 by pointwise implication lifting\n\nAdopts proposals/quotient-detachment/proof_simplification/patches/domrho8-pointwise-lifting.patch (batch 210). rho8_all no longer goes through an auxiliary syntactic deduction relation: two retained schemas (cd99, cd88) give lift_right, T(a -> b) => T((x -> a) -> (x -> b)), a term of two modus-ponens nodes, and the final derivation uses it twice. The deduction development and the distribution schema cd106 go, together with cd100-cd105 that only they needed (52 CD schemas retained instead of 59). 517 -> 453 lines; the generator generate_domrho8_lean.py is patched with it and reproduces the committed file exactly from lean217/dominated_rho8_full_certificate.json.\n\nrho8_all keeps its statement; rho8_all, composition, lift_right and KCodeDom.cdom_iff_c222 depend on [propext, Quot.sound]. Checked with lake build BusyBeaver.ZFC.EnumPerm BusyBeaver.ZFC.EnumDom (Lean 4.32.0), so both the K215 and the K217 enumerators rebuild on it. The Rocq DomRho8.v (reflected certificate) is unchanged.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "bec5e937754e511ddd10b41535ec1353be0a4977",
+      "message": "Merge remote-tracking branch 'origin/main' into claude/busy-beaver-zfc-formalization-e75dc8"
+    },
+    {
+      "sha": "cc422e905be3ed7797a6e968643addc347504305",
+      "message": "Simplify K215 Lean certificate, lookup and seed proofs; verify phase six"
+    },
+    {
+      "sha": "fb2ff3b5f5d88313bb4c8559a21911a159a3adab",
+      "message": "Reconcile K215 simplification reports through Source 178 and publish checkpoint catalogue"
+    },
+    {
+      "sha": "6f335b412aed11351b759a1d20b0e39604b0d5b9",
+      "message": "Retain legacy proof interfaces through exact phase-six provider reuse"
+    },
+    {
+      "sha": "29b567c2e48e81a302ae744e4073d2919a99393e",
+      "message": "Merge origin report placements while retaining the verified phase-six proof sources"
+    },
+    {
+      "sha": "e4d84048de8c82db0238cf191117534965492216",
+      "message": "Proof simplification proposals"
+    },
+    {
+      "sha": "b08c4256ecae3328cab287086ec5148ce0562b81",
+      "message": "K215 Rocq: decode-then-xstep enumerator and one general L1, as in Lean\n\nPorts the Lean restructuring of EnumPerm (021d848979) to rocqperm/:\n- EnumPerm.v: the command type, xstep and tupof move here from L1_CompPerm,\n  and enum_step is `decode` (the command packed at a pointer) followed by\n  xstep, instead of an inline four-way decoding.\n- L1_SoundPerm.v: soundness is two command-level lemmas, xstep_inv and\n  xstep_none (only NIP halts, on the cached code 1); Inv_step and halt_step\n  are short consequences, without per-command case splits. The zero-start\n  Inv_s0 and enum_sound, which nothing used, are gone.\n- L1_CompPerm.v: step_read reduces to decode_fields (decode inverts the\n  encoding) and step_pl to decode_le; reach and halts_from_reached work from\n  any start state between candidates, and complete_from compiles the\n  derivation behind START_Y with Y the state's own counter. The zero-start\n  reach/halts_from_reach/enum_complete are gone.\n- SeedPerm.v: one theorem, halts_from_iff (between candidates, with theorems\n  in the registers, halting iff thm222 1); seedPerm_iff_thm is one line.\n  The copy of the reachability induction (reach_from) is gone. 58 -> 19 lines.\n- L2RootPerm_dispatch.v: root_sem unfolds decode and reduces xstep per\n  command; MP splits on the modus-ponens test before injection.\nHand-written Rocq sources: 706 -> 675 lines. coq/215 regenerated with\nregenerate215.py; the manifest refreshed with add_variant215.py. Public\nnames used downstream are unchanged (enum_step, run, halts_from,\nseedPerm_iff_thm, root_sem).\n\nChecked incrementally with Rocq 9.1.0 / rocq-stdlib 9.0.0 against the\nprevious build objects: EnumPerm, L1_SoundPerm, L1_CompPerm, SeedPerm,\nRegs215, DagPerm, ProgLibPerm and L2RootPerm (closed reports) compile.\nCommitted at the user's request before the full 44-module closure build,\nwhich is running; MainPerm and the two endpoint files are not yet rechecked.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "9303204f79e033ae76cf0719d090862fef0e00a9",
+      "message": "Merge origin/main: keep Lean phase six, re-land the compiled Rocq migration\n\nThe peer's phase-six checkpoint (cc422e905b, 6f335b412a) and its merge\n29b567c2e4 kept their own copies of files both sides had changed:\n- Lean: phase six is taken whole (normalized source certificate,\n  KSource215Program, KFastSites215, RMNormalizedBisim, ...). Its\n  KSeedModel222 is our adopted patch plus a cleanup (unused hirr arguments\n  and simp arguments removed), so it is taken as is. Its DomRho8.lean and\n  generate_domrho8_lean.py (517 lines) are taken too: the merge record says\n  the pointwise-lifting version is held back because it dropped the public\n  `distribution` theorem; it will come back separately with that theorem\n  kept.\n- Rocq: 29b567c2e4 kept the previous 215 closure and deferred the\n  normalized-certificate migration as outside its Lean-only task. That\n  migration and the decode-based enumerator (b08c4256ec) are re-landed here:\n  coq/215, rocqperm/, inputs/215, regenerate215.py, add_variant215.py,\n  build.py, manifest.json and regeneration215.json are ours. Upstream's\n  manifest differs from the merge base only in the 215 variant, so nothing\n  else is dropped.\n\nEvidence, now recorded in k225-formal/verification/k215/rocq/normalized-91/:\nall 44 modules of the K215 Rocq closure compiled from scratch with Rocq\n9.1.0 / rocq-stdlib 9.0.0 by the maintained build.py (PASS_CLOSED_COMPILE,\ntwo closed endpoint reports, no Axioms report, 499 s); every compiled source\nis byte-identical to the committed coq/215 tree; build.py --check-only\npasses for 215, 217 and 221. Recursive coqchk not yet rerun.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "d7105dd57d190074b39ff1ee80d01fefbe9b4cf4",
+      "message": "Place batch 211: four K215 proof-simplification packets, retire 4 archives\n\nArrivals af67cd0525, 465923c184, e4d84048de. Placed whole and byte-identical under k225-formal/verification/k215/simplification/proposals/ (proof-core, checked-transport, semantic-normal-forms, guarded-core), omitting copies of already placed packets (guarded-core checked/extracted/, affine/extracted/, refinements/incoming/) and repository tables (checked-transport state_reduction/inputs/); logs stay out by the ignore rules. Indexed in proposals/README.md. The only 215-state table not in the repository is an unverified allocation experiment, not an alternative. Nothing rerun; the queue is clear.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "09513fe67f539dad96951b808d3d089f3a821d23",
+      "message": "K215 Rocq: L1_SoundPerm keeps formula codes opaque\n\nAdopts proposals/checked-transport/rocq_seed_rank (batch 211): Local Opaque P wim wal wex weq wel. The soundness proof only uses the constructor lemmas, so nothing changes in its scripts or statements, but simplification no longer expands numeric formula codes. Compile time 24.5 s -> 1.5 s (Rocq 9.1.0, against the existing build objects); SeedPerm and MainPerm recompile on it. coq/215 regenerated, manifest refreshed.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "e94206c09f783e51abe616f8a1327e6c607548a1",
+      "message": "K215/K217 Lean: DomRho8 through a representation-independent implication core\n\nAdopts proposals/proof-core (batch 211). The dominated-rho8 argument moves into the generic DominatedImplication.lean: for an arbitrary carrier and implication operation it needs only MP, the restricted rho8 instances and a reflexive relation preserved by insertion in either operand (no truth axiom, arithmetic, decoder or injectivity). Thirteen checked MP shortcuts reduce 117 helper schemas to 84, and a direct composition/exchange/K/Peirce argument replaces the local deduction calculus. DomRho8.lean becomes a 70-line compatibility adapter that keeps every public declaration (DomImp, rho8_all, composition, distribution and the helpers) and adds rho8_all_of_restricted.\n\n517 lines / 30,114 bytes -> 458 lines / 22,278 bytes across the two files. This keeps the public interface, the condition under which the phase-six merge record held back the earlier pointwise-lifting version. rho8_all, composition and distribution keep their exact statements (checked textually, and by the packet's DomRho8PublicAudit client, which compiles); their axioms stay [propext, Quot.sound], and the generic DominatedImplication theorems use none. lake build BusyBeaver.ZFC.EnumPerm BusyBeaver.ZFC.EnumDom passes (Lean 4.32.0), so the K215 and K217 enumerators rebuild on it. generate_domrho8_lean.py is marked superseded; the Rocq DomRho8.v files are unchanged and are not rendered from this file.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "639e34777e269af05ce380733a7f43b5fec9902b",
+      "message": "K215 Lean: one shared bundle semantics for both seed directions\n\nAdopts proposals/semantic-normal-forms/seed_semantics (batch 211), combined with the semantic round trip already on main. KSeed222.BundleSemantics.bundle_iff_seed proves once, for distinct names, that a decoded seed bundle means the seed property (through the normal forms req_iff and clos_iff); seed_of_bundle becomes a consequence instead of a second decoding, the equal-name case stays as diagonal_bundle_of_seed, and seedProp_congr replaces the witness-by-witness transport at the end of seed_eqFree. KSeedModel222 keeps derivable_named_bundle and the Code254Models.sat_encode_decode round trip (no formula inductions), and keeps matrix_iff (now unused) as public interface with omit hirr in. The packet's patch could not apply to the current files (it predates both seed changes), so the two were merged by hand.\n\nKSeed222 + KSeedModel222: 454 -> 332 lines. No declaration removed from either file; seed_eqFree, seed_of_bundle and bundle_of_seed keep their statements, as the packet's AuditSeedSemantics client checks (it compiles). lake build BusyBeaver.ZFC.KIndisc222 passes with no warnings in these modules (Lean 4.32.0); all four reported theorems depend on [propext, Classical.choice, Quot.sound].\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "47da6a5dcfe2796dd222ccda714d0b0e76b6f14f",
+      "message": "Replace K215 deduction machinery with pointwise implication lifting; verify phase seven"
+    },
+    {
+      "sha": "dd2304c9a8bdde6c39d525ff001f2609e9fc4e06",
+      "message": "Merge incoming proof proposals while retaining the checked phase-seven sources"
+    },
+    {
+      "sha": "d726d1dfe7aa0b46b46da3e2bb8c96ba4ab0d73d",
+      "message": "Record the new shared-seed proposal while preserving the verified checkpoint"
+    },
+    {
+      "sha": "b8802a97728f44fcf8b748b913a257dcd2696610",
+      "message": "K215 Rocq: recursive coqchk of the normalized/decode-based closure passes\n\nFresh 44-module compile of the current coq/215 tree with Rocq 9.1.0 / rocq-stdlib 9.0.0, then recursive coqchk of K215F.CorrectDense215: PASS_CLOSED_KERNEL (coqchk exit 0, 1,121 s). Both endpoint files print their two closed reports and no Axioms report; the checker's global context is the baseline's (inj_pair2, proof_irrelevance, eq_rect_eq, on which the endpoint statements do not depend), with no unsafe fixpoints or assumed positivity. Every compiled source is byte-identical to the committed tree. verification/k215/rocq/normalized-91/ now holds the run's verification.json, compilation log and coqchk summary.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "f46b58faf8dcb0eddd096eb59cedb4812d02041b",
+      "message": "Merge remote-tracking branch 'origin/main' into claude/busy-beaver-zfc-formalization-e75dc8"
+    },
+    {
+      "sha": "9bac1c403c780dee62206556fbda311236798c98",
+      "message": "K215 Rocq: re-land the kernel-checked normalized/decode-based closure\n\nThe origin merge f46b58faf8 restored the older offset-certificate Rocq sources (coq/215, inputs/215, rocqperm, regenerate215.py, add_variant215.py, build.py, manifests), which the phase-seven merge had retained as the last checked boundary pending a check of the new tree. That check now exists: verification/k215/rocq/normalized-91 records a fresh 44-module compile and a recursive coqchk of K215F.CorrectDense215 (PASS_CLOSED_KERNEL, exit 0), with per-module source hashes. This commit restores exactly those bytes (the tree of b8802a9772: 3 files removed, 8 restored, 16 changed); the Lean sources are untouched.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "e7bea38d11ab68d971d355c781bb4c7fd13f4471",
+      "message": "Share K215 implication and seed proofs; verify phase eight"
+    },
+    {
+      "sha": "f7b4a86bb3c654db0fb07714beaea06b83d5ce49",
+      "message": "Merge upstream Rocq receipts while preserving the checked Lean checkpoint"
+    },
+    {
+      "sha": "4fdc59197a45a6beb7e5a4ae7109fd13477b1d17",
+      "message": "K215/K217: DomRho8 as a 52-step condensed-detachment derivation, Lean and Rocq\n\nrho8 a b c u = ((c -> u) -> a) -> ((a -> c) -> (b -> c)) is Lukasiewicz's single axiom of the\nimplicational calculus; DomImp grants it only for u <= a. DomRho8.rho8_all now derives every\ninstance by one condensed-detachment derivation of 52 modus-ponens steps (one lemma each) from\ntruth, modus ponens and the dominated rows, instead of replaying Source 149's certificate\n(118 lemmas). Every side condition u <= a holds because u is a literal subterm of a (le_l/le_r),\nis the code 0, or is a hypothesis of the lemma; no step needs the 0 -> 0 = 0 conversion.\n\n  Lean DomRho8.lean   454 lines / 26,770 bytes -> 254 lines / 11,974 bytes (1.6 s)\n  Rocq DomRho8.v      22,673 bytes (reflective certificate) -> 11,190 bytes (1.9 s),\n                      the same derivation as direct lemmas\n\nThe public interface used by KCodeDom and ThmDom is unchanged (DomImp, rho8_all; le_l, le_r,\nsub and wim00 are kept). The unused public helpers composition and lift_right are gone. Checked:\nlake build of DomRho8 and KCodeDom (rho8_all: propext, Quot.sound); in Rocq, DomRho8 and\nThmDom compiled in the build tree (both closed under the global context); build.py\n--check-only passes. The full 44-module Rocq compile with recursive coqchk follows separately.\n\nNew k225-formal/rho8cd/:\n  derivation.txt           the derivation (formula, premises, side conditions per line)\n  generate_domrho8_cd.py   renders it for Lean (--lean) and Rocq (--rocq), recomputing every\n                           unifier so premises are applied at explicit instances; called by\n                           regenerate215.py for coq/215/DomRho8.v\n  search/                  the untrusted search: a given-clause prover in Rust (cdr) with\n                           side-condition tracking and Veroff hints, and shrink.py (hint\n                           deletion). Hints from the 111 statements of the old proof gave\n                           86 steps in 6 s; hint-deletion passes gave 85 -> 61 -> 56 -> 54\n                           nodes (52 lemmas plus the two leaves), a local optimum under four\n                           parameter settings.\n\ngenerate_domrho8_lean.py is marked superseded (kept as history).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "159397838a0af11c030bba140fa5618664cb5a9b",
+      "message": "Merge origin/main: keep the peer's phase-eight Lean core and Rocq tree; Rocq DomRho8 by condensed detachment\n\nPhase eight (e7bea38d11, f7b4a86bb3) adopted the representation-independent DominatedImplication core for the Lean DomRho8 and kept the older Rocq production tree. This merge keeps both. The 52-step derivation of rho8cd/ is used only where the peer's tree has no competing change: coq/215/DomRho8.v (11,190 bytes, replacing the 22,673-byte reflective certificate; DomRho8 and ThmDom compiled, closed under the global context), regenerate215.py calls rho8cd/generate_domrho8_cd.py, and the regeneration receipt and manifest digests are refreshed on the peer's tree (regenerate215 reproduces coq/215 exactly; build.py --check-only passes). The Lean rendering of the same derivation (254 lines, built with KCodeDom in 4fdc59197a) stays available as rho8cd's --lean output; the docs say which lane uses what.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "507ccc5db72bd8448347e928016bded6df084d04",
+      "message": "Share K215 return proof and verify decoder prefixes"
+    },
+    {
+      "sha": "35e2d8fa8cba0f7be845d1e6faf16b0606df2199",
+      "message": "Import condensed-detachment research and retain checked proof boundary"
+    },
+    {
+      "sha": "d93adc41745b28830efd865d2b9898be36988ef5",
+      "message": "K215/K217 Lean: DominatedImplication core as a 58-step condensed-detachment derivation\n\nThe representation-independent core of phase eight keeps its interface (Language, rho8,\nRestricted, and the public rho8_all, composition, lift_right) but its proof is now one\ncondensed-detachment derivation of 58 modus-ponens steps, one lemma each, from modus ponens and\nthe restricted rows alone: no truth constant, no private seed (WithSeed), no Peirce/K/lifting\nassembly. Each side condition holds by L.refl and insertion into an implication operand\n(grow_left/grow_right), or is a hypothesis of the lemma.\n\n  DominatedImplication.lean  381 lines / 19,378 bytes, 82 numbered helpers + seed assembly\n                          -> 295 lines / 13,984 bytes, 58 lemmas\n  axioms of rho8_all, composition, lift_right: propext, Quot.sound -> none\n\nDomRho8.lean (the Nat adapter) is byte-identical. Checked: lake build of DominatedImplication,\nDomRho8 and KCodeDom (adapter and cdom_iff_c222 report propext, Quot.sound, as before);\nevery formula of the derivation is a classical tautology (sanity check).\n\nrho8cd/:\n  derivation_core.txt     the derivation, with #GOAL lines for the three public statements\n  generate_domrho8_cd.py  --core renders it; the Lean (--lean) and Rocq (--rocq) Nat renderings\n                          of derivation.txt are unchanged (coq/215/DomRho8.v reproduces byte\n                          for byte); in core mode a variable the unifier loses takes a variable\n                          of the lemma (or the other side of its side condition) instead of 0,\n                          and a derivation using truth is rejected\n  search/                 cdr gains NOZ=1 (no truth axiom) and GOALS (extra goals; the proof DAG\n                          is their union); shrink.py passes them through. Seeded with the\n                          52-step proof's formulas, three hint-deletion passes gave\n                          71 -> 64 -> 59 nodes (58 lemmas plus the row leaf); a fourth from the\n                          union of the single- and three-goal proofs also stopped at 59. Without\n                          truth the row alone needs 52 lemmas too.\n\ngenerate_dominated_implication_lean.py notes that it now reproduces the phase-eight core\n(history); the k225-formal README names the current producers.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "2ca3a5c16f0876d2cab842056353c03a1ed2f5f0",
+      "message": "Merge origin/main (phase nine): keep the compiled 58-step core; Rocq keeps its checked replay\n\nPhase nine imported rho8cd/ as research and retained the earlier Rocq DomRho8.v, regeneration record, manifest and regenerate215.py; this merge keeps that Rocq boundary. On the Lean side the incoming tree did not touch DominatedImplication.lean, so the 58-step condensed-detachment core of the previous commit (compiled with DomRho8 and KCodeDom) stays. The k225-formal README, rho8cd/README.md and an appended update in rho8cd/PROVEIT_STATUS.md now say exactly which lane uses which derivation.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+    },
+    {
+      "sha": "6f0d42d368506bc29c70ace1c992ed88b2651346",
+      "message": "Proof simplification proposal"
+    }
+  ],
+  "files": [
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderCertificate.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderPaths.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderSourceBinding.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DomRho8.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FramedWindow.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/K215Decoder.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDecoderPrefix215.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFastSites215.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHome.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch000.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch001.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch002.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch003.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch004.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch005.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch006.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch007.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch008.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Data.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMNormalizedBisim.lean",
+    "Computability/BusyBeaver/Research/ZFC/README.md",
+    "Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/dominated_implication_templates/adapter.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/dominated_implication_templates/core-prefix.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/dominated_implication_templates/core-suffix.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/generate_dominated_implication_lean.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/generate_domrho8_lean.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/generate_sites215_lean.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/generate_source215_lean.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/partition_source215_lean.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/prepare_k215.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/PROVEIT_STATUS.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/derivation.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/derivation_core.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/generate_domrho8_cd.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/search/Cargo.lock",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/search/Cargo.toml",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/search/hints_source149.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/search/shrink.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/rho8cd/search/src/main.rs",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/normalized-91/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/normalized-91/compilation.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/normalized-91/coqchk.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/rocq/normalized-91/verification.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/basis-reference.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/basis_reference.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/controls/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/controls/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/evidence.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/execution.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/live-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/live-review.stderr",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/live-review.stdout",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/outer-execution-observation.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/publish.stderr",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/publish.stdout",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/root-actual-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/root_readonly_review.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/runner-peer-v1.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/runner-peer-v2.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/saved-review.stderr",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/saved-review.stdout",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/source-freeze-v1.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review/source-peer.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/lean/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/history/saved-reader-v1/correction.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/history/saved-reader-v1/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/history/saved-reader-v1/saved.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/history/saved-reader-v1/saved.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/independent-peer.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/review.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/saved-v2.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/saved-v2.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/legacy-continuity/stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/adoption-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/bundle.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/bundle.py.v2.diff",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/controls.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/controls.py.v2.diff",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/evidence.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/helper-freeze.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/bundle.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/controls.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/copy-map.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/helper-freeze.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/peer.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/history/helpers-v1/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/peer-review-v2.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/review_adoption.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/review_saved.py.v2.diff",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/root-saved-review-v2.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/proof-sources/summary.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/merge.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/postmerge-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/retained-absences.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/retained-paths.txt",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/source-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase6/upstream-merge/source-review.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/basis-reference.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/basis_reference.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/controls/controls-result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/controls/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/controls/controls.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/controls/controls.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/evidence.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/execution.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/history/controls-v1/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/history/controls-v1/controls.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/history/controls-v1/controls.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/history/controls-v1/correction.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/live-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/helper-source-peer.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/helper-source-peer.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/live.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/live.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/outer-execution-observation.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/publish.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/publish.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/root-actual-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/root_readonly_review.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/saved.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/saved.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review/source-freeze-v1.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/lean/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/evidence.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/execution.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/helper-freeze.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/helper-peer/review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/helper-peer/review.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/live-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-chain.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-logs/live.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-logs/live.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-logs/publish.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-logs/publish.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-logs/saved.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/publication-logs/saved.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/references.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/review/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/legacy/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/merge.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/postmerge-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/retained-production.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase7/upstream-merge/seed-sharing-639e.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/documentation-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/basis-reference.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/basis_reference.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/evidence.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/execution.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/live-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/README.prepared.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/controls-result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/controls.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/controls.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/finalize_stage.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/live.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/live.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/outer-execution-observation.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/peer-controls-result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/peer-controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/peer-controls.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/peer-controls.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/preparation-history.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/publish.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/publish.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/root-actual-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/root_readonly_review.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/saved.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/saved.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/source-freeze-v1.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/source-peer.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review/source-peer.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/lean/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/evidence.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/execution.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-freeze.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-peer/controls-result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-peer/controls.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-peer/controls.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-peer/controls.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-peer/review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/helper-peer/review.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/live-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-chain.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-logs/live.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-logs/live.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-logs/publish.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-logs/publish.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-logs/saved.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/publication-logs/saved.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/references.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/legacy/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/after-check.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/before-check.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/check_boundary.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/history/strict-raw-log-assumption/inventory.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/history/strict-raw-log-assumption/inventory.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/history/strict-raw-log-assumption/inventory.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/inventory.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/inventory.stderr.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/inventory.stdout.log",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/merge.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/postmerge-legacy.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/postmerge-primary.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/retained-production.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase8/upstream-merge/review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/adoption.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/documentation-copy-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/documentation-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/auxiliary.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/basis-reference.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/basis_reference.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/evidence.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/execution.tar.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/independent-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/index.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/result.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/review_saved.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/root-saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/lean/saved-review.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/legacy-unchanged.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/DominatedImplication.lean.diff",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/KHomeReady.lean.diff",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/README.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/candidate-control.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/candidate/DominatedImplication.lean",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/candidate/KHomeReady.lean",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/census-summary.json.gz",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/census.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/census.stdout",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/copy-map.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/freeze.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/history/census-v1.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/history/v1-status.json",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/prepare_candidates.py",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/next-inlining/producer-plan.md",
+    "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase9/timings.json"
+  ]
+}
