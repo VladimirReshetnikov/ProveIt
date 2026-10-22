@@ -1,4 +1,4 @@
-import BusyBeaver.ZFC.KIndisc222
+import BusyBeaver.ZFC.KSeedInterface222
 import BusyBeaver.ZFC.Code254GIC
 
 /-!
