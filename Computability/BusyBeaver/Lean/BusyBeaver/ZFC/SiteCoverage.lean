@@ -46,12 +46,12 @@ theorem allSites_sound (test : List Bool → Edge → Bool)
       simpa only [allSites, List.append_nil] using h
   | left hl ih =>
       intro revPrefix h
-      have hh := ih (false :: revPrefix) (Bool.and_eq_true_iff.mp h).1
-      simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using hh
+      simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using
+        ih (false :: revPrefix) (Bool.and_eq_true_iff.mp h).1
   | right hl ih =>
       intro revPrefix h
-      have hh := ih (true :: revPrefix) (Bool.and_eq_true_iff.mp h).2
-      simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using hh
+      simpa only [List.reverse_cons, List.append_assoc, List.singleton_append] using
+        ih (true :: revPrefix) (Bool.and_eq_true_iff.mp h).2
 
 /-- The path in LeafAt is exactly the bits consumed, rather than the input
 list truncated without its implicit trailing zeros. -/
@@ -67,37 +67,28 @@ theorem twalk_leafAt (t : Tree) : ∀ (P : List Bool) (i : Nat) (e : Edge) (d : 
       exact ⟨Nat.le_refl _, by simpa only [Nat.sub_self, RMEquiv.pre] using LeafAt.here e'⟩
   | node a b iha ihb =>
       intro P i e d h
-      cases P with
-      | nil =>
-          obtain ⟨hd, hl⟩ := iha [] (i + 1) e d h
-          have hk : d - i = (d - (i + 1)) + 1 := by omega
-          refine ⟨by omega, ?_⟩
-          rw [hk]
-          change LeafAt (.node a b) (false :: RMEquiv.pre [] (d - (i + 1))) e
-          exact .left hl
-      | cons c P =>
-          cases c with
-          | false =>
-              obtain ⟨hd, hl⟩ := iha P (i + 1) e d h
-              have hk : d - i = (d - (i + 1)) + 1 := by omega
-              refine ⟨by omega, ?_⟩
-              rw [hk]
-              change LeafAt (.node a b) (false :: RMEquiv.pre P (d - (i + 1))) e
-              exact .left hl
-          | true =>
-              obtain ⟨hd, hl⟩ := ihb P (i + 1) e d h
-              have hk : d - i = (d - (i + 1)) + 1 := by omega
-              refine ⟨by omega, ?_⟩
-              rw [hk]
-              change LeafAt (.node a b) (true :: RMEquiv.pre P (d - (i + 1))) e
-              exact .right hl
+      rcases P with _ | ⟨_ | _, P⟩
+      · obtain ⟨hd, hl⟩ := iha [] (i + 1) e d h
+        refine ⟨by omega, ?_⟩
+        rw [show d - i = (d - (i + 1)) + 1 by omega]
+        change LeafAt (.node a b) (false :: RMEquiv.pre [] (d - (i + 1))) e
+        exact .left hl
+      · obtain ⟨hd, hl⟩ := iha P (i + 1) e d h
+        refine ⟨by omega, ?_⟩
+        rw [show d - i = (d - (i + 1)) + 1 by omega]
+        change LeafAt (.node a b) (false :: RMEquiv.pre P (d - (i + 1))) e
+        exact .left hl
+      · obtain ⟨hd, hl⟩ := ihb P (i + 1) e d h
+        refine ⟨by omega, ?_⟩
+        rw [show d - i = (d - (i + 1)) + 1 by omega]
+        change LeafAt (.node a b) (true :: RMEquiv.pre P (d - (i + 1))) e
+        exact .right hl
 
 theorem allSites_twalk (test : List Bool → Edge → Bool) (t : Tree)
     (h : allSites test [] t = true) (P : List Bool) (e : Edge) (d : Nat)
     (hw : twalk t P 0 = some (e, d)) : test (consume P d) e = true := by
-  have hl := (twalk_leafAt t P 0 e d hw).2
-  have hc := allSites_sound test hl [] h
-  simpa only [List.reverse_nil, List.nil_append, Nat.sub_zero, RMEquiv.consume_eq] using hc
+  simpa only [List.reverse_nil, List.nil_append, Nat.sub_zero, RMEquiv.consume_eq] using
+    allSites_sound test (twalk_leafAt t P 0 e d hw).2 [] h
 
 /-- Rejecting `.none` also proves that every instruction-pointer input finds
 some leaf. This asserts no operation or binary-step correctness. -/
@@ -110,12 +101,10 @@ theorem allSites_total (test : List Bool → Edge → Bool) (t : Tree) :
   | node a b iha ihb =>
       intro revPrefix h P i
       have hh := Bool.and_eq_true_iff.mp h
-      cases P with
-      | nil => exact iha (false :: revPrefix) hh.1 [] (i + 1)
-      | cons c P =>
-          cases c with
-          | false => exact iha (false :: revPrefix) hh.1 P (i + 1)
-          | true => exact ihb (true :: revPrefix) hh.2 P (i + 1)
+      rcases P with _ | ⟨_ | _, P⟩
+      · exact iha (false :: revPrefix) hh.1 [] (i + 1)
+      · exact iha (false :: revPrefix) hh.1 P (i + 1)
+      · exact ihb (true :: revPrefix) hh.2 P (i + 1)
 
 theorem allSites_walk (test : List Bool → Edge → Bool) (p : Program) (t : Tree)
     (ht : ptree p = t) (h : allSites test [] t = true)

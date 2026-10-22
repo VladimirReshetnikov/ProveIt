@@ -78,9 +78,8 @@ theorem spec_eq (a b : Nat) : C222 (wim (wal (wel a b) (weq a b)) (weq a b)) := 
   exact .mp (.ax (C222.r6 (wel a b) (weq a b))) e2
 
 /-- **rho7** from the merged row. -/
-theorem rho7_222 (a b c : Nat) : C222 (rho7 a b c) := by
-  apply ded2
-  exact .mp (.ax (spec_eq a b)) (.mp (.mp (.ax (C222.rG a b c)) d1) d0)
+theorem rho7_222 (a b c : Nat) : C222 (rho7 a b c) :=
+  ded2 (.mp (.ax (spec_eq a b)) (.mp (.mp (.ax (C222.rG a b c)) d1) d0))
 
 /-- Membership vacuity, projected from the bundle `¬(RV → ¬K_s)`. -/
 theorem vrel_of_bundle (a b c : Nat) (h1 : c ≠ a) (h2 : c ≠ b) : C222 (vrel a b c) := by
