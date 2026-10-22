@@ -1,0 +1,189 @@
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/L1_CompPerm.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/L1_CompPerm.v
+@@ -1,7 +1,7 @@
+ (** * L1_CompPerm: [thm222 1] implies that the 215's enumerator halts.
+ 
+-    As L1_Comp222, for Source 159's commands: a derivation of the dominated calculus [thmDom]
+-    compiles to a command list.  Block contract for a code X:
++    As L1_Comp222, for Source 159's commands: a derivation of [thm222] compiles directly to a command list
++    by interpreting dominated implication in block contracts.  Block contract for a code X:
+         [blk X L] :  for all T w,  exec L (T, w, 0, 0) is a halt or ends in (X, w, 0, 0).
+     The counter is set from a cleared state by [J u = MP u] ([J 0] is empty); a dominated rho8
+     leaf is [Discard; J u; AX(c; a - u, b); NIP^8; DROP; NIP^3]. The program
+@@ -9,7 +9,7 @@
+     number is reached unless the enumerator halts earlier. *)
+ From Coq Require Import Arith Lia Bool List.
+ From K230L Require Import Codes230.
+-From NS Require Import Codes222 EnumPerm Thm222 ThmDom.
++From NS Require Import Codes222 EnumPerm Thm222 DomRho8.
+ Import ListNotations.
+ 
+ (** ** Commands and their encoding *)
+@@ -308,11 +308,22 @@
+   rewrite (ex_nip _ _ _ _ _ _ EB). xrun. right. reflexivity.
+ Qed.
+ 
+-(** ** Compilation of derivations of the dominated calculus *)
+-Lemma compile X : thmDom X -> exists L, blk X L.
++(** ** Compile directly into the algebra of block contracts. *)
++Definition Compilable (X : nat) : Prop := exists L, blk X L.
++
++Lemma compilable_dom_imp : DomImp Compilable.
++Proof.
++  constructor.
++  - exists DISCARD. exact blk_true.
++  - intros a b [LI HI] [LA HA].
++    exists (mpb b LA LI). exact (blk_mp a b LA LI HA HI).
++  - intros a b c u Hu. exists (leaf 8 a b c u). now apply blk_r8.
++Qed.
++
++Lemma compile_direct X : thm222 X -> exists L, blk X L.
+ Proof.
+   induction 1 as [| t b _ [LA HA] _ [LI HI] | a hh _ [L HL]
+-                  | a b | a b c | a b c | a b c | a b c | a b | a b c | a b c u Hu | a b c H1 H2].
++                  | a b | a b c | a b c | a b c | a b c | a b | a b c | a b c u | a b c H1 H2].
+   - exists DISCARD. exact blk_true.
+   - exists (mpb b LA LI). exact (blk_mp t b LA LI HA HI).
+   - exists (genb a L). exact (blk_gen a hh L HL).
+@@ -323,7 +334,7 @@
+   - exists (leaf 5 a b c 0). apply blk_r5.
+   - exists (leaf 6 a 0 b 0). apply blk_r6.
+   - exists (leaf 7 a b c 0). apply blk_r7.
+-  - exists (leaf 8 a b c u). now apply blk_r8.
++  - exact (rho8_all Compilable compilable_dom_imp a b c u).
+   - exists (leafB a b c). now apply blk_bundle.
+ Qed.
+ 
+@@ -341,7 +352,7 @@
+ 
+ Theorem enum_complete : thm222 1 -> enum_halts.
+ Proof.
+-  intro H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
++  intro H. destruct (compile_direct 1 H) as [L HL].
+   set (N := enc_fields (fields (START 0)) (enc_tail (L ++ SUFFIX))).
+   destruct (reach N) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
+   apply (halts_from_reach n s R).
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/L1_CompPerm.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/L1_CompPerm.v
+@@ -1,8 +1,8 @@
+-(** k225-formal/rocqperm/L1_CompPerm.v (SHA256 3b4de4f5196c48def488bcbfa413ea4afcf0026db1a5afca1f21b341aa235aaf) under namespace K215F. *)
++(** k225-formal/rocqperm/L1_CompPerm.v (SHA256 f074df28539f5fe49dc0a8591a4408c88e343bf472f8c9a484f817a08f5c1f52) under namespace K215F. *)
+ (** * L1_CompPerm: [thm222 1] implies that the 215's enumerator halts.
+ 
+-    As L1_Comp222, for Source 159's commands: a derivation of the dominated calculus [thmDom]
+-    compiles to a command list.  Block contract for a code X:
++    As L1_Comp222, for Source 159's commands: a derivation of [thm222] compiles directly to a command list
++    by interpreting dominated implication in block contracts.  Block contract for a code X:
+         [blk X L] :  for all T w,  exec L (T, w, 0, 0) is a halt or ends in (X, w, 0, 0).
+     The counter is set from a cleared state by [J u = MP u] ([J 0] is empty); a dominated rho8
+     leaf is [Discard; J u; AX(c; a - u, b); NIP^8; DROP; NIP^3]. The program
+@@ -10,7 +10,7 @@
+     number is reached unless the enumerator halts earlier. *)
+ From Coq Require Import Arith Lia Bool List.
+ From K230L Require Import Codes230.
+-From K215F Require Import Codes222 EnumPerm Thm222 ThmDom.
++From K215F Require Import Codes222 EnumPerm Thm222 DomRho8.
+ Import ListNotations.
+ 
+ (** ** Commands and their encoding *)
+@@ -309,11 +309,22 @@
+   rewrite (ex_nip _ _ _ _ _ _ EB). xrun. right. reflexivity.
+ Qed.
+ 
+-(** ** Compilation of derivations of the dominated calculus *)
+-Lemma compile X : thmDom X -> exists L, blk X L.
++(** ** Compile directly into the algebra of block contracts. *)
++Definition Compilable (X : nat) : Prop := exists L, blk X L.
++
++Lemma compilable_dom_imp : DomImp Compilable.
++Proof.
++  constructor.
++  - exists DISCARD. exact blk_true.
++  - intros a b [LI HI] [LA HA].
++    exists (mpb b LA LI). exact (blk_mp a b LA LI HA HI).
++  - intros a b c u Hu. exists (leaf 8 a b c u). now apply blk_r8.
++Qed.
++
++Lemma compile_direct X : thm222 X -> exists L, blk X L.
+ Proof.
+   induction 1 as [| t b _ [LA HA] _ [LI HI] | a hh _ [L HL]
+-                  | a b | a b c | a b c | a b c | a b c | a b | a b c | a b c u Hu | a b c H1 H2].
++                  | a b | a b c | a b c | a b c | a b c | a b | a b c | a b c u | a b c H1 H2].
+   - exists DISCARD. exact blk_true.
+   - exists (mpb b LA LI). exact (blk_mp t b LA LI HA HI).
+   - exists (genb a L). exact (blk_gen a hh L HL).
+@@ -324,7 +335,7 @@
+   - exists (leaf 5 a b c 0). apply blk_r5.
+   - exists (leaf 6 a 0 b 0). apply blk_r6.
+   - exists (leaf 7 a b c 0). apply blk_r7.
+-  - exists (leaf 8 a b c u). now apply blk_r8.
++  - exact (rho8_all Compilable compilable_dom_imp a b c u).
+   - exists (leafB a b c). now apply blk_bundle.
+ Qed.
+ 
+@@ -342,7 +353,7 @@
+ 
+ Theorem enum_complete : thm222 1 -> enum_halts.
+ Proof.
+-  intro H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
++  intro H. destruct (compile_direct 1 H) as [L HL].
+   set (N := enc_fields (fields (START 0)) (enc_tail (L ++ SUFFIX))).
+   destruct (reach N) as [Hh | [n [s [R [P0 N0]]]]]; [exact Hh|].
+   apply (halts_from_reach n s R).
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/SeedPerm.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/SeedPerm.v
+@@ -3,7 +3,7 @@
+     START 4 ++ Build_F ++ SUFFIX has candidate number P 3 (P 4 (P 1 r)) >= 4. *)
+ From Coq Require Import Arith Lia List.
+ From K230L Require Import Codes230.
+-From NS Require Import Codes222 Thm222 ThmDom EnumPerm L1_SoundPerm L1_CompPerm.
++From NS Require Import Codes222 Thm222 EnumPerm L1_SoundPerm L1_CompPerm.
+ Import ListNotations.
+ 
+ Definition seedPerm : state := mkState 0 4 0 0 0 0.
+@@ -33,7 +33,7 @@
+ 
+ Theorem seedPerm_complete : thm222 1 -> halts_from seedPerm.
+ Proof.
+-  intros H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
++  intros H. destruct (compile_direct 1 H) as [L HL].
+   set (N := enc_fields (fields (START 4)) (enc_tail (L ++ SUFFIX))).
+   assert (HN : 4 <= N).
+   { unfold N, START, fields, enc_fields. cbn [fold_right].
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/SeedPerm.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/SeedPerm.v
+@@ -1,10 +1,10 @@
+-(** k225-formal/rocqperm/SeedPerm.v (SHA256 723bd2fa87a5c5cfd4b6f29a5374ca1e6713de7f673a51e0380c436cbc197802) under namespace K215F. *)
++(** k225-formal/rocqperm/SeedPerm.v (SHA256 f278322ff9bc8a8868e3be21efd0b50f610b40af18bebf30ac8bcd571f4f4de2) under namespace K215F. *)
+ (** * SeedPerm: the 215's bootstrap starts candidate 4 with every other register zero.
+     The proof search is complete from that state (Source 159's cofinal argument): the program
+     START 4 ++ Build_F ++ SUFFIX has candidate number P 3 (P 4 (P 1 r)) >= 4. *)
+ From Coq Require Import Arith Lia List.
+ From K230L Require Import Codes230.
+-From K215F Require Import Codes222 Thm222 ThmDom EnumPerm L1_SoundPerm L1_CompPerm.
++From K215F Require Import Codes222 Thm222 EnumPerm L1_SoundPerm L1_CompPerm.
+ Import ListNotations.
+ 
+ Definition seedPerm : state := mkState 0 4 0 0 0 0.
+@@ -34,7 +34,7 @@
+ 
+ Theorem seedPerm_complete : thm222 1 -> halts_from seedPerm.
+ Proof.
+-  intros H. destruct (compile 1 (thmDom_of_thm222 1 H)) as [L HL].
++  intros H. destruct (compile_direct 1 H) as [L HL].
+   set (N := enc_fields (fields (START 4)) (enc_tail (L ++ SUFFIX))).
+   assert (HN : 4 <= N).
+   { unfold N, START, fields, enc_fields. cbn [fold_right].
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/manifest.json
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/manifest.json
+@@ -1570,8 +1570,8 @@
+   "coq/215/ThmDom.v": "46570eec20ab096898b37983b3ced465e59510b7509bf67a3ce10a8674ae9e44",
+   "coq/215/EnumPerm.v": "3c2e084a3853ccd63e12d48d2475338501a404d59de4f926c0638f0b3412faa2",
+   "coq/215/L1_SoundPerm.v": "d1d5883dba5d60a11eb888f8a5b492ca1c81990d087bdb9311849968da078eca",
+-  "coq/215/L1_CompPerm.v": "b8bb16641baed4cbd061f121abc256794bf7986be26046c9595bed256bbde4e2",
+-  "coq/215/SeedPerm.v": "2e15a4166f4ffc3eecc8ad4b4f126cf76458eb816fcab90bba7058be9aa2b12b",
++  "coq/215/L1_CompPerm.v": "1331aa6a363100c06ad5d1b6f20d21c99052d53acf6e7c0a5d0d98a7f1152f05",
++  "coq/215/SeedPerm.v": "a707df7a063f8d7280ee0d0512f9b5aea2e094a5b25b8012e5d1d0a06c165202",
+   "coq/215/Regs215.v": "b19277cfc8414b9ddb3e37e0c4f95ca6fcc7b06c2956c057f8c987db01f8ed0f",
+   "coq/215/DagPerm.v": "ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1",
+   "coq/215/ProgLibPerm.v": "55d84bc0eb7ceaa8761c6d8f037b6436977f30844e9540b380c75e57927dd5ff",

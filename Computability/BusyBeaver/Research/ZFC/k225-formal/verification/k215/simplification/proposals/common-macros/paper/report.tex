@@ -1,0 +1,498 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{microtype,booktabs,tabularx,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage{listings,fancyhdr,needspace}
+\hypersetup{pdftitle={A Common Macro Library and Smaller Semantic Interfaces for the K215 Proofs},pdfauthor={Research assistance for Vladimir Reshetnikov}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,framerule=0.3pt,rulecolor=\color{black!20},aboveskip=10pt,belowskip=10pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}\lhead{\small K215 proof simplification}\rhead{\small Revision 6d9800d1ca67}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Seed}{\operatorname{Seed}}
+\newcommand{\Run}{\operatorname{Run}}
+\newcommand{\Inside}{\operatorname{Inside}}
+\newcommand{\Closed}{\operatorname{Closed}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Irr}{\operatorname{Irr}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\pin}{\texttt{6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}}
+\newcommand{\gh}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/#1}{#2}}
+\input{results.tex}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.6in}
+{\color{MidnightBlue}\large PROVEIT / BUSY BEAVER / ZFC\par}
+\vspace{0.35in}
+{\Huge\bfseries A Common Macro Library\par}
+\vspace{0.08in}
+{\Huge\bfseries and Smaller Semantic Interfaces\par}
+\vspace{0.18in}
+{\LARGE for the K215 Correctness Proofs\par}
+\vspace{0.4in}
+{\large A source-grounded proposal with checked Rocq and Lean components\par}
+\vspace{0.35in}
+Prepared for Vladimir Reshetnikov\\
+October 21, 2026 (America/Los\_Angeles)\\[8pt]
+Reviewed repository revision:\\[3pt]
+\pin
+\vfill
+\begin{abstract}
+The most useful further reduction is to make the existing macro proofs depend on a small common program interface. The maintained Rocq libraries for the dominated and command-permuted programs have identical mathematical bodies after systematic renaming. Their 58 fixed-node contracts use only 89 node definitions. We isolate that graph, compile the entire inherited macro library against it, prove a general transport theorem for the actual register-machine semantics, bind the graph to both literal programs, and check all 58 transported K215 contracts. This provides the verified core of a shared production library.
+
+On the Lean side, we provide a checked two-file patch sharing envelopes and bounded tagged comprehension, with a net reduction of 20 lines and 899 bytes. A separate functional-seed experiment proves a constructive normalization theorem and removes an unnecessary irreflexivity hypothesis from augmented separation. Its support code currently exceeds its local line savings, so it is presented as an optional interface improvement. The report distinguishes these component checks from the repository's existing full-endpoint checks and states the remaining integration obligations explicitly.
+\end{abstract}
+\vfill
+{\small The archive contains this manuscript and PDF, source overlays and patches, reproducible checks, source hashes, compiler evidence, and independent source reviews.}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Recommendation and scope}
+
+I recommend a staged change. First, apply the small Lean envelope patch, whose mathematical content, old API statements, and affected semantic clients have been checked. Next, make Rocq's shared macro graph a production interface and replace candidate-specific copies of the arithmetic proofs with instances of that interface. Keep the functional-seed normalization as a separate proposal until its reuse or conceptual benefit justifies its extra support code.
+
+The main architectural contribution is concrete: all 58 fixed-node macro contracts in \code{ProgLibPerm.v} can be obtained from a library proved over only 89 literal node definitions. This is useful evidence for a refactor because the arithmetic library was actually recompiled after replacing the full candidate program by that smaller graph. The candidate-specific transport theorems preserve all register values and all exit forms. They can therefore supply the exact kinds of contracts consumed by the next program layer.
+
+The task concerns simplification of the correctness proof of the accepted 215-state machine. The underlying machine table is left fixed. Its dense-table SHA-256 is
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{center}
+The reviewed revision is pinned so that every source observation and proposed patch has a definite meaning. The recent commits have already implemented several substantial simplifications; the following sections distinguish those existing improvements from this packet's additions.
+
+\subsection{The established endpoint}
+
+The repository records the externally checked statement
+\[
+  \mathrm{Halt}(K215,\mathrm{blank})
+  \quad\longleftrightarrow\quad
+  \text{ZFC has a finite derivation of falsity}.
+\]
+Negating this equivalence yields nonhalting if and only if syntactic consistency, without a consistency premise. The Lean endpoint is
+\code{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}; the Rocq dense endpoint is
+\code{tm215\_halts\_iff\_ZFC\_inconsistent}~\cite{verification,endpoint}.
+
+The distinction between this external proof-assistant theorem and a proof encoded in the object theory matters. The verification record explicitly leaves an internal PA proof and a derivation in ZFC's own proof syntax outside the completed result~\cite{verification}. The proposed refactors preserve the existing formal target. They introduce no additional internalization claim.
+
+\subsection{Evidence levels used here}
+
+The report uses three separate levels of evidence:
+\begin{enumerate}
+\item \textbf{Repository-recorded endpoint checks.} These are the existing full or incrementally justified checks described in the maintained verification records. They establish the baseline; this work does not rerun the expensive complete machine endpoints.
+\item \textbf{New component checks.} These are actual compiler runs for the new Rocq transport/library components and the changed Lean semantic modules, plus typed clients and assumption reports. The archive includes their reproduction scripts and receipts.
+\item \textbf{Source and finite-data audits.} These compare literal tables, compute graph footprints, compare statements, and bind files by hash. They support the interpretation of the formal checks but do not substitute for them.
+\end{enumerate}
+
+\section{What the recent commits have already simplified}
+
+The current maintained Lean checkpoint is phase fourteen. It records an endpoint closure of 178 project modules and 2,093,112 bytes of selected source. The original full Lean check used 204 project modules. The original Rocq endpoint check used 237 sources. These are measurements from the repository's verification records, with their stated dependency reuse and toolchain boundaries~\cite{phase14,verification}.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{0.28\linewidth}Xp{0.22\linewidth}@{}}
+\toprule
+Area & Current evidence at the reviewed revision & Consequence for this proposal\\
+\midrule
+Propositional and derived rules & A shared implication core, ordinary/restricted instances, and shared derived-rule proofs are already maintained. & Further duplication here needs a specific new target.\\
+Profile composition & Six contracts now use transitive containers directly; the duplicate \code{KProfileTC} module and its generator were retired. & The same abstraction need not be proposed again.\\
+AX routine & Commit \code{ab6ceabe32ee} makes the 217 AX proof use the checked macro-word pattern already used for the 215. & A macro-word port alone would repeat existing work.\\
+Enumerator start state & Commit \code{6d9800d1ca67} generalizes the 217 enumerator and makes its seed theorem an instance. & The latest seed proof is already smaller.\\
+Quotient development & Commit \code{eb931b07ad8d} preserves a one-quotient adapter patch as a proposal with its own validation scope. & It remains a relevant integration candidate, with separate evidence.\\
+\bottomrule
+\end{tabularx}
+\caption{Current work acknowledged before choosing a further simplification.}
+\end{table}
+
+The proposals index is useful for discovery but contains historical status paragraphs. Some items in its older ``Open'' list were adopted by later checkpoints. For current status, the maintained sources and phase-fourteen record take precedence~\cite{phase14,index}.
+
+The inherited Rocq macro library already has a sound sequence-expansion mechanism: \code{seqx}, \code{expand}, and a composition proof. It would therefore be misleading to claim that replacing per-node AX reasoning by a word interpreter is a new Rocq opportunity. The duplication that remains is at a different boundary: the same macro mathematics is forked for different surrounding program graphs.
+
+\section{Rocq: one library over an 89-node interface}
+
+\subsection{A reproducible source census}
+
+The independent census parses the maintained literal Rocq tables and separately checks their agreement with the source JSON. It also strips nested comments from the two macro libraries, consistently renames candidate-specific identifiers, and normalizes whitespace. The resulting library bodies are exactly equal~\cite{macro}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Measured item & Value\\
+\midrule
+\code{ProgLibDom.v} & 781 lines / 38,002 bytes\\
+\code{ProgLibPerm.v} & 780 lines / 37,951 bytes\\
+Literal nodes in \code{DagDom} / \code{DagPerm} & 484 / 487\\
+Changed shared node indices & 139, 141, 147, 471\\
+Added target indices & 484, 485, 486\\
+Largest closed agreeing source region & 466 nodes\\
+Fixed-node macro statements & 58\\
+Distinct node roots in those statements & 53\\
+Descendant closure of the 53 roots & \textbf{89 nodes}\\
+\bottomrule
+\end{tabular}
+\caption{Literal-source measurements, reproduced by \code{audit\_macro\_footprint.py}.}
+\end{table}
+
+The 89-node set is more useful than the larger 466-node region. A common library needs the nodes actually reached from its contract roots. The extra agreeing nodes belong to other parts of the program and add no support to those contracts.
+
+For precision, ``89-node'' means 89 explicitly retained node definitions at their original indices. The prototype does not renumber the nodes into an interval of length 89. A default row completes the total lookup function outside the retained set. All theorem applications are guarded by membership in the checked footprint, so that default is irrelevant to the transferred macro runs.
+
+\Needspace{8\baselineskip}
+\begin{proposition}[Least structural footprint]
+Let $R$ be the set of 53 roots occurring in the audited fixed-node statements. Starting with $R$ and repeatedly adding every node child of an included node terminates at an 89-element set $S$. It is the least forward-closed set containing $R$ in the literal graphs.
+\end{proposition}
+\begin{proof}
+The finite audit enumerates the closure until no child is missing. Its final set is forward closed and contains $R$. Every forward-closed set containing $R$ contains the initial set and, inductively, each set produced by one more child-expansion step. It therefore contains the final set. Agreement of the two tables on every included node makes the same closure valid for both graphs.
+\end{proof}
+
+This is a structural minimality statement for the chosen roots and literal edges. It is not a lower bound on a different implementation of the macros or on the number of machine states.
+
+\subsection{The transport theorem}
+
+Write $\Run_p(e,R,x,R')$ for the repository's actual big-step register-machine relation: program $p$, starting edge $e$, initial register file $R$, exit $x$, and final register file $R'$. Its exit forms are normal termination, break, continue, and halt. Break and continue carry their existing counters.
+
+\begin{definition}
+For a set of node indices $S$, an edge is \emph{inside} $S$ if it is primitive or has the form $\mathrm{node}(n)$ with $n\in S$.
+For programs $p,q$, the predicate $\Closed(p,q,S)$ says that every $n\in S$ satisfies at least one of:
+\begin{enumerate}
+\item $p(n)=q(n)$ and both children of this row are inside $S$;
+\item an independently supplied contract
+\[
+\forall R,x,R',\quad
+\Run_p(\mathrm{node}(n),R,x,R')\Rightarrow
+\Run_q(\mathrm{node}(n),R,x,R').
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Local program transport]\label{thm:transport}
+If $\Closed(p,q,S)$ and $e$ is inside $S$, then
+\[
+ \Run_p(e,R,x,R')\ \Longrightarrow\ \Run_q(e,R,x,R')
+\]
+for every initial register file, exit, and final register file.
+\end{theorem}
+\begin{proof}
+Induct on the finite derivation of the run. A primitive constructor is independent of the program's node table and is reproduced unchanged. At a node, inspect its closure witness. If the witness is a semantic contract, apply it to the whole node run. Otherwise the two node rows are equal, and the required child edges are inside $S$. Apply the induction hypotheses to the child derivations and reconstruct the same node constructor in $q$.
+
+The recursive continue-one constructor has three subderivations: one for the first child, one for the second child, and a resumed run of the original node. The first two use closure of the children. The third uses $n\in S$ again. Thus the argument does not assume termination of all executions and does not require a decreasing node index. It is induction on the supplied finite derivation, including its reentry subderivation.
+\end{proof}
+
+The theorem is checked in \code{LocalProgram.v}. Its design follows the existing Lean \code{RMTransfer} interface~\cite{rmtransfer}; the contribution here is a checked Rocq counterpart with concrete source bindings. The earlier graph report in the repository had already identified the missing Rocq replacement theorem~\cite{priorgraph}.
+
+\subsection{A finite gate with an explicit bound}
+
+The executable checker tests literal row equality and closure of both children at every active index below a bound. Its soundness theorem takes the additional premise
+\[
+  \forall n,\quad \mathrm{ok}(n)=\mathrm{true}\Rightarrow n<B.
+\]
+This bound premise is essential: otherwise a finite checker could silently miss active indices outside its scan. The concrete interface uses a Boolean footprint with a built-in upper bound, and the proof of that premise is explicit.
+
+The literal graph bindings use the first branch of $\Closed$. The semantic-contract branch is retained for future replacements of a changed node by a proved equivalent implementation; no unproved contract is used to justify the present graph.
+
+Since the literal conditions hold in both directions, Theorem~\ref{thm:transport} gives the exact equivalence
+\[
+ n\in S\ \Longrightarrow\
+ \bigl(\Run_{\mathrm{Perm}}(\mathrm{node}(n),R,x,R')
+ \leftrightarrow
+ \Run_{\mathrm{Dom}}(\mathrm{node}(n),R,x,R')\bigr).
+\]
+The root node $0$ lies outside $S$. This theorem concerns the common macros; it does not identify the different command enumerators at their roots.
+
+\subsection{What was compiled}
+
+The checked component contains a canonical program, the inherited macro library retargeted to it, finite bindings to the two literal candidate programs, and a complete 58-contract K215 adapter. The retargeting changes the program import and the concrete program/node identifiers. The arithmetic proof bodies are preserved. The independent audit checks this exact transformation.
+
+The adapter passes through a single lifting lemma. In schematic form:
+\begin{lstlisting}
+canonical_sem e m exit m' -> inside macro_ok e = true ->
+  concrete_sem dagPerm e m exit m'
+\end{lstlisting}
+This is stronger than a halting-only simulation: loop, pairing, unpairing, stack, comparison, and fetch contracts need specific exits and final registers.
+
+The final component was compiled from fresh objects using Coq 8.18.0: 13 project modules passed, with 63 closed assumption reports, including all 58 transported contracts. Recursive \code{coqchk} also passed and reported no context axioms or unsafe declaration categories. The repository's maintained full Rocq endpoint was checked with Rocq 9.1.0 and rocq-stdlib 9.0.0~\cite{verification}. These are separate validation scopes. The portable component's reference inputs agree with the maintained source evidence modulo line endings; its proof semantics were not replaced by a toy model.
+
+The K215 adapter imports only its own binding. Its ten-project-module source closure excludes the 217 candidate table and the optional cross-program comparison. This prevents a prototype convenience import from accidentally becoming a dependency of the 215 endpoint.
+
+\subsection{Production integration and honest size accounting}
+
+The eight new component files total \RocqComponentLines{} lines and \RocqComponentBytes{} bytes. They include new infrastructure and one concrete adapter. The canonical arithmetic library itself remains 780 lines. These numbers demonstrate checked reuse, not an achieved reduction of the complete endpoint.
+
+There is also a nominal-type issue: the prototype's register record is \code{MacroLibrary.St}, whereas the old concrete file declared its own \code{ProgLibPerm.St}. Equality of displayed theorem statements after relocation does not establish identity of those two record types. A production migration should share the record and its utility definitions, preserve any needed aliases, and rebuild the unchanged clients. The archive therefore does not label the Rocq component a drop-in replacement.
+
+The intended production structure is:
+\begin{enumerate}
+\item A common register/semantics layer, parameterized by the program where necessary.
+\item A canonical macro graph and one arithmetic proof library.
+\item A small program-interface instance for each candidate, verified against its literal table.
+\item A reusable adapter or functor exporting the contracts, with compatibility names where required.
+\item Candidate-specific AX, dispatch, and root proofs above this common layer.
+\end{enumerate}
+
+This boundary also stabilizes recompilation. A change confined to AX or dispatch currently changes a module imported by the macro proofs. After factoring, the canonical arithmetic library depends only on its own 89 rows. The candidate binding changes, while the common arithmetic development remains fixed. This is an architectural benefit; no measured end-to-end build-speed improvement is claimed here.
+
+\section{Lean: share envelopes and tagged comprehension}
+
+\subsection{The repeated argument}
+
+In the semantic lower chain, $t$ is an empty raw marker and the tagged domain consists of objects $z$ satisfying $t\in z$. A raw bound $U$ is converted into an untagged envelope, then raw tagged comprehension supplies a set whose tagged members satisfy the desired predicate.
+
+Before the patch, \code{KLowerTag.dt\_comp}, \code{KLowerTag.tag\_collection}, and \code{KLowerQHyp.envelope} each perform the same envelope construction. \code{dt\_comp} and \code{dt\_comp\_env} also repeat the same guarded-membership reasoning. The latter already states the more reusable contract but lives too late in the dependency graph~\cite{lowerfiles}.
+
+The patch moves that existing contract to \code{KLowerTag} and introduces a shared envelope theorem. The namespace and explicit public statement of \code{dt\_comp\_env} are preserved; \code{KLowerQHyp} continues to see it through its existing transitive imports.
+
+\subsection{The envelope theorem}
+
+Assume the raw constructions supplied by \code{FormSeed}, irreflexivity of membership, and emptiness of $t$. For $a\ne t$, choose
+\[
+ E=\{a\}\cup\{z\in a:t\in z\}
+\]
+in the raw membership sense: the equality here describes exactly which objects are members, without assuming raw extensionality.
+
+\begin{proposition}[A common envelope contract]
+There is an $E$ with
+\[
+ E\ne t,\qquad t\notin E,\qquad
+ \forall z,\ (t\in z\land z\in a)\Rightarrow z\in E.
+\]
+\end{proposition}
+\begin{proof}
+The augmented-comprehension theorem supplies the displayed membership characterization. It implies $a\in E$. If $E=t$, emptiness of $t$ contradicts that membership, proving $E\ne t$. If $t\in E$, the characterization gives either $t=a$, contradicting $a\ne t$, or $t\in t$, contradicting irreflexivity. Finally, every tagged member of $a$ belongs to the second part of the characterization and therefore lies in $E$.
+\end{proof}
+
+The premise $a\ne t$ is a condition of this construction. The claim does not assert that every conceivable envelope construction fails at $a=t$. The existing special case of \code{dt\_comp} continues to handle that bound separately.
+
+For a prescribed envelope $E$, the moved \code{dt\_comp\_env} theorem builds $S$ so that
+\[
+ t\in S,\qquad
+ \forall z\ (t\in z\Rightarrow
+ (z\in S\leftrightarrow z\in U\land\theta(z))).
+\]
+It additionally retains a raw support statement: each raw member of $S$ is $E$, $t$, or a member of $U$. Tagged $z$ cannot equal $E$ because $t\notin E$, and cannot equal $t$ by irreflexivity. These facts remove the two extra raw members from the interpreted domain.
+
+\subsection{Changes and validation}
+
+The two-file patch makes four changes:
+\begin{enumerate}
+\item \code{raw\_envelope} proves the envelope contract once for $a\ne t$.
+\item \code{dt\_comp\_env} moves unchanged to the earlier layer.
+\item \code{dt\_comp} and \code{tag\_collection} use the common envelope contract.
+\item The old \code{envelope} theorem remains a wrapper for a tagged input.
+\end{enumerate}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+File & Old lines & New lines & Old bytes & New bytes\\
+\midrule
+\code{KLowerTag.lean} & 214 & 226 & 9,945 & 10,641\\
+\code{KLowerQHyp.lean} & 263 & 231 & 12,635 & 11,040\\
+\midrule
+Total & 477 & 457 & 22,580 & 21,681\\
+\bottomrule
+\end{tabular}
+\caption{Net reduction: 20 lines and 899 bytes, including all relocated support.}
+\end{table}
+
+The net result is small but direct: there is one proof of each envelope/comprehension contract, and three callers use it. The old API statements were checked by typed Lean clients. The affected semantic closure, including \code{KLowerEqv}, \code{KLowerQHyp}, \code{tag\_qhyp}, and \code{zf\_consistent\_of\_formSeed}, was compiled. The latter two retain the standard profile \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. The expensive machine-specific source, bootstrap, and site certificates are outside this component check.
+
+\section{Optional Lean experiment: functional seed closure}
+
+\subsection{Why witnesses are repeatedly reconstructed}
+
+The existing seed property for a binary relation $Q$ at an input $A$ asserts existence of a container $C$ satisfying two conditions:
+\begin{align*}
+&\forall y,\ Q(A,y)\Rightarrow\exists z,\ Q(A,z)\land z\in C,\\
+&\forall y\in C,\ \exists x,\ Q(x,y)\land
+  \forall x'\subseteq y\ \forall y',\ Q(x',y')\Rightarrow
+  \exists z,\ Q(x',z)\land z\in C.
+\end{align*}
+Here $x'\subseteq y$ means $\forall w,\ w\in x'\Rightarrow w\in y$ in the raw structure. The requested output $y$ or $y'$ need not equal the output $z$ chosen by the seed condition. For a single-valued relation, however, equality follows. The old raw constructions repeatedly perform this extraction and equality substitution~\cite{seed,lowerfiles}.
+
+\begin{definition}
+A relation $Q$ is \emph{single valued} if
+\[
+\forall x,y,z,\quad Q(x,y)\land Q(x,z)\Rightarrow y=z.
+\]
+A \emph{seed closure} for $Q,A$ is a container $C$ with:
+\begin{align*}
+\text{root: }&\forall y,\ Q(A,y)\Rightarrow y\in C;\\
+\text{image: }&\forall y\in C,\ \exists x,\ Q(x,y);\\
+\text{step: }&\forall y\in C\ \forall x\subseteq y\ \forall z,
+ Q(x,z)\Rightarrow z\in C.
+\end{align*}
+\end{definition}
+
+\begin{theorem}[Constructive functional normalization]\label{thm:seed}
+For a single-valued $Q$, the existing seed property holds if and only if there is a seed closure for $Q,A$.
+\end{theorem}
+\begin{proof}
+Suppose $C$ witnesses the old property. Given $Q(A,y)$, its root clause supplies $Q(A,z)$ and $z\in C$. Single valuedness gives $z=y$, so $y\in C$. For the image clause, discard the closure part of the old witness. For a closure request $Q(x,z)$ below a member $y\in C$, the old clause supplies $Q(x,z')$ and $z'\in C$; single valuedness again gives $z'=z$.
+
+Conversely, suppose the three closure clauses hold. Answer a root request $Q(A,y)$ with the same $y$. For a member $y\in C$, choose the input supplied by the image clause. Answer every later request $Q(x',z)$ with $z$ itself, using the step clause. This direction does not need single valuedness. Both directions are constructive; no choice function is selected.
+\end{proof}
+
+The Lean theorem \code{seedProp\_iff\_closure} is checked without axioms. Its hypotheses are explicit, and its use does not strengthen an arbitrary nondeterministic seed relation.
+
+\subsection{A checked counterexample to omitting the hypothesis}
+
+Let $V=\{0,1\}$, define membership only by $0\in1$, and let $Q(x,y)$ hold for every pair. The membership relation is irreflexive. The old seed property holds at $A=0$, witnessed by $C=1$: answer every request by $0$, and use the same answer for closure requests.
+
+A seed closure cannot exist. Its root clause would require $1\in C$, since $Q(0,1)$ holds, but $1$ is a member of no object. Thus the single-valuedness premise cannot simply be erased. The archive includes a Boolean Lean proof of this counterexample, also with an axiom-free assumption report.
+
+\subsection{A stronger augmented-comprehension theorem}
+
+The functional formulation also exposes an unnecessary hypothesis in the old proof of augmented separation. Let $A_0$ be a raw singleton of $a$, and consider
+\[
+ Q(u,v)\quad\Longleftrightarrow\quad
+ (u=A_0\land v=a)\ \lor\
+ (u=\{v\}\land v\in a\land\theta(v)).
+\]
+Both branches are single valued. If they overlap, $A_0$ is a singleton of both $a$ and $v$, so $v=a$. This compatibility argument suffices; it does not need to rule out overlap by an irreflexivity contradiction.
+
+\begin{proposition}
+The \code{FormSeed} interface alone proves existence of a raw object $b$ with
+\[
+ \forall z,\quad z\in b\ \leftrightarrow\ z=a\ \lor\ (z\in a\land\theta(z)).
+\]
+The separate irreflexivity premise can be omitted from this theorem.
+\end{proposition}
+\begin{proof}
+Normalize the seed relation above using Theorem~\ref{thm:seed}. Its root places $a$ in the container. The image clause ensures that every container member is either $a$ or a desired member of $a$. For a desired member $z\in a$, take a raw singleton $s_z$ of $z$. Then $s_z\subseteq a$, and $Q(s_z,z)$ holds. The closure step below $a$ puts $z$ in the container. The argument uses singleton uniqueness and makes no appeal to irreflexivity.
+\end{proof}
+
+The new \code{raw\_aug\_core} states this result. The old \code{raw\_aug} signature, including its irreflexivity argument, remains as a compatibility wrapper. The original elementary theorem assumption profiles are checked separately so that incidental convenience tactics do not introduce a broader local dependency profile.
+
+\subsection{Why this is an optional patch}
+
+The rewritten raw file has fewer lines, although its bytes increase slightly, and a new general interface has a further cost. Including \code{KSeedFunctional}, the final experiment changes \SeedBeforeLines{} lines to \SeedAfterLines{} lines, a net increase of \SeedAddedLines{} lines. The corresponding total grows from 9,381 to 11,217 bytes, an increase of 1,836 bytes. The exact file hashes and measurements are in the evidence manifest. This is a clearer separation of relation-specific functionality from generic closure reasoning and it strengthens one theorem; it is not presently a net source-size reduction.
+
+For a size-focused integration, the envelope patch can be adopted independently. The functional interface is worth adopting if more downstream constructions use it, if the stronger \code{raw\_aug\_core} is useful, or if reviewers prefer its explicit root/image/step organization. Its measurements should remain separate from the 20-line envelope saving.
+
+\section{Validation, reproducibility, and integration order}
+
+\subsection{What the archive establishes}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{0.24\linewidth}Xp{0.24\linewidth}@{}}
+\toprule
+Component & New validation & Remaining boundary\\
+\midrule
+Rocq transport and macro graph & Actual RM semantics, finite graph bindings, inherited macro-library compilation, all 58 K215 contracts, assumption reports, recursive \code{coqchk}. & Production API/functor integration, maintained Rocq 9.1 replay, and complete endpoint rebuild.\\
+Lean envelope sharing & Two-file patch; affected semantic closure; old typed interfaces; assumption checks. & Machine-specific full endpoint replay after adoption.\\
+Lean functional seed & Constructive normalization; rewritten raw constructions; stronger augmented separation; compatibility clients; finite counterexample. & Optional adoption; total support currently adds lines.\\
+Source audits & Literal graph census, exact source retargeting, statement comparison, import-closure review, pinned hashes. & These are source/data checks rather than independent proofs of the endpoint.\\
+\bottomrule
+\end{tabularx}
+\caption{Validation scopes are intentionally stated per component.}
+\end{table}
+
+The combined Lean component check uses version 4.32.0 and freshly covers \LeanProjectCount{} project modules plus three audit modules. A separate envelope-only replay checks 64 project modules and one interface audit against the original raw constructions, confirming that the smaller patch can be adopted independently. All accepted compiler invocations and final source hashes are recorded. Failed development attempts are excluded from pass claims. Existing unused-section-variable warnings in inherited modules are distinguished from errors; the evidence does not equate a successful compile with a warning-free codebase.
+
+\subsection{Replaying the artifacts}
+
+Use a checkout of the pinned ProveIt revision. The archive README gives the exact command-line interface for each supplied checker. The workflows are:
+\begin{enumerate}
+\item Run the independent Python footprint and component audits against the checkout. These read the literal maintained sources and compare their hashes and structure.
+\item Run the Rocq component builder in its isolated build directory. It stages its small reference dependency closure and compiles the supplied modules serially, followed by assumption reports and \code{coqchk}.
+\item Run the Lean overlay checker with the pinned compiler. It resolves the source import closure from the checkout, stages the overlay, compiles dependencies serially, and checks explicit old signatures and axiom reports.
+\item Apply the envelope patch independently if that is the selected production change. Apply the functional-seed patch only when that separate experiment is intended.
+\end{enumerate}
+
+The packet contains source and evidence, not precompiled proof objects to be trusted as opaque binaries. Generated graph data remains a proposal checked by the proof kernel. Hashes bind the actual sources, and source-only audits have their own labels.
+
+\subsection{Recommended integration sequence}
+
+\paragraph{First change: envelope sharing.}
+Apply the small two-file patch, compile its reverse semantic closure, and rerun the repository's unchanged K215 endpoint clients with the current source-transitive evidence discipline. The public contract should remain fixed. This change has direct measured source savings and a narrow review surface.
+
+\paragraph{Second change: common Rocq definitions.}
+Introduce a common register record and utility layer. Preserve aliases required by downstream uses. This resolves the nominal-type distinction before replacing any concrete library. Compile the original \code{L2RootPerm} client against the proposed facade.
+
+\paragraph{Third change: the macro interface.}
+Move the arithmetic proofs to the canonical graph and instantiate a reusable adapter for each candidate. Keep the 215 and 217 graph bindings independent. Synchronize the candidate producers so regeneration produces the shared structure. Recheck the exact endpoint and its assumption reports before retiring the duplicate production proof bodies.
+
+\paragraph{Separate decision: functional normalization.}
+Evaluate the optional patch on proof readability and additional uses, with its full support-code cost visible. If adopted, retain \code{raw\_aug} as the old interface and expose \code{raw\_aug\_core} for clients that need the weaker premise.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can the 58 adapters be represented once?} A Rocq functor or parameterized contract package could export the fixed contract family from one program-interface witness. The useful acceptance test is compilation of the unchanged client, with the common definitions and old names bound precisely.
+\item \textbf{How many candidates share the same macro interface?} The current census binds two literal programs. Extending it to earlier candidates would establish the actual reuse multiplier. Different node numbering should be handled by a proved relabeling map rather than textual substitution alone.
+\item \textbf{Can the footprint become a maintained semantic module?} Generate a small canonical graph from an explicit macro specification, prove its contracts once, and check each larger program against that interface. This would make candidate discovery independent of arithmetic proof maintenance.
+\item \textbf{Which changed nodes admit total semantic contracts?} The transport theorem already allows a contract branch. Carefully proved contracts for modified equality, pairing, or fetch routines could extend reuse beyond literal graph equality. Totality, exit behavior, and all final registers must remain explicit.
+\item \textbf{Can the functional-seed interface pay for itself?} Search later raw constructions for additional single-valued relations, or provide reusable lemmas for unions of compatible functional relations. Measure the complete support and caller changes together.
+\item \textbf{Which other hypotheses can be weakened by compatible overlap?} The augmented-separation proof suggests checking places where a disjointness contradiction was used merely to identify an output. A local uniqueness proof may suffice even when disjointness is unavailable.
+\item \textbf{What remains in decoder primitive factoring?} The existing prefix and semantic-site proposals still need complete primitive/return coverage. A future reduction should account for all 6,176 guarded outcomes in the maintained site proof, rather than extrapolating from a single leaf~\cite{phase14,index}.
+\item \textbf{How should internalization be packaged?} The external halting/refutation theorem and the object-theoretic formalization goal should have separate named deliverables. A future internal theorem should identify its coding, base theory, and proof translation explicitly.
+\end{enumerate}
+
+\section{Assessment}
+
+The new evidence supports a specific next architectural change: an 89-node common Rocq macro interface can carry the full existing macro mathematics and all 58 concrete K215 contracts. The proof of this reuse has been carried out against the real semantics and literal candidate data. Completing the production facade and checking its clients is the remaining engineering step.
+
+The Lean envelope patch is ready as a small, separately reviewable source reduction. The functional-seed work supplies an axiom-free normalization theorem and a stronger augmented-comprehension result, with its current size cost made explicit. Together the artifacts give a practical migration path while preserving the accepted machine, its formal endpoint, and the distinction between component validation and full-endpoint certification.
+
+\clearpage
+\begin{thebibliography}{9}
+\small
+\bibitem{verification} ProveIt contributors.
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{Formal correctness of the exact 215-state machine}.
+Pinned revision \code{6d9800d1ca67}, including endpoint statements, machine hashes, original toolchains, and internalization scope.
+
+\bibitem{phase14} ProveIt contributors.
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase14/README.md}{Fourteenth K215 proof-simplification checkpoint}.
+Maintained source and evidence accounting at the reviewed revision.
+
+\bibitem{endpoint} ProveIt contributors.
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{KEndpoint215.lean} and
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}{KEndpoint.lean}.
+Exact machine instance and generic endpoint composition.
+
+\bibitem{index} ProveIt contributors.
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md}{Proof-simplification proposals index};
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/README.md}{formal endpoint overview}.
+Historical proposals and current checkpoint pointers.
+
+\bibitem{rmtransfer} ProveIt contributors.
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMTransfer.lean}{RMTransfer.lean} and
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean}{L2Perm.lean}.
+Existing Lean closed-region transport and its macro applications.
+
+\bibitem{priorgraph} ProveIt contributors.
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/k215-simplification-3/rocq/CFG_REPORT.md}{Earlier Rocq graph report}.
+Prior identification of the missing Rocq whole-node transport theorem.
+
+\bibitem{macro} ProveIt contributors; inherited mathematics and code attributed in the source to Elliot Glazer's pinned \code{k230-rocq} development and its cited predecessors.
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/ProgLibPerm.v}{ProgLibPerm.v} and
+\gh{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/217/ProgLibDom.v}{ProgLibDom.v}.
+The archive preserves their attribution and reference-input hashes.
+
+\bibitem{seed} ProveIt contributors.
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean}{KSeed222.lean} and
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean}{KLowerSeed.lean}.
+Exact seed and formula-seed interfaces.
+
+\bibitem{lowerfiles} ProveIt contributors.
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean}{KLowerRaw.lean},
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean}{KLowerTag.lean}, and
+\gh{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean}{KLowerQHyp.lean}.
+Baseline raw constructions, tagged comprehension, and quotient hypotheses.
+\end{thebibliography}
+
+\end{document}

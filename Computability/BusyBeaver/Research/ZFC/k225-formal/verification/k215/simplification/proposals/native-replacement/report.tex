@@ -1,0 +1,110 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[10pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\pagestyle{fancy}\fancyhf{}\lhead{K215: reuse semantics, not proof copies}\rhead{22 October 2026}\cfoot{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=4em
+\setlist[itemize]{label=$\bullet$,leftmargin=*,nosep}\setlist[enumerate]{leftmargin=*,nosep}
+\newcommand{\code}[1]{\texttt{#1}}
+\newtheorem{proposition}{Proposition}
+\begin{document}
+\begin{center}{\Large\bfseries Reuse semantics instead of repeating transport}\\[6pt]
+Further simplifications of ProveIt's Rocq and Lean proofs\\22 October 2026\end{center}
+\textbf{Two recommendations.} For Lean, derive quotient Replacement from the already-proved quotient collection theorem, using native equality. For Rocq, transport the common macro library across a closed unchanged subgraph instead of maintaining a renamed copy of its proofs. Neither proposal changes the machine, the calculus or the consistency target.
+
+\textbf{Scope.} This review is pinned to main commit
+\code{6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}. It inspects actual source and upstream validation records. Our new proof drafts are \emph{uncompiled}. No Lean, Rocq or Coq executable was available in this review environment. Source audits and finite mathematical checks below are not substitutes for kernel checking. No repository files were modified or committed.
+
+\section*{1. What has changed since the previous review}
+The direct-seed proposal now has upstream component evidence: it returns \code{FullSeed mem} on the original domain, avoiding the first indiscernibility quotient. Its records report 116 fresh Lean compilations and 26 axiom reports, including generic \code{KEndpoint}, but explicitly not the literal machine endpoint. Its selected closure drops 179 to 178 modules and 7,534 bytes, while preserved legacy APIs increase touched production source by 6,795 bytes. Our earlier delivered proposal remains uncompiled; those separate upstream checks do not retroactively validate it.
+
+The maintained phase-fourteen checkpoint adopts derived-rule and transitive-container sharing. Later quotient and dense-bridge changes were retained as proposals by merge \code{6901b164}; their presence in history does not establish maintained adoption. The new \code{eb931b07} quotient-unification proposal makes the QHyp development the single bisimulation development and supplies a CP/GIC adapter. It reports 601 fewer lines across fourteen files and checks of 25 reverse-closure modules, but excludes machine-specific endpoints and the facade. This is a strong existing proposal, not a new contribution of this report.
+
+At our cutoff, K217 also reuses the checked macro-word template for AX and instantiates generalized boundary completeness at the seed. The latest commit removes a net 94 lines from \code{EnumDom}, \code{SeedDom} and \code{L2RootDom}, and retires the enumerator fork generator. Its author reports component builds, not a rebuilt \code{KEndpoint217}. These improvements should not be proposed again as unfinished work.
+
+Batch 215 already contains a shared scheduler. It explicitly exposes the cost of abstraction: K215's scheduler alone grows 95 Lean lines, and the Rocq scheduler refactor grows 101 lines. Sharing induction can simplify maintenance without shortening a single endpoint. We therefore target \emph{remaining duplicated semantic arguments}, rather than another generic scheduler interface.
+\newpage
+\section*{2. Lean: obtain Replacement after entering the quotient}
+\code{KQ1Collect.quotient\_collection} already establishes collection for every actual formula and every quotient valuation, with native equality. Nevertheless, \code{KQ1Replacement} constructs another raw equality-free matrix, proves bisimilarity invariance, transfers functionality to raw representatives, obtains interpreted Replacement, and descends its witness back to the quotient.
+
+That file is 143 lines both in the pinned source and the quotient-unification overlay. Its raw proof path occupies lines 32--135. This is an opportunity to change the \emph{order of reasoning}: transport collection once, then prove its consequences in the quotient. It is not a claim that all 143 lines can immediately be deleted.
+
+\begin{proposition}[Guarded collection gives a partial functional image]
+Let $m$ be any binary relation on a type $V$, $a,b\in V$, and $R\subseteq V^2$.
+Suppose
+\begin{align*}
+ m(y,b)&\Longrightarrow \exists x\,[m(x,a)\land R(x,y)],\\
+ m(x,a)\land\exists y\,R(x,y)&\Longrightarrow
+                 \exists z\,[m(z,b)\land R(x,z)],\\
+ m(x,a)\land R(x,y)\land R(x,z)&\Longrightarrow y=z.
+\end{align*}
+Then $m(y,b)\leftrightarrow\exists x\,[m(x,a)\land R(x,y)]$ for every $y$.
+\end{proposition}
+\begin{proof}
+The forward implication is support. For the reverse, take $x$ with $m(x,a)$ and $R(x,y)$. Coverage supplies $z$ in $b$ with $R(x,z)$. Functionality gives $y=z$, so $y$ is in $b$.
+\end{proof}
+The lemma requires neither totality of $R$, extensionality of $m$, nor an inhabitedness assumption. It uses literal equality, not bisimilarity. The supplied \code{GuardedImage.lean} and \code{GuardedImage.v} are self-contained proof drafts of this elementary statement, explicitly not compiled or integrated.
+
+\textbf{One formula adapter.} The repository uses output at slot 0 and input at slot 1 for \code{relOf}. For the quotient membership relation $m$, set
+\[
+ R(x,y):=\operatorname{relOf}(m,\varphi,e)(y,x),\qquad
+ \psi:=\operatorname{Mem}(0,2)\land\operatorname{rename}(\rho,\varphi),
+\]
+where $\rho(0)=1$, $\rho(1)=0$, and $\rho(k+2)=k+3$. Under environment $(x,y,a,e)$, $\psi$ means exactly $m(x,a)\land R(x,y)$. Use \code{Sat\_rename\_relOf} from \code{FirstOrder/Fol.lean} and \code{collectionInstance\_congr} for relation transport; the valuation equality has only the cases $0$, $1$, and $k+2$. Crucially, rename $\varphi$ itself, \emph{not} its equality-free translation: we are already in the quotient.
+
+Instantiate \code{quotient\_collection} with this guarded formula and environment $(a,e)$. Its support and coverage give the first two premises above. Existing \code{Functional (relOf ...)} supplies the third, even though the lemma only needs uniqueness on the domain $a$. The resulting witness proves the current \code{quotient\_replacement} statement; \code{bridge\_Repl} then preserves \code{quotient\_repl\_form} unchanged.
+\newpage
+\section*{3. Lean dependencies, compatibility and a smaller endpoint interface}
+\textbf{The import order is acyclic:}
+\[
+\text{Replacement}\to\text{Collect}\to\text{Power}\to\text{Separation}.
+\]
+The collection proof currently uses separation's valuation-lifting API. Do not simultaneously derive Separation from collection without moving that infrastructure and rechecking dependencies. Replacement alone is the low-risk first change.
+
+\textbf{Honest size accounting.} The quotient-unification proposal preserves old raw helper APIs through wrappers in \code{QuotientReplacement}. Adding the native proof while keeping every raw helper can increase total source size. First inventory references to \code{replacement\_instance}, \code{interpreted\_replacement}, \code{quotient\_relOf} and the raw choice-form lemmas. Keep the public quotient theorems unchanged. A safe first layout is a lightweight \code{KQ1ReplacementCore} and CP/GIC \code{QuotientReplacementCore}, with old modules importing these cores and retaining raw helper APIs. Both \code{KQ1ZF} and \code{InductiveAttempts} must import the cores: the latter uses the quotient theorem and would otherwise retain the heavy path. Remove unused helpers only after a complete consumer and documentation inventory. Report whole maintained source, selected endpoint source and compatibility source separately. No measured net saving is claimed here.
+
+\textbf{Why the guard matters.} Collection's support only promises that a selected output has \emph{some} input; it does not automatically put that input in $a$. The membership conjunct in $\psi$ is essential. Nor may functionality be dropped: collection can select one of two possible outputs rather than their full image. The enclosed finite sanity check exhausts 33,033 relation/domain/witness triples over domains of size 0--3, including 1,782 satisfying premise instances, and checks both negative controls. This supports the elementary argument, not the syntax adapter or a formal endpoint.
+
+\textbf{Secondary interface refinement.} The all-leaf decoder-residual proposal now reports coverage of 4,751 leaves and 6,176 guarded outcomes with 51 pinned component modules. It supplies \code{source\_halts\_iff} for related source/tape states. Instead of making generic \code{KEndpoint} understand another coverage certificate, its smallest core need only consume
+\[
+\operatorname{SourceHalts}(p,([],R_0))\ \longleftrightarrow\
+\operatorname{TapeHalts}(M,T).
+\]
+Together with the existing dense/sparse correspondence, blank-to-$T$ boot run, source/calculus equivalence and logical equivalence, this yields the same endpoint by transitivity. Existing Boolean coverage and new residual coverage become alternative producers of that single premise. Keep the old API as a wrapper.
+
+This is a refinement of the residual packet's already-proposed direct composition, not a new simulation theorem. The current endpoint is already short; the benefit is separation of certificate machinery from logical composition and independent validation of each producer, not a claimed line-count breakthrough. Boot forward preservation still needs the existing deterministic-halting argument. Positive progress in nonhalting simulation steps must remain inside each simulation provider.
+
+\section*{4. Rocq: transport a closed macro subgraph once}
+The source review identifies \code{ProgLibPerm.v} as a renamed copy of \code{ProgLib219.v}: the 753-line suffix beginning with the determinism section is text-identical after replacing \code{dagPerm} by \code{dag219}. Prove once that equal node rows on a successor-closed set preserve the existing big-step \code{RM.run} relation, with its exact exit and final registers. Then replace the duplicated numerical macro proofs with checked transport wrappers. Generic state, node and flattening machinery should be shared separately; program-dependent flattening must still use the actual program.
+\newpage
+\section*{5. Closed-subgraph transport: proof and acceptance plan}
+Let $F$ be a set of node addresses and define $\operatorname{inside}_F(\code{ENode}\ n)$ as $n\in F$, with every primitive edge inside. Require, for every $n\in F$, equality $\code{nodes}\ P\ n=\code{nodes}\ Q\ n$ and that both edges of this pair are inside $F$. This gives
+\[
+\operatorname{inside}_F(e)\ \Longrightarrow\
+\bigl(\code{RM.run}\ P\ e\ R\ x\ R'\ \longleftrightarrow\
+\code{RM.run}\ Q\ e\ R\ x\ R'\bigr).
+\]
+Induct on the finite \code{RM.run} derivation, not on fuel or DAG addresses. Primitive constructors are unchanged. In a node constructor, rewrite the equal pair and apply the induction hypotheses using closure of both children. Crucially, \code{run\_node\_cdr\_continue1} also recursively runs the same node; its third induction hypothesis uses the original $n\in F$ premise. This handles loops without a separate termination argument. The reverse implication uses the same agreement and closure symmetrically.
+
+All exits are preserved: \code{XNormal}, \code{XBreak k}, \code{XContinue k} and \code{XHalt}. In particular, \code{run\_halt} says $\code{run}\ P\ \code{EHalt}\ R\ \code{XHalt}\ R$; it is not an existential-fuel or small-step stopping convention. The existing \code{sem} contract quantifies over initial registers and provides $\exists R',\ \code{run}\ P\ e\ R\ x\ R'\wedge\code{approx}\ R'\ m'$. Transfer its run witness and retain the same final-register approximation. First share the \code{St}/\code{approx} definitions so copied record types do not obstruct this adapter.
+
+The source audit found 53 literal entry addresses in the library's semantic contracts. Their transitive footprint has 89 rows, all identical in \code{Dag219} and \code{DagPerm}; changed old rows 139, 141, 147 and 236 are outside it. The new dispatch/AX proofs remain variant-specific. These are source facts, not compiled transport certificates. Exact source pins and reproducible audit details accompany the report.
+
+\textbf{Implementation sequence.}
+\begin{enumerate}
+\item Port the already-maintained Lean \code{RMTransfer} architecture, used by \code{L2Perm} and \code{L2Dom} to reuse macros. The inspected Rocq \code{RMEquiv} relates big-step and small-step semantics; \code{Bisim230.check\_iff} transfers whole-program halting from a certificate. Neither supplies this arbitrary-edge, exit-and-register-preserving contract. The archived \code{k215-simplification-3/rocq/CFG\_REPORT.md} already suggests this port for changed-increment CFGs. The new contribution here is the concrete 753-line duplication and its 89-row sharing boundary, not the general port idea.
+\item Prove or reflect one footprint certificate containing entry inclusion, equal lookups and closure. A Boolean audit outside the kernel is not sufficient by itself.
+\item Move the common macro proofs behind a program parameter and the footprint certificate, or preserve the old library and expose thin transferred lemmas for the new program. Preserve consumed theorem names and statements.
+\item Update any producer that would regenerate the duplicate file. Rebuild both macro clients, variant dispatch/AX proofs and every affected source-to-machine theorem before claiming adoption.
+\end{enumerate}
+
+\textbf{Formal validation boundary.} For Lean, check the native-image lemma, formula adapter, both quotient Replacement endpoints, the CP/GIC compatibility lane and then literal \code{KEndpoint215}. For Rocq, check the generic run-transport theorem, finite certificate and downstream endpoint under the production-designated toolchain, with recursive kernel checking. Upstream Coq 8.18 scheduler checks do not certify production Rocq 9.1 sources. Preserve axiom reports and exact transitive source bindings; distinguish reused objects from fresh compilation.
+
+\textbf{Recommendation order.} First prototype the short native-image lemma and guarded adapter in Lean, and the closed-footprint run theorem in Rocq. Measure the resulting maintained proof source \emph{including} adapters and certificates. Adopt only after complete client checking. The larger direct-seed, quotient-unification and residual-runtime proposals remain valuable, but their separate component receipts should not be combined into an unperformed full-machine validation.
+
+\section*{Sources and reproducibility}
+Pinned source paths and hashes appear in \code{SOURCE\_AUDIT.json}. The principal upstream records are the \href{https://github.com/VladimirReshetnikov/ProveIt/commit/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}{review cutoff}, \href{https://github.com/VladimirReshetnikov/ProveIt/commit/eb931b07ad8de83ba1a1d21dc84abe5a1c98364e}{quotient-unification proposal}, and batch 215's candidate-scheduling and decoder-residual proposal directories. The report's new arguments are mathematical proposals; no smaller machine, compiled proof reduction, proof-term size reduction or speedup is asserted.
+\end{document}

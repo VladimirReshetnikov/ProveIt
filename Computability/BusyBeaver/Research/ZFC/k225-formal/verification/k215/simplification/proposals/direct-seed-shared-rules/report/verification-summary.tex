@@ -1,0 +1,28 @@
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}p{0.20\textwidth}p{0.20\textwidth}X@{}}
+\toprule
+Measured source scope & Before & After & Change \\
+\midrule
+Lean K215 import closure & 178 modules & 177 modules & One fewer module \\
+Same closure, bytes & 2,093,112 & 2,086,255 & 6,857 fewer \\
+Same closure, physical lines & 40,517 & 40,387 & 130 fewer \\
+Rocq paired propositional sources, bytes & 23,160 & 16,001 & 7,159 fewer \\
+Same sources, physical lines & 297 & 261 & 36 fewer \\
+Maintained Rocq derivation bodies & 142 & 71 & One copy per lemma \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The Lean figure measures the \emph{active endpoint closure}. Keeping the old
+quotient interfaces available adds 7,472 bytes and 184 lines across the six
+changed or new production files overall; compatibility preservation therefore
+does not shrink the entire repository. The three modules leaving this endpoint
+closure are \code{Code254Models}, \code{KSeedModel222}, and \code{KIndisc222};
+two small interface/direct-proof modules enter it. The numerical seed semantics
+module remains because the upper chain still uses it.
+
+The checked scope is the new Lean semantic component and its recorded clients,
+and the Rocq propositional component with its actual consumers. The entire
+literal K215 endpoint has not been rebuilt in this packet. The repository's
+existing full-endpoint checks remain evidence for the original pinned sources;
+the changed endpoint requires the stated integration gate.

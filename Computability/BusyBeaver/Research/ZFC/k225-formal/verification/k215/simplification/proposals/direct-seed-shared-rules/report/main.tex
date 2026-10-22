@@ -1,0 +1,663 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={K215: Direct Seed Models and Shared Propositional Proofs},pdfauthor={OpenAI, research assistance for Vladimir Reshetnikov}}
+\setlist{itemsep=3pt,topsep=6pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small ProveIt / K215 proof simplification}
+\rhead{\small October 21, 2026}
+\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\enc}{\operatorname{enc}}
+\newcommand{\thh}{\operatorname{th}}
+\newcommand{\Sat}{\operatorname{Sat}}
+\newcommand{\Free}{\operatorname{Free}}
+\newcommand{\Seed}{\operatorname{Seed}}
+\newcommand{\Der}{\operatorname{DerivableNF}}
+\newcommand{\FullSeed}{\operatorname{FullSeed}}
+\newcommand{\Ccal}{\mathsf{C}_{222}}
+\newcommand{\NF}{\mathsf{NF}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{\texttt{6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}}
+\newcommand{\project}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,breaklines=true,
+  frame=single,rulecolor=\color{black!15},backgroundcolor=\color{black!2},
+  xleftmargin=4pt,xrightmargin=4pt,aboveskip=10pt,belowskip=10pt,showstringspaces=false}
+\input{results.tex}
+
+\title{\textbf{K215: Direct Seed Models and\\Shared Propositional Proofs}\\[5pt]
+\large Two checked components for simplifying the Rocq and Lean developments}
+\author{Research assistance for Vladimir Reshetnikov\\\small OpenAI}
+\date{October 21, 2026 (America/Los\_Angeles)}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The current K215 development already contains many of the obvious proof reductions.
+This report develops two specific next steps against the pinned repository: a direct
+Lean construction of a full seed model, and a shared Rocq propositional proof core.
+The direct construction implements an earlier uncompiled repository proposal and
+aligns Lean with a construction already used by the Rocq lower bound. Its essential
+point is that the completeness interface supplies truth of original named formulas
+with literal equality. One can therefore build the seed model on the original
+domain, using an interpreted formula code as a fresh private name, and bypass the
+preliminary indiscernibility quotient. The Rocq refactor packages 71 duplicated
+derivations once over implication, negation, modus ponens, and the three existing
+propositional axiom rules. Concrete adapters preserve both sets of exported names.
+The archive contains source overlays, reproduction programs, exact input identities,
+compiler evidence, and independent review. The status and limits of compilation are
+stated separately for the semantic components and the complete physical-machine
+endpoint. No Turing-machine transition is changed.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Recommendation and scope}
+
+The recommended next integration is \emph{direct seed construction in Lean plus
+one shared propositional core in Rocq}. These remove different kinds of unnecessary
+work: an intermediate model construction in the first case, and duplicate derivation
+bodies in the second. They preserve the target theorem and the existing calculus.
+They do not search for a different machine or rely on a smaller machine to simplify
+the proof.
+
+\subsection{Precisely which repository state was reviewed}
+
+The repository is \project. All source comparisons in this report use commit
+\pin, whose latest relevant change generalizes the K217 enumerator to arbitrary
+states between candidates. The timestamp is October 22 in UTC and October 21 in
+the user's local time zone. The previous changes already include the phase-fourteen
+K215 checkpoint and the proposed CP/GIC-to-QHyp quotient adapter.
+
+The independent source census reproduces the phase-fourteen Lean endpoint exactly:
+\textbf{178 project modules, 2,093,112 source bytes, and 40,517 physical source
+lines}. This is an import-closure measurement; it is not a count of mathematical
+lemmas or a measurement of proof-object size. The source identity and complete
+module list are retained in \code{evidence/baseline-lean-closure.json}.
+
+The dense machine table has SHA-256
+\begin{quote}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{quote}
+It has 215 working states and a separate halt. Neither proposal changes that table.
+
+\subsection{The theorem being preserved}
+
+The maintained Lean endpoint has type
+\begin{lstlisting}
+BlankHalts machine215 <-> BProv ZFCax_s [] Form.fBot
+\end{lstlisting}
+and its nonhalting corollary negates both sides. The Rocq endpoint similarly
+identifies halting of the exact dense table with a finite classical refutation of
+its explicitly defined ZFC theory. These are external proof-assistant theorems
+about the machine and syntactic consistency. The repository also explains why the
+ordinary mathematical argument can be formalized in ZFC. The present changes do
+not supply a serialized derivation in ZFC's own proof syntax, and they do not close
+the separately open internal PA endpoint.
+
+The distinction matters: proving a new component, checking a source overlay, and
+rebuilding the entire physical endpoint are three different achievements. We use
+each description only for its corresponding evidence.
+
+\subsection{Measured result and verification boundary}
+
+\input{verification-summary.tex}
+
+The reductions are intentionally reported with their costs. Adding a shared
+abstraction is useful only when its consumers actually share it. Likewise,
+removing a quotient from an informal diagram does not remove it from the
+compiled dependency closure until imports and shared declarations are separated.
+
+\section{What recent work has already accomplished}
+
+This work begins after substantial simplification. Treating earlier results as new
+would obscure the remaining problems. The current source and proposal index establish
+the following context; references are given in Section~\ref{sec:references}.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Existing work & Consequence for the present recommendation \\
+\midrule
+\endhead
+Shared implication core and named derived rules & The numerical dominated
+implication argument and the two Lean named calculi already share major parts of
+their derivations. The Rocq target below is a separate pair of classical
+propositional proof files. \\[4pt]
+Transitive-container factoring & Phase fourteen removes a duplicate profile
+development and its generator. We use that checkpoint as the baseline. \\[4pt]
+Checked macro words & The Lean AX construction for the permuted source is already
+a checked word; the dominated source now uses the same template. Recommending
+that transformation again would add little. \\[4pt]
+Source and runtime certificates & The proposals already cover trailing-zero
+normalization, balanced lookup, affine cores, semantic site contracts, uniform
+decoder prefixes, and positive simulations. They retain their own adoption and
+verification status. \\[4pt]
+Candidate scheduling & A generic scheduling induction is already proposed, and
+the current K217 change removes a seed-specific repetition. \\[4pt]
+Quotient unification & A recent proposal derives the QHyp interface from CP/GIC
+and reuses one later bisimulation-quotient development. That proposal is distinct
+from removing the \emph{earlier} indiscernibility quotient. \\[4pt]
+Direct full seed & The sharing-interfaces packet explicitly sketches the direct
+Lean route but labels it uncompiled. The corresponding Rocq construction already
+appears in \code{rocq224/src/Complete222.v}. The contribution here is checked
+implementation and integration work, with those origins acknowledged. \\
+\bottomrule
+\end{longtable}
+
+The common design principle is to expose the strongest useful theorem that is
+already available, and then prove each reusable argument at the weakest interface
+it actually needs. The direct-seed result uses a stronger semantic interface than
+the old caller exploited. The propositional core uses a weaker syntactic interface
+than its old proof files suggested.
+
+\section{The Lean opportunity: use the original model}
+
+\subsection{The current lower chain}
+
+The numerical calculus \(\Ccal\) derives the code \(1\) exactly when the relevant
+set theory is refutable. The difficult lower direction starts with a hypothetical
+model of the named formulas whose equality-interpreted numerical codes are
+derivable. In the previous route, the named seed bundle was first obtained only
+for equality-free matrices. The model was then quotiented by membership
+indiscernibility so that its new equality could be represented by an equality-free
+formula upstairs. A satisfaction-transport induction and representative choices
+extended the seed property to all named matrices.
+
+This is a valid general construction. However, the actual completeness interface
+already supplies more than an arbitrary model of equality-free formulas.
+
+\subsection{The decisive completeness interface}
+
+Write \(\thh f\) for the membership-indiscernibility interpretation of equality,
+and \(\enc f\) for the numerical encoding of a named formula. The theory used in
+the lower bridge is
+\[
+  \Der(f) \quad\Longleftrightarrow\quad
+  \Ccal\bigl(\enc(\thh f)\bigr).
+\]
+The syntactic premise of \code{KEind222.c222_complete} asks for derivability of
+\(\enc(\thh f)\) for theory members \(f\). Its semantic premise, however, supplies
+\[
+  \forall f\;\bigl(\Der(f)\Longrightarrow
+       \forall e\;\Sat(M,e,f)\bigr).                 \tag{1}
+\]
+It supplies truth of \(f\), with literal equality, on the original domain of \(M\).
+It does not merely supply truth of \(\thh f\). This is the fact that permits the
+shorter route.
+
+There is no circularity. The completeness theorem is proved using the named
+calculus and its interpretation; it does not import the seed-model or
+indiscernibility developments that this refactor bypasses.
+
+\subsection{The seed property}
+
+Let \(E\) be an arbitrary binary relation on a domain \(V\). Write \(x\subseteq_E y\)
+for \(\forall w\,(E(w,x)\to E(w,y))\). For a binary predicate \(Q\) and an input
+\(A\), the seed property is
+\begin{align*}
+\Seed_E(Q,A)\;\Longleftrightarrow\;\exists C\;\bigl[&
+  (\forall y\,(Q(A,y)\to\exists z\,(Q(A,z)\land E(z,C))))\\
+  {}\land{}&\forall y\,(E(y,C)\to\exists x\,[Q(x,y)\land\\[-2pt]
+  &\hspace{22mm}\forall x'\,(x'\subseteq_E y\to
+       \forall y'\,(Q(x',y')\to\exists z\,(Q(x',z)\land E(z,C))))])\bigr].
+\end{align*}
+Thus \(C\) answers any output request of \(A\), and each element of \(C\) is an
+output whose subsets also have their requests answered inside \(C\).
+
+A full seed model is irreflexive and has this property for every named formula
+\(\psi\), with the relation
+\[
+  Q_{\psi,e}(x,y)=\Sat(E,e[0\mapsto x][1\mapsto y],\psi).
+\]
+Equality is permitted in \(\psi\), and all other free names are interpreted as
+parameters by \(e\).
+
+\section{A direct full-seed theorem}
+
+\subsection{A fresh name supplied by the interpreted code}
+
+The repository's numerical constructors are
+\[
+\begin{array}{ll}
+  \enc(R(i,j))=4P(i,j)+1,&\enc(i=j)=4P(i,j)+3,\\
+  \enc(\bot)=1,&\enc(f\to g)=4P(\enc f,\enc g),\\
+  \enc(\forall i\,f)=4P(i,\enc f)+2,
+\end{array}
+\]
+where \(P\) is the pairing function already used by the machine development.
+The existing projection bounds give \(x\le P(x,y)\) and \(y\le P(x,y)\).
+
+\begin{lemma}[Free names are below the code]\label{lem:free-code}
+For every named formula \(f\) and natural number \(i\),
+\(\Free(i,f)\) implies \(i<\enc f\).
+\end{lemma}
+\begin{proof}
+Induct on the formula. For membership and equality atoms, \(i\) is one of the
+two names, and the pairing projection bounds together with the positive tag give
+the inequality. Falsity has no free names. In an implication, apply the induction
+hypothesis to the subformula in which \(i\) is free, and then the corresponding
+pairing projection bound. In a universal formula, free occurrence implies free
+occurrence in its body, and the body-code projection bound applies.
+These are the five branches of \code{free_lt_enc}.
+\end{proof}
+
+\begin{lemma}[Equality interpretation preserves free support]\label{lem:free-th}
+If \(\Free(i,f)\), then \(\Free(i,\thh f)\).
+\end{lemma}
+\begin{proof}
+The relation, falsity, implication, and universal cases follow directly from the
+definition and induction. Equality \(a=b\) is interpreted by the conjunction of
+agreement of incoming and outgoing membership. Its auxiliary quantified name is
+\(a+b+1\), which differs from both \(a\) and \(b\); consequently both original
+argument names remain free. This proves the equality case. The assertion concerns
+\emph{free} occurrences, not every syntactic occurrence.
+\end{proof}
+
+For an arbitrary named matrix \(\psi\), including equality, set
+\[
+  m_\psi=\neg\neg\psi,\qquad
+  k_\psi=\enc(\thh m_\psi).
+\]
+The double negation gives \(k_\psi>1\) directly from the outer implication code
+and the right projection bound \(1\le P(\enc(\thh\neg\psi),1)\).
+Moreover, \(k_\psi\) is not free in \(m_\psi\). If it were free, the two lemmas
+would give
+\[
+  k_\psi<\enc(\thh m_\psi)=k_\psi,
+\]
+a contradiction. Thus one and the same code supplies the enabled numerical
+bundle label and the freshness needed for the named semantic proof. No search for
+an extra fresh variable or alpha-renaming pass is required.
+
+\subsection{Named bundle semantics}
+
+The named syntax has genuine falsity, and its negation is implication into that
+falsity. Let \(B(a,b,k;m)\) denote the named seed bundle \code{bundleNF}. Its
+request and closure subformulas are the existing \code{reqNF} and
+\code{closNF}. The exact names \(a,b,k\) remain explicit.
+
+\begin{theorem}[Named bundle equivalence]\label{thm:bundle}
+Suppose \(a\ne b\), \(k\ne a\), \(k\ne b\), and \(k\) is not free in \(m\).
+Then, for every relation \(E\) and environment \(e\),
+\[
+  \Sat(E,e,B(a,b,k;m))\quad\Longleftrightarrow\quad
+  \Seed_E\bigl((x,y)\mapsto\Sat(E,e[a\mapsto x][b\mapsto y],m),e(a)\bigr).
+\]
+No irreflexivity hypothesis is required for this named-formula theorem.
+\end{theorem}
+\begin{proof}
+First normalize the named request. Since \(k\ne b\), it says exactly that every
+output of the fixed input has some output in the container named by \(k\).
+Repeated assignments to \(b\) collapse by the environment-update identity.
+
+Next normalize the closure subformula. Commuting updates at the distinct names
+\(a,b,k\) gives: every member \(y\) of the container is an output of some input
+\(x\), and every subset \(x'\) of \(y\) has each output request answered in the
+container. This is \code{named_clos_iff}.
+
+The bundle's auxiliary implication from a membership atom to its
+\(k\)-universal closure is valid because \(k\) differs from its two names.
+The outer negated universal implication is then converted, classically, to an
+existential container satisfying the closure and request conditions. Finally,
+freshness of \(k\) in \(m\) removes the container assignment from every
+occurrence of the matrix. The resulting conjunction is the definition of
+\(\Seed_E\), in reversed order.
+\end{proof}
+
+\begin{remark}[Why the numerical theorem still needs irreflexivity]
+The decoded numerical code \(1\) is represented by a self-membership atom;
+irreflexivity makes it false. Named \(\NF.\bot\), on the other hand, is interpreted
+as literal falsehood. Removing irreflexivity from the named theorem does not
+permit removing it from the numerical soundness theorem. In particular, the
+existing soundness development still covers arbitrary natural codes and
+coincident input/output roles.
+\end{remark}
+
+\subsection{Derivability of the named bundle}
+
+Equality interpretation commutes with the named bundle:
+\[
+  \thh B(a,b,k;m)=B(a,b,k;\thh m).
+\]
+Every atom introduced by the bundle macros is a membership atom, so this identity
+requires no freshness side condition. With \(k=k_\psi\), the existing encoding
+identity therefore gives
+\[
+ \enc\bigl(\thh B(0,1,k_\psi;m_\psi)\bigr)
+   =\code{bundle222}(0,1,k_\psi).
+\]
+Since \(k_\psi>1\), the numerical bundle constructor proves the right side
+derivable. Hence \(B(0,1,k_\psi;m_\psi)\) belongs to \(\Der\).
+
+\begin{theorem}[Direct full seed]\label{thm:direct}
+Let \(E\) be an irreflexive relation satisfying every \(\Der\) formula under
+every environment. Then \(\FullSeed(E)\) holds on its original domain.
+\end{theorem}
+\begin{proof}
+For arbitrary \(\psi,e\), apply the model hypothesis to the derivable named
+bundle just constructed. Theorem~\ref{thm:bundle}, the bound \(k_\psi>1\), and
+freshness give \(\Seed_E(Q_{m_\psi,e},e(0))\). Classical double-negation
+elimination gives pointwise equivalence of \(Q_{m_\psi,e}\) and
+\(Q_{\psi,e}\). The existing \code{seedProp_congr} transports the seed property
+across this pointwise equivalence. Combining these instances with the supplied
+irreflexivity gives \(\FullSeed(E)\).
+\end{proof}
+
+This is precisely the new direct semantic component. The older theorem concludes
+\(\FullSeed(\operatorname{qmem}E)\) on a quotient domain; the direct theorem
+concludes \(\FullSeed(E)\).
+The argument does not assert that \(\psi\) and \(\thh\psi\) have the same
+truth value on the original domain. The interpreted formula is used to prove
+derivability and choose the private name; the model hypothesis evaluates the
+original named bundle.
+
+\section{Integration into the Lean lower bridge}
+
+\subsection{What can now be removed from this proof path}
+
+The old path needs the relation \code{Ind}, its setoid, the quotient
+\code{IndQ}, lifted membership \code{qmem}, equality and surjectivity facts for
+representatives, a satisfaction-transport induction, and a transfer of seed
+containers through quotient representatives. None of these is needed by the
+direct lower bridge.
+
+The later set-theoretic construction still needs its tagged domain, bisimulation
+quotient, and well-founded part. Those solve a different mathematical problem.
+The proposed CP/GIC-to-QHyp adapter can be considered separately; this report's
+direct seed result neither assumes its adoption nor claims its savings.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.18\textwidth}XX@{}}
+\toprule
+Stage & Previous lower bridge & Direct lower bridge \\
+\midrule
+Completeness & Model of original derivable named formulas & Same model \\
+Seed instances & Equality-free matrices first & All named matrices directly \\
+First quotient & Membership indiscernibility and satisfaction transport & Not used \\
+Seed model & Quotient domain & Original domain \\
+ZF construction & Tagged domain, bisimulation quotient, well-founded part & Same construction \\
+Witness & Quotient class of \(e(0)\) & \(e(0)\) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{A small interface is essential}
+
+Simply importing the old quotient module to obtain its \code{FullSeed} declaration
+would retain the entire old route. The implementation therefore separates the
+shared named bundle definitions, the theory predicate, and the full-seed
+specification from the optional quotient proof. The downstream
+\code{KLowerSeed} module needs only this specification. Existing quotient clients
+can continue to use the legacy module and its original theorem statements.
+
+This is a compatibility-preserving import cut, not deletion of a useful general
+quotient theorem from the repository. The exact overlay and source census record
+which modules leave the K215 closure and which declarations remain available to
+other clients.
+
+\subsection{The endpoint substitution}
+
+At the mathematical boundary, the lower bridge changes to the following shape:
+\begin{lstlisting}
+have hfull := fullSeed_direct_of_derivable mem hirr hT
+exact zf_consistent_of_formSeed
+  (formSeed_of_fullSeed hfull) hfull.irr (e 0) hf
+\end{lstlisting}
+The source calculus, its code \(1\), the definition of finite ZF refutation,
+the ZF/ZFC refutation equivalence, and the physical-machine theorem type are
+unchanged. In particular, this argument does not add an inhabited-domain axiom:
+the environment already supplies the witness \(e(0)\).
+
+Removing a semantic quotient does not imply removing \code{Quot.sound} from
+Lean's printed axiom set. Existing classical reasoning and extensionality
+infrastructure still use Lean's standard principles. The relevant check is that
+the exact reported axiom profile is preserved and no \code{sorryAx}, new axiom,
+or unchecked native-computation principle enters.
+
+\section{The Rocq opportunity: one propositional derivation library}
+
+\subsection{The duplicated fragment}
+
+The pinned \code{ZF.L1_LProp} file and the K215-local \code{L224Prop} file
+contain 71 corresponding lemmas: 59 intermediate derivations and 12 public
+propositional rules. An independent normalization check finds identical statements
+and proof bodies after renaming the theorem predicate, the axiom constructors,
+modus ponens, and the exported prefixes.
+
+The two full named calculi should not be identified. They have different
+quantifier/vacuity interfaces. The repeated \emph{propositional} derivations,
+however, use only implication, negation, modus ponens, and three rules common
+to both calculi.
+
+\subsection{The minimal interface}
+
+Let \(F\) be any type of formula objects, with operations \(\Rightarrow\) and
+\(\neg\), and predicate \(\operatorname{Pr}\). Require
+\begin{align*}
+\mathrm{MP}:\quad&\operatorname{Pr}(a\Rightarrow b)\to
+                    \operatorname{Pr}(a)\to\operatorname{Pr}(b),\\
+\mathrm{B1}:\quad&\operatorname{Pr}\bigl((a\Rightarrow b)\Rightarrow
+                   ((b\Rightarrow c)\Rightarrow(a\Rightarrow c))\bigr),\\
+\mathrm{B2}:\quad&\operatorname{Pr}\bigl((\neg a\Rightarrow a)\Rightarrow a\bigr),\\
+\mathrm{B3}:\quad&\operatorname{Pr}\bigl(a\Rightarrow(\neg a\Rightarrow b)\bigr).
+\end{align*}
+The Rocq module type \code{PropositionalBasis} expresses exactly these data.
+The functor \code{PropositionalRules} contains one copy of the inherited
+derivations. No syntax induction, quantifier constructor, equality atom, or
+set-theoretic axiom is part of this contract.
+
+Three original proof bodies used the arbitrary formula \code{Weq 0 0}, although
+their statements did not mention it. Each lemma already binds a formula
+\code{w0}; substituting that formula for the arbitrary choice removes even the
+need for a distinguished formula or an inhabited-carrier assumption. The core
+therefore applies uniformly to an arbitrary formula type, including an empty
+one.
+
+\subsection{Why the abstraction is sound}
+
+Every original derivation is a finite term constructed from earlier derivations,
+MP, and the three basis rules. Replacing the concrete symbols with interface
+fields yields the same well-typed proof term over arbitrary interface data.
+This is the mathematical content of the abstraction. Kernel compilation checks
+each such term; the code does not assume a broad soundness principle for the
+full named calculus.
+
+For the ordinary calculus, instantiate the interface using
+\code{lprov}, \code{LDET}, and \code{LB1}--\code{LB3}. For the restricted
+calculus, instantiate it using \code{lprov224}, \code{MDET}, and
+\code{MB1}--\code{MB3}. Both use their original implication and negation
+constructors. The compatibility facades retain the original public and helper
+names.
+
+The module-type fields are parameters of a functor, not new global axioms of
+the concrete endpoints. Their implementations are the constructors already
+present in the original inductive derivability relations. The concrete
+assumption reports must therefore be closed; this is checked explicitly.
+
+\subsection{The real size tradeoff}
+
+For the two concrete clients together, the old source occupies
+\textbf{297 lines and 23,160 bytes}. The shared core plus its two compatibility
+facades occupies \textbf{261 lines and 16,001 bytes}: a reduction of
+\textbf{36 lines and 7,159 bytes}, approximately \textbf{30.9\%} of those source
+bytes. These figures include the new abstraction and both facades, but exclude
+audit clients and documentation from both sides of the implementation comparison.
+
+Adopting only the restricted-calculus facade while retaining the complete old
+ordinary propositional development would \emph{increase} the selected source by
+97 lines and 3,653 bytes. The paired adoption is the actual simplification.
+The report does not infer a proof-object-size reduction or a clean-build speedup
+from these source figures; those are separate measurements.
+
+\section{Verification, reproduction, and adoption}
+
+\subsection{Evidence is tied to source identities}
+
+The archive includes the repository pin, source SHA-256 values, the proposed
+overlays, compiler logs, assumption reports, typed API checks, and source metrics.
+The Lean closure census is independent of the compiler and labels its output as
+a source measurement. The Rocq evidence records the selected component and its
+upstream references. No old proof receipt is treated as a certificate for newly
+combined source bytes.
+
+\input{verification-details.tex}
+
+\subsection{Suggested integration order}
+
+\begin{enumerate}
+\item Apply the Lean interface split and direct-seed component to the pinned
+      source in an isolated checkout. Compile the direct theorem, its semantic
+      lower bridge, and the retained legacy interfaces. Compare exact theorem
+      types and printed axioms.
+\item Run the repository's K215 endpoint verification driver on the changed
+      closure. Use its exact-source provider reuse policy for unchanged physical
+      modules; do not relabel a source census as a successful machine build.
+\item Adopt the Rocq core and both facades together in the source-staging
+      pipeline. Compile the exact production namespace and consumers under its
+      pinned Rocq/stdlib versions, and run the corresponding recursive kernel
+      check.
+\item Update generators or staging rules so regeneration reproduces the
+      simplified sources. Retain the derivative-file attribution and upstream
+      pins. A locally edited generated file alone is not a durable integration.
+\item Record separate results for logical API preservation, source reduction,
+      proof objects, and build time. Only then replace the currently approved
+      endpoint provider records.
+\end{enumerate}
+
+The work delivered here is a proposal package for this sequence. It does not
+modify the public repository or ask for permission to publish changes. The
+user requested an archive for later incorporation.
+
+\section{What should not be simplified away}
+
+Several tempting reductions would change the theorem rather than simplify its
+proof.
+
+\paragraph{Arbitrary numerical codes.}
+The machine manipulates arbitrary natural formula codes. Restricting a numerical
+soundness theorem to neatly decoded formulas would require a new reachability
+invariant. The direct lower bridge has no such consequence for the upper bridge.
+
+\paragraph{Coincident role names.}
+The ordinary named-bundle theorem uses distinct input and output names. The
+numerical soundness theorem separately handles degenerate roles. Its diagonal
+case must remain; the direct construction simply selects the fixed distinct
+roles 0 and 1 for its own use.
+
+\paragraph{The later set-theoretic quotient.}
+The preliminary indiscernibility quotient enforces an equality interpretation.
+The later bisimulation quotient belongs to the ZF model construction. Removing
+the first does not justify removing the second.
+
+\paragraph{Progress in machine simulations.}
+The present proposal does not alter the physical runtime simulation. Existing
+positive-step obligations prevent a target halt from being hidden by an infinite
+sequence of zero-duration source stutters. A future runtime compression must
+preserve those obligations or supply an independently proved well-founded rank.
+
+\paragraph{Exact statements and assumptions.}
+A shorter lemma with a stronger unproved premise is not a replacement for the
+closed endpoint. Explicit typed clients and concrete assumption reports are
+therefore part of the deliverable, not optional decoration.
+
+\section{Further research questions}
+
+The next questions are concrete enough to have measurable success criteria.
+
+\begin{enumerate}
+\item \textbf{Can the named and numerical bundle proofs share one normalization
+      argument?} Both normalize requests, closure, and a private marker. An
+      abstract matrix-satisfaction interface could expose \emph{semantic}
+      freshness and update laws once, with named and decoded instances.
+      Semantic freshness means that updating the private name does not change
+      matrix truth. Requiring only syntactic absence of a free name would be
+      too restrictive for the numerical code-zero case: its decoded tautology
+      can mention name zero while its truth remains independent of that name.
+      The existing \code{sat_dec_update} and the new \code{sat_update_fresh}
+      already supply the two semantic interfaces. The target is a net
+      deletion after including the interface, with the numerical diagonal case
+      and irreflexivity assumptions still explicit.
+\item \textbf{How far can the Rocq basis be reused beyond these 71 lemmas?}
+      The unchanged meta-theory consumers already compile through the facades.
+      A next step is to factor only the common contextual/deduction operations,
+      while leaving the differing quantifier/vacuity hypotheses as parameters.
+      The success criterion is paired source reduction plus preserved original
+      signatures, not a claim that the two full calculi coincide.
+\item \textbf{Can the direct lower bridge and the existing QHyp quotient adapter
+      be adopted together?} They address different stages and should compose.
+      The combined closure must be built afresh or through exact bound providers;
+      source savings from two independent proposals cannot simply be added when
+      they share imports or wrappers.
+\item \textbf{Which proof-interface cuts improve build cost as well as source
+      readability?} Measure clean and incremental builds with identical
+      toolchains and resource settings. Keep generated certificate data,
+      mathematical proof source, and compiled proof-object sizes separate.
+\item \textbf{Can more cross-assistant architecture be aligned?} The Rocq direct
+      seed construction suggested the Lean simplification; the Lean practice
+      of shared named-calculus interfaces suggested the Rocq factoring. A
+      theorem-interface correspondence could prevent future independent copies
+      of essentially the same argument, without forcing both assistants to use
+      identical encodings or proof tactics.
+\item \textbf{Can the internal consistency statement be strengthened without
+      duplicating the machine proof?} The internal PA endpoint is a distinct
+      research problem. Isolate the additional formalized proof-translation and
+      arithmetization obligations at the existing semantic/calculus boundary;
+      do not rebuild a second physical runtime proof merely to change the
+      metatheoretic presentation.
+\end{enumerate}
+
+\section{Sources and attribution}\label{sec:references}
+
+All ProveIt URLs below refer to the immutable reviewed commit, not the moving
+\code{main} branch. Long file paths are given so the report remains usable after
+incorporation into the repository.
+
+\begin{enumerate}[label={[\arabic*]}]
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md}{K215 README}.
+      Exact machine, theorem statements, evidence routes, and formal boundary.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase14/README.md}{Fourteenth K215 proof-simplification checkpoint}.
+      Maintained source counts, checked scopes, and assumption profiles.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md}{Proof-simplification proposals index}.
+      Earlier source, runtime, scheduling, quotient, and interface proposals.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/sharing-interfaces/calculus/DIRECT_FULL_SEED.md}{Direct full seed proposal}.
+      Prior uncompiled construction implemented by the Lean component here.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean}{\code{KEind222.lean}};
+      \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean}{\code{KSeedModel222.lean}};
+      \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KIndisc222.lean}{\code{KIndisc222.lean}};
+      \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}{\code{KEndpoint.lean}}.
+      Exact old lower-chain interfaces and proofs.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq224/src/Complete222.v}{\code{rocq224/src/Complete222.v}}.
+      Existing Rocq fresh-code construction and direct seed route.
+\item \href{https://github.com/jeff87654/busy-beaver/tree/c132d7eae8158cd3a9850ea3eb7251158c3dd821}{Jeff Ketchersid's pinned busy-beaver source} and
+      \href{https://github.com/elliotglazer/k230-rocq/tree/3142e4dd980f0be12f4abb636c4ae2528afc17eb}{Elliot Glazer's pinned K230 Rocq source}.
+      The inherited named propositional derivations, source calculi, and
+      set-theoretic construction retain their original authorship and terms.
+\end{enumerate}
+
+The abstract propositional derivation bodies are adaptations of the existing
+Jeff Ketchersid proofs. The seed principle and lower construction are inherited
+from the Glazer/K-family development. This packet's contribution is the
+checked refactoring, concrete adapters, direct Lean implementation, integration
+overlay, exact accounting, and review; it does not claim discovery of these
+underlying logical principles. Notices and source identities accompany the code.
+
+\appendix
+\section{Archive map and reproducibility}
+\input{archive-map.tex}
+
+\end{document}

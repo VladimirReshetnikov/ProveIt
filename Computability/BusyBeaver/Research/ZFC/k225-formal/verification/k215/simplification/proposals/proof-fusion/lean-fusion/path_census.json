@@ -1,0 +1,43 @@
+{
+  "status": "Source census and estimated data-layout comparison only; no replacement decoder or kernel check",
+  "repository_commit": "6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95",
+  "source_path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Data.lean",
+  "source_sha256": "decd1faa0ec8d9cc49cce105db044608e0e7518836fd63cfd4cfcd0d1f08c683",
+  "source_bytes": 239254,
+  "certificate_entries": 1426,
+  "path_occurrences": 2852,
+  "unique_paths": 2806,
+  "maximum_path_bits": 176,
+  "total_occurrence_bits": 175057,
+  "unique_path_bits": 174645,
+  "unique_prefixes": 5174,
+  "unique_suffixes": 49506,
+  "certificate_chunk_bytes": 108501,
+  "current_decimal_path_field_bytes": 54885,
+  "whole_path_dictionary_id_field_bytes_only": 10196,
+  "compressed_prefix_vertices_including_empty": 3358,
+  "compressed_prefix_rows_excluding_empty": 3357,
+  "compressed_prefix_edge_bits": 5173,
+  "estimated_ascii_pair_payload_bytes": 36128,
+  "compressed_prefix_id_field_bytes": 10461,
+  "estimated_pair_payload_plus_id_bytes": 46589,
+  "estimated_bytes_saved_before_decoder_and_index_overhead": 8296,
+  "reconstruction_checks_passed": true,
+  "measurement_definitions": {
+    "certificate_chunk_bytes": "UTF-8 byte count from first 'def fwd0' up to, excluding, first 'def fwdCert'",
+    "current_decimal_path_field_bytes": "sum(len(str(n))) for the first two integer fields of every parsed leaf entry",
+    "vertices": "unique stored paths union all branching prefixes union empty path, sorted by (length, lexicographic bits)",
+    "parent": "longest proper prefix that is also a vertex",
+    "tail_code": "int('1' + bits_after_parent, 2)",
+    "pair_payload": "'[' + ', '.join(f'({parent_id}, {tail_code})' for nonempty vertices) + ']'",
+    "id_field_bytes": "sum(len(str(vertex_id))) for each of the 2 * entry_count path occurrences",
+    "estimated_saving": "current_decimal_path_field_bytes - pair_payload_bytes - id_field_bytes"
+  },
+  "excluded_costs": [
+    "Lean definition headers and types",
+    "Balanced indexing tree or other non-list lookup representation",
+    "Decoder implementation and any associated proofs",
+    "Compile time, kernel reductions, memory use, and compiled object size"
+  ],
+  "interpretation": "Whole-path repetition is sparse; the estimated radix saving is modest and may be erased by decoder/index overhead. This is not a measured production source reduction or speedup."
+}

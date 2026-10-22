@@ -1,0 +1,103 @@
+import BusyBeaver.ZFC.KHomeReady
+import BusyBeaver.ZFC.KSim
+
+/- OWNED, UNCOMPILED PROPOSAL, not a claimed kernel theorem.
+   No Seg, conc, normalizer, sstep, or Home modification is required.
+   The main new obligation is sstep_addLeft. -/
+namespace SetTheory.BusyBeaver.ZFC.KLeftFrame
+open KZip KRuntimeCore
+
+def addLeft (F : List Seg) : SConf → SConf
+  | (q, onl, l, r) => (q, onl, l ++ F, r)
+
+def safeLeft : SConf → Bool
+  | (_, true, [], _) => false
+  | _ => true
+
+/-- Algebraic equality, before invoking any tape theorem. The one rejected
+case is essential: original sstep on an empty left list inserts a blank. -/
+theorem sstep_addLeft {M : TMN} {br : Branch} {s t : SConf} {m : Bool}
+    (hs : safeLeft s = true) (h : sstep M br s = some (t, m)) (F : List Seg) :
+    sstep M br (addLeft F s) = some (addLeft F t, m) := by
+  /- Intended proof: destruct q/onl/l/r, the leading Seg and optional row/oracle
+     result. Every accepted branch is append associativity. The onl=true,l=[]
+     branch is discharged by hs; the box-left branch by h. peelLeft/peelRight
+     preserve appended F directly. The following tactic script is uncompiled. -/
+  rcases s with ⟨q, onl, l, r⟩
+  cases onl <;> cases l <;> cases r <;>
+    simp_all [safeLeft, addLeft, sstep, peelLeft, peelRight]
+  all_goals
+    repeat first | split at h | split | cases_type Seg | cases_type Bool
+    all_goals simp_all [safeLeft, addLeft, sstep, peelLeft, peelRight,
+      List.cons_append, List.append_assoc]
+
+/-- Fixed-length local replay, ignoring the symbolic progress flag.
+No run can inspect the tail that the eventual caller will append. -/
+def runLocal (M : TMN) (br : Branch) : Nat → SConf → Option SConf
+  | 0, s => some s
+  | k + 1, s =>
+      if safeLeft s then do
+        let (t, _) ← sstep M br s
+        runLocal M br k t
+      else none
+
+/-- Only Reach is needed here. The final Home supplies Reach1. -/
+theorem runLocal_sound {M : TMN} (B : BoxLemmas M) {br : Branch}
+    (n : Nat) {vs : List Nat} (hv : Valid br vs) (F : List Seg) :
+    ∀ k s t, runLocal M br k s = some t →
+      Reach M (conc n vs (addLeft F s)) (conc n vs (addLeft F t)) := by
+  intro k
+  induction k with
+  | zero =>
+      intro s t h
+      simp only [runLocal, Option.some.injEq] at h
+      subst t
+      exact .refl _ _
+  | succ k ih =>
+      intro s t h
+      cases hs : safeLeft s with
+      | false => simp [runLocal, hs] at h
+      | true =>
+          cases he : sstep M br s with
+          | none => simp [runLocal, hs, he] at h
+          | some pair =>
+              rcases pair with ⟨s', m⟩
+              have htail : runLocal M br k s' = some t := by
+                simpa only [runLocal, hs, if_true, he] using h
+              have hstep := sstep_sound B n (sstep_addLeft hs he F) hv
+              exact hstep.1.trans (ih s' t htail)
+
+/-- An immediate specialization of EXISTING scanBound_sound and home_word.
+No prefix-end-one predicate or new crossing theorem is required. -/
+theorem home_prefix {M : TMN} (rows : KHome.Rows M) (hb : KHome.Boundary M)
+    (P R : List Bool) (blanks : Nat) {k : Nat}
+    (hs : KHome.scanBound 0 (P.reverse.map Seg.bit) = some k) :
+    Reach1 M (zl 2 ((P.reverse ++ [true]) ++ List.replicate blanks false) R)
+      (zc 84 [true] (P ++ R)) := by
+  obtain ⟨j, _, hj, hword⟩ := KHome.scanBound_sound rows 0 [] hs
+    (by decide : 0 < 8) (Nat.le_refl 0)
+  have hw : KHome.LeftWord M 2 (P.reverse ++ [true]) 2 := by
+    have hp : KHome.LeftWord M 2 P.reverse (KHome.state j) := by
+      simpa only [KSim.flat_bits] using hword
+    exact hp.append (.cons (rows.reset j hj) (.nil _))
+  simpa only [List.reverse_reverse] using KHome.home_word hb P.reverse R blanks hw
+
+/- Final application for each of the 35 templates:
+   0. Use FORMAL_TEMPLATES.json, not native-label trace data. The exact mapping
+      is native301→formal102, native302→formal120, halt254→230.
+      Native302 occurs in these local traces and must be translated.
+   1. Kernel-check runLocal M none steps start = some (2,true,[],R').
+   2. Instantiate runLocal_sound at F = (P.reverse.map .bit) ++ [.bit true]
+      (optionally append a trailing blank segment, which conc trims).
+   3. Rewrite flat_append/flat_bits to get the exact standard leaf port.
+   4. Apply home_prefix to P and flat n vs R'.
+   5. Compose with Reach.trans_reach1, preserving whole tapes and positive progress.
+   6. Normalize only the RIGHT endpoint list to E ++ 0^(n+16+|S|-|E|)
+      ++ 1 ++ boxList none vs. No unframed normL/sMatches reasoning is used.
+   7. Prove continuePath/breakPath(P++S)=P++E using the suffix-only count,
+      strip and no-overflow premises. Bind q to RoutedEntry as before.
+
+   The universal contract quantifies over arbitrary finite P satisfying the
+   existing scanBound premise, every n, and every Valid none register file.
+   The far-left tape is blank, not an arbitrary nonblank exterior. -/
+end SetTheory.BusyBeaver.ZFC.KLeftFrame

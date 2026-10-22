@@ -1,0 +1,164 @@
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/L1_SoundPerm.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/L1_SoundPerm.v
+@@ -1,4 +1,4 @@
+-(** k225-formal/rocqperm/L1_SoundPerm.v (SHA256 b31de84939e17f30f5bc2997983d8754ba64b891d9dda277477c7c1b3c5d9756) under namespace K215F. *)
++(** k225-formal/rocqperm/L1_SoundPerm.v (SHA256 32816a7c853922debe2ffe179ef0afcbb8b844efbda80ef1e3310e36177a078d) under namespace K215F. *)
+ (** * L1_SoundPerm: if the 215's enumerator halts, then [thm222 1].
+ 
+     As L1_Sound222: the current formula, the cache and every entry of the stack stream are
+@@ -11,12 +11,7 @@
+ Definition goodstack (w : nat) : Prop := forall k, thm222 (fst (unP (popn k w))).
+ 
+ Lemma popn_S k w : popn (S k) w = popn k (snd (unP w)).
+-Proof.
+-  unfold popn. revert w. induction k as [|k IH]; intro w; [reflexivity|].
+-  change (snd (unP (Nat.iter (S k) (fun w => snd (unP w)) w)) =
+-          snd (unP (Nat.iter k (fun w => snd (unP w)) (snd (unP w))))).
+-  now rewrite IH.
+-Qed.
++Proof. unfold popn. apply Nat.iter_succ_r. Qed.
+ 
+ Lemma good_push x w : thm222 x -> goodstack w -> goodstack (P x w).
+ Proof.
+@@ -46,30 +41,36 @@
+   apply Nat.eqb_neq in E1, E2. now apply W_bundle.
+ Qed.
+ 
+-Lemma Inv_step s s' : Inv s -> enum_step s = Some s' -> Inv s'.
++(** One decoded command either preserves the invariant or derives falsity. *)
++Lemma step_sound s : Inv s ->
++  match enum_step s with Some s' => Inv s' | None => thm222 1 end.
+ Proof.
+   intros [Ht [Hh Hw]]. unfold enum_step.
+   destruct (if Nat.eqb (pl s) 0 then _ else _) as [pl1 np1].
+   destruct (unP pl1) as [ac pl2].
+   destruct ac as [|[|[|c]]].
+-  - destruct (Nat.eqb (h s) 1); [discriminate|].
+-    destruct (good_pop _ Hw) as [H1 H2]. destruct (unP (ws s)) as [h1 w1] eqn:E.
+-    intro H; injection H as <-. repeat split; cbn [tw h ws]; [exact Ht | exact H1 | exact H2].
+-  - intro H; injection H as <-. repeat split; cbn [tw h ws]; [exact Hh | exact Hh | now apply good_push].
++  - destruct (Nat.eqb (h s) 1) eqn:E.
++    + apply Nat.eqb_eq in E. now rewrite <- E.
++    + destruct (good_pop _ Hw) as [H1 H2]. destruct (unP (ws s)) as [h1 w1] eqn:Eu.
++      repeat split; cbn [tw h ws]; [exact Ht | exact H1 | exact H2].
++  - repeat split; cbn [tw h ws]; [exact Hh | exact Hh | now apply good_push].
+   - destruct (unP pl2) as [x pl3].
+-    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)) eqn:E; intro H; injection H as <-.
++    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)) eqn:E.
+     + apply Nat.eqb_eq in E. repeat split; cbn [tw h ws].
+       * apply (W_mp (tw s)); [exact Ht | now rewrite E].
+       * exact W_true.
+       * apply good_push; [exact W_true | exact Hw].
+     + repeat split; cbn [tw h ws]; [exact W_true | exact W_true | exact Hw].
+   - destruct (unP pl2) as [y pl3]. destruct (unP pl3) as [x pl4].
+-    intro H; injection H as <-. repeat split; cbn [tw h ws].
++    repeat split; cbn [tw h ws].
+     + apply gate_thm.
+     + exact W_true.
+     + unfold ax_stack.
+       repeat apply good_push; try assumption; constructor; assumption.
+ Qed.
++
++Lemma Inv_step s s' : Inv s -> enum_step s = Some s' -> Inv s'.
++Proof. intros Hs E. pose proof (step_sound s Hs) as H. rewrite E in H. exact H. Qed.
+ 
+ Lemma Inv_run n s s' : Inv s -> run n s = Some s' -> Inv s'.
+ Proof.
+@@ -80,17 +81,7 @@
+ Qed.
+ 
+ Lemma halt_step s : Inv s -> enum_step s = None -> thm222 1.
+-Proof.
+-  intros [Ht [Hh Hw]]. unfold enum_step.
+-  destruct (if Nat.eqb (pl s) 0 then _ else _) as [pl1 np1].
+-  destruct (unP pl1) as [ac pl2].
+-  destruct ac as [|[|[|c]]]; try discriminate.
+-  - destruct (Nat.eqb (h s) 1) eqn:E.
+-    + intros _. apply Nat.eqb_eq in E. now rewrite <- E.
+-    + destruct (unP (ws s)); discriminate.
+-  - destruct (unP pl2). discriminate.
+-  - destruct (unP pl2) as [y pl3]. destruct (unP pl3). discriminate.
+-Qed.
++Proof. intros Hs E. pose proof (step_sound s Hs) as H. rewrite E in H. exact H. Qed.
+ 
+ Theorem enum_sound : enum_halts -> thm222 1.
+ Proof.
+--- a/Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/L1_SoundPerm.v
++++ b/Computability/BusyBeaver/Research/ZFC/k225-formal/rocqperm/L1_SoundPerm.v
+@@ -10,12 +10,7 @@
+ Definition goodstack (w : nat) : Prop := forall k, thm222 (fst (unP (popn k w))).
+ 
+ Lemma popn_S k w : popn (S k) w = popn k (snd (unP w)).
+-Proof.
+-  unfold popn. revert w. induction k as [|k IH]; intro w; [reflexivity|].
+-  change (snd (unP (Nat.iter (S k) (fun w => snd (unP w)) w)) =
+-          snd (unP (Nat.iter k (fun w => snd (unP w)) (snd (unP w))))).
+-  now rewrite IH.
+-Qed.
++Proof. unfold popn. apply Nat.iter_succ_r. Qed.
+ 
+ Lemma good_push x w : thm222 x -> goodstack w -> goodstack (P x w).
+ Proof.
+@@ -45,30 +40,36 @@
+   apply Nat.eqb_neq in E1, E2. now apply W_bundle.
+ Qed.
+ 
+-Lemma Inv_step s s' : Inv s -> enum_step s = Some s' -> Inv s'.
++(** One decoded command either preserves the invariant or derives falsity. *)
++Lemma step_sound s : Inv s ->
++  match enum_step s with Some s' => Inv s' | None => thm222 1 end.
+ Proof.
+   intros [Ht [Hh Hw]]. unfold enum_step.
+   destruct (if Nat.eqb (pl s) 0 then _ else _) as [pl1 np1].
+   destruct (unP pl1) as [ac pl2].
+   destruct ac as [|[|[|c]]].
+-  - destruct (Nat.eqb (h s) 1); [discriminate|].
+-    destruct (good_pop _ Hw) as [H1 H2]. destruct (unP (ws s)) as [h1 w1] eqn:E.
+-    intro H; injection H as <-. repeat split; cbn [tw h ws]; [exact Ht | exact H1 | exact H2].
+-  - intro H; injection H as <-. repeat split; cbn [tw h ws]; [exact Hh | exact Hh | now apply good_push].
++  - destruct (Nat.eqb (h s) 1) eqn:E.
++    + apply Nat.eqb_eq in E. now rewrite <- E.
++    + destruct (good_pop _ Hw) as [H1 H2]. destruct (unP (ws s)) as [h1 w1] eqn:Eu.
++      repeat split; cbn [tw h ws]; [exact Ht | exact H1 | exact H2].
++  - repeat split; cbn [tw h ws]; [exact Hh | exact Hh | now apply good_push].
+   - destruct (unP pl2) as [x pl3].
+-    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)) eqn:E; intro H; injection H as <-.
++    destruct (Nat.eqb (wim (tw s) (d s + x)) (h s)) eqn:E.
+     + apply Nat.eqb_eq in E. repeat split; cbn [tw h ws].
+       * apply (W_mp (tw s)); [exact Ht | now rewrite E].
+       * exact W_true.
+       * apply good_push; [exact W_true | exact Hw].
+     + repeat split; cbn [tw h ws]; [exact W_true | exact W_true | exact Hw].
+   - destruct (unP pl2) as [y pl3]. destruct (unP pl3) as [x pl4].
+-    intro H; injection H as <-. repeat split; cbn [tw h ws].
++    repeat split; cbn [tw h ws].
+     + apply gate_thm.
+     + exact W_true.
+     + unfold ax_stack.
+       repeat apply good_push; try assumption; constructor; assumption.
+ Qed.
++
++Lemma Inv_step s s' : Inv s -> enum_step s = Some s' -> Inv s'.
++Proof. intros Hs E. pose proof (step_sound s Hs) as H. rewrite E in H. exact H. Qed.
+ 
+ Lemma Inv_run n s s' : Inv s -> run n s = Some s' -> Inv s'.
+ Proof.
+@@ -79,17 +80,7 @@
+ Qed.
+ 
+ Lemma halt_step s : Inv s -> enum_step s = None -> thm222 1.
+-Proof.
+-  intros [Ht [Hh Hw]]. unfold enum_step.
+-  destruct (if Nat.eqb (pl s) 0 then _ else _) as [pl1 np1].
+-  destruct (unP pl1) as [ac pl2].
+-  destruct ac as [|[|[|c]]]; try discriminate.
+-  - destruct (Nat.eqb (h s) 1) eqn:E.
+-    + intros _. apply Nat.eqb_eq in E. now rewrite <- E.
+-    + destruct (unP (ws s)); discriminate.
+-  - destruct (unP pl2). discriminate.
+-  - destruct (unP pl2) as [y pl3]. destruct (unP pl3). discriminate.
+-Qed.
++Proof. intros Hs E. pose proof (step_sound s Hs) as H. rewrite E in H. exact H. Qed.
+ 
+ Theorem enum_sound : enum_halts -> thm222 1.
+ Proof.

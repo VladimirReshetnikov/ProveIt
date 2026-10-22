@@ -1,0 +1,29 @@
+\begin{longtable}{@{}p{0.30\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Path & Contents and role \\
+\midrule
+\endhead
+\code{report/} & This article, its LaTeX inputs, and the compiled PDF. \\
+\code{lean/} & Direct-seed source overlay, compatibility clients, reproduction
+program, patch, source identities, and compilation evidence. \\
+\code{rocq/} & Shared propositional core, two exact facades, 142-signature audit,
+pinned input snapshots, deterministic producer, reproduction program, source
+patches, notices, and compiler/kernel evidence. \\
+\code{tools/closure_census.py} & Read-only Lean import and source-size census;
+accepts an explicit checkout and repository-relative or module-root overlays. \\
+\code{evidence/} & Repository pin, baseline and proposed closure measurements,
+independent review, and delivery manifest. \\
+\code{README.md} & Entry point, exact validation scope, integration instructions,
+and instructions for rebuilding this article. \\
+\bottomrule
+\end{longtable}
+
+To rebuild the PDF, run the following from \code{report/} in an environment
+with pdfLaTeX and the listed standard packages:
+\begin{lstlisting}
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+\end{lstlisting}
+The reproduction programs do not require compiled proof objects from this
+archive. Proof-object files and compiler installations are deliberately omitted;
+the formal source, inputs or exact retrieval pins, and logs are provided.

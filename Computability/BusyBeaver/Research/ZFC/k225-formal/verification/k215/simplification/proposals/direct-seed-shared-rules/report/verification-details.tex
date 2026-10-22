@@ -1,0 +1,60 @@
+\subsection{Lean verification}
+
+The proof compiler is Lean 4.32.0, commit
+\code{8c9756b28d64dab099da31a4c09229a9e6a2ef35}, matching the repository's
+toolchain. The direct bundle theorem, the free-name bound, preservation of free
+support through equality interpretation, and the direct seed theorem have been
+compiled against the reviewed source. The successful named-bundle and direct
+seed reports use only \code{propext}, \code{Classical.choice}, and
+\code{Quot.sound}.
+
+The final clean replay compiles 112 project modules serially with no project
+object reuse. Every compilation succeeds. The two typed audit clients check
+the generic endpoint and both direct/legacy seed APIs, producing eleven
+expected axiom reports. The two free-support lemmas use \code{propext} and
+\code{Quot.sound}; the other nine audited results use the standard three
+axioms. There are no warnings in the changed modules or audit clients; 18
+preexisting linter warnings occur in unchanged dependencies. The recorded
+elapsed time is 113.52 seconds for this replay, with no baseline speed
+comparison implied.
+
+The exact compilation records are described in \code{lean/README.md} and
+its accompanying evidence. The interface split is
+checked separately from the optional old quotient route, so retaining old
+clients cannot silently reintroduce that route into the new K215 import closure.
+The source-only census computes the full hypothetical K215 closure of the
+overlay, including its unchanged physical certificate modules; it does not
+compile those certificates.
+
+\subsection{Rocq component verification}
+
+The local component check uses Coq 8.18.0 with OCaml 4.14.1. Ten selected source
+modules are compiled serially, including the shared core, both actual
+derivability instances, both compatibility facades, and the unchanged
+\code{ZF.L1_LMeta} and \code{K215F.L224Meta} consumers. The audit restates all
+142 original theorem signatures. Its 26 printed assumption reports are closed:
+12 public propositional rules in each calculus and two meta-theory results.
+Recursive \code{coqchk} succeeds for the selected consumers and their imports.
+
+The only compatibility edit in the old meta-theory consumer for this local
+check is the import-prefix spelling \code{Stdlib} to \code{Coq}. The packet
+does not claim that Coq 8.18 is the production toolchain: the maintained K215
+Rocq lane pins Rocq 9.1.0 and stdlib 9.0.0. The supplied component must be
+registered in that driver and checked there before adoption. Raw exit codes,
+source and object hashes, API logs, and the recursive kernel-check record are
+retained in \code{rocq/evidence/}.
+
+\subsection{Independent review and limits of performance claims}
+
+An independent source-and-receipt review verifies the direct argument's
+completeness premise, the exact import counts, the moved interface statements,
+the 142 Rocq API signatures, ten Rocq source/object records, and the closed
+assumption reports. The final Lean replay has its own 112 bound module
+records. This review is labeled as a review, not a second compiler
+run. Its detailed findings are included with the archive.
+
+The evidence contains per-module elapsed times to reproduce the work's scope.
+These are not a controlled before/after build benchmark. No clean-build
+speedup or proof-object-size reduction is claimed. Module counts, physical
+source lines, source bytes, and number of maintained derivation bodies are
+kept as separate metrics.

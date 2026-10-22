@@ -1,0 +1,43 @@
+\subsection{Completed formal checks for the direct route}
+
+The delivered Lean development goes beyond an abstract interface sketch. Its
+three new modules freshly compile with 37 pinned repository modules, giving a
+\textbf{40-module fresh check}. They have the following precise roles:
+\begin{center}\small
+\begin{tabular}{p{0.46\linewidth}rrp{0.25\linewidth}}
+\toprule
+New module & Lines & Bytes & Result \\
+\midrule
+\code{DirectInfinity.lean} & 141 & 5,996 & General closure and quotient lemmas \\
+\code{KLowerDirectInfinity.lean} & 110 & 4,087 & Actual FormSeed and tagged domain \\
+\code{KLowerDirectInfinityQuotient.lean} & 53 & 2,325 & Actual quotient, ordinary Infinity \\
+\midrule
+Total & 304 & 12,408 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The final \code{ordinary\_quotient\_infinity} theorem establishes exactly the
+existential empty-set and ordinary-successor clause of the current
+\code{ZFAxioms.inf} field, on \code{KQ1Model.quotientMember}. Its assumptions are
+\code{FormSeed}, raw irreflexivity, an empty raw marker, a tagged witness, and
+the current quotient interface. It does not call the old singleton/index proof.
+The final theorem's printed axioms are precisely \code{propext},
+\code{Classical.choice}, and \code{Quot.sound}. The generic seed and tagged
+induction lemmas have no axioms; the generic quotient transport uses
+\code{propext}.
+
+An independent Rocq/Coq core supplies the same seed and ordinary-quotient results.
+Its 169 lines / 7,881 bytes freshly compile under Coq 8.18.0, all eight assumption
+reports are closed, and recursive \code{coqchk -o} reports no axioms. For tagged
+dependent pairs it uses equality of the underlying representatives explicitly;
+the quotient map must respect that relation. This avoids assuming proof
+irrelevance for arbitrary dependent pairs in Rocq. The ordinary quotient results
+specialize to raw equality and have the same mathematical conclusions as Lean.
+
+The precise remaining step is now \emph{endpoint integration}, not the mathematical
+construction of Infinity. Extract a \code{KQ1ZFCore} whose model constructor accepts
+ordinary Infinity explicitly; retain the existing route as a compatibility
+wrapper; and supply this checked theorem on the K215 route. The current
+\code{QHyp} singleton field still exists. A full endpoint rebuild and a fresh
+import census must precede any claim that the old dependency has been removed.

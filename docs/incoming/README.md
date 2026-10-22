@@ -27,6 +27,17 @@ publication keep their separate scopes.
 
 ## Current queue
 
+## Queue status after batch 216
+
+Seven K215 proof-simplification packets from `2061357d56` are placed under
+[proposals/](../../Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md)
+(`round13-left-frame`, `collection-first`, `common-macros`, `direct-seed-shared-rules`,
+`native-replacement`, `proof-boundaries`, `proof-fusion`). Each file byte-identical to a repository
+blob at `HEAD` or at the pin `57541fe0cf` is omitted; logs stay outside Git under the `*.log` rule;
+two mirrored path prefixes are shortened. No new machine table. Nothing was rerun at intake. The
+ZIPs are retired.
+
+
 Two further proof-simplification reports from `1b16269c48` are placed as [Sources 193–194, batch 215](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake215-placement.md). All 508 members recover through 231 immutable Git aliases, 49 delivery aliases, 50 arrival-only members and 178 new ancillary files. Placement `6bd7e8ff01` retired both ZIPs; the [written reconciliation](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-215.md) is published in `22a3d74d97` and the catalogue in `00fc7a5ded`. The host has 194 sources, written coverage 1–164 and 167–194, and the collection remains 290 reports. Its dated addendum distinguishes the selected phase15 dense proof from unadopted residual, abbreviation and scheduler proposals. No supplied program or proof compiler ran for intake.
 
 Five further proof-simplification reports from `c3caaf63a4` are placed as [Sources 188–192, batch 214](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake214-placement.md). All 1,161 members recover through 799 immutable Git aliases, 44 earlier-delivery aliases, 67 arrival-only members and 251 new ancillary files. The five ZIPs are retired. The [written reconciliation](../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-214.md) is published in `61b75ef2fc`, and the catalogue in `bb3c04d1fa`; the collection remains 290 reports. No supplied code or proof compiler ran for intake.
