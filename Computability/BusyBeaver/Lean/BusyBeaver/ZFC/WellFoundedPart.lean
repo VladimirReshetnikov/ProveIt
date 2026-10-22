@@ -64,12 +64,8 @@ def wfForm (i : Nat) : Form := fEx (fAnd (twForm 0) (fMem (i + 1) 0))
 def witnessForm : Form := fAnd (twForm 1) (fMem 0 1)
 
 theorem sat_transitiveForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
-    Sat mem env (transitiveForm i) ↔ Transitive mem (env i) := by
-  constructor
-  · intro h x hx
-    exact (sat_subsetForm mem (scons x env) 0 (i + 1)).mp (h x hx)
-  · intro h x hx
-    exact (sat_subsetForm mem (scons x env) 0 (i + 1)).mpr (h x hx)
+    Sat mem env (transitiveForm i) ↔ Transitive mem (env i) :=
+  forall_congr' fun x => imp_congr_right fun _ => sat_subsetForm mem (scons x env) 0 (i + 1)
 
 theorem sat_nonemptyForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
     Sat mem env (nonemptyForm i) ↔ NonemptySet mem (env i) := Iff.rfl
@@ -78,36 +74,21 @@ theorem sat_minimalElementForm (mem : V → V → Prop) (env : Nat → V) (m s :
     Sat mem env (minimalElementForm m s) ↔ Minimal mem (env m) (env s) := Iff.rfl
 
 theorem sat_minimalForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
-    Sat mem env (minimalForm i) ↔ ∃ m, Minimal mem m (env i) := by
-  constructor
-  · intro ⟨m, hm⟩
-    exact ⟨m, (sat_minimalElementForm mem (scons m env) 0 (i + 1)).mp hm⟩
-  · intro ⟨m, hm⟩
-    exact ⟨m, (sat_minimalElementForm mem (scons m env) 0 (i + 1)).mpr hm⟩
+    Sat mem env (minimalForm i) ↔ ∃ m, Minimal mem m (env i) :=
+  exists_congr fun m => sat_minimalElementForm mem (scons m env) 0 (i + 1)
 
 theorem sat_wellFoundedForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
-    Sat mem env (wellFoundedForm i) ↔ InternallyWellFounded mem (env i) := by
-  constructor
-  · intro h s hs hne
-    exact (sat_minimalForm mem (scons s env) 0).mp
-      (h s ((sat_subsetForm mem (scons s env) 0 (i + 1)).mpr hs)
-        ((sat_nonemptyForm mem (scons s env) 0).mpr hne))
-  · intro h s hs hne
-    exact (sat_minimalForm mem (scons s env) 0).mpr
-      (h s ((sat_subsetForm mem (scons s env) 0 (i + 1)).mp hs)
-        ((sat_nonemptyForm mem (scons s env) 0).mp hne))
+    Sat mem env (wellFoundedForm i) ↔ InternallyWellFounded mem (env i) :=
+  forall_congr' fun s => imp_congr (sat_subsetForm mem (scons s env) 0 (i + 1))
+    (imp_congr (sat_nonemptyForm mem (scons s env) 0) (sat_minimalForm mem (scons s env) 0))
 
 theorem sat_twForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
     Sat mem env (twForm i) ↔ TW mem (env i) :=
   and_congr (sat_transitiveForm mem env i) (sat_wellFoundedForm mem env i)
 
 theorem sat_wfForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
-    Sat mem env (wfForm i) ↔ WF mem (env i) := by
-  constructor
-  · intro ⟨t, ht, hxt⟩
-    exact ⟨t, (sat_twForm mem (scons t env) 0).mp ht, hxt⟩
-  · intro ⟨t, ht, hxt⟩
-    exact ⟨t, (sat_twForm mem (scons t env) 0).mpr ht, hxt⟩
+    Sat mem env (wfForm i) ↔ WF mem (env i) :=
+  exists_congr fun t => and_congr (sat_twForm mem (scons t env) 0) Iff.rfl
 
 theorem sat_witnessForm (mem : V → V → Prop) (env : Nat → V) (x t : V) :
     MatrixRelation mem witnessForm env x t ↔ TW mem t ∧ mem x t :=
@@ -123,9 +104,8 @@ theorem equalityFree_wfForm (i : Nat) : EqualityFree (wfForm i) := by
 
 /-- This is exactly the Separation instance with matrix Mem(0,1). -/
 theorem intersection_exists (B : FiniteSets.Base mem) (s t : V) :
-    ∃ b, ∀ x, mem x b ↔ mem x s ∧ mem x t := by
-  obtain ⟨b, hb⟩ := B.sep (fMem 0 1) (fun _ => t) s
-  exact ⟨b, hb⟩
+    ∃ b, ∀ x, mem x b ↔ mem x s ∧ mem x t :=
+  B.sep (fMem 0 1) (fun _ => t) s
 
 /-- Meeting a TW set suffices: intersect, take a minimal element, and use
 transitivity to rule out children lying elsewhere in the original set. -/
@@ -179,10 +159,7 @@ theorem wf_closure (B : FiniteSets.Base mem) (a : V)
     ProfileModel.collectionInstance_congr mem _ _ (sat_witnessForm mem (fun _ => a))
       ((sat_gicForm mem witnessForm (fun _ => a)).mp hG)
   obtain ⟨c, hSupport, hCover⟩ := hc a
-  have hFamily : ∀ t, mem t c → TW mem t := by
-    intro t ht
-    obtain ⟨x, htw, _⟩ := hSupport t ht
-    exact htw
+  have hFamily : ∀ t, mem t c → TW mem t := fun t ht => (hSupport t ht).elim fun _ h => h.1
   have haU : Sub mem a (FiniteSets.union B c) := by
     intro x hx
     obtain ⟨t, htc, _, hxt⟩ := hCover x hx (ha x hx)
