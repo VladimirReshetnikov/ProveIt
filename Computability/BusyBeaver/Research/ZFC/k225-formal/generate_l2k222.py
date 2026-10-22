@@ -25,42 +25,34 @@ LOOP136 = '''/-- The rotated next-candidate loop of Dag230 (nodes 136/300):
 `np++; while s1 {s1--; np++}`. -/
 theorem loop136 : ∀ (k : Nat) (st : AS), st.s1 = k →
     Rn (.node 136) st { st with np := st.np + k + 1, s1 := 0 } := by
+  have hinc (st : AS) :
+      Run dag222 (.inc 0) (enc st) .normal (enc { st with np := st.np + 1 }) := by
+    have := Run.inc (p := dag222) 0 (enc st)
+    rwa [show enc st 0 = st.np from rfl, upd_np] at this
   intro k
   induction k with
   | zero =>
       intro st h
-      have hinc : Run dag222 (.inc 0) (enc st) .normal (enc { st with np := st.np + 1 }) := by
-        have := Run.inc (p := dag222) 0 (enc st)
-        rwa [show enc st 0 = st.np from rfl, upd_np] at this
       have hz : Run dag222 (.decnz 6) (enc { st with np := st.np + 1 }) (.brk 1)
           (enc { st with np := st.np + 1 }) := Run.decZero 6 _ (by simp [enc, h])
-      have h300 : Run dag222 (.node 300) (enc { st with np := st.np + 1 }) .normal
-          (enc { st with np := st.np + 1 }) := Run.carBrk1 300 _ _ hz
-      have := Run.cdrNormal (p := dag222) 136 _ _ _ hinc h300
+      have := Run.cdrNormal (p := dag222) 136 _ _ _ (hinc st) (Run.carBrk1 300 _ _ hz)
       have e : ({ st with np := st.np + 1 } : AS) = { st with np := st.np + 0 + 1, s1 := 0 } := by
         cases st; simp only at h; subst h; rfl
-      rw [e] at this
-      exact this
+      rwa [e] at this
   | succ k ih =>
       intro st h
-      have hinc : Run dag222 (.inc 0) (enc st) .normal (enc { st with np := st.np + 1 }) := by
-        have := Run.inc (p := dag222) 0 (enc st)
-        rwa [show enc st 0 = st.np from rfl, upd_np] at this
       have hdec : Run dag222 (.decnz 6) (enc { st with np := st.np + 1 }) .normal
           (enc { st with np := st.np + 1, s1 := k }) := by
         have := Run.decPos (p := dag222) 6 (enc { st with np := st.np + 1 }) k (by simp [enc, h])
         rwa [upd_s1] at this
-      have h300 : Run dag222 (.node 300) (enc { st with np := st.np + 1 }) (.cont 1)
-          (enc { st with np := st.np + 1, s1 := k }) :=
-        Run.cdrContS 300 0 _ _ _ hdec (Run.contS 1 _)
-      have hrest := ih { st with np := st.np + 1, s1 := k } rfl
-      have := Run.cdrCont1 (p := dag222) 136 _ _ _ _ _ hinc h300 hrest
+      have := Run.cdrCont1 (p := dag222) 136 _ _ _ _ _ (hinc st)
+        (Run.cdrContS 300 0 _ _ _ hdec (Run.contS 1 _))
+        (ih { st with np := st.np + 1, s1 := k } rfl)
       have e2 : ({ ({ st with np := st.np + 1, s1 := k } : AS) with
           np := (({ st with np := st.np + 1, s1 := k } : AS)).np + k + 1, s1 := 0 } : AS) =
           { st with np := st.np + (k + 1) + 1, s1 := 0 } := by
         cases st; simp only; congr 1; omega
-      rw [e2] at this
-      exact this
+      rwa [e2] at this
 
 '''
 OLD_136 = "(seqAS (n := 136) rfl (loop203 _) (inc_AS 0 (by omega) _))"

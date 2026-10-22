@@ -82,10 +82,8 @@ theorem growG_valid (mem : V → V → Prop) (e : Nat → V) (a b c : Nat) :
   simp only [growG]
   rw [sat_wim, sat_weq, sat_wim, sat_weq, sat_wal]
   intro h1 h2 d
-  rw [sat_weq]
-  have ha : a ≠ wel a b := Nat.ne_of_lt (lt_wel_left a b)
-  have hb : b ≠ wel a b := Nat.ne_of_lt (lt_wel_right a b)
-  rw [update_other _ _ ha, update_other _ _ hb, ← h1, ← h2]
+  rw [sat_weq, update_other _ _ (Nat.ne_of_lt (lt_wel_left a b)),
+    update_other _ _ (Nat.ne_of_lt (lt_wel_right a b)), ← h1, ← h2]
 
 /-- Every derivable code decodes to a formula true in every irreflexive model of the
 decoded bundles. -/
