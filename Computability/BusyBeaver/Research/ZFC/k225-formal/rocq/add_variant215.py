@@ -17,10 +17,10 @@ s = s.replace('"""Cleanly compile and kernel-check the isolated 217/218/221/225/
 b.write_text(s, encoding="utf-8", newline="\n")
 
 regen = json.loads((EXT / "coq/regeneration215.json").read_text(encoding="utf-8"))
-calc = ["Codes222", "Thm222", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta", "L224E",
+calc = ["Codes222", "Thm222", "DominatedCore", "CD222", "Prop222", "G222", "L224Def", "L224Prop", "L224Meta", "L224E",
         "Interp222", "Sound222", "Complete222", "DomRho8", "ThmDom", "EnumPerm", "L1_SoundPerm",
         "L1_CompPerm", "SeedPerm", "Regs215", "DagPerm", "ProgLibPerm", "L2RootPerm", "MainPerm"]
-order = calc + ["Prog215", "OffsetBisim230", "Cert215Offsets", "Source215", "Table230", "TM230", "Zip",
+order = calc + ["Prog215", "PathCodec", "BisimMirror", "NormalizedBisim", "NormalizedCert215", "Source215", "Table230", "TM230", "Zip",
                 "Boot230", "Runtime230Core", "Tape230Blocks", "Tape230Carry", "Interpreter230Sites",
                 "Interpreter230Check", "Sim230", "Sim230Main", "Table215", "Dense215", "Correct215",
                 "CorrectDense215"]
@@ -33,11 +33,13 @@ m["variants"]["215"] = {
     "deleted_sparse_labels": regen["deleted_sparse_labels"],
     "dense_labels": regen["dense_labels"],
     "inputs": {"dense": "inputs/215/table.tm", "sparse": "inputs/215/table_k230labels.tm",
-               "sites": "inputs/215/sites.json", "certificate": "inputs/215/Cert215Offsets.v"}}
+               "sites": "inputs/215/sites.json", "certificate": "inputs/215/NormalizedCert215.v"}}
 m["primary_variant"] = 215
 files = m["files"]
 new = [f"coq/215/{n}.v" for n in order] + [f"inputs/215/{n}" for n in
-       ("table.tm", "table_k230labels.tm", "sites.json", "Cert215Offsets.v")] + ["regenerate215.py"]
+       ("table.tm", "table_k230labels.tm", "sites.json", "NormalizedCert215.v")] + ["regenerate215.py"]
+for rel in [k for k in files if k.startswith(("coq/215/", "inputs/215/")) and k not in new]:
+    del files[rel]
 for rel in new + ["build.py"]:
     files[rel] = sha(EXT / rel)
 m_path.write_text(json.dumps(m, indent=1), encoding="utf-8", newline="\n")
