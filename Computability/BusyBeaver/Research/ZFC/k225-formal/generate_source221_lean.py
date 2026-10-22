@@ -124,8 +124,8 @@ theorem path_iff_iter (R : RMDag.Regs) :
 
 """
     out += program("p221", n1, r1, f"The 221's source as a {len(n1)}-node DAG (root {r1}).") + "\n"
-    out += "/-- The 221's decoder tree, written out. -/\ndef t221 : Tree :=\n  " + literal_tree(n1, r1) + "\n\n"
-    out += "/-- dag222's decoder tree, written out. -/\ndef tD : Tree :=\n  " + literal_tree(n2, r2) + "\n\n"
+    out += "/-- The 221's decoder tree, computed from the program. -/\ndef t221 : Tree := ptree p221\n\n"
+    out += "/-- dag222's decoder tree, computed from the program. -/\ndef tD : Tree := ptree pathDag222\n\n"
     out += "theorem t221_eq : ptree p221 = t221 := by rfl\n\ntheorem tD_eq : ptree pathDag222 = tD := by rfl\n\n"
     out += "/-! ## Forward certificate (221 → dag222) -/\n\n" + cert_block("fwd", entries, "t221", "tD")
     out += "\n/-! ## Mirrored certificate (dag222 → 221) -/\n\n" + cert_block("bwd", mirror, "tD", "t221")
