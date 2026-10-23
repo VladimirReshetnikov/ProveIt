@@ -26,6 +26,13 @@ is applied only after validity is proved in every model, including
 nonstandard models. No consistency or model-existence assumption is used.
 All ten public axiom audits use only the standard Lean axioms.
 
-This is internal arithmetic infrastructure. Multiplication associativity,
-distributivity, arithmetic coding and the full internal consistency versus
-polynomial-unsolvability equivalence remain further obligations.
+`ObjectDistributivity` further proves both distributive laws and
+multiplication associativity with every intermediate value explicit.
+Again the induction predicates are supplied object formulas; the proofs
+cover every internal natural. The closed distributivity and associativity
+sentences have actual ZFC derivations. Its eight public audits use only
+the standard Lean axioms.
+
+This is internal arithmetic infrastructure. Arithmetic coding and the full
+internal consistency versus polynomial-unsolvability equivalence remain
+further obligations.

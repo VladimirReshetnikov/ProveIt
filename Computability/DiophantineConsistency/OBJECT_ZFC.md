@@ -103,6 +103,9 @@ adds left zero, left successor and commutativity for all internal naturals,
 using explicit formula predicates for induction and the checked addition
 laws. Its closed commutativity sentence has an actual ZFC derivation; see
 [OBJECT_MULTIPLICATION_LAWS.md](OBJECT_MULTIPLICATION_LAWS.md).
+`ObjectDistributivity` adds both distributive laws and multiplication
+associativity on every internal natural, including actual closed ZFC
+derivations of the associated sentences.
 
 [`ObjectNaturalExpression.lean`](Lean/DiophantineConsistency/ObjectNaturalExpression.lean)
 recursively interprets every supplied `NatExpr`, with arbitrary maps of its

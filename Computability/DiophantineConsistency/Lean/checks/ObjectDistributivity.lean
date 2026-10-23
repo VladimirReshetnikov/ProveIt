@@ -1,0 +1,11 @@
+import DiophantineConsistency.ObjectDistributivity
+
+open DiophantineConsistency.ObjectDistributivity
+#print axioms mulRel_distrib_left
+#print axioms mulRel_distrib_right
+#print axioms mulRel_assoc
+#print axioms mulRel_assoc_iff
+#print axioms sentence_multiplicationAssociativeForm
+#print axioms zfc_proves_multiplication_associative
+#print axioms sentence_distributiveForm
+#print axioms zfc_proves_distributivity
