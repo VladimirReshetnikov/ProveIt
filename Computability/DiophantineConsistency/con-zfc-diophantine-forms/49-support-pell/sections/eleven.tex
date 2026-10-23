@@ -1,0 +1,347 @@
+\section{Eleven positive variables: combining quotient absorption with a smaller norm}
+\label{sec:eleven}
+
+Package 38 removes the Pell index quotient $h$ by absorbing its
+divisibility condition into an existing carrier. Package 44 removes an
+inner radical separator, but its displayed root estimate uses $k>E$,
+which was obtained from that same quotient equation. Combining the two
+constructions therefore requires a new estimate, not just substituting
+one formula into the other. The estimate below compares the coupled-root
+gap with the actual relative error. It works before $h$ has been
+reconstructed and preserves the smaller weight $K=IT+1$.
+
+\subsection{The two explicit equations}
+
+The supplied variables are precisely
+\[
+ J,F,\alpha,z,i,T,s,w,\eta,\zeta,t\in\Pos.
+\]
+Use the complete fixed tuple $(\beta,K_0,M_C,M_F)$ specified in the
+coefficient appendix. The following names are polynomial abbreviations,
+not additional unknowns:
+\begin{align*}
+ q&=\beta J+1,&s_0&=s+3q,&C_w&=q-F-\alpha,\\
+ X&=wq,&Y&=s_0q^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,&\ell&=EkY,\\
+ A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac,\\
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=\Delta(D-1)=(\Delta I)^2,\\
+ d&=Q-1,&v&=cT.
+\end{align*}
+Define also
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_t&=(K_0+w)C_w+(q-F)-z(q-1),\\
+ b&=c+RD,\qquad e=Q(Dv^2+b^2)-1,\qquad B_a=2Qvb.
+\end{align*}
+Choose one of two carrier corrections,
+\[
+ \delta_{\mathrm f}=(a+2)c-\ell
+ \quad\hbox{or}\quad
+ \delta_{\mathrm s}=ac-\ell.
+\]
+The subscripts denote the full and short carriers. For either choice put
+\begin{equation}\label{eq:eleven-carrier}
+ \begin{split}
+ K&=IT+1,\qquad S=EH,\qquad L=E(1+HK),\\
+ W&=Eb_0+H\bigl(E(t+b+\delta)+k-R-1\bigr).
+ \end{split}
+\end{equation}
+The computed carrier weight $K$ is distinct from the fixed compiler
+coefficient $K_0$.
+
+Define the integer polynomial
+\begin{equation}\label{eq:eleven-norm}
+ \mathcal N=
+ \prod_{\substack{g=\pm\sqrt G\\ \tau=\pm\sqrt A\\ f=\pm\sqrt D}}
+ \left[d(W-Lg-S\tau)^2-S^2e+S^2B_af\right].
+\end{equation}
+The signs in this display specify a formal eight-factor product. Each
+root appears through an even polynomial after the product is expanded,
+so $\mathcal N$ has integer coefficients. The notation does not add
+quantified variables or assert that independent Galois automorphisms of
+the three radicals exist. The requested scalar equation is
+\begin{equation}\label{eq:eleven-polynomial}
+ \boxed{\quad P_{11}=N_t(1+\mathcal N)-1=0.\quad}
+\end{equation}
+
+For an entirely division-free evaluation of \eqref{eq:eleven-norm}, set
+\begin{align*}
+ n_d&=dS^2A,&H_P&=S^2QDv^2,&H_U&=S^2Qb^2,\\
+ H_e&=H_P+H_U-S^2,&j_0&=4H_PH_U,\\
+ \mathcal T&=2d(W^2+L^2G),&\mathcal K&=[d(W^2-L^2G)]^2,\\
+ A_1&=2(n_d+H_e),&c_1&=(n_d-H_e)^2-j_0,\\
+ a_1&=\mathcal T-A_1,&b_1&=c_1-\mathcal K,\\
+ v_1&=16n_dj_0-a_1(a_1\mathcal T+2b_1),&
+ u_1&=b_1^2-a_1^2\mathcal K.
+\end{align*}
+Then
+\begin{equation}\label{eq:eleven-scalar-norm}
+ \mathcal N=\mathcal K v_1^2-u_1(\mathcal T v_1-u_1).
+\end{equation}
+One verifies this identity by eliminating $\tau,f$ first and reducing
+the resulting quartic in $d(W-Lg)^2$ modulo its quadratic relation.
+It is a polynomial identity, including at square or coincident
+radicands, not an identity restricted to successful witnesses.
+
+\begin{theorem}\label{thm:eleven}
+For each choice of $\delta$, the polynomial
+\eqref{eq:eleven-polynomial} has a zero in $\Pos^{11}$ if and only if
+the normalized blank-K215 compiler has a solution. Thus its absence of
+positive zeros is provably equivalent in ZFC to $\Con(\ZFC)$, through
+the inherited compiler and machine/refutation calibration.
+The full carrier has exact degree $990$ and a $117$-operation evaluator;
+the short carrier has exact degree $994$ and a $115$-operation evaluator.
+\end{theorem}
+
+\subsection{Extracting the unit and obtaining the outer bounds}
+
+Put $x_0=d(W^2+L^2G)$. The scalar evaluator satisfies
+\[
+ \mathcal T=2x_0,\qquad
+ \mathcal K=x_0^2-4d^2W^2L^2G,
+\]
+and consequently
+\begin{equation}\label{eq:eleven-modfour}
+ \mathcal N\equiv(u_1-x_0v_1)^2\pmod4.
+\end{equation}
+At a zero of $P_{11}$ both $N_t$ and $1+\mathcal N$ are integer
+units. The possibility $1+\mathcal N=-1$ would give
+$\mathcal N=-2$, contradicting \eqref{eq:eleven-modfour}. Therefore
+\[
+ \mathcal N=0,\qquad N_t=1.
+\]
+The authentic coefficient interface now gives
+\begin{equation}\label{eq:eleven-bounds}
+ \begin{gathered}
+ q\ge16,\quad C_w>0,\quad 3q<R<q^4-2,\\
+ X\ge q,\quad Y=(s+3q)q^3>3q^4>3R,\quad E>R+1,\\
+ E\ge65536,\quad k\ge2,\quad kY<c<k(Y+1)<2kY,\\
+ I\ge c^2,\quad c\ge2,\quad a+2<2E.
+ \end{gathered}
+\end{equation}
+For example, $C_w\le0$ would give
+$N_t\le1-F-(z-1)(q-1)\le0$, so the boundary $C_w=0$ is excluded
+here by the already recovered transport sign. No assertion $k>E$,
+$c>EY$, or $R<k$ is used before the omitted quotient is recovered.
+
+\subsection{A relative-error estimate replaces the lost quotient bound}
+
+For estimates only, let $g=\sqrt G$, $f=\sqrt D$ and $\tau=\sqrt A$
+denote the positive real roots. From \eqref{eq:eleven-bounds},
+\begin{equation}\label{eq:eleven-roots}
+ \begin{gathered}
+ g<(a+2)c<2Ec,\qquad f<(a+2)I<2EI,\\
+ 1<A<\Delta I=\sqrt Q,\qquad g>\tau.
+ \end{gathered}
+\end{equation}
+For the radicand comparison, $\Delta c^2-A$ exceeds
+$k^2[2EY^3+Y^4-EY]-1>0$; also $I\ge c^2$. These estimates do
+not require the index equation.
+
+\begin{lemma}[The sufficient coupled-root gap]\label{lem:eleven-gap}
+Under \eqref{eq:eleven-bounds},
+\[
+ \frac{b+cf}{d}<Ig-cf.
+\]
+Every coherent auxiliary root, including a complex root, satisfying
+\[
+ d y^2=Q(vf'-b)^2-1=e-B_af',\qquad f'=\pm f,
+\]
+therefore obeys
+\[
+ |y|<b+ITg,\qquad |\tau'+y|<b+(IT+1)g
+ \quad(\tau'=\pm\tau).
+\]
+\end{lemma}
+
+\begin{proof}
+The exact identity $(Ig)^2-(cf)^2=I^2-c^2$ first gives $Ig>cf$.
+Since $I\ge c^2$ and $c\ge2$, its right side is greater than
+$I^2/2$. Thus
+\[
+ Ig-cf>\frac{I^2}{4Ig}>\frac{I}{8Ec}
+       \ge\frac{c}{8E}>\frac{Y}{4E}.
+\]
+On the other hand $c<I^2$, $D<4E^2I^2$, $R<E$ and $cf<2EI^2$
+give
+\[
+ b<5RE^2I^2<5E^3I^2,\qquad
+ b+cf<6E^3I^2,\qquad d>\tfrac12E^4I^2.
+\]
+Consequently
+\[
+ \frac{b+cf}{d}<\frac{12}{E}<\frac{Y}{4E}<Ig-cf,
+\]
+because $Y>48$. The difference $Ig-cf$ need not exceed one: comparison
+with this smaller error is the new point.
+
+Set $Z=b+Tcf>1$. Taking complex absolute values and using $Q=d+1$,
+\[
+ |y|^2\le\frac{QZ^2+1}{d}
+ <\bigl[Z(1+1/d)\bigr]^2.
+\]
+The last strict difference is $(QZ^2-d)/d^2>0$. Since $T\ge1$,
+\[
+ Z/d\le T(b+cf)/d<T(Ig-cf).
+\]
+Hence $|y|<Z+Z/d<b+ITg$. Finally $\tau<g$ proves the stated
+bound for $|\tau'+y|$.
+\end{proof}
+
+\subsection{Recovering the radicals and the absorbed divisibility}
+
+Eliminating the two inner radicals gives the rational-coefficient
+polynomial
+\begin{align*}
+ C(x)&=d(x^2+A)-e,\\
+ \mathcal F(x)&=[C(x)^2+DB_a^2-4d^2x^2A]^2-4C(x)^2DB_a^2.
+\end{align*}
+At $\mathcal N=0$ some branch gives
+$x=(W-Lg')/S=\tau'+y$ and $\mathcal F(x)=0$. If $g'=-g$, then
+\[
+ x=b+\left[t+\frac{k-R-1}{E}\right]
+      +\delta+\frac{b_0}{H}+(K+1/H)g>b+Kg.
+\]
+The bracket is positive because $t\ge1$, $k\ge2$ and $E>R+1$;
+both carrier corrections are positive. This contradicts
+Lemma~\ref{lem:eleven-gap}. If $G$ were nonsquare, the actual quadratic
+conjugation in $\Q(\sqrt G)$ would carry a root at one main sign to
+the excluded sign. Therefore $g$ is a positive integer and $x$ is
+rational.
+
+The exceptional inner branches can be excluded without a separator.
+If $C(x)=0$ at a root, substitution gives the integer identity
+\[
+ d^2A^2-deA+Q^2v^2b^2D=0.
+\]
+Modulo $Q$, both $d$ and $e$ are $-1$, so $Q\mid A(A-1)$.
+This is impossible because $1<A<\sqrt Q$. Likewise
+$\mathcal F(0)=0$ would force $Q\mid(A-1)^2$, also impossible.
+Thus both denominators in the following reconstruction are nonzero:
+\begin{align*}
+ U_x&=C(x)^2+DB_a^2-4d^2x^2A,\\
+ f'&=-\frac{U_x}{2C(x)B_a},\qquad
+ \tau'=\frac{C(x)+B_af'}{2dx},\qquad y=x-\tau'.
+\end{align*}
+The equation $\mathcal F(x)=0$ gives $(f')^2=D$, $(\tau')^2=A$
+and the auxiliary equation. The rational roots $f',\tau'$ are
+integers.
+
+We use the inherited rational Pell saturation lemma: for integers
+$m\ge2,V$, a rational solution of
+$m^2V^2-(m^2-1)y^2=1$ is integral. Briefly, writing $y=u/v$ in
+lowest terms gives $v^2\mid m^2-1$. In the integer-coordinate Pell
+group of discriminant $(m^2-1)/v^2$, the solutions $(m,v)$ and
+$(m|V|,|u|)$ have indices $j,l$. Divisibility of their abscissas
+forces $l$ to be an odd multiple of $j$: reduce the index modulo $2j$,
+reflect into $[0,j]$, and use strict growth of the abscissas. The
+ordinate divisibility then gives $v\mid u$, hence $v=1$.
+Apply this lemma with $m=\Delta I$ and $V=vf'-b$. It makes $y$
+and consequently $x$ integral. Reducing $W=Lg+Sx$ modulo $E$ yields
+\begin{equation}\label{eq:eleven-weak-index}
+ E\mid H(k-R-1).
+\end{equation}
+The factor $H$ has not yet been cancelled.
+
+\subsection{The short-range argument restores the full index}
+
+Let $\chi_{a+2},\psi_{a+2}$ be the Pell sequences. The recovered
+main and normalized strong equations give indices $p,m\ge1$ with
+\[
+ g=\chi_{a+2}(p),\quad c=\psi_{a+2}(p),\quad
+ |f'|=\chi_{a+2}(m),\quad I=\psi_{a+2}(m).
+\]
+Since $c^2\mid I$, strong divisibility and composition first give
+$p\mid m$ and then $c\mid m/p$. In particular $c\mid m$ and
+$m\ge pc>2p$. The auxiliary odd-index identities give a further
+index $j_0$ such that
+\[
+ j_0\equiv\pm p\pmod m,\qquad j_0\equiv\pm R\pmod c.
+\]
+These are the normalized signed-quotient identities used in
+package 38: they follow from $V\equiv-c\pmod{|f'|}$,
+$V\equiv-R\pmod c$, the odd Pell quotient polynomial, and signed
+index reduction. They allow either sign of $f'$ or $V$. As
+$c>2Y>6R$ and $c>2p$, they imply $p=R$ before any use of $h$.
+For the latter bound, $c>1$ gives $p\ge2$, and the Pell recurrence
+gives $c\ge5^{p-1}>2p$.
+
+The first equation classifies
+\[
+ |\tau'|=\chi_{2EY+1}(n),\qquad
+ k=2\psi_{2EY+1}(n),\qquad 1\le n<p=R.
+\]
+The last inequality follows by parameter monotonicity from
+$2EY+1>a+2$ and $c>k$. Put $\mu=E/\gcd(E,H)$. Because
+$\gcd(Y,H)=\gcd(Y,3)\le3$,
+\[
+ \mu\ge Y/3>R.
+\]
+Equation \eqref{eq:eleven-weak-index} gives $k\equiv R+1\pmod\mu$.
+The first Pell recurrence gives $k\equiv2n\pmod E$. Hence
+$2n\equiv R+1\pmod\mu$; since $|2n-R-1|<R<\mu$, this means
+$2n=R+1$ exactly. It follows that
+\[
+ h=(k-R-1)/E\in\Pos.
+\]
+Indeed $R>48$ gives $n\ge25$, so strict Pell growth gives $k>2n$.
+
+Now divide the carrier identity by $E$ and reduce modulo $H$. This
+gives $g\equiv b_0\pmod H$, so $\gamma=(g-b_0)/H$ is an integer.
+It is positive: $n\ge25$ implies $k\ge4(2EY+1)>X$, hence $c>X$,
+whereas $g>(a+1)c$. We have recovered every equation of the normalized
+compiler. Taking absolute values of $\tau',y$ is harmless; the
+inherited signed-quotient interface permits the recovered auxiliary
+signs. This proves soundness using the identified compiler theorem,
+not by assuming its conclusion during radical recovery.
+
+\subsection{Completeness and exact complexity}
+
+For a blank halting run, choose canonical positive normalized compiler
+witnesses. Their estimates give $Y>2^R$, $R>3q$ and $q\ge16$, so
+$Y/q^3>3q$ and $s=Y/q^3-3q$ is positive. For both corrections,
+$0<\delta<g$: since $c<2kY$, one has $\ell/c>E/2>2$, and
+$(a+2)c-\ell<ac<g$. Define
+\[
+ t=\gamma+Kg+\tau+y-b-\delta-h.
+\]
+The auxiliary equation gives $y\ge|Tcf-b|\ge b-Tcf$.
+Consequently
+\[
+ t>\gamma+\tau-h+T(Ig-cf)>0,
+\]
+because $\tau>\ell>k/E>h$ and $Ig>cf$. Its defining identity gives
+$W=Lg+S(\tau+y)$, so a coherent factor in
+\eqref{eq:eleven-norm} vanishes and $N_t=1$. This proves completeness.
+
+The exact degrees can be transferred without assuming generic
+coefficients. Let $\mathcal N_{44}$ be package 44's corresponding
+full or short norm, before quotient absorption. In the localization at
+$E$, there is the exact identity
+\begin{equation}\label{eq:eleven-degree-transfer}
+ \mathcal N=
+ E^{16}\mathcal N_{44}\left(s+3q,\,
+                      t+\frac{k-R-1}{E}\right).
+\end{equation}
+Each of its eight factors is multiplied by $E^2$. The old norm has
+$t$-degree at most $16$, so denominators clear and this is an ordinary
+polynomial identity. Its source exact degrees are $892$ and $896$
+for the full and short carriers respectively \cite{package44}.
+The rational shift has degree $4-6=-2$, strictly below $\deg t=1$;
+any term using it loses at least three degrees. The highest part of
+$s\mapsto s+3q$ is the invertible linear substitution
+$s\mapsto s+3\beta J$, so it preserves the nonzero leading form.
+Since $\deg E=6$, \eqref{eq:eleven-degree-transfer} gives exact
+norm degrees $988$ and $992$. Finally $N_t$ has nonzero leading form
+$w(\beta J-F-\alpha)-z\beta J$, of degree two, giving exact scalar
+degrees $990$ and $994$.
+
+The literal division-free DAGs charge all operations in these definitions
+and contain no dead gates. They give $117$ operations for the full
+carrier and $115$ for the short carrier. The degree proof, the charged
+gate counts, and the semantic equivalence are separate claims: the
+finite circuit audits support the first two, while the argument above
+and its explicit inherited Pell/compiler dependencies establish the
+third. No new end-to-end formal certificate or absolute minimality
+claim follows from this construction.

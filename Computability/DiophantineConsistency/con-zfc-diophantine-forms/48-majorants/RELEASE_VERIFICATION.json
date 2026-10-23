@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "python_version": "3.12.14",
+  "release_files_hash_verified": 141,
+  "pinned_source_files_hash_verified": 44,
+  "primary_and_certificate_circuits": 26,
+  "refined_universal_polynomial_identities": 14,
+  "steps": [
+    {
+      "audit": "source and inherited finalizers",
+      "arguments": [
+        "python3",
+        "-O",
+        "verify.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "audit": "refined finalizers",
+      "arguments": [
+        "python3",
+        "-O",
+        "verify_refined.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "audit": "materialized fixed leaves",
+      "arguments": [
+        "python3",
+        "-O",
+        "code/materialize_fixed.py",
+        "--check"
+      ],
+      "status": "PASS"
+    },
+    {
+      "audit": "independent support and overlap",
+      "arguments": [
+        "python3",
+        "-O",
+        "proofs/check_support_independent.py",
+        "."
+      ],
+      "status": "PASS"
+    },
+    {
+      "audit": "independent universal majorant identities",
+      "arguments": [
+        "python3",
+        "-O",
+        "proofs/check_majorant2048_independent.py"
+      ],
+      "status": "PASS"
+    },
+    {
+      "audit": "majorant boundary fixtures",
+      "arguments": [
+        "python3",
+        "-O",
+        "proofs/verify_higher_majorant.py"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "scope": "Finite construction and algebraic certificates; the unbounded equivalence is the mathematical theorem in report.pdf."
+}

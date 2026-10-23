@@ -1,0 +1,196 @@
+\subsection{Detailed recovery and degree arguments}
+This subsection supplies the details behind the positive construction's
+new steps. The complete parallel proof text is also retained as
+\path{positive/Y_ABSORPTION_PROOF.md}, alongside the pinned inherited
+signed-compiler proofs.
+
+\paragraph{The literal norm evaluator.}
+The eight-factor expression is evaluated without radicals by the following
+integer-polynomial identities. These registers make the equation fully
+explicit even without expanding its exponentially many monomials:
+\begin{align*}
+ d_n&=dS^2A,&H_Q&=S^2Q,&H_P&=H_QDv^2,\\
+ H_U&=H_Qb^2,&H_e&=H_P+H_U-S^2,&j_0&=4H_PH_U,\\
+ T_r&=2d(W^2+L^2G),&K_n&=[d(W^2-L^2G)]^2,&&\\
+ A_a&=2(d_n+H_e),&c_c&=(d_n-H_e)^2-j_0,&&\\
+ a_t&=T_r-A_a,&b_t&=c_c-K_n,&c_o&=16d_nj_0,\\
+ v_b&=c_o-a_t(a_tT_r+2b_t),&u_r&=b_t^2-a_t^2K_n,&&\\
+ N&=K_nv_b^2-u_r(T_rv_b-u_r).&&&&
+\end{align*}
+This is the universal quadratic-remainder norm identity. No specialized
+Galois independence is needed. With $x_0=d(W^2+L^2G)$, one has
+$T_r=2x_0$ and $K_n\equiv x_0^2\pmod4$, hence
+$N\equiv(u_r-x_0v_b)^2\pmod4$. The unit equation
+$N_t(1+N)=1$ therefore excludes $N=-2$ and forces $N=0,N_t=1$.
+
+\paragraph{Bounds before any missing quotient is recovered.}
+From $N_t=1$, if $C\le0$, then
+\[
+ N_t\le q-F-z(q-1)=1-F-(z-1)(q-1)\le0,
+\]
+a contradiction. The whole authentic tuple supplies the remaining outer
+bounds already stated. In particular $c>2Y>96$, $I\ge c^2$ and $a+2<2E$.
+For the positive real roots $g=\sqrt G$, $f=\sqrt D$, $\tau=\sqrt A$,
+$g<2Ec$ and $f<2EI$. Direct expansion gives
+\[
+ 1<A<\Delta c^2\le\Delta I=\sqrt Q,
+\]
+since $\Delta c^2-A>k^2[EY(2Y^2-1)+Y^4]-1>0$.
+Moreover $c<I^2$, $R<E$ and $D<4E^2I^2$ give
+\[
+ b+cf<6E^3I^2,\qquad d>\tfrac12E^4I^2,\qquad
+ \frac{b+cf}{d}<\frac{12}{E}.
+\]
+Using $I^2-c^2>I^2/2$, $Ig+cf<2Ig$ and $ic>96$,
+\[
+ Ig-cf=\frac{I^2-c^2}{Ig+cf}>\frac{I}{8Ec}
+       =\frac{ic}{8E}>\frac{12}{E}.
+\]
+These estimates do not assume $k>E$ or the absent index quotient.
+
+\paragraph{Coherent inner roots, including the exceptional cases.}
+For a formal variable $x$, put
+\[
+ C_x=d(x^2+A)-e,\quad
+ \mathcal F(x)=[C_x^2+DB_a^2-4d^2x^2A]^2-4C_x^2DB_a^2.
+\]
+Factoring quadratics shows that every root has a coherent description
+$x=\tau'+y$, $(\tau')^2=A$, $(f')^2=D$ and
+$dy^2=Q(vf'-b)^2-1$, including possibly complex $y$.
+For $Z_b=b+vf>1$, one has
+$|y|^2\le(QZ_b^2+1)/d$ and $|y|<Z_b+Z_b/d$ because the difference of
+squares is $(QZ_b^2-d)/d^2>0$. With $T\ge1$ and the preceding bound,
+$|y|<b+ITg$ and $|x|<\tau+b+ITg$. This justifies the negative-main-root
+exclusion in the preceding section. If $G$ were nonsquare, actual quadratic
+conjugation would transfer a root of the rational polynomial $\mathcal F$
+to that excluded negative-main-root value. Thus $g$ is integral and
+$x=(W-Lg)/S$ is rational.
+
+If $C_x=0$ at $\mathcal F(x)=0$, substitution gives
+\[
+ d^2A^2-deA+Q^2v^2b^2D=0.
+\]
+Modulo $Q$, this forces $Q\mid A(A-1)$, impossible since
+$0<A(A-1)<Q$. Similarly $\mathcal F(0)=0$ forces $Q\mid(A-1)^2$.
+Thus $x,C_x$ are nonzero. Put
+\[
+ U_x=C_x^2+DB_a^2-4d^2x^2A,\qquad
+ f'=-\frac{U_x}{2C_xB_a},\quad
+ \tau'=\frac{C_x+B_af'}{2dx},\quad y=x-\tau'.
+\]
+The denominators are nonzero, and the polynomial identity verifies
+$(f')^2=D$, $(\tau')^2=A$ and the auxiliary Pell equation. The rational
+square roots $f',\tau'$ are integers.
+
+The inherited rational Pell saturation lemma states that $m\ge2$, $V\in\Z$,
+$y\in\mathbb Q$ and $m^2V^2-(m^2-1)y^2=1$ imply $y\in\Z$.
+To recall its proof, write $y=p/r$ in lowest terms; $r^2\mid m^2-1$.
+The integer-coordinate Pell equation with positive nonsquare discriminant
+$(m^2-1)/r^2$ has solutions $(m,r)$ and $(m|V|,|p|)$. If their indices
+are $j,l$, abscissa divisibility forces $l$ an odd multiple of $j$:
+reduce $l$ modulo $2j$, reflect to $[0,j]$, and use
+$\chi_{n+2j}\equiv-\chi_n\pmod{\chi_j}$ and strict growth.
+The ordinate addition law now gives $r\mid p$, hence $r=1$.
+Apply this lemma with $m=\Delta I$ and $V=vf'-b$.
+Thus $y,x$ are integers. Reducing $W=Lg+Sx$ modulo $Y$ gives only
+$Y\mid H(k-R-1)$ at this stage; no cancellation of $H$ is assumed.
+
+\paragraph{The order of index recovery.}
+Write $A_0=a+2$. The main and strong Pell norms give positive indices $p,m$
+with $g=\chi_{A_0}(p)$, $c=\psi_{A_0}(p)$,
+$|f'|=\chi_{A_0}(m)$, $I=\psi_{A_0}(m)$.
+From $I=ic^2$, strong divisibility yields $p\mid m$; write $m=pj$.
+Composition modulo $c$ gives $c\mid j$, hence $c\mid m$ and $m>2p$.
+Since $c>1$, $p\ge2$ and recurrence growth gives $c>2p$; also $c>6R$.
+For the auxiliary equation, set
+$V=c(Tf'-1)-R(f')^2$; classification at $\Delta I$ gives an odd index
+$j_0$. The odd-index polynomial obeys
+\[
+ \chi_s(2r+1)=sQ_r(s^2),\quad
+ Q_r(1-A_0^2)=(-1)^r\psi_{A_0}(2r+1),\quad
+ Q_r(0)=(-1)^r(2r+1).
+\]
+Modulo $|f'|$, $Q\equiv1-A_0^2$ and $V\equiv-c$; the pinned signed
+index-reduction theorem, using $2p<m$, gives $j_0\equiv\pm p\pmod m$,
+hence modulo $c$. Modulo $c$, $Q\equiv0$, $V\equiv-R$, so
+$j_0\equiv\pm R\pmod c$. As $0<p,R<c/2$, $p=R$.
+These inherited steps precede both the main congruence modulo $H$ and the
+missing index equation.
+
+The first norm is $\tau'^2-k^2EY(EY+1)=1$, with fundamental unit
+$(2EY+1,2)$. Put $P_0=2EY+1$; then
+$|\tau'|=\chi_{P_0}(n)$, $k=2\psi_{P_0}(n)$ for $n\ge1$.
+Since $P_0>A_0$ and $c>k$, monotonicity gives $n<p=R$.
+Now $\mu=Y/\gcd(Y,H)=Y/\gcd(Y,3)>R$, and the recovered divisibility
+says $k\equiv R+1\pmod\mu$. Recurrence reduction gives
+$k\equiv2n\pmod Y$. Thus $2n-R-1$ is divisible by $\mu$ and has absolute
+value less than $R$, forcing $2n=R+1$. Reduction modulo $E$ also gives
+$k\equiv2n\pmod E$, so $h=(k-R-1)/E$ is integral. It is positive:
+$R>48$ gives $n\ge25$ and $k>2n$.
+
+Dividing the carrier by $Y$, using $(k-R-1)/Y=hX$, now gives
+$g\equiv b_0\pmod H$. Since $n\ge2$ implies $k\ge4P_0>X$, one has
+$c>X$ and $g>(a+1)c$, so $\gamma=(g-b_0)/H>0$.
+The ordinary signed compiler is reached literally by
+$i_{\rm ordinary}=\Delta i$ and $I_{\rm ordinary}=\Delta I$:
+\[
+ I_{\rm ordinary}^2=\Delta((f')^2-1)=Q.
+\]
+If $f'<0$, change $f',T$ simultaneously to their negatives. The retained
+ordinary signed theorem permits that signed auxiliary quotient and extracts
+a blank K215 halt. No stronger unquoted normalized theorem is needed.
+
+\paragraph{A complete leading-form witness.}
+For the unabsorbed twelve-positive lean norm define
+\[
+\begin{gathered}
+ q_0=\beta J,\ X_0=wq_0,\ Y_0=sq_0^3,\ E_0=X_0Y_0,\ k_0=\eta+\zeta,\\
+ c_0=k_0Y_0,\ I_0=ic_0^2,\ \ell_0=E_0c_0,\ H_0=4E_0,\ d_0=E_0^4I_0^2,\\
+ R_0=q_0^3(q_0-F),\ B_0=R_0E_0^2I_0^2,\ V_0=I_0T\ell_0.
+\end{gathered}
+\]
+The degrees of $H,\ell,d,b,IT\ell$ are $6,11,46,38,23$.
+The positive-leading formal Laurent branches have
+\[
+ \tau-\ell=k/2+\text{lower terms},\qquad
+ (b_0+g)/H=c_0/2+\text{terms below degree 5},
+\]
+while $(b_0-g)/H$ has degree $-1$ and
+$T(Ig-cf)=iTc_0/(2E_0)+\text{terms below degree 1}$.
+These expansions concern degree, not rationality of specialized roots.
+For each sign triple put $Z=W_0-Hb-H\varepsilon_a\tau-L_0\varepsilon_g g$.
+The corresponding factor equals
+\[
+ 2dHbZ+dZ^2-H^2b^2-H^2QDv^2+H^2
+       +\varepsilon_f2H^2Qbvf.
+\]
+For $\varepsilon_f\ne\varepsilon_g$, four factors have degree 119 and
+leader $-\varepsilon_g4H_0^2d_0B_0V_0$.
+For matched signs, the degree-119 terms cancel. The identity
+\[
+ dI^2G-QDc^2=Q(I^2-c^2)-I^2G
+\]
+handles the leading-square cancellation; the remaining cross term has degree
+at most 92 and $H^2b^2$ has degree 88. The other four leading terms are
+\[
+\begin{array}{ccl}
+\varepsilon_a=-1,\ \varepsilon_g=\pm1:&107,&4H_0^2d_0B_0\ell_0,\\
+\varepsilon_a=+1,\ \varepsilon_g=-1:&101,&H_0^2d_0B_0c_0,\\
+\varepsilon_a=+1,\ \varepsilon_g=+1:&97,&H_0^2d_0B_0(2t-k_0-iTc_0/E_0).
+\end{array}
+\]
+Their product is the nonzero leading form
+\[
+ 2^{12}H_0^{16}d_0^8B_0^8V_0^4\ell_0^2c_0
+              (2t-k_0-iTc_0/E_0).
+\]
+It is nonzero because $t$ is independent. Hence the norm degree is exactly
+$4\cdot119+2\cdot107+101+97=888$.
+For eleven variables, the exact identity
+$N=Y^{16}N_{\rm lean}(t+(k-R-1)/Y)$ and
+$s_{\rm old}=s+3q$ adds 64 degrees. The rational shift has degree 0,
+below $t$'s degree 1; the carrier degree is at most 16, so denominators clear.
+The affine $s$ substitution has invertible top linear part $s+3\beta J$,
+preserving nonvanishing. The transport factor has nonzero degree-2 leader
+$w(q_0-F-\alpha)-zq_0$. This proves degrees 952 and 954 for the norm and
+product, for every authentic $\beta>0$, not merely sampled coefficients.

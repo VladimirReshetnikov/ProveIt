@@ -1,0 +1,196 @@
+\section{The ten-unrestricted-integer companion}
+\label{sec:sparse-sun}
+The sparse quadratic code can be composed with the existing ten-integer
+finalizer, without a new unknown or a change to its logical interface.
+The variables are exactly
+\[
+(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}.
+\]
+The coefficient tuple is the coherent tuple specified in the coefficient
+manifest.  All expressions below are polynomial abbreviations, not extra
+quantified variables.  Our new work is sparse support isolation, an
+interior padding digit, and a shared-source evaluator.  The universal
+ten-integer reduction itself is due to Sun.
+
+\subsection{A source interface with arbitrary padding position}
+Let $p$ be the padding position and $w_1,\ldots,w_{31}$ the distinct
+variable positions. They are distinct from $p$, nonnegative, and at most
+$W$. For $|\alpha|\le2$ put
+\[
+ e_p(\alpha)=(2-|\alpha|)p+\sum_i\alpha_iw_i,
+ \qquad c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,p_{j,\alpha},
+\]
+where $r_j(n)=\sum p_{j,\alpha}n^\alpha$ is the shifted positive parent.
+The certificate gives targets $H_j$ such that
+\[
+ H_j-e_p(\alpha)+e_p(\gamma)=H_k
+ \quad\Longleftrightarrow\quad (j,\alpha)=(k,\gamma)
+\]
+for each nonzero source coefficient and each quadratic monomial $\gamma$.
+In particular,
+\[
+ [T^{H_j}]\left(T^p+\sum_i n_iT^{w_i}\right)^2
+       \sum_{k,\alpha}c_{k,\alpha}T^{H_k-e_p(\alpha)}=2r_j(n).
+\]
+This condition is weaker than requiring all quadratic monomial positions
+to be distinct: only the source's active support must be isolated.
+Write
+\[
+ D(T)=\sum_{j,\alpha}c_{j,\alpha}T^{H_j-e_p(\alpha)},\quad
+ Z(T)=\sum_jT^{H_j},\quad \ell(T)=\sum_iT^{w_i},\quad
+ K_c=\deg D+2W.
+\]
+All the exponents displayed are certified nonnegative.
+
+The exact fixed integer
+$C_0=1+\sum_{j,\alpha}|c_{j,\alpha}|$ has bit length $1\,182\,954$.
+Independent reconstruction verifies
+\[
+ \beta_S=2^{1\,182\,966}>2048C_0.
+\]
+In particular the fixed base multiplier is $1$ modulo $3$.
+Define
+\begin{align*}
+ b&=1+3f,& \mathcal B&=\beta_Sb^2,& \mathcal C&=b\mathcal B^W,\\
+ N_0&=\mathcal B^{W+1},&N_1&=4\mathcal B^{K_c+1},&N&=N_0N_1,\\
+ M_c&=N_0-1-(b-1)\ell(\mathcal B),\\
+ T_c&=M_c+N_0(\mathcal B-2)Z(\mathcal B),\\
+ J_c&=2(\mathcal B^p+g)^2D(\mathcal B)
+            +\mathcal B\sum_{i=0}^{K_c}\mathcal B^i,\\
+ S_c&=g+N_0J_c,&R_c&=(S_c+T_c+1)N+T_c+1,\\
+ X&=(N-1)R_c,&Y&=N^2.
+\end{align*}
+Suppose $f\ne0$, $b$ is a square and $0\le g<2\mathcal C$.
+Then $b\ge4$ and $\mathcal B>2048C_0b^2$. Since $p\le W$,
+\[
+ \left|2(\mathcal B^p+g)^2D(\mathcal B)\right|
+ <18C_0b^2\mathcal B^{K_c}<\mathcal B^{K_c+1}.
+\]
+Hence $0<J_c<3\mathcal B^{K_c+1}<N_1$ and the block bounds give
+$0\le S_c,T_c<N$. Consequently
+\[
+ X\ge N^2-1>3b,\qquad Y>\max\{b,256\},\qquad 3\mid X.
+\]
+These statements precede, and do not assume, the power-of-two condition.
+
+If $b$ is also a power of two, Sun's binomial carry lemma identifies
+$Y\mid\binom{2X}{X}$ with the absence of binary carries in $S_c+T_c$.
+The low block decodes
+$g=\sum_i n_i\mathcal B^{w_i}$ with $0\le n_i<b$.
+Every coefficient $A_t$ of
+$(T^p+\sum n_iT^{w_i})^2D(T)$ satisfies
+\[
+ |A_t|\le C_0(1+\textstyle\sum n_i)^2
+ <1024C_0b^2<\mathcal B/2.
+\]
+Thus the baseline $\mathcal B/2$ produces actual, strictly interior
+base-$\mathcal B$ digits, without interdigit carrying. At target $H_j$,
+the digit is $\mathcal B/2+2r_j(n)$. Its addition to
+$\mathcal B/2-1$ has no binary carries precisely when $r_j(n)=0$.
+This proves soundness.
+
+Conversely, choose a natural source zero, then choose $b=4^q$ arbitrarily
+large and greater than all its coordinates.  The same calculation gives
+the binomial divisibility and $g<\mathcal C$. In the interior-padding
+certificate the sole zero variable position is the coordinate $i$,
+whereas the fifth residual has constant term $1$ and depends only on
+$E,a,X$, whose positions are positive. Some positive-position coordinate
+must therefore be nonzero. Thus $g\ge\mathcal B\ge b$. The original
+padding-zero certificate has all variable positions positive, and the
+same conclusion follows because the zero vector fails the fifth residual.
+This proves the full source interface required by the inherited bridge.
+
+\subsection{The literal tail}
+The following formulas explicitly define the tail.  Their number-theoretic
+justification is the cited Sun bridge and the previously proved coprime
+positivity merger, quintic divisibility merger and separating norm.
+\begin{gather*}
+ L=lY ,U=2LX ,V=4gwY ,W_1=bw ,\\
+ A=U(V+1) , B_1=2X+1 , C=B_1+(A-2)h ,\\
+ P_n=U^2V ,K_1=X+1+k(P_n-2) ,\\
+ S=2A-5 ,T=3W_1C-2(W_1^2-1) ,\\
+ r_1=(P_n^2-4)K_1^2+4 ,\\
+ \Delta=8\mathcal C^3gK_1^2
+   -g^2\bigl(32(C-K_1L)^2\mathcal C^3+g^2K_1^2\bigr) ,\\
+ O=f^2l^2\Delta ,\xi=zx ,\\
+ D=(A^2-4)C^2+4 ,E=C^2D\xi ,\\
+ F=4(A^2-4)E^2+1 ,G=2(A+2)(A-2)^2E^2-1 ,\\
+ H=C+(B_1-C)F+16EFy ,I=(G^2-1)H^2+1 ,\\
+ r_0=b\bigl(1+(3O-4)b^2z^2\bigr) ,r_2=DFI ,\\
+ \Sigma=\xi S^5 ,t=T+Sy ,\\
+ \Theta=(t^3-tS^2-S^3)(t^2+23S^2) ,\\
+ q_0=1 ,q_1=r_0 ,q_2=r_0(P_n^2+K_1^2+3) ,\\
+ a_j=\Sigma^2q_j^2r_j\quad(0\le j\le2) ,Z=\Sigma m-\Theta.
+\end{gather*}
+Finally set
+\[
+ V_n=Z^2+a_2-a_0-a_1,\qquad
+ W_n=V_n^2+4Z^2a_2-4a_0a_1,
+\]
+\begin{equation}
+ \boxed{\ F_{10}=W_n^2-16V_n^2Z^2a_2=0.\ }
+\end{equation}
+There is no radical, division, variable exponent, unspecified enumeration
+index or hidden existential witness in this equation.
+
+The final polynomial is the formal norm
+$\prod_{\varepsilon\in\{\pm1\}^3}
+ (Z+\sum_j\varepsilon_j\sqrt{a_j})$.
+The inherited separating-weight proof applies even to candidate negative
+radicands, and the $\Sigma=0$ branch is excluded because then
+$F_{10}=\Theta^8\ne0$.  No claim of an unweighted three-radical criterion
+is being made. Composing that proof with the source interface just proved
+and the coherent compiler endpoint yields
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf z\in\mathbb Z^{10}:F_{10}(\mathbf z)=0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This is an equivalence theorem, not a proof of consistency or inconsistency.
+
+\subsection{Two layers of evaluator factoring}
+The tail polynomial is unchanged by the exact identities
+\[
+ G=(a-1)(F-1)-1,\quad a=(LX)(V+1),\qquad
+ H=C+F(B_1-C+16Ey),
+\]
+\[
+ t^3-tS^2-S^3=t(t^2-S^2)-S^3,
+ \qquad f^2l^2=(fl)^2,\quad b^2z^2=(bz)^2.
+\]
+The equality $A=2a$ is built polynomially, without division. Sharing
+$\Sigma^2r_0^2$ between $a_1$ and $a_2$ saves another operation.
+Independent symbolic expansions verify these identities and the norm.
+
+There is a more substantial source-level saving. Let
+$Q_j(u_0,\ldots,u_{31})$ be the degree-two homogenization of the shifted
+residual, and let $\operatorname{diag}(Q_j)$ be its sum of pure-square
+monomials. The weighted form is exactly
+\[
+ V_j=Q_j+\operatorname{diag}(Q_j).
+\]
+Indeed a degree-two multinomial has weight $1$ on cross monomials and
+weight $2$ on pure squares.  Evaluate every $Q_j$ by homogenizing the
+\emph{shared sixty-gate parent}, not by expanding its monomials. At
+\[
+ u_0=\mathcal B^{W-p},\qquad
+ u_i=\mathcal B^{W-w_i},
+\]
+we have
+$D(\mathcal B)=\sum_j\mathcal B^{H_j-2W}V_j$ whenever every
+$H_j\ge2W$.  Only the sparse diagonal correction is added afterward.
+This preserves sharing between different quadratic equations and sharply
+reduces the operation count. Uniformly translating all target positions
+preserves their isolation property, so it can be used to ensure this
+nonnegative-offset condition.
+
+All operation counts are live binary $+,-,\times$ gates, including scalar
+multiplication; fixed coefficients and reuse are free. The supplied JSON
+circuits and receipts give the exact counts for each retained tradeoff.
+Exact degree is established by an upper bound from circuit propagation
+and a nonzero coefficient at that same bound after diagonal specialization
+modulo a prime. Three independent primes are retained for redundancy.
+The verifier also checks actual fixed bytes, all coefficient bounds and
+literal source-and-tail replay. These finite checks do not replace the
+inherited unbounded arithmetic theorems, nor supply a new end-to-end formal
+proof assistant development.

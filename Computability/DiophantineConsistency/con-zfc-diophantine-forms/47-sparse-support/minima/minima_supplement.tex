@@ -1,0 +1,97 @@
+\section{A secondary improvement: minimum norms at degree 44}
+\label{app:minima}
+
+The optional \texttt{minima/} supplement reduces the historical
+15-positive-variable, degree-44 sum of squares from 78 binary operations
+to 76, or to 75 using its inherited signed index/transport recovery.
+The source is package 12's \texttt{ordinary\_gap\_system61.json}, copied
+byte for byte from commit \texttt{5b0c9ae9fdae83db563f9d2b61ea0fb1f4a801e6}.
+The supplement's \texttt{SOURCE\_PINS.json} records full paths and blob
+identities. Both new polynomials bind the complete package-31 coefficient
+tuple through local binary payloads.
+
+Take fifteen positive variables
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,e,\gamma.
+\]
+Use the fixed ports $(\beta,K_0,M_C,M_F)$ of Section~\ref{sec:parent}.
+Define polynomial abbreviations
+\begin{gather*}
+ q=\beta J+1,\quad C=q-F-\alpha,\quad X=wq,\quad Y=sq^3,\quad E=XY,\\
+ k=\eta+\zeta,\quad c=kY+\eta,\quad a=E+Y,\quad H=4a+3,\quad
+ \Delta=a^2+H,\\
+ D=X+ac+\gamma H,\qquad
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ V=c(Tf-1)-Rf^2,\quad U=\Delta(f^2-1),\quad I=ic^2,\quad W_s=I^2-U,\\
+ N_0=\tau^2-XY^2(XY^2+1)k^2,\quad
+ N_1=D^2-\Delta c^2,\\
+ N_a=U\bigl(V^2-(V+e)^2\bigr)+(V+e)^2,\qquad N_k=k-hE-R.
+\end{gather*}
+For original transport coordinate $z$ put
+$N_t=(K_0+w)C+(q-F)-z(q-1)$. The cheaper equation is
+\[
+ \boxed{P_{75}=N_0^2+N_1^2+N_a^2+W_s^2+(N_kN_t-1)^2-3=0.}
+\]
+For the shifted coordinate $z=z_{\rm old}-1$, put
+$R_t=(K_0+w)C-F-z(q-1)$. The cleaner local alternative is
+\[
+ \boxed{P_{76}=N_0^2+N_1^2+N_a^2+W_s^2+(N_k-1)^2+R_t^2-3=0.}
+\]
+
+\paragraph{Why subtracting three is sound.}
+On every positive assignment,
+\[
+ N_0^2\geq1,\qquad N_1^2\geq1,\qquad N_a^2+W_s^2\geq1.
+\]
+Their equality cases are respectively $N_0=1$, $N_1=1$, and
+$(N_a,W_s)=(1,0)$.
+For the first norm, $n_0=XY^2\geq2$ makes $n_0(n_0+1)$ nonsquare,
+so the norm cannot vanish. A norm $-1$ solution
+$\xi^2-n_0(n_0+1)\nu^2=-1$ would descend under multiplication by
+$2n_0+1-2\sqrt{n_0(n_0+1)}$: its new second coordinate is
+$(2n_0+1)\nu-2\xi$, strictly between 0 and $\nu$.
+For the main norm, $\Delta=(a+2)^2-1$ is nonsquare; its residue 0 or 3
+modulo four also excludes norm $-1$.
+
+If $U>0$, then $U\geq2$. A vanishing auxiliary norm would give
+$UV^2=(U-1)(V+e)^2$; since $e>0$, the two roots cannot both vanish.
+It would follow that $U(U-1)$ is a square, contrary to its position
+between consecutive squares. Thus $N_a\ne0$. If $U=0$, then
+$W_s=I^2\geq81$, so the block is larger than 1.
+Equality in the block therefore forces $W_s=0$ and $N_a=\pm1$.
+Now $U=I^2$, and reduction modulo four makes $N_a$ congruent to
+$V^2$ or $(V+e)^2$, excluding $-1$.
+
+Consequently $P_{76}=0$ is tuplewise equivalent to the six historical
+comparisons $N_0=N_1=N_a=N_k=1$, $W_s=R_t=0$.
+For $P_{75}$ the same argument gives $N_0=N_1=N_a=1$, $W_s=0$,
+and $N_kN_t=1$. These give a zero of the ordinary product with
+$y=V+e$, which may be signed. The current package-31 theorem in
+\texttt{upstream/ORDINARY\_BLANK\_PROOF.md} applies directly on its
+nine-positive-coordinate domain and recovers $N_k=N_t=1$
+for the authentic native tuple. Package 12's canonical gap theorem
+supplies $e>0$ for completeness. This is the ordinary strong equation
+$I^2=\Delta(f^2-1)$; it does not assert coordinatewise equivalence
+to the normalized strong equation. The semantic compiler and ZFC
+interpretation remain inherited dependencies.
+
+\paragraph{Exact finite certificate.}
+The 76-operation schedule uses 40 multiplications, 21 additions and
+15 subtractions; the 75-operation schedule uses 40, 20 and 15.
+Every gate and every supplied input is live. The cancellation
+\[
+ N_a=V^2-(U-1)e(2V+e)
+\]
+gives the required degree-22 auxiliary bound. Setting all fifteen
+variables equal to $t$, exact symbolic propagation yields degree 44
+with leading coefficient
+\[
+ 16\beta^{28}+256\beta^{24}+16\beta^{22}>0.
+\]
+Thus the total-degree upper bound is attained for the actual coefficients.
+The standard-library verifier authenticates all source and payload bytes,
+rebuilds both circuits, proves the displayed identity by exact ring
+expansion, and checks this leading coefficient. Its calculation uses no
+interpolation. This secondary saving is three operations relative to
+the historical degree-44 equation; it does not replace the main
+nine-variable improvement.

@@ -1,0 +1,285 @@
+\section{Nine unknowns through a parity-calibrated carry block}
+\label{sec:nine-calibrated}
+The explicit polynomial below has nine nonnegative integer unknowns,
+exact degree \(7\,344\,328\), and 744 binary arithmetic operations.
+Its positive-coordinate translate has the same degree and 738 operations
+(211 additions, 26 subtractions, 501 multiplications).
+All intermediate names denote polynomial registers, not quantified variables.
+With the identified inherited compiler and Jones ratio theorems, ordinary
+mathematics formalizable in ZFC proves
+\[
+  \neg\exists\mathbf x\in\mathbb N^9\ F_9(\mathbf x)=0
+       \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+This is not a proof of consistency, a claim of minimum complexity, an
+unrestricted-integer nine-variable result, or a new end-to-end kernel proof.
+
+\subsection{Fixed data and selective extraction}
+The source is the original package31 system of 22 quadratic residuals in
+31 positive coordinates, followed by the shift \(y_i=x_i+1\).
+Its exact JSON is \path{upstream/upstream_parent_quartic31.json},
+SHA256 beginning \texttt{1c336ba0b3c9827f}; the full digest and repository
+pin \texttt{124c07c0b77a} are in
+\path{upstream/SOURCE_PINS.json}.
+We do not replace its transport row by the distinct package45 normalization.
+The whole 121-by-8801, 943-tile compiler tuple is bound in
+\path{COEFFICIENT_BINDING.json}; its four port bit lengths are
+\((1064921,1070004,1064921,1064922)\). The \(M_F\) port is the already
+shifted \(M_{F,\mathrm{source}}\). All four authenticated compressed
+little-endian payloads and the complete tuple adapter proof are included.
+
+For the shifted residual \(p_j\), set
+\[
+ c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,[\mathbf x^\alpha]p_j.
+\]
+Exact source expansion produces 136 terms and 26 distinct recipes,
+including literal-only recipes. From the port bit lengths, termwise triangle
+bounds prove \(|c_{j,\alpha}|<M=2^{2134927}\). Fix
+\[
+ \kappa=2134940,\qquad a=2^\kappa=8192M,\qquad
+ c=2^{15\kappa/2-10}=2^{16012040}.
+\]
+These are fixed ordinary integers. The evenness of \(\kappa\) will matter.
+
+The 31 weights, in the source variable order, are
+\[
+\begin{gathered}
+9,25,23,139,35,151,168,21,91,181,94,52,150,180,7,135,\\
+38,88,183,106,178,136,20,138,8,64,105,154,37,137,120.
+\end{gathered}
+\]
+The row order and corresponding targets are
+\[
+\begin{gathered}
+16,2,9,14,21,7,15,22,13,3,19,20,1,10,17,8,4,6,11,18,12,5;\\
+70,86,451,685,1050,1296,1530,1874,2212,2358,2696,2780,\\
+2792,3157,3290,3634,3929,4238,4384,4527,4865,5190.
+\end{gathered}
+\]
+Write \(W=183\), \(Q_c=5190\), \(K_c=Q_c+2W=5556\), and
+\(E_c=K_c+W+2=5741\). The frozen finite certificate verifies, for every
+source-supported \(\alpha\) and every \(|\beta|\leq2\),
+\[
+ q_j-\alpha\cdot w+\beta\cdot w=q_l
+       \quad\Longleftrightarrow\quad j=l\text{ and }\alpha=\beta.
+\]
+It checks all \(136\cdot528=71808\) interactions. Only the 71 used
+padded pairs need isolation; absent pair sums may coincide. The reversed
+exponents are nonnegative and mutually distinct, so no coefficient inflation
+factor occurs. Define
+\[
+ D_c(t)=\sum_{j,\alpha}c_{j,\alpha}t^{q_j-\alpha\cdot w},\qquad
+ C_{\mathbf x}(t)=\left(1+\sum_i x_it^{w_i}\right)^2.
+\]
+Factorial cancellation gives
+\([t^{q_j}](C_{\mathbf x}D_c)=2p_j(\mathbf x)\).
+The highest coefficient of \(D_c\) is 2 at exponent 5190: residual5 is
+last and has constant term 1. Thus, for \(B-1>M\),
+\[
+ B^{5190}<D_c(B)<\frac{M B^{5191}}{B-1}.
+\]
+
+\subsection{Sparse target padding and source bounds}
+Use \((\epsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0,n)\in\mathbb N^9\),
+where \(\mathbb N=\{0,1,\ldots\}\). Put
+\(g=g_0+1,h=h_0+1,s=s_0+1,w=w_0+1,i=i_0+1,j=j_0+1\), and define
+\begin{align*}
+ b&=\epsilon+2,& B&=ab^2,& \ell&=\sum_iB^{w_i},& A_t&=\sum_jB^{q_j},\\
+ N_0&=B^{184},& Z&=B^{5557},& L&=2bB^{5741},& N&=cB^{2966},\\
+ M_c&=N_0-1-(b-1)\ell,&
+ J_c&=2(1+g)^2D_c(B)+A_t,\\
+ S_c&=g+N_0J_c,&T_c&=M_c+N_0(B-2)A_t,\\
+ R&=L^2+(S_c+T_c)L+L-1-S_c,&G_{\rm cap}&=32bB^{183}.
+\end{align*}
+The block length \(L\) and ratio threshold root \(N\) are different.
+On every outer assignment, \(J_c,S_c>0\), and the base-\(B\) digits of
+\(M_c\) are \(B-b\) at the weights and \(B-1\) elsewhere through \(W\).
+Hence \(0\leq M_c<N_0\), \(T_c\geq0\), and
+\[
+ R=L^2+(L-1)S_c+LT_c+L-1\geq8,\qquad
+ 0<b\leq R,N,\quad N\geq8,\quad G_{\rm cap}>0.
+\]
+These facts do not presuppose a power-of-two base or a bound on \(g\).
+
+If \(g<4bB^{183}\), integrality yields \(1+g\leq4bB^{183}\) and
+\(g<N_0\). Therefore
+\[
+2(1+g)^2D_c(B)<\frac{32Mb^2}{B-1}Z
+ =\frac{B}{256(B-1)}Z<\frac Z{128},\qquad
+ A_t<\frac Z{128}.
+\]
+Thus \(0<J_c<Z/64<Z\), while \((B-2)A_t<B^{5191}\leq Z\).
+Using integrality again gives
+\[
+ 0\leq S_c,T_c<N_0Z=B^{5741},\qquad S_c+T_c<2B^{5741}<L.
+\]
+
+Once \(b\) is a power of two, so is \(B\). Binary disjointness of
+\(g\) and \(M_c\) is exactly
+\(g=\sum_i x_iB^{w_i}\) with \(0\leq x_i<b\).
+Let \(h_r=[t^r](C_{\mathbf x}D_c)\). Then
+\[
+ |h_r|<M(1+\sum x_i)^2<1024Mb^2=B/8,
+ \qquad J_c=\sum_{r=0}^{5556}(2h_r+\delta_r)B^r,
+\]
+where \(\delta_r\) is 1 at a target and 0 elsewhere. In signed-digit
+normalization the incoming borrow is always \(-1\) or 0: the coefficient
+bound preserves this by induction. At a target the normalized digit is
+\((2h_r+1+\text{borrow})\bmod B\). It avoids the mask \(B-2\) precisely
+when \(h_r=0\): for zero it is 0 or 1; for positive \(h_r\) it is at
+least 2 and below \(B/2\); for negative \(h_r\) it is above \(B/2\).
+Consequently
+\[
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ g\text{ codes a common nonnegative zero of all }p_j.
+\]
+The symbol \(\&\) denotes ordinary bitwise intersection of nonnegative
+integers. It occurs only in the proof, not in the polynomial circuit.
+
+\subsection{The new block-parity calibration}
+For \(S,T\geq0\), \(S+T<L=2^u\), the polynomial
+\[
+ X=L^2+(S+T)L+(L-1-S)
+\]
+has disjoint top, middle and bottom binary blocks. Thus
+\[
+\operatorname{pop}(X)=u+\operatorname{pop}(T)+1
+ -\bigl[\operatorname{pop}(S)+\operatorname{pop}(T)-\operatorname{pop}(S+T)\bigr].
+\]
+The bracket is nonnegative and vanishes exactly if \(S\mathbin{\&}T=0\).
+Legendre's formula gives
+\(v_2\binom{2X}{X}=\operatorname{pop}(X)\), so
+\[
+ 2^{u+\operatorname{pop}(T)+1}\mid\binom{2X}{X}
+       \quad\Longleftrightarrow\quad S\mathbin{\&}T=0.
+\]
+Put \(b=2^k,B=2^v\), with \(v=\kappa+2k\).
+The low mask contributes \(184v-31k\) bits; the 22 high target digits
+contribute \(22(v-1)\). Hence
+\[
+ \operatorname{pop}(T_c)=206v-31k-22.
+\]
+Choosing \(L=2bB^{5741}\) gives \(u=1+k+5741v\), and therefore
+\begin{align*}
+ u+\operatorname{pop}(T_c)+1
+ &=5947v-30k-20\\
+ &=5947\kappa+11864k-20\\
+ &=2\bigl(15\kappa/2-10+2966v\bigr)=2\log_2N.
+\end{align*}
+Thus the tested threshold is exactly \(N^2\), even with \(b\) linear
+in the input. No extra unknown, dummy digit or square-base restriction is
+needed. This is the new parity-calibration step.
+
+Conversely, for a source zero choose any sufficiently large power of two
+\(b>\max x_i\), and \(\epsilon=b-2\). Since \(p_5(0)=1\), its code
+\(g\) is positive. Moreover
+\(g\leq(b-1)\ell<bB^{183}\), so \(32g<G_{\rm cap}\).
+Both masks are disjoint and \(N^2\mid\binom{2R}{R}\).
+Every sufficiently large power of two is available, eliminating any hidden
+cofinality assumption.
+
+\subsection{Ratio registers and the near-square finalizer}
+Use the inherited Jones ratio registers
+\begin{gather*}
+ U=N^2w,\quad Y=N^2s,\quad M_0=RY,\quad P=2M_0^2U,\\
+ K=R+1+h(P-1),\quad A=M_0(U+1),\quad B_1=2R+1,\quad W_1=bw,\\
+ C=B_1+W_1+\phi,\quad J=4A-5,\quad Q=3W_1C-2(W_1^2-1),\\
+ D=(A^2-1)C^2+1,\quad E=iJDC^2,\quad F=(A^2-1)E^2+1,\\
+ G=A+F(CD+1-A),\quad H=B_1+jC,\quad I=(G^2-1)H^2+1,\\
+ a_0=(P^2-1)K^2+1,\quad a_1=64DFI,\quad u_0=JF,\quad v_0=QF+J(H-C),\\
+ \mu=K^2G_{\rm cap}-4(C-KY)^2G_{\rm cap}-8gK^2.
+\end{gather*}
+Here \(u_0,v_0\) avoid conflict with the binary block exponent.
+The imported \texttt{ratio\_sound} and \texttt{ratio\_complete} in
+\path{upstream/NineRatio.lean} relate the four conditions
+\[
+ a_0\text{ square},\quad DFI\text{ square},\quad u_0\mid v_0,\quad\mu>0
+\]
+to the central-binomial divisibility and \(b\) a power of two. Soundness
+gives \(8g<G_{\rm cap}\); completeness requires \(32g<G_{\rm cap}\).
+All numerical hypotheses were proved unconditionally above. Multiplying
+\(DFI\) by 64 does not change its square predicate.
+
+For every outer assignment, \(A\geq2,J\geq3,D\geq A^2,K>1\), all Pell
+registers are positive, and \(Q,H-C>0\). Thus
+\[
+ 0<\frac{v_0}{u_0}=\frac QJ+\frac{H-C}{F}\leq Q+H-C=:M_d.
+\]
+Put
+\[
+ V_0=PK,\quad t_0=iJC,\quad S_0=t_0(8D^2-4D-1),\quad V_1=S_0GH.
+\]
+As \(E=t_0DC\), exact identities yield
+\[
+ DF=t_0^2D^3(D-1)+D,\qquad
+ S_0^2-64DF=t_0^2(8D+1)-64D\geq8D+9>0.
+\]
+Since \(I\leq G^2H^2\) and \(V_0^2-a_0=K^2-1>0\), we have
+\(0<a_r<V_r^2\) for \(r=0,1\).
+Define the requested single polynomial by
+\begin{gather*}
+ \Omega=u_0(2\mu-1),\qquad
+ \Theta=u_0n+v_0-\Omega(M_d+V_0V_1),\\
+ \boxed{F_9=\left(\Theta^2-\Omega^2(a_0+V_0^2a_1)\right)^2
+                    -4\Omega^4V_0^2a_0a_1.}
+\end{gather*}
+The four-factor identity implies, at any zero,
+\(\Theta/\Omega=r_0+V_0r_1\) with \(r_i^2=a_i\).
+This rational number cannot be zero, because then
+\(|r_1|=|r_0|/V_0<1\), contrary to the positive integer \(a_1\).
+The identity
+\(2(\Theta/\Omega)r_0=(\Theta/\Omega)^2+a_0-V_0^2a_1\)
+forces both roots rational and thus integral. This argument does not assume
+independence of square classes.
+The strict bounds give
+\[
+ Z_0=M_d+V_0V_1+r_0+V_0r_1\geq M_d+1>0.
+\]
+The factor equation is \(n+v_0/u_0=(2\mu-1)Z_0\).
+Its positive left side forces \(\mu>0\), and its integral right side
+forces \(u_0\mid v_0\). Conversely the four ratio conditions yield an
+integer \(n=(2\mu-1)Z_0-v_0/u_0\geq1\) and hence a zero.
+This completes both directions of the stated reduction.
+
+\subsection{Exact degree and audited implementation}
+A raw degree walk would miss a leading cancellation. The certificate uses
+\begin{align*}
+ \Delta_V=V_1^2-a_1
+ &=[t_0^2(8D+1)-64D]G^2H^2+64DF(H^2-1),\\
+ E_0&=u_0n+v_0-\Omega M_d,\\
+ \Theta^2-\Omega^2(a_0+V_0^2a_1)
+ &=E_0^2-2E_0\Omega V_0V_1+\Omega^2V_0^2\Delta_V-\Omega^2a_0.
+\end{align*}
+The first summand of \(\Delta_V\) has degree \(1\,763\,760\) and
+leader \(2^{147}a^{881800}c^{96}\). The third summand of the last display
+dominates, with degree \(3\,672\,164\) and leader
+\(2^{299}a^{1835914}c^{224}\). Finally
+\(4\Omega^4V_0^2a_0a_1\) has degree \(5\,998\,540\), strictly less than
+twice the dominant degree. Thus
+\[
+ \deg F_9=7\,344\,328,\qquad
+ \operatorname{LC}_{\rm diagonal}(F_9)=2^{598}a^{3671828}c^{448}>0.
+\]
+The diagonal attains the full multivariate total-degree bound. The
+cancellation-resolved certificate records every decisive exact leader;
+coefficient-dependent lower heads are left unknown, not guessed.
+
+Replacing every natural input by a positive input minus one is a bijection
+and preserves degree. In particular \(b=\epsilon_++1\),
+\(\phi=\phi_+-1\), and \(n=n_+-1\).
+The conservative three-block comparison has degree \(12\,023\,320\) and
+734 positive operations. A square-base uncalibrated two-block comparison
+has degree \(14\,687\,132\) and 740 operations. Its admissible bases
+\(b=2^{2r+1}\) are explicitly cofinal. Both comparison circuits and their
+proof details are included; the parity-calibrated version is primary.
+
+The self-contained standard-library scripts \path{build_nine.py} and
+\path{verify_nine.py} rebuild all 12 circuits, authenticate the full tuple,
+verify all 26 recipe bounds and the selective certificate, and perform
+360 modular replays covering 11520 independently computed named registers.
+They also check 43945 two-block cases, 42 threshold identities, an exact
+symbolic near-square identity, 243 majorant fixtures and 1728 finalizer
+fixtures. These finite checks audit data and implementation, not consistency.
+The complete proof and all limitations are in \path{PROOF.md}; provenance
+and imported dependencies are distinguished from the new mathematics.

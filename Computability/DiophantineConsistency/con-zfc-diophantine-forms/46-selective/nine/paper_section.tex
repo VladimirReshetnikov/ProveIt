@@ -1,0 +1,145 @@
+\section{Nine positive unknowns: a second improved equation}
+\label{sec:nine}
+The same support-selective source also improves the nine-variable Jones
+route.  Its primary circuit has nine strictly positive unknowns, exact
+total degree $19\,615\,180$, and $606$ binary arithmetic operations.  The
+equivalent version over nonnegative integers uses $609$ operations.  The
+previous package-45 positive equation has degree $129\,875\,980$ and $788$
+operations.  This is a reduction of approximately $84.9\%$ in degree and
+$23.1\%$ in operations, without changing the number of unknowns.
+
+Let the raw quadratic source, its weights and its targets be as above, and
+write $W=175$, $H=5148$, and $K=H+2W=5498$.  Set
+$M=2^{2140017}$ and $b_0=2^{2140030}=8192M$.  Initially take
+$\epsilon,\phi,n\geq0$ and $g,h,s,w,i,j>0$. Define
+\begin{align*}
+b&=b_0+\epsilon,& B&=b^3,& \ell&=\sum_{r=1}^{31}B^{w_r},\\
+N_0&=B^{W+1},&N_1&=4B^{K+1},&N&=N_0N_1,\\
+L&=N_0-1-(b-1)\ell,& Z&=\sum_{r=1}^{22}B^{E_r},\\
+T&=L+(B-2)ZN_0,&&&\\
+J_0&=2(1+\ell+g)^2\Dc(B)+B\sum_{r=0}^{K}B^r,&&&\\
+S&=g+J_0N_0,&R&=(N-1)((S+T+1)N+T+1),\\
+G_{\mathrm{cap}}&=32bB^W.&&&
+\end{align*}
+Every exponent is fixed.  The raw residuals are evaluated at positive
+digits $x_r=z_r+1$: the one added $\ell$ implements all thirty-one
+positivity shifts in the common convolution factor.
+
+The coefficient at the largest exponent of $\Dc$ is $2$, and all its other
+coefficients have absolute value below $M$. Hence $\Dc(B)>0$ unconditionally.
+The source therefore satisfies $R,N\geq8$ and $b\leq R,N$ before any
+equation is imposed. If $g<4bB^W$, then $1+\ell+g<5bB^W$, and the choice
+$b\geq8192M$ gives $0<S,T<N$.  With $b$ a power of two, the exact
+population-count identity
+\[
+\operatorname{popcount}(R)=2\log_2N+
+\operatorname{popcount}(S+T)-\operatorname{popcount}(S)
+-\operatorname{popcount}(T)
+\]
+shows that $N^2\mid\binom{2R}{R}$ is precisely the no-carry condition.
+Its low block encodes $g=\sum z_rB^{w_r}$ with $0\leq z_r<b$; its target
+blocks impose all the original positive quadratic equations simultaneously.
+Conversely, every positive parent solution permits arbitrarily large
+dyadic bases with $32g<G_{\mathrm{cap}}$.  The all-one parent assignment
+is not a zero, because its residual $a-E-sN$ equals $-1$, so $g>0$.
+
+All the numerical Jones bridge registers are as follows
+\cite{package45,jones}. The names $K_1,D_1,H_1$ distinguish these
+registers from the source exponent bound $K$, kernel $\Dc$, and maximum
+target $H$:
+\begin{align*}
+U&=N^2w,&Y_0&=N^2s,&M_0&=RY_0,\\
+P&=2M_0^2U,&K_1&=R+1+h(P-1),&A&=M_0(U+1),\\
+B_1&=2R+1,&W_1&=bw,&C&=B_1+W_1+\phi,\\
+J&=4A-5,&Q&=3W_1C-2(W_1^2-1),&&\\
+D_1&=(A^2-1)C^2+1,&E&=iJD_1C^2,&&\\
+F&=(A^2-1)E^2+1,&G&=A+F(CD_1+1-A),&&\\
+H_1&=B_1+jC,&I&=(G^2-1)H_1^2+1,&&\\
+a_0&=(P^2-1)K_1^2+1,&a_1&=D_1FI,&&\\
+u&=JF,&v&=QF+J(H_1-C).&&
+\end{align*}
+Define the margin polynomial
+\[
+m=K_1^2G_{\mathrm{cap}}
+ -4(C-K_1Y_0)^2G_{\mathrm{cap}}-8gK_1^2.
+\]
+Here $m$ is a polynomial register, not a tenth unknown.
+
+The hypotheses of \texttt{Jones1982.Nine.ratio\_sound} and
+\texttt{ratio\_complete} are $R,N\geq8$, $b\leq R,N$,
+$b,G_{\mathrm{cap}}>0$, $h,s,w,i,j>0$ and $\phi\geq0$.
+All have been supplied independently of the carry condition.
+Soundness states that $a_0,a_1$ squares, $u\mid v$, and $m>0$ imply
+that $b$ is a power of two, $N^2\mid\binom{2R}{R}$, and
+$8g<G_{\mathrm{cap}}$. The latter is exactly $g<4bB^W$, the
+interval needed by the source. Completeness starts with $b$ a power
+of two, the divisibility, and $32g<G_{\mathrm{cap}}$, and supplies
+$h,s,w,i,j,\phi$ satisfying the four arithmetic conditions.
+This is precisely the stronger interval supplied by a parent zero.
+No property of the Sun ten-integer bridge is used here.
+
+Set
+\[
+V_0=PK_1,\qquad V_1=(AC)(AE)(GH_1),\qquad M_d=Q+H_1.
+\]
+These registers are positive. The identities
+\begin{align*}
+V_0^2-a_0&=K_1^2-1>0,&(AC)^2-D_1&=C^2-1>0,\\
+(AE)^2-F&=E^2-1>0,&(GH_1)^2-I&=H_1^2-1>0
+\end{align*}
+give $0<a_0<V_0^2$ and $0<a_1<V_1^2$ on every outer assignment.
+Also $Q>0$, $H_1-C>0$, and
+$0<v/u=Q/J+(H_1-C)/F<M_d-1$.
+
+One polynomial combines these four conditions. Put
+\[
+\Omega=um,\qquad
+\Theta=u(n+M_d)+v-\Omega(2M_d+V_0V_1),
+\]
+and take
+\[
+\boxed{\bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+       -4\Omega^4V_0^2a_0a_1=0.}
+\]
+At $m=0$ its left side is nonzero. Otherwise its four-factor norm identity
+implies that a rational number is $r_0+V_0r_1$, with $r_t^2=a_t$.
+The strict majorant excludes a zero rational sum; the identity
+$2(r_0+V_0r_1)r_0=(r_0+V_0r_1)^2+a_0-V_0^2a_1$ then makes both roots
+integers. Their bounds give
+$2M_d+V_0V_1+r_0+V_0r_1\geq2M_d+1>0$, which forces $m>0$ and
+$u\mid v$.  The converse chooses $n$ from this same positive expression.
+Thus this finalizer has both the required soundness and completeness.
+
+To define the polynomial on nine \emph{positive} coordinates, replace
+$\epsilon,\phi,n$ throughout by their positive coordinates minus one,
+leaving $g,h,s,w,i,j$ positive. For the nine \emph{nonnegative} version,
+instead leave $\epsilon,\phi,n$ unchanged and replace each of
+$g,h,s,w,i,j$ by its nonnegative coordinate plus one. These are bijections
+with the mixed domain used in the proof. They establish the stated
+solvability equivalences; they do not justify an unrestricted-integer
+interpretation of this nine-variable equation.
+
+The full exact degree is
+\[
+1152t+12W+280=19\,615\,180,
+\qquad t=3(H+3W+2)=17\,025.
+\]
+The cancellation-resolved circuit proves this upper bound, and its
+all-variable diagonal has nonzero leading coefficient $2^{2050}$, proving
+equality. Its critical exact identity is
+\begin{align*}
+\Delta_V=V_1^2-a_1
+ ={}&(C^2-1)(AE)^2(GH_1)^2\\
+   &+D_1(E^2-1)(GH_1)^2+D_1F(H_1^2-1).
+\end{align*}
+Writing $E_0=u(n+M_d)+v-2\Omega M_d$, the inner polynomial of the
+final equation equals
+\[
+E_0^2-2E_0\Omega V_0V_1+\Omega^2V_0^2\Delta_V-\Omega^2a_0.
+\]
+Its uniquely highest degree is $576t+6W+140$, with diagonal coefficient
+$2^{1025}$. The final subtracted term has smaller degree than its square.
+The full proof is in \file{nine/PROOF.md}; the polynomial identity is
+independently replayed by the verifier. The source is explicit, while the
+finite audits are implementation checks, not a decision of consistency
+or a new end-to-end formal proof of the inherited compiler.

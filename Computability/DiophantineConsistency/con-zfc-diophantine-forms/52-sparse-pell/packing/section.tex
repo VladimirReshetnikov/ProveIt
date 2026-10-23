@@ -1,0 +1,93 @@
+\section{Sparse active isolation and overlapping target bands}
+The full $B_2$ requirement is unnecessarily strong. The shifted quadratic
+source has only $71$ distinct active monomials, although its universal
+quadratic expansion has $528$. We require each active monomial to be isolated
+from that expansion, but allow all irrelevant monomials to collide.
+
+Let $q_j=\sum_\alpha p_{j,\alpha}X^\alpha$ be the shifted residuals,
+$w(\alpha)=\sum_i\alpha_iw_i$, and
+$f(\alpha)=(2-|\alpha|)!\prod_i\alpha_i!$. Put
+\[
+ C_{\mathbf z}(T)=\left(1+\sum_i z_iT^{w_i}\right)^2,
+ \qquad D(T)=\sum_{j,\alpha}f(\alpha)p_{j,\alpha}
+                       T^{H_j-w(\alpha)}.
+\]
+All source exponents are nonnegative. Our exact finite separation condition is
+\[
+ H_j-w(\alpha)+w(\gamma)=H_k
+ \quad\Longleftrightarrow\quad j=k\ \hbox{and}\ \alpha=\gamma,
+ \tag{S}
+\]
+for every active source record $(j,\alpha)$, every monomial $\gamma$ of
+degree at most two, and every target $H_k$.
+
+\begin{theorem}[Sparse simultaneous extraction]
+Under \textup{(S)}, for every integer tuple $\mathbf z$,
+$[T^{H_j}](C_{\mathbf z}D)=2q_j(\mathbf z)$ for every $j$.
+Moreover, distinct source records occupy distinct exponents in $D$.
+If every weighted source coefficient is bounded in absolute value by $M$,
+then every coefficient of $D$ is so bounded, and for nonnegative $\mathbf z$
+every coefficient of $C_{\mathbf z}D$ is bounded by
+$M(1+\sum_i z_i)^2$.
+\end{theorem}
+\begin{proof}
+Expand the square retaining its formal multinomial labels, even if some
+irrelevant labels have the same exponent. Condition \textup{(S)} permits
+only the intended label at a target, whose multinomial multiplier
+$2/f(\alpha)$ cancels the weighting in $D$. If two source records occupied
+the same exponent, multiplying by either record's monomial would violate
+\textup{(S)} at its target. Hence source exponents are distinct.
+Finally the coefficients of $C_{\mathbf z}$ are nonnegative and sum to
+$(1+\sum_i z_i)^2$, giving the asserted convolution bound.
+\end{proof}
+
+The certified variable weights, in source order, are
+\[
+\begin{split}
+(&9,89,38,43,2,118,82,27,88,83,23,163,123,148,3,108,\\
+ &144,155,137,173,174,68,17,107,63,57,169,168,28,133,102).
+\end{split}
+\]
+Their maximum is $174$, versus $799$ previously. The $528$ monomials
+occupy only $265$ positions: this is deliberately not a Sidon set.
+All $71$ active monomials are nevertheless isolated. With rows ordered
+$1,2,3,4,6,\ldots,22,5$, regular targets $H_j=349j$ yield
+$D_{\max}=7678$ and $K_{\rm code}=8026$.
+
+An independently checked overlapping placement has targets
+\[
+\begin{split}
+(&63,3297,4744,1100,752,3094,2209,3586,912,4689,2437,\\
+ &4168,3833,2764,78,4364,425,1347,1548,1614,1882,5074),
+\end{split}
+\]
+yielding $D_{\max}=5074$ and $K_{\rm code}=5422$.
+In both cases the largest target belongs to shifted row $5$, whose constant
+coefficient is $1$, so $D$ has leading coefficient $2$ and is positive at
+all sufficiently large positive bases. The existing target mask uses only
+distinctness of its target positions, not their equal spacing. Thus the
+same no-carry theorem applies without an extra factor $22$ in its
+coefficient bound. Both layouts are retained because irregular exponent
+arithmetic can trade lower degree for more operations.
+
+The supplied standard-library verifier reconstructs the source symbolically
+and checks all $71\,808$ source-term/expansion pairs. The search itself is
+not trusted and no global optimality is claimed. An additional certified layout puts the padding position at $81$, with
+one variable position at $0$, and replaces $(1+g)^2$ by $(B^{81}+g)^2$.
+Its packed layout has $D_{\max}=4728$, $K_{\rm code}=5076$, and largest
+target $4890$. The leading coefficient remains $2$. The decoding and
+coefficient bounds are unchanged. Completeness still gives $g\ge b$:
+no source zero can be supported on its sole zero-position variable $i$,
+as shifted row $5$ is independent of $i$ and has constant $1$.
+All bounds use $D_{\max}$ rather than the largest target, which is different
+for interior padding. Full vectors and a checked translation-normalization
+certificate are included alongside the general proof.
+For the wider nine-variable witness interval $0\le g<4bB^W$,
+$B^{81}+g<(4b+1)B^W\le5bB^W$; for Sun's interval
+$0\le g<2bB^W$, the corresponding bound is $3bB^W$.
+Thus interior padding preserves the respective coefficient budgets.
+Uniformly raising all packed interior targets by $186$ makes their minimum
+$348=2W$, permitting a shared homogeneous evaluator with no negative powers.
+This multiplies $D$ by $T^{186}$, preserves every extraction identity, and
+gives $D_{\max}=4914$ and $K_{\rm code}=5262$. It is supplied as a separately
+verified degree--operation tradeoff.

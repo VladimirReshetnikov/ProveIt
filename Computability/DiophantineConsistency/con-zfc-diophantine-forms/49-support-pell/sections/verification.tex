@@ -1,0 +1,106 @@
+\section{Reproduction, evidence and remaining questions}\label{sec:verification}
+
+\subsection{Canonical objects in the archive}
+The mathematical definitions above are accompanied by machine-readable
+straight-line programs. Their variables, fixed coefficient bindings,
+ordered binary gates and output names make them exact polynomial
+specifications without requiring a fully expanded coefficient list.
+The principal files are as follows.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Object & Canonical file\\\midrule
+Nine positive & \file{nine/generated/multitarget_nine_positive.json}\\[3pt]
+Nine natural & \file{nine/generated/multitarget_nine_natural.json}\\[3pt]
+Ten integer & \file{data/polynomial.json}\\[3pt]
+Eleven, degree 990 & \file{eleven/generated/eleven_full_product.json}\\[3pt]
+Eleven, degree 994 & \file{eleven/generated/eleven_short_product.json}\\[3pt]
+Fifteen, degree 44 & \file{short/offset44.json}\\[3pt]
+Shared coefficients & \file{coefficients/COEFFICIENT_BINDING.json}\\[3pt]
+Extra packed leaves & \file{fixed/FIXED_LEAVES.json}\\[3pt]
+Complete audit driver & \file{verify_all.py}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Auxiliary systems, sum-of-squares variants and larger degree-certificate
+circuits are named separately. The current operation counts refer only
+to the canonical primary objects listed above.
+
+\subsection{What the finite audits establish}
+The driver runs mutually distinct checks of the relevant finite claims:
+\begin{enumerate}[leftmargin=*]
+\item An independent reconstruction of the four native integers from
+ the finite coefficient recipe and literal tiles, with byte-level hashes.
+\item Exhaustive enumeration of all 528 padded pair sums, isolation of
+ all 71 active pairs, and a deliberately invalid-label negative control.
+\item Exact symbolic reconstruction of both quadratic parent systems
+ and all 44 extraction identities, retaining the native ports as
+ independent polynomial symbols. The transport shift is checked explicitly.
+\item Exact reconstruction and hash checks of all 33 additional fixed
+ leaves, with the coefficient bounds needed in the carry arguments.
+\item Gate ordering, permitted operations, witness and coefficient
+ bindings, complete liveness, and the claimed operation ledgers.
+\item Exact algebraic identities used for norm cancellation and the
+ short sum-of-squares form, together with independently evaluated
+ full formulas. Finite modular evaluations supplement these identities.
+\item Degree upper bounds from cancellation-resolved expressions and
+ nonzero leading forms. The eleven-variable audit computes complete
+ polynomial rays modulo primes with the actual fixed coefficients;
+ the article supplies the accompanying symbolic degree argument.
+\end{enumerate}
+Every check uses explicit error conditions that remain active under
+\texttt{python3 -O}; the result does not depend on Python assertions
+remaining enabled. The audits were run both normally and in optimized
+mode where specified by the combined driver.
+
+The nine-, ten- and fifteen-variable finite auditors use the Python
+standard library. NumPy is used only for the eleven-variable univariate
+polynomial-ray checks; the tested version is recorded in the combined
+receipt. The single command
+\begin{quote}\ttfamily
+python3 verify\_all.py
+\end{quote}
+repeats the audits from an extracted archive. To compile this article,
+run \texttt{pdflatex -interaction=nonstopmode -halt-on-error report.tex}
+twice from its root directory. A \file{Makefile} provides both targets.
+
+These programs do not exhaust unbounded witnesses, prove the compiler
+semantics by testing, or settle consistency. Their role is to make the
+literal data and finite algebra independently reviewable. The new
+mathematical proofs use explicitly identified inherited compiler and
+number-theoretic results, all formalizable in the arithmetic available
+in ZFC. No Lean or Rocq build was performed for the new polynomials.
+
+\subsection{Next mathematical improvements worth testing}
+The support theorem suggests several concrete directions.
+First, one can search for shorter label vectors, with an independent
+checker for active-pair isolation unchanged. The present $W=200$
+certificate has no accompanying optimality proof. Its dependence is
+explicit:
+\[
+ \deg F_9=162444W+79768,\qquad
+ \deg F_{10}=297088W+147144
+\]
+for this uniform-target construction and the same leading-source
+conditions. Hence each unit removed from the maximum label saves a
+known number of degrees. It does not necessarily save arithmetic gates,
+because addition chains depend on the actual exponent set.
+
+Second, the uniform target gap $2W+1$ is sufficient but may be wasteful.
+One could use the actual difference sets of the row supports to place
+targets more tightly, provided every cross-row interference term is
+excluded and the off-target carry bound is reproved. Third, an equivalent
+quadratic source with a different support graph may admit smaller labels
+even if its number of equations changes. These are optimization questions
+about a finite certified interface, not a search over unverified compiler
+semantics.
+
+For the eleven-variable route, the useful new quantity is the relative
+error between $I\sqrt{G}$ and $c\sqrt{D}$. Retaining such a difference
+before introducing coarse absolute bounds may permit further combined
+eliminations. For coefficient size, any smaller coherent tuple must be
+substituted as a whole and all source magnitude estimates recomputed;
+the current archive deliberately uses one authenticated tuple throughout.
+Finally, an explicit formal bridge from the materialized native compiler
+to the syntactic proof predicate would strengthen certification without
+changing these arithmetic optimization questions.

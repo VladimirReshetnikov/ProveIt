@@ -1,0 +1,133 @@
+Let \(t=\deg N=3(H_*+3W+2)\). Thus \(t=25\,308\) for uniform targets
+and \(t=18\,942\) for overlapping targets. All degrees below are
+multivariate total degrees. A \emph{leader} is the leading coefficient
+after substituting the same indeterminate for all nine coordinates.
+A nonzero such coefficient proves that the multivariate upper bound
+is attained. Successor/predecessor domain shifts leave these leaders unchanged.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule Register & Degree & Diagonal leader\\\midrule
+\(N\) & \(t\) & \(2^2\)\\
+\(R\) & \(3t\) & \(2^4\)\\
+\(P\) & \(12t+3\) & \(2^{21}\)\\
+\(A\) & \(7t+2\) & \(2^{12}\)\\
+\(C\) & \(3t\) & \(2^5\)\\
+\(D\) & \(20t+4\) & \(2^{34}\)\\
+\(e\) & \(10t+3\) & \(2^{19}\)\\
+\(L\) & \(23t+4\) & \(2^{39}\)\\
+\(F\) & \(80t+18\) & \(2^{140}\)\\
+\(G\) & \(103t+22\) & \(2^{179}\)\\
+\(H\) & \(3t+1\) & \(2^5\)\\
+\(a_0\) & \(48t+14\) & \(2^{84}\)\\
+\(a_1=DFI\) & \(312t+68\) & \(2^{542}\)\\
+\(\Omega\) & \(115t+3W+31\) & \(-2^{211}\)\\
+\(T\), principal majorant & \(153t+33\) & \(2^{277}\)\\
+\(V\), principal majorant & \(156t+34\) & \(2^{282}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A polynomial certificate for the hidden cancellation}
+Use \(t_6,d_5,r_k,\mathcal N,L,c_*\) from the majorant proof and define
+\[
+ R_*=
+ e(64r_1D^3+40r_2D^2+28r_3D+21r_4)+c_*D^4 .
+\]
+Then \(D^4T=e\,t_6\mathcal N+R_*\), and the following are exact
+integer-polynomial identities:
+\begin{align}
+ \Delta_T:={}&D^8(T^2-\lambda^2DFG^2)\notag\\
+ ={}&e^2d_5\mathcal N^2
+ +1024^2D^8\bigl(X_*L^2-4DG(CD+1)\bigr)\notag\\
+ &\quad+2e\,t_6\mathcal N R_*+R_*^2,\label{eq:deltaT}\\
+ \Delta_V:={}&D^8(V^2-\lambda^2a_1)\notag\\
+ ={}&H^2\Delta_T+\lambda^2DFD^8(H^2-1)
+              +D^8(2THB_g+B_g^2).\label{eq:deltaV}
+\end{align}
+Here \(X_*=e^2D^3(D-1)\). The term
+\(X_*\mathcal N^2-4(X_*+D)G^2\) simplifies to
+\(X_*L^2-4DG(CD+1)\); this is the essential cancellation
+in \eqref{eq:deltaT}.
+
+The respective degree bounds of the four summands in
+\eqref{eq:deltaT} are
+\[
+326t+70,\quad306t+62,\quad333t+72,\quad200t+46.
+\]
+For the third bound, \(\deg R_*=100t+23\), with a positive leading
+coefficient supplied by \(c_*D^4\). Its term uniquely dominates.
+Since \(\deg D^8=160t+32\), we have
+\[
+\deg(T^2-\lambda^2DFG^2)=173t+40.
+\]
+After multiplication by \(H^2\), that becomes \(179t+42\).
+In \(V^2-\lambda^2a_1\), however, the padding cross term \(2THB_g\)
+has degree \(180t+40\), which is greater because \(t>2\).
+Its leader is
+\(2\cdot2^{282}\cdot2^{43}=2^{326}\).
+All other terms have smaller degree. Thus
+\[
+ \deg(V^2-\lambda^2a_1)=180t+40,\qquad
+ \operatorname{lc}_{\rm diag}(V^2-\lambda^2a_1)=2^{326}.
+\]
+
+Let \(E_0=u(n+M_d)+v-2\Omega M_d\). The inner norm has the exact expansion
+\[
+ \Theta^2-\Omega^2(a_0+h^2b_1)
+ =E_0^2-2E_0\Omega hV
+       +\Omega^2h^2(V^2-b_1)-\Omega^2a_0.
+\]
+The third term uniquely dominates: its degree is \(410t+6W+104\)
+and its diagonal leader is \(2^{748}\). Squaring produces degree
+\(820t+12W+208\) and leader \(2^{1496}\).
+The subtracted norm term has the \emph{same} degree and leader
+\(2^{1494}\). Therefore
+\[
+ \boxed{\deg F_9=820t+12W+208,\qquad
+        \operatorname{lc}_{\rm diag}F_9=3\cdot2^{1494}.}
+\]
+This proves exact degree, not merely a syntactic upper bound.
+It also explains the doubled padding \(B_g\): padding only by \(B_*+1\)
+would make the two highest terms cancel.
+
+\subsection{What the certificate graph evaluates}
+The primary graph evaluates exactly \(F_9\). The principal degree
+certificate graph instead evaluates \(D^{16}F_9\), through
+\[
+ \left[
+ D^8(E_0^2-2E_0\Omega hV-\Omega^2a_0)
+ +\Omega^2h^2\Delta_V
+ \right]^2
+ -4D^{16}\Omega^4h^2a_0b_1.
+\]
+This avoids division while exposing every required cancellation.
+Its exact degree is \(1140t+12W+272\) and its diagonal leader is
+\(3\cdot2^{2038}\). Subtracting the known degree of \(D^{16}\)
+recovers the primary degree. The certificate graph is not substituted
+for the delivered equation.
+
+The V8 graph uses an equal-polynomial certificate instead. Its displayed
+defect has degree \(252t+56\) and diagonal leader \(2^{443}\).
+Consequently
+\[
+ \deg F_{9,\mathrm{V8}}=964t+12W+240,\qquad
+ \operatorname{lc}_{\rm diag}F_{9,\mathrm{V8}}=2^{1730}.
+\]
+
+\subsection{Unchanged-finalizer comparison and modular receipts}
+For the source replacements with the inherited finalizers, the degree
+formulas are
+\begin{align*}
+ \deg F_{9,\mathrm{inherited}}&=3456H_*+10380W+7192,\\
+ \deg F_{10}&=6320H_*+19016W+12992.
+\end{align*}
+The inherited-finalizer graphs and their nonzero leading coefficients are
+independently replayed modulo \(1\,000\,000\,007\), \(1\,000\,000\,009\), and
+\(998\,244\,353\). The refined graphs use \(1\,000\,003\),
+\(1\,000\,033\), and \(1\,000\,000\,007\).
+A single nonzero residue at a proved multivariate upper bound suffices
+for exactness; the three receipts provide additional cross-checks.
+For the principal nine-variable graph the symbolic degree calculation
+above also supplies an exact integer leader.
+

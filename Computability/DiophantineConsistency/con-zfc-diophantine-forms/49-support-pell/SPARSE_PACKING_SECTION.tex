@@ -1,0 +1,143 @@
+\section{Support separation instead of full Sidon separation}
+
+The current wave-6 constructions encode a system of twenty-two quadratic
+residuals in thirty-one source coordinates.  Their positional code separates
+all $\binom{33}{2}=528$ homogenized quadratic monomials, although only
+seventy-one distinct monomials occur in the residuals.  The following
+weaker condition is sufficient and admits a substantially shorter explicit
+code.
+
+\paragraph{Definition.}
+Let $p_1,\ldots,p_r\in\mathbb Z[X_1,\ldots,X_n]$ have degree at most two.
+Pad a monomial of degree less than two by copies of $X_0=1$, and let
+$\mathcal A$ be the union of the resulting supported unordered pairs.
+Weights $w_0=0,w_1,\ldots,w_n$ are \emph{support separating} if, for every
+$(i,j)\in\mathcal A$, the equality
+$w_i+w_j=w_k+w_l$ with $0\le k\le l\le n$ implies $(i,j)=(k,l)$.
+No condition is imposed on a sum shared only by unsupported pairs.
+Uniqueness merely among supported pairs would be insufficient.
+
+\paragraph{Support extraction theorem.}
+Write $W=\max_iw_i$, choose
+$E_j=2W+(j-1)(2W+1)$, and put
+\[
+ p_j(X)=\sum_{|\alpha|\le2}a_{j,\alpha}X^\alpha,\qquad
+ c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,a_{j,\alpha}.
+\]
+Define
+\[
+ D(Z)=\sum_{j,\alpha}c_{j,\alpha}Z^{E_j-\alpha\cdot w},
+ \qquad C_X(Z)=\left(1+\sum_iX_iZ^{w_i}\right)^2.
+\]
+Then
+\[
+ [Z^{E_j}]C_X(Z)D(Z)=2p_j(X)\qquad(1\le j\le r).
+\]
+If every $|c_{j,\alpha}|\le M$, then for nonnegative $X_i$ every
+coefficient of $C_XD$ has absolute value at most
+$M(1+\sum_iX_i)^2$.
+
+\paragraph{Proof.}
+At the sum of a supported padded pair, support separation identifies exactly
+one unordered pair in $C_X$. Its multinomial coefficient is canceled by the
+factorial in $c_{j,\alpha}$. A contribution from a different row would equate
+a nonzero target difference, of absolute value at least $2W+1$, to a
+difference of two pair sums, of absolute value at most $2W$. This is
+impossible. The reversed row kernels lie in disjoint intervals
+$[E_j-2W,E_j]$, so every coefficient of $D$ is bounded by $M$.
+The coefficients of $C_X$ are nonnegative even when unsupported pairs
+collide, and their sum is $C_X(1)=(1+\sum_iX_i)^2$. Convolution proves the
+last bound. This also explains why collisions away from the tested digits
+do not create a hidden carry problem.\hfill$\square$
+
+\subsection{The explicit certificate}
+
+In the parent coordinate order
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\mathrm{aux}},\Delta,
+\end{gathered}
+\]
+take the weights
+\[
+\begin{split}
+(w_1,\ldots,w_{31})={}&(200,199,193,166,11,57,125,37,93,113,153,16,\\
+&158,192,120,64,139,198,144,23,15,43,18,165,179,\\
+&112,10,44,117,71,119).
+\end{split}
+\]
+The exhaustive certificate finds $285$ distinct sums among $528$ pairs,
+with $130$ collided sum positions and maximum multiplicity seven.
+Nevertheless all $71$ supported pairs are uniquely represented among all
+$528$ pairs. Thus this is deliberately not a Sidon set. The literal vector
+and exhaustive check, rather than its heuristic discovery method, certify
+the construction.
+
+The largest weight is $W=200$, compared with $799$ in the inherited code.
+For $r=22$, the targets are $400+401j$ for $0\le j\le21$, their maximum
+is $8821$, and the product support bound is $9221$. The exact symbolic
+audit checks the forty-four extraction identities for the two inherited
+parent coordinate conventions, with all four native ports left symbolic.
+Those parents differ by the explicitly checked transport shift
+$z_{\rm old}=z+1$; their supports coincide.
+
+\subsection{The resulting equations and exact metrics}
+
+The nine-variable source uses the existing coherent package-31 tuple,
+$b=2^{2134939}+\epsilon$, $B=b^3$,
+$N_0=B^{201}$, $N_1=4B^{9222}$ and $N=N_0N_1$.
+Its coefficient kernel is the $D(B)$ above. All carry bounds and the
+numerical Jones ratio hypotheses are preserved by the support-extraction
+theorem. The inherited finalizer remains the polynomial
+\[
+ F_9=\bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+       -4\Omega^4V_0^2a_0a_1.
+\]
+Its full arithmetic registers and fixed coefficient recipes appear in
+the accompanying proof and literal division-free DAG. They are
+abbreviations, not additional unknowns. The positive domain uses the
+usual successor translations of $\epsilon,\phi,n$; it must not be
+reinterpreted as an equation over unrestricted integers.
+
+With $t=\deg N=3(8821+3\cdot200+2)=28269$, the inherited exact
+cancellation analysis gives
+\[
+ \deg F_9=1152t+12W+280=32\,568\,568.
+\]
+The diagonal leading coefficient is $2^{2050}\ne0$. The cancellation
+is resolved by the exact identity
+\[
+\begin{split}
+ V_1^2-DFI={}&(C^2-1)(AE)^2(GH)^2\\
+ &+D(E^2-1)(GH)^2+DF(H^2-1),
+\end{split}
+\]
+which is also checked by symbolic coefficient comparison.
+The primary positive evaluator has $652$ live binary operations;
+the translated natural evaluator has $655$.
+
+The unchanged Sun finalizer with the corresponding package-40 source
+produces a ten-unrestricted-integer companion of exact degree
+$59\,564\,744$, with $653$ operations. The whole native coefficient
+tuple is retained. This companion additionally imports the external
+number-theoretic results identified in the inherited ten-integer proof.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Construction & Unknowns & Degree & Operations\\
+\hline
+Wave-6 package 45 & $9$ positive & $129\,875\,980$ & $788$\\
+Support-separated Jones & $9$ positive & $32\,568\,568$ & $652$\\
+Wave-6 package 40 & $10$ integers & $237\,520\,456$ & $782$\\
+Support-separated Sun & $10$ integers & $59\,564\,744$ & $653$\\
+\hline
+\end{tabular}
+\end{center}
+
+These are matching-domain relative improvements, not global minimum
+claims. The new support theorem and exact finite certificates preserve
+the inherited ordinary compiler equivalence. They do not supply a new
+end-to-end Lean/Rocq proof of the explicit native compiler, nor decide
+the consistency statement itself.

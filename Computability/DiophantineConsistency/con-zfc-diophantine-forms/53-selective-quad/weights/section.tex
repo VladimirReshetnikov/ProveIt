@@ -1,0 +1,304 @@
+\section{Selective quadratic isolation with sparse target padding}
+\label{sec:selective-isolation}
+
+This section proves the new source encoding, independently of the
+number-theoretic finalizers.  Its only finite input is the explicit tuple
+in \texttt{code\_v1.json} and the 22 source residuals identified below.
+The proof does not assume a full Sidon ($B_2$) property, disjoint source
+intervals, or any unverified output of the search program.
+
+\subsection{The exact source and coefficient convention}
+Let $r_1,\ldots,r_{22}$ be the quadratic residuals of the original
+package31 positive-variable source.  Every original variable $X_i$ is
+replaced by $x_i+1$, where $x_i\in\mathbb N=\{0,1,\ldots\}$.
+We use the following coordinate order:
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\mathsf N,\mathsf E,\mathsf P,c,a,\\
+X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta.
+\end{gathered}
+\]
+Here the displayed names label source coordinates, not the variables of a
+final nine- or ten-variable polynomial.  In this section the coefficients
+may first be regarded as elements of
+$\mathbb Z[\beta,K_0,M_C,M_F]$; the final construction must substitute its
+specified, fixed compiler tuple.  These four symbols are not additional
+Diophantine unknowns.  The isolation identities below hold under every
+integer specialization of the ports.
+
+The exact source bytes are \texttt{upstream\_parent\_quartic31.json},
+fetched from repository commit
+\begin{center}\texttt{124c07c0b77a9e20e84676514d8b1ff78536ea3f}.\end{center}
+The accompanying \texttt{SOURCE\_PINS.json} records repository paths,
+SHA-256 hashes and Git blob hashes.  The selected source is the original
+positive-transport version, not a silent substitution of package45's
+transport variant.  After shifting coordinates, package45's row 15 is
+precisely the selected row 15 minus $\beta(x_J+1)$.  Thus its weighted
+constant coefficient differs by $-2\beta$, and its weighted $x_J$
+coefficient by $-\beta$; the other weighted coefficients agree.
+All 136 supports are the same.  The checker verifies this exact difference.
+
+\subsection{A support-selective isolation theorem}
+For $n$ coordinates write
+\[
+ r_k(x)=\sum_{\alpha\in S_k}p_{k,\alpha}x^\alpha,
+ \qquad |\alpha|\leq2.
+\]
+Choose distinct positive integer weights $w_1,\ldots,w_n$ and set
+$w_0=0$.  Pad each multi-index $\alpha$ with $2-|\alpha|$ copies of
+index 0 to obtain an unordered pair.  This is a bijection between
+multi-indices of degree at most two and the $\binom{n+2}{2}$ unordered
+pairs from $\{0,\ldots,n\}$.  Put $e(\alpha)=\sum_i\alpha_iw_i$.
+Choose distinct targets $q_k\in\mathbb N$ satisfying
+\begin{align}
+ q_k-e(\alpha)&\geq0 &&(\alpha\in S_k),\label{eq:selective-nonnegative}\\
+ q_k-e(\alpha)+e(\gamma)=q_j
+ &\ \Longrightarrow\ k=j\ \text{and}\ \alpha=\gamma
+ &&(\alpha\in S_k,\ |\gamma|\leq2).\label{eq:selective-isolation}
+\end{align}
+Only the first monomial in this condition is required to occur in a
+residual.  Distinct absent monomials are allowed to have equal weights.
+Define
+\[
+ f_\alpha=(2-|\alpha|)!\prod_i\alpha_i!,\qquad
+ c_{k,\alpha}=f_\alpha p_{k,\alpha},\qquad
+ D(t)=\sum_{k,\alpha\in S_k}c_{k,\alpha}t^{q_k-e(\alpha)},
+\]
+and $C_x(t)=(1+\sum_i x_i t^{w_i})^2$.
+Then, identically in all the $x_i$ and all coefficient ports,
+\begin{equation}
+ [t^{q_j}]C_x(t)D(t)=2r_j(x).\label{eq:selective-extraction}
+\end{equation}
+Indeed, the contribution from monomial $x^\gamma$ in the square has
+multinomial coefficient $2/f_\gamma$.  Condition
+\eqref{eq:selective-isolation} permits it to reach target $q_j$ only when
+$k=j$ and $\gamma=\alpha$.  Its product with $f_\alpha p_{j,\alpha}$
+is $2p_{j,\alpha}$.  Summing proves the identity, including all signs.
+This argument is a polynomial identity, not a test on bounded witnesses.
+
+\paragraph{The coefficient bound does not acquire a factor 22.}
+The reversed exponents $q_k-e(\alpha)$ are injective.  To see this, suppose
+$q_k-e(\alpha)=q_j-e(\gamma)$ with $\alpha\in S_k$ and
+$\gamma\in S_j$.  Adding $e(\gamma)$ makes the left side reach $q_j$;
+\eqref{eq:selective-isolation} forces $k=j$ and $\alpha=\gamma$.
+Consequently, after fixing the integer ports, if
+$A=\max_{k,\alpha}|c_{k,\alpha}|$, each coefficient of the entire
+polynomial $D$ has magnitude at most $A$.  For $x_i\geq0$,
+\begin{equation}
+ \bigl|[t^s]C_x(t)D(t)\bigr|
+ \leq A\left(1+\sum_i x_i\right)^2.\label{eq:selective-bound}
+\end{equation}
+For a fixed coefficient of the product, sum over the nonnegative
+coefficients of $C_x$ and use the bound $A$ for the single corresponding
+coefficient of $D$.  Their sum is $C_x(1)$.  Collisions between absent
+monomials in $C_x$, or overlaps between source intervals, do not change
+this argument.
+
+\paragraph{Leading coefficient and positivity.}
+Let $M=\max_i w_i$ and $Q=\max_kq_k$.  In the explicit certificate the
+unique row at target $Q$ is original row 5.  Its shifted polynomial is
+\[
+ r_5(x)=1+2x_E-x_a+x_Ex_X-x_ax_X.
+\]
+It has constant coefficient 1.  Positivity of every input weight implies
+that the coefficient of $t^Q$ in $D$ is exactly 2, and no term has higher
+degree.  If $B>A+1$, then
+\[
+ \left|\sum_{s<Q}[t^s]D(t)B^s\right|
+ \leq A\frac{B^Q-1}{B-1}<B^Q,
+ \qquad D(B)>0.
+\]
+Also $D(B)<2AB^Q$ for $B\geq2$.  Row 5 shows that the all-zero source
+vector is not a common zero.  These facts hold independently of the
+values of the fixed ports.
+
+\subsection{The explicit frozen certificate}
+The weight vector, including its padding coordinate, is
+\[
+\begin{aligned}
+(w_0,\ldots,w_{31})={}&(0,9,25,23,139,35,151,168,21,91,181,94,52,150,180,7,\\
+&135,38,88,183,106,178,136,20,138,8,64,105,154,37,137,120).
+\end{aligned}
+\]
+The row order and corresponding targets are
+\[
+\begin{array}{r|rrrrrrrrrrr}
+ k&16&2&9&14&21&7&15&22&13&3&19\\
+ q_k&70&86&451&685&1050&1296&1530&1874&2212&2358&2696\\[2pt]
+\hline
+ k&20&1&10&17&8&4&6&11&18&12&5\\
+ q_k&2780&2792&3157&3290&3634&3929&4238&4384&4527&4865&5190
+\end{array}
+\]
+Thus
+\[
+ M=183,\qquad Q=5190,\qquad H=Q+2M=5556,
+ \qquad (M+1)+(H+1)=5741.
+\]
+There are 71 marked padded pairs: the 32 constant/linear pairs and
+39 genuine quadratic pairs.  The 22 row term counts, in original row
+order, are
+\[
+ (4,5,5,6,5,8,6,8,8,4,3,6,9,17,10,3,6,6,4,3,4,6),
+\]
+with sum 136.  Of all 528 padded pairs, only 267 different integer
+pair sums occur.  For example,
+$w_1+w_3=9+23=25+7=w_2+w_{15}$; both pairs are absent from the source.
+Therefore this is genuinely not a full $B_2$ set.  The overlapping
+intervals, including targets only 12 apart, are intentional.
+
+The byte-level canonical identifier for \texttt{code\_v1.json} is
+\begin{center}\small
+\texttt{53cfdccbb252fd3f6ebe87ae0bb9dad8b2fdfc8c6168f668029add30ed339e25}.
+\end{center}
+No seed, random choice, optimizer or search executable remains in the
+mathematical specification.  A deterministic finite tuple is part of the
+equation, rather than an existential claim that some suitable tuple exists.
+
+\subsection{Sparse target padding: one bit absorbs incoming borrow}
+The same selective code permits a smaller source wrapper than dense
+centering.  Let $B\geq4$ be a power of two and let
+\[
+ F(t)=\sum_{s=0}^H a_st^s\in\mathbb Z[t],\qquad
+ |a_s|<B/4,\qquad F(B)>0.
+\]
+For a target set $\mathcal Q\subseteq\{0,\ldots,H\}$ put
+\[
+ A_{\mathcal Q}=\sum_{q\in\mathcal Q}B^q,\qquad
+ J=2F(B)+A_{\mathcal Q}.
+\]
+Then
+\begin{equation}
+ \tau_2\bigl(J,(B-2)A_{\mathcal Q}\bigr)=0
+ \quad\Longleftrightarrow\quad
+ a_q=0\quad\hbox{for all }q\in\mathcal Q,\label{eq:sparse-carry}
+\end{equation}
+where $\tau_2(u,v)=0$ means that binary addition of the nonnegative
+integers $u,v$ is carry-free.
+
+For completeness, write $\delta_s=1$ at a target and 0 elsewhere, and
+form the signed carry recurrence
+\[
+ c_0=0,\quad
+ c_{s+1}=\left\lfloor\frac{2a_s+\delta_s+c_s}{B}\right\rfloor,
+ \quad d_s=2a_s+\delta_s+c_s-Bc_{s+1}.
+\]
+Induction gives $c_s\in\{-1,0\}$ and $0\leq d_s<B$: the numerator
+lies strictly between $-B$ and $B$.  Because $J>0$, telescoping forces
+the final carry $c_{H+1}=0$; otherwise
+$J=\sum_{s=0}^H d_sB^s-B^{H+1}<0$.  Thus the $d_s$ are the actual
+base-$B$ digits of $J$.
+
+At a target the mask digit is $B-2$, whose binary digits forbid all bits
+except the least significant bit.  Hence carry-freeness requires
+$d_s\in\{0,1\}$.  If the outgoing carry were $-1$, the numerator would
+be $d_s-B\leq1-B$, contradicting
+$2a_s+1+c_s>-B/2-1\geq1-B$.  The outgoing carry is therefore zero.
+Now $2a_s=d_s-1-c_s$, and the only even integer allowed by
+$d_s\in\{0,1\}$ and $c_s\in\{-1,0\}$ is 0.  Conversely, $a_s=0$
+gives $d_s=1+c_s\in\{0,1\}$ and outgoing carry zero.  This proves
+\eqref{eq:sparse-carry}; in particular, an incoming borrow cannot produce
+a false zero test.  No test is imposed on an absent target.
+
+\subsection{Source wrapper and size estimates before power-of-two decoding}
+Choose an integer $b\geq1$ and an integer base
+$B>4096Ab^2$.  This assumption is a numerical coefficient majorant,
+not yet a power-of-two assumption.  Define
+\[
+\begin{aligned}
+ \ell&=\sum_{i=1}^{31}B^{w_i},& A_{\mathcal Q}&=\sum_{k=1}^{22}B^{q_k},\\
+ N_0&=B^{M+1},&N_1&=B^{H+1},\\
+ N_{\rm src}&=N_0N_1=B^{5741},&\mathcal C&=bB^M,\\
+ M_0&=N_0-1-(b-1)\ell,&J(g)&=2(1+g)^2D(B)+A_{\mathcal Q},\\
+ S(g)&=g+N_0J(g),& T&=M_0+N_0(B-2)A_{\mathcal Q}.
+\end{aligned}
+\]
+For every integer $0\leq g<2\mathcal C$, all of these expressions
+needed by the no-carry test are nonnegative, with $J(g),T>0$, and
+\begin{equation}
+ S(g)+T<N_{\rm src}.\label{eq:source-pair-bound}
+\end{equation}
+Indeed, $B>2b$ implies $g<N_0$, and the base-$B$ digits of $M_0$ are
+$B-b$ at the distinct marked input positions and $B-1$ elsewhere, so
+$0\leq M_0<N_0$.  As $g$ is integral, $1+g\leq2bB^M$.  Consequently
+\[
+ 0<2(1+g)^2D(B)<16Ab^2B^H<N_1/256.
+\]
+Furthermore, using $M\geq1$,
+\[
+ (B-1)A_{\mathcal Q}\leq B^{Q+1}-1<N_1/B^2.
+\]
+It follows that
+\[
+ S(g)+T<N_0\left(2+N_1/256+N_1/B^2\right)<N_0N_1.
+\]
+The last inequality follows already from $B\geq4$ and $N_1\geq4$.
+These estimates hold before any bridge has deduced that $b$ is a power
+of two.  They therefore do not introduce circular reasoning into that
+bridge.  The displayed $N_{\rm src}$ has no factor 4; the old dense-padding
+wrapper $4B^{5741}$ is not the wrapper used here.
+
+If now $b$ and $B$ are powers of two, binary carry-freeness of $g$ and
+$M_0$ is equivalent to a unique representation
+\[
+ g=\sum_{i=1}^{31}x_iB^{w_i},\qquad 0\leq x_i<b.
+\]
+The mask $B-b$ allows precisely the lowest $\log_2 b$ bits in each
+marked cell and no bits in an unmarked cell.  For this representation,
+$(1+g)^2D(B)=C_x(B)D(B)$.  By \eqref{eq:selective-bound},
+\[
+ |a_s|\leq A\bigl(1+31(b-1)\bigr)^2
+ \leq A(31b)^2<B/4.
+\]
+The low and high words split at the power of two $N_0$.  Combining the
+low-word mask, \eqref{eq:sparse-carry} and
+\eqref{eq:selective-extraction} proves
+\[
+ \tau_2\bigl(S(g),T\bigr)=0
+ \quad\Longleftrightarrow\quad
+ \begin{cases}
+ g=\sum_i x_iB^{w_i},\quad 0\leq x_i<b,\\
+ r_1(x)=\cdots=r_{22}(x)=0.
+ \end{cases}
+\]
+A common source zero is nonzero because $r_5(0)=1$.  Choosing $b$ from
+any cofinal allowed power-of-two family larger than every $x_i$ gives
+$B\leq g<\mathcal C$, since all weights are positive and distinct.
+Thus the usual cofinal source-witness requirement is preserved.
+The arithmetic finalizers must still prove their own bridge hypotheses,
+fixed coefficient specialization and final variable-domain equivalences.
+
+\subsection{Independent finite verification and limits}
+The standard-library program \texttt{verify\_selective.py} performs the
+following checks without executing any upstream code or search binary:
+\begin{enumerate}
+\item Check source SHA-256 and Git blob hashes against the current pinned
+repository receipts, and the frozen code's exact byte hash.
+\item Parse all 22 parent residual formulas, including affine
+abbreviations, in an independently implemented sparse polynomial ring;
+compare them with the supplied sparse terms.
+\item Apply the 31 binomial shifts, verify every weighted coefficient in
+\texttt{source\_support.json}, and compare all 136 terms to package45
+with precisely the two row-15 corrections described above.
+\item Enumerate all $136\cdot528=71\,808$ source-term/padded-pair
+interactions.  Exactly 136 land at marked targets, each at its intended
+row and monomial.  Reconstruct the 22 formal target polynomials and
+verify that each is twice its residual.
+\item Check all reversed exponents are nonnegative and distinct, the
+leading coefficient is 2, and the displayed maxima are exact.
+\end{enumerate}
+The replay command is \texttt{python3 verify\_selective.py}; it also
+passes with Python's \texttt{-O} switch, because validity checks do not
+use removable assertions.  The finite certificate supplies the complete
+finite premise of the isolation proof.  It does not purport to prove the
+inherited machine compiler or the Sun/Jones number-theoretic theorems.
+
+The maximum target decreases from the package45 value 35178 to 5190,
+and the maximum input weight from 799 to 183.  These are source exponent
+spans, not final polynomial degrees or operation counts; those metrics
+must be computed from each compiled finalizer.  The tuple is not claimed
+globally optimal.  The construction gives no new proof of
+$\operatorname{Con}(\mathrm{ZFC})$, and no assertion that the consistency
+question has been decided.  Its contribution is an explicit, rigorously
+checkable support-selective code and a sparse padding lemma that can be
+composed with the separately stated consistency-to-source theorem.
