@@ -47,7 +47,8 @@ frontier is now:**
 - **the smallest native tuple binding an equation**, B = 2^429959 (54,
   unchanged).
 
-The report holds thirty-seven AI-assisted research packages:
+The report holds thirty-seven research packages, all but 60 and 66
+stating AI assistance:
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -90,20 +91,23 @@ The only requirement is the theorem itself:
 A route of its own must state and prove its own calibration, as carefully as
 the K215 endpoint does here.
 
-Most packages so far derive from K215 and Jones (or Sun), and the next
-section describes that common route. That is a fact about the existing
-packages, not a rule. They reuse it because this repository has checked
-infrastructure for it: the K215 endpoint in Lean and Rocq, and the Lean
-development of Jones's reduction.
+Every finished equation so far encodes the K215 blank run through the
+native compiler, and most also use Jones's reduction or Sun's;
+[The common theorem](#the-common-theorem) below describes that route. That
+is a fact about the existing packages, not a rule. Part of the route has
+checked infrastructure here: the K215 endpoint in Lean and Rocq, and the
+Lean development of Jones's reduction. The compiler and the Diophantine
+bridge are not formalized.
 
 Other routes in the repository:
-- **Explored by packages.** Wave 9's 66 and 67 explore routes past K215 and
-  Jones (see the wave-9 section below).
+- **Explored by packages.** Wave 9's 60, 66 and 67 discuss routes past K215
+  and Jones (see the wave-9 section below).
 - **In the active research.** It records its own alternatives in
   [ALTERNATIVE_ENCODINGS.md](../ALTERNATIVE_ENCODINGS.md). These include a
   Lean-checked direct quartic for syntactic ZFC refutability that skips the
   Jones compression (`DirectQuarticZFC.noNaturalZero_iff_conZFC`, at
-  `da269a4f57`).
+  `da269a4f57`). Its variable and operation counts are not yet measured,
+  and the theorem is external: its derivation inside ZFC remains open.
 
 ## Earlier waves
 
@@ -166,8 +170,8 @@ of 56's and 57's files are staged twice. Ignored members are checksum ledgers an
 ## The common theorem
 
 This is the route the packages so far have taken; it is not required (see
-above). Each package defines polynomials or small systems with four **fixed
-integer coefficient ports**:
+above). Each finished equation defines polynomials or small systems with four
+**fixed integer coefficient ports**:
 
 - Bm1 = B − 1;
 - Kconstant = D_C + B·D_R;
@@ -242,13 +246,13 @@ norms are separated:
 
 Wave 9 works mostly on signs, guards and carriers:
 
-- **Sign recovery and product guards** (62, 63, 67). One guard on a product
+- **Sign recovery and product guards** (62, 63, 64, 67). One guard on a product
   replaces two separate sign guards; this gives the 42ℤ quartic that all
   three found.
-- **Congruence and integral carriers** (61, 64, 65). Divisibility forced by
+- **Congruence and integral carriers** (61, 64, 65, 67). Divisibility forced by
   a square equation recovers scales and quotients, for low degree at 12–14
   positive unknowns.
-- **Shared coefficient positions** (65) and **gap coordinates** (66) lower
+- **Shared coefficient positions** (65) and **positive gap coordinates** (60, 66) lower
   the source height of the nine-variable forms; **higher majorants** (63,
   66, 67) lower their degree below the common formula.
 - **Direct proof certificates** (66) and a **review of non-K215 routes**
@@ -266,8 +270,8 @@ checked figures agree with the claims. The mathematics was not re-derived.
   numerals; reuse and system comparisons are free. Fixed leaves are free,
   so a constant folded into a leaf costs nothing. The packages differ
   slightly here: 66 stores a threshold power as a leaf (otherwise 495 and
-  499 operations, not 490 and 494), and 7 of 67's 519 ten-integer gates act
-  on constants only.
+  499 operations, not 490 and 494). In the ten-integer circuits of 65 (525)
+  and 67 (519, 520, 522), 7 gates act on constants only; 66's have none.
 - Unknowns are strictly positive unless marked ℤ (unrestricted integers)
   or ℕ (naturals). Natural-coordinate companions have separate counts:
   - in wave 7, package 52 adds three operations, 47 adds four, and 53's
@@ -288,7 +292,7 @@ lower directory number counts as earlier.
 |---|---|---|---|
 | Nine positive, fewest operations | **444** at degree 1,845,940 (ℕ: 451) | 66 | 66 |
 | Nine positive, lowest degree | **1,494,006 / 487** | 67 | 67 |
-| Nine positive, Pareto frontier | 1,845,940 / 444, 1,834,516 / 449, 1,825,540 / 451 (66); 1,738,228 / 457, 1,675,396 / 458 (65); 1,663,788 / 475 (67); 1,520,178 / 476, 1,510,770 / 481, 1,503,378 / 483 (66); 1,494,006 / 487 (67). Dominated: 60's 1,797,796 / 465, 62's 1,834,516 / 453, 63's 1,573,266 / 504, 64's 1,781,068 / 470, 67's 462, 478 and 482, and every wave-8 form, 59's 473 included | 65, 66, 67 | — |
+| Nine positive, Pareto frontier | 1,845,940 / 444, 1,834,516 / 449, 1,825,540 / 451 (66); 1,738,228 / 457, 1,675,396 / 458 (65); 1,663,788 / 475 (67); 1,520,178 / 476, 1,510,770 / 481, 1,503,378 / 483 (66); 1,494,006 / 487 (67). Dominated: 60's 1,797,796 / 465, 62's 1,834,516 / 453, 63's 1,573,266 / 504, 64's 1,781,068 / 470, 67's 462, 465, 478 and 482, and every wave-8 form, 59's 473 included | 65, 66, 67 | — |
 | Nine positive on a smaller tuple | 60's 1,797,796 / 465 and 62's 1,834,516 / 453, both on 2^590069; 54's 490 (wave 8) on 2^429959 | 60, 62; 54 | — |
 | 10ℤ (Sun's reduction), Pareto frontier | **3,547,076 / 490** and **3,507,876 / 494** (66); **3,327,556 / 519** (67). Dominated: 65's 7,428,120 / 525, 67's 520 and 522, and every wave-8 form, 54's 513 included | 66; 67 | — |
 | Fewest integers without Sun's 2026 reduction | **13ℤ**: 10,461,744 / 519 (67) and 59's 11,543,632 / 518, a tradeoff | 67; 59 | — |
@@ -297,7 +301,7 @@ lower directory number counts as earlier.
 | Thirteen positive | **34 / 93** (61) and **114 / 83** (62). 62 dominates 57's 132 / 83 and 59's 126 / 91 | 61; 62 | 61 |
 | Fourteen positive | **26 / 92** (65) and **30 / 83** (64), against wave-8 **52 / 79** (55, 59). Dominated: 65's 30 / 85, 67's 30 / 87 and 63's 34 / 87. 67 and 63 also give five-equation systems at 78 operations | 64; 65 | 64 |
 | Fifteen positive, fewest operations | unchanged: **66 ops** (51's P66, degree 157) | 51 | 51 |
-| Fifteen positive, lowest degree | **24 / 88**: 58's polynomial after z ↦ z − 1, evaluated in 88 operations (66). 60 has the same polynomial in 89 | 66; 60 | 58 |
+| Fifteen positive, lowest degree | **24 / 88**: 58's 24 / 90 polynomial with z replaced by z + 1, in 88 operations (66). 60 has the same polynomial in 89 | 66; 60 | 60 |
 | Fifteen positive, Pareto frontier | 157 / 66 (51); 125 / 67 (59); 101 / 68 (54); 91 / 69 (59); 80 / 70, 78 / 71 and 64 / 72 (54); 54 / 73 and 46 / 74 (56); 44 / 75 (47); 30 / 78, 26 / 87 and 24 / 88 (66). 66's 30 / 78 and 26 / 87 are 58's 30 / 79 and 26 / 88 polynomials, each evaluated in one operation fewer | 47, 51, 54, 56, 59, 66 | — |
 | Integer quartic | **41ℤ** (26 residuals, 388 terms) | 64 | 64 |
 | Integer sextic and octic | **35ℤ** sextic (20 residuals) and **30ℤ** octic (15 residuals) | 62 | 62 |
@@ -308,7 +312,7 @@ lower directory number counts as earlier.
 
 | Dir | Archive | Title as printed | Constructions |
 |---|---|---|---|
-| [`60-positive-gap/`](60-positive-gap/) | `ConZFC_Positive_Gap_2026-10-23.zip` | *Positive source coordinates for a smaller Diophantine consistency candidate* (README: *Positive source coordinates: a smaller nine-variable candidate*) | 9 positive / 1,797,796 / 465 (ℕ 472), on the 2^590069 tuple and, as the same circuit, on 31's; 15 / 1 / 24 / 89 (58's degree-24 polynomial after z ↦ z − 1) |
+| [`60-positive-gap/`](60-positive-gap/) | `ConZFC_Positive_Gap_2026-10-23.zip` | *Positive source coordinates for a smaller Diophantine consistency candidate* (README: *Positive source coordinates: a smaller nine-variable candidate*) | 9 positive / 1,797,796 / 465 (ℕ 472), on the 2^590069 tuple and, as the same circuit, on 31's; 15 / 1 / 24 / 89 (58's degree-24 polynomial with z replaced by z + 1) |
 | [`61-congruence-carriers/`](61-congruence-carriers/) | `con-zfc-congruence-carriers.zip` | *Congruence carriers for Diophantine consistency equations* (README: *Congruence carriers and a divided Pell norm*) | **13 / 1 / 34 / 93**; **12 / 1 / 118 / 104** and SOS 172 / 103; 37ℤ sextic and 34ℤ octic; positive forms on 2^590069, integer forms on 34's tuple |
 | [`62-sign-and-norm/`](62-sign-and-norm/) | `con-zfc-sign-and-norm.zip` | *Sign recovery and centered norms for explicit ZFC consistency equations* | **13 / 1 / 114 / 83**; 42ℤ quartic (27 residuals); **35ℤ sextic**, **30ℤ octic**; 9 positive / 1,834,516 / 453 (ℕ 460); P13 and the nine form on 2^590069, the integer forms on 34's tuple |
 | [`63-sign-recovery/`](63-sign-recovery/) | `con-zfc-sign-recovery-2026-10-23.zip` | *Recovering signs and absorbing Pell quotients* | 42ℤ quartic (the same polynomial as 62's); 14 / 1 / 34 / 87 (system 78; ℕ 101); 9 positive / 1,573,266 / 504 (ℕ 511); the quartic and P14 on 34's tuple, F9 on 31's |
@@ -331,7 +335,8 @@ chain, and two packages explore further:
   - the integer quartics, sextics and octics of 61, 62, 63, 64 and 67;
   - 61's twelve- and thirteen-positive forms and 62's thirteen-positive
     form;
-  - the fourteen-positive forms of 63, 64 and 65 (`pell/`).
+  - the fourteen-positive forms of 63, 64, 65 (`pell/`) and 67;
+  - the fifteen-positive forms of 60 and 66.
 
   Every nine-positive form uses 59's Jones ratio finalizer.
 - **66's `direct/`.** A nondeterministic one-stack checker of proofs in the
@@ -363,9 +368,10 @@ chain, and two packages explore further:
 
   No competitive non-K215 endpoint resulted, because no compiler was
   instantiated and measured.
-- **The others.** 63 looked at the active native refutation graph and the
-  Coq FRACTRAN route, and 64 at an unnamed alternative; neither obtained a
-  smaller equation.
+- **The others.** 60's report has a section on a direct proof-checker
+  route, without a construction. 63 looked at the active native refutation
+  graph and the Coq FRACTRAN route, and 64 at an unnamed alternative;
+  neither obtained a smaller equation.
 
 ### Identities and dominance (intake findings)
 
@@ -388,9 +394,11 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
   None cites the others. 64's 41ℤ quartic shares 22 of its 26 rows and
   removes one more unknown with X = 2u².
 - **Cheaper evaluators of earlier polynomials.** 66's 15-positive 30 / 78
-  and 26 / 87 are 58's 30 / 79 and 26 / 88. 66's 24 / 88 and 60's 24 / 89
-  are 58's 24 / 90 with z ↦ z − 1.
-- **Near twins.** 65's 30 / 85 equals 67's 30 / 87 with z ↦ z + 1, so they
+  and 26 / 87 are 58's 30 / 79 and 26 / 88, the same polynomials.
+- **Shifted polynomials.** 66's 24 / 88 and 60's 24 / 89 are one polynomial:
+  58's 24 / 90 with z replaced by z + 1, so a different polynomial on the
+  positive domain.
+- **Near twins.** 65's 30 / 85 is 67's 30 / 87 with z replaced by z + 1, so they
   are different polynomials on the positive domain. 64's 30 / 83 differs
   from both: its modulus is Y².
 - **Equal degree, different polynomials.** 62's nine-positive form and 66's
@@ -412,9 +420,9 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
 - **Parallel discoveries.** The triple 42ℤ quartic; the 65 / 67 fourteen-
   positive twins; 60's and 66's evaluators of the same 24-degree
   polynomial; 62's and 66's identical source height.
-- **Corrections to wave 8.** For the first time, packages call earlier work
-  wrong; both points are minor:
-  - 62, 63 and 67 independently report that 57's quartic proof writes the
+- **Corrections to wave 8.** Two corrections of wave-8 work, both minor.
+  Earlier waves recorded a few such objections too, such as 34's and 53's.
+  - 62, 63, 64 and 67 independently report that 57's quartic proof writes the
     transport row as `(K0+w)C=(z-1)(q-1)+F` and concludes z > 1, while the
     literal row is F + z(q − 1). The dossier calls this an unlabelled shift
     of notation, harmless: z > 0 is what the proof needs, and the circuits
@@ -423,8 +431,8 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
     where the true sum is 1619. The dossier recomputed 1619; both are below
     the needed 2048. The placed copy still reads 1719.
 - **Counting conventions.** See the frontier notes: 66 folds a threshold
-  power into a fixed leaf, and 67 counts 7 constant-only gates.
-- **Stale README at the pin.** 63 and 64 observe that this README, at
+  power into a fixed leaf, while 65 and 67 count 7 constant-only gates.
+- **Stale README at the pin.** 62, 63 and 64 observe that this README, at
   `beb0192cb8`, still described waves 5–7. That was true; the wave-8
   reconciliation came later.
 - **64's P14 ends in a sum of squares minus 1**, as 55's fourteen-positive
@@ -434,7 +442,7 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
 ### Delivery discrepancies (wave 9)
 
 - **Drivers fail in place.** Every driver reads files omitted at intake;
-  66's also reads its git-ignored `SHA256SUMS.json`. Rerun from the arrival
+  66's and 67's also read their git-ignored `SHA256SUMS.json`. Rerun from the arrival
   archives, as `PLACEMENT.md` explains.
 
   | Dir | Driver | Note |
@@ -448,10 +456,11 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
   | 66 | `verify.py` | SymPy |
   | 67 | `verify.py` | SymPy 1.14.0; refuses `-O` |
 
-- **Degree labels.** 65's and 66's ten-integer JSON label exact degrees
+- **Degree labels.** The ten-integer JSON of 65, 66 and 67 labels exact degrees
   `degree_upper_bound`, as in wave 8.
-- **Titles.** 60, 61, 66 (three different titles) and 63 (subtitle) print
-  titles that differ from their README H1 or PDF metadata.
+- **Titles.** 60, 61, 66 (three different titles), and 63, 64 and 65
+  (subtitles only) print titles that differ from their README H1 or PDF
+  metadata.
 - **Inside packages.**
   - 62's `nine/NOTICE.md` says the independent audit's grouping code "was
     corrected by the component author". Its `RESULTS.json` calls a degree
@@ -460,16 +469,18 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
   - 63's bibliography has no Jones, Matiyasevich or Sun entry, though its
     nine-positive form uses Jones's ratio representation. Its NOTICE says
     "MIT license" for an MIT-0 file.
+  - 62's README has the typo "to1,834,516/453".
   - 64's README lists a root `licenses/` directory that does not exist.
   - 63, 64 and 65 paraphrase the titles of the packages they cite. 65 gives
     31's title as this collection's title, "Con(ZFC) in Diophantine form".
   - 66's `ARTIFACT_MAP.md` names a nonexistent `nine/METRICS.json`. Its
     review tells readers to run `check_intake.py` and
-    `check_literal_ledgers.py`, which are not shipped.
+    `check_literal_ledgers.py`, which are not shipped, and it gives two
+    interaction counts (22,481 and 22,451).
   - 67's top-level `nine/coefficients` binding is the 2^590069 tuple, while
     every nine-variable circuit uses `old_tuple/`, which invites a wrong
     binding. Its README and PDF abstract drop the space before numerals
-    ("in42").
+    ("in42"). It hashes a `sigbovik2020.pdf` that it does not ship.
 - **Licence and attribution.**
   - Every package except 66 ships an MIT-0 licence file for its new
     material, and all keep the inherited notices. 65's `sun/` has a NOTICE
@@ -501,8 +512,8 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
      majorant degrees (63).
    - A joint search over shared positions, a third congruence recovery,
      and fewer gates at degree 26 (65).
-4. **Formalize.** 64's adaptive-modulus lemmas and signed sign-recovery
-   bounds; 65's shared-position argument.
+4. **Formalize.** 64's adaptive-modulus lemmas, signed packing bounds and
+   Mersenne-radix sign lemma; 65's shared-position argument.
 
 ## Wave 8 (sources 54–59)
 
@@ -681,7 +692,8 @@ confirmed 59's nine-variable and 13ℤ degrees exactly.
 ### Frontier after wave 8, as placed
 
 Numbers are the packages' own. At intake, the dossiers recounted every
-operation count and measured the degrees, as described under wave 8 below;
+operation count and measured the degrees, as described above in this
+section;
 all checked figures agree with the claims. The mathematics was not
 re-derived.
 
@@ -724,7 +736,7 @@ full; where only one package has it, that package.
 **Who knew whom.** Only 59 saw other wave-8 work, 56 and 57, and it
 composed 56's free coordinate into its nine-positive form. 54 and 55 did not
 know 59. 59 did not know 54 or 58, so its own frontier tables are partly
-dominated (see below).
+dominated (see the wave-8 tensions above).
 
 The combined frontier near the top of this README supersedes this table
 where wave 9 improves on it.

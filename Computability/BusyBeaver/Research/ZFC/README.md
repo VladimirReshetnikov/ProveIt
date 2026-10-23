@@ -1140,9 +1140,9 @@ is now under `Computability/DiophantineConsistency`. It holds waves 5–9
 (intake batches 221–225; wave-9 placement `a2cd79b912`, reconciliation
 `42d8cbf310`).
 
-Most packages turn the K215 calibration behind
+Every finished equation so far turns the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
-with fixed integer coefficients. They do so by compiling a local tile
+with fixed integer coefficients. It does so by compiling a local tile
 language of the blank run of [`candidate-k215/k215.tm`](candidate-k215/k215.tm)
 with the Hilbert's-tenth native-window/Pell compiler, its input interface
 removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
@@ -1150,7 +1150,8 @@ removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
 K215 is not required: by Vladimir's direction, proposals may use other
 encodings, provided they prove their own calibration (the report's section
 "Any encoding is welcome"). Wave-9 66 already sketches a proof-certificate
-source calibrated through `KEndpoint.c222_iff_zf_refutation` instead.
+source calibrated instead through `KEndpoint.c222_iff_zf_refutation` and
+`ConstructibleChoice.zf_refutation_iff_zfc_refutation`.
 
 As the packages state them:
 

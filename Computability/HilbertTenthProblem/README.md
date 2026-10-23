@@ -18,8 +18,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 is now under `Computability/DiophantineConsistency`. It holds waves 5–9
 (batches 221–225, thirty-seven packages).
 
-Most packages apply the native-window/Pell compiler below, with its input
-interface removed, to the blank run of the 215-state ZFC machine
+Every finished equation so far applies the native-window/Pell compiler
+below, with its input interface removed, to the blank run of the 215-state ZFC machine
 (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`). The result
 is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC).
