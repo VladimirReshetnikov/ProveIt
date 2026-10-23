@@ -36,14 +36,6 @@ theorem sat_powBody (e : Nat → V) :
     Sat mem e powBody ↔ ∀ z, (mem z (e 0) ↔ ∀ w, mem w z → mem w (e 1)) := by
   simp only [powBody, Sat, Sat_fIff, scons]
 
-theorem rsat_powBody {X : V} (hX : Trans mem X) (e : Nat → V) :
-    RSat mem X e powBody ↔ ∀ z, mem z X → (mem z (e 0) ↔ ∀ w, mem w z → mem w (e 1)) := by
-  simp only [powBody, fIff, RSat, scons]
-  refine forall_congr' fun z => imp_congr_right fun hz => ?_
-  have hsub : (∀ w, mem w X → mem w z → mem w (e 1)) ↔ ∀ w, mem w z → mem w (e 1) :=
-    ⟨fun h w hw => h w (hX z hz w hw) hw, fun h w _ hw => h w hw⟩
-  rw [hsub]; exact ⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.1, h.2⟩⟩
-
 section VL
 
 variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)

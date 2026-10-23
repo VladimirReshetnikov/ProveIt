@@ -250,10 +250,6 @@ theorem Eind_vac (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :
 
 /-! ## The interpretation of derivations -/
 
-theorem th_neg (a : NF) : th (neg a) = neg (th a) := rfl
-theorem th_ex (i : Nat) (a : NF) : th (ex i a) = ex i (th a) := rfl
-theorem th_luk (c u a b : NF) : th (luk c u a b) = luk (th c) (th u) (th a) (th b) := rfl
-
 theorem thm_th {f : NF} (h : Thm Ax f) : ThmK (fun g => ∃ a, Ax a ∧ th a = g) (th f) := by
   induction h with
   | ax h => exact .ax ⟨_, h, rfl⟩

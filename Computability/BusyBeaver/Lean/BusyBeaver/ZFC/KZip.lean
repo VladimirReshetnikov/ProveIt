@@ -151,8 +151,6 @@ theorem zL {M : TMN} {q q' : Nat} {l r : List Bool} {b w : Bool}
 
 theorem zl_cons (q : Nat) (x : Bool) (l r : List Bool) : zl q (x :: l) r = zc q l (x :: r) := rfl
 
-theorem zl_nil (q : Nat) (r : List Bool) : zl q [] r = zc q [] (false :: r) := rfl
-
 /-! ## Runs -/
 
 theorem run_add (M : TMN) (a b : Nat) (c : Conf) :

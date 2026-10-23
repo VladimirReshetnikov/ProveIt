@@ -119,18 +119,4 @@ theorem index_of_container (B : Base mem) (e Y : V) (heY : mem e Y)
   obtain ⟨hzY, hzLeast⟩ := (hSpec z).mp hz
   exact (hSpec (singleton B z)).mpr ⟨hY z hzY, fun X heX hX => hX z (hzLeast X heX hX)⟩
 
-/-- Formula induction uses the actual source formula's Separation instance. -/
-theorem index_formula_induction (B : Base mem) {e N : V} (hN : Index B e N)
-    (phi : Form) (env : Nat → V) (hZero : Sat mem (scons e env) phi)
-    (hStep : ∀ x, mem x N → Sat mem (scons x env) phi →
-      Sat mem (scons (singleton B x) env) phi) :
-    ∀ x, mem x N → Sat mem (scons x env) phi := by
-  obtain ⟨X, hX⟩ := B.sep phi env N
-  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, hZero⟩
-  have hcX : Closed B X := by
-    intro x hx
-    obtain ⟨hxN, hPhi⟩ := (hX x).mp hx
-    exact (hX (singleton B x)).mpr ⟨hN.closed x hxN, hStep x hxN hPhi⟩
-  exact fun x hx => ((hX x).mp (hN.least X heX hcX x hx)).2
-
 end SetTheory.BusyBeaver.ZFC.SingletonInfinity

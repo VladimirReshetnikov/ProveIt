@@ -39,9 +39,6 @@ def relT : Nat → Form → Form
 def Shows (t : V) (d : Nat) (e : Nat → Tag mem t) (e' : Nat → V) : Prop :=
   ∀ i, e' (sh d i) = (e i).1
 
-theorem sh_ne (d i : Nat) : sh d i ≠ d := by
-  unfold sh; split <;> omega
-
 theorem shows_scons {t : V} {d : Nat} {e : Nat → Tag mem t} {e' : Nat → V}
     (h : Shows t d e e') (x : Tag mem t) : Shows t (d + 1) (scons x e) (scons x.1 e') := by
   intro i

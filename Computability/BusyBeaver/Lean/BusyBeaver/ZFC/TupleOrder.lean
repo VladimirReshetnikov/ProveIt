@@ -63,15 +63,6 @@ section Tuples
 
 variable (H : ZFAxioms mem) (hR : Regular mem) {W : V}
 
-theorem tup_val {n t i : V} (ht : IsTup H W n t) (hi : mem i n) :
-    ∃ u, mem (kpair H i u) t ∧ Fld H W u := by
-  obtain ⟨u, hu⟩ := ht.1.2.1 i hi
-  exact ⟨u, hu, ht.2 i u hu⟩
-
-theorem tup_dom {n t i u : V} (ht : IsTup H W n t) (h : mem (kpair H i u) t) : mem i n := by
-  obtain ⟨i', u', hi', e⟩ := ht.1.2.2 _ h
-  rwa [(kpair_inj H _ _ _ _ e).1]
-
 /-- Tuples that agree everywhere are equal. -/
 theorem tup_ext {n t t' : V} (ht : IsTup H W n t) (ht' : IsTup H W n t')
     (h : SatSupport.AgreeP H n t t') : t = t' := by

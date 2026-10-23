@@ -25,13 +25,6 @@ def Agree (M N : TMN) (S : List Nat) : Prop := ∀ q ∈ S, ∀ b, M q b = N q b
 def agreeB (M N : TMN) (S : List Nat) : Bool :=
   S.all fun q => decide (M q false = N q false) && decide (M q true = N q true)
 
-theorem agree_of_agreeB {M N : TMN} {S : List Nat} (h : agreeB M N S = true) : Agree M N S := by
-  intro q hq b
-  simp only [agreeB, List.all_eq_true, Bool.and_eq_true, decide_eq_true_eq] at h
-  cases b
-  · exact (h q hq).1
-  · exact (h q hq).2
-
 theorem Agree.row {M N : TMN} {S : List Nat} (h : Agree M N S) {q : Nat} {b : Bool}
     {r : Option (Bool × Bool × Nat)} (hq : q ∈ S) (e : N q b = r) : M q b = r :=
   (h q hq b).trans e

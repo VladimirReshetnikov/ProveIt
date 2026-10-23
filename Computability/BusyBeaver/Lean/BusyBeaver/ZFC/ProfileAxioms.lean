@@ -47,12 +47,6 @@ theorem member_left_iff (mem : V → V → Prop)
   ⟨member_left mem hSymm hTrans hxx',
     member_left mem hSymm hTrans (hSymm x x' hxx')⟩
 
-theorem member_right_iff (mem : V → V → Prop)
-    (hSymm : ∀ x y, Eqv mem x y → Eqv mem y x)
-    (hTrans : ∀ x y z, Eqv mem x y → Eqv mem y z → Eqv mem x z)
-    {x y y' : V} (hyy' : Eqv mem y y') : Member mem x y ↔ Member mem x y' :=
-  ⟨member_right mem hTrans hyy', member_right mem hTrans (hSymm y y' hyy')⟩
-
 theorem empty_of_raw_empty (mem : V → V → Prop) (e : V)
     (he : ∀ z, ¬ mem z e) : ∀ z, ¬ Member mem z e :=
   fun _ ⟨a, hae, _⟩ => he a hae

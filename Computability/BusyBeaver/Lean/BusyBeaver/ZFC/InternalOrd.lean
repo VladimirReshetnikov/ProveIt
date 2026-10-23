@@ -132,12 +132,6 @@ theorem trichotomy : ∀ a, Ord mem a → ∀ b, Ord mem b → mem a b ∨ a = b
       · exact (IHb x hx).elim (fun h => absurd ⟨x, hx, Or.inl h⟩ h2) fun h =>
           h.resolve_left fun h => h2 ⟨x, hx, Or.inr h⟩
 
-omit H hR in
-theorem sub_of_le {a b : V} (hb : Ord mem b) (h : a = b ∨ mem a b) : ∀ x, mem x a → mem x b := by
-  rcases h with rfl | h
-  · exact fun _ hx => hx
-  · exact fun x hx => hb.1 a h x hx
-
 /-- A transitive subset relation between ordinals is `≤`. -/
 theorem le_of_sub {a b : V} (ha : Ord mem a) (hb : Ord mem b) (h : ∀ x, mem x a → mem x b) :
     a = b ∨ mem a b :=
