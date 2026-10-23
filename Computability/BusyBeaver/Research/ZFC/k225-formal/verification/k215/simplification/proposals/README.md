@@ -75,3 +75,16 @@ Rocq source proof with the compact codec (`zfc215-simplification`), the trailing
 Lean certificate (`k215-simplification`), the calibration patch (`structural`), and shared decoder
 contexts for `KSites215` (`fm215-compression`, `structural`). The CM215 and M124 transport proofs give
 formal endpoints for those alternatives once their adapters are compiled.
+
+**Batch 219 against `main` (2026-10-22).** Adopted and checked: `proof-spine`'s import cut
+(256a9eec85; the KEndpoint215 closure goes from 162 to 156 modules, the six CP-specific
+`Quotient*` modules leave it), `consolidation-plan`'s native quotient Replacement (8a27c2c3ec;
+`KQ1Replacement` leaves the closure), `checked-interfaces`' ConstructibleAbs normalization
+(5a26d6d805), and `source-identity`'s `z465` reuse of the generic loop theorem (6e1a532d89;
+compiled in the 215, 217 and 218 slices). Not adopted: `checked-interfaces`' direct
+checked-tree Rocq checker (larger and slower than the list checker, as the packet says), the
+AX-word inference (-27 bytes for K215) and the guarded-subtype interpretation (judged not
+worth it by its own packet). Open: the shared control templates (`framed-control`, with
+`contextual-contracts`, `proof-sharing` and `checked-local-contracts` as variants), which
+would replace the site batches' literal execution; `consolidation-plan`'s common Rocq
+runtime; `proof-spine`'s decrement-prefix sharing.
