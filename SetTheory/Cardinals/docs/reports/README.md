@@ -3603,3 +3603,17 @@ positive unknowns as a delivered circuit, 12 positive unknowns at degree
 coefficients with B = 2^(5^9). The 67-operation equation keeps the fewest
 operations. Nothing was rerun; no formalization, consistency proof,
 optimality or new universal bound is claimed.
+
+Batch 221 (arrival `b7f8b75b5b`, "wave-5") replaces the wave-4 packages in
+turn by seven syntheses, which supersede them as before; the collection
+stays at **291 reports**. Placement `952c1fab49` removes the wave-4
+directories (recoverable from `604b1416b5` through its parent), places
+sources 31–37 and retires the seven ZIPs; reconciliation `6d9a8438f7`
+replaces the README and lists the wave-4 results not reproduced. The
+packages state 10 unrestricted integers by instantiating Sun's 2026
+ten-integer reduction (cited, not checked at intake), 14 by a Jones
+construction, nine positive unknowns at a lower degree, 12 positive
+unknowns at degree 1022 or in 108 operations, and materialized
+coefficients with B = 2^1012115. The 67-operation equation keeps the
+fewest operations. Nothing was rerun; no formalization, consistency
+proof, optimality or new general theorem is claimed.
