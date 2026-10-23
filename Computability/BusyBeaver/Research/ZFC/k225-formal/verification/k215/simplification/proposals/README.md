@@ -84,7 +84,13 @@ formal endpoints for those alternatives once their adapters are compiled.
 compiled in the 215, 217 and 218 slices). Not adopted: `checked-interfaces`' direct
 checked-tree Rocq checker (larger and slower than the list checker, as the packet says), the
 AX-word inference (-27 bytes for K215) and the guarded-subtype interpretation (judged not
-worth it by its own packet). Open: the shared control templates (`framed-control`, with
-`contextual-contracts`, `proof-sharing` and `checked-local-contracts` as variants), which
-would replace the site batches' literal execution; `consolidation-plan`'s common Rocq
-runtime; `proof-spine`'s decrement-prefix sharing.
+worth it by its own packet). Evaluated and not adopted: the shared control templates (`framed-control`, with
+`contextual-contracts`, `proof-sharing` and `checked-local-contracts` as variants). Their Lean
+layers are 2,751 (framed-control) and 616-904 lines, standalone beside the production site
+coverage, against about 900 hand-written lines (`KSim`, `KFastSites215`, `SiteCoverage`,
+`KHome`, `KHomeReady`) plus a generated kernel `decide` certificate that they would replace;
+every packet disclaims a source or build-time reduction, counting kernel-execution
+obligations instead. For a shorter and simpler proof the one-checker certificate is the
+better design. Still open: `consolidation-plan`'s common Rocq runtime (its five repeated
+bodies sit in files copied from the pinned K230 reference) and `proof-spine`'s
+decrement-prefix sharing (a finite diagnostic, not yet a formal lemma).
