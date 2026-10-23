@@ -203,7 +203,9 @@ re-derived.
   or ℕ (naturals). Natural-coordinate companions have separate counts:
   - in wave 7, package 52 adds three operations, 47 adds four, and 53's
     calibrated form adds six;
-  - in wave 8, 54 adds three, 57 two, 55 six, and 56 and 59 seven.
+  - in wave 8, 54 adds three, 57 two, 55 six, 56 seven (nine for its
+    reference form), 59 seven (four for its initial form), and 58's
+    natural translation fifteen.
 
   The domain translation and its actual circuit must be stated.
 
@@ -220,14 +222,14 @@ full; where only one package has it, that package.
 | Eleven positive | unchanged: **954 / 113** (52) | wave 7 | 52 |
 | Twelve positive | **242 / 94** and **258 / 89**, two different polynomials | 57 | 57 |
 | Twelve positive, other points | 59: 316 / 102. Its three-equation system has residual degrees 2, 26 and 288 in 95 operations, or 94 shifted, the fewest of any twelve-positive system (52's was 103, shifted 102). Dominated: 58's 629 / 114 (system 622 / 109, shifted 108) and wave-7 52's 897 / 108 | 59 | — |
-| Thirteen positive (new) | 132 / 83 (57) and 126 / 91 (59), a tradeoff; no earlier package has a thirteen-positive form | 57; 59 | — |
+| Thirteen positive | **132 / 83** (57), which dominates the earlier single thirteen-positive equations (wave-4 24's 319 / 89, and 515 / 84 of wave-4 16 and 20); 126 / 91 (59) is a lower-degree tradeoff. The wave-4 systems 288 / 81 (24) and 488 / 78 (16, 20) are counted separately | 57; 59 | 57 |
 | Fourteen positive | **52 / 79** in two different polynomials, each dominating wave-7 50's 56 / 79 | 55; 59 | 55 |
 | Fifteen positive, fewest operations | unchanged: **66 ops** (51's P66, degree 157) | 51 | 51 |
 | Fifteen positive, lowest degree | **24 / 90**; also 26 / 88 and 30 / 79 | 58 | 58 |
 | Fifteen positive, Pareto frontier | 157 / 66 (51); 125 / 67 (59); 101 / 68 (54; 59 has the same circuit on another tuple); 91 / 69 (59); 80 / 70, 78 / 71 and 64 / 72 (54); 54 / 73 and 46 / 74 (56); 44 / 75 (47); 30 / 79, 26 / 88 and 24 / 90 (58). P67 (155 / 67) is now dominated by 59's 125 / 67, and wave-2 Q₅₆ (56 / 74) by 56's 46 / 74 | 47, 51, 54, 56, 58, 59 | — |
 | Integer quartic | **45ℤ**: the sum of squares of 28 quadratic residuals, 407 expanded terms, below the 50ℤ quartic | 57 | 57 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125; 24ℤ at 1936 / 161 | waves 5–6 | — |
-| Smallest coefficients binding an equation | **B = 2^429959** (215,492 bytes), 46's adapter tuple. 54 binds every equation to it, P66 included, but calls the size "not a new record". Its derived fixed leaves are larger: the scale Y_scale alone takes 1.7 MB. Next comes 2^590069 (39 and 44; also 52, 57, 58 and 59's thirteen-positive form) | 54 | 54 |
+| Smallest coefficients binding an equation | **B = 2^429959** (215,492 bytes), 46's adapter tuple. 54 binds every equation to it, P66 included, but calls the size "not a new record". Its derived fixed leaves are larger: the scale Y_scale alone takes 1.7 MB. Next comes 2^590069 (39 and 44; also 52, 57, 58, and 59's thirteen-positive form and nine-variable comparisons) | 54 | 54 |
 
 **Who knew whom.** Only 59 saw other wave-8 work, 56 and 57, and it
 composed 56's free coordinate into its nine-positive form. 54 and 55 did not
@@ -243,7 +245,7 @@ dominated (see below).
 | [`56-free-coordinate/`](56-free-coordinate/) | `ConZFC_Free_Coordinate_2026-10-23.zip` | *Free Pell coordinates and a smaller nine-variable equation for ZFC consistency* (README: *Free Pell coordinates: a smaller equation for ZFC consistency*) | 9 positive / 4,686,812 / 560 (reference form 562; ℕ 567 and 571); **15 / 1 / 54 / 73** (Q54) and **46 / 74** (Q46); on 31's tuple |
 | [`57-separated-degrees/`](57-separated-degrees/) | `ConZFC_Separated_Degrees_2026-10-23.zip` | *Separated degrees and Pell quotients* | **12 / 1 / 242 / 94** and **258 / 89** (intermediate 314 / 91); 13 / 1 / 132 / 83; 9 positive / 2,628,944 / 499; **10ℤ / 1 / 8,317,400 / 544**; **45ℤ quartic**; the 9–13-variable forms on the 2^590069 tuple, the quartic on 34's |
 | [`58-integral-root/`](58-integral-root/) | `ConZFC_Integral_Root_2026-10-23.zip` | *Integral-root carriers for Con(ZFC)* | **15 / 1 / 24 / 90**, 26 / 88 and 30 / 79; 12 / 1 / 629 / 114 (system 622 / 109, shifted 108); translations to 15ℕ (24 / 105) and 60ℤ (48 / 210); on the 2^590069 tuple |
-| [`59-degree-separated/`](59-degree-separated/) | `ZFC_Diophantine_Degree_Separated_2026-10-23.zip` | *Degree-separated arithmetic encodings and an ordinary-root merger for Con(ZFC)* (README: *Degree-separated encodings and …*) | **9 positive / 1,910,404 / 473** (ℕ 480; initial 2,676,548 / 476); 10ℤ / 8,469,528 / 533; **13ℤ / 11,543,632 / 518** without Sun; 12 / 316 / 102 (system 288 / 95, shifted 94); 13 / 126 / 91; 14 / 52 / 79; 15-positive points from 125 / 67 to 46 / 75; on 31's tuple, except the thirteen-positive form on 2^590069 |
+| [`59-degree-separated/`](59-degree-separated/) | `ZFC_Diophantine_Degree_Separated_2026-10-23.zip` | *Degree-separated arithmetic encodings and an ordinary-root merger for Con(ZFC)* (README: *Degree-separated encodings and …*) | **9 positive / 1,910,404 / 473** (ℕ 480; initial 2,676,548 / 476); 10ℤ / 8,469,528 / 533; **13ℤ / 11,543,632 / 518** without Sun; 12 / 316 / 102 (system 288 / 95, shifted 94); 13 / 126 / 91; 14 / 52 / 79; 15-positive points from 125 / 67 to 46 / 75; on 31's tuple, except the thirteen-positive form and the three nine-variable comparisons, on 2^590069 |
 
 Directory numbers put 59 last because it reviews and builds on 56 and 57.
 59 ships its own `PLACEMENT.md`, suggesting the suffix
@@ -257,13 +259,13 @@ recounted every operation count and measured degrees in three ways:
 - exactly, for circuits up to about degree 1,100;
 - by truncated leading-term arithmetic, for the large circuits;
 - or on the package's own cancellation-resolved certificate, after checking
-  that it equals the primary.
+  that it equals the primary (for 55's majorant form, D^16 times the
+  primary).
 
-Every measured figure agrees with its claim. There are two gaps. 54's two
+Every measured figure agrees with its claim. One gap remains: 54's two
 `support2048` nine-positive forms have no certificate, so their degrees
-are confirmed only as bounded (about 6.04 million). 59's nine-variable
-degrees were confirmed exactly by one dossier and as upper bounds by the
-other.
+are confirmed only as bounded (about 6.04 million). The independent audit
+confirmed 59's nine-variable and 13ℤ degrees exactly.
 
 - **Pairwise different polynomials:**
   - the nine-positive forms of 54–57 and 59;
@@ -275,7 +277,8 @@ other.
   - 59's historical 44 / 76 reference is 49's `offset44`;
   - 59's 13ℤ intermediates `signed_seeded` and `signed` are 53's circuits,
     node for node;
-  - 54's 24 ten-integer circuits contain only nine distinct polynomials.
+  - 54's 24 ten-integer circuits contain only nine distinct polynomials
+    with the actual fixed values (eighteen with random ones).
 - **The same circuit on different tuples.** These are different
   polynomials, because the fixed values differ:
   - 59's 101 / 68 and 84 / 70 are 54's 101 / 68 and 54's retained 84 / 70
@@ -313,13 +316,13 @@ other.
 - **The active target moved.** The active research chose 52's 548-operation
   form after wave 7. Wave 8 dominates it (54's 490, 59's 473), and the
   active wave-8 review now adopts 59's form.
-- **Stale README at the pins.** 54, 55, 56 and 59 observe that this README,
+- **Stale README at the pins.** 55, 56, 57 and 59 observe that this README,
   at their pins, still described wave 6, or still called 67 operations
   unbeaten. That was true at the pins; the wave-7 reconciliation came later.
-- **Transcriptions.** 56's baseline review and 57's `WAVE7_AUDIT.md` give
-  52's twelve-positive system as 888 / 102 (here: 888 / 103, shifted 102).
-  56 gives 52's eleven-positive system as 952 / 108 (here: 109 operations,
-  shifted 108).
+- **Transcriptions.** 56's baseline review gives 52's twelve-positive
+  system as 888 / 102 and its eleven-positive system as 952 / 108,
+  dropping "shifted" (here: system 888 / 103, shifted 102; system 109,
+  shifted 108). 57's `WAVE7_AUDIT.md` labels both as shifted.
 - **58's "improving".** 58's abstract calls its 629 / 114 an improvement on
   52's 897 / 108. It is a degree tradeoff, and within wave 8 it is dominated.
 - **No package calls an earlier package or this README wrong.**
@@ -343,13 +346,15 @@ other.
   degrees `degree_upper_bound`, as wave-7 52's did. The dossiers measured
   them as exact.
 - **Titles.** The PDF metadata titles of 55, 57 and 59 differ from their
-  printed `\title`.
+  printed `\title`; 56's PDF has none.
 - **Inside packages.**
-  - 54's reviews name `check_literal_ledgers.py`, `check_separated_tuple.py`
-    and `check_short*.log`, which are not shipped. Its NOTICE says "MIT
+  - 54's reviews name `check_literal_ledgers.py` and
+    `check_separated_tuple.py`, and its `positive/README.txt` names
+    `check_short*.log` receipts; none is shipped. Its NOTICE says "MIT
     license", while its licence files are MIT-0.
   - 56's `nine/hybrid_section.tex` is inputted nowhere. Its 571-operation
-    natural form appears only in the JSON ledgers.
+    natural reference form is in `nine/README.md` and `nine/PROOF.md` but
+    not in the top-level tables.
   - 57's NOTICE says its upstream programs are not entry points, yet
     `reproduce.py` runs one. Its `RELOCATION_CHECK.json` counts 187 members
     for 191 files. `data/channel_certificate108.json` duplicates
@@ -359,10 +364,7 @@ other.
     the "lean carrier", not a Lean proof. Its bibliography paraphrases the
     cited packages' titles.
   - 59's `positive/README.md` says its independent audit uses SymPy; it is
-    standard-library only. `late_comparison.tex` speaks of an
-    "eighteen-stage replay"; the driver runs 25 stages. Its nine-variable
-    comparison circuits use base 2^1182967, against 52's 2^1182966,
-    unexplained.
+    standard-library only.
 - **Licence and attribution.**
   - All six ship MIT-0 licence files for their new material and keep the
     inherited notices.
@@ -382,7 +384,7 @@ other.
   - 56: its degree certificates.
   - 57: the 314 / 91 form, the toy checker and the expanded quartic.
   - 58: its certificates and the copies of 47's and 52's prior forms.
-  - 59: the nine-variable comparisons, four 13ℤ intermediates, the SOS
+  - 59: the nine-variable comparisons, five 13ℤ intermediates, the SOS
     576 / 103 and the 44 / 76 reference.
 
 ### Further questions (wave 8)
@@ -1037,9 +1039,10 @@ The packages say, in their own words (exceptions noted):
     pins.
   - Wave-7 46, 51 and 53 build their short forms on its checked circuits
     P69, P73 and P75.
-  - Wave-8 56, 58 and 59 cite its `ExplicitZFC`, `NativeZFC`,
-    `PositiveZFC` and short-circuit theorems, and say these do not certify
-    their new circuits.
+  - Wave-8 54 cites its later closed executable equation (at
+    `d2f19e4d5c`), 56 its `ExplicitZFC` and `NativeZFC` theorems, and 59
+    also `PositiveZFC` and the short-circuit theorems. Each says these do
+    not certify its new circuits.
   - No package supplies a new end-to-end formal certificate. Subsequent
     active stage formalization is recorded separately below.
 - **No new general theorem.**
@@ -1064,9 +1067,9 @@ The packages say, in their own words (exceptions noted):
 - **No optimality.** No global minimum is claimed. The only claim below 67
   operations is 51's P66 (66 operations, degree 157); no package claims
   fewer. No form below nine unknowns or ten unrestricted integers is
-  claimed. 59 lists three unproved routes to twelve unrestricted integers
-  in `signed/NO_TWELVE_VARIABLE_CLAIM.md`, with counterexamples to the
-  naive versions.
+  claimed. 59 lists three routes to twelve unrestricted integers as
+  unproved in `signed/NO_TWELVE_VARIABLE_CLAIM.md`; its counterexamples
+  there show that two shortcuts in its own 13ℤ proof are invalid.
 
 ## Relation to the formal developments
 
@@ -1112,7 +1115,7 @@ The packages say, in their own words (exceptions noted):
     `NineRatio.lean`. Both files still match 59's pinned checksums.
 - **Sun.** Every 10ℤ form depends on Sun's 2026 preprint and his 2021 paper.
   31 cites Proposition 2.1, Theorems 3.1 and 4.1, Propositions 6.1–6.2 and
-  §7 of the preprint. 57 and 59 cite Propositions 6.1–6.2. These are
+  §7 of the preprint. 55, 57 and 59 cite Propositions 6.1–6.2. These are
   external, unformalized and were not checked at intake.
 - **Active research.** `Computability/DiophantineConsistency` (outside this
   directory) holds checked Lean work on a Diophantine consistency equation;
