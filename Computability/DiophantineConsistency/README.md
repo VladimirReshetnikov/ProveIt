@@ -40,6 +40,9 @@ already has a closed external consistency equivalence at degree at most
 four; it retains the enumerator's arithmetic graph. Lean now bounds its
 natural-variable count by `nu < 2^300000`; the exact count remains unmeasured.
 See [NATIVE_QUARTIC_SIZE.md](NATIVE_QUARTIC_SIZE.md) for the checked metadata.
+The new [natural-register builder](NATURAL_REGISTER_PROGRAM.md) preserves
+sharing before quartic compilation, with one gate witness per stored
+register. Recompiling a complete checker through this builder remains open.
 
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
 release replays pass. Within the nine-positive branch, the next delivered

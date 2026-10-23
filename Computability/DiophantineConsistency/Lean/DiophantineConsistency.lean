@@ -152,3 +152,4 @@ import DiophantineConsistency.AnnotatedRenameScanPR
 import DiophantineConsistency.ObjectOmegaSemiring
 import DiophantineConsistency.NaturalExpressionSemiring
 import DiophantineConsistency.ObjectNaturalSemiring
+import DiophantineConsistency.NaturalRegisterProgram
