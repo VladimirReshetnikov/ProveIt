@@ -31,7 +31,10 @@ K215 or Jones dependency; see
 [natural-number coding](ANNOTATED_PROOF_CODE.md) now passes Lean, including
 roundtrips and malformed-input rejection. Exact numeric certificates for
 renaming under binders, including shift and instantiation, also pass Lean;
-see [ANNOTATED_RENAME.md](ANNOTATED_RENAME.md). Arithmetic compilation is in progress.
+see [ANNOTATED_RENAME.md](ANNOTATED_RENAME.md). The complete numeric renaming
+validator now has a supplied, checked primitive-recursive program for all
+input codes; see [ANNOTATED_RENAME_VALIDATOR.md](ANNOTATED_RENAME_VALIDATOR.md).
+The rest of the checker compilation remains in progress.
 The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
 already has a closed external consistency equivalence at degree at most
 four; it retains the enumerator's arithmetic graph. Lean now bounds its

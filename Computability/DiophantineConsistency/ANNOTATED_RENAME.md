@@ -76,7 +76,8 @@ proved in Lean:
 These are instruction-node counts, not polynomial variable counts. Runtime
 controls execute the supplied index and atomic-validation programs as well as
 the complete numeric table parser on valid and malformed small certificates.
-These programs do not establish that the whole table validator or the original
-sealed-ZFC checker has been compiled. Bounds, sealing, actual schema expansion,
-contextwise transformations, whole proof-line validation and the internal
-coded-form/omega interpretation remain open obligations.
+The subsequent [whole-table validator](ANNOTATED_RENAME_VALIDATOR.md) now has
+checked supplied PR data and exact agreement on arbitrary input codes.
+Bounds, sealing, actual schema expansion, contextwise transformations, whole
+proof-line validation and the internal coded-form/omega interpretation remain
+open obligations for the original sealed-ZFC checker.
