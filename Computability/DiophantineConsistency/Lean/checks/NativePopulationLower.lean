@@ -1,0 +1,3 @@
+import DiophantineConsistency.NativePopulationLower
+
+#print axioms DiophantineConsistency.NativePopulationLower.source_population_lower

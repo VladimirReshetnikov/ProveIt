@@ -1,0 +1,7 @@
+import DiophantineConsistency.NativeSourceWindow
+
+open DiophantineConsistency.NativeSourceWindow
+
+#print axioms source_transport_identity
+#print axioms source_spatial_power
+#print axioms source_native_window

@@ -1,0 +1,9 @@
+import DiophantineConsistency.NativeHalfBinomial
+
+open DiophantineConsistency.NativeHalfBinomial
+
+#print axioms upper_estimate_scaled
+#print axioms doubled_upper_estimate
+#print axioms half_binomial_of_ratio
+#print axioms seventy_two_mul_lt_two_pow
+#print axioms source_half_binomial

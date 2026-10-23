@@ -1,0 +1,12 @@
+import DiophantineConsistency.NativeMaskPopulation
+
+open DiophantineConsistency.NativeMaskPopulation
+
+#print axioms four_block_population_le
+#print axioms native_mask_saturation
+#print axioms repeated_eq_mul_repunit
+#print axioms repeated_population
+#print axioms repunit_mod_eight
+#print axioms population_add_one_even
+#print axioms population_sub_one_mod_eight
+#print axioms repeated_native_mask_population

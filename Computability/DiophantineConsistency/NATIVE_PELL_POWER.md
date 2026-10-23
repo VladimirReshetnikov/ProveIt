@@ -51,9 +51,10 @@ Dedicated checks audit all public theorem interfaces; they use only
 `propext`, `Classical.choice` and `Quot.sound`. These are unbounded proofs,
 not checks over sample source solutions.
 
-The next arithmetic prerequisite is the **half-binomial** ratio extraction:
-the native first coordinate is doubled, whereas the existing `Ratio90`
-interface uses `k=psi`. Its undoubled conclusions cannot be reused directly.
-Power/population-to-mask extraction, exact native-window decoding and its
-connection to K215/refutation remain separate obligations. No object-language
-ZFC derivation or fixed-payload calibration is asserted here.
+The subsequent [half-binomial ratio extraction](NATIVE_HALF_BINOMIAL.md)
+now passes Lean, retaining the doubled native first coordinate rather than
+using the undoubled `Ratio90` conclusion. Population/mask extraction and
+the full forward [native arithmetic-window binding](NATIVE_SOURCE_WINDOW.md)
+also pass. Whole-tuple window decoding and its connection to K215/refutation
+remain separate obligations. No object-language ZFC derivation or
+fixed-payload calibration is asserted here.
