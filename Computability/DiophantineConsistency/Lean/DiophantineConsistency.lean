@@ -21,3 +21,9 @@ import DiophantineConsistency.SidonPositions
 import DiophantineConsistency.QuadraticCoding
 import DiophantineConsistency.ObjectArithmetic
 import DiophantineConsistency.PolynomialGraph
+import DiophantineConsistency.DirectComposition
+import DiophantineConsistency.MultiQuadraticCoding
+import DiophantineConsistency.ObjectEquation
+import DiophantineConsistency.ObjectConsistency
+import DiophantineConsistency.ObjectCodeClosure
+import DiophantineConsistency.MultiTargetCarry
