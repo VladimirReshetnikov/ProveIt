@@ -1,4 +1,4 @@
-import BusyBeaver.ZFC.WellFoundedPart
+import BusyBeaver.ZFC.WellFoundedPartCore
 
 /-!
 Actual first-order formula relativization to the internally well-founded part.
