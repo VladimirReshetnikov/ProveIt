@@ -1,9 +1,10 @@
 # A Diophantine equation for syntactic consistency of ZFC
 
 Research started 23 October 2026, from repository commit `22e75dd6b8`.
-This directory contains active research and its Lean proofs; the delivered
-manuscripts under `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/`
-remain historical source material.
+This directory contains active research, its Lean proofs, and the delivered
+manuscripts in [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md).
+The manuscript collection was moved here from the Cardinals reports tree
+on 23 October 2026 at the repository owner's request.
 
 The target is one integer-coefficient polynomial, with an exactly stated
 witness domain, whose absence of zeros is equivalent to the absence of a

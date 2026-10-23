@@ -2,6 +2,12 @@
 
 Updated 23 October 2026. This is a work log, not a completion certificate.
 
+The historical manuscript collection has moved from the Cardinals reports
+tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
+at the repository owner's request. Live catalogue/intake/research links
+were updated. Pinned historical source paths remain valid for their named
+commits and are deliberately retained in the delivered provenance records.
+
 | Component | Status | Evidence / next task |
 |---|---|---|
 | Reports and historical comparison | Initial audit complete | Wave-5 collection README; P67 circuit in package 36 |

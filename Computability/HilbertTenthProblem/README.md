@@ -15,7 +15,7 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 **Fixed-input specializations for Con(ZFC)** (not formalized). The research
 report
-[`con-zfc-diophantine-forms`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
+[`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 (batch 221, seven wave-5 packages pinned to `8c6eec9d19`, superseding the
 earlier waves of batches 217–220) applies the native-window/Pell compiler
 below, with its input interface removed, to the blank run of the 215-state

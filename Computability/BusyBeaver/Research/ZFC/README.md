@@ -1137,7 +1137,7 @@ published to support further work toward 214.
 **Diophantine form of the K215 endpoint** (not formalized). Intake batch 221
 placed seven wave-5 packages, superseding the earlier waves of batches
 217–220, as the research report
-[`con-zfc-diophantine-forms`](../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
+[`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
 (placement `952c1fab49`, reconciliation `6d9a8438f7`). Each one turns the
 K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation` into
 an explicit polynomial with fixed integer coefficients. The route compiles a

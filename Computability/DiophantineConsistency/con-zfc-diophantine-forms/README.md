@@ -1,5 +1,14 @@
 # Con(ZFC) in Diophantine form
 
+This collection now lives under `Computability/DiophantineConsistency`.
+It was moved on 23 October 2026 from
+`SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms`.
+Paths in pinned source ledgers and historical Git commands still refer to
+the locations in those earlier commits. The delivered packages retain their
+original contents; this collection README's live repository links were
+adjusted for the move. See the [active research](../README.md) for new Lean
+proofs and the current status.
+
 **Explicit polynomials with fixed integer coefficients whose unsolvability
 ZFC proves equivalent to Con(ZFC): seven wave-5 syntheses on the blank run of
 K215, with ten unrestricted integers via Sun's reduction, fourteen via Jones,
@@ -68,7 +77,8 @@ tuples whose payloads are not in the tree, so in practice they too are
 usable only from history. To read the results that are in history only,
 use the wave-4 README and
 directories at `52f475c7a7`, e.g.
-`git show 52f475c7a7:<this directory>/README.md`. Earlier waves' lost results
+`git show 52f475c7a7:SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md`.
+Earlier waves' lost results
 are listed in their own READMEs (see the wave table).
 
 Some earlier results remain unbeaten on their own measures:
@@ -87,7 +97,7 @@ Some earlier results remain unbeaten on their own measures:
 ## How this report was made
 
 The packages overlap, as before, so they are **placed, not written**
-([docs/incoming/README.md](../../../../../../docs/incoming/README.md),
+([docs/incoming/README.md](../../../docs/incoming/README.md),
 section 2):
 
 - each package keeps its delivered layout and PDF in its numbered directory,
@@ -121,7 +131,7 @@ coefficient ports**:
 
 The ports are determined by a finite recipe from the literal 215-state
 machine
-[`candidate-k215/k215.tm`](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm),
+[`candidate-k215/k215.tm`](../../BusyBeaver/Research/ZFC/candidate-k215/k215.tm),
 and each package proves, by ordinary mathematics formalizable in ZFC, that
 
 > ZFC ⊢ (no solution in the stated domain) ↔ Con(ZFC).
@@ -131,7 +141,7 @@ The route is unchanged:
 1. the blank run of K215 halts iff ZFC has a finite refutation;
 2. a local tile language of that run is compiled by the repository's
    native-window/Pell compiler
-   ([`native-stream-queue/`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md))
+   ([`native-stream-queue/`](../../HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md))
    with its input interface removed.
 
 The low-variable forms then apply a reduction to a fixed quartic:

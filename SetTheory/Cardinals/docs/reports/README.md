@@ -3547,7 +3547,7 @@ intake. Current machine and accepted endpoint statements are unchanged.
 
 Batch 217 (arrival `2fd49a1a9d`, "Con(ZFC) in Diophantine form") opens a
 thirteenth Hilbert's-tenth report,
-[`con-zfc-diophantine-forms`](hilbert-tenth-problem/con-zfc-diophantine-forms/README.md),
+[`con-zfc-diophantine-forms`](../../../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md),
 bringing the collection to **291 reports**. Its eight packages, all of
 22 October 2026 and pinned to `cdd582bec1`, prove the same theorem
 independently: an explicit polynomial with fixed integer coefficients whose
