@@ -1,0 +1,130 @@
+\section{A thirteen-positive degree-126 auxiliary quotient}
+\label{sec:positive13-quotient}
+This additional construction has thirteen positive unknowns, exact degree
+$126$, and $91$ binary arithmetic operations ($51$ multiplications and
+$40$ additions/subtractions). It is a degree--operation tradeoff against the
+late incoming degree-$132$, $83$-operation construction, not a dominance
+claim. It uses that construction's entire fixed native-window coefficient
+tuple, with $\beta=2^{590069}-1$ and the already shifted $M_F$.
+
+Supply exactly $J,F,\alpha,z,f,i,T,s,w,\eta,\zeta,y,t>0$. Define
+\begin{align*}
+q&=\beta J+1,&X&=wq,&Y&=sq^3,&E&=XY,\\
+k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,\\
+\Delta&=a^2+H=(a+1)(a+3),&\ell&=EkY,\\
+A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{align*}
+Set
+\begin{align*}
+R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+N_t&=(K_0+w)(q-F-\alpha)+q-F-z(q-1),\\
+U&=4q^4,\qquad r=k-R-1,\qquad S=UH,\\
+W&=Ub_0+H\bigl(U(t+\ell)+r\bigr),\\
+N&=(W^2+U^2G-S^2A)^2-4W^2U^2G.
+\end{align*}
+These abbreviations are the late parent's separate main/first-Pell norm.
+The new auxiliary abbreviations are
+\begin{align*}
+I&=ic^2,&N_s&=f^2-\Delta I^2,&Q&=\Delta(f^2-1),\\
+V&=c(Tf-1)-Rf^2,&M&=a+1,&C_*&=(a+3)(f^2-1),\\
+Z&=C_*(V^2-1)+(Q-1)y(2-My).
+\end{align*}
+In particular $MC_*=Q$; the notation $C_*$ is unrelated to the fixed
+coefficient port $M_C$. The single equation is
+\[
+\boxed{\quad P=N_t(1+N)N_s(1+Z)-1=0.\quad}
+\]
+Every abbreviation is polynomial and introduces no quantified unknown.
+
+\paragraph{The quotient identity and the sign gap.}
+Direct expansion gives the universal polynomial identity
+\[
+MZ=QV^2-(Q-1)(My-1)^2-1.                       \tag{*}
+\]
+For integers $m\ge2$ and $0<b<2m-2$, the equation
+$x^2-(m^2-1)v^2=-b$ has no integer solution. Indeed, after taking absolute
+values, $v>0$ and $(m-1)v<x<mv$, because
+$(2m-2)v^2>b$. Multiplication by the norm-one element
+$m-\sqrt{m^2-1}$ gives another solution with strictly smaller positive
+ordinate $mv-x$. Infinite descent proves the assertion.
+
+\paragraph{Soundness, with the order explicit.}
+If $P=0$, its four integer factors are units. Since $N$ is a square modulo
+$4$, the factor $1+N$ must be $1$. The negative choice for $N_s$ is excluded
+by the preceding lemma with $m=a+2$ and $b=1$, since
+$\Delta=(a+2)^2-1$. Thus $N_s=1$ and
+$Q=(\Delta I)^2$. Put $m=\Delta I\ge2$.
+If $1+Z=-1$, identity~(*) gives
+\[
+(mV)^2-(m^2-1)(My-1)^2=-(2a+1).
+\]
+This is impossible because
+$0<2a+1<2\Delta I-2$: already $I\ge1$, $a>0$, and
+$2\Delta-2-(2a+1)=2a^2+6a+3>0$.
+Therefore $Z=0$ and $N_t=1$. Notice that no transport bound was needed
+before this recovery. Now $y_{\rm old}=My-1>0$ restores exactly the late
+parent's thirteen-positive system:
+\[
+N_t=1,\quad N=0,\quad N_s=1,\quad
+QV^2-(Q-1)y_{\rm old}^2=1.
+\]
+The parent's main-norm recovery and normalized strong/auxiliary rank proof
+therefore restore the full compiler interface, giving a blank K215 halt
+and a finite syntactic ZFC refutation.
+
+\paragraph{Completeness and the residue.}
+Start with canonical normalized compiler witnesses for an accepting
+computation, keeping the outer variables, $f,i$ and the parent's positive
+carrier $t$. The whole fixed tuple gives $R\equiv3\pmod4$.
+Write $m=\Delta I$, so $Q=m^2$, and choose
+\[
+V=\frac{\chi_m(R)}m,\qquad y_{\rm old}=\psi_m(R).
+\]
+The parent's explicit odd-index reconstruction proves
+$V\equiv-c\pmod{f^2}$, $V\equiv-R\pmod c$ and
+$y_{\rm old}\equiv-1\pmod Q$.
+The last congruence also follows directly because $\psi_m(R)$ is an even
+polynomial in $m$ with constant term $(-1)^{(R-1)/2}=-1$.
+Consequently
+\[
+T=\frac{V+c+Rf^2}{cf}>0,
+\qquad y=\frac{y_{\rm old}+1}{M}>0
+\]
+are integers, using $\gcd(c,f)=1$, $f^2\equiv1\pmod c$, and $M\mid Q$.
+The Pell identity and~(*) give $Z=0$. The other three factors are $1$, so
+$P=0$. This changes the meaning of $y$ and may replace $T$; it does not
+assert the residue for every old auxiliary witness.
+
+\paragraph{Exact degree.}
+Let $q_0=\beta J$, $Y_0=sq_0^3$, $E_0=wq_0Y_0$,
+$k_0=\eta+\zeta$, $c_0=k_0Y_0$, $\ell_0=E_0c_0$,
+$U_0=4q_0^4$, $H_0=4E_0$, $I_0=ic_0^2$ and
+$N_{t,2}=w(q_0-F-\alpha)-zq_0$.
+The parent's exact cancellation identity gives degree $68$ for $N$, with
+\[
+N_{68}=4U_0^4H_0^3\ell_0^3(2t-k_0).
+\]
+The strong factor has degree $34$ and leading form $-E_0^2I_0^2$.
+The two summands of $Z$ each have degree at most $22$, and their combined
+highest part is
+\[
+Z_{22}=E_0f^2(c_0^2T^2f^2-E_0^2y^2)\ne0.
+\]
+Thus $\deg P=2+68+34+22=126$, with nonzero leading form
+\[
+-N_{68}E_0^3I_0^2f^2(c_0^2T^2f^2-E_0^2y^2)N_{t,2}.
+\]
+This is a universal degree proof, not an inference from sampled rays.
+
+\paragraph{Logical and reproducibility boundary.}
+Composing both directions with the inherited compiler and syntactic
+calibration yields, in ZFC,
+\[
+\text{$P$ has no strictly positive integer zero}
+\quad\Longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}).
+\]
+No global minimality or consistency decision is claimed. The literal DAG,
+parent and coefficient hashes, complete proof and independent finite
+checks accompany this section. The checker verifies polynomial identities,
+all live gates, the $91$-operation count and actual-coefficient degree rays;
+these checks do not replace the unbounded compiler proof.

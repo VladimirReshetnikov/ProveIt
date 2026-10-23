@@ -1,0 +1,25 @@
+\subsection{Hybrid evaluation of the source without moving any target}
+The coefficient specification and the evaluator are separate objects.
+For evaluation, put $u_0=B^{183}$ and $u_i=B^{183-w_i}$.
+Homogenize the inherited sixty-operation quadratic source at the coordinates
+$u_i+u_0$. Align additions by powers of $u_0$ and make every comparison
+homogeneous of degree two. The fifteenth residual of that sixty-operation
+source uses the shifted transport convention; adding $\beta J u_0$ restores
+the original package-31 residual used by the selective certificate.
+
+For a quadratic monomial the factorial weight is two on a diagonal, including
+$u_0^2$, and one off the diagonal. Add one further copy of every diagonal
+coefficient to the homogeneous residual. A row with target $h\ge366$ can then
+be multiplied by $B^{h-366}$ to obtain its exact reversed coefficient block.
+Only targets $70$ and $86$ fail this inequality. Evaluate those two rows
+directly, and evaluate the remaining twenty through the shared homogeneous
+circuit. Sparse Horner evaluation combines the blocks. No target is shifted,
+no negative exponent is introduced, and the polynomial is unchanged.
+
+The independent auditor expands all twenty-two homogeneous comparisons in
+all thirty-five symbols and checks the original residuals exactly. It also
+reconstructs the shifted source independently and verifies all $71{,}808$
+source/expansion interactions. The hybrid evaluator saves $161$ live binary
+operations relative to this component's direct term evaluator. The separate
+cancellation-resolved degree certificate deliberately uses the direct source
+evaluator, making its degree argument independent of the gate-saving layout.

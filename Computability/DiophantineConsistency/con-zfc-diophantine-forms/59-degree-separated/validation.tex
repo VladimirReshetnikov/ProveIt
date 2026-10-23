@@ -1,0 +1,51 @@
+\section{Validation and reproducible archive}
+The root verifier authenticates the complete release, copies it into a
+temporary directory, and executes 25 finite replay stages without modifying
+the sealed originals. The stages cover kernel reconstruction, source and
+circuit identities, independent literal evaluators, exact degree witnesses,
+coefficient bindings, guard counterexamples and a cross-family metadata
+check. Generated JSON circuits are compared byte-for-byte with the delivered
+versions. The machine-readable stage and output lists are authoritative.
+
+The standard root run uses ordinary Python. The nine-variable primary
+verifier deliberately rejects \texttt{-O} and \texttt{-OO}; that rejection
+is documented and was tested, not misreported as a successful optimized
+proof. Its separate independent checker uses explicit checks and passes in
+both modes. Other component receipts distinguish normal and optimized
+runs. NumPy is required for one direct-merger diagnostic; the other canonical
+families and the direct merger's independent symbolic checker use the Python
+standard library. The late thirteen-positive authored checker additionally
+uses SymPy; its separate independent review is standard-library only.
+Tested versions are Python 3.12.14, NumPy 2.3.5 and SymPy 1.14.0.
+
+The strongest local checks are exact identities, not sample evaluations.
+The split-source checker parses the original 22 residuals, applies and
+inverts the two row operations, authenticates all 89 coefficient records,
+and verifies all 22,544 interactions and 22 formal target identities.
+The direct merger's independent checker expands its complete formal norm,
+including zero, negative and coincident specializations. Degree certificates
+combine valid upper bounds with nonzero leading homogeneous forms or
+specializations modulo primes; merely evaluating random points would not
+establish exact degree.
+
+Finite examples additionally stress source bounds, signed borrows, zero
+spectators, CRT parametrizations, and positive-coordinate reconstruction.
+Ten deliberately corrupted source/code cases are rejected. Three separate
+root corruption controls test release integrity only. These distinctions
+are retained in the receipts: a file-hash rejection is not an independent
+number-theoretic proof, and a finite test is not a consistency decision.
+
+All primary source31 bindings agree on the same four actual payloads.
+The nine-variable comparison tuple and the late thirteen-positive compact
+tuple are explicitly separate. Active proof
+and payload paths are checked after copying to an isolated directory;
+historical metadata is identified as inert provenance. No network access
+is needed for replay. The imported machine/compiler and representation
+results retain immutable references and original notices; the replay does
+not claim to rebuild their theorem-prover developments.
+
+The PDF is compiled from the supplied TeX, inspected page by page, and
+packaged with the explicit circuits, coefficient payloads, proofs and
+checks. Rebuilding a PDF may change its metadata. The final archive is
+re-extracted and replayed before delivery; its checksum is supplied outside
+the archive to avoid a self-referential checksum.

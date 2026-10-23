@@ -1,0 +1,133 @@
+{
+  "status": "PASS",
+  "script": "code/domain_translations.py",
+  "script_sha256": "8f3ad769d1998f6b4b05a3820325f52a057c2e5c0f4c5e0a0895806482f995d1",
+  "source_positive_circuit": "circuits/p15_degree24.json",
+  "source_positive_circuit_sha256": "39d785143cef12766127398ced6e2680b85ed182a636248737764892746c20ae",
+  "coefficient_authentication": {
+    "binding_file": "coefficients/COEFFICIENT_BINDING.json",
+    "binding_sha256": "0599543212b8d2bbed2db018a29d6826702e1877faa5c8a1861d041998cb1783",
+    "instance": "wang943-complement67-shared-anchor-length8807-prime581197",
+    "payloads": [
+      {
+        "port": "beta",
+        "sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d",
+        "gzip_sha256": "466796f146d60db9929fa0f0f62d70d5e6afbcea9940342764571f1ca6bea87c"
+      },
+      {
+        "port": "K",
+        "sha256": "c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e",
+        "gzip_sha256": "b70752bb38570b1e93d480469c63ace9ed4b4552f94eb89d96bc600b1e2a4b6a"
+      },
+      {
+        "port": "MC",
+        "sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4",
+        "gzip_sha256": "271fabccdd555bda2c54c4c3a7379cc02eeba4893c07178bfd557a7683b74d5e"
+      },
+      {
+        "port": "MF_source",
+        "sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737",
+        "gzip_sha256": "935cd87f8b23f24a20fd742c48d2a9cbca6afd494b6b074445df72c98b0c6e3b"
+      }
+    ]
+  },
+  "primes": [
+    65537,
+    1000003,
+    1000000007
+  ],
+  "seed": 3494514724,
+  "random_cases_per_prime_per_translation": 96,
+  "imports_project_code": false,
+  "uses_python_assert": false,
+  "translations": [
+    {
+      "status": "PASS",
+      "domain": "nonnegative integers",
+      "witness_count": 15,
+      "exact_degree": 24,
+      "operations": 105,
+      "operation_breakdown": {
+        "+": 42,
+        "*": 47,
+        "-": 16
+      },
+      "added_operations": 15,
+      "residual_evaluator_operations": 94,
+      "all_literal_gates_and_witnesses_live": true,
+      "modular_cases": 297,
+      "residual_and_output_comparisons": 2079,
+      "modular_comparisons_sha256": "d6680d868fe8882ade556d1074f5c897e596e1d46a736dac0b604f6cb81a5b85",
+      "degree_ray_checks": [
+        {
+          "prime": 65537,
+          "degree": 24,
+          "observed_leading_coefficient": 36,
+          "expected_leading_coefficient": 36,
+          "method": "Exact degree-th finite difference divided by degree factorial"
+        },
+        {
+          "prime": 1000003,
+          "degree": 24,
+          "observed_leading_coefficient": 36,
+          "expected_leading_coefficient": 36,
+          "method": "Exact degree-th finite difference divided by degree factorial"
+        },
+        {
+          "prime": 1000000007,
+          "degree": 24,
+          "observed_leading_coefficient": 36,
+          "expected_leading_coefficient": 36,
+          "method": "Exact degree-th finite difference divided by degree factorial"
+        }
+      ],
+      "file": "circuits/p15_nonnegative_degree24.json",
+      "sha256": "eede657d7e60fa851da5d84e3a755639d706da354f6be7c2b42b59a01db15f02"
+    },
+    {
+      "status": "PASS",
+      "domain": "unrestricted integers",
+      "witness_count": 60,
+      "exact_degree": 48,
+      "operations": 210,
+      "operation_breakdown": {
+        "*": 107,
+        "+": 87,
+        "-": 16
+      },
+      "added_operations": 120,
+      "residual_evaluator_operations": 199,
+      "all_literal_gates_and_witnesses_live": true,
+      "modular_cases": 297,
+      "residual_and_output_comparisons": 2079,
+      "modular_comparisons_sha256": "574839f11a98a0c3d9495208eb27a90280f1a9e4c3e59b98e619e981522fd5b2",
+      "degree_ray_checks": [
+        {
+          "prime": 65537,
+          "degree": 48,
+          "observed_leading_coefficient": 65501,
+          "expected_leading_coefficient": 65501,
+          "method": "Exact degree-th finite difference divided by degree factorial"
+        },
+        {
+          "prime": 1000003,
+          "degree": 48,
+          "observed_leading_coefficient": 377330,
+          "expected_leading_coefficient": 377330,
+          "method": "Exact degree-th finite difference divided by degree factorial"
+        },
+        {
+          "prime": 1000000007,
+          "degree": 48,
+          "observed_leading_coefficient": 90651923,
+          "expected_leading_coefficient": 90651923,
+          "method": "Exact degree-th finite difference divided by degree factorial"
+        }
+      ],
+      "file": "circuits/p60_integer_degree48.json",
+      "sha256": "e8fa40f23569ba4f4950164a520bfeeb90a83ec7e2c0c38fe49e40dc4f603e99"
+    }
+  ],
+  "proof_scope": "Nonnegative translation is an affine bijection. Integer translation is surjective by Lagrange's four-square theorem. Degree upper bounds use the independently established parent degree; equal-ray leading coefficients prove the lower bounds.",
+  "limits": "Standard domain clarification, not a frontier claim. Modular tests are implementation diagnostics, not a substitute for the existence-equivalence or inherited compiler proofs."
+}

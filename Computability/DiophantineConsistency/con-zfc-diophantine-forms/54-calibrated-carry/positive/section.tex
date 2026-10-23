@@ -1,0 +1,95 @@
+\section{A constant-cancelled positive norm minimum}
+The short-equation frontier gains a fifteen-positive-variable polynomial
+of degree $64$ evaluated in $72$ binary arithmetic operations, and a
+$70$-operation degree-$80$ version. The inherited $66$-operation,
+degree-$157$ formula remains the operation-count comparison. All four
+ports are rebound together to the verified native tuple with base
+$2^{429959}$; the high mask is already shifted.
+
+For the $72/64$ version the positive inputs are
+$J,F,\alpha,z,f,h,i,T,s,w,r,\eta,\zeta,u,\gamma$. Define
+\begin{align*}
+ q&=\beta J+1,&X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3.
+\end{align*}
+\begin{align*}
+ \Delta&=a^2+H,&D&=X+ac+\gamma H,&\ell&=EkY,\\
+ V&=f^2(cT-R)-c,&I&=ic^2,&A_0&=\Delta(f^2-1).
+\end{align*}
+\[
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J.
+\]
+\begin{align*}
+ N_0&=r^2+\ell(2r-k),&N_1&=D^2-\Delta c^2,\\
+ N_a&=(V+u)^2-A_0u(2V+u),&N_k&=k-hE-R.
+\end{align*}
+\[
+ N_t=(K_0+w)(q-F-\alpha)+(q-F)-z(q-1).
+\]
+Put $A=N_0N_1$, $B=N_aN_kN_t$, and $C=I^2-A_0$. The equation is
+\[
+                    A^2+B(B-2)+C^2=0.                 \tag{S64}
+\]
+All displayed auxiliary letters denote polynomial abbreviations, not new
+witnesses. The literal division-free DAG uses $40$ multiplications,
+$18$ additions and $14$ subtractions, including all literal operations.
+
+\paragraph{Soundness.}
+The first and main norms cannot vanish on the positive domain: their
+discriminants $XY^2(XY^2+1)$ and $(a+2)^2-1$ are nonsquares. Hence
+$A^2\geq1$. Completing the square in (S64) gives
+$A^2+(B-1)^2+C^2=1$, so $A^2=1$, $B=1$, $C=0$.
+The consecutive-product negative-Pell obstruction and the modulo-four
+main-norm obstruction give $N_0=N_1=1$. Now $A_0=I^2>1$ and the
+auxiliary norm has square residue modulo four, giving $N_a=1$.
+Restore $\tau=\ell+r>0$ and $y=|V+u|>0$; the latter cannot vanish
+since its norm is one. Set $T_{\rm old}=fT$. The resulting tuple solves
+the inherited ordinary product equation, with $N_kN_t=1$. Its signed
+strong-rank theorem recovers both unit signs, including the weak
+transport boundary, and extracts the blank K215 computation. No division
+of a supplied multiplier by $\Delta$ is made.
+
+\paragraph{Positive completeness.}
+For a canonical normalized compiler witness,
+$c=\psi_{a+2}(R)$ and $f^2=1+\Delta j^2c^4$. Choose $i=\Delta j$.
+The verified native low-mask phase gives $R\equiv3\pmod4$.
+For the odd-index Pell polynomials,
+\[
+ \chi_t(2v+1)=tQ_v(t^2),\quad Q_v(0)=(-1)^v(2v+1),\quad
+ Q_v(1-(a+2)^2)=(-1)^v\psi_{a+2}(2v+1).
+\]
+With $S=ic^2$, choose $V=\chi_S(R)/S$ and $y=\psi_S(R)$.
+Since $S^2=\Delta(f^2-1)$, these identities give
+$V\equiv-c\pmod{f^2}$ and $V\equiv-R\pmod c$. Also
+$f^2\equiv1\pmod c$, so
+\[
+                 T=\frac{V+c+Rf^2}{cf^2}
+\]
+is a positive integer. Moreover $V\geq4S^2-3>1$ and the auxiliary
+norm implies $y>V$, giving positive $u=y-V$; the first norm similarly
+gives positive $r=\tau-\ell$. Thus $A=B=1$, $C=0$.
+This reconstructs auxiliary coordinates; it does not assert divisibility
+of every old quotient by $f$.
+
+\paragraph{Exact degree.}
+Let $q_0=\beta J$, $k_0=\eta+\zeta$,
+$E_0=wsq_0^4$, $c_0=k_0sq_0^3$, and
+$T_0=w(q_0-F-\alpha)-zq_0$.
+The degrees of $A,B,C$ are $30,32,22$, respectively.
+The unique degree-$64$ term is $B^2$, with leader
+\[
+               4h^2E_0^6c_0^2T^2f^8u^2T_0^2.
+\]
+The coefficient of
+$J^{32}h^2\eta^2w^6s^8T^2f^8u^2z^2$ is $4\beta^{32}\ne0$.
+Without either gap the same finalizer has $70$ gates and degree $80$.
+With both gaps but old $V=c(Tf-1)-Rf^2$, it has $73$ gates and degree
+$62$. The target cancellation $(B-1)^2-1=B(B-2)$ saves one operation.
+
+The independent checker verifies full DAG liveness, all four native
+payload hashes, $1200$ direct-formula evaluations, $72$ complete
+finite-field univariate degree replays, and five exact Pell
+reconstruction examples. Normal and optimized runs agree. These checks
+corroborate the unbounded proof; inherited compiler and rank theorems
+remain dependencies, not new kernel-certified results. No consistency
+truth value or global optimality is claimed.

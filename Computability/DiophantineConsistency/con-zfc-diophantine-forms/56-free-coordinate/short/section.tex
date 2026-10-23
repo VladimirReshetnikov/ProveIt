@@ -1,0 +1,184 @@
+\section{Additional short equations: 73 operations at degree 54}
+\label{sec:short-synthesis}
+
+The incoming archives contain useful improvements that are absent from
+the active P76 documentation: a 66-operation equation of degree 157,
+a 72-operation equation of degree 80, and an ordinary gap equation with
+75 operations at degree 44. We retain these as the comparison baseline.
+The following synthesis adds the two tradeoffs
+\[
+ (\text{operations},\text{degree})=(73,54),\qquad (74,46),
+\]
+each using fifteen strictly positive integer variables. It combines the
+incoming minimum-norm argument and squared-modulus reconstruction, and
+regroups the main norm to save one further operation. The finite verifier
+checks every literal arithmetic gate and exact leading homogeneous form.
+The semantic compiler remains an identified inherited mathematical
+dependency; no new proof-assistant or object-language ZFC certificate is
+asserted in this supplement.
+
+\subsection{The exact polynomial}
+
+Use the complete package-31 coefficient tuple, with $B=2^{1064921}$,
+$\beta=B-1$, and its already shifted $M_F$. The tuple and all four binary
+payloads are included in \texttt{short/coefficients31/}.
+The fifteen positive unknowns are
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,e,\gamma.
+\]
+Define polynomial abbreviations, with no additional unknowns:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H,&D&=X+ac+\gamma H,\\
+ L&=E(kY),&
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ V&=f^2(cT-R)-c,&U&=\Delta(f^2-1),&I&=ic^2.
+\end{align*}
+The five factors and strong residual are
+\begin{align*}
+ N_0&=\tau^2-L(L+k),&N_1&=D^2-\Delta c^2,\\
+ N_a&=(V+e)^2-Ue(2V+e),&W_s&=I^2-U,\\
+ N_k&=k-hE-R,&N_t&=(K_0+w)C+(q-F)-z(q-1).
+\end{align*}
+The main short equation is
+\begin{equation}\label{eq:short54}
+ \boxed{Q_{54}=N_0^2+N_a^2+W_s^2+(N_1N_kN_t-1)^2-2=0.}
+\end{equation}
+The lower-degree alternative is
+\begin{equation}\label{eq:short46}
+ \boxed{Q_{46}=N_0^2+N_1^2+N_a^2+W_s^2+(N_kN_t-1)^2-3=0.}
+\end{equation}
+The subscripts denote exact degree. Their literal evaluators have 73
+and 74 operations, respectively. The principal evaluator has
+39 multiplications, 19 additions and 15 subtractions; the alternative
+has one more addition. Multiplication by a fixed numeral is charged.
+
+\subsection{The minimum argument and complete local equivalence}
+
+The following facts hold on every positive assignment, before imposing
+either equation:
+\begin{equation}\label{eq:min-blocks}
+ N_0^2\geq1,\qquad N_a^2+W_s^2\geq1.
+\end{equation}
+Equality cases are $N_0=1$ and $(N_a,W_s)=(1,0)$, respectively.
+For the first assertion, write $n=XY^2\geq2$. The discriminant $n(n+1)$
+is nonsquare, so $N_0\ne0$. A hypothetical solution of
+$x^2-n(n+1)t^2=-1$ has
+$nt<|x|<(n+\tfrac12)t$. Multiplication by
+$2n+1-2\sqrt{n(n+1)}$ produces a new positive second coordinate
+$(2n+1)t-2|x|<t$, contradicting minimality. Thus $N_0\ne-1$.
+
+For the second assertion put $y_0=V+e$. The exact identity
+\[
+ N_a=UV^2-(U-1)y_0^2
+\]
+is immediate. If $U=0$, then $W_s=I^2\geq81$. Otherwise $U\geq2$,
+and $N_a=0$ would force the consecutive integers $U,U-1$ to be
+squares, unless $V=y_0=0$. The latter contradicts $e>0$. Hence
+$N_a\ne0$. Equality in the second block forces $W_s=0$ and
+$N_a=\pm1$. Now $U=I^2$, so modulo four $N_a$ is congruent to
+$y_0^2$ when $I$ is even and to $V^2$ when $I$ is odd. Thus $N_a=-1$
+is impossible. This proves all assertions in~\eqref{eq:min-blocks}.
+
+At a zero of~\eqref{eq:short54}, both minimum blocks attain their
+minima and the remaining square vanishes. Hence
+\[
+ N_0=N_a=1,\qquad W_s=0,\qquad N_1N_kN_t=1.
+\]
+The last equation makes $N_1$ an integer unit. Since
+$\Delta=(a+2)^2-1\equiv0$ or $3\pmod4$, square residues exclude
+$N_1=-1$. Thus $N_1=1$ and $N_kN_t=1$. These are precisely the
+equality conditions of~\eqref{eq:short46}; conversely they imply both
+equations. This is a complete tuplewise equivalence, uniform in the
+fixed ports with $\beta>0$.
+
+The saving is transparent at the circuit level. Starting from $Q_{46}$,
+remove the $N_1^2$ gate and its summation gate, insert one multiplication
+of $N_1$ into the unit product, and change the final constant from three
+to two. This saves exactly one binary operation.
+
+\subsection{Squared-modulus completeness for the ordinary strong form}
+
+The historical gap construction used
+$V_{\mathrm{old}}=c(T_{\mathrm{old}}f-1)-Rf^2$.
+The identity
+\[
+ V=f^2(cT-R)-c=V_{\mathrm{old}}\big|_{T_{\mathrm{old}}=fT}
+\]
+proves soundness immediately. Completeness requires reconstructing an
+auxiliary Pell ordinate, rather than assuming divisibility of every
+old quotient.
+
+A halting computation supplies a canonical normalized witness.
+Transfer it to ordinary coordinates by
+$i_{\mathrm{ordinary}}=\Delta i_{\mathrm{normalized}}$.
+The inherited decoding supplies $c=\psi_A(R)$,
+$A=a+2$, $R\equiv3\pmod4$, and
+\[
+ I^2=\Delta(f^2-1),\qquad c\mid I,
+ \qquad f^2\equiv1\pmod c,
+ \qquad \gcd(c,f)=1.
+\]
+For $R=2r+1$ the Pell polynomials satisfy
+\[
+ \chi_t(R)=tQ_r(t^2),\quad
+ Q_r(0)=(-1)^rR,\quad
+ Q_r(1-A^2)=(-1)^r\psi_A(R).
+\]
+These follow by the elementary second-order Pell recurrences. Since $r$
+is odd, take
+\[
+ V=\frac{\chi_I(R)}{I},\qquad y=\psi_I(R).
+\]
+Both are positive integers, $V>1$, and their norm is one. The displayed
+polynomial identities give $V\equiv-c\pmod{f^2}$ and
+$V\equiv-R\pmod c$. Consequently
+\[
+ T=\frac{V+c+Rf^2}{cf^2}>0
+\]
+is an integer and satisfies the required quotient formula. Finally
+\[
+ (I^2-1)(y^2-V^2)=V^2-1>0
+\]
+implies $e=y-V>0$. The other coordinates remain unchanged. This proves
+existence equivalence to the authenticated ordinary source and hence,
+using its inherited compiler and K215 calibration, the ordinary
+mathematical implications formalizable in ZFC:
+\begin{align*}
+ \text{$Q_{54}$ has no positive zero}&\longleftrightarrow
+ \operatorname{Con}(\mathrm{ZFC}),\\
+ \text{$Q_{46}$ has no positive zero}&\longleftrightarrow
+ \operatorname{Con}(\mathrm{ZFC}).
+\end{align*}
+
+\subsection{Exact degrees and bounded comparison}
+
+The factor degrees are $22,18,23,22,7,2$ for
+$N_0,N_1,N_a,W_s,N_k,N_t$, respectively. The main-norm cancellation is
+the identity, with $Z=X+\gamma H$,
+\[
+ (ac+Z)^2-(a^2+H)c^2=Z^2+2acZ-Hc^2.
+\]
+Writing $Q=\beta J$, $k_0=\eta+\zeta$ and
+$C_1=Q-F-\alpha$, the highest homogeneous forms are
+\begin{align*}
+ [Q_{54}]_{54}
+ &=64\gamma^2h^2w^6s^8k_0^2Q^{30}(wC_1-zQ)^2,\\
+ [Q_{46}]_{46}
+ &=4w^4s^6k_0^2T^2f^8e^2Q^{22}.
+\end{align*}
+Their respective coefficients of
+$J^{32}\gamma^2h^2w^6s^8\eta^2z^2$ and
+$J^{22}w^4s^6\eta^2T^2f^8e^2$ are
+$64\beta^{32}$ and $4\beta^{22}$, strictly positive for the supplied
+tuple. The exact symbolic audit verifies these full leading forms,
+not merely a numerical specialization.
+
+These points improve the local degree/operation frontier between the
+reviewed $72/80$ and $75/44$ candidates. They do not improve the existing
+66-operation record, the degree-44 point, or the smallest-variable
+constructions. The proof files and source receipts make this a bounded
+repository comparison, without a claim of worldwide priority or global
+minimality.

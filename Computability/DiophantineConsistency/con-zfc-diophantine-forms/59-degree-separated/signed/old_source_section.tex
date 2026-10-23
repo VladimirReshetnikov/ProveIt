@@ -1,0 +1,433 @@
+\section{Thirteen integers: CRT elimination and a coprime spectator guard}
+\label{sec:jones-seeded}
+
+The polynomial specified below has exactly thirteen unrestricted integer
+unknowns, exact total degree $28\,847\,344$, and a division-free circuit of
+$754$ live binary operations ($516$ multiplications, $215$ additions and
+$23$ subtractions). Its integer zero existence is equivalent to a finite
+syntactic ZFC refutation. Thus, with the stated inherited compiler theorem,
+ZFC proves that its lack of integer zeros is equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$. This is an ordinary mathematical proof,
+not a new Lean certificate, a proof of consistency, or a global minimality
+claim. Unlike the ten-integer companion, the arithmetic finalizer here uses
+only the established Jones ratio interface, not Sun's 2026 bridge.
+
+\subsection{A coherent fixed source and an explicit polynomial}
+Let $p_1,\ldots,p_{22}$ be the original package-31 quadratic residuals after
+substituting $x_i=n_i+1$ in all $31$ positive source coordinates. The exact
+source is \texttt{upstream/parent\_quartic31.json}; the complete fixed port
+mapping is $(\beta,K_0,M_C,M_F)=(\beta,K,M_C,M_{F,\mathrm{source}})$ from
+\path{FIXED_BINDING_OLD_SOURCE.json}. All four compressed little-endian payloads are
+included and hash-authenticated. This uses the original transport coordinate,
+not package 45's extra transport shift. The imported source theorem says
+\[
+ \exists n\in\mathbb N^{31}\ \bigwedge_{j=1}^{22}p_j(n)=0
+ \quad\Longleftrightarrow\quad
+ \text{there is a finite ZFC refutation}.
+\]
+The fifth residual equals $1$ at $n=0$, so any common zero is nonzero.
+
+Use the selective weights $w_i$, row order, and targets $q_j$ in
+\texttt{CODE.json}, identical to the companion's certified tuple.
+Their maxima are $W=183$ and $Q_*=5190$; put $K_*=Q_*+2W=5556$ and
+$E_*=K_*+W+2=5741$. For
+$p_j(n)=\sum_\alpha p_{j,\alpha}n^\alpha$, set
+\[
+ c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,p_{j,\alpha},\qquad
+ D_c(B)=\sum_{j,\alpha}c_{j,\alpha}B^{q_j-\alpha\cdot w}.
+\]
+The finite isolation certificate checks all $71\,808$ possible interactions
+of the $136$ used source terms with the $528$ padded quadratic monomials.
+It proves
+\[
+ [t^{q_j}]\Bigl(1+\sum_i n_it^{w_i}\Bigr)^2D_c(t)=2p_j(n).
+\]
+It also proves that the displayed exponents in $D_c$ are distinct and its
+leading coefficient is $2$. All $|c_{j,\alpha}|<A_*=2^{2134927}$;
+the verifier derives this bound from the actual fixed-port bit lengths.
+
+The unknowns are
+\[
+ (\epsilon,g,h,s,w,\phi,i,j,z_1,z_2,z_3,r,v)\in\mathbb Z^{13}.
+\]
+Every subsequent symbol is a polynomial register, not an additional unknown.
+Fix
+\[
+ \kappa=2134940,\quad a=2^\kappa=8192A_*,\quad
+ \eta=2^{16012040}=2^{15\kappa/2-10},
+\]
+and define
+\begin{align*}
+ b&=2\epsilon^2,& B&=ab^2,\\
+ \ell&=\sum_iB^{w_i},& T_*&=\sum_jB^{q_j},\\
+ N_0&=B^{W+1},& L&=2bB^{E_*},\\
+ N&=\eta B^{2966},& c&=bB^W,\\
+ M_c&=N_0-1-(b-1)\ell,&
+ J_c&=2(1+g)^2D_c(B)+T_*,\\
+ S_c&=g+N_0J_c,& T_c&=M_c+N_0(B-2)T_*,\\
+ R&=L^2+(S_c+T_c)L+(L-1-S_c),& G_c&=32c.
+\end{align*}
+All powers have fixed nonnegative integer exponents. In particular, $N$ is
+an ordinary polynomial, not a variable-exponent abbreviation.
+
+Use the Jones registers with the exact CRT reparameterization of $H$ below, and $\omega=w^2$:
+\begin{align*}
+ U&=N^2\omega,&Y&=N^2s,\\
+ M&=RY,&P&=2M^2U,\\
+ K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=b\omega,\\
+ C&=B_1+W_1+\phi,&J&=4A-5,&
+ Q&=3W_1C-2(W_1^2-1),\\
+ D&=(A^2-1)C^2+1,&E&=iJDC^2,&F&=(A^2-1)E^2+1,\\
+ G&=A+F(CD+1-A),&H&=C+F(B_1+jC),&I&=(G^2-1)H^2+1,\\
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI,\\
+ u&=J,&t&=Q.
+\end{align*}
+Set
+\[
+ \delta=C-KY,\qquad \Delta=g(c-g)K^2-c^2\delta^2,
+ \qquad (d_1,d_2,d_3)=(3s-1,3\phi+2,3\Delta-1).
+\]
+The new coprime-spectator stack is
+\[
+ C_0=a_0,\qquad B_j^*=1+4d_jC_{j-1}z_j^2,\qquad
+ C_j=C_{j-1}B_j^*\quad(j=1,2),
+\]
+\[
+ B_3^*=1+4d_3C_2a_1z_3^2,\qquad C_*=C_3=C_2B_3^*.
+\]
+Thus the last guard contains the second square candidate $a_1$ as a
+spectator. This is the only change to the Pell sign stack.
+Finally define
+\begin{align*}
+ Z&=\epsilon wi z_1z_2z_3a_0,&\Sigma&=Zu^5,&\rho&=t+ur,\\
+ \Theta&=(\rho^3-u^2\rho-u^3)(\rho^2+23u^2),&
+ X&=\Sigma v-\Theta,\\
+ A_0&=\Sigma^2C_*,&A_1&=\Sigma^2a_1.
+\end{align*}
+The requested thirteen-integer equation is the following single polynomial:
+\begin{equation}\label{eq:jones-seeded}
+ \boxed{\mathcal F_{13}=(X^2-A_0-A_1)^2-4A_0A_1=0.}
+\end{equation}
+The literal division-free DAG is \texttt{generated/signed\_coprime\_crt.json}.
+
+\subsection{Sparse padding and unconditional size estimates}
+Assume first only $b\ge2$. Since $B-1>A_*$ and the top coefficient of $D_c$
+is $2$, we have $D_c(B)>B^{Q_*}>0$. Also $0<M_c<N_0$.
+In fact $S_c>0$ for every integer $g$, not merely for $g\ge1$.
+Put $v_g=g+1$ and $A_{\rm sc}=2N_0D_c\ge2$. Then
+\[
+ S_c=A_{\rm sc}v_g^2+v_g+N_0T_*-1>0,
+\]
+because $A_{\rm sc}v_g^2+v_g\ge0$ for every integer $v_g$, and $N_0T_*>1$.
+Also $T_c>0$. Consequently, unconditionally in $g$,
+\[
+ R=L^2+S_c(L-1)+T_cL+L-1>L^2.
+\]
+Moreover
+\[
+ N^2=2^{-20}a^{15}B^{5932}<B^{5947}<B^{11482}<L^2,
+ \qquad b\le c\le N.
+\]
+Thus $R\ge N\ge8$ and $b\le N,R$ before assuming any carry or square
+condition. Negative powers here occur only in this comparison proof, never
+in the equation.
+
+If $1\le g<4bB^W$, integrality gives $1+g\le4bB^W$ and $g<N_0$.
+The injective coefficients imply
+\[
+ |D_c(B)|<\frac{A_*B^{Q_*+1}}{B-1},\qquad
+ 2(1+g)^2D_c(B)<\frac{32A_*b^2}{B-1}B^{K_*+1}.
+\]
+Because $B=8192A_*b^2$, the last prefactor is less than $1/128$.
+Together with $T_*<B^{Q_*+1}/(B-1)$ this gives
+$0<J_c<B^{K_*+1}$. Likewise $(B-2)T_*<B^{Q_*+1}\le B^{K_*+1}$.
+Consequently
+\[
+ 0<S_c,T_c<B^{E_*},\qquad S_c+T_c<2B^{E_*}<L.
+\]
+These estimates hold for arbitrary integer $b\ge2$, not just powers of two.
+
+Now suppose $b=2^k$. Then $B=2^\nu$, where $\nu=\kappa+2k$.
+The binary mask $M_c$ forces exactly
+\[
+ g\mathbin{\&}M_c=0\quad\Longleftrightarrow\quad
+ g=\sum_i n_iB^{w_i},\qquad 0\le n_i<b.
+\]
+Here $\&$ is used only in the proof. For such a code, write
+$h_e=[t^e](1+\sum n_it^{w_i})^2D_c(t)$. Then
+\[
+ |h_e|\le A_*(1+\textstyle\sum_i n_i)^2
+ <1024A_*b^2=B/8<B/4.
+\]
+The unnormalized digits of $J_c$ are $2h_e+\varepsilon_e$, where
+$\varepsilon_e=1$ at a target and $0$ elsewhere. Starting with incoming
+carry $c_0=0$, normalized carries obey
+\[
+ c_{e+1}=\left\lfloor\frac{2h_e+\varepsilon_e+c_e}{B}\right\rfloor,
+ \qquad c_e\in\{-1,0\}.
+\]
+At a target, its normalized digit avoids $B-2$ exactly when it is $0$ or $1$.
+If $h_e=0$, the digit is $1+c_e\in\{0,1\}$. If $h_e>0$, it is at least $2$;
+if $h_e<0$, a borrow normalizes it to a digit at least $2$.
+Thus the target test is equivalent to $h_e=0$, independently of incoming
+borrows. There is no need to fill every position with a dense $B/2$ offset.
+It follows, by splitting at $N_0$, that
+\[
+ S_c\mathbin{\&}T_c=0\quad\Longleftrightarrow\quad
+ g\text{ codes a common zero of all }p_j.
+\]
+Conversely every common zero has, for arbitrarily large $b=2^{1+2r}$, such a
+code with $1\le g<bB^W=c$.
+
+\subsection{The parity-tuned two-block threshold}
+Write $L=2^\lambda$ after $b=2^k$ has been established. The three disjoint
+blocks in $R$ give
+\[
+ s_2(R)=1+s_2(S_c+T_c)+\lambda-s_2(S_c)
+       =\lambda+s_2(T_c)+1-\tau_2(S_c,T_c),
+\]
+where $s_2$ is binary digit sum and
+$\tau_2(S,T)=s_2(S)+s_2(T)-s_2(S+T)\ge0$ counts binary carries.
+The strict inequality $S_c+T_c<L$ is essential.
+The $31$ allowed low positions and the $22$ target positions give
+\[
+ s_2(T_c)=(W+23)\nu-31k-22,\qquad
+ \lambda=1+k+E_*\nu.
+\]
+Therefore
+\begin{align*}
+ \lambda+s_2(T_c)+1
+ &=5947\kappa+11864k-20\\
+ &=2\bigl(15\kappa/2-10+2966(\kappa+2k)\bigr)
+ =\log_2N^2.
+\end{align*}
+Legendre's formula yields
+$v_2\binom{2R}{R}=s_2(R)$, hence
+\[
+ N^2\mid\binom{2R}{R}
+ \quad\Longleftrightarrow\quad S_c\mathbin{\&}T_c=0.
+\]
+The small factor $2b$ in $L$ calibrates the threshold to a polynomial square
+without an extra variable, an extra target mask, or a cubic radix.
+
+\subsection{An exact polynomial CRT reparameterization}
+The inherited ratio interface uses $H_{\rm old}=B_1+j_{\rm old}C$ and
+$JF\mid QF+J(H_{\rm old}-C)$. Since $E=iJDC^2$,
+\[
+ F\equiv1\pmod J,\qquad F\equiv1\pmod C,
+\]
+and hence $\gcd(J,F)=1$. The divisibility is equivalent to
+$J\mid Q$ and $F\mid H_{\rm old}-C$. Our changed register
+\[
+ H=C+F(B_1+jC)
+\]
+automatically satisfies the latter. It also has the original form, with
+\[
+ j_{\rm old}=1+(A^2-1)i^2J^2D^2C^3B_1+Fj,
+\]
+which is a polynomial integer, since $F-1=(A^2-1)i^2J^2D^2C^4$.
+This identity holds for arbitrary signed inputs, including $C=0$.
+
+Conversely, at the canonical positive ratio witnesses, $0<B_1<C$ and
+$j_{\rm old}\ge1$. Therefore $z=(H_{\rm old}-C)/F>0$ and
+$z\equiv B_1\pmod C$, so $z=B_1+jC$ with $j\ge0$. Thus every
+canonical witness is represented. No extra unknown or cofinal restriction is
+introduced. The merger now has $u=J$ rather than $JF$. This CRT step is
+inherited from the separately identified sparse-Pell packet, not claimed as
+an original theorem here.
+
+\subsection{The interval guard and the Jones interface}
+If $\Delta>0$ and $b\ge2$, then $K\ne0$ and
+$0<g<c$. The identity $4g(c-g)=c^2-(c-2g)^2\le c^2$ implies
+$4\delta^2<K^2$. Along with $s\ge1$, $\phi\ge0$, and $w\ne0$, this gives
+$C,Y>0$ and $K>0$. The usual square-gap argument forces $h\ge1$:
+if $h\le0$, then $1\le K\le R+1<P$; $K=1$ would force $P-1\mid R$,
+which is impossible, while for $2\le K<P$,
+\[
+ (PK-1)^2<(P^2-1)K^2+1<(PK)^2.
+\]
+Thus $a_0$ cannot be a square in that branch.
+
+For precision, instantiate the free ceiling in
+\texttt{Jones1982.Nine.ratio\_sound} by
+$G_{\mathrm{aux}}=8gK^2+1$, rather than assuming its old margin condition.
+The positive integer $K^2-4\delta^2$ then gives
+\[
+ (K^2-4\delta^2)G_{\mathrm{aux}}-8gK^2>0.
+\]
+This ceiling is a proof-side abbreviation; the ratio registers do not
+otherwise depend on it.
+
+Replace $i$ by $|i|$, which changes no condition. To handle signed $j$,
+$u\mid t$ now means $J\mid Q$, while $F\mid H-C$ holds identically. Also
+$F\equiv1\pmod D$, $G\equiv1\pmod D$, and $G\equiv A\pmod F$ show
+that the positive integers $D,F,I$ are pairwise coprime.
+Hence $a_1=DFI$ square makes each a square. Put $d=G^2-1>0$ and
+$x=\sqrt I$. The norm-one unit $x+H\sqrt d$ is positive even if $H<0$.
+A positive power of $G+\sqrt d$ is the identity modulo $CF$; multiplying by
+sufficiently large such powers gives a Pell solution $H'>B_1$ with
+$H'\equiv H\pmod{CF}$. Then $j'=(H'-B_1)/C>0$, all square conditions
+remain true, and $J\mid Q$ remains true. The literal positive Jones interface
+therefore applies and gives the power-of-two base and central-binomial
+condition required above.
+
+For completeness, take any common source zero, choose
+$b=2^{1+2r}$ large enough, and set $\epsilon=2^r$. The direct source code
+has $32g<G_c$, so the literal ratio completeness theorem supplies its
+canonical witnesses. In \texttt{Ratio.lean}, \texttt{exists\_B25core} sets
+\[
+ \omega=2^{2R+1-k},\qquad U=(N^2/b)2^{2R+1}.
+\]
+Since $k=1+2r$ is odd and $k<2R+1$, this $\omega$ is a positive square.
+No claim that the canonical $s$ is a square is needed.
+
+The same canonical construction has
+$\rho_0=(U+1)^{2R}/U^R=Y+f$ with
+$0\le f<2^{2R}/U=b/(2N^2)$ and $Y\ge1$.
+The source's \texttt{ratio\_core} gives
+\[
+ |C/K-\rho_0|\le\frac{2(Y+f)}{Y(U+1)}<\frac4U,
+ \qquad |C/K-Y|<\frac b{N^2}.
+\]
+The last inequality uses $R\ge8$. Since $c,b\le N$ and
+$g(c-g)\ge1$, it follows that
+\[
+ \frac{c^2(C-KY)^2}{K^2}<\frac{c^2b^2}{N^4}\le1\le g(c-g),
+\]
+so the very same canonical witnesses, translated by the exact CRT formula, satisfy $\Delta>0$.
+This is a cofinal square-base proof, not an unsupported restriction of an
+existing slack variable to squares.
+
+\subsection{Raw two-root recovery, including the zero spectator branch}
+For every integer assignment, $u=J=4A-5\ne0$. The polynomial
+\[
+ \Pi(x)=(x^3-x-1)(x^2+23)
+\]
+has no rational root and has a root modulo every positive integer.
+For an odd prime other than $23$, either the cubic has a simple root or it
+is irreducible, whose Frobenius three-cycle makes its nonzero discriminant
+$-23$ a square. The quadratic then has a simple root. At $23$ the cubic has
+the simple root $3$; at $2$, $-23\equiv1\pmod8$ admits compatible square
+roots. Hensel lifting and CRT finish the assertion. Thus
+$\Theta=u^5\Pi(t/u+r)\ne0$ for every assignment, and
+\[
+ \exists r\quad Zu^5\mid\Theta
+ \quad\Longleftrightarrow\quad Z\ne0\ \hbox{and}\ u\mid t.
+\]
+Indeed a root modulo $|Z|$ proves the reverse implication once $u\mid t$.
+If $v_p(u)=\alpha>\beta=v_p(t)$, the two factors of $\Theta$ have
+valuations $3\beta$ and $2\beta$, contrary to $u^5\mid\Theta$.
+If $Z=0$, divisibility would require $\Theta=0$, already impossible.
+
+At a zero of the equation, $\Sigma=0$ is impossible because then the
+polynomial is $\Theta^4\ne0$. In particular
+$\epsilon,w,i,z_1,z_2,z_3,a_0$ are nonzero. Every $d_j\equiv2\pmod3$
+is nonzero, and every $B_j^*\equiv1\pmod4$ is nonzero. Thus $C_2,C_*$
+are nonzero.
+
+\paragraph{No coincident radicands.}
+One has $C_*\ne a_1$ without any positivity assumption. If $a_1=0$ this
+follows from $C_*\ne0$. Otherwise $B_3^*\ne1$, and it cannot be $-1$
+because it is $1$ modulo $4$. But
+\[
+ \gcd(B_3^*,a_1)=1,
+\]
+while $C_*=a_1$ would make $B_3^*$ divide $a_1$. This would force
+$B_3^*=\pm1$, a contradiction.
+
+Put $q=X/\Sigma$. The raw norm equation implies
+\[
+ (q^2+C_*-a_1)^2=4C_*q^2.
+\]
+If $q=0$, the norm would give $C_*=a_1$, just excluded. Therefore
+\[
+ r_0=\frac{q^2+C_*-a_1}{2q},\qquad r_1=q-r_0
+\]
+are rational, with $r_0^2=C_*$ and $r_1^2=a_1$. Rational square roots of
+integers are integers. Hence $C_*,a_1$ are integer squares,
+$q\in\mathbb Z$, and $\Sigma\mid\Theta$. In particular $J\mid Q$.
+No complex-root separation assumption is used.
+
+\paragraph{Recover the first two guards before ruling out $a_1=0$.}
+The factors $a_0,B_1^*,B_2^*,B_3^*$ are pairwise coprime, because each
+new factor is $1$ modulo its entire preceding product. Their nonzero product
+$C_*$ is a square. Thus each absolute factor is a square. Since
+$B_j^*\equiv1\pmod4$, every $B_j^*$ is positive: a negative square cannot
+be $1$ modulo $4$. The product sign then forces $a_0>0$, also a square.
+All prefixes are now positive, so $d_1,d_2>0$, yielding $s\ge1$ and
+$\phi\ge0$.
+
+At this point the last factor might still equal $1$ if $a_1=0$; this branch
+must not be silently discarded. The unconditional source estimate above
+has already proved $R>L^2>0$ for \emph{every} signed $g$. Since
+$\epsilon,w\ne0$ and $s\ge1$, we have $b\ge2$, $N\ge8$, $U,Y>0$,
+$A\ge2$, and, using $\phi\ge0$, $C>0$. Then
+\[
+ D\ge A^2>0,\qquad F\ge1,\qquad
+ CD+1-A>0,\qquad G\ge A>1,\qquad I\ge1.
+\]
+Consequently $a_1=DFI>0$. Now $B_3^*\ne1$, and its positivity with
+$C_2a_1z_3^2>0$ forces $d_3>0$, hence $\Delta>0$. This closes the
+zero-spectator branch without adding $a_1$ to the nonzero multiplier.
+The interval and ratio arguments above therefore apply.
+
+\paragraph{Completeness.}
+Start from the canonical positive ratio witnesses, translated by the CRT
+parameterization. They have $a_0,a_1$ positive squares, $J\mid Q$, and all
+three strict sign conditions. For $j=1,2$, $d_jC_{j-1}$ is positive
+nonsquare because $d_j\equiv2\pmod3$ and $C_{j-1}$ is a square.
+A nontrivial Pell solution $x^2-d_jC_{j-1}y^2=1$ can be chosen with $y$
+even, so $z_j=y/2\ne0$ makes $B_j^*=x^2$. For the last guard,
+$d_3C_2a_1$ is likewise positive nonsquare, since $C_2a_1$ is a positive
+square. The same construction gives $B_3^*$ square and $C_*$ square.
+The intersective lemma chooses $r$ with $\Sigma\mid\Theta$. Finally choose
+\[
+ v=\Theta/\Sigma+\sqrt{C_*}+\sqrt{a_1}\in\mathbb Z.
+\]
+Then the raw norm vanishes. Both directions are proved. By the inherited
+compiler theorem, integer-zero existence is equivalent to a finite ZFC
+refutation, and ZFC proves its negation equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{Exact degree, comparison, and verification scope}
+The exact relevant register degrees are
+\[
+\begin{array}{c|rrrrrr}
+ &a_0&a_1&C_2&C_*&\Sigma&X\\\hline
+ \deg&652210&6592598&2608849&12185330&1119171&1119172
+\end{array}
+\]
+and $\deg A_0=14423672$, $\deg A_1=8830940$. The degree of $A_0$
+strictly exceeds those of $X^2$ and $A_1$. The output has leading term
+$A_0^2$. Its diagonal leading coefficient is
+\[
+ 72338\,a^{7211252}\eta^{960}\pmod{1000003},
+\]
+which is nonzero since $a$ and $\eta$ are powers of two. The circuit upper
+bound and this specialization together prove exact degree $28\,847\,344$.
+
+At the identical fixed source and selective code, the previous seeded
+construction has degree $57\,866\,184$ and $759$ operations. The coprime
+spectator alone gives degree $46\,680\,720$ and $758$ operations; combining
+it with CRT gives degree $28\,847\,344$ and $754$ operations, a $50.15\%$
+degree reduction against the seeded predecessor. All have thirteen integer
+unknowns. This is not a twelve-variable construction, a variable-count
+record, a global optimum, or a claim that coefficient storage decreased.
+
+The canonical circuit additionally factors the merger cubic as
+$\rho(\rho^2-u^2)-u^3$, saving one multiplication without changing the
+polynomial. The metric counts every live binary addition, subtraction and
+multiplication, including scalar multiplication and fixed exponentiation.
+Reuse and fixed coefficient leaves are free. The code independently replays
+literal formulas over three finite fields, checks signed and zero branches,
+the norm identity, the CRT identity, nonvacuous Pell witness examples, source
+positivity, sparse carries, and the inherited fixed-byte hashes. Those are
+finite implementation audits, not a replacement for the universal proof or
+a new kernel-checked formal theorem.
+
+Run \texttt{python build\_jones.py}, \texttt{python check\_jones.py}, and
+\texttt{python -O check\_jones.py}. The complete equation and fixed binding
+are in the emitted DAG and \path{FIXED_BINDING_OLD_SOURCE.json}. Source provenance
+is retained in \texttt{SOURCE\_PINS.json}; the CRT source packet and its
+archive hash are recorded separately in \texttt{CRT\_PROVENANCE.json}.

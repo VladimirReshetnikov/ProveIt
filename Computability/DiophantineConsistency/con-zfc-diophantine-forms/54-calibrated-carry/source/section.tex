@@ -1,0 +1,89 @@
+\section{Selective positivity and calibrated sparse carry blocks}
+
+The quadratic parent still has $31$ positive variables and $22$ equations.
+A useful simplification is to shift only
+\[
+ F,\alpha,z,h,i,j,s,w,\eta,\zeta,\gamma,g
+\]
+by one, representing the other nineteen parent coordinates directly by
+nonnegative integers. This reduces the symbolic coefficient records from
+$136$ to $109$, and the distinct active monomials from $71$ to $62$
+($39$ quadratic, $22$ linear, and the constant).
+
+Here is the entire positivity argument. Write $q=1+\beta J$,
+$C=q-F-\alpha$, $k=\eta+\zeta$, $Y=a-E$, $Q=c-\eta$, and $T=P-k$.
+Transport gives $(K_0+w)C=F+z\beta J>0$, so $C>0$, $q\ge3$, and $J>0$.
+The equations $L=q^2-1$, $N=q(L+1)$, and $X=wq$ make $L,N,X$ positive.
+Next $Y=sN>0$, $E=XY>0$, and $a=E+Y>0$.
+Then $Q=kY>0$, $c=Q+\eta>0$, $T=EQ>0$, $P=T+k>0$, and
+$\tau^2=PT+1$ makes $\tau>0$.
+The defining equations make $D,\Delta,C_2$ positive.
+Since $I=iC_2>0$ and $B_{\rm aux}=I^2>0$,
+$B_{\rm aux}=\Delta(F_2-1)$ and $F_2=f^2$ imply $f\ge2$.
+Finally $y^2=B_{\rm aux}g+1>1$ and
+$V^2=(B_{\rm aux}-1)g+1\ge1$ make $y,V$ positive;
+$of=V+c>0$ makes $o>0$. Thus every unshifted coordinate is positive.
+The inverse subtracts one from exactly the twelve guarded coordinates,
+so this is a bijection of zero sets, not merely an existence reduction.
+At the natural origin, residual~2 equals $-1$.
+
+Let $p$ be the padding position, $w_i$ the distinct variable positions,
+$W=\max(p,w_i)$, and $H_j$ the targets. For the independently certified
+weighted source polynomial $D(t)$, put $d=\deg D$ and $K=d+2W$.
+The positional isolation identity is
+\[
+ [t^{H_j}]\left(t^p+\sum_i x_it^{w_i}\right)^2D(t)=2r_j(x).
+\]
+Importantly, $d$, $\max H_j$, and $p$ are kept distinct.
+For the coherent native tuple every weighted coefficient has magnitude
+strictly below $M=2^{864013}$. Choose
+$\kappa=864026$ and $a=2^\kappa=8192M$.
+Set $B=ab^2$ and
+\begin{align*}
+ A&=\sum_jB^{H_j},&\ell&=\sum_iB^{w_i},&N_0&=B^{W+1},\\
+ J_c&=2(B^p+g)^2D(B)+A,&
+ S&=g+N_0J_c,&
+ T&=N_0-1-(b-1)\ell+N_0(B-2)A.
+\end{align*}
+The sparse $+1$ target background permits signed lower coefficients:
+incoming borrows are only $0$ or $-1$. At a target the normalized digit
+avoids $B-2$ exactly when the selected coefficient is zero.
+Consequently binary disjointness $S\mathbin{\&}T=0$ tests all residuals.
+For $0\le g<4bB^W$, one has $0\le S,T<B^E$, where $E=K+W+2$.
+These estimates cover interior padding because $B^p+g<5bB^W$.
+
+For the nine-variable ratio bridge take
+\[
+ L=2bB^E,\qquad R=L(L+S+T+1)-(S+1),\qquad G_{\rm cap}=32bB^W.
+\]
+When $b=2^k$ and $B=2^v$, the mask has
+$\operatorname{pop}(T)=(W+23)v-31k-22$ set bits.
+The two-block complement identity therefore gives the exact binomial
+threshold exponent $(K+2W+25)v-30k-20$.
+For even $K$ this is the square of the polynomial
+\[
+ N=2^{15\kappa/2-10}B^{(K+2W+10)/2}.
+\]
+For odd $K$, replace this by
+$N=2^{8\kappa-10}bB^{(K+2W+9)/2}$.
+The endpoint $b=1$ introduces no zero, since its mask would force every
+source digit to vanish. Thus positive $b$ can be an input directly.
+For the $W=174$ packed certificate,
+$(\deg R,\deg N,\deg G_{\rm cap})=(18386,4778,349)$.
+
+The integer bridge permits an arbitrary polynomial threshold, so it is
+better to retain $L=B^E$ and
+\[
+ Y=2^{\kappa(K+2W+25)-21}b^{,2(K+2W+25)-31}.
+\]
+This is not the nine-variable square $N^2$.
+With $b=1+3f$, even $\kappa$ gives $b,B,L\equiv1\pmod3$,
+$T\equiv-22\equiv2\pmod3$, and hence $X\equiv1+T\equiv0\pmod3$.
+For completeness, both source coordinates $D$ and $\Delta$ are positive;
+since their positions are distinct, at least one has positive weight.
+Thus an encoded source zero satisfies $g\ge B\ge b$, even though the
+natural source coordinates were not all assumed positive.
+
+The source identities, coefficient bounds, signed-borrow cases and threshold
+arithmetic are independently checked. The unbounded compiler/calibration and
+Jones/Sun arithmetic bridges remain explicitly inherited mathematical proofs.

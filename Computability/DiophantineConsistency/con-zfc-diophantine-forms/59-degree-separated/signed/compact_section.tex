@@ -1,0 +1,101 @@
+\subsection{Recommended compact companion: odd-parity calibration}
+\label{sec:jones-compact}
+The recommended compact companion has the same thirteen unrestricted integer
+unknowns, exact degree $11\,543\,632$, and $518$ live binary operations
+($326$ multiplications, $169$ additions, $23$ subtractions). Its literal DAG
+is \texttt{generated/signed\_coprime\_compact\_split\_crt.json}.
+The $520$-operation construction above is retained as the fully explicit
+baseline. Only three source registers are changed:
+\[
+ \mathcal G_+=D_2(B)U_c^2+D_1(B)U_c+D_0(B)+B^{2161},\qquad
+ L=B^{2279},\qquad \widehat N=\eta\epsilon B^{1201},
+\]
+with the same $\eta=2^{8\kappa-10}$. In the literal ratio registers use
+\[
+ U=\widehat N^2w^2,\qquad Y=\widehat N^2s.
+\]
+Everything else, including the mask, source targets, interval guard, CRT
+registers, spectator stack, merger, and raw final norm, is unchanged.
+The JSON register named \texttt{N} contains $\widehat N$, which can be
+negative. \emph{Only in the proof}, instantiate the positive Jones parameter
+by $N=|\widehat N|$. Since all uses of this register in the polynomial are
+through its square, $N^2=\widehat N^2$ exactly. There is no absolute-value
+gate or extra unknown in the equation.
+
+\paragraph{Unconditional positivity.}
+The same square completion, now with a slightly lower off-target monomial,
+gives
+\begin{align*}
+ \mathcal G_+
+ &>\tfrac14 B^{1929}U_c^2+B^{2161}
+       -4A_*^2B^{2125}-2A_*B^{1719}\\
+ &>\tfrac14 B^{1929}U_c^2+\tfrac12B^{2161},
+\end{align*}
+because $4A_*^2/B^{36}<1/4$ and $2A_*/B^{442}<1/4$. Thus
+\[
+ S_c>\tfrac12N_0B^{1929}U_c^2+U_c+N_0B^{2161}-\ell>0
+\]
+for every integer $g$, exactly as in the baseline proof. Hence $R>L^2$.
+For the positive proof-side $N$ one has
+\[
+ N^2=2^{-21}a^{16}bB^{2402}
+       <a^{15}B^{2403}<B^{2418}<B^{4558}=L^2.
+\]
+Also $N\ge c=bB^{116}$, since
+$\eta B^{1085}\ge2|\epsilon|$, using $B\ge2|\epsilon|$ and $\eta\ge1$.
+Finally $N\ge B^{1201}\ge8$. Thus all hypotheses $R\ge N\ge8$ and
+$b,c\le N$ concern the positive number $|\widehat N|$, not signed
+$\widehat N$. This is sufficient for every use of the ratio theorem and for
+the canonical estimate proving $\Delta>0$.
+
+\paragraph{A smaller block is sufficient.}
+On the required range $0<g<c$, the previous bound
+$2|\mathcal G|<B^{2162}/256$ still holds. Also
+$T_*<B^{2162}/256$ and $2B^{2161}<B^{2162}/128$, since $B>256$.
+Therefore
+\[
+ 0<J_c<B^{2162}/64,\qquad
+ S_c<B^{2279}/32,\qquad T_c<B^{2279}/64.
+\]
+Consequently $S_c+T_c<L=B^{2279}$. The pad is still above every target,
+since $2161>2129$, and the same coefficient bound
+$|h_e|<994A_*b^2<B/8$ covers its extra coefficient 1. The entire sparse
+carry proof is therefore unchanged.
+
+\paragraph{The exact square threshold uses the forced odd parity.}
+After ratio soundness establishes $b=2^k$, the polynomial identity
+$b=2\epsilon^2$ with integer $\epsilon\ne0$ forces $k$ odd and
+$\epsilon^2=2^{k-1}$. Write $\nu=\kappa+2k$. For $L=B^{2279}$,
+\begin{align*}
+ \log_2L+s_2(T_c)+1
+ &=2418\nu-31k-21\\
+ &=2418\kappa+4805k-21\\
+ &=2(8\kappa-10+1201\nu)+(k-1)
+ =\log_2\widehat N^2.
+\end{align*}
+Thus $N^2=\widehat N^2$ has exactly the required central-binomial valuation
+threshold. No even-$k$ assertion is needed: that branch cannot occur.
+For completeness choose $\epsilon=2^r>0$ and $b=2^{1+2r}$, which are still
+cofinal. The canonical $\omega$ remains a square. The same $b,c\le N$
+estimate proves the interval guard. All later CRT, nonzero, square-recovery,
+and sign-bootstrap arguments are identical. This proves the compact
+companion's equivalence to a source zero and hence to a finite ZFC refutation.
+
+\paragraph{Exact degree and accounting.}
+Here the relevant degrees are
+\[
+ \deg a_0=261194,\quad \deg a_1=2634542,\quad
+ \deg C_*=4874866,\quad\deg\Sigma=448475,
+\]
+and $\deg A_0=5771816$, $\deg A_1=3531492$. Again $A_0$ dominates
+$X^2$ and $A_1$, and the leading term of the output is $A_0^2$.
+Its diagonal coefficient is
+\[
+ 630137\,a^{2885464}\eta^{960}\pmod{1000003}\ne0.
+\]
+This proves exact degree $11\,543\,632$, with $518$ operations under the
+same gate metric. The change saves two operations and 2480 degrees against
+the scaled split baseline, without changing the source tuple or number of
+unknowns. The independent audit checks the all-integer source minimum,
+compact block bounds, negative-$\epsilon$ normalization, odd-$k$ threshold,
+and that the signed \texttt{N} node feeds only its square.

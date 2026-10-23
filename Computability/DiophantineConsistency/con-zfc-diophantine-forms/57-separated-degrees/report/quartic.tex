@@ -1,0 +1,176 @@
+\section{A quartic in forty-five unrestricted integers}
+\label{sec:quartic45}
+
+The independent low-degree contribution reduces the inspected
+fifty-integer quartic to \textbf{forty-five unrestricted integer unknowns},
+while retaining degree four.  It uses 28 quadratic residuals instead of
+29.  Its expanded representation has 407 symbolic terms, compared with
+362 in the chosen parent; the improvement concerns variable count at
+fixed degree, not monomial count or evaluation cost.
+
+This construction keeps the complete package-34 coefficient tuple
+\begin{center}\code{mixed-parity-unrounded-1064921},\end{center}
+with
+\(B=2^{1064921}\), \(\beta=B-1\), and ports
+\(\beta,K_0,M_C,M_F\).  The last port is the already shifted
+\(M_{F,\mathrm{native}}+B-1\).  It is a separate complete binding from
+the tuple used for the principal twelve- and thirteen-variable equations.
+The four raw payloads, their finite construction, the literal K215
+transition table, and the relevant inherited proofs are included in
+\texttt{quartic/upstream/}.  The canonical accepting witnesses for this
+tuple have \(q=2^t\) with \(t\) odd.
+
+\subsection{The two guard reductions}
+
+Write
+\[
+ \operatorname{Pos}(u,v,t)=1+u^2+v^2+t(t+1).
+\]
+This expression is positive on all integer triples and represents every
+positive integer.  For the converse, apply the three-square theorem to
+\(4n-3\): its residue modulo four forces one odd square and two even
+squares, yielding the displayed representation after division by four.
+
+\begin{lemma}[A common-sign guard]
+Suppose \(q>0\) and \(C=q-F-\alpha\).  Then
+\[
+ F\alpha>0\quad\hbox{and}\quad FC>0
+ \quad\Longleftrightarrow\quad F,\alpha,C>0.
+\]
+\end{lemma}
+\begin{proof}
+The two products make the three nonzero integers have the same sign.
+Their sum is \(q>0\), so that sign is positive.  The converse is immediate.
+\end{proof}
+
+\begin{lemma}[A dyadic guard]
+For \(\beta\ge3\), the equation
+\(\beta J+1=2v^2\), with \(J,v\in\mathbb Z\), implies \(J>0\).
+Every canonical radix \(q=2^t\) with \(t\) odd satisfies this equation
+with \(v=2^{(t-1)/2}\).
+\end{lemma}
+\begin{proof}
+If \(J\le-1\), its left side is negative; if \(J=0\), it is one,
+which cannot be twice an integer square.  The second assertion is a
+direct substitution.
+\end{proof}
+
+\subsection{The complete quadratic system}
+
+The 32 arithmetic coordinates are
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,r,v_s,w,\tau,\eta,\zeta,y,\gamma,o,j,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta,u.
+\end{gathered}
+\]
+Add one coordinate \(v_q\) and four triples
+\(\boldsymbol e,\boldsymbol\xi,\boldsymbol b,\boldsymbol d\).
+All 45 coordinates range over \(\mathbb Z\).  In the following formulas,
+the letters
+\[
+\begin{gathered}
+ q=\beta J+1,\quad C=q-F-\alpha,\quad
+ k=\eta+\zeta,\quad H=4a+3,\\
+ R=(q-F)(N-q)-CL+(M_C+qM_F)J
+\end{gathered}
+\]
+are polynomial abbreviations, not additional coordinates.  Retain the
+following 23 arithmetic equations:
+\begin{alignat*}{2}
+ L&=q^2-1,&\qquad N&=q(L+1),\\
+ X&=wq,&a&=E+(2v_s+1)N,\\
+ E&=X(a-E),&c&=k(a-E)+\eta,\\
+ P&=E(c-\eta)+k,&\tau^2&=P(P-k)+1,\\
+ D&=X+ac+\gamma H,&\Delta&=a^2+H,\\
+ C_2&=c^2,&D^2&=\Delta C_2+1,\\
+ k&=R+1+hE,&(K_0+w)C+q-F-z(q-1)&=1,\\
+ F_2&=f^2,&V&=of-c,\\
+ V-cj+k-1-hE&=0,&g&=y^2-V^2,\\
+ I&=(2r+1)C_2,&B_{\rm aux}&=I^2,\\
+ B_{\rm aux}&=\Delta(F_2-1),&y^2-B_{\rm aux}g&=1,\\
+ w&=u^2.&&
+\end{alignat*}
+Add the five quadratic guards
+\begin{align*}
+ \eta&=\operatorname{Pos}(\boldsymbol e),&
+ \zeta&=\operatorname{Pos}(\boldsymbol\xi),&
+ q&=2v_q^2,\\
+ F\alpha&=\operatorname{Pos}(\boldsymbol b),&
+ FC&=\operatorname{Pos}(\boldsymbol d).
+\end{align*}
+Here \(\operatorname{Pos}(\boldsymbol e)\) means evaluation at its three
+coordinates.  Every displayed residual is quadratic.  If they are
+\(r_1,\ldots,r_{28}\), define the single equation
+\begin{equation}
+ \boxed{\displaystyle Q_{45}=\sum_{i=1}^{28}r_i^2=0.}
+ \label{eq:quartic45}
+\end{equation}
+The coefficient of \(\tau^4\) is one, so the degree is exactly four.
+The literal ordered residuals, variable list, and exact expansion are
+\texttt{quartic/quartic45.json} and
+\texttt{quartic/quartic45\_expanded.json}.
+
+\subsection{Why the unguarded transport quotient is harmless}
+
+The old fifty-variable system had independent ternary guards for
+\(J,F,\alpha,z,\eta,\zeta\).  Delete the first four guards and their
+twelve private variables; retain the last two; add \(v_q\) and the two
+new triples.  Thus the variable count is
+\(50-12+7=45\), and the residual count is \(29-4+3=28\).
+Because these are domain changes, an algebraic identity alone would not
+prove the required existential equivalence.
+
+At a zero of \eqref{eq:quartic45}, the dyadic guard gives \(J>0\),
+and the common-sign guard gives \(F,\alpha,C>0\).  The retained
+guards give \(\eta,\zeta>0\).  The only missing original positivity
+condition is \(z>0\).  Its recovery must respect the proof order.
+
+In the inherited signed Pell proof, the early use of \(z>0\) was
+solely to infer \(C\ge0\) from transport.  We already have the stronger
+conclusion \(C>0\), independently.  Hence the same packing bounds follow:
+\[
+ q(q^2-1)<R<q^4-2,\qquad R-2>3q+1.
+\]
+The square-scale exclusion gives \(w>0\).  The existing odd-scale
+argument, with \(s=2v_s+1\), excludes negative \(s\); it uses the
+Pell equations, these bounds, and the exposed congruences
+\(V\equiv-c\pmod{|f|}\), \(V\equiv-R\pmod{|c|}\), without
+another use of \(z\).  Positive-scale rank recovery and the signed
+main-root argument then give
+\[
+ X=2^R.
+\]
+For a detailed dependency trace see the included
+\texttt{ODD\_SCALE\_27\_PROOF.md}, Sections 1--4, and
+\texttt{SIGNED\_DOMAIN\_29.md}, through its signed-gamma and
+ordinary-strong arguments.  This explicitly supplies \(C>0\) in place
+of the original preliminary transport inference; it does not invoke
+the final signed-domain theorem before restoring its guard.
+
+Since \(R>3q\), we have \(w=2^R/q>q>F\).  The retained transport
+equation now reads
+\[
+ (K_0+w)C=(z-1)(q-1)+F.
+\]
+Its left side exceeds \(F\), so \(z>1\).  All original positivity
+conditions are therefore restored.  Choosing their ternary representations
+produces a zero of the old fifty-variable quartic, and its inherited
+compiler theorem yields a finite ZFC refutation.
+
+Conversely, canonical accepting witnesses have \(q=2^t\) with odd
+\(t\), and \(F,\alpha,C>0\).  Set \(v_q=2^{(t-1)/2}\) and use
+the positive representations of \(F\alpha\) and \(FC\).  Every new
+equation holds.  Consequently the ordinary mathematical argument gives,
+formalizably in ZFC,
+\[
+ \text{there is no integer zero of }Q_{45}
+ \quad\Longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}).
+\]
+
+The portable finite audit checks all 28 residual degrees, the 45 live
+coordinates, the exact expansion, \([\tau^4]Q_{45}=1\), the complete
+fixed payloads, and the pinned inherited bytes.  The unbounded Pell and
+compiler arguments remain explicit mathematical dependencies; this
+section does not claim a new end-to-end Lean/Rocq certificate or an
+exported object-language ZFC derivation.

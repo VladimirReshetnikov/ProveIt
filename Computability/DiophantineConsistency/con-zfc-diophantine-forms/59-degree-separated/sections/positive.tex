@@ -1,0 +1,297 @@
+\section{A degree-316 ordinary-strong merger}
+\label{sec:ordinary-merger}
+
+\paragraph{Result and scope.}
+There is an explicit equation in twelve strictly positive integer unknowns,
+of exact total degree $316$, evaluated in $102$ binary arithmetic operations
+($61$ multiplications and $41$ additions or subtractions), whose positive
+unsolvability is equivalent in ZFC to $\operatorname{Con}(\mathrm{ZFC})$.
+The three-equation system has residual degrees $2,26,288$ in $95$ operations,
+or $94$ after the inherited positive transport-coordinate shift. A sum of
+squares has degree $576$ in $103$ operations. Fixed numeral leaves and reuse
+are free; multiplication by a numeral is charged.
+
+This improves the authenticated degree-$897$, $108$-operation twelve-positive
+construction on both measures. It does not reduce the eleven-positive
+variable frontier, assert global optimality, prove consistency, or provide
+a new end-to-end proof-assistant certificate. The native compiler and literal
+K215/refutation calibration remain explicit inherited dependencies.
+
+The structural change is to retain $f$ and eliminate the ordinary strong
+coordinate $i$, together with $\tau$ and $y$. Thus the crucial polynomial is
+$Q=\Delta(f^2-1)$ of degree $14$, not the normalized
+$\Delta^2(ic^2)^2$ of degree $46$. A separated three-root sum recovers
+rationality; rational Pell saturation recovers integrality. Removing a known
+common denominator factor from its norm gives a degree-$288$ inner polynomial.
+
+\subsection{Literal polynomial}
+The supplied positive variables are
+\[
+ J,F,\alpha,z,f_0,T,s,w,\eta,\zeta,\gamma,t.
+\]
+Use exactly the entire authentic source31 Wang943 $121$-by-$8801$ coefficient
+tuple $(\beta,K_0,M_C,M_F)$, with $\beta=2^{1064921}-1$ and $M_F$ already
+the shifted mask. These are fixed integers, not unknowns. The payloads,
+hashes, tuple adapter, and inherited ordinary proof are included in the
+packet. Every other name below is a polynomial abbreviation:
+\begin{align*}
+q&=\beta J+1,& C_w&=q-F-\alpha,& X&=wq,&Y&=sq^3,\\
+E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,&\ell&=EkY,\\
+A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{align*}
+Define
+\begin{align*}
+R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+N_t&=(K_0+w)C_w+q-F-z(q-1),\\
+U&=4q^4,\qquad u=k-R-1,\\
+D_*&=Ub_0+H(U\gamma-u),\qquad N_m=D_*^2-U^2G,\\
+f&=f_0+1,\qquad Q=\Delta(f^2-1),\qquad d=Q-1,\\
+V&=c(Tf-1)-Rf^2,\qquad E_a=QV^2-1,\qquad M_2=2f\ell,\\
+Z&=c^4M_2^2 E_a,\qquad x=c^2t,\qquad r=c^4f^2A,\\
+M&=d(x^2+Q+r)-Z,\\
+C_0&=M^2+4d^2\{x^2(r-Q)-Qr\},\qquad B=2dQ-M,\\
+N&=C_0^2-16d^2x^2rB^2.
+\end{align*}
+The equation is
+\begin{equation}
+ \boxed{\;N_t(1+N_m)(1+N)-1=0.\;}             \label{eq:ordinary316}
+\end{equation}
+The corresponding system is $N_t=1$, $N_m=0$, $N=0$. The sum of squares
+is $(N_t-1)^2+N_m^2+N^2=0$.
+
+The inner norm is exactly
+\begin{equation}
+ N=\prod_{\rho^2=Q,\;\tau^2=A}
+ \bigl[d(c^2t-\rho-c^2f\tau)^2-c^4M_2^2E_a\bigr],
+ \label{eq:ordinary-norm}
+\end{equation}
+with both formal signs of each root. To verify this identity, put
+$b=c^2f\tau$, so $b^2=r$. Each factor is
+$M-2dx\rho-2dxb+2d\rho b$. Its norm in $\rho$ is
+$C_0+4dx(2dQ-M)b$; its norm in $b$ is the stated $N$.
+This is a polynomial-ring identity, including degenerate specializations.
+It does not assume independent Galois automorphisms after specialization.
+
+For comparison, the eight-factor linear norm of
+\[
+ c^2dt-d\rho-c^2df\tau-c^2M_2\sqrt{dE_a}
+\]
+is $d^4N$. Eliminating the two signs of the last root proves this identity
+and explains the denominator deflation. The actual circuit has no division.
+
+\subsection{Unit guard and the main root}
+Since $U$ is divisible by $4$,
+\[
+ N_m\equiv D_*^2\pmod {16},\qquad N\equiv C_0^2\pmod {16}.
+\]
+At a root of \eqref{eq:ordinary316}, all three factors are integer units.
+Neither norm can equal $-2$, which is not a square modulo $4$. Hence
+$N_m=N=0$ and $N_t=1$.
+
+The authentic transport/mask interface then gives
+\[
+ q\ge16,\quad C_w>0,\quad 3q<R<q^4-2,\quad
+ X\ge q,\quad Y\ge q^3,\quad E\ge q^4>R+2,
+\]
+\[
+ k\ge2,\qquad kY<c<k(Y+1),\qquad a+2<2E.
+\]
+In particular $C_w\le0$ would imply
+$N_t\le 1-F-(z-1)(q-1)\le0$, so it is impossible.
+The shift $f=f_0+1$ ensures $f\ge2$, $Q>1$, and $d>0$;
+no $f=1$ or zero-denominator exception is discarded.
+
+From $N_m=0$, the rational root $g=D_*/U$ of $g^2=G$ is an integer.
+It is positive: $H<5a$, $b_0>akY$, and $u<k$ give
+\[
+ D_*>Ub_0-Hk>ak(UY-5)>0.
+\]
+Reduction of $D_*=Ug$ modulo $U$ gives
+\begin{equation}
+ U\mid H(k-R-1).                                \label{eq:ordinary-absorber}
+\end{equation}
+Neither the omitted index quotient nor the old main quotient has yet
+been recovered.
+
+\subsection{Rationality from separated square classes}
+Write $\rho=\sqrt Q>0$ and $\tau=\sqrt A>0$. If $V=0$, then $E_a=-1$
+and every real factor in \eqref{eq:ordinary-norm} is strictly positive.
+Thus $V\ne0$. Since $V$ is an integer, $E_a\ge Q-1=d$ and
+\[
+ y=\sqrt{E_a/d}\ge1.
+\]
+A vanishing factor gives signs $\epsilon_j\in\{1,-1\}$ with
+\begin{equation}
+ t=\epsilon_1\frac{\rho}{c^2}
+    +\epsilon_2 f\tau+\epsilon_3 M_2y.           \label{eq:ordinary-sum}
+\end{equation}
+Before any rationality conclusion, one has
+\[
+ \rho<(a+2)f,\qquad \tau<\ell+k,\qquad
+ \ell-k=k(EY-1)\ge2EY-2>2E>a+2.
+\]
+Consequently
+\begin{equation}
+ 0<\frac\rho{c^2}<f\ell<f\tau,
+ \qquad
+ \frac\rho{c^2}+f\tau<2f\ell=M_2\le M_2y.
+ \label{eq:ordinary-separation}
+\end{equation}
+
+Each term in \eqref{eq:ordinary-sum} is a rational multiple of a square
+root of a positive integer; use $y=\sqrt{dE_a}/d$. Distinct squarefree
+radicals are linearly independent over $\mathbb Q$. In a rational signed
+sum, every irrational square class must cancel. The largest term exceeds
+the sum of both others, so its class cannot cancel unless $y$ is rational.
+Then the strict inequality between the two remaining terms excludes their
+cancellation in an irrational class. Hence $\rho,\tau,y$ are rational.
+In particular $\rho$ and $\tau$ are integers. This argument explicitly
+allows coincident square classes.
+
+\paragraph{Rational Pell saturation.}
+For integers $m\ge2,V$ and rational $y$, the equation
+\[
+ m^2V^2-(m^2-1)y^2=1
+\]
+forces $y$ to be integral. Indeed, write $y=b/r$ in lowest terms. Then
+$r^2\mid m^2-1$. For the positive nonsquare integer
+$D_0=(m^2-1)/r^2$, the pairs $(m,r)$ and $(m|V|,|b|)$ are
+integer-coordinate Pell solutions. If their fundamental-unit indices are
+$j,l$, divisibility of their abscissas forces $l$ to be an odd multiple of
+$j$: reduce modulo $2j$, reflect into $[0,j]$, and use strict growth with
+$\chi_{n+2j}\equiv-\chi_n\pmod {\chi_j}$. Ordinate divisibility then gives
+$r\mid b$, so $r=1$. The original equation excludes zero-coordinate cases.
+
+Apply this lemma with $m=\rho$ to
+\[
+ \rho^2V^2-(\rho^2-1)y^2=1.
+\]
+Thus $y$ is integral. Equation \eqref{eq:ordinary-sum} now makes
+$\rho/c^2$ integral. Put $i=\rho/c^2>0$. The recovered equations are
+\[
+ \tau^2=1+\ell(\ell+k),\qquad
+ (ic^2)^2=\Delta(f^2-1),\qquad QV^2-(Q-1)y^2=1.
+\]
+All square-root signs may be made positive. No cancellation of $\Delta$
+and no ordinary-rank assumption has occurred in this recovery.
+
+\subsection{Ordered index recovery}
+This part uses the preserved ordinary strong-rank theorem and the source50
+absorber, with their hypotheses now verified. Let $A_0=a+2$ and
+$P_0=2EY+1$. The two recovered Pell norms yield indices $p,n\ge1$ with
+\[
+ g=\chi_{A_0}(p),\quad c=\psi_{A_0}(p),\quad
+ \tau=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n).
+\]
+The first norm's fundamental integer-coordinate solution is
+$(2EY+1,2)$ for discriminant $EY(EY+1)$. Since $P_0>A_0$ and $c>k$,
+monotonicity gives $p>n$.
+
+The Pell recurrence gives $k\equiv2n\pmod {4EY}$, and
+$4EY=4ws^2q^7$ is divisible by $U$. Set $\mu=U/\gcd(U,H)$.
+The number $H$ is odd; a prime common to $q,H$ must be $3$.
+If $3\mid q$, then $H\equiv3\pmod {27}$, so its $3$-adic valuation
+is exactly one. Hence
+\[
+ \gcd(U,H)\le3,\qquad \mu\ge\frac{4q^4}{3}>R+1.
+\]
+Together with \eqref{eq:ordinary-absorber} this gives
+$2n=R+1+j\mu$, where positivity of $n$ forces $j\ge0$.
+Thus $n\ge25$, $p\ge26$, and Pell growth proves
+\[
+ c>A_0\Delta^2,\qquad c>2p,\qquad c>2R.
+\]
+
+The ordinary strong-rank theorem now applies to
+$(ic^2)^2=\Delta(f^2-1)$. It gives an index $m$ such that
+\[
+ f=\chi_{A_0}(m),\quad p\mid m,\quad c\mid m,\quad m>2p,
+ \quad ic^2=\Delta\psi_{A_0}(m),\quad c^2\mid f^2-1.
+\]
+The theorem handles the possibly nonfundamental parameter in the underlying
+squarefree Pell field. Its proof and the signed auxiliary argument are
+included in the preserved ordinary source, Sections 4--5.
+
+The odd auxiliary index $j_0$ satisfies $j_0\equiv\pm p\pmod m$ from
+$V\equiv-c\pmod f$, and $j_0\equiv\pm R\pmod c$ from
+$Q\equiv0\pmod c$, $V\equiv-R\pmod c$. Since $c\mid m$ and
+$0<p,R<c/2$, it follows that $p=R$. The signed reduction uses
+$2\chi_{A_0}(m-1)<\chi_{A_0}(m)$, not an assumed sign of $V$.
+
+Now $n<R$, so $|2n-R-1|<R<\mu$ forces $2n=R+1$. Hence
+$u=k-2n$ is divisible by $4EY$, and therefore by both $E,U$. Set
+\[
+ h=u/E,\qquad \gamma_{\rm old}=\gamma-u/U.
+\]
+The first is positive because $n\ge25$ and $\psi_{P_0}(n)>n$.
+The main carrier gives $\gamma_{\rm old}=(g-b_0)/H$.
+Since $n\ge2$, $k\ge4P_0>X$, so $c>X$ and
+$g-b_0>(a+1)c-ac-X=c-X>0$.
+All positive ordinary compiler coordinates are restored. Its inherited
+soundness theorem extracts a blank K215 halt and a finite ZFC refutation.
+
+\subsection{Completeness}
+Conversely take a canonical positive ordinary compiler witness. Its index
+identity is $p=R=2n-1$, so $u$ is a positive multiple of $4EY$ and of $U$.
+Set
+\[
+ \gamma=\gamma_{\rm old}+u/U,\qquad f_0=f-1,
+ \qquad t=i+f\tau+M_2y.
+\]
+These are positive integers. Then $D_*=Ug$, while the positive-sign
+factor in \eqref{eq:ordinary-norm} is
+$c^4M_2^2(dy^2-E_a)=0$. Thus $N_m=N=0$ and $N_t=1$.
+The preserved change $i_{\rm ordinary}=\Delta i_{\rm normalized}$
+provides ordinary witnesses from normalized ones when necessary.
+This proves existence equivalence, hence the claimed consistency equivalence.
+
+The shifted system uses $(K_0+w)C_w=F+z(q-1)$, corresponding to
+$z_{\rm old}=z+1$. Canonical witnesses have $X=2^R$ and
+$w>q>F$, which force $z_{\rm old}\ge2$. Thus the new $z$ is positive,
+and the shift saves one operation.
+
+\subsection{Exact degree and replay}
+Put
+\[
+ q_0=\beta J,\quad Y_0=sq_0^3,\quad E_0=wq_0Y_0,
+ \quad c_0=(\eta+\zeta)Y_0.
+\]
+These have degrees $1,4,6,5$. The inner leading forms are
+\[
+ Q_{14}=E_0^2f_0^2,\quad V_7=c_0Tf_0,\quad
+ (M_2)_{12}=2f_0E_0c_0,\quad Z_{72}=4E_0^4c_0^8T^2f_0^6.
+\]
+All other terms of $M$ have degree at most $58$. Therefore
+\[
+ N_{288}=Z_{72}^4=2^8E_0^{16}c_0^{32}T^8f_0^{24}.
+\]
+The subtracted term in $N$ has degree at most $238$, so there is no
+possible cancellation of this highest form.
+For the main residual use
+\[
+ N_m=U^2\{(b_0+H\gamma)^2-G\}
+      -2UHu(b_0+H\gamma)+H^2u^2.
+\]
+The bracket has degree $18$ and highest form $8E_0^2c_0\gamma$;
+the other terms have degree at most $25,20$. Thus
+\[
+ (N_m)_{26}=128q_0^8E_0^2c_0\gamma.
+\]
+Since $(N_t)_2=w(q_0-F-\alpha)-zq_0$ is nonzero,
+\[
+ P_{316}=2^{15}q_0^8E_0^{18}c_0^{33}\gamma T^8f_0^{24}
+             [w(q_0-F-\alpha)-zq_0]
+\]
+is nonzero for every authentic $\beta>0$. These are exact fixed-instance
+degrees, not generic numerical tests.
+
+The packet's independent arithmetic checker verifies $36$ exact signed
+norm/deflation identities, $100$ modular identities, both residue guards,
+$144$ pre-index bounds, and $24$ complete finite-field polynomial rays
+including the actual fixed coefficients. It also verifies payload hashes,
+analytic leaders, and transport shifts. Both ordinary Python and
+\texttt{python -O} runs pass. The inert circuits have no dead gates or inputs.
+Finite checks validate identities, counts and degrees, not the inherited
+unbounded compiler theorem. The work is AI-assisted and makes no claim of
+independent human review or kernel-certified consistency reduction.

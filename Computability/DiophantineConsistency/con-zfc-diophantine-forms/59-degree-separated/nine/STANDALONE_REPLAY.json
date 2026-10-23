@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "isolated_copy": true,
+  "network_access_used": false,
+  "checks": [
+    {
+      "command": "python3 build_nine.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 verify_nine.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 independent_review.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 -O independent_review.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 -O verify_nine.py",
+      "exit_code": 1,
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "rehashed coefficient corruption in degree-zero source kernel",
+      "status": "EXPECTED_REJECTION",
+      "reason": "ValueError: exact kernel certificate"
+    }
+  ]
+}

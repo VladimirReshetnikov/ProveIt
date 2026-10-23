@@ -1,0 +1,42 @@
+\section{Twelve guarded coordinates recover all positivity}
+Shift by one exactly the twelve parent coordinates
+\[
+ F,\alpha,z,h,i,j,s,w,\eta,\zeta,\gamma,g.
+\]
+Represent the other nineteen coordinates by nonnegative integers directly.
+Let $r_j$ denote the resulting quadratic residuals over $\N^{31}$.
+
+\begin{proposition}
+This coordinate substitution is a bijection between the natural zero set
+of the transformed source and the strictly positive zero set of the parent.
+The transformed source has 109 coefficient records and 62 active monomials:
+39 quadratic, 22 linear, and the constant. Its origin is not a zero.
+\end{proposition}
+\begin{proof}
+The twelve shifted coordinates are already positive. The transport row
+$(K_0+w)C=F+z\beta J$ has a positive right side and positive multiplier,
+so $C>0$. Consequently $q=F+\alpha+C\ge3$ and $J>0$.
+Rows 1--3 give $L=q^2-1>0$, $N=q(L+1)>0$ and $X=wq>0$.
+Next $Y=sN>0$, $E=XY>0$, and $a=E+Y>0$.
+Since $k=\eta+\zeta>0$, the next rows give $Q=kY>0$,
+$c=Q+\eta>0$, $T=EQ>0$ and $P=T+k>0$;
+$\tau^2=PT+1$ makes the nonnegative $\tau$ positive.
+The defining rows give $D,\Delta,C_2>0$.
+Then $I=iC_2>0$ and $B_a=I^2>0$, while
+$B_a=\Delta(F_2-1)$ and $F_2=f^2$ imply $f\ge2$.
+Finally $y^2=B_ag+1>1$ makes $y>0$, and
+\[
+ V^2=(B_a-1)g+1\ge1
+\]
+makes the nonnegative $V$ positive. From $of=V+c>0$ we get $o>0$.
+This covers all nineteen initially unguarded coordinates. Conversely,
+subtract one from the twelve declared coordinates of any positive zero.
+The two maps are literal inverses. At the natural origin row 2 is $-1$.
+Exact expansion of the listed residuals gives the stated support counts.
+\end{proof}
+This argument needs only $\beta,K_0>0$, not a compiler consequence,
+Pell-rank theorem, numerical specialization, or consistency assumption.
+It is a source-interface simplification, not a decrease in the number of
+quantified source variables. The bound and packing proofs that follow
+refer to this exact source, not the all-coordinate shift or a different
+transport convention.

@@ -1,0 +1,196 @@
+                      Short Diophantine Consistency Equations:
+                     A Squared-Modulus and Root-Gap Synthesis
+                                         Arithmetic research packet
+
+                                               23 October 2026
+
+
+                                                    Abstract
+          Combining three previously established coordinate reductions gives nine new local fifteen-positive-
+      variable degree/operation tradeoffs and lowers the degree of a fourteen-variable, 79-operation equation
+      from 56 to 52. The inherited absolute operation record remains 66; the inherited degree-44 point remains
+      unchanged. We give exact literal polynomials, positive existence reductions, coherent materialized
+      coefficients and independent finite arithmetic audits, while explicitly retaining the inherited compiler
+      proof boundary.
+
+
+1     A synthesized short-polynomial frontier
+The squared-modulus quotient, ordinary strong-rank theorem, and two Pell-root gaps are all inherited.
+Their combination improves several local degree/operation tradeoffs, without reducing the absolute
+operation record below the incoming 66-operation, degree-157 equation. All equations below have strictly
+positive integer unknowns, and their lack of solutions is provably equivalent in ZFC to Con(ZFC) at the
+ordinary mathematical proof level of the inherited compiler. This is not a new end-to-end Lean/Rocq
+certificate or a consistency assertion.
+
+               Variables   Operations    Exact degree    Construction
+                      15            67             125   Reduced scaled product; squared modulus
+                      15            68             101   Ordinary product; squared modulus
+                      15            69              91   Ordinary product; first gap
+                      15            70              84   Ordinary product; both gaps
+                      15            71              80   Three squared residuals
+                      15            72              74   Three squared residuals; first gap
+                      15            73              60   Four squared residuals
+                      15            74              50   Four squared residuals; auxiliary gap
+                      15            75              46   Four squared residuals; both gaps
+                      14            79              52   Absorber; squared modulus; auxiliary gap
+
+
+Comparison discipline. The incoming 15-variable 66/157 and 76/44 points remain incomparable
+endpoints. Historical pairs 67/155, 68/123, 69/99, 70/93, 71/83, 74/56 and 78/44, together with incoming
+68/113 and wave-7 72/80, are retained as comparators. The 14-variable point improves the incoming
+79/56 construction at the same operation count. The included 76/44 reconstruction is a reference control,
+not new work. These are bounded repository comparisons, not global minimality or priority claims.
+
+1.1   Literal fixed polynomials
+Use the entire Wang943 121 × 8801 tuple, with B = 21064921 , β = B − 1, K0 = K, MC = MC , and
+MF = MF,source = MF,native + B − 1. All four materialized coefficients and their compressed/raw hashes
+
+                                                         1
+accompany the report. In particular, MF is already shifted. For fifteen coordinates use
+
+                                      J, F, α, z, f, h, i, T, s, w, τ, η, ζ, y, γ > 0.
+
+Replace τ by r when the first gap is enabled and y by u when the auxiliary gap is enabled. Define
+polynomial abbreviations
+
+ q = βJ + 1,                                                       C = q − F − α, X = wq,                      Y = sq 3 ,
+E = XY,                                                            k = η + ζ,            c = kY + η,           a = E + Y,
+H = 4a + 3,                                                        ∆ = a2 + H,           D = X + ac + γH,      L = EkY,
+                               2
+R = ((q − 1)(q − F ) + α)(q − 1) + (MC + qMF )J,
+V = f 2 (cT − R) − c,                                            A0 = ∆(f 2 − 1),        I = ic2 .
+
+They introduce no additional unknowns. The norm factors are
+
+              N0 = τ 2 − L(L + k),                                         N1 = D2 − ∆c2 ,
+              Na = A0 (V 2 − y 2 ) + y 2 ,                                 Nk = k − hE − R,
+              Nt = (K0 + w)C + (q − F ) − z(q − 1),                             S = I 2 − A0 ,   Ns = S + 1.
+
+The gap alternatives are
+
+                          N0,g = r2 + L(2r − k),    Na,g = (V + u)2 − A0 u(2V + u).
+
+Let Q(B1 , . . . , Bm ) = S 2 + j ( N ∈Bj N − 1)2 . The displayed data specify the ordinary polynomials
+                                P Q
+completely:
+
+                             Operations      Equation’s left side                 Enabled gaps
+                                      68     N0 N1 Na Nk Nt Ns − 1                None
+                                      69     N0 N1 Na Nk Nt Ns − 1                First
+                                      70     N0 N1 Na Nk Nt Ns − 1                Both
+                                      71     Q({N0 , N1 }, {Na , Nk , Nt })       None
+                                      72     Q({N0 , N1 , Nk }, {Na , Nt })       First
+                                      73     Q({N0 }, {Na }, {N1 , Nk , Nt })     None
+                                      74     Q({Na }, {N1 , Nk }, {N0 , Nt })     Auxiliary
+                                      75     Q({Na }, {N0 , Nk }, {N1 , Nt })     Both
+
+For the 67-operation equation only, put Isc = i∆c2 and Nsc = ∆f 2 − Isc
+                                                                     2 . With no gaps, its left side is
+
+
+                                                N0 N1 Na Nk Nt Nsc − ∆.
+
+The evaluator shares ∆f 2 between Nsc and A0 = ∆f 2 − ∆. Every binary operation, including fixed-scalar
+multiplication, is charged in the literal JSON gate lists.
+
+1.2   Why the combinations preserve existence
+The exact all-value pullback is
+
+                                      c((f T )f − 1) − Rf 2 = f 2 (cT − R) − c.
+
+Thus a new positive quotient gives the old positive quotient Told = f T . Completeness is not the assertion
+that every old quotient is divisible by f . Instead, at a canonical compiler witness, write A = a + 2 and
+c = ψA (R), where R ≡ 3 (mod 4). Ordinary strong rank supplies
+
+                                I 2 = ∆(f 2 − 1),         c | I,       f2 ≡ 1      (mod c).
+
+                                                             2
+For R = 2j + 1 the integer polynomial Qj defined by χt (R) = tQj (t2 ) satisfies
+
+                             Qj (0) = (−1)j R,         Qj (1 − A2 ) = (−1)j ψA (R).
+
+The recurrence Qj+1 = (4Z − 2)Qj − Qj−1 , with Q0 = 1 and Q1 = 4Z − 3, proves both identities. Since j
+is odd, set
+                                            χI (R)
+                                    V∗ =           ,   y∗ = ψI (R).
+                                               I
+The quotient is integral, V∗ ≡ −c (mod f 2 ) and V∗ ≡ −R (mod c). Since gcd(c, f ) = 1, the number
+
+                                                      V∗ + c + Rf 2
+                                               T∗ =
+                                                          cf 2
+is a positive integer and satisfies the new quotient formula. The auxiliary norm remains one. This
+argument works with the ordinary strong coordinate; it never divides an arbitrary supplied i by ∆.
+    The root gaps use exact polynomial identities:
+
+                                  (L + r)2 − L(L + k) = r2 + L(2r − k),
+                        A0 V 2 − (V + u)2 + (V + u)2 = (V + u)2 − A0 u(2V + u).
+                                         
+
+For soundness restore τ = L + r > 0 and y = |V + u|. Once A0 = I 2 > 1, an auxiliary unit excludes
+V + u = 0. For completeness r = τ − L > 0 follows from τ 2 − L2 = Lk + 1 > 0. The canonical V∗ > 1 and
+
+                                        (I 2 − 1)(y∗2 − V∗2 ) = V∗2 − 1 > 0
+
+give u = y∗ − V∗ > 0.
+    For the ordinary product, all factors are units. The full mod-four check shows Ns = 1+I 2 −∆(f 2 −1) ̸≡
+−1 (mod 4), since ∆ ≡ 0 or 3 and squares are 0 or 1. Hence S = 0; in the squared sums this is immediate.
+The consecutive-product negative Pell obstruction excludes N0 = −1; modulo four excludes N1 = −1 and,
+now that A0 = I 2 , Na = −1. Thus
+
+                              N0 = N1 = Na = 1,              Nk Nt = 1,       S = 0.
+
+Every grouping accounts for each of the five factors once, so these values pull back to the inherited relaxed
+72-operation polynomial. Its proof retains the possible C = 0 boundary, establishes the large main index
+before invoking ordinary rank, recovers p = R, and only then forces Nk = Nt = 1 and C > 0. The
+authenticated native compiler and blank-K215 calibration supply the finite ZFC refutation. Conversely, a
+canonical compiler witness makes all individual factors one after the replacements.
+    For the scaled equation cancel positive ∆ and apply the normalized strong-unit mod-four obstruction.
+Then Nsc = ∆ and A0 = Isc  2 , reducing to the inherited scaled proof. The canonical completeness argument
+
+above applies with Isc in place of I. Full local arguments and inherited interfaces are included in PROOF.md
+and the authenticated source-proof directory.
+
+1.3   The fourteen-variable degree reduction
+Remove h, retain τ , and replace y by u. Put
+
+         U = 4q 4 ,   r0 = k − R − 1,     b0 = X + ac,       D∗ = U b0 + H(U γ − r0 ),   G∗ = 1 + ∆c2 .
+
+The equation is
+                           (D∗2 − U 2 G∗ )2 + S 2 + (Na,g − 1)2 + (N0 Nt − 1)2 = 0.
+It is an exact existence adapter of the incoming 14-variable 79/56 absorber: Told = f T and y = |V + u|
+give soundness directly. The absorber proof’s early index bound and ordinary rank theorem are inherited,
+
+                                                         3
+not replaced. Canonical squared-modulus reconstruction followed by u = y∗ − V∗ supplies completeness.
+One saved quotient gate pays for one added auxiliary-gap gate, leaving 79 operations.
+   The exact main residual identity is
+
+                                 D∗2 − U 2 G∗ = U 2 ((b0 + Hγ)2 − G∗ )
+                                                  − 2U Hr0 (b0 + Hγ) + H 2 r02 .
+
+Its three terms have degrees 26, ≤ 25, ≤ 20; the other residuals have degrees 22, 23, 24. Therefore the exact
+final degree is 52, not 44. With Q = βJ and k0 = η + ζ, its nonzero leading form is 16384γ 2 w4 s6 k02 Q38 .
+
+1.4   Arithmetic verification and proof boundary
+The independent standard-library auditor imports no generator or upstream Python code. It expands each
+literal main-norm ancestor cone exactly, then propagates symbolic leading forms, preserving cancellations
+rather than using only naive degree bounds. The factor degrees are
+
+             (deg N0 , deg N1 , deg Na , deg Nk , deg Nt , deg S) = (22 or 12, 18, 30 or 23, 7, 2, 22).
+
+The scaled factor has degree 46. All output leading forms have an exhibited monomial with nonzero
+coefficient depending only on β > 0, so the proof applies to the actual bound tuple. All gates, unknowns
+and ports are live. Raw/compressed coefficient hashes, ranges, mask populations and source-proof hashes
+are checked, along with five universal local polynomial identities. Each of the eleven circuits passes 100
+signed/degenerate literal-formula diagnostics; five exact canonical Pell examples check reconstruction and
+positive gaps. Checks pass normally and under python3 -O.
+    These are finite artifact checks, separate from the unbounded Pell and compiler proofs. No finite
+experiment tests Con(ZFC). The contribution is the explicit combined frontier, reproducible circuits and
+reduction proof, not a claim of a foundational breakthrough.
+
+
+
+
+                                                         4
+

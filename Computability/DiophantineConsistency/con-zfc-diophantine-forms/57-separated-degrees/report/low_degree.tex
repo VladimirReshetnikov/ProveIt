@@ -1,0 +1,403 @@
+\section{Two separate norms and a balanced Pell quotient}
+\label{sec:low-degree}
+
+The direct positive-variable route admits a substantial reduction that is
+independent of the nine-variable packing construction.  The recommended
+polynomial has twelve positive unknowns, exact degree $242$, and $94$ binary
+operations.  A cheaper companion has degree $258$ and $89$ operations.
+The incoming wave-7 comparison is twelve positive unknowns, degree $897$,
+and $108$ operations.  A further thirteen-positive companion has degree
+$132$ and $83$ operations.  The twelve-positive degree-$314$, $91$-operation
+intermediate is retained because its reconstruction makes the mechanism
+especially transparent.
+
+The new mechanism keeps two quadratic norms separate.  One combines the
+main Pell root and the first Pell root while absorbing the index quotient.
+The other removes the strong Pell root.  A known residue of the auxiliary
+Pell ordinate then permits an exact polynomial factor to be removed, with
+its size chosen to balance the two remaining terms.  All coefficients are
+the complete compact tuple in the coefficient appendix, with the already
+shifted high mask.  There are no additional existential coefficient ports.
+
+\subsection{The literal twelve-variable polynomial}
+
+Supply exactly
+\[
+ J,F,\alpha,z,i,T,s,w,\eta,\zeta,y,t\in\mathbb Z_{>0}.
+\]
+Every other letter in this section denotes a polynomial abbreviation.  Set
+\begin{align*}
+ q&=\beta J+1,&X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,\\
+ \Delta&=a^2+H,&\ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,\\
+ b_0&=X+ac,&U&=4q^4,&r&=k-R-1,&S&=UH.
+\end{align*}
+Here the transport expressions are
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_t&=(K_0+w)(q-F-\alpha)+q-F-z(q-1).
+\end{align*}
+Define the first norm by
+\begin{align}
+ W&=Ub_0+H\bigl(U(t+\ell)+r\bigr),\notag\\
+ \mathcal N&=(W^2+U^2G-S^2A)^2-4W^2U^2G.
+ \label{eq:two-root-norm}
+\end{align}
+For the second norm put
+\begin{align*}
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=(\Delta I)^2,&d&=Q-1,\\
+ v&=cT,&b&=c+RD.
+\end{align*}
+Choose one of the following two pairs of polynomial abbreviations:
+\[
+ (M,C)=\bigl((\Delta ic)^2,c^2\bigr)
+ \quad\hbox{or}\quad
+ (M,C)=(Q,1).
+\]
+In both cases $Q=MC$.  Finally set
+\begin{align}
+ Z&=C(Dv^2+b^2-1)+dy(2-My),\notag\\
+ \mathcal J_M&=Z^2-4C^2Dv^2b^2,\notag\\
+ \boxed{P_M=N_t(1+\mathcal N)(1+\mathcal J_M)-1=0.}
+ \label{eq:twelve-balanced}
+\end{align}
+The first choice is the degree-$242$ equation; the second is the
+$258$-degree companion.  Both are ordinary integer polynomials.  The
+balanced evaluator computes $M=(\Delta I)(\Delta i)$ and $Q=Mc^2$,
+which is the same polynomial definition with one multiplication saved.
+
+\begin{theorem}
+For each of the two fixed polynomials in \eqref{eq:twelve-balanced}, ZFC
+proves that it has no solution in twelve strictly positive integers if and
+only if $\operatorname{Con}(\mathrm{ZFC})$.  Their exact degree/operation
+pairs are $(242,94)$ and $(258,89)$, respectively.
+\end{theorem}
+
+The theorem composes the reduction below with the inherited native-window
+compiler and K215 syntactic-refutation calibration.  The complete new
+argument is supplied here; the source texts for the signed Pell recovery,
+canonical compiler witnesses, and auxiliary congruences are retained in
+\texttt{low\_degree/upstream/}, with exact pins.  This is an ordinary
+mathematical proof formalizable in ZFC, rather than a new exported
+object-language derivation or a newly checked end-to-end proof-assistant
+artifact.
+
+\subsection{Units, positivity, and recovery of the strong root}
+
+Both $\mathcal N$ and $\mathcal J_M$ are squares modulo $4$.  If
+\eqref{eq:twelve-balanced} holds, its three integer factors are units.
+The value $-1$ for either $1+\mathcal N$ or $1+\mathcal J_M$ would force
+the corresponding norm to equal $-2$, impossible modulo $4$.  Thus
+\begin{equation}
+ N_t=1,\qquad \mathcal N=\mathcal J_M=0.
+ \label{eq:low-units}
+\end{equation}
+This obtains the transport interface before any Pell index argument.  Its
+inherited bounds are
+\begin{equation}
+\begin{gathered}
+ q\ge16,\quad C_w=q-F-\alpha>0,\quad 3q<R<q^4-2,\\
+ X\ge q,\quad Y\ge q^3,\quad E\ge q^4>R+2,\qquad
+ k\ge2,\quad kY<c<k(Y+1).
+\end{gathered}
+\label{eq:low-outer}
+\end{equation}
+For example, $C_w\le0$ would imply
+$N_t\le q-F-z(q-1)=1-F-(z-1)(q-1)\le0$.  The remaining bounds are the
+authentic whole-tuple mask bounds.  Consequently $M,C,v,b$ are positive,
+$Q>1$, and $M\ge2$.  All denominators used next are nonzero.
+
+From $\mathcal J_M=0$ define the rational number
+\[
+ f=\frac{Z}{2Cvb}.
+\]
+It satisfies $f^2=D$, so it is an integer.  The sign of this recovered
+integer is not prescribed.  Put $y_{\rm old}=My-1>0$.  The exact polynomial
+identity
+\begin{equation}
+ MZ=Q(Dv^2+b^2)-1-d(My-1)^2
+ \label{eq:quotient-identity}
+\end{equation}
+then gives
+\begin{equation}
+ f^2-\Delta I^2=1,\qquad
+ d y_{\rm old}^2=Q(vf-b)^2-1,
+ \qquad vf-b=c(Tf-1)-Rf^2.
+ \label{eq:low-strong-aux}
+\end{equation}
+These are the normalized strong and auxiliary Pell equations.  The signed
+auxiliary theorem uses $|f|$ as its modulus and covers a negative $f$.
+To match the preserved ordinary-strong statement explicitly, take
+$i_{\rm ordinary}=\Delta i>0$; then
+$(i_{\rm ordinary}c^2)^2=\Delta(f^2-1)=Q$.  No positive sign for the
+reconstructed $f$ is silently assumed.
+
+\subsection{A two-root carrier restores the main square}
+
+Write $g_0=\sqrt G>0$ and $\tau_0=\sqrt A>0$.  There is the exact real
+factorization
+\begin{equation}
+ \mathcal N=\prod_{\sigma,\epsilon\in\{-1,1\}}
+       (W-\sigma Ug_0-\epsilon S\tau_0).
+ \label{eq:main-four-factors}
+\end{equation}
+Since $r=k-R-1\ge1-R$, $U>R$, and $t\ge1$, we have $t+r/U>0$ and
+\[
+ W=Ub_0+S(\ell+t+r/U)>0.
+\]
+A vanishing factor supplies real roots $g^2=G$, $\tau^2=A$ with
+$W=Ug+S\tau$.  Squaring isolates
+\[
+ 2WU g=W^2+U^2G-S^2A.
+\]
+Thus $g$ is rational, hence integral; then $\tau$ is integral as well.
+This argument remains valid when the two radicands have the same square
+class.
+
+The sign $g<0$ is impossible.  Indeed
+\[
+ \tau_0<\ell+k,\qquad
+ \frac{b_0+g_0}{H}>\frac{2ac}{4a+3}>\frac c3>k,
+\]
+since $a>1$ and $Y>3$.  For $g=-g_0$ the factor equation would give
+\[
+ \tau=\ell+t+r/U+(b_0+g_0)/H>\ell+k>\tau_0,
+\]
+a contradiction.  Therefore $g=g_0>0$.  Reducing the carrier identity
+modulo $U$ proves
+\begin{equation}
+ U\mid H(k-R-1).
+ \label{eq:low-weak-divisibility}
+\end{equation}
+We have not yet canceled $H$ or recovered the omitted index quotient.
+
+\subsection{Recover the exact index before the deleted quotients}
+
+Put $A_0=a+2$ and $P_0=2EY+1$.  Standard Pell classification gives
+positive indices $p,m,n$ with
+\begin{align*}
+ g&=\chi_{A_0}(p),&c&=\psi_{A_0}(p),\\
+ |f|&=\chi_{A_0}(m),&I&=\psi_{A_0}(m),\\
+ |\tau|&=\chi_{P_0}(n),&k&=2\psi_{P_0}(n).
+\end{align*}
+The first-Pell discriminant is $EY(EY+1)$, with fundamental
+integer-coordinate unit $(P_0,2)$.  Because $P_0>A_0$ and $c>k$,
+monotonicity gives $n<p$.  Also $c>1$ implies $p\ge2$, whence
+$c\ge2A_0>2R$, and Pell growth gives $c>2p$.
+
+Strong divisibility and $c^2\mid I$ give $p\mid m$.  Write $m=pj$.
+Then
+\[
+ I=c\psi_g(j),\qquad \psi_g(j)\equiv jg^{j-1}\pmod c.
+\]
+Since $g^2\equiv1\pmod c$, $g$ is invertible modulo $c$, so $c\mid j$.
+Consequently $c\mid m$ and $m\ge pc>2p$.
+
+For clarity, the signed auxiliary-index recovery used at this point does
+not depend on either deleted quotient.  Put $M_0=\Delta I$ and
+$V=c(Tf-1)-Rf^2$.  The second equation in \eqref{eq:low-strong-aux} is
+\[
+ M_0^2V^2-(M_0^2-1)y_{\rm old}^2=1.
+\]
+Its Pell index $j_0$ is odd because its abscissa is divisible by $M_0$.
+For the integer odd-index polynomials $Q_j$,
+\begin{align*}
+ \chi_{M_0}(2j+1)&=M_0Q_j(M_0^2),\\
+ Q_j(1-A_0^2)&=(-1)^j\psi_{A_0}(2j+1),\\
+ Q_j(0)&=(-1)^j(2j+1).
+\end{align*}
+Modulo $|f|$, $M_0^2\equiv1-A_0^2$ and $V\equiv-c$.  Squaring and
+doubling, and reducing the signed abscissa index using $0<2p<m$, yields
+$j_0\equiv\pm p\pmod m$, hence modulo $c$.  Modulo $c$,
+$M_0^2\equiv0$, $f^2\equiv1$, and $V\equiv-R$, so
+$j_0\equiv\pm R\pmod c$.  Since $0<p,R<c/2$, it follows that
+\begin{equation}
+ p=R.
+ \label{eq:low-index}
+\end{equation}
+This is the signed index argument reproduced in the preserved sources;
+its inputs have all been verified before using $h$ or $\gamma$.
+
+Let $\mu=U/\gcd(U,H)$.  Since $H$ is odd and $H\equiv3\pmod q$, the
+only possible common prime of $q$ and $H$ is $3$.  If $3\mid q$, then
+$27\mid Y$ and $H\equiv3\pmod{27}$, so the $3$-adic valuation is one.
+Therefore
+\[
+ \gcd(U,H)\le3,\qquad \mu\ge4q^4/3>R.
+\]
+The first Pell recurrence gives $k\equiv2n\pmod{4EY}$.  The modulus
+$4EY=4ws^2q^7$ is a multiple of $U$.  Thus
+\eqref{eq:low-weak-divisibility} gives $2n\equiv R+1\pmod\mu$.
+But $1\le n<R$ implies $|2n-R-1|<R<\mu$.  Hence
+\[
+ 2n=R+1,\qquad r=k-R-1\equiv0\pmod{4EY}.
+\]
+In particular $h=r/E$ and $r/U$ are integers.  Moreover $n\ge25$ and
+$\psi_{P_0}(n)>n$ make $h>0$.  Dividing the carrier by $U$ gives
+\[
+ g=b_0+H(t+\ell+r/U-\tau),
+\]
+so $\gamma=(g-b_0)/H$ is integral.  Since $n\ge2$ gives
+$k\ge4P_0>X$, we have $c>X$; since $\Delta>(a+1)^2$,
+$g-b_0>c-X>0$.  Thus $\gamma>0$.
+
+All normalized compiler equations have now been recovered, including
+$k-hE-R=1$ and the positive main quotient.  Their signed auxiliary
+soundness theorem gives a blank K215 halt, hence a finite syntactic ZFC
+refutation.  The proof does not require making the reconstructed $f$
+positive on the same assignment.
+
+\subsection{Canonical completeness and the removed Pell residue}
+
+Start with a canonical positive normalized compiler witness.  It has
+$p=R=2n-1$, $h>0$, and $\gamma>0$.  Its first Pell recurrence gives
+$U\mid r$.  Define
+\begin{equation}
+ t=\gamma+\tau-\ell-r/U.
+ \label{eq:low-t-complete}
+\end{equation}
+This is a positive integer: since $\tau^2=\ell^2+\ell k+1$ and
+$\ell>k$,
+\[
+ \tau-\ell=\frac{\ell k+1}{\tau+\ell}
+ >\frac{\ell k}{2\ell+k}>\frac k3>\frac rU.
+\]
+The carrier identity follows, so $\mathcal N=0$.
+
+For the new ordinate quotient, one may replace the canonical auxiliary
+witnesses explicitly.  The authentic population decoding gives
+$R\equiv3\pmod4$.  To identify the precise inherited fact, the native
+radix is divisible by $4$, $q=B^N$, $J\equiv1\pmod4$, and
+$M_C\equiv2\pmod4$.  The low mask forces $C_w\equiv1\pmod4$; the
+formula for $R$ gives $R\equiv C_w+2\equiv3\pmod4$.  This argument is
+preserved in the wave-7 squared-modulus source and applies to the whole
+compact tuple here.
+
+Keep the outer coordinates and the original positive $f,i$.  Put
+$m_0=\Delta I$, so $Q=m_0^2$, and choose
+\begin{equation}
+ V=\chi_{m_0}(R)/m_0,\qquad
+ y_{\rm old}=\psi_{m_0}(R).
+ \label{eq:canonical-auxiliary}
+\end{equation}
+The odd-index polynomial makes $V$ a positive integer.  Its identities give
+\begin{equation}
+ V\equiv-c\pmod{f^2},\qquad
+ V\equiv-R\pmod c,
+ \qquad y_{\rm old}\equiv-1\pmod Q.
+ \label{eq:canonical-residues}
+\end{equation}
+For the first use $m_0^2\equiv1-A_0^2\pmod{f^2}$ and
+$(R-1)/2$ odd; for the second use $c\mid m_0$ and the constant term
+of $Q_{(R-1)/2}$.  For the third, $\psi_x(R)$ is an even polynomial
+in $x$, with constant term $(-1)^{(R-1)/2}=-1$.  The recurrence
+$\psi_x(j+1)=2x\psi_x(j)-\psi_x(j-1)$ proves this assertion by induction.
+
+Because $\gcd(c,f)=1$ and $f^2\equiv1\pmod c$, the numerator below is
+divisible by $cf$ (in fact by $cf^2$).  Thus
+\[
+ T=\frac{V+c+Rf^2}{cf}>0
+\]
+is an integer, and $V=c(Tf-1)-Rf^2$.  The Pell identity gives the auxiliary
+equation.  This replaces only $T$ and the auxiliary ordinate; it leaves
+\eqref{eq:low-t-complete} unchanged.  No assumption of cofinal auxiliary
+witnesses is needed.
+
+For either selected $M\mid Q$, define
+\[
+ y=(y_{\rm old}+1)/M\in\mathbb Z_{>0}.
+\]
+Identity \eqref{eq:quotient-identity} gives $\mathcal J_M=0$.  All twelve
+supplied coordinates are positive, proving completeness.  Negating the
+existence equivalence proves the stated consistency equivalence in ZFC.
+
+\subsection{Exact degrees and the intermediate companions}
+
+Write the leading homogeneous forms as
+\begin{gather*}
+ q_0=\beta J,\quad X_0=wq_0,\quad Y_0=sq_0^3,\quad E_0=X_0Y_0,\quad
+ k_0=\eta+\zeta,\quad c_0=k_0Y_0,\quad \ell_0=E_0c_0,\\
+ H_0=4E_0,\quad U_0=4q_0^4,\quad I_0=ic_0^2,\quad
+ R_0=q_0^3(q_0-F),\quad (N_t)_0=w(q_0-F-\alpha)-zq_0.
+\end{gather*}
+The large apparent degree of \eqref{eq:two-root-norm} cancels by an exact
+polynomial identity.  Set
+\begin{align*}
+ D_0&=b_0^2-G=X^2+2Xac-Hc^2-1,&Z_0&=Ut+r,\\
+ C_2&=U^2D_0+2UHb_0Z_0
+       +H^2(2U\ell Z_0+Z_0^2-U^2\ell k-U^2).
+\end{align*}
+Then
+\begin{equation}
+\begin{split}
+ \mathcal N={}&4U^4H^2\ell^2D_0+4U^2Hb_0\ell C_2+C_2^2\\
+ &\hspace{1cm}-4U^4H^2G(\ell k+1).
+\end{split}
+\label{eq:norm-degree-identity}
+\end{equation}
+Here $\deg D_0\le16$ and $\deg C_2\le32$.  The four summands have
+respective degree bounds $66,68,64,62$.  Only the second reaches $68$,
+with nonzero highest part
+\begin{equation}
+ \mathcal N_{68}=2^{16}w^6s^9k_0^3q_0^{49}(2t-k_0).
+ \label{eq:low-norm-leader}
+\end{equation}
+This proves the upper and lower degree statements by polynomial identities,
+without treating a sampled diagonal degree as an upper bound.
+
+For the full-modulus choice $M=Q$, the two summands defining $Z$ have
+maximum degrees $76$ and $94$.  The latter has highest part
+$-Q_0^2y^2$, where $Q_0=E_0^4I_0^2$.  Thus $\mathcal J_M$ has degree
+$188$, and $P_M$ has degree $68+188+2=258$, with highest part
+\[
+ \mathcal N_{68}Q_0^4y^4(N_t)_0\ne0.
+\]
+For the balanced choice, $\deg M=36$ and $\deg C=10$.  The first summand
+of $Z$ has degree $86$ and highest part $c_0^2R_0^2E_0^4I_0^4$; the
+second has degree $84$.  The subtracted term of $\mathcal J_M$ has degree
+$142$.  Hence $\deg\mathcal J_M=172$, and the highest part of $P_M$ is
+\[
+ \mathcal N_{68}c_0^4R_0^4E_0^8I_0^8(N_t)_0\ne0,
+\]
+of degree $242$.
+
+The degree-$314$ intermediate uses the original ordinate directly:
+\begin{align*}
+ e&=Q(Dv^2+b^2)-1,& B_{\mathrm{aux}}&=2Qvb,\\
+ \mathcal J&=(e-dy^2)^2-B_{\mathrm{aux}}^2D,&
+ P_{314}&=N_t(1+\mathcal N)(1+\mathcal J)-1.
+\end{align*}
+It reconstructs $f=(e-dy^2)/B_{\mathrm{aux}}$, with no canonical residue
+restriction.  Its inner norm has degree $244$ and highest part
+$E_0^{16}I_0^{12}R_0^4$, proving total degree $314$.
+
+Finally, retaining $f>0$ gives the thirteen-positive companion
+\begin{align*}
+ N_s&=f^2-\Delta I^2,&V&=c(Tf-1)-Rf^2,\\
+ N_a&=\Delta(f^2-1)(V^2-y^2)+y^2,&
+ P_{132}&=N_t(1+\mathcal N)N_sN_a-1.
+\end{align*}
+A zero forces all factors to be integer units and $\mathcal N=0$.
+The elementary negative-Pell obstruction
+\[
+ x^2-(m^2-1)y^2\ne-1\qquad(m\ge2)
+\]
+first rules out $N_s=-1$.  Then $\Delta(f^2-1)=(\Delta I)^2$ is a
+square, so the same obstruction rules out $N_a=-1$.  Thus $N_t=N_s=N_a=1$.
+For the obstruction, a hypothetical nonnegative solution has
+$(m-1)y<x<my$; multiplying by $m-\sqrt{m^2-1}$ gives a smaller positive
+ordinate $my-x$, contradicting descent.  The remaining proof is the
+same carrier/index reconstruction above.  Degrees of the factors are
+$2,68,34,28$, and their nonzero leading product is
+\[
+ -\mathcal N_{68}E_0^4I_0^2c_0^2T^2f^4(N_t)_0,
+\]
+so the exact degree is $132$.
+
+The literal DAGs have $94$, $89$, $91$, and $83$ live binary gates for
+$P_{242},P_{258},P_{314},P_{132}$, respectively.  Independent finite checks
+include full polynomial arrays over three primes using the actual fixed
+coefficients, four-factor multiplication in the formal quadratic algebra,
+unit-guard congruences, the exact quotient identity, and nontrivial canonical
+Pell reconstructions.  These validate the delivered arithmetic; the universal
+proof and the identified inherited compiler arguments establish the theorem.

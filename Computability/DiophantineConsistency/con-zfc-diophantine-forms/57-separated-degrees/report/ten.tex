@@ -1,0 +1,177 @@
+\section{Ten unrestricted integers}
+\label{sec:ten}
+
+Supply exactly ten unrestricted integer coordinates
+\[
+ (f,g,h,k,l,w,x,y,z,m)\in\Z^{10}.
+\]
+Use the source of Section~\ref{sec:channels}, with
+\begin{gather*}
+ b=1+3f,\qquad B=a_Sb^2,\qquad \mathcal C=bB^{108},\qquad L_c=B^{2241},\\
+ X=L_c^2+(S_c+T_c)L_c+L_c-1-S_c,\\
+ Y=a_S^{15}\,2^{\kappa-21}B^{2356}b.
+\end{gather*}
+The monomial cap is \(\mathcal C=a_S^{108}b^{217}\), as required
+by the inherited Sun bridge.  The source output \(Y\) is a fixed
+polynomial, not an exponential with a variable exponent.
+
+\subsection{The arithmetic source contract}
+
+Before recovering a binary base, the reverse bridge has \(f\ne0\),
+\(b\) an integer square, and \(0\le g<2\mathcal C\).  Since
+\(b\equiv1\pmod3\), these hypotheses imply \(b\ge4\) and \(f>0\).
+The preceding source proof applies and gives
+\(S_c,T_c\ge0\) and \(S_c+T_c<L_c\), including the stronger summed
+bound~\eqref{eq:source-sum-range}.  Hence
+\[
+ X\ge L_c^2>3b,\qquad Y>\max(b,256).
+\]
+The exponent \(\kappa\) is even, so \(B\equiv N_0\equiv L_c\equiv1\pmod3\).
+We have \(M_c\equiv0\), \(A_T\equiv22\), and
+\(T_c\equiv-22\pmod3\).  Consequently
+\[
+ X\equiv1+T_c\equiv0\pmod3.
+\]
+These range and congruence facts do not assume \(b\) is a power of two.
+
+After binary-base recovery, write \(b=2^s\), \(B=2^v\).  For
+nonnegative \(S,T\) with \(S+T<L_c\), the three disjoint blocks in
+\(L_c^2+(S+T)L_c+L_c-1-S\) give
+\[
+ \pop(X)=1+\log_2L_c+\pop(T_c)
+       -\bigl(\pop(S_c)+\pop(T_c)-\pop(S_c+T_c)\bigr).
+\]
+The subtracted carry deficit is nonnegative, and vanishes exactly when
+\(S_c\mathbin{\&}T_c=0\).  The exact mask population is
+\(\pop(T_c)=131v-31s-22\), so
+\[
+ 1+\log_2L_c+\pop(T_c)=2372v-31s-21=\log_2Y.
+\]
+Legendre's formula therefore proves
+\[
+ Y\mid\binom{2X}{X}\quad\Longleftrightarrow\quad
+ S_c\mathbin{\&}T_c=0.
+\]
+Conversely a parent zero can be encoded with arbitrarily large
+\(b=4^s\), putting \(f=(b-1)/3\).  It has \(b\le g<\mathcal C\)
+and the required divisibility.  This is the full source contract; the
+Sun bridge does not require \(Y\) to be a square or equal to \(L_c^2\).
+
+\subsection{Literal final polynomial}
+
+The following finalizer is inherited from the inspected package-31 and
+wave-7 construction; only its source polynomials have changed.  Define
+\begin{gather*}
+ L=lY,\quad U=2LX,\quad V=4gwY,\quad W_b=bw,\\
+ A=U(V+1),\quad B_*=2X+1,\quad C=B_*+(A-2)h,\\
+ P=U^2V,\quad K=X+1+k(P-2),\quad S_*=2A-5,\\
+ T_*=3W_bC-2(W_b^2-1),\quad R_2=(P^2-4)K^2+4,\\
+ \Delta_*=8\mathcal C^3gK^2-g^2\{32(C-KL)^2\mathcal C^3+g^2K^2\},\\
+ O=f^2l^2\Delta_*,\quad\xi=zx,\quad D=(A^2-4)C^2+4,\\
+ E=C^2D\xi,\quad F=4(A^2-4)E^2+1,\\
+ G_*=2(A+2)(A-2)^2E^2-1,\quad\Omega_*=16E,\\
+ H_*=C+(B_*-C)F+\Omega_*Fy,\quad I_*=(G_*^2-1)H_*^2+1.
+\end{gather*}
+Put
+\begin{align*}
+ r&=T_*+S_*y,&\Sigma&=\xi S_*^5,\\
+ \Theta_*&=(r^3-rS_*^2-S_*^3)(r^2+23S_*^2),\\
+ a_0&=b\{1+(3O-4)b^2z^2\},&a_1&=R_2,&a_2&=DFI_*,\\
+ w_0&=1,&w_1&=a_0,&w_2&=a_0(P^2+K^2+3),\\
+ Z_*&=\Sigma m-\Theta_*,&A_i&=\Sigma^2w_i^2a_i\quad(0\le i\le2),\\
+ V_*&=Z_*^2+A_2-A_0-A_1,&
+ W_*&=V_*^2+4Z_*^2A_2-4A_0A_1.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{F_{10}=W_*^2-16V_*^2Z_*^2A_2=0.}
+ \label{eq:ten-final}
+\end{equation}
+All powers in these formulas are fixed nonnegative integers.  In
+particular, no square root, factorial, binomial coefficient, bit operation,
+or divisibility predicate occurs in the actual polynomial.
+
+\subsection{Why the inherited finalizer still applies}
+
+Sun's arithmetic bridge, specialized as in the preserved proof, supplies
+both directions for any source satisfying the contract above.  The reverse
+direction requires \(b\) square, \(O>0\), \(\xi\ne0\),
+\(R_2\) and \(DFI_*\) square, and \(S_*\mid T_*\).  It recovers
+\(b\) as a power of two, \(0<g<2\mathcal C\), and the central-binomial
+divisibility.  The forward direction supplies these conditions, together
+with the residue interpolation needed for the finalizer.  These are the
+same arithmetic bridge hypotheses as in the inspected construction.
+
+For clarity, the finalizer's main logical steps are recorded here.
+The polynomial \((v^3-v-1)(v^2+23)\) has a root modulo every positive
+integer and no rational root.  Prime valuations in its homogeneous
+factors show that \(\Sigma\mid\Theta_*\) implies \(S_*\mid T_*\).
+The parity of \(S_*\) makes it nonzero, and the absence of rational
+roots makes \(\Theta_*\ne0\).  If \(\Sigma=0\), then
+\(F_{10}=\Theta_*^8\ne0\), excluding that branch.
+
+For \(z\ne0\), the factors \(b\) and
+\(1+(3O-4)b^2z^2\) are coprime.  If their product is a square,
+they are signed squares; \(b\equiv1\pmod3\) excludes a negative
+square and the zero-factor exception.  The positivity Pell lemma then
+gives \(O>0\).  Conversely, the forward bridge has \(O\ge4\);
+a suitable positive Pell unit makes \(a_0\) a square.  Residue
+interpolation supplies a multiple \(\xi=zx\) and the required
+class of \(y\), making \(a_2\) a square and
+\(\Sigma\mid\Theta_*\).
+
+The structural weights satisfy
+\[
+ |w_1|>\sqrt{|a_0|},\qquad
+ |w_2|>\sqrt{|a_0|}+|w_1|\sqrt{|a_1|}.
+\]
+Here \(|a_0|>1\) whenever \(z\ne0\), and
+\(\sqrt{|a_1|}\le P^2+K^2+2\).  In the multiquadratic field,
+any nontrivial sign-changing automorphism of a weighted root sum has
+a largest changed index whose magnitude exceeds the sum of all smaller
+changed magnitudes.  Thus a rational weighted sum forces every radicand
+to be an integer square.  The exact identity
+\[
+ F_{10}=\prod_{\epsilon\in\{\pm1\}^3}
+ \left(Z_*+\sum_{i=0}^2\epsilon_i\sqrt{A_i}\right)
+\]
+now proves the finalizer equivalence.  This argument also handles
+negative radicands using complex absolute values, and zero radicands
+separately.  At a zero, the bridge and~\eqref{eq:channel-zero} recover
+a parent solution.  From a parent solution, choose the forward bridge
+witnesses and set \(m\) to cancel one integral signed factor.
+
+The full inherited interpolation, local-root, and bridge proof is kept
+in \code{upstream/wave7_sun_popcount.tex}, with its precise primary
+references~\cite{sun2021,sun2026}.  The root verifier checks the norm
+identity by exact polynomial multiplication; the unbounded bridge is
+an identified mathematical dependency.
+
+\subsection{Exact degree and circuit cost}
+
+The source registers have degrees
+\[
+ \deg X=8964,\qquad\deg Y=4713,\qquad\deg\mathcal C=217.
+\]
+Representative downstream degrees are
+\[
+\begin{array}{c|rrrrrrr}
+ &A&C&P&K&D&E&F\\\hline
+\deg&18393&18394&32071&32072&73574&110364&257514
+\end{array}
+\]
+and
+\[
+\begin{array}{c|rrrrr}
+ &G_*&H_*&I_*&\Sigma&\Theta_*\\\hline
+\deg&275907&367879&1287572&91967&91980.
+\end{array}
+\]
+The exact leading-coefficient certificate in
+\code{generated/ten_integer_degree.json} propagates the degree bound
+through every gate and exhibits a strictly positive final diagonal
+leader.  The independent modular leading residues in
+Section~\ref{sec:status} verify it with the actual fixed coefficients.
+The resulting exact degree is \(8\,317\,400\).  There are 544 live
+binary operations: 174 additions, 26 subtractions, and 344 multiplications.
+The baseline comparison concerns unrestricted integer zeros throughout.

@@ -1,0 +1,151 @@
+\section{The nine variable ratio interface}
+We first use exactly the mixed-domain coordinates
+\[
+ b,g,h,s,w,i\in\Pos,\qquad \phi,j,n\in\N.
+\]
+Every other symbol is a polynomial abbreviation. The source registers
+$R,N,G_c=G_{\rm cap}$ are those of Section~\ref{sec:carry8}, with the
+selected even- or odd-$K_c$ threshold formula. They satisfy the imported
+ratio theorem's unconditional size requirements before a zero is assumed.
+The following quotient removal and conditional norm lemma are retained
+from the preceding iteration; the new source and sharper majorant are
+composed with their full two-way proofs, not merely with sample tests.
+
+\subsection{Literal ratio registers and exact quotient removal}
+Define
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M_0&=RY,\\
+ P&=2M_0^2U,&K&=R+1+h(P-1),&A&=M_0(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&C&=B_1+W_1+\phi,\\
+ J&=4A-5,&Q&=3W_1C-2(W_1^2-1),&&\\
+ D&=(A^2-1)C^2+1,&k&=iJC,&L&=kD,\\
+ E&=LC,&F&=(A^2-1)E^2+1,&&\\
+ G&=A+F(CD+1-A),&H&=C+F(B_1+jC),&&\\
+ I&=(G^2-1)H^2+1,&a_0&=(P^2-1)K^2+1,&a_1&=DFI,\\
+ m&=[K^2-4(C-KY)^2]G_c-8gK^2.&&&&
+\end{align*}
+The inherited ratio theorem instead has $H_{\rm old}=B_1+j_{\rm old}C$,
+$j_{\rm old}\ge1$, and divisibility
+$JF\mid QF+J(H_{\rm old}-C)$. Since $F\equiv1\pmod J$ and
+$F\equiv1\pmod C$, $\gcd(F,J)=1$, so that divisibility is equivalent to
+\[
+ J\mid Q\quad\hbox{and}\quad F\mid H_{\rm old}-C.
+\]
+If the second holds, $z=(H_{\rm old}-C)/F$ is positive and congruent to
+$B_1$ modulo $C$. As $0<B_1<C$, uniquely $z=B_1+jC$ for $j\ge0$.
+This is exactly the new $H$. Conversely every such new $j$ gives the old
+positive integer
+\[
+ j_{\rm old}=1+\frac{F-1}{C}B_1+Fj.
+\]
+The quotient is an integer because $C\mid F-1$. This is a bijection of the
+old divisible witnesses with the new unrestricted nonnegative witnesses,
+preserving $H$ itself. No cofinal-witness assertion or extra hypothesis is
+introduced. The resulting ratio conditions are precisely
+\[
+ a_0\text{ square},\quad a_1\text{ square},\quad J\mid Q,\quad m>0.
+\]
+The numerical Jones theorem gives from these conditions that $b$ is a power
+of two, $8g<G_c$, and $N^2\mid\binom{2R}{R}$. Conversely the stronger
+source bound $32g<G_c$ produces the requisite ratio witnesses.
+
+\subsection{A general conditional-separation norm theorem}
+\begin{theorem}\label{thm:conditional}
+Let $u,v,m,a_0,a_1,V_0,V_1$ be integers with $u>0$,
+$0<v/u<V_0+V_1$, $a_i>0$, $V_i>0$, $a_i<V_i^2$, and
+$m>0\Rightarrow a_0\ne a_1$. Put
+\[
+ \Omega=um,\qquad \Theta=un+v-\Omega(V_0+V_1).
+\]
+Then there exists $n\in\N$ satisfying
+\[
+ (\Theta^2-\Omega^2(a_0+a_1))^2-4\Omega^4a_0a_1=0
+\]
+if and only if $m>0$, $a_0,a_1$ are integer squares, and $u\mid v$.
+\end{theorem}
+\begin{proof}
+If $m=0$, $\Theta=un+v>0$, excluding a zero. Otherwise factor the norm
+over the reals to obtain signed roots $r_i^2=a_i$ with
+$\Theta/\Omega=r_0+r_1$. Rearrangement gives
+\[
+ n+v/u=mZ,\qquad Z=V_0+V_1+r_0+r_1>0.
+\]
+The left side is positive, so $m>0$ \emph{before} integrality of either
+root is known. Conditional separation now makes $x=r_0+r_1$ nonzero;
+otherwise $a_0=a_1$. Since $x$ is rational,
+$2xr_0=x^2+a_0-a_1$ shows $r_0,r_1\in\mathbb Q$.
+A rational number whose square is an integer is an integer, as follows
+by writing it as a reduced fraction. Hence $Z\in\Z$ and $u\mid v$.
+Conversely choose the positive integer roots and put $n=mZ-v/u$.
+Then $n\in\Z$ and $n\ge Z-v/u>V_0+V_1-v/u>0$.
+Substitution makes a linear factor zero. The quotient bound is needed only
+for completeness, not for the positivity-first soundness argument.
+\end{proof}
+Positive majorants are essential, not just $V_i^2>a_i$. Without separation,
+$a_0=a_1=2$, $V_0=V_1=2$, $u=v=2$, $m=1$, $n=3$ is a false square
+witness. Without positive majorants, $a_0=1,a_1=4,V_0=-2,V_1=4$,
+$u=v=1,m=-1,n=0$ is a false positive-margin witness, even though the
+squared-majorant and quotient inequalities hold. These are retained
+as negative controls.
+
+\subsection{The lower cost simple majorant companion}
+Unconditionally $A\ge2$ and $P,K,C,J,D,E,F,G,H>1$. Define
+\[
+ V_0=PK,\qquad T=k(8D^2-4D-1),\qquad V_1=TGH.
+\]
+The identities $E=CL$, $L=kD$ give $F=(D-1)k^2D^2+1$. Direct expansion
+then yields
+\[
+ V_0^2-a_0=K^2-1>0,\qquad
+ T^2-64DF=(8D+1)k^2-64D=8D(k^2-8)+k^2>0,
+\]
+because $k=iJC\ge3$. Therefore the strictly positive majorant $V_1$ has
+\[
+ \Delta_1=V_1^2-64a_1
+ =[(8D+1)k^2-64D](GH)^2+64DF(H^2-1)>0.
+\]
+The lower degree of this polynomial defect, rather than simply a smaller
+numerical bound, is the degree improvement.
+
+If $m>0$, its defining margin implies $4(C-KY)^2<K^2$, so
+$C>K(Y-1/2)>K$ because $Y\ge64$. Also
+\[
+ A^2-P=M_0^2(U^2+1)>0,\quad D>C^2,\quad F\ge A^2,\quad
+ G\ge A,\quad I\ge G^2\ge A^2.
+\]
+For $G\ge A$, use $G=A+F(CD+1-A)$ and $D\ge A^2$, $C\ge1$.
+It follows that
+\[
+ a_1=DFI>C^2A^4>C^2P^2>K^2P^2>a_0.
+\]
+This separation is established without assuming squarehood or divisibility.
+The same positivity-first proof works without the auxiliary quotient offsets.
+Indeed $Q<3C^2$, $D>C^2$ and $T>3D$ imply $V_1>Q$.
+The lower-cost simple-majorant fixed polynomial is
+\begin{align*}
+ \Omega&=Jm,\\
+ \Theta&=Jn+Q-\Omega(V_0+V_1),\\
+ F_9&=[\Theta^2-\Omega^2(a_0+64a_1)]^2
+                   -256\Omega^4a_0a_1=0.
+\end{align*}
+To check the offset-free form explicitly, $m=0$ gives $\Theta=Jn+Q>0$.
+Otherwise a zero factor gives $n+Q/J=mZ$ with
+$Z=V_0+V_1+r_0+r_1>0$. Thus $m>0$, and the separation just proved
+makes $r_0+r_1$ nonzero. The rational reconstruction from
+Theorem~\ref{thm:conditional} gives integer roots and $J\mid Q$.
+Conversely choose the positive integer roots and set $n=mZ-Q/J$.
+As $Z>V_1>Q>Q/J$, this is a positive integer and a factor vanishes.
+
+Squarehood of $64a_1$ is equivalent to squarehood of $a_1$: an integer
+square root divided by 8 is a rational square root of an integer, hence
+an integer. The finalizer is therefore equivalent to exactly the four
+ratio conditions. Composing both directions proves the desired source
+solvability equivalence.
+
+For the positive-domain polynomial, replace $\phi,j,n$ in this mixed-domain
+formula by the corresponding positive coordinates minus 1. For the
+nonnegative-domain polynomial, replace $b,g,h,s,w,i$ by the corresponding
+nonnegative coordinates plus 1. These are bijections; the supplied circuit
+ledgers charge their operations. They must not be omitted when stating the
+domain.
+

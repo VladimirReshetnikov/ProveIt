@@ -1,0 +1,365 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,
+  citecolor=blue!45!black,pdftitle={Separated degrees and Pell quotients: smaller consistency equations for ZFC},
+  pdfauthor={Research contribution prepared for ProveIt}}
+\urlstyle{same}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}(\mathrm{ZFC})}
+\newcommand{\pop}{\operatorname{pop}}
+\DeclareUrlCommand\code{\urlstyle{tt}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[2]
+
+\title{Separated degrees and Pell quotients\\[4pt]
+\large Smaller explicit consistency equations for ZFC}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt project}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give several new explicit integer polynomials whose absence of zeros in
+their stated domains is equivalent, by ordinary mathematics formalizable in
+ZFC, to syntactic consistency of ZFC.  The strongest small-degree result has
+twelve positive unknowns, degree \(242\), and a 94-operation division-free
+evaluation circuit; an 89-operation alternative has degree \(258\).
+Separating the ordinary degrees in a packed quadratic source yields a
+nine-positive-unknown equation of degree \(2\,628\,944\) and 499 operations,
+and a ten-unrestricted-integer equation of degree \(8\,317\,400\) and 544
+operations.  A separate guard construction reduces a fifty-integer
+quartic to forty-five integer unknowns.
+
+The new ingredients are degree-separated coefficient extraction with an
+unconditional positive carrier, two separate quadratic norms with exact
+index recovery, a congruence-based quotient of a Pell ordinate, and shared
+sign guards.  The native computation compiler, machine-to-refutation
+calibration, and Jones/Sun arithmetic bridges are inherited and explicitly
+identified.  We supply the polynomial circuits, fixed coefficient bytes,
+mathematical proofs, independent finite audits, and source pins.  We claim
+improvements over the inspected repository frontier, not an absolute
+minimum, a decision of consistency, or a new end-to-end proof-assistant
+certificate.
+\end{abstract}
+
+\section{Results and the meaning of simplicity}
+\label{sec:results}
+
+There is no single ordering of Diophantine equations that simultaneously
+minimizes the number of unknowns, degree, arithmetic circuit size, coefficient
+description length, and expanded monomial count.  The domain is also part
+of the specification: positive unknowns cannot silently be treated as
+unrestricted integers.  We therefore give explicit improvements in several
+of these directions, and identify the precise comparisons.
+
+The baseline is the repository revision
+\begin{center}
+\code{4b4349064a750ba6347293b55874a7f92abdd0db}.
+\end{center}
+It includes all eight inspected wave-7 archives under \code{docs/incoming}.
+The comparison uses those archives as well as the integrated catalogue,
+rather than comparing only against the older wave-6 summary.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Domain and unknown count & Exact degree & Operations & Role\\
+\midrule
+\(\Pos^{12}\) & \textbf{242} & \textbf{94} & Lowest-degree new twelve-variable form\\
+\(\Pos^{12}\) & \textbf{258} & \textbf{89} & Shorter twelve-variable evaluator\\
+\(\Pos^{13}\) & 132 & 83 & Additional tradeoff\\
+\(\Pos^9\) & \textbf{2,628,944} & \textbf{499} & Nine positive unknowns\\
+\(\N^9\) & 2,628,944 & 501 & Explicit nonnegative translation\\
+\(\Z^{10}\) & \textbf{8,317,400} & \textbf{544} & Ten unrestricted integers\\
+\(\Z^{45}\) & \textbf{4} & --- & Quartic, 28 quadratic residuals\\
+\bottomrule
+\end{tabular}
+\caption{Delivered constructions.  Here \(\N=\{0,1,2,\ldots\}\).
+Operations are live binary additions, subtractions, and multiplications.}
+\label{tab:results}
+\end{table}
+
+The incoming twelve-positive form has degree 897 and 108 operations.
+Degree 242 is a \(73.02\%\) reduction; the 89-operation variant reduces
+its evaluator by \(17.59\%\).  The best incoming nine-positive degree is
+\(7\,344\,328\), while the smallest incoming operation count at nine
+positive variables is 548, attained by a different equation.  Our equation
+improves both independent minima: the degree falls by \(64.20\%\) and
+the operation count by \(8.94\%\).  Similarly, the incoming ten-integer
+minima are degree \(21\,111\,400\) and 582 operations, again at different
+points.  The new degree falls by \(60.60\%\) and the operation count by
+\(6.53\%\).  The quartic result decreases the unrestricted variable count
+from 50 to 45, a \(10\%\) reduction.  The detailed archive-by-archive
+comparison is retained in \code{proofs/WAVE7_AUDIT.md}.
+
+These changes do not improve every existing objective.  In particular,
+the known 31-positive-variable quartic and short fifteen-positive-variable
+evaluators remain useful points on the frontier.  We do not reduce the
+number nine of positive unknowns or ten of unrestricted unknowns.  The
+forty-five-variable quartic has more expanded symbolic terms than its
+chosen parent, as discussed in Section~\ref{sec:quartic45}.
+
+\begin{theorem}[Mathematical endpoint]
+For every polynomial in Table~\ref{tab:results}, with its domain \(D\)
+and fixed coefficient instance specified in this packet, the supplied
+reductions and the identified inherited compiler/calibration theorems give
+an ordinary mathematical proof formalizable in ZFC of
+\[
+  \exists\mathbf x\in D\;P(\mathbf x)=0
+  \quad\Longleftrightarrow\quad
+  \text{there exists a finite syntactic ZFC refutation}.
+\]
+Consequently ZFC proves
+\[
+ \boxed{\quad
+ (\forall\mathbf x\in D\;P(\mathbf x)\ne0)
+ \quad\Longleftrightarrow\quad\Con.
+ \quad}
+\]
+\end{theorem}
+
+The theorem is a composition of explicit new reductions with named inherited
+theorems.  Its mathematical dependency is the accepted K215 consistency
+calibration, not an assertion that bounded simulations establish nonhalting.
+The formalization status is narrower: no newly assembled derivation of
+the displayed equivalence in the repository's object-language \code{BProv}
+calculus is supplied.  Section~\ref{sec:status} explains this distinction.
+
+For a practical choice, the degree-242 twelve-positive form is the most
+balanced new construction in this packet.  If unknowns must range over all
+integers, use the ten-integer form for a small variable count or the
+forty-five-integer form for degree four.  Every register appearing below
+is a polynomial abbreviation; only the explicitly listed coordinates
+are quantified.
+
+\section{Explicit coefficients and inherited interfaces}
+\label{sec:coefficients}
+
+The nine-, ten-, twelve-, and thirteen-variable constructions use one
+complete coherent four-port tuple
+\[
+  (\beta,K_0,M_C,M_F),\qquad \beta=2^{590069}-1.
+\]
+Its identifier is
+\begin{center}\small
+\code{wang943-checksum67-shared-anchor-length8807-prime581197}.
+\end{center}
+The bit lengths of its four ports are respectively
+\((590069,592884,590069,590070)\).  All four unsigned little-endian
+integers are included under \code{coefficients/coefficients/}, together
+with their construction and an independent decoder.  They occupy 295,388
+raw bytes and 9,445 gzip bytes.  The fourth port \(M_F\) is already the
+shifted \(M_{F,\mathrm{native}}+2^{590069}-1\); it must not be shifted
+a second time.  The archive contains the literal 943-tile input and the
+literal K215 transition input needed by its builder.
+
+The raw SHA-256 hashes are given in \code{COEFFICIENT_BINDING.json}.
+The independent decoder reconstructs all four whole integers, verifies
+66,062 native basis identities, and checks the actual coefficient residues
+needed by the compiler's rank controller.  Its 38,663 one-bit negative
+controls supplement these exact checks.  The unbounded compiler proof is
+included separately; finite checks are not a replacement for it.
+
+The forty-five-integer quartic uses the complete package-34 tuple
+\begin{center}\code{mixed-parity-unrounded-1064921}.\end{center}
+It has a different binding, even
+though the arithmetic register names are similar.  Its four raw payloads
+occupy 532,479 bytes.  Keeping that complete tuple is necessary for its
+odd-exponent canonical radix.  No coefficient ports are spliced between
+the two instances.
+
+For the degree-separated source below, all channel coefficient recipes
+are evaluated at the first tuple.  A termwise absolute bound gives
+\[
+ M=2^{1182955},\qquad \kappa=1182968,
+ \qquad a_S=2^\kappa=8192M.
+\]
+Every channel coefficient has absolute value strictly below \(M\).
+The two additional scale coefficients are
+\(2^{9463734}\) and \(2^{1182947}\).  These scales and every derived
+channel coefficient leaf are also materialized in \code{fixed/}, with
+a signed magnitude format and exact hashes.  There are fourteen such
+nonliteral leaves, requiring 2,512,713 raw bytes or 47,720 gzip bytes.
+This byte count is separate from arithmetic circuit complexity.
+
+The inherited interfaces are the positive quadratic native compiler,
+the normalized Pell compiler and its signed auxiliary-index lemma,
+the accepted K215-to-refutation calibration, the Jones nine-variable
+ratio bridge, and the Sun ten-integer bridge.  The relevant mathematical
+proof texts and Jones Lean source are retained under \code{upstream/},
+\code{low_degree/upstream/}, and \code{quartic/upstream/}.  Their source
+revision and byte hashes are recorded.  These imports are part of the
+proof, not hidden assumptions about the existence of a solution.
+
+\input{low_degree.tex}
+\input{channels.tex}
+\input{nine.tex}
+\input{ten.tex}
+\input{quartic.tex}
+
+\section{Verification, reproduction, and formalization status}
+\label{sec:status}
+
+\subsection{What the finite audits establish}
+
+The new proofs separate unbounded implications from finite certificates.
+The source checker reconstructs all 22 target identities as polynomial
+identities with four indeterminate coefficient ports, and exhausts all
+23,599 relevant source/expansion interactions.  The toy source checker
+deliberately allows a linear and a quadratic term to share a reversed
+position.  It checks 1,020 source/carry cases, including three genuine
+zero cases, 680 forbidden-digit controls, and 36 unconditional-positivity
+regressions.  These diagnostics would be meaningless as a proof of ZFC
+consistency; their purpose is to expose implementation mistakes in the
+source transformation.
+
+The root verifier reads the emitted circuits without importing their
+builder.  It authenticates all native and derived coefficient bytes,
+checks every gate reference, all variable leaves, liveness, and operation
+counts.  It compares the complete output and key named registers with
+independent literal formulas at 72 deterministic modular assignments per
+equation.  Four formal polynomial identities check the Pell majorant,
+its defect, the nine-variable degree cancellation, and the eight-factor
+three-radical norm.  The latter norm has 35 terms.
+
+The exact-degree check propagates a multivariate upper bound and the
+coefficient at that degree on a diagonal.  The cancellation-resolved
+identity is used for nine variables.  With the actual coefficient
+payloads, the independently obtained leading residues are
+\[
+\begin{array}{c|rrr}
+\text{equation}&101&1009&1000003\\\hline
+F_9&77&467&509827\\
+F_{10}&80&969&99517
+\end{array}
+\]
+Any nonzero residue proves the required lower bound.  Thus the reported
+degrees are exact, not syntactic upper bounds or estimates from sampled
+function values.  The low-degree checker evaluates full univariate
+polynomials with the actual tuple, using \(t=3x\) and all other
+coordinates equal to \(x\) to avoid a vanishing top form.  The universal
+upper bounds are supplied by the cancellation identities in its proof.
+The quartic checker expands the sum of squares exactly and verifies its
+degree-four coefficient, all 45 live coordinates, 28 residuals, and
+the separate coefficient binding.
+
+\subsection{Reproduction commands}
+
+All computational audits use the Python standard library and can be run
+from the packet root:
+\begin{verbatim}
+python3 build.py
+python3 materialize.py
+python3 verify.py
+python3 data/verify_channels.py
+python3 data/check_toy_channels.py
+python3 coefficients/audit_coefficients.py
+python3 low_degree/verify.py
+python3 quartic/build_verify.py
+\end{verbatim}
+The all-in-one runner \code{reproduce.py} also checks the pinned local
+sources and assembles a machine-readable receipt.  The low-degree builders
+and both coefficient builders are supplied for regeneration.  The source
+position search is not required: the small fixed certificate is the proof
+input.  The two source checkers explicitly reject Python optimization
+flags, because their internal assertions are part of their audit.
+
+Compile the paper from \code{report/} with two passes of
+\code{pdflatex -halt-on-error main.tex}.  The final packet includes the
+compiled PDF and all its TeX inputs.  \code{MANIFEST.sha256} records the
+distributed files.  An extracted copy was used for the final reproduction
+check, so the executable audits do not depend on the development checkout.
+
+\subsection{Ordinary provability versus an exported object-language proof}
+
+The intended consistency predicate is syntactic: there is no finite
+derivation of falsity from the recursively presented axioms of ZFC.
+The accepted K215 proof states that its blank halting is equivalent to
+the existence of such a derivation, by ordinary reasoning formalizable
+in ZFC.  The present work composes that inherited theorem with explicit
+new polynomial reductions.  Integer arithmetic, finite coefficient
+extraction, Pell recurrences, exact divisibility, and the witness
+constructions used here can all be developed internally in ZFC; none
+requires assuming \(\Con\).
+
+This mathematical claim must be distinguished from the repository's
+remaining proof-assistant obligation.  At the inspected revision,
+\code{Computability/DiophantineConsistency/OBJECT_ZFC.md} states that
+an external Lean theorem about \code{BProv ZFCax_s [] Form.fBot} is
+not itself an object-language derivation of the equivalence.  The concrete
+target sentences and a complete derivation of their equivalence are not
+yet assembled.  A formal proof must handle the model's own arithmetic,
+including nonstandard witnesses, and cannot use numeral agreement or
+bounded consistency as a substitute.  We preserve this boundary: the
+archive supplies new mathematical proofs and exact executable finite
+certificates, not a new kernel-checked end-to-end theorem or a completed
+\code{BProv} endpoint.
+
+Neither the existence nor the absence of solutions is asserted
+unconditionally in this paper.  The equivalences are the result.
+
+\appendix
+\section{Complete channel polynomials}
+\label{app:channels}
+
+The following table specifies every term of the three channel polynomials
+used in Section~\ref{sec:channels}.  A row \((d,e,c)\) contributes
+\(cT^e\) to \(A_d(T)\).  The four symbols in its coefficient column
+are the fixed native tuple of Section~\ref{sec:coefficients}.
+Thus the table, the fixed payloads, the weights and the displayed register
+formulas give an explicit polynomial without an appeal to a general
+existence theorem for Diophantine representations.
+\input{channel_table.tex}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt}, inspected revision
+\code{4b4349064a750ba6347293b55874a7f92abdd0db}, especially
+\code{Computability/DiophantineConsistency/con-zfc-diophantine-forms}
+and \code{docs/incoming}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4b4349064a750ba6347293b55874a7f92abdd0db}.
+
+\bibitem{jones}
+J. P. Jones, \emph{Universal Diophantine equation}, Journal of Symbolic
+Logic \textbf{47} (1982), 549--571.  The numerical ratio interface used
+here is preserved in \code{upstream/NineRatio.lean}, with its supporting
+\code{Ratio.lean} and \code{ProductPell.lean} source.
+
+\bibitem{sun2021}
+Z.-W. Sun, \emph{Further results on Hilbert's Tenth Problem},
+Science China Mathematics \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/html/1704.03504v7}.
+
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+2026 preprint, version 2.  The inherited ten-integer bridge is specialized
+from Propositions 6.1--6.2.
+\url{https://arxiv.org/html/2609.01594v2}.
+
+\bibitem{formal}
+J. Bayer, M. David, M. Hassler, Yu. Matiyasevich, and D. Schleicher,
+\emph{Diophantine equations over \(\Z\): universal bounds and parallel
+formalization}, 2025 preprint.
+\url{https://arxiv.org/html/2506.20909v2}.
+\end{thebibliography}
+\end{document}

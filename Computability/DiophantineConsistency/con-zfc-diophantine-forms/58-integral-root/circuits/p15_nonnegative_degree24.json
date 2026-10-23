@@ -1,0 +1,816 @@
+{
+  "name": "fifteen_nonnegative_degree_24",
+  "domain": "nonnegative integers",
+  "witnesses": [
+    "j",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "i",
+    "T",
+    "X",
+    "Y",
+    "r",
+    "eta",
+    "zeta",
+    "u",
+    "gamma"
+  ],
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding_file": "../coefficients/COEFFICIENT_BINDING.json",
+  "port_aliases": {
+    "beta": "beta",
+    "K0": "K",
+    "MC": "MC",
+    "MF": "MF_source"
+  },
+  "source": [
+    [
+      "positive_j",
+      "+",
+      1,
+      "j"
+    ],
+    [
+      "positive_F",
+      "+",
+      1,
+      "F"
+    ],
+    [
+      "positive_alpha",
+      "+",
+      1,
+      "alpha"
+    ],
+    [
+      "positive_z",
+      "+",
+      1,
+      "z"
+    ],
+    [
+      "positive_f",
+      "+",
+      1,
+      "f"
+    ],
+    [
+      "positive_h",
+      "+",
+      1,
+      "h"
+    ],
+    [
+      "positive_i",
+      "+",
+      1,
+      "i"
+    ],
+    [
+      "positive_T",
+      "+",
+      1,
+      "T"
+    ],
+    [
+      "positive_X",
+      "+",
+      1,
+      "X"
+    ],
+    [
+      "positive_Y",
+      "+",
+      1,
+      "Y"
+    ],
+    [
+      "positive_r",
+      "+",
+      1,
+      "r"
+    ],
+    [
+      "positive_eta",
+      "+",
+      1,
+      "eta"
+    ],
+    [
+      "positive_zeta",
+      "+",
+      1,
+      "zeta"
+    ],
+    [
+      "positive_u",
+      "+",
+      1,
+      "u"
+    ],
+    [
+      "positive_gamma",
+      "+",
+      1,
+      "gamma"
+    ],
+    [
+      "triple_j",
+      "*",
+      3,
+      "positive_j"
+    ],
+    [
+      "Jold",
+      "+",
+      "triple_j",
+      1
+    ],
+    [
+      "qm",
+      "*",
+      "beta",
+      "Jold"
+    ],
+    [
+      "q",
+      "+",
+      "qm",
+      1
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "q6",
+      "*",
+      "q3",
+      "q3"
+    ],
+    [
+      "qF",
+      "-",
+      "q",
+      "positive_F"
+    ],
+    [
+      "C",
+      "-",
+      "qF",
+      "positive_alpha"
+    ],
+    [
+      "E",
+      "*",
+      "positive_X",
+      "positive_Y"
+    ],
+    [
+      "k",
+      "+",
+      "positive_eta",
+      "positive_zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "positive_Y"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "positive_eta"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "positive_Y"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "gammaH",
+      "*",
+      "positive_gamma",
+      "H"
+    ],
+    [
+      "Z",
+      "+",
+      "positive_X",
+      "gammaH"
+    ],
+    [
+      "D0",
+      "+",
+      "ac",
+      "Z"
+    ],
+    [
+      "ell",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "ell_r",
+      "+",
+      "ell",
+      "positive_r"
+    ],
+    [
+      "g25",
+      "*",
+      "q3",
+      "ell_r"
+    ],
+    [
+      "first_num",
+      "+",
+      "g25",
+      "positive_Y"
+    ],
+    [
+      "g27",
+      "+",
+      "ell",
+      "k"
+    ],
+    [
+      "g28",
+      "*",
+      "ell",
+      "g27"
+    ],
+    [
+      "first_rhs",
+      "+",
+      "g28",
+      1
+    ],
+    [
+      "g30",
+      "*",
+      "first_num",
+      "first_num"
+    ],
+    [
+      "g31",
+      "*",
+      "q6",
+      "first_rhs"
+    ],
+    [
+      "A",
+      "-",
+      "g30",
+      "g31"
+    ],
+    [
+      "g34",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "XH",
+      "*",
+      "positive_X",
+      "H"
+    ],
+    [
+      "g37",
+      "*",
+      "q",
+      "D0"
+    ],
+    [
+      "main_num",
+      "+",
+      "g37",
+      "XH"
+    ],
+    [
+      "g39",
+      "*",
+      "main_num",
+      "main_num"
+    ],
+    [
+      "g40",
+      "+",
+      "g34",
+      1
+    ],
+    [
+      "g41",
+      "*",
+      "q2",
+      "g40"
+    ],
+    [
+      "B",
+      "-",
+      "g39",
+      "g41"
+    ],
+    [
+      "g43",
+      "*",
+      "qm",
+      "qF"
+    ],
+    [
+      "g44",
+      "+",
+      "g43",
+      "positive_alpha"
+    ],
+    [
+      "g45",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "g46",
+      "*",
+      "g44",
+      "g45"
+    ],
+    [
+      "g47",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "g48",
+      "+",
+      "MC",
+      "g47"
+    ],
+    [
+      "g49",
+      "*",
+      "g48",
+      "Jold"
+    ],
+    [
+      "R",
+      "+",
+      "g46",
+      "g49"
+    ],
+    [
+      "g51",
+      "*",
+      "positive_h",
+      "E"
+    ],
+    [
+      "kmhE",
+      "-",
+      "k",
+      "g51"
+    ],
+    [
+      "Rhat",
+      "-",
+      "kmhE",
+      1
+    ],
+    [
+      "g54",
+      "*",
+      "K0",
+      "C"
+    ],
+    [
+      "g55",
+      "+",
+      "g54",
+      "qF"
+    ],
+    [
+      "g56",
+      "*",
+      "positive_z",
+      "qm"
+    ],
+    [
+      "g57",
+      "-",
+      "g55",
+      "g56"
+    ],
+    [
+      "g58",
+      "*",
+      "q",
+      "g57"
+    ],
+    [
+      "g59",
+      "*",
+      "positive_X",
+      "C"
+    ],
+    [
+      "transport_num",
+      "+",
+      "g58",
+      "g59"
+    ],
+    [
+      "index_res",
+      "-",
+      "Rhat",
+      "R"
+    ],
+    [
+      "transport_res",
+      "-",
+      "transport_num",
+      "q"
+    ],
+    [
+      "f2",
+      "*",
+      "positive_f",
+      "positive_f"
+    ],
+    [
+      "g64",
+      "-",
+      "f2",
+      1
+    ],
+    [
+      "U",
+      "*",
+      "Delta",
+      "g64"
+    ],
+    [
+      "I",
+      "*",
+      "positive_i",
+      "c2"
+    ],
+    [
+      "g67",
+      "*",
+      "I",
+      "I"
+    ],
+    [
+      "strong",
+      "-",
+      "g67",
+      "U"
+    ],
+    [
+      "g69",
+      "*",
+      "c",
+      "positive_T"
+    ],
+    [
+      "g70",
+      "-",
+      "g69",
+      "Rhat"
+    ],
+    [
+      "g71",
+      "*",
+      "f2",
+      "g70"
+    ],
+    [
+      "V",
+      "-",
+      "g71",
+      "c"
+    ],
+    [
+      "vu",
+      "+",
+      "V",
+      "positive_u"
+    ],
+    [
+      "g74",
+      "*",
+      "vu",
+      "vu"
+    ],
+    [
+      "g75",
+      "*",
+      2,
+      "V"
+    ],
+    [
+      "g76",
+      "+",
+      "g75",
+      "positive_u"
+    ],
+    [
+      "g77",
+      "*",
+      "positive_u",
+      "g76"
+    ],
+    [
+      "g78",
+      "*",
+      "U",
+      "g77"
+    ],
+    [
+      "g79",
+      "-",
+      "g74",
+      "g78"
+    ],
+    [
+      "auxiliary",
+      "-",
+      "g79",
+      1
+    ],
+    [
+      "residual_square_0",
+      "*",
+      "A",
+      "A"
+    ],
+    [
+      "residual_square_1",
+      "*",
+      "B",
+      "B"
+    ],
+    [
+      "residual_square_2",
+      "*",
+      "index_res",
+      "index_res"
+    ],
+    [
+      "residual_square_3",
+      "*",
+      "transport_res",
+      "transport_res"
+    ],
+    [
+      "residual_square_4",
+      "*",
+      "auxiliary",
+      "auxiliary"
+    ],
+    [
+      "residual_square_5",
+      "*",
+      "strong",
+      "strong"
+    ],
+    [
+      "sum_1",
+      "+",
+      "residual_square_0",
+      "residual_square_1"
+    ],
+    [
+      "sum_2",
+      "+",
+      "sum_1",
+      "residual_square_2"
+    ],
+    [
+      "sum_3",
+      "+",
+      "sum_2",
+      "residual_square_3"
+    ],
+    [
+      "sum_4",
+      "+",
+      "sum_3",
+      "residual_square_4"
+    ],
+    [
+      "sum_5",
+      "+",
+      "sum_4",
+      "residual_square_5"
+    ]
+  ],
+  "residuals": [
+    "A",
+    "B",
+    "index_res",
+    "transport_res",
+    "auxiliary",
+    "strong"
+  ],
+  "output": "sum_5",
+  "exact_degree": 24,
+  "operations": 105,
+  "operation_breakdown": {
+    "+": 42,
+    "*": 47,
+    "-": 16
+  },
+  "residual_evaluator_operations": 94,
+  "degree_certificate_only": false,
+  "source_positive_circuit": "p15_degree24.json",
+  "source_positive_circuit_sha256": "39d785143cef12766127398ced6e2680b85ed182a636248737764892746c20ae",
+  "domain_translation": {
+    "coordinates": [
+      {
+        "positive_coordinate": "j",
+        "translated_witnesses": [
+          "j"
+        ],
+        "positive_coordinate_gate": "positive_j",
+        "expression": "1 + j"
+      },
+      {
+        "positive_coordinate": "F",
+        "translated_witnesses": [
+          "F"
+        ],
+        "positive_coordinate_gate": "positive_F",
+        "expression": "1 + F"
+      },
+      {
+        "positive_coordinate": "alpha",
+        "translated_witnesses": [
+          "alpha"
+        ],
+        "positive_coordinate_gate": "positive_alpha",
+        "expression": "1 + alpha"
+      },
+      {
+        "positive_coordinate": "z",
+        "translated_witnesses": [
+          "z"
+        ],
+        "positive_coordinate_gate": "positive_z",
+        "expression": "1 + z"
+      },
+      {
+        "positive_coordinate": "f",
+        "translated_witnesses": [
+          "f"
+        ],
+        "positive_coordinate_gate": "positive_f",
+        "expression": "1 + f"
+      },
+      {
+        "positive_coordinate": "h",
+        "translated_witnesses": [
+          "h"
+        ],
+        "positive_coordinate_gate": "positive_h",
+        "expression": "1 + h"
+      },
+      {
+        "positive_coordinate": "i",
+        "translated_witnesses": [
+          "i"
+        ],
+        "positive_coordinate_gate": "positive_i",
+        "expression": "1 + i"
+      },
+      {
+        "positive_coordinate": "T",
+        "translated_witnesses": [
+          "T"
+        ],
+        "positive_coordinate_gate": "positive_T",
+        "expression": "1 + T"
+      },
+      {
+        "positive_coordinate": "X",
+        "translated_witnesses": [
+          "X"
+        ],
+        "positive_coordinate_gate": "positive_X",
+        "expression": "1 + X"
+      },
+      {
+        "positive_coordinate": "Y",
+        "translated_witnesses": [
+          "Y"
+        ],
+        "positive_coordinate_gate": "positive_Y",
+        "expression": "1 + Y"
+      },
+      {
+        "positive_coordinate": "r",
+        "translated_witnesses": [
+          "r"
+        ],
+        "positive_coordinate_gate": "positive_r",
+        "expression": "1 + r"
+      },
+      {
+        "positive_coordinate": "eta",
+        "translated_witnesses": [
+          "eta"
+        ],
+        "positive_coordinate_gate": "positive_eta",
+        "expression": "1 + eta"
+      },
+      {
+        "positive_coordinate": "zeta",
+        "translated_witnesses": [
+          "zeta"
+        ],
+        "positive_coordinate_gate": "positive_zeta",
+        "expression": "1 + zeta"
+      },
+      {
+        "positive_coordinate": "u",
+        "translated_witnesses": [
+          "u"
+        ],
+        "positive_coordinate_gate": "positive_u",
+        "expression": "1 + u"
+      },
+      {
+        "positive_coordinate": "gamma",
+        "translated_witnesses": [
+          "gamma"
+        ],
+        "positive_coordinate_gate": "positive_gamma",
+        "expression": "1 + gamma"
+      }
+    ],
+    "added_operations": 15,
+    "explanation": "Each positive coordinate is one plus a nonnegative coordinate. This coordinatewise bijection preserves existence of a zero.",
+    "degree_explanation": "An invertible affine translation preserves total degree 24. On the all-equal ray the degree-24 coefficient is 36.",
+    "frontier_claim": false
+  },
+  "proof": "../report/report.pdf",
+  "status": "Standard domain translation of the primary positive equation; ordinary mathematical proof, no new end-to-end proof-assistant certificate."
+}

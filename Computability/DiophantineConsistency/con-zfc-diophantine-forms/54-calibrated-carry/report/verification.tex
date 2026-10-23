@@ -1,0 +1,92 @@
+\section{Reproduction and verification boundary}
+\subsection{One command from a clean extraction}
+Run \texttt{python3 verify\_release.py} from the extracted release, or invoke
+that script by absolute path from any directory. Python 3.10 or later,
+SymPy and NumPy are required. The top-level verifier rejects optimized
+Python ($\texttt{-O}$ or $\texttt{-OO}$), validates the exact sealed file
+set and all SHA-256 hashes, and checks the retained direct-source Git blob
+identities. It also checks the selected archive-member hashes against the
+recorded provenance. It then makes an isolated temporary copy and runs
+only this release's authored checks there. Any failed check exits nonzero;
+the sealed original is checked again afterward.
+
+The eight original incoming archives were authenticated at intake but are
+not included. Clean replay therefore does \emph{not} recompute their Git
+blob hashes from nonexistent archive bytes. The retained ledger records
+those intake results and binds the selected member bytes. Genuine direct
+Git-blob checks apply to the included repository-source files, separately
+identified in the provenance ledger. These are integrity checks, not an
+external digital signature: the manifest cannot authenticate its own origin.
+The recipient should record the outer ZIP digest through a trusted channel.
+
+The optional \texttt{rebuild\_artifacts.py} regenerates 112 source, packing,
+circuit and fixed-payload files in a temporary copy and compares their exact
+bytes; this succeeded in the recorded Python/SymPy environment.
+
+The release contains editable \LaTeX{} and the rendered PDF, explicit
+arithmetic DAGs, exact fixed coefficient payloads and recipes, source and
+packing JSON, mathematical proofs, inherited licenses, newly authored
+builders and independent verifiers. No input ZIP duplication, search
+binaries, font cache, or transient computation logs are needed.
+The \texttt{negative\_controls.py} script tests rejection of optimized
+execution, changed/missing/unexpected files, corrupted source bytes even
+after rehashing the manifest, and a malformed positional certificate.
+
+For a standard TeX Live or MiKTeX install, run \texttt{pdflatex report.tex}
+twice from \path{report/}, or \texttt{latexmk -pdf report.tex}.
+The Linux helper uses the existing research environment's TeX files, without
+shell escape or a new installation. Compile in a working copy, since a
+sealed manifest intentionally rejects newly generated auxiliary files.
+
+\subsection{What the finite checks establish}
+\begin{enumerate}
+\item Reconstruct the coherent native tuple from the declarative mode
+formulas and inert transition table; check all finite decoder cases,
+controller residues, payload sizes and hashes.
+\item Reconstruct all 22 parent residuals, apply exactly the twelve shifts,
+verify all 109 factorial-weighted records and 62 active monomials, the
+nonzero-origin guard and actual coefficient bounds.
+\item Exhaustively test the 109-by-528 source/monomial isolation condition
+for each of nine packing certificates, including row signs and interior
+padding; verify positive leading coefficient and target headroom.
+\item Test the exact complement/popcount identity, signed borrow cases,
+threshold parity branches and modulo-three conditions. These finite
+regressions accompany, rather than replace, the universal proofs.
+\item Prove exact symbolic equality between every shared or sparse
+nine-variable source evaluator and its declared source polynomial.
+Independently reconstruct the small radical-defect polynomial and degree
+dominance; replay complete literal graphs and both domain translations
+with actual coefficient residues.
+\item For the integer family, check all 24 literal graphs, source identities,
+fixed payloads, zero-scale and modulo-three cases, norm identities and
+three nonzero top-degree residues. Matching degree upper bounds and
+nonzero diagonal coefficients certify the exact total degrees.
+\item For the short positive family, traverse every DAG for liveness and
+paid operations, independently evaluate the formulas, replay full univariate
+polynomials over three finite fields, and test the exact Pell reconstruction.
+A separate review audits the universal sign, positivity and phase arguments.
+\end{enumerate}
+A numerical test passing on finitely many assignments is not a universal
+compiler theorem. Exact symbolic ring identities and nonzero modular
+coefficients do have the finite mathematical force explicitly stated.
+The ordinary universal proofs, composed with the inherited semantic
+contracts, establish the consistency equivalences formalizable in ZFC.
+
+\subsection{Later formalization status at a separate pin}
+The source pin for this construction remains \pin. A separate, later
+snapshot at \texttt{d2f19e4d5cc4030f60049333285eea86a1ef401c}
+records that wave 7 was placed as collection entries 46--53. More
+importantly, its status documents report a closed executable actual-ZFC
+consistency equation: the concrete arithmetic refutation-program extraction
+and supplied-data bridge are no longer open. The project also reports
+checked generic simultaneous-quadratic coefficient extraction and a
+multi-target central-binomial carry test under explicit packing bounds.
+
+The same documents distinguish remaining work: the report-specific ordinary
+P67 compiler is not a newly checked Lean proof; a smaller closed
+quadratic-to-Jones adapter is not supplied by those generic lemmas; and the
+internal object-level ZFC consistency equivalence remains open, despite
+checked internal arithmetic and polynomial-side sentence construction.
+The ordinary external equivalence and an internal derivation are different
+claims. We have not rerun the later Lean build here, and its progress does
+not retroactively kernel-certify these new literal equations.
