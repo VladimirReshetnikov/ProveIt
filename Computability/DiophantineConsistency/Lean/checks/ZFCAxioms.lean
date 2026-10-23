@@ -1,0 +1,9 @@
+import DiophantineConsistency
+
+#print axioms DiophantineConsistency.refutationInputs_re
+#print axioms DiophantineConsistency.zfcRefutationInputs_re
+#print axioms DiophantineConsistency.halts_iff_refutation
+#print axioms DiophantineConsistency.zfcNinePolynomial_hasZero_iff_refutation
+#print axioms DiophantineConsistency.zfcNinePolynomial_noZero_iff_conZFC
+#print axioms DiophantineConsistency.zfcQuarticPolynomial_degree_le_four
+#print axioms DiophantineConsistency.zfcQuarticPolynomial_noZero_iff_conZFC

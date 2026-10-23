@@ -27,7 +27,7 @@ compiler still need a formal semantic bridge. Nine-natural-variable forms
 use the already formalized Jones reduction but introduce very large powers.
 The ten-unrestricted-integer Sun construction is not formalized here.
 
-The first formal route being investigated is:
+The first formal route is now checked:
 
 1. A concrete semidecision procedure halts exactly when ZFC has a finite
    refutation. Reuse the checked K215/program endpoint rather than assume
@@ -45,6 +45,47 @@ repository's object-level ZFC proof calculus. Portability of an arithmetic
 argument to ZFC is not itself a checked object-level derivation.
 
 See [STATUS.md](STATUS.md) for the current evidence and remaining work.
+
+The main checked result is
+`DiophantineConsistency.zfcNinePolynomial_noZero_iff_conZFC` in
+[ZFC.lean](Lean/DiophantineConsistency/ZFC.lean). It has no consistency or
+compiler hypothesis. The alternative `zfcQuarticPolynomial` has 58 natural
+witness slots and total degree at most four. Both use existence-based
+coefficient selection.
+
+For a concrete small arithmetic circuit, see
+[SHORT_EQUATION.md](SHORT_EQUATION.md): a 69-operation, degree-111 polynomial
+with 15 positive unknowns, bound to the historical package-36 coefficient
+tuple. Lean checks its complete positive zero set against the literal P67
+baseline. The native-window compiler connecting those explicit circuits to
+ZFC refutations remains to be formalized.
+
+## Continuing toward explicit coefficients
+
+The current computability/MRDP interfaces hide the program and polynomial
+inside propositions. Extracting executable polynomial data from those
+propositions would require an unjustified elimination from `Prop` into
+`Type`. The next phase instead builds data-valued arithmetic syntax and
+representation constructors, with separate correctness proofs. A
+syntax-directed primitive-recursion compiler can then retain its polynomial
+data throughout. The proved Jones nine-variable reduction accepts any
+normalized quartic, so a direct gate-to-quartic conversion can avoid the
+58-witness universal representation during this phase.
+
+## Reproducing the checked milestones
+
+From the repository root, with Lean and Mathlib 4.32.0:
+
+```sh
+lake build DiophantineConsistency.ZFC DiophantineConsistency.ShortCircuit DiophantineConsistency.ConsecutivePell
+lake env lean Computability/DiophantineConsistency/Lean/checks/ZFCAxioms.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/ShortEquationAxioms.lean
+python3 Computability/DiophantineConsistency/tools/audit_short_circuit.py
+```
+
+The axiom audits list only `propext`, `Classical.choice`, and `Quot.sound`.
+The finite circuit audit verifies operation count, liveness, source binding,
+and exact degree independently of the semantic compiler obligations.
 
 ## Source interfaces
 

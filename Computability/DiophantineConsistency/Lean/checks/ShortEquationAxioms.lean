@@ -1,7 +1,12 @@
 import DiophantineConsistency.ShortEquation
+import DiophantineConsistency.ShortCircuit
+import DiophantineConsistency.ConsecutivePell
 
 #print axioms DiophantineConsistency.ShortEquation.strong_ne_neg_one
 #print axioms DiophantineConsistency.ShortEquation.strong_eq_one
 #print axioms DiophantineConsistency.ShortEquation.replace_coefficient
 #print axioms DiophantineConsistency.ShortEquation.scaled_identity
 #print axioms DiophantineConsistency.ShortEquation.scaled_zero_iff_reduced
+#print axioms DiophantineConsistency.ShortCircuit.eval_polynomial
+#print axioms DiophantineConsistency.ShortCircuit.eval_polynomial_zero_iff_baselineValue_zero
+#print axioms DiophantineConsistency.ConsecutivePell.norm_ne_neg_one
