@@ -22,16 +22,18 @@ commits and are deliberately retained in the delivered provenance records.
 | Short-equation local simplification | Lean checked | `ShortEquation.scaled_zero_iff_reduced`, no compiler hypothesis |
 | Literal 69-operation polynomial | Lean checked | `ShortCircuit.eval_polynomial_zero_iff_baselineValue_zero`; scalar and MvPolynomial evaluation both included |
 | Literal 75-operation polynomial, degree 68 | Lean checked | `ShortSystem.eval_compactPolynomial_zero_iff_baselineValue_zero` and `compactPolynomial_totalDegree_le` |
+| Literal 73-operation polynomial, degree 80 | Lean checked | `ShortFrontier.eval_polynomial_zero_iff_baselineValue_zero` and `polynomial_totalDegree_le` |
 | Consecutive-product negative Pell obstruction | Lean checked | `ConsecutivePell.norm_ne_neg_one` for every integer `n ≥ 2` |
 | Executable representation data | Lean checked primitives; integration open | `Representation`, `ArithmeticRepresentation`, `NaturalExpression`; see `COMPILER.md` |
-| Further short-equation reduction | In progress | 73-operation grouped residuals at degree 80; preserve the operation/degree frontier |
+| Further short-equation reduction | In progress | Current checked frontier: 69 operations/degree 111, 73/80, 75/68 |
 
 ## Validation environment
 
-The checkout uses Lean `v4.32.0` and Mathlib `v4.32.0`. It initially has no
-local `.lake` directory. Existing machine-verification and Mathlib caches
-are being inspected so a fresh check can reuse matching dependencies
-without copying large unrelated builds.
+The checkout uses Lean `v4.32.0` and Mathlib `v4.32.0`. A standard Lake build
+of the ZFC endpoint and short-equation modules has completed successfully,
+reusing matching Mathlib dependencies. The new modules also have independent
+axiom checks; completed audits use only `propext`, `Classical.choice`, and
+`Quot.sound`.
 
 ## Checked local simplification
 
@@ -52,6 +54,14 @@ It supports a candidate 69-operation, degree-111 evaluator of the inherited
 the old evaluator's shared multiplication `Δ*f²`; the corrected ledger was
 emitted and checked independently. Compiler correctness and its connection to
 ZFC have not been inferred from this local theorem.
+
+`ShortSystem.lean` and `ShortFrontier.lean` now also check the 75-operation,
+degree-68 and 73-operation, degree-80 alternatives. Both retain exactly the
+complete positive zero set of P67. The Lean certificates include their
+actual polynomials, literal evaluator identities, and degree upper bounds.
+Independent finite audits establish the exact degrees, operation ledgers,
+and nonzero leading coefficients. See [SHORT_SYSTEM.md](SHORT_SYSTEM.md)
+and [SHORT_FRONTIER.md](SHORT_FRONTIER.md).
 
 The literal circuit and finite ledger have now been emitted and independently
 checked: 69 live binary gates, 40 multiplications, 15 additions, 14

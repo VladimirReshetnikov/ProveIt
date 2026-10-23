@@ -2,6 +2,7 @@ import DiophantineConsistency.ShortEquation
 import DiophantineConsistency.ShortCircuit
 import DiophantineConsistency.ConsecutivePell
 import DiophantineConsistency.ShortSystem
+import DiophantineConsistency.ShortFrontier
 
 #print axioms DiophantineConsistency.ShortEquation.strong_ne_neg_one
 #print axioms DiophantineConsistency.ShortEquation.strong_eq_one
@@ -14,3 +15,6 @@ import DiophantineConsistency.ShortSystem
 #print axioms DiophantineConsistency.ShortSystem.compactLiteralValue_eq_compactValue
 #print axioms DiophantineConsistency.ShortSystem.eval_compactPolynomial_zero_iff_baselineValue_zero
 #print axioms DiophantineConsistency.ShortSystem.compactPolynomial_totalDegree_le
+#print axioms DiophantineConsistency.ShortFrontier.literalValue_eq_value
+#print axioms DiophantineConsistency.ShortFrontier.eval_polynomial_zero_iff_baselineValue_zero
+#print axioms DiophantineConsistency.ShortFrontier.polynomial_totalDegree_le

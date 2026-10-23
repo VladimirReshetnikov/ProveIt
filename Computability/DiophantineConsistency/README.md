@@ -66,6 +66,11 @@ coefficient tuple. Lean proves its degree bound and complete positive-zero
 equivalence to P67. Grouping the main norm with the two coupled unit factors
 saves two operations over the intermediate 77-operation sum of squares.
 
+The checked tradeoff in [SHORT_FRONTIER.md](SHORT_FRONTIER.md) uses
+73 operations at degree 80. It groups the six unit factors into three
+residuals and has the same complete positive zero set. The present frontier
+is 69 operations/degree 111, 73/80, and 75/68; each uses 15 positive unknowns.
+
 ## Continuing toward explicit coefficients
 
 The current computability/MRDP interfaces hide the program and polynomial
@@ -85,11 +90,12 @@ The detailed contracts and remaining links are tracked in
 From the repository root, with Lean and Mathlib 4.32.0:
 
 ```sh
-lake build DiophantineConsistency.ZFC DiophantineConsistency.ShortSystem
+lake build DiophantineConsistency.ZFC DiophantineConsistency.ShortFrontier
 lake env lean Computability/DiophantineConsistency/Lean/checks/ZFCAxioms.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/ShortEquationAxioms.lean
 python3 Computability/DiophantineConsistency/tools/audit_short_circuit.py
 python3 Computability/DiophantineConsistency/tools/audit_sos_circuit.py
+python3 Computability/DiophantineConsistency/tools/audit_frontier_circuit.py
 ```
 
 The axiom audits list only `propext`, `Classical.choice`, and `Quot.sound`.

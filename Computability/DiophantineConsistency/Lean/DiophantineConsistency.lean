@@ -3,3 +3,4 @@ import DiophantineConsistency.ShortEquation
 import DiophantineConsistency.ShortCircuit
 import DiophantineConsistency.ConsecutivePell
 import DiophantineConsistency.ShortSystem
+import DiophantineConsistency.ShortFrontier
