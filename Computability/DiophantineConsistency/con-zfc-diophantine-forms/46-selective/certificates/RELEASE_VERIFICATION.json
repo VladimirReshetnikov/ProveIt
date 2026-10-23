@@ -1,0 +1,1130 @@
+{
+  "schema": "proveit-selective-release-audit-v1",
+  "status": "PASS",
+  "source_commit": "124c07c0b77a9e20e84676514d8b1ff78536ea3f",
+  "driver_optimization_level": 0,
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "scope": "Finite release reproduction and independent implementation checks; the unbounded solvability theorems also use the accompanying mathematical proofs and explicitly cited upstream theorems.",
+  "provenance": {
+    "status": "PASS",
+    "commit": "124c07c0b77a9e20e84676514d8b1ff78536ea3f",
+    "root_entries": 50,
+    "upstream_entries": 21,
+    "distinct_files": 50
+  },
+  "manifest": {
+    "status": "PASS",
+    "manifests": [
+      {
+        "file": "MANIFEST.sha256",
+        "entries": 120,
+        "sha256": "5ab3a7a38a95e2aecf1e87730b80a9d7f7562dfdde330cb8acff3090d051c71a"
+      }
+    ]
+  },
+  "shared_inputs": {
+    "status": "PASS",
+    "ports": [
+      {
+        "port": "beta",
+        "raw_bytes": 133116,
+        "sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea"
+      },
+      {
+        "port": "K",
+        "raw_bytes": 133751,
+        "sha256": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395"
+      },
+      {
+        "port": "MC",
+        "raw_bytes": 133116,
+        "sha256": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b"
+      },
+      {
+        "port": "MF_source",
+        "raw_bytes": 133116,
+        "sha256": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7"
+      }
+    ]
+  },
+  "subprocess_gates": [
+    {
+      "label": "ten-variable rebuild",
+      "script": "code/build.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.105,
+      "stdout_bytes": 269,
+      "stdout_sha256": "ec5e6570645b9198e3794cc6a58edba352b7d0348e33ab6f114aebd95c724c3e",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "equal_json_artifacts": [
+        "data/polynomial.json",
+        "data/coefficient_recipes.json",
+        "certificates/coefficient_bound.json",
+        "certificates/degree.json",
+        "certificates/metrics.json"
+      ]
+    },
+    {
+      "label": "nine-variable rebuild",
+      "script": "nine/build_nine.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.043,
+      "stdout_bytes": 236,
+      "stdout_sha256": "695916a62c954e2cf49def86400df098deed5480112d45c08258428dbbbc7866",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "equal_json_artifacts": [
+        "nine/generated/selective_nine_positive.json",
+        "nine/generated/selective_nine_positive_degree_certificate.json",
+        "nine/generated/selective_nine_natural.json",
+        "nine/generated/selective_nine_natural_degree_certificate.json"
+      ]
+    },
+    {
+      "label": "ten-variable independent audit [normal]",
+      "script": "code/audit_candidate.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.871,
+      "stdout_bytes": 1960,
+      "stdout_sha256": "ba49567ae08fd509ec6bfc8fbce4711213426e780974a44fe9e89627393fd80a",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "certificates/candidate_independent_audit.json",
+      "receipt_sha256": "ba49567ae08fd509ec6bfc8fbce4711213426e780974a44fe9e89627393fd80a",
+      "receipt_data": {
+        "status": "PASS",
+        "source_exact_symbolic_audit": {
+          "protected_pairs": 62,
+          "all_pairs": 528,
+          "distinct_all_pair_sums": 278,
+          "kernel_terms": 94,
+          "symbolic_target_identities": 22,
+          "extracted_symbolic_terms": 99,
+          "cross_target_support_checks": 1974,
+          "minimum_kernel_exponent": 0,
+          "maximum_kernel_exponent": 5148
+        },
+        "coefficient_bounds": {
+          "coefficient_maximum_l1": 4,
+          "maximum_port_degree": 2,
+          "H_bit_length": 2140010,
+          "required_bound_bit_length": 2140022,
+          "source_exponent": 2140030,
+          "shifted_word_broad_bound": "36 H b^2 <= B-2 for b>=4",
+          "port_bit_lengths": {
+            "beta": 1064921,
+            "K0": 1070004,
+            "MC": 1064921,
+            "MF": 1064922
+          }
+        },
+        "exact_final_norm_identity": {
+          "status": "PASS",
+          "variables": [
+            "Z",
+            "u",
+            "v",
+            "w"
+          ],
+          "identity": "F(Z,u^2,v^2,w^2) = product_(e0,e1,e2 in {-1,1}) (Z+e0*u+e1*v+e2*w)",
+          "expanded_terms": 35,
+          "degree": 8
+        },
+        "negative_controls": [
+          {
+            "field": "weights",
+            "index": 2,
+            "delta": 1,
+            "rejected_for": "active pair collision"
+          },
+          {
+            "field": "targets",
+            "index": 1,
+            "delta": 1,
+            "rejected_for": "extraction mismatch at original parent row 16"
+          }
+        ],
+        "literal_formula_controls": {
+          "samples": 12,
+          "named_values_checked": 660,
+          "prime": 1000000007
+        },
+        "exact_degree_certificate": {
+          "degree": 35876184,
+          "diagonal_leading_coefficient_mod_prime": 996362474,
+          "prime": 1000000007,
+          "source_degrees": {
+            "X": 34050,
+            "Y": 22700,
+            "Ccap": 351
+          },
+          "method": "coefficient at propagated upper bound after all variables equal T; nonzero modulo prime"
+        },
+        "operations": {
+          "mul": 422,
+          "add": 138,
+          "sub": 80
+        },
+        "total_operations": 640,
+        "scope": "Exact finite algebra/data certificates and deterministic diagnostic circuit tests, not an unbounded parent-compiler proof."
+      }
+    },
+    {
+      "label": "ten-variable independent audit [-O]",
+      "script": "code/audit_candidate.py",
+      "mode": "-O",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.981,
+      "stdout_bytes": 1960,
+      "stdout_sha256": "ba49567ae08fd509ec6bfc8fbce4711213426e780974a44fe9e89627393fd80a",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "certificates/candidate_independent_audit.json",
+      "receipt_sha256": "ba49567ae08fd509ec6bfc8fbce4711213426e780974a44fe9e89627393fd80a",
+      "receipt_data": {
+        "status": "PASS",
+        "source_exact_symbolic_audit": {
+          "protected_pairs": 62,
+          "all_pairs": 528,
+          "distinct_all_pair_sums": 278,
+          "kernel_terms": 94,
+          "symbolic_target_identities": 22,
+          "extracted_symbolic_terms": 99,
+          "cross_target_support_checks": 1974,
+          "minimum_kernel_exponent": 0,
+          "maximum_kernel_exponent": 5148
+        },
+        "coefficient_bounds": {
+          "coefficient_maximum_l1": 4,
+          "maximum_port_degree": 2,
+          "H_bit_length": 2140010,
+          "required_bound_bit_length": 2140022,
+          "source_exponent": 2140030,
+          "shifted_word_broad_bound": "36 H b^2 <= B-2 for b>=4",
+          "port_bit_lengths": {
+            "beta": 1064921,
+            "K0": 1070004,
+            "MC": 1064921,
+            "MF": 1064922
+          }
+        },
+        "exact_final_norm_identity": {
+          "status": "PASS",
+          "variables": [
+            "Z",
+            "u",
+            "v",
+            "w"
+          ],
+          "identity": "F(Z,u^2,v^2,w^2) = product_(e0,e1,e2 in {-1,1}) (Z+e0*u+e1*v+e2*w)",
+          "expanded_terms": 35,
+          "degree": 8
+        },
+        "negative_controls": [
+          {
+            "field": "weights",
+            "index": 2,
+            "delta": 1,
+            "rejected_for": "active pair collision"
+          },
+          {
+            "field": "targets",
+            "index": 1,
+            "delta": 1,
+            "rejected_for": "extraction mismatch at original parent row 16"
+          }
+        ],
+        "literal_formula_controls": {
+          "samples": 12,
+          "named_values_checked": 660,
+          "prime": 1000000007
+        },
+        "exact_degree_certificate": {
+          "degree": 35876184,
+          "diagonal_leading_coefficient_mod_prime": 996362474,
+          "prime": 1000000007,
+          "source_degrees": {
+            "X": 34050,
+            "Y": 22700,
+            "Ccap": 351
+          },
+          "method": "coefficient at propagated upper bound after all variables equal T; nonzero modulo prime"
+        },
+        "operations": {
+          "mul": 422,
+          "add": 138,
+          "sub": 80
+        },
+        "total_operations": 640,
+        "scope": "Exact finite algebra/data certificates and deterministic diagnostic circuit tests, not an unbounded parent-compiler proof."
+      }
+    },
+    {
+      "label": "nine-variable independent audit [normal]",
+      "script": "nine/verify_nine.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.513,
+      "stdout_bytes": 783,
+      "stdout_sha256": "c3de492a43b1a1d4b932543111350f564d3575256acebb1021cfa0a28c7698b7",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "nine/generated/VERIFICATION.json",
+      "receipt_sha256": "5c9ee05fa13e64a982f79a745476b8e9be4598be0001f36a70b50f4e4cbeb6ae",
+      "receipt_data": {
+        "status": "PASS",
+        "maximum_weight": 175,
+        "target_maximum": 5148,
+        "source_span": 5498,
+        "degree": 19615180,
+        "positive_operations": 606,
+        "natural_operations": 609,
+        "active_pairs": 62,
+        "all_pair_multisets": 528,
+        "distinct_D_records": 94,
+        "source_replays": 120,
+        "circuit_domain_and_certificate_replays": 120,
+        "positive_offset_target_extractions": 352,
+        "finalizer_completeness_fixtures": 128,
+        "zero_margin_exclusions": 980,
+        "port_payloads": [
+          {
+            "port": "beta",
+            "file": "coefficients/payloads/beta.bin.gz",
+            "raw_sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+            "bit_length": 1064921
+          },
+          {
+            "port": "K0",
+            "file": "coefficients/payloads/K.bin.gz",
+            "raw_sha256": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+            "bit_length": 1070004
+          },
+          {
+            "port": "MC",
+            "file": "coefficients/payloads/MC.bin.gz",
+            "raw_sha256": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+            "bit_length": 1064921
+          },
+          {
+            "port": "MF",
+            "file": "coefficients/payloads/MF_source.bin.gz",
+            "raw_sha256": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7",
+            "bit_length": 1064922
+          }
+        ],
+        "degree_certificates": [
+          {
+            "prime": 1000000007,
+            "degree": 19615180,
+            "diagonal_leading_coefficient_mod_prime": 638575513,
+            "named_degrees": {
+              "b": 1,
+              "B": 3,
+              "Dcode": 15444,
+              "ell": 525,
+              "N0": 528,
+              "N1": 16497,
+              "N": 17025,
+              "mask": 528,
+              "targets": 15444,
+              "Tcode": 15975,
+              "Jcode": 16497,
+              "Scode": 17025,
+              "R": 51075,
+              "Gcap": 526,
+              "U": 34051,
+              "Y": 34051,
+              "M": 85126,
+              "P": 204303,
+              "K": 204304,
+              "A": 119177,
+              "C": 51075,
+              "J": 119177,
+              "Q": 51077,
+              "D": 340504,
+              "E": 561832,
+              "F": 1362018,
+              "G": 1753597,
+              "H": 51076,
+              "I": 3609346,
+              "a0": 817214,
+              "a1": 5311868,
+              "u": 1481195,
+              "v": 1413095,
+              "m": 477236,
+              "V0": 408607,
+              "V1": 2655934,
+              "Mdiv": 51077,
+              "Omega": 1958431,
+              "E0": 2009508,
+              "deltaV": 5073514,
+              "inner": 9807590
+            }
+          },
+          {
+            "prime": 1000000009,
+            "degree": 19615180,
+            "diagonal_leading_coefficient_mod_prime": 107735003,
+            "named_degrees": {
+              "b": 1,
+              "B": 3,
+              "Dcode": 15444,
+              "ell": 525,
+              "N0": 528,
+              "N1": 16497,
+              "N": 17025,
+              "mask": 528,
+              "targets": 15444,
+              "Tcode": 15975,
+              "Jcode": 16497,
+              "Scode": 17025,
+              "R": 51075,
+              "Gcap": 526,
+              "U": 34051,
+              "Y": 34051,
+              "M": 85126,
+              "P": 204303,
+              "K": 204304,
+              "A": 119177,
+              "C": 51075,
+              "J": 119177,
+              "Q": 51077,
+              "D": 340504,
+              "E": 561832,
+              "F": 1362018,
+              "G": 1753597,
+              "H": 51076,
+              "I": 3609346,
+              "a0": 817214,
+              "a1": 5311868,
+              "u": 1481195,
+              "v": 1413095,
+              "m": 477236,
+              "V0": 408607,
+              "V1": 2655934,
+              "Mdiv": 51077,
+              "Omega": 1958431,
+              "E0": 2009508,
+              "deltaV": 5073514,
+              "inner": 9807590
+            }
+          },
+          {
+            "prime": 2147483647,
+            "degree": 19615180,
+            "diagonal_leading_coefficient_mod_prime": 16,
+            "named_degrees": {
+              "b": 1,
+              "B": 3,
+              "Dcode": 15444,
+              "ell": 525,
+              "N0": 528,
+              "N1": 16497,
+              "N": 17025,
+              "mask": 528,
+              "targets": 15444,
+              "Tcode": 15975,
+              "Jcode": 16497,
+              "Scode": 17025,
+              "R": 51075,
+              "Gcap": 526,
+              "U": 34051,
+              "Y": 34051,
+              "M": 85126,
+              "P": 204303,
+              "K": 204304,
+              "A": 119177,
+              "C": 51075,
+              "J": 119177,
+              "Q": 51077,
+              "D": 340504,
+              "E": 561832,
+              "F": 1362018,
+              "G": 1753597,
+              "H": 51076,
+              "I": 3609346,
+              "a0": 817214,
+              "a1": 5311868,
+              "u": 1481195,
+              "v": 1413095,
+              "m": 477236,
+              "V0": 408607,
+              "V1": 2655934,
+              "Mdiv": 51077,
+              "Omega": 1958431,
+              "E0": 2009508,
+              "deltaV": 5073514,
+              "inner": 9807590
+            }
+          }
+        ],
+        "degree_proof": "Certificate polynomial is identically the primary polynomial by the displayed norm expansion in PROOF.md; propagated upper bound and nonzero diagonal coefficient prove exact degree.",
+        "limits": "Finite implementation checks. The unbounded solvability equivalence uses the accompanying proof and the cited parent-system and Jones ratio theorems."
+      }
+    },
+    {
+      "label": "nine-variable independent audit [-O]",
+      "script": "nine/verify_nine.py",
+      "mode": "-O",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.619,
+      "stdout_bytes": 783,
+      "stdout_sha256": "c3de492a43b1a1d4b932543111350f564d3575256acebb1021cfa0a28c7698b7",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "nine/generated/VERIFICATION.json",
+      "receipt_sha256": "5c9ee05fa13e64a982f79a745476b8e9be4598be0001f36a70b50f4e4cbeb6ae",
+      "receipt_data": {
+        "status": "PASS",
+        "maximum_weight": 175,
+        "target_maximum": 5148,
+        "source_span": 5498,
+        "degree": 19615180,
+        "positive_operations": 606,
+        "natural_operations": 609,
+        "active_pairs": 62,
+        "all_pair_multisets": 528,
+        "distinct_D_records": 94,
+        "source_replays": 120,
+        "circuit_domain_and_certificate_replays": 120,
+        "positive_offset_target_extractions": 352,
+        "finalizer_completeness_fixtures": 128,
+        "zero_margin_exclusions": 980,
+        "port_payloads": [
+          {
+            "port": "beta",
+            "file": "coefficients/payloads/beta.bin.gz",
+            "raw_sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+            "bit_length": 1064921
+          },
+          {
+            "port": "K0",
+            "file": "coefficients/payloads/K.bin.gz",
+            "raw_sha256": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+            "bit_length": 1070004
+          },
+          {
+            "port": "MC",
+            "file": "coefficients/payloads/MC.bin.gz",
+            "raw_sha256": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+            "bit_length": 1064921
+          },
+          {
+            "port": "MF",
+            "file": "coefficients/payloads/MF_source.bin.gz",
+            "raw_sha256": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7",
+            "bit_length": 1064922
+          }
+        ],
+        "degree_certificates": [
+          {
+            "prime": 1000000007,
+            "degree": 19615180,
+            "diagonal_leading_coefficient_mod_prime": 638575513,
+            "named_degrees": {
+              "b": 1,
+              "B": 3,
+              "Dcode": 15444,
+              "ell": 525,
+              "N0": 528,
+              "N1": 16497,
+              "N": 17025,
+              "mask": 528,
+              "targets": 15444,
+              "Tcode": 15975,
+              "Jcode": 16497,
+              "Scode": 17025,
+              "R": 51075,
+              "Gcap": 526,
+              "U": 34051,
+              "Y": 34051,
+              "M": 85126,
+              "P": 204303,
+              "K": 204304,
+              "A": 119177,
+              "C": 51075,
+              "J": 119177,
+              "Q": 51077,
+              "D": 340504,
+              "E": 561832,
+              "F": 1362018,
+              "G": 1753597,
+              "H": 51076,
+              "I": 3609346,
+              "a0": 817214,
+              "a1": 5311868,
+              "u": 1481195,
+              "v": 1413095,
+              "m": 477236,
+              "V0": 408607,
+              "V1": 2655934,
+              "Mdiv": 51077,
+              "Omega": 1958431,
+              "E0": 2009508,
+              "deltaV": 5073514,
+              "inner": 9807590
+            }
+          },
+          {
+            "prime": 1000000009,
+            "degree": 19615180,
+            "diagonal_leading_coefficient_mod_prime": 107735003,
+            "named_degrees": {
+              "b": 1,
+              "B": 3,
+              "Dcode": 15444,
+              "ell": 525,
+              "N0": 528,
+              "N1": 16497,
+              "N": 17025,
+              "mask": 528,
+              "targets": 15444,
+              "Tcode": 15975,
+              "Jcode": 16497,
+              "Scode": 17025,
+              "R": 51075,
+              "Gcap": 526,
+              "U": 34051,
+              "Y": 34051,
+              "M": 85126,
+              "P": 204303,
+              "K": 204304,
+              "A": 119177,
+              "C": 51075,
+              "J": 119177,
+              "Q": 51077,
+              "D": 340504,
+              "E": 561832,
+              "F": 1362018,
+              "G": 1753597,
+              "H": 51076,
+              "I": 3609346,
+              "a0": 817214,
+              "a1": 5311868,
+              "u": 1481195,
+              "v": 1413095,
+              "m": 477236,
+              "V0": 408607,
+              "V1": 2655934,
+              "Mdiv": 51077,
+              "Omega": 1958431,
+              "E0": 2009508,
+              "deltaV": 5073514,
+              "inner": 9807590
+            }
+          },
+          {
+            "prime": 2147483647,
+            "degree": 19615180,
+            "diagonal_leading_coefficient_mod_prime": 16,
+            "named_degrees": {
+              "b": 1,
+              "B": 3,
+              "Dcode": 15444,
+              "ell": 525,
+              "N0": 528,
+              "N1": 16497,
+              "N": 17025,
+              "mask": 528,
+              "targets": 15444,
+              "Tcode": 15975,
+              "Jcode": 16497,
+              "Scode": 17025,
+              "R": 51075,
+              "Gcap": 526,
+              "U": 34051,
+              "Y": 34051,
+              "M": 85126,
+              "P": 204303,
+              "K": 204304,
+              "A": 119177,
+              "C": 51075,
+              "J": 119177,
+              "Q": 51077,
+              "D": 340504,
+              "E": 561832,
+              "F": 1362018,
+              "G": 1753597,
+              "H": 51076,
+              "I": 3609346,
+              "a0": 817214,
+              "a1": 5311868,
+              "u": 1481195,
+              "v": 1413095,
+              "m": 477236,
+              "V0": 408607,
+              "V1": 2655934,
+              "Mdiv": 51077,
+              "Omega": 1958431,
+              "E0": 2009508,
+              "deltaV": 5073514,
+              "inner": 9807590
+            }
+          }
+        ],
+        "degree_proof": "Certificate polynomial is identically the primary polynomial by the displayed norm expansion in PROOF.md; propagated upper bound and nonzero diagonal coefficient prove exact degree.",
+        "limits": "Finite implementation checks. The unbounded solvability equivalence uses the accompanying proof and the cited parent-system and Jones ratio theorems."
+      }
+    },
+    {
+      "label": "74-operation independent audit [normal]",
+      "script": "short/verify_p74.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.031,
+      "stdout_bytes": 1714,
+      "stdout_sha256": "178a24b77629537a80a1b4bb5168610d8582bb5ca3693f62b0c6dddf95751ca2",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "short/p74_audit.json",
+      "receipt_sha256": "a0f16a5810853eb65d0e8d8aaab3c7c2fe80266735e6318f92d8d340cb150b94",
+      "receipt_data": {
+        "status": "PASS",
+        "gates": 74,
+        "counts": {
+          "*": 41,
+          "+": 18,
+          "-": 15
+        },
+        "variables": 15,
+        "degree": 68,
+        "coefficient_instance": "wang943-mixed115-shared-anchor-length8801-prime3433",
+        "native_base_exponent": 1012115,
+        "pinned_source_files_verified": 7,
+        "actual_positive_beta_verified": true,
+        "coherent_port_payloads": [
+          {
+            "port": "beta",
+            "bits": 1012115,
+            "raw_sha256": "7bffde1a5cec7e266d3c07518c297d9874f4ac46a6b3ac88ddddcad81bf6cff3",
+            "gzip_sha256": "b04e7cc437c8d703319bdb1c65a8863819592e4aa808311f36cefe3dfd49b47a"
+          },
+          {
+            "port": "K",
+            "bits": 1016946,
+            "raw_sha256": "effce61e34258ac4f1905f905a5da3363ccc0e2f48dd5bbbd39747334d75d153",
+            "gzip_sha256": "871cd985b9a3f6c05c8216f8a4da3be5d6ebbd55885143b634614cfe7c826dd1"
+          },
+          {
+            "port": "MC",
+            "bits": 1012115,
+            "raw_sha256": "a968b03cd5c3629e7ab80ba0c05b33f1906c2d74ab9a98225541f4b84b5c6b16",
+            "gzip_sha256": "59fa3d4b4fc3ac4018d3460ad7b23168cb1c6d4864abfaf22f1797a0e8cf1a16"
+          },
+          {
+            "port": "MF_source",
+            "bits": 1012116,
+            "raw_sha256": "970148f1570c695beb7271540eb58887f8e9b23d3fd7325cf233e0bb639f858a",
+            "gzip_sha256": "66c2d41127e0af533e75df064c91ac454301e08ad832a4e8b39a03f9423d7cd9"
+          }
+        ],
+        "actual_tuple_degree_certificate": {
+          "prime": 1000000007,
+          "beta_mod_prime": 90241428,
+          "nonzero_diagonal_coefficient_mod_prime": 300893052,
+          "diagonal_leading_coefficient_formula": "2^8 * beta^40"
+        },
+        "uniform_leading_form": "i^4*w^4*s^12*(eta+zeta)^8*(beta*J)^40",
+        "uniform_local_theorem": "For any fixed integer ports with beta>0, the new circuit has the complete positive zero set of the inherited P75; actual coefficients use the whole pinned package-36 tuple.",
+        "proof_boundary": "Finite circuit audit; complete local zero-equivalence proof is RESULT.md. Native compiler semantics are inherited."
+      }
+    },
+    {
+      "label": "74-operation independent audit [-O]",
+      "script": "short/verify_p74.py",
+      "mode": "-O",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.116,
+      "stdout_bytes": 1714,
+      "stdout_sha256": "178a24b77629537a80a1b4bb5168610d8582bb5ca3693f62b0c6dddf95751ca2",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "short/p74_audit.json",
+      "receipt_sha256": "a0f16a5810853eb65d0e8d8aaab3c7c2fe80266735e6318f92d8d340cb150b94",
+      "receipt_data": {
+        "status": "PASS",
+        "gates": 74,
+        "counts": {
+          "*": 41,
+          "+": 18,
+          "-": 15
+        },
+        "variables": 15,
+        "degree": 68,
+        "coefficient_instance": "wang943-mixed115-shared-anchor-length8801-prime3433",
+        "native_base_exponent": 1012115,
+        "pinned_source_files_verified": 7,
+        "actual_positive_beta_verified": true,
+        "coherent_port_payloads": [
+          {
+            "port": "beta",
+            "bits": 1012115,
+            "raw_sha256": "7bffde1a5cec7e266d3c07518c297d9874f4ac46a6b3ac88ddddcad81bf6cff3",
+            "gzip_sha256": "b04e7cc437c8d703319bdb1c65a8863819592e4aa808311f36cefe3dfd49b47a"
+          },
+          {
+            "port": "K",
+            "bits": 1016946,
+            "raw_sha256": "effce61e34258ac4f1905f905a5da3363ccc0e2f48dd5bbbd39747334d75d153",
+            "gzip_sha256": "871cd985b9a3f6c05c8216f8a4da3be5d6ebbd55885143b634614cfe7c826dd1"
+          },
+          {
+            "port": "MC",
+            "bits": 1012115,
+            "raw_sha256": "a968b03cd5c3629e7ab80ba0c05b33f1906c2d74ab9a98225541f4b84b5c6b16",
+            "gzip_sha256": "59fa3d4b4fc3ac4018d3460ad7b23168cb1c6d4864abfaf22f1797a0e8cf1a16"
+          },
+          {
+            "port": "MF_source",
+            "bits": 1012116,
+            "raw_sha256": "970148f1570c695beb7271540eb58887f8e9b23d3fd7325cf233e0bb639f858a",
+            "gzip_sha256": "66c2d41127e0af533e75df064c91ac454301e08ad832a4e8b39a03f9423d7cd9"
+          }
+        ],
+        "actual_tuple_degree_certificate": {
+          "prime": 1000000007,
+          "beta_mod_prime": 90241428,
+          "nonzero_diagonal_coefficient_mod_prime": 300893052,
+          "diagonal_leading_coefficient_formula": "2^8 * beta^40"
+        },
+        "uniform_leading_form": "i^4*w^4*s^12*(eta+zeta)^8*(beta*J)^40",
+        "uniform_local_theorem": "For any fixed integer ports with beta>0, the new circuit has the complete positive zero set of the inherited P75; actual coefficients use the whole pinned package-36 tuple.",
+        "proof_boundary": "Finite circuit audit; complete local zero-equivalence proof is RESULT.md. Native compiler semantics are inherited."
+      }
+    },
+    {
+      "label": "native coefficient reconstruction [normal]",
+      "script": "coefficients/reconstruct_native.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.156,
+      "stdout_bytes": 1141,
+      "stdout_sha256": "7200d264fcb837259882b1f3087351d8f43bbb96f839b5ead265f899b34ba0c3",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "coefficients/REPRODUCTION.json",
+      "receipt_sha256": "5a5587d33a3cbddc31d4674f5093ac94edf80fcbfa1308aa3500aecbc60e9577",
+      "receipt_data": {
+        "status": "PASS",
+        "source_snapshot": "124c07c0b77a9e20e84676514d8b1ff78536ea3f",
+        "preserved_sources_verified": 21,
+        "builder_git_blob_sha1": "27f0b25d7c0776d9d7bc042f6adb0c52285637bd",
+        "builder_historical_source_commit": "8c6eec9d19ef80538c8e61ff6e0180040583446a",
+        "python_optimization_level": 0,
+        "instance": "wang943-mixed-121x8801",
+        "b": 121,
+        "L": 8801,
+        "d": 1064921,
+        "ports": [
+          {
+            "port": "beta",
+            "bit_length": 1064921,
+            "raw_bytes": 133116,
+            "sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+            "matches_reconstructed_bytes": true
+          },
+          {
+            "port": "K",
+            "bit_length": 1070004,
+            "raw_bytes": 133751,
+            "sha256": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+            "matches_reconstructed_bytes": true
+          },
+          {
+            "port": "MC",
+            "bit_length": 1064921,
+            "raw_bytes": 133116,
+            "sha256": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+            "matches_reconstructed_bytes": true
+          },
+          {
+            "port": "MF_source",
+            "bit_length": 1064922,
+            "raw_bytes": 133116,
+            "sha256": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7",
+            "matches_reconstructed_bytes": true
+          }
+        ],
+        "total_raw_bytes": 533099,
+        "native_basis_checks": 69230,
+        "tile_count": 943,
+        "geometry": {
+          "status": "PASS",
+          "native_basis_checks": 69230,
+          "tile_groups": {
+            "transitions": 430,
+            "halt": 2,
+            "unchanged": 2,
+            "arrive_right": 398,
+            "arrive_left": 90,
+            "finish": 4,
+            "initialize": 4,
+            "reset": 3,
+            "seam": 9,
+            "forbidden": 1
+          },
+          "support_size": 989,
+          "clause_mask_population": 53,
+          "external_padding_population": 860,
+          "maximum_unshifted_exponent": 8791,
+          "mass_bits": 118,
+          "threshold_bits": 120,
+          "threshold": "789998487493936316431751375694647416",
+          "clean_clause_bands": true,
+          "unique_anchor_alignment": true,
+          "one_tile_clause_checks": 943,
+          "selector_counts_checked": 944
+        },
+        "rank_controller": {
+          "status": "PASS",
+          "d_factors": {
+            "11": 2,
+            "13": 1,
+            "677": 1
+          },
+          "orders": {
+            "121": 10,
+            "13": 12,
+            "677": 52,
+            "2341": 60
+          },
+          "order_mod_d": 780,
+          "padding_prime": 2341,
+          "step": 2340,
+          "valuation": 1,
+          "valuation_witness": 2556373,
+          "unit_residues": [
+            {
+              "prime": 11,
+              "B": 2,
+              "DC": 5,
+              "DR": 4,
+              "q_squared_minus_one": 3,
+              "bracket": 9
+            },
+            {
+              "prime": 13,
+              "B": 6,
+              "DC": 1,
+              "DR": 12,
+              "q_squared_minus_one": 9,
+              "bracket": 7
+            },
+            {
+              "prime": 677,
+              "B": 611,
+              "DC": 38,
+              "DR": 643,
+              "q_squared_minus_one": 293,
+              "bracket": 654
+            },
+            {
+              "prime": 2341,
+              "B": 2100,
+              "DC": 2051,
+              "DR": 586,
+              "q_squared_minus_one": 1896,
+              "bracket": 1225
+            }
+          ]
+        },
+        "mask_checks": {
+          "MC_population": 1063932,
+          "MF_native_population": 989,
+          "MC_mod4": 2,
+          "MF_native_mod8": 4
+        },
+        "scope": "Exact finite reconstruction and byte equality; inherited unbounded compiler semantics remain a mathematical dependency."
+      }
+    },
+    {
+      "label": "coefficient adapter independent audit [normal]",
+      "script": "coefficient_adapter/audit_separated.py",
+      "mode": "normal",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.19,
+      "stdout_bytes": 1539,
+      "stdout_sha256": "894548c2db1f1d13b319a197464f0ea87d07a0abc0d263d23b09470ab25986db",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "coefficient_adapter/separated_audit.json",
+      "receipt_sha256": "894548c2db1f1d13b319a197464f0ea87d07a0abc0d263d23b09470ab25986db",
+      "receipt_data": {
+        "status": "PASS",
+        "imports_no_builder": true,
+        "python_assertions_used": false,
+        "source_sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755",
+        "modes": 457,
+        "support": 520,
+        "expanded_tiles": 1479,
+        "unmatched_extras": 536,
+        "occupied_witnesses": 1479,
+        "physical_bit_corruptions": 65076,
+        "empty_auxiliary_assignments": 131072,
+        "accepted_empty_auxiliary_assignments": 1,
+        "native_basis_checks": 37960,
+        "b": 89,
+        "L": 4831,
+        "d": 429959,
+        "lambda_": 106261,
+        "total_raw_bytes": 215492,
+        "coefficients": [
+          {
+            "port": "beta",
+            "bits": 429959,
+            "bytes": 53745,
+            "sha256": "456b39f7b82cc935374b729b223221fbf34864e43b699fe94504caad06969d0f"
+          },
+          {
+            "port": "K",
+            "bits": 434054,
+            "bytes": 54257,
+            "sha256": "c41628eebbbc8bdfb4ca0246969963713eeffc337039a98cbe075b1727e24aa8"
+          },
+          {
+            "port": "MC",
+            "bits": 429959,
+            "bytes": 53745,
+            "sha256": "4164b9c631e09c57f30d0699bd9146c106fed18a2829e5220033d2c06b3001b7"
+          },
+          {
+            "port": "MF_source",
+            "bits": 429960,
+            "bytes": 53745,
+            "sha256": "4e094dca3a2cfb839d73f94bfd90ccf9168804d7204f35176b01646885885336"
+          }
+        ],
+        "controller_units": [
+          {
+            "prime": 89,
+            "B": 4,
+            "B_squared_minus_one": 15,
+            "H0": 44
+          },
+          {
+            "prime": 4831,
+            "B": 840,
+            "B_squared_minus_one": 273,
+            "H0": 3664
+          },
+          {
+            "prime": 106261,
+            "B": 93141,
+            "B_squared_minus_one": 97840,
+            "H0": 51423
+          }
+        ]
+      }
+    },
+    {
+      "label": "coefficient adapter independent audit [-O]",
+      "script": "coefficient_adapter/audit_separated.py",
+      "mode": "-O",
+      "status": "PASS",
+      "exit_code": 0,
+      "elapsed_seconds": 0.299,
+      "stdout_bytes": 1539,
+      "stdout_sha256": "894548c2db1f1d13b319a197464f0ea87d07a0abc0d263d23b09470ab25986db",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt": "coefficient_adapter/separated_audit.json",
+      "receipt_sha256": "894548c2db1f1d13b319a197464f0ea87d07a0abc0d263d23b09470ab25986db",
+      "receipt_data": {
+        "status": "PASS",
+        "imports_no_builder": true,
+        "python_assertions_used": false,
+        "source_sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755",
+        "modes": 457,
+        "support": 520,
+        "expanded_tiles": 1479,
+        "unmatched_extras": 536,
+        "occupied_witnesses": 1479,
+        "physical_bit_corruptions": 65076,
+        "empty_auxiliary_assignments": 131072,
+        "accepted_empty_auxiliary_assignments": 1,
+        "native_basis_checks": 37960,
+        "b": 89,
+        "L": 4831,
+        "d": 429959,
+        "lambda_": 106261,
+        "total_raw_bytes": 215492,
+        "coefficients": [
+          {
+            "port": "beta",
+            "bits": 429959,
+            "bytes": 53745,
+            "sha256": "456b39f7b82cc935374b729b223221fbf34864e43b699fe94504caad06969d0f"
+          },
+          {
+            "port": "K",
+            "bits": 434054,
+            "bytes": 54257,
+            "sha256": "c41628eebbbc8bdfb4ca0246969963713eeffc337039a98cbe075b1727e24aa8"
+          },
+          {
+            "port": "MC",
+            "bits": 429959,
+            "bytes": 53745,
+            "sha256": "4164b9c631e09c57f30d0699bd9146c106fed18a2829e5220033d2c06b3001b7"
+          },
+          {
+            "port": "MF_source",
+            "bits": 429960,
+            "bytes": 53745,
+            "sha256": "4e094dca3a2cfb839d73f94bfd90ccf9168804d7204f35176b01646885885336"
+          }
+        ],
+        "controller_units": [
+          {
+            "prime": 89,
+            "B": 4,
+            "B_squared_minus_one": 15,
+            "H0": 44
+          },
+          {
+            "prime": 4831,
+            "B": 840,
+            "B_squared_minus_one": 273,
+            "H0": 3664
+          },
+          {
+            "prime": 106261,
+            "B": 93141,
+            "B_squared_minus_one": 97840,
+            "H0": 51423
+          }
+        ]
+      }
+    }
+  ],
+  "subprocess_gate_count": 11,
+  "reproduced_json_artifacts": [
+    "data/polynomial.json",
+    "data/coefficient_recipes.json",
+    "certificates/coefficient_bound.json",
+    "certificates/degree.json",
+    "certificates/metrics.json",
+    "nine/generated/selective_nine_positive.json",
+    "nine/generated/selective_nine_positive_degree_certificate.json",
+    "nine/generated/selective_nine_natural.json",
+    "nine/generated/selective_nine_natural_degree_certificate.json"
+  ],
+  "original_release_unchanged": true,
+  "original_file_count": 122,
+  "elapsed_seconds": 3.985
+}

@@ -1,0 +1,254 @@
+\section{A 72-operation, degree-80 relaxed-kernel equation}
+\label{sec:relaxed-short}
+
+The construction here has fifteen strictly positive integer unknowns,
+exact total degree $80$, and $72$ charged binary arithmetic operations.
+It saves one multiplication against the pinned degree-$80$ normalized
+$P_{73}$ evaluator. This is a local tradeoff, not a global minimality
+claim: the inherited degree-$155$ equation still uses only $67$ operations.
+The relaxed norm itself is prior art. Historical package~10 already has
+a degree-$56$, $74$-operation equation using it; our companion $P_{74}$
+merely recovers that pair by a different grouping.
+
+\subsection{The explicit equation and its fixed coefficients}
+The witnesses, all in $\mathbb Z_{>0}$, are
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+The four fixed ports are the \emph{complete} materialized Wang943
+$121$-by-$8801$ tuple, with
+\[
+ B=2^{1064921},\quad \beta=B-1,\quad
+ K_0=D_C+BD_R,\quad M_C,\quad M_F=M_{F,\mathrm{native}}+B-1.
+\]
+The files \texttt{COEFFICIENT\_BINDING.json} and
+\texttt{coefficients/} specify their exact bytes and hashes. The complete
+native adapter proof is retained as
+\texttt{upstream\_verified/COEFFICIENT\_PROOF.md}. No component is taken
+from the different complement-packed coefficient tuple.
+
+Define polynomial abbreviations, not additional unknowns:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,\\
+ Y&=sq^3,&E&=XY,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&a&=E+Y,&A&=a+2,\\
+ H&=4a+3,&\Delta&=a^2+H=A^2-1,&D&=X+ac+\gamma H.
+\end{align*}
+The remaining abbreviations are
+\begin{align*}
+ G&=(q-1)(q-F)+\alpha,&R&=G(q^2-1)+(M_C+qM_F)J,\\
+ V&=c(Tf-1)-Rf^2,&I&=ic^2,\qquad K_{\rm aux}=\Delta(f^2-1).
+\end{align*}
+Set
+\begin{align*}
+ N_0&=\tau^2-(XY^2)(XY^2+1)k^2,&
+ N_1&=D^2-\Delta c^2,\\
+ N_a&=K_{\rm aux}(V^2-y^2)+y^2,&
+ N_k&=k-hE-R,\\
+ N_t&=(K_0+w)C+(q-F)-z(q-1),&
+ S&=I^2-K_{\rm aux}.
+\end{align*}
+Our equation is
+\begin{equation}\label{eq:relaxed72}
+ \boxed{(N_0N_1-1)^2+(N_aN_kN_t-1)^2+S^2=0.}
+\end{equation}
+The companion is
+\begin{equation}\label{eq:relaxed74}
+ (N_0-1)^2+(N_a-1)^2+S^2+(N_1N_kN_t-1)^2=0.
+\end{equation}
+The literal files \texttt{p72\_relaxed.json} and
+\texttt{p74\_relaxed.json} contain the full division-free evaluators.
+Only fixed nonnegative exponents occur.
+
+\subsection{What must be proved after relaxing the norm}
+The new condition is
+\[
+ (ic^2)^2=\Delta(f^2-1),
+\]
+not the normalized condition $f^2-\Delta(ic^2)^2=1$.
+These individual equations are not equivalent at the same coordinates.
+In completeness, the old multiplier is scaled by $\Delta$; in soundness,
+a rank argument must first recover integral Pell coordinates. Consequently
+the existing Lean same-coordinate theorem for normalized $P_{75}$ cannot
+be cited as a certificate for this polynomial.
+
+At a zero of \eqref{eq:relaxed72}, $K_{\rm aux}=I^2$ and each of
+$N_0,N_1,N_a,N_k,N_t$ is an integer unit. The negative-Pell descent for
+$v(v+1)$, with $v=XY^2>1$, excludes $N_0=-1$. Since
+$\Delta=(a+2)^2-1\equiv0$ or $3\pmod4$, $N_1\ne-1$.
+Since $K_{\rm aux}$ is a square, $N_a\equiv y^2$ or $V^2\pmod4$,
+so $N_a\ne-1$. Thus
+\begin{equation}\label{eq:relaxedunits}
+ N_0=N_1=N_a=1,\qquad N_k=\epsilon,\quad N_t=\nu,
+ \qquad \epsilon\nu=1,\quad \epsilon,\nu\in\{-1,1\}.
+\end{equation}
+The same conclusion follows from \eqref{eq:relaxed74}. Neither remaining
+sign is assumed positive at this point.
+
+Weak transport implies $C\ge0$, not yet $C>0$. The authentic mask ranges
+then give
+\[
+ q(q^2-1)<R<q^4-q^3+q^2-1<q^4-2,\qquad
+ R-2>3q+1,\qquad E>R+2,\qquad a>R+2.
+\]
+Let $P_0=2XY^2+1$. Ordinary Pell classification yields
+\[
+ \tau=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n),\qquad
+ D=\chi_A(p),\quad c=\psi_A(p).
+\]
+Since $P_0\equiv1\pmod E$,
+$2n=R+\epsilon+bE$ for some $b\ge0$. Thus $n\ge24$.
+Moreover $P_0>A$ and $c>k$ give $p>n$; Pell growth gives
+\begin{equation}\label{eq:relaxedlarge}
+ c>A\Delta^2,\qquad c>2p,\qquad c>2R.
+\end{equation}
+No auxiliary index or decoded tableau is used for these bounds.
+
+\subsection{The inherited relaxed-rank lemma, proved explicitly}
+Suppose $c=\psi_A(p)>A\Delta^2$ and
+$(ic^2)^2=\Delta(f^2-1)$. Then there is $m>0$ with
+\begin{equation}\label{eq:relaxedrank}
+ f=\chi_A(m),\qquad p\mid m,\qquad c\mid m,\qquad
+ ic^2=\Delta\psi_A(m).
+\end{equation}
+Here is the full rank argument. Write $\Delta=d_0s_0^2$ with $d_0>1$
+squarefree and choose the least positive integer-coefficient unit
+$F+y_0\sqrt{d_0}$. By division by powers of this least unit, every
+positive integer-coefficient norm-one unit is its power. For some $e\ge1$,
+\[
+ A=\chi_F(e),\quad S_0=\psi_F(e),\quad s_0=y_0S_0,
+ \quad\Delta=(F^2-1)S_0^2,\quad\psi_F(ep)=S_0c.
+\]
+The relaxed equation implies $s_0\mid ic^2$ and $d_0\mid ic^2/s_0$,
+so it too determines an integral norm-one unit. For some $t>0$,
+\[
+ f=\chi_F(t),\qquad ic^2=(F^2-1)S_0\psi_F(t).
+\]
+Put $L=(F^2-1)S_0\le\Delta$ and $g=\gcd(t,ep)$. Strong divisibility
+of the Pell sequence gives
+\[
+ c\gcd(c,\Delta)=\gcd(c^2,L\psi_F(ep))\mid L\psi_F(g),
+ \qquad \psi_F(g)\ge c/\Delta.
+\]
+If $g<ep$, then $2g\le ep$ and doubling gives
+\[
+ 2\psi_F(g)^2<\psi_F(2g)\le\psi_F(ep)=S_0c<Ac,
+\]
+contrary to $c^2/\Delta^2>Ac$. Hence $ep\mid t$. Write $t=em$;
+composition proves $p\mid m$ and the first and last claims in
+\eqref{eq:relaxedrank}.
+
+For the remaining divisibility, write $m=pb$. The binomial expansion gives
+\[
+ \psi_A(pb)/c\equiv bD^{b-1}\pmod c.
+\]
+Since $c^2\mid\Delta\psi_A(m)$ and $\gcd(D,c)=1$, we have
+$c\mid\Delta b$. Also
+$c\equiv pA^{p-1}\pmod\Delta$, so
+$g_0=\gcd(c,\Delta)=\gcd(p,\Delta)$ divides $p$.
+Thus $c/g_0\mid b$ and $c\mid pb=m$, as required.
+This proof does not assert the stronger, generally unavailable condition
+$c^2\mid\psi_A(m)$.
+
+\subsection{Quotient elimination is still sound}
+The rank lemma must be used \emph{before} restoring the two deleted
+quotients. Set $\rho=ic^2$. Since $p\mid m$, we have
+\[
+ c^2\mid f^2-1,\quad f^2\ge1+\Delta c^2,\quad f>2c,
+ \quad\rho^2=\Delta(f^2-1),\quad c\mid\rho,\quad m\ge c>2p.
+\]
+As $R<a<\Delta$,
+\[
+ \rho^2-(Rf^2+c)=(\Delta-R)f^2-\Delta-c
+ \ge f^2-\Delta-c>0.
+\]
+The auxiliary equation is
+$\rho^2V^2-(\rho^2-1)y^2=1$. If $|V|>1$, it implies
+$|V|\ge2\rho^2-1$. But $T>0$ gives $V>-(Rf^2+c)>-\rho^2$,
+excluding negative values with $|V|>1$. The cases $V=\pm1$ contradict
+$V\equiv-c\pmod f$ and $f>2c>4$. Thus $V>0$.
+
+Now the proof-only expressions
+\[
+ o=cT-Rf,\qquad j=Tf-R(f^2-1)/c-1
+\]
+are integers, and $of=V+c>0$, $jc=V+R>0$. Consequently $o,j>0$ and
+\[
+ V=of-c=jc-R.
+\]
+There is no division in the polynomial evaluator. In particular, the old
+normalized formula for $j$ in terms of $\Delta i^2c^3$ must not be used
+with the new multiplier.
+
+The retained signed auxiliary step-down applies with exactly these
+hypotheses and \eqref{eq:relaxedlarge}. To expose its interface, write
+$\rho V=\chi_\rho(\ell)$ with $\ell=2u+1$ odd and
+$\chi_Z(2u+1)=ZQ_u(Z^2)$. The identities
+\[
+ Q_u(1-A^2)=(-1)^u\psi_A(\ell),\qquad Q_u(0)=(-1)^u\ell
+\]
+give $(-1)^u\psi_A(\ell)\equiv-c\pmod f$ and
+$(-1)^u\ell\equiv-R\pmod c$.
+Squaring the first and applying the retained plus-congruence step-down to
+$\chi_A(2\ell)\equiv\chi_A(2p)\pmod{\chi_A(m)}$ gives
+$\ell\equiv\pm p\pmod m$, hence $R\equiv\pm p\pmod c$.
+The half-interval bounds force $p=R$.
+
+Returning to $2n=R+\epsilon+bE$, the bound $E>R+2$ rules out $b>0$.
+If $\epsilon=-1$, then $p=2n+1$, and duplication with
+$\chi_A(2)>P_0$ gives $c>Ak>k(Y+1)$, contradicting
+$kY<c<k(Y+1)$. Therefore $N_k=N_t=1$ and only now $C>0$.
+The retained fixed-minus parity theorem yields $R\equiv3\pmod4$.
+All remaining lower-ratio, half-binomial, mask and native-compiler steps
+then have their original hypotheses. Exact sources and full proof-order
+details are in \texttt{PROOF.md} and the pinned
+\texttt{INHERITED\_PELL\_AUDIT.md}.
+
+\subsection{Completeness and the logical endpoint}
+From a finite ZFC refutation, the inherited normalized compiler supplies
+a positive tuple for this entire selected coefficient tuple. Keep all
+its witnesses except replace $i_{\rm old}$ by
+$i_{\rm new}=\Delta i_{\rm old}$. Then
+\[
+ (i_{\rm new}c^2)^2=\Delta(f^2-1),
+\]
+while $K_{\rm aux},V$ and all outer factors are unchanged. Every required
+factor is $+1$, so both displayed equations vanish. Conversely the
+preceding soundness proof recovers a calibrated finite blank-K215
+computation. Hence, in ordinary mathematics formalizable in ZFC,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in\mathbb Z_{>0}^{15}\;P_{72}(\mathbf x)=0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This is not a proof of consistency and not a new end-to-end proof-assistant
+certificate. It uses the inherited compiler and literal K215 calibration.
+
+\subsection{Exact degree, operation counts, and historical comparison}
+The kernel has $61$ live producers: $34$ multiplications and $27$
+additions/subtractions. Equation \eqref{eq:relaxed72} adds three products,
+three residual subtractions, three squares and two additions:
+$72=40M+32A$. Its residual degrees are $40,37,22$.
+The companion has $74=40M+34A$, with degrees $22,28,22,27$.
+
+The main norm's cancellation is an ordinary polynomial identity:
+\[
+ (ac+Z)^2-(a^2+H)c^2=2acZ+Z^2-Hc^2,\qquad Z=X+\gamma H.
+\]
+The independent auditor expands that cone exactly before propagating
+leading homogeneous forms. The two polynomial leaders are respectively
+\[
+ 64\gamma^2w^8s^{14}(\eta+\zeta)^6(\beta J)^{50},\qquad
+ w^4s^8T^4f^8(\eta+\zeta)^4(\beta J)^{28}.
+\]
+Their nonzero coefficients $64\beta^{50}$ and $\beta^{28}$ prove exact
+degrees $80$ and $56$ for the actual positive fixed $\beta$.
+
+The historical pairs (degree, operations) $ (99,69),(93,70),(83,71),
+(56,74),(44,78)$ remain relevant. The present $(80,72)$ point does not
+dominate $(83,71)$ or $(56,74)$; it lies between them. In particular,
+$(56,74)$ is \emph{not} a new record here. The prior relaxed kernel and
+its historical $Q_{56}$ are explicitly retained for comparison.
+The reproducible standard-library audit verifies counts, liveness,
+literal sources, complete payloads and exact degree, but does not itself
+certify the unbounded compiler semantics.

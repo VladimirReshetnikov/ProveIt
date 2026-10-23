@@ -1,0 +1,279 @@
+\section{Eleven positive unknowns with denominator reduced absorption}
+\label{sec:eleven958}
+
+The new equation has eleven positive unknowns, exact degree $958$, and
+$117$ charged binary arithmetic operations. A second equation trades four
+degrees for two operations: degree $962$ and $115$ operations. The full
+carrier's two-equation system has degrees $(2,956)$ and uses $112$
+operations after the standard positive transport shift. These improve
+both pinned eleven-positive frontiers, $1154/123$ and $1140/129$.
+They do not dominate the twelve-positive degree-$901$ construction.
+The argument uses no Sun representation theorem.
+
+Two changes make this possible. First, the multiplier-one norm from
+source44 remains sound without the deleted index equation: its main-root
+bound needs $d(I\sqrt G-c\sqrt D)>b+c\sqrt D$, not the stronger
+$I\sqrt G-c\sqrt D>1$. Second, quotient absorption needs denominator
+$Y$, not $E=XY$. The short Pell-index argument recovers the full
+$E$-divisibility after the weaker $Y$-divisibility has done its job.
+
+\subsection{Explicit equation}
+Take precisely the positive integer unknowns
+\[
+ J,F,\alpha,z,i,T,s,w,\eta,\zeta,t.
+\]
+Fix the complete authentic normalized blank-K215 coefficient tuple
+$(\beta,K_0,M_C,M_F)$, with $M_F$ already the shifted high mask.
+The delivered fixed instance is the materialized Wang943
+$121\times8801$ tuple with $\beta=2^{1064921}-1$; its four payloads and
+hashes are included. The proof is uniform in any whole authentic tuple.
+Set
+\begin{gather*}
+ q=\beta J+1,\quad s_0=s+3q,\quad X=wq,\quad Y=s_0q^3,\quad E=XY,\\
+ k=\eta+\zeta,\quad c=kY+\eta,\quad a=E+Y,\quad H=4a+3,\\
+ \Delta=a^2+H=(a+2)^2-1,\quad \ell=EkY,\quad A=1+\ell(\ell+k),\\
+ G=1+\Delta c^2,\quad b_0=X+ac,\quad C_w=q-F-\alpha,\\
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_t=(K_0+w)C_w+q-F-z(q-1),\\
+ I=ic^2,\quad D=1+\Delta I^2,\quad Q=\Delta(D-1)=(\Delta I)^2,\\
+ d=Q-1,\quad v=cT,\quad b=c+RD,\\
+ e=Q(Dv^2+b^2)-1,\quad B_*=2Qvb,\quad K=IT+1,\\
+ L_0=1+HK,\quad S=HY,\quad L=YL_0.
+\end{gather*}
+The computed register $K$ is not the fixed coefficient $K_0$.
+For the full carrier put $\delta=(a+2)c-\ell$; for the shorter one put
+$\delta=ac-\ell$. In either case define
+\[
+ W=Y\bigl[b_0+H(t+b+\delta)\bigr]+H(k-R-1)
+\]
+and the integer polynomial
+\begin{equation}\label{eq:new-eleven-norm}
+ N=\prod_{\substack{g=\pm\sqrt G\\\tau=\pm\sqrt A\\f=\pm\sqrt D}}
+ \left[d(W-Lg-S\tau)^2-S^2e+S^2B_*f\right].
+\end{equation}
+The formal signs define a conjugate product, not independently assumed
+Galois automorphisms. Every other symbol is a polynomial abbreviation,
+not another unknown. The proposed single equation is
+\begin{equation}\label{eq:new-eleven-single}
+ \boxed{\ N_t(1+N)-1=0\ }.
+\end{equation}
+The two-equation presentation is $N_t=1$, $N=0$.
+
+For an explicit division-free scalar evaluator, set
+\begin{align*}
+ d_n&=dS^2A,&H_Q&=S^2Q,&H_P&=H_QDv^2,&H_U&=H_Qb^2,\\
+ H_e&=H_P+H_U-S^2,&j&=4H_PH_U,\\
+ \mathcal T&=2d(W^2+L^2G),&\mathcal K&=[d(W^2-L^2G)]^2,\\
+ A_*&=2(d_n+H_e),&C_*&=(d_n-H_e)^2-j,\\
+ u&=\mathcal T-A_*,&r&=C_*-\mathcal K,&c_*&=16d_nj,\\
+ V_*&=c_*-u(u\mathcal T+2r),&U_*&=r^2-u^2\mathcal K,\\
+ N&=\mathcal K V_*^2-U_*(\mathcal T V_*-U_*).
+\end{align*}
+This is a universal polynomial identity, including degenerate radicands.
+The emitted JSON circuits expand every square and count every binary gate.
+
+\subsection{Weighted main-root separation}
+Let $x_0=d(W^2+L^2G)$. Since $\mathcal T=2x_0$ and
+$\mathcal K\equiv x_0^2\pmod4$, the norm obeys
+$N\equiv(U_*-x_0V_*)^2\pmod4$.
+Thus a root of \eqref{eq:new-eleven-single} forces $N=0$, $N_t=1$:
+the alternative integer unit $1+N=-1$ would make $N=-2$.
+The inherited transport interface then gives
+\[
+ q\ge16,\quad C_w>0,\quad 3q<R<q^4-2.
+\]
+Our positive shift implies
+\[
+ X\ge16,\quad Y>3q^4>3R,\quad E>R+1,\quad
+ k\ge2,\quad kY<c<2kY,\quad c>96,\quad a+2<2E.
+\]
+No assertion $k>E$ has been used.
+
+For positive real $g=\sqrt G$, $f=\sqrt D$, $\tau=\sqrt A$, direct
+comparison yields
+\[
+ 1<A<\Delta c^2\le\Delta I=\sqrt Q,\qquad
+ g>\tau,\quad g<2Ec,\quad f<2EI.
+\]
+The exact identity $(Ig)^2-(cf)^2=I^2-c^2$ and $I\ge c^2$ give
+\[
+ Ig-cf>\frac{I}{8Ec}.
+\]
+Moreover $b+cf<6E^3I^2$ and $d>\tfrac12 E^4I^2$, so
+\begin{equation}\label{eq:weighted-gap}
+ d(Ig-cf)>\frac{E^3I^3}{16c}
+ \ge\frac{E^3I^2c}{16}>6E^3I^2>b+cf.
+\end{equation}
+This is the new estimate that removes dependence on the missing index
+quotient.
+
+Every root of the inner norm has a coherent representation
+\[
+ x=\tau'+y,\quad (\tau')^2=A,\quad(f')^2=D,\quad
+ dy^2=Q(vf'-b)^2-1.
+\]
+These roots may be complex. With $Z=b+vf>1$,
+\[
+ |y|<Z+Z/d,\qquad Z/d\le T(b+cf)/d<T(Ig-cf)
+\]
+by \eqref{eq:weighted-gap}. Hence $|x|<b+(IT+1)g=b+Kg$.
+But the negative main sign gives
+\[
+ \frac{W+Lg}{S}
+ =b+t+\delta+\frac{k-R-1}{Y}+\frac{b_0}{H}
+       +\left(K+\frac1H\right)g>b+Kg,
+\]
+since $t+(k-R-1)/Y>0$. This is impossible. Quadratic conjugation
+therefore forces the main root $g$ to be a positive integer, and
+$x=(W-Lg)/S$ is rational.
+
+\subsection{Integral inner roots}
+Set $C(x)=d(x^2+A)-e$. The inner norm is
+\[
+ F(x)=\bigl[C(x)^2+DB_*^2-4d^2x^2A\bigr]^2
+           -4C(x)^2DB_*^2.
+\]
+If $C(x)=F(x)=0$, substitution gives
+$d^2A^2-deA+Q^2v^2b^2D=0$, so $Q\mid A(A-1)$, impossible because
+$1<A<\sqrt Q$. Also $F(0)=0$ would imply $Q\mid(A-1)^2$, again
+impossible. The rational expressions
+\[
+ f'=-\frac{C(x)^2+DB_*^2-4d^2x^2A}{2C(x)B_*},\qquad
+ \tau'=\frac{C(x)+B_*f'}{2dx},\qquad y=x-\tau'
+\]
+therefore have justified denominators and satisfy $(f')^2=D$,
+$(\tau')^2=A$ and the auxiliary equation. Thus $f',\tau'$ are integers.
+The inherited rational Pell saturation lemma,
+\[
+ m^2V^2-(m^2-1)y^2=1,\quad m,V\in\mathbb Z,\ m\ge2,
+ \quad y\in\mathbb Q\quad\Longrightarrow\quad y\in\mathbb Z,
+\]
+with $m=\Delta I$ and $V=vf'-b$ makes $y$, hence $x$, integral.
+A proof of the lemma is included in the companion proof file; it uses
+abscissa and ordinate divisibility in the integer-coordinate Pell group.
+Reducing $W=Lg+Sx$ modulo $Y$ now yields
+\begin{equation}\label{eq:weak-y}
+ Y\mid H(k-R-1).
+\end{equation}
+
+\subsection{Short indices restore full divisibility}
+Write $A_0=a+2$ and let $\chi_{A_0},\psi_{A_0}$ be its Pell sequences.
+The main and strong roots give positive indices $p,m$ with
+\[
+ g=\chi_{A_0}(p),\quad c=\psi_{A_0}(p),\quad
+ |f'|=\chi_{A_0}(m),\quad I=\psi_{A_0}(m).
+\]
+Strong divisibility and $I=ic^2$ give $p\mid m$; composition modulo $c$
+then gives $c\mid m/p$, so $m\ge pc>2p$. Also $p<c/2$ and $R<c/2$.
+Source38's signed auxiliary-index argument, applied before
+\eqref{eq:weak-y}, yields $R\equiv\pm p\pmod c$, hence $p=R$.
+For clarity, it classifies the auxiliary Pell solution at $\Delta I$
+with odd index $j_0$. Reducing its odd-index polynomial modulo $|f'|$
+gives $j_0\equiv\pm p\pmod m$, while reduction modulo $c$ gives
+$j_0\equiv\pm R\pmod c$. The full recurrence argument is reproduced
+in the companion proof file, including the signed branches.
+
+The square $A$ has fundamental integer-coordinate unit
+$(2EY+1,2)$, so for some $n\ge1$,
+\[
+ |\tau'|=\chi_{2EY+1}(n),\qquad k=2\psi_{2EY+1}(n).
+\]
+Monotonicity and $2EY+1>A_0$, $c>k$ imply $n<p=R$.
+Since $2EY+1\equiv1\pmod E$,
+\[
+ k\equiv2n\pmod E.
+\]
+Now $\gcd(Y,H)=\gcd(Y,3)\le3$. By \eqref{eq:weak-y},
+\[
+ 2n\equiv R+1\pmod\mu,\qquad
+ \mu=Y/\gcd(Y,H)>R.
+\]
+But $|2n-R-1|<R$, so $2n=R+1$. It follows that
+$E\mid k-R-1$ after all, and
+\[
+ h=(k-R-1)/E>0.
+\]
+Dividing the carrier by $Y$ gives
+\[
+ b_0+H(t+b+\delta+hX)=L_0g+H(\tau'+y).
+\]
+Thus $g\equiv b_0\pmod H$. The recovered
+$\gamma=(g-b_0)/H$ is positive: $n\ge2$ gives $k>X$, hence $c>X$,
+and $g>(a+1)c$.
+All normalized compiler equations are restored. Absolute values of
+$\tau',y$ are harmless; simultaneous sign reversal of $f',T$ is
+covered by the inherited signed-quotient interface. This proves soundness
+through the calibrated blank-K215 halt equivalence.
+
+\subsection{Completeness and exact degree}
+For a canonical compiler witness, $X=2^R$, $Y>2^R$, and $R>3q$
+ensure $s_{\rm old}=Y/q^3>3q$. Thus $s=s_{\rm old}-3q>0$.
+Choose positive canonical roots and define
+\[
+ t=\gamma+Kg+\tau+y-b-\delta-hX.
+\]
+Since $0<\delta<g$, $y\ge b-vf$, and
+$\tau>\ell=EkY>k/Y>hX$, one has
+\[
+ t>\gamma+\tau+T(Ig-cf)-hX>0.
+\]
+This produces the coherent zero factor and proves completeness.
+The transport substitution $z_{\rm old}=z+1$ replaces $N_t=1$ by
+$(K_0+w)C_w=F+z(q-1)$ and saves one operation; canonical witnesses
+have $z_{\rm old}\ge2$.
+
+Let $N_{12}$ be the earlier multiplier-one norm. The exact localized
+identity is
+\[
+ N=Y^{16}N_{12}\!\left(s_{\rm old}=s+3q,
+           t_{\rm old}=t+\frac{k-R-1}{Y}\right).
+\]
+Each of the eight factors contributes $Y^2$, and the $t_{\rm old}$
+degree is at most $16$, so denominators clear. The rational shift has
+degree $0$, below the degree-$1$ supplied carrier. It cannot change the
+highest form. The invertible highest-linear substitution
+$s_{\rm old}=s+3\beta J$ preserves its nonvanishing.
+More explicitly, the rational carrier perturbation changes an unscaled
+factor only in degrees at most $96$ and $58$, below its smallest
+established factor degree $97$.
+The earlier exact norm degrees $892$ and $896$ consequently become
+$956$ and $960$. The transport factor has exact degree $2$, giving
+$958$ and $962$.
+
+The full highest form is $Y_0^{16}$ times
+\[
+ -2^{14}H_0^{16}d_0^8B^8V^4\ell_0^2k_0Y_0^2
+       \left(2t+k_0-\frac{iTc_0}{E_0}\right),
+\]
+where
+\begin{gather*}
+ q_0=\beta J,\quad Y_0=(s+3q_0)q_0^3,\quad X_0=wq_0,
+ \quad E_0=X_0Y_0,\quad c_0=k_0Y_0,\quad k_0=\eta+\zeta,\\
+ I_0=ic_0^2,\quad H_0=4E_0,\quad \ell_0=E_0c_0,
+ \quad d_0=E_0^4I_0^2,\\
+ B=q_0^3(q_0-F)E_0^2I_0^2,\qquad V=I_0T\ell_0.
+\end{gather*}
+Its $t$ coefficient is nonzero for every authentic $\beta>0$;
+the displayed denominator cancels. Multiplying by
+$w(q_0-F-\alpha)-zq_0$ gives the single equation's highest form.
+The companion proof gives the short carrier's form as well.
+
+\subsection{Verification and logical boundary}
+The included builder audits all gates and coefficient hashes. The
+independent checker passes 24 exact and 60 modular formal conjugate
+products per carrier, three complete finite-field polynomial rays with
+both illustrative and actual fixed coefficients, all stated leading
+forms, the transport shift, and 288 pre-index bound tests. The tests
+include $k=2$ and arbitrarily large $X$, where the old unweighted gap
+shortcut is unavailable. Both normal Python and optimized Python pass.
+Finite checks validate the implementation, not the unbounded compiler.
+
+The baseline is ProveIt commit
+\texttt{124c07c0b77a}, specifically source38's
+index reconstruction and source44's multiplier-one norm. Complete source
+pins, copied proof dependencies, payloads, circuits, and the detailed
+mathematical proof accompany this section. The resulting theorem is
+that ZFC proves the absence of positive solutions equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$. No consistency decision, global
+minimality theorem, independent human review, or new kernel-checked
+end-to-end certificate is asserted.

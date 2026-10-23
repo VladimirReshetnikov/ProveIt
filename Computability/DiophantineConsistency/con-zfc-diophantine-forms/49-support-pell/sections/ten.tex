@@ -1,0 +1,351 @@
+\section{The ten-integer companion}\label{sec:ten}
+
+This section gives the complete evaluator over $\Z^{10}$. It uses the
+\emph{unshifted} transport row in the table of Section~\ref{sec:sparse},
+the same support-isolating labels, and the existing package-40/Sun
+arithmetic bridge. The two constructions therefore use slightly different
+parent coefficient records, despite having the same supported pairs.
+The ten unrestricted coordinates are exactly
+\[
+f,g,h,k,l,w,x,y,z,m.
+\]
+Every other symbol introduced in this section is a polynomial
+abbreviation, not an additional witness.
+
+\subsection{Fixed source and the required range contract}
+
+Let $\Dcode$ be the factorial-weighted kernel of the unshifted parent,
+with the targets $E_j=400+401(j-1)$. Thus its degree is 8821 and its
+leading coefficient is 2. Keep the whole package-31 tuple and put
+\[
+ H_0=8(1+\beta+K_0+M_C+M_F)^2,
+ \qquad \beta_S=2^{2140030}.
+\]
+The ordinary quadratic coefficients have magnitude at most $H_0$,
+and the factorial-weighted ones have magnitude at most $2H_0$.
+For example, their port degree is at most two and their integer
+coefficient $\ell^1$ norm is at most eight. The supplied coefficient
+audit verifies these statements exactly. The port bit lengths give
+\[
+ H_0<2^{2140017},\qquad
+ \beta_S>4\cdot33^2H_0.
+\]
+The actual integers and all sixteen live nonliteral coefficient leaves
+are materialized in the archive. These coefficient choices are fixed;
+they do not add unknowns to the equation.
+
+Define the source registers by
+\begin{align*}
+ b&=1+3f,&\BB&=\beta_Sb^2,&
+ \ell&=\sum_{r=1}^{31}\BB^{w_r},\\
+ N_0&=\BB^{201},&N_1&=4\BB^{9222},&N&=N_0N_1=4\BB^{9423},\\
+ M_c&=N_0-1-(b-1)\ell,&
+ T_*&=\sum_{r=1}^{22}\BB^{E_r},\\
+ T_c&=M_c+(\BB-2)T_*N_0,\\
+ J_c&=2(1+g)^2\Dcode(\BB)+\BB\sum_{r=0}^{9221}\BB^r,\\
+ S_c&=g+J_cN_0,\\
+ R_c&=(S_c+T_c+1)N+T_c+1,\\
+ X&=(N-1)R_c,&Y&=N^2,&\mathcal C&=b\BB^{200}.
+\end{align*}
+In particular, the upper-range polynomial has the exact fixed form
+\begin{equation}\label{eq:tencap}
+ \mathcal C=2^{428006000}b^{401}.
+\end{equation}
+Its power-of-two exponent is positive and even, and its exponent of
+$b$ is positive and odd. All exponents in the source are fixed
+nonnegative integers.
+
+\begin{proposition}[Source contract for the ten-integer bridge]
+\label{prop:tensource}
+The displayed source has the following properties.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=*]
+\item From a common natural zero of the unshifted parent one can choose
+ arbitrarily large $f>0$, with $b$ both a square and a power of two,
+ and an integer $g$ satisfying
+ \[
+ b\le g<\mathcal C,\qquad Y\mid\binom{2X}{X}.
+ \]
+\item If $f\ne0$, $b$ is both a square and a power of two,
+ $0\le g<2\mathcal C$, and $Y\mid\binom{2X}{X}$, then the
+ parent has a common natural zero.
+\item If $f\ne0$, $b$ is a square and $0\le g<2\mathcal C$,
+ without yet assuming a power-of-two base, then
+ \[
+ 0\le S_c,T_c<N,\qquad 3\mid X,\qquad
+ X>3b,\qquad Y>\max\{b,256\}.
+ \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Under the hypotheses of (iii), $b=1+3f$ forces $f>0$ and $b\ge4$.
+The positive leading coefficient and the bound $2H_0$ on the other
+kernel coefficients imply $\Dcode(\BB)>0$. Integrality and
+$g<2b\BB^{200}$ give $1+g\le2b\BB^{200}$ and $g<N_0$.
+Since $16H_0b^2\le\BB-2$, the kernel estimate yields
+\[
+\begin{split}
+0<J_c
+&\le (16H_0b^2+\BB)\sum_{r=0}^{9221}\BB^r\\
+&<2\BB^{9222}<N_1.
+\end{split}
+\]
+The mask satisfies $0\le M_c<N_0$, while
+$(\BB-2)T_*<\BB^{8822}<N_1$. Hence both packed words lie in
+$[0,N)$. The exponent in $\beta_S$ is even, so
+$\beta_S\equiv b\equiv\BB\equiv1\pmod3$ and $N\equiv1\pmod3$.
+Therefore $3\mid X$. Also $R_c\ge N+1>\BB>b$ and $N\ge4$,
+giving $X>3b$; the fixed base makes $Y>\max\{b,256\}$ immediate.
+
+If $b$ is a power of two, the words $\BB,N_0,N$ are powers of two.
+Lemma~\ref{lem:carry} identifies the binomial divisibility with the
+joint no-carry test of $S_c,T_c$. Its low block forces
+$g=\sum_r n_r\BB^{w_r}$ with $0\le n_r<b$. Theorem~\ref{thm:extract}
+recovers the twenty-two residuals at the target cells. Every coefficient
+of the square times the kernel has absolute value at most
+\[
+ 2H_0(1+\textstyle\sum_r n_r)^2<\BB/2,
+\]
+so the geometric offset and target masks test precisely whether all
+residuals vanish. This proves (ii).
+
+Conversely, take a parent zero and choose $b=2^{2q}$ as large as needed,
+with $b$ exceeding all its coordinates. Then $f=(b-1)/3$ is an arbitrarily
+large positive integer. Pack the zero into $g$. It is not the all-zero
+tuple, and all selected weights are positive, so $g\ge\BB\ge b$.
+The geometric bound gives $g<b\BB^{200}=\mathcal C$.
+The same masks pass, and the binomial divisibility follows. This proves
+(i) and completes the contract.
+\end{proof}
+
+\subsection{The complete polynomial evaluator}
+
+Continue with the following substitutions:
+\begin{align*}
+ L&=lY,&U&=2LX,\\
+ V&=4gwY,&W_b&=bw,\\
+ A&=U(V+1),&B_1&=2X+1,\\
+ C&=B_1+(A-2)h,&P_n&=U^2V,\\
+ K&=X+1+k(P_n-2),&S&=2A-5,\\
+ T&=3W_bC-2(W_b^2-1),&R_2&=(P_n^2-4)K^2+4.
+\end{align*}
+\begin{align*}
+ \Delta_b&=8\mathcal C^3gK^2
+       -g^2\bigl(32(C-KL)^2\mathcal C^3+g^2K^2\bigr),\\
+ O&=f^2l^2\Delta_b,\qquad \xi=zx.
+\end{align*}
+The modified Lucas-certificate registers are
+\begin{align*}
+ D&=(A^2-4)C^2+4,&E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,&G_*&=2(A+2)(A-2)^2E^2-1,\\
+ \omega&=16E,&H_*&=C+(B_1-C)F+\omega Fy,\\
+ I_*&=(G_*^2-1)H_*^2+1.
+\end{align*}
+Define the divisibility merger, radicands and separating weights by
+\begin{align*}
+ \Sigma&=\xi S^5,&r&=T+Sy,\\
+ \Theta&=(r^3-rS^2-S^3)(r^2+23S^2),\\
+ r_0&=b\bigl(1+(3O-4)b^2z^2\bigr),&
+ r_1&=R_2,&r_2&=DFI_*,\\
+ v_0&=1,&v_1&=r_0,&v_2&=r_0(P_n^2+K^2+3).
+\end{align*}
+Finally put
+\begin{align*}
+ Z_n&=\Sigma m-\Theta,&a_i&=\Sigma^2v_i^2r_i\quad(0\le i\le2),\\
+ V_n&=Z_n^2+a_2-a_0-a_1,\\
+ W_n&=V_n^2+4Z_n^2a_2-4a_0a_1.
+\end{align*}
+The requested unrestricted-integer equation is
+\begin{equation}\label{eq:F10}
+ \boxed{F_{10}=W_n^2-16V_n^2Z_n^2a_2=0.}
+\end{equation}
+Together with the fixed coefficient records and the source above, this
+specifies every arithmetic operation needed to define one polynomial
+in the ten displayed integer unknowns. There are no divisibility
+predicates, roots, variable exponents or hidden existential parameters
+in its definition.
+
+\subsection{The imported parameterized arithmetic bridge}
+
+We state the precise inherited interface rather than silently applying
+a theorem whose literal statement uses a different source polynomial.
+Package 40 reads the proofs of Sun's Propositions 6.1--6.2 parametrically:
+the source enters through Proposition~\ref{prop:tensource},
+$b=1+3f$, and a bound of the form $\mathcal C=2^c b^d$ with fixed
+positive even $c$ and positive odd $d$. Its size and congruence
+hypotheses are exactly those proved in part (iii). The new constants
+$c=428006000$ and $d=401$ satisfy that interface. The polynomial
+tail and the arithmetic witnesses have not changed
+\cite{package40,sun2021,sun2026}.
+
+For clarity, let $u_0(A)=0$, $u_1(A)=1$ and
+$u_{q+1}(A)=Au_q(A)-u_{q-1}(A)$, extended in the usual way to
+integer indices. The imported bridge and interpolation statements are:
+\begin{enumerate}[leftmargin=*]
+\item A parent zero admits $f,g,h,k,l,w$ with $A>2$ even,
+ $B_1>0$ odd, $b$ a square, $b\le g<\mathcal C$,
+ $C=u_{B_1}(A)$, $R_2$ a square, $S\mid T$, and $O>0$.
+\item For the displayed substitutions, the conditions
+ \[
+ b\text{ square},\quad O>0,\quad \xi\ne0,\quad
+ DFI_*\text{ square},\quad R_2\text{ square},\quad S\mid T
+ \]
+ imply a parent zero.
+\item If $A>2$ is even, $B_1>0$ is odd and $C=u_{B_1}(A)$,
+ then for every positive integer $d_0$ there is $\xi>0$ divisible
+ by $d_0$ such that each residue class modulo $\xi$ contains a $y$
+ for which $DFI_*$ is a square.
+\end{enumerate}
+The third statement is Sun's full residue-class interpolation theorem.
+It is needed because the divisibility merger below prescribes a residue
+class after choosing $\xi$. We retain this theorem as a cited dependency;
+we do not claim a fresh proof of the Lucas results or of the general
+ten-integer theorem.
+
+The reverse direction does not assume a power-of-two base prematurely.
+Once $b$ is a square and $O>0$, the displayed formula for $O$ forces
+$f,l\ne0$, $\Delta_b>0$, $g>0$ and $K\ne0$. It then gives
+\[
+ 0<g<2\mathcal C,\qquad 4(C-KL)^2<K^2.
+\]
+Part (iii) of Proposition~\ref{prop:tensource} is therefore available
+before the Lucas step. The inherited reverse argument recovers
+\[
+ C=u_{B_1}(A),\quad K=u_{X+1}(P_n),\quad
+ W_b=2^{B_1},\quad Y\mid\binom{2X}{X}.
+\]
+Since $W_b=bw$ and $b>0$, it follows that $b$ is a power of two.
+Only at this point is part (ii) applied. This order of reasoning is
+why the broad pre-decoding range contract was proved separately.
+
+\subsection{Why the finalizer introduces no extra solutions}
+
+Here we recall the short algebraic part of the inherited finalizer,
+including its nonvanishing and choice-order conditions. The integer
+$S=2A-5$ is always odd and nonzero. The polynomial
+\[
+ \pi(v)=(v^3-v-1)(v^2+23)
+\]
+has no rational root and has a root modulo every positive integer.
+For the latter assertion, at an odd prime other than 23 either the
+cubic has a simple root or it is irreducible; in the irreducible case
+Frobenius is a three-cycle, so its discriminant $-23$ is a square and
+the quadratic has a simple root. At 23 the cubic has the simple root
+3. These roots lift to odd prime powers. At 2, the fact
+$-23\equiv1\pmod8$ supplies a root in the 2-adic integers.
+The Chinese remainder theorem finishes the claim. The rational-root
+test for the cubic and positivity of the quadratic prove nonvanishing
+over $\Q$.
+
+If $S\mid T$, write $T=Sq$. For any $\xi\ne0$ choose a root
+$c_0$ of $\pi$ modulo $|\xi|$ and prescribe
+$y\equiv c_0-q\pmod\xi$. Then $\Sigma\mid\Theta$.
+Conversely, $S^5\mid\Theta$ forces $S\mid T$: if
+$\nu_p(S)>\nu_p(T)$, the two homogeneous factors of $\Theta$
+have valuations $3\nu_p(T)$ and $2\nu_p(T)$, contradicting
+$S^5\mid\Theta$. Also $\Theta\ne0$, since otherwise
+$\pi((T+Sy)/S)=0$.
+
+Suppose $z\ne0$ and $r_0$ is a square. The factors
+$b$ and $1+(3O-4)b^2z^2$ are coprime. The second cannot be zero:
+that would force $|b|=|z|=1$, hence $b=1$, $f=O=0$, contradicting
+its vanishing. Unique factorization makes $b$ a signed square;
+$b\equiv1\pmod3$ excludes the negative sign. The other factor is
+then a square as well, which forces $O>0$ because for $O\le0$
+it is at most $1-4(bz)^2<0$.
+
+For the converse, the positive bridge gives $O\ge g\ge b\ge4$:
+$\Delta_b$ is a positive multiple of $g$, and $f,l$ are nonzero.
+Thus $d=3O-4$ is positive and is 2 modulo 3, so it is nonsquare.
+A positive Pell unit for $d$, raised to a suitable finite order
+modulo $b$, supplies
+$u^2-dv^2=1$ with $v>0$ and $b\mid v$.
+Choose $z=v/b>0$. Then $r_0$ is a square. The interpolation theorem
+can now choose $\xi>0$ divisible by this already fixed $z$; put
+$x=\xi/z$. Only after this modulus exists do we prescribe the
+residue class of $y$ needed for $\Sigma\mid\Theta$.
+
+For every integer assignment with $z\ne0$, one has $|r_0|>1$.
+Indeed $r_0=0,\pm1$ would force $|b|=1$, hence $b=1$ and
+$f=O=0$, whereas $r_0=1-4z^2\le-3$.
+Also
+\[
+ \sqrt{|r_1|}\le P_n^2+K^2+2,
+\]
+as follows by subtracting $(P_n^2+4)K^2+4$ from
+$(P_n^2+K^2+2)^2$. Consequently
+\[
+ |v_1|>\sqrt{|r_0|},\qquad
+ |v_2|>\sqrt{|r_0|}+|v_1|\sqrt{|r_1|}.
+\]
+If a signed sum of these three weighted roots is rational, every
+radicand is an integer square. To see this, in the multiquadratic
+extension take the largest-index nonzero root term changed by an
+automorphism. Its change has greater absolute value than all preceding
+changes combined, a contradiction. This argument works with complex
+absolute values for negative radicands and does not assume independent
+square classes. Rational square roots of integers are integral.
+
+The final polynomial has the exact identity
+\[
+ F_{10}=\prod_{\varepsilon\in\{\pm1\}^3}
+ \left(Z_n+\varepsilon_0\sqrt{a_0}
+           +\varepsilon_1\sqrt{a_1}
+           +\varepsilon_2\sqrt{a_2}\right).
+\]
+The radicals cancel; successive conjugate multiplication gives precisely
+\eqref{eq:F10}. If $\Sigma=0$, then all $a_i=0$ and
+$F_{10}=\Theta^8\ne0$. At any zero, therefore, $\xi=zx\ne0$.
+Divide a vanishing factor by $\Sigma$. Separation makes all $r_i$
+squares and the resulting signed sum integral, so $\Sigma\mid\Theta$.
+The two mergers give $S\mid T$, $b$ square and $O>0$; the reverse
+bridge then yields a parent zero.
+
+Conversely, a parent zero gives the positive bridge witnesses. Choose
+$z$, $\xi$, $x$ and $y$ in the order just described, obtaining all
+three square radicands and $\Sigma\mid\Theta$. An integer $m$ can
+then make $Z_n$ equal to the negative of $\Sigma$ times any signed
+sum of the weighted integer roots. One norm factor vanishes.
+This proves both implications for the ten-integer equation and hence
+\eqref{eq:logicaltarget}, using the explicitly stated inherited
+compiler and arithmetic contracts.
+
+\subsection{Exact degree and evaluator size}
+
+Put $u=9221+200+2=9423$. The geometric offset uniquely dominates
+$J_c$, and the source registers have degrees
+\[
+\begin{array}{c|rrrrrr}
+\text{register}&N&S_c&T_c&X&Y&\mathcal C\\\hline
+\text{degree}&2u&2u&2u-800&6u&4u&401.
+\end{array}
+\]
+In particular $d_X=56538$, $d_Y=37692$ and $d_C=401$.
+Propagation through the retained tail gives
+\begin{align*}
+ \deg Z_n&=5d_X+10d_Y+30=659640,\\
+ \deg a_0&=14d_X+28d_Y+3d_C+57=1848168,\\
+ \deg a_1&=26d_X+48d_Y+6d_C+98=3281708,\\
+ \deg a_2&=114d_X+224d_Y+6d_C+440=14891186.
+\end{align*}
+The last degree exceeds those of $a_0,a_1,Z_n^2$. Therefore the
+highest part of $F_{10}$ is the fourth power of the highest part
+of $a_2$, giving
+\[
+ \deg F_{10}
+ =456d_X+896d_Y+24d_C+1760
+ =59\,564\,744.
+\]
+The independent actual-coefficient certificate also gives
+\[
+ [T^{59564744}]F_{10}(T,\ldots,T)
+ \equiv285435419\pmod{1000000007},
+\]
+which is nonzero. This is an exact leading-coefficient computation,
+not sampling of possible solutions.
+
+The primary division-free graph has 215 additions, 25 subtractions
+and 413 multiplications, totaling \textbf{653 operations}.
+Shared powers, row-wise quadratic Horner evaluation and divide-and-
+conquer geometric sums account for its size. Every binary gate is
+charged under the common convention. These are exact construction
+metrics and do not assert that no shorter ten-integer evaluator exists.

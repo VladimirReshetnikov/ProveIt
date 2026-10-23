@@ -1,0 +1,276 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!40!black,pdftitle={Sparse quadratic coding and shorter Pell finalizers for ZFC consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.35em}
+\setlist{nosep,leftmargin=1.5em}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pos}{\mathbb Z_{>0}}\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\pin}{\texttt{124c07c0b77a9e20e84676514d8b1ff78536ea3f}}
+\input{metrics.tex}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Sparse quadratic coding and Pell finalizers}
+\fancyhead[R]{\small ZFC consistency}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Sparse quadratic coding and shorter Pell finalizers\\for ZFC consistency\\[0.5em]\large Explicit equations in nine positive or ten integer unknowns\\and lower-degree eleven- and twelve-positive companions}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\ProveIt repository}
+\date{23 October 2026\\\small Construction snapshot \texttt{124c07c0b77a}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We improve the explicit consistency equations in ProveIt packages 38--45
+by using only the active quadratic source support, overlapping target digits,
+and an interior padding digit. The largest positional weight falls from 799
+to 174. A new conditional-separation norm theorem, a second-order polynomial
+Pell majorant, and an exact CRT witness reparameterization substantially
+simplify the nine-variable finalizer. The recommended compromise
+uses nine positive unknowns, degree \NineDegree{}, and \NineOps{} live binary
+operations; a 655-operation companion lowers the degree to $10\,127\,484$. A ten-unrestricted-integer companion has degree $33\,202\,776$
+in 689 operations; shared homogenization also gives degree $50\,822\,936$
+in only 582 operations. An independent lean-carrier construction gives
+eleven positive unknowns at degree 954 in 113 operations and twelve at
+degree 897 in 108 operations. Each lack-of-solutions assertion is
+provably equivalent in ZFC by the mathematical arguments below to the inherited syntactic
+$\Con(\mathrm{ZFC})$ predicate. We give the new proofs, literal polynomial
+registers, complete fixed coefficient payloads, finite positional certificates,
+and isolated reproducibility checks. We do not claim global minimality,
+a consistency decision, a new unknown-count theorem, or a newly checked
+end-to-end Lean, Rocq, or object-level ZFC derivation.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Results and the meaning of simplest}
+The domain is part of an equation's specification. Throughout
+$\N=\{0,1,\ldots\}$ and $\Pos=\{1,2,\ldots\}$. An equation over
+$\Pos^9$ is not silently an equation over $\Z^9$.
+
+\begin{theorem}[Consistency presentations]
+Let the fixed integer polynomials in this report be instantiated by the
+complete coherent tuple in \path{coefficients/COEFFICIENT_BINDING.json}.
+Then, with the inherited compiler and arithmetic dependencies identified
+below, ZFC proves each of
+\[
+\begin{aligned}
+\neg\exists\mathbf x\in\Pos^9\ F_9(\mathbf x)=0
+ &\longleftrightarrow\Con(\mathrm{ZFC}),\\
+\neg\exists\mathbf x\in\Z^{10}\ F_{10}(\mathbf x)=0
+ &\longleftrightarrow\Con(\mathrm{ZFC}),\\
+\neg\exists\mathbf x\in\Pos^{11}\ P_{11}(\mathbf x)=0
+ &\longleftrightarrow\Con(\mathrm{ZFC}),\\
+\neg\exists\mathbf x\in\Pos^{12}\ P_{12}(\mathbf x)=0
+ &\longleftrightarrow\Con(\mathrm{ZFC}).
+\end{aligned}
+\]
+A separate coordinate translation gives the supplied nine-nonnegative form.
+\end{theorem}
+This is an equivalence theorem, not a proof of either truth value. The
+consistency predicate means the absence of a finite syntactic ZFC refutation
+under the pinned K215 calibration. No unconditional independence claim is
+inferred merely from consistency.
+
+\input{comparison.tex}
+
+There is no single numerical simplicity order. The nine-variable result is
+recommended when the number of positive unknowns matters. For unrestricted
+integers, retain the ten-variable Pareto alternatives rather than hiding the
+cost--degree tradeoff. The eleven- and twelve-positive equations are useful
+when low total degree and short evaluation are preferred. The historical
+67-operation scalar and 59-operation system remain unbeaten here on their
+operation measures alone.
+
+\subsection{New mechanisms}
+\begin{enumerate}
+\item Isolate only the 71 active quadratic monomials from all 528 possible
+monomials, allowing irrelevant collisions. Overlapping target bands and an
+interior padding position further shorten the source.
+\item In the nine-variable norm, infer a positive margin before recovering
+integer roots. That margin itself separates the radicands, eliminating a
+large multiplicative separator.
+\item Use a second-order Pell square-root majorant whose polynomial defect
+has lower degree, and absorb an entire divisibility quotient by an exact CRT
+reparameterization of an existing witness.
+\item Evaluate the sparse source by homogenizing the shared sixty-gate
+parent and adding only its diagonal correction, instead of expanding every
+coefficient independently.
+\item For eleven positive variables, combine a lean Pell carrier with a
+smaller absorption modulus $Y$, proving the missing quotient only after a
+short Pell-index interval is recovered.
+\end{enumerate}
+The smaller compiler tuple is reused as a \emph{whole} from packages 39/44;
+its coefficient size is not a new record. The support certificates are
+explicit verified constructions, not optimality certificates.
+
+\section{Source snapshot and logical dependencies}
+The construction snapshot is \pin. The package-local sources 38--45, not
+the stale collection summary, provide the reviewed comparisons. At this pin
+the root catalogue still describes wave 5, and the incoming README says its
+queue is clear through batch 221. We retained 42 byte-exact files in the
+current review ledger. Independent gate traversals check the important
+38/44 comparison variants; their degree claims are read with their ordinary
+proofs, rather than presented as newly formalized results.
+
+The proof chain is
+\[
+\begin{split}
+\text{a zero of a displayed fixed polynomial}
+&\longleftrightarrow \text{a zero of the positive quadratic parent}\\
+&\longleftrightarrow \text{blank K215 halting}\\
+&\longleftrightarrow \text{a finite syntactic ZFC refutation}.
+\end{split}
+\]
+The sparse source, new algebraic finalizer arguments and degree proofs are
+proved here. The normalized native compiler, its actual-machine calibration,
+the Jones ratio bridge, and the relevant Sun ten-integer bridge remain
+identified mathematical dependencies. Their source proof texts and exact
+pins are included as inert references. No upstream program is executed by
+the release verifier.
+
+\subsection{The complete quadratic parent}
+The 31 strictly positive coordinates, in certificate order, are
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta.
+\end{gathered}
+\]
+The fixed ports are $\beta,K_0,M_C,M_F$. Define polynomial abbreviations
+\[
+\begin{gathered}
+q=\beta J+1,\quad k=\eta+\zeta,\quad H=4a+3,\quad C=q-F-\alpha,\\
+U=L+1,\quad Y=a-E,\quad Q=c-\eta,\quad T=P-k,\quad R=jc-V.
+\end{gathered}
+\]
+The following are all 22 equations, in their canonical order:
+\begin{alignat*}{3}
+1:\quad&U=q^2, &\qquad 2:\quad&N=qU,\\
+3:\quad&X=wq, &4:\quad&Y=sN,\\
+5:\quad&E=XY, &6:\quad&Q=kY,\\
+7:\quad&T=EQ, &8:\quad&\tau^2=PT+1,\\
+9:\quad&D=X+ac+\gamma H, &10:\quad&\Delta=a^2+H,\\
+11:\quad&C_2=c^2, &12:\quad&D^2=\Delta C_2+1,\\
+13:\quad&k=R+1+hE,&&\\
+14:\quad&R=(q-F)(N-q)-CL+(M_C+qM_F)J,&&\\
+15:\quad&(K_0+w)C=F+z\beta J,&&\\
+16:\quad&F_2=f^2, &17:\quad&V=of-c,\\
+18:\quad&g=y^2-V^2, &19:\quad&I=iC_2,\\
+20:\quad&B_a=I^2, &21:\quad&B_a=\Delta(F_2-1),\\
+22:\quad&y^2-B_ag=1.&&
+\end{alignat*}
+The residual is left minus right. Substitute every positive coordinate by
+$n_i+1$ to obtain $r_j(\mathbf n)$ over $\N^{31}$. In particular
+$r_5(\mathbf0)=1$, so a simultaneous zero cannot be the zero vector. The
+parent JSON is a literal shared sixty-operation evaluator, with SHA-256
+\begin{center}\small\texttt{ac2a67782d344d1e74fd93bc3f09fae0097eaed1829fd8194ae235ae84763e48}.\end{center}
+Its old embedded instance label is historical: the port-parametric algebra
+is instantiated here by the complete new tuple. Its transport convention
+$z_{\rm old}=z+1$ is valid on solution sets, not a bijection on arbitrary
+positive assignments. The authentic compiler gives $C>0$, $F<q$,
+$X=wq=2^R$ and $R>3q$, hence $w>q>F$; therefore
+$(z_{\rm old}-1)(q-1)=(K_0+w)C-F>0$. Thus $z_{\rm old}\ge2$, which
+justifies the inverse transport for the new tuple too.
+
+\subsection{Actual fixed integers}
+The active tuple is
+\texttt{wang943-complement67-shared-anchor-length8807-prime581197}.
+Its native base is $2^{590069}$ and $\beta=2^{590069}-1$. In port order
+$(\beta,K_0,M_C,M_F)$, the bit lengths are
+\[
+(590069,592884,590069,590070).
+\]
+All four minimal unsigned little-endian payloads are shipped, both raw and
+as deterministic gzip, totaling 295388 raw or 9445 compressed bytes.
+$M_F$ is the already-shifted \texttt{MF\_source}; it must not be shifted again.
+The manifest gives every SHA-256 and the exact alias map. Derived leaves
+are materialized separately for the nine- and ten-variable circuits.
+These are ordinary fixed integer coefficients, not existential parameters,
+unknown enumerator indices, or instructions to wait for a consistency decision.
+
+An independently authored checker reconstructs the four ports from the
+literal 943-tile data and the pinned complement-decoder formulas. It verifies
+66062 scalar basis identities, 38663 single-bit mutations, synchronization
+supports, carry inequalities, mask balance, controller primality, exact
+orders, and lifting/unit conditions. The source expansion contains 136
+weighted coefficient records. Writing
+$c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,[\mathbf n^\alpha]r_j$,
+the checked bounds are
+\[
+|c_{j,\alpha}|<M=2^{1182955},\qquad
+\operatorname{bitlength}\left(1+\sum|c_{j,\alpha}|\right)=1182954.
+\]
+The nine-variable radix scale is $\lambda=4096M=2^{1182967}$; the
+integer source uses $\beta_S=2^{1182966}>2048(1+\sum|c_{j,\alpha}|)$.
+These finite coefficient checks do not replace the universal compiler proof.
+
+\input{../packing/section.tex}
+\input{vectors.tex}
+\input{nine.tex}
+\input{../integer/section.tex}
+\input{../positive/section.tex}
+\input{positive_details.tex}
+\input{verification.tex}
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can support-local collision avoidance and target placement be optimized
+jointly with addition-chain cost, rather than minimizing only the maximum
+position or target span? A proof-producing search can emit the same small
+isolation certificate independently of its heuristic.
+\item Can a third-order or asymmetrically scaled polynomial Pell majorant
+improve the exact nine-variable degree after all cancellation terms are
+charged? Its strict positivity must hold before squarehood is known.
+\item Is there a safe analogue of conditional separation for the
+unrestricted-integer three-radical norm? The negative-radicand and zero-scale
+branches make a naive removal of its separators invalid.
+\item Can an additional quotient be absorbed without enlarging the witness
+count, while preserving both directions and the exact positive domains?
+The CRT change here is a bijection, not a claim of cofinal Pell witnesses.
+\item Can package 40's 457-selector factorized-receiver candidate be made a
+complete compiler? Its empty cells may retain payload bits; an occupancy-first
+interface proof is needed before its coefficients may replace a complete tuple.
+\item Can the new sparse quadratic interface be connected directly to the
+post-pin executable supplied-data Jones compiler, avoiding the quartic
+sum-of-squares detour? Concrete refutation-program extraction and the
+object-level ZFC derivation are distinct remaining tasks.
+\end{enumerate}
+These are bounded next directions, not completed improvements. The present
+release already specifies the exact equations and their reproducible finite
+certificates without depending on any future success.
+
+\section*{References and provenance}
+\addcontentsline{toc}{section}{References and provenance}
+\begin{enumerate}
+\item ProveIt construction snapshot:
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/124c07c0b77a9e20e84676514d8b1ff78536ea3f/Computability/DiophantineConsistency/con-zfc-diophantine-forms}{the pinned construction collection at commit 124c07c0b77a}.
+Full file URLs and Git blob hashes are in \path{review/SOURCE_PINS.json}.
+\item J. P. Jones, Universal Diophantine equation, \emph{Journal of Symbolic
+Logic} 47 (1982), 549--571. \url{https://doi.org/10.2307/2273588}.
+The exact inherited ratio interfaces are preserved in
+\path{inherited/nine/NineRatio.lean}; no new compilation is claimed here.
+\item Zhi-Wei Sun, Further results on Hilbert's tenth problem,
+\url{https://arxiv.org/abs/1704.03504}, version 7 (2021), and the later
+arithmetic bridge cited by the pinned package 31,
+\url{https://arxiv.org/abs/2609.01594}, version 2 (2026).
+The exact mathematical dependency is the retained
+\path{inherited/sun/SIGNED10_PROOF.md}, Sections 4--8.
+\item Native coefficient/compiler proofs: package 44
+\path{native/PROOF.md} and package 39
+\path{optional_compact/coefficients/PROOF.md}. The signed ordinary compiler
+boundary is preserved as \path{positive/upstream/ORDINARY_BLANK_PROOF.md}.
+\item Post-pin status snapshot:
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2d7766807b92f6d505649885d472e20cc0236b4f/Computability/DiophantineConsistency}{the pinned status documents at commit 2d7766807b92}.
+The four exact status/compiler documents are included with their own pins.
+\end{enumerate}
+\end{document}

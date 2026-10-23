@@ -1,0 +1,96 @@
+\section{A literal finite recipe for the fixed coefficient tuple}\label{sec:coefficients}
+
+The following restates the package-31 coefficient recipe in a form that
+can be reconstructed independently of its original builder
+\cite{package31}. All the numbers in this appendix are fixed constants,
+not additional Diophantine unknowns. The attached literal table contains
+943 ordered Wang tiles. Its first two entries are
+$(2,435,3,1)$ and $(5,0,0,0)$; the remaining entries are sorted
+lexicographically. Each entry lists west, north, east and south labels,
+all in $\{0,\ldots,511\}$. The full finite table is part of the exact
+specification, at \file{coefficients/upstream/wang943_tiles.json}.
+
+Set
+\[
+ \rho=2^{121},\quad L_c=8801,\quad d_c=121\cdot8801=1064921,
+ \quad B_c=2^{d_c},\quad W_j=2^{10+2j}\quad(0\le j\le43).
+\]
+Write $\operatorname{bit}_j(n)$ for the $j$th binary digit of a
+nonnegative integer. If the tile with selector $e$ has labels
+$x_{e,0},\ldots,x_{e,3}$, put
+\[
+ c_e=1+\sum_{t=0}^3\sum_{j=0}^9
+       \operatorname{bit}_j(x_{e,t}+512)W_{10t+j}
+       +\sum_{j=40}^{43}W_j \qquad (0\le e\le942).
+\]
+The additional copy positions are defined using
+$(o_0,o_1,o_2,o_3)=(1023,1013,1003,983)$:
+\[
+ c_{o_t+j}=W_{10t+j}\quad(0\le t\le3,\ 0\le j\le9).
+\]
+Put
+\[
+ (c_{1095},c_{1096},c_{2195},c_{3296})=(W_{40},W_{41},W_{42},W_{43}),
+ \qquad c_{1063}=c_{1064}=0.
+\]
+The complete 989-element selector set is
+\begin{align*}
+ \mathcal E={}&\{0,\ldots,942\}\cup\{983,\ldots,992\}
+ \cup\{1003,\ldots,1032\}\\
+ &\cup\{1063,1064,1095,1096,2195,3296\}.
+\end{align*}
+Define
+\begin{align*}
+ \mu&=1022+\sum_{j=0}^{43}W_j,\\
+ Z_{\rm pad}&=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+                 +(2^{27}-1)\rho^{8799},\\
+ D_C&=\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e
+                  (\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R&=\rho^{42},\\
+ M_C&=B_c-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+                    -2\rho^{1063},\\
+ M_F^{\rm native}&=4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^9(\rho^{1013+j}+\rho^{1065+j})
+       +\rho^{2195}+\rho^{3296}+Z_{\rm pad}.
+\end{align*}
+The four ports used throughout the article are exactly
+\begin{equation}\label{eq:coefficienttuple}
+ \boxed{\beta=B_c-1,\qquad K_0=D_C+B_cD_R,\qquad
+        M_C=M_C,\qquad M_F=M_F^{\rm native}+B_c-1.}
+\end{equation}
+In particular, the final port is the \emph{shifted} mask. Substituting a
+native mask in its place, or mixing coefficients from different packages,
+would define a different polynomial and invalidate the inherited binding.
+
+\subsection{Byte and arithmetic checks}
+The independent reconstruction uses only this recipe and the literal
+tile table; it does not import the original builder. It checks the
+exact integer values against all four supplied little-endian unsigned
+payloads, both compressed and decompressed SHA-256 hashes, and the
+dimensions recorded in the binding manifest. It also verifies
+\[
+0<M_C<\beta,\quad 0<M_F^{\rm native}<\beta,\quad
+M_C\equiv2\pmod4,\quad M_F^{\rm native}\equiv4\pmod8,
+\]
+and population counts
+\[
+ \pc(M_C)=1064921-989,\qquad \pc(M_F^{\rm native})=989.
+\]
+The literal carry threshold is
+\[
+ 789998487493936316431751375694647416,
+\]
+which lies strictly between $2^{119}$ and $2^{120}$. Finite controller
+unit residues and the multiplicative orders $10,12,52,60$ modulo
+$121,13,677,2341$, respectively, are checked as well. These are finite
+arithmetic checks of the coefficient recipe. The interpretation of
+arbitrary solution words is the separate inherited compiler theorem.
+
+The archive also materializes all nonliteral fixed leaves introduced
+by the two packed evaluators: 17 for the nine-positive graph and 16
+for the ten-integer graph. Their signed encodings, recipes and hashes
+are recorded in \file{fixed/FIXED_LEAVES.json}. Fixed leaves are not
+counted as variables or charged as variable-dependent arithmetic.
+The size of a fully expanded polynomial coefficient list is neither
+materialized nor claimed as an improved metric.

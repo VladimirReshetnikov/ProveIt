@@ -1,0 +1,147 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,longtable,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Selective quadratic encodings for the consistency of ZFC},pdfauthor={OpenAI-assisted research for Vladimir Reshetnikov}}
+\renewcommand{\labelitemi}{$\bullet$}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\providecommand{\mathscr}[1]{\mathcal{#1}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\title{Selective quadratic encodings and smaller Pell norms\\for the consistency of ZFC}
+\author{OpenAI-assisted research for Vladimir Reshetnikov and ProveIt}
+\date{23 October 2026}
+\setlength{\emergencystretch}{2em}
+\begin{document}\maketitle
+\begin{abstract}
+We combine direct quadratic-system encoding with selective, rather than
+full Sidon, separation of monomials. Nonuniform overlapping target intervals
+further reduce the exponent range. A sparse signed-borrow padding replaces
+a dense geometric sum; a calibrated two-block binary construction then
+replaces a generic three-block carry-to-binomial conversion. Independently,
+we reduce the denominator used to absorb a Pell-index quotient and seed a
+square-condition guard with an already required radicand. The deliverable
+contains explicit division-free polynomial circuits, fixed coefficient
+recipes and payloads, ordinary mathematical proofs, and reproducible
+finite certificates. None of these equivalences proves consistency, and
+no global optimum or new end-to-end kernel certificate is asserted.
+\end{abstract}
+
+\section{Statement, domains, and comparison boundary}
+The arithmetic baseline is the immutable ProveIt snapshot
+\texttt{124c07c0b77a}, which places eight
+wave-six packages as sources 38--45 beside sources 31--37. In particular,
+source44 is our preceding B4 delivery. The current collection is
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\end{center}
+The accompanying source maps retain immutable links; later repository
+activity is distinguished from this frozen comparison.
+
+For every validated equation below, the claimed theorem is
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\mathbf x\in D^r\;F(\mathbf x)=0\right)
+ \longleftrightarrow\Con(\mathrm{ZFC}),
+\]
+where the domain $D$ is stated explicitly. Natural numbers include zero;
+positive integers do not; unrestricted integers are a third domain.
+Registers in the formulas are polynomial abbreviations, not additional
+unknowns. All powers in the final expressions have fixed nonnegative
+integer exponents. Square roots and divisibility appear only in proofs,
+not as extra operations allowed in the delivered polynomial.
+
+The proof direction is always constructive solvability versus a finite
+syntactic ZFC refutation. The literal K215 calibration and native-window/Pell
+compiler remain identified inherited mathematical dependencies. The new
+adapters are ordinary proofs formalizable in ZFC. Finite audits certify
+source identities, exact arithmetic, degree witnesses and bindings, not
+unbounded compiler correctness. We neither assume nor establish
+$\Con(\mathrm{ZFC})$.
+
+\input{results.tex}
+
+\section{What is simplified structurally}
+A quadratic parent with 31 positive coordinates and 22 residuals can be
+shifted to nonnegative coordinates without forming a quartic sum of
+squares. Earlier direct encodings separated all 528 padded quadratic
+monomials with a full $B_2$ set, although only 71 of those monomials occur
+in the residuals. We separate each occurring monomial from every possible
+contaminant, while allowing irrelevant monomials to collide with one
+another. This is a certified finite condition, not an appeal to random
+hashing. Target intervals may overlap provided no unwanted contribution
+lands on a tested coefficient.
+
+The same principle applies to the rest of the construction: impose only
+the relation needed at the next interface. The binary threshold can be
+calibrated to the known mask instead of a generic maximum; the absorbed
+index congruence needs only $Y$-divisibility initially, rather than full
+$XY$-divisibility. In each case the proof explicitly reconstructs what was
+omitted before invoking the inherited interface.
+
+\input{weights/section.tex}
+\input{packing/mask_popcount/section.tex}
+\input{nine/section.tex}
+\input{jones/section.tex}
+\input{batching/section.tex}
+\input{short/section.tex}
+
+\section{Proof status and newer repository developments}
+The repository has made important formal progress independent of these
+explicit reductions. At the post-baseline snapshot
+\texttt{59e9d4d22b34abdcc27f378796b9bfa28c6f1cc2}, its status document
+reports a closed executable nine-variable expression from the concrete
+refutation enumerator, with checked external Lean equivalences
+\texttt{ExplicitZFC.noSyntaxZero\_iff\_conZFC} and
+\texttt{noNaturalZero\_iff\_conZFC}. Its numerical coefficient payload
+is not materialized. The same document still marks the P67 compiler proof
+in Lean and an object-language ZFC derivation as open. We inspected these
+status statements, but did not rebuild that Lean development.
+
+These are different constructions and proof layers. Our finite,
+materialized circuits do not inherit a kernel certificate merely because
+another executable expression has a Lean theorem. Conversely, it would
+now be incorrect to describe all repository coefficient recipes as
+noncomputable choices. The report preserves this distinction and includes
+the reviewed status document as provenance.
+
+\input{validation.tex}
+
+\section{Limits and next mathematical targets}
+The smaller selective code is a concrete certificate, not a minimum
+among all labelings. The native coefficient tuple is kept coherent;
+replacing one port in isolation is forbidden. A smaller published tuple
+could be substituted only with its complete adapter and a newly verified
+bound on every derived coefficient. We do not hide that cost by calling
+all large integers unit-size data.
+
+The attempt to absorb the remaining transport quotient is not promoted
+to a ten-positive-variable theorem. Removing the transport equation
+loses the early positivity and size bounds; a proposed rational-index
+repair leaves a modular branch that does not force the required original
+index congruence. The archive records the obstruction separately from
+validated constructions. No search for an actual consistency refutation
+is performed.
+
+The most promising next proof-assistant target is the general selective
+extraction and signed-borrow theorem: it has a small finite certificate
+interface and is independent of the set-theoretic calibration. The
+calibrated two-block carry lemma is similarly elementary. Formalizing
+these reusable interfaces would be more valuable than treating finite
+sample tests as if they certified the complete Diophantine reduction.
+
+\section*{Attribution and references}
+The classical Pell, Jones, and Sun representation results are inherited,
+not claimed as new. Source38 supplies direct quadratic batching and index
+absorption; sources39,40,43 and45 develop direct or multi-output quadratic
+encoding; source44 supplies the multiplier-one norm and earlier signed
+Jones guards. The new finite labeling, overlapping-target certificate,
+calibrated sparse carry adapter, seeded guard and denominator reduction
+are described with their specific proof obligations above. Historical
+short-form comparisons are checked against earlier waves as well as the
+newer Lean-local frontier. Source URLs and exact file digests are in the
+component ledgers and root dependency map. AI-assisted internal reviews
+are not represented as independent human endorsement.
+\end{document}

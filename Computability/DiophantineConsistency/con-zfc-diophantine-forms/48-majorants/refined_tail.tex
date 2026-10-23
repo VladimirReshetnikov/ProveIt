@@ -1,0 +1,208 @@
+\subsection{A smaller separating multiplier}
+Put $B_*=P(P+R)$. The source bounds imply $U\ge64$, $M\ge512$, and
+$A\ge33280$. In particular all the following inequalities hold for
+\emph{every} assignment in the specified domain, before imposing any
+square or divisibility condition:
+\begin{equation}\label{eq:rootbounds}
+ 0<\sqrt{a_0}<PK\le hB_*<h\sqrt{a_1}.
+\end{equation}
+Indeed, $h(P+R)-K=(h-1)(R+1)\ge0$, and
+$a_0=P^2K^2-K^2+1<P^2K^2$. Also
+\[
+ A^2-2P=M^2(U-1)^2>0,\qquad D>A^2>2P,\qquad E>D.
+\]
+It follows that $F>2P^2>B_*$, since $R<P$.
+The quantity $L=CD+1-A$ is greater than one, so $G>F>B_*$.
+Finally $I\ge G^2$ and $DF>1$, proving the last bound in
+\eqref{eq:rootbounds}. Thus the existing coordinate $h$ already separates
+the two radicals. No new unknown is needed for that purpose.
+
+\subsection{The principal polynomial majorant}
+Define $\lambda=2048$ and the following polynomial registers:
+\begin{align*}
+ L&=CD+1-A,& \mathcal N&=2G+L,\\
+ \mathcal N_1&=2e^2D(D-1)L+3C,&
+ \mathcal N_2&=2e^2(D-1)L,\\
+ \mathcal N_3&=2e^2(L-C),& \mathcal N_4&=2e^2C,\\
+ c_*&=256i(e^2+2)+2048,& B_g&=2P(P+R)+1.
+\end{align*}
+Put
+\begin{align}
+ T={}&e\bigl((1024D^2-512D-128)\mathcal N
+       -64\mathcal N_1-40\mathcal N_2
+       -28\mathcal N_3-21\mathcal N_4\bigr)+c_*,\label{eq:Tmajor}\\
+ V={}&TH+B_g,\qquad b_1=\lambda^2a_1.\label{eq:Vmajor}
+\end{align}
+These definitions have no division. The registers $\mathcal N_k$ are
+explicit products and sums, not quotient operations.
+
+\begin{lemma}[Uniform polynomial majorant]\label{lem:majorant}
+For every allowed assignment,
+\[
+ T>\lambda\sqrt{DF}\,G>0,
+ \qquad \sqrt{b_1}<V-B_*,
+ \qquad B_*<\sqrt{b_1}.
+\]
+\end{lemma}
+\begin{proof}
+It is enough for the first inequality that $A\ge3$ and $C,i\ge1$.
+Let $X_*=e^2D^3(D-1)$. Direct substitution gives
+\[
+ DF=X_*+D,\qquad G=(X_*/D)L+CD+1.
+\]
+The fractions in this proof are real-number comparisons only.
+Define the two integer polynomials
+\begin{align*}
+ t_6(D)={}&1024D^6-512D^5-128D^4-64D^3-40D^2-28D-21,\\
+ d_5(D)={}&33792D^5+10560D^4+4928D^3+2464D^2+1176D+441.
+\end{align*}
+Their exact identity is
+\begin{equation}\label{eq:tnidentity}
+ t_6(D)^2-1024^2D^{11}(D-1)=d_5(D).
+\end{equation}
+For $D\ge1$, $t_6(D)>0$: the sum of the negative coefficients is 793,
+less than 1024, and every corresponding power is at most $D^6$.
+Also $d_5(D)>0$. Hence, for $D>1$,
+\[
+ \frac{t_6(D)}{D^4}>1024D^2\sqrt{1-1/D}.
+\]
+This finite identity replaces any need to assume convergence of a series.
+
+The exact remainders $\mathcal N=D^k\mathcal N_k+r_k$ are
+\begin{align*}
+ r_1&=3-A, &r_2&=3CD+3-A,\\
+ r_3&=2e^2(A-1)D^2+r_2, &
+ r_4&=2e^2(1-A-C)D^3+r_3.
+\end{align*}
+They give the identity
+\[
+ T=e\frac{t_6(D)}{D^4}\mathcal N+\mathcal E+c_*,
+ \qquad
+ \mathcal E=e\left(\frac{64r_1}{D}+\frac{40r_2}{D^2}
+                    +\frac{28r_3}{D^3}+\frac{21r_4}{D^4}\right).
+\]
+Since $D\ge A^2\ge9$ and $e=i(4A-5)C$, elementary bounds give
+\[
+ \frac{eA}{D}<\frac92 i,\qquad
+ \frac{eC}{D}<\frac32 i,\qquad
+ \frac{e(A+C-1)}{D}<6i.
+\]
+For example, the first follows from
+$eA/D<4iA^2/((A^2-1)C)\le9i/2$; the second follows from
+$eC/D<4iA/(A^2-1)\le3i/2$. Both $r_2$ and $r_3$ are positive.
+Bounding only the possibly negative terms therefore yields
+\begin{align*}
+ -\mathcal E
+ &<\frac{64eA}{D}+\frac{42e^3(A+C-1)}{D}+\frac{21eA}{D^4}\\
+ &<252ie^2+\frac{765}{2}i<c_*-2048.
+\end{align*}
+
+For positive $X_*,D$, strict concavity of the square root gives
+$\sqrt{X_*+D}<\sqrt{X_*}+D/(2\sqrt{X_*})$.
+Multiplication by $2048G$ and the displayed identity for $G$ give
+\[
+ \lambda\sqrt{DF}\,G
+ <1024eD^2\sqrt{1-1/D}\,(2G+L)+\lambda v_*,
+ \quad
+ v_*:=\frac{CD+1}{2eD\sqrt{1-1/D}}<1.
+\]
+The last inequality follows from $e\ge7C$ and
+$\sqrt{D(D-1)}>D-1$. Combining these bounds proves
+$T>\lambda\sqrt{DF}\,G$.
+Since $I\le G^2H^2$, equations \eqref{eq:Vmajor} imply
+$V-\sqrt{b_1}>B_g>B_*$. The remaining lower bound follows from
+\eqref{eq:rootbounds}.
+\end{proof}
+
+The low-degree padding $B_g=2B_*+1$ has two roles. It supplies the strict
+root gap for all inputs, and its factor two prevents the highest terms of
+the final norm from cancelling. Omitting that factor preserves the gap
+but invalidates the stated exact-degree calculation.
+
+\subsection{The final equation and its exact existential meaning}
+Set
+\begin{align*}
+ \Omega&=um,\\
+ \Theta&=u(n+M_d)+v-\Omega(2M_d+hV).
+\end{align*}
+The principal nine-variable equation is
+\begin{equation}\label{eq:ninefinal}
+ \boxed{F_9=
+ \bigl(\Theta^2-\Omega^2(a_0+h^2b_1)\bigr)^2
+       -4\Omega^4h^2a_0b_1=0.}
+\end{equation}
+Together with the displayed source, register definitions, fixed coefficient
+bytes, weights, and targets, this is a completely specified ordinary
+integer polynomial in exactly nine unknowns.
+
+\begin{proposition}[No lost sign or margin condition]\label{prop:ninenorm}
+For fixed values of the first eight mixed-domain coordinates,
+\eqref{eq:ninefinal} admits $n\in\N$ if and only if
+$a_0,a_1$ are integer squares, $u\mid v$, and the computed margin $m$ is positive.
+\end{proposition}
+\begin{proof}
+Here $u>0$ and $0<v/u<M_d-1$. The latter follows directly from
+$v/u=Q/J+(H-C)/F$, with $Q>0$, $J,F>1$, and $H-C>0$.
+If $m=0$, the left-hand polynomial is
+$(u(n+M_d)+v)^4>0$. Thus a zero has $\Omega\ne0$.
+Factoring the four-root norm over the real numbers gives
+\[
+ \frac\Theta\Omega=\varepsilon\sqrt{a_0}
+                       +\delta h\sqrt{b_1},
+ \qquad \varepsilon,\delta\in\{-1,1\}.
+\]
+This rational sum is nonzero by \eqref{eq:rootbounds}. If it is $r$, then
+\[
+ \sqrt{a_0}=\frac{r^2+a_0-h^2b_1}{2\varepsilon r}.
+\]
+Both roots are therefore rational and hence integral. This handles equal
+or dependent square classes as well. Because $b_1=\lambda^2a_1$,
+integrality of $\sqrt{b_1}$ implies integrality of $\sqrt{a_1}$: a rational
+square root of an integer is an integer.
+
+Write the signed integer roots as $r_0,r_1$ and define
+\[
+ Z=2M_d+hV+r_0+hr_1.
+\]
+The strict root bounds, with integer endpoints, give
+$r_0\ge-hB_*+1$ and $r_1\ge-V+B_*+1$. Consequently
+$Z\ge2M_d+h+1>0$. Rearranging the equation for $\Theta$ gives
+\[
+ n+M_d+v/u=mZ.
+\]
+Its left side is positive, so $m>0$. Its right side and $n+M_d$ are
+integers, so $u\mid v$.
+
+Conversely, suppose the three conditions hold. Choose either signs of
+the integral roots, retain the \emph{actual} positive computed value of $m$,
+and set $n=mZ-M_d-v/u$. The same bounds imply $n\ge0$, and substitution
+makes \eqref{eq:ninefinal} vanish. No step replaces the computed margin
+by a freely chosen witness or assumes $m=1$.
+\end{proof}
+
+Composing Proposition~\ref{prop:ninenorm} with the numerical ratio bridge
+and the source lemma proves the nine-variable existence equivalence.
+
+\subsection{A smaller-cost alternative}
+The release also supplies the simpler choice $\lambda=8$,
+\[
+ S_8=e(8D^2-4D-1),\qquad V_8=S_8GH,\qquad b_1=64a_1.
+\]
+Use the same norm \eqref{eq:ninefinal} with $V=V_8$.
+Its exact defect is
+\[
+ V_8^2-64a_1
+ =\bigl(e^2(8D+1)-64D\bigr)G^2H^2+64DF(H^2-1).
+\]
+Since $e\ge7$, the first bracket is greater than $4De^2$.
+Also $V_8<8D^2eGH$ and $2B_*<D^2$, so
+\[
+ \frac{V_8^2-64a_1}{V_8}
+ >\frac{eGH}{2D}>\frac{(D-1)De^3}{2}>D^2>2B_*.
+\]
+As $V_8>B_*$, this implies $(V_8-B_*)^2>64a_1$ and proves the same
+strict gap. The preceding norm proof applies unchanged.
+This alternative uses 568 operations with uniform targets or 624 with
+overlapping targets; its exact degrees are respectively 24,399,300 and
+18,262,476. It is included because operation count and degree have
+different minima among the supplied constructions.

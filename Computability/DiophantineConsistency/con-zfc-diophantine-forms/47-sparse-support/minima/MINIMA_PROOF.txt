@@ -1,0 +1,250 @@
+MINIMUM-NORM FINALIZATION OF THE FIFTEEN-POSITIVE-VARIABLE GAP SYSTEM
+23 October 2026
+
+1. Definition, provenance, and scope
+
+This is a secondary improvement in arithmetic circuit size at exact degree
+44. The copied historical source ordinary_gap_sos78 has 15 positive
+unknowns and 78 binary arithmetic operations. The new equations have 76
+or 75 operations with the same number of unknowns and the same degree.
+
+gap_system61.json and upstream/ordinary_gap_sos78.json are byte-identical
+copies from ProveIt commit
+5b0c9ae9fdae83db563f9d2b61ea0fb1f4a801e6.
+Their paths and Git blob identities, together with every other inherited
+file, are recorded in SOURCE_PINS.json. The copied source files' old
+coefficient-binding fields are retained as historical metadata. Both NEW
+circuits bind the whole package-31 wang943-mixed-121x8801 tuple, copied
+from commit 124c07c0b77a9e20e84676514d8b1ff78536ea3f, through
+fixed_coefficients.json:
+
+    Bm1 = beta = 2^1064921 - 1,
+    Kconstant = K,  MC = MC,  MF = MF_source.
+
+MF_source is already the shifted mask. The four gzip payloads encode
+unsigned little-endian integer magnitudes, without a sign byte. They
+are a complete, evaluable finite definition of all non-small constants;
+there is no unspecified coefficient port and no consistency-dependent
+choice. The source compiler binding and its ordinary proof are retained
+under upstream/COEFFICIENT_BINDING.json and COEFFICIENT_PROOF.md.
+
+The polynomial minimum argument below is new. The native-window compiler,
+ordinary strong Pell reduction, signed index/transport recovery, positive
+gap completeness, and K215 calibration are inherited mathematical inputs.
+The local 76-operation zero-set equivalence needs none of their semantic
+claims. The interpretation of either polynomial as ZFC refutability uses
+those inputs, just as the historical equation does. This package supplies
+no new Lean/Rocq kernel certificate for that endpoint.
+
+2. Exact formulas
+
+All 15 quantified variables are strictly positive integers, in this order:
+
+    J,F,alpha,z,f,h,i,T,s,w,tau,eta,zeta,e,gamma.
+
+JSON uses Jrep, transport_quotient, auxiliary_quotient, tau_root, and
+auxiliary_gap for J,z,T,tau,e. The 76-operation equation uses shifted
+z=z_old-1; the 75-operation equation uses original z_old.
+
+Define polynomial abbreviations, not extra quantified variables:
+
+    q=beta J+1, C=q-F-alpha,
+    X=wq, Y=sq^3, E=XY,
+    k=eta+zeta, c=kY+eta, a=E+Y,
+    H=4a+3, Delta=a^2+H=(a+2)^2-1,
+    D=X+ac+gamma H,
+    R=((q-1)(q-F)+alpha)(q^2-1)+(MC+q MF)J,
+    V=c(Tf-1)-Rf^2,
+    U=Delta(f^2-1), I=ic^2, W=I^2-U,
+    y=V+e,
+    N0=tau^2-(XY^2)(XY^2+1)k^2,
+    N1=D^2-Delta c^2,
+    Na=U(V^2-y^2)+y^2,
+    Nk=k-hE-R.
+
+For original z define Nt=(K+w)C+(q-F)-z(q-1). The 75-operation equation is
+
+    P75=N0^2+N1^2+Na^2+W^2+(Nk Nt-1)^2-3=0.          (A)
+
+For shifted z define Rt=(K+w)C-F-z(q-1). The 76-operation equation is
+
+    P76=N0^2+N1^2+Na^2+W^2+(Nk-1)^2+Rt^2-3=0.       (B)
+
+The operation counts concern the emitted shared-register schedules, not
+the result of evaluating each abbreviation independently.
+
+3. Integer minimum lemma
+
+For every positive input assignment,
+
+    N0^2 >= 1,  N1^2 >= 1,  Na^2+W^2 >= 1.           (C)
+
+Equality in the first two inequalities holds exactly when N0=1 and N1=1,
+respectively. Equality in the third holds exactly when Na=1 and W=0.
+
+Proof for N0. Set n0=XY^2. Since beta>=1, q>=2 and n0>=2. The integer
+n0(n0+1) lies strictly between n0^2 and (n0+1)^2. If N0=0, k>0 implies
+(tau/k)^2=n0(n0+1), which would make this integer a square. Thus N0!=0.
+
+To exclude N0=-1, suppose xi^2-n0(n0+1)nu^2=-1 with xi,nu positive,
+and choose a solution with nu minimal. Write d=n0(n0+1). Multiplication
+by the norm-one unit 2n0+1-2 sqrt(d) gives the integral solution
+
+    xi'=(2n0+1)xi-2d nu,  nu'=(2n0+1)nu-2xi.
+
+Its norm is still -1. The inequalities n0 nu<xi<sqrt(d)nu
+<(n0+1/2)nu show 0<nu'<nu. (The first strict inequality follows
+from n0 nu^2>1.) Replacing xi' by its absolute value contradicts
+minimality. Consequently N0^2=1 implies N0=1.
+
+Proof for N1. Delta=(a+2)^2-1 lies strictly between (a+1)^2 and
+(a+2)^2. Since c>0, the same rational-square argument excludes N1=0.
+Modulo four, Delta is either 0 or 3. Neither x^2 nor x^2-3c^2 can
+be -1 modulo four. Hence N1=-1 is impossible.
+
+Proof for the coupled block. U>=0. If U>0, then f>=2 and U>=2.
+Suppose Na=0. The identity
+
+    U V^2=(U-1)(V+e)^2
+
+and e>0 show that V and V+e cannot both vanish. In fact neither
+can vanish, so multiplying the ratio by U gives the rational square
+U(U-1). An integer with a rational square root is an integer square,
+whereas (U-1)^2<U(U-1)<U^2. Therefore Na!=0.
+
+If U=0 then f=1 and W=I^2. Since c>=3 and i>=1, I>=9 and W>=81.
+Thus the block Na^2+W^2 is strictly larger than 1 on this branch.
+
+The block is therefore always at least 1; if it equals 1, the first
+branch gives W=0 and Na=+1 or -1. Now U=I^2, so
+
+    Na=I^2 V^2-(I^2-1)(V+e)^2
+
+is congruent modulo four to V^2 when I is odd, and to (V+e)^2 when
+I is even. It cannot be -1. This proves all assertions in (C).
+No positivity assumption on V or V+e away from the zero set is used.
+
+4. Zero-set equivalence and imported part of the proof
+
+Write each equation as the sum of three nonnegative integer excesses
+
+    (N0^2-1)+(N1^2-1)+(Na^2+W^2-1)
+
+and the remaining ordinary squares. It follows directly from (C) that
+P76=0 if and only if
+
+    N0=N1=Na=Nk=1, W=Rt=0.                           (D)
+
+These are precisely the six comparisons in gap_system61.json. This is
+a tuplewise local equivalence for arbitrary fixed beta>=1 and arbitrary
+other integer ports. No Pell-index or compiler theorem is needed for it.
+
+Likewise, P75=0 if and only if
+
+    N0=N1=Na=1, W=0, Nk Nt=1.                        (E)
+
+For the authentic native tuple, (E) makes the ordinary product
+N0 N1 Na Nk Nt (1+W)-1 vanish. The current signed theorem in
+upstream/ORDINARY_BLANK_PROOF.md, Sections 3-7, applies directly with
+y=V+e: its nine required positive coordinates are J,F,alpha,z,i,s,w,eta,
+zeta, while y and the five other coordinates may be arbitrary integers.
+That theorem recovers Nk=Nt=+1 and the native computation interpretation.
+No assertion that V or y is positive is required for this soundness step.
+The historical ORDINARY_REDUCTION.md is retained only as provenance;
+its obsolete six-system upper bound on R is superseded by the current
+proof's explicitly corrected bound R<q^4-q^3+q^2-1.
+
+Positive-domain completeness uses the canonical auxiliary Pell point
+from upstream/GAP_AUXILIARY_PROOF.md: U>1, V>1, y>0 and
+
+    (U-1)(y^2-V^2)=V^2-1>0
+
+imply y>V and e=y-V>0. The historical strict positivity of the shifted
+transport coordinate supplies the 76-operation coordinates as well.
+
+The ordinary-strong equation W=0 is I^2=Delta(f^2-1). It is not the
+normalized strong equation f^2-Delta i^2 c^4=1 in the same coordinates.
+The transfer uses the inherited relaxed strong-rank theorem; it does
+not cancel a Delta factor by assuming divisibility of i.
+
+Composing the inherited compiler and K215 calibration with (D), or
+with (E) and signed recovery, gives the usual ordinary mathematical
+theorem formalizable in ZFC: absence of positive zeros is equivalent
+to Con(ZFC). The scripts below do not prove that semantic endpoint.
+
+5. Exact degree and circuit audit
+
+The baseline source has 61 producers, all live. For P76, add three
+differences, six squares, five additions, and one final subtraction:
+
+    61+3+6+5+1=76, with 40 multiplications, 21 additions, 15 subtractions.
+
+For P75, restore the original transport factor at one additional
+producer, then add one product, two differences, five squares,
+four additions, and one final subtraction:
+
+    62+1+2+5+4+1=75, with 40 multiplications, 20 additions, 15 subtractions.
+
+The copied historical SOS has 78 operations, specifically
+40 multiplications, 21 additions, and 17 subtractions.
+
+The cancellation
+
+    Na=V^2-(U-1)e(2V+e)
+
+reduces the auxiliary degree bound from the naive 28 to 22. With
+Q=beta J and k0=eta+zeta, the three degree-22 leading forms are
+
+    N0_top = -w^2 k0^2 s^4 Q^14,
+    Na_top = -2e k0 w^2 s^3 Q^11 T f^3,
+    W_top  = i^2 k0^4 s^4 Q^12.
+
+All other squared terms have degree less than 44. Their absence from
+the leading form follows, for the main norm, from the exact identity
+
+    N1=2ac(X+gamma H)+(X+gamma H)^2-Hc^2,
+
+whose degree is at most 18. The index and transport terms have still
+smaller degrees. Their absence from
+the degree-44 leading form can also be certified by permitting the
+main norm the harmless upper bound 22: its coefficient at degree 22
+cancels exactly. On the diagonal J=F=...=gamma=t, the resulting exact
+leading coefficient of P75, P76 and the historical SOS is
+
+    16 beta^28 + 256 beta^24 + 16 beta^22 > 0.
+
+Thus the full multivariate upper bound 44 is attained for the actual
+materialized coefficient tuple. This certificate does not depend on
+interpolation, numerical sampling, or genericity of the fixed ports.
+
+verify.py authenticates the inherited source bytes by SHA-256 and
+Git blob SHA-1, decompresses and binds all four coefficient payloads,
+checks their magnitudes and bit lengths, rebuilds both new JSON files,
+checks every operand and all gate/port liveness, proves the auxiliary
+identity by finite exact ring expansion, and propagates symbolic leading
+coefficients in all four fixed leaves. It checks the historical 78-gate
+baseline by the same independent procedure. Its JSON receipt records
+the degree, leader, and full gate ledger.
+
+Run from any working directory:
+
+    python3 /path/to/minima/verify.py
+
+The only dependency is Python's standard library. evaluate.py evaluates
+either concrete polynomial modulo a supplied integer, for example
+
+    python3 evaluate.py 75 1000003 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+This modular evaluation is a convenience for working with the fixed
+polynomial; it is not a test for the existence or absence of zeros.
+
+6. Comparison boundary
+
+The 75-operation degree-44 form improves the historical degree-44
+78-operation equation by three operations. The 76-operation version
+saves two operations and has the cleaner purely local zero-set proof.
+Neither improves the fewest-operations 67-operation construction.
+The degree-56 equation with 74 operations trades one fewer operation
+for higher degree, so the 75-operation degree-44 result is a distinct
+comparison point. No claim of global optimality or literature priority
+is made.

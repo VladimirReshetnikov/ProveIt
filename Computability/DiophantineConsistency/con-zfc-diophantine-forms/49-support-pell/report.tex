@@ -1,0 +1,227 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=26mm]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,microtype,xcolor}
+\usepackage{xurl,hyperref,fancyhdr}
+\definecolor{inkblue}{HTML}{173A5E}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,pdftitle={Support-aware digit coding and sharper Pell norms for ZFC consistency},pdfauthor={Research synthesis prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Support-aware Diophantine consistency equations}
+\fancyhead[R]{\small 23 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\Dcode}{\mathcal D}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\file}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\pin}{\texttt{124c07c0b77a9e20e84676514d8b1ff78536ea3f}}
+
+\title{\color{inkblue}Support-aware digit coding and sharper Pell norms\\[3pt]
+\large Explicit Diophantine equations for the consistency of ZFC}
+\author{Research synthesis prepared for Vladimir Reshetnikov\\
+\small ProveIt integration package; AI-assisted mathematical research}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give explicit, fixed-integer-coefficient polynomial equations whose
+absence of solutions is provably equivalent in ZFC to its syntactic
+consistency, using the repository's established K215/compiler calibration.
+The principal new step replaces a full Sidon condition in quadratic
+digit coding by isolation only of monomials actually used by the source
+equations. A certified list of 32 labels in $[0,200]$ isolates all 71
+active pairs, although many of the other 528 pairs collide. Compared with
+the wave-6 constructions at the pinned source commit, this gives nine
+positive unknowns at degree $32\,568\,568$ in 652 binary arithmetic
+operations, and ten unrestricted integer unknowns at degree $59\,564\,744$
+in 653 operations. The latter uses Sun's cited ten-integer bridge.
+A separate root estimate permits index-quotient absorption and the
+removal of an inner radical separator to coexist: eleven positive
+unknowns then suffice at degree 990 in 117 operations, or degree 994
+in 115 operations. A small, historically qualified circuit refinement
+also attains degree 44 with fifteen positive unknowns in 76 operations.
+All coefficients, arithmetic circuits, finite certificates, reconstruction
+scripts and source notices accompany the article. These are ordinary
+mathematical proofs with explicit inherited interfaces, not a new
+end-to-end proof-assistant certificate, a proof of consistency, or a
+claim of absolute minimality.
+\end{abstract}
+
+\vspace{5pt}
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Witness domain & Exact degree & Operations & Role\\
+\midrule
+$\Pos^9$ & $32\,568\,568$ & 652 & Few positive variables\\
+$\N^9$ & $32\,568\,568$ & 655 & Natural-domain translation\\
+$\Z^{10}$ & $59\,564\,744$ & 653 & Unrestricted integer equation\\
+$\Pos^{11}$ & 990 & 117 & Moderate-degree construction\\
+$\Pos^{11}$ & 994 & 115 & Shorter moderate-degree evaluator\\
+$\Pos^{15}$ & 44 & 76 & Small low-degree refinement\\
+\bottomrule
+\end{tabular}
+\end{center}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Scope, baseline and the exact claim}
+
+\subsection{What ``simplest'' can mean}
+Variable count, degree, evaluator length and coefficient size are different
+objectives. No known argument identifies a globally simplest consistency
+equation under all of them. This package constructs improvements with
+precise, comparable metrics. The underlying logical assertion is
+\begin{equation}\label{eq:logicaltarget}
+ \ZFC\vdash
+ \bigl(\neg\exists\mathbf x\in\mathcal A\;P(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \Con(\ZFC),
+\end{equation}
+where $\mathcal A$ is stated separately for every polynomial. Here
+$\N=\{0,1,2,\ldots\}$, and $\Con(\ZFC)$ means that the repository's
+fixed, recursively specified ZFC proof calculus has no finite derivation
+of falsity. No assertion is made that a positive-domain polynomial has
+the same meaning over all integers.
+
+The source is pinned to \pin. This commit places wave 6 beside wave 5;
+the collection README at that commit still principally describes wave 5.
+Consequently the comparison uses the actual new packages 38--45 as well
+as the active research documents. A comparison only with wave 5 would
+substantially overstate the improvements \cite{repo,package38,package40,package44,package45}.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Comparable construction & Variables & Degree & Operations\\
+\midrule
+Package 45 multi-target & $9\Pos$ & $129\,875\,980$ & 788\\
+This package & $9\Pos$ & $32\,568\,568$ & 652\\
+Package 40 quadratic packing & $10\Z$ & $237\,520\,456$ & 782\\
+This package & $10\Z$ & $59\,564\,744$ & 653\\
+Package 38 absorption & $11\Pos$ & 1154 & 123\\
+This package, full carrier & $11\Pos$ & 990 & 117\\
+This package, short carrier & $11\Pos$ & 994 & 115\\
+Historical wave-2 gap SOS & $15\Pos$ & 44 & 78\\
+This package, regrouped SOS & $15\Pos$ & 44 & 76\\
+\bottomrule
+\end{tabular}
+\caption{Counts are for supplied circuits, not circuit lower bounds.
+The degree-44 idea is historical; only its shorter regrouping is new here.}
+\end{table}
+
+The nine-variable degree decreases by approximately $74.92\%$ and its
+operation count by $17.26\%$. The ten-integer degree decreases by
+approximately $74.92\%$ and its operation count by $16.50\%$ against
+package 40. These are substantial simplifications of explicit instances,
+not new general nine- or ten-variable representation theorems. The
+historical 67-operation equation remains shorter when evaluator length
+alone is the objective. The new constructions do not decrease the
+known variable-count bounds.
+
+\subsection{Proof layers and what was checked}
+The mathematical composition has four layers:
+\begin{enumerate}[leftmargin=*]
+\item the literal K215 machine halts on blank input exactly when there is
+ a finite ZFC refutation;
+\item its marked-tile/native-window/Pell compiler gives the fixed positive
+ source equations and coherent coefficient tuple;
+\item the new support-aware coding or the new eleven-variable root
+ estimate transforms those equations;
+\item the existing Jones ratio or Sun Lucas bridge, where used, and an
+ explicit finalizer give a single polynomial.
+\end{enumerate}
+Layers 1 and 2 are inherited mathematical dependencies. Their source
+proofs and immutable repository references are identified in the archive.
+The new local arguments are proved here. The finite programs check
+literal coefficient reconstruction, symbolic extraction identities,
+arithmetic circuits, liveness and degree certificates. They cannot replace
+the unbounded compiler arguments or decide either side of
+\eqref{eq:logicaltarget}.
+
+The repository separately contains an unconditional Lean equivalence with
+a nine-natural-variable polynomial selected through
+\texttt{Classical.choose}. That milestone has different coefficient
+explicitness from the materialized constructions here. A Lean theorem
+about a syntactic proof predicate also differs from an already checked
+derivation inside the object-language ZFC calculus. We do not conflate
+these claims or claim a new Lean/Rocq build \cite{active}.
+
+\subsection{Exact coefficients and operation convention}
+All constructions use the \emph{whole} package-31 coefficient tuple
+$(\beta,K_0,M_C,M_F)$, where $M_F$ is already shifted. Its bit lengths are
+\[
+1064921,\quad1070004,\quad1064921,\quad1064922.
+\]
+The four raw payloads total 533099 bytes; their gzip encodings total
+10485 bytes. They are independently reconstructed from the finite recipe
+in Appendix~\ref{sec:coefficients}. The recipe does not search for a
+refutation or depend on a truth value of consistency.
+
+An operation is one binary addition, subtraction or multiplication of a
+variable-dependent expression, including multiplication by a numeral.
+Reuse and fixed coefficient leaves are free. Fixed powers are expanded
+into charged multiplication gates. Arithmetic involving only fixed
+constants is part of coefficient construction, as in the compared
+packages. Equality comparisons are free when reporting systems. The
+literal DAGs, rather than uncharged abbreviations, determine all counts.
+
+\input{sections/sparse}
+\input{sections/nine}
+\input{sections/ten}
+\input{sections/eleven}
+\input{sections/short}
+\input{sections/verification}
+\appendix
+\input{sections/coefficients}
+
+\begingroup\raggedright
+\begin{thebibliography}{99}
+\bibitem{repo} V. Reshetnikov and contributors, \emph{ProveIt}, source snapshot
+\pin, 23 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/124c07c0b77a9e20e84676514d8b1ff78536ea3f/Computability/DiophantineConsistency}.
+\bibitem{active} ProveIt, \emph{A Diophantine equation for syntactic consistency of ZFC},
+\texttt{README.md}, \texttt{STATUS.md}, \texttt{SHORT\_EQUATION.md},
+\texttt{SHORT\_SYSTEM.md}, and \texttt{SHORT\_FRONTIER.md}, at the source snapshot above.
+\bibitem{package31} ProveIt report package 31, \emph{Smaller explicit Diophantine forms for Con(ZFC)},
+\texttt{31-sun10}; coefficient adapter, literal tables, quartic source and compiler proofs.
+\bibitem{package38} ProveIt report package 38, \emph{Eleven positive unknowns by absorbing the index quotient},
+\texttt{38-batching11/eleven/ELEVEN\_POSITIVE\_PROOF.md}, at the source snapshot.
+\bibitem{package40} ProveIt report package 40, \emph{Direct quadratic packing},
+\texttt{40-packing10/report.tex}, especially its source contract and parameterized Sun composition.
+\bibitem{package44} ProveIt report package 44, \emph{Removing the inner separator: twelve positive unknowns, degree 901},
+\texttt{44-b4-sparse/positive/PROOF.md}, at the source snapshot.
+\bibitem{package45} ProveIt report package 45, \emph{Nine-variable equation from multi-target quadratic carry coding},
+\texttt{45-multioutput/nine/MULTITARGET\_NINE\_PROOF.md}, at the source snapshot.
+\bibitem{historical} ProveIt, audited wave-2 snapshot
+\texttt{5b0c9ae9fd}; source 12 gap SOS and source 15 double-gap constructions.
+The archive records exact historical source references separately.
+\bibitem{jones} J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+\bibitem{sun2021} Z.-W. Sun, Further results on Hilbert's tenth problem,
+\emph{Science China Mathematics} \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/abs/1704.03504}.
+\bibitem{sun2026} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2 September 2026, preprint.
+\url{https://arxiv.org/abs/2609.01594v2}.
+\end{thebibliography}
+\endgroup
+\end{document}

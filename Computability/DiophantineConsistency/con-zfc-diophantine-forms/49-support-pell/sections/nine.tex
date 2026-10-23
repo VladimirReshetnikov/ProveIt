@@ -1,0 +1,221 @@
+\section{The nine-variable polynomial}\label{sec:nine}
+
+\subsection{Source registers and bounds}
+First use $\epsilon,\phi,n\in\N$ and $g,h,s,w,i,j\in\Pos$.
+These are exactly nine coordinates; every other name below is an
+abbreviation. Use the shifted parent from Section~\ref{sec:sparse}.
+The 136 factorial-weighted coefficient records satisfy
+\[
+ |c_{r,\alpha}|<M=2^{2134927}.
+\]
+The verifier derives this by summing absolute integer coefficients times
+the powers of two supplied by the four port bit lengths. Set
+$b_*=2^{2134939}=4096M$. Define
+\begin{align*}
+ b&=b_*+\epsilon,& \BB&=b^3,&
+ \ell&=\sum_{r=1}^{31}\BB^{w_r},\\
+ N_0&=\BB^{201},&N_1&=4\BB^{9222},&N&=N_0N_1,\\
+ M_c&=N_0-1-(b-1)\ell,&
+ T_*&=\sum_{r=1}^{22}\BB^{E_r},\\
+ T_c&=M_c+(\BB-2)T_*N_0,\\
+ J_c&=2(1+g)^2\Dcode(\BB)+\BB\sum_{r=0}^{9221}\BB^r,\\
+ S_c&=g+J_cN_0,\\
+ R&=(N-1)\bigl((S_c+T_c+1)N+T_c+1\bigr),\\
+ G_c&=32b\BB^{200}.
+\end{align*}
+The weights and target exponents are the fixed integers in
+\eqref{eq:weightsnew}; the parent residuals determine $\Dcode$ exactly.
+All powers and sums have fixed, finite exponents and limits.
+
+The leading coefficient of $\Dcode(Z)$, at degree 8821, is 2, because
+the last parent residual has constant coefficient 1. All other
+coefficients have magnitude less than $M$. Since $\BB-1>M$,
+\begin{equation}\label{eq:Dcodepositive}
+ 0<\BB^{8821}<\Dcode(\BB)
+ <\frac{M\BB^{8822}}{\BB-1}.
+\end{equation}
+The selected weights form a proper subset of $\{0,\ldots,200\}$,
+so $M_c>0$. Consequently $R\ge N\ge8$ and $R,N\ge b$ on every
+outer assignment, even before imposing the final equation.
+
+On the branch $g<4b\BB^{200}$, integrality gives
+$1+g\le4b\BB^{200}$ and $g<N_0$. Equation~\eqref{eq:Dcodepositive}
+and $b\ge4096M$ imply
+\[
+2(1+g)^2\Dcode(\BB)
+ <\frac{32Mb^2\BB^{9222}}{\BB-1},\qquad
+32Mb^2\le\BB/128.
+\]
+Adding the geometric sum therefore gives $0<J_c<N_1$.
+Also $(\BB-2)T_*<\BB^{8822}$, so
+\begin{equation}\label{eq:boundedsource}
+0\le S_c,T_c<N.
+\end{equation}
+These bounds hold on the stated range without assuming a successful
+digit test.
+
+\subsection{The carry equivalence}
+For nonnegative integers let
+$\tau_2(S,T)=\pc(S)+\pc(T)-\pc(S+T)$, where $\pc$ counts binary
+one-bits. This counts carries with multiplicity and is zero precisely
+when the binary supports are disjoint.
+
+\begin{lemma}\label{lem:carry}
+If $N=2^e$ and $0\le S,T<N$, then for
+$R=(N-1)((S+T+1)N+T+1)$,
+\[
+ N^2\mid\binom{2R}{R}\quad\Longleftrightarrow\quad\tau_2(S,T)=0.
+\]
+\end{lemma}
+\begin{proof}
+The exact identity
+\[
+R=(S+T)N^2+(N-1-S)N+(N-1-T)
+\]
+has two low blocks that are binary complements. Hence
+$\pc(R)=2e-\tau_2(S,T)$. The factorial valuation identity
+$\nu_2(m!)=m-\pc(m)$ gives
+$\nu_2\binom{2R}{R}=\pc(R)$. The desired valuation is at least
+$2e$ exactly when the nonnegative carry count vanishes.
+\end{proof}
+
+When $b$ is a power of two, so are $\BB,N_0,N_1,N$.
+On the range in \eqref{eq:boundedsource}, the low and high blocks
+separate the no-carry test into
+\[
+\tau_2(g,M_c)=0,\qquad
+\tau_2(J_c,(\BB-2)T_*)=0.
+\]
+The first says exactly
+$g=\sum x_r\BB^{w_r}$ with $0\le x_r<b$: the low mask leaves
+those digit slots and those low bits free, and masks every other bit.
+At such a packed word, Theorem~\ref{thm:extract} gives target
+coefficients $2p_j(\mathbf x)$. All coefficients of
+$C_{\mathbf x}\Dcode$ have magnitude at most
+\[
+ M(1+\textstyle\sum x_r)^2\le M(32b)^2\le\BB/4.
+\]
+Thus the geometric offset in $J_c$ gives, after its common binary
+factor 2 is removed, digits strictly between 0 and $\BB$, with the
+target digit equal to $\BB/2+2p_j(\mathbf x)$. Its disjointness
+from $\BB/2-1$ forces precisely $p_j(\mathbf x)=0$.
+
+It follows that a power-of-two $b$, the bound $0<g<4b\BB^{200}$,
+and $N^2\mid\binom{2R}{R}$ imply a common natural parent zero.
+Conversely, from a common parent zero choose an arbitrarily large
+power of two $b\ge b_*$ exceeding all its coordinates and pack them
+into $g$. The parent zero is nonzero, so $g>0$; moreover
+$g<(b-1)\BB^{201}/(\BB-1)<b\BB^{200}$.
+Both masks pass and $32g<G_c$. This is the stronger bound needed
+for the completeness direction of the ratio bridge.
+
+\subsection{The numerical Jones bridge}
+Continue with the following polynomial registers:
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,\\
+ M_0&=RY,&P&=2M_0^2U,\\
+ K&=R+1+h(P-1),&A&=M_0(U+1),\\
+ B_1&=2R+1,&W_1&=bw,\\
+ C&=B_1+W_1+\phi,&J&=4A-5,\\
+ Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ E&=iJDC^2,&F&=(A^2-1)E^2+1,\\
+ G&=A+F(CD+1-A),&H&=B_1+jC,\\
+ I&=(G^2-1)H^2+1,&a_0&=(P^2-1)K^2+1,\\
+ a_1&=DFI,&u&=JF.
+\end{align*}
+\begin{align*}
+ v&=QF+J(H-C),\\
+ m&=K^2G_c-4(C-KY)^2G_c-8gK^2.
+\end{align*}
+The numerical ratio lemmas used in the inherited construction state:
+given $R,N\ge8$, $b\le R,N$, $b,G_c>0$, the five positive
+bridge witnesses and $\phi\ge0$, the conditions
+\begin{equation}\label{eq:ratiofour}
+a_0,a_1\text{ are integer squares},\quad u\mid v,\quad m>0
+\end{equation}
+imply $b$ is a power of two,
+$N^2\mid\binom{2R}{R}$ and $8g<G_c$.
+Conversely the power-of-two and binomial conditions, with $32g<G_c$,
+admit witnesses satisfying \eqref{eq:ratiofour}. These are the
+repository's \texttt{Jones1982.Nine.ratio\_sound} and
+\texttt{ratio\_complete} contracts \cite{jones,package45}.
+All their numerical source hypotheses were established above.
+The old positional powers $5^j$ are not a hypothesis of these
+numerical lemmas; the new source coding is proved separately.
+
+\subsection{A single equation with no hidden quantified coordinates}
+Set
+\begin{align*}
+ V_0&=PK,&V_1&=(AC)(AE)(GH),&M_d&=Q+H,\\
+ \Omega&=um,\qquad
+ \Theta=u(n+M_d)+v-\Omega(2M_d+V_0V_1).
+\end{align*}
+The equation is
+\begin{equation}\label{eq:F9}
+\boxed{F_9=
+ \bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+ -4\Omega^4V_0^2a_0a_1=0.}
+\end{equation}
+This is a literal polynomial after the displayed substitutions.
+The final primary domain is nine positive integers: replace
+$\epsilon,\phi,n$ in these formulas by $\epsilon-1,\phi-1,n-1$.
+The other six coordinates remain positive. For the nine-natural
+version instead replace $g,h,s,w,i,j$ by their successors and leave
+$\epsilon,\phi,n$ nonnegative.
+
+For completeness we recall why the inherited finalizer introduces no
+exceptional solutions. On every outer assignment all needed radicands
+are positive, and
+\[
+0<a_0<V_0^2,\qquad 0<a_1<V_1^2,\qquad
+0<v/u<Q+H-1=M_d-1.
+\]
+The first two assertions follow from
+$V_0^2-a_0=K^2-1$ and
+$(AC)^2-D=C^2-1$, $(AE)^2-F=E^2-1$,
+$(GH)^2-I=H^2-1$; the quotient estimate follows from
+$v/u=Q/J+(H-C)/F$ and $H>C$.
+If $m=0$, then $\Omega=0$ while $\Theta/u=n+M_d+v/u>0$,
+so \eqref{eq:F9} cannot hold.
+Otherwise its four-factor identity makes
+$\Theta/\Omega=r_0+V_0r_1$ with $r_j^2=a_j$.
+This rational sum is nonzero, for otherwise $|r_1|<1$ would contradict
+$a_1\in\Pos$. The identity
+$2(\Theta/\Omega)r_0=(\Theta/\Omega)^2+a_0-V_0^2a_1$
+makes both roots rational and therefore integral.
+The strict majorants imply
+\[
+ Z=2M_d+V_0V_1+r_0+V_0r_1\ge2M_d+1.
+\]
+The vanishing factor becomes $n+M_d+v/u=mZ$, forcing $m>0$
+and $u\mid v$. Conversely choose integral roots under
+\eqref{eq:ratiofour} and put $n=mZ-M_d-v/u$. This is an integer
+at least 2, so a factor vanishes. The source and ratio bridge now prove
+\eqref{eq:logicaltarget} for the stated domain.
+
+\subsection{Exact degree and the paid evaluator}
+Let $t_0=\deg N=3(8821+3\cdot200+2)=28269$.
+The geometric offset uniquely dominates $J_c$, giving
+$\deg R=3t_0$. The only large cancellation needed in the finalizer is
+resolved by the exact identity
+\begin{align*}
+ V_1^2-a_1={}&(C^2-1)(AE)^2(GH)^2\\
+ &+D(E^2-1)(GH)^2+DF(H^2-1).
+\end{align*}
+Writing $E_0=u(n+M_d)+v-2\Omega M_d$ gives identically
+\begin{align*}
+\Theta^2-\Omega^2(a_0+V_0^2a_1)
+={}&E_0^2-2E_0\Omega V_0V_1\\
+ &+\Omega^2V_0^2(V_1^2-a_1)-\Omega^2a_0.
+\end{align*}
+Degree propagation through this cancellation-resolved expression yields
+\[
+\deg F_9=1152t_0+12W+280=32\,568\,568.
+\]
+On the diagonal where all nine coordinates have highest part $T$,
+its leading coefficient is $2^{2050}\ne0$. Thus this is exact total
+degree, not just a syntactic upper bound. The affine domain changes
+preserve it. The primary graph has 652 live binary operations for the
+positive domain and 655 for the natural domain. The larger equal-polynomial
+degree-certificate graphs are separate verification artifacts and are not
+the claimed short evaluators.

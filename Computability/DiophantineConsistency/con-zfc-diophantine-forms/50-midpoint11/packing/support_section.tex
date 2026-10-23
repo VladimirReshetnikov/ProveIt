@@ -1,0 +1,145 @@
+\section{Support-aware quadratic packing}
+The main low-variable improvement is to replace full Sidon separation by
+separation only where the input system actually has a nonzero monomial.
+This changes the largest fixed exponent label from $799$ to $190$.
+
+\subsection{The exact hypothesis needed}
+Let $p_1,\ldots,p_m\in\mathbb Z[X_1,\ldots,X_n]$ have total degree at most
+two, let $\mathcal A$ be the union of their supports, and set
+$\mathcal Q=\{\alpha\in\mathbb N^n:|\alpha|\leq2\}$.
+For distinct positive integers $w_i$, write
+$e(\alpha)=\sum_i\alpha_iw_i$ and $W=\max_iw_i$.
+The sufficient condition is
+\begin{equation}\label{eq:support-isolation}
+ \alpha\in\mathcal A,\quad\beta\in\mathcal Q,\quad
+ e(\alpha)=e(\beta)\quad\Longrightarrow\quad\alpha=\beta.
+\end{equation}
+The map $e$ need not be injective on all of $\mathcal Q$.
+Let $h_j=2W+(j-1)(2W+1)$, and define
+\begin{align*}
+ c_{j,\alpha}&=(2-|\alpha|)!\prod_i\alpha_i!\,[X^\alpha]p_j,\\
+ D(T)&=\sum_{j,\alpha}c_{j,\alpha}T^{h_j-e(\alpha)},&
+ C_z(T)&=\left(1+\sum_i z_iT^{w_i}\right)^2.
+\end{align*}
+Then all exponents of $D$ are nonnegative and
+\begin{equation}\label{eq:support-extraction}
+ [T^{h_j}]C_z(T)D(T)=2p_j(z)
+ \qquad(1\leq j\leq m).
+\end{equation}
+
+\paragraph{Proof.}
+A source monomial $\alpha$ of row $k$ and an expansion monomial $\beta$
+can contribute to $h_j$ only if
+$h_j-h_k=e(\beta)-e(\alpha)$.
+The right side has absolute value at most $2W$; a nonzero left side has
+absolute value at least $2W+1$. Hence $k=j$, and
+\eqref{eq:support-isolation} gives $\beta=\alpha$.
+The factorial in $c_{j,\alpha}$ cancels the multinomial denominator,
+giving \eqref{eq:support-extraction}. The row intervals
+$[h_j-2W,h_j]$ are disjoint and the supported exponents within each are
+distinct. Therefore, if $|c_{j,\alpha}|<M$, each coefficient of $D$ has
+absolute value less than $M$. Each coefficient of $C_zD$ has absolute
+value at most
+\begin{equation}\label{eq:support-bound}
+ M\left(1+\sum_i|z_i|\right)^2.
+\end{equation}
+Indeed, the sum of the nonnegative coefficients of $C_{|z|}$ is exactly
+the squared quantity. Collisions between absent monomials preserve this
+sum. In particular, no additional factor $m$ is needed.
+\hfill$\square$
+
+\subsection{The explicit instance}
+The variable order is the inherited order
+\[
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta.
+\]
+In that order the weights are
+\begin{align*}
+ &(10,14,128,112,178,157,173,145,129,63,123,84,151,75,2,124,\\
+ &\hspace{9mm}3,169,31,190,185,184,189,177,90,111,19,30,68,51,144).
+\end{align*}
+With a padding weight zero, there are $\binom{33}{2}=528$ degree-two
+multisets. The source uses only $71$ of their monomials. Each supported
+sum is unique among all $528$ sums, while the entire list has only $278$
+distinct values. Thus $250$ repetitions are allowed, and the vector is
+explicitly not a $B_2$ set. The finite verifier reconstructs the source
+supports from the literal parent circuits and checks all
+$136\cdot528=71{,}808$ source/expansion pairs. Its only $136$ target hits
+are the required diagonal hits.
+
+Two inherited parent presentations are retained exactly. The ten-integer
+construction uses package~40's 65-operation parent; the nine-variable
+construction uses package~45's 60-operation parent. Their supports agree,
+but their transport coordinates satisfy $z_{\rm old}=z_{\rm new}+1$.
+The affine polynomial identity is checked independently. The inherited
+positive-zero correspondence, including the step $z_{\rm old}\geq2$, is
+recorded in the bundled parent proof. Their coefficients are not silently
+identified. Both use the same complete four-port tuple of package~31,
+including the already shifted fourth port.
+
+\subsection{Why the unbounded source interface is preserved}
+First rewrite the inherited positive-variable parent by $x_i=z_i+1$, so
+that the source coordinates $z_i$ are nonnegative. Move its fifth shifted
+residual to the last row. Its value at the zero vector is $1$, so the highest coefficient of $D$ is $2$, and the source
+has no common zero at the zero vector. Positivity of the weights and a
+geometric-series bound give $D(B)>0$ whenever $B>M+1$.
+All no-carry arguments use only this positive leading term,
+\eqref{eq:support-extraction}, \eqref{eq:support-bound}, and the maximum
+weight. They do not need the full Sidon hypothesis.
+
+For the nine-variable form use $h_j=381j$, so
+$h_{22}=8382$ and $K=h_{22}+2W=8762$.
+The unchanged bound on weighted coefficients is
+$M=2^{2134927}$; put $b_0=4096M=2^{2134939}$,
+$b=b_0+\varepsilon$ and $B=b^3$. Define
+\begin{align*}
+ \ell&=\sum_iB^{w_i},& N_0&=B^{191},&N_1&=4B^{8763},&N&=N_0N_1,\\
+ M_0&=N_0-1-(b-1)\ell,& T_0&=\sum_jB^{h_j},\\
+ T&=M_0+(B-2)T_0N_0,\\
+ J_0&=2(1+g)^2D(B)+B\sum_{k=0}^{8762}B^k,& S&=g+J_0N_0,\\
+ R&=(N-1)\bigl((S+T+1)N+T+1\bigr),&G_{\rm cap}&=32bB^{190}.
+\end{align*}
+The bounded branch $g<4bB^{190}$ gives $g<N_0$ and $0<J_0<N_1$;
+also $0<T<N$. When $b$ is a power of two, the first mask forces
+$g=\sum_i z_iB^{w_i}$ with $0\leq z_i<b$.
+Equation~\eqref{eq:support-bound} gives strict coefficient magnitudes
+below $M(32b)^2\leq B/4$. After adding $B/2$ to each coefficient, all
+digits lie strictly between zero and $B$. The second mask forces every
+target digit to equal $B/2$, and therefore every source row vanishes.
+The binary-popcount identity gives the inherited central-binomial
+divisibility condition $N^2\mid\binom{2R}{R}$.
+
+Conversely, choose an arbitrarily large power of two $b$ above the
+coordinates of a common source zero. The resulting packed $g$ is positive,
+all target tests pass, and $32g<G_{\rm cap}$. Thus both directions of the
+Jones ratio interface hold. For Sun's ten-integer interface use
+$h_j=380+381(j-1)$, $K=8761$, $b=1+3f$ and
+$B=2^{2140030}b^2$. The original coefficient majorant and all congruence
+conditions remain valid. The source cap is still $bB^{190}$, in precisely
+the required fixed-power form. The inherited finalizers therefore apply
+without increasing the number of witnesses.
+
+\subsection{Resulting fixed polynomials and certified metrics}
+The literal ten-integer circuit has $653$ live binary arithmetic operations
+and exact total degree $56{,}593{,}864$. The literal nine-positive-variable
+circuit has $651$ operations and exact degree $30{,}947{,}584$; its
+nonnegative-variable translation has $654$ operations. For the latter,
+$t=\deg N=26{,}862$, and the inherited cancellation-resolved identity gives
+\[
+ \deg F_9=1152t+12W+280=30{,}947{,}584,
+\]
+with diagonal leading coefficient $2^{2050}$. A separate certificate circuit
+has $666$ operations but represents exactly the same polynomial; the
+$651$-operation circuit is used for the operation comparison.
+All fixed powers in the delivered circuits are expanded into multiplication
+gates. Exact degree lower bounds follow from nonzero leading coefficients
+at the proved degree upper bound. Modular full-formula comparisons are
+reported separately as implementation evidence.
+
+Against the reviewed wave-6 constructions, the degrees fall from
+$237{,}520{,}456$ and $129{,}875{,}980$, respectively. The operation savings
+are $129$ and $137$. The consistency equivalences retain their imported
+compiler/K215, Jones, and (for the integer form) Sun dependencies. This
+contribution proves and certifies the new source transformation; it does
+not claim global minimality or a new end-to-end proof-assistant certificate.

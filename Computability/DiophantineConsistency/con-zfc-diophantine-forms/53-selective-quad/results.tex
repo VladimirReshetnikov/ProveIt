@@ -1,0 +1,57 @@
+\section{Results and fair comparisons}
+An operation is a charged binary addition, subtraction, or multiplication,
+including multiplication by a fixed numeral and every multiplication used
+for a fixed power. Shared registers and fixed integer leaves are not
+charged again. Degrees are total degrees in the quantified unknowns; the
+large coefficients are fixed. This arithmetic-circuit measure is not a
+bit-complexity measure or an expanded-monomial count.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Domain and unknowns & Exact degree & Operations & Comparison\\
+\midrule
+$10\Z$ & $21\,111\,400$ & 659 & Source40: $237\,520\,456/782$\\
+$9$ positive & $7\,344\,328$ & 738 & Source45: $129\,875\,980/788$\\
+$9$ positive, fewer gates & $12\,023\,320$ & 734 & Same baseline\\
+$13\Z$, Jones only & $57\,866\,184$ & 759 & Source44: $226\,334\,238\,192/1409$\\
+$11$ positive & 958 & 117 & Source38: $1154/123$\\
+$11$ positive, fewer gates & 962 & 115 & Source38: $1140/129$\\
+$15$ positive & 80 & 72 & Local P73: $80/73$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The nine-natural versions use 744 and 740 operations, respectively, at
+the same degrees. The eleven-positive two-equation shifted systems have
+degrees $(2,956)$ at 112 operations, or $(2,960)$ at 110 operations. The
+systems are secondary presentations; the main claims above are single
+polynomial equations. The unseeded thirteen-integer comparator has degree
+$71\,382\,096$ and 770 operations.
+
+These rows are not ordered by one universal notion of ``simplest.'' Sun's
+2026 theorem is used only for the ten-unrestricted-integer row. The nine,
+thirteen, eleven, and fifteen-variable routes do not use that theorem.
+The thirteen-variable row is therefore a dependency-reduced alternative,
+not a competitor on unknown count with the ten-integer row. Positive and
+unrestricted domains must not be conflated.
+
+The known 67-operation scalar equation and 59-operation system remain
+unbeaten on operation count alone. Our previous twelve-positive equation
+has smaller degree $901$ than the new eleven-positive equation, at the
+cost of an extra unknown. Historical fifteen-positive points $99/69$,
+$93/70$, $83/71$, $56/74$, and $44/78$ also remain relevant; the present
+$56/74$ regrouping is explicitly not claimed as new. The eight earlier
+packages were reviewed as mathematical sources, not all rerun wholesale.
+New circuit properties are independently audited in this archive.
+
+\paragraph{Coefficient cost is not hidden.}
+All active constructions in this release use the complete source31
+Wang943 $121\times8801$ tuple: $B_{\rm native}=2^{1064921}$,
+$\beta=B_{\rm native}-1$, and the three matching ports $K,M_C,M_F$.
+The fourth port is already shifted. The four uncompressed payloads total
+533,099 bytes. This is larger than source44's alternative 295,388-byte
+tuple, which is not silently substituted. The source constant
+$2^{2134940}$ and derived fixed leaves have exact finite recipes from this
+selected tuple; their cost and bit lengths are disclosed separately.
+The new wins are in exponent ranges, degree, arithmetic circuits, and
+some proof interfaces, not a claim to new coefficient-byte records.

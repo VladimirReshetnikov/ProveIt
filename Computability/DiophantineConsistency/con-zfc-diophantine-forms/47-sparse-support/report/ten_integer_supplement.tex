@@ -1,0 +1,242 @@
+\section{Complete ten-integer definition and transfer proof}
+\label{sec:ten-supplement}
+
+This supplement specifies the second delivered polynomial without any
+implicit auxiliary unknowns.  Its ten independent unknowns are
+\[
+ (f,g,h,k,l,w,x,y,z,m)\in\Z^{10}.
+\]
+Every other symbol in this section abbreviates an integer polynomial in
+these ten variables.  Symbols used for the nine-variable construction
+are reset locally.  The parent polynomials $p_j$, their fixed weighted
+coefficients $c_{j,\alpha}$, and either one of the two weight vectors
+are exactly those in Sections~\ref{sec:parent}--\ref{sec:sparse}.
+In particular,
+\[
+ W=\max_iw_i,\quad h_j=j(2W+1)-1,\quad
+ H_*=44W+21,\quad K_*=46W+21,
+\]
+and $\mathcal D$ is the fixed univariate polynomial in
+\eqref{eq:D}.  These are fixed exponents and fixed coefficients,
+not further unknowns.
+
+\subsection{The two-input packed source}
+
+Set the fixed integer $\beta_{10}=2^{2140030}$ and define
+\begin{align*}
+ b&=1+3f,& B_{10}&=\beta_{10}b^2,
+ &\ell&=\sum_{i=1}^{31}B_{10}^{w_i},\\
+ N_0&=B_{10}^{W+1},&N_1&=4B_{10}^{K_*+1},&N&=N_0N_1,\\
+ M_c&=N_0-1-(b-1)\ell,
+ &Q_c&=(B_{10}-2)\sum_{j=1}^{22}B_{10}^{h_j},
+ &T_c&=M_c+Q_cN_0,\\
+ J_c&=2(1+g)^2\mathcal D(B_{10})+
+                B_{10}\sum_{q=0}^{K_*}B_{10}^{q},
+ &S_c&=g+J_cN_0.
+\end{align*}
+Finally put
+\[
+ X=(N-1)\bigl((S_c+T_c+1)N+T_c+1\bigr),\qquad
+ Y=N^2,\qquad C_b=bB_{10}^{W}.
+\]
+Thus $N=4B_{10}^{47W+23}$ and
+$C_b=2^{2140030W}b^{2W+1}$.
+All sums have fixed finite limits.  The released circuit evaluates them
+by shared powers and geometric-sum identities.
+
+\subsection{The retained Lucas and norm registers}
+
+Define, in the displayed order,
+\begin{align*}
+ L&=lY,&U&=2LX,&V&=4gwY,&W_b&=bw,\\
+ A&=U(V+1),&B_1&=2X+1,&C&=B_1+(A-2)h,\\
+ P_n&=U^2V,&K&=X+1+k(P_n-2),\\
+ S&=2A-5,&T&=3W_bC-2(W_b^2-1),\\
+ R_2&=(P_n^2-4)K^2+4.
+\end{align*}
+The margin and Lucas registers are
+\begin{align*}
+ \Delta_b&=8C_b^3gK^2-
+       g^2\bigl(32(C-KL)^2C_b^3+g^2K^2\bigr),\\
+ O&=f^2l^2\Delta_b,&\xi&=zx,\\
+ D&=(A^2-4)C^2+4,&E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,
+ &G^*&=2(A+2)(A-2)^2E^2-1,\\
+ \Omega_{10}&=16E,
+ &H^*&=C+(B_1-C)F+\Omega_{10}Fy,\\
+ I^*&=((G^*)^2-1)(H^*)^2+1.
+\end{align*}
+The homogeneous quintic merger and the three radicands are
+\begin{align*}
+ \Sigma&=\xi S^5,&r&=T+Sy,\\
+ \Theta_{10}&=(r^3-rS^2-S^3)(r^2+23S^2),\\
+ r_0&=b\bigl(1+(3O-4)b^2z^2\bigr),&
+ r_1&=R_2,&r_2&=DFI^*,\\
+ v_1&=r_0,&v_2&=v_1(P_n^2+K^2+3),\\
+ Z_n&=\Sigma m-\Theta_{10},\\
+ a_0&=\Sigma^2r_0,&a_1&=\Sigma^2v_1^2r_1,
+ &a_2&=\Sigma^2v_2^2r_2.
+\end{align*}
+Set $V_n=Z_n^2+a_2-a_0-a_1$.  The complete equation is
+\begin{equation}
+ \boxed{\quad
+ F_{10}:=(V_n^2+4Z_n^2a_2-4a_0a_1)^2
+              -16V_n^2Z_n^2a_2=0.\quad}
+ \label{eq:supplement-F10}
+\end{equation}
+After the definitions are substituted, this is a single polynomial over
+$\Z$ in precisely the ten displayed integer unknowns.  The files
+\texttt{sparse220\_ten\_integer.json} and
+\texttt{sparse239\_ten\_integer.json} specify the corresponding expanded
+binary arithmetic schedules and bind every nonliteral leaf to its exact
+materialized coefficient.
+
+\subsection{The precise inherited source interface}
+
+Here is the interface of package 40's source theorem used in the
+composition~\cite{source40}.  Let $H_0$ bound the ordinary coefficients
+of the shifted parent rows.  One may take
+\[
+ H_0=8(1+\beta+K_0+M_C+M_F)^2,
+ \qquad \beta_{10}>4\cdot33^2H_0.
+\]
+The displayed inequality follows from the fixed port bit lengths; the
+exact coefficient payloads also verify it directly.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If the $p_j$ have a common zero in $\N^{31}$, then for every
+sufficiently large positive integer $f$ for which $b=1+3f$ is both a
+square and a power of two, there is a $g$ with
+\[
+ b\leq g<C_b,\qquad Y\mid\binom{2X}{X}.
+\]
+\item If $f\ne0$, $b$ is a square and a power of two,
+$0\leq g<2C_b$, and $Y\mid\binom{2X}{X}$, then the $p_j$ have a
+common zero in $\N^{31}$.
+\item Already under $f\ne0$, $b$ a square, and $0\leq g<2C_b$,
+without the power-of-two assumption, one has
+\[
+ 0\leq S_c,T_c<N,\quad3\mid X,\quad X>3b,\quad
+ Y>\max\{b,256\}.
+\]
+\end{enumerate}
+
+The new support-isolation property proves the exact same coefficient
+identities and coefficient bound used in that theorem.  Distinct
+encoded positions, positive leading coefficient 2, target spacing,
+and nonnegative exponents have all been retained.  The proof of
+\textup{(iii)} bounds $J_c$ for every integer in the broad permitted
+interval before any digit recovery.  For \textup{(ii)}, the lower mask
+recovers $g=\sum_i n_iB_{10}^{w_i}$ with $0\leq n_i<b$; the upper mask
+tests all 22 centered coefficients, and the binary carry identity gives
+the binomial divisibility.  For \textup{(i)}, choose arbitrarily large
+$b=4^q>\max_i n_i$ and $f=(b-1)/3$, then use the same word.  The parent
+zero is nonzero because its last row has constant coefficient 1; thus
+$g\geq B_{10}\geq b$.  These observations prove that the source
+interface transfers to the two supplied vectors.
+
+Sun's retained argument uses this interface, $b=1+3f$, and
+$C_b=2^c b^d$ with $c$ even and $d$ odd.  Here
+$c=2140030W$ is even and $d=2W+1$ is odd.  Thus the new source has all
+the required congruence and growth hypotheses.  The use is of the
+parametric proofs of Propositions 6.1--6.2 and Theorem 4.1 of
+Sun's 2026 paper, as composed and documented in packages 31 and
+40~\cite{sun2026,source31,source40}.
+
+\subsection{Why the unrestricted norm has exactly the required zeros}
+
+The retained bridge has two relevant consequences.  A common parent
+zero supplies positive witnesses with $A>2$ even, $B_1>0$ odd,
+$b$ square, $b\leq g<C_b$, $C=u_{B_1}(A)$, $R_2$ square,
+$S\mid T$, and $O>0$.  Conversely, for the formulas above,
+\[
+ b\text{ square},\quad O>0,\quad\xi\ne0,\quad
+ DFI^*\text{ square},\quad R_2\text{ square},\quad S\mid T
+ \tag{S1}
+\]
+imply a parent zero.  The reverse proof first obtains the source's
+broad ranges from $O>0$; it then recovers the Lucas value and the
+power-of-two base.  The full interpolation assertion says that, when
+$C=u_{B_1}(A)$ under the positive hypotheses, for any positive $d$
+one may choose $\xi>0$ divisible by $d$ such that \emph{every}
+residue class modulo $\xi$ contains a $y$ making $DFI^*$ a square.
+
+For completeness, the finalizer enforces exactly (S1) as follows.
+The polynomial $\pi(t)=(t^3-t-1)(t^2+23)$ has no rational zero and has
+a root modulo every positive integer.  Its cubic discriminant is
+$-23$: at an odd prime other than 23, either the cubic has a simple
+root or its irreducible Frobenius 3-cycle makes $-23$ a square; at 23
+the cubic has simple root 3; at 2 one uses $-23\equiv1\pmod8$.
+Lifting and CRT finish the local assertion.  As $S=2A-5$ is always
+odd and nonzero, $\Theta_{10}\ne0$ always.  Moreover,
+$\Sigma\mid\Theta_{10}$ implies $S\mid T$: if
+$\nu_p(S)>\nu_p(T)$, the two homogeneous factors have valuations
+$3\nu_p(T)$ and $2\nu_p(T)$, contradicting $S^5\mid\Theta_{10}$.
+Conversely, from $S\mid T$ a root of $\pi$ modulo $|\xi|$ prescribes
+a residue class for $y$ giving $\Sigma\mid\Theta_{10}$.
+
+For $z\ne0$, the factors $b$ and $1+(3O-4)b^2z^2$ are coprime, and
+the second cannot vanish.  Therefore $r_0$ square makes $b$ a signed
+square; $b\equiv1\pmod3$ excludes the negative sign.  Its second
+factor is then a square, which forces $O>0$.  Conversely positive
+bridge witnesses have $O\geq g\geq b\geq4$.  Pell's equation for the
+positive nonsquare $3O-4\equiv2\pmod3$, after taking a unit power
+whose second coordinate is divisible by $b$, supplies $z>0$ making
+$r_0$ square.
+
+Finally, for $z\ne0$ one has $|r_0|>1$ and
+\[
+ \sqrt{|r_1|}\leq P_n^2+K^2+2,\qquad
+ |v_1|>\sqrt{|r_0|},\qquad
+ |v_2|>\sqrt{|r_0|}+|v_1|\sqrt{|r_1|}.
+\]
+These inequalities ensure that a rational signed sum
+$\pm\sqrt{r_0}\pm v_1\sqrt{r_1}\pm v_2\sqrt{r_2}$ requires all
+three radicands to be integer squares.  Indeed, a multiquadratic-field
+automorphism changing a root changes the highest-index changed term
+by more than the combined absolute values of all earlier changes.
+The argument also covers negative radicands and dependent square
+classes.
+
+Equation~\eqref{eq:supplement-F10} is identically the product of its
+eight signed-root factors.  If $\Sigma=0$, it equals
+$\Theta_{10}^8\ne0$; hence any zero has $\xi=zx\ne0$.  Dividing a
+vanishing factor by $\Sigma$ and using separation forces the three
+squares and then $\Sigma\mid\Theta_{10}$.  The preceding mergers
+give (S1), so the reverse bridge supplies a parent zero.  In the
+other direction, choose the positive bridge witnesses, then the Pell
+value $z>0$, then an interpolation modulus $\xi$ divisible by $z$,
+then a $y$ in the quintic-prescribed residue class.  Put $x=\xi/z$.
+All radicands are squares and $\Sigma\mid\Theta_{10}$, so an integer
+$m$ makes one norm factor vanish.  This proves
+\[
+ (\exists\mathbf t\in\Z^{10})\ F_{10}(\mathbf t)=0
+ \quad\Longleftrightarrow\quad
+ (\exists\boldsymbol n\in\N^{31})\ \bigwedge_j p_j(\boldsymbol n)=0.
+\]
+Together with the inherited fixed-compiler theorem, classical negation
+gives the asserted equivalence with $\Con$ in ZFC.  The argument
+retains the cited ordinary proof dependencies and makes no additional
+claim of end-to-end proof-assistant certification.
+
+\subsection{Exact degree and supplied evaluators}
+
+Writing $p=47W+23$, the source degrees are
+$d_X=6p$, $d_Y=4p$, and $d_C=2W+1$.  The retained tail gives
+\begin{align*}
+ \deg Z_n&=5d_X+10d_Y+30,\\
+ \deg a_0&=14d_X+28d_Y+3d_C+57,\\
+ \deg a_1&=26d_X+48d_Y+6d_C+98,\\
+ \deg a_2&=114d_X+224d_Y+6d_C+440.
+\end{align*}
+The last strictly dominates the degrees of $a_0,a_1,Z_n^2$.
+Thus the top homogeneous part of $F_{10}$ is the fourth power of the
+top homogeneous part of $a_2$, and
+\[
+ \deg F_{10}=297088W+147144.
+\]
+The $W=220$ evaluator uses 675 operations and has exact degree
+65,506,504; the $W=239$ evaluator uses 662 operations and has exact
+degree 71,151,176.  Independent direct leading-coefficient propagation
+on these two exported DAGs gives nonzero residues 489390939 and
+862326449 modulo 1,000,000,007, respectively, certifying attainment of
+the propagated upper bounds.

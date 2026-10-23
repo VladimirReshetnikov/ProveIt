@@ -36,9 +36,10 @@ below are unchanged. Neither the Diophantine bridge nor the compiler is
 formalized. The Lean development proves MRDP and `Jones1982.nine_unknowns`,
 the existence of a nine-unknown representation without a degree bound.
 
-The report's Jones-route forms use the ratio lemmas of `Jones1982.Nine` and
-`Jones1982.USys_of_mem` for a fixed parent system or quartic, not
-`nine_unknowns` (which fixes ν = 58). Their new arguments are unformalized,
+The report's Jones-route forms use `Jones1982.Nine.wset_iff_nine` (wave 5)
+or its ratio lemmas directly (wave 6), with `Jones1982.USys_of_mem`, for a
+fixed parent system or quartic. None uses `nine_unknowns`, which fixes
+ν = 58. Their new arguments are unformalized,
 so the new polynomials are not themselves instances of a Lean theorem.
 
 The established arithmetic bounds are **74 operations for a complete

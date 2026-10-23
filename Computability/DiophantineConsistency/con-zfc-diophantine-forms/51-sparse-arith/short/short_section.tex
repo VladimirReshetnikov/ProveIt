@@ -1,0 +1,292 @@
+\section{A squared-modulus quotient: a 66-operation equation}
+\label{sec:squared-modulus}
+
+The constructions with fewest variables need large arithmetic circuits.
+There is a separate improvement at the short-circuit end of the comparison:
+the inherited fifteen-positive-variable equation can be evaluated in
+\textbf{66 binary arithmetic operations}.  Its exact degree is 157.  This
+saves one operation against the repository's 67-operation, degree-155
+baseline.  The same idea lowers the costs of the degree-80 and degree-68
+alternatives from 73 and 75 to 72 and 74 operations, respectively.
+The saving comes from a stronger auxiliary congruence, followed by a change
+of the quantified quotient.  It is not an identity between the old and new
+polynomials at the same quotient coordinate.
+
+\subsection{The explicit polynomial and its fixed coefficients}
+
+Use the entire coefficient tuple of package 36 at the source commit
+\texttt{124c07c0b7}: the ports are
+\(\beta=B-1,K_0,M_C,M_F\), with \(B=2^{1012115}\).
+Here \(K_0\) is the tuple's \texttt{K} and \(M_F\) is its already shifted
+\texttt{MF\_source}.  The four ports are fixed integers, not additional
+unknowns.  The coefficient construction and its machine semantics are
+inherited; the argument below introduces no rebinding or change of masks.
+
+All fifteen unknowns are strictly positive integers:
+\[
+ (J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma)\in\Pos^{15}.
+\]
+Define the following polynomial abbreviations, which introduce no new
+unknowns:
+\begin{align*}
+ q&=\beta J+1,                 & C&=q-F-\alpha,\\
+ X&=wq,                       & Y&=sq^3, & E&=XY,\\
+ k&=\eta+\zeta,               & c&=kY+\eta, & a&=E+Y,\\
+ H&=4a+3,                     & \Delta&=a^2+H, & A&=a+2,\\
+ D&=X+ac+\gamma H,            & G&=(q-1)(q-F)+\alpha,\\
+ R&=G(q^2-1)+(M_C+qM_F)J,     & S&=i\Delta c^2,\\
+ V&=f^2(cT-R)-c.&&&
+\end{align*}
+In particular, \(\Delta=A^2-1=(a+1)(a+3)>0\) throughout the positive
+domain, before any equation is imposed.  Set
+\begin{align*}
+ N_0&=\tau^2-(XY^2)(XY^2+1)k^2,\\
+ N_1&=D^2-\Delta c^2,\\
+ N_a&=S^2(V^2-y^2)+y^2,\\
+ N_k&=k-hE-R,\\
+ N_t&=(K_0+w)C+(q-F)-z(q-1),\\
+ N_{\mathrm{str}}&=\Delta f^2-S^2.
+\end{align*}
+The proposed equation is the ordinary integer polynomial equation
+\begin{equation}
+ \boxed{\quad
+ P_{66}:=N_0N_1N_aN_kN_tN_{\mathrm{str}}-\Delta=0.
+ \quad}
+ \label{eq:p66}
+\end{equation}
+Every exponent in this definition is fixed.  The divisions and Pell
+polynomials used below occur only in the proof and witness construction.
+
+\subsection{Why a square modulus permits a cheaper quotient}
+
+Write \(\chi_t(n),\psi_t(n)\) for the integer Pell polynomials determined by
+\[
+ \chi_t(0)=1,\qquad \psi_t(0)=0,
+\]
+\[
+ \chi_t(n+1)=t\chi_t(n)+(t^2-1)\psi_t(n),\qquad
+ \psi_t(n+1)=\chi_t(n)+t\psi_t(n).
+\]
+Thus \(\chi_t(n)^2-(t^2-1)\psi_t(n)^2=1\).
+
+\begin{lemma}[Odd Pell quotient identities]
+\label{lem:odd-quotient}
+For each \(r\in\N\) there is a polynomial \(Q_r\in\Z[Z]\) such that
+\begin{align}
+ \chi_t(2r+1)&=tQ_r(t^2),\label{eq:odd-quotient-identity}\\
+ Q_r(0)&=(-1)^r(2r+1),\label{eq:odd-quotient-constant}\\
+ Q_r(1-A^2)&=(-1)^r\psi_A(2r+1).
+ \label{eq:odd-quotient-conjugate}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The odd-index subsequence gives
+\[
+ Q_0(Z)=1,\qquad Q_1(Z)=4Z-3,\qquad
+ Q_{r+1}(Z)=(4Z-2)Q_r(Z)-Q_{r-1}(Z).
+\]
+This proves \eqref{eq:odd-quotient-identity} and
+\eqref{eq:odd-quotient-constant} by induction.  The sequence
+\(\psi_A(2r+1)\) starts with \(1,4A^2-1\) and has recurrence coefficient
+\(4A^2-2\).  Substituting \(Z=1-A^2\) changes the coefficient of the
+displayed recurrence to its negative, giving
+\eqref{eq:odd-quotient-conjugate} by the same induction.  These are
+identities over the integers and therefore also hold modulo any positive
+integer.
+\end{proof}
+
+\begin{lemma}[Squared-modulus reconstruction]
+\label{lem:squared-modulus-reconstruction}
+Suppose \(A>1\), \(R>0\), \(R\equiv3\pmod4\),
+\(c=\psi_A(R)>0\), and \(i,f>0\) satisfy
+\[
+ \Delta=A^2-1,\qquad f^2=1+\Delta i^2c^4.
+\]
+Put \(S=\Delta ic^2\).  There are positive integers \(V,y,T\) satisfying
+\[
+ S^2(V^2-y^2)+y^2=1,\qquad V=f^2(cT-R)-c.
+\]
+\end{lemma}
+
+\begin{proof}
+Take
+\[
+ V=\frac{\chi_S(R)}{S},\qquad y=\psi_S(R).
+\]
+The quotient is integral by \eqref{eq:odd-quotient-identity}; both values
+are positive because \(S>1\) and \(R>0\).  The Pell identity gives the
+required norm equation.  Also
+\[
+ S^2=\Delta(f^2-1)\equiv1-A^2\pmod{f^2}.
+\]
+Since \((R-1)/2\) is odd, Lemma~\ref{lem:odd-quotient} gives the two
+congruences
+\begin{equation}
+ V\equiv-c\pmod{f^2},\qquad V\equiv-R\pmod c.
+ \label{eq:squared-modulus-congruences}
+\end{equation}
+For the second, use \(c\mid S\) and
+\eqref{eq:odd-quotient-constant}.  The strong equation gives
+\(f^2\equiv1\pmod c\), hence \(\gcd(c,f)=1\).
+The numerator \(V+c+Rf^2\) is therefore divisible by both \(f^2\) and
+\(c\), and thus by \(cf^2\).  Consequently
+\[
+ T=\frac{V+c+Rf^2}{cf^2}
+\]
+is a positive integer.  Rearranging proves the stated quotient identity.
+\end{proof}
+
+The earlier auxiliary construction used congruence modulo \(f\).  Retaining
+the full modulus \(f^2\) is what makes the old quotient divisible by
+\(f\), after choosing a suitable auxiliary Pell ordinate.
+
+\subsection{Soundness, completeness, and the native congruence}
+
+\begin{theorem}[Existence-equivalence of the short equation]
+\label{thm:p66-consistency}
+With the authentic package-36 coefficient tuple, the inherited ordinary
+mathematical compiler and K215 calibration imply
+\[
+ \mathrm{ZFC}\vdash
+ \left[
+ \neg\exists\mathbf{x}\in\Pos^{15}\;P_{66}(\mathbf{x})=0
+ \right]
+ \;\longleftrightarrow\;
+ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The additional reduction from the inherited explicit polynomial to
+\eqref{eq:p66} requires no consistency assumption.
+\end{theorem}
+
+\begin{proof}
+Let \(P_{67}\) denote the inherited polynomial on the same fifteen slots.
+Its only different abbreviation is
+\[
+ V_{\mathrm{old}}=c(T_{\mathrm{old}}f-1)-Rf^2.
+\]
+The exact all-value identity
+\begin{equation}
+ P_{66}(\ldots,f,T,\ldots)
+   =P_{67}(\ldots,f,fT,\ldots)
+ \label{eq:p66-pullback}
+\end{equation}
+follows by substitution.  Thus every positive new zero gives a positive old
+zero, since \(fT>0\).  Inherited soundness supplies a finite ZFC refutation.
+
+Conversely, a finite refutation supplies a positive old zero.  Its inherited
+Pell and compiler recovery gives
+\[
+ c=\psi_A(R),\qquad f^2=1+\Delta i^2c^4,
+ \qquad q=B^N,\qquad J=1+B+\cdots+B^{N-1}
+\]
+for some positive integer \(N\), together with the native bit condition
+\[
+ (C-1)\mathbin{\mathrm{AND}}(M_CJ+1)=0.
+\]
+The tuple has \(4\mid B\) and \(M_C\equiv2\pmod4\).  Hence
+\(q\equiv0\pmod4\), \(J\equiv1\pmod4\), and
+\(M_CJ+1\equiv3\pmod4\).  The two low bits of the nonnegative integer
+\(C-1\) must vanish, so \(C\equiv1\pmod4\).  Using the exact identity
+\(G=q(q-F)-C\), the definition of \(R\) yields
+\[
+ R\equiv C+2\equiv3\pmod4.
+\]
+This phase follows from the authentic native decoding; it is not a
+restriction silently imposed on arbitrary coefficient assignments.
+
+Apply Lemma~\ref{lem:squared-modulus-reconstruction} at these same values
+of \(A,R,c,i,f\).  Replace only the supplied auxiliary ordinate \(y\) and
+quotient \(T\) by the lemma's positive integers.  The auxiliary norm factor
+is again one.  The other factors are unchanged; in particular the inherited
+unit classification gives \(N_0=N_1=N_k=N_t=1\) and
+\(N_{\mathrm{str}}=\Delta\).  Thus \(P_{66}=0\).
+
+We have established equivalence of positive solvability, which composes
+with the inherited refutation calibration.  Negating gives the displayed
+consistency equivalence.  All new steps are finite integer algebra,
+induction on polynomial recurrences, and elementary divisibility, and can
+be carried out in ZFC.
+\end{proof}
+
+The reverse map may change both auxiliary coordinates.  In particular,
+the theorem does not assert that every old quotient is divisible by \(f\),
+or that the old and new equations have identical zero sets at unchanged
+coordinates.  The local substitution proof also does not supply an
+end-to-end Lean or Rocq certificate for the inherited native-window
+compiler.
+
+\subsection{Exact arithmetic size, degree, and companion equations}
+
+The old evaluator already computes \(f^2\).  Its five private quotient
+operations are replaced by the four operations
+\[
+ cT,\qquad cT-R,\qquad f^2(cT-R),\qquad f^2(cT-R)-c.
+\]
+Every other gate is retained.  The complete new evaluator has
+\(38\) multiplications, \(15\) additions, and \(13\) subtractions.
+Multiplication by a fixed numeral is charged; reuse is free.  All gates,
+all fifteen witnesses, and all four coefficient ports are live.
+
+The exact factor degrees in the order
+\(N_0,N_1,N_a,N_k,N_t,N_{\mathrm{str}}\) are
+\[
+ 22,\quad18,\quad62,\quad7,\quad2,\quad46.
+\]
+Put \(Q=\beta J\), \(k_0=\eta+\zeta\), and
+\(C_1=Q-F-\alpha\).  The leading homogeneous polynomial of \(P_{66}\) is
+\[
+ -8Q^{91}h\gamma i^4k_0^{13}w^{13}s^{26}T^2f^4
+       (wC_1-zQ).
+\]
+In particular, the coefficient of
+\[
+ J^{92}h\gamma i^4\eta^{13}w^{13}s^{26}T^2f^4z
+\]
+is \(8\beta^{92}\ne0\).  The exact degree is therefore 157, and the
+final subtraction of \(\Delta\), of degree 12, cannot affect it.
+
+For lower-degree alternatives, retain the new \(V\) but put
+\[
+ \widetilde N_a=\Delta(f^2-1)(V^2-y^2)+y^2,
+ \qquad N_s=f^2-\Delta(ic^2)^2.
+\]
+The following three companion equations inherit the same positive
+solvability equivalence:
+\begin{align*}
+ P_{68}&=N_0N_1\widetilde N_aN_kN_tN_s-1=0,\\
+ P_{72}&=(N_0N_1-1)^2+(\widetilde N_aN_kN_t-1)^2+(N_s-1)^2=0,\\
+ P_{74}&=(N_0-1)^2+(\widetilde N_a-1)^2+(N_s-1)^2
+              +(N_1N_kN_t-1)^2=0.
+\end{align*}
+Indeed each is the corresponding inherited parent equation under the same
+positive substitution \(T_{\mathrm{old}}=fT\); the established parent
+equivalences and the reconstruction proof above apply.  Their fully paid
+counts and exact degrees are
+\[
+\begin{array}{c|r|r|r|r|r}
+ &\text{multiplications}&\text{additions}&\text{subtractions}
+ &\text{total}&\text{degree}\\ \hline
+ P_{66}&38&15&13&66&157\\
+ P_{68}&39&15&14&68&113\\
+ P_{72}&40&17&15&72&80\\
+ P_{74}&40&18&16&74&68
+\end{array}
+\]
+For \(P_{72}\), the first squared residual uniquely reaches degree 80;
+its leading form is
+\(64\gamma^2w^8s^{14}(\eta+\zeta)^6(\beta J)^{50}\).
+For \(P_{74}\), the strong residual uniquely reaches degree 68 after
+squaring; its leading form is
+\(i^4w^4s^{12}(\eta+\zeta)^8(\beta J)^{40}\).
+For \(P_{68}\), a degree-113 monomial has coefficient
+\(8\beta^{64}\).  These nonzero coefficients certify the claimed exact
+degrees uniformly for the prescribed tuple.
+
+The supplied standard-library auditor checks the literal schedules, source
+hashes, exact polynomial identities at the changed cut, leading homogeneous
+forms, and full liveness.  Normal and optimized Python executions agree.
+Its finite congruence examples and modular circuit diagnostics support the
+implementation; the universal reconstruction lemma, rather than those
+examples, supplies the new mathematical proof.  The result improves stated
+repository tradeoffs and makes no claim of global minimality.

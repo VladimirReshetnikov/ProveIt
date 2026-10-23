@@ -1,0 +1,414 @@
+\section{A selective, borrow-tolerant ten-integer equation}
+\label{sec:selective-sun}
+
+There is a completely fixed polynomial in ten unrestricted integer unknowns
+\[
+ F_{10}(f,g,h,k,l,w,x,y,z,m)
+\]
+of exact total degree $21\,111\,400$, with a division-free evaluation circuit
+using $659$ binary operations, for which ordinary mathematics formalizable
+in ZFC proves
+\[
+ \neg\exists(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}\;(F_{10}=0)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+The proof uses the pinned ProveIt machine/compiler calibration and Sun's
+arithmetic bridge. It is not an end-to-end proof-assistant certificate and
+it does not establish either consistency or inconsistency. The unknown
+count is inherited, not a new universal unknown-count theorem.
+
+Three source-layer changes are responsible for the improvement:
+selective isolation of used quadratic monomials, one-bit target padding
+that tolerates incoming borrows, and calibration by the actual mask
+population instead of a uniform worst-case carry threshold. The latter
+two changes are proved below and are independent of any search heuristic.
+All scalar powers in this section have fixed nonnegative integer exponents.
+Auxiliary letters are polynomial abbreviations, not extra unknowns.
+
+\subsection{Fixed data and selective extraction}
+
+Use precisely the 22 quadratic residuals of
+\texttt{data/parent\_quartic31.json} and the complete fixed port tuple
+\[
+ (\beta_{\rm native},K_0,M_C,M_F)
+ = (\texttt{beta},\texttt{K},\texttt{MC},\texttt{MF\_source}).
+\]
+The last port is already shifted; it must not be shifted again. Its tuple
+is Wang943 $121\times8801$, with port bit lengths
+$(1064921,1070004,1064921,1064922)$. Each payload is included, with compressed
+and uncompressed hashes. The active binding is \texttt{INSTANCE.json};
+historical relative paths inside preserved input files are provenance only.
+
+Replace every positive parent coordinate by $n_i+1$. Let $r_j(n)$ denote
+the resulting residual, written $r_j=\sum_\alpha p_{j,\alpha}n^\alpha$,
+$|\alpha|\le2$. This is the original package-31 source, not the later
+package-45 transport variant. The inherited source theorem is
+\[
+ \exists n\in\mathbb N^{31}\;\bigwedge_{j=1}^{22}r_j(n)=0
+ \quad\Longleftrightarrow\quad\neg\operatorname{Con}(\mathrm{ZFC}),
+ \qquad \mathbb N=\{0,1,2,\ldots\}.
+\]
+Its parent coordinate order is
+\[
+\begin{split}
+ &(J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ &\hspace{25mm}N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta).
+\end{split}
+\]
+Assign these coordinates the following weights, with a padding weight $a_0=0$:
+\[
+\begin{split}
+(a_0,\ldots,a_{31})={}&(0,9,25,23,139,35,151,168,21,91,181,94,52,150,180,7,\\
+ &135,38,88,183,106,178,136,20,138,8,64,105,154,37,137,120).
+\end{split}
+\]
+The residual order and corresponding targets are
+\[
+\begin{split}
+ &(16,2,9,14,21,7,15,22,13,3,19,20,1,10,17,8,4,6,11,18,12,5),\\
+ &(70,86,451,685,1050,1296,1530,1874,2212,2358,2696,2780,\\
+ &\hspace{7mm}2792,3157,3290,3634,3929,4238,4384,4527,4865,5190).
+\end{split}
+\]
+Write $q_j$ for the target assigned to residual $r_j$, and put
+\[
+ t=183,\quad q=5190,\quad K_c=q+2t=5556,\quad E_c=t+K_c+2=5741,
+ \quad H_c=2t+K_c+3+22=5947.
+\]
+For every used $\alpha$ and every $\gamma$ with $|\gamma|\le2$, the
+finite certificate verifies
+\begin{equation}\label{eq:sel-isolation}
+ q_j-\alpha\cdot a+\gamma\cdot a=q_k
+ \quad\Longleftrightarrow\quad j=k\ \hbox{and}\ \alpha=\gamma.
+\end{equation}
+All reversed exponents are nonnegative. There are 136 used source terms,
+528 possible padded quadratic monomials, and $136\cdot528=71808$ checked
+interactions. Only 267 different pair sums occur: a full Sidon condition
+is deliberately not required.
+
+Define
+\[
+ c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\;p_{j,\alpha},\qquad
+ D_c(Z)=\sum_{j,\alpha}c_{j,\alpha}Z^{q_j-\alpha\cdot a}.
+\]
+Condition \eqref{eq:sel-isolation} implies that the 136 displayed exponents
+in $D_c$ are distinct. Indeed, if two were equal, multiplying by the
+monomial belonging to either source term would violate isolation at its
+target. Thus, for $A_c\ge\max|c_{j,\alpha}|$, every coefficient of $D_c$
+has absolute value at most $A_c$, with no multiplicity factor.
+Its leading coefficient is exactly $2$: the last residual is $r_5$ and
+$r_5(0)=1$. In particular, the zero vector is not a source solution.
+
+For $C_n(Z)=(1+\sum_i n_iZ^{a_i})^2$, multinomial expansion gives
+\begin{equation}\label{eq:sel-extraction}
+ [Z^{q_j}]C_n(Z)D_c(Z)=2r_j(n),\qquad
+ \left|[Z^s]C_nD_c\right|\le A_c(1+\textstyle\sum_i n_i)^2.
+\end{equation}
+The factorial multiplier cancels the multinomial coefficient; isolation
+excludes every unwanted contribution. This proves the identity for all
+source vectors, not just tested examples.
+
+Take $A_c$ to be the maximum coefficient majorant obtained by replacing
+in each fixed-port recipe a monomial by $2^{\sum e_i\ell_i}$, multiplying
+by the absolute value of its integer coefficient, and summing. Here
+$\ell_i$ are the four verified port bit lengths. Exact integer arithmetic
+gives $\operatorname{bitlength}(A_c)=2134927$ and, with
+\[
+ \kappa=2134940,\qquad \beta_S=2^\kappa,
+ \qquad \left\lfloor\beta_S/A_c\right\rfloor=16383,
+\]
+we have
+\begin{equation}\label{eq:sel-bound}
+ \beta_S>4096A_c\quad\hbox{and}\quad\beta_S>64A_c.
+\end{equation}
+
+\subsection{The new source polynomials}
+
+In the two unrestricted integer unknowns $f,g$, define
+\begin{align*}
+ b&=1+3f,& B_c&=\beta_S b^2,& \mathcal C&=bB_c^t,\\
+ \ell&=\sum_{i=1}^{31}B_c^{a_i},&
+ N_0&=B_c^{t+1},&N_1&=B_c^{K_c+1},&N&=N_0N_1,\\
+ A_T&=\sum_{j=1}^{22}B_c^{q_j},&
+ M_0&=N_0-1-(b-1)\ell,\\
+ T_c&=M_0+(B_c-2)A_TN_0,&
+ J_c&=2(1+g)^2D_c(B_c)+A_T,& S_c&=g+J_cN_0,\\
+ X&=N^2+(S_c+T_c)N+N-1-S_c,\\
+ Y&=\beta_S^{15}\,2^{\kappa-21}\,B_c^{5931}b.
+\end{align*}
+Equivalently, $Y=2^{\kappa H_c-21}b^{11863}$; the first form avoids
+materializing its larger fixed coefficient. The fixed leaf
+$2^{\kappa-21}=2^{2134919}$ is explicitly specified, not an unknown.
+Also $\mathcal C=2^{\kappa t}b^{367}$ has the monomial form required
+by the inherited bridge.
+
+\paragraph{Bounds before binary-base recovery.}
+Suppose $f\ne0$, $b$ is an integer square and $0\le g<2\mathcal C$.
+Since $b\equiv1\pmod3$, these hypotheses imply $b\ge4$ and $f>0$.
+The integer $B_c$ is positive and even, but is not yet assumed to be a
+power of two. Its size implies $B_c>2b$ and $B_c>A_c+1$.
+In the following estimates write $B=B_c$ temporarily.
+
+The base-$B$ digits of $M_0$ are $B-1$ except at the 31 designated
+positions, where they are $B-b$. Hence $0\le M_0<N_0$.
+The leading term of $D_c(B)$ is $2B^q$, and
+\[
+ |D_c(B)-2B^q|\le A_c\frac{B^q-1}{B-1}<B^q,
+ \qquad 0<D_c(B)<\frac{A_c B^{q+1}}{B-1}.
+\]
+Because $g$ is integral, $1+g\le2bB^t$. Therefore
+\[
+ 0<2(1+g)^2D_c(B)
+ <\frac{8A_cb^2}{B-1}N_1<\frac14N_1.
+\]
+The last inequality follows from $\beta_S>64A_c$ and $B>2$.
+Also $(B-1)A_T<B^{q+1}\le N_1/B^2$, since $t\ge1$.
+Consequently
+\[
+ 0<J_c+(B-2)A_T<\tfrac12N_1.
+\]
+We have $g<N_0$, so $g+M_0<2N_0$. As $N_1\ge4$, this proves
+\begin{equation}\label{eq:sel-tight-range}
+ 0\le S_c,\quad0\le T_c,\qquad S_c+T_c<N.
+\end{equation}
+In particular $X\ge N^2>3b$ and $Y>\max(b,256)$.
+Furthermore $B_c\equiv N_0\equiv N\equiv1\pmod3$,
+$M_0\equiv0$ and $T_c\equiv-22$, giving
+\[
+ X\equiv1+T_c\equiv0\pmod3.
+\]
+These statements were obtained without assuming that a square $b$ is a
+power of two. This order matters in the reverse bridge.
+
+\subsection{Sparse padding that tolerates borrows}
+
+Now assume additionally that $b$ is a power of two. Then $B_c$ and $N_0$
+are powers of two. The condition $g\mathbin{\&}M_0=0$ and $0\le g<N_0$
+is exactly
+\[
+ g=\sum_{i=1}^{31}n_iB_c^{a_i},\qquad 0\le n_i<b.
+\]
+The weights are distinct, so the tuple is unique. Indeed, the low mask
+forbids every bit outside the low $\log_2 b$ bits of these designated
+base-$B_c$ cells.
+
+For this tuple let $h_s=[Z^s]C_nD_c$ and let $\epsilon_s$ be the indicator
+of the 22 target positions. Equations \eqref{eq:sel-extraction} and
+\eqref{eq:sel-bound} give $|h_s|<B_c/4$, and
+\[
+ J_c=\sum_{s=0}^{K_c}(2h_s+\epsilon_s)B_c^s.
+\]
+This is a signed-coefficient expansion, not yet a digit expansion.
+Set $u_0=0$ and carry out ordinary Euclidean digit normalization:
+\[
+ u_{s+1}=\left\lfloor\frac{2h_s+\epsilon_s+u_s}{B_c}\right\rfloor,
+ \qquad d_s=2h_s+\epsilon_s+u_s-B_cu_{s+1}.
+\]
+Induction gives $u_s\in\{-1,0\}$ and $0\le d_s<B_c$.
+At a marked position $\epsilon_s=1$, the binary mask $B_c-2$ permits
+exactly the digits $0$ and $1$. If $h_s=0$, the unnormalized digit is
+$1+u_s\in\{0,1\}$, so it passes. If $h_s\ge1$, that digit lies in
+$[2,B_c)$ and fails. If $h_s\le-1$, it lies strictly between $-B_c+1$
+and $0$, so its normalized digit is at least $2$ and again fails.
+Thus each marked test detects precisely $h_s=0$, regardless of an
+incoming borrow. Positivity of $J_c$ was already proved, so these are
+ordinary digits of a nonnegative integer.
+
+Concatenation at the power-of-two boundary $N_0$ now yields
+\begin{equation}\label{eq:sel-carry-source}
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ g=\sum_i n_iB_c^{a_i},\ 0\le n_i<b,\quad r_1(n)=\cdots=r_{22}(n)=0.
+\end{equation}
+The dense geometric padding used by the previous construction has been
+replaced by only one extra bit at each marked cell. Unmarked negative
+coefficients may generate borrows; the proof allows them rather than
+silently assuming them absent.
+
+\subsection{Calibrating the binomial threshold by the mask population}
+
+For $N=2^u$ and nonnegative integers $S,T$ satisfying $S+T<N$, set
+\[
+ X_*=N^2+(S+T)N+N-1-S.
+\]
+Its leading, middle, and low blocks are disjoint. If $s_2$ denotes binary
+population, then
+\begin{align*}
+ s_2(X_*)&=1+s_2(S+T)+u-s_2(S)\\
+ &=1+u+s_2(T)-\bigl(s_2(S)+s_2(T)-s_2(S+T)\bigr).
+\end{align*}
+The parenthesized term is nonnegative and vanishes exactly when
+$S\mathbin{\&}T=0$. Legendre's formula gives
+$\nu_2\binom{2X_*}{X_*}=s_2(X_*)$. Consequently
+\begin{equation}\label{eq:sel-popcount}
+ 2^{1+u+s_2(T)}\mid\binom{2X_*}{X_*}
+ \quad\Longleftrightarrow\quad S\mathbin{\&}T=0.
+\end{equation}
+The stronger range $S+T<N$ is essential and was proved in
+\eqref{eq:sel-tight-range}; separate inequalities $S<N,T<N$ would not suffice.
+
+Write $b=2^k$ and $B_c=2^v$ on the binary branch. The low mask has
+population $(t+1)v-31k$, while each of the 22 high marked cells contributes
+$v-1$ bits. Hence
+\[
+ s_2(T_c)=(t+1+22)v-31k-22,\qquad u=E_cv,
+\]
+and
+\[
+ 1+u+s_2(T_c)=H_cv-31k-21
+ =\kappa H_c+(2H_c-31)k-21=\log_2Y.
+\]
+Combining \eqref{eq:sel-popcount} and \eqref{eq:sel-carry-source} proves
+the required reverse source implication. Conversely, a source solution
+is nonzero because $r_5(0)=1$. Choose arbitrarily large $b=4^s$ exceeding
+all its coordinates and put $f=(b-1)/3$. Its encoding satisfies
+$b\le B_c\le g<\mathcal C$ and all carry tests pass. Thus it supplies
+arbitrarily large forward witnesses with $Y\mid\binom{2X}{X}$.
+This establishes the entire source contract for the unchanged finalizer.
+
+\subsection{Explicit radical-free finalizer}
+
+The following formulas are the inherited package-31 quintic,
+merged-square, structural-weight finalizer. They are written out to fix
+the actual equation. Distinguish its local $B_*,S_*,T_*$ from the source
+base and masks above. Define
+\begin{gather*}
+ L=lY,\qquad U=2LX,\qquad V=4gwY,\qquad W=bw,\\
+ A=U(V+1),\qquad B_*=2X+1,\qquad C=B_*+(A-2)h,\\
+ P=U^2V,\qquad K=X+1+k(P-2),\\
+ S_*=2A-5,\qquad T_*=3WC-2(W^2-1),\\
+ R_2=(P^2-4)K^2+4,\\
+ \Delta=8\mathcal C^3gK^2-g^2\{32(C-KL)^2\mathcal C^3+g^2K^2\},\\
+ O=f^2l^2\Delta,\qquad \xi=zx,\\
+ D=(A^2-4)C^2+4,\qquad E=C^2D\xi,\\
+ F=4(A^2-4)E^2+1,\qquad G_*=2(A+2)(A-2)^2E^2-1,\\
+ \Omega=16E,\qquad H_*=C+(B_*-C)F+\Omega Fy,\\
+ I_*=(G_*^2-1)H_*^2+1.
+\end{gather*}
+Put
+\begin{align*}
+ r&=T_*+S_*y,&\Sigma&=\xi S_*^5,\\
+ \Theta&=(r^3-rS_*^2-S_*^3)(r^2+23S_*^2),\\
+ a_0&=b\{1+(3O-4)b^2z^2\},&a_1&=R_2,&a_2&=DFI_*,\\
+ w_0&=1,&w_1&=a_0,&w_2&=a_0(P^2+K^2+3),\\
+ Z&=\Sigma m-\Theta,&A_i&=\Sigma^2w_i^2a_i\quad(0\le i\le2),\\
+ V_n&=Z^2+A_2-A_0-A_1,&W_n&=V_n^2+4Z^2A_2-4A_0A_1.
+\end{align*}
+The promised single equation is
+\begin{equation}\label{eq:sel-final-ten}
+ \boxed{\ F_{10}=W_n^2-16V_n^2Z^2A_2=0.\ }
+\end{equation}
+Every expression is an integer polynomial. In particular, radicals and
+binomial coefficients appear in the proof only, never in the equation.
+
+\paragraph{Exact dependency boundary.}
+Sun's 2021 Theorems 4.12--4.13, specialized as in his 2026 Propositions
+6.1--6.2, provide the two bridge directions for any source satisfying the
+contract just proved. Forward witnesses have $b$ square, $R_2$ square,
+$S_*\mid T_*$, $C=u_{B_*}(A)$ and $O>0$. Reverse witnesses with
+$b$ square, $O>0$, $\xi\ne0$, $R_2,DFI_*$ square and $S_*\mid T_*$
+recover $b\in2\uparrow$, $0<g<2\mathcal C$ and the required binomial
+divisibility. The residue interpolation theorem permits $\xi$ to be
+divisible by any prescribed positive integer and permits any residue
+class for $y\pmod\xi$.
+The only data substituted here are the newly proved source polynomials;
+the bridge does not require $Y=N^2$.
+
+For completeness, the inherited finalizer implications can be verified
+as follows. The polynomial $(v^3-v-1)(v^2+23)$ has a root modulo every
+positive integer and none over $\mathbb Q$. For odd primes other than
+23 the cubic discriminant is $-23$: if the cubic is irreducible its
+Frobenius permutation is even, so the quadratic has a simple root;
+otherwise the cubic has a simple root. At 23 the cubic has simple root
+3. At 2, $-23\equiv1\pmod8$. Hensel lifting and the Chinese remainder
+theorem finish the local-root argument. Prime valuations in the two
+homogeneous factors show that $\Sigma\mid\Theta$ forces $S_*\mid T_*$:
+if $v_p(S_*)>v_p(T_*)$, the valuation of $\Theta$ is
+$5v_p(T_*)<5v_p(S_*)$. Since $S_*$ is odd, it never vanishes; the absence
+of rational roots ensures $\Theta\ne0$.
+
+When $z\ne0$, $a_0$ square implies that its coprime factors $b$ and
+$1+(3O-4)b^2z^2$ are signed squares. The congruence $b\equiv1\pmod3$
+excludes a negative square and excludes zero, including the zero-factor
+exception. Thus $b$ is a positive square and the usual positivity Pell
+lemma gives $O>0$. Conversely, forward witnesses have $O\ge4$: the
+positive integer $\Delta$ is divisible by $g\ge b\ge4$. For
+$d=3O-4>0$, $d\equiv2\pmod3$ is nonsquare. A positive Pell unit raised
+to its order modulo $b$ gives $v=bz>0$ with $u^2-dv^2=1$, making $a_0$
+a square. Residue interpolation then supplies $\xi=zx$ and a $y$ that
+simultaneously makes $a_2$ square and $\Sigma\mid\Theta$.
+
+If $z\ne0$, the displayed $a_0$ always has $|a_0|>1$. The exceptional
+possibilities $a_0=0,\pm1$ force $|b|=1$, hence $b=1$, $f=O=0$, and
+$a_0=1-4z^2$, a contradiction. Also
+$\sqrt{|a_1|}\le P^2+K^2+2$. Thus the weights obey
+\[
+ |w_1|>\sqrt{|a_0|},\qquad
+ |w_2|>\sqrt{|a_0|}+|w_1|\sqrt{|a_1|}.
+\]
+In the multiquadratic field, an automorphism changing a nonzero weighted
+root has a largest changed index; its magnitude exceeds the sum of all
+smaller changed magnitudes. A rational weighted sum can therefore occur
+only when every $a_i$ is an integer square. This also covers negative
+radicands by complex absolute values, and zero radicands separately.
+
+The exact norm identity
+\[
+ F_{10}=\prod_{\epsilon\in\{\pm1\}^3}
+ \left(Z+\sum_{i=0}^2\epsilon_i\sqrt{A_i}\right)
+\]
+has 35 expanded terms and is checked independently by integer polynomial
+arithmetic. If $\Sigma=0$ then $F_{10}=\Theta^8\ne0$. At a zero of
+$F_{10}$ we therefore have $\Sigma\ne0$, hence $z\ne0$; separation forces
+all $a_i$ square and $\Sigma\mid\Theta$. The reverse bridge and source
+proof recover a parent solution. Conversely the forward construction
+just described makes all $a_i$ square and $\Sigma\mid\Theta$; choosing
+$m$ to cancel one signed factor gives $F_{10}=0$. Composition with the
+pinned parent theorem proves the stated consistency equivalence in ZFC.
+
+\subsection{Exact finite certificates and comparison}
+
+The literal DAG \texttt{generated/signed10\_b2.json} has ten variable
+leaves, 18 fixed leaves, and 659 live binary arithmetic gates:
+214 additions, 26 subtractions and 419 multiplications. Multiplication
+by a numeral is charged; fixed-coefficient construction is outside this
+arithmetic-circuit cost. It is not a bit-complexity claim.
+
+The independent checker does not import or execute the builder. It
+reconstructs the shifted quadratic source and fixed recipes, verifies
+all selective interactions, checks 52 local polynomial circuit identities
+exactly, checks the norm identity, and audits liveness and the gate ledger.
+For the total degree it propagates a syntactic upper bound, then tracks
+the coefficient of that degree after substituting the same indeterminate
+for all ten variables. The resulting nonzero residues are
+\[
+ \begin{array}{c|ccc}
+ p&101&1009&1000003\\\hline
+ [T^{21111400}]F_{10}(T,\ldots,T)\pmod p&36&42&374910.
+ \end{array}
+\]
+Any one of these gives the exact lower bound, hence the total degree is
+exactly $21\,111\,400$. This is not a random evaluation argument.
+Finite small-base audits additionally corroborate the borrow and
+population lemmas, including non-power-of-two square source bases.
+They are tests of implementations, not substitutes for the unbounded proofs.
+
+The previous package-40 ten-integer point was degree $237\,520\,456$
+with 782 operations. The new degree is lower by a factor exceeding
+$11.25$, and the circuit uses 123 fewer operations, a reduction of about
+$15.7\%$. Package 43's 809-operation variant is also improved. These are
+comparisons of explicit constructions at the pinned repository snapshot,
+not claims of global optimality, of an absolute ``simplest'' equation, or
+of improvement over different variable/domain tradeoffs.
+
+The pinned revision is
+\texttt{124c07c0b77a9e20e84676514d8b1ff78536ea3f}.
+\texttt{SOURCE\_PINS.json} records the verified exact source bytes.
+Primary arithmetic references are Z.-W. Sun,
+\emph{Further results on Hilbert's Tenth Problem}, Sci. China Math. 64
+(2021), 281--306, \url{https://arxiv.org/html/1704.03504v7}; and
+\emph{Ten unknowns for Hilbert's tenth problem over the integers},
+2026 preprint, \url{https://arxiv.org/html/2609.01594v2}.
+The inherited finalizer proof and coefficient adapter are preserved in
+\texttt{upstream/}. Their original relative links describe upstream
+layouts; the source pin manifest provides their current verified origins.

@@ -1,0 +1,146 @@
+\section{The quadratic source and support-aware coding}\label{sec:sparse}
+
+\subsection{The complete parent system}
+The common source has 31 positive coordinates, in this exact order:
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta.
+\end{gathered}
+\]
+These names are local to this subsection. Put
+$q=\beta J+1$, $k=\eta+\zeta$, $H_p=4a+3$ and
+$C_p=q-F-\alpha$. The inherited source is the following quadratic system
+\cite{package31,package40}.
+\begin{longtable}{@{}rl@{}}
+\toprule Row & Equation\\\midrule\endhead
+1 &$L=q^2-1$\\[2pt]
+2 &$N=q(L+1)$\\[2pt]
+3 &$X=wq$\\[2pt]
+4 &$a=E+sN$\\[2pt]
+5 &$E=X(a-E)$\\[2pt]
+6 &$c=k(a-E)+\eta$\\[2pt]
+7 &$P=E(c-\eta)+k$\\[2pt]
+8 &$\tau^2=P(P-k)+1$\\[2pt]
+9 &$D=X+ac+\gamma H_p$\\[2pt]
+10 &$\Delta=a^2+H_p$\\[2pt]
+11 &$C_2=c^2$\\[2pt]
+12 &$D^2=\Delta C_2+1$\\[2pt]
+13 &$k=jc-V+1+hE$\\[2pt]
+14 &$jc-V=(q-F)(N-q)-C_pL+(M_C+qM_F)J$\\[2pt]
+15 &$(K_0+w)C_p+q-F-z(q-1)=1$\\[2pt]
+16 &$F_2=f^2$\\[2pt]
+17 &$V=of-c$\\[2pt]
+18 &$g=y^2-V^2$\\[2pt]
+19 &$I=iC_2$\\[2pt]
+20 &$B_{\rm aux}=I^2$\\[2pt]
+21 &$B_{\rm aux}=\Delta(F_2-1)$\\[2pt]
+22 &$y^2-B_{\rm aux}g=1$\\
+\bottomrule
+\end{longtable}
+The ten-integer construction uses this table. The nine-variable
+construction uses the inherited positive transport shift in row 15,
+\[
+ (K_0+w)C_p=F+z(q-1).
+\]
+It corresponds to $z_{\rm old}=z+1$. Canonical compiler witnesses have
+$z_{\rm old}\ge2$, so this is an existence equivalence on the positive
+domain. Both parent conventions and their shift are checked symbolically;
+their monomial supports coincide. They are not treated as literally the
+same polynomial system at the same coordinates.
+
+For each parent, replace all coordinates by $x_i+1$, form left-minus-right
+residuals, and reorder the rows as
+$1,2,3,4,6,7,\ldots,22,5$. Write the result as
+$p_1,\ldots,p_{22}\in\Z[x_1,\ldots,x_{31}]$. Each has degree at most two,
+and the last has $p_{22}(0)=1$. Thus the all-zero tuple is not a common
+zero. The inherited theorem identifies a common natural zero with a
+finite ZFC refutation.
+
+\subsection{The weaker separation property}
+Pad a monomial of degree less than two by copies of $x_0=1$.
+Let $\mathcal S$ be the union of the unordered pairs $(i,j)$ occurring
+in the padded supports of the residuals. A weight vector
+$w_0=0,w_1,\ldots,w_n\ge0$ has \emph{active-pair isolation} when
+\begin{equation}\label{eq:active}
+ (i,j)\in\mathcal S,\quad w_i+w_j=w_k+w_l,
+ \quad 0\le k\le l\le n
+ \quad\Longrightarrow\quad (i,j)=(k,l).
+\end{equation}
+The comparison is against \emph{all} pairs, not just supported ones.
+Requiring uniqueness only among supported pairs would allow an unused
+monomial in the square of the packed word to contaminate a tested digit.
+Pairs outside $\mathcal S$ may collide with one another.
+
+\begin{theorem}[Support-aware simultaneous extraction]\label{thm:extract}
+Let $p_j=\sum_{|\alpha|\le2}a_{j,\alpha}x^\alpha$, $1\le j\le r$,
+and suppose \eqref{eq:active} holds. Put $W=\max_iw_i$ and
+\[
+ E_j=2W+(j-1)(2W+1),\qquad
+ c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,a_{j,\alpha}.
+\]
+For
+\[
+ \Dcode(Z)=\sum_{j,\alpha}c_{j,\alpha}Z^{E_j-\alpha\cdot w},
+ \qquad C_{\mathbf x}(Z)=\left(1+\sum_i x_iZ^{w_i}\right)^2,
+\]
+all exponents are nonnegative and
+\[
+ [Z^{E_j}]C_{\mathbf x}(Z)\Dcode(Z)=2p_j(\mathbf x).
+\]
+If $|c_{j,\alpha}|\le M$, then for $\mathbf x\in\N^n$ every coefficient
+of $C_{\mathbf x}\Dcode$ has absolute value at most
+$M(1+\sum_i x_i)^2$.
+\end{theorem}
+\begin{proof}
+For a supported $\alpha$, active-pair isolation gives exactly one padded
+pair at exponent $\alpha\cdot w$ in $C_{\mathbf x}$. Its coefficient is
+$2!x^\alpha/((2-|\alpha|)!\prod_i\alpha_i!)$. The factorial in
+$c_{j,\alpha}$ therefore produces $2a_{j,\alpha}x^\alpha$.
+A contribution from a different row would equate a nonzero target
+difference, of absolute value at least $2W+1$, to a difference of two
+pair sums, whose absolute value is at most $2W$. That is impossible.
+Within a row, the active monomial is isolated against every possible
+pair in $C_{\mathbf x}$, so there are no other contributions.
+
+The reversed supports of the rows lie in disjoint intervals
+$[E_j-2W,E_j]$. Each coefficient of $\Dcode$ is consequently bounded by
+$M$. All coefficients of $C_{\mathbf x}$ are nonnegative, including
+those at collided unused positions, and their sum is
+$C_{\mathbf x}(1)=(1+\sum_i x_i)^2$. The coefficient bound follows by
+convolution. This last step is why unused collisions cause no hidden
+carry problem.
+\end{proof}
+
+\subsection{The literal certificate}
+In the parent coordinate order above, take
+\begin{equation}\label{eq:weightsnew}
+\begin{split}
+(w_1,\ldots,w_{31})={}&(200,199,193,166,11,57,125,37,93,113,153,16,\\
+&158,192,120,64,139,198,144,23,15,43,18,165,179,\\
+&112,10,44,117,71,119).
+\end{split}
+\end{equation}
+There are 71 active pairs among the 528 unordered pairs, including
+repetitions and the padding coordinate. Exhaustive enumeration verifies
+\eqref{eq:active}. The 528 pairs occupy only 285 sums: 130 sum positions
+have collisions, and the largest multiplicity is seven. Thus the
+condition is strictly weaker than a full Sidon condition in this instance.
+The certificate is the literal vector and the exhaustive enumeration;
+the heuristic that found it is not a premise of the proof.
+
+Here
+\[
+ W=200,\quad E_j=400+401(j-1),\quad
+ E_{\max}=8821,\quad K_c=E_{\max}+2W=9221.
+\]
+The previous full-Sidon vector had $W=799$. Both parent conventions have
+136 nonzero coefficient records, and the audit verifies all 44 target
+identities with the four native coefficient ports left as independent
+symbols. The coefficient bound is unchanged, because the source
+coefficients and the convolution estimate are unchanged.
+
+This is a reusable sufficient-condition theorem and a specific improved
+certificate. We do not assert that support-aware additive coding is new
+in all contexts, that $W=200$ is optimal, or that this reduction changes
+the undecidability variable-count records.

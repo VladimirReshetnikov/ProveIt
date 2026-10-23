@@ -1,0 +1,126 @@
+{
+  "status": "PASS_WITH_PACKAGING_RECOMMENDATIONS",
+  "snapshot_date": "2026-10-23",
+  "isolated_canonical_tree": true,
+  "normal": [
+    {
+      "script": "weights/verify_selective.py",
+      "returncode": 0,
+      "seconds": 0.09
+    },
+    {
+      "script": "weights/test_selective.py",
+      "returncode": 0,
+      "seconds": 0.54
+    },
+    {
+      "script": "packing/mask_popcount/reproduce.py",
+      "returncode": 0,
+      "seconds": 0.26
+    },
+    {
+      "script": "nine/verify_nine.py",
+      "returncode": 0,
+      "seconds": 1.89
+    },
+    {
+      "script": "jones/check_jones.py",
+      "returncode": 0,
+      "seconds": 1.18
+    },
+    {
+      "script": "batching/check_eleven.py",
+      "returncode": 0,
+      "seconds": 0.27
+    },
+    {
+      "script": "elimination/audit_package.py",
+      "returncode": 0,
+      "seconds": 0.23
+    },
+    {
+      "script": "elimination/audit_eleven.py",
+      "returncode": 0,
+      "seconds": 0.29
+    },
+    {
+      "script": "short/audit_relaxed.py",
+      "returncode": 0,
+      "seconds": 0.07
+    }
+  ],
+  "optimized": [
+    {
+      "script": "weights/verify_selective.py",
+      "returncode": 0,
+      "seconds": 0.15,
+      "error": ""
+    },
+    {
+      "script": "weights/test_selective.py",
+      "returncode": 0,
+      "seconds": 0.64,
+      "error": ""
+    },
+    {
+      "script": "packing/mask_popcount/reproduce.py",
+      "returncode": 0,
+      "seconds": 0.3,
+      "error": ""
+    },
+    {
+      "script": "nine/verify_nine.py",
+      "returncode": 0,
+      "seconds": 1.77,
+      "error": ""
+    },
+    {
+      "script": "jones/check_jones.py",
+      "returncode": 0,
+      "seconds": 1.24,
+      "error": ""
+    },
+    {
+      "script": "batching/check_eleven.py",
+      "returncode": 0,
+      "seconds": 0.41,
+      "error": ""
+    },
+    {
+      "script": "elimination/audit_package.py",
+      "returncode": 0,
+      "seconds": 0.4,
+      "error": ""
+    },
+    {
+      "script": "elimination/audit_eleven.py",
+      "returncode": 0,
+      "seconds": 0.34,
+      "error": ""
+    },
+    {
+      "script": "short/audit_relaxed.py",
+      "returncode": 0,
+      "seconds": 0.12,
+      "error": ""
+    }
+  ],
+  "scope": "Snapshot replay of existing checkers; not a guarantee that assert-based rejection checks survive -O or that pending report files are complete.",
+  "post_fix_replay": {
+    "families": [
+      "nine",
+      "jones",
+      "short"
+    ],
+    "normal_and_optimized_pass": true,
+    "byte_identical_stdout_per_family": true,
+    "nine_selective_checker_matches_canonical": true,
+    "nine_selective_pin_and_support_files_present": true,
+    "active_adapter_paths_and_hashes_match": [
+      "nine",
+      "jones",
+      "short"
+    ],
+    "requirements_file_present": true
+  }
+}

@@ -1,0 +1,101 @@
+\section{A smaller complete native coefficient tuple}
+\label{app:coefficient-adapter}
+
+A separate adapter in \texttt{coefficient\_adapter/} reduces the fixed
+coefficient heights of the inherited K215 native/Pell interface:
+\[
+ \rho=2^{89},\qquad L=4831,\qquad B=\rho^L=2^{429959}.
+\]
+Its four raw coefficient ports occupy \(215\,492\) bytes, versus
+source44's \(295\,388\) bytes for \(B=2^{590069}\), a reduction of
+\(27.0478\%\). The base exponent decreases by \(27.1341\%\).
+The port bit lengths, in order
+\((\beta,K,M_C,M_{F,\mathrm{source}})\), are
+\(429959,434054,429959,429960\).
+The main low-variable equations in this article retain their source31
+tuple. Substituting the new tuple would require rebuilding their
+derived index constants.
+
+\paragraph{The new mechanism.}
+Source40 factors \(488\) receiver tiles into two modes and seventeen
+Boolean payload bits, leaving \(457\) selector modes, but explicitly
+leaves an empty-cell soundness obligation open. Source44 supplies
+aggregate complement clauses. The new adapter combines these ideas
+with complemented edge labels, doubled horizontal labels, and reuse
+of the copied west parity bit as the current anchor. It removes four
+dedicated occupancy copies and the separate current anchor; the support
+has \(520\) native positions.
+
+Put \(T=2^{42}\), \(M=4T\). The selector and gate masks give
+\(n\in\{0,1\}\). For mode \(i=(w_i,n_i,e_i,s_i)\) and receiver payloads
+\(Q_R,Q_L\in\{0,\ldots,255\}\), \(u\in\{0,1\}\), define
+\[
+ \begin{aligned}
+ L_i&=2w_i+2^{11}n_i+2^{21}(2e_i)+2^{32}s_i,\\
+ V&=2Q_R+2^{11}u+2^{21}(2Q_L)+2^{32}(2Q_R+2Q_L+u).
+ \end{aligned}
+\]
+The label widths are \(11,10,11,10\). Let \(Z<T\) be the copied label
+vector, \(y=Z\bmod2\) its west low bit, and \(A_1,A_2\) the two
+standalone anchors. The same physical bit \(y\) is used twice:
+\begin{equation}
+ W=Z+T(y+A_1+A_2),\qquad
+ \sum_i x_i(1+L_i)+V+W\equiv0\pmod M.                 \label{eq:adapterpayload}
+\end{equation}
+All coefficients are nonnegative. Every \(L_i,V\) is even, so \eqref{eq:adapterpayload}
+gives \(y=n\).
+
+If \(n=0\), then \(W<3T\) and \(V<T\). Hence \(0\le V+W<M\),
+so \(V=W=0\): all payloads, copies and anchors vanish, apart from the
+ignored dummy digits. This closes the old empty-cell gap.
+If \(n=1\), the gates give \(0\le L_i+V<T\), and the positive sum in
+\eqref{eq:adapterpayload} is less than \(2M\). It therefore equals \(M\), giving
+\[
+ W=3T+\bigl(T-1-(L_i+V)\bigr).
+\]
+Thus \(y=A_1=A_2=1\), and the copied labels are exactly complemented.
+Both horizontal labels were doubled, so their complemented low bits
+are one. Conversely every intended occupied encoding satisfies the
+clause. This uniform interval argument supplies the local theorem.
+
+\paragraph{The full native interface.}
+The shared source anchor is the west copy at position \(539\);
+the two tested temporal anchors remain \(1203,1807\). The bare shifts
+are \(33,68,664,1268\), clause targets \(2409,3015\), and spatial
+exponent \(46\). Complete basis identities and the two exact support
+intersections give a clean Start clause, binary synchronization
+including the upper-dummy exception, and whole-cell alignment.
+Spatial matching then propagates occupation through the cyclic word:
+an occupied east low bit is one, while the west low bit equals \(n\).
+Complementation and doubling preserve edge matching. Deleting the
+\(536\) unmatched receiver expansions recovers the original marked
+K215 Wang language.
+
+The masks have populations \(520\) and \(429959-520\), with the same
+required low congruences as the source interface. All conservative
+carry and strict-slack thresholds are below \(2^{89}\).
+Completeness uses the fixed prime \(\lambda=106261\):
+\[
+ \operatorname{ord}_{429959}(B)=26565\mid(\lambda-1),
+ \qquad B^{\lambda-1}\bmod\lambda^2=8376873414\ne1.
+\]
+The certified controller units allow the inherited Boolean dummy
+adjustment of the actual packed rank. The full coefficient recipe,
+synchronization proof, completeness argument and canonical witness
+promises are in \texttt{SEPARATED\_PROOF.md}.
+
+\paragraph{Verification and scope.}
+The independent auditor imports neither builder and reconstructs the
+Wang language from all \(430\) literal K215 actions. It verifies \(37\,960\) native basis
+identities, \(1\,479\) occupied encodings, \(65\,076\) physical bit
+corruptions, and all \(131\,072\) empty auxiliary assignments, of which
+only the zero payload is realizable. Every coefficient byte and the
+controller arithmetic are independently reconstructed. Normal and
+optimized Python executions pass.
+
+This is a complete ordinary mathematical adapter composed with the
+explicitly inherited native/Pell compiler, Wang-language theorem, and
+K215/refutation calibration. It is not a new end-to-end proof-assistant
+certificate. Finite checks establish the stated finite identities;
+the universal transfer uses the proof and its explicit inherited
+theorems. Exact source pins and original licenses accompany the files.

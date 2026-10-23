@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "source_exact_symbolic_audit": {
+    "protected_pairs": 62,
+    "all_pairs": 528,
+    "distinct_all_pair_sums": 278,
+    "kernel_terms": 94,
+    "symbolic_target_identities": 22,
+    "extracted_symbolic_terms": 99,
+    "cross_target_support_checks": 1974,
+    "minimum_kernel_exponent": 0,
+    "maximum_kernel_exponent": 5148
+  },
+  "coefficient_bounds": {
+    "coefficient_maximum_l1": 4,
+    "maximum_port_degree": 2,
+    "H_bit_length": 2140010,
+    "required_bound_bit_length": 2140022,
+    "source_exponent": 2140030,
+    "shifted_word_broad_bound": "36 H b^2 <= B-2 for b>=4",
+    "port_bit_lengths": {
+      "beta": 1064921,
+      "K0": 1070004,
+      "MC": 1064921,
+      "MF": 1064922
+    }
+  },
+  "exact_final_norm_identity": {
+    "status": "PASS",
+    "variables": [
+      "Z",
+      "u",
+      "v",
+      "w"
+    ],
+    "identity": "F(Z,u^2,v^2,w^2) = product_(e0,e1,e2 in {-1,1}) (Z+e0*u+e1*v+e2*w)",
+    "expanded_terms": 35,
+    "degree": 8
+  },
+  "negative_controls": [
+    {
+      "field": "weights",
+      "index": 2,
+      "delta": 1,
+      "rejected_for": "active pair collision"
+    },
+    {
+      "field": "targets",
+      "index": 1,
+      "delta": 1,
+      "rejected_for": "extraction mismatch at original parent row 16"
+    }
+  ],
+  "literal_formula_controls": {
+    "samples": 12,
+    "named_values_checked": 660,
+    "prime": 1000000007
+  },
+  "exact_degree_certificate": {
+    "degree": 35876184,
+    "diagonal_leading_coefficient_mod_prime": 996362474,
+    "prime": 1000000007,
+    "source_degrees": {
+      "X": 34050,
+      "Y": 22700,
+      "Ccap": 351
+    },
+    "method": "coefficient at propagated upper bound after all variables equal T; nonzero modulo prime"
+  },
+  "operations": {
+    "mul": 422,
+    "add": 138,
+    "sub": 80
+  },
+  "total_operations": 640,
+  "scope": "Exact finite algebra/data certificates and deterministic diagnostic circuit tests, not an unbounded parent-compiler proof."
+}

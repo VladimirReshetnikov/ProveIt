@@ -1,0 +1,128 @@
+\section{A smaller evaluator at fifteen positive variables and degree 44}
+\label{sec:offset44}
+
+The low-degree supplement is a polynomial in fifteen strictly positive
+integer variables of exact degree44 evaluated by76 binary operations:
+41 multiplications,19 additions, and16 subtractions. This improves the
+earlier degree-44 evaluator's78 operations by two. The root-gap
+substitutions themselves are inherited: historical package12 used the
+auxiliary gap, and package15 used both gaps. Package10's $Q_{56}$ used
+four grouped residuals,74 operations, and degree56. The change here is
+their combination with a different pairing of the norm, index, and
+transport factors. It is neither the first degree-44 construction nor an
+operation-count improvement over $P_{67}$.
+
+All four coefficient ports are rebound together to package31's tuple,
+$B=2^{1064921}$. Write them as $\beta,K_0,M_C,M_F$, where $\beta=B-1$
+and $M_F$ is the already shifted high mask. The original package36
+binding in the copied active evaluator is not retained; no identity with
+its fixed Lean polynomial is asserted.
+
+The variables are
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,r,\eta,\zeta,u,\gamma
+ \in\mathbb Z_{>0}.
+\]
+The following quantities are polynomial abbreviations:
+\begin{align*}
+q&=\beta J+1,& C&=q-F-\alpha,\\
+X&=wq,&Y&=sq^3,&E&=XY,\\
+k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+H&=4a+3,&\Delta&=a^2+H,&D&=X+ac+\gamma H,\\
+L&=E(kY),&G&=(q-1)(q-F)+\alpha,\\
+R&=G(q^2-1)+(M_C+qM_F)J,&&\\
+V&=c(Tf-1)-Rf^2,&A_0&=\Delta(f^2-1),&I&=ic^2.
+\end{align*}
+Define
+\begin{align*}
+N_0&=r^2+L(2r-k),&N_1&=D^2-\Delta c^2,\\
+N_a&=(V+u)^2-A_0u(2V+u),&&\\
+N_k&=k-hE-R,&N_t&=(K_0+w)C+(q-F)-z(q-1).
+\end{align*}
+The proposed single equation is
+\begin{equation}\label{eq:offset44}
+\boxed{(N_0N_k-1)^2+(N_1N_t-1)^2+(N_a-1)^2+(I^2-A_0)^2=0.}
+\end{equation}
+Its literal division-free evaluation is in \texttt{offset44.json}.
+
+\paragraph{Soundness.}
+A zero of~\eqref{eq:offset44} gives
+$N_0N_k=N_1N_t=N_a=1$ and $I^2=A_0$. Restore
+$\tau=L+r>0$. The exact identity
+\[
+(L+r)^2-L(L+k)=r^2+L(2r-k)
+\]
+expresses $N_0$ as $\tau^2-n(n+1)k^2$ for $n=XY^2\ge2$.
+The negative Pell equation with this consecutive-product discriminant
+has no solution with $k>0$: multiplication by
+$2n+1-2\sqrt{n(n+1)}$ decreases the positive second coordinate of any
+putative norm-minus-one solution. Thus the unit $N_0$ is positive and
+$N_0=N_k=1$. Similarly $\Delta=(a+2)^2-1$ is0 or3 modulo4, so
+$N_1$ cannot be $-1$; consequently $N_1=N_t=1$.
+
+Put $y_0=V+u$. The second exact identity is
+\[
+A_0\bigl(V^2-(V+u)^2\bigr)+(V+u)^2
+=(V+u)^2-A_0u(2V+u).
+\]
+If $y_0=0$, the equation $N_a=1$ would imply $I^2V^2=1$.
+But $I=ic^2>1$, so this is impossible. Hence $y=|y_0|>0$.
+The restored positive coordinates solve the inherited ordinary strong
+system
+\[
+\tau^2-L(L+k)=N_1=A_0(V^2-y^2)+y^2=N_k=N_t=1,
+\qquad I^2=A_0.
+\]
+Its authenticated compiler theorem therefore gives blank K215 halting.
+This argument does not assume that the computed expression $V+u$ is
+positive away from zeros, and it does not divide $i$ by $\Delta$.
+
+\paragraph{Completeness.}
+Start from the canonical positive normalized witness supplied by a blank
+halting computation and use the inherited transfer
+$i_{\rm ordinary}=\Delta i_{\rm normalized}$. It yields the ordinary
+system above with $V>1$, $y>0$, and $A_0>1$. The strict inequality $V>1$
+is essential: it excludes the degenerate auxiliary root $V=y=1$ whose
+gap would vanish. It follows from the inherited auxiliary positivity
+argument and the congruence $V\equiv-c\pmod f$ with $f>2c>2$.
+Set $r=\tau-L$ and $u=y-V$. The norm equations give
+\[
+\tau^2-L^2=Lk+1>0,\qquad
+(A_0-1)(y^2-V^2)=V^2-1>0.
+\]
+Therefore both new coordinates are strictly positive, and the two
+identities prove~\eqref{eq:offset44}. Composing with the ordinary compiler
+and K215 calibration establishes, by ordinary mathematics formalizable
+in ZFC, that the absence of positive zeros is equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$. No new proof-assistant certificate or
+checked object-language ZFC derivation is claimed.
+
+\paragraph{Exact degree.}
+The five factor degrees are respectively $12,18,22,7,2$; $I^2-A_0$ has
+degree22. For the main factor, setting $Z=X+\gamma H$ gives the identity
+\[
+(ac+Z)^2-(a^2+H)c^2=Z^2+2acZ-Hc^2,
+\]
+which lowers its apparent degree22 to18. The four residual degrees in
+\eqref{eq:offset44} are consequently $19,20,22,22$. With
+$Q=\beta J$ and $k_0=\eta+\zeta$, the degree-44 homogeneous part is
+\[
+i^4k_0^8s^8Q^{24}
+ +4k_0^2w^4s^6T^2f^6u^2Q^{22}.
+\]
+The monomial $i^4\eta^8s^8J^{24}$ has nonzero coefficient $\beta^{24}$.
+Thus44 is the exact degree. The standard-library audit independently
+checks the literal76-gate schedule, all ports' liveness, the three
+polynomial identities, and this complete homogeneous part. Normal and
+optimized Python runs give the same ledger.
+
+\paragraph{Historical comparison.}
+The wave-2 pin \texttt{5b0c9ae9fd} contains package10's
+\texttt{ordinary\_blank\_four\_sos\_74.json}, with the positive-domain
+proof in \texttt{sections/ordinary\_section.tex}; package12's
+\texttt{GAP\_AUXILIARY\_PROOF.md} and degree-44/78-operation evaluator;
+and package15's \texttt{POSITIVE\_GAP\_SHEARS.md}, with the degree83/71
+product and degree44/80 six-square version. These are like-for-like
+comparisons of positive-domain templates and paid binary operations,
+with all coefficient tuples treated coherently. The two-operation saving
+is a bounded repository comparison, not a global priority assertion.

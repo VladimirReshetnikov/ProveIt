@@ -1,0 +1,675 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[letterpaper,margin=0.92in,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{183650}
+\definecolor{accent}{HTML}{16666C}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,
+pdftitle={Smaller explicit Diophantine equations for ZFC consistency},
+pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Smaller Diophantine consistency equations}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.4em}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=1.5em}
+\allowdisplaybreaks[2]
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\Sq}{\operatorname{Sq}}
+\newcommand{\file}[1]{\texttt{\small\detokenize{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\input{metrics.tex}
+\title{\color{ink}Smaller explicit Diophantine equations\\for ZFC consistency\\[0.7em]
+\large Encoding the monomials that occur, overlapping output positions,\\and polynomial approximations to square roots}
+\author{AI-assisted mathematical research\\Prepared for Vladimir Reshetnikov and the ProveIt project}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct explicit integer polynomials whose unsolvability represents
+the syntactic consistency of ZFC, improving the current ProveIt constructions
+on both degree and arithmetic cost. The main nine-positive-variable equation
+has exact degree \NineBestDegree{} and a division-free circuit with
+\NineBestOps{} live binary operations; its nine-nonnegative-variable version
+uses three more operations. A ten-unrestricted-integer equation has exact
+degree \TenBestDegree{} and \TenBestOps{} operations. Lower-cost alternatives
+are supplied. The comparison is with the latest wave-6 constructions in
+repository commit \texttt{124c07c0b77a}, rather than a superseded baseline.
+
+The first new observation is that a quadratic source need not distinguish
+all possible monomials: it must distinguish each monomial that occurs from
+all competing monomials. For the actual source this reduces the largest
+position from 799 to 179. A second finite certificate permits overlapping
+row blocks. A third improvement uses divisibility already present in the
+Jones arithmetic witnesses to construct a closer polynomial majorant for
+the radical in the final norm. All new arithmetic arguments are proved;
+the archive contains the literal circuits, complete fixed coefficient data,
+independent checks, and the inherited theorem dependencies. The resulting
+consistency equivalence is an ordinary mathematical proof formalizable in
+ZFC, using the same native compiler and machine calibration as the supplied
+repository. We do not claim a new end-to-end Lean/Rocq certificate, a proof of
+consistency, or a global minimum over Diophantine equations.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{The result, its domain, and the comparison}
+\label{sec:result}
+Write $\N=\{0,1,2,\ldots\}$ and $\Pos=\{1,2,\ldots\}$.
+We use the repository's precise syntactic consistency sentence
+\[
+ \Con(\mathrm{ZFC})\;\equiv\;
+ \neg\exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot),
+\]
+calibrated there by \texttt{BProv ZFCax\_s [] Form.fBot}.
+The coefficient tuple is fixed independently of this sentence's truth.
+
+\begin{theorem}[Explicit consistency equations]
+The finite data and polynomial formulas in this article define polynomials
+$F_9\in\Z[x_1,\ldots,x_9]$ and $F_{10}\in\Z[z_1,\ldots,z_{10}]$ such that,
+using the inherited mathematical compiler and arithmetic theorems identified
+in Section~\ref{sec:foundations}, ZFC proves
+\begin{align*}
+ \neg\exists\mathbf x\in\Pos^9\;F_9(\mathbf x)=0
+ &\ \longleftrightarrow\ \Con(\mathrm{ZFC}),\\
+ \neg\exists\mathbf z\in\Z^{10}\;F_{10}(\mathbf z)=0
+ &\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\end{align*}
+The principal $F_9$ has exact total degree \NineBestDegree{} and
+\NineBestOps{} binary operations. The principal $F_{10}$ has exact total
+degree \TenBestDegree{} and \TenBestOps{} operations. The displayed
+registers in their definitions are abbreviations, not additional unknowns.
+\end{theorem}
+
+\input{comparison_table.tex}
+
+The nine-variable result retains positivity. Its unrestricted-integer
+interpretation is not asserted. The supplied natural-variable version uses
+an explicit coordinate shift described below. For a Diophantine equation
+over all integers, $F_{10}$ is the corresponding primary deliverable.
+That branch retains Sun's ten-integer reduction \cite{sun}; the
+nine-variable branch uses the older Jones arithmetic bridge \cite{jones}.
+
+The preceding nine-positive-variable point in package 45 is degree
+$129\,875\,980$ at 788 operations. The preceding ten-integer point in
+package 40 is degree $237\,520\,456$ at 782 operations
+\cite{package40,package45}. We compare against those latest points. Earlier
+claims comparing only with exponentially larger wave-5 polynomials are
+not the baseline for this contribution.
+
+There is no metric-independent ``simplest'' equation. The operation count
+charges each binary addition, subtraction, and multiplication, including
+multiplication by a fixed coefficient. Reuse of a computed register is free;
+fixed powers are expanded into charged multiplication gates. The count does
+not measure bit complexity, expanded monomial count, or the cost of producing
+fixed coefficients. The repository's 67-operation equation with fifteen
+positive variables remains cheaper on that single measure. We have not
+found a sub-nine-natural-variable or sub-ten-integer construction.
+
+\section{The fixed quadratic parent and coefficient data}
+\label{sec:parent}
+The common parent has 31 strictly positive coordinates and 22 quadratic
+equations. In order, the coordinates are
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta.
+\end{gathered}
+\]
+Here these letters are local to the parent; later tail registers reuse some
+letters for different quantities. The four fixed compiler ports are
+$(\beta,K_0,M_C,M_F)$, with the high mask $M_F$ already shifted. Put
+\[
+q=\beta J+1,\qquad k=\eta+\zeta,\qquad
+H=4a+3,\qquad C=q-F-\alpha.
+\]
+The equations, in their original order, are
+\begin{longtable}{@{}r@{\quad}l@{}}
+\toprule Row & Equation\\\midrule\endhead
+1& $L+1=q^2$\\
+2& $N=q(L+1)$\\
+3& $X=wq$\\
+4& $a-E=sN$\\
+5& $E=X(a-E)$\\
+6& $c-\eta=k(a-E)$\\
+7& $P-k=E(c-\eta)$\\
+8& $\tau^2=P(P-k)+1$\\
+9& $D=X+ac+\gamma H$\\
+10& $\Delta=a^2+H$\\
+11& $C_2=c^2$\\
+12& $D^2=\Delta C_2+1$\\
+13& $k=jc-V+1+hE$\\
+14& $jc-V=(q-F)(N-q)-CL+(M_C+qM_F)J$\\
+15& $(K_0+w)C=F+z\beta J$\\
+16& $F_2=f^2$\\
+17& $V=of-c$\\
+18& $g=y^2-V^2$\\
+19& $I=iC_2$\\
+20& $B_a=I^2$\\
+21& $B_a=\Delta(F_2-1)$\\
+22& $y^2-B_ag=1$\\\bottomrule
+\end{longtable}
+
+The exact orientation of each residual is fixed by
+\file{data/parent_system.json}. The displayed equalities alone are
+unchanged by reversing a residual; the finite coefficient file records
+the orientation used in the packing. For each parent coordinate substitute
+$x_i+1$ and form the recorded left-minus-right residual. Denote these
+polynomials by $r_1,\ldots,r_{22}$. Every $r_j$ has degree at most two.
+The fifth residual has $r_5(\mathbf0)=1$.
+
+The imported parent theorem is
+\begin{equation}\label{eq:parent}
+ \exists\mathbf x\in\N^{31}\ \bigwedge_{j=1}^{22}r_j(\mathbf x)=0
+ \quad\longleftrightarrow\quad
+ \exists p\;\operatorname{Proof}_{\mathrm{ZFC}}(p,\bot).
+\end{equation}
+We use the complete package-31 tuple, whose radix is $B_0=2^{1064921}$.
+Its four port bit lengths are respectively
+\[
+1064921,\quad1070004,\quad1064921,\quad1064922.
+\]
+Their compressed unsigned little-endian payloads are included, together
+with hashes and the inherited coefficient recipe. They total 533,099
+uncompressed bytes. No component is taken from a different compiler tuple.
+The archive also materializes all 16 fixed leaves of the emitted graphs
+in \file{data/fixed/}, including signs, exact byte lengths, and SHA-256
+hashes; these payloads contain 3,331,623 uncompressed bytes in total.
+
+Every additional fixed leaf is either a literal small integer, the explicit
+integer $2^{2140030}$, or a recorded integer polynomial in these four ports.
+Thus the equation contains no unspecified recursively enumerable index,
+consistency-dependent coefficient, or search for a ZFC refutation in its
+definition. A gate file plus these finite leaves is a complete specification
+of one ordinary integer polynomial, even though fully expanding it would be
+an inefficient way to display it.
+
+\section{A smaller positional certificate}
+\label{sec:packing}
+\subsection{Only the present monomials need isolation}
+Adjoin $x_0=1$ and homogenize each monomial of degree at most two to
+degree two. There are $32\cdot33/2=528$ possible unordered pairs of indices.
+Only 71 of those pairs occur in the 22 residuals. We call these pairs
+\emph{present}. Assign the following weights in the coordinate order
+$(0,J,F,\ldots,\Delta)$:
+\begin{equation}\label{eq:weights}
+\begin{split}
+(&0,174,166,110,137,115,65,168,126,105,49,155,54,60,15,4,\\
+ &118,146,26,44,7,17,57,38,158,177,179,116,46,94,35,96).
+\end{split}
+\end{equation}
+Let $W=179$. All nonpadding weights are distinct and positive.
+For every present pair $(a,b)$, its sum $w_a+w_b$ differs from the sum
+of every other pair among the 528. Pairs absent from every residual may
+collide. Indeed, these 528 pairs occupy just 266 different positions.
+
+The certificate is a finite list and a universally quantified check over
+528 pairs, not a claim of optimality for a combinatorial search. Both the
+construction verifier and a separately written sparse-polynomial checker
+expand the actual parent to identify the 71 present pairs and check this
+property. No heuristic search code is needed to validate it.
+
+\subsection{Extraction with possibly overlapping row blocks}
+Write $r_j=\sum_\alpha p_{j,\alpha}x^\alpha$, where $|\alpha|\le2$, and set
+\[
+ s(\alpha)=\sum_i\alpha_iw_i,\qquad
+ c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\;p_{j,\alpha}.
+\]
+For a row permutation $\pi$, signs $\sigma_j\in\{1,-1\}$, and increasing
+integer targets $H_j\ge2W$, define
+\begin{equation}\label{eq:Dcode}
+ \mathcal D(T)=\sum_{j=0}^{21}\sum_{\alpha\in\operatorname{supp}r_{\pi(j)}}
+ \sigma_jc_{\pi(j),\alpha}T^{H_j-s(\alpha)}.
+\end{equation}
+Every exponent here is nonnegative and fixed.
+
+\begin{lemma}[Isolation only at the selected outputs]\label{lem:isolation}
+Suppose for every row $j$, every $\alpha\in\operatorname{supp}r_{\pi(j)}$,
+every degree-at-most-two monomial $\beta$, and every row $i$, the equality
+\[
+ H_i-H_j=s(\beta)-s(\alpha)
+\]
+implies $i=j$ and $\beta=\alpha$. Then, for
+$\mathcal C(T)=(1+\sum_i x_iT^{w_i})^2$,
+\[
+ [T^{H_j}]\,\mathcal C(T)\mathcal D(T)
+       =2\sigma_jr_{\pi(j)}(\mathbf x).
+\]
+Moreover all monomial records in $\mathcal D$ have distinct exponents.
+\end{lemma}
+\begin{proof}
+A term from row $j$ and monomial $\alpha$ can contribute at output $H_i$
+only under the displayed equality. The isolation hypothesis leaves exactly
+the matching monomial in the matching row. Its coefficient in $\mathcal C$
+is $2!\,x^\alpha/((2-|\alpha|)!\prod_i\alpha_i!)$, cancelling the
+factorial multiplier in $c_{j,\alpha}$. This argument also treats constants
+and linear terms by the padding variable. If two records of $\mathcal D$
+shared an exponent, multiplying either by its own present monomial from
+$\mathcal C$ would violate output isolation at that row. Hence the records
+have distinct exponents.
+\end{proof}
+
+The condition distinguishes a present monomial from \emph{every} competing
+monomial. Distinguishing present monomials only from one another would not
+be sufficient: an absent monomial is still produced by $\mathcal C$ and
+could contaminate a selected coefficient.
+
+\subsection{Two explicit placements}
+The uniform placement uses row order
+$1,2,3,4,6,\ldots,22,5$, all signs positive, and
+\[
+ H_j=358+359j\quad(0\le j\le21),\qquad H_{21}=7897.
+\]
+Distinct row targets are more than $2W$ apart, so the 71-pair certificate
+proves the lemma's hypothesis immediately. The highest coefficient of
+$\mathcal D$ is $2r_5(\mathbf0)=2$.
+
+The overlapping placement has targets
+\begin{equation}\label{eq:overlap}
+\begin{split}
+(&358,608,939,1147,1432,1739,1989,2170,2512,2699,2972,\\
+ &3305,3492,3683,3914,4108,4399,4697,4926,5224,5469,5775).
+\end{split}
+\end{equation}
+Its original row order and signs are specified in
+\file{data/overlap_layout.json}; the finite table is reproduced in the
+appendix. The last row is the negative of original row 9 and has constant
+$+8$, so the highest coefficient of $\mathcal D$ is $16$.
+Every successive gap is greater than $W$. Differences of nonadjacent
+targets therefore exceed $2W$, and only adjacent pairs require the finite
+cross-row check. That check verifies the full hypothesis of
+Lemma~\ref{lem:isolation}. No claim that all support intervals are disjoint
+is made or needed.
+
+\section{From isolated coefficients to the arithmetic source}
+\label{sec:source}
+We spell out the source because replacing positions inside a universal
+theorem with hard-coded exponents would be invalid. The new source is
+proved directly and then supplied to the numerical arithmetic bridge.
+
+Let $H_*=\max_jH_j$, $K_*=H_*+2W$, and let $M_*$ bound the absolute values
+of every weighted coefficient $c_{j,\alpha}$. The finite coefficient check
+gives $M_*<2^{2134927}$. The chosen fixed integer
+$\Lambda=2^{2140030}$ comfortably satisfies all coefficient bounds below.
+For the nine-variable construction use
+\[
+ b=\Lambda+\epsilon,\quad B=b^3,\quad\epsilon\ge0;
+\]
+for the ten-integer construction use $b=1+3f$, $B=\Lambda b^2$.
+The latter bridge first recovers $b\ge4$ before the digit argument is used.
+
+Define the following polynomial registers, with $g$ the encoded witness:
+\begin{align*}
+ \ell&=\sum_{i=1}^{31}B^{w_i}, &
+ N_0&=B^{W+1}, & N_1&=4B^{K_*+1}, & N&=N_0N_1,\\
+ M_0&=N_0-1-(b-1)\ell, &
+ T_*&=(B-2)\sum_jB^{H_j},\\
+ \mathcal T&=M_0+T_*N_0, &
+ \mathcal J&=2(1+g)^2\mathcal D(B)+B\sum_{v=0}^{K_*}B^v,\\
+ \mathcal S&=g+\mathcal JN_0, &
+ R&=(N-1)\bigl((\mathcal S+\mathcal T+1)N+\mathcal T+1\bigr).
+\end{align*}
+The source cap is $G_*=32bB^W$ in the nine-variable case and
+$C_*=bB^W$ in the ten-integer case. All sums have fixed finite limits.
+
+\begin{lemma}[The carry test survives the sparse encoding]
+The source has the same two-way interface as the source in package 45:
+if $b$ is a power of two and $0<g<4bB^W$, then
+\[
+ N^2\mid\binom{2R}{R}
+ \quad\Longrightarrow\quad
+ \exists\mathbf x\in\N^{31}\ \bigwedge_j r_j(\mathbf x)=0.
+\]
+Conversely every common zero of the parent admits arbitrarily large
+power-of-two choices of $b$ with an encoding $0<g<bB^W$ satisfying the
+central-binomial divisibility. The corresponding signed-source interface
+holds on the bounds required by the retained Sun bridge.
+\end{lemma}
+\begin{proof}
+Every coefficient of $\mathcal D$ is a single signed weighted coefficient,
+by Lemma~\ref{lem:isolation}; overlapping rows introduce no coefficient
+sum. Its leading coefficient is positive. If $B>M_*+1$, the total
+absolute contribution of all lower positions at $B$ is smaller than one
+unit in the leading position, so $\mathcal D(B)>0$.
+
+For $0\le x_i<b$, all coefficients of $\mathcal C$ are nonnegative and
+their sum is $(1+\sum_i x_i)^2\le(32b)^2$. Therefore
+\[
+ \left|[T^v]\mathcal C(T)\mathcal D(T)\right|
+ \le M_*(32b)^2<B/4.
+\]
+Collisions among absent monomials do not change this sum bound. Adding
+$B/2$ at every position through $K_*$ yields digits strictly between
+$B/4$ and $3B/4$, hence between zero and $B$.
+
+The elementary block estimates retained from the source proof give
+$0\le\mathcal S,\mathcal T<N$ on the soundness range $g<4bB^W$.
+For example $1+g\le4bB^W$, $g<N_0$, and
+\[
+ 2(1+g)^2\mathcal D(B)
+ <32M_*b^2\frac{B^{K_*+1}}{B-1};
+\]
+the choice of $\Lambda$ makes this smaller than the allowed high block.
+The geometric part of $\mathcal J$ is smaller than $2B^{K_*+1}$,
+so $\mathcal J<N_1$. Also $T_*<B^{H_*+1}$, giving $\mathcal T<N$.
+These estimates use $W,H_*,K_*$, not equal target spacing.
+
+For $N=2^r$ and $0\le S,T<N$, the identity
+\[
+ (N-1)((S+T+1)N+T+1)
+ =(S+T)N^2+(N-1-S)N+(N-1-T)
+\]
+gives
+$\pc(R)=2r-\tau_2(S,T)$, where $\tau_2$ is the number of binary carries
+with multiplicity. Legendre's factorial formula gives
+$v_2\binom{2R}{R}=\pc(R)$. Thus the divisibility is equivalent to no
+binary carries between $\mathcal S$ and $\mathcal T$.
+
+The low-block mask first forces
+$g=\sum_i x_iB^{w_i}$ with $0\le x_i<b$. The high-block mask can be
+divided by two together with $\mathcal J$, which is a common binary
+shift. At each selected position it tests all lower bits of the shifted
+digit. Within $(B/4,3B/4)$ the only multiple of $B/2$ is $B/2$ itself.
+By Lemma~\ref{lem:isolation}, this is equivalent to the vanishing of
+every residual. Other positions need no additional condition.
+
+Conversely choose $b$ larger than all coordinates of a common parent
+zero. Its encoding is positive because the all-zero tuple is not a parent
+zero; it is smaller than $bB^W$. Both masks are then disjoint from their
+encoded blocks. The signed source chooses arbitrarily large even powers
+of two $b=1+3f$ and applies the same bounds. Its congruence requirement
+$3\mid R$ follows from $B\equiv N\equiv1\pmod3$, since the exponent
+2140030 is even. These are the source conditions used by the inherited
+ten-integer arithmetic theorem.
+\end{proof}
+
+For arbitrary nine-variable outer assignments, positivity of $\mathcal D(B)$
+and the masks also gives $R\ge N\ge8$ and $0<b\le R,N$. These hold
+before a putative solution is assumed. This order matters when invoking
+the arithmetic bridge to establish the eventual bound on $g$.
+
+\section{The nine-variable equation}
+\label{sec:nine}
+Initially use mixed domains
+\[
+ \epsilon,\phi,n\in\N,\qquad g,h,s,w,i,j\in\Pos.
+\]
+There are exactly nine unknowns. Using the source $R,N,b,g,G_*$, define
+the unchanged Jones registers
+\begin{align*}
+ U&=N^2w, &Y&=N^2s, &M&=RY,\\
+ P&=2M^2U, &K&=R+1+h(P-1), &A&=M(U+1),\\
+ B_1&=2R+1, &W_1&=bw, &C&=B_1+W_1+\phi,\\
+ J&=4A-5, &Q&=3W_1C-2(W_1^2-1),\\
+ D&=(A^2-1)C^2+1, &e&=iJC, &E&=CDe,\\
+ F&=(A^2-1)E^2+1, &G&=A+F(CD+1-A),\\
+ H&=B_1+jC, &I&=(G^2-1)H^2+1,\\
+ a_0&=(P^2-1)K^2+1, &a_1&=DFI,\\
+ u&=JF, &v&=QF+J(H-C),\\
+ m&=\bigl(K^2-4(C-KY)^2\bigr)G_*-8gK^2,
+ &M_d&=Q+H.
+\end{align*}
+The quantity $m$ is a polynomial register, not another witness.
+The numerical Jones ratio theorem says that the existential conditions
+\begin{equation}\label{eq:ratio_conditions}
+ a_0,a_1\in\Sq(\Z),\qquad u\mid v,\qquad m>0
+\end{equation}
+recover the central-binomial divisibility, a power-of-two base, and
+$8g<G_*$. Conversely the source's stronger $32g<G_*$ supplies these
+conditions with appropriate arithmetic witnesses. We retain the precise
+\texttt{ratio\_sound} and \texttt{ratio\_complete} theorems, not an
+unmodified theorem with the older exponential source positions.
+
+\input{refined_tail.tex}
+
+For nine strictly positive coordinates, replace $\epsilon,\phi,n$ by
+their positive coordinates minus one and leave the other six unchanged.
+For nine nonnegative coordinates, leave those three unchanged and replace
+$g,h,s,w,i,j$ by their nonnegative coordinates plus one. These are exact
+domain bijections. The emitted circuits charge all shifts and use the
+same fixed coefficient tuple.
+
+\section{The ten-unrestricted-integer equation}
+\label{sec:ten}
+This branch uses $(f,g,h,k,l,w,x,y,z,m)\in\Z^{10}$ and the signed
+source $b=1+3f$, $B=\Lambda b^2$, $X=R$, $Y=N^2$, $C_*=bB^W$.
+The following registers are retained from the fully explicit package-40
+Sun adapter:
+\begin{align*}
+ L&=lY, &U&=2LX, &V&=4gwY, &W_0&=bw,\\
+ A&=U(V+1), &B_1&=2X+1, &C&=B_1+(A-2)h,\\
+ P&=U^2V, &K&=X+1+k(P-2),\\
+ S_0&=2A-5, &T_0&=3W_0C-2(W_0^2-1).
+\end{align*}
+\begin{align*}
+ r_1&=(P^2-4)K^2+4,\\
+ \delta&=8C_*^3gK^2-g^2\bigl(32(C-KL)^2C_*^3+g^2K^2\bigr).
+\end{align*}
+\begin{align*}
+ O&=f^2l^2\delta, &\xi&=zx,\\
+ D&=(A^2-4)C^2+4, &E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,\\
+ G_0&=2(A+2)(A-2)^2E^2-1, &\Omega_0&=16E,\\
+ H_0&=C+(B_1-C)F+\Omega_0Fy,\\
+ I_0&=(G_0^2-1)H_0^2+1.
+\end{align*}
+Put
+\begin{align*}
+ \Sigma&=\xi S_0^5,& r&=T_0+S_0y,\\
+ \vartheta&=(r^3-rS_0^2-S_0^3)(r^2+23S_0^2),\\
+ r_0&=b\bigl(1+(3O-4)b^2z^2\bigr),&r_2&=DFI_0,\\
+ w_0&=1,&w_1&=r_0,&w_2&=r_0(P^2+K^2+3),\\
+ Z&=\Sigma m-\vartheta,&A_i&=\Sigma^2w_i^2r_i\quad(0\le i\le2),\\
+ V_*&=Z^2+A_2-A_0-A_1,&
+ W_*&=V_*^2+4Z^2A_2-4A_0A_1.
+\end{align*}
+The equation is
+\begin{equation}\label{eq:ten}
+ \boxed{F_{10}=W_*^2-16V_*^2Z^2A_2=0.}
+\end{equation}
+No square root, division, binomial coefficient, or variable exponent occurs
+in its definition. Those objects occur only in the correctness proof.
+
+\subsection{What is reused in this branch}
+The retained finalizer is the product over eight sign choices of a
+three-radical expression, expanded into the displayed norm. Its proof
+recovers the square predicates and merged divisibility condition using
+separating weights, including dependent square classes. The case
+$\Sigma=0$ yields $\vartheta^8\ne0$ and is excluded in the inherited
+argument. The polynomial $(t^3-t-1)(t^2+23)$ supplies the cited
+divisibility--nonvanishing merger, with full residue interpolation from
+Sun's theorem \cite{sun,package40}.
+
+We replace only its source. Section~\ref{sec:source} verifies the source's
+positivity, range, base, congruence, and carry requirements for the new
+positions. The finalizer first establishes the hypotheses needed by that
+source; a square base alone is never treated as a power of two.
+The inherited signed-tail theorem then proves that \eqref{eq:ten} has an
+integer zero exactly when the quadratic parent has a positive zero.
+This branch's new contribution is the certified sparse and overlapping
+source, not a new proof of the general ten-integer theorem.
+
+\section{Why the composition is a ZFC consistency equivalence}
+\label{sec:foundations}
+The complete mathematical chain is
+\begin{align*}
+ \text{new polynomial has a zero}
+ &\Longleftrightarrow \text{the encoded quadratic system has a zero}\\
+ &\Longleftrightarrow \text{the literal K215 machine halts on blank tape}\\
+ &\Longleftrightarrow \text{ZFC has a finite syntactic refutation}.
+\end{align*}
+The first equivalence is the new encoding proof composed with the explicitly
+retained numerical bridge. The latter two equivalences are the inherited
+native-window/Pell compiler and the repository's calibrated proof enumerator.
+They are substantive mathematical dependencies, not conclusions of running
+the finite checkers in this archive.
+
+The new arguments concern finite polynomials, integer arithmetic, finite
+coefficient lists, and elementary algebraic-number reasoning. They can be
+formalized in ZFC. Combining them with the identified inherited proofs
+therefore supplies the asserted ZFC-provable equivalences. No assertion of
+the general soundness of Lean or Rocq inside ZFC is used as a replacement
+for this proof chain.
+
+\subsection{A subtle inherited rank lemma checked in this review}
+The parent uses
+$I=ic^2$, $I^2=\Delta(f^2-1)$, rather than the stronger-looking expression
+with an additional $\Delta$ in $I$. This must not be justified by simply
+cancelling $\Delta$, because $\Delta$ need not be squarefree.
+The inherited relaxed-rank lemma handles it correctly. In the notation
+$\Delta=A^2-1$, $c=\psi_A(p)>A\Delta^2$, it establishes
+\[
+ f=\chi_A(m),\quad p\mid m,\quad c\mid m,\quad
+ ic^2=\Delta\psi_A(m).
+\]
+Its proof passes to the fundamental unit of the squarefree part of
+$\Delta$, applies strong divisibility, and uses the independently obtained
+large-index bound to force the correct index divisibility. The full audit
+and source locator are included in \file{proofs/FOUNDATION_AUDIT.md}.
+Thus this parent does not silently assume $\Delta$ squarefree.
+
+\subsection{Formalization status}
+At the reviewed commit, the repository has an unconditional external Lean
+theorem for a nine-natural-variable polynomial selected via
+\texttt{Classical.choose}, and a 58-natural-variable quartic. Those are
+different objects from the materialized coefficient circuits here.
+The active work log records an executable coefficient compiler and an
+object-language ZFC derivation as open formalization tasks \cite{status}.
+The short explicit P67/P69/P73/P75 families have local Lean algebraic
+certificates, with their end-to-end native compiler bridge still an ordinary
+mathematical proof. This contribution adds ordinary proofs and independently
+checked finite data; it does not claim to close those formalization tasks.
+
+No consistency assumption is used to define the coefficients. The theorem
+proves an equivalence and proves neither side. A claim of two-sided
+independence would require additional hypotheses and is not made here.
+
+\section{Reproduction and the scope of the evidence}
+\label{sec:verification}
+The release contains Python code using only the standard library. The
+recommended entry point is \file{verify.py}; \file{verify_refined.py}
+checks the refined nine-variable circuits. The independent support checker
+does not import construction helpers. The scripts are also run with
+\texttt{python3 -O}, so correctness gates must not disappear when assertions
+are disabled. The archive includes exact receipts and a complete hash manifest.
+
+The checks establish the following finite claims:
+\begin{enumerate}
+\item The parent expansion and all successor shifts match the fixed
+31-coordinate, 22-equation source.
+\item All 71 present monomials are isolated against all 528 possible
+quadratic monomials, and every cross-row target is isolated in both layouts.
+\item The four compiler ports and all derived coefficient recipes are
+bound to the supplied bytes; source positivity and coefficient bounds use
+that complete tuple.
+\item The emitted straight-line graphs are acyclic, every gate and
+witness port is live, and every operation is charged under the stated model.
+\item Direct source-formula replay matches the emitted graphs; exact
+symbolic identities relate the finalizer to its cancellation-resolved
+degree certificate.
+\item Multivariate degree upper bounds are attained, by a nonzero
+diagonal leading coefficient, with exact formulas for the nine-variable
+tail and independent modular certificates for the ten-variable tail.
+\end{enumerate}
+These are checks of the polynomial construction and its finite certificates.
+Searching sample assignments cannot prove an unbounded consistency
+equivalence. The universal claims instead follow from the mathematical
+proofs above and their named inherited dependencies.
+
+\section{Where the reduction comes from and what remains}
+The first gain comes from specializing the algebraic encoding to the
+\emph{support} of the actual residual system. The 457 absent quadratic
+monomials never need to be separated from one another. This is stronger
+than merely searching for a better full Sidon set, because it changes
+the constraint being solved.
+
+The second gain separates only the output positions that will actually
+be tested. The row-polynomial supports may overlap freely elsewhere.
+The explicit target list is a small exact certificate for this weaker
+condition, while every carry bound is preserved.
+
+The third gain uses divisibility already present in the arithmetic tail
+to approximate its radical more closely by a polynomial. It also replaces
+a large separating multiplier by the existing witness $h$, after proving
+an unconditional gap. These transformations introduce no witness and no
+variable denominator. Their defect identities explain the lower degree
+and provide small exact certificates of the otherwise hidden cancellations.
+
+Further work can optimize the joint choice of variable weights, row order,
+and charged power schedule; formalize Lemma~\ref{lem:isolation} once for
+all finite sparse sources; and connect executable coefficient data to the
+existing Lean ZFC endpoint. None of those possible improvements is included
+in the certified numerical claims of this release.
+
+\appendix
+\section{Exact finite placement data}
+\input{layout_table.tex}
+\section{Detailed degree certificate}
+\input{degree_table.tex}
+\section{Files, fixed coefficients, and provenance}
+The machine-readable equations live in \file{generated/}. The primary
+refined nine-variable equations and their degree
+certificates live in \file{refined/}; the principal certificate evaluates
+$D^{16}F_9$, while the V8 certificate evaluates $F_9$ itself.
+\file{data/} contains the literal
+parent, complete ports, coefficient recipes, weights, and placement data.
+\file{proofs/} contains the independent mathematical reviews; \file{upstream/}
+and \file{inherited/} contain the pinned dependency text needed to inspect
+the inherited interfaces.
+The source and dependency hashes are recorded in the manifests. The compiler
+ports are immutable data, never additional unknowns.
+
+The manuscript source is \file{report.tex}; a normal TeX installation can
+rebuild it with two passes of \texttt{pdflatex}. The adjacent small TeX input
+files contain the exact tables and the finalizer proof. They are part of the
+source deliverable. New material is supplied under the repository's MIT
+No Attribution license; inherited notices and attribution remain in the archive.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo} V. Reshetnikov and ProveIt contributors.
+\emph{ProveIt}, reviewed commit
+\texttt{124c07c0b77a9e20e84676514d8b1ff78536ea3f}, 23 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/124c07c0b77a9e20e84676514d8b1ff78536ea3f/Computability/DiophantineConsistency}{Pinned DiophantineConsistency repository directory}.
+\bibitem{package40} ProveIt report package 40.
+\emph{Direct quadratic packing for a ten-integer consistency equation},
+23 October 2026. Pinned repository directory
+\texttt{con-zfc-diophantine-forms/40-packing10}; report and source certificates
+at the commit in \cite{repo}.
+\bibitem{package45} ProveIt report package 45.
+\emph{Simultaneous quadratic coding for ZFC consistency}, 23 October 2026.
+Pinned directory \texttt{con-zfc-diophantine-forms/45-multioutput};
+especially the source proof and \texttt{MULTITARGET\_NINE\_PROOF.md}.
+\bibitem{parent} ProveIt report package 31.
+\emph{Sun ten-integer and quadratic31 constructions}; literal parent,
+full coefficient tuple, and retained-system proofs in
+\texttt{con-zfc-diophantine-forms/31-sun10}, at \cite{repo}.
+\bibitem{status} ProveIt contributors. \emph{DiophantineConsistency research
+status}, \texttt{STATUS.md}, and \emph{Constructing the coefficient data},
+\texttt{COMPILER.md}, at \cite{repo}.
+\bibitem{jones} J. P. Jones. Universal Diophantine equation.
+\emph{Journal of Symbolic Logic} \textbf{47}(3) (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+The numerical ratio interfaces used here are also formalized in ProveIt's
+\texttt{Diophantine/Paper1982/NineRatio.lean}.
+\bibitem{sun} Z.-W. Sun. \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}. arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/html/2609.01594v2}.
+\bibitem{relaxed} ProveIt contributors. \emph{Relaxed Pell auxiliary proof}.
+\nolinkurl{Computability/HilbertTenthProblem/Papers/1980/PELL_RELAXED_AUXILIARY_PROOF.md},
+at \cite{repo}; specialized in package 36's inherited ordinary proof.
+\end{thebibliography}
+\end{document}

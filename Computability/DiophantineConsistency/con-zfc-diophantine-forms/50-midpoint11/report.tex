@@ -1,0 +1,1027 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype,xcolor,enumitem,fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,
+ pdftitle={Smaller explicit Diophantine equations for ZFC consistency},
+ pdfauthor={Research synthesis prepared for Vladimir Reshetnikov}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zpos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\pin}{\texttt{124c07c0b77a9e20e84676514d8b1ff78536ea3f}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine consistency equations}
+\fancyhead[R]{\small ProveIt / 23 October 2026}
+\fancyfoot[C]{\thepage}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{18mm}
+{\small\sffamily\color{blue!45!black} RESEARCH ARTICLE AND REPRODUCIBILITY ARCHIVE}\par
+\vspace{9mm}
+{\Huge\bfseries Smaller explicit\par Diophantine equations\par for ZFC consistency}\par
+\vspace{9mm}
+{\Large Encoding only the monomials that occur,\par and recovering a deleted Pell quotient}\par
+\vspace{9mm}
+{\large Prepared for Vladimir Reshetnikov and the ProveIt project\par
+23 October 2026}
+\vspace{10mm}
+\begin{abstract}
+We construct explicit integer-coefficient polynomials whose absence of
+zeros, on precisely specified domains, is equivalent to syntactic
+consistency of ZFC through the repository's calibrated blank-K215 compiler.
+The comparison includes the eight wave-6 reports at the pinned revision,
+not just the older collection summary. A support-dependent quadratic
+encoding lowers the nine-positive-variable degree from $129\,875\,980$
+to $30\,947\,584$, with 651 binary arithmetic operations instead of 788.
+Its ten-unrestricted-integer companion has degree $56\,593\,864$ and
+653 operations, versus $237\,520\,456$ and 782. The general ten-integer
+reduction is Sun's; the contribution is the smaller explicit source
+encoding and its specialization.
+
+A separate construction uses eleven positive variables, degree 954,
+and 115 operations. It combines a refined auxiliary-root estimate with
+a midpoint carrier and the modulus $4q^4$, which recovers the deleted
+index quotient without a translation of the scale variable. A lower-degree
+fourteen-positive-variable alternative retains degree 56 with 79 operations,
+removing one variable from the historical degree-56 construction.
+All constants are fixed
+by finite recipes and binary payloads; no consistency-dependent choice
+or unspecified enumeration index occurs. The archive contains the
+literal circuits, complete new reduction proofs, exact finite certificates,
+and preserved source notices. The inherited compiler calibration and
+number-theoretic interfaces are identified explicitly. This is an ordinary
+mathematical construction, not a new end-to-end Lean certificate or a
+proof of global minimality.
+\end{abstract}
+\vfill
+{\small Reviewed repository revision: \pin\par
+\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Results, comparison, and the exact logical assertion}
+
+\subsection{What has been constructed}
+
+Fix the ordinary syntactic consistency statement
+\[
+ \Con(\mathrm{ZFC})\;\equiv\;
+ \text{there is no finite derivation of falsity from the chosen ZFC axiom predicate}.
+\]
+The repository identifies this predicate with
+$\neg\,\texttt{\detokenize{BProv ZFCax_s [] Form.fBot}}$ at its formal
+endpoint. The constructions below are bound to the same literal
+215-state machine and one complete native coefficient tuple.
+
+\begin{theorem}[Consistency equations, with stated inherited interfaces]
+\label{thm:main}
+Use the imported mathematical calibration of the literal blank-K215
+compiler stated in Section~\ref{sec:dependencies}, and the cited arithmetic
+interfaces, as theorems with ordinary proofs formalizable in ZFC.
+For every polynomial $P$ constructed here, on its stated domain $D$,
+composition with the displayed reductions yields
+\[
+ \mathrm{ZFC}\ \vdash\
+ \left(\neg\exists\boldsymbol{x}\in D\;P(\boldsymbol{x})=0\right)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+The eleven- and fourteen-positive-variable constructions use the
+ordinary Pell/compiler interface and do not use Sun's 2026 preprint.
+The nine-variable construction uses the repository's Jones interface;
+the ten-unrestricted-integer construction additionally uses Sun's
+ten-integer interface.
+\end{theorem}
+
+This is an ordinary provability claim obtained by composing the stated
+proof dependencies; assuming only their external truth would not suffice
+for the displayed internal conclusion. No consistency assumption is used.
+The new implications are proved below; the full unbounded compiler is
+inherited from the pinned repository, with its ordinary proofs included.
+We have not produced a new proof-assistant derivation of that compiler
+or an object-language ZFC proof term. Section~\ref{sec:formal-status}
+keeps these levels distinct.
+
+The four principal outputs improve different measures. They cannot be
+ranked by one unqualified use of ``simplest.'' In particular, the shortest
+known circuit in the reviewed family remains the historical
+67-operation $P_{67}$, with fifteen positive variables and degree 155.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{34mm}rrp{48mm}@{}}
+\toprule
+Domain / unknowns & Exact degree & Operations & Reviewed comparison\\
+\midrule
+$9$ positive & $30\,947\,584$ & $651$ & Package 45: $129\,875\,980$, 788\\
+$9$ nonnegative & $30\,947\,584$ & $654$ & Package 45: same degree, 791\\
+$10$ unrestricted & $56\,593\,864$ & $653$ & Package 40: $237\,520\,456$, 782\\
+$11$ positive & $954$ & $115$ & Package 38: $1140$, 129; or $1154$, 123\\
+$11$ positive, system & $2$; $952$ & $110$ & Two equations, shifted; equality tests free\\
+$14$ positive & $56$ & $79$ & Historical $Q_{56}$: $15$ variables, degree 56, 74 operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The fourteen-variable lower-degree alternative and its distinct
+tradeoff are given in Section~\ref{sec:fourteen}. The archive also retains
+an eleven-variable full-carrier variant of degree 958 at 116 operations,
+which provides a simpler comparison with package 44's twelve-variable
+carrier. The midpoint variant dominates it on the two displayed measures.
+
+The new nine-variable degree is about $4.20$ times smaller than the
+wave-6 comparison, and its evaluator removes 137 operations. The ten-integer
+degree is also about $4.20$ times smaller and removes 129 operations
+from the degree-best comparison. Package 38 has a different ten-integer
+point at 773 operations and larger degree; the present 653-operation
+point improves that evaluator as well. The eleven-variable point removes
+186 degrees and 14 operations from the previously lowest-degree
+eleven-variable equation, or 200 degrees and 8 operations from the
+123-operation alternative.
+
+\subsection{Counting conventions and what is new}
+
+An operation is one binary addition, subtraction, or multiplication,
+including a multiplication by an integer numeral or a squaring. Shared
+registers are evaluated once. A fixed coefficient is a leaf, and its
+finite construction is accounted for separately. Fixed powers in a
+display are expanded into multiplication gates in the literal circuit.
+Thus these are circuit sizes, not counts of monomials in a fully expanded
+polynomial. All supplied variables, fixed ports, and emitted gates are live.
+For a system, comparisons are free under the same convention used by the
+repository. A natural variable includes zero; a positive variable does not.
+
+The concrete contributions relative to the reviewed material are:
+\begin{enumerate}
+\item Only the 71 quadratic monomials that actually occur are isolated
+against all 528 possible quadratic expansion monomials. Full pair-sum
+uniqueness is unnecessary. This permits maximum weight 190 instead of 799.
+\item Auxiliary-root recovery needs
+$d(Ig-cf)>b+cf$, rather than the stronger $Ig-cf>1$.
+This removes a circular dependence on the index quotient being recovered.
+\item The even polynomial modulus $U=4q^4$ replaces a much larger carrier
+scale. Its gcd with $H$ is at most three, and its congruence information
+is enough to recover an exact Pell-index equality.
+\item The midpoint $\ell+k/2$ can be used in a carrier with integer
+coefficients because $U/2=2q^4$ is itself a polynomial. No additional
+variable or global doubling is needed.
+\item An early index lower bound makes the same small modulus compatible
+with the ordinary strong-rank equation. This removes one variable while
+retaining degree 56, at the cost of five operations.
+\end{enumerate}
+Sparse polynomial encodings, Pell equations, and relation-combining
+norms are established methods~\cite{jones1982,sun2021,sun2026}.
+We claim the stated new combinations,
+finite weight assignment, explicit circuits, and comparisons with this
+repository revision. We do not claim the first use of support-sensitive
+Kronecker encoding in all of mathematics, an optimal weight assignment,
+or a global lower bound on the number of variables.
+
+\subsection{The reviewed baseline}
+
+The pinned commit is \pin~\cite{repo}, whose intake commit places wave-6 sources
+38--45 beside sources 31--37. At that revision, the collection README
+still primarily summarizes wave 5. We therefore inspected the actual
+wave-6 source files and literal circuit data. The original incoming
+archives have been placed into the report directory; the pinned
+\texttt{docs/incoming} directory contains its placement ledger.
+The relevant current path is
+\begin{center}
+\small\texttt{Computability/DiophantineConsistency/con-zfc-diophantine-forms/}.
+\end{center}
+Historical source paths in preserved files refer to the earlier
+\texttt{SetTheory/Cardinals} location at their own named commits. They are
+provenance, not instructions to mix old coefficient tuples.
+
+\section{One fixed coefficient tuple and the inherited interfaces}
+\label{sec:dependencies}
+
+\subsection{The native coefficients are fixed integers}
+
+Every new main construction uses the unchanged, complete package-31
+tuple, whose base is
+\[
+ \rho=2^{121},\qquad L_c=8801,\qquad
+ B_c=\rho^{L_c}=2^{1\,064\,921}.
+\]
+The four ports are
+\[
+ \beta=B_c-1,\qquad K_0=D_C+B_cD_R,\qquad M_C,
+ \qquad M_F=M_{F,\mathrm{native}}+B_c-1.
+\]
+The last port is already shifted. Substituting the unshifted high mask
+would define a different and unjustified equation.
+
+The exact finite recipe and original table data are supplied in
+\texttt{coefficients/upstream/}; \texttt{coefficients/ports.json}
+binds the four materialized gzip payloads by full SHA-256 hashes and
+their original names. Their uncompressed sizes are
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Port & Bit length & Bytes\\
+\midrule
+$\beta$ & $1\,064\,921$ & $133\,116$\\
+$K_0$ & $1\,070\,004$ & $133\,751$\\
+$M_C$ & $1\,064\,921$ & $133\,116$\\
+$M_F$ & $1\,064\,922$ & $133\,116$\\
+\midrule
+Total & & $533\,099$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These integers do not depend on whether the machine halts. They are
+computed from its finite transition table and the fixed compiler layout.
+The nine- and ten-variable circuits additionally use fixed coefficient
+leaves obtained by explicit integer recipes from these four ports.
+Every such leaf has a name, recipe, and checked bound. None is an
+unspecified index supplied by an existence theorem.
+
+We deliberately retain this common tuple to isolate the new arithmetic
+reductions. Package 44 supplies smaller native coefficients, but we do
+not claim a coefficient-size record or silently rebind an existing
+compression constant to that different tuple.
+
+\subsection{The semantic chain being imported}
+
+The inherited chain identifies three statements: a finite ZFC refutation
+exists; the literal blank K215 machine halts; and the calibrated positive
+compiler source has a solution. The machine endpoint is represented in
+the repository by the theorem
+\begin{center}
+\small\texttt{\detokenize{KEndpoint215.blank_halts_iff_zfc_refutation}}.
+\end{center}
+The ordinary mathematical compiler proofs, their source notices, and
+the selected coefficient adapter are preserved in this archive.
+The scalar Pell arguments are formalizable in ordinary arithmetic
+available inside ZFC; this observation is not an exported object-level
+proof term.
+
+For the eleven-variable construction we use the following precise
+properties of the calibrated source:
+\begin{enumerate}
+\item From positive coordinates and the transport equation $N_t=1$,
+the weak bounds in Lemma~\ref{lem:weak} hold.
+\item The normalized Pell equations, including the reconstructed positive
+quotients $h,\gamma$, have signed-quotient soundness: a negative recovered
+strong root can be accompanied by the corresponding sign change of its
+quotient coordinate, and an accepting blank computation is still extracted.
+\item A finite blank halt supplies canonical positive normalized
+witnesses with main Pell index $R$ and first Pell index $(R+1)/2$.
+\end{enumerate}
+These are the interfaces used by packages 38 and 44. We do not infer
+them from finite modular samples. For low-variable encoding, the two
+literal 22-equation quadratic parents are audited separately: package
+40's parent and package 45's parent have the same monomial support but
+one different row after their affine coordinate choices. The archive
+checks the coordinate relation and does not replace one parent by the
+other without that transformation.
+
+\input{packing/support_section.tex}
+
+\section{An explicit equation in eleven positive variables}
+\label{sec:eleven}
+
+The eleven supplied variables, and no others, are
+\[
+ J,F,\alpha,z,i,T,s,w,\eta,\zeta,t\in\Zpos.
+\]
+Use the four fixed ports above and define the polynomial abbreviations
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,& Y&=sq^3,\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,& a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,
+ &\ell&=EkY,& A&=1+\ell(\ell+k),\\
+ G&=1+\Delta c^2,& b_0&=X+ac,& I&=ic^2,&D&=1+\Delta I^2,\\
+ Q&=\Delta(D-1)=(\Delta I)^2,&d&=Q-1,&v&=cT,&b&=c+RD,
+\end{align*}
+where the rank and transport polynomials are
+\begin{align}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\label{eq:rank}\\
+ N_t&=(K_0+w)C+q-F-z(q-1).\label{eq:transport}
+\end{align}
+Put
+\begin{align}
+ U&=4q^4,&r&=k-R-1,& K&=IT,\nonumber\\
+ S&=UH,& L&=U+SK,\nonumber\\
+ W&=U\bigl[b_0+H(t+b+\ell)\bigr]+H\bigl(2q^4k-r\bigr),\label{eq:carrier}\\
+ e&=Q(Dv^2+b^2)-1,&B_{\!a}&=2Qvb.\nonumber
+\end{align}
+The symbol $K$ in \eqref{eq:carrier} is a computed weight, distinct
+from the fixed coefficient $K_0$.
+
+Define
+\begin{equation}
+ \mathcal N=
+ \prod_{\substack{g=\pm\sqrt G,\ \tau=\pm\sqrt A\\ f=\pm\sqrt D}}
+ \left[d(W-Lg-S\tau)^2-S^2e+S^2B_{\!a}f\right].
+ \label{eq:formalnorm}
+\end{equation}
+This is an integer polynomial: the product is invariant under each
+formal sign change, and only even powers of the three formal roots
+remain. This definition does not assume that the square classes are
+independent or that there exist eight independent field automorphisms.
+The radical symbols are notation for a finite polynomial identity.
+
+Our main equation is
+\begin{equation}
+ \boxed{\quad P_{11}=N_t(1+\mathcal N)-1=0.\quad}
+ \label{eq:p11}
+\end{equation}
+Every named quantity in \eqref{eq:rank}--\eqref{eq:p11} is computed
+from the eleven supplied variables. There is no variable exponent,
+divisibility predicate, square root operation, or extra existential
+quantifier in the final literal circuit.
+
+\subsection{A division-free scalar formula}
+\label{sec:scalar}
+
+The following evaluation specifies \eqref{eq:formalnorm} using only
+integer additions, subtractions, and multiplications:
+\begin{align*}
+ n_d&=dS^2A,&P_H&=S^2QDv^2,&U_H&=S^2Qb^2,\\
+ e_H&=P_H+U_H-S^2,& j&=4P_HU_H,\\
+ \mathcal T&=2d(W^2+L^2G),& \kappa&=[d(W^2-L^2G)]^2,\\
+ \mathcal A&=2(n_d+e_H),&\mathcal B&=(n_d-e_H)^2-j,\\
+ a_r&=\mathcal T-\mathcal A,&b_r&=\mathcal B-\kappa,\\
+ v_r&=16n_dj-a_r(a_r\mathcal T+2b_r),
+ &u_r&=b_r^2-a_r^2\kappa,\\
+ \mathcal N&=\kappa v_r^2-u_r(\mathcal T v_r-u_r).
+\end{align*}
+For a proof, after eliminating the signs of $\tau$ and $f$, the
+polynomial in $x=d(W-Lg)^2$ is
+\[
+ (x^2-\mathcal A x+\mathcal B)^2-16n_dj x.
+\]
+The two values obtained from the signs of $g$ have sum $\mathcal T$
+and product $\kappa$. Reduction modulo
+$x^2-\mathcal T x+\kappa$ gives $u_r-v_rx$; its quadratic norm
+is the displayed expression. This proves the scalar identity over an
+integer polynomial ring, including all square and zero specializations.
+
+\begin{lemma}[The unit guard]
+\label{lem:guard}
+For every integer substitution, $\mathcal N$ is congruent to a square
+modulo four. Hence a root of \eqref{eq:p11} satisfies
+$N_t=1$ and $\mathcal N=0$.
+\end{lemma}
+\begin{proof}
+Set $x_0=d(W^2+L^2G)$. Then
+$\mathcal T=2x_0$ and
+$\kappa=x_0^2-4d^2W^2L^2G$. Thus
+\[
+ \mathcal N\equiv(u_r-x_0v_r)^2\pmod4.
+\]
+At a product root, $N_t$ and $1+\mathcal N$ are integer units.
+The possibility $1+\mathcal N=-1$ would require
+$\mathcal N=-2$, impossible modulo four. Both units are therefore $+1$.
+\end{proof}
+
+\section{Root recovery without assuming the missing quotient}
+\label{sec:root-recovery}
+
+\begin{lemma}[Weak bounds]\label{lem:weak}
+At a positive root of \eqref{eq:p11}, the authentic coefficient
+interface and \eqref{eq:transport} give
+\begin{gather*}
+ q\ge16,\quad C>0,\quad 3q<R<q^4-2,\quad
+ X\ge q,\quad Y\ge q^3,\quad E\ge q^4>R+2,\\
+ k\ge2,\quad kY<c<k(Y+1),\quad I\ge c^2,\quad a+2<2E.
+\end{gather*}
+In particular $c>8192>96$. No inequality $k>E$ is used here.
+\end{lemma}
+\begin{proof}
+The transport and rank bounds are the imported weak interface. In
+particular, $C\le0$ would make
+$N_t\le1-F-(z-1)(q-1)\le0$, contradicting $N_t=1$.
+All remaining assertions follow from the positive coordinate definitions;
+$a+2=E+Y+2<2E$ uses $X\ge16$ and $Y\ge4096$.
+\end{proof}
+
+In the following estimates, write $g=\sqrt G$, $f=\sqrt D$,
+and $\tau=\sqrt A$ for the positive real roots, whether or not they
+are integers. The elementary inequalities
+\begin{equation}
+ 1<A<\Delta I=\sqrt Q,\qquad
+ g<(a+2)c<2Ec,\qquad f<(a+2)I<2EI
+ \label{eq:weak-radicals}
+\end{equation}
+hold. For the first, $c>kY$ gives
+\[
+ \Delta c^2-A>E k^2Y(2Y^2-1)-1>0,
+\]
+and $I\ge c^2$. Notice that these estimates do not use an already
+recovered main or first Pell index.
+
+\begin{lemma}[The refined auxiliary gap]\label{lem:gap}
+Under the weak bounds,
+\[
+ d(Ig-cf)>b+cf.
+\]
+Every coherent complex auxiliary root satisfying
+\[
+ d y^2=Q(vf'-b)^2-1,
+ \qquad (f')^2=D,
+\]
+therefore satisfies $|y|<b+ITg$.
+\end{lemma}
+\begin{proof}
+The exact relation
+\[
+ (Ig)^2-(cf)^2=I^2-c^2
+\]
+and $I\ge c^2$, $c\ge2$, give
+\[
+ Ig-cf=\frac{I^2-c^2}{Ig+cf}
+ >\frac{I^2}{4Ig}>\frac{I}{8Ec}.
+\]
+Also $d>\tfrac12E^4I^2$. Since $R<E$, $D<4E^2I^2$,
+and $c<I^2$, one has $b+cf<6E^3I^2$. Consequently
+\[
+ d(Ig-cf)>\frac{E^3I^3}{16c}>6E^3I^2>b+cf,
+\]
+where the middle strict inequality uses $I>96c$.
+
+Set $Z=b+Tcf>1$. Even for a complex $y$, its defining equation
+implies $d|y|^2\le QZ^2+1$. The exact difference
+\[
+ [Z(1+1/d)]^2-\frac{QZ^2+1}{d}
+ =\frac{QZ^2-d}{d^2}>0
+\]
+gives $|y|<Z+Z/d$. As $T\ge1$,
+$Z/d\le T(b+cf)/d<T(Ig-cf)$. Thus $|y|<b+ITg$.
+\end{proof}
+
+This is the compatibility lemma missing from a direct juxtaposition of
+packages 38 and 44: the latter's estimate $Ig-cf>1$ used the old
+index quotient. The refined inequality is valid even when $k\le E$.
+
+\subsection{The midpoint and selection of the main root}
+
+For the proof only, put $\delta=\ell+k/2$.
+The carrier \eqref{eq:carrier} has integer coefficients even if this
+temporary rational abbreviation is not yet an integer. Its inner
+argument is
+\begin{equation}
+ x=\frac{W-Lg'}{S}
+   =t+b+\delta-\frac rU+\frac{b_0-g'}H-ITg',
+ \qquad (g')^2=G.
+ \label{eq:innerarg}
+\end{equation}
+Since $k\ge2$,
+\begin{equation}
+ \delta\ge\tau,\qquad
+ 0\le\delta-\tau
+ =\frac{k^2/4-1}{\delta+\tau}
+ <\frac{k}{8EY}<Ig-cf.
+ \label{eq:midpointgap}
+\end{equation}
+The last inequality follows from Lemma~\ref{lem:gap}'s stronger bound
+$Ig-cf>I/(8Ec)\ge c/(8E)>kY/(8E)$.
+We do \emph{not} claim $\delta-\tau<1$; $k$ is unbounded.
+
+Each root of the inner elimination polynomial has a coherent form
+$x=\tau'+y$ with $(\tau')^2=A$ and the auxiliary relation in
+Lemma~\ref{lem:gap}. Thus $|x|<\tau+b+ITg$.
+If $g'=-g$, however, \eqref{eq:innerarg} gives
+\[
+ x=t+b+\delta-r/U+(b_0+g)/H+ITg>b+\tau+ITg.
+\]
+Indeed $H<5a$, $b_0>ac$, $g>ac$, and $c>kY$ imply
+$(b_0+g)/H>2c/5>k>r/U$. This is a contradiction.
+If $G$ were nonsquare, actual conjugation of $\Q(\sqrt G)$ would
+carry the vanishing rational-coefficient inner polynomial at the
+positive branch to the forbidden negative branch. Therefore $g$ is a
+positive integer and $x$ is rational. This argument uses one actual
+quadratic conjugation, not fictitious independent signs in a splitting field.
+
+\subsection{Exceptional inner roots and rational Pell saturation}
+
+The inner polynomial is
+\begin{align*}
+ C_x&=d(x^2+A)-e,\\
+ F_*(x)&=\left[C_x^2+DB_{\!a}^2-4d^2x^2A\right]^2
+                    -4C_x^2DB_{\!a}^2.
+\end{align*}
+It has $F_*(x)=0$ for the rational $x$ just recovered. If $C_x=0$,
+substitution gives the integer identity
+\[
+ d^2A^2-deA+Q^2v^2b^2D=0.
+\]
+Reducing modulo $Q$, where $d\equiv e\equiv-1$, gives
+$Q\mid A(A-1)$, impossible since $0<A(A-1)<Q$.
+Likewise $F_*(0)=0$ would give $Q\mid(A-1)^2$, also impossible.
+Therefore both $x$ and $C_x$ are nonzero. Now define
+\begin{align*}
+ U_x&=C_x^2+DB_{\!a}^2-4d^2x^2A,\\
+ f'&=-\frac{U_x}{2C_xB_{\!a}},&
+ \tau'&=\frac{C_x+B_{\!a}f'}{2dx},&y&=x-\tau'.
+\end{align*}
+All denominators have been justified. Direct substitution gives
+$(f')^2=D$, $(\tau')^2=A$, and
+\[
+ dy^2=Q(vf'-b)^2-1.
+\]
+The rational square roots $f',\tau'$ of integers are integers.
+
+We also need $y\in\Z$. The inherited rational Pell saturation lemma
+states that, for integers $m\ge2$ and $V$, if
+\[
+ m^2V^2-(m^2-1)y^2=1,\qquad y\in\Q,
+\]
+then $y\in\Z$. Here $m=\Delta I$ and $V=vf'-b$.
+For completeness, write $y=p/q$ in lowest terms. Then $q^2\mid m^2-1$,
+and the positive nonsquare $D_0=(m^2-1)/q^2$ has integer-coordinate
+Pell solutions $(m,q)$ and $(m|V|,|p|)$. Both are powers of its
+fundamental integer-coordinate unit. Their abscissas $\chi_j,\chi_l$
+satisfy $\chi_j\mid\chi_l$. Reducing and reflecting $l$ modulo $2j$,
+the addition formulas and strict growth show that $l$ is an odd
+multiple of $j$. The ordinate formulas then give $q\mid p$;
+lowest terms force $q=1$. The cases $V=0$ or $p=0$ cannot satisfy
+the original equation. It follows that $y$, and hence $x$, is integral.
+
+\section{A small modulus recovers the deleted Pell quotient}
+\label{sec:quotient}
+
+Write $A_0=a+2$ and $P_0=2EY+1$. The first Pell equation has
+fundamental integer-coordinate unit $(P_0,2)$, while the main equation
+has fundamental unit $(A_0,1)$. Thus
+\begin{equation}
+ |\tau'|=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n),\qquad
+ g=\chi_{A_0}(p),\quad c=\psi_{A_0}(p)
+ \label{eq:firstmainindices}
+\end{equation}
+for positive indices $n,p$. In particular $k$ is even. Only now do
+we assert that $\delta$ is integral. From the integer carrier identity
+\eqref{eq:innerarg}, it follows that
+\begin{equation}
+ U\mid Hr.\label{eq:weakdiv}
+\end{equation}
+Cancelling $H$ at this stage would be invalid.
+
+\subsection{Enough index separation without translating \texorpdfstring{$s$}{s}}
+
+Because $c>1$, we have $p\ge2$. If $n=1$, then $k=2$ and
+positivity forces $\eta=\zeta=1$, so $c=2Y+1$. But
+$c=\psi_{A_0}(p)\ge2A_0>2Y+1$, a contradiction. Hence
+\begin{equation}
+ n\ge2,\qquad k\ge4P_0>8EY,\qquad
+ c>8EY^2>2R,\qquad c>X.
+ \label{eq:recoveredlarge}
+\end{equation}
+The standard growth estimate also gives $c>2p$.
+Thus the necessary index separation comes from the integral Pell
+equations themselves. No replacement $s_{\rm old}=s+3q$ is necessary.
+
+The strong equation gives
+\[
+ |f'|=\chi_{A_0}(m),\qquad I=\psi_{A_0}(m)
+\]
+for $m\ge1$. Strong divisibility and $c^2\mid I$ first give
+$p\mid m$. If $m=pj$, composition yields
+\[
+ \psi_{A_0}(m)=c\psi_{\chi_{A_0}(p)}(j).
+\]
+The second factor is congruent modulo $c$ to
+$j\chi_{A_0}(p)^{j-1}$. Since $\chi_{A_0}(p)$ is a unit modulo
+$c$, we obtain $c\mid j$, hence $pc\mid m$ and $m>2p$.
+
+The auxiliary equation is
+\[
+ (\Delta I)^2V^2-((\Delta I)^2-1)y^2=1,
+ \qquad V=c(Tf'-1)-R(f')^2.
+\]
+Its Pell index $j_0$ is positive and odd. The usual odd-index
+abscissa polynomials $Q_v$ satisfy
+\begin{gather*}
+ \chi_M(2v+1)=M Q_v(M^2),\\
+ Q_v(1-A_0^2)=(-1)^v\psi_{A_0}(2v+1),\qquad
+ Q_v(0)=(-1)^v(2v+1).
+\end{gather*}
+Reducing modulo $|f'|$, using
+$Q=\Delta((f')^2-1)\equiv1-A_0^2$ and $V\equiv-c$,
+gives $\psi_{A_0}(j_0)\equiv\pm c$. Squaring and doubling gives
+\[
+ \chi_{A_0}(2j_0)\equiv\chi_{A_0}(2p)
+ \pmod{\chi_{A_0}(m)}.
+\]
+Since $0<2p<m$, signed index reduction gives
+$j_0\equiv\pm p\pmod m$. To see why the signed step is valid,
+reduce an index modulo $2m$ and reflect it to $[0,m]$. A negative
+representative cannot equal $\chi_{A_0}(2p)$ modulo $\chi_{A_0}(m)$
+because $2\chi_{A_0}(m-1)<\chi_{A_0}(m)$; strict growth then
+forces the representative to be $2p$.
+
+Separately, $Q\equiv0\pmod c$ and $V\equiv-R\pmod c$
+give $j_0\equiv\pm R\pmod c$. Since $c\mid m$ and
+$0<p,R<c/2$, these congruences force
+\begin{equation}
+ p=R.\label{eq:pR}
+\end{equation}
+No step used an index quotient before its reconstruction.
+
+\begin{lemma}[The modulus $4q^4$]\label{lem:modulus}
+Under the preceding hypotheses, $2n=R+1$, and both $E$ and $U$
+divide $r=k-R-1$.
+\end{lemma}
+\begin{proof}
+The polynomial $H=4sq^3(wq+1)+3$ is odd. Any prime dividing
+both $q$ and $H$ must be three. If $3\mid q$, then
+$H\equiv3\pmod{27}$, so its 3-adic valuation is exactly one.
+Consequently
+\[
+ \gcd(U,H)\in\{1,3\},\qquad
+ \mu=U/\gcd(U,H)\ge4q^4/3>R.
+\]
+The Pell recurrence gives
+$\psi_{P_0}(n)\equiv n\pmod{P_0-1}$, hence
+\[
+ k\equiv2n\pmod{4EY}.
+\]
+Moreover $U=4q^4\mid4EY=4ws^2q^7$. Combining this with
+\eqref{eq:weakdiv} gives $2n\equiv R+1\pmod\mu$.
+
+Since $P_0>A_0$ and $c>k$, monotonicity of the Pell sequences
+in their base and index implies $n<p=R$. Thus
+$|2n-R-1|<R<\mu$, and the congruence is an equality.
+It follows that $r=k-2n$ is divisible by $4EY$, hence by $E$ and $U$.
+\end{proof}
+
+Set
+\[
+ h=r/E,\qquad \gamma=(g-b_0)/H.
+\]
+The first is a positive integer because $n\ge2$ and
+$\psi_{P_0}(n)>n$. The carrier, $U\mid r$, and even $k$
+give $g\equiv b_0\pmod H$, so the second is an integer.
+Since $g>(a+1)c$ and $c>X$, it is positive. We have now
+reconstructed the normalized source equations
+\begin{gather*}
+ (\tau')^2-\ell(\ell+k)=1,\qquad
+ (b_0+H\gamma)^2-\Delta c^2=1,\\
+ (f')^2-\Delta i^2c^4=1,\qquad
+ Q[c(Tf'-1)-R(f')^2]^2-(Q-1)y^2=1,\\
+ k-hE-R=1,\qquad N_t=1.
+\end{gather*}
+Take positive absolute values of the first and auxiliary roots. If
+$f'<0$, change $f'$ and its quotient coordinate $T$ together,
+as allowed by the inherited signed-quotient soundness interface.
+This extracts a finite blank-K215 halt and hence a ZFC refutation.
+
+\section{Constructive completeness and exact size of the eleven-variable equation}
+
+\subsection{Constructing the new positive coordinate}
+
+Conversely, take a canonical positive normalized compiler witness.
+It has positive $g,\tau,f,y,\gamma$ and first/main indices satisfying
+$R=2n-1$. The Pell recurrence gives
+$r=k-2n\equiv0\pmod{4EY}$, so $r/U$ is a positive integer;
+$k$ is even as well. Define
+\begin{equation}
+ t=\gamma+ITg+\tau+y-b-\delta+r/U,
+ \qquad\delta=\ell+k/2.\label{eq:newt}
+\end{equation}
+The auxiliary Pell equation gives $y\ge|vf-b|\ge b-vf$.
+By \eqref{eq:midpointgap},
+\[
+ t\ge\gamma+T(Ig-cf)+(\tau-\delta)+r/U
+   >\gamma+r/U>0.
+\]
+Thus \eqref{eq:newt} is an integer positive coordinate. Substituting it
+into the carrier makes one coherent factor of \eqref{eq:formalnorm}
+vanish, while $N_t=1$ is unchanged. This proves the converse.
+Together with soundness, it establishes the eleven-variable case of
+Theorem~\ref{thm:main} through the stated inherited calibration.
+
+\subsection{Exact degree, including the cancellations}
+\label{sec:degree11}
+
+A naive gate-degree propagation gives 1138 for the product. The actual
+degree is 954 because of exact norm cancellations. The following
+calculation proves the smaller degree, rather than inferring it from
+random evaluations.
+
+Use a subscript zero for a highest homogeneous part, and set
+\begin{gather*}
+ q_0=\beta J,\quad k_0=\eta+\zeta,\quad
+ X_0=wq_0,\quad Y_0=sq_0^3,\quad E_0=X_0Y_0,\quad c_0=k_0Y_0,\\
+ I_0=ic_0^2,\quad H_0=4E_0,\quad \ell_0=E_0c_0,\quad
+ d_0=E_0^4I_0^2,\\
+ R_0=q_0^3(q_0-F),\quad B_0=R_0E_0^2I_0^2,\quad
+ V_0=I_0T\ell_0,\quad U_0=4q_0^4.
+\end{gather*}
+Their relevant degrees are
+$\deg H_0=6$, $\deg\ell_0=11$, $\deg d_0=46$,
+$\deg B_0=38$, and $\deg V_0=23$.
+
+First omit the factor $U$ and the rational shift $-r/U$ from the
+carrier, retaining the rational midpoint $\ell+k/2$. Work in the
+Laurent series field obtained by scaling all supplied variables by
+one indeterminate; its coefficient field is the rational function
+field in those variables and the fixed ports. The principal roots
+have leading terms $g_0=\tau_0=\ell_0$ and $f_0=E_0I_0$.
+The exact square-difference identity gives
+\[
+ T(Ig-cf)=\frac{iTc_0}{2E_0}+\text{terms of smaller degree}.
+\]
+For signs $(s_g,s_\tau,s_f)$, four factors with $s_f\ne s_g$
+have degree 119 and leading term
+$-s_g4H_0^2d_0B_0V_0$.
+For the four factors with $s_f=s_g$, the leading terms are
+\begin{center}
+\begin{tabular}{@{}ccrl@{}}
+\toprule
+$s_g$ & $s_\tau$ & Degree & Leading term\\
+\midrule
+$+$ & $-$ & 107 & $4H_0^2B_0d_0\ell_0$\\
+$-$ & $-$ & 107 & $4H_0^2B_0d_0\ell_0$\\
+$-$ & $+$ & 101 & $4H_0B_0d_0\ell_0$\\
+$+$ & $+$ & 97 & $H_0^2B_0d_0(2t-iTc_0/E_0)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+To verify the table, define the full unscaled carrier expressions
+\[
+ W^{\rm u}=b_0+H(t+b+\ell+k/2),\qquad
+ L^{\rm u}=1+HIT,
+\]
+and put $Z=W^{\rm u}-Hb-Hs_\tau\tau-L^{\rm u}s_gg$.
+Expand each factor as
+\[
+ 2dHbZ+dZ^2-H^2b^2-H^2QDv^2+H^2
+       +s_f2H^2Qbvf.
+\]
+The leading degree-119 terms cancel exactly when $s_f=s_g$.
+In that case the residual linear expression is controlled successively
+by $2\ell$, $(b_0+g)/H\sim2\ell_0/H_0$, or
+$t-T(Ig-cf)$; the midpoint error $\delta-\tau$ has degree $-9$.
+The quadratic cancellation follows from
+\[
+ dI^2G-QDc^2=Q(I^2-c^2)-I^2G,
+\]
+so the remaining quadratic terms are below the listed degrees.
+This also supplies a uniform upper bound, not just a leading-term guess.
+
+Multiplying the table gives unscaled norm degree
+$4\cdot119+107+107+101+97=888$ and leading form
+\[
+ 2^{14}H_0^{15}d_0^8B_0^8V_0^4\ell_0^3
+ \left(2t-\frac{iTc_0}{E_0}\right).
+\]
+The actual norm is, in the localization at $U$,
+\[
+ \mathcal N=U^{16}\mathcal N_{\rm unscaled}(t-r/U).
+\]
+Its degree in the carrier coordinate is at most sixteen, so the
+denominators clear. Since $\deg(r/U)=0<\deg t$, the substitution
+does not alter the highest homogeneous part. Consequently
+\begin{equation}
+ \mathcal N_{952}
+ =2^{14}U_0^{16}H_0^{15}d_0^8B_0^8V_0^4\ell_0^3
+ \left(2t-\frac{iTc_0}{E_0}\right)\ne0.
+ \label{eq:lead952}
+\end{equation}
+The denominators in the displayed expression cancel against its
+prefactors. Nonvanishing follows from the independent occurrence of
+$t$, and holds for every authentic $\beta>0$. Finally
+\[
+ (N_t)_2=w(q_0-F-\alpha)-zq_0\ne0,
+\]
+so \eqref{eq:p11} has exact degree $952+2=954$.
+
+\subsection{Operations and an optional system}
+
+The literal schedule has 69 multiplications and 46 additions or
+subtractions, totaling 115. The use of $L=U+SIT$ shares the already
+computed $S$, and the midpoint term uses $U/2=2q^4$ directly.
+The exact two-equation form $N_t=1$, $\mathcal N=0$ uses 111
+operations if the final norm is tested by comparing its two terms.
+Applying the inherited positive transport shift
+\[
+ (K_0+w)C=F+z(q-1),\qquad z_{\rm old}=z+1,
+\]
+gives the 110-operation system of degrees 2 and 952.
+Canonical witnesses have $w=2^R/q>q>F$, so $z_{\rm old}\ge2$;
+the shifted coordinate is positive. Arbitrary positive shifted solutions
+map back by $z_{\rm old}=z+1$.
+
+The checker computes complete univariate polynomials modulo 10007 and
+10009 using the actual materialized coefficients. It obtains nonzero
+degree-954 coefficients 8551 and 2035 on the two recorded rays, matching
+\eqref{eq:lead952}. These are exact finite-field calculations, not
+interpolation. The paper supplies the upper bound; the nonzero coefficient
+supplies an independent lower-bound certificate for the literal instance.
+
+\input{fourteen/section.tex}
+
+\section{Verification, integration, and what remains unformalized}
+\label{sec:formal-status}
+
+\subsection{The checks and their proper interpretation}
+
+The archive separates finite implementation checks from mathematical
+soundness. Its main checks are:
+\begin{itemize}
+\item symbolic reconstruction of both quadratic parents and all 136
+source coefficient records, with a separate check of their affine
+transport-coordinate relation;
+\item exhaustive isolation of 71 supported monomials against all 528
+quadratic pairs, and all $136\cdot528=71\,808$ source/expansion tests
+at the target positions;
+\item exact fixed-leaf recipes, coefficient bounds, byte hashes,
+operation counts, variable counts, and complete circuit liveness;
+\item exact norm identities proved algebraically, with independent
+formal-radical multiplication diagnostics including square, zero, and
+coincident-radicand specializations;
+\item exact degree certificates and tests using the actual fixed tuple;
+\item direct accepting and rejecting finite controls for the source
+packing, where supplied, and the positive coordinate transformations.
+\end{itemize}
+None of these finite tests attempts to verify that an unbounded machine
+never halts. No search for a ZFC contradiction or for a gigantic zero
+was performed. An exhaustive combinatorial isolation certificate is
+different from a finite sample of an infinite semantic implication;
+the former is precisely the finite hypothesis of the encoding theorem.
+
+\subsection{Formalization status}
+
+At the pinned revision the active research records a Lean-checked
+nine-natural-variable existence theorem with coefficients selected through
+existential representation, and a checked quartic alternative. It
+explicitly leaves executable coefficient export, the explicit $P_{67}$
+compiler correctness in Lean, and an object-level ZFC derivation open.
+Those facts are preserved in the provenance snapshots.
+
+The present article supplies explicit data and ordinary proofs for the
+new adapters. It does not silently turn the existing existence-based
+Lean polynomial into the literal circuits here, or claim that local
+ring identities prove the compiler endpoint. The new degree and
+operation certificates are finite certificates for specific polynomials;
+the intended consistency interpretation still composes with the
+inherited semantic chain described earlier. The mathematical reviews
+in \texttt{review/} were produced as independent AI-assisted reviews
+within this work, not as external human peer review.
+
+\subsection{Reproducing and incorporating the package}
+
+Run \texttt{python3 verify.py} from the archive root. Python 3.10 or
+later and NumPy are sufficient; the support-encoding and fourteen-variable
+checks themselves use the standard library. The verification driver
+regenerates the literal circuit files and writes an ordered receipt.
+The supplied \texttt{Makefile} rebuilds this article with a standard
+\texttt{pdflatex} installation. No network or running ProveIt checkout
+is needed for these finite checks.
+
+The intended integration unit is the complete archive directory.
+Preserve the coherent coefficient tuple, source ledgers, and licenses.
+No existing repository files or remote branches were changed in this
+work. A suitable destination is a new descriptively named source
+directory under the current DiophantineConsistency report collection;
+its number should be assigned at intake instead of guessed here.
+The source commit is pinned so that later repository edits do not alter
+the comparison silently.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{How small can the support-dependent weights be?}
+The weight-190 certificate is a feasible construction, not an optimum.
+A reproducible SAT or integer-programming search could prove lower
+bounds for this exact 71-monomial support. That would distinguish a
+search improvement from a structural lower bound.
+\item \textbf{Can row targets overlap?}
+The present theorem retains separated row blocks. The true obstruction
+is a finite set of support/expansion differences. Carefully certified
+nonuniform target placement may reduce the maximum target without
+requiring a globally stronger pair-sum condition.
+\item \textbf{Can the quadratic parent be redesigned for its support?}
+Affine coordinate changes and choices of intermediate multiplication
+registers change which monomials need isolation. Jointly minimizing
+parent support and encoding range may outperform optimizing weights
+after the parent has been fixed.
+\item \textbf{Can more coefficient or guard structure be retained?}
+The present carry estimate uses a safe total coefficient bound.
+Row-specific signs, shared coefficient expressions, and smaller
+independent buffers may reduce the fixed source base or evaluator,
+but each change must preserve the malformed-digit rejection argument.
+\item \textbf{Can the new quotient lemma be formalized locally?}
+The modulus $4q^4$, its gcd bound, the Pell recurrence congruence,
+and the short-index argument are concrete targets for Lean. Their
+proof should explicitly order root recovery, evenness of $k$, weak
+divisibility, and restoration of $h$.
+\item \textbf{Can the full semantic bridge be closed?}
+The most valuable formalization work is a data-valued compiler that
+connects the actual four ports and literal source circuit to the
+existing K215 endpoint. A local simplification certificate alone
+does not settle that obligation.
+\item \textbf{Can the midpoint carrier remove another coordinate?}
+The refined root-gap estimate uses actual coupling between Pell
+radicands. A further removal must preserve rational-root saturation,
+the nonzero exceptional denominators, and positivity in completeness.
+No sub-eleven moderate-degree construction is asserted here.
+\end{enumerate}
+
+\clearpage
+\appendix
+\section{A finite native coefficient recipe}
+\label{app:coefficients}
+
+This appendix records the selected tuple without an unspecified
+enumeration index. The exact ordered tile list consists of the 943
+quadruples in \path{coefficients/upstream/upstream/wang943_tiles.json};
+the accompanying generator reconstructs it from the 430 literal K215
+actions. Slots are west, north, east, south; start is selector zero,
+the impossible tile is selector one, and the remaining tiles are
+lexicographically ordered, as in package 31.
+
+Let
+\begin{align*}
+ \mathcal E_c={}&\{0,\ldots,942\}\cup\{983,\ldots,992\}
+ \cup\{1003,\ldots,1032\}\\
+ &\cup\{1063,1064,1095,1096,2195,3296\}.
+\end{align*}
+It has 989 elements. Set $W_j=2^{10+2j}$ for $0\le j<44$,
+and copy offsets $o_t=(1023,1013,1003,983)$. If tile $i$ has
+slot labels $x_{it}$, define
+\[
+ c_i=1+\sum_{t=0}^3\sum_{j=0}^9
+        \operatorname{bit}_j(x_{it}+512)W_{10t+j}
+        +W_{40}+W_{41}+W_{42}+W_{43}.
+\]
+At exponent $o_t+j$ put $c_e=W_{10t+j}$; at the four listed
+anchors put $W_{40},\ldots,W_{43}$. The two dummy coefficients
+at 1063 and 1064 are zero. Define
+\begin{align*}
+ \mu_c&=1022+\sum_{j=0}^{43}W_j,\\
+ Z_c&=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+                 +(2^{27}-1)\rho^{8799},\\
+ D_C&=\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E_c}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R&=\rho^{42},\\
+ M_C&=B_c-1-\sum_{e\in\mathcal E_c\setminus\{1\}}\rho^e
+                       -2\rho^{1063},\\
+ M_{F,\mathrm{native}}&=4+\mu_c(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^9(\rho^{1013+j}+\rho^{1065+j})
+       +\rho^{2195}+\rho^{3296}+Z_c.
+\end{align*}
+Use $\rho=2^{121}$, $B_c=\rho^{8801}$ and the four ports
+specified earlier. These are bounded finite sums of fixed integers.
+The source proof checks carry bounds, clause decoding, alignment,
+mask populations, and the controller for the actual packed rank;
+they are not new claims established merely by rewriting the recipe here.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt}, revision \pin,
+23 October 2026. Current collection, packages 31, 38, 40, 44, 45,
+and active DiophantineConsistency status and short-equation sources.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/124c07c0b77a9e20e84676514d8b1ff78536ea3f/Computability/DiophantineConsistency}.
+Exact relative paths, hashes, and preserved notices are included in
+the archive's provenance files.
+\bibitem{jones1982}
+J. P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), no. 3, 549--571.
+\url{https://doi.org/10.2307/2273588}.
+The repository's Jones interfaces and explicit finalizer are preserved
+with their own source notices.
+\bibitem{sun2021}
+Z.-W. Sun, \emph{Further results on Hilbert's Tenth Problem},
+Science China Mathematics \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/abs/1704.03504v7}.
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+preprint, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/html/2609.01594v2}.
+The ten-integer theorem and its number-theoretic finalizer are
+attributed to Sun; they are not new results of this article.
+\end{thebibliography}
+\end{document}

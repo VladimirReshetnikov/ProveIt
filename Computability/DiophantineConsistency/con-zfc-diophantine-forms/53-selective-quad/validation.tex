@@ -1,0 +1,43 @@
+\section{Validation and reproducible delivery}
+The root \texttt{verify.py} authenticates the release, copies it to an
+isolated temporary directory, and executes 21 finite replay stages. It
+never modifies the sealed originals. Python 3.10 or later, SymPy and NumPy
+are required; the versions used for the recorded run are Python 3.12.14,
+SymPy 1.14.0 and NumPy 2.3.5. The exact tested package versions are listed
+in \texttt{requirements.txt}.
+
+The checks are deliberately separated by logical strength:
+\begin{itemize}
+\item Exact source reconstruction authenticates all four complete
+coefficient ports, positive-to-natural coordinate shifts, and each used
+quadratic coefficient. The original parent31 transport convention is
+selected explicitly; the related package45 row is not silently substituted.
+\item Exhaustive finite certificates verify all 71,808 monomial
+interactions and 22 target identities. Eleven deliberate mutations of
+the selective certificate or its pinned source data are rejected.
+\item Algebraic audits check polynomial identities in local register
+rings, independent literal evaluations, formal conjugate products and
+cancellation-aware degree certificates. A nonzero leading residue proves
+that a degree upper bound is attained; random evaluation alone would not.
+\item Independent finite controls cover binary overflows, signed borrows,
+parity-tuned thresholds, and seeded norms with negative as well as
+positive inputs. Their proofs are universal arguments in the text; the
+finite ranges are diagnostic corroboration, not unbounded proofs.
+\item Byte-for-byte rebuilt-file comparison detects changes to delivered
+circuits. Three separate release corruption controls test only integrity;
+they are not advertised as three independent mathematical counterexample
+searches.
+\end{itemize}
+The exact stage list, output list, source digests and replay receipt are
+machine-readable. The root checker is run without \texttt{-O}; individual
+checker receipts also record optimized-Python replays. No received upstream
+proof script is used as a substitute for a mathematical argument, and no
+Lean or Rocq endpoint build is claimed for these new equations.
+
+The root \texttt{build\_report.sh} compiles this editable TeX source twice
+on a standard TeX Live installation. The release also includes component
+proofs, their exact polynomial DAGs, coefficient recipes and inherited
+notices. No network request is needed for finite reproduction. The
+unbounded imported results have immutable source references; reproducing
+the entire upstream theorem-prover development is outside this finite
+replay contract.

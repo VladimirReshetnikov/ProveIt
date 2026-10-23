@@ -1151,7 +1151,9 @@ As the packages state them:
 - eleven positive unknowns;
 - 10 unrestricted integers via a cited reduction of Sun;
 - the fewest operations remain 67 (15 unknowns, degree 155);
-- the smallest coefficient tuple binding an equation has B = 2^590069.
+- the smallest coefficient tuple binding an equation has B = 2^590069;
+  materialized coefficient bytes do not by themselves prove the compiler
+  theorem.
 
 Only the machine endpoint is checked in Lean/Rocq; the Diophantine bridge is
 not. The ZFC-provability claim rests on the ordinary calibration argument,
