@@ -178,3 +178,6 @@ import DiophantineConsistency.QuadraticRegisterSystem
 import DiophantineConsistency.QuadraticNatPairing
 import DiophantineConsistency.QuadraticDivMod
 import DiophantineConsistency.RegisterDivMod
+import DiophantineConsistency.GatesSemiring
+import DiophantineConsistency.QuarticSemiring
+import DiophantineConsistency.ObjectQuarticCompiler

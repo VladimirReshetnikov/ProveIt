@@ -39,6 +39,9 @@ programs and numeric certificates; see [ANNOTATED_BOUND_SEAL.md](ANNOTATED_BOUND
 The actual Separation and Replacement schemas now have checked constructor,
 rename and sealing programs too; see [ANNOTATED_SCHEMAS.md](ANNOTATED_SCHEMAS.md).
 The axiom-tag dispatcher and full proof-line validator remain in progress.
+The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
+ZFC derivation of its source/target no-zero equivalence over the entire
+internal omega. Internal verification of the full checker encoding remains open.
 The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
 already has a closed external consistency equivalence at degree at most
 four; it retains the enumerator's arithmetic graph. Lean now bounds its
