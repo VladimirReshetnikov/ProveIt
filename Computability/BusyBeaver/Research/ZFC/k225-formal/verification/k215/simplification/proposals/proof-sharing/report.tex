@@ -1,0 +1,950 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem,xcolor,listings,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={Shortening the K215 correctness proofs},
+  pdfauthor={Prepared for Vladimir Reshetnikov and the ProveIt repository},
+  pdfsubject={Verified local frames, execution footprints, and bounded scheduling},
+  pdfkeywords={Busy Beaver, ZFC, consistency, Lean, Rocq, proof simplification}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small K215: reusable proof components}
+\fancyhead[R]{\small ProveIt research note}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setcounter{tocdepth}{1}
+\setlist{nosep,topsep=5pt}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Some}{\operatorname{some}}
+\newcommand{\None}{\operatorname{none}}
+\newcommand{\Reach}{\operatorname{Reach}}
+\newcommand{\ReachOne}{\operatorname{Reach}^{+}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\tri}{\operatorname{T}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/cbf94cb552a3b49509e0eee80e7455d4eb5974c6/#1}{#2}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!15},backgroundcolor=\color{black!2},
+  xleftmargin=3pt,xrightmargin=3pt,showstringspaces=false}
+\title{Shortening the K215 correctness proofs\large\\
+Verified local frames, execution footprints, and bounded scheduling}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository}
+\date{22 October 2026\quad\textnormal{(Pacific time)}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The most useful next simplification of the existing K215 proofs is to share
+semantic runtime contracts and scheduler arguments while keeping the exact
+machine and endpoint statements fixed. Several earlier proposals are already
+present in the current source, so repeating their original reductions would
+misstate the remaining work. We review commit
+\texttt{cbf94cb552a3b49509e0eee80e7455d4eb5974c6} and provide concrete,
+separately compiled components. The main Lean component proves a guarded
+append-left frame theorem for the maintained symbolic executor and verifies
+all 35 local bodies proposed in the earlier round-13 packet. These yield
+whole-configuration positive execution contracts for arbitrary admissible
+prefixes, gap parameters, and register files. A fresh finite audit binds their
+1,422 intended occurrences to the current source and decoder; a separate Lean
+theorem proves all 35 source actions preserve every path prefix. A Coq component
+proves exact execution replay under agreement on the rows actually read,
+with a checked adapter to the current Rocq runtime. A second Lean component
+strengthens scheduler reachability by a triangular potential and removes the
+between-candidates premise from completeness of the current K215 enumerator.
+The contributions are reusable proof components and an integration plan;
+they are not a fresh build of the complete ZFC endpoint or a smaller machine.
+\end{abstract}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Recommendation and exact scope}
+
+The immediate recommendation is to make the runtime proof consume semantic
+edge contracts, instantiate the already available decoder prefix once, and
+discharge repeated control suffixes through the frame theorem proved here.
+Keep the existing literal executor as a fallback producer of contracts.
+This changes where a proof is shared, rather than changing the theorem to be
+proved. In parallel, give all enumerators one scheduler interface and make
+Rocq runtime reuse depend on explicit transition-row agreement.
+
+The implementation supplied with this article makes progress on three
+well-defined boundaries:
+
+\begin{enumerate}
+\item \textbf{Lean local frames.} A symbolic step commutes with appending an
+unread left frame, provided the step does not read an empty explicit left
+fragment. Fixed local runs lift to complete configurations. Existing Home
+correctness supplies positive progress. All 35 concrete bodies are checked
+against the current formal-label K215 table.
+\item \textbf{Rocq execution locality.} An instrumented executor records
+the transition rows read during a bounded symbolic execution. Agreement on
+that footprint preserves the exact result for the same target predicate, fuel, and
+initial progress Boolean. A compiled specialization identifies
+the parameterized executor with the existing production executor.
+\item \textbf{Lean scheduling.} One potential proves reach-or-halt from
+an arbitrary partially processed candidate. The concrete adapter retains the
+current direct \code{build\_c222} compiler and proves completeness from every
+enumerator state, with a derivability invariant required only for soundness.
+\end{enumerate}
+
+The first idea and its 35 templates were identified by the repository's
+round-13 left-frame proposal; that packet explicitly left the generic Lean
+proof uncompiled. Our contribution is its checked realization against the
+current executor, plus the precise universal contracts and fresh source
+binding audit. Table locality is a cross-lane realization of a familiar
+principle already proposed on the Lean side. The scheduler abstraction is
+inherited from Source194; the triangular bound and current-source adapter
+are additional work. These distinctions are essential to the provenance of
+the result \cite{round13,fusion,scheduler}.
+
+\subsection{The machine and the logical endpoint}
+
+The accepted machine has 215 working states, two tape symbols, a separate
+halt, blank input, and a two-way infinite tape. Initialization is included in
+the state count. Its dense table is identified by SHA-256
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc\\
+96f9e265f0ae45863543d40ae70090.
+\end{center}
+The source site file has 4,751 leaves and maximum path length 47. There are
+6,176 branch outcomes, since each of the 1,425 decrement sites has two outcomes.
+The exact counts come from the supplied read-only snapshot inventory and
+the repository's literal inputs \cite{candidate,verification}.
+
+The existing endpoints have the form
+\[
+ \operatorname{Halt}(M_{215},\mathrm{blank})
+ \quad\Longleftrightarrow\quad
+ \text{ZFC has a finite derivation of falsity}.
+\]
+Negating both sides gives the corresponding nonhalting/consistency statement.
+Consistency is not a premise. The Lean theorem is
+\code{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}; Rocq exposes
+\code{tm215\_halts\_iff\_ZFC\_inconsistent} and its negated form
+\cite{endpoint,rocqendpoint}.
+
+The repository explicitly distinguishes these external proof-assistant
+theorems from a derivation represented in ZFC's own proof syntax. This report
+preserves that distinction. None of the new components constructs an internal
+PA or ZFC proof of the equivalence. Obtaining such an internal endpoint remains
+a separate formalization task; a compilation or an assumption report alone
+does not supply it \cite{verification}.
+
+\section{The actual starting point}
+
+\subsection{Source inspection must precede comparisons}
+
+The repository has extensive earlier simplification work. The phase-15
+overview records a 176-module Lean endpoint, shared recursion and quotient
+syntax, a smaller PowerSets import boundary, and a shortened dense bridge.
+However, the current source contains later changes too. A fresh static import
+census at the pinned commit finds \textbf{174 project modules, 1,752,650 source
+bytes, and 37,648 lines} in the ordinary import closure of
+\code{BusyBeaver.ZFC.KEndpoint215}. This census resolves the libraries through
+the root Lake configuration and includes the bounded-consistency dependencies.
+It excludes the compiler's own libraries. It is a source inventory, not a
+fresh full compilation or a declaration-level dependency proof.
+
+Table~\ref{tab:baseline} lists particularly relevant observations. The byte
+counts measure complete files, including comments and generated declarations.
+They must not be added to historical savings attributed to earlier packets.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{0.33\linewidth}rX@{}}
+\toprule
+Current source & Bytes & Consequence for this proposal\\
+\midrule
+\code{KSource215Program.lean} & 6,867 & The tree is already computed from the program; do not propose removal of the old 122,874-byte tree literal as new work.\\
+\code{KSource215Data.lean} & 116,343 & Normalized correspondence is already represented compactly.\\
+Rocq \code{Source215.v} & 832 & The current source theorem is a 14-line facade over the normalized checker.\\
+Rocq \code{NormalizedCert215.v} & 109,125 & The 1,426-entry normalized certificate is already present.\\
+\code{EnumPerm.lean} & 23,176 & The current compiler already uses \code{build\_c222} directly.\\
+\code{KRuntimeCore.lean} & 22,804 & A stable 562-line symbolic-executor interface is available for frame lifting.\\
+\code{KSim.lean} & 16,107 & The maintained endpoint still consumes its existing whole-site coverage interface.\\
+\bottomrule
+\end{tabularx}
+\caption{Selected current-file measurements, reproduced by
+\code{snapshot\_inventory.py}. These are not claimed savings from this work.}
+\label{tab:baseline}
+\end{table}
+
+The original full-build records report 204 freshly compiled Lean project
+modules and 237 Rocq sources, with a recursive Rocq kernel check. Later
+checkpoints retain incremental dependency bindings. We reviewed those records
+as repository evidence; we did not replay the complete historical build.
+Current source presence and an earlier successful receipt are different facts
+\cite{verification,phase15}.
+
+\subsection{What should be reused immediately}
+
+The following ideas should be credited and retained: the normalized source
+checker, one-sided correspondence with symmetry, direct compilation in the
+algebra of block contracts, the representation-independent implication core,
+the shared semantic interfaces, and the existing Home return theorem.
+Likewise, Source193 already provides an all-leaf semantic residual component;
+it is not limited to the earlier two-outcome example. Its reported component
+build does not establish that the current named ZFC endpoint has adopted it
+\cite{phase15,round13,source193}.
+
+One integration hazard is particularly concrete. The older Source194
+enumerator snapshot uses the intermediate \code{CDom} compilation route;
+the current \code{EnumPerm} uses \code{build\_c222}. Copying the old file
+wholesale would undo a later simplification. Scheduler changes should be
+transplanted as small interfaces or adapters, retaining the current compiler.
+The supplied adapter does exactly that.
+
+\section{The guarded frame theorem}
+\label{sec:frame}
+
+\subsection{Why a frame lemma fits the existing representation}
+
+The maintained Lean runtime represents a symbolic configuration by
+\[
+ s=(q,o,L,R).
+\]
+Here $q$ is the state, $o$ records whether the head is on the left or right
+list, and $L,R$ are lists of symbolic segments. A segment is a literal bit,
+a run of length $a n+c$, or an encoded register file. The interpretation
+\code{conc n vs s} turns this into a complete zipper configuration for a
+natural gap parameter $n$ and register list $vs$.
+
+The executor \code{sstep M br s} returns either failure or a pair $(t,m)$,
+where $m$ records definite positive progress. One symbolic operation may be
+a concrete transition, a whole run scan, an orientation change, or a
+register-file excursion justified by \code{BoxLemmas M}. Thus symbolic-step
+counts are not ordinary Turing-machine time bounds \cite{runtime}.
+
+\begin{definition}[Append-left frame]
+For a list $F$ of symbolic segments, set
+\[
+ A_F(q,o,L,R)=(q,o,L\mathbin{++}F,R).
+\]
+Call $s$ \emph{left-safe} if it is not of the form $(q,\mathrm{left},[],R)$.
+\end{definition}
+
+The frame is appended at the far end of the explicit left fragment. Its
+contents are unrestricted for the local step lemma. The safety condition
+ensures that the next step cannot read the appended frame. It may expose the
+frame at its output, where a subsequent local step must pass the guard again.
+
+\begin{theorem}[One-step frame commutation]
+\label{thm:frame}
+For every table $M$, branch condition $br$, left-safe symbolic configuration
+$s$, and frame $F$,
+\[
+ \operatorname{sstep}_{M,br}(A_Fs)
+ =\operatorname{map}\bigl((t,m)\mapsto(A_Ft,m)\bigr)
+       (\operatorname{sstep}_{M,br}(s)).
+\]
+In particular, a successful step preserves its exact successor and progress
+bit after appending the frame.
+\end{theorem}
+
+\begin{proof}
+Inspect the head orientation and the first segment. For a nonempty left
+list, a bit reorientation touches its head, and a run scan or peel touches
+only that run and the adjacent right list. Appending $F$ commutes with each
+list operation. A left-side register-box case fails on both sides.
+
+When the head is on the right, a literal transition, a run scan or peel,
+and an oracle excursion either leave the left list unchanged or prepend
+segments to it. These operations commute with appending $F$. The same
+transition table and branch oracle are consulted in both executions, so all
+case conditions agree. The only case in which appending a frame changes
+which segment is read is an empty left list with the head on the left;
+the hypothesis excludes it. The progress Boolean is not altered by any
+of these rewrites.
+\end{proof}
+
+The formal theorem is \code{KLeftFrame.sstep\_frame}. Its proof works by
+case analysis on the existing definition, without replacing the executor,
+introducing a new segment constructor, or asserting a window-only semantics.
+The specialization \code{sstep\_addLeft} exposes the successful-step form.
+
+\subsection{The guard is necessary}
+
+For an empty explicit left fragment, the unframed executor reorients onto
+a blank cell. If a nonblank frame has been appended, the framed executor
+instead reorients onto the first cell of that frame. Those symbolic
+configurations need not agree. Therefore an unconditional frame equation is
+false. It is also unsound to normalize away trailing zeros from an unframed
+left fragment and subsequently append a nonblank frame: the discarded zeros
+would then separate the local fragment from that frame. The supplied proof
+does neither.
+
+\subsection{A finite local run gives a universal semantic contract}
+
+Define \code{runLocal} by a fixed number of symbolic steps. At each positive
+fuel value it checks left-safety, performs one \code{sstep}, and recurses.
+At zero steps it returns the current configuration. It has no early target
+test and no implicit permission to read through the frame.
+
+\begin{theorem}[Local replay soundness]
+\label{thm:replay}
+Assume the existing register contracts \code{BoxLemmas M} and validity of
+$vs$ for $br$. If
+\[
+ \operatorname{runLocal}_{M,br}(k,s)=\Some(t),
+\]
+then for every $n\in\N$ and every symbolic frame $F$,
+\[
+ \Reach_M(\operatorname{conc}(n,vs,A_Fs),
+          \operatorname{conc}(n,vs,A_Ft)).
+\]
+\end{theorem}
+
+\begin{proof}
+Induct on $k$. The zero case is reflexivity. In the successor case the
+successful local computation provides safety, a successful step, and the
+remaining local run. Theorem~\ref{thm:frame} lifts the step through the
+frame. The existing \code{sstep\_sound} supplies concrete reachability;
+compose it with the induction hypothesis. No local positivity assertion is
+needed.
+\end{proof}
+
+This weaker conclusion is deliberate. The final Home operation is already
+known to make positive progress under the existing \code{KHome.Rows M} and
+\code{KHome.Boundary M} contracts. With those contracts, if Home maps the
+framed local exit to $u$, its theorem and Theorem~\ref{thm:replay} give
+\[
+ \ReachOne_M(\operatorname{conc}(n,vs,A_Fs),
+             \operatorname{conc}(n,vs,u)).
+\]
+The implementation is \code{local\_home\_sound}. Keeping positivity at this
+single composition boundary avoids proving a redundant moved-bit invariant
+for every local body.
+
+\section{Thirty-five verified K215 templates}
+\label{sec:templates}
+
+In this section $M_{215}$ denotes the maintained sparse formal-label table
+\code{KTableCore.tm215}. The existing dense bridge relates it to the literal
+215-state machine. The new component uses the sparse runtime representation;
+it does not reprove that dense bridge.
+
+\subsection{The exact universal statement}
+
+Every listed template has an entry configuration $s_t$, a fixed local-step
+count $k_t$, and a right-list result $R_t$. The checked equation is
+\[
+ \operatorname{runLocal}_{M_{215},\mathrm{none}}(k_t,s_t)
+       =\Some(2,\mathrm{left},[],R_t).
+\]
+Let $P$ be a finite Boolean prefix and let
+\[
+ F_P=\operatorname{reverse}(P)\text{ mapped to bit segments}
+            \mathbin{++}[\operatorname{bit}(1)].
+\]
+The existing Home scan predicate must accept the reversed prefix:
+\[
+ \operatorname{scanBound}(0,\operatorname{bits}(\operatorname{reverse}(P)))=\Some(j)
+ \quad\text{for some }j.
+\]
+This is the exact formal premise, rather than an informal assumption that
+the prefix ``looks safe.'' Prefixes ending in zero are permitted when the
+predicate accepts them.
+
+\begin{theorem}[Concrete K215 template contract]
+\label{thm:template}
+For each of the 35 listed templates, every accepted prefix $P$, every
+$n\in\N$, and every valid register list $vs$,
+\[
+\begin{split}
+ \ReachOne_{M_{215}}\bigl(&\operatorname{conc}(n,vs,A_{F_P}s_t),\\
+                       &\operatorname{conc}(n,vs,
+                        (84,\mathrm{right},[\operatorname{bit}(1)],
+                            \operatorname{bits}(P)\mathbin{++}R_t))\bigr).
+\end{split}
+\]
+\end{theorem}
+
+The formal theorem is \code{KLeftFrame215.template\_prefix}. It checks
+\code{KTape.boxLemmas} for the current table and discharges the Home readiness
+conditions by kernel computation. There are no unproved machine-specific
+register or Home hypotheses left in this concrete theorem. Its register
+validity premise includes the existing minimum register-list length.
+The interpreted exterior is the ordinary blank exterior of the maintained
+configuration representation; the theorem does not generalize Home to an
+arbitrary nonblank far-left tape.
+
+The local gap has length $n+16$. At a source path $pc$, the existing gap
+$n+(64-|pc|)$ is obtained by using the template parameter
+$n'=n+48-|pc|$. The current path-length bound makes this a natural number.
+The gap change at exit is accounted for by the literal zero segments in
+$R_t$, before any source-interface normalization.
+
+\subsection{What was checked}
+
+The template family contains 29 Continue templates and six Break templates.
+Their bodies contain 444 symbolic operations in total, with maximum body
+length 39. Fresh Lean 4.32.0 component builds check 14 distinct modules:
+three new modules and 11 exact repository dependencies. The Boolean theorem
+\code{all\_checked} is obtained by kernel reduction of all 35 equations.
+The universal contract then follows from the generic frame and Home proofs.
+This is stronger than testing selected concrete prefixes or register values.
+
+The earlier native traces use labels that differ from the maintained formal
+table. In particular native labels 301, 302, and 254 correspond to formal
+labels 102, 120, and 230. Native 302 occurs inside these local traces, so
+translating entry labels alone would be insufficient. The template data used
+here is the already translated formal-label family, rebound to the current
+table by the new checks \cite{round13}.
+
+\begin{theorem}[Source actions preserve the prefix]
+For every one of the 35 listed source-action records, with suffix $S_t$
+and result $E_t$, and every Boolean word $P$,
+\[
+ \operatorname{action}_t(P\mathbin{++}S_t)=P\mathbin{++}E_t.
+\]
+\end{theorem}
+The theorem \code{KLeftFramePaths215.prefix\_action} uses the actual
+\code{RegisterPath.continuePath} and \code{breakPath} definitions. Each
+suffix contains the required delimiters, and each Break increment finishes
+inside the suffix. Case reduction over the finite list therefore leaves
+$P$ arbitrary. This theorem has only \code{propext} in its assumption
+report. Formally relating the action record to its runtime-template record,
+and relating their symbolic right lists to the leaf contract, are still
+integration obligations.
+
+\subsection{Coverage accounting}
+
+A separate supplied Python audit checks every literal source path against
+the current 202-node source DAG and 234-role decoder graph. It then checks
+the intended template assignments, exact routing state, operation and
+argument, prefix/suffix split, Home prefix acceptance, framed source action,
+and gap identity. It finds the same 1,422 template uses: 1,326 Continue
+outcomes and 96 Break outcomes. Of their prefixes, 721 end in zero. Three
+control outcomes remain literal.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Outcome family & Total & Template uses & Literal fallback\\
+\midrule
+Increment & 1,900 & 0 & 1,900\\
+Decrement, both outcomes & 2,850 & 0 & 2,850\\
+Continue & 1,327 & 1,326 & 1\\
+Break & 98 & 96 & 2\\
+Halt & 1 & 0 & 1\\
+\midrule
+Total & 6,176 & 1,422 & 4,754\\
+\bottomrule
+\end{tabular}
+\caption{Exact intended source coverage. The 1,422 uses share 35 local bodies.}
+\label{tab:coverage}
+\end{table}
+
+If these uses are incorporated into semantic coverage, the proposed number
+of separately expensive residual-body checks becomes
+\[
+ 35+4,754=4,789,
+\]
+which is 1,387 fewer than 6,176, or approximately 22.46\%. All 6,176 coverage
+and interface obligations remain: many become inexpensive instantiations
+and exact data checks. The count is inherited from the earlier proposal
+and freshly audited here; it is not a measured full-build speedup or a net
+source-size saving.
+
+The distinction between the evidence types is precise. The 35 universal
+template contracts and their arbitrary-prefix source actions are kernel checked.
+The assignment of all 1,422 current
+source occurrences is additionally audited by an executable finite check.
+The latter must enter the formal source-coverage proof before the template
+route can replace the existing endpoint's coverage premise. This report
+does not silently promote a Python equality check to a theorem.
+
+\section{Execution footprints for the Rocq runtime}
+\label{sec:footprint}
+
+The Rocq source contains candidate-specific copies of runtime modules whose
+proofs are largely shared. Comparing eight generated candidate directories
+shows that several important modules become text-identical after the header
+and candidate namespace are removed. This identifies a maintenance
+opportunity; it does not prove a reduction in the active K215 import closure.
+
+The smallest useful abstraction is a parameterized symbolic step with an
+explicit row-read set. It allows a computed certificate or proved local run
+to be reused when another machine agrees on the rows that execution actually
+needs, without requiring global equality of the transition tables.
+
+\subsection{The generic replay theorem}
+
+Let a table be a function $a:K\to A$, and suppose a symbolic step
+\[
+ \operatorname{step}(a,s)\in\operatorname{Option}(S\times\mathrm{Bool})
+\]
+has a read list $\operatorname{reads}(s)$. Assume the local property
+\[
+ a|_{\operatorname{reads}(s)}=b|_{\operatorname{reads}(s)}
+ \Longrightarrow \operatorname{step}(a,s)=\operatorname{step}(b,s).
+\]
+Use the production executor's convention: zero fuel fails; at positive
+fuel a target is accepted only when the accumulated progress bit is true;
+otherwise take a symbolic step and recurse with the disjunction of progress
+bits.
+
+Define the footprint recursively from execution under $a$. It is empty
+at zero fuel or an already accepted target. Otherwise it starts with
+$\operatorname{reads}(s)$ and appends the remaining execution footprint
+if the step succeeds.
+
+\begin{theorem}[Exact replay on a footprint]
+\label{thm:footprint}
+If $a$ and $b$ agree on the footprint of execution under $a$, then the two
+bounded executions have the same result and the same footprint. The fuel,
+target predicate, initial configuration, and initial progress bit are identical.
+\end{theorem}
+
+\begin{proof}
+Induct on fuel. Zero fuel and target acceptance are immediate. In the
+remaining case, agreement on the first portion of the footprint and local
+step locality give identical symbolic successors and progress bits.
+If the step fails, both executions fail. Otherwise, agreement on the
+remaining portion permits the induction hypothesis at the common successor.
+Appending the common first read list also gives equality of the footprints.
+\end{proof}
+
+The core theorem is \code{FootprintReplay.footprint\_replay}. It preserves
+failure as well as success. The footprint is obtained solely from the first
+table's execution; a second search is not assumed. Duplicated row keys in
+the list are harmless and can later be deduplicated by a separate finite
+membership argument.
+
+\subsection{A checked adapter to the existing executor}
+
+\code{Runtime215Locality.v} defines \code{sstepWith} by parameterizing only
+the four transition-table applications in the current
+\code{Runtime230Core.sstep} body. Its \code{readRows} returns at most one
+row: the row for a visible bit or run, or the blank row needed by a box-edge
+fallback. Pure reorientation and successful fixed oracle cases have no
+table read at this layer.
+
+The specialization equation \code{sstepWith\_original} is definitional.
+The theorem \code{execWith\_original} identifies the iterated executor with
+the production one by induction. Applying Theorem~\ref{thm:footprint}
+gives \code{siteFootprint\_replay}. These statements compile against
+the exact maintained runtime dependency sources.
+
+There is one semantic qualification. An oracle excursion is independent
+of the table \emph{as a symbolic computation}, but its correctness as a
+concrete machine run depends on register contracts for the chosen table.
+Therefore replay equality alone does not transfer the full halting theorem
+to an arbitrary new machine. The target table must still satisfy the
+appropriate runtime/register soundness hypotheses. The supplied theorem
+states exact executor equality and does not conceal those semantic obligations.
+
+The component uses Coq 8.18.0 and eight exact upstream dependency modules
+plus two new modules. The new theorem assumption reports are closed.
+This is compatible Rocq-language proof work; it is not a claim that the
+repository's complete Rocq 9.1.0 endpoint was rerun under its pinned toolchain.
+
+\section{One scheduler proof, with a bounded strengthening}
+\label{sec:scheduler}
+
+\subsection{The common structure}
+
+The current enumerators repeat \code{run\_inv}, \code{run\_add},
+\code{drain}, and \code{reach}. Across \code{EnumPerm}, \code{EnumDom},
+\code{Enum222}, and \code{Enum254}, those 16 declarations occupy 209 lines
+and 9,500 bytes. That is the duplication scope, not a net saving: a shared
+module and its concrete adapters must be counted too.
+
+Source194 already isolates a useful \code{Dynamics} interface with the
+existing step and finite-run functions. Its laws express two cases. Write
+$p(s)$ for the pending-work rank of the current candidate and $i(s)$ for the
+next candidate index. If a successful step takes $s$ to $t$, then
+\begin{align*}
+ p(s)>0 &\Longrightarrow p(t)<p(s)\ \text{ and }\ i(t)=i(s),\\
+ p(s)=0 &\Longrightarrow i(t)=i(s)+1.
+\end{align*}
+That abstraction supports a qualitative cofinality theorem without a
+bound on refill size. It should remain the general interface.
+
+The K215 decoder supplies an extra fact:
+\[
+ p(s)=0\text{ and }s\to t \quad\Longrightarrow\quad p(t)\le i(s).
+\]
+This permits a simple numerical strengthening.
+
+\begin{definition}[Triangular scheduler potential]
+Let $\tri(0)=0$ and $\tri(n+1)=\tri(n)+n+1$; equivalently
+$\tri(n)=n(n+1)/2$. For a target $N$ and $i(s)\le N$, set
+\[
+ V_N(s)=\tri(N)-\tri(i(s))+p(s).
+\]
+\end{definition}
+
+\begin{lemma}[Strict decrease]
+Until $p(s)=0$ and $i(s)=N$, every successful step stays at index at most
+$N$ and decreases $V_N$ strictly.
+\end{lemma}
+
+\begin{proof}
+If $p(s)>0$, the index is unchanged and the remaining work decreases.
+If $p(s)=0$ and the target boundary has not been reached, then $i(s)<N$.
+The new index is $i(s)+1$, and the refill bound gives
+\[
+\begin{split}
+ V_N(t)&\le \tri(N)-\tri(i(s)+1)+i(s)\\
+       &=\tri(N)-\tri(i(s))-1=V_N(s)-1.
+\end{split}
+\]
+All subtractions are natural-number subtractions with the needed order
+bounds established first. The Lean proof uses the recursive triangle
+identity, so no nonlinear arithmetic procedure is required.
+\end{proof}
+
+\begin{theorem}[Bounded reach-or-halt]
+\label{thm:scheduler}
+For every state $s$ with $i(s)\le N$, there are $k$ and $t$ such that
+\[
+ k\le V_N(s),\qquad \operatorname{run}(k,s)=\Some(t),
+\]
+and either the next step at $t$ halts, or $p(t)=0$ and $i(t)=N$.
+\end{theorem}
+
+\begin{proof}
+Use well-founded recursion on $V_N(s)$. If the target boundary is already
+reached, take $k=0$. If the next step halts, again take $k=0$. Otherwise
+perform the successful step, apply strict decrease, and prepend that step
+to the recursively supplied prefix. The natural strict decrease pays for
+the extra step in the bound.
+\end{proof}
+
+The theorem counts successful enumerator steps. If the result is a state
+whose next step halts, that last halting transition requires one additional
+step. It does not bound the binary machine's physical runtime. The result
+assumes neither consistency nor an invariant on the logical working payload.
+It also does not show that a target boundary is reached unconditionally:
+earlier halting is an explicit alternative.
+
+\subsection{Specialization to the current K215 enumerator}
+
+For \code{EnumPerm}, $p(s)=s.\code{pl}$ and $i(s)=s.\code{np}$.
+The existing \code{step\_eq} and \code{decode\_le} prove the local laws and
+refill bound. The wrapper uses the original \code{enumStep} and \code{run};
+it does not introduce a competing executable semantics. The concrete theorem
+is \code{find\_candidate\_bounded}.
+
+The same component supplies a useful stronger completeness statement:
+\begin{theorem}[Completeness from any scheduler position]
+\label{thm:complete}
+For every current K215 enumerator state $s$,
+\[
+ C_{222}(\mathrm{F})\quad\Longrightarrow\quad
+                    \operatorname{HaltsFrom}(s).
+\]
+Consequently, under the existing derivability invariant on $s$'s payload,
+\[
+ \operatorname{HaltsFrom}(s)\quad\Longleftrightarrow\quad C_{222}(\mathrm F),
+\]
+without the old premise $s.\code{pl}=0$.
+\end{theorem}
+
+\begin{proof}
+Compile the derivation with the current \code{build\_c222}, obtaining a
+block $p$ with the established contract. Prepend the existing reset command
+and append the existing terminating suffix. The encoded program index $N$
+is at least the starting next-candidate index by \code{encL\_ge}.
+
+Apply Theorem~\ref{thm:scheduler} from the original state, even if a candidate
+is partly processed. If an earlier halt is reached, completeness is already
+proved. Otherwise the run reaches the boundary that fetches the selected
+encoded program. The existing \code{program\_none} works from every payload,
+and \code{exec\_list} executes the program there. Compose the prefixes with
+the original \code{run\_add}. For the equivalence, use the existing
+\code{sound} theorem in the other direction, retaining its invariant.
+\end{proof}
+
+This strengthens the maintained \code{complete} and \code{halts\_iff}
+interfaces, both of which currently require a between-candidates state.
+It is an exact concrete result about the current enumerator. Arbitrary-state
+completeness was already proposed in Source194 and related earlier work;
+we claim its checked attachment to the current compiler, not its mathematical
+discovery. The triangular potential is an optional quantitative refinement
+of the more general Source194 scheduler.
+
+\section{How to integrate the components}
+\label{sec:integration}
+
+\subsection{Preserve the final theorem and change its producers}
+
+The endpoint theorem itself is already short. Its complexity lies in the
+objects and semantic results it composes. A useful architecture has the
+following interfaces:
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.24\linewidth}XX@{}}
+\toprule
+Boundary & Producer & Consumer\\
+\midrule
+Literal table identity & dense/sparse bridge and exact row facts & concrete runtime semantics\\
+Symbolic step soundness & row contracts and register contracts & generic frame/replay theorems\\
+Source-edge semantics & decoder prefix, local templates, literal fallback & source/TM simulation\\
+Enumerator cofinality & shared scheduler and local laws & direct block compiler completeness\\
+Logical calibration & existing calculus/ZF/ZFC development & unchanged final endpoint\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The consumer of a semantic edge contract should not know whether its proof
+came from a long literal replay, a shared template, or a hand-proved routine.
+This is the main simplification: the proof structure follows the operation's
+meaning, while exact tables remain checked data.
+
+\subsection{A concrete sequence of patches}
+
+\textbf{Patch 1: add the frame library and the 35-template module.}
+These are additive and already checked independently. Keep their theorem
+statements independent of the source-coverage generator. The exact
+\code{safeLeft} guard and final Home premise belong in the public interface.
+
+\textbf{Patch 2: connect the semantic coverage interface.}
+Transplant the Source193 residual coverage interface into the current
+\code{KSim}/endpoint route, preserving the existing Boolean checker as an
+adapter. Do not replace an entire older source snapshot: later Home,
+lookup, and compiler changes must survive. Check the old API clients while
+this interface is introduced.
+
+\textbf{Patch 3: turn the occurrence audit into formal coverage.}
+For each source occurrence, check its exact path split, routed state,
+operation, source-action equation, gap substitution, and Home guard.
+Use the template theorem when its verified predicates hold and the literal
+residual checker otherwise. The finite table must still cover every source
+leaf and every decrement outcome. Only then replace the old coverage
+producer in the simulation theorem.
+
+\textbf{Patch 4: share scheduler proofs through adapters.}
+Retain the existing executable definitions. Move generic run composition
+and cofinality into one module, instantiate local laws for each enumerator,
+and use the new arbitrary-position completeness theorem when helpful.
+Keep the current direct compiler. The triangular bound should be a separate
+theorem, so enumerators without its refill premise can still use the
+qualitative interface.
+
+\textbf{Patch 5: parameterize the Rocq runtime at the table boundary.}
+Use the supplied equality and footprint theorems as the first small change.
+Separate the symbolic executor from the concrete table module, then add
+semantic register/routine hypotheses at the existing soundness boundary.
+Candidate-specific files should eventually contain table data, row checks,
+boot facts, and a short instantiation. This larger refactor still needs a
+fresh Rocq 9.1.0 endpoint build.
+
+\subsection{The acceptance condition}
+
+For each adopted patch, preserve the exact type of both halting and
+nonhalting endpoint declarations and their machine data. Record successful
+compilation of affected descendants and endpoint clients. Check the actual
+assumption reports: the established Lean endpoint profile is
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}; the recorded
+Rocq endpoint reports are closed. Keep generator reproduction separate from
+proof compilation, and retain failed attempts with their actual status.
+These are the repository's existing evidence distinctions, not new
+mathematical assumptions \cite{verification,phase15}.
+
+A faster local check is not automatically a faster full build. Measure
+kernel-check time, proof-object size, source size, and the source/import
+closure separately. In particular, an additive pilot can increase source
+size while enabling a later replacement that reduces repeated proofs.
+No net endpoint-size reduction is claimed for the present additive packet.
+
+\section{Reproduction and evidence}
+
+The archive contains the article source and PDF, the three component source
+packets, portable build scripts, raw accepted compiler logs, dependency
+manifests, source inventories, and the finite assignment audit. The formal
+packets vendor only their selected source dependencies, with inherited
+licenses and notices. Compiled objects are regenerated locally.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}X@{}}
+\toprule
+Component & Toolchain & Meaning of a successful check\\
+\midrule
+Local frames and templates & Lean 4.32.0 & Generic frame/replay/Home theorems and all 35 universal K215 template contracts.\\
+Execution footprints & Coq 8.18.0 & Generic replay and its equality/locality adapter to the exact existing Rocq runtime.\\
+Bounded scheduler & Lean 4.32.0 & General triangular bound and the concrete current-enumerator theorems.\\
+Occurrence audit & Python 3 & Exact finite bindings and intended coverage of 1,422 uses; not a kernel proof of source coverage.\\
+Snapshot inventory & Python 3 & Current source identities and ordinary import closure; not a fresh full endpoint build.\\
+\bottomrule
+\end{tabularx}
+\caption{Evidence scopes. Compiler receipts and raw logs accompany the source.}
+\end{table}
+
+The supplied build scripts perform serial proof invocations and write their
+results into chosen output directories. The package README gives the exact
+commands. Lean's own release libraries and the installed Coq standard library
+are explicit toolchain boundaries. No downloaded discovery script, external
+finite test, or unproved declaration is used as a premise of the new formal
+theorems.
+
+All three concrete scheduler theorems report the ordinary Lean foundational
+profile \code{propext}, \code{Classical.choice}, and \code{Quot.sound}.
+The concrete template theorem has the ordinary Lean foundational profile
+\code{propext}, \code{Classical.choice}, \code{Quot.sound}. The literal
+\code{all\_checked} theorem reports only \code{propext}. The new generic
+Coq replay and actual adapter theorem reports are closed under the global
+context. Assumption reports should always be read for the exact declarations
+named in the logs, rather than generalized to every imported library.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can the 1,422 occurrence bindings be discharged by one
+small reflected checker?} The next concrete milestone is a theorem turning
+the existing exact assignment predicate into source-edge semantics, followed
+by kernel reduction of its finite coverage table. This would complete the
+formal bridge between the verified templates and the source simulator.
+
+\item \textbf{How much reuse is available in increment/decrement bodies?}
+The remaining 4,750 register-operation outcomes dominate the literal family.
+Seek a small set of register-relative contracts, with branch premises
+carried explicitly. A new contract should preserve complete configurations,
+including register tails, head position, and gap changes.
+
+\item \textbf{What is the smallest useful semantic template family?}
+The 35 bodies need not be minimal. Several implement the same source
+operation from different routed states. A quotient by certified entry
+stuttering or by identical residual effects could reduce the family, but
+the extra adapter proofs must be charged against the saving.
+
+\item \textbf{Can a single data format serve both assistants?} Share
+literal templates, row footprints, source assignments, and versioned hashes.
+Prove each parser/checker sound in its own assistant. This avoids making
+either compiler or an unproved cross-assistant translation a new premise.
+
+\item \textbf{Which scheduler abstraction is simplest in actual clients?}
+Compare the Source194 qualitative cofinality theorem with the stronger
+bounded theorem. The former needs fewer hypotheses. Both share the drain/reach reasoning;
+the latter additionally gives explicit prefix bounds.
+The right default should be decided by client source size and clarity,
+not by theorem strength alone.
+
+\item \textbf{Can active theorem dependencies be reduced beyond import
+dependencies?} The current 174-module census measures whole files. Small
+semantic interfaces and declaration-level dependency analysis may reveal
+unused calibration or compatibility layers, but any cut must preserve
+the final theorem's meaning and the existing API clients.
+
+\item \textbf{How should the internal ZFC endpoint be formalized?}
+Identify a weak arithmetical theory adequate for the runtime and compiler
+proofs; represent the logical calibration and its proof translation
+explicitly. This should produce an internal derivation of the intended
+arithmetical equivalence rather than relying on external model-theoretic
+reasoning being informally transferable.
+\end{enumerate}
+
+\clearpage
+\appendix
+\section{The local-template inventory}
+
+The body count below is a count of guarded symbolic operations, not binary
+TM transitions. The entry state uses the maintained formal labels. The
+source suffix/result columns summarize the intended source action; the
+kernel theorem's exact physical exit is its literal \code{exitRight} list.
+\input{template_table.tex}
+
+\clearpage
+\section{Artifact map and integration status}
+
+\begin{description}[style=nextline,leftmargin=1.5em]
+\item[\code{lean-runtime/}]
+The generic append-left library, the concrete template family, exact
+dependency sources, compiler receipts, and finite source-assignment audit.
+The README identifies any additional path-framing results and their exact
+scope.
+\item[\code{rocq-locality/}]
+\code{FootprintReplay.v}, \code{Runtime215Locality.v}, eight exact dependency
+sources, build script, closed assumption logs, and recursive checker evidence.
+\item[\code{lean-scheduler/}]
+The inherited Source194 dynamics interface, new bounded potential, concrete
+K215 adapter, 14 exact production dependencies, and reproduction evidence.
+\item[\code{audit/}]
+The pinned static source inventory and its script, plus quantitative
+comparisons used in the article. The files state their own evidence scope.
+\item[\code{README.md} and \code{VERIFICATION.json}]
+Commands, source identities, final component statuses, known integration
+obligations, and pointers to raw logs. The complete ZFC endpoint is marked
+as not rebuilt in this packet.
+\end{description}
+
+\begin{thebibliography}{12}
+\small
+\bibitem{candidate}
+ProveIt contributors. \emph{Accepted K215 candidate, literal tables, source,
+and attribution}. Pinned repository revision used throughout this report.
+\repo{Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md}{Candidate README};
+\repo{Computability/BusyBeaver/Research/ZFC/candidate-k215/NOTICE.md}{attribution notice}.
+
+\bibitem{verification}
+ProveIt contributors. \emph{Formal correctness of the exact 215-state machine}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{Verification record},
+with separate Lean and Rocq build records and stated internal-proof limitation.
+
+\bibitem{endpoint}
+ProveIt contributors. \emph{KEndpoint215.lean}.
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{Exact Lean endpoint source}.
+
+\bibitem{rocqendpoint}
+ProveIt contributors. \emph{CorrectDense215.v}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/CorrectDense215.v}{Exact Rocq dense endpoint source}.
+
+\bibitem{phase15}
+ProveIt contributors. \emph{Fifteenth K215 proof-simplification checkpoint}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md}{Checkpoint and retained evidence}.
+
+\bibitem{runtime}
+ProveIt contributors, with inherited K230 and m254 runtime work.
+\emph{KRuntimeCore.lean and KHome.lean}.
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean}{Symbolic executor};
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHome.lean}{Home correctness}.
+
+\bibitem{round13}
+ProveIt research packet. \emph{Round 13 runtime: factor at the first
+empty-left Home boundary}. Earlier uncompiled frame proposal, template
+discovery and formal-label binding.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/round13-left-frame/runtime/README.md}{Runtime proposal and data}.
+
+\bibitem{scheduler}
+ProveIt Source194. \emph{CofinalScheduler.lean}.
+\repo{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/194-scheduler-CofinalScheduler.lean}{Generic scheduler source};
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean}{current K215 enumerator}.
+
+\bibitem{source193}
+ProveIt. \emph{Sources 193--194 reconciliation}.
+\repo{SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-215.md}{Residual coverage and scheduler status}.
+
+\bibitem{fusion}
+ProveIt research packet. \emph{Proof fusion and local reuse}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/proof-fusion/README.txt}{Compiler fusion and Lean table-dependency transport proposal}.
+
+\bibitem{computed}
+ProveIt. \emph{Computed source tree proposal and current source}.
+\repo{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/computed-tree/README.md}{Proposal};
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean}{current program source}.
+\end{thebibliography}
+\end{document}

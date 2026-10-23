@@ -1,0 +1,41 @@
+\section{Validation and integration plan}
+\label{sec:validation}
+\subsection{Keep four kinds of evidence separate}
+\begin{enumerate}
+\item \textbf{Current source identity.} The archive's source manifests bind copied input bytes to the exact Git commit, Git blob IDs, SHA-256 digests, paths and verified source URLs. A source hash establishes which text was inspected, not its correctness.
+\item \textbf{Static refactoring evidence.} The source-census and generic-spine checks establish import closure, preserved source bodies, selected substitutions and the stated size accounting. They do not elaborate declarations or validate typeclass behavior.
+\item \textbf{Finite diagnostic evidence.} The newly authored replay checker establishes its reported finite cases under its transcribed abstract semantics. It is neither a proof-assistant certificate nor an exhaustive check of all natural register values by concrete simulation.
+\item \textbf{Formal acceptance.} The maintained Lean and Rocq checkers must accept the changed source in their pinned toolchains, with source-bound records of endpoint statements and assumptions. This last step has not been performed for the proposals.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}>{\raggedright\arraybackslash}p{0.29\linewidth}@{}}
+\toprule
+Record & What it supports & What it does not support \\
+\midrule
+Historical full builds & Repository-reported Lean 4.32.0 and Rocq 9.1.0 checks of their bound historical bytes & All later source edits automatically passing \\
+\addlinespace
+Later integration records & Selective serial Lean builds; normalized Rocq adoption reports the 215 compile order; later slices report narrower checks & A newly repeated all-current Lean build or current recursive \code{coqchk} \\
+\addlinespace
+This research package & Pinned source integrity, static census, patch audit and finite replay measurements & New Lean/Rocq kernel checks or timing results \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The normalized Rocq adoption explicitly reports that recursive \code{coqchk} was not rerun. Later endpoint rechecks against an already compiled reference are not equivalent to a fresh recursive audit of every present input. The current repository history, rather than older proposal-catalogue status text, determines which simplifications are already integrated.
+
+\subsection{A low-risk sequence of changes}
+\begin{enumerate}
+\item \textbf{Establish a current baseline.} Record exact source bytes, compiler versions, complete dependency selection, endpoint statements and assumption reports. Perform a full current build before attributing a regression or speedup to these proposals.
+\item \textbf{Land only the semantic-spine patch.} Apply the 12-file candidate to the exact pin in a fresh branch. Compile the new cores, four legacy wrappers, the explicit \code{WFModel} compatibility import, and both endpoint clients. Include the separate retained compatibility scope, because it is intentionally not covered by the primary import census.
+\item \textbf{Add fork composition without replacing production checks.} Compile the new composition lemmas against unchanged executor soundness. Check zero, nonzero, neutral validity, the positive-progress flag, and normalized endpoint equality independently of performance.
+\item \textbf{Replace only decrement replay.} Preserve the source-site coverage theorem, register/path guards, physical-register map and branch contracts. The shared Lean \code{KSim} checker also serves non-215 K-family clients, so rebuild their affected site certificates and clients as a separate runtime-compatibility gate; no finite success is claimed here for those other variants. Regenerate changed literal certificates and rebuild all dependent endpoints. For Rocq, repeat the recursive kernel audit and endpoint assumption reports; for Lean, record endpoint \texttt{\#print axioms} and recheck typed endpoint clients.
+\item \textbf{Measure before expanding.} Compare clean and incremental builds under the same toolchain, cache policy, CPU allocation and memory limit. Report total maintained source, selected closure, check time, object size and peak memory separately. Keep a rollback path for each change.
+\end{enumerate}
+
+\subsection{Run the portable checks without changing the archive}
+Extract a fresh copy and run \code{python3 verify.py}. The fixed \code{MANIFEST.sha256} lists every payload file other than itself. The verifier checks exact membership and hashes, refuses optimized Python, and runs only the selected newly authored checkers in a temporary copy. It compares the original package before and after, including manifest bytes, and checks that regenerated diagnostic results match the archived bytes. No Lean/Rocq source, repository generator, downloaded script, or build receipt reader is executed.
+
+The manifest is an integrity record, not a cryptographic signature. The verifier is a research harness, not a sandbox. It does not regenerate or repair its own baseline manifest. It rejects extra files, so edits and document rebuilding should be performed in a separate working copy. The historical baseline is retained as a compact import/hash/metric ledger rather than a second full source tree; the verifier checks that ledger's graph and sums, not absent historical bytes.
+
+To rebuild the PDF from editable sources, run \code{make pdf} with a standard TeX installation. Shell escape is disabled. A rebuilt PDF may differ byte-for-byte across TeX distributions; that is separate from whether the mathematical text and checks reproduce. The shipped PDF is rendered and visually inspected; no TeX compiler log or page-image collection is needed in the repository archive.

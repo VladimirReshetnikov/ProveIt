@@ -1,0 +1,148 @@
+\section{Remove the decoder's second source language}
+
+\paragraph{Recommendation.}
+Index the decoder roles directly by the existing register program, rather than
+by the separately numbered \texttt{DecoderCertificate.Node} array. This is a
+representation deletion, not another graph minimization or a new source proof.
+The current correspondence is already kernel-proved; no trust gap is alleged.
+This simplifies the separately checked prefix component and its future
+integration, not the current end-to-end endpoint closure: production still
+uses the fixed-fuel checker and all 6,176 counted guarded outcomes.
+
+\paragraph{Exact pinned finding.}
+At commit \texttt{cbf94cb552a3b49509e0eee80e7455d4eb5974c6},
+\texttt{K215Decoder.sourceNodes} has 202 entries: 179 forks and 23 primitive
+leaves. Its forks, enumerated in their existing order, are precisely the 179
+nodes of \texttt{KSource215.p215}. The decoder root 201 maps to program root 178.
+For the map $\rho$ from alternate nodes to register edges,
+\[
+ \rho(v)=
+ \begin{cases}
+   \operatorname{node}(j),&v\text{ is the }j\text{-th fork},\\
+   \operatorname{primitive}(o,a),&v\text{ is the leaf }(o,a),
+ \end{cases}
+\]
+the audit checks every local square
+\[
+ \mathrm{sourceNodes}[v]=\operatorname{fork}(l,r)
+ \quad\Longrightarrow\quad
+ \mathrm{p215.nodes}(j)=(\rho(l),\rho(r)).
+\]
+All 179 squares pass. All 468 role branches retarget: 371 internal and 97
+terminal. The 234 roles and 281 physical blocks are preserved, not identified
+with source nodes or merged with each other.
+
+\subsection{The layer that can disappear}
+The current root theorem starts with \texttt{RegisterPath.walk}, converts through
+\texttt{twalk} and \texttt{LeafAt}, rewrites by
+\texttt{source\_tree\_eq}, and reconstructs a
+\texttt{SourcePath sourceNodes} witness. That witness is then interpreted through
+the role and block certificate. The separate source tree is unfolded with fuel
+203, although the actual program already supplies its own decoder and fuel.
+
+Instead, a role's source field should be an actual \texttt{Program} node.
+An internal link still stores its target-role and block indices. A terminal
+link stores its physical action, but no separately numbered primitive leaf.
+The selected logical operation is read directly from the actual program's
+left or right edge. The new checker demands exactly:
+\begin{itemize}
+\item Internal source edge: the actual edge is \texttt{node child}; the target
+  role names \texttt{child}; its short suffix, physical state and referenced
+  block satisfy the current window and endpoint equalities. Preserve
+  decreasing labels on internal source references.
+\item Terminal source edge: the actual edge is not a node, and the stored
+  physical action equals the real table row at the role's state and read bit.
+  The terminal operation and argument remain those of the actual source edge.
+\item Root and domain: the first role names \texttt{p.root}, state 84 and the
+  initial marker suffix; role source labels are below \texttt{p.nnodes}.
+\end{itemize}
+
+The full consumed prefix remains part of the routed-entry predicate. The
+physical state or its two-bit history is not a substitute for a role path.
+A terminal action/table-row equality is not an opcode-semantics proof;
+residual primitive and return contracts remain mandatory.
+
+\subsection{One direct walk induction}
+The required semantic replacement is a single induction on a successful
+\texttt{walk} equation. A convenient invariant uses an absolute tape offset
+$a$, consumed position $i$, and final depth $d$. Assume
+\[
+ \operatorname{walk}(p,f,n,P,i)=\operatorname{some}(e,d),
+ \qquad t(a+j)=\operatorname{bit}(P,j)\quad(i\leq j<d),
+\]
+and that the checked current role names source node $n$ and its suffix is
+present immediately before $a+i$. The theorem constructs a certified block
+chain from the role's physical state at head $a+i$ to the terminal primitive
+port at head $a+d-1$, preserving the entire arbitrary tape. It also records
+the exact source operation $e$ and the complete routed-entry witness.
+
+For a terminal source edge, success gives $d=i+1$ and the internal chain is
+empty. For an internal edge, the structural certificate selects the next role
+and block. Existing \texttt{before\_snoc}, \texttt{before\_drop},
+\texttt{before\_window} and arbitrary-tape block soundness establish the next
+boundary. Apply the induction hypothesis at $i+1$ and prepend that block.
+There are exactly $d-i-1$ internal links; the unchanged duration facts give
+\[
+ d-i-1\ \leq\ \mathrm{clock}\ \leq\ 7(d-i-1).
+\]
+At the root, the interval-bit assumption follows from the existing
+\texttt{Reads} hypothesis on \texttt{consume P d}. Using $P$ itself would be
+incorrect: the decoder may consume implicit trailing zeros or ignore a
+supplied suffix. The theorem is proposition-valued and requires no forbidden
+extraction of a computational clock from a general proof.
+
+This proof is proposed, not compiled here. The owned finite audit does not
+establish its quantified tape semantics. The existing zipper reflection and
+physical block proofs should be reused unchanged.
+The minimal prefix-library edit set is \texttt{DecoderCertificate},
+\texttt{K215Decoder}, \texttt{DecoderPaths}, \texttt{DecoderSourceBinding},
+and \texttt{KDecoderPrefix215}. For this step, \texttt{KSim}, the nine
+\texttt{KSites215Batch} modules and \texttt{KSites215} remain unchanged.
+
+\subsection{Freshness, compatibility and limits}
+This differs from the already implemented computed-tree change: defining
+\texttt{t215 := ptree p215} removed the expanded tree literal but retained
+\texttt{sourceNodes}, the second source language and their correspondence.
+It also differs from earlier program-first plans that choose a route and clock
+before introducing the tape, or use decreasing labels for coverage. Those
+ideas can be composed with this representation deletion, but are not repeated
+as new results.
+
+The direct root theorem consumes the same \texttt{walk} result used by
+\texttt{KSim.Covered}. It does not itself prove total source coverage,
+primitive/return contracts, or acceptance by the fixed-fuel Boolean site
+checker. Existing production discharges its old checks; a replacement must
+preserve all 6,176 counted guarded outcomes. Semantic
+reachability must not be used as evidence that fixed-fuel checking succeeds.
+
+The internal routed-entry type changes. Preserve final machine/refutation and
+consistency endpoints, and audit internal callers. If exact legacy decoder
+types must survive, retain a separate compatibility facade and count it in
+the maintenance cost. A generic inverse \texttt{LeafAt}-to-\texttt{twalk}
+lemma can retain a leaf-facing wrapper without the alternate source array;
+preserving the old exact result type is a different requirement.
+
+\paragraph{Delivered evidence.}
+The owned parser verifies exact pinned Git blob identities before reading
+the two literal graphs. Its output includes the complete 179-label map,
+23 primitive projections and all 234 role relabelings. It checks all 4,751
+expanded leaf walks, counts 6,176 decrement-sensitive outcomes, and exercises
+unread suffixes and trailing-zero erasure. Swapped fork labels, a changed
+primitive and a changed root child are rejected by negative controls. These
+are finite source-data checks, not runtime guard checks or a new proof-assistant
+receipt. An independent strict-parser review reproduced the counts.
+
+\paragraph{Deliverable boundary.}
+\texttt{DirectProgramCertificateDraft.lean} supplies the new finite checker,
+literal retargeted roles and proposed kernel-check declarations. It has not
+been compiled and supplies no generic direct-walk soundness theorem. Its old
+decoder import is a migration convenience for the 281 blocks; production must
+first split those blocks into a source-independent module to obtain the
+intended dependency deletion.
+
+The old 202-node literal is 3,132 UTF-8 bytes; the current
+\texttt{DecoderSourceBinding.lean} is 4,456 bytes. These are gross deletion
+candidates, not a net-saving claim. Count the replacement induction, checker,
+updated clients and any facade. No proof-object, runtime, memory or build-time
+improvement is claimed. No corresponding Rocq representation deletion is
+asserted without inspecting an analogous source boundary.

@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""Generate small kernel-checkable metadata and exact caller attachments."""
+import argparse, hashlib, json
+from pathlib import Path
+
+def bits(s):
+    if any(c not in '01' for c in s): raise ValueError(s)
+    return 'bits "' + s + '"'
+
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument('--input',type=Path,required=True)
+    ap.add_argument('--output',type=Path,required=True)
+    args=ap.parse_args()
+    data=json.loads(args.input.read_text())
+    src='''import FrameContracts
+
+/- Generated finite metadata. All checks use the maintained source program,
+   full role routes and literal machine. The emitter is not trusted. -/
+namespace SetTheory.BusyBeaver.ZFC.KFrameCallers
+open KZip KRuntimeCore KLeftFrame KFramedTemplates KFrameContracts KTableCore
+
+def bits (s : String) : List Bool := s.toList.map (fun c => c == '1')
+
+def metas : List Meta := [
+'''
+    for t in data['templates_data']:
+        _,q,s,op,k,_,e,*rest=t['key']
+        src+=f'  ⟨{q}, {bits(s)}, {bits(e)}, {str(op=="CB").lower()}, {k}⟩,\n'
+    src+= ''']
+
+def metaAt (i : Nat) : Meta := metas[i]?.getD default
+def templateAt (i : Nat) : LocalTemplate := templates[i]?.getD default
+
+def shapeCheck : Bool :=
+  decide (metas.length = templates.length) &&
+    (List.range metas.length).all (fun i => decide (Shape (metaAt i) (templateAt i)))
+
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+
+theorem shapes_checked : shapeCheck = true := by decide +kernel
+
+def checkCaller (c : Caller) : Bool :=
+  decide (c.templateIndex < metas.length) &&
+    decide (CallerOK (metaAt c.templateIndex) (templateAt c.templateIndex) c)
+
+def callers : List Caller := [
+'''
+    for c in data['guard_records']:
+        src+=f'  ⟨{bits(c["pc"])}, {bits(c["prefix"])}, {c["template"]}⟩,\n'
+    src+=''' ]
+
+theorem caller_count : callers.length = 1423 := by decide +kernel
+theorem callers_checked : callers.all checkCaller = true := by decide +kernel
+
+theorem caller_ok {c : Caller} (hc : c ∈ callers) :
+    CallerOK (metaAt c.templateIndex) (templateAt c.templateIndex) c := by
+  have h := (List.all_eq_true.mp callers_checked) c hc
+  exact of_decide_eq_true ((Bool.and_eq_true_iff.mp h).2)
+
+theorem index_valid {c : Caller} (hc : c ∈ callers) : c.templateIndex < metas.length := by
+  have h := (List.all_eq_true.mp callers_checked) c hc
+  exact of_decide_eq_true ((Bool.and_eq_true_iff.mp h).1)
+
+theorem shape_of_index {i : Nat} (hi : i < metas.length) :
+    Shape (metaAt i) (templateAt i) := by
+  have h := (Bool.and_eq_true_iff.mp shapes_checked).2
+  exact of_decide_eq_true ((List.all_eq_true.mp h) i (List.mem_range.mpr hi))
+
+theorem template_member {i : Nat} (hi : i < metas.length) : templateAt i ∈ templates := by
+  have he : metas.length = templates.length :=
+    of_decide_eq_true ((Bool.and_eq_true_iff.mp shapes_checked).1)
+  have hit : i < templates.length := by omega
+  simp only [templateAt, List.getElem?_eq_getElem hit, Option.getD_some]
+  exact List.getElem_mem hit
+
+/-- A checked caller provides a positive whole-tape run of the exact machine
+    and the exact source continuation, for every gap and valid register file. -/
+theorem all_caller_contracts {c : Caller} (hc : c ∈ callers)
+    (n : Nat) {vs : List Nat} (hv : Valid none vs) :
+    let m := metaAt c.templateIndex
+    sourceResult m c.word = c.prefix ++ m.result ∧
+    Reach1 tm215
+      (conc n vs (addLeft (c.prefix.reverse.map Seg.bit ++ [.bit true]) (localStart m)))
+      (zc 84 [true] (c.prefix ++ m.result ++
+        List.replicate (n + (16 + m.suffix.length - m.result.length)) false ++
+          true :: sepsR vs)) := by
+  exact caller_contract (template_member (index_valid hc))
+    (shape_of_index (index_valid hc)) (caller_ok hc) n hv
+
+/-- Exact standard primitive entries and the production gap formula. -/
+theorem all_caller_standard {c : Caller} (hc : c ∈ callers)
+    (n : Nat) {vs : List Nat} (hv : Valid none vs) :
+    let m := metaAt c.templateIndex
+    sourceResult m c.word = c.prefix ++ m.result ∧
+    Reach1 tm215
+      (leafPort m.q c.word (n + (64 - c.word.length)) vs)
+      (zc 84 [true] (sourceResult m c.word ++
+        List.replicate (n + (64 - (sourceResult m c.word).length)) false ++
+          true :: sepsR vs)) := by
+  exact caller_contract_standard (template_member (index_valid hc))
+    (shape_of_index (index_valid hc)) (caller_ok hc) n hv
+
+/-- Source action and full internal role route were checked on the same word. -/
+theorem caller_bindings {c : Caller} (hc : c ∈ callers) :
+    let m := metaAt c.templateIndex
+    RegisterPath.walk KSource215.p215 (KSource215.p215.nnodes + 1)
+      KSource215.p215.root c.word 0 = some (action m, c.word.length) ∧
+    portState K215Decoder.roles 0 c.word.dropLast = some m.q :=
+  ⟨(caller_ok hc).2.2.1, (caller_ok hc).2.2.2.1⟩
+
+#print axioms shapes_checked
+#print axioms callers_checked
+#print axioms all_caller_contracts
+#print axioms all_caller_standard
+#print axioms caller_bindings
+end SetTheory.BusyBeaver.ZFC.KFrameCallers
+'''
+    args.output.write_text(src)
+    print(json.dumps({'templates':len(data['templates_data']),
+                      'callers':len(data['guard_records']),
+                      'input_sha256':hashlib.sha256(args.input.read_bytes()).hexdigest(),
+                      'output_sha256':hashlib.sha256(args.output.read_bytes()).hexdigest()}))
+if __name__=='__main__':main()

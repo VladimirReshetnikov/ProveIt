@@ -1,0 +1,169 @@
+{
+  "status": "PASS_FOCUSED_KERNEL",
+  "scope": "Focused finite-footprint transport pilot; not the K215 endpoint",
+  "sources": [
+    {
+      "origin": "Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/checked-affine-core/affine_core/source_deps/K230/RM.v",
+      "compiled_path": "deps/K230/RM.v",
+      "sha256": "214a6016420e48f4432565ce97f1a27d07ac42642f8ed170d5d0ee02c5994ee8",
+      "object_sha256": "cc594e8812521e7893fa7004cd624861a699fceb235327b2391c44db6f29ce22",
+      "closed_reports": 0
+    },
+    {
+      "origin": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/218/Dag219.v",
+      "compiled_path": "deps/PilotOld/Dag219.v",
+      "sha256": "a12b21cb4e216049ed4bf657c9de1ee1ca467e47f05deccee32cc76a96927445",
+      "object_sha256": "cf47497853dbc3a62a39f63b12e72b6e03db4b9f3979b2064c2e9f7aab7c5d3e",
+      "closed_reports": 0
+    },
+    {
+      "origin": "Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/DagPerm.v",
+      "compiled_path": "deps/PilotNew/DagPerm.v",
+      "sha256": "ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1",
+      "object_sha256": "5e157b7aff9eeb936ba0180745d0f18ea6d6192520b8a096ad57b8c507f9cae2",
+      "closed_reports": 0
+    },
+    {
+      "origin": "RunTransfer.v",
+      "compiled_path": "RunTransfer.v",
+      "sha256": "86460fa886d5a492fe04e5f85356c9f703be147b7ef9b002c2b794f1770ec1ec",
+      "object_sha256": "58d1dc3cd99531b07d67ec5476ecfec6c0280c607d7e74d760a5947c0e4ca17c",
+      "closed_reports": 3
+    },
+    {
+      "origin": "Footprint215.v",
+      "compiled_path": "Footprint215.v",
+      "sha256": "a314c9025434f2b96aa94fc7ef30bc4cf2f17058efb84ad19f687da02073c42d",
+      "object_sha256": "15dedfe9317bf5d5a9c888e290b589774bcd020556e51ea16d323bdd7f2a66e2",
+      "closed_reports": 2
+    }
+  ],
+  "invocations": [
+    {
+      "name": "toolchain",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02861765299894614,
+      "log_sha256": "a0b4f15df5fb051f99ac4510d6e2f52bf2e6f598701c0e190a2d0b91e2d7bb39"
+    },
+    {
+      "name": "deps_K230_RM",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/PilotOld",
+        "PilotOld",
+        "-Q",
+        "deps/PilotNew",
+        "PilotNew",
+        "deps/K230/RM.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.3677028550009709,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "deps_PilotOld_Dag219",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/PilotOld",
+        "PilotOld",
+        "-Q",
+        "deps/PilotNew",
+        "PilotNew",
+        "deps/PilotOld/Dag219.v"
+      ],
+      "exit_code": 0,
+      "seconds": 7.500023606000468,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "deps_PilotNew_DagPerm",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/PilotOld",
+        "PilotOld",
+        "-Q",
+        "deps/PilotNew",
+        "PilotNew",
+        "deps/PilotNew/DagPerm.v"
+      ],
+      "exit_code": 0,
+      "seconds": 9.337028265003028,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "RunTransfer",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/PilotOld",
+        "PilotOld",
+        "-Q",
+        "deps/PilotNew",
+        "PilotNew",
+        "RunTransfer.v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.35204026700012037,
+      "log_sha256": "e70ed2b02bbb05140ba7ad843b0286e87e58d01206b3dd29392066a9b0b9e012"
+    },
+    {
+      "name": "Footprint215",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqc",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/PilotOld",
+        "PilotOld",
+        "-Q",
+        "deps/PilotNew",
+        "PilotNew",
+        "Footprint215.v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.1438007010001456,
+      "log_sha256": "e48860f73316a42d574e923cda848bcb6d474abd18fef10499e88630d5a78335"
+    },
+    {
+      "name": "coqchk",
+      "command": [
+        "/workspace/scratch/c5331d2bc8a4/toolchains/coq-8.18/usr/bin/coqchk",
+        "-silent",
+        "-Q",
+        "deps/K230",
+        "K230",
+        "-Q",
+        "deps/PilotOld",
+        "PilotOld",
+        "-Q",
+        "deps/PilotNew",
+        "PilotNew",
+        "Footprint215"
+      ],
+      "exit_code": 0,
+      "seconds": 36.46781388900126,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "toolchain": "The Coq Proof Assistant, version 8.18.0\ncompiled with OCaml 4.14.1"
+}

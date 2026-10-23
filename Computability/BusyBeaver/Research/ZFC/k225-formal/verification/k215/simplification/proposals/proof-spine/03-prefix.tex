@@ -1,0 +1,78 @@
+\section{Share the decrement prefix before the oracle split}
+\label{sec:prefix}
+\subsection{The remaining duplication}
+A decrement instruction has two outcomes: zero and nonzero. Current symbolic certificates replay each outcome from the same site-entry configuration, although decoding and register-selection work before the branch oracle is identical. This duplication remains after the already integrated one-sided normalization and shared implication changes. The proposal establishes the common premise once and forks only at the branch-sensitive operation; it does not merge the two outcome obligations or guess the branch.
+
+The selected construction uses the existing sound symbolic executor in \emph{neutral} mode for a prefix, then the same executor in a branch-specialized mode for each continuation. There is no new tape semantics and no new branch-noninterference induction. The only new semantic argument composes two existing \code{exec_sound} applications.
+
+\subsection{The exact soundness interface}
+Write $\llbracket s\rrbracket_{n,v}$ for the existing concretization of a symbolic configuration $s$, at natural parameter $n$ and register valuation $v$. Let $\leadsto^*$ and $\leadsto^+$ denote concrete reflexive and positive reachability. The existing executor theorem has the following shape:
+\[
+\begin{split}
+ &\code{Valid}(b,v)\ \wedge\
+ \code{exec}(b,T,f,s,m)=\code{some}(t)\\
+ &\quad\Longrightarrow\quad
+ T(t)=\code{true}\ \wedge\
+ \llbracket s\rrbracket_{n,v}\leadsto^*\llbracket t\rrbracket_{n,v}\
+ \wedge\
+ (m=\code{false}\Rightarrow
+ \llbracket s\rrbracket_{n,v}\leadsto^+\llbracket t\rrbracket_{n,v}).
+\end{split}
+\]
+Here $b$ is either neutral or a specified register/outcome branch, $T$ is the target predicate, $f$ is fuel, and $m$ records whether positive progress is already established. Ordinary register validity for a branch implies neutral validity, since the latter imposes no branch predicate.
+
+\begin{proposition}[Sound cut composition]
+Assume the existing box soundness hypotheses and
+\[
+\begin{aligned}
+\code{exec}(\code{none},C,f,s,\code{false})&=\code{some}(c),\\
+\code{exec}(b,T,g,c,\code{true})&=\code{some}(t),\\
+\code{Valid}(b,v)&.
+\end{aligned}
+\]
+Then $T(t)=\code{true}$ and
+$\llbracket s\rrbracket_{n,v}\leadsto^+\llbracket t\rrbracket_{n,v}$.
+The cut predicate $C$ may be arbitrary.
+\end{proposition}
+\begin{proof}
+Derive neutral validity from the register-validity component of $\code{Valid}(b,v)$. Apply existing executor soundness to the neutral prefix. Because its initial progress flag is false, this gives positive reachability from $\llbracket s\rrbracket$ to $\llbracket c\rrbracket$. Apply executor soundness a second time, with the original branch validity, to the continuation. It gives $T(t)$ and reflexive reachability from $\llbracket c\rrbracket$ to $\llbracket t\rrbracket$. Compose positive and reflexive reachability. A reflexive continuation is permitted; positive execution is already supplied by the prefix.
+\end{proof}
+
+We start the continuation with \code{moved=true}. Requiring each suffix to establish new positive progress would be an unnecessary strengthening of the original contract and could reject a valid cut whose continuation is reflexive. Starting the \emph{prefix} with true would instead lose the positive-progress conclusion needed by the site contract.
+
+\subsection{The decrement fork}
+Use the cut predicate
+\[
+ C_r(q,\ell,L,R)\;\equiv\;
+ q=0\ \wedge\ \ell=\code{false}\ \wedge\
+ R=[\code{box}(\code{mark}(r))].
+\]
+Test this explicit predicate before taking a step. A failed neutral oracle is not a sound generic stopping rule: the existing stepper may fall back to a table transition. The boundary controls include a synthetic table exhibiting this fallback. The left segment list $L$ is retained, not erased or normalized without proof. The register $r$ is the physical register after the existing register permutation.
+
+The proposed Boolean \code{forkTo} / \code{fork_to} first runs the neutral prefix to $C_r$ with \code{moved=false}. Failure returns false. Given the resulting $c$, it requires both specialized continuations from $c$, with \code{moved=true}, to match the original zero and nonzero target configurations. To prove either old site contract, take the corresponding conjunct and apply sound cut composition. Existing \code{sMatches_conc} / \code{matches_conc} translates accepted symbolic matching into equality of concrete endpoints.
+
+This proof does not require proving that neutral execution syntactically agrees with both original full traces. Neutral soundness already proves the concrete prefix for every valid valuation. The independent finite diagnostic checks trace agreement to establish the proposed sharing opportunity and quantify work; that comparison is not an extra formal premise.
+
+The archive includes an uncompiled Lean candidate module, an exact decrement-branch fragment, and an uncompiled Rocq integration fragment. The Lean cut module imports only \code{KHomeReady}, takes fuel explicitly, and sits below \code{KSim} in the dependency graph, so \code{KSim} can import it without a cycle. The Rocq fragment reuses the existing four box hypotheses and is intended to be inserted around the existing \code{Interpreter230Sites.v} soundness section, not compiled as a standalone file. The public Rocq \code{check_site}/\code{check_edge} and Lean \code{checkEdge} signatures, together with site-soundness statements, can stay unchanged, but the Boolean checker implementation changes. The literal \code{all_leaves_check} certificate and all downstream endpoints must be regenerated and rebuilt. Keeping a theorem's statement is not a license to reuse a certificate whose checked expression changed. Two separately fuel-bounded phases may accept different inputs from the old single phase at fixed fuel; only the universal semantic contract is intended to remain unchanged.
+
+\subsection{Separate measurements for the two production paths}
+The current Rocq production path executes a full site without the Lean Home shortcut. Lean's current full-start path uses that shortcut. Their abstract replay counts must therefore be reported separately.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Quantity & Rocq full site & Lean full start with Home \\
+\midrule
+Decrement sites & 1,425 & 1,425 \\
+Complete branch outcomes & 2,850 & 2,850 \\
+Original abstract replay calls & 1,337,729 & 514,073 \\
+Calls after prefix sharing & 852,647 & 312,947 \\
+Duplicate calls removed & 485,082 & 201,126 \\
+Fraction removed & 36.26\% & 39.12\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are finite diagnostic counts, not formal compilation measurements. The newly authored Python checker parses pinned source/data and transcribes the abstract transition rules; it does not execute repository programs. It equates the current Lean and Rocq tables, checks all 430 enabled actions against the native table under the explicit state-label map, equates the two 179-node source programs, regenerates all 4,751 leaves, and replays both complete decrement outcomes, locates their common prefix at the expected physical-register cut, checks neutral prefix execution, and checks positive prefix progress. Fuel exhaustion, failure to reach the expected target, and unexpected oracle behavior are failures, not successes.
+
+The transcription is a distinct trust boundary: agreement of pinned data and finite traces is evidence about these cases, not a kernel proof of the Lean or Rocq executor. The counts omit target-predicate evaluation and normalization work and add 1,425 successful prefix-cut tests. Eleven rejection/progress controls exercise wrong cuts, wrong branches, empty-prefix progress and fallback behavior. Abstract calls are not concrete machine steps, proof-term size, kernel reductions, wall-clock time or peak memory. All 4,751 leaves and 6,176 original guarded outcomes remain; only the 2,850 decrement outcomes are measured here. The reported percentage covers decrement work only, not every source-site kind or the full endpoint.

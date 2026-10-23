@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "scope": "Copied exact checked Lean sources and accepted logs; validated source pins, driver binding and complete project import closure; no new compilation",
+  "checked_modules": [
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "path": "BusyBeaver/ZFC/KZip.lean",
+      "sha256": "35170a1145cb2fc74e5faba3a922da13bb2d05aa6fe98fafe1593a4ba22c498a",
+      "imports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "path": "BusyBeaver/ZFC/KRuntimeCore.lean",
+      "sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "path": "BusyBeaver/ZFC/KHome.lean",
+      "sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTableCore",
+      "path": "BusyBeaver/ZFC/KTableCore.lean",
+      "sha256": "a541dbfd4d4b9426b852ff975dd565f1ff562075290bd8c5f8c9abcddd20fb95",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable215",
+      "path": "BusyBeaver/ZFC/KTable215.lean",
+      "sha256": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "path": "BusyBeaver/ZFC/RegisterPath.lean",
+      "sha256": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+      "imports": [
+        "Init"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KControlFrame",
+      "path": "BusyBeaver/ZFC/KControlFrame.lean",
+      "sha256": "3e95cc2baf162386a73690f19c70006603741cdb0a24aab3cf28bc8e51525133",
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLeftFrame",
+      "path": "BusyBeaver/ZFC/KLeftFrame.lean",
+      "sha256": "e32b6d4805453a542691d2b47cfe54d8b52f54bf39f98cf80aa7779a883a5d6c",
+      "imports": [
+        "BusyBeaver.ZFC.KHome"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLeftFrame215",
+      "path": "BusyBeaver/ZFC/KLeftFrame215.lean",
+      "sha256": "4f721af887542f4deaedbdaa26443b665908a2dbabe91e987955e6d3558b3a76",
+      "imports": [
+        "BusyBeaver.ZFC.KLeftFrame",
+        "BusyBeaver.ZFC.KTable215"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFramedControl215",
+      "path": "BusyBeaver/ZFC/KFramedControl215.lean",
+      "sha256": "93e0abd472dbd7326445a9e399c018748e9b9f53a0707cc1cf58b79e5f316a81",
+      "imports": [
+        "BusyBeaver.ZFC.KLeftFrame215",
+        "BusyBeaver.ZFC.KControlFrame"
+      ]
+    },
+    {
+      "module": "FrameAudit",
+      "path": "FrameAudit.lean",
+      "sha256": "b4fa597f76c8eb50c209e7623d44f22078cb20dbfe3875a12e718d38cf263ac0",
+      "imports": [
+        "BusyBeaver.ZFC.KFramedControl215"
+      ]
+    }
+  ],
+  "project_module_count": 10,
+  "closed_clients": 1,
+  "external_imports": [
+    "Init"
+  ],
+  "new_sources_modified": false,
+  "docs_only_change": "Clarifies that entry-state numerals are checked, while decoder routing for 1,422 occurrences remains future work",
+  "copied_file_count": 37
+}

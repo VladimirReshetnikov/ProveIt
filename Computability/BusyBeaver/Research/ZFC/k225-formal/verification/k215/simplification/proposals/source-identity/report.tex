@@ -1,0 +1,186 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue,pdftitle={Further K215 proof simplification: one source language and smaller proof boundaries},pdfauthor={Prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\renewcommand{\labelitemi}{$\bullet$}
+\title{Further K215 proof simplification:\\one source language and smaller proof boundaries}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{22 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The recent commits have implemented several earlier simplifications. The next useful step is not another broad abstraction: it is to remove redundant representations while retaining the existing proof boundaries. We give an exact source-language identification for the separately checked decoder-prefix component, a small proposal to infer AX macro words from their actual programs, and a Rocq proof that can reuse its existing loop theorem. We distinguish changes to the maintained endpoint from preparation for a future decoder integration. All new formal files are uncompiled drafts; finite data audits are reproducible and do not replace kernel checks.
+\end{abstract}
+
+\section{Current baseline and recommended priorities}
+This review is pinned to ProveIt commit
+\texttt{cbf94cb552a3b49509e0eee80e7455d4eb5974c6}.
+The target remains the accepted 215-state, two-symbol, blank-input machine with dense-table SHA-256
+\begin{center}\small
+\texttt{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.
+\end{center}
+No machine transition, source program, calculus or consistency statement is changed.
+The existing endpoint relates blank halting to a finite ZFC refutation. Its negation gives the desired nonhalting/consistency equivalence. This review proposes refactoring the external Lean and Rocq proofs; it does not provide a new derivation encoded in ZFC's own proof syntax.
+
+The following are no longer new opportunities at this pin:
+\begin{itemize}
+\item The shared implication core is in the maintained Rocq source; the old large \texttt{CD222} and \texttt{DomRho8} developments have short adapters.
+\item Lean constructs the full seed on the original model. The preliminary indiscernibility quotient is gone. The later bisimulation quotient remains essential.
+\item The QHyp quotient is shared; source trees are computed from programs; the Rocq source certificate is normalized and one-sided.
+\item Rocq's unused zero-seed enumerator layer is removed. Lean's AX words no longer repeat successor-node annotations.
+\end{itemize}
+The repository's archived 89-node macro-transport prototypes are also real prior work, not a new discovery. Their maintained-source integration is still unfinished.
+
+\paragraph{Recommendation.}
+For an immediate, low-risk production edit, try the Rocq loop reuse in Section~\ref{sec:rocq}. For a small representation cleanup, try the computed AX words in Section~\ref{sec:ax}. For the next substantial decoder-proof simplification, remove the second source language as in Section~\ref{sec:decoder}, before further enlarging the prefix/suffix adapter. That last change simplifies a separately checked component and its future integration; it does \emph{not} immediately shrink today's endpoint closure.
+
+\section{Delete the decoder's second source language}\label{sec:decoder}
+\subsection{An exact identification, not an analogy}
+The decoder-prefix development has its own 202-node \texttt{sourceNodes} representation. The maintained register program \texttt{p215} already represents precisely the same source with 179 fork nodes and 23 distinct primitive edges. The difference is that the decoder assigns additional node numbers to primitive leaves.
+
+Let $\phi$ map the $j$-th fork, in existing decoder-node order, to the register-program edge $\mathrm{node}(j)$, and each primitive node to its literal \texttt{RegisterPath.Edge}. Then for every fork $v$ and branch $b$,
+\[
+\phi(\operatorname{child}(v,b))
+=\operatorname{branch}(p215,j,b),
+\qquad \phi(201)=\mathrm{node}(178).
+\]
+All 179 local squares are checked against the pinned definitions. This is not a minimization of the Turing machine or a claim that it has 179 states.
+
+The complete role retargeting preserves the genuinely physical data:
+\begin{center}\small
+\begin{tabular}{lr}
+\toprule
+Quantity&Unchanged count\\
+\midrule
+Physical decoder roles&234\\
+Arbitrary-tape blocks&281\\
+Role branches&468\\
+Internal / terminal branches&371 / 97\\
+Expanded source leaves&4751\\
+Counted guarded site outcomes&6176\\
+\bottomrule
+\end{tabular}
+\end{center}
+A role is not identified by its source node alone. Its physical state, short suffix, role index and block references must survive. In particular, merging 234 roles into 179 source labels would be unsound without a separate argument.
+
+\subsection{The correspondence detour that can disappear}
+The current prefix route starts from \texttt{RegisterPath.walk}, passes through the tree \texttt{ptree p215} and a \texttt{LeafAt} witness, identifies that tree with the 203-fuel unfolding of the separate decoder syntax, and reconstructs a second \texttt{SourcePath}. Only then does it build a route through the checked physical blocks.
+
+Instead, let roles point directly to nodes of \texttt{p215}. An internal role branch checks that the selected program edge is $\mathrm{node}(c)$, the target role has node $c$, and $c<n$. It retains the suffix and block-window conditions exactly. A terminal role branch uses the selected program edge itself, not a fictitious primitive-node number. This removes the intermediate syntax, its unfolding fuel, its tree-equality binding and the source-path/leaf correspondence from the intended architecture.
+
+This is stronger than replacing a literal tree by a computed tree. It is also different from choosing a route before quantifying over tapes: the latter fixes the quantifier order but can still carry two source languages. The two improvements are compatible.
+
+\subsection{The new theorem that is actually needed}
+The finite label map alone is not the proof. The remaining generic theorem should say:
+\begin{quote}
+For every admissible decoder role and every successful walk of the actual program from its source node, the role certificate supplies a finite block route to the corresponding primitive-entry port. The route preserves the consumed depth, unread suffix, physical state and local window. Its clock and port are chosen before the arbitrary ambient tape.
+\end{quote}
+Prove this by induction on the successful walk, or on the decreasing source-node number for internal branches. At each internal step, use the existing arbitrary-tape block theorem, update the suffix to the last two bits of the known local word, and invoke the induction hypothesis. At a terminal step, return the selected literal primitive edge and the actual physical action.
+
+The critical obligations are:
+\begin{enumerate}
+\item Node bounds and strict decrease for every internal target. The 179 finite squares and 468 branch checks establish the required literal facts, not universal execution semantics.
+\item Correct accounting for the walk's zero extension and consumed depth. Trailing zero erasure and arbitrary unread bits cannot be silently identified with a different physical entry convention.
+\item Nonempty block windows and positive block durations, using the retained block checks. A source-rank decrease does not itself prove physical execution.
+\item A terminal port indexed by the \emph{actual source edge}, together with the original physical state/action and suffix.
+\item The existing residual primitive and return-to-dispatch contracts, and the existing arbitrary-tape-to-zipper reflection.
+\end{enumerate}
+
+\paragraph{A useful counterexample to an overclaim.}
+The pilot's terminal checker tests that the source edge is non-internal and that the physical transition equals the stored action. Changing one primitive opcode to another still non-internal opcode does not change that test. Therefore it cannot prove increment/decrement/break/continue semantics. This is intentional for a prefix checker, but it makes the residual contracts mandatory. The audit's 6,176 outcomes are counted and structurally mapped, not newly executed or kernel-proved outcomes.
+
+\subsection{Migration boundary}
+First split the formal transition table and 281 block certificates out of \texttt{K215Decoder}, so that the direct-program checker can import them without importing the old source language. Then replace the source-index fields and prove the walk-to-route theorem. Keep old names as compatibility wrappers until their clients have been checked.
+
+Five prefix modules are involved, from the certificate definition to \texttt{KDecoderPrefix215}; the companion proposal gives their exact interfaces and the dependency split. Today's \texttt{KSim}, \texttt{KSites215} and its 105 site blocks remain unchanged at this stage. Only a later semantic-contract integration can remove work from the production endpoint. The supplied checker pilot deliberately still imports the old block provider, so it is not itself a dependency reduction. Net source and build savings must be measured after that split and integration.
+
+\section{Compute AX words, but retain their checker}\label{sec:ax}
+The recent successor-inference change leaves one 156-atom list in each of \texttt{L2AxiomsPerm} and \texttt{L2AxiomsDom}. Every atom is already determined by the left macro edge of its literal program node. There are only thirteen macro kinds.
+
+Define a partial reverse lookup from \texttt{AXAtom.node}. A small generic extractor follows the right successor, returning the list of decoded atoms; it stops at gate 457 and uses fuel 156 from entry 236. Define \texttt{axWord} to be its result, with the empty list as the failure default. Crucially, leave the existing checker and theorem in place:
+\[
+\operatorname{axWordCheck}(236,\operatorname{axWord})=\mathrm{true}.
+\]
+The existing \texttt{axWordRun} applies to \emph{every} accepted word. Therefore no new theorem asserting correctness of the extractor is needed. A wrong reverse lookup or insufficient fuel must still pass the old checker; the empty default fails at entry 236 because $236\ne457$. The extractor is a producer, not a new soundness assumption.
+
+Both literal words are recovered exactly by the finite audit. The two words differ only in positions 7 and 8: \texttt{readp1, cons} versus \texttt{cons, readp1}. The proposal does not identify these words or assume that their actions commute. Each is checked against its own literal DAG.
+
+The supplied minimal overlays change only the import, the thirteen-atom reverse lookup and the definition of \texttt{axWord}. The text of \texttt{axWordCheck}, \texttt{axWordRun}, \texttt{axWord\_checked}, \texttt{axWordClean} and \texttt{ax\_eval} is unchanged. The maintained \texttt{generate\_l2axiomsdom.py} template must also be updated; the supplied overlays are not a complete producer patch. Those proofs nevertheless must be elaborated again. In particular, the existing \texttt{simp only} proof of \texttt{ax\_eval} may need reduction support now that the word is computed rather than literal.
+
+\paragraph{Honest size accounting.}
+The two source modules total 13,039 bytes. The overlays total 11,520 bytes and the new helper is 732 bytes: a net reduction of 787 bytes. Line count instead rises from 310 to 316. For the K215 lane alone, counting the entire new helper, the saving is only 27 bytes and one module is added. The benefit is removing redundant macro annotations and their maintenance, not a substantial endpoint-size reduction. Kernel reduction may cost more, as both extraction and checking traverse the program. No timing improvement is claimed. If literal words are faster enough to justify their storage, keep the current representation.
+
+The same pattern may be useful in Rocq, but this packet does not claim a Rocq AX-word implementation. It is safer to pilot the existing Lean checker boundary than to introduce a second generic semantic interpreter merely for symmetry between languages.
+
+\section{Rocq: reuse the existing loop proof}\label{sec:rocq}
+\texttt{ProgLibPerm.z465} still proves a register-clearing loop by induction on its initial value. The existing \texttt{sem\_while} and \texttt{while\_tac} already cover that exact shape. Nodes 199 and 465 have the same rows:
+\[
+(\mathrm{EDecnz}\ 5,\ \mathrm{EContinue}\ 1).
+\]
+Keep the old public statement, including its now-unused premise:
+\[
+\forall a\ m,\quad \operatorname{get}(m,5)=a\ \Longrightarrow\
+\operatorname{sem}(\mathrm{ENode}\ 465,m,\mathrm{XNormal},\operatorname{set}(m,5,0)).
+\]
+After introducing $m$ and discarding the premise, apply \texttt{while\_tac} with identity body transformer and post-state $m\mapsto\operatorname{set}(m,5,0)$.
+
+The obligations are the literal row, $5\le8$, the existing continuation rule at level one, preservation of the tested register by the identity body, setting an already-zero register, and overwrite of the same register. No functional extensionality, new termination measure or additional semantic hypothesis is needed. Applying \texttt{w199} directly at node 465 would be wrong; the proposal instead reuses the generic theorem already used to prove \texttt{w199}.
+
+The declaration changes from 9 to 5 lines and from 475 to 171 bytes. The two calls in \texttt{r466} keep their types. Apply the edit to the maintained \texttt{NEW\_EQ} producer template as well as the generated file, then regenerate and compile the downstream endpoint. The patch and typed comparison client are supplied but uncompiled.
+
+\paragraph{The larger Rocq opportunity is integration, not rediscovery.}
+The maintained Perm and 219 macro bodies remain a 753-line renamed duplicate. Archived \texttt{common-macros} and \texttt{collection-first} prototypes already implement the 89-node transport idea. Their reported Coq 8.18 component checks are not a fresh Rocq 9.1 endpoint check. Production integration still needs a shared state-record identity, exact public wrappers, producer synchronization, and preservation of every exit and final register value. This remains higher-impact than the local four-line cleanup, but should be credited as adoption of existing work.
+
+\section{A deliberately deferred abstraction}
+Two maintained Lean proofs, \texttt{KLowerRel.sat\_relT} and \texttt{WFRelativization.sat\_translate}, share the mathematics of interpreting formulas in a definable subtype. We developed a capture-aware common kernel as an experiment, but do \emph{not} recommend adopting it merely to reduce current source size.
+
+The correct abstraction needs a binding context $c$, its update $c^+$, a slot map $\sigma_c$, an ambient invariant $G(c,r)$ and a guard formula $g_c$. The laws are
+\begin{align*}
+\sigma_{c^+}(0)&=0,&\sigma_{c^+}(i+1)&=\sigma_c(i)+1,\\
+G(c,r)&\Rightarrow G(c^+,x::r),&
+\operatorname{Sat}(x::r,g_c)&\longleftrightarrow P(x)\quad\text{under }G(c,r).
+\end{align*}
+If $r(\sigma_c(i))=(e(i)).\mathrm{val}$, induction on the formula gives
+\[
+\operatorname{Sat}_{V}(r,\operatorname{translate}_c(\varphi))
+\longleftrightarrow
+\operatorname{Sat}_{\{x\mid P(x)\}}(e,\varphi).
+\]
+The guarded universal and existential cases are the substantive ones. The theorem itself does not need choice or a global inhabitedness assumption.
+
+For the tagged domain, the context is the moving marker index $d$, the guard is membership from slot $d+1$ to slot zero after pushing a variable, and $G(d,r)$ says $r(d)=t$. For the well-founded subtype, the context is trivial, slots are unchanged and the guard is the existing well-foundedness formula at zero. The named-variable constructibility translation uses a different syntax and is \emph{not} included in the claimed reuse.
+
+The draft kernel is 108 lines and its comparison client is 71 lines, before production integration and compatibility work. The two existing translators and satisfaction proofs total 89 lines, or 99 including the tagged environment helpers. Factoring two inductions into a richer interface is not automatically a shortening. Exact old-translation identities, equality-free clients and binder/capture obligations still need checking. The packet retains this experiment and finite capture regressions for future reuse, but does not count it as a proven size saving. A smaller reuse of existing subtype quantifier lemmas may be preferable unless more clients justify the full interface.
+
+\section{Validation and adoption plan}
+\subsection{What was checked here}
+The archive contains pinned source snapshots, explicit mappings, proposed overlays, finite audit programs and an independent data checker. The checks read source as inert data. They do not execute repository generators or invoke Lean, Rocq or a kernel checker.
+
+The finite audits establish the exact node/role correspondence and both inferred AX words. They verify the unchanged Rocq statement and loop row, and independently reproduce the source-size comparisons. Negative controls include malformed or non-internal rows, insufficient fuel, incorrect atom decoding and the wrong continuation level. The subtype checks exercise capture and equality cases on finite structures; they are regression tests, not a quantified proof.
+
+No new formal file in this packet has been compiled. No endpoint dependency count, proof-term size or build-time saving is claimed. Historical full builds and recent per-module checks remain repository evidence; this review does not upgrade those records into a fresh full build at the review pin.
+
+\subsection{Acceptance gates}
+\begin{enumerate}
+\item Apply a single proposal at a time in an isolated worktree, retaining the pinned machine tables and endpoint theorem statements.
+\item For Rocq, synchronize the shared producer template, regenerate every affected output, compile the changed library and callers, and check the exact sparse and dense endpoints and their assumptions. The proposed proof must be closed under the same global context.
+\item For computed AX words, compile the helper, both edited modules, their root and seed consumers, and the affected endpoints. Check assumptions, exact regeneration, and both compile-time and source-size effects. Do not infer success from unchanged theorem text.
+\item For the direct-program decoder, first check the finite retargeting and retained block certificates, then prove the universal walk-to-route theorem and its arbitrary-tape reflection. Only after residual primitive contracts are composed should the production site interface be changed.
+\item Preserve compatibility adapters until all intended clients are checked. Measure maintained sources and generators together, rather than counting only deleted generated copies.
+\end{enumerate}
+
+\paragraph{Bottom line.}
+The most promising architectural simplification is to make the literal program the decoder's sole source syntax. The safest immediate Rocq simplification is reuse of an existing loop theorem. The computed AX-word pilot tests the same principle on a small production component without adding a new soundness theorem. Broad semantic abstraction should follow demonstrated reuse, not be treated as a saving by itself.
+
+\subsection*{Pinned primary sources}
+\begin{itemize}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cbf94cb552a3b49509e0eee80e7455d4eb5974c6/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{K215 verification baseline and endpoint boundaries}.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cbf94cb552a3b49509e0eee80e7455d4eb5974c6/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md}{Prior proposal catalogue}, distinguishing archived prototypes from maintained integration.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cbf94cb552a3b49509e0eee80e7455d4eb5974c6/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean}{Lean AX checker and word}, and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/cbf94cb552a3b49509e0eee80e7455d4eb5974c6/Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/ProgLibPerm.v}{Rocq macro library}.
+\end{itemize}
+The accompanying provenance files give exact URLs and hashes for every source used in the component audits.
+\end{document}

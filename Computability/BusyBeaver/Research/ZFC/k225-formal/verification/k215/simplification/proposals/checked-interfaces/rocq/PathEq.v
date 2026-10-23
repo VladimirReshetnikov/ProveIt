@@ -1,0 +1,43 @@
+(** Zero-padded path utilities, copied verbatim from the maintained NCheck module. *)
+From Coq Require Import List Bool Arith Lia NArith.
+From K230 Require Import RM RMEquiv.
+From K230P Require Import Bisim230.
+Import ListNotations.
+
+Fixpoint allzero (P : list bool) : bool :=
+  match P with [] => true | b :: Q => negb b && allzero Q end.
+
+Lemma allzero_ok P : allzero P = true -> ipeq P [].
+Proof.
+  induction P as [|b P IH]; intro H; [apply ipeq_refl|].
+  cbn [allzero] in H. apply andb_prop in H as [Hb HP].
+  destruct b; [discriminate|]. intros [|i]; [reflexivity|].
+  change (bit P i = false). rewrite <- (bit_nil i). exact (IH HP i).
+Qed.
+
+Fixpoint ibeq (P Q : list bool) : bool :=
+  match P, Q with
+  | [], _ => allzero Q
+  | _, [] => allzero P
+  | b :: P, c :: Q => Bool.eqb b c && ibeq P Q
+  end.
+
+Lemma ibeq_ok P Q : ibeq P Q = true -> ipeq P Q.
+Proof.
+  revert Q. induction P as [|b P IH]; intros [|c Q] H.
+  - apply ipeq_refl.
+  - apply ipeq_sym, allzero_ok. exact H.
+  - apply allzero_ok. exact H.
+  - cbn [ibeq] in H. apply andb_prop in H as [Hbc HPQ].
+    apply Bool.eqb_prop in Hbc. subst c.
+    intros [|i]; [reflexivity|]. exact (IH Q HPQ i).
+Qed.
+
+Lemma halts_ipeq p P Q R : ipeq P Q ->
+  rm_halts p (P,R) -> rm_halts p (Q,R).
+Proof.
+  intros E (n & c & Hr & Ha).
+  destruct (RMEquiv.hn_ipeq p n P Q R E (ex_intro _ c (conj Hr Ha)))
+    as (c' & Hr' & Ha'). exists n,c'. auto.
+Qed.
+

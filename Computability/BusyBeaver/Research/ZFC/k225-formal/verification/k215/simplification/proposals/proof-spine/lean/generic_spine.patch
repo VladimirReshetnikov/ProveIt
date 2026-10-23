@@ -1,0 +1,1746 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean
+@@ -1,158 +1,10 @@
++import BusyBeaver.ZFC.FiniteSetsCore
+ import BusyBeaver.ZFC.SingletonInfinity
+-
+-/-!
+-Finite set constructors and literal graph atoms without Infinity.
+-The elementary operator and Kuratowski proofs are adapted from the repository's
+-ZF/Zf.lean, with their hypotheses reduced to Extensionality, Pairing and Union.
+-The inherited Separation field is used by the later finite-attempt construction;
+-no internal omega or recursion theorem is used here.
+--/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.FiniteSets
+ open Form
+ universe u
+ variable {V : Type u} {mem : V → V → Prop}
+-
+-structure Base (mem : V → V → Prop) : Prop extends SingletonInfinity.Base mem where
+-  union : ∀ a, ∃ b, ∀ z, mem z b ↔ ∃ x, mem z x ∧ mem x a
+-
+-noncomputable def pair (H : Base mem) (a b : V) : V := (H.pair a b).choose
+-
+-theorem pair_spec (H : Base mem) (a b x : V) :
+-    mem x (pair H a b) ↔ (x = a ∨ x = b) :=
+-  (H.pair a b).choose_spec x
+-
+-noncomputable abbrev singleton (H : Base mem) (a : V) : V :=
+-  SingletonInfinity.singleton H.toBase a
+-
+-theorem singleton_spec (H : Base mem) (a x : V) :
+-    mem x (singleton H a) ↔ x = a := SingletonInfinity.singleton_spec H.toBase a x
+-
+-noncomputable def union (H : Base mem) (u : V) : V := (H.union u).choose
+-
+-theorem union_spec (H : Base mem) (u x : V) :
+-    mem x (union H u) ↔ ∃ v, mem x v ∧ mem v u :=
+-  (H.union u).choose_spec x
+-
+-noncomputable def cup (H : Base mem) (a b : V) : V := union H (pair H a b)
+-
+-theorem cup_spec (H : Base mem) (a b x : V) :
+-    mem x (cup H a b) ↔ (mem x a ∨ mem x b) := by
+-  unfold cup
+-  rw [union_spec H (pair H a b) x]
+-  exact ⟨fun ⟨v, hxv, hv⟩ =>
+-      ((pair_spec H a b v).mp hv).imp (fun (e : v = a) => e ▸ hxv)
+-        fun (e : v = b) => e ▸ hxv,
+-    fun h => h.elim (fun ha => ⟨a, ha, (pair_spec H a b a).mpr (Or.inl rfl)⟩)
+-      fun hb => ⟨b, hb, (pair_spec H a b b).mpr (Or.inr rfl)⟩⟩
+-
+-noncomputable def succ (H : Base mem) (a : V) : V := cup H a (singleton H a)
+-
+-theorem succ_spec (H : Base mem) (a x : V) :
+-    mem x (succ H a) ↔ (mem x a ∨ x = a) := by
+-  unfold succ
+-  rw [cup_spec H a (singleton H a) x, singleton_spec H a x]
+-
+-theorem succ_self (H : Base mem) (a : V) : mem a (succ H a) :=
+-  (succ_spec H a a).mpr (Or.inr rfl)
+-
+-noncomputable def kpair (H : Base mem) (a b : V) : V :=
+-  pair H (singleton H a) (pair H a b)
+-
+-theorem kpair_mem (H : Base mem) (a b q : V) :
+-    mem q (kpair H a b) ↔ (q = singleton H a ∨ q = pair H a b) :=
+-  pair_spec H _ _ q
+-
+-theorem singleton_inj (H : Base mem) (a b : V)
+-    (h : singleton H a = singleton H b) : a = b :=
+-  (singleton_spec H b a).mp (h ▸ (singleton_spec H a a).mpr rfl)
+-
+-theorem pair_single (H : Base mem) (a b c : V)
+-    (h : pair H a b = singleton H c) : a = c ∧ b = c :=
+-  ⟨(singleton_spec H c a).mp (h ▸ (pair_spec H a b a).mpr (Or.inl rfl)),
+-    (singleton_spec H c b).mp (h ▸ (pair_spec H a b b).mpr (Or.inr rfl))⟩
+-
+-theorem kpair_inj (H : Base mem) {a b c d : V}
+-    (h : kpair H a b = kpair H c d) : a = c ∧ b = d := by
+-  have hac : a = c := ((kpair_mem H c d (singleton H a)).mp
+-    (h ▸ (kpair_mem H a b _).mpr (Or.inl rfl))).elim (singleton_inj H a c)
+-    fun hs => (pair_single H c d a hs.symm).1.symm
+-  refine ⟨hac, ?_⟩
+-  subst hac
+-  -- h : kpair a b = kpair a d
+-  have h1 : mem (pair H a b) (kpair H a b) :=
+-    (kpair_mem H a b _).mpr (Or.inr rfl)
+-  rw [h] at h1
+-  rcases (kpair_mem H a d _).mp h1 with h1 | h1
+-  · -- pair a b = singleton a, so b = a
+-    have hba : b = a := (pair_single H a b a h1).2
+-    have h2 : mem (pair H a d) (kpair H a d) :=
+-      (kpair_mem H a d _).mpr (Or.inr rfl)
+-    rw [← h] at h2
+-    rcases (kpair_mem H a b _).mp h2 with h2 | h2
+-    · exact hba.trans (pair_single H a d a h2).2.symm
+-    · exact ((pair_spec H a b d).mp (h2 ▸ (pair_spec H a d d).mpr (Or.inr rfl))).elim
+-        (fun hd => hba.trans hd.symm) Eq.symm
+-  · -- pair a b = pair a d
+-    refine ((pair_spec H a d b).mp (h1 ▸ (pair_spec H a b b).mpr (Or.inr rfl))).elim
+-      (fun hb => ?_) id
+-    -- b = a
+-    exact ((pair_spec H a b d).mp (h1 ▸ (pair_spec H a d d).mpr (Or.inr rfl))).elim
+-      (fun hd => hb.trans hd.symm) Eq.symm
+-
+-
+-noncomputable def insert (B : Base mem) (f p : V) : V := cup B f (singleton B p)
+-
+-theorem insert_spec (B : Base mem) (f p z : V) :
+-    mem z (insert B f p) ↔ mem z f ∨ z = p := by
+-  rw [insert, cup_spec B, singleton_spec B]
+-
+-/-- An actual set-by-formula specification, requiring only Extensionality. -/
+-theorem sat_setBy (B : Base mem) (env : Nat → V) (i : Nat) (phi : Form) (b : V)
+-    (hp : ∀ x, Sat mem (scons x env) phi ↔ mem x b) :
+-    Sat mem env (fSetByF i phi) ↔ env i = b := by
+-  rw [fSetByF_sat]
+-  exact ⟨fun h => B.ext _ _ fun x => (h x).trans (hp x), fun h x => by rw [h]; exact (hp x).symm⟩
+-
+-/-- Inputs i,j; output k. -/
+-def pairForm (i j k : Nat) : Form :=
+-  fSetByF k (fOr (fEq 0 (i + 1)) (fEq 0 (j + 1)))
+-
+-theorem sat_pairForm (B : Base mem) (env : Nat → V) (i j k : Nat) :
+-    Sat mem env (pairForm i j k) ↔ env k = pair B (env i) (env j) :=
+-  sat_setBy B env k _ _ fun x => (pair_spec B (env i) (env j) x).symm
+-
+-/-- Inputs i,j; output k, with Kuratowski coding. -/
+-def kpairForm (i j k : Nat) : Form :=
+-  fSetByF k (fOr (SingletonInfinity.singForm (i + 1) 0) (pairForm (i + 1) (j + 1) 0))
+-
+-theorem sat_kpairForm (B : Base mem) (env : Nat → V) (i j k : Nat) :
+-    Sat mem env (kpairForm i j k) ↔ env k = kpair B (env i) (env j) := by
+-  refine sat_setBy B env k _ _ fun x => ?_
+-  change (Sat mem (scons x env) (SingletonInfinity.singForm (i + 1) 0) ∨
+-    Sat mem (scons x env) (pairForm (i + 1) (j + 1) 0)) ↔ _
+-  rw [SingletonInfinity.sat_singForm B.toBase, sat_pairForm B, kpair_mem B]
+-  rfl
+-
+-/-- Graph f contains the ordered pair (x,y). -/
+-def appForm (f x y : Nat) : Form :=
+-  fEx (fAnd (kpairForm (x + 1) (y + 1) 0) (fMem 0 (f + 1)))
+-
+-theorem sat_appForm (B : Base mem) (env : Nat → V) (f x y : Nat) :
+-    Sat mem env (appForm f x y) ↔ mem (kpair B (env x) (env y)) (env f) := by
+-  refine ⟨fun ⟨p, hp, hm⟩ => ?_,
+-    fun hm => ⟨kpair B (env x) (env y), (sat_kpairForm B _ _ _ _).mpr rfl, hm⟩⟩
+-  have hp' : p = kpair B (env x) (env y) := (sat_kpairForm B _ _ _ _).mp hp
+-  change mem p (env f) at hm
+-  rwa [hp'] at hm
+-
+-/-- Input i; output j, for the von Neumann successor. -/
+-def succForm (i j : Nat) : Form :=
+-  fSetByF j (fOr (fMem 0 (i + 1)) (fEq 0 (i + 1)))
+-
+-theorem sat_succForm (B : Base mem) (env : Nat → V) (i j : Nat) :
+-    Sat mem env (succForm i j) ↔ env j = succ B (env i) :=
+-  sat_setBy B env j _ _ fun x => (succ_spec B (env i) x).symm
+ 
+ theorem quotientBase (rawMem : V → V → Prop) (witness : V)
+     (h : ProfileModel.ModelsCPGIC rawMem) :
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSetsCore.lean
+@@ -0,0 +1,158 @@
++import BusyBeaver.ZFC.SingletonInfinityCore
++import ZF.Zf
++
++/-!
++Finite set constructors and literal graph atoms without Infinity.
++The elementary operator and Kuratowski proofs are adapted from the repository's
++ZF/Zf.lean, with their hypotheses reduced to Extensionality, Pairing and Union.
++The inherited Separation field is used by the later finite-attempt construction;
++no internal omega or recursion theorem is used here.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.FiniteSets
++open Form
++universe u
++variable {V : Type u} {mem : V → V → Prop}
++
++structure Base (mem : V → V → Prop) : Prop extends SingletonInfinity.Base mem where
++  union : ∀ a, ∃ b, ∀ z, mem z b ↔ ∃ x, mem z x ∧ mem x a
++
++noncomputable def pair (H : Base mem) (a b : V) : V := (H.pair a b).choose
++
++theorem pair_spec (H : Base mem) (a b x : V) :
++    mem x (pair H a b) ↔ (x = a ∨ x = b) :=
++  (H.pair a b).choose_spec x
++
++noncomputable abbrev singleton (H : Base mem) (a : V) : V :=
++  SingletonInfinity.singleton H.toBase a
++
++theorem singleton_spec (H : Base mem) (a x : V) :
++    mem x (singleton H a) ↔ x = a := SingletonInfinity.singleton_spec H.toBase a x
++
++noncomputable def union (H : Base mem) (u : V) : V := (H.union u).choose
++
++theorem union_spec (H : Base mem) (u x : V) :
++    mem x (union H u) ↔ ∃ v, mem x v ∧ mem v u :=
++  (H.union u).choose_spec x
++
++noncomputable def cup (H : Base mem) (a b : V) : V := union H (pair H a b)
++
++theorem cup_spec (H : Base mem) (a b x : V) :
++    mem x (cup H a b) ↔ (mem x a ∨ mem x b) := by
++  unfold cup
++  rw [union_spec H (pair H a b) x]
++  exact ⟨fun ⟨v, hxv, hv⟩ =>
++      ((pair_spec H a b v).mp hv).imp (fun (e : v = a) => e ▸ hxv)
++        fun (e : v = b) => e ▸ hxv,
++    fun h => h.elim (fun ha => ⟨a, ha, (pair_spec H a b a).mpr (Or.inl rfl)⟩)
++      fun hb => ⟨b, hb, (pair_spec H a b b).mpr (Or.inr rfl)⟩⟩
++
++noncomputable def succ (H : Base mem) (a : V) : V := cup H a (singleton H a)
++
++theorem succ_spec (H : Base mem) (a x : V) :
++    mem x (succ H a) ↔ (mem x a ∨ x = a) := by
++  unfold succ
++  rw [cup_spec H a (singleton H a) x, singleton_spec H a x]
++
++theorem succ_self (H : Base mem) (a : V) : mem a (succ H a) :=
++  (succ_spec H a a).mpr (Or.inr rfl)
++
++noncomputable def kpair (H : Base mem) (a b : V) : V :=
++  pair H (singleton H a) (pair H a b)
++
++theorem kpair_mem (H : Base mem) (a b q : V) :
++    mem q (kpair H a b) ↔ (q = singleton H a ∨ q = pair H a b) :=
++  pair_spec H _ _ q
++
++theorem singleton_inj (H : Base mem) (a b : V)
++    (h : singleton H a = singleton H b) : a = b :=
++  (singleton_spec H b a).mp (h ▸ (singleton_spec H a a).mpr rfl)
++
++theorem pair_single (H : Base mem) (a b c : V)
++    (h : pair H a b = singleton H c) : a = c ∧ b = c :=
++  ⟨(singleton_spec H c a).mp (h ▸ (pair_spec H a b a).mpr (Or.inl rfl)),
++    (singleton_spec H c b).mp (h ▸ (pair_spec H a b b).mpr (Or.inr rfl))⟩
++
++theorem kpair_inj (H : Base mem) {a b c d : V}
++    (h : kpair H a b = kpair H c d) : a = c ∧ b = d := by
++  have hac : a = c := ((kpair_mem H c d (singleton H a)).mp
++    (h ▸ (kpair_mem H a b _).mpr (Or.inl rfl))).elim (singleton_inj H a c)
++    fun hs => (pair_single H c d a hs.symm).1.symm
++  refine ⟨hac, ?_⟩
++  subst hac
++  -- h : kpair a b = kpair a d
++  have h1 : mem (pair H a b) (kpair H a b) :=
++    (kpair_mem H a b _).mpr (Or.inr rfl)
++  rw [h] at h1
++  rcases (kpair_mem H a d _).mp h1 with h1 | h1
++  · -- pair a b = singleton a, so b = a
++    have hba : b = a := (pair_single H a b a h1).2
++    have h2 : mem (pair H a d) (kpair H a d) :=
++      (kpair_mem H a d _).mpr (Or.inr rfl)
++    rw [← h] at h2
++    rcases (kpair_mem H a b _).mp h2 with h2 | h2
++    · exact hba.trans (pair_single H a d a h2).2.symm
++    · exact ((pair_spec H a b d).mp (h2 ▸ (pair_spec H a d d).mpr (Or.inr rfl))).elim
++        (fun hd => hba.trans hd.symm) Eq.symm
++  · -- pair a b = pair a d
++    refine ((pair_spec H a d b).mp (h1 ▸ (pair_spec H a b b).mpr (Or.inr rfl))).elim
++      (fun hb => ?_) id
++    -- b = a
++    exact ((pair_spec H a b d).mp (h1 ▸ (pair_spec H a d d).mpr (Or.inr rfl))).elim
++      (fun hd => hb.trans hd.symm) Eq.symm
++
++
++noncomputable def insert (B : Base mem) (f p : V) : V := cup B f (singleton B p)
++
++theorem insert_spec (B : Base mem) (f p z : V) :
++    mem z (insert B f p) ↔ mem z f ∨ z = p := by
++  rw [insert, cup_spec B, singleton_spec B]
++
++/-- An actual set-by-formula specification, requiring only Extensionality. -/
++theorem sat_setBy (B : Base mem) (env : Nat → V) (i : Nat) (phi : Form) (b : V)
++    (hp : ∀ x, Sat mem (scons x env) phi ↔ mem x b) :
++    Sat mem env (fSetByF i phi) ↔ env i = b := by
++  rw [fSetByF_sat]
++  exact ⟨fun h => B.ext _ _ fun x => (h x).trans (hp x), fun h x => by rw [h]; exact (hp x).symm⟩
++
++/-- Inputs i,j; output k. -/
++def pairForm (i j k : Nat) : Form :=
++  fSetByF k (fOr (fEq 0 (i + 1)) (fEq 0 (j + 1)))
++
++theorem sat_pairForm (B : Base mem) (env : Nat → V) (i j k : Nat) :
++    Sat mem env (pairForm i j k) ↔ env k = pair B (env i) (env j) :=
++  sat_setBy B env k _ _ fun x => (pair_spec B (env i) (env j) x).symm
++
++/-- Inputs i,j; output k, with Kuratowski coding. -/
++def kpairForm (i j k : Nat) : Form :=
++  fSetByF k (fOr (SingletonInfinity.singForm (i + 1) 0) (pairForm (i + 1) (j + 1) 0))
++
++theorem sat_kpairForm (B : Base mem) (env : Nat → V) (i j k : Nat) :
++    Sat mem env (kpairForm i j k) ↔ env k = kpair B (env i) (env j) := by
++  refine sat_setBy B env k _ _ fun x => ?_
++  change (Sat mem (scons x env) (SingletonInfinity.singForm (i + 1) 0) ∨
++    Sat mem (scons x env) (pairForm (i + 1) (j + 1) 0)) ↔ _
++  rw [SingletonInfinity.sat_singForm B.toBase, sat_pairForm B, kpair_mem B]
++  rfl
++
++/-- Graph f contains the ordered pair (x,y). -/
++def appForm (f x y : Nat) : Form :=
++  fEx (fAnd (kpairForm (x + 1) (y + 1) 0) (fMem 0 (f + 1)))
++
++theorem sat_appForm (B : Base mem) (env : Nat → V) (f x y : Nat) :
++    Sat mem env (appForm f x y) ↔ mem (kpair B (env x) (env y)) (env f) := by
++  refine ⟨fun ⟨p, hp, hm⟩ => ?_,
++    fun hm => ⟨kpair B (env x) (env y), (sat_kpairForm B _ _ _ _).mpr rfl, hm⟩⟩
++  have hp' : p = kpair B (env x) (env y) := (sat_kpairForm B _ _ _ _).mp hp
++  change mem p (env f) at hm
++  rwa [hp'] at hm
++
++/-- Input i; output j, for the von Neumann successor. -/
++def succForm (i j : Nat) : Form :=
++  fSetByF j (fOr (fMem 0 (i + 1)) (fEq 0 (i + 1)))
++
++theorem sat_succForm (B : Base mem) (env : Nat → V) (i j : Nat) :
++    Sat mem env (succForm i j) ↔ env j = succ B (env i) :=
++  sat_setBy B env j _ _ fun x => (succ_spec B (env i) x).symm
++
++end SetTheory.BusyBeaver.ZFC.FiniteSets
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean
+@@ -1,20 +1,6 @@
+-import BusyBeaver.ZFC.SingletonInfinity
++import BusyBeaver.ZFC.InductiveAttemptsCore
+ import BusyBeaver.ZFC.FiniteSets
+ import BusyBeaver.ZFC.QuotientReplacement
+-
+-/-!
+-Finite attempts on the least singleton index, without an assumed omega.
+-
+-The semantic lemmas expose only the particular graph and set-existence
+-resources used in the argument. They do not assert collection or Separation
+-for arbitrary semantic relations. Literal first-order formulas and finite-set
+-graph adapters discharge these resources in the actual CP/GIC quotient.
+-
+-The backwards attempt argument is adapted from `Std_setrec.v:agree_lemma`,
+-`att_base`, `exist_lemma` and `closure_thm`, upstream
+-297ab8df7e5de329605c3875b4934643b371a5e3. Its use with singleton and von
+-Neumann successor is `Std_setinf.v:or_to_zf_core` in the attributed verification.
+--/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.InductiveAttempts
+ 
+@@ -22,301 +8,6 @@
+ 
+ universe u
+ variable {V : Type u} {mem : V → V → Prop}
+-
+-def Agree (app : V → V → V → Prop) (f g z : V) : Prop :=
+-  ∀ v w, app f z v → app g z w → v = w
+-
+-def Attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    (N e a f : V) : Prop :=
+-  (∀ v, app f e v → v = a) ∧
+-  ∀ z v, mem z N → app f (singleton B z) v →
+-    ∃ w, app f z w ∧ v = G w
+-
+-def HasAttempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    (N e a z : V) : Prop :=
+-  ∃ f, Attempt B G app N e a f ∧ ∃ v, app f z v
+-
+-def Value (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    (N e a z v : V) : Prop :=
+-  mem z N ∧ ∃ f, Attempt B G app N e a f ∧ app f z v
+-
+-/-- Only the agreement predicate for these two fixed attempts is separated. -/
+-theorem agree_of_separator (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    {N e a f g : V} (hN : Index B e N)
+-    (hSep : ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z)
+-    (hf : Attempt B G app N e a f) (hg : Attempt B G app N e a g) :
+-    ∀ z, mem z N → Agree app f g z := by
+-  obtain ⟨X, hX⟩ := hSep
+-  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, fun v w hfv hgw =>
+-    (hf.1 v hfv).trans (hg.1 w hgw).symm⟩
+-  have hcX : Closed B X := by
+-    intro z hz
+-    obtain ⟨hzN, hzAgree⟩ := (hX z).mp hz
+-    refine (hX (singleton B z)).mpr ⟨hN.closed z hzN, fun v w hfv hgw => ?_⟩
+-    obtain ⟨v0, hfv0, hv⟩ := hf.2 z v hzN hfv
+-    obtain ⟨w0, hgw0, hw⟩ := hg.2 z w hzN hgw
+-    exact hv.trans ((congrArg G (hzAgree v0 w0 hfv0 hgw0)).trans hw.symm)
+-  exact fun z hz => ((hX z).mp (hN.least X heX hcX z hz)).2
+-
+-/-- A one-point graph is an attempt because the base has no predecessor. -/
+-theorem base_attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    (N e a : V) (hNz : ∀ z, mem z N → singleton B z ≠ e)
+-    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a) :
+-    ∃ f, Attempt B G app N e a f ∧ app f e a := by
+-  obtain ⟨f, hf⟩ := hPoint
+-  exact ⟨f, ⟨fun v hv => ((hf e v).mp hv).2,
+-    fun z v hzN hv => (hNz z hzN ((hf (singleton B z) v).mp hv).1).elim⟩, (hf e a).mpr ⟨rfl, rfl⟩⟩
+-
+-/-- Adjunction of one new graph point preserves the backwards attempt clauses. -/
+-theorem extend_attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    {N e a f z v : V} (hNz : ∀ u, mem u N → singleton B u ≠ e)
+-    (hf : Attempt B G app N e a f) (hzN : mem z N) (hfv : app f z v)
+-    (hExtend : ∃ g, ∀ u w,
+-      app g u w ↔ app f u w ∨ (u = singleton B z ∧ w = G v)) :
+-    ∃ g, Attempt B G app N e a g ∧ app g (singleton B z) (G v) := by
+-  obtain ⟨g, hg⟩ := hExtend
+-  refine ⟨g, ⟨?_, ?_⟩, (hg _ _).mpr (Or.inr ⟨rfl, rfl⟩)⟩
+-  · exact fun w hw => ((hg e w).mp hw).elim (hf.1 w) fun hw => (hNz z hzN hw.1.symm).elim
+-  · intro u w huN hw
+-    rcases (hg (singleton B u) w).mp hw with hw | ⟨hu, rfl⟩
+-    · exact (hf.2 u w huN hw).imp fun t ⟨ht, hwt⟩ => ⟨(hg u t).mpr (Or.inl ht), hwt⟩
+-    · obtain rfl := singleton_injective B hu
+-      exact ⟨v, (hg _ v).mpr (Or.inl hfv), rfl⟩
+-
+-/-- Only the fixed attempt-domain-existence predicate is separated here. -/
+-theorem attempts_exist_of_separator (B : Base mem) (G : V → V)
+-    (app : V → V → V → Prop) {N e a : V} (hN : Index B e N)
+-    (hNz : ∀ z, mem z N → singleton B z ≠ e)
+-    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
+-    (hExtend : ∀ f z v, ∃ g, ∀ u w,
+-      app g u w ↔ app f u w ∨ (u = z ∧ w = v))
+-    (hSep : ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z) :
+-    ∀ z, mem z N → HasAttempt B G app N e a z := by
+-  obtain ⟨X, hX⟩ := hSep
+-  obtain ⟨f0, hf0, hfa⟩ := base_attempt B G app N e a hNz hPoint
+-  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, f0, hf0, a, hfa⟩
+-  have hcX : Closed B X := by
+-    intro z hz
+-    obtain ⟨hzN, f, hf, v, hfv⟩ := (hX z).mp hz
+-    obtain ⟨g, hg, hgv⟩ := extend_attempt B G app hNz hf hzN hfv
+-      (hExtend f (singleton B z) (G v))
+-    exact (hX (singleton B z)).mpr ⟨hN.closed z hzN, g, hg, G v, hgv⟩
+-  exact fun z hz => ((hX z).mp (hN.least X heX hcX z hz)).2
+-
+-/-- Explicit agreement/existence cuts and one partial-functional image resource
+-give closure under this fixed G; no semantic all-relations schema is postulated. -/
+-theorem closure_of_instances (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    {N e a : V} (hN : Index B e N)
+-    (hNz : ∀ z, mem z N → singleton B z ≠ e)
+-    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
+-    (hExtend : ∀ f z v, ∃ g, ∀ u w,
+-      app g u w ↔ app f u w ∨ (u = z ∧ w = v))
+-    (hAgr : ∀ f g, ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z)
+-    (hEx : ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z)
+-    (hImage : (∀ z v w, Value B G app N e a z v →
+-      Value B G app N e a z w → v = w) →
+-      ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z N ∧ Value B G app N e a z v) :
+-    ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (G v) Y := by
+-  have hAgree (f g : V) :=
+-    agree_of_separator B G app (a := a) hN (hAgr f g)
+-  have hExists := attempts_exist_of_separator B G app hN hNz hPoint hExtend hEx
+-  obtain ⟨Y, hY⟩ := hImage fun z v w ⟨hzN, f, hf, hfv⟩ ⟨_, g, hg, hgw⟩ =>
+-    hAgree f g hf hg z hzN v w hfv hgw
+-  obtain ⟨f0, hf0, hfa⟩ := base_attempt B G app N e a hNz hPoint
+-  refine ⟨Y, (hY a).mpr ⟨e, hN.zero_mem, hN.zero_mem, f0, hf0, hfa⟩, fun v hv => ?_⟩
+-  obtain ⟨z, hzN, _, f, hf, hfv⟩ := (hY v).mp hv
+-  obtain ⟨g, hg, w, hgw⟩ := hExists (singleton B z) (hN.closed z hzN)
+-  obtain ⟨v0, hgv0, hw⟩ := hg.2 z w hzN hgw
+-  have hwG : w = G v := hw.trans (congrArg G (hAgree f g hf hg z hzN v v0 hfv hgv0).symm)
+-  exact (hY (G v)).mpr ⟨singleton B z, hN.closed z hzN,
+-    hN.closed z hzN, g, hg, hwG ▸ hgw⟩
+-
+-/- The templates below are actual first-order formulas. Their two atom builders
+-are parameters so the independently proved finite-set atoms can be reused. -/
+-
+-open Form
+-
+-def attemptForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
+-    (N e a f : Nat) : Form :=
+-  fAnd
+-    (fAll (fImp (appF (f + 1) (e + 1) 0) (fEq 0 (a + 1))))
+-    (fAll (fAll (fAll (fImp
+-      (fAnd (fMem 2 (N + 3))
+-        (fAnd (singForm 2 1) (appF (f + 3) 1 0)))
+-      (fEx (fAnd (appF (f + 4) 3 0) (stepF 0 1)))))))
+-
+-def agreeForm (appF : Nat → Nat → Nat → Form) (f g z : Nat) : Form :=
+-  fAll (fAll (fImp
+-    (fAnd (appF (f + 2) (z + 2) 1) (appF (g + 2) (z + 2) 0)) (fEq 1 0)))
+-
+-def hasAttemptForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
+-    (N e a z : Nat) : Form :=
+-  fEx (fAnd (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0)
+-    (fEx (appF 1 (z + 2) 0)))
+-
+-def valueForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
+-    (N e a z v : Nat) : Form :=
+-  fAnd (fMem z N)
+-    (fEx (fAnd (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0)
+-      (appF 0 (z + 1) (v + 1))))
+-
+-section Syntax
+-
+-variable (B : Base mem) (G : V → V) (app : V → V → V → Prop)
+-    (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
+-    (hApp : ∀ (env : Nat → V) f x y,
+-      Sat mem env (appF f x y) ↔ app (env f) (env x) (env y))
+-    (hStep : ∀ (env : Nat → V) x y,
+-      Sat mem env (stepF x y) ↔ env y = G (env x))
+-
+-include hApp hStep in
+-theorem sat_attemptForm (env : Nat → V) (N e a f : Nat) :
+-    Sat mem env (attemptForm appF stepF N e a f) ↔
+-      Attempt B G app (env N) (env e) (env a) (env f) := by
+-  change ((∀ v, Sat mem (scons v env) (appF (f + 1) (e + 1) 0) → v = env a) ∧
+-    ∀ z s v, mem z (env N) ∧
+-      Sat mem (scons v (scons s (scons z env))) (singForm 2 1) ∧
+-      Sat mem (scons v (scons s (scons z env))) (appF (f + 3) 1 0) →
+-      ∃ w, Sat mem (scons w (scons v (scons s (scons z env)))) (appF (f + 4) 3 0) ∧
+-        Sat mem (scons w (scons v (scons s (scons z env)))) (stepF 0 1)) ↔ _
+-  constructor
+-  · rintro ⟨h0, hs⟩
+-    refine ⟨fun v hv => h0 v ((hApp _ _ _ _).mpr hv), fun z v hz hv => ?_⟩
+-    obtain ⟨w, hwApp, hwStep⟩ := hs z (singleton B z) v
+-      ⟨hz, (sat_singForm B _ 2 1).mpr rfl, (hApp _ _ _ _).mpr hv⟩
+-    exact ⟨w, (hApp _ _ _ _).mp hwApp, (hStep _ 0 1).mp hwStep⟩
+-  · rintro ⟨h0, hs⟩
+-    refine ⟨fun v hv => h0 v ((hApp _ _ _ _).mp hv), ?_⟩
+-    rintro z s v ⟨hz, hSing, hAppV⟩
+-    obtain rfl : s = singleton B z := (sat_singForm B _ 2 1).mp hSing
+-    obtain ⟨w, hwApp, hwStep⟩ := hs z v hz ((hApp _ _ _ _).mp hAppV)
+-    exact ⟨w, (hApp _ _ _ _).mpr hwApp, (hStep _ 0 1).mpr hwStep⟩
+-
+-include hApp in
+-theorem sat_agreeForm (env : Nat → V) (f g z : Nat) :
+-    Sat mem env (agreeForm appF f g z) ↔ Agree app (env f) (env g) (env z) := by
+-  change (∀ v w, Sat mem (scons w (scons v env)) (appF (f + 2) (z + 2) 1) ∧
+-    Sat mem (scons w (scons v env)) (appF (g + 2) (z + 2) 0) → v = w) ↔ _
+-  exact ⟨fun h v w hv hw => h v w ⟨(hApp _ _ _ _).mpr hv, (hApp _ _ _ _).mpr hw⟩,
+-    fun h v w ⟨hv, hw⟩ => h v w ((hApp _ _ _ _).mp hv) ((hApp _ _ _ _).mp hw)⟩
+-
+-include hApp hStep in
+-theorem sat_hasAttemptForm (env : Nat → V) (N e a z : Nat) :
+-    Sat mem env (hasAttemptForm appF stepF N e a z) ↔
+-      HasAttempt B G app (env N) (env e) (env a) (env z) := by
+-  change (∃ f, Sat mem (scons f env) (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0) ∧
+-    ∃ v, Sat mem (scons v (scons f env)) (appF 1 (z + 2) 0)) ↔ _
+-  exact exists_congr fun _ => and_congr (sat_attemptForm B G app appF stepF hApp hStep _ _ _ _ _)
+-    (exists_congr fun _ => hApp _ _ _ _)
+-
+-include hApp hStep in
+-theorem sat_valueForm (env : Nat → V) (N e a z v : Nat) :
+-    Sat mem env (valueForm appF stepF N e a z v) ↔
+-      Value B G app (env N) (env e) (env a) (env z) (env v) := by
+-  change (mem (env z) (env N) ∧ ∃ f,
+-    Sat mem (scons f env) (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0) ∧
+-      Sat mem (scons f env) (appF 0 (z + 1) (v + 1))) ↔ _
+-  exact and_congr Iff.rfl (exists_congr fun _ =>
+-    and_congr (sat_attemptForm B G app appF stepF hApp hStep _ _ _ _ _) (hApp _ _ _ _))
+-
+-include B hApp in
+-theorem agreement_separator (N f g : V) :
+-    ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z := by
+-  obtain ⟨X, hX⟩ := B.sep (agreeForm appF 1 2 0) (scons f (fun _ => g)) N
+-  exact ⟨X, fun z => (hX z).trans
+-    (and_congr Iff.rfl (sat_agreeForm app appF hApp _ 1 2 0))⟩
+-
+-include appF stepF hApp hStep in
+-theorem existence_separator (N e a : V) :
+-    ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z := by
+-  obtain ⟨X, hX⟩ := B.sep (hasAttemptForm appF stepF 1 2 3 0)
+-    (scons N (scons e (fun _ => a))) N
+-  exact ⟨X, fun z => (hX z).trans (and_congr Iff.rfl
+-    (sat_hasAttemptForm B G app appF stepF hApp hStep _ 1 2 3 0))⟩
+-
+-include appF stepF hApp hStep in
+-theorem value_image
+-    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
+-      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
+-    (N e a : V)
+-    (hFunctional : ∀ z v w, Value B G app N e a z v →
+-      Value B G app N e a z w → v = w) :
+-    ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z N ∧ Value B G app N e a z v := by
+-  let params := scons N (scons e (fun _ => a))
+-  have hr (z v : V) : relOf mem (valueForm appF stepF 2 3 4 1 0) params v z ↔
+-      Value B G app N e a z v :=
+-    sat_valueForm B G app appF stepF hApp hStep (scons v (scons z params)) 2 3 4 1 0
+-  have hf : Functional (relOf mem (valueForm appF stepF 2 3 4 1 0) params) :=
+-    fun z v w hv hw => hFunctional z v w ((hr z v).mp hv) ((hr z w).mp hw)
+-  obtain ⟨Y, hY⟩ := hRepl (valueForm appF stepF 2 3 4 1 0) params hf N
+-  exact ⟨Y, fun v => (hY v).trans
+-    (exists_congr (fun z => and_congr Iff.rfl (hr z v)))⟩
+-
+-include appF stepF hApp hStep in
+-/-- Definability of the two fixed atoms discharges precisely the three
+-formula resources, leaving only finite graph existence/extension. -/
+-theorem closure_of_forms
+-    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
+-      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
+-    {N e a : V} (hN : Index B e N)
+-    (hNz : ∀ z, mem z N → singleton B z ≠ e)
+-    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
+-    (hExtend : ∀ f z v, ∃ g, ∀ u w,
+-      app g u w ↔ app f u w ∨ (u = z ∧ w = v)) :
+-    ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (G v) Y := by
+-  apply closure_of_instances B G app hN hNz hPoint hExtend
+-  · exact agreement_separator B app appF hApp N
+-  · exact existence_separator B G app appF stepF hApp hStep N e a
+-  · exact value_image B G app appF stepF hApp hStep hRepl N e a
+-
+-end Syntax
+-
+-/- Fixed finite graphs instantiate the preceding atom templates. -/
+-
+-def GraphApp (B : FiniteSets.Base mem) (f x y : V) : Prop :=
+-  mem (FiniteSets.kpair B x y) f
+-
+-theorem point_graph (B : FiniteSets.Base mem) (e a : V) :
+-    ∃ f, ∀ z v, GraphApp B f z v ↔ z = e ∧ v = a := by
+-  refine ⟨singleton B.toBase (FiniteSets.kpair B e a), fun z v => ?_⟩
+-  change mem (FiniteSets.kpair B z v) (singleton B.toBase (FiniteSets.kpair B e a)) ↔ _
+-  rw [singleton_spec B.toBase]
+-  exact ⟨FiniteSets.kpair_inj B, by rintro ⟨rfl, rfl⟩; rfl⟩
+-
+-theorem extend_graph (B : FiniteSets.Base mem) (f z v : V) :
+-    ∃ g, ∀ u w, GraphApp B g u w ↔ GraphApp B f u w ∨ (u = z ∧ w = v) := by
+-  refine ⟨FiniteSets.insert B f (FiniteSets.kpair B z v), fun u w => ?_⟩
+-  change mem (FiniteSets.kpair B u w) (FiniteSets.insert B f (FiniteSets.kpair B z v)) ↔
+-    mem (FiniteSets.kpair B u w) f ∨ (u = z ∧ w = v)
+-  rw [FiniteSets.insert_spec B]
+-  exact or_congr Iff.rfl ⟨FiniteSets.kpair_inj B, by rintro ⟨rfl, rfl⟩; rfl⟩
+-
+-/-- Actual finite-set atoms, two Separation cuts and one Replacement image
+-produce a successor-closed set without any earlier Infinity axiom. -/
+-theorem successor_closure (B : FiniteSets.Base mem)
+-    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
+-      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
+-    {N e a : V} (hN : Index B.toBase e N)
+-    (hNz : ∀ z, mem z N → singleton B.toBase z ≠ e) :
+-    ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (FiniteSets.succ B v) Y :=
+-  closure_of_forms B.toBase (FiniteSets.succ B) (GraphApp B)
+-    FiniteSets.appForm FiniteSets.succForm
+-    (FiniteSets.sat_appForm B) (FiniteSets.sat_succForm B) hRepl hN hNz
+-    (point_graph B e a) (extend_graph B)
+-
+-/-- The ordinary semantic Infinity axiom from one empty-root singleton container. -/
+-theorem ordinary_infinity_of_container (B : FiniteSets.Base mem)
+-    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
+-      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
+-    (e : V) (he : ∀ z, ¬ mem z e) (Y : V) (heY : mem e Y)
+-    (hY : Closed B.toBase Y) :
+-    ∃ I, (∃ e0, mem e0 I ∧ ∀ z, ¬ mem z e0) ∧
+-      ∀ x, mem x I → ∃ sx, mem sx I ∧ ∀ t, mem t sx ↔ mem t x ∨ t = x := by
+-  obtain ⟨N, hN⟩ := index_of_container B.toBase e Y heY hY
+-  obtain ⟨I, heI, hI⟩ := successor_closure B hRepl (a := e) hN
+-    (fun z _ => empty_not_singleton B.toBase e he z)
+-  exact ⟨I, ⟨e, heI, he⟩, fun x hx =>
+-    ⟨FiniteSets.succ B x, hI x hx, FiniteSets.succ_spec B x⟩⟩
+ 
+ theorem quotientFiniteBase (rawMem : V → V → Prop) (witness : V)
+     (h : ProfileModel.ModelsCPGIC rawMem) :
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttemptsCore.lean
+@@ -0,0 +1,321 @@
++import BusyBeaver.ZFC.SingletonInfinityCore
++import BusyBeaver.ZFC.FiniteSetsCore
++import ZF.Zf
++
++/-!
++Finite attempts on the least singleton index, without an assumed omega.
++
++The semantic lemmas expose only the particular graph and set-existence
++resources used in the argument. They do not assert collection or Separation
++for arbitrary semantic relations. Literal first-order formulas and finite-set
++graph adapters discharge these resources in the actual CP/GIC quotient.
++
++The backwards attempt argument is adapted from `Std_setrec.v:agree_lemma`,
++`att_base`, `exist_lemma` and `closure_thm`, upstream
++297ab8df7e5de329605c3875b4934643b371a5e3. Its use with singleton and von
++Neumann successor is `Std_setinf.v:or_to_zf_core` in the attributed verification.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.InductiveAttempts
++
++open SingletonInfinity
++
++universe u
++variable {V : Type u} {mem : V → V → Prop}
++
++def Agree (app : V → V → V → Prop) (f g z : V) : Prop :=
++  ∀ v w, app f z v → app g z w → v = w
++
++def Attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    (N e a f : V) : Prop :=
++  (∀ v, app f e v → v = a) ∧
++  ∀ z v, mem z N → app f (singleton B z) v →
++    ∃ w, app f z w ∧ v = G w
++
++def HasAttempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    (N e a z : V) : Prop :=
++  ∃ f, Attempt B G app N e a f ∧ ∃ v, app f z v
++
++def Value (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    (N e a z v : V) : Prop :=
++  mem z N ∧ ∃ f, Attempt B G app N e a f ∧ app f z v
++
++/-- Only the agreement predicate for these two fixed attempts is separated. -/
++theorem agree_of_separator (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    {N e a f g : V} (hN : Index B e N)
++    (hSep : ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z)
++    (hf : Attempt B G app N e a f) (hg : Attempt B G app N e a g) :
++    ∀ z, mem z N → Agree app f g z := by
++  obtain ⟨X, hX⟩ := hSep
++  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, fun v w hfv hgw =>
++    (hf.1 v hfv).trans (hg.1 w hgw).symm⟩
++  have hcX : Closed B X := by
++    intro z hz
++    obtain ⟨hzN, hzAgree⟩ := (hX z).mp hz
++    refine (hX (singleton B z)).mpr ⟨hN.closed z hzN, fun v w hfv hgw => ?_⟩
++    obtain ⟨v0, hfv0, hv⟩ := hf.2 z v hzN hfv
++    obtain ⟨w0, hgw0, hw⟩ := hg.2 z w hzN hgw
++    exact hv.trans ((congrArg G (hzAgree v0 w0 hfv0 hgw0)).trans hw.symm)
++  exact fun z hz => ((hX z).mp (hN.least X heX hcX z hz)).2
++
++/-- A one-point graph is an attempt because the base has no predecessor. -/
++theorem base_attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    (N e a : V) (hNz : ∀ z, mem z N → singleton B z ≠ e)
++    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a) :
++    ∃ f, Attempt B G app N e a f ∧ app f e a := by
++  obtain ⟨f, hf⟩ := hPoint
++  exact ⟨f, ⟨fun v hv => ((hf e v).mp hv).2,
++    fun z v hzN hv => (hNz z hzN ((hf (singleton B z) v).mp hv).1).elim⟩, (hf e a).mpr ⟨rfl, rfl⟩⟩
++
++/-- Adjunction of one new graph point preserves the backwards attempt clauses. -/
++theorem extend_attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    {N e a f z v : V} (hNz : ∀ u, mem u N → singleton B u ≠ e)
++    (hf : Attempt B G app N e a f) (hzN : mem z N) (hfv : app f z v)
++    (hExtend : ∃ g, ∀ u w,
++      app g u w ↔ app f u w ∨ (u = singleton B z ∧ w = G v)) :
++    ∃ g, Attempt B G app N e a g ∧ app g (singleton B z) (G v) := by
++  obtain ⟨g, hg⟩ := hExtend
++  refine ⟨g, ⟨?_, ?_⟩, (hg _ _).mpr (Or.inr ⟨rfl, rfl⟩)⟩
++  · exact fun w hw => ((hg e w).mp hw).elim (hf.1 w) fun hw => (hNz z hzN hw.1.symm).elim
++  · intro u w huN hw
++    rcases (hg (singleton B u) w).mp hw with hw | ⟨hu, rfl⟩
++    · exact (hf.2 u w huN hw).imp fun t ⟨ht, hwt⟩ => ⟨(hg u t).mpr (Or.inl ht), hwt⟩
++    · obtain rfl := singleton_injective B hu
++      exact ⟨v, (hg _ v).mpr (Or.inl hfv), rfl⟩
++
++/-- Only the fixed attempt-domain-existence predicate is separated here. -/
++theorem attempts_exist_of_separator (B : Base mem) (G : V → V)
++    (app : V → V → V → Prop) {N e a : V} (hN : Index B e N)
++    (hNz : ∀ z, mem z N → singleton B z ≠ e)
++    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
++    (hExtend : ∀ f z v, ∃ g, ∀ u w,
++      app g u w ↔ app f u w ∨ (u = z ∧ w = v))
++    (hSep : ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z) :
++    ∀ z, mem z N → HasAttempt B G app N e a z := by
++  obtain ⟨X, hX⟩ := hSep
++  obtain ⟨f0, hf0, hfa⟩ := base_attempt B G app N e a hNz hPoint
++  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, f0, hf0, a, hfa⟩
++  have hcX : Closed B X := by
++    intro z hz
++    obtain ⟨hzN, f, hf, v, hfv⟩ := (hX z).mp hz
++    obtain ⟨g, hg, hgv⟩ := extend_attempt B G app hNz hf hzN hfv
++      (hExtend f (singleton B z) (G v))
++    exact (hX (singleton B z)).mpr ⟨hN.closed z hzN, g, hg, G v, hgv⟩
++  exact fun z hz => ((hX z).mp (hN.least X heX hcX z hz)).2
++
++/-- Explicit agreement/existence cuts and one partial-functional image resource
++give closure under this fixed G; no semantic all-relations schema is postulated. -/
++theorem closure_of_instances (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    {N e a : V} (hN : Index B e N)
++    (hNz : ∀ z, mem z N → singleton B z ≠ e)
++    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
++    (hExtend : ∀ f z v, ∃ g, ∀ u w,
++      app g u w ↔ app f u w ∨ (u = z ∧ w = v))
++    (hAgr : ∀ f g, ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z)
++    (hEx : ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z)
++    (hImage : (∀ z v w, Value B G app N e a z v →
++      Value B G app N e a z w → v = w) →
++      ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z N ∧ Value B G app N e a z v) :
++    ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (G v) Y := by
++  have hAgree (f g : V) :=
++    agree_of_separator B G app (a := a) hN (hAgr f g)
++  have hExists := attempts_exist_of_separator B G app hN hNz hPoint hExtend hEx
++  obtain ⟨Y, hY⟩ := hImage fun z v w ⟨hzN, f, hf, hfv⟩ ⟨_, g, hg, hgw⟩ =>
++    hAgree f g hf hg z hzN v w hfv hgw
++  obtain ⟨f0, hf0, hfa⟩ := base_attempt B G app N e a hNz hPoint
++  refine ⟨Y, (hY a).mpr ⟨e, hN.zero_mem, hN.zero_mem, f0, hf0, hfa⟩, fun v hv => ?_⟩
++  obtain ⟨z, hzN, _, f, hf, hfv⟩ := (hY v).mp hv
++  obtain ⟨g, hg, w, hgw⟩ := hExists (singleton B z) (hN.closed z hzN)
++  obtain ⟨v0, hgv0, hw⟩ := hg.2 z w hzN hgw
++  have hwG : w = G v := hw.trans (congrArg G (hAgree f g hf hg z hzN v v0 hfv hgv0).symm)
++  exact (hY (G v)).mpr ⟨singleton B z, hN.closed z hzN,
++    hN.closed z hzN, g, hg, hwG ▸ hgw⟩
++
++/- The templates below are actual first-order formulas. Their two atom builders
++are parameters so the independently proved finite-set atoms can be reused. -/
++
++open Form
++
++def attemptForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
++    (N e a f : Nat) : Form :=
++  fAnd
++    (fAll (fImp (appF (f + 1) (e + 1) 0) (fEq 0 (a + 1))))
++    (fAll (fAll (fAll (fImp
++      (fAnd (fMem 2 (N + 3))
++        (fAnd (singForm 2 1) (appF (f + 3) 1 0)))
++      (fEx (fAnd (appF (f + 4) 3 0) (stepF 0 1)))))))
++
++def agreeForm (appF : Nat → Nat → Nat → Form) (f g z : Nat) : Form :=
++  fAll (fAll (fImp
++    (fAnd (appF (f + 2) (z + 2) 1) (appF (g + 2) (z + 2) 0)) (fEq 1 0)))
++
++def hasAttemptForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
++    (N e a z : Nat) : Form :=
++  fEx (fAnd (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0)
++    (fEx (appF 1 (z + 2) 0)))
++
++def valueForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
++    (N e a z v : Nat) : Form :=
++  fAnd (fMem z N)
++    (fEx (fAnd (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0)
++      (appF 0 (z + 1) (v + 1))))
++
++section Syntax
++
++variable (B : Base mem) (G : V → V) (app : V → V → V → Prop)
++    (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
++    (hApp : ∀ (env : Nat → V) f x y,
++      Sat mem env (appF f x y) ↔ app (env f) (env x) (env y))
++    (hStep : ∀ (env : Nat → V) x y,
++      Sat mem env (stepF x y) ↔ env y = G (env x))
++
++include hApp hStep in
++theorem sat_attemptForm (env : Nat → V) (N e a f : Nat) :
++    Sat mem env (attemptForm appF stepF N e a f) ↔
++      Attempt B G app (env N) (env e) (env a) (env f) := by
++  change ((∀ v, Sat mem (scons v env) (appF (f + 1) (e + 1) 0) → v = env a) ∧
++    ∀ z s v, mem z (env N) ∧
++      Sat mem (scons v (scons s (scons z env))) (singForm 2 1) ∧
++      Sat mem (scons v (scons s (scons z env))) (appF (f + 3) 1 0) →
++      ∃ w, Sat mem (scons w (scons v (scons s (scons z env)))) (appF (f + 4) 3 0) ∧
++        Sat mem (scons w (scons v (scons s (scons z env)))) (stepF 0 1)) ↔ _
++  constructor
++  · rintro ⟨h0, hs⟩
++    refine ⟨fun v hv => h0 v ((hApp _ _ _ _).mpr hv), fun z v hz hv => ?_⟩
++    obtain ⟨w, hwApp, hwStep⟩ := hs z (singleton B z) v
++      ⟨hz, (sat_singForm B _ 2 1).mpr rfl, (hApp _ _ _ _).mpr hv⟩
++    exact ⟨w, (hApp _ _ _ _).mp hwApp, (hStep _ 0 1).mp hwStep⟩
++  · rintro ⟨h0, hs⟩
++    refine ⟨fun v hv => h0 v ((hApp _ _ _ _).mp hv), ?_⟩
++    rintro z s v ⟨hz, hSing, hAppV⟩
++    obtain rfl : s = singleton B z := (sat_singForm B _ 2 1).mp hSing
++    obtain ⟨w, hwApp, hwStep⟩ := hs z v hz ((hApp _ _ _ _).mp hAppV)
++    exact ⟨w, (hApp _ _ _ _).mpr hwApp, (hStep _ 0 1).mpr hwStep⟩
++
++include hApp in
++theorem sat_agreeForm (env : Nat → V) (f g z : Nat) :
++    Sat mem env (agreeForm appF f g z) ↔ Agree app (env f) (env g) (env z) := by
++  change (∀ v w, Sat mem (scons w (scons v env)) (appF (f + 2) (z + 2) 1) ∧
++    Sat mem (scons w (scons v env)) (appF (g + 2) (z + 2) 0) → v = w) ↔ _
++  exact ⟨fun h v w hv hw => h v w ⟨(hApp _ _ _ _).mpr hv, (hApp _ _ _ _).mpr hw⟩,
++    fun h v w ⟨hv, hw⟩ => h v w ((hApp _ _ _ _).mp hv) ((hApp _ _ _ _).mp hw)⟩
++
++include hApp hStep in
++theorem sat_hasAttemptForm (env : Nat → V) (N e a z : Nat) :
++    Sat mem env (hasAttemptForm appF stepF N e a z) ↔
++      HasAttempt B G app (env N) (env e) (env a) (env z) := by
++  change (∃ f, Sat mem (scons f env) (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0) ∧
++    ∃ v, Sat mem (scons v (scons f env)) (appF 1 (z + 2) 0)) ↔ _
++  exact exists_congr fun _ => and_congr (sat_attemptForm B G app appF stepF hApp hStep _ _ _ _ _)
++    (exists_congr fun _ => hApp _ _ _ _)
++
++include hApp hStep in
++theorem sat_valueForm (env : Nat → V) (N e a z v : Nat) :
++    Sat mem env (valueForm appF stepF N e a z v) ↔
++      Value B G app (env N) (env e) (env a) (env z) (env v) := by
++  change (mem (env z) (env N) ∧ ∃ f,
++    Sat mem (scons f env) (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0) ∧
++      Sat mem (scons f env) (appF 0 (z + 1) (v + 1))) ↔ _
++  exact and_congr Iff.rfl (exists_congr fun _ =>
++    and_congr (sat_attemptForm B G app appF stepF hApp hStep _ _ _ _ _) (hApp _ _ _ _))
++
++include B hApp in
++theorem agreement_separator (N f g : V) :
++    ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z := by
++  obtain ⟨X, hX⟩ := B.sep (agreeForm appF 1 2 0) (scons f (fun _ => g)) N
++  exact ⟨X, fun z => (hX z).trans
++    (and_congr Iff.rfl (sat_agreeForm app appF hApp _ 1 2 0))⟩
++
++include appF stepF hApp hStep in
++theorem existence_separator (N e a : V) :
++    ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z := by
++  obtain ⟨X, hX⟩ := B.sep (hasAttemptForm appF stepF 1 2 3 0)
++    (scons N (scons e (fun _ => a))) N
++  exact ⟨X, fun z => (hX z).trans (and_congr Iff.rfl
++    (sat_hasAttemptForm B G app appF stepF hApp hStep _ 1 2 3 0))⟩
++
++include appF stepF hApp hStep in
++theorem value_image
++    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
++      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
++    (N e a : V)
++    (hFunctional : ∀ z v w, Value B G app N e a z v →
++      Value B G app N e a z w → v = w) :
++    ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z N ∧ Value B G app N e a z v := by
++  let params := scons N (scons e (fun _ => a))
++  have hr (z v : V) : relOf mem (valueForm appF stepF 2 3 4 1 0) params v z ↔
++      Value B G app N e a z v :=
++    sat_valueForm B G app appF stepF hApp hStep (scons v (scons z params)) 2 3 4 1 0
++  have hf : Functional (relOf mem (valueForm appF stepF 2 3 4 1 0) params) :=
++    fun z v w hv hw => hFunctional z v w ((hr z v).mp hv) ((hr z w).mp hw)
++  obtain ⟨Y, hY⟩ := hRepl (valueForm appF stepF 2 3 4 1 0) params hf N
++  exact ⟨Y, fun v => (hY v).trans
++    (exists_congr (fun z => and_congr Iff.rfl (hr z v)))⟩
++
++include appF stepF hApp hStep in
++/-- Definability of the two fixed atoms discharges precisely the three
++formula resources, leaving only finite graph existence/extension. -/
++theorem closure_of_forms
++    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
++      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
++    {N e a : V} (hN : Index B e N)
++    (hNz : ∀ z, mem z N → singleton B z ≠ e)
++    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
++    (hExtend : ∀ f z v, ∃ g, ∀ u w,
++      app g u w ↔ app f u w ∨ (u = z ∧ w = v)) :
++    ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (G v) Y := by
++  apply closure_of_instances B G app hN hNz hPoint hExtend
++  · exact agreement_separator B app appF hApp N
++  · exact existence_separator B G app appF stepF hApp hStep N e a
++  · exact value_image B G app appF stepF hApp hStep hRepl N e a
++
++end Syntax
++
++/- Fixed finite graphs instantiate the preceding atom templates. -/
++
++def GraphApp (B : FiniteSets.Base mem) (f x y : V) : Prop :=
++  mem (FiniteSets.kpair B x y) f
++
++theorem point_graph (B : FiniteSets.Base mem) (e a : V) :
++    ∃ f, ∀ z v, GraphApp B f z v ↔ z = e ∧ v = a := by
++  refine ⟨singleton B.toBase (FiniteSets.kpair B e a), fun z v => ?_⟩
++  change mem (FiniteSets.kpair B z v) (singleton B.toBase (FiniteSets.kpair B e a)) ↔ _
++  rw [singleton_spec B.toBase]
++  exact ⟨FiniteSets.kpair_inj B, by rintro ⟨rfl, rfl⟩; rfl⟩
++
++theorem extend_graph (B : FiniteSets.Base mem) (f z v : V) :
++    ∃ g, ∀ u w, GraphApp B g u w ↔ GraphApp B f u w ∨ (u = z ∧ w = v) := by
++  refine ⟨FiniteSets.insert B f (FiniteSets.kpair B z v), fun u w => ?_⟩
++  change mem (FiniteSets.kpair B u w) (FiniteSets.insert B f (FiniteSets.kpair B z v)) ↔
++    mem (FiniteSets.kpair B u w) f ∨ (u = z ∧ w = v)
++  rw [FiniteSets.insert_spec B]
++  exact or_congr Iff.rfl ⟨FiniteSets.kpair_inj B, by rintro ⟨rfl, rfl⟩; rfl⟩
++
++/-- Actual finite-set atoms, two Separation cuts and one Replacement image
++produce a successor-closed set without any earlier Infinity axiom. -/
++theorem successor_closure (B : FiniteSets.Base mem)
++    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
++      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
++    {N e a : V} (hN : Index B.toBase e N)
++    (hNz : ∀ z, mem z N → singleton B.toBase z ≠ e) :
++    ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (FiniteSets.succ B v) Y :=
++  closure_of_forms B.toBase (FiniteSets.succ B) (GraphApp B)
++    FiniteSets.appForm FiniteSets.succForm
++    (FiniteSets.sat_appForm B) (FiniteSets.sat_succForm B) hRepl hN hNz
++    (point_graph B e a) (extend_graph B)
++
++/-- The ordinary semantic Infinity axiom from one empty-root singleton container. -/
++theorem ordinary_infinity_of_container (B : FiniteSets.Base mem)
++    (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
++      ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
++    (e : V) (he : ∀ z, ¬ mem z e) (Y : V) (heY : mem e Y)
++    (hY : Closed B.toBase Y) :
++    ∃ I, (∃ e0, mem e0 I ∧ ∀ z, ¬ mem z e0) ∧
++      ∀ x, mem x I → ∃ sx, mem sx I ∧ ∀ t, mem t sx ↔ mem t x ∨ t = x := by
++  obtain ⟨N, hN⟩ := index_of_container B.toBase e Y heY hY
++  obtain ⟨I, heI, hI⟩ := successor_closure B hRepl (a := e) hN
++    (fun z _ => empty_not_singleton B.toBase e he z)
++  exact ⟨I, ⟨e, heI, he⟩, fun x hx =>
++    ⟨FiniteSets.succ B x, hI x hx, FiniteSets.succ_spec B x⟩⟩
++
++end SetTheory.BusyBeaver.ZFC.InductiveAttempts
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean
+@@ -1,5 +1,5 @@
+ import BusyBeaver.ZFC.KLowerEqv
+-import BusyBeaver.ZFC.QuotientModel
++import BusyBeaver.ZFC.KQ1Model
+ import BusyBeaver.ZFC.KQ1ZF
+ 
+ /-!
+@@ -140,10 +140,10 @@
+     exact ⟨w, ((hp u).mp hup).2 w.1 w.2 hwu, hzw⟩
+   · -- the clean representative: the separation of `a` by `· ∈ x`, over the envelope `E`
+     obtain ⟨S, htS, hSraw, hS⟩ := dt_comp_env hs hirr ht a.1 E hEt htE hEa
+-      (rename swap01 (relT 0 (QuotientModel.memberForm 0 1))) (scons t (fun _ => x.1))
++      (rename swap01 (relT 0 (KQ1Model.memberForm 0 1))) (scons t (fun _ => x.1))
+     have hSm : ∀ z : Tag mem t, tmem mem t z ⟨S, htS⟩ ↔ tmem mem t z a ∧ Member (tmem mem t) z x :=
+       fun z => (hS z.1 z.2).trans (and_congr Iff.rfl ((tag_formula _ (fun _ => x) z).trans
+-        (QuotientModel.sat_memberForm _ _ 0 1)))
++        (KQ1Model.sat_memberForm _ _ 0 1)))
+     have hSW : mem S W := (hW S).mpr fun w hw => by
+       rcases hSraw w hw with rfl | rfl | h
+       · exact hEv
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean
+@@ -1,5 +1,5 @@
+ import FirstOrder.Completeness
+-import BusyBeaver.ZFC.InductiveAttempts
++import BusyBeaver.ZFC.InductiveAttemptsCore
+ import BusyBeaver.ZFC.KQ1Basic
+ import BusyBeaver.ZFC.KQ1Replacement
+ import BusyBeaver.ZFC.KQ1Collect
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean
+@@ -1,23 +1,5 @@
++import BusyBeaver.ZFC.SingletonInfinityCore
+ import BusyBeaver.ZFC.QuotientBasic
+-
+-/-!
+-The noncircular singleton index for an ordinary-Infinity construction.
+-
+-This first checkpoint follows the least-singleton-closed-set cut in
+-`ZF/stdzf/coq/Std_setinf.v:or_to_zf_core`, upstream
+-297ab8df7e5de329605c3875b4934643b371a5e3, used by the attributed Mira-Cult /
+-Jeff verification through `S_ax.v:S_inf` and `S_main.v:ZF_to_S0`.
+-
+-The base below has only Extensionality, Pairing and actual first-order
+-Separation. It does not contain Infinity or Separation for arbitrary semantic
+-predicates. A literal ZMem formula cuts the least singleton-closed index out
+-of an already supplied singleton-closed container. The resulting index has
+-set induction and formula induction. At an empty root, singleton injectivity
+-and exclusion of the root from the successor range give the elementary
+-inductive-structure conditions needed by the separate finite-attempt graph
+-argument. This checkpoint does not prove ordinary `Inf_form` or construct a
+-full `ZFAxioms` value; no internal omega or recursion theorem is assumed.
+--/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.SingletonInfinity
+ 
+@@ -25,113 +7,6 @@
+ 
+ universe u
+ variable {V : Type u} {mem : V → V → Prop}
+-
+-/-- The small base required by the least singleton-closed index cut. -/
+-structure Base (mem : V → V → Prop) : Prop where
+-  ext : ∀ a b, (∀ z, mem z a ↔ mem z b) → a = b
+-  pair : ∀ a b, ∃ p, ∀ z, mem z p ↔ z = a ∨ z = b
+-  sep : ∀ (phi : Form) (env : Nat → V) (a : V),
+-    ∃ b, ∀ z, mem z b ↔ mem z a ∧ Sat mem (scons z env) phi
+-
+-noncomputable def singleton (B : Base mem) (a : V) : V := (B.pair a a).choose
+-
+-theorem singleton_spec (B : Base mem) (a z : V) :
+-    mem z (singleton B a) ↔ z = a := by
+-  simpa only [singleton, or_self] using (B.pair a a).choose_spec z
+-
+-theorem singleton_unique (B : Base mem) (a s : V)
+-    (hs : ∀ z, mem z s ↔ z = a) : s = singleton B a :=
+-  B.ext s (singleton B a) (fun z => (hs z).trans (singleton_spec B a z).symm)
+-
+-theorem singleton_injective (B : Base mem) : Function.Injective (singleton B) := by
+-  intro a b hab
+-  exact (singleton_spec B b a).mp (hab ▸ (singleton_spec B a a).mpr rfl)
+-
+-theorem empty_not_singleton (B : Base mem) (e : V) (he : ∀ z, ¬ mem z e) (a : V) :
+-    singleton B a ≠ e :=
+-  fun h => he a (h ▸ (singleton_spec B a a).mpr rfl)
+-
+-def Closed (B : Base mem) (X : V) : Prop :=
+-  ∀ x, mem x X → mem (singleton B x) X
+-
+-theorem closed_of_exact_singletons (B : Base mem) (X : V)
+-    (h : ∀ x, mem x X → ∃ s, mem s X ∧ ∀ z, mem z s ↔ z = x) : Closed B X := by
+-  intro x hx
+-  obtain ⟨s, hsX, hs⟩ := h x hx
+-  simpa only [singleton_unique B x s hs] using hsX
+-
+-def LeastMember (B : Base mem) (e z : V) : Prop :=
+-  ∀ X, mem e X → Closed B X → mem z X
+-
+-/-- The source is slot i, and the exact singleton is slot j. -/
+-def singForm (i j : Nat) : Form :=
+-  fAll (fIff (fMem 0 (j + 1)) (fEq 0 (i + 1)))
+-
+-theorem sat_singForm (B : Base mem) (env : Nat → V) (i j : Nat) :
+-    Sat mem env (singForm i j) ↔ env j = singleton B (env i) := by
+-  change (∀ z, Sat mem (scons z env)
+-    (fIff (fMem 0 (j + 1)) (fEq 0 (i + 1)))) ↔ _
+-  exact ⟨fun hs => B.ext _ _ fun z => ((Sat_fIff (mem := mem)).mp (hs z)).trans
+-      (singleton_spec B (env i) z).symm,
+-    fun hs z => (Sat_fIff (mem := mem)).mpr (show mem z (env j) ↔ z = env i by
+-      rw [hs]; exact singleton_spec B (env i) z)⟩
+-
+-def closedForm (i : Nat) : Form :=
+-  fAll (fImp (fMem 0 (i + 1))
+-    (fEx (fAnd (fMem 0 (i + 2)) (singForm 1 0))))
+-
+-theorem sat_closedForm (B : Base mem) (env : Nat → V) (i : Nat) :
+-    Sat mem env (closedForm i) ↔ Closed B (env i) := by
+-  change (∀ x, mem x (env i) → ∃ s, mem s (env i) ∧
+-    Sat mem (scons s (scons x env)) (singForm 1 0)) ↔ _
+-  refine ⟨fun hc x hx => ?_,
+-    fun hc x hx => ⟨singleton B x, hc x hx, (sat_singForm B _ 1 0).mpr rfl⟩⟩
+-  obtain ⟨s, hs, hSing⟩ := hc x hx
+-  have heq : s = singleton B x := (sat_singForm B _ 1 0).mp hSing
+-  simpa only [heq] using hs
+-
+-/-- Membership in every singleton-closed set containing the distinguished root. -/
+-def zMemForm (z e : Nat) : Form :=
+-  fAll (fImp (fAnd (fMem (e + 1) 0) (closedForm 0)) (fMem (z + 1) 0))
+-
+-theorem sat_zMemForm (B : Base mem) (env : Nat → V) (z e : Nat) :
+-    Sat mem env (zMemForm z e) ↔ LeastMember B (env e) (env z) := by
+-  change (∀ X, mem (env e) X ∧ Sat mem (scons X env) (closedForm 0) →
+-    mem (env z) X) ↔ _
+-  exact ⟨fun h X he hc => h X ⟨he, (sat_closedForm B _ 0).mpr hc⟩,
+-    fun h X hx => h X hx.1 ((sat_closedForm B _ 0).mp hx.2)⟩
+-
+-/-- Induction here quantifies over represented sets; it is not unrestricted
+-induction over external semantic predicates. -/
+-structure Index (B : Base mem) (e N : V) : Prop where
+-  zero_mem : mem e N
+-  closed : Closed B N
+-  least : ∀ X, mem e X → Closed B X → ∀ z, mem z N → mem z X
+-
+-/-- One actual ZMem Separation instance supplies the singleton index. -/
+-theorem index_of_container (B : Base mem) (e Y : V) (heY : mem e Y)
+-    (hY : Closed B Y) : ∃ N, Index B e N := by
+-  obtain ⟨N, hN⟩ := B.sep (zMemForm 0 1) (fun _ => e) Y
+-  have hSpec (z : V) : mem z N ↔ mem z Y ∧ LeastMember B e z :=
+-    (hN z).trans (and_congr Iff.rfl (sat_zMemForm B _ 0 1))
+-  refine ⟨N, (hSpec e).mpr ⟨heY, fun _ he _ => he⟩, fun z hz => ?_,
+-    fun X heX hX z hz => ((hSpec z).mp hz).2 X heX hX⟩
+-  obtain ⟨hzY, hzLeast⟩ := (hSpec z).mp hz
+-  exact (hSpec (singleton B z)).mpr ⟨hY z hzY, fun X heX hX => hX z (hzLeast X heX hX)⟩
+-
+-/-- Formula induction uses the actual source formula's Separation instance. -/
+-theorem index_formula_induction (B : Base mem) {e N : V} (hN : Index B e N)
+-    (phi : Form) (env : Nat → V) (hZero : Sat mem (scons e env) phi)
+-    (hStep : ∀ x, mem x N → Sat mem (scons x env) phi →
+-      Sat mem (scons (singleton B x) env) phi) :
+-    ∀ x, mem x N → Sat mem (scons x env) phi := by
+-  obtain ⟨X, hX⟩ := B.sep phi env N
+-  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, hZero⟩
+-  have hcX : Closed B X := by
+-    intro x hx
+-    obtain ⟨hxN, hPhi⟩ := (hX x).mp hx
+-    exact (hX (singleton B x)).mpr ⟨hN.closed x hxN, hStep x hxN hPhi⟩
+-  exact fun x hx => ((hX x).mp (hN.least X heX hcX x hx)).2
+ 
+ theorem quotientBase (rawMem : V → V → Prop) (witness : V)
+     (h : ProfileModel.ModelsCPGIC rawMem) :
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinityCore.lean
+@@ -0,0 +1,136 @@
++import FirstOrder.Fol
++
++/-!
++The noncircular singleton index for an ordinary-Infinity construction.
++
++This first checkpoint follows the least-singleton-closed-set cut in
++`ZF/stdzf/coq/Std_setinf.v:or_to_zf_core`, upstream
++297ab8df7e5de329605c3875b4934643b371a5e3, used by the attributed Mira-Cult /
++Jeff verification through `S_ax.v:S_inf` and `S_main.v:ZF_to_S0`.
++
++The base below has only Extensionality, Pairing and actual first-order
++Separation. It does not contain Infinity or Separation for arbitrary semantic
++predicates. A literal ZMem formula cuts the least singleton-closed index out
++of an already supplied singleton-closed container. The resulting index has
++set induction and formula induction. At an empty root, singleton injectivity
++and exclusion of the root from the successor range give the elementary
++inductive-structure conditions needed by the separate finite-attempt graph
++argument. This checkpoint does not prove ordinary `Inf_form` or construct a
++full `ZFAxioms` value; no internal omega or recursion theorem is assumed.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.SingletonInfinity
++
++open Form
++
++universe u
++variable {V : Type u} {mem : V → V → Prop}
++
++/-- The small base required by the least singleton-closed index cut. -/
++structure Base (mem : V → V → Prop) : Prop where
++  ext : ∀ a b, (∀ z, mem z a ↔ mem z b) → a = b
++  pair : ∀ a b, ∃ p, ∀ z, mem z p ↔ z = a ∨ z = b
++  sep : ∀ (phi : Form) (env : Nat → V) (a : V),
++    ∃ b, ∀ z, mem z b ↔ mem z a ∧ Sat mem (scons z env) phi
++
++noncomputable def singleton (B : Base mem) (a : V) : V := (B.pair a a).choose
++
++theorem singleton_spec (B : Base mem) (a z : V) :
++    mem z (singleton B a) ↔ z = a := by
++  simpa only [singleton, or_self] using (B.pair a a).choose_spec z
++
++theorem singleton_unique (B : Base mem) (a s : V)
++    (hs : ∀ z, mem z s ↔ z = a) : s = singleton B a :=
++  B.ext s (singleton B a) (fun z => (hs z).trans (singleton_spec B a z).symm)
++
++theorem singleton_injective (B : Base mem) : Function.Injective (singleton B) := by
++  intro a b hab
++  exact (singleton_spec B b a).mp (hab ▸ (singleton_spec B a a).mpr rfl)
++
++theorem empty_not_singleton (B : Base mem) (e : V) (he : ∀ z, ¬ mem z e) (a : V) :
++    singleton B a ≠ e :=
++  fun h => he a (h ▸ (singleton_spec B a a).mpr rfl)
++
++def Closed (B : Base mem) (X : V) : Prop :=
++  ∀ x, mem x X → mem (singleton B x) X
++
++theorem closed_of_exact_singletons (B : Base mem) (X : V)
++    (h : ∀ x, mem x X → ∃ s, mem s X ∧ ∀ z, mem z s ↔ z = x) : Closed B X := by
++  intro x hx
++  obtain ⟨s, hsX, hs⟩ := h x hx
++  simpa only [singleton_unique B x s hs] using hsX
++
++def LeastMember (B : Base mem) (e z : V) : Prop :=
++  ∀ X, mem e X → Closed B X → mem z X
++
++/-- The source is slot i, and the exact singleton is slot j. -/
++def singForm (i j : Nat) : Form :=
++  fAll (fIff (fMem 0 (j + 1)) (fEq 0 (i + 1)))
++
++theorem sat_singForm (B : Base mem) (env : Nat → V) (i j : Nat) :
++    Sat mem env (singForm i j) ↔ env j = singleton B (env i) := by
++  change (∀ z, Sat mem (scons z env)
++    (fIff (fMem 0 (j + 1)) (fEq 0 (i + 1)))) ↔ _
++  exact ⟨fun hs => B.ext _ _ fun z => ((Sat_fIff (mem := mem)).mp (hs z)).trans
++      (singleton_spec B (env i) z).symm,
++    fun hs z => (Sat_fIff (mem := mem)).mpr (show mem z (env j) ↔ z = env i by
++      rw [hs]; exact singleton_spec B (env i) z)⟩
++
++def closedForm (i : Nat) : Form :=
++  fAll (fImp (fMem 0 (i + 1))
++    (fEx (fAnd (fMem 0 (i + 2)) (singForm 1 0))))
++
++theorem sat_closedForm (B : Base mem) (env : Nat → V) (i : Nat) :
++    Sat mem env (closedForm i) ↔ Closed B (env i) := by
++  change (∀ x, mem x (env i) → ∃ s, mem s (env i) ∧
++    Sat mem (scons s (scons x env)) (singForm 1 0)) ↔ _
++  refine ⟨fun hc x hx => ?_,
++    fun hc x hx => ⟨singleton B x, hc x hx, (sat_singForm B _ 1 0).mpr rfl⟩⟩
++  obtain ⟨s, hs, hSing⟩ := hc x hx
++  have heq : s = singleton B x := (sat_singForm B _ 1 0).mp hSing
++  simpa only [heq] using hs
++
++/-- Membership in every singleton-closed set containing the distinguished root. -/
++def zMemForm (z e : Nat) : Form :=
++  fAll (fImp (fAnd (fMem (e + 1) 0) (closedForm 0)) (fMem (z + 1) 0))
++
++theorem sat_zMemForm (B : Base mem) (env : Nat → V) (z e : Nat) :
++    Sat mem env (zMemForm z e) ↔ LeastMember B (env e) (env z) := by
++  change (∀ X, mem (env e) X ∧ Sat mem (scons X env) (closedForm 0) →
++    mem (env z) X) ↔ _
++  exact ⟨fun h X he hc => h X ⟨he, (sat_closedForm B _ 0).mpr hc⟩,
++    fun h X hx => h X hx.1 ((sat_closedForm B _ 0).mp hx.2)⟩
++
++/-- Induction here quantifies over represented sets; it is not unrestricted
++induction over external semantic predicates. -/
++structure Index (B : Base mem) (e N : V) : Prop where
++  zero_mem : mem e N
++  closed : Closed B N
++  least : ∀ X, mem e X → Closed B X → ∀ z, mem z N → mem z X
++
++/-- One actual ZMem Separation instance supplies the singleton index. -/
++theorem index_of_container (B : Base mem) (e Y : V) (heY : mem e Y)
++    (hY : Closed B Y) : ∃ N, Index B e N := by
++  obtain ⟨N, hN⟩ := B.sep (zMemForm 0 1) (fun _ => e) Y
++  have hSpec (z : V) : mem z N ↔ mem z Y ∧ LeastMember B e z :=
++    (hN z).trans (and_congr Iff.rfl (sat_zMemForm B _ 0 1))
++  refine ⟨N, (hSpec e).mpr ⟨heY, fun _ he _ => he⟩, fun z hz => ?_,
++    fun X heX hX z hz => ((hSpec z).mp hz).2 X heX hX⟩
++  obtain ⟨hzY, hzLeast⟩ := (hSpec z).mp hz
++  exact (hSpec (singleton B z)).mpr ⟨hY z hzY, fun X heX hX => hX z (hzLeast X heX hX)⟩
++
++/-- Formula induction uses the actual source formula's Separation instance. -/
++theorem index_formula_induction (B : Base mem) {e N : V} (hN : Index B e N)
++    (phi : Form) (env : Nat → V) (hZero : Sat mem (scons e env) phi)
++    (hStep : ∀ x, mem x N → Sat mem (scons x env) phi →
++      Sat mem (scons (singleton B x) env) phi) :
++    ∀ x, mem x N → Sat mem (scons x env) phi := by
++  obtain ⟨X, hX⟩ := B.sep phi env N
++  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, hZero⟩
++  have hcX : Closed B X := by
++    intro x hx
++    obtain ⟨hxN, hPhi⟩ := (hX x).mp hx
++    exact (hX (singleton B x)).mpr ⟨hN.closed x hxN, hStep x hxN hPhi⟩
++  exact fun x hx => ((hX x).mp (hN.least X heX hcX x hx)).2
++
++end SetTheory.BusyBeaver.ZFC.SingletonInfinity
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModel.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModel.lean
+@@ -1,4 +1,5 @@
+ import BusyBeaver.ZFC.WFModelCore
++import BusyBeaver.ZFC.WellFoundedPart
+ import BusyBeaver.ZFC.QuotientZF0
+ import BusyBeaver.ZFC.QuotientCPGIC
+ 
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean
+@@ -1,4 +1,4 @@
+-import BusyBeaver.ZFC.WellFoundedPart
++import BusyBeaver.ZFC.WellFoundedPartCore
+ 
+ /-!
+ Actual first-order formula relativization to the internally well-founded part.
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean
+@@ -1,24 +1,6 @@
++import BusyBeaver.ZFC.WellFoundedPartCore
+ import BusyBeaver.ZFC.FiniteSets
+ import BusyBeaver.ZFC.QuotientCPGIC
+-import ZF.Zf
+-
+-/-!
+-The internally well-founded part, with one literal GIC witness instance.
+-
+-The definitions follow the well-founded-part interpretation in the attributed
+-busy-beaver snapshot, ZF/stdzf_r3/regcon/WF.v, pin
+-297ab8df7e5de329605c3875b4934643b371a5e3. Here the already available
+-formula-indexed GIC collects transitive well-founded witnesses directly;
+-there is no choice of a canonical witness and no inference of Collection
+-from functional Replacement without Foundation.
+-
+-The finite base has Extensionality, Pairing, Union and actual Form Separation.
+-The only Separation matrix used below is membership in a parameter, for an
+-intersection. WF closure requests one displayed GIC formula. Its matrix is
+-equality-free. InternallyWellFounded quantifies over represented sets, not
+-arbitrary external subsets, and no external WellFounded relation is assumed.
+-This is not yet the full ZF interpretation or a consistency comparison.
+--/
+ 
+ namespace SetTheory.BusyBeaver.ZFC.WellFoundedPart
+ 
+@@ -26,195 +8,6 @@
+ 
+ universe u
+ variable {V : Type u} {mem : V → V → Prop}
+-
+-def NonemptySet (mem : V → V → Prop) (s : V) : Prop := ∃ x, mem x s
+-
+-def Minimal (mem : V → V → Prop) (m s : V) : Prop :=
+-  mem m s ∧ ∀ z, mem z m → ¬ mem z s
+-
+-def InternallyWellFounded (mem : V → V → Prop) (t : V) : Prop :=
+-  ∀ s, Sub mem s t → NonemptySet mem s → ∃ m, Minimal mem m s
+-
+-def TW (mem : V → V → Prop) (t : V) : Prop :=
+-  Transitive mem t ∧ InternallyWellFounded mem t
+-
+-def WF (mem : V → V → Prop) (x : V) : Prop :=
+-  ∃ t, TW mem t ∧ mem x t
+-
+-def transitiveForm (i : Nat) : Form :=
+-  fAll (fImp (fMem 0 (i + 1)) (subsetForm 0 (i + 1)))
+-
+-def nonemptyForm (i : Nat) : Form := fEx (fMem 0 (i + 1))
+-
+-def minimalElementForm (m s : Nat) : Form :=
+-  fAnd (fMem m s)
+-    (fAll (fImp (fMem 0 (m + 1)) (fImp (fMem 0 (s + 1)) fBot)))
+-
+-def minimalForm (i : Nat) : Form := fEx (minimalElementForm 0 (i + 1))
+-
+-def wellFoundedForm (i : Nat) : Form :=
+-  fAll (fImp (subsetForm 0 (i + 1))
+-    (fImp (nonemptyForm 0) (minimalForm 0)))
+-
+-def twForm (i : Nat) : Form := fAnd (transitiveForm i) (wellFoundedForm i)
+-
+-def wfForm (i : Nat) : Form := fEx (fAnd (twForm 0) (fMem (i + 1) 0))
+-
+-/-- Input 0, witness output 1; there are no additional parameters. -/
+-def witnessForm : Form := fAnd (twForm 1) (fMem 0 1)
+-
+-theorem sat_transitiveForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
+-    Sat mem env (transitiveForm i) ↔ Transitive mem (env i) :=
+-  forall_congr' fun x => imp_congr_right fun _ => sat_subsetForm mem (scons x env) 0 (i + 1)
+-
+-theorem sat_nonemptyForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
+-    Sat mem env (nonemptyForm i) ↔ NonemptySet mem (env i) := Iff.rfl
+-
+-theorem sat_minimalElementForm (mem : V → V → Prop) (env : Nat → V) (m s : Nat) :
+-    Sat mem env (minimalElementForm m s) ↔ Minimal mem (env m) (env s) := Iff.rfl
+-
+-theorem sat_minimalForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
+-    Sat mem env (minimalForm i) ↔ ∃ m, Minimal mem m (env i) :=
+-  exists_congr fun m => sat_minimalElementForm mem (scons m env) 0 (i + 1)
+-
+-theorem sat_wellFoundedForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
+-    Sat mem env (wellFoundedForm i) ↔ InternallyWellFounded mem (env i) :=
+-  forall_congr' fun s => imp_congr (sat_subsetForm mem (scons s env) 0 (i + 1))
+-    (imp_congr (sat_nonemptyForm mem (scons s env) 0) (sat_minimalForm mem (scons s env) 0))
+-
+-theorem sat_twForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
+-    Sat mem env (twForm i) ↔ TW mem (env i) :=
+-  and_congr (sat_transitiveForm mem env i) (sat_wellFoundedForm mem env i)
+-
+-theorem sat_wfForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
+-    Sat mem env (wfForm i) ↔ WF mem (env i) :=
+-  exists_congr fun t => and_congr (sat_twForm mem (scons t env) 0) Iff.rfl
+-
+-theorem sat_witnessForm (mem : V → V → Prop) (env : Nat → V) (x t : V) :
+-    MatrixRelation mem witnessForm env x t ↔ TW mem t ∧ mem x t :=
+-  and_congr (sat_twForm mem (scons x (scons t env)) 1) Iff.rfl
+-
+-theorem equalityFree_witnessForm : EqualityFree witnessForm := by
+-  simp [witnessForm, twForm, transitiveForm, wellFoundedForm, nonemptyForm,
+-    minimalForm, minimalElementForm, subsetForm, EqualityFree]
+-
+-theorem equalityFree_wfForm (i : Nat) : EqualityFree (wfForm i) := by
+-  simp [wfForm, twForm, transitiveForm, wellFoundedForm, nonemptyForm,
+-    minimalForm, minimalElementForm, subsetForm, EqualityFree]
+-
+-/-- This is exactly the Separation instance with matrix Mem(0,1). -/
+-theorem intersection_exists (B : FiniteSets.Base mem) (s t : V) :
+-    ∃ b, ∀ x, mem x b ↔ mem x s ∧ mem x t :=
+-  B.sep (fMem 0 1) (fun _ => t) s
+-
+-/-- Meeting a TW set suffices: intersect, take a minimal element, and use
+-transitivity to rule out children lying elsewhere in the original set. -/
+-theorem minimal_of_meets_tw (B : FiniteSets.Base mem) (t : V) (ht : TW mem t)
+-    (s : V) (hMeet : ∃ x, mem x s ∧ mem x t) : ∃ m, Minimal mem m s := by
+-  obtain ⟨b, hb⟩ := intersection_exists B s t
+-  have hSub : Sub mem b t := fun x hx => ((hb x).mp hx).2
+-  obtain ⟨x, hxs, hxt⟩ := hMeet
+-  obtain ⟨m, hmb, hMin⟩ := ht.2 b hSub ⟨x, (hb x).mpr ⟨hxs, hxt⟩⟩
+-  refine ⟨m, ((hb m).mp hmb).1, ?_⟩
+-  intro z hzm hzs
+-  exact hMin z hzm ((hb z).mpr ⟨hzs, ht.1 m (hSub m hmb) z hzm⟩)
+-
+-theorem tw_union (B : FiniteSets.Base mem) (c : V)
+-    (hFamily : ∀ t, mem t c → TW mem t) : TW mem (FiniteSets.union B c) := by
+-  constructor
+-  · intro x hx z hz
+-    obtain ⟨t, hxt, htc⟩ := (FiniteSets.union_spec B c x).mp hx
+-    exact (FiniteSets.union_spec B c z).mpr
+-      ⟨t, (hFamily t htc).1 x hxt z hz, htc⟩
+-  · intro s hs hne
+-    obtain ⟨x, hxs⟩ := hne
+-    obtain ⟨t, hxt, htc⟩ := (FiniteSets.union_spec B c x).mp (hs x hxs)
+-    exact minimal_of_meets_tw B t (hFamily t htc) s ⟨x, hxs, hxt⟩
+-
+-/-- Adjoin a set whose every member already lies in the TW set. -/
+-theorem tw_adjoin (B : FiniteSets.Base mem) (u a : V)
+-    (hu : TW mem u) (ha : Sub mem a u) : TW mem (FiniteSets.insert B u a) := by
+-  constructor
+-  · intro x hx z hz
+-    rcases (FiniteSets.insert_spec B u a x).mp hx with hx | hxa
+-    · exact (FiniteSets.insert_spec B u a z).mpr (Or.inl (hu.1 x hx z hz))
+-    · have hza : mem z a := hxa ▸ hz
+-      exact (FiniteSets.insert_spec B u a z).mpr (Or.inl (ha z hza))
+-  · intro s hs hne
+-    classical
+-    by_cases hMeet : ∃ x, mem x s ∧ mem x u
+-    · exact minimal_of_meets_tw B u hu s hMeet
+-    · obtain ⟨x, hxs⟩ := hne
+-      rcases (FiniteSets.insert_spec B u a x).mp (hs x hxs) with hxu | hxa
+-      · exact False.elim (hMeet ⟨x, hxs, hxu⟩)
+-      · subst x
+-        exact ⟨a, hxs, fun z hza hzs => hMeet ⟨z, hzs, ha z hza⟩⟩
+-
+-/-- A single displayed actual GIC formula collects all needed TW witnesses.
+-No schema over arbitrary semantic relations is a premise. -/
+-theorem wf_closure (B : FiniteSets.Base mem) (a : V)
+-    (hG : Sat mem (fun _ => a) (gicForm witnessForm))
+-    (ha : ∀ x, mem x a → WF mem x) : WF mem a := by
+-  have hc : CollectionInstance mem (fun x t => TW mem t ∧ mem x t) :=
+-    ProfileModel.collectionInstance_congr mem _ _ (sat_witnessForm mem (fun _ => a))
+-      ((sat_gicForm mem witnessForm (fun _ => a)).mp hG)
+-  obtain ⟨c, hSupport, hCover⟩ := hc a
+-  have hFamily : ∀ t, mem t c → TW mem t := fun t ht => (hSupport t ht).elim fun _ h => h.1
+-  have haU : Sub mem a (FiniteSets.union B c) := by
+-    intro x hx
+-    obtain ⟨t, htc, _, hxt⟩ := hCover x hx (ha x hx)
+-    exact (FiniteSets.union_spec B c x).mpr ⟨t, hxt, htc⟩
+-  exact ⟨FiniteSets.insert B (FiniteSets.union B c) a,
+-    tw_adjoin B _ a (tw_union B c hFamily) haU,
+-    (FiniteSets.insert_spec B _ a a).mpr (Or.inr rfl)⟩
+-
+-theorem wf_closure_of_equalityFree_gic (B : FiniteSets.Base mem)
+-    (hG : ProfileModel.ModelsGIC mem) (a : V)
+-    (ha : ∀ x, mem x a → WF mem x) : WF mem a :=
+-  wf_closure B a (hG witnessForm equalityFree_witnessForm (fun _ => a)) ha
+-
+-theorem wf_mem {x y : V} (hx : WF mem x) (hy : mem y x) : WF mem y := by
+-  obtain ⟨t, ht, hxt⟩ := hx
+-  exact ⟨t, ht, ht.1 x hxt y hy⟩
+-
+-/-- Pairing alone supplies the TW singleton witness for an actual empty set. -/
+-theorem wf_empty (B : FiniteSets.Base mem) (e : V) (he : ∀ z, ¬ mem z e) :
+-    WF mem e := by
+-  have ht : TW mem (FiniteSets.singleton B e) := by
+-    constructor
+-    · intro x hx z hz
+-      have hxe := (FiniteSets.singleton_spec B e x).mp hx
+-      subst x
+-      exact False.elim (he z hz)
+-    · intro s hs hne
+-      obtain ⟨x, hxs⟩ := hne
+-      have hxe := (FiniteSets.singleton_spec B e x).mp (hs x hxs)
+-      subst x
+-      exact ⟨e, hxs, fun z hze => False.elim (he z hze)⟩
+-  exact ⟨FiniteSets.singleton B e, ht, (FiniteSets.singleton_spec B e e).mpr rfl⟩
+-
+-/-- The ordinary well-founded-part minimal-element property is internal. -/
+-theorem wf_minimal (a : V) (ha : WF mem a) (hne : NonemptySet mem a) :
+-    ∃ m, mem m a ∧ WF mem m ∧ ∀ z, mem z m → ¬ mem z a := by
+-  obtain ⟨t, ht, hat⟩ := ha
+-  obtain ⟨m, hm, hMin⟩ := ht.2 a (ht.1 a hat) hne
+-  exact ⟨m, hm, ⟨t, ht, ht.1 a hat m hm⟩, hMin⟩
+-
+-def Domain (mem : V → V → Prop) := {x : V // WF mem x}
+-
+-def domainMem (mem : V → V → Prop) (x y : Domain mem) : Prop := mem x.1 y.1
+-
+-/-- The actual Reg_form holds in the WF subtype. Other ZF axioms still
+-require their interpreted instance proofs; this is not a full model claim. -/
+-theorem domain_regular (mem : V → V → Prop) :
+-    ∀ env : Nat → Domain mem, Sat (domainMem mem) env Reg_form := by
+-  apply bridge_Reg.mpr
+-  intro a hne
+-  obtain ⟨x, hx⟩ := hne
+-  obtain ⟨m, hm, hwm, hMin⟩ := wf_minimal a.1 a.2 ⟨x.1, hx⟩
+-  refine ⟨⟨m, hwm⟩, hm, ?_⟩
+-  rintro ⟨z, hzm, hza⟩
+-  exact hMin z.1 hzm hza
+ 
+ /-- The actual quotient supplies the fixed native GIC instance and small base. -/
+ theorem quotient_wf_closure (rawMem : V → V → Prop) (witness : V)
+--- /dev/null
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPartCore.lean
+@@ -0,0 +1,219 @@
++import BusyBeaver.ZFC.FiniteSetsCore
++import BusyBeaver.ZFC.ProfileModel
++import ZF.Zf
++
++/-!
++The internally well-founded part, with one literal GIC witness instance.
++
++The definitions follow the well-founded-part interpretation in the attributed
++busy-beaver snapshot, ZF/stdzf_r3/regcon/WF.v, pin
++297ab8df7e5de329605c3875b4934643b371a5e3. Here the already available
++formula-indexed GIC collects transitive well-founded witnesses directly;
++there is no choice of a canonical witness and no inference of Collection
++from functional Replacement without Foundation.
++
++The finite base has Extensionality, Pairing, Union and actual Form Separation.
++The only Separation matrix used below is membership in a parameter, for an
++intersection. WF closure requests one displayed GIC formula. Its matrix is
++equality-free. InternallyWellFounded quantifies over represented sets, not
++arbitrary external subsets, and no external WellFounded relation is assumed.
++This is not yet the full ZF interpretation or a consistency comparison.
++-/
++
++namespace SetTheory.BusyBeaver.ZFC.WellFoundedPart
++
++open Form PositiveClosure DeepPositiveClosure ProfileCollection ProfileSyntax
++
++universe u
++variable {V : Type u} {mem : V → V → Prop}
++
++def NonemptySet (mem : V → V → Prop) (s : V) : Prop := ∃ x, mem x s
++
++def Minimal (mem : V → V → Prop) (m s : V) : Prop :=
++  mem m s ∧ ∀ z, mem z m → ¬ mem z s
++
++def InternallyWellFounded (mem : V → V → Prop) (t : V) : Prop :=
++  ∀ s, Sub mem s t → NonemptySet mem s → ∃ m, Minimal mem m s
++
++def TW (mem : V → V → Prop) (t : V) : Prop :=
++  Transitive mem t ∧ InternallyWellFounded mem t
++
++def WF (mem : V → V → Prop) (x : V) : Prop :=
++  ∃ t, TW mem t ∧ mem x t
++
++def transitiveForm (i : Nat) : Form :=
++  fAll (fImp (fMem 0 (i + 1)) (subsetForm 0 (i + 1)))
++
++def nonemptyForm (i : Nat) : Form := fEx (fMem 0 (i + 1))
++
++def minimalElementForm (m s : Nat) : Form :=
++  fAnd (fMem m s)
++    (fAll (fImp (fMem 0 (m + 1)) (fImp (fMem 0 (s + 1)) fBot)))
++
++def minimalForm (i : Nat) : Form := fEx (minimalElementForm 0 (i + 1))
++
++def wellFoundedForm (i : Nat) : Form :=
++  fAll (fImp (subsetForm 0 (i + 1))
++    (fImp (nonemptyForm 0) (minimalForm 0)))
++
++def twForm (i : Nat) : Form := fAnd (transitiveForm i) (wellFoundedForm i)
++
++def wfForm (i : Nat) : Form := fEx (fAnd (twForm 0) (fMem (i + 1) 0))
++
++/-- Input 0, witness output 1; there are no additional parameters. -/
++def witnessForm : Form := fAnd (twForm 1) (fMem 0 1)
++
++theorem sat_transitiveForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
++    Sat mem env (transitiveForm i) ↔ Transitive mem (env i) :=
++  forall_congr' fun x => imp_congr_right fun _ => sat_subsetForm mem (scons x env) 0 (i + 1)
++
++theorem sat_nonemptyForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
++    Sat mem env (nonemptyForm i) ↔ NonemptySet mem (env i) := Iff.rfl
++
++theorem sat_minimalElementForm (mem : V → V → Prop) (env : Nat → V) (m s : Nat) :
++    Sat mem env (minimalElementForm m s) ↔ Minimal mem (env m) (env s) := Iff.rfl
++
++theorem sat_minimalForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
++    Sat mem env (minimalForm i) ↔ ∃ m, Minimal mem m (env i) :=
++  exists_congr fun m => sat_minimalElementForm mem (scons m env) 0 (i + 1)
++
++theorem sat_wellFoundedForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
++    Sat mem env (wellFoundedForm i) ↔ InternallyWellFounded mem (env i) :=
++  forall_congr' fun s => imp_congr (sat_subsetForm mem (scons s env) 0 (i + 1))
++    (imp_congr (sat_nonemptyForm mem (scons s env) 0) (sat_minimalForm mem (scons s env) 0))
++
++theorem sat_twForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
++    Sat mem env (twForm i) ↔ TW mem (env i) :=
++  and_congr (sat_transitiveForm mem env i) (sat_wellFoundedForm mem env i)
++
++theorem sat_wfForm (mem : V → V → Prop) (env : Nat → V) (i : Nat) :
++    Sat mem env (wfForm i) ↔ WF mem (env i) :=
++  exists_congr fun t => and_congr (sat_twForm mem (scons t env) 0) Iff.rfl
++
++theorem sat_witnessForm (mem : V → V → Prop) (env : Nat → V) (x t : V) :
++    MatrixRelation mem witnessForm env x t ↔ TW mem t ∧ mem x t :=
++  and_congr (sat_twForm mem (scons x (scons t env)) 1) Iff.rfl
++
++theorem equalityFree_witnessForm : EqualityFree witnessForm := by
++  simp [witnessForm, twForm, transitiveForm, wellFoundedForm, nonemptyForm,
++    minimalForm, minimalElementForm, subsetForm, EqualityFree]
++
++theorem equalityFree_wfForm (i : Nat) : EqualityFree (wfForm i) := by
++  simp [wfForm, twForm, transitiveForm, wellFoundedForm, nonemptyForm,
++    minimalForm, minimalElementForm, subsetForm, EqualityFree]
++
++/-- This is exactly the Separation instance with matrix Mem(0,1). -/
++theorem intersection_exists (B : FiniteSets.Base mem) (s t : V) :
++    ∃ b, ∀ x, mem x b ↔ mem x s ∧ mem x t :=
++  B.sep (fMem 0 1) (fun _ => t) s
++
++/-- Meeting a TW set suffices: intersect, take a minimal element, and use
++transitivity to rule out children lying elsewhere in the original set. -/
++theorem minimal_of_meets_tw (B : FiniteSets.Base mem) (t : V) (ht : TW mem t)
++    (s : V) (hMeet : ∃ x, mem x s ∧ mem x t) : ∃ m, Minimal mem m s := by
++  obtain ⟨b, hb⟩ := intersection_exists B s t
++  have hSub : Sub mem b t := fun x hx => ((hb x).mp hx).2
++  obtain ⟨x, hxs, hxt⟩ := hMeet
++  obtain ⟨m, hmb, hMin⟩ := ht.2 b hSub ⟨x, (hb x).mpr ⟨hxs, hxt⟩⟩
++  refine ⟨m, ((hb m).mp hmb).1, ?_⟩
++  intro z hzm hzs
++  exact hMin z hzm ((hb z).mpr ⟨hzs, ht.1 m (hSub m hmb) z hzm⟩)
++
++theorem tw_union (B : FiniteSets.Base mem) (c : V)
++    (hFamily : ∀ t, mem t c → TW mem t) : TW mem (FiniteSets.union B c) := by
++  constructor
++  · intro x hx z hz
++    obtain ⟨t, hxt, htc⟩ := (FiniteSets.union_spec B c x).mp hx
++    exact (FiniteSets.union_spec B c z).mpr
++      ⟨t, (hFamily t htc).1 x hxt z hz, htc⟩
++  · intro s hs hne
++    obtain ⟨x, hxs⟩ := hne
++    obtain ⟨t, hxt, htc⟩ := (FiniteSets.union_spec B c x).mp (hs x hxs)
++    exact minimal_of_meets_tw B t (hFamily t htc) s ⟨x, hxs, hxt⟩
++
++/-- Adjoin a set whose every member already lies in the TW set. -/
++theorem tw_adjoin (B : FiniteSets.Base mem) (u a : V)
++    (hu : TW mem u) (ha : Sub mem a u) : TW mem (FiniteSets.insert B u a) := by
++  constructor
++  · intro x hx z hz
++    rcases (FiniteSets.insert_spec B u a x).mp hx with hx | hxa
++    · exact (FiniteSets.insert_spec B u a z).mpr (Or.inl (hu.1 x hx z hz))
++    · have hza : mem z a := hxa ▸ hz
++      exact (FiniteSets.insert_spec B u a z).mpr (Or.inl (ha z hza))
++  · intro s hs hne
++    classical
++    by_cases hMeet : ∃ x, mem x s ∧ mem x u
++    · exact minimal_of_meets_tw B u hu s hMeet
++    · obtain ⟨x, hxs⟩ := hne
++      rcases (FiniteSets.insert_spec B u a x).mp (hs x hxs) with hxu | hxa
++      · exact False.elim (hMeet ⟨x, hxs, hxu⟩)
++      · subst x
++        exact ⟨a, hxs, fun z hza hzs => hMeet ⟨z, hzs, ha z hza⟩⟩
++
++/-- A single displayed actual GIC formula collects all needed TW witnesses.
++No schema over arbitrary semantic relations is a premise. -/
++theorem wf_closure (B : FiniteSets.Base mem) (a : V)
++    (hG : Sat mem (fun _ => a) (gicForm witnessForm))
++    (ha : ∀ x, mem x a → WF mem x) : WF mem a := by
++  have hc : CollectionInstance mem (fun x t => TW mem t ∧ mem x t) :=
++    ProfileModel.collectionInstance_congr mem _ _ (sat_witnessForm mem (fun _ => a))
++      ((sat_gicForm mem witnessForm (fun _ => a)).mp hG)
++  obtain ⟨c, hSupport, hCover⟩ := hc a
++  have hFamily : ∀ t, mem t c → TW mem t := fun t ht => (hSupport t ht).elim fun _ h => h.1
++  have haU : Sub mem a (FiniteSets.union B c) := by
++    intro x hx
++    obtain ⟨t, htc, _, hxt⟩ := hCover x hx (ha x hx)
++    exact (FiniteSets.union_spec B c x).mpr ⟨t, hxt, htc⟩
++  exact ⟨FiniteSets.insert B (FiniteSets.union B c) a,
++    tw_adjoin B _ a (tw_union B c hFamily) haU,
++    (FiniteSets.insert_spec B _ a a).mpr (Or.inr rfl)⟩
++
++theorem wf_closure_of_equalityFree_gic (B : FiniteSets.Base mem)
++    (hG : ProfileModel.ModelsGIC mem) (a : V)
++    (ha : ∀ x, mem x a → WF mem x) : WF mem a :=
++  wf_closure B a (hG witnessForm equalityFree_witnessForm (fun _ => a)) ha
++
++theorem wf_mem {x y : V} (hx : WF mem x) (hy : mem y x) : WF mem y := by
++  obtain ⟨t, ht, hxt⟩ := hx
++  exact ⟨t, ht, ht.1 x hxt y hy⟩
++
++/-- Pairing alone supplies the TW singleton witness for an actual empty set. -/
++theorem wf_empty (B : FiniteSets.Base mem) (e : V) (he : ∀ z, ¬ mem z e) :
++    WF mem e := by
++  have ht : TW mem (FiniteSets.singleton B e) := by
++    constructor
++    · intro x hx z hz
++      have hxe := (FiniteSets.singleton_spec B e x).mp hx
++      subst x
++      exact False.elim (he z hz)
++    · intro s hs hne
++      obtain ⟨x, hxs⟩ := hne
++      have hxe := (FiniteSets.singleton_spec B e x).mp (hs x hxs)
++      subst x
++      exact ⟨e, hxs, fun z hze => False.elim (he z hze)⟩
++  exact ⟨FiniteSets.singleton B e, ht, (FiniteSets.singleton_spec B e e).mpr rfl⟩
++
++/-- The ordinary well-founded-part minimal-element property is internal. -/
++theorem wf_minimal (a : V) (ha : WF mem a) (hne : NonemptySet mem a) :
++    ∃ m, mem m a ∧ WF mem m ∧ ∀ z, mem z m → ¬ mem z a := by
++  obtain ⟨t, ht, hat⟩ := ha
++  obtain ⟨m, hm, hMin⟩ := ht.2 a (ht.1 a hat) hne
++  exact ⟨m, hm, ⟨t, ht, ht.1 a hat m hm⟩, hMin⟩
++
++def Domain (mem : V → V → Prop) := {x : V // WF mem x}
++
++def domainMem (mem : V → V → Prop) (x y : Domain mem) : Prop := mem x.1 y.1
++
++/-- The actual Reg_form holds in the WF subtype. Other ZF axioms still
++require their interpreted instance proofs; this is not a full model claim. -/
++theorem domain_regular (mem : V → V → Prop) :
++    ∀ env : Nat → Domain mem, Sat (domainMem mem) env Reg_form := by
++  apply bridge_Reg.mpr
++  intro a hne
++  obtain ⟨x, hx⟩ := hne
++  obtain ⟨m, hm, hwm, hMin⟩ := wf_minimal a.1 a.2 ⟨x.1, hx⟩
++  refine ⟨⟨m, hwm⟩, hm, ?_⟩
++  rintro ⟨z, hzm, hza⟩
++  exact hMin z.1 hzm hza
++
++end SetTheory.BusyBeaver.ZFC.WellFoundedPart

@@ -1,0 +1,38 @@
+% Report fragment. Not a standalone document.
+\subsection{A negative result: sharing is not automatically simplification}
+The pinned lower chain contains two genuinely related subtype interpretations:
+\texttt{KLowerRel.relT}/\texttt{sat\_relT} and
+\texttt{WFRelativization.translate}/\texttt{sat\_translate}.
+Both use the same eight-constructor De Bruijn \texttt{Form}; the named-variable
+translation in \texttt{ConstructibleReflect} is deliberately excluded.
+
+The supplied optional experiment factors their semantic induction through a
+context-indexed slot map and a guard evaluated in the ambient valuation after
+the bound variable is pushed. Its precise obligations are: preservation of the
+new slot~0, successor compatibility of old slots, stability of a valuation
+invariant, exact equivalence between the guard and the subtype predicate, and
+agreement of source and target valuations at mapped slots. For tagged sets the
+marker advances from~$d$ to~$d+1$ and the guard is membership from slot~$d+1$ to
+slot~0. For the well-founded part slots remain unchanged and the original
+well-foundedness guard is not recursively translated. Equality remains native
+subtype equality. Neither inhabitedness nor representative choice is needed.
+
+This abstraction is \emph{not recommended for current source-size reduction}.
+The tagged translator and principal proof occupy $9+21=30$ physical lines;
+the well-founded translator and proof occupy $9+50=59$. Even adding the tagged
+environment helpers yields only $99$ lines. The complete experiment contains a
+$108$-line core and a $71$-line compatibility/adapter client, totaling $179$
+lines before a production interface-preserving replacement is supplied.
+Removing compatibility checks from an import path does not remove their
+maintenance cost. The single shared induction is therefore a conditional
+reuse option, not demonstrated shortening.
+
+The source audit verifies $49$ pinned files and two actual endpoint-to-client
+import paths, not a full closure census. The finite audit checks $162$ formulas
+on $36$ small membership structures, including $972$ syntactic comparisons,
+and finds counterexamples for deliberately broken marker, slot, and equality
+rules. These are regression tests only. All new Lean files remain uncompiled;
+kernel-term size, checking time, and complete endpoint savings are unmeasured.
+See \texttt{lean/REVIEW.md}, \texttt{SOURCE\_AUDIT.json}, and
+\texttt{FINITE\_CHECKS.json} for exact ranges, obligations, and reproducible
+commands.

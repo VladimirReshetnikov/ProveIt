@@ -1,0 +1,43 @@
+\section{The present proof and the scope of this proposal}
+\label{sec:baseline}
+The accepted K215 candidate has 215 working states, two tape symbols, a single two-way infinite tape, blank input, initial state zero, and a separate halt. Initialization is included in the count. The two formal lanes are intended to certify the same literal dense transition table, not merely machines of equal size.
+
+The existing endpoint is
+\[
+  \operatorname{Halt}(K215,\operatorname{blank})
+  \quad\Longleftrightarrow\quad
+  \exists d\;\operatorname{Derivation}_{\ZFC}(d,\bot).
+\]
+Negating both sides gives nonhalting if and only if syntactic consistency, $\Con(\ZFC)$. Consistency is not a premise of the equivalence. The repository explicitly describes these as external proof-assistant theorems; it does not supply an internal PA proof or a derivation encoded in ZFC's own proof syntax. Provability \emph{in ZFC} therefore remains a separately stated formalization obligation. None of the refactorings below discharges it.
+
+The endpoint composes five interfaces: dense-state renaming, blank initialization, binary/source simulation, source/program correspondence, and proof enumeration with ZFC calibration. This decomposition should be preserved. The proposals change how those interfaces are proved or imported, not their statements, the machine table, the source program, or the calibration target.
+
+\subsection{A current source pin rather than a historical receipt}
+All new source-based observations are pinned to \pin. The review checked Git blob identities and SHA-256 digests for 203 current Lean source snapshots. The transitive project-source import closure of \code{KEndpoint215} is 174 modules, 1,752,650 bytes and 37,648 lines. These are static source measurements, excluding external toolchain libraries.
+
+The earlier comparison pin is
+\code{6d9800d1ca67c52db0eb6e1c65df7b5cab9cdb95}. Its corresponding closure was 178 modules, 2,093,112 bytes and 40,517 lines. Thus 340,462 bytes and 2,869 lines of selected closure have already disappeared before the new proposals in this report. The historical phase-15 count of 176 modules is not the present count.
+
+The repository records full Lean and Rocq builds at an earlier commit, \code{613f9cf28a}, followed by narrower checked updates and reuse records. Those records are valuable provenance, but their existence does not establish a full build of all source bytes at the present pin. We did not run Lean or Rocq. New patches below are explicitly \emph{uncompiled candidates}.
+
+\subsection{Changes already integrated}
+Earlier proposals are not new recommendations here. The current source history already includes the unified QHyp quotient, computed proof trees, direct C222 compiler steps in both proof assistants, shared Rocq implication evaluation, normalized one-sided Rocq certificates, AX successor inference, and a direct full-seed construction. A successful next refactoring should start from these current implementations rather than reproduce an obsolete plan.
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Integrated change & Introducing commit \\
+\midrule
+Unified QHyp quotient & \code{8e46744} \\
+Computed proof trees & \code{775267c} \\
+Direct compiler in Lean & \code{fa92b88} \\
+Direct compiler in Rocq & \code{7b4ee981} \\
+Shared Rocq implication evaluation & \code{85cbbc9} \\
+One-sided normalized Rocq certificates & \code{16a674f} \\
+AX successor inference & \code{4fb82d6} \\
+Direct full-seed construction & \code{ff928ef0} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The packaged source ledger and integration map give full hashes and paths. The old phase-15 checkpoint and previous proposal documents are historical evidence, not validation of this report's current source pin.

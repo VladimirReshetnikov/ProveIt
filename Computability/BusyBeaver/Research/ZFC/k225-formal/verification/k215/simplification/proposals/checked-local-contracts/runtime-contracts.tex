@@ -1,0 +1,202 @@
+\section{A guarded left-frame theorem for the actual executor}
+\subsection{The representation and the precise guard}
+The maintained symbolic state is
+\[
+ s=(q,o,L,R),
+\]
+where $q$ is a state label, $o$ says whether the head is on the left list, and $L,R$ are lists of symbolic segments. A segment is a literal bit, a run of $an+c$ equal bits, or a register-file box. The interpretation \texttt{conc n vs s} produces a complete list-zipper configuration. Here $n$ is an arbitrary natural gap parameter and $vs$ is an arbitrary register file satisfying the appropriate branch validity predicate~\cite{runtime}.
+
+The executor's \texttt{sstep} may perform a literal transition, reorient the representation, scan a run, peel a cell, or use an already justified register-box contract. Some symbolic operations represent zero concrete transitions; a scan can represent arbitrarily many. A positive symbolic step count is not a positive concrete-time witness.
+
+For a symbolic frame $F$, define
+\[
+ A_F(q,o,L,R)=(q,o,L\mathbin{+\!+}F,R).
+\]
+This appends a preserved tape fragment beyond the explicit local left fragment. Define
+\[
+ G(q,o,L,R)\quad\Longleftrightarrow\quad
+ \neg(o=\mathsf{true}\land L=[]).
+\]
+
+\begin{theorem}[Guarded exact commutation]\label{thm:frame}
+For every machine table $M$, branch specification $b$, frame $F$, and symbolic state $s$ satisfying $G(s)$,
+\[
+ \operatorname{sstep}_{M,b}(A_Fs)
+ =\operatorname{map}(A_F\times\mathrm{id})
+       (\operatorname{sstep}_{M,b}(s)).
+\]
+The equality preserves the entire successor state, success or failure, and the progress Boolean.
+\end{theorem}
+\begin{proof}
+Split on orientation and the leading segment. Literal transitions prepend or remove a segment at the near end and commute with appending $F$ at the far end. Run scans have the same property. The two peeling functions commute with append by a direct split on the run coefficients. The box oracle inspects its state, branch and box descriptor; its left-list updates also commute with append. The only exceptional branch is orientation-left with an empty explicit left list. The guard excludes it. The supplied Lean proof handles these cases explicitly.
+\end{proof}
+
+The exception is essential. With $s=(q,\mathsf{true},[],[])$ and $F=[1]$, the unframed interpreter exposes an implicit blank, whereas the framed interpreter exposes the frame's $1$. The successors differ. The supplied \texttt{unguarded\_frame\_counterexample} proves this for arbitrary $M$ and branch specification.
+
+\subsection{A finite local replay}
+Define \texttt{runLocal} by exact fuel, checking the guard before every symbolic operation. At fuel zero it returns the current state without demanding the guard. Thus a local trace can finish precisely at a boundary where it must stop.
+
+\begin{theorem}[Universal local replay]\label{thm:local}
+Assume the existing register-box contracts for $M$. If
+\[
+ \operatorname{runLocal}_{M,b}(j,s)=\operatorname{some}(t),
+\]
+then, for every symbolic frame $F$, every $n\in\mathbb N$, and every $vs$ satisfying \texttt{Valid b vs},
+\[
+ \operatorname{conc}(n,vs,A_Fs)
+ \Reach_M
+ \operatorname{conc}(n,vs,A_Ft).
+\]
+\end{theorem}
+\begin{proof}
+Induct on $j$. The zero case is reflexive reachability. Successful successor replay supplies the guard and a successful symbolic step. Apply Theorem~\ref{thm:frame}, then the maintained \texttt{sstep\_sound}, and compose its concrete reachability with the induction hypothesis. The executor and interpretation remain unchanged.
+\end{proof}
+
+The conclusion deliberately permits zero concrete steps. Positive progress comes from the final Home contract, not from counting symbolic operations.
+
+\subsection{Why normalization needs a boundary}
+The maintained left normalizer may drop trailing blank segments because they represent blank exterior in a complete configuration. This is unsafe before appending a nonblank frame. Unframed left lists $[]$ and $[0]$ normalize alike, but appending $[1]$ gives $[1]$ and $[0,1]$, different tapes.
+
+The supplied \texttt{normalization\_frame\_counterexample} checks this using the actual \texttt{sMatches}, \texttt{conc} and frame definitions. Our replay therefore uses exact symbolic equality. Only the right endpoint is simplified by the ordinary, non-trimming segment normal form. An unframed \texttt{normL} or \texttt{sMatches} result is not lifted through a later frame.
+
+\section{Finish at Home and recover positive progress}
+All 35 inherited local templates end at exactly
+\[
+ (2,\mathsf{true},[],R').
+\]
+Append the frame
+\[
+ F_P=\operatorname{map}(\mathsf{bit},\rev(P))
+            \mathbin{+\!+}[\mathsf{bit}(1)].
+\]
+Its last bit is the existing marker. The boundary now exposes the entire preserved prefix, in reverse tape order, followed by the marker: precisely the entry needed by the maintained Home theorem~\cite{home}.
+
+The prefix premise is the existing finite scan check
+\begin{equation}\label{eq:scan}
+ \operatorname{scanBound}(0,\operatorname{map}(\mathsf{bit},\rev(P)))
+ =\operatorname{some}(a).
+\end{equation}
+For a literal bit word, it excludes a run of eight zeros. It does not require $P$ to be nonempty or end in one. The Home theorem does require standard blank exterior beyond the marker; it does not promise behavior with arbitrary nonblank cells farther left.
+
+\begin{theorem}[A positive complete-tape contract]\label{thm:home}
+Assume the existing box contracts, Home scan rows, and Home boundary theorem for $M$. If~\eqref{eq:scan} holds and
+\[
+ \operatorname{runLocal}_{M,b}(j,s)
+ =\operatorname{some}(2,\mathsf{true},[],R'),
+\]
+then, for every $n$ and every valid $vs$,
+\[
+ \operatorname{conc}(n,vs,A_{F_P}s)
+ \PosReach_M
+ \operatorname{zc}(84,[1],P\mathbin{+\!+}\operatorname{flat}(n,vs,R')).
+\]
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:local} reaches the framed Home port. The existing scan-bound soundness theorem supplies the unchanged-word scan of $\rev(P)$. Append the marker's reset transition and invoke \texttt{home\_word}. That theorem supplies positive reachability to dispatch. Compose the local reflexive-transitive run with this positive final segment.
+\end{proof}
+
+The supplied \texttt{local\_home\_sound} proves this statement. It quantifies over all admissible register values and all gaps, and preserves the whole represented tape. Reusing a local trace does not identify different complete source paths. A closed check of \texttt{KHomeReady.ready tm215} discharges the Home premises for the actual K215 table.
+
+\section{Source-path framing: keep stripping and carry inside the suffix}
+Physical execution alone is insufficient. We must identify the source instruction's exact successor. Write the complete consumed source word as $P\mathbin{+\!+}S$, with preserved prefix $P$ and literal local suffix $S$.
+
+The source defines continuation by stripping $k$ one-bits from the right, and break by stripping $k$ zero-bits and then incrementing. These existing operations are total on finite words. Their exhausted-suffix behavior is unsuitable for a local frame rule: remaining work might consume the preserved prefix when one is present~\cite{registerpath}.
+
+We introduce two partial checkers on reversed suffixes:
+\begin{align*}
+ \operatorname{stripWithin}(b,0,xs)&=\operatorname{some}(xs),\\
+ \operatorname{stripWithin}(b,k+1,[])&=\operatorname{none},\\
+ \operatorname{incWithin}([])&=\operatorname{none},\\
+ \operatorname{incWithin}(0::xs)&=\operatorname{some}(1::xs),\\
+ \operatorname{incWithin}(1::xs)&=
+   \operatorname{map}(0::\cdot)(\operatorname{incWithin}(xs)).
+\end{align*}
+The remaining stripping case consumes the next bit and decrements the required count exactly when the bit matches $b$.
+
+\begin{lemma}[Local source arithmetic]\label{lem:arithmetic}
+Successful local stripping and, for break, successful local increment entail the corresponding equation for every prefix $P$:
+\begin{align*}
+ \operatorname{continuePath}(k,P\mathbin{+\!+}S)&=P\mathbin{+\!+}E,\\
+ \operatorname{breakPath}(k,P\mathbin{+\!+}S)&=P\mathbin{+\!+}E.
+\end{align*}
+Here $E$ is the checked local result for the selected operation.
+\end{lemma}
+\begin{proof}
+Induct on the reversed explicit suffix. Successful partial stripping establishes that no work remains before the arbitrary reversed prefix is inspected. Successful partial increment finds a zero before carry leaves the explicit suffix. Both therefore commute with appending an arbitrary reversed prefix. Reversing the equalities yields the displayed source-path equations.
+\end{proof}
+
+The new \texttt{PathFrame.lean} proves these statements against the current \texttt{RegisterPath} definitions. Its combined \texttt{controlCheck\_sound} covers both operations. Formal counterexamples show why exhausting a suffix while stripping, or allowing carry to escape an all-one suffix, invalidates the frame rule. Matching a few concrete source endpoints would not establish the universal fact.
+
+\section{The checked 35-template library}
+\subsection{Use the actual table and one shared record}
+Native labels and maintained Lean labels differ:
+\[
+ 301\mapsto102,\qquad302\mapsto120,\qquad254\mapsto230.
+\]
+Native state 302 occurs in the traces. Our generator reads the inherited, already relabeled \texttt{FORMAL\_TEMPLATES.json}; Lean directly evaluates \texttt{runLocal} against the actual \texttt{tm215}. Neither the Python trace nor the generator is assumed sound~\cite{leftframe,table215}.
+
+All 35 local replay equations are kernel-checked. The specified operation counts sum to 444; these are symbolic executor operations, not concrete machine steps. The same generated record carries the source suffix, control operation, argument, and result. All 29 continuation and six break templates pass the new local arithmetic checker.
+
+The right-output geometry is checked separately: $S$ is nonempty, $|E|\le |S|$, the start is the claimed primitive port, and the right output normalizes to the claimed result and adjusted gap. Thus the physical theorem and the source theorem use the same typed record. There is no unverified join between separate metadata lists.
+
+\subsection{The exact combined contract}
+For a template $t$, write $q$ for its entry state, $S$ for its literal suffix and $E$ for its result. The combined theorem \texttt{every\_template\_control} proves both the positive physical run below and the corresponding source equation of Lemma~\ref{lem:arithmetic}:
+\begin{align*}
+ &\operatorname{zc}\bigl(q,\,
+   \rev(P\mathbin{+\!+}\operatorname{init}(S))\mathbin{+\!+}[1],\\
+ &\hspace{3.5em}
+   [\operatorname{last}(S)]\mathbin{+\!+}0^{n+16}
+       \mathbin{+\!+}[1]\mathbin{+\!+}\operatorname{sepsR}(vs)\bigr)\\
+ &\quad\PosReach_{\mathrm{tm215}}\\
+ &\operatorname{zc}\bigl(84,[1],\,
+   P\mathbin{+\!+}E\mathbin{+\!+}0^{\,n+(16+|S|-|E|)}
+       \mathbin{+\!+}[1]\mathbin{+\!+}\operatorname{sepsR}(vs)\bigr).
+\end{align*}
+The quantifiers cover every prefix $P$ accepted by~\eqref{eq:scan}, every natural $n$, and every valid register list $vs$. The register file and every preserved prefix bit remain unchanged.
+
+The generic combined theorem retains the established box contracts as an explicit premise. The freshly compiled \texttt{every\_template\_control\_closed} adapter in \texttt{ClosedControl215.lean} discharges it using the existing \texttt{KTape.boxLemmas}, just as the production proof does. Thus the final contract has no box, Home-row, boundary, or table-agreement assumption: only template membership, the prefix scan condition, an arbitrary gap, and a register list of length at least ten.
+
+The production leaf uses gap $n+(64-|Q|)$, where the whole source word $Q=P\mathbin{+\!+}S$ has length at most 48. Instantiate the template with
+\[
+ n'=n+(48-|Q|).
+\]
+Then $n'+16=n+(64-|Q|)$. The length premise is essential because subtraction is truncated in the natural numbers. The correspondence is an exact arithmetic obligation, not a license to omit the full source word.
+
+\subsection{What the proposed reduction counts}
+The current site list contains 1,900 increments, 1,425 decrements, 98 breaks, 1,327 continuations, and one halt. Decrements require separate zero and positive outcomes, so
+\[
+1900+2\cdot1425+98+1327+1=6176.
+\]
+The inherited proposal assigns 1,422 control occurrences to 35 templates: 1,326 continuations and 96 breaks. Three controls remain literal: \texttt{001/CB1}, \texttt{1000111/CC3}, and \texttt{11011/CB1}.
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule Execution family & Current occurrences & Proposed distinct checks\\\midrule
+Increment & 1,900 & 1,900\\
+Decrement outcomes & 2,850 & 2,850\\
+Control & 1,425 & $35+3=38$\\
+Halt & 1 & 1\\\midrule
+Total & 6,176 & 4,789\\\bottomrule
+\end{tabular}
+\end{center}
+The difference is 1,387, approximately 22.46\% of the original expensive execution family. This is not a 22.46\% compile-time improvement. All 6,176 outcomes still need coverage. Each template use needs exact routing, prefix/suffix, operation, gap and result bindings. Our new work proves the reusable universal components and the 35 local certificates; it does not count all remaining production obligations as recompiled.
+
+\section{The endpoint must accept semantic evidence}
+The current \texttt{KSim.Covered M p} requires an exact successful source walk and a Boolean \texttt{checkEdge} result for every path. That Boolean evaluates a particular symbolic executor with fuel 4,000. Eventual semantic reachability does not imply that this evaluator returns \texttt{true} within that fuel~\cite{sim}.
+
+A full semantic-coverage refactor can expose positive nonhalting-edge contracts, designated halt-port contracts, the two decrement cases, bounds, register permutation, overflow, and spare-register extension. Exact source-walk totality and complete consumed words must remain part of coverage. The old Boolean checker can supply these contracts through soundness; template proofs supply them by composition~\cite{intake215}.
+
+There is also a smaller endpoint seam. The included \texttt{KEndpointPort.patch} factors the existing endpoint through a theorem whose operational input is simply
+\[
+ \operatorname{Halts}(M,T)
+ \quad\longleftrightarrow\quad C222(F).
+\]
+The dense-state, boot, and logical-calibration arguments stay unchanged. The old endpoint becomes a wrapper supplying
+\[
+  \texttt{hsrc}\;\circ\;
+  (\texttt{KSim.halts\_iff}\ \cdots)^{-1}.
+\]
+A semantic residual simulation can supply the same port directly. This avoids proving Boolean evaluator acceptance from a semantic theorem.
+
+The patch applies cleanly to the pinned source but is explicitly uncompiled against the endpoint closure. It adds 21 lines (81 to 102), so it is enabling interface work, not an immediate source-size reduction.
+
+Decoder totality must not disappear in either migration. In the source, \texttt{step p c = none} can mean decoder exhaustion, as well as a literal halt. Preserve the existing completeness argument so that a stuck relevant source configuration corresponds to the designated halt leaf. Positive target progress must also remain available for reverse halting transport.

@@ -1,0 +1,131 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{enumitem,fancyhdr,listings}
+\definecolor{ink}{HTML}{183247}
+\definecolor{accent}{HTML}{176B78}
+\definecolor{light}{HTML}{F3F6F8}
+\hypersetup{pdftitle={Shorter K215 proofs through checked local contracts},pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{K215 / PROOF SIMPLIFICATION}}
+\fancyhead[R]{\small October 22, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.4em}\setlength{\parindent}{0pt}
+\setlist{topsep=3pt,itemsep=2pt,leftmargin=*}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,backgroundcolor=\color{light},frame=single,rulecolor=\color{light}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Reach}{\mathrel{\longrightarrow^{*}}}
+\newcommand{\PosReach}{\mathrel{\longrightarrow^{+}}}
+\newcommand{\rev}{\operatorname{rev}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\base}{cbf94cb552a3b49509e0eee80e7455d4eb5974c6}
+\setcounter{tocdepth}{1}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{1cm}
+{\Large\textcolor{accent}{PROVEIT RESEARCH NOTE}}\par
+\vspace{0.6cm}
+{\Huge\bfseries\textcolor{ink}{Shorter K215 proofs}}\par
+\vspace{0.3cm}
+{\LARGE Through checked local contracts}\par
+\vspace{0.8cm}
+{\large A concrete continuation of the Rocq and Lean proof simplification work}\par
+\vspace{0.8cm}
+Prepared for Vladimir Reshetnikov\par
+October 22, 2026 (Pacific time)\par
+\vspace{0.7cm}
+\textbf{Reviewed repository snapshot}\par
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/cbf94cb552a3b49509e0eee80e7455d4eb5974c6}\par
+\vspace{0.8cm}
+\textbf{Recommendation.} Continue the semantic-contract route. Prove the effect of a local routine once, quantify over the preserved context, and bind each use with a small finite check. In Lean, this realizes the earlier left-frame proposal. In Rocq, a closed subprogram footprint permits reuse of existing macro proofs.
+
+\textbf{New checked work.} This delivery supplies a guarded frame theorem, positive Home composition, universal source-path framing, and literal checks for the 35 inherited local templates. It also supplies a Coq-checked transfer theorem for an exact 89-node common subprogram. These are component results. They have not replaced the production endpoint or constituted a new full K215 build.
+\vfill
+\textbf{Archive contents:} this article and its LaTeX source, new proof modules, pinned prerequisite sources, deterministic generators, source census, compiler logs, and reproduction instructions.
+\end{titlepage}
+
+\begin{abstract}
+The current K215 proof has already absorbed extensive sharing, reflection, and import pruning. Recommending those improvements again would obscure the remaining task. At the reviewed snapshot, the maintained Lean endpoint selects 176 project modules; its latest accepted checkpoint reports 2,052,142 selected source bytes. Its 4,751 source leaves still induce 6,176 runtime branch obligations. The best next structural reduction is to reuse exact semantic contracts across occurrences, while preserving the entire tape and source path.
+
+We develop two concrete instances. An earlier uncompiled proposal factors 1,422 control occurrences through 35 local symbolic traces and the existing Home theorem. We supply checked universal frame and path-action lemmas, closed checks of those traces against the actual Lean table, and formal counterexamples to unsafe framing. The proposed expensive execution family has 4,789 members; this is a candidate obligation count, not a measured speedup or an integrated endpoint result. Separately, two Rocq macro libraries are identical after declared namespace/program renaming. Their 58 concrete-node contracts have 53 roots in a closed 89-node subprogram on which the old and new DAGs agree. A newly checked transport theorem preserves every exit and every final register value. We distinguish fresh component results, inherited evidence, and remaining production integration work.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The target and the present baseline}
+The target remains the accepted two-symbol, one-tape K215 machine, started on a blank two-way infinite tape, with 215 working states and a separate halt. Initialization is included. We neither change this machine nor search for a smaller state count in this report. The relevant statement is
+\begin{equation}\label{eq:goal}
+ \neg\operatorname{Halt}(K215,\mathrm{blank})
+ \quad\longleftrightarrow\quad \Con(\ZFC).
+\end{equation}
+Its positive form identifies halting with the existence of a finite ZFC derivation of falsity. The maintained Lean declaration is \texttt{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}; nonhalting follows by \texttt{not\_congr}. The Rocq dense endpoint is \texttt{tm215\_halts\_iff\_ZFC\_inconsistent}~\cite{verification,endpoint}.
+
+There is a foundational distinction to preserve. The repository records external proof-assistant theorems about a syntactic ZFC proof predicate. It explicitly does not supply a derivation encoded in PA's or ZFC's own proof syntax. This report does not add that internalization. Our local operational arguments are finitary and suitable for arithmetic formalization, but compiling them in Lean or Coq is not itself an internal ZFC proof of~\eqref{eq:goal}. No consistency assumption is used to prove the equivalence.
+
+All reviewed sources are pinned to commit \texttt{\base}. The following literal input hashes were independently recomputed:
+\begin{center}
+\begin{tabular}{@{}lp{0.70\linewidth}@{}}
+\toprule Input & SHA-256\\\midrule
+Dense table & \nolinkurl{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}\\
+Native table & \nolinkurl{9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2}\\
+Source sites & \nolinkurl{17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The accepted phase-fifteen record reports a 176-module endpoint closure, a 194-provider primary check, a 71-provider compatibility check, and 199 distinct project modules across those scopes. The original full builds reported 204 Lean project modules and 237 Rocq sources. Those counts have different scopes and dates. We attribute them to the repository; we did not rerun either complete endpoint~\cite{phase15,verification}.
+
+\section{What has already been simplified}
+The current proof already contains most of the obvious abstractions. Its history documents shared implication derivations, pointwise lifts replacing a deduction theorem, a shared enumerator argument, generic symbolic execution, macro-word composition for AX, bisimulation symmetry, normalized source correspondence, shared Home returns, semantic seed sharing, quotient syntax, transfinite recursion, and a stopped-or-synchronized dense bridge~\cite{simplification}.
+
+Several large historical reductions are real but are not new savings available at this snapshot. The Lean dominated-implication core and adapter have already fallen from 689,857 to 16,826 bytes, and the AX routine from 202,222 to 7,563 bytes. Normalized correspondence already checks 1,426 entries rather than 2,240. All 4,751 source leaves remain represented. We independently counted the 1,426 literal certificate leaves in the current source data; we did not rerun that large correspondence certificate.
+
+The pending proposals are especially relevant~\cite{intake215,leftframe}:
+\begin{itemize}
+\item The residual-decoder component provides a semantic route from exact leaf ports to source simulation. Its reported component checks are not a current full endpoint build.
+\item A transparent subtree abbreviation could remove repeated text in site obligations. Its quoted 18,565-byte saving is for an uncompiled source-formatting proposal, not a computational reduction.
+\item A four-client cofinal-scheduler abstraction shares induction, but its historical aggregate saving is only 324 bytes, and the K215-only closure grows. It may improve maintenance without improving this machine's selected proof size.
+\item The round-thirteen left-frame proposal discovers the 35 local templates developed below, but explicitly leaves its generic Lean proof and integration uncompiled.
+\end{itemize}
+The immediate opportunity is to finish a small reusable proof boundary and check its finite instantiations. Another broad simulation framework would add a new layer before removing an old one.
+
+\section{The organizing principle: reusable contracts}
+At the runtime level, different source paths execute the same finite local behavior. They differ in a preserved tape prefix, a gap length, and register contents. A useful theorem quantifies over those data instead of reevaluating the local mechanism at every occurrence.
+
+At the register-program level, two programs may contain exactly the same closed subprogram. A macro proof should depend only on its reachable nodes. It should not be repeated because a distant dispatch routine changed.
+
+Both arguments have the form
+\[
+ \text{one semantic theorem}
+ +\text{ a finite applicability certificate}
+ \Longrightarrow \text{ all concrete uses}.
+\]
+The finite certificate is still checked. Sharing does not mean discarding occurrences, joining different source paths, or accepting a generator's output as a theorem.
+
+Keep the measurements separate:
+\begin{center}
+\begin{tabular}{@{}p{0.28\linewidth}p{0.65\linewidth}@{}}
+\toprule Measurement & Meaning\\\midrule
+Selected source bytes & One endpoint's transitive project source closure.\\
+Maintenance source bytes & Proofs, adapters, generators, and shared definitions across supported variants.\\
+Expensive execution checks & Distinct finite runtime certificates needing evaluation.\\
+Kernel time and memory & Actual resource use under a specified toolchain and workload.\\
+Audit surface & Semantic arguments and finite data a reviewer must understand.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Reducing one does not automatically reduce the others. New reusable code initially increases source size until production clients replace repeated work.
+
+\input{runtime-contracts.tex}
+\input{rocq-and-integration.tex}
+\input{references.tex}
+\end{document}

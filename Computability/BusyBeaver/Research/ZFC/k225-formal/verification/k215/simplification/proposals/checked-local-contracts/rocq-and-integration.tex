@@ -1,0 +1,120 @@
+\section{Rocq: transport macros across a checked closed footprint}
+\subsection{The concrete repetition}
+The current \texttt{ProgLibPerm.v} has 37,951 bytes and 780 newline-counted lines. After removing nested comments and whitespace and applying declared namespace/program renaming, it is identical to the K218 \texttt{ProgLib219.v}. This is a reproducible textual census; semantic agreement on the shared footprint is established separately below.
+
+The literal DAGs contain 467 and 487 nodes. The newer program changes old nodes 139, 141, 147 and 236 and adds nodes 467 through 486. The 58 concrete-node macro theorem blocks mention 53 distinct roots. Their closed transitive node footprint has only 89 nodes, none affected by those changes. Those blocks occupy 275 lines of the current macro library. The snapshot audit records all roots, nodes and source hashes.
+
+\subsection{An exact transport theorem}
+Use the existing \texttt{K230.RM.run} relation. It records a program, starting edge, initial register function, exit kind and final register function. Exits include normal, break, continue and halt. Preserving all these distinctions is stronger and more useful than a bare halting equivalence~\cite{rocqmacro}.
+
+\begin{definition}
+A finite node set $U$ is a \emph{closed agreement footprint} for programs $p,q$ if, for every $u\in U$, the two programs have exactly equal child edges at $u$, and every child that is a node reference also belongs to $U$. Primitive edges need no membership condition.
+\end{definition}
+
+\begin{theorem}[Exact macro transport]\label{thm:transport}
+Suppose $U$ is a closed agreement footprint and $e$ is primitive or references a node in $U$. Then for all register functions $R,R'$ and all exits $x$,
+\[
+ \operatorname{run}_p(e,R,x,R')
+ \quad\longleftrightarrow\quad
+ \operatorname{run}_q(e,R,x,R').
+\]
+\end{theorem}
+\begin{proof}
+For one direction, induct on the given big-step derivation. Primitive constructors are identical. At a node constructor, table agreement rewrites the child edges, and closure permits the induction hypotheses. In the continue-one constructor, the loop restarts at the same node, which remains in $U$. The same exit and the identical final register function are preserved. Table agreement and closure are symmetric, giving the reverse direction. The supplied proof covers all sixteen constructors of the actual relation, without a termination or acyclicity hypothesis.
+\end{proof}
+
+The supplied \texttt{check\_footprint} tests both table equality and closure. Its soundness theorem turns a true Boolean result into the hypotheses of Theorem~\ref{thm:transport}. The concrete \texttt{Footprint215.v} kernel-checks the exact 89-node footprint and all 53 roots. Thus
+\begin{lstlisting}
+Theorem macro_run_iff n R x R' :
+  In n macro_roots ->
+  (run dag219 (ENode n) R x R' <->
+   run dagPerm (ENode n) R x R').
+\end{lstlisting}
+has no unproved table-agreement hypothesis. The companion \texttt{macro\_contract} transports arbitrary preconditions and arbitrary postconditions on exits and registers. All old contracts at those roots are eligible for reuse, for every input register function.
+
+\subsection{The actual production refactor}
+The old and new libraries independently declare a nine-field record \texttt{St}. Textual identity does not make those types definitionally equal. Production must either move \texttt{St}, \texttt{get}, \texttt{set} and \texttt{approx} into a shared module with compatible exports, or supply explicit record conversions and prove their register observations agree.
+
+Next make \texttt{sem} program-parametric, retain one shared mathematical macro library, and replace repeated variant bodies with transport wrappers. Preserve existing public statements through checked aliases or conversions. Keep changed dispatch, AX and root-program arguments local, and update the generating templates as well as generated files.
+
+Avoid importing an entire old machine merely to shorten a local wrapper. A common macro module, parameterized by its finite table interface, gives a better dependency boundary. A canonical partial macro table with default behavior outside the closed footprint is another option: agreement matters only where the proof can go.
+
+The pilot was freshly compiled with Coq 8.18.0 and OCaml 4.14.1 and recursively checked with \texttt{coqchk}. Five named assumption reports are closed under the global context. It is a portable Rocq-family component result, not a Rocq 9.1.0 production run. Adoption must check the wrappers and descendants under the repository's pinned production toolchain.
+
+\subsection{Further family sharing}
+The extension also repeats several runtime files across eight variants. The current census gives:
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule Source & K215 bytes & Eight copies, bytes\\\midrule
+\texttt{Runtime230Core.v} & 19,622 & 156,227\\
+\texttt{Interpreter230Sites.v} & 8,121 & 64,219\\
+\texttt{Sim230.v} & 12,037 & 95,393\\
+\texttt{Tape230Blocks.v} & 8,786 & 69,539\\
+\texttt{Tape230Carry.v} & 5,579 & 43,883\\
+\bottomrule
+\end{tabular}
+\end{center}
+This suggests a subsequent family-level refactor. \texttt{Runtime230Core} already exposes its register excursion theorems as premises; its remaining table dependence can become explicit. \texttt{Sim230} is conceptually parametric in the program, checked sites, boot frame and initial registers. The Lean lane already demonstrates this architecture.
+
+These figures quantify maintenance repetition. Deleting seven variants does not remove seven copies from one endpoint's import closure. No net source or time saving is claimed before the actual shared clients are compiled and measured.
+
+\section{Recommended implementation order}
+\textbf{First, adopt the small checked components.} Review the frame guard, full output equality, local source arithmetic and finite footprint checker. Their current proofs are included and freshly checked. Keep finite data generated from pinned inputs, with the generator outside the logical trust base.
+
+\textbf{Second, attach the runtime contracts.} Use the submitted residual prefix route and the small semantic endpoint port, or the more general semantic-coverage interface. Bind each of the 1,422 shared control occurrences to an exact routed entry, suffix split and source action. Retain the three literal controls and all increment, decrement and halt outcomes. Full prefixes and final primitive bits remain present.
+
+\textbf{Third, share the Rocq macro library.} Resolve record identity and exported APIs before replacing bodies. Use the 89-node gate for unchanged macros and retain independent proofs for changed parts. This is a focused transfer of an existing Lean technique to a place where Rocq still repeats it.
+
+\textbf{Fourth, rebuild and measure the endpoints.} Recompile affected transitive closures and both literal-machine endpoints. Compare selected source bytes, maintained generator bytes, object sizes, compiler time, peak memory and endpoint assumptions against the same baseline. Historical timing must remain labeled historical.
+
+The subtree abbreviation is a small independent cleanup. The cofinal-scheduler abstraction is a separate maintenance choice. Neither is added arithmetically to the template obligation count or treated as another reduction of the same source.
+
+\section{Validation and reproduction}
+The archive contains a machine-readable census, exact input hashes, proof sources, pinned prerequisites, accepted compiler logs, development failures kept separately, and reproduction drivers. The summary below describes fresh component checks only.
+
+\input{validation-summary.tex}
+
+No machine transition is weakened, no external oracle is introduced, and no \texttt{sorry}, \texttt{admit} or new axiom is used. Finite Lean equations use kernel checking; the Coq footprint equations use \texttt{vm\_compute} followed by checked equality proofs and recursive \texttt{coqchk}.
+
+The drivers use new output directories, verify prerequisite hashes, compile in dependency order, preserve compiler output and emit receipts. The generator can be rerun and compared byte-for-byte with its checked output. Reusable sources, rather than compiled objects, are delivered. Exact commands and toolchain requirements appear in the README.
+
+One evidence distinction matters for future integration: historical receipts certify their recorded bytes. For example, the retained Rocq normalized-9.1 receipt lists 44 compiled entries, whereas the current local K215 source directory has 43 files and some source hashes differ. This does not invalidate the historical check or refute the machine theorem; it means that receipt alone cannot certify arbitrary later edits. Our new receipts bind only the actual sources and toolchains used here.
+
+The production source tree was left unchanged. The endpoint-port patch is clearly separated as an uncompiled proposal. Component success is not used as evidence that this adapter or a complete endpoint passed.
+
+\section{Conclusion}
+The strongest next simplification makes each proof depend only on the computation it actually uses. For runtime code, that is a guarded local trace plus a proved return through the preserved prefix. For register macros, it is a closed subprogram footprint. Small finite certificates still establish that every application satisfies the theorem's conditions.
+
+This delivery turns the earlier 35-template sketch into checked universal components and establishes a concrete 89-node transfer route for the Rocq macros. The remaining work is explicit: exact source-occurrence attachment, semantic endpoint integration, compatible macro wrappers, and production endpoint rebuilds. The literal machine and intended equivalence with syntactic ZFC consistency remain unchanged.
+
+\appendix
+\section{Primary source and artifact map}
+\begin{longtable}{@{}p{0.36\linewidth}p{0.57\linewidth}@{}}
+\toprule Module or artifact & Role\\\midrule
+\endhead
+\texttt{KEndpoint215} & Literal-machine halting and nonhalting statements.\\
+\texttt{KEndpoint} & Dense/boot composition and ZF/ZFC calibration.\\
+\texttt{KRuntimeCore} & Symbolic segments, interpretation, stepping and soundness.\\
+\texttt{KHome} & Uniform prefix scan and positive Home return.\\
+\texttt{KSim} & Current Boolean coverage and source simulation.\\
+\texttt{KDecoderPrefix215} & Exact role/path entry and full leaf-port representation.\\
+\texttt{RegisterPath} & Executable source path operations.\\
+\texttt{KTable215} & Actual sparse-label table checked by local equations.\\
+\texttt{LeftFrameContract} & New guarded frame theorem and positive composition.\\
+\texttt{LeftFrameTemplates215} & New kernel-checked rendering of inherited 35-template data.\\
+\texttt{LeftFrameGeometry215} & Exact input and output geometry for those records.\\
+\texttt{PathFrame} & Universal local source-path arithmetic.\\
+\texttt{PathFrameTemplates215} & Joined physical/source contracts and concrete Home check.\\
+\texttt{ClosedControl215} & Final adapter discharging the register-engine premises.\\
+\texttt{RunTransfer.v} & Generic closed-footprint transport.\\
+\texttt{Footprint215.v} & Exact 89-node and 53-root certificate.\\
+\texttt{KEndpointPort.patch} & Small semantic endpoint interface; uncompiled proposal.\\
+\bottomrule
+\end{longtable}
+
+\section{Attribution and originality}
+The machine, mathematical calibration and existing proof stack belong to the ProveIt project and its cited predecessors, including Elliot Glazer's K230 development and Jeff Ketchersid's register-machine and Turing-machine verification work. The accepted candidate's notice and the repository license are included.
+
+The 35-template decomposition, 1,422 occurrence assignments and proposed 4,789-check family are credited to the repository's round-thirteen left-frame proposal. The semantic residual route is credited to the existing submitted component. Neither is presented as a new discovery.
+
+The contribution here is the checked realization of the universal frame and source-action obligations, exact tape geometry and their joined contracts, literal kernel checks, explicit counterexamples, and the focused Rocq transfer theorem with its checked 89-node instance. No minimality, smaller machine, new consistency result, full endpoint speedup or production closure reduction is claimed.

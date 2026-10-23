@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "scope": "Standalone exact-definition Coq compatibility component",
+  "compiled_at_utc": "2026-10-23T00:08:53.645677+00:00",
+  "compiler_version": "The Coq Proof Assistant, version 8.18.0\ncompiled with OCaml 4.14.1",
+  "compiler_binaries": [
+    {
+      "path": "/workspace/scratch/039d82f6c45e/rocq_work/toolchain/root/usr/bin/coqc",
+      "sha256": "f14ab0c140bdfdb31c7e7e1f20379703973376480a4eea2d43d0fa56ddae03ec"
+    },
+    {
+      "path": "/workspace/scratch/039d82f6c45e/rocq_work/toolchain/root/usr/bin/coqchk",
+      "sha256": "788a7a87e176bfd4a8820f76871efaa087a052d68447d8f129bcdf15c6c7ac87"
+    }
+  ],
+  "source_files": {
+    "FrameProofBody.v.inc": {
+      "sha256": "1e5240daa794193d2411de43c5461d16a7bf94d5266f6d0d28128a00368064e5",
+      "bytes": 6555
+    },
+    "K215FrameStandalone.v": {
+      "sha256": "341aa4edd20f24ad6177dea365dba2b085aad847b06b8f198c1c082ca728e7b3",
+      "bytes": 10504
+    },
+    "K215FrameTemplates.v": {
+      "sha256": "f99039f81fb40dc1cf609a8722c4bd640d445a6d0812f0bd3a53808acafe64ee",
+      "bytes": 20054
+    },
+    "K215LeftFrame.v": {
+      "sha256": "8184a364e071d6268ccc5e71929d51af66f4ef4620359228e1cdf58aa6f66895",
+      "bytes": 7007
+    },
+    "prepare_rocq.py": {
+      "sha256": "340240f8328f41dffaeebb8c26a3d9ee7536512ba198b15f8848d2ac30984a7d",
+      "bytes": 9955
+    },
+    "check_component.py": {
+      "sha256": "b6e85d3dcfd66ad54cf6c7f9c6e4bd66cef5fbcaa271426a7e3234b641386d37",
+      "bytes": 4248
+    },
+    "EXTRACTION.json": {
+      "sha256": "723ea8ae2ae78b3d01cf83b3909902afc0bec82b519b2ca2f2d3033f5a07f381",
+      "bytes": 3192
+    },
+    "K215FrameStandalone.vo": {
+      "sha256": "5fcd97b2f2d9ad109772eb3d7700e520a78ec08f21c00574309886ea2bacda1c",
+      "bytes": 76847
+    },
+    "K215FrameTemplates.vo": {
+      "sha256": "e7e3a3dc1800f897a75e569b9c078f619f054475f40243885b6adca96707f98b",
+      "bytes": 98065
+    }
+  },
+  "records": [
+    {
+      "name": "regenerate",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/039d82f6c45e/rocq_work/prepare_rocq.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.04917197000031592,
+      "log": "evidence/regenerate.log",
+      "log_sha256": "723ea8ae2ae78b3d01cf83b3909902afc0bec82b519b2ca2f2d3033f5a07f381"
+    },
+    {
+      "name": "compiler-version",
+      "command": [
+        "/workspace/scratch/039d82f6c45e/rocq_work/toolchain/root/usr/bin/coqc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.02533462499923189,
+      "log": "evidence/compiler-version.log",
+      "log_sha256": "a0b4f15df5fb051f99ac4510d6e2f52bf2e6f598701c0e190a2d0b91e2d7bb39"
+    },
+    {
+      "name": "K215FrameStandalone",
+      "command": [
+        "/workspace/scratch/039d82f6c45e/rocq_work/toolchain/root/usr/bin/coqc",
+        "-q",
+        "K215FrameStandalone.v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.4214551010009018,
+      "log": "evidence/K215FrameStandalone.log",
+      "log_sha256": "87696c04fea9fc5d85183a5c6b8c26d7ef7026cd2285f9c336d37ad7c4114cd2"
+    },
+    {
+      "name": "K215FrameTemplates",
+      "command": [
+        "/workspace/scratch/039d82f6c45e/rocq_work/toolchain/root/usr/bin/coqc",
+        "-q",
+        "K215FrameTemplates.v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8868525189973298,
+      "log": "evidence/K215FrameTemplates.log",
+      "log_sha256": "9142003af0ddfc667b3be918398301beda2b58ef86b659f73c468d6f1ff51d73"
+    },
+    {
+      "name": "coqchk",
+      "command": [
+        "/workspace/scratch/039d82f6c45e/rocq_work/toolchain/root/usr/bin/coqchk",
+        "-silent",
+        "-o",
+        "K215FrameTemplates"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.845743961999688,
+      "log": "evidence/coqchk.log",
+      "log_sha256": "63bb684ee7d2f8c186e9067d18af3f3b661e1345e5d4780f6126e3b9b1f6147d"
+    }
+  ],
+  "closed_assumption_reports": {
+    "generic": 5,
+    "templates": 20
+  },
+  "coqchk_axioms": [],
+  "production_rocq_9_1_endpoint_rebuilt": false,
+  "production_import_adapter_compiled": false,
+  "concrete_tape_semantic_client_instantiated": false,
+  "timing_note": "Single local run, not a comparison benchmark or endpoint build timing."
+}

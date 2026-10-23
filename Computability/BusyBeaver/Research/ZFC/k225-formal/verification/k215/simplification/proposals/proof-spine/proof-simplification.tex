@@ -1,0 +1,60 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small K215 proof simplification}
+\fancyhead[R]{\small Research proposal}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=none,aboveskip=6pt,belowskip=6pt}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{definition}[proposition]{Definition}
+\newcommand{\llbracket}{[\![}
+\newcommand{\rrbracket}{]\!]}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{\code{cbf94cb552a3b49509e0eee80e7455d4eb5974c6}}
+\hypersetup{pdftitle={Simplifying the K215 correctness proofs},pdfauthor={OpenAI},pdfsubject={Proof refactoring proposals for ProveIt}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Simplifying the K215 correctness proofs}\par
+\vspace{8pt}
+{\large A source pinned research proposal for ProveIt}\par
+\vspace{6pt}
+23 October 2026
+\end{center}
+\vspace{8pt}
+\textbf{Source baseline.} \pin.
+
+\textbf{Scope.} This report concerns shortening and simplifying the existing correctness proofs. It does not propose a smaller Turing machine.
+
+\textbf{Validation boundary.} Proposed Lean and Rocq proof changes require compilation in the repository's pinned toolchains. Static inspections and finite checks are supplementary evidence, not replacement kernel proofs.
+
+\input{00-summary}
+\clearpage
+\tableofcontents
+\newpage
+\input{01-baseline}
+\input{02-spine}
+\input{03-prefix}
+\input{04-validation}
+\input{05-research}
+\input{06-sources}
+\end{document}

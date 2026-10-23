@@ -1,0 +1,115 @@
+{
+  "status": "FAIL",
+  "toolchain": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "target": "BusyBeaver.ZFC.KLeftFrame",
+  "records": [
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "source": {
+        "origin": "/workspace/scratch/c995d38c8a66/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+        "sha256": "35170a1145cb2fc74e5faba3a922da13bb2d05aa6fe98fafe1593a4ba22c498a",
+        "imports": [],
+        "project_imports": [],
+        "rel": "BusyBeaver/ZFC/KZip.lean"
+      },
+      "command": [
+        "/workspace/scratch/c995d38c8a66/toolchains/lean-4.32.0-linux/bin/lean",
+        "-o",
+        "BusyBeaver/ZFC/KZip.olean",
+        "BusyBeaver/ZFC/KZip.lean"
+      ],
+      "cwd": "/workspace/scratch/c995d38c8a66/work/residual_design/build01",
+      "returncode": 0,
+      "elapsed_seconds": 0.507158,
+      "log_sha256": "ec406b70d342791e74d1c125a6eb00bf517a650e7b4dcfa70437f0dedde78429",
+      "object_sha256": "38a2a488d25c07ae358541b9d36e6587576cb2f3fb34ccf72acdb83b6323f487",
+      "import_objects": {}
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "source": {
+        "origin": "/workspace/scratch/c995d38c8a66/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+        "sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+        "imports": [
+          "BusyBeaver.ZFC.KZip"
+        ],
+        "project_imports": [
+          "BusyBeaver.ZFC.KZip"
+        ],
+        "rel": "BusyBeaver/ZFC/KRuntimeCore.lean"
+      },
+      "command": [
+        "/workspace/scratch/c995d38c8a66/toolchains/lean-4.32.0-linux/bin/lean",
+        "-o",
+        "BusyBeaver/ZFC/KRuntimeCore.olean",
+        "BusyBeaver/ZFC/KRuntimeCore.lean"
+      ],
+      "cwd": "/workspace/scratch/c995d38c8a66/work/residual_design/build01",
+      "returncode": 0,
+      "elapsed_seconds": 1.470698,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "85e0c602f320e52037521dd90d0d19bf3aa3a396d545c7fce8680b6968ebb930",
+      "import_objects": {
+        "BusyBeaver.ZFC.KZip": "38a2a488d25c07ae358541b9d36e6587576cb2f3fb34ccf72acdb83b6323f487"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "source": {
+        "origin": "/workspace/scratch/c995d38c8a66/ProveIt/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHome.lean",
+        "sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+        "imports": [
+          "BusyBeaver.ZFC.KRuntimeCore"
+        ],
+        "project_imports": [
+          "BusyBeaver.ZFC.KRuntimeCore"
+        ],
+        "rel": "BusyBeaver/ZFC/KHome.lean"
+      },
+      "command": [
+        "/workspace/scratch/c995d38c8a66/toolchains/lean-4.32.0-linux/bin/lean",
+        "-o",
+        "BusyBeaver/ZFC/KHome.olean",
+        "BusyBeaver/ZFC/KHome.lean"
+      ],
+      "cwd": "/workspace/scratch/c995d38c8a66/work/residual_design/build01",
+      "returncode": 0,
+      "elapsed_seconds": 0.786057,
+      "log_sha256": "377c84ad2807f431874243baa151b6cedfc166310f924f21e106e0660206ec56",
+      "object_sha256": "98d68b25d4e217be62361cafe2c74deb1b2f0ca45b176a028f93d30282d10d52",
+      "import_objects": {
+        "BusyBeaver.ZFC.KRuntimeCore": "85e0c602f320e52037521dd90d0d19bf3aa3a396d545c7fce8680b6968ebb930"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLeftFrame",
+      "source": {
+        "origin": "/workspace/scratch/c995d38c8a66/work/residual_design/BusyBeaver/ZFC/KLeftFrame.lean",
+        "sha256": "4fe2b5db6886f65b5266eb7704991ad32f01d87ce0601f9ee3c16213a262d6da",
+        "imports": [
+          "BusyBeaver.ZFC.KHome"
+        ],
+        "project_imports": [
+          "BusyBeaver.ZFC.KHome"
+        ],
+        "rel": "BusyBeaver/ZFC/KLeftFrame.lean"
+      },
+      "command": [
+        "/workspace/scratch/c995d38c8a66/toolchains/lean-4.32.0-linux/bin/lean",
+        "-o",
+        "BusyBeaver/ZFC/KLeftFrame.olean",
+        "BusyBeaver/ZFC/KLeftFrame.lean"
+      ],
+      "cwd": "/workspace/scratch/c995d38c8a66/work/residual_design/build01",
+      "returncode": 1,
+      "elapsed_seconds": 0.583731,
+      "log_sha256": "57df485c4161aa645ecbb8112e5e5c23b977fdb647957bc6f58a6a2154921b9e",
+      "object_sha256": null,
+      "import_objects": {
+        "BusyBeaver.ZFC.KHome": "98d68b25d4e217be62361cafe2c74deb1b2f0ca45b176a028f93d30282d10d52"
+      }
+    }
+  ],
+  "full_zfc_endpoint_rebuilt": false,
+  "scope": "Append-frame component and literal template contracts only"
+}

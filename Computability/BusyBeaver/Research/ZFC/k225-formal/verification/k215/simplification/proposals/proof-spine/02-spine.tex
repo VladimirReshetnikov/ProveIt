@@ -1,0 +1,57 @@
+\section{Separate the generic semantic spine from quotient adapters}
+\label{sec:spine}
+\subsection{Why the existing split is incomplete}
+The current proof has already extracted a \code{WFModelCore}, but its imported mathematical lemmas still bring the legacy CP/GIC quotient implementation into the primary endpoint closure. Two concrete dependencies, with arrows denoting transitive import reachability, are
+\[
+\begin{split}
+\code{WFModelCore}&\longrightarrow\code{WellFoundedPart}
+ \longrightarrow\code{QuotientCPGIC},\\
+\code{FiniteSets}&\longrightarrow\code{SingletonInfinity}
+ \longrightarrow\code{QuotientBasic}.
+\end{split}
+\]
+The general mathematics and its particular quotient instantiation share files. Merely introducing a top-level core therefore does not create a dependency boundary.
+
+The candidate separates four modules at their first quotient-specific adapter. The generic declaration bodies move verbatim, preserving their namespaces; the old modules become wrappers that import the core and retain the quotient-specific tail. Existing import paths and declaration names therefore remain available to compatibility clients. This avoids rewriting their mathematical proofs while allowing the primary path to use only the generic layer.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.28\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.32\linewidth}@{}}
+\toprule
+Existing module & New core module & First retained adapter boundary \\
+\midrule
+\code{SingletonInfinity} & \code{SingletonInfinityCore} & \code{theorem quotientBase} \\
+\code{FiniteSets} & \code{FiniteSetsCore} & \code{theorem quotientBase} \\
+\code{InductiveAttempts} & \code{InductiveAttemptsCore} & \code{theorem quotientFiniteBase} \\
+\code{WellFoundedPart} & \code{WellFoundedPartCore} & Actual-quotient GIC and base adapter \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Four further edits redirect \code{WFRelativization} and \code{KQ1ZF} to the new cores, and replace \code{KLowerQHyp}'s use of \code{QuotientModel.memberForm} and its satisfaction lemma with the already existing \code{KQ1Model} versions. The compatibility module \code{WFModel} also gains an explicit \code{WellFoundedPart} import for its quotient adapter, replacing a formerly transitive dependency. The syntax change in \code{KLowerQHyp} is a specific interface substitution, not a claim that arbitrary quotient lemmas are interchangeable. The patch and checks record the exact occurrences.
+
+\subsection{The mathematical boundary already present in the proofs}
+The generic layer has a concrete semantic interface, not an empty abstraction. Let $V$ be a carrier with membership relation $\in_M$.
+\begin{enumerate}
+\item \code{SingletonInfinity.Base} requires extensionality, exact pairs and formula-indexed Separation. Its least singleton-closed index construction additionally uses a root and an already supplied singleton-closed container. It does not depend on a quotient representation.
+\item \code{FiniteSets.Base} adds exact Union. The finite-set constructors and represented graph formulas use these fields rather than the particular CP/GIC construction.
+\item \code{ordinary_infinity_of_container} takes that finite base, formula-indexed functional Replacement, an empty root $e$, and a set $Y$ containing $e$ and closed under exact singleton. It constructs an ordinary von Neumann-successor inductive set. The existing theorem has no quotient or CP/GIC argument.
+\item \code{wf_closure} takes the finite base, the single first-order instance
+\[
+  \code{Sat}(\in_M,\lambda\_ .a,
+  \code{gicForm}(\code{witnessForm})),
+\]
+and the hypothesis that every member of $a$ lies in the internally well-founded part. The witness formula describes a transitive internally well-founded witness containing its input. Collection gathers the witnesses; their union is internally well-founded; adjoining $a$ supplies its witness. This uses represented subsets and the stated formula instance, not external well-foundedness or Collection for arbitrary external predicates.
+\end{enumerate}
+The adapter layer then instantiates precisely these hypotheses using the CP/GIC quotient. The dependency direction should follow that reasoning: the representation-specific instance imports the general theorem, not conversely. The candidate moves the existing proof bodies unchanged across this boundary. It does not add CP as a hidden hypothesis, claim CP was previously assumed by the generic theorem, or replace a proof with a stronger semantic assumption.
+
+\subsection{What the dependency cut changes}
+At the pinned sources, the candidate removes ten old module names from the selected endpoint closure and introduces the four cores. The six-module net reduction is 174 to 168. The old names absent from this closure are \code{FiniteSets}, \code{InductiveAttempts}, \code{SingletonInfinity}, \code{WellFoundedPart}, and the six \code{QuotientBasic}, \code{QuotientCPGIC}, \code{QuotientModel}, \code{QuotientPower}, \code{QuotientReplacement}, \code{QuotientSeparation} modules.
+
+Selected source decreases from 1,752,650 to 1,725,295 bytes and from 37,648 to 37,117 lines. This is a structural dependency result. The patch neither deletes those six mathematical theories from the repository nor asserts that Lean automatically discards every unused declaration. Legacy clients can continue to import their wrappers.
+
+\textbf{Cost.} The overall patch adds 1,152 bytes and 46 lines across its affected files because wrappers and new imports are added. This small duplication buys a clear API boundary and avoids a breaking repository-wide migration. If every legacy client is later migrated, wrapper retirement becomes a separate decision with its own evidence.
+
+\subsection{Why compilation is still essential}
+Verbatim movement of declarations is strong static evidence but is not a Lean elaboration theorem. Import changes may alter transitive availability, typeclass instances, notation, reducibility, or namespace behavior. The patch has not been compiled here. The static audit establishes source identity, declaration-body preservation, import resolution and the stated census; it cannot certify elaborated proof terms.
+
+Adopt the dependency patch first. Compile each core, each compatibility wrapper, both endpoint clients, and the retained compatibility scope in the pinned Lean toolchain. Compare \texttt{\#print axioms} output with the accepted baseline and preserve the exact endpoint statements. Only then measure clean and incremental build time, peak memory and proof-object size. A reduced import census alone warrants none of those performance claims.

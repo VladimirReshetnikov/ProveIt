@@ -1,0 +1,43 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean
+@@ -57,6 +57,27 @@
+     rw [e, run_add, ht, hm] at hj
+     simp [run, hc] at hj
+ 
++/-- A semantic port separates endpoint composition from the certificate producer.
++This is the same deterministic boot argument used by the original endpoint. -/
++theorem blank_halts_iff_c222_of_port
++    {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat} {T : Conf}
++    (hD : Commutes D M ex 230) (hH : ∀ b, M 230 b = none)
++    (hboot : Reach M (zc (ex 0) [] []) T)
++    (hport : Halts M T ↔ KCode222.C222 Code254.F) :
++    BlankHalts D ↔ KCode222.C222 Code254.F := by
++  rw [blank_iff hD hH, ← hport]
++  exact ⟨halts_of_reach hboot, Halts.of_reach hboot⟩
++
++/-- Any checked semantic source port feeds the unchanged ZFC calibration. -/
++theorem blank_halts_iff_zfc_refutation_of_port
++    {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat} {T : Conf}
++    (hD : Commutes D M ex 230) (hH : ∀ b, M 230 b = none)
++    (hboot : Reach M (zc (ex 0) [] []) T)
++    (hport : Halts M T ↔ KCode222.C222 Code254.F) :
++    BlankHalts D ↔ BProv ZFCax_s [] Form.fBot :=
++  ((blank_halts_iff_c222_of_port hD hH hboot hport).trans c222_iff_zf_refutation).trans
++    ConstructibleChoice.zf_refutation_iff_zfc_refutation
++
+ section
+ 
+ variable {m : Nat} {D : Machine (m + 1)} {M : TMN} {ex : Nat → Nat} {p : RegisterPath.Program}
+@@ -67,9 +88,9 @@
+ include hD hH hB hcov hboot hrel hsrc
+ 
+ /-- **A K machine halts iff the code 1 is derivable in the 222 calculus.** -/
+-theorem blank_halts_iff_c222 : BlankHalts D ↔ KCode222.C222 Code254.F := by
+-  rw [blank_iff hD hH, ← hsrc, KSim.halts_iff hB hcov hH hrel]
+-  exact ⟨halts_of_reach hboot, Halts.of_reach hboot⟩
++theorem blank_halts_iff_c222 : BlankHalts D ↔ KCode222.C222 Code254.F :=
++  blank_halts_iff_c222_of_port hD hH hboot
++    ((KSim.halts_iff hB hcov hH hrel).symm.trans hsrc)
+ 
+ /-- **A K machine halts on the blank tape iff ZFC is refutable.** -/
+ theorem blank_halts_iff_zfc_refutation : BlankHalts D ↔ BProv ZFCax_s [] Form.fBot :=

@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "pin": "cbf94cb552a3b49509e0eee80e7455d4eb5974c6",
+  "python": "3.12.14",
+  "replay_stages": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "root/audit_ax_inference.py"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "root/AX_INFERENCE_AUDIT.json",
+        "root/drafts/MacroWordInference.lean",
+        "root/drafts/L2AxiomsPerm.lean",
+        "root/drafts/L2AxiomsDom.lean",
+        "root/drafts/L2AxiomsPerm.lean.patch",
+        "root/drafts/L2AxiomsDom.lean.patch"
+      ],
+      "stdout_sha256": "cc7c09072a907973c421596c92be88502ae7d954805530657531143c0b634359"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "decoder/audit_direct_program.py",
+        "--output-dir",
+        "decoder"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "decoder/DIRECT_PROGRAM_AUDIT.json",
+        "decoder/NODE_AND_ROLE_MAP.json"
+      ],
+      "stdout_sha256": "6fc6caf586c2587602aa07897da450306b9171796344f444d6e1371fac47c845"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "decoder/make_direct_role_sketch.py"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "decoder/DirectProgramCertificateDraft.lean"
+      ],
+      "stdout_sha256": "3ae9ad09f5c029481c2f106a32c374cff70f1d85a6020cb690ccdd7aba44e851"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "rocq/audit_reuse.py"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "rocq/REUSE_AUDIT.json",
+        "rocq/z465_producer.proposal.patch"
+      ],
+      "stdout_sha256": "3281c51f52f7e6df9077d76f3eb18b27bf417e0a7a1827588b76030b83f6c82c"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "lean/audit_sources.py",
+        "--out",
+        "lean/SOURCE_AUDIT.json"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "lean/SOURCE_AUDIT.json"
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "lean/check_guarded_subtype.py",
+        "--out",
+        "lean/FINITE_CHECKS.json"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "lean/FINITE_CHECKS.json"
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "review/independent_data_check.py"
+      ],
+      "exit_code": 0,
+      "byte_identical_outputs": [
+        "review/INDEPENDENT_DATA_CHECK.json"
+      ],
+      "stdout_sha256": "b0ec9aed1a553caf34e01804b77c69560734dd02bf7c1470013c3fecefbb9df4"
+    }
+  ],
+  "byte_identical_rebuilt_files": [
+    "decoder/DIRECT_PROGRAM_AUDIT.json",
+    "decoder/DirectProgramCertificateDraft.lean",
+    "decoder/NODE_AND_ROLE_MAP.json",
+    "lean/FINITE_CHECKS.json",
+    "lean/SOURCE_AUDIT.json",
+    "review/INDEPENDENT_DATA_CHECK.json",
+    "rocq/REUSE_AUDIT.json",
+    "rocq/z465_producer.proposal.patch",
+    "root/AX_INFERENCE_AUDIT.json",
+    "root/drafts/L2AxiomsDom.lean",
+    "root/drafts/L2AxiomsDom.lean.patch",
+    "root/drafts/L2AxiomsPerm.lean",
+    "root/drafts/L2AxiomsPerm.lean.patch",
+    "root/drafts/MacroWordInference.lean"
+  ],
+  "original_files_unchanged": true,
+  "Lean_or_Rocq_compiled": false,
+  "upstream_code_executed": false,
+  "scope": "Exact source-data, integrity, finite regression and draft reproduction checks. Not universal semantic proofs, endpoint builds, timing measurements or machine reductions."
+}

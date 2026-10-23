@@ -1,0 +1,230 @@
+{
+  "commit": "cbf94cb552a3b49509e0eee80e7455d4eb5974c6",
+  "module": "BusyBeaver.ZFC.ConstructibleAbs",
+  "proposed_sha256": "b644da4d75ef7db58df680ce75780e705b99d5c558cac79d868be2096b21bc86",
+  "sources": [
+    {
+      "module": "FirstOrder.Fol",
+      "source": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+      "root": "Logic/FirstOrder/Lean",
+      "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "bytes": 21238,
+      "imports": []
+    },
+    {
+      "module": "FirstOrder.Calculus",
+      "source": "Logic/FirstOrder/Lean/FirstOrder/Calculus.lean",
+      "root": "Logic/FirstOrder/Lean",
+      "sha256": "6d61edd50c7062213be2e34a3b6a1efdb67d0f8072e75d4ff5dea20b41f549be",
+      "bytes": 16647,
+      "imports": [
+        "FirstOrder.Fol"
+      ]
+    },
+    {
+      "module": "ZF.Zf",
+      "source": "SetTheory/ZF/Lean/ZF/Zf.lean",
+      "root": "SetTheory/ZF/Lean",
+      "sha256": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa",
+      "bytes": 54075,
+      "imports": [
+        "FirstOrder.Calculus"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedZF",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "07a7b77602e217e365920a179f9523ac11d527ecdef052fefa801820f093b247",
+      "bytes": 7068,
+      "imports": [
+        "ZF.Zf"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalOrd",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "973f0f0ac7b2c88e7d93ce60f2785a806be1e98c61fdbbe9f69d094c5ea93a29",
+      "bytes": 7140,
+      "imports": [
+        "BusyBeaver.ZFC.NamedZF"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalRank",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "052a1d3e294781944e52d52bb86a8f3d1968ffc987f1808bf8c0cc3ca8700b0f",
+      "bytes": 20720,
+      "imports": [
+        "BusyBeaver.ZFC.InternalOrd"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.TransRec",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "da6b8f9136328f0582cd50f0514988109245c038e0cfb37435c3bcf2a24db7fe",
+      "bytes": 3335,
+      "imports": [
+        "BusyBeaver.ZFC.InternalRank"
+      ]
+    },
+    {
+      "module": "FirstOrder.Completeness",
+      "source": "Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+      "root": "Logic/FirstOrder/Lean",
+      "sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299",
+      "bytes": 45611,
+      "imports": [
+        "FirstOrder.Calculus"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.Basic",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Basic.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028",
+      "bytes": 21889,
+      "imports": [
+        "FirstOrder.Completeness",
+        "ZF.Zf"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.Coding",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Coding.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8",
+      "bytes": 15763,
+      "imports": [
+        "BoundedZFCConsistency.Basic"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.CodePredicate",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodePredicate.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df",
+      "bytes": 25870,
+      "imports": [
+        "BoundedZFCConsistency.Coding"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.FormulaClosedSet",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8",
+      "bytes": 23229,
+      "imports": [
+        "BoundedZFCConsistency.CodePredicate"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.OmegaRecursion",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/OmegaRecursion.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e",
+      "bytes": 42544,
+      "imports": [
+        "BoundedZFCConsistency.Basic"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSat",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "6f9cd1ec5917548ebf6e1bc41fc3c9a1ec9c2dd40473ab57ebb60bdca333b0a1",
+      "bytes": 60730,
+      "imports": [
+        "BoundedZFCConsistency.FormulaClosedSet",
+        "BoundedZFCConsistency.OmegaRecursion"
+      ]
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSatTotality",
+      "source": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+      "root": "SetTheory/BoundedConsistency/Lean",
+      "sha256": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9",
+      "bytes": 37883,
+      "imports": [
+        "BoundedZFCConsistency.InternalSat"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleDef",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "28b93a2d4340c8ade31b8bf30a2709419ba4846478381a5ec02112b1b0fd3d34",
+      "bytes": 9410,
+      "imports": [
+        "BusyBeaver.ZFC.TransRec",
+        "BoundedZFCConsistency.InternalSatTotality"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.Constructible",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "2c3aea758b591dd3deb3f154a96f4fbd52e2c6d9600f7506058f593670bfd2d6",
+      "bytes": 18843,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleDef"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFRank",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "df0b9faf58e80e51a390dd8ec15944eecdfe462c0cc1ec94d1a29eab36f6d388",
+      "bytes": 15497,
+      "imports": [
+        "BusyBeaver.ZFC.InternalRank",
+        "BoundedZFCConsistency.OmegaRecursion"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleReflect",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "b844bddeeebe4d009d92edc16a79225e81e5ef8ce0626b2b78c02c6fc3fd3108",
+      "bytes": 31015,
+      "imports": [
+        "BusyBeaver.ZFC.Constructible",
+        "BusyBeaver.ZFC.ZFRank"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleZF",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "00ff2869b1313643c83a0124abc3cf8bf6e0b3e9d590e768ff8488ab7dd3cc6c",
+      "bytes": 17255,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleReflect"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.SatSupport",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "6c373873159691fa767e518917874410201b7cec2b42d5add25a93e7495b24bd",
+      "bytes": 9347,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleZF"
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleAbs",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "root": "Computability/BusyBeaver/Lean",
+      "sha256": "3a1166a1879f5895671cb2d023130410d7c380a5134b0990ea0d9415719d3756",
+      "bytes": 50827,
+      "imports": [
+        "BusyBeaver.ZFC.SatSupport"
+      ]
+    }
+  ]
+}

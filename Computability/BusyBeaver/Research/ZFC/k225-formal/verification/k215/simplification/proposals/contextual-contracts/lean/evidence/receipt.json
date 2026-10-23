@@ -1,0 +1,402 @@
+{
+  "status": "PASS",
+  "scope": "10 project modules plus one closed client; not the K215 endpoint",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "cbf94cb552a3b49509e0eee80e7455d4eb5974c6",
+  "compiler": {
+    "path": "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+    "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+  },
+  "driver_sha256": "0ea269cfc9767578c3c1bf0fe2b42607cfb4d76b9a15be3a3f4aaf468abaa977",
+  "modules": [
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "source_sha256": "35170a1145cb2fc74e5faba3a922da13bb2d05aa6fe98fafe1593a4ba22c498a",
+      "source_bytes": 8625,
+      "source_lines": 228,
+      "imports": [],
+      "dependency_objects": {},
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KZip.olean",
+        "BusyBeaver/ZFC/KZip.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.667563,
+      "lock_wait_seconds": 4.8e-05,
+      "warning_count": 1,
+      "log": "logs/BusyBeaver.ZFC.KZip.log",
+      "log_sha256": "ec406b70d342791e74d1c125a6eb00bf517a650e7b4dcfa70437f0dedde78429",
+      "object_sha256": "38a2a488d25c07ae358541b9d36e6587576cb2f3fb34ccf72acdb83b6323f487"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "source_sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+      "source_bytes": 22804,
+      "source_lines": 562,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KZip": "38a2a488d25c07ae358541b9d36e6587576cb2f3fb34ccf72acdb83b6323f487"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KRuntimeCore.olean",
+        "BusyBeaver/ZFC/KRuntimeCore.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 1.820131,
+      "lock_wait_seconds": 5.7e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KRuntimeCore.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "85e0c602f320e52037521dd90d0d19bf3aa3a396d545c7fce8680b6968ebb930"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "source_sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+      "source_bytes": 10788,
+      "source_lines": 249,
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KRuntimeCore": "85e0c602f320e52037521dd90d0d19bf3aa3a396d545c7fce8680b6968ebb930"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KHome.olean",
+        "BusyBeaver/ZFC/KHome.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 1.01739,
+      "lock_wait_seconds": 7.3e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KHome.log",
+      "log_sha256": "377c84ad2807f431874243baa151b6cedfc166310f924f21e106e0660206ec56",
+      "object_sha256": "98d68b25d4e217be62361cafe2c74deb1b2f0ca45b176a028f93d30282d10d52"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTableCore",
+      "source_sha256": "a541dbfd4d4b9426b852ff975dd565f1ff562075290bd8c5f8c9abcddd20fb95",
+      "source_bytes": 1367,
+      "source_lines": 39,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KZip": "38a2a488d25c07ae358541b9d36e6587576cb2f3fb34ccf72acdb83b6323f487"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KTableCore.olean",
+        "BusyBeaver/ZFC/KTableCore.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.3152,
+      "lock_wait_seconds": 6.5e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KTableCore.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "dd68f764b5c79244b8ef1a00fac2d4c08f8ed2ae3a4614eb3d8db864eadeb100"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable215",
+      "source_sha256": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+      "source_bytes": 11919,
+      "source_lines": 242,
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KTableCore": "dd68f764b5c79244b8ef1a00fac2d4c08f8ed2ae3a4614eb3d8db864eadeb100"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KTable215.olean",
+        "BusyBeaver/ZFC/KTable215.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.866542,
+      "lock_wait_seconds": 6.2e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KTable215.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "1e814eefb2615346a794ae8e503c2fe1c17c35fecdbaf3818657e9b88beab55c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source_sha256": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+      "source_bytes": 6929,
+      "source_lines": 193,
+      "imports": [
+        "Init"
+      ],
+      "dependency_objects": {},
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/RegisterPath.olean",
+        "BusyBeaver/ZFC/RegisterPath.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.866286,
+      "lock_wait_seconds": 3.6e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.RegisterPath.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "object_sha256": "bc854b289005d6a695b10fce455cdcd1b95b494a84fd79c9a64d8dea01d0876c"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KControlFrame",
+      "source_sha256": "3e95cc2baf162386a73690f19c70006603741cdb0a24aab3cf28bc8e51525133",
+      "source_bytes": 4516,
+      "source_lines": 117,
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.RegisterPath": "bc854b289005d6a695b10fce455cdcd1b95b494a84fd79c9a64d8dea01d0876c"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KControlFrame.olean",
+        "BusyBeaver/ZFC/KControlFrame.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.516397,
+      "lock_wait_seconds": 5e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KControlFrame.log",
+      "log_sha256": "db1952567dd730a3db455a7eb6564ab54eda1fa9d43a1ef388ce8151aebcf8c1",
+      "object_sha256": "d6430009627de0df2504b6c757383d8f7fa1145e720951c4aa22ebf3f2f0ef02"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLeftFrame",
+      "source_sha256": "e32b6d4805453a542691d2b47cfe54d8b52f54bf39f98cf80aa7779a883a5d6c",
+      "source_bytes": 7291,
+      "source_lines": 191,
+      "imports": [
+        "BusyBeaver.ZFC.KHome"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KHome": "98d68b25d4e217be62361cafe2c74deb1b2f0ca45b176a028f93d30282d10d52"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KLeftFrame.olean",
+        "BusyBeaver/ZFC/KLeftFrame.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.716364,
+      "lock_wait_seconds": 6e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KLeftFrame.log",
+      "log_sha256": "5bf93f8fae57022c0ba2a68eb0810df20dc6f08dcfc9ae2606659e1975fbda03",
+      "object_sha256": "2abde4ce5ad6d3572143258c75171d3c7c0f5f2c696c14660c7ce63dde425074"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLeftFrame215",
+      "source_sha256": "4f721af887542f4deaedbdaa26443b665908a2dbabe91e987955e6d3558b3a76",
+      "source_bytes": 11837,
+      "source_lines": 124,
+      "imports": [
+        "BusyBeaver.ZFC.KLeftFrame",
+        "BusyBeaver.ZFC.KTable215"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KLeftFrame": "2abde4ce5ad6d3572143258c75171d3c7c0f5f2c696c14660c7ce63dde425074",
+        "BusyBeaver.ZFC.KTable215": "1e814eefb2615346a794ae8e503c2fe1c17c35fecdbaf3818657e9b88beab55c"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KLeftFrame215.olean",
+        "BusyBeaver/ZFC/KLeftFrame215.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.966822,
+      "lock_wait_seconds": 9.2e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KLeftFrame215.log",
+      "log_sha256": "7071455aa214828fbb80395c10407f39da36e622fca44478d4ebcc65f99aba75",
+      "object_sha256": "e739d0affcdc590d8be9076163a4c284f1fcf686417f8de28a933418d585f6c6"
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFramedControl215",
+      "source_sha256": "93e0abd472dbd7326445a9e399c018748e9b9f53a0707cc1cf58b79e5f316a81",
+      "source_bytes": 8255,
+      "source_lines": 143,
+      "imports": [
+        "BusyBeaver.ZFC.KLeftFrame215",
+        "BusyBeaver.ZFC.KControlFrame"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KLeftFrame215": "e739d0affcdc590d8be9076163a4c284f1fcf686417f8de28a933418d585f6c6",
+        "BusyBeaver.ZFC.KControlFrame": "d6430009627de0df2504b6c757383d8f7fa1145e720951c4aa22ebf3f2f0ef02"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "BusyBeaver/ZFC/KFramedControl215.olean",
+        "BusyBeaver/ZFC/KFramedControl215.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 1.069613,
+      "lock_wait_seconds": 6e-05,
+      "warning_count": 0,
+      "log": "logs/BusyBeaver.ZFC.KFramedControl215.log",
+      "log_sha256": "9e72b51e519031678e647f1dcc695c40a0d3e2ade7e2af9c303b72acc969c6ce",
+      "object_sha256": "c49404ab734037bcca7b72f4d0ecc0cba76c3008a7bed1ed98f704e9f7d44edd"
+    },
+    {
+      "module": "FrameAudit",
+      "source_sha256": "b4fa597f76c8eb50c209e7623d44f22078cb20dbfe3875a12e718d38cf263ac0",
+      "source_bytes": 1935,
+      "source_lines": 41,
+      "imports": [
+        "BusyBeaver.ZFC.KFramedControl215"
+      ],
+      "dependency_objects": {
+        "BusyBeaver.ZFC.KFramedControl215": "c49404ab734037bcca7b72f4d0ecc0cba76c3008a7bed1ed98f704e9f7d44edd"
+      },
+      "command": [
+        "/workspace/scratch/4dba11cf6666/toolchains/lean-4.32.0-linux/bin/lean",
+        "-j1",
+        "-M4096",
+        "-o",
+        "FrameAudit.olean",
+        "FrameAudit.lean"
+      ],
+      "exit_code": 0,
+      "seconds": 0.314918,
+      "lock_wait_seconds": 8.5e-05,
+      "warning_count": 0,
+      "log": "logs/FrameAudit.log",
+      "log_sha256": "9d43b9bf8cc119b67c340f8a5f053d19a3f35d9dcf8a176c566ab03f675e0c79",
+      "object_sha256": "66d919c852a74ad8d0f9692f1400a8dfce8682d6eee1516f29950f037b0ab634"
+    }
+  ],
+  "external_imports": [
+    "Init"
+  ],
+  "axiom_profiles": {
+    "SetTheory.BusyBeaver.ZFC.KHome.scanBound_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KHome.flat_reverse": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KHome.home_sound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KControlFrame.stripChecked_append": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KControlFrame.incChecked_append": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KControlFrame.controlSuffix_frame": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame.sstep_natural": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame.unsafe_frame_counterexample": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame.runLocal_sound": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame.home_prefix": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame.local_home": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame215.all_checked": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame215.template_reach": [
+      "propext",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KLeftFrame215.template_home": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KFramedControl215.all_aligned": [
+      "propext"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KFramedControl215.control_contract": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.KFramedControl215.aligned_contract": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "K215FrameAudit.actual_control_runtime": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "K215FrameAudit.actual_control_source": [
+      "propext",
+      "Quot.sound"
+    ],
+    "K215FrameAudit.boundary_guard_is_essential": [
+      "propext"
+    ],
+    "K215FrameAudit.all_runtime_templates_accounted_for": []
+  },
+  "warnings": 1,
+  "new_module_and_client_warnings": 0,
+  "templates": 35,
+  "local_steps": 444,
+  "maximum_template_steps": 39,
+  "full_occurrence_assembly_checked": false,
+  "full_zfc_endpoint_rebuilt": false,
+  "total_compile_seconds": 9.137226
+}

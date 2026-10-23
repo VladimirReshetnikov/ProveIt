@@ -1,0 +1,372 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array,enumitem,xcolor,listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\lhead{K215 proof simplification}\rhead{Current-source research report}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\halts}{\operatorname{Halts}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\get}{\operatorname{lookup}}
+\newcommand{\all}{\operatorname{all}}
+\newcommand{\some}{\operatorname{some}}
+\newcommand{\none}{\operatorname{none}}
+\newcommand{\ipeq}{\mathrel{\simeq_0}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\source}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/cbf94cb552a3b49509e0eee80e7455d4eb5974c6/#1}{#2}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},showstringspaces=false}
+\title{\textbf{K215: Shorter Proofs by Checking\newline Only the Required Interfaces}\\[0.6em]
+\large Current-source audit, direct certificate checking,\newline and normalization of semantic proof obligations}
+\author{Research contribution for Vladimir Reshetnikov's ProveIt project}
+\date{22 October 2026 (Pacific time)\\[0.3em]\small Repository snapshot: \texttt{cbf94cb552a3b49509e0eee80e7455d4eb5974c6}}
+\hypersetup{pdftitle={K215: Shorter Proofs by Checking Only the Required Interfaces},pdfauthor={ProveIt research contribution},pdfsubject={Current-source audit and checked proof simplification components}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The final K215 correctness theorem is already a short composition. Further progress should remove repeated obligations below that interface, while keeping the exact 215-state table and the theorem statements fixed. This report audits the current repository rather than relying on its older checkpoint summaries. The maintained Lean endpoint currently imports 174 project modules containing 1,752,650 source bytes; the phase-fifteen summary describes an older 176-module, 2,052,142-byte state. Several attractive proposals have therefore already been adopted.
+
+The principal structural contribution completes an existing cross-system design: a normalized Rocq source-certificate checker whose only lookup requirement is that a returned row has been locally checked. Its soundness does not require balanced-tree cuts to equal subtree sizes, a flattening identity, unique indices, or a separately certified generator. This is the interface already exploited by the maintained Lean checker. The report separates this mathematical simplification from claims about source size or compilation speed. A second, immediately smaller Lean pilot normalizes subtype expressions before transporting witnesses, removing 836 bytes without adding a helper. A more general helper was tested and rejected because it increased total source. The largest remaining operational opportunity is to complete semantic decoder-prefix and residual-runtime contracts for all 6,176 site outcomes. Exact verification scope, reproducible evidence, and remaining integration obligations are recorded with the accompanying code.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Recommendation and scope}
+
+\paragraph{Recommendation.}
+Keep the literal K215 machine and the existing endpoint APIs. Simplify the proof by giving each layer the weakest interface that its consumer actually uses. In particular:
+\begin{enumerate}
+\item Treat a source certificate as a finite collection of checked local simulation obligations with a routing operation. The semantic proof needs closure under routing, not equality with a particular serialized list.
+\item Normalize subtype operations before moving guarded witnesses. Introduce a new transport abstraction only if enough real clients share it to reduce total maintenance.
+\item Finish the existing semantic site-contract interface. Prove the decoder prefix once per source path by a structural theorem, and let the remaining finite checks start at its exact primitive-entry configuration.
+\end{enumerate}
+The first two items have concrete component evidence in this packet. The Lean patch makes an immediate source reduction. The Rocq interface removes representation-proof obligations, but its first-use source is larger than the present list implementation; it is an optional architecture change whose adoption should be justified by the measured workload. The third item is the main larger integration project. None requires a new 215-state candidate, an altered tape convention, a weaker endpoint, or a proof of consistency as an extra premise.
+
+\paragraph{The exact target.}
+The repository describes K215 as a two-symbol, one-tape machine with 215 working states, blank input, initial state zero, a two-way infinite tape, and a separate halt. Initialization is included. Its dense table has SHA-256
+\begin{center}\small\texttt{fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.\end{center}
+The maintained endpoints assert, in their respective proof assistants,
+\[
+  \halts(K215,\mathrm{blank})\quad\longleftrightarrow\quad
+  \operatorname{Refutable}(\mathrm{ZFC}).
+\]
+Negating both sides gives the desired nonhalting/consistency equivalence in the external formalization. The supplied archive does not change the machine or assert its unconditional nonhalting. See the exact repository endpoint and verification description~\cite{endpoint,verification}.
+
+\paragraph{An important scope distinction.}
+An external Lean or Rocq theorem about encoded ZFC proofs is not itself an explicitly encoded derivation in ZFC's own proof syntax. The repository states this distinction. Its external theorem and the separately desired internal PA/ZFC derivation should remain separate milestones. The elementary certificate arguments in this report are suitable ingredients for arithmetization, but that observation is not a formal internalization theorem. In particular, one should not simply identify a Lean axiom report with a proof that ZFC derives the endpoint sentence.
+
+\paragraph{What ``shorter'' measures.}
+There are at least four different quantities: maintained source, checked dependency closure, human mathematical obligations, and checking time. A wrapper can reduce one file while increasing total maintenance. A smaller certificate can make reduction slower. A dependency cut can remove hundreds of kilobytes without changing any proof body. We record these quantities separately and do not add overlapping savings.
+
+\section{What is already present at the pinned commit}
+
+\subsection{Current sources versus checkpoint summaries}
+The initial inventory used the GitHub connection and a read-only local checkout of commit \texttt{cbf94cb552a}. All source claims below refer to that snapshot. The current census follows Lean imports after removing comments and string literals, resolves library roots using \code{lakefile.toml}, counts each local module once, and excludes Lean's shipped toolchain modules. It is static source analysis, not a new kernel build. The script, source hashes, and complete inventory are included in \code{evidence/architecture\_metrics.json} and \code{tools/architecture\_metrics.py}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Scope & Project modules & Source bytes\\
+\midrule
+Phase-fifteen historical summary & 176 & 2,052,142\\
+Pinned current K215 endpoint closure & 174 & 1,752,650\\
+Difference & $-2$ & $-299,492$\\
+\bottomrule
+\end{tabular}
+\caption{The current byte count is freshly measured; the historical byte count is the phase-fifteen report's stated count. This is not a new full-build comparison.}
+\end{table}
+
+The current closure contains 37,648 physical source lines. The net byte reduction from the historical reported total is about 14.6\%. Four old modules leave this closure: \code{Code254Models}, \code{KCodeDom}, \code{KIndisc222}, and \code{KSeedModel222}. Two enter: \code{KSeedDirect222} and \code{KSeedInterface222}. Among common modules, 91 have a different raw source hash; a changed hash does not by itself identify a mathematical change. The historical checkpoint remains evidence about its own exact source/object bindings, not automatic verification of every later source~\cite{phase15}.
+
+\subsection{Do not propose adopted work as a new result}
+The current sources already include the following improvements, even where an older proposal index describes them as future work:
+\begin{itemize}
+\item A 1,426-entry normalized correspondence certificate, compared modulo implicit trailing zero bits. The Rocq source theorem checks one direction and obtains the other by symmetry.
+\item A computed Lean decoder tree: \code{t215 := ptree p215}. The current stable-program file is 6,867 bytes; the old expanded literal is not the current target.
+\item Direct compilation of the \code{C222}/\code{thm222} calculus, removing the intermediate dominated-calculus step from the active compiler route.
+\item Direct seed semantics in the current Lean endpoint, and sharing of quotient syntax and quotient-model infrastructure.
+\item Shared dominated implication, relation-parametric recursion, a smaller PowerSets import boundary, and the stopped-or-synchronized dense-machine proof.
+\item Subsequent proof-body compression in the current calculus, profile, register, and model files.
+\end{itemize}
+These observations come from the maintained source files and recent commits, not merely the historical aggregate table~\cite{source,leanchecker,endpointshared,computed,proposals}.
+
+\subsection{Where the remaining source volume lies}
+The following is a disjoint accounting: first take the logical-calibration roots, then add previously uncounted enumerator/source dependencies, then generic runtime dependencies, then remaining endpoint inputs. It is not the sum of independently measured, overlapping import closures.
+
+\begin{table}[ht]
+\centering
+\begin{tabularx}{\textwidth}{Xrr}
+\toprule
+Ordered disjoint group & Modules & Bytes\\
+\midrule
+Logical calibration & 89 & 1,110,039\\
+Additional enumerator and source & 40 & 329,522\\
+Additional generic runtime & 14 & 168,755\\
+Remaining machine inputs and endpoint composition & 31 & 144,334\\
+\midrule
+Total & 174 & 1,752,650\\
+\bottomrule
+\end{tabularx}
+\caption{Current-source decomposition, with root lists and every counted file retained in the census.}
+\end{table}
+
+The largest individual files include \code{KSource215Data} (116,343 bytes), \code{InternalSat} (60,730), \code{ZF.Zf} (54,075), and \code{ConstructibleAbs} (50,827). The logical calibration therefore deserves attention as well as certificate data. Yet the final theorem is already small: it composes dense renaming, initialization, binary/source simulation, program equivalence, proof enumeration, and the ZF/ZFC calibration~\cite{endpoint,endpointshared}. Golfing that composition has little leverage over its imported proof obligations.
+
+\section{A certificate is a checked graph, not necessarily an array}
+
+\subsection{The existing normalized certificate}
+A certificate row is a tuple
+\[
+  x=(P_1,P_2,j,k),
+\]
+where the finite bit paths $P_1,P_2$ select corresponding observations in the two register-program trees. The successor labels $j$ and $k$ select the nonzero and zero branches. A local check accepts either two halt observations, or two tests of the same register whose respective successor segments agree~\cite{normalized}.
+
+The segment comparison records the finite sequence of incremented registers. Equality of the increment count for every register implies equality of the resulting register file. The segment endpoints are compared using
+\[
+ P\ipeq Q\quad\Longleftrightarrow\quad
+ \forall i\in\N,\;\operatorname{bit}(P,i)=\operatorname{bit}(Q,i),
+\]
+where missing bits are false. This is exactly the implicit-zero convention of the register path semantics. Paths must not be shortened before the consumed prefix has been used to determine increment and break behavior. Normalization concerns the checkpoint relation, not an indiscriminate replacement of operational paths.
+
+The current Rocq checker resolves a successor label through a list lookup. Earlier balanced-tree proposals instead prove that tree lookup equals lookup in the flattened list, certify the sizes of all subtree cuts, and transfer the existing list theorem through this identity~\cite{balancedprior}. This route is sound. Its representation theorem is nevertheless stronger than the semantic proof needs.
+
+\subsection{The weaker interface}
+Let
+\[
+  L:\N\longrightarrow \operatorname{Option}(\mathrm{Path}\times\mathrm{Path})
+\]
+be a routing operation. Write $\operatorname{Local}_L(P,Q,j,k)$ for the current normalized row obligation evaluated with $L$ as successor lookup.
+
+\begin{definition}[Checked lookup coverage]
+A lookup operation has checked coverage if
+\[
+ L(i)=\some(P,Q)
+ \quad\Longrightarrow\quad
+ \exists j,k,\;\operatorname{Local}_L(P,Q,j,k).
+ \tag{LC}
+\]
+The initial segment pair must additionally satisfy its normalized branch obligation for lookup label zero.
+\end{definition}
+
+The displayed condition can be implemented with a Boolean local checker whose accepted results imply the semantic obligations. It is not an assumption that the certificate generator is correct. The concrete certificate must prove it by computation and a generic coverage lemma.
+
+\begin{theorem}[Lookup-based normalized source equivalence]
+Suppose that lookup coverage (LC) and the initial normalized branch obligation hold for programs $p_1,p_2$. Then, for every natural-valued register file $R$,
+\[
+ \halts(p_1,([],R))\quad\longleftrightarrow\quad
+ \halts(p_2,([],R)).
+\]
+No injectivity, surjectivity, canonical numbering, sortedness, subtree-size, or list-refinement premise is required of the lookup operation.
+\end{theorem}
+
+\begin{proof}[Proof structure]
+For the forward direction use well-founded induction on an actual finite halting time in the source program. At a checked checkpoint, two halt observations immediately transfer halting. Otherwise both programs test the same register. Since their register files agree, they select the same zero or nonzero branch. The source test consumes a positive step. Execute the subsequent finite increment segments using the existing segment lemmas. Equality of increment counts restores equal registers; normalized path equality transfers the source halting witness to the checkpoint selected by $L$. Lookup coverage supplies the checked local obligation at that selected pair. The remaining source time is strictly smaller, so the induction applies.
+
+For the reverse direction swap the path components of every successful lookup result. The initial branch obligation is symmetric, register equality is symmetric, and the increment-count comparison is symmetric. A returned swapped pair inherits a swapped locally checked row. Thus the same forward theorem applies with the programs exchanged. One does not need to build or verify a second concrete certificate.
+\end{proof}
+
+The positive decrement step is essential to this proof. Equality of segment effects alone is not a general license to collapse an infinite sequence of zero-duration source steps. The present theorem uses the inherited finite-run induction at real register tests.
+
+\subsection{Trees with arbitrary cuts}
+Consider a finite routing tree with constructors
+\[
+ T ::= \mathrm{Empty}\mid\mathrm{Leaf}(x)\mid\mathrm{Branch}(c,T_l,T_r).
+\]
+The cut $c$ is any natural number. Lookup follows the left child if $i<c$, and otherwise follows the right child with label $i-c$. The supplied Rocq implementation returns a leaf's row only when its residual label is zero; an always-returning leaf, as used in the maintained Lean implementation, would satisfy the same coverage lemma. Define $\all(f,T)$ to test $f$ at every leaf.
+
+\begin{lemma}[Lookup returns a checked row]
+For every $f,T,i,x$,
+\[
+  \get(T,i)=\some(x)\ \wedge\ \all(f,T)=\mathrm{true}
+  \quad\Longrightarrow\quad f(x)=\mathrm{true}.
+\]
+\end{lemma}
+\begin{proof}
+Induct on $T$. An empty tree has no successful lookup. A leaf gives the conclusion directly. At a branch, both subtrees satisfy their all-leaf check, and the lookup chooses one of them; apply its induction hypothesis. The proof never inspects the relation between $c$ and either subtree's size.
+\end{proof}
+
+Taking $f$ to be the local normalized check establishes (LC). This removes the need for a flattening theorem from the correctness dependency path. It also cleanly distinguishes two questions:
+\begin{itemize}
+\item \emph{Soundness}: if the concrete checker accepts, does the source equivalence follow? Checked coverage answers this without validating cuts.
+\item \emph{Generator fidelity}: did an external program build the intended tree, preserve every original row in order, and choose efficient cuts? Those are useful diagnostics and completeness/performance properties, but are not additional assumptions of the semantic theorem.
+\end{itemize}
+
+An incorrect cut may route to an unintended row. The branch checker then still compares the actual segment endpoints to the row that was actually returned. It can reject; if it accepts, the successful local simulations are what justify the conclusion. Omitting an unreachable row is likewise harmless only when every successful routing result remains checked and the initial obligation holds. This is a proof about a closed checked relation, not about trusting malformed data.
+
+\subsection{Relation to the existing Lean proof and earlier proposals}
+This is not a claim to have discovered a new general verification principle. The maintained Lean \code{RMBisim.lookupC\_all} already has exactly this shape, and its leaf lookup intentionally does not require an array-style bounds check~\cite{leanchecker}. The uncompiled guarded-core and sharing-interfaces packets identify the same Rocq opportunity~\cite{lookupdesign}. The present contribution is to complete the interface and instantiate it against the current normalized K215 source certificate, with its concrete checking scope made explicit.
+
+It is also different from merely changing a list to a balanced tree while retaining every representation theorem. The shared semantic proof quantifies over the lookup interface once; the supplied tree instance and same-name source facade preserve the all-register theorem. A future compatibility wrapper can recover the old list-checker API if it is still needed. Otherwise the library can end up maintaining several copies of the same branch and entry soundness argument.
+
+\paragraph{Source-size tradeoff.}
+Counting generic source and facades while excluding common program, RM, and certificate data symmetrically, the earlier checked balanced-refinement stack has 21,768 bytes and 575 lines. The new direct stack has 12,601 bytes and 327 lines, a reduction of 9,167 bytes and 248 lines relative to that alternative. The current production list checker plus its facade has only 9,571 bytes and 224 lines. The direct tree stack therefore adds 3,030 bytes and 103 lines relative to the current list route. This is a simplification of the optional balanced architecture, not an immediate net shortening of the current Rocq source lane. The exact counted file sets and hashes are provided in \code{source\_metrics.json}.
+
+\section{Performance: keep the claims narrower than the evidence}
+
+The existing normalized certificate has 1,426 entries and induces 2,851 successor lookups in the published lookup census. A prior experiment counted 2,033,059 list-cell visits versus 32,961 tree-node visits, a ratio of about 61.7~\cite{balancedprior}. That ratio is an operation-count comparison, not a compilation speedup.
+
+The same prior packet reports a balanced concrete-module compilation time of 15.741 seconds versus 9.238 seconds for its normalized-list baseline. Its recursive kernel check took 313.451 seconds. Tree construction, exact flattening, validity, size, height, reduction strategy, and proof checking all contribute to the actual cost. The negative result is a reason to change the obligation boundary and then measure, not a reason to promise that any balanced structure will be faster.
+
+The direct checker eliminates the representation-validity and flattening obligations from its semantic theorem. It does not guarantee faster conversion. A sensible experiment holds fixed the programs, normalized row data, toolchain, and checking command, and reports separately:
+\begin{enumerate}
+\item generic proof compilation;
+\item certificate-data elaboration;
+\item concrete semantic checking;
+\item recursive kernel checking;
+\item total fresh build time and resulting object sizes.
+\end{enumerate}
+Generated data should be counted separately from handwritten generic proofs. A repeated test on tiny files or an inherited historical receipt is not a replacement for the exact concrete client.
+
+\paragraph{Adoption decision.}
+Keep the current production list backend as the default until an actual workload justifies switching. The direct tree component is valuable as a smaller alternative to the older balanced-refinement architecture and as a clean interface for future certificate backends. Its current focused measurements do not justify describing it as a faster or smaller replacement for the present production list path. The normalization-first Lean patch has the clearest immediate source-shortening benefit.
+
+\section{Normalize before abstracting the semantic proof}
+
+\subsection{The recurring argument}
+Let $D$ be an ambient domain and let $P:D\to\mathrm{Prop}$ define a subtype
+\[
+ D_P=\{x:D\mid P(x)\}.
+\]
+A guarded quantifier often restricts all relevant values to $P$ already. For example, if $y\in x$ and $P(x)$, transitivity may imply $P(y)$. In a graph-membership argument, closure of a pair code may force both coordinates into the subtype. The current constructibility development repeatedly constructs subtype witnesses, proves these membership facts, and rewrites the same ambient/subtype relation~\cite{constructibleabs}.
+
+The mathematical pattern is a theorem about supported guards, not a stronger global model hypothesis. It is useful to understand this pattern even when adding a new library abstraction is not the best implementation.
+
+\begin{theorem}[Guarded existential restriction]
+Let $G,F:D\to\mathrm{Prop}$ and assume
+\[
+ \forall x,\;G(x)\to P(x).
+\]
+Then
+\[
+ (\exists x:D,\ G(x)\wedge F(x))
+ \quad\longleftrightarrow\quad
+ (\exists x:D_P,\ G(x.1)\wedge F(x.1)).
+\]
+\end{theorem}
+\begin{proof}
+In the forward direction send a witness $x$ to the subtype witness $\langle x,h_G(x)\rangle$. In the reverse direction forget the subtype membership proof. The same guard and body are retained.
+\end{proof}
+
+\begin{theorem}[Guarded universal restriction]
+Under the same support hypothesis,
+\[
+ (\forall x:D,\ G(x)\to F(x))
+ \quad\longleftrightarrow\quad
+ (\forall x:D_P,\ G(x.1)\to F(x.1)).
+\]
+\end{theorem}
+\begin{proof}
+Restriction is immediate. For extension, use the guard to construct the required subtype witness and apply the restricted statement to it.
+\end{proof}
+
+Product-valued witnesses give the corresponding multi-coordinate statement. In implementation it can be more readable to export two- and four-coordinate corollaries with named binders than to make every client manipulate a product. However, helpers should be introduced only where their aggregate use pays for their own definitions.
+
+\subsection{A rejected helper and a smaller replacement}
+An initial pilot introduced a reusable guarded-subtype helper. Its generic lemmas compiled without axioms, and individual witness blocks became shorter, but the helper cost 1,176 bytes. Counting the helper and the changed clients, the pilot grew by 904 bytes. It is not recommended as a proof-shortening patch. This negative result is retained in the evidence so that the recommendation does not mistake a smaller client for smaller total maintenance.
+
+The successful replacement instead uses the existing subtype evaluation equalities first. Normalize pair codes, natural-number codes, and bit codes to their ambient values; then move the already-supported witnesses. This removes repeated conversions at each local use without introducing a new module.
+
+The resulting five-theorem patch changes the proof bodies of \code{functional\_iff}, \code{isFunctionOn\_iff}, \code{isEnvOn\_iff}, \code{atom\_clause}, and \code{bin\_clause}. The complete \code{ConstructibleAbs.lean} file shrinks from 50,827 to 49,991 bytes and from 917 to 911 lines: 836 bytes and six lines removed, with no new imports, definitions, helper declarations, or changed theorem statements. The byte reduction is modest (about 1.65\%), but it makes the witness argument more direct and has a small review surface. Its exact checks are described in Section~\ref{sec:results}.
+
+\subsection{Scope of the method}
+
+This does not justify replacing the entire internal-formula-code argument by an ordinary structural induction over external syntax. The model development handles represented formula codes, including codes that may be nonstandard from the external point of view. Its represented-rank descent has a different job from the elementary witness transport. The pilot is deliberately limited to the latter.
+
+Nor should a small source-line reduction automatically be called an improvement. A long generic theorem that saves two lines at one client can make the proof harder to read. The pilot's useful lesson is to normalize the concrete semantic expressions first and only then assess whether a shared theorem is still needed.
+
+\section{The larger remaining opportunity: finish semantic runtime coverage}
+
+\subsection{What remains active}
+The current \code{KSim.Covered} interface still asks for the Boolean \code{checkEdge} result at every consumed source leaf~\cite{ksim}. The site inventory contains exactly
+\[
+ 4,751\text{ leaves},\qquad 6,176\text{ branch outcomes}.
+\]
+The instruction counts are 1,900 increments, 1,425 decrement tests, 1,327 continues, 98 breaks, and one halt. A decrement contributes two outcomes; every other leaf contributes one. The maintained Lean coverage is divided into nine batches containing 105 kernel-check blocks. These are source/data counts from the current tree, not newly timed compilation results.
+
+The repository already contains generic semantic-site interfaces, an exact decoder-prefix theorem, and partial composition pilots~\cite{semanticcontracts,decoder}. A proof for one leaf, or two outcomes of a decrement, does not establish the full 6,176-outcome replacement. The next substantial work is to close that finite but delicate integration gap.
+
+\subsection{The correct contract boundary}
+Use a semantic edge specification: for every valid represented register file and padding parameter, the machine executes the intended register instruction and reaches the exact successor dispatch representation; a halt leaf reaches a genuine terminal configuration. The present \code{KSim} halting-transfer argument additionally needs positive progress on simulated source steps. A different simulation discipline could allow zero-step transitions together with a separate well-founded rank; no such replacement is asserted here.
+
+Split the proof at the exact primitive-entry port already supplied by the decoder-prefix theorem:
+\[
+ \mathrm{Dispatch}(Q)
+ \ \longrightarrow^*\ 
+ \mathrm{Port}(\operatorname{reverse}(\mathrm{pre}),b,q)
+ \ \longrightarrow^+\ 
+ \mathrm{SuccessorDispatch}(Q',R').
+\]
+The prefix theorem keeps the complete consumed source word on the left of the head. The residual contract must consume this exact port, including the marker, path tail, gap expression, physical register order, and branch assumption. Merely identifying a physical state or a short suffix does not identify the full continuation when decoder roles share states.
+
+\subsection{An incremental integration route}
+First keep \code{checkEdge} as a producer of semantic contracts. This preserves a working fallback while changing \code{KSim} to consume the semantic statement. Then add a second producer using the structural decoder prefix and a residual symbolic check. Mixed coverage lets different leaves use different producers under the same endpoint theorem.
+
+For the current source, generate a total classification of all 4,751 leaves, including both decrement outcomes. Prove that every classified leaf has one of the accepted producers. The finite coverage object should fail if any leaf is missing, if a branch polarity is swapped, or if the halt case is classified as an ordinary return. Only after that theorem is checked should the redundant full-prefix runs be retired.
+
+Next identify truly shared residual contracts. A frame lemma may factor an untouched continuation, but it must state precisely where the head can move and where the marker is found. An unrestricted ``arbitrary left context'' principle is false for code that scans into that context. The earlier left-frame proposal is a useful starting point, not already a theorem about every K215 residual~\cite{leftframe}.
+
+This architecture can reduce repeated decoder execution in the proof while leaving the physical transition table intact. It also offers a cleaner proof surface for related 215-state candidates, since a changed decoder can reuse the same semantic primitive contracts when its exact entry hypotheses are re-established.
+
+\section{Integration plan and acceptance criteria}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.28\textwidth}}
+\toprule
+Stage & Change & Required evidence\\
+\midrule
+1. Lean normalization & Normalize subtype operations before transporting witnesses. & Unchanged theorem types; fresh module and client checks; no assumption growth.\\
+2. Optional source interface & Generalize normalized checking over checked lookup; add the tree producer if useful. & Exact all-register source theorem; printed assumptions; concrete certificate check.\\
+3. Production adoption & Rebuild affected descendants after selecting either component. & Current-toolchain checks, including sparse/dense endpoints; source and theorem identity.\\
+4. Site interface & Let simulation consume semantic edge contracts with the old checker as a producer. & Existing endpoint clients still check.\\
+5. Complete residuals & Structural decoder prefix plus exact residual contracts for every outcome. & Total 4,751-leaf/6,176-outcome coverage, bootstrap and terminal cases preserved.\\
+6. Cleanup & Remove displaced duplicated code and synchronize maintained generators. & Before/after maintenance counts and reproducible regeneration.\\
+\bottomrule
+\end{tabularx}
+\caption{A sequence of small, separately reviewable changes. Stages with completed component evidence are identified in the following section; a component receipt is not a claim that all stages have passed.}
+\end{table}
+
+Preserve the public source name \code{Source215.p215\_dagPerm}. Likewise retain \code{blank\_\allowbreak halts\_\allowbreak iff\_\allowbreak zfc\_\allowbreak refutation} in \code{KEndpoint215}. Keep exact machine hashes and public theorem types in the integration checks. For changed producer-generated sources, change the producer as well and compare regenerated bytes. Re-run affected descendants; source identity and inherited compiler receipts should not be conflated.
+
+The criterion for retaining an abstraction is a smaller total burden after counting generic helpers, adapters, and synchronized generators. For timing, compare complete relevant workloads under the same toolchain. For logical trust, inspect the new theorem's assumptions and the exact endpoint's assumptions independently.
+
+\input{results.tex}
+
+\section{Conclusions for this repository}
+The shortest route to another useful improvement is to exploit the interfaces that the existing proofs already reveal. The normalized source proof only needs closure under checked lookup. The subtype proofs often only need a guarded witness restriction lemma. The runtime simulation only needs semantic edge behavior, even though its current producer performs a full bounded symbolic execution at every site.
+
+The accompanying components make these distinctions concrete. They preserve the accepted K215 target and distinguish checked source-layer results from a future full production endpoint rebuild. The larger decoder/residual project remains worthwhile precisely because the smaller preliminary interfaces are already available; it should be pursued as a complete coverage theorem with exact ports and positive progress, rather than another isolated successful decoder example.
+
+\begin{thebibliography}{99}\small
+\bibitem{verification} ProveIt contributors. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/README.md}{Formal correctness of the exact 215-state machine}. Pinned repository verification description.
+\bibitem{endpoint} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{\texttt{KEndpoint215.lean}}. Exact Lean endpoint.
+\bibitem{phase15} ProveIt contributors. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase15/README.md}{Fifteenth K215 proof-simplification checkpoint}. Historical evidence and scope.
+\bibitem{source} ProveIt contributors. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/Source215.v}{\texttt{Source215.v}}. Current normalized source equivalence.
+\bibitem{normalized} ProveIt contributors. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/rocq/rocq-extension/coq/215/NormalizedBisim.v}{\texttt{NormalizedBisim.v}}. Current Rocq normalized checker and finite-run soundness argument.
+\bibitem{leanchecker} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean}{\texttt{RMBisim.lean}}, and \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMNormalizedBisim.lean}{\texttt{RMNormalizedBisim.lean}}. Semantic bisimulation, checked lookup, and normalized relation.
+\bibitem{endpointshared} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}{\texttt{KEndpoint.lean}}. Shared current endpoint and direct-seed calibration route.
+\bibitem{computed} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean}{\texttt{KSource215Program.lean}}. Computed decoder tree.
+\bibitem{proposals} ProveIt contributors. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/README.md}{Proof-simplification proposal inventory}. Historical packet descriptions; individual adoption status must be checked against current source.
+\bibitem{balancedprior} ProveIt research packet. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/proof-core/source_checker/README.md}{Composed normalized and balanced source certificate}. Prior exact-flattening route, operation counts, and measured negative timing result.
+\bibitem{lookupdesign} ProveIt research packets. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/guarded-core/refinements/REVIEW.md}{Guarded-core refinement review}; \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/sharing-interfaces/structural/INTERFACE.md}{Sharing semantic interfaces}. Earlier checked-lookup designs.
+\bibitem{constructibleabs} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean}{\texttt{ConstructibleAbs.lean}}. Constructibility, represented codes, and subtype witness arguments.
+\bibitem{ksim} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean}{\texttt{KSim.lean}}. Current Boolean coverage and register-machine simulation.
+\bibitem{semanticcontracts} ProveIt research packets. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/proof-contracts/lean/README.md}{Checked semantic proof contracts}; \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/semantic-coverage/README.md}{Semantic coverage}. Earlier component proofs and their limited integration scope.
+\bibitem{decoder} ProveIt contributors. \source{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDecoderPrefix215.lean}{\texttt{KDecoderPrefix215.lean}}. Exact zipper entry retaining the entire consumed source word.
+\bibitem{leftframe} ProveIt research packet. \source{Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/round13-left-frame/README.md}{Further proof simplification, round 13}. Proposed guarded left-frame lifting and other explicitly scoped work.
+\end{thebibliography}
+\end{document}

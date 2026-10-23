@@ -1,0 +1,41 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean
+@@ -1,3 +1,4 @@
++import BusyBeaver.ZFC.MacroWordInference
+ import BusyBeaver.ZFC.L2Perm
+ import BusyBeaver.ZFC.EnumPerm
+ 
+@@ -65,6 +66,10 @@
+   | .readp2, st => { st with pl := (Cantor.ofNat st.pl).2, p2 := st.p2 + (Cantor.ofNat st.pl).1 }
+   | .readp1, st => { st with pl := (Cantor.ofNat st.pl).2, p1 := st.p1 + (Cantor.ofNat st.pl).1 }
+ 
++def AXAtom.decode (n : Nat) : Option AXAtom :=
++  ([.par1, .par2, .par3, .push, .cons, .wel, .wal, .weq, .wn, .wa, .wex, .readp2, .readp1] : List AXAtom).find?
++    (fun a => a.node == n)
++
+ theorem AXAtom.run (st : AS) (hc : Clean st) : ∀ a : AXAtom, Rn (.node a.node) st (a.effect st)
+   | .par1 => L2Perm.par1 st hc
+   | .par2 => L2Perm.par2 st hc
+@@ -117,20 +122,8 @@
+       exact seq hn (AXAtom.run st hc a) (ih hr _ (by cases a <;> exact hc))
+     · contradiction
+ 
+-def axWord : List AXAtom := [
+-  .par1, .par2, .wal, .par3, .par1, .readp2, .cons, .readp1, .par1, .cons, .par1, .par3,
+-  .cons, .par2, .par3, .cons, .cons, .cons, .par3, .par1, .weq, .par3, .par2, .weq,
+-  .par1, .par2, .wel, .par1, .par2, .weq, .wal, .cons, .cons, .par1, .par1, .par3,
+-  .wal, .wex, .par3, .cons, .par3, .par1, .weq, .par3, .par2, .wel, .par1, .par2,
+-  .wel, .cons, .cons, .par1, .par2, .par3, .wal, .wal, .par2, .par1, .par3, .wal,
+-  .wal, .cons, .par1, .par2, .weq, .par3, .par1, .wel, .par3, .par2, .wel, .cons,
+-  .cons, .par1, .par2, .par3, .cons, .wal, .par1, .par2, .wal, .par1, .par3, .wal,
+-  .cons, .cons, .par1, .par1, .par2, .weq, .wex, .par1, .par2, .wel, .par3, .par1,
+-  .par2, .wel, .wal, .cons, .par3, .par2, .par2, .par3, .wel, .par1, .par3, .par1,
+-  .par3, .par3, .par1, .wel, .par3, .par2, .wel, .cons, .wal, .par2, .par3, .par2,
+-  .par3, .par2, .par3, .wel, .wn, .cons, .wal, .wn, .cons, .wal, .cons, .wal,
+-  .wn, .cons, .wal, .wn, .cons, .wal, .par2, .par3, .par2, .par3, .par2, .par3,
+-  .wel, .wn, .cons, .wal, .wn, .cons, .wal, .wn, .cons, .wal, .cons, .wn]
++def axWord : List AXAtom :=
++  (MacroWordInference.inferWord dagPerm.nodes AXAtom.decode 457 156 236).getD []
+ 
+ theorem axWord_checked : axWordCheck 236 axWord = true := by decide +kernel
+ 

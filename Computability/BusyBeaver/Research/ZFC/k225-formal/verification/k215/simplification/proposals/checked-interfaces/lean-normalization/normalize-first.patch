@@ -1,0 +1,101 @@
+--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean
++++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean
+@@ -210,36 +210,37 @@
+     (∀ x y y' : {x // InL H hP x}, memL H hP (kpair (L_zfAxioms H hR hP) x y) F →
+       memL H hP (kpair (L_zfAxioms H hR hP) x y') F → y = y') ↔
+     (∀ x y y', mem (kpair H x y) F.1 → mem (kpair H x y') F.1 → y = y') := by
+-  refine ⟨fun h x y y' hy hy' => ?_, fun h x y y' hy hy' => Subtype.ext (h x.1 y.1 y'.1
+-    ((kpairN_mem H hR hP _ _ _).1 hy) ((kpairN_mem H hR hP _ _ _).1 hy'))⟩
++  simp only [memL, val_kpair H hR hP, Subtype.ext_iff]
++  refine ⟨fun h x y y' hy hy' => ?_, fun h x y y' => h x.1 y.1 y'.1⟩
+   obtain ⟨hx, hyL⟩ := inL_of_kpair_mem H hR hP F.2 hy
+   obtain ⟨-, hy'L⟩ := inL_of_kpair_mem H hR hP F.2 hy'
+-  exact congrArg Subtype.val (h ⟨x, hx⟩ ⟨y, hyL⟩ ⟨y', hy'L⟩ ((kpairN_mem H hR hP _ _ _).2 hy)
+-    ((kpairN_mem H hR hP _ _ _).2 hy'))
++  exact h ⟨x, hx⟩ ⟨y, hyL⟩ ⟨y', hy'L⟩ hy hy'
+ 
+ theorem isFunctionOn_iff (F d : {x // InL H hP x}) :
+     IsFunctionOn (L_zfAxioms H hR hP) F d ↔ IsFunctionOn H F.1 d.1 := by
+   unfold IsFunctionOn
+-  refine and_congr (functional_iff H hR hP F) (and_congr ⟨fun h x hx => ?_, fun h x hx => ?_⟩
++  rw [functional_iff H hR hP]
++  simp only [memL, val_kpair H hR hP, Subtype.ext_iff]
++  refine and_congr Iff.rfl (and_congr ⟨fun h x hx => ?_, fun h x hx => ?_⟩
+     ⟨fun h p hp => ?_, fun h p hp => ?_⟩)
+   · obtain ⟨y, hy⟩ := h ⟨x, inL_trans H hR hP d.2 hx⟩ hx
+-    exact ⟨y.1, (kpairN_mem H hR hP _ _ _).1 hy⟩
++    exact ⟨y.1, hy⟩
+   · obtain ⟨y, hy⟩ := h x.1 hx
+-    exact ⟨⟨y, (inL_of_kpair_mem H hR hP F.2 hy).2⟩, (kpairN_mem H hR hP _ _ _).2 hy⟩
++    exact ⟨⟨y, (inL_of_kpair_mem H hR hP F.2 hy).2⟩, hy⟩
+   · obtain ⟨x, y, hx, he⟩ := h ⟨p, inL_trans H hR hP F.2 hp⟩ hp
+-    exact ⟨x.1, y.1, hx, (kpairN_eq H hR hP _ _ _).1 he⟩
++    exact ⟨x.1, y.1, hx, he⟩
+   · obtain ⟨x, y, hx, he⟩ := h p.1 hp
+     have hxy := inL_kpair H hR hP (he ▸ p.2)
+-    exact ⟨⟨x, hxy.1⟩, ⟨y, hxy.2⟩, hx, (kpairN_eq H hR hP _ _ _).2 he⟩
++    exact ⟨⟨x, hxy.1⟩, ⟨y, hxy.2⟩, hx, he⟩
+ 
+ theorem isEnvOn_iff (A E : {x // InL H hP x}) :
+     IsEnvOn (L_zfAxioms H hR hP) A E ↔ IsEnvOn H A.1 E.1 := by
+   unfold IsEnvOn
+   rw [isFunctionOn_iff H hR hP]
+-  refine and_congr (Iff.of_eq (congrArg (IsFunctionOn H E.1) (val_omegaV H hR hP)))
+-    ⟨fun h n y hy => ?_, fun h n y hy => h n.1 y.1 ((kpairN_mem H hR hP _ _ _).1 hy)⟩
++  simp only [val_omegaV H hR hP, memL, val_kpair H hR hP]
++  refine and_congr Iff.rfl ⟨fun h n y hy => ?_, fun h n y hy => h n.1 y.1 hy⟩
+   obtain ⟨hn, hyL⟩ := inL_of_kpair_mem H hR hP E.2 hy
+-  exact h ⟨n, hn⟩ ⟨y, hyL⟩ ((kpairN_mem H hR hP _ _ _).2 hy)
++  exact h ⟨n, hn⟩ ⟨y, hyL⟩ hy
+ 
+ /-- Application agrees on a graph with a recorded value. -/
+ theorem val_applyV {F x : {x // InL H hP x}}
+@@ -332,15 +333,14 @@
+         (kpair (L_zfAxioms H hR hP) i j) ∧ b = vbit (L_zfAxioms H hR hP) (QN i j)) ↔
+     (∃ i j, mem i (omegaV H) ∧ mem j (omegaV H) ∧ c.1 = kpair H (natV H t) (kpair H i j) ∧
+       b.1 = vbit H (Q i j)) := by
+-  refine ⟨fun ⟨i, j, hi, hj, hc, hb⟩ => ?_, fun ⟨i, j, hi, hj, hc, hb⟩ => ?_⟩
+-  · have hi' := (mem_omegaN H hR hP i).1 hi
+-    have hj' := (mem_omegaN H hR hP j).1 hj
+-    exact ⟨i.1, j.1, hi', hj', (codeEq2_iff H hR hP t c i j).1 hc,
+-      (bitEq_iff H hR hP b _ _ (hQ i j hi' hj')).1 hb⟩
++  simp only [memL, val_omegaV H hR hP, Subtype.ext_iff, val_kpair H hR hP,
++    val_natV H hR hP, val_vbit H hR hP]
++  refine ⟨fun ⟨i, j, hi, hj, hc, hb⟩ => ⟨i.1, j.1, hi, hj, hc, ?_⟩,
++    fun ⟨i, j, hi, hj, hc, hb⟩ => ?_⟩
++  · simpa only [propext (hQ i j hi hj)] using hb
+   · let i' : {x // InL H hP x} := ⟨i, inL_nat H hR hP hi⟩
+     let j' : {x // InL H hP x} := ⟨j, inL_nat H hR hP hj⟩
+-    exact ⟨i', j', (mem_omegaN H hR hP i').2 hi, (mem_omegaN H hR hP j').2 hj,
+-      (codeEq2_iff H hR hP t c i' j').2 hc, (bitEq_iff H hR hP b _ _ (hQ i' j' hi hj)).2 hb⟩
++    exact ⟨i', j', hi, hj, hc, by simpa only [propext (hQ i' j' hi hj)] using hb⟩
+ 
+ omit he in
+ theorem bin_clause (t : Nat) (op : Prop → Prop → Prop) :
+@@ -354,19 +354,13 @@
+     (∃ c1 c2 b1 b2, c.1 = kpair H (natV H t) (kpair H c1 c2) ∧
+       mem (satTriple H c1 e.1 b1) S.1 ∧ mem (satTriple H c2 e.1 b2) S.1 ∧
+       b.1 = vbit H (op (b1 = natV H 1) (b2 = natV H 1))) := by
+-  refine ⟨fun ⟨c1, c2, b1, b2, hc, h1, h2, hb⟩ => ?_, fun ⟨c1, c2, b1, b2, hc, h1, h2, hb⟩ => ?_⟩
+-  · exact ⟨c1.1, c2.1, b1.1, b2.1, (codeEq2_iff H hR hP t c c1 c2).1 hc,
+-      (tripleMem_iff H hR hP _ _ _ _).1 h1, (tripleMem_iff H hR hP _ _ _ _).1 h2,
+-      (bitEq_iff H hR hP b _ _ (by rw [natEq_iff H hR hP, natEq_iff H hR hP])).1 hb⟩
+-  · have t1 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h1)
+-    have t2 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h2)
+-    let c1' : {x // InL H hP x} := ⟨c1, t1.1⟩
+-    let c2' : {x // InL H hP x} := ⟨c2, t2.1⟩
+-    let b1' : {x // InL H hP x} := ⟨b1, t1.2.2⟩
+-    let b2' : {x // InL H hP x} := ⟨b2, t2.2.2⟩
+-    exact ⟨c1', c2', b1', b2', (codeEq2_iff H hR hP t c c1' c2').2 hc,
+-      (tripleMem_iff H hR hP c1' e b1' S).2 h1, (tripleMem_iff H hR hP c2' e b2' S).2 h2,
+-      (bitEq_iff H hR hP b _ _ (by rw [natEq_iff H hR hP, natEq_iff H hR hP])).2 hb⟩
++  simp only [Subtype.ext_iff, val_kpair H hR hP, val_natV H hR hP,
++    val_vbit H hR hP, memL, val_satTriple H hR hP]
++  refine ⟨fun ⟨c1, c2, b1, b2, h⟩ => ⟨c1.1, c2.1, b1.1, b2.1, h⟩,
++    fun ⟨c1, c2, b1, b2, h⟩ => ?_⟩
++  have h1 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h.2.1)
++  have h2 := inL_satTriple H hR hP (inL_trans H hR hP S.2 h.2.2.1)
++  exact ⟨⟨c1, h1.1⟩, ⟨c2, h2.1⟩, ⟨b1, h1.2.2⟩, ⟨b2, h2.2.2⟩, h⟩
+ 
+ theorem quant_clause (t u v : Nat) :
+     (∃ c1 : {x // InL H hP x}, c = kpair (L_zfAxioms H hR hP) (natV (L_zfAxioms H hR hP) t) c1 ∧

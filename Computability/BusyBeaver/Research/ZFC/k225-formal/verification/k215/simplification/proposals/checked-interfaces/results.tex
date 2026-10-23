@@ -1,0 +1,67 @@
+\section{Executed checks and deliverable contents}\label{sec:results}
+
+\subsection{Lean: proof-body normalization with unchanged public reports}
+The accepted patch was replayed with Lean 4.32.0 in a fresh output directory. The 25 successful compiler invocations comprise 21 unchanged dependency modules, the original \code{ConstructibleAbs} module, an API-reporting client, the modified module, and the identical API-reporting client. Both complete module compilations include the unchanged downstream proofs inside that module.
+
+The six public type and assumption reports---the five changed theorems and the downstream \code{vEqL}---are byte-for-byte identical between the two builds. Each lists precisely \code{propext}, \code{Classical.choice}, and \code{Quot.sound}. Both target logs and both API-client logs have zero warnings and errors. The patch passes \code{git apply --check}. An independent source review additionally verified that masking only the five proof bodies leaves the complete original and proposed files identical, including section directives. The fresh-build evidence and the source review are separate records, not two independent compilations.
+
+The paired target compilations took 0.938 seconds for the original and 1.009 seconds for the proposal in this one run. No speed improvement is established. The supported result is a checked reduction of 836 source bytes, with unchanged declarations and printed assumptions. Other descendants and the complete K215 endpoint were not rebuilt.
+
+\subsection{Rocq component: exact normalized certificate and recursive check}
+The delivered source-equivalence component was built from fresh sources with Coq 8.18.0, compiled with OCaml 4.14.1. All 18 module invocations succeeded. They include the inherited register semantics and programs, the current 1,426-row normalized certificate, the production list baseline, the generic checked-lookup theorem, the direct tree instance, a same-name \code{K215F.Source215} facade, a typed client, and eight boundary controls. The concrete theorem retains the quantifier over \emph{every} natural-valued register file:
+\[
+ \forall R,\quad
+ \code{rm\_halts}\ p215\ ([],R)
+ \;\longleftrightarrow\;
+ \code{rm\_halts}\ dagPerm\ ([],R).
+\]
+The delivered client and concrete source theorems print as closed under the global context. A recursive \code{coqchk} run on \code{SourceClient} also succeeded, taking 259.463 seconds in this run. The evidence records the exact commands, source and log hashes, elapsed times, and process peak resident memory.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Concrete source-check module & Seconds & Peak RSS (KiB)\\
+\midrule
+Current list baseline & 8.968 & 456,896\\
+Direct checked-tree instance & 11.135 & 527,844\\
+\bottomrule
+\end{tabular}
+\caption{One serial fresh run using the same compiler and inherited programs. These are module invocations, not full endpoint build times or statistically stable benchmarks.}
+\end{table}
+
+The direct instance is about 24\% slower than the production list source module in this observation. Its separate facade and typed client also take time; the table is not a claim about the entire build. A packed-payload tree variant was tried and rejected because it had a larger adapter and slower focused checks. The selected implementation uses expanded rows. Both the source-size comparison and this negative timing result support retaining the current list backend as the default.
+
+The production repository uses Rocq 9.1.0. Its inherited \code{RMEquiv.v} requires a small explicit compatibility import under Coq 8.18; the packet retains the original 9.1 source and hashes both the delivered and compiled 8.18 variants. The build driver leaves that inherited source unchanged on its 9.1 branch, but that branch has not been executed here. This receipt establishes a concrete Coq 8.18 source-layer theorem and recursive check. It is not a Rocq 9.1 production acceptance receipt, nor a new binary-machine/ZFC endpoint build.
+
+\subsection{Reproduction and repository integration}
+The archive is intended to be unpacked as a research contribution, for example below the existing K215 simplification-proposals directory. Its root \code{README.md} gives the current adoption recommendation, file map, and commands. The original checkout is unchanged.
+
+\begin{lstlisting}
+python3 verify_packet.py --repo /path/to/ProveIt
+python3 lean-normalization/reproduce.py \
+  --repo /path/to/ProveIt --lean /path/to/lean \
+  --out /new/lean-output
+python3 rocq/build.py --out /new/rocq-output --baseline --recursive
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+
+The packet verifier checks hashes and recorded results; it does not run a proof kernel. The two replay drivers perform the fresh component checks. The source census can also be rerun against a matching checkout with the supplied analysis script. No compiler binaries, build objects, or precompiled proof caches are needed from this archive.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}X}
+\toprule
+Artifact & Purpose\\
+\midrule
+\code{report.tex}, \code{results.tex}, \code{report.pdf} & Editable report, executed-check section, and rendered document.\\
+\code{lean-normalization/} & Reviewable patch, full proposed source, source manifest, fresh replay driver, API audit, logs, and failed-edit history.\\
+\code{rocq/} & Generic and concrete proofs, source facade, typed client, boundary cases, inherited dependencies and licenses, replay driver, metrics, and final recursive-check evidence.\\
+\code{experiments/rejected-helper/} & The rejected Lean helper and client, with whole-change accounting.\\
+\code{evidence/}, \code{tools/} & Current-source census, snapshot provenance, independent component reviews, and census script.\\
+\code{MANIFEST.json}, \code{verify\_packet.py} & Exact file hashes and evidence-binding checks.\\
+\bottomrule
+\end{tabularx}
+\caption{Deliverables and their verification roles.}
+\end{table}

@@ -1,0 +1,63 @@
+\section{Rocq: reuse an existing loop theorem, and separate integration from novelty}
+At the review pin \texttt{cbf94cb552a3b49509e0eee80e7455d4eb5974c6}, the maintained
+\texttt{ProgLibPerm.v} and \texttt{ProgLib219.v} still share an identical 753-line,
+36,213-byte proof body after the identifier replacement
+\texttt{dag219}\,$\mapsto$\,\texttt{dagPerm}. However, the previously proposed
+89-node closed-slice transport is \emph{already implemented in archived prototypes}:
+\texttt{common-macros/rocq} and \texttt{collection-first/code/rocq/macro-slice}
+report Coq~8.18 component checks. Their production integration remains open.
+In particular, the shared state-record identity, actual-program structural utilities,
+parameterized contract wrappers, producer route and Rocq~9.1 endpoint rebuild must
+still be reconciled. The transport idea itself is not a new recommendation here.
+
+A smaller, genuinely additional simplification is available immediately.
+\texttt{ProgLibPerm.z465} (lines 670--678) reproves a register-clearing loop by
+induction even though \texttt{sem\_while} and \texttt{while\_tac} already prove that
+same pattern in \texttt{w199}. The actual DAG rows are
+\[
+  199\mapsto(\mathrm{EDecnz}\ 5,\mathrm{EContinue}\ 1),\qquad
+  465\mapsto(\mathrm{EDecnz}\ 5,\mathrm{EContinue}\ 1).
+\]
+Keep the existing public statement
+\begin{verbatim}
+Lemma z465 a : forall m, get m 5 = a ->
+  sem (ENode 465) m XNormal (set m 5 0).
+\end{verbatim}
+and replace only its proof by
+\begin{verbatim}
+Proof.
+  intros m _. revert m.
+  while_tac (fun m : St => m) (fun m : St => set m 5 0).
+Qed.
+\end{verbatim}
+This applies the generic loop theorem directly at node 465; it does not apply
+the node-199 contract at the wrong node. The old value parameter and premise are
+retained for compatibility, although the generic theorem does not need them.
+
+\paragraph{All obligations.}
+Instantiate \texttt{sem\_while} with $n=465$, $r=5$, body
+$\mathrm{EContinue}\ 1$, $g(m)=m$, and $P(m)=\mathrm{set}\ m\ 5\ 0$.
+The six obligations are the literal DAG equation, $5\leq8$, the existing
+\texttt{sem\_cont} contract at continue level 1, preservation of register~5 by
+the identity function, $P(m)=m$ when register~5 is zero, and
+$P(m)=P(g(\mathrm{set}\ m\ 5\ v))$ when that register is $v+1$.
+The final two are finite-record field calculations. No functional extensionality,
+new induction, new axiom, or change to the machine is required. The continue level
+is essential; replacing it by 2 is rejected by the static negative control.
+
+\paragraph{Measured scope and validation.}
+The declaration changes from 9 lines / 475 bytes to 5 lines / 171 bytes:
+a reduction of 4 lines and 304 bytes per declaration, and one fewer bespoke
+induction. These are static text counts, not measured endpoint proof-term or
+compile-time savings. The exact old declaration also occurs in the
+\texttt{NEW\_EQ} template of \texttt{regenerate218.py}; that is the producer to
+change before regenerating the 218, 217 and 215 libraries. The included patch
+is producer-only and deliberately leaves archived evidence untouched.
+The proposed proof and typed comparison client are \textbf{not compiled} in this
+review. Adoption requires the production toolchain, unaffected \texttt{r466}
+clients, assumption reports, regenerated-source consistency, unchanged literal
+tables, and the sparse/dense K215 endpoint checks.
+
+The independently written \texttt{audit\_reuse.py} verifies the 15 saved inputs
+against their Git blob hashes and produces \texttt{REUSE\_AUDIT.json}. It treats
+upstream source only as data and executes no downloaded source or producer.

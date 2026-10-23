@@ -1,0 +1,136 @@
+{
+  "review_status": "PASS",
+  "review_kind": "Independent mathematical interface, source identity and recorded-evidence audit; not an additional compiler run",
+  "reviewed_utc": "2026-10-23T00:25:06.438765+00:00",
+  "paths_relative_to": "rocq",
+  "baseline_commit": "cbf94cb552a3b49509e0eee80e7455d4eb5974c6",
+  "bindings": [
+    {
+      "path": "build.py",
+      "bytes": 5508,
+      "sha256": "e335313ff78e935721d168072935396638b2ae00e562513bc5423d9772e947b5"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 3897,
+      "sha256": "de3afd64a13f9ae43f29fba7aa668698f1ecdbc80ae7c1d3e0e769633f893a77"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6886,
+      "sha256": "52012ede42bed234bbc12b32ee126e2eb8c20072d1b1a6b1719f4db83249c2ab"
+    },
+    {
+      "path": "source_bindings.json",
+      "bytes": 4894,
+      "sha256": "4014db169e114226a7f7503d1b4b7ba85d895b6f34f144b78ed19c5bd85468c8"
+    },
+    {
+      "path": "source_metrics.json",
+      "bytes": 4039,
+      "sha256": "21a89c1c0ad6279a17054db1af7ee2e9644ebeea97ac059d0c9c648aa4ae57f8"
+    },
+    {
+      "path": "evidence/final/result.json",
+      "bytes": 16217,
+      "sha256": "ecf86ade537e35afe5c20310b062196d3ec2fb35061374ddeef4bd60b9887baa"
+    },
+    {
+      "path": "PathEq.v",
+      "bytes": 1403,
+      "sha256": "a917e502d3c70b709f3ea586a239f075cb4dfad2b11376e9a2b9f8ed94f7ad39"
+    },
+    {
+      "path": "LookupNormalized.v",
+      "bytes": 7368,
+      "sha256": "88d3cc194666718ec07540c14c7552e1e877ba211b62d1dc031836ff34529ad4"
+    },
+    {
+      "path": "CheckedTree.v",
+      "bytes": 2644,
+      "sha256": "bdd099d8d6dbf24bf3158266820a1474f1cc9bb21d8f18f2f17fccf92f15499e"
+    },
+    {
+      "path": "Source215Direct.v",
+      "bytes": 799,
+      "sha256": "86e2dde43bff97fc4bce6d116a8ff3d4064397012ed8428e87f4c0f95d1428bd"
+    },
+    {
+      "path": "Source215.v",
+      "bytes": 387,
+      "sha256": "0e8976e40b05c297330d34030bdfd8687cafb85d58fdea02f5e1521aba7da4fb"
+    },
+    {
+      "path": "SourceClient.v",
+      "bytes": 391,
+      "sha256": "fca72d8cbe2f9adba443b3a9e6afe100e4b776f291029e0c48d33a64676258d5"
+    },
+    {
+      "path": "BoundaryCases.v",
+      "bytes": 1569,
+      "sha256": "90291ca1075d91ab22d4772b0022920b013aefb134d373f271030c293173be5a"
+    },
+    {
+      "path": "Compat818.v",
+      "bytes": 608,
+      "sha256": "969b1efdcfed9ac232f23e7fccaac44d4c8ec3b9d81dc3367ab916eb00dc213e"
+    }
+  ],
+  "checks": {
+    "packaged_final_receipt_identical_to_completed_run": true,
+    "pinned_repository_sources_byte_and_git_blob_verified": 11,
+    "normalized_path_utility_block_verbatim_verified": true,
+    "delivered_and_actual_compiled_sources_verified": 18,
+    "sole_compilation_source_transformation": "Insert proved Compat818 import into private RMEquiv copy for Coq 8.18",
+    "successful_module_records": 18,
+    "actual_compiled_object_hashes_independently_verified": 18,
+    "packaged_and_actual_log_bindings_verified": 19,
+    "closed_global_context_reports": 18,
+    "no_Axioms_report_in_accepted_logs": true,
+    "recursive_source_client_audit_exit_code": 0,
+    "recursive_audit_command_contains_no_admit_or_norec_option": true,
+    "facade_public_source_theorem_statement_text_identical": true,
+    "typed_client_uses_qualified_production_theorem_name": true,
+    "compiled_boundary_controls": [
+      "leaf_rejects_nonzero",
+      "zero_cut_routes_right",
+      "oversized_cut_routes_left",
+      "duplicate_rows_pass",
+      "zero_cut_can_pass",
+      "oversized_cut_can_pass",
+      "missing_initial_rejected",
+      "mismatched_halt_rejected"
+    ],
+    "selected_source_metrics": {
+      "current_list": {
+        "bytes": 9571,
+        "lines": 224
+      },
+      "prior_balanced_refinement": {
+        "bytes": 21768,
+        "lines": 575
+      },
+      "direct_checked_lookup": {
+        "bytes": 12601,
+        "lines": 327
+      }
+    },
+    "final_report_timing_and_memory_values_match_receipt": true
+  },
+  "mathematical_interface_review": [
+    "Every successful lookup returns a path pair for which some successor indices satisfy the local normalized check. This is sufficient for the inherited finite source-halting-time induction.",
+    "The tree coverage proof holds for arbitrary cuts. It requires neither list flattening nor a cut-size invariant, injectivity, surjectivity, or uniqueness of rows. Each actual returned leaf is checked.",
+    "The Rocq leaf lookup accepts only residual index zero; the source and eight controls preserve this behavior.",
+    "The forward proof consumes a synchronized decrement before recursion. A zero-length following increment segment therefore cannot remove the strict source-time decrease.",
+    "Mirrored lookup swaps path pairs and inherits locally checked rows, yielding reverse implication from the same concrete semantic check.",
+    "The concrete, facade and client conclusions are the full all-register source equivalence rm_halts p215 ([],R) iff rm_halts dagPerm ([],R)."
+  ],
+  "scope_and_limits": [
+    "Accepted compilation and recursive checking were performed by the component producer. This independent review rehashed the actual emitted objects and logs and verified their packaged bindings; it did not rerun a compiler.",
+    "The executed lane is Coq 8.18.0 with the explicit proved compatibility import. The provided Rocq 9.1 route was not executed.",
+    "Neither binary sparse/dense endpoint nor the full ZFC calibration endpoint was rebuilt by this component. No internally encoded PA/ZFC derivation is supplied.",
+    "The direct stack is 9,167 bytes and 248 lines smaller than the prior optional balanced-refinement stack, but 3,030 bytes and 103 lines larger than the current production list stack.",
+    "One focused run measured the direct module slower than the list baseline. No production speedup is established."
+  ],
+  "path_base_note": "Paths in bindings are relative to this component directory in the delivered packet."
+}
