@@ -23,8 +23,8 @@ stated frontier is now:**
 - **nine positive unknowns** at degree 7,344,328;
 - **eleven positive unknowns** at degree 954;
 - **twelve positive unknowns** at degree 897 in 108 operations;
-- **a fifteen-positive-unknown equation in 66 operations**, the first below
-  the long-standing 67.
+- **a fifteen-positive-unknown equation in 66 operations** (degree 157), the
+  first below the long-standing 67.
 
 The report holds twenty-three AI-assisted research packages:
 
@@ -145,7 +145,9 @@ that actually occur in the parent, rather than for a full Sidon set.
 
 - These parents have 62 monomials in the raw coordinates and 71 in the
   shifted ones.
-- The new weights have maxima of 174–239, against 799 before.
+- The new weights of 46–50, 52 and 53 have maxima of 174–239, against 799
+  before; 51 keeps 40's 799-maximum Sidon set and makes only its targets
+  sparse.
 - The packages also change the arithmetic finalizers. They use new
   majorants, midpoint and lean carriers, absorption modulo Y, and
   reparameterized short circuits.
@@ -169,12 +171,12 @@ full; where only one package has it, that package.
 |---|---|---|---|
 | 10ℤ (Sun's reduction), lowest degree | **21,111,400 / 659** | 53 | 53 |
 | 10ℤ, fewest operations | **582** at degree 50,822,936 | 52 | 52 |
-| 10ℤ, other Pareto point | 52: **34,378,296 / 637**. Its 33,202,776 / 689 is dominated by 53's 21,111,400 / 659; 46's 35,876,184 / 640 and 48's 53,325,896 / 595 are dominated by 52 | 52 | 52 |
+| 10ℤ, other Pareto point | 52: 34,378,296 / 637. Dominated: 52's 33,202,776 / 689 (by 53's 659), 46's 35,876,184 / 640 (by 52's 637) and 48's 53,325,896 / 595 (by 52's 582) | 52 | — |
 | Fewest integers without Sun's 2026 reduction | **13ℤ at 57,866,184 / 759**, which beats wave-6 44's 13ℤ and 14ℤ on every measure | 53 | 53 |
 | Nine positive, lowest degree | **7,344,328 / 738** | 53 | 53 |
 | Nine positive, fewest operations | **548** at degree 15,502,748 | 52 | 52 |
-| Nine positive, other Pareto points | 52: **10,127,484 / 655, 10,486,092 / 603**. 53's 12,023,320 / 734, 46's 19,615,180 / 606 and 48's 15,534,796 / 655 are dominated by 52 | 52 | 52 |
-| Eleven positive | **954 / 113**, system 109 (shifted 108) (52). 50's midpoint 954 / 115 (systems 111 / 110) is a different polynomial, dominated by 52's. Also 49's 990 / 117 and 994 / 115, 53's 958 / 117 and 962 / 115, wave-6 38's 1154 / 123 | 52; 50 | 50 |
+| Nine positive, other Pareto points | 52: 10,127,484 / 655, 10,486,092 / 603. Dominated: 53's 12,023,320 / 734 (by 52's 655), 46's 19,615,180 / 606 and 48's 15,534,796 / 655 (by 52) | 52 | — |
+| Eleven positive | **954 / 113**, system 109 (shifted 108) (52). 50's midpoint 954 / 115 (systems 111 / 110) is a different polynomial, dominated by 52's. Also 49's 990 / 117 and 994 / 115, 53's 958 / 117 and 962 / 115, wave-6 38's 1154 / 123 | 52; 50 | 52 |
 | Twelve positive | **897 / 108**, three-equation system 888 / 103, shifted 102. It ties the old fewest-operations record (108, system 102) at lower degree than wave-6 44's 901 | 52 | 52 |
 | Fourteen positive | 56 / 79 (a new point) | 50 | 50 |
 | Fifteen positive, fewest operations | **66 ops** (P66, degree 157, on 36's tuple). See the note below | 51 | 51 |
@@ -183,12 +185,17 @@ full; where only one package has it, that package.
 | Smallest coefficients binding an equation | unchanged: **B = 2^590069** (wave-6 39 and 44; 52 binds its new 9, 10, 11 and 12 forms to it). 46's adapter B = 2^429959 binds no equation | 39, 44 | 39 |
 
 **The 66-operation equation.** 51's P66 is obtained from the old P67 by the
-substitution T ↦ fT. The same holds for 51's P68, P72 and P74, which come
-from P69, P73 and P75, as the dossier checked at random points and on 36's
-tuple. Since the substitution is not invertible over the positive
+substitution T ↦ fT. It trades two degrees for one operation: degree 157
+against P67's 155. P67 (155 / 67) remains the lowest-degree point at 67
+operations or fewer.
+
+The same substitution gives 51's P68, P72 and P74 from P69, P73 and P75.
+Those are the active research's Lean-checked short circuits in
+`Computability/DiophantineConsistency/circuits/`. The dossier and the audit
+checked these identities at random points and on 36's tuple. Since the substitution is not invertible over the positive
 integers, 51 proves P66's equivalence separately; it says P66 "is not an
-identity" with the old polynomial at the same coordinates. 50, 52 and 53
-each still call 67 operations unbeaten, without knowing of 51.
+identity" with the old polynomial at the same coordinates. 46, 47, 48, 49,
+50, 52 and 53 each still call 67 operations unbeaten, without knowing of 51.
 
 ## Wave 7 (sources 46–53)
 
@@ -197,9 +204,9 @@ each still call 67 operations unbeaten, without knowing of 51.
 | [`46-selective/`](46-selective/) | `con-zfc-selective-2026-10-23.zip` | *Selective coefficient extraction for explicit ZFC consistency equations* | 10ℤ / 1 / 35,876,184 / 640; 9 positive / 1 / 19,615,180 / 606; P74 15 / 1 / 68 / 74 (36's tuple); a coefficient adapter B = 2^429959 binding no equation |
 | [`47-sparse-support/`](47-sparse-support/) | `ConZFC_Sparse_Support_2026-10-23.zip` | *Sparse support packing for explicit Diophantine consistency equations* | 9 positive / 25,936,016 / 651 and 23,878,392 / 670; 10ℤ / 71,151,176 / 662 and 65,506,504 / 675; 15 / 1 / 44 / 75 and 44 / 76 |
 | [`48-majorants/`](48-majorants/) | `con-zfc-support-majorants-2026-10-23.zip` | *Smaller explicit Diophantine equations for ZFC consistency* | 9 positive, six variants from 15,534,796 / 655 to 29,157,244 / 562; 10ℤ / 53,325,896 / 595 and 39,914,856 / 651 |
-| [`49-support-pell/`](49-support-pell/) | `con_zfc_sparse_support_2026-10-23.zip` | *Support-aware digit coding and sharper Pell norms for Con(ZFC)* | 9 positive / 32,568,568 / 652; 10ℤ / 59,564,744 / 653; 11 / 1 / 990 / 117 and 994 / 115 (systems 988 / 113, 992 / 111; shifted 112, 110 — stated only in `eleven/generated/BUILD_RECEIPT.json`); 15 / 1 / 44 / 76 |
+| [`49-support-pell/`](49-support-pell/) | `con_zfc_sparse_support_2026-10-23.zip` | *Support-aware digit coding and sharper Pell norms: Explicit Diophantine equations for the consistency of ZFC* (README: *…for Con(ZFC)*) | 9 positive / 32,568,568 / 652; 10ℤ / 59,564,744 / 653; 11 / 1 / 990 / 117 and 994 / 115 (systems 988 / 113, 992 / 111, shifted 112, 110: delivered circuits whose operation counts appear only in `eleven/generated/BUILD_RECEIPT.json`); 15 / 1 / 44 / 76 |
 | [`50-midpoint11/`](50-midpoint11/) | `ConZFC_Support_Sensitive_2026-10-23.zip` | *Smaller explicit Diophantine equations for ZFC consistency* | **11 / 1 / 954 / 115** (systems 111, shifted 110), full carrier 958 / 116; 9 positive / 30,947,584 / 651; 10ℤ / 56,593,864 / 653; **14 / 1 / 56 / 79** |
-| [`51-sparse-arith/`](51-sparse-arith/) | `con_zfc_sparse_arithmetic_2026-10-23.zip` | *Sparse packing and arithmetic simplifications for Con(ZFC)* | 10ℤ / 54,768,104 / 709; 9 positive / 33,332,620 / 682; **P66 15 / 1 / 157 / 66**, P68 113 / 68, P72 80 / 72, P74 68 / 74 (36's tuple) |
+| [`51-sparse-arith/`](51-sparse-arith/) | `con_zfc_sparse_arithmetic_2026-10-23.zip` | *Sparse target packing and arithmetic separation for Diophantine consistency* (README: *Sparse packing and arithmetic simplifications for Con(ZFC)*) | 10ℤ / 54,768,104 / 709; 9 positive / 33,332,620 / 682; **P66 15 / 1 / 157 / 66**, P68 113 / 68, P72 80 / 72, P74 68 / 74 (36's tuple) |
 | [`52-sparse-pell/`](52-sparse-pell/) | `con-zfc-sparse-pell-124c07c0b7.zip` | *Sparse quadratic coding and shorter Pell finalizers for ZFC consistency* | 9 positive / 10,486,092 / 603, **15,502,748 / 548**, 10,127,484 / 655; 10ℤ / 34,378,296 / 637, **50,822,936 / 582**, 33,202,776 / 689; **11 / 1 / 954 / 113** (system 109, shifted 108); **12 / 1 / 897 / 108** (system 888 / 103, shifted 102); on the 2^590069 tuple |
 | [`53-selective-quad/`](53-selective-quad/) | `ZFC_Diophantine_Selective_Quadratic_2026-10-23.zip` | *Selective quadratic encodings and smaller Pell norms for the consistency of ZFC* | **10ℤ / 21,111,400 / 659**; **9 positive / 7,344,328 / 738**, 12,023,320 / 734; **13ℤ / 57,866,184 / 759** without Sun's 2026 reduction (unseeded 71,382,096 / 770); 11 / 958 / 117 and 962 / 115; P72 15 / 1 / 80 / 72 |
 
@@ -212,20 +219,33 @@ other names: 48 suggests `46-support-majorants` and 51 `46-sparse-arithmetic`.
 
 - **Polynomial identities.** The dossiers evaluated circuits modulo 2^127 − 1
   with the actual fixed values:
-  - all eight 10ℤ circuits of waves 6–7 that were compared, and all eleven
-    nine-positive circuits, are pairwise different polynomials;
+  - the 10ℤ circuits of 40, 43, 46, 47 (two), 48 (two) and 49 are pairwise
+    different polynomials, and so are the nine-positive circuits of 45, 46,
+    47 (two), 48 (six) and 49;
+  - the 9- and 10-variable forms of 50–53 differ from all of these by
+    degree;
+  - wave-6 41's 10ℤ remains the same polynomial as 44's `sun_b4`;
   - the eleven-positive forms of 38, 49, 50, 52 and 53 are pairwise
     different;
   - 52's twelve-positive 897 form differs from 44's.
-- **Shared tails.** The finalizers are shared literally. One Sun finalizer
-  is common to every 10ℤ circuit compared, and one Jones tail to 45, 46, 47,
-  49 and 48's "inherited" variants. The differences lie in the source
-  coding.
-- **Shared templates.** 40, 47, 48-uniform and 49 share the ten-integer
-  template deg = 297088W + 147144, where W is the weight maximum.
+- **Shared tails.** Where the dossiers compared them, the finalizers are
+  shared literally, and the differences lie in the source coding:
+  - one Sun finalizer is common to the 10ℤ circuits of 40, 43, 46, 47, 48
+    and 49;
+  - one Jones tail is common to 45, 46, 47, 49 and 48's "inherited"
+    variants.
+
+  51 replaces the Sun norm weights by (1, b, bK), and 52 refactors its
+  tails.
+- **Shared templates.** 40, 47, 48-uniform, 49 and 50 (W = 190) share the
+  ten-integer template deg = 297088W + 147144, where W is the weight
+  maximum.
 - **Different conventions.** The packages count the parent's monomials as
-  62 (raw coordinates, 46) or 71 (shifted, 47–49, 53). The source base is 40's
-  2^2140030 in 46 and 51, and 43's 2^2134940 in 53.
+  62 (raw coordinates, 46) or 71 (shifted, 47–50, 52, 53). The source base
+  differs too:
+  - 40's 2^2140030 in 46–51;
+  - 43's 2^2134940 in 53;
+  - 2^1182966 in 52.
 - **Tuples.** 46–51 and 53 use 31's tuple, with 36's for the 15-unknown
   short forms of 46 and 51. 52 uses the 2^590069 tuple (bytes identical to
   44's). Fixed leaves are materialized in 48 (16 leaves, 3,331,623 bytes), 51
@@ -234,22 +254,24 @@ other names: 48 suggests `46-support-majorants` and 51 `46-sparse-arithmetic`.
 ### Tensions, not adjudicated at intake
 
 - **67 → 66 operations.** See the note under the combined frontier.
-- **Independent discoveries.** 46–49 and 50, 52, 53 each present
-  support-aware or selective isolation as new; none cites another.
-- **Combining 38 and 44.** 50, 52 and 53 each note that 38's index
+- **Independent discoveries.** 46–50, 52 and 53 each present support-aware
+  or selective isolation as new, and 51 its sparse targets; none cites
+  another.
+- **Combining 38 and 44.** 49, 50, 52 and 53 each note that 38's index
   absorption and 44's norm cannot simply be juxtaposed. A compatibility
   lemma is needed, because 44's bound Ig − cf > 1 used the old index
   quotient. 53's review calls the unqualified assertion "false". This
   concerns the combination; **no package says 38's own eleven-positive
   proof is wrong.** 38's result still awaits independent review.
-- **Stale README at the pin.** 47, 49, 50 and 52 observe that this README,
+- **Stale README at the pin.** 47, 49, 50, 51 and 52 observe that this README,
   at their pin `124c07c0b7`, still described wave 5 only. That was true: the
   wave-6 reconciliation came later, in `613e12db0c`.
 - **Missed baselines.**
-  - 46's P74 (68 / 74) does not mention wave-2 Q₅₆ (56 / 74), which dominates
-    it.
-  - 52 cites wave-6 points that the wave-6 text below omitted: 38's 1140 /
-    129 and 1138 / 124, and 44's shifted three-equation 896 / 104.
+  - 46's and 51's P74 (68 / 74) do not mention wave-2 Q₅₆ (56 / 74), which
+    dominates them.
+  - 52 cites two wave-6 details that the wave-6 text below omits: 38's
+    translated shifted system 1138 / 124, and the degree 896 of 44's shifted
+    104-operation three-equation system.
 - **No package calls an earlier package or this README wrong.**
 
 ### Delivery discrepancies (wave 7)
@@ -274,24 +296,31 @@ other names: 48 suggests `46-support-majorants` and 51 `46-sparse-arithmetic`.
     not external human review.
   - **47 ships no licence file for its main new material**, which it supplies
     "under its existing project arrangements". The others ship MIT-0.
-  - Every package ships the K215 machine notices; in 52 they are inside the
-    bundled copies of earlier packages.
+  - Every package ships the K215 machine notices; in 48 and 52 they are
+    inside the bundled copies of earlier packages.
   - 52 calls wave-6 45 "own prior work", and 53 calls wave-6 44 "our
     preceding B4 delivery".
 - **Inside packages.**
-  - 49's system forms appear only in a build receipt.
+  - 49 states its systems' operation counts only in a build receipt.
   - 52's METRICS file labels the 10ℤ degrees "upper_bound", while its text
     says they are exact.
   - 51's README speaks of seven polynomials; its report states three
     theorems.
-- **Bundled post-pin files.** None of these packages uses the active Lean
-  work.
-  - 50 bundles the active `Lean/DiophantineConsistency/ZFC.lean` (omitted
-    at intake as a copy).
-  - 52 bundles a snapshot at `2d7766807b`, a merge of active Lean work.
-  - 53 bundles the wave-6 README and STATUS at `59e9d4d22b`. That STATUS
-    lists the active P76 (76 operations, degree 64), and 53 notes the
-    active `ExplicitZFC` theorems.
+- **Active research files.** The active research in this directory's parent
+  predates the wave-7 pin, and some wave-7 packages build on it:
+  - **Short forms.** 46, 51 and 53 start their 15-unknown short forms from
+    the active research's checked circuits P69, P73 and P75. 46's P74
+    equivalence uses the active checked P75 / P69 ↔ P67 result.
+  - **At-pin copies.** 46, 47, 48, 50, 51 and 53 bundle copies of active
+    files as of the pin (`Lean/DiophantineConsistency/ZFC.lean`,
+    short-circuit notes, P75). Most were omitted at intake as copies.
+  - **Post-pin snapshots.**
+    - 52 bundles one at `2d7766807b`, a merge of active Lean work.
+    - 53 bundles one at `59e9d4d22b`. Its STATUS lists the active P76 (76
+      operations, degree 64), and 53 notes the active `ExplicitZFC`
+      theorems.
+  - **Not checked.** None of the packages' own new constructions is
+    formally checked by that work.
 - **Retained intermediates.**
   - 46's target search;
   - 47's `search/`;
@@ -496,13 +525,13 @@ full; where only one package has it, that package.
 | Fewest operations | **67** (P₆₇), and the 59-op 16 / 7 / 24 system, unchanged. 42 and 44 rebind both to their new tuples | — | (wave 1) |
 | Smallest coefficients binding an equation | **B = 2^590069**, 295,388 raw bytes, largest port 592,884 bits. It binds 39's compact 10ℤ instance and 44's P₆₇ and 59-op system, with identical payload bytes. Next come 38's 2^678139 (339,476 bytes) and 42's 2^683195 (342,269 bytes). 40's research candidate 2^690547 binds no equation | 39, 44 | 39 |
 
-The combined frontier at the top of this README supersedes this table where
-wave 7 improves on it.
+The combined frontier near the top of this README supersedes this table
+where wave 7 improves on it.
 
 ## Wave 5 (sources 31–37)
 
 Wave 5 is described as placed, with its frontier at that time. The
-combined frontier above supersedes it where wave 6 improves on it.
+combined frontier above supersedes it where waves 6 and 7 improve on it.
 
 ### Supersession of wave 4
 
@@ -742,8 +771,11 @@ The packages say, in their own words (exceptions noted):
     build.
   - Sun's reduction is not formalized anywhere in the repository (checked at
     intake: nothing in `Computability/HilbertTenthProblem`).
-  - No package uses the active Lean research in
-    `Computability/DiophantineConsistency/Lean/`, which postdates the pins.
+  - The active Lean research in `Computability/DiophantineConsistency/`
+    postdates the wave-5 and wave-6 pins, but not the wave-7 pin.
+  - Wave-7 46, 51 and 53 build their short forms on its checked circuits
+    P69, P73 and P75.
+  - None of the packages' own new constructions is formally checked.
 - **No new general theorem.**
   - The ten-integer reduction is attributed to Sun. 31 "does not claim a new
     general ten-unknowns theorem".
@@ -761,9 +793,10 @@ The packages say, in their own words (exceptions noted):
   hypothesis: wave-5 32, 33, 36; wave-6 41, 43, 45; wave-7 48, 52.
 - **Domains.** Positive and nine-variable equations must not be read over ℤ;
   the domains of different forms are not interchangeable.
-- **No optimality.** No global minimum is claimed, and nothing below 67
-  operations is claimed. No form below nine unknowns or ten unrestricted
-  integers is claimed.
+- **No optimality.** No global minimum is claimed. The only claim below 67
+  operations is 51's P66 (66 operations, degree 157); no package claims
+  fewer. No form below nine unknowns or ten unrestricted integers is
+  claimed.
 
 ## Relation to the formal developments
 
@@ -793,8 +826,10 @@ The packages say, in their own words (exceptions noted):
 
   The new codes, decoders, finalizers, majorants and Pell-index arguments
   are unformalized. Several arguments rest on the structure of Lean proofs
-  rather than their statements, for example the square base via
-  `Jones1982.USys_of_mem`.
+  rather than their statements, for example:
+  - the square base, via `Jones1982.USys_of_mem`;
+  - 53's 13ℤ cofinal base, which uses the witness chosen inside the proof
+    of `Jones1982.exists_B25core`.
 - **Sun.** Every 10ℤ form depends on Sun's 2026 preprint and his 2021 paper.
   31 cites Proposition 2.1, Theorems 3.1 and 4.1, Propositions 6.1–6.2 and
   §7 of the preprint. These are external, unformalized and were not checked
