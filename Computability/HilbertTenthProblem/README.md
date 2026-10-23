@@ -13,32 +13,33 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1982 | J. P. Jones | Universal Diophantine Equation | *J. Symbolic Logic* 47, 549–571 | XeLaTeX |
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
-**Fixed-input specializations for Con(ZFC)** (not formalized). The research
-report
+**Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-(batch 221, seven wave-5 packages pinned to `8c6eec9d19`, superseding the
-earlier waves of batches 217–220) applies the native-window/Pell compiler
-below, with its input interface removed, to the blank run of the 215-state
-ZFC machine (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`).
-It gives explicit polynomials with fixed integer coefficients for which, by
-an ordinary argument formalizable in ZFC, ZFC proves "no solution" ↔
+(now under `Computability/DiophantineConsistency`; waves 5 and 6, batches
+221 and 222, fifteen packages) applies the native-window/Pell compiler below,
+with its input interface removed, to the blank run of the 215-state ZFC
+machine (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`).
+The resulting explicit polynomials have fixed integer coefficients, and an
+ordinary argument formalizable in ZFC shows that ZFC proves "no solution" ↔
 Con(ZFC). As the packages state them:
 
-- 12 positive unknowns at degree 1022, or in 108 operations;
-- 10 unrestricted integers, by instantiating Z.-W. Sun's 2026 ten-integer
-  reduction (a cited preprint, not formalized and not checked at intake);
-- 14 unrestricted integers by a Jones-type construction;
+- 10 unrestricted integers at degree 237,520,456, via a cited 2026 preprint
+  of Z.-W. Sun (not formalized, not checked at intake);
+- 13 unrestricted integers without that preprint;
+- nine positive unknowns at degree 129,875,980;
+- eleven positive unknowns, a first, needing independent review;
+- twelve at degree 901;
 - the fewest operations remain 67 (15 unknowns, degree 155).
 
 These are fixed-instance results, so the universal operation bounds stated
 below are unchanged. Neither the Diophantine bridge nor the compiler is
 formalized. The Lean development proves MRDP and `Jones1982.nine_unknowns`,
-the existence of a nine-unknown representation without a degree bound. The
-report's nine-variable and signed Jones-type forms build on the parametric
-`Jones1982.Nine.wset_iff_nine` and its lemmas for a fixed 31- or 32-unknown
-quartic, not on `nine_unknowns` (which fixes ν = 58). Their new finalizers, majorants
-and cofinal-base arguments are unformalized, so the new polynomials are not
-themselves instances of the Lean theorem.
+the existence of a nine-unknown representation without a degree bound.
+
+The report's Jones-route forms use the ratio lemmas of `Jones1982.Nine` and
+`Jones1982.USys_of_mem` for a fixed parent system or quartic, not
+`nine_unknowns` (which fixes ν = 58). Their new arguments are unformalized,
+so the new polynomials are not themselves instances of a Lean theorem.
 
 The established arithmetic bounds are **74 operations for a complete
 certificate and 84 for one universal polynomial**. The

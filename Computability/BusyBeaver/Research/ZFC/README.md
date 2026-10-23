@@ -1134,24 +1134,28 @@ published to support further work toward 214.
 
 ## Intake and theory minimization
 
-**Diophantine form of the K215 endpoint** (not formalized). Intake batch 221
-placed seven wave-5 packages, superseding the earlier waves of batches
-217–220, as the research report
-[`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-(placement `952c1fab49`, reconciliation `6d9a8438f7`). Each one turns the
-K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation` into
-an explicit polynomial with fixed integer coefficients. The route compiles a
-local tile language of the blank run of
-[`candidate-k215/k215.tm`](candidate-k215/k215.tm) with the Hilbert's-tenth
-native-window/Pell compiler, its input interface removed. By an ordinary
-argument, ZFC then proves "no solution" ↔ Con(ZFC). As the packages state
-them, 12 positive unknowns are reached at degree 1022 and 10 unrestricted
-integers via a cited reduction of Sun. The fewest operations remain 67 (15
-unknowns, degree 155), and the smallest coefficient tuple binding an
-equation has B = 2^1012115. The materialized bytes do not by themselves
-prove the compiler theorem. Only the machine endpoint is checked in
-Lean/Rocq; the Diophantine bridge is not. The ZFC-provability claim rests on
-the ordinary calibration argument, not on Lean's soundness.
+**Diophantine form of the K215 endpoint** (not formalized). The report
+[`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md),
+now under `Computability/DiophantineConsistency`, holds waves 5 and 6
+(intake batches 221 and 222; wave-6 placement `124c07c0b7`, reconciliation
+`613e12db0c`). Each package turns the K215 calibration behind
+`KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
+with fixed integer coefficients. To do so it compiles a local tile language
+of the blank run of [`candidate-k215/k215.tm`](candidate-k215/k215.tm) with
+the Hilbert's-tenth native-window/Pell compiler, its input interface
+removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
+
+As the packages state them:
+
+- nine positive unknowns at degree 129,875,980;
+- eleven positive unknowns;
+- 10 unrestricted integers via a cited reduction of Sun;
+- the fewest operations remain 67 (15 unknowns, degree 155);
+- the smallest coefficient tuple binding an equation has B = 2^590069.
+
+Only the machine endpoint is checked in Lean/Rocq; the Diophantine bridge is
+not. The ZFC-provability claim rests on the ordinary calibration argument,
+not on Lean's soundness.
 
 [Intake batch 143](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
 was completed before this research: placement `b07d1a27b`, reconciliation
