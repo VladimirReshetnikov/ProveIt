@@ -128,6 +128,15 @@ polynomial identities on nonstandard inputs; it is not a transfer principle
 for arbitrary external arithmetic theorems. See
 [OBJECT_OMEGA_SEMIRING.md](OBJECT_OMEGA_SEMIRING.md).
 
+`ObjectNaturalOrder` and `ObjectNaturalZero` add internal difference witnesses,
+canonical linear order, additive cancellation and absence of zero divisors.
+Using these, `ObjectResidualSquares.zfc_proves_residual_conjunction` is an
+actual ZFC derivation equating a supplied sum of residual squares with the
+conjunction of its residual equations, under the internal-natural guard.
+This closes the algebraic sum-of-squares compiler step; see
+[OBJECT_RESIDUAL_SQUARES.md](OBJECT_RESIDUAL_SQUARES.md). Correctness of the
+complete arithmetic checker/representation on nonstandard inputs remains open.
+
 [`ObjectEquation.lean`](Lean/DiophantineConsistency/ObjectEquation.lean)
 instantiates this construction at the closed nine-variable equation:
 `unsolvabilitySentence := ObjectPolynomial.noZeroForm ExplicitZFC.expression`.

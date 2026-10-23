@@ -153,3 +153,6 @@ import DiophantineConsistency.ObjectOmegaSemiring
 import DiophantineConsistency.NaturalExpressionSemiring
 import DiophantineConsistency.ObjectNaturalSemiring
 import DiophantineConsistency.NaturalRegisterProgram
+import DiophantineConsistency.ObjectNaturalOrder
+import DiophantineConsistency.ObjectNaturalZero
+import DiophantineConsistency.ObjectResidualSquares
