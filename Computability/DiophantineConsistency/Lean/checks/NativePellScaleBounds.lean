@@ -1,0 +1,9 @@
+import DiophantineConsistency.NativePellScaleBounds
+
+open DiophantineConsistency.NativePellScaleBounds
+
+#print axioms source_N_eq_q_cube
+#print axioms source_rank_gt_three_q
+#print axioms source_binary_exponent_bound
+#print axioms source_q_cube_dvd_X
+#print axioms source_q_cube_dvd_Y

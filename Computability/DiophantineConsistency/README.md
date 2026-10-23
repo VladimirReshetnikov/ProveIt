@@ -94,6 +94,12 @@ translation also pass Lean; see
 [SPLIT_POSITIVE_RECIPE59.md](SPLIT_POSITIVE_RECIPE59.md). Native calibration
 remains open.
 
+The native arithmetic bridge now recovers the exact first Pell index, the
+source register `X=2^R`, the binary block base and the common cubic scale;
+see [NATIVE_PELL_POWER.md](NATIVE_PELL_POWER.md). These are unbounded source
+theorems with explicit port hypotheses. The half-binomial extraction and
+fixed native-window/compiler calibration remain open.
+
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp
 coefficient height, sparse low-mask decoding, ratio reparameterization, and

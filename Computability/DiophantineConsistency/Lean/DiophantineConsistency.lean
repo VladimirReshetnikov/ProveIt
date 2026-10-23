@@ -131,3 +131,7 @@ import DiophantineConsistency.GapCircuitDegree66
 import DiophantineConsistency.GapFinalizerDegree66
 import DiophantineConsistency.GapPolynomialDegree66
 import DiophantineConsistency.ObjectAdditionLaws
+import DiophantineConsistency.NativePellFirstIndex
+import DiophantineConsistency.NativePellPower
+import DiophantineConsistency.NativeBinaryScale
+import DiophantineConsistency.NativePellScaleBounds

@@ -1,0 +1,8 @@
+import DiophantineConsistency.NativePellFirstIndex
+
+open DiophantineConsistency.NativePellFirstIndex
+
+#print axioms first_index_exact
+#print axioms source_first_index_exact
+#print axioms source_native_rank_odd
+#print axioms source_first_pair
