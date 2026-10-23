@@ -9,6 +9,12 @@ original contents. See the [active research](../README.md) for new Lean
 proofs and the current status; this README covers only the delivered
 manuscripts.
 
+The subsequent [active proposal review](../PROPOSAL_REVIEW.md) records
+independent release replays, circuit counts, proof assessments and the next
+formalization target. It selects package 52's 548-operation nine-positive
+form while retaining package 53's lower-degree alternative. The delivered
+packages remain unchanged.
+
 **Explicit polynomials with fixed integer coefficients whose unsolvability
 ZFC proves equivalent to Con(ZFC). Waves 5, 6 and 7 are all in the tree. The
 stated frontier is now:**
@@ -152,8 +158,9 @@ Numbers are the packages' own; **none was re-derived at intake.**
 - Operations count every binary +, −, × including multiplication by fixed
   numerals; reuse and system comparisons are free.
 - Unknowns are strictly positive unless marked ℤ (unrestricted integers)
-  or ℕ (naturals). Each nine-positive form has a nine-ℕ companion three
-  operations dearer.
+  or ℕ (naturals). Natural-coordinate companions have separate counts:
+  package 52 adds three operations, 47 adds four, and 53's calibrated form
+  adds six. The domain translation and its actual circuit must be stated.
 
 The base is the earliest-arriving package that presents the construction in
 full; where only one package has it, that package.
@@ -162,11 +169,11 @@ full; where only one package has it, that package.
 |---|---|---|---|
 | 10ℤ (Sun's reduction), lowest degree | **21,111,400 / 659** | 53 | 53 |
 | 10ℤ, fewest operations | **582** at degree 50,822,936 | 52 | 52 |
-| 10ℤ, other Pareto points | 52: 33,202,776 / 689, 34,378,296 / 637; 46: 35,876,184 / 640; 48: 53,325,896 / 595 | 46, 48, 52 | — |
+| 10ℤ, other Pareto point | 52: **34,378,296 / 637**. Its 33,202,776 / 689 is dominated by 53's 21,111,400 / 659; 46's 35,876,184 / 640 and 48's 53,325,896 / 595 are dominated by 52 | 52 | 52 |
 | Fewest integers without Sun's 2026 reduction | **13ℤ at 57,866,184 / 759**, which beats wave-6 44's 13ℤ and 14ℤ on every measure | 53 | 53 |
 | Nine positive, lowest degree | **7,344,328 / 738** | 53 | 53 |
 | Nine positive, fewest operations | **548** at degree 15,502,748 | 52 | 52 |
-| Nine positive, other Pareto points | 52: 10,127,484 / 655, 10,486,092 / 603; 53: 12,023,320 / 734. 46's 19,615,180 / 606 and 48's 15,534,796 / 655 are dominated by 52 | 52, 53 | — |
+| Nine positive, other Pareto points | 52: **10,127,484 / 655, 10,486,092 / 603**. 53's 12,023,320 / 734, 46's 19,615,180 / 606 and 48's 15,534,796 / 655 are dominated by 52 | 52 | 52 |
 | Eleven positive | **954 / 113**, system 109 (shifted 108) (52). 50's midpoint 954 / 115 (systems 111 / 110) is a different polynomial, dominated by 52's. Also 49's 990 / 117 and 994 / 115, 53's 958 / 117 and 962 / 115, wave-6 38's 1154 / 123 | 52; 50 | 50 |
 | Twelve positive | **897 / 108**, three-equation system 888 / 103, shifted 102. It ties the old fewest-operations record (108, system 102) at lower degree than wave-6 44's 901 | 52 | 52 |
 | Fourteen positive | 56 / 79 (a new point) | 50 | 50 |
