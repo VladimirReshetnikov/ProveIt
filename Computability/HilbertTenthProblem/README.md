@@ -15,8 +15,8 @@ universal Diophantine equations by James P. Jones and coauthors:
 
 **Fixed-input specializations for Con(ZFC)** (not formalized). The report
 [`con-zfc-diophantine-forms`](../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5, 6 and
-7 (batches 221–223, twenty-three packages).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–8
+(batches 221–224, twenty-nine packages).
 
 Each package applies the native-window/Pell compiler below, with its input
 interface removed, to the blank run of the 215-state ZFC machine
@@ -26,14 +26,16 @@ argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC).
 
 As the packages state them:
 
-- 10 unrestricted integers at degree 21,111,400, via a cited 2026 preprint
+- nine positive unknowns at degree 1,910,404 in 473 operations;
+- 10 unrestricted integers at degree 8,317,400, via a cited 2026 preprint
   of Z.-W. Sun (not formalized, not checked at intake);
-- 13 unrestricted integers without that preprint;
-- nine positive unknowns at degree 7,344,328;
+- 13 unrestricted integers without that preprint, at degree 11,543,632;
 - eleven positive unknowns at degree 954 (the eleven-positive forms still
   need independent review);
-- twelve positive unknowns at degree 897 in 108 operations;
-- a 15-positive-unknown equation in **66 operations**, below the previous 67.
+- twelve positive unknowns at degree 242 in 94 operations;
+- fifteen positive unknowns at degree 24, and in 66 operations at
+  degree 157;
+- a quartic in 45 unrestricted integers.
 
 These are fixed-instance results, so the universal operation bounds stated
 below are unchanged. Neither the Diophantine bridge nor the compiler is
@@ -41,8 +43,8 @@ formalized. The Lean development proves MRDP and `Jones1982.nine_unknowns`,
 the existence of a nine-unknown representation without a degree bound.
 
 The report's Jones-route forms use `Jones1982.Nine.wset_iff_nine` (wave 5)
-or its ratio lemmas directly (waves 6–7), with `Jones1982.USys_of_mem`, for a
-fixed parent system or quartic. None uses `nine_unknowns`, which fixes
+or its ratio lemmas directly (waves 6–8), with `Jones1982.USys_of_mem`, for
+a fixed parent system or quartic. None uses `nine_unknowns`, which fixes
 ν = 58. Their new arguments are unformalized, so the new polynomials are not
 themselves instances of a Lean theorem.
 

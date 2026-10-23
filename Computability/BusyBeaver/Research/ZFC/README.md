@@ -1136,9 +1136,9 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–7
-(intake batches 221–223; wave-7 placement `6d375f2d2d`, reconciliation
-`9e51c5f456`).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–8
+(intake batches 221–224; wave-8 placement `beb0192cb8`, reconciliation
+`ea94d3bc3f`).
 
 Each package turns the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1149,12 +1149,12 @@ removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
 
 As the packages state them:
 
-- nine positive unknowns at degree 7,344,328;
-- eleven positive unknowns at degree 954;
-- 10 unrestricted integers via a cited reduction of Sun;
-- a 15-unknown equation in 66 operations;
-- the smallest coefficient tuple binding an equation still has
-  B = 2^590069.
+- nine positive unknowns at degree 1,910,404 in 473 operations;
+- 10 unrestricted integers via a cited reduction of Sun, at degree
+  8,317,400;
+- a 15-unknown equation of degree 24, and one in 66 operations;
+- the smallest coefficient tuple binding an equation now has
+  B = 2^429959.
 
 Materialized coefficient bytes do not by themselves prove the compiler
 theorem. Only the machine endpoint is checked in Lean/Rocq; the Diophantine
