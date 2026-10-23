@@ -17,7 +17,15 @@ from the classical Tarski/Kalish–Montague route. The separately attributed
 propositional certificate and numerical program ports are described below;
 no Coq compiler was run.
 
-The latest [phase23 Lean checkpoint](k225-formal/verification/k215/simplification/phase23/README.md), independent actual readback,
+The [phase24 Lean proof cleanup](k225-formal/verification/k215/simplification/phase24/README.md) shares runtime, selector, subtype and calculus proofs,
+removing **175 lines / 8,435 bytes across thirteen maintained sources**. Its kernel
+check, independent actual readback, capture and capture review pass: **230 providers
+= 121 fresh + 109 exact phase23 reuses**, plus two fresh audits, with zero selected
+warnings. The primary endpoint stays at **172 modules** and selects **2,210 fewer
+source bytes**; this overlaps the maintained saving and must not be added. The
+215-state machine and endpoint statements stay fixed; its internal PA endpoint remains open.
+
+The [phase23 Lean checkpoint](k225-formal/verification/k215/simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. It separates four generic
 cores from compatibility adapters, uses native quotient Collection for
 Replacement, and closes the attempt-value image by extending its recorded

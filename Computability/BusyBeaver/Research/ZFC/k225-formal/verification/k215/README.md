@@ -6,7 +6,15 @@ The original fresh full builds below were recorded at `613f9cf28a`.
 [Phase16](simplification/phase16/README.md) retains the preceding accepted
 quotient-unification snapshot and its exact source, profile and warning records.
 
-The latest [phase23 Lean checkpoint](simplification/phase23/README.md), independent actual readback,
+The [phase24 Lean proof cleanup](simplification/phase24/README.md) shares runtime, selector, subtype and calculus proofs,
+removing **175 lines / 8,435 bytes across thirteen maintained sources**. Its kernel
+check, independent actual readback, capture and capture review pass: **230 providers
+= 121 fresh + 109 exact phase23 reuses**, plus two fresh audits, with zero selected
+warnings. The primary endpoint stays at **172 modules** and selects **2,210 fewer
+source bytes**; this overlaps the maintained saving and must not be added. The
+215-state machine and endpoint statements stay fixed; its internal PA endpoint remains open.
+
+The [phase23 Lean checkpoint](simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. Thirty-three maintained
 sources remove **243 Lean lines / 13,016 bytes**; forty declarations retire and
 three signatures become stronger. The check covers 230 providers (215 project
@@ -110,7 +118,7 @@ endpoint. The large literal tables and arithmetic certificates are kernel-checke
 data, while these final compositions stay small.
 
 The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, selects 172
-project modules from the current phase23 sources and then two explicit endpoint
+project modules from the current phase24 sources and then two explicit endpoint
 clients. The original fresh build selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
 selects 237 sources: 195 from the pinned reference and 42 for K215. Both use the

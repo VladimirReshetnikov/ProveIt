@@ -1,0 +1,198 @@
+{
+  "status": "PASS_SOURCE_REVIEW_ONLY_UNCOMPILED",
+  "independent_of_author": true,
+  "candidate_package": "/tmp/k215-phase24-machine-leads",
+  "bindings": {
+    "pins_sha256": "5cf68d6ece012d20257c136d9e43abf67f8bb6ac6e245402aa5f62dcb5988302",
+    "report_sha256": "da9e953119c00bea4954419e2cc779ff2e470ccf8441b0c77e7f1ab40a3e17fb",
+    "diff_sha256": "c8dd312510fb150eaf40490ada1795f9bf6791a65a904344a3efce65364a11b7"
+  },
+  "sources": [
+    {
+      "module": "BusyBeaver.ZFC.L2Lib254",
+      "before_sha256": "7dd236d35dc2cf98344e180ae0d211f14831320ea8c88d5cb7e28cda0bb3e029",
+      "candidate_sha256": "3484e04d3bdc22685edeb63c3bca3500cc15e6e95345bbb420405b424498f4f4",
+      "old_headers_exact": 47,
+      "new_declarations": [
+        "dec_brk",
+        "dec_halt",
+        "pass",
+        "fall"
+      ],
+      "definition_chunks_exact": [
+        "AS",
+        "enc",
+        "Rn",
+        "walkStep",
+        "updAS",
+        "loopAS"
+      ],
+      "imports_exact": true,
+      "canonical_matches_before": false,
+      "canonical_matches_candidate": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Root254",
+      "before_sha256": "dcb0b54869b40fa76b44a26a467e1c58351d689e88e49988d1a8451ded5aeb4b",
+      "candidate_sha256": "50891b3be0ebe10c0956eb6e7d6f63db5359ed987357fdb53cef71a2c4e33405",
+      "old_headers_exact": 17,
+      "new_declarations": [],
+      "definition_chunks_exact": [
+        "toAS",
+        "s2"
+      ],
+      "imports_exact": true,
+      "canonical_matches_before": false,
+      "canonical_matches_candidate": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Root222",
+      "before_sha256": "d92586a142a487ff989d6115717782291132057097969ec1c8529a46bad8715f",
+      "candidate_sha256": "b3b285abc29b2f825c8c614a9470c32c1c611f004ade3b2b754bcbdd20f8bccd",
+      "old_headers_exact": 17,
+      "new_declarations": [],
+      "definition_chunks_exact": [
+        "toAS",
+        "s2"
+      ],
+      "imports_exact": true,
+      "canonical_matches_before": false,
+      "canonical_matches_candidate": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2RootDom",
+      "before_sha256": "a8515c592d14d58488d5d684023cd6d166c1e24e4a2e3af9d74e717076b9c3ac",
+      "candidate_sha256": "7b9f8092301be0508c76705364a1cdf6c0380d48e4862ec62675291a72406266",
+      "old_headers_exact": 15,
+      "new_declarations": [],
+      "definition_chunks_exact": [
+        "toAS"
+      ],
+      "imports_exact": true,
+      "canonical_matches_before": false,
+      "canonical_matches_candidate": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2RootPerm",
+      "before_sha256": "edef68116d200da87fe74a990bcaaab737fc86103cfa8e669beb15cd6f06b1f7",
+      "candidate_sha256": "97dd7cf3ee29fc4294f4b1283d2eb640635be2487206ee1bc96adf2daa4d71e4",
+      "old_headers_exact": 16,
+      "new_declarations": [],
+      "definition_chunks_exact": [
+        "mpOut",
+        "toAS"
+      ],
+      "imports_exact": true,
+      "canonical_matches_before": false,
+      "canonical_matches_candidate": true
+    }
+  ],
+  "new_shared_theorems": [
+    "L2.dec_brk",
+    "L2.dec_halt",
+    "L2.pass",
+    "L2.fall"
+  ],
+  "seven_compatibility_wrappers": [
+    "L2Dom.dec_brk",
+    "L2Dom.dec_halt",
+    "L2Dom.pass",
+    "L2Dom.fall",
+    "L2Perm.dec_brk",
+    "L2Perm.pass",
+    "L2Perm.fall"
+  ],
+  "source_and_type_findings": [
+    "All old declaration headers, names, binder order and implicitness are exact; all definitions, import lines and preexisting attributes are unchanged. Four generic public theorems are added, with no new module.",
+    "The generic decrement rules reproduce the existing Dom proofs with arbitrary p. Their exact node equation, positive ac premise and desired break/halt continuation are retained. They use Run.decPos, upd_ac and brk_cdr/halt_cdr.",
+    "pass consumes an inner break through skip, then executes the enclosing literal break1. fall uses decZero to skip the next selector, executes only the supplied normal branch body, then performs the enclosing break1. These agree with the existing Run constructor exit semantics.",
+    "The 254/222 selector path is 141\u2192142\u2192143\u2192144\u2192145\u2192146\u2192147\u2192148\u2192149. DROP selects body121 at ac=1; NIP selects body152 at ac=2; AX reaches node149 after three decrements. The 254 AX child remains1/f1; 222 remains236/f236.",
+    "NIP halt walks halt_cdr147 after skip148(decZero), halt_car146, dec_halt145, halt_car144, halt_car143, dec_halt142, halt_car141. It does not conflate normal/break/halt exits.",
+    "Clean is exactly s1=0 and s2=0, so changing ac leaves hc and the old p2 premises definitionally applicable. Repeated record updates of ac collapse to the last update. No scratch or p2 premise is dropped from specialized dispatches.",
+    "All root_step, fetch, read, iteration, boot and program_halts_iff sections are byte-exact. RootDom and RootPerm dispatches and all later source remain byte-exact; only their seven helper proof bodies become compatibility wrappers.",
+    "trCore is not stretched across the modified fetch or AX ancestors: sharedNodes still excludes141\u2013149. The new rules construct local runs for each concrete program."
+  ],
+  "metrics": {
+    "before_lines": 1169,
+    "candidate_lines": 1091,
+    "removed_lines": 78,
+    "before_bytes": 57535,
+    "candidate_bytes": 52819,
+    "removed_bytes": 4716,
+    "primary_modules_unchanged": 172,
+    "primary_basis_bytes": 1728487,
+    "primary_candidate_bytes_standalone": 1729996,
+    "primary_byte_growth": 1509,
+    "scope_note": "Whole maintained delta charges new shared helpers and all compatibility wrappers. Primary arithmetic is separate, against the phase23 graph; it is not the combined phase24 result."
+  },
+  "standalone_graph_readback": {
+    "plan": "/tmp/k215-phase23-check-v2/candidate-plan.json",
+    "plan_sha256": "1daca70939536e244f69b8197a05ff9a19a7ef0e24fab43056f5785b6f576730",
+    "fresh_provider_count": 30,
+    "fresh_projects": 27,
+    "fresh_clients": [
+      "MacroSharing18Api",
+      "WFModelCompat12",
+      "ZFNativeCompat12"
+    ],
+    "site_or_forward_batches_forced": [],
+    "combined_graph": "Root must recompute after all phase24 overlays."
+  },
+  "axioms": {
+    "no_new_axiom_or_admitted_proof_in_sources": true,
+    "new_helper_profiles": "UNMEASURED; no empty-profile claim. dec_* reuse upd_ac and its extensional function equality proof.",
+    "old_measured_profiles": "Root must preserve exact phase23 reports in the combined serial check."
+  },
+  "risks": [
+    "No elaboration has run. Implicit program/node/state inference in concise nested dispatch terms remains a kernel gate.",
+    "No speed, state-count, object-byte saving or primary-source reduction is inferred."
+  ],
+  "reference_sources": [
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+      "sha256": "36b7b8fdeaad284940fafe170b8da3ed6953e41b743034e446f68c8c5f6fd3cb"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib222.lean",
+      "sha256": "0350c9c97883fb35cbd445835033bc57970737020223d0cd6a33655ea67b6f23"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros254.lean",
+      "sha256": "dcff2bd808ad8ff5b07fdadb68735f8c4b3588ee3ebf7471a3c376b72cb4298e"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros222.lean",
+      "sha256": "1f387ed395159eb5797619e03b2e1947ca6681878005a41acadcd4feafdc04f9"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control254.lean",
+      "sha256": "c83632ec42f496945464644db054b533f9fcf84a772d470d29a3828e9908ae82"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control222.lean",
+      "sha256": "49eee095ddc152c43b5255cb52b4ec1b58ccac45bc376548347e558c7f31df32"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag254.lean",
+      "sha256": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag222.lean",
+      "sha256": "9e73e2d6ac692c33b07efde7faa08545fdd61ca692ec03e21afe2ffe99a7cb71"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DagDom.lean",
+      "sha256": "9d52a871ea029099dd192fb66cf0ef802c4f9ed6e8c32d3a7b3661ce343af5aa"
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DagPerm.lean",
+      "sha256": "11ccf62cf09e41b8f85e1c7d6aa56aeca0c0d211e119fb5309d5fb1ac6a96123"
+    }
+  ],
+  "execution": {
+    "compiler": false,
+    "canonical_edits": false,
+    "supplied_helpers_or_producers": false,
+    "owned_source_readback_only": true
+  }
+}

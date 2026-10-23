@@ -1,0 +1,194 @@
+{
+  "status": "PASS_INDEPENDENT_ROOT_PHASE24_V2_RUNTIME_ASSETS_RECIPES_AND_SAFETY_GATE_REVIEW",
+  "reviewer_relationship": "Reviewer authored the earlier phase23 adapter design. Phase24 config/entrypoint/base expansion adaptations and V2 fixes are root-owned and independently checked here; this is not independent authorship of the entire inherited helper chain. Reviewer also authored the separate uncompiled logic candidate, not these phase24 tools.",
+  "review_scope": "Full adapter, config, three wrappers and handoff; all three exact P23\u2192P24 expanded-helper diffs and complete final runner/derive/actual sources; supervisor run_locked cleanup path read as inert source. No draft or compiler execution.",
+  "draft": "/tmp/k215-phase24-tools-v2",
+  "handoff": {
+    "path": "/tmp/k215-phase24-tools-v2/handoff.json",
+    "sha256": "e0d0582139283c4272d4629e8a74e7d12a060f958c9c0a590ad22d32b5fe8147",
+    "bytes": 1887
+  },
+  "runtime_assets": [
+    {
+      "path": "/tmp/k215-phase24-tools-v2/phase_adapter.py",
+      "sha256": "f1fda9e1f9881b498262dddf8ebb495a5439896cbaaf421db3068f2cc7d2b093",
+      "bytes": 1732
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/phase24.json",
+      "sha256": "6d1e36b3986cfc5c3f33621c86fbe88b91a3c3a30db70066cde26e20e86beaf8",
+      "bytes": 5366
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/build-candidate.py",
+      "sha256": "009526a6057cb70b8179f9655eb46d69c41967819d50c59629f1c09a0330a826",
+      "bytes": 299
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/derive_plan.py",
+      "sha256": "a8f3b9a67df0db0733b547fa352034b81341d8429e5d6d115e51cd2ade49960a",
+      "bytes": 299
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/review_actual.py",
+      "sha256": "32f324ddd235133d397859ec04bde384a421ef22d511ac20bb5b80c4293fb29c",
+      "bytes": 299
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/phase23-base/runner.py",
+      "sha256": "2938202053fa58b596117c2a7414d3fa2c4a528c43fbd2810e9cf345a3eaa58e",
+      "bytes": 16453
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/phase23-base/derive.py",
+      "sha256": "a2cfab0b30b100e5ad9e175d901203f1cc9a0248e7e93198a07df77f49e99a3b",
+      "bytes": 10628
+    },
+    {
+      "path": "/tmp/k215-phase24-tools-v2/phase23-base/actual.py",
+      "sha256": "90e058746b540da8aa2fb9ea0f7536d53dd93ee0b4f1c6e1ce676e9f3d7cdeca",
+      "bytes": 17037
+    }
+  ],
+  "expanded_helpers": [
+    {
+      "kind": "runner",
+      "base_sha256": "2938202053fa58b596117c2a7414d3fa2c4a528c43fbd2810e9cf345a3eaa58e",
+      "expanded_sha256": "21adbb405be8e1c0532a0a42bd2d4628ddba639741f677de525fe754a06571d3",
+      "expanded_bytes": 16453,
+      "exact_counted_replacements": 7,
+      "diff_sha256": "4710037e377909cec3e3e945f4bdb3eac476a11df959e075d7c0d174138f3889"
+    },
+    {
+      "kind": "derive",
+      "base_sha256": "a2cfab0b30b100e5ad9e175d901203f1cc9a0248e7e93198a07df77f49e99a3b",
+      "expanded_sha256": "2dea7365e03e098007d041561e72ed869bb5f93b0d3ae04c2bf5f4acbaac8e36",
+      "expanded_bytes": 10628,
+      "exact_counted_replacements": 9,
+      "diff_sha256": "fcfc134f8148f95dc7ce20716bc41e8f1f7ada0c706027951ff8815a4592a4b3"
+    },
+    {
+      "kind": "actual",
+      "base_sha256": "90e058746b540da8aa2fb9ea0f7536d53dd93ee0b4f1c6e1ce676e9f3d7cdeca",
+      "expanded_sha256": "2b1a1fdf9c031a2bc1910e0879f4245782f37707fb2a55bed36cb7af4f2415da",
+      "expanded_bytes": 17037,
+      "exact_counted_replacements": 13,
+      "diff_sha256": "018c0a50865970cc62913b8357ac5ba93e1c3b9e02c0765dd5a121c44fee893f"
+    }
+  ],
+  "exact_replacement_recipes_checked": 29,
+  "phase23_base_provenance": {
+    "config": "/tmp/k215-phase23-check-draft-v2/phase23.json",
+    "sha256": "6398a6af29a8213a525517318c7c9de34fdc71f37f3d9b4669ebbef2e1ca7602",
+    "result": "Each of the three copied P23 bases is byte-exact to a fresh static application of the accepted cfg6398 counted replacement recipes to its pinned phase22 base. No base code was imported or run."
+  },
+  "fixed_V1_preparation_findings": [
+    {
+      "issue": "Runner resume branch still accepted phase22_checked instead of phase23_checked.",
+      "v2_status": "Fixed; current basis loader, reuse writer, resumed-origin guard and actual stdout/provenance checks all agree on phase23_checked."
+    },
+    {
+      "issue": "Actual reader still passed226toaccepted basis and asserted len(old)==226.",
+      "v2_status": "Both fixed to230. All three expanded sources contain no226orphase22tokens."
+    }
+  ],
+  "basis": {
+    "result": "/tmp/k215-phase23-check-v2/candidate-build-run1/result.json",
+    "sha256": "684d93cbb3b49a25587ca2177d49789ff8e6dad0c06e5f9823803d665304cffe",
+    "providers": 230,
+    "missing_original_raw_records": 12,
+    "old_missing_record_names": [
+      "BoundedZFCConsistency.Basic",
+      "BoundedZFCConsistency.Choice",
+      "BoundedZFCConsistency.CodePredicate",
+      "BoundedZFCConsistency.Coding",
+      "BoundedZFCConsistency.FormulaClosedSet",
+      "BoundedZFCConsistency.OmegaRecursion",
+      "BusyBeaver.Core",
+      "BusyBeaver.ZFC.FramedWindow",
+      "FirstOrder.Calculus",
+      "FirstOrder.Completeness",
+      "FirstOrder.Fol",
+      "ZF.Zf"
+    ],
+    "phase23_eleven_leaf_pins": [
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/README.md",
+        "sha256": "74a5d2281208eaec2d77c32f1c2b63b46abc3aca5f9b1d950494b0ffde78b3e1",
+        "bytes": 3960
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/capture-config.json",
+        "sha256": "dec64746ffa236bd5f9388317efaf9950cf9a8d7d10caa2ca60cea2a4fccc8c8",
+        "bytes": 361488
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/capture.json",
+        "sha256": "b800f5a8bfd7b8652981a405e5978f64a3eb23195b64c404a739de7e8ba0c855",
+        "bytes": 836
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/capture.py",
+        "sha256": "8fc8387ec12df0ebf512fcdb2b32dbc06321c1a86c986da9f48b67efc95a6aed",
+        "bytes": 11691
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/check-plan.json",
+        "sha256": "1daca70939536e244f69b8197a05ff9a19a7ef0e24fab43056f5785b6f576730",
+        "bytes": 199736
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/check.py",
+        "sha256": "e18cc80daa24997bf1f68b97a4ba9a4cf4509f1361738c5060c42ec820d50687",
+        "bytes": 548
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/evidence.tar.gz",
+        "sha256": "573012336488f152e622798d08f7782ea90310b6dc994864c51c1315f9001dd6",
+        "bytes": 3389911
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/index.json",
+        "sha256": "cf1994f345795d5cffc259acce1aa03b031f38ad695c1d53fe2a3d2bbe7d0038",
+        "bytes": 1588441
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/result-review.json",
+        "sha256": "edf3adfd15948e9dc74f835675acf39ecab956053f4c9b3704c90bbf224b04ff",
+        "bytes": 4379
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/result.json",
+        "sha256": "684d93cbb3b49a25587ca2177d49789ff8e6dad0c06e5f9823803d665304cffe",
+        "bytes": 212496
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase23/lean/review_actual.py",
+        "sha256": "e685ba95f7df1390ca8274196ef62cc1e2fc90ceaf5fca139fc1623da8c25b92",
+        "bytes": 548
+      }
+    ]
+  },
+  "retained_gates": {
+    "current_input_protocol": "Eight runtime assets enter the plan and runner owner-input freeze. Exact eleven phase23Lean leaf boundary encapsulates older evidence; no renewed inheritance loop over obsolete ancestor present-pin sets is added. Current consumed sources/snapshots/tools/objects/logs/dependencies remain directly bound.",
+    "source_and_import_identity": "Strict before/candidate/canonical guards; no unlisted current source or changed import edge can enter. Exact selected target closure/topological order and changed-source set are checked. Current counts derive dynamically rather than fixing230as candidate scope.",
+    "freshness": "Deriver, runner and actual reader independently close changed/new source/import nodes through every selected transitive dependent. Forced modules cannot reuse historical objects. New-import dependencies are visited first; both audit roots stay fresh.",
+    "profiles": "Same15typedclients and exact93client/5WFTheory/10audit report/profile equality, ordered names and standard-axiom allowlist. Fresh providers/clients/audits reject every warning and any error:/sorryAx text. Historical comma-string/list report forms normalize only against actual raw log profiles.",
+    "boundaries": "Accepted230provider P23workspace/object/log/dependency/toolchain bindings are retained,12missingraw records are measured rather than fabricated. Three machine files and active generate_l2dom.py pins equal basis. Sixteen inherited absence checks remain, plus explicit new retirement absences if any.",
+    "toolchain": "Exact Lean4.32.0 binary SHAe8baaa... and pinned supervisor SHAa3cf7c...; lean/lake/Init.olean/project-toolchain bindings are retained.",
+    "limits": "Serial -j1, LEAN_NUM_THREADS=1, -M12288,120seconds for ordinary modules and each audit,900seconds only for215site/Fwd batches; fixed global/tmp/proveit-k215-proof-build.lock.",
+    "cleanup": "Runner retains SIGTERM-to-KeyboardInterrupt and calls pinned run_locked. That supervisor uses a dedicated process session and kills/reaps the compiler group on timeout or BaseException before lock release. Per-output nonblocking flock and owner-equality resume guard remain exact.",
+    "completion": "Sources/current inputs/absence/dependency/object/log/profile bindings are reread before and after audits. Actual reader requires terminal outer PASS/zeroexit/empty stderr and exact launch/freeze, fresh/reuse origins, complete object set and audit records; no accepted result can come from a stopped prefix."
+  },
+  "nonblocking_documentary_note": "The derive expanded source retains the inherited docstring wording P23 closure derivation; executable mode, basis, paths, source labels and runtime namespace are phase24/current accepted phase23 as intended. This is not a gate or provenance discrepancy.",
+  "limits_of_review": "Source/config-only. No source spec or final phase24 fresh/current counts were frozen for this review. This permits root to use the exact reviewed control flow after source freeze; it is not a compiler/result/actual/capture PASS. V1 remains unexecuted preparation history.",
+  "findings": [],
+  "execution": {
+    "compiler": false,
+    "supplied_code": false,
+    "adapter_or_helpers": false,
+    "canonical_edits": false,
+    "draft_edits": false,
+    "goal_remains_active": true
+  }
+}

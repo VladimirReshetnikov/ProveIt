@@ -1,0 +1,15 @@
+# Phase24 integration records
+
+The accepted run checks 230 providers (215 project modules and 15 typed clients): 121 fresh providers, 109 exact phase23 reuses, and two fresh endpoint audits. All observed provider and audit logs have zero warnings; the 93 client, five WFTheory and ten audit reports retain the required profiles. The full invocation exited zero in 1307.98 seconds. This is a run duration, without a comparative performance claim.
+
+`source-spec.json` is the final source specification, left byte-exact with its preparation-time full-check-pending label. `source-peer.json` audits source and plan metadata; its author wrote the three logic changes and therefore does not independently review their mathematics. `math-peer-logic-runtime-native.json` supplies the separate review of those changes; `math-peer-selectors.json` independently reviews the selector changes. The two annotation peers preserve the narrow elaboration repairs. `upstream-coordination.json` records attributed runtime adoption and comparison with Claude's other changes.
+
+`actual-review.json` binds all 230 source/object/dependency/log chains, 1250 owner inputs, 102 present pins and 16 absences. The 218 present original provider records and 12 inherited missing records are distinguished; no missing record is reconstructed. `capture-review.json` independently reads the archive in memory and reconstructs all 640 blobs, 1078 logical entries and 1071 source aliases, including 611 raw-plan files. The prior phase23 eleven-file leaf remains an exact external boundary. Objects are excluded.
+
+The evidence archive preserves four focused diagnostic contexts (240 explicit files): a precompiler metadata-order rejection, the original native elaboration failure, the insufficient first annotation repair, and the successful two-module repair. None is a failed full run or an accepted reuse basis. The accepted full run always uses the phase23 basis. Full-plan preparation versions and earlier control drafts remain historical.
+
+The first extras-manifest preparation sampled the collector's still-open stdout and was rejected before config construction. The second collector invocation used the existing `capture-` exclusion for its job outputs and recorded only stable files. Both manifests and terminal receipts are preserved; this did not change proof sources, checks, gates or the accepted result.
+
+The [eight runtime assets](runtime/README.md), capture/config sources and independent source-review receipts remain byte copies of the versions reviewed and used. `readback.py` checks publication copy identity and links only. Its [CLI documentation](readback-README.md) describes that separate scope. The final adoption ledger and readback receipt are publication records created after capture; they do not pretend to be inside the sealed evidence archive.
+
+The machine still has 215 states. The internal PA endpoint and minimum-state theorem remain open. This phase changes proof presentation while preserving the existing endpoint statements and axiom profiles.

@@ -68,9 +68,7 @@ theorem sat_translate (mem : V → V → Prop) (phi : Form) :
   | fEq i j =>
     intro env
     change (env i).val = (env j).val ↔ env i = env j
-    constructor
-    · exact Subtype.ext
-    · exact congrArg Subtype.val
+    exact Subtype.ext_iff.symm
   | fBot => intro env; rfl
   | fImp a b iha ihb =>
     intro env
@@ -86,30 +84,27 @@ theorem sat_translate (mem : V → V → Prop) (phi : Form) :
     change (∀ x : V, Sat mem (scons x (liftEnv mem env)) (wfForm 0) →
       Sat mem (scons x (liftEnv mem env)) (translate a)) ↔
         ∀ x : Domain mem, Sat (domainMem mem) (scons x env) a
-    constructor
-    · intro h x
-      apply (ih (scons x env)).mp
-      rw [liftEnv_scons]
-      exact h x.val ((sat_guard mem (liftEnv mem env) x.val).mpr x.property)
-    · intro h x hx
-      let y : Domain mem := ⟨x, (sat_guard mem (liftEnv mem env) x).mp hx⟩
-      have hy := (ih (scons y env)).mpr (h y)
-      rwa [liftEnv_scons] at hy
+    refine (forall_congr' fun x =>
+      (imp_congr (sat_guard mem (liftEnv mem env) x)
+        (Iff.rfl : Sat mem (scons x (liftEnv mem env)) (translate a) ↔ _)).trans
+        (forall_congr' fun hx => ?_)).trans
+      (Subtype.forall (q := fun x : Domain mem =>
+        Sat (domainMem mem) (scons x env) a)).symm
+    have h := ih (scons ⟨x, hx⟩ env)
+    rwa [liftEnv_scons] at h
   | fEx a ih =>
     intro env
     change (∃ x : V, Sat mem (scons x (liftEnv mem env)) (wfForm 0) ∧
       Sat mem (scons x (liftEnv mem env)) (translate a)) ↔
         ∃ x : Domain mem, Sat (domainMem mem) (scons x env) a
-    constructor
-    · rintro ⟨x, hx, ha⟩
-      let y : Domain mem := ⟨x, (sat_guard mem (liftEnv mem env) x).mp hx⟩
-      refine ⟨y, (ih (scons y env)).mp ?_⟩
-      rw [liftEnv_scons]
-      exact ha
-    · rintro ⟨x, hx⟩
-      refine ⟨x.val, (sat_guard mem (liftEnv mem env) x.val).mpr x.property, ?_⟩
-      have ha := (ih (scons x env)).mpr hx
-      rwa [liftEnv_scons] at ha
+    refine (exists_congr fun x =>
+      ((and_congr (sat_guard mem (liftEnv mem env) x)
+        (Iff.rfl : Sat mem (scons x (liftEnv mem env)) (translate a) ↔ _)).trans exists_prop.symm).trans
+        (exists_congr fun hx => ?_)).trans
+      (Subtype.exists (q := fun x : Domain mem =>
+        Sat (domainMem mem) (scons x env) a)).symm
+    have h := ih (scons ⟨x, hx⟩ env)
+    rwa [liftEnv_scons] at h
 
 theorem sat_translate_of_wf (mem : V → V → Prop) (phi : Form)
     (env : Nat → V) (hWF : ∀ i, WF mem (env i)) :
@@ -154,13 +149,9 @@ theorem equalityFree_translate (phi : Form) :
   | fOr a b iha ihb => exact and_congr iha ihb
   | fAll a ih =>
     change (EqualityFree (wfForm 0) ∧ EqualityFree (translate a)) ↔ EqualityFree a
-    constructor
-    · intro h; exact ih.mp h.2
-    · intro h; exact ⟨equalityFree_wfForm 0, ih.mpr h⟩
+    exact (and_iff_right (equalityFree_wfForm 0)).trans ih
   | fEx a ih =>
     change (EqualityFree (wfForm 0) ∧ EqualityFree (translate a)) ↔ EqualityFree a
-    constructor
-    · intro h; exact ih.mp h.2
-    · intro h; exact ⟨equalityFree_wfForm 0, ih.mpr h⟩
+    exact (and_iff_right (equalityFree_wfForm 0)).trans ih
 
 end SetTheory.BusyBeaver.ZFC.WFRelativization

@@ -100,15 +100,9 @@ theorem dni (a : NF) : T (imp a (neg (neg a))) :=
 
 /-- Case split: `(¬a → c) → ((b → c) → ((a → b) → c))`. -/
 theorem imp_cases (a b c : NF) :
-    T (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
-  apply ded3 hC
-  -- hypotheses: (¬a → c), (b → c), (a → b); goal c, by Peirce at bot on c.
-  have inner : Der NF.imp T [neg c, imp a b, imp b c, imp (neg a) c] c := by
-    have na : Der NF.imp T [neg c, imp a b, imp b c, imp (neg a) c] (neg a) :=
-      deduction hC (.mp (Der.hyp (a := neg c) (by simp))
-        (.mp (Der.hyp (a := imp b c) (by simp)) (.mp (Der.hyp (a := imp a b) (by simp)) h0)))
-    exact .mp (Der.hyp (a := imp (neg a) c) (by simp)) na
-  exact .mp (.ax (hC.peirce c NF.bot)) (deduction hC inner)
+    T (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) :=
+  ded3 hC (cases_on hC (p := a)
+    (.mp h2 (.mp h1 h0)) (.mp h2.weaken h0))
 
 theorem vac_bot (i : Nat) : T (imp NF.bot (all i NF.bot)) := hC.efq _
 

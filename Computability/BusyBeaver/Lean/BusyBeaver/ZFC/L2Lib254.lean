@@ -71,6 +71,39 @@ abbrev Rn (e : Edge) (st st' : AS) : Prop := Run dag254 e (enc st) .normal (enc 
 @[simp] theorem upd_pl (st : AS) (v : Nat) : upd (enc st) 8 v = enc { st with pl := v } := by
   funext i; rcases i with _ | _ | _ | _ | _ | _ | _ | _ | _ | i <;> simp [upd, enc]
 
+/-! ## Selector dispatch -/
+
+/-- A positive selector enters the next branch after decrementing `ac`. -/
+theorem dec_brk {p : Prog} {a b : Nat} (ha : p.nodes a = (.decnz 3, .node b))
+    {st : AS} (k : Nat) (hk : st.ac = k + 1) {R : Regs}
+    (hb : Run p (.node b) (enc { st with ac := k }) (.brk 1) R) :
+    Run p (.node a) (enc st) (.brk 1) R := by
+  have hdec := Run.decPos (p := p) 3 (enc st) k (by simp [enc, hk])
+  rw [upd_ac] at hdec
+  exact brk_cdr (k := 0) ha hdec hb
+
+/-- The same selector transition propagates a halt from the next branch. -/
+theorem dec_halt {p : Prog} {a b : Nat} (ha : p.nodes a = (.decnz 3, .node b))
+    {st : AS} (k : Nat) (hk : st.ac = k + 1) {R : Regs}
+    (hb : Run p (.node b) (enc { st with ac := k }) .halt R) :
+    Run p (.node a) (enc st) .halt R := by
+  have hdec := Run.decPos (p := p) 3 (enc st) k (by simp [enc, hk])
+  rw [upd_ac] at hdec
+  exact halt_cdr ha hdec hb
+
+/-- Propagate an inner dispatch's break through its enclosing branch. -/
+theorem pass {p : Prog} {b c a' : Nat} {e : Edge} (hb : p.nodes b = (.node c, .brk 1))
+    (hc : p.nodes c = (.node a', e)) {R R' : Regs} (h : Run p (.node a') R (.brk 1) R') :
+    Run p (.node b) R (.brk 1) R' :=
+  brk_cdr (k := 0) hb (skip hc h) (Run.brkS 0 _)
+
+/-- A zero selector falls through to this branch's body, then breaks out. -/
+theorem fall {p : Prog} {b c a' x : Nat} {e : Edge} (hb : p.nodes b = (.node c, .brk 1))
+    (hc : p.nodes c = (.node a', e)) (ha' : p.nodes a' = (.decnz 3, .node x))
+    {st st' : AS} (h0 : st.ac = 0) (he : Run p e (enc st) .normal (enc st')) :
+    Run p (.node b) (enc st) (.brk 1) (enc st') :=
+  brk_cdr (k := 0) hb (seq hc (skip ha' (Run.decZero 3 _ (by simp [enc, h0]))) he) (Run.brkS 0 _)
+
 /-! ## Loop instances -/
 
 /-- `s1 → ac` -/

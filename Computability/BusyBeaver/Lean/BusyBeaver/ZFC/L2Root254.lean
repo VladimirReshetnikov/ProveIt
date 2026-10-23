@@ -28,78 +28,25 @@ theorem dispatch_mp (st : AS) (hc : Clean st) (h0 : st.ac = 0) :
     (mp_branch st hc)
 
 theorem dispatch_drop (st : AS) (hc : Clean st) :
-    Rn (.node 141) { st with ac := 1 } { st with ac := 0, tw := st.p2, ws := P st.tw st.ws } := by
-  have hdec := Run.decPos (p := dag254) 3 (enc { st with ac := 1 }) 0 (by simp [enc])
-  rw [upd_ac] at hdec
-  let st0 : AS := { { st with ac := 1 } with ac := 0 }
-  have h145 : Rn (.node 145) st0 st0 :=
-    skip (p := dag254) (n := 145) rfl (Run.decZero 3 (enc st0) (by simp [st0, enc]))
-  have h144 := seqAS (n := 144) rfl h145 (par2 st0 hc)
-  have h143 := brk_cdr (p := dag254) (n := 143) (k := 0) rfl h144 (Run.brkS 0 _)
-  have h142 := brk_cdr (p := dag254) (n := 142) (k := 0) rfl hdec h143
-  have := skip (p := dag254) (n := 141) rfl h142
-  apply rn_eq this
-  cases st; rfl
+    Rn (.node 141) { st with ac := 1 } { st with ac := 0, tw := st.p2, ws := P st.tw st.ws } :=
+  skip rfl (dec_brk rfl 0 rfl (fall rfl rfl rfl rfl (par2 { st with ac := 0 } hc)))
 
 theorem dispatch_nip (st : AS) (hc : Clean st) (hh : st.p2 ≠ 1) :
     Rn (.node 141) { st with ac := 2 }
-      { st with ac := 0, p2 := (Cantor.ofNat st.ws).1, ws := (Cantor.ofNat st.ws).2 } := by
-  have hdec1 := Run.decPos (p := dag254) 3 (enc { st with ac := 2 }) 1 (by simp [enc])
-  rw [upd_ac] at hdec1
-  have hdec2 := Run.decPos (p := dag254) 3 (enc { { st with ac := 2 } with ac := 1 }) 0 (by simp [enc])
-  rw [upd_ac] at hdec2
-  let st0 : AS := { { { st with ac := 2 } with ac := 1 } with ac := 0 }
-  have h148 : Rn (.node 148) st0 st0 :=
-    skip (p := dag254) (n := 148) rfl (Run.decZero 3 (enc st0) (by simp [st0, enc]))
-  have h147 := seqAS (n := 147) rfl h148 (nip_branch st0 hc hh)
-  have h146 := brk_cdr (p := dag254) (n := 146) (k := 0) rfl h147 (Run.brkS 0 _)
-  have h145 := brk_cdr (p := dag254) (n := 145) (k := 0) rfl hdec2 h146
-  have h144 := skip (p := dag254) (n := 144) rfl h145
-  have h143 := brk_cdr (p := dag254) (n := 143) (k := 0) rfl h144 (Run.brkS 0 _)
-  have h142 := brk_cdr (p := dag254) (n := 142) (k := 0) rfl hdec1 h143
-  have := skip (p := dag254) (n := 141) rfl h142
-  apply rn_eq this
-  cases st; rfl
+      { st with ac := 0, p2 := (Cantor.ofNat st.ws).1, ws := (Cantor.ofNat st.ws).2 } :=
+  skip rfl (dec_brk rfl 1 rfl (pass rfl rfl (dec_brk rfl 0 rfl
+    (fall rfl rfl rfl rfl (nip_branch { st with ac := 0 } hc hh)))))
 
 theorem dispatch_nip_halt (st : AS) (hc : Clean st) (hh : st.p2 = 1) :
     ∃ R', Run dag254 (.node 141) (enc { st with ac := 2 }) .halt R' := by
-  have hdec1 := Run.decPos (p := dag254) 3 (enc { st with ac := 2 }) 1 (by simp [enc])
-  rw [upd_ac] at hdec1
-  have hdec2 := Run.decPos (p := dag254) 3 (enc { { st with ac := 2 } with ac := 1 }) 0 (by simp [enc])
-  rw [upd_ac] at hdec2
-  let st0 : AS := { { { st with ac := 2 } with ac := 1 } with ac := 0 }
-  obtain ⟨R', hR'⟩ := nip_halt st0 hc hh
-  have h148 : Rn (.node 148) st0 st0 :=
-    skip (p := dag254) (n := 148) rfl (Run.decZero 3 (enc st0) (by simp [st0, enc]))
-  have h147 := halt_cdr (p := dag254) (n := 147) rfl h148 hR'
-  have h146 := halt_car (p := dag254) (n := 146) rfl h147
-  have h145 := halt_cdr (p := dag254) (n := 145) rfl hdec2 h146
-  have h144 := halt_car (p := dag254) (n := 144) rfl h145
-  have h143 := halt_car (p := dag254) (n := 143) rfl h144
-  have h142 := halt_cdr (p := dag254) (n := 142) rfl hdec1 h143
-  exact ⟨R', halt_car (p := dag254) (n := 141) rfl h142⟩
+  obtain ⟨R', hR'⟩ := nip_halt { st with ac := 0 } hc hh
+  exact ⟨R', halt_car rfl (dec_halt rfl 1 rfl (halt_car rfl (halt_car rfl (dec_halt rfl 0 rfl
+    (halt_car rfl (halt_cdr rfl (skip rfl (Run.decZero 3 _ (by simp [enc]))) hR'))))))⟩
 
 theorem dispatch_ax (st : AS) (hc : Clean st) (c : Nat) :
-    Rn (.node 141) { st with ac := c + 3 } (f1 { st with ac := c }) := by
-  have hdec1 := Run.decPos (p := dag254) 3 (enc { st with ac := c + 3 }) (c + 2) (by simp [enc])
-  rw [upd_ac] at hdec1
-  have hdec2 := Run.decPos (p := dag254) 3 (enc { { st with ac := c + 3 } with ac := c + 2 }) (c + 1)
-    (by simp [enc])
-  rw [upd_ac] at hdec2
-  have hdec3 := Run.decPos (p := dag254) 3
-    (enc { { { st with ac := c + 3 } with ac := c + 2 } with ac := c + 1 }) c (by simp [enc])
-  rw [upd_ac] at hdec3
-  have e : ({ { { { st with ac := c + 3 } with ac := c + 2 } with ac := c + 1 } with ac := c } : AS) =
-      { st with ac := c } := by cases st; rfl
-  rw [e] at hdec3
-  have h148 := brk_cdr (p := dag254) (n := 148) (k := 0) rfl hdec3 (ax_leaf _ hc)
-  have h147 := skip (p := dag254) (n := 147) rfl h148
-  have h146 := brk_cdr (p := dag254) (n := 146) (k := 0) rfl h147 (Run.brkS 0 _)
-  have h145 := brk_cdr (p := dag254) (n := 145) (k := 0) rfl hdec2 h146
-  have h144 := skip (p := dag254) (n := 144) rfl h145
-  have h143 := brk_cdr (p := dag254) (n := 143) (k := 0) rfl h144 (Run.brkS 0 _)
-  have h142 := brk_cdr (p := dag254) (n := 142) (k := 0) rfl hdec1 h143
-  exact skip (p := dag254) (n := 141) rfl h142
+    Rn (.node 141) { st with ac := c + 3 } (f1 { st with ac := c }) :=
+  skip rfl (dec_brk rfl (c + 2) rfl (pass rfl rfl (dec_brk rfl (c + 1) rfl
+    (pass rfl rfl (dec_brk rfl c rfl (ax_leaf _ hc))))))
 
 /-! ## One root run is one enumerator step -/
 

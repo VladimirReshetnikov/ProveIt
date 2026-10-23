@@ -6,6 +6,14 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
+The [phase24 Lean proof cleanup](../simplification/phase24/README.md) shares runtime, selector, subtype and calculus proofs,
+removing **175 lines / 8,435 bytes across thirteen maintained sources**. Its kernel
+check, independent actual readback, capture and capture review pass: **230 providers
+= 121 fresh + 109 exact phase23 reuses**, plus two fresh audits, with zero selected
+warnings. The primary endpoint stays at **172 modules** and selects **2,210 fewer
+source bytes**; this overlaps the maintained saving and must not be added. The
+215-state machine and endpoint statements stay fixed; its internal PA endpoint remains open.
+
 The [phase23 selected check](../simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. It covers 230 providers
 (215 project modules and fifteen existing typed clients): 199 fresh providers,
@@ -61,7 +69,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current phase23 source selection contains 172
+the compiler trust boundary. The current phase24 source selection contains 172
 project modules and only the external `Init` boundary.
 It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.

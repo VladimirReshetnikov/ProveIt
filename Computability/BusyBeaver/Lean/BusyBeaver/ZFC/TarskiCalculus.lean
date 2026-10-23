@@ -87,6 +87,16 @@ theorem update_same (e : Nat → V) (i : Nat) (d : V) : update e i d i = d := by
 theorem update_other (e : Nat → V) {i n : Nat} (d : V) (h : n ≠ i) : update e i d n = e n := by
   simp [update, h]
 
+theorem update_comm (e : Nat → V) {i x : Nat} (h : i ≠ x) (d v : V) :
+    update (update e i d) x v = update (update e x v) i d := by
+  funext n
+  simp only [update]
+  by_cases hn : n = x <;> by_cases hm : n = i
+  · exact absurd (hm.symm.trans hn) h
+  · simp [hn, Ne.symm h]
+  · simp [hm, h]
+  · simp [hn, hm]
+
 /-- Tarski satisfaction in a structure with equality interpreted as identity. -/
 def Sat (mem : V → V → Prop) : (Nat → V) → NF → Prop
   | e, rel i j => mem (e i) (e j)
@@ -156,15 +166,8 @@ theorem soundness {Ax : NF → Prop} {mem : V → V → Prop}
       intro e h dj di
       by_cases hij : i = j
       · subst hij; exact h dj di
-      · have hh : update (update e i di) j dj = update (update e j dj) i di := by
-          funext n
-          simp only [update]
-          by_cases hn : n = i <;> by_cases hm : n = j
-          · exact absurd (hn.symm.trans hm) hij
-          · simp [hn, hij]
-          · simp [hm, Ne.symm hij]
-          · simp [hn, hm]
-        rw [← hh]; exact h di dj
+      · rw [← update_comm e hij di dj]
+        exact h di dj
   | rho6 i b =>
       intro e h
       obtain ⟨d, hd⟩ := (sat_ex mem e i _).mp h
@@ -175,10 +178,7 @@ theorem soundness {Ax : NF → Prop} {mem : V → V → Prop}
   | rho1 i j =>
       intro e
       rw [sat_ex]
-      refine ⟨e j, ?_⟩
-      by_cases hij : j = i
-      · subst hij; simp [Sat, update]
-      · simp [Sat, update, hij]
+      exact ⟨e j, by simp [Sat, update]⟩
   | rho7 a b c =>
       intro e h1 h2
       simp only [Sat] at h1 h2 ⊢

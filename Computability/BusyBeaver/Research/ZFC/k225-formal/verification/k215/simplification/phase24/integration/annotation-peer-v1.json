@@ -1,0 +1,70 @@
+{
+  "status": "PASS_INDEPENDENT_SOURCE_ONLY_EXPLICIT_SUBTYPE_PREDICATE_REPAIR_REVIEW",
+  "scope": "Independent review of root-authored two-predicate annotation repair only. The prior native proof candidate and earlier source-only review remain immutable history. This is not compiler or kernel validation.",
+  "inputs": {
+    "before": {
+      "path": "/tmp/k215-phase24-native-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "sha256": "6862032a904f7a01aaea2d7572e93b9dc341720304bb33248faa43e815124288",
+      "bytes": 6445
+    },
+    "candidate": {
+      "path": "/tmp/k215-phase24-native-repair-v1/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "sha256": "c8a2247141001ad0e628ac3f17585171b36beabcebc74edba57faae9968add33",
+      "bytes": 6607
+    },
+    "repair_diff": {
+      "path": "/tmp/k215-phase24-native-repair-v1/repair.diff",
+      "sha256": "0757f0d583fa435cd2be2a26baf48d7d00933b4c0442cf45d676492dc70c641b",
+      "bytes": 1146
+    },
+    "handoff": {
+      "path": "/tmp/k215-phase24-native-repair-v1/handoff.json",
+      "sha256": "28bc7da2e487eea8694cf78f8c209bd4a6502b74d2653557df62c6ccbd4500d8",
+      "bytes": 1014
+    },
+    "stdlib_signature": {
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/Data/Subtype/Basic.lean",
+      "sha256": "146ef8b3ebf4b02f6cf4f317c9f7220901cfed6d83e5ddc597dcc17ebf1f70a3",
+      "bytes": 710
+    },
+    "prior_other_packages_peer": {
+      "path": "/tmp/k215-phase24-source-peer/machine-author-other-packages.json",
+      "sha256": "0a306808e630beb8a4476d986579917f211563d0d2099b207dd41263058c3df0",
+      "bytes": 23172
+    }
+  },
+  "exact_edit_check": {
+    "repair_diff_matches_complete_before_after": true,
+    "only_two_existing_Subtype_forall_exists_instantiations_change": true,
+    "all_other_bytes_exact": true,
+    "public_headers_imports_definitions_guards_hypotheses_and_environment_transports_unchanged": true,
+    "annotation_cost_lines": 4,
+    "annotation_cost_bytes": 162
+  },
+  "mathematical_findings": [
+    "Both actual Lean4.32 subtype lemmas have the named implicit binder q : {a // p a} -> Prop. The supplied q is exactly fun x : Domain mem => Sat (domainMem mem) (scons x env) a, the right-hand predicate already stated in each normalized Sat goal.",
+    "The Domain mem annotation fixes alpha=V and p=WF mem. q <x,hx> is exactly the subtype Sat conclusion of the unchanged induction hypothesis at scons <x,hx> env. The explicit predicate adds no witness, model premise or equality.",
+    "Subtype.forall.symm still converts guarded ambient universal quantification with its explicit WF proof binder to the same subtype universal. Subtype.exists.symm still converts the corresponding ambient element/proof witness pair into the same subtype existential.",
+    "The constructive Init theorem bodies remain direct forward/backward maps. The repair introduces no new congruence, extensionality constant, global iff_congr, propext, choice, or axiom declaration. Exact measured profiles remain a root-controlled kernel gate.",
+    "All previously reviewed raw WF guards, slot0 bound-variable environments, liftEnv_scons rewrites and output0/input1 Replacement transports are unchanged."
+  ],
+  "static_metrics": {
+    "WFRelativization_old_candidate_lines": 151,
+    "repaired_lines": 155,
+    "old_candidate_bytes": 6445,
+    "repaired_bytes": 6607,
+    "final_native_two_file_savings_lines": 41,
+    "final_native_two_file_savings_bytes": 1203,
+    "combined_thirteen_source_savings_lines": 177,
+    "combined_thirteen_source_savings_bytes": 8571,
+    "scope": "Static counts only; root final source map and kernel run remain separate."
+  },
+  "blocking_findings": [],
+  "known_limit": "Dependent congruence elaboration is not executed by this review. This checks the named q binder and exact intended predicate; only root compilation can establish terminal success.",
+  "execution": {
+    "compiler_or_Lean": false,
+    "supplied_helpers_or_proofs": false,
+    "canonical_or_author_files_changed": false,
+    "only_new_output": "/tmp/k215-phase24-native-repair-v1/independent-review.json"
+  }
+}

@@ -1,0 +1,440 @@
+{
+  "status": "PASS_INDEPENDENT_SOURCE_ONLY_LOGIC_RUNTIME_NATIVE_REVIEW_UNCOMPILED",
+  "authorship_boundary": {
+    "reviewer_authored": "Five-file selector sharing candidate in /tmp/k215-phase24-machine-leads. Its self-review is not independent.",
+    "independently_reviewed_here": "The other eight files: runner logic3, attributed upstream runtime3 and sibling native2. Reviewer authored none of those edits.",
+    "machine_author_report": {
+      "path": "/tmp/k215-phase24-machine-leads/report.json",
+      "sha256": "da9e953119c00bea4954419e2cc779ff2e470ccf8441b0c77e7f1ab40a3e17fb",
+      "bytes": 7994
+    }
+  },
+  "blocking_findings": [],
+  "logic": {
+    "input_report": {
+      "path": "/tmp/k215-phase24-logic-leads/report.json",
+      "sha256": "a90205b01d4a73e601c806b1854306c1d7a20ef47baed2a7a7e5d7f6aa90932a",
+      "bytes": 7619
+    },
+    "input_pins": {
+      "path": "/tmp/k215-phase24-logic-leads/pins.json",
+      "sha256": "67e7e39169031747d3181b778906b91c23061f102683ee4f12f3d9f2fcd784b8",
+      "bytes": 2735
+    },
+    "diff": {
+      "path": "/tmp/k215-phase24-logic-leads/candidate.diff",
+      "sha256": "a4989580ca0ab47b0ebf8be72f5d99ae19e812be8921bb7ea4e66c0a8b7ea021",
+      "bytes": 4433
+    },
+    "files": [
+      {
+        "module": "BusyBeaver.ZFC.TarskiCalculus",
+        "before": {
+          "path": "/tmp/k215-phase24-logic-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+          "sha256": "07855d7116c0a57fae8d7064c97cd52ff21ac1d095e1e0afa9d0cbd7069415d4",
+          "bytes": 7303
+        },
+        "candidate": {
+          "path": "/tmp/k215-phase24-logic-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+          "sha256": "dc915947cdc69196eaeac6f4177802565f9ed0697634431c09b7fa588edd1056",
+          "bytes": 7245
+        },
+        "canonical": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+          "sha256": "dc915947cdc69196eaeac6f4177802565f9ed0697634431c09b7fa588edd1056",
+          "bytes": 7245
+        },
+        "imports_exact": true,
+        "nonproof_declarations_exact": true,
+        "lines_saved": 0,
+        "bytes_saved": 58
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiDerived",
+        "before": {
+          "path": "/tmp/k215-phase24-logic-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+          "sha256": "8d91af78db6bbb1dab8f07f102bc802e70b3fb86467764a5644f2ec9b1b426d2",
+          "bytes": 8131
+        },
+        "candidate": {
+          "path": "/tmp/k215-phase24-logic-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+          "sha256": "d86f5b07eb3882a110cef9cd3ee6ce17660ca53e7415de3bcd0c44a4fa8a9a8d",
+          "bytes": 7681
+        },
+        "canonical": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+          "sha256": "d86f5b07eb3882a110cef9cd3ee6ce17660ca53e7415de3bcd0c44a4fa8a9a8d",
+          "bytes": 7681
+        },
+        "imports_exact": true,
+        "nonproof_declarations_exact": true,
+        "lines_saved": 6,
+        "bytes_saved": 450
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiClean",
+        "before": {
+          "path": "/tmp/k215-phase24-logic-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+          "sha256": "5dbfdac09367ae7416b69d68276758ff7a6971b42c9bc5bdfc41bc6a2293a899",
+          "bytes": 8070
+        },
+        "candidate": {
+          "path": "/tmp/k215-phase24-logic-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+          "sha256": "d6fc1983817765023b1c9acbe727ec5eb3d7420f78a935e7d375aae66eec26ed",
+          "bytes": 7409
+        },
+        "canonical": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+          "sha256": "d6fc1983817765023b1c9acbe727ec5eb3d7420f78a935e7d375aae66eec26ed",
+          "bytes": 7409
+        },
+        "imports_exact": true,
+        "nonproof_declarations_exact": true,
+        "lines_saved": 21,
+        "bytes_saved": 661
+      }
+    ],
+    "global_named_theorem_header_map_exact_after_relocation": true,
+    "named_theorem_headers": 42,
+    "moved_update_comm_statement_and_complete_proof_byte_exact": true,
+    "public_declarations_added_or_retired": [],
+    "net_lines_saved": 27,
+    "net_bytes_saved": 1169,
+    "findings": [
+      "imp_cases uses ded3 over G=[a->b,b->c,not-a->c]. The true branch has a::G and applies h1 then h2; the false branch uses h2.weaken from G for not-a->c and the new head not-a. Existing Kalmar.cases_on discharges precisely those two branches using the same object-calculus hC; it adds no Lean Classical axiom.",
+      "occurs_lt_top follows from the existing not_occurs_of_top_le: an occurrence refutes top f<=n, then Nat.lt_of_not_ge gives n<top f. Pinned Lean4.32 source defines that Nat lemma via the constructive decidable-order alternative, not global excluded middle.",
+      "update_comm moves unchanged from the unsectioned universe-u/V semantics block of TarskiClean to the matching semantics block of TarskiCalculus. Namespace, universe, implicit V, binder names/order and proof remain exact. TarskiClean transitively imports TarskiCalculus through Leibniz/Derived, so old import paths still expose the same declaration.",
+      "rho4 uses update_comm at i,j,di,dj in the correct reversed orientation to match h di dj. The i=j branch remains. rho1 chooses e j; both indices evaluate to e j, so simp can erase the explicit equality split.",
+      "All nonproof definitions, inductives, Rows/instance fields, imports, options and section inclusion policies remain unchanged. The only visibility change is earlier availability of the existing update_comm."
+    ]
+  },
+  "runtime": {
+    "source_commit": "303ecd816c89021f29ae88084545a63bc785c893",
+    "attributed_adopted_commit": "1b30c178dd01a20957c7260fee74cfc7c3b842bb",
+    "before_manifest": {
+      "path": "/tmp/k215-phase24-upstream/before.json",
+      "sha256": "1a4c256fcf032fcd9b9e4d9e8650563ab3c7fa42dad4174f487658874c5490f0",
+      "bytes": 1629
+    },
+    "upstream_patch": {
+      "path": "/tmp/k215-phase24-upstream/runtime.patch",
+      "sha256": "d72e3be007a634ac6d9fbebecd882eb8758e6c3746f6e99cd1f289eea4ad16a0",
+      "bytes": 15456
+    },
+    "files": [
+      {
+        "module": "KRuntimeCore",
+        "before": {
+          "path": "/tmp/k215-phase24-upstream/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+          "sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+          "bytes": 22804
+        },
+        "adopted_canonical": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+          "sha256": "4ecde56c82c57487c8f9e842fcfc27e4e925059ad7ef19e7cdd01204399d5cd2",
+          "bytes": 21572
+        },
+        "equals_attributed_adopted_commit": true,
+        "public_theorem_headers_exact": true,
+        "public_theorem_header_count": 21,
+        "nonproof_declarations_exact": true,
+        "nonproof_declaration_count": 34,
+        "imports_exact": true,
+        "lines_saved": 24,
+        "bytes_saved": 1232
+      },
+      {
+        "module": "KZip",
+        "before": {
+          "path": "/tmp/k215-phase24-upstream/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+          "sha256": "66a35e52f53f3366f9fc76e12e06b2881377d1fc3a6d816371b3fb0ef6941c7b",
+          "bytes": 8537
+        },
+        "adopted_canonical": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+          "sha256": "e959ce4909f67b092ba237c26e1b53a2db112b42ef22c69ad04a73816414192c",
+          "bytes": 8404
+        },
+        "equals_attributed_adopted_commit": true,
+        "public_theorem_headers_exact": true,
+        "public_theorem_header_count": 28,
+        "nonproof_declarations_exact": true,
+        "nonproof_declaration_count": 10,
+        "imports_exact": true,
+        "lines_saved": 2,
+        "bytes_saved": 133
+      },
+      {
+        "module": "KBoot",
+        "before": {
+          "path": "/tmp/k215-phase24-upstream/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot.lean",
+          "sha256": "5aa0eca9f1830045164a1ab876a8467319d9edf9672c4d762ee6a5ce4db64a6f",
+          "bytes": 2799
+        },
+        "adopted_canonical": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot.lean",
+          "sha256": "a7a82ed68c778937728bdd332fe2a52978dfc54bdc99b17df2a19a16fcd534c6",
+          "bytes": 2681
+        },
+        "equals_attributed_adopted_commit": true,
+        "public_theorem_headers_exact": true,
+        "public_theorem_header_count": 3,
+        "nonproof_declarations_exact": true,
+        "nonproof_declaration_count": 7,
+        "imports_exact": true,
+        "lines_saved": 5,
+        "bytes_saved": 118
+      }
+    ],
+    "net_lines_saved": 31,
+    "net_bytes_saved": 1483,
+    "findings": [
+      "KRuntimeCore equality eliminations replace existing Option/tuple injection bookkeeping. Oracle branch alternatives retain the same mark/inc/dec0/decp premises and concrete results. StepOk progress flags, oracle extra-cell behavior, validity assumptions and executor induction are unchanged.",
+      "flatT_push and normL_spec merge identical alternatives; their segment/run normalization functions are literal. sMatches_conc combines the two head-side proofs while retaining both zc_padl and zl_padl equations.",
+      "KBoot lstep_sound applies identical terminal tactics to the two concrete move cases; the impossible no-row case remains discharged first. lblock_sound retains its exact 2^d recurrence and all transition-function agreement premises.",
+      "KZip uses the same trim recursion and run-add clocks; named scanR arguments instantiate exactly the old step proposition. Reach versus Reach1 and both progress-composition orientations remain exact.",
+      "Canonical files equal adopted1b30 bytes. KRuntimeCore/KBoot also equal the source commit bytes. KZip deliberately differs from upstream only by the retained phase23 removal of the unused zc simp entry in step_zc; the corresponding baseline difference is the same. No restoration of old warning text occurs.",
+      "The upstream commit prose says -51 lines; the actual adopted delta is -31 physical lines and -1483 bytes. Its author-reported compile claims are historical provenance, not this source peer or a phase24 kernel result."
+    ]
+  },
+  "native": {
+    "input_report": {
+      "path": "/tmp/k215-phase24-native-leads/report.json",
+      "sha256": "dd75be8652071f8d814c97af4f05287635267136f543f57d8e351938af5974ca",
+      "bytes": 5452
+    },
+    "input_pins": {
+      "path": "/tmp/k215-phase24-native-leads/pins.json",
+      "sha256": "a89cc7ba0b0a52963c7d9cf5f457fd7d36e89cfe4d001768bc0197bc8aa7917b",
+      "bytes": 3247
+    },
+    "patch": {
+      "path": "/tmp/k215-phase24-native-leads/candidate.patch",
+      "sha256": "f6037a96506d8f8ab035b10214429eb392e0cf4bd542f34e5f6f8155bbaf959d",
+      "bytes": 7295
+    },
+    "all_packet_file_pins_checked": [
+      {
+        "path": "/tmp/k215-phase24-native-leads/README.md",
+        "sha256": "60cc941bb1ed7a58e9e918fbd94c3fc6d93bfcc51add11937f48af1527244b9f",
+        "bytes": 1893
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+        "sha256": "59a40978561071d79c289024b8e13119ccbc9b90032b4300867d6b318873709d",
+        "bytes": 8991
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+        "sha256": "7bcd80f1042bf270e609975996a7d2a7b0c69b790902d89f471ea6ab4b96141c",
+        "bytes": 6834
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/caller-census.json",
+        "sha256": "8a23b0be72c55b20cbf7abf6e65fbe00041416a94653183591f421bd27f24251",
+        "bytes": 4633
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+        "sha256": "b4d4c89c3de42b4bcdb08af504004c7f822d46a7ddb797074fb87098af9e4c26",
+        "bytes": 8015
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+        "sha256": "6862032a904f7a01aaea2d7572e93b9dc341720304bb33248faa43e815124288",
+        "bytes": 6445
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/candidate.patch",
+        "sha256": "f6037a96506d8f8ab035b10214429eb392e0cf4bd542f34e5f6f8155bbaf959d",
+        "bytes": 7295
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/expected-affected-reports.json",
+        "sha256": "98d1f30da7626f48648cf60c80f327cef096054f86b68c04530a635d82e4d197",
+        "bytes": 2528
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/initial-counts.json",
+        "sha256": "7aa8ad9f32a3980029046b7d7e828a5f283b27fc1d7c40f9292919a9e682d95b",
+        "bytes": 642
+      },
+      {
+        "path": "/tmp/k215-phase24-native-leads/report.json",
+        "sha256": "dd75be8652071f8d814c97af4f05287635267136f543f57d8e351938af5974ca",
+        "bytes": 5452
+      }
+    ],
+    "files": [
+      {
+        "module": "WFModelCore",
+        "before": {
+          "path": "/tmp/k215-phase24-native-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+          "sha256": "59a40978561071d79c289024b8e13119ccbc9b90032b4300867d6b318873709d",
+          "bytes": 8991
+        },
+        "candidate": {
+          "path": "/tmp/k215-phase24-native-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+          "sha256": "b4d4c89c3de42b4bcdb08af504004c7f822d46a7ddb797074fb87098af9e4c26",
+          "bytes": 8015
+        },
+        "canonical_at_review": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+          "sha256": "b4d4c89c3de42b4bcdb08af504004c7f822d46a7ddb797074fb87098af9e4c26",
+          "bytes": 8015
+        },
+        "canonical_matches": "candidate",
+        "public_theorem_headers_exact": true,
+        "public_theorem_header_count": 11,
+        "nonproof_declarations_exact": true,
+        "nonproof_declaration_count": 2,
+        "imports_exact": true,
+        "lines_saved": 30,
+        "bytes_saved": 976
+      },
+      {
+        "module": "WFRelativization",
+        "before": {
+          "path": "/tmp/k215-phase24-native-leads/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+          "sha256": "7bcd80f1042bf270e609975996a7d2a7b0c69b790902d89f471ea6ab4b96141c",
+          "bytes": 6834
+        },
+        "candidate": {
+          "path": "/tmp/k215-phase24-native-leads/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+          "sha256": "6862032a904f7a01aaea2d7572e93b9dc341720304bb33248faa43e815124288",
+          "bytes": 6445
+        },
+        "canonical_at_review": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+          "sha256": "6862032a904f7a01aaea2d7572e93b9dc341720304bb33248faa43e815124288",
+          "bytes": 6445
+        },
+        "canonical_matches": "candidate",
+        "public_theorem_headers_exact": true,
+        "public_theorem_header_count": 9,
+        "nonproof_declarations_exact": true,
+        "nonproof_declaration_count": 3,
+        "imports_exact": true,
+        "lines_saved": 15,
+        "bytes_saved": 389
+      }
+    ],
+    "public_headers_retained": 25,
+    "public_declarations_added_or_retired": [],
+    "private_retirement": [
+      "WFModel.raw_rel_iff"
+    ],
+    "selected_source_census_size": 230,
+    "retired_name_only_possible_current_module": [],
+    "historic_expected_report_rows_checked": 10,
+    "net_lines_saved": 45,
+    "net_bytes_saved": 1365,
+    "findings": [
+      "The universal branch first transports the ambient wfForm guard by sat_guard, then applies the induction hypothesis at scons <x,hx> env under the explicit WF proof binder. Subtype.forall.symm converts exactly forall ambient x, forall hx:WF x into forall x:Domain. liftEnv_scons rewrites the same environment as before.",
+      "The existential branch transports the guard, converts WF x and rawSat into exists hx:WF x, rawSat using exists_prop.symm, then applies the induction hypothesis at that subtype witness. Subtype.exists.symm reconstructs the single Domain witness. No representative choice or inhabited-domain premise is inserted.",
+      "Atomic subtype equality and pair/successor disjunctions use Subtype.ext_iff.symm in the correct value-equality-to-subtype-equality direction. The ambient membership relation remains definitionally domainMem on subtype values.",
+      "domain_separation reuses sat_translate_scons at the same slot0 tested element. domain_replacement replaces exactly four occurrences of the private raw_rel_iff by existing sat_translate_relOf; its relOf left side unfolds to the identical Sat at output0,input1.",
+      "replacementForm and replacementForm_spec are byte-exact, including both WF guards. The raw global functionality proof still extracts WF for input/output before applying the original global subtype Functional assumption; both image directions and output WF closure keep their original domain guards and witnesses.",
+      "The removed private helper has no external selected source/client or report use and is definitionally the existing public transport, so deletion eliminates a duplicate environment proof. All25 retained public declaration headers, five nonproof definitions and all imports remain exact."
+    ]
+  },
+  "axiom_source_readback": {
+    "new_axiom_or_opaque_declarations": [],
+    "active_print_axiom_commands_changed": false,
+    "new_global_iff_congr_or_propext_constant_use": false,
+    "constructive_library_sources_read": [
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+        "sha256": "3cf0caf5187aa99790d83ac1b482dbc228942cc6308a752ae2b7f980984381b4",
+        "bytes": 8231
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+        "sha256": "731aefe160e05836bf1de2cd8e748ef2523e539fa17a6538283465f6bfc678a3",
+        "bytes": 14952
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+        "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+        "bytes": 21238
+      },
+      {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPartCore.lean",
+        "sha256": "56f632559d0a4587165c39e33e9f8085f72e4606cf8ef3574a844b709560fb58",
+        "bytes": 9714
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/Data/Nat/Basic.lean",
+        "sha256": "4f5e4f1ae65f0c8744ec2921159215627c85dc77ba6d57e73fe277b6f46a5062",
+        "bytes": 47131
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init.lean",
+        "sha256": "68c57bbafcacc3372655ac168082c481765639aba61f2d969da496d58e2727e6",
+        "bytes": 1443
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/Data.lean",
+        "sha256": "042816cc30f39ab0eb92bfdf43d325db9e783b8d54738f57b9fdb6bd57139d35",
+        "bytes": 1614
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/Core.lean",
+        "sha256": "8428c5944bc5bd899f8832b26e458da8ae7c54562f59000aa4c58ca536e5c940",
+        "bytes": 102401
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/PropLemmas.lean",
+        "sha256": "f57e74ac87489d1dc42b28b55670ee6c69343b0344632f0ae77f95aa5e43ff9b",
+        "bytes": 38441
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/Data/Subtype/Basic.lean",
+        "sha256": "146ef8b3ebf4b02f6cf4f317c9f7220901cfed6d83e5ddc597dcc17ebf1f70a3",
+        "bytes": 710
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Init/Ext.lean",
+        "sha256": "84d30187a4a48d331119eedfca8bf290d1673cfd886012b6af57d85a6b7fd8b4",
+        "bytes": 3590
+      },
+      {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/src/lean/Lean/Elab/Tactic/Ext.lean",
+        "sha256": "5ad2f5fab08e344f73b10a7a98f13539df887f737bc443295c243b0cda2b7ed7",
+        "bytes": 14115
+      }
+    ],
+    "detail": "Subtype.forall/exists, imp/and/or/forall/exists congruences, exists_prop and and_iff_right are direct constructive maps in pinned Init. Subtype.ext uses constructor equality; ext_iff generation uses equality cases and Subtype.ext. The existing environment funext transport remains. Existing Classical.byContradiction in Tarski semantics is unchanged. Runtime edits use equality elimination and the same earlier soundness rules. This supports source plausibility but is not a measured candidate axiom profile.",
+    "candidate_axiom_profiles": "NOT_MEASURED; root must preserve every exact accepted profile and zero fresh warnings, including the93client/5WFTheory/10audit reports. Useful new-helper audits remain root-controlled."
+  },
+  "source_adoption_receipt": {
+    "path": "/tmp/k215-phase24-source-adoption-v1.json",
+    "sha256": "43a33ac6a1865720836c67803857ceef86961b3d0ba00649f69c1eba6e919bbd",
+    "bytes": 6945
+  },
+  "reviewed_other_package_delta": {
+    "files": 8,
+    "lines_saved": 103,
+    "bytes_saved": 4017
+  },
+  "combined_author_plus_independent_static_delta_not_kernel_acceptance": {
+    "files": 13,
+    "lines_saved": 181,
+    "bytes_saved": 8733,
+    "new_generic_selector_helpers": 4,
+    "private_helpers_retired": 1,
+    "retained_public_headers_imports_nonproof_definitions_exact": true
+  },
+  "limits": [
+    "Full candidate elaboration and dependent predicate inference are untested by this reviewer.",
+    "No source peer certifies its own authored five-file selector proof independently.",
+    "Original reports and pre-adoption canonical-before labels remain immutable preparation-time snapshots; current canonical candidate hashes are read separately here.",
+    "No machine/state/endpoint/general-assumption change, speedup or proof-object result follows from this static review."
+  ],
+  "execution": {
+    "compiler_or_Lean": false,
+    "supplied_or_archived_helpers_or_proofs": false,
+    "canonical_or_author_file_edits": false,
+    "new_owned_output_only": "/tmp/k215-phase24-source-peer/machine-author-other-packages.json"
+  }
+}

@@ -88,3 +88,8 @@ runtime assets and the diagnostic metadata limit.
 The [next control lead](leads/README.md) is explicitly uncompiled and outside this
 production-source check. The internally encoded PA endpoint and minimum-state
 theorem remain open.
+
+[Phase24](../phase24/README.md) passes kernel, actual readback, capture and independent capture review
+for 230 providers (121 fresh / 109 phase23 reuses) and two fresh endpoint audits.
+Thirteen sources remove 175 lines / 8,435 bytes; the primary stays at 172 modules.
+New static batch219 proposal reviews remain separate from these checked sources.

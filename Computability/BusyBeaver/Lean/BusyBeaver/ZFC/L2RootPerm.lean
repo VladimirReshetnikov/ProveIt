@@ -53,21 +53,19 @@ through at `ac = 0` to the body (`fall`); either way `b` then breaks out of the 
 
 theorem dec_brk {a b : Nat} (ha : dagPerm.nodes a = (.decnz 3, .node b)) {st : AS} (k : Nat)
     (hk : st.ac = k + 1) {R : Regs} (hb : Run dagPerm (.node b) (enc { st with ac := k }) (.brk 1) R) :
-    Run dagPerm (.node a) (enc st) (.brk 1) R := by
-  have hdec := Run.decPos (p := dagPerm) 3 (enc st) k (by simp [enc, hk])
-  rw [upd_ac] at hdec
-  exact brk_cdr (k := 0) ha hdec hb
+    Run dagPerm (.node a) (enc st) (.brk 1) R :=
+  L2.dec_brk ha k hk hb
 
 theorem pass {b c a' : Nat} {e : Edge} (hb : dagPerm.nodes b = (.node c, .brk 1))
     (hc : dagPerm.nodes c = (.node a', e)) {R R' : Regs} (h : Run dagPerm (.node a') R (.brk 1) R') :
     Run dagPerm (.node b) R (.brk 1) R' :=
-  brk_cdr (k := 0) hb (skip hc h) (Run.brkS 0 _)
+  L2.pass hb hc h
 
 theorem fall {b c a' x : Nat} {e : Edge} (hb : dagPerm.nodes b = (.node c, .brk 1))
     (hc : dagPerm.nodes c = (.node a', e)) (ha' : dagPerm.nodes a' = (.decnz 3, .node x))
     {st st' : AS} (h0 : st.ac = 0) (he : Run dagPerm e (enc st) .normal (enc st')) :
     Run dagPerm (.node b) (enc st) (.brk 1) (enc st') :=
-  brk_cdr (k := 0) hb (seq hc (skip ha' (Run.decZero 3 _ (by simp [enc, h0]))) he) (Run.brkS 0 _)
+  L2.fall hb hc ha' h0 he
 
 theorem dispatch_drop (st : AS) (hc : Clean st) :
     Rn (.node 141) { st with ac := 1 } { st with ac := 0, tw := st.p2, ws := P st.tw st.ws } :=

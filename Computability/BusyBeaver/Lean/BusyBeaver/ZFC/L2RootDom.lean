@@ -37,29 +37,25 @@ through at `ac = 0` to the body (`fall`); either way `b` then breaks out of the 
 
 theorem dec_brk {a b : Nat} (ha : dagDom.nodes a = (.decnz 3, .node b)) {st : AS} (k : Nat)
     (hk : st.ac = k + 1) {R : Regs} (hb : Run dagDom (.node b) (enc { st with ac := k }) (.brk 1) R) :
-    Run dagDom (.node a) (enc st) (.brk 1) R := by
-  have hdec := Run.decPos (p := dagDom) 3 (enc st) k (by simp [enc, hk])
-  rw [upd_ac] at hdec
-  exact brk_cdr (k := 0) ha hdec hb
+    Run dagDom (.node a) (enc st) (.brk 1) R :=
+  L2.dec_brk ha k hk hb
 
 /-- `dec_brk` for a halting run. -/
 theorem dec_halt {a b : Nat} (ha : dagDom.nodes a = (.decnz 3, .node b)) {st : AS} (k : Nat)
     (hk : st.ac = k + 1) {R : Regs} (hb : Run dagDom (.node b) (enc { st with ac := k }) .halt R) :
-    Run dagDom (.node a) (enc st) .halt R := by
-  have hdec := Run.decPos (p := dagDom) 3 (enc st) k (by simp [enc, hk])
-  rw [upd_ac] at hdec
-  exact halt_cdr ha hdec hb
+    Run dagDom (.node a) (enc st) .halt R :=
+  L2.dec_halt ha k hk hb
 
 theorem pass {b c a' : Nat} {e : Edge} (hb : dagDom.nodes b = (.node c, .brk 1))
     (hc : dagDom.nodes c = (.node a', e)) {R R' : Regs} (h : Run dagDom (.node a') R (.brk 1) R') :
     Run dagDom (.node b) R (.brk 1) R' :=
-  brk_cdr (k := 0) hb (skip hc h) (Run.brkS 0 _)
+  L2.pass hb hc h
 
 theorem fall {b c a' x : Nat} {e : Edge} (hb : dagDom.nodes b = (.node c, .brk 1))
     (hc : dagDom.nodes c = (.node a', e)) (ha' : dagDom.nodes a' = (.decnz 3, .node x))
     {st st' : AS} (h0 : st.ac = 0) (he : Run dagDom e (enc st) .normal (enc st')) :
     Run dagDom (.node b) (enc st) (.brk 1) (enc st') :=
-  brk_cdr (k := 0) hb (seq hc (skip ha' (Run.decZero 3 _ (by simp [enc, h0]))) he) (Run.brkS 0 _)
+  L2.fall hb hc ha' h0 he
 
 theorem dispatch_drop (st : AS) (hc : Clean st) :
     Rn (.node 141) { st with ac := 1 } { st with ac := 0, tw := st.p2, ws := P st.tw st.ws } :=

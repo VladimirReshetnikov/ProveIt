@@ -87,19 +87,8 @@ theorem occurs_rn_cases {x y n : Nat} : ∀ {f : NF}, Occurs n (rn x y f) → Oc
       · simp only [rn, hi, if_false, Occurs] at h
         exact h.elim (fun h => Or.inl (Or.inl h)) (fun h => (occurs_rn_cases h).imp_left Or.inr)
 
-theorem occurs_lt_top {n : Nat} : ∀ {f : NF}, Occurs n f → n < top f
-  | rel i j, h => by simp only [Occurs] at h; simp only [top]; omega
-  | NF.eq i j, h => by simp only [Occurs] at h; simp only [top]; omega
-  | NF.bot, h => h.elim
-  | imp a b, h => by
-      simp only [top]
-      cases h with
-      | inl h | inr h => have := occurs_lt_top h; omega
-  | all i a, h => by
-      simp only [top]
-      cases h with
-      | inl h => omega
-      | inr h => have := occurs_lt_top h; omega
+theorem occurs_lt_top {n : Nat} : ∀ {f : NF}, Occurs n f → n < top f :=
+  fun {_} h => Nat.lt_of_not_ge (fun hn => not_occurs_of_top_le hn h)
 
 /-- Labels of a relabelled formula are old labels or new binders. -/
 theorem occurs_cl (K : Nat) : ∀ (d : Nat) (f : NF) (n : Nat),
@@ -136,16 +125,6 @@ theorem clean_cl (K : Nat) : ∀ (d : Nat) (f : NF), Clean (cl K d f)
 
 universe u
 variable {V : Type u}
-
-theorem update_comm (e : Nat → V) {i x : Nat} (h : i ≠ x) (d v : V) :
-    update (update e i d) x v = update (update e x v) i d := by
-  funext n
-  simp only [update]
-  by_cases hn : n = x <;> by_cases hm : n = i
-  · exact absurd (hm.symm.trans hn) h
-  · simp [hn, Ne.symm h]
-  · simp [hm, h]
-  · simp [hn, hm]
 
 /-- Renaming a free label is updating the assignment. -/
 theorem sat_rn (mem : V → V → Prop) (x c : Nat) :

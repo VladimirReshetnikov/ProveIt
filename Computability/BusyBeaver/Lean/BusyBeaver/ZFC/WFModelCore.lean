@@ -38,14 +38,7 @@ theorem domain_pair (H : ZFAxioms mem) (hc : ClosedWF mem) (a b : Domain mem) :
     · exact h.symm ▸ a.property
     · exact h.symm ▸ b.property
   refine ⟨⟨p, hwp⟩, fun x => ?_⟩
-  constructor
-  · intro hx
-    rcases (hp x.val).mp hx with h | h
-    · exact Or.inl (Subtype.ext h)
-    · exact Or.inr (Subtype.ext h)
-  · rintro (h | h)
-    · exact (hp x.val).mpr (Or.inl (congrArg Subtype.val h))
-    · exact (hp x.val).mpr (Or.inr (congrArg Subtype.val h))
+  exact (hp x.val).trans (or_congr Subtype.ext_iff.symm Subtype.ext_iff.symm)
 
 theorem domain_union (H : ZFAxioms mem) (hc : ClosedWF mem) (a : Domain mem) :
     ∃ w : Domain mem, ∀ x, domainMem mem x w ↔
@@ -69,14 +62,7 @@ theorem domain_separation (H : ZFAxioms mem) (hc : ClosedWF mem)
   obtain ⟨s, hs⟩ := H.sep (translate phi) (liftEnv mem env) a.val
   have hws : WF mem s := hc s fun x hx => wf_mem a.property ((hs x).mp hx).1
   refine ⟨⟨s, hws⟩, fun x => ?_⟩
-  change mem x.val s ↔ mem x.val a.val ∧ _
-  rw [hs x.val]
-  apply and_congr_right
-  intro _
-  have he : scons x.val (liftEnv mem env) = liftEnv mem (scons x env) :=
-    funext fun i => by cases i <;> rfl
-  rw [he]
-  exact sat_translate mem phi (scons x env)
+  exact (hs x.val).trans (and_congr Iff.rfl (sat_translate_scons mem phi env x))
 
 theorem domain_power (hc : ClosedWF mem) (hp : PSCCalibration.PowerSets mem)
     (a : Domain mem) :
@@ -110,14 +96,7 @@ theorem domain_infinity (H : ZFAxioms mem) (hc : ClosedWF mem) :
       · exact wf_mem x.property hz
       · exact hz.symm ▸ x.property
     refine ⟨⟨sx, hws⟩, (hJ' sx).mpr ⟨hsI, hws⟩, fun t => ?_⟩
-    constructor
-    · intro ht
-      rcases (hs t.val).mp ht with ht | ht
-      · exact Or.inl ht
-      · exact Or.inr (Subtype.ext ht)
-    · rintro (ht | ht)
-      · exact (hs t.val).mpr (Or.inl ht)
-      · exact (hs t.val).mpr (Or.inr (congrArg Subtype.val ht))
+    exact (hs t.val).trans (or_congr Iff.rfl Subtype.ext_iff.symm)
 
 /-- Both arguments are guarded, so raw functionality holds globally. -/
 def replacementForm (phi : Form) : Form :=
@@ -129,15 +108,6 @@ theorem replacementForm_spec (phi : Form) (env : Nat → Domain mem)
   change (Sat mem _ (wfForm 0) ∧ Sat mem _ (wfForm 1) ∧ _) ↔ _
   exact and_congr (sat_wfForm mem _ 0) (and_congr (sat_wfForm mem _ 1) Iff.rfl)
 
-private theorem raw_rel_iff (phi : Form) (env : Nat → Domain mem)
-    (y x : Domain mem) :
-    Sat mem (scons y.val (scons x.val (liftEnv mem env))) (translate phi) ↔
-      relOf (domainMem mem) phi env y x := by
-  have he : scons y.val (scons x.val (liftEnv mem env)) = liftEnv mem (scons y (scons x env)) :=
-    funext fun i => by rcases i with _ | _ | _ <;> rfl
-  rw [he]
-  exact sat_translate mem phi (scons y (scons x env))
-
 theorem domain_replacement (H : ZFAxioms mem) (hc : ClosedWF mem)
     (phi : Form) (env : Nat → Domain mem)
     (hf : Functional (relOf (domainMem mem) phi env)) (a : Domain mem) :
@@ -148,8 +118,8 @@ theorem domain_replacement (H : ZFAxioms mem) (hc : ClosedWF mem)
     obtain ⟨hy1, hx, h1⟩ := (replacementForm_spec phi env y1 x).mp h1
     obtain ⟨hy2, _, h2⟩ := (replacementForm_spec phi env y2 x).mp h2
     exact congrArg Subtype.val (hf ⟨x, hx⟩ ⟨y1, hy1⟩ ⟨y2, hy2⟩
-      ((raw_rel_iff phi env ⟨y1, hy1⟩ ⟨x, hx⟩).mp h1)
-      ((raw_rel_iff phi env ⟨y2, hy2⟩ ⟨x, hx⟩).mp h2))
+      ((sat_translate_relOf mem phi env ⟨y1, hy1⟩ ⟨x, hx⟩).mp h1)
+      ((sat_translate_relOf mem phi env ⟨y2, hy2⟩ ⟨x, hx⟩).mp h2))
   obtain ⟨r, hr⟩ := H.repl (replacementForm phi) (liftEnv mem env) hfun a.val
   have hwr : WF mem r := hc r fun y hy => by
     obtain ⟨x, _, hrel⟩ := (hr y).mp hy
@@ -159,11 +129,11 @@ theorem domain_replacement (H : ZFAxioms mem) (hc : ClosedWF mem)
   · intro hy
     obtain ⟨x, hxa, hrel⟩ := (hr y.val).mp hy
     obtain ⟨_, hx, hrel⟩ := (replacementForm_spec phi env y.val x).mp hrel
-    exact ⟨⟨x, hx⟩, hxa, (raw_rel_iff phi env y ⟨x, hx⟩).mp hrel⟩
+    exact ⟨⟨x, hx⟩, hxa, (sat_translate_relOf mem phi env y ⟨x, hx⟩).mp hrel⟩
   · rintro ⟨x, hxa, hrel⟩
     exact (hr y.val).mpr ⟨x.val, hxa,
       (replacementForm_spec phi env y.val x.val).mpr
-        ⟨y.property, x.property, (raw_rel_iff phi env y x).mpr hrel⟩⟩
+        ⟨y.property, x.property, (sat_translate_relOf mem phi env y x).mpr hrel⟩⟩
 
 /-- All six ambient ZF fields hold in the interpreted WF domain. -/
 theorem domain_zfAxioms (H : ZFAxioms mem) (hc : ClosedWF mem) :

@@ -3,7 +3,15 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
-The latest [phase23 Lean checkpoint](phase23/README.md), independent actual readback,
+The [phase24 Lean proof cleanup](phase24/README.md) shares runtime, selector, subtype and calculus proofs,
+removing **175 lines / 8,435 bytes across thirteen maintained sources**. Its kernel
+check, independent actual readback, capture and capture review pass: **230 providers
+= 121 fresh + 109 exact phase23 reuses**, plus two fresh audits, with zero selected
+warnings. The primary endpoint stays at **172 modules** and selects **2,210 fewer
+source bytes**; this overlaps the maintained saving and must not be added. The
+215-state machine and endpoint statements stay fixed; its internal PA endpoint remains open.
+
+The [phase23 Lean checkpoint](phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. Thirty-three maintained
 sources remove **243 Lean lines / 13,016 bytes**; forty declarations retire and
 three signatures become stronger. The check covers 230 providers (215 project
@@ -146,7 +154,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest Lean checkpoint](phase23/README.md),
+The [latest Lean checkpoint](phase24/README.md),
+[phase23 Lean checkpoint](phase23/README.md),
 [twenty-second checkpoint](phase22/README.md),
 [twenty-first checkpoint](phase21/README.md),
 [twentieth checkpoint](phase20/README.md),
