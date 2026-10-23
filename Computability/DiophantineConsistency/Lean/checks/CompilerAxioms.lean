@@ -1,0 +1,15 @@
+import DiophantineConsistency.ArithmeticRepresentation
+import DiophantineConsistency.NaturalExpression
+import DiophantineConsistency.BoundedForallCertificate
+import DiophantineConsistency.JonesIndex
+
+#print axioms DiophantineConsistency.Expr.eval_toPolynomial
+#print axioms DiophantineConsistency.Rep.correct_toPolynomial
+#print axioms DiophantineConsistency.Rep.conjunction
+#print axioms DiophantineConsistency.Rep.existsBlock
+#print axioms DiophantineConsistency.GraphRep.add
+#print axioms DiophantineConsistency.ArithmeticRep.modEq
+#print axioms DiophantineConsistency.Expr.eval_splitNatural
+#print axioms DiophantineConsistency.Rep.correct_splitNatural
+#print axioms DiophantineConsistency.boundedForallCertificate
+#print axioms DiophantineConsistency.JonesIndex.index_correct
