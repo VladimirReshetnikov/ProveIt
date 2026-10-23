@@ -1,4 +1,4 @@
-(** The 218's ProgLib219.v (SHA256 440bc3de352263ade7a08f3c07cd06ca10311bec38b1704ef083513c7151dc73) for dagPerm. *)
+(** The 218's ProgLib219.v (SHA256 7c25950bd1033bcec595f752160f1a097131a3d2edcc5f99ccd3a49a49cd742e) for dagPerm. *)
 (** ProgLib222.v (SHA256 2f4beb9b392cc7c326ecfe248f941c1100783a2213a188b045a6a8de5cd86258) for dagPerm: the equality test's lemmas
     are proved anew for Source 140's routine; everything else is unchanged. *)
 (** Forked by gen_prog222.py from Elliot Glazer's k230-rocq (3142e4d) prog/ProgLib230.v for dagPerm. *)
@@ -669,12 +669,8 @@ Qed.
 
 Lemma z465 a : forall m, get m 5 = a -> sem (ENode 465) m XNormal (set m 5 0).
 Proof.
-  induction a as [|a IH]; intros m Ha.
-  - eapply sem_conseq; [eapply sem_car_break1; [reflexivity | apply sem_decnz_zero; exact Ha]|].
-    destruct m; nrm; subst; reflexivity.
-  - eapply sem_cdr_continue1; [reflexivity | apply sem_decnz_pos; [lia | exact Ha] | apply sem_cont |].
-    eapply sem_conseq; [apply (IH (set m 5 a)); destruct m; reflexivity|].
-    destruct m; reflexivity.
+  intros m _. revert m.
+  while_tac (fun m : St => m) (fun m : St => set m 5 0).
 Qed.
 
 Lemma r466 b : forall m, get m 6 = b -> sem (ENode 466) m (XBreak 1) (clr m).
