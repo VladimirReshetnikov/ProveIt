@@ -46,11 +46,8 @@ theorem mem_T_nil {T : Form → Prop} : ∀ x ∈ ([] : List Form), T x :=
   fun _ hx => nomatch hx
 
 theorem mem_T_cons {T : Form → Prop} {a : Form} {G : List Form}
-    (ha : T a) (hG : ∀ x ∈ G, T x) : ∀ x ∈ a :: G, T x := by
-  intro x hx
-  rcases List.mem_cons.mp hx with rfl | hx
-  · exact ha
-  · exact hG x hx
+    (ha : T a) (hG : ∀ x ∈ G, T x) : ∀ x ∈ a :: G, T x :=
+  List.forall_mem_cons.mpr ⟨ha, hG⟩
 
 /-! ## The canonical (quotient term) model of a maximal-consistent Henkin
 theory -/
@@ -326,10 +323,8 @@ theorem BProv_ax {B : Form → Prop} {G : List Form} {phi : Form}
 
 /-- A bare finite-context proof is also a proof relative to any theory. -/
 theorem BProv_of_Prov {B : Form → Prop} {G : List Form} {phi : Form}
-    (h : Prov G phi) : BProv B G phi := by
-  refine ⟨[], ?_, by simpa using h⟩
-  intro x hx
-  cases hx
+    (h : Prov G phi) : BProv B G phi :=
+  ⟨[], mem_T_nil, by simpa using h⟩
 
 /-- A finite-context assumption is available in relative provability. -/
 theorem BProv_ass {B : Form → Prop} {G : List Form} {phi : Form}
@@ -351,22 +346,14 @@ theorem BProv_bound_list (B : Form → Prop) (D : List Form) :
       intro hL
       rcases hL a (by simp) with ⟨La, hLa, hpa⟩
       rcases ih (fun x hx => hL x (by simp [hx])) with ⟨Lb, hLb, hpL⟩
-      refine ⟨La ++ Lb, List.forall_mem_append.mpr ⟨hLa, hLb⟩, ?_⟩
+      refine ⟨La ++ Lb, List.forall_mem_append.mpr ⟨hLa, hLb⟩, mem_T_cons ?_ ?_⟩
+      · exact Prov_weaken hpa _ (List.forall_mem_append.mpr
+          ⟨fun x hx => List.mem_append_left _ (List.mem_append_left _ hx),
+           fun x hx => List.mem_append_right _ hx⟩)
       · intro x hx
-        rw [List.mem_cons] at hx
-        rcases hx with rfl | hx
-        · apply Prov_weaken hpa
-          intro y hy
-          rw [List.mem_append] at hy ⊢
-          rcases hy with hy | hy
-          · exact Or.inl (List.mem_append.mpr (Or.inl hy))
-          · exact Or.inr hy
-        · apply Prov_weaken (hpL x hx)
-          intro y hy
-          rw [List.mem_append] at hy ⊢
-          rcases hy with hy | hy
-          · exact Or.inl (List.mem_append.mpr (Or.inr hy))
-          · exact Or.inr hy
+        exact Prov_weaken (hpL x hx) _ (List.forall_mem_append.mpr
+          ⟨fun y hy => List.mem_append_left _ (List.mem_append_right _ hy),
+           fun y hy => List.mem_append_right _ hy⟩)
 
 /-- Transport a relative proof to another theory/context once every used source
 axiom and every finite-context assumption has been proved in the target. -/
@@ -378,8 +365,7 @@ theorem BProv_lift {B C : Form → Prop} {G D : List Form} {phi : Form}
   have hctx : ∀ x, x ∈ Lb ++ G → BProv C D x :=
     List.forall_mem_append.mpr ⟨fun x hx => hB x (hLb x hx), hG⟩
   rcases BProv_bound_list C D (Lb ++ G) hctx with ⟨Lc, hLc, hpctx⟩
-  refine ⟨Lc, hLc, ?_⟩
-  exact Prov_cut hp (Lc ++ D) hpctx
+  exact ⟨Lc, hLc, Prov_cut hp (Lc ++ D) hpctx⟩
 
 /-- Relative provability is closed under cutting in proofs of the finite
 context. -/
@@ -416,11 +402,7 @@ theorem BProv_rule2 {B : Form → Prop} {G : List Form} {a b c : Form}
     (rule [a, b]
       (Prov.P_ass _ _ (by simp))
       (Prov.P_ass _ _ (by simp)))
-  intro d hd
-  simp at hd
-  rcases hd with rfl | rfl
-  · exact ha
-  · exact hb
+  exact mem_T_cons ha (mem_T_cons hb mem_T_nil)
 
 /-- Enlarging the background theory preserves relative provability. -/
 theorem BProv_theory_mono {B C : Form → Prop} {G : List Form} {phi : Form}
@@ -684,12 +666,7 @@ theorem BProv_orE_imp {B : Form → Prop} {G : List Form} {a b c : Form}
       (Prov.P_ass _ _ (by simp))
       (Prov.P_ass _ _ (by simp))
       (Prov.P_ass _ _ (by simp)))
-  intro g hg
-  simp at hg
-  rcases hg with rfl | rfl | rfl
-  · exact hor
-  · exact ha
-  · exact hb
+  exact mem_T_cons hor (mem_T_cons ha (mem_T_cons hb mem_T_nil))
 
 /-- Relative provability is closed under disjunction elimination. -/
 theorem BProv_orE {B : Form → Prop} {G : List Form} {a b c : Form}
@@ -722,13 +699,9 @@ theorem BProv_exI {B : Form → Prop} {G : List Form} {a : Form} {k : Nat}
 /-- A finite list of axioms from a sentence theory is unchanged by renaming. -/
 theorem map_rename_eq_of_sentences {B : Form → Prop} (hB : Sentences B)
     {L : List Form} (hL : ∀ x, x ∈ L → B x) (r : Nat → Nat) :
-    L.map (rename r) = L := by
-  calc
-    L.map (rename r) = L.map (fun x => x) := by
-      apply List.map_congr_left
-      intro x hx
-      exact rename_eq_of_sentence x (hB x (hL x hx)) r
-    _ = L := by simp
+    L.map (rename r) = L :=
+  (List.map_congr_left (fun x hx =>
+    rename_eq_of_sentence x (hB x (hL x hx)) r)).trans (List.map_id' L)
 
 /-- Universal introduction for a relative proof whose theory axioms are
 sentences. -/
@@ -736,15 +709,8 @@ theorem BProv_allI_of_sentences {B : Form → Prop} (hB : Sentences B)
     {G : List Form} {a : Form}
     (h : BProv B (G.map (rename Nat.succ)) a) : BProv B G (fAll a) := by
   rcases h with ⟨L, hL, hp⟩
-  have hLmap := map_rename_eq_of_sentences hB hL Nat.succ
-  refine ⟨L, hL, ?_⟩
-  apply Prov.P_allI
-  apply Prov_weaken hp
-  intro x hx
-  simp only [List.map_append, List.mem_append] at hx ⊢
-  rcases hx with hx | hx
-  · exact Or.inl (by simpa [hLmap] using hx)
-  · exact Or.inr hx
+  refine ⟨L, hL, Prov.P_allI _ _ ?_⟩
+  simpa only [List.map_append, map_rename_eq_of_sentences hB hL Nat.succ] using hp
 
 /-- Existential elimination for a relative proof whose theory axioms are
 sentences. -/
@@ -756,31 +722,13 @@ theorem BProv_exE_of_sentences {B : Form → Prop} (hB : Sentences B)
   rcases hex with ⟨Le, hLe, hpe⟩
   rcases hbody with ⟨Lb, hLb, hpb⟩
   have hLbmap := map_rename_eq_of_sentences hB hLb Nat.succ
-  refine ⟨Le ++ Lb, ?_, ?_⟩
-  · intro x hx
-    simp only [List.mem_append] at hx
-    grind
-  · apply Prov.P_exE _ a c
-    · apply Prov_weaken hpe
-      intro x hx
-      simp only [List.mem_append] at hx ⊢
-      grind
-    · apply Prov_weaken hpb
-      intro x hx
-      rw [List.mem_append] at hx
-      rcases hx with hx | hx
-      · apply List.mem_cons.mpr
-        apply Or.inr
-        simp only [List.map_append, List.mem_append]
-        apply Or.inl
-        exact Or.inr (by simpa [hLbmap] using hx)
-      · rw [List.mem_cons] at hx
-        rcases hx with hx | hx
-        · exact List.mem_cons.mpr (Or.inl hx)
-        · apply List.mem_cons.mpr
-          apply Or.inr
-          simp only [List.map_append, List.mem_append]
-          exact Or.inr hx
+  refine ⟨Le ++ Lb, List.forall_mem_append.mpr ⟨hLe, hLb⟩, ?_⟩
+  apply Prov.P_exE _ a c
+  · apply Prov_weaken hpe
+    mem_tac
+  · apply Prov_weaken hpb
+    simp only [List.map_append, hLbmap]
+    mem_tac
 
 /-! ### Directed connective and equivalence calculus -/
 
@@ -953,11 +901,7 @@ theorem Tinf_closed (B : Form → Prop) (L0 : List Form) (G : List Form)
 theorem Tinf_mp (B : Form → Prop) (L0 : List Form) (a b : Form)
     (hImp : Tinf B L0 (fImp a b)) (ha : Tinf B L0 a) : Tinf B L0 b := by
   apply Tinf_closed B L0 [fImp a b, a] b
-  · intro x hx
-    simp at hx
-    rcases hx with rfl | rfl
-    · exact hImp
-    · exact ha
+  · exact mem_T_cons hImp (mem_T_cons ha mem_T_nil)
   · exact Prov.P_impE _ a b
       (Prov.P_ass _ _ (by simp))
       (Prov.P_ass _ _ (by simp))

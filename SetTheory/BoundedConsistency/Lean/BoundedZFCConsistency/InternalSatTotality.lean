@@ -485,29 +485,13 @@ noncomputable def envTotal (H : ZFAxioms mem) (A R : V) : Nat → V :=
 theorem fTotalOnF_spec (H : ZFAxioms mem) (A R y : V) :
     Sat mem (scons y (envTotal H A R)) fTotalOnF ↔ TotalOn H A R y := by
   unfold TotalOn
-  constructor
-  · intro h E hE
-    obtain ⟨S, hclosed, hall⟩ :=
-      h E (fun e he => (fEnvOnF_spec H
-        (scons e (scons E (scons y (envTotal H A R)))) 0 3).mpr (hE e he))
-    refine ⟨S, (fSatClosedF_spec H
-      (scons S (scons E (scons y (envTotal H A R)))) 0 3 4).mp hclosed,
-      fun e he => ?_⟩
-    obtain ⟨b, hb⟩ := hall e he
-    exact ⟨b, (fTripleMemF_spec H
-      (scons b (scons e (scons S (scons E (scons y (envTotal H A R))))))
-      4 1 0 2).mp hb⟩
-  · intro h E hE
-    obtain ⟨S, hclosed, hall⟩ :=
-      h E (fun e he => (fEnvOnF_spec H
-        (scons e (scons E (scons y (envTotal H A R)))) 0 3).mp (hE e he))
-    refine ⟨S, (fSatClosedF_spec H
-      (scons S (scons E (scons y (envTotal H A R)))) 0 3 4).mpr hclosed,
-      fun e he => ?_⟩
-    obtain ⟨b, hb⟩ := hall e he
-    exact ⟨b, (fTripleMemF_spec H
-      (scons b (scons e (scons S (scons E (scons y (envTotal H A R))))))
-      4 1 0 2).mpr hb⟩
+  refine forall_congr' fun E => imp_congr ?_ (exists_congr fun S => and_congr ?_ ?_)
+  · exact forall_congr' fun e => imp_congr_right fun _ =>
+      fEnvOnF_spec H (scons e (scons E (scons y (envTotal H A R)))) 0 3
+  · exact fSatClosedF_spec H (scons S (scons E (scons y (envTotal H A R)))) 0 3 4
+  · exact forall_congr' fun e => imp_congr_right fun _ => exists_congr fun b =>
+      fTripleMemF_spec H
+        (scons b (scons e (scons S (scons E (scons y (envTotal H A R)))))) 4 1 0 2
 
 /-- **Totality, in the uniform form the induction proves.**
 
@@ -730,19 +714,10 @@ theorem satIn_imp (H : ZFAxioms mem) {A R : V} (hS : IsSetStructure H A R)
   obtain ⟨S, b, hcert⟩ :=
     certificate_total H hS _ (isFormCodeSem_imp H h1 h2) e he
   obtain ⟨b1, b2, k1, k2, hb⟩ := justified_imp H (Certifies.justified H hcert)
-  have e1 : b1 = vbit H (SatIn H A R c1 e) :=
-    certifies_bit H h1 ⟨hcert.closed, k1⟩
-  have e2 : b2 = vbit H (SatIn H A R c2 e) :=
-    certifies_bit H h2 ⟨hcert.closed, k2⟩
-  have hcong : (vbit H (SatIn H A R c1 e) = natV H 1 →
-      vbit H (SatIn H A R c2 e) = natV H 1) ↔
-      (SatIn H A R c1 e → SatIn H A R c2 e) := by
-    constructor
-    · exact fun h hs => (vbit_eq_one H _).mp (h ((vbit_eq_one H _).mpr hs))
-    · exact fun h hs => (vbit_eq_one H _).mpr (h ((vbit_eq_one H _).mp hs))
-  rw [satIn_iff_bit_eq_one H (isFormCodeSem_imp H h1 h2) hcert, hb, e1, e2,
-      vbit_congr H hcong]
-  exact vbit_eq_one H _
+  rw [satIn_iff_bit_eq_one H (isFormCodeSem_imp H h1 h2) hcert, hb,
+      certifies_bit H h1 ⟨hcert.closed, k1⟩,
+      certifies_bit H h2 ⟨hcert.closed, k2⟩, vbit_eq_one]
+  exact imp_congr (vbit_eq_one H _) (vbit_eq_one H _)
 
 /-- Conjunction. -/
 theorem satIn_and (H : ZFAxioms mem) {A R : V} (hS : IsSetStructure H A R)
@@ -753,19 +728,10 @@ theorem satIn_and (H : ZFAxioms mem) {A R : V} (hS : IsSetStructure H A R)
   obtain ⟨S, b, hcert⟩ :=
     certificate_total H hS _ (isFormCodeSem_and H h1 h2) e he
   obtain ⟨b1, b2, k1, k2, hb⟩ := justified_and H (Certifies.justified H hcert)
-  have e1 : b1 = vbit H (SatIn H A R c1 e) :=
-    certifies_bit H h1 ⟨hcert.closed, k1⟩
-  have e2 : b2 = vbit H (SatIn H A R c2 e) :=
-    certifies_bit H h2 ⟨hcert.closed, k2⟩
-  have hcong : (vbit H (SatIn H A R c1 e) = natV H 1 ∧
-      vbit H (SatIn H A R c2 e) = natV H 1) ↔
-      (SatIn H A R c1 e ∧ SatIn H A R c2 e) := by
-    constructor
-    · exact fun h => ⟨(vbit_eq_one H _).mp h.1, (vbit_eq_one H _).mp h.2⟩
-    · exact fun h => ⟨(vbit_eq_one H _).mpr h.1, (vbit_eq_one H _).mpr h.2⟩
-  rw [satIn_iff_bit_eq_one H (isFormCodeSem_and H h1 h2) hcert, hb, e1, e2,
-      vbit_congr H hcong]
-  exact vbit_eq_one H _
+  rw [satIn_iff_bit_eq_one H (isFormCodeSem_and H h1 h2) hcert, hb,
+      certifies_bit H h1 ⟨hcert.closed, k1⟩,
+      certifies_bit H h2 ⟨hcert.closed, k2⟩, vbit_eq_one]
+  exact and_congr (vbit_eq_one H _) (vbit_eq_one H _)
 
 /-- Disjunction. -/
 theorem satIn_or (H : ZFAxioms mem) {A R : V} (hS : IsSetStructure H A R)
@@ -776,19 +742,10 @@ theorem satIn_or (H : ZFAxioms mem) {A R : V} (hS : IsSetStructure H A R)
   obtain ⟨S, b, hcert⟩ :=
     certificate_total H hS _ (isFormCodeSem_or H h1 h2) e he
   obtain ⟨b1, b2, k1, k2, hb⟩ := justified_or H (Certifies.justified H hcert)
-  have e1 : b1 = vbit H (SatIn H A R c1 e) :=
-    certifies_bit H h1 ⟨hcert.closed, k1⟩
-  have e2 : b2 = vbit H (SatIn H A R c2 e) :=
-    certifies_bit H h2 ⟨hcert.closed, k2⟩
-  have hcong : (vbit H (SatIn H A R c1 e) = natV H 1 ∨
-      vbit H (SatIn H A R c2 e) = natV H 1) ↔
-      (SatIn H A R c1 e ∨ SatIn H A R c2 e) := by
-    constructor
-    · exact fun h => h.imp (vbit_eq_one H _).mp (vbit_eq_one H _).mp
-    · exact fun h => h.imp (vbit_eq_one H _).mpr (vbit_eq_one H _).mpr
-  rw [satIn_iff_bit_eq_one H (isFormCodeSem_or H h1 h2) hcert, hb, e1, e2,
-      vbit_congr H hcong]
-  exact vbit_eq_one H _
+  rw [satIn_iff_bit_eq_one H (isFormCodeSem_or H h1 h2) hcert, hb,
+      certifies_bit H h1 ⟨hcert.closed, k1⟩,
+      certifies_bit H h2 ⟨hcert.closed, k2⟩, vbit_eq_one]
+  exact or_congr (vbit_eq_one H _) (vbit_eq_one H _)
 
 /-- The universal quantifier, ranging over the carrier with the shifted
 environment. -/

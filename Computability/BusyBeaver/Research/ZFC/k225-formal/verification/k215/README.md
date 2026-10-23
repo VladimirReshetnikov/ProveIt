@@ -6,13 +6,13 @@ The original fresh full builds below were recorded at `613f9cf28a`.
 [Phase16](simplification/phase16/README.md) retains the preceding accepted
 quotient-unification snapshot and its exact source, profile and warning records.
 
-The [phase25 proof cleanup](simplification/phase25/README.md) removes **101 lines / 2,322 bytes**
-from five files, reusing existing calculus, simulator and absoluteness lemmas.
+The [phase26 proof cleanup](simplification/phase26/README.md) removes **126 lines / 3,711 bytes**
+from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers
-(110 fresh / 120 exact phase24 reuses)** and two fresh audits, with zero warnings.
-The primary closure remains **172 modules / 1,723,955 source bytes**; its byte
+(56 fresh / 174 exact phase25 reuses)** and two fresh audits, with zero warnings.
+The primary closure remains **172 modules / 1,720,244 source bytes**; its byte
 saving overlaps the five-file measure. The machine remains 215 states, and the
-internal PA endpoint remains open. [Previous checkpoint](simplification/phase24/README.md).
+internal PA endpoint remains open. [Previous checkpoint](simplification/phase25/README.md).
 
 The [phase23 Lean checkpoint](simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. Thirty-three maintained
@@ -118,7 +118,7 @@ endpoint. The large literal tables and arithmetic certificates are kernel-checke
 data, while these final compositions stay small.
 
 The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, selects 172
-project modules from the current phase25 sources and then two explicit endpoint
+project modules from the current phase26 sources and then two explicit endpoint
 clients. The original fresh build selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
 selects 237 sources: 195 from the pinned reference and 42 for K215. Both use the

@@ -6,13 +6,13 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
-The [phase25 proof cleanup](../simplification/phase25/README.md) removes **101 lines / 2,322 bytes**
-from five files, reusing existing calculus, simulator and absoluteness lemmas.
+The [phase26 proof cleanup](../simplification/phase26/README.md) removes **126 lines / 3,711 bytes**
+from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers
-(110 fresh / 120 exact phase24 reuses)** and two fresh audits, with zero warnings.
-The primary closure remains **172 modules / 1,723,955 source bytes**; its byte
+(56 fresh / 174 exact phase25 reuses)** and two fresh audits, with zero warnings.
+The primary closure remains **172 modules / 1,720,244 source bytes**; its byte
 saving overlaps the five-file measure. The machine remains 215 states, and the
-internal PA endpoint remains open. [Previous checkpoint](../simplification/phase24/README.md).
+internal PA endpoint remains open. [Previous checkpoint](../simplification/phase25/README.md).
 
 The [phase23 selected check](../simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. It covers 230 providers
@@ -69,7 +69,7 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current phase25 source selection contains 172
+the compiler trust boundary. The current phase26 source selection contains 172
 project modules and only the external `Init` boundary.
 It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.

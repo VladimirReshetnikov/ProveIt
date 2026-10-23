@@ -17,13 +17,13 @@ from the classical Tarski/Kalish–Montague route. The separately attributed
 propositional certificate and numerical program ports are described below;
 no Coq compiler was run.
 
-The [phase25 proof cleanup](k225-formal/verification/k215/simplification/phase25/README.md) removes **101 lines / 2,322 bytes**
-from five files, reusing existing calculus, simulator and absoluteness lemmas.
+The [phase26 proof cleanup](k225-formal/verification/k215/simplification/phase26/README.md) removes **126 lines / 3,711 bytes**
+from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers
-(110 fresh / 120 exact phase24 reuses)** and two fresh audits, with zero warnings.
-The primary closure remains **172 modules / 1,723,955 source bytes**; its byte
+(56 fresh / 174 exact phase25 reuses)** and two fresh audits, with zero warnings.
+The primary closure remains **172 modules / 1,720,244 source bytes**; its byte
 saving overlaps the five-file measure. The machine remains 215 states, and the
-internal PA endpoint remains open. [Previous checkpoint](k225-formal/verification/k215/simplification/phase24/README.md).
+internal PA endpoint remains open. [Previous checkpoint](k225-formal/verification/k215/simplification/phase25/README.md).
 
 The [phase23 Lean checkpoint](k225-formal/verification/k215/simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. It separates four generic

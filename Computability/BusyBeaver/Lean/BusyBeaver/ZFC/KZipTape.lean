@@ -17,23 +17,16 @@ def Rel (c : FramedWindow.Full) (z : Conf) : Prop :=
     c.tape (c.head + (i : Int)) = z.r.getD i false ∧
     c.tape (c.head - ((i + 1 : Nat) : Int)) = z.l.getD i false
 
-private theorem getD_trim : ∀ (l : List Bool) (i : Nat),
-    (trim l).getD i false = l.getD i false
-  | [], _ => rfl
-  | b :: l, i => by
-      rw [trim_cons]
-      split
-      · rename_i h
-        obtain ⟨rfl, ht⟩ := h
-        cases i with
-        | zero => rfl
-        | succ i => simpa [ht] using (getD_trim l i).symm
-      · cases i with
-        | zero => rfl
-        | succ i => simpa using getD_trim l i
-
 private theorem getD_tail (l : List Bool) (i : Nat) :
     l.tail.getD i false = l.getD (i + 1) false := by cases l <;> simp
+
+private theorem getD_trim : ∀ (l : List Bool) (i : Nat),
+    (trim l).getD i false = l.getD i false := by
+  intro l i
+  induction i generalizing l with
+  | zero => simpa only [← List.headD_eq_getD] using headD_trim l
+  | succ i ih =>
+      rw [← getD_tail, ← getD_tail, ← ih ((trim l).tail), tail_trim, ih]
 
 /-- One full-tape step has the same zipper step, including its write and direction. -/
 theorem rel_step {M : TMN} {c d : FramedWindow.Full} {z : Conf}

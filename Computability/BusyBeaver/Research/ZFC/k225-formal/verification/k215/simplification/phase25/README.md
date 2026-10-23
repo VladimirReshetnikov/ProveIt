@@ -45,3 +45,8 @@ checker, so it remains unadopted and is excluded from the 101-line reduction.
 
 The literal machine remains **215 states**. The internal PA endpoint and minimum-state
 theorem remain open. No incoming checker, generator or supplied proof was executed.
+
+The [phase26 proof cleanup](../phase26/README.md) continues from this frozen
+checkpoint, removing 126 lines / 3,711 bytes across five proof files. Its full
+kernel build, independent actual readback, capture and archive review pass;
+this phase25 eleven-file Lean leaf remains unchanged.

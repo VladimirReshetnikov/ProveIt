@@ -3,13 +3,13 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
-The [phase25 proof cleanup](phase25/README.md) removes **101 lines / 2,322 bytes**
-from five files, reusing existing calculus, simulator and absoluteness lemmas.
+The [phase26 proof cleanup](phase26/README.md) removes **126 lines / 3,711 bytes**
+from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers
-(110 fresh / 120 exact phase24 reuses)** and two fresh audits, with zero warnings.
-The primary closure remains **172 modules / 1,723,955 source bytes**; its byte
+(56 fresh / 174 exact phase25 reuses)** and two fresh audits, with zero warnings.
+The primary closure remains **172 modules / 1,720,244 source bytes**; its byte
 saving overlaps the five-file measure. The machine remains 215 states, and the
-internal PA endpoint remains open. [Previous checkpoint](phase24/README.md).
+internal PA endpoint remains open. [Previous checkpoint](phase25/README.md).
 
 The [phase23 Lean checkpoint](phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. Thirty-three maintained
@@ -154,7 +154,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest Lean checkpoint](phase25/README.md),
+The [latest Lean checkpoint](phase26/README.md),
+[phase25 Lean checkpoint](phase25/README.md),
 [phase24 Lean checkpoint](phase24/README.md),
 [phase23 Lean checkpoint](phase23/README.md),
 [twenty-second checkpoint](phase22/README.md),

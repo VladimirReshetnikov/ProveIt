@@ -189,16 +189,12 @@ include H hR
 /-- Approximations on the same ordinal are equal. -/
 theorem rapprox_eq {f g d : V} (hf : RApprox H R f d) (hg : RApprox H R g d) (hd : Ord mem d) :
     f = g := by
-  apply H.ext; intro p
-  constructor
-  · intro hp
+  have sub {f g : V} (hf : RApprox H R f d) (hg : RApprox H R g d) : ∀ p, mem p f → mem p g := by
+    intro p hp
     obtain ⟨b, S, hb, rfl⟩ := hf.1 p hp
     obtain ⟨S', hS'⟩ := hg.2.1 b hb
     rwa [rapprox_unique H hR hf hg hd hd b (ord_of_mem hd hb) hb hb S S' hp hS']
-  · intro hp
-    obtain ⟨b, S, hb, rfl⟩ := hg.1 p hp
-    obtain ⟨S', hS'⟩ := hf.2.1 b hb
-    rwa [← rapprox_unique H hR hf hg hd hd b (ord_of_mem hd hb) hb hb S' S hS' hp]
+  exact H.ext f g fun p => ⟨sub hf hg p, sub hg hf p⟩
 
 omit hR in
 /-- First coordinates of pairs in an approximation lie in its domain. -/
@@ -255,27 +251,19 @@ theorem rapprox_extend {f b S : V} (hf : RApprox H R f b) (hb : Ord mem b)
     · obtain ⟨rfl, -⟩ := kpair_inj H _ _ _ _ e1; exact absurd e2 (hnb S2)
     · rw [(kpair_inj H _ _ _ _ e1).2, (kpair_inj H _ _ _ _ e2).2]
   · intro c S1 h1 z
-    -- pairs of the extension below a stage of `f` are pairs of `f`
-    have back : ∀ x, mem x b → ∀ c' T, mem c' x → mem (kpair H c' T) (vcup H f (vsingle H (kpair H b S))) →
-        mem (kpair H c' T) f := by
-      intro x hx c' T hc' hT
-      rcases (hg _).1 hT with hT | hT
-      · exact hT
-      · obtain ⟨rfl, -⟩ := kpair_inj H _ _ _ _ hT
-        exact absurd (hb.1 x hx c' hc') (mem_irrefl H hR c')
-    rcases (hg _).1 h1 with h1 | h1
-    · rw [hf.2.2.2 c S1 h1 z]
-      exact ⟨fun ⟨c', T, hc', hT, hz⟩ => ⟨c', T, hc', (hg _).2 (Or.inl hT), hz⟩,
-        fun ⟨c', T, hc', hT, hz⟩ => ⟨c', T, hc', back c (rapprox_dom H hf h1) c' T hc' hT, hz⟩⟩
-    · obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ h1
-      rw [hS z]
-      constructor
-      · rintro ⟨c', T, hc', hT, hz⟩; exact ⟨c', T, hc', (hg _).2 (Or.inl hT), hz⟩
-      · rintro ⟨c', T, hc', hT, hz⟩
-        rcases (hg _).1 hT with hT | hT
-        · exact ⟨c', T, hc', hT, hz⟩
-        · obtain ⟨rfl, -⟩ := kpair_inj H _ _ _ _ hT
-          exact absurd hc' (mem_irrefl H hR _)
+    have hrec : Sub mem c b ∧
+        (mem z S1 ↔ ∃ c' T, mem c' c ∧ mem (kpair H c' T) f ∧ R z T) := by
+      rcases (hg _).1 h1 with h1 | h1
+      · exact ⟨hb.1 c (rapprox_dom H hf h1), hf.2.2.2 c S1 h1 z⟩
+      · obtain ⟨rfl, rfl⟩ := kpair_inj H _ _ _ _ h1
+        exact ⟨fun _ h => h, hS z⟩
+    apply hrec.2.trans
+    refine exists_congr fun c' => exists_congr fun T => and_congr_right fun hc' => and_congr_left' ?_
+    refine ⟨fun hT => (hg _).2 (Or.inl hT), fun hT => ?_⟩
+    rcases (hg _).1 hT with hT | hT
+    · exact hT
+    · obtain ⟨rfl, -⟩ := kpair_inj H _ _ _ _ hT
+      exact absurd (hrec.1 _ hc') (mem_irrefl H hR _)
 
 /-- Glue the approximations on the successors below `d`. -/
 theorem rapprox_glue (hrF : RDef mem R rF) {d : V} (hd : Ord mem d) (h : ∀ b, mem b d → ∃ g, RApprox H R g (vsucc H b)) :

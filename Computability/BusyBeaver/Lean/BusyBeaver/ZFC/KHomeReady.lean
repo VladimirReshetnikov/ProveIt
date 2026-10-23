@@ -17,14 +17,6 @@ def rowsCheck (M : TMN) : Bool :=
 def ready (M : TMN) : Bool :=
   rowsCheck M && FramedWindow.check (KZipTape.table M) 18 2 0 cells 84 2
 
-private theorem rowsCheck_sound {M : TMN} (h : rowsCheck M = true) : KHome.Rows M := by
-  simp only [rowsCheck, Bool.and_eq_true, List.all_eq_true] at h
-  constructor
-  · intro i hi
-    exact of_decide_eq_true (h.1 i (List.mem_range.mpr hi))
-  · intro i hi
-    exact of_decide_eq_true (h.2 i (List.mem_range.mpr (by omega)))
-
 private theorem overlay_eq (xs : FramedWindow.Cells) (t : FramedWindow.Tape)
     (h : ∀ p ∈ xs, t p.1 = p.2) : FramedWindow.overlay xs t = t := by
   funext i
@@ -37,29 +29,29 @@ private theorem overlay_eq (xs : FramedWindow.Cells) (t : FramedWindow.Tape)
     · have ht := ih (fun p hp => h p (by simp [hp]))
       simpa only [FramedWindow.overlay, FramedWindow.lookup, if_neg hi] using ht
 
-/-- The checked window returns across the blank-left boundary on every right frame. -/
-private theorem boundary_of_check {M : TMN}
-    (hc : FramedWindow.check (KZipTape.table M) 18 2 0 cells 84 2 = true) : KHome.Boundary M := by
-  intro R
-  let s := zc 2 [] (false :: true :: R)
-  have hm : FramedWindow.overlay cells (KZipTape.tape s) = KZipTape.tape s := by
-    apply overlay_eq
-    intro p hp
-    simp only [cells, List.mem_cons, List.not_mem_nil, or_false] at hp
-    rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-      simp [KZipTape.tape, s, zc, trim_cons] <;> rfl
-  have hs := FramedWindow.arbitrary_tape (KZipTape.table M) 18 2 0 cells 84 2
-    hc (KZipTape.tape s) hm
-  have he : KZipTape.Rel ⟨84, 2, KZipTape.tape s⟩ (zc 84 [true] R) := by
-    simpa [KZipTape.full, s, zc, trim_cons, trim_trim] using
-      KZipTape.rel_right (KZipTape.rel_right (KZipTape.rel_full s) 2) 84
-  have hr := KZipTape.run_reflect (KZipTape.rel_full s) he
-    (by exact ⟨trim_trim _, trim_trim _⟩) ⟨trim_trim _, trim_trim _⟩ hs
-  exact ⟨17, by simpa [s, zl] using hr⟩
-
 theorem ready_sound {M : TMN} (h : ready M = true) : KHome.Rows M ∧ KHome.Boundary M := by
-  simp only [ready, Bool.and_eq_true] at h
-  exact ⟨rowsCheck_sound h.1, boundary_of_check h.2⟩
+  simp only [ready, rowsCheck, Bool.and_eq_true, List.all_eq_true] at h
+  refine ⟨⟨?_, ?_⟩, ?_⟩
+  · intro i hi
+    exact of_decide_eq_true (h.1.1 i (List.mem_range.mpr hi))
+  · intro i hi
+    exact of_decide_eq_true (h.1.2 i (List.mem_range.mpr (by omega)))
+  · intro R
+    let s := zc 2 [] (false :: true :: R)
+    have hm : FramedWindow.overlay cells (KZipTape.tape s) = KZipTape.tape s := by
+      apply overlay_eq
+      intro p hp
+      simp only [cells, List.mem_cons, List.not_mem_nil, or_false] at hp
+      rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+        simp [KZipTape.tape, s, zc, trim_cons] <;> rfl
+    have hs := FramedWindow.arbitrary_tape (KZipTape.table M) 18 2 0 cells 84 2
+      h.2 (KZipTape.tape s) hm
+    have he : KZipTape.Rel ⟨84, 2, KZipTape.tape s⟩ (zc 84 [true] R) := by
+      simpa [KZipTape.full, s, zc, trim_cons, trim_trim] using
+        KZipTape.rel_right (KZipTape.rel_right (KZipTape.rel_full s) 2) 84
+    have hr := KZipTape.run_reflect (KZipTape.rel_full s) he
+      (by exact ⟨trim_trim _, trim_trim _⟩) ⟨trim_trim _, trim_trim _⟩ hs
+    exact ⟨17, by simpa [s, zl] using hr⟩
 
 /-- A positive Home shortcut, otherwise exactly the old abstract step. -/
 def homeStep (M : TMN) (br : Branch) (s : SConf) : Option (SConf × Bool) :=

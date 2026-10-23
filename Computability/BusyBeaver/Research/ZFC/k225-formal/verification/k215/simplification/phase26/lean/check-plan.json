@@ -1,0 +1,4879 @@
+{
+  "status": "SOURCE_DERIVED_READY_FOR_ROOT_REVIEW",
+  "base_commit": "3b9e7eddac0a9edbdbe2df16fe0c35e6b0173b5c",
+  "main_commit": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "mode": "phase26-candidate",
+  "basis_directory": "/tmp/k215-phase25-check-v3/candidate-build-run1",
+  "basis_result_sha256": "9532e7d8d09f746c1ec509d09ba8e7eea76f752998a602afd4c2aa6cbdaf0d3c",
+  "targets": [
+    "BusyBeaver.ZFC.KEndpoint215",
+    "BusyBeaver.ZFC.KDecoderPrefix215",
+    "BusyBeaver.ZFC.PSCCalibration",
+    "GenericShared13Api",
+    "NumericCD52Api",
+    "LukasShared13Api",
+    "DerivedRows14Api",
+    "ThmKDerived14Api",
+    "KEindDerived14Api",
+    "ProfileTC14Api",
+    "BasicInterfaces15Api",
+    "TransRec15Api",
+    "QuotientSharing15Api",
+    "QuotientUnified16Api",
+    "WFModelCompat12",
+    "ZFNativeCompat12",
+    "BusyBeaver.ZFC.L2Control254",
+    "DirectSeed17Api",
+    "MacroSharing18Api",
+    "BusyBeaver.ZFC.L2RootDom",
+    "BusyBeaver.ZFC.L2Root222",
+    "BusyBeaver.ZFC.L2Root219"
+  ],
+  "modules": [
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+      "source_sha256": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+      "bytes": 6929,
+      "lines": 193,
+      "imports": [
+        "Init"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDag",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+      "source_sha256": "36b7b8fdeaad284940fafe170b8da3ed6953e41b743034e446f68c8c5f6fd3cb",
+      "bytes": 12631,
+      "lines": 296,
+      "imports": [],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMEquiv",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv.lean",
+      "source_sha256": "61f807d4327a1e39ad441e1e737f5affd9fd7004476e12bb378c9c6663dc909c",
+      "bytes": 29630,
+      "lines": 670,
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMBisim",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean",
+      "source_sha256": "c18b757a0b981a6e78c7a1fbe449fe6d53f38039f7d99cdf0021b2a151166f81",
+      "bytes": 21772,
+      "lines": 536,
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215Program",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean",
+      "source_sha256": "7ab40d3faf9ddb976cdac2f77727e9e43b99b13a81fb45a340ad99abdfcd8310",
+      "bytes": 6867,
+      "lines": 200,
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMNormalizedBisim",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMNormalizedBisim.lean",
+      "source_sha256": "8f3106bd9f78ca3b5dcdb724fd6f61134c0e8c8094be38275f09fc85410b3ccd",
+      "bytes": 5704,
+      "lines": 142,
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag222.lean",
+      "source_sha256": "9e73e2d6ac692c33b07efde7faa08545fdd61ca692ec03e21afe2ffe99a7cb71",
+      "bytes": 17955,
+      "lines": 484,
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag219",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag219.lean",
+      "source_sha256": "fd3bdfcd5048dd7205b66fcce323bb78017a3137dcd04cc3ef9c0788334ac3ad",
+      "bytes": 1051,
+      "lines": 31,
+      "imports": [
+        "BusyBeaver.ZFC.Dag222"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.DagDom",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DagDom.lean",
+      "source_sha256": "9d52a871ea029099dd192fb66cf0ef802c4f9ed6e8c32d3a7b3661ce343af5aa",
+      "bytes": 1683,
+      "lines": 45,
+      "imports": [
+        "BusyBeaver.ZFC.Dag219"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.DagPerm",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DagPerm.lean",
+      "source_sha256": "11ccf62cf09e41b8f85e1c7d6aa56aeca0c0d211e119fb5309d5fb1ac6a96123",
+      "bytes": 1143,
+      "lines": 32,
+      "imports": [
+        "BusyBeaver.ZFC.DagDom"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215Data",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Data.lean",
+      "source_sha256": "23b670c2b6ffd08fa173bbbe54faaf8989aac9b410a41a3332dee3f5fcaa5554",
+      "bytes": 116343,
+      "lines": 1574,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.RMNormalizedBisim",
+        "BusyBeaver.ZFC.RMEquiv",
+        "BusyBeaver.ZFC.DagPerm"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck00",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck00.lean",
+      "source_sha256": "94814b35eddc170e62e344e7688bb5fac219f13012237a3c289184b9e2c7ebe1",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck01",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck01.lean",
+      "source_sha256": "51650ba6a8b60ace0e0df08d091642cf6b26f61be90ff94f48fcaf915230554f",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck02",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck02.lean",
+      "source_sha256": "93b51768742c644e375a29b4bea3334cdc442668b238630d0981b837333d0beb",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck03",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck03.lean",
+      "source_sha256": "f7995d503238314b660ec50aa539fdbbe396963081c9106d4c0d28cf67799c06",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck04",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck04.lean",
+      "source_sha256": "a11d471d874702bb3d5997dbbd931da8943e21c5439bd38e39d3c7ad8fc4563e",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck05",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck05.lean",
+      "source_sha256": "1b778ec1851826ca42385b36d37e2fb68beeebe36f8e43c54fa619a3acff160a",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck06",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck06.lean",
+      "source_sha256": "0b180db46c1559108b27817d8bce975ddf0b5d01bd37cf344aeeb1c1949e1919",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck07",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck07.lean",
+      "source_sha256": "0dfe7b445f279fe74cb73d7586fc337cb31fbe02ddafcc18dce920becdf04d9a",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck08",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck08.lean",
+      "source_sha256": "ec65d59064254fcb3e4917700b76d72ada5a1b913b7eeb9f95c5b0ffd022c68d",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck09",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck09.lean",
+      "source_sha256": "1081f5dbe35de086481840dc57c19fd31776c18202cdc70c944a6a10c2f52d91",
+      "bytes": 276,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck10",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck10.lean",
+      "source_sha256": "2fd83e04ccc2c5bc88a0f2d1cadc5508ad6ca087dadac57584abc58245518fd9",
+      "bytes": 278,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck11",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck11.lean",
+      "source_sha256": "675d4952844aca13b0cc56d329ad8e10e03214edf1b5ad111098284a17ea14b5",
+      "bytes": 278,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck12",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck12.lean",
+      "source_sha256": "0a8a7e890b3b73422adec5f8862eed0c939939ab8f2176e2c3afbb06c2e7d0d2",
+      "bytes": 278,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck13",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck13.lean",
+      "source_sha256": "d511874dc2d775a15f4aa5fab071121da09596e9165e5952c7f1b0d5232c7ed2",
+      "bytes": 278,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck14",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck14.lean",
+      "source_sha256": "662f8f1a6a4a2649bc2f173c67f91a2c39887459d7f44e01233695b7596e83e4",
+      "bytes": 278,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215FwdCheck15",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215FwdCheck15.lean",
+      "source_sha256": "e1569df821afdf7861b97debed209027be84f8422c2649801997e83edc33508a",
+      "bytes": 278,
+      "lines": 11,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215.lean",
+      "source_sha256": "1a25e38fa662a609357d41eb307ee7156ec55c1502cc3298c5556ab1f20bb245",
+      "bytes": 1912,
+      "lines": 44,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Data",
+        "BusyBeaver.ZFC.KSource215FwdCheck00",
+        "BusyBeaver.ZFC.KSource215FwdCheck01",
+        "BusyBeaver.ZFC.KSource215FwdCheck02",
+        "BusyBeaver.ZFC.KSource215FwdCheck03",
+        "BusyBeaver.ZFC.KSource215FwdCheck04",
+        "BusyBeaver.ZFC.KSource215FwdCheck05",
+        "BusyBeaver.ZFC.KSource215FwdCheck06",
+        "BusyBeaver.ZFC.KSource215FwdCheck07",
+        "BusyBeaver.ZFC.KSource215FwdCheck08",
+        "BusyBeaver.ZFC.KSource215FwdCheck09",
+        "BusyBeaver.ZFC.KSource215FwdCheck10",
+        "BusyBeaver.ZFC.KSource215FwdCheck11",
+        "BusyBeaver.ZFC.KSource215FwdCheck12",
+        "BusyBeaver.ZFC.KSource215FwdCheck13",
+        "BusyBeaver.ZFC.KSource215FwdCheck14",
+        "BusyBeaver.ZFC.KSource215FwdCheck15"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KSource215.p215_halts_iff",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "FirstOrder.Fol",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+      "source_sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "bytes": 21238,
+      "lines": 645,
+      "imports": [],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.Kalmar",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+      "source_sha256": "3cf0caf5187aa99790d83ac1b482dbc228942cc6308a752ae2b7f980984381b4",
+      "bytes": 8231,
+      "lines": 200,
+      "imports": [],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiCalculus",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+      "source_sha256": "dc915947cdc69196eaeac6f4177802565f9ed0697634431c09b7fa588edd1056",
+      "bytes": 7245,
+      "lines": 195,
+      "imports": [],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiDerived",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+      "source_sha256": "d86f5b07eb3882a110cef9cd3ee6ce17660ca53e7415de3bcd0c44a4fa8a9a8d",
+      "bytes": 7681,
+      "lines": 190,
+      "imports": [
+        "BusyBeaver.ZFC.Kalmar",
+        "BusyBeaver.ZFC.TarskiCalculus"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiLeibniz",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "source_sha256": "731aefe160e05836bf1de2cd8e748ef2523e539fa17a6538283465f6bfc678a3",
+      "bytes": 14952,
+      "lines": 327,
+      "imports": [
+        "BusyBeaver.ZFC.TarskiDerived"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiClean",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+      "source_sha256": "d6fc1983817765023b1c9acbe727ec5eb3d7420f78a935e7d375aae66eec26ed",
+      "bytes": 7409,
+      "lines": 193,
+      "imports": [
+        "BusyBeaver.ZFC.TarskiLeibniz"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiComplete",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+      "source_sha256": "3b3178184a0f9ca8c0b29f7b1fc67b46243c25b77fa906c7ea5ed763aecbd217",
+      "bytes": 20947,
+      "lines": 505,
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.TarskiClean"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DominatedImplication",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DominatedImplication.lean",
+      "source_sha256": "bd07364a829e8a1535b0ecf1ee6ed0c292d5af35e01a6db8f152dd2610e247d8",
+      "bytes": 14146,
+      "lines": 300,
+      "imports": [
+        "Init"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.DominatedImplication.rho8_all",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DominatedImplication.composition",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DominatedImplication.lift_right",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DominatedImplication.k",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DominatedImplication.peirce",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DominatedImplication.s",
+          []
+        ]
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.Lukasiewicz",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+      "source_sha256": "7d443a733b5c5ddd0d49728cf1ea7d855dd445f156934c13578bacc008c59874",
+      "bytes": 4097,
+      "lines": 101,
+      "imports": [
+        "BusyBeaver.ZFC.TarskiComplete",
+        "BusyBeaver.ZFC.DominatedImplication"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TarskiFalsity",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+      "source_sha256": "73a98d487a99602ef16b49918cd591400d64f9016f927272d01f53911c258406",
+      "bytes": 8021,
+      "lines": 194,
+      "imports": [
+        "BusyBeaver.ZFC.Lukasiewicz"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+      "source_sha256": "efffed3d6c96bb073d444c35352361347b6e2415b8c9e95b8bc860ecda3eb05a",
+      "bytes": 19507,
+      "lines": 458,
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.TarskiFalsity"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KCode222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean",
+      "source_sha256": "fbc4fef6e479b6bc5bc83bcfafa73fb1befdc1b1d02b605da68ecf691f641eb3",
+      "bytes": 5949,
+      "lines": 140,
+      "imports": [
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KCode222.c222_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KCode222.c222_classical",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeed222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeed222.lean",
+      "source_sha256": "f1edf98f4bcd6f548f8e7b8ca59afdf4f01fc8307c1fdab19b21d95afb9543e8",
+      "bytes": 8449,
+      "lines": 184,
+      "imports": [
+        "BusyBeaver.ZFC.KCode222"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KSeed222.BundleSemantics.bundle_iff_seed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KSeed222.bundle_of_seed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KThmK",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KThmK.lean",
+      "source_sha256": "35b485200a181eceba3098a3ed837bc51c9f1e448bc3d2bb3e77b1d4d52b87c3",
+      "bytes": 8661,
+      "lines": 202,
+      "imports": [
+        "BusyBeaver.ZFC.TarskiLeibniz",
+        "BusyBeaver.ZFC.Lukasiewicz",
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KThmK.spec",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KThmK.alpha_bwd",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEqCodes222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEqCodes222.lean",
+      "source_sha256": "1e2e768af99cbf3fe1cae0f4f41e93c229e77f8ea4937ceab9884a93ff8071cb",
+      "bytes": 4735,
+      "lines": 100,
+      "imports": [
+        "BusyBeaver.ZFC.KCode222"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KEqCodes222.rho7_222",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KEqCodes222.vrel_of_bundle",
+          [
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEind222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean",
+      "source_sha256": "cc863d4b209b505c3240d683812d86c4cd4f1a599abce050c5e558e09592a508",
+      "bytes": 15127,
+      "lines": 316,
+      "imports": [
+        "BusyBeaver.ZFC.KThmK",
+        "BusyBeaver.ZFC.KEqCodes222"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KEind222.c222_complete",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedInterface222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedInterface222.lean",
+      "source_sha256": "6c0860c7c763b2d71c111bdcc27c2eabc569c6f2674c411f93d6349a164f1170",
+      "bytes": 1634,
+      "lines": 41,
+      "imports": [
+        "BusyBeaver.ZFC.KSeed222",
+        "BusyBeaver.ZFC.KEind222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSeedDirect222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean",
+      "source_sha256": "6616630b8e6707a5fab1e59d5a540b86d0b9ab03d2545cd0871bce73e9669d13",
+      "bytes": 6480,
+      "lines": 153,
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KSeed222.named_bundle_iff_seed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KSeed222.seed_direct",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileCongruence",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean",
+      "source_sha256": "a4a53a141352b87b3b6c8beb7b6376316c21aad5842ad62848407f586dca48ba",
+      "bytes": 4607,
+      "lines": 115,
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.Profile.oneWay_iff_full",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.Profile.sat_eraseEquality_congr",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfilePairs",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean",
+      "source_sha256": "d05b17aba8198b6c1fc5805d15fcb3353b5cf2bab07882942a489e4bc5637f9f",
+      "bytes": 4789,
+      "lines": 99,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCongruence"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfilePairs.orderedPair_injective",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfilePairs.orderedPair_endpoint_congr",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.PositiveClosure",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+      "source_sha256": "3d5476f01f10f3425f35f417a1d4b0678a66c6dda28e480fdabc7dc6b48f9150",
+      "bytes": 8763,
+      "lines": 178,
+      "imports": [],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.PositiveClosure.constant_exact_of_instance",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PositiveClosure.switch_subset_bounded",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PositiveClosure.positive_decoder_cover",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PositiveClosure.separation_of_instances",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PositiveClosure.union_of_instances",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileCollection",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean",
+      "source_sha256": "2cbd1b1d80f85a4fc48d5640231870c365788458c537cdc2252f84c680ab54f5",
+      "bytes": 8612,
+      "lines": 178,
+      "imports": [
+        "BusyBeaver.ZFC.ProfilePairs",
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileCollection.pair_of_collection",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileCollection.orderedPairs_of_pairs",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileCollection.bisim_refl_of_collection",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileCollection.eqv_symm_of_instances",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254Containers",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean",
+      "source_sha256": "fa7826c62bb1c2839c1e53b51a6929cec0117c45f017a7bb0569b44a96dae800",
+      "bytes": 5911,
+      "lines": 125,
+      "imports": [
+        "BusyBeaver.ZFC.Code254",
+        "BusyBeaver.ZFC.ProfileCollection"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DeepPositiveClosure",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+      "source_sha256": "a1ddfc51493e8c2b4e7c319d342dbbbf738cd4e1937c5112dd300eb5df0ce588",
+      "bytes": 7598,
+      "lines": 178,
+      "imports": [
+        "FirstOrder.Fol",
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.DeepPositiveClosure.sat_pscForm",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DeepPositiveClosure.equalityFree_pscForm",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileSyntax",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean",
+      "source_sha256": "cc5f9f5ad575db59429407388c2112059876a73b1a71ffd28f51a058f4f3b81f",
+      "bytes": 7253,
+      "lines": 155,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCollection",
+        "BusyBeaver.ZFC.DeepPositiveClosure"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileSyntax.sat_orderedPairForm",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileSyntax.sat_gicForm",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileSyntax.equalityFree_orderedPairForm",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileModel",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean",
+      "source_sha256": "a275d982a9a22105ddad2d4132564d6eee13d7790285300f7053d5629032ebcd",
+      "bytes": 6525,
+      "lines": 143,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileSyntax"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileModel.pairs_of_model",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileModel.eqv_refl_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileModel.eqv_symm_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254GIC",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254GIC.lean",
+      "source_sha256": "2c2bd36a3f530801a3ec16d0d14689ac1dd5df52d74a5f5c2afdc11fd917dd86",
+      "bytes": 13708,
+      "lines": 318,
+      "imports": [
+        "BusyBeaver.ZFC.Code254Containers",
+        "BusyBeaver.ZFC.ProfileModel"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerSeed",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerSeed.lean",
+      "source_sha256": "4af3a71099fc066001f1663c6cabb139037ec5f54a1ca9c3acdf3af4e684949e",
+      "bytes": 2631,
+      "lines": 62,
+      "imports": [
+        "BusyBeaver.ZFC.KSeedInterface222",
+        "BusyBeaver.ZFC.Code254GIC"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KLower.formSeed_of_fullSeed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerRaw",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRaw.lean",
+      "source_sha256": "365f1c78561bcb49a378e99323c1f578d95f31c2f7515a34c5ff854b4899caa8",
+      "bytes": 9381,
+      "lines": 202,
+      "imports": [
+        "BusyBeaver.ZFC.KLowerSeed"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerRel",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerRel.lean",
+      "source_sha256": "91e22c3cd78d8eadd3bdc92593b96283e363957da0bc763da7317030924b405b",
+      "bytes": 3831,
+      "lines": 84,
+      "imports": [
+        "BusyBeaver.ZFC.KLowerRaw"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerTag",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerTag.lean",
+      "source_sha256": "44d2c4e03dad9ee4a8b4c8d420595fe8e3a22c5912fd219fd490d7db892057ca",
+      "bytes": 9548,
+      "lines": 203,
+      "imports": [
+        "BusyBeaver.ZFC.KLowerRel"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileComposition",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+      "source_sha256": "2c51eda4e0c175e66345ffd8bee9fe2ac0a9f74e7d63a044ff6b0b06b1b9c73a",
+      "bytes": 14663,
+      "lines": 287,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileCollection"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileComposition.union_edges_of_instance",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileComposition.composition_of_instances",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileComposition.eqv_trans_of_instances",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileComposition.eqv_extensionality_of_instances",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.CompositionModel",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CompositionModel.lean",
+      "source_sha256": "2eff1608245d9f1c4d19928d07070b03417de682121e42a2d13523eb5c4022d4",
+      "bytes": 6260,
+      "lines": 133,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileModel",
+        "BusyBeaver.ZFC.ProfileComposition"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.CompositionModel.eqv_trans_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.CompositionModel.eqv_extensionality_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileAxioms",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+      "source_sha256": "848f84aa36c57e49fac7920a4ce49938f987a03562088713f45dd729d2872f50",
+      "bytes": 11914,
+      "lines": 244,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileComposition"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileAxioms.same_eqv",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileAxioms.separation_of_instance",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileAxioms.subD_bound",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileAxioms.power_of_instances",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileAxioms.replacement_of_instance",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileAxioms.singleton_closed_of_containers",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQHyp",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQHyp.lean",
+      "source_sha256": "6a8d6c70cc3b9139b77cb4bae4bfffb308946645abc1faa4de25af1c1bc6cb71",
+      "bytes": 1517,
+      "lines": 34,
+      "imports": [
+        "BusyBeaver.ZFC.CompositionModel",
+        "BusyBeaver.ZFC.ProfileAxioms"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerEqv",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerEqv.lean",
+      "source_sha256": "0531258acfdd868577e1f23eaf5feb64441273472d762df3632601cada8f83e4",
+      "bytes": 4200,
+      "lines": 97,
+      "imports": [
+        "BusyBeaver.ZFC.KLowerTag",
+        "BusyBeaver.ZFC.ProfileComposition",
+        "BusyBeaver.ZFC.KQHyp"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Model",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Model.lean",
+      "source_sha256": "b1463ad9e107309841d519d7112d5bfd6367efdbcb819cc4c50b0713a53cab91",
+      "bytes": 7525,
+      "lines": 190,
+      "imports": [
+        "BusyBeaver.ZFC.KQHyp"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KQ1Model.sat_quotient",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KQ1Model.quotient_extensional",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KQ1Model.equalityFree_translate",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "FirstOrder.Calculus",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/FirstOrder/Lean/FirstOrder/Calculus.lean",
+      "source_sha256": "448229ba92adad5d79c52ee6e2ac32cecf75c0074196e36c5fa8f9d2b9188804",
+      "bytes": 15372,
+      "lines": 359,
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "FirstOrder.Completeness",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+      "source_sha256": "575a8e2a6033d05d8bc74d9dc59d81bcbf4fbd556bcbf3590e1756e300b28394",
+      "bytes": 44520,
+      "lines": 1071,
+      "imports": [
+        "FirstOrder.Calculus"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.SingletonInfinityCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinityCore.lean",
+      "source_sha256": "97ce198e9b2b81411f9aeab92af95db02380800d7646ef211d791f642bab1417",
+      "bytes": 5164,
+      "lines": 116,
+      "imports": [
+        "FirstOrder.Fol"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "ZF.Zf",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/ZF/Lean/ZF/Zf.lean",
+      "source_sha256": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa",
+      "bytes": 54075,
+      "lines": 1372,
+      "imports": [
+        "FirstOrder.Calculus"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.FiniteSetsCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSetsCore.lean",
+      "source_sha256": "aec578d9e23cb00a923bc0e9d103e96c110800cb9ad6288f14063336bc863811",
+      "bytes": 6325,
+      "lines": 150,
+      "imports": [
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.InductiveAttemptsCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttemptsCore.lean",
+      "source_sha256": "63fe323a784e74a631d695a4ccd490b13d38d2a9eade4618a0fe8e8b88d2928d",
+      "bytes": 12935,
+      "lines": 262,
+      "imports": [
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Separation",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Separation.lean",
+      "source_sha256": "f4befa6a5bc4f893ed1ccc9506365d73bd021d2f781c9037479bd32dbe7109ac",
+      "bytes": 5260,
+      "lines": 116,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Model",
+        "BusyBeaver.ZFC.ProfileAxioms",
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Basic",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Basic.lean",
+      "source_sha256": "2640c339e73f549f6d8451e8802dda2bd5be86af6723ec78bf316d5fda20e32a",
+      "bytes": 5829,
+      "lines": 137,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Separation"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Power",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Power.lean",
+      "source_sha256": "bd112ce0e758f9210939afdf9d5d8e2207755888f69ce8aa9f2b01a806a540e7",
+      "bytes": 1871,
+      "lines": 51,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Separation"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Collect",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Collect.lean",
+      "source_sha256": "7e0bd508c644964cba186be9aea5561c7afd6ca8d537cbfd1ee09064f7ec51d0",
+      "bytes": 3818,
+      "lines": 90,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Power"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1Replacement",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1Replacement.lean",
+      "source_sha256": "7301c7c73996eadf85014b1298b466da653d52a455d0afde2b253924ac4896bf",
+      "bytes": 2740,
+      "lines": 59,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Collect"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.WellFoundedPartCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPartCore.lean",
+      "source_sha256": "56f632559d0a4587165c39e33e9f8085f72e4606cf8ef3574a844b709560fb58",
+      "bytes": 9714,
+      "lines": 214,
+      "imports": [
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "BusyBeaver.ZFC.ProfileModel",
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFRelativization",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "source_sha256": "c1f040c7e4ec04af866e1b2c3aa3856ce9fa873439e29472fd31d9db2bd98305",
+      "bytes": 6743,
+      "lines": 157,
+      "imports": [
+        "BusyBeaver.ZFC.WellFoundedPartCore"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.PowerSets",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSets.lean",
+      "source_sha256": "fe2f9aa8deb9a4bebb96c0685858b3df6f8c5ade3fba7b524468a61dbcfbac98",
+      "bytes": 400,
+      "lines": 14,
+      "imports": [
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFModelCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModelCore.lean",
+      "source_sha256": "b4d4c89c3de42b4bcdb08af504004c7f822d46a7ddb797074fb87098af9e4c26",
+      "bytes": 8015,
+      "lines": 166,
+      "imports": [
+        "BusyBeaver.ZFC.WFRelativization",
+        "BusyBeaver.ZFC.PowerSets"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KQ1ZF",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean",
+      "source_sha256": "897e9cd58f749f96e7a52274b51df80c7777392cdbe9d4141e703311f1981938",
+      "bytes": 2929,
+      "lines": 66,
+      "imports": [
+        "FirstOrder.Completeness",
+        "BusyBeaver.ZFC.InductiveAttemptsCore",
+        "BusyBeaver.ZFC.KQ1Basic",
+        "BusyBeaver.ZFC.KQ1Replacement",
+        "BusyBeaver.ZFC.KQ1Collect",
+        "BusyBeaver.ZFC.WFModelCore"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KQ1ZF.zf_consistent",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KLowerQHyp",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KLowerQHyp.lean",
+      "source_sha256": "8f9e281316c88cc118ac977028ca35602e6f9f78b4c091bcb959a6286548a79f",
+      "bytes": 12350,
+      "lines": 251,
+      "imports": [
+        "BusyBeaver.ZFC.KLowerEqv",
+        "BusyBeaver.ZFC.KQ1Model",
+        "BusyBeaver.ZFC.KQ1ZF"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedZF",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "source_sha256": "2bbf029d3c73436ee2ebf4acbceb7198308f4d3ba760ef00025405d3b51f70fd",
+      "bytes": 6839,
+      "lines": 162,
+      "imports": [
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalOrd",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "source_sha256": "b36c1ed470783380369d029023540e6b806c3448027afc7ec1ffddb6b32a16ba",
+      "bytes": 6935,
+      "lines": 155,
+      "imports": [
+        "BusyBeaver.ZFC.NamedZF"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalRank",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "source_sha256": "8e7c42ccabd8641da1cfd39493521c058b83375fea1b7ee599b5e656a6a1f745",
+      "bytes": 20008,
+      "lines": 440,
+      "imports": [
+        "BusyBeaver.ZFC.InternalOrd"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TransRec",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+      "source_sha256": "da6b8f9136328f0582cd50f0514988109245c038e0cfb37435c3bcf2a24db7fe",
+      "bytes": 3335,
+      "lines": 87,
+      "imports": [
+        "BusyBeaver.ZFC.InternalRank"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.Basic",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Basic.lean",
+      "source_sha256": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028",
+      "bytes": 21889,
+      "lines": 492,
+      "imports": [
+        "FirstOrder.Completeness",
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.Coding",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Coding.lean",
+      "source_sha256": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8",
+      "bytes": 15763,
+      "lines": 377,
+      "imports": [
+        "BoundedZFCConsistency.Basic"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.CodePredicate",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodePredicate.lean",
+      "source_sha256": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df",
+      "bytes": 25870,
+      "lines": 578,
+      "imports": [
+        "BoundedZFCConsistency.Coding"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.FormulaClosedSet",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+      "source_sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8",
+      "bytes": 23229,
+      "lines": 514,
+      "imports": [
+        "BoundedZFCConsistency.CodePredicate"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.OmegaRecursion",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/OmegaRecursion.lean",
+      "source_sha256": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e",
+      "bytes": 42544,
+      "lines": 963,
+      "imports": [
+        "BoundedZFCConsistency.Basic"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSat",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean",
+      "source_sha256": "6f9cd1ec5917548ebf6e1bc41fc3c9a1ec9c2dd40473ab57ebb60bdca333b0a1",
+      "bytes": 60730,
+      "lines": 1321,
+      "imports": [
+        "BoundedZFCConsistency.FormulaClosedSet",
+        "BoundedZFCConsistency.OmegaRecursion"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSatTotality",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+      "source_sha256": "6acda738652c2916394f381d8b264733f5440b528c73bb9965f03939cec40092",
+      "bytes": 36207,
+      "lines": 797,
+      "imports": [
+        "BoundedZFCConsistency.InternalSat"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleDef",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "source_sha256": "28b93a2d4340c8ade31b8bf30a2709419ba4846478381a5ec02112b1b0fd3d34",
+      "bytes": 9410,
+      "lines": 192,
+      "imports": [
+        "BusyBeaver.ZFC.TransRec",
+        "BoundedZFCConsistency.InternalSatTotality"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Constructible",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "source_sha256": "2c3aea758b591dd3deb3f154a96f4fbd52e2c6d9600f7506058f593670bfd2d6",
+      "bytes": 18843,
+      "lines": 410,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleDef"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFRank",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "source_sha256": "df0b9faf58e80e51a390dd8ec15944eecdfe462c0cc1ec94d1a29eab36f6d388",
+      "bytes": 15497,
+      "lines": 323,
+      "imports": [
+        "BusyBeaver.ZFC.InternalRank",
+        "BoundedZFCConsistency.OmegaRecursion"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleReflect",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "source_sha256": "b844bddeeebe4d009d92edc16a79225e81e5ef8ce0626b2b78c02c6fc3fd3108",
+      "bytes": 31015,
+      "lines": 661,
+      "imports": [
+        "BusyBeaver.ZFC.Constructible",
+        "BusyBeaver.ZFC.ZFRank"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleZF",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+      "source_sha256": "00ff2869b1313643c83a0124abc3cf8bf6e0b3e9d590e768ff8488ab7dd3cc6c",
+      "bytes": 17255,
+      "lines": 365,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleReflect"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.SatSupport",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "source_sha256": "6c373873159691fa767e518917874410201b7cec2b42d5add25a93e7495b24bd",
+      "bytes": 9347,
+      "lines": 190,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleZF"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleAbs",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "source_sha256": "74c3335bc93578f7a2431d7697cedf31fdaaa565cdda0c714104dd5b7f09319a",
+      "bytes": 49339,
+      "lines": 899,
+      "imports": [
+        "BusyBeaver.ZFC.SatSupport"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalWO",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+      "source_sha256": "344bd30704aad42e53efcf86dcff59a931a00e80ba46949a95f725305ba69a40",
+      "bytes": 15315,
+      "lines": 288,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleAbs"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.OrderRec",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+      "source_sha256": "19bcf592efcef5647a53e9796db590aad1585e3b19f25445aeb6272d1e50eeb2",
+      "bytes": 14773,
+      "lines": 295,
+      "imports": [
+        "BusyBeaver.ZFC.InternalWO"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.CodeOrder",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+      "source_sha256": "dad7258176530b381ee630504e7a5b2cac60fd9f3f86514d13e6ece711b17556",
+      "bytes": 18808,
+      "lines": 416,
+      "imports": [
+        "BusyBeaver.ZFC.OrderRec"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.TupleOrder",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+      "source_sha256": "d20eea9bc00f817fc396194c43ee10dd12bf8333d34ba356a8f88067d9aaf36f",
+      "bytes": 15134,
+      "lines": 311,
+      "imports": [
+        "BusyBeaver.ZFC.CodeOrder"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BoundedZFCConsistency.Choice",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean",
+      "source_sha256": "659cfe68441b2ebd9ed3dceb2e62e7690110424769e6e7ba1f81f63c9c1f6928",
+      "bytes": 8648,
+      "lines": 223,
+      "imports": [
+        "ZF.Zf"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleOrder",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+      "source_sha256": "7f19fe8d9c6c6aa5bf160e46715c364adb395f6bb12092380510a1e8deddfc0d",
+      "bytes": 28316,
+      "lines": 583,
+      "imports": [
+        "BusyBeaver.ZFC.TupleOrder",
+        "BoundedZFCConsistency.Choice"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFModels",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFModels.lean",
+      "source_sha256": "a8766ccc0fdb0d31db88be9a174b9ad58a0b715f0fe15a546148a370bfbc7602",
+      "bytes": 1511,
+      "lines": 29,
+      "imports": [
+        "BusyBeaver.ZFC.InternalOrd"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleChoice",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean",
+      "source_sha256": "3728efadefd93d944836c0f70d18aabbad37274b8c474594b8f01b89dd0eb84c",
+      "bytes": 2356,
+      "lines": 59,
+      "imports": [
+        "BusyBeaver.ZFC.ConstructibleOrder",
+        "BusyBeaver.ZFC.ZFModels"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.NamedForm254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean",
+      "source_sha256": "ef31ca9a720449a237f8bf3db0290004f4f1fc7479e67a5b6206c9bc6bb9f057",
+      "bytes": 3392,
+      "lines": 84,
+      "imports": [
+        "BusyBeaver.ZFC.TarskiCalculus",
+        "BusyBeaver.ZFC.ProfileSyntax"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KUpper222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean",
+      "source_sha256": "e9ad034a48cfef16d9d2aa388b1ab8536a68168e04497ca4c198d519bb84a511",
+      "bytes": 10736,
+      "lines": 231,
+      "imports": [
+        "BusyBeaver.ZFC.KSeed222",
+        "BusyBeaver.ZFC.ConstructibleReflect",
+        "BusyBeaver.ZFC.ConstructibleChoice",
+        "BusyBeaver.ZFC.NamedForm254"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KUpper222.seed_in_VL",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KUpper222.zf_refutation_of_c222",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+      "source_sha256": "35aace8be7a4790b6d59bad4ca2bb563eb995e5dc3dfe1d103a8a85214f56f7e",
+      "bytes": 8280,
+      "lines": 220,
+      "imports": [],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+      "source_sha256": "58015ac780eb55287029cc25f214f0ee1f7efdd239863a19588525f3ea685a6f",
+      "bytes": 21468,
+      "lines": 528,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHome.lean",
+      "source_sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+      "bytes": 10788,
+      "lines": 249,
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KHome.scanBound_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KHome.flat_reverse",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KHome.home_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.FramedWindow",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FramedWindow.lean",
+      "source_sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+      "bytes": 6667,
+      "lines": 183,
+      "imports": [
+        "Init"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.FramedWindow.arbitrary_tape_at",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZipTape",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+      "source_sha256": "0e45434403e0acc61a005c8386e3fab79fc0153501e72faee002f3bd8aa62dec",
+      "bytes": 10388,
+      "lines": 231,
+      "imports": [
+        "BusyBeaver.ZFC.KZip",
+        "BusyBeaver.ZFC.FramedWindow"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.rel_step",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.rel_run",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.run_reflect",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.rel_full",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.check_restore",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.check_restore_pos",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHomeReady",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+      "source_sha256": "81846324b4b51b2f4a6133fb2f5a4377835fef821cf5c41e647ee866162aee29",
+      "bytes": 4300,
+      "lines": 93,
+      "imports": [
+        "BusyBeaver.ZFC.KHome",
+        "BusyBeaver.ZFC.KZipTape"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KHomeReady.ready_sound",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KHomeReady.exec_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPathClean",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPathClean.lean",
+      "source_sha256": "c029c0720c7631ba935318af1cfa8829ba641eb7397b8a4ee183927f8dd98cde",
+      "bytes": 15926,
+      "lines": 390,
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.SiteCoverage",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+      "source_sha256": "15ad5a7b5f1ab1e656146ae823f0e012ea8ab4295b5381c8650e03885f201c24",
+      "bytes": 6237,
+      "lines": 150,
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim",
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSim",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+      "source_sha256": "2eb262840c62543e356953097df6f77c214ced66a933e17146adace5d240ab98",
+      "bytes": 15745,
+      "lines": 345,
+      "imports": [
+        "BusyBeaver.ZFC.KHomeReady",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.Core",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/Core.lean",
+      "source_sha256": "436336133fa107c62eb00322333ec9451a0705964bd2b62fce3f44ce848672a6",
+      "bytes": 28429,
+      "lines": 808,
+      "imports": [],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.KDenseBridge",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDenseBridge.lean",
+      "source_sha256": "af106657576086765266c915f0710a4ac9fcef1a90c6e8e6ea0cd6736ad97b54",
+      "bytes": 7261,
+      "lines": 169,
+      "imports": [
+        "BusyBeaver.Core",
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEndpoint",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean",
+      "source_sha256": "7f63ca9764d7f93e31905a19dca9b320f37178d6e44ca1eee788c060a19da8fc",
+      "bytes": 3992,
+      "lines": 81,
+      "imports": [
+        "BusyBeaver.ZFC.KSeedDirect222",
+        "BusyBeaver.ZFC.KLowerQHyp",
+        "BusyBeaver.ZFC.KUpper222",
+        "BusyBeaver.ZFC.KSim",
+        "BusyBeaver.ZFC.KDenseBridge"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTableCore",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTableCore.lean",
+      "source_sha256": "8d9eb49c11dcc64bf461cfa205aa886f7ab7e43925a5315485acffc1f2c75e5d",
+      "bytes": 1119,
+      "lines": 32,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable230",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTable230.lean",
+      "source_sha256": "07b988b854aa25bdcd7466628ef35209d64fe14e249cd6753ea1945945f4939c",
+      "bytes": 12432,
+      "lines": 245,
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTape",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTape.lean",
+      "source_sha256": "55cf0bd584c351dc9743e44b34da68b4625f57f121554de315ed0b6c42a49803",
+      "bytes": 16851,
+      "lines": 398,
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore",
+        "BusyBeaver.ZFC.KTable230"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTable215.lean",
+      "source_sha256": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+      "bytes": 11919,
+      "lines": 242,
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KDense215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDense215.lean",
+      "source_sha256": "b1ebe573ced4b336ead43dbe7278ad97c8d28c06412b43c7291d051b98c6395a",
+      "bytes": 11616,
+      "lines": 259,
+      "imports": [
+        "BusyBeaver.ZFC.KDenseBridge",
+        "BusyBeaver.ZFC.KTable215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot.lean",
+      "source_sha256": "a7a82ed68c778937728bdd332fe2a52978dfc54bdc99b17df2a19a16fcd534c6",
+      "bytes": 2681,
+      "lines": 71,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFast215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFast215.lean",
+      "source_sha256": "4f33903017795959d98f52d73875965415fb3ead8e553e0b5637f5097c577c19",
+      "bytes": 16260,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot",
+        "BusyBeaver.ZFC.KTable215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk000",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk000.lean",
+      "source_sha256": "b0fc5b762ac6ce006dbefac116aabe6988aaf559550d7205761ee6468f599078",
+      "bytes": 866,
+      "lines": 21,
+      "imports": [
+        "BusyBeaver.ZFC.KFast215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk001",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk001.lean",
+      "source_sha256": "93b5a6e63defbe1136b6668532e6e7f2ce579f0543d240cc803a0d71313b00bd",
+      "bytes": 1185,
+      "lines": 23,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk000"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk002",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk002.lean",
+      "source_sha256": "d4ef959d4110b197a68c57de22007fe641b8fddffaaaf4eada6b6b1b152fe954",
+      "bytes": 1341,
+      "lines": 24,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk001"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk003",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk003.lean",
+      "source_sha256": "82ca4b73d9bb57056beaefa006a25f538ae351ba3e5095d0709cab1c6d5bbbcb",
+      "bytes": 1697,
+      "lines": 26,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk002"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk004",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk004.lean",
+      "source_sha256": "f55e5b47aeb47d806e57008722c9e8cc8aec4cd31ef6a59dd2678ebdf4eb5d85",
+      "bytes": 1819,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk003"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk005",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk005.lean",
+      "source_sha256": "75f0fcd083e73eafc12aabf51627d042511970a908a31277b6ccf2fe002f72d8",
+      "bytes": 1817,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk004"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk006",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk006.lean",
+      "source_sha256": "21599974e6eb97f09946d56471b1b0224c2a748acce2839219a8f649869adb74",
+      "bytes": 1825,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk005"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk007",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk007.lean",
+      "source_sha256": "65a4d78fc456c04771c68d0c9514c938e886abf573224191f4764ba822c91d53",
+      "bytes": 1815,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk006"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk008",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk008.lean",
+      "source_sha256": "ed8e822dc5bb5cbba990f6e32a46639f8f8ff1b7fa8dbbeb6e90351014403103",
+      "bytes": 1865,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk007"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk009",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk009.lean",
+      "source_sha256": "61f1c2f91458e9938e3f87fa3afca35f09ba3cf509b6873f2ebb9ce94c93d65c",
+      "bytes": 1872,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk008"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk010",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk010.lean",
+      "source_sha256": "4bdd21b4e7dc251bf2f57c32576c5cdf9e11a89ffbd163c791b7842a297faecf",
+      "bytes": 1873,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk009"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk011",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk011.lean",
+      "source_sha256": "6add85ca9b6ef350c0d4951ccd90b36e194232ed0d769bd83475cd609770ef57",
+      "bytes": 1881,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk010"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215Chunk012",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215Chunk012.lean",
+      "source_sha256": "34310c0c089727de08320af461115168ed1b7c3b82117403242865bd8b9d05ef",
+      "bytes": 1881,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk011"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot215.lean",
+      "source_sha256": "45f81db42066cc3f9c5278dd0902a45f1167fa9c8f2632a9568ceb5a87850ad5",
+      "bytes": 1765,
+      "lines": 36,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot215Chunk012",
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFastSites215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFastSites215.lean",
+      "source_sha256": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+      "bytes": 824,
+      "lines": 24,
+      "imports": [
+        "BusyBeaver.ZFC.KFast215",
+        "BusyBeaver.ZFC.KSim"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch000",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch000.lean",
+      "source_sha256": "6eeba730ca68956cd65b384b958f2b24ffc123b276bf7ed254f5459d59fdc8bb",
+      "bytes": 4116,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch001",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch001.lean",
+      "source_sha256": "030d1dfdf1920b5118872d22a9320053a0cd28ac2423a8a1b57d00ee119fcda9",
+      "bytes": 6030,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch002",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch002.lean",
+      "source_sha256": "fedb7c726cdec58b1587155fbf0f8f84039be7e0b540105efcb25fa002bcff96",
+      "bytes": 6664,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch003",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch003.lean",
+      "source_sha256": "58e6981a6821dd8ff0071e9dbf4b1c69c356bfea5658eccfb7631bee7b8b743d",
+      "bytes": 7407,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch004",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch004.lean",
+      "source_sha256": "cdce86362e8ab38e24b829e2ef88db8e1e6c7df0be548a2f713197ed2e58ac3f",
+      "bytes": 7430,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch005",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch005.lean",
+      "source_sha256": "8b762b1cdb86e31624af193891bd8432cf05b6f5101d1ce899d5f2ff30014243",
+      "bytes": 7109,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch006",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch006.lean",
+      "source_sha256": "f1313be869bb59bfc0979546604e792f9adc51059f8be972c3c2faba443de791",
+      "bytes": 7209,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch007",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch007.lean",
+      "source_sha256": "f923ed6e63e0cdebdda49be5959eae34a90ad2909b536b479821e748accfb9be",
+      "bytes": 6753,
+      "lines": 83,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215Batch008",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215Batch008.lean",
+      "source_sha256": "3035812778f8582266ab95fecb9edd5660d5af853a57d9e99c24c73c4764896a",
+      "bytes": 3076,
+      "lines": 65,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KFastSites215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSites215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSites215.lean",
+      "source_sha256": "2473fcb082552b32148095da71a0b274d7419e372da315d826815d372acc2ebc",
+      "bytes": 14956,
+      "lines": 236,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.KSites215Batch000",
+        "BusyBeaver.ZFC.KSites215Batch001",
+        "BusyBeaver.ZFC.KSites215Batch002",
+        "BusyBeaver.ZFC.KSites215Batch003",
+        "BusyBeaver.ZFC.KSites215Batch004",
+        "BusyBeaver.ZFC.KSites215Batch005",
+        "BusyBeaver.ZFC.KSites215Batch006",
+        "BusyBeaver.ZFC.KSites215Batch007",
+        "BusyBeaver.ZFC.KSites215Batch008"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDagIteration",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDagIteration.lean",
+      "source_sha256": "cc13e5431b2c61483a765adaac788de7d1bce36a450a7e68474ee8c780943389",
+      "bytes": 2187,
+      "lines": 59,
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMTransfer",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMTransfer.lean",
+      "source_sha256": "285fda0c080fb6d952cb8796069d0475d121691c95994a94d40131051d9402e7",
+      "bytes": 5104,
+      "lines": 112,
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag219Bisim",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag219Bisim.lean",
+      "source_sha256": "9abd0e85b51fa41ef9de4b26952810aaf7abc0a87b9a855fb9381de724094e5a",
+      "bytes": 10582,
+      "lines": 213,
+      "imports": [
+        "BusyBeaver.ZFC.Dag219",
+        "BusyBeaver.ZFC.RMTransfer"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.Dag254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag254.lean",
+      "source_sha256": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52",
+      "bytes": 13425,
+      "lines": 246,
+      "imports": [
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Lib254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib254.lean",
+      "source_sha256": "3484e04d3bdc22685edeb63c3bca3500cc15e6e95345bbb420405b424498f4f4",
+      "bytes": 18026,
+      "lines": 388,
+      "imports": [
+        "BusyBeaver.ZFC.Dag254",
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Macros254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros254.lean",
+      "source_sha256": "dcff2bd808ad8ff5b07fdadb68735f8c4b3588ee3ebf7471a3c376b72cb4298e",
+      "bytes": 8228,
+      "lines": 163,
+      "imports": [
+        "BusyBeaver.ZFC.L2Lib254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Control254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control254.lean",
+      "source_sha256": "c83632ec42f496945464644db054b533f9fcf84a772d470d29a3828e9908ae82",
+      "bytes": 7559,
+      "lines": 146,
+      "imports": [
+        "BusyBeaver.ZFC.L2Macros254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Lib222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib222.lean",
+      "source_sha256": "0350c9c97883fb35cbd445835033bc57970737020223d0cd6a33655ea67b6f23",
+      "bytes": 3003,
+      "lines": 59,
+      "imports": [
+        "BusyBeaver.ZFC.L2Lib254",
+        "BusyBeaver.ZFC.Dag222",
+        "BusyBeaver.ZFC.RMTransfer"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Macros222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros222.lean",
+      "source_sha256": "1f387ed395159eb5797619e03b2e1947ca6681878005a41acadcd4feafdc04f9",
+      "bytes": 2409,
+      "lines": 40,
+      "imports": [
+        "BusyBeaver.ZFC.L2Macros254",
+        "BusyBeaver.ZFC.L2Lib222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Control222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control222.lean",
+      "source_sha256": "49eee095ddc152c43b5255cb52b4ec1b58ccac45bc376548347e558c7f31df32",
+      "bytes": 3576,
+      "lines": 72,
+      "imports": [
+        "BusyBeaver.ZFC.L2Control254",
+        "BusyBeaver.ZFC.L2Macros222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Perm",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Perm.lean",
+      "source_sha256": "47fed633badbae4e45fbfea3e21a2f778f871bd8c904ec81bdf01f8944d6981b",
+      "bytes": 5064,
+      "lines": 123,
+      "imports": [
+        "BusyBeaver.ZFC.DagPerm",
+        "BusyBeaver.ZFC.Dag219Bisim",
+        "BusyBeaver.ZFC.L2Control222",
+        "BusyBeaver.ZFC.RMTransfer"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DomRho8",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DomRho8.lean",
+      "source_sha256": "8fdbec0db9134070bee2dfa0a433aff66ab83c00007ea7b9aabd9192c506d378",
+      "bytes": 2680,
+      "lines": 73,
+      "imports": [
+        "BusyBeaver.ZFC.Code254",
+        "BusyBeaver.ZFC.DominatedImplication"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.DomRho8.rho8_all",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DomRho8.composition",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DomRho8.lift_right",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DomRho8.rho8_all_of_restricted",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.EnumPerm",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumPerm.lean",
+      "source_sha256": "0c2a214ef68b37cb4df92c9a208d069bd2b4fca04f062483dfd11dc2b2a9e30e",
+      "bytes": 23176,
+      "lines": 545,
+      "imports": [
+        "BusyBeaver.ZFC.KCode222",
+        "BusyBeaver.ZFC.DomRho8"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.AXWord",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/AXWord.lean",
+      "source_sha256": "d38e251ff9284e053a4cb2040d5374d44dc485d7e1d4e2723958229a51977649",
+      "bytes": 10721,
+      "lines": 257,
+      "imports": [
+        "BusyBeaver.ZFC.L2Control222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2AxiomsPerm",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsPerm.lean",
+      "source_sha256": "708784946a85a5f5e59193b16627e3b1104c96e5cced821ce0c246070680c78d",
+      "bytes": 1970,
+      "lines": 48,
+      "imports": [
+        "BusyBeaver.ZFC.L2Perm",
+        "BusyBeaver.ZFC.EnumPerm",
+        "BusyBeaver.ZFC.AXWord"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.L2Perm.l236",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.L2Perm.ax_eval",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2RootPerm",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootPerm.lean",
+      "source_sha256": "97dd7cf3ee29fc4294f4b1283d2eb640635be2487206ee1bc96adf2daa4d71e4",
+      "bytes": 8097,
+      "lines": 166,
+      "imports": [
+        "BusyBeaver.ZFC.RMDagIteration",
+        "BusyBeaver.ZFC.L2AxiomsPerm"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.SeedPerm",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SeedPerm.lean",
+      "source_sha256": "ed038b38122aca4ebd1f31a48f2ea9e99d2bb6f33a406cab4039ba62163b80ec",
+      "bytes": 1445,
+      "lines": 45,
+      "imports": [
+        "BusyBeaver.ZFC.L2RootPerm"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.L2Perm.dagPerm_seed_iff",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KEndpoint215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean",
+      "source_sha256": "77b71164cf3cac4303ab786852e58969bc5c7332c5261aecfc22a63d3a39dfc9",
+      "bytes": 2660,
+      "lines": 54,
+      "imports": [
+        "BusyBeaver.ZFC.KSource215",
+        "BusyBeaver.ZFC.KEndpoint",
+        "BusyBeaver.ZFC.KTape",
+        "BusyBeaver.ZFC.KDense215",
+        "BusyBeaver.ZFC.KBoot215",
+        "BusyBeaver.ZFC.KSites215",
+        "BusyBeaver.ZFC.SeedPerm"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KEndpoint215.blank_halts_iff_zfc_refutation",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DecoderCertificate",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderCertificate.lean",
+      "source_sha256": "bd14c19ccb3a3755c59d6bef210a018caf559789d91a7f5be0cedabbcf1cb50b",
+      "bytes": 4486,
+      "lines": 113,
+      "imports": [
+        "BusyBeaver.ZFC.FramedWindow"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.DecoderCertificate.block_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DecoderCertificate.all_blocks_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DecoderCertificate.chain_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.K215Decoder",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/K215Decoder.lean",
+      "source_sha256": "8663e195ec5a08d1137547eaf7332cfc32ef7c353e473437bbc3fc06cf45c373",
+      "bytes": 32426,
+      "lines": 787,
+      "imports": [
+        "BusyBeaver.ZFC.DecoderCertificate",
+        "BusyBeaver.ZFC.KFast215",
+        "BusyBeaver.ZFC.KZipTape"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.K215Decoder.all_blocks_checked",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.K215Decoder.structure_checked",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.K215Decoder.restores_arbitrary_tape",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DecoderPaths",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderPaths.lean",
+      "source_sha256": "a4e8638db1d4f9f1f500f0ca2a85ecbb219d3ff766559ee53fc6374996a7ef5e",
+      "bytes": 15614,
+      "lines": 345,
+      "imports": [
+        "BusyBeaver.ZFC.K215Decoder"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.K215SourcePaths.semantic_edges",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.K215SourcePaths.reaches_primitive_routed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DecoderSourceBinding",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderSourceBinding.lean",
+      "source_sha256": "6fa157ef9030371af52c9d101f175c624ed8e5e2edc05e6026b6644f0af15beb",
+      "bytes": 4456,
+      "lines": 100,
+      "imports": [
+        "BusyBeaver.ZFC.DecoderPaths",
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.DecoderSourceBinding.source_tree_eq",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DecoderSourceBinding.upstream_leaf_reaches_routed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DecoderSourceBinding.upstream_walk_reaches_routed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KDecoderPrefix215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDecoderPrefix215.lean",
+      "source_sha256": "cb561a8bc4ae64e77abe9664bfc6e815a9856fc2b3031de367903ecdc0ada6f4",
+      "bytes": 10524,
+      "lines": 203,
+      "imports": [
+        "BusyBeaver.ZFC.DecoderSourceBinding",
+        "BusyBeaver.ZFC.KZipTape",
+        "BusyBeaver.ZFC.KSim"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KDecoderPrefix215.rel_word",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KDecoderPrefix215.entry_uniform",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KDecoderPrefix215.leaf_prefix",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KDecoderPrefix215.walk_prefix",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Bootstrap",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bootstrap.lean",
+      "source_sha256": "a2a3599021fd4a933440366ed87f195df4155d9b7330d2cd2dc76efe7c622e97",
+      "bytes": 9174,
+      "lines": 240,
+      "imports": [
+        "BusyBeaver.ZFC.PositiveClosure"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.Bootstrap.pairing_of_instance",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.Bootstrap.partial_replacement_of_instance",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.Bootstrap.infinity_of_instance",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DefinableClosure",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DefinableClosure.lean",
+      "source_sha256": "2e05a77cf35a8cd1d2a3cd10b110a4b23d3f7fa8e04dabade77602d25e9ca36a",
+      "bytes": 11950,
+      "lines": 276,
+      "imports": [
+        "BusyBeaver.ZFC.DeepPositiveClosure",
+        "BusyBeaver.ZFC.Bootstrap"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.DefinableClosure.instance_of_definable",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DefinableClosure.separation_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DefinableClosure.union_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DefinableClosure.partial_replacement_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.DefinableClosure.infinity_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.PSCCalibration",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean",
+      "source_sha256": "b5fe4fc694a00304acc057c17789c4f9334909ffa7c88dfa0db661cdf1c4159d",
+      "bytes": 8037,
+      "lines": 182,
+      "imports": [
+        "BusyBeaver.ZFC.DefinableClosure",
+        "BusyBeaver.ZFC.PowerSets",
+        "ZF.Zf",
+        "FirstOrder.Completeness"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.PSCCalibration.psc_of_zfAxioms",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PSCCalibration.psc_iff_zfAxioms",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PSCCalibration.psc_iff_zf0",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PSCCalibration.psc_consistency_iff_zf0",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "GenericShared13Api",
+      "source": "/tmp/k215-phase13-upstream-check/clients/GenericShared13Api.lean",
+      "source_sha256": "b8eaaf557d8963cf2288aedda4fbf426a2744420b93141f2c81fdef742bdf642",
+      "bytes": 2141,
+      "lines": 54,
+      "imports": [
+        "BusyBeaver.ZFC.DominatedImplication"
+      ],
+      "expected_reports": [
+        [
+          "GenericShared13Api.unrestricted",
+          []
+        ],
+        [
+          "GenericShared13Api.composition",
+          []
+        ],
+        [
+          "GenericShared13Api.lifting",
+          []
+        ],
+        [
+          "GenericShared13Api.only_explicit_fields",
+          []
+        ],
+        [
+          "GenericShared13Api.k",
+          []
+        ],
+        [
+          "GenericShared13Api.peirce",
+          []
+        ],
+        [
+          "GenericShared13Api.s",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KCodeDom",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCodeDom.lean",
+      "source_sha256": "94f6e3c2dc89f05316be895d6d1353ae3e5df6eaf94f0dce272a59379b40abf7",
+      "bytes": 2617,
+      "lines": 73,
+      "imports": [
+        "BusyBeaver.ZFC.KCode222",
+        "BusyBeaver.ZFC.DomRho8"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KCodeDom.cdom_iff_c222",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "NumericCD52Api",
+      "source": "/tmp/k215-phase13-upstream-check/clients/NumericCD52Api.lean",
+      "source_sha256": "de2abe0c7107b56517d84f4593c8cb554258ca4d90a96a35c72c90c7eb6d5cd2",
+      "bytes": 1150,
+      "lines": 35,
+      "imports": [
+        "BusyBeaver.ZFC.KCodeDom"
+      ],
+      "expected_reports": [
+        [
+          "NumericCD52Api.restricted_without_truth",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "NumericCD52Api.unrestricted",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "NumericCD52Api.composition",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "NumericCD52Api.lifting",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "NumericCD52Api.same_numeric_calculus",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "LukasShared13Api",
+      "source": "/tmp/k215-phase13-upstream-check/clients/LukasShared13Api.lean",
+      "source_sha256": "38c8d5fd58a80af15c4c9ba44fd632079c3e853342b545a274e2634b5e1e2fd0",
+      "bytes": 1608,
+      "lines": 45,
+      "imports": [
+        "BusyBeaver.ZFC.Lukasiewicz"
+      ],
+      "expected_reports": [
+        [
+          "LukasShared13Api.only_explicit_fields",
+          []
+        ],
+        [
+          "LukasShared13Api.k",
+          []
+        ],
+        [
+          "LukasShared13Api.peirce",
+          []
+        ],
+        [
+          "LukasShared13Api.composition",
+          []
+        ],
+        [
+          "LukasShared13Api.s",
+          []
+        ],
+        [
+          "LukasShared13Api.ex_falso",
+          []
+        ],
+        [
+          "LukasShared13Api.classical",
+          []
+        ],
+        [
+          "LukasShared13Api.complete",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "DerivedRows14Api",
+      "source": "/tmp/k215-phase14-derived/clients/DerivedRows14Api.lean",
+      "source_sha256": "443566615356b7a4888fc427e47e699258f603df92b655c007865c024232dd49",
+      "bytes": 1474,
+      "lines": 33,
+      "imports": [
+        "BusyBeaver.ZFC.TarskiLeibniz"
+      ],
+      "expected_reports": [
+        [
+          "DerivedRows14Api.deduction",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "DerivedRows14Api.vacuity",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "DerivedRows14Api.atomic_rewrite",
+          [
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "ThmKDerived14Api",
+      "source": "/tmp/k215-phase14-derived/clients/ThmKDerived14Api.lean",
+      "source_sha256": "e8c8843673883dfb903f902aa6a081be11bec782734188f18502fda9da0ee8fe",
+      "bytes": 1873,
+      "lines": 48,
+      "imports": [
+        "BusyBeaver.ZFC.KThmK"
+      ],
+      "expected_reports": [
+        [
+          "ThmKDerived14Api.reflexivity",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "ThmKDerived14Api.leibniz",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "ThmKDerived14Api.specialization",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "ThmKDerived14Api.alpha",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "KEindDerived14Api",
+      "source": "/tmp/k215-phase14-derived/clients/KEindDerived14Api.lean",
+      "source_sha256": "c9552f693ba231640b60cdc1b67621836240e991e67d93ac60a41d4a40c64645",
+      "bytes": 701,
+      "lines": 19,
+      "imports": [
+        "BusyBeaver.ZFC.KEind222"
+      ],
+      "expected_reports": [
+        [
+          "KEindDerived14Api.interpretation",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "KEindDerived14Api.completeness",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "ProfileTC14Api",
+      "source": "/tmp/k215-phase14-profile/client-v2/ProfileTC14Api.lean",
+      "source_sha256": "2385bc17262454b91c11ba6f4758adddb58b005ab38cf7e5efdbc07d5c3bac6e",
+      "bytes": 4583,
+      "lines": 90,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileComposition",
+        "BusyBeaver.ZFC.KLowerEqv"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileTC14Api.strong_to_transitive",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileTC14Api.from_transitive",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileTC14Api.from_containers",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileTC14Api.tag_trans",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ProfileTC14Api.tag_ext",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BasicInterfaces15Api",
+      "source": "/tmp/k215-phase15-basic/clients/BasicInterfaces15Api.lean",
+      "source_sha256": "d38ca68034e1a9fcef37adfc948abef8f42ff865e7a4e030873cd3c4e8bc9190",
+      "bytes": 886,
+      "lines": 29,
+      "imports": [
+        "BusyBeaver.ZFC.PSCCalibration",
+        "BusyBeaver.ZFC.KDenseBridge"
+      ],
+      "expected_reports": [
+        [
+          "BasicInterfaces15Api.power_sets",
+          []
+        ],
+        [
+          "BasicInterfaces15Api.calibration",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "BasicInterfaces15Api.dense",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "TransRec15Api",
+      "source": "/tmp/k215-phase15-transrec/clients/TransRec15Api.lean",
+      "source_sha256": "9ea336d787bd1b1ef3ff0f4a19d68b070eacdfe3b3fbe0b3759a490d6d25bef2",
+      "bytes": 6141,
+      "lines": 125,
+      "imports": [
+        "BusyBeaver.ZFC.TransRec"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_shape",
+          [
+            "Classical.choice"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_shape",
+          [
+            "Classical.choice"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.approximation_shape",
+          [
+            "Classical.choice"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_formula",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_formula",
+          []
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_semantics",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_exists",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_unique",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_spec",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_mono",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.cumulative_trans",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_semantics",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_exists",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_unique",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_spec",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.operation_mono",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.relation_unique",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.TransRec15Api.relation_mono",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.PowerSyntax",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean",
+      "source_sha256": "71b3cd2d29d3b72967aabffb09c82f1c7f23f382ca7fa121e49cb4afa4cd6f7b",
+      "bytes": 2344,
+      "lines": 54,
+      "imports": [
+        "BusyBeaver.ZFC.ProfileAxioms",
+        "BusyBeaver.ZFC.ProfileModel"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.PowerSyntax.power_instance",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.PowerSyntax.power_profile_of_model",
+          [
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientModel",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean",
+      "source_sha256": "d13a4227d40ddf196ee1526c2472c9154022ee039b9a0a3276a9bfe6a62b4cac",
+      "bytes": 4403,
+      "lines": 96,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Power",
+        "BusyBeaver.ZFC.PowerSyntax"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.QuotientModel.sat_quotient",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.QuotientModel.quotient_extensional",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.QuotientModel.equalityFree_translate",
+          []
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "QuotientSharing15Api",
+      "source": "/tmp/k215-phase16-quotient/clients/QuotientSharing15Api.lean",
+      "source_sha256": "bdcdb806e1596cd8fd8a8ffe8712bddd3494ce460abbd10d9d5e4d9bbf607ba8",
+      "bytes": 2700,
+      "lines": 59,
+      "imports": [
+        "BusyBeaver.ZFC.KQ1Model",
+        "BusyBeaver.ZFC.QuotientModel"
+      ],
+      "expected_reports": [
+        [
+          "QuotientSharing15Api.shared_syntax",
+          []
+        ],
+        [
+          "QuotientSharing15Api.strong_congruence",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientSharing15Api.weak_congruence",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientSharing15Api.strong_satisfaction",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientSharing15Api.weak_satisfaction",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientSharing15Api.strong_extensionality",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientSharing15Api.weak_extensionality",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientSeparation",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+      "source_sha256": "7f55d7535fcc14caa42bfae5cbc6d9b7501317a8cfd60749a4668fe8f17cc64d",
+      "bytes": 1440,
+      "lines": 29,
+      "imports": [
+        "BusyBeaver.ZFC.QuotientModel"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientPower",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientPower.lean",
+      "source_sha256": "ac278cfbfa11a04021a5fe8e234320f7b3c96a5bc08eae61551380952ed2fd3c",
+      "bytes": 1487,
+      "lines": 32,
+      "imports": [
+        "BusyBeaver.ZFC.QuotientSeparation"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientCPGIC",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+      "source_sha256": "3131b2087ac1dcd8ac47e7dcc9e04d85cd8a41ca21fbd57fccb16d9f287b31cb",
+      "bytes": 8201,
+      "lines": 156,
+      "imports": [
+        "BusyBeaver.ZFC.QuotientPower",
+        "BusyBeaver.ZFC.KQ1Collect"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "QuotientUnified16Api",
+      "source": "/tmp/k215-phase16-quotient/clients/QuotientUnified16Api.lean",
+      "source_sha256": "1c346d691017eaf1741b0c2c8308d1867997b56cab9d9c2ab38a2a6542549c0e",
+      "bytes": 2680,
+      "lines": 58,
+      "imports": [
+        "BusyBeaver.ZFC.QuotientCPGIC"
+      ],
+      "expected_reports": [
+        [
+          "QuotientUnified16Api.legacy_carrier",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.legacy_constructor",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.weak_carrier",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.weak_constructor",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.weak_membership",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.cp_gic_supplies_weak",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.weak_native_gic",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "QuotientUnified16Api.strong_cp_gic",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientBasic",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean",
+      "source_sha256": "8b44e2a6cb66d95f2ea8bab012b2f8f1f746c8651affab736d33d28bcc59202e",
+      "bytes": 2410,
+      "lines": 48,
+      "imports": [
+        "BusyBeaver.ZFC.QuotientSeparation",
+        "BusyBeaver.ZFC.KQ1Basic"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.SingletonInfinity",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+      "source_sha256": "c941fdcb1fef2e86443be7d76634613732959a78ae2e992f434842eb0dbebad1",
+      "bytes": 1253,
+      "lines": 29,
+      "imports": [
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "BusyBeaver.ZFC.QuotientBasic"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.FiniteSets",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+      "source_sha256": "40cb9b14ef4ca695cd27cf3eef7271de5781b77f7a2b3eb69858cff199473447",
+      "bytes": 521,
+      "lines": 15,
+      "imports": [
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "BusyBeaver.ZFC.SingletonInfinity"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.WellFoundedPart",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+      "source_sha256": "6618da58a497f9771020ead958523556247fd14f802fe83cbcf7df0b4192ed07",
+      "bytes": 1269,
+      "lines": 28,
+      "imports": [
+        "BusyBeaver.ZFC.WellFoundedPartCore",
+        "BusyBeaver.ZFC.FiniteSets",
+        "BusyBeaver.ZFC.QuotientCPGIC"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientReplacement",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+      "source_sha256": "cfb4cab3d129e44cc7c88374719b9fed29555c70c61b4fac434db026eb9ac844",
+      "bytes": 1390,
+      "lines": 29,
+      "imports": [
+        "BusyBeaver.ZFC.QuotientModel",
+        "BusyBeaver.ZFC.KQ1Replacement"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.InductiveAttempts",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+      "source_sha256": "da17ef6952ba4a3dfa09c5289c34e7cd78097ee4aac892f140255a82fe2385f0",
+      "bytes": 1842,
+      "lines": 38,
+      "imports": [
+        "BusyBeaver.ZFC.InductiveAttemptsCore",
+        "BusyBeaver.ZFC.FiniteSets",
+        "BusyBeaver.ZFC.QuotientReplacement"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Code254Models",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Models.lean",
+      "source_sha256": "c07eacc95775e7c5a5b2291008dbb4517718a6c187a5659dd9a35056196eb9ef",
+      "bytes": 3291,
+      "lines": 72,
+      "imports": [
+        "BusyBeaver.ZFC.Code254GIC"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Enum254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean",
+      "source_sha256": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da",
+      "bytes": 29375,
+      "lines": 718,
+      "imports": [
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.QuotientZF0",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientZF0.lean",
+      "source_sha256": "8819382e2f33d307754e1899d82a9834cb140b89780c5e6693a50d0660ba0ee4",
+      "bytes": 4723,
+      "lines": 95,
+      "imports": [
+        "BusyBeaver.ZFC.InductiveAttempts",
+        "BusyBeaver.ZFC.QuotientPower",
+        "BusyBeaver.ZFC.PSCCalibration",
+        "BusyBeaver.ZFC.Code254Models",
+        "BusyBeaver.ZFC.Enum254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFModel",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModel.lean",
+      "source_sha256": "100f5975670af6a34729a11c4167a070de5d3345ebeba0bea1b42e3d901c0384",
+      "bytes": 950,
+      "lines": 22,
+      "imports": [
+        "BusyBeaver.ZFC.WFModelCore",
+        "BusyBeaver.ZFC.WellFoundedPart",
+        "BusyBeaver.ZFC.QuotientZF0",
+        "BusyBeaver.ZFC.QuotientCPGIC"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.DecodeFresh254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecodeFresh254.lean",
+      "source_sha256": "10baa5fc8f2c440ee8a7ff5953c11ae83266a5390afd3121f891e356199e7b52",
+      "bytes": 4663,
+      "lines": 130,
+      "imports": [
+        "BusyBeaver.ZFC.Code254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.NativeDecoded254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeDecoded254.lean",
+      "source_sha256": "1de8f92797fe31fc19a602bf799522bfbc65f91232946ff2cb0befe2206be9b1",
+      "bytes": 9908,
+      "lines": 206,
+      "imports": [
+        "BusyBeaver.ZFC.Code254Models",
+        "BusyBeaver.ZFC.NamedForm254",
+        "BusyBeaver.ZFC.DecodeFresh254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Axioms254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms254.lean",
+      "source_sha256": "25e48307ed165cd6a920a0e104101f9b1197c06d3f40ecf32eedc32b156ef477",
+      "bytes": 6495,
+      "lines": 177,
+      "imports": [
+        "BusyBeaver.ZFC.AXWord",
+        "BusyBeaver.ZFC.Enum254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Root254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+      "source_sha256": "50891b3be0ebe10c0956eb6e7d6f63db5359ed987357fdb53cef71a2c4e33405",
+      "bytes": 9076,
+      "lines": 183,
+      "imports": [
+        "BusyBeaver.ZFC.RMDagIteration",
+        "BusyBeaver.ZFC.L2Axioms254"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.NativeTheory254",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeTheory254.lean",
+      "source_sha256": "69297da8a6ee8445ac36110a10b26ab190d57ffc5ef88801bf7288c9bacf7284",
+      "bytes": 4531,
+      "lines": 102,
+      "imports": [
+        "BusyBeaver.ZFC.NativeDecoded254",
+        "BusyBeaver.ZFC.L2Root254",
+        "FirstOrder.Completeness"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.ZFNative",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean",
+      "source_sha256": "415c9b5541bc5b0ada47cee0495b9a471acf5ee9189eb5d4b32eecdc01efb7c0",
+      "bytes": 3408,
+      "lines": 74,
+      "imports": [
+        "BusyBeaver.ZFC.ZFModels",
+        "BusyBeaver.ZFC.ZFRank",
+        "BusyBeaver.ZFC.NativeTheory254",
+        "BoundedZFCConsistency.Choice"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.WFTheory",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean",
+      "source_sha256": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164",
+      "bytes": 2316,
+      "lines": 57,
+      "imports": [
+        "BusyBeaver.ZFC.WFModel",
+        "BusyBeaver.ZFC.ZFNative"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.WFTheory.zf_consistent_of_model",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.WFTheory.c254_of_zf_refutation",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.WFTheory.c254_refutation_iff_zf",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.WFTheory.native_refutation_iff_zf",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.WFTheory.native_consistency_iff_zf",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "WFModelCompat12",
+      "source": "/tmp/k215-phase12-import-check/clients/WFModelCompat12.lean",
+      "source_sha256": "f73711a4048e0375b55df0228a86fa5df72ab6a24ba86ef04af53680bde40f8b",
+      "bytes": 1152,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.WFModel",
+        "BusyBeaver.ZFC.WFTheory"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.WFModelCompat12.domain_axioms",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.WFModelCompat12.domain_models",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.WFModelCompat12.quotient_models",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "ZFNativeCompat12",
+      "source": "/tmp/k215-phase12-import-check/clients/ZFNativeCompat12.lean",
+      "source_sha256": "c37f2d55304e6bff0ef98f1135a7a4add1f9db526e690a71feceed09c4c4b2e8",
+      "bytes": 1875,
+      "lines": 42,
+      "imports": [
+        "BusyBeaver.ZFC.ZFNative"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.models",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.native",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.refutation",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.halt_zf",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.con_zf",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.halt_zfc",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.ZFNativeCompat12.con_zfc",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "DirectSeed17Api",
+      "source": "/tmp/k215-phase17-integration/clients/DirectSeed17Api.lean",
+      "source_sha256": "194bbd119e630c9c294b706eda25120ee8b9912dc80ffc171b43836a23442e21",
+      "bytes": 1014,
+      "lines": 31,
+      "imports": [
+        "BusyBeaver.ZFC.KSeedDirect222",
+        "BusyBeaver.ZFC.KLowerSeed"
+      ],
+      "expected_reports": [
+        [
+          "DirectSeed17Api.original_domain",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "DirectSeed17Api.literal_equality_seed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "DirectSeed17Api.formula_seed",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "MacroSharing18Api",
+      "source": "/tmp/k215-phase18-clients/clients-checked-v3/MacroSharing18Api.lean",
+      "source_sha256": "fc871829d4cc6ac283bb7aafd8b87364381e8c0c5d2e73f512494d3247d191f8",
+      "bytes": 3562,
+      "lines": 82,
+      "imports": [
+        "BusyBeaver.ZFC.L2Control222"
+      ],
+      "expected_reports": [
+        [
+          "MacroSharing18Api.record_encoding",
+          []
+        ],
+        [
+          "MacroSharing18Api.named_update",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.indexed_update",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.push_parameter",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.implication_and_clean",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.read_parameter",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.unequal_break",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.modus_ponens",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.fetch_cases",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "MacroSharing18Api.halt_branch",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Dom",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Dom.lean",
+      "source_sha256": "31229737a8d4abd0fabf57e0b26a8b267b6caec73e5bc6241e20d03541246bf7",
+      "bytes": 5047,
+      "lines": 123,
+      "imports": [
+        "BusyBeaver.ZFC.DagDom",
+        "BusyBeaver.ZFC.Dag219Bisim",
+        "BusyBeaver.ZFC.L2Control222",
+        "BusyBeaver.ZFC.RMTransfer"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.EnumDom",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumDom.lean",
+      "source_sha256": "78bf388271e021682a0f9d952c5919f8d4b3c1dbf636238c96801ca16dc77fcd",
+      "bytes": 23536,
+      "lines": 576,
+      "imports": [
+        "BusyBeaver.ZFC.KCode222",
+        "BusyBeaver.ZFC.DomRho8"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2AxiomsDom",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsDom.lean",
+      "source_sha256": "989885413061677c70485de399ae1dd69189cb9e7230ffab0e2341973589d07c",
+      "bytes": 1957,
+      "lines": 48,
+      "imports": [
+        "BusyBeaver.ZFC.L2Dom",
+        "BusyBeaver.ZFC.EnumDom",
+        "BusyBeaver.ZFC.AXWord"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.L2Dom.l236",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.L2Dom.ax_eval",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2RootDom",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2RootDom.lean",
+      "source_sha256": "7b9f8092301be0508c76705364a1cdf6c0380d48e4862ec62675291a72406266",
+      "bytes": 8446,
+      "lines": 170,
+      "imports": [
+        "BusyBeaver.ZFC.RMDagIteration",
+        "BusyBeaver.ZFC.L2AxiomsDom"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.Enum222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum222.lean",
+      "source_sha256": "a8479e58d12ed7a1fe52737a57037bf748c0ab1c68598027577535a9bbffd1c2",
+      "bytes": 28778,
+      "lines": 704,
+      "imports": [
+        "BusyBeaver.ZFC.KCode222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Axioms222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms222.lean",
+      "source_sha256": "89f04182989d20cab46142e19cfbd8519b0d140b0853b0fce602e08334ca5afc",
+      "bytes": 1689,
+      "lines": 41,
+      "imports": [
+        "BusyBeaver.ZFC.L2Control222",
+        "BusyBeaver.ZFC.Enum222",
+        "BusyBeaver.ZFC.AXWord"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Root222",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root222.lean",
+      "source_sha256": "b3b285abc29b2f825c8c614a9470c32c1c611f004ade3b2b754bcbdd20f8bccd",
+      "bytes": 9174,
+      "lines": 184,
+      "imports": [
+        "BusyBeaver.ZFC.RMDagIteration",
+        "BusyBeaver.ZFC.L2Axioms222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Lib219",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib219.lean",
+      "source_sha256": "beb57ec710a1fcbe955de053d39cc244d61b90576a999532a6eec802aa4a4363",
+      "bytes": 2592,
+      "lines": 50,
+      "imports": [
+        "BusyBeaver.ZFC.L2Lib222",
+        "BusyBeaver.ZFC.Dag219Bisim"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Macros219",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros219.lean",
+      "source_sha256": "1f4dc090810efc56e1619d42f9afa17db667afc6948153c8ce2a796c93999799",
+      "bytes": 2376,
+      "lines": 39,
+      "imports": [
+        "BusyBeaver.ZFC.L2Macros222",
+        "BusyBeaver.ZFC.L2Lib219"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Control219",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control219.lean",
+      "source_sha256": "402c53c1a3a24a3cc20857def918efbec9811a54136ea21b6c0ff22b7dd92c68",
+      "bytes": 1416,
+      "lines": 29,
+      "imports": [
+        "BusyBeaver.ZFC.L2Control222",
+        "BusyBeaver.ZFC.L2Macros219"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Axioms219",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms219.lean",
+      "source_sha256": "b2d5e22ecd286fc8a80d4e20c1eec5b4e305a043b6fdc90ed8574c641627a438",
+      "bytes": 941,
+      "lines": 25,
+      "imports": [
+        "BusyBeaver.ZFC.L2Control219",
+        "BusyBeaver.ZFC.L2Axioms222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Root219",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root219.lean",
+      "source_sha256": "1ecb57f548b494f50ea325ff8e7c98c757b7fee4e0ea51af83d36ecbd6e2cf79",
+      "bytes": 4548,
+      "lines": 105,
+      "imports": [
+        "BusyBeaver.ZFC.RMDagIteration",
+        "BusyBeaver.ZFC.L2Axioms219",
+        "BusyBeaver.ZFC.L2Root222"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    }
+  ],
+  "audits": [
+    {
+      "module": "EndpointAudit215",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/EndpointAudit215.lean",
+      "source_sha256": "d13596021774c5b26937b13cf6cca58342af99f59626b9205ff10b9df1e6fc7d",
+      "expected_reports": [
+        [
+          "EndpointAudit215.blank_halts_exactly_when_zfc_has_a_finite_refutation",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "EndpointAudit215.nonhalting_exactly_when_zfc_is_consistent",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "K215Audit",
+      "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/K215Audit.lean",
+      "source_sha256": "9144acc6c597c4a53928fc62be00d5e25d9f32f519797d17a5058d03b5460986",
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KEndpoint215.blank_halts_iff_zfc_refutation",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KEndpoint215.nonhalting_iff_zfc_consistency",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KDense215.commutes",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KBoot215.boot",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KSites215.covered",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KEndpoint215.p215_boot_iff",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "K215Audit.blank_halts_exact",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "K215Audit.nonhalting_exact",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    }
+  ],
+  "retired_modules": [
+    "BusyBeaver.ZFC.KIndisc222",
+    "BusyBeaver.ZFC.KProfileTC",
+    "BusyBeaver.ZFC.KSeedModel222",
+    "BusyBeaver.ZFC.L2AxiomsEval254"
+  ],
+  "absent_inputs": [
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KProfileTC.lean",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KIndisc222.lean",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedModel222.lean",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_profile_tc.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_kq1.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/dominated_implication_templates/core-prefix.txt",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/dominated_implication_templates/core-suffix.txt",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2k222.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2axioms222.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2q219.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2axiomsdom.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsEval254.lean",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/generate_l2_axioms.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/generate_l2_axioms_eval.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/rotation240_pa/port_l2_axioms.py",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/rotation240_pa/port_l2_eval.py"
+  ],
+  "present_inputs": {
+    "/tmp/k215-phase26-tools-v1/phase_adapter.py": "485bb8ec396c87d50704a107d0e5d38fe6d7456f094251ecbc9b994d72b70892",
+    "/tmp/k215-phase26-tools-v1/phase26.json": "1094fce8c73e8a86503578ddad442e9d3e041eb5713664aa0461e0d62a791844",
+    "/tmp/k215-phase26-tools-v1/build-candidate.py": "df49610dae78f92b531687e4fc98627494ae1f2349277cb42f51b640ce5a7102",
+    "/tmp/k215-phase26-tools-v1/derive_plan.py": "4c6e877170e5c07fceb3ead206f4be237f209c39254c0387dc9c2987ed077e1b",
+    "/tmp/k215-phase26-tools-v1/review_actual.py": "ce50389b94d5b41c5edd676c3db0a4053c28f8d5a8062cb6aa255d5985d3a477",
+    "/tmp/k215-phase26-tools-v1/phase25-base/runner.py": "674229f1b1eba23847567546fc10e9d3d257d504600c95f6925622cc65e6035f",
+    "/tmp/k215-phase26-tools-v1/phase25-base/derive.py": "624044738bb2ae6c61e330e32d46c2b2258d7e29f1004470be76b8af082cfae8",
+    "/tmp/k215-phase26-tools-v1/phase25-base/actual.py": "6cb6f25525ae7167612eb2b08fa3fb08f88f46ebe36c6e6bc2705e2b1bcf2458",
+    "/tmp/k215-phase26-completeness-cuts-v2/candidate/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean": "575a8e2a6033d05d8bc74d9dc59d81bcbf4fbd556bcbf3590e1756e300b28394",
+    "/tmp/k215-phase26-completeness-cuts-v2/before/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299",
+    "/tmp/k215-phase26-bounded-cuts/candidate/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean": "6acda738652c2916394f381d8b264733f5440b528c73bb9965f03939cec40092",
+    "/tmp/k215-phase26-bounded-cuts/before/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9",
+    "/tmp/k215-phase26-rank-cuts-v2/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean": "8e7c42ccabd8641da1cfd39493521c058b83375fea1b7ee599b5e656a6a1f745",
+    "/tmp/k215-phase26-rank-cuts-v2/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean": "d3fbdfbf272aecd3c207083ba72c1c01d694444c88a9565fa96050e03b487164",
+    "/tmp/k215-phase26-runtime-cuts/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean": "81846324b4b51b2f4a6133fb2f5a4377835fef821cf5c41e647ee866162aee29",
+    "/tmp/k215-phase26-runtime-cuts/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+    "/tmp/k215-phase26-runtime-cuts/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean": "0e45434403e0acc61a005c8386e3fab79fc0153501e72faee002f3bd8aa62dec",
+    "/tmp/k215-phase26-runtime-cuts/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d",
+    "/tmp/k215-phase26-completeness-cuts/README.md": "5b2071f7fb9b3b45667b036f7c921d8296a97251a1b7dc34e6104d25f830c127",
+    "/tmp/k215-phase26-completeness-cuts/before/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299",
+    "/tmp/k215-phase26-completeness-cuts/candidate/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean": "0678a60f3fd74ae2f8420529a05cc71b20f76f0d9c27207da3c87bfe817eaf80",
+    "/tmp/k215-phase26-completeness-cuts/candidate.diff": "891a0c1406feafda01b10b51d5941d15449a50a603da53c01c77629183476223",
+    "/tmp/k215-phase26-completeness-cuts/metrics.json": "ee414c25a7f95848b1ca92a6b27765ac204191fe30ed7332cefb1747c9ed033e",
+    "/tmp/k215-phase26-completeness-cuts/pins.json": "81e525482b944d19130d3c224a2d56da99cd398fa68341a37b7948a00d64b88f",
+    "/tmp/k215-phase26-bounded-cuts/candidate.diff": "fc6aeb09fbafea8db32b89406b66b20528284d5dc081aea62bd68f889a635a03",
+    "/tmp/k215-phase26-bounded-cuts/handoff.json": "422af9cc8c3c32523cbb3d19acfdde70ab59e763455e63627f7991fb5a26bec1",
+    "/tmp/k215-phase26-bounded-cuts/header-report.json": "9de47e84444c9e0df9eefefdd6633d2eb52567993e4ffd48cea521147e3b664e",
+    "/tmp/k215-phase26-bounded-cuts/metrics.json": "0e5936b5357bd41a85ad2d210f3a1e6e60a1b8c46cb67076c3c4df84d806ddab",
+    "/tmp/k215-phase26-bounded-cuts/pins.json": "11d4498180967d7cc96003a4004a9a15a9ade1b30eb505c5b2698c71c96d974d",
+    "/tmp/k215-phase26-bounded-cuts/report.json": "7119dec26f07136bab8f883ddb34f373d32e5ee9156a028684b77351561c62a7",
+    "/tmp/k215-phase26-bounded-cuts/use-report.json": "3912ca5ce3f33dae94097e9b04f56d0f5e427e073ec1d86de5575249f4ce71c6",
+    "/tmp/k215-phase26-rank-cuts/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean": "b36c1ed470783380369d029023540e6b806c3448027afc7ec1ffddb6b32a16ba",
+    "/tmp/k215-phase26-rank-cuts/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean": "d3fbdfbf272aecd3c207083ba72c1c01d694444c88a9565fa96050e03b487164",
+    "/tmp/k215-phase26-rank-cuts/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean": "b36c1ed470783380369d029023540e6b806c3448027afc7ec1ffddb6b32a16ba",
+    "/tmp/k215-phase26-rank-cuts/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean": "90e0b1fdc27f91472ca351f1a8a13dbb204526918ea16ea5f437e53c44ad4251",
+    "/tmp/k215-phase26-rank-cuts/candidate.diff": "0fdc6582da0ae1dd3d882864858025fdbefb77e40e5d5021c91901e421e985a9",
+    "/tmp/k215-phase26-rank-cuts/header-report.json": "ef8ea253568c69f493da12957a958d2ba533b72af3e0d7c187bbebee89c92d38",
+    "/tmp/k215-phase26-rank-cuts/manifest.json": "faa9cdaa1db8c57c65c4f81e87e2994851bd0382cb3cc5c8cda8c50ebe324955",
+    "/tmp/k215-phase26-rank-cuts/metrics.json": "bf727a01cad40b4f0a3809960605d8610e5563dca33615b8a26262db84864ac5",
+    "/tmp/k215-phase26-rank-cuts/pins.json": "616fdfa921e01b5da83dc98c7c4d1a40550fa3fb6f66269a83b380b48c40c5c2",
+    "/tmp/k215-phase26-rank-cuts/report.json": "e06f2edba5a69fca47f3acc5bcb3a78c5585912f9df5e1c6979d7c27cfc748ee",
+    "/tmp/k215-phase26-rank-cuts/use-report.json": "283115886c9abbfce65080266623384479ba175eac9acaa125b04260b311afbd",
+    "/tmp/k215-phase26-runtime-cuts/candidate.diff": "797d8bc12cfb932b1b26229ea9c3950d6db437b48c53c7ad22198c3f44b90b56",
+    "/tmp/k215-phase26-runtime-cuts/declarations.json": "984f10d7b4ef2b3b4e6fdb4211c4260c2390a7acc79ae5a3b2a3f545204c201b",
+    "/tmp/k215-phase26-runtime-cuts/handoff.json": "5a6c84159e54ce59f6b7d6dfbc2c3d75f9e078d7824c8f2443a69f0e689851c2",
+    "/tmp/k215-phase26-runtime-cuts/metrics.json": "444ead29ce8ca6fd1d517801c6d9a2a06d9dcb89e6e1423463a8dba750f1cfbd",
+    "/tmp/k215-phase26-runtime-cuts/pins.json": "f3a2c9dc2546f8fe4f3cc11e45a175b19e395a60d96818c1ffde3e9e1f39b0fd",
+    "/tmp/k215-phase26-runtime-cuts/report.json": "4863ba4d05fc6596216d88893b733ef32e3dff6e7ada2a7085e336f4b6395a32",
+    "/tmp/k215-phase26-runtime-cuts/uses.json": "975b0365260fcae0d715cd0c5cd6da8d7e1e3b898b48dd95c098153ece3d3b8e",
+    "/tmp/k215-phase26-integration/source-review-v1.json": "796c574ad940646cf831c338c8d8ec4458db7ad09e1670eb6ac96c3305d3fb5a",
+    "/tmp/k215-phase26-integration/source-adoption-v1.json": "1026d6afbe0b151fc7759b430b42aeb16e72dd359e26d9d6c5a5b0989c5c93a0",
+    "/tmp/k215-phase26-integration/control-root-review.json": "8b7849214b7ff2afb5e9662b97ccd9887de8be03740c10f7bc46eab22febb997",
+    "/tmp/k215-phase26-completeness-peer.json": "08401d174d17452cadd71ca15d0344ce2a666a9408351354fb44ed28494fafdf",
+    "/tmp/k215-phase26-bounded-peer.json": "bad0d938b6e8d6d66a8fac02c7076183eed5264277c92c31fcda5dcd39442c20",
+    "/tmp/k215-phase26-rank-peer.json": "c88bd87e3a5b6a634a3c1325cafa31c137a0f929cce5868eebbabf94f3f7b1fd",
+    "/tmp/k215-phase26-runtime-peer.json": "b67b70f66c007d58ee96c4c62b26daf05d65adbf4e245efce0b546f303cb01fc",
+    "/tmp/k215-phase26-focused-draft-v1/pins.json": "43e5fb8a3638f74132a37eb871d4b992a4473481245fbfb410c6b5d043268c0d",
+    "/tmp/k215-phase26-focused-draft-v1/handoff.json": "3747c8be4b53dbae99e4c58889c99c6f8678d2f30a7ef11d5b8bde6ca1942703",
+    "/tmp/k215-phase26-focused-draft-v1/run_once.py": "aa918520265d74b6ead920801eab561012ff8aa9cedf4879216fa3059587375b",
+    "/tmp/k215-phase26-focused-draft-v1/focus_plan.py": "4dff0c4d245f08cfab4c9cd4dfbc7b9c1d36df02e90dfb9ac0e95f8cbcc52d88",
+    "/tmp/k215-phase26-focused-draft-v1/candidate.diff": "b1ca4d4ec39d917d2a37aa4a4298eb25cb9eb8f9feb7fa9af0d70f84c37211a2",
+    "/tmp/k215-phase26-focused-draft-v1/README.md": "1d4f7ececf3cf96eca7d42586a3f21b1b7a1f3abc671f2d58082fb9150a2b718",
+    "/tmp/k215-phase26-focused-draft-v1/before/run_once.py": "aa918520265d74b6ead920801eab561012ff8aa9cedf4879216fa3059587375b",
+    "/tmp/k215-phase26-focused-draft-v1/before/focus_plan.py": "acef4f1b8541978e8cdede94c7ac1d4294b8fab2c9e10a45a97be257cab2646e",
+    "/tmp/k215-phase26-completeness-cuts-v2/pins.json": "f291b7376e67dc2b189ab26cffbea05d4ff291df2d5814536df484bb4713426b",
+    "/tmp/k215-phase26-completeness-cuts-v2/repair.diff": "b2e5c1591059ca273077dec6174c55a42bbbb0ac6de945a85c10f3b1282d3646",
+    "/tmp/k215-phase26-completeness-cuts-v2/metrics.json": "c18c0c078c8386932f89c3e4c264abb708835ee00991e501701946e54b2fcd2c",
+    "/tmp/k215-phase26-completeness-cuts-v2/candidate.diff": "236de6d36aeefad0de240444c3e99b19539b8bfb5af82c325cfc30074628438c",
+    "/tmp/k215-phase26-completeness-cuts-v2/README.md": "f75b1e20344137e1bf565b4fd11fa9fa449755fd94d7899062a03806438ef632",
+    "/tmp/k215-phase26-focused-v1/focused-preflight.stdout": "06d3e85f0ae5d83a530450c6d9c083d4deb263d318855dd85e272384757a1e2f",
+    "/tmp/k215-phase26-focused-v1/freeze.json": "7bcdd4a98f61d00d244be8260aff84ffd75dbbbd554ecd2ee3cd6df5756b231a",
+    "/tmp/k215-phase26-focused-v1/focused-preflight-outer.json": "fbda5c256f55fe3479aa2045470aaca89e96bd825cc322e95628751146db993a",
+    "/tmp/k215-phase26-focused-v1/focused-build.stdout": "6079708ff17be268c4c8d2bed8adf649868ba870fec300807cb29912318db393",
+    "/tmp/k215-phase26-focused-v1/run_once.py": "aa918520265d74b6ead920801eab561012ff8aa9cedf4879216fa3059587375b",
+    "/tmp/k215-phase26-focused-v1/focused-preflight.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v1/focused-build-outer.json": "110da3aab057be214ba819773334fc5f2d1074f7b53a44ab0c0d78877ae93ed3",
+    "/tmp/k215-phase26-focused-v1/focused-build.stderr": "e96d73f7834a9029ab57ffde6d758398a4b5a49cfaf85e95361cd315edfbf365",
+    "/tmp/k215-phase26-focused-v1/focused-preflight-run1/preflight.json": "06d3e85f0ae5d83a530450c6d9c083d4deb263d318855dd85e272384757a1e2f",
+    "/tmp/k215-phase26-focused-v1/focused-preflight-run1/output.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/inventory.json": "237a27fcb11ba990d16f3af78a168618e2356dc9f34216ef8c4ca718f530e9bb",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/toolchain.json": "d65727850c08f80fbfc8880f05688fdecca54260e4bca3c08d991b67541709bd",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/completed.json": "5f0aef2319643c63efbe2c248498947f386df48550b7a6007f037e491a8e2a56",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/output.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/before.json": "97337f2d2e54370599095fd975b2dafd7ae41fb94e4134f211d7874bf8767b7a",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/attempts/001-FirstOrder.Completeness/record.json": "e08ebe6d3a7b7ef8a76abf4201fe80ce6d4adc3d2cb5f0fbce0a6eb8a5fc7169",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/attempts/001-FirstOrder.Completeness/Completeness.lean": "0678a60f3fd74ae2f8420529a05cc71b20f76f0d9c27207da3c87bfe817eaf80",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/attempts/001-FirstOrder.Completeness/compiler.log": "072dfc5d41f9e6e1acfcfa8a8f4c3c0e16fee143a945797c6b4ef837db844e8f",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/workspace/FirstOrder/Fol.lean": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/workspace/FirstOrder/Completeness.lean": "0678a60f3fd74ae2f8420529a05cc71b20f76f0d9c27207da3c87bfe817eaf80",
+    "/tmp/k215-phase26-focused-v1/focused-build-run1/workspace/FirstOrder/Calculus.lean": "448229ba92adad5d79c52ee6e2ac32cecf75c0074196e36c5fa8f9d2b9188804",
+    "/tmp/k215-phase26-integration/candidate-plan-v1.json": "ddc66f7a062829bfe1756cef2434651607ad323f2c0d1ffa92131e3e15e7797a",
+    "/tmp/k215-phase26-integration/focused-plan-v1.json": "6ba77f9d7d1aa67679ece98ada98c690f79353e5e1608fcd631017208643528c",
+    "/tmp/k215-phase26-control-peer.json": "fb23fb3526d661f0aedbd09dcaf193133f80a69c7795ceb2a7fdd556f19499c2",
+    "/tmp/k215-phase26-focused-peer.json": "ad58abef6afa767809c6f286f2b430e569e1a1f8700ec2ebdadc76147469263c",
+    "/tmp/k215-phase26-rank-cuts-v2/pins.json": "e07dde113368f97ea097d10f1535e54a387f3b0dce52a5000eb48d5f74501c64",
+    "/tmp/k215-phase26-rank-cuts-v2/repair.diff": "375419f3ccfb6c69685d9a52d2d7c26f9cf3d77473a373595686a59e51ab8da7",
+    "/tmp/k215-phase26-rank-cuts-v2/metrics.json": "75682d8baef95d4a34ceb8b1867fd4c26d8632a004375ab2f36718a2f28e71c0",
+    "/tmp/k215-phase26-rank-cuts-v2/candidate.diff": "576a3da9921f95eb28c39f6bccb98406131db21321c9a8cb8ac55b3412f836fb",
+    "/tmp/k215-phase26-rank-cuts-v2/README.md": "268debcabb4f0ff17a64b15a064fb92a3b33a8db7265b27b8abef61a1de54e00",
+    "/tmp/k215-phase26-focused-v2/freeze.json": "a6949e39fe43672dc405300ce0bbc6ea4f759453376f31e3940adf86e821f126",
+    "/tmp/k215-phase26-focused-v2/focused-build.stdout": "49be337c16925251490b726392b592b8e3a839ece19c59823d59180fe74b8067",
+    "/tmp/k215-phase26-focused-v2/run_once.py": "aa918520265d74b6ead920801eab561012ff8aa9cedf4879216fa3059587375b",
+    "/tmp/k215-phase26-focused-v2/focused-build-outer.json": "e41628d07478228fba24fb224b87195befaffc72115f09d499faa4e57f57ac40",
+    "/tmp/k215-phase26-focused-v2/focused-build.stderr": "f7c1c243a87d10bd09b564612fe22d34c12f12f7b373efc7941b7296776d5694",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/inventory.json": "fb968009555334ad464636dcb736d9bbd98a90464848f8a0c973970f38878865",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/toolchain.json": "d65727850c08f80fbfc8880f05688fdecca54260e4bca3c08d991b67541709bd",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/completed.json": "4c2d44c511fff7b349cc8c1dd920f25dc3fed088deeb58992cb4974129cf258e",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/output.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/before.json": "3f3b368b26ef3d761ef753ef65b33e0d26bd9e6f8c73f68ca8c7b552cc905c3e",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/003-BoundedZFCConsistency.Coding/record.json": "5ced9d8db966055a9444ea466535b884db5d15e953442aacd3235e43e92e034e",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/003-BoundedZFCConsistency.Coding/Coding.lean": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/003-BoundedZFCConsistency.Coding/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/004-BoundedZFCConsistency.CodePredicate/record.json": "79eeb5b197d10eed710d06cd14b30449c5a740aafc1660ef8227aceec5ac7086",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/004-BoundedZFCConsistency.CodePredicate/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/004-BoundedZFCConsistency.CodePredicate/CodePredicate.lean": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/009-BusyBeaver.ZFC.InternalRank/record.json": "fe3b2e322ab94ef6efa5656f4d40362b4051d5431203cf8fd5d8aa2a8a695492",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/009-BusyBeaver.ZFC.InternalRank/InternalRank.lean": "90e0b1fdc27f91472ca351f1a8a13dbb204526918ea16ea5f437e53c44ad4251",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/009-BusyBeaver.ZFC.InternalRank/compiler.log": "b535c64ccb9b965fa7a9a906da2d4d5fc836110b435b061937685f80744da024",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/008-BoundedZFCConsistency.InternalSatTotality/record.json": "c7a8f2928482f3ff44505488bbb381329e6582743944aa6601504772a1a540ff",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/008-BoundedZFCConsistency.InternalSatTotality/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/008-BoundedZFCConsistency.InternalSatTotality/InternalSatTotality.lean": "6acda738652c2916394f381d8b264733f5440b528c73bb9965f03939cec40092",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/007-BoundedZFCConsistency.InternalSat/record.json": "80fc1df1e06f53ca096bc85670d89357b32c488602b77ed3d3a2c637b640a6cd",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/007-BoundedZFCConsistency.InternalSat/InternalSat.lean": "6f9cd1ec5917548ebf6e1bc41fc3c9a1ec9c2dd40473ab57ebb60bdca333b0a1",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/007-BoundedZFCConsistency.InternalSat/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/001-FirstOrder.Completeness/record.json": "7c6dde8c735ab8039cb96bb1467aa53c6b9e75d2dd267e3a1217323eff980986",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/001-FirstOrder.Completeness/Completeness.lean": "575a8e2a6033d05d8bc74d9dc59d81bcbf4fbd556bcbf3590e1756e300b28394",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/001-FirstOrder.Completeness/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/002-BoundedZFCConsistency.Basic/record.json": "1761445cac0747c8a83c8bc9d8cb1ed24de47ae4a847ed8aacfe20c6cdc8ddb8",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/002-BoundedZFCConsistency.Basic/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/002-BoundedZFCConsistency.Basic/Basic.lean": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/006-BoundedZFCConsistency.OmegaRecursion/record.json": "585cbc86d61ef61e18e5b7c7ac3e23e6405990dba467c4e48021174e94177aa1",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/006-BoundedZFCConsistency.OmegaRecursion/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/006-BoundedZFCConsistency.OmegaRecursion/OmegaRecursion.lean": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/005-BoundedZFCConsistency.FormulaClosedSet/record.json": "42f5808d63e568ccbc911147f1142f0a8c4e0448b66613baf4a39298f851e60e",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/005-BoundedZFCConsistency.FormulaClosedSet/FormulaClosedSet.lean": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/attempts/005-BoundedZFCConsistency.FormulaClosedSet/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/FirstOrder/Fol.lean": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/FirstOrder/Completeness.lean": "575a8e2a6033d05d8bc74d9dc59d81bcbf4fbd556bcbf3590e1756e300b28394",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/FirstOrder/Calculus.lean": "448229ba92adad5d79c52ee6e2ac32cecf75c0074196e36c5fa8f9d2b9188804",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/ZF/Zf.lean": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/Coding.lean": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/FormulaClosedSet.lean": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/InternalSat.lean": "6f9cd1ec5917548ebf6e1bc41fc3c9a1ec9c2dd40473ab57ebb60bdca333b0a1",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/InternalSatTotality.lean": "6acda738652c2916394f381d8b264733f5440b528c73bb9965f03939cec40092",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/OmegaRecursion.lean": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/CodePredicate.lean": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BoundedZFCConsistency/Basic.lean": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BusyBeaver/ZFC/InternalOrd.lean": "b36c1ed470783380369d029023540e6b806c3448027afc7ec1ffddb6b32a16ba",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BusyBeaver/ZFC/InternalRank.lean": "90e0b1fdc27f91472ca351f1a8a13dbb204526918ea16ea5f437e53c44ad4251",
+    "/tmp/k215-phase26-focused-v2/focused-build-run1/workspace/BusyBeaver/ZFC/NamedZF.lean": "2bbf029d3c73436ee2ebf4acbceb7198308f4d3ba760ef00025405d3b51f70fd",
+    "/tmp/k215-phase26-integration/candidate-plan-v2.json": "405744ba430627fbe0751580c2f6c21bb6bd1e27320605151123b1bd1fe466e0",
+    "/tmp/k215-phase26-integration/focused-plan-v2.json": "4b16445ee9e63faf3a0b24a2f9cc4b45ef38aab5c488ebb9615300945a143edd",
+    "/tmp/k215-phase26-completeness-repair-peer-v2.json": "6d68c37a6cff67291e88312d0637cf518142739494d4c3e3228784847d676639",
+    "/tmp/k215-phase26-integration/source-spec-v4.json": "d359dd277e5fc245691ec5112addbb6291eb28f531b2a349c02f77eab337132f",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/README.md": "e9f5079b3fa336fa4db95ba46a95730f08517610cbd288829c0c69394908b0e5",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/capture-config.json": "7361574a74ae720b5ba066439eef9f99dc0ad9852d3edda8495e1e56464b605b",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/capture.json": "9cc991189a04a975cfd9bfdee3b80505ef11afd517bd72ac2bfed73410488d48",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/capture.py": "541ed7dabb2dba317438206ae4a5a8c9ce30b047bb3f26725d5cb44fae573957",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/check-plan.json": "e5a4cfb2e342a944e563ccb76a27a08beb9f653403637681c755161de34fd471",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/check.py": "9e2beda5c4c8d8023ce31f74011a0705e6b8e250926a2035d3d343d38d4bf392",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/evidence.tar.gz": "c97fc3b7db5007217440e1856956a2c98fd56a8abdb2e0c6fa5c08976dc694ba",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/index.json": "e0cd0dee4f92d4102e9707475647b85ad278ef691a1f8eff336fab1ddd081a43",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/result-review.json": "62291e79af3dd187eda6f3d7de765cd24d7d45d43d7396a5480479beef9af2c3",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/result.json": "9532e7d8d09f746c1ec509d09ba8e7eea76f752998a602afd4c2aa6cbdaf0d3c",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase25/lean/review_actual.py": "4334be526943b4c5184a10ea511cfef394b383516601c97ac767af7139dfa008",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.native.tm": "9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py": "4453ac9a3745b4525575945d0aab506f270bbbbbbcf52c09a160f6c60f2ecd38",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/EndpointAudit215.lean": "d13596021774c5b26937b13cf6cca58342af99f59626b9205ff10b9df1e6fc7d",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/K215Audit.lean": "9144acc6c597c4a53928fc62be00d5e25d9f32f519797d17a5058d03b5460986"
+  },
+  "expected": {
+    "provider_count": 230,
+    "project_count": 215,
+    "typed_client_count": 15,
+    "affected_typed_clients": [
+      "BasicInterfaces15Api",
+      "TransRec15Api",
+      "WFModelCompat12",
+      "ZFNativeCompat12"
+    ],
+    "changed_sources": [
+      "BoundedZFCConsistency.InternalSatTotality",
+      "BusyBeaver.ZFC.InternalRank",
+      "BusyBeaver.ZFC.KHomeReady",
+      "BusyBeaver.ZFC.KZipTape",
+      "FirstOrder.Completeness"
+    ],
+    "fresh_by_source_transitivity": [
+      "BasicInterfaces15Api",
+      "BoundedZFCConsistency.Basic",
+      "BoundedZFCConsistency.CodePredicate",
+      "BoundedZFCConsistency.Coding",
+      "BoundedZFCConsistency.FormulaClosedSet",
+      "BoundedZFCConsistency.InternalSat",
+      "BoundedZFCConsistency.InternalSatTotality",
+      "BoundedZFCConsistency.OmegaRecursion",
+      "BusyBeaver.ZFC.CodeOrder",
+      "BusyBeaver.ZFC.Constructible",
+      "BusyBeaver.ZFC.ConstructibleAbs",
+      "BusyBeaver.ZFC.ConstructibleChoice",
+      "BusyBeaver.ZFC.ConstructibleDef",
+      "BusyBeaver.ZFC.ConstructibleOrder",
+      "BusyBeaver.ZFC.ConstructibleReflect",
+      "BusyBeaver.ZFC.ConstructibleZF",
+      "BusyBeaver.ZFC.DecoderPaths",
+      "BusyBeaver.ZFC.DecoderSourceBinding",
+      "BusyBeaver.ZFC.InternalRank",
+      "BusyBeaver.ZFC.InternalWO",
+      "BusyBeaver.ZFC.K215Decoder",
+      "BusyBeaver.ZFC.KDecoderPrefix215",
+      "BusyBeaver.ZFC.KEndpoint",
+      "BusyBeaver.ZFC.KEndpoint215",
+      "BusyBeaver.ZFC.KFastSites215",
+      "BusyBeaver.ZFC.KHomeReady",
+      "BusyBeaver.ZFC.KLowerQHyp",
+      "BusyBeaver.ZFC.KQ1ZF",
+      "BusyBeaver.ZFC.KSim",
+      "BusyBeaver.ZFC.KSites215",
+      "BusyBeaver.ZFC.KSites215Batch000",
+      "BusyBeaver.ZFC.KSites215Batch001",
+      "BusyBeaver.ZFC.KSites215Batch002",
+      "BusyBeaver.ZFC.KSites215Batch003",
+      "BusyBeaver.ZFC.KSites215Batch004",
+      "BusyBeaver.ZFC.KSites215Batch005",
+      "BusyBeaver.ZFC.KSites215Batch006",
+      "BusyBeaver.ZFC.KSites215Batch007",
+      "BusyBeaver.ZFC.KSites215Batch008",
+      "BusyBeaver.ZFC.KUpper222",
+      "BusyBeaver.ZFC.KZipTape",
+      "BusyBeaver.ZFC.NativeTheory254",
+      "BusyBeaver.ZFC.OrderRec",
+      "BusyBeaver.ZFC.PSCCalibration",
+      "BusyBeaver.ZFC.QuotientZF0",
+      "BusyBeaver.ZFC.SatSupport",
+      "BusyBeaver.ZFC.TransRec",
+      "BusyBeaver.ZFC.TupleOrder",
+      "BusyBeaver.ZFC.WFModel",
+      "BusyBeaver.ZFC.WFTheory",
+      "BusyBeaver.ZFC.ZFNative",
+      "BusyBeaver.ZFC.ZFRank",
+      "FirstOrder.Completeness",
+      "TransRec15Api",
+      "WFModelCompat12",
+      "ZFNativeCompat12"
+    ]
+  },
+  "source_overlay": [
+    {
+      "module": "FirstOrder.Completeness",
+      "canonical": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+      "before": {
+        "path": "/tmp/k215-phase26-completeness-cuts-v2/before/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+        "sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299"
+      },
+      "candidate": {
+        "path": "/tmp/k215-phase26-completeness-cuts-v2/candidate/Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+        "sha256": "575a8e2a6033d05d8bc74d9dc59d81bcbf4fbd556bcbf3590e1756e300b28394"
+      }
+    },
+    {
+      "module": "BoundedZFCConsistency.InternalSatTotality",
+      "canonical": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+      "before": {
+        "path": "/tmp/k215-phase26-bounded-cuts/before/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+        "sha256": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9"
+      },
+      "candidate": {
+        "path": "/tmp/k215-phase26-bounded-cuts/candidate/SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+        "sha256": "6acda738652c2916394f381d8b264733f5440b528c73bb9965f03939cec40092"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.InternalRank",
+      "canonical": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "before": {
+        "path": "/tmp/k215-phase26-rank-cuts-v2/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+        "sha256": "d3fbdfbf272aecd3c207083ba72c1c01d694444c88a9565fa96050e03b487164"
+      },
+      "candidate": {
+        "path": "/tmp/k215-phase26-rank-cuts-v2/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+        "sha256": "8e7c42ccabd8641da1cfd39493521c058b83375fea1b7ee599b5e656a6a1f745"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHomeReady",
+      "canonical": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+      "before": {
+        "path": "/tmp/k215-phase26-runtime-cuts/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+        "sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a"
+      },
+      "candidate": {
+        "path": "/tmp/k215-phase26-runtime-cuts/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+        "sha256": "81846324b4b51b2f4a6133fb2f5a4377835fef821cf5c41e647ee866162aee29"
+      }
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZipTape",
+      "canonical": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+      "before": {
+        "path": "/tmp/k215-phase26-runtime-cuts/before/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+        "sha256": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d"
+      },
+      "candidate": {
+        "path": "/tmp/k215-phase26-runtime-cuts/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+        "sha256": "0e45434403e0acc61a005c8386e3fab79fc0153501e72faee002f3bd8aa62dec"
+      }
+    }
+  ],
+  "newly_retired_module_sources": [],
+  "newly_retired_producers": [],
+  "unselected_old_modules": [],
+  "endpoint_closure": {
+    "old_module_count": 172,
+    "old_source_bytes": 1723955,
+    "new_module_count": 172,
+    "new_source_bytes": 1720244,
+    "added_modules": [],
+    "removed_modules": []
+  },
+  "scope": "One exact source-transitive closure of all accepted phase25 targets and fifteen maintained clients. Every forced provider is warning-free. All report profiles come from accepted phase25 logs; new modules have empty profiles. Two endpoint audits remain fresh. No claim for an internal PA endpoint or other machine variants."
+}
