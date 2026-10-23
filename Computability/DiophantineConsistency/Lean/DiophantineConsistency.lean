@@ -136,3 +136,4 @@ import DiophantineConsistency.NativePellPower
 import DiophantineConsistency.NativeBinaryScale
 import DiophantineConsistency.NativePellScaleBounds
 import DiophantineConsistency.ObjectAdditionCancellation
+import DiophantineConsistency.ObjectMultiplicationLaws

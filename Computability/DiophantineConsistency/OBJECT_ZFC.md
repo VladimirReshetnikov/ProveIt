@@ -98,6 +98,12 @@ semantics, natural output closure, zero/successor laws, and numeral agreement
 are checked. `zfc_proves_multiplication_total` and
 `zfc_proves_multiplication_unique` are actual `BProv ZFCax_s []` derivations.
 
+[`ObjectMultiplicationLaws.lean`](Lean/DiophantineConsistency/ObjectMultiplicationLaws.lean)
+adds left zero, left successor and commutativity for all internal naturals,
+using explicit formula predicates for induction and the checked addition
+laws. Its closed commutativity sentence has an actual ZFC derivation; see
+[OBJECT_MULTIPLICATION_LAWS.md](OBJECT_MULTIPLICATION_LAWS.md).
+
 [`ObjectNaturalExpression.lean`](Lean/DiophantineConsistency/ObjectNaturalExpression.lean)
 recursively interprets every supplied `NatExpr`, with arbitrary maps of its
 finite coordinates to free-variable slots. It supplies exact arbitrary-model
