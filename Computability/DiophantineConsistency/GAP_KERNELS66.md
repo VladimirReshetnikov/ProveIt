@@ -60,5 +60,6 @@ This certificate supplies the literal 85-record source-to-coefficient bridge.
 The subsequent [word-range stage](GAP_WORDS66.md),
 [rank calibration](GAP_NINE_RATIO66.md) and
 [unbounded source contract](GAP_SOURCE_NINE66.md) now pass Lean. The
-443/450-operation DAG's identity with that arithmetic contract, whole-tuple
-native calibration and the internal ZFC biconditional remain separate.
+[443/450-operation DAG's identity](GAP_CIRCUIT_RECIPE66.md) with that arithmetic
+contract also passes Lean. Whole-tuple native calibration and the internal
+ZFC biconditional remain separate.

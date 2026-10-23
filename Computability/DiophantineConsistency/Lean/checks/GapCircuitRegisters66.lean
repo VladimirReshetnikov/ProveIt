@@ -1,0 +1,15 @@
+import DiophantineConsistency.GapCircuitRegisters66
+open DiophantineConsistency.GapCircuitRegisters66
+#print axioms natural_baseRegister
+#print axioms natural_kernel0Register
+#print axioms natural_kernel1Register
+#print axioms natural_kernel2Register
+#print axioms natural_ellRegister
+#print axioms natural_targetsRegister
+#print axioms natural_thresholdRegister
+#print axioms natural_marginScaleRegister
+#print axioms natural_sourceHighRegister
+#print axioms natural_sourceSRegister
+#print axioms natural_sourceTRegister
+#print axioms natural_blockLengthRegister
+#print axioms natural_sourceRankRegister

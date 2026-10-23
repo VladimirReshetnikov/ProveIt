@@ -53,6 +53,6 @@ natural zero existence. Their full positive coordinate conventions agree.
 The dedicated checks audit all thirteen new endpoints and the CRT-coordinate
 translation. Only Lean's standard axioms occur. The subsequent
 [actual nine-variable polynomial binding](GAP_NINE_POLYNOMIAL66.md) now also
-passes Lean. The 443/450-operation literal circuit identification, authentic
-native source-to-refutation calibration and the internal object-language ZFC
-equivalence remain open.
+passes Lean, as do the [443/450-operation literal circuit identification](GAP_CIRCUIT_RECIPE66.md)
+and [degree upper bound](GAP_DEGREE66.md). Authentic native source-to-refutation
+calibration and the internal object-language ZFC equivalence remain open.

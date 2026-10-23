@@ -41,7 +41,8 @@ release replays pass. Within the nine-positive branch, the next delivered
 cost target is package 66's 444-operation, degree-1,845,940 form. Package
 66's separate [compact54-sharp instance](candidates/gap2082-compact54/README.md)
 passes its sealed finite checks at **443 positive / 450 natural operations**
-with the same degree and is the next local cost target to formalize. Package
+with the same degree. Its counted circuit and source-polynomial binding now
+pass Lean. Package
 65 offers direct source reuse and lower degree; package 67 reaches degree
 1,494,006 at higher cost. See [PROPOSAL_REVIEW_WAVE9.md](PROPOSAL_REVIEW_WAVE9.md)
 for the comparison, replay evidence and parallel alternative-encoding work.
@@ -49,8 +50,13 @@ for the comparison, replay evidence and parallel alternative-encoding work.
 The H2082 source arithmetic and its actual nine-variable polynomial now pass
 Lean, including sharp port bounds, positivity, word/carry calibration and
 unbounded witness construction. See
-[GAP_NINE_POLYNOMIAL66.md](GAP_NINE_POLYNOMIAL66.md). The literal 443/450-gate
-binding, native source calibration and internal ZFC theorem remain open.
+[GAP_NINE_POLYNOMIAL66.md](GAP_NINE_POLYNOMIAL66.md). Lean also identifies the
+literal 443/450-operation DAGs with those polynomials, including all eleven
+fixed-leaf recipes and the positive/natural root translation; see
+[GAP_CIRCUIT_RECIPE66.md](GAP_CIRCUIT_RECIPE66.md). The cancellation-aware
+degree bound of 1,845,940 is checked for both actual polynomials in
+[GAP_DEGREE66.md](GAP_DEGREE66.md). Native source calibration and the internal
+ZFC theorem remain open.
 
 The previous wave-eight target, now a checked source checkpoint, was
 package 59's free-coordinate degree-separated adjunct: nine

@@ -40,8 +40,9 @@ The ring-homomorphism proofs use explicit finite coefficient-map branches.
 checked H2082 table and frozen proof template without writing. Dedicated
 checks audit all public theorems; only Lean's standard axioms occur.
 
-This closes the actual polynomial-to-source arithmetic bridge. The separate
-443/450-operation literal DAG identification, materialized whole-tuple native
-calibration to ZFC refutation and the object-language ZFC biconditional remain
-further obligations. No operation-count or exact-degree claim is inferred
-solely from this polynomial definition.
+This closes the actual polynomial-to-source arithmetic bridge. The subsequent
+[443/450-operation literal DAG identification](GAP_CIRCUIT_RECIPE66.md) and
+[cancellation-aware degree upper bound](GAP_DEGREE66.md) now also pass Lean.
+Materialized whole-tuple native calibration to ZFC refutation and the
+object-language ZFC biconditional remain further obligations. Exact degree
+remains a separate finite-audit result.

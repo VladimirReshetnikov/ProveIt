@@ -45,4 +45,5 @@ standard axioms occur. No source zero, digit decoder, native compiler
 calibration or internal ZFC consistency statement is used to establish these
 word bounds. The subsequent [carry/source equivalence](GAP_SOURCE_CONTRACT66.md)
 and [unbounded source existence](GAP_SOURCE_NINE66.md) now pass Lean.
-The counted443/450-operation DAG identification remains a further bridge.
+The subsequent [counted 443/450-operation DAG identification](GAP_CIRCUIT_RECIPE66.md)
+also passes Lean.

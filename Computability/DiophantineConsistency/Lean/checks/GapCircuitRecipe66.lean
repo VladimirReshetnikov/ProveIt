@@ -1,0 +1,5 @@
+import DiophantineConsistency.GapCircuitRecipe66
+open DiophantineConsistency.GapCircuitRecipe66
+#print axioms naturalValue_eq_recipe
+#print axioms map_fixedLeaves
+#print axioms naturalPolynomial_eq_recipe

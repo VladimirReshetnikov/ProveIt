@@ -1,0 +1,3 @@
+import DiophantineConsistency.GapCircuitTranslation66
+open DiophantineConsistency.GapCircuitTranslation66
+#print axioms positiveValue_eq_naturalValue

@@ -1,0 +1,6 @@
+import DiophantineConsistency.GapPositiveRecipe66
+open DiophantineConsistency.GapPositiveRecipe66
+#print axioms successorShift_sub_one
+#print axioms positiveValue_eq_recipe
+#print axioms positivePolynomial_eq_recipe
+#print axioms exists_positive_zero_iff_natural_zero
