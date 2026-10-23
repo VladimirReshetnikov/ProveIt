@@ -1,6 +1,6 @@
 # Whole-tuple compatibility for the split116 candidates
 
-The `compact57/` and `compact54/` directories are separate candidate instances
+The `compact57/`, `compact54/`, and `compact54-sharp/` directories are separate candidate instances
 of the report59 split116/free-coordinate architecture. Each must contain its
 own complete native tuple, regenerated packed coefficients and scale leaves,
 and validation receipts. No delivered report59 equation is changed in place.
@@ -40,14 +40,15 @@ q=beta*J+1, C=q−F−alpha,
 (K0+w)C+(q−F)−z*(q−1)=1.
 ```
 
-## Two complete instances
+## Complete instances
 
 | Instance | beta base | Port bit lengths beta,K,MC,MF_source | Native raw bytes | Safe H exponent | kappa |
 |---|---|---|---:|---:|---:|
 |compact57|B=2^590069|590069,592884,590069,590070|295388|1182955|1182967|
 |compact54|B=2^429959|429959,434054,429959,429960|215492|864015|864027|
+|compact54-sharp|B=2^429959|429959,434054,429959,429960|215492|864014|864026|
 
-Both instances use beta=B−1, K0=DC+B*DR, and
+All three instances use beta=B−1, K0=DC+B*DR, and
 MF=MF_source=MF_native+B−1. The last shift occurs exactly once. All four
 native bytestrings must come from the selected single instance.
 
@@ -166,3 +167,31 @@ nine-positive construction. The inherited native/Pell and K215/refutation
 proofs remain mathematical inputs. A kernel-checked calibration of these native
 ports, and an internal ZFC derivation of the final biconditional, remain distinct
 formalization obligations.
+
+
+## The sharp 54 scale
+
+`compact54-sharp/` keeps the whole 54 native tuple and old-z source unchanged.
+Its smaller height certificate factors record c007 as
+
+```
+c007 = 2*beta*(K0+1).
+```
+
+For beta<2^429959 and K0<2^434054, with nonnegative ports, integer discreteness
+gives K0+1<=2^434054. Hence c007<2^864014. The other 88 actual records also satisfy
+this strict bound; their original termwise box estimates already fit it. This
+saves one bit from H while preserving all four native integers and the three
+kernel coefficient lists. The regenerated scale is kappa=864026, which is even,
+and the outer leaf becomes c=2^6912197. Even kappa causes no parity assumption in
+the split-mask population calculation or the ratio construction. The separate
+sharp instance has completed its generator and verifier replay; it does not
+replace the wider-scale instances or their historical receipts.
+
+The checked `SplitKernelData59.records0_lt`, `records1_lt`, and `records2_lt`
+prove the stronger generic bound 2*Bcap*Kcap under the supplied box assumptions.
+`kernelBounds_box` combines these actual89 recipe bounds with the three degree
+ceilings and leading coefficient1; its axiom audit uses only Lean's standard
+propext, Classical.choice and Quot.sound.
+That formal certificate is separate from the native calibration and must not be
+read as a proof of the omitted compiler-to-refutation bridge.

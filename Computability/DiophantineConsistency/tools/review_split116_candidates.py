@@ -19,7 +19,8 @@ def sha(raw):
 def main():
     family = ROOT / "candidates/split116-compact"
     rows = []
-    for variant in ("compact57", "compact54"):
+    variants = ("compact57", "compact54", "compact54-sharp")
+    for variant in variants:
         instance = family / variant
         manifest = json.loads((instance / "MANIFEST.json").read_text())
         for name, expected in manifest.items():
@@ -50,7 +51,7 @@ def main():
     result = dict(status="PASS", scope="Independent literal DAG/liveness/count audit, fixed-leaf bytes/hash readback and whole candidate manifest check. No unbounded theorem or new degree proof inferred.", circuits=rows)
     target = family / "INDEPENDENT_CIRCUIT_REVIEW.json"
     target.write_text(json.dumps(result, indent=2) + "\n")
-    print(json.dumps(dict(status="PASS", instances=2, circuits=len(rows))))
+    print(json.dumps(dict(status="PASS", instances=len(variants), circuits=len(rows))))
 
 
 if __name__ == "__main__":

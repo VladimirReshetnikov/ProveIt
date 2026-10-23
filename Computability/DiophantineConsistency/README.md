@@ -25,7 +25,9 @@ positive variables, 473 binary operations, degree 1,910,404 (480 operations
 over naturals). It improves both measures over the former package-52 target.
 Two new concrete instances bind that architecture to the entire compact
 tuples from packages 54 and 57. The current preferred instance uses 54's
-215,492-byte native tuple, retaining the same operation count and degree;
+215,492-byte native tuple, retaining the same operation count and degree.
+Its sharpened binding halves the radix floor and divides the threshold
+scale by 256, saving one raw stored byte;
 see [the candidate artifacts](candidates/split116-compact/README.md).
 The selection, alternatives,
 full finite replays and remaining proof obligations are recorded in
@@ -34,7 +36,8 @@ equations remain the certified baseline until a replacement is fully checked.
 
 The new split-form foundations now pass Lean: same-degree coefficient
 extraction, the shorter rank's exact carry threshold, mask population,
-signed-borrow decoding, coefficient bounds, and the free-carrier finalizer.
+signed-borrow decoding, coefficient bounds, the free-carrier finalizer,
+and the assembled binomial-to-source-coefficient contract.
 Their contracts and remaining assembly work are recorded in
 [SPLIT116_FORMALIZATION.md](SPLIT116_FORMALIZATION.md).
 

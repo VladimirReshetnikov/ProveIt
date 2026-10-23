@@ -23,6 +23,8 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parents[1]
 ARRIVAL = '7331974b69'
+LEGACY_COMMIT = '4edbd53636'
+LEGACY_SHA256 = 'd4ebd34d36becdc5142526ccf02f6e2c239ac93c8528b39235ee798b1aa10da1'
 ARCHIVES = {
     54: ('con-zfc-calibrated-carry-4b4349064a.zip',
          'e8045da2c6a33b84a51cfb7fa543fb5ccd1db857d283af5094a89f09ec6be2be'),
@@ -38,6 +40,8 @@ VARIANTS = {
                   'height': 1182955, 'kappa': 1182967},
     'compact54': {'package': 54, 'bits': [429959, 434054, 429959, 429960],
                   'height': 864015, 'kappa': 864027},
+    'compact54-sharp': {'package': 54, 'bits': [429959, 434054, 429959, 429960],
+                        'height': 864014, 'kappa': 864026},
 }
 ALIASES = {'beta': 'beta', 'K0': 'K', 'MC': 'MC', 'MF': 'MF_source'}
 SCRIPTS = ['build_nine.py', 'circuit.py', 'verify_nine.py',
@@ -81,6 +85,27 @@ def rewrite(text, old, new, count=1):
     return text.replace(old, new)
 
 
+def generate_legacy(variant, destination):
+    """Replay the actual checkpoint generator, preserving its old provenance.
+
+    A new generator hash must not silently reseal the two frozen instances.
+    The old program is retained verbatim in scratch and its repository roots
+    are explicitly supplied, so its original source hash remains truthful.
+    """
+    source = subprocess.run(['git', 'show', f'{LEGACY_COMMIT}:' +
+        'Computability/DiophantineConsistency/tools/generate_split116_compact.py'],
+        cwd=REPO, check=True, capture_output=True).stdout
+    require(sha(source) == LEGACY_SHA256, 'legacy generator identity')
+    with tempfile.TemporaryDirectory(prefix='proveit-split116-legacy-') as td:
+        path = Path(td)/'research/tools/generate_split116_compact.py'
+        path.parent.mkdir(parents=True)
+        path.write_bytes(source)
+        namespace = {'__name__': 'split116_checkpoint_generator', '__file__': str(path)}
+        exec(compile(source, str(path), 'exec'), namespace)
+        namespace['ROOT'], namespace['REPO'] = ROOT, REPO
+        namespace['generate'](variant, destination)
+
+
 def materialize(destination, config, ports):
     bodies = [json.loads(p.read_text()) for p in sorted((destination/'generated').glob('split_116_*.json'))
               if not p.name.endswith('_degree.json')]
@@ -119,15 +144,44 @@ def materialize(destination, config, ports):
 def extra_checks(destination, config, ports):
     kernels = json.loads((destination/'data/split_kernels.json').read_text())
     bounds = []
+    actuals = []
+    factorized = []
     for kernel in kernels['kernels']:
         for term in kernel['terms']:
             bound = sum(abs(t['coefficient']) * (1 << sum(e*b for e, b in
                 zip(t['powers'], config['bits']))) for t in term['coefficient'])
+            polynomial = {tuple(t['powers']): t['coefficient'] for t in term['coefficient']}
+            if config['variant'] == 'compact54-sharp' and polynomial == {
+                    (1, 0, 0, 0): 2, (1, 1, 0, 0): 2}:
+                original_bits = bound.bit_length()
+                bound = 2 * ((1 << config['bits'][0]) - 1) * (1 << config['bits'][1])
+                factorized.append({'degree': kernel['degree'], 'exponent': term['exponent'],
+                    'recipe': '2*beta+2*beta*K0 = 2*beta*(K0+1)',
+                    'old_termwise_majorant_bits': original_bits,
+                    'factorized_majorant_bits': bound.bit_length()})
             actual = sum(t['coefficient'] * math.prod(ports[p]**e for p, e in
                 zip(('beta', 'K0', 'MC', 'MF'), t['powers'])) for t in term['coefficient'])
             require(abs(actual) < 1 << config['height'], 'actual weighted coefficient height')
             bounds.append(bound)
+            actuals.append((abs(actual), kernel['degree'], term['exponent']))
     require(len(bounds) == 89 and max(bounds).bit_length() == config['height'], 'all89 majorants')
+    if config['variant'] == 'compact54-sharp':
+        require(len(factorized) == 1 and factorized[0]['degree'] == 1 and
+                factorized[0]['exponent'] == 383, 'unique factorized transport record')
+        maximum = max(actuals)
+        require(maximum[0].bit_length() == config['height'], 'smallest dyadic kernel height')
+        write_json(destination/'HEIGHT_CERTIFICATE.json', {
+            'status': 'PASS', 'weighted_records': 89, 'unchanged_termwise_records': 88,
+            'factorized_records': factorized,
+            'generic_assumptions': ['beta,K0 are integers',
+                '0<=beta<2^429959', '0<=K0<2^434054'],
+            'factorized_bound': '|2*beta+2*beta*K0| <= 2*(2^429959-1)*2^434054 < 2^864014',
+            'reason': 'K0+1<=2^434054; beta<=2^429959-1; all factors nonnegative.',
+            'maximum_actual_absolute_coefficient_bits': maximum[0].bit_length(),
+            'maximum_actual_at_degree': maximum[1], 'maximum_actual_at_exponent': maximum[2],
+            'minimal_dyadic_height_for_fixed_kernel': True,
+            'kappa_parity': 'No parity premise: 2418 is even, L=b*B^2279, c=2^(8*kappa-11).',
+            'scope': 'Exact literal kernel-height certificate; no native calibration or consistency theorem.'})
     cases = []
     for k in range(32):
         nu = config['kappa'] + 2*k
@@ -173,6 +227,8 @@ def extra_checks(destination, config, ports):
 
 
 def generate(variant, destination):
+    if variant in ('compact57', 'compact54'):
+        return generate_legacy(variant, destination)
     spec = VARIANTS[variant]
     config = dict(spec, variant=variant, threshold_scale_exponent=8*spec['kappa']-11)
     require(not destination.exists(), f'destination exists: {destination}')
@@ -257,6 +313,12 @@ def generate(variant, destination):
                            f'bits={tuple(spec["bits"])} if split else BITS')
             text = rewrite(text, "'coherent_tuple':'old31' if split else 'native52'",
                            f"'coherent_tuple':'{variant}' if split else 'native52'")
+            text = rewrite(text,
+                "        bound=max(bound,bnd)\n        return coefs[name]",
+                "        if poly == {(1,0,0,0):2,(1,1,0,0):2}:\n"
+                "            # Integer box: beta<=Bcap-1 and K0+1<=Qcap.\n"
+                "            bnd=2*((1<<bits[0])-1)*(1<<bits[1])\n"
+                "        bound=max(bound,bnd)\n        return coefs[name]")
         if name in ('verify_nine.py', 'independent_review.py', 'check_source_independent.py'):
             require('old_tuple' in text, 'legacy tuple path')
             text = text.replace('old_tuple', 'compact_tuple')

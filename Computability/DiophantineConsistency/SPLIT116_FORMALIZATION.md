@@ -7,6 +7,10 @@ binary operations, and exact degree 1,910,404. The natural-coordinate
 translation has 480 operations. The concrete circuits, signed constants,
 provenance and finite replay receipts are in
 [candidates/split116-compact](candidates/split116-compact/README.md).
+The preferred `compact54-sharp` binding uses height `2^864014`, radix floor
+`2^864026` and threshold scale `2^6912197`. Its factored height bound saves
+one raw stored byte relative to the first compact54 instance; operation
+count, degree and compressed storage are unchanged.
 
 These numerical claims do not yet describe a new Lean theorem equating
 this particular circuit's unsolvability with consistency. The closed
@@ -55,6 +59,19 @@ use only `propext`, `Classical.choice`, and `Quot.sound`.
   margin and quotient shift. Positive margin recovers the former carrier
   domain, and the actual finalizer has a strictly positive final witness.
   Its soundness and completeness use the existing Jones numerical theorem.
+* `SplitCarry`, `SplitSourceBounds` and `SplitSourceCarry` combine the low
+  digit decoder with the sparse high borrow test, deriving the product's
+  degree below 2162 and quarter-base coefficient bound from the kernel data.
+* `SplitNineRatio` supplies the exact outer base, rank, threshold and cap.
+  Its soundness recovers the power-of-two base and weak cap; completeness
+  constructs the required positive coordinates. The threshold is checked
+  for either parity of the fixed radix exponent.
+* `SplitSourceWords` proves that the actual high word is positive before
+  the cap, that the natural and integer word/mask expressions agree, and
+  that the weak cap gives both required code ranges. `SplitSourceContract`
+  assembles the calibrated binomial test with bounded positive digits and
+  all monitored source coefficients zero. No supplied degree, population,
+  quarter-bound or source-word positivity premise remains in this theorem.
 
 The detailed decoder and finalizer contracts are in
 [SPARSE_BORROW_CARRY.md](SPARSE_BORROW_CARRY.md),
@@ -71,8 +88,8 @@ The two source row operations, 89 weighted records and 22 target positions
 are being bound literally in Lean. All source-domain translations must
 preserve the positive quotient boundary.
 
-The assembly still needs the two-block low/high carry decoder, literal source
-extraction, and composition with the free-carrier finalizer. The counted
+The assembly still needs the literal source binding and the unbounded
+positive-nine existence composition. The counted
 473-operation DAG then needs a checked evaluation identity with the
 literal polynomial. Generic lemmas above do not discharge that identity.
 
@@ -94,6 +111,12 @@ lake env lean Computability/DiophantineConsistency/Lean/checks/MaskPopulation.le
 lake env lean Computability/DiophantineConsistency/Lean/checks/SparseBorrowCarry.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/SplitCoefficientBounds.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/SplitWordBounds.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitCarry.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceBounds.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceCarry.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitNineRatio.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceWords.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceContract.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/FreeCarrierRatio.lean
 python3 -B Computability/DiophantineConsistency/tools/generate_split116_compact.py --all --check
 ```

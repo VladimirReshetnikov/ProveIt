@@ -63,3 +63,9 @@ import DiophantineConsistency.FreeCarrierRatio
 import DiophantineConsistency.SparseBorrowCarry
 import DiophantineConsistency.SplitCoefficientBounds
 import DiophantineConsistency.SplitWordBounds
+import DiophantineConsistency.SplitCarry
+import DiophantineConsistency.SplitSourceBounds
+import DiophantineConsistency.SplitSourceCarry
+import DiophantineConsistency.SplitNineRatio
+import DiophantineConsistency.SplitSourceWords
+import DiophantineConsistency.SplitSourceContract
