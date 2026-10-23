@@ -3,8 +3,8 @@
 
 The certificate checks fixed exponent identities and a structural remap of
 every other gate. It therefore describes an identity over commutative rings,
-not just equality at the modular diagnostic assignments. Lean checking of
-this particular transformation remains a separate task.
+not just equality at the modular diagnostic assignments. This particular
+transformation is also checked separately by SplitJointPower59 in Lean.
 """
 import argparse
 import collections
@@ -167,6 +167,8 @@ def main():
         output[name] = encoded(child)
         receipt.update(parent_sha256=sha(raw), child_sha256=sha(output[name]),
                        fixed_binding_sha256=sha(binding_raw), modular_diagnostics=36,
+                       # Preserve the original receipt bytes pinned by the Lean
+                       # generator; current proof status is recorded in README.
                        scope="Exact fixed-exponent identities and structural gate remap; Lean transformation proof pending.")
         output[f"{domain}_rewrite.json"] = encoded(receipt)
         rows.append(dict(domain=domain, operations=operations, power_multiplications=90,

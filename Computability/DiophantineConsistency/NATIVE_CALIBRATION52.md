@@ -71,7 +71,15 @@ The existing formal endpoints do not close authentic native calibration:
   already identifies the literal machine215 blank halting predicate with
   `BProv ZFCax_s [] Form.fBot`.
 
-The smallest remaining external contract is therefore the positive-zero
+For the authoritative old-z source now bound by `SplitCertificate59`,
+[NativePellBootstrap](NATIVE_PELL_BOOTSTRAP.md) has also closed main
+classification, the native window bound, the strong bootstrap and the exact
+main index from explicit native port relations. Its inner native rank is
+distinct from the outer binomial rank. These are literal source arithmetic
+theorems, not fixed-payload/tableau calibration; the package-52 shifted
+quotient still needs its precise domain translation when reusing them.
+
+The remaining external contract is the positive-zero
 existence equivalence between this *particular coherent four-port instance*
 and `BlankHalts machine215`. A useful decomposition is the seven-equation
 Pell/bit-mask theorem, the literal complement-packed clause decoder, whole-cell

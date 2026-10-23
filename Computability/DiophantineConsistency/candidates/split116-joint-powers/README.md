@@ -29,8 +29,10 @@ remap. The checker independently rederives both circuits' power labels,
 checks complete new-node coverage and the output correspondence, audits
 topology/liveness/counts, and compares 36 modular assignments per domain.
 The exponent and structural certificate describes an equality over every
-commutative ring; the modular comparisons are only diagnostics. A Lean
-proof of this particular rewrite is being developed separately.
+commutative ring; the modular comparisons are only diagnostics.
+`SplitJointPower59` now checks this particular rewrite in Lean, including
+actual `MvPolynomial` equality with the parent circuits. See
+[SPLIT_JOINT_POWER59.md](../../SPLIT_JOINT_POWER59.md).
 
 Fixed leaves are bound by the unchanged
 [compact54-sharp binding](../split116-compact/compact54-sharp/fixed/BINDING.json).

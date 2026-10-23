@@ -93,9 +93,10 @@ Package 66 changes two source coordinates by
 `P_old=P_new+eta+zeta` and `N_old=N_new+q`. The old positive zero equations
 justify the inverse positive domains. Its new 85-record source needs a
 fresh literal extraction certificate; its historical unrepaired layout
-really fails a new interaction and is explicitly rejected. The repaired
-H2082 layout, affine source reconstruction and population parity factors
-must be formalized. The simple variant reuses the current free-carrier
+really fails a new interaction and is explicitly rejected. The affine
+source reconstruction now passes Lean in `GapSource66`, including inverse
+positivity. The repaired H2082 extraction layout and population parity
+factors still need formalization. The simple variant reuses the current free-carrier
 tail; the refined variants require new seventh-order majorants.
 
 Package 65 permits a repeated kernel position only when every owner has
@@ -111,8 +112,10 @@ source/binomial/finalizer composition, unbounded cofinal witnesses and
 the actual nine-variable `MvPolynomial` source equivalence pass Lean.
 Our joint-power version additionally saves 17 gates, with its particular
 generic-ring and multivariate-polynomial rewrite now checked in Lean.
-Its counted-DAG/source-recipe identification remains separate. These remain useful proof
-checkpoints even though the numerical target has changed.
+The actual 463-operation natural DAG is now identified with the source
+recipe and its `MvPolynomial`, including all twelve fixed-leaf expressions.
+The positive-DAG shift remains separate. These are useful proof checkpoints
+even though the numerical target has changed.
 
 The signed native Pell step-down and main bootstrap are also checked under
 explicit native port relations. They do not yet identify the fixed payloads'

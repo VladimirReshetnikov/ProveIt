@@ -15,29 +15,35 @@ Neither consistency nor inconsistency is assumed.
 
 There is no single established meaning of "simplest": number of variables,
 total degree, arithmetic operations, and coefficient size give different
-answers. We first seek the fewest natural witnesses available from the
-repository's proved reductions, while retaining a quartic alternative.
-Global optimality is not asserted.
+answers. We compare these measures separately, retaining constructions
+with different tradeoffs, including direct quartics and proof-certificate
+encodings. Global optimality is not asserted.
 
 Neither a K215 encoding nor a Jones universal equation is a requirement.
 Direct proof-certificate and arithmetic-trace encodings are separate research
 routes. The nine-variable comparison below is one working branch of a
 multi-measure search, not a restriction on the final construction.
 
-Wave-nine placement `a2cd79b912` has now been merged. All eight full normal
-release replays pass; the comparison, optimized checks and next-target
-selection are being recorded separately. The checked package-59 work below
-is preserved while these new proposals are evaluated.
+Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
+release replays pass. Within the nine-positive branch, the next delivered
+cost target is package 66's 444-operation, degree-1,845,940 form. Package
+66's separate [compact54-sharp instance](candidates/gap2082-compact54/README.md)
+passes its sealed finite checks at **443 positive / 450 natural operations**
+with the same degree and is the next local cost target to formalize. Package
+65 offers direct source reuse and lower degree; package 67 reaches degree
+1,494,006 at higher cost. See [PROPOSAL_REVIEW_WAVE9.md](PROPOSAL_REVIEW_WAVE9.md)
+for the comparison, replay evidence and parallel alternative-encoding work.
 
-After reviewing wave-eight placement `beb0192cb8`, the next small-nine
-target is package 59's free-coordinate degree-separated adjunct: nine
+The previous wave-eight target, now a checked source checkpoint, was
+package 59's free-coordinate degree-separated adjunct: nine
 positive variables, 473 binary operations, degree 1,910,404 (480 operations
 over naturals). It improves both measures over the former package-52 target.
-Two new concrete instances bind that architecture to the entire compact
-tuples from packages 54 and 57. The current preferred instance uses 54's
+Concrete instances bind that architecture to the entire compact
+tuples from packages 54 and 57. The preferred instance of this recipe uses 54's
 215,492-byte native tuple, retaining the same operation count and degree.
 Its sharpened binding halves the radix floor and divides the threshold
-scale by 256, saving one raw stored byte;
+scale by 256, saving one raw stored byte. A checked joint-power
+rewrite reduces the same polynomial to 456 positive / 463 natural operations;
 see [the candidate artifacts](candidates/split116-compact/README.md).
 The selection, alternatives,
 full finite replays and remaining proof obligations are recorded in
@@ -55,8 +61,11 @@ nine-coordinate arithmetic source equivalence now also pass Lean. The
 equation and exact port hypotheses are recorded in
 [SPLIT_SOURCE59.md](SPLIT_SOURCE59.md). The actual nine-variable
 `MvPolynomial` and its evaluation/source equivalence also pass Lean; see
-[SPLIT_NINE_POLYNOMIAL59.md](SPLIT_NINE_POLYNOMIAL59.md). Its native
-calibration and counted DAG identity remain separate obligations.
+[SPLIT_NINE_POLYNOMIAL59.md](SPLIT_NINE_POLYNOMIAL59.md). Lean also identifies
+the literal 480-operation natural DAG and its 463-operation replacement
+with this polynomial, including all twelve fixed-leaf recipes; see
+[SPLIT_CIRCUIT_RECIPE59.md](SPLIT_CIRCUIT_RECIPE59.md). The positive-DAG shift
+and native calibration are separate obligations.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

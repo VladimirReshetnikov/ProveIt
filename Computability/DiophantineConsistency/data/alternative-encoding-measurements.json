@@ -1,0 +1,48 @@
+{
+  "description": "Controlled exploratory count probes; no numerical complete-quartic count was obtained.",
+  "git_head_at_receipt": "4bc76d809b9d2350a034c851812f73dad52577fb",
+  "probes": [
+    {
+      "name": "full_representation_eval",
+      "status": "timeout",
+      "limits": {
+        "seconds": 45,
+        "exit_code": 124
+      },
+      "lean_source": "import DiophantineConsistency.NativeZFC\nopen DiophantineConsistency\n#eval NativeZFC.representation.witnessCount\n",
+      "source_sha256": "4e2ae861726d1a0e502e5465fd94b1b43d2678aa7da1ca85efb2ba2d0d4466f5",
+      "output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "full_representation_reduce",
+      "status": "heartbeat_limit",
+      "limits": {
+        "seconds": 45,
+        "heartbeats": 200000,
+        "exit_code": 1
+      },
+      "lean_source": "import DiophantineConsistency.NativeZFC\nopen DiophantineConsistency\nset_option maxRecDepth 20000\nset_option maxHeartbeats 200000\n#reduce NativeZFC.representation.witnessCount\n",
+      "source_sha256": "4968c0791cb9ee648f8dca41bdd1d62b5c410df2dc040114f2e8505fb7b720b9",
+      "output": "/tmp/proofs62ff-quartic-count-reduce.lean:5:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n",
+      "output_sha256": "a6e0366efb8ddb0b2442cf38b09100e9de9f7149412f1072ab9550f0236da4c7"
+    },
+    {
+      "name": "formula_tree_gate_counts",
+      "status": "timeout",
+      "limits": {
+        "seconds": 45,
+        "exit_code": 124
+      },
+      "lean_source": "import DiophantineConsistency.NativeZFC\nopen DiophantineConsistency\nopen NativeFormulaSyntax\nprivate def a : NatExpr (Fin 4) := .var 0\nprivate def b : NatExpr (Fin 4) := .var 1\nprivate def c : NatExpr (Fin 4) := .var 2\nprivate def u : NatExpr (Fin 4) := .var 3\n#eval [QuarticCompiler.Gates.count (row1 a b),\n  QuarticCompiler.Gates.count (row2 a b c),\n  QuarticCompiler.Gates.count (row3 a b c),\n  QuarticCompiler.Gates.count (row4 a b c),\n  QuarticCompiler.Gates.count (row5 a b c),\n  QuarticCompiler.Gates.count (row6 a b),\n  QuarticCompiler.Gates.count (growth a b c),\n  QuarticCompiler.Gates.count (row8 a b c u),\n  QuarticCompiler.Gates.count (bundle a b c)]\n",
+      "source_sha256": "b79560cf92c4ab2814f5bd36eace26e375dee881a7be66145bf4d2a0eaff0b62",
+      "output": "",
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "known_checked_local_count": {
+    "declaration": "NativeGraphEnumerator.enumStepProgram_witnessCount",
+    "value": 1742,
+    "measure": "one-step graph witnesses before trace and quartic flattening"
+  }
+}

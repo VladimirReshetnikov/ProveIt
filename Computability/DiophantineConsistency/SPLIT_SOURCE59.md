@@ -1,6 +1,6 @@
 # Literal split116 source and nine-coordinate equation
 
-The current numerical candidate is
+The wave-eight proof checkpoint is
 [compact54-sharp](candidates/split116-compact/compact54-sharp/README.md):
 nine positive variables, 473 live binary operations, degree 1,910,404.
 Its natural translation has 480 operations. The complete coefficient tuple
@@ -79,12 +79,16 @@ The Lean arithmetic proof below uses finite polynomial sums.
 `SplitNinePolynomial59.polynomial` is an actual `MvPolynomial (Fin 9) Int`,
 with a checked evaluation identity and the same source-zero equivalence;
 see [SPLIT_NINE_POLYNOMIAL59.md](SPLIT_NINE_POLYNOMIAL59.md). Its evaluator
-has not yet been identified with the counted shared DAG by a Lean theorem.
+is now identified in Lean with the literal 480-operation natural DAG,
+including all twelve fixed-leaf recipes; see
+[SPLIT_CIRCUIT_RECIPE59.md](SPLIT_CIRCUIT_RECIPE59.md).
 
 A separate [joint-power instance](candidates/split116-joint-powers/README.md)
 reduces these same positive/natural polynomials to 456/463 operations.
 Its exact exponent/remap certificate is independently checked, and the
-specific Lean rewrite proof is in progress. Wave-nine proposals introduce
+specific generic-ring and multivariate-polynomial rewrite now passes Lean.
+Lean also identifies the 463-operation natural DAG with the source recipe.
+The positive-DAG translation remains separate. Wave-nine proposals introduce
 further competing forms; this is a local improvement of the checked recipe.
 
 ## Checked proof chain
