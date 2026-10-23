@@ -29,7 +29,9 @@ Lean soundness and completeness, with explicit axiom/schema tags and no
 K215 or Jones dependency; see
 [ANNOTATED_PROOF_CHECKER.md](ANNOTATED_PROOF_CHECKER.md). Its
 [natural-number coding](ANNOTATED_PROOF_CODE.md) now passes Lean, including
-roundtrips and malformed-input rejection. Arithmetic compilation is in progress.
+roundtrips and malformed-input rejection. Exact numeric certificates for
+renaming under binders, including shift and instantiation, also pass Lean;
+see [ANNOTATED_RENAME.md](ANNOTATED_RENAME.md). Arithmetic compilation is in progress.
 The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
 already has a closed external consistency equivalence at degree at most
 four; it retains the enumerator's arithmetic graph and has unmeasured size.
