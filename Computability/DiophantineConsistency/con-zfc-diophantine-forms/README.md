@@ -103,17 +103,26 @@ The route:
    native-window/Pell compiler
    ([`native-stream-queue/`](../../HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md)),
    with its input interface removed.
-3. The low-variable forms then apply a reduction to a fixed parent: wave-4
-   30's 31-unknown system of 22 quadratic residuals, or its quartic sum of
-   squares. There are two reductions:
-   - the **Matiyasevich–Jones** nine-variable reduction, for the 9ℕ, 9-positive,
-     11- and 12-positive forms and the signed 13–17ℤ forms;
+3. The **11- and 12-positive forms** are direct Pell constructions on the
+   compiler source. They merge roots, separate norms and absorb indices,
+   with no reduction to a quartic.
+4. The **lowest-variable forms** reduce a fixed parent: wave-4 30's
+   31-unknown system of 22 quadratic residuals or its quartic sum of
+   squares, in coordinates such as 31's 60-operation system (z_old = z + 1).
+   There are two reductions:
+   - the **Matiyasevich–Jones** nine-variable reduction, for the 9ℕ and
+     9-positive forms and the signed 13–17ℤ forms;
    - **Sun's** ten-integer reduction, for every 10ℤ form.
 
-Wave 6's main new idea is to code the 22 quadratic residuals directly, with
-a finite Sidon (B₂) or Bose–Chowla (B₄) set of digit positions. Wave 5 instead
-applied exponentially spaced positions to the quartic sum of squares. This
-cuts the degree of the low-variable forms by many orders of magnitude.
+   The exception is wave-5 32's 15ℤ and 16ℤ forms, which use ν = 32 and
+   package 29's T4 quartic32.
+
+Wave 6's main new idea is to replace wave 5's exponentially spaced digit
+positions 5^j by a finite additive code. The B₂ (Sidon) packages 38, 39,
+40, 43 and 45 code the 22 quadratic residuals directly. The B₄
+(Bose–Chowla) packages 41, 42 and 44 keep the quartic sum of squares but
+place it on a B₄ set. Both cut the degree of the low-variable forms by many
+orders of magnitude.
 
 ## Combined frontier, waves 5 and 6 (intake findings)
 
@@ -128,7 +137,7 @@ full; where only one package has it, that package.
 
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
-| Fewest unrestricted integers (Sun's reduction) | **10ℤ at degree 237,520,456**, in 782 ops (40) or 809 (43). These are the same circuit template, differing in one fixed constant (β_source); setting 40's to 43's value reproduces 43 | 40, 43 | 40 |
+| Fewest unrestricted integers (Sun's reduction) | **10ℤ at degree 237,520,456**, in 782 ops (40) or 809 (43). They are the same polynomial up to one fixed constant, the source base β_source (40's 2^2140030, 43's 2^2134940); with 43's value, 40's cheaper circuit evaluates 43's polynomial | 40, 43 | 40 |
 | 10ℤ, fewest operations | **773 ops** at degree 449,607,016 (38, on its own tuple) | 38 | 38 |
 | 10ℤ, other forms | 39: 267,823,432 / 786 (one circuit on two tuples). 45: 237,526,776 / 936. 41: 69,554,088,184 / 1333, the same polynomial as 44's 1407-op `sun_b4`, so 41 is a cheaper evaluator of it. 42: 107,286,763,576 / 2204. Wave-5 31: about 5.9·10^26 / 1442 | — | — |
 | Fewest integers without Sun's 2026 reduction | **13ℤ** at degree 226,334,238,192, 1409 ops; and **14ℤ** at 226,295,141,096 / 1420, which dominates every wave-5 14–16ℤ form on degree and operations | 44 | 44 |
@@ -170,8 +179,8 @@ article is `report.pdf` (`report/report.pdf` in 45).
 |---|---|---|
 | 38, 40, 43 | the same 32-element Sidon set (maximum 799); 38's target stride is 3197, 40's and 43's 1599 | 22 quadratic residuals |
 | 39 | Sidon set, maximum 901 | 22 quadratic residuals |
-| 45 | 43's Sidon set, targets 1599j (one above 43's) | 31's shifted system |
-| 41, 44 | the same Bose–Chowla B₄ set (maximum 610,895), 44's an affine image of 42's code | 31's quartic sum of squares |
+| 45 | 43's Sidon set, targets 1599j (one above 43's) | 31's 60-op quadratic system (`quartic31_system60.json`, z_old = z + 1) |
+| 41, 44 | the same Bose–Chowla B₄ set (maximum 610,895), an affine image of 42's code | 31's quartic sum of squares |
 | 42 | a B₄ code with T = 942,302, plus nonzero edge words in the compiler | 31's quartic sum of squares |
 
 ### Coefficient recipes: use one whole tuple
@@ -180,7 +189,7 @@ article is `report.pdf` (`report/report.pdf` in 45).
 |---|---|---|---|
 | 38 | new: B = 2^678139 (ρ = 2^77, L = 8807, padding prime 56611) | 339,476 raw bytes (gzip 8,851); κ and β_Sun materialized | bytes match no other package |
 | 39 | 31's tuple (principal); compact B = 2^590069 (ρ = 2^67, prime 581197) | compact: 295,388 raw bytes | compact bytes identical to 44's native tuple |
-| 40 | 31's tuple; research candidate B = 2^690547 (346,098 bytes) | 31's (copies omitted at intake); β_S = 2^2140030 | the candidate binds no equation |
+| 40 | 31's tuple; research candidate B = 2^690547 (346,098 bytes) | 31's (copies omitted at intake); source base β_source = 2^2140030 | the candidate binds no equation |
 | 41 | 31's tuple, β_Sun = 2^4269882 | copies omitted at intake | 79 fixed leaves |
 | 42 | new: B = 2^683195 (ρ = 2^107, L = 6385, prime 135257) for the composed instance; 31's for the comparison instance | 342,269 raw bytes; β_S = 2^2743514 | the comparison and composed instances are one DAG on two tuples |
 | 43 | 31's tuple | β_source = 2^2134940 as a recipe only | 16 recipe leaves |
@@ -191,12 +200,20 @@ Every package binds its four ports as one tuple and forbids splicing.
 
 ### Tensions, not adjudicated at intake
 
-- **The eleven-positive form.** Earlier packages explicitly declined an
-  eleven-positive form: wave-4 24 (no identity forcing gcd(E, H) = 1), 36 and
-  37. 38 instead deletes h and N_k, keeps the weaker divisibility
-  E | H(k − R − 1), recovers p = R first, and uses the modulus
-  μ = E / gcd(E, H) > R (`38-batching11/sections/section_eleven.tex`). It
-  does not cite those earlier remarks, and its review is a same-session AI
+- **The eleven-positive form.** Several packages explicitly declined an
+  eleven-positive form:
+  - earlier: wave-4 24 (no identity forcing gcd(E, H) = 1), 36 and 37;
+  - in this wave, 42 (`report.tex:428-437`), which names the gcd(E, H)
+    obstacle and the proof-order problem that X = 2^R cannot be used
+    before the packed index is recovered.
+
+  38's argument (`38-batching11/sections/section_eleven.tex`):
+  - it deletes h and N_k and keeps the weaker divisibility
+    E | H(k − R − 1);
+  - it recovers p = R first, which addresses 42's proof-order point;
+  - it uses the modulus μ = E / gcd(E, H) > R.
+
+  38 cites none of these remarks, and its review is a same-session AI
   review (`eleven/INDEPENDENT_REVIEW.md`). It is the result most in need of
   independent checking.
 - **The square base (from wave 5).** 44's `signed_audit/COFINAL_BASE_AUDIT.md`
@@ -211,12 +228,14 @@ Every package binds its four ports as one tuple and forbids splicing.
   without knowing of each other. 39's compact tuple and 44's native tuple are
   byte-identical.
 - **Inside packages.**
-  - 45 says both that its shift is "a genuine positive zero-set bijection"
-    (`report/report.tex:202-204`) and that it is "not a bijection on positive
-    witnesses" (`:429`).
-  - 45 counts 83 source pins in its report and 84 in its README.
   - 42's README recommends the composed instance, while its Theorem 1.1
     states the comparison instance.
+  - 45's two statements on its shift are consistent. One calls the zero sets
+    bijective given the compiler bounds (`report/report.tex:202-204`); the
+    other says the shift is not a bijection on all positive witnesses
+    (`:429`).
+  - 45's "83" and "84" source pins are also consistent: 83 initial-review
+    checks plus construction pins.
 - **No package calls wave 5 or its README wrong.**
   - 45 compares its twelve-positive system with 34's 1013 / 120 system. That
     system is real (`34-integer14/positive/SHIFTED12_PROOF.md:14`), and the
@@ -236,7 +255,7 @@ Every package binds its four ports as one tuple and forbids splicing.
   | 40 | `code/verify.py` | |
   | 41 | `reproduce.py` | contrary to its README; NumPy for the positive checker |
   | 42 | `reproduce.py` and `package_release.py --check` | |
-  | 43 | `reproduce.py` | |
+  | 43 | `reproduce.py` | contrary to its README |
   | 44 | `verify.py` | `SHA256SUMS.json` first |
   | 45 | `verify_release.py` | exact file set; SymPy and NumPy |
 
@@ -254,21 +273,23 @@ Every package binds its four ports as one tuple and forbids splicing.
   - Every package ships the K215 machine notices (`LICENSE.Wade`,
     `NOTICE-K215`).
   - 44 calls wave-5 37 "the preceding delivery in this conversation".
-- **Bundled post-pin files.** 44 and 45 bundle byte copies of
-  `Computability/DiophantineConsistency/README.md` and `STATUS.md` as of
-  `8747904f8b` (the commit after their pin that started the active Lean
-  research); 45 calls it the "postscript". No package uses the active Lean
-  work.
+- **Bundled post-pin files.** 45 bundles byte copies of
+  `Computability/DiophantineConsistency/README.md` and `STATUS.md`, and 44
+  bundles `STATUS.md` only. Both copies are as of `8747904f8b`, the commit
+  after their pin that started the active Lean research; 45 calls it the
+  "postscript". No package uses the active Lean work.
 - **Retained intermediates.**
   - 38: an earlier review copy, `review/ELEVEN_INDEPENDENT_REVIEW.md`.
   - 40: the unfinished `research_candidate/`.
   - 42: dominated finalizer variants and `review/UNSUCCESSFUL_REDUCTIONS.md`.
-  - 45: nine degree-certificate DAGs and the `short/` dead ends.
+  - 45: two nine-variable degree-certificate DAGs (803 and 806 ops) and the
+    `short/` dead ends.
 
 ### Further questions (wave 6)
 
 1. **Smaller codes.** Smaller or support-aware Sidon and B₄ sets, joint span
-   and cost optimization, and support-aware targets (38, 39, 40, 42, 43, 45).
+   and cost optimization, and support-aware targets (38, 39, 40, 41, 42, 43,
+   45).
    Each unit drop in the Sidon maximum lowers 40's degree by 297,088.
 2. **Formalize.** The extraction, carry decoder, signed bootstrap and
    reordered Pell-index recovery (38); the source interface (43, 45); which
@@ -276,9 +297,10 @@ Every package binds its four ports as one tuple and forbids splicing.
 3. **Fewer unknowns.**
    - Eight naturals and nine unrestricted integers remain unsettled (38).
    - Going below ten integers needs other ideas (41).
-   - B₄ coding for the nine-variable Jones route (42, 43).
-4. **A smaller parent.** A smaller quartic or source system (42, 43); 44 found
-   no validated thirty-variable quartic.
+   - B₄ coding for the nine-variable Jones route (asked by 42 and 43) is
+     already delivered by 44. 38's and 45's B₂ nine-variable forms beat it.
+4. **A smaller parent.** A smaller quartic or source system (39, 42, 43). 44
+   found no validated thirty-variable quartic.
 5. **Coefficients.** Rebinding native improvements (39), transporting 36's
    tuple (45) and finishing 40's research candidate (40).
 
@@ -535,9 +557,13 @@ The packages say, in their own words (exceptions noted):
   - 38 says its nine-variable form "does not extend the result to nine
     unrestricted integers". 44 makes no sub-ten-integer or sub-nine-natural
     claim.
-- **No consistency proof.** The theorems are equivalences. Each package says
-  it decides neither side; several add that a two-sided independence claim
-  needs an extra hypothesis (wave-5 32, 33, 36; wave-6 41, 45).
+  - 31's review is not an independent audit of Sun's Lucas theorems.
+  - 31 warns that ten integers "should not be compared … as if the domains
+    were identical".
+- **No consistency proof.** The theorems are equivalences, and every
+  package disclaims a consistency proof; most also say they decide neither
+  side. Several add that a two-sided independence claim needs an extra
+  hypothesis: wave-5 32, 33, 36 and wave-6 41, 43, 45.
 - **Domains.** Positive and nine-variable equations must not be read over ℤ;
   the domains of different forms are not interchangeable.
 - **No optimality.** No global minimum is claimed, and nothing below 67
@@ -559,12 +585,23 @@ The packages say, in their own words (exceptions noted):
   - `Jones1982.exists_B25core`;
   - in 38, also `Jones1982.lemma_2_16`.
 
-  Wave-6 packages use the ratio lemmas directly, not
-  `Jones1982.Nine.wset_iff_nine`, which needs a quartic parent. None of them
-  uses `Jones1982.nine_unknowns`, which fixes ν = 58. Their new codes,
-  decoders, finalizers, majorants and Pell-index arguments are unformalized.
+  Which lemmas each wave uses:
+  - Wave 5's nine-variable forms apply `Jones1982.Nine.wset_iff_nine`
+    (for example 37 at ν = 31).
+  - Wave-6 38, 44 and 45 use the ratio lemmas directly instead. Their
+    additive codes replace the 5^ν packing that `wset_iff_nine` hard-wires
+    (`NineMain.lean:46-60`).
+  - 38 and 44 also use `Jones1982.lemma_2_16`.
+  - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
+
+  The new codes, decoders, finalizers, majorants and Pell-index arguments
+  are unformalized. Several arguments rest on the structure of Lean proofs
+  rather than their statements, for example the square base via
+  `Jones1982.USys_of_mem`.
 - **Sun.** Every 10ℤ form depends on Sun's 2026 preprint and his 2021 paper.
-  These are external, unformalized and were not checked at intake.
+  31 cites Proposition 2.1, Theorems 3.1 and 4.1, Propositions 6.1–6.2 and
+  §7 of the preprint. These are external, unformalized and were not checked
+  at intake.
 - **Active research.** `Computability/DiophantineConsistency` (outside this
   directory) holds checked Lean work on a Diophantine consistency equation;
   see its [README](../README.md) and STATUS. This report's packages are not
