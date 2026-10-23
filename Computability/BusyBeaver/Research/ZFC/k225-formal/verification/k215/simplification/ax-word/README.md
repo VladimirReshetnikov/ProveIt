@@ -21,7 +21,7 @@ checks are preserved in [source-actual.json](source-actual.json) and
 original scratch paths as historical records. The parent [portable Lean build](../../lean/README.md)
 provides full endpoint reproduction from the current repository sources.
 
-The [canonical generator](../../../../generate_l2axiomsdom.py) emits this
+The [then-canonical generator](https://github.com/VladimirReshetnikov/ProveIt/blob/65c60db4e43b4e3b472b01fb776a20d0971e41f4/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2axiomsdom.py) emits this
 compact representation only in `perm` mode. The
 [generation comparison](generation-review.json) confirms exact reproduction of
 the checked source, unchanged Dom-mode output, and unchanged public statement
@@ -39,3 +39,9 @@ The original source remains in Git at revision
 namespace-opening syntax, and the [exact correction](history/api-caller-v1/repair.diff).
 It also retains an unexecuted [generator formatting draft](history/generator-format-attempt1/note.txt)
 with a Python string-escaping error. Neither changed the checked AX proof.
+
+The [phase20 successor](../phase20/README.md) shares the word evaluator, literal-read proof
+and 148-atom suffix across the maintained AX facades. The obsolete
+[final generator template](../phase20/retired/generate_l2axiomsdom.py) is preserved as inert
+history. The generation comparison and commands above record this earlier checkpoint;
+its linked historical generator matches the exact hash in `generation-review.json`.

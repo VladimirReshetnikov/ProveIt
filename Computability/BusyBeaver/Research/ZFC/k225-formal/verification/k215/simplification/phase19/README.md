@@ -63,3 +63,7 @@ proposal snapshots after canonical paths change. No object files are shipped.
 Capture stores 396 distinct blobs, 713 logical entries and 712 source aliases.
 The [independent capture review](integration/capture-peer/actual-review.json) checks
 the archive, index and required evidence coverage.
+
+The [phase20 successor](../phase20/README.md) shares AX word proofs and the 219 macro
+contracts. This phase19 checkpoint and its eleven Lean evidence leaf files retain their
+original source, result and capture identities.

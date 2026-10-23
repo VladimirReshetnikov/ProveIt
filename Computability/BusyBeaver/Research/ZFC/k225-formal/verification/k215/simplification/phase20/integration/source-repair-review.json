@@ -1,0 +1,240 @@
+{
+  "status": "INDEPENDENT_FINAL_SOURCE_REPAIR_REVIEW_PASS",
+  "initial_source_spec": {
+    "path": "/tmp/k215-phase20-check-draft/source-spec-v1.json",
+    "sha256": "1e5b7e6d494d1c2918598b3bae2cbcb3f3253e36ca859b49ab3e63ebd3bf76c1",
+    "bytes": 10219
+  },
+  "final_source_spec": {
+    "path": "/tmp/k215-phase20-repairs/source-spec-v4.json",
+    "sha256": "97e3ca75c7ccefde42a2bceb504a6b40e8a7a464de8cc3a937b0d6a7fe113187",
+    "bytes": 10169
+  },
+  "final_map": {
+    "path": "/tmp/k215-phase20-check-v4/candidate-plan.json",
+    "sha256": "3e9c2af4f8908e7f878e1559d5ef1212edae527f8e14856befda10716bd0d7e6",
+    "bytes": 153584
+  },
+  "sources": [
+    {
+      "module": "BusyBeaver.ZFC.L2Axioms222",
+      "initial": {
+        "path": "/tmp/k215-phase20-ax-words/candidate-v4/L2Axioms222.lean",
+        "sha256": "21c6750516f38832439435663af84bc4c4840b5e1a519f85df21b13d96f8b21a",
+        "bytes": 1687
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-repairs/L2Axioms222-v4.lean",
+        "sha256": "89f04182989d20cab46142e19cfbd8519b0d140b0853b0fce602e08334ca5afc",
+        "bytes": 1689
+      },
+      "repairs": [
+        "Bind the two implicit register files before the native-run proof argument h in the transfer callback.",
+        "Remove wa after the compiler reported it unused; warning policy remains strict."
+      ],
+      "diff": "--- /tmp/k215-phase20-ax-words/candidate-v4/L2Axioms222.lean\n+++ /tmp/k215-phase20-repairs/L2Axioms222-v4.lean\n@@ -24,7 +24,7 @@\n def f236 (st : AS) : AS := axWordEval axWord st\n \n theorem l236 (st : AS) (hc : Clean st) : Rn (.node 236) st (f236 st) :=\n-  axWordRun (fun a h => trCore (by cases a <;> rfl) h) loop208 gate222 axWord axWord_checked st hc\n+  axWordRun (fun a {_ _} h => trCore (by cases a <;> rfl) h) loop208 gate222 axWord axWord_checked st hc\n \n theorem c236 (st : AS) (hc : Clean st) : Clean (f236 st) := axWordClean axWord st hc\n \n@@ -36,6 +36,6 @@\n         0, 0, 0, 0, 0, (Cantor.ofNat (Cantor.ofNat pl).2).2\u27e9 := by\n   simp only [f236, axWord, AXWord.axBody, List.cons_append, List.nil_append, axWordEval, AXAtom.effect, pushA, popA, gateF, ofNat_P,\n     Enum222.gate, Enum222.axStack, bundle222, nks, clos, req, vrel, growG,\n-    rho1, rho2, rho3, rho4, rho5, rho6, rho8, wa, wex, Nat.zero_add]\n+    rho1, rho2, rho3, rho4, rho5, rho6, rho8, wex, Nat.zero_add]\n \n end SetTheory.BusyBeaver.ZFC.L2K\n"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Axioms219",
+      "initial": {
+        "path": "/tmp/k215-phase20-ax-words/candidate-v2/L2Axioms219.lean",
+        "sha256": "b2d5e22ecd286fc8a80d4e20c1eec5b4e305a043b6fdc90ed8574c641627a438",
+        "bytes": 941
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-ax-words/candidate-v2/L2Axioms219.lean",
+        "sha256": "b2d5e22ecd286fc8a80d4e20c1eec5b4e305a043b6fdc90ed8574c641627a438",
+        "bytes": 941
+      },
+      "repairs": [],
+      "diff": ""
+    },
+    {
+      "module": "BusyBeaver.ZFC.AXWord",
+      "initial": {
+        "path": "/tmp/k215-phase20-ax-sharing/candidate-v5/AXWord.lean",
+        "sha256": "42d5fab367825804436373116ef272edd6aa59f6eb4b22665a6a5acdd25dd661",
+        "bytes": 8113
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-repairs/AXWord-v2.lean",
+        "sha256": "ad2ec186bb7c2054d876a0433ffea0ba6eda8317d6b947bb770924bc75f5ba44",
+        "bytes": 8107
+      },
+      "repairs": [
+        "Single-line record syntax preserves the written pl/tw/s1 effect; fixes the parse error before elaboration."
+      ],
+      "diff": "--- /tmp/k215-phase20-ax-sharing/candidate-v5/AXWord.lean\n+++ /tmp/k215-phase20-repairs/AXWord-v2.lean\n@@ -58,8 +58,7 @@\n   | .wn, st => { st with tw := Code254.wn st.tw }\n   | .readp2, st => { st with pl := (Cantor.ofNat st.pl).2, p2 := st.p2 + (Cantor.ofNat st.pl).1 }\n   | .readp1, st => { st with pl := (Cantor.ofNat st.pl).2, p1 := st.p1 + (Cantor.ofNat st.pl).1 }\n-  | .readwff, st => { st with pl := (Cantor.ofNat st.pl).2,\n-      tw := st.tw + (Cantor.ofNat st.pl).1, s1 := 0 }\n+  | .readwff, st => { st with pl := (Cantor.ofNat st.pl).2, tw := st.tw + (Cantor.ofNat st.pl).1, s1 := 0 }\n \n /-- The ordinary macros have their native contracts; `readwff` is composed below. -/\n theorem AXAtom.run (st : AS) (hc : Clean st) :\n"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2AxiomsPerm",
+      "initial": {
+        "path": "/tmp/k215-phase20-ax-sharing/candidate-v5/L2AxiomsPerm.lean",
+        "sha256": "c14df8bd2ef2b7760142cf6799a464274d05c1b53c4caee7aa16f57086188024",
+        "bytes": 1964
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-repairs/L2AxiomsPerm-v3.lean",
+        "sha256": "708784946a85a5f5e59193b16627e3b1104c96e5cced821ce0c246070680c78d",
+        "bytes": 1970
+      },
+      "repairs": [
+        "Bind the two implicit register files before the native-run proof argument h in the transfer callback."
+      ],
+      "diff": "--- /tmp/k215-phase20-ax-sharing/candidate-v5/L2AxiomsPerm.lean\n+++ /tmp/k215-phase20-repairs/L2AxiomsPerm-v3.lean\n@@ -26,7 +26,7 @@\n \n def f236 (st : AS) : AS := axWordEval axWord st\n theorem l236 (st : AS) (hc : Clean st) : Rn (.node 236) st (f236 st) :=\n-  axWordRun (fun a h => tr (by cases a <;> rfl)\n+  axWordRun (fun a {_ _} h => tr (by cases a <;> rfl)\n     (L2K.trCore (by cases a <;> rfl) h))\n     (fun st => tr (n := 208) rfl (L2K.loop208 st))\n     (fun st hc => tr (n := 457) rfl (AXWord.gate222 st hc)) axWord axWord_checked st hc\n"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2AxiomsDom",
+      "initial": {
+        "path": "/tmp/k215-phase20-ax-sharing/candidate-v5/L2AxiomsDom.lean",
+        "sha256": "c6fc19df3eb8c2a93b11489b7422eb56df327a0fadacd2b2cea05127b530f201",
+        "bytes": 1951
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-repairs/L2AxiomsDom-v3.lean",
+        "sha256": "989885413061677c70485de399ae1dd69189cb9e7230ffab0e2341973589d07c",
+        "bytes": 1957
+      },
+      "repairs": [
+        "Bind the two implicit register files before the native-run proof argument h in the transfer callback."
+      ],
+      "diff": "--- /tmp/k215-phase20-ax-sharing/candidate-v5/L2AxiomsDom.lean\n+++ /tmp/k215-phase20-repairs/L2AxiomsDom-v3.lean\n@@ -26,7 +26,7 @@\n \n def f236 (st : AS) : AS := axWordEval axWord st\n theorem l236 (st : AS) (hc : Clean st) : Rn (.node 236) st (f236 st) :=\n-  axWordRun (fun a h => tr (by cases a <;> rfl)\n+  axWordRun (fun a {_ _} h => tr (by cases a <;> rfl)\n     (L2K.trCore (by cases a <;> rfl) h))\n     (fun st => tr (n := 208) rfl (L2K.loop208 st))\n     (fun st hc => tr (n := 457) rfl (AXWord.gate222 st hc)) axWord axWord_checked st hc\n"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Lib219",
+      "initial": {
+        "path": "/tmp/k215-phase20-q-sharing/candidate-v3/L2Lib219.lean",
+        "sha256": "beb57ec710a1fcbe955de053d39cc244d61b90576a999532a6eec802aa4a4363",
+        "bytes": 2592
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-q-sharing/candidate-v3/L2Lib219.lean",
+        "sha256": "beb57ec710a1fcbe955de053d39cc244d61b90576a999532a6eec802aa4a4363",
+        "bytes": 2592
+      },
+      "repairs": [],
+      "diff": ""
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Macros219",
+      "initial": {
+        "path": "/tmp/k215-phase20-q-sharing/candidate-v3/L2Macros219.lean",
+        "sha256": "1f4dc090810efc56e1619d42f9afa17db667afc6948153c8ce2a796c93999799",
+        "bytes": 2376
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-q-sharing/candidate-v3/L2Macros219.lean",
+        "sha256": "1f4dc090810efc56e1619d42f9afa17db667afc6948153c8ce2a796c93999799",
+        "bytes": 2376
+      },
+      "repairs": [],
+      "diff": ""
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Control219",
+      "initial": {
+        "path": "/tmp/k215-phase20-q-sharing/candidate-v3/L2Control219.lean",
+        "sha256": "402c53c1a3a24a3cc20857def918efbec9811a54136ea21b6c0ff22b7dd92c68",
+        "bytes": 1416
+      },
+      "final": {
+        "path": "/tmp/k215-phase20-q-sharing/candidate-v3/L2Control219.lean",
+        "sha256": "402c53c1a3a24a3cc20857def918efbec9811a54136ea21b6c0ff22b7dd92c68",
+        "bytes": 1416
+      },
+      "repairs": [],
+      "diff": ""
+    }
+  ],
+  "all_eight_final_sources_match_adopted_canonical_and_frozen_map": true,
+  "only_four_sources_changed_from_initial_candidate": true,
+  "interface_or_mathematical_premise_changes": false,
+  "warning_policy_waivers": false,
+  "original_candidate_and_failed_evidence_preserved": true,
+  "rejected_run_history": [
+    {
+      "directory": "/tmp/k215-phase20-check",
+      "outer": {
+        "path": "/tmp/k215-phase20-check/candidate-build-outer.json",
+        "sha256": "322b33f914ccc54404ae72626f6bc94cdf7b7dfb34cd787afa7ec4bfe4333d69",
+        "bytes": 642
+      },
+      "raw": {
+        "path": "/tmp/k215-phase20-check/candidate-build-run1/attempts/001-BusyBeaver.ZFC.AXWord/record.json",
+        "sha256": "6044f9c9afe5ba25b03d47dd8689fd09cef23c7a232d192949b136a2912f4859",
+        "bytes": 1518
+      },
+      "log": {
+        "path": "/tmp/k215-phase20-check/candidate-build-run1/attempts/001-BusyBeaver.ZFC.AXWord/compiler.log",
+        "sha256": "6248bf145004fa91e3012631557617fb58b9eac71f0355eb09ec5ebd2ea0109f",
+        "bytes": 2485
+      },
+      "compiler_status": "FAIL",
+      "compiler_exit_code": 1,
+      "warnings": 0,
+      "contains_error": true,
+      "contains_partial_sorryAx": false,
+      "accepted_by_runner": false,
+      "result_exists": false
+    },
+    {
+      "directory": "/tmp/k215-phase20-check-v2",
+      "outer": {
+        "path": "/tmp/k215-phase20-check-v2/candidate-build-outer.json",
+        "sha256": "108d0a9b5b91a91096dc39ca5adbbd7778c3e2d8b8544affff60013d51eba7d8",
+        "bytes": 649
+      },
+      "raw": {
+        "path": "/tmp/k215-phase20-check-v2/candidate-build-run1/attempts/002-BusyBeaver.ZFC.L2AxiomsPerm/record.json",
+        "sha256": "ef7aaa49331b0fc3c4670f1035061a2553b9ce2668bd149b0b0783dde54b5f3e",
+        "bytes": 2069
+      },
+      "log": {
+        "path": "/tmp/k215-phase20-check-v2/candidate-build-run1/attempts/002-BusyBeaver.ZFC.L2AxiomsPerm/compiler.log",
+        "sha256": "192c990f2f0c3bde335e90e42e7abc56c30440ec4177fc4f7915fcb823e2a29d",
+        "bytes": 9566
+      },
+      "compiler_status": "FAIL",
+      "compiler_exit_code": 1,
+      "warnings": 0,
+      "contains_error": true,
+      "contains_partial_sorryAx": true,
+      "accepted_by_runner": false,
+      "result_exists": false
+    },
+    {
+      "directory": "/tmp/k215-phase20-check-v3",
+      "outer": {
+        "path": "/tmp/k215-phase20-check-v3/candidate-build-outer.json",
+        "sha256": "120456e87b3be0236766154f8090ae077eaea92a91840cce0dd65536dea54cc5",
+        "bytes": 649
+      },
+      "raw": {
+        "path": "/tmp/k215-phase20-check-v3/candidate-build-run1/attempts/008-BusyBeaver.ZFC.L2Axioms222/record.json",
+        "sha256": "cae8b80ae291cb3b4c800fccadb097695dbd1f167b14a37ae19ea2aaf0cc7adb",
+        "bytes": 1821
+      },
+      "log": {
+        "path": "/tmp/k215-phase20-check-v3/candidate-build-run1/attempts/008-BusyBeaver.ZFC.L2Axioms222/compiler.log",
+        "sha256": "f62960e5733d9f2eb0fd99a7d7703e630e9da8bc1d6c30f0ff871e842f7309ff",
+        "bytes": 599
+      },
+      "compiler_status": "PASS",
+      "compiler_exit_code": 0,
+      "warnings": 1,
+      "contains_error": false,
+      "contains_partial_sorryAx": false,
+      "accepted_by_runner": false,
+      "result_exists": false
+    }
+  ],
+  "final_kernel_status": "Deferred to separately approved independent actual-result reader.",
+  "compiler_invocations": 0,
+  "canonical_writes": 0,
+  "supplied_generator_executions": 0,
+  "self": {
+    "path": "/tmp/k215-phase20-runner-peer/review_repairs_v1.py",
+    "sha256": "e411f4cffbda0f0eda5235b26e9fe08b63dcdb32b04ee677854ce459cbfd32bd",
+    "bytes": 5281
+  }
+}

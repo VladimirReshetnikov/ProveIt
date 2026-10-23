@@ -3,6 +3,15 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
+The latest [phase20 Lean check](phase20/README.md) passes for shared AX words
+and the 219 macro contracts. Seven Lean modules are replaced and a common module
+is added, removing 3,059 lines / 417,103 bytes. Three retired writers bring net
+active maintenance savings to 3,763 lines / 447,473 bytes. The selected check
+covers 227 providers: fourteen compile fresh, 213 reuse exact bindings, and two
+endpoint audits compile fresh. All fresh checks have zero warnings. The primary
+215 endpoint grows to 179 modules / 1,768,653 source bytes; the large source
+savings include compatibility proofs outside that closure.
+
 The [phase19 Lean check](phase19/README.md) passes for concise forwarding proofs
 and five root interfaces sharing the existing iteration argument. Seven Lean files
 lose 169 lines / 6,449 bytes. Including the synchronized producer gives net
@@ -112,7 +121,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest accepted checkpoint](phase19/README.md),
+The [latest Lean checkpoint](phase20/README.md),
+[nineteenth checkpoint](phase19/README.md),
 [eighteenth checkpoint](phase18/README.md),
 [seventeenth checkpoint](phase17/README.md),
 [sixteenth checkpoint](phase16/README.md),

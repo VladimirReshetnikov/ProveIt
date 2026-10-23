@@ -30,6 +30,12 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
+The latest [phase20 Lean check](../k225-formal/verification/k215/simplification/phase20/README.md)
+passes after sharing AX word proofs and 55 macro contracts. It checks 227 providers
+and two fresh endpoint audits, with zero warnings in all fresh checks. The selected
+proof sources lose 3,059 Lean lines / 417,103 bytes; the primary endpoint now imports
+179 modules. The exact 215-state machine and its endpoint statements are unchanged.
+
 The [phase19 Lean check](../k225-formal/verification/k215/simplification/phase19/README.md)
 passes after shortening forwarding proofs and sharing the root iteration argument.
 Seven Lean files lose 169 lines / 6,449 bytes. The check covers 211 project modules

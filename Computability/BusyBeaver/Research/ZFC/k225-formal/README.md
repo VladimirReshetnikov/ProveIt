@@ -10,6 +10,15 @@ Its zero-offset proposal is reconciled as
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
 
+The latest [phase20 Lean check](verification/k215/simplification/phase20/README.md)
+passes for shared AX words and 55 transferred 219 macro contracts. It covers 227
+providers and two fresh endpoint audits; all fresh checks have zero warnings.
+Seven Lean modules are replaced and one common module is added, removing 3,059
+Lean lines / 417,103 bytes. Retiring three obsolete writers gives net active
+maintenance savings of 3,763 lines / 447,473 bytes. These savings include the
+compatibility facades; the primary 215 endpoint grows to 179 modules /
+1,768,653 source bytes. The machine and endpoint statements are unchanged.
+
 The [phase19 Lean check](verification/k215/simplification/phase19/README.md)
 passes for concise forwarding proofs and a shared iteration argument across five
 roots. Seven Lean sources lose 169 lines / 6,449 bytes; including the synchronized
@@ -242,9 +251,12 @@ semantic lower chain are reused as they are. Its endpoint
   every register file: both routines return normally iff `s1 = p2`, otherwise break one level,
   and clear both (proved once on raw registers); every other node below 461 is shared, so runs
   transfer by induction (`run_transfer`). With `L2K.dag222_seed_iff` this is `Dag219.seed_iff`;
-  no L2 lemma is reproved. (The forked `L2Lib219` … `L2Root219`, from
-  [`generate_l2q219.py`](generate_l2q219.py), are not used by the endpoint; they remain as the
-  source contracts cited by [k217-protected-tail-seed](../k217-protected-tail-seed/README.md).)
+  no L2 lemma is reproved. The `L2Lib219` … `L2Root219` source contracts cited by
+  [k217-protected-tail-seed](../k217-protected-tail-seed/README.md) now share the state and
+  macro proofs of `L2K`, transferring runs through `Dag219Bisim`. The obsolete
+  [textual fork](verification/k215/simplification/phase20/retired/generate_l2q219.py) and
+  [per-node AX writer](verification/k215/simplification/phase20/retired/generate_l2axioms222.py)
+  are retired with their original bytes preserved.
 - **Source**: [`KSource219`](../../../Lean/BusyBeaver/ZFC/KSource219.lean) relates the 219's 4,744-leaf source to
   `dag219` (2,237 certificate entries, none offset); it imports the program data only.
 - **Engine**: the table in K230 labels ([`lean219/`](lean219/), new states renamed into freed
@@ -282,9 +294,11 @@ data in [`lean217/`](lean217/)).
 - **Program**: [`DagDom`](../../../Lean/BusyBeaver/ZFC/DagDom.lean) is `dag219` with the AX word's prefix replaced
   ([`make_dagdom.py`](make_dagdom.py)). Only the root, the reads and the dispatch (13 nodes) reach the
   AX routine, so every other `L2K` lemma transfers by [`RMTransfer`](../../../Lean/BusyBeaver/ZFC/RMTransfer.lean)
-  ([`L2Dom`](../../../Lean/BusyBeaver/ZFC/L2Dom.lean)); the AX word is a checked macro word, rendered from the 215's template by
-  [`generate_l2axiomsdom.py`](generate_l2axiomsdom.py) ([`L2AxiomsDom`](../../../Lean/BusyBeaver/ZFC/L2AxiomsDom.lean)), and
-  the root step adapted from `L2Root222` ([`L2RootDom`](../../../Lean/BusyBeaver/ZFC/L2RootDom.lean)).
+  ([`L2Dom`](../../../Lean/BusyBeaver/ZFC/L2Dom.lean)); the AX routine shares the checked word
+  evaluator ([`L2AxiomsDom`](../../../Lean/BusyBeaver/ZFC/L2AxiomsDom.lean)), and the root step
+  is adapted from `L2Root222` ([`L2RootDom`](../../../Lean/BusyBeaver/ZFC/L2RootDom.lean)).
+  The [former combined AX template](verification/k215/simplification/phase20/retired/generate_l2axiomsdom.py)
+  is retired with its original bytes preserved.
 - **Machine**: the source relates to `dagDom` by 2,239 certificate entries, none offset
   ([`KSource217`](../../../Lean/BusyBeaver/ZFC/KSource217.lean)); the 312,617-step startup ([`KBoot217`](../../../Lean/BusyBeaver/ZFC/KBoot217.lean)),
   all 4,751 decoder leaves ([`KSites217`](../../../Lean/BusyBeaver/ZFC/KSites217.lean); the source's paths reach 45 bits, so
