@@ -15,9 +15,10 @@ weight 174 and regular stride 349; `SelectiveCertificate46` checks its
 The literal package-52 native rows are now checked in
 `NativeQuadraticParent`, together with their exact selective coefficients
 and bounds in `NativeQuadraticPositions` and `NativeCoefficientBounds`.
-Sparse decoding and the exact package-52 finalizer are also checked;
-see [SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). The combined source
-adapter and source-to-refutation bridge remain separate.
+Sparse decoding, the exact package-52 finalizer and their assembled
+nine-coordinate arithmetic source equivalence are also checked;
+see [SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). The literal polynomial
+binding and source-to-refutation bridge remain separate.
 `NearSquareFinalizer` also proves the sharp majorant and final one-witness
 norm equivalence. The full-Sidon components below remain general reusable
 foundations rather than the preferred numerical positions.
@@ -130,10 +131,11 @@ selected literal package-52 source, stages 1–4 now have checked components:
 the port-parametric row identities, arbitrary-position low mask, corrected
 coefficient height and convolution bound, and positive leading coefficient
 with pre-decoding range bounds. `SelectiveCarry.central_blocks_iff` supplies
-the two-block packing theorem; assembling it into the literal source
-contract is in progress. The finalizer and exact ratio substitution in
-stage 6 are checked separately. Native coefficient calibration, the closed
-nine-coordinate bridge and the internal ZFC theorem remain open.
+the two-block packing theorem. `NativeQuadraticSource52.source_contract`
+assembles the literal source contract, and `NativeNineSource52` joins it
+to the actual ratio registers and finalizer in both directions. Native
+coefficient calibration, the closed consistency replacement and the
+internal ZFC theorem remain open.
 
 1. Supply the finite integer coefficients of each quadratic gate residual
    as canonical pairs and prove `Q_j(u)` equals that residual when `u_0=1`.

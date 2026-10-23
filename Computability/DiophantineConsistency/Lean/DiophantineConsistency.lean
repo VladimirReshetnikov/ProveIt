@@ -50,3 +50,6 @@ import DiophantineConsistency.RatioReparameterization
 import DiophantineConsistency.NativeNineRatio52
 import DiophantineConsistency.NativeBaseBounds52
 import DiophantineConsistency.NativeSparseBounds52
+import DiophantineConsistency.NativeQuadraticSource52
+import DiophantineConsistency.NativeNineFinalizer52
+import DiophantineConsistency.NativeNineSource52

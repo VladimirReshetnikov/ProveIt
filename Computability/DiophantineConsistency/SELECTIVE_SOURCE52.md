@@ -90,8 +90,13 @@ under the explicit coefficient, base and weak-cap assumptions
 `0<=g<4*b*B^174`. The exact leading coefficient 2 supplies positivity.
 `SelectiveCarry` proves the full shifted-polynomial identity, rowwise carry
 equivalence and the central-binomial contract for two packed blocks.
-The intended block sizes are `N0=B^175`, `N1=4*B^7865`, hence
-`N=4*B^8040`. Their assembly into a literal source equivalence is in progress.
+The block sizes are `N0=B^175`, `N1=4*B^7865`, hence `N=4*B^8040`.
+`NativeQuadraticSource52.source_contract` now proves the assembled exact
+equivalence between central-binomial divisibility and all 22 literal
+source rows at decoded bounded inputs. Its size bounds precede decoding.
+The same file proves unconditional high-word positivity for every natural
+`g`, without the cap, and exact integer casts for the masks, packed words
+and rank. Its regression excludes the vacuous `b=1` case for every port tuple.
 
 `NativeBaseBounds52` checks the weak soundness cap, stronger completeness
 cap, exact power-of-two scale and an explicit arbitrarily large bound
@@ -108,10 +113,19 @@ package-52 four-condition norm test, recovering positive margin before
 extracting integer square roots. These are checked separately from the
 source adapter.
 
-The remaining chain must connect the packed source, the new ratio variables
-and finalizer, prove cofinal witness bounds, and calibrate the four actual
-native coefficient ports to ZFC refutations. Only after that chain is closed
-can the 548-operation equation replace the current certified baseline.
+`NativeNineSource52.natural_zero_iff_source` now joins the source contract,
+cofinal bounds, new ratio variables and finalizer in both directions.
+Its nine natural coordinates shift `b,g,h,s,w,i` by one and use `phi,j,n`
+directly. `natural_zero_iff_source_published` discharges the coefficient
+height using only the four explicit published port-size assumptions.
+The numerical rank temporarily uses an exact `toNat`; its equality with
+the literal polynomial rank is proved separately from its range bounds,
+and the full multivariate-polynomial binding is in progress.
+
+The remaining chain must bind that explicit polynomial and calibrate the
+four actual native coefficient ports to ZFC refutations. Only after that
+chain is closed can the 548-operation equation replace the current
+certified baseline.
 The separate object-language work is tracked in [OBJECT_ZFC.md](OBJECT_ZFC.md).
 
 ## Reproduction
@@ -123,6 +137,8 @@ python3 Computability/DiophantineConsistency/scripts/generate_native_quadratic_p
 lake build DiophantineConsistency
 lake env lean Computability/DiophantineConsistency/Lean/checks/NativeQuadraticParent.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/NativeQuadraticPositions.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/NativeQuadraticSource52.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/NativeNineSource52.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/LowMaskCoding.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/SelectiveCarry.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/RatioMarginFinalizer.lean

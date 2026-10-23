@@ -161,6 +161,43 @@ theorem abs_coeff_padded_square_mul_le {m : ℕ} (w : Fin (m + 1) → ℕ)
   simpa only [Fin.sum_univ_succ, Fin.cases_zero, Fin.cases_succ,
     abs_one, abs_of_nonneg (Int.natCast_nonneg _)] using h
 
+/-- A dimension-dependent scale suffices for any number of source inputs.
+The lower-bound form permits rounding the scale up to a power of two. -/
+theorem half_base_bound {m : ℕ} (w : Fin (m + 1) → ℕ) (u : Fin m → ℕ) (p : ℤ[X])
+    {H : ℤ} (hH : 0 < H) (hp : ∀ i, |p.coeff i| ≤ H)
+    {b t : ℕ} (hb : 0 < b) (ht : 1 ≤ t) (hu : ∀ i, u i < b)
+    (hbase : 4 * ((m : ℤ) + 1) ^ 2 * H * (b : ℤ) ^ 2 ≤ (2 : ℤ) ^ t) (n : ℕ) :
+    |(encoded w (Fin.cases 1 (fun i => (u i : ℤ))) ^ 2 * p).coeff n| <
+      2 ^ (t - 1) := by
+  have hsum : (∑ i, (u i : ℤ)) ≤ (m : ℤ) * b := by
+    calc
+      (∑ i, (u i : ℤ)) ≤ ∑ _i : Fin m, (b : ℤ) := by
+        apply Finset.sum_le_sum
+        intro i _
+        exact_mod_cast (hu i).le
+      _ = _ := by simp
+  have hbZ : 1 ≤ (b : ℤ) := by exact_mod_cast hb
+  have hs0 : 0 ≤ 1 + ∑ i, (u i : ℤ) :=
+    add_nonneg (by decide) (Finset.sum_nonneg (fun i _ => Int.natCast_nonneg (u i)))
+  have hs : 1 + (∑ i, (u i : ℤ)) ≤ ((m : ℤ) + 1) * b := by
+    calc
+      _ ≤ (b : ℤ) + (m : ℤ) * b := add_le_add hbZ hsum
+      _ = _ := by ring
+  have hsq := pow_le_pow_left₀ hs0 hs 2
+  have hc := (abs_coeff_padded_square_mul_le w u p H hH.le hp n).trans
+    (mul_le_mul_of_nonneg_left hsq hH.le)
+  have hscale : 4 * (H * (((m : ℤ) + 1) * b) ^ 2) ≤ (2 : ℤ) ^ t := by
+    calc
+      _ = 4 * ((m : ℤ) + 1) ^ 2 * H * (b : ℤ) ^ 2 := by ring
+      _ ≤ _ := hbase
+  have hpositive : 0 < H * (((m : ℤ) + 1) * b) ^ 2 := by positivity
+  have hpow : (2 : ℤ) ^ t = 2 * 2 ^ (t - 1) := by
+    rw [← pow_succ']
+    congr 1
+    omega
+  rw [hpow] at hscale
+  linarith
+
 /-- The paper's scale `B=4096 H b^2` gives the strict half-base bound on all
 coefficients after decoding the 31 bounded input digits. -/
 theorem half_base_bound_31 (w : Fin 32 → ℕ) (u : Fin 31 → ℕ) (p : ℤ[X])

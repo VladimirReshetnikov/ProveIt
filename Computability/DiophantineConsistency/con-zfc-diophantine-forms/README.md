@@ -319,8 +319,9 @@ other names: 48 suggests `46-support-majorants` and 51 `46-sparse-arithmetic`.
     - 53 bundles one at `59e9d4d22b`. Its STATUS lists the active P76 (76
       operations, degree 64), and 53 notes the active `ExplicitZFC`
       theorems.
-  - **Not checked.** None of the packages' own new constructions is
-    formally checked by that work.
+  - **Delivered certificates.** None of the packages supplies an end-to-end
+    formal certificate for its new construction. Subsequent active stage
+    proofs for 52 are tracked in [SELECTIVE_SOURCE52.md](../SELECTIVE_SOURCE52.md).
 - **Retained intermediates.**
   - 46's target search;
   - 47's `search/`;
@@ -775,7 +776,8 @@ The packages say, in their own words (exceptions noted):
     postdates the wave-5 and wave-6 pins, but not the wave-7 pin.
   - Wave-7 46, 51 and 53 build their short forms on its checked circuits
     P69, P73 and P75.
-  - None of the packages' own new constructions is formally checked.
+  - No package supplies a new end-to-end formal certificate. Subsequent
+    active stage formalization is recorded separately below.
 - **No new general theorem.**
   - The ten-integer reduction is attributed to Sun. 31 "does not claim a new
     general ten-unknowns theorem".
@@ -824,8 +826,13 @@ The packages say, in their own words (exceptions noted):
     20-file Jones closure, which it did not rebuild.
   - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
 
-  The new codes, decoders, finalizers, majorants and Pell-index arguments
-  are unformalized. Several arguments rest on the structure of Lean proofs
+  These new codes, decoders, finalizers, majorants and Pell-index arguments
+  were not formally certified by the delivered packages. Subsequent active
+  work now checks 52's literal source, masks, ranges, ratio substitution,
+  finalizer and assembled arithmetic source equivalence; see
+  [SELECTIVE_SOURCE52.md](../SELECTIVE_SOURCE52.md). Native calibration and
+  the internal ZFC equivalence remain open. Several delivered arguments
+  rest on the structure of Lean proofs
   rather than their statements, for example:
   - the square base, via `Jones1982.USys_of_mem`;
   - 53's 13ℤ cofinal base, which uses the witness chosen inside the proof

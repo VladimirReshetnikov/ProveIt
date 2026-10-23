@@ -51,5 +51,7 @@ example : ¬ (2 ^ 17) ^ 2 ∣
 #print axioms SelectiveCoefficientBounds.kernel_exponents_injective
 #print axioms SelectiveCoefficientBounds.abs_coeff_combined_le
 #print axioms SelectiveCoefficientBounds.half_base_bound_31
+#print axioms SelectiveCoefficientBounds.half_base_bound
 #print axioms PolynomialRangeBounds.eval_gt_top_power
 #print axioms PolynomialRangeBounds.highWord_bounds
+#print axioms PolynomialRangeBounds.highWord_pos

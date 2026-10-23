@@ -86,6 +86,19 @@ def highWord (p : ℤ[X]) (B g : ℤ) (padding D W : ℕ) : ℤ :=
   2 * (B ^ padding + g) ^ 2 * p.eval B +
     B * (∑ i ∈ range (D + 2 * W + 1), B ^ i)
 
+/-- Positivity holds for every nonnegative candidate code, independently of
+the cap that the later ratio theorem will recover. -/
+theorem highWord_pos {B H g : ℤ} (hB : 2 ≤ B) (hBH : H ≤ B - 1) (hg : 0 ≤ g)
+    (p : ℤ[X]) {D W padding : ℕ} (hd : p.natDegree ≤ D)
+    (hc : ∀ i, |p.coeff i| ≤ H) (htop : p.coeff D = 2) :
+    0 < highWord p B g padding D W := by
+  have hp : 0 < p.eval B := (by positivity : 0 < B ^ D).trans
+    (eval_gt_top_power hB hBH p hd hc htop)
+  have hmain : 0 < 2 * (B ^ padding + g) ^ 2 * p.eval B := by positivity
+  have hoff : 0 ≤ B * (∑ i ∈ range (D + 2 * W + 1), B ^ i) := by positivity
+  unfold highWord
+  exact add_pos_of_pos_of_nonneg hmain hoff
+
 /-- A bound on arbitrary weak-cap assignments, established before binary
 decoding or the parent equations. The whole high word fits `4 B^(K+1)`. -/
 theorem highWord_bounds {B H b g : ℤ} (hB : 2 ≤ B) (hH : 0 < H) (hb : 1 ≤ b)
