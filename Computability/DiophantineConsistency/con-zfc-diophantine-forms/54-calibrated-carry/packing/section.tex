@@ -1,0 +1,61 @@
+\section{Selective active support and freely oriented packing}
+The positivity-recovery reduction shifts only twelve coordinates, reducing
+$136$ coefficient records to $109$ and $71$ active monomials to $62$.
+The universal quadratic expansion still has $528$ formal monomials.
+For padding position $c$, variable positions $w_i$, row signs
+$\epsilon_j\in\{\pm1\}$, and targets $H_j$, define
+\[
+ m(\alpha)=(2-|\alpha|)c+\sum_i\alpha_iw_i,\quad
+ f(\alpha)=(2-|\alpha|)!\prod_i\alpha_i!,\qquad
+ D(T)=\sum_{j,\alpha}\epsilon_jf(\alpha)p_{j,\alpha}
+ T^{H_j-m(\alpha)}.
+\]
+The exact sparse isolation condition is
+\[
+ H_j-m(\alpha)+m(\gamma)=H_k
+ \quad\Longleftrightarrow\quad j=k\ \text{and}\ \alpha=\gamma,
+\]
+for every active source record and every formal quadratic expansion label.
+It gives
+$[T^{H_j}]((T^c+\sum_i z_iT^{w_i})^2D)=2\epsilon_jq_j(\mathbf z)$.
+It also forces all source exponents in $D$ to be distinct, so overlapping
+bands incur no extra row-count factor in the coefficient bound.
+
+A useful relaxation is to orient the row containing the highest source
+term rather than reserve a particular row as last. If that term's
+coefficient is a nonzero ordinary integer, its row sign can make it
+positive without changing support, isolation, or the common zero set.
+For $B>M+1$, any positive integral leading coefficient dominates all
+lower coefficients bounded by $M$, proving $D(B)>0$ unconditionally.
+
+The smaller-$K_{\rm code}$ packed certificate has
+\[
+ (W,c,D_{\max},K_{\rm code})=(174,81,4072,4420).
+\]
+The shared-homogeneous certificate has
+\[
+ (W,c,D_{\max},K_{\rm code})=(170,169,4086,4426),
+ \qquad\min_jH_j=340=2W.
+\]
+The lowest final degree instead uses the unshifted $W=170$ layout,
+with $K_{\rm code}=4425$ and the odd threshold branch.
+Both displayed layouts have leading coefficient $1$ and positive row signs. The latter
+requires only a uniform target shift by $1$; it improves the previous
+shared-homogeneous $K_{\rm code}=5262$ by approximately $15.9\%$.
+A smaller-width $W=163$ regular certificate is retained for the operation
+frontier. All nine supplied variants verify
+$K_{\rm code}=D_{\max}+2W\ge\max_jH_j+2$, including the headroom needed
+by sparse one-bit padding.
+
+Interior padding preserves the required witness bounds. At a nonnegative
+source zero, row $10$ gives $\Delta=a^2+4a+3\ge3$, while row $12$ gives
+$D^2=C_2\Delta+1\ge1$, hence $D\ge1$. Their distinct positions cannot
+both be zero, so the packed witness has a positive digit at a positive
+position and is at least $B\ge b$. The ordinary interval bounds are
+$B^c+g\le3bB^W$ or $5bB^W$, according to the bridge's witness interval.
+
+A newly authored standard-library verifier reconstructs the complete
+selective source from pinned inert gate data, checks every coefficient
+and row sign, and exhaustively replays $57\,552$ positional checks per
+certificate. Search code is not a proof dependency; global optimality and
+new kernel formalization of the inherited compiler endpoint are not claimed.

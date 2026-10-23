@@ -1,0 +1,189 @@
+\section{One packed word, three ordinary-degree channels}
+\label{sec:channels}
+
+The incoming selective encodings improve on full Sidon separation by
+isolating only monomials that actually occur in the parent system.  Their
+homogenized packed square still mixes constant, linear, and quadratic
+source terms.  The new observation is that these three ordinary degrees
+can be evaluated separately without introducing another unknown.
+
+Let \(r_1,\ldots,r_{22}\) be the raw quadratic residuals of the
+31-positive-variable parent in \code{data/parent_quartic31.json}.
+The raw positive coordinates are retained, rather than expanding a
+positive-to-nonnegative shift into the source coefficients.  In their
+specified order, use the weights
+\[
+\begin{split}
+(w_1,\ldots,w_{31})={}&(104,76,79,60,108,8,99,55,36,54,98,11,7,10,44,32,\\
+ &106,22,17,1,3,4,37,89,97,107,39,40,86,45,92),
+\end{split}
+\]
+and, in residual order, the target positions
+\[
+\begin{split}
+(q_1,\ldots,q_{22})={}&(1081,1388,1366,763,850,546,1414,1147,1914,1093,821,\\
+ &1861,39,1621,238,759,500,1711,1052,283,1343,368).
+\end{split}
+\]
+Put
+\[
+ W=108,\quad Q_c=1914,\quad K_c=Q_c+2W+1=2131,
+ \quad E_c=K_c+W+2=2241,
+\]
+\[
+ H_c=E_c+W+23=2372.
+\]
+The 31-coordinate order is exactly
+\[
+\begin{split}
+&(J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+&\hspace{13mm}N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta).
+\end{split}
+\]
+
+For a source coefficient \(p_{j,\alpha}\), write \(d=|\alpha|\).
+Place its reversed term at exponent \(q_j-\alpha\cdot w\) in
+\(A_d(T)\).  Its coefficient is \(2p_{j,\alpha}\) for a constant,
+a linear monomial, or a square; for a product of two different coordinates
+it is \(p_{j,\alpha}\).  Appendix~\ref{app:channels} gives every
+coefficient and exponent.  There are 45 quadratic records, 41 linear
+records, and eight constant records.
+
+\begin{lemma}[Degree-separated extraction]
+For indeterminates \(z_1,\ldots,z_{31}\), define
+\[
+ Y_z(T)=\sum_i z_iT^{w_i},\qquad
+ \mathcal F(T,y)=A_2(T)y^2+A_1(T)y+A_0(T)+T^{Q_c+1}(y^2+1).
+\]
+Then, for every \(1\le j\le22\),
+\[
+ [T^{q_j}]\mathcal F(T,Y_z(T))=2r_j(z_1,\ldots,z_{31}).
+\]
+\end{lemma}
+\begin{proof}
+The finite certificate checks, separately for each \(d\in\{0,1,2\}\),
+that for every supported monomial \(\alpha\) of degree \(d\) and every
+monomial \(\delta\) of exactly that degree,
+\[
+ q_j-\alpha\cdot w+\delta\cdot w=q_k
+ \quad\Longleftrightarrow\quad (j,\alpha)=(k,\delta).
+\]
+All reversed exponents are nonnegative.  This is verified against all
+496 pure quadratic monomials, all 31 linear monomials, and the constant
+monomial: \(45\cdot496+41\cdot31+8=23599\) interactions.  The
+coefficient of a mixed product in \(Y_z^2\) is two, while that of a
+square is one.  The stated coefficient factors give exactly \(2r_j\).
+All carrier exponents exceed \(Q_c\).  The supplied checker also
+reconstructs the 22 identities symbolically with the native ports left
+indeterminate, independently of the interaction count.
+\end{proof}
+
+Cross-degree collisions are harmless because a term of \(A_1Y_z\)
+is never multiplied by a quadratic monomial, and a term of \(A_2Y_z^2\)
+is never multiplied by a constant or a linear monomial.  The three
+channels are fixed polynomials evaluated at the same base and the same
+single packed input.  No extra existential coordinate is introduced.
+
+\subsection{A positive carrier valid before decoding}
+
+Let \(b\ge2\), \(B=a_Sb^2\), and
+\[
+ \ell=\sum_iB^{w_i},\qquad y=g+\ell.
+\]
+The shift by \(\ell\) means that packed nonnegative digits \(n_i\)
+decode to the positive parent coordinates \(n_i+1\).  By construction,
+the reversed exponents are distinct within each channel.  Since each
+coefficient has magnitude below \(M\),
+\[
+ |A_d(B)|<\frac{MB^{Q_c+1}}{B-1}.
+\]
+Put \(\varepsilon=M/(B-1)<1/4\).  The elementary inequality
+\(y^2+|y|+1\le\tfrac32(y^2+1)\) gives, for \emph{every integer}
+\(y\),
+\begin{equation}
+ \tfrac12B^{Q_c+1}(y^2+1)
+ <\mathcal F(B,y)<2B^{Q_c+1}(y^2+1).
+ \label{eq:carrier-positive}
+\end{equation}
+In particular, positivity is available before a ratio bridge has recovered
+a bound on \(g\).  A carrier proved positive only on the eventual
+decoding range would not justify that proof order.
+
+Define the source registers
+\begin{align*}
+ N_0&=B^{W+1},& Z_c&=B^{K_c+1},& A_T&=\sum_jB^{q_j},\\
+ M_c&=N_0-1-(b-1)\ell,& J_c&=2\mathcal F(B,g+\ell)+A_T,\\
+ S_c&=g+N_0J_c,&T_c&=M_c+N_0(B-2)A_T.
+\end{align*}
+For every \(g>0\), \(S_c>0\).  The base-\(B\) digits of \(M_c\)
+are \(B-b\) at the 31 weights and \(B-1\) at the remaining positions
+through \(W\), so \(0\le M_c<N_0\) and \(T_c\ge0\), without any
+power-of-two assumption on \(b\).
+
+If \(0\le g<4bB^W\), then \(g<N_0\), \(\ell<2B^W\), and
+\(g+\ell<5bB^W\).  Equation~\eqref{eq:carrier-positive} gives
+\[
+ 0<\mathcal F(B,g+\ell)<52b^2B^{K_c},\qquad
+ 0<J_c<105b^2B^{K_c}<Z_c.
+\]
+Also \((B-2)A_T<Z_c\).  Thus \(0\le S_c,T_c<B^{E_c}\).
+The stronger bound needed for the ten-integer adapter follows from
+\[
+ J_c+(B-2)A_T
+ =2\mathcal F(B,g+\ell)+(B-1)A_T
+ <(104b^2+1)B^{K_c}<\tfrac14Z_c.
+\]
+Here \(a_S>420\).  Since \(g+M_c<2N_0\) and \(Z_c\ge4\),
+\begin{equation}
+ S_c+T_c<N_0(2+Z_c/4)<N_0Z_c=B^{E_c}.
+ \label{eq:source-sum-range}
+\end{equation}
+
+\subsection{Exact zero extraction with signed borrows}
+
+Assume \(b\) is a power of two.  Then \(B\) and \(N_0\) are powers
+of two.  In the range just proved,
+\[
+ g\mathbin{\&}M_c=0
+ \quad\Longleftrightarrow\quad
+ g=\sum_i n_iB^{w_i},\qquad 0\le n_i<b.
+\]
+The tuple is unique.  Put \(z_i=n_i+1\), so \(1\le z_i\le b\).
+If \(h_s\) is the coefficient of \(T^s\) in
+\(\mathcal F(T,Y_z(T))\), the sum \(z=\sum_i z_i\le31b\) gives
+\[
+ |h_s|\le (M+1)z^2+Mz+M+1<2048Mb^2=B/4.
+\]
+The polynomial degree is at most \(K_c\).  Write the signed expansion
+\[
+ J_c=\sum_{s=0}^{K_c}(2h_s+\epsilon_s)B^s,
+ \qquad \epsilon_s=\begin{cases}1&s\in\{q_1,\ldots,q_{22}\},\\0&\text{otherwise.}\end{cases}
+\]
+Ordinary Euclidean digit normalization has incoming carry always zero
+or minus one, by induction from the strict coefficient bound.  At a target,
+the normalized digit avoids the binary mask \(B-2\) exactly when
+\(h_s=0\): a zero coefficient gives digit zero or one; a positive
+coefficient gives a digit at least two; a negative coefficient gives a
+normalized digit at least two after borrowing.  This argument explicitly
+permits an incoming borrow.
+
+Concatenation at the \(N_0\) boundary and the extraction lemma prove
+\begin{equation}
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ \left\{
+ \begin{array}{l}
+ g=\sum_i n_iB^{w_i},\quad0\le n_i<b,\\
+ r_j(n_1+1,\ldots,n_{31}+1)=0\quad(1\le j\le22).
+ \end{array}\right.
+ \label{eq:channel-zero}
+\end{equation}
+Bitwise AND is used only in the proof, never in the final equations.
+
+For completeness, any positive parent solution gives nonnegative digits
+\(n_i=z_i-1\).  They are not all zero: the fifth shifted residual equals
+one at the zero vector.  Choose any sufficiently large power of two
+\(b>\max_i n_i\).  All weights are positive, so the resulting
+\(g\ge B\ge b\), while \(g<bB^W\), and every carry test passes.
+These witnesses exist at arbitrarily large admissible powers of two;
+the ten-integer construction may restrict them to \(b=4^s\).

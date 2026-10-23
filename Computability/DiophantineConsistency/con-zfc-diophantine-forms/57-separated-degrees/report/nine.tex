@@ -1,0 +1,246 @@
+\section{Nine positive unknowns at degree 2,628,944}\label{sec:nine}
+
+We compose the degree-separated source of Section~\ref{sec:channels} with
+an exact binary-population calibration and the inherited Jones ratio
+construction. The resulting equation has nine strictly positive unknowns,
+exact total degree $2\,628\,944$, and 499 live binary arithmetic operations.
+Its separately translated nonnegative version has the same degree and
+501 operations. The arithmetic proof below identifies the exact zero set;
+no intermediate register is an additional unknown.
+
+\subsection{Source registers and the binary threshold}
+Supply the nine positive coordinates
+\[
+ (\epsilon_+,g,h,s,w,\phi_+,i,j_+,n_+)\in\Pos^9,
+ \qquad \phi=\phi_+-1,\quad j=j_+-1,\quad n=n_+-1.
+\]
+Put $b=\epsilon_++1$, $a_\star=2^{1182968}$, and $B=a_\star b^2$.
+Use the source registers $S_c,T_c$ from Section~\ref{sec:channels},
+including its raw positive word and positive carrier.
+Put $c_\star=2^{9463734}$ and define
+\begin{equation}\label{eq:nine-source}
+\begin{aligned}
+ L&=4bB^{2241},& N&=c_\star bB^{1178},\\
+ R&=(S_c+T_c)L+L-1-S_c,& G_{\rm cap}&=32bB^{108}.
+\end{aligned}
+\end{equation}
+All exponents are fixed nonnegative integers. In particular, $N$ and the
+binary block length $L$ are different polynomials.
+
+The source theorem gives $S_c>0$ and $T_c\geq0$ on \emph{every} outer
+assignment, before recovering a binary base or a bound on $g$. Hence
+\[
+ R=(L-1)S_c+LT_c+L-1\geq8,
+ \qquad N\geq8,\qquad 0<b\leq R,N,\qquad G_{\rm cap}>0.
+\]
+If subsequently $8g<G_{\rm cap}$, then $g<4bB^{108}$, and the source
+bounds give $S_c,T_c<B^{2241}$ and $S_c+T_c<L$.
+
+Suppose also $b=2^k$, and write $B=2^v$, so $v=1182968+2k$.
+The low mask occupies 109 base-$B$ cells, with 31 allowed digit windows;
+the 22 output masks each contribute $v-1$ bits. Thus
+\[
+ \operatorname{pop}(T_c)=131v-31k-22,
+ \qquad \log_2L=2+k+2241v.
+\]
+The two disjoint binary blocks of $R$ give the exact identity
+\begin{align*}
+ \operatorname{pop}(R)
+ &=\log_2L+\operatorname{pop}(T_c)-\delta,\\
+ \delta&=\operatorname{pop}(S_c)+\operatorname{pop}(T_c)
+                  -\operatorname{pop}(S_c+T_c)\geq0.
+\end{align*}
+Here $\delta=0$ precisely when $S_c$ and $T_c$ have disjoint binary bits.
+Furthermore,
+\begin{align*}
+ \log_2L+\operatorname{pop}(T_c)
+ &=2372v-30k-20\\
+ &=2\bigl(8\cdot1182968-10+k+1178v\bigr)=2\log_2N.
+\end{align*}
+Legendre's formula therefore proves
+\begin{equation}\label{eq:nine-threshold}
+ N^2\mid\binom{2R}{R}
+ \quad\Longleftrightarrow\quad S_c\mathbin{\&}T_c=0.
+\end{equation}
+The binomial coefficient and bitwise symbol occur only in the proof.
+There is no leading $L^2$ term in $R$; its omission is justified by the
+unconditional positivity and exact block calculation above.
+
+\subsection{Complete polynomial definition}
+The following are polynomial registers. Letters reused from the source
+construction are local to this subsection:
+\begin{align*}
+ U&=N^2w,& Y&=N^2s,& M_0&=RY,\\
+ P&=2M_0^2U,& K&=R+1+h(P-1),& A&=M_0(U+1),\\
+ B_1&=2R+1,& W_1&=bw,& C&=B_1+W_1+\phi,\\
+ J&=4A-5,& Q&=3W_1C-2(W_1^2-1),\\
+ D&=(A^2-1)C^2+1,& E&=iJDC^2,\\
+ F&=(A^2-1)E^2+1,& G&=A+F(CD+1-A),\\
+ H&=C+F(B_1+jC),& I&=(G^2-1)H^2+1.
+\end{align*}
+Set
+\begin{align*}
+ V_0&=PK,& a_0&=V_0^2-K^2+1,& a_1&=64DFI,\\
+ \mu&=\bigl(K^2-4(C-KY)^2\bigr)G_{\rm cap}-8gK^2,\\
+ t_0&=iJC,& T_0&=t_0(8D^2-4D-1),& V_1&=T_0GH,\\
+ \Omega&=J\mu,& E_0&=Jn+Q,&
+ \Theta&=E_0-\Omega(V_0+V_1).
+\end{align*}
+The promised equation is
+\begin{equation}\label{eq:nine-final}
+ \boxed{\displaystyle
+ P_9=\bigl(\Theta^2-\Omega^2(a_0+a_1)\bigr)^2
+                  -4\Omega^4a_0a_1=0.}
+\end{equation}
+The factor 64 belongs to the present definition of $a_1$; the inherited
+ratio lemmas use the unscaled square predicate for $DFI$.
+
+\subsection{The ratio interface and an exact quotient change}
+The supplied \texttt{NineRatio.lean} and its accompanying mathematical
+proof give the following numerical contract. Under the unconditional
+preconditions established above, the four conditions
+\[
+ a_0\text{ is a square},\quad DFI\text{ is a square},\quad
+ J\mid Q,\quad \mu>0                                      \tag{R}
+\]
+recover $b$ as a power of two, $8g<G_{\rm cap}$, and the binomial
+condition in~\eqref{eq:nine-threshold}. Conversely, the binomial condition,
+a binary $b$, and the stronger bound $32g<G_{\rm cap}$ supply the
+remaining ratio witnesses. The change from the original ratio variables
+to~(R) is exact, as follows.
+
+Originally $H_{\rm old}=B_1+j_{\rm old}C$, with $j_{\rm old}>0$, and the
+divisibility condition is
+\[
+ JF\mid QF+J(H_{\rm old}-C).
+\]
+Since $E$ is divisible by both $J$ and $C$, one has
+$F\equiv1\pmod J$ and $F\equiv1\pmod C$. The displayed divisibility is
+equivalent to $J\mid Q$ and $F\mid H_{\rm old}-C$.
+Write $z=(H_{\rm old}-C)/F$. Then $z>0$ and $z\equiv B_1\pmod C$.
+Because $0<B_1<C$, there is a unique $j\geq0$ with $z=B_1+jC$.
+This gives exactly $H=C+F(B_1+jC)$. Conversely,
+\[
+ j_{\rm old}=1+\frac{F-1}{C}B_1+Fj>0
+\]
+is an integer and reconstructs the original $H_{\rm old}$.
+The division occurs only in this proof of a witness bijection. Neither
+an added variable nor an auxiliary cofinality assertion is needed.
+
+\subsection{A polynomial majorant and recovery in the correct order}
+Every register needed below is positive, with $A\geq2$, $J\geq3$, $K>1$,
+$D\geq A^2$, and $H>C>1$. Also $Q>0$. Define the polynomial
+\[
+ \mathcal E=t_0^2(8D+1)-64D.
+\]
+The identities $E=t_0DC$ and $(A^2-1)C^2=D-1$ give
+\begin{equation}\label{eq:nine-majorant}
+\begin{aligned}
+ F&=t_0^2D^2(D-1)+1,\\
+ T_0^2-64DF&=\mathcal E>0,\\
+ V_1^2-a_1&=\mathcal E(GH)^2+64DF(H^2-1)>0.
+\end{aligned}
+\end{equation}
+Indeed $t_0\geq3$, so $\mathcal E\geq9(8D+1)-64D>0$.
+Together with $V_0^2-a_0=K^2-1>0$, these prove
+\[
+ 0<\sqrt{a_0}<V_0,\qquad 0<\sqrt{a_1}<V_1
+\]
+without assuming either radicand is a square. Moreover $J>W_1$,
+$0<Q/J<3C$, and $V_1>3C$; hence $V_1>Q/J$.
+For example, $U=N^2w\geq2W_1$ implies $J>W_1$, while
+$T_0>t_0\geq3C$ proves the latter majorant bound.
+
+\begin{lemma}[Exact finalizer]
+For fixed outer coordinates in the stated domain, there is an $n\geq0$
+satisfying~\eqref{eq:nine-final} if and only if the four conditions~(R) hold.
+\end{lemma}
+\begin{proof}
+If $\mu=0$, then $\Omega=0$ and $P_9=(Jn+Q)^4>0$. Otherwise the real
+factorization of the two-root norm implies, for some signs, that
+\[
+ n+\frac QJ
+ =\mu\bigl(V_0+V_1\pm\sqrt{a_0}\pm\sqrt{a_1}\bigr).       \tag{*}
+\]
+The parenthesized expression is positive by the strict majorants; the
+left side is positive because $n\geq0$ and $Q>0$. Thus $\mu>0$ is obtained
+\emph{before} any integrality claim about the radicals.
+
+The margin inequality now gives $|C-KY|<K/2$, whence $C>K$ because
+$Y\geq64$. Also $P<2A^2$, $F\geq A^2$, and $I\geq1$. Consequently
+\[
+ a_1\geq64(A^2-1)A^2C^2
+       \geq48A^4C^2>4A^4K^2>P^2K^2>a_0.
+\]
+Let $z=\Theta/\Omega$. The vanishing norm says
+$z=\pm\sqrt{a_0}\pm\sqrt{a_1}$. This rational number is nonzero because
+$a_1>a_0$. Squaring after isolating either root gives, with a suitable sign,
+\[
+ 2z(\pm\sqrt{a_0})=z^2+a_0-a_1.
+\]
+Both roots are therefore rational, hence integral. In particular $DFI$
+is a square, since a rational square root of an integer is integral.
+Equation~(*) now gives $Q/J\in\Z$, proving~(R).
+
+Conversely, under~(R), choose the positive integer square roots and set
+\[
+ n=\mu\bigl(V_0+V_1+\sqrt{a_0}+\sqrt{a_1}\bigr)-Q/J.
+\]
+This is an integer and is positive, since $\mu\geq1$ and $V_1>Q/J$.
+One real factor of the norm vanishes, proving $P_9=0$.
+\end{proof}
+
+The ratio contract, the source theorem, and this lemma prove soundness.
+For completeness, encode a positive parent solution by digits $n_i=z_i-1$.
+The shifted parent has no zero at the zero vector, so its code is positive.
+Choose any sufficiently large binary $b$ exceeding all digits. The source
+then supplies $g<bB^{108}$, hence $32g<G_{\rm cap}$, and the binomial
+condition. Apply ratio completeness, the exact quotient change, and the
+lemma. Composing with the pinned compiler and K215 calibration proves
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\neg\exists\mathbf x\in\Pos^9\;P_9(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \Con.
+\]
+For the nine-natural version use independent coordinates
+$\epsilon,g_0,h_0,s_0,w_0,\phi,i_0,j,n\in\N$, put $b=\epsilon+2$, and
+replace $g,h,s,w,i$ by $g_0+1,h_0+1,s_0+1,w_0+1,i_0+1$.
+These are exact domain translations; the positive polynomial is not
+silently reinterpreted over unrestricted integers.
+
+\subsection{Exact degree and evaluation cost}
+The apparent top degree of the norm cancels. The supplied degree-certificate
+circuit resolves that cancellation using~\eqref{eq:nine-majorant}. Write
+$\Delta_1=V_1^2-a_1$. The exact polynomial identity is
+\begin{align*}
+ \Theta^2-\Omega^2(a_0+a_1)
+ ={}&E_0^2-2E_0\Omega(V_0+V_1)\\
+ &+\Omega^2\bigl(K^2-1+\Delta_1+2V_0V_1\bigr),\\
+ \Delta_1={}&\mathcal E(GH)^2+64DF(H^2-1).
+\end{align*}
+Let $\rho=\deg R=8963$ and $\nu=\deg N=2357$. Propagation of total-degree
+upper bounds through these identities gives
+\[
+ \deg P_9=188\rho+400\nu+8W+236=2\,628\,944,
+ \qquad W=108.
+\]
+For clarity, $\deg\Omega=92\,184$, $\deg\Delta_1=1\,130\,104$, and
+$\Omega^2\Delta_1$ uniquely supplies degree $1\,314\,472$ in the inner
+expression. Its square has degree $2\,628\,944$; the other outer term has
+degree $1\,791\,262$.
+
+The upper bound is attained. Set every supplied positive coordinate equal
+to a single indeterminate $x$. The leading coefficients of $R$ and $N$
+are respectively $8a_\star^{4481}$ and $c_\star a_\star^{1178}$.
+The leading coefficient of the final polynomial is exactly
+\[
+ \boxed{2^{742}a_\star^{1314060}c_\star^{400}>0.}
+\]
+This proves exact total degree, rather than a syntactic bound or a random
+numerical estimate. The same coefficient survives the natural-coordinate
+translations. The primary circuit has 170 additions, 25 subtractions,
+and 304 multiplications, totaling 499 operations; the natural version has
+175 additions, 22 subtractions, and the same 304 multiplications, totaling
+501. Fixed-power evaluation is expanded into these binary gates. The
+larger cancellation-resolved circuit is a degree certificate and is not
+substituted for the primary evaluator's cost.

@@ -1,0 +1,51 @@
+\subsection{Literal graphs and the nine variable tradeoffs}
+The primary positive polynomial uses positive inputs
+\[
+ (b,g,h,s,w,\phi_+,i,j_+,n_+)\in\Pos^9,
+\]
+with $\phi=\phi_+-1$, $j=j_+-1$, $n=n_+-1$. The natural version uses
+$(b_0,g_0,h_0,s_0,w_0,\phi,i_0,j,n)\in\N^9$ and sets
+$b=b_0+1$, $g=g_0+1$, $h=h_0+1$, $s=s_0+1$, $w=w_0+1$, $i=i_0+1$.
+The literal circuit orders these nine slots consistently. Both maps are
+bijections of the declared domains, and every arithmetic shift is charged.
+
+For each packing and majorant, the JSON records the source certificate,
+source parameters, domain, ordered inputs, all fixed-leaf recipes, live DAG,
+named register map, output index, operation counts, and exact-degree
+certificate. A register name is not an additional unknown.
+The fixed-binding file connects the recipe leaves to signed or unsigned
+little-endian payloads; fixed power leaves are materialized too.
+
+The balanced $W=170$, $p=169$, $K_c=4426$ certificate has
+\[
+ (r,n_0,c_0)=(18394,4776,341),
+\]
+so the quotient-cancelled degree formula gives $4\,400\,764$.
+Removing its uniform target shift gives $K_c=4425$ and the odd threshold
+branch; then $(r,n_0,c_0)=(18390,4775,341)$ and the degree is
+$4\,399\,820$. Its lower degree comes at a higher gate cost because the
+entire source no longer permits the same homogeneous sharing.
+
+Two other explicitly retained tails use the same norm with different
+$q$ and positive majorant $V_1$:
+\begin{enumerate}
+\item The simple tail has $q=64$ and
+$V_1=k(8D^2-4D-1)GH$, proved above.
+\item The inherited support tail has $q=2048^2$ and
+$V_1=[T_6+256i(k^2+2)+2048]H$.
+Its uniform majorant proof is retained as a pinned inert dependency.
+\end{enumerate}
+The quotient-cancelled tail is the one proved in detail in the preceding
+section. For all three, exact cancellation-sensitive upper degrees are
+matched by a nonzero top diagonal coefficient. The verifier expands the
+small defect polynomial, not the huge final polynomial, and propagates
+its exact degree through the remaining circuit identities. Random modular
+replays are additional diagnostics, not the sole degree proof.
+
+The finite source verifier proves exact equality of each evaluator with
+its declared sparse source in the polynomial ring over four independent
+port indeterminates. In particular, shared homogenization does not assume
+the ports have special numerical values. Full independent circuit replays
+then use the actual fixed residues and both domain translations.
+The primary operation count is never replaced by the cost of an auxiliary
+certificate graph or a denominator-multiplied polynomial.

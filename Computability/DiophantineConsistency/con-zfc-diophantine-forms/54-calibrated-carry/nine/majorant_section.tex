@@ -1,0 +1,183 @@
+\section{A sharper polynomial radical bound}\label{sec:quotient-majorant}
+
+The following local improvement is independent of the choice of sparse
+source.  Keep the CRT-reparameterized Jones registers, and write
+\[
+ k=iJC,\quad J=4A-5,\quad D=(A^2-1)C^2+1,\quad
+ \mathcal L=CD+1-A.
+\]
+Then $F=1+k^2D^2(D-1)$, $G=A+F\mathcal L$, and
+$I=(G^2-1)H^2+1$.  All allowed assignments have $A\ge33280$,
+$C\ge1$, and $i\ge1$; the argument below only requires $A\ge729$.
+These letters are polynomial registers, not additional unknowns.
+
+Put
+\begin{align*}
+ B_8&=8D^2-4D-1, &\mathcal N&=2G+\mathcal L,\\
+ T_6&=k\{128B_8\mathcal N
+       -8k^2(2B_8+2D-1)\mathcal L+C(14k^2-192)\},\\
+ T&=T_6+i^3\{9C^2(64A-239)
+       -14C(64A^2-304A+603)+1024\}+288i+2048,\\
+ V_1&=TH, &q&=2048^2.
+\end{align*}
+The supplied support-majorants construction already used $T_6$ with a
+coarser positive correction.  The new step is the correction displayed
+here: exact polynomial division in $A$, together with one further finite
+radical estimate, removes its high-degree error terms.
+
+\paragraph{Uniform majorant.}
+For every allowed assignment,
+\begin{equation}\label{eq:new-majorant}
+ T>2048\sqrt{DF}\,G>0,\qquad V_1>\sqrt{qDFI}.
+\end{equation}
+To prove this, define
+\[
+ t_7=2048D^7-1024D^6-256D^5-128D^4-80D^3-56D^2-42D-33.
+\]
+Exact multiplication gives
+\begin{align*}
+ t_7^2-2048^2D^{13}(D-1)
+ ={}&109824D^6+36608D^5+18304D^4+9984D^3\\
+   &+5460D^2+2772D+1089>0.
+\end{align*}
+Also $t_7>0$ for $D\ge1$, since $2048>1719$, the sum of the absolute
+values of its other coefficients.  Thus
+$t_7/(2D^5)>1024D^2\sqrt{1-1/D}$.
+No convergence argument is used.
+
+A second exact identity is
+\[
+ T_6=\frac{kt_7\mathcal N}{2D^5}+\mathcal E_7,
+\]
+where
+\begin{align*}
+ \mathcal E_7={}&\frac{14k^3(A-1)-9k^3C}{D}
+ +\frac{9k^3(A-1)-33k^3C}{D^2}
+ +\frac{33k^3(A-1)}{D^3}\\
+ &+k\left\{\frac{120C+192-64A}{D}
+ +\frac{84C+120-40A}{D^2}
+ +\frac{63C+84-28A}{D^3}
+ +\frac{63-21A}{D^4}\right\}\\
+ &+\frac{99kC}{2D^4}+\frac{33k(3-A)}{2D^5}.
+\end{align*}
+The decisive divisions are
+\begin{align*}
+ J^3&=(A+1)(64A^2-304A+604)-729,\\
+ J^3&=(A^2-1)(64A-240)+(364A-365).
+\end{align*}
+Writing $s=A^2-1$ and using $D=sC^2+1$, they imply
+\begin{align*}
+ \frac{14k^3(A-1)}D-14i^3C(64A^2-304A+604)
+ &=-14i^3C\left\{\frac{729}{A+1}
+                    +\frac{J^3}{(A+1)D}\right\},\\
+ -\frac{9k^3C}D+9i^3C^2(64A-240)
+ &=-\frac{9i^3C^2(364A-365)}s
+     +\frac{9i^3J^3C^2}{sD}.
+\end{align*}
+For $A\ge729$ and $C\ge1$, the elementary bounds
+\[
+ \frac{729}{A+1}<1,\quad
+ 0<\frac{364A-365}{A^2-1}<1,\quad
+ \frac{J^3}{(A+1)D}<\frac{64}{C^2},\quad
+ \frac{k^3C}{D^2}<i^3,\quad \frac{kA}{D}<4i
+\]
+show, on dropping positive summands, that
+\begin{align*}
+ \mathcal E_7-14i^3C(64A^2-304A+604)
+   +9i^3C^2(64A-240)
+ >-14i^3C-9i^3C^2-929i^3-277i.
+\end{align*}
+Here $929=14\cdot64+33$.  The bound $277i$ follows from
+$D\ge9$,
+$64+40/9+28/81+21/729<69$, and $66/D^4<1$.
+Consequently $T>kt_7\mathcal N/(2D^5)+2048$.
+
+Finally let $X=k^2D^3(D-1)$.  Then $DF=X+D$ and
+$G=(X/D)\mathcal L+CD+1$.  Strict concavity of the square root gives
+\[
+ 2048\sqrt{DF}\,G
+ <1024kD^2\sqrt{1-1/D}\,(2G+\mathcal L)+2048v,
+ \qquad
+ v=\frac{CD+1}{2kD\sqrt{1-1/D}}<1.
+\]
+The last inequality follows from $k\ge7C$, $D\ge9$, and
+$\sqrt{D(D-1)}>D-1$.  This proves the first inequality in
+\eqref{eq:new-majorant}; the second follows from $I<(GH)^2$.
+Every denominator above occurs only in the proof, not in the polynomial.
+
+\paragraph{The offset-free finalizer.}
+Let $a_0=(P^2-1)K^2+1$, $a_1=DFI$, $V_0=PK$, and retain
+\[
+ m=[K^2-4(C-KY)^2]G_{\rm cap}-8gK^2,\qquad \Omega=Jm.
+\]
+For the nonnegative witness $n$, put
+\[
+ E_0=Jn+Q,\qquad \Theta=E_0-\Omega(V_0+V_1),
+\]
+so the final equation is
+\begin{equation}\label{eq:quotient-nine-final}
+ \boxed{\bigl[\Theta^2-\Omega^2(a_0+qa_1)\bigr]^2
+           -4q\Omega^4a_0a_1=0.}
+\end{equation}
+Its zero predicate is exactly the four ratio conditions
+$a_0,a_1$ square, $J\mid Q$, and $m>0$.
+Indeed, $m=0$ would leave $(Jn+Q)^4>0$.  Otherwise real factorization
+of the norm gives
+\[
+ n+Q/J=m(V_0+V_1+r_0+r_1),\qquad
+ r_0^2=a_0,\quad r_1^2=qa_1.
+\]
+Both majorants are unconditional, so the parenthesized expression is
+positive and $m>0$ follows before any integrality assertion.  The margin
+then implies $C>K$, and the standard ratio inequalities give $a_1>a_0$.
+The rational signed root sum therefore cannot vanish.  Squaring isolates
+each root, proving it rational and hence integral; also
+$r_1/2048$ is an integral square root of $a_1$.  The displayed equation
+now gives $J\mid Q$.
+Conversely choose the positive integral roots and set
+$n=m(V_0+V_1+r_0+r_1)-Q/J$.  Since
+$F=1+k^2D^2(D-1)\ge D$, we have $V_1>2048D>2048C^2>Q$;
+thus $n\ge0$ and the norm vanishes.
+This argument retains the computed margin, rather than replacing it
+by a freely chosen witness.
+
+\paragraph{Exact degree with independent source sizes.}
+Write $r=\deg R$, $n_0=\deg N$, $c_0=\deg G_{\rm cap}$, and let their
+positive diagonal leading coefficients be $\rho,\nu,\kappa$.
+The decisive register degrees are
+\[
+ \deg A=r+4n_0+2,\quad \deg C=r,\quad
+ \deg H=17r+32n_0+19,\quad
+ \deg\Omega=5r+20n_0+c_0+12.
+\]
+Exact expansion of $T^2-qDFG^2$ yields 703 integer monomials in $A,C,i$.
+Their exponents are coordinatewise at most $(15,18,6)$, with unique
+simultaneous leading term
+\[
+ 9\cdot2^{18}A^{15}C^{18}i^6.
+\]
+Thus its exact degree is $33r+60n_0+36$.  In
+\[
+ \Delta_1=V_1^2-qa_1
+ =H^2(T^2-qDFG^2)+qDF(H^2-1),
+\]
+the first term dominates, giving degree $67r+124n_0+74$.
+In turn $\Omega^2\Delta_1$ uniquely dominates the identity
+\[
+ \Theta^2-\Omega^2(a_0+qa_1)
+ =E_0^2-2E_0\Omega(V_0+V_1)
+  +\Omega^2\{K^2-1+\Delta_1+2V_0V_1\}.
+\]
+Its square also dominates the norm's subtracted term.  Therefore
+\begin{equation}\label{eq:quotient-nine-degree}
+ \deg F_9=154r+328n_0+4c_0+196,
+ \qquad
+ \operatorname{lc}_{\rm diag}(F_9)
+ =81\cdot2^{148}\kappa^4\rho^{154}\nu^{328}>0.
+\end{equation}
+This treats the carry block length and the Jones threshold root as distinct
+quantities; it does not assume $\deg R=3\deg N$.
+The independently expanded defect, modular circuit replays, and exact
+leading-degree checks audit these algebraic claims.  They do not replace
+the inherited source compiler or Jones ratio theorems, prove consistency,
+or constitute a new end-to-end proof-assistant certificate.

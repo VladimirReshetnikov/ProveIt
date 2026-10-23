@@ -1,0 +1,1000 @@
+{
+  "schema": "proveit-congruence-release-audit-v1",
+  "status": "PASS",
+  "python_version": "3.12.14",
+  "manifest": {
+    "status": "PASS",
+    "files": 391,
+    "sha256": "b8de941422d98abb0113352d9de9964c9a979b1727189b1bd81089cbd38ac93d"
+  },
+  "stages_passed": 13,
+  "byte_identical_rebuilds": [
+    {
+      "path": "ten/generated/signed10_b2.json",
+      "sha256": "d5e9a58f109d5222324ec7d8efb64677534beac2777935123fff50a7fc47d77d"
+    },
+    {
+      "path": "ten/generated/source_records.json",
+      "sha256": "c11782c068afa0c6fe00b0df405f92d3e363b90a0b9853ee618d3dec5577a0aa"
+    },
+    {
+      "path": "ten/generated/METRICS.json",
+      "sha256": "aed80fb54bb2fb529875b46570ea153ea38e222219891ac09fe4c49e9e02ebc5"
+    },
+    {
+      "path": "fourteen/polynomial.json",
+      "sha256": "d888c3f13c404b63c23257dce5ca67ab2e2caa699bceb810a5520517b0bd02db"
+    },
+    {
+      "path": "nine_fast/generated/LEDGER.json",
+      "sha256": "70a55d4fa666e52f6fe965b908603cf2d3bf7ea673f3a69475f5a41e88f629af"
+    },
+    {
+      "path": "nine_fast/generated/calibrated_positive.json",
+      "sha256": "a046c5f4ad1f2bba3c8cc2303e8d3fdec1488ecd30d3c67730e1c104b5060895"
+    },
+    {
+      "path": "nine_fast/generated/calibrated_positive_certificate.json",
+      "sha256": "fc9e5476573bca508979cc6ca753594097d26ee578983837c190f58f0ff30312"
+    },
+    {
+      "path": "nine_fast/generated/calibrated_positive_degree.json",
+      "sha256": "f9c9e4a821cf35b09d05fb9274046f04ecaacc6c1e6c300ee890a1a05f7bb708"
+    },
+    {
+      "path": "nine_fast/generated/calibrated_natural.json",
+      "sha256": "b50da5b717aaaefff6b93b9ca0a52a2be8998e421d42d006f912eb2db410f83b"
+    },
+    {
+      "path": "nine_fast/generated/calibrated_natural_certificate.json",
+      "sha256": "0acc68ba64c775e6b1e3660dafa56f68c47d8fd8142429fc7dcd8e99e3c6bc65"
+    },
+    {
+      "path": "nine_fast/generated/calibrated_natural_degree.json",
+      "sha256": "f9c9e4a821cf35b09d05fb9274046f04ecaacc6c1e6c300ee890a1a05f7bb708"
+    },
+    {
+      "path": "nine_majorant/generated/LEDGER.json",
+      "sha256": "ace0084d386dc0f48ae511850632870db427e99b94b306e4e8b308ba41d89c98"
+    },
+    {
+      "path": "nine_majorant/generated/calibrated_positive.json",
+      "sha256": "3f8baf2d1e5e6f8e0f3bcc209ca8d773d5d824d0f7d93783ba4f0c164c367194"
+    },
+    {
+      "path": "nine_majorant/generated/calibrated_positive_certificate.json",
+      "sha256": "394dd1eb489fec7ecf9627afc713ab704f06a414df9df71f508d17d285c73184"
+    },
+    {
+      "path": "nine_majorant/generated/calibrated_positive_degree.json",
+      "sha256": "8b11afd6b464abfcdd5ba534e1f7cc80bcabbd58fc07f8f5f284066c0dbcb1b9"
+    },
+    {
+      "path": "nine_majorant/generated/calibrated_natural.json",
+      "sha256": "296e4d538086a93c4aeb598c5f80d6c41d7deff166ab76e67f442986542ec5d5"
+    },
+    {
+      "path": "nine_majorant/generated/calibrated_natural_certificate.json",
+      "sha256": "5f2ec7bc977b08de3f975f26bf91530b7016ab9d841cbee130fb529c31e7af1e"
+    },
+    {
+      "path": "nine_majorant/generated/calibrated_natural_degree.json",
+      "sha256": "8b11afd6b464abfcdd5ba534e1f7cc80bcabbd58fc07f8f5f284066c0dbcb1b9"
+    }
+  ],
+  "stages": [
+    {
+      "name": "Native coefficient regeneration and dependency inventory",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "native/verify_native.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.586,
+      "stdout_sha256": "d14a5a1211b6e4c4ce6c7685c355d2ef5a3a955972a41f3db0b988bfdd9c5340",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"source_commit\": \"4b4349064a750ba6347293b55874a7f92abdd0db\",\n  \"verified_source_files\": 237,\n  \"literal_machine_actions\": 430,\n  \"reconstructed_wang_tiles\": 943,\n  \"native_basis_checks\": 69230,\n  \"native_support_size\": 989,\n  \"ports\": [\n    {\n      \"port\": \"beta\",\n      \"raw_bytes\": 133116,\n      \"sha256\": \"6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea\",\n      \"bit_length\": 1064921\n    },\n    {\n      \"port\": \"K\",\n      \"raw_bytes\": 133751,\n      \"sha256\": \"6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395\",\n      \"bit_length\": 1070004\n    },\n    {\n      \"port\": \"MC\",\n      \"raw_bytes\": 133116,\n      \"sha256\": \"7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b\",\n      \"bit_length\": 1064921\n    },\n    {\n      \"port\": \"MF_source\",\n      \"raw_bytes\": 133116,\n      \"sha256\": \"28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7\",\n      \"bit_length\": 1064922\n    }\n  ],\n  \"finite_geometry\": {\n    \"status\": \"PASS\",\n    \"native_basis_checks\": 69230,\n    \"tile_groups\": {\n      \"transitions\": 430,\n      \"halt\": 2,\n      \"unchanged\": 2,\n      \"arrive_right\": 398,\n      \"arrive_left\": 90,\n      \"finish\": 4,\n      \"initialize\": 4,\n      \"reset\": 3,\n      \"seam\": 9,\n      \"forbidden\": 1\n    },\n    \"support_size\": 989,\n    \"clause_mask_population\": 53,\n    \"external_padding_population\": 860,\n    \"maximum_unshifted_exponent\": 8791,\n    \"mass_bits\": 118,\n    \"threshold_bits\": 120,\n    \"threshold\": \"789998487493936316431751375694647416\",\n    \"clean_clause_bands\": true,\n    \"unique_anchor_alignment\": true,\n    \"one_tile_clause_checks\": 943,\n    \"selector_counts_checked\": 944\n  },\n  \"finite_rank_controller\": {\n    \"status\": \"PASS\",\n    \"d_factors\": {\n      \"11\": 2,\n      \"13\": 1,\n      \"677\": 1\n    },\n    \"orders\": {\n      \"121\": 10,\n      \"13\": 12,\n      \"677\": 52,\n      \"2341\": 60\n    },\n    \"order_mod_d\": 780,\n    \"padding_prime\": 2341,\n    \"step\": 2340,\n    \"valuation\": 1,\n    \"valuation_witness\": 2556373,\n    \"unit_residues\": [\n      {\n        \"prime\": 11,\n        \"B\": 2,\n        \"DC\": 5,\n        \"DR\": 4,\n        \"q_squared_minus_one\": 3,\n        \"bracket\": 9\n      },\n      {\n        \"prime\": 13,\n        \"B\": 6,\n        \"DC\": 1,\n        \"DR\": 12,\n        \"q_squared_minus_one\": 9,\n        \"bracket\": 7\n      },\n      {\n        \"prime\": 677,\n        \"B\": 611,\n        \"DC\": 38,\n        \"DR\": 643,\n        \"q_squared_minus_one\": 293,\n        \"bracket\": 654\n      },\n      {\n        \"prime\": 2341,\n        \"B\": 2100,\n        \"DC\": 2051,\n        \"DR\": 586,\n        \"q_squared_minus_one\": 1896,\n        \"bracket\": 1225\n      }\n    ]\n  },\n  \"formal_project_modules\": 168,\n  \"formal_external_imports\": [\n    \"Init\"\n  ],\n  \"formal_endpoint_clients\": 2,\n  \"formal_kernel_build_performed\": false,\n  \"machine_execution_performed\": false,\n  \"scope\": \"Offline bounded coefficient regeneration, literal projection, source identity, and complete K215 project-import inventory; not a new kernel proof replay.\"\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Ten-variable circuit rebuild",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "ten/build.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.039,
+      "stdout_sha256": "df3fe5eb581be806ae056a1e1724a46ef1b21d241c3e348921466e8e91fbb64e",
+      "stdout": "{\"total_operations\": 586, \"degree_upper_bound\": 9152284, \"source\": {\"positions\": [0, 9, 25, 23, 139, 35, 151, 168, 21, 91, 181, 94, 52, 150, 180, 7, 135, 38, 88, 183, 106, 178, 136, 20, 138, 8, 64, 105, 154, 37, 137, 120], \"max_position\": 183, \"stride\": null, \"blocks\": 22, \"convolution_height\": 5556, \"reversal_height\": 5190, \"targets\": [70, 86, 451, 685, 1059, 1296, 1530, 1874, 2124, 2358, 2696, 2780, 2792, 3157, 3290, 3634, 3929, 4238, 4384, 4527, 4865, 5190], \"order\": [16, 2, 9, 14, 21, 7, 15, 22, 13, 3, 19, 20, 1, 10, 17, 8, 4, 6, 11, 18, 12, 5], \"beta_exponent\": 2134940, \"popcount_power\": 5947, \"beta_mask_exponent\": 2134919, \"source_adapter\": \"sparse-borrow-calibrated-mask-popcount\"}}",
+      "stderr": ""
+    },
+    {
+      "name": "Ten-variable independent source and degree checks",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "ten/verify.py"
+      ],
+      "status": "PASS",
+      "seconds": 1.059,
+      "stdout_sha256": "a5d6e09920aa898fcbe5cd068f2c04ba86844ff96af5be24178575ea4a133aaa",
+      "stdout": "{\"status\": \"PASS\", \"total_operations\": 586, \"exact_degree\": 9152284, \"degree_certificates\": [{\"prime\": 1000003, \"degree\": 9152284, \"diagonal_top_coefficient\": 474647}, {\"prime\": 1000033, \"degree\": 9152284, \"diagonal_top_coefficient\": 56488}, {\"prime\": 1000037, \"degree\": 9152284, \"diagonal_top_coefficient\": 452960}], \"modular_named_register_comparisons\": 14352}",
+      "stderr": ""
+    },
+    {
+      "name": "Fast nine-variable circuit rebuild",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "nine_fast/build_nine.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.064,
+      "stdout_sha256": "70a55d4fa666e52f6fe965b908603cf2d3bf7ea673f3a69475f5a41e88f629af",
+      "stdout": "{\n  \"calibrated_natural\": {\n    \"degree\": 6692108,\n    \"operations\": 610,\n    \"operation_counts\": {\n      \"add\": 178,\n      \"mul\": 407,\n      \"sub\": 25\n    },\n    \"certificate_operations\": 626\n  },\n  \"calibrated_positive\": {\n    \"degree\": 6692108,\n    \"operations\": 604,\n    \"operation_counts\": {\n      \"sub\": 26,\n      \"mul\": 407,\n      \"add\": 171\n    },\n    \"certificate_operations\": 620\n  }\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Independent positive source extraction",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "nine_fast/verify_source.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.091,
+      "stdout_sha256": "02911b0555131451cf6541b1a10342a98ecc278dbaa8066085635910ca1e8a85",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"original_positive_source_terms\": 94,\n  \"protected_pairs\": 62,\n  \"source_target_interactions\": 49632,\n  \"intended_target_hits\": 94,\n  \"D_degree\": 5102,\n  \"D_leading_coefficient\": 1,\n  \"coefficient_bound_exponent\": 2134927,\n  \"largest_triangle_bound_bitlength\": 2134926,\n  \"actual_port_bitlengths\": [\n    1064921,\n    1070004,\n    1064921,\n    1064922\n  ],\n  \"source_register_replays\": 144,\n  \"scope\": \"Exact finite support and factorial identities, actual coefficient binding, and modular circuit replay. Universal carry, positivity and semantic arguments are in the report.\"\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Fast nine-variable independent circuit and degree checks",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "nine_fast/check_circuits.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.107,
+      "stdout_sha256": "b4a9284f10bf08ac182ec55e3694c09af1955b65ee1d95276ddd91099f32e73e",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"circuit_comparisons\": 240,\n  \"congruence_fixtures\": 40,\n  \"certificate_multiplier\": \"1\",\n  \"independent_exact_degree_checks\": [\n    {\n      \"domain\": \"natural\",\n      \"modulus\": 1000003,\n      \"certificate_degree\": 6692108,\n      \"D_degree\": 139324,\n      \"primary_degree\": 6692108,\n      \"nonzero_certificate_leader\": 958234\n    },\n    {\n      \"domain\": \"natural\",\n      \"modulus\": 1000033,\n      \"certificate_degree\": 6692108,\n      \"D_degree\": 139324,\n      \"primary_degree\": 6692108,\n      \"nonzero_certificate_leader\": 831131\n    },\n    {\n      \"domain\": \"natural\",\n      \"modulus\": 1000000007,\n      \"certificate_degree\": 6692108,\n      \"D_degree\": 139324,\n      \"primary_degree\": 6692108,\n      \"nonzero_certificate_leader\": 442674705\n    },\n    {\n      \"domain\": \"positive\",\n      \"modulus\": 1000003,\n      \"certificate_degree\": 6692108,\n      \"D_degree\": 139324,\n      \"primary_degree\": 6692108,\n      \"nonzero_certificate_leader\": 958234\n    },\n    {\n      \"domain\": \"positive\",\n      \"modulus\": 1000033,\n      \"certificate_degree\": 6692108,\n      \"D_degree\": 139324,\n      \"primary_degree\": 6692108,\n      \"nonzero_certificate_leader\": 831131\n    },\n    {\n      \"domain\": \"positive\",\n      \"modulus\": 1000000007,\n      \"certificate_degree\": 6692108,\n      \"D_degree\": 139324,\n      \"primary_degree\": 6692108,\n      \"nonzero_certificate_leader\": 442674705\n    }\n  ],\n  \"scope\": \"Exact S0 defect identity, finite circuit equality checks, and independent modular nonzero-leading-coefficient degree proof; universal inequalities are proved in PROOF.md.\"\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Majorant nine-variable circuit rebuild",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "nine_majorant/build_nine.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.069,
+      "stdout_sha256": "ace0084d386dc0f48ae511850632870db427e99b94b306e4e8b308ba41d89c98",
+      "stdout": "{\n  \"calibrated_natural\": {\n    \"degree\": 5671669,\n    \"operations\": 636,\n    \"operation_counts\": {\n      \"add\": 183,\n      \"mul\": 422,\n      \"sub\": 31\n    },\n    \"certificate_operations\": 726\n  },\n  \"calibrated_positive\": {\n    \"degree\": 5671669,\n    \"operations\": 630,\n    \"operation_counts\": {\n      \"sub\": 32,\n      \"mul\": 422,\n      \"add\": 176\n    },\n    \"certificate_operations\": 720\n  }\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Majorant exact ring identities",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "nine_majorant/check_ring_identities.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.137,
+      "stdout_sha256": "6e506f1b5aa077328bae91eaced3aa6f640100c45df224b9650ff2de760b2fae",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"scope\": \"Exact ring identities only; inequalities reviewed separately\",\n  \"scale\": 2048,\n  \"identities\": [\n    \"four polynomial quotient remainders\",\n    \"rational square-root approximant\",\n    \"D4*T identity\",\n    \"DF identity\",\n    \"G identity\",\n    \"D8*defect identity\",\n    \"V1 squared defect\",\n    \"two-defect norm expansion\"\n  ]\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Majorant independent circuit and degree checks",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "nine_majorant/check_circuits.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.139,
+      "stdout_sha256": "ba8b01afa018f0a8c5bc79b5d523025ff9ceae72d38f3f630e5ce6b29004f246",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"circuit_comparisons\": 240,\n  \"congruence_fixtures\": 40,\n  \"certificate_multiplier\": \"D^16\",\n  \"independent_exact_degree_checks\": [\n    {\n      \"domain\": \"natural\",\n      \"modulus\": 1000003,\n      \"certificate_degree\": 7900853,\n      \"D_degree\": 139324,\n      \"primary_degree\": 5671669,\n      \"nonzero_certificate_leader\": 134166\n    },\n    {\n      \"domain\": \"natural\",\n      \"modulus\": 1000033,\n      \"certificate_degree\": 7900853,\n      \"D_degree\": 139324,\n      \"primary_degree\": 5671669,\n      \"nonzero_certificate_leader\": 552848\n    },\n    {\n      \"domain\": \"natural\",\n      \"modulus\": 1000000007,\n      \"certificate_degree\": 7900853,\n      \"D_degree\": 139324,\n      \"primary_degree\": 5671669,\n      \"nonzero_certificate_leader\": 322492406\n    },\n    {\n      \"domain\": \"positive\",\n      \"modulus\": 1000003,\n      \"certificate_degree\": 7900853,\n      \"D_degree\": 139324,\n      \"primary_degree\": 5671669,\n      \"nonzero_certificate_leader\": 134166\n    },\n    {\n      \"domain\": \"positive\",\n      \"modulus\": 1000033,\n      \"certificate_degree\": 7900853,\n      \"D_degree\": 139324,\n      \"primary_degree\": 5671669,\n      \"nonzero_certificate_leader\": 552848\n    },\n    {\n      \"domain\": \"positive\",\n      \"modulus\": 1000000007,\n      \"certificate_degree\": 7900853,\n      \"D_degree\": 139324,\n      \"primary_degree\": 5671669,\n      \"nonzero_certificate_leader\": 322492406\n    }\n  ],\n  \"scope\": \"Finite implementation checks and modular nonzero-leading-coefficient degree proof; ring identities and universal inequalities are separately proved.\"\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Fourteen-variable circuit rebuild",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "fourteen/build.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.022,
+      "stdout_sha256": "339d769411fb1a810b8a619601234fc43378549f113bd36dd7a82838ef2145ed",
+      "stdout": "{\"operations\": 79, \"operation_counts\": {\"*\": 43, \"+\": 20, \"-\": 16}, \"exact_degree\": 52}",
+      "stderr": ""
+    },
+    {
+      "name": "Fourteen-variable independent checks",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "fourteen/verify.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.199,
+      "stdout_sha256": "730a9379e02a6c0ad556d3cd8ebcf39bea0c85b5ac57d3df439c987505a129ef",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"witnesses\": 14,\n  \"degree\": 52,\n  \"operations\": 79,\n  \"counts\": {\n    \"*\": 43,\n    \"+\": 20,\n    \"-\": 16\n  },\n  \"all_gates_and_ports_live\": true,\n  \"main_residual_expansion_terms\": 2994,\n  \"main_degree\": 26,\n  \"auxiliary_gap_degree\": 23,\n  \"strong_degree\": 22,\n  \"leading_form\": \"16384*w^4*s^6*(eta+zeta)^2*gamma^2*(beta*J)^38\",\n  \"diagonal_leader\": \"65536*beta^38\",\n  \"full_univariate_replays\": [\n    {\n      \"prime\": 1009,\n      \"degree\": 52,\n      \"leading_coefficient\": 338\n    },\n    {\n      \"prime\": 10007,\n      \"degree\": 52,\n      \"leading_coefficient\": 3291\n    },\n    {\n      \"prime\": 1000003,\n      \"degree\": 52,\n      \"leading_coefficient\": 554477\n    }\n  ],\n  \"formula_replays_with_actual_coefficients\": 72,\n  \"odd_polynomial_identity_controls\": 76,\n  \"canonical_auxiliary_controls\": 5,\n  \"minimum_block_controls\": 3672,\n  \"coefficient_hashes_verified\": true,\n  \"provenance_hashes_verified\": true,\n  \"polynomial_sha256\": \"d888c3f13c404b63c23257dce5ca67ab2e2caa699bceb810a5520517b0bd02db\",\n  \"scope\": \"Finite arithmetic verification; unbounded proof in PROOF.md and inherited source texts.\"\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Independent residual-text parser and source DAG check",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "audits/audit_fused_positive_source.py"
+      ],
+      "status": "PASS",
+      "seconds": 0.059,
+      "stdout_sha256": "366570ddb1c482dad402a5eb39b79c3b487744188d15f70874c9261349d83c6e",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"source_sha256\": \"1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287\",\n  \"code_sha256\": \"d0436f2b497d252ff923274467a09050c7d157f19d88ec2ac0149da91c6ef136\",\n  \"circuit_sha256\": \"a046c5f4ad1f2bba3c8cc2303e8d3fdec1488ecd30d3c67730e1c104b5060895\",\n  \"builder_sha256\": \"b3dc0a1eec951359ab16c6850416b3637d4f28888803739671cffc127e484e0b\",\n  \"parsed_residuals\": 22,\n  \"padded_pairs\": 528,\n  \"reversed_terms\": 94,\n  \"checked_interactions\": 49632,\n  \"correct_target_hits\": 94,\n  \"D_degree\": 5102,\n  \"D_leading_coefficient\": 1,\n  \"max_target\": 5190,\n  \"weights_max\": 183,\n  \"emitted_D_matches_independent_AST_derivation\": true,\n  \"retained_M_exponent\": 2134927,\n  \"actual_bound_bit_length\": 2134926,\n  \"all_one_residual5\": 1,\n  \"analytic_review\": \"fused_positive_source_review.md\",\n  \"scope\": \"Changed positive-source layer only; downstream arithmetic bridge/finalizer not reviewed here.\"\n}",
+      "stderr": ""
+    },
+    {
+      "name": "Independent signed guard and constructive Lucas checks",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "audits/ten_root_audit.py",
+        "--component",
+        "ten"
+      ],
+      "status": "PASS",
+      "seconds": 1.34,
+      "stdout_sha256": "94177d19aa6f57dfa6adb8128997ff1e712f2199dbcb8eef9c57bb5690416f31",
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"scope\": \"finite checks supplement the universal proof; not a proof of source undecidability\",\n  \"circuit_sha256\": \"d5e9a58f109d5222324ec7d8efb64677534beac2777935123fff50a7fc47d77d\",\n  \"operation_count\": 586,\n  \"degree_upper_bound\": 9152284,\n  \"actual_coefficient_congruence_samples\": 128,\n  \"rational_norm_inputs_examined\": 413820,\n  \"rational_norm_zeros_checked\": 100,\n  \"signed_guard_inputs_examined\": 12936,\n  \"signed_guard_squares_checked\": 24,\n  \"constructive_lucas_modular_cases\": 54\n}",
+      "stderr": ""
+    }
+  ],
+  "component_reports": {
+    "native/VERIFICATION.json": {
+      "status": "PASS",
+      "source_commit": "4b4349064a750ba6347293b55874a7f92abdd0db",
+      "verified_source_files": 237,
+      "literal_machine_actions": 430,
+      "reconstructed_wang_tiles": 943,
+      "native_basis_checks": 69230,
+      "native_support_size": 989,
+      "ports": [
+        {
+          "port": "beta",
+          "raw_bytes": 133116,
+          "sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+          "bit_length": 1064921
+        },
+        {
+          "port": "K",
+          "raw_bytes": 133751,
+          "sha256": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+          "bit_length": 1070004
+        },
+        {
+          "port": "MC",
+          "raw_bytes": 133116,
+          "sha256": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+          "bit_length": 1064921
+        },
+        {
+          "port": "MF_source",
+          "raw_bytes": 133116,
+          "sha256": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7",
+          "bit_length": 1064922
+        }
+      ],
+      "finite_geometry": {
+        "status": "PASS",
+        "native_basis_checks": 69230,
+        "tile_groups": {
+          "transitions": 430,
+          "halt": 2,
+          "unchanged": 2,
+          "arrive_right": 398,
+          "arrive_left": 90,
+          "finish": 4,
+          "initialize": 4,
+          "reset": 3,
+          "seam": 9,
+          "forbidden": 1
+        },
+        "support_size": 989,
+        "clause_mask_population": 53,
+        "external_padding_population": 860,
+        "maximum_unshifted_exponent": 8791,
+        "mass_bits": 118,
+        "threshold_bits": 120,
+        "threshold": "789998487493936316431751375694647416",
+        "clean_clause_bands": true,
+        "unique_anchor_alignment": true,
+        "one_tile_clause_checks": 943,
+        "selector_counts_checked": 944
+      },
+      "finite_rank_controller": {
+        "status": "PASS",
+        "d_factors": {
+          "11": 2,
+          "13": 1,
+          "677": 1
+        },
+        "orders": {
+          "121": 10,
+          "13": 12,
+          "677": 52,
+          "2341": 60
+        },
+        "order_mod_d": 780,
+        "padding_prime": 2341,
+        "step": 2340,
+        "valuation": 1,
+        "valuation_witness": 2556373,
+        "unit_residues": [
+          {
+            "prime": 11,
+            "B": 2,
+            "DC": 5,
+            "DR": 4,
+            "q_squared_minus_one": 3,
+            "bracket": 9
+          },
+          {
+            "prime": 13,
+            "B": 6,
+            "DC": 1,
+            "DR": 12,
+            "q_squared_minus_one": 9,
+            "bracket": 7
+          },
+          {
+            "prime": 677,
+            "B": 611,
+            "DC": 38,
+            "DR": 643,
+            "q_squared_minus_one": 293,
+            "bracket": 654
+          },
+          {
+            "prime": 2341,
+            "B": 2100,
+            "DC": 2051,
+            "DR": 586,
+            "q_squared_minus_one": 1896,
+            "bracket": 1225
+          }
+        ]
+      },
+      "formal_project_modules": 168,
+      "formal_external_imports": [
+        "Init"
+      ],
+      "formal_endpoint_clients": 2,
+      "formal_kernel_build_performed": false,
+      "machine_execution_performed": false,
+      "scope": "Offline bounded coefficient regeneration, literal projection, source identity, and complete K215 project-import inventory; not a new kernel proof replay."
+    },
+    "ten/generated/VERIFIED.json": {
+      "status": "PASS",
+      "semantic_scope": "finite artifact checks; inherited endpoint is a theorem dependency",
+      "circuit_sha256": "d5e9a58f109d5222324ec7d8efb64677534beac2777935123fff50a7fc47d77d",
+      "node_counts": {
+        "variable": 10,
+        "literal": 15,
+        "mul": 391,
+        "add": 171,
+        "fixed": 12,
+        "sub": 24
+      },
+      "operation_counts": {
+        "add": 171,
+        "sub": 24,
+        "mul": 391
+      },
+      "total_operations": 586,
+      "exact_degree": 9152284,
+      "degree_certificates": [
+        {
+          "prime": 1000003,
+          "degree": 9152284,
+          "diagonal_top_coefficient": 474647
+        },
+        {
+          "prime": 1000033,
+          "degree": 9152284,
+          "diagonal_top_coefficient": 56488
+        },
+        {
+          "prime": 1000037,
+          "degree": 9152284,
+          "diagonal_top_coefficient": 452960
+        }
+      ],
+      "source": {
+        "records": 94,
+        "pair_monomials": 528,
+        "interaction_checks": 49632,
+        "coefficient_mass_bit_length": 2134925,
+        "reversed_degree": 5102,
+        "leading_coefficient": 1,
+        "old_target_failures": [
+          {
+            "source_row": 21,
+            "target_row": 7,
+            "source_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "word_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "source_row": 13,
+            "target_row": 3,
+            "source_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "word_alpha": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "source_row": 13,
+            "target_row": 3,
+            "source_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "word_alpha": [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "source_row": 13,
+            "target_row": 3,
+            "source_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "word_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "source_row": 13,
+            "target_row": 3,
+            "source_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "word_alpha": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "modular_direct_formula_assignments": 276,
+      "modular_named_register_comparisons": 14352,
+      "congruence_assignments": 69,
+      "identities": {
+        "exact_identities": 3,
+        "norm_expanded_terms": 6
+      }
+    },
+    "nine_fast/CIRCUIT_AUDIT.json": {
+      "status": "PASS",
+      "circuit_comparisons": 240,
+      "congruence_fixtures": 40,
+      "certificate_multiplier": "1",
+      "independent_exact_degree_checks": [
+        {
+          "domain": "natural",
+          "modulus": 1000003,
+          "certificate_degree": 6692108,
+          "D_degree": 139324,
+          "primary_degree": 6692108,
+          "nonzero_certificate_leader": 958234
+        },
+        {
+          "domain": "natural",
+          "modulus": 1000033,
+          "certificate_degree": 6692108,
+          "D_degree": 139324,
+          "primary_degree": 6692108,
+          "nonzero_certificate_leader": 831131
+        },
+        {
+          "domain": "natural",
+          "modulus": 1000000007,
+          "certificate_degree": 6692108,
+          "D_degree": 139324,
+          "primary_degree": 6692108,
+          "nonzero_certificate_leader": 442674705
+        },
+        {
+          "domain": "positive",
+          "modulus": 1000003,
+          "certificate_degree": 6692108,
+          "D_degree": 139324,
+          "primary_degree": 6692108,
+          "nonzero_certificate_leader": 958234
+        },
+        {
+          "domain": "positive",
+          "modulus": 1000033,
+          "certificate_degree": 6692108,
+          "D_degree": 139324,
+          "primary_degree": 6692108,
+          "nonzero_certificate_leader": 831131
+        },
+        {
+          "domain": "positive",
+          "modulus": 1000000007,
+          "certificate_degree": 6692108,
+          "D_degree": 139324,
+          "primary_degree": 6692108,
+          "nonzero_certificate_leader": 442674705
+        }
+      ],
+      "scope": "Exact S0 defect identity, finite circuit equality checks, and independent modular nonzero-leading-coefficient degree proof; universal inequalities are proved in PROOF.md."
+    },
+    "nine_fast/SOURCE_FUSION_AUDIT.json": {
+      "status": "PASS",
+      "original_positive_source_terms": 94,
+      "protected_pairs": 62,
+      "source_target_interactions": 49632,
+      "intended_target_hits": 94,
+      "D_degree": 5102,
+      "D_leading_coefficient": 1,
+      "coefficient_bound_exponent": 2134927,
+      "largest_triangle_bound_bitlength": 2134926,
+      "actual_port_bitlengths": [
+        1064921,
+        1070004,
+        1064921,
+        1064922
+      ],
+      "source_register_replays": 144,
+      "scope": "Exact finite support and factorial identities, actual coefficient binding, and modular circuit replay. Universal carry, positivity and semantic arguments are in the report."
+    },
+    "nine_majorant/CIRCUIT_AUDIT.json": {
+      "status": "PASS",
+      "circuit_comparisons": 240,
+      "congruence_fixtures": 40,
+      "certificate_multiplier": "D^16",
+      "independent_exact_degree_checks": [
+        {
+          "domain": "natural",
+          "modulus": 1000003,
+          "certificate_degree": 7900853,
+          "D_degree": 139324,
+          "primary_degree": 5671669,
+          "nonzero_certificate_leader": 134166
+        },
+        {
+          "domain": "natural",
+          "modulus": 1000033,
+          "certificate_degree": 7900853,
+          "D_degree": 139324,
+          "primary_degree": 5671669,
+          "nonzero_certificate_leader": 552848
+        },
+        {
+          "domain": "natural",
+          "modulus": 1000000007,
+          "certificate_degree": 7900853,
+          "D_degree": 139324,
+          "primary_degree": 5671669,
+          "nonzero_certificate_leader": 322492406
+        },
+        {
+          "domain": "positive",
+          "modulus": 1000003,
+          "certificate_degree": 7900853,
+          "D_degree": 139324,
+          "primary_degree": 5671669,
+          "nonzero_certificate_leader": 134166
+        },
+        {
+          "domain": "positive",
+          "modulus": 1000033,
+          "certificate_degree": 7900853,
+          "D_degree": 139324,
+          "primary_degree": 5671669,
+          "nonzero_certificate_leader": 552848
+        },
+        {
+          "domain": "positive",
+          "modulus": 1000000007,
+          "certificate_degree": 7900853,
+          "D_degree": 139324,
+          "primary_degree": 5671669,
+          "nonzero_certificate_leader": 322492406
+        }
+      ],
+      "scope": "Finite implementation checks and modular nonzero-leading-coefficient degree proof; ring identities and universal inequalities are separately proved."
+    },
+    "fourteen/AUDIT.json": {
+      "status": "PASS",
+      "witnesses": 14,
+      "degree": 52,
+      "operations": 79,
+      "counts": {
+        "*": 43,
+        "+": 20,
+        "-": 16
+      },
+      "all_gates_and_ports_live": true,
+      "main_residual_expansion_terms": 2994,
+      "main_degree": 26,
+      "auxiliary_gap_degree": 23,
+      "strong_degree": 22,
+      "leading_form": "16384*w^4*s^6*(eta+zeta)^2*gamma^2*(beta*J)^38",
+      "diagonal_leader": "65536*beta^38",
+      "full_univariate_replays": [
+        {
+          "prime": 1009,
+          "degree": 52,
+          "leading_coefficient": 338
+        },
+        {
+          "prime": 10007,
+          "degree": 52,
+          "leading_coefficient": 3291
+        },
+        {
+          "prime": 1000003,
+          "degree": 52,
+          "leading_coefficient": 554477
+        }
+      ],
+      "formula_replays_with_actual_coefficients": 72,
+      "odd_polynomial_identity_controls": 76,
+      "canonical_auxiliary_controls": 5,
+      "minimum_block_controls": 3672,
+      "coefficient_hashes_verified": true,
+      "provenance_hashes_verified": true,
+      "polynomial_sha256": "d888c3f13c404b63c23257dce5ca67ab2e2caa699bceb810a5520517b0bd02db",
+      "scope": "Finite arithmetic verification; unbounded proof in PROOF.md and inherited source texts."
+    },
+    "audits/fused_positive_source_audit.json": {
+      "status": "PASS",
+      "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+      "code_sha256": "d0436f2b497d252ff923274467a09050c7d157f19d88ec2ac0149da91c6ef136",
+      "circuit_sha256": "a046c5f4ad1f2bba3c8cc2303e8d3fdec1488ecd30d3c67730e1c104b5060895",
+      "builder_sha256": "b3dc0a1eec951359ab16c6850416b3637d4f28888803739671cffc127e484e0b",
+      "parsed_residuals": 22,
+      "padded_pairs": 528,
+      "reversed_terms": 94,
+      "checked_interactions": 49632,
+      "correct_target_hits": 94,
+      "D_degree": 5102,
+      "D_leading_coefficient": 1,
+      "max_target": 5190,
+      "weights_max": 183,
+      "emitted_D_matches_independent_AST_derivation": true,
+      "retained_M_exponent": 2134927,
+      "actual_bound_bit_length": 2134926,
+      "all_one_residual5": 1,
+      "analytic_review": "fused_positive_source_review.md",
+      "scope": "Changed positive-source layer only; downstream arithmetic bridge/finalizer not reviewed here."
+    },
+    "audits/TEN_ROOT_CHECKS.json": {
+      "status": "PASS",
+      "scope": "finite checks supplement the universal proof; not a proof of source undecidability",
+      "circuit_sha256": "d5e9a58f109d5222324ec7d8efb64677534beac2777935123fff50a7fc47d77d",
+      "operation_count": 586,
+      "degree_upper_bound": 9152284,
+      "actual_coefficient_congruence_samples": 128,
+      "rational_norm_inputs_examined": 413820,
+      "rational_norm_zeros_checked": 100,
+      "signed_guard_inputs_examined": 12936,
+      "signed_guard_squares_checked": 24,
+      "constructive_lucas_modular_cases": 54
+    }
+  },
+  "seconds": 3.963,
+  "scope": "Finite algebra, binding, degree, regeneration, and implementation checks. The unbounded semantic equivalences are the stated mathematical proofs. No new end-to-end Lean/Rocq or object-language ZFC derivation is asserted."
+}

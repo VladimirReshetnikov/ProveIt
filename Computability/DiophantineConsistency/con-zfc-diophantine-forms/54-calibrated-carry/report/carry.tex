@@ -1,0 +1,170 @@
+\section{Sparse padding and the exact carry threshold}
+\label{sec:carry8}
+Let $p$ be the padding position, $w_i$ the 31 distinct variable positions,
+$W=\max(p,w_i)$, and $H_j$ the 22 distinct targets. Let $D_c(t)$ be the
+weighted, row-oriented source polynomial of the selected certificate,
+$d=\deg D_c$, $K_c=d+2W$, and $E=K_c+W+2$. Every reversed exponent is
+nonnegative. The certificate proves
+\[
+ [t^{H_j}]\left(t^p+\sum_i x_it^{w_i}\right)^2D_c(t)
+     =2\epsilon_jr_j(\mathbf x),\qquad
+ K_c\ge\max_jH_j+2.
+\]
+The maximum target, source degree, and padding position are distinct data.
+The 109 reversed positions are distinct, so a bound on each weighted source
+coefficient also bounds each coefficient of $D_c$, without a row-count factor.
+
+Put $\kappa=864026$, $\lambda=2^\kappa$, and $B=\lambda b^2$ for integer
+$b\ge1$. The positive integral leading coefficient of $D_c$ implies
+\[
+ 0<D_c(B)<\frac{MB^{d+1}}{B-1},\qquad M=2^{864013},
+\]
+because all lower terms together have magnitude below $MB^d/(B-1)<B^d$.
+This positivity is unconditional; it does not assume a source zero or a
+binary base.
+
+\subsection{The sparse source and its size bounds}
+For $g\ge0$, define only polynomial abbreviations
+\begin{align*}
+ A_c&=\sum_jB^{H_j},&\ell&=\sum_iB^{w_i},&N_0&=B^{W+1},\\
+ Z_c&=B^{K_c+1},&M_c&=N_0-1-(b-1)\ell,&&\\
+ J_c&=2(B^p+g)^2D_c(B)+A_c,&&&&\\
+ S_c&=g+N_0J_c,&T_c&=M_c+N_0(B-2)A_c.&&
+\end{align*}
+The ordinary radix-$B$ digits of $M_c$ are $B-b$ at a variable position,
+and $B-1$ elsewhere through $W$. Thus $0\le M_c<N_0$, $T_c\ge0$,
+and $J_c,S_c>0$, before $b$ is known to be a power of two.
+
+On the branch $g<4bB^W$ one has $g<N_0$ and $B^p+g<5bB^W$, so
+\[
+ 2(B^p+g)^2D_c(B)
+ <\frac{50Mb^2B^{K_c+1}}{B-1}
+ \le\frac{50}{8192}\frac{BZ_c}{B-1}<\frac{Z_c}{128}.
+\]
+Also $A_c<B^{\max H_j+1}/(B-1)<Z_c/128$, whence
+$0<J_c<Z_c/64$. Finally $(B-2)A_c<B^{\max H_j+1}\le Z_c$.
+Integer low/high block bounds give
+\[
+             0\le S_c,T_c<B^E,\qquad S_c+T_c<2B^E.       \tag{C1}
+\]
+Using $1+g$ in place of $B^p+g$ would invalidate the proof for interior
+padding. The displayed estimate explicitly retains $p$.
+
+\subsection{Signed borrows rather than fictitious positive digits}
+Now assume $b=2^k$ and hence $B=2^v$, $v=\kappa+2k$.
+The low mask condition $g\mathbin{\&}M_c=0$ is exactly
+\[
+ g=\sum_i x_iB^{w_i},\qquad 0\le x_i<b.
+\]
+The padding position is distinct, so its digit remains the fixed coefficient
+one in the encoded linear form. Write $h_t$ for the coefficient of
+$(t^p+\sum_i x_it^{w_i})^2D_c(t)$. Then
+\[
+ |h_t|<M(1+\sum_i x_i)^2\le M(31b)^2<1024Mb^2=B/8.
+\]
+The nominal digit of $J_c$ is $2h_t+\delta_t$, where $\delta_t=1$ at a
+target and is zero elsewhere. Starting with incoming carry $c_{-1}=0$,
+normalize by
+\[
+ c_t=\left\lfloor\frac{2h_t+\delta_t+c_{t-1}}{B}\right\rfloor.
+\]
+The strict coefficient bound proves inductively $c_t\in\{-1,0\}$.
+At a target, $h_t=0$ gives normalized digit 0 or 1. If $h_t>0$, the
+digit is at least 2 and below $B/2$; if $h_t<0$, it is above $B/2$.
+Because every $h_t$ at a target is $2\epsilon_jr_j$, a nonzero positive
+$h_t$ is at least 2, which supplies the first lower bound even after a
+borrow. Precisely the first case is disjoint from the target mask $B-2$.
+As $0<J_c<Z_c$, these are ordinary digits of a finite nonnegative integer;
+no bit convention for a negative integer is being used. Hence
+\[
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ g\text{ encodes a common natural source zero}.                \tag{C2}
+\]
+
+\subsection{A two-block valuation identity}
+For $S,T\ge0$ with $S+T<L=2^u$ and fixed integer $c>0$, put
+\[
+ R_c=cL^2+(S+T)L+(L-1-S).
+\]
+These three binary blocks do not overlap. Complementing the low block gives
+\[
+ \pc(R_c)=\pc(c)+u+\pc(T)-\delta,\qquad
+ \delta=\pc(S)+\pc(T)-\pc(S+T)\ge0.
+\]
+Here $\delta=0$ exactly when $S\mathbin{\&}T=0$; it counts the propagated
+binary carries. Legendre's factorial formula gives
+$v_2\binom{2R_c}{R_c}=\pc(R_c)$, so
+\[
+ 2^{u+\pc(T)+\pc(c)}\mid\binom{2R_c}{R_c}
+    \quad\Longleftrightarrow\quad S\mathbin{\&}T=0.       \tag{C3}
+\]
+It is essential to use $S+T<L$, not just two separate upper bounds.
+For our mask the 31 variable positions remove $k$ one-bits each, while the
+22 high targets contribute $v-1$ each. Thus
+\[
+ \pc(T_c)=(W+23)v-31k-22.                                \tag{C4}
+\]
+
+\subsection{The nine-variable square threshold}
+Jones's interface needs a threshold of the form $N^2$. Set
+\[
+ L=2bB^E,\quad R=L^2+(S_c+T_c)L+L-1-S_c,\quad
+ G_{\rm cap}=32bB^W.
+\]
+By (C1), $S_c+T_c<L$. Here $u=1+k+Ev$, and the top word is $c=1$.
+Equations (C3)--(C4) give threshold exponent
+\[
+             (K_c+2W+25)v-30k-20.                       \tag{C5}
+\]
+For even $K_c$, take
+\[
+ q=(K_c+2W+10)/2,\qquad N=2^{15\kappa/2-10}B^q.
+\]
+For odd $K_c$, take instead
+\[
+ q=(K_c+2W+9)/2,\qquad N=2^{8\kappa-10}bB^q.
+\]
+In both cases $2\log_2N$ equals (C5) when $b=2^k$. Both expressions are
+polynomials with fixed integer exponents and coefficients. The odd branch
+is required by the degree-minimal $W=170$, $K_c=4425$ certificate.
+The square-root threshold $N$ is \emph{not} the carry block length $L$.
+
+For all initial assignments $b,g\ge1$, without a binary-base premise,
+\[
+ R=L^2+(L-1)S_c+LT_c+L-1\ge L^2+L-1\ge8,
+ \qquad N\ge\max(b,8),\quad R\ge b,\quad G_{\rm cap}>0.
+\]
+The imported ratio theorem first supplies $8g<G_{\rm cap}$, which is
+exactly the branch used to prove (C1). Conversely a source zero can be
+encoded for every sufficiently large power of two $b$; it is nonzero, so
+$g\ge1$, and distinct positions give $g<bB^W$, hence $32g<G_{\rm cap}$.
+The endpoint $b=1$ produces no extra zero: its mask forces every decoded
+source digit to zero, contrary to residual 2 at the origin.
+
+\subsection{The integer threshold must remain different}
+The Sun bridge allows an arbitrary polynomial threshold $Y$. Use
+\[
+ L=B^E,\quad X=L^2+(S_c+T_c)L+L-1-S_c,\quad
+ Y=2^{\kappa(K_c+2W+25)-21}b^{2(K_c+2W+25)-31},
+ \quad\mathcal C=bB^W.
+\]
+On its soundness branch $f\ne0$, $b=1+3f$ is a square, so $b\ge4$,
+and $0\le g<2\mathcal C$. The certificate's target gap is at least two,
+giving $(B-2)A_c<B^{K_c-1}=Z_c/B^2$. Together with
+$J_c<Z_c/64$ and $(g+M_c)/N_0<2<Z_c/128$, this gives the stronger bound
+$S_c+T_c<L$. The exact threshold exponent is now
+\[
+ (K_c+2W+25)v-31k-21,
+\]
+which is exactly $\log_2Y$. Moreover even $\kappa$ and $b\equiv1\pmod3$
+give $B,L\equiv1\pmod3$ and $T_c\equiv-22\equiv2\pmod3$;
+therefore $X\equiv1+T_c\equiv0\pmod3$ before binary-base recovery.
+The bounds $X>3b$ and $Y>\max(b,256)$ are immediate.
+
+Completeness needs $b\le g<\mathcal C$. At a source zero the distinct
+coordinates $D,\Delta$ are positive and at most one of their positions is
+zero, so $g\ge B\ge b$. A sufficiently large power-of-two square supplies
+the remaining bound. Copying the natural choice $L=2bB^E$ into this branch
+would needlessly change the degrees and can destroy $3\mid X$; the two
+interfaces are deliberately kept separate.

@@ -1,0 +1,171 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,longtable,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Degree-separated arithmetic encodings for the consistency of ZFC},pdfauthor={OpenAI-assisted research for Vladimir Reshetnikov}}
+\renewcommand{\labelitemi}{$\bullet$}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\providecommand{\mathscr}[1]{\mathcal{#1}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\setlength{\emergencystretch}{4em}
+\title{Degree-separated arithmetic encodings\\and an ordinary-root merger for $\Con(\mathrm{ZFC})$}
+\author{OpenAI-assisted research for Vladimir Reshetnikov and ProveIt}
+\date{23 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We review all eight newly delivered wave-seven packages and combine their
+ideas with a different coefficient-extraction architecture. Quadratic,
+linear and constant source terms are encoded in separate kernels, so their
+labels may collide across degrees without corrupting a tested coefficient.
+This reduces the source convolution height from 5556 to 2161. Combined
+with calibrated carry blocks, exact CRT parametrization and sharper Pell
+majorants, it yields smaller explicit nine-natural and ten-integer
+polynomials. A coprime spectator guard removes an unnecessary radical
+weight in the thirteen-integer route. Independently, retaining the ordinary
+Pell root rather than its multiplier yields a twelve-positive-variable
+polynomial of degree 316. A late composition with a parallel free-coordinate
+construction gives the recommended nine-positive equation at degree
+$1\,910\,404$ and 473 operations. All coefficients are fixed by explicit recipes
+and materialized native payloads. The proofs are ordinary mathematical
+reductions with identified inherited dependencies, accompanied by finite
+exact certificates; no consistency proof, global minimum or new
+end-to-end formal-kernel certificate is asserted.
+\end{abstract}
+
+\section{Question and reproducible review boundary}
+The task is to construct an explicit integer-coefficient polynomial $F$
+for which ZFC proves
+\[
+ \left(\neg\exists\mathbf x\in D^r\ F(\mathbf x)=0\right)
+ \longleftrightarrow\Con(\mathrm{ZFC}),
+\]
+with a small description, low degree, few unknowns or a short arithmetic
+circuit. These are different size objectives. We state the domain $D$
+explicitly: $\N$ includes zero, positive integers exclude zero, and
+unrestricted integers form a third domain. A positive-domain equation is
+not silently reinterpreted over $\Z$.
+
+The eight input archives were retrieved at arrival commit
+\texttt{4b4349064a75}, verified against their Git blob hashes, and inspected
+as original delivered packages. Their placement commit
+\texttt{6d375f2d2dea} assigns sources 46--53 under
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\end{center}
+Full commit IDs, archive hashes and member provenance are in
+\texttt{INCOMING\_PINS.json} and the component ledgers. The catalogue was
+not yet reconciled at this placement, so comparisons use the original
+packets rather than an outdated summary. Source53 is the preceding
+32-page delivery in this conversation.
+
+Every register below abbreviates a polynomial expression, not an additional
+existential unknown. All exponents in the final circuits are fixed
+nonnegative integers. Rational quantities, square roots, valuations and
+divisibility appear in the proofs, not as permitted operations in the
+polynomial. The route is finite ZFC refutation $\leftrightarrow$ calibrated
+blank K215 halting $\leftrightarrow$ a native-window/Pell source solution
+$\leftrightarrow$ a zero of the explicit new polynomial. Negation supplies
+the requested equivalence without deciding either side.
+
+\input{results.tex}
+
+\section{What changes mathematically}
+The previous selective code still homogenized a quadratic system by adding
+a dummy coordinate. It therefore separated linear from quadratic labels
+although no source equation needed those cross-degree products. We instead
+use
+\[
+ G(B,U)=D_2(B)U^2+D_1(B)U+D_0(B).
+\]
+Only labels within the same homogeneous degree can interfere. The resulting
+finite certificate has 89 source records, 22 exact target identities and
+22,544 interactions, rather than the preceding 136 records and 71,808
+interactions. It deliberately permits a linear label to equal a quadratic
+label. A signed leading-layer estimate is needed: positive input coordinates
+do not by themselves make a signed kernel positive.
+
+The arithmetic finalizers also impose only the relations actually needed.
+The mask's binary population calibrates the binomial divisibility threshold;
+a small factor in the block length makes that threshold a polynomial square.
+An exact CRT parametrization removes one divisibility quotient. A spectator
+radicand in the last Pell guard prevents coincident radicals without a large
+external separator. Finally, choosing which Pell witness to retain changes
+the direct moderate-degree construction dramatically: keeping $f$ makes
+$Q=\Delta(f^2-1)$ degree 14 instead of the normalized degree 46 expression.
+The new merger restores integrality before invoking strong-rank results.
+
+\input{sections/encoding.tex}
+\input{sections/sun.tex}
+\input{sections/nine.tex}
+\input{sections/signed.tex}
+\input{sections/positive.tex}
+\input{sections/short.tex}
+
+\section{Proof status and relationship to the formal developments}
+At the reviewed placement snapshot, the repository reports a closed
+executable \texttt{ExplicitZFC} expression, a direct arithmetic-graph
+\texttt{NativeZFC} equivalence, and a \texttt{PositiveZFC} natural-to-positive
+coordinate shift. Numerical coefficient payloads of those formal expressions
+remain unmaterialized. The generic quadratic extraction foundations are
+reported checked, but their complete adaptation to the final Jones theorem
+is separate. The object-language ZFC development has actual addition
+formulas and derivations, while its full internal consistency bridge is
+still open. We inspected this status; we did not rerun those Lean builds.
+
+Those results are not kernel certificates for the smaller fixed circuits
+in this report. Conversely, the existence of noncomputable historical
+polynomial selections does not make all newer executable constructions
+noncomputable. We distinguish explicit coefficient data, external Lean
+semantic equivalences, object-language derivations, and ordinary proofs
+formalizable in ZFC. None may be substituted for another without an actual
+bridge theorem.
+
+The literal K215 logical calibration, native compiler, Pell rank and Jones
+ratio results are identified inherited dependencies. Only the ten-integer
+route additionally uses Sun's 2026 bridge. Local finite tests certify exact
+identities, bindings, circuit sizes and degree attainment; they do not
+certify an unbounded compiler by testing a finite number of assignments.
+
+\input{validation.tex}
+
+\section{Limits, rejected shortcuts, and further targets}
+The new code is certified, not proved optimal. Its search history is not a
+semantic dependency: the finite tuple and exact isolation checker are
+sufficient. More aggressive fixed-port row operations or a different
+source presentation could improve it further, but require new coefficient,
+positivity and degree audits.
+
+No twelve-unrestricted-integer theorem or ten-positive-variable theorem is
+claimed. In the signed construction the zero-spectator branch is handled
+by recovering the first two guards and using source positivity for every
+signed packed input before the final guard is read. Omitting that ordering
+would permit an invalid argument. In the ordinary-root merger, integrality
+comes from Pell saturation followed by the carrier identity. A tempting
+shortcut from $c^2\mid d\rho$ and $\gcd(d,\rho)=1$ to $c^2\mid\rho$ is
+invalid and is not used.
+
+The most useful formalization targets are the degree-specific extraction
+certificate, sparse-borrow normalization, and the ordinary-root merger's
+ordered saturation proof. They are reusable arithmetic interfaces rather
+than assertions about consistency itself. The supplied source maps,
+explicit gates and independent algebraic checkers are intended to make
+such work easier, not to present it as already completed.
+
+\input{late_comparison.tex}
+\input{sections/nine_free_adjunct.tex}
+\input{sections/positive13_adjunct.tex}
+
+\section*{Attribution}
+The Pell, Jones, Sun and calibrated machine/compiler results are inherited.
+Sources46--52 contribute shared positive-coordinate words, source shears,
+Pell majorants, exact CRT removal, quotient absorbers and squared-modulus
+reconstruction. Source53 contributes selective extraction, calibrated
+carry blocks and seeded guards. This report's new contributions are the
+homogeneous-degree-separated architecture, its certified composition,
+the coprime spectator guard, the ordinary-root merger and explicitly
+audited combinations. Original notices and immutable references are
+preserved. AI-assisted internal reviews are not external human endorsement.
+\end{document}

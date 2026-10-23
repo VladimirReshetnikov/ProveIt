@@ -1,0 +1,238 @@
+                A degree-316 Diophantine consistency equation
+                         in twelve positive unknowns
+                                Research supplement for ProveIt
+
+                                            23 October 2026
+
+
+1     A degree-316 ordinary-strong merger
+Result and scope. There is an explicit equation in twelve strictly positive integer unknowns, of
+exact total degree 316, evaluated in 102 binary arithmetic operations (61 multiplications and 41
+additions or subtractions), whose positive unsolvability is equivalent in ZFC to Con(ZFC). The
+three-equation system has residual degrees 2, 26, 288 in 95 operations, or 94 after the inherited
+positive transport-coordinate shift. A sum of squares has degree 576 in 103 operations. Fixed
+numeral leaves and reuse are free; multiplication by a numeral is charged.
+    This improves the authenticated degree-897, 108-operation twelve-positive construction on both
+measures. It does not reduce the eleven-positive variable frontier, assert global optimality, prove
+consistency, or provide a new end-to-end proof-assistant certificate. The native compiler and literal
+K215/refutation calibration remain explicit inherited dependencies.
+    The structural change is to retain f and eliminate the ordinary strong coordinate i, together with
+τ and y. Thus the crucial polynomial is Q = ∆(f 2 − 1) of degree 14, not the normalized ∆2 (ic2 )2
+of degree 46. A separated three-root sum recovers rationality; rational Pell saturation recovers
+integrality. Removing a known common denominator factor from its norm gives a degree-288 inner
+polynomial.
+
+1.1   Literal polynomial
+The supplied positive variables are
+
+                                      J, F, α, z, f0 , T, s, w, η, ζ, γ, t.
+
+Use exactly the entire authentic source31 Wang943 121-by-8801 coefficient tuple (β, K0 , MC , MF ),
+with β = 21064921 − 1 and MF already the shifted mask. These are fixed integers, not unknowns.
+The payloads, hashes, tuple adapter, and inherited ordinary proof are included in the packet. Every
+other name below is a polynomial abbreviation:
+
+      q = βJ + 1,            Cw = q − F − α,                              X = wq,           Y = sq 3 ,
+      E = XY,                  k = η + ζ,                                     c = kY + η,   a = E + Y,
+                                       2                   2
+      H = 4a + 3,             ∆ = a + H = (a + 2) − 1,                        ℓ = EkY,
+                                              2
+      A = 1 + ℓ(ℓ + k),       G = 1 + ∆c ,                                b0 = X + ac.
+
+
+
+
+                                                       1
+Define
+
+                       R = ((q − 1)(q − F ) + α)(q 2 − 1) + (MC + qMF )J,
+                      Nt = (K0 + w)Cw + q − F − z(q − 1),
+                       U = 4q 4 ,       u = k − R − 1,
+                      D∗ = U b0 + H(U γ − u),               Nm = D∗2 − U 2 G,
+                       f = f0 + 1,          Q = ∆(f 2 − 1),              d = Q − 1,
+                                                    2                 2
+                      V = c(T f − 1) − Rf ,                 Ea = QV − 1,            M2 = 2f ℓ,
+                       Z = c M22 Ea ,
+                              4
+                                               x = c t, 2             4 2
+                                                                 r = c f A,
+                              2
+                      M = d(x + Q + r) − Z,
+                      C0 = M 2 + 4d2 {x2 (r − Q) − Qr},                   B = 2dQ − M,
+                      N = C02 − 16d2 x2 rB 2 .
+
+The equation is
+                                         Nt (1 + Nm )(1 + N ) − 1 = 0.                                    (1)
+                                                                                    2 +N 2 = 0.
+The corresponding system is Nt = 1, Nm = 0, N = 0. The sum of squares is (Nt −1)2 +Nm
+   The inner norm is exactly
+                                        Y
+                                                    d(c2 t − ρ − c2 f τ )2 − c4 M22 Ea ,
+                                                                                      
+                             N=                                                                           (2)
+                                    ρ2 =Q, τ 2 =A
+
+with both formal signs of each root. To verify this identity, put b = c2 f τ , so b2 = r. Each factor is
+M − 2dxρ − 2dxb + 2dρb. Its norm in ρ is C0 + 4dx(2dQ − M )b; its norm in b is the stated N . This
+is a polynomial-ring identity, including degenerate specializations. It does not assume independent
+Galois automorphisms after specialization.
+    For comparison, the eight-factor linear norm of
+
+                                       c2 dt − dρ − c2 df τ − c2 M2 dEa
+                                                                          p
+
+
+is d4 N . Eliminating the two signs of the last root proves this identity and explains the denominator
+deflation. The actual circuit has no division.
+
+1.2      Unit guard and the main root
+Since U is divisible by 4,
+
+                             Nm ≡ D∗2       (mod 16),            N ≡ C02       (mod 16).
+
+At a root of (1), all three factors are integer units. Neither norm can equal −2, which is not a
+square modulo 4. Hence Nm = N = 0 and Nt = 1.
+   The authentic transport/mask interface then gives
+
+            q ≥ 16,   Cw > 0,       3q < R < q 4 − 2,           X ≥ q,     Y ≥ q3,     E ≥ q 4 > R + 2,
+
+                             k ≥ 2,        kY < c < k(Y + 1),                 a + 2 < 2E.
+In particular Cw ≤ 0 would imply Nt ≤ 1 − F − (z − 1)(q − 1) ≤ 0, so it is impossible. The shift
+f = f0 + 1 ensures f ≥ 2, Q > 1, and d > 0; no f = 1 or zero-denominator exception is discarded.
+
+                                                            2
+    From Nm = 0, the rational root g = D∗ /U of g 2 = G is an integer. It is positive: H < 5a,
+b0 > akY , and u < k give
+                            D∗ > U b0 − Hk > ak(U Y − 5) > 0.
+Reduction of D∗ = U g modulo U gives
+                                            U | H(k − R − 1).                                           (3)
+Neither the omitted index quotient nor the old main quotient has yet been recovered.
+
+1.3    Rationality from separated square classes
+           √                √
+Write ρ = Q > 0 and τ = A > 0. If V = 0, then Ea = −1 and every real factor in (2) is strictly
+positive. Thus V ̸= 0. Since V is an integer, Ea ≥ Q − 1 = d and
+                                                 q
+                                            y=       Ea /d ≥ 1.
+A vanishing factor gives signs ϵj ∈ {1, −1} with
+                                            ρ
+                                     t = ϵ1 2 + ϵ2 f τ + ϵ3 M2 y.                                       (4)
+                                           c
+Before any rationality conclusion, one has
+          ρ < (a + 2)f,        τ < ℓ + k,     ℓ − k = k(EY − 1) ≥ 2EY − 2 > 2E > a + 2.
+Consequently
+                             ρ                  ρ
+                          0< 2
+                               < f ℓ < f τ,        + f τ < 2f ℓ = M2 ≤ M2 y.                       (5)
+                            c                   c2
+                                                                                             √
+    Each term in (4) is a rational multiple of a square root of a positive integer; use y = dEa /d.
+Distinct squarefree radicals are linearly independent over Q. In a rational signed sum, every
+irrational square class must cancel. The largest term exceeds the sum of both others, so its class
+cannot cancel unless y is rational. Then the strict inequality between the two remaining terms
+excludes their cancellation in an irrational class. Hence ρ, τ, y are rational. In particular ρ and τ
+are integers. This argument explicitly allows coincident square classes.
+
+Rational Pell saturation.        For integers m ≥ 2, V and rational y, the equation
+                                        m2 V 2 − (m2 − 1)y 2 = 1
+forces y to be integral. Indeed, write y = b/r in lowest terms. Then r2 | m2 − 1. For the positive
+nonsquare integer D0 = (m2 − 1)/r2 , the pairs (m, r) and (m|V |, |b|) are integer-coordinate Pell
+solutions. If their fundamental-unit indices are j, l, divisibility of their abscissas forces l to be an odd
+multiple of j: reduce modulo 2j, reflect into [0, j], and use strict growth with χn+2j ≡ −χn (mod χj ).
+Ordinate divisibility then gives r | b, so r = 1. The original equation excludes zero-coordinate cases.
+    Apply this lemma with m = ρ to
+                                         ρ2 V 2 − (ρ2 − 1)y 2 = 1.
+Thus y is integral. Equation (4) now makes ρ/c2 integral. Put i = ρ/c2 > 0. The recovered
+equations are
+                τ 2 = 1 + ℓ(ℓ + k),     (ic2 )2 = ∆(f 2 − 1),        QV 2 − (Q − 1)y 2 = 1.
+All square-root signs may be made positive. No cancellation of ∆ and no ordinary-rank assumption
+has occurred in this recovery.
+
+                                                      3
+1.4    Ordered index recovery
+This part uses the preserved ordinary strong-rank theorem and the source50 absorber, with their
+hypotheses now verified. Let A0 = a + 2 and P0 = 2EY + 1. The two recovered Pell norms yield
+indices p, n ≥ 1 with
+                       g = χA0 (p),    c = ψA0 (p),     τ = χP0 (n),     k = 2ψP0 (n).
+The first norm’s fundamental integer-coordinate solution is (2EY +1, 2) for discriminant EY (EY +1).
+Since P0 > A0 and c > k, monotonicity gives p > n.
+   The Pell recurrence gives k ≡ 2n (mod 4EY ), and 4EY = 4ws2 q 7 is divisible by U . Set
+µ = U/ gcd(U, H). The number H is odd; a prime common to q, H must be 3. If 3 | q, then H ≡ 3
+(mod 27), so its 3-adic valuation is exactly one. Hence
+                                                    4q 4
+                                 gcd(U, H) ≤ 3,            µ≥
+                                                         > R + 1.
+                                                     3
+Together with (3) this gives 2n = R + 1 + jµ, where positivity of n forces j ≥ 0. Thus n ≥ 25,
+p ≥ 26, and Pell growth proves
+                                  c > A 0 ∆2 ,       c > 2p,     c > 2R.
+   The ordinary strong-rank theorem now applies to (ic2 )2 = ∆(f 2 − 1). It gives an index m such
+that
+            f = χA0 (m), p | m, c | m, m > 2p, ic2 = ∆ψA0 (m), c2 | f 2 − 1.
+The theorem handles the possibly nonfundamental parameter in the underlying squarefree Pell field.
+Its proof and the signed auxiliary argument are included in the preserved ordinary source, Sections
+4–5.
+    The odd auxiliary index j0 satisfies j0 ≡ ±p (mod m) from V ≡ −c (mod f ), and j0 ≡ ±R
+(mod c) from Q ≡ 0 (mod c), V ≡ −R (mod c). Since c | m and 0 < p, R < c/2, it follows that
+p = R. The signed reduction uses 2χA0 (m − 1) < χA0 (m), not an assumed sign of V .
+    Now n < R, so |2n − R − 1| < R < µ forces 2n = R + 1. Hence u = k − 2n is divisible by 4EY ,
+and therefore by both E, U . Set
+                                      h = u/E,         γold = γ − u/U.
+The first is positive because n ≥ 25 and ψP0 (n) > n. The main carrier gives γold = (g − b0 )/H.
+Since n ≥ 2, k ≥ 4P0 > X, so c > X and g − b0 > (a + 1)c − ac − X = c − X > 0. All positive
+ordinary compiler coordinates are restored. Its inherited soundness theorem extracts a blank K215
+halt and a finite ZFC refutation.
+
+1.5    Completeness
+Conversely take a canonical positive ordinary compiler witness. Its index identity is p = R = 2n − 1,
+so u is a positive multiple of 4EY and of U . Set
+                        γ = γold + u/U,          f0 = f − 1,    t = i + f τ + M2 y.
+These are positive integers. Then D∗ = U g, while the positive-sign factor in (2) is c4 M22 (dy 2 −Ea ) = 0.
+Thus Nm = N = 0 and Nt = 1. The preserved change iordinary = ∆inormalized provides ordinary
+witnesses from normalized ones when necessary. This proves existence equivalence, hence the claimed
+consistency equivalence.
+    The shifted system uses (K0 + w)Cw = F + z(q − 1), corresponding to zold = z + 1. Canonical
+witnesses have X = 2R and w > q > F , which force zold ≥ 2. Thus the new z is positive, and the
+shift saves one operation.
+
+                                                       4
+1.6   Exact degree and replay
+Put
+                        q0 = βJ,     Y0 = sq03 ,    E0 = wq0 Y0 ,    c0 = (η + ζ)Y0 .
+These have degrees 1, 4, 6, 5. The inner leading forms are
+
+               Q14 = E02 f02 ,   V7 = c0 T f0 ,    (M2 )12 = 2f0 E0 c0 ,   Z72 = 4E04 c80 T 2 f06 .
+
+All other terms of M have degree at most 58. Therefore
+                                              4
+                                      N288 = Z72 = 28 E016 c32 8 24
+                                                            0 T f0 .
+
+The subtracted term in N has degree at most 238, so there is no possible cancellation of this highest
+form. For the main residual use
+
+                       Nm = U 2 {(b0 + Hγ)2 − G} − 2U Hu(b0 + Hγ) + H 2 u2 .
+
+The bracket has degree 18 and highest form 8E02 c0 γ; the other terms have degree at most 25, 20.
+Thus
+                                   (Nm )26 = 128q08 E02 c0 γ.
+Since (Nt )2 = w(q0 − F − α) − zq0 is nonzero,
+
+                           P316 = 215 q08 E018 c33  8 24
+                                                0 γT f0 [w(q0 − F − α) − zq0 ]
+
+is nonzero for every authentic β > 0. These are exact fixed-instance degrees, not generic numerical
+tests.
+    The packet’s independent arithmetic checker verifies 36 exact signed norm/deflation identities,
+100 modular identities, both residue guards, 144 pre-index bounds, and 24 complete finite-field
+polynomial rays including the actual fixed coefficients. It also verifies payload hashes, analytic
+leaders, and transport shifts. Both ordinary Python and python -O runs pass. The inert circuits
+have no dead gates or inputs. Finite checks validate identities, counts and degrees, not the inherited
+unbounded compiler theorem. The work is AI-assisted and makes no claim of independent human
+review or kernel-certified consistency reduction.
+
+
+
+
+                                                       5
+

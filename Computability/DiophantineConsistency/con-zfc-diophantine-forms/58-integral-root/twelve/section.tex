@@ -1,0 +1,314 @@
+\section{A twelve-variable companion of degree 629}
+\label{sec:twelve}
+
+The same integrality mechanism also improves the degree of a construction
+with fewer supplied variables. The result in this section uses twelve strictly
+positive integers and has exact degree $629$, with $114$ live binary arithmetic
+operations. Its three-equation version has maximum residual degree $622$ and
+$109$ operations, or $108$ after the established positive transport shift.
+The comparison is with package~52's twelve-positive lean equation, of degree
+$897$ and $108$ operations. Thus the new point reduces degree by approximately
+$29.9\%$, at a cost of six operations. It does not reduce the number of supplied
+variables, and no global optimality or literature-wide novelty is claimed.
+
+All notation in this section is local. The four fixed ports are the same
+complete authentic tuple $(\beta,K_0,M_C,M_F)$ used elsewhere in this report;
+$M_F$ is already shifted. In particular $\beta=2^{590069}-1$. Canonical
+completeness uses odd native exponent $N$, so its old coordinate satisfies
+$J_{\rm old}\equiv1\pmod3$. We may therefore put $J_{\rm old}=3J+1$,
+retaining completeness with positive $J$ by taking $N>1$. This changes the
+parameterization, not the coefficient tuple. It gives $q\equiv2\pmod3$.
+The point of this residue restriction is that the later divisor $q$ is
+coprime to $3$.
+
+\subsection{The fixed polynomial}
+
+The twelve supplied coordinates are
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\mathbb Z_{>0}.
+\]
+Define the following polynomial abbreviations:
+\begin{align*}
+ j&=3J+1,&q&=\beta j+1,&C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,\\
+ b_0&=X+ac,&&&
+\end{align*}
+\[
+ R=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)j.
+\]
+\begin{align*}
+ N_k&=k-hE-R,\\
+ N_t&=(K_0+w)C+q-F-z(q-1).
+\end{align*}
+\begin{align*}
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=(\Delta I)^2,\\
+ d_0&=Q-1,&v&=cT,&b&=c+RD,\\
+ e&=Q(Dv^2+b^2)-1,&B_a&=2Qvb.
+\end{align*}
+The new scaled carrier is
+\begin{align*}
+ S&=q^2H,&L&=q^2(1+HIT),\\
+ W&=q^2b_0+H\bigl[q^2(t+b+\ell)+s\bigr].
+\end{align*}
+Let
+\begin{equation}
+ \mathcal N=
+ \prod_{\substack{g=\pm\sqrt G,\ \tau=\pm\sqrt A\\f=\pm\sqrt D}}
+ \left[d_0(W-Lg-S\tau)^2-S^2e+S^2B_af\right].
+ \label{eq:twelve-norm}
+\end{equation}
+Every formal sign is included. Consequently this is an integer polynomial;
+no radicals or intermediate registers are additional unknowns. Formal signs
+are not being identified with independent field automorphisms after
+specialization. The equation is
+\begin{equation}
+ \boxed{P_{12}=N_kN_t(1+\mathcal N)-1=0.}
+ \label{eq:twelve-final}
+\end{equation}
+
+For an explicit division-free evaluator, put
+\begin{align*}
+ d_A&=d_0S^2A,&U_Q&=S^2Q,\\
+ P_H&=U_QDv^2,&U_H&=U_Qb^2,\\
+ e_H&=P_H+U_H-S^2,&j_H&=4P_HU_H,\\
+ \mathcal T&=2d_0(W^2+L^2G),&
+ \kappa&=[d_0(W^2-L^2G)]^2,\\
+ \mathcal A&=2(d_A+e_H),&
+ \mathcal B&=(d_A-e_H)^2-j_H,\\
+ a_r&=\mathcal T-\mathcal A,&b_r&=\mathcal B-\kappa,\\
+ v_r&=16d_Aj_H-a_r(a_r\mathcal T+2b_r),&
+ u_r&=b_r^2-a_r^2\kappa,\\
+ \mathcal N&=\kappa v_r^2-u_r(\mathcal T v_r-u_r).
+\end{align*}
+This is the inherited quadratic-remainder identity for the formal norm.
+The supplied JSON circuit gives every live gate and includes all
+multiplications by fixed numerals. The system version compares the final
+norm terms directly and imposes $N_k=N_t=1$.
+
+\subsection{Bounds before recovering divisibility}
+
+The predecessor norm identity gives
+$\mathcal N\equiv(u_r-x_0v_r)^2\pmod4$, where
+$x_0=d_0(W^2+L^2G)$. At a root of \eqref{eq:twelve-final}, all three factors
+are integer units. The option $\mathcal N=-2$ is impossible modulo~$4$.
+Thus $\mathcal N=0$ and $N_k=N_t=\varepsilon\in\{1,-1\}$.
+
+The authentic native-mask inequalities applied to the transport unit give
+\[
+ C\ge0,\qquad q-F=C+\alpha>0,\qquad q\ge16,
+ \qquad 3q<R<q^4-2.
+\]
+The boundary $C=0$ is not discarded at this stage. We cannot yet use
+$q^3\mid Y$ or $E>R$: the present definition is only $Y=sq$. Instead,
+\begin{equation}
+ X,Y\ge q,\quad E\ge q^2,\quad
+ k=hE+R+\varepsilon>R,\quad c>RY,\quad
+ a+2<2E,\quad I\ge c^2.
+ \label{eq:twelve-early}
+\end{equation}
+In bounds below, $g,f,\tau$ denote positive real square roots. Then
+$g<2Ec$, $f<2EI$, and the inherited elementary expansion gives
+\[
+ \Delta c^2-A>
+ k^2\bigl[EY(2Y^2-1)+Y^4\bigr]-1>0.
+\]
+In particular
+\begin{equation}
+ 1<A<\Delta c^2\le\Delta I=\sqrt Q.
+ \label{eq:twelve-exception-bound}
+\end{equation}
+
+The earlier lean construction used $E>R$ in its outer-root estimate. Here it
+can be replaced by a consequence of $c>RY$. Since
+$D<4E^2I^2$, $c<I^2$, and $d_0>\tfrac12E^4I^2$, we have
+\[
+ b+cf<(4R+1)E^2I^2,
+ \qquad \frac{b+cf}{d_0}<\frac{9R}{E^2}.
+\]
+On the other hand, the exact identity
+$(Ig)^2-(cf)^2=I^2-c^2$ implies
+\[
+ Ig-cf=\frac{I^2-c^2}{Ig+cf}>\frac{I}{8Ec}
+       =\frac{ic}{8E}.
+\]
+Finally $icE>RYE=RXY^2>72R$ by \eqref{eq:twelve-early}. Therefore
+\begin{equation}
+ \frac{b+cf}{d_0}<\frac{9R}{E^2}<\frac{ic}{8E}<Ig-cf.
+ \label{eq:twelve-new-bound}
+\end{equation}
+This is the extra estimate that makes divisibility recovery possible without
+assuming the scale one is trying to recover.
+
+\subsection{Integral roots force the missing scale}
+
+For a coherent auxiliary root $y$ with $(f')^2=D$, the norm relation is
+\[
+ d_0y^2=Q(vf'-b)^2-1.
+\]
+The standard square estimate, also valid for complex $y$, gives
+\[
+ |y|<b+Tcf+T\frac{b+cf}{d_0}<b+ITg.
+\]
+Consequently any root $x=\tau'+y$ of the inner polynomial has
+$|x|<\tau+b+ITg$. But the negative-main-root branch would give
+\[
+ \frac{W+Lg}{S}
+ =b+ITg+\left(t+\frac{s}{q^2}\right)
+   +\ell+\frac{b_0+g}{H}.
+\]
+This exceeds that upper bound: $t+s/q^2>0$,
+$\tau<\ell+k$, and $(b_0+g)/H>c/3>k$, since $Y\ge16$.
+Actual quadratic conjugation would send an irrational positive-main-root
+branch to this forbidden branch. Hence $g$ is a positive integer and
+$x=(W-Lg)/S$ is rational.
+
+For completeness, the inherited inner-root reconstruction can be stated
+explicitly. Define
+\begin{align*}
+ C_x&=d_0(x^2+A)-e,\\
+ F(x)&=\bigl[C_x^2+DB_a^2-4d_0^2x^2A\bigr]^2-4C_x^2DB_a^2.
+\end{align*}
+The norm implies $F(x)=0$. If $C_x=0$, eliminating $x^2$ would give
+\[
+ d_0^2A^2-d_0eA+Q^2v^2b^2D=0,
+\]
+which forces $Q\mid A(A-1)$, contrary to
+\eqref{eq:twelve-exception-bound}. Likewise $F(0)=0$ would force
+$Q\mid(A-1)^2$, also impossible. Thus the denominators in
+\begin{align*}
+ U_x&=C_x^2+DB_a^2-4d_0^2x^2A,\\
+ f'&=-\frac{U_x}{2C_xB_a},&
+ \tau'&=\frac{C_x+B_af'}{2d_0x},&y&=x-\tau'
+\end{align*}
+are nonzero. The identity $F(x)=0$ gives
+$(f')^2=D$, $(\tau')^2=A$, and the auxiliary Pell equation above.
+The rational square roots $f',\tau'$ are integers. The inherited rational
+Pell saturation lemma says that, for integers $m\ge2,V$ and rational $y$,
+\[
+ m^2V^2-(m^2-1)y^2=1\quad\Longrightarrow\quad y\in\mathbb Z.
+\]
+Applying it with $m=\Delta I$ and $V=vf'-b$ shows that $y$, and hence $x$,
+is integral. The lemma's ordinary proof is preserved in the upstream proof
+files; it is not a newly supplied proof-assistant certificate.
+
+Reduce $W=Lg+Sx$ modulo $q^2$. This gives $q^2\mid Hs$.
+But $Y=sq$ gives $H\equiv3\pmod q$, while $q\equiv2\pmod3$.
+Thus $\gcd(q,H)=1$ and
+\begin{equation}
+ q^2\mid s,
+ \qquad s_{\rm old}=s/q^2\in\mathbb Z_{>0},
+ \qquad Y=s_{\rm old}q^3.
+ \label{eq:twelve-divisibility}
+\end{equation}
+
+There is now a short soundness proof using the old equation directly.
+Let $\mathcal N_{\rm lean}$ be package~52's unscaled twelve-variable lean norm,
+on the same fixed tuple. In the localization at $q$ there is the exact identity
+\begin{equation}
+ \mathcal N=q^{32}
+   \mathcal N_{\rm lean}\left(t+\frac{s}{q^2}\right),
+ \qquad Y=(s/q^2)q^3.
+ \label{eq:twelve-identity}
+\end{equation}
+Each of eight factors gains $q^4$. Its carrier degree is at most $16$, so
+all denominators clear. By \eqref{eq:twelve-divisibility}, the mapped old
+coordinates $s_{\rm old}$ and $t_{\rm old}=t+s_{\rm old}$ are positive
+integers. The index and transport factors are unchanged. Thus a new root
+produces a root of the established old positive equation. Its compiler and
+K215 calibration recover a finite ZFC refutation.
+
+\subsection{Completeness and coefficient-preserving equivalence}
+
+Choose canonical normalized compiler witnesses with odd $N>1$. Keep the
+retained coordinates, put $J=(J_{\rm old}-1)/3$, $s=s_{\rm old}q^2$, and set
+\[
+ t=\gamma+ITg+\tau+y-b-\ell-s_{\rm old}.
+\]
+All coordinates are integral. The auxiliary Pell equation gives
+$y\ge b-vf$, and $Ig>cf$. Also
+\[
+ \tau-\ell=\frac{\ell k+1}{\tau+\ell}>\frac{k}{3},
+ \qquad
+ \frac{k}{3}>\frac{XY}{3}>\frac{Y}{q^3}=s_{\rm old}.
+\]
+Here $\ell>k$, $\tau<\ell+k$, $k>XY$, and $X\ge q\ge16$ are canonical
+compiler inequalities. Therefore
+\[
+ t\ge\gamma+T(Ig-cf)+(\tau-\ell)-s_{\rm old}>0.
+\]
+A coherent factor in \eqref{eq:twelve-norm} vanishes, and $N_k=N_t=1$.
+This proves both existence implications. Composing with the inherited
+syntactic-refutation calibration yields, by ordinary mathematics formalizable
+in ZFC,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl[\text{$P_{12}$ has no positive integer zero}\bigr]
+ \longleftrightarrow\mathrm{Con}(\mathrm{ZFC}).
+\]
+No truth value of either equivalent assertion is proved. The separately
+supplied system replaces the product by $N_k=N_t=1$ and $\mathcal N=0$.
+Its shifted transport version uses $(K_0+w)C=F+z(q-1)$; the established
+positive transport shift preserves existence after the scale has been
+recovered.
+
+\subsection{Exact degree and reproducible evidence}
+
+Set the leading homogeneous forms
+\begin{align*}
+ q_0&=3\beta J,&X_0&=wq_0,&Y_0&=sq_0,&E_0&=X_0Y_0,\\
+ k_0&=\eta+\zeta,&c_0&=k_0Y_0,&I_0&=ic_0^2,&\ell_0&=E_0c_0,\\
+ H_0&=4E_0,&Q_0&=E_0^4I_0^2,&R_0&=q_0^3(q_0-F),\\
+ B_0&=R_0E_0^2I_0^2,&V_0&=I_0T\ell_0.
+\end{align*}
+The respective degrees of $H_0,\ell_0,Q_0,B_0,V_0,c_0$ are
+$4,7,30,26,15,3$. The exact leading cancellations in the unscaled lean
+norm give the following eight factor degrees:
+\[
+ 79,79,79,79,71,71,67,65.
+\]
+Their sum is $590$. Four opposite $f/g$ branches have leading form
+$-\operatorname{sgn}(g)4H_0^2Q_0B_0V_0$; the two matched branches with
+negative $\tau$ have leading form $4H_0^2Q_0B_0\ell_0$; the other two
+matched branches have leading forms
+\[
+ H_0^2Q_0B_0c_0,
+ \qquad
+ H_0^2Q_0B_0\left(2t-k_0-\frac{iTc_0}{E_0}\right).
+\]
+Their product is
+\begin{equation}
+ 2^{12}H_0^{16}Q_0^8B_0^8V_0^4\ell_0^2c_0
+ \left(2t-k_0-\frac{iTc_0}{E_0}\right).
+ \label{eq:twelve-leading}
+\end{equation}
+The displayed denominator cancels against preceding factors. The result is
+a nonzero polynomial, since $t$ is independent. These are the same exact
+lean-norm cancellations as in the bundled predecessor proof, now with
+$\deg X=\deg Y=2$; in particular the cancellation uses
+$(Ig)^2-(cf)^2=I^2-c^2$, not independent treatment of these square roots.
+
+The shift $s/q^2$ in \eqref{eq:twelve-identity} has degree $-1$, below
+$\deg t=1$, so it does not change \eqref{eq:twelve-leading}. The factor
+$q^{32}$ adds $32$ degrees, giving $\deg\mathcal N=622$. The index factor
+has nonzero degree-$5$ leader $-hE_0$, and the transport factor has nonzero
+degree-$2$ leader $w(q_0-F-\alpha)-zq_0$. Hence
+\[
+ \deg P_{12}=622+5+2=629.
+\]
+This is uniform for every authentic positive $\beta$ satisfying the stated
+coefficient and completeness interface.
+
+The companion checker performs $60$ modular formal-norm multiplications,
+$59$ valid modular checks of \eqref{eq:twelve-identity}, and six complete
+univariate polynomial computations: three with formal-port fixtures and
+three with the actual fixed tuple. All six give degrees $622$ and $629$.
+It also checks all four compressed and uncompressed coefficient hashes and
+all fourteen bundled source-file pins. These are finite algebra diagnostics;
+the unbounded equivalence rests on the preceding argument and the inherited
+compiler theorems. The files \texttt{twelve/upstream/LEAN\_PROOF.md},
+\texttt{INNER\_RECOVERY\_PROOF.md}, \texttt{ELEVEN\_POSITIVE\_PROOF.md}, and
+\texttt{ORDINARY\_BLANK\_PROOF.md} preserve those ordinary mathematical
+boundaries explicitly.

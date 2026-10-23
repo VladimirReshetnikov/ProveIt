@@ -1,0 +1,481 @@
+                 A Thirteen-Integer Jones Equation
+      with Degree-Separated Coding, CRT, and Coprime Guards
+                          Mathematical research artifact for ProveIt
+
+                                            23 October 2026
+
+
+1     Thirteen integers: CRT elimination and a coprime spectator
+      guard
+The polynomial specified below has exactly thirteen unrestricted integer unknowns, exact total
+degree 11 546 112, and a division-free circuit of 520 live binary operations (328 multiplications,
+169 additions and 23 subtractions). Its integer zero existence is equivalent to a finite syntactic
+ZFC refutation. Thus, with the stated inherited compiler theorem, ZFC proves that its lack of
+integer zeros is equivalent to Con(ZFC). This is an ordinary mathematical proof, not a new Lean
+certificate, a proof of consistency, or a global minimality claim. Unlike the ten-integer companion,
+the arithmetic finalizer here uses only the established Jones ratio interface, not Sun’s 2026 bridge.
+The recommended compact companion in Section 1.8 has degree 11 543 632 and 518 operations,
+with the same thirteen unknowns.
+
+1.1    Degree-separated kernels and the complete polynomial
+Use the original package-31 system of 22 quadratic residuals rj (p) in 31 strictly positive co-
+ordinates. The exact data are split/parent source.json; the coherent fixed port tuple is
+(β, K0 , MC , MF ) = (β, K, MC , MF,source ) from FIXED BINDING.json. All four compressed little-
+endian payloads are included and hash-authenticated. The inherited compiler theorem identifies
+its positive common zeros with finite syntactic ZFC refutations. This is the original tuple, not a
+mixture with a later packet’s smaller coefficients.
+    Perform just two elementary integer row operations:
+                  ϱ14 = r14 + r2 ,       ϱ15 = r15 + r3 ,     ϱj = rj   (j ̸= 14, 15).
+The inverses are subtraction of rows 2 and 3, so the common zero set is unchanged. Write
+ϱj = α rj,α pα and
+    P
+                                    (
+                                      2rj,α ,         |α| = 0, 1,
+                              cj,α = Q
+                                      ( i αi !)rj,α , |α| = 2.
+Use the 31 positive weights wi and the 22 targets qj in split/split code.json, and set
+                                      X
+                           Dd (T ) =       cj,α T qj −α·w (d = 0, 1, 2).
+                                         j, |α|=d
+
+The supplied exact certificate establishes
+    W = max wi = 116,     Q∗ = max qj = 2129,        (deg D0 , deg D1 , deg D2 ) = (1719, 2027, 1929).
+          i                          j
+
+The leading coefficient of D2 is exactly 1; every kernel has internally distinct exponents. There
+are 89 source records. Checking all 22,544 same-degree source/expansion interactions proves
+                                                                               X
+          [T qj ] D2 (T )U (T )2 + D1 (T )U (T ) + D0 (T ) = 2ϱj (p),             pi T wi .
+                                                          
+                                                                      U (T ) =
+                                                                                     i
+
+
+                                                    1
+The degrees are kept in separate products. Thus a linear label may equal a quadratic label without
+causing cross-degree contamination. No homogeneous dummy coordinate or full Sidon condition
+is needed. Let
+
+                    K∗ = max(deg Dd + dW ) = 2161,                 E∗ = K∗ + W + 2 = 2279.
+                            d
+
+The fixed coefficient bound, checked from the actual original port bit lengths, is |cj,α | < A∗ =
+22134927 .
+    The unknowns are exactly
+
+                                 (ϵ, g, h, s, w, ϕ, i, j, z1 , z2 , z3 , r, v) ∈ Z13 .
+
+All following expressions are polynomial abbreviations. Fix
+
+                    κ = 2134940,        a = 2κ = 8192A∗ ,              η = 217079510 = 28κ−10 ,
+
+and define
+
+         b = 2ϵ2 ,                                               B = ab2 ,
+             X                                                        X
+         ℓ=       B wi ,                                         T∗ =     B qj ,
+                i                                                         j
+
+        Uc = ℓ + g,                                               G = D2 (B)Uc2 + D1 (B)Uc + D0 (B),
+       G+ = G + B 2162 ,                                         N0 = B 117 ,
+         L = 2bB 2279 ,                                           N = ηbB 1201 ,
+         c = bB 116 ,                                            Gc = 32c,
+       Mc = N0 − 1 − (b − 1)ℓ,                                    Jc = 2G+ + T∗ ,
+        Sc = g + N0 Jc ,                                         Tc = Mc + N0 (B − 2)T∗ ,
+                2
+        R = L + (Sc + Tc )L + (L − 1 − Sc ).
+
+The extra monomial B 2162 lies above every target. It repairs positivity on arbitrary signed g
+without changing an extracted residual or adding a new unknown. Every exponent in these
+formulas is fixed and nonnegative.
+   Use the Jones registers with the exact CRT reparameterization of H below, and ω = w2 :
+
+      U = N 2 ω,                              Y = N 2 s,
+      M = RY,                                 P = 2M 2 U,
+      K = R + 1 + h(P − 1),                   A = M (U + 1),
+      B1 = 2R + 1,                          W1 = bω,
+      C = B1 + W1 + ϕ,                         J = 4A − 5,                          Q = 3W1 C − 2(W12 − 1),
+      D = (A2 − 1)C 2 + 1,                    E = iJDC 2 ,                          F = (A2 − 1)E 2 + 1,
+      G = A + F (CD + 1 − A),                 H = C + F (B1 + jC),                   I = (G2 − 1)H 2 + 1,
+      a0 = (P 2 − 1)K 2 + 1,                  a1 = DF I,
+       u = J,                                  t = Q.
+
+Set
+
+      δ = C − KY,           ∆ = g(c − g)K 2 − c2 δ 2 ,           (d1 , d2 , d3 ) = (3s − 1, 3ϕ + 2, 3∆ − 1).
+
+The new coprime-spectator stack is
+
+                    C0 = a0 ,    Bj∗ = 1 + 4dj Cj−1 zj2 ,           Cj = Cj−1 Bj∗        (j = 1, 2),
+
+                                                          2
+                               B3∗ = 1 + 4d3 C2 a1 z32 ,        C∗ = C3 = C2 B3∗ .
+Thus the last guard contains the second square candidate a1 as a spectator. This is the only
+change to the Pell sign stack. Finally define
+
+          Z = ϵwiz1 z2 z3 a0 ,                                   Σ = Zu5 ,                ρ = t + ur,
+                  3      2       3    2         2
+          Θ = (ρ − u ρ − u )(ρ + 23u ),                         X = Σv − Θ,
+                 2
+         A0 = Σ C∗ ,                                            A1 = Σ2 a1 .
+
+The requested thirteen-integer equation is the following single polynomial:
+
+                                  F13 = (X 2 − A0 − A1 )2 − 4A0 A1 = 0.                                 (1)
+
+The literal division-free DAG is generated/signed coprime split crt.json.
+
+1.2    Signed-input positivity and sharp block bounds
+Assume only ϵ ̸= 0, hence b ≥ 2 and B = 8192A∗ b2 . Geometric-series estimates give
+
+                D2 (B) > 12 B 1929 ,      |D1 (B)| < 2A∗ B 2027 ,      |D0 (B)| < 2A∗ B 1719 .
+
+Completing half of the quadratic square gives, for every real Uc ,
+
+                                                            D1 (B)2
+                             G+ ≥ 21 D2 (B)Uc2 + B 2162 −              − |D0 (B)|
+                                                            2D2 (B)
+                                > 41 B 1929 Uc2 + B 2162 − 4A2∗ B 2125 − 2A∗ B 1719
+                                > 14 B 1929 Uc2 + 12 B 2162 .
+
+The last line uses 4A2∗ /B 37 < 1/4 and 2A∗ /B 443 < 1/4. For every integer g, Uc = ℓ + g is an
+integer. Therefore
+                            Sc > 12 N0 B 1929 Uc2 + Uc + N0 B 2162 − ℓ > 0.
+Indeed tUc2 + Uc ≥ 0 for an integer Uc and t ≥ 1, while ℓ < N0 . This explicitly absorbs the signed
+linear term g, rather than incorrectly deducing Sc > 0 merely from Jc > 0.
+    The mask satisfies 0 < Mc < N0 , so Tc > 0 as well. Consequently
+
+                                R = L2 + Sc (L − 1) + Tc L + L − 1 > L2 .
+
+Also
+                      N 2 = 2−20 a15 B 2403 < B 2418 < B 4558 < L2 ,            b ≤ c ≤ N.
+Thus R ≥ N ≥ 8, b ≤ R, N , and all these estimates hold before any sign guard, carry condition,
+or source-coordinate decoding.
+    For the range needed by the interval guard, assume 0 < g < c. Since ℓ < 2B 116 , one has
+Uc < 2bB 116 . Then
+
+                 |G| < 12A∗ b2 B 2161 ,          2|G| < B 2162 /256,         T∗ < B 2162 /256.
+
+Writing Pc = B 2162 , this gives 0 < Jc < (2 + 1/128)Pc . Since g < N0 and Pc > 128,
+
+                0 < Sc < 3B 2279 ,           0 < Tc < B 2279 ,        Sc + Tc < 4B 2279 ≤ L.
+
+For the middle bound, use (B − 2)T∗ < B 2130 and 1 + B 2130 < B 2162 . These sharp estimates are
+why the off-target padding does not require increasing the block exponent from 2279 to 2280.
+
+
+
+                                                           3
+1.3   Sparse carries and parity-tuned square threshold
+Continue to assume 0 < g < c, and suppose now b = 2k , so B = 2ν with ν = κ + 2k. The low
+mask gives                                  X
+                    g & Mc = 0 ⇐⇒ g =          ni B wi ,   0 ≤ ni < b.
+                                                       i
+                                                                                      wi . Every coefficient
+                                                                             P
+Here the binary “and” is proof notation only. Put pi = ni + 1, so Uc =       i pi B
+he of D2 (T )U (T )2 + D1 (T )U (T ) + D0 (T ) + T 2162 obeys
+
+                                      |he | < 994A∗ b2 < B/8.
+
+The bound includes
+             P       the possible collisions at unmarked coefficients and the extra coefficient 1; it
+follows from i pi ≤ 31b. The unnormalized digits of Jc are 2he + εe , where εe = 1 exactly at the
+targets. Starting with incoming carry 0, normalized carries remain in {−1, 0}. At a target, its
+digit avoids B − 2 exactly when it is 0 or 1. This happens exactly when he = 0, independently of
+an incoming borrow. The degree-separated extraction theorem then gives, using the inverse row
+operations,
+
+        Sc & Tc = 0    ⇐⇒     p = n + 1 is a positive common zero of the original system.
+
+Conversely every such zero has this code with 0 < g < c for arbitrarily large b = 21+2r . The all-one
+positive tuple is not a zero, since original row 5 has value 1 there. Thus the encoded nonnegative
+tuple is not zero.
+   Write L = 2λ . Since Sc , Tc > 0 and Sc + Tc < L, the three nonoverlapping blocks in R give
+
+                               s2 (R) = λ + s2 (Tc ) + 1 − τ2 (Sc , Tc ),
+
+where τ2 (S, T ) = s2 (S) + s2 (T ) − s2 (S + T ) ≥ 0 is the number of binary carries. The 31 low
+allowed positions and 22 high target positions give
+
+                        s2 (Tc ) = 139ν − 31k − 22,          λ = 1 + k + 2279ν.
+
+Therefore
+
+                  λ + s2 (Tc ) + 1 = 2418κ + 4806k − 20
+                                  = 2 (8κ − 10) + k + 1201(κ + 2k) = log2 N 2 .
+                                                                  
+
+
+Legendre’s identity v2 2R
+                          
+                        R = s2 (R) now proves
+                                     
+                                 2   2R
+                               N |          ⇐⇒              Sc & Tc = 0.
+                                      R
+
+The factor b in N is necessary in this parity class. It is a polynomial factor, not a new witness or
+a variable exponent.
+
+1.4   An exact polynomial CRT reparameterization
+The inherited ratio interface uses Hold = B1 +jold C and JF | QF +J(Hold −C). Since E = iJDC 2 ,
+
+                             F ≡1     (mod J),             F ≡1   (mod C),
+
+and hence gcd(J, F ) = 1. The divisibility is equivalent to J | Q and F | Hold − C. Our changed
+register
+                                     H = C + F (B1 + jC)
+
+
+
+                                                   4
+automatically satisfies the latter. It also has the original form, with
+
+                               jold = 1 + (A2 − 1)i2 J 2 D2 C 3 B1 + F j,
+
+which is a polynomial integer, since F − 1 = (A2 − 1)i2 J 2 D2 C 4 . This identity holds for arbitrary
+signed inputs, including C = 0.
+    Conversely, at the canonical positive ratio witnesses, 0 < B1 < C and jold ≥ 1. Therefore
+z = (Hold − C)/F > 0 and z ≡ B1 (mod C), so z = B1 + jC with j ≥ 0. Thus every canonical
+witness is represented. No extra unknown or cofinal restriction is introduced. The merger now
+has u = J rather than JF . This CRT step is inherited from the separately identified sparse-Pell
+packet, not claimed as an original theorem here.
+
+1.5   The interval guard and the Jones interface
+If ∆ > 0 and b ≥ 2, then K ̸= 0 and 0 < g < c. The identity 4g(c − g) = c2 − (c − 2g)2 ≤ c2
+implies 4δ 2 < K 2 . Along with s ≥ 1, ϕ ≥ 0, and w = ̸ 0, this gives C, Y > 0 and K > 0. The
+usual square-gap argument forces h ≥ 1: if h ≤ 0, then 1 ≤ K ≤ R + 1 < P ; K = 1 would force
+P − 1 | R, which is impossible, while for 2 ≤ K < P ,
+
+                              (P K − 1)2 < (P 2 − 1)K 2 + 1 < (P K)2 .
+
+Thus a0 cannot be a square in that branch.
+   For precision, instantiate the free ceiling in Jones1982.Nine.ratio sound by Gaux = 8gK 2 +1,
+rather than assuming its old margin condition. The positive integer K 2 − 4δ 2 then gives
+
+                                    (K 2 − 4δ 2 )Gaux − 8gK 2 > 0.
+
+This ceiling is a proof-side abbreviation; the ratio registers do not otherwise depend on it.
+    Replace i by |i|, which changes no condition. To handle signed j, u | t now means J | Q, while
+F | H − C holds identically. Also F ≡ 1 (mod D), G ≡ 1 (mod D), and G ≡ A (mod F ) show
+that the positive integers D, F, I are √pairwise coprime. Hence a1 =√DF I square makes each a
+square. Put d = G2 − 1 >√0 and x = I. The norm-one unit x + H d is positive even if H < 0.
+A positive power of G + d is the identity modulo CF ; multiplying by sufficiently large such
+powers gives a Pell solution H ′ > B1 with H ′ ≡ H (mod CF ). Then j ′ = (H ′ − B1 )/C > 0,
+all square conditions remain true, and J | Q remains true. The literal positive Jones interface
+therefore applies and gives the power-of-two base and central-binomial condition required above.
+    For completeness, take any common source zero, choose b = 21+2r large enough, and set
+ϵ = 2r . The direct source code has 32g < Gc , so the literal ratio completeness theorem supplies
+its canonical witnesses. In Ratio.lean, exists B25core sets
+
+                               ω = 22R+1−k ,        U = (N 2 /b)22R+1 .
+
+Since k = 1 + 2r is odd and k < 2R + 1, this ω is a positive square. No claim that the canonical s
+is a square is needed.
+    The same canonical construction has ρ0 = (U + 1)2R /U R = Y + f with 0 ≤ f < 22R /U =
+b/(2N 2 ) and Y ≥ 1. The source’s ratio core gives
+                                      2(Y + f )  4                           b
+                      |C/K − ρ0 | ≤             < ,          |C/K − Y | <      .
+                                      Y (U + 1)  U                          N2
+The last inequality uses R ≥ 8. Since c, b ≤ N and g(c − g) ≥ 1, it follows that
+
+                               c2 (C − KY )2   c2 b2
+                                             <       ≤ 1 ≤ g(c − g),
+                                     K2        N4
+so the very same canonical witnesses, translated by the exact CRT formula, satisfy ∆ > 0. This is
+a cofinal square-base proof, not an unsupported restriction of an existing slack variable to squares.
+
+                                                   5
+1.6   Raw two-root recovery, including the zero spectator branch
+For every integer assignment, u = J = 4A − 5 ̸= 0. The polynomial
+
+                                   Π(x) = (x3 − x − 1)(x2 + 23)
+
+has no rational root and has a root modulo every positive integer. For an odd prime other than
+23, either the cubic has a simple root or it is irreducible, whose Frobenius three-cycle makes its
+nonzero discriminant −23 a square. The quadratic then has a simple root. At 23 the cubic has
+the simple root 3; at 2, −23 ≡ 1 (mod 8) admits compatible square roots. Hensel lifting and CRT
+finish the assertion. Thus Θ = u5 Π(t/u + r) ̸= 0 for every assignment, and
+
+                              ∃r   Zu5 | Θ       ⇐⇒       Z ̸= 0 and u | t.
+
+Indeed a root modulo |Z| proves the reverse implication once u | t. If vp (u) = α > β = vp (t), the
+two factors of Θ have valuations 3β and 2β, contrary to u5 | Θ. If Z = 0, divisibility would require
+Θ = 0, already impossible.
+   At a zero of the equation, Σ = 0 is impossible because then the polynomial is Θ4 ̸= 0. In
+particular ϵ, w, i, z1 , z2 , z3 , a0 are nonzero. Every dj ≡ 2 (mod 3) is nonzero, and every Bj∗ ≡ 1
+(mod 4) is nonzero. Thus C2 , C∗ are nonzero.
+
+No coincident radicands. One has C∗ ̸= a1 without any positivity assumption. If a1 = 0 this
+follows from C∗ ̸= 0. Otherwise B3∗ ̸= 1, and it cannot be −1 because it is 1 modulo 4. But
+
+                                            gcd(B3∗ , a1 ) = 1,
+
+while C∗ = a1 would make B3∗ divide a1 . This would force B3∗ = ±1, a contradiction.
+   Put q = X/Σ. The raw norm equation implies
+
+                                       (q 2 + C∗ − a1 )2 = 4C∗ q 2 .
+
+If q = 0, the norm would give C∗ = a1 , just excluded. Therefore
+
+                                       q 2 + C∗ − a 1
+                                r0 =                  ,      r1 = q − r0
+                                             2q
+
+are rational, with r02 = C∗ and r12 = a1 . Rational square roots of integers are integers. Hence
+C∗ , a1 are integer squares, q ∈ Z, and Σ | Θ. In particular J | Q. No complex-root separation
+assumption is used.
+
+Recover the first two guards before ruling out a1 = 0. The factors a0 , B1∗ , B2∗ , B3∗ are
+pairwise coprime, because each new factor is 1 modulo its entire preceding product. Their nonzero
+product C∗ is a square. Thus each absolute factor is a square. Since Bj∗ ≡ 1 (mod 4), every Bj∗ is
+positive: a negative square cannot be 1 modulo 4. The product sign then forces a0 > 0, also a
+square. All prefixes are now positive, so d1 , d2 > 0, yielding s ≥ 1 and ϕ ≥ 0.
+    At this point the last factor might still equal 1 if a1 = 0; this branch must not be silently
+discarded. The unconditional source estimate above has already proved R > L2 > 0 for every
+signed g. Since ϵ, w ̸= 0 and s ≥ 1, we have b ≥ 2, N ≥ 8, U, Y > 0, A ≥ 2, and, using ϕ ≥ 0,
+C > 0. Then
+
+            D ≥ A2 > 0,       F ≥ 1,        CD + 1 − A > 0,            G ≥ A > 1,   I ≥ 1.
+
+Consequently a1 = DF I > 0. Now B3∗ ̸= 1, and its positivity with C2 a1 z32 > 0 forces d3 > 0,
+hence ∆ > 0. This closes the zero-spectator branch without adding a1 to the nonzero multiplier.
+The interval and ratio arguments above therefore apply.
+
+                                                    6
+Completeness. Start from the canonical positive ratio witnesses, translated by the CRT
+parameterization. They have a0 , a1 positive squares, J | Q, and all three strict sign conditions. For
+j = 1, 2, dj Cj−1 is positive nonsquare because dj ≡ 2 (mod 3) and Cj−1 is a square. A nontrivial
+Pell solution x2 − dj Cj−1 y 2 = 1 can be chosen with y even, so zj = y/2 ̸= 0 makes Bj∗ = x2 . For
+the last guard, d3 C2 a1 is likewise positive nonsquare, since C2 a1 is a positive square. The same
+construction gives B3∗ square and C∗ square. The intersective lemma chooses r with Σ | Θ. Finally
+choose                                          p       √
+                                     v = Θ/Σ + C∗ + a1 ∈ Z.
+Then the raw norm vanishes. Both directions are proved. By the inherited compiler theorem,
+integer-zero existence is equivalent to a finite ZFC refutation, and ZFC proves its negation
+equivalent to Con(ZFC).
+
+1.7    Exact degree, comparison, and verification scope
+The exact relevant register degrees are
+                           a0      a1      C2      C∗      Σ     X
+                   deg 261250 2635110 1045009 4875914 448571 448572
+
+and deg A0 = 5773056, deg A1 = 3532252. The degree of A0 strictly exceeds those of X 2 and A1 ,
+so the output has leading term A20 . Its diagonal leading coefficient is
+
+                                 116361 a2885464 η 960   (mod 1000003),
+
+which is nonzero since a and η are powers of two. The circuit upper bound and this specialization
+prove exact degree 11 546 112.
+     The previous seeded thirteen-integer construction has degree 57 866 184 and 759 operations. At
+its unchanged old source, the coprime spectator alone gives degree 46 680 720 and 758 operations,
+and adding CRT gives degree 28 847 344 and 754 operations. With degree-separated extraction
+and the one-monomial signed-input repair, the canonical result is degree 11 546 112 and 520
+operations: 80.05% less degree and 31.49% fewer operations than the seeded predecessor. All
+variants have thirteen unrestricted integer unknowns and the same original coherent coefficient
+tuple. The old-source proof is retained in old source section.tex for an explicit apples-to-apples
+comparison. No twelve-variable result, variable-count record, global optimum, or reduction of
+coefficient storage is claimed.
+     The metric counts every live binary addition, subtraction and multiplication, including scalar
+multiplication and all fixed-power gates. Reuse and fixed leaves are free. The canonical evaluator
+uses sparse Horner forms, reuses known exponent sums, and factors the merger cubic as ρ(ρ2 −
+u2 ) − u3 . These are exact polynomial identities, not new semantic assumptions.
+     The checker independently parses all 22 original residuals, proves the two row inverses and all 22
+target polynomial identities, verifies the complete 22,544 isolation interactions, and authenticates
+the full fixed tuple. It also replays literal circuit registers over three finite fields, checks signed and
+zero branches, the norm and CRT identities, nonvacuous Pell examples, source positivity, sparse
+carries, and the parity calibration. These finite implementation audits corroborate the universal
+proof; they are not a new kernel-checked formal theorem or an unbounded consistency search.
+     Run python build jones.py, python check jones.py, and python -O check jones.py.
+The complete division-free polynomial and fixed binding are in the emitted DAG and
+FIXED BINDING.json. Original source provenance is in SOURCE PINS.json; the CRT source
+archive and theorem are identified in CRT PROVENANCE.json.
+
+1.8    Recommended compact companion: odd-parity calibration
+The recommended compact companion has the same thirteen unrestricted integer unknowns,
+exact degree 11 543 632, and 518 live binary operations (326 multiplications, 169 additions, 23
+
+                                                    7
+subtractions). Its literal DAG is generated/signed coprime compact split crt.json. The
+520-operation construction above is retained as the fully explicit baseline. Only three source
+registers are changed:
+
+        G+ = D2 (B)Uc2 + D1 (B)Uc + D0 (B) + B 2161 ,             L = B 2279 ,    b = ηϵB 1201 ,
+                                                                                  N
+
+with the same η = 28κ−10 . In the literal ratio registers use
+                                        b 2 w2 ,
+                                     U =N                      b 2 s.
+                                                            Y =N
+
+Everything else, including the mask, source targets, interval guard, CRT registers, spectator stack,
+merger, and raw final norm, is unchanged. The JSON register named N contains N        b , which can
+be negative. Only in the proof, instantiate the positive Jones parameter by N = |N    b |. Since all
+                                                                     2     2
+uses of this register in the polynomial are through its square, N = N exactly. There is no
+                                                                         b
+absolute-value gate or extra unknown in the equation.
+
+Unconditional positivity. The same square completion, now with a slightly lower off-target
+monomial, gives
+
+                         G+ > 14 B 1929 Uc2 + B 2161 − 4A2∗ B 2125 − 2A∗ B 1719
+                            > 14 B 1929 Uc2 + 12 B 2161 ,
+
+because 4A2∗ /B 36 < 1/4 and 2A∗ /B 442 < 1/4. Thus
+
+                            Sc > 12 N0 B 1929 Uc2 + Uc + N0 B 2161 − ℓ > 0
+
+for every integer g, exactly as in the baseline proof. Hence R > L2 . For the positive proof-side N
+one has
+                      N 2 = 2−21 a16 bB 2402 < a15 B 2403 < B 2418 < B 4558 = L2 .
+Also N ≥ c = bB 116 , since ηB 1085 ≥ 2|ϵ|, using B ≥ 2|ϵ| and η ≥ 1. Finally N ≥ B 1201 ≥ 8. Thus
+all hypotheses R ≥ N ≥ 8 and b, c ≤ N concern the positive number |N     b |, not signed N
+                                                                                         b . This is
+sufficient for every use of the ratio theorem and for the canonical estimate proving ∆ > 0.
+
+A smaller block is sufficient. On the required range 0 < g < c, the previous bound
+2|G| < B 2162 /256 still holds. Also T∗ < B 2162 /256 and 2B 2161 < B 2162 /128, since B > 256.
+Therefore
+                   0 < Jc < B 2162 /64,   Sc < B 2279 /32,    Tc < B 2279 /64.
+Consequently Sc + Tc < L = B 2279 . The pad is still above every target, since 2161 > 2129, and
+the same coefficient bound |he | < 994A∗ b2 < B/8 covers its extra coefficient 1. The entire sparse
+carry proof is therefore unchanged.
+
+The exact square threshold uses the forced odd parity. After ratio soundness establishes
+b = 2k , the polynomial identity b = 2ϵ2 with integer ϵ ̸= 0 forces k odd and ϵ2 = 2k−1 . Write
+ν = κ + 2k. For L = B 2279 ,
+
+                  log2 L + s2 (Tc ) + 1 = 2418ν − 31k − 21
+                                       = 2418κ + 4805k − 21
+                                                                             b 2.
+                                       = 2(8κ − 10 + 1201ν) + (k − 1) = log2 N
+
+Thus N 2 = N   b 2 has exactly the required central-binomial valuation threshold. No even-k assertion
+is needed: that branch cannot occur. For completeness choose ϵ = 2r > 0 and b = 21+2r , which are
+still cofinal. The canonical ω remains a square. The same b, c ≤ N estimate proves the interval
+guard. All later CRT, nonzero, square-recovery, and sign-bootstrap arguments are identical. This
+proves the compact companion’s equivalence to a source zero and hence to a finite ZFC refutation.
+
+                                                     8
+Exact degree and accounting.          Here the relevant degrees are
+
+          deg a0 = 261194,    deg a1 = 2634542,          deg C∗ = 4874866,     deg Σ = 448475,
+
+and deg A0 = 5771816, deg A1 = 3531492. Again A0 dominates X 2 and A1 , and the leading term
+of the output is A20 . Its diagonal coefficient is
+
+                             630137 a2885464 η 960       (mod 1000003) ̸= 0.
+
+This proves exact degree 11 543 632, with 518 operations under the same gate metric. The change
+saves two operations and 2480 degrees against the scaled split baseline, without changing the source
+tuple or number of unknowns. The independent audit checks the all-integer source minimum,
+compact block bounds, negative-ϵ normalization, odd-k threshold, and that the signed N node
+feeds only its square.
+
+
+
+
+                                                     9
+

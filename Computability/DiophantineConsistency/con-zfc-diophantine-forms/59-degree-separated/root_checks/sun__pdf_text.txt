@@ -1,0 +1,320 @@
+                 Degree-separated convolution and calibrated masks
+                       for a ten-integer consistency equation
+                                Mathematical research prepared for ProveIt
+
+                                                    23 October 2026
+
+
+1     Degree-separated coding: a ten-integer equation
+There is a completely fixed integer polynomial
+
+                                             F10 (f, g, h, k, l, w, x, y, z, m)
+
+of exact total degree 8 469 528, evaluated by a division-free circuit of 533 binary arithmetic operations, for
+which ordinary mathematics formalizable in ZFC proves
+
+                      ¬∃(f, g, h, k, l, w, x, y, z, m) ∈ Z10 (F10 = 0)            ⇐⇒    Con(ZFC).
+
+This is a new source-coding architecture, not a new unknown-count theorem. The inherited compiler
+calibration and Sun arithmetic bridge remain stated mathematical dependencies. No consistency decision,
+global minimality claim, or new end-to-end proof-assistant certificate is asserted.
+    The structural change is to split the extraction convolution by homogeneous degree. A linear label may
+now collide with a quadratic label: their kernels are separate summands. This relaxes the finite isolation
+problem rather than merely finding a better placement for the previous problem. Elementary row operations,
+one shared positivity shift, borrow-tolerant target padding, and exact mask-population calibration complete
+the construction.
+
+1.1   Fixed source and three homogeneous kernels
+Use exactly the unshifted, strictly positive, 31-coordinate parent in data/parent_quartic31.json, with its
+complete original four-port binding (βnative , K0 , MC , MF ). The four included compressed payloads have bit
+lengths (1064921, 1070004, 1064921, 1064922); the last is MF_source, already shifted, and is not shifted again.
+INSTANCE.json is the active binding. No package-52 transport row or coefficient is spliced into this tuple.
+The pinned parent theorem is
+
+                          ∃p ∈ Z31
+                                >0 r1 (p) = · · · = r22 (p) = 0              ⇐⇒   ¬ Con(ZFC).
+
+Replace only r14 by ρ14 = r14 + r2 and r15 by ρ15 = r15 + r3 ; otherwise put ρj = rj . The inverse row
+operations preserve the common zero set over every coefficient tuple. There are now 89 records: seven
+constant, 39 linear, and 43 quadratic.
+   In the parent coordinate order
+
+                          (J, F, α, z, f, h, i, o, j, s, w, τ, η, ζ, y, γ,
+                                           N, E, P, c, a, X, D, C2 , L, F2 , V, g, I, Baux , ∆),
+
+choose the positive, distinct weights
+
+                  (w1 , . . . , w31 ) = (1, 7, 61, 36, 16, 85, 20, 67, 43, 11, 34, 13, 96, 80, 29, 50,
+                                      2, 109, 110, 112, 116, 91, 53, 55, 27, 101, 92, 9, 107, 37, 60).
+
+                                                               1
+The row order and targets are
+
+                            (2, 22, 8, 15, 9, 11, 3, 17, 13, 18, 12, 20, 4, 21, 19, 1, 6, 10, 16, 14, 7, 5),
+                            (28, 85, 286, 384, 593, 602, 642, 731, 906, 966, 1083, 1212, 1231, 1393,
+                                            1461, 1471, 1678, 1719, 1732, 1880, 2107, 2129).
+
+Let qj denote the target assigned to row j, and write ρj =
+                                                                                           P               α . For d = |α| put
+                                                                                                α aj,α p
+                                                                                       (
+                                                 X                                      2aj,α ,      d = 0, 1,
+                                      e(α) =            α i wi ,          cj,α =            Q
+                                                    i                                   aj,α i αi !, d = 2.
+
+Define the fixed integer polynomials
+
+                       cj,α Z qj −e(α) ,
+             X                                                  X
+ Dd (Z) =                                      Up (Z) =                pi Z wi ,           Gp (Z) = D2 (Z)Up (Z)2 + D1 (Z)Up (Z) + D0 (Z).
+            j, |α|=d                                               i
+
+All reversed exponents are nonnegative. The exact finite certificate checks, for every used degree-d monomial
+α and every degree-d monomial γ in 31 variables,
+
+                                           qj − e(α) + e(γ) = qk                   ⇐⇒           j = k and α = γ.
+
+There are respectively 1, 31, 496 expansion monomials in degrees 0, 1, 2, and 22,544 source/expansion interac-
+tions. There is no requirement to separate a degree-one label from a degree-two label. Multinomial expansion
+and the displayed coefficient weights therefore give the universal identities
+
+                                                 [Z qj ]Gp (Z) = 2ρj (p)                   (1 ≤ j ≤ 22).                                 (1)
+
+The independent checker compares the entire extracted polynomials in all 31 coordinates and four ports, not
+just evaluations at test points.
+    Write M = 116, Q = 2129. The exact kernel degrees and convolution height are
+
+       deg D0 = 1719,                deg D1 = 2027,                    deg D2 = 1929,                    H = max(deg Dd + dM ) = 2161.
+                                                                                                                 d
+
+The leading term of D2 is exactly +Z 1929 , arising from EX in row five. Every kernel separately has distinct
+exponents. Replacing each port monomial in a coefficient by its strict bit bound and taking absolute integer
+coefficients gives a maximum majorant of bit length 2134927. Consequently, with
+
+                                            C0 = 22134927 ,                κ = 2134940,                    βS = 2κ ,
+
+every kernel coefficient has absolute value less than C0 , and βS > 4096C0 .
+
+1.2   Source polynomials and pre-binary bounds
+In the unrestricted integer unknowns f, g define
+                                                                                           X
+                                     b = 1 + 3f,              B = βS b2 ,          ℓ=           B wi ,     Uc = ℓ + g,
+                                                                                            i
+                                                                                                                X
+                                    Gc = D2 (B)Uc2 + D1 (B)Uc + D0 (B),                                  AT =        B qj ,
+                                                                                                                 j
+                                                    117                     2162                                 2279
+                                           N0 = B         ,     N1 = B             ,       N = N0 N1 = B                ,
+                                             M0 = N0 − 1 − (b − 1)ℓ,                        Jc = 2Gc + AT ,
+                                             Sc = g + J c N0 ,             Tc = M0 + (B − 2)AT N0 ,
+                                                X = N 2 + (Sc + Tc )N + N − 1 − Sc ,
+
+                                                                               2
+                      Y = βS15 2κ−21 B 2402 b = 22418κ−21 b4805 ,                C = bB 116 = 2116κ b233 .
+
+All powers have fixed nonnegative integer exponents. Every displayed register is an abbreviation, never an
+additional quantified unknown.
+    Assume f ̸= 0, b is a square, and 0 ≤ g < 2C. Then b ≡ 1 (mod 3) implies b ≥ 4, and B > 4096C0 b2 .
+Distinct positive weights give ℓ < 2B 116 , hence
+
+                                                      B 116 ≤ Uc < 3bB 116 .
+
+In particular, without assuming b is a power of two,
+
+                      D2 (B) > 21 B 1929 ,       |D1 (B)| < 2C0 B 2027 ,          |D0 (B)| < 2C0 B 1719 .
+
+After division by B 1929 Uc2 , the two possible negative terms are bounded by 2C0 /B 18 < 1/8 and 2C0 /B 442 <
+1/8. Thus Gc > 14 B 1929 Uc2 > 0. This is the necessary signed leading-layer argument; positivity is not inferred
+from positive inputs alone.
+   The kernel degree bounds also give
+
+                        |Gc | < 2C0 (1 + 3b + 9b2 )B H ≤ 26C0 b2 B H ,                  2Gc < N1 /64.
+
+Since Q = 2129 < H, both AT and (B − 2)AT are less than N1 /64. It follows that
+
+                                 0 < Jc < N1 /32,                Jc + (B − 2)AT + 2 < N1 .
+
+The digits of M0 are B − 1, except that the 31 designated cells have digit B − b. Therefore 0 ≤ M0 < N0 ,
+and g < N0 as well. The preceding strict high-block bound proves
+
+                                         0 ≤ Sc ,          0 ≤ Tc ,        Sc + Tc < N.                       (2)
+
+Consequently X ≥ N 2 > 3b and Y > max(b, 256). Because κ is even, B ≡ N ≡ 1 (mod 3), M0 ≡ 0, and
+Tc ≡ −22; hence X ≡ 1 + Tc ≡ 0 (mod 3). These are all established before binary-base recovery.
+
+1.3   Borrow-tolerant extraction and exact mask population
+Suppose now that b is a power of two. So are B, N0 , N . The low mask condition g & M0 = 0 is exactly
+                                                      X
+                                                 g=         ni B wi ,     0 ≤ ni < b.
+                                                       i
+
+For these digits put pi = ni + 1, so Uc = i pi B wi encodes positive parent coordinates without expanding a
+                                                 P
+
+successor substitution in every residual. Write hs = [Z s ]Gp (Z) and let ϵs be the indicator of the 22 targets.
+All coefficients, including unsupported collisions, satisfy
+                                                 X             X
+                                |hs | < C0 {(        pi )2 +        pi + 1} ≤ 993C0 b2 < B/4.
+                                                 i              i
+                                 PH                 s
+The signed expansion of Jc is       s=0 (2hs + ϵs )B . Euclidean digit normalization has incoming carries only in
+{−1, 0}:
+                                             2hs + ϵs + us
+                                                                     
+                      u0 = 0,     us+1 =                      , ds = 2hs + ϵs + us − Bus+1 .
+                                                   B
+At a marked cell the mask B − 2 admits precisely digits 0, 1. If hs = 0, the unnormalized digit 1 + us passes.
+If hs ≥ 1, it lies in [2, B) and fails. If hs ≤ −1, it lies strictly between −B + 1 and zero, and its normalized
+digit is at least two, so it fails. Thus incoming borrows do not affect the zero test. Positivity of Jc was proved
+independently, ensuring these are its ordinary digits. Combining the disjoint low and high blocks with (1)
+proves                                     X
+              Sc & Tc = 0 ⇐⇒ g =              ni B wi , 0 ≤ ni < b, r1 (n + 1) = · · · = r22 (n + 1) = 0.
+                                             i
+
+
+                                                                    3
+   For N = 2u and S, T ≥ 0 with S + T < N , let X∗ = N 2 + (S + T )N + N − 1 − S. Its disjoint binary
+blocks give
+                       s2 (X∗ ) = 1 + u + s2 (T ) − {s2 (S) + s2 (T ) − s2 (S + T )}.
+The braces count carries with multiplicity, and vanish precisely when S & T = 0. Legendre’s formula therefore
+implies                                              !
+                                   1+u+s2 (T )   2X∗
+                                 2             |          ⇐⇒ S & T = 0.
+                                                  X∗
+The stronger range (2) is essential. Writing b = 2k , B = 2v , the actual mask population is
+
+                               s2 (Tc ) = (117 + 22)v − 31k − 22,               u = 2279v.
+
+Hence 1 + u + s2 (Tc ) = 2418v − 31k − 21 = log2 Y , exactly explaining the fixed polynomial threshold used
+above.
+    Conversely, a positive parent zero is not the all-one vector: original row five equals one there. For
+arbitrarily large b = 4s exceeding all its coordinates, encode ni = pi − 1. Then g ≥ B > b and g < C; the
+latter follows from (b − 1)ℓ < bB 116 . All marked tests pass and Y | 2XX . This proves both directions of the
+entire source contract needed by the inherited finalizer, including its lower bound on forward witnesses and
+its pre-binary reverse bounds.
+
+1.4   Explicit radical-free finalizer
+The following formulas are the inherited package-31 quintic, merged-square, structural-weight finalizer. They
+are written out to fix the actual equation. Distinguish its local B∗ , S∗ , T∗ from the source base and masks
+above. Define
+
+                             L = lY,         U = 2LX,            V = 4gwY,         W = bw,
+                          A = U (V + 1),            B∗ = 2X + 1,          C = B∗ + (A − 2)h,
+                                       P = U 2 V,        K = X + 1 + k(P − 2),
+                                     S∗ = 2A − 5,         T∗ = 3W C − 2(W 2 − 1),
+                                                R2 = (P 2 − 4)K 2 + 4,
+                                 ∆ = 8C 3 gK 2 − g 2 {32(C − KL)2 C 3 + g 2 K 2 },
+                                               O = f 2 l2 ∆,          ξ = zx,
+                                       D = (A2 − 4)C 2 + 4,             E = C 2 Dξ,
+                          F = 4(A2 − 4)E 2 + 1,             G∗ = 2(A + 2)(A − 2)2 E 2 − 1,
+                                 Ω = 16E,            H∗ = C + (B∗ − C)F + ΩF y,
+                                                I∗ = (G2∗ − 1)H∗2 + 1.
+
+Put
+
+       r = T∗ + S∗ y,                                Σ = ξS∗5 ,
+      Θ = (r3 − rS∗2 − S∗3 )(r2 + 23S∗2 ),
+      a0 = b{1 + (3O − 4)b2 z 2 },                   a1 = R2 ,                               a2 = DF I∗ ,
+      w0 = 1,                                       w1 = a0 ,                                w2 = a0 (P 2 + K 2 + 3),
+      Z = Σm − Θ,                                    Ai = Σ2 wi2 ai     (0 ≤ i ≤ 2),
+             2
+      Vn = Z + A2 − A0 − A1 ,                       Wn = Vn2 + 4Z 2 A2 − 4A0 A1 .
+
+The promised single equation is
+                                             F10 = Wn2 − 16Vn2 Z 2 A2 = 0.                                              (3)
+
+                                                             4
+Every expression is an integer polynomial. In particular, radicals and binomial coefficients appear in the
+proof only, never in the equation.
+
+Exact dependency boundary. Sun’s 2021 Theorems 4.12–4.13, specialized as in his 2026 Propositions
+6.1–6.2, provide the two bridge directions for any source satisfying the contract just proved. Forward witnesses
+have b square, R2 square, S∗ | T∗ , C = uB∗ (A) and O > 0. Reverse witnesses with b square, O > 0, ξ ̸= 0,
+R2 , DF I∗ square and S∗ | T∗ recover b ∈ 2 ↑, 0 < g < 2C and the required binomial divisibility. The residue
+interpolation theorem permits ξ to be divisible by any prescribed positive integer and permits any residue
+class for y (mod ξ). The only data substituted here are the newly proved source polynomials; the bridge
+does not require Y = N 2 .
+    For completeness, the inherited finalizer implications can be verified as follows. The polynomial (v 3 −
+v − 1)(v 2 + 23) has a root modulo every positive integer and none over Q. For odd primes other than 23
+the cubic discriminant is −23: if the cubic is irreducible its Frobenius permutation is even, so the quadratic
+has a simple root; otherwise the cubic has a simple root. At 23 the cubic has simple root 3. At 2, −23 ≡ 1
+(mod 8). Hensel lifting and the Chinese remainder theorem finish the local-root argument. Prime valuations
+in the two homogeneous factors show that Σ | Θ forces S∗ | T∗ : if vp (S∗ ) > vp (T∗ ), the valuation of Θ is
+5vp (T∗ ) < 5vp (S∗ ). Since S∗ is odd, it never vanishes; the absence of rational roots ensures Θ ̸= 0.
+    When z ̸= 0, a0 square implies that its coprime factors b and 1 + (3O − 4)b2 z 2 are signed squares. The
+congruence b ≡ 1 (mod 3) excludes a negative square and excludes zero, including the zero-factor exception.
+Thus b is a positive square and the usual positivity Pell lemma gives O > 0. Conversely, forward witnesses
+have O ≥ 4: the positive integer ∆ is divisible by g ≥ b ≥ 4. For d = 3O − 4 > 0, d ≡ 2 (mod 3) is nonsquare.
+A positive Pell unit raised to its order modulo b gives v = bz > 0 with u2 − dv 2 = 1, making a0 a square.
+Residue interpolation then supplies ξ = zx and a y that simultaneously makes a2 square and Σ | Θ.
+    If z ̸= 0, the displayed a0 always has |a0 | > 1. The exceptional possibilities a0 = 0, ±1 force |b| = 1, hence
+b = 1, f = O = 0, and a0 = 1 − 4z , a contradiction. Also |a1 | ≤ P 2 + K 2 + 2. Thus the weights obey
+                                      2
+                                                                p
+
+                                            q                          q               q
+                                  |w1 | >       |a0 |,       |w2 | >       |a0 | + |w1 | |a1 |.
+
+In the multiquadratic field, an automorphism changing a nonzero weighted root has a largest changed index;
+its magnitude exceeds the sum of all smaller changed magnitudes. A rational weighted sum can therefore
+occur only when every ai is an integer square. This also covers negative radicands by complex absolute
+values, and zero radicands separately.
+    The exact norm identity
+                                                                       2
+                                                                 !
+                                                         Y             X p
+                                        F10 =                   Z+           ϵi Ai
+                                                     ϵ∈{±1}3           i=0
+
+has 35 expanded terms and is checked independently by integer polynomial arithmetic. If Σ = 0 then
+F10 = Θ8 ̸= 0. At a zero of F10 we therefore have Σ ̸= 0, hence z ̸= 0; separation forces all ai square and
+Σ | Θ. The reverse bridge and source proof recover a parent solution. Conversely the forward construction just
+described makes all ai square and Σ | Θ; choosing m to cancel one signed factor gives F10 = 0. Composition
+with the pinned parent theorem proves the stated consistency equivalence in ZFC.
+
+1.5    Exact circuit, degree, and reproducibility
+The actual circuit uses the same finalizer polynomial in factored form. For example, with A = 2A1/2 and
+F − 1 = 4(A2 − 4)E 2 , its Lucas expression is G∗ = (A1/2 − 1)(F − 1) − 1; also H∗ = C + F (B∗ − C + Ωy).
+The common factor Σ2 a20 is reused in the last two scaled radicands. Fixed powers reuse already computed
+powers B i , B j when i + j is the required exponent, falling back to binary exponentiation otherwise. These
+are exact polynomial identities, not a relaxation of the equation.
+    generated/sun10.json contains all ten variable leaves and 533 live binary gates: 340 multiplications,
+166 additions, and 27 subtractions. Multiplication by a numeral is charged. The fixed coefficient leaves are
+
+
+                                                                5
+specified by INSTANCE.json, the four payloads, and generated/source_records.json. Their construction
+is not included in this arithmetic-operation count, which is not bit complexity.
+    The source degrees are deg X = 9116, deg Y = 4805, and deg C = 233. The propagated final upper bound
+is
+                             456(9116) + 896(4805) + 24(233) + 1760 = 8 469 528.
+After all ten variables are replaced by one indeterminate T , the coefficient of T 8469528 has nonzero residues
+
+                                             p                      101 1009 1000003
+                            [T 8469528 ]F10 (T, . . . , T ) mod p   68 256 476348.
+
+Any one residue proves the matching lower bound, so this degree is exact. This is leading-coefficient
+propagation, not a random point evaluation.
+    The independent checker imports no builder. It independently parses all 22 source residuals; verifies the
+inverse row operations, 89 records, and all 22,544 isolation interactions; checks 59 local circuit identities,
+the additional Lucas factorization, and the eight-factor norm identity; audits every gate and fixed binding;
+and certifies the exact degree. Finite implementation tests cover 476 borrow transitions, 11,049 binary block
+pairs, and 60 large-integer source assignments, including nonbinary square bases 25 and 49. These finite
+checks supplement, rather than replace, the unbounded mathematical arguments. Both ordinary Python and
+python3 -O independent_check.py pass.
+    Against the prior calibrated-mask ten-integer construction of degree 21 111 400 and 659 gates, the new
+point has 59.88% lower degree and 126 fewer gates (19.12%). Against the incoming 582-gate homogeneous
+source point of degree 50 822 936, it has 49 fewer gates and more than sixfold lower degree. These are explicit
+pinned comparisons, not claims of global optimality or superiority over every variable/domain tradeoff.
+    The inherited exact-source pin is 124c07c0b77a9e20e84676514d8b1ff78536ea3f; SOURCE_PINS.json
+preserves all 12 source identities. Primary arithmetic dependencies are Z.-W. Sun, Further results on
+Hilbert’s Tenth Problem, Sci. China Math. 64 (2021), 281–306, https://arxiv.org/html/1704.03504v7;
+and Ten unknowns for Hilbert’s tenth problem over the integers, 2026 preprint, https://arxiv.org/html/
+2609.01594v2. The complete inherited source, coefficient, and finalizer proof records are preserved under
+upstream/; their historical relative paths do not supersede the active manifest.
+
+
+
+
+                                                           6
+

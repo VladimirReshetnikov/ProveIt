@@ -1,0 +1,2976 @@
+{
+  "status": "PASS",
+  "review_type": "Internal AI-assisted independent implementation check",
+  "script": "code/independent_check.py",
+  "script_sha256": "4a4b6b3ecb9efe1705ecf95a97ff8f5483362eea8e44b5c15959f1b43e589940",
+  "imports_project_code": false,
+  "uses_python_assert": false,
+  "python": "3.12.14",
+  "seed": 3227500580,
+  "primes": [
+    65537,
+    1000003,
+    1000000007
+  ],
+  "random_scalar_cases_per_prime": 64,
+  "fixed_scalar_cases_per_prime": 4,
+  "rays_per_prime": 4,
+  "scalar_residual_and_output_comparisons": 7344,
+  "coefficient_authentication": {
+    "binding_file": "coefficients/COEFFICIENT_BINDING.json",
+    "binding_sha256": "0599543212b8d2bbed2db018a29d6826702e1877faa5c8a1861d041998cb1783",
+    "instance": "wang943-complement67-shared-anchor-length8807-prime581197",
+    "source_commit": "22e75dd6b87b1b199bb08c778d7cf075ae5aae08",
+    "d": 590069,
+    "padding_prime": 581197,
+    "payloads": [
+      {
+        "port": "beta",
+        "file": "coefficients/coefficients/beta.bin.gz",
+        "raw_bytes": 73759,
+        "bits": 590069,
+        "sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d",
+        "gzip_sha256": "466796f146d60db9929fa0f0f62d70d5e6afbcea9940342764571f1ca6bea87c"
+      },
+      {
+        "port": "K",
+        "file": "coefficients/coefficients/K.bin.gz",
+        "raw_bytes": 74111,
+        "bits": 592884,
+        "sha256": "c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e",
+        "gzip_sha256": "b70752bb38570b1e93d480469c63ace9ed4b4552f94eb89d96bc600b1e2a4b6a"
+      },
+      {
+        "port": "MC",
+        "file": "coefficients/coefficients/MC.bin.gz",
+        "raw_bytes": 73759,
+        "bits": 590069,
+        "sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4",
+        "gzip_sha256": "271fabccdd555bda2c54c4c3a7379cc02eeba4893c07178bfd557a7683b74d5e"
+      },
+      {
+        "port": "MF_source",
+        "file": "coefficients/coefficients/MF_source.bin.gz",
+        "raw_bytes": 73759,
+        "bits": 590070,
+        "sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737",
+        "gzip_sha256": "935cd87f8b23f24a20fd742c48d2a9cbca6afd494b6b074445df72c98b0c6e3b"
+      }
+    ],
+    "scope": "Payload authentication and elementary tuple invariants only; native compiler audit is separate."
+  },
+  "circuits": [
+    {
+      "file": "circuits/p15_degree24.json",
+      "sha256": "39d785143cef12766127398ced6e2680b85ed182a636248737764892746c20ae",
+      "operations": 90,
+      "operation_breakdown": {
+        "*": 47,
+        "+": 27,
+        "-": 16
+      },
+      "residual_evaluator_operations": 79,
+      "all_gates_and_inputs_live": true,
+      "certificate_only": false,
+      "scalar_cases": 204,
+      "scalar_comparisons_sha256": "221608ef39c6bed0d1b021ff79d8775e41dc845971d9aabcbdfe115ddd0c7961",
+      "residual_order": [
+        "A",
+        "B",
+        "index_res",
+        "transport_res",
+        "auxiliary",
+        "strong"
+      ],
+      "residual_degree_upper_bounds": [
+        11,
+        9,
+        4,
+        3,
+        12,
+        10
+      ],
+      "residual_degree_lower_bounds_witnessed_modulo_primes": [
+        11,
+        9,
+        4,
+        3,
+        12,
+        10
+      ],
+      "output_degree_upper_bound": 24,
+      "output_degree_lower_bound_witnessed_modulo_primes": 24,
+      "ray_checks": [
+        {
+          "prime": 65537,
+          "ray_index": 0,
+          "slopes": {
+            "j": 37177,
+            "F": 50780,
+            "alpha": 64170,
+            "z": 49414,
+            "f": 32017,
+            "h": 39120,
+            "i": 3862,
+            "T": 57725,
+            "X": 62124,
+            "Y": 25048,
+            "r": 26043,
+            "eta": 14453,
+            "zeta": 36841,
+            "u": 27249,
+            "gamma": 12073
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            23558,
+            35195,
+            33553,
+            16062,
+            547,
+            12156
+          ],
+          "output_leading_coefficient": 37061
+        },
+        {
+          "prime": 65537,
+          "ray_index": 1,
+          "slopes": {
+            "j": 27725,
+            "F": 28538,
+            "alpha": 19788,
+            "z": 3070,
+            "f": 21091,
+            "h": 55842,
+            "i": 11652,
+            "T": 5603,
+            "X": 48951,
+            "Y": 5902,
+            "r": 39232,
+            "eta": 35516,
+            "zeta": 50184,
+            "u": 55204,
+            "gamma": 51042
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            5326,
+            340,
+            4980,
+            35180,
+            9302,
+            40550
+          ],
+          "output_leading_coefficient": 18364
+        },
+        {
+          "prime": 65537,
+          "ray_index": 2,
+          "slopes": {
+            "j": 13875,
+            "F": 62658,
+            "alpha": 30282,
+            "z": 5273,
+            "f": 19474,
+            "h": 558,
+            "i": 45976,
+            "T": 19734,
+            "X": 45536,
+            "Y": 38263,
+            "r": 41158,
+            "eta": 2488,
+            "zeta": 15336,
+            "u": 41113,
+            "gamma": 26882
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            48925,
+            29709,
+            6272,
+            61409,
+            7930,
+            22642
+          ],
+          "output_leading_coefficient": 34917
+        },
+        {
+          "prime": 65537,
+          "ray_index": 3,
+          "slopes": {
+            "j": 34853,
+            "F": 6657,
+            "alpha": 62735,
+            "z": 11638,
+            "f": 19195,
+            "h": 45913,
+            "i": 3874,
+            "T": 43511,
+            "X": 11707,
+            "Y": 63152,
+            "r": 33848,
+            "eta": 18026,
+            "zeta": 47993,
+            "u": 47519,
+            "gamma": 49718
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            10725,
+            2898,
+            2942,
+            18888,
+            48761,
+            58861
+          ],
+          "output_leading_coefficient": 18298
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 0,
+          "slopes": {
+            "j": 769680,
+            "F": 396231,
+            "alpha": 128022,
+            "z": 78846,
+            "f": 6899,
+            "h": 137875,
+            "i": 130511,
+            "T": 763070,
+            "X": 22034,
+            "Y": 581449,
+            "r": 278255,
+            "eta": 615820,
+            "zeta": 968150,
+            "u": 889671,
+            "gamma": 303558
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            980979,
+            110811,
+            556807,
+            704542,
+            395854,
+            146339
+          ],
+          "output_leading_coefficient": 919219
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 1,
+          "slopes": {
+            "j": 126115,
+            "F": 55938,
+            "alpha": 217703,
+            "z": 723184,
+            "f": 569187,
+            "h": 969892,
+            "i": 408047,
+            "T": 45982,
+            "X": 350761,
+            "Y": 858366,
+            "r": 594842,
+            "eta": 763844,
+            "zeta": 23171,
+            "u": 548863,
+            "gamma": 465435
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            433145,
+            180520,
+            665460,
+            853128,
+            973441,
+            170821
+          ],
+          "output_leading_coefficient": 537729
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 2,
+          "slopes": {
+            "j": 252163,
+            "F": 472973,
+            "alpha": 252139,
+            "z": 198211,
+            "f": 500851,
+            "h": 941547,
+            "i": 447779,
+            "T": 688655,
+            "X": 252544,
+            "Y": 478776,
+            "r": 588267,
+            "eta": 804239,
+            "zeta": 748005,
+            "u": 446723,
+            "gamma": 494919
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            222776,
+            883536,
+            185845,
+            913045,
+            826098,
+            627758
+          ],
+          "output_leading_coefficient": 858299
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 3,
+          "slopes": {
+            "j": 549469,
+            "F": 328498,
+            "alpha": 469642,
+            "z": 910669,
+            "f": 638106,
+            "h": 961985,
+            "i": 249236,
+            "T": 551775,
+            "X": 896450,
+            "Y": 554705,
+            "r": 737766,
+            "eta": 534417,
+            "zeta": 666390,
+            "u": 187989,
+            "gamma": 260590
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            658432,
+            632113,
+            836433,
+            657657,
+            946392,
+            633129
+          ],
+          "output_leading_coefficient": 130699
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 0,
+          "slopes": {
+            "j": 893904728,
+            "F": 545936030,
+            "alpha": 181638163,
+            "z": 851836244,
+            "f": 765963956,
+            "h": 930608752,
+            "i": 701638114,
+            "T": 821225122,
+            "X": 694828086,
+            "Y": 775607477,
+            "r": 195883562,
+            "eta": 115713159,
+            "zeta": 113522797,
+            "u": 282599548,
+            "gamma": 374141117
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            73861499,
+            36410597,
+            227286340,
+            955177675,
+            996651862,
+            424886516
+          ],
+          "output_leading_coefficient": 74862555
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 1,
+          "slopes": {
+            "j": 969010136,
+            "F": 494214209,
+            "alpha": 681697462,
+            "z": 278755512,
+            "f": 90148201,
+            "h": 177579654,
+            "i": 181160904,
+            "T": 857339949,
+            "X": 679083404,
+            "Y": 288854963,
+            "r": 531179916,
+            "eta": 761454889,
+            "zeta": 64473481,
+            "u": 804729550,
+            "gamma": 498235177
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            534707531,
+            103794093,
+            923055905,
+            66867519,
+            67452147,
+            597522992
+          ],
+          "output_leading_coefficient": 103061065
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 2,
+          "slopes": {
+            "j": 291405976,
+            "F": 780102500,
+            "alpha": 764040961,
+            "z": 962915679,
+            "f": 472401306,
+            "h": 621234365,
+            "i": 627769891,
+            "T": 101368481,
+            "X": 594677142,
+            "Y": 851484478,
+            "r": 222228176,
+            "eta": 113833809,
+            "zeta": 165786740,
+            "u": 666932330,
+            "gamma": 210420443
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            457200247,
+            111199439,
+            738488310,
+            865269476,
+            159838551,
+            612361401
+          ],
+          "output_leading_coefficient": 206941067
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 3,
+          "slopes": {
+            "j": 175041815,
+            "F": 214324424,
+            "alpha": 287619780,
+            "z": 147405963,
+            "f": 453159601,
+            "h": 299069846,
+            "i": 371307655,
+            "T": 303480423,
+            "X": 736401044,
+            "Y": 20030573,
+            "r": 280743367,
+            "eta": 490774947,
+            "zeta": 541487879,
+            "u": 495587439,
+            "gamma": 352175872
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            38407333,
+            164110161,
+            715752221,
+            507714812,
+            589749412,
+            660427372
+          ],
+          "output_leading_coefficient": 519715182
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "circuits/p15_degree24_degree_certificate.json",
+      "sha256": "b5a95245fe8252850911919f008fc5fa36d8571a361fdbd5a0056d03852b2586",
+      "operations": 102,
+      "operation_breakdown": {
+        "*": 56,
+        "+": 28,
+        "-": 18
+      },
+      "residual_evaluator_operations": 91,
+      "all_gates_and_inputs_live": true,
+      "certificate_only": true,
+      "scalar_cases": 204,
+      "scalar_comparisons_sha256": "221608ef39c6bed0d1b021ff79d8775e41dc845971d9aabcbdfe115ddd0c7961",
+      "residual_order": [
+        "A",
+        "B",
+        "index_res",
+        "transport_res",
+        "auxiliary",
+        "strong"
+      ],
+      "residual_degree_upper_bounds": [
+        11,
+        9,
+        4,
+        3,
+        12,
+        10
+      ],
+      "residual_degree_lower_bounds_witnessed_modulo_primes": [
+        11,
+        9,
+        4,
+        3,
+        12,
+        10
+      ],
+      "output_degree_upper_bound": 24,
+      "output_degree_lower_bound_witnessed_modulo_primes": 24,
+      "ray_checks": [
+        {
+          "prime": 65537,
+          "ray_index": 0,
+          "slopes": {
+            "j": 37177,
+            "F": 50780,
+            "alpha": 64170,
+            "z": 49414,
+            "f": 32017,
+            "h": 39120,
+            "i": 3862,
+            "T": 57725,
+            "X": 62124,
+            "Y": 25048,
+            "r": 26043,
+            "eta": 14453,
+            "zeta": 36841,
+            "u": 27249,
+            "gamma": 12073
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            23558,
+            35195,
+            33553,
+            16062,
+            547,
+            12156
+          ],
+          "output_leading_coefficient": 37061
+        },
+        {
+          "prime": 65537,
+          "ray_index": 1,
+          "slopes": {
+            "j": 27725,
+            "F": 28538,
+            "alpha": 19788,
+            "z": 3070,
+            "f": 21091,
+            "h": 55842,
+            "i": 11652,
+            "T": 5603,
+            "X": 48951,
+            "Y": 5902,
+            "r": 39232,
+            "eta": 35516,
+            "zeta": 50184,
+            "u": 55204,
+            "gamma": 51042
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            5326,
+            340,
+            4980,
+            35180,
+            9302,
+            40550
+          ],
+          "output_leading_coefficient": 18364
+        },
+        {
+          "prime": 65537,
+          "ray_index": 2,
+          "slopes": {
+            "j": 13875,
+            "F": 62658,
+            "alpha": 30282,
+            "z": 5273,
+            "f": 19474,
+            "h": 558,
+            "i": 45976,
+            "T": 19734,
+            "X": 45536,
+            "Y": 38263,
+            "r": 41158,
+            "eta": 2488,
+            "zeta": 15336,
+            "u": 41113,
+            "gamma": 26882
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            48925,
+            29709,
+            6272,
+            61409,
+            7930,
+            22642
+          ],
+          "output_leading_coefficient": 34917
+        },
+        {
+          "prime": 65537,
+          "ray_index": 3,
+          "slopes": {
+            "j": 34853,
+            "F": 6657,
+            "alpha": 62735,
+            "z": 11638,
+            "f": 19195,
+            "h": 45913,
+            "i": 3874,
+            "T": 43511,
+            "X": 11707,
+            "Y": 63152,
+            "r": 33848,
+            "eta": 18026,
+            "zeta": 47993,
+            "u": 47519,
+            "gamma": 49718
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            10725,
+            2898,
+            2942,
+            18888,
+            48761,
+            58861
+          ],
+          "output_leading_coefficient": 18298
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 0,
+          "slopes": {
+            "j": 769680,
+            "F": 396231,
+            "alpha": 128022,
+            "z": 78846,
+            "f": 6899,
+            "h": 137875,
+            "i": 130511,
+            "T": 763070,
+            "X": 22034,
+            "Y": 581449,
+            "r": 278255,
+            "eta": 615820,
+            "zeta": 968150,
+            "u": 889671,
+            "gamma": 303558
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            980979,
+            110811,
+            556807,
+            704542,
+            395854,
+            146339
+          ],
+          "output_leading_coefficient": 919219
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 1,
+          "slopes": {
+            "j": 126115,
+            "F": 55938,
+            "alpha": 217703,
+            "z": 723184,
+            "f": 569187,
+            "h": 969892,
+            "i": 408047,
+            "T": 45982,
+            "X": 350761,
+            "Y": 858366,
+            "r": 594842,
+            "eta": 763844,
+            "zeta": 23171,
+            "u": 548863,
+            "gamma": 465435
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            433145,
+            180520,
+            665460,
+            853128,
+            973441,
+            170821
+          ],
+          "output_leading_coefficient": 537729
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 2,
+          "slopes": {
+            "j": 252163,
+            "F": 472973,
+            "alpha": 252139,
+            "z": 198211,
+            "f": 500851,
+            "h": 941547,
+            "i": 447779,
+            "T": 688655,
+            "X": 252544,
+            "Y": 478776,
+            "r": 588267,
+            "eta": 804239,
+            "zeta": 748005,
+            "u": 446723,
+            "gamma": 494919
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            222776,
+            883536,
+            185845,
+            913045,
+            826098,
+            627758
+          ],
+          "output_leading_coefficient": 858299
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 3,
+          "slopes": {
+            "j": 549469,
+            "F": 328498,
+            "alpha": 469642,
+            "z": 910669,
+            "f": 638106,
+            "h": 961985,
+            "i": 249236,
+            "T": 551775,
+            "X": 896450,
+            "Y": 554705,
+            "r": 737766,
+            "eta": 534417,
+            "zeta": 666390,
+            "u": 187989,
+            "gamma": 260590
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            658432,
+            632113,
+            836433,
+            657657,
+            946392,
+            633129
+          ],
+          "output_leading_coefficient": 130699
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 0,
+          "slopes": {
+            "j": 893904728,
+            "F": 545936030,
+            "alpha": 181638163,
+            "z": 851836244,
+            "f": 765963956,
+            "h": 930608752,
+            "i": 701638114,
+            "T": 821225122,
+            "X": 694828086,
+            "Y": 775607477,
+            "r": 195883562,
+            "eta": 115713159,
+            "zeta": 113522797,
+            "u": 282599548,
+            "gamma": 374141117
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            73861499,
+            36410597,
+            227286340,
+            955177675,
+            996651862,
+            424886516
+          ],
+          "output_leading_coefficient": 74862555
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 1,
+          "slopes": {
+            "j": 969010136,
+            "F": 494214209,
+            "alpha": 681697462,
+            "z": 278755512,
+            "f": 90148201,
+            "h": 177579654,
+            "i": 181160904,
+            "T": 857339949,
+            "X": 679083404,
+            "Y": 288854963,
+            "r": 531179916,
+            "eta": 761454889,
+            "zeta": 64473481,
+            "u": 804729550,
+            "gamma": 498235177
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            534707531,
+            103794093,
+            923055905,
+            66867519,
+            67452147,
+            597522992
+          ],
+          "output_leading_coefficient": 103061065
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 2,
+          "slopes": {
+            "j": 291405976,
+            "F": 780102500,
+            "alpha": 764040961,
+            "z": 962915679,
+            "f": 472401306,
+            "h": 621234365,
+            "i": 627769891,
+            "T": 101368481,
+            "X": 594677142,
+            "Y": 851484478,
+            "r": 222228176,
+            "eta": 113833809,
+            "zeta": 165786740,
+            "u": 666932330,
+            "gamma": 210420443
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            457200247,
+            111199439,
+            738488310,
+            865269476,
+            159838551,
+            612361401
+          ],
+          "output_leading_coefficient": 206941067
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 3,
+          "slopes": {
+            "j": 175041815,
+            "F": 214324424,
+            "alpha": 287619780,
+            "z": 147405963,
+            "f": 453159601,
+            "h": 299069846,
+            "i": 371307655,
+            "T": 303480423,
+            "X": 736401044,
+            "Y": 20030573,
+            "r": 280743367,
+            "eta": 490774947,
+            "zeta": 541487879,
+            "u": 495587439,
+            "gamma": 352175872
+          },
+          "residual_degrees": [
+            11,
+            9,
+            4,
+            3,
+            12,
+            10
+          ],
+          "output_degree": 24,
+          "residual_leading_coefficients": [
+            38407333,
+            164110161,
+            715752221,
+            507714812,
+            589749412,
+            660427372
+          ],
+          "output_leading_coefficient": 519715182
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "circuits/p15_degree26.json",
+      "sha256": "b4104f1b9d2a88ac255b5489da754feb54ecd6fbfc4de95ae8ea46d56d8f3fb1",
+      "operations": 88,
+      "operation_breakdown": {
+        "*": 47,
+        "+": 26,
+        "-": 15
+      },
+      "residual_evaluator_operations": 79,
+      "all_gates_and_inputs_live": true,
+      "certificate_only": false,
+      "scalar_cases": 204,
+      "scalar_comparisons_sha256": "a9ef4d55d85dfaa3aac8de669604edd1b8377d5780893a540b946beff5f1eb59",
+      "residual_order": [
+        "A",
+        "B",
+        "coupled",
+        "auxiliary",
+        "strong"
+      ],
+      "residual_degree_upper_bounds": [
+        11,
+        9,
+        7,
+        13,
+        10
+      ],
+      "residual_degree_lower_bounds_witnessed_modulo_primes": [
+        11,
+        9,
+        7,
+        13,
+        10
+      ],
+      "output_degree_upper_bound": 26,
+      "output_degree_lower_bound_witnessed_modulo_primes": 26,
+      "ray_checks": [
+        {
+          "prime": 65537,
+          "ray_index": 0,
+          "slopes": {
+            "j": 54831,
+            "F": 6933,
+            "alpha": 38564,
+            "z": 5875,
+            "f": 56368,
+            "h": 62,
+            "i": 21990,
+            "T": 35755,
+            "X": 14657,
+            "Y": 12174,
+            "r": 51058,
+            "eta": 11853,
+            "zeta": 45092,
+            "u": 42149,
+            "gamma": 60876
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            51353,
+            47701,
+            12673,
+            15797,
+            13272
+          ],
+          "output_leading_coefficient": 45850
+        },
+        {
+          "prime": 65537,
+          "ray_index": 1,
+          "slopes": {
+            "j": 39701,
+            "F": 46321,
+            "alpha": 59973,
+            "z": 7781,
+            "f": 37586,
+            "h": 37965,
+            "i": 33208,
+            "T": 13100,
+            "X": 34303,
+            "Y": 51603,
+            "r": 12805,
+            "eta": 51606,
+            "zeta": 33274,
+            "u": 64205,
+            "gamma": 33138
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            39345,
+            57171,
+            44720,
+            11123,
+            36730
+          ],
+          "output_leading_coefficient": 52810
+        },
+        {
+          "prime": 65537,
+          "ray_index": 2,
+          "slopes": {
+            "j": 62166,
+            "F": 26561,
+            "alpha": 27185,
+            "z": 57592,
+            "f": 33433,
+            "h": 46547,
+            "i": 58047,
+            "T": 26182,
+            "X": 45258,
+            "Y": 17344,
+            "r": 16202,
+            "eta": 33004,
+            "zeta": 38838,
+            "u": 65066,
+            "gamma": 15732
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            36570,
+            40521,
+            63756,
+            49914,
+            16489
+          ],
+          "output_leading_coefficient": 18341
+        },
+        {
+          "prime": 65537,
+          "ray_index": 3,
+          "slopes": {
+            "j": 61909,
+            "F": 48308,
+            "alpha": 7782,
+            "z": 61241,
+            "f": 25342,
+            "h": 28909,
+            "i": 64656,
+            "T": 44166,
+            "X": 37638,
+            "Y": 11959,
+            "r": 54015,
+            "eta": 48408,
+            "zeta": 50072,
+            "u": 4140,
+            "gamma": 41817
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            4458,
+            8203,
+            48294,
+            42633,
+            54060
+          ],
+          "output_leading_coefficient": 35068
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 0,
+          "slopes": {
+            "j": 200408,
+            "F": 964791,
+            "alpha": 268412,
+            "z": 601835,
+            "f": 546125,
+            "h": 766080,
+            "i": 246901,
+            "T": 763874,
+            "X": 879396,
+            "Y": 234638,
+            "r": 295281,
+            "eta": 2843,
+            "zeta": 519057,
+            "u": 771734,
+            "gamma": 433384
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            475776,
+            37822,
+            57716,
+            103997,
+            25403
+          ],
+          "output_leading_coefficient": 343564
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 1,
+          "slopes": {
+            "j": 262614,
+            "F": 58288,
+            "alpha": 526403,
+            "z": 9952,
+            "f": 587761,
+            "h": 177036,
+            "i": 773537,
+            "T": 169114,
+            "X": 178035,
+            "Y": 37537,
+            "r": 231633,
+            "eta": 249650,
+            "zeta": 539212,
+            "u": 379070,
+            "gamma": 988423
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            627718,
+            30492,
+            20284,
+            669137,
+            323506
+          ],
+          "output_leading_coefficient": 981543
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 2,
+          "slopes": {
+            "j": 3837,
+            "F": 5083,
+            "alpha": 589678,
+            "z": 772027,
+            "f": 569217,
+            "h": 897123,
+            "i": 394992,
+            "T": 927297,
+            "X": 416935,
+            "Y": 827457,
+            "r": 44683,
+            "eta": 663417,
+            "zeta": 798092,
+            "u": 153799,
+            "gamma": 141806
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            528509,
+            538816,
+            669364,
+            543403,
+            400836
+          ],
+          "output_leading_coefficient": 934554
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 3,
+          "slopes": {
+            "j": 155067,
+            "F": 24532,
+            "alpha": 749833,
+            "z": 658669,
+            "f": 708604,
+            "h": 87759,
+            "i": 905373,
+            "T": 846786,
+            "X": 92532,
+            "Y": 165141,
+            "r": 741181,
+            "eta": 991393,
+            "zeta": 791249,
+            "u": 867337,
+            "gamma": 608740
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            919485,
+            92026,
+            7140,
+            447889,
+            297796
+          ],
+          "output_leading_coefficient": 954512
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 0,
+          "slopes": {
+            "j": 613771560,
+            "F": 337691255,
+            "alpha": 233585673,
+            "z": 958272582,
+            "f": 161823584,
+            "h": 797541804,
+            "i": 931039323,
+            "T": 268791270,
+            "X": 142137278,
+            "Y": 682550615,
+            "r": 920539481,
+            "eta": 900463988,
+            "zeta": 726314723,
+            "u": 72496110,
+            "gamma": 476950344
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            204403796,
+            726808352,
+            335527832,
+            964027393,
+            153364063
+          ],
+          "output_leading_coefficient": 948934800
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 1,
+          "slopes": {
+            "j": 151600222,
+            "F": 862409005,
+            "alpha": 946497307,
+            "z": 938803800,
+            "f": 467430970,
+            "h": 181619957,
+            "i": 704332280,
+            "T": 771670142,
+            "X": 705289452,
+            "Y": 89805988,
+            "r": 561948436,
+            "eta": 712379920,
+            "zeta": 533371271,
+            "u": 478074433,
+            "gamma": 175901040
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            232074187,
+            418358344,
+            518732112,
+            240411247,
+            331119578
+          ],
+          "output_leading_coefficient": 279512040
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 2,
+          "slopes": {
+            "j": 63475666,
+            "F": 833147592,
+            "alpha": 226344812,
+            "z": 466664135,
+            "f": 653796060,
+            "h": 615029649,
+            "i": 322960882,
+            "T": 56132545,
+            "X": 627256287,
+            "Y": 457073654,
+            "r": 259301370,
+            "eta": 154849750,
+            "zeta": 820768931,
+            "u": 282848097,
+            "gamma": 850462551
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            51279958,
+            298009490,
+            696324,
+            719532649,
+            971143327
+          ],
+          "output_leading_coefficient": 352866598
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 3,
+          "slopes": {
+            "j": 972147995,
+            "F": 233882329,
+            "alpha": 708885450,
+            "z": 823847341,
+            "f": 369174971,
+            "h": 762581997,
+            "i": 380618080,
+            "T": 480324430,
+            "X": 960057863,
+            "Y": 518187012,
+            "r": 622442518,
+            "eta": 983122184,
+            "zeta": 115273566,
+            "u": 475434503,
+            "gamma": 399933914
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            906921487,
+            525336973,
+            71866117,
+            104643332,
+            60726160
+          ],
+          "output_leading_coefficient": 855410642
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "circuits/p15_degree26_degree_certificate.json",
+      "sha256": "dc5053a564b2c6796f6dd59ce070da39f08a68b3f3d67eb0742ffbf3ff6e07d7",
+      "operations": 100,
+      "operation_breakdown": {
+        "*": 56,
+        "+": 27,
+        "-": 17
+      },
+      "residual_evaluator_operations": 91,
+      "all_gates_and_inputs_live": true,
+      "certificate_only": true,
+      "scalar_cases": 204,
+      "scalar_comparisons_sha256": "a9ef4d55d85dfaa3aac8de669604edd1b8377d5780893a540b946beff5f1eb59",
+      "residual_order": [
+        "A",
+        "B",
+        "coupled",
+        "auxiliary",
+        "strong"
+      ],
+      "residual_degree_upper_bounds": [
+        11,
+        9,
+        7,
+        13,
+        10
+      ],
+      "residual_degree_lower_bounds_witnessed_modulo_primes": [
+        11,
+        9,
+        7,
+        13,
+        10
+      ],
+      "output_degree_upper_bound": 26,
+      "output_degree_lower_bound_witnessed_modulo_primes": 26,
+      "ray_checks": [
+        {
+          "prime": 65537,
+          "ray_index": 0,
+          "slopes": {
+            "j": 54831,
+            "F": 6933,
+            "alpha": 38564,
+            "z": 5875,
+            "f": 56368,
+            "h": 62,
+            "i": 21990,
+            "T": 35755,
+            "X": 14657,
+            "Y": 12174,
+            "r": 51058,
+            "eta": 11853,
+            "zeta": 45092,
+            "u": 42149,
+            "gamma": 60876
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            51353,
+            47701,
+            12673,
+            15797,
+            13272
+          ],
+          "output_leading_coefficient": 45850
+        },
+        {
+          "prime": 65537,
+          "ray_index": 1,
+          "slopes": {
+            "j": 39701,
+            "F": 46321,
+            "alpha": 59973,
+            "z": 7781,
+            "f": 37586,
+            "h": 37965,
+            "i": 33208,
+            "T": 13100,
+            "X": 34303,
+            "Y": 51603,
+            "r": 12805,
+            "eta": 51606,
+            "zeta": 33274,
+            "u": 64205,
+            "gamma": 33138
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            39345,
+            57171,
+            44720,
+            11123,
+            36730
+          ],
+          "output_leading_coefficient": 52810
+        },
+        {
+          "prime": 65537,
+          "ray_index": 2,
+          "slopes": {
+            "j": 62166,
+            "F": 26561,
+            "alpha": 27185,
+            "z": 57592,
+            "f": 33433,
+            "h": 46547,
+            "i": 58047,
+            "T": 26182,
+            "X": 45258,
+            "Y": 17344,
+            "r": 16202,
+            "eta": 33004,
+            "zeta": 38838,
+            "u": 65066,
+            "gamma": 15732
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            36570,
+            40521,
+            63756,
+            49914,
+            16489
+          ],
+          "output_leading_coefficient": 18341
+        },
+        {
+          "prime": 65537,
+          "ray_index": 3,
+          "slopes": {
+            "j": 61909,
+            "F": 48308,
+            "alpha": 7782,
+            "z": 61241,
+            "f": 25342,
+            "h": 28909,
+            "i": 64656,
+            "T": 44166,
+            "X": 37638,
+            "Y": 11959,
+            "r": 54015,
+            "eta": 48408,
+            "zeta": 50072,
+            "u": 4140,
+            "gamma": 41817
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            4458,
+            8203,
+            48294,
+            42633,
+            54060
+          ],
+          "output_leading_coefficient": 35068
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 0,
+          "slopes": {
+            "j": 200408,
+            "F": 964791,
+            "alpha": 268412,
+            "z": 601835,
+            "f": 546125,
+            "h": 766080,
+            "i": 246901,
+            "T": 763874,
+            "X": 879396,
+            "Y": 234638,
+            "r": 295281,
+            "eta": 2843,
+            "zeta": 519057,
+            "u": 771734,
+            "gamma": 433384
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            475776,
+            37822,
+            57716,
+            103997,
+            25403
+          ],
+          "output_leading_coefficient": 343564
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 1,
+          "slopes": {
+            "j": 262614,
+            "F": 58288,
+            "alpha": 526403,
+            "z": 9952,
+            "f": 587761,
+            "h": 177036,
+            "i": 773537,
+            "T": 169114,
+            "X": 178035,
+            "Y": 37537,
+            "r": 231633,
+            "eta": 249650,
+            "zeta": 539212,
+            "u": 379070,
+            "gamma": 988423
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            627718,
+            30492,
+            20284,
+            669137,
+            323506
+          ],
+          "output_leading_coefficient": 981543
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 2,
+          "slopes": {
+            "j": 3837,
+            "F": 5083,
+            "alpha": 589678,
+            "z": 772027,
+            "f": 569217,
+            "h": 897123,
+            "i": 394992,
+            "T": 927297,
+            "X": 416935,
+            "Y": 827457,
+            "r": 44683,
+            "eta": 663417,
+            "zeta": 798092,
+            "u": 153799,
+            "gamma": 141806
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            528509,
+            538816,
+            669364,
+            543403,
+            400836
+          ],
+          "output_leading_coefficient": 934554
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 3,
+          "slopes": {
+            "j": 155067,
+            "F": 24532,
+            "alpha": 749833,
+            "z": 658669,
+            "f": 708604,
+            "h": 87759,
+            "i": 905373,
+            "T": 846786,
+            "X": 92532,
+            "Y": 165141,
+            "r": 741181,
+            "eta": 991393,
+            "zeta": 791249,
+            "u": 867337,
+            "gamma": 608740
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            919485,
+            92026,
+            7140,
+            447889,
+            297796
+          ],
+          "output_leading_coefficient": 954512
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 0,
+          "slopes": {
+            "j": 613771560,
+            "F": 337691255,
+            "alpha": 233585673,
+            "z": 958272582,
+            "f": 161823584,
+            "h": 797541804,
+            "i": 931039323,
+            "T": 268791270,
+            "X": 142137278,
+            "Y": 682550615,
+            "r": 920539481,
+            "eta": 900463988,
+            "zeta": 726314723,
+            "u": 72496110,
+            "gamma": 476950344
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            204403796,
+            726808352,
+            335527832,
+            964027393,
+            153364063
+          ],
+          "output_leading_coefficient": 948934800
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 1,
+          "slopes": {
+            "j": 151600222,
+            "F": 862409005,
+            "alpha": 946497307,
+            "z": 938803800,
+            "f": 467430970,
+            "h": 181619957,
+            "i": 704332280,
+            "T": 771670142,
+            "X": 705289452,
+            "Y": 89805988,
+            "r": 561948436,
+            "eta": 712379920,
+            "zeta": 533371271,
+            "u": 478074433,
+            "gamma": 175901040
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            232074187,
+            418358344,
+            518732112,
+            240411247,
+            331119578
+          ],
+          "output_leading_coefficient": 279512040
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 2,
+          "slopes": {
+            "j": 63475666,
+            "F": 833147592,
+            "alpha": 226344812,
+            "z": 466664135,
+            "f": 653796060,
+            "h": 615029649,
+            "i": 322960882,
+            "T": 56132545,
+            "X": 627256287,
+            "Y": 457073654,
+            "r": 259301370,
+            "eta": 154849750,
+            "zeta": 820768931,
+            "u": 282848097,
+            "gamma": 850462551
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            51279958,
+            298009490,
+            696324,
+            719532649,
+            971143327
+          ],
+          "output_leading_coefficient": 352866598
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 3,
+          "slopes": {
+            "j": 972147995,
+            "F": 233882329,
+            "alpha": 708885450,
+            "z": 823847341,
+            "f": 369174971,
+            "h": 762581997,
+            "i": 380618080,
+            "T": 480324430,
+            "X": 960057863,
+            "Y": 518187012,
+            "r": 622442518,
+            "eta": 983122184,
+            "zeta": 115273566,
+            "u": 475434503,
+            "gamma": 399933914
+          },
+          "residual_degrees": [
+            11,
+            9,
+            7,
+            13,
+            10
+          ],
+          "output_degree": 26,
+          "residual_leading_coefficients": [
+            906921487,
+            525336973,
+            71866117,
+            104643332,
+            60726160
+          ],
+          "output_leading_coefficient": 855410642
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "circuits/p15_degree30.json",
+      "sha256": "2623733d4d53b78eab892e0b5b579ae41e2b78624ae6890c6914c71cbfdc30c0",
+      "operations": 79,
+      "operation_breakdown": {
+        "*": 42,
+        "+": 22,
+        "-": 15
+      },
+      "residual_evaluator_operations": 72,
+      "all_gates_and_inputs_live": true,
+      "certificate_only": false,
+      "scalar_cases": 204,
+      "scalar_comparisons_sha256": "653acd68e2e63799b6b2f0b586e7bda8e1bda49ffbabad3084df4b4f637f2c8a",
+      "residual_order": [
+        "A",
+        "paired",
+        "auxiliary",
+        "strong"
+      ],
+      "residual_degree_upper_bounds": [
+        12,
+        15,
+        15,
+        10
+      ],
+      "residual_degree_lower_bounds_witnessed_modulo_primes": [
+        12,
+        15,
+        15,
+        10
+      ],
+      "output_degree_upper_bound": 30,
+      "output_degree_lower_bound_witnessed_modulo_primes": 30,
+      "ray_checks": [
+        {
+          "prime": 65537,
+          "ray_index": 0,
+          "slopes": {
+            "J": 50150,
+            "F": 6644,
+            "alpha": 59152,
+            "z": 37181,
+            "f": 61757,
+            "h": 3022,
+            "i": 59464,
+            "T": 24531,
+            "w": 6664,
+            "Y": 28606,
+            "r": 38548,
+            "eta": 65371,
+            "zeta": 65518,
+            "u": 3617,
+            "gamma": 9554
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            14525,
+            6745,
+            33788,
+            60198
+          ],
+          "output_leading_coefficient": 52288
+        },
+        {
+          "prime": 65537,
+          "ray_index": 1,
+          "slopes": {
+            "J": 7704,
+            "F": 38057,
+            "alpha": 12063,
+            "z": 25332,
+            "f": 35342,
+            "h": 57119,
+            "i": 51461,
+            "T": 40258,
+            "w": 54256,
+            "Y": 399,
+            "r": 479,
+            "eta": 42121,
+            "zeta": 56418,
+            "u": 45167,
+            "gamma": 21611
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            58490,
+            19344,
+            3785,
+            8170
+          ],
+          "output_leading_coefficient": 13225
+        },
+        {
+          "prime": 65537,
+          "ray_index": 2,
+          "slopes": {
+            "J": 43642,
+            "F": 28130,
+            "alpha": 3642,
+            "z": 5996,
+            "f": 42094,
+            "h": 51836,
+            "i": 23007,
+            "T": 46112,
+            "w": 62742,
+            "Y": 12202,
+            "r": 50845,
+            "eta": 28002,
+            "zeta": 7956,
+            "u": 33498,
+            "gamma": 37221
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            43435,
+            11839,
+            7222,
+            35324
+          ],
+          "output_leading_coefficient": 33647
+        },
+        {
+          "prime": 65537,
+          "ray_index": 3,
+          "slopes": {
+            "J": 24840,
+            "F": 37,
+            "alpha": 54115,
+            "z": 10171,
+            "f": 18490,
+            "h": 9266,
+            "i": 53994,
+            "T": 23441,
+            "w": 20402,
+            "Y": 11930,
+            "r": 24047,
+            "eta": 3666,
+            "zeta": 62857,
+            "u": 47644,
+            "gamma": 58902
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            50210,
+            42978,
+            5233,
+            10295
+          ],
+          "output_leading_coefficient": 3499
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 0,
+          "slopes": {
+            "J": 552447,
+            "F": 110385,
+            "alpha": 298557,
+            "z": 824236,
+            "f": 794000,
+            "h": 625575,
+            "i": 646683,
+            "T": 179177,
+            "w": 423383,
+            "Y": 935663,
+            "r": 144984,
+            "eta": 143908,
+            "zeta": 722826,
+            "u": 559152,
+            "gamma": 18782
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            484198,
+            810559,
+            917722,
+            434152
+          ],
+          "output_leading_coefficient": 64120
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 1,
+          "slopes": {
+            "J": 205189,
+            "F": 311782,
+            "alpha": 702844,
+            "z": 327906,
+            "f": 857362,
+            "h": 279068,
+            "i": 911109,
+            "T": 883174,
+            "w": 303568,
+            "Y": 115736,
+            "r": 162349,
+            "eta": 714392,
+            "zeta": 379620,
+            "u": 333832,
+            "gamma": 486119
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            69005,
+            777401,
+            805159,
+            338434
+          ],
+          "output_leading_coefficient": 572195
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 2,
+          "slopes": {
+            "J": 586834,
+            "F": 372603,
+            "alpha": 144897,
+            "z": 263606,
+            "f": 529039,
+            "h": 385415,
+            "i": 420045,
+            "T": 27337,
+            "w": 184514,
+            "Y": 883949,
+            "r": 900946,
+            "eta": 987819,
+            "zeta": 357380,
+            "u": 496996,
+            "gamma": 932222
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            966001,
+            656030,
+            2561,
+            820955
+          ],
+          "output_leading_coefficient": 628481
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 3,
+          "slopes": {
+            "J": 754172,
+            "F": 889843,
+            "alpha": 336909,
+            "z": 236941,
+            "f": 359396,
+            "h": 349068,
+            "i": 627275,
+            "T": 183494,
+            "w": 916385,
+            "Y": 164756,
+            "r": 715380,
+            "eta": 624756,
+            "zeta": 204963,
+            "u": 989575,
+            "gamma": 710309
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            567592,
+            546623,
+            857694,
+            556616
+          ],
+          "output_leading_coefficient": 598469
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 0,
+          "slopes": {
+            "J": 249360251,
+            "F": 971119863,
+            "alpha": 446450930,
+            "z": 393131407,
+            "f": 638685381,
+            "h": 62323817,
+            "i": 458827291,
+            "T": 707564885,
+            "w": 224660486,
+            "Y": 336407615,
+            "r": 960009802,
+            "eta": 284860101,
+            "zeta": 583350866,
+            "u": 2469357,
+            "gamma": 305380576
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            302548913,
+            39927909,
+            736301727,
+            545184893
+          ],
+          "output_leading_coefficient": 294153541
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 1,
+          "slopes": {
+            "J": 485211451,
+            "F": 683509155,
+            "alpha": 85391983,
+            "z": 909188557,
+            "f": 509093974,
+            "h": 891244282,
+            "i": 541801197,
+            "T": 264132532,
+            "w": 576708605,
+            "Y": 350408824,
+            "r": 704356180,
+            "eta": 385402080,
+            "zeta": 806702985,
+            "u": 372632310,
+            "gamma": 467375797
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            273933397,
+            405276057,
+            82805492,
+            233841238
+          ],
+          "output_leading_coefficient": 685091303
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 2,
+          "slopes": {
+            "J": 201079079,
+            "F": 724307533,
+            "alpha": 4317173,
+            "z": 469030190,
+            "f": 27180638,
+            "h": 797295256,
+            "i": 632276678,
+            "T": 802664126,
+            "w": 102775378,
+            "Y": 396676824,
+            "r": 173972756,
+            "eta": 831609373,
+            "zeta": 578717571,
+            "u": 60998974,
+            "gamma": 131695444
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            504829688,
+            874486106,
+            580067988,
+            839724235
+          ],
+          "output_leading_coefficient": 580977696
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 3,
+          "slopes": {
+            "J": 164880889,
+            "F": 933584235,
+            "alpha": 397959139,
+            "z": 115282438,
+            "f": 209933952,
+            "h": 70143764,
+            "i": 620425217,
+            "T": 414558897,
+            "w": 212699771,
+            "Y": 764599418,
+            "r": 378026514,
+            "eta": 395598005,
+            "zeta": 606527879,
+            "u": 865387451,
+            "gamma": 392970254
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            66780986,
+            437396827,
+            408510434,
+            261622729
+          ],
+          "output_leading_coefficient": 449158993
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "file": "circuits/p15_degree30_degree_certificate.json",
+      "sha256": "33d9813c2f69b97e126549d96f21cb94d85ba6bf8aea8b53ed1d1dfb7636aa17",
+      "operations": 86,
+      "operation_breakdown": {
+        "*": 48,
+        "+": 22,
+        "-": 16
+      },
+      "residual_evaluator_operations": 79,
+      "all_gates_and_inputs_live": true,
+      "certificate_only": true,
+      "scalar_cases": 204,
+      "scalar_comparisons_sha256": "653acd68e2e63799b6b2f0b586e7bda8e1bda49ffbabad3084df4b4f637f2c8a",
+      "residual_order": [
+        "A",
+        "paired",
+        "auxiliary",
+        "strong"
+      ],
+      "residual_degree_upper_bounds": [
+        12,
+        15,
+        15,
+        10
+      ],
+      "residual_degree_lower_bounds_witnessed_modulo_primes": [
+        12,
+        15,
+        15,
+        10
+      ],
+      "output_degree_upper_bound": 30,
+      "output_degree_lower_bound_witnessed_modulo_primes": 30,
+      "ray_checks": [
+        {
+          "prime": 65537,
+          "ray_index": 0,
+          "slopes": {
+            "J": 50150,
+            "F": 6644,
+            "alpha": 59152,
+            "z": 37181,
+            "f": 61757,
+            "h": 3022,
+            "i": 59464,
+            "T": 24531,
+            "w": 6664,
+            "Y": 28606,
+            "r": 38548,
+            "eta": 65371,
+            "zeta": 65518,
+            "u": 3617,
+            "gamma": 9554
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            14525,
+            6745,
+            33788,
+            60198
+          ],
+          "output_leading_coefficient": 52288
+        },
+        {
+          "prime": 65537,
+          "ray_index": 1,
+          "slopes": {
+            "J": 7704,
+            "F": 38057,
+            "alpha": 12063,
+            "z": 25332,
+            "f": 35342,
+            "h": 57119,
+            "i": 51461,
+            "T": 40258,
+            "w": 54256,
+            "Y": 399,
+            "r": 479,
+            "eta": 42121,
+            "zeta": 56418,
+            "u": 45167,
+            "gamma": 21611
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            58490,
+            19344,
+            3785,
+            8170
+          ],
+          "output_leading_coefficient": 13225
+        },
+        {
+          "prime": 65537,
+          "ray_index": 2,
+          "slopes": {
+            "J": 43642,
+            "F": 28130,
+            "alpha": 3642,
+            "z": 5996,
+            "f": 42094,
+            "h": 51836,
+            "i": 23007,
+            "T": 46112,
+            "w": 62742,
+            "Y": 12202,
+            "r": 50845,
+            "eta": 28002,
+            "zeta": 7956,
+            "u": 33498,
+            "gamma": 37221
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            43435,
+            11839,
+            7222,
+            35324
+          ],
+          "output_leading_coefficient": 33647
+        },
+        {
+          "prime": 65537,
+          "ray_index": 3,
+          "slopes": {
+            "J": 24840,
+            "F": 37,
+            "alpha": 54115,
+            "z": 10171,
+            "f": 18490,
+            "h": 9266,
+            "i": 53994,
+            "T": 23441,
+            "w": 20402,
+            "Y": 11930,
+            "r": 24047,
+            "eta": 3666,
+            "zeta": 62857,
+            "u": 47644,
+            "gamma": 58902
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            50210,
+            42978,
+            5233,
+            10295
+          ],
+          "output_leading_coefficient": 3499
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 0,
+          "slopes": {
+            "J": 552447,
+            "F": 110385,
+            "alpha": 298557,
+            "z": 824236,
+            "f": 794000,
+            "h": 625575,
+            "i": 646683,
+            "T": 179177,
+            "w": 423383,
+            "Y": 935663,
+            "r": 144984,
+            "eta": 143908,
+            "zeta": 722826,
+            "u": 559152,
+            "gamma": 18782
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            484198,
+            810559,
+            917722,
+            434152
+          ],
+          "output_leading_coefficient": 64120
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 1,
+          "slopes": {
+            "J": 205189,
+            "F": 311782,
+            "alpha": 702844,
+            "z": 327906,
+            "f": 857362,
+            "h": 279068,
+            "i": 911109,
+            "T": 883174,
+            "w": 303568,
+            "Y": 115736,
+            "r": 162349,
+            "eta": 714392,
+            "zeta": 379620,
+            "u": 333832,
+            "gamma": 486119
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            69005,
+            777401,
+            805159,
+            338434
+          ],
+          "output_leading_coefficient": 572195
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 2,
+          "slopes": {
+            "J": 586834,
+            "F": 372603,
+            "alpha": 144897,
+            "z": 263606,
+            "f": 529039,
+            "h": 385415,
+            "i": 420045,
+            "T": 27337,
+            "w": 184514,
+            "Y": 883949,
+            "r": 900946,
+            "eta": 987819,
+            "zeta": 357380,
+            "u": 496996,
+            "gamma": 932222
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            966001,
+            656030,
+            2561,
+            820955
+          ],
+          "output_leading_coefficient": 628481
+        },
+        {
+          "prime": 1000003,
+          "ray_index": 3,
+          "slopes": {
+            "J": 754172,
+            "F": 889843,
+            "alpha": 336909,
+            "z": 236941,
+            "f": 359396,
+            "h": 349068,
+            "i": 627275,
+            "T": 183494,
+            "w": 916385,
+            "Y": 164756,
+            "r": 715380,
+            "eta": 624756,
+            "zeta": 204963,
+            "u": 989575,
+            "gamma": 710309
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            567592,
+            546623,
+            857694,
+            556616
+          ],
+          "output_leading_coefficient": 598469
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 0,
+          "slopes": {
+            "J": 249360251,
+            "F": 971119863,
+            "alpha": 446450930,
+            "z": 393131407,
+            "f": 638685381,
+            "h": 62323817,
+            "i": 458827291,
+            "T": 707564885,
+            "w": 224660486,
+            "Y": 336407615,
+            "r": 960009802,
+            "eta": 284860101,
+            "zeta": 583350866,
+            "u": 2469357,
+            "gamma": 305380576
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            302548913,
+            39927909,
+            736301727,
+            545184893
+          ],
+          "output_leading_coefficient": 294153541
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 1,
+          "slopes": {
+            "J": 485211451,
+            "F": 683509155,
+            "alpha": 85391983,
+            "z": 909188557,
+            "f": 509093974,
+            "h": 891244282,
+            "i": 541801197,
+            "T": 264132532,
+            "w": 576708605,
+            "Y": 350408824,
+            "r": 704356180,
+            "eta": 385402080,
+            "zeta": 806702985,
+            "u": 372632310,
+            "gamma": 467375797
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            273933397,
+            405276057,
+            82805492,
+            233841238
+          ],
+          "output_leading_coefficient": 685091303
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 2,
+          "slopes": {
+            "J": 201079079,
+            "F": 724307533,
+            "alpha": 4317173,
+            "z": 469030190,
+            "f": 27180638,
+            "h": 797295256,
+            "i": 632276678,
+            "T": 802664126,
+            "w": 102775378,
+            "Y": 396676824,
+            "r": 173972756,
+            "eta": 831609373,
+            "zeta": 578717571,
+            "u": 60998974,
+            "gamma": 131695444
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            504829688,
+            874486106,
+            580067988,
+            839724235
+          ],
+          "output_leading_coefficient": 580977696
+        },
+        {
+          "prime": 1000000007,
+          "ray_index": 3,
+          "slopes": {
+            "J": 164880889,
+            "F": 933584235,
+            "alpha": 397959139,
+            "z": 115282438,
+            "f": 209933952,
+            "h": 70143764,
+            "i": 620425217,
+            "T": 414558897,
+            "w": 212699771,
+            "Y": 764599418,
+            "r": 378026514,
+            "eta": 395598005,
+            "zeta": 606527879,
+            "u": 865387451,
+            "gamma": 392970254
+          },
+          "residual_degrees": [
+            12,
+            15,
+            15,
+            10
+          ],
+          "output_degree": 30,
+          "residual_leading_coefficients": [
+            66780986,
+            437396827,
+            408510434,
+            261622729
+          ],
+          "output_leading_coefficient": 449158993
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "degree_method": "Upper bounds from explicit cancellation identities; lower bounds from nonzero coefficients on exact univariate rays modulo primes, using authentic integer ports.",
+  "limits": "Finite diagnostics and arithmetic degree certificates do not prove soundness/completeness or the compiler/calibration theorem. This is not external or proof-assistant certification and does not test Con(ZFC)."
+}

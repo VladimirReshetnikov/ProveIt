@@ -1,0 +1,222 @@
+\section{Ten integers with equal residual weights}
+\label{sec:equal-integer}
+
+The recommended circuit defines a fixed polynomial
+\[
+ F_{10}(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z[f,g,h,k,l,w,x,y,z,m]
+\]
+with ten unrestricted integer unknowns, \textbf{554} live binary arithmetic
+operations, and exact total degree \textbf{14,699,152}. Ordinary mathematics
+formalizable in ZFC, using the identified native compiler and Sun
+representation theorems, proves
+\[
+ \neg\exists\mathbf u\in\mathbb Z^{10}\;(F_{10}(\mathbf u)=0)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+This neither proves consistency nor claims a universal improvement on Sun's
+ten-variable theorem. It is not an end-to-end proof-assistant certificate.
+The prior balanced circuit used 637 operations and degree 34,378,296.
+
+\subsection{Fixed source and a calibrated carry bridge}
+
+The selective source has 31 natural coordinates and 22 quadratic residuals,
+with 109 nonzero coefficient records. Only twelve old positive coordinates
+are shifted by one; positivity of the remaining nineteen follows from the
+source equations. All four native ports are bound together to the verified
+215,492-byte tuple. The already shifted mask port is not shifted a second time.
+
+For the recommended positional certificate, $W=170$, padding $p=169$,
+$D_{\max}=4086$, and $K_c=4426$. Write $w_i$ for its 31 coordinate positions
+and $H_j$ for its 22 targets. With signed source residuals
+$r_j(\mathbf n)=\sum_\alpha p_{j,\alpha}\mathbf n^\alpha$, define
+\begin{align*}
+ c_{j,\alpha}&=(2-|\alpha|)!\prod_i\alpha_i!\;p_{j,\alpha},\\
+ e(\alpha)&=(2-|\alpha|)p+\sum_i\alpha_iw_i,\\
+ D_c(B)&=\sum_{j,\alpha}c_{j,\alpha}B^{H_j-e(\alpha)},&
+ Z_c(B)&=\sum_jB^{H_j}.
+\end{align*}
+The independently checked support-isolation certificate proves
+\[
+ [B^{H_j}]\bigl(B^p+\textstyle\sum_i n_iB^{w_i}\bigr)^2D_c(B)
+   =2r_j(\mathbf n).
+\]
+It also proves that $D_c$ has positive leading coefficient and
+$K_c\ge\max H_j+2$. No full Sidon property is needed.
+
+Let $C_0=1+\sum|c_{j,\alpha}|$. The actual fixed coefficients satisfy
+$\beta_S=2^{864026}>8192C_0$. Define
+\begin{align*}
+ b&=1+3f,& B&=\beta_Sb^2,& \mathcal C&=bB^W,\\
+ \ell&=\sum_iB^{w_i},&N_0&=B^{W+1},&N_1&=B^{K_c+1},&N&=N_0N_1,\\
+ M_0&=N_0-1-(b-1)\ell,\\
+ T_c&=M_0+N_0(B-2)Z_c(B),\\
+ J_c&=2(B^p+g)^2D_c(B)+Z_c(B),&S_c&=g+N_0J_c,\\
+ X&=N^2+(S_c+T_c)N+(N-1-S_c),\\
+ Y&=2^{13824395}B^{4775}b.
+\end{align*}
+All exponents are fixed nonnegative integers. The final expression for $Y$
+is the literal polynomial form of the exact mask-popcount threshold.
+
+Suppose $f\ne0$, $b$ is a square, and $0\le g<2\mathcal C$.
+Then $b\ge4$, $B>2b$, $D_c(B)>0$, and
+\[
+ 2(B^p+g)^2D_c(B)<18C_0b^2B^{K_c}<N_1/256.
+\]
+The distinct targets and their two-position headroom give
+$Z_c(B)<2B^{K_c-2}$ and $(B-2)Z_c(B)<B^{K_c-1}$.
+Consequently $S_c,T_c\ge0$ and $S_c+T_c<N$. Thus
+$X\ge N^2>3b$ and $Y>\max(b,256)$, before any power-of-two recovery.
+Also $b,B,N_0,N\equiv1\pmod3$, so
+$X\equiv1+T_c\equiv1-22\equiv0\pmod3$.
+
+If $b$ is also a power of two, the low mask decodes
+$g=\sum_i n_iB^{w_i}$ with $0\le n_i<b$. Write $h_t$ for the coefficients
+of $(B^p+\sum_i n_iB^{w_i})^2D_c(B)$. Then $|h_t|<B/8$.
+The nominal digit of $J_c$ at a target is $2h_t+1$. Every incoming borrow
+is $-1$ or $0$; after normalization this digit is $0$ or $1$ exactly when
+$h_t=0$. These are precisely the digits disjoint from the mask $B-2$.
+Hence $S_c\mathbin{\&}T_c=0$ detects all 22 residuals.
+
+Writing $N=2^u$, the separated binary blocks give
+\[
+ \operatorname{popcount}(X)
+ =1+u+\operatorname{popcount}(T_c)-c(S_c,T_c),
+\]
+where $c$ is the nonnegative propagated carry count. For $b=2^k$ and
+$B=2^v$, the mask has
+$\operatorname{popcount}(T_c)=(W+23)v-31k-22$.
+Legendre's formula
+$v_2\binom{2X}{X}=\operatorname{popcount}(X)$ now proves
+\[
+ Y\mid\binom{2X}{X}\quad\Longleftrightarrow\quad S_c\mathbin{\&}T_c=0.
+\]
+Conversely, a source zero supplies arbitrarily large $b=4^q$ and
+$b\le g<\mathcal C$: the unshifted coordinates $D,\Delta$ are both positive,
+and at most one has position zero. This supplies exactly the inherited
+Sun source interface. The sparse-padding and popcount mechanisms are
+adapted from the eighth incoming archive; the complete interior-padding
+proof is in \texttt{SPARSE\_SOURCE\_PROOF.md}.
+
+\subsection{Complete polynomial tail}
+
+Using the preceding $b,X,Y,\mathcal C$, form these polynomial abbreviations:
+\begin{align*}
+ L&=lY,&U&=2LX,&V&=4gwY,\\
+ A&=U(V+1),&B_1&=2X+1,&C&=B_1+(A-2)h,\\
+ P_n&=U^2V,&K&=X+1+k(P_n-2),&S&=2A-5,\\
+ T&=3bwC-2((bw)^2-1),\\
+ \Delta&=8\mathcal C^3gK^2-g^2\{32(C-KL)^2\mathcal C^3+g^2K^2\},\\
+ O&=f^2l^2\Delta,&\xi&=zx,\\
+ D&=(A^2-4)C^2+4,&E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,&G&=2(A+2)(A-2)^2E^2-1,\\
+ H&=C+(B_1-C)F+16EFy,&I&=(G^2-1)H^2+1,\\
+ r_0&=b\{1+(3O-4)b^2z^2\},&r_1&=(P_n^2-4)K^2+4,&r_2&=DFI,\\
+ \Sigma&=\xi S^5,&t&=T+Sy,\\
+ \Theta&=(t^3-tS^2-S^3)(t^2+23S^2).
+\end{align*}
+The new weights are \textbf{$(1,b,b)$}. Set
+\[
+ Z=\Sigma m-\Theta,\qquad
+ a_0=\Sigma^2r_0,\quad a_1=\Sigma^2b^2r_1,\quad a_2=\Sigma^2b^2r_2,
+\]
+and define the final polynomial by
+\[
+ Q=Z^2+a_2-a_0-a_1,\qquad R=Q^2+4Z^2a_2-4a_0a_1,
+ \qquad F_{10}=R^2-16Z^2a_2Q^2.
+\]
+Every auxiliary letter is an abbreviation, not an unknown. The exact
+circuit file supplies the positional data, fixed leaves and binary gates.
+
+\subsection{Why the smaller weights are valid}
+
+The norm identity is
+\[
+ R^2-16Z^2a_2Q^2
+ =\prod_{\epsilon_0,\epsilon_1,\epsilon_2\in\{\pm1\}}
+  (Z+\epsilon_0\sqrt{a_0}+\epsilon_1\sqrt{a_1}+\epsilon_2\sqrt{a_2}).
+\]
+It holds over the complex numbers, including dependent squareclasses and
+zero radicands. Since $S$ is odd, it is nonzero. The quintic
+$(v^3-v-1)(v^2+23)$ has no rational root, so $\Theta\ne0$.
+At $\Sigma=0$ the norm is $\Theta^8$, excluding that branch. Monicity of
+the normalized norm and the rational-root theorem imply
+$\Sigma\mid\Theta$, and the product identity gives a rational signed sum
+\[
+ \pm\sqrt{r_0}\ \pm b\sqrt{r_1}\ \pm b\sqrt{r_2}.
+\]
+No positivity has yet been assumed.
+
+Put $J=1+(3O-4)b^2z^2$; then $\gcd(b,J)=1$. If $|b|>1$ and
+$r_0=bJ$ were in a nontrivial signed squarefree class $d$, write
+$r_0=da^2$. Linear independence of distinct squarefree radical classes
+would force $b\mid a$: every other contribution in this class is a
+multiple of $b$. This would imply $b\mid J$, a contradiction.
+The exceptional case $|b|=1$ is $b=1$, hence $f=0$ and
+$r_0=1-4z^2$ is odd. Both other radicands are divisible by four, so
+an odd squareclass coefficient cannot be canceled by their even
+coefficients. Thus $r_0$ is a nonnegative square in every case.
+It cannot vanish: $J=0$ forces $b=1$ and $O=1$, inconsistent with $f=0$.
+The actual $b=1$ case is then impossible because $z\ne0$.
+
+Unique factorization and $b\equiv1\pmod3$ make $b$ a positive square.
+Since $J>0$ and $z\ne0$, one has $O>0$, hence $f,l\ne0$ and $\Delta>0$.
+Now $\mathcal C>0$. The formula for $\Delta$ first excludes $K=0$ and
+$g\le0$, and then yields $g<2\mathcal C$. The source size bounds apply,
+so $|L|\ge2$, $|U|\ge4$ and, as $V\in4\mathbb Z$, $|A|\ge4$.
+Furthermore
+\[
+ K^2>4g(C-KL)^2\quad\Longrightarrow\quad
+ |C|>|K|(|L|-\tfrac12)>|K|.
+\]
+For $V\in4\mathbb Z$, $|V|\le(V+1)^2$, whence $|P_n|\le A^2$ and
+\[
+ r_1<A^4C^2+4.
+\]
+In contrast, $C$ is odd, $D\ge A^2\ge16$, and
+$E^2=C^4D^2\xi^2\ge C^2$. Thus $F\ge A^2C^2+1$.
+Since $G$ is odd, $I\ge1$, so
+\[
+ r_2=DFI\ge A^4C^2+A^2>A^4C^2+4>r_1.
+\]
+This strict separation is established before assuming either remaining
+square predicate. Subtracting the integral first root and dividing by $b$
+leaves a rational sum $q=\pm\sqrt{r_1}\pm\sqrt{r_2}$. It cannot be zero
+because $r_1\ne r_2$. Squaring gives
+$\pm\sqrt{r_1}=(q^2+r_1-r_2)/(2q)$; both roots are therefore rational,
+hence integral. Negative candidate radicands and dependent classes have
+been resolved, not assumed away.
+
+We recover the same three square predicates and divisibility as the
+inherited finalizer. Conversely those predicates provide an integral signed
+weighted root sum and hence a suitable integer $m$. This proves the exact
+existential equivalence of the replacement.
+
+\subsection{Circuit and exact-degree certificates}
+
+The circuit shares a homogeneous evaluation of the positive parent,
+with only the declared twelve coordinate shifts and diagonal corrections
+for factorial weighting. Negative row signs reverse a subtraction.
+A hybrid alternative uses sparse Horner evaluation only for rows whose
+homogeneous offsets would be negative. Exact expansion matches all
+115 resulting monomials over four independent native-port indeterminates.
+
+Further exact gate savings use, with $a=A/2$ constructed without division,
+\begin{gather*}
+ G+1=(a-1)(F-1),\qquad G^2-1=(G+1)(G-1),\\
+ T=2+bw(3C-2bw),\qquad
+ H=C+F\{16Ey-(A-2)h\},\\
+ R=Q^2+4(Z^2a_2-a_0a_1).
+\end{gather*}
+The live gate count is 347 multiplications, 149 additions and 58
+subtractions. The propagated upper degree is 14,699,152. Substituting
+all ten variables by $T$ gives a nonzero coefficient
+$982070748$ modulo $1000000007$ at that degree, proving exactness.
+Two additional primes independently give nonzero top coefficients.
+
+A 513-operation alternative has exact degree 25,838,224; a 558-operation
+hybrid has degree 14,696,016. These are search results, not minimality
+claims. The independent verifier also replays every source and tail,
+checks fixed-byte hashes, and checks exact ring identities. Finite
+regressions include 38,016 strict-separation cases and negative controls
+showing that $(1,b,b)$ is not an unconditional square detector.
+The mathematical proofs, not the finite samples, establish universality.

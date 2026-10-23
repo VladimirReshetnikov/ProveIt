@@ -1,0 +1,198 @@
+\section{Degree-separated source extraction}
+\label{sec:degree-separated-source}
+The gain in this section comes from changing the multiplication architecture,
+not from finding a smaller code for the previous homogenized square.  Linear
+and quadratic monomials are placed in separate kernels, so that their labels
+may coincide.  For the explicit code below the linear monomial $N$ and the
+quadratic monomial $J^2$ both have label $2$; this would be prohibited by every
+previous dummy-coordinate isolation condition.
+
+\subsection{Source and exact finite identity}
+Let $r_1,\ldots,r_{22}$ be the unshifted residuals in the original
+31-positive-variable package-31 source, with the complete original four-port
+tuple $(\beta,K_0,M_C,M_F)$; $M_F$ already includes its prescribed shift.
+First put
+\[
+ \rho_{14}=r_{14}+r_2,\qquad \rho_{15}=r_{15}+r_3,
+ \qquad \rho_j=r_j\quad(j\ne14,15).
+\]
+The inverse operations $r_{14}=\rho_{14}-\rho_2$ and
+$r_{15}=\rho_{15}-\rho_3$ prove equality of the common zero sets on every
+domain.  There are now $89$ records: $7$ constants, $39$ linear records, and
+$43$ quadratic records.  The support union comprises $1$, $22$, and $39$
+monomials in the respective degrees.
+
+Write $\rho_j=\sum_\alpha a_{j,\alpha}p^\alpha$.  For positive, distinct
+integer labels $w_i$, set
+\[
+ U(Z)=\sum_{i=1}^{31}p_i Z^{w_i},\qquad
+ e(\alpha)=\sum_i\alpha_iw_i,
+\]
+\[
+ c_{j,\alpha}=
+ \begin{cases}
+  2a_{j,\alpha},&|\alpha|=0\text{ or }1,\\
+  a_{j,\alpha}\prod_i\alpha_i!,&|\alpha|=2,
+ \end{cases}
+ \qquad
+ D_d(Z)=\sum_{j,\,|\alpha|=d}c_{j,\alpha}Z^{q_j-e(\alpha)}.
+\]
+Our packed expression is
+\begin{equation}\label{eq:split-G}
+ G(Z,p)=D_2(Z)U(Z)^2+D_1(Z)U(Z)+D_0(Z).
+\end{equation}
+All exponents in the three kernels are nonnegative.
+
+The finite certificate imposes two conditions, separately for $d=0,1,2$.
+Every supported degree-$d$ monomial must have a unique label among all
+monomials of that degree.  Furthermore, a source term of $D_d$ from row $j$
+can reach a marked target $q_k$ after multiplication by a degree-$d$
+monomial only when $k=j$ and the monomials agree.  There are respectively
+$1$, $31$, and $496$ candidate monomials.  The coefficient of a cross product
+in $U^2$ is $2$ and that of a square is $1$, so the factorial weighting gives
+\begin{equation}\label{eq:split-extraction}
+ [Z^{q_j}]G(Z,p)=2\rho_j(p)\qquad(1\le j\le22).
+\end{equation}
+This is a universal identity in the $31$ witness indeterminates and the four
+ports.  Cross-degree collisions cause no interference: different homogeneous
+degrees never multiply the same kernel.
+
+The labels, in the source variable order, are
+\begin{gather*}
+ (J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta),\\[2pt]
+ (1,7,61,36,16,85,20,67,43,11,34,13,96,80,29,50,\\
+ 2,109,110,112,116,91,53,55,27,101,92,9,107,37,60).
+\end{gather*}
+Assign targets in the following row order:
+\begin{gather*}
+ (2,22,8,15,9,11,3,17,13,18,12,20,4,21,19,1,6,10,16,14,7,5),\\
+ (28,85,286,384,593,602,642,731,906,966,1083,1212,1231,\\
+ 1393,1461,1471,1678,1719,1732,1880,2107,2129).
+\end{gather*}
+The exact sparse kernels are supplied as machine-readable polynomials in
+\texttt{split\_kernels.json}, derived from the canonical
+\texttt{split\_code.json}.  The checker independently parses the original
+residuals, proves the two inverse row identities, enumerates $22\,544$
+source/expansion products, and compares all $22$ formal output polynomials.
+There are exactly $89$ target contributions.  It obtains
+\[
+ M=116,\quad Q=2129,\qquad
+ (\deg D_0,\deg D_1,\deg D_2)=(1719,2027,1929),
+\]
+\begin{equation}\label{eq:split-height}
+ H=\max_{0\le d\le2}(\deg D_d+dM)=2161.
+\end{equation}
+Every kernel has internally distinct exponents.  The leading term of $D_2$
+is exactly $+Z^{1929}$, arising from the $EX$ term in row~5.
+
+\subsection{Coefficient bounds and unconditional positivity}
+The complete native tuple has strict port bounds
+\[
+ \beta<2^{1064921},\quad K_0<2^{1070004},\quad
+ M_C<2^{1064921},\quad M_F<2^{1064922}.
+\]
+Taking absolute integer coefficients and replacing the port powers by their
+bit bounds yields, for every weighted kernel coefficient, absolute value
+strictly below
+\[
+ C=2^{2134927}.
+\]
+The checker recomputes this finite integer majorant from every coefficient.
+The common selected source floor $\beta_S=2^{2134940}$ satisfies
+$\beta_S>4096C$, so $B=\beta_Sb^2>4096Cb^2$.  For the Jones choice $B=b^3$,
+it suffices to retain the existing requirement $b\ge4096C$.
+
+Put $\ell=\sum_iB^{w_i}$ and $U=\ell+g$.  If $g\ge0$, then
+$U\ge B^{116}$.  For $B\ge4096C$, the certified leading coefficient gives
+\[
+ D_2(B)>B^{1929}\left(1-\frac{C}{B-1}\right)
+       >\frac12B^{1929},
+\]
+whereas $|D_1(B)|<2CB^{2027}$ and $|D_0(B)|<2CB^{1719}$.
+After division by $B^{1929}U^2$, the two potentially negative terms are
+less than $2C/B^{18}<1/8$ and $2C/B^{442}<1/8$.  Thus
+\begin{equation}\label{eq:split-positive}
+ G(B,U)>\frac14B^{1929}U^2>0
+ \qquad(g\ge0).
+\end{equation}
+This proof precedes digit recovery and does not assume that $B$ is already
+a power of two.  In particular, it does not incorrectly infer positivity
+from the signs of all kernel coefficients.
+
+\subsection{Sparse padding and the source interval}
+Suppose $b\ge4$, $B\ge4096Cb^2$, and $0\le g<2bB^{116}$.
+Distinct positive labels imply $\ell<2B^{116}$, whence
+$U<3bB^{116}$.  By the actual kernel degrees,
+\[
+ |G(B,U)|<2C(1+3b+9b^2)B^H\le26Cb^2B^H,
+ \qquad 2G(B,U)<\frac1{64}B^{H+1}.
+\]
+Define
+\[
+ T_{\rm arg}=\sum_jB^{q_j},\qquad N_0=B^{117},\qquad N_1=B^{2162},
+ \qquad J_{\rm code}=2G(B,U)+T_{\rm arg}.
+\]
+Since $Q=2129$, both $T_{\rm arg}$ and $(B-2)T_{\rm arg}$ are less than
+$N_1/64$.  Therefore
+\[
+ 0<J_{\rm code}<N_1/32,\qquad
+ J_{\rm code}+(B-2)T_{\rm arg}+2<N_1.
+\]
+If the usual low words of $S$ and $T$ are each below $N_0$, the latter
+strict inequality proves $S+T<N=N_0N_1$ including their possible low-block
+carry.  All these inequalities hold before binary recovery.  The older dense
+padding $2G+B\sum_{h=0}^HB^h$ also lies between $0$ and $2B^{H+1}$, if an
+adapter retains $N_1=4B^{H+1}$.
+
+After digit recovery write $g=\sum_i n_iB^{w_i}$ with $0\le n_i<b$ and
+$p_i=n_i+1$.  Then $U=\sum_i p_iB^{w_i}$ and $\sum_i p_i\le31b$.
+Every coefficient of the complete polynomial $G$ is bounded in absolute
+value by
+\begin{equation}\label{eq:split-digit-bound}
+ C\left((\sum_i p_i)^2+\sum_i p_i+1\right)
+ \le993Cb^2<B/4.
+\end{equation}
+This controls unsupported collisions too; it sums the three homogeneous
+layers rather than assuming that all quadratic labels are distinct.
+The inherited sparse-borrow padding lemma now applies to
+$J_{\rm code}=2G+T_{\rm arg}$.  Its marked coefficients are exactly
+$2\rho_j$, by~\eqref{eq:split-extraction}, and the row inverse recovers the
+original source equations.
+
+Conversely, any positive source solution supplies $n_i=p_i-1$ for every
+sufficiently large base.  The all-one tuple is not a solution because the
+unchanged row~5 equals $1$ there.  Hence some $n_i>0$, and the positive
+labels give $g\ge B>b$.  Thus the lower source-witness bound is preserved,
+not merely the upper bound.
+
+\subsection{One-cell positivity repair for signed adapters}
+An adapter that must prove positivity for every integer $g$, rather than
+only $g\ge0$, may use
+\[
+ G_+(B,U)=G(B,U)+B^{2162}.
+\]
+This changes no target coefficient since $2162>Q$, and increases the exact
+height only to $2162$.  Completing the square, and using the bounds above,
+\begin{align*}
+ G_+(B,U)
+ &\ge B^{2162}-|D_0(B)|-\frac{D_1(B)^2}{4D_2(B)}\\
+ &>B^{2162}-2CB^{1719}-2C^2B^{2125}>0.
+\end{align*}
+Indeed the normalized subtractions $2C/B^{443}$ and $2C^2/B^{37}$ are each
+less than $1/4$ for $B\ge4096C$.  Positivity thus holds for every real $U$.
+The added off-target coefficient is $1$, within the same coefficient bound;
+a sparse bounded-input adapter can take $N_1=B^{2163}$.
+
+\subsection{What is and is not certified}
+The exact standard-library replay and ten corruption controls are in
+\texttt{verify\_split.py} and \texttt{test\_split.py}; ordinary and optimized
+Python produce byte-identical verification receipts.  Neither search code
+nor a third-party symbolic package is a replay dependency.
+Compared with the frozen wave7 source, the convolution height falls from
+$5556$ to $2161$ (about $61.1\%$) and $H+M+2$ falls from $5741$ to $2279$
+(about $60.3\%$).  These are source exponents, not final equation degrees.
+The finalizer must still be composed and its actual arithmetic circuit
+independently audited.  No global optimum or new end-to-end proof-assistant
+certificate is claimed.  The unbounded compiler/refutation and arithmetic
+finalizer theorems remain identified inherited semantic dependencies.
