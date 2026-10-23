@@ -1,7 +1,7 @@
 import FirstOrder.Completeness
 import BusyBeaver.ZFC.InductiveAttemptsCore
 import BusyBeaver.ZFC.KQ1Basic
-import BusyBeaver.ZFC.KQ1Replacement
+import BusyBeaver.ZFC.KQ1ReplacementNative
 import BusyBeaver.ZFC.KQ1Collect
 import BusyBeaver.ZFC.WFModelCore
 
@@ -38,9 +38,9 @@ theorem zfAxioms (mem : V → V → Prop) (witness : V) (h : QHyp mem) :
   inf := by
     obtain ⟨Y, ⟨e, heY, he⟩, hY⟩ := KQ1Basic.quotient_empty_singleton_container mem witness h
     exact InductiveAttempts.ordinary_infinity_of_container (base mem witness h)
-      (KQ1Replacement.quotient_replacement mem witness h) e he Y heY
+      (KQ1ReplacementNative.quotient_replacement mem witness h) e he Y heY
       (closed_of_exact_singletons (base mem witness h).toBase Y hY)
-  repl := KQ1Replacement.quotient_replacement mem witness h
+  repl := KQ1ReplacementNative.quotient_replacement mem witness h
 
 theorem closedWF (mem : V → V → Prop) (witness : V) (h : QHyp mem) :
     ClosedWF (KQ1Model.quotientMember mem witness h) := fun a ha =>
