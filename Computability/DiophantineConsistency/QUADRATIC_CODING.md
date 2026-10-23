@@ -5,6 +5,18 @@ reduction. The results below do **not** yet produce a smaller closed equation.
 They replace the exponential-position coefficient extraction by checked
 quadratic and simultaneous arithmetic identities.
 
+After the [wave-7 review](PROPOSAL_REVIEW.md), package 52's interior-regular
+selective encoding is the next target, with package 53 retained for lower
+degree. `SelectiveQuadraticCoding` now proves extraction under isolation of
+only the used pairs, with arbitrary row targets and explicit cross-target
+exclusion. `SelectiveCertificate52` checks the 71 active pairs at maximum
+weight 174 and regular stride 349; `SelectiveCertificate46` checks its
+62-pair support at maximum weight 175. Both allow unused collisions.
+The literal native rows and source-to-refutation bridge remain separate.
+`NearSquareFinalizer` also proves the sharp majorant and final one-witness
+norm equivalence. The full-Sidon components below remain general reusable
+foundations rather than the preferred numerical positions.
+
 ## Checked identities
 
 Let `m` be the number of variable coordinates and reserve coordinate zero

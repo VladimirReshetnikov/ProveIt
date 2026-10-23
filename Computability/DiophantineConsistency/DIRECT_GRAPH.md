@@ -47,7 +47,7 @@ assuming consistency.
 
 `NativeZFC` now selects the further source reduction in
 [NATIVE_FORMULAS.md](NATIVE_FORMULAS.md). Its one-step graph uses exactly
-1,811 witnesses rather than this baseline's 6,924, as proved by Lean
+1,742 witnesses rather than this baseline's 6,924, as proved by Lean
 definitions. Polynomial formula blocks, denominator clearing, and retention
 of the existing output coordinate account for this reduction. These counts
 do not include the final quartic flattening.

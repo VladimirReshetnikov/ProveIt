@@ -1,6 +1,7 @@
 import DiophantineConsistency.ObjectArithmetic
 import DiophantineConsistency.ObjectEquation
 import DiophantineConsistency.ObjectCodeClosure
+import DiophantineConsistency.ObjectCodeSeal
 
 #print axioms DiophantineConsistency.ObjectArithmetic.addForm_spec
 #print axioms DiophantineConsistency.ObjectArithmetic.addRel_result_nat
@@ -25,3 +26,13 @@ import DiophantineConsistency.ObjectCodeClosure
 #print axioms DiophantineConsistency.ObjectCodeClosure.closeCodeValue_seal_quotation
 #print axioms DiophantineConsistency.ObjectCodeClosure.zfc_proves_closeCode_total
 #print axioms DiophantineConsistency.ObjectCodeClosure.zfc_proves_closeCode_unique
+#print axioms DiophantineConsistency.ObjectCodeBound.boundCodeRel_total
+#print axioms DiophantineConsistency.ObjectCodeBound.boundCodeRel_unique
+#print axioms DiophantineConsistency.ObjectCodeBound.boundCodeValue_quotation
+#print axioms DiophantineConsistency.ObjectCodeBound.zfc_proves_boundCode_total
+#print axioms DiophantineConsistency.ObjectCodeBound.zfc_proves_boundCode_unique
+#print axioms DiophantineConsistency.ObjectCodeSeal.sealCodeRel_quotation
+#print axioms DiophantineConsistency.ObjectCodeSeal.zfc_proves_sealCode_total
+#print axioms DiophantineConsistency.ObjectCodeSeal.zfc_proves_sealCode_unique
+#print axioms DiophantineConsistency.ObjectCodeSeal.sat_consistencySentence_iff
+#print axioms DiophantineConsistency.ObjectCodeSeal.sealedRefutation_of_external

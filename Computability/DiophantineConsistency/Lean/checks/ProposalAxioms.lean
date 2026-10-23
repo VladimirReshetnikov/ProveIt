@@ -1,0 +1,18 @@
+import DiophantineConsistency.SelectiveCertificate46
+import DiophantineConsistency.SelectiveCertificate52
+import DiophantineConsistency.NearSquareFinalizer
+import DiophantineConsistency.MinimumNorm
+import DiophantineConsistency.ArithmeticNonzero
+import DiophantineConsistency.BoundedForallSize
+
+#print axioms DiophantineConsistency.SelectiveQuadraticCoding.coeff_square_mul_combined
+#print axioms DiophantineConsistency.SelectiveCertificate46.active_isolated
+#print axioms DiophantineConsistency.SelectiveCertificate52.active_isolated
+#print axioms DiophantineConsistency.SelectiveCertificate52.coeff_rows
+#print axioms DiophantineConsistency.NearSquareFinalizer.full_majorant_bounds
+#print axioms DiophantineConsistency.NearSquareFinalizer.exists_value_zero_iff
+#print axioms DiophantineConsistency.MinimumNorm.gap_minima75_zero_iff
+#print axioms DiophantineConsistency.MinimumNorm.gap_minima76_zero_iff
+#print axioms DiophantineConsistency.Rep.nonzero
+#print axioms DiophantineConsistency.GraphRep.ifEqDirect
+#print axioms DiophantineConsistency.BoundedForallSize.boundedForall_count
