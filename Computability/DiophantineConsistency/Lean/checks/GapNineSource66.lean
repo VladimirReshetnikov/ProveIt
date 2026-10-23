@@ -1,0 +1,11 @@
+import DiophantineConsistency.GapNineSource66
+
+open DiophantineConsistency GapNineSource66
+
+#print axioms coefficients_zero_iff_source
+#print axioms exists_natural_zero_iff_source
+#print axioms exists_natural_zero_iff_source_portBounds
+#print axioms exists_natural_zero_iff_source_compact54
+#print axioms source_successor_zero_iff_old
+#print axioms compact54_zero_iff_split59
+#print axioms no_natural_zero_iff_source

@@ -1,0 +1,19 @@
+import DiophantineConsistency.NativeEnumeratorBounds
+
+open DiophantineConsistency
+
+namespace DiophantineConsistency.NativeEnumerationSizeChecks
+
+set_option maxRecDepth 10000 in
+example : NativeGraphEnumerator.optionStepProgram.witnessCount = 1752 := rfl
+
+#print axioms NativeFormulaSyntax.implication_depth
+#print axioms NativeEnumerationSize.bundleCoordinates_depth
+#print axioms NativeEnumerationSize.stackCoordinates_depth
+#print axioms NativeEnumerationSize.gateCoordinates_depth
+#print axioms NativeEnumeratorBounds.rawStepProgram_thin
+#print axioms NativeEnumeratorBounds.enumStepProgram_thin
+#print axioms NativeEnumeratorBounds.enumStepProgram_depth
+#print axioms NativeEnumeratorBounds.optionStepProgram_thin
+
+end DiophantineConsistency.NativeEnumerationSizeChecks

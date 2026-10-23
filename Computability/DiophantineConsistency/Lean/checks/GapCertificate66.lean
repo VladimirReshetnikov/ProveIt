@@ -1,0 +1,6 @@
+import DiophantineConsistency.GapCertificate66
+open DiophantineConsistency.GapCertificate66
+#print axioms delivered_zero_iff
+#print axioms rowValue_eq_source
+#print axioms coeff_source_rows
+#print axioms coeff_zero_iff_source_zero

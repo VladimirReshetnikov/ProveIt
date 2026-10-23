@@ -1,0 +1,9 @@
+import DiophantineConsistency.SplitPositiveRecipe59
+open DiophantineConsistency.SplitPositiveRecipe59
+#print axioms successorShift_sub_one
+#print axioms positiveValue_eq_recipe
+#print axioms jointPositiveValue_eq_recipe
+#print axioms positivePolynomial_eq_recipe
+#print axioms jointPositivePolynomial_eq_recipe
+#print axioms jointPositiveValue_eq_jointNaturalValue
+#print axioms exists_positive_zero_iff_natural_zero

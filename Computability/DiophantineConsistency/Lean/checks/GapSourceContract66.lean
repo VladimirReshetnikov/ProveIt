@@ -1,0 +1,5 @@
+import DiophantineConsistency.GapSourceContract66
+open DiophantineConsistency.GapSourceContract66
+#print axioms binomial_iff_source
+#print axioms source_of_zero
+#print axioms zero_of_source

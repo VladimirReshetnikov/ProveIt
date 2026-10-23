@@ -20,6 +20,7 @@ in the external correctness theorem.
 | `NativeZFC` | 9 naturals | Same Jones compression, from direct arithmetic graph data | Source step has exactly 1,742 graph witnesses; this is not a final evaluator count | Closed executable recipe; external no-zero iff checked |
 | New `DirectQuarticZFC` | `nu` naturals, defined below | **At most 4**, Lean checked | **At most `6*(nu+1)` syntax-tree binary operations**, Lean checked | Closed executable syntax, actual polynomial/evaluation identity, external no-zero iff checked; no Jones index construction |
 | Generic `DAGQuartic` compiler | `n+2*m` naturals for `n` inputs and `m` stored nodes | At most 4, Lean checked | At most `12*m+4` tree operations, Lean checked | Signed intermediates and arbitrary constants allowed; sharing retained; no complete ZFC checker compiled through this yet |
+| Generic `NaturalDAGQuartic` compiler | `n+m` naturals | At most 4, Lean checked | At most `6*m+4` tree operations, Lean checked | Source uses nonnegative constants, addition and multiplication, comparing two output wires; no whole-checker size claim |
 | `ZFC.zfcQuarticPolynomial` | 58 naturals | At most 4, Lean checked | Not measured | Existence-based coefficient selection; not an exported executable coefficient recipe |
 | Package 66 H2082 simple | 9 positive / 9 natural | Exact 1,845,940, finite certificate review | 444 / 451 live binary operations | Delivered source/circuit candidate; authentic source-to-refutation and internal ZFC obligations remain |
 | Local H2082 compact54-sharp | 9 positive / 9 natural | Exact 1,845,940, finite certificate review | **443 / 450 live binary operations** | Whole native tuple 215,492 raw bytes; eleven derived live fixed leaves 1,565,018 raw bytes; complete sealed replay passes; Lean source/circuit and semantic bridges remain |
@@ -85,25 +86,41 @@ These failures do not invalidate the finite definitions, and they do not
 supply numerical counts. They do show why “the step has only 1,742 witnesses”
 is insufficient to claim a small final quartic.
 
-## Recommended next source: a supplied proof certificate
+The checked [structural size recurrences](STRUCTURAL_SIZES.md) now supply
+another measurement method. They propagate witness counts and expression
+depth numerically and bound the raw quartic by `nu+1<=m+2^(2*h+2)` without
+constructing its trees. Closing those metadata bounds for the whole supplied
+source is separate from evaluating its exact size.
 
-The next implementation should replace exhaustive candidate enumeration by
-an annotated proof-certificate checker, and preserve sharing before the
-arithmetic graph is flattened. The preferred target for the full user goal
-is the repository's **actual sealed ZFC calculus**, because its internal
+## Direct source: a supplied sealed-ZFC proof certificate
+
+The direct route now has an annotated proof-certificate checker, replacing
+exhaustive candidate enumeration at the semantic source. Its arithmetic
+compilation must preserve sharing. It targets the repository's
+**actual sealed ZFC calculus**, because its internal
 axiom and derivation formulas already exist and quote the requested theory.
 A checker for the smaller C222 calculus is a useful optional benchmark but
 retains a separate internal calculus-to-ZFC translation obligation.
 
-A concrete first artifact is `AnnotatedProofChecker.lean` with data-valued
-finite records containing the conclusion, rule tag, parent-line indices,
-and rule/schema parameters. Parent indices must be below the current line.
-The certificate also supplies the finite axiom context and schema arguments;
-validity must check those arguments rather than treating axiomhood as an
-oracle. Prove both directions between successful checking and
-`BProv ZFCax_s [] Form.fBot`, using structural/line induction. This replaces
-an unbounded search over earlier failed candidates by existentially supplying
-one successful certificate. It does not assume such a certificate exists.
+[`AnnotatedProofChecker.lean`](Lean/DiophantineConsistency/AnnotatedProofChecker.lean)
+contains finite records with rule tags, backward parent indices, complete
+context/formula annotations and schema parameters. Explicit tags construct
+the actual sealed axioms; validation checks exact ordered premises and all
+seventeen original calculus rules. Lean proves that an accepted certificate
+exists exactly when `BProv ZFCax_s [] Form.fBot` holds. The source has no
+K215/Jones dependency, axiomhood oracle or choice-based data. It does not
+assume a refutation exists. See
+[ANNOTATED_PROOF_CHECKER.md](ANNOTATED_PROOF_CHECKER.md). Its
+[executable numeric coding](ANNOTATED_PROOF_CODE.md) now has checked typed
+roundtrips, parser uniqueness, fuel truncation and the same exact refutation
+existence endpoint. Primitive-recursive/arithmetic compilation is next.
+
+[Local PR arithmetic](ANNOTATED_CODE_ARITHMETIC.md) now supplies literal
+`ScalarPRCode` data for code constructors/projections, guarded list lookup
+and checking an earlier judgment's complete context and formula. The lookup
+program has 69 syntax nodes; the optimized reference check has 209. These
+are PR-program sizes, not polynomial operation or witness counts, and do
+not represent the whole checker.
 
 For arithmetic compilation, pack the finite line columns, use explicit
 quotient/remainder or beta-entry graphs for parent references, and compile
@@ -138,6 +155,13 @@ under topology. The explicit gate witnesses split each integer into its
 positive and negative natural parts. Leaf nodes are charged too; no final
 checker size advantage is inferred from this generic bound. See
 [DAG_QUARTIC.md](DAG_QUARTIC.md).
+
+For nonnegative arithmetic, the checked
+[`NaturalDAGQuartic`](NATURAL_DAG_QUARTIC.md) compiler compares two output
+wires using only one natural variable per node: `n+m` slots and at most
+`6*m+4` operations, still at degree at most four. Its source restrictions
+are explicit. Both compilers retain sharing and charge all stored leaf
+nodes. Their bounds do not measure the whole certificate checker.
 
 The exact C222 benchmark source is especially clear:
 [KCode222.lean](../BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean) has twelve

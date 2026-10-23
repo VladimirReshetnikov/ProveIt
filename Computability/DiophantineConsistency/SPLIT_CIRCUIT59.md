@@ -55,7 +55,8 @@ These counts belong to the literal parent DAG.
 [SplitCircuitRecipe59](SPLIT_CIRCUIT_RECIPE59.md) now proves the natural
 parent's equality with the higher-level `SplitNinePolynomial59` recipe,
 including all twelve fixed-leaf expressions in the four source ports and
-height/threshold scales. The positive-input translation, native calibration
-to refutation, internal ZFC provability and global simplicity optimality
-remain separate obligations. Newer local candidate DAGs need their own data
-and transformation certificates.
+height/threshold scales. The subsequent
+[positive stage](SPLIT_POSITIVE_RECIPE59.md) also proves the positive-input
+translation and positive recipe identities. Native calibration to refutation,
+internal ZFC provability and global simplicity optimality remain separate
+obligations. Newer local candidate DAGs need their own data and certificates.

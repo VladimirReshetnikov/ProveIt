@@ -88,8 +88,10 @@ reduces these same positive/natural polynomials to 456/463 operations.
 Its exact exponent/remap certificate is independently checked, and the
 specific generic-ring and multivariate-polynomial rewrite now passes Lean.
 Lean also identifies the 463-operation natural DAG with the source recipe.
-The positive-DAG translation remains separate. Wave-nine proposals introduce
-further competing forms; this is a local improvement of the checked recipe.
+The positive-DAG translation and the 456-operation positive recipe identity
+also pass Lean; see [SPLIT_POSITIVE_RECIPE59.md](SPLIT_POSITIVE_RECIPE59.md).
+Wave-nine proposals introduce further competing forms; this is a local
+improvement of the checked recipe.
 
 ## Checked proof chain
 

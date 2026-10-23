@@ -24,6 +24,16 @@ Direct proof-certificate and arithmetic-trace encodings are separate research
 routes. The nine-variable comparison below is one working branch of a
 multi-measure search, not a restriction on the final construction.
 
+A direct parent-index checker for the actual sealed ZFC calculus now has
+Lean soundness and completeness, with explicit axiom/schema tags and no
+K215 or Jones dependency; see
+[ANNOTATED_PROOF_CHECKER.md](ANNOTATED_PROOF_CHECKER.md). Its
+[natural-number coding](ANNOTATED_PROOF_CODE.md) now passes Lean, including
+roundtrips and malformed-input rejection. Arithmetic compilation is in progress.
+The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
+already has a closed external consistency equivalence at degree at most
+four; it retains the enumerator's arithmetic graph and has unmeasured size.
+
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
 release replays pass. Within the nine-positive branch, the next delivered
 cost target is package 66's 444-operation, degree-1,845,940 form. Package
@@ -64,8 +74,11 @@ equation and exact port hypotheses are recorded in
 [SPLIT_NINE_POLYNOMIAL59.md](SPLIT_NINE_POLYNOMIAL59.md). Lean also identifies
 the literal 480-operation natural DAG and its 463-operation replacement
 with this polynomial, including all twelve fixed-leaf recipes; see
-[SPLIT_CIRCUIT_RECIPE59.md](SPLIT_CIRCUIT_RECIPE59.md). The positive-DAG shift
-and native calibration are separate obligations.
+[SPLIT_CIRCUIT_RECIPE59.md](SPLIT_CIRCUIT_RECIPE59.md). The corresponding
+473/456-operation positive DAGs and their exact positive/natural root
+translation also pass Lean; see
+[SPLIT_POSITIVE_RECIPE59.md](SPLIT_POSITIVE_RECIPE59.md). Native calibration
+remains open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

@@ -114,8 +114,9 @@ Our joint-power version additionally saves 17 gates, with its particular
 generic-ring and multivariate-polynomial rewrite now checked in Lean.
 The actual 463-operation natural DAG is now identified with the source
 recipe and its `MvPolynomial`, including all twelve fixed-leaf expressions.
-The positive-DAG shift remains separate. These are useful proof checkpoints
-even though the numerical target has changed.
+The positive-DAG shift, positive polynomial identification and full
+positive/natural root equivalence also pass Lean. These are useful proof
+checkpoints even though the numerical target has changed.
 
 The signed native Pell step-down and main bootstrap are also checked under
 explicit native port relations. They do not yet identify the fixed payloads'

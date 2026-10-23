@@ -53,5 +53,7 @@ Lean's standard axioms occur.
 This is a local size reduction of the pinned parent, not a global minimum.
 The natural DAG is now identified with the source/rank arithmetic recipe by
 [`SplitCircuitRecipe59`](SPLIT_CIRCUIT_RECIPE59.md), including all twelve
-fixed-leaf expressions. The positive-DAG shift, authentic native compiler
-calibration and internal ZFC provability remain separate obligations.
+fixed-leaf expressions. The
+[positive-DAG shift and positive recipe identities](SPLIT_POSITIVE_RECIPE59.md)
+also pass Lean. Authentic native compiler calibration and internal ZFC
+provability remain separate obligations.

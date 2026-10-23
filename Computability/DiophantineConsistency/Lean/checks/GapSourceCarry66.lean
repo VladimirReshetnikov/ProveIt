@@ -1,0 +1,5 @@
+import DiophantineConsistency.GapSourceCarry66
+open DiophantineConsistency.GapSourceCarry66
+#print axioms product_natDegree_lt_2083
+#print axioms tau_product_iff
+#print axioms tau_targets_iff

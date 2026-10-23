@@ -53,5 +53,5 @@ there are no new axioms or native-evaluation proof shortcuts.
 This identification discharges the counted natural DAG-to-scalar-recipe
 obligation. It does not calibrate a native compiler tuple to a ZFC refutation
 predicate or prove the object-language ZFC biconditional. The positive-input
-translation between the separate 473/456-operation circuits and this natural
-polynomial is a further, explicitly separate statement.
+translation and both 473/456-operation positive recipe identities are checked
+in the subsequent [positive stage](SPLIT_POSITIVE_RECIPE59.md).
