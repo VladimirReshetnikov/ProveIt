@@ -306,4 +306,29 @@ theorem refutationInputs_re : REPred refutationInputs := by
   exact (exists_none_iff initialState).trans
     (EnumPerm.halts_iff rfl ⟨C222.truth, C222.truth, good_zero⟩)
 
+/-- A scalar, executable bounded test for the actual proof enumerator.
+Its result is `1` exactly when a refutation has already been found. -/
+def haltingTest (t : ℕ) : ℕ :=
+  Encodable.encode (decide (boundedRun t initialState = none))
+
+theorem haltingTest_natPrimrec : Nat.Primrec haltingTest := by
+  have h : Primrec fun t : ℕ => decide (boundedRun t initialState = none) :=
+    (Primrec.eq.comp
+      (pr_boundedRun.comp Primrec.id (Primrec.const initialState))
+      (Primrec.const none)).decide
+  exact Primrec.nat_iff.mp (Primrec.encode_iff.mpr h)
+
+theorem haltingTest_vectorPrimrec :
+    Nat.Primrec' (fun v : List.Vector ℕ 1 => haltingTest v.head) :=
+  Nat.Primrec'.prim_iff₁.mpr (Primrec.nat_iff.mpr haltingTest_natPrimrec)
+
+theorem haltingTest_eq_one_iff (t : ℕ) :
+    haltingTest t = 1 ↔ boundedRun t initialState = none := by
+  by_cases h : boundedRun t initialState = none <;> simp [haltingTest, h]
+
+theorem exists_haltingTest_eq_one_iff : (∃ t, haltingTest t = 1) ↔ C222 F := by
+  simp only [haltingTest_eq_one_iff]
+  exact (exists_none_iff initialState).trans
+    (EnumPerm.halts_iff rfl ⟨C222.truth, C222.truth, good_zero⟩)
+
 end DiophantineConsistency

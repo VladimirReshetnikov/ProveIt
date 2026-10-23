@@ -85,6 +85,15 @@ normalized quartic, so a direct gate-to-quartic conversion can avoid the
 The detailed contracts and remaining links are tracked in
 [COMPILER.md](COMPILER.md).
 
+The supplied-data route now includes arithmetic graphs, Pell sequences,
+power, binomial, factorial, and bounded universal quantification.
+[`EquationFromRep.construct`](COMPILER_JONES.md) constructs a normalized
+quartic and a nine-variable equation directly from supplied representation
+syntax, with a checked equivalence for both presentations.
+`ExecutableJones.fromRep` also gives a complete executable syntax path,
+including its coefficient readers and index. Integration with the concrete
+refutation program remains to be completed.
+
 ## Reproducing the checked milestones
 
 From the repository root, with Lean and Mathlib 4.32.0:
@@ -93,6 +102,8 @@ From the repository root, with Lean and Mathlib 4.32.0:
 lake build DiophantineConsistency.ZFC DiophantineConsistency.ShortFrontier
 lake env lean Computability/DiophantineConsistency/Lean/checks/ZFCAxioms.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/ShortEquationAxioms.lean
+lake build DiophantineConsistency
+lake env lean Computability/DiophantineConsistency/Lean/checks/CompilerAxioms.lean
 python3 Computability/DiophantineConsistency/tools/audit_short_circuit.py
 python3 Computability/DiophantineConsistency/tools/audit_sos_circuit.py
 python3 Computability/DiophantineConsistency/tools/audit_frontier_circuit.py

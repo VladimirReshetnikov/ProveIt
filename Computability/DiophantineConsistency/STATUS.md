@@ -15,7 +15,7 @@ commits and are deliberately retained in the delivered provenance records.
 | Concrete recursively enumerable refutation predicate | Lean checked | `Computability.refutationInputs_re` and `Bridge.zfcRefutationInputs_re`; actual six-register enumerator |
 | Nine-variable specialization | Lean checked | `zfcNinePolynomial_noZero_iff_conZFC`, no premises; existence-based coefficients |
 | Quartic alternative | Lean checked | `zfcQuarticPolynomial_noZero_iff_conZFC` and total degree at most four |
-| Explicit, computable coefficient recipe | Open | Do not confuse classical selection with coefficient export |
+| Explicit, computable coefficient recipe for ZFC | Integration open | `ExecutableJones.fromRep` checked and executable; actual refutation program data still required |
 | P67 compiler correctness in Lean | Open | The report's ordinary proof is not yet a Lean proof |
 | Object-level ZFC derivation | Open | External equivalence and internal provability are separate claims |
 | Global simplicity minimum | Not claimed | No common ordering of all size measures; no optimality theorem |
@@ -25,6 +25,11 @@ commits and are deliberately retained in the delivered provenance records.
 | Literal 73-operation polynomial, degree 80 | Lean checked | `ShortFrontier.eval_polynomial_zero_iff_baselineValue_zero` and `polynomial_totalDegree_le` |
 | Consecutive-product negative Pell obstruction | Lean checked | `ConsecutivePell.norm_ne_neg_one` for every integer `n ≥ 2` |
 | Executable representation data | Lean checked primitives; integration open | `Representation`, `ArithmeticRepresentation`, `NaturalExpression`; see `COMPILER.md` |
+| Explicit arithmetic and bounded quantification | Lean checked | Supplied Pell, power, binomial, factorial and bounded-forall representations; no representation selected from existence proofs |
+| Supplied representation to nine-variable equation | Lean checked | `EquationFromRep.construct`: explicit normalized quartic, literal index, expression and polynomial, natural solvability/unsolvability equivalences |
+| Executable supplied-data Jones compiler | Lean checked | `ExecutableJones.fromRep`, sparse coefficient reader, explicit coding sums/index; exact evaluation agreement with the mathematical polynomial |
+| Primitive-recursive graph compiler | Lean checked | `ScalarPRCode.graphRep`, structural on all seven program constructors, including the full bounded transition trace |
+| Concrete refutation-program data | In progress | `haltingTest` and exact accepted-value endpoint checked; extraction to `ScalarPRCode.Realizes haltingTest` remains open |
 | Further short-equation reduction | In progress | Current checked frontier: 69 operations/degree 111, 73/80, 75/68 |
 
 ## Validation environment

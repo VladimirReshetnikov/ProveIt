@@ -2,14 +2,55 @@ import DiophantineConsistency.ArithmeticRepresentation
 import DiophantineConsistency.NaturalExpression
 import DiophantineConsistency.BoundedForallCertificate
 import DiophantineConsistency.JonesIndex
+import DiophantineConsistency.PairingRepresentation
+import DiophantineConsistency.ComputationRepresentation
+import DiophantineConsistency.FactorialRepresentation
+import DiophantineConsistency.BoundedForallRepresentation
+import DiophantineConsistency.EquationFromRep
+import DiophantineConsistency.PRCode
+import DiophantineConsistency.ScalarPRCode
+import DiophantineConsistency.ScalarPRRepresentation
+import DiophantineConsistency.ExecutableJones
+import DiophantineConsistency.ScalarPROptimizer
 
 #print axioms DiophantineConsistency.Expr.eval_toPolynomial
 #print axioms DiophantineConsistency.Rep.correct_toPolynomial
 #print axioms DiophantineConsistency.Rep.conjunction
+#print axioms DiophantineConsistency.Rep.disjunction
 #print axioms DiophantineConsistency.Rep.existsBlock
+#print axioms DiophantineConsistency.Rep.allFin
+#print axioms DiophantineConsistency.Rep.compose
 #print axioms DiophantineConsistency.GraphRep.add
 #print axioms DiophantineConsistency.ArithmeticRep.modEq
 #print axioms DiophantineConsistency.Expr.eval_splitNatural
 #print axioms DiophantineConsistency.Rep.correct_splitNatural
 #print axioms DiophantineConsistency.boundedForallCertificate
 #print axioms DiophantineConsistency.JonesIndex.index_correct
+#print axioms DiophantineConsistency.GraphRep.sub
+#print axioms DiophantineConsistency.GraphRep.mod
+#print axioms DiophantineConsistency.GraphRep.div
+#print axioms DiophantineConsistency.GraphRep.pair
+#print axioms DiophantineConsistency.GraphRep.unpairLeft
+#print axioms DiophantineConsistency.GraphRep.unpairRight
+#print axioms DiophantineConsistency.GraphRep.existsValue
+#print axioms DiophantineConsistency.PellRepresentation.rep
+#print axioms DiophantineConsistency.GraphRep.pow
+#print axioms DiophantineConsistency.GraphRep.binomial
+#print axioms DiophantineConsistency.GraphRep.factorial
+#print axioms DiophantineConsistency.Rep.boundedForall
+#print axioms DiophantineConsistency.PRCode.primrec
+#print axioms DiophantineConsistency.ScalarPRCode.primrec
+#print axioms DiophantineConsistency.ScalarPRRepresentation.trace_iff
+#print axioms DiophantineConsistency.ScalarPRCode.graphRep
+#print axioms DiophantineConsistency.ScalarPRCode.Realizes.graphRep
+#print axioms DiophantineConsistency.ScalarPRCode.eval_optimize
+#print axioms DiophantineConsistency.ScalarPRCode.nodeCount_optimize_le
+#print axioms DiophantineConsistency.QuarticCompiler.compile
+#print axioms DiophantineConsistency.EquationFromRep.noNaturalZero_construct
+#print axioms DiophantineConsistency.EquationFromRep.noSyntaxZero_construct
+#print axioms DiophantineConsistency.EquationFromRep.eval_expression_construct
+#print axioms DiophantineConsistency.SyntaxCoefficients.coefficient_expand
+#print axioms DiophantineConsistency.QuarticSyntax.polynomial_expression
+#print axioms DiophantineConsistency.ExecutableJones.noZero_fromRep
+#print axioms DiophantineConsistency.ExecutableJones.eval_fromRep_polynomial
+#print axioms DiophantineConsistency.ExecutableJones.hasNaturalZero_fromRep_polynomial
