@@ -10,31 +10,44 @@ proofs and the current status; this README covers only the delivered
 manuscripts.
 
 The active research's proposal reviews record independent release replays,
-circuit counts, proof assessments and its next formalization target. After
-wave 7, [PROPOSAL_REVIEW.md](../PROPOSAL_REVIEW.md) selected package 52's
-548-operation nine-positive form. The wave-8 review,
-[PROPOSAL_REVIEW_WAVE8.md](../PROPOSAL_REVIEW_WAVE8.md) (`94d84e5c1b`),
-replaces that target by package 59's 473-operation nine-positive form. It
-keeps 54 as the smaller-coefficient option and keeps the checked package-52
-milestones. The delivered packages remain unchanged.
+circuit counts, proof assessments and its next formalization target:
+
+- After wave 7, [PROPOSAL_REVIEW.md](../PROPOSAL_REVIEW.md) selected package
+  52's 548-operation nine-positive form.
+- After wave 8, [PROPOSAL_REVIEW_WAVE8.md](../PROPOSAL_REVIEW_WAVE8.md)
+  (`94d84e5c1b`) moved to 59's 473-operation form.
+- After wave 9, [PROPOSAL_REVIEW_WAVE9.md](../PROPOSAL_REVIEW_WAVE9.md)
+  (`bdd86761ba`) adopts 66's 444-operation H2082 form. It seals a local
+  443-operation instance on 54's smaller tuple, and keeps 65's and 67's
+  lower-degree forms.
+
+The delivered packages remain unchanged.
 
 **Explicit polynomials with fixed integer coefficients whose unsolvability
-ZFC proves equivalent to Con(ZFC). Waves 5–8 are all in the tree. The stated
+ZFC proves equivalent to Con(ZFC). Waves 5–9 are all in the tree. The stated
 frontier is now:**
 
-- **nine positive unknowns** at degree 1,910,404 in 473 operations (59), the
-  lowest degree and the fewest operations at once;
-- **ten unrestricted integers** at degree 8,317,400 (57), or in 513
-  operations (54), via Sun's reduction;
+- **nine positive unknowns** in 444 operations at degree 1,845,940 (66),
+  or at degree 1,494,006 in 487 operations (67);
+- **ten unrestricted integers** in 490 operations at degree 3,547,076 (66),
+  or at degree 3,327,556 in 519 operations (67), via Sun's reduction;
 - **thirteen unrestricted integers without Sun's reduction** at degree
-  11,543,632 (59);
+  10,461,744 (67);
 - **eleven positive unknowns** at degree 954 (52, unchanged);
-- **twelve positive unknowns** at degree 242 in 94 operations (57);
-- **fifteen positive unknowns** at degree 24 (58), and in 66 operations
-  (51's P66, degree 157, unchanged);
-- **the smallest native tuple binding an equation**, B = 2^429959 (54).
+- **twelve positive unknowns** at degree 118 (61), or in 89 operations
+  (57's 258 form);
+- **thirteen positive unknowns** at degree 34 (61), or in 83 operations at
+  degree 114 (62);
+- **fourteen positive unknowns** at degree 26 (65), at degree 30 in 83
+  operations (64), or in 79 operations at degree 52 (55, 59);
+- **fifteen positive unknowns** at degree 24 in 88 operations (66), and in
+  66 operations (51's P66, degree 157, unchanged);
+- **a quartic in 41 unrestricted integers** (64), a sextic in 35 and an
+  octic in 30 (62);
+- **the smallest native tuple binding an equation**, B = 2^429959 (54,
+  unchanged).
 
-The report holds twenty-nine AI-assisted research packages:
+The report holds thirty-seven AI-assisted research packages:
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -48,12 +61,49 @@ The report holds twenty-nine AI-assisted research packages:
   Diophantine form (wave-8)", placed in `beb0192cb8`), all dated
   23 October 2026. 54–57 and 59 are pinned to the wave-7 arrival
   `4b4349064a`, 58 to the wave-7 placement `6d375f2d2d`.
+- **Wave 9**, sources 60–67: batch 225 (arrival `0c6be9a074`, "Con(ZFC) in
+  Diophantine form (wave-9)", placed in `a2cd79b912`), all dated
+  23 October 2026 and pinned to the wave-8 placement `beb0192cb8`.
 
-**Earlier waves are kept.** By Vladimir's direction, waves 6, 7 and 8 are
-each placed beside the earlier waves rather than replacing them. Wave-7
-packages cite wave-5 and wave-6 packages by number; no wave-7 package cites
-another. In wave 8, only 59 cites a sibling: it reviews and builds on 56 and
-57, which reached it during packaging.
+**Earlier waves are kept.** By Vladimir's direction, waves 6–9 are each
+placed beside the earlier waves rather than replacing them. Wave-7 packages
+cite wave-5 and wave-6 packages by number; no wave-7 package cites another.
+In wave 8, only 59 cites a sibling: it reviews and builds on 56 and 57,
+which reached it during packaging. No wave-9 package cites a sibling.
+
+## Any encoding is welcome
+
+By Vladimir's direction (23 October 2026), a proposal **need not** be built
+from the following, and is free to explore other encodings:
+- an encoding of the Turing machine K215
+  ([`candidate-k215/k215.tm`](../../BusyBeaver/Research/ZFC/candidate-k215/k215.tm));
+- Jones's universal Diophantine equation or its nine-variable reduction;
+- Sun's ten-integer reduction;
+- the native-window/Pell compiler.
+
+The only requirement is the theorem itself:
+- an explicit polynomial (or small system) with fixed integer coefficients;
+- a stated domain;
+- an ordinary proof, formalizable in ZFC, that ZFC proves "no solution" ↔
+  Con(ZFC).
+
+A route of its own must state and prove its own calibration, as carefully as
+the K215 endpoint does here.
+
+Most packages so far derive from K215 and Jones (or Sun), and the next
+section describes that common route. That is a fact about the existing
+packages, not a rule. They reuse it because this repository has checked
+infrastructure for it: the K215 endpoint in Lean and Rocq, and the Lean
+development of Jones's reduction.
+
+Other routes in the repository:
+- **Explored by packages.** Wave 9's 66 and 67 explore routes past K215 and
+  Jones (see the wave-9 section below).
+- **In the active research.** It records its own alternatives in
+  [ALTERNATIVE_ENCODINGS.md](../ALTERNATIVE_ENCODINGS.md). These include a
+  Lean-checked direct quartic for syntactic ZFC refutability that skips the
+  Jones compression (`DirectQuarticZFC.noNaturalZero_iff_conZFC`, at
+  `da269a4f57`).
 
 ## Earlier waves
 
@@ -69,7 +119,8 @@ They remain in history:
 | 5 | 221 | `b7f8b75b5b` | `952c1fab49` … (kept) | `22e75dd6b8` |
 | 6 | 222 | `29ca562f8f` | `124c07c0b7` … (kept) | `6ed62e4cd5` |
 | 7 | 223 | `4b4349064a` | `6d375f2d2d` … (kept) | `8e5fa20d8f` |
-| 8 | 224 | `7331974b69` | `beb0192cb8` … | this file |
+| 8 | 224 | `7331974b69` | `beb0192cb8` … (kept) | `46988b7869` |
+| 9 | 225 | `0c6be9a074` | `a2cd79b912` … | this file |
 
 Until `ea8ae71167`, every one of these READMEs lived at
 `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md`.
@@ -95,9 +146,8 @@ values where available, to tell polynomials apart. Agreement at random points
 is strong evidence of identity, not proof; disagreement proves the
 polynomials differ.
 
-[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for all four waves: the
-batch-221 record, then the appended batch-222, batch-223 and batch-224
-records.
+[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for all five waves: the
+batch-221 record, then the appended batch-222 to batch-225 records.
 
 | Wave | Archive members | Staged | Omitted copies | Ignored |
 |---|---:|---:|---:|---:|
@@ -105,6 +155,7 @@ records.
 | 6 | 1,149 | 773 | 371 | 5 |
 | 7 | 1,571 | 1,043 | 524 | 4 |
 | 8 | 1,736 | 974 | 759 | 3 |
+| 9 | 1,829 | 1,030 | 766 | 33 |
 
 Omitted copies are byte-identical (up to line ends) to repository files.
 Most of the later waves' are copies of earlier-wave files of this
@@ -114,8 +165,9 @@ of 56's and 57's files are staged twice. Ignored members are checksum ledgers an
 
 ## The common theorem
 
-Each package defines polynomials or small systems with four **fixed integer
-coefficient ports**:
+This is the route the packages so far have taken; it is not required (see
+above). Each package defines polynomials or small systems with four **fixed
+integer coefficient ports**:
 
 - Bm1 = B − 1;
 - Kconstant = D_C + B·D_R;
@@ -188,53 +240,269 @@ norms are separated:
 - **An ordinary-root merger** (59) for twelve positive unknowns, and a
   coprime guard for thirteen unrestricted integers.
 
-## Combined frontier, waves 5–8 (intake findings)
+Wave 9 works mostly on signs, guards and carriers:
 
-Numbers are the packages' own. At intake, the dossiers recounted every
-operation count and measured the degrees, as described under wave 8 below;
-all checked figures agree with the claims. The mathematics was not
-re-derived.
+- **Sign recovery and product guards** (62, 63, 67). One guard on a product
+  replaces two separate sign guards; this gives the 42ℤ quartic that all
+  three found.
+- **Congruence and integral carriers** (61, 64, 65). Divisibility forced by
+  a square equation recovers scales and quotients, for low degree at 12–14
+  positive unknowns.
+- **Shared coefficient positions** (65) and **gap coordinates** (66) lower
+  the source height of the nine-variable forms; **higher majorants** (63,
+  66, 67) lower their degree below the common formula.
+- **Direct proof certificates** (66) and a **review of non-K215 routes**
+  (67); see the wave-9 section.
+
+## Combined frontier, waves 5–9 (intake findings)
+
+Numbers are the packages' own. At intake, four read-only dossiers recounted
+every operation count and measured the degrees of the headline circuits; all
+checked figures agree with the claims. The mathematics was not re-derived.
 
 - "u / e / d / o" means unknowns / equations / degree / operations; pairs
   are degree / operations.
 - Operations count every binary +, −, × including multiplication by fixed
-  numerals; reuse and system comparisons are free.
+  numerals; reuse and system comparisons are free. Fixed leaves are free,
+  so a constant folded into a leaf costs nothing. The packages differ
+  slightly here: 66 stores a threshold power as a leaf (otherwise 495 and
+  499 operations, not 490 and 494), and 7 of 67's 519 ten-integer gates act
+  on constants only.
 - Unknowns are strictly positive unless marked ℤ (unrestricted integers)
   or ℕ (naturals). Natural-coordinate companions have separate counts:
   - in wave 7, package 52 adds three operations, 47 adds four, and 53's
     calibrated form adds six;
   - in wave 8, 54 adds three, 57 two, 55 six, 56 seven (nine for its
     reference form), 59 seven (four for its initial form), and 58's
-    natural translation fifteen.
+    natural translation fifteen;
+  - in wave 9, every nine-positive form adds seven, and 63's fourteen-positive
+    form adds fourteen.
 
   The domain translation and its actual circuit must be stated.
 
 The base is the earliest-arriving package that presents the construction in
-full; where only one package has it, that package.
+full; where only one package has it, that package. Within one wave, the
+lower directory number counts as earlier.
 
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
-| Nine positive | **1,910,404 / 473**, the lowest degree and the fewest operations at once (ℕ: 480). It dominates every other nine-positive form, among them 54's 9,461,300 / 490 and 4,399,820 / 598, 57's 2,628,944 / 499, 56's 4,686,812 / 560, 55's 5,671,669 / 630, 59's own initial 2,676,548 / 476, and wave-7 52's 548 and 53's 7,344,328 | 59 | 59 |
-| 10ℤ (Sun's reduction), lowest degree | **8,317,400 / 544** | 57 | 57 |
-| 10ℤ, fewest operations | **513** at degree 25,838,224, on 46's 2^429959 tuple | 54 | 54 |
-| 10ℤ, other Pareto points | 59: 8,469,528 / 533. 54: 25,355,280 / 517 and 24,369,008 / 519. Dominated by 59's 533: 54's recommended 14,699,152 / 554 and 14,696,016 / 558. Dominated by 57 and 59: 55's 9,152,284 / 586. Every wave-7 10ℤ form is dominated too | 59; 54 | — |
-| Fewest integers without Sun's 2026 reduction | **13ℤ at 11,543,632 / 518**, beating wave-7 53's 57,866,184 / 759 on both measures | 59 | 59 |
+| Nine positive, fewest operations | **444** at degree 1,845,940 (ℕ: 451) | 66 | 66 |
+| Nine positive, lowest degree | **1,494,006 / 487** | 67 | 67 |
+| Nine positive, Pareto frontier | 1,845,940 / 444, 1,834,516 / 449, 1,825,540 / 451 (66); 1,738,228 / 457, 1,675,396 / 458 (65); 1,663,788 / 475 (67); 1,520,178 / 476, 1,510,770 / 481, 1,503,378 / 483 (66); 1,494,006 / 487 (67). Dominated: 60's 1,797,796 / 465, 62's 1,834,516 / 453, 63's 1,573,266 / 504, 64's 1,781,068 / 470, 67's 462, 478 and 482, and every wave-8 form, 59's 473 included | 65, 66, 67 | — |
+| Nine positive on a smaller tuple | 60's 1,797,796 / 465 and 62's 1,834,516 / 453, both on 2^590069; 54's 490 (wave 8) on 2^429959 | 60, 62; 54 | — |
+| 10ℤ (Sun's reduction), Pareto frontier | **3,547,076 / 490** and **3,507,876 / 494** (66); **3,327,556 / 519** (67). Dominated: 65's 7,428,120 / 525, 67's 520 and 522, and every wave-8 form, 54's 513 included | 66; 67 | — |
+| Fewest integers without Sun's 2026 reduction | **13ℤ**: 10,461,744 / 519 (67) and 59's 11,543,632 / 518, a tradeoff | 67; 59 | — |
 | Eleven positive | unchanged: **954 / 113** (52) | wave 7 | 52 |
-| Twelve positive | **242 / 94** and **258 / 89**, two different polynomials | 57 | 57 |
-| Twelve positive, other points | 59: 316 / 102. Its three-equation system has residual degrees 2, 26 and 288 in 95 operations, or 94 shifted, the fewest of any twelve-positive system (52's was 103, shifted 102). Dominated: 58's 629 / 114 (system 622 / 109, shifted 108) and wave-7 52's 897 / 108 | 59 | — |
-| Thirteen positive | **132 / 83** (57), which dominates the earlier single thirteen-positive equations (wave-4 24's 319 / 89, and 515 / 84 of wave-4 16 and 20); 126 / 91 (59) is a lower-degree tradeoff. The wave-4 systems 288 / 81 (24) and 488 / 78 (16, 20) are counted separately | 57; 59 | 57 |
-| Fourteen positive | **52 / 79** in two different polynomials, each dominating wave-7 50's 56 / 79 | 55; 59 | 55 |
+| Twelve positive | **118 / 104** and the sum-of-squares 172 / 103 (61); 57's 242 / 94 and **258 / 89**; 59's three-equation system at 94 operations | 61; 57 | 57 |
+| Thirteen positive | **34 / 93** (61) and **114 / 83** (62). 62 dominates 57's 132 / 83 and 59's 126 / 91 | 61; 62 | 61 |
+| Fourteen positive | **26 / 92** (65) and **30 / 83** (64), against wave-8 **52 / 79** (55, 59). Dominated: 65's 30 / 85, 67's 30 / 87 and 63's 34 / 87. 67 and 63 also give five-equation systems at 78 operations | 64; 65 | 64 |
 | Fifteen positive, fewest operations | unchanged: **66 ops** (51's P66, degree 157) | 51 | 51 |
-| Fifteen positive, lowest degree | **24 / 90**; also 26 / 88 and 30 / 79 | 58 | 58 |
-| Fifteen positive, Pareto frontier | 157 / 66 (51); 125 / 67 (59); 101 / 68 (54; 59 has the same circuit on another tuple); 91 / 69 (59); 80 / 70, 78 / 71 and 64 / 72 (54); 54 / 73 and 46 / 74 (56); 44 / 75 (47); 30 / 79, 26 / 88 and 24 / 90 (58). P67 (155 / 67) is now dominated by 59's 125 / 67, and wave-2 Q₅₆ (56 / 74) by 56's 46 / 74 | 47, 51, 54, 56, 58, 59 | — |
-| Integer quartic | **45ℤ**: the sum of squares of 28 quadratic residuals, 407 expanded terms, below the 50ℤ quartic | 57 | 57 |
+| Fifteen positive, lowest degree | **24 / 88**: 58's polynomial after z ↦ z − 1, evaluated in 88 operations (66). 60 has the same polynomial in 89 | 66; 60 | 58 |
+| Fifteen positive, Pareto frontier | 157 / 66 (51); 125 / 67 (59); 101 / 68 (54); 91 / 69 (59); 80 / 70, 78 / 71 and 64 / 72 (54); 54 / 73 and 46 / 74 (56); 44 / 75 (47); 30 / 78, 26 / 87 and 24 / 88 (66). 66's 30 / 78 and 26 / 87 are 58's 30 / 79 and 26 / 88 polynomials, each evaluated in one operation fewer | 47, 51, 54, 56, 59, 66 | — |
+| Integer quartic | **41ℤ** (26 residuals, 388 terms) | 64 | 64 |
+| Integer sextic and octic | **35ℤ** sextic (20 residuals) and **30ℤ** octic (15 residuals) | 62 | 62 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125; 24ℤ at 1936 / 161 | waves 5–6 | — |
-| Smallest coefficients binding an equation | **B = 2^429959** (215,492 bytes), 46's adapter tuple. 54 binds every equation to it, P66 included, but calls the size "not a new record". Its derived fixed leaves are larger: the scale Y_scale alone takes 1.7 MB. Next comes 2^590069 (39 and 44; also 52, 57, 58, and 59's thirteen-positive form and nine-variable comparisons) | 54 | 54 |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54). No wave-9 package uses it; the active research's 443-operation H2082 instance does | 54 | 54 |
 
-**Who knew whom.** Only 59 saw other wave-8 work, 56 and 57, and it
-composed 56's free coordinate into its nine-positive form. 54 and 55 did not
-know 59. 59 did not know 54 or 58, so its own frontier tables are partly
-dominated (see below).
+## Wave 9 (sources 60–67)
+
+| Dir | Archive | Title as printed | Constructions |
+|---|---|---|---|
+| [`60-positive-gap/`](60-positive-gap/) | `ConZFC_Positive_Gap_2026-10-23.zip` | *Positive source coordinates for a smaller Diophantine consistency candidate* (README: *Positive source coordinates: a smaller nine-variable candidate*) | 9 positive / 1,797,796 / 465 (ℕ 472), on the 2^590069 tuple and, as the same circuit, on 31's; 15 / 1 / 24 / 89 (58's degree-24 polynomial after z ↦ z − 1) |
+| [`61-congruence-carriers/`](61-congruence-carriers/) | `con-zfc-congruence-carriers.zip` | *Congruence carriers for Diophantine consistency equations* (README: *Congruence carriers and a divided Pell norm*) | **13 / 1 / 34 / 93**; **12 / 1 / 118 / 104** and SOS 172 / 103; 37ℤ sextic and 34ℤ octic; positive forms on 2^590069, integer forms on 34's tuple |
+| [`62-sign-and-norm/`](62-sign-and-norm/) | `con-zfc-sign-and-norm.zip` | *Sign recovery and centered norms for explicit ZFC consistency equations* | **13 / 1 / 114 / 83**; 42ℤ quartic (27 residuals); **35ℤ sextic**, **30ℤ octic**; 9 positive / 1,834,516 / 453 (ℕ 460); P13 and the nine form on 2^590069, the integer forms on 34's tuple |
+| [`63-sign-recovery/`](63-sign-recovery/) | `con-zfc-sign-recovery-2026-10-23.zip` | *Recovering signs and absorbing Pell quotients* | 42ℤ quartic (the same polynomial as 62's); 14 / 1 / 34 / 87 (system 78; ℕ 101); 9 positive / 1,573,266 / 504 (ℕ 511); the quartic and P14 on 34's tuple, F9 on 31's |
+| [`64-structural-reductions/`](64-structural-reductions/) | `con-zfc-structural-reductions-2026-10-23.zip` | *Structural reductions for explicit Diophantine consistency equations* | **14 / 1 / 30 / 83**; **41ℤ quartic** (26 residuals), 36ℤ sextic, 31ℤ octic (retained 44ℤ quartic); 9 positive / 1,781,068 / 470 (ℕ 477); P14 on 2^590069, integer forms on 34's tuple, F9 on 31's |
+| [`65-shared-taps/`](65-shared-taps/) | `con_zfc_shared_taps_carriers_2026-10-23.zip` | *Shared coefficient positions and integral Pell carriers* | 9 positive / **1,675,396 / 458** and 1,738,228 / 457 (ℕ 465, 464); 10ℤ / 7,428,120 / 525; **14 / 1 / 26 / 92** and 30 / 85; nine and ten on 31's tuple, fourteen on 2^590069 |
+| [`66-gap-congruence/`](66-gap-congruence/) | `ConZFC_Gap_Congruence_2026-10-23.zip` | *Smaller consistency equations through degree separation, congruence norms, and direct proof certificates* (README: *Gap coordinates, congruence norms, and direct proof certificates*) | 9 positive: six forms from 1,845,940 / **444** to 1,503,378 / 483; **10ℤ / 3,547,076 / 490** and 3,507,876 / 494; 15-positive 30 / 78, 26 / 87, **24 / 88**; `direct/`, a proof-certificate source avoiding K215 and Jones (see below); nine and ten on 31's tuple, fifteen on 2^590069 |
+| [`67-oriented-guards/`](67-oriented-guards/) | `ZFC_Diophantine_Oriented_Guards_2026-10-23.zip` | *Oriented guards and smaller Diophantine consistency equations* | 9 positive: six forms from 1,731,700 / 462 to **1,494,006 / 487**; **10ℤ / 3,327,556 / 519**; **13ℤ / 10,461,744 / 519** without Sun; 14 / 1 / 30 / 87 (system 78, max degree 15); 42ℤ quartic (= 62's), 36ℤ sextic, 32ℤ octic; `alternatives/`, a review of non-K215 routes |
+
+Directory numbers: 60–65 carry zeroed file times and follow archive-name
+order; 66 and 67 follow their file times. Each directory's `README.md` is
+its entry point.
+
+### Encodings beyond K215 and Jones
+
+Every finished wave-9 equation still calibrates through the K215 blank run
+and the native compiler. But several routes avoid other parts of the usual
+chain, and two packages explore further:
+
+- **No Jones and no Sun.** These routes use neither:
+  - the integer quartics, sextics and octics of 61, 62, 63, 64 and 67;
+  - 61's twelve- and thirteen-positive forms and 62's thirteen-positive
+    form;
+  - the fourteen-positive forms of 63, 64 and 65 (`pell/`).
+
+  Every nine-positive form uses 59's Jones ratio finalizer.
+- **66's `direct/`.** A nondeterministic one-stack checker of proofs in the
+  repository's numerical calculus C222, rather than a machine run. It avoids
+  K215 and Jones at the source level.
+  - **Calibration:** `KEndpoint.c222_iff_zf_refutation` and
+    `ConstructibleChoice.zf_refutation_iff_zfc_refutation`, both present in
+    the repository.
+  - **Finished:** a local step quartic with 2 exposed states and 89 natural
+    witnesses (91 variables), 85 residuals, 3,108 monomials, degree 4.
+  - **Only a proposal:** the global constructor, `OneStackEquation.lean`
+    (159 lines, never elaborated, no theorem). Its final unknown count and
+    size are unknown.
+  - **Not compared:** 66 does not compare it with the active research's
+    deterministic C222 enumerator (`NativeGraphEnumerator.lean`, 1,742 step
+    witnesses), which also avoids K215 and Jones.
+- **67's `alternatives/`.** A review, with no polynomial claimed, of four
+  directions:
+  - **Direct provability**, after Carl and Moroz: the published
+    explicitization is far too large.
+  - **Fixed-input universality**, with small universal machines and the
+    refuter as initial boundary: called the strongest direction, but it
+    lacks an economical finite-input boundary compiler.
+  - **The Coq DPRM development via FRACTRAN:** infrastructure, with no
+    measured size.
+  - **A negative result:** unordered FRACTRAN is a vector-addition system,
+    whose reachability is decidable, so it cannot serve as a universal
+    refuter.
+
+  No competitive non-K215 endpoint resulted, because no compiler was
+  instantiated and measured.
+- **The others.** 63 looked at the active native refutation graph and the
+  Coq FRACTRAN route, and 64 at an unnamed alternative; neither obtained a
+  smaller equation.
+
+### Identities and dominance (intake findings)
+
+**How the dossiers checked.** Their own evaluators, not package code,
+evaluated circuits modulo 2^127 − 1 (and NTT primes) with the actual fixed
+values. They recounted every operation count and measured degrees:
+- exactly, along random lines, for the small circuits and, by exact
+  finite differences or untruncated line restriction, for the nine- and
+  ten-variable ones;
+- on certificate circuits after checking that each equals its primary, or a
+  stated multiple of it (D^16 or D^20 times the primary for 63 and 67).
+
+The integer quartics, sextics and octics were expanded exactly with the
+coefficient ports symbolic. Every measured figure agrees with its claim.
+
+- **One quartic, three packages.** The 42ℤ quartics of 62, 63 and 67 are one
+  polynomial: the same 27 residuals (67 renames three auxiliaries), on
+  byte-identical tuples. Each keeps 25 of 57's 28 residuals, replaces
+  w − u² by w − 4u², and merges the two sign guards into one product guard.
+  None cites the others. 64's 41ℤ quartic shares 22 of its 26 rows and
+  removes one more unknown with X = 2u².
+- **Cheaper evaluators of earlier polynomials.** 66's 15-positive 30 / 78
+  and 26 / 87 are 58's 30 / 79 and 26 / 88. 66's 24 / 88 and 60's 24 / 89
+  are 58's 24 / 90 with z ↦ z − 1.
+- **Near twins.** 65's 30 / 85 equals 67's 30 / 87 with z ↦ z + 1, so they
+  are different polynomials on the positive domain. 64's 30 / 83 differs
+  from both: its modulus is Y².
+- **Equal degree, different polynomials.** 62's nine-positive form and 66's
+  H2068 form both have degree 1,834,516, because both reordered 59's targets
+  to height 2068. They differ at random points and use different tuples.
+- **Pairwise different:**
+  - all 21 nine-positive circuits compared across 59–67, except 62's 453-
+    and 467-operation circuits, which are one polynomial;
+  - every twelve-, thirteen- and fourteen-positive form;
+  - every sextic and octic (64's and 67's 36ℤ sextics share only 10 of 21
+    rows).
+- **One degree formula.** Every nine-positive form that keeps 59's
+  finalizer has degree exactly 816H + 1224W + 5044, where H is the source
+  height and W the weight maximum. 63, 66's refined forms and 67's orders
+  1–4 go below it with modified majorants.
+
+### Tensions, not adjudicated at intake
+
+- **Parallel discoveries.** The triple 42ℤ quartic; the 65 / 67 fourteen-
+  positive twins; 60's and 66's evaluators of the same 24-degree
+  polynomial; 62's and 66's identical source height.
+- **Corrections to wave 8.** For the first time, packages call earlier work
+  wrong; both points are minor:
+  - 62, 63 and 67 independently report that 57's quartic proof writes the
+    transport row as `(K0+w)C=(z-1)(q-1)+F` and concludes z > 1, while the
+    literal row is F + z(q − 1). The dossier calls this an unlabelled shift
+    of notation, harmless: z > 0 is what the proof needs, and the circuits
+    are unaffected.
+  - 66 reports that 54's `REFINED_MAJORANT_PROOF.md` gives a sum of 1719
+    where the true sum is 1619. The dossier recomputed 1619; both are below
+    the needed 2048. The placed copy still reads 1719.
+- **Counting conventions.** See the frontier notes: 66 folds a threshold
+  power into a fixed leaf, and 67 counts 7 constant-only gates.
+- **Stale README at the pin.** 63 and 64 observe that this README, at
+  `beb0192cb8`, still described waves 5–7. That was true; the wave-8
+  reconciliation came later.
+- **64's P14 ends in a sum of squares minus 1**, as 55's fourteen-positive
+  form does, rather than in a sum of squares set to 0.
+- **No package calls this README wrong.**
+
+### Delivery discrepancies (wave 9)
+
+- **Drivers fail in place.** Every driver reads files omitted at intake;
+  66's also reads its git-ignored `SHA256SUMS.json`. Rerun from the arrival
+  archives, as `PLACEMENT.md` explains.
+
+  | Dir | Driver | Note |
+  |---|---|---|
+  | 60 | `checks/verify_all.py` | writes in place |
+  | 61 | `verify_all.py` | writes in place; binding paths inside its integer packets dangle |
+  | 62 | `verify_all.py` | writes `verification/REPLAY*.json` and logs in place |
+  | 63 | `verify.py` | runs in place; component checks rewrite `VERIFICATION.json` |
+  | 64 | `verify_all.py` | writes `certificates/ROOT_CHECKS*.json` in place |
+  | 65 | `verify_all.py` | works in a temporary copy |
+  | 66 | `verify.py` | SymPy |
+  | 67 | `verify.py` | SymPy 1.14.0; refuses `-O` |
+
+- **Degree labels.** 65's and 66's ten-integer JSON label exact degrees
+  `degree_upper_bound`, as in wave 8.
+- **Titles.** 60, 61, 66 (three different titles) and 63 (subtitle) print
+  titles that differ from their README H1 or PDF metadata.
+- **Inside packages.**
+  - 62's `nine/NOTICE.md` says the independent audit's grouping code "was
+    corrected by the component author". Its `RESULTS.json` calls a degree
+    bound "matched" that belongs to the certificate circuit, not to the
+    453-operation primary.
+  - 63's bibliography has no Jones, Matiyasevich or Sun entry, though its
+    nine-positive form uses Jones's ratio representation. Its NOTICE says
+    "MIT license" for an MIT-0 file.
+  - 64's README lists a root `licenses/` directory that does not exist.
+  - 63, 64 and 65 paraphrase the titles of the packages they cite. 65 gives
+    31's title as this collection's title, "Con(ZFC) in Diophantine form".
+  - 66's `ARTIFACT_MAP.md` names a nonexistent `nine/METRICS.json`. Its
+    review tells readers to run `check_intake.py` and
+    `check_literal_ledgers.py`, which are not shipped.
+  - 67's top-level `nine/coefficients` binding is the 2^590069 tuple, while
+    every nine-variable circuit uses `old_tuple/`, which invites a wrong
+    binding. Its README and PDF abstract drop the space before numerals
+    ("in42").
+- **Licence and attribution.**
+  - Every package except 66 ships an MIT-0 licence file for its new
+    material, and all keep the inherited notices. 65's `sun/` has a NOTICE
+    but no LICENSE.
+  - 66 ships no root licence for its new material.
+  - 60 and 66 make no AI-assistance statement of their own; the others do.
+- **Retained intermediates.**
+  - 62: the 467-operation Horner form, certificate circuits, a second 42ℤ
+    quartic and a copy of 57's quartic.
+  - 63: the D^20 certificates and the unshifted P14.
+  - 64: the 44ℤ quartic and the certificates.
+  - 66 and 67: the dominated nine-positive variants.
+
+### Further questions (wave 9)
+
+1. **Other encodings.**
+   - Complete 66's one-stack constructor, and compare it with the active
+     deterministic C222 enumerator.
+   - An economical finite-input boundary compiler for fixed-input
+     universality (67).
+2. **Combinations (intake observations, untested).**
+   - 65's height-1873 source with 66's or 67's majorants.
+   - 64's X = 2u² step with 62's guard exchange, for a smaller sextic or
+     octic.
+3. **Smaller circuits.**
+   - A Diophantine interface for "C(S+T, S) odd", more sign recovery and
+     rational-root traps (62).
+   - The remaining simplex guards, P14's degree-17 carrier, and F9's
+     majorant degrees (63).
+   - A joint search over shared positions, a third congruence recovery,
+     and fewer gates at degree 26 (65).
+4. **Formalize.** 64's adaptive-modulus lemmas and signed sign-recovery
+   bounds; 65's shared-position argument.
 
 ## Wave 8 (sources 54–59)
 
@@ -409,6 +677,57 @@ confirmed 59's nine-variable and 13ℤ degrees exactly.
    review records a feasibility result for moving 59's form to a smaller
    tuple, without a certified circuit.
 5. **Lower bounds.** Restricted lower bounds (54).
+
+### Frontier after wave 8, as placed
+
+Numbers are the packages' own. At intake, the dossiers recounted every
+operation count and measured the degrees, as described under wave 8 below;
+all checked figures agree with the claims. The mathematics was not
+re-derived.
+
+- "u / e / d / o" means unknowns / equations / degree / operations; pairs
+  are degree / operations.
+- Operations count every binary +, −, × including multiplication by fixed
+  numerals; reuse and system comparisons are free.
+- Unknowns are strictly positive unless marked ℤ (unrestricted integers)
+  or ℕ (naturals). Natural-coordinate companions have separate counts:
+  - in wave 7, package 52 adds three operations, 47 adds four, and 53's
+    calibrated form adds six;
+  - in wave 8, 54 adds three, 57 two, 55 six, 56 seven (nine for its
+    reference form), 59 seven (four for its initial form), and 58's
+    natural translation fifteen.
+
+  The domain translation and its actual circuit must be stated.
+
+The base is the earliest-arriving package that presents the construction in
+full; where only one package has it, that package.
+
+| Criterion | Best stated | Found by | Base |
+|---|---|---|---|
+| Nine positive | **1,910,404 / 473**, the lowest degree and the fewest operations at once (ℕ: 480). It dominates every other nine-positive form, among them 54's 9,461,300 / 490 and 4,399,820 / 598, 57's 2,628,944 / 499, 56's 4,686,812 / 560, 55's 5,671,669 / 630, 59's own initial 2,676,548 / 476, and wave-7 52's 548 and 53's 7,344,328 | 59 | 59 |
+| 10ℤ (Sun's reduction), lowest degree | **8,317,400 / 544** | 57 | 57 |
+| 10ℤ, fewest operations | **513** at degree 25,838,224, on 46's 2^429959 tuple | 54 | 54 |
+| 10ℤ, other Pareto points | 59: 8,469,528 / 533. 54: 25,355,280 / 517 and 24,369,008 / 519. Dominated by 59's 533: 54's recommended 14,699,152 / 554 and 14,696,016 / 558. Dominated by 57 and 59: 55's 9,152,284 / 586. Every wave-7 10ℤ form is dominated too | 59; 54 | — |
+| Fewest integers without Sun's 2026 reduction | **13ℤ at 11,543,632 / 518**, beating wave-7 53's 57,866,184 / 759 on both measures | 59 | 59 |
+| Eleven positive | unchanged: **954 / 113** (52) | wave 7 | 52 |
+| Twelve positive | **242 / 94** and **258 / 89**, two different polynomials | 57 | 57 |
+| Twelve positive, other points | 59: 316 / 102. Its three-equation system has residual degrees 2, 26 and 288 in 95 operations, or 94 shifted, the fewest of any twelve-positive system (52's was 103, shifted 102). Dominated: 58's 629 / 114 (system 622 / 109, shifted 108) and wave-7 52's 897 / 108 | 59 | — |
+| Thirteen positive | **132 / 83** (57), which dominates the earlier single thirteen-positive equations (wave-4 24's 319 / 89, and 515 / 84 of wave-4 16 and 20); 126 / 91 (59) is a lower-degree tradeoff. The wave-4 systems 288 / 81 (24) and 488 / 78 (16, 20) are counted separately | 57; 59 | 57 |
+| Fourteen positive | **52 / 79** in two different polynomials, each dominating wave-7 50's 56 / 79 | 55; 59 | 55 |
+| Fifteen positive, fewest operations | unchanged: **66 ops** (51's P66, degree 157) | 51 | 51 |
+| Fifteen positive, lowest degree | **24 / 90**; also 26 / 88 and 30 / 79 | 58 | 58 |
+| Fifteen positive, Pareto frontier | 157 / 66 (51); 125 / 67 (59); 101 / 68 (54; 59 has the same circuit on another tuple); 91 / 69 (59); 80 / 70, 78 / 71 and 64 / 72 (54); 54 / 73 and 46 / 74 (56); 44 / 75 (47); 30 / 79, 26 / 88 and 24 / 90 (58). P67 (155 / 67) is now dominated by 59's 125 / 67, and wave-2 Q₅₆ (56 / 74) by 56's 46 / 74 | 47, 51, 54, 56, 58, 59 | — |
+| Integer quartic | **45ℤ**: the sum of squares of 28 quadratic residuals, 407 expanded terms, below the 50ℤ quartic | 57 | 57 |
+| Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125; 24ℤ at 1936 / 161 | waves 5–6 | — |
+| Smallest coefficients binding an equation | **B = 2^429959** (215,492 bytes), 46's adapter tuple. 54 binds every equation to it, P66 included, but calls the size "not a new record". Its derived fixed leaves are larger: the scale Y_scale alone takes 1.7 MB. Next comes 2^590069 (39 and 44; also 52, 57, 58, and 59's thirteen-positive form and nine-variable comparisons) | 54 | 54 |
+
+**Who knew whom.** Only 59 saw other wave-8 work, 56 and 57, and it
+composed 56's free coordinate into its nine-positive form. 54 and 55 did not
+know 59. 59 did not know 54 or 58, so its own frontier tables are partly
+dominated (see below).
+
+The combined frontier near the top of this README supersedes this table
+where wave 9 improves on it.
 
 ## Wave 7 (sources 46–53)
 
@@ -609,7 +928,7 @@ identity" with the old polynomial at the same coordinates. 46, 47, 48, 49,
 50, 52 and 53 each still call 67 operations unbeaten, without knowing of 51.
 
 The combined frontier near the top of this README supersedes this table
-where wave 8 improves on it.
+where waves 8 and 9 improve on it.
 
 ## Wave 6 (sources 38–45)
 
@@ -789,12 +1108,12 @@ full; where only one package has it, that package.
 | Smallest coefficients binding an equation | **B = 2^590069**, 295,388 raw bytes, largest port 592,884 bits. It binds 39's compact 10ℤ instance and 44's P₆₇ and 59-op system, with identical payload bytes. Next come 38's 2^678139 (339,476 bytes) and 42's 2^683195 (342,269 bytes). 40's research candidate 2^690547 binds no equation | 39, 44 | 39 |
 
 The combined frontier near the top of this README supersedes this table
-where waves 7 and 8 improve on it.
+where waves 7–9 improve on it.
 
 ## Wave 5 (sources 31–37)
 
 Wave 5 is described as placed, with its frontier at that time. The
-combined frontier above supersedes it where waves 6–8 improve on it.
+combined frontier above supersedes it where waves 6–9 improve on it.
 
 ### Supersession of wave 4
 
@@ -1035,7 +1354,7 @@ The packages say, in their own words (exceptions noted):
   - Sun's reduction is not formalized anywhere in the repository (checked at
     intake: nothing in `Computability/HilbertTenthProblem`).
   - The active Lean research in `Computability/DiophantineConsistency/`
-    postdates the wave-5 and wave-6 pins, but not the wave-7 and wave-8
+    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-9
     pins.
   - Wave-7 46, 51 and 53 build their short forms on its checked circuits
     P69, P73 and P75.
@@ -1043,6 +1362,10 @@ The packages say, in their own words (exceptions noted):
     `d2f19e4d5c`), 56 its `ExplicitZFC` and `NativeZFC` theorems, and 59
     also `PositiveZFC` and the short-circuit theorems. Each says these do
     not certify its new circuits.
+  - Wave-9 66's `direct/` calibrates through the existing
+    `KEndpoint.c222_iff_zf_refutation` and
+    `ConstructibleChoice.zf_refutation_iff_zfc_refutation`; its global
+    constructor is an unelaborated Lean sketch with no theorem.
   - No package supplies a new end-to-end formal certificate. Subsequent
     active stage formalization is recorded separately below.
 - **No new general theorem.**
@@ -1052,6 +1375,8 @@ The packages say, in their own words (exceptions noted):
     own result. 42 calls it "a preprint dependency".
   - In wave 8, the 10ℤ forms of 54, 55, 57 and 59 depend on it. 59's 13ℤ
     form and every nine-positive form do not.
+  - In wave 9, the 10ℤ forms of 65, 66 and 67 depend on it; 67's 13ℤ form
+    does not.
   - 38 says its nine-variable form "does not extend the result to nine
     unrestricted integers". 44 makes no sub-ten-integer or sub-nine-natural
     claim.
@@ -1098,6 +1423,9 @@ The packages say, in their own words (exceptions noted):
   - Wave-8 54, 55, 56, 57 and 59 use the ratio lemmas for their
     nine-variable forms. 58 uses no Jones lemma: its 12- and 15-positive
     forms are direct.
+  - Every wave-9 nine-positive form keeps 59's Jones ratio finalizer.
+    The 12- to 15-positive forms and the integer quartics, sextics and
+    octics of wave 9 use no Jones lemma.
   - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
 
   These new codes, decoders, finalizers, majorants and Pell-index arguments
@@ -1129,6 +1457,12 @@ The packages say, in their own words (exceptions noted):
     [PROPOSAL_REVIEW_WAVE8.md](../PROPOSAL_REVIEW_WAVE8.md) (`94d84e5c1b`),
     after replaying all six arrival archives. It adopts 59's 473-operation
     nine-positive form as its target.
+  - It reviewed wave 9 in [PROPOSAL_REVIEW_WAVE9.md](../PROPOSAL_REVIEW_WAVE9.md)
+    (`bdd86761ba`), replaying all eight archives, and adopts 66's
+    444-operation H2082 form, with a local 443-operation instance on 54's
+    tuple. Its [ALTERNATIVE_ENCODINGS.md](../ALTERNATIVE_ENCODINGS.md)
+    records a Lean-checked direct quartic that skips Jones
+    (`DirectQuarticZFC.noNaturalZero_iff_conZFC`, `da269a4f57`).
 - **Nothing delivered in this report is formalized.** The active stage
   proofs for 52 live outside this directory.
 
@@ -1144,6 +1478,7 @@ attribution file the packages ship is kept in place.
 | 6 | `22e75dd6b87b1b199bb08c778d7cf075ae5aae08` | `29ca562f8f` | `124c07c0b7` |
 | 7 | `124c07c0b77a9e20e84676514d8b1ff78536ea3f` | `4b4349064a` | `6d375f2d2d` |
 | 8 | `4b4349064a750ba6347293b55874a7f92abdd0db` (54–57, 59); `6d375f2d2deac0519e659bbce5b48087023c1430` (58) | `7331974b69` | `beb0192cb8` |
+| 9 | `beb0192cb8dc36f78c369c080f2adfbc1887a486` | `0c6be9a074` | `a2cd79b912` |
 
 ## Files
 
@@ -1822,4 +2157,185 @@ Every staged file, grouped by source directory (generated from the tree):
 - `59-degree-separated/sun/data/`: `layout.json`
 - `59-degree-separated/sun/generated/`: `INDEPENDENT_CHECKS.json`, `METRICS.json`, `source_records.json`, `sun10.json`, `verification_optimized_run.json`, `verification_run.json`
 - `59-degree-separated/sun/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `60-positive-gap/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.json`, `README.md`
+- `60-positive-gap/checks/`: `PDF_QA.json`, `REPRODUCTION.json`, `verify_all.py`
+- `60-positive-gap/report/`: `report.pdf`, `report.tex`
+- `60-positive-gap/research_alternatives/`: `NINE_CANDIDATE_REVIEW.md`, `alternatives.tex`, `check_positive_gap.py`, `positive_gap_independent_check.json`
+- `60-positive-gap/research_low_degree/`: `audit_gap_source.py`, `gap_source_audit.json`, `gap_source_audit.md`
+- `60-positive-gap/research_low_degree/supplement15/`: `LICENSE`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `build.py`, `reproduce.py`, `section.tex`, `verify.py`
+- `60-positive-gap/research_low_degree/supplement15/certificates/`: `BUILD.json`, `REPRODUCE.json`, `VERIFY.json`
+- `60-positive-gap/research_low_degree/supplement15/circuits/`: `p15_degree24_source58_baseline90.json`, `p15_degree24_source58_baseline90_degree_certificate.json`, `p15_degree24_transport89.json`, `p15_degree24_transport89_degree_certificate.json`
+- `60-positive-gap/research_low_degree/supplement15/native/`: `NOTICE-upstream.md`
+- `60-positive-gap/research_low_degree/supplement15/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `60-positive-gap/research_low_degree/supplement15/upstream/`: `RELAXED_KERNEL_COMPLETE.md`, `source58_NOTICE.md`, `source58_build.py`, `source58_p90.json`, `source58_report.tex`
+- `60-positive-gap/research_nine/`: `NEW_SOURCE_PROOF.md`
+- `60-positive-gap/research_nine/candidate/`: `SOURCE_CHECK.json`, `build_nine.py`, `circuit.py`
+- `60-positive-gap/research_nine/candidate/data/`: `parent_source.json`, `split_code.json`, `split_kernels.json`
+- `60-positive-gap/research_nine/candidate/generated/`: `LEDGER.json`, `gap_100_natural.json`, `gap_100_natural_certificate.json`, `gap_100_natural_certificate_degree.json`, `gap_100_positive.json`, `gap_100_positive_certificate.json`, `gap_100_positive_certificate_degree.json`
+- `60-positive-gap/research_nine/compact_candidate/`: `DEGREE_AND_BINDING.md`, `README.md`, `SOURCE_CHECK.json`, `audit_circuit.py`, `build_nine.py`, `circuit.py`, `source_equations.tex`, `write_source_table.py`
+- `60-positive-gap/research_nine/compact_candidate/data/`: `parent_source.json`, `split_code.json`, `split_kernels.json`
+- `60-positive-gap/research_nine/compact_candidate/generated/`: `INDEPENDENT_CIRCUIT_AUDIT.json`, `LEDGER.json`, `SOURCE_TABLE_AUDIT.json`, `gap_100_natural.json`, `gap_100_natural_certificate.json`, `gap_100_natural_certificate_degree.json`, `gap_100_positive.json`, `gap_100_positive_certificate.json`, `gap_100_positive_certificate_degree.json`
+- `60-positive-gap/research_nine/data/`: `positive_gap_records.json`, `positive_gap_shift_records.json`, `reconstructed_records.json`
+- `60-positive-gap/upstream-status/`: `PROPOSAL_REVIEW.md`, `README.md`
+- `60-positive-gap/upstream31/`: `FETCH_LEDGER.json`, `LICENSE`, `NOTICE.md`
+- `60-positive-gap/upstream31/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `60-positive-gap/upstream44/native/`: `NOTICE-upstream.md`
+- `60-positive-gap/upstream44/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `61-congruence-carriers/`: `LICENSE`, `MANIFEST.json`, `Makefile`, `NOTICE.md`, `README.md`, `REPORT_QA.json`, `RESULTS.json`, `VERIFICATION.json`, `verify_all.py`
+- `61-congruence-carriers/integer/`: `REDUCTIONS_PROOF.md`, `REDUCTION_VERIFICATION.json`, `SOURCE_TRANSPORT_CLARIFICATION.md`, `build_reductions.py`, `eliminate.py`, `octic34.json`, `sextic37.json`
+- `61-congruence-carriers/integer/coefficients_source/`: `ACTIVE_BINDING.json`, `DOSSIER_VERIFICATION.json`, `EXACT_REPRODUCTION.json`, `LICENSE`, `NOTICE.md`, `README_DOSSIER.md`, `TRANSFER_LEDGER.json`, `verify_dossier.py`
+- `61-congruence-carriers/integer/coefficients_source/historical/`: `DOMAIN_REDUCTION_PROOF.md`, `integer36_degree8_odd_scale.json`, `integer42_degree6_odd_scale.json`
+- `61-congruence-carriers/integer/coefficients_source/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`
+- `61-congruence-carriers/integer/coefficients_source/licenses/package57/`: `LICENSE`, `NOTICE.md`
+- `61-congruence-carriers/licenses/`: `FETCH_MANIFEST.json`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.package44`, `LICENSE.root`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-upstream-native44.md`, `NOTICE_K215.md`, `README.md`, `SOURCE_PINS-native44.json`
+- `61-congruence-carriers/positive/`: `ACTIVE_BINDING.json`, `AUDIT12.md`, `CHECK12.json`, `CHECK13.json`, `CIRCUIT_OPTIMIZATION.md`, `PROOF13.md`, `PROOF14.md`, `REVIEW_P13.md`, `SIGNED_INDEX_LEMMA.md`, `build12.py`, `build13.py`, `check12.py`, `check13.py`, `dag.py`, `p12_product_split2.json`, `p12_sos_split2.json`, `p13_degree34.json`
+- `61-congruence-carriers/positive/intermediate14/`: `CHECK14.json`, `build14.py`, `check14.py`, `p14_degree34.json`
+- `61-congruence-carriers/positive/reference/`: `p12_product_split2_105.json`, `p12_sos_split2_104.json`, `p13_degree34_95.json`
+- `61-congruence-carriers/provenance/`: `SOURCE_BLOBS.json`
+- `61-congruence-carriers/provenance/signed_source/`: `SNAPSHOT.json`
+- `61-congruence-carriers/report/`: `congruence_carriers.pdf`, `congruence_carriers.tex`
+- `62-sign-and-norm/`: `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `RESEARCH_NOTES.md`, `RESULTS.json`, `SOURCE_SNAPSHOT.json`, `build_report.py`, `report.pdf`, `report.tex`, `verify_all.py`
+- `62-sign-and-norm/nine/`: `COEFFICIENT_BINDING.json`, `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_nine.py`, `build_source.py`, `circuit.py`, `independent_review.py`, `materialize.py`, `reproduce.py`, `rewrite_powers.py`, `section.tex`, `verify.py`
+- `62-sign-and-norm/nine/certificates/`: `INDEPENDENT_REVIEW.json`, `SOURCE.json`, `VERIFIED.json`
+- `62-sign-and-norm/nine/data/`: `parent_source.json`, `split_code.json`, `split_kernels.json`
+- `62-sign-and-norm/nine/fixed/`: `BINDING.json`, `c007.bin.gz`, `c010.bin.gz`, `threshold_scale.bin.gz`
+- `62-sign-and-norm/nine/generated/`: `LEDGER.json`, `split_116_natural.json`, `split_116_natural_certificate.json`, `split_116_natural_certificate_degree.json`, `split_116_natural_global.certificate.json`, `split_116_natural_global.json`, `split_116_positive.json`, `split_116_positive_certificate.json`, `split_116_positive_certificate_degree.json`, `split_116_positive_global.certificate.json`, `split_116_positive_global.json`
+- `62-sign-and-norm/nine/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`
+- `62-sign-and-norm/nine/upstream/`: `FREE_COORDINATE_PROOF.md`, `FROZEN_NINE_PROOF.md`, `NOTICE-native.md`, `NOTICE-source53.md`, `NOTICE-source59.md`, `SPLIT_SOURCE_PROOF.md`
+- `62-sign-and-norm/positive13/`: `BUILD_RECEIPT.json`, `CHECKS.json`, `COEFFICIENT_BINDING.json`, `INDEPENDENT_REVIEW.md`, `LICENSE`, `PROOF.md`, `README.md`, `REVIEW_CHECKS.json`, `SOURCE_PINS.json`, `build.py`, `check.py`, `p13_independent_check.py`, `polynomial.json`, `section.tex`
+- `62-sign-and-norm/positive13/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`
+- `62-sign-and-norm/quartic42/`: `AUDIT.json`, `DEPENDENCY_AUDIT.json`, `INDEPENDENT_ALGEBRA.json`, `INDEPENDENT_REVIEW.md`, `PROOF.md`, `READABLE_FORMULAS.json`, `SOURCE_PINS.json`, `build_verify.py`, `companions_section.tex`, `independent_algebra.py`, `quartic42.json`, `quartic42_expanded.json`, `section.tex`, `verify_dependencies.py`
+- `62-sign-and-norm/quartic42/companions/`: `AUDIT.json`, `INDEPENDENT_CHECK.json`, `INDEPENDENT_REVIEW.md`, `PROOF.md`, `build_companions.py`, `check_low_degree_companions.py`, `octic30.json`, `octic30_expanded.json`, `octic30_readable.json`, `quartic42_x_square.json`, `sextic35.json`, `sextic35_expanded.json`, `sextic35_readable.json`
+- `62-sign-and-norm/quartic42/dependencies/12-gap-norm14/proofs/`: `quartic32_proof.md`
+- `62-sign-and-norm/quartic42/dependencies/12-gap-norm14/quadratic/`: `quartic32.json`
+- `62-sign-and-norm/quartic42/dependencies/20-root12/`: `LICENSE.ProveIt`
+- `62-sign-and-norm/quartic42/dependencies/20-root12/domains/`: `DOMAIN_REDUCTION_PROOF.md`, `integer54_quartic.json`
+- `62-sign-and-norm/quartic42/dependencies/20-root12/domains/sources/15-release/evidence/diophantine_zfc_round2/integers/`: `SIGNED_DOMAIN_PROOF.md`
+- `62-sign-and-norm/quartic42/dependencies/20-root12/domains/sources/15-release/evidence/diophantine_zfc_round2/quadratic/`: `LOW_DEGREE_PROOF.md`
+- `62-sign-and-norm/quartic42/dependencies/23-separating12/`: `NOTICE.md`
+- `62-sign-and-norm/quartic42/dependencies/23-separating12/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`
+- `62-sign-and-norm/quartic42/dependencies/23-separating12/proofs/`: `ODD_SCALE_27_PROOF.md`
+- `62-sign-and-norm/quartic42/dependencies/29-simpler-forms/`: `integer54_quartic.json`
+- `62-sign-and-norm/quartic42/dependencies/`: `README.md`, `SOURCE_PINS.json`
+- `62-sign-and-norm/quartic42/dependencies/source34/`: `LICENSE`, `NOTICE.md`
+- `62-sign-and-norm/quartic42/dependencies/source34/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`
+- `62-sign-and-norm/verification/`: `PDF_QA.json`, `REPLAY.json`, `REPLAY_OPTIMIZED.json`
+- `63-sign-recovery/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `README.md`, `RESULTS.json`, `VERIFICATION.json`, `verify.py`
+- `63-sign-recovery/nine/`: `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build.py`, `check_exact.py`, `check_source.py`, `section.tex`, `verify.py`
+- `63-sign-recovery/nine/coefficients/`: `BINDING.json`
+- `63-sign-recovery/nine/data/`: `order7_majorant_positive_certificate.json`
+- `63-sign-recovery/nine/generated/`: `ORDER7_LEDGER.json`, `order7_natural.json`, `order7_natural_certificate.json`, `order7_natural_degree.json`, `order7_positive.json`, `order7_positive_certificate.json`, `order7_positive_degree.json`
+- `63-sign-recovery/nine/licenses/31-sun10/`: `LICENSE`, `NOTICE.md`
+- `63-sign-recovery/nine/licenses/48-majorants/`: `LICENSE`, `NOTICE.md`
+- `63-sign-recovery/nine/licenses/55-congruence-norms/`: `LICENSE`, `NOTICE.md`
+- `63-sign-recovery/nine/licenses/59-degree-separated/`: `LICENSE`, `NOTICE.md`
+- `63-sign-recovery/positive14/`: `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `pell14_degree34.json`, `pell14_degree34_degree_certificate.json`, `pell14_degree34_unshifted.json`, `pell14_natural_degree34.json`, `section.tex`, `verify.py`
+- `63-sign-recovery/provenance/`: `SOURCES.json`
+- `63-sign-recovery/quartic/`: `AUDIT.json`, `build_verify.py`, `quartic42.json`, `quartic42_expanded.json`
+- `63-sign-recovery/report/`: `QA.json`, `metrics.tex`, `report.pdf`, `report.tex`
+- `63-sign-recovery/reviews/`: `NINE_REVIEW.md`, `POSITIVE14_REVIEW.md`, `QUARTIC42_REVIEW.md`, `ZFC_INTERNALIZATION_SCOPE.md`, `check_nine_independent.py`
+- `63-sign-recovery/upstream/licenses/`: `34-integer14-LICENSE`, `34-integer14-NOTICE.md`, `57-separated-degrees-LICENSE`, `57-separated-degrees-NOTICE.md`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`
+- `64-structural-reductions/`: `LICENSE`, `MANIFEST.sha256`, `METRICS.json`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `build_report.py`, `verify_all.py`
+- `64-structural-reductions/certificates/`: `PDF_CHECKS.json`, `REPLAY_LOG_OPTIMIZED.json`, `ROOT_CHECKS_OPTIMIZED.json`
+- `64-structural-reductions/integer41/`: `COMPANIONS_PROOF.md`, `NOTICE.md`, `PROOF41.md`, `PROOF44.md`, `SOURCE_PINS.json`, `build_companions.py`, `build_verify41.py`, `build_verify44.py`, `octic31.json`, `quartic41.json`, `quartic44.json`, `section.tex`, `sextic36.json`
+- `64-structural-reductions/integer41/certificates/`: `COEFFICIENT_CHECKS.json`, `OCTIC31_CHECKS.json`, `QUARTIC41_CHECKS.json`, `QUARTIC41_EXPANSION.json`, `QUARTIC44_CHECKS.json`, `SEXTIC36_CHECKS.json`
+- `64-structural-reductions/integer41/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `64-structural-reductions/nine-positive-111/`: `PROOF.md`, `README.md`, `SOURCE_AUDIT.json`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build_nine.py`, `circuit.py`, `materialize_fixed.py`, `section.tex`, `verify_candidate.py`
+- `64-structural-reductions/nine-positive-111/data/`: `split_code.json`, `split_kernels.json`
+- `64-structural-reductions/nine-positive-111/fixed/`: `BINDING.json`, `c007.bin.gz`, `c008.bin.gz`, `c010.bin.gz`, `threshold_scale.bin.gz`
+- `64-structural-reductions/nine-positive-111/generated/`: `LEDGER.json`, `split_111_natural.json`, `split_111_natural_certificate.json`, `split_111_natural_certificate_degree.json`, `split_111_positive.json`, `split_111_positive_certificate.json`, `split_111_positive_certificate_degree.json`
+- `64-structural-reductions/nine-positive-111/native/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `64-structural-reductions/positive14/`: `CHECKS.json`, `NATIVE_REBUILD.json`, `PROOF.md`, `SOURCE_PINS.json`, `build.py`, `polynomial.json`, `section.tex`, `verify.py`
+- `64-structural-reductions/positive14/native/`: `NOTICE-upstream.md`
+- `64-structural-reductions/positive14/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `64-structural-reductions/report/`: `report.pdf`, `report.tex`
+- `64-structural-reductions/review/`: `BASELINE_PINS.json`, `INTERNAL_MATHEMATICAL_REVIEW.md`, `active_README.pinned.md`, `collection_README.pinned.md`
+- `65-shared-taps/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `VERIFICATION.json`, `report.pdf`, `report.tex`, `verify_all.py`
+- `65-shared-taps/nine/`: `LICENSE`, `NATIVE_RECONSTRUCTION.json`, `NOTICE.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `circuit.py`, `construct.py`, `materialize_fixed.py`, `section.tex`, `verify.py`
+- `65-shared-taps/nine/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `65-shared-taps/nine/data/`: `kernels.json`, `kernels_economy.json`, `layout.json`, `layout_economy.json`
+- `65-shared-taps/nine/fixed/shared_taps/`: `BINDING.json`, `c006.bin.gz`, `c007.bin.gz`, `c010.bin.gz`, `threshold_scale.bin.gz`
+- `65-shared-taps/nine/fixed/shared_taps_economy/`: `BINDING.json`, `c006.bin.gz`, `c007.bin.gz`, `c010.bin.gz`, `threshold_scale.bin.gz`
+- `65-shared-taps/nine/generated/`: `LEDGER.json`, `shared_taps_economy_natural.json`, `shared_taps_economy_natural_certificate.json`, `shared_taps_economy_natural_certificate_degree.json`, `shared_taps_economy_positive.json`, `shared_taps_economy_positive_certificate.json`, `shared_taps_economy_positive_certificate_degree.json`, `shared_taps_natural.json`, `shared_taps_natural_certificate.json`, `shared_taps_natural_certificate_degree.json`, `shared_taps_positive.json`, `shared_taps_positive_certificate.json`, `shared_taps_positive_certificate_degree.json`
+- `65-shared-taps/nine/inherited/`: `nine_free_proof.md`, `split_code.json`, `split_kernels.json`, `split_source_proof.md`
+- `65-shared-taps/pell/`: `CHECK_RESULTS.json`, `INDEPENDENT_PROOF_AUDIT.md`, `LICENSE`, `METRICS.json`, `NOTICE.md`, `README.md`, `REPLAY_RESULTS.json`, `SOURCE_PINS.json`, `build.py`, `candidate14.py`, `carrier14.py`, `evaluate.py`, `independent_check.py`, `proof.md`, `section.tex`, `verify_all.py`
+- `65-shared-taps/pell/circuits/`: `p14_degree26.json`, `p14_degree30.json`
+- `65-shared-taps/pell/coefficients/`: `NOTICE-upstream.md`
+- `65-shared-taps/pell/coefficients/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `65-shared-taps/sun/`: `INDEPENDENT_PROOF_AUDIT.md`, `NOTICE.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `algebra_audit.py`, `build.py`, `fixed.py`, `section.tex`, `source_audit.py`, `tail.py`, `verify.py`
+- `65-shared-taps/sun/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `65-shared-taps/sun/data/`: `kernels.json`, `layout.json`
+- `65-shared-taps/sun/generated/`: `METRICS.json`, `VERIFICATION.json`, `sun10.json`
+- `65-shared-taps/sun/inherited/`: `package59_NOTICE.md`, `shared_taps_proof.md`
+- `66-gap-congruence/`: `ARTIFACT_MAP.md`, `NOTICE.md`, `PDF_QA.json`, `PROVENANCE.json`, `README.md`, `RELEASE_CHECKS.json`, `negative_controls.py`, `verify.py`
+- `66-gap-congruence/algebra/`: `RESULTS.json`, `SHORTENED_INTEGRAL_ROOT_PROOF.md`, `build_and_check.py`, `p15_78_degree30.json`, `p15_87_degree26.json`, `p15_88_degree24.json`
+- `66-gap-congruence/algebra/upstream/`: `LICENSE.source`, `NOTICE.source.md`
+- `66-gap-congruence/carry/`: `CERTIFICATES.json`, `PROOF.md`, `README.md`, `REBUILD.json`, `TEST_RESULTS.json`, `VERIFICATION.json`, `gapN116_H2068_code.json`, `gapN116_H2068_kernels.json`, `gapNmirror116_H2057_code.json`, `gapNmirror116_H2057_kernels.json`, `gapNq116_H2082_code.json`, `gapNq116_H2082_kernels.json`, `rebuild_kernels.py`, `section.tex`, `test_certificates.py`, `verify_certificates.py`
+- `66-gap-congruence/direct/`: `OneStackEquation.lean`, `README.md`, `SOURCE_PINS.json`, `build_stack_step.py`, `check_stack.py`, `emit_stack_constructor.py`, `flatten_stack_step.py`, `section.tex`, `stack_step.json`, `stack_step_quartic.json`, `stack_step_quartic16.json`, `stack_step_quartic4.json`, `stack_step_quartic64.json`
+- `66-gap-congruence/direct_audit/`: `REVIEW.md`, `audit.py`, `receipt.json`, `receipt_optimized.json`
+- `66-gap-congruence/integer/`: `CHECKS.json`, `FINAL_METRICS.json`, `NEGATIVE_CONTROLS.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_integer.py`, `negative_controls.py`, `section.tex`, `verify_integer.py`
+- `66-gap-congruence/integer/alternative_low_cost/`: `CHECKS.json`, `README.md`, `build_integer.py`, `verify_integer.py`
+- `66-gap-congruence/integer/alternative_low_cost/data/`: `gapN116_H2068_code.json`, `gapN86_source.json`, `gapNmirror116_H2057_code.json`, `gapNq116_H2082_code.json`, `gapNq85_source.json`, `layout.json`
+- `66-gap-congruence/integer/alternative_low_cost/fixed/`: `MANIFEST.json`, `c003.bin.gz`, `c004.bin.gz`, `c005.bin.gz`, `c006.bin.gz`, `radix.bin.gz`, `threshold.bin.gz`
+- `66-gap-congruence/integer/alternative_low_cost/generated/`: `METRICS.json`, `integer10.json`, `source_records.json`
+- `66-gap-congruence/integer/data/`: `gapN116_H2068_code.json`, `gapN86_source.json`, `gapNmirror116_H2057_code.json`, `gapNq116_H2082_code.json`, `gapNq85_source.json`, `layout.json`
+- `66-gap-congruence/integer/fixed/`: `MANIFEST.json`, `c000.bin.gz`, `c007.bin.gz`, `c008.bin.gz`, `radix.bin.gz`, `threshold.bin.gz`
+- `66-gap-congruence/integer/generated/`: `METRICS.json`, `integer10.json`, `source_records.json`
+- `66-gap-congruence/integer/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `66-gap-congruence/integer/upstream/`: `GAP_SOURCE_PROOF.md`
+- `66-gap-congruence/integer_audit/`: `AUDIT.md`, `INDEPENDENT_INTEGER_AUDIT.json`, `independent_integer_audit.py`
+- `66-gap-congruence/nine/`: `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_nine.py`, `check_defect_exact.py`, `section.tex`, `verify_nine.py`
+- `66-gap-congruence/nine/data/H2057/`: `kernels.json`, `layout.json`, `source.json`
+- `66-gap-congruence/nine/data/H2068/`: `kernels.json`, `layout.json`, `source.json`
+- `66-gap-congruence/nine/data/H2082/`: `kernels.json`, `layout.json`, `source.json`
+- `66-gap-congruence/nine/data/`: `OLD_TUPLE_BINDING.json`
+- `66-gap-congruence/nine/fixed/`: `BINDING.json`, `c_33afcc0215e266df.bin.gz`, `c_50b8a3599b18e0a9.bin.gz`, `c_e3dd773f14077424.bin.gz`, `c_f69b40d0743298dc.bin.gz`, `threshold_16012032.bin.gz`, `threshold_17079501.bin.gz`
+- `66-gap-congruence/nine/generated/`: `DEFECT_IDENTITY.json`, `H2057_refined_natural.json`, `H2057_refined_positive.json`, `H2057_simple_natural.json`, `H2057_simple_positive.json`, `H2068_refined_natural.json`, `H2068_refined_positive.json`, `H2068_simple_natural.json`, `H2068_simple_positive.json`, `H2082_refined_natural.json`, `H2082_refined_positive.json`, `H2082_simple_natural.json`, `H2082_simple_positive.json`, `METRICS.json`, `VERIFICATION.json`
+- `66-gap-congruence/nine/upstream/`: `INHERITED_LICENSE`, `INHERITED_NOTICE.md`
+- `66-gap-congruence/nine_audit/`: `AUDIT.md`, `INDEPENDENT_NINE_AUDIT.json`, `LOCAL_IDENTITIES.json`, `check_local_identities.py`, `independent_nine_audit.py`
+- `66-gap-congruence/report/`: `algebra.tex`, `check_metrics.tex`, `comparison.tex`, `direct.tex`, `integer.tex`, `metrics.tex`, `nine.tex`, `packing.tex`, `report.pdf`, `report.tex`, `research.tex`, `scope.tex`, `source.tex`, `verification.tex`
+- `66-gap-congruence/review/`: `INTAKE_CHECKS.json`, `LITERAL_LEDGER_CHECKS.json`, `RECENT_COMMITS.json`, `SOURCE_PINS.json`, `WAVE8_COMPARISON.md`
+- `66-gap-congruence/review/formal/`: `QUADRATIC_CODING.md`, `SELECTIVE_SOURCE52.md`, `SOURCE.json`, `STATUS.md`
+- `66-gap-congruence/source/`: `EIGHT_GUARD_PROOF.md`, `GAP_SOURCE_CHECKS.json`, `GAP_SOURCE_PROOF.md`, `README.md`, `SOURCE_RELEASE_FILES.json`, `build_gap_source.py`, `gap87_kernels.json`, `gap87_source.json`, `gapL86_kernels.json`, `gapL86_source.json`, `gapN86_kernels.json`, `gapN86_source.json`, `gapNq85_kernels.json`, `gapNq85_source.json`, `section.tex`
+- `66-gap-congruence/source_audit/`: `AUDIT.md`, `INDEPENDENT_SOURCE_AUDIT.json`, `independent_sources.py`
+- `67-oriented-guards/`: `INCOMING_PINS.json`, `LICENSE`, `NOTICE.md`, `PDF_QA.json`, `PLACEMENT.md`, `PRESEAL_REPLAY.json`, `README.md`, `REBUILD_FILES.json`, `SECTION_LAYOUT_MAP.json`, `SIGNED_DELIVERABLES.json`, `build_sections.py`, `negative_controls.py`, `report.pdf`, `report.tex`, `verify.py`
+- `67-oriented-guards/alternatives/`: `REVIEW.md`, `SOURCE_HASHES.txt`, `section.tex`
+- `67-oriented-guards/encoding/`: `CARRY_TESTS.json`, `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `RELEASE_FILES.txt`, `SIGNED_PAD.md`, `SOURCE_PINS.json`, `TESTS.json`, `VERIFICATION.json`, `check_carry.py`, `section.tex`, `split_code.json`, `split_kernels.json`, `test_split.py`, `verify_split.py`
+- `67-oriented-guards/encoding/upstream/`: `LICENSE-separated-degrees`, `NOTICE-separated-degrees.md`
+- `67-oriented-guards/nine/`: `CHECK_NINE.json`, `CHECK_NINE_OPTIMIZED.json`, `GENERATED_HASHES.json`, `INDEPENDENT_REVIEW.md`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_nine.py`, `check_nine.py`, `check_ring.py`, `report.tex`, `section.tex`, `test_corruption.py`
+- `67-oriented-guards/nine/data/`: `split108_code.json`, `split108_kernels.json`
+- `67-oriented-guards/nine/generated/`: `LEDGER.json`, `split_108_order-1_natural.json`, `split_108_order-1_natural_certificate.json`, `split_108_order-1_natural_certificate_degree.json`, `split_108_order-1_positive.json`, `split_108_order-1_positive_certificate.json`, `split_108_order-1_positive_certificate_degree.json`, `split_108_order0_natural.json`, `split_108_order0_natural_certificate.json`, `split_108_order0_natural_certificate_degree.json`, `split_108_order0_positive.json`, `split_108_order0_positive_certificate.json`, `split_108_order0_positive_certificate_degree.json`, `split_108_order1_natural.json`, `split_108_order1_natural_certificate.json`, `split_108_order1_natural_certificate_degree.json`, `split_108_order1_positive.json`, `split_108_order1_positive_certificate.json`, `split_108_order1_positive_certificate_degree.json`, `split_108_order2_natural.json`, `split_108_order2_natural_certificate.json`, `split_108_order2_natural_certificate_degree.json`, `split_108_order2_positive.json`, `split_108_order2_positive_certificate.json`, `split_108_order2_positive_certificate_degree.json`, `split_108_order3_natural.json`, `split_108_order3_natural_certificate.json`, `split_108_order3_natural_certificate_degree.json`, `split_108_order3_positive.json`, `split_108_order3_positive_certificate.json`, `split_108_order3_positive_certificate_degree.json`, `split_108_order4_natural.json`, `split_108_order4_natural_certificate.json`, `split_108_order4_natural_certificate_degree.json`, `split_108_order4_positive.json`, `split_108_order4_positive_certificate.json`, `split_108_order4_positive_certificate_degree.json`
+- `67-oriented-guards/nine/review/`: `MAJORANT_SYMPY.json`, `NINE_INDEPENDENT.json`, `check_majorant_sympy.py`, `check_nine_independent.py`
+- `67-oriented-guards/positive/`: `CHECK_RECEIPT.json`, `LICENSE`, `NEGATIVE_CONTROL_RECEIPT.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `check.py`, `fourteen_positive_degree30.json`, `fourteen_positive_degree30_certificate.json`, `fourteen_positive_system.json`, `negative_controls.py`, `report.pdf`, `report.tex`, `section.tex`
+- `67-oriented-guards/positive/coefficients/`: `NOTICE-upstream.md`
+- `67-oriented-guards/positive/coefficients/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `67-oriented-guards/quartic/`: `CHECKS.json`, `LICENSE`, `NOTICE.md`, `PROJECTIONS.md`, `PROJECTION_CHECKS.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `TEX_RESIDUAL_CHECK.json`, `build_projections.py`, `build_verify.py`, `check_tex_residuals.py`, `octic32.json`, `octic32_expanded.json`, `quartic42.json`, `quartic42_expanded.json`, `section.tex`, `sextic36.json`, `sextic36_expanded.json`
+- `67-oriented-guards/quartic/upstream/q45/upstream/34-integer14/`: `LICENSE`
+- `67-oriented-guards/quartic/upstream/q45/upstream/34-integer14/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`
+- `67-oriented-guards/review/`: `ARRIVAL_COMMIT.json`
+- `67-oriented-guards/review/baseline/`: `BASELINE_REVIEW.md`, `ConZFC_Integral_Root_2026-10-23.stdout.txt`, `EXECUTION_SURFACE.json`, `FORMAL_COMMIT.json`, `FRONTIER_COUNTS.json`, `PROPOSAL_REVIEW.md`, `README.md`, `REPLAY_RESULTS.json`, `SELECTED_PARETO.json`, `SELECTIVE_SOURCE52.md`, `SOURCE_PINS.json`, `STATUS.md`, `ZFC_Diophantine_Degree_Separated_2026-10-23.stdout.txt`, `con-zfc-calibrated-carry-4b4349064a.stdout.txt`, `con_zfc_congruence_norms_2026-10-23.stdout.txt`, `count_frontier.py`, `pareto.py`, `replay_inputs.py`
+- `67-oriented-guards/review/positive14/`: `RECEIPT.json`, `REVIEW.md`, `check_independent.py`
+- `67-oriented-guards/review/projections/`: `AUDIT.md`, `REVIEW.json`, `check.py`, `normal.stdout.txt`, `optimized.stdout.txt`
+- `67-oriented-guards/review/quartic42/`: `LITERAL_REVIEW.json`, `PRELIMINARY.md`, `REPAIRED_PROOF_REVIEW.md`, `SNAPSHOT.json`, `TRANSPORT_CORRECTION.json`, `TRANSPORT_CORRECTION.md`, `check_literal.py`, `check_literal_intake.py`, `normal.stdout.txt`, `optimized.stdout.txt`
+- `67-oriented-guards/review/signed10/`: `AUDIT.md`, `FINAL_REPLAY.json`, `FINAL_SNAPSHOT.json`, `REPLAY.json`, `SNAPSHOT.json`, `STRUCTURE.json`, `final_normal.stdout.txt`, `final_optimized.stdout.txt`, `normal.stdout.txt`, `optimized.stdout.txt`
+- `67-oriented-guards/review/signed108/`: `AUDIT.md`, `REPLAY.json`, `SNAPSHOT.json`, `STRUCTURE.json`, `normal.stdout.txt`, `optimized.stdout.txt`
+- `67-oriented-guards/review/signed108trim/`: `AUDIT.md`, `FINAL_DOCUMENT_HASHES.json`, `REPLAY.json`, `SNAPSHOT.json`, `STRUCTURE.json`, `normal.stdout.txt`, `optimized.stdout.txt`
+- `67-oriented-guards/review/signed13/`: `AUDIT.md`, `FINAL_DOCUMENT_HASHES.json`, `REPLAY.json`, `SNAPSHOT.json`, `STRUCTURE.json`, `normal.stdout.txt`, `optimized.stdout.txt`
+- `67-oriented-guards/root_checks/`: `check_bindings.json`, `check_bindings.py`, `check_endpoints.json`, `check_endpoints.py`
+- `67-oriented-guards/sections/`: `alternatives.tex`, `encoding.tex`, `nine.tex`, `positive.tex`, `quartic.tex`, `signed108trim.tex`, `signed13.tex`
+- `67-oriented-guards/signed/`: `INSTANCE.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `independent_check.py`, `report.pdf`, `report.tex`, `section.tex`
+- `67-oriented-guards/signed/generated/`: `INDEPENDENT_CHECKS.json`, `METRICS.json`, `sun10.json`
+- `67-oriented-guards/signed/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `67-oriented-guards/signed108/`: `INSTANCE.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `independent_check.py`, `report.pdf`, `report.tex`, `section.tex`, `source_audit.py`
+- `67-oriented-guards/signed108/data/`: `layout.json`
+- `67-oriented-guards/signed108/generated/`: `INDEPENDENT_CHECKS.json`, `METRICS.json`, `source_records.json`, `sun10.json`
+- `67-oriented-guards/signed108/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `67-oriented-guards/signed108trim/`: `INSTANCE.json`, `NOTICE.md`, `PDF_QA.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `evaluate.py`, `independent_check.py`, `report.pdf`, `report.tex`, `section.tex`, `source_audit.py`
+- `67-oriented-guards/signed108trim/data/`: `layout.json`
+- `67-oriented-guards/signed108trim/generated/`: `INDEPENDENT_CHECKS.json`, `METRICS.json`, `source_records.json`, `sun10.json`
+- `67-oriented-guards/signed108trim/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `67-oriented-guards/signed13/`: `FIXED_BINDING.json`, `LICENSE`, `NOTICE.md`, `README.md`, `build_jones.py`, `report.pdf`, `report.tex`, `reproduce.py`, `section.tex`, `split_source.py`, `verify.py`
+- `67-oriented-guards/signed13/generated/`: `CHECKS.json`, `LEDGER.json`, `signed_coprime_compact_split_crt.json`, `signed_coprime_compact_split_crt_degree.json`
+- `67-oriented-guards/signed13/licenses/`: `LICENSE`, `LICENSE.SparsePell`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `67-oriented-guards/signed13/split/`: `split_code.json`, `split_kernels.json`, `verify_split.py`
 - top level: `README.md` (this file), `PLACEMENT.md`
