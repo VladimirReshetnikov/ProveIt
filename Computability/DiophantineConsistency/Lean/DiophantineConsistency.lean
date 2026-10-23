@@ -130,3 +130,4 @@ import DiophantineConsistency.FreeCarrierDegree
 import DiophantineConsistency.GapCircuitDegree66
 import DiophantineConsistency.GapFinalizerDegree66
 import DiophantineConsistency.GapPolynomialDegree66
+import DiophantineConsistency.ObjectAdditionLaws

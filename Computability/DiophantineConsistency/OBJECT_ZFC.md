@@ -80,6 +80,14 @@ than an unrestricted external induction assumption about the model.
 The module and its independent axiom audit pass with only `propext`,
 `Classical.choice`, and `Quot.sound`.
 
+[`ObjectAdditionLaws.lean`](Lean/DiophantineConsistency/ObjectAdditionLaws.lean)
+now proves left zero, left successor, commutativity and associativity over
+the entire internal omega. Every induction supplies an actual formula.
+The closed commutativity and associativity sentences have actual ZFC
+derivations; see [OBJECT_ADDITION_LAWS.md](OBJECT_ADDITION_LAWS.md). These
+laws support internal arithmetic compiler proofs, without transferring
+arbitrary external natural-number theorems to nonstandard models.
+
 ## Multiplication, supplied expressions, and the actual equation sentence
 
 [`ObjectMultiplication.lean`](Lean/DiophantineConsistency/ObjectMultiplication.lean)
