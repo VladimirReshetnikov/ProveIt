@@ -17,15 +17,17 @@ coordinate graph with zero extra witnesses. The entire `axStack` has a
 fixed-denominator natural polynomial, supplied by nested applications of
 `ScaledNatural.cantorPair`. Clearing that positive constant denominator in
 one graph equation also gives zero extra witnesses for the stack coordinate
-graph. The gated coordinate graph uses 14 witnesses for its two equality
-branches.
+graph. The gated coordinate graph uses one disequality slack for
+`(c-a)*(c-b) != 0`: its zero branch returns zero, and its nonzero branch
+returns the polynomial bundle. This saves thirteen witnesses against the
+earlier two-equality construction.
 
 The external operand graphs are substituted once into fixed coordinate
 blocks. Checked witness-count formulas are:
 
 ```
 implication arguments: 2 + sum of the two argument witness counts
-gated arguments:      17 + sum of the three argument witness counts
+gated arguments:       4 + sum of the three argument witness counts
 stack arguments:       7 + sum of the seven argument witness counts
 ```
 
@@ -34,7 +36,11 @@ uses those blocks in the source arithmetic checker. Its `program` represents
 the exact `haltingTest` graph and retains the single outer beta-function
 trace from the earlier direct graph construction. Its local finite
 compositions retain the exposed graph output, avoiding an unnecessary
-output-value witness. The full source step has **1,811** witnesses,
+output-value witness. Local equality branches also use the one-slack
+disequality graph and retain the exposed output. Their cost is five plus
+the four argument witness counts, saving two against the earlier branch.
+The full source step has **1,742** witnesses, down from the checked
+1,811-witness checkpoint and
 compared with **6,924** for `DirectGraphEnumerator`.
 Both counts are theorems proved by definitional reduction.
 

@@ -9,6 +9,12 @@ original contents. See the [active research](../README.md) for new Lean
 proofs and the current status; this README covers only the delivered
 manuscripts.
 
+The subsequent [active proposal review](../PROPOSAL_REVIEW.md) records
+independent release replays, circuit counts, proof assessments and the next
+formalization target. It selects package 52's 548-operation nine-positive
+form while retaining package 53's lower-degree alternative. The delivered
+packages remain unchanged.
+
 **Explicit polynomials with fixed integer coefficients whose unsolvability
 ZFC proves equivalent to Con(ZFC). Waves 5, 6 and 7 are all in the tree. The
 stated frontier is now:**
@@ -154,8 +160,9 @@ Numbers are the packages' own; **none was re-derived at intake.**
 - Operations count every binary +, −, × including multiplication by fixed
   numerals; reuse and system comparisons are free.
 - Unknowns are strictly positive unless marked ℤ (unrestricted integers)
-  or ℕ (naturals). Each nine-positive form has a nine-ℕ companion three
-  operations dearer (four in 47, six in 53).
+  or ℕ (naturals). Natural-coordinate companions have separate counts:
+  package 52 adds three operations, 47 adds four, and 53's calibrated form
+  adds six. The domain translation and its actual circuit must be stated.
 
 The base is the earliest-arriving package that presents the construction in
 full; where only one package has it, that package.

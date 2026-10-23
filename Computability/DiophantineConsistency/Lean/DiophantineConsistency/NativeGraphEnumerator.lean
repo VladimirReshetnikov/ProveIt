@@ -7,7 +7,7 @@ namespace DiophantineConsistency.NativeGraphEnumerator
 
 open SetTheory SetTheory.BusyBeaver.ZFC EnumPerm Code254 KCode222
 open DirectGraphEnumerator (R ofEq identity constant successor add sub
-  iterate pl np tw ws depth cache ifEq ifZero)
+  iterate pl np tw ws depth cache)
 open DirectEnumerator (encodeState decodeState encodeOption rawStep rawStep_eq
   optionStep optionStep_encode)
 
@@ -15,6 +15,20 @@ attribute [local irreducible] Nat.unpair
 
 def comp {f g : ℕ → ℕ} (r : R f) (s : R g) : R (fun n => f (g n)) :=
   GraphRep.composeDirect r (fun _ => s)
+
+def ifEq {f g h k : ℕ → ℕ} (r : R f) (s : R g) (t : R h) (u : R k) :
+    R (fun n => if f n = g n then h n else k n) := GraphRep.ifEqDirect r s t u
+
+def ifZero {f g h : ℕ → ℕ} (r : R f) (s : R g) (t : R h) :
+    R (fun n => if f n = 0 then g n else h n) := ifEq r (constant 0) s t
+
+theorem ifEq_witnessCount {f g h k : ℕ → ℕ}
+    (r : R f) (s : R g) (t : R h) (u : R k) :
+    (ifEq r s t u).witnessCount =
+      5 + r.witnessCount + s.witnessCount + t.witnessCount + u.witnessCount := by
+  change 4 + (1 + (r.witnessCount + (s.witnessCount +
+    (t.witnessCount + (u.witnessCount + 0))))) = _
+  omega
 
 def unpairLeft {f : ℕ → ℕ} (r : R f) : R (fun n => (unP (f n)).1) :=
   GraphRep.composeDirect CantorRepresentation.leftCoordinate (fun _ => r)
@@ -111,7 +125,7 @@ def program : R haltingTest := by
 
 set_option maxRecDepth 10000 in
 /-- Exact source-graph count; the proof reduces only the witness-count projection. -/
-theorem enumStepProgram_witnessCount : enumStepProgram.witnessCount = 1811 := rfl
+theorem enumStepProgram_witnessCount : enumStepProgram.witnessCount = 1742 := rfl
 
 set_option maxRecDepth 10000 in
 theorem directGraph_enumStepProgram_witnessCount :

@@ -19,6 +19,15 @@ answers. We first seek the fewest natural witnesses available from the
 repository's proved reductions, while retaining a quartic alternative.
 Global optimality is not asserted.
 
+After reviewing the eight wave-7 proposals, the next small-nine target is
+package 52's interior-regular equation: nine positive variables, 548 binary
+operations, degree 15,502,748 (551 operations over naturals). Package 53's
+738-operation, degree-7,344,328 form remains the lower-degree target.
+The selection, alternatives, finite replays and remaining proof obligations
+are recorded in [PROPOSAL_REVIEW.md](PROPOSAL_REVIEW.md). These proposals
+supersede wave 6 as numerical targets; the current closed Lean equations
+remain the certified baseline until a replacement is fully checked.
+
 The wave-5 and wave-6 report packages explicitly distinguish their new final
 equations from an end-to-end Lean certificate. The inherited P67 is a particularly short
 candidate: 15 strictly positive witnesses, degree 155, and 67 binary
@@ -31,8 +40,8 @@ The wave-6 packages arrived on `origin/main` during this research and were
 merged at `2d7766807b`. Their direct quadratic/Sidon encodings improve the
 reported low-variable degree and operation counts substantially; for example,
 [package 45](con-zfc-diophantine-forms/45-multioutput/README.md) reports nine
-positive unknowns at degree 129,875,980 in 788 operations. These are useful
-next-stage comparison targets. The executable generic Jones route below
+positive unknowns at degree 129,875,980 in 788 operations. These were useful
+comparison targets. The executable generic Jones route below
 prioritizes a complete checked construction and does not claim to improve
 those degree or operation counts.
 

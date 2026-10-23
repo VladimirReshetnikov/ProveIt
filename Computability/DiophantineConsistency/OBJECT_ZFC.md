@@ -7,21 +7,23 @@ calculus of a sentence expressing the same equivalence. The requested
 No theorem in this research promotes the external equivalence to an internal
 one.
 
-A fully internal endpoint must supply two actual `SetTheory.Form` sentences:
-a consistency sentence for the chosen coded ZFC proof system, and a sentence
-saying that the fixed nine-variable polynomial has no natural zero. The
-required conclusion then has the shape
+Both sides of the internal target are now actual `SetTheory.Form` sentences:
+a consistency sentence for sealed ZFC axiom codes and a sentence saying that
+the fixed nine-variable polynomial has no internal natural zero. The remaining
+required conclusion is
 
 ```
-BProv ZFCax_s [] (fIff consistencySentence unsolvabilitySentence).
+BProv ZFCax_s [] (fIff ObjectCodeSeal.consistencySentence
+  ObjectEquation.unsolvabilitySentence).
 ```
 
 The polynomial-side target is now supplied by
 `ObjectEquation.unsolvabilitySentence`. Its satisfaction theorem includes
-all internal natural tuples. `ObjectConsistency.unsealedConsistencySentence`
-supplies the consistency-side sentence for the canonical unsealed axiom
-coding. Relating that coding internally to the sealed theory used by the
-external endpoint, and deriving the full equivalence, remain open.
+all internal natural tuples. `ObjectCodeSeal.consistencySentence` quantifies
+over internal refutations from the sealed axiom-code predicate and quotes the
+actual external `ZFCax_s` convention. The equivalence between these two
+sentences is still open. The separate unsealed consistency sentence remains
+available for the canonical bounded-consistency development.
 
 ## Verified reusable interfaces
 
@@ -46,8 +48,8 @@ external endpoint, and deriving the full equivalence, remain open.
   supplies `fZFCAxiomCodeF`, `fCtxZFCAxiomsF` and their arbitrary-model
   specifications. These encode the unsealed axiom predicate `ZFCax`.
   The external consistency endpoint uses the sealed sentence theory
-  `ZFCax_s`; a common internal proof coding or an internal sealing bridge
-  must be specified explicitly.
+  `ZFCax_s`; `ObjectCodeSeal` now supplies its internal sealed axiom-code
+  predicate using checked bound computation and universal closure.
 * [`Endpoint.zfc_proves_conZFC_unfolded`](../../SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Endpoint.lean)
   proves `BProv ZFCax_s [] (conZFCForm n)` for each external numeral `n`.
   This is bounded consistency. The external family does not give a single
@@ -124,8 +126,26 @@ uniqueness, and formula-code preservation hold for every internal natural
 iteration count, by definable internal induction. Its quotation theorem
 agrees exactly with `closeN`, and with `sealF` when supplied the numeral
 `bound f`. Closed totality and functionality sentences have actual ZFC
-derivations. Computing the bound on arbitrary internal formula codes and
-transforming sealed/unsealed refutation certificates remain open.
+derivations.
+
+[`ObjectCodeBound.lean`](Lean/DiophantineConsistency/ObjectCodeBound.lean)
+computes that bound on every internal formula code. Its explicit local
+constructor certificates, exact formula semantics, natural-valuedness,
+totality, and functionality are checked. The proofs use definable
+formula-code induction, including nonstandard codes; quotation agrees
+exactly with `SetTheory.bound`. Totality and functionality have actual
+ZFC derivations.
+
+[`ObjectCodeSeal.lean`](Lean/DiophantineConsistency/ObjectCodeSeal.lean)
+combines the two operations, with exact `sealF` quotation and actual ZFC
+totality/functionality proofs. Its sealed axiom-code predicate quotes every
+actual `ZFCax_s` axiom. The associated `consistencySentence` has exact
+arbitrary-model semantics: no internal coded refutation from these sealed
+axiom contexts. Every external sealed refutation quotes internally, so
+satisfaction implies the external `ConZFC`; the reverse is not asserted
+uniformly for nonstandard models. An internal transformation between sealed
+and unsealed proof certificates remains optional work if the older unsealed
+coding is used; it is not needed merely to state the sealed target.
 
 ## Shortest concrete route still missing
 

@@ -200,7 +200,9 @@ its inputs. Its exact count theorem proves that every finite composition
 uses one fewer witness than `GraphRep.compose`, including functions with no
 inputs. The native formula blocks now use this constructor. See
 [NATIVE_FORMULAS.md](NATIVE_FORMULAS.md) for the checked reduction of the
-enumerator-step graph from 6,924 witnesses to 1,811.
+enumerator-step graph from 6,924 witnesses through 1,811 to 1,742. The latest
+step uses one natural slack for integer disequality and a single nonzero
+product to test the two gate alternatives.
 
 All checked components are covered by
 [`checks/CompilerAxioms.lean`](Lean/checks/CompilerAxioms.lean). Its audit

@@ -2,6 +2,7 @@ import DiophantineConsistency.NativeFormulaSyntax
 import DiophantineConsistency.PolynomialGraph
 import DiophantineConsistency.GraphBranching
 import DiophantineConsistency.DirectComposition
+import DiophantineConsistency.ArithmeticNonzero
 
 /-!
 # Fixed coordinate graphs for formula generation and the axiom stack
@@ -58,17 +59,24 @@ def bundleCoordinates : GraphRep (fun v : Fin 3 → ℕ => bundle222 (v 0) (v 1)
 @[simp] theorem bundleCoordinates_witnessCount : bundleCoordinates.witnessCount = 0 := rfl
 
 def gateCoordinates : GraphRep (fun v : Fin 3 → ℕ => gate (v 0) (v 1) (v 2)) := by
-  let a : GraphRep (fun v : Fin 3 → ℕ => v 0) := GraphRep.coordinate 0
-  let b : GraphRep (fun v : Fin 3 → ℕ => v 1) := GraphRep.coordinate 1
-  let c : GraphRep (fun v : Fin 3 → ℕ => v 2) := GraphRep.coordinate 2
-  refine (c.ifEq a (GraphRep.constant 0)
-    (c.ifEq b (GraphRep.constant 0) bundleCoordinates)).ofIff ?_
+  let d : Expr (Option (Fin 3)) :=
+    (.var (some 2) - .var (some 0)) * (.var (some 2) - .var (some 1))
+  let yes := (Rep.equality d (.constant 0)).conjunction
+    (Rep.equality (.var none) (.constant 0))
+  let no := (Rep.nonzero d).conjunction bundleCoordinates
+  refine (yes.disjunction no).ofIff ?_
   intro v
+  change (((v (some 2) : ℤ) - (v (some 0) : ℤ)) *
+      ((v (some 2) : ℤ) - (v (some 1) : ℤ)) = 0 ∧ (v none : ℤ) = 0) ∨
+    (((v (some 2) : ℤ) - (v (some 0) : ℤ)) *
+      ((v (some 2) : ℤ) - (v (some 1) : ℤ)) ≠ 0 ∧
+      v none = bundle222 (v (some 0)) (v (some 1)) (v (some 2))) ↔ _
+  simp only [mul_eq_zero, sub_eq_zero, Int.natCast_inj, Int.natCast_eq_zero]
   by_cases hca : v (some 2) = v (some 0) <;>
     by_cases hcb : v (some 2) = v (some 1) <;>
-    simp [gate, hca, hcb]
+    simp [gate, hca, hcb, sub_ne_zero]
 
-@[simp] theorem gateCoordinates_witnessCount : gateCoordinates.witnessCount = 14 := rfl
+@[simp] theorem gateCoordinates_witnessCount : gateCoordinates.witnessCount = 1 := rfl
 
 /-- The ten nested source pairings as one fixed-denominator polynomial. -/
 def stackScaled : ScaledNatural (fun v : Fin 7 → ℕ =>
@@ -126,8 +134,8 @@ theorem implication_witnessCount {σ : Type*} {a b : (σ → ℕ) → ℕ}
 
 theorem gated_witnessCount {σ : Type*} {a b c : (σ → ℕ) → ℕ}
     (ha : GraphRep a) (hb : GraphRep b) (hc : GraphRep c) :
-    (gated ha hb hc).witnessCount = 17 + ha.witnessCount + hb.witnessCount + hc.witnessCount := by
-  change 3 + (14 + (ha.witnessCount + (hb.witnessCount + (hc.witnessCount + 0)))) = _
+    (gated ha hb hc).witnessCount = 4 + ha.witnessCount + hb.witnessCount + hc.witnessCount := by
+  change 3 + (1 + (ha.witnessCount + (hb.witnessCount + (hc.witnessCount + 0)))) = _
   omega
 
 theorem stack_witnessCount {σ : Type*} {a h b c u t w : (σ → ℕ) → ℕ}
