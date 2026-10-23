@@ -65,3 +65,8 @@ rows, including all three rejected histories. No compiled object is shipped.
 The [Lean evidence](lean/README.md) records the accepted check and its exact inputs.
 Eleven phase19 Lean evidence leaf files remain exact historical boundaries. Earlier
 compiler history, raw logs and recorded source hashes retain their original meanings.
+
+The [phase21 successor](../phase21/README.md) extends the shared proof to the
+native AX expression and inlines its single-use evaluation lemma into `L2.ax_eval`.
+Its kernel check and independent actual and capture reviews pass. This phase20
+record and its eleven Lean evidence leaf files retain their accepted identities.

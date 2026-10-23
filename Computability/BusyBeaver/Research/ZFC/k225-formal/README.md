@@ -10,7 +10,15 @@ Its zero-offset proposal is reconciled as
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
 
-The latest [phase20 Lean check](verification/k215/simplification/phase20/README.md)
+The latest [phase21 Lean check](verification/k215/simplification/phase21/README.md) and both independent
+reviews pass. One shared AX expression proof removes 1,085 Lean lines / 104,946
+bytes; four retired writers bring active savings to 1,653 lines / 126,445 bytes.
+The check covers 226 providers and two fresh endpoint audits, with zero fresh
+warnings. The primary endpoint retains 179 modules and selects 1,771,267 bytes;
+the large source savings include compatibility proofs. The 215-state machine
+and its endpoint statements are unchanged.
+
+The [phase20 Lean check](verification/k215/simplification/phase20/README.md)
 passes for shared AX words and 55 transferred 219 macro contracts. It covers 227
 providers and two fresh endpoint audits; all fresh checks have zero warnings.
 Seven Lean modules are replaced and one common module is added, removing 3,059

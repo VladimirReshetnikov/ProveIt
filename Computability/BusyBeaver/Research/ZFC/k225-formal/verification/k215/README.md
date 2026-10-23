@@ -6,7 +6,15 @@ The original fresh full builds below were recorded at `613f9cf28a`.
 [Phase16](simplification/phase16/README.md) retains the preceding accepted
 quotient-unification snapshot and its exact source, profile and warning records.
 
-The latest [phase20 Lean check](simplification/phase20/README.md) passes for
+The latest [phase21 Lean check](simplification/phase21/README.md) and both independent
+reviews pass. One shared AX expression proof removes 1,085 Lean lines / 104,946
+bytes; four retired writers bring active savings to 1,653 lines / 126,445 bytes.
+The check covers 226 providers and two fresh endpoint audits, with zero fresh
+warnings. The primary endpoint retains 179 modules and selects 1,771,267 bytes;
+the large source savings include compatibility proofs. The 215-state machine
+and its endpoint statements are unchanged.
+
+The [phase20 Lean check](simplification/phase20/README.md) passes for
 227 providers: 212 project modules and fifteen unchanged typed clients. Fourteen
 providers and both endpoint audits compile fresh with zero warnings; 213 providers
 reuse exact accepted bindings. Shared AX words and 55 transferred 219 macro contracts
@@ -75,7 +83,7 @@ endpoint. The large literal tables and arithmetic certificates are kernel-checke
 data, while these final compositions stay small.
 
 The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, selects 179
-project modules from the current phase20 sources and then two explicit endpoint
+project modules from the current phase21 sources and then two explicit endpoint
 clients. The original fresh build selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
 selects 237 sources: 195 from the pinned reference and 42 for K215. Both use the

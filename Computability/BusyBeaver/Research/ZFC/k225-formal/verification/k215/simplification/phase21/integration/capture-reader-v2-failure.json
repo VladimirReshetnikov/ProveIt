@@ -1,0 +1,20 @@
+{
+  "status": "OBSERVED_CAPTURE_READER_FAILURE_PRESERVED",
+  "accepted_as_capture_review": false,
+  "reader": {
+    "path": "/tmp/k215-phase21-capture-peer/review_capture_v2.py",
+    "sha256": "d3d97b357af2baee61077e876682842e0cd0947cb6c11df045f8d29c8d5d2dcd"
+  },
+  "packet": "/tmp/k215-phase21-capture-v1",
+  "config_sha256": "a3c812639d3f24dafda67ae4db188f1ef22c237536986ac70a9c4e0b34d62d1f",
+  "observed_tool_exit_code": 1,
+  "observed_traceback": "review_capture_v2.py line 186: assert record[reports] == row[expected_reports]; AssertionError",
+  "diagnosis": "Three inherited providers encode structured reports with axiom text strings rather than normalized string lists. Exact hash-pinned compiler-log profiles already match all expected profiles. Reader format interpretation requires a successor, without changing accepted proof receipts or warning/profile policy.",
+  "affected_inherited_providers": [
+    "BusyBeaver.ZFC.DominatedImplication",
+    "BusyBeaver.ZFC.DecoderCertificate",
+    "GenericShared13Api"
+  ],
+  "raw_output_note": "The terminal error was returned directly by root exec tool; this is an explicit observation record, not a fabricated subprocess raw receipt.",
+  "archive_or_compiler_mutation": false
+}

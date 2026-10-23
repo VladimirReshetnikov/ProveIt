@@ -3,7 +3,7 @@ import BusyBeaver.ZFC.L2Control222
 /-!
 AX routines as checked words of register macros. The program fixes the successors; the
 word names only semantic operations. A literal read is the clean-to-clean pair 158/208.
-One induction composes the macro contracts for every program sharing those primitives.
+One structural induction composes the macro contracts for expression trees and words.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.AXWord
@@ -37,6 +37,7 @@ theorem gate222 (st : AS) (hc : Clean st) : L2K.Rn (.node 457) st (gateF st) := 
 
 inductive AXAtom where
   | par1 | par2 | par3 | push | cons | wel | wal | weq | wn | wa | wex | readp2 | readp1 | readwff
+  deriving DecidableEq
 
 /-- The first primitive of an atom; `readwff` also runs primitive 208. -/
 def AXAtom.node : AXAtom → Nat
@@ -150,6 +151,67 @@ private theorem AXAtom.prefix (a : AXAtom) {n next : Nat}
       cases a <;> first | contradiction | exact hn
     exact chainNext_run hn' (transfer a (AXAtom.run st hc a ha)) hr
 
+/-- AX programs may share branches as well as concatenate macro prefixes. -/
+inductive AXExpr where
+  | atom : AXAtom → AXExpr
+  | prefix : AXAtom → AXExpr → AXExpr
+  | seq : AXExpr → AXExpr → AXExpr
+  | gate
+
+def axExprCheck (p : Prog) (gate : Nat) : Nat → AXExpr → Bool
+  | n, .atom a => decide (n = a.node ∧ a ≠ .readwff)
+  | n, .prefix a rest =>
+    match a.next p n with
+    | none => false
+    | some next => axExprCheck p gate next rest
+  | n, .seq left right =>
+    match p.nodes n with
+    | (.node i, .node j) => axExprCheck p gate i left && axExprCheck p gate j right
+    | _ => false
+  | n, .gate => decide (n = gate)
+
+def axExprEval : AXExpr → AS → AS
+  | .atom a, st => a.effect st
+  | .prefix a rest, st => axExprEval rest (a.effect st)
+  | .seq left right, st => axExprEval right (axExprEval left st)
+  | .gate, st => gateF st
+
+theorem axExprClean (expr : AXExpr) (st : AS) (hc : Clean st) :
+    Clean (axExprEval expr st) := by
+  induction expr generalizing st with
+  | atom a => exact a.clean st hc
+  | «prefix» a rest ih => exact ih _ (a.clean st hc)
+  | seq left right ihl ihr => exact ihr _ (ihl st hc)
+  | gate => exact hc
+
+include transfer move in
+theorem axExprRun {gate : Nat}
+    (gateRun : ∀ st : AS, Clean st → Run p (.node gate) (enc st) .normal (enc (gateF st)))
+    (expr : AXExpr) {n : Nat} (h : axExprCheck p gate n expr = true)
+    (st : AS) (hc : Clean st) : Run p (.node n) (enc st) .normal (enc (axExprEval expr st)) := by
+  induction expr generalizing n st with
+  | atom a =>
+    simp only [axExprCheck, decide_eq_true_eq] at h
+    rcases h with ⟨rfl, ha⟩
+    exact transfer a (AXAtom.run st hc a ha)
+  | «prefix» a rest ih =>
+    cases hn : a.next p n with
+    | none => simp only [axExprCheck, hn, Bool.false_eq_true] at h
+    | some next =>
+      exact a.prefix transfer move hn st hc
+        (ih (by simpa only [axExprCheck, hn] using h) _ (a.clean st hc))
+  | seq left right ihl ihr =>
+    simp only [axExprCheck] at h
+    split at h
+    · rename_i i j hn
+      simp only [Bool.and_eq_true] at h
+      exact seq hn (ihl h.1 st hc) (ihr h.2 _ (axExprClean left st hc))
+    · contradiction
+  | gate =>
+    simp only [axExprCheck, decide_eq_true_eq] at h
+    subst n
+    exact gateRun st hc
+
 /-- The literal program supplies successors; the certificate names only semantic macros. -/
 def axWordCheck (p : Prog) (gate : Nat) : Nat → List AXAtom → Bool
   | n, [] => decide (n = gate)
@@ -162,28 +224,34 @@ def axWordEval : List AXAtom → AS → AS
   | [], st => gateF st
   | a :: rest, st => axWordEval rest (a.effect st)
 
-theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) :
-    Clean (axWordEval word st) := by
+private def wordExpr : List AXAtom → AXExpr
+  | [] => .gate
+  | a :: rest => .prefix a (wordExpr rest)
+
+private theorem wordExpr_check (word : List AXAtom) (gate n : Nat) :
+    axExprCheck p gate n (wordExpr word) = axWordCheck p gate n word := by
+  induction word generalizing n with
+  | nil => rfl
+  | cons a rest ih => simp only [wordExpr, axExprCheck, axWordCheck, ih]
+
+private theorem wordExpr_eval (word : List AXAtom) (st : AS) :
+    axExprEval (wordExpr word) st = axWordEval word st := by
   induction word generalizing st with
-  | nil => exact hc
-  | cons a rest ih => exact ih _ (a.clean st hc)
+  | nil => rfl
+  | cons a rest ih => simp only [wordExpr, axExprEval, axWordEval, ih]
+
+theorem axWordClean (word : List AXAtom) (st : AS) (hc : Clean st) :
+    Clean (axWordEval word st) :=
+  (wordExpr_eval word st) ▸ axExprClean (wordExpr word) st hc
 
 include transfer move in
 theorem axWordRun {gate : Nat}
     (gateRun : ∀ st : AS, Clean st → Run p (.node gate) (enc st) .normal (enc (gateF st)))
     (word : List AXAtom) {n : Nat} (h : axWordCheck p gate n word = true)
     (st : AS) (hc : Clean st) : Run p (.node n) (enc st) .normal (enc (axWordEval word st)) := by
-  induction word generalizing n st with
-  | nil =>
-    simp only [axWordCheck, decide_eq_true_eq] at h
-    subst n
-    exact gateRun st hc
-  | cons a rest ih =>
-    cases hn : a.next p n with
-    | none => simp only [axWordCheck, hn, Bool.false_eq_true] at h
-    | some next =>
-      exact a.prefix transfer move hn st hc
-        (ih (by simpa only [axWordCheck, hn] using h) _ (a.clean st hc))
+  simpa only [wordExpr_eval] using
+    axExprRun transfer move gateRun (wordExpr word)
+      (by simpa only [wordExpr_check] using h) st hc
 
 end
 end SetTheory.BusyBeaver.ZFC.AXWord
