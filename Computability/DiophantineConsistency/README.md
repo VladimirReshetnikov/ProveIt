@@ -60,6 +60,12 @@ tuple. Lean checks its complete positive zero set against the literal P67
 baseline. The native-window compiler connecting those explicit circuits to
 ZFC refutations remains to be formalized.
 
+The lower-degree alternative in [SHORT_SYSTEM.md](SHORT_SYSTEM.md) uses
+75 operations at degree 68, with the same 15 positive unknowns and fixed
+coefficient tuple. Lean proves its degree bound and complete positive-zero
+equivalence to P67. Grouping the main norm with the two coupled unit factors
+saves two operations over the intermediate 77-operation sum of squares.
+
 ## Continuing toward explicit coefficients
 
 The current computability/MRDP interfaces hide the program and polynomial
@@ -71,16 +77,19 @@ syntax-directed primitive-recursion compiler can then retain its polynomial
 data throughout. The proved Jones nine-variable reduction accepts any
 normalized quartic, so a direct gate-to-quartic conversion can avoid the
 58-witness universal representation during this phase.
+The detailed contracts and remaining links are tracked in
+[COMPILER.md](COMPILER.md).
 
 ## Reproducing the checked milestones
 
 From the repository root, with Lean and Mathlib 4.32.0:
 
 ```sh
-lake build DiophantineConsistency.ZFC DiophantineConsistency.ShortCircuit DiophantineConsistency.ConsecutivePell
+lake build DiophantineConsistency.ZFC DiophantineConsistency.ShortSystem
 lake env lean Computability/DiophantineConsistency/Lean/checks/ZFCAxioms.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/ShortEquationAxioms.lean
 python3 Computability/DiophantineConsistency/tools/audit_short_circuit.py
+python3 Computability/DiophantineConsistency/tools/audit_sos_circuit.py
 ```
 
 The axiom audits list only `propext`, `Classical.choice`, and `Quot.sound`.

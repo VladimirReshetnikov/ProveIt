@@ -21,9 +21,10 @@ commits and are deliberately retained in the delivered provenance records.
 | Global simplicity minimum | Not claimed | No common ordering of all size measures; no optimality theorem |
 | Short-equation local simplification | Lean checked | `ShortEquation.scaled_zero_iff_reduced`, no compiler hypothesis |
 | Literal 69-operation polynomial | Lean checked | `ShortCircuit.eval_polynomial_zero_iff_baselineValue_zero`; scalar and MvPolynomial evaluation both included |
+| Literal 75-operation polynomial, degree 68 | Lean checked | `ShortSystem.eval_compactPolynomial_zero_iff_baselineValue_zero` and `compactPolynomial_totalDegree_le` |
 | Consecutive-product negative Pell obstruction | Lean checked | `ConsecutivePell.norm_ne_neg_one` for every integer `n ≥ 2` |
-| Executable representation data | In progress | Type-valued arithmetic syntax, explicit witness data, and closure constructors |
-| Further short-equation reduction | In progress | Five-equation sum of squares using the consecutive-Pell sign obstruction |
+| Executable representation data | Lean checked primitives; integration open | `Representation`, `ArithmeticRepresentation`, `NaturalExpression`; see `COMPILER.md` |
+| Further short-equation reduction | In progress | 73-operation grouped residuals at degree 80; preserve the operation/degree frontier |
 
 ## Validation environment
 
@@ -48,8 +49,8 @@ sample evaluations.
 
 It supports a candidate 69-operation, degree-111 evaluator of the inherited
 15-positive-variable equation. The initial 68-operation estimate missed
-the old evaluator's shared multiplication `Δ*f²`; the corrected ledger is
-being emitted independently. Compiler correctness and its connection to
+the old evaluator's shared multiplication `Δ*f²`; the corrected ledger was
+emitted and checked independently. Compiler correctness and its connection to
 ZFC have not been inferred from this local theorem.
 
 The literal circuit and finite ledger have now been emitted and independently
