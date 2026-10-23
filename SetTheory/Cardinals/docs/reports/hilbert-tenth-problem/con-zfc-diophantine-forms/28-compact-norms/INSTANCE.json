@@ -1,0 +1,144 @@
+{
+  "release": "con_zfc_synthesis",
+  "date": "2026-10-23",
+  "repository_revision": "ae3007ca4467011e0e051c84acb4a1dd13971b0e",
+  "coefficient_convention": "Complete Wang943 compact 5^10 tuple; source MF is shifted MF_native+B-1. Never substitute only selected ports from a different compiler.",
+  "four_port_binding": {
+    "variant": "wang943-compact-5pow10",
+    "B": "2^(5^10)",
+    "beta": {
+      "payload": "compiler/coefficients_compact/beta.bin.gz",
+      "sha256": "40cc309fcb5dd2942c371d18be6d955d472e6b4c3604034b316194037ac16a5d"
+    },
+    "K0": {
+      "payload": "compiler/coefficients_compact/K.bin.gz",
+      "sha256": "e79f794af9565a7d824beb423bd03ee9ac117811b9b0e3a83ffe18f8a084de99"
+    },
+    "MC": {
+      "payload": "compiler/coefficients_compact/MC.bin.gz",
+      "sha256": "2e3107193f3b376fc3cfffdaa3ef547e6dd8dfdd4548519c0e33b5ffe2f2371d"
+    },
+    "MF": {
+      "payload": "compiler/coefficients_compact/MF_source.bin.gz",
+      "sha256": "8851b54fffd93780996de5f8c69315448e1369c3eea142428d2225a5149d1825",
+      "convention": "MF_native+B-1"
+    }
+  },
+  "binary_encoding": "Unsigned little-endian integer, minimal byte length, no header; .bin.gz is deterministic gzip of .bin",
+  "materialized_four_port_raw_bytes": 5312269,
+  "materialized_four_port_gzip_bytes": 20260,
+  "twelve_variable": {
+    "domain": "strictly positive integers",
+    "variables": [
+      "J",
+      "F",
+      "alpha",
+      "z",
+      "h",
+      "i",
+      "T",
+      "s",
+      "w",
+      "eta",
+      "zeta",
+      "r"
+    ],
+    "fixed_ports": [
+      "beta",
+      "K0",
+      "MC",
+      "MF"
+    ],
+    "system": {
+      "file": "circuits/compact12_system.json",
+      "equations": 3,
+      "exact_degrees": [
+        7,
+        2,
+        1072
+      ],
+      "operations": 112
+    },
+    "product": {
+      "file": "circuits/compact12_product.json",
+      "equations": 1,
+      "exact_degree": 1081,
+      "operations": 116
+    },
+    "sum_of_squares": {
+      "file": "circuits/compact12_sos.json",
+      "equations": 1,
+      "exact_degree": 2144,
+      "operations": 119
+    },
+    "semantic_claim": "ZFC proves that existence of a solution in the stated domain is equivalent to existence of a finite ZFC refutation.",
+    "signed_h_extension_claimed": false
+  },
+  "nine_variable": {
+    "name": "nine-structured-signed-divisor-wang943",
+    "domain": "N^9, N={0,1,2,...}",
+    "variables": [
+      "epsilon",
+      "g0",
+      "h0",
+      "s0",
+      "w0",
+      "phi",
+      "i0",
+      "j0",
+      "n"
+    ],
+    "parent": {
+      "repository_path": "SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/18-jones9/base/quartic32.upstream.json",
+      "sha256": "149eacd479896a113d869c5b74163efa4dab2cabaca8b581a6405cc9f580ca60",
+      "historical_metadata": "Relative coefficient-path metadata is superseded by this whole-tuple binding; polynomial residuals are unchanged.",
+      "local_path": "vendor/jones18/quartic32.upstream.json"
+    },
+    "four_port_binding": {
+      "variant": "wang943-compact-5pow10",
+      "B": "2^(5^10)",
+      "beta": {
+        "payload": "compiler/coefficients_compact/beta.bin.gz",
+        "sha256": "40cc309fcb5dd2942c371d18be6d955d472e6b4c3604034b316194037ac16a5d"
+      },
+      "K0": {
+        "payload": "compiler/coefficients_compact/K.bin.gz",
+        "sha256": "e79f794af9565a7d824beb423bd03ee9ac117811b9b0e3a83ffe18f8a084de99"
+      },
+      "MC": {
+        "payload": "compiler/coefficients_compact/MC.bin.gz",
+        "sha256": "2e3107193f3b376fc3cfffdaa3ef547e6dd8dfdd4548519c0e33b5ffe2f2371d"
+      },
+      "MF": {
+        "payload": "compiler/coefficients_compact/MF_source.bin.gz",
+        "sha256": "8851b54fffd93780996de5f8c69315448e1369c3eea142428d2225a5149d1825",
+        "convention": "MF_native+B-1"
+      }
+    },
+    "fixed_leaf_recipes": {
+      "nu": 32,
+      "L": 116415321826934814453125,
+      "records": "circuits/nine/constants.json",
+      "bound": "circuits/nine/index_bound_s.json",
+      "coefficient": "c_alpha=(4-|alpha|)!*product(alpha_j!)*coefficient_alpha(sum_j r_j(n+1)^2), with a dummy unused input coordinate alpha_0",
+      "s": "2+24*sum(rho_j^2), rho_j=sum over raw residual terms abs(integer_coefficient)*2^(unknown_degree)*fixed_ports^powers",
+      "z_index": "2^s",
+      "y_index": "sum_{alpha in N^33, |alpha|<=4}(z_index+c_alpha)*(2*z_index)^(L-sum(alpha_j*5^j))",
+      "all_index_sum_terms": 66045,
+      "nonzero_c_alpha": 346,
+      "expanded_index_constants": false
+    },
+    "new_polynomial": {
+      "file": "circuits/nine/nine_structured_dag.json",
+      "degree": 10857358574867248535156250288,
+      "degree_formula": "93264*5^33+288",
+      "operations": 20547,
+      "fixed_leaves": 348,
+      "diagonal_leading_coefficient": "441*2^192"
+    },
+    "proof_boundary": "Ordinary mathematical reduction through stated inherited Jones/compiler/K215 theorems; no new end-to-end kernel check. No consistency or solvability claim.",
+    "repository_revision": "ae3007ca4467011e0e051c84acb4a1dd13971b0e",
+    "path_base": "enclosing release root"
+  },
+  "proof_scope": "Ordinary mathematical proofs composed with the named inherited compiler, Pell, Jones and K215 theorems. New algebra and complete specialization have not been kernel checked. Finite checks do not prove consistency or universal semantic correctness."
+}

@@ -1,0 +1,205 @@
+\section{Division-free circuits and arithmetic savings}
+\label{sec:circuits}
+
+All displayed auxiliary symbols in this section denote polynomial
+abbreviations. They introduce neither existentially quantified coordinates
+nor operations outside addition, subtraction, and multiplication.
+The delivered JSON files specify their evaluation order and every operand.
+The accounting convention charges each binary arithmetic operation, including
+multiplication by a fixed integer; reusing an earlier value and comparing two
+computed expressions are free. This is the convention used by the repository
+comparison circuits \cite{repo21,repo22}.
+All polynomial-identity comparisons hold the four coefficient ports equal.
+Replacing the whole tuple is a separate semantic step proved in
+Section~\ref{sec:coefficients}.
+
+\subsection{A shared evaluator for the four-root construction}
+
+Use the notation of the root-recovery construction, and write $W$ for its
+supplied merged expression, $N$ for the weight of the main root, and $m=HM$
+for the weight of the first Pell root. Thus the relevant eight-conjugate
+product is
+\begin{equation}
+\mathcal R=
+\prod_{\sigma,\epsilon,\delta\in\{-1,1\}}
+\left[d\bigl(W+\sigma N\sqrt G+\epsilon m\sqrt A\bigr)^2
+      -H^2e+\delta H^2B_{\rm aux}\sqrt D\right].
+\label{eq:circuits-eight-norm}
+\end{equation}
+Here $B_{\rm aux}=2Qvb$. Define $P_a=QDv^2$ and $U_a=Qb^2$,
+so that $B_{\rm aux}^2D=4P_aU_a$. Formula \eqref{eq:circuits-eight-norm} explains the elimination;
+it is not the circuit definition and does not require a square-root operation.
+
+The following completely integral evaluator computes the same polynomial:
+\begin{align*}
+ V_0&=W^2+N^2G,& J_\theta&=4W^2(N^2G),& a_0&=m^2A,\\
+ C_0&=d(V_0+a_0)-H^2e,& K_*&=4d^2a_0,& U_0&=K_*V_0,\\
+ Z_0&=4H^4P_aU_a,\\
+ x&=C_0^2+J_\theta d^2-U_0-Z_0,
+ &y&=2C_0d-K_*,\\
+ n_0&=x^2+J_\theta y^2-4Z_0U_0,
+ &n_1&=2xy-4Z_0K_*,\\
+ \mathcal R&=n_0^2-J_\theta n_1^2.
+\end{align*}
+The three-equation system compares
+\[
+ N_k=1,\qquad N_t=1,\qquad n_0^2=J_\theta n_1^2.
+\]
+The corresponding single equation is
+\[
+ N_kN_t(1+\mathcal R)-1=0.
+\]
+Since $4\mid J_\theta$, the integer $\mathcal R$ is a square modulo $4$.
+Consequently $1+\mathcal R$ cannot equal $-1$. This preserves the modular
+guard needed in the product equation; the remaining outer signs are handled
+by the root-recovery proof.
+
+To verify the evaluator, work temporarily in a quadratic algebra and put
+$\theta=2WN\sqrt G$, so that $\theta^2=J_\theta$ and
+$(W+N\sqrt G)^2=V_0+\theta$. Taking the norm in the first-root direction
+uses the exact identity
+\begin{equation}
+ \bigl((C-u)^2-Z\bigr)\bigl((C+u)^2-Z\bigr)
+   =(C^2-u^2-Z)^2-4u^2Z.
+\label{eq:circuits-symmetric}
+\end{equation}
+After the first two eliminations, the remaining quadratic-algebra element
+is $n_0+n_1\theta$. Its norm is the last line of the evaluator. This is an
+identity in a free integer-polynomial ring. In particular no division by
+$W$, $N$, or $2WN$ is performed, and the identity remains valid when one of
+these quantities is zero.
+
+\subsection{Factoring the common odd coefficient}
+
+The earlier paired evaluator explicitly constructs $V_1=2WN$, then
+$dV_1$, $K_*V_1$, and their products and squares. Every odd component has
+this same factor $V_1$. Retaining only its square
+$G V_1^2=4W^2(N^2G)$ avoids three arithmetic operations in the complete
+polynomial evaluator. Both $W^2$ and $N^2G$ are already needed for $V_0$.
+The system saves one further subtraction by comparing its two final norm
+terms directly.
+
+Applied to the unchanged nested-norm polynomial of package~21, this gives
+\[
+ (12\hbox{ positive variables},\ 1\hbox{ equation},\ 1353,\ 113)
+\]
+in the order (unknowns, equations, degree, operations), improving its
+116-operation evaluator. Its three-equation system uses 108 operations
+rather than 112, with the same maximum degree 1344. The polynomial itself,
+its zero set, and the proof assumptions are unchanged \cite{repo21}.
+
+The same idea applies to the monic-resultant circuits of package~22.
+There $r_1=2W$ occurs in every odd component, while $Br_1^2$ already occurs
+in the even component. In its twelve-variable evaluator, write
+\[
+ v_I=r_1t,\qquad
+ h_I=2r_1(v_Rt-\lambda u_R).
+\]
+One may compute $Bv_I^2=(Br_1^2)t^2$ and
+$Bh_I^2=4(Br_1^2)(v_Rt-\lambda u_R)^2$ directly. Moreover
+$Br_1^2=4BW^2$ needs two gates because $W^2$ is already available,
+whereas forming $r_1$, squaring it, and multiplying by $B$ uses three.
+The complete saving is three operations: 117 becomes 114 for the
+polynomial, and 112 becomes 109 for its system. The thirteen-variable
+intermediate has $h_I=r_1t$ and saves two operations: its degree-319
+polynomial uses 89 operations, and its four-equation system of maximum
+degree 288 uses 81. Again these are exact refactorings of the original
+polynomials \cite{repo22}.
+
+\subsection{Weights and the unrestricted-integer lift}
+
+The new positive constructions use the same shared evaluator with different
+separating weights. For the degree-1081 version, the identity
+\[
+ 1+8TI+16REi^2c^3=1+8I(T+2REic),\qquad I=ic^2,
+\]
+saves one more operation. The tighter degree-1073 and degree-1069 weights
+are evaluated in their already factored form
+\[
+ M=I(2T+R\mathcal C\,ic),
+\]
+with $\mathcal C=E+3(X+Y)$ and
+$\mathcal C=E+2(X+Y)+sq^2$, respectively. Their improvement in degree
+comes from the cancellation proved in the weight analysis, rather than
+from the generic degree bound of the evaluation graph.
+
+For the signed construction use
+\[
+ M=1+8(TI)^2+16Ra i^2c^3
+   =1+8(ic)I(T^2c+2Ra),\qquad N=1+8HM.
+\]
+The second expression is a polynomial identity for arbitrary integers,
+including negative $i$ and $c$. The separate signed-domain proof supplies
+the positivity properties needed in the root argument.
+
+There is a further saving when the six guarded coordinates are replaced by
+$\Pos(u,v,t)=1+u^2+v^2+t(t+1)$. Write
+\[
+ F=F_0+1,\quad z=z_0+1,\quad q=\beta J+1,
+\]
+where $F_0$ and $z_0$ are their three-term nonnegative quadratic parts.
+Then
+\begin{align*}
+ q-F&=\beta J-F_0,\\
+ (K_0+w)C+(q-F)-z(q-1)
+   &=(K_0+w)C-F_0-z_0\beta J.
+\end{align*}
+Thus the evaluator never forms the two separate $+1$ gates for $F$ and
+$z$. This changes neither the substitution nor the quantified domain.
+The final unrestricted-integer polynomial uses 167 operations, and its
+three-equation system uses 162.
+
+\subsection{Final ledgers and verification scope}
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\hline
+Form & Polynomial degree & Operations & System degree & Operations\\
+\hline
+12 positive, tightest weight &1069&123&1060&118\\
+12 positive, tight weight    &1073&121&1064&116\\
+12 positive, simpler weight &1081&120&1072&115\\
+12 positive, refactored norm&1353&113&1344&108\\
+13 positive, monic merger   &319&89&288&81\\
+24 unrestricted integers    &1936&167&1920&162\\
+\hline
+\end{tabular}
+\end{center}
+All systems in this table have three equations except the thirteen-variable
+system, which has four. The degrees are exact. For the degree-1069 and
+1073 products, naive propagation through the graph gives 1081; their
+homogeneous cancellation must be used to obtain the exact degree.
+The graph metadata records this distinction rather than overwriting the
+larger syntactic bound.
+
+The package contains three complementary kinds of evidence. First,
+\path{code/check_exact_identities.py} expands the small free-polynomial
+identities over $\Z$ and checks every coefficient. This covers the shared
+odd-component factors, identity~\eqref{eq:circuits-symmetric}, the weight
+factorizations, and both integer-lift cancellations. Second, independent
+exact evaluations multiply all eight conjugates in an eight-dimensional
+algebra and compare that result with the division-free graph. Third,
+\texttt{degree\_check.py} evaluates the entire graph on univariate slices
+over two prime fields. Its convolution uses integer packing with a proved
+carry bound; it does not use floating point or merely propagate the
+largest input degree. These checks confirm the degree cancellations and
+support the separate uniform leading-form proofs.
+
+For the signed polynomial, the independently derived monomial
+\[
+ J_x^{1354}h\,i_{\rm int}^{48}\eta_x^{192}
+ w_{\rm int}^{162}s_{\rm int}^{177}z_x^2
+\]
+has total degree 1936 and coefficient
+\[
+ 2^{257}\,255^4(57599\cdot73983)^2\beta^{677}.
+\]
+The coefficient is nonzero for every admissible $\beta>0$; its modular
+values agree with two independent full-polynomial slice calculations.
+
+Arithmetic identity checks establish the stated circuit transformations.
+The root-recovery lemmas, the signed-domain argument, the native compiler,
+and the calibration of K215 remain mathematical proof dependencies. None
+of these finite calculations is presented as a new Lean or Rocq theorem,
+or as a test of whether the consistency polynomial has a solution.

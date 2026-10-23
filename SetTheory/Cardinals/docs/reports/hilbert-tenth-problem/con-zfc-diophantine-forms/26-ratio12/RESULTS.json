@@ -1,0 +1,209 @@
+{
+  "title": "Smaller explicit Diophantine forms of ZFC consistency",
+  "date": "2026-10-22",
+  "source_repository": "VladimirReshetnikov/ProveIt",
+  "source_commit": "a477d0fc8b6feda53796835564a988015e744d4d",
+  "logical_claim": "ZFC proves that each presentation has no solutions in its stated domain if and only if Con(ZFC), by composition with the inherited inputless compiler and exact K215 endpoint.",
+  "proof_status": "Ordinary mathematical proofs formalizable in ZFC; no new end-to-end Lean or Rocq formalization and no rerun of the complete endpoint build.",
+  "operation_convention": "One gate per binary integer addition, subtraction, or multiplication, including multiplication by fixed numerals. Comparisons in systems are free. Shared expressions and fixed coefficient ports are not unknowns.",
+  "constructions": [
+    {
+      "id": "ratio12_product",
+      "domain": "strictly positive integers",
+      "unknowns": 12,
+      "equations": 1,
+      "exact_degree": 1081,
+      "residual_exact_degrees": null,
+      "max_degree": 1081,
+      "operations": 116,
+      "multiplications": 74,
+      "additions_subtractions": 42,
+      "circuit": "arithmetic/ratio12_product.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "original transport coordinate",
+      "degree_proof": "report.tex, Section 5.6"
+    },
+    {
+      "id": "ratio12_system",
+      "domain": "strictly positive integers",
+      "unknowns": 12,
+      "equations": 3,
+      "exact_degree": null,
+      "residual_exact_degrees": [
+        7,
+        2,
+        1072
+      ],
+      "max_degree": 1072,
+      "operations": 111,
+      "multiplications": 72,
+      "additions_subtractions": 39,
+      "circuit": "arithmetic/ratio12_system.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "original transport coordinate",
+      "degree_proof": "report.tex, Section 5.6"
+    },
+    {
+      "id": "ratio12_system_shifted",
+      "domain": "strictly positive integers",
+      "unknowns": 12,
+      "equations": 3,
+      "exact_degree": null,
+      "residual_exact_degrees": [
+        7,
+        2,
+        1072
+      ],
+      "max_degree": 1072,
+      "operations": 110,
+      "multiplications": 72,
+      "additions_subtractions": 38,
+      "circuit": "arithmetic/ratio12_system_shifted.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "z_old=z+1",
+      "degree_proof": "report.tex, Section 5.6"
+    },
+    {
+      "id": "integer24_product",
+      "domain": "unrestricted integers",
+      "unknowns": 24,
+      "equations": 1,
+      "exact_degree": 2432,
+      "residual_exact_degrees": null,
+      "max_degree": 2432,
+      "operations": 163,
+      "multiplications": 94,
+      "additions_subtractions": 69,
+      "circuit": "arithmetic/integer24_product.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "original transport coordinate",
+      "degree_proof": "report.tex, Section 6.7"
+    },
+    {
+      "id": "integer24_system",
+      "domain": "unrestricted integers",
+      "unknowns": 24,
+      "equations": 3,
+      "exact_degree": null,
+      "residual_exact_degrees": [
+        12,
+        4,
+        2416
+      ],
+      "max_degree": 2416,
+      "operations": 159,
+      "multiplications": 92,
+      "additions_subtractions": 67,
+      "circuit": "arithmetic/integer24_system.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "original transport coordinate",
+      "degree_proof": "report.tex, Section 6.7"
+    },
+    {
+      "id": "integer24_system_shifted",
+      "domain": "unrestricted integers",
+      "unknowns": 24,
+      "equations": 3,
+      "exact_degree": null,
+      "residual_exact_degrees": [
+        12,
+        4,
+        2416
+      ],
+      "max_degree": 2416,
+      "operations": 157,
+      "multiplications": 92,
+      "additions_subtractions": 65,
+      "circuit": "arithmetic/integer24_system_shifted.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "z_old=z+1",
+      "degree_proof": "report.tex, Section 6.7"
+    },
+    {
+      "id": "integer24_sos",
+      "domain": "unrestricted integers",
+      "unknowns": 24,
+      "equations": 1,
+      "exact_degree": 4832,
+      "residual_exact_degrees": null,
+      "max_degree": 4832,
+      "operations": 166,
+      "multiplications": 95,
+      "additions_subtractions": 71,
+      "circuit": "arithmetic/integer24_sos.json",
+      "fixed_numerals": [
+        "beta",
+        "K0",
+        "MC",
+        "MF"
+      ],
+      "coefficient_binding": "coefficients/COEFFICIENT_BINDING.json",
+      "coordinate_convention": "original transport coordinate",
+      "degree_proof": "report.tex, Section 6.7"
+    }
+  ],
+  "coefficient_backend": {
+    "variant": "wang943-parity-H1-5pow10",
+    "binding": "coefficients/COEFFICIENT_BINDING.json",
+    "tile_count": 943,
+    "radix_bit_exponent": 625,
+    "native_cell_length": 15625,
+    "base_bit_exponent": 9765625,
+    "max_port_bits": 9766251,
+    "previous_wang943_max_port_bits": 13201251,
+    "largest_port_bit_reduction": 3435000,
+    "raw_payload_bytes": 4882894,
+    "gzip_payload_bytes": 19820,
+    "port_aliases": {
+      "beta": "beta",
+      "K0": "K",
+      "MC": "MC",
+      "MF": "MF_source"
+    },
+    "native_high_mask": "MF_source-beta",
+    "complete_tuple_required": true
+  },
+  "comparisons_scope": "Inspected repository family at the pinned commit; no global variable, degree, circuit, or coefficient minimum is claimed.",
+  "reproduction": {
+    "command": "python3 -B reproduce.py",
+    "python": "3.10 or later, standard library only",
+    "receipt": "verification/REPRODUCTION.json",
+    "finite_check_scope": "The checks establish the specified finite arithmetic and coefficient properties; universal equivalence is supplied by the mathematical proofs and their inherited dependencies."
+  }
+}

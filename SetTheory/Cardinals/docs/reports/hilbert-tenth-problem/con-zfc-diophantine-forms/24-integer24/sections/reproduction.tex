@@ -1,0 +1,95 @@
+\section{Reproducibility, limitations, and remaining directions}
+\label{sec:reproduction}
+
+\subsection{What is delivered}
+
+The archive contains the standalone \LaTeX{} source of this report and its
+compiled PDF, the editable section sources, twenty literal arithmetic
+circuits, all four compressed coefficient integers, standard-library
+Python builders and checkers, and the pinned upstream proof and machine
+files used in the composition.  No repository checkout or network
+connection is needed to run the numerical and algebraic verification.
+Upstream files retain their source paths, commit identifiers, checksums,
+and notices.  The inherited formal endpoint is a source record, not a
+self-contained copy of the whole Lean project.
+
+For a practical entry point, use
+\texttt{signed\_separating\_saturated24\_product.json} for unrestricted
+integers, or
+\texttt{optimized\_tightest\_separating12\_product.json} for the
+degree-1069 positive equation.  Replacing \texttt{product} with
+\texttt{system} selects the corresponding three-equation version.  Every
+circuit explicitly refers to the one delivered coefficient binding.  The
+binding records minimal unsigned little-endian bytes and SHA-256 hashes;
+\texttt{MF} always means the shifted high mask.
+
+From the unpacked archive directory, the standard-library verification
+and reconstruction entry points are
+\begin{verbatim}
+python3 verify.py
+python3 reproduce.py
+pdflatex -interaction=nonstopmode -halt-on-error con_zfc_synthesis.tex
+pdflatex -interaction=nonstopmode -halt-on-error con_zfc_synthesis.tex
+\end{verbatim}
+The first command checks the supplied artifacts.  The second regenerates
+the new coefficient tuple and the four principal construction families,
+then rebinds and verifies the delivered circuits.  The six exact-refactored
+comparison circuits and the two inherited comparison circuits are included
+literally and checked against their preserved source packets; they do not
+depend on a missing external generator.  The final two commands rebuild
+the document.  The Python scripts require no third-party Python package.
+The \LaTeX{} source uses ordinary TeX Live packages.
+
+\subsection{The verification boundary}
+
+The finite audits check the literal machine-to-tile enumeration, the
+layout's support and carry inequalities, the modular padding constants,
+the four materialized payloads, every circuit's well-formedness and live
+inputs, exact small polynomial identities, and independent evaluations
+of the norm constructions.  Full univariate finite-field calculations
+use the actual four coefficient residues to check the principal degree
+claims.  The positive tight-weight and signed-variable sections also
+give uniform nonzero leading forms, so the claimed degrees are not based
+only on random evaluations or generic syntactic upper bounds.
+
+These checks have specific limits.  Finite-field agreement is a
+diagnostic unless backed by the displayed polynomial identity or degree
+proof.  A successful program run does not prove universal compiler
+soundness, does not formally verify the root-recovery arguments, and does
+not establish the truth of consistency.  The infinite claims rest on
+the mathematical proofs and their stated inherited interfaces.  This
+report makes no new end-to-end Lean or Rocq verification claim.
+
+The supplied collection is itself a set of research reports; its intake
+note explicitly distinguishes claims in the packages from independently
+re-derived facts \cite{collection}.  This synthesis follows that
+distinction: it preserves the exact sources for review and supplies new
+proofs for the changed constructions, rather than treating comparison
+metadata as a substitute for the reduction.
+
+\subsection{An attempted extra variable reduction that is not claimed}
+
+The remaining index quotient $h$ is tempting to merge with the main-root
+quotient.  A single combined carrier, however, supplies a combined
+divisibility condition.  Recovering separately the index congruence
+modulo $E$ and the main-root congruence modulo $H$ would require further
+arithmetic information, such as an appropriate coprimality condition.
+There is no available identity forcing $\gcd(E,H)=1$:
+\[
+ E=XY,\qquad H=4(E+Y)+3,
+\]
+and the elementary parameter restrictions do not justify that inference.
+The required decomposition cannot simply be assumed.  Consequently no
+eleven-positive-variable theorem is asserted here.  A valid further
+reduction would have to preserve both congruences, or prove an additional
+property of every recovered Pell witness before using it.
+
+There are still concrete directions for improvement.  The 943-tile
+language and its spatial exponent layout were kept fixed, so reducing
+the local alphabet or redesigning the layout could lower coefficient
+height further.  A different norm elimination might improve the tradeoff
+between twelve-variable degree and arithmetic length.  Fewer integer
+coordinates would require a replacement for one of the six positivity
+guards, another valid root merger, or a stronger signed interface.
+None of these potential improvements is counted in the delivered results.
+

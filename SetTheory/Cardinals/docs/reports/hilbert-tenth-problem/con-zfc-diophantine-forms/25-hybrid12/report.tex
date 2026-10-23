@@ -1,0 +1,1035 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{163B50}
+\definecolor{accent}{HTML}{087E8B}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=accent,citecolor=ink,
+ pdftitle={Smaller Diophantine forms of ZFC consistency},
+ pdfauthor={OpenAI-assisted research synthesis for ProveIt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Smaller Diophantine forms of ZFC consistency}}
+\fancyhead[R]{\small 22 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[3]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\PP}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\pin}{\texttt{ae3007ca4467011e0e051c84acb4a1dd13971b0e}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae3007ca4467011e0e051c84acb4a1dd13971b0e/#1}{#2}}
+\newcommand{\collection}{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}
+\title{\textbf{Smaller Diophantine forms\\of ZFC consistency}\\[7pt]
+\large A twelve-variable polynomial of degree 1081 in 116 operations,\\
+with a fivefold smaller coefficient-base exponent}
+\author{OpenAI-assisted research synthesis prepared for\\Vladimir Reshetnikov's ProveIt repository}
+\date{22 October 2026\\[3pt]\small Comparison snapshot: \texttt{ae3007ca4467}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We compare the eight current packages in ProveIt's third collection of
+Diophantine formulations of $\Con(\ZFC)$ and combine two of their root
+elimination methods with a smaller coefficient encoding. The new ordinary
+integer polynomial has twelve strictly positive unknowns, exact total degree
+$1081$, and a shared arithmetic circuit with $116$ binary operations.
+It improves the inspected twelve-variable degree record $1145$ at $123$
+operations and matches the $116$-operation construction of degree $1353$.
+Its three-equation presentation has maximum degree $1072$ and $111$
+operations under the collection's free-comparison convention.
+
+Separately, mixed-radix clause decoding and external zero tests reduce the
+943-tile compiler base from $2^{5^{10}}$ to $2^{5^9}$. All four coefficients
+are materialized: their combined raw size falls from $5\,312\,269$ to
+$977\,220$ bytes. This tuple also instantiates the existing $67$-operation
+polynomial and $59$-operation system, included with unchanged arithmetic.
+
+The proof composes explicit new algebraic and number-theoretic arguments
+with the identified native compiler and K215 consistency calibration.
+It is ordinary mathematics formalizable in ZFC, supported by reproducible
+finite audits, and is not a new end-to-end Lean or Rocq certificate.
+No consistency proof, global minimum, or improvement on the existing
+nine-natural-variable count is asserted.
+\end{abstract}
+\clearpage
+\begingroup\small\tableofcontents\endgroup
+\clearpage
+
+\section{The result and the meaning of simplicity}
+\label{sec:result}
+
+The central deliverable is a completely specified polynomial
+$\mathcal P_{12}\in\ZZ[J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,r]$.
+Its four coefficient ports are bound to four particular integers, not
+existential parameters. The full definition appears in
+Sections~\ref{sec:formula} and~\ref{sec:coefficients}; executable binary
+circuits and the actual coefficient bytes accompany this article.
+
+\begin{theorem}[Fixed-instance equivalence]
+\label{thm:main}
+For the coefficient tuple defined in Section~\ref{sec:coefficients}, ZFC
+proves
+\[
+ \boxed{\quad
+ \bigl(\nexists\mathbf x\in\PP^{12}:\mathcal P_{12}(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \Con(\ZFC).
+ \quad}
+\]
+The three-equation system and sum-of-squares equation in
+Section~\ref{sec:formula} have the same existence predicate.
+The polynomial has exact degree $1081$ and a $116$-operation circuit;
+the system has maximum residual degree $1072$ and a $111$-operation circuit.
+\end{theorem}
+
+Here $\Con(\ZFC)$ means absence of a finite syntactic derivation of falsity
+in the effective first-order ZFC presentation used by the K215 endpoint.
+The theorem proves an equivalence. It assumes neither side of that
+equivalence. The twelve-coordinate domain is strictly positive integers.
+For nonnegative unknowns one may write
+$\mathcal P_{12}(n_1+1,\ldots,n_{12}+1)=0$; its degree remains $1081$.
+The displayed equation is not asserted equivalent over unrestricted
+$\ZZ^{12}$.
+
+\subsection{Comparison at an immutable snapshot}
+
+The comparison is frozen at \pin. The current collection has packages
+16--23; its earlier waves survive in history and in cited source copies
+\cite{catalogue}. The main measured tradeoffs are:
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & Unknowns & Equations & Degree & Operations\\
+\midrule
+18: Jones specialization & $9\NN$ & 1 & $161844\,5^{33}+484$ & 20,531\\
+20: previous lowest-degree twelve & $12\PP$ & 1 & 1145 & 123\\
+21: previous least-operation twelve & $12\PP$ & 1 & 1353 & 116\\
+22: monic twelve & $12\PP$ & 1 & 1529 & 117\\
+\textbf{New hybrid} & $\mathbf{12\PP}$ & \textbf{1} & \textbf{1081} & \textbf{116}\\
+\textbf{New hybrid system} & $\mathbf{12\PP}$ & \textbf{3} & \textbf{1072} & \textbf{111}\\
+New hybrid sum of squares & $12\PP$ & 1 & 2144 & 119\\
+Inherited least-operation polynomial & $15\PP$ & 1 & 155 & 67\\
+22: inherited least-operation system & $16\PP$ & 7 & 24 & 59\\
+Inherited quartic lift & $32\PP$ & 1 & 4 & ---\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The degree and operation improvement is simultaneous within the reviewed
+twelve-variable family: $1081<1145<1353$ and $116<123$.
+Relative to package 20 the degree falls by $64$, approximately $5.59\%$;
+relative to package 21 it falls by $272$, approximately $20.10\%$.
+These statements do not compare unlike domains or imply global optimality.
+
+The $111$-operation system requires an accounting qualification. Our
+emitter compares the two final norm terms directly instead of subtracting
+them and comparing with zero. The same rewrite reduces package 21's
+published $112$-operation system to $111$ operations. Thus the new system
+has lower degree at a tied normalized cost. The apparent one-operation
+gain is not exclusive to this construction.
+
+An operation means one binary addition, subtraction, or multiplication,
+including a square and multiplication by a fixed numeral. Register reuse,
+supplied fixed coefficients, and equality comparisons are free. These are
+costs of the supplied circuits, not lower bounds on all possible circuits.
+We report maximum residual degree for systems and total degree for a
+single polynomial.
+
+\subsection{Which presentation to use}
+
+For a compact moderate-degree formula with few coordinates, the new
+twelve-variable product is the strongest result here. For arithmetic
+operation count alone, the inherited $67$-operation product remains better;
+for a small system, retain the $59$-operation presentation. Both are
+included with the new, smaller coefficient tuple. If coordinate count
+alone is decisive, package 18's nine-natural-variable specialization
+remains smaller, at much larger degree and circuit size \cite{jones9}.
+
+The collection also contains $26$-integer and $27$-integer constructions,
+including a $27$-integer product of degree $172$ \cite{catalogue}.
+Those are different domain tradeoffs. None of the new positive-domain
+arguments licenses silently interpreting our twelve coordinates as signed.
+
+\section{A complete polynomial definition}
+\label{sec:formula}
+
+Supply exactly the twelve positive integers
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,r.
+\]
+Write the four fixed ports as $\beta,K_0,M_C,M_F$.
+The last port is the \emph{shifted} mask
+$M_F=M_F^{\rm native}+B-1$. All other symbols below are polynomial
+abbreviations, not additional unknowns.
+
+\subsection{The common arithmetic interface}
+
+Define
+\begin{align*}
+ q&=\beta J+1,& C_w&=q-F-\alpha,& X&=wq,&Y&=sq^3,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,\qquad b_0=X+ac.
+\end{align*}
+The packed rank and outer factors are
+\begin{align}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+                    +(M_C+qM_F)J,\label{eq:R}\\
+ N_k&=k-hE-R,\label{eq:Nk}\\
+ N_t&=(K_0+w)C_w+(q-F)-z(q-1).\label{eq:Nt}
+\end{align}
+For the strong and auxiliary Pell constraints, put
+\begin{align*}
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=(\Delta I)^2,&d&=Q-1,\\
+ v&=cT,&b&=c+RD,&P&=QDv^2,&U&=Qb^2,\\
+ e&=P+U-1,& B_{\rm aux}&=2Qvb.
+\end{align*}
+Our new choice of weights and carrier is
+\begin{equation}
+ \boxed{M=(kI+T)^2,\qquad L=1+HM,\qquad S=b_0+Hr.}
+ \label{eq:weights}
+\end{equation}
+
+\subsection{A conceptual norm definition}
+
+For a temporary indeterminate $x$, define
+\begin{align*}
+ C(x)&=d(x^2+M^2A)-e,\\
+ \mathcal F(x)&=
+  \bigl(C(x)^2+DB_{\rm aux}^2-4d^2x^2M^2A\bigr)^2
+            -4DB_{\rm aux}^2C(x)^2.
+\end{align*}
+Let $\mathcal F_H(t)=H^8\mathcal F(t/H)$.
+The denominator clears because $\deg_x\mathcal F=8$ and all its
+coefficients are integers. Define the norm
+\begin{equation}
+ \mathcal N=\mathcal F_H(S-L\sqrt G)\,
+             \mathcal F_H(S+L\sqrt G).
+ \label{eq:norm}
+\end{equation}
+The two conjugate factors make this an integer polynomial. No radical,
+division, variable exponent, or quantified auxiliary root occurs in the
+actual evaluator supplied next.
+
+\subsection{A division-free scalar evaluator}
+
+The following formulas eliminate all formal radicals explicitly:
+\begin{align*}
+ n&=(HM)^2A,&V_0&=S^2+L^2G,&V_1&=2SL,\\
+ C_0&=d(V_0+n)-H^2e,& C_1&=dV_1,\\
+ K_f&=4d^2n,&K_{c0}&=K_fV_0,&K_{c1}&=K_fV_1,&Z&=4H^4PU,\\
+ C_{s0}&=C_0^2+GC_1^2,&C_{s1}&=2C_0C_1,\\
+ W_0&=C_{s0}-K_{c0}-Z,&W_1&=C_{s1}-K_{c1},\\
+ N_0&=W_0^2+GW_1^2-4ZK_{c0},&
+ N_1&=2W_0W_1-4ZK_{c1},\\
+ \mathcal N&=N_0^2-GN_1^2.
+\end{align*}
+The fixed coefficient $K_0$ and the intermediate $K_{c0}$ are different
+symbols. This distinction is also enforced in the JSON circuits.
+The identity used to save operations is
+\[
+ (C^2+K-Z)^2-4C^2K=(C^2-K-Z)^2-4KZ.
+\]
+It replaces a general multiplication of two quadratic coefficient pairs
+by multiplication of a pair by a scalar. The identity is inherited from
+package 21 \cite{norm21}; the distinct inner and outer weights are new.
+
+The recommended single equation is
+\begin{equation}
+ \boxed{\mathcal P_{12}=N_kN_t(1+\mathcal N)-1=0.}
+ \label{eq:main}
+\end{equation}
+The equivalent three-equation presentation is
+\begin{equation}
+ \boxed{N_k=1,\qquad N_t=1,\qquad N_0^2=GN_1^2.}
+ \label{eq:system}
+\end{equation}
+The conservative sum-of-squares alternative is
+\begin{equation}
+ (N_k-1)^2+(N_t-1)^2+\mathcal N^2=0.
+ \label{eq:sos}
+\end{equation}
+Its degree is $2144$ and its circuit uses $119$ operations.
+
+\section{The logical interface and proof dependencies}
+\label{sec:dependencies}
+
+Let $K215$ denote the literal machine included as
+\texttt{coefficients/k215.tm}. Its working states are $0,\ldots,214$;
+state $215$ is halt. The initial tape is blank, with the head in state zero.
+The table SHA-256 is
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{center}
+The pinned endpoint states
+\[
+ \operatorname{BlankHalts}(K215)
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\ZFC\mathrm{ax}_s,[],\bot)
+ \cite{kendpoint}.
+\]
+We use the ordinary mathematical calibration mirrored by this endpoint,
+not a meta-inference from Lean's soundness to a ZFC proof object.
+No endpoint build was rerun for this delivery.
+
+The inherited normalized blank compiler has positive coordinates
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma
+\]
+and the relations
+\begin{align*}
+ \tau^2&=A,&u&=X+ac+H\gamma,&u^2&=G,\\
+ f^2&=1+\Delta i^2c^4=D,&
+ Q\bigl(c(Tf-1)-Rf^2\bigr)^2-(Q-1)y^2&=1,\\
+ N_k&=1,&N_t&=1.
+\end{align*}
+Its signed-quotient extension permits the simultaneous replacement
+$(f,T)\mapsto(-f,-T)$ during reconstruction; the detailed source
+arguments are included in \texttt{upstream/}. This extension, the Pell
+rank and half-binomial lemmas, the native compiler, and K215 calibration
+are inherited dependencies \cite{blank67,root20,root09,helical}.
+
+The new work has two independent parts: prove that the twelve-variable
+norm restores exactly this arithmetic certificate, and prove that the
+new coefficient tuple meets the same native compiler interface.
+Together they establish
+\[
+ \exists\mathbf x\in\PP^{12}\;\mathcal P_{12}=0
+ \ \longleftrightarrow\ \operatorname{BlankHalts}(K215)
+ \ \longleftrightarrow\ \neg\Con(\ZFC).
+\]
+All statements concern finite strings, natural-number arithmetic, algebraic
+numbers, or elementary Pell theory, and the cited constructions are
+formalizable in ZFC. The present package does not contain a newly checked
+end-to-end formalization of this chain.
+
+\section{The new root-recovery proof}
+\label{sec:roots}
+
+\subsection{Unit signs and the noncircular bootstrap}
+
+In the scalar evaluator, $V_1$ and $C_1$ are even, $C_{s1}$ is divisible
+by $4$, $K_{c1}$ by $8$, $W_1$ by $4$, and $N_1$ by $8$.
+Consequently
+\[
+ \mathcal N\equiv N_0^2\pmod{64}.
+\]
+At an integer zero of~\eqref{eq:main}, the three factors
+$N_k,N_t,1+\mathcal N$ are units. The value $1+\mathcal N=-1$ would
+make a square congruent to $-2$ modulo $4$, which is impossible.
+Therefore
+\begin{equation}
+ \mathcal N=0,\qquad N_k=N_t=\varepsilon\in\{-1,1\}.
+ \label{eq:units}
+\end{equation}
+
+The inherited weak transport estimate applies before any root recovery
+\cite{blank67}. Since $K_0+w\ge2$, the transport factor being a unit
+implies $C_w\ge0$. In particular $q-F=C_w+\alpha>0$.
+For the coherent compiler tuple its mask bounds then give
+\begin{align}
+ &q\ge16,\quad X\ge q,\quad Y\ge q^3\ge4096,
+ \quad 0<R<q^4-2,\notag\\
+ &E\ge q^4>R+2,\quad k=R+\varepsilon+hE>E,\quad k>R,
+ \quad kY<c<k(Y+1)<2kY.\label{eq:weak}
+\end{align}
+The exceptional boundary $C_w=0$ is retained at this stage. It is not
+discarded by assuming the final index sign prematurely. Set $A_0=a+2$.
+Since $E\ge16Y$ and $Y\ge4096$, we also have $A_0<2E$.
+
+\subsection{The inner weight needs no extra doubling}
+
+Put $P_0=Dv^2+b^2$ and $M_0=kI^2+T^2$.
+The estimates~\eqref{eq:weak} give
+\begin{equation}
+ A>\frac{A_0^2c^2}{16},\qquad A>64A_0^4,\qquad
+ D<A_0^2I^2,\qquad b<2kA_0^2I^2.
+ \label{eq:innerbounds}
+\end{equation}
+For the first two, $A>\ell^2$, $A_0c<4EkY=4\ell$, and
+$\ell>E^2Y$ suffice. The second follows from
+$E^4Y^2>64(2E)^4$. The remaining bounds use $I>1$, $c<I^2$, and $R<k$.
+
+Now $M_0^2\ge4kI^2T^2$ and $M_0^2\ge k^2I^4$. Since $k>64$,
+\begin{align*}
+ AM_0^2&>\frac{k}{4}A_0^2c^2I^2T^2>16Dv^2,\\
+ AM_0^2&>64A_0^4k^2I^4>16b^2.
+\end{align*}
+Adding these strict inequalities yields $AM_0^2>8P_0$.
+Because $d=Q-1\ge Q/2$ and $M=(kI+T)^2\ge M_0$,
+\begin{equation}
+ \boxed{dAM^2>4QP_0.}\label{eq:inner}
+\end{equation}
+This estimate uses no root equation. It strengthens the bound used by
+package 20 and removes its unnecessary factor of two in the inner weight.
+
+\subsection{All complex branches have a uniform bound}
+
+Factoring $\mathcal F$ first with $f^2=D$ and then with $\tau^2=A$
+gives exactly the coherent branches
+\begin{equation}
+ x=M\tau+y,\qquad \tau^2=A,\quad f^2=D,\quad
+ dy^2=e-B_{\rm aux}f=Q(vf-b)^2-1.
+ \label{eq:branches}
+\end{equation}
+This factorization is valid over an algebraic closure, including repeated
+roots. It does not introduce assumptions on independent square classes.
+Every branch, including a possible imaginary $y$, satisfies
+\begin{equation}
+ |y|^2\le\frac{2QP_0+1}{d}<\frac{4QP_0}{d}<AM^2.
+ \label{eq:ybound}
+\end{equation}
+It also satisfies the useful separate estimate
+\[
+ |y|<2(v\sqrt D+b)
+       <8k^2YIT+10k^3I^2.
+\]
+Indeed $\sqrt D<A_0I$, $c<2kY$, $A_0<2E<2k$, and
+$b<2kY+4k^3I^2<5k^3I^2$ prove the last inequality.
+
+\begin{lemma}[The main radicand has a large square-root gap]
+\label{lem:gap}
+Under~\eqref{eq:weak}, $\sqrt G-\sqrt A>kY^2$.
+\end{lemma}
+\begin{proof}
+Since $\Delta>(a+1)^2$ and $c>kY$,
+\[
+ \sqrt G>(a+1)c>(E+Y+1)kY.
+\]
+On the other hand,
+$(\ell+k/2)^2-A=k^2/4-1>0$, hence
+$\sqrt A<\ell+k/2=EkY+k/2$. Subtraction gives
+$\sqrt G-\sqrt A>k(Y^2+Y-1/2)>kY^2$.
+\end{proof}
+
+Because $M=k^2I^2+2kIT+T^2$ and $Y\ge4096$, this gap gives
+\begin{align*}
+ M(\sqrt G-\sqrt A)
+ &>k^3Y^2I^2+2k^2Y^2IT\\
+ &>10k^3I^2+8k^2YIT>|y|.
+\end{align*}
+Thus every root of $\mathcal F$ obeys
+\begin{equation}
+ \boxed{|x|<M\sqrt G<\frac{L\sqrt G}{H}.}
+ \label{eq:outerbound}
+\end{equation}
+This is the key saving: the inner weight $M$ is separated from the outer
+congruence weight $L=1+HM$. One does not need the extra large outer
+multiplier used in package 20, or the repeated outer weight used in 21.
+
+\subsection{The outer norm forces the main root to be integral}
+
+Suppose $\mathcal N=0$. If $G$ were nonsquare, expressing either
+factor in~\eqref{eq:norm} as $E_0+E_1\sqrt G$, with integers $E_0,E_1$,
+would show that both coefficients vanish: otherwise $G$ is a rational
+square and therefore an integer square. Both conjugate factors would
+then vanish. The two corresponding roots
+$(S-L\sqrt G)/H$ and $(S+L\sqrt G)/H$ differ by
+$2L\sqrt G/H$, contradicting~\eqref{eq:outerbound}.
+
+Therefore an integer $u$ with $u^2=G$ and a rational
+$x=(S-Lu)/H$ satisfy $\mathcal F(x)=0$.
+The root $u$ is positive. If it were negative,
+$S=Lu+Hx<0$ by~\eqref{eq:outerbound}, whereas $S=b_0+Hr>0$.
+
+\subsection{Rational reconstruction and Pell saturation}
+
+For real $x$, inequality~\eqref{eq:inner} and
+$B_{\rm aux}\sqrt D\le QP_0$ give
+\[
+ C(x)>3QP_0+1>B_{\rm aux}\sqrt D>0.
+\]
+Moreover $\mathcal F(0)=(C(0)^2-DB_{\rm aux}^2)^2>0$.
+Define
+\begin{align*}
+ V(x)&=C(x)^2+DB_{\rm aux}^2-4d^2x^2M^2A,\\
+ f&=-\frac{V(x)}{2C(x)B_{\rm aux}},&
+ \tau&=\frac{C(x)+B_{\rm aux}f}{2dxM},&
+ y&=x-M\tau.
+\end{align*}
+All denominators are nonzero. The equation $\mathcal F(x)=0$ gives
+$f^2=D$, and the ensuing identity
+$(C+B_{\rm aux}f)^2=4d^2x^2M^2A$ gives $\tau^2=A$.
+Both roots are rational numbers with integer squares, so are integers.
+The remaining rational $y$ satisfies
+\begin{equation}
+ Q(vf-b)^2-(Q-1)y^2=1.\label{eq:saturationinstance}
+\end{equation}
+
+\begin{lemma}[Rational auxiliary Pell saturation]
+\label{lem:saturation}
+If integers $m\ge2,V$ and rational $y$ satisfy
+$m^2V^2-(m^2-1)y^2=1$, then $y$ is an integer.
+\end{lemma}
+\begin{proof}
+Write $y=a/b$ in lowest terms with $b>0$. The equation implies
+$b^2\mid m^2-1$. Put $D_0=(m^2-1)/b^2$, a positive nonsquare integer.
+There are integral Pell solutions
+\[
+ m^2-D_0b^2=1,\qquad (m|V|)^2-D_0a^2=1.
+\]
+Neither second coordinate is zero. Let
+$\epsilon=x_1+y_1\sqrt{D_0}>1$ be the fundamental integral Pell unit,
+and write $\epsilon^n=\chi_n+\psi_n\sqrt{D_0}$.
+For some $j,l\ge1$, $m=\chi_j$, $b=\psi_j$,
+$m|V|=\chi_l$, and $|a|=\psi_l$.
+
+The identity $\chi_j\mid\chi_l$ forces $l$ to be an odd multiple of $j$.
+To see this, $\epsilon^{2j}\equiv-1$ in the quadratic ring modulo
+$\chi_j$ gives $\chi_{n+2j}\equiv-\chi_n$ and
+$\chi_{2j-n}\equiv-\chi_n$. Reduce $l$ modulo $2j$ and reflect into
+$0\le n\le j$. For $n<j$, $0<\chi_n<\chi_j$, so divisibility is
+impossible; hence the reduced index is $j$.
+The Pell multiplication formulas now give $\psi_j\mid\psi_l$.
+Thus $b\mid a$, and coprimality forces $b=1$.
+\end{proof}
+
+Apply the lemma to $m=\Delta I$ and $V=vf-b$ in
+\eqref{eq:saturationinstance}. It yields $y\in\ZZ$, and then
+$x=M\tau+y\in\ZZ$. The special Pell shape is essential; a general
+rational solution of $dy^2=e-Bf$ need not be integral.
+
+\subsection{Recover the omitted congruence and positive coordinate}
+
+Since $L\equiv1\pmod H$ and $S=b_0+Hr=Lu+Hx$,
+$u\equiv b_0\pmod H$. Therefore
+\[
+ \gamma=\frac{u-b_0}{H}\in\ZZ.
+\]
+It is positive. Write $\psi_p(n)$ for the coefficient of
+$\sqrt{p^2-1}$ in $(p+\sqrt{p^2-1})^n$.
+The restored first Pell equation implies
+$k=2\psi_{2XY^2+1}(n)$ with $n\ge1$. Since $k>E\ge16^4$,
+$n\ne1$, so $k\ge4(2XY^2+1)>X$ and $c>k>X$.
+Because $u>0$, $u^2=1+\Delta c^2$, and $\Delta>(a+1)^2$,
+\[
+ \gamma H=u-ac-X>c-X>0.
+\]
+Taking absolute values of $\tau$ and $y$ is harmless. If $f<0$, change
+the signs of $f,T$ together. The inherited signed-quotient normalized
+compiler then applies, forces $\varepsilon=1$, and recovers a blank
+halting tableau. This use of the signed-quotient result is explicit;
+no signed-$\gamma$ theorem is being assumed.
+
+Conversely, take a canonical positive normalized compiler witness, with
+$u=b_0+H\gamma$. The choice
+\begin{equation}
+ r=\gamma+M(u+\tau)+y>0\label{eq:extension}
+\end{equation}
+gives $S=Lu+H(M\tau+y)$ and makes a factor of $\mathcal N$ vanish.
+Together with $N_k=N_t=1$, it proves completeness. This finishes the new
+arithmetic part of Theorem~\ref{thm:main}.
+
+\section{Exact degrees and simpler-proof alternatives}
+\label{sec:degree}
+
+Give each supplied unknown degree one and each fixed port degree zero.
+The leading-degree ledger is
+\begin{center}\small
+\begin{tabular}{@{}lr@{\qquad}lr@{\qquad}lr@{}}
+\toprule
+Expression & Degree & Expression & Degree & Expression & Degree\\
+\midrule
+$c$ & 5 & $a,H$ & 6 & $\Delta$ & 12\\
+$\ell,I$ & 11 & $A,G$ & 22 & $D$ & 34\\
+$Q,d$ & 46 & $b$ & 38 & $P$ & 92\\
+$U,e$ & 122 & $M$ & 24 & $L,HM$ & 30\\
+$S$ & 11 & $n,V_0$ & 82 & $V_1$ & 41\\
+$C_0$ & 134 & $C_1$ & 87 & $Z$ & 238\\
+$K_{c0}$ & 256 & $K_{c1}$ & 215 & $W_0$ & 268\\
+$W_1$ & 221 & $N_0$ & 536 & $N_1$ & 489\\
+\bottomrule
+\end{tabular}
+\end{center}
+The unique top contribution to $C_0$ is $-H^2e$.
+It remains the unique largest contribution through the subsequent
+squares. In particular $N_0^2$ has degree $1072$, while
+$GN_1^2$ has degree only $1000$.
+Writing $q_0=\beta J$ and $k_0=\eta+\zeta$ gives the uniform certificate
+\begin{equation}
+ \mathcal N_{\rm top}
+ =2^{32}i^{48}k_0^{96}w^{80}s^{176}q_0^{656}(q_0-F)^{16}.
+ \label{eq:leader}
+\end{equation}
+This is nonzero for every valid $\beta>0$. The leading forms of $N_k,N_t$
+have degrees $7,2$, respectively, so $\deg\mathcal P_{12}=1081$.
+More explicitly, the coefficient of
+\[
+ J^{677}hz\,i^{48}\eta^{96}w^{81}s^{177}
+\]
+is $2^{32}\beta^{677}>0$. Thus exact degree is established for the actual
+coefficient instance, without relying on small diagnostic replacements.
+
+There is a useful proof-length tradeoff. Replace the carrier by
+$S=Lb_0+Hr$, leaving $M=(kI+T)^2$ and $L=1+HM$ unchanged.
+This costs one extra multiplication and retains degree $1081$.
+The inner bound gives $|x|<2M\sqrt A$, while both $\sqrt G>\sqrt A$
+and $b_0>\sqrt A$. For the second inequality,
+\[
+ a^2k^2Y^2-A=k^2\bigl[EY(2Y^2-1)+Y^4\bigr]-1>0,
+\]
+and $b_0>akY$. Consequently
+$(S+L\sqrt G)/H>2M\sqrt A$, excluding that conjugate directly.
+This avoids the outer gap estimates. Its product and system cost
+$117$ and $112$ operations. A further variant using $M=kI^2+T^2$
+costs $118$ and $113$. All three variants are emitted and audited.
+
+\section{A smaller complete coefficient tuple}
+\label{sec:coefficients}
+
+The new adapter retains package 19's $943$ Wang tiles, occupied binary
+edge labels, native support, and anchor ruler \cite{wang943,compact943}.
+It combines three changes: decode the selector count before other fields;
+place mask-population padding in guaranteed zero cells; and shorten the
+spatial and clause shifts using exact support checks.
+
+\subsection{The fixed tile language}
+
+A tile is $(\mathrm{west},\mathrm{north},\mathrm{east},\mathrm{south})$.
+Use vertical labels $0,1$ for headless bits,
+$\operatorname{head}(q,b)=2(q+1)+b$ for $0\le q\le215$, and
+$L_0=434,Q_0=435,R_0=436,V_0=437,H_0=438$ for initialization and boundaries.
+Horizontal labels are $O=0,HB=1,PL=2,PQ=3,PR=4,BAD=5$ and directed
+signals. Let $S_R,S_L$ be the sorted sets of states targeted by right-
+and left-moving working actions. They have sizes $199$ and $45$.
+Set $\operatorname{right}(q)=6+\operatorname{index}_{S_R}(q)$ and
+$\operatorname{left}(q)=205+\operatorname{index}_{S_L}(q)$.
+
+The finite language is specified by the following table. Each range is
+finite, and the builder reconstructs it without running the machine.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.79\linewidth}r@{}}
+\toprule
+Tile family & Count\\
+\midrule
+For each working action $(q,b)\mapsto(v,R,t)$ use
+$(O,\operatorname{head}(q,b),\operatorname{right}(t),v)$;
+for a left action use $(\operatorname{left}(t),\operatorname{head}(q,b),O,v)$ & 430\\
+Halt loops $(O,\operatorname{head}(215,b),O,\operatorname{head}(215,b))$ & 2\\
+Headless stays $(O,b,O,b)$ & 2\\
+Receive-right $(\operatorname{right}(q),b,O,\operatorname{head}(q,b))$;
+receive-left $(O,b,\operatorname{left}(q),\operatorname{head}(q,b))$ & 488\\
+Finish $(O,c,O,H_0)$, $c\in\{0,1,\operatorname{head}(215,0),\operatorname{head}(215,1)\}$ & 4\\
+Initialization $(PL,L_0,PL,0)$, $(PL,Q_0,PQ,1)$,
+$(PQ,R_0,PR,\operatorname{head}(93,0))$, $(PR,R_0,PR,0)$ & 4\\
+Reset $(HB,H_0,HB,p)$, $p\in\{L_0,Q_0,R_0\}$ & 3\\
+Seam $(u,V_0,v,V_0)$, $u\in\{O,HB,PR\}$, $v\in\{O,HB,PL\}$ & 9\\
+Forbidden $(BAD,0,O,0)$ & 1\\
+\midrule
+Total & 943\\
+\bottomrule
+\end{tabular}
+\end{center}
+The start tile $(PL,Q_0,PQ,1)$ is selector zero and the forbidden tile
+is selector one; all remaining tiles follow lexicographically.
+The actual first machine action is $(0,0)\mapsto(1,R,93)$.
+No east color is $BAD$, so the forbidden tile cannot occur in a global
+matching tiling.
+
+The inherited language proof shows that a marked periodic tiling exists
+exactly when blank K215 halts. Initialization phases force finite vertical
+boundaries around the marked head, directed signals implement each exact
+machine step, and a later reset row requires a halted head. Conversely a
+finite halting run admits independently padded widths and heights and
+matching helical seams. The adapter changes no tile or machine action.
+
+\subsection{Literal coefficient definitions}
+
+Put
+\[
+ \rho=2^{125},\qquad L_{\rm cell}=15625,\qquad
+ d_{\rm base}=125\cdot15625=5^9,
+ \qquad B=\rho^{L_{\rm cell}}.
+\]
+For $0\le j<10$, let
+\[
+ e_0(j)=1023+j,\quad e_1(j)=1013+j,\quad
+ e_2(j)=1003+j,\quad e_3(j)=983+j.
+\]
+The native support is
+\[
+ \mathcal E=\{0,\ldots,942\}\cup
+ \{e_t(j):0\le t<4,\ 0\le j<10\}
+ \cup\{1063,1064,1095,1096,2195,3296\}.
+\]
+It has $989$ elements. Let $w_j=2^{10+2j}$ for $0\le j<44$.
+If tile $i$ has labels $x_{it}$, encode the occupied label $x_{it}+512$
+in ten bits, and define
+\begin{align*}
+ c_i&=1+\sum_{t=0}^3\sum_{j=0}^9
+          \operatorname{bit}_j(x_{it}+512)w_{10t+j}
+             +\sum_{j=40}^{43}w_j,\quad 0\le i<943,\\
+ c_{e_t(j)}&=w_{10t+j},\\
+ (c_{1095},c_{1096},c_{2195},c_{3296})&=(w_{40},w_{41},w_{42},w_{43}),\\
+ c_{1063}&=c_{1064}=0,\qquad
+ \mu=1022+\sum_{j=0}^{43}w_j.
+\end{align*}
+Bit extraction here is only part of the bounded definition of fixed
+coefficients from the finite tile list. It is not an operation in the
+Diophantine polynomial.
+
+The external padding mask is
+\[
+ Z_{\rm pad}=(2^{123}-1)\sum_{e=9000}^{9005}\rho^e
+                  +(2^{122}-1)\rho^{9006}.
+\]
+Define
+\begin{align}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e
+          \bigl(\rho^{4393-e}+\rho^{5495-e}\bigr),\notag\\
+ D_R={}&\rho^{42},\notag\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+                       -2\rho^{1063},\notag\\
+ M_F^{\rm native}={}&4+\mu(\rho^{4393}+\rho^{5495})
+  +\sum_{j=0}^9(\rho^{1013+j}+\rho^{1065+j})
+  +\rho^{2195}+\rho^{3296}+Z_{\rm pad}.\label{eq:constants}
+\end{align}
+The complete tuple used throughout this package is
+\begin{equation}
+ \boxed{\beta=B-1,\qquad K_0=D_C+BD_R,\qquad
+          M_C,\qquad M_F=M_F^{\rm native}+B-1.}
+ \label{eq:ports}
+\end{equation}
+Every exponent and summation range is fixed. There is no unbounded
+coefficient search and no dependence on whether a refutation is found.
+
+\section{Why the smaller encoding preserves the compiler}
+\label{sec:adapterproof}
+
+\subsection{Mixed-radix decoding must be done in order}
+
+At a clean clause target, let $n$ be the number of selected tiles.
+Native selector digits are Boolean, so $0\le n\le943<1024$.
+All other contributions to the clause sum are divisible by $1024$;
+therefore its low ten bits are exactly $n$, even if higher fields have
+not yet been decoded. Disjointness from the low mask $1022$ forces
+$n\in\{0,1\}$.
+
+Only now consider the upper fields. Each is the sum of at most one
+selected tile bit and one copy bit, or of $n$ and one anchor bit.
+Its value lies in $\{0,1,2\}$, so radix-four fields are carry-free.
+The mask tests their low bits, allowing precisely $0$ and $2$.
+Thus an empty cell has no copies or anchors, and an occupied cell has
+exactly the selected tile's copy bits and all four anchors.
+
+Conversely, every valid tile encoding and the empty encoding passes.
+The old uniform ten-bit spacing is unnecessary after the selector count
+has been established. The new clause mask has $9+44=53$ set bits.
+Assuming the upper fields carry-free before decoding $n$ would be an
+error; the ordered argument above is the substantive mixed-radix change.
+
+\subsection{Exact geometry replaces excessive spacing}
+
+Use clause targets $T_1=4393,T_2=5495$, spatial shift $H_c=42$,
+and bare shifts $30,62,1100,2200$.
+The required target identities, for $0\le j<10$, are:
+\begin{center}\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Target & $D_C$ source & $D_R$ source & Temporal source\\
+\midrule
+$1013+j$ & $983+j$ & none & $1013+j$\\
+$1065+j$ & $1003+j$ & $1023+j$ & none\\
+$2195$ & $1095$ & none & $2195$\\
+$3296$ & $1096$ & none & $3296$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For every $e\in\mathcal E$, these are exact native-basis coefficient
+identities, including both reflected clause bands. At each clause target
+$T$, $[\rho^{T-e}]D_C=c_e$ and $e+42\ne T$.
+The checker exhausts all $69\,230$ such identities; linearity extends
+them to every native assignment, including the allowed dummy digits.
+
+The two finite support intersections are
+\begin{align*}
+ (T_1-\mathcal E)\cap(T_2-\mathcal E)&=\varnothing
+                         \pmod{15625},\\
+ (2195-\mathcal E)\cap(3296-\mathcal E)&=\{0\}
+                         \pmod{15625}.
+\end{align*}
+The first supplies a clean clause band for every binary rotation; the
+second supplies unique whole-cell anchor alignment after binary alignment.
+The upper-dummy spill position $1064$ already belongs to $\mathcal E$.
+Its unique possible odd spill cannot satisfy both distinct anchor tests.
+These are the same synchronization arguments as the inherited exact-support
+compiler. The support span $3296$ is less than half the circumference,
+so no omitted circular case arises.
+
+\subsection{Population padding can test guaranteed zero positions}
+
+The two clause masks contribute $106$ set bits. Twenty overlap tests,
+two anchor tests, and the low test contribute $23$ more. The remaining
+$860$ bits needed to reach $989$ are supplied by $Z_{\rm pad}$.
+
+For an aligned canonical witness, the largest radix exponent in any
+$D_C$ convolution is $5495+3296=8791$; the corresponding bound for
+$D_R$ is $42+3296=3338$, and temporal native support is at most $3296$.
+All padding positions $9000,\ldots,9006$ are therefore identically zero.
+Completeness loses no canonical witness. In soundness the added tests
+may simply be discarded; adding zero tests cannot create a witness.
+
+The exact population and low-bit invariants are
+\begin{align*}
+ \pc(M_F^{\rm native})&=106+23+860=989,\\
+ \pc(M_C)&=d_{\rm base}-989,\\
+ M_C&\equiv2\pmod4,&M_F^{\rm native}&\equiv4\pmod8,\\
+ 0<M_C,M_F^{\rm native}&<B-1.
+\end{align*}
+They preserve the inherited inverse-population theorem and its exact
+two-bit surplus. The padding need not occur inside the clause band;
+the proof uses its population and its vanishing on canonical outputs.
+
+\subsection{Carries, margins, and five-adic tuning}
+
+For the uniform inherited bound
+\[
+ \mathrm{mass}=(989+2)\left(2\sum_{e\in\mathcal E}c_e+6\right),
+\]
+$\mathrm{mass}$ has $118$ bits and $4\mathrm{mass}+8$ has $120$ bits.
+The largest padding digit has $123$ bits, and
+$2(2^{123}-1)+4<2^{125}$. Therefore $\rho=2^{125}$ exceeds every
+required uniform carry threshold. Padding is part of the tested mask,
+not an additional computation summand. All unshifted products and mask
+positions remain inside the $15625$-cell circumference, and the inherited
+strict-slack estimates remain available.
+
+Because $125$ is a power of five, $\rho\equiv2\pmod5$.
+The clause gap $1102\equiv2\pmod4$ makes paired reflected-clause
+contributions cancel modulo five. The four bare shifts give
+$D_C\equiv0\pmod5$, while $D_R\equiv4\pmod5$. Consequently
+\[
+ \boxed{2D_C-D_R\equiv1\pmod5.}
+\]
+The inherited dummy-control argument needs this quantity to be a unit;
+its particular nonzero residue is immaterial. Independent power-of-five
+width and height padding therefore still tunes the actual packed rank
+to the needed temporal stride. This completes the coefficient-adapter
+argument and the remaining part of Theorem~\ref{thm:main}.
+
+\section{Materialized integers and operation-minimal alternatives}
+
+The coefficient payloads are deterministic gzip files containing minimal
+unsigned little-endian integers, with no header in the decompressed bytes.
+The binding manifest records SHA-256 hashes of both forms. The sizes are:
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Port & Bits & Raw bytes & Gzip bytes\\
+\midrule
+$\beta$ & 1,953,125 & 244,141 & 273\\
+$K_0$ & 1,958,376 & 244,797 & 10,170\\
+$M_C$ & 1,953,125 & 244,141 & 373\\
+$M_F$ & 1,953,126 & 244,141 & 371\\
+\midrule
+Total & & 977,220 & 11,187\\
+\bottomrule
+\end{tabular}
+\end{center}
+The old $943$-tile compact tuple occupies $5\,312\,269$ raw bytes,
+and its largest coefficient has $13\,201\,251$ bits \cite{compact943}.
+The new raw size is $81.604\%$ smaller, while the largest bit length
+is $85.165\%$ smaller. These are actual coefficient-height improvements,
+not merely better compression of unchanged integers.
+
+\subsection{The unchanged 67-operation polynomial, with smaller coefficients}
+
+For users prioritizing operation count, the archive includes the inherited
+fifteen-positive-variable arithmetic DAG, rebound to~\eqref{eq:ports}.
+Use the common interface with additional positive $f,\tau,y,\gamma$ and
+without $r$. Set
+\begin{align*}
+ D_{\rm main}&=X+ac+\gamma H,&
+ V&=c(Tf-1)-Rf^2,&K_{\rm aux}&=(i\Delta c^2)^2,\\
+ N^{(0)}&=\tau^2-(XY^2)(XY^2+1)k^2,\\
+ N^{(1)}&=D_{\rm main}^2-\Delta c^2,\\
+ N^{(a)}&=K_{\rm aux}(V^2-y^2)+y^2,\\
+ N^{(s)}&=\Delta f^2-K_{\rm aux}.
+\end{align*}
+Then
+\[
+ \mathcal P_{67}=N^{(0)}N^{(1)}N^{(a)}N_kN_tN^{(s)}-\Delta=0
+\]
+has the same positive existence predicate, degree $155$, and $67$
+operations \cite{blank67}. Its arithmetic is not a new result here.
+Its fixed coefficients are smaller by the new adapter.
+
+The archive also includes package 22's unchanged seven-equation system
+in sixteen positive unknowns, degree $24$ and $59$ operations, rebound
+to the same tuple \cite{retained59}. These two baselines prevent a
+twelve-variable improvement from being mistaken for an overall
+operation-count record.
+
+\section{Verification, reproducibility, and limits}
+\label{sec:verification}
+
+The Python programs use only the standard library. The delivered package
+is designed to run after extraction, without relying on the source
+repository layout, omitted historical files, or network access.
+From the package root:
+\begin{verbatim}
+python3 reproduce.py
+make pdf
+\end{verbatim}
+The first command regenerates the arithmetic circuits and coefficient
+payloads, runs independent audits, and checks the fixed-instance bindings.
+The second compiles this source using \texttt{pdflatex} twice.
+
+\subsection{What the checks establish}
+
+The arithmetic builder checks each of three variants against an independently
+implemented eight-component conjugate-product evaluator on $24$ exact signed
+assignments. It checks product and sum-of-squares finalizers, the parity
+identity, dependency order, liveness, and operation counts. A separate
+auditor imports no builder and checks the leading-form identities on $32$
+exact assignments. The uniform proof in Section~\ref{sec:degree}, not the
+finite sampling, establishes the degree for the actual large coefficients.
+
+The coefficient verifier reads the actual bytes and independently
+reconstructs the recipe. Its checks include $69\,230$ exact native-basis
+identities, all $943$ valid tile clauses, rejection of $41\,492$ individual
+copy/anchor mutations, rejection of all $44$ analogous empty-cell
+mutations, all $944$ possible selector counts, support intersections,
+population counts, low congruences, and padding support separation.
+These finite basis identities establish the stated finite layout properties
+exactly; the arbitrary-tableau transfer is the mathematical argument in
+Section~\ref{sec:adapterproof}.
+
+The release verifier additionally evaluates the supplied circuits modulo
+three primes using residues of the actual four integers, and checks the
+compact direct formula against the emitted circuit. These computations
+audit binding and transcription. They are not a search for a full solution
+or evidence concerning the truth of consistency.
+
+\subsection{What is inherited and what remains open}
+
+The new proof uses the same native compiler, Pell rank lemmas, half-binomial
+criterion, and K215 calibration as the reviewed packages. Copies of the
+critical inherited arguments and an immutable provenance ledger accompany
+the archive. The new work has received a separate mathematical audit within
+this assistant collaboration, not an external human endorsement.
+No Lean or Rocq proof of the new norm or coefficient adapter is claimed.
+
+The improvements do not settle any absolute minimization problem. The
+nine-natural-variable form remains smaller in variable count; the
+$67$-operation and $59$-operation baselines remain smaller in arithmetic
+work. We have not constructed an eleven-positive-variable equation at
+moderate degree or a new improvement to the signed $26$-integer family.
+
+For contemporary context, Sun's September 2026 preprint states a constructive
+ten-integer-variable representation for every recursively enumerable set
+\cite{sun2026}. That general theorem gives a further route to a small
+signed-variable count. This package does not instantiate its source-polynomial
+compiler for K215 and does not present an unspecified polynomial as an
+explicit ten-variable result. Likewise, the concrete Jones reduction used
+by package 18 assumes a quartic input: feeding it a degree-$1081$ polynomial
+without changing and proving the coding bounds would be invalid.
+
+The most direct formalization project is now comparatively local: prove
+Lemma~\ref{lem:gap}, the coherent-root recovery lemma, the scalar norm
+identity, and the mixed-radix decoder, then compose them with an explicitly
+formalized native compiler interface. The materialized tuple and full
+circuits make this a fixed, reviewable target.
+
+\appendix
+\section{Package map and exact instance contract}
+
+\begin{center}\small
+\begin{tabular}{@{}p{.30\linewidth}p{.62\linewidth}@{}}
+\toprule
+Location & Contents\\
+\midrule
+\texttt{report.tex}, \texttt{report.pdf} & Complete article and compiled version.\\
+\texttt{arithmetic/} & Self-contained emitter, nine circuit variants, algebra receipts.\\
+\texttt{coefficients/} & Literal K215 table, ordered tiles, complete coefficient recipe,
+actual compressed integers, independent byte verifier, binding manifest.\\
+\texttt{baselines/} & The unchanged 67-operation polynomial and 59-operation system,
+with complete new bindings.\\
+\texttt{proofs/} & Expanded new proofs and independent mathematical reviews.\\
+\texttt{upstream/} & Selected inherited proofs and endpoint source, preserved as evidence.\\
+\texttt{verification/} & Independent arithmetic, fixed-instance, and release checks.\\
+\texttt{provenance/} & Immutable source paths, revision, and byte hashes.\\
+\texttt{licenses/} & Repository license and inherited machine notices.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The canonical instance identifier is
+\begin{center}\small\ttfamily
+wang943-mixed125-external-padding-5pow9.
+\end{center}
+Circuit aliases $\mathtt{beta}$ and $\mathtt{Bm1}$ map to the payload
+\texttt{beta}; $\mathtt{K0}$ and $\mathtt{Kconstant}$ map to
+\texttt{K}; $\mathtt{MC}$ maps to \texttt{MC}; and $\mathtt{MF}$ maps
+to \texttt{MF\_source}. All four ports must be replaced together.
+The shifted mask convention is part of the theorem, not an optional
+renaming. Historical source copies keep their historical bindings;
+only the explicitly rebound delivered circuits select this instance.
+
+\begin{thebibliography}{99}\small
+\bibitem{catalogue} ProveIt contributors,
+\emph{Con(ZFC) in Diophantine form: audited wave-3 comparison}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md}{Pinned collection README}.
+
+\bibitem{root20} ProveIt package 20,
+\emph{Twelve positive unknowns by amalgamating the main Pell root}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/20-root12/amalgamation/ROOT12_PROOF.md}{Pinned proof}.
+
+\bibitem{norm21} ProveIt package 21,
+\emph{A twelve-positive-variable Diophantine equation for Con(ZFC)}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/21-norm12/proofs/NORM12_PROOF.md}{Pinned proof};
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/21-norm12/arithmetic/build_norm12.py}{scalar norm emitter}.
+
+\bibitem{root09} ProveIt package 09, retained by package 20,
+\emph{Root amalgamation and the signed-quotient interface}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/20-root12/amalgamation/dependencies/09_ROOT_AMALGAMATION_PROOF.md}{Pinned dependency}.
+
+\bibitem{blank67} ProveIt, retained by package 21,
+\emph{Independent proof and source audit: the 67-operation blank-input polynomial}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/21-norm12/upstream/FIXED_BLANK_67_PROOF.md}{Pinned proof}.
+
+\bibitem{helical} ProveIt, retained by package 21,
+\emph{Blank-input helical native compiler proof}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/21-norm12/upstream/BLANK_HELICAL_PROOF.md}{Pinned proof}.
+
+\bibitem{wang943} ProveIt package 19,
+\emph{Materialized four-coefficient Con(ZFC) instance: 943 signal tiles}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/19-wang943/compiler/WANG943_COEFFICIENTS.md}{Pinned language and compiler proof}.
+
+\bibitem{compact943} ProveIt package 19,
+\emph{Recommended compact instance: $B=2^{5^{10}}$}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/19-wang943/compiler/WANG943_COMPACT_LAYOUT.md}{Pinned exact-support layout}.
+
+\bibitem{retained59} ProveIt package 22,
+\emph{A 59-operation system in 16 positive unknowns}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/22-monic12/proofs/RETAINED59_PROOF.md}{Pinned proof}.
+
+\bibitem{jones9} ProveIt package 18,
+\emph{Three explicit Diophantine forms of ZFC consistency}.
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/18-jones9/report.tex}{Pinned report source};
+\repo{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/18-jones9/nine/nine_section.tex}{concrete nine-variable section}.
+
+\bibitem{kendpoint} ProveIt contributors,
+\emph{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}.
+\repo{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{Pinned Lean endpoint source}.
+
+\bibitem{sun2026} Zhi-Wei Sun,
+\emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/html/2609.01594v2}.
+\end{thebibliography}
+\end{document}

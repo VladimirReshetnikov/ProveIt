@@ -1,0 +1,138 @@
+{
+  "schema": "proveit-conzfc-optional-materialization-check-v1",
+  "status": "PASS",
+  "scope": "Regenerated circuit and polynomial artifacts, checked their advertised counts and degree certificates, ran the generators' finite algebra and transcription diagnostics, and verified complete compact943 coefficient bytes. This is not an end-to-end proof-assistant certificate, a solution search, or a proof of Con(ZFC). The ordinary mathematical equivalence proofs and their imported compiler/Pell dependencies require separate review.",
+  "execution": "Ran reproduce.py --materialize-coefficients in an isolated temporary copy of the archive; the temporary raw files were discarded.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "started_utc": "2026-10-23T01:12:17+00:00",
+  "completed_utc": "2026-10-23T01:12:19+00:00",
+  "elapsed_seconds": 1.72,
+  "steps": [
+    {
+      "script": "coefficients/build_wang943.py",
+      "script_sha256": "77da90b15a0a564da28186475b2f9b5e58f2752e47e267ac7b67ff08dde2b983",
+      "arguments": [
+        "-B",
+        "coefficients/build_wang943.py"
+      ],
+      "working_directory": "coefficients",
+      "returncode": 0,
+      "elapsed_seconds": 0.065
+    },
+    {
+      "script": "coefficients/build_wang943_compact.py",
+      "script_sha256": "8aeb4f4899f4432d729d77af3086bfafa542be78e3b87f3b68f75dd99b6d378e",
+      "arguments": [
+        "-B",
+        "coefficients/build_wang943_compact.py"
+      ],
+      "working_directory": "coefficients",
+      "returncode": 0,
+      "elapsed_seconds": 0.115
+    },
+    {
+      "script": "coefficients/materialize_wang943_compact.py",
+      "script_sha256": "c5e19b09b8f2c2bd1229cc3d1936b867a4d11a712a1bfcff646598f5f3621b3b",
+      "arguments": [
+        "-B",
+        "coefficients/materialize_wang943_compact.py"
+      ],
+      "working_directory": "coefficients",
+      "returncode": 0,
+      "elapsed_seconds": 0.268
+    },
+    {
+      "script": "norm12/build_shifted_norm12.py",
+      "script_sha256": "1babb75bf7d2dfaab7e96c73354ad96ac2a81ebbdadfaf5568fd378b96b3d88b",
+      "arguments": [
+        "-B",
+        "norm12/build_shifted_norm12.py"
+      ],
+      "working_directory": "norm12",
+      "returncode": 0,
+      "elapsed_seconds": 0.115
+    },
+    {
+      "script": "signed17/build_signed17.py",
+      "script_sha256": "8cd720f8ed4dcd04c601f8681b0810775ebe9b745997336805e202314c97d234",
+      "arguments": [
+        "-B",
+        "signed17/build_signed17.py"
+      ],
+      "working_directory": "signed17",
+      "returncode": 0,
+      "elapsed_seconds": 1.018
+    },
+    {
+      "script": "low_degree/build_odd_scale_lifts.py",
+      "script_sha256": "5abf796b7a24da428976cf18de6c89b7ce0264f8f5b740d3a9c1a0d9c3e57e82",
+      "arguments": [
+        "-B",
+        "low_degree/build_odd_scale_lifts.py"
+      ],
+      "working_directory": "low_degree",
+      "returncode": 0,
+      "elapsed_seconds": 0.064
+    }
+  ],
+  "coefficient_verification_in_temporary_copy": {
+    "status": "PASS",
+    "manifest": "COEFFICIENT_BINDING.json",
+    "manifest_sha256": "1e0a9584cccab521f0a317d1a696997b13f9409708bbf37728f693bcb7fe56a9",
+    "variant": "wang943-compact-5pow10",
+    "files": [
+      {
+        "name": "beta",
+        "supplied_path": "coefficients/coefficients_compact/beta.bin.gz",
+        "gzip_bytes": 1219,
+        "gzip_sha256": "d74fa1f37a13a30bd345de76647c04ccb4a168f9c0f6fa958342bd808042bf87",
+        "bytes": 1220704,
+        "sha256": "40cc309fcb5dd2942c371d18be6d955d472e6b4c3604034b316194037ac16a5d",
+        "bit_length": 9765625,
+        "population": 9765625,
+        "existing_raw_file_verified": true
+      },
+      {
+        "name": "MC",
+        "supplied_path": "coefficients/coefficients_compact/MC.bin.gz",
+        "gzip_bytes": 1616,
+        "gzip_sha256": "26c82f68771defd499337403feea14a5ee27a6e79011a418cfb61f518a532b0b",
+        "bytes": 1220704,
+        "sha256": "2e3107193f3b376fc3cfffdaa3ef547e6dd8dfdd4548519c0e33b5ffe2f2371d",
+        "bit_length": 9765625,
+        "population": 9764636,
+        "existing_raw_file_verified": true
+      },
+      {
+        "name": "MF_source",
+        "supplied_path": "coefficients/coefficients_compact/MF_source.bin.gz",
+        "gzip_bytes": 1314,
+        "gzip_sha256": "a872d8313b7c1b86f1c2533fe8ea02043ef472d4521bd00b51f27333484f35e8",
+        "bytes": 1220704,
+        "sha256": "8851b54fffd93780996de5f8c69315448e1369c3eea142428d2225a5149d1825",
+        "bit_length": 9765626,
+        "population": 991,
+        "existing_raw_file_verified": true
+      },
+      {
+        "name": "K",
+        "supplied_path": "coefficients/coefficients_compact/K.bin.gz",
+        "gzip_bytes": 16111,
+        "gzip_sha256": "7bd89ac9dc87307d870807429db0fbe313378d565fa4ebcfeddd8c170f3f6696",
+        "bytes": 1650157,
+        "sha256": "e79f794af9565a7d824beb423bd03ee9ac117811b9b0e3a83ffe18f8a084de99",
+        "bit_length": 13201251,
+        "population": 33499,
+        "existing_raw_file_verified": true
+      }
+    ],
+    "integer_contract_checks": "PASS",
+    "scope": "The complete compact943 tuple used by norm12 and low_degree. The signed17 family retains its separate original T4 recipe; its generator authenticates its source files and checks modular evaluations."
+  },
+  "family_statuses": {
+    "norm12": "PASS",
+    "signed17": "PASS",
+    "low_degree": "PASS"
+  },
+  "combined_driver_log": "verification/logs/optional_materialization_in_isolated_copy.log"
+}

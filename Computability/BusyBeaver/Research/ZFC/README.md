@@ -1134,27 +1134,24 @@ published to support further work toward 214.
 
 ## Intake and theory minimization
 
-**Diophantine form of the K215 endpoint** (not formalized). Intake batch 219
-placed eight wave-3 packages, superseding the earlier waves of batches 217
-and 218, as the research report
+**Diophantine form of the K215 endpoint** (not formalized). Intake batch 220
+placed seven wave-4 packages, superseding the earlier waves of batches
+217–219, as the research report
 [`con-zfc-diophantine-forms`](../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
-(placement `da064316ea`, reconciliation `0641ffc22c`). Each one turns
-the K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation`
-into an explicit polynomial with fixed integer coefficients. The route is
-to compile a local tile language of the blank run of
+(placement `604b1416b5`, reconciliation `eab42d8e3e`). Each one turns the
+K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation` into
+an explicit polynomial with fixed integer coefficients. The route compiles a
+local tile language of the blank run of
 [`candidate-k215/k215.tm`](candidate-k215/k215.tm) with the Hilbert's-tenth
-native-window/Pell compiler with its input interface removed. By an
-ordinary argument, ZFC
-then proves "no solution" ↔ Con(ZFC). As the packages state them, the
-fewest positive unknowns in a moderate-degree circuit are 12, nine natural
-unknowns are reached at astronomic degree by an explicit Jones
-specialization, and the fewest operations remain 67 (15
-unknowns, degree 155). The smallest coefficient recipe has B = 2^(5^10)
-(943 tiles); two recipes are shipped materialized, and the materialized
-bytes do not by themselves prove the compiler theorem. Only the machine
-endpoint is checked in Lean/Rocq; the Diophantine bridge is not. The
-ZFC-provability claim rests on the ordinary calibration argument, not on
-Lean's soundness.
+native-window/Pell compiler, its input interface removed. By an ordinary
+argument, ZFC then proves "no solution" ↔ Con(ZFC). As the packages state
+them, 12 positive unknowns are reached at degree 1069 and nine positive
+unknowns at astronomic degree. The fewest operations remain 67 (15 unknowns,
+degree 155), and the smallest coefficient recipes have B = 2^(5^9). Several
+recipes ship materialized, and the materialized bytes do not by themselves
+prove the compiler theorem. Only the machine endpoint is checked in
+Lean/Rocq; the Diophantine bridge is not. The ZFC-provability claim rests on
+the ordinary calibration argument, not on Lean's soundness.
 
 [Intake batch 143](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
 was completed before this research: placement `b07d1a27b`, reconciliation

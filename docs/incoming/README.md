@@ -27,6 +27,20 @@ publication keep their separate scopes.
 
 ## Current queue
 
+## Queue status after batch 220
+
+The seven wave-4 archives of `375cc6e3d7` ("Con(ZFC) in Diophantine form
+(wave-4)") are syntheses of batch 219's eight packages and, by Vladimir's
+direction ("do the same", after he chose supersession for wave 3), supersede
+them. Placement `604b1416b5` removes the wave-3 directories from
+[con-zfc-diophantine-forms](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
+(recoverable from `da064316ea` through its parent), places the seven packages
+as sources 24–30 (831 files; 25 repository copies outside the report omitted,
+byte-identical up to line ends; 15 ignored ledgers and logs) and retires all
+seven ZIPs. Reconciliation `eab42d8e3e` replaces the report README and lists
+the wave-3 results that wave 4 does not reproduce. The collection stays at
+291 reports. Nothing was rerun. The queue is clear.
+
 ## Queue status after batch 219
 
 The eight wave-3 archives of `cbf94cb552` ("Con(ZFC) in Diophantine form
@@ -1520,6 +1534,7 @@ ProveIt-era batches (from this directory):
 | 217 | Eight manuscripts from `2fd49a1a9d`, one theorem proved eight times: placement `084e120830` opens `hilbert-tenth-problem/con-zfc-diophantine-forms` (one numbered directory per package, PDFs kept; 600 members = 329 staged + 264 repository copies omitted + 7 ignored checksum ledgers) and retires all eight ZIPs; reconciliation README `feadb33d20` (bases 06 for P67, 05 for the 15-unknown 82-operation product found twice with 03, and 02 for the degree-28 system), catalogue `c588457cf8` (291 reports). No write, nothing rerun. | [README.md](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md): overlap, credits, tensions, non-claims, merged open questions |
 | 218 | Seven wave-2 manuscripts from `7be2780f26`, superseding batch 217 by Vladimir's direction: placement `8a4b00b5bf` removes wave-1 directories 01–08 of `hilbert-tenth-problem/con-zfc-diophantine-forms` and places sources 09–15 (640 members = 535 staged + 93 copies omitted against the repository outside the report + 12 ignored), retiring all seven ZIPs; reconciliation README `505e0e0a30` (frontier table: 13 unknowns 09, degree-121 14-unknown 09, gap norm 12, six-way-shared 61-op system, 29 integers 14, T4 coefficients 11). No write, nothing rerun; collection stays 291. | [README.md](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md): frontier, credits, recipes, tensions, supersession |
 | 219 | Eight wave-3 manuscripts from `cbf94cb552`, superseding batch 218 by Vladimir's direction (asked and answered): placement `da064316ea` removes wave-2 directories 09–15 and places sources 16–23 (921 members = 818 staged, including 20's 25 MB of materialized coefficient binaries and 7 attribution files restored after the audit, + 86 copies omitted + 17 ignored), retiring all eight ZIPs; reconciliation README `0641ffc22c` (9 naturals via Jones 18; 12 positive by seven polynomials; 26ℤ; 27ℤ at 172/116 23; B = 2^(5^10) materialized 19; wave-2 results not reproduced listed). No write, nothing rerun; collection stays 291. | [README.md](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md): frontier, methods, recipes, supersession |
+| 220 | Seven wave-4 manuscripts from `375cc6e3d7`, superseding batch 219 by Vladimir's direction: placement `604b1416b5` removes wave-3 directories 16–23 and places sources 24–30 (871 members = 831 staged + 25 copies omitted + 15 ignored; attribution files kept wherever they sit), retiring all seven ZIPs; reconciliation README `eab42d8e3e` (17ℤ signed Jones 29; nine positive delivered 27; nine-variable degree 120724·5^32+366 at 1840 ops 30; twelve positive at degree 1069 24 or 111 ops 30; 31-unknown quartic 30; B = 2^(5^9) 25, 27; wave-3 results not reproduced listed). No write, nothing rerun; collection stays 291. | [README.md](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md): frontier, recipes, supersession |
 
 
 

@@ -1,0 +1,44 @@
+{
+  "reviewed_revision": "ae3007ca4467011e0e051c84acb4a1dd13971b0e",
+  "families": [
+    {
+      "name": "shifted norm12",
+      "domain": "12 strictly positive integers",
+      "binding": "COEFFICIENT_BINDING.json",
+      "builder": "norm12/build_shifted_norm12.py",
+      "forms": [
+        "norm12/shifted_norm12_product.json",
+        "norm12/shifted_norm12_system110.json",
+        "norm12/shifted_norm12_sos118.json"
+      ]
+    },
+    {
+      "name": "odd scale low degree",
+      "domain": "unrestricted integers",
+      "binding": "COEFFICIENT_BINDING.json",
+      "builder": "low_degree/build_odd_scale_lifts.py",
+      "forms": [
+        "low_degree/generated/integer51_degree4_odd_scale.json",
+        "low_degree/generated/integer42_degree6_odd_scale.json",
+        "low_degree/generated/integer36_degree8_odd_scale.json"
+      ]
+    },
+    {
+      "name": "signed17",
+      "domain": "17 unrestricted integers",
+      "binding": "signed17/upstream/COEFFICIENT_BINDINGS.json",
+      "coefficient_and_index_recipe": "signed17/SIGNED17_PROOF.md",
+      "recipe_data": [
+        "signed17/upstream/nine/generated/constants.json",
+        "signed17/upstream/nine/generated/index_bound_s.json",
+        "signed17/upstream/base/quartic32.upstream.json"
+      ],
+      "source_pins": "signed17/SOURCE_PINS.json",
+      "builder": "signed17/build_signed17.py",
+      "forms": [
+        "signed17/generated/signed17.json"
+      ]
+    }
+  ],
+  "rule": "Each family uses one entire fixed coefficient tuple. Intermediate circuit register names and fixed coefficient leaves do not count as quantified variables. No parameter is selected by the truth of Con(ZFC)."
+}

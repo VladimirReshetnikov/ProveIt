@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,microtype}
+\usepackage{xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\hypersetup{pdftitle={Smaller separating norms and a signed finalizer for Diophantine ZFC consistency},pdfauthor={Prepared for the ProveIt project},pdfsubject={Explicit Diophantine equations equivalent to ZFC consistency},pdfkeywords={Diophantine equations, ZFC consistency, Pell equations, Jones reduction, ProveIt}}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\PP}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Norm}{\operatorname{Norm}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\pin}{\texttt{ae3007ca4467011e0e051c84acb4a1dd13971b0e}}
+\newcommand{\repo}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ae3007ca4467011e0e051c84acb4a1dd13971b0e/#1}{#2}}
+\title{Smaller separating norms and a signed finalizer\newline for Diophantine ZFC consistency}
+\author{Research synthesis prepared for the ProveIt project}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We compare and combine the eight current Diophantine consistency packages in
+ProveIt, numbered 16--23, at the fixed repository revision recorded below.
+Two new algebraic reductions give concrete improvements. First, a polynomial
+in twelve strictly positive integer unknowns has exact degree $1081$ and a
+division-free circuit of $116$ binary arithmetic operations. Its
+three-equation presentation has maximum degree $1072$ and $112$ operations.
+This improves the former twelve-variable degree minimum $1145$ while matching
+the former operation minimum $116$. The key change is the uniform bound
+$|y'|<(T^2+XI^2)\sqrt G$ for every relevant algebraic conjugate, together with
+a smaller coefficient for the first Pell root.
+
+Second, a concrete Jones specialization in nine nonnegative unknowns has
+exact degree $93264\,5^{33}+288$, compared with $161844\,5^{33}+484$ in
+package 18, and uses $20\,547$ operations instead of $20\,531$. This is a
+$42.374\%$ degree reduction at a cost of sixteen operations. It combines
+structured radical bounds with a signed divisibility finalizer that avoids
+squaring the divisor and dividend.
+
+Both constructions use the complete, already published 943-tile coefficient
+tuple of package 19, with $B=2^{5^{10}}$. We rebuild its four actual integers
+and include their compressed binary representations. The nine-variable
+index constants are defined by bounded finite recipes, rather than expanded.
+Composing the new algebra with the repository's ordinary compiler and K215
+calibration theorems proves in ZFC that each stated unsolvability assertion
+is equivalent to $\Con(\ZFC)$. We give detailed proofs, exact polynomial
+circuits, independent algebraic checks, and a reproducible archive. We claim
+improvements within the inspected family, without claiming global minimality
+or a new end-to-end proof-assistant certificate.
+\end{abstract}
+
+\noindent\textbf{Repository snapshot.} \pin. All comparisons use that snapshot;
+the historical package numbers are retained for attribution.
+\clearpage
+\tableofcontents
+\newpage
+\input{sections/overview}
+\input{sections/twelve}
+\input{sections/nine}
+\input{sections/coefficients}
+\input{sections/verification}
+\input{sections/references}
+\end{document}
