@@ -35,8 +35,8 @@ below are unchanged. Neither the Diophantine bridge nor the compiler is
 formalized. The Lean development proves MRDP and `Jones1982.nine_unknowns`,
 the existence of a nine-unknown representation without a degree bound. The
 report's nine-variable and signed Jones-type forms build on the parametric
-`Jones1982.Nine.wset_iff_nine` and its lemmas for a fixed 31-unknown quartic,
-not on `nine_unknowns` (which fixes ν = 58). Their new finalizers, majorants
+`Jones1982.Nine.wset_iff_nine` and its lemmas for a fixed 31- or 32-unknown
+quartic, not on `nine_unknowns` (which fixes ν = 58). Their new finalizers, majorants
 and cofinal-base arguments are unformalized, so the new polynomials are not
 themselves instances of the Lean theorem.
 

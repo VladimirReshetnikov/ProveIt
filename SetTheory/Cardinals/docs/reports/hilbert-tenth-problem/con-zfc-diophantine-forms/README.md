@@ -32,11 +32,21 @@ wave 5 was placed.
 Source numbers 01–30 are kept only because the packages' texts use them; the
 wave-5 directories continue the sequence as 31–37.
 
-Several wave-5 packages bundle copies of wave-4 files as reference material.
-These include the audited wave-4 README, for example
-`32-integer15/references/COMPARISON_AT_PIN.md` and 35's
-`sources/catalogue/`. Such copies stay bound to their original wave-4
-tuples and describe a superseded wave.
+All seven wave-5 packages bundle a copy of the audited wave-4 README:
+
+| Package | Copy |
+|---|---|
+| 31 | `sources/COLLECTION_AT_PIN.md` |
+| 32 | `references/COMPARISON_AT_PIN.md` |
+| 33 | `upstream/reviewed_README.md` |
+| 34 | `review/README.md` |
+| 35 | `sources/catalogue/README.md` |
+| 36 | `evidence/COMPARISON_AT_PIN.md` |
+| 37 | `sources/README.md` |
+
+Several packages also bundle wave-4 circuits as reference material. These
+copies stay bound to their original wave-4 tuples, and they describe a
+superseded wave.
 
 **Wave-4 results that wave 5 does not reproduce or rebind** (an intake
 comparison by blob matching against the wave-4 tree):
@@ -45,6 +55,7 @@ comparison by blob matching against the wave-4 tree):
 |---|---|
 | 30's 25ℤ / 920 / 131 and 26ℤ / 214 / 123 forms (system 128 / 117) | `37-wave5/lowdegree/upstream/integers/` |
 | 24's 24ℤ / 1936 / 167 and 26's 24ℤ / 2432 / 163 | `34-integer14/review/24-integer24/`, `34-integer14/review/26-ratio12/` |
+| 27's 24ℤ / 1936 / 168 and 30's 24ℤ / 2240 / 165 | none (history only) |
 | 27's nine-positive form at 1537 ops (new majorant) | `34-integer14/review/27-wave4/nine/generated/` |
 | 27's 1480-op nine-positive form of 18's circuit and its literal-weight variants | none (history only) |
 | 24's 13-unknown forms 319 / 89 and 288 / 81 | none (history only) |
@@ -52,18 +63,26 @@ comparison by blob matching against the wave-4 tree):
 | 27's 59-op systems of degree 12, 10, 8, 6 (17–20 unknowns) | none (history only) |
 | the 16 / 7 / 22 / 60 system (27, 30) | none (history only) |
 
-To read the results that are in history only, use the wave-4 README and
+The byte copies of 24's, 26's and 27's circuits are bound to coefficient
+tuples whose payloads are not in the tree, so in practice they too are
+usable only from history. To read the results that are in history only,
+use the wave-4 README and
 directories at `52f475c7a7`, e.g.
 `git show 52f475c7a7:<this directory>/README.md`. Earlier waves' lost results
 are listed in their own READMEs (see the wave table).
 
-Two results remain the best on their measures:
+Some earlier results remain unbeaten on their own measures:
 
 - the 67-operation equation P₆₇ (wave 1), for fewest operations;
-- the 59-operation 16 / 7 / 24 system.
+- the 59-operation 16 / 7 / 24 system;
+- wave-2 Q₅₆ (15 / 1 / 56 / 74) and the 33ℤ / 1 / 159 / 134 polynomial;
+- the history-only items above: 27's low-degree 59-operation systems, 24's
+  13-unknown forms, and 27's nine-positive forms at 1480 operations
+  (majorant) and 1473 (literal weights), which still have fewer
+  operations than any wave-5 nine-unknown form.
 
-36 ships both rebound to its coefficients, and 31 bundles the 59-operation
-system.
+36 ships P₆₇ and the 59-operation system rebound to its coefficients, and
+31 bundles the 59-operation system.
 
 ## How this report was made
 
@@ -115,11 +134,14 @@ The route is unchanged:
    ([`native-stream-queue/`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md))
    with its input interface removed.
 
-The low-variable forms then apply a reduction to the fixed 31-unknown
-quartic:
+The low-variable forms then apply a reduction to a fixed quartic:
 
-- Jones's nine-variable reduction, for the 9ℕ and signed 14–16ℤ forms;
+- the Matiyasevich–Jones nine-variable reduction, for the 9ℕ and signed
+  14–17ℤ forms;
 - for 31's 10ℤ form, Sun's ten-integer reduction.
+
+The quartic is the 31-unknown one of wave-4 package 30, except in 32's
+15ℤ and 16ℤ forms, which use ν = 32 and package 29's T4 quartic32.
 
 ## The seven packages
 
@@ -134,10 +156,10 @@ positive unless marked ℤ (unrestricted integers) or ℕ (naturals).
 | [`31-sun10/`](31-sun10/) | `con_zfc_synthesis.zip` | *Smaller explicit Diophantine forms for Con(ZFC)* | **10ℤ / 1 / 126496·5^31 + 27064 / 1442** (Sun's reduction instantiated); 16ℤ / 1 / 813056·L + 10016 / 1617; 31-quartic system 22 / 2 / **60**, SOS 125; 12 / 1 / 1081 / 108, shifted system **102** |
 | [`32-integer15/`](32-integer15/) | `con_zfc_fifteen_integer_synthesis_2026-10-22.zip` | *Fifteen integer unknowns and smaller coefficient tuples…* | 15ℤ / 1 / 813056·5^33 + 4184 / 1541; 16ℤ / 1 / 406528·5^33 + 10008 / 1550 (both on the T4 tuple); 12 / 1 / 1081 / 108, systems 104 and 103 |
 | [`33-signed16/`](33-signed16/) | `ConZFC_Signed16_Synthesis_2026-10-22.zip` | *Sixteen integer unknowns for an explicit consistency equation* | 16ℤ / 1 / 406528·L + 10008 / 1590; 31-quartic system 61, SOS 126; 12 / 1 / 1081 / 108 (systems 104, 103); optional tuple B = 2^1012625 binding no equation |
-| [`34-integer14/`](34-integer14/) | `con-zfc-fourteen-integer-8c6eec9d19.zip` | *Smaller Diophantine forms for ZFC consistency* | **14ℤ / 1 / 813056·L + 2152 / 1586**; 15ℤ / 1 / 406528·L + 2528 / 1594; **9ℕ / 9 positive at 92324·L + 296**, 1559 / 1554 ops; **12 / 1 / 1022 / 124**, 1041 / 111, 1081 / 110; 50ℤ quartic (29 residuals) |
+| [`34-integer14/`](34-integer14/) | `con-zfc-fourteen-integer-8c6eec9d19.zip` | *Smaller Diophantine forms for ZFC consistency* | **14ℤ / 1 / 813056·L + 2152 / 1586**; 15ℤ / 1 / 406528·L + 2528 / 1594; **9ℕ / 9 positive at 92324·L + 296**, 1559 / 1554 ops; **12 / 1 / 1022 / 124**, 1023 / 119, 1025 / 116, 1033 / 114, 1041 / 111, 1081 / 110 (systems down to 1014 / 115, 1016 / 112, 1024 / 110); 50ℤ quartic (29 residuals) |
 | [`35-cancel12/`](35-cancel12/) | `con-zfc-synthesis-2026-10-22.zip` | *Smaller explicit Diophantine forms of ZFC consistency* | 16ℤ / 1 / 813056·L + 10024 / 1865; 17ℤ / 1 / 406528·L + 27512 / 1874; 12 / 1 / 1065 / 118 (systems 114, 113); 12 / 1 / 1081 / 108 (systems 104, 103); 31-quartic system 62, SOS 127 |
 | [`36-small-tuple/`](36-small-tuple/) | `con-zfc-synthesis-2026-10-22 (1).zip` | *Smaller Diophantine presentations of ZFC consistency* | **B = 2^1012115**, materialized (506,664 raw bytes); 12 / 1 / 1081 / 109 and 1069 / 120 (systems 104 / 115, shifted 103 / 114); 30's nine-variable polynomial in 1587 / 1582 ops; P₆₇ and the 59-op system rebound |
-| [`37-wave5/`](37-wave5/) | `ZFC_Diophantine_Fourteen_Integers_2026-10-23.zip` | *Fourteen integer unknowns and smaller separating norms for the consistency of ZFC* | **14ℤ / 1 / 813056·L + 2752 / 1524**; 16ℤ / 1 / 406528·L + 10008 / **1537**; **9 positive / 92324·L + 296 / 1500** (1505 over ℕ); 12-positive products of degree 1061, 1065, 1069, 1081 (120, 119, 117, 109 ops), systems 1052 / 114 and 1072 / 103; 24ℤ / 1 / 1936 / 161 (system 156); 50ℤ quartic (system 111, SOS 197) |
+| [`37-wave5/`](37-wave5/) | `ZFC_Diophantine_Fourteen_Integers_2026-10-23.zip` | *Fourteen integer unknowns and smaller separating norms for the consistency of ZFC* | **14ℤ / 1 / 813056·L + 2752 / 1524**; 16ℤ / 1 / 406528·L + 10008 / **1537**; **9 positive / 92324·L + 296 / 1500** (1505 over ℕ) and 9 positive / 93264·L + 288 / 1498 (1503 over ℕ); 12-positive products of degree 1061, 1065, 1069, 1081 (120, 119, 117, 109 ops), systems 1052 / 114 and 1072 / 103; 24ℤ / 1 / 1936 / 161 (system 156); 50ℤ quartic (system 111, SOS 197) |
 
 Directory numbers follow the archives' arrival (file-time) order. Each
 directory's `README.md` is its entry point. The articles are `report.pdf` in
@@ -152,15 +174,15 @@ full; where only one package has it, that package.
 |---|---|---|---|
 | Fewest unrestricted integers | **10ℤ**: degree 126496·5^31 + 27064 (about 5.9·10^26), 1,442 ops; instantiates Sun's 2026 ten-integer reduction (preprint arXiv:2609.01594v2, cited, not reproduced, not checked at intake) on 30's quartic | 31 only | 31 |
 | Fewest unrestricted integers, Jones route | **14ℤ**: 37 (813056·L + 2752, 1524 ops) beats 34 (813056·L + 2152 at 1586 ops) on operations, and 34 beats 37 on degree; different polynomials | 34, 37 | 34 |
-| 15ℤ and 16ℤ | 15ℤ: 34 (406528·L + 2528 / 1594), 32 (813056·5^33 + 4184 / 1541, T4 tuple). 16ℤ: 31, 32, 33, 35 and 37, all different polynomials except possibly 33's and 37's, which share the degree 406528·L + 10008 (not compared at intake); fewest ops 37 (1537) | — | 37 for 16ℤ |
-| Nine unknowns | **degree 92324·L + 296**, 9 positive at 1500 ops (37) or 1554 (34); over ℕ 1505 / 1559 (not compared at intake for identity) | 34, 37 | 34 |
-| Twelve positive, lowest degree | **1022** at 124 ops (34); 1041 / 111 (34); 1061 / 120 and system 1052 / 114 (37); 1065 (35, 37: the same template, different tuples) | 34; 37; 35 | 34 |
+| 15ℤ and 16ℤ | 15ℤ: 37 (813056·L + 4184 / 1530), 34 (406528·L + 2528 / 1594), 32 (813056·5^33 + 4184 / 1541, ν = 32, T4 tuple). 16ℤ: 31, 32, 33, 35 and 37, all different polynomials (33's and 37's share the degree 406528·L + 10008 but differ in their parent-quartic records, checked by the audit); fewest ops 37 (1537) | 37, 34, 32; 31, 32, 33, 35, 37 | 34 for 15ℤ; 31 for 16ℤ, 37 for operations |
+| Nine unknowns | **degree 92324·L + 296**, 9 positive at 1500 ops (37) or 1554 (34), over ℕ 1505 / 1559: different polynomials (different templates and tuples, checked by the audit). 37 also has degree 93264·L + 288 at 1498 positive / 1503 ℕ. Wave-4 27's history-only 1480 / 1473 still have fewer operations | 34, 37 | 34 |
+| Twelve positive, lowest degree | **1022** at 124 ops, then 1023 / 119, 1025 / 116, 1033 / 114, 1041 / 111; systems 1014 / 115, 1016 / 112, 1024 / 110 (all 34). 34's 1025 / 116 product and 1016 / 112 system dominate 37's 1061 / 120 (system 1052 / 114) and 35's and 37's 1065 forms (the same template on different tuples) | 34 | 34 |
 | Twelve positive, fewest operations | **108** (31, 32, 33, 35): all are 30's degree-1081 polynomial evaluated more cheaply. 31's, 32's and 35's are the same fixed polynomial (identical tuples), and 33's is 30's own fixed polynomial. Systems: **102** (31, shifted) | 31, 32, 33, 35 | 31 |
-| 31-unknown positive quartic | system **60** ops, SOS 125 (31); 61 / 126 (33); 62 / 127 (35), each 30's quartic under affine shifts | 31, 33, 35 | 31 |
-| Integer quartic | **50ℤ** (34; 37, not compared at intake) | 34, 37 | 34 |
-| 24ℤ at moderate degree | 37's 1936 / 161 (system 156); wave-4 24's 1936 / 167 is bundled in 34's review copies | 37 | 37 |
+| 31-unknown positive quartic | system **60** ops, SOS 125 (31); 61 / 126 (33); 62 / 127 (35), each 30's quartic under affine coordinate changes | 31, 33, 35 | 31 |
+| Integer quartic | **50ℤ** (34, 37: they differ in one of 29 residuals, checked by the audit) | 34, 37 | 34 |
+| 24ℤ at moderate degree | 37's 1936 / 161 (system 156), a different polynomial from wave-4 24's and 27's 1936 forms (smaller ratio weight) | 37 | 37 |
 | Fewest operations | **67** (P₆₇), unchanged; the 59-op 16 / 7 / 24 system unchanged | — | (wave 1) |
-| Smallest coefficients binding an equation | **B = 2^1012115** (36, 506,664 raw bytes); 33's 2^1012625 binds none; 2^1064921 (31, 32, 35: one identical tuple; 34 shares only β) | 36 | 36 |
+| Smallest coefficients binding an equation | **B = 2^1012115** (36, 506,664 raw bytes, largest port 1,016,946 bits). 33's optional 2^1012625 binds none but has fewer raw bytes (506,644) and a smaller largest port (1,015,251 bits), so "smallest" depends on the measure. 2^1064921 (31, 32, 35: one identical tuple; 34 shares only β) | 36 | 36 |
 
 ### Coefficient recipes: use one whole tuple
 
@@ -183,17 +205,26 @@ full; where only one package has it, that package.
 ### Tensions, not adjudicated at intake
 
 - **The square base.** 33 says replacing the base slack by a square "is not
-  justified" (`report.tex:763-767`). Meanwhile 31 (b = κt²), 32 (b = b*·r²),
-  34 (b = Bodd·ε²), 35 and 37 all use a square or cofinal base. They justify
-  it by inspecting the Lean proof of `Jones1982.USys_of_mem`, and 34's open
-  question 2 notes that the step depends on that inspection. The 14–16ℤ
-  forms rest on this step.
-- **Smallest-tuple claims.** 35 and 36 each claim the smallest tuple
-  without knowing of each other; 36's is smaller. 33's optional 2^1012625
-  is smaller than 35's but binds nothing.
-- **Like-for-like system counts.** 36's README compares old *unshifted*
-  systems (107, 118 ops) with its new *shifted* ones (103, 114). Like for
-  like, the new counts are 104 and 115.
+  justified" (`report.tex:763-767`). Other forms use a square or cofinal
+  base leaf, justified by inspecting the Lean proof of
+  `Jones1982.USys_of_mem` (34's open question 2 notes the dependence):
+  - 31's 16ℤ form (`kappa_index`);
+  - 32's 15ℤ form (`b_floor`);
+  - 34's 14ℤ form (`b_floor_odd`);
+  - 35's 16ℤ form (`b_scale`);
+  - 37's 14ℤ and 15ℤ forms (`base_scale`).
+
+  32's, 33's and 37's 16ℤ forms and 34's 15ℤ form use the ordinary Jones
+  index, so they do not depend on the contested step. That includes the
+  16ℤ form with the fewest operations (37's, 1537).
+- **Smallest-tuple claims.** 31, 32, 33, 35 and 36 each present their tuple
+  as smaller than the pin's, without knowing of each other. 36's binds an
+  equation and has the smallest B; 33's optional tuple, which binds nothing,
+  has fewer bytes.
+- **Like-for-like system counts.** 36 compares old *unshifted* systems
+  (107, 118 ops) with its new *shifted* ones (103, 114) (`report.tex:117-119`;
+  its README shows 107 → 103). Like for like, the new counts are 104 and
+  115.
 - **Corrections of wave 4.** 34 says wave-4 30's `positive/README.md` wrongly
   points to a nonexistent `coefficients/` folder; the wave-4 README already
   recorded this. 37 says wave-4 27's "same paper18 polynomial" is a template
@@ -214,10 +245,11 @@ The packages say, in their own words (exceptions noted):
   theorem or global optimality". The ten-integer reduction is attributed to
   Sun. 31's review says it is not an independent audit of Sun's Lucas
   theorems.
-- **No consistency proof.** The theorems are equivalences. 31, 32, 33, 35
-  and 36 add that the stronger two-sided claim needs an extra hypothesis or
-  is not made. No such remark was found in 34 or 37; 37 says the
-  equivalence "does not prove either side".
+- **No consistency proof.** The theorems are equivalences. 32, 33 and 36
+  add that a stronger two-sided claim is not made or needs an extra
+  hypothesis. 31 and 35 give only the second-incompleteness remark. 34
+  says it "does not decide either side" and 37 that it "does not prove
+  either side".
 - **Domains.** Positive and nine-variable equations must not be read over ℤ.
   31 warns that ten integers "should not be compared … as if the domains
   were identical".
@@ -233,9 +265,12 @@ The packages say, in their own words (exceptions noted):
   through Lean's soundness.
 - **Jones.** The nine-variable and signed 14–17ℤ forms build on the
   parametric `Jones1982.Nine.wset_iff_nine` and its lemmas
-  (`Nine.ratio_complete`, `Nine.ratio_sound`, `NineReduce.reduced_of_mem`,
-  `Master3.USys_of_mem`, `Ratio.exists_B25core`) for the fixed 31-unknown
-  quartic. They do not use `Jones1982.nine_unknowns`, which fixes ν = 58.
+  `Jones1982.Nine.ratio_complete`, `Jones1982.Nine.ratio_sound`,
+  `Jones1982.Nine.reduced_of_mem`, `Jones1982.USys_of_mem` and
+  `Jones1982.exists_B25core`. The packages often cite these by file
+  prefix, as in `Master3.USys_of_mem`. The quartic is the fixed
+  31-unknown one, or package 29's 32-unknown one for 32's integer
+  forms. They do not use `Jones1982.nine_unknowns`, which fixes ν = 58.
   Their new finalizers, majorants, cofinal bases and Pell-orbit arguments
   are unformalized. Several argue from the Lean proofs' structure rather
   than from their statements.
@@ -255,13 +290,13 @@ These are disclosed here and were not fixed in the delivered files.
   |---|---|
   | 31 | `verify_all.py` |
   | 32 | `verify_all.py` |
-  | 33 | `reproduce.py --check-release` |
+  | 33 | `reproduce.py`, including its default run (stage 4 hashes the omitted sources) |
   | 34 | `verify_release.py` (exact manifest; needs SymPy and NumPy) |
   | 35 | `reproduce.py` |
   | 37 | `verify.py` (needs NumPy and SymPy) |
 
-  From reading the code (not running it), 33's default run and 36's
-  `verify.py` read no omitted file. Rerun from the arrival commit, as
+  From reading the code (not running it), only 36's `verify.py` reads no
+  omitted file. Rerun from the arrival commit, as
   `PLACEMENT.md` explains.
 - **Licence and attribution.**
   - Notices of AI assistance:
@@ -270,11 +305,11 @@ These are disclosed here and were not fixed in the delivered files.
     |---|---|
     | 31 | AI assistance (one line) |
     | 32 | OpenAI, no human review |
-    | 33 | "Prepared with AI assistance" |
-    | 34 | OpenAI |
+    | 33 | "Prepared with AI assistance"; "remain open to human review" |
+    | 34 | OpenAI; "not external human endorsements" |
     | 35 | OpenAI, disclaiming human authorship |
     | 36 | AI-assisted, unnamed |
-    | 37 | OpenAI |
+    | 37 | OpenAI; "No external human review" |
 
   - 33 states **no licence for its new material**.
   - Every package ships a K215 machine notice. 37 says it fixes wave-4
@@ -282,8 +317,9 @@ These are disclosed here and were not fixed in the delivered files.
   - 34 calls wave-4 30 "our preceding construction". 37 calls wave-4 27
     "the previous delivery".
 - **Inside the packages.**
-  - 31's `quartic31_sos125.json` carries the degree metadata of the system
-    (2, not 4).
+  - 31's `quartic31_sos125.json` carries `exact_degree: 4` together with
+    the system's `exact_maximum_degree: 2`, equation count and
+    comparisons.
   - 33's own earlier 1617-op circuit is superseded.
   - 34's `audit/SUN_SCOPE_NOTE.md` still speaks of a "new 16-variable
     construction".
@@ -291,12 +327,16 @@ These are disclosed here and were not fixed in the delivered files.
   - 37 lists no open questions.
 - **Retained intermediates.**
   - 31's comparison variants and its inactive reference instance.
-  - 34's superseded 16 / 17-variable forms, dominated `nine31_structured*`
-    and undelivered `coefficients/exploration/`.
+  - 34's dominated `nine31_structured*` and undelivered
+    `coefficients/exploration/`. Its superseded 16 / 17-variable forms are
+    mentioned in prose only.
   - 36's folded nine-variable copies and an exploratory moment method.
-  - 37's dominated signed15.
-- **Bundled copies.** 32's bundled Lean files differ from the repository's
-  only by a trailing blank line, so they were kept.
+  - 37's signed15 (813056·L + 4184 / 1530), which 37 calls dominated
+    although it beats 32's and 34's 15ℤ forms on operations.
+- **Bundled copies.** Some bundled Lean files differ from the repository's
+  only by a trailing blank line, so they were kept: 32's, including
+  `compiler/upstream/KEndpoint215.lean`; 34's `audit/ProductPell.lean.txt`
+  and `audit/Ratio.lean.txt`; and 37's `review/upstream/Ratio.lean`.
 
 ## Further questions and research
 
@@ -304,17 +344,24 @@ These are the open problems the packages list, merged and credited:
 
 1. **Formalize.** Sun's Lucas and interpolation theorems and the
    ten-integer adapter (31). The cofinal radix via `USys_of_mem` and the
-   Pell-orbit lemma (32). The adapter and finalizers (35).
+   Pell-orbit lemma (32). The adapter and finalizers (35). The new lemmas
+   generally (33, 34).
 2. **Fewer unknowns.**
    - Below ten integers is a separate problem (31).
-   - Instantiate Sun's route on the other packages' tuples (32, 35).
+   - Instantiate Sun's route on the other packages' tuples (32, 33, 34,
+     35).
    - Rebuild the Jones index at ν = 31 (32).
    - Remove more signed guards (35).
-3. **Smaller circuits** (31) and smaller tile languages (36).
+3. **Smaller circuits** (31, 32), better finalizers and majorants (33,
+   34), and smaller tile languages and coefficient geometry (32, 34, 36).
 4. **A smaller parent quartic.** It would lower every Jones and Sun degree
-   (36). A new encoding of the first-index congruence (36).
+   (33, 34, 36). A new encoding of the first-index congruence (36).
 5. **Justify the square base from the statement of `USys_of_mem`**, not its
    proof (34's open question 2; see the tension above).
+
+Each package's full list is in its own article, for example
+`33-signed16/report.tex` (from line 762), `34-integer14/report/synthesis_report.md`
+(lines 1490-1503) and `32-integer15/report.tex` (from line 551).
 
 ## Licence and provenance
 
