@@ -29,6 +29,18 @@ larger original31 tuple, with radix `2^1064921`; its better degree and
 circuit size do not establish a coefficient-size improvement. The bindings
 must remain whole and separate.
 
+**Subsequent concrete improvement:** the same split/free-coordinate
+architecture has now been regenerated with each entire compact tuple,
+including all fixed leaves and its recalibrated threshold. Both instances
+retain 473 operations and degree 1,910,404. The preferred current
+instantiation is [compact54](candidates/split116-compact/compact54/README.md):
+215,492 native raw bytes, compared with the delivered 59's 533,099.
+The twelve live derived fixed leaves total 1,672,726 raw bytes. These byte
+counts describe stored constants, not an expanded polynomial. The delivered
+59 files remain the reference release; the new instances are separately
+sealed artifacts with ordinary source-interface compatibility and finite
+replays, not new Lean consistency endpoints.
+
 Package 57 is also a useful compact-tuple alternative: its 499-operation,
 degree-2,628,944 point uses 295,388 native payload bytes, compared with
 59's 533,099 and 54's 215,492. These counts measure the four native ports,
@@ -154,13 +166,17 @@ elimination. New Lean obligations are:
 6. Close the authentic whole-tuple native compiler/K215 calibration and
    the separate internal ZFC derivation.
 
-A new coherent combination is being investigated separately: use the
-entire compact tuple from 57 in 59's split/free-coordinate architecture.
-An exact termwise audit of all 89 coefficients supports height
-`2^1182955` and the odd radix floor `2^1182967`. This is a feasibility
-result, not yet a newly certified circuit or semantic endpoint. Its fixed
-leaves, recalibrated threshold and whole-source binding must be generated
-and checked before it can replace the delivered 59 instance.
+The separate [compact candidate family](candidates/split116-compact/README.md)
+now supplies those complete bindings, materialized signed fixed leaves,
+recalibrated thresholds and byte-identical rebuilds under two Python
+versions. The package-54 tuple uses height `2^864015`, radix floor
+`2^864027` and threshold scale `2^6912205`; package 57 uses `2^1182955`,
+`2^1182967` and `2^9463725`. All 89 actual weighted coefficients were
+checked for each tuple, along with the four adapted replay programs.
+Lean now checks the generic split extraction, sparse borrow decoder,
+population calibration, quarter-base bounds and free-carrier ratio
+adapter. See [SPLIT116_FORMALIZATION.md](SPLIT116_FORMALIZATION.md) for
+the exact completed contracts and remaining assembly obligations.
 
 No newly delivered package supplies an end-to-end Lean certificate or
 object-language ZFC derivation. Finite replay does not supply these missing

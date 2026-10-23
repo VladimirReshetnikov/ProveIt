@@ -1,0 +1,85 @@
+# Split116 with two coherent compact coefficient tuples
+
+Both instances below combine package 59's degree-separated/free-coordinate
+architecture with a **complete** smaller native tuple. All four ports are
+replaced together; `MF_source` is already shifted once. No delivered package
+was modified. The exact archive pins and ordinary interface compatibility
+are recorded in [COEFFICIENT_COMPATIBILITY.md](COEFFICIENT_COMPATIBILITY.md).
+
+| Instance | Positive / natural operations | Exact degree | Native tuple raw / gzip bytes | Twelve live derived fixed leaves, raw / gzip bytes |
+|---|---:|---:|---:|---:|
+| [compact57](compact57/README.md) | 473 / 480 | 1,910,404 | 295,388 / 9,445 | 2,291,097 / 47,435 |
+| [compact54](compact54/README.md) | 473 / 480 | 1,910,404 | 215,492 / 4,751 | 1,672,726 / 23,616 |
+
+The nine coordinates are `b,g,h,s,w,C,i,j,n`. The positive circuit uses
+strictly positive integer inputs. The natural circuit is its bijective
+successor-coordinate translation, including the correct unshifted internal
+CRT coordinate `j`. These are ordinary integer polynomials: division,
+variable exponentiation and extra quantified coefficient ports do not occur.
+
+`generated/split_116_positive.json` and `generated/split_116_natural.json`
+are the principal literal circuits. Their fixed leaf names are bound to
+actual signed integers by `fixed/BINDING.json` and the accompanying magnitude
+payloads. The generator checks that every live fixed leaf is present and
+that its stored signed value equals the recipe evaluated at the selected
+whole tuple. Historical default coefficient paths inside retained source
+JSON are inert provenance; the candidate's explicit bindings are authoritative.
+
+The scale data are:
+
+| Instance | Weighted coefficient bound H | Radix floor a=4096H | Threshold scale c |
+|---|---|---|---|
+| compact57 | `2^1182955` | `2^1182967` | `2^9463725` |
+| compact54 | `2^864015` | `2^864027` | `2^6912205` |
+
+Each has `c=2^(8κ−11)` for its own radix exponent κ. Retaining package 59's
+old threshold while changing the tuple would change the decoder predicate.
+The source remains the old-z, 31-positive-coordinate parent, followed by the
+two invertible source row operations. It is not silently replaced by the
+package-52 shifted transport source.
+
+## Verification and reproduction
+
+From the repository root, run:
+
+```sh
+python3 -B Computability/DiophantineConsistency/tools/generate_split116_compact.py --all --check
+```
+
+Only Python's standard library and the pinned local Git arrival objects are
+needed. This command recreates each entire instance in scratch and compares
+every byte. Both 68-file instances reproduced identically under Python
+3.12.13 and Python 3.13.14. Generated gzip headers are canonicalized; received
+native payloads remain byte identical to their archives.
+
+For each instance, generation runs the adapted builder, primary verifier and
+two independently structured reviewers. Their retained originals and exact
+adaptation hashes are in `provenance/` and `PROVENANCE.json`. The checks include:
+
+- all 22 symbolic target identities, two inverse row identities and 22,544
+  source/expansion interactions;
+- all 89 actual weighted coefficient bounds and every stored fixed value;
+- exact operation ledgers, liveness and cancellation-resolved degree, with
+  actual-tuple nonzero leading-coefficient checks;
+- 120 complete modular assignments and 22,320 named-register comparisons;
+- signed-borrow, carry-population, CRT, radical and finalizer fixtures;
+- the exact threshold exponent identity for the new κ at 32 values of
+  `log2(b)`, in addition to the source checker's independent binary fixtures.
+
+The symbolic diagonal leading coefficient is
+`2^186 * a^954792 * c^400`, which is strictly positive. The degree certificate
+supplies the degree upper bound as well as this nonzero attained diagonal.
+The main polynomial and the cancellation-resolving degree polynomial are
+checked against their common register formulas and exact local identities.
+
+[REPRODUCIBILITY.json](REPRODUCIBILITY.json) records the cross-version replay
+and four semantic rejection controls. Incorrect signed scale bindings and
+stale threshold exponents were rejected in temporary copies. The candidate
+directories were unchanged by those controls.
+
+These are concrete polynomial artifacts with finite certificates, rather
+than a new end-to-end Lean consistency theorem. The ordinary native/Pell
+and source-interface proofs are retained and attributed. Kernel-checked
+native calibration, the formal source/finalizer composition for these new
+circuits, and an internal object-language ZFC derivation remain separate
+formalization obligations. No global simplicity minimum is claimed.

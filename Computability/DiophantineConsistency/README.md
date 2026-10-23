@@ -23,10 +23,20 @@ After reviewing wave-eight placement `beb0192cb8`, the next small-nine
 target is package 59's free-coordinate degree-separated adjunct: nine
 positive variables, 473 binary operations, degree 1,910,404 (480 operations
 over naturals). It improves both measures over the former package-52 target.
-Package 54 retains the smaller native tuple. The selection, alternatives,
+Two new concrete instances bind that architecture to the entire compact
+tuples from packages 54 and 57. The current preferred instance uses 54's
+215,492-byte native tuple, retaining the same operation count and degree;
+see [the candidate artifacts](candidates/split116-compact/README.md).
+The selection, alternatives,
 full finite replays and remaining proof obligations are recorded in
 [PROPOSAL_REVIEW_WAVE8.md](PROPOSAL_REVIEW_WAVE8.md). The current closed Lean
 equations remain the certified baseline until a replacement is fully checked.
+
+The new split-form foundations now pass Lean: same-degree coefficient
+extraction, the shorter rank's exact carry threshold, mask population,
+signed-borrow decoding, coefficient bounds, and the free-carrier finalizer.
+Their contracts and remaining assembly work are recorded in
+[SPLIT116_FORMALIZATION.md](SPLIT116_FORMALIZATION.md).
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

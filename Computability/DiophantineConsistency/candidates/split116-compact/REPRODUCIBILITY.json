@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "generator_sha256": "d4ebd34d36becdc5142526ccf02f6e2c239ac93c8528b39235ee798b1aa10da1",
+  "full_regeneration_versions": [
+    "Python3.12.13",
+    "Python3.13.14"
+  ],
+  "instances": {
+    "compact57": {
+      "byte_identical_files": 68,
+      "manifest_sha256": "b4dfacc88940c2f9ee858aaa46c78734f3f389c8f67f27d4ac22053ba09c0394",
+      "provenance_sha256": "71d41d291e1638a0e32f3a349f639df84fe3198069f153b44094d2f9c57a192f",
+      "replay_sha256": "8590aa2a463b00b2baebd7b32a6c15f1ab9e831ca78ca41393d45b9ed574573b",
+      "extra_checks_sha256": "32316be68690216930c609b4819e4fcde492ab62fcba609d7ac728ee50d15222",
+      "positive_operations": 473,
+      "natural_operations": 480,
+      "exact_degree": 1910404
+    },
+    "compact54": {
+      "byte_identical_files": 68,
+      "manifest_sha256": "ae7925deeeb7e217766307ae757240385d98d65de1eee8766c0273654e39fb41",
+      "provenance_sha256": "1f814478ee015f9ff67edf2f995e2039171677029cad3c7e0d99c70745ceddfc",
+      "replay_sha256": "c1b96378b6b8a7477a0d3b396f627fb296fcb2be9b1e4c0004cd5e7b55a7df37",
+      "extra_checks_sha256": "36c46459e22e416d3c4212da5678f69cc17cc4bcef2b9be65a5dbc404720644f",
+      "positive_operations": 473,
+      "natural_operations": 480,
+      "exact_degree": 1910404
+    }
+  },
+  "logs": [
+    {
+      "name": "proofs62ff-split116-both-generation.log",
+      "sha256": "5f5ad9287fa78380b7b435ef5e033cefce6076259db9e2853a9a6b678b1599a5"
+    },
+    {
+      "name": "proofs62ff-split116-both-reproduction312.log",
+      "sha256": "a1dc548c092b4d238786ea27331055bb256e15a364e17f01acd66286e0a96a9f"
+    },
+    {
+      "name": "proofs62ff-split116-both-reproduction313.log",
+      "sha256": "a1dc548c092b4d238786ea27331055bb256e15a364e17f01acd66286e0a96a9f"
+    }
+  ],
+  "semantic_controls": {
+    "status": "PASS",
+    "scope": "Two semantic fixed-binding/scale controls for each candidate; original files unchanged.",
+    "controls": [
+      {
+        "variant": "compact57",
+        "control": "wrong_fixed_scale_sign",
+        "status": "EXPECTED_REJECTION",
+        "reason": "materialized fixed leaf denotes its exact whole-tuple recipe"
+      },
+      {
+        "variant": "compact57",
+        "control": "stale_threshold_exponent",
+        "status": "EXPECTED_REJECTION",
+        "reason": "exact decoder threshold"
+      },
+      {
+        "variant": "compact54",
+        "control": "wrong_fixed_scale_sign",
+        "status": "EXPECTED_REJECTION",
+        "reason": "materialized fixed leaf denotes its exact whole-tuple recipe"
+      },
+      {
+        "variant": "compact54",
+        "control": "stale_threshold_exponent",
+        "status": "EXPECTED_REJECTION",
+        "reason": "exact decoder threshold"
+      }
+    ]
+  },
+  "scope": "Finite candidate generation, exact symbolic/degree/circuit and fixed-data verification. No new Lean consistency equivalence or object-language ZFC derivation."
+}
