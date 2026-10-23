@@ -1,0 +1,107 @@
+\subsection{A smaller twelve-positive-variable norm}
+The following synthesis has twelve strictly positive unknowns
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,r.
+\]
+Its product has exact degree $1081$ and $120$ binary arithmetic operations.
+The three-equation system has maximum residual degree $1072$ and $115$
+operations when its last equality is compared directly. The sum of squares
+has degree $2144$ and $123$ operations. Abbreviations are polynomial
+expressions, not additional unknowns.
+
+Use the authentic four fixed ports $(\beta,K_0,M_C,M_F)$, with the shifted
+$M_F$ convention, and set
+\begin{align*}
+ q&=\beta J+1,&C&=q-F-\alpha,&X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k&=k-hE-R,&N_t&=(K_0+w)C+q-F-z(q-1).
+\end{align*}
+Define the normalized auxiliary expressions
+\begin{align*}
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=(\Delta I)^2,&d&=Q-1,\\
+ v&=cT,&b&=c+RD,&e&=Q(Dv^2+b^2)-1,&B&=2Qvb.
+\end{align*}
+The new separate weights are
+\[
+ W=2I(T+Raic),\qquad L=1+HW,\qquad M=2W,\qquad S=X+ac+Hr.
+\]
+The integer polynomial norm is
+\[
+ N=\prod_{u^2=G,\ \tau^2=A,\ f^2=D}
+ \bigl[d(S-Lu-HM\tau)^2-H^2e+H^2Bf\bigr],
+\]
+where the product is over all eight sign choices. This is only a compact
+notation for a polynomial; the delivered circuit uses $+,-,\times$ alone.
+The final presentations are
+\[
+ N_k=N_t=1,\quad N=0;
+ \qquad P=N_kN_t(1+N)-1=0.
+\]
+
+For a literal evaluator put
+\begin{align*}
+ a_0&=H^2M^2A,&V_0&=S^2+L^2G,&V_1&=2SL,\\
+ C_0&=d(V_0+a_0)-H^2e,&C_1&=dV_1,&K_f&=4d^2a_0,\\
+ K_0'&=K_fV_0,&K_1'&=K_fV_1,&Z&=4H^4(QDv^2)(Qb^2),\\
+ U_0&=C_0^2+GC_1^2-K_0'-Z,&U_1&=2C_0C_1-K_1',\\
+ N_0&=U_0^2+GU_1^2-4ZK_0',&N_1&=2U_0U_1-4ZK_1',\\
+ N&=N_0^2-GN_1^2.
+\end{align*}
+
+\paragraph{Why the norm introduces no extra witnesses.}
+At a zero of the product, $N\equiv N_0^2\pmod4$ forces $N=0$ and
+$N_k=N_t\in\{1,-1\}$. The inherited weak transport bounds imply
+$X\ge16$, $Y\ge4096$, $a\ge64$, $R<c$, and $Q\ge3$. A coherent
+vanishing norm factor gives
+\[
+ S=Lu+HM\tau+Hy,\qquad d y^2=Q(vf-b)^2-1.
+\]
+Every complex conjugate satisfies
+\[
+ |y'|<\tfrac43(v\sqrt D+b)<\tfrac34W\sqrt G,
+ \qquad \sqrt G<\tfrac98\sqrt A.
+\]
+The second inequality follows from
+$(1+66/1024)(65/64)=70850/65536<9/8$; the first follows by dividing
+by $ac<\sqrt G$, using $\sqrt D<(a+2)I$, and $a\ge64$, $R<c$.
+Since $HW>36$,
+\[
+ HM\sqrt A>\tfrac{16}{9}HW\sqrt G
+  >(1+\tfrac74HW)\sqrt G>L\sqrt G+H|y'|.
+\]
+Galois conjugation therefore first forces $\tau$ rational, then forces $u$
+rational. Both are integral because their squares are integers. Next $y$ is
+rational and $f=(e-dy^2)/B$ is an integer. The special Pell saturation lemma
+\[
+ m^2V^2-(m^2-1)y^2=1,\quad m\ge2,\quad m,V\in\mathbb Z,
+ \quad y\in\mathbb Q\quad\Longrightarrow\quad y\in\mathbb Z
+\]
+applies with $m=\Delta I$. Reducing modulo $H$ now recovers integral
+$\gamma=(u-X-ac)/H$. The inherited signed compiler theorem resolves the
+remaining signs and gives blank K215 halting. Conversely, a canonical
+compiler witness gives the positive coordinate
+$r=\gamma+Wu+M\tau+y$. Thus ZFC proves that absence of positive solutions
+is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+
+\paragraph{Exact degree, including the tied leading terms.}
+Write $q_0=\beta J$, $k_0=\eta+\zeta$, and use $*$ for the highest
+homogeneous form. Put $Z_*=d_*H_*^2R_*^2D_*^2$, of degree $134$.
+The top forms are
+\[
+ (dV_0)_*=4Z_*,\quad(da_0)_*=16Z_*,\quad(H^2e)_*=Z_*,
+ \quad C_{0*}=19Z_*,\quad K_{0*}'=256Z_*^2.
+\]
+Hence $U_{0*}=105Z_*^2$ and $N_*=105^4Z_*^8$. Explicitly,
+\[
+ N_*=2^{32}105^4i^{48}k_0^{96}w^{80}s^{176}
+       q_0^{656}(q_0-F)^{16},
+\]
+nonzero for every authentic $\beta>0$. Thus $\deg N=1072$,
+$\deg P=1081$, and the sum-of-squares degree is $2144$.
+
+This is an ordinary mathematical reduction, not a new end-to-end
+proof-assistant certificate or a proof of ZFC consistency. Full integrality,
+sign, source, coefficient-binding, and verification details are in the
+companion proof and executable packet.

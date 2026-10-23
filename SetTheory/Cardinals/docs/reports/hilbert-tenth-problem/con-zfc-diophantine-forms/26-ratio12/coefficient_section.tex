@@ -1,0 +1,280 @@
+\section{A smaller complete coefficient tuple}
+\label{sec:coefficients}
+
+The preceding reductions can use a complete authentic tuple from
+the inherited compiler. We additionally give a smaller tuple for
+the same \(943\)-tile Wang language.
+The improvement changes the arithmetic placement of tile-copy
+tests, while retaining the ordered language, the blank-machine
+semantics, and the radix-cell size.
+
+\subsection{Exact finite specification}
+
+The archive includes the ordered list of \(943\) tiles from
+package 19 \cite{wang}, generated from the literal \(\KTM\)
+transition table. A tile is
+\((x_W,x_N,x_E,x_S)\), with all labels below \(512\).
+Selector \(0\) is Start; selector \(1\) is the globally impossible
+Forbidden tile. The list's SHA-256 is
+\[
+\begin{gathered}
+\texttt{66b55f1d11fca9fefc93b12fcfc8b4cabb75b}\\
+\texttt{08e9fd03311f9e894a1c5e5e81f}.
+\end{gathered}
+\]
+The split display denotes one \(64\)-digit hash with no separator.
+This fixed finite list, rather than a hypothetical halting run,
+is the input to the following recipe.
+
+Set
+\[
+A_c=1024,\quad \rho=2^{625},\quad L_c=15625,\quad
+d_c=625L_c=9765625=5^{10},\quad B=\rho^{L_c}.
+\tag{7.1}
+\]
+For \(j=0,\ldots,9\), place the four kinds of native copy bits at
+\[
+\begin{array}{c|rrrr}
+t&W&N&E&S\\ \hline
+e_t(j)&1020+2j&1000+2j&980+2j&960+2j.
+\end{array}
+\tag{7.2}
+\]
+Let \(\mathcal E\) be the disjoint union of selectors \(0,\ldots,942\),
+these forty copy positions, dummy positions \(1063,1064\), and
+anchors \(1095,1096,2195,3296\).
+Thus \(|\mathcal E|=989\), and \(\max\mathcal E=3296\).
+Order directions as \(W,N,E,S\), numbered \(t=0,1,2,3\).
+For selector \(i\), define the fixed integer
+\[
+c_i=1+\sum_{t=0}^3\sum_{j=0}^9
+ \operatorname{bit}_j(x_t+512)A_c^{1+10t+j}
+ +\sum_{j=41}^{44}A_c^j.
+\tag{7.3}
+\]
+The remaining coefficients are
+\[
+\begin{gathered}
+c_{e_t(j)}=A_c^{1+10t+j},\qquad
+c_{1095}=A_c^{41},\quad c_{1096}=A_c^{42},\\
+c_{2195}=A_c^{43},\quad c_{3296}=A_c^{44},\qquad
+c_{1063}=c_{1064}=0.
+\end{gathered}
+\]
+Put
+\[
+\mu=A_c-2+\sum_{j=1}^{44}(A_c-3)A_c^j
+       +2^{450}(2^{78}-1).
+\]
+Then the new directional coefficients are
+\[
+\begin{split}
+D_C={}&\rho^{40}+\rho^{41}+\rho^{1100}+\rho^{2200}\\
+ &+\sum_{e\in\mathcal E}c_e
+       \bigl(\rho^{7631-e}+\rho^{8733-e}\bigr),\\
+D_R={}&\rho.
+\end{split}
+\tag{7.4}
+\]
+The native masks are
+\[
+\begin{split}
+M_F={}&4+\mu(\rho^{7631}+\rho^{8733})
+ +\sum_{j=0}^9\rho^{1000+2j}
+ +\sum_{j=0}^9\rho^{1021+2j}
+ +\rho^{2195}+\rho^{3296},\\
+M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+          -2\rho^{1063}.
+\end{split}
+\tag{7.5}
+\]
+Finally take the four ports exactly as in (2.1).
+The code calls them \texttt{beta}, \texttt{K0}, \texttt{MC},
+and \texttt{MF}; the stored payload for the last is
+\texttt{MF\_source}.
+The archive contains all four integers as deterministic compressed
+binary payloads, their hashes, the transition table, the tile list,
+and independent reconstruction code.
+No variable exponent occurs in this definition: every sum is finite
+over a displayed fixed range or the supplied finite tile list.
+
+\subsection{Parity separates temporal and spatial tests}
+
+All native copy positions are even. The temporal copy tests are
+at the even positions \(1000+2j\), while the spatial copy tests
+are at the odd positions \(1021+2j\).
+This makes the native transport displacement \(1\) sufficient.
+The factor \(BD_R\) in \(\kappa\) still moves to a neighboring
+whole cell; only its displacement \emph{within} the cell is reduced.
+
+At temporal target \(1000+2j\), the bare \(D_C\)-shift \(40\)
+sees exactly the south copy \(960+2j\). The shift \(41\)
+and the \(D_R\)-shift \(1\) would see unsupported odd positions.
+The rotated native word contributes the north copy \(1000+2j\).
+At spatial target \(1021+2j\), the \(D_C\)-shift \(41\)
+sees the east copy \(980+2j\), and \(D_R\)'s shift \(1\)
+sees the west copy \(1020+2j\). The shift \(40\) and the
+rotated native word would require unsupported odd positions.
+Selectors end at \(942\), and the odd dummy and anchors are
+outside these tested ranges.
+
+At anchor targets \(2195,3296\), the only bare-shift contributions
+are \(1095+1100\) and \(1096+2200\), respectively.
+The other bare shifts and \(D_R\) miss the native support.
+Every reflected clause exponent is at least
+\(7631-3296=4335\), above all these targets.
+The twenty edge tests and two synchronization tests therefore
+have exactly their inherited meanings.
+
+\subsection{Clause isolation and alignment for arbitrary rotations}
+
+Write \(\mathcal E=\mathcal S\cup\{2195,3296\}\), with
+\(\max\mathcal S=1096\). The two clause bands differ by \(1102\).
+No pair in \(\mathcal S\) has that difference, and
+\[
+2195-1102=1093\notin\mathcal E,\qquad
+3296-1102=2194\notin\mathcal E.
+\]
+Since \(3296-2195=1101\), we have
+\(1102\notin\mathcal E-\mathcal E\).
+At either clause target the bare shifts and \(D_R\) also miss
+\(\mathcal E\). Thus its coefficient is exactly
+\(\sum_e c_e d_e\), with the same selector and copy equations
+as the original language.
+
+The upper-dummy spill position is \(1063+1=1064\), already in
+\(\mathcal E\). Moreover \(L_c>2\max\mathcal E\).
+Hence the two circular sets
+\[
+\{7631-e\bmod L_c:e\in\mathcal E\},
+\qquad
+\{8733-e\bmod L_c:e\in\mathcal E\}
+\]
+are disjoint. For every rotation, at least one clause band is clean.
+
+For binary alignment, write a rotation as \(625t+\varepsilon\),
+where \(0\le\varepsilon<625\).
+The inherited carry-free bound implies that for
+\(1\le\varepsilon\le623\) every rotated radix digit is even.
+For \(\varepsilon=624\), only the single upper-dummy spill can
+give an odd digit.
+At an occupied marked cell, both tested anchors require odd
+digits, excluding both kinds of misalignment.
+For \(\varepsilon=0\), the sole ordered support pair at
+difference \(1101\) is \((2195,3296)\):
+\(2195-1101=1094\) is absent, whereas
+\(3296-1101=2195\) is present.
+There are no additional circular cases since
+\(L_c>2\max\mathcal E\).
+The anchor tests therefore force whole-cell alignment.
+This checks arbitrary purported rotations; it does not assume
+a desired stride divisibility in advance.
+
+\subsection{Carry, population, origin, and canonical padding}
+
+The values \(c_e\) are only relocated. Their mass and the
+base-\(A_c\) clause inequalities remain unchanged.
+For completeness the finite bounds checked in the archive are
+\[
+\begin{gathered}
+\mathrm{mass}=(989+2)\left(2\sum_e c_e+6\right),\\
+\mathrm{threshold}=\max(4\mathrm{mass}+8,\,2\mu+4,\,16)<\rho,\\
+\frac{3\rho}{4}+\mathrm{mass}\le\rho-2,\qquad
+\frac{\rho}{2}+1+\mathrm{mass}\le\rho-2.
+\end{gathered}
+\tag{7.6}
+\]
+The mass has \(461\) bits and the threshold \(529\) bits, versus
+\(625\) bits of radix capacity.
+The largest possible product exponents are bounded by
+\[
+8733+3296=12029<L_c,\qquad
+1+3296=3297<L_c.
+\]
+There is no new intercell spill.
+The masks satisfy
+\[
+\pc(M_F)=989,\quad \pc(M_C)=d_c-989,\quad
+M_C\equiv2\pmod4,\quad M_F\equiv4\pmod8,
+\]
+and both native masks lie strictly between \(0\) and \(B-1\).
+The low mask has its highest in-cell bit set, but neither mask
+has a bit at or above the cell cutoff.
+
+The minimum exponents of \(D_C,D_R\) are \(40,1\), both positive.
+The low-origin unit therefore still comes only from the temporal
+neighbor's selector \(0\). The canonical unique Start is not its
+own temporal neighbor, preserving the special origin test.
+
+Finally \(\rho\equiv2\pmod5\).
+The paired clause contributions cancel modulo five, because their
+exponent gap \(1102\) is \(2\pmod4\). The bare terms give
+\[
+D_C\equiv1+2+1+1=0\pmod5,\qquad
+D_R\equiv2\pmod5,\qquad
+2D_C-D_R\equiv3\pmod5.
+\tag{7.7}
+\]
+Under the canonical power-of-five padding, let \(w_{\rm tile}\)
+denote the tableau width (distinct from the core coordinate \(w\)).
+The dummy coefficient controlling the actual packed rank is
+\[
+\Gamma=\rho^{1063}(q^2-1)
+\bigl[1+q(D_C+BD_R+B^{w_{\rm tile}})\bigr]\equiv2\pmod5.
+\tag{7.8}
+\]
+It is a unit modulo the required power of five.
+Thus the inherited Boolean subset adjustment still realizes the
+actual-rank stride congruence.
+The unchanged tile language supplies independently large
+power-of-five width and height padding. Together with the
+preserved origin and strict slack bounds, this establishes
+canonical completeness. The mask calculation (6.12) is unchanged,
+so the simultaneous odd-\(i\), square-\(w\), odd-\(s\) refinements
+also survive.
+
+\begin{proposition}
+The complete tuple (7.1)--(7.5) meets the native compiler's
+soundness and canonical completeness interface. Consequently
+it can be used in both Theorems~\ref{thm:positive} and
+\ref{thm:integer}.
+\end{proposition}
+\begin{proof}
+The edge, clause, occupancy, alignment, and carry arguments above
+decode exactly the same Wang tilings as the inherited \(943\)-tile
+language. Its Start/Forbidden and helical computation theorem
+\cite{wang} decodes precisely blank halting computations.
+Conversely the same language pads an actual finite computation;
+(7.6)--(7.8) give the required packing, rank adjustment, and slack.
+The native arithmetic compiler proof \cite{blank,ordinary}
+therefore applies to the complete new tuple.
+The supplied proof notes spell out the same adapter independently
+of this compressed presentation.
+\end{proof}
+
+\subsection{Exact size reduction}
+
+Since \(0<D_C<B\) and \(D_R=2^{625}\),
+\[
+\operatorname{bitlength}(\kappa)=d_c+625+1=9{,}766{,}251.
+\]
+This is the largest of the four actual port bit lengths.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Measure & Previous Wang943 & New parity tuple & Reduction\\
+\midrule
+Largest port, bits & 13,201,251 & 9,766,251 & 3,435,000\\
+Four raw payloads, bytes & 5,312,269 & 4,882,894 & 429,375\\
+Four deterministic gzip files, bytes & 20,260 & 19,820 & 440\\
+\bottomrule
+\end{tabular}
+\caption{The coefficient-height improvement is \(26.02\%\).
+Compression lengths are separate storage measurements.}
+\end{table}
+
+This adapter alone does not reduce the tile count, variable count,
+degree, or arithmetic operation count. It supplies a smaller exact
+numeric backend for both new arithmetic constructions.

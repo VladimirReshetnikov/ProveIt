@@ -1,0 +1,285 @@
+\section{An explicit equation in nine nonnegative integers}
+\label{sec:nine-explicit}
+
+The classical nine-unknown construction can be applied directly to the
+concrete quartic $P_{32}$ above.  This does not require an unspecified
+index of a recursively enumerable set.  Every constant in what follows
+is supplied by the bounded coefficient recipe for $P_{32}$.
+Write $z_\star,y_\star$ for its chosen index constants, put
+$\nu=32$ and $L=5^{\nu+1}=5^{33}$, and write
+\[
+ e_\star(T)=\sum_{\substack{\alpha\in\mathbb N^{\nu+1}\\|\alpha|\leq4}}
+       (z_\star+c_\alpha)T^{L-\sum_{r=0}^{\nu}\alpha_r5^r}
+\]
+for the fixed univariate digit polynomial constructed from the weighted
+coefficients $c_\alpha$ of $P_{32}$.  Its exponent bounds are fixed
+integers.  In particular, evaluating $e_\star$ does not introduce any
+new existential unknown.
+
+\subsection{The nine unknowns and their polynomial expressions}
+
+The unknowns are exactly
+\[
+ (\varepsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0,n)\in\mathbb N^9.
+\]
+Set $g=g_0+1$, $h=h_0+1$, $s=s_0+1$, $w=w_0+1$,
+$i=i_0+1$, and $j=j_0+1$.  All symbols defined below are polynomial
+abbreviations, not additional unknowns.  First put
+\begin{align*}
+ b&=y_\star+1+\varepsilon,&
+ \mathcal B&=b^5,& q&=\mathcal B^L,\\
+ \ell&=\sum_{r=1}^{\nu}\mathcal B^{5^r},&
+ \lambda&=\sum_{r=0}^{4L-1}\mathcal B^r,&
+ e&=e_\star(\mathcal B),\\
+ \theta&=\mathcal B-2z_\star,&
+ N&=q^{16},&G&=32b\mathcal B^{5^\nu}.
+\end{align*}
+The packed code is the following explicit polynomial:
+\begin{align}
+ R={}&\Bigl[g+eq^3+\ell q^5+
+  \bigl(2(e-z_\star\lambda)(1+\mathcal B+g)^4
+       +\lambda\mathcal B+\lambda\mathcal Bq^4\bigr)q^7\Bigr](N^2-N)
+ \notag\\
+ &+\Bigl[q^3-b\ell+\ell+\theta\lambda q^3+
+                 (\mathcal B-2)q^8\Bigr](N^2-1).
+ \label{eq:nine-R}
+\end{align}
+Next define
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\\
+ P&=2M^2U,&K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&C&=B_1+W_1+\phi,\\
+ J&=4A-5,&Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ E&=iJDC^2,&F&=(A^2-1)E^2+1,&G_1&=A+F(CD+1-A),\\
+ H&=B_1+jC,&I&=(G_1^2-1)H^2+1.&
+\end{align*}
+The four arithmetic conditions in the Jones ratio reduction use
+\begin{align*}
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI,\\
+ d&=(JF)^2,&c_\mathrm{div}&=(QF+J(H-C))^2,\\
+ m&=K^2G-4(C-KY)^2G-8gK^2.
+\end{align*}
+Here $c_\mathrm{div}$ is a dividend, and is unrelated to the
+coefficient symbols $c_\alpha$.
+
+\subsection{Smaller unconditional radical weights}
+
+\begin{lemma}[Polynomial majorant for every Pell radicand]
+\label{lem:nine-majorant}
+For arbitrary real $a,b$, set $\mathcal M(a,b)=a^2+b^2+1$.
+Then
+\[
+ \sqrt{\left|(a^2-1)b^2+1\right|}\leq\mathcal M(a,b).
+\]
+\end{lemma}
+\begin{proof}
+The triangle inequality gives
+$|(a^2-1)b^2+1|\leq(a^2+1)b^2+1$, while
+\[
+ (a^2+b^2+1)^2-\bigl((a^2+1)b^2+1\bigr)
+   =a^4+b^4+a^2b^2+2a^2+b^2\geq0.
+\]
+Both sides of the desired square-root bound are nonnegative.
+\end{proof}
+
+Consequently the following integer polynomial weights are admissible
+on \emph{every} integer assignment of the intermediate expressions:
+\begin{align}
+ V_0&=P^2+K^2+2,\notag\\
+ V_1&=(A^2+C^2+1)(A^2+E^2+1)(G_1^2+H^2+1)+1.
+ \label{eq:nine-weights}
+\end{align}
+Indeed, $V_0,V_1\geq2$ and
+$\sqrt{|a_r|}\leq V_r-1$ for $r=0,1$.
+No sign conclusion about $R$, no square condition, and no positivity
+conclusion from the margin $m$ is used in this assertion.
+This avoids any circular appeal to conditions that the final equation
+is supposed to enforce.
+
+Put
+\begin{align}
+ \Omega&=d(2m-1),\notag\\
+ \Theta&=dn+c_\mathrm{div}
+          -\Omega(c_\mathrm{div}+V_0V_1),\notag\\
+ \boxed{\displaystyle
+ \mathcal F_9=
+ \bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+          -4\Omega^4V_0^2a_0a_1.}
+ \label{eq:nine-final}
+\end{align}
+The requested equation is $\mathcal F_9=0$ over $\mathbb N^9$.
+Only addition, subtraction, multiplication and powers with fixed
+nonnegative integer exponents occur.  The displayed formula is therefore
+an ordinary integer-coefficient polynomial, not an exponential
+Diophantine equation or a formula containing hidden quantified variables.
+
+\subsection{Why the polynomial has exactly the required zero-existence predicate}
+
+\begin{lemma}[The finalizer enforces the four ratio conditions]
+\label{lem:nine-finalizer}
+For every integer tuple of the intermediate variables,
+\[
+ \exists n\in\mathbb N\;\mathcal F_9=0
+ \quad\Longleftrightarrow\quad
+ a_0,a_1\text{ are integer squares},\quad
+ JF\mid QF+J(H-C),\quad m>0.
+\]
+\end{lemma}
+\begin{proof}
+First $J=4A-5\ne0$.  Also $F\ne0$: if
+$(A^2-1)E^2+1=0$, then the integer equation
+$(1-A^2)E^2=1$ forces $A=0$ and $E=\pm1$.
+But $E=iJDC^2$ would then be divisible by $5$, a contradiction.
+Thus $d=(JF)^2>0$, and $c_\mathrm{div}\geq0$.
+
+For arbitrary formal square roots $r_0^2=a_0$ and $r_1^2=a_1$,
+direct multiplication gives the polynomial identity
+\[
+ \mathcal F_9=
+ \prod_{\sigma,\tau\in\{-1,1\}}
+ \bigl(\Theta-\Omega(\sigma r_0+\tau V_0r_1)\bigr).
+\]
+This identity eliminates the radicals completely; the left side is the
+ordinary polynomial in~\eqref{eq:nine-final}.  Suppose it vanishes.
+Because $d>0$ and $2m-1\ne0$, we have $\Omega\ne0$.
+Choose complex square roots and absorb the signs of a vanishing factor
+into them.  Then
+\[
+ s_*:=\Theta/\Omega=r_0+V_0r_1\in\mathbb Q.
+\]
+If $s_*\ne0$, the identity
+$2s_*r_0=s_*^2+a_0-V_0^2a_1$ shows that both roots are rational,
+and hence integral because their squares are integers.
+If $s_*=0$, then
+$|r_1|=|r_0|/V_0\leq(V_0-1)/V_0<1$.
+Consequently the integer $a_1$ has absolute value less than one,
+so $a_1=a_0=0$.  This also gives integral roots.  This argument covers
+signed radicands and repeated square classes without an independence
+assumption.
+
+Write $Z=c_\mathrm{div}+V_0V_1+r_0+V_0r_1$.
+The root bounds give $Z\geq c_\mathrm{div}+1>0$.
+The vanishing factor is exactly
+\[
+ dn+c_\mathrm{div}=d(2m-1)Z.
+\]
+It forces $d\mid c_\mathrm{div}$ and $2m-1>0$, hence $m>0$.
+Conversely, if both radicands are integer squares,
+$d\mid c_\mathrm{div}$ and $m>0$, choose either signs of their
+integer roots and put
+\[
+ n=(2m-1)Z-c_\mathrm{div}/d.
+\]
+This is an integer, and $Z\geq c_\mathrm{div}+1$ and $d\geq1$
+imply $n\geq1$.  Its factor vanishes, so $\mathcal F_9=0$.
+This is the two-radical case of refined relation combining, proved
+here directly.  Finally, for integers $u\ne0,v$,
+$u^2\mid v^2$ is equivalent to $u\mid v$.  Apply this to
+$u=JF$, $v=QF+J(H-C)$.
+\end{proof}
+
+\begin{theorem}[Concrete nine-variable consistency equation]
+\label{thm:nine-consistency}
+With the complete fixed coefficient tuple and the bounded index recipe
+specified above, ZFC proves
+\[
+ \bigl(\nexists\mathbf x\in\mathbb N^9:
+                   \mathcal F_9(\mathbf x)=0\bigr)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+The hypotheses of the repository theorem
+\texttt{Jones1982.Nine.wset\_iff\_nine} are all concrete here:
+$\nu=32\geq1$, $P_{32}$ has degree four, its normalization follows
+from the fifth residual at the all-ones tuple, the stated index recipe
+satisfies \texttt{Index}, and the fixed input is $1>0$.
+
+More explicitly, \texttt{Nine.reduced\_of\_mem} and
+\texttt{Nine.mem\_of\_reduced} convert a zero of $P_{32}$ into,
+and back from, the two-witness packed central-binomial criterion.
+The theorems \texttt{Nine.ratio\_complete} and
+\texttt{Nine.ratio\_sound} convert that criterion into exactly the
+four conditions of Lemma~\ref{lem:nine-finalizer}.  Their construction
+uses the eight nonnegative coordinates
+$(\varepsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0)$, with the six displayed
+positive shifts.  The original Lean construction combines those
+conditions with the weights $a_r^2+2$; replacing those weights by
+\eqref{eq:nine-weights} preserves existence of the final witness $n$
+by Lemma~\ref{lem:nine-finalizer}.
+This is an equivalence of existential zero sets; the same numerical
+value of $n$ need not work for both choices of weights.
+
+It follows that $\mathcal F_9$ has a nonnegative solution exactly when
+$P_{32}$ does, hence exactly when the specified blank-input K215
+machine halts.  The established K215 calibration identifies the latter
+with a finite ZFC derivation of falsity.  Negating these equivalences
+proves the claim.  The argument uses the mathematical native/Pell
+compiler and calibration results already identified for $P_{32}$;
+it does not promote finite numerical tests to semantic proofs.
+\end{proof}
+
+\subsection{Exact degree and a fully expanded binary circuit}
+
+The polynomial in~\eqref{eq:nine-final}, with input $1$ already fixed,
+has exact total degree
+\[
+ \boxed{161844\,5^{33}+484
+   =18\,841\,121\,345\,758\,438\,110\,351\,562\,984.}
+\]
+The following ledger gives selected exact degrees; all compiler and
+index constants are coefficients.
+\begin{center}
+\begin{tabular}{lr@{\qquad}lr}
+Expression & Degree & Expression & Degree\\\hline
+$R$ & $235L$ & $K$ & $950L+4$\\
+$A$ & $555L+2$ & $D$ & $1580L+4$\\
+$E$ & $2605L+7$ & $F$ & $6320L+18$\\
+$G_1$ & $8135L+22$ & $I$ & $16740L+46$\\
+$a_0$ & $3800L+14$ & $a_1$ & $24640L+68$\\
+$d$ & $13750L+40$ & $m$ & $2221L+11$\\
+$V_0$ & $1900L+8$ & $V_1$ & $22590L+62$\\
+$\Omega$ & $15971L+51$ & $\Theta$ & $40461L+121$
+\end{tabular}
+\end{center}
+No degree estimate assumes a solution.  For a direct certificate of
+exactness, specialize all nine unknowns to $t$ while leaving every
+fixed constant symbolic.  The leading coefficient of $\Theta$ is
+$2^{82}$, the term $\Theta^4$ has strictly larger degree than the
+other terms in the final norm, and the leading coefficient of
+$\mathcal F_9(t,\ldots,t)$ is $2^{328}$.
+This is a nonzero integer independent of the coefficient tuple.
+The accompanying symbolic leading-term audit verifies every binary
+gate and records no unresolved leading cancellation.
+
+The generated arithmetic DAG has exactly $20\,531$ live binary
+operations: $664$ additions, $22$ subtractions and $19\,845$
+multiplications.  These counts expand every fixed exponent into
+binary multiplications and charge squaring and multiplication by a
+fixed coefficient.  They do not charge construction of the giant
+fixed integers, consistently with the inherited fixed-coefficient
+operation model.  There are nine variable leaves and $348$ named
+fixed leaves: $z_\star$, $y_\star$, and the $346$ nonzero symbolic
+weighted coefficients of the shifted quartic.  Those $348$ leaves
+are completely defined constants, not existential parameters.
+
+The long digit-polynomial sum is generated efficiently.  If
+$T=\mathcal B$ and $r=5^\nu$, then
+\[
+ \sum_{|\alpha|\leq4}T^{L-\sum\alpha_j5^j}
+ =T^r h_4\bigl(T^r,T^{r-1},T^{r-5},\ldots,T^{r-5^\nu}\bigr),
+\]
+where $h_4$ is the complete homogeneous symmetric polynomial of
+degree four.  Its standard ascending recurrence uses only addition
+and multiplication.  Thus $e_\star(T)$ is $z_\star$ times this
+baseline plus the $346$ sparse coefficient corrections.
+The geometric sum defining $\lambda$ likewise has a binary
+doubling circuit without division.
+
+For comparison, keeping the original weights $a_0^2+2,a_1^2+2$
+gives a nine-variable equation of degree $291404L+860$ with
+$20\,524$ operations.  The unconditional majorants reduce the
+degree by approximately $44.46\%$ for seven extra additions.
+The large increase in degree and arithmetic work relative to the
+small Pell equations is an explicit cost of reducing the number of
+unknowns; no simultaneous improvement in every size measure is claimed.

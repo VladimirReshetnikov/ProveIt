@@ -1,0 +1,406 @@
+\section{Twelve positive unknowns: a tighter separating norm}
+\label{sec:positive}
+
+The construction combines the separating-root encoding of package~23 with
+rational Pell saturation from packages~19--22. Saturation removes the extra
+factor $H$ in package~23's strong multiplier. A sharper separating weight
+then deliberately cancels leading terms in four conjugate factors. The
+result improves package~20's degree-$1145$, $123$-operation equation
+\cite{repo19,repo20,repo21,repo23}. All statements in this section use the
+entire fixed coefficient tuple specified elsewhere in this report.
+
+\subsection{An explicit polynomial}
+
+The twelve supplied unknowns are
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\Z_{>0}.
+\]
+All other symbols are polynomial abbreviations. The fixed ports are $\beta,K_0,M_C,M_F$, with $\beta=B-1$ and $M_F$ the shifted high
+mask. Define
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,& Y&=sq^3,& E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,& A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{align*}
+The transport and index expressions are
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k&=k-hE-R,\\
+ N_t&=(K_0+w)C+q-F-z(q-1).
+\end{align*}
+The normalized strong and auxiliary expressions are
+\begin{align*}
+ I&=ic^2,& S&=\Delta I,&Q&=S^2,&D&=1+IS,&d&=Q-1,\\
+ v&=cT,& b&=c+RD,&e&=Q(Dv^2+b^2)-1,&B_1&=2Qvb.
+\end{align*}
+In particular $\Delta=(a+2)^2-1$ and $D=1+\Delta I^2$.
+Choose one of the following three weights:
+\begin{align}
+ M_{1081}&=1+8I(T+2REic),\label{eq:m1081}\\
+ M_{1073}&=I\bigl(2T+R[E+3(X+Y)]ic\bigr),\label{eq:m1073}\\
+ M_{1069}&=I\bigl(2T+R[E+2(X+Y)+sq^2]ic\bigr).
+ \label{eq:m1069}
+\end{align}
+Set
+\[
+ m=HM,\qquad N=1+2m,\qquad W=Ht+Nb_0.
+\]
+For formal roots $\tau^2=A$, $g^2=G$, put
+\begin{align}
+ \mathcal F(\tau,g)
+ &=\bigl[d(W-m\tau-Ng)^2-H^2e\bigr]^2-H^4B_1^2D,
+ \label{eq:formalF}\\
+ \Omega&=\prod_{\tau=\pm\sqrt A,\,g=\pm\sqrt G}
+                   \mathcal F(\tau,g).\label{eq:omega}
+\end{align}
+The product is an integer polynomial, without additional unknowns.
+The requested single equation is
+\begin{equation}
+ \boxed{\quad P=N_kN_t(1+\Omega)-1=0.\quad}
+ \label{eq:positiveP}
+\end{equation}
+The corresponding three-equation system is
+\begin{equation}
+ N_k=1,\qquad N_t=1,\qquad \Omega=0.
+ \label{eq:positiveSystem}
+\end{equation}
+
+For clarity, no algebraic-number or resultant operation is needed to
+compute $\Omega$. The following scalar circuit uses only integer arithmetic:
+\begin{align*}
+ r_0&=W^2+N^2G,&\Theta&=4W^2N^2G,&a_0&=m^2A,\\
+ C_0&=d(r_0+a_0)-H^2e,&k_f&=4d^2a_0,&K_c&=k_fr_0,\\
+ Z_0&=H^4B_1^2D,&x_0&=C_0^2+\Theta d^2-K_c-Z_0,
+   &x_1&=2C_0d-k_f,\\
+ n_0&=x_0^2+\Theta x_1^2-4Z_0K_c,
+   &n_1&=2x_0x_1-4Z_0k_f,\\
+ \Omega&=n_0^2-\Theta n_1^2.
+\end{align*}
+To verify this identity, write $\theta=2WN g$, so $\theta^2=\Theta$.
+After eliminating $\tau$, the conjugate factor is
+$(C^2-K-Z_0)^2-4KZ_0$, where
+$C=C_0+d\theta$ and $K=K_c+k_f\theta$.
+Its even and odd parts are $n_0,n_1$, respectively.
+The system compares $n_0^2=\Theta n_1^2$ directly, saving the final
+subtraction. Shared intermediate values and the factorization of $M$ are
+charged exactly as in the attached JSON circuits.
+
+\begin{theorem}\label{thm:positive12}
+For each weight in \eqref{eq:m1081}--\eqref{eq:m1069}, the positive
+integer solvability of \eqref{eq:positiveP} or
+\eqref{eq:positiveSystem} is equivalent to blank halting of the calibrated
+K215 machine. Consequently ZFC proves that absence of a positive integer
+solution is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+The exact sizes are as follows; every binary addition, subtraction, or
+multiplication, including one by a fixed numeral, is charged.
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Weight & System degree & System operations & Equation degree & Operations\\
+\hline
+$M_{1081}$ &1072&115&1081&120\\
+$M_{1073}$ &1064&116&1073&121\\
+$M_{1069}$ &1060&118&1069&123\\
+\hline
+\end{tabular}
+\end{center}
+
+The sum-of-squares equation
+$(N_k-1)^2+(N_t-1)^2+\Omega^2=0$ has degrees
+$2144,2128,2120$ and operation counts $123,124,126$, respectively.
+The theorem concerns ordinary mathematics formalizable in ZFC. It does
+not assert a new kernel-checked end-to-end reduction or prove consistency.
+
+\subsection{The integrality lemma that removes the extra multiplier}
+
+\begin{lemma}[Rational Pell saturation]\label{lem:saturation}
+Let $s_0\ge2$ and $V$ be integers. If $y\in\mathbb Q$ and
+\[
+ s_0^2V^2-(s_0^2-1)y^2=1,
+\]
+then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+Write $y=u/v_0$ in lowest terms with $v_0>0$. Its equation implies
+$v_0^2\mid s_0^2-1$. The integer
+$D_0=(s_0^2-1)/v_0^2$ is positive and nonsquare, since otherwise
+$s_0^2-1$ would be a square. The pairs
+$(s_0,v_0)$ and $(s_0|V|,|u|)$ solve $x^2-D_0z^2=1$ with positive
+ordinates; $u=0$ or $V=0$ is impossible. Write them as
+$(\chi_j,\psi_j)$ and $(\chi_l,\psi_l)$ in the powers of the fundamental
+positive integer-coordinate Pell unit, where $j,l\ge1$.
+
+We have $\chi_j\mid\chi_l$. The addition identities imply
+\[
+ \chi_{r+2j}\equiv-\chi_r\pmod{\chi_j},\qquad
+ \chi_{2j-r}\equiv-\chi_r\pmod{\chi_j}.
+\]
+Reduce $l$ modulo $2j$, then reflect to $0\le r\le j$.
+Strict growth gives $0<\chi_r<\chi_j$ for $r<j$, so the divisible
+case requires $r=j$. Thus $l$ is an odd multiple of $j$.
+The Pell multiplication formula gives $\psi_j\mid\psi_l$, hence
+$v_0\mid u$. Their coprimality forces $v_0=1$.
+\end{proof}
+
+This is the special feature of the auxiliary norm. Rationality of a root
+of a general nonmonic quadratic would not imply integrality. Packages
+19--22 establish equivalent saturation lemmas
+\cite{repo19,repo20,repo21}; applying the lemma before recovering the main
+congruence removes package~23's extra $H$ without changing any canonical
+compiler witness.
+
+\subsection{Separation bounds before recovering roots}
+
+First, $\Theta$ is divisible by $4$, so $\Omega$ is a square modulo $4$.
+At a zero of \eqref{eq:positiveP}, its three integer factors are units.
+The last cannot be $-1$: that would require $\Omega=-2$, which is not a
+square modulo $4$. Therefore
+\[
+ \Omega=0,\qquad N_k=N_t=\epsilon\in\{1,-1\}.
+\]
+The system has $\epsilon=1$. The inherited weak transport bootstrap is
+valid for both signs and gives, before any eliminated root is recovered,
+\begin{equation}
+ \begin{gathered}
+ C\ge0,\quad q\ge16,\quad X\ge16,\quad Y\ge q^3\ge4096,\\
+ 0<R<q^4-2,\qquad E\ge q^4>R+2.
+ \end{gathered}\label{eq:weakbounds}
+\end{equation}
+These are coefficient-dependent statements from the authentic blank
+interface, not assertions for arbitrary substituted ports
+\cite{normalized,repo20,repo21}.
+
+A vanished factor in \eqref{eq:omega} supplies coherent roots satisfying
+\begin{align}
+ \tau^2&=A,&g^2&=G,&f^2&=D,\nonumber\\
+ d y^2&=e-B_1f=Q(vf-b)^2-1,\label{eq:rootrelations}\\
+ t&=y+M\tau+N\gamma,&\gamma&=(g-b_0)/H.
+ \label{eq:linearroot}
+\end{align}
+The roots here are initially algebraic. In particular, no integrality
+or sign of $\gamma$ has been assumed.
+
+For the first weight, all complex auxiliary branches satisfy
+\[
+ |y|<2\bigl(v(a+2)I+b\bigr).
+\]
+Indeed $\sqrt D<(a+2)I$ and $Q\ge2$ give this bound directly from
+\eqref{eq:rootrelations}. Since
+$a+2<2E$, $c<2kY$, $\sqrt A>\ell>Ec/2$, and $D<4E^2I^2$,
+\[
+ \frac{|y|}{\sqrt A}
+ <8TI+\frac4E+16REi^2c^3<M_{1081}.
+\]
+
+Here is the sharper estimate used for the other weights.
+Since $\Delta>R+2$ and $I^2\ge c^4$,
+\[
+ Q-b=\Delta I^2(\Delta-R)-c-R>0.
+\]
+Thus $b\le d$; also $\sqrt D<S<d$.
+Put $Z=v\sqrt D+b>1$. For every auxiliary conjugate,
+\[
+ |y|^2\le\frac{QZ^2+1}{d},\qquad
+ \left[Z\left(1+\frac1d\right)\right]^2-
+       \frac{QZ^2+1}{d}=\frac{QZ^2-d}{d^2}>0.
+\]
+Consequently
+\begin{equation}
+ |y|<Z+v+1<cT\bigl((a+2)I+1\bigr)+c+RD+1.
+ \label{eq:sharpy}
+\end{equation}
+Let $\rho=(1+1/Y)/E$. We have $c/\ell<\rho$, and
+$(a+3)\rho<2$, because
+$(a+3)/E<9/8$ and $1+1/Y<17/16$.
+Furthermore
+\begin{align*}
+ (a+2)^2/E&=E+2Y+4+Y/X+4/X+4/E<E+3Y+5,\\
+ (a+2)^2\rho&<E+3Y+X+9<E+3(X+Y)-2.
+\end{align*}
+For $C_1=E+3(X+Y)$, dividing \eqref{eq:sharpy} by $\sqrt A$
+therefore gives
+\[
+ \frac{|y|}{\sqrt A}
+ <2TI+R(C_1-2)i^2c^3+2
+ \le 2TI+RC_1i^2c^3=M_{1073}.
+\]
+The last inequality uses $Ri^2c^3\ge1$.
+
+For $C_2=E+2(X+Y)+sq^2$, use the exact identity
+\[
+ (a+2)^2\rho=E+2Y+X+6+Y/X+5/X+4/Y+8/E+4/(EY).
+\]
+Since $Y/X=sq^2/w\le sq^2$ and
+$5/X+4/Y+8/E+4/(EY)<1$, the right side is less than
+$E+2Y+X+sq^2+7<C_2-2$. The identical argument proves
+$|y|<M_{1069}\sqrt A$.
+
+Finally $G>A$: $c>kY$ and $\Delta-E^2>2EY$ imply
+\[
+ \Delta c^2>k^2Y^2\Delta>
+ k^2(E^2Y^2+EY)=A-1.
+\]
+For each of the three weights, the two uniform separation inequalities are
+\begin{equation}
+ |y|<M\sqrt A,\qquad
+ \frac{N\sqrt G}{H}>2M\sqrt G>2M\sqrt A.
+ \label{eq:separate}
+\end{equation}
+
+\subsection{Rationality, integrality, and the compiler interface}
+
+Work in a finite normal splitting field over $\mathbb Q$ containing all
+roots in \eqref{eq:rootrelations}. If an automorphism changed the sign of
+$g$, it would change $N\gamma$ by magnitude $2N\sqrt G/H$.
+The change in $M\tau$ has magnitude at most $2M\sqrt A$, and the change
+in $y$ has magnitude strictly less than $2M\sqrt A$, using the uniform
+bound for both conjugates. Their sum cannot cancel the former change by
+\eqref{eq:separate}, contradicting the fixed rational value $t$ in
+\eqref{eq:linearroot}. Hence $g$ is rational. With $g$ fixed, a change in
+$\tau$ would similarly require $2M\sqrt A<2M\sqrt A$.
+Thus $\tau$ is rational. Equation \eqref{eq:linearroot} makes $y$
+rational, and $B_1>0$ makes $f=(e-dy^2)/B_1$ rational.
+
+Since $g^2=G$, $\tau^2=A$, and $f^2=D$ are integers, $g,\tau,f$ are
+integers. The integer $V=vf-b$ and $S=\Delta I\ge2$ now satisfy the
+hypotheses of Lemma~\ref{lem:saturation}, so $y$ is an integer.
+Both $H\gamma=g-b_0$ and $N\gamma=t-M\tau-y$ are integers, and
+$N=1+2HM$ gives $\gcd(H,N)=1$. Bezout's identity proves
+$\gamma\in\Z$.
+
+The recovered equations are precisely the normalized first, main, strong,
+and auxiliary Pell equations. The inherited signed-coordinate theorem
+permits signed $\gamma,\tau,f,y,T$, and conversion to its ordinary strong
+coordinate is $i_{\rm ord}=\Delta i$. That theorem restores the unit sign
+$\epsilon=1$ and extracts a blank K215 halting computation
+\cite{normalized,repo20,repo21}. In particular, the sign of the main root
+is not assumed in the reconstruction.
+
+Conversely, take a canonical positive normalized blank compiler witness.
+For each chosen weight, set
+\[
+ t=y+M\tau+N\gamma>0.
+\]
+One factor of \eqref{eq:omega} vanishes and $N_k=N_t=1$.
+No additional divisibility restriction on $i$ and no adjustment of the
+auxiliary Pell period is required. This proves the existential equivalence
+in Theorem~\ref{thm:positive12}; composing with the calibrated K215
+refutation equivalence and negating existential solvability gives its
+claimed ZFC theorem.
+
+\subsection{Uniform exact degrees and the deliberate cancellation}
+
+Scale the twelve supplied variables by a formal parameter $\lambda$ and
+write a subscript $0$ for the leading homogeneous part. The shared degrees
+are
+\[
+ \begin{array}{c|rrrrrrrrrrr}
+ \text{expression}&E,H&Y&c&R&\Delta&I&Q,d&D&b&A,G&M,N\\
+ \hline
+ \text{degree}&6&4&5&4&12&11&46&34&38&22&27,33.
+ \end{array}
+\]
+Put
+\[
+ \mathcal B=R_0E_0^2i^2c_0^4,\qquad
+ \mathcal D=R_0E_0Y_0i^2c_0^4.
+\]
+These have degrees $38$ and $36$.
+The two formal main-quotient roots solve
+\[
+ H^2\gamma^2+2Hb_0\gamma+(b_0^2-G)=0.
+\]
+The coefficient degrees are $12,17,16$, with
+$(b_0^2-G)_{16}=-H_0c_0^2\ne0$. Thus the two roots have orders $5$ and
+$-1$; the larger has leading term $-2\ell_0/H_0$.
+Also each auxiliary root has expansion
+\[
+ y=\varepsilon(b-vf)+O(\lambda^{-8}),\qquad \varepsilon\in\{1,-1\},
+\]
+since $Q/(Q-1)=1+O(\lambda^{-46})$, while $vf$ has order $23$.
+These expansions can be taken in a Laurent-series extension of the
+rational function field; all leading radicands are squares there.
+
+For $M_{1081}$, $M\sqrt A$ has leading term $16\mathcal B$ and
+$N\gamma$ on its large branch has leading term $-64\mathcal B$.
+The exact factorization is
+\begin{equation}
+ \Omega=d^8H^{16}
+  \prod\bigl(t-y-M\tau-N\gamma\bigr),
+ \label{eq:16factor}
+\end{equation}
+with sixteen coherent branches, counting multiplicity. Their leading
+magnitudes are $15,17$ four times each, and $47,49,79,81$ twice each,
+in units of $\mathcal B$. No leading term vanishes. Hence
+\[
+ \deg\Omega=8\cdot46+16\cdot6+16\cdot38=1072.
+\]
+The leading coefficient multiplier is
+$15^4 17^4(47\cdot49\cdot79\cdot81)^2$, which is nonzero.
+
+For $M_{1073}$, the positive formal first root satisfies
+$\sqrt A-\ell=O(\lambda)$, and
+\[
+ M\sqrt A-b=Ri^2c^3(C_1\ell-\Delta c)+O(\lambda^{28}).
+\]
+Here the exact polynomial identity
+\[
+ C_1\ell-\Delta c
+ =(EY+3EX-Y^2-4E-4Y-3)c-E(E+3X+3Y)\eta
+\]
+has unique leading form $E_0Y_0c_0$ of degree $15$.
+Consequently $M\sqrt A-b$ has leading form $\mathcal D$ of degree $36$:
+its terms of degrees $38$ and $37$ cancel identically.
+Now $N\gamma$ on the large branch has leading term $-4\mathcal B$;
+on the small branch it has order $32$.
+In \eqref{eq:16factor}, four factors have degree $36$ and leading
+magnitude $\mathcal D$, four have degree $38$ and magnitude
+$2\mathcal B$, and the remaining eight have leading multiples
+$2,4,4,6$ of $\mathcal B$, each twice. The signed product is positive:
+\begin{align*}
+ \Omega_{1064}
+ &=589824\,d_0^8H_0^{16}\mathcal B^{12}\mathcal D^4,\\
+ 1064&=8\cdot46+16\cdot6+12\cdot38+4\cdot36.
+\end{align*}
+Writing $q_0=\beta J$, $k_0=\eta+\zeta$ gives the fully substituted form
+\begin{equation}
+ \Omega_{1064}=9\cdot2^{48}i^{48}k_0^{96}w^{76}s^{176}
+                     q_0^{652}(q_0-F)^{16}.\label{eq:top1073}
+\end{equation}
+It is nonzero for every authentic slice $\beta>0$.
+The product's leading form multiplies this by
+\[
+ [-hw s q_0^4]\,[w(q_0-F-\alpha)-zq_0].
+\]
+For example, the coefficient of
+$J^{673}hz i^{48}\eta^{96}w^{77}s^{177}$ is
+$9\cdot2^{48}\beta^{673}>0$. This proves exact degree $1073$ uniformly,
+not merely for diagnostic numerical specializations.
+
+Finally, for $M_{1069}$ replace $C_1$ by $C_2$ above. Then
+\[
+ C_2\ell-\Delta c
+ =(2EX+Esq^2-Y^2-4E-4Y-3)c-EC_2\eta.
+\]
+Its unique leading term is $E_0(sq_0^2)c_0$, of degree $14$.
+Thus the four cancellation factors have degree $35$, rather than $36$.
+All other factors retain their previous degrees and leading multipliers.
+The norm has exact degree $1060$, and its leading form is
+\[
+ \Omega_{1060}=9\cdot2^{48}i^{48}k_0^{96}w^{76}s^{176}
+                     q_0^{648}(q_0-F)^{16}.
+\]
+The corresponding product coefficient at
+$J^{669}hz i^{48}\eta^{96}w^{77}s^{177}$ is
+$9\cdot2^{48}\beta^{669}>0$, proving exact degree $1069$.
+The degrees of $N_k,N_t$ are $7,2$ in every case. The sum-of-squares
+claims follow because $\Omega^2$ is its unique highest-degree summand.
+
+The independent finite checks compare the literal circuits against
+conjugate-product evaluators, verify all gates and ports are live, and
+compute full univariate specializations over two finite fields to detect
+the cancellations. They corroborate the formulas and operation counts;
+the preceding uniform arguments establish the mathematical equivalence
+and exact degrees. They do not construct an accepting K215 computation.

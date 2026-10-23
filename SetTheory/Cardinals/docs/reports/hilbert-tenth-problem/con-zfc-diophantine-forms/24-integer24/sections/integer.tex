@@ -1,0 +1,314 @@
+\section{Twenty-four unrestricted integer unknowns}
+\label{sec:integer}
+
+The preceding construction can be adapted to a substantially smaller
+integer domain. The current collection has equations in 26 unrestricted
+integers; the construction below has \textbf{24}, degree \textbf{1936},
+and a division-free evaluator with \textbf{167} binary operations. Its
+three-equation version uses 162 operations and has maximum degree 1920.
+The proof combines the saturated root norm of package~19 with the odd-scale
+signed-domain theorem of package~23 \cite{repo19,repo23,oddscale}.
+The new work is the separation argument when the half-binomial scale, the
+main Pell parameter, and the separating coefficients can be negative.
+
+\subsection{Domain maps and the equation}
+
+For each of the six ports
+\[
+ J,F,\alpha,z,\eta,\zeta
+\]
+use a disjoint copy of the polynomial
+\[
+ \operatorname{Pos}(x,y,u)=1+x^2+y^2+u(u+1).
+\]
+Its values are positive, and it represents every positive integer:
+apply the three-square theorem to $4n-3$, whose representation has one
+odd square and two even squares. Supply six further unrestricted integers
+$h,T,t,r_i,r_s,r_w$, and put
+\begin{equation}\label{eq:integer-domain}
+ i=2r_i+1,\qquad s=2r_s+1,\qquad w=r_w^2.
+\end{equation}
+Thus the number of supplied integers is $6\cdot3+6=24$.
+The executable circuit names these last three inputs \texttt{ii},
+\texttt{ss}, and \texttt{ww}, and names the merged coordinate $t$
+\texttt{r}.
+
+Retain the common abbreviations $q,C,X,Y,E,k,c,a,H,\Delta,R,N_k,N_t$
+of the positive construction. In particular,
+\begin{align*}
+ X&=wq,&Y&=sq^3,&E&=XY,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H.
+\end{align*}
+To make the norm definition explicit, set
+\begin{align*}
+ L&=kXY^2,& A&=1+L(L+k),&G&=1+\Delta c^2,\\
+ P&=X+ac,&I&=ic^2,&D&=1+\Delta I^2,\\
+ Q&=\Delta^2I^2,&d&=Q-1,&v&=cT,\\
+ b&=c+RD,&e&=Q(Dv^2+b^2)-1,&B_1&=2Qvb.
+\end{align*}
+Here $L$ is an arithmetic abbreviation, unrelated to a compiler cell
+length. All these symbols are computed expressions, not new unknowns.
+
+Use the following signed separating weights:
+\begin{align}
+ M&=1+8(TI)^2+16Ra i^2c^3
+     =1+8(ic)I(T^2c+2Ra),\label{eq:signed-weight}\\
+ N&=1+8HM,\qquad Z=Ht+NP.\label{eq:signed-weight-N}
+\end{align}
+The second expression for $M$ is the factored form used by the circuit.
+For formal roots $u^2=A$ and $g^2=G$, define
+\begin{align}
+ F(u,g)&=\bigl[d(Z-HMu-Ng)^2-H^2e\bigr]^2-H^4B_1^2D,
+ \label{eq:signed-factor}\\
+ \Omega&=\prod_{u=\pm\sqrt A}\prod_{g=\pm\sqrt G}F(u,g).
+ \label{eq:signed-norm}
+\end{align}
+The product is an ordinary polynomial with integer coefficients; its
+division-free circuit does not use square roots or a resultant operation.
+The requested single equation is
+\begin{equation}\label{eq:integer-final}
+ \boxed{\;N_kN_t(1+\Omega)-1=0.\;}
+\end{equation}
+The corresponding system is $N_k=1$, $N_t=1$, $\Omega=0$.
+All four fixed coefficient ports must come from one complete authentic
+tuple. The new tuple in Section~\ref{sec:coefficients} has the required
+interface; package~19's compact Wang943 tuple is a separate valid choice.
+
+\begin{theorem}\label{thm:integer24}
+For the coherent fixed coefficients specified in this report, equation
+\eqref{eq:integer-final} has an integer zero if and only if the blank
+run of K215 halts. The same statement holds for its three-equation system.
+Consequently ZFC proves that the absence of integer zeros is equivalent
+to $\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+
+\subsection{Bootstrap with signed scales}
+
+The optimized norm evaluator has the form
+$\Omega=U^2-\Theta V^2$, where
+$\Theta=4Z^2N^2G$. Thus $\Omega$ is a square modulo four.
+At a zero of \eqref{eq:integer-final}, all three integer factors are
+units. The alternative $1+\Omega=-1$ would require a square to equal
+two modulo four. Therefore
+\[
+ \Omega=0,\qquad N_k=N_t=\epsilon,\qquad\epsilon\in\{1,-1\}.
+\]
+For the system these conclusions hold directly with $\epsilon=1$.
+
+The weak transport estimate needs only the six guarded positive ports:
+\[
+ q-F-z(q-1)=1-F-(z-1)(q-1)\leq0.
+\]
+If $C\leq-1$, then $N_t\leq-(K_0+w)\leq-2$, a contradiction.
+Hence $C\geq0$ and $q-F=C+\alpha>0$. The authentic mask bounds give
+\begin{equation}\label{eq:integer-mask-bound}
+ q\geq16,\qquad q(q^2-1)<R<q^4-2.
+\end{equation}
+These estimates are valid before reconstructing any root and do not use
+$s>0$ \cite{normalized,repo19}.
+
+Since $s$ is odd, $|Y|\geq q^3$. Also $X\geq0$, and $a,c$ have
+the same sign as $Y$. Their absolute values satisfy
+$|a|\geq q^3$ and $|c|>k(|Y|-1)>1$. Consequently $|H|>1$ and
+\[
+ \Delta=(a+2)^2-1\geq(q^3-2)^2-1>q^4>R.
+\]
+The multiplier $i$ is nonzero, so
+\begin{equation}\label{eq:integer-pre-root}
+ D>\Delta+|c|,\qquad 1<b<Q,\qquad Q>D>1.
+\end{equation}
+For the upper bound on $b$, use
+$Q-b=(\Delta-R)D-\Delta-c>0$. In particular $b$ is positive even
+when $c$ is negative. Finally, $Ra c^3>0$, so $M>1$, and
+\begin{equation}\label{eq:integer-N-bound}
+ \left|\frac NH\right|>7M,\qquad \gcd(N,H)=1.
+\end{equation}
+
+\subsection{Recovering roots without assuming their signs}
+
+Because $A\geq1$ and $G>1$, a zero of \eqref{eq:signed-norm}
+selects real roots $u,g$ with $F(u,g)=0$. Work in the totally real
+Galois field $\mathbb Q(u,g)$, allowing degrees one, two, or four, and put
+\[
+ y=\frac{Z-HMu-Ng}{H}.
+\]
+When $B_1\ne0$, define $f=(e-dy^2)/B_1$. Then $f^2=D$ and every
+actual conjugate satisfies
+$d(y')^2=Q(vf'-b)^2-1$. When $B_1=0$, necessarily $v=0$, and the
+same factor directly gives $d(y')^2=Qb^2-1$. In both cases,
+\begin{equation}\label{eq:integer-y-bound}
+ |y'|<2\bigl(|v|\sqrt D+b\bigr),\qquad
+ Z=HMu+Ng+Hy.
+\end{equation}
+No division by $T$ or $B_1$ is made in the exceptional branch.
+
+First exclude $w=0$. The inequalities $|a|\geq4096$ and $|c|>1$ give
+\[
+ \sqrt G>\frac{|a||c|}{2},\qquad
+ \sqrt D<2|a||i|c^2,\qquad D<4a^2i^2c^4.
+\]
+Term by term in \eqref{eq:signed-weight}, these imply
+\begin{align}
+ M\sqrt G
+ &>2|c|+4|a||iT||c|^3+8Ra^2i^2c^4\notag\\
+ &>2\bigl(|v|\sqrt D+b\bigr).
+ \label{eq:integer-boundary-separation}
+\end{align}
+Here $i^2T^2c^2\geq|iT|$, including $T=0$, and
+$b\leq|c|+RD$. If $w=0$, then $A=1$ and $u$ is already integral.
+An automorphism flipping $g$ would contradict
+\eqref{eq:integer-N-bound}, \eqref{eq:integer-y-bound}, and
+\eqref{eq:integer-boundary-separation}. Thus $g$ is rational and
+integral, and $y$ is rational.
+
+We use the rational auxiliary Pell saturation lemma: for integers
+$S_0>1,V$, a rational solution of
+\begin{equation}\label{eq:integer-saturation}
+ S_0^2V^2-(S_0^2-1)y^2=1
+\end{equation}
+is integral. Its proof by ordinary Pell classification and divisibility
+of first coordinates does not assume $S_0^2-1$ squarefree
+\cite{repo19}. When $B_1\ne0$, the rational $f$ has integral square,
+so is integral, and the lemma applies with
+$S_0=|\Delta I|$, $V=vf-b$. When $B_1=0$, apply it with $V=-b$.
+Thus $y$ is integral in either case.
+
+Set $\gamma=(g-P)/H$. The linear equation gives
+$t=Mu+N\gamma+y$. Hence $H\gamma$ and $N\gamma$ are integers;
+coprimality in \eqref{eq:integer-N-bound} makes $\gamma$ integral.
+At $X=0$ the main norm would now imply
+\[
+ 1=(ac+H\gamma)^2-\Delta c^2
+   =H(2ac\gamma+H\gamma^2-c^2),
+\]
+contradicting $|H|>1$. Therefore $w>0$ and $X\geq q\geq16$.
+
+For $w>0$, we have $\sqrt A>L$, $|a+2|<2|E|$, and
+$|c|<2k|Y|$. Dividing \eqref{eq:integer-y-bound} by $\sqrt A$
+and using $L=|E|k|Y|$ yields
+\begin{align}
+ \frac{|y'|}{\sqrt A}
+ &<8|TI|+\frac4{|E|}+16R|E|i^2|c|^3\notag\\
+ &<1+8(TI)^2+16R|a|i^2|c|^3=M.
+ \label{eq:integer-ordinary-separation}
+\end{align}
+The last step uses $|E|\geq q^4$, $|a|>|E|$, and the integer
+inequality $(TI)^2\geq|TI|$.
+
+For either sign of $Y$, the elementary estimates
+\[
+ \Delta>\tfrac34a^2,\quad |c|>\tfrac34k|Y|,
+ \quad G>\tfrac{27}{64}L^2,\quad A<\tfrac32L^2
+\]
+give $\sqrt G>\sqrt A/2$. An automorphism flipping $g$ in
+\eqref{eq:integer-y-bound} would therefore imply
+$|N/H|\sqrt G<2M\sqrt A$, whereas
+\eqref{eq:integer-N-bound} gives
+$|N/H|\sqrt G>\tfrac72M\sqrt A$. Thus $g$ is rational. Once $g$
+is fixed, a flip of $u$ contradicts the uniform bound
+\eqref{eq:integer-ordinary-separation}. Hence $u$ is rational as well.
+Both are integers, and the saturation and coprimality argument above
+makes $y,\gamma$ integers. This uses only actual field automorphisms;
+square radicands or coincident quadratic extensions cause no exception.
+
+If $T=0$, the recovered integral $y$ would satisfy
+\[
+ (Q-1)(y^2-b^2)=b^2-1>0.
+\]
+Since $1<b<Q$, one has $|y|\geq b+1$ and $Q-1\geq b$. The left
+side is at least $b(2b+1)>b^2-1$, a contradiction. Thus $T\ne0$,
+and the recovered $f=(e-dy^2)/B_1$ is an integer.
+
+\subsection{Soundness and completeness of the signed domain}
+
+The roots just reconstructed satisfy exactly
+\begin{align*}
+ u^2&=1+L(L+k),\\
+ (X+ac+H\gamma)^2-\Delta c^2&=1,\\
+ f^2-\Delta i^2c^4&=1,\\
+ Q[c(Tf-1)-Rf^2]^2-(Q-1)y^2&=1,
+ \qquad N_k=N_t=\epsilon.
+\end{align*}
+There are six positive guarded ports, odd $s,i$, nonzero square $w$,
+and unrestricted integer roots. These are precisely the hypotheses of
+the signed odd-scale theorem \cite{oddscale}. Its negative-$s$ argument
+recovers the main Pell rank $R$ and rules out both main-root signs by
+their congruences modulo $H$. Hence $s>0$. The inherited signed compiler
+then forces $\epsilon=1$ and recovers an accepting blank K215 tableau
+\cite{normalized}. Our root recovery did not assume these conclusions.
+
+Conversely, an accepting computation has canonical normalized witnesses
+with odd $i$ and square $w$. The additional oddness of $s$ follows from
+the native population identities. If $q=2^j$, the native masks give
+\[
+ \operatorname{popcount}(R)=3j+2,
+ \qquad v_2(Y)=\operatorname{popcount}(R)-2=3j.
+\]
+Since $Y=sq^3$, the scale $s$ is odd. The required mask hypotheses are
+$M_C\equiv2\pmod4$, $M_F^{\rm native}\equiv4\pmod8$, and
+$\operatorname{popcount}(M_C)+
+\operatorname{popcount}(M_F^{\rm native})=d_{\rm base}=\log_2B$;
+the coefficient adapter preserves them. The arithmetic port is still
+the \emph{shifted} $M_F$.
+
+Choose $t=y+Mu+N\gamma$. Then one norm factor vanishes and
+$N_k=N_t=1$. The six positive coordinates admit their three-integer
+representations. This proves Theorem~\ref{thm:integer24} after composition
+with the inherited K215/refutation calibration.
+
+\subsection{Exact degree and operation count}
+
+Assign weight two to $J,F,\alpha,z,\eta,\zeta,w$ and weight one to
+$s,i,h,T,t$. The principal degrees are
+\begin{align*}
+ \deg(a,H,c,\Delta,L,A,G)&=(11,11,9,22,20,40,40),\\
+ \deg(R,I,D,Q,d,b,e,B_1)&=(8,19,60,82,82,68,218,160),\\
+ \deg(M,N,Z,N_k,N_t)&=(48,59,79,12,4).
+\end{align*}
+Write a subscript $0$ for the highest homogeneous part. Then
+$A_0=G_0=L_0^2$, $P_0=L_0=a_0c_0$, and
+\[
+ M_0L_0=16b_0,\qquad N_0=8H_0M_0.
+\]
+In the four leading sign choices, $Z-HMu-Ng$ has leading part
+$H_0M_0L_0$ times one of $-1,1,15,17$. Thus the leading coefficients
+of the inner bracket in \eqref{eq:signed-factor}, after extracting
+$H_0^2d_0b_0^2$, are
+\[
+ 255,\quad255,\quad57599,\quad73983.
+\]
+Their squares have degree 480, while the competing term $H^4B_1^2D$
+has degree 424. Therefore
+\begin{equation}\label{eq:integer-top-form}
+ \Omega_0=C_*H_0^{16}d_0^8b_0^{16},\qquad
+ C_*=255^4(57599\cdot73983)^2>0.
+\end{equation}
+Its degree is $16\cdot11+8\cdot82+16\cdot68=1920$.
+Multiplying $N_kN_t$ adds $12+4$, giving exact degree 1936.
+The squared-residual alternative has degree 3840.
+
+For an explicit uniform certificate, in the actual circuit variable
+names the coefficient of
+\[
+ J_x^{1354}h\,\mathrm{ii}^{48}\eta_x^{192}
+ \mathrm{ww}^{162}\mathrm{ss}^{177}z_x^2
+\]
+is $2^{257}C_*\beta^{677}$. The exponent sum is 1936 and the
+coefficient is nonzero for every authentic $\beta>0$. Thus the degree
+claim applies to the full fixed integers, independently of numerical
+specializations.
+
+The optimized positive core takes 120 product operations; the signed
+weight takes two more. The domain maps initially cost 47 operations.
+Two additions disappear by absorbing the constant terms of $F$ and $z$:
+if $F=1+F_*$, $z=1+z_*$, and $r=\beta J$, then
+\[
+ q-F=r-F_*,\qquad N_t=(K_0+w)C-F_*-z_*r.
+\]
+The final counts are therefore 167 operations for the product, 162 for
+the system, and 170 for the sum of squares. All supplied coordinates and
+all emitted gates are live. Exact conjugate-product checks, domain-map
+identity checks, and independent finite-field leading-coefficient checks
+corroborate the circuit. The universal equivalence rests on the proof
+above and the explicitly stated inherited dependencies, rather than on
+those finite diagnostics.

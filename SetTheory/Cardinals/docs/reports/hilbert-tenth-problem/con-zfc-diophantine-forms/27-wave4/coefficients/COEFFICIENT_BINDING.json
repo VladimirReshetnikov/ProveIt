@@ -1,0 +1,96 @@
+{
+  "schema": "con-zfc-whole-tuple-v1",
+  "tuple_id": "wang943-mixed-radix4-zero-fields-5pow9",
+  "d": 1953125,
+  "B": "2^1953125",
+  "port_order": [
+    "beta",
+    "K",
+    "MC",
+    "MF_source"
+  ],
+  "endianness": "little",
+  "source_port_aliases": {
+    "Bm1": "beta",
+    "beta": "beta",
+    "Kconstant": "K",
+    "K0": "K",
+    "K": "K",
+    "MC": "MC",
+    "MF": "MF_source",
+    "MFsrc": "MF_source",
+    "MF_source": "MF_source"
+  },
+  "warning": "MF_source is already shifted by beta. Replace all four ports as a whole tuple; never splice backends.",
+  "ports": {
+    "beta": {
+      "path": "expanded/beta.bin",
+      "bit_length": 1953125,
+      "bytes": 244141,
+      "gzip_bytes": 273,
+      "sha256": "a73855e0454c131b029aa5463d82a399b32fee1b34ed58ab053ed76eb0123bda",
+      "population": 1953125,
+      "mod4": 3,
+      "mod8": 7,
+      "mod5": 1
+    },
+    "K": {
+      "path": "expanded/K.bin",
+      "bit_length": 1958376,
+      "bytes": 244797,
+      "gzip_bytes": 10180,
+      "sha256": "cd2eeda196a626c9bde13ff9c4e7d90f3555bf8e0b6b79b40c2809bf91324782",
+      "population": 33499,
+      "mod4": 0,
+      "mod8": 0,
+      "mod5": 3
+    },
+    "MC": {
+      "path": "expanded/MC.bin",
+      "bit_length": 1953125,
+      "bytes": 244141,
+      "gzip_bytes": 373,
+      "sha256": "152bf7fed24ba5df0b6afec3f655b99bb39d4e98357cd8c5ffcd8e969891f8b7",
+      "population": 1952136,
+      "mod4": 2,
+      "mod8": 6,
+      "mod5": 0
+    },
+    "MF_source": {
+      "path": "expanded/MF_source.bin",
+      "bit_length": 1953126,
+      "bytes": 244141,
+      "gzip_bytes": 405,
+      "sha256": "61d521d6336abcf5d14aa1f22e9ab0d244a5d09709c1c43e90d7195a523e00c4",
+      "population": 991,
+      "mod4": 3,
+      "mod8": 3,
+      "mod5": 1
+    }
+  },
+  "compiler_contract": {
+    "positive_inputless_interface": true,
+    "ordinary_quartic32_interface": true,
+    "canonical_odd_d_and_tableau_area": true,
+    "canonical_rank_3_mod4": true,
+    "canonical_square_w": true,
+    "canonical_odd_normalized_i": true,
+    "canonical_odd_ordinary_scaled_i": true,
+    "canonical_odd_s": true,
+    "native_MC_mod4": 2,
+    "native_MF_mod8": 4,
+    "native_mask_population_sum": 1953125,
+    "packed_data_mask_disjointness": true,
+    "packed_rank_population": "3*t+2, where q=2^t"
+  },
+  "proof": "COEFFICIENT_PROOF.md",
+  "builder": "build_mixed.py",
+  "independent_checker": "audit_independent.py",
+  "source_links": [
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/ae3007ca4467011e0e051c84acb4a1dd13971b0e/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/19-wang943/compiler/WANG943_COEFFICIENTS.md",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/ae3007ca4467011e0e051c84acb4a1dd13971b0e/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/19-wang943/compiler/WANG943_COMPACT_LAYOUT.md",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/ae3007ca4467011e0e051c84acb4a1dd13971b0e/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/20-root12/coefficients/COEFFICIENT_PROOF.md",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/ae3007ca4467011e0e051c84acb4a1dd13971b0e/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/23-separating12/proofs/ODD_SCALE_27_PROOF.md"
+  ],
+  "trust_boundary": "Ordinary universal adapter plus exact finite checks; imported native/Pell and K215/refutation theorems are not freshly kernel checked."
+}

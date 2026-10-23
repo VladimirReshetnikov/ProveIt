@@ -1,0 +1,3152 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames, svgnames, x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX, Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{longtable, booktabs, array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{fvextra}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines, breakanywhere, commandchars=\\\{\}, fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines, breakanywhere, fontsize=\small}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine forms for Con(ZFC)}
+\fancyhead[R]{\small Pinned synthesis}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+\setlength{\emergencystretch}{4em}
+\AtBeginDocument{\hypersetup{linkcolor=blue!45!black, urlcolor=blue!55!black}}
+\let\oldsection\section
+\renewcommand{\section}{\clearpage\oldsection}
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{0em}{2.4em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{3.5em}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Smaller explicit Diophantine forms for Con(ZFC)},
+  pdfauthor={Mathematical synthesis and independent arithmetic audits},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Smaller explicit Diophantine forms for Con(ZFC)}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{A pinned comparison and four complementary syntheses}
+\author{Mathematical synthesis and independent arithmetic audits}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{Executive conclusion}\label{executive-conclusion}
+
+There is a genuine improvement, but not a single meaningful winner under
+every definition of ``simplest.'' The strongest recommendations are:
+
+\begin{itemize}
+\tightlist
+\item
+  For a short, directly readable equation: the new 12-positive-variable
+  polynomial, with 111 binary arithmetic operations and exact degree
+  1081. It improves the earlier 139-operation, degree-1257 form on both
+  measures, without adding variables.
+\item
+  For few unrestricted integer unknowns: the new 24-integer polynomial,
+  with 165 operations and degree 2240. The 25-integer and 26-integer
+  alternatives have much lower degrees.
+\item
+  For low degree and transparent equations: the new system of 22
+  quadratics in 31 positive variables, or its single quartic sum of
+  squares. This removes one variable and one equation from the previous
+  32-variable quartic.
+\item
+  For the fewest unknowns among the explicit constructions reviewed: a
+  new specialization in nine nonnegative unknowns, with 1840 live binary
+  operations and exact degree \(120724\cdot5^{32}+366\). Its degree
+  remains enormous, and most of its fixed coefficients are specified by
+  bounded finite recipes rather than written out.
+\end{itemize}
+
+Each recommendation is a fixed ordinary integer polynomial, or a finite
+system of such polynomials, after the stated coefficient binding. All
+displayed auxiliary expressions are arithmetic registers unless
+explicitly listed as supplied variables. In particular, neither the norm
+notation nor an enormous fixed exponent hides extra quantified variables
+or an exponential Diophantine equation.
+
+The logical conclusion is
+
+\[\mathsf{ZFC}\vdash\bigl(\text{the specified equation has no solution in its stated domain}\bigr)
+\longleftrightarrow\operatorname{Con}(\mathsf{ZFC}).\]
+
+This is an ordinary mathematical reduction, intended and argued to be
+formalizable in ZFC, composed with the inherited blank-machine/compiler
+calibration. It is not a proof of consistency, an unconditional
+independence theorem, a global minimality result, or a newly
+kernel-checked end-to-end formalization. The executable audits certify
+finite arithmetic, identities, degree arguments and provenance at their
+documented boundaries; they do not certify the entire unbounded compiler
+theorem.
+
+\section{Scope, pin and counting
+convention}\label{scope-pin-and-counting-convention}
+
+The comparison uses the ProveIt repository at immutable commit
+
+\path|ae3007ca4467011e0e051c84acb4a1dd13971b0e|
+
+under
+\path|SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms|.
+It covers the new wave-3 packages 16--23 and compares their
+contributions against the earlier local Wang943 synthesis. The exact
+source URL, Git blob SHA-1, local SHA-256 and byte count for the
+reviewed source selection are recorded in the source ledger. The online
+entry point is the
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/ae3007ca4467011e0e051c84acb4a1dd13971b0e/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}{pinned
+catalogue}.
+
+One binary addition, subtraction or multiplication costs one operation,
+including multiplication by a fixed coefficient or by a small integer
+and including a squaring. Previously computed values may be reused. A
+fixed enormous integer is a leaf of degree zero, not a run-time
+integer-construction cost. In an equality-comparison system, comparisons
+are free; converting it to residuals or a sum of squares has an
+additional, separately stated cost. Thus an operation count is a
+straight-line-program measure, not a bit-complexity, file-size or
+proof-complexity measure.
+
+The domain matters: \(\mathbb N=\{0,1,\ldots\}\),
+\(\mathbb Z_{>0}=\{1,2,\ldots\}\) and \(\mathbb Z\) are not
+interchangeable for variable counts. Squaring or a three-variable
+positivity encoding changes the number of unknowns. Shifting a natural
+variable by one preserves existence but requires a new circuit count. We
+do not silently compare any of these encodings as if they were
+identical.
+
+\section{What the eight packages
+contribute}\label{what-the-eight-packages-contribute}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Package
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Main reusable idea
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Representative original result
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+16 integer27 & Smaller separator; signed lifting & 13 positive, degree
+515, 84 ops; 27 integers, degree 1004, 139 ops \\
+17 primitive12 & Sixteen separated branches; rational Pell saturation &
+12 positive, degree 2601, 167 ops \\
+18 jones9 & Explicit Jones specialization; radical finalizer & 9
+naturals, degree \(161844\cdot5^{33}+484\), 20531 ops \\
+19 wang943 & Compact coherent compiler; four-root saturation & 12
+positive, degree 1257, 139 ops; 26 integers, degree 2465, 192 ops \\
+20 root12 & Separate the main root outside the inner norm & 12 positive,
+degree 1145, 123 ops \\
+21 norm12 & Nested quadratic norms and economical evaluation & 12
+positive, degree 1353, 116 ops \\
+22 monic12 & Monic merger; retained-coordinate system & 12 positive,
+degree 1529, 117 ops; 16 positive, 7 equations, degree 24, 59 ops \\
+23 separating12 & Odd scales and low-degree integer lifting & 27
+integers, degree 172, 116 ops; positive 12-variable alternative \\
+\end{longtable}
+
+The table intentionally gives representative points, not an assertion
+that every variant was independently re-proved. Fifteen selected literal
+circuits across all eight packages were count- and liveness-audited.
+Mathematical source review was deeper for the ingredients actually used
+in the synthesis. The individual audit records distinguish independently
+reconstructed degrees from merely recorded source degrees.
+
+Several earlier points remain useful. The old 67-operation single
+equation remains smaller in arithmetic-operation count than the new
+low-variable single equations. The 59-operation retained system remains
+the lowest operation count established here for that system family. The
+new work does not improve either of these operation-only benchmarks.
+
+A particularly important correction is that package 18 is genuinely
+explicit: its nine-variable result is not merely an existence statement
+about a universal polynomial with an unspecified index. Its fixed leaves
+have finite bounded recipes. But that does not mean the recipes were
+evaluated into a complete expanded decimal coefficient list. Those two
+senses of explicitness must remain separate.
+
+\section{The new comparison frontier}\label{the-new-comparison-frontier}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2784}}
+  >{\centering\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1443}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1134}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1134}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2165}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1340}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Construction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Domain
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Vars
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Eqs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Degree
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Binary ops
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Small positive product & positive & 12 & 1 & 1081 & 111 \\
+Small positive system & positive & 12 & 3 & 1072 max & 107 \\
+Sharp pair norm & integers & 24 & 1 & 2240 & 165 \\
+Sharp pair-norm system & integers & 24 & 3 & 2224 max & 161 \\
+Small-weight norm & integers & 25 & 1 & 920 & 131 \\
+Small-weight system & integers & 25 & 4 & 872 max & 126 \\
+Ordinary two-root merger & integers & 26 & 1 & 214 & 123 \\
+Ordinary two-root system & integers & 26 & 5 & 128 max & 117 \\
+Quadratic system & positive & 31 & 22 & 2 max & 65 \\
+Quartic sum of squares & positive & 31 & 1 & 4 & 130 \\
+Tight Jones specialization & naturals & 9 & 1 &
+\(120724\cdot5^{32}+366\) & 1840 \\
+\end{longtable}
+
+The integer system equation counts follow the literal comparator
+outputs. The normalized 26-integer alternative has the same 123
+operations but degree 236 and is therefore not preferred on these two
+criteria. The older unsharpened 24-integer separator has degree 2256 at
+the same 165 operations; it is retained only to expose the improvement
+and proof history.
+
+Relative to the earlier local synthesis, the 12-positive polynomial
+saves 28 operations (20.1\%) and lowers degree from 1257 to 1081
+(14.0\%). The new 26-integer ordinary version saves 69 operations
+(35.9\%) and lowers degree from 2465 to 214 (91.3\%). The 24-integer
+version instead prioritizes two fewer integer variables. The quartic
+saves one variable and one quadratic equation.
+
+For nine variables, two distinct results must not be conflated:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Re-evaluating the \emph{same original} package-18 polynomial by shared
+  radix-five powers and sparse Horner form reduces its circuit from
+  20531 to 1704 operations, without changing its polynomial or degree.
+\item
+  The recommended new nine-variable polynomial additionally uses the
+  31-variable quartic and tighter unconditional companions. It has 1840
+  operations but a much smaller degree, approximately 14.9\% of the
+  original degree. This is not a same-polynomial rewrite.
+\end{enumerate}
+
+Neither dominates the other on operation count and degree. Both have
+nine natural unknowns. The first has 348 fixed leaves; the new one has
+404 because the new parent quartic yields 402 nonzero weighted
+coefficient recipes rather than 346. Fewer parent variables did not
+imply a sparser coefficient list.
+
+\section{A readable recommended
+equation}\label{a-readable-recommended-equation}
+
+The concise 12-positive-variable recommendation has supplied variables
+
+\[J, F,\alpha, z, h, i, T, s, w,\eta,\zeta, t>0.\]
+
+Bind the four fixed ports once and for all as described below. Define
+
+\[\begin{aligned}
+q&=\beta J+1,& C&=q-F-\alpha,&X&=wq,&Y&=sq^3,\\
+E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+H&=4a+3,&\Delta&=a^2+H,&\ell&=EkY,\\
+A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{aligned}\]
+
+Further put
+
+\[R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J.\]
+
+\[\begin{aligned}
+N_k&=k-hE-R,\\
+N_t&=(K_0+w)C+q-F-z(q-1).
+\end{aligned}\]
+
+\[\begin{aligned}
+I&=ic^2,&D&=1+\Delta I^2,\\
+Q&=\Delta(D-1),&d&=Q-1,\\
+v&=cT,&b&=c+RD,\\
+P&=QDv^2,&U&=Qb^2,\\
+M&=k(I^2+T^2),&L&=HM+1,\\
+W&=b_0+Ht.&&
+\end{aligned}\]
+
+The following scalar evaluator contains no division, radicals or extra
+witnesses:
+
+\[\begin{aligned}
+n_0&=(HM)^2A,&d_n&=dn_0,\\
+H_P&=H^2P,&H_U&=H^2U,&H_e&=H_P+H_U-H^2,\\
+j_0&=4H_PH_U,&S_0&=2d(W^2+L^2G),\\
+K_n&=d^2(W^2-L^2G)^2,&A_0&=2(d_n+H_e),\\
+c_0&=(d_n-H_e)^2-j_0,&a_t&=S_0-A_0,\\
+b_t&=c_0-K_n,&c_1&=16d_nj_0,\\
+v_r&=a_t(a_tS_0+2b_t)-c_1,&u_r&=b_t^2-a_t^2K_n,\\
+N&=u_r^2+S_0u_rv_r+K_nv_r^2.
+\end{aligned}\]
+
+The equation is simply
+
+\[\boxed{\quad N_kN_t(1+N)-1=0.\quad}\]
+
+Alternatively retain the three equations \(N_k=N_t=1\), \(N=0\). The
+111-operation product and 107-operation system are completely expanded
+into literal binary arithmetic records in the supplied JSON. The
+displayed shared-expression arrangement is explanatory; the literal
+circuit is the authoritative operation ledger.
+
+\subsection{Why this merger is safe}\label{why-this-merger-is-safe}
+
+An eliminant can have unwanted roots unless its branch, denominator and
+integrality obligations are proved. Here the norm \(N\) is a square
+modulo four, so the product equation forces \(N=0\) and a common unit
+sign for \(N_k, N_t\). The authenticated weak transport bounds apply
+before root recovery.
+
+The smaller weight \(M=k(I^2+T^2)\) controls every complex root of the
+inner polynomial strictly inside \(|x|<M\sqrt G\). The outer coefficient
+\(L=HM+1\) then forces \(G\) to be a square: otherwise conjugation would
+create two roots farther apart than that bound allows. The selected main
+root is positive because \(W>0\). Rational recovery of the remaining
+roots uses explicitly nonzero denominators. Rational square roots of
+integers are integral; the remaining rational auxiliary Pell coordinate
+is handled by the special saturation lemma, not by a false general claim
+about nonmonic quadratics.
+
+The congruence \(L\equiv1\pmod H\) restores the main-root affine
+coordinate, and a separate growth inequality proves that coordinate
+positive. Only then is the inherited signed quotient/compiler theorem
+applied. The complete argument, including bounds for complex branches
+and exact leading forms, is given in the positive proof appendix.
+
+\section{Low degree without opaque
+eliminants}\label{low-degree-without-opaque-eliminants}
+
+The 31-variable system is the most transparent new alternative. It
+deletes the old packing register \(G\) from the 32-variable quartic
+using
+
+\[G=q(q-F)-C,\qquad N=q(L+1),\qquad L=q^2-1.\]
+
+The packing product is replaced by
+
+\[LG=(q-F)(N-q)-CL.\]
+
+This is quadratic in the retained coordinates, unlike the naive
+substitution. Their difference is exactly
+
+\[(q-F)\bigl(q(L+1)-N\bigr),\]
+
+which is zero by a retained equation. Conversely the unchanged transport
+relation implies \(C>0\), so
+
+\[G=(q-1)C+q\alpha>0.\]
+
+Thus the deleted coordinate is recovered with its required sign. This is
+a bijection of positive solution tuples, not just an informal
+elimination. All 22 residuals are quadratic. Their sum of squares has
+degree exactly four because its \(\tau^4\) coefficient is one. Replacing
+every positive input by a natural input plus one gives a normalized
+quartic: at the all-zero natural tuple, the fifth original residual is
+one independently of all fixed ports.
+
+That normalized 31-witness polynomial is the input to the new Jones
+specialization. The parameter \(\nu=31\) is the parent quartic's witness
+count. It is not the compiler radix exponent and is not the
+nine-variable output count.
+
+\section{Integer domains and fewer positivity
+witnesses}\label{integer-domains-and-fewer-positivity-witnesses}
+
+Six source ports require positivity. Each uses its own three-integer
+surjection
+
+\[\operatorname{Pos}(a, b, c)=1+a^2+b^2+c(c+1).\]
+
+The other scale coordinates are encoded as \(i=2r+1\), \(s=2v+1\),
+\(w=u^2\). This uses 21 unrestricted integer inputs before retained
+merger coordinates are added. It does not assume \(s\) positive: the
+signed source theorem must exclude \(s<0\), and the zero-scale case
+\(w=0\) must be ruled out explicitly.
+
+The 24-variable construction retains \(h, T, t\) and merges both outer
+roots through a quadratic-algebra pair norm. A strict bound allows its
+separator to be reduced from \(3HW\) to \(2HW\). This causes a genuine
+leading-term cancellation in one formal branch, lowering the degree from
+2256 to 2240 at unchanged operation cost. The proof separately handles a
+zero auxiliary coefficient, zero \(w\), negative \(H\), coincident
+quadratic extensions and integrality of the recovered affine coordinate.
+
+The 25-variable construction also retains \(\gamma\) and uses a smaller
+inner weight. Its degree is 920. The 26-variable construction
+additionally retains \(f\) and merges only the first and auxiliary
+roots. Its ordinary strong relation gives degree 214 instead of 236. A
+proof that \(1<A<Q_0\) excludes the otherwise problematic \(t=0\)
+branch. All of these distinctions are substantive: discarding a boundary
+case or replacing a signed root by its absolute value inside an affine
+identity would not be valid.
+
+\section{Nine variables: explicit, smaller, still
+enormous}\label{nine-variables-explicit-smaller-still-enormous}
+
+The final polynomial has the nine nonnegative inputs
+
+\[\epsilon, g_0, h_0, s_0, w_0,\phi, i_0, j_0, n.\]
+
+The six shifts \(g=g_0+1\), \(h=h_0+1\), \(s=s_0+1\), \(w=w_0+1\),
+\(i=i_0+1\), \(j=j_0+1\) are part of the circuit. The other three inputs
+are not shifted.
+
+Its construction has four layers:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Shift the 31-variable quartic to natural inputs and expand its
+  degree-at-most-four coefficient data.
+\item
+  Form the explicitly bounded Jones index from 402 weighted coefficient
+  records and the fixed bound \(z_*=2^{45933757}\). The companion
+  \(y_*\) is a specified finite sum, not an unspecified recursively
+  enumerable-set index.
+\item
+  Use shared fifth powers, complete-homogeneous recurrences and sparse
+  Horner evaluation to avoid repeatedly building huge powers. All
+  exponents in the polynomial evaluation are fixed nonnegative integers
+  and are lowered to multiplication-only circuits.
+\item
+  Replace crude magnitude majorants with positive unconditional
+  companions and apply the audited two-radical finalizer.
+\end{enumerate}
+
+The evaluation identities can be stated exactly. Put \(r=5^\nu\),
+\(L=5^{\nu+1}\) and \(p_j=B^{5^j}\). If \(h_4\) is the complete
+homogeneous symmetric polynomial of degree four, the full baseline digit
+sum is
+
+\[\sum_{|\alpha|\le4}B^{L-\sum_{j=0}^{\nu}\alpha_j5^j}
+=B^r h_4\bigl(B^r, B^{r-5^0}, B^{r-5^1},\ldots, B^{r-5^\nu}\bigr).\]
+
+The first argument records the slack exponent \(4-|\alpha|\). Starting
+with \(h_0=1\) and \(h_1=\cdots=h_4=0\), append an argument \(v\) by
+updating \(h_k\leftarrow h_k+vh_{k-1}\) in ascending order
+\(k=1,2,3,4\). Suffix products give
+\(B^{r-5^j}=\prod_{k=j}^{\nu-1}p_k^4\), so every exponent is
+nonnegative. The geometric sum is
+
+\[\lambda=(1+q)(1+q^2)\prod_{j=0}^{\nu}(1+p_j+p_j^2+p_j^3+p_j^4),\qquad q=B^L.\]
+
+For nonzero sparse correction exponents \(E_1>\cdots>E_m\), sorted
+Horner evaluation starts with \(A=c_1\), replaces \(A\) by
+\(AB^{E_{i-1}-E_i}+c_i\), and ends with \(AB^{E_m}\). The fifth-power
+ladder and shared radix-five digit runs evaluate these fixed powers by
+multiplication only. These identities, rather than numerical
+coincidence, justify the circuit rewrite.
+
+The finalizer has the recognizable form
+
+\[\bigl[\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr]^2
+-4\Omega^4V_0^2a_0a_1=0.\]
+
+The accompanying proof establishes both the separated-radical recovery
+and the required positivity/divisibility implications, including the
+zero-sum branch. The complete formulas and the proof that the smaller
+companions dominate every relevant signed expression appear in the
+nine-variable appendix. The exact circuit, coefficient recipes and
+independent leading-term certificate are included.
+
+The exact degree is
+
+\[120724\cdot5^{32}+366
+=2\,810\,824\,662\,446\,975\,708\,007\,812\,866.\]
+
+A cancellation-aware symbolic leading-term audit finds the nonzero
+diagonal leader \(2^{274}z_*^2\). Because the selected \(z_*\) is
+positive, this proves the degree uniformly for the selected instance,
+not just as a sampled upper bound. No finite evaluator expands this
+astronomical-degree polynomial into all monomials.
+
+\section{Exact coefficient binding and
+materialization}\label{exact-coefficient-binding-and-materialization}
+
+The selected backend for every new recommended construction is one
+\emph{complete} compact Wang943 tuple. Set
+
+\[B=2^{5^{10}},\qquad\beta=B-1,\qquad
+K_0=K,\qquad M_C=M_C,\qquad M_F=M_{F,\mathrm{source}}.\]
+
+The last port is the shifted source mask, not the native unshifted mask.
+Source metadata that records the original derivation tuple is preserved
+as provenance; the package's explicit whole-tuple binding governs the
+delivered instantiation. Changing only \(\beta\) or mixing ports from
+different compilers would not be justified by these proofs.
+
+The four unsigned little-endian integer payloads are fully materialized.
+Their total raw size is 5,312,269 bytes and their deterministic gzip
+total is 20,260 bytes. The binding contains the exact decompressed
+SHA-256 identities and bit lengths. The Jones bound \(z_*\) is also
+materialized: 5,741,720 raw bytes, with a 5,613-byte deterministic gzip
+representation, with its own digest and exact power-of-two check.
+
+The 402 weighted coefficients of the new nine-variable circuit and
+\(y_*\) are fixed by bounded finite recipes. They are not individually
+materialized. Nor is the expanded final nine-variable coefficient list.
+The package supplies all data necessary to identify those integers
+exactly and evaluates their residues for actual-instance checks, without
+claiming to have printed or expanded them in full.
+
+The important compression is mathematical and representational, not a
+claim that bit complexity became small. A tiny gzip file for a power of
+two can denote an enormous integer, while a finite recipe can denote an
+integer too large to materialize practically.
+
+\section{What was verified, and what remains
+inherited}\label{what-was-verified-and-what-remains-inherited}
+
+The new executable work uses only newly authored checkers and treats
+received files as inert data. No received Python program or Lean source
+was executed or imported, no proof environment was installed, and no
+public repository was modified.
+
+The evidence separates four levels:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Exact finite algebra: sparse identities, norm identities, coefficient
+  reconstruction, all-gate/all-input liveness, operation ledgers, exact
+  symbolic leading terms, source hashes and materialized coefficient
+  hashes.
+\item
+  Supplementary numerical diagnostics: signed boundary cases, modular
+  evaluation at independent primes, synthetic radical witnesses and
+  actual fixed-tuple residues. These are useful error detectors, not
+  proofs of unbounded equivalences.
+\item
+  New ordinary proofs: all branch separation, sign restoration, rational
+  saturation, zero-case exclusion, direct completeness maps, quartic
+  elimination and smaller companion estimates in the appendices.
+\item
+  Inherited unbounded dependencies: the calibrated K215 refutation
+  computation, native-window/blank compiler equivalence, complete
+  Wang943 transfer, signed odd-scale rank/population arguments, and the
+  applicable Jones specialization theorem.
+\end{enumerate}
+
+The rational Pell saturation lemma is particularly important. For
+integer \(m\ge2\), integer \(V\) and rational \(y\),
+
+\[m^2V^2-(m^2-1)y^2=1\quad\Longrightarrow\quad y\in\mathbb Z.\]
+
+Its proof uses the ordinary integer-coordinate Pell group and index
+divisibility. It is not the false assertion that every rational root of
+a nonmonic integer polynomial is integral. Repeated or square radicands
+likewise require actual automorphisms or universal norm identities, not
+an assumed full multiquadratic field degree.
+
+The archive verifier checks an immutable file manifest before running
+checkers in a temporary copy, rejects Python optimized mode, and leaves
+the delivered tree unchanged. It verifies pinned local source bytes
+against their recorded Git blob and SHA-256 identities. Fresh isolated
+replay results are recorded separately. A passing replay does not
+silently upgrade the ordinary proofs into a proof-assistant certificate.
+
+\section{Productive next steps}\label{productive-next-steps}
+
+The best next work depends on which objective matters.
+
+\begin{itemize}
+\tightlist
+\item
+  For readability and proof assurance, formalize the new Pell
+  saturation, root recovery and signed zero-case lemmas before
+  attempting further aggressive eliminations. These are the high-risk
+  boundaries, unlike routine norm expansion.
+\item
+  For the 12-positive equation, search for a smaller shared scalar norm
+  evaluator and weights that preserve the pre-recovery complex-root
+  bounds. A cheaper norm formula without a valid bound is not an
+  improvement.
+\item
+  For low degree, seek another relation-aware register elimination in
+  the quadratic system. The successful deletion used a retained
+  relation; naive substitution alone missed it. Do not eliminate a
+  positive port unless its recovery and strict sign are proved.
+\item
+  For nine variables, compare the lower-degree 1840-operation polynomial
+  with the 1704-operation same-polynomial rewrite according to the
+  user's preferred metric. Continue sparse radix-five scheduling and
+  companion simplification, but audit exact cancellation after every
+  change.
+\item
+  For fewer unrestricted integers, investigate additional signed or odd
+  canonical coordinates only where both soundness and canonical
+  completeness survive. More permissive signs can introduce spurious
+  solutions.
+\item
+  For much smaller constants, optimize the authenticated native compiler
+  while preserving the complete four-port interface. Compiler radix
+  compression does not by itself reduce the Jones witness parameter.
+\end{itemize}
+
+Several tempting shortcuts were rejected: inferring coefficient validity
+from portwise congruences, replacing the Jones parameter by the compiler
+radix exponent, omitting rational saturation, overlooking negative
+scales or zero merger coordinates, and claiming formal verification from
+source inspection alone.
+
+\section{Reading the accompanying
+package}\label{reading-the-accompanying-package}
+
+The top-level README identifies the selected circuits, proof files,
+coefficient binding and one-command verification. The report is
+available as PDF and editable TeX. The archive contains the exact
+circuit descriptions and fixed-coefficient recipes, pinned source data,
+ordinary proofs, newly authored checkers, their receipts and an
+immutable digest manifest. Provenance-only source files are not
+executable dependencies of the checker suite.
+
+The appendices below contain the complete new mathematical reductions
+and the detailed comparison audit. Repeated local symbols are scoped to
+their own appendix. In particular, the quartic's positive transport
+coordinate, the Jones fixed index, the pair-norm register and the
+compiler radix are different objects even when earlier sources used
+similar letters.
+
+\section{Appendix A. Complete positive-variable
+proof}\label{appendix-a.-complete-positive-variable-proof}
+
+\subsection{Result and logical scope}\label{result-and-logical-scope}
+
+The three-equation circuit \path|positive12_system.json| has twelve
+strictly positive supplied variables, 107 charged binary arithmetic
+operations (66 multiplications, 41 additions/subtractions), and residual
+degrees 7, 2, 1072. Its single-equation product
+\path|positive12_product.json| has 111 operations (68 multiplications,
+43 additions/subtractions) and exact total degree 1081.
+
+This combines package 20's main-root/inner-root merger with package 21's
+congruence carrier and scalar norm factorization, and adds a smaller
+separating weight and a trace/product quadratic-remainder evaluator. It
+is strictly smaller in both operation count and degree than the wave-3
+12-variable degree winner (20: degree 1145, 123 operations) and
+operation winner (21: degree 1353, 116 operations). It also improves the
+previous local twelve-variable form (degree 1257, 139 operations). It is
+not a variable-count improvement and is not claimed globally optimal.
+Package 18's explicit nine-variable construction remains a separate,
+extremely high-degree choice.
+
+The four fixed coefficients are the complete materialized compact
+Wang943 tuple from package 19: B=2\^{}(5\^{}10), beta=B-1, K0=K, MC=MC,
+MF=MF\_source. The last is the shifted mask, not MF\_native. The local
+\path|COEFFICIENT_BINDING.json| supplies every payload hash and a finite
+recipe/source; no coefficient is unspecified and no individual port is
+mixed with another compiler. All other displayed registers below are
+computed expressions, not quantified variables.
+
+The inherited compiler and literal K215 calibration imply, by ordinary
+mathematics formalizable in ZFC,
+
+\begin{verbatim}
+ZFC proves: (no positive solution) iff Con(ZFC).
+\end{verbatim}
+
+This is an equivalence, not a proof of consistency or a new end-to-end
+proof-assistant formalization. The finite checker below tests only the
+arithmetic identities, counts, leading degrees, payloads and synthetic
+radical witnesses, not the inherited unbounded compiler/calibration
+theorem.
+
+\subsection{Definition}\label{definition}
+
+The twelve supplied positive integers are
+
+\begin{verbatim}
+J, F, alpha, z, h, i, T, s, w, eta, zeta, t.
+\end{verbatim}
+
+Retain the common interface:
+
+\begin{verbatim}
+q=beta*J+1, Cw=q-F-alpha, X=wq, Y=sq^3, E=XY,
+k=eta+zeta, c=kY+eta, a=E+Y, H=4a+3,
+Delta=a^2+H=(a+2)^2-1,
+ell=E*kY, A=1+ell*(ell+k), G=1+Delta*c^2, b0=X+a*c,
+R=((q-1)*(q-F)+alpha)*(q^2-1)+(MC+q*MF)*J,
+Nk=k-hE-R,
+Nt=(K0+w)*Cw+q-F-z*(q-1).
+\end{verbatim}
+
+Define
+
+\begin{verbatim}
+I=i*c^2, D=1+Delta*I^2, Q=Delta*(D-1)=(Delta*I)^2,
+d=Q-1, v=c*T, b=c+R*D,
+P=Q*D*v^2, U=Q*b^2, e=P+U-1, Baux=2*Q*v*b,
+M=k*(I^2+T^2), L=H*M+1, W=b0+H*t.
+\end{verbatim}
+
+For a formal indeterminate x put
+
+\begin{verbatim}
+C(x)=d*(x^2+M^2*A)-e,
+F(x)=[C(x)^2+D*Baux^2-4*d^2*x^2*M^2*A]^2
+      -4*C(x)^2*D*Baux^2.
+\end{verbatim}
+
+Write F\_H(z)=H\^{}8 F(z/H). The polynomial being enforced is
+
+\begin{verbatim}
+N=F_H(W-L*sqrt(G))*F_H(W+L*sqrt(G)).
+\end{verbatim}
+
+The radical notation is only a compact definition of an integer
+polynomial; the following division-free scalar formula is its complete
+evaluator:
+
+\begin{verbatim}
+n=(H*M)^2*A, dn=d*n,
+HP=H^2*P, HU=H^2*U, He=HP+HU-H^2=H^2*e,
+j=4*HP*HU=H^4*D*Baux^2,
+Trace=2*d*(W^2+L^2*G),
+Knorm=d^2*(W^2-L^2*G)^2,
+AA=2*(dn+He), constant=(dn-He)^2-j,
+at=Trace-AA, bt=constant-Knorm, coef=16*dn*j,
+vr=at*(at*Trace+2*bt)-coef,
+ur=bt^2-at^2*Knorm,
+N=ur^2+Trace*ur*vr+Knorm*vr^2.
+\end{verbatim}
+
+The system and product are
+
+\begin{verbatim}
+Nk=1, Nt=1, N=0;
+P12=Nk*Nt*(1+N)-1=0.
+\end{verbatim}
+
+Each multiplication by 2,4,16 and every other binary operation is
+charged in the emitted JSON. Scalar comparison is free in the system
+ledger.
+
+\subsection{Why the evaluator is exactly the intended
+norm}\label{why-the-evaluator-is-exactly-the-intended-norm}
+
+The identity
+
+\begin{verbatim}
+(C^2+j-K)^2-4*j*C^2=(C^2-K-j)^2-4*K*j
+\end{verbatim}
+
+holds in any commutative ring. With z=H*x it rewrites F\_H(z) as
+
+\begin{verbatim}
+[ (d*z^2)^2-AA*(d*z^2)+constant ]^2-coef*(d*z^2).
+\end{verbatim}
+
+For z=W+/-L*sqrt(G), put x\_+/-=d*z\^{}2. Their sum and product are
+exactly Trace and Knorm. Modulo x\^{}2-Trace*x+Knorm, the expression
+x\^{}2-AA*x+constant is at*x+bt. Squaring and subtracting coef*x leaves
+ur+vr*x. Its norm is \path|ur^2+Trace*ur*vr+Knorm*vr^2,| proving the
+formula uniformly, including square, zero or coincident quadratic
+specializations. There is no black-box resultant, nonzero-discriminant
+assumption or extra witness.
+
+\subsection{Product units and the bounds available before root
+recovery}\label{product-units-and-the-bounds-available-before-root-recovery}
+
+Set x0=d*(W\^{}2+L\^{}2*G). Then Trace=2*x0 and
+
+\begin{verbatim}
+Knorm=x0^2-4*d^2*W^2*L^2*G.
+\end{verbatim}
+
+Consequently N is congruent to (ur+x0*vr)\^{}2 modulo 4. Thus 1+N cannot
+be -1. At a positive root of P12, each of its three integer factors is a
+unit, so N=0 and Nk=Nt=epsilon for a common epsilon in \{1,-1\}.
+
+The inherited weak transport/mask bootstrap, which permits both signs
+and the boundary Cw=0, gives
+
+\begin{verbatim}
+Cw>=0, q>=16, X>=q, Y>=q^3, E=XY,
+3q<R<q^4-2, k=R+epsilon+hE>E.
+\end{verbatim}
+
+It follows without using any eliminated roots that
+
+\begin{verbatim}
+kY<c<2kY, a+2<2E, D<(a+2)^2*I^2,
+c<I^2, R>1, Y^2>20R, kY>8E.
+\end{verbatim}
+
+Every denominator used below is nonzero: H, M, d, Baux are positive;
+Q\textgreater1, D\textgreater1 and A\textgreater1. The bounds come from
+the whole selected coefficient tuple's common-interface theorem, not
+merely from residue tests of its four ports.
+
+\subsection{The smaller separating
+weight}\label{the-smaller-separating-weight}
+
+Put Aparam=a+2. First,
+
+\begin{verbatim}
+sqrt(G)>(a+1)c,
+sqrt(A)<ell+k.
+\end{verbatim}
+
+Since c\textgreater kY and a=E+Y,
+
+\begin{verbatim}
+sqrt(G)-sqrt(A)>k*(Y^2+Y-1)>kY^2.
+\end{verbatim}
+
+Also sqrt(A)\textgreater ell=EkY\textgreater kY\^{}2, because
+X\textgreater1 and E=XY.
+
+The new choice M=k(I\^{}2+T\^{}2) bounds both kinds of auxiliary terms
+cheaply. Using I\^{}2+T\^{}2\textgreater=2IT and kY\textgreater8E,
+
+\begin{verbatim}
+2*v*sqrt(D)<8*k*E*Y*I*T < (1/2)*M*k*Y^2.
+\end{verbatim}
+
+Further c\textless I\^{}2, D\textless4E\^{}2 I\^{}2 and
+RE\^{}2\textgreater1 imply
+
+\begin{verbatim}
+b=c+RD<5RE^2 I^2.
+\end{verbatim}
+
+Since k\textgreater E and Y\^{}2\textgreater20R,
+
+\begin{verbatim}
+2b<10RE^2 I^2 < (1/2)*M*k*Y^2.
+\end{verbatim}
+
+Therefore
+
+\begin{verbatim}
+2*(v*sqrt(D)+b)<M*k*Y^2
+    <min(M*sqrt(A), M*(sqrt(G)-sqrt(A))).             (1)
+\end{verbatim}
+
+This sharpens both separation roles at once. In particular, with
+P0=Dv\^{}2+b\^{}2 and e=QP0-1,
+
+\begin{verbatim}
+M^2*A>4*(v*sqrt(D)+b)^2>4P0,
+d*M^2*A>2Q*P0,
+\end{verbatim}
+
+because d=Q-1\textgreater=Q/2. Consequently for every real x,
+
+\begin{verbatim}
+C(x)>Q*P0+1>Baux*sqrt(D)>0.                          (2)
+\end{verbatim}
+
+No recovered square root, rationality, sign or integer quotient is used
+in these estimates. They are weaker in one numerical constant than
+package 20's old d M\^{}2 A\textgreater4QP0 bound, but (2) is precisely
+what reconstruction requires.
+
+\subsection{All complex roots and exclusion of spurious
+branches}\label{all-complex-roots-and-exclusion-of-spurious-branches}
+
+The elementary factorization of F gives the complete root description
+
+\begin{verbatim}
+x=M*tau+y,
+tau^2=A, f^2=D,
+d*y^2=e-Baux*f=Q*(v*f-b)^2-1.                        (3)
+\end{verbatim}
+
+Indeed, factor F first using f\^{}2=D and then using tau\^{}2=A:
+
+\begin{verbatim}
+[C(x)+Baux*f]^2=4*d^2*x^2*M^2*A,
+C(x)+Baux*f=2*d*x*M*tau.
+\end{verbatim}
+
+Expanding the last equality gives (3), and conversely (3) gives F(x)=0.
+Both factorizations are valid over the complex numbers without dividing.
+The two f roots are real. For either of them and any complex y
+satisfying (3), the absolute-value estimate gives
+
+\begin{verbatim}
+|y|<2*(v*sqrt(D)+b).
+\end{verbatim}
+
+For example \path!d|y|^2=|Q(vf-b)^2-1|<Q(v! sqrt(D)+b)\^{}2 and
+Q/d\textless=2. The strict inequality also covers a negative right side:
+its absolute value is at most 1, while Q(v sqrt(D)+b)\^{}2\textgreater1.
+
+By (1), every complex root x of F obeys
+
+\begin{verbatim}
+|x|<=M*sqrt(A)+|y|<M*sqrt(G).                       (4)
+\end{verbatim}
+
+Moreover x=0 is not a root: (2) gives \path|F(0)=[C(0)^2-D*Baux^2]^2>0.|
+This will justify the rational-recovery formula's denominator rather
+than silently discarding a zero branch.
+
+\subsection{Recover the main root and its
+congruence}\label{recover-the-main-root-and-its-congruence}
+
+If N=0, choose bmain=+sqrt(G) or -sqrt(G) with F\_H(W-L*bmain)=0 and put
+x=(W-L*bmain)/H. Thus F(x)=0.
+
+If G is not an integer square, its two roots are irrational quadratic
+conjugates, so both F\_H(W-L*sqrt(G)) and F\_H(W+L*sqrt(G)) vanish.
+Their associated x roots have distance 2L sqrt(G)/H. By (4) the distance
+is strictly less than 2M sqrt(G), contradicting L=HM+1. Thus G is a
+square and bmain is an integer; x is rational.
+
+The chosen bmain cannot be negative. Indeed W=b0+Ht\textgreater0, but
+then
+
+\begin{verbatim}
+W=L*bmain+H*x < -L*sqrt(G)+HM*sqrt(G)<0
+\end{verbatim}
+
+by (4). Therefore bmain\textgreater0. No unsupported absolute-value
+replacement of an affine main-root expression has occurred.
+
+\subsection{Recover the other roots and every
+denominator}\label{recover-the-other-roots-and-every-denominator}
+
+For the rational real x just obtained, (2) and x!=0 justify
+
+\begin{verbatim}
+Ux=C(x)^2+D*Baux^2-4*d^2*x^2*M^2*A,
+f=-Ux/(2*C(x)*Baux),
+tau=(C(x)+Baux*f)/(2*d*x*M),
+y=x-M*tau.
+\end{verbatim}
+
+The equation F(x)=0 gives f\^{}2=D. The squared identity in Section 13.6
+gives tau\^{}2=A. These rational roots of integer squares are integers.
+Expansion restores (3), so V=vf-b is an integer and
+
+\begin{verbatim}
+Q*V^2-(Q-1)*y^2=1.
+\end{verbatim}
+
+Here Q=S\^{}2 with the integer S=Delta*I\textgreater=2. The rational
+auxiliary Pell saturation lemma below makes y an integer. Hence
+x=M*tau+y is integral. As W=b0+Ht=L*bmain+Hx and L=1+HM, reduction
+modulo H gives bmain=b0 modulo H. Therefore gamma=(bmain-b0)/H is an
+integer.
+
+In fact gamma\textgreater0 without a signed-main-root extension:
+sqrt(Delta)\textgreater a+1, bmain\textgreater0 and bmain\^{}2=1+Delta
+c\^{}2 give bmain\textgreater(a+1)c.~Also
+c\textgreater k\textgreater E\textgreater X, so
+bmain-ac-X\textgreater c-X\textgreater0.
+
+\subsubsection{Rational auxiliary Pell
+saturation}\label{rational-auxiliary-pell-saturation}
+
+If S\textgreater=2 and V are integers and rational y satisfies S\^{}2
+V\^{}2-(S\^{}2-1)y\^{}2=1, write S\^{}2-1=d0*b0\^{}2 with squarefree
+d0\textgreater1. The rational z=b0*y is integral because a reduced
+denominator squared would divide squarefree d0. Both (S, b0) and
+(\textbar SV\textbar,\textbar z\textbar) are nontrivial positive
+integer-coordinate Pell solutions for d0. Write them as indices m, n in
+the powers of the fundamental integer-coordinate Pell unit. For its
+coordinates chi\_j, psi\_j, the identities modulo chi\_m give
+chi\_(j+2m)=-chi\_j and chi\_(2m-j)=-chi\_j. Reduce n modulo 2m and
+reflect into 0\textless=r\textless=m. Since
+1\textless=chi\_r\textless chi\_m for r\textless m, divisibility
+chi\_m\textbar chi\_n forces n to be an odd multiple of m. The addition
+formulas then imply psi\_m\textbar psi\_n.~Thus b0 divides
+\textbar z\textbar, and y is integral. This uses the ordinary integer
+Pell group, not the possibly larger half-integral unit group.
+
+\subsection{Soundness and direct
+completeness}\label{soundness-and-direct-completeness}
+
+We have restored
+
+\begin{verbatim}
+tau^2-ell*(ell+k)=1,
+(X+ac+gamma H)^2-Delta*c^2=1,
+f^2-Delta*i^2*c^4=1,
+Q*[c*(T*f-1)-R*f^2]^2-(Q-1)*y^2=1,
+Nk=Nt=epsilon.
+\end{verbatim}
+
+The identity vf-b=c(Tf-1)-Rf\^{}2 uses f\^{}2=D. Gamma is positive; tau
+and y can be replaced by their positive absolute values. If f\textless0,
+change f and T simultaneously to their negatives, preserving Tf and
+every relevant equation. The signed-quotient extension of the normalized
+blank interface allows this signed T and common weak unit sign. It
+forces epsilon=+1 and recovers the blank K215 computation, exactly as
+package 20's inherited package-09 theorem. The mask/decoder does not
+depend on the harmless auxiliary sign choices.
+
+Conversely start with any canonical positive normalized blank-compiler
+witness. Keep all eleven retained coordinates and set
+
+\begin{verbatim}
+t=gamma+M*bmain+M*tau+y>0.
+\end{verbatim}
+
+Then W=L*bmain+H(M*tau+y), so its corresponding factor F\_H(W-L*bmain)
+vanishes. Hence N=0 and Nk=Nt=1. This proves completeness directly,
+without changing i, choosing a new Pell index or imposing a new
+divisibility restriction. It proves equivalence in existence, not a
+bijection of witnesses.
+
+\subsection{Exact degrees}\label{exact-degrees}
+
+Fixed coefficients have degree zero. The unchanged degrees are
+\path|c=5, a=H=6, Delta=12, R=4, ell=11, A=G=22, I=11, D=34, Q=d=46,|
+v=6, b=38, P=92, U=e=122. Our new degrees are
+
+\begin{verbatim}
+M=23, L=29, W=11, n=80, dn=126,
+HP=104, HU=He=134, j=238,
+Trace=126, Knorm=252, AA=134, constant=268,
+at=134, bt=268, coef=364, vr=402, ur=536.
+\end{verbatim}
+
+He has the nonzero highest form H\_top\^{}2 U\_top. Because
+deg(He)\textgreater deg(dn), constant and bt have top form He\_top\^{}2;
+because 536\textgreater520, ur has top form He\_top\^{}4. In N the other
+two term degrees are at most 1064 and 1056, strictly below
+deg(ur\^{}2)=1072. Thus
+
+\begin{verbatim}
+N_top=He_top^8=H_top^16*U_top^8
+\end{verbatim}
+
+is nonzero, proving exact degree 1072 without a generic-specialization
+claim. The nonzero Nk, Nt leading forms add 7+2, proving exact degree
+1081 for P12. All fixed positive beta slices have these degrees. The
+checker supplements this proof with two independent finite-field
+univariate degree tests.
+
+\subsection{Provenance and verification
+boundary}\label{provenance-and-verification-boundary}
+
+\path|SOURCE_PINS.json| records the immutable repository pin
+\path|ae3007ca4467011e0e051c84acb4a1dd13971b0e|, exact relevant blob IDs
+and local SHA-256 hashes. The new proof/emitter/checker are locally
+authored; no received program is executed, imported, installed or used
+to mutate the public repository. The new-owned checker evaluates
+received circuit JSON only as inert arithmetic records and verifies the
+new circuit against a separately implemented multiquadratic conjugate
+product. Synthetic kernel witnesses do not claim to encode an accepting
+ZFC-refutation computation.
+
+\section{Appendix B. Complete integer-family
+proof}\label{appendix-b.-complete-integer-family-proof}
+
+\subsection{Status, scope, and exact
+statements}\label{status-scope-and-exact-statements}
+
+This is a new ordinary mathematical reduction, formalizable in ZFC, from
+the authenticated blank-machine Pell interface. It is not a new
+Lean/Rocq proof, a proof of Con(ZFC), or a global minimality claim. For
+a single coherent authentic coefficient quartet, the displayed equations
+have integer solutions exactly when the calibrated blank K215 refutation
+machine halts. Therefore ZFC proves that their lack of integer solutions
+is equivalent to Con(ZFC).
+
+The six guarded source ports are J, F, alpha, z, eta, zeta. Replace each with
+its own disjoint positive surjection
+
+\begin{verbatim}
+Pos(a, b, c)=1+a²+b²+c(c+1).
+\end{verbatim}
+
+Set i=2r+1, s=2v+1, w=u². These substitutions use 21 unrestricted
+integers and 47 binary gates. The three constructions retain,
+respectively:
+
+\begin{itemize}
+\tightlist
+\item
+  24 integers: h, T, t.
+\item
+  25 integers: h, T, t, gamma.
+\item
+  26 integers: h, T, t, gamma, f.
+\end{itemize}
+
+Every retained coordinate is unrestricted. The selected source quartet
+must always be complete; MF means the shifted high-mask port. The
+original package-06 quartet is a safe direct binding for the proofs
+below. The compact Wang943 quartet from the previous round is also
+admissible through its whole-tuple compiler transfer and the native mask
+population identity used by the odd-scale theorem. No mixing of
+coefficient ports is permitted. The new catalogue's T4 choices require
+their own complete audited binding, not just replacement of beta.
+
+Exact literal circuits and verified ledgers:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.5333}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0933}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0933}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0933}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0933}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.0933}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Form
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Vars
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Degree
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Ops
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Mul
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Add/sub
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Sharpened pair norm (Section 14.9) & 24 & 2240 & 165 & 96 & 69 \\
+Threefold-separator comparison & 24 & 2256 & 165 & 96 & 69 \\
+Small-weight norm & 25 & 920 & 131 & 70 & 61 \\
+Ordinary two-root merger & 26 & 214 & 123 & 63 & 60 \\
+Normalized two-root alternative & 26 & 236 & 123 & 64 & 59 \\
+\end{longtable}
+
+All gates and all input ports are live. Comparisons are not arithmetic
+gates. Every abbreviation is expanded by the JSON straight-line
+circuits, which use only integer constants and binary +,-,*.
+
+\subsection{Common polynomials and signed
+pre-bootstrap}\label{common-polynomials-and-signed-pre-bootstrap}
+
+Define
+
+\begin{verbatim}
+q=beta J+1, C=q-F-alpha, X=wq, Y=sq³, E=XY,
+k=eta+zeta, c=kY+eta, a=E+Y, H=4a+3,
+Delta=a²+H=(a+2)²-1, P0=X+ac,
+ell=E kY=XkY², A=1+ell(ell+k), G=1+Delta c²,
+R=((q-1)(q-F)+alpha)(q²-1)+(MC+q MF)J,
+Nk=k-hE-R,
+Nt=(K0+w)C+q-F-z(q-1).
+\end{verbatim}
+
+The authentic fixed coefficients satisfy beta\textgreater=15 and
+K0\textgreater=2 and the source mask bounds. If Nt is a unit,
+C\textless=-1 is impossible, since
+
+\begin{verbatim}
+Nt=(K0+w)C+1-F-(z-1)(q-1)<=-2.
+\end{verbatim}
+
+Thus C\textgreater=0. The authentic weak transport/mask bootstrap gives
+
+\begin{verbatim}
+q>=16, q(q²-1)<R<q⁴-2.
+\end{verbatim}
+
+These deductions require neither X\textgreater0 nor s\textgreater0.
+Since s is odd, Z0=\textbar Y\textbar\textgreater=q³. Since
+X\textgreater=0, \textbar a\textbar=(X+1)Z0\textgreater=q³. The signs of
+a, c, H are the sign of Y. Both signs satisfy
+
+\begin{verbatim}
+k(Z0-1)<|c|<k(Z0+1), |c|>2, |H|>1,
+Delta>=(q³-1)(q³-3)>q⁴>R.
+\end{verbatim}
+
+Also ell\textgreater=0 and A\textgreater=1, with A=1 exactly when X=0.
+In particular Delta is positive even for negative s and is 0 or 3 modulo
+four.
+
+For the normalized strong quantities let
+
+\begin{verbatim}
+I=i c², S=Delta I, D=1+Delta I², Q=S², d=Q-1,
+vaux=cT, b=c+RD,
+e=Q(D vaux²+b²)-1, Baux=2Q vaux b.
+\end{verbatim}
+
+The nonzero odd i and \textbar c\textbar\textgreater2 give
+Q\textgreater2, D\textgreater Delta+\textbar c\textbar, and
+
+\begin{verbatim}
+b>D-|c|>1,
+Q-b=(Delta-R)D-Delta-c>D-Delta-|c|>0.
+\end{verbatim}
+
+Thus 1\textless b\textless Q, for either sign of s and including w=0 and
+T=0. This early strict interval replaces positive-only bounds in the
+older arguments.
+
+\subsection{The 24-integer polynomial and optimized norm
+circuit}\label{the-24-integer-polynomial-and-optimized-norm-circuit}
+
+Put
+
+\begin{verbatim}
+W=vaux²+D+2b, P=HW, K=P+1,
+uweight=3P, Z=Ht+K P0.
+\end{verbatim}
+
+For temporary formal square roots tau²=A and g²=G define
+
+\begin{verbatim}
+F(tau, g)=[d(Z-uweight tau-Kg)²-H²e]²-H⁴ Baux² D.
+\end{verbatim}
+
+Let N be the product of F over the four formal signs of tau and g. No
+roots are supplied or existentially quantified in the actual equation:
+
+\begin{verbatim}
+Nk Nt(1+N)-1=0.                                      (24)
+\end{verbatim}
+
+Here is the lower-cost pair-ring evaluator. In the quadratic algebra
+with g²=G, let x=Z+Kg, x²=x0+x1 g, and set
+
+\begin{verbatim}
+Cpair=d(x²+uweight² A)-H²e,
+Jpair=4d² uweight² A x²,
+Zterm=H⁴ Baux² D.
+\end{verbatim}
+
+The inner norm over tau is the identity
+
+\begin{verbatim}
+Fpair=(Cpair²-Jpair-Zterm)²-4 Jpair Zterm.
+\end{verbatim}
+
+Write Fpair=F0+F1 g and output N=F0²-G F1². The circuit computes Zterm
+as 4H⁴ p z0, where p=QD vaux² and z0=Qb². Thus it never computes Baux as
+a separate intermediate. This is a polynomial identity, including all
+repeated-root and zero-Baux cases.
+
+The odd coefficient F1 is even: x1=2ZK is even; every subsequent odd
+coefficient stays even under sums and products in this pair algebra.
+Hence N is a square modulo four. At a zero of (24), the three integer
+factors are units; 1+N cannot equal -1. Therefore N=0 and Nk=Nt=epsilon
+in \{1,-1\}.
+
+\subsubsection{Every actual conjugate of the auxiliary root is
+bounded}\label{every-actual-conjugate-of-the-auxiliary-root-is-bounded}
+
+Since A\textgreater=1 and G\textgreater1, a vanishing norm factor
+supplies real tau, g. Set
+
+\begin{verbatim}
+y=(Z-uweight tau-Kg)/H.
+\end{verbatim}
+
+If Baux is nonzero, f=(e-dy²)/Baux satisfies f²=D and
+
+\begin{verbatim}
+dy²=e-Baux f=Q(vaux f-b)²-1.
+\end{verbatim}
+
+Every actual conjugate f' is ±sqrt(D). All actual conjugates y' are
+real, since they lie in the totally real field Q(tau, g). Therefore
+
+\begin{verbatim}
+|y'|<sqrt(2)(|vaux|sqrt(D)+b)
+      <2(|vaux|sqrt(D)+b)<=vaux²+D+2b=W.
+\end{verbatim}
+
+If Baux=0, then vaux=0 because Q and b are nonzero. Directly dy²=Qb²-1,
+which gives the same strict bound
+\textbar y'\textbar\textless2b\textless W. This case makes no division
+by Baux.
+
+\subsubsection{The zero-w boundary is handled before
+separation}\label{the-zero-w-boundary-is-handled-before-separation}
+
+Write P=HW. Both signs of H are allowed. Since
+\textbar P\textbar\textgreater4,
+
+\begin{verbatim}
+|K|>=|P|-1>3|P|/4, |K|<5|P|/4.
+\end{verbatim}
+
+Also sqrt(G)\textgreater2, so
+\textbar K\textbar sqrt(G)\textgreater\textbar P\textbar=\textbar H\textbar W.
+
+If w=0, then tau²=A=1, so tau is already rational. An automorphism
+changing g to -g in
+
+\begin{verbatim}
+Z=uweight tau+Kg+Hy
+\end{verbatim}
+
+would imply \textbar K\textbar sqrt(G)\textless=\textbar H\textbar W, a
+contradiction. Thus g is rational, hence an integer. Section 14.3.4
+below proves y and gamma integral even here. Then the main equation
+g=P0+H gamma with X=0 reduces modulo H to 0=1, because g²-Delta c²=1 and
+Delta=a²+H. This contradicts \textbar H\textbar\textgreater1. Therefore
+w\textgreater0 and X\textgreater=q.
+
+\subsubsection{Separation when w\textgreater0, including negative H and
+P}\label{separation-when-w0-including-negative-h-and-p}
+
+With X\textgreater=16 and Z0\textgreater=4096,
+
+\begin{verbatim}
+|a+2|<(9/8)XZ0, |c|<(9/8)kZ0.
+\end{verbatim}
+
+Thus
+
+\begin{verbatim}
+sqrt(G)<|a+2||c|<(81/64)ell<(3/2)sqrt(A),
+sqrt(A)>8.
+\end{verbatim}
+
+Consequently
+
+\begin{verbatim}
+|K|sqrt(G)+|H|W
+   <(15/8)|P|sqrt(A)+|P|
+   <2|P|sqrt(A)<3|P|sqrt(A)=|uweight|sqrt(A).
+\end{verbatim}
+
+Any actual automorphism flipping tau would contradict this inequality
+after subtracting its image of the displayed linear equation. Hence tau
+is rational, therefore an integer. A subsequent g flip contradicts
+\textbar K\textbar sqrt(G)\textgreater\textbar H\textbar W, so g is
+likewise an integer.
+
+This argument uses only actual automorphisms. It makes no generic
+field-degree or root-independence assumption and covers square radicands
+and coincident quadratic extensions. Negative H, P, K require no special
+field argument because all separations use their absolute values.
+
+\subsubsection{Rational auxiliary saturation and gamma
+integrality}\label{rational-auxiliary-saturation-and-gamma-integrality}
+
+Use the elementary saturation lemma:
+
+\begin{verbatim}
+If m>=2 and V are integers and y is rational,
+m²V²-(m²-1)y²=1 implies y is an integer.
+\end{verbatim}
+
+A full proof is inherited from
+round3/audit/RATIONAL\_AUXILIARY\_PELL\_SATURATION.md and reproduced in
+upstream package 21. In brief, write y=a/b reduced. Then b² divides
+m²-1; both m and m\textbar V\textbar{} are integral x-coordinates on the
+Pell equation with coefficient (m²-1)/b². For its fundamental-unit
+sequence, x\_j divides x\_l only when l is an odd multiple of j. The
+corresponding y-coordinate divisibility forces b\textbar a and b=1. The
+divisibility statement follows by reducing l modulo 2j and reflecting
+into 0\textless=r\textless=j, where 0\textless x\_r\textless x\_j for
+r\textless j.
+
+Once tau, g are integral, y is rational. If Baux is nonzero, f is
+rational with integer square D and hence integral, so V=vaux f-b is an
+integer and the lemma applies with m=\textbar S\textbar. If Baux=0,
+apply it directly with V=-b. In both cases y is integral.
+
+Define gamma=(g-P0)/H. The linear identity gives
+
+\begin{verbatim}
+t=3W tau+K gamma+y.
+\end{verbatim}
+
+Thus K gamma is integral, and H gamma is integral by definition. Because
+gcd(K, H)=1, gamma is integral.
+
+Now T=0 would imply vaux=Baux=0 and
+
+\begin{verbatim}
+(Q-1)(y²-b²)=b²-1>0.
+\end{verbatim}
+
+Integral y then has \textbar y\textbar\textgreater=b+1. But
+Q-1\textgreater=b by 1\textless b\textless Q, so the left side is at
+least b(2b+1)\textgreater b²-1, contradiction. Therefore T and Baux are
+nonzero and the recovered f is well defined.
+
+We have restored all normalized source relations with signed
+h, T, f, tau, y, gamma, odd i, square w, six positive guarded ports, and
+nonzero odd s. The odd-scale theorem discussed in Section 14.6 excludes
+s\textless0 and supplies the authentic blank compiler.
+
+\subsection{The 25-integer small-weight
+reduction}\label{the-25-integer-small-weight-reduction}
+
+Retain gamma and the main norm
+
+\begin{verbatim}
+Nmain=(P0+H gamma)²-Delta c².
+\end{verbatim}
+
+Use the same normalized strong and auxiliary definitions, but put
+
+\begin{verbatim}
+M=I²+T²,
+Caux=d(t²+M²A)-e,
+U=Caux²+D Baux²-4d²t²M²A,
+N25=U²-D(2Caux Baux)².
+\end{verbatim}
+
+The equation is
+
+\begin{verbatim}
+Nmain Nk Nt(1+N25)-1=0.                           (25)
+\end{verbatim}
+
+The main negative unit is excluded modulo four since Delta is 0 or 3 mod
+4. Also N25 is a square modulo four. Thus Nmain=1, N25=0, and Nk=Nt are
+common units. The main equation excludes X=0 modulo H before any deleted
+root is restored.
+
+\subsubsection{Main Pell rank at both signs of
+s}\label{main-pell-rank-at-both-signs-of-s}
+
+Let Z0=\textbar Y\textbar, E0=XZ0, B0=\textbar a+2\textbar. The main
+Pell classification gives \textbar c\textbar=psi\_B0(p), \textbar P0+H
+gamma\textbar=chi\_B0(p), p\textgreater=1. Since
+\textbar c\textbar\textgreater1, p cannot be 1.
+
+If p=2, c=2(a+2), for either sign of Y. For the positive main root
+chi\_B0(2),
+
+\begin{verbatim}
+chi_B0(2)-ac=H+4,
+\end{verbatim}
+
+so X=4 modulo H. But 16\textless=X\textless\textbar H\textbar,
+impossible. For the negative main root,
+
+\begin{verbatim}
+4(-chi_B0(2)-ac)=-(4(a+2)-5)(4(a+2)+1)-1,
+\end{verbatim}
+
+so 4X=-1 modulo H. Since 0\textless4X+1\textless\textbar H\textbar, this
+is likewise impossible. Therefore p\textgreater=3 and
+
+\begin{verbatim}
+|c|>=4B0²-1>4E0²-1.
+\end{verbatim}
+
+Together with \textbar c\textbar\textless k(Z0+1), this yields
+k\textgreater(7/2)X²Z0. In particular
+
+\begin{verbatim}
+ell=XkZ0²>(7/2)E0³, A>ell².
+\end{verbatim}
+
+The proof does not assume s\textgreater0, h\textgreater=0, or the
+existence of the eliminated first root.
+
+\subsubsection{Signed small-weight
+domination}\label{signed-small-weight-domination}
+
+Let lambda=(16/15)\^{}4. The elementary estimates B0\textless(16/15)E0,
+\textbar c\textbar\textless(16/15)kZ0, R+1\textless E0,
+D\textless B0²I², and \textbar c\textbar/I²\textless1 give
+
+\begin{verbatim}
+D c²/I²<lambda A,
+b²/I⁴<(4lambda/49)A.
+\end{verbatim}
+
+Because M²\textgreater=4I²T² and M²\textgreater=I⁴, including at T=0,
+
+\begin{verbatim}
+(D vaux²+b²)/M²
+   <lambda(1/4+4/49)A <(9/20)A.
+
+Since Q>=10, d>=9Q/10. Consequently
+
+dAM²>2Q(D vaux²+b²),
+Caux>Q(D vaux²+b²)+1>|Baux|sqrt(D).
+\end{verbatim}
+
+If t=0, N25=(Caux²-D Baux²)²\textgreater0, contradiction. Thus t is
+nonzero. If T=0, then Baux=0 and N25=0 gives a rational root
+tau=Caux/(2dtM) with tau²=A, so tau is an integer. Then y=t-M tau is
+integral and satisfies the impossible gap equation from Section 14.3.4.
+Hence T and Baux are nonzero.
+
+Now define
+
+\begin{verbatim}
+f=-U/(2Caux Baux),
+tau=(Caux+Baux f)/(2dtM),
+y=t-M tau.
+\end{verbatim}
+
+The resultant first gives f²=D, then tau²=A. Both rational roots are
+integers, and y is integral. Expanding yields dy²=e-Baux f and therefore
+the exact source auxiliary relation. The signed odd-scale compiler then
+applies as before.
+
+\subsection{The 26-integer two-root
+equations}\label{the-26-integer-two-root-equations}
+
+Retain gamma and f.~Define
+
+\begin{verbatim}
+Q0=Delta(f²-1), d0=Q0-1,
+V=c(Tf-1)-Rf², e0=Q0 V²-1,
+U0=d0(t²+A)-e0,
+N26=U0²-4d0²t²A.
+\end{verbatim}
+
+For normalized strong use Ns=f²-Delta I²; for ordinary strong use
+Ns=1+I²-Q0. In either case the single equation is
+
+\begin{verbatim}
+Nmain Nk Nt Ns(1+N26)-1=0.                         (26)
+\end{verbatim}
+
+The main and normalized negative units are impossible modulo four. For
+ordinary strong, Ns=-1 would give I²-Delta(f²-1)=-2. If Delta=0 mod4
+this is impossible; if Delta=3 mod4, checking square residues 0,1 also
+gives no residue 2. Thus Ns=1 for both versions. The norm guard is a
+square modulo four, so N26=0 and Nk=Nt are common units.
+
+The main equation again excludes X=0 and supplies the rank
+p\textgreater=3 bound of Section 14.4.1. In the normalized version,
+
+\begin{verbatim}
+Q0=Delta² i² c⁴>A,
+\end{verbatim}
+
+directly from Delta\textgreater(X Z0)² and
+\textbar c\textbar\textgreater k(Z0-1), or from the stronger ordinary
+inequality below.
+
+In the ordinary version Q0=I²=i²c⁴. By
+k\textgreater(7/2)X²Z0\textgreater4X and Z0\textgreater=4096,
+
+\begin{verbatim}
+c²>k²(Z0-1)²>(k²Z0²)/2>2XkZ0²=2ell.
+\end{verbatim}
+
+Also ell\textgreater k\textgreater=2, so
+
+\begin{verbatim}
+A=1+ell²+ell k<4ell²<c⁴<=I²=Q0.
+\end{verbatim}
+
+Thus 1\textless A\textless Q0 in both versions. If t=0, N26=0 forces d0
+A=e0, or Q0(A-V²)=A-1. This contradicts 0\textless A-1\textless Q0.
+Therefore t is nonzero, and
+
+\begin{verbatim}
+tau=U0/(2d0 t), y=t-tau
+\end{verbatim}
+
+are rational with tau²=A, so tau and y are integers. Expanding gives d0
+y²=e0. These exactly restore the first and auxiliary source norms. The
+ordinary or normalized signed odd-scale theorem applies. This proof
+handles the previously missing zero-t branch without demanding positive
+t or positive s.
+
+\subsection{Excluding negative s and canonical
+completeness}\label{excluding-negative-s-and-canonical-completeness}
+
+The needed source theorem is pinned package
+23/proofs/ODD\_SCALE\_27\_PROOF.md. Its negative-s exclusion applies to
+both ordinary and normalized strong equations and to signed roots,
+h, T, gamma. The newly reconstructed equations meet all of those
+hypotheses.
+
+For clarity, the exclusion does not merely assert that negative s is
+unnatural. With Z0=-Y, B0=(X+1)Z0-2 and c0=-c, first and main Pell
+classification, the signed auxiliary step-down congruences, and no-wrap
+bounds recover the main rank p=R and index R=2r0+1. The Pell growth
+ratio then gives Z0\textgreater2\^{}R. The two possible main-root signs
+respectively imply X+2\^{}R=0 modulo H or X2\^{}R=1 modulo H. The strict
+inequalities
+
+\begin{verbatim}
+0<X+2^R<|H|, 1<X2^R<XZ0<|H|
+\end{verbatim}
+
+exclude both signs. Hence s\textgreater0. The same rank argument forces
+the common index/transport units to +1. The existing signed blank
+compiler now recovers the exact native tableau and calibrated refutation
+machine.
+
+Conversely, a canonical accepting blank tableau has q=2\^{}t, with t odd
+after the established powers-of-five padding; R is odd, so w=2\^{}R/q is
+a square. The population identity of package 23 gives popcount(R)=3t+2.
+The half-binomial identity gives v2(Y)=popcount(R)-2=3t, so s=Y/q³ is
+positive and odd. The canonical normalized strong multiplier i is odd,
+as in package 14. No new divisibility condition on this multiplier is
+imposed.
+
+For the ordinary 26-integer variant use i\_ordinary=Delta i\_normalized.
+Canonical Y is even, so a is even and Delta=a²+4a+3 is odd. Thus
+i\_ordinary is still odd. All other canonical witnesses are unchanged.
+
+Define the new free coordinate by
+
+\begin{verbatim}
+t=3W tau+K gamma+y                  for (24),
+t=M tau+y                          for (25),
+t=tau+y                            for (26).
+\end{verbatim}
+
+These integers make the respective norm vanish. All remaining source
+factors are one, all six positive ports have Pos representations, and
+both odd parameters and the square scale have the stated integer
+representations. This proves completeness without an extra Pell period,
+H-divisible multiplier, or positivity assumption on t.
+
+\subsection{Uniform exact degree
+proofs}\label{uniform-exact-degree-proofs}
+
+Use weight two on J, F, alpha, z, eta, zeta, w; weight one on
+i, s, h, T, t, gamma, f.~The substitutions have precisely these leading
+weights. Let q0=beta J and k0=eta+zeta. Key degrees are
+
+\begin{verbatim}
+a, H:11; c:9; ell:20; A, G:40; Delta:22;
+R:8; Nk:12; Nt:4; I:19; D:60; Q, d:82; b, W:68.
+\end{verbatim}
+
+For (24), K, uweight have degree 79 and Z has degree 99. The four leading
+linear forms Z-uweight tau-Kg are scalar multiples -3,+3,-1,+5 of K\_top
+ell\_top. The H²e term has degree 240, below d times the linear square,
+of degree 280; H⁴Baux²D has degree 424, below the preceding square of
+degree 560. Therefore
+
+\begin{verbatim}
+N_top=45⁴ d_top⁸(K_top ell_top)^16, deg N=2240.
+\end{verbatim}
+
+The product degree is 2240+12+4=2256. After the actual substitutions,
+the coefficient of
+
+\begin{verbatim}
+J_a^1578 h r^48 eta_a^224 u^194 v^209 z_a²
+\end{verbatim}
+
+is +2\^{}305 3\^{}8 5\^{}4 beta\^{}789. It is nonzero uniformly for
+beta\textgreater0, and the exponent sum is2256. Thus the result is not
+merely an upper bound or a sampled generic degree.
+
+For (25), M has degree 38, e has degree 218, and d M² A has degree 198.
+Thus the unique highest part of Caux is -Q\_top b\_top², U has degree
+436 with top Caux\_top², and N25 has degree 872 with top U\_top². The
+competing subtracted term has degree 816. The main norm degree is32, not
+its naive bound40: the cancellation leaves highest term 8 gamma a\_top²
+c\_top. Hence the product degree is872+32+12+4=920. The coefficient of
+
+\begin{verbatim}
+J_a^640 h gamma r^24 eta_a^98 u^70 v^84 z_a²
+\end{verbatim}
+
+is +2\^{}111 beta\^{}320.
+
+For (26), Q0, d0 have degree 24, V has degree 11, e0 has degree 46, and
+U0 has degree 64, uniquely from d0 A. Thus N26 has exact degree 128. The
+strong factor has degree 60 normalized or38 ordinary. Adding the
+main, index, transport degrees32,12,4 gives236 normalized or214 ordinary.
+The corresponding coefficients are
+
+\begin{verbatim}
+[J_a^160 h gamma f⁴ r² eta_a^18 u^26 v^22 z_a²] = -2^27 beta^80,
+[J_a^144 h gamma f⁴ r² eta_a^18 u^22 v^20 z_a²] = +2^25 beta^72.
+\end{verbatim}
+
+All displayed monomials use one coordinate from each relevant
+positive-surjection triple. These explicit nonzero coefficients prove
+exact degree for every authentic beta\textgreater0.
+
+\subsection{Verification and
+limitations}\label{verification-and-limitations}
+
+\path|build_odd_scale_family.py| and \path|check_odd_scale_family.py|
+were newly written locally. Imported programs were not executed. Earlier
+emitted circuits were read as inert JSON. The checker independently
+evaluates the 24-variable norm by four-factor multiplication in a
+rank-four free algebra, not by replaying the optimized pair formula as
+its reference. Each circuit passed 120 signed integer formula
+comparisons, all-port/all-gate liveness, two exact modular
+degree/leading-coefficient checks, and guard parity. The common signed
+bounds were checked on 2160 finite cases, including w=0, T=0, negative s
+and both signs of i.
+
+These finite checks support arithmetic identities and ledger accuracy;
+they do not replace the unbounded Pell classifications, rank step-down,
+population identity, compiler correctness, machine calibration, or
+rational saturation proofs. No actual accepting K215 computation is
+produced or asserted.
+
+\subsection{A sharper 24-integer separator: degree 2240 at the same165
+gates}\label{a-sharper-24-integer-separator-degree-2240-at-the-same165-gates}
+
+The strict inequality already proved in Section 14.3.3 gives
+
+\begin{verbatim}
+|K|sqrt(G)+|H|W<2|P|sqrt(A).
+\end{verbatim}
+
+Therefore replacing uweight=3P by uweight=2P preserves every soundness
+argument, with t=2W tau+K gamma+y in completeness. The separately frozen
+circuit is \path|integer24_sharp_pair_norm165_degree2240.json|; the
+previous 3P circuit remains for comparison and provenance.
+
+One leading formal branch now cancels, which genuinely lowers the exact
+degree rather than merely weakening an upper bound. This can be computed
+in the formal Laurent-series field obtained by scaling every actual
+integer input by a common indeterminate. Choose the square-root branches
+with leading terms ell and ac. These formal expansions satisfy
+
+\begin{verbatim}
+sqrt(A)=ell+terms of weighted degree at most2,
+sqrt(G)=ac+terms of weighted degree at most9,
+ac-ell=kY²+eta E+eta Y.
+\end{verbatim}
+
+The last expression has unique highest part k\_top Y\_top² of degree 16.
+The exceptional branch is
+
+\begin{verbatim}
+Ht+K(P0+sqrt(G))-2P sqrt(A)
+  =K[ac+X+sqrt(G)-2sqrt(A)]+2sqrt(A)+Ht.
+\end{verbatim}
+
+Its unique top is 2K\_top k\_top Y\_top², of degree 95. The other three
+linear branches have degree 99 and respective leading multiples -2,2,4
+of K\_top ell\_top. In every branch the d times linear-square term still
+strictly dominates H²e, and its square strictly dominates H⁴Baux²D.
+Multiplying the four branch leaders gives
+
+\begin{verbatim}
+N_top=2^20 d_top^8 K_top^16 ell_top^12 k_top^4 Y_top^8,
+deg N=2224.
+\end{verbatim}
+
+This formal expansion is only a device to compute the leading polynomial
+form; the norm itself remains a literal integer polynomial with no
+division or algebraic-number input.
+
+The product has exact degree 2224+12+4=2240. The coefficient of
+
+\begin{verbatim}
+J_a^1570 h r^48 eta_a^224 u^186 v^209 z_a²
+\end{verbatim}
+
+is +2\^{}325 beta\^{}785, nonzero for every beta\textgreater0.
+Independent exact modular evaluations confirm this degree and
+coefficient. The sharper form is the preferred24-integer entry; its165
+gates still consist of 96 multiplications and 69 additions/subtractions.
+
+\section{Appendix C. Complete quartic
+reduction}\label{appendix-c.-complete-quartic-reduction}
+
+\subsection{Result and dependency
+boundary}\label{result-and-dependency-boundary}
+
+The pinned package-18 quartic32 source at ProveIt commit
+\path|ae3007ca4467011e0e051c84acb4a1dd13971b0e| has 32 positive
+witnesses and 23 quadratic equations. One packing register is
+unnecessary. The following construction has 31 positive witnesses, 22
+quadratic equations, and an exact quartic sum of squares. Its fixed
+compiler ports are unchanged.
+
+This is an exact algebraic, tuplewise reduction of that source. Composed
+with its ordinary Pell/compiler proof and K215 calibration, ZFC proves
+that the new polynomial has no positive solution if and only if
+Con(ZFC). This is not an end-to-end proof-assistant certificate. No
+truth of Con(ZFC), consistency of ZFC, or global minimality is assumed
+or established.
+
+The source's literal JSON and its hashes are preserved in
+\path|SOURCE_LEDGER.json|. No upstream code was executed. Our
+\path|build_arithmetic.py| is newly authored.
+
+\subsection{Exact equations}\label{exact-equations}
+
+All 31 coordinates are strictly positive integers:
+
+\begin{verbatim}
+J, F, alpha, z, f, h, i, o, j, s, w, tau, eta, zeta, y, gamma,
+N, E, P, c, a, X, D, C2, L, F2, V, g, I, Baux, Delta.
+\end{verbatim}
+
+The four fixed ports beta, K0, MC and MF must be one complete
+authenticated blank compiler tuple. MF is the shifted source mask. All
+coefficients remain fixed integers, not quantified inputs. The following
+are affine abbreviations:
+
+\begin{verbatim}
+q=beta J+1, k=eta+zeta, H=4a+3, C=q-F-alpha.
+\end{verbatim}
+
+The 22 equations are:
+
+\begin{verbatim}
+L=q^2-1,
+N=q(L+1),
+X=wq,
+a=E+sN,
+E=X(a-E),
+c=k(a-E)+eta,
+P=E(c-eta)+k,
+tau^2=P(P-k)+1,
+D=X+ac+gamma H,
+Delta=a^2+H,
+C2=c^2,
+D^2=Delta C2+1,
+k=jc-V+1+hE,
+jc-V=(q-F)(N-q)-CL+(MC+q MF)J,
+(K0+w)C+(q-F)-z(q-1)=1,
+F2=f^2,
+V=of-c,
+g=y^2-V^2,
+I=i C2,
+Baux=I^2,
+Baux=Delta(F2-1),
+y^2-Baux g=1.
+\end{verbatim}
+
+Every displayed residual is quadratic after the four affine
+abbreviations are expanded. Let r\_1,\ldots, r\_22 be the left sides
+minus the right sides in this order. The single polynomial is
+
+\begin{verbatim}
+Q31 = r_1^2 + ... + r_22^2.
+\end{verbatim}
+
+Its literal sparse data, including all coefficient-port exponents, are
+in \path|quartic31.json|; \path|quartic31_expanded.json| contains the
+306-term expanded sum of squares. Because tau occurs only in r\_8 and
+with term tau\^{}2, the coefficient of tau\^{}4 in Q31 is exactly 1. The
+degree is therefore exactly 4 for every admissible tuple of fixed
+coefficients.
+
+IMPORTANT: z here is the OLD positive transport coordinate, as in the
+pinned package-18 quartic source. It is not the shifted z of package-22
+retained59. No tuple components or transport conventions have been
+spliced.
+
+\subsection{Exact zero-set equivalence and sign
+obligations}\label{exact-zero-set-equivalence-and-sign-obligations}
+
+The source has an additional positive variable G and the equations
+
+\begin{verbatim}
+G=(q-1)(q-F)+alpha=q(q-F)-C,
+jc-V=LG+(MC+q MF)J.
+\end{verbatim}
+
+The new packing expression obeys the polynomial identity
+
+\begin{verbatim}
+L[q(q-F)-C] - [(q-F)(N-q)-CL]
+  = (q-F)[q(L+1)-N].
+\end{verbatim}
+
+Thus it agrees with LG whenever the retained N equation holds.
+
+Forward direction: forget G from any positive source solution. The
+displayed identity gives the new packing equation; every other equation
+is unchanged.
+
+Reverse direction: a new positive solution has q\textgreater1. Its
+unchanged transport identity gives
+
+\begin{verbatim}
+(K0+w)C = F+(z-1)(q-1)>0.
+\end{verbatim}
+
+Since K0+w\textgreater0, C\textgreater0. Define
+
+\begin{verbatim}
+G=q(q-F)-C=(q-1)C+q alpha.
+\end{verbatim}
+
+This is a strictly positive integer. Restoring this single coordinate
+now satisfies both removed source equations, by the exact identity. All
+other coordinates are untouched. The two maps are inverse: this is a
+bijection of positive zero sets, not only an existence reduction.
+
+No new negative-root or unit-sign branch is introduced. All original
+source roots, quotient coordinates and equations remain. The only
+restored variable is G, whose strict positivity was proved above. In
+particular alpha is NOT eliminated or relaxed; all original outer bounds
+and native-window hypotheses are inherited unchanged.
+
+\subsection{Nonnegative normalization for the nine-variable
+compressor}\label{nonnegative-normalization-for-the-nine-variable-compressor}
+
+Replace each of the 31 positive coordinates x by n\_x+1. This preserves
+degree 4 and gives a polynomial over 31 nonnegative unknowns with the
+same existence condition. At all positive coordinates equal to 1, the
+fifth residual is
+
+\begin{verbatim}
+E-X(a-E)=1.
+\end{verbatim}
+
+Hence the shifted polynomial is strictly positive at the all-zero tuple,
+independently of the four fixed coefficients. This preserves the
+normalization condition required by the pinned nine-variable compressor.
+Its witness-count parameter can therefore be changed from 32 to 31; the
+nine-variable audit separately verifies the resulting coefficient and
+degree arithmetic.
+
+\subsection{Operation counts and
+reproduction}\label{operation-counts-and-reproduction}
+
+The explicit equality-comparison circuit in \path|quartic31_system.json|
+has 65 binary gates: 33 multiplications and 32 additions/subtractions.
+Equality comparisons are free, exactly as in the source's operation
+convention. Every multiplication by a coefficient or small integer is
+charged. Every gate, witness and coefficient port is live.
+
+The complete SOS circuit in \path|quartic31_circuit.json| has 130 gates:
+55 multiplications and 75 additions/subtractions. Its 65 additional
+gates are 22 residual subtractions, 22 squares and 21 additions. These
+are explicit upper bounds from literal evaluators, not
+operation-minimality claims.
+
+Run \path|python3 build_arithmetic.py| in this directory. The script
+checks the packing identity as a zero sparse polynomial, compares every
+unchanged residual with the pinned source's literal sparse terms,
+verifies all 22 new residual degrees and exact quartic degree, checks
+the tau\^{}4 and normalization certificates, verifies the comparison and
+residual circuits symbolically, checks gate/input liveness, and performs
+1000 signed integer evaluations of the packing identity. These are
+algebraic audits, not a search for a solution or a substitute for the
+inherited unbounded arithmetic/compiler proof.
+
+\section{Appendix D. Complete nine-variable
+construction}\label{appendix-d.-complete-nine-variable-construction}
+
+\subsection{Result and scope}\label{result-and-scope}
+
+At the pinned ProveIt revision
+\path|ae3007ca4467011e0e051c84acb4a1dd13971b0e|, combine the Jones
+nine-witness reduction with the new 31-positive-variable, 22-quadratic
+parent and the complete compact943 compiler tuple. The resulting
+equation is an ordinary integer polynomial in exactly nine nonnegative
+integer unknowns. Its final circuit is
+\path|nu31/nine_compact_magnitude_tight.json|.
+
+\begin{itemize}
+\tightlist
+\item
+  Exact total degree:
+  \path|120724 * 5^32 + 366 = 2810824662446975708007812866|.
+\item
+  Live binary operations: 1,840 = 715 additions + 22 subtractions +
+  1,103 multiplications.
+\item
+  Variable leaves: nine. Fixed leaves: 404 = 402 weighted coefficient
+  constants, z, and y.
+\item
+  The four underlying compiler integers are actual materialized
+  integers, totaling 5,312,269 raw bytes or 20,260 deterministic-gzip
+  bytes.
+\item
+  The new index constant is the actual integer z=2\^{}45933757. Its
+  materialization occupies 5,741,720 raw bytes or 5,613 gzip bytes. Its
+  SHA-256 is
+  \path|d2b21c2c280cd06b3f233616ce4add5fd554f3d9178baa4ef7923826a3b1e100|.
+\item
+  The 402 weighted coefficients and the much larger index y are bounded
+  explicit recipes, not materialized integers in this package. No
+  coefficient is an existential parameter.
+\end{itemize}
+
+This is an ordinary mathematical proof using the previously identified
+native/Pell compiler, literal K215 calibration, and Jones arithmetic
+theorems. The new algebra and finite audits are not a new end-to-end
+proof-assistant theorem. They neither decide consistency nor supply a
+halting/refutation witness.
+
+\subsection{Coherent compiler binding and the parent
+quartic}\label{coherent-compiler-binding-and-the-parent-quartic}
+
+The authoritative binding is the COMPLETE compact943 tuple, not the
+historical t-shape default metadata carried by the inert source:
+
+\begin{verbatim}
+beta = B_native-1;
+K0 = K = DC+B_native*DR;
+MC = compact data mask;
+MF = MF_source = MF_native+B_native-1;
+B_native = 2^(5^10).
+\end{verbatim}
+
+All four values must come from the same compact943 instance.
+\path|nu31/COMPACT_COEFFICIENT_BINDING.json| and the round-three
+compiler proof give the finite 943-tile recipe, exact masks, geometry,
+and verified bytes. In particular the verified interface includes the
+no-carry bounds, balanced mask populations, two-band rotation
+separation, unique anchor synchronization, mod-5 unit 2DC-DR=4,
+actual-rank dummy control, positive slack, and canonical
+odd/square-scale completeness. MF is never the unshifted native mask.
+The machine table and language are the same exact K215 blank-halt
+language, not a new machine-input parameter.
+
+The old 32-variable source already uses exactly this abstract four-port
+arithmetic interface. The new parent removes its register G. Write, in
+this parent paragraph only,
+
+\begin{verbatim}
+q=beta J+1, C=q-F-alpha, G=(q-1)(q-F)+alpha.
+\end{verbatim}
+
+Its retained quadratic equation N=q(L\_parent+1) implies
+
+\begin{verbatim}
+G=q(q-F)-C;
+L_parent G=(q-F)(N-q)-C L_parent.
+\end{verbatim}
+
+Thus the G definition and old packing equation are replaced by the
+single quadratic packing equation
+
+\begin{verbatim}
+jc-V=(q-F)(N-q)-C L_parent+(MC+q MF)J.
+\end{verbatim}
+
+Every other residual is unchanged. Conversely recover G from its
+displayed formula. G is positive: the literal retained transport
+equation gives
+
+\begin{verbatim}
+(K0+w)C+(q-F)=1+z_parent(q-1)>=q.
+\end{verbatim}
+
+If C\textless=0, the left side is at most q-F\textless q, a
+contradiction. Hence C\textgreater0, q-F=C+alpha\textgreater0, and
+G=(q-1)(q-F)+alpha\textgreater0. This establishes both directions on the
+required positive domain, with no change of the source quotient
+convention. The new system has 31 positive variables and 22 quadratic
+residuals r\_j.
+
+Define P31(x, n)=sum\_j r\_j(n+1)\^{}2, independent of its dummy input x.
+The fifth residual is E*X+E-a*X and equals 1 when all positive
+coordinates equal 1. Therefore P31(x,0)\textgreater0 for every x,
+independently of the four compiler values. Its degree is exactly four
+since the coefficient of tau\^{}4 is 1. The literal sparse parent is
+\path|../arithmetic/quartic31.json|; its SHA-256 before any nonalgebraic
+metadata editing is
+\path|1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287|.
+
+The parent-to-K215 equivalence remains the imported arithmetic/compiler
+theorem, now transported by the exact G elimination. K215 blank halting
+is equivalent to finite syntactic ZFC refutability by the identified
+literal-machine calibration. Those ordinary arguments are formalizable
+in ZFC; this package does not claim their rechecking inside a newly
+built Lean/Rocq kernel.
+
+The Jones parameter nu counts parent-quartic witness variables. It is
+now 31, not 9. The unrelated native fixed radix B\_native=2\^{}(5\^{}10)
+cannot justify setting nu=9. A normalized quartic in nine witnesses and
+its admissible index would be needed for that substitution. No such
+reduction is claimed.
+
+\subsection{Explicit index without an uninstantiated
+recursive-enumeration
+index}\label{explicit-index-without-an-uninstantiated-recursive-enumeration-index}
+
+Set nu=31 and L=5\^{}32. Expand P31 in the 32 coordinates (dummy x plus
+31 witnesses). For alpha in N\^{}32 with
+\textbar alpha\textbar\textless=4 let p\_alpha be its ordinary
+coefficient and put
+
+\begin{verbatim}
+c_alpha=(4-|alpha|)! * product(alpha_j!) * p_alpha;
+expo(alpha)=sum_(j=0)^31 alpha_j*5^j.
+\end{verbatim}
+
+There are exactly 402 nonzero symbolic coefficient records, each
+explicitly a small polynomial in (beta, K0, MC, MF). They are listed in
+\path|nu31/COMPACT_CONSTANTS.json|. Unlisted c\_alpha are zero. The
+independent expansion has 675 terms when the four ports are retained
+symbolically. All exponent powers in the records are ordinary fixed
+nonnegative integers.
+
+The authentic port bit lengths, in this order, are
+
+\begin{verbatim}
+(9765625,13201251,9765625,9765626).
+\end{verbatim}
+
+For each record c\_alpha=sum\_t a\_t product port\_j\^{}(e\_tj), define
+the completely explicit integer upper bound
+
+\begin{verbatim}
+H_alpha=sum_t |a_t| * 2^(sum_j e_tj * bitlength(port_j)).
+\end{verbatim}
+
+The actual absolute coefficient is at most H\_alpha. Exact finite
+integer arithmetic verifies, for every one of the 402 records,
+
+\begin{verbatim}
+H_alpha+1 < 2^45933757.
+\end{verbatim}
+
+The sparse powers-of-two certificate is
+\path|nu31/INDEX_BOUND_CERTIFICATE.json|; it does not require
+materializing any quartic coefficient. Set
+
+\begin{verbatim}
+z=2^45933757;
+u=sum_(j=1)^31 (2z)^(5^j);
+y=sum_(|alpha|<=4) (z+c_alpha)(2z)^(L-expo(alpha));
+e(T)=sum_(|alpha|<=4) (z+c_alpha)T^(L-expo(alpha)).
+\end{verbatim}
+
+The y sum has exactly binomial(36,4)=58,905 terms. All digits z+c\_alpha
+lie strictly between 1 and 2z, and the exponent positions are distinct
+by base-five uniqueness. Hence y is a positive integer, 2(2z)\^{}L
+\textless= y \textless{} (2z)\^{}(L+1). In particular it has at most
+45,933,758*(5\^{}32+1) binary digits. The unused u is explicit as well;
+it is not a polynomial leaf or unknown.
+
+These definitions satisfy precisely \path|Jones1982.Index 31 P31 z u y|:
+z is a power of two, \textbar c\_alpha\textbar+1\textless z, and u, y are
+the specified lpoly/epoly evaluations. P31 is normalized, has degree
+\textless=4, nu\textgreater=1, and the chosen input is x=1\textgreater0.
+These are exactly the hypotheses of \path|Jones1982.Nine.wset_iff_nine|,
+rather than a misuse of the public generic theorem whose convenience
+proof passes through a 58-variable quartic.
+
+\subsection{The literal nine-coordinate
+equation}\label{the-literal-nine-coordinate-equation}
+
+The nine unknowns are
+
+\begin{verbatim}
+epsilon, g0, h0, s0, w0, phi, i0, j0, n in N.
+\end{verbatim}
+
+Set g=g0+1, h=h0+1, s=s0+1, w=w0+1, i=i0+1, j=j0+1. Every symbol below
+is only a polynomial abbreviation. Define
+
+\begin{verbatim}
+b=y+1+epsilon, B=b^5, q=B^L;
+ell=sum_(r=1)^31 B^(5^r), lambda=sum_(r=0)^(4L-1) B^r;
+e=e(B), theta=B-2z, N=q^16, Gcap=32b B^(5^31);
+
+R=[g+e q^3+ell q^5+
+   (2(e-z lambda)(1+B+g)^4+lambda B+lambda B q^4)q^7](N^2-N)
+  +[q^3-b ell+ell+theta lambda q^3+(B-2)q^8](N^2-1).
+\end{verbatim}
+
+Continue with exactly the Jones ratio expressions:
+
+\begin{verbatim}
+U=N^2 w, Y=N^2 s, M=R Y, P=2M^2 U;
+K=R+1+h(P-1), A=M(U+1), B1=2R+1, W1=bw;
+C=B1+W1+phi, J=4A-5, Q=3W1 C-2(W1^2-1);
+D=(A^2-1)C^2+1, E=i J D C^2, F=(A^2-1)E^2+1;
+G1=A+F(CD+1-A), H=B1+jC, I=(G1^2-1)H^2+1;
+a0=(P^2-1)K^2+1, a1=DFI;
+d=(JF)^2, c=(QF+J(H-C))^2;
+m=K^2 Gcap-4(C-KY)^2 Gcap-8gK^2.
+\end{verbatim}
+
+The d, c here are respectively the divisor and dividend, not parent
+coordinates or coefficient records.
+
+The new magnitude companions are
+
+\begin{verbatim}
+deltaR=32 z lambda g^4 q^7 (N^2-N), Rbar=R+deltaR;
+Kbar=Rbar+1+h(P+1), Abar=Rbar Y(U+1);
+Cbar=2Rbar+1+bw+phi, Jbar=4Abar+5;
+Dbar=(Abar^2+1)Cbar^2+1, Ebar=i Jbar Dbar Cbar^2;
+Fbar=(Abar^2+1)Ebar^2+1;
+Gbar=Abar+Fbar(Cbar Dbar+1+Abar), Hbar=2Rbar+1+jCbar;
+V0=(P+1)Kbar+2;
+V1=((Abar+1)Cbar+1)((Abar+1)Ebar+1)((Gbar+1)Hbar+1)+1.
+\end{verbatim}
+
+Finally define
+
+\begin{verbatim}
+Omega=d(2m-1);
+Theta=dn+c-Omega(c+V0 V1);
+F9=(Theta^2-Omega^2(a0+V0^2 a1))^2-4 Omega^4 V0^2 a0 a1.
+\end{verbatim}
+
+The single requested equation is F9=0. Every exponent in the entire
+display is fixed. There are no divisions, radicals, variable exponents,
+or additional quantified variables in the equation.
+
+\subsection{Noncircular magnitude bounds, including negative packed
+ranks}\label{noncircular-magnitude-bounds-including-negative-packed-ranks}
+
+All following inequalities hold on EVERY natural assignment of the nine
+inputs, before any zero or square condition is assumed. The admissible
+index gives b\textgreater=2, B\textgreater=4, B\textgreater2z, and
+e(B)\textgreater0. Since the exponents in ell are a subset of
+0,\ldots, L-1,
+
+\begin{verbatim}
+ell <= (q-1)/(B-1), and b<=B-1, hence b ell<q.
+\end{verbatim}
+
+Thus the entire right bracket in R is positive. Put u0=B+1. The
+elementary convexity inequality (u0+g)\^{}4\textless=8(u0\^{}4+g\^{}4)
+holds for nonnegative u0, g. Also
+
+\begin{verbatim}
+16z(B+1)^4 < 128 B^5 < B^9 <= B q^4,
+\end{verbatim}
+
+using B\textgreater2z, B\textgreater=4, and L\textgreater=2. The
+positive lambda B q\^{}4 term in the left bracket therefore absorbs 16z
+lambda(B+1)\^{}4. Consequently
+
+\begin{verbatim}
+R+16 z lambda g^4 q^7(N^2-N)>=0.
+\end{verbatim}
+
+The added term is nonnegative, so Rbar=R+32 z lambda g\^{}4
+q\^{}7(N\^{}2-N) dominates both R and -R. Thus
+Rbar\textgreater=\textbar R\textbar{} without assuming R positive. This
+is the key improvement over simply replacing every minus sign by a plus
+sign.
+
+P=2M\^{}2U is nonnegative. The displayed companion formulas then give,
+successively,
+
+\begin{verbatim}
+Kbar>=|K|, Abar>=|A|, Cbar>=|C|, Jbar>=|J|,
+Dbar>=|D|, Ebar>=|E|, Fbar>=|F|,
+Gbar>=|G1|, Hbar>=|H|.
+\end{verbatim}
+
+These follow only from triangle inequalities and nonnegative products.
+For real a, b,
+
+\begin{verbatim}
+sqrt(|(a^2-1)b^2+1|) <= (|a|+1)|b|+1.
+\end{verbatim}
+
+Indeed the squared right side exceeds (a\^{}2+1)b\^{}2+1, which already
+bounds the absolute radicand. Therefore V0, V1\textgreater=2 and
+
+\begin{verbatim}
+sqrt(|a0|)<=V0-1, sqrt(|a1|)<=V1-1.
+\end{verbatim}
+
+Unlike the baseline all-integer majorant lemma, this improved weight
+lemma is asserted only on the natural input domain with the specified
+valid index. That is exactly the domain needed by the nine-witness
+equivalence. It never assumes the desired margin, divisibility,
+squarehood, or R positivity.
+
+\subsection{Exact sign/root finalizer
+proof}\label{exact-signroot-finalizer-proof}
+
+J=4A-5 is a nonzero integer. Also F cannot vanish: if
+(A\^{}2-1)E\^{}2+1=0, then (1-A\^{}2)E\^{}2=1 forces A=0 and E=+/-1; but
+E=iJDC\^{}2 is then divisible by 5, impossible. Hence
+d=(JF)\^{}2\textgreater0 and c\textgreater=0, while Omega=d(2m-1) is
+nonzero at every integer assignment.
+
+\begin{verbatim}
+Choose formal complex roots r0^2=a0, r1^2=a1. Direct multiplication yields
+
+F9=product_(sigma, tau in {-1,1}) [Theta-Omega(sigma r0+tau V0 r1)].
+\end{verbatim}
+
+If F9=0, absorb the signs of a vanishing factor into r0, r1. Then
+s*=Theta/Omega=r0+V0r1 is rational. If s*!=0, the identity
+2s*r0=s*\^{}2+a0-V0\^{}2 a1 makes both roots rational. If s*=0,
+\textbar r1\textbar=\textbar r0\textbar/V0\textless1, so the integer
+\textbar a1\textbar\textless1, forcing a1=a0=0. In either case the roots
+are rational, hence integers since their squares are integers. This
+proof covers negative candidate radicands, zero roots, and repeated
+square classes.
+
+Set Z=c+V0V1+r0+V0r1. The established root bounds give
+Z\textgreater=c+1\textgreater0. The vanishing factor reads
+
+\begin{verbatim}
+dn+c=d(2m-1)Z.
+\end{verbatim}
+
+It implies d divides c and m\textgreater0. Conversely, if a0, a1 are
+squares, d divides c, and m\textgreater0, choose their integer roots and
+define
+
+\begin{verbatim}
+n=(2m-1)Z-c/d.
+\end{verbatim}
+
+This is a nonnegative integer (indeed \textgreater=1), and its factor
+vanishes. Finally (JF)\^{}2 divides (QF+J(H-C))\^{}2 iff JF divides
+QF+J(H-C). Thus existential elimination of n gives EXACTLY the original
+two square tests, one divisibility test, and positive margin.
+
+The source theorems \path|Nine.reduced_of_mem|,
+\path|Nine.mem_of_reduced|, \path|Nine.ratio_complete|, and
+\path|Nine.ratio_sound| retain their literal arithmetic expressions.
+Only the final weights and the witness n change. Therefore the new F9
+has a natural zero iff P31 has one, iff the compact native compiler
+accepts a blank K215 computation, iff there is a finite ZFC refutation.
+Negating gives, provably by the stated ordinary mathematics in ZFC,
+
+\begin{verbatim}
+(there is no natural nine-tuple with F9=0) iff Con(ZFC).
+\end{verbatim}
+
+\subsection{Exact degree, not merely a naive upper
+bound}\label{exact-degree-not-merely-a-naive-upper-bound}
+
+Write L=5\^{}32. The dominant R term is +lambda B q\^{}4 q\^{}7 N\^{}2,
+of degree 235L; the apparently large negative quartic term is lower
+degree. Selected ordinary degrees are
+
+\begin{verbatim}
+R:235L; P:950L+3; K:950L+4; A:555L+2;
+D:1580L+4; E:2605L+7; F:6320L+18;
+G1:8135L+22; H:235L+1; I:16740L+46;
+a0:3800L+14; a1:24640L+68;
+d:13750L+40; c:13110L+40; m:2221L+11;
+V0:1900L+7; V1:12320L+34;
+Omega:15971L+51; Theta:30191L+92.
+\end{verbatim}
+
+A naive degree calculation misses an important cancellation. Set
+eta\_degree=20L+1. On the all-coordinates-equal-t specialization, R has
+leading coefficient 1, while deltaR has degree 215L-1 and leading
+coefficient 32z. Thus Rbar/R first differs by relative leading term
+32z*t\^{}(-eta\_degree).
+
+Relative companion defects for A, C, J, H have multiplier 1, for D
+multiplier 4, E multiplier 7, F multiplier 16, and G1 multiplier 21. The
+three factors in V1 consequently have total relative defect (2+8+22)=32
+times that first R defect. The Pell subtractions of 1 have smaller
+degree. Since the leading coefficient of a1 is 2\^{}46,
+
+\begin{verbatim}
+degree(V1^2-a1)=24620L+67;
+leading coefficient(V1^2-a1)=2^57 z.
+\end{verbatim}
+
+For a fully polynomial certificate, expand differences of products by
+telescoping, e.g.~\path|xbar^2-x^2=(xbar-x)(xbar+x),| rather than
+dividing polynomials. The independent auditor supplies that
+cancellation-free identity for every companion, the three factors, and
+V1\^{}2-a1.
+
+Put E0=dn+c-Omega c, so Theta=E0-Omega V0V1. Then
+
+\begin{verbatim}
+Theta^2-Omega^2(a0+V0^2a1)
+  =E0^2-2 E0 Omega V0V1
+   +Omega^2 V0^2(V1^2-a1)-Omega^2 a0.
+\end{verbatim}
+
+The third term alone has highest degree 60362L+183 and leading
+coefficient 2\^{}137 z. The cross term has lower degree 59272L+183. The
+final subtracted norm term 4Omega\^{}4V0\^{}2a0a1 has degree 96124L+300,
+below twice 60362L+183. Thus
+
+\begin{verbatim}
+degree F9 =120724L+366;
+leading coefficient F9(t,..., t)=2^274 z^2>0.
+\end{verbatim}
+
+This nonzero leader proves exactness after the authentic fixed constants
+are substituted. The proof does not assume a Diophantine solution and
+does not treat fixed constants as variables.
+
+\subsection{Circuit savings and verification
+boundaries}\label{circuit-savings-and-verification-boundaries}
+
+The sparse coefficient correction is evaluated by sorted-exponent Horner
+arithmetic. Powers share a radix-five ladder p\_j=B\^{}(5\^{}j) and
+cached equal-digit runs. The baseline digit sum is
+
+\begin{verbatim}
+B^(5^nu) h4(B^(5^nu), B^(5^nu-1), ..., B^(5^nu-5^nu)),
+\end{verbatim}
+
+with ascending complete-homogeneous recurrence. Finally
+
+\begin{verbatim}
+lambda=product_(j=0)^nu (1+p_j+p_j^2+p_j^3+p_j^4) * (1+q)*(1+q^2).
+\end{verbatim}
+
+These are exact identities, with no divisions in the output circuit.
+They account for most of the operation-count improvement. Fixed
+exponentiation is fully expanded into binary multiplications, and
+squaring and scalar multiplication are charged. Shared reuse is free.
+The construction/materialization cost of fixed integer constants is not
+charged as variable arithmetic; all constants nevertheless have bounded
+definitions.
+
+Independent diagnostics include exact rebuilding of all shifted and
+weighted coefficients, the strict index bound, all four compiler-byte
+hashes/bit lengths, literal 58,905-term index-baseline comparisons, 752
+actual-instance named-node comparisons across four primes and four input
+tuples, 512 companion/root-bound assignments, and 576 constructed
+finalizer witnesses. The degree certificate also checks
+cancellation-free algebra independently. These are finite checks of the
+definitions, not an empirical proof of the unbounded semantic
+equivalence.
+
+\section{Appendix E. Independent nine-variable
+audit}\label{appendix-e.-independent-nine-variable-audit}
+
+\subsection{Audited final candidate}\label{audited-final-candidate}
+
+File: \path|../nine/nu31/nine_compact_magnitude_tight.json|.
+
+\begin{itemize}
+\tightlist
+\item
+  Nine nonnegative supplied unknowns.
+\item
+  1,840 live binary operations:715 additions,22 subtractions,1,103
+  multiplications.
+\item
+  404 fixed leaves:402 explicitly defined weighted coefficients, plus
+  z\_star and y\_star.
+\item
+  Exact \path|degree:120724*5^32+366=2810824662446975708007812866.|
+\item
+  Uniform all-unknowns=t leading \path|coefficient:2^274*z_star^2,|
+  nonzero because z\_star is a positive power of 2.
+\item
+  Parent quartic:31 positive witnesses,22 quadratic residuals; after
+  positive shifts,675 symbolic terms and 402 weighted coefficient
+  records.
+\end{itemize}
+
+Independent source-to-coefficient and degree ledger:
+\path|NU31_INDEPENDENT_AUDIT.json|. Independent semantic check of the
+quartic elimination: \path|QUARTIC31_INDEPENDENT_REVIEW.json|. The
+compact compiler tuple transfer is a separately audited prerequisite.
+
+\subsection{The reduced quartic is an exact positive zero-set
+equivalence}\label{the-reduced-quartic-is-an-exact-positive-zero-set-equivalence}
+
+I independently matched all 21 unchanged residuals against package 18's
+pinned32-variable source after deleting its G coordinate. Only its old
+residuals14 and 15 are affected. The replacement is justified by
+
+\path|L[q(q-F)-C]-[(q-F)(N-q)-CL]=(q-F)[q(L+1)-N].|
+
+On every new positive solution, unchanged transport gives
+
+\begin{verbatim}
+(K0+w)C=F+(z-1)(q-1)>0.
+\end{verbatim}
+
+Therefore C\textgreater0 and the restored integer
+\path|G=q(q-F)-C=(q-1)C+q*alpha| is strictly positive. The forward and
+reverse coordinate maps are inverses. This is a bijection of positive
+zero sets, not a heuristic elimination that drops a sign constraint. The
+old transport coordinate z is retained unchanged.
+
+The normalization residual remains E-X(a-E), which equals1 when all
+positive variables equal1. Shifting31 coordinates by+1 therefore
+supplies the exact Normalized hypothesis for the nine-variable
+compressor at nu=31. The fixed dummy input remains1. The change
+nu32-\textgreater31 is justified by this witness reduction; it is
+unrelated to the backend compiler's radix exponent.
+
+\subsection{Tight unconditional majorant for the packed
+R}\label{tight-unconditional-majorant-for-the-packed-r}
+
+In the Jones notation, let g=g0+1, B=b\^{}5, q=B\^{}L, N=q\^{}16,
+lambda=sum\_\{r\textless4L\}B\^{}r, and ell=sum\_\{j=1\}\^{}nu
+B\^{}(5\^{}j). The admissible index and natural domain imply
+B\textgreater2*z\_star, B\textgreater=4, L\textgreater=2, e\textgreater0
+and theta=B-2*z\_star\textgreater0.
+
+Set
+
+\path|T0=16*z_star*lambda*g^4*q^7*(N^2-N),| deltaR=2*T0, Rbar=R+deltaR.
+
+Then Rbar\textgreater=\textbar R\textbar{} without assuming the final
+equation has a solution.
+
+For the proof, (u+g)\^{}4\textless=8(u\^{}4+g\^{}4) for nonnegative u, g.
+Thus the negative piece \path|-2*z_star*lambda*(B+1+g)^4| of R's first
+bracket is bounded below by \path|-16*z_star*lambda*((B+1)^4+g^4).|
+Adding T0 cancels the g\^{}4 part. The positive lambda*B*q\^{}4 term
+absorbs the other part because
+
+\begin{verbatim}
+B*q^4 >= B^9 > 128*B^5 > 16*z_star*(B+1)^4.
+\end{verbatim}
+
+The middle inequality follows from B\textgreater=4; the final strict
+inequality follows from 2*z\_star\textless B and B+1\textless2B. Every
+remaining first-bracket term is nonnegative.
+
+For the second bracket, ell is a subsum of 1+B+\ldots+B\^{}(L-1), and
+b\textless=B-1. Hence b*ell\textless q, so q\^{}3-b*ell\textgreater0.
+Its other terms are nonnegative. Thus R+T0\textgreater=0. As
+T0\textgreater=0, R+2*T0\textgreater=\textbar R\textbar.
+
+All subsequent magnitude companions follow by triangle inequality. With
+bars as in the construction,
+
+\begin{verbatim}
+|A|<=Abar, |C|<=Cbar, |J|<=Jbar, |D|<=Dbar,
+|E|<=Ebar, |F|<=Fbar, |Gp|<=Gbar, |H|<=Hbar,
+|K|<=Kbar.
+\end{verbatim}
+
+P is nonnegative even when R is negative, since P=2(RY)\^{}2U and
+U\textgreater0. This justifies Kbar=Rbar+1+h(P+1).
+
+For arbitrary real a, b,
+
+\path!sqrt(|(a^2-1)b^2+1|)<=(|a|+1)|b|+1.!
+
+Indeed, the radicand's absolute value is at most(a\^{}2+1)b\^{}2+1, and
+the proposed square exceeds this by
+2\textbar a\textbar b\^{}2+2(\textbar a\textbar+1)\textbar b\textbar.
+Consequently
+
+\begin{verbatim}
+V0=(P+1)Kbar+2,
+\end{verbatim}
+
+\path|V1=[(Abar+1)Cbar+1][(Abar+1)Ebar+1][(Gbar+1)Hbar+1]+1|
+
+satisfy sqrt(\textbar a0\textbar)\textless=V0-1 and
+sqrt(\textbar a1\textbar)\textless=V1-1 before any semantic conclusion.
+V0, V1\textgreater=2. The same four-factor finalizer proof applies on
+every natural assignment. It does not need these particular bounds to
+hold on all unrestricted integer assignments.
+
+\subsection{Exact degree despite leading
+cancellation}\label{exact-degree-despite-leading-cancellation}
+
+Put L=5\^{}32 and eta=20L+1. The base leading degrees are unchanged as
+functions of L. In particular degR=235L, degdeltaR=215L-1, and the
+diagonal leading coefficient of deltaR is32*z\_star.
+
+The important top-degree cancellation is real: V1\^{}2 and a1 have the
+same leading term. Merely adding gate degrees would overestimate the
+final degree. The independent audit resolves it using exact telescoping
+identities rather than dropping a canceled term without justification.
+
+Let deltaA=Abar-A, deltaC=Cbar-C, and similarly for J, D, E, F, Gp, H. Their
+polynomial identities are
+
+\begin{itemize}
+\tightlist
+\item
+  \path|deltaA=deltaR*Y*(U+1),| deltaC=2*deltaR, deltaJ=4*deltaA+10.
+\item
+  \path|deltaD=deltaA*(Abar+A)*Cbar^2+A^2*deltaC*(Cbar+C)+Cbar^2+C^2.|
+\item
+  \path|deltaE=i[deltaJ*Dbar*Cbar^2+J*deltaD*Cbar^2+J*D*deltaC*(Cbar+C)].|
+\item
+  \path|deltaF=deltaA*(Abar+A)*Ebar^2+A^2*deltaE*(Ebar+E)+Ebar^2+E^2.|
+\item
+  \path|deltaG=deltaA+deltaF*(Cbar*Dbar+1+Abar)+F[deltaC*Dbar+C*deltaD+Abar+A].|
+\item
+  \path|deltaH=2*deltaR+j*deltaC.|
+\end{itemize}
+
+Define Ibar=(Gbar\^{}2+1)Hbar\^{}2+1 only for the audit. Then
+
+\path|deltaI=deltaG*(Gbar+Gp)*Hbar^2+Gp^2*deltaH*(Hbar+H)+Hbar^2+H^2.|
+
+Put M1=(Abar+1)Cbar+1, M2=(Abar+1)Ebar+1, M3=(Gbar+1)Hbar+1. The
+differences M1\^{}2-D, M2\^{}2-F, M3\^{}2-I equal respectively
+
+\path|deltaD+2*Abar*Cbar^2+2*(Abar+1)*Cbar,|
+\path|deltaF+2*Abar*Ebar^2+2*(Abar+1)*Ebar,|
+\path|deltaI+2*Gbar*Hbar^2+2*(Gbar+1)*Hbar.|
+
+Using these expressions in
+
+\path|V1^2-a1=(M1^2-D)M2^2M3^2+D(M2^2-F)M3^2+DF(M3^2-I)+2M1M2M3+1|
+
+gives a cancellation-free certificate of exact degree 24620L+67 and
+diagonal leading coefficient 2\^{}57*z\_star.
+
+Write Omega=W and E0=dn+c-Omega*c, so Theta=E0-Omega*V0*V1. The
+finalizer's inner bracket becomes
+
+\path|E0^2-2E0*Omega*V0*V1+Omega^2*V0^2*(V1^2-a1)-Omega^2*a0.|
+
+The third term is uniquely highest, of degree 60362L+183 and diagonal
+leading coefficient 2\^{}137*z\_star. Squaring dominates the final
+subtracted norm term (degree 96124L+300), so the final polynomial has
+exact degree 120724L+366 and leading coefficient 2\^{}274*z\_star\^{}2.
+
+Every step of this certificate was independently checked with symbolic
+fixed leaves. The exact multivariate degree upper bound follows from the
+displayed polynomial identities; the nonzero diagonal leader gives the
+matching lower bound. Finite modular tests additionally checked all
+companion-difference and finalizer identities but are not substituted
+for the algebraic proof.
+
+A draft value+334 was incorrect and was corrected before finalization:
+reducing degdeltaR by 16 reduces the inner degree by 16 and the final
+degree by 32, changing+398 to+366, not to+334.
+
+\subsection{Circuit simplification is exact and
+division-free}\label{circuit-simplification-is-exact-and-division-free}
+
+The fresh generic circuit builder is \path|generic_jones_circuit.py|. It
+is newly authored and never imports received repository Python. It is
+parameterized by nu and the finite coefficient records.
+
+It evaluates the sparse correction polynomial by sorted-exponent Horner
+recurrence and shared powers p\_j=B\^{}(5\^{}j). Products for
+consecutive equal radix-five digit runs are cached. The complete
+homogeneous baseline uses suffix products B\^{}(5\^{}nu-5\^{}j).
+
+The geometric sum also factors exactly:
+
+\begin{verbatim}
+lambda = `product_{j=0}^nu(1+p_j+p_j^2+p_j^3+p_j^4)*(1+q)*(1+q^2).`
+\end{verbatim}
+
+This follows by repeated geometric-series factorization for powers of 5,
+then \path|S_(4L)=S_L(1+q+q^2+q^3).| No division, variable exponent or
+hidden unknown is introduced.
+
+As a control, the nu32 baseline rebuilt from scratch has 1,704
+operations and exactly matches every named value of package
+18's20,531-operation circuit on 64 random coefficient/input trials,
+while an independent symbolic leading audit proves its unchanged exact
+degree. The nu31 coefficient support is somewhat denser, so its baseline
+costs1,800 operations; adding the tighter magnitude companions gives the
+final1,840-operation circuit.
+
+\subsection{Scope and conclusion}\label{scope-and-conclusion}
+
+The algebraic simplification, index construction, quartic reduction,
+root majorants and exact-degree certificate have been independently
+audited here. The inherited K215 and native-window/Pell compiler remain
+ordinary mathematical dependencies; no proof-assistant endpoint was
+rebuilt. The result is an equivalence formalizable in ZFC, not a proof
+of ZFC consistency and not a global optimality theorem.
+
+\section{Appendix F. Independent Pell and signed-domain
+audit}\label{appendix-f.-independent-pell-and-signed-domain-audit}
+
+\subsection{Verdict and scope}\label{verdict-and-scope}
+
+The new arithmetic reductions are mathematically sound, subject to the
+explicitly inherited authenticated blank-machine compiler, signed
+Pell/rank lemmas, whole-tuple coefficient transfer, and K215
+calibration. No new gap was found in their unbounded root-recovery
+arguments. The independently recommended integer form is the
+\textbf{sharp 24-variable, 165-operation, degree-2240} form, rather than
+the valid but dominated degree-2256 variant.
+
+The audit covers the actual positive 12-variable circuits, the pair-ring
+integer 24-variable circuits with weights 3 and 2, the 25-variable
+small-weight circuit, and both ordinary/normalized 26-variable two-root
+circuits. It is not a proof of Con(ZFC), kernel certification, or a
+global-minimality result. In particular, these observations do not
+replace the unbounded compiler and arithmetic classification theorems by
+finite tests.
+
+The source snapshot is \path|ae3007ca4467011e0e051c84acb4a1dd13971b0e|.
+Independently recomputed Git blob hashes of the local mathematical
+source files agree with the source ledger:
+
+\begin{itemize}
+\tightlist
+\item
+  \path|23-separating12/proofs/ODD_SCALE_27_PROOF.md|:
+  \path|9db60b97a08f54b790f3b79540edc693e12d9ccb|.
+\item
+  \path|20-root12/arithmetic/SMALL_WEIGHT_PROOF.md|:
+  \path|a47ffb635dda271afe03804c534cf268be450c8c|.
+\item
+  \path|20-root12/amalgamation/ROOT12_PROOF.md|:
+  \path|abb6bb1519bffe77f7f2970f92464ed1f2c76be6|.
+\item
+  \path|21-norm12/proofs/NORM12_PROOF.md|:
+  \path|13508f1065385cef7914270bd81e8fff79888e3b|.
+\end{itemize}
+
+The old commit mentioned inside the odd-scale document is historical
+text; the audited retrieved blob is the one in the new snapshot.
+
+\subsection{Positive twelve-variable
+construction}\label{positive-twelve-variable-construction}
+
+Use the author's notation, especially \path|ell=EkY|,
+\path|A=1+ell(ell+k)|, \path|G=1+Delta*c²|, \path|I=i*c²|,
+\path|D=1+Delta*I²|, \path|Q=(Delta*I)²|, and \path|d=Q-1|. Distinguish
+the circuit register P from the geometric quantity \path|Pgeom=Dv²+b²|.
+
+\subsubsection{Outer guard and pre-recovery
+bounds}\label{outer-guard-and-pre-recovery-bounds}
+
+The trace/product evaluator satisfies
+
+\path|Trace=2x0|, \path|Knorm=x0²-4d²W²L²G|, where \path|x0=d(W²+L²G)|.
+
+Therefore its final norm is \path|(ur+x0*vr)² modulo 4|. At a product
+zero the norm guard cannot be -1, so the norm vanishes and
+\path|Nk=Nt=epsilon|, with \path|epsilon=±1|. The inherited weak
+bootstrap explicitly permits these common signs and the boundary
+\path|Cw=0|. Positive h then yields \path|k=R+epsilon+hE>E|; this step
+must not be imported into the signed-integer reductions.
+
+The only growth assumptions used by the new positive argument are
+available here: \path|q>=16|, \path|X>=q|, \path|Y>=q³|, \path|R<q⁴-2|,
+\path|R>1|, \path|c<2kY|, \path|a+2<2E|, \path|D<(a+2)²I²|, \path|c<I²|,
+\path|Y²>20R|, and \path|kY>8E|.
+
+\subsubsection{Smaller weight and all complex
+branches}\label{smaller-weight-and-all-complex-branches}
+
+For \path|M=k(I²+T²)|, direct comparison gives
+
+\path|2v sqrt(D)<8kEYIT<(1/2)MkY²|,
+
+using \path|M>=2kIT| and \path|kY>8E|. Also \path|b<5RE²I²|, whence
+
+\path|2b<10RE²I²<(1/2)MkY²|,
+
+using \path|M>=kI²|, \path|k>E|, and \path|Y²>20R|. These estimates are
+strictly valid without recovered roots.
+
+Separately, \path|sqrt(G)>(a+1)c| and \path|sqrt(A)<ell+k| give
+
+\path|sqrt(G)-sqrt(A)>k(Y²+Y-1)>kY²|,
+
+while \path|sqrt(A)>ell>kY²|. Thus the auxiliary root bound is smaller
+than both \path|M sqrt(A)| and the main/first-root gap.
+
+The complete complex roots of the inner octic have the form
+\path|x=M tau+y|, where \path|tau²=A|, \path|f²=D|, and
+\path|d y²=Q(vf-b)²-1|. The two f branches are real, but y need not
+initially be real. For either branch, the absolute value of the
+right-hand side is strictly smaller than \path|Q(v sqrt(D)+b)²|; if it
+is negative its absolute value is at most 1, while the upper bound is
+greater than 1. Consequently every complex root satisfies
+
+\path!|y|<2(v sqrt(D)+b)! and \path!|x|<M sqrt(G)!.
+
+Moreover \path|M²A>4Pgeom| and \path|d>=Q/2| imply the sufficient strict
+inequality
+
+\path|d M²A>2Q Pgeom|.
+
+The stronger constant 4 is unnecessary. It follows that
+\path!C(x)=d(x²+M²A)-e>Q Pgeom+1>|Baux|sqrt(D)! for every real x, and in
+particular x=0 cannot be an inner root.
+
+\subsubsection{Recovery and
+completeness}\label{recovery-and-completeness}
+
+With \path|L=HM+1|, \path|W=b0+Ht|, an irrational g with \path|g²=G|
+would yield two inner roots \path|(W±Lg)/H|. Their distance is
+\path|2L sqrt(G)/H|, contradicting the universal bound
+\path|2M sqrt(G)|. Thus g is integral. Positivity of W also excludes the
+negative g branch.
+
+The rational nonzero x then gives the rational formulas for f and tau
+with all denominators nonzero; their integral squares make both
+integers. The auxiliary root y is only rational at this stage. The Pell
+saturation lemma is required before claiming x integral: with
+\path|Q=S²|, integral \path|V=vf-b|, and \path|S²V²-(S²-1)y²=1|, that
+lemma gives integral y. Hence x is integral, and reduction of
+\path|W=Lg+Hx| modulo H gives \path|g=b0 modulo H|, since
+\path|L=1 modulo H|. Thus gamma is integral. Finally \path|g>(a+1)c| and
+\path|c>k>E>X| imply gamma\textgreater0.
+
+The recovered f sign is handled by changing f, T simultaneously if
+needed; the exact inherited signed-quotient interface permits signed T
+without requiring odd i or square w. It must not be confused with the
+narrower odd-i/square-w integer theorem.
+
+The correct positive completeness coordinate is
+
+\path|t=M(tau+b0)+L gamma+y=gamma+M g+M tau+y>0|.
+
+Using only \path|t=M tau+L gamma+y| would not match the new W; the final
+proof uses the correct formula.
+
+\subsubsection{Norm identity and exact
+degree}\label{norm-identity-and-exact-degree}
+
+The octic is rewritten as \path|[zeta²-AA*zeta+constant]²-coef*zeta|,
+with \path|zeta=d z²|. Modulo \path|zeta²-Trace*zeta+Knorm|, this
+becomes \path|ur+vr*zeta|. Its quadratic norm is exactly the implemented
+formula. This identity is valid for repeated roots and zero
+discriminants and involves no division.
+
+The unique leaders give \path|deg(He)=134|, \path|deg(bt)=268|,
+\path|deg(ur)=536|. The other final terms have degrees at most 1064 and
+1056, below \path|deg(ur²)=1072|. Therefore
+\path|N_top=H_top^16*U_top^8| is nonzero for every beta\textgreater0.
+Adding the nonzero index and transport leaders gives exact product
+degree 1081. The literal ledgers are 107 operations for the system and
+111 for the product.
+
+\subsection{Signed 24-variable
+amalgamation}\label{signed-24-variable-amalgamation}
+
+Six Pos substitutions, odd i, odd s, and square w use 21 unrestricted
+coordinates; h, T, t bring the total to 24. The Pos map is nonnegative and
+onto the positive integers by the three-square theorem on \path|4n-3|.
+The disjoint substitutions preserve nonzero highest homogeneous forms.
+
+\subsubsection{Pre-bootstrap and degenerate
+cases}\label{pre-bootstrap-and-degenerate-cases}
+
+Before excluding w=0 or negative s, let \path!Z0=|Y|>=q³!. The signs of
+a, c, H equal that of Y. The inequalities \path|Delta>q⁴>R|, \path!|c|>2!,
+and nonzero odd i imply \path!D>Delta+|c|!, \path|Q>2|, and
+
+\path|1<b=c+RD<Q|.
+
+These statements are valid when w=0 and when T=0. In particular,
+negative c does not invalidate b's positivity.
+
+Take \path|W=v²+D+2b|, \path|P=HW|, \path|K=P+1|. Every actual conjugate
+y in the totally real field generated by tau, g satisfies \path!|y|<W!:
+use \path!2|v|sqrt(D)<=v²+D!. For Baux=0, v=0 and \path|d y²=Qb²-1|
+gives the bound directly, without division by Baux.
+
+The correct absolute-value estimate is \path!|K|>=|P|-1>3|P|/4!, not
+\path!|K|>|P|-1!; equality holds in the first comparison when
+P\textless0. This minor wording error was reported for correction and
+has no effect on the subsequent strict bounds.
+
+At w=0, tau=±1 is already rational. The strict inequality
+\path!|K|sqrt(G)>|P|=|H|W! forces g rational. Saturation then yields
+integral y, and coprimality \path|gcd(K, H)=1| yields integral gamma. The
+main norm reduced modulo H gives 0=1, excluding w=0 without circular use
+of the positive-w separation.
+
+At w\textgreater0, \path|sqrt(G)<(3/2)sqrt(A)| and \path|sqrt(A)>8|
+yield
+
+\path!|K|sqrt(G)+|P|<(15/8)|P|sqrt(A)+|P|<2|P|sqrt(A)!.
+
+Thus both weights 3P and \textbf{2P} separate tau, and then g, using
+actual field automorphisms. The argument does not assume independent
+quadratic extensions. Negative H, P, K are handled by absolute values
+throughout.
+
+Once tau, g are integers, saturation gives integral y in both B branches.
+The identity \path|t=m W tau+K gamma+y|, with m=2 or 3, then makes gamma
+integral. If T=0, \path|1<b<Q| and integral y contradict
+\path|(Q-1)(y²-b²)=b²-1|; therefore the omitted f is recoverable. All
+source roots and affine congruences are now present before invoking the
+signed odd-scale theorem.
+
+\subsubsection{Pair-ring norm and sharper exact
+degree}\label{pair-ring-norm-and-sharper-exact-degree}
+
+The inner identity is
+
+\path|[(C-jroot)²-Zterm]*[(C+jroot)²-Zterm] = (C²-J-Zterm)²-4J*Zterm|,
+
+with \path|jroot²=J|. Computing this in the g quadratic algebra,
+followed by \path|F0²-GF1²|, gives the implemented rank-four norm. Odd
+coefficients are even, so the norm is a square modulo four for all
+integer inputs.
+
+For weight 3, the four highest linear coefficients are -3,3,-1,5, giving
+the valid exact norm degree 2240 and product degree 2256.
+
+For weight \textbf{2}, three branches have leaders -2,2,4 times
+\path|K_top ell_top|. The fourth leading term cancels, but its next
+leader is exactly \path|2K_top k_top Y_top²|, of degree 95 rather than
+99. Indeed \path|ac-ell=E eta+kY²+etaY| has unique highest part kY² of
+degree 16; \path|sqrt(G)-ac| has degree at most 9 and \path|sqrt(A)-ell|
+at most 2 in the formal homogeneous Laurent expansion. The residual H²e
+and H⁴Baux²D terms remain strictly lower even in this branch. Therefore
+
+\path|N_top=2^20 d_top^8 K_top^16 ell_top^12 k_top^4 Y_top^8|,
+
+of degree 2224. The outer degrees 12 and 4 give \textbf{2240}. This is a
+uniform nonvanishing argument, not merely a sampled line degree. Gate
+count stays 165.
+
+\subsection{Signed 25- and 26-variable
+forms}\label{signed-25--and-26-variable-forms}
+
+The retained main norm immediately excludes w=0 and supports a useful
+rank bootstrap before recovering any eliminated first root. Put
+\path!B0=|a+2|!. The main Pell rank cannot be 1 because
+\textbar c\textbar\textgreater1. At rank 2, \path|c=2(a+2)| for both
+signs of Y. The positive root gives \path|g-ac=H+4|, hence
+\path|X=4 modulo H|; the negative root gives \path|4X=-1 modulo H|. The
+strict bounds \path!16<=X<|H|! and \path!0<4X+1<|H|! exclude both. Thus
+rank is at least 3 and
+
+\path!|c|>4(X|Y|)²-1!, \path!k>(7/2)X²|Y|!.
+
+This argument works with negative H and does not assume positive h or
+already restored tau.
+
+For 25 variables, all small-weight estimates extend with
+\textbar Y\textbar{} and \textbar c\textbar. With \path|M=I²+T²| and
+lambda=(16/15)\^{}4, one obtains
+
+\path|(Dv²+b²)/M² < lambda(1/4+4/49) A < (9/20)A|.
+
+Together with \path|d>=9Q/10|, this gives the strict Caux domination
+needed to exclude t=0. The T=0 case reconstructs integral tau, y first,
+then contradicts the b\textless Q gap. The remaining rational formulas
+restore integral f, tau, y with no missing denominator branch. The unique
+leading norm term has degree 872; main/index/transport degrees 32,12,4
+give exact degree \textbf{920}, at \textbf{131 operations}.
+
+For 26 variables, ordinary strong gives \path|Q0=I²|, and normalized
+strong gives \path|Q0=Delta²I²|. The same rank bootstrap yields
+k\textgreater4X and \path|c²>2ell|, so
+
+\path|1<A<4ell²<c⁴<=I²<=Q0|.
+
+Consequently t=0 would imply \path|Q0(A-V²)=A-1|, impossible since
+\path|0<A-1<Q0|. Rational tau then has integral square and is integral;
+y=t-tau is integral. The ordinary negative strong unit is excluded by
+the explicit mod-four square-residue check, not an unwarranted
+positivity assertion.
+
+Ordinary completeness needs the source multiplier
+\path|i_ordinary=Delta*i_normalized|; canonical Y is even, so Delta is
+odd and the required odd multiplier remains odd. This point is present
+in the new proof. The exact degrees are \textbf{214 ordinary} and
+\textbf{236 normalized}, both at \textbf{123 operations}. The ordinary
+alternative dominates the normalized one on these two metrics but
+invokes the corresponding ordinary strong-rank theorem.
+
+\subsection{Odd-scale and coefficient
+dependencies}\label{odd-scale-and-coefficient-dependencies}
+
+The newly restored integer relations match the precise
+six-positive-port, odd-i, odd-s, square-w domain. The source negative-s
+proof was reviewed, including both main-root signs. The rank congruences
+recover p=R; the growth bound gives \path!|Y|>2^R!; the two signs yield
+\path|X+2^R=0 modulo H| or \path|X*2^R=1 modulo H|, each contradicted by
+its strict no-wrap bound. The sign of c is lost only in congruences
+explicitly squared, so no unsupported positive-c step is used.
+
+Canonical odd-s completeness uses the exact population identity, not
+only a congruence of R: \path|popcount(R)=3t+2|, hence \path|v2(Y)=3t|,
+and \path|s=Y/q³| is odd. The shifted MF convention is essential.
+Algebraically the packing formula agrees with the circuit only when
+\path|MF_source=MF_native+beta|. Complete coherent tuples must be used.
+
+The final logical equivalence remains inherited through the fixed
+authentic compiler and literal-machine calibration. These new arithmetic
+arguments do not independently establish those large source theorems.
+
+\subsection{Independent executable checks and packaging
+caveat}\label{independent-executable-checks-and-packaging-caveat}
+
+\path|pell_independent_checks.py| was newly authored for this audit and
+treats all received circuits solely as inert JSON. It uses a
+quotient-algebra multiplication-matrix determinant as the independent
+reference for the rank-four norm, rather than executing/importing either
+author's emitter. It validates DAG references, binary operation ledgers,
+every-gate/every-port liveness, 250 independent signed/zero identity
+assignments per file, 250 mod-four checks per file, and two exact
+finite-field affine line degrees. Ten circuits pass, including the three
+final integer comparison systems. The systems were also checked
+gate-by-gate against their corresponding audited product circuits; their
+residual degrees are (12,4,2224), (32,12,4,872), and (32,12,4,38,128),
+at 161,126,117 operations respectively. The file
+\path|pell_independent_checks.json| records frozen SHA-256 hashes and
+complete results.
+
+\path|pell_bound_checks.py| adds 600 exact-integer positive-gap fixtures
+and 1920 signed weight-two fixtures, including negative s, H, P, both i
+signs, w=0, and T=0. No floating-point square roots are used. These
+tests supplement the preceding unbounded arguments and are not their
+substitutes.
+
+Packaging note: the final release uses one shared compact-coefficient
+directory. All active positive, integer and nine-variable bindings
+resolve within the archive and their exact payload hashes are checked
+before replay.
+
+\section{Appendix G. Retained-system tradeoff and rejected
+shortcuts}\label{appendix-g.-retained-system-tradeoff-and-rejected-shortcuts}
+
+The pinned package-22 source really has 16 positive witnesses, 7
+equations, 59 binary gates (33 multiplications, 26
+additions/subtractions), and residual degrees 22,18,24,7,2,22,6. Its
+stated degree 24 is correct.
+
+Replace its positive auxiliary root y by V+e, where V=of-c and e is a
+new positive coordinate in place of y. Every other formula and equation
+is left unchanged. Computing V+e costs one addition and its square
+reuses the original y-square gate. The emitted
+\path|retained16_gap_system60.json| has 60 gates, 33 multiplications and
+27 additions/subtractions, and exact residual degrees 22,18,20,7,2,22,6.
+Its maximum degree is 22.
+
+For soundness, restore y=V+e. The strong equation makes
+A0=(ic\^{}2)\^{}2\textgreater1. The auxiliary norm A0
+V\^{}2-(A0-1)y\^{}2=1 excludes y=0. Replacing y by \textbar y\textbar{}
+therefore gives a positive source root while leaving every equation
+intact; no positivity of V is required for this direction. For canonical
+positive source witnesses, V\textgreater1 and y\textgreater0, and
+
+\begin{verbatim}
+(A0-1)(y^2-V^2)=V^2-1>0.
+\end{verbatim}
+
+Consequently y\textgreater V and e=y-V is positive, proving
+completeness. This is an existence equivalence, not a claim that all
+original positive tuples have positive gap. The exact auxiliary leading
+degree drops from 24 to 20 through
+
+\begin{verbatim}
+A0[V^2-(V+e)^2]+(V+e)^2
+  = (V+e)^2-A0 e(2V+e).
+\end{verbatim}
+
+The system's degree 22 is still attained by the unchanged first norm and
+ordinary strong equation.
+
+Comparison must use the actual existing data: package 12 already has a
+15-positive-variable, 6-equation, 61-gate, degree 22 system
+\path|ordinary_gap_system61.json|. Thus our 16-variable 60/22 point
+saves just one gate in exchange for one additional variable and
+equation. The main result of this lane is the separate 31-variable
+quartic, not a claimed new \textless59-gate frontier.
+
+\subsection{Explored but not promoted}\label{explored-but-not-promoted}
+
+\begin{itemize}
+\tightlist
+\item
+  No rigorously equivalent system with fewer than 59 gates was
+  established. Simple factorization and affine shears mostly
+  redistribute, rather than remove, charged operations.
+\item
+  A first-root gap tau=L+t costs one more addition and lowers that
+  residual to degree 12, but the strong equation remains degree 22. It
+  offers no better maximum-degree/operation point here.
+\item
+  Eliminating alpha through G=q(q-F)-C can keep certain transport
+  expressions quadratic using X=wq, but discards a required positivity
+  restriction. It was rejected rather than treating inferred bounds as
+  automatic.
+\item
+  Weakening c\^{}2 divisibility to c in the strong Pell equation does
+  not preserve the needed conclusion c\textbar m from the available rank
+  proof. It was not used.
+\item
+  Direct coordinate elimination can miss useful relations between
+  remaining equations. The successful G deletion instead uses N=q(L+1)
+  to reduce the apparent cubic product GL to two quadratic products.
+\end{itemize}
+
+These are scoped research observations, not lower bounds or minimality
+claims.
+
+\end{document}

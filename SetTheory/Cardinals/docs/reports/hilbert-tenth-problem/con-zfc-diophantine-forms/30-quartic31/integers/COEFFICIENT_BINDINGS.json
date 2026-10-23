@@ -1,0 +1,82 @@
+{
+  "primary_backend": "wang943_compact",
+  "binding_policy": "Only the complete delivered compact four-port tuple is selected; all paths are relative to this file.",
+  "proof": "COEFFICIENT_TRANSFER.md",
+  "port_aliases": {
+    "beta": "beta",
+    "Bm1": "beta",
+    "K0": "K",
+    "Kconstant": "K",
+    "MC": "MC",
+    "MF": "MF_source"
+  },
+  "backends": {
+    "wang943_compact": {
+      "description": "Recommended audited compact Wang943 compiler, d=5^10; materialized integer quartet.",
+      "coefficient_proof": "../compiler/WANG943_COMPACT_LAYOUT.md",
+      "independent_audit": "../audit/WANG943_INDEPENDENT_AUDIT.md",
+      "coefficients": {
+        "beta": {
+          "path": "../compiler/coefficients_compact/beta.bin",
+          "sha256": "40cc309fcb5dd2942c371d18be6d955d472e6b4c3604034b316194037ac16a5d",
+          "encoding": "unsigned little-endian, minimal bytes, no header",
+          "bit_length": 9765625
+        },
+        "MC": {
+          "path": "../compiler/coefficients_compact/MC.bin",
+          "sha256": "2e3107193f3b376fc3cfffdaa3ef547e6dd8dfdd4548519c0e33b5ffe2f2371d",
+          "encoding": "unsigned little-endian, minimal bytes, no header",
+          "bit_length": 9765625
+        },
+        "MF_source": {
+          "path": "../compiler/coefficients_compact/MF_source.bin",
+          "sha256": "8851b54fffd93780996de5f8c69315448e1369c3eea142428d2225a5149d1825",
+          "encoding": "unsigned little-endian, minimal bytes, no header",
+          "bit_length": 9765626
+        },
+        "K": {
+          "path": "../compiler/coefficients_compact/K.bin",
+          "sha256": "e79f794af9565a7d824beb423bd03ee9ac117811b9b0e3a83ffe18f8a084de99",
+          "encoding": "unsigned little-endian, minimal bytes, no header",
+          "bit_length": 13201251
+        }
+      }
+    }
+  },
+  "arithmetic_skeletons": [
+    {
+      "file": "integer24_pair_norm165_degree2256.json",
+      "sha256": "fd6d6db8941a5ddc49c0fbb2a37685a0a854357f5d879275e2ee524339f8f172"
+    },
+    {
+      "file": "integer24_sharp_pair_norm165_degree2240.json",
+      "sha256": "864ac6bedd94fa646674e4a34609b4fd69b7758fc1da3c434ada28401a3e97f8"
+    },
+    {
+      "file": "integer24_system161_degree2224.json",
+      "sha256": "bf39560c90fa1173fe18b8b63d97f4c7e545dadfcc2f1f5a82f4b958d1c8687a"
+    },
+    {
+      "file": "integer25_small_weight131_degree920.json",
+      "sha256": "0e823f43509a51cf252ed5095ced517335434cba4056e7e1de1c6cdbb091c529"
+    },
+    {
+      "file": "integer25_system126_degree872.json",
+      "sha256": "50c1076bd60dfc1d31013f97338660f77f86b75bb31f136718a5e73ac3ea8267"
+    },
+    {
+      "file": "integer26_ordinary_two_root123_degree214.json",
+      "sha256": "bf00287063f463d18aa398e63d27628e8363f76f359c8ac68763bad1dc9c2ebd"
+    },
+    {
+      "file": "integer26_system117_degree128.json",
+      "sha256": "5db305523afd22efeeddbd5fe36faf893dc88dc8fa043b924a57233bfdf8d6e2"
+    },
+    {
+      "file": "integer26_two_root123_degree236.json",
+      "sha256": "00e54954d34fe610fd506db222124a8c8e7eb4ea28f3a3c6017150c4d0d20a42"
+    }
+  ],
+  "odd_scale_dependency": "upstream/23-separating12/proofs/ODD_SCALE_27_PROOF.md",
+  "historical_alternatives": "Original06 and noncompact Wang943 are provenance alternatives, not delivered or active bindings. See the pinned catalogue."
+}
