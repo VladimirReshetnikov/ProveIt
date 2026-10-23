@@ -1,5 +1,5 @@
 import BusyBeaver.ZFC.KLowerEqv
-import BusyBeaver.ZFC.QuotientModel
+import BusyBeaver.ZFC.KQ1Model
 import BusyBeaver.ZFC.KQ1ZF
 
 /-!
@@ -143,10 +143,10 @@ theorem tag_power_member (a : Tag mem t) :
     exact ⟨w, ((hp u).mp hup).2 w.1 w.2 hwu, hzw⟩
   · -- the clean representative: the separation of `a` by `· ∈ x`, over the envelope `E`
     obtain ⟨S, htS, hSraw, hS⟩ := dt_comp_env hs hirr ht a.1 E hEt htE hEa
-      (rename swap01 (relT 0 (QuotientModel.memberForm 0 1))) (scons t (fun _ => x.1))
+      (rename swap01 (relT 0 (KQ1Model.memberForm 0 1))) (scons t (fun _ => x.1))
     have hSm : ∀ z : Tag mem t, tmem mem t z ⟨S, htS⟩ ↔ tmem mem t z a ∧ Member (tmem mem t) z x :=
       fun z => (hS z.1 z.2).trans (and_congr Iff.rfl ((tag_formula _ (fun _ => x) z).trans
-        (QuotientModel.sat_memberForm _ _ 0 1)))
+        (KQ1Model.sat_memberForm _ _ 0 1)))
     have hSW : mem S W := (hW S).mpr fun w hw => by
       rcases hSraw w hw with rfl | rfl | h
       · exact hEv
