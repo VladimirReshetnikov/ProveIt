@@ -1,0 +1,214 @@
+\section{Complement-packed native clauses}
+\label{sec:complement-native}
+This section gives an independent structural reduction of the complete
+coefficient tuple at the inherited 67-operation polynomial and
+59-operation system frontiers.  Their arithmetic circuits, degrees, and
+positive-variable domains do not change.  The old tuple in package 36 had
+$B=2^{1012115}$ and occupied 506664 raw bytes.  The new tuple has
+\[
+ \rho=2^{67},\qquad L=8807,\qquad d=590069,\qquad B=\rho^L=2^{590069},
+\]
+and its four materialized ports occupy 295388 raw bytes, a reduction of
+$41.6994\%$.  This changes the integers themselves, rather than merely
+their file compression.
+
+\subsection{One congruence replaces the parity fields}
+\begin{lemma}[Aggregate complement decoder]
+Let $N<2^a$, let $0<v_i<2^m$ for $0\le i<N$, and let all $x_i,y_j$
+be Boolean.  Define
+\[
+ n=\sum_i x_i,\quad W=\sum_{j=0}^{m-1}2^j y_j,\quad
+ S=\sum_i\bigl(1+2^a(2^m-v_i)\bigr)x_i+2^aW,
+ \quad \mu=2^{a+m}-2.
+\]
+Then $S\mathbin{\mathrm{AND}}\mu=0$ if and only if either all selectors
+and copies vanish, or exactly one selector $i$ is present and $W=v_i$.
+\end{lemma}
+\begin{proof}
+The low $a$ bits of $S$ equal $n$, since $0\le n\le N<2^a$.
+Their mask is $2^a-2$, so $n\in\{0,1\}$.  This extraction precedes,
+and does not assume, any claim about internal payload carries.
+If $n=0$, the remaining payload is $W<2^m$, whose low $m$ bits must
+vanish, so $W=0$.  If selector $i$ is present, the payload is
+$2^m-v_i+W\in(0,2^{m+1})$.  Its low $m$ bits vanish exactly when it
+equals $2^m$, hence exactly when $W=v_i$.  Conversely valid cells have
+$S=0$ or $S=2^{a+m}+1$, both disjoint from $\mu$.
+\end{proof}
+The interval $W<2^m$ uses one distinct Boolean support position for each
+copy bit.  It does not apply to unconstrained nonnegative copy values.
+The native low mask supplies these Boolean conditions; both dummy
+positions have clause coefficient zero.
+
+Retain the exact Wang943 language and its ordering.  For a tile with
+west, north, east, south labels $(w,n,e,s)$, put
+\[
+ v_i=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
+\]
+The lower 34 bits encode the labels.  Positions $34,35,36,37$ are
+the four occupancy bits, and positions $38,39,40$ are the three anchors.
+These last seven bits are one for every occupied tile.  Use $a=10,m=41$,
+so the selector coefficient and mask are
+\[
+ c_i=1+1024(2^{41}-v_i),\qquad \mu=2^{51}-2.
+\]
+Moving the seven constant bits to the top gives $c_i\le 1+2^{44}$.
+This additionally improves the uniform carry bound.
+
+The 38 native edge-copy positions are unchanged.  Their payload positions
+are specified by
+\[
+\begin{array}{c|c|c}
+\text{slot}&\text{native positions}&\text{payload bit positions}\\\hline
+W&1023+j,\ 0\le j<9&0,\ldots,7,34\\
+N&1013+j,\ 0\le j<10&8,\ldots,16,35\\
+E&1003+j,\ 0\le j<9&17,\ldots,24,36\\
+S&983+j,\ 0\le j<10&25,\ldots,33,37
+\end{array}
+\]
+The anchors $1095,2195,3296$ carry payload positions $38,39,40$.
+Let $E$ be these 41 positions together with selectors $0,\ldots,942$
+and dummies $1063,1064$; thus $|E|=986$.  At the copy position for bit
+$j$ put $c_e=2^{10+j}$, and at each dummy put $c_e=0$.  The lemma now
+proves exactly the same local valid cells as the old 41 separate
+radix-four parity fields.
+
+\subsection{The full coefficient recipe}
+All powers below have fixed finite exponents.  Define
+\begin{align*}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}
+       +\sum_{e\in E}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R={}&\rho^{42},\\
+ Z={}&(2^{65}-1)\sum_{e=8792}^{8804}\rho^e
+                  +(2^{19}-1)\rho^{8805},\\
+ M_C={}&B-1-\sum_{e\in E\setminus\{1\}}\rho^e-2\rho^{1063},\\
+ M_{F,\mathrm{native}}={}&4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^9\rho^{1013+j}+\sum_{j=0}^8\rho^{1065+j}
+       +\rho^{2195}+\rho^{3296}+Z.
+\end{align*}
+The four arithmetic ports, all of which must be replaced together, are
+\[
+ \boxed{\beta=B-1,\quad K_0=D_C+BD_R,\quad M_C,\quad
+ M_F=M_{F,\mathrm{native}}+B-1.}
+\]
+The fourth port is shifted; substituting the native high mask is incorrect.
+
+The old support geometry is preserved.  The two clause targets are
+$4393,5495$; the two distinct tested temporal anchors remain $2195,3296$
+with shared current source $1095$.  Finite support arithmetic verifies
+\[
+ ((4393-E)\bmod L)\cap((5495-E)\bmod L)=\varnothing,
+ \qquad
+ ((2195-E)\bmod L)\cap((3296-E)\bmod L)=\{0\}.
+\]
+All 66062 current/spatial/temporal native-basis identities are verified
+independently.  The aggregate lemma at the clean band of the distinguished
+Start cell forces its shared anchor, and hence both tested temporal
+anchors, to one.  The inherited rotation argument therefore still excludes
+binary misalignment and then nonzero whole-radix cell misalignment.
+After alignment, overlap parity recovers the original occupied edge
+codes and the same Wang matching constraints.
+
+For the inherited conservative uniform bound one now has
+\[
+ \mathcal M=988\left(2\sum_{e\in E}c_e+6\right)
+ =29613572795083482608,
+ \qquad
+ 4\mathcal M+8=118454291180333930440<2^{67}.
+\]
+Also $2\mu+4<2^{67}$ and $2(2^{65}-1)+4<2^{67}$.  These bounds
+preserve the compiler's carry, positive-slack, and nonaligned-rotation
+estimates.  The new internal payload carries are intentional and are
+covered by the lemma, not by an assumption of separate fields.
+
+The largest unshifted product exponent is 8791.  Each padded test, at a
+position from 8792 through 8805, therefore constrains a zero in an aligned
+cell.  There are 864 such tests.  Consequently
+\[
+ \operatorname{pc}(M_C)=d-986,\quad
+ \operatorname{pc}(M_{F,\mathrm{native}})=986,
+ \quad M_C\equiv2\pmod4,\quad
+ M_{F,\mathrm{native}}\equiv4\pmod8.
+\]
+The original native mask population balance and low congruences remain exact.
+
+\subsection{The new actual-rank controller}
+For completeness use the explicitly certified prime
+\[
+ \lambda=581197,\qquad k=\lambda-1=581196,
+ \qquad d=67\cdot8807.
+\]
+The multiplicative orders of $B$ modulo $67,8807,\lambda$ are respectively
+$66,4403,581196$.  Their required divisibility conditions hold, and
+\[
+ B^k\bmod\lambda^2=182964883980\ne1,
+ \qquad B^k\equiv1\pmod\lambda.
+\]
+For $H_0=1+BD_C+B^2(D_R+1)$, the residues
+\[
+\begin{array}{c|rrr}
+p&B&B^2-1&H_0\\\hline
+67&46&38&41\\
+8807&456&5374&5193\\
+581197&348469&573553&76889
+\end{array}
+\]
+prove the necessary unit conditions.  Choose sufficiently large independent
+spatial and temporal dimensions $w,h$ that are powers of $\lambda$,
+and put $N=wh$, $q=B^N$.  Switching a safe low dummy bit at position $j$
+changes the actual packed rank by
+\[
+ \delta R=-\Gamma B^j,\qquad
+ \Gamma=\rho^{1063}(q^2-1)[1+q(D_C+BD_R+B^w)].
+\]
+The certificates imply $\gcd(\Gamma,dN)=1$.  With $T=N/\lambda$,
+the powers $B^{kj}$ run through all residues $1+d\lambda z$ modulo
+$dN$.  The original Boolean consecutive-orbit subset argument, using
+$\{B^{2+kj}:0\le j<T\}\cup\{B^3\}$, therefore adjusts the actual
+rank to $R\equiv dw\pmod{dN}$.  Taking $N>d\lambda^2$ and $h>\lambda$
+keeps all chosen dummy cells and their needed translates below $N$ and
+away from the origin.  The complete argument is reproduced in
+\texttt{native/PROOF.md}; it is not a test of only synthetic tableaux.
+
+Both $d$ and these canonical dimensions are odd.  The unchanged population
+and congruence identities retain the source square/odd-scale promises.
+Soundness, unlike completeness, places no prime-power restriction on the
+dimensions of an arbitrary recovered tableau.
+
+\subsection{The short explicit system}
+Use sixteen strictly positive unknowns
+\[
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+Define the following polynomial abbreviations, not additional unknowns:
+\begin{gather*}
+q=\beta J+1,\quad C=q-F-\alpha,\quad X=wq,\quad Y=sq^3,\\
+E=XY,\quad k=\eta+\zeta,\quad c=kY+\eta,\quad a=E+Y,\\
+H=4a+3,\quad \Delta=a^2+H,\quad D=X+ac+\gamma H,\\
+G=(q-1)(q-F)+\alpha,\quad R=G(q^2-1)+(M_C+qM_F)J,\\
+L_0=EkY,\quad V=of-c,\quad U=jc-R,\quad I=ic^2,\\
+A_0=\Delta(f^2-1).
+\end{gather*}
+The seven equations are
+\begin{gather*}
+ \tau^2-L_0(L_0+k)=1,\qquad D^2-\Delta c^2=1,\\
+ A_0(V^2-y^2)+y^2=1,\qquad k-hE-R=1,\\
+ (K_0+w)C=F+z(q-1),\qquad I^2=A_0,\qquad U=V.
+\end{gather*}
+The exact evaluator remains 59 operations.  By the inherited arithmetic
+theorem, the native interface proved here, the unchanged Wang language,
+and the literal K215 calibration, its positive unsolvability is provably
+equivalent in ZFC to $\operatorname{Con}(\mathrm{ZFC})$.  The supplied
+67-operation polynomial is rebound by the same complete tuple and keeps
+its fifteen positive unknowns and exact degree 155.
+
+\subsection{Reproduction and limits}
+The builder reconstructs the literal tile language from all 430 pinned
+machine actions without executing the machine.  The independent auditor
+starts instead from the pinned tile list, imports no builder code,
+reconstructs all four full integers, verifies the source Git blob identities,
+and checks all native basis identities, exact carry and mask bounds, and
+the prime controller.  It also verifies that both rebound arithmetic
+sources are unchanged.  The complement lemma and inherited universal
+compiler proofs, not finite diagnostic examples alone, supply the
+unbounded mathematical conclusion.  No new end-to-end proof-assistant
+certificate, consistency decision, or global optimum is claimed.

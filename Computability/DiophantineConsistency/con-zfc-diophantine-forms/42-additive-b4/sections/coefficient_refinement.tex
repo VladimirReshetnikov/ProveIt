@@ -1,0 +1,387 @@
+\section{Nonzero label codes and smaller fixed coefficients}
+\label{sec:coefficient-refinement}
+
+The variable-compression construction and the coefficient construction
+address different measures.  This section gives a new coefficient tuple
+and binds two complete, moderate-degree equations to it.  It does not
+silently substitute these coefficients into a low-variable form whose
+index constants were computed from another parent polynomial.
+
+\subsection{The new tuple and its measured improvement}
+
+The baseline is package 36 of the reviewed repository commit.  It uses
+943 Wang tiles, a radix $\rho=2^{115}$, cell length $8801$, and
+$B=2^{1012115}$.  The new construction uses the identical tile language,
+but has
+\begin{equation}
+ b=107,\qquad L=6385,\qquad d=bL=683195,\qquad
+ \rho=2^{107},\qquad B=\rho^L=2^{683195}.
+ \label{eq:nonzero-base}
+\end{equation}
+All four resulting coefficients are materialized, with their exact
+unsigned little-endian payloads and hashes included in the archive.
+The comparison is:
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Measure & Package 36 & New tuple\\
+\hline
+Base exponent $\log_2 B$ & $1{,}012{,}115$ & $683{,}195$\\
+Largest coefficient, bits & $1{,}016{,}946$ & $688{,}546$\\
+Four raw payloads, bytes & $506{,}664$ & $342{,}269$\\
+\hline
+\end{tabular}
+\end{center}
+These decrease by $32.50\%$, $32.29\%$, and $32.45\%$, respectively.
+There are two mathematical changes: an occupancy bit on each edge word
+is replaced by nonzeroness of that whole word; and exact support
+isolation permits a much shorter synchronization layout.
+
+\subsection{Occupancy requires a nonzero word, not an extra bit}
+
+\paragraph{Nonzero-code lemma.}
+\emph{Suppose a local selector/copy clause permits either an empty cell,
+whose edge words are all zero, or one selected tile with its four encoded
+edge words.  Suppose the horizontal and vertical label encodings are
+injective and never zero, and corresponding words agree at neighboring
+cells.  A Start tile in a cyclic word whose spatial shift is one forces
+every cell to be occupied and decodes the original tile matching rules.}
+
+Indeed, a neighbor of an occupied cell has a matching nonzero word and
+therefore cannot be empty.  Iteration of spatial step one visits the
+whole cyclic word.  Once occupancy is established, injectivity decodes
+the original labels.  Conversely, any tile matching supplies the encoded
+words and satisfies all bit comparisons.  This argument does not require
+a bit position shared by every nonzero word.
+
+The inherited horizontal colors are $0,\ldots,249$, and the vertical
+colors are $0,\ldots,438$.  Encode every label $x$ as $x+1$.  Horizontal
+words now use eight bits and vertical words nine.  This is optimal
+\emph{within the fixed-length, separate-edge encoding interface with zero
+reserved for emptiness}: $m$ labels require $2^\ell-1\ge m$.  The bounds
+are therefore $\ell_H\ge8$ and $\ell_V\ge9$, attained here.  This is not
+a lower bound on general Diophantine constructions.
+
+\subsection{The entire finite recipe}
+
+Keep the ordered 943 Wang tiles, with Start at selector $0$ and Forbidden
+at selector $1$.  The language and literal 430-action K215 table are
+unchanged.  The separately supplied tile list has SHA-256
+\begin{center}\small\ttfamily
+66b55f1d11fca9fefc93b12fcfc8b4cabb75\\
+b08e9fd03311f9e894a1c5e5e81f.
+\end{center}
+Use the following slot data:
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Slot $s$ & Offset $o_s$ & Width $\ell_s$ & Field $p_s$\\
+\hline
+West & 1023 & 8 & 0\\
+North & 1013 & 9 & 8\\
+East & 1003 & 8 & 17\\
+South & 983 & 9 & 25\\
+\hline
+\end{tabular}
+\end{center}
+The native support $E$ is the disjoint union of $\{0,\ldots,942\}$,
+the 34 copy positions $o_s+j$, the dummies $1063,1064$, and the anchors
+$1022,1042,2107$.  Hence $|E|=982$.  Set $w_j=2^{10+2j}$ for
+$0\le j<37$.  For tile $i$, with label $x_{i,s}$ in slot $s$, define
+\[
+ c_i=1+\sum_{s=0}^3\sum_{j=0}^{\ell_s-1}
+        \operatorname{bit}_j(x_{i,s}+1)w_{p_s+j}
+        +w_{34}+w_{35}+w_{36}.
+\]
+At the copy positions set $c_{o_s+j}=w_{p_s+j}$; at the three anchors
+use $w_{34},w_{35},w_{36}$, in the displayed order; and set both dummy
+coefficients to zero.  Define the following fixed integers:
+\begin{align*}
+ \mu&=1022+\sum_{j=0}^{36}w_j,\\
+ Z&=(2^{105}-1)\sum_{e=6376}^{6383}\rho^e
+                +(2^{30}-1)\rho^{6384},\\
+ D_C&=\rho^{30}+\rho^{70}+\rho^{20}+\rho^{1085}
+       +\sum_{e\in E}c_e(\rho^{3202-e}+\rho^{4268-e}),\\
+ D_R&=\rho^{50},\\
+ M_C&=B-1-\sum_{\substack{e\in E\\e\ne1}}\rho^e-2\rho^{1063},\\
+ M_{F,\mathrm{native}}&=4+\mu(\rho^{3202}+\rho^{4268})
+       +\sum_{j=0}^8\rho^{1013+j}+\sum_{j=0}^7\rho^{1073+j}
+       +\rho^{1042}+\rho^{2107}+Z.
+\end{align*}
+The four actual ports are
+\begin{equation}
+ \boxed{\beta=B-1,\qquad K=D_C+BD_R,\qquad
+ M_C,\qquad M_F=M_{F,\mathrm{native}}+B-1.}
+ \label{eq:nonzero-ports}
+\end{equation}
+In particular $M_F$ already includes its shift.  All sums and powers in
+this recipe are fixed finite arithmetic; none is an existential variable
+or a computation that waits for a refutation.
+
+\subsection{Why the new finite interface is sound and complete}
+
+Let $n$ be the selector count in one native cell.  Before inspecting any
+payload field, $0\le n\le943$, and the lowest ten bits of the clause sum
+are precisely $n$.  Disjointness with $1022$ forces $n=0$ or $n=1$.
+Only then does each radix-four payload field become a sum in
+$\{0,1,2\}$.  Testing its low bit forces equality of the selected tile
+bit and its copy, and forces each anchor to equal $n$.  Thus payload
+carry-freeness is not assumed before selector extraction.
+
+The complete comparison identities are:
+\begin{center}\small
+\begin{tabular}{llll}
+\hline
+Target & Current source via $D_C$ & Spatial source & Temporal source\\
+\hline
+$1013+j$, $0\le j<9$ & $983+j$ & none & $1013+j$\\
+$1073+j$, $0\le j<8$ & $1003+j$ & $1023+j$ & none\\
+$1042$ & $1022$ & none & $1042$\\
+$2107$ & $1022$ & none & $2107$\\
+\hline
+\end{tabular}
+\end{center}
+At each clause band $T=3202,4268$, the coefficient of $\rho^{T-e}$ in
+$D_C$ is exactly $c_e$ for every $e\in E$, and $e+50\ne T$.  The
+generator and independently written auditor check all
+$19\cdot982\cdot3+2\cdot982\cdot2=59{,}902$ scalar identities.  Their
+linearity covers every native assignment, including the allowed dummy
+digits.  No additional bare or reflected-clause contribution is omitted.
+
+Write $S=E\setminus\{2107\}$.  Its maximum is $1064$.
+The difference $1066$ is absent from $E-E$, since pairs in $S$ have
+smaller span and $2107-1066=1041\notin E$.  Because $L>2\max E$,
+\[
+ ((3202-E)\bmod L)\cap((4268-E)\bmod L)=\varnothing.
+\]
+At least one clause band is clean for every binary rotation.  Decode
+the distinguished Start cell first: its selector is already one, so its
+source anchor at $1022$ is one and both tested temporal anchors must be
+one.  This step does not presuppose global occupancy.
+
+The source's parity argument excludes nonzero binary remainders: for
+remainders $1,\ldots,b-2$ every rotated native digit is even, and for
+$b-1$ only the single upper-dummy spill can be odd.  Two tested anchors
+cannot both be odd in either case.  The remaining whole-radix alignment
+is unique, since the difference $2107-1042=1065$ occurs exactly once in
+$E-E$.  Thus
+\[
+ ((1042-E)\bmod L)\cap((2107-E)\bmod L)=\{0\}.
+\]
+After alignment, the parity comparisons give equality of corresponding
+bits.  The nonzero-code lemma then propagates occupancy and recovers
+the unchanged marked Wang tiling.  Conversely every intended tiling
+supplies these words and anchors, so the change loses no tableau.
+
+The inherited conservative mass bound is
+\[
+ \mathcal M=(982+2)\left(2\sum_{e\in E}c_e+6\right).
+\]
+Its bit length is 104, while $4\mathcal M+8$ has bit length 106;
+therefore $4\mathcal M+8<2^{107}$.  Also $2\mu+4<2^{107}$ and
+$2(2^{105}-1)+4<2^{107}$.  These are the inherited uniform carry and
+strict-slack bounds.  The maximum unshifted current exponent is
+$4268+2107=6375$, and the spatial maximum is $50+2107=2157$.
+All padding positions $6376,\ldots,6384$ are consequently zero on every
+intended aligned field, including safe dummy variations.
+
+The unpadded high-mask population is $2\cdot46+9+8+2+1=112$.
+Padding contributes $8\cdot105+30=870$, giving
+\[
+ \operatorname{pc}(M_{F,\mathrm{native}})=982,\qquad
+ \operatorname{pc}(M_C)=d-982.
+\]
+Moreover $M_C\equiv2\pmod4$, $M_{F,\mathrm{native}}\equiv4\pmod8$,
+and both native masks lie strictly between zero and $B-1$.  The origin
+test is unchanged because every exponent in $D_C,D_R$ is positive.
+
+\subsection{Controlling the actual Pell rank}
+
+Changing $d$ requires a new actual-rank controller.  We have
+\[
+ d=5\cdot107\cdot1277,
+ \qquad \lambda=135257\text{ prime},\qquad k=\lambda-1=135256.
+\]
+The orders of $B$ modulo $5,107,1277,\lambda$ are respectively
+$4,106,1276,67628$.  Hence
+$\operatorname{ord}_d(B)=67628\mid k$, while
+\[
+ B^k\bmod\lambda^2=13998558473\ne1,
+ \qquad v_\lambda(B^k-1)=1.
+\]
+For $H_0=1+BD_C+B^2(D_R+1)$, the exact unit certificate is
+\begin{center}
+\begin{tabular}{rrrr}
+\hline
+$p$ & $B\bmod p$ & $(B^2-1)\bmod p$ & $H_0\bmod p$\\
+\hline
+5 & 3 & 3 & 2\\
+107 & 88 & 39 & 58\\
+1277 & 942 & 1125 & 956\\
+135257 & 55321 & 88158 & 66933\\
+\hline
+\end{tabular}
+\end{center}
+Choose independently padded width $w_0$ and height $h_0$ to be
+sufficiently large powers of $\lambda$, put $N=w_0h_0=\lambda^n$,
+$q=B^N$, and require $N>d\lambda^2$ and $h_0>\lambda$.
+Then $q\equiv B^{w_0}\equiv B\pmod{d\lambda}$.  Flipping a low
+dummy at cell $j$ changes the actual packed rank by
+\[
+ \delta R=-\Gamma B^j,\qquad
+ \Gamma=\rho^{1063}(q^2-1)
+             [1+q(D_C+BD_R+B^{w_0})].
+\]
+The table proves $\gcd(\Gamma,dN)=1$.
+
+For completeness, put $T_0=N/\lambda$ and $C_0=d\lambda$.
+Every residue modulo $dN=C_0T_0$ is a Boolean subset sum of
+\[
+ \{B^{2+kj}:0\le j<T_0\}\cup\{B^3\}.
+\]
+Indeed the first $T_0$ powers of $B^k$ are exactly the residues
+$1+C_0z$.  Normalize a target by $B^{-2}$ and subtract
+$\epsilon B$, $\epsilon\in\{0,1\}$, to make it nonzero modulo
+$\lambda$.  Its least residue $a$ modulo $C_0$ satisfies
+$1\le a<C_0<T_0$ and $\gcd(a,T_0)=1$.  Writing the target as
+$a+C_0u$, solve
+\[
+ az_0+\frac{a(a-1)}2\equiv u\pmod{T_0}.
+\]
+The $a$ distinct orbit entries with additive coordinates
+$z_0,z_0+1,\ldots,z_0+a-1$ have the desired sum.  Include $B^3$
+if $\epsilon=1$.  The greatest selected position is at most
+$N-N/\lambda-\lambda+3$, and $w_0<N/\lambda$; hence no required
+spatial or temporal translate wraps or touches the origin.
+
+Starting from rank $R_0$, choose the subset for
+$(R_0-dw_0)\Gamma^{-1}$ modulo $dN$.  It gives
+$R\equiv dw_0\pmod{dN}$, exactly the temporal rotation required by
+$X=2^R$.  The strict positive slack survives every safe dummy choice.
+The inherited Pell converse supplies the remaining witnesses.  Prime
+powers are a completeness choice only; soundness does not impose them
+on arbitrary solutions.
+
+Both $d$ and $N$ are odd, and the canonical word is $1$ modulo $4$.
+The balanced populations and low congruences therefore preserve the
+inherited identities $\operatorname{pc}(R)=3dN+2$ and $R\equiv3\pmod4$.
+In particular $X/q$ remains a positive square, and the inherited odd
+Pell multipliers and odd half-binomial scale remain available.  This
+also verifies the completeness promises of the compatible signed
+arithmetic adapters.
+
+\subsection{Two concrete equations bound to the new tuple}
+
+To make the coefficient result a complete mathematical instance, the
+archive supplies the old arithmetic graphs with all four ports rebound
+to \eqref{eq:nonzero-ports}.  The 15 positive variables for the first are
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+The following are polynomial abbreviations, not extra unknowns:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,& Y&=sq^3,\\
+ E_0&=XY,& k_0&=\eta+\zeta,\\
+ c&=k_0Y+\eta,& a&=E_0+Y,\\
+ H&=4a+3,& \Delta&=a^2+H,\\
+ D&=X+ac+\gamma H,& G&=(q-1)(q-F)+\alpha.
+\end{align*}
+Also set
+\begin{align*}
+ R&=G(q^2-1)+(M_C+qM_F)J,\\
+ V&=c(Tf-1)-Rf^2,\qquad K_a=(i\Delta c^2)^2.
+\end{align*}
+Set
+\begin{align*}
+ N_0&=\tau^2-(XY^2)(XY^2+1)k_0^2,\\
+ N_1&=D^2-\Delta c^2,\\
+ N_a&=K_a(V^2-y^2)+y^2,\\
+ N_k&=k_0-hE_0-R,\\
+ N_t&=(K+w)C+(q-F)-z(q-1),\\
+ N_s&=\Delta f^2-K_a.
+\end{align*}
+Then the fixed equation is
+\begin{equation}
+ \boxed{P_{67}^{\mathrm{nz}}=N_0N_1N_aN_kN_tN_s-\Delta=0.}
+ \label{eq:nonzero-p67}
+\end{equation}
+Its delivered graph has 67 binary arithmetic operations, comprising
+39 multiplications and 28 additions/subtractions.  Its exact degree is
+155.  The crucial cancellation is the polynomial identity
+\[
+ N_1=2ac(X+\gamma H)+(X+\gamma H)^2-Hc^2,
+\]
+which gives degree 18.  The six factor degrees are
+$22,18,60,7,2,46$.  For example, the degree-155 monomial
+\[
+ J^{92}h\gamma i^4\eta^{13}w^{13}s^{26}T^2f^2z
+\]
+has coefficient $8\beta^{92}\ne0$.  Thus the degree remains exact after
+the new fixed tuple is bound.
+
+For the second presentation replace $T$ by two positive unknowns $o,j$,
+so that there are sixteen unknowns in total, and retain the same outer
+abbreviations.  Put
+\[
+ L_0=E_0k_0Y,\quad V_0=of-c,\quad U_0=jc-R,
+ \quad I=ic^2,\quad A_0=\Delta(f^2-1).
+\]
+The seven equations are
+\begin{equation}
+\begin{aligned}
+ \tau^2-L_0(L_0+k_0)&=1,& D^2-\Delta c^2&=1,\\
+ A_0(V_0^2-y^2)+y^2&=1,& k_0-hE_0-R&=1,\\
+ (K+w)C&=F+z(q-1),& I^2&=A_0,\\
+ U_0&=V_0.&&
+\end{aligned}
+\label{eq:nonzero-system59}
+\end{equation}
+Their residual degrees are $22,18,24,7,2,22,6$.  The graph evaluates
+the comparisons using 59 arithmetic operations, comprising 33
+multiplications and 26 additions/subtractions; comparisons are free
+under the repository convention.  These are inherited arithmetic
+graphs, not new operation records.
+
+\paragraph{Bound-instance theorem.}
+\emph{ZFC proves that each of
+\eqref{eq:nonzero-p67} and \eqref{eq:nonzero-system59} has no solution
+in its stated positive-integer domain if and only if $\operatorname{Con}(\mathrm{ZFC})$.}
+
+The inherited Pell/arithmetic proofs equate solutions of these graphs
+with the blank marked native compiler problem, provided its complete
+four-port interface holds.  The preceding argument establishes that
+interface for the new tuple, including soundness, actual-rank tuning,
+strict positive witnesses and canonical signed promises.  The unchanged
+Wang-language theorem equates a marked tiling with a finite blank K215
+halting run, and the K215 calibration equates such a run with a finite
+ZFC refutation.  Composition and negation prove the displayed theorem.
+This is a proof of an equivalence, with the inherited mathematical
+dependencies made explicit; it is neither a decision of consistency nor
+a new end-to-end kernel check.
+
+\subsection{Reproducible evidence and limits}
+
+The directory \texttt{coefficient\_backend/} contains the full recipe,
+literal raw and gzip coefficients, machine actions, independently pinned
+tiles, preserved notices, inherited proof sources, and the new proof.
+Its builder and auditor require only the Python standard library.
+The independent review found no gap in the nonzero-code bootstrap or
+the new synchronization support.
+
+The concrete circuit verifier proves that every arithmetic graph,
+witness list and comparison is unchanged from its pinned source, and
+that every coefficient port is fixed to the declared payload hash.
+It reproduces exact degree bounds using the main-norm cancellation,
+and proves degree attainment by a nonzero leading coefficient on a
+specified line modulo $1000000007$.  This latter computation is an
+exact lower-degree certificate, not probabilistic identity testing.
+All 67 or 59 gates and all four ports are live.
+
+The archived \texttt{PROOF.md} gives the complete adapter derivation,
+including the Boolean subset-sum controller.  Finite checks verify its
+explicit constants and support identities; they do not by themselves
+prove the unbounded Pell, tiling or K215 calibration theorems.  The
+comparison ten-integer compression retains its original parent tuple
+and fixed indices.  Section~\ref{composed:section} completes the
+rebinding as a distinct, fully regenerated ten-integer instance.

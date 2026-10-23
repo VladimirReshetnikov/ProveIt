@@ -1,0 +1,100 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,longtable,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Sparse carry encodings for the consistency of ZFC},pdfauthor={OpenAI-assisted research for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\providecommand{\mathscr}[1]{\mathcal{#1}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\title{Sparse carry encodings for the consistency of ZFC}
+\author{OpenAI-assisted research for Vladimir Reshetnikov and ProveIt}
+\date{23 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+The purpose of this supplement is an explicit, reproducible improvement to fixed Diophantine presentations of $\Con(\mathrm{ZFC})$, not a proof of consistency. The central change replaces exponentially spaced exponent positions by a certified four-sum-distinct sequence. A second change specializes the carry compiler to a fixed polynomial, eliminating an unused input digit and an entire transfer test. A third packs an entire finite tile payload into one complement equality. We distinguish the universal mathematical arguments, exact finite certificates, inherited compiler results, and external theorem dependencies. No end-to-end proof-assistant certificate or global minimum is claimed.
+\end{abstract}
+\section{Question, domains, and review boundary}
+The repository snapshot is
+\texttt{22e75dd6b87b1b199bb08c778d7cf075ae5aae08}.
+It contains seven wave-five packages numbered 31--37. Package 37 is the preceding delivery in this conversation. The comparison must distinguish positive integers, natural numbers $\N=\{0,1,\ldots\}$, and unrestricted integers. In every construction, named circuit registers abbreviate expressions; they are not further existential unknowns. All coefficient leaves are fixed integers with finite recipes, and no recipe branches on the truth of consistency.
+
+The desired assertion has the form
+\[
+\mathrm{ZFC}\vdash
+\bigl(\neg\exists\mathbf x\in D^r\; F(\mathbf x)=0\bigr)
+\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The proof proceeds by showing that a solution is equivalent to a finite syntactic refutation of ZFC. It does not decide either side. The literal 215-state machine, its logical calibration, and the ordinary native-window/Pell compiler are inherited dependencies. The new arithmetic adapters are proved here in ordinary mathematics and checked by reproducible finite certificates, not claimed to have been rebuilt in Lean or Rocq.
+
+\section{A four-sum-distinct exponent set}
+\label{sec:b4}
+Let $M=2^{20}-1=1048575$. Work in the field represented by
+\[
+\mathbb F_2[T]/(T^{20}+T^3+1).
+\]
+The certificate verifies that $\theta=T$ has an orbit of length $M$ containing every nonzero bit vector. Thus every nonzero element is invertible and $\theta$ generates the multiplicative group. The 32 elements fixed by $x\mapsto x^{32}$ form a subfield. For each such element $a$, take the discrete logarithm of $\theta+a$.
+
+These 32 logarithms have distinct sums of four terms modulo $M$, allowing repetitions. Indeed equality of such sums gives equality of two monic products $\prod_{i=1}^4(\theta+a_i)$. Subtracting the products gives a polynomial of degree at most three over $\mathbb F_{32}$ vanishing at $\theta$. The extension has degree four, so that polynomial is zero and unique factorization gives equal multisets.
+
+Translation and multiplication by a unit modulo $M$ preserve this property. Translate one member to zero, leaving 31 positive representatives $w_i$. Padding a multiset with zero converts uniqueness of four-term sums into uniqueness of all sums $\sum\alpha_iw_i$ with $|\alpha|\le4$. Our deterministic affine-orbit search gives
+\[
+\begin{gathered}
+(w_1,\ldots,w_{31})=(51609,55430,68596,78030,89463,90233,\\
+110498,110508,128615,136498,211819,241519,305379,312706,\\
+314312,369115,417382,429683,435112,450230,462314,469608,\\
+490199,501539,507151,524944,550792,559943,573626,607799,610895).
+\end{gathered}
+\]
+The actual machine-readable list is authoritative; the displayed list is for inspection. All $\binom{35}{4}=52360$ four-term multisets are also enumerated and their residues checked independently. The multiplier is 208418 and the subsequent translation is 836756, applied after subtracting 535448 from the raw logarithms modulo $M$. No optimality among all four-sum-distinct sets is asserted.
+
+Put $t=610895$ and $L=4t=2443580$. The former exponential spacing used $5^{31}$ or $5^{32}$. It is uniqueness of low-degree sums, not that particular spacing, that is needed for coefficient extraction.
+
+\section{A fixed-polynomial carry lemma}
+Let $P\in\Z[X_1,\ldots,X_{31}]$ have degree at most four and $P(0)>0$. Write
+\[
+ c_\alpha=(4-|\alpha|)!\prod_i\alpha_i!\,[X^\alpha]P,
+ \qquad D(B)=\sum_\alpha c_\alpha B^{L-\sum_i\alpha_i w_i}.
+\]
+Choose fixed powers of two $z>\max_\alpha|c_\alpha|$ and $a$ such that
+\[
+ a>\max\{2z\,32^4,2048z,8\},\qquad b\ge2,\qquad B=ab^4.
+\]
+For digit witnesses $0\le n_i<b$, put $g=\sum_i n_iB^{w_i}$. The coefficient of $X^L$ in
+\[
+ (1+\sum_i n_iX^{w_i})^4\sum_\alpha c_\alpha X^{L-\alpha\cdot w}
+\]
+is exactly $24P(\mathbf n)$. This follows from the four-sum property and the multinomial coefficient. Every coefficient has absolute value less than $z(1+\sum n_i)^4<B/2$.
+
+If $b$ is a power of two, define
+\[
+ J_c=2(1+g)^4D(B)+B\sum_{j=0}^{8t}B^j,
+ \qquad T_c=(B-2)B^L.
+\]
+Then binary addition of $J_c$ and $T_c$ has no carry exactly when $P(\mathbf n)=0$. To see this, divide both operands by two: the shifted coefficients lie strictly between zero and $B$, and the mask tests whether the coefficient at position $L$ is precisely $B/2$.
+
+This argument uses a signed sparse coefficient polynomial. It needs neither the dense positive coefficient background nor an enormous fixed index that transports its value from one base to another. Detailed two-sided bounds, the witness-digit mask, central-binomial encoding, and the ratio interface are supplied in the accompanying proof files.
+
+\section{Results and comparison}
+\input{results.tex}
+\input{sun/section.tex}
+\input{nine/section.tex}
+\input{signed_audit/section.tex}
+\input{positive/section.tex}
+\input{native/native_section.tex}
+
+\section{Proof dependencies and reproducibility}
+\input{validation.tex}
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, pinned snapshot cited above.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+\bibitem{sun2021} Z.-W. Sun, \emph{Further results on Hilbert's Tenth Problem}, Science China Mathematics 64 (2021), 281--306.\newline
+\url{https://arxiv.org/abs/1704.03504}
+\bibitem{sun2026} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers}, 2026 preprint, version 2.\newline
+\url{https://arxiv.org/abs/2609.01594v2}
+\end{thebibliography}
+\end{document}

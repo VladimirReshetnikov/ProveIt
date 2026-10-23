@@ -1,0 +1,107 @@
+\section{A ten-integer equation with radically smaller degree}
+\label{sec:sun-b4}
+The new source compiler preserves the same ten unrestricted integer
+unknowns and the same fixed native coefficient tuple as the pinned
+\texttt{31-sun10} equation. Its exact degree is
+\[
+ \boxed{69\,554\,088\,184=113856\cdot610895+27064},
+\]
+versus $589\,042\,901\,992\,797\,851\,562\,527\,064$ previously, a reduction
+by approximately $8.47\times10^{15}$. Its emitted evaluator uses 1,407
+binary operations rather than 1,442: 484 additions, 25 subtractions and
+898 multiplications. The multiplication count increases from 851, so
+the total-operation improvement should not be described as improving
+every circuit metric. Both circuits have 79 fixed leaves.
+
+\paragraph{The changed source.}
+Let $P=\sum_{j=1}^{22}r_j(n+1)^2$ be the pinned quartic in 31 nonnegative
+unknowns. For $P=\sum p_\alpha n^\alpha$, put
+$c_\alpha=(4-|\alpha|)!\prod_j\alpha_j!p_\alpha$.
+Use the certified $B_4$ witness positions $w_1,\ldots,w_{31}$ with
+$t=\max w_j=610895$, and put $L_c=4t$.
+Keep $\beta_S=2^{4269882}$, which is distinct from the native compiler
+port named \texttt{beta}. Define
+\begin{align*}
+ b&=1+3f,&\mathcal B&=\beta_Sb^4,&\mathscr C&=b\mathcal B^t,\\
+ \ell&=\sum_j\mathcal B^{w_j},&
+ D_c&=\sum_\alpha c_\alpha\mathcal B^{L_c-\alpha\cdot w},\\
+ N_0&=\mathcal B^{t+1},&N_1&=4\mathcal B^{8t+1},&N&=N_0N_1,\\
+ M_c&=N_0-1-(b-1)\ell,&
+ T_c&=M_c+(\mathcal B-2)\mathcal B^{L_c}N_0,\\
+ J_c&=2(1+g)^4D_c+\sum_{i=0}^{8t}\mathcal B^{i+1},&S_c&=g+J_cN_0,\\
+ R_c&=(S_c+T_c+1)N+T_c+1,&X&=(N-1)R_c,&Y&=N^2.
+\end{align*}
+All exponents are fixed integers. There is no dummy source input slot.
+The companion proof establishes the necessary bounds for arbitrary
+$0\le g<2\mathscr C$, before assuming that $g$ decodes to a tuple.
+Specifically, if $f\ne0$ and $b$ is square, then
+$0<D_c$, $0<J_c<2\mathcal B^{8t+1}<N_1$ and $0\le S_c,T_c<N$.
+Moreover $3\mid X$, $X>3b$, and $Y>\max\{b,256\}$.
+For square powers of two $b$, binary carry decoding yields
+\[
+ Y\mid\binom{2X}{X}
+ \quad\Longleftrightarrow\quad
+ g=\sum_jn_j\mathcal B^{w_j},\quad 0\le n_j<b,\quad P(n)=0
+\]
+within the prescribed $g$ interval. Arbitrarily large $b$ supply the
+positive direction. This replaces the full source theorem application
+by a proved sparse specialization while preserving its entire interface.
+
+\paragraph{The complete equation.}
+The unknowns are $(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}$.
+Continue the preceding source polynomials by
+\begin{align*}
+ L&=lY,&U&=2LX,&V&=4gwY,&W&=bw,\\
+ A&=U(V+1),&B&=2X+1,&C&=B+(A-2)h,\\
+ P_n&=U^2V,&K&=X+1+k(P_n-2),\\
+ S&=2A-5,&T&=3WC-2(W^2-1),&R_2&=(P_n^2-4)K^2+4.
+\end{align*}
+\[
+ \Delta=8\mathscr C^3gK^2-g^2\bigl(32(C-KL)^2\mathscr C^3+g^2K^2\bigr).
+\]
+\begin{align*}
+ O&=f^2l^2\Delta,&\xi&=zx,\\
+ D&=(A^2-4)C^2+4,&E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,&G&=2(A+2)(A-2)^2E^2-1,\\
+ H&=C+(B-C)F+16EFy,&I&=(G^2-1)H^2+1.
+\end{align*}
+Set
+\begin{align*}
+ r&=T+Sy,&\Sigma&=\xi S^5,&
+ \Theta&=(r^3-rS^2-S^3)(r^2+23S^2),\\
+ a_0&=b\bigl(1+(3O-4)b^2z^2\bigr),&a_1&=R_2,&a_2&=DFI,\\
+ v_0&=1,&v_1&=a_0,&v_2&=a_0(P_n^2+K^2+3),\\
+ Z&=\Sigma m-\Theta,&A_i&=\Sigma^2v_i^2a_i\quad(0\le i\le2),\\
+ V_n&=Z^2+A_2-A_0-A_1,&W_n&=V_n^2+4Z^2A_2-4A_0A_1.
+\end{align*}
+Then the new equation is
+\[
+ \boxed{F_{B_4}=W_n^2-16V_n^2Z^2A_2=0.}
+\]
+These are abbreviations, not additional unknowns. The bridge and finalizer
+are unchanged from the pinned construction; only the source coding changed.
+The source-interface theorem therefore gives the same equivalence between
+integer zeros of $F_{B_4}$ and nonnegative zeros of $P$.
+Together with the inherited calibrated compiler endpoint,
+\[
+ \mathrm{ZFC}\vdash
+ [\neg\exists(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}\ F_{B_4}=0]
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\paragraph{What was proved and what was checked.}
+The new ingredient is the sparse source-interface proof, including its
+unconditional size bounds. It relies on the explicitly certified $B_4$
+positions and standard binary carry identities. Sun 2026 Theorem~4.1 and
+Propositions~6.1--6.2, and the repository's compiler calibration, remain
+external mathematical inputs. No new universal unknown-count theorem,
+global optimality, coefficient-size reduction, or end-to-end Lean/Rocq
+formalization is claimed.
+
+The exact degree is attained by nonzero leading diagonal residues 95,
+909 and 668382 modulo 101, 1009 and 1000003. The finite audit also verifies
+all 402 coefficient recipes, all fixed payload hashes, all 52,360 padded
+four-sums, and the formal 35-term final norm identity. A separate literal
+transcription matches 120 modular assignments and 5,400 named values;
+these last tests are regressions rather than universal equivalence proofs.
+The full proof, circuit and checks are under \texttt{sun/}.

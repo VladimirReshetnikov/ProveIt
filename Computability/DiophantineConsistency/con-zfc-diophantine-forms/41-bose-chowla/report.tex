@@ -1,0 +1,1166 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Finite additive coding for an explicit Con(ZFC) equation},
+ pdfauthor={Prepared for the ProveIt project with ChatGPT assistance},
+ pdfsubject={A ten-integer Diophantine consistency equation and a twelve-positive-variable refinement}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite additive coding for Con(ZFC)}
+\fancyhead[R]{\small ProveIt research supplement}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\B}{\mathcal B}
+\newcommand{\capc}{\mathscr C}
+\newcommand{\bitand}{\mathbin{\&}}
+\newcommand{\ep}{\varepsilon}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+ frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},
+ aboveskip=8pt,belowskip=8pt}
+
+\title{\textbf{Finite additive coding for an explicit\\Con(ZFC) equation}\\[7pt]
+\large Ten unrestricted integer unknowns, degree \(69\,554\,088\,184\),\\
+and a secondary twelve-positive-variable equation of degree \(938\)}
+\author{Prepared for Vladimir Reshetnikov's ProveIt repository\\
+\small Mathematical synthesis, explicit circuits, and reproducible audits}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a fixed polynomial \(F_{10}\in\Z[f,g,h,k,l,w,x,y,z,m]\) for which
+ZFC proves that the absence of integer zeros is equivalent to
+\(\Con(\ZFC)\), for the repository's calibrated proof predicate.
+The polynomial has exact total degree \(69\,554\,088\,184\) and a
+division-free evaluator with \(1\,333\) binary arithmetic operations.
+The existing ten-integer form in package 31 has degree
+\(126496\cdot5^{31}+27064\) and \(1\,442\) operations. The degree therefore
+falls by a factor greater than \(8.46\cdot10^{15}\), while the variable
+count is preserved and the evaluator becomes smaller.
+
+The new mathematical step is to encode quartic monomials with a
+32-element Bose--Chowla \(B_4\) set instead of radix-five exponent
+positions. We prove the complete replacement lemma, including the
+off-center coefficient bound, arbitrary-input size bounds, and binary
+carry argument. Sun's ten-integer bridge and the repository's final
+relation combiner are retained with explicit attribution. A separate
+Pell-majorant improvement gives one equation in twelve positive integers
+of degree \(938\), or three equations of maximum degree \(929\).
+
+The archive supplies all fixed coefficient payloads, executable
+arithmetic circuits, exact finite certificates, proof notes, and source
+provenance. These are ordinary mathematical reductions with explicit
+inherited dependencies; no new end-to-end Lean or Rocq certificate,
+proof of consistency, global minimality, or variable-count record is claimed.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Result, scope, and comparison}
+\label{sec:results}
+
+Throughout, \(\N=\{0,1,2,\ldots\}\). The statement \(\Con(\ZFC)\) means
+that there is no finite derivation of contradiction in the recursive
+ZFC proof system calibrated by ProveIt's K215 endpoint. The endpoint
+identifies a blank-input halt of the fixed machine with such a derivation.
+This convention fixes the arithmetized consistency statement; it is not
+an unspecified truth predicate or an existentially selected theory.
+
+\begin{theorem}[Main fixed instance]
+\label{thm:main}
+Let \(F_{10}\) be the polynomial defined in
+Sections~\ref{sec:fixed}--\ref{sec:finalizer}, equivalently by the delivered
+file \texttt{generated/equation10.json} and its fixed bindings. Then
+\[
+\ZFC\ \vdash\
+\left[
+ \exists(f,g,h,k,l,w,x,y,z,m)\in\Z^{10}\quad F_{10}=0
+ \ \longleftrightarrow\ \neg\Con(\ZFC)
+\right].
+\]
+Consequently ZFC proves
+\[
+\boxed{\quad
+ \left(\forall(f,g,h,k,l,w,x,y,z,m)\in\Z^{10},\ F_{10}\ne0\right)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\quad}
+\]
+The total degree is exactly \(69\,554\,088\,184\). Its delivered
+arithmetic circuit uses \(484\) additions, \(25\) subtractions, and
+\(824\) multiplications: \(1\,333\) operations in total.
+\end{theorem}
+
+All letters introduced as abbreviations denote explicit polynomials in
+these ten supplied variables. Circuit registers are not additional
+existential unknowns. There are no variable exponents, digit-extraction
+operations, divisions, radicals, unspecified indices, or free coefficient
+parameters in the equation.
+
+The archive also gives a second result, proved in
+Section~\ref{sec:positive-majorant}: twelve \emph{strictly positive}
+unknowns, either a degree-\(938\) equation with \(122\) operations or a
+three-equation system of maximum residual degree \(929\), with \(117\)
+operations. Positive and unrestricted integer domains must not be
+silently interchanged.
+
+\subsection{The reviewed baseline}
+
+The review is pinned to ProveIt commit
+\begin{center}
+\texttt{22e75dd6b87b1b199bb08c778d7cf075ae5aae08}.
+\end{center}
+The relevant directory is
+\begin{center}\small
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}.
+\end{center}
+The comparison includes the source-31 through source-37 refinements
+available at that commit, not merely an earlier universal equation.
+The decisive comparisons are as follows.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.30\linewidth}p{0.14\linewidth}p{0.29\linewidth}r@{}}
+\toprule
+Presentation & Domain & Total degree / maximum degree & Operations\\
+\midrule
+Source 31, one equation & \(10\) in \(\Z\)
+ & \(126496\cdot5^{31}+27064\) & \(1\,442\)\\
+New additive code, same finalizer & \(10\) in \(\Z\)
+ & \(69\,554\,088\,184\) & \(1\,333\)\\
+New code, literal Sun finalizer & \(10\) in \(\Z\)
+ & \(1\,323\,756\,220\,880\) & \(1\,383\)\\
+\midrule
+Source 34, low-degree equation & \(12\) positive & \(1\,022\) & \(124\)\\
+New majorant, one equation & \(12\) positive & \(938\) & \(122\)\\
+Source 34, associated system & \(12\) positive & \(1\,013\) & \(120\)\\
+New majorant, three equations & \(12\) positive & \(929\) & \(117\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The old ten-integer degree is exactly
+\[
+589\,042\,901\,992\,797\,851\,562\,527\,064.
+\]
+Its ratio to the new degree is approximately
+\(8.4688465822\cdot10^{15}\). The evaluator saves \(109\) operations,
+about \(7.56\%\). These improvements hold simultaneously at the same
+ten-integer variable count.
+
+Other existing forms retain advantages in other metrics. In particular,
+the degree-\(1081\), twelve-positive-variable evaluator takes only
+\(108\) operations; the new degree-\(938\) presentation does not dominate
+that evaluator. Existing nine-positive-variable and low-degree
+many-variable forms remain relevant. The source-31 parent itself is a
+system of \(22\) quadratic equations in \(31\) positive variables. There
+is no single ordering called \emph{simplest} that makes variable count,
+degree, circuit size, coefficient storage, and proof complexity equivalent.
+The new ten-integer result is a strict improvement on the reviewed
+ten-integer baseline in both reported complexity metrics.
+
+\subsection{What is new and what is inherited}
+
+The general reduction to ten unrestricted integer variables belongs to
+Sun~\cite{sun2026}. The fixed consistency machine, its compiler, the
+source quartic, and the structural three-radical finalizer belong to the
+existing ProveIt construction~\cite{repo}. Bose--Chowla additive sets are
+classical~\cite{bosechowla}. The contribution here is their application
+to the \emph{entire bounded-degree monomial simplex}, together with a
+complete proof that the altered source code meets every downstream
+hypothesis. The source reversal target is also tightened to \(4W\),
+and the fixed powers are shared explicitly.
+
+The positive-variable improvement is independent of the additive code.
+It combines the complete coordinate shift in source 37 with the
+translated carrier in source 34, and proves a substantially smaller
+separating majorant. It uses the same complete coefficient tuple.
+
+The claimed novelty is relative to the reviewed repository
+constructions. We do not infer worldwide priority from an absence of
+search results or claim an optimal \(B_4\) set.
+
+\section{A completely fixed quartic source}
+\label{sec:fixed}
+
+Use the complete source-31 coefficient tuple associated with the
+\(121\times8801\), \(943\)-tile compiler. Its four equation ports are
+\[
+\beta=\texttt{beta},\quad K_0=\texttt{K},\quad
+M_C=\texttt{MC},\quad M_F=\texttt{MF\_source}.
+\]
+The last port is the \emph{already shifted} mask. Replacing only one
+member by a coefficient from a smaller tuple would invalidate the
+binding, so no such mixture is made here.
+
+The payloads are nonnegative integers encoded as unsigned little-endian
+bytes and then gzip-compressed. Their exact bit lengths are
+\[
+(1\,064\,921,\ 1\,070\,004,\ 1\,064\,921,\ 1\,064\,922).
+\]
+They occupy \(533\,099\) uncompressed bytes in total. The included
+coefficient builder reconstructs them from the supplied \(943\) Wang
+tiles and the \(430\) transitions of the fixed \(215\)-state machine.
+The payloads, coefficient recipes, and manifests fix actual integers,
+not parameters to be chosen after deciding consistency.
+
+Let \(r_1,\ldots,r_{22}\) be the quadratic residuals listed in
+Appendix~\ref{app:parent}, with these four fixed ports. In the ordered
+31 source coordinates define
+\begin{equation}
+P(n_1,\ldots,n_{31})
+   =\sum_{j=1}^{22}r_j(n_1+1,\ldots,n_{31}+1)^2.
+\label{eq:parent}
+\end{equation}
+The shift is essential: the parent variables are positive, while the
+encoded variables are in \(\N\). The inherited compiler and calibrated
+machine endpoint prove
+\begin{equation}
+\exists n\in\N^{31}\ P(n)=0
+\quad\longleftrightarrow\quad
+\text{blank K215 halts}
+\quad\longleftrightarrow\quad
+\neg\Con(\ZFC).
+\label{eq:inherited}
+\end{equation}
+The included \texttt{KEndpoint215.lean} records the final theorem as
+\texttt{blank\_halts\_iff\_zfc\_refutation}; its imports and the full
+compiler are inherited dependencies, not newly rebuilt formal proofs.
+
+The source polynomial has exact degree four. For example, the
+\(\tau^4\) coefficient in the sum of squares is nonzero. Also \(P(0)>0\):
+at the all-one parent assignment the fifth residual \(E-X(a-E)\) is
+one. This positivity will make the reversed encoding polynomial
+positive even at inputs that have not yet passed the digit test.
+
+Write
+\[
+P(n)=\sum_{|\alpha|\le4}p_\alpha n^\alpha,\qquad
+c_\alpha=(4-|\alpha|)!\prod_{i=1}^{31}\alpha_i!\,p_\alpha.
+\]
+The exact reconstruction produces \(402\) nonzero weighted records.
+Their coefficients are small polynomial recipes in the four fixed
+ports; after expanding those recipes there are \(675\) symbolic terms.
+Let \(L=\max_\alpha|p_\alpha|\). The inherited, replayed coefficient
+bound is
+\[
+|c_\alpha|+1<2^{4\,269\,855}.
+\]
+Retain the fixed extra constant
+\begin{equation}
+\boxed{\beta_S=2^{4\,269\,882}}.
+\label{eq:betas}
+\end{equation}
+Since \(48\cdot33^4=56\,924\,208<2^{27}\), it satisfies
+\begin{equation}
+\beta_S>48\cdot33^4L.
+\label{eq:coefbound}
+\end{equation}
+Its exponent is even. Both this strict coefficient margin and the
+congruence \(\beta_S\equiv1\pmod3\) will be used.
+
+The authoritative new binding is \texttt{data/INSTANCE.json}. The
+upstream instance file is retained for fixed coefficients and provenance;
+its old radix-five exponents and old output paths are superseded.
+
+\section{Replacing positional exponents by a finite additive code}
+\label{sec:b4}
+
+\subsection{The exact property needed}
+
+A \(B_4\) set is a set whose sums of four elements, with repetitions
+allowed and order ignored, uniquely determine their multisets. We need
+\(32\) elements, not \(31\): one is the zero padding coordinate for
+monomials of degree below four.
+
+Fix the following ordered set:
+\begin{equation}
+\begin{split}
+(w_0,\ldots,w_{31})={}&(
+0,51609,55430,68596,78030,89463,90233,110498,\\
+&110508,128615,136498,211819,241519,305379,312706,314312,\\
+&369115,417382,429683,435112,450230,462314,469608,490199,\\
+&501539,507151,524944,550792,559943,573626,607799,610895).
+\end{split}
+\label{eq:weights}
+\end{equation}
+Thus \(W=w_{31}=610\,895\), and \(w_0=0\) is not an unknown.
+The delivered checker verifies all
+\(\binom{35}{4}=52\,360\) unordered four-element multisets and confirms
+that their sums are distinct modulo \(1\,048\,575\). This stronger
+modular property implies uniqueness of their integer sums.
+
+\begin{lemma}[Full-simplex injectivity]
+\label{lem:injectivity}
+For \(|\alpha|\le4\), let
+\[
+e(\alpha)=\sum_{i=1}^{31}\alpha_iw_i.
+\]
+Then \(e\) is injective on all such exponent vectors.
+\end{lemma}
+\begin{proof}
+Represent \(\alpha\) by \(\alpha_i\) copies of \(w_i\), padded by
+\(4-|\alpha|\) copies of zero. Equal sums imply equal four-element
+multisets. In particular, each positive weight has the same
+multiplicity, so the exponent vectors agree.
+\end{proof}
+
+Checking only collisions among the \(402\) source monomials would be
+insufficient. The other factor in coefficient extraction contains
+\emph{every} monomial of total degree at most four. The lemma covers the
+whole simplex and therefore prevents those missing-source terms from
+contaminating the distinguished coefficient.
+
+\subsection{Origin and independent verification of the weights}
+
+The weights come from the classical Bose--Chowla construction
+\cite{bosechowla}. Work in
+\[
+\mathbb F_2[t]/(t^{20}+t^3+1),
+\]
+and let \(\theta\) be the residue of \(t\). The supplied program checks
+that its successive powers enumerate all \(2^{20}-1\) nonzero bit
+patterns and return to one. This finite check shows at once that the
+quotient is a field and \(\theta\) is primitive; no external table of
+primitive polynomials is assumed.
+
+Put \(Q=2^{20}-1=1\,048\,575\). The subfield of order \(32\) is
+\[
+\{0\}\ \cup\ \{\theta^{33825j}:0\le j<31\}.
+\]
+For \(a\) in this subfield define \(e_a\in[0,Q)\) by
+\(\theta^{e_a}=\theta+a\). If two sums of four such logarithms agree
+modulo \(Q\), the corresponding products of four factors \(\theta+a\)
+agree. Their monic degree-four polynomials have a difference of degree
+at most three that vanishes at \(\theta\). Since \(\theta\) has degree
+four over \(\mathbb F_{32}\), that difference is zero. Unique
+factorization gives equality of the multisets.
+
+Multiply all logarithms by the unit \(208418\) modulo \(Q\), translate
+by \(-97920\), and take the sorted representatives in \([0,Q)\).
+The result is \eqref{eq:weights}. The translation removes a cyclic
+gap of length \(437680\). This was a finite search for a convenient
+set, not a proof that \(610895\) is the smallest possible diameter.
+The separate exhaustive multiset check certifies the literal list
+independently of the finite-field implementation.
+
+\subsection{The coefficient-isolation identity}
+
+Define the ordinary univariate polynomial
+\begin{equation}
+D_c(T)=\sum_{|\alpha|\le4}c_\alpha T^{4W-e(\alpha)}.
+\label{eq:dcode}
+\end{equation}
+Every exponent is nonnegative. Equality in \(e(\alpha)\le4W\) causes
+no problem, so a reversal target \(4W+1\), or the old \(5W\), is unnecessary.
+
+\begin{lemma}[Quartic isolation and coefficient bound]
+\label{lem:isolation}
+For arbitrary \(n_1,\ldots,n_{31}\),
+\[
+[T^{4W}]\left(1+\sum_{i=1}^{31}n_iT^{w_i}\right)^4D_c(T)
+  =24P(n).
+\]
+If all \(n_i\ge0\), every coefficient of this product has absolute
+value at most
+\[
+24L\left(1+\sum_i n_i\right)^4.
+\]
+\end{lemma}
+\begin{proof}
+The term indexed by \(\gamma\) in the multinomial factor can contribute
+to degree \(4W\) with the term indexed by \(\alpha\) in \(D_c\) only if
+\(e(\gamma)=e(\alpha)\). Lemma~\ref{lem:injectivity} gives
+\(\gamma=\alpha\). Its multinomial coefficient is
+\[
+\frac{24}{(4-|\alpha|)!\prod_i\alpha_i!},
+\]
+which cancels the factorial in \(c_\alpha\), proving the identity.
+
+Different \(\alpha\)'s give different exponents of \(D_c\), and
+\(|c_\alpha|\le24L\). For any coefficient of the product, bound each
+contributing coefficient of \(D_c\) by \(24L\), and sum all the
+nonnegative coefficients of the multinomial factor. Their sum is
+\((1+\sum_i n_i)^4\). No factor counting the \(402\) source terms is needed.
+\end{proof}
+
+Because \(P(0)>0\), the leading coefficient of \(D_c\) is \(24P(0)>0\).
+For every integer \(B\) with \(B-1>24L\),
+\[
+\left|D_c(B)-24P(0)B^{4W}\right|
+ \le24L\sum_{j=0}^{4W-1}B^j<B^{4W}.
+\]
+In particular \(D_c(B)>0\). This estimate holds before any decoding
+assumption on the integer being tested.
+
+\section{The new two-variable source code}
+\label{sec:coding}
+
+The only supplied variables in this section are \(f,g\in\Z\). Put
+\begin{align}
+b&=1+3f,& \B&=\beta_Sb^4,&
+\ell_c&=\sum_{i=1}^{31}\B^{w_i},\nonumber\\
+N_0&=\B^{W+1},&
+N_1&=4\B^{8W+1},&
+N&=N_0N_1=4\B^{9W+2},\nonumber\\
+M_c&=N_0-1-(b-1)\ell_c,&
+T_c&=M_c+(\B-2)\B^{4W}N_0,\nonumber\\
+J_c&=2(1+g)^4D_c(\B)+\B\sum_{j=0}^{8W}\B^j,&
+S_c&=g+J_cN_0,\nonumber\\
+R_c&=(S_c+T_c+1)N+T_c+1,&
+X&=(N-1)R_c,&Y&=N^2,\nonumber\\
+\capc&=b\B^W.
+\label{eq:newsource}
+\end{align}
+Here and below fixed-index sums and fixed integer powers are ordinary
+polynomial notation. In the circuit they are evaluated by binary
+additions and multiplications, without division.
+
+\Needspace{8\baselineskip}
+\begin{proposition}[Replacement source lemma]
+\label{prop:source}
+The formulas \eqref{eq:newsource} have these properties.
+\begin{enumerate}
+\item If \(P\) has a nonnegative integer zero, one can choose \(f\)
+arbitrarily large, with \(b\) both a square and a power of two, and
+choose \(b\le g<\capc\), so that
+\[
+Y\mid\binom{2X}{X}.
+\]
+\item Conversely, \(f\ne0\), \(0\le g<2\capc\), \(b\) both a square
+and a power of two, and this divisibility imply that \(P\) has a
+nonnegative integer zero.
+\item Even before assuming that \(b\) is a power of two, the conditions
+\(f\ne0\), \(b\) a square, and \(0\le g<2\capc\) imply
+\[
+0\le S_c,T_c<N,\qquad 3\mid X,\qquad
+X>3b,\qquad Y>\max(b,256).
+\]
+\end{enumerate}
+\end{proposition}
+
+\subsection{Bounds before decoding}
+
+Since \(b=1+3f\) is a square and \(f\ne0\), it is at least four and
+\(f>0\). Inequality \eqref{eq:coefbound} gives \(\B>2b\).
+The base-\(\B\) digits of \(M_c\) are \(\B-b\) at the selected positions
+\(w_i\), and \(\B-1\) at all other positions below \(W+1\).
+Consequently
+\[
+0\le M_c<N_0,\quad 0\le g<N_0,\quad 0\le T_c<N.
+\]
+The bound on \(g\) uses \(g<2b\B^W<N_0\).
+
+For arbitrary such \(g\), not necessarily a correctly packed witness,
+\(g+1\le2b\B^W\). Let \(A_c=48L(2b)^4\). The coefficient margin gives
+\(A_c<\B-2\). Positivity and the geometric upper bound on \(D_c\) imply
+\[
+\begin{split}
+0<J_c
+&\le A_c\B^{4W}\sum_{j=0}^{4W}\B^j+
+       \B\sum_{j=0}^{8W}\B^j\\
+&<\frac{(\B-2)+\B}{\B-1}\B^{8W+1}
+ =2\B^{8W+1}<N_1.
+\end{split}
+\]
+Thus \(0\le S_c<N\) as well. Because \(\beta_S\equiv b\equiv1\pmod3\),
+we have \(\B\equiv N\equiv1\pmod3\) and hence \(3\mid X\).
+Finally \(R_c\ge N+1>\B\ge b\), and the displayed sizes of \(N,X,Y\)
+give the strict inequalities in the proposition.
+
+The cap retains exactly the form required by the downstream theorem:
+\begin{equation}
+\capc=2^{4\,269\,882W}b^{4W+1}.
+\label{eq:capform}
+\end{equation}
+Both exponents are fixed positive integers, and the exponent of two
+is even.
+
+\subsection{The digit mask and the distinguished coefficient}
+
+Assume now that \(b\) is a power of two. Then \(\B,N_0,N\) are powers
+of two. Bitwise conjunction is denoted by \(\bitand\) in the proof
+only. The literal digits of \(M_c\) imply
+\[
+g\bitand M_c=0
+\quad\Longleftrightarrow\quad
+g=\sum_{i=1}^{31}n_i\B^{w_i}\quad\text{with }0\le n_i<b.
+\]
+At selected positions the mask allows precisely the low
+\(\log_2 b\) bits; elsewhere it allows none. This elementary mask
+statement is valid for arbitrary increasing positions, as in
+Sun's Lemma 2.4~\cite{sun2021}; see also \cite{bayer2026}.
+
+For such decoded digits put
+\[
+K_c=
+\left(1+\sum_i n_i\B^{w_i}\right)^4D_c(\B)
++\frac{\B}{2}\sum_{j=0}^{8W}\B^j.
+\]
+By \eqref{eq:coefbound} and Lemma~\ref{lem:isolation}, every coefficient
+before padding has absolute value strictly less than \(\B/2\).
+Therefore each displayed base-\(\B\) digit of \(K_c\) is an integer
+strictly between zero and \(\B\), with no carries or borrows.
+Its digit at position \(4W\) is \(\B/2+24P(n)\).
+Among the integers strictly between zero and \(\B\), only \(\B/2\)
+has zero conjunction with \(\B/2-1\). Thus
+\[
+K_c\bitand\bigl((\B/2-1)\B^{4W}\bigr)=0
+\quad\Longleftrightarrow\quad P(n)=0.
+\]
+
+Since \(J_c=2K_c\), shifting both operands by one binary bit gives
+\begin{equation}
+J_c\bitand\bigl((\B-2)\B^{4W}\bigr)=0
+\quad\Longleftrightarrow\quad P(n)=0.
+\label{eq:binaryshift}
+\end{equation}
+It would be incorrect to claim that doubling preserves all base-\(\B\)
+digits without carries. Identity \eqref{eq:binaryshift} uses a
+\emph{binary shift}, so those possible base-\(\B\) carries do not matter.
+
+Because \(g,M_c<N_0\), the low and high binary blocks separate:
+\[
+S_c\bitand T_c=0
+\quad\Longleftrightarrow\quad
+g\bitand M_c=0
+\ \text{and}\
+J_c\bitand\bigl((\B-2)\B^{4W}\bigr)=0.
+\]
+The carry/binomial identity of Sun~\cite[Lemma 2.2]{sun2021}, for any
+power of two \(N\) and \(0\le S_c,T_c<N\), states that the definition of
+\(R_c,X,Y\) in \eqref{eq:newsource} gives
+\[
+S_c\bitand T_c=0
+\quad\Longleftrightarrow\quad
+N^2\mid\binom{2X}{X}.
+\]
+There is no monomial-position assumption in this last identity.
+This proves the converse in Proposition~\ref{prop:source}.
+
+For the forward direction, start with a zero \(n\) and choose
+\(b=4^r\) arbitrarily large, exceeding all its coordinates. Then
+\(f=(b-1)/3\) is a positive integer and can be arbitrarily large.
+Pack \(g=\sum_i n_i\B^{w_i}\).
+Since \(P(0)>0\), at least one coordinate is nonzero, so \(g\ge\B\ge b\).
+The usual finite-digit bound gives \(g<b\B^W=\capc\).
+The mask, coefficient test, and carry identity prove the required
+divisibility. This completes all parts of the replacement lemma.
+
+\section{The unchanged ten-integer bridge}
+\label{sec:bridge}
+
+Introduce the remaining eight supplied integer variables
+\(h,k,l,w,x,y,z,m\). With \(X,Y,b,\capc\) as above, define
+\begin{align}
+L_b&=lY,\quad U=2L_bX,\quad V=4gwY,\quad W_b=bw,\nonumber\\
+A&=U(V+1),\quad B_b=2X+1,\quad C=B_b+(A-2)h,\nonumber\\
+P_n&=U^2V,\quad K=X+1+k(P_n-2),\nonumber\\
+S&=2A-5,\quad T=3W_bC-2(W_b^2-1),\nonumber\\
+R_2&=(P_n^2-4)K^2+4,\nonumber\\
+\Delta_b&=8\capc^3gK^2
+ -g^2\{32(C-KL_b)^2\capc^3+g^2K^2\},\nonumber\\
+O&=f^2l^2\Delta_b,\quad \xi=zx,\nonumber\\
+D&=(A^2-4)C^2+4,\quad E=C^2D\xi,\nonumber\\
+F&=4(A^2-4)E^2+1,\quad
+G^*=2(A+2)(A-2)^2E^2-1,\nonumber\\
+\Omega&=16E,\quad H^*=C+(B_b-C)F+\Omega Fy,\nonumber\\
+I^*&=((G^*)^2-1)(H^*)^2+1.
+\label{eq:bridge}
+\end{align}
+These are Sun's bridge and modified Lucas certificate
+\cite[Propositions 6.1--6.2 and Theorems 3.1, 4.1]{sun2026}, in the
+source-31 factorization. The local subscript \(b\) merely distinguishes
+these symbols from earlier bounds. In particular, \(L_b\) is not the
+coefficient bound \(L\), and \(B_b\) is not the coding base \(\B\).
+
+For clarity, the exact imported contract is the following.
+
+\begin{proposition}[Sun bridge contract, specialized]
+\label{prop:bridge}
+For source polynomials satisfying Proposition~\ref{prop:source} and
+cap \eqref{eq:capform}, the formulas \eqref{eq:bridge} have these properties.
+\begin{enumerate}
+\item A zero of \(P\) yields \(f,g,h,k,l,w\), with \(f\) as large as
+needed and \(A>2\), such that \(b\) and \(R_2\) are integer squares,
+\(S\mid T\), \(C=u_{B_b}(A)\), and \(O>0\).
+\item Given these positive bridge witnesses, the modified Lucas
+interpolation theorem permits \(\xi>0\) divisible by any prescribed
+positive integer, and permits an arbitrary residue class for \(y\)
+modulo \(\xi\), while making \(DFI^*\) a square.
+\item Conversely, \(b\) a square, \(O>0\), \(\xi\ne0\),
+\(DFI^*\) and \(R_2\) squares, and \(S\mid T\), imply a nonnegative
+zero of \(P\).
+\end{enumerate}
+\end{proposition}
+
+Here \(u_j(A)\) denotes the Lucas sequence with \(u_0=0,u_1=1\), and
+\(u_{j+1}=Au_j-u_{j-1}\). It occurs in the proof contract, not as an
+operation in the final equation. The reverse bridge first obtains
+\(g>0\), \(K\ne0\), and \(0<g<2\capc\) from \(\Delta_b>0\), then
+recovers the power-of-two and binomial conditions and invokes the
+source lemma. Its numerical hypotheses \(3\mid X\), \(X>3b\), and
+\(Y>\max(b,256)\) were re-established above, before decoding.
+Thus the use of the bridge does not assume that radix-five positions
+are still present.
+
+On forward witnesses, \(\Delta_b\) is a positive integer multiple of
+\(g\), and \(g\ge b\ge4\). Hence
+\[
+\Delta_b\ge4,\qquad O=f^2l^2\Delta_b\ge4.
+\]
+Also \(S=2A-5\) is an odd, nonzero integer at \emph{every} integer
+assignment, without any solution hypotheses.
+
+\section{The final polynomial and proof of equivalence}
+\label{sec:finalizer}
+
+For reviewability we restate the source-31 finalizer and its proof.
+This section is inherited structure with the new source code substituted.
+
+\subsection{A divisibility and nonvanishing merger}
+
+Let
+\[
+\pi(v)=(v^3-v-1)(v^2+23),\qquad
+\Sigma=\xi S^5,\qquad r=T+Sy,
+\]
+and define
+\begin{equation}
+\Theta=(r^3-rS^2-S^3)(r^2+23S^2).
+\label{eq:theta}
+\end{equation}
+The polynomial \(\pi\) has no rational root and has a root modulo
+every positive integer. Here is a short proof of the latter fact.
+For an odd prime \(p\ne23\), the cubic has nonzero discriminant \(-23\).
+If it has a root, that root is simple. Otherwise it is irreducible;
+Frobenius acts as an even three-cycle, so its discriminant is a
+nonzero square modulo \(p\), and \(v^2+23\) has a simple root.
+At \(p=23\), the cubic has the simple root \(3\).
+Hensel lifting handles all odd prime powers. Since \(-23\equiv1\pmod8\),
+it is a square in the \(2\)-adic integers. The Chinese remainder
+theorem completes the argument. The rational-root test rules out a
+rational root of the cubic, and the quadratic is positive on \(\mathbb Q\).
+
+Since \(S\ne0\), equation \eqref{eq:theta} never gives \(\Theta=0\).
+If \(\Sigma\mid\Theta\), then \(S\mid T\): otherwise select a prime with
+\(\alpha=v_p(S)>\beta=v_p(T)\). The two homogeneous factors in
+\(\Theta\) have valuations exactly \(3\beta\) and \(2\beta\), by their
+unique least-valuation terms. Thus \(v_p(\Theta)=5\beta<5\alpha\),
+contradicting \(S^5\mid\Theta\).
+
+Conversely, if \(S\mid T\) and \(\xi\ne0\), write \(T=Sq\), select a
+root \(c\) of \(\pi\) modulo \(|\xi|\), and prescribe
+\(y\equiv c-q\pmod{\xi}\). Then \(\Sigma\mid\Theta\).
+This is precisely the residue freedom retained by
+Proposition~\ref{prop:bridge}.
+
+\subsection{Merging two square requirements}
+
+Define three radicands and three weights:
+\begin{align}
+r_0&=b\{1+(3O-4)b^2z^2\},&
+r_1&=R_2,&r_2&=DFI^*,\nonumber\\
+v_0&=1,&v_1&=r_0,&v_2&=r_0(P_n^2+K^2+3).
+\label{eq:radicands}
+\end{align}
+If \(z\ne0\) and \(r_0\) is a square, its two displayed factors are
+coprime. Therefore \(b\) is a signed square; \(b\equiv1\pmod3\)
+excludes zero and negative squares. The possible zero second factor
+would force \(|b|=1\), also giving \(b=1\).
+Thus \(b\) is a positive square, and
+\(1+(3O-4)(bz)^2\) is a square. Since \(bz\ne0\), positivity follows
+immediately: if \(O\le0\), this integer is at most
+\(1-4(bz)^2<0\). Hence \(O>0\).
+
+Conversely, on forward witnesses \(O\ge4\).
+The integer \(d=3O-4>0\) is \(2\pmod3\), hence nonsquare.
+A positive Pell unit gives a solution \(u^2-dv^2=1\) with \(v>0\)
+divisible by \(b\): raise the unit to its finite order modulo \(b\).
+Writing \(v=bz\) gives \(z>0\) and makes \(r_0\) a square.
+Prescribe this \(z\) as a divisor of \(\xi\) in the interpolation
+theorem and set \(x=\xi/z\). No extra supplied unknown is used.
+
+\subsection{Why the small weights force each square}
+
+Whenever \(z\ne0\), one has \(|r_0|>1\).
+If \(r_0=0\) or \(r_0=\pm1\), the defining factors force \(|b|=1\);
+then \(b=1,f=0,O=0\) and \(r_0=1-4z^2\le-3\), a contradiction.
+Moreover
+\[
+\sqrt{|r_1|}\le P_n^2+K^2+2.
+\]
+Indeed \(|r_1|\le(P_n^2+4)K^2+4\), and subtracting this from
+\((P_n^2+K^2+2)^2\) leaves
+\(P_n^4+K^4+P_n^2K^2+4P_n^2\ge0\).
+Consequently
+\begin{equation}
+|v_1|>\sqrt{|r_0|},\qquad
+|v_2|>\sqrt{|r_0|}+|v_1|\sqrt{|r_1|}.
+\label{eq:separation}
+\end{equation}
+
+If a signed sum \(\sum_{j=0}^2\ep_jv_j\sqrt{r_j}\) is rational,
+take an automorphism of the multiquadratic splitting field and the
+largest index whose nonzero radical term it changes.
+The magnitude of that term is at least \(|v_j|\), while the sum of
+all earlier magnitudes is strictly smaller by \eqref{eq:separation}.
+Its change cannot cancel. Thus every nonzero radical is fixed by
+every automorphism and is rational; a rational square root of an
+integer is integral. Zero radicands are already squares.
+The argument uses complex absolute values and therefore does not
+presuppose that the radicands are nonnegative or independent.
+
+\subsection{The radical-free equation}
+
+Set
+\begin{align}
+Z_n&=\Sigma m-\Theta,&
+A_j&=\Sigma^2v_j^2r_j\quad(0\le j\le2),\nonumber\\
+V_n&=Z_n^2+A_2-A_0-A_1,&
+W_n&=V_n^2+4Z_n^2A_2-4A_0A_1.
+\label{eq:norminputs}
+\end{align}
+The requested polynomial is
+\begin{equation}
+\boxed{\qquad F_{10}=W_n^2-16V_n^2Z_n^2A_2.\qquad}
+\label{eq:f10}
+\end{equation}
+Equations \eqref{eq:parent}--\eqref{eq:f10}, the literal weights, and
+the supplied fixed integer tuple completely specify it.
+The formal identity
+\begin{equation}
+F_{10}=\prod_{\ep\in\{-1,1\}^3}
+\left(Z_n+\sum_{j=0}^2\ep_j\sqrt{A_j}\right)
+\label{eq:normidentity}
+\end{equation}
+is used only in its proof. The evaluator contains no radicals.
+An exact expansion of the right side has \(35\) integer polynomial
+terms in \(Z_n,A_0,A_1,A_2\); the independent symbolic check compares
+it coefficientwise to the left side.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}, apart from the degree]
+Start with \(P(n)=0\). The replacement source lemma and the positive
+bridge give the required square and divisibility conditions, with
+\(O\ge4\). The Pell construction gives \(z>0\) making \(r_0\) square.
+The interpolation theorem supplies \(\xi>0\) divisible by \(z\),
+and a \(y\) in the prescribed congruence class, such that \(r_2\) is
+square and \(\Sigma\mid\Theta\). Put \(x=\xi/z\).
+All three \(r_j\) are now integer squares. Select \(m\) so that
+\(\Sigma m-\Theta\) is the negative of one signed sum of their
+weighted integer roots multiplied by \(\Sigma\).
+One factor of \eqref{eq:normidentity} vanishes, giving \(F_{10}=0\).
+
+Conversely suppose \(F_{10}=0\) at an arbitrary integer assignment.
+We always have \(S\ne0\) and \(\Theta\ne0\).
+If \(\Sigma=0\), all \(A_j\) vanish and \eqref{eq:f10} becomes
+\(\Theta^8\ne0\), impossible. Thus \(\xi=zx\ne0\), in particular
+\(z\ne0\). Divide a vanishing factor of \eqref{eq:normidentity}
+by \(\Sigma\); it gives a rational weighted sum of the roots of
+the \(r_j\). The separation argument makes all of them integer
+squares, and the same factor gives \(\Sigma\mid\Theta\).
+The merger therefore gives \(S\mid T\), \(b\) square, and \(O>0\).
+The reverse Sun bridge and Proposition~\ref{prop:source} give a
+nonnegative zero of \(P\).
+
+Composition with \eqref{eq:inherited} proves
+\(\exists F_{10}=0\leftrightarrow\neg\Con(\ZFC)\).
+All imported results and the displayed arguments are ordinary
+mathematics formalizable in ZFC. Classical negation gives the
+stated equivalence for lack of solutions. This argument neither
+assumes nor establishes which side is true in the standard model.
+\end{proof}
+
+\section{Exact degree and the small evaluator}
+\label{sec:degree}
+
+\subsection{A symbolic degree calculation}
+
+Let
+\[
+n=36W+8=\deg N,\qquad c=4W+1=\deg\capc.
+\]
+All degrees in this section give each of the ten supplied unknowns
+degree one and each fixed coefficient degree zero. Propagating degrees
+through the displayed formulas gives the following useful checkpoints:
+\begin{center}
+\small
+\begin{tabular}{@{}lr@{\qquad}lr@{}}
+\toprule
+Expression & Degree & Expression & Degree\\
+\midrule
+\(D_c(\B)\) & \(16W\) & \(J_c\) & \(32W+4\)\\
+\(N,S_c\) & \(n\) & \(R_c\) & \(2n\)\\
+\(X\) & \(3n\) & \(Y\) & \(2n\)\\
+\(A\) & \(7n+3\) & \(C\) & \(7n+4\)\\
+\(P_n\) & \(12n+4\) & \(K\) & \(12n+5\)\\
+\(\Delta_b\) & \(28n+3c+14\) &
+\(O\) & \(28n+3c+18\)\\
+\(r_0\) & \(28n+3c+23\) &
+\(r_1\) & \(48n+18\)\\
+\(r_2\) & \(616n+340\) &
+\(\Sigma\) & \(35n+17\)\\
+\(v_2\) & \(52n+3c+33\) &
+\(A_2\) & \(790n+6c+440\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are attained degrees, not merely syntactic upper bounds.
+For example, the geometric-sum term uniquely dominates \(J_c\);
+the leading term of \(\Delta_b\) is supplied by
+\(-32g^2(C-KL_b)^2\capc^3\), with \(KL_b\) dominating \(C\);
+and \(K^2\) uniquely dominates the parenthesis in \(v_2\).
+Following the nonzero leaders verifies the subsequent rows.
+
+The scaled third radicand \(A_2\) strictly dominates \(A_0,A_1,Z_n^2\).
+In the final norm its fourth power has coefficient one and dominates
+all other terms. Consequently
+\begin{align*}
+\deg F_{10}
+ &=4(790n+6c+440)\\
+ &=3160n+24c+1760\\
+ &=113856W+27064\\
+ &=\boxed{69\,554\,088\,184}.
+\end{align*}
+This argument depends on the nonzero positive \(\beta_S\), not on
+an accidental cancellation among the four native compiler ports.
+
+As a separate finite attainment certificate, substitute every supplied
+unknown by one indeterminate and compute the degree and leading
+coefficient modulo three primes. At the claimed degree the leading
+coefficients are \(95\pmod{101}\), \(909\pmod{1009}\), and
+\(668382\pmod{1000003}\). A single nonzero such coefficient already
+proves attainment once the degree upper bound is known. The checker
+computes these from the actual fixed tuple.
+
+\subsection{Circuit representation and operation convention}
+
+The JSON circuit is an ordered list of literal, fixed, variable,
+addition, subtraction, and multiplication nodes. Every arithmetic
+node references earlier nodes. Only the ten listed variable leaves
+are quantified. The \(79\) fixed leaves are \(\beta_S\) and the
+canonical nonliteral coefficient recipes, bound to the actual
+integer payloads. Fixed leaves and reuse are free; each binary
+addition, subtraction, and multiplication, including multiplication
+by a numeral, is counted. Powers are expanded into multiplication
+nodes. The count does not assert that arithmetic on million-bit
+coefficients takes unit bit complexity.
+
+For source evaluation, put \(t_0=\B^W\) and
+\(t_i=\B^{W-w_i}\). Then
+\[
+D_c(\B)=
+\sum_\alpha c_\alpha t_0^{4-|\alpha|}
+                       \prod_{i=1}^{31}t_i^{\alpha_i}.
+\]
+A finite shared Horner expansion evaluates this polynomial.
+The pure powers \(\B^{w_i}\) and \(\B^{W-w_i}\) are constructed
+with \(234\) multiplications. The deterministic builder starts with
+binary powers, merges frequently shared pairs of disjoint bit
+components, and reuses the resulting products. Its certificate
+labels each node by its exact exponent; multiplication adds labels,
+which proves every target power without relying on numerical tests.
+
+The geometric sum is computed with the division-free identities
+\[
+G_{2r}=G_r(1+\B^r),\qquad
+G_{2r+1}=G_{2r}+\B^{2r},\qquad
+G_r=\sum_{j=0}^{r-1}\B^j.
+\]
+The resulting live arithmetic counts are
+\[
+484+25+824=\boxed{1333}.
+\]
+An independent evaluator expands the entire \(D_c\) block exactly
+over \(\Z[\B,\beta,K_0,M_C,M_F]\), obtaining the same \(675\)
+symbolic terms as the literal definition. It does not import the
+circuit builder. It also compares all named formulas on modular
+assignments with the actual coefficient tuple.
+
+\subsection{A conservative comparison variant}
+
+The archive retains \texttt{equation10\_sun\_finalizer.json}, which uses
+the same new source coding but Sun's literal four-square, sextic
+finalizer. Its exact degree is \(1\,323\,756\,220\,880\) and its
+evaluator has \(1\,383\) operations. This variant separates the new
+additive-coding argument from the repository's later finalizer
+optimizations and gives an additional review route.
+
+\input{positive/section.tex}
+
+\section{What the finite artifacts establish}
+\label{sec:verification}
+
+The archive distinguishes mathematical proofs, exact finite
+certificates, and diagnostic evaluations.
+
+\paragraph{Unbounded mathematical arguments.}
+The full-simplex coefficient identity, arbitrary-input source bounds,
+carry reduction, and finalizer equivalence are proved above. The
+positive-majorant proof is included in this report and in a longer
+proof note. These are combined with explicitly identified compiler,
+Pell, Lucas, and machine theorems. Those imported arguments are not
+replaced by a successful Python run.
+
+\paragraph{Exact finite certificates.}
+The primary driver verifies all \(25\) pinned source-31 file hashes and
+the \(17\) additional archived proof dependencies,
+reconstructs the shifted quartic and all \(402\) weighted records,
+checks the actual fixed coefficient bounds and payloads, reconstructs
+the finite-field code, exhausts all \(52\,360\) four-element multisets,
+proves the shared-power labels, and regenerates the delivered circuits
+byte for byte. It checks the three-radical and four-radical norm
+identities as exact sparse polynomials. The coefficient compiler
+reconstructs all four native payloads from the supplied finite data
+and compares their raw bytes. Its replay includes \(69\,230\) basis
+checks and all \(943\) tile checks.
+
+\paragraph{Independent algebra and degree checks.}
+The separate primary evaluator proves the entire \(D_c\) source-encoding
+polynomial identity by sparse expansion, then compares every named
+formula at \(60\) assignments over three prime fields. Exact
+nonzero leading coefficients certify degree attainment.
+The secondary checker performs \(123\) formal-radical product
+comparisons and six complete univariate polynomial specializations,
+three using the actual coefficient tuple modulo the selected primes.
+Its symbolic leading-form proof is given in the report.
+
+\paragraph{What is not certified.}
+These scripts do not search the infinite integer domain or establish
+whether a zero exists. They do not rebuild the imported Lean
+development or mechanize the newly written unbounded proofs.
+Independent mathematical review is included as audit notes, but
+those notes are not a substitute for a proof-assistant kernel.
+The audits were separate AI-assisted reviews during this work, not
+external peer review.
+The theorem claimed is an ordinary ZFC theorem supported by the
+displayed proof and its cited dependencies.
+
+\subsection{Reproduction}
+
+From the extracted top-level directory, with Python 3.10 or later:
+\begin{lstlisting}
+python3 reproduce.py
+\end{lstlisting}
+The primary checks use the Python standard library and require no
+network access. The optional secondary checker uses NumPy:
+\begin{lstlisting}
+python3 positive/check_majorant.py
+\end{lstlisting}
+Build this PDF with a standard LaTeX installation:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The prebuilt PDF is included. The file \texttt{README.md} gives the
+inventory and integration notes. Manifests record the pinned source
+paths, Git blob hashes, SHA-256 values, and coefficient conventions.
+The upstream payloads and their license notices are preserved.
+
+\section{The general lesson and remaining opportunities}
+
+The old radix-five choice pays for an exponent vector in which every
+coordinate could independently range from zero to four. A quartic
+only uses vectors with \emph{total} degree at most four. This is the
+structural excess removed by the additive code.
+
+More generally, for a degree-\(\delta\) polynomial with \(\delta\ge2\) in \(n\) source
+variables, a \(B_\delta\) set of \(n+1\) elements, one translated to
+zero, makes
+\[
+e(\alpha)=\sum_{i=1}^n\alpha_iw_i
+\]
+injective on \(|\alpha|\le\delta\). With reversal target \(\delta W\)
+and coefficients
+\((\delta-|\alpha|)!\prod_i\alpha_i!\,p_\alpha\), the same proof
+isolates \(\delta!P\). Bose--Chowla supplies such sets in a cyclic
+group of order \(q^\delta-1\) for prime powers \(q\ge n+1\).
+For fixed \(\delta\), this permits exponent ranges of order
+\(n^\delta\), rather than the exponential positional scale
+\((\delta+1)^n\).
+
+For this particular quartic, the next concrete mathematical target
+would be a smaller certified \(32\)-element \(B_4\) set, or a
+support-aware code proven to separate the source support from
+\emph{all} competing quartic monomials. Merely checking pairwise
+collisions within the support is not sufficient. Any smaller \(W\)
+can be substituted into the present proof, with primary degree
+\(113856W+27064\), provided the full certificate and source bounds
+are retained.
+
+Reducing the number of supplied unrestricted integer unknowns below
+ten would require a different contribution. Nothing here achieves
+that. Likewise, the best remaining simplification may depend on
+whether the intended reader values low degree, a short evaluator,
+small coefficients, or a short formal proof. The delivered results
+give two concrete improvements with complete definitions, while
+keeping those objectives distinct.
+
+\appendix
+\section{The literal positive quartic parent}
+\label{app:parent}
+
+The parent variables, in the order used for the \(31\) positive weights,
+are
+\[
+\begin{split}
+(&J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ &N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta).
+\end{split}
+\]
+All are positive integers in the parent. The symbols in this appendix
+are local and should not be identified with the ten final variables.
+Define the affine abbreviations
+\[
+q=\beta J+1,\qquad k=\eta+\zeta,\qquad
+H=4a+3,\qquad C=q-F-\alpha.
+\]
+The \(22\) equations, whose left side minus right side gives the
+residuals in order, are
+\begin{align*}
+L&=q^2-1,\\
+N&=q(L+1),\\
+X&=wq,\\
+a&=E+sN,\\
+E&=X(a-E),\\
+c&=k(a-E)+\eta,\\
+P&=E(c-\eta)+k,\\
+\tau^2&=P(P-k)+1,\\
+D&=X+ac+\gamma H,\\
+\Delta&=a^2+H,\\
+C_2&=c^2,\\
+D^2&=\Delta C_2+1,\\
+k&=jc-V+1+hE,\\
+jc-V&=(q-F)(N-q)-CL+(M_C+qM_F)J,\\
+(K_0+w)C+(q-F)-z(q-1)&=1,\\
+F_2&=f^2,\\
+V&=of-c,\\
+g&=y^2-V^2,\\
+I&=iC_2,\\
+B_{\rm aux}&=I^2,\\
+B_{\rm aux}&=\Delta(F_2-1),\\
+y^2-B_{\rm aux}g&=1.
+\end{align*}
+After substituting the affine abbreviations, each residual is
+quadratic. Replacing each listed variable by \(n_i+1\) and summing
+the residual squares gives \eqref{eq:parent}. The delivered
+\texttt{parent\_quartic31.json} is the machine-readable authority;
+the verifier reconstructs the weighted coefficients directly from it.
+
+\section{Artifact map and attribution}
+
+\begin{longtable}{@{}p{0.36\linewidth}p{0.60\linewidth}@{}}
+\toprule
+Path & Role\\
+\midrule
+\endhead
+\path{report.tex}, \path{report.pdf} & Main definitions, proofs, comparisons,
+and reproducibility instructions.\\
+\path{data/INSTANCE.json} & Authoritative new fixed instance, parameters,
+degree, and paths.\\
+\path{data/weights_certificate.json} & Literal weights, finite-field
+recipe, and exhaustive multiset certificate.\\
+\path{generated/equation10.json} & Primary \(1\,333\)-operation,
+ten-integer polynomial.\\
+\path{generated/equation10_sun_finalizer.json} & New source code with
+the literal Sun finalizer.\\
+\path{code/build_equation.py}, \path{code/shared_powers.py} &
+Deterministic circuit construction and shared exponent evaluation.\\
+\path{code/weights.py} & Independent finite additive-code construction
+and exhaustive verification.\\
+\path{code/check_equation.py} & Source integrity, coefficient
+reconstruction, norm identities, and degree checks.\\
+\path{code/check_coefficients.py} & Rebuilds the four complete compiler
+coefficients from the supplied tiles and machine.\\
+\path{code/check_circuit_independent.py} & Exact sparse source identity
+and independent scalar transcription checks.\\
+\path{positive/} & Twelve-positive-variable circuit, builder,
+checker, binding, and full proof.\\
+\path{proofs/} & Full coefficient-coding argument and independent
+mathematical audit notes for both improvements.\\
+\path{upstream/source31/} & Exact pinned dependencies, complete payloads,
+compiler data, and original license notices.\\
+\path{upstream/dependencies/} & Additional inherited proof excerpts
+and the calibrated K215 endpoint.\\
+\bottomrule
+\end{longtable}
+
+This supplement was prepared with ChatGPT assistance for incorporation
+into ProveIt. The mathematical inputs, authorship of the general
+theorems, and inherited source files are credited explicitly.
+The new explanatory text and scripts are intended for distribution
+under the repository's MIT No Attribution license, with all inherited
+third-party notices retained. See \texttt{NOTICE.md}, \texttt{LICENSE},
+and the machine-data notices in the archive.
+
+\begin{thebibliography}{9}
+
+\bibitem{bosechowla}
+R.~C. Bose and S.~Chowla,
+\emph{Theorems in the additive theory of numbers},
+Commentarii Mathematici Helvetici \textbf{37} (1962/63), 141--147.
+Original report version:
+\url{https://www.cs.umd.edu/~gasarch/COURSES/858/S13/BoseChowla.pdf}.
+
+\bibitem{sun2021}
+Zhi-Wei Sun,
+\emph{Further results on Hilbert's Tenth Problem},
+Science China Mathematics \textbf{64} (2021), 281--306.
+Explicit source coding, arbitrary-position masks, and carry lemmas:
+\url{https://arxiv.org/html/1704.03504v7}.
+
+\bibitem{sun2026}
+Zhi-Wei Sun,
+\emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2026 preprint.
+In particular Proposition 2.1, Theorems 3.1 and 4.1,
+Propositions 6.1--6.2, and Section 7.
+\url{https://arxiv.org/html/2609.01594v2}.
+
+\bibitem{bayer2026}
+Jonas Bayer, Marco David, Malte Ha{\ss}ler, Yuri Matiyasevich,
+and Dierk Schleicher,
+\emph{Diophantine equations over \(\Z\): universal bounds and parallel
+formalization}, arXiv:2506.20909v3, 22 October 2026.
+Definition 1.5 and Lemma 1.6 give another explicit statement of the
+arbitrary-position mask property.
+\url{https://arxiv.org/html/2506.20909v3}.
+
+\bibitem{repo}
+Vladimir Reshetnikov and ProveIt contributors,
+\emph{Con(ZFC) Diophantine forms}, repository source collection,
+reviewed at commit
+\texttt{22e75dd6b87b1b199bb08c778d7cf075ae5aae08}.
+Packages 24--31 supply the inherited compiler and Pell interfaces;
+packages 31--37 supply the reviewed comparison constructions.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/22e75dd6b87b1b199bb08c778d7cf075ae5aae08/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}.
+
+\end{thebibliography}
+\end{document}
+

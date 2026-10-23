@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "Clean isolated sibling-folder rebuild, invoked from an unrelated working directory. Every existing composed file is byte-identical.",
+  "commands": [
+    "python3 regenerate_binding.py",
+    "python3 b4_code.py",
+    "python3 build_b4_sun10.py",
+    "python3 verify_b4_sun10.py"
+  ],
+  "identical_file_count": 34,
+  "inputs": [
+    "../ten_integer",
+    "../coefficient_backend"
+  ],
+  "requires": "Python standard library only",
+  "exclusions": [
+    "__pycache__",
+    "generated/CLEAN_REBUILD.json"
+  ]
+}

@@ -1,0 +1,228 @@
+\section{Complemented whole-label clauses reduce the fixed coefficients}
+\label{sec:complemented-compiler}
+
+The improvements in the number of unknowns can use the previous coefficient
+tuple.  A separate, compatible reduction makes the fixed native compiler
+smaller.  We keep the ordered 943-tile language, native positions, transport
+geometry, and shared-anchor synchronization of package~36 at the pinned
+repository commit~\cite{repo}.  We replace its bitwise label clauses by
+whole-label clauses and recompute the complete tuple and rank controller.
+The resulting base is
+\[
+ \rho=2^{77},\qquad L=8807,\qquad d=77L=678139,\qquad B=\rho^L.
+\]
+The four native ports occupy $339{,}476$ raw bytes, versus $506{,}664$ in
+package~36.  The largest port has $681{,}374$ bits, versus $1{,}016{,}946$.
+Both reductions are approximately $33.0\%$.  These figures measure the
+native ports, not the coefficients of an expanded final polynomial.
+
+\subsection{One guard bit per entire label}
+
+\begin{lemma}[Complemented label field]
+Let $0\le x<2^{\ell-1}$ and let $v$ be an $\ell$-bit copied word.
+Give a selected tile coefficient $x+1$, its copied bits their ordinary
+binary weights, and the combined field $\ell+1$ bits.  Testing that the
+lowest $\ell$ bits vanish forces the copied word to be
+\[
+ \operatorname{code}(x)=2^\ell-1-x
+\]
+when one tile is selected, and forces it to be zero when none is selected.
+\end{lemma}
+
+\begin{proof}
+With no tile the field is $v\in[0,2^\ell-1]$.  With one tile it is
+$x+1+v$, strictly between $0$ and $2^{\ell+1}$.  Its only possible multiple
+of $2^\ell$ is therefore $2^\ell$.  The code is injective and its highest
+bit is one.  The extra bit prevents overflow into the next field.
+\end{proof}
+
+The old clauses assigned a separate radix-four field to every copied bit.
+For the four label widths $9,10,9,10$, this required $76$ payload bits.
+The new fields require $10+11+10+11=42$ bits.  The three two-bit anchor
+fields remain, and are placed first to reduce the carry bound.
+
+The selector is decoded before this lemma is used.  At most $943$ tile
+bits can be selected, while every other clause coefficient is divisible
+by $1024$.  Thus the lowest ten bits are the exact number $n$ of selected
+tiles.  Disjointness with the mask $1022$ forces $n\in\{0,1\}$.
+This reasoning does not assume carry-free label fields before selection.
+
+\subsection{A complete finite recipe}
+
+The tile slots are west, north, east, south.  Their original labels fit
+below $2^{\ell_s-1}$.  Use the following native offsets and clause offsets:
+\[
+\begin{array}{c|rrrr}
+ s&\mathrm W&\mathrm N&\mathrm E&\mathrm S\\\hline
+ o_s&1023&1013&1003&983\\
+ \ell_s&9&10&9&10\\
+ p_s&16&47&37&26
+\end{array}
+\]
+The three native anchor positions are $1095,2195,3296$, with clause
+offsets $10,12,14$.  Define the unchanged support
+\[
+ \mathcal E=\{0,\ldots,942\}
+ \cup\{o_s+j:0\le j<\ell_s\}
+ \cup\{1063,1064,1095,2195,3296\},
+ \qquad |\mathcal E|=986.
+\]
+For tile $i$ with original labels $x_{i,s}$, put
+\begin{align*}
+ c_i&=1+\sum_s(x_{i,s}+1)2^{p_s}+2^{10}+2^{12}+2^{14},\\
+ c_{o_s+j}&=2^{p_s+j},\qquad
+ (c_{1095},c_{2195},c_{3296})=(2^{10},2^{12},2^{14}),\\
+ c_{1063}&=c_{1064}=0,\\
+ \mu&=1022+2^{10}+2^{12}+2^{14}
+       +\sum_s(2^{\ell_s}-1)2^{p_s}.
+\end{align*}
+The clause mask has $57$ bits and population $50$.  All of the following
+powers and sums define fixed integers:
+\begin{align*}
+ Z_0&=(2^{75}-1)\sum_{e=8792}^{8802}\rho^e
+                      +(2^{39}-1)\rho^{8803},\\
+ D_C&=\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}
+      +\sum_{e\in\mathcal E}c_e
+             (\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R&=\rho^{42},\\
+ M_C&=B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e
+                 -2\rho^{1063},\\
+ M_{F,0}&=4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^{9}\rho^{1013+j}
+       +\sum_{j=0}^{8}\rho^{1065+j}
+       +\rho^{2195}+\rho^{3296}+Z_0.
+\end{align*}
+The four ports, always used together, are
+\[
+ \boxed{\beta=B-1,\quad K_0=D_C+BD_R,\quad M_C,
+                  \quad M_F=M_{F,0}+B-1.}
+\]
+In particular $M_F$ is the shifted source mask.  The unshifted mask
+$M_{F,0}$ is not an interchangeable port.
+
+\subsection{Why the native compiler still applies}
+
+The scalar native-basis identities are unchanged: at targets $1013+j$,
+$0\le j<10$, the current and temporal contributions are from $983+j$
+and $1013+j$; at $1065+j$, $0\le j<9$, the current and spatial
+contributions are from $1003+j$ and $1023+j$; each tested anchor
+$2195,3296$ reads the current source $1095$ and its own temporal bit.
+At each clause target $T\in\{4393,5495\}$, the coefficient of
+$\rho^{T-e}$ in $D_C$ is precisely $c_e$.  The finite auditor checks all
+$66{,}062$ identities, including the absence of every other contribution.
+
+The occupied high bits and injective codes are retained, so the previous
+matching and occupation-propagation proof applies.  The clean-band and
+anchor intersections remain
+\begin{align*}
+ ((4393-\mathcal E)\bmod L)
+       \cap((5495-\mathcal E)\bmod L)&=\varnothing,\\
+ ((2195-\mathcal E)\bmod L)
+       \cap((3296-\mathcal E)\bmod L)&=\{0\}.
+\end{align*}
+Indeed, $1102$ is absent from $\mathcal E-\mathcal E$, whereas the
+difference $1101$ occurs only between the two tested anchors.  The
+inequality $L>2\max\mathcal E$ excludes new circular cases.  Start first
+forces the source anchor, then both tested anchors; the old binary and
+whole-radix synchronization arguments recover alignment before global
+occupancy is used.
+
+For the inherited conservative pre-decoding bound, put
+\[
+ \mathcal M=988\left(2\sum_{e\in\mathcal E}c_e+6\right).
+\]
+Exact integer arithmetic verifies
+\[
+ \max\{4\mathcal M+8,\,2\mu+4,\,2(2^{75}-1)+4,\,16\}<2^{77}.
+\]
+Thus the uniform carry bounds still hold.  The largest unshifted current
+exponent is $5495+3296=8791$, so the padded positions $8792$ through
+$8803$ are identically zero on intended aligned cells.  The padding
+contributes $11\cdot75+39=864$ tests and the original mask contributes
+$122$.  Consequently
+\[
+ \operatorname{pc}(M_{F,0})=986,\qquad
+ \operatorname{pc}(M_C)=d-986,\qquad
+ M_C\equiv2\pmod4,\quad M_{F,0}\equiv4\pmod8,
+\]
+with $0<M_C,M_{F,0}<B-1$.  These are identities of the actual materialized
+ports, not only symbolic population counts.
+
+\subsection{An explicit controller for the actual packed rank}
+
+Changing the radix requires a new completeness certificate.  Set
+\[
+ \lambda=56611,\qquad k=\lambda-1=56610,
+ \qquad d=7\cdot11\cdot8807.
+\]
+All four displayed primes are certified by trial division.  With
+$H_0=1+BD_C+B^2(D_R+1)$, exact modular arithmetic gives
+\[
+\begin{array}{c|rrrr}
+ p&7&11&8807&56611\\\hline
+ \operatorname{ord}_p(B)&3&10&629&6290\\
+ (B^2-1)\bmod p&3&2&3507&20663\\
+ H_0\bmod p&6&1&3377&14311
+\end{array}
+\]
+Also $\operatorname{ord}_d(B)=18870\mid k$ and
+\[
+ B^k\bmod\lambda^2=1810929280\ne1,
+ \qquad B^k\equiv1\pmod\lambda.
+\]
+Hence $v_\lambda(B^k-1)=1$.
+
+Pad a canonical accepting rectangle to independently large powers of
+$\lambda$ in both directions, as allowed by the inherited language
+theorem.  Write its width and height as $w_c,h_c$, and set
+$N=w_ch_c=\lambda^n$, $q=B^N$, $T=N/\lambda$, $C_0=d\lambda$.
+Choose $N>d\lambda^2$ and $h_c>\lambda$.
+The exact change in actual packed rank caused by the safe dummy at cell
+$j$ remains
+\[
+ \delta R=-\Gamma B^j,\qquad
+ \Gamma=\rho^{1063}(q^2-1)
+          [1+q(D_C+BD_R+B^{w_c})].
+\]
+The unit table proves $\gcd(\Gamma,dN)=1$.
+
+Binomial lifting and the order certificates imply that the first $T$
+powers of $B^k$ are precisely the residues $1+C_0z$ modulo $C_0T$.
+Every residue modulo $dN$ is a Boolean subset sum of
+\[
+ \{B^{2+kj}:0\le j<T\}\cup\{B^3\}.
+\]
+To see this, normalize a target by $B^{-2}$ and subtract either zero or
+$B$ to make it nonzero modulo $\lambda$.  Its least residue $a$ modulo
+$C_0$ satisfies $1\le a<C_0<T$ and $\gcd(a,T)=1$.  Write the target as
+$a+C_0u$ and solve
+\[
+ az_0+\frac{a(a-1)}2\equiv u\pmod T.
+\]
+The $a$ distinct orbit entries with additive coordinates
+$z_0,z_0+1,\ldots,z_0+a-1$ have the desired sum.  Include $B^3$ exactly
+when the initial subtraction was used.
+
+The largest selectable cell is at most $N-N/\lambda-\lambda+3$.
+Since $w_c<N/\lambda$, its required spatial and one-cell translates
+remain below $N$ and avoid the origin.  Thus the inherited no-wrap
+argument applies.  Choosing the target
+$(R_0-dw_c)\Gamma^{-1}$ tunes the actual rank to
+$R\equiv dw_c\pmod{dN}$, as required by the helical compiler.
+
+The unchanged mask residues give canonical $R\equiv3\pmod4$.
+Since $d,N$ are odd, the canonical dyadic arithmetic scale is square;
+the standard choice of strong Pell index preserves the odd normalized
+multiplier, and the population identity preserves the odd scale in
+$Y=sq^3$.  Thus signed adapters using these simultaneous promises remain
+compatible.  Soundness does not restrict arbitrary solutions to
+prime-power rectangles; this choice is only used in completeness.
+
+The scripts \texttt{build\_complemented.py} and
+\texttt{audit\_complemented.py} reproduce the integer ports and the finite
+certificates.  The second script does not import the first and reconstructs
+all four full integers independently.  The complete universal adapter
+argument and dependency boundary are retained in
+\texttt{compiler/PROOF.md}.  Rebinding a source polynomial changes no
+variable count, degree, or gate count; any derived compression constants
+must nevertheless be recomputed from the newly bound source.

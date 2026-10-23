@@ -1,0 +1,238 @@
+\section{A secondary improvement: twelve positive unknowns at degree 938}
+\label{sec:positive-majorant}
+
+This section uses the complete source-31 coefficient tuple already bundled
+with this report, with port aliases
+\(\beta=\texttt{beta},K_0=\texttt{K},M_C=\texttt{MC},
+M_F=\texttt{MF\_source}\). The last mask is shifted. It does not use the
+Sun coefficient or the new exponent code. The inherited normalized
+blank-K215 compiler interface is the one proved in source 31's
+\texttt{coefficients/COEFFICIENT\_PROOF.md}; source 34's positive reductions
+are explicitly uniform in such complete tuples. The new step is a
+separator of formal degree nine, replacing the previous degree-23
+separator. All symbols in this section are local.
+
+The twelve supplied unknowns are
+\[
+J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\Z_{>0}.
+\]
+All other symbols below are polynomial abbreviations. Set
+\begin{align*}
+q&=\beta J+1,&\omega&=w+q,&C&=q-F-\alpha,\\
+X&=\omega q,&Y&=sq^3,&E&=XY,\\
+k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+H&=4a+3,&\Delta&=a^2+H,&\ell&=EkY,\\
+A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac,\\
+I&=ic^2,&D&=1+\Delta I^2,&Q&=(\Delta I)^2,\\
+d&=Q-1,&v&=cT,&b&=c+RD.
+\end{align*}
+Here the abbreviation \(R\), and the two transport expressions, are
+\begin{align*}
+R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+N_k&=k-hE-R,\qquad
+N_t=(K_0+\omega)C+q-F-z(q-1).
+\end{align*}
+The new majorant and translated carrier are
+\begin{gather*}
+\boxed{M=k(ik^3+T)^2},\qquad \delta=(a+2)c-\ell,\\
+\sigma=b+M\delta+v(a+2)I,\qquad
+L=HM+1,\qquad W=b_0+H(t+\sigma).
+\end{gather*}
+Write \(e=Q(Dv^2+b^2)-1\) and \(B_1=2Qvb\). The polynomial norm is
+\begin{equation}
+N=\prod_{\substack{\tau=\pm\sqrt A,\;g=\pm\sqrt G\\f=\pm\sqrt D}}
+\bigl[d(W-HM\tau-Lg)^2-H^2e+H^2B_1f\bigr].
+\label{eq:positive-newnorm}
+\end{equation}
+This is an integer polynomial; the formal sign product introduces no
+quantified unknowns. It is valid also for square, zero, or dependent
+radicands. The scalar circuit below and the delivered JSON files give
+a literal evaluation using only integer additions and multiplications.
+The two presentations are
+\begin{equation}
+\boxed{N_kN_t(1+N)-1=0},\qquad
+\boxed{N_k=1,\quad N_t=1,\quad N=0}.
+\label{eq:positive-presentations}
+\end{equation}
+
+For completeness, one scalar evaluation of the norm is
+\begin{align*}
+n&=(HM)^2A,&d_n&=dn,&H_Q&=H^2Q,\\
+H_P&=H_QDv^2,&H_U&=H_Qb^2,&H_e&=H_P+H_U-H^2,\\
+j&=4H_PH_U,&\mathcal T&=2d(W^2+L^2G),&
+\mathcal K&=[d(W^2-L^2G)]^2,\\
+a_t&=\mathcal T-2(d_n+H_e),&
+b_t&=(d_n-H_e)^2-j-\mathcal K,\\
+\bar v&=16d_nj-a_t(a_t\mathcal T+2b_t),&
+u&=b_t^2-a_t^2\mathcal K,\\
+N&=\mathcal K\bar v^2-u(\mathcal T\bar v-u).
+\end{align*}
+These are the sourced trace--remainder identities with the new inputs.
+
+\begin{theorem}
+For the complete fixed coefficient tuple specified above, ZFC proves
+that absence of positive integer solutions to either presentation in
+\eqref{eq:positive-presentations} is equivalent to \(\operatorname{Con}(\mathrm{ZFC})\).
+The single polynomial has exactly twelve supplied unknowns, degree 938,
+and a 122-operation evaluator. The system has three equations, maximum
+residual degree 929, and 117 operations. Binary additions, subtractions,
+and multiplications by numerals are all charged; reuse and system
+comparisons are free.
+\end{theorem}
+
+\paragraph{Inherited interface, stated explicitly.}
+For the authentic tuple, \(N_k=N_t=\epsilon\),
+\(\epsilon\in\{1,-1\}\), implies before recovering any root that
+\begin{gather*}
+q\ge16,\quad Y\ge q^3,\quad E=XY>R+2,\quad
+3q<R<q^4-2,\\
+k=R+\epsilon+hE>E,\quad kY<c<k(Y+1),\quad
+\sqrt G-\sqrt A>kY^2.
+\end{gather*}
+The recovered four normalized Pell equations, with integral roots and
+\(g\equiv b_0\pmod H\), imply a blank K215 halt; the signed-quotient
+extension restores \(\epsilon=1\). Conversely a halt admits canonical
+positive roots \(g,\tau,f,y,\gamma\), with \(X=2^R\).
+These are the inherited compiler assertions, not claims established by
+finite tests in the present report. The coordinate shift is complete:
+\(2^R/q>q\), so the original \(w_{\rm old}\) can be replaced by the
+positive integer \(w=w_{\rm old}-q\). This is the shift proved in source 37.
+
+\paragraph{The new majorant estimate.}
+The shifted coordinate gives \(X\ge q(q+1)>q^2\), hence \(R<X^2\).
+The bounds
+\(c<(17/16)kY\) and \(a+2<(17/16)E\) follow at once.
+Crucially,
+\begin{equation}
+\frac{R(a+2)^2c^4}{k^8Y^2}<1.
+\label{eq:new-majorant-key}
+\end{equation}
+Indeed the left side equals
+\[
+\frac R{X^2}\left(\frac{a+2}{E}\right)^2
+\left(\frac c{kY}\right)^4\left(\frac Ek\right)^4
+\le\left[\frac q{q+1}(1+q^{-2}+2q^{-5})(1+q^{-3})^2\right]^2<1.
+\]
+For the last inequality, set \(x=q^{-2}\). The two parentheses have
+product at most \((1+2x)(1+x)^2<1+5x<1+1/q\), since \(q\ge16\).
+
+Let \(Z=v\sqrt D+b\). Every complex auxiliary root satisfying
+\(dy^2=Q(vf-b)^2-1\), \(f^2=D\), obeys the sharp estimate
+\begin{equation}
+|y|<Z+v+1.
+\label{eq:positive-sharp-y}
+\end{equation}
+To see this, \(\Delta>R+2\), \(I^2\ge c^4\) give
+\(Q-b=\Delta I^2(\Delta-R)-c-R>0\), so \(b\le d\), and
+\(\sqrt D<\Delta I<d\). Therefore
+\[
+|y|^2\le\frac{QZ^2+1}d
+<\left[Z\left(1+\frac1d\right)\right]^2,
+\qquad Z/d<v+1.
+\]
+The strict middle inequality has numerator \(QZ^2-d>0\).
+
+Since \(D<(a+2)^2I^2\), equation \eqref{eq:new-majorant-key} yields
+\(b/(kY^2)<i^2k^7+1\). Also
+\[
+\frac{v\sqrt D}{kY^2}
+<(17/16)^4EYiTk^2
+<\frac{(17/16)^4}{X}iTk^4<iTk^4.
+\]
+Using \(v/(kY^2)<T\) and \(1/(kY^2)<1\), we obtain
+\[
+\frac{Z+v+1}{kY^2}<i^2k^7+iTk^4+T+2
+<i^2k^7+2iTk^4+kT^2=M.
+\]
+Thus \(|y|<MkY^2<M(\sqrt G-\sqrt A)\).
+Moreover \(\sqrt A>\ell=XkY^2\), so
+\(M\sqrt A>XZ>2Z\). The latter will ensure positivity in the converse.
+
+\paragraph{Soundness.}
+The scalar norm satisfies \(N\equiv\square\pmod4\): write
+\(\mathcal T=2x_0\) and
+\(\mathcal K=x_0^2-4d^2W^2L^2G\) in the final formula. Thus a zero of
+the product in \eqref{eq:positive-presentations} forces \(N=0\) and
+\(N_k=N_t=\epsilon\in\{1,-1\}\). A vanishing factor gives coherent
+algebraic roots with
+\[
+x=(W-Lg)/H=M\tau+y,\quad \tau^2=A,\quad g^2=G,\quad f^2=D,
+\quad dy^2=Q(vf-b)^2-1.
+\]
+Every conjugate of \(x\) has magnitude less than \(M\sqrt G\).
+If \(g\) were irrational, an automorphism reversing it would produce
+two such \(x\)'s at distance \(2L\sqrt G/H>2M\sqrt G\), impossible.
+Hence \(g\) is rational and integral, and \(x\) is rational. A sign
+change of an irrational \(\tau\) would require two auxiliary roots of
+magnitude less than \(M\sqrt A\) to compensate a difference
+\(2M\sqrt A\). Thus \(\tau\) is integral, \(y\) is rational, and
+\(f=(e-dy^2)/B_1\) is rational and integral.
+
+The sourced rational Pell saturation lemma now applies to
+\[
+(\Delta I)^2(vf-b)^2-((\Delta I)^2-1)y^2=1
+\]
+and makes \(y\), hence \(x\), integral. This lemma says that for
+integers \(S\ge2,V\), a rational \(y\) satisfying
+\(S^2V^2-(S^2-1)y^2=1\) is integral. Source 24 proves it by reducing
+the denominator to a common Pell unit and using divisibility of its
+cosine sequence.
+
+Since \(\delta,\sigma>0\), \(W>0\); a negative \(g\) would contradict
+the bound on \(x\). Reducing \(W-Lg=Hx\) modulo \(H\) gives
+\(g\equiv b_0\pmod H\). Its quotient \(\gamma\) is positive because
+\(g>(a+1)c>b_0\). The normalized compiler interface now supplies a blank
+K215 halt; its ordinary strong coordinate is \(i_{\rm ord}=\Delta i\).
+No independent sign changes of dependent radicals were assumed.
+
+\paragraph{Completeness.}
+From a canonical positive compiler witness and the complete \(w\)-shift,
+put
+\[
+t=\gamma+M(g-\delta)+M\tau+y-b-v(a+2)I.
+\]
+We have \(0<\delta<ac<g\), because \(\ell/c>E/2>2\).
+Also \((a+2)I<2\sqrt D\) and
+\(M\tau>2(v\sqrt D+b)>b+v(a+2)I\). Therefore \(t\) is a positive
+integer. Its definition makes \(W=Lg+H(M\tau+y)\), so one norm factor
+vanishes and \(N_k=N_t=1\). Composing both directions with the calibrated
+K215 refutation theorem, and negating existential solvability, proves the
+stated ZFC equivalence.
+
+\paragraph{Exact degree.}
+Scale the twelve variables by a formal parameter. The degrees of
+\(E,H,c,I,D,Q,b,M,v\) are respectively
+\(6,6,5,11,34,46,38,9,6\).
+The positive-leading roots \(g,\tau,f\) have degrees \(11,11,17\), with
+\[
+g-\tau=\delta-k/2+O(\lambda^{-1}),\qquad
+(a+2)I-f=I/(2(a+2))+\text{lower-degree terms}.
+\]
+The four positive-\(f\) factors in \eqref{eq:positive-newnorm} have degree
+119. In the negative-\(f\) factors the leading auxiliary terms cancel.
+Their remaining leading terms have degrees 116,116,114,107: the first
+three come from the main radical signs, and the last from
+\(Hv((a+2)I-f)\), of degree 17. All competing squared terms have degree
+at most 104. Thus \(\deg N=4(119)+2(116)+114+107=929\).
+
+More explicitly, with \(q_0=\beta J\), \(k_0=\eta+\zeta\),
+\(\omega_0=w+q_0\), the nonzero homogeneous leader is
+\[
+N_{929}=-2^{46}i^{43}k_0^{103}T^5s^{152}
+\omega_0^{69}q_0^{549}(q_0-F)^8.
+\]
+This is nonzero for every authentic \(\beta>0\). Since
+\(\deg N_k=7\) and \(\deg N_t=2\), the product has exact degree 938.
+The new product improves source 34's degree-1022, 124-operation form in
+both metrics; its system improves the corresponding degree-1013,
+120-operation system. The existing degree-1081 evaluator at 108 operations
+retains its operation-count advantage. There is no variable-count or
+global-optimality claim.
+
+The delivered checker compares 123 independent formal-radical products
+with the scalar circuit and verifies six complete univariate degree
+specializations, including three with the actual coefficient tuple.
+The generic runs also check the displayed leading coefficient. The full
+proof details are in \texttt{positive/POSITIVE\_PROOF.md}. These finite
+checks support the algebra and do not replace the inherited compiler
+theorems or claim a new end-to-end formalization.

@@ -1,0 +1,122 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,
+ citecolor=blue!45!black,pdftitle={Quadratic batching, index absorption, and smaller consistency equations},
+ pdfauthor={Research synthesis prepared for ProveIt}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\bitlength}{\operatorname{bitlength}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\Zpos}{\Z_{>0}}
+\newcommand{\repoPin}{\texttt{22e75dd6b87b1b199bb08c778d7cf075ae5aae08}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: Diophantine consistency forms}
+\fancyhead[R]{\small 23 October 2026}
+\fancyfoot[C]{\thepage}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{18mm}
+{\small\sffamily\color{blue!45!black} RESEARCH SYNTHESIS FOR PROVEIT}\par
+\vspace{8mm}
+{\Huge\bfseries Quadratic batching,\par index absorption,\par and smaller consistency\par equations}\par
+\vspace{8mm}
+{\Large Explicit Diophantine forms whose unsolvability\par is equivalent in ZFC to $\Con(\mathrm{ZFC})$}\par
+\vspace{8mm}
+{\large Prepared for Vladimir Reshetnikov\par 23 October 2026}
+\vspace{12mm}
+\begin{abstract}
+We give three compatible improvements over the Diophantine consistency
+forms at the pinned ProveIt repository revision. First, we test its
+22 quadratic residuals simultaneously, using a 32-element Sidon set,
+instead of first forming a quartic sum of squares and then using
+exponential positional weights. The Jones interface yields a polynomial
+in nine nonnegative integers of exact degree $166\,177\,600$ and an
+868-operation evaluator; the strictly positive version uses 864
+operations. A companion through the existing Sun interface has ten
+unrestricted integer unknowns, exact degree $449\,607\,016$, and 773
+operations. Second, a short-range Pell-index argument absorbs an index
+quotient into the existing norm carrier, giving eleven positive unknowns
+at degree 1154, or a two-equation system of degrees 2 and 1152; a
+further positive translation gives degree 1140. Third,
+complementing whole tile labels replaces bitwise clauses and reduces the
+fixed native coefficient payload by about $33\%$.
+
+All constants have finite recipes. The native tuple and source size
+constants also have materialized binary payloads.
+The archive contains explicit division-free circuits, a complete proof
+of the new reductions, dependency records, and independent finite
+certificates. The mathematical equivalences use the inherited native
+compiler and literal K215 calibration. The ten-integer companion also
+uses Sun's 2026 preprint. This report does not claim an end-to-end new
+proof-assistant theorem, global minimality, or a proof of consistency.
+\end{abstract}
+\vfill
+{\small Source revision: \repoPin\par
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/section_overview.tex}
+\input{sections/section_nine.tex}
+\input{sections/section_sun.tex}
+\input{sections/section_eleven.tex}
+\input{sections/section_eleven_optional.tex}
+\input{sections/section_compiler.tex}
+\input{sections/section_verification.tex}
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt}, repository revision
+\repoPin, accessed 23 October 2026.
+Report family \texttt{con-zfc-diophantine-forms}, especially packages
+30, 31, 34--37; source and inherited notices are recorded in the archive.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/22e75dd6b87b1b199bb08c778d7cf075ae5aae08/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}{Pinned report directory and source archive}.
+\bibitem{jones1982}
+J. P. Jones, \emph{Universal Diophantine equation}, Journal of Symbolic
+Logic \textbf{47} (1982), no. 3, 549--571.
+\url{https://doi.org/10.2307/2273588}.
+The parameterized carry and ratio interfaces used here are present in
+the repository's \texttt{Paper1982/Carries.lean} and
+\texttt{Paper1982/NineRatio.lean}.
+\bibitem{sun2021}
+Z.-W. Sun, \emph{Further results on Hilbert's Tenth Problem}, Science
+China Mathematics \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/abs/1704.03504}, version 7.
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, preprint, arXiv:2609.01594, version 2 (2026).
+\url{https://arxiv.org/html/2609.01594v2}.
+\end{thebibliography}
+\end{document}

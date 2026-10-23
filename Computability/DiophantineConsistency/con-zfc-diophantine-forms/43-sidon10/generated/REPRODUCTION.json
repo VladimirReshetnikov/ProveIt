@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "steps": [
+    {
+      "name": "coefficient_rebuild",
+      "command": [
+        "python3",
+        "-B",
+        "vendor/rebuild_coefficients.py"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "7f8f8cf357f8b58c5ddd6d43a3652842985c3af5179f078e5c8e662cba480e54"
+    },
+    {
+      "name": "build",
+      "command": [
+        "python3",
+        "-B",
+        "build.py"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "dc195b3e602d307d4a42a8e8001d0cf9991424fd3af453069fc3c6eefd1cd470",
+      "receipt": "generated/BUILD_RECEIPT.json"
+    },
+    {
+      "name": "independent_audit",
+      "command": [
+        "python3",
+        "-B",
+        "checks/audit.py",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "b8583f1c3115b17b3bc13fc625e30a1b7d1202c4a178ae5a35cb6d58590c4193"
+    },
+    {
+      "name": "source_interface",
+      "command": [
+        "python3",
+        "-B",
+        "checks/source_interface.py",
+        "--candidate",
+        ".",
+        "--output",
+        "generated/SOURCE_INTERFACE_AUDIT.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "6c5965c23adc6427af196050043c1fe8fd822b8eafc30ca7c5f9d1e3692d1824"
+    },
+    {
+      "name": "sidon_and_toys",
+      "command": [
+        "python3",
+        "-B",
+        "checks/sidon_and_toys.py",
+        "--output",
+        "generated/SIDON_AND_TOYS_AUDIT.json"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "69344f746f77d11cab22846ca76ae189e78c8c4760881d7084cf2c1f6a5efd70"
+    }
+  ],
+  "active_binding_verified": true,
+  "scope": "Reproduction and arithmetic audits; no search for a Con(ZFC) solution.",
+  "unknown_domain": "Z",
+  "unknowns": 10,
+  "exact_total_degree": 237520456,
+  "binary_arithmetic_operations": 809,
+  "receipts": [
+    "vendor/REBUILD_RECEIPT.json",
+    "generated/BUILD_RECEIPT.json",
+    "generated/INDEPENDENT_AUDIT.json",
+    "generated/SOURCE_INTERFACE_AUDIT.json",
+    "generated/SIDON_AND_TOYS_AUDIT.json"
+  ]
+}

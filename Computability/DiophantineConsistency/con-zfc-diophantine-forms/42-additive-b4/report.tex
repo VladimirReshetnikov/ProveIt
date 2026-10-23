@@ -1,0 +1,575 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,microtype}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+pdftitle={Additive coding and smaller coefficients for Diophantine consistency equations},
+pdfauthor={AI-assisted research report prepared for ProveIt},
+pdfsubject={Explicit Diophantine presentations of Con(ZFC)},
+pdfkeywords={Diophantine equations, Hilbert tenth problem, ZFC consistency, Bose-Chowla, additive coding}}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\code}[1]{\ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\B}{\mathcal B}
+\newcommand{\capc}{\mathscr C}
+\DeclareMathOperator{\Sq}{Sq}
+\title{\textbf{Additive coding and smaller coefficients\\for Diophantine consistency equations}\\[4pt]
+\large An explicit synthesis for $\Con(\mathrm{ZFC})$}
+\author{Research report prepared for ProveIt\\
+\small AI-assisted mathematical synthesis, construction, and independent audit}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a completely specified ordinary polynomial in ten unrestricted
+integer unknowns whose unsolvability is equivalent, provably in ZFC, to
+$\Con(\mathrm{ZFC})$ for the repository's proof predicate. Its degree is
+exactly $107\,286\,763\,576$, compared with
+$126496\cdot5^{31}+27064$ for the ten-integer construction in the pinned
+repository. The degree decreases by a factor of approximately
+$5.49\cdot10^{15}$. The arithmetic circuit grows from 1,442 to 2,204 binary
+operations. This is a degree improvement at a fixed number of unknowns.
+
+The new step replaces exponentially spaced positions $5^j$ by a finite
+additive $B_4$ code. Quartic coefficient recovery needs only distinct
+sums of at most four positions. A translated Bose--Chowla set supplies
+32 positions, including the homogenizing zero, with maximum $942302$.
+We prove the exact coefficient identity, bounds, mask decoding, and
+the complete source interface required by Sun's ten-integer reduction.
+
+Independently, a native compiler refinement encodes every edge label
+by a nonzero word, making separate occupancy bits redundant. Together
+with an audited support layout, this reduces the native base from the
+previous smallest bound $2^{1012115}$ to $2^{683195}$. The four fixed
+coefficient files occupy 342,269 raw bytes. We bind this tuple to the
+existing P67 equation and 59-operation system. We also deliver a
+fully composed ten-integer variant, regenerating all source coefficients
+and bounds from the new tuple. It retains the same degree and circuit
+size and reduces its five raw fixed payloads from 1,066,835 to
+685,209 bytes. A separate comparison instance preserves the original
+tuple and isolates the additive-code improvement.
+
+The archive includes the report source and PDF, complete circuits,
+actual fixed coefficients, reproducible generators, finite
+certificates, independent reviews, and provenance. No global
+minimality, new universal variable-count theorem, consistency proof,
+or new end-to-end Lean/Rocq certificate is claimed.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{The results and what they improve}
+\label{sec:result}
+All natural numbers include zero. A positive variable is strictly
+positive. An unrestricted integer variable may have any sign.
+These domains are part of each theorem.
+
+Let $\operatorname{Ref}_{\mathrm{ZFC}}$ denote the existence of a
+finite refutation in the proof calculus used by the pinned ProveIt
+development. Thus $\Con(\mathrm{ZFC})$ abbreviates
+$\neg\operatorname{Ref}_{\mathrm{ZFC}}$ for that calculus.
+
+\begin{theorem}[The comparison ten-integer equation]\label{thm:main}
+The comparison circuit \code{ten_integer/generated/b4_signed10.json}
+defines a polynomial
+\[
+ F_{\mathrm{B4}}(f,g,h,k,l,w,x,y,z,m)\in
+ \Z[f,g,h,k,l,w,x,y,z,m]
+\]
+such that
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\exists\boldsymbol u\in\Z^{10}:F_{\mathrm{B4}}(\boldsymbol u)=0\bigr)
+ \longleftrightarrow \operatorname{Ref}_{\mathrm{ZFC}}.
+\]
+Consequently,
+\[
+ \boxed{\quad
+ \mathrm{ZFC}\ \vdash\
+ \bigl(\nexists\boldsymbol u\in\Z^{10}:F_{\mathrm{B4}}(\boldsymbol u)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+ \quad}
+\]
+The exact degree is $107286763576$. The supplied evaluator uses
+485 additions, 25 subtractions, and 1,694 multiplications:
+2,204 binary arithmetic operations in total.
+\end{theorem}
+
+The degree decrease is
+\[
+\frac{126496\cdot5^{31}+27064}{107286763576}
+=
+\frac{589042901992797851562527064}{107286763576}
+\approx5.4903595034\cdot10^{15}.
+\]
+There are 762 more arithmetic operations than in the previous
+ten-integer circuit, an increase of about $52.8\%$.
+The new method improves degree dramatically while retaining the
+same ten unrestricted unknowns and a compact, finite expression.
+
+The recommended complete instance is
+\code{ten_integer_composed/generated/b4_signed10.json}.
+Corollary~\ref{composed:main} proves the same equivalence, degree,
+and operation count for this variant, with all fixed coefficients
+and the source-base bound recomputed from the smaller tuple below.
+The comparison circuit remains included to separate the two
+mathematical changes.
+
+The second result concerns a different measure:
+\begin{theorem}[A smaller complete native tuple]\label{thm:tuple}
+The nonzero-edge compiler in \code{coefficient_backend/} supplies
+an admissible fixed blank-K215 tuple
+$(B-1,K,M_C,M_F^{\rm src})$ with
+\[
+ B=2^{683195},\qquad
+ \max\{\text{port bit lengths}\}=688546.
+\]
+Its four materialized unsigned integer files contain 342,269 raw
+bytes. Substitution of this entire tuple in the inherited P67
+equation and retained 59-operation system preserves their
+equivalence to blank K215 halting, and hence their unsolvability
+is equivalent in ZFC to $\Con(\mathrm{ZFC})$.
+\end{theorem}
+The source base exponent decreases by $32.50\%$ compared with
+package 36's $1012115$; raw bytes decrease by $32.45\%$ from
+506,664. These percentages compare complete tuples. The proof
+does not splice the smallest individual ports from different
+constructions.
+
+\subsection{There is no single smallest measure}
+Variable count, degree, number of arithmetic operations, coefficient
+size, and proof complexity are distinct. The present work supplies
+two new points in that comparison. It does not dominate the old
+67-operation equation or the nine-natural-variable constructions
+on every measure.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{44mm}p{23mm}p{43mm}r@{}}
+\toprule
+Construction & Domain & Degree & Operations\\
+\midrule
+Pinned package 31 & $10$ integers &
+$126496\cdot5^{31}+27064$ & 1442\\
+This report, main circuit & $10$ integers &
+$107286763576$ & 2204\\
+Pinned P67; new tuple here & $15$ positive &
+$155$ & 67\\
+Pinned quartic, package 31 & $31$ positive &
+$4$ & 125\\
+Pinned package 34 & $12$ positive &
+$1022$ & 124\\
+Pinned package 37 & $9$ positive &
+$92324\cdot5^{32}+296$ & 1500\\
+\bottomrule
+\end{tabular}
+\end{center}
+The pinned values are the audited collection's stated values,
+supported by their source formulas. The new circuits and
+coefficient metrics are recomputed in this delivery.
+Nine-natural or nine-positive results are not ten-integer results
+with a different notation.
+
+\section{Repository analysis and the inherited boundary}
+\label{sec:repo}
+The source revision is
+\[
+ \code{22e75dd6b87b1b199bb08c778d7cf075ae5aae08}.
+\]
+Its collection contains wave 5, packages 31--37, with a subsequent
+audit correcting several comparisons. Earlier waves remain
+recoverable from history. In particular, the relevant baseline
+already has ten unrestricted integers via Sun's 2026 preprint
+\cite{Sun2026}; improving to fourteen or twelve unrestricted
+integers would not advance that frontier.
+
+\subsection{What was combined}
+Package 31 provides the explicit ten-integer outer construction,
+its quintic divisibility merger, the coprime positivity merger,
+and economical separating weights. It also supplies a complete
+fixed coefficient tuple and the 31-variable quartic. These are
+retained in the main result.
+
+The new additive code replaces the source polynomial's
+exponentially spaced digit positions. It is not an optimization
+of a few gates in the final norm. It changes the exponent geometry
+at the stage that determines the enormous degree.
+
+The coefficient result combines the Wang943 native compiler,
+the actual-rank control method refined in package 36, a new
+nonzero-word encoding of edge labels, and an exact support
+layout. It improves explicit coefficient size while preserving
+the simple P67 and 59-operation arithmetic skeletons.
+
+The inspections of packages 34 and 37 also identify two relevant
+boundaries: their shifted twelve-positive-variable norms are
+different polynomials whose positive completeness requires a
+proof, and their small signed Jones forms rely on additional
+cofinality arguments. Neither of those delicate transformations
+is needed for the principal ten-integer result here.
+
+\subsection{The fixed parent}
+The positive variables, in their authoritative order, are
+\[
+\begin{split}
+ &(J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ &\hspace{12mm}N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta).
+\end{split}
+\]
+The four fixed ports are $(\beta,K_0,M_C,M_F)$, with $M_F$
+already the shifted mask. Set
+\[
+ q=\beta J+1,\qquad k=\eta+\zeta,\qquad
+ H=4a+3,\qquad C=q-F-\alpha.
+\]
+Appendix~\ref{app:parent} gives all 22 quadratic residuals $r_j$.
+For the nonnegative coding domain define
+\begin{equation}\label{eq:parent}
+ P_0(n_1,\ldots,n_{31})=
+ \sum_{j=1}^{22}r_j(n_1+1,\ldots,n_{31}+1)^2.
+\end{equation}
+This is a quartic. Its constant term is strictly positive because
+at the all-one parent assignment the residual $E-X(a-E)$ is $1$.
+Every zero therefore has at least one nonzero coordinate.
+
+The comparison tuple is package 31's complete 121-by-8801
+tuple, whose native base is $2^{1064921}$. Its four materialized
+ports have bit lengths
+\[
+ 1064921,\quad1070004,\quad1064921,\quad1064922.
+\]
+The compressed files and \code{ten_integer/data/INSTANCE.json}
+fix them exactly. Historical metadata in a byte-preserved parent
+file does not override this active binding.
+Section~\ref{composed:section} binds the same parent equations to
+the smaller tuple and recomputes all following coefficient bounds.
+
+For
+\[
+ P_0(\boldsymbol n)=\sum_{|\alpha|\le4}p_\alpha\boldsymbol n^\alpha,
+ \qquad
+ c_\alpha=(4-|\alpha|)!\prod_{i=1}^{31}\alpha_i!\,p_\alpha,
+\]
+the exact reconstruction gives 402 nonzero records and proves
+\[
+ |c_\alpha|+1<2^{4269855}.
+\]
+The source radix multiplier is the actual fixed integer
+\[
+ \beta_S=2^{4269882},
+\]
+which is also materialized and hashed. Since
+$48\cdot33^4=56924208<2^{27}$, it satisfies
+\[
+ \beta_S>48\cdot33^4\max_\alpha|p_\alpha|.
+\]
+All coefficient records are finite integer expressions in the
+four fixed ports. There is no unspecified recursively enumerable
+index or existential coefficient.
+
+\subsection{The endpoint being inherited}
+The pinned development provides
+\begin{equation}\label{eq:inherited}
+ \exists\boldsymbol n\in\N^{31}:P_0(\boldsymbol n)=0
+ \quad\Longleftrightarrow\quad
+ \text{K215 halts on the blank tape}
+ \quad\Longleftrightarrow\quad
+ \operatorname{Ref}_{\mathrm{ZFC}}.
+\end{equation}
+The formal machine theorem is
+\code{KEndpoint215.blank_halts_iff_zfc_refutation}, whose statement
+uses \code{BlankHalts machine215} and
+\code{BProv ZFCax_s [] Form.fBot}.
+The native compiler and quartic adapters remain ordinary
+mathematical developments. Their particular proof files and
+the coefficient adapter are cited and retained with provenance.
+
+We use the mathematical equivalences represented by those
+developments. We do not infer a ZFC theorem from Lean's soundness,
+and we do not claim a new build of the formal machine endpoint.
+
+\input{sections/source_b4.tex}
+\input{sections/coefficient_refinement.tex}
+\input{sections/composed_variant.tex}
+
+\section{Verification and proof status}
+\label{sec:verification}
+A zero-equivalence theorem is an assertion about all integer
+assignments. Finite tests alone cannot establish it. The universal
+new source argument and coefficient adapter are therefore proved
+as ordinary mathematics, and the finite checks certify the
+specific data and arithmetic claims used by those proofs.
+
+For the main ten-integer equation, the executable verifier:
+\begin{enumerate}
+\item reconstructs the shifted sum of the 22 parent residual
+squares and all 402 weighted coefficients exactly;
+\item verifies the literal compressed ports, source hashes, and
+all coefficient bounds;
+\item checks all 52,360 four-multiset sums of the code;
+\item expands the norm identities exactly in a formal polynomial
+algebra, with 35 terms for three radicands and 495 terms for four;
+\item compares each emitted circuit with the literal formulas
+modulo three primes, including named intermediate quantities;
+\item verifies the ten variable leaves, binary gate ledger,
+fixed-leaf bindings, and an exact degree-attainment certificate.
+\end{enumerate}
+For the original-tuple comparison circuit, substituting a single indeterminate for
+all unknowns gives a coefficient at degree $107286763576$ equal
+to $16$ modulo 101. Since every gate also satisfies the advertised
+degree upper bound, this nonzero residue proves exact degree.
+The residues 599 modulo 1009 and 622356 modulo 1000003 provide
+additional checks. One nonzero residue already suffices.
+For the recommended composed instance the corresponding residues
+are $36$, $63$, and $258712$. Its independent bound-and-binding
+audit also reconstructs every weighted coefficient and checks
+the new actual fixed payloads.
+
+The native backend is checked independently without importing
+the generator. The audit reconstructs all four integers and
+checks 3,772 nonzero edge codes, 59,902 native-basis identities,
+both rotation intersections, carry and padding bounds, and the
+prime-power controller conditions on the actual new coefficients.
+A separate mathematical review checks the order of the alignment
+and occupancy arguments.
+
+Clean rebuilding and byte comparison establish that the recorded
+circuits are the generator outputs. They do not decide whether
+the equation has a solution. The modular random assignments are
+transcription diagnostics; the coefficient reconstruction, norm
+identities, finite injectivity enumeration, and leading-coefficient
+certificate have exact stated meanings.
+
+\subsection{External and inherited dependencies}
+The proof uses the pinned K215 and compiler equivalences, Sun's
+2021 Lucas and binomial results, Sun's 2026 ten-integer bridge
+and interpolation theorem, and elementary finite-field, Pell,
+and unique-factorization facts. The 2026 paper remains a preprint
+dependency. The new code and adapter have not been kernel-checked
+end to end in Lean or Rocq.
+
+The comparison ten-integer polynomial remains bound to the
+original complete tuple. The recommended variant in
+Section~\ref{composed:section} is fully rebound: all 402 weighted
+coefficient recipes, their bounds, the actual source-base payload,
+and the final degree certificate are regenerated from the new tuple.
+Separate independent audits check both instances. The smaller tuple
+is also concretely bound to P67 and the retained system.
+
+\subsection{What the conclusions do and do not say}
+The theorems are provable equivalences with consistency, not
+proofs of consistency. The new degree reduction is established
+relative to the explicitly pinned predecessor, and the
+coefficient reduction is established relative to the complete
+package-36 tuple. Neither is a claim that no smaller equation
+exists. Classical Bose--Chowla sets and Sun's universal theorem
+retain their attribution. The synthesis and explicit
+instance improvements are the new contributions presented here;
+a limited source search is not evidence of worldwide priority.
+
+\section{Further research questions}
+\label{sec:future}
+\paragraph{Can the actual source support use a shorter additive code?}
+A full $B_4$ code separates all 52,360 quartic monomials, while
+the source has only 402 nonzero records. It is enough that each
+supported exponent avoid every competing degree-at-most-four
+monomial. An exact support-aware search could lower the maximum
+position substantially. Checking collisions only between two
+supported monomials would be insufficient: an unsupported
+monomial from the fourth power could still contaminate the
+coefficient being recovered.
+
+\paragraph{Can span and circuit cost be optimized jointly?}
+The former powers-of-five positions are unusually cheap to share.
+The new irregular positions achieve a much shorter span but
+increase the gate count. Codeword translation, assignment to
+parent variables, and shared addition chains can be searched
+together. A useful comparison must state both span and emitted
+operation count.
+
+\paragraph{Can the Jones nine-natural-variable route use additive coding?}
+The related coefficient-extraction stage makes this plausible,
+but each bound, mask, and reverse implication needs a separate
+audit. The ten-integer proof does not automatically certify a
+nine-variable circuit after a textual substitution. This is the
+most direct route to combining the new degree improvement with
+the collection's smallest natural-variable count.
+
+\paragraph{Can other native backends benefit from the same adapter?}
+Section~\ref{composed:section} completes the composition of the two
+present improvements. The same architecture permits future coherent
+compiler tuples, but each replacement must regenerate its source
+coefficient bounds and fixed leaves. Automating that interface,
+with proof certificates rather than only construction scripts,
+would make subsequent backend comparisons much easier to audit.
+
+\paragraph{Can the input quartic use fewer positive variables?}
+The identity $D^2+c^2=(Ac)^2+1$ suggests removing a Pell
+discriminant, but in the present system it merely moves the
+auxiliary cost. Eliminating the index quotient runs into
+divisibility and proof-order obstacles involving
+$\gcd(E,H)$. In particular $X=2^R$ cannot be used before the
+argument establishing the packed index has recovered it.
+No reduced quartic count or eleven-positive-variable construction
+is asserted here.
+
+\paragraph{Which formal lemma should come first?}
+The most reusable addition to the formal development is the
+additive coefficient-extraction lemma parameterized by a finite
+injectivity certificate, followed by the mask and source
+interface. This separates the new proof from the existing
+Lucas and machine endpoints. An exact circuit checker can
+verify degree upper bounds and the nonzero modular
+leading coefficient.
+
+\paragraph{How close is the displayed code to a minimum?}
+For an integer $B_4$ code with 32 positions in $[0,T]$,
+counting gives $4T+1\ge\binom{35}{4}$, hence $T\ge13090$.
+This lower bound is weak and does not show that 942302 is close
+to optimal. Optimizing this finite code is a concrete
+combinatorial task. Proving a globally simplest Diophantine
+consistency equation is a separate problem.
+
+\paragraph{Can occupancy information be compressed further?}
+The new per-edge widths are minimal under the stated separate
+injective nonzero-word interface. This leaves open joint
+encodings, different tile presentations, alternative support
+geometry, and larger changes to the computation-to-polynomial
+compiler. A claimed gain must preserve both the local language
+and the global alignment/halting theorem.
+
+\section{Reproduction and incorporation}
+The top-level \code{reproduce.py} runs the construction and
+finite audits using Python's standard library. The report is
+built with \code{latexmk -pdf report.tex}. The directory includes:
+\begin{itemize}
+\item the complete LaTeX article and its compiled PDF;
+\item the composed ten-integer circuit, the original-tuple comparison
+instance, and four alternative finalizers for that comparison;
+\item the literal parent, coefficient recipes, and compressed
+fixed integers;
+\item the new native backend, its concrete P67/system bindings,
+and independent coefficient audit;
+\item finite verification receipts, independent mathematical
+reviews, source pins, notices, and licenses.
+\end{itemize}
+The package is intended as a new sibling in the user's
+\code{con-zfc-diophantine-forms} collection. Existing source
+numbers and old tuples should retain their identities.
+The supplied fixed code positions describe a new polynomial;
+they are not an edit to the old package-31 polynomial's degree.
+
+\appendix
+\section{The literal positive parent system}
+\label{app:parent}
+Use the variables and affine abbreviations of
+Section~\ref{sec:repo}, and write $R=jc-V$ as a computed
+expression. The 22 equations below specify the parent of the
+two ten-integer instances. Their residuals are left side minus right
+side.
+\begin{align*}
+ L&=q^2-1,&N&=q(L+1),\\
+ X&=wq,&a&=E+sN,\\
+ E&=X(a-E),&c&=k(a-E)+\eta,\\
+ P&=E(c-\eta)+k,&\tau^2&=P(P-k)+1,\\
+ D&=X+ac+\gamma H,&\Delta&=a^2+H,\\
+ C_2&=c^2,&D^2&=\Delta C_2+1,\\
+ k&=R+1+hE.
+\end{align*}
+The next two transport equations are
+\begin{align*}
+ R&=(q-F)(N-q)-CL+(M_C+qM_F)J,\\
+ (K_0+w)C+(q-F)-z(q-1)&=1.
+\end{align*}
+Finally,
+\begin{align*}
+ F_2&=f^2,&V&=of-c,\\
+ g&=y^2-V^2,&I&=iC_2,\\
+ B_{\rm aux}&=I^2,&B_{\rm aux}&=\Delta(F_2-1),\\
+ y^2-B_{\rm aux}g&=1.
+\end{align*}
+The transport coordinate here is the original unshifted one.
+The later 60-operation quadratic system uses a shifted transport
+coordinate; its residual list must not be silently substituted
+when reconstructing this package's coefficient records.
+The JSON source is authoritative and is checked against the
+displayed equations.
+
+\begin{thebibliography}{99}
+\bibitem{Repo}
+V.~Reshetnikov, \emph{ProveIt}, revision
+\code{22e75dd6b87b1b199bb08c778d7cf075ae5aae08},
+23 October 2026. Collection:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/22e75dd6b87b1b199bb08c778d7cf075ae5aae08/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}.
+The source provenance ledger identifies individual paths and blobs.
+
+\bibitem{Package31}
+ProveIt package \code{31-sun10}, \emph{Smaller explicit Diophantine
+forms for Con(ZFC)}, at revision \cite{Repo}, particularly
+\code{signed10/SIGNED10_PROOF.md},
+\code{coefficients/COEFFICIENT_PROOF.md}, and
+\code{signed10/data/parent_quartic31.json}.
+Its ten-integer finalizer improvements are inherited here.
+
+\bibitem{Package36}
+ProveIt package \code{36-small-tuple},
+\emph{Smaller Diophantine presentations of ZFC consistency},
+at revision \cite{Repo}. The native compiler, actual-rank
+padding method, and 59-operation system are the baseline
+for the separate coefficient improvement.
+
+\bibitem{Sun2021}
+Z.-W.~Sun, \emph{Further results on Hilbert's Tenth Problem},
+Science China Mathematics \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/abs/1704.03504v7}.
+The source coding and Lucas/binomial results are used with
+explicit hypotheses.
+
+\bibitem{Sun2026}
+Z.-W.~Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594v2}.
+Proposition 2.1, Theorems 3.1 and 4.1, Propositions 6.1--6.2,
+and Section 7. This is a preprint dependency.
+
+\bibitem{BoseChowla}
+R.~C.~Bose and S.~Chowla, \emph{Theorems in the additive theory of
+numbers}, Commentarii Mathematici Helvetici \textbf{37}
+(1962/63), 141--147.
+\url{https://doi.org/10.1007/BF02566968}.
+Earlier author report:
+\url{https://www.cs.umd.edu/~gasarch/COURSES/858/S13/BoseChowla.pdf}.
+
+\bibitem{Bayer2025}
+J.~Bayer, M.~David, M.~Ha{\ss}ler, Y.~Matiyasevich, and
+D.~Schleicher, \emph{Diophantine equations over $\Z$: universal
+bounds and parallel formalization}, arXiv:2506.20909v3,
+22 October 2026; first version 2025.
+\url{https://arxiv.org/abs/2506.20909v3}.
+Equations (1.6)--(1.7) and Definition 2.1 give an independent
+exposition of the positional source architecture.
+\end{thebibliography}
+\end{document}
+

@@ -1,0 +1,123 @@
+\section{Thirteen integers using only the Jones ratio theorem}
+
+There is a second, independent route to a small signed equation which does
+not use Sun's 2026 reduction.  It combines the fixed-polynomial carry code
+above with the literal Jones ratio construction and a new guard that
+simultaneously certifies an interval and an accurate rational approximation.
+The output has
+\[
+ \boxed{13\text{ unrestricted integers},\quad 1409\text{ binary operations},
+ \quad\deg F_{13}=226334238192.}
+\]
+More precisely its degree is $370496t+84272$, where $t=610895$.
+This is not a variable-count improvement over the companion ten-integer
+construction.  It is an explicit smaller Jones-based alternative with no
+2026 Lucas-reduction dependency.  The fourteen-integer variant has $1420$
+operations and slightly smaller degree $226295141096$; both are retained.
+
+\subsection*{Exact specification}
+The full division-free recipe is
+\path{signed_audit/generated/signed13_b4.json}; its source coefficients
+are the same coherent $31$-variable quartic tuple as the companion
+construction.  Set $a=2^{4269877}$ and use precisely the variables
+\[
+ (\epsilon,g,h,s,w,\phi,i,j,z_1,z_2,z_3,v,u)\in\mathbb Z^{13}.
+\]
+Put $b=2\epsilon^2$, $\omega=w^2$, and use the fixed-polynomial B4 front end
+with $B=ab^4$, $t=610895$, $L=4t$, and $N=2B^{9t+2}$.  It produces $R$ and
+\(c=bB^t\).  Retain the literal Jones ratio registers
+\[
+\begin{gathered}
+ U=N^2\omega,\quad Y=N^2s,\quad M=RY,\quad P=2M^2U,\quad
+ K=R+1+h(P-1),\quad A=M(U+1),\\
+ B_1=2R+1,\quad W_1=b\omega,\quad C=B_1+W_1+\phi,
+ \quad J=4A-5,\quad Q=3W_1C-2(W_1^2-1),\\
+ D=(A^2-1)C^2+1,\quad E=iJDC^2,\quad F=(A^2-1)E^2+1,\\
+ G=A+F(CD+1-A),\quad H=B_1+jC,\quad I=(G^2-1)H^2+1,\\
+ a_0=(P^2-1)K^2+1,\qquad a_1=DFI.
+\end{gathered}
+\]
+The new combined guard is
+\[
+ \boxed{\Delta=g(c-g)K^2-c^2(C-KY)^2>0.}
+\]
+Only $s\ge1$, $\phi\ge0$, and $\Delta>0$ remain to be encoded.  Set
+\[
+ d_1=3s-1,\quad d_2=3\phi+2,\quad d_3=3\Delta-1,
+ \quad C_0=1,\quad C_r=C_{r-1}(1+4d_rC_{r-1}z_r^2),
+ \quad C_*=C_3.
+\]
+Let $D_0=JF$, $T_0=QF+J(H-C)$, $Z=\epsilon wi z_1z_2z_3$, and
+\[
+\begin{gathered}
+ S=ZD_0^5,\quad r=T_0+D_0v,\quad
+ T=(r^3-D_0^2r-D_0^3)(r^2+23D_0^2),\\
+ w_1=C_*,\quad w_2=C_*(P^2+K^2+2),\quad X=Su-T,\\
+ A_0=S^2C_*,\quad A_1=S^2w_1^2a_0,\quad A_2=S^2w_2^2a_1,\\
+ V=X^2+A_2-A_0-A_1,\quad W=V^2+4X^2A_2-4A_0A_1,\\
+ \boxed{F_{13}=W^2-16V^2X^2A_2=0.}
+\end{gathered}
+\]
+All displayed registers are polynomial abbreviations, not additional
+unknowns.  The three-factor Pell stack, quintic intersective merger and
+three-root norm have the full signed-domain proofs in
+\path{signed_audit/SIGNED_B4_PROOF.md}; the new guard proof is in
+\path{signed_audit/THIRTEEN_GUARD_PROOF.md}.
+
+\subsection*{Why the guard is sound}
+Since $c>0$, $\Delta>0$ forces $K\ne0$ and $0<g<c$.  The exact identity
+\[
+ c^2\bigl(K^2-4(C-KY)^2\bigr)
+   =4\Delta+(c-2g)^2K^2
+\]
+gives the Jones approximation $4(C-KY)^2<K^2$.  Positivity of $C,Y$
+then forces $K>0$; the square condition on $a_0$ excludes $h\le0$ by the
+usual gap between consecutive squares.  Reflection of $i$ and a Pell
+orbit modulo $CF$ restore positive $i,j$ without changing the conditions.
+To invoke the unchanged \texttt{Nine.ratio\_sound} theorem literally, supply
+its free ceiling parameter, in the proof only, as $G_{\rm aux}=8gK^2+1$.
+The positive integer $K^2-4(C-KY)^2$ is at least one, so its original
+margin is positive.  Thus the theorem gives the required power-of-two
+base and central-binomial divisibility.  The recovered $g<c$ supplies
+the carry-code bounds.
+
+\subsection*{Why the canonical witness satisfies the stronger guard}
+The exact source \texttt{Ratio.exists\_B25core} chooses $b=2^k$ and
+\[
+ \omega=2^{2R+1-k},\quad
+ U=\frac{N^2}{b}2^{2R+1},\quad
+ \rho=\frac{(U+1)^{2R}}{U^R}=Y+f.
+\]
+Expanding the binomial, the fractional tail is
+\[
+ f=\sum_{j=0}^{R-1}\binom{2R}{j}U^{j-R}
+   <\frac{2^{2R}}U=\frac{b}{2N^2}<1.
+\]
+The other terms are the integer $Y$, and $N^2\mid Y$ as in the original
+construction.  The literal \texttt{ratio\_core} estimate, with
+$A=RY(U+1)$, yields
+\[
+ \left|\frac CK-\rho\right|
+ \le\frac{2(Y+f)}{Y(U+1)}<\frac4U.
+\]
+Consequently, since $R\ge8$,
+\[
+ \left|\frac CK-Y\right|
+ <\frac b{N^2}\left(\frac12+\frac4{2^{2R+1}}\right)
+ <\frac b{N^2}.
+\]
+The direct witness code has $1\le g<c$, while $c,b\le N$.  Therefore
+\[
+ \frac{c^2(C-KY)^2}{K^2}<\frac{c^2b^2}{N^4}\le1
+ \le g(c-g),
+\]
+which proves $\Delta>0$.  Neither $Y$ nor the base is changed by the later
+product-Pell extension.  Choosing $k=1+2r$ sufficiently large makes
+$b=2(2^r)^2$ and $\omega$ a positive square.  The three stack witnesses,
+merger witness and norm root now complete the integer solution.
+
+Thus ordinary mathematics formalizable in ZFC proves that $F_{13}$ has an
+integer zero exactly when the source quartic does, hence exactly when
+there is a finite ZFC refutation.  The accompanying source, B4, polynomial,
+modular and exact-degree checks are diagnostics, not a new end-to-end
+Lean certificate or a proof of consistency.

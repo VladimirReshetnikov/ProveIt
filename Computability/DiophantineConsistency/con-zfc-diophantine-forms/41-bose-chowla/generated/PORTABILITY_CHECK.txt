@@ -1,0 +1,101 @@
+Verification from a fresh isolated copy; no surrounding checkout and no network requests.
+
+$ reproduce.py
+{"status": "PASS", "source_files": 25, "proof_dependencies": 17, "B4_multisets": 52360, "degree": 69554088184, "operations": 1333, "coefficient_records": 402, "norm_term_counts": {"3": 35, "4": 495}}
+{"status": "PASS", "ports_reconstructed": 4, "native_basis_checks": 69230, "tiles": 943}
+{
+  "status": "PASS",
+  "circuit_sha256": "6c80191869b421514b51eaabc28188e438f2b00f44e68606a72f9b439f67dcce",
+  "unknowns": [
+    "f",
+    "g",
+    "h",
+    "k",
+    "l",
+    "w",
+    "x",
+    "y",
+    "z",
+    "m"
+  ],
+  "operations": 1333,
+  "fixed_leaves": 79,
+  "all_gates_live": true,
+  "B4_multisets": 52360,
+  "maximum_weight": 610895,
+  "exact_Dcode_audit": {
+    "exact_identity": true,
+    "ring": "Z[B,beta,K0,MC,MF]",
+    "coefficient_records": 402,
+    "expanded_terms": 675,
+    "positions": 31,
+    "target": 2443580
+  },
+  "all_named_values_scalar_checks": 60,
+  "primes": [
+    1000000007,
+    1000000009,
+    2147483647
+  ],
+  "coefficient_payload_hashes": {
+    "beta": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+    "K": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+    "MC": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+    "MF_source": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7"
+  },
+  "scope": "Exact source polynomial coding identity and literal DAG checks; finite scalar checks do not prove semantic equivalence."
+}
+All primary checks passed. These checks do not search for a ZFC refutation.
+
+$ positive/check_majorant.py
+{
+  "independent_formal_radical_products": 123,
+  "degree_rays": [
+    {
+      "prime": 10007,
+      "norm_degree": 929,
+      "product_degree": 938,
+      "leading_coefficient": 4077
+    },
+    {
+      "prime": 10009,
+      "norm_degree": 929,
+      "product_degree": 938,
+      "leading_coefficient": 9794
+    },
+    {
+      "prime": 10037,
+      "norm_degree": 929,
+      "product_degree": 938,
+      "leading_coefficient": 5866
+    }
+  ],
+  "actual_coefficient_degree_rays": [
+    {
+      "prime": 10007,
+      "norm_degree": 929,
+      "product_degree": 938
+    },
+    {
+      "prime": 10009,
+      "norm_degree": 929,
+      "product_degree": 938
+    },
+    {
+      "prime": 10037,
+      "norm_degree": 929,
+      "product_degree": 938
+    }
+  ],
+  "whole_tuple_payloads_verified": [
+    "beta",
+    "K",
+    "MC",
+    "MF_source"
+  ],
+  "all_gates_and_ports_live": true,
+  "delivered_circuits_regenerated_exactly": true,
+  "product_operations": 122,
+  "system_operations": 117,
+  "scope": "Finite diagnostics; the mathematical proof supplies the universal identity, exact degree, and compiler equivalence."
+}
