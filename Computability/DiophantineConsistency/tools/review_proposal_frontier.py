@@ -80,9 +80,24 @@ def audit(case):
                 require(kind in ("literal", "variable", "fixed"), path + ": invalid node")
                 deps[index] = ()
         output = data["output"]
+    elif "gates" in data:
+        inputs = data["variables"]
+        fixed_names = data["fixed_ports"]
+        available = set(inputs + fixed_names)
+        for gate in data["gates"]:
+            name, op = gate["id"], gate["op"]
+            require(name not in available, path + ": repeated producer")
+            require(op in ("add", "sub", "mul") and len(gate["args"]) == 2, path + ": invalid operation")
+            operands = tuple(v for v in gate["args"] if isinstance(v, str))
+            require(all(v in available for v in operands), path + ": invalid dependency")
+            available.add(name)
+            deps[name] = operands
+            counts[op] += 1
+        output = data["output"]
     else:
         inputs = data["witnesses"]
-        available = set(inputs + data["fixed_numerals"])
+        fixed_names = data["fixed_numerals"]
+        available = set(inputs + fixed_names)
         for name, op, left, right in data["source"]:
             require(name not in available, path + ": repeated producer")
             require(op in ("+", "-", "*"), path + ": invalid operation")
@@ -101,11 +116,11 @@ def audit(case):
             pending.extend(deps.get(node, ()))
     require(all(node in used for node in deps), path + ": dead producer")
     if "nodes" not in data:
-        require(all(name in used for name in inputs + data["fixed_numerals"]), path + ": dead input")
+        require(all(name in used for name in inputs + fixed_names), path + ": dead input")
     require(len(inputs) == variables, path + ": variable count")
     require(len(set(inputs)) == variables, path + ": repeated input")
     require(sum(counts.values()) == operations, path + ": operation count")
-    metadata_degree = data.get("degree", data.get("exact_degree"))
+    metadata_degree = data.get("degree", data.get("exact_degree", data.get("exact_total_degree")))
     if isinstance(metadata_degree, int):
         require(metadata_degree == degree, path + ": reported degree transcription")
     return dict(path=path, variables=variables, domain=domain, reported_degree=degree,

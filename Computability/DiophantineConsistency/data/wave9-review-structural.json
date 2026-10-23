@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "arrival_pin": "0c6be9a074",
+  "placement_pin": "a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49",
+  "python": "3.12.13",
+  "packages": [
+    {
+      "package": 61,
+      "archive": "con-zfc-congruence-carriers.zip",
+      "archive_sha256": "da7c4d0731da84cd56a606d270a3a27670a237faf79b8fdb30fec0a72a8fba0e",
+      "full_normal_release_replay": "PASS",
+      "logs": [
+        {
+          "file": "proofs62ff-wave9-carriers-normal.log",
+          "sha256": "1a64794d1d94411fd3eb93df3ae1a6eac8420c8a96076807b7ceee583ce18c5b",
+          "bytes": 1791
+        }
+      ]
+    },
+    {
+      "package": 62,
+      "archive": "con-zfc-sign-and-norm.zip",
+      "archive_sha256": "7b3d6f8e2b034fc7b443a2fbde9bd001831b62a37f8042637fe19fec076d9454",
+      "full_normal_release_replay": "PASS",
+      "logs": [
+        {
+          "file": "proofs62ff-wave9-signnorm-normal.log",
+          "sha256": "71125970a3118526623c085394b118a591067f7a4f7cca60f8925dcc849a0392",
+          "bytes": 469
+        },
+        {
+          "file": "proofs62ff-wave9-signnorm-optimized.log",
+          "sha256": "99ea0811d91ec0f5ee70d3ce144f60bba3aebace1caa79049b36e7cd210e3810",
+          "bytes": 479
+        }
+      ]
+    },
+    {
+      "package": 63,
+      "archive": "con-zfc-sign-recovery-2026-10-23.zip",
+      "archive_sha256": "98c4d8cfd4d72da2967827b5bdb0d5b6c6feecd02d41ea4dd31877047f1ad69c",
+      "full_normal_release_replay": "PASS",
+      "logs": [
+        {
+          "file": "proofs62ff-wave9-signrecovery-normal.log",
+          "sha256": "3d58c8bb085a1f00c70836ccece43490c829db49c27d0891afe3c36c1f61396c",
+          "bytes": 7817
+        },
+        {
+          "file": "proofs62ff-wave9-signrecovery-nine-optimized.log",
+          "sha256": "098981f8a523e3192bbcf0dd6ce77954890be3e2f22c75187b51ed97a955b63c",
+          "bytes": 2594
+        },
+        {
+          "file": "proofs62ff-wave9-signrecovery-independent-optimized.log",
+          "sha256": "57e26ae6b814b0f4327ddc86231f8dd46b4556b71f7583c0ef425b5cdb68d19b",
+          "bytes": 618
+        }
+      ]
+    },
+    {
+      "package": 64,
+      "archive": "con-zfc-structural-reductions-2026-10-23.zip",
+      "archive_sha256": "0a2e23f812b70caea1140ba83822e70fc397a8792ba571bf3f3204ab5461c015",
+      "full_normal_release_replay": "PASS",
+      "logs": [
+        {
+          "file": "proofs62ff-wave9-structural-normal.log",
+          "sha256": "5a930618101b71ee579f833d3c6588734117156af186351acd06ce5a2634e46f",
+          "bytes": 2863
+        },
+        {
+          "file": "proofs62ff-wave9-structural-optimized.log",
+          "sha256": "0d9b10ebe15678541b791364afe04ad7eb1ec073d37f57c28539c699f67b229f",
+          "bytes": 2836
+        }
+      ]
+    }
+  ],
+  "optimized_policy": {
+    "61": "Root normally replays new algebra/dossier checkers in both modes; historical coefficient tools run normally.",
+    "62": "Full root -O replay PASS, flag propagates.",
+    "63": "Root replays quartic and positive14 normally/-O; additional nine/verify.py and reviews/check_nine_independent.py -O PASS.",
+    "64": "Declared root --optimized replay PASS, all new checkers replayed with -O."
+  },
+  "source_boundary": {
+    "59_old_z_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+    "63_and_64": "Byte-identical authoritative parent_source.json to59.",
+    "62": "21 expanded rows identical to59; transport row15 subtracts beta*J and uses shifted positive quotient. Same distinction as52, requiring positive-domain recovery.",
+    "61": "No nine-variable improvement; new low-degree carriers use inherited source interfaces."
+  },
+  "scope": "Full finite release integrity, coefficient/algebra/degree/circuit replays. No new unbounded native-calibration, end-to-end Lean, internal ZFC theorem or global optimum inferred."
+}

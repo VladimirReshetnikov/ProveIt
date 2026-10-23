@@ -1,0 +1,2266 @@
+{
+  "status": "PASS",
+  "review_date": "2026-10-23",
+  "arrival_commit": "0c6be9a074d8905b22015e93c5c9d28eda36e95e",
+  "placement_commit": "a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49",
+  "scope": "Four full archive releases: ordinary arithmetic/source review, complete declared release replays and independent literal DAG audit. This is not an end-to-end Lean or object-language ZFC certificate.",
+  "archives": [
+    {
+      "name": "ConZFC_Gap_Congruence_2026-10-23.zip",
+      "arrival_commit": "0c6be9a074",
+      "sha256": "4e181f1845ed6ded63754916b708535285058067cf1d0dc42063b224dad76933",
+      "git_blob_sha1": "e297746502b3b56eab701ecced001a4da1f87471",
+      "file_count": 296,
+      "uncompressed_bytes": 5247343,
+      "pristine_full_tree_matches_archive": true,
+      "full_member_hash_manifest_sha256": "2ff1f22dcc8092347d367d95670023a8dbd1c8135854ceaa3c90f549469ab591"
+    },
+    {
+      "name": "ConZFC_Positive_Gap_2026-10-23.zip",
+      "arrival_commit": "0c6be9a074",
+      "sha256": "add1d545586ae7b8ceea47638f92ee5483c19b4c499892cd604a905a15f9464a",
+      "git_blob_sha1": "cddf14dbd317aaa55b1e84775ca69bd53ec8da3b",
+      "file_count": 206,
+      "uncompressed_bytes": 2698500,
+      "pristine_full_tree_matches_archive": true,
+      "full_member_hash_manifest_sha256": "f388afef71259fb57267ae40937736077da09d10f1227508635e80f755686547"
+    },
+    {
+      "name": "ZFC_Diophantine_Oriented_Guards_2026-10-23.zip",
+      "arrival_commit": "0c6be9a074",
+      "sha256": "870c762a85e391fac910c8679a8bddbda30ef4f2d80a599ce6fd481c89e6240d",
+      "git_blob_sha1": "003866be7ca1437d5f21c1ee4d027f0115196517",
+      "file_count": 503,
+      "uncompressed_bytes": 7438508,
+      "pristine_full_tree_matches_archive": true,
+      "full_member_hash_manifest_sha256": "d3c3fd1199e2bfd02b1502a88decc312b8d93dd95fb3bc4af1a8456b86b44998"
+    },
+    {
+      "name": "con_zfc_shared_taps_carriers_2026-10-23.zip",
+      "arrival_commit": "0c6be9a074",
+      "sha256": "3b8c1d2186836361486c7108fac5bb1b9c0142b1fcc4cb80a47d214bdac0a34f",
+      "git_blob_sha1": "7bf5a26f33ba2c9115d765c0159ee676ee7c1de9",
+      "file_count": 179,
+      "uncompressed_bytes": 1819042,
+      "pristine_full_tree_matches_archive": true,
+      "full_member_hash_manifest_sha256": "d81722ac483e945876d10594c27ddc154655a5592edeb9194871147af5cada46"
+    }
+  ],
+  "pristine_manifest_integrity": {
+    "gap_congruence": {
+      "status": "PASS",
+      "manifest": "SHA256SUMS.json",
+      "manifest_sha256": "b84e699f87ab08a18eb417931c83c58df25d4f212b3faf9c34aade9b7fb41389",
+      "sealed_files": 295,
+      "archive_tree_files": 296,
+      "not_listed_in_manifest": [
+        "SHA256SUMS.json"
+      ]
+    },
+    "positive_gap": {
+      "status": "PASS",
+      "manifest": "MANIFEST.sha256",
+      "manifest_sha256": "167b05ae59dca9c4a44345721c6dc57524d2fda9c553a2d94110a9d5e4158c87",
+      "sealed_files": 205,
+      "archive_tree_files": 206,
+      "not_listed_in_manifest": [
+        "MANIFEST.sha256"
+      ]
+    },
+    "oriented_guards": {
+      "status": "PASS",
+      "manifest": "SHA256SUMS.json",
+      "manifest_sha256": "00092e79748116eb747dc821e33d735da7baaf96126975256e7e331d128fd4b4",
+      "sealed_files": 502,
+      "archive_tree_files": 503,
+      "not_listed_in_manifest": [
+        "SHA256SUMS.json"
+      ]
+    },
+    "shared_taps": {
+      "status": "PASS",
+      "manifest": "MANIFEST.sha256",
+      "manifest_sha256": "3364713afc28e97c6cb82b3c5e95293e07cc1ce48fd6a8c0700a0ecfa2b720c9",
+      "sealed_files": 178,
+      "archive_tree_files": 179,
+      "not_listed_in_manifest": [
+        "MANIFEST.sha256"
+      ]
+    }
+  },
+  "environment": {
+    "python": "3.12.13",
+    "interpreter": "/tmp/proofs62ff-wave7-review-venv/bin/python3.12",
+    "sympy": "1.14.0",
+    "numpy": "2.3.5",
+    "isolated_run_copies": true,
+    "pristine_trees_match_all_archive_members": true
+  },
+  "policy": {
+    "gap_congruence": "Root normal18-stage replay; all18 stages repeated directly with -O; explicit corruption driver normal (its own negative controls include normal and -O). The root itself does not propagate -O.",
+    "positive_gap": "Declared root11-stage mixed-mode replay; each stage also repeated in its complementary optimization mode. The manifest was independently authenticated before any run.",
+    "oriented_guards": "Root normal25-stage replay; root forbids -O by explicit policy. All25 stages repeated directly with -O, four signed checkers also run directly with -O, and root corruption controls run normally.",
+    "shared_taps": "Root normal and root -O; root forwards the optimization flag to component checkers.",
+    "interpretation": "Successful optimized builder execution is not a proof that every internal Python assert remained active; explicit independent checkers and negative controls are recorded separately."
+  },
+  "replays": {
+    "positive_gap": {
+      "status": "PASS",
+      "commands": [
+        {
+          "label": "root_declared_policy",
+          "arguments": [
+            "checks/verify_all.py"
+          ],
+          "exit_code": 0,
+          "seconds": 14.221,
+          "log_sha256": "829bb55b2ad32a8103020d0b677e50ad6efdefcb8ab80515e44429b7abc3556f",
+          "log": "logs/positive_gap/root_declared_policy.log"
+        },
+        {
+          "label": "complementary_mode_01",
+          "arguments": [
+            "-O",
+            "upstream44/native/build_coefficients.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.164,
+          "log_sha256": "0599543212b8d2bbed2db018a29d6826702e1877faa5c8a1861d041998cb1783",
+          "log": "logs/positive_gap/complementary_mode_01.log"
+        },
+        {
+          "label": "complementary_mode_02",
+          "arguments": [
+            "upstream44/native/audit_coefficients.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.164,
+          "log_sha256": "54d01f2edc02947a1eacf77341b6377158e1729748f6151615b89914ce33146f",
+          "log": "logs/positive_gap/complementary_mode_02.log"
+        },
+        {
+          "label": "complementary_mode_03",
+          "arguments": [
+            "-O",
+            "upstream31/coefficients/build_coefficients.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.164,
+          "log_sha256": "2861651d4452722963f0cf5f61503fbd3229a141b12deee29e9ee6db3a3505a4",
+          "log": "logs/positive_gap/complementary_mode_03.log"
+        },
+        {
+          "label": "complementary_mode_04",
+          "arguments": [
+            "-O",
+            "research_nine/compact_candidate/build_nine.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.164,
+          "log_sha256": "f043bde44d62ae5c1680c2f998c7856785c30cc97513c5cd34d6fc1581100271",
+          "log": "logs/positive_gap/complementary_mode_04.log"
+        },
+        {
+          "label": "complementary_mode_05",
+          "arguments": [
+            "-O",
+            "research_nine/candidate/build_nine.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.164,
+          "log_sha256": "61ff6e926f2fd56c7f08991edad3cc039182cc2d767de26782d9fb22d14ade11",
+          "log": "logs/positive_gap/complementary_mode_05.log"
+        },
+        {
+          "label": "complementary_mode_06",
+          "arguments": [
+            "research_low_degree/audit_gap_source.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "ee431289f7ba266c70e0c13939610f1dd72d2a5d8854e4792b3879d1c5aa62c3",
+          "log": "logs/positive_gap/complementary_mode_06.log"
+        },
+        {
+          "label": "complementary_mode_07",
+          "arguments": [
+            "research_alternatives/check_positive_gap.py",
+            "--records",
+            "research_nine/compact_candidate/data/parent_source.json",
+            "--layout",
+            "research_nine/compact_candidate/data/split_code.json"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "9ceb231e616cfc8a37850f8a7a4dd701f11ec70ec27f91c32736d2b6f5d70dcf",
+          "log": "logs/positive_gap/complementary_mode_07.log"
+        },
+        {
+          "label": "complementary_mode_08",
+          "arguments": [
+            "-O",
+            "research_nine/compact_candidate/write_source_table.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.114,
+          "log_sha256": "2168ab68adac7aaa266b902c97a6ccca1cc9492bf2a81aa387f08d2be199e5d4",
+          "log": "logs/positive_gap/complementary_mode_08.log"
+        },
+        {
+          "label": "complementary_mode_09",
+          "arguments": [
+            "research_nine/compact_candidate/audit_circuit.py",
+            "--binding",
+            "upstream44/native/COEFFICIENT_BINDING.json"
+          ],
+          "exit_code": 0,
+          "seconds": 11.637,
+          "log_sha256": "4c969643b61a6e2948f9ae09aad73aa8d2a9add697cd072d407e593b9bb90f3f",
+          "log": "logs/positive_gap/complementary_mode_09.log"
+        },
+        {
+          "label": "complementary_mode_10",
+          "arguments": [
+            "-O",
+            "research_low_degree/supplement15/build.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "d151bc33ba21748cf3c5b22831146617f03b4178dd84f64c67c7a2ceca50b432",
+          "log": "logs/positive_gap/complementary_mode_10.log"
+        },
+        {
+          "label": "complementary_mode_11",
+          "arguments": [
+            "research_low_degree/supplement15/verify.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.114,
+          "log_sha256": "6a2b75bb913f9d0c339a150951cb79cff12c0689f55134f43bb476b715b6b0d1",
+          "log": "logs/positive_gap/complementary_mode_11.log"
+        }
+      ]
+    },
+    "oriented_guards": {
+      "status": "PASS",
+      "commands": [
+        {
+          "label": "root_normal",
+          "arguments": [
+            "verify.py"
+          ],
+          "exit_code": 0,
+          "seconds": 209.661,
+          "log_sha256": "71ced5b5ee2e7bb7e8e37ab6459ad7042516d1e66030c7ec7ef9cc901e8fd066",
+          "log": "logs/oriented_guards/root_normal.log"
+        },
+        {
+          "label": "optimized_01",
+          "arguments": [
+            "-O",
+            "build_sections.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.187,
+          "log_sha256": "1cc58db3dd00d237b533522b569c06d29ccebc7614757c450c08144635cbbc4f",
+          "log": "logs/oriented_guards/optimized_01.log"
+        },
+        {
+          "label": "optimized_02",
+          "arguments": [
+            "-O",
+            "encoding/verify_split.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "4bc48827c3c92752b05da85898f4fbfb5f41770dfa01cfdee8ce4efa889cb8c4",
+          "log": "logs/oriented_guards/optimized_02.log"
+        },
+        {
+          "label": "optimized_03",
+          "arguments": [
+            "-O",
+            "encoding/test_split.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.715,
+          "log_sha256": "f55317bcb18f152530d0b8265bff1271bba11c2377b055fae3516b184cf422ec",
+          "log": "logs/oriented_guards/optimized_03.log"
+        },
+        {
+          "label": "optimized_04",
+          "arguments": [
+            "-O",
+            "encoding/check_carry.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.032,
+          "log_sha256": "4b32ce5650b361439ad7b214afa12b84f925231e20777ae68c86c772798aebee",
+          "log": "logs/oriented_guards/optimized_04.log"
+        },
+        {
+          "label": "optimized_05",
+          "arguments": [
+            "-O",
+            "quartic/build_verify.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.071,
+          "log_sha256": "dcaee7dd9d0007b164439bffc0d899f2d3ec739094580c6ad6fc3a0d32d8b33d",
+          "log": "logs/oriented_guards/optimized_05.log"
+        },
+        {
+          "label": "optimized_06",
+          "arguments": [
+            "-O",
+            "quartic/build_projections.py"
+          ],
+          "exit_code": 0,
+          "seconds": 2.769,
+          "log_sha256": "d3ac8bb0302eaa18155aa76fd341ad583cadf6be64ee951570c6ff9838aa03af",
+          "log": "logs/oriented_guards/optimized_06.log"
+        },
+        {
+          "label": "optimized_07",
+          "arguments": [
+            "-O",
+            "review/quartic42/check_literal.py"
+          ],
+          "exit_code": 0,
+          "seconds": 2.569,
+          "log_sha256": "7f9779d77fe32f97f3750fdb4a79cd216826d791ee2afd7f7045c667e1cfb20c",
+          "log": "logs/oriented_guards/optimized_07.log"
+        },
+        {
+          "label": "optimized_08",
+          "arguments": [
+            "-O",
+            "review/projections/check.py"
+          ],
+          "exit_code": 0,
+          "seconds": 6.628,
+          "log_sha256": "aae406f51745508b81cd98e9964deb0f944d8cbbdf3dd5e99c90bc392b91e029",
+          "log": "logs/oriented_guards/optimized_08.log"
+        },
+        {
+          "label": "optimized_09",
+          "arguments": [
+            "-O",
+            "nine/build_nine.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.62,
+          "log_sha256": "bc2b7404c575d5a38a1fac953e0f2c2df279e414b41a4da4fb56a02372a24d5a",
+          "log": "logs/oriented_guards/optimized_09.log"
+        },
+        {
+          "label": "optimized_10",
+          "arguments": [
+            "-O",
+            "nine/check_ring.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.515,
+          "log_sha256": "912cd81c7c27bd0ffce8e40fc04ef58aa8ce501df9f5abec5681ed658b74ec09",
+          "log": "logs/oriented_guards/optimized_10.log"
+        },
+        {
+          "label": "optimized_11",
+          "arguments": [
+            "-O",
+            "nine/check_nine.py"
+          ],
+          "exit_code": 0,
+          "seconds": 98.392,
+          "log_sha256": "a2cca679bd2be97bda23b119c13d27b61600eb2096d846f2307d9a83cca377a8",
+          "log": "logs/oriented_guards/optimized_11.log"
+        },
+        {
+          "label": "optimized_12",
+          "arguments": [
+            "-O",
+            "nine/test_corruption.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "004db4082235e2cad15c072b51133deaa61f709c59550c3004127627cd749cc0",
+          "log": "logs/oriented_guards/optimized_12.log"
+        },
+        {
+          "label": "optimized_13",
+          "arguments": [
+            "-O",
+            "nine/review/check_nine_independent.py"
+          ],
+          "exit_code": 0,
+          "seconds": 1.166,
+          "log_sha256": "24b2944bbb4d95179777bc99f23781efc753516a50d99be7b8a793e73f919aa5",
+          "log": "logs/oriented_guards/optimized_13.log"
+        },
+        {
+          "label": "optimized_14",
+          "arguments": [
+            "-O",
+            "nine/review/check_majorant_sympy.py"
+          ],
+          "exit_code": 0,
+          "seconds": 3.371,
+          "log_sha256": "d3a8c53487b1401f0fad9601113b24a5575c6b021221f5cca795cd38e032fce7",
+          "log": "logs/oriented_guards/optimized_14.log"
+        },
+        {
+          "label": "optimized_15",
+          "arguments": [
+            "-O",
+            "signed/reproduce.py"
+          ],
+          "exit_code": 0,
+          "seconds": 7.43,
+          "log_sha256": "f3b80fd33178ad183060dc3c65d3c1c216e982efeb4908996ba67bdbe97051fb",
+          "log": "logs/oriented_guards/optimized_15.log"
+        },
+        {
+          "label": "optimized_16",
+          "arguments": [
+            "-O",
+            "signed108/reproduce.py"
+          ],
+          "exit_code": 0,
+          "seconds": 7.03,
+          "log_sha256": "e668d055fbbbb5eb225682c230bc2c5687eb7f6431b32bf1b1770e41cc64410d",
+          "log": "logs/oriented_guards/optimized_16.log"
+        },
+        {
+          "label": "optimized_17",
+          "arguments": [
+            "-O",
+            "signed108trim/reproduce.py"
+          ],
+          "exit_code": 0,
+          "seconds": 7.078,
+          "log_sha256": "cfd6a086a000a7d5cf95e9d2d0de446410437695cba930d4be160bdaf204c8d9",
+          "log": "logs/oriented_guards/optimized_17.log"
+        },
+        {
+          "label": "optimized_18",
+          "arguments": [
+            "-O",
+            "signed13/reproduce.py"
+          ],
+          "exit_code": 0,
+          "seconds": 72.25,
+          "log_sha256": "3ff0552969e66c2ef5040c634d38fcc146d149bad846437390508b33951d1eec",
+          "log": "logs/oriented_guards/optimized_18.log"
+        },
+        {
+          "label": "optimized_19",
+          "arguments": [
+            "-O",
+            "positive/build.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "c3b56e99abe8052e7f2673499b554f04cc83305c5a9b5eb6bd88c942a60ebb42",
+          "log": "logs/oriented_guards/optimized_19.log"
+        },
+        {
+          "label": "optimized_20",
+          "arguments": [
+            "-O",
+            "positive/check.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "ed975fb2e9c226ae31a9326827f07571d108fe53a396055057969b49053cab92",
+          "log": "logs/oriented_guards/optimized_20.log"
+        },
+        {
+          "label": "optimized_21",
+          "arguments": [
+            "-O",
+            "positive/negative_controls.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.214,
+          "log_sha256": "69300db45647b2a310b906ea899960ae7c2c1a195be8582470710ac411d42357",
+          "log": "logs/oriented_guards/optimized_21.log"
+        },
+        {
+          "label": "optimized_22",
+          "arguments": [
+            "-O",
+            "review/positive14/check_independent.py"
+          ],
+          "exit_code": 0,
+          "seconds": 3.321,
+          "log_sha256": "c73a2484688e11adeff2948362de8e5f1ae104484006de1b13f492199715dd57",
+          "log": "logs/oriented_guards/optimized_22.log"
+        },
+        {
+          "label": "optimized_23",
+          "arguments": [
+            "-O",
+            "root_checks/check_endpoints.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "62a979b452f868f4b12e47186876d2235f3986c23b9f87efb9bed8852ddc7349",
+          "log": "logs/oriented_guards/optimized_23.log"
+        },
+        {
+          "label": "optimized_24",
+          "arguments": [
+            "-O",
+            "quartic/check_tex_residuals.py"
+          ],
+          "exit_code": 0,
+          "seconds": 2.068,
+          "log_sha256": "518ae042dc083745a9d2efb4e05611045283447c2d1ac9fbd5a754c0d4e0fe4e",
+          "log": "logs/oriented_guards/optimized_24.log"
+        },
+        {
+          "label": "optimized_25",
+          "arguments": [
+            "-O",
+            "root_checks/check_bindings.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "12fb2e7ef6c8e10251550a5b0d117f023d0c8783b7c719c4b400279e147e9980",
+          "log": "logs/oriented_guards/optimized_25.log"
+        },
+        {
+          "label": "optimized_direct_signed_01",
+          "arguments": [
+            "-O",
+            "signed/independent_check.py"
+          ],
+          "exit_code": 0,
+          "seconds": 3.42,
+          "log_sha256": "a1215fff8c8fe40b6ee88d0ac954d601d2b6282af98cf5ffef90dd6c86e15a9c",
+          "log": "logs/oriented_guards/optimized_direct_signed_01.log"
+        },
+        {
+          "label": "optimized_direct_signed_02",
+          "arguments": [
+            "-O",
+            "signed108/independent_check.py"
+          ],
+          "exit_code": 0,
+          "seconds": 3.42,
+          "log_sha256": "561d29529f04c2eb7c34f36809ee7c60e6b558585ac32d6ee9b08803625db097",
+          "log": "logs/oriented_guards/optimized_direct_signed_02.log"
+        },
+        {
+          "label": "optimized_direct_signed_03",
+          "arguments": [
+            "-O",
+            "signed108trim/independent_check.py"
+          ],
+          "exit_code": 0,
+          "seconds": 3.609,
+          "log_sha256": "49134fbc219137b1d75ebf2ae1e804283def8639c976c3e741ef3e1328db8838",
+          "log": "logs/oriented_guards/optimized_direct_signed_03.log"
+        },
+        {
+          "label": "optimized_direct_signed_04",
+          "arguments": [
+            "-O",
+            "signed13/verify.py"
+          ],
+          "exit_code": 0,
+          "seconds": 35.977,
+          "log_sha256": "e537fc73d1577ebdd9feeba2d93129630e42b713279e190b779d77d3f230b276",
+          "log": "logs/oriented_guards/optimized_direct_signed_04.log"
+        },
+        {
+          "label": "root_negative_controls",
+          "arguments": [
+            "negative_controls.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.365,
+          "log_sha256": "712e0d586e6091a58775bcbe18c7d561004a6e29983d2db60e889c02153f304b",
+          "log": "logs/oriented_guards/root_negative_controls.log"
+        }
+      ]
+    },
+    "shared_taps": {
+      "status": "PASS",
+      "commands": [
+        {
+          "label": "root_normal",
+          "arguments": [
+            "verify_all.py"
+          ],
+          "exit_code": 0,
+          "seconds": 4.13,
+          "log_sha256": "90690d836f3c21379ce08af0aeb28b35eabb1e3369bc97b13a788bf3482f29b2",
+          "log": "logs/shared_taps/root_normal.log"
+        },
+        {
+          "label": "root_optimized_propagating",
+          "arguments": [
+            "-O",
+            "verify_all.py"
+          ],
+          "exit_code": 0,
+          "seconds": 6.388,
+          "log_sha256": "8e5bdd9731c0d558667021fab7e8c2beb821c9cd501728b8b332e3430ec29920",
+          "log": "logs/shared_taps/root_optimized_propagating.log"
+        }
+      ]
+    },
+    "gap_congruence": {
+      "status": "PASS",
+      "commands": [
+        {
+          "label": "root_normal",
+          "arguments": [
+            "verify.py"
+          ],
+          "exit_code": 0,
+          "seconds": 234.641,
+          "log_sha256": "881f66c4ffc692642c536d0de1e3873c354bd3bbbe7a65526807bc1a11c2024e",
+          "log": "logs/gap_congruence/root_normal.log"
+        },
+        {
+          "label": "optimized_01",
+          "arguments": [
+            "-O",
+            "source/build_gap_source.py"
+          ],
+          "exit_code": 0,
+          "seconds": 2.588,
+          "log_sha256": "660b52140081f68e76ba15543b72796561a437e35ce5e2bdb7228bfca0862c49",
+          "log": "logs/gap_congruence/optimized_01.log"
+        },
+        {
+          "label": "optimized_02",
+          "arguments": [
+            "-O",
+            "carry/verify_certificates.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "b8cc6b55754e58999e477d2d7bada06b1c7ed3c7dc60118a0989895a19170730",
+          "log": "logs/gap_congruence/optimized_02.log"
+        },
+        {
+          "label": "optimized_03",
+          "arguments": [
+            "-O",
+            "carry/rebuild_kernels.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.064,
+          "log_sha256": "6c482194c7b2abead72549f77611e31f47182f6decaa3986d64ce20bd8786b89",
+          "log": "logs/gap_congruence/optimized_03.log"
+        },
+        {
+          "label": "optimized_04",
+          "arguments": [
+            "-O",
+            "carry/test_certificates.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.715,
+          "log_sha256": "5ed9aa4542272317ec4896f87382af06b7576d82044ffefabb2ef730e990b2bc",
+          "log": "logs/gap_congruence/optimized_04.log"
+        },
+        {
+          "label": "optimized_05",
+          "arguments": [
+            "-O",
+            "source_audit/independent_sources.py"
+          ],
+          "exit_code": 0,
+          "seconds": 4.021,
+          "log_sha256": "bdd2f69b0c98d2ac3c273692c597d5716dfaf6181414be9f3dd2d0a824379d4b",
+          "log": "logs/gap_congruence/optimized_05.log"
+        },
+        {
+          "label": "optimized_06",
+          "arguments": [
+            "-O",
+            "nine/build_nine.py"
+          ],
+          "exit_code": 0,
+          "seconds": 5.173,
+          "log_sha256": "e699ade022b996c8bb52ac18786ed9956b145791aceb100707c7812d25c1f291",
+          "log": "logs/gap_congruence/optimized_06.log"
+        },
+        {
+          "label": "optimized_07",
+          "arguments": [
+            "-O",
+            "nine/verify_nine.py"
+          ],
+          "exit_code": 0,
+          "seconds": 19.506,
+          "log_sha256": "b3997b5436987cd795ac71d6e98df8c07d2316a2323e8f2e996ef39e6544a3c0",
+          "log": "logs/gap_congruence/optimized_07.log"
+        },
+        {
+          "label": "optimized_08",
+          "arguments": [
+            "-O",
+            "nine/check_defect_exact.py"
+          ],
+          "exit_code": 0,
+          "seconds": 14.404,
+          "log_sha256": "321ef7aefa28772b210d8bdb6904f3d6b4fd82c28bb157bd1a584010fbf29c15",
+          "log": "logs/gap_congruence/optimized_08.log"
+        },
+        {
+          "label": "optimized_09",
+          "arguments": [
+            "-O",
+            "nine_audit/independent_nine_audit.py"
+          ],
+          "exit_code": 0,
+          "seconds": 119.012,
+          "log_sha256": "3df6e4bd7fb5837afb33387e1ce6632e1d396cd7d616e059ca18be644b32c36d",
+          "log": "logs/gap_congruence/optimized_09.log"
+        },
+        {
+          "label": "optimized_10",
+          "arguments": [
+            "-O",
+            "nine_audit/check_local_identities.py"
+          ],
+          "exit_code": 0,
+          "seconds": 2.369,
+          "log_sha256": "bc8341164f66d5cc10e388ceeb95096eae54ae94c74e89cdb21a8a889911e80d",
+          "log": "logs/gap_congruence/optimized_10.log"
+        },
+        {
+          "label": "optimized_11",
+          "arguments": [
+            "-O",
+            "integer/build_integer.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.445,
+          "log_sha256": "bccb58200a6ea56415ab9dd59fea9804f9391a44e681bad0645effef7dfd7335",
+          "log": "logs/gap_congruence/optimized_11.log"
+        },
+        {
+          "label": "optimized_12",
+          "arguments": [
+            "-O",
+            "integer/verify_integer.py"
+          ],
+          "exit_code": 0,
+          "seconds": 16.599,
+          "log_sha256": "ed7a545b9f9473e7ca184caa84281c478cfef1fe012d5538cf19b971b9bf6497",
+          "log": "logs/gap_congruence/optimized_12.log"
+        },
+        {
+          "label": "optimized_13",
+          "arguments": [
+            "-O",
+            "integer/alternative_low_cost/build_integer.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.314,
+          "log_sha256": "cabfcf2aa98aa60f431b7a7f1966033dec5a8b91ee2e11e490d8e185995bc9f9",
+          "log": "logs/gap_congruence/optimized_13.log"
+        },
+        {
+          "label": "optimized_14",
+          "arguments": [
+            "-O",
+            "integer/alternative_low_cost/verify_integer.py"
+          ],
+          "exit_code": 0,
+          "seconds": 15.921,
+          "log_sha256": "1a33bb360972ec6e328e1e476e483cd9b7f78717d256f3d2882c2c088bf2ffee",
+          "log": "logs/gap_congruence/optimized_14.log"
+        },
+        {
+          "label": "optimized_15",
+          "arguments": [
+            "-O",
+            "integer_audit/independent_integer_audit.py"
+          ],
+          "exit_code": 0,
+          "seconds": 26.878,
+          "log_sha256": "f8a91f90113f91e20c169dc78adaf301e779427a0e8e6a19801f82cff22095b1",
+          "log": "logs/gap_congruence/optimized_15.log"
+        },
+        {
+          "label": "optimized_16",
+          "arguments": [
+            "-O",
+            "algebra/build_and_check.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.114,
+          "log_sha256": "0d9622351cf5d64558ee49aadc1913d07e98174f7eabc3c48445804442fd2eab",
+          "log": "logs/gap_congruence/optimized_16.log"
+        },
+        {
+          "label": "optimized_17",
+          "arguments": [
+            "-O",
+            "direct/check_stack.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.115,
+          "log_sha256": "81934414a1b9173f625eba2ae5cb4b1fe37e23fd54769d953be6df76ee5720fd",
+          "log": "logs/gap_congruence/optimized_17.log"
+        },
+        {
+          "label": "optimized_18",
+          "arguments": [
+            "-O",
+            "direct_audit/audit.py"
+          ],
+          "exit_code": 0,
+          "seconds": 0.114,
+          "log_sha256": "473b4ee279e2ef2a69395e70528e884932bfcc31efbdbb62e0918f0c63eb464e",
+          "log": "logs/gap_congruence/optimized_18.log"
+        },
+        {
+          "label": "negative_controls",
+          "arguments": [
+            "negative_controls.py"
+          ],
+          "exit_code": 0,
+          "seconds": 1.676,
+          "log_sha256": "9d56356dc6c31a722984e51b0b7ccc0bf4625739f6b9620ea9d5df137a2b1f13",
+          "log": "logs/gap_congruence/negative_controls.log"
+        }
+      ]
+    }
+  },
+  "replay_summaries": {
+    "gap_congruence": {
+      "root_stages": 18,
+      "sealed_files": 295,
+      "retained_source_matches": 80,
+      "byte_identical_rebuilt_files": 64,
+      "optimized_direct_stages": 18,
+      "tamper_mutations": 6,
+      "tamper_rejected_runs": 12
+    },
+    "positive_gap": {
+      "declared_root_stages": 11,
+      "complementary_mode_stages": 11
+    },
+    "oriented_guards": {
+      "root_stages": 25,
+      "sealed_files": 502,
+      "byte_identical_rebuilt_files": 66,
+      "optimized_direct_stages": 25,
+      "additional_direct_optimized_signed_checkers": 4
+    },
+    "shared_taps": {
+      "root_normal": "PASS",
+      "root_optimized_propagating": "PASS"
+    }
+  },
+  "environment_retry": {
+    "package": "oriented_guards",
+    "initial_exit_code": 1,
+    "initial_log_sha256": "bfc77dfb2dcf82c83c20bb16a01c4d961e9a3c17d11257875956555aff36ac62",
+    "reason": "Nested projection checker invoked bare python rather than sys.executable and could not import SymPy.",
+    "repair": "Prepend the existing venv/bin directory to PATH; archive source unmodified.",
+    "final_status": "PASS"
+  },
+  "independent_metrics": {
+    "status": "PASS",
+    "circuit_count": 32,
+    "modular_translation_fixtures": 192,
+    "scope": "Independent literal DAG topology, liveness, operation recount and cancellation-formula arithmetic; domain-translation modular checks are diagnostics. Exact universal degree identities remain manuscript/replayed certificate obligations.",
+    "circuits": [
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2057_refined_natural.json",
+        "sha256": "398e97512f93ea00542993c38a0e7e76072e5dae6e549e47874ace6d7b941bad",
+        "domain": "natural",
+        "declared_domain": "natural",
+        "variables": 9,
+        "operations": 490,
+        "operation_counts": {
+          "add": 175,
+          "mul": 288,
+          "sub": 27
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1503378,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2057,
+        "Ecode": 2175,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "c244c16a082d0a304439f570f04545d24414d08a8cce5f70a1d84b9d7c61b427",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1149,
+        "block_scale_power_of_two": 0,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2057_refined_natural.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2057_refined_positive.json",
+        "sha256": "df3d030cf7b3f20c4d098878c06d87cc811185e662dcf7b1be2226a42f628774",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 483,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 288,
+          "add": 167
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1503378,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2057,
+        "Ecode": 2175,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "c244c16a082d0a304439f570f04545d24414d08a8cce5f70a1d84b9d7c61b427",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1149,
+        "block_scale_power_of_two": 0,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2057_refined_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2057_simple_natural.json",
+        "sha256": "818d6a11a593f5d6b50a07dc2649987add5da525186f6697bff50e9e610b990d",
+        "domain": "natural",
+        "declared_domain": "natural",
+        "variables": 9,
+        "operations": 458,
+        "operation_counts": {
+          "add": 167,
+          "mul": 270,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1825540,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2057,
+        "Ecode": 2175,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "c244c16a082d0a304439f570f04545d24414d08a8cce5f70a1d84b9d7c61b427",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1149,
+        "block_scale_power_of_two": 0,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2057_simple_natural.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2057_simple_positive.json",
+        "sha256": "bf785e032bface8ce9b9552727c96db778cebfed702caef9be6b6b903809921a",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 451,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 270,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1825540,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2057,
+        "Ecode": 2175,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "c244c16a082d0a304439f570f04545d24414d08a8cce5f70a1d84b9d7c61b427",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1149,
+        "block_scale_power_of_two": 0,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2057_simple_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2068_refined_natural.json",
+        "sha256": "32d98edb6af6fe460d0678532c4e9be484cdbeb1dd125cbae32223d040936b51",
+        "domain": "natural",
+        "declared_domain": "natural",
+        "variables": 9,
+        "operations": 488,
+        "operation_counts": {
+          "add": 175,
+          "mul": 286,
+          "sub": 27
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1510770,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2068,
+        "Ecode": 2186,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "1effff9fc1a14bb3996e099ab3b9fca431baadcb7846acaace043a564771a494",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1155,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2068_refined_natural.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2068_refined_positive.json",
+        "sha256": "455cdf78d67cf2c1b93bcd30ca73ea606efeb395e1e00d372d03008afe8c4460",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 481,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 286,
+          "add": 167
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1510770,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2068,
+        "Ecode": 2186,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "1effff9fc1a14bb3996e099ab3b9fca431baadcb7846acaace043a564771a494",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1155,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2068_refined_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2068_simple_natural.json",
+        "sha256": "6c5d57c52a1148139db09cef5b0c1ee7da3709acede35d93a27726a0e06164b0",
+        "domain": "natural",
+        "declared_domain": "natural",
+        "variables": 9,
+        "operations": 456,
+        "operation_counts": {
+          "add": 167,
+          "mul": 268,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1834516,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2068,
+        "Ecode": 2186,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "1effff9fc1a14bb3996e099ab3b9fca431baadcb7846acaace043a564771a494",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1155,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2068_simple_natural.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2068_simple_positive.json",
+        "sha256": "e4b1880b9bdc0cf906727f9bc1eac4160d0b932c4825eb4a4e62d3bf26f402dc",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 449,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 268,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1834516,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2068,
+        "Ecode": 2186,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "1effff9fc1a14bb3996e099ab3b9fca431baadcb7846acaace043a564771a494",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1155,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2068_simple_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2082_refined_natural.json",
+        "sha256": "83a16fa7e446a22fabc099523fd4895fb35731dbc9888c2b6d6e8a65b97f51bd",
+        "domain": "natural",
+        "declared_domain": "natural",
+        "variables": 9,
+        "operations": 483,
+        "operation_counts": {
+          "add": 174,
+          "mul": 282,
+          "sub": 27
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1520178,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2082,
+        "Ecode": 2200,
+        "source_sha256": "e4f50dbede42c421defa2d7d36268413351dd1e023763c584ea34f3b9a827957",
+        "layout_sha256": "d4b85e61d6cc88a385d608f11a938f8b36bf4280940f4d236be897573d3b6f51",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1162,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2082_refined_natural.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2082_refined_positive.json",
+        "sha256": "82b7bb6428632bce56e1952e28170c32ad9762f233f22e3f65945cbdba2850d0",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 476,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 282,
+          "add": 166
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1520178,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2082,
+        "Ecode": 2200,
+        "source_sha256": "e4f50dbede42c421defa2d7d36268413351dd1e023763c584ea34f3b9a827957",
+        "layout_sha256": "d4b85e61d6cc88a385d608f11a938f8b36bf4280940f4d236be897573d3b6f51",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1162,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2082_refined_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2082_simple_natural.json",
+        "sha256": "e6b77013f1c6b73a5c37235e6c2d08b74fb8d30d44f06193dec760b6a272a242",
+        "domain": "natural",
+        "declared_domain": "natural",
+        "variables": 9,
+        "operations": 451,
+        "operation_counts": {
+          "add": 166,
+          "mul": 264,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1845940,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2082,
+        "Ecode": 2200,
+        "source_sha256": "e4f50dbede42c421defa2d7d36268413351dd1e023763c584ea34f3b9a827957",
+        "layout_sha256": "d4b85e61d6cc88a385d608f11a938f8b36bf4280940f4d236be897573d3b6f51",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1162,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2082_simple_natural.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2082_simple_positive.json",
+        "sha256": "54940b525035256da71a2eac5be5f04e74e86fbcd94926ff4edd02394cf85e28",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 444,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 264,
+          "add": 158
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1845940,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2082,
+        "Ecode": 2200,
+        "source_sha256": "e4f50dbede42c421defa2d7d36268413351dd1e023763c584ea34f3b9a827957",
+        "layout_sha256": "d4b85e61d6cc88a385d608f11a938f8b36bf4280940f4d236be897573d3b6f51",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1162,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2082_simple_positive.json"
+      },
+      {
+        "path": "ConZFC_Positive_Gap_2026-10-23/positive-gap-refinement/research_nine/compact_candidate/generated/gap_100_natural.json",
+        "sha256": "c5d83929eba38e88bac5c1b0e4de76b2d766df815f726850f87e44d2de7305dc",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 472,
+        "operation_counts": {
+          "add": 167,
+          "mul": 284,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1797796,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/compact_candidate/generated/gap_100_natural_certificate_degree.json",
+        "W": 100,
+        "height": 1920,
+        "Ecode": 2149,
+        "source_sha256": "98a3be433694b5c5b5e99020c503cbb2e2a5adf05757b6bbc2357832472700ab",
+        "layout_sha256": "b20bd8f5ccd9de760da025ed9d172e52d4856c349e4c149299d5f45632d28845",
+        "base_scale_exponent": 1182967,
+        "threshold_scale_exponent": 9463725,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1128,
+        "block_scale_power_of_two": 0,
+        "package": "positive_gap_compact",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/compact_candidate/generated/gap_100_natural.json"
+      },
+      {
+        "path": "ConZFC_Positive_Gap_2026-10-23/positive-gap-refinement/research_nine/compact_candidate/generated/gap_100_positive.json",
+        "sha256": "1863a750cc99d0806e9b80259baddb64cb7a98325743c17d7c77008836cdf5e2",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 465,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 284,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1797796,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/compact_candidate/generated/gap_100_positive_certificate_degree.json",
+        "W": 100,
+        "height": 1920,
+        "Ecode": 2149,
+        "source_sha256": "98a3be433694b5c5b5e99020c503cbb2e2a5adf05757b6bbc2357832472700ab",
+        "layout_sha256": "b20bd8f5ccd9de760da025ed9d172e52d4856c349e4c149299d5f45632d28845",
+        "base_scale_exponent": 1182967,
+        "threshold_scale_exponent": 9463725,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1128,
+        "block_scale_power_of_two": 0,
+        "package": "positive_gap_compact",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/compact_candidate/generated/gap_100_positive.json"
+      },
+      {
+        "path": "ConZFC_Positive_Gap_2026-10-23/positive-gap-refinement/research_nine/candidate/generated/gap_100_natural.json",
+        "sha256": "07378694513a7d0e60a9d36c48a74e2ab901e4aec7ad28a5e632c70660c09ad5",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 472,
+        "operation_counts": {
+          "add": 167,
+          "mul": 284,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1797796,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/candidate/generated/gap_100_natural_certificate_degree.json",
+        "W": 100,
+        "height": 1920,
+        "Ecode": 2149,
+        "source_sha256": "98a3be433694b5c5b5e99020c503cbb2e2a5adf05757b6bbc2357832472700ab",
+        "layout_sha256": "b20bd8f5ccd9de760da025ed9d172e52d4856c349e4c149299d5f45632d28845",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1128,
+        "block_scale_power_of_two": 0,
+        "package": "positive_gap_original",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/candidate/generated/gap_100_natural.json"
+      },
+      {
+        "path": "ConZFC_Positive_Gap_2026-10-23/positive-gap-refinement/research_nine/candidate/generated/gap_100_positive.json",
+        "sha256": "778e200bd67c9ead8f4006f9df3f968f97c6dbdfff109d7b788880a13d3d3da0",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 465,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 284,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1797796,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/candidate/generated/gap_100_positive_certificate_degree.json",
+        "W": 100,
+        "height": 1920,
+        "Ecode": 2149,
+        "source_sha256": "98a3be433694b5c5b5e99020c503cbb2e2a5adf05757b6bbc2357832472700ab",
+        "layout_sha256": "b20bd8f5ccd9de760da025ed9d172e52d4856c349e4c149299d5f45632d28845",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1128,
+        "block_scale_power_of_two": 0,
+        "package": "positive_gap_original",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_nine/candidate/generated/gap_100_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order-1_natural.json",
+        "sha256": "af3c332dd4f63217a3e6267f4603ea1c30901b5bada77dada6536f193990549c",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 469,
+        "operation_counts": {
+          "add": 170,
+          "mul": 278,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1731700,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order-1_natural_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order-1_natural.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order-1_positive.json",
+        "sha256": "a137009a634ccb58e68f34a598239aed7582b2f51f824a5b4051088a9f14daed",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 462,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 278,
+          "add": 162
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1731700,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order-1_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order-1_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order0_natural.json",
+        "sha256": "3a5cf4a67da896d74c2f071fa9bfc8e3bbd365419f44ead67bd6b1bbb9ef6ad5",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 472,
+        "operation_counts": {
+          "add": 172,
+          "mul": 279,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1731700,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order0_natural_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order0_natural.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order0_positive.json",
+        "sha256": "5fa613114bfca22c30c7b3fba4bdc9af705b3c2d88cec19c019289fca135b447",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 465,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 279,
+          "add": 164
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1731700,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order0_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order0_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order1_natural.json",
+        "sha256": "3c0928cb79190b8568acd3e6646c73872d3362b9761b7cdf61a4be53e24fbf1f",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 482,
+        "operation_counts": {
+          "add": 174,
+          "mul": 285,
+          "sub": 23
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1663788,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order1_natural_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order1_natural.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order1_positive.json",
+        "sha256": "387fc7f86f1ced5e85e3da15aa568d550361091c70bf064da0e6416c5fccfb8d",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 475,
+        "operation_counts": {
+          "sub": 24,
+          "mul": 285,
+          "add": 166
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1663788,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order1_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order1_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order2_natural.json",
+        "sha256": "0add3df201412ee8129f2149f86377efa1329e13d854a499bb524c411331de93",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 485,
+        "operation_counts": {
+          "add": 174,
+          "mul": 287,
+          "sub": 24
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1595876,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order2_natural_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order2_natural.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order2_positive.json",
+        "sha256": "da02ce9a842b77f4cdacc7bee783589a4f08749cad139c121bb324e6b95b5172",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 478,
+        "operation_counts": {
+          "sub": 25,
+          "mul": 287,
+          "add": 166
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1595876,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order2_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order2_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order3_natural.json",
+        "sha256": "9f49f00c8a0d430662149621157ed902644c3b5717bbf85b17dc8e82f4be4231",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 489,
+        "operation_counts": {
+          "add": 174,
+          "mul": 289,
+          "sub": 26
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1527964,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order3_natural_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order3_natural.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order3_positive.json",
+        "sha256": "6e527a1bf0a87792cd841270eaa00a53ea842c735e224267202bb926f8057c9d",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 482,
+        "operation_counts": {
+          "sub": 27,
+          "mul": 289,
+          "add": 166
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1527964,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order3_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order3_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order4_natural.json",
+        "sha256": "1bd2aec9abb5c46976b16ac9033dd78a3160aaed51aad4cbd3d37686b7d69b39",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 494,
+        "operation_counts": {
+          "add": 175,
+          "mul": 292,
+          "sub": 27
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1494006,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order4_natural_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order4_natural.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order4_positive.json",
+        "sha256": "13e46fb1772d4963b2d951d73e2ab1a261700a12ac795e174e791c02dc90bdcd",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 487,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 292,
+          "add": 167
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1494006,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order4_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order4_positive.json"
+      },
+      {
+        "path": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/generated/shared_taps_economy_natural.json",
+        "sha256": "8395e9306df2406638ecac6852b70f6fccb55d4b30718076978ec16b411e1361",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 464,
+        "operation_counts": {
+          "add": 167,
+          "mul": 276,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1738228,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_economy_natural_certificate_degree.json",
+        "W": 116,
+        "height": 1816,
+        "Ecode": 2068,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "80f539d1e1ccad31857f6c35ea1333e7b27244677d60becfecb7bddcbd4c255f",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1096,
+        "block_scale_power_of_two": 1,
+        "package": "shared_taps",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_economy_natural.json"
+      },
+      {
+        "path": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/generated/shared_taps_economy_positive.json",
+        "sha256": "4e2b3725de6de00c799dcece6baed212e3982c5769b95deaac41740f1ef7ffc5",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 457,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 276,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1738228,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_economy_positive_certificate_degree.json",
+        "W": 116,
+        "height": 1816,
+        "Ecode": 2068,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "80f539d1e1ccad31857f6c35ea1333e7b27244677d60becfecb7bddcbd4c255f",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1096,
+        "block_scale_power_of_two": 1,
+        "package": "shared_taps",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_economy_positive.json"
+      },
+      {
+        "path": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/generated/shared_taps_natural.json",
+        "sha256": "e7993237a001e7fd413b4edbcc9ed876a8abc720d4a15d6a5dce1e9d4d7ee327",
+        "domain": "natural",
+        "declared_domain": "nonnegative integers",
+        "variables": 9,
+        "operations": 465,
+        "operation_counts": {
+          "add": 165,
+          "mul": 279,
+          "sub": 21
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1675396,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_natural_certificate_degree.json",
+        "W": 116,
+        "height": 1739,
+        "Ecode": 1991,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "0edbd3e778f9f55834ab6dd13a85d72d828f59d74914bcb5a8a469af909c001a",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1057,
+        "block_scale_power_of_two": 0,
+        "package": "shared_taps",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_natural.json"
+      },
+      {
+        "path": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/generated/shared_taps_positive.json",
+        "sha256": "99629040517a0d8e0c8a46aace67b11baa3e310c64b93b946b0837b309b6e44a",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 458,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 279,
+          "add": 157
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1675396,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_positive_certificate_degree.json",
+        "W": 116,
+        "height": 1739,
+        "Ecode": 1991,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "0edbd3e778f9f55834ab6dd13a85d72d828f59d74914bcb5a8a469af909c001a",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1057,
+        "block_scale_power_of_two": 0,
+        "package": "shared_taps",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_positive.json"
+      }
+    ],
+    "nine_positive_frontier": [
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2082_simple_positive.json",
+        "sha256": "54940b525035256da71a2eac5be5f04e74e86fbcd94926ff4edd02394cf85e28",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 444,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 264,
+          "add": 158
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1845940,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2082,
+        "Ecode": 2200,
+        "source_sha256": "e4f50dbede42c421defa2d7d36268413351dd1e023763c584ea34f3b9a827957",
+        "layout_sha256": "d4b85e61d6cc88a385d608f11a938f8b36bf4280940f4d236be897573d3b6f51",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1162,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2082_simple_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2068_simple_positive.json",
+        "sha256": "e4b1880b9bdc0cf906727f9bc1eac4160d0b932c4825eb4a4e62d3bf26f402dc",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 449,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 268,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1834516,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2068,
+        "Ecode": 2186,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "1effff9fc1a14bb3996e099ab3b9fca431baadcb7846acaace043a564771a494",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1155,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2068_simple_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2057_simple_positive.json",
+        "sha256": "bf785e032bface8ce9b9552727c96db778cebfed702caef9be6b6b903809921a",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 451,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 270,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1825540,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2057,
+        "Ecode": 2175,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "c244c16a082d0a304439f570f04545d24414d08a8cce5f70a1d84b9d7c61b427",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1149,
+        "block_scale_power_of_two": 0,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2057_simple_positive.json"
+      },
+      {
+        "path": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/generated/shared_taps_economy_positive.json",
+        "sha256": "4e2b3725de6de00c799dcece6baed212e3982c5769b95deaac41740f1ef7ffc5",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 457,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 276,
+          "add": 159
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1738228,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_economy_positive_certificate_degree.json",
+        "W": 116,
+        "height": 1816,
+        "Ecode": 2068,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "80f539d1e1ccad31857f6c35ea1333e7b27244677d60becfecb7bddcbd4c255f",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1096,
+        "block_scale_power_of_two": 1,
+        "package": "shared_taps",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_economy_positive.json"
+      },
+      {
+        "path": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/generated/shared_taps_positive.json",
+        "sha256": "99629040517a0d8e0c8a46aace67b11baa3e310c64b93b946b0837b309b6e44a",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 458,
+        "operation_counts": {
+          "sub": 22,
+          "mul": 279,
+          "add": 157
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1675396,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_positive_certificate_degree.json",
+        "W": 116,
+        "height": 1739,
+        "Ecode": 1991,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "0edbd3e778f9f55834ab6dd13a85d72d828f59d74914bcb5a8a469af909c001a",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1057,
+        "block_scale_power_of_two": 0,
+        "package": "shared_taps",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/generated/shared_taps_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order1_positive.json",
+        "sha256": "387fc7f86f1ced5e85e3da15aa568d550361091c70bf064da0e6416c5fccfb8d",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 475,
+        "operation_counts": {
+          "sub": 24,
+          "mul": 285,
+          "add": 166
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1663788,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order1_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order1_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2082_refined_positive.json",
+        "sha256": "82b7bb6428632bce56e1952e28170c32ad9762f233f22e3f65945cbdba2850d0",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 476,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 282,
+          "add": 166
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1520178,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2082,
+        "Ecode": 2200,
+        "source_sha256": "e4f50dbede42c421defa2d7d36268413351dd1e023763c584ea34f3b9a827957",
+        "layout_sha256": "d4b85e61d6cc88a385d608f11a938f8b36bf4280940f4d236be897573d3b6f51",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1162,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2082_refined_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2068_refined_positive.json",
+        "sha256": "455cdf78d67cf2c1b93bcd30ca73ea606efeb395e1e00d372d03008afe8c4460",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 481,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 286,
+          "add": 167
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1510770,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2068,
+        "Ecode": 2186,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "1effff9fc1a14bb3996e099ab3b9fca431baadcb7846acaace043a564771a494",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 16012032,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1155,
+        "block_scale_power_of_two": 1,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2068_refined_positive.json"
+      },
+      {
+        "path": "ConZFC_Gap_Congruence_2026-10-23/con-zfc-gap-congruence/nine/generated/H2057_refined_positive.json",
+        "sha256": "df3d030cf7b3f20c4d098878c06d87cc811185e662dcf7b1be2226a42f628774",
+        "domain": "positive",
+        "declared_domain": "positive",
+        "variables": 9,
+        "operations": 483,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 288,
+          "add": 167
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1503378,
+        "degree_source": "manuscript cancellation-resolved formula, independently recomputed",
+        "W": 116,
+        "height": 2057,
+        "Ecode": 2175,
+        "source_sha256": "f480951de950ee891c13a5f75ebd195fa2d6767c4276d6605c11dd3dca78a6f0",
+        "layout_sha256": "c244c16a082d0a304439f570f04545d24414d08a8cce5f70a1d84b9d7c61b427",
+        "base_scale_exponent": 2134939,
+        "threshold_scale_exponent": 17079501,
+        "threshold_b_power": 1,
+        "threshold_B_power": 1149,
+        "block_scale_power_of_two": 0,
+        "package": "gap_congruence",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/nine/generated/H2057_refined_positive.json"
+      },
+      {
+        "path": "ZFC_Diophantine_Oriented_Guards_2026-10-23/ZFC_Diophantine_Oriented_Guards/nine/generated/split_108_order4_positive.json",
+        "sha256": "13e46fb1772d4963b2d951d73e2ab1a261700a12ac795e174e791c02dc90bdcd",
+        "domain": "positive",
+        "declared_domain": "positive integers",
+        "variables": 9,
+        "operations": 487,
+        "operation_counts": {
+          "sub": 28,
+          "mul": 292,
+          "add": 167
+        },
+        "all_arithmetic_gates_live": true,
+        "topological": true,
+        "degree": 1494006,
+        "degree_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order4_positive_certificate_degree.json",
+        "W": 108,
+        "height": 1939,
+        "Ecode": 2064,
+        "source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+        "layout_sha256": "381ab521241d1cc2d2272c9bd9c4c43c63d5f5a6bc587343aa1a6344ed814cde",
+        "base_scale_exponent": 2134940,
+        "threshold_scale_exponent": 16012039,
+        "threshold_b_power": 0,
+        "threshold_B_power": 1090,
+        "block_scale_power_of_two": 0,
+        "package": "oriented_guards",
+        "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/nine/generated/split_108_order4_positive.json"
+      }
+    ]
+  },
+  "source_compatibility": {
+    "status": "PASS",
+    "checked_source": "con_zfc_shared_taps_carriers_2026-10-23/con_zfc_shared_taps_carriers/nine/data/source_system65.json",
+    "checked_source_sha256": "3338193dfab9b409a198df086316a41a0dc987b4ba462d25e44c7de6fca62094",
+    "lean_bound_source": "Computability/DiophantineConsistency/data/split59/parent_source.json",
+    "lean_bound_source_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+    "expanded_identical_rows": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "expanded_sign_reversed_rows": [],
+    "other_rows": [],
+    "scope": "Exact inert-data symbolic expansion over31 variables and4 independent ports; no native calibration claim.",
+    "repository_checked_source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/data/source_system65.json"
+  },
+  "other_principal_endpoints": [
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/60-positive-gap/research_low_degree/supplement15/circuits/p15_degree24_transport89.json",
+      "variables": 15,
+      "domain": "positive integers",
+      "degree": 24,
+      "operations": 89,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/pell/circuits/p14_degree26.json",
+      "variables": 14,
+      "domain": "positive integers",
+      "degree": 26,
+      "operations": 92,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/pell/circuits/p14_degree30.json",
+      "variables": 14,
+      "domain": "positive integers",
+      "degree": 30,
+      "operations": 85,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/sun/generated/sun10.json",
+      "variables": 10,
+      "domain": "integers",
+      "degree": 7428120,
+      "operations": 525,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/integer/generated/integer10.json",
+      "variables": 10,
+      "domain": "integers",
+      "degree": 3507876,
+      "operations": 494,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/integer/alternative_low_cost/generated/integer10.json",
+      "variables": 10,
+      "domain": "integers",
+      "degree": 3547076,
+      "operations": 490,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/quartic/quartic42.json",
+      "variables": 42,
+      "domain": "integers",
+      "degree": 4,
+      "operations": null,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/quartic/sextic36.json",
+      "variables": 36,
+      "domain": "integers",
+      "degree": 6,
+      "operations": null,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/quartic/octic32.json",
+      "variables": 32,
+      "domain": "integers",
+      "degree": 8,
+      "operations": null,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/signed/generated/sun10.json",
+      "variables": 10,
+      "domain": "integers",
+      "degree": 3671340,
+      "operations": 522,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/signed108/generated/sun10.json",
+      "variables": 10,
+      "domain": "integers",
+      "degree": 3327948,
+      "operations": 520,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/signed108trim/generated/sun10.json",
+      "variables": 10,
+      "domain": "integers",
+      "degree": 3327556,
+      "operations": 519,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/signed13/generated/signed_coprime_compact_split_crt.json",
+      "variables": 13,
+      "domain": "integers",
+      "degree": 10461744,
+      "operations": 519,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    },
+    {
+      "repository_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/positive/fourteen_positive_degree30.json",
+      "variables": 14,
+      "domain": "positive integers",
+      "degree": 30,
+      "operations": 87,
+      "scope": "Principal manuscript endpoint and replayed component metrics; included for central comparison."
+    }
+  ],
+  "audit_script_sha256": {
+    "audit_metrics.py": "51fdd5a5707679b447d18f60e39ba2286991cc80aa0e582fe4c5bc10d94cdd89",
+    "audit_sources.py": "d1c616386b8c0b21db81284a8f16b675077cb6bd504ddbada3ea98d7c1f67acc",
+    "run_replays.py": "897851223558e55ac416e3322954ccefe3a94cb331547f6a168f08ba92f8b682"
+  },
+  "proof_review": {
+    "new_arithmetic_counterexample_found": false,
+    "recommended_low_risk_degree_target_of_these_four": "65 shared-taps primary:458operations,degree1675396; same old-z source and checked free-carrier tail.",
+    "operation_target_of_these_four": "66 H2082 simple:444operations,degree1845940; requires positive source-gap bridge and parity recalibration.",
+    "degree_target_of_these_four": "67 order4:487operations,degree1494006; requires new higher-majorant inequalities.",
+    "global_target_switch": "Compare other four wave9 archives before selecting. Retain the same-polynomial456-operation formal baseline.",
+    "undischarged_dependencies": [
+      "Native source/compiler calibration for the supplied complete tuple.",
+      "Internal object-language ZFC consistency equivalence.",
+      "New literal-circuit-to-polynomial identity and exact metrics in Lean."
+    ]
+  }
+}

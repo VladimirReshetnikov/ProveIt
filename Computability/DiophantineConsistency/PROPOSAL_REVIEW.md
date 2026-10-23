@@ -1,6 +1,11 @@
 # Choosing the next equation from the recent proposals
 
-**Current decision:** following placement `beb0192cb8`, switch to package
+**Current review:** wave-nine placement `a2cd79b912` is assessed in
+[PROPOSAL_REVIEW_WAVE9.md](PROPOSAL_REVIEW_WAVE9.md). Within the nine-positive
+branch the next delivered cost target is package 66's 444/1,845,940 form;
+alternative proof-certificate encodings remain open.
+
+**Previous decision, preserved as proof checkpoint:** following placement `beb0192cb8`, switch to package
 59's free-coordinate degree-separated adjunct: nine positive unknowns,
 473 operations, degree 1,910,404 (480 operations over naturals). All six
 wave-eight release replays pass. A separately generated compact54-sharp
