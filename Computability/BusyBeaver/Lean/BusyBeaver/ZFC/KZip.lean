@@ -78,8 +78,7 @@ theorem trim_cons_trim (b : Bool) (l : List Bool) : trim (b :: trim l) = trim (b
 
 theorem trim_append_false : ∀ l : List Bool, trim (l ++ [false]) = trim l
   | [] => rfl
-  | b :: l => by
-      rw [List.cons_append]; exact trim_cons_congr b (trim_append_false l)
+  | b :: l => trim_cons_congr b (trim_append_false l)
 
 theorem trim_append_zeros (l : List Bool) (n : Nat) :
     trim (l ++ List.replicate n false) = trim l := by
@@ -169,7 +168,7 @@ theorem Reach.refl (M : TMN) (c : Conf) : Reach M c c := ⟨0, rfl⟩
 theorem Reach.trans {M : TMN} {a b c : Conf} (h1 : Reach M a b) (h2 : Reach M b c) :
     Reach M a c := by
   obtain ⟨i, hi⟩ := h1; obtain ⟨j, hj⟩ := h2
-  exact ⟨i + j, by rw [run_add, hi]; exact hj⟩
+  exact ⟨i + j, by rwa [run_add, hi]⟩
 
 theorem Reach.of_eq {M : TMN} {a b : Conf} (h : a = b) : Reach M a b := h ▸ Reach.refl M a
 
@@ -185,12 +184,12 @@ theorem Reach1.reach {M : TMN} {a b : Conf} (h : Reach1 M a b) : Reach M a b :=
 theorem Reach1.trans_reach {M : TMN} {a b c : Conf} (h1 : Reach1 M a b) (h2 : Reach M b c) :
     Reach1 M a c := by
   obtain ⟨i, hi⟩ := h1; obtain ⟨j, hj⟩ := h2
-  exact ⟨i + j, by rw [show i + j + 1 = (i + 1) + j by omega, run_add, hi]; exact hj⟩
+  exact ⟨i + j, by rwa [show i + j + 1 = (i + 1) + j by omega, run_add, hi]⟩
 
 theorem Reach.trans_reach1 {M : TMN} {a b c : Conf} (h1 : Reach M a b) (h2 : Reach1 M b c) :
     Reach1 M a c := by
   obtain ⟨i, hi⟩ := h1; obtain ⟨j, hj⟩ := h2
-  exact ⟨i + j, by rw [show i + j + 1 = i + (j + 1) by omega, run_add, hi]; exact hj⟩
+  exact ⟨i + j, by rwa [show i + j + 1 = i + (j + 1) by omega, run_add, hi]⟩
 
 theorem Halts.of_reach {M : TMN} {a b : Conf} (h : Reach M a b) (hb : Halts M b) : Halts M a := by
   obtain ⟨c, hc, hs⟩ := hb; exact ⟨c, h.trans hc, hs⟩
@@ -202,8 +201,7 @@ theorem scanR {M : TMN} {q : Nat} {b w : Bool} (h : M q b = some (w, true, q)) :
       Reach M (zc q l (List.replicate n b ++ r)) (zc q (List.replicate n w ++ l) r)
   | 0, l, r => Reach.refl M _
   | n + 1, l, r => by
-      have h1 : step M (zc q l (b :: (List.replicate n b ++ r))) = some (zc q (w :: l) (List.replicate n b ++ r)) :=
-        zR h
+      have h1 := zR (l := l) (r := List.replicate n b ++ r) h
       refine (Reach.of_step (by simpa [List.replicate_succ] using h1)).trans ?_
       have := scanR h n (w :: l) r
       have e : List.replicate n w ++ w :: l = List.replicate (n + 1) w ++ l := by

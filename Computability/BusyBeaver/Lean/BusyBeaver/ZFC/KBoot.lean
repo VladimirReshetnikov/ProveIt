@@ -50,20 +50,15 @@ theorem lstep_sound {F M : TMN} (hF : ∀ q b, F q b = M q b) {s s' : LConf}
   simp only [lconc, step_zc]
   split at h
   · simp at h
-  · rename_i w q' hm
-    rw [hm]; simp only [Option.some.injEq] at h ⊢; subst h; rfl
-  · rename_i w q' hm
-    rw [hm]; simp only [Option.some.injEq] at h ⊢; subst h; rfl
+  all_goals rename_i w q' hm; rw [hm]; simp only [Option.some.injEq] at h ⊢; subst h; rfl
 
 theorem lblock_sound {F M : TMN} (hF : ∀ q b, F q b = M q b) :
     ∀ (d : Nat) {s s' : LConf}, lblock F d s = some s' → run M (2 ^ d) (lconc s) = some (lconc s')
-  | 0, s, s', h => by
-      have := lstep_sound hF h
-      simp [run, this]
+  | 0, s, s', h => by simp [run, lstep_sound hF h]
   | d + 1, s, s', h => by
       simp only [lblock] at h
       cases h1 : lblock F d s with
-      | none => rw [h1] at h; simp at h
+      | none => simp [h1] at h
       | some s1 =>
           rw [h1] at h
           rw [Nat.pow_succ, Nat.mul_two, run_add, lblock_sound hF d h1]
