@@ -12,7 +12,12 @@ only the used pairs, with arbitrary row targets and explicit cross-target
 exclusion. `SelectiveCertificate52` checks the 71 active pairs at maximum
 weight 174 and regular stride 349; `SelectiveCertificate46` checks its
 62-pair support at maximum weight 175. Both allow unused collisions.
-The literal native rows and source-to-refutation bridge remain separate.
+The literal package-52 native rows are now checked in
+`NativeQuadraticParent`, together with their exact selective coefficients
+and bounds in `NativeQuadraticPositions` and `NativeCoefficientBounds`.
+Sparse decoding and the exact package-52 finalizer are also checked;
+see [SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). The combined source
+adapter and source-to-refutation bridge remain separate.
 `NearSquareFinalizer` also proves the sharp majorant and final one-witness
 norm equivalence. The full-Sidon components below remain general reusable
 foundations rather than the preferred numerical positions.
@@ -118,7 +123,17 @@ interface, and `NineMain.wset_iff_nine` are currently tied to the quartic
 index, `5^i` positions, fourth powers, and old masks. Replacing their `L`
 constant does not establish a direct quadratic reduction.
 
-## Minimal remaining construction
+## Construction obligations and current progress
+
+The original generic plan below records the required stages. For the
+selected literal package-52 source, stages 1–4 now have checked components:
+the port-parametric row identities, arbitrary-position low mask, corrected
+coefficient height and convolution bound, and positive leading coefficient
+with pre-decoding range bounds. `SelectiveCarry.central_blocks_iff` supplies
+the two-block packing theorem; assembling it into the literal source
+contract is in progress. The finalizer and exact ratio substitution in
+stage 6 are checked separately. Native coefficient calibration, the closed
+nine-coordinate bridge and the internal ZFC theorem remain open.
 
 1. Supply the finite integer coefficients of each quadratic gate residual
    as canonical pairs and prove `Q_j(u)` equals that residual when `u_0=1`.

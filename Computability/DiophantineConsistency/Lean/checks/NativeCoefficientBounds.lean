@@ -1,0 +1,10 @@
+import DiophantineConsistency.NativeCoefficientBounds
+
+open DiophantineConsistency.NativeCoefficientBounds
+
+#print axioms envelope_lt
+#print axioms abs_rowCoefficient_le_envelope
+#print axioms weighted_rowCoefficient_lt
+#print axioms published_large_scale
+#print axioms published_height_eq
+#print axioms weighted_rowCoefficient_lt_published

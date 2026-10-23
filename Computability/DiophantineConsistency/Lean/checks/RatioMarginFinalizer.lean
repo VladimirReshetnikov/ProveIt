@@ -1,0 +1,3 @@
+import DiophantineConsistency.RatioMarginFinalizer
+
+#print axioms DiophantineConsistency.RatioMarginFinalizer.exists_value_zero_iff

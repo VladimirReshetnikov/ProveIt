@@ -28,6 +28,14 @@ are recorded in [PROPOSAL_REVIEW.md](PROPOSAL_REVIEW.md). These proposals
 supersede wave 6 as numerical targets; the current closed Lean equations
 remain the certified baseline until a replacement is fully checked.
 
+The package-52 formalization now checks its literal 60-gate, 22-row source,
+all 136 quadratic coefficient records, exact selective positions, sharp
+coefficient height, sparse low-mask decoding, ratio reparameterization, and
+margin-first finalizer. See [SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md).
+The combined source-to-binomial contract and native coefficient calibration
+remain in progress; these local proofs do not yet replace the closed
+consistency equation.
+
 The wave-5 and wave-6 report packages explicitly distinguish their new final
 equations from an end-to-end Lean certificate. The inherited P67 is a particularly short
 candidate: 15 strictly positive witnesses, degree 155, and 67 binary
