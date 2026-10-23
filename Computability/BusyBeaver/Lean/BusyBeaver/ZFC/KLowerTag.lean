@@ -119,14 +119,6 @@ theorem tag_union (a : Tag mem t) :
   · rintro ⟨-, y, hty, hzy, hya⟩
     exact ⟨⟨y, hty⟩, hzy, hya⟩
 
-/-- Power sets in `D_t`: the tagged raw subsets of a tagged set. -/
-theorem tag_power (a : Tag mem t) :
-    ∃ p : Tag mem t, ∀ z, tmem mem t z p ↔ ∀ w, mem w z.1 → mem w a.1 := by
-  obtain ⟨U, hU⟩ := raw_power hs hirr a.1
-  apply tag_of_bound hs hirr ht U _ (fEq 0 0) (fun _ => t)
-  intro z
-  exact ⟨fun h => ⟨(hU z.1).mpr h, rfl⟩, fun h => (hU z.1).mp h.1⟩
-
 /-- Transitive containers in `D_t`. -/
 theorem tag_transitive (a : Tag mem t) :
     ∃ v : Tag mem t, tmem mem t a v ∧ ∀ y, tmem mem t y v → ∀ z, tmem mem t z y → tmem mem t z v := by

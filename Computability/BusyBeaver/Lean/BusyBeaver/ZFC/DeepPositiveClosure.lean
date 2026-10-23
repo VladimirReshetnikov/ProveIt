@@ -144,12 +144,6 @@ theorem sat_pscForm (mem : V → V → Prop) (phi : Form) (env : Nat → V) :
       PositiveClosure.ClosureInstance mem (PositiveClosure.Sub mem) (MatrixRelation mem phi env) :=
   imp_congr (sat_subsetBoundForm mem phi env) (sat_positiveBodyForm mem phi env)
 
-/-- Universal parameter environments correspond to validity of these instances. -/
-theorem valid_pscForm_iff (mem : V → V → Prop) (phi : Form) :
-    (∀ env, Sat mem env (pscForm phi)) ↔
-      ∀ env, PositiveClosure.ClosureInstance mem (PositiveClosure.Sub mem) (MatrixRelation mem phi env) :=
-  forall_congr' fun env => sat_pscForm mem phi env
-
 /-- A syntactic check, independent of the semantics. -/
 def EqualityFree : Form → Prop
   | fMem _ _ => True

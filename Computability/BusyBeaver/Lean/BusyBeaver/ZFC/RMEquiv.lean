@@ -158,8 +158,6 @@ theorem incPath_snoc_false (Q : List Bool) : incPath (Q ++ [false]) = Q ++ [true
 theorem incPath_snoc_true (Q : List Bool) : incPath (Q ++ [true]) = incPath Q ++ [false] := by
   simp [incPath, incRev]
 
-theorem incPath_nil : incPath [] = [] := rfl
-
 theorem brk0 (Q : List Bool) : breakPath 0 Q = incPath Q := by
   simp [breakPath, stripPath, stripRev]
 

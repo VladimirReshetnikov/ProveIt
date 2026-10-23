@@ -60,10 +60,6 @@ def NSat (mem : V → V → Prop) : (Nat → V) → NForm → Prop
   | ρ, .ex x a => ∃ d, NSat mem (upd ρ x d) a
   | ρ, .atom φ args => Sat mem (fun i => ρ (args i)) φ
 
-/-- Satisfaction depends on the environment only pointwise. -/
-theorem nsat_congr (mem : V → V → Prop) (φ : NForm) {ρ ρ' : Nat → V} (h : ∀ i, ρ i = ρ' i) :
-    NSat mem ρ φ ↔ NSat mem ρ' φ := by rw [funext h]
-
 /-! ## Translation into De Bruijn formulas -/
 
 def under (slots : Nat → Nat) (x : Nat) (i : Nat) : Nat := if i = x then 0 else slots i + 1
