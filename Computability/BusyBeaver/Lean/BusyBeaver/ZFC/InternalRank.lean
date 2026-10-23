@@ -77,11 +77,6 @@ theorem nsat_pmemF (ρ : Nat → V) (f x y : Nat) :
   simp (disch := omega) only [upd_same, upd_other]
   exact ⟨fun ⟨_, rfl, h⟩ => h, fun h => ⟨_, rfl, h⟩⟩
 
-theorem nsat_powF (ρ : Nat → V) (y t : Nat) :
-    NSat mem ρ (powF y t) ↔ ∀ z, mem z (ρ y) ↔ Sub mem z (ρ t) := by
-  simp only [powF, NSat, nsat_iff, nsat_subF]
-  simp (disch := omega) only [upd_same, upd_other]
-
 end Pairs
 
 /-! ## Recursion along the ordinals

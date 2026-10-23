@@ -36,12 +36,6 @@ theorem classMember_right_congr (mem : V → V → Prop) {a b : V}
     ClassMember mem z a ↔ ClassMember mem z b :=
   ⟨fun ⟨t, ht, hzt⟩ => ⟨t, (h t).mp ht, hzt⟩, fun ⟨t, ht, hzt⟩ => ⟨t, (h t).mpr ht, hzt⟩⟩
 
-theorem classMember_left_congr (mem : V → V → Prop) {a b : V}
-    (h : Same mem a b) (c : V) :
-    ClassMember mem a c ↔ ClassMember mem b c :=
-  ⟨fun ⟨t, ht, hat⟩ => ⟨t, ht, same_trans mem (same_symm mem h) hat⟩,
-    fun ⟨t, ht, hbt⟩ => ⟨t, ht, same_trans mem h hbt⟩⟩
-
 /-- Every inner member class of a Kuratowski code contains its first endpoint. -/
 theorem orderedPair_first (mem : V → V → Prop) {a b c : V}
     (h : OrderedPair mem a b c) (z : V) (hz : ClassMember mem z c) :
@@ -78,10 +72,6 @@ theorem orderedPair_injective (mem : V → V → Prop) {a b a' b' c : V}
       (fun hb'a => same_trans mem hba (same_symm mem hb'a)) (same_symm mem)
   · exact ((hUnion b).mp (Or.inr (same_refl mem b))).elim
       (fun hba' => (hba (same_trans mem hba' (same_symm mem hFirst))).elim) id
-
-theorem singleton_object_congr (mem : V → V → Prop) {s t a : V}
-    (hst : Same mem s t) (hs : Singleton mem s a) : Singleton mem t a :=
-  fun z => (classMember_right_congr mem hst z).symm.trans (hs z)
 
 theorem pair_object_congr (mem : V → V → Prop) {p q a b : V}
     (hpq : Same mem p q) (hp : Pair mem p a b) : Pair mem q a b :=

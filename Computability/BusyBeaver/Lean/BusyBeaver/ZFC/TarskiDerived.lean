@@ -98,10 +98,6 @@ theorem dne (a : NF) : T (imp (neg (neg a)) a) := by
 theorem dni (a : NF) : T (imp a (neg (neg a))) :=
   ded2 hC (.mp h0 h1)
 
-/-- Classical contraposition in the reverse direction. -/
-theorem contra_rev {a b : NF} (h : T (imp (neg a) (neg b))) : T (imp b a) :=
-  syl hC (syl hC (dni hC b) (contra hC h)) (dne hC a)
-
 /-- Case split: `(¬a → c) → ((b → c) → ((a → b) → c))`. -/
 theorem imp_cases (a b c : NF) :
     T (imp (imp (neg a) c) (imp (imp b c) (imp (imp a b) c))) := by
@@ -130,13 +126,6 @@ theorem all_mono (i : Nat) {a b : NF} (h : T (imp a b)) : T (imp (all i a) (all 
 
 theorem ex_mono (i : Nat) {a b : NF} (h : T (imp a b)) : T (imp (ex i a) (ex i b)) :=
   contra hC (all_mono hC i (contra hC h))
-
-/-- The B axiom of each quantifier: `a → ∀i ∃i a`. -/
-theorem b_axiom (i : Nat) (a : NF) : T (imp a (all i (ex i a))) := by
-  have h' : T (imp a (neg (ex i (all i (neg a))))) :=
-    syl hC (dni hC a) (contra hC (R.rho6 i (neg a)))
-  -- ¬ ex i (∀i ¬a) = ¬¬ ∀i ¬∀i ¬a, and ∀i ¬∀i ¬a = ∀i ∃i a.
-  exact syl hC h' (dne hC (all i (neg (all i (neg a)))))
 
 /-- If `a → ∀i a` then `∃i a → a`. -/
 theorem ex_elim_of_vac {i : Nat} {a : NF} (h : T (imp a (all i a))) : T (imp (ex i a) a) :=

@@ -61,9 +61,6 @@ theorem sepsL_cons (v : Nat) (vs : List Nat) :
     sepsL (v :: vs) = true :: (List.replicate v true ++ false :: sepsL vs) := by
   simp [sepsL, List.replicate_succ]
 
-theorem sepsL_app (a b : List Nat) : sepsL (a ++ b) = sepsL a ++ sepsL b := by
-  simp [sepsL, List.flatMap_append]
-
 theorem rev_sepsR (vs : List Nat) : (sepsR vs).reverse = sepsL vs.reverse := by
   induction vs with
   | nil => rfl

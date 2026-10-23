@@ -168,11 +168,6 @@ theorem wf_closure (B : FiniteSets.Base mem) (a : V)
     tw_adjoin B _ a (tw_union B c hFamily) haU,
     (FiniteSets.insert_spec B _ a a).mpr (Or.inr rfl)⟩
 
-theorem wf_closure_of_equalityFree_gic (B : FiniteSets.Base mem)
-    (hG : ProfileModel.ModelsGIC mem) (a : V)
-    (ha : ∀ x, mem x a → WF mem x) : WF mem a :=
-  wf_closure B a (hG witnessForm equalityFree_witnessForm (fun _ => a)) ha
-
 theorem wf_mem {x y : V} (hx : WF mem x) (hy : mem y x) : WF mem y := by
   obtain ⟨t, ht, hxt⟩ := hx
   exact ⟨t, ht, ht.1 x hxt y hy⟩

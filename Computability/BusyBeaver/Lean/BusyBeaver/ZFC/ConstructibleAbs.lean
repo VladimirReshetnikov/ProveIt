@@ -26,7 +26,6 @@ open NamedZF NForm InternalOrd InternalRank TransRec ConstructibleDef Constructi
 universe u
 variable {V : Type u} {mem : V → V → Prop}
 
-
 /-! ## Inversion for formula codes (in any model of the ZF bundle) -/
 
 section Inversion
@@ -304,10 +303,6 @@ theorem codeEq2_iff (t : Nat) (c x y : {x // InL H hP x}) :
     c = kpair (L_zfAxioms H hR hP) (natV (L_zfAxioms H hR hP) t)
       (kpair (L_zfAxioms H hR hP) x y) ↔ c.1 = kpair H (natV H t) (kpair H x.1 y.1) := by
   rw [Subtype.ext_iff, val_kpair H hR hP, val_natV H hR hP, val_kpair H hR hP]
-
-theorem bitEq_iff (b : {x // InL H hP x}) (p q : Prop) (hpq : p ↔ q) :
-    b = vbit (L_zfAxioms H hR hP) p ↔ b.1 = vbit H q := by
-  rw [Subtype.ext_iff, val_vbit H hR hP, vbit_congr H hpq]
 
 theorem natEq_iff (b : {x // InL H hP x}) (k : Nat) :
     b = natV (L_zfAxioms H hR hP) k ↔ b.1 = natV H k := by

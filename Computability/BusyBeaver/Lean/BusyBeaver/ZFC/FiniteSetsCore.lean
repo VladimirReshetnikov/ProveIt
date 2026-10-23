@@ -54,9 +54,6 @@ theorem succ_spec (H : Base mem) (a x : V) :
   unfold succ
   rw [cup_spec H a (singleton H a) x, singleton_spec H a x]
 
-theorem succ_self (H : Base mem) (a : V) : mem a (succ H a) :=
-  (succ_spec H a a).mpr (Or.inr rfl)
-
 noncomputable def kpair (H : Base mem) (a b : V) : V :=
   pair H (singleton H a) (pair H a b)
 
@@ -100,7 +97,6 @@ theorem kpair_inj (H : Base mem) {a b c d : V}
     -- b = a
     exact ((pair_spec H a b d).mp (h1 ▸ (pair_spec H a d d).mpr (Or.inr rfl))).elim
       (fun hd => hb.trans hd.symm) Eq.symm
-
 
 noncomputable def insert (B : Base mem) (f p : V) : V := cup B f (singleton B p)
 

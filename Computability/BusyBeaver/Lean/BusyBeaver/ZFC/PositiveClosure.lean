@@ -56,11 +56,6 @@ def Switch (mem : V → V → Prop) (x y : V) : Prop :=
 theorem sub_refl (mem : V → V → Prop) (x : V) : Sub mem x x :=
   fun _ hz => hz
 
-theorem point_seed_reflexive : ∀ a : V, a = a := fun _ => rfl
-
-theorem subset_seed_reflexive (mem : V → V → Prop) : ∀ a, Sub mem a a :=
-  sub_refl mem
-
 /-- An exact extension follows from only its constant-relation instance.
 The explicit witness is the nonempty first-order domain convention. -/
 theorem constant_exact_of_instance (mem : V → V → Prop) (seed : V → V → Prop)
