@@ -1,4 +1,5 @@
 import BusyBeaver.ZFC.WFModelCore
+import BusyBeaver.ZFC.WellFoundedPart
 import BusyBeaver.ZFC.QuotientZF0
 import BusyBeaver.ZFC.QuotientCPGIC
 

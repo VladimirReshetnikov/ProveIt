@@ -1,5 +1,5 @@
 import FirstOrder.Completeness
-import BusyBeaver.ZFC.InductiveAttempts
+import BusyBeaver.ZFC.InductiveAttemptsCore
 import BusyBeaver.ZFC.KQ1Basic
 import BusyBeaver.ZFC.KQ1Replacement
 import BusyBeaver.ZFC.KQ1Collect
