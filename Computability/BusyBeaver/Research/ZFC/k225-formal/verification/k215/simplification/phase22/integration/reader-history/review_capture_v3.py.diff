@@ -1,0 +1,11 @@
+--- /tmp/k215-phase22-capture-peer/review_capture_v2.py
++++ /tmp/k215-phase22-capture-peer/review_capture_v3.py
+@@ -299,7 +299,7 @@
+     assert review['status'] == 'PASS_INDEPENDENT_ACTUAL_CANDIDATE_READBACK'
+     assert all(review[key] == EXPECTED_COUNTS[key] for key in ['providers', 'projects', 'typed_clients', 'fresh', 'reuses', 'audits'])
+     assert (review['client_reports'], review['WFTheory_reports'], review['audit_reports']) == (93, 5, 10)
+-    assert review['exact_profiles_preserved'] and review['all_source_object_dependency_log_toolchain_bindings_checked'] and review['no_site_or_forward_certificate_batch_recompiled']
++    assert review['exact_profiles_preserved'] and review['all_source_object_dependency_log_toolchain_bindings_checked'] and review['fresh_site_or_forward_certificate_batches'] == []
+     assert review['auditor']['path'] == cfg['actual_review_helper']['source'] and review['auditor']['sha256'] == cfg['actual_review_helper']['sha256']
+     assert review['result']['path'] == run['result']['source'] and review['result']['sha256'] == args.expected_result_sha
+     assert review['basis_result']['sha256'] == BASIS_SHA and capture['actual_review_sha256'] == cfg['actual_review']['sha256']

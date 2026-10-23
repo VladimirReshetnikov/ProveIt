@@ -155,6 +155,7 @@ theorem raw_aug (a : V) (θ : Form) (ρ : Nat → V) :
         exact (hirr a (this ▸ hza)).elim
       · exact ((hsz.unique ((sat_singF _ 1 0).mp hz')).symm ▸ hzC : mem z C)
 
+omit hirr in
 theorem raw_tagged {t : V} (ht : ∀ z, ¬ mem z t) (B : V) (hBt : B ≠ t) (θ : Form) (ρ : Nat → V) :
     ∃ S, ∀ z, mem z S ↔ z = B ∨ z = t ∨ (mem z B ∧ Sat mem (scons z ρ) θ) := by
   obtain ⟨r0, hr0⟩ := raw_pair hs ht B t

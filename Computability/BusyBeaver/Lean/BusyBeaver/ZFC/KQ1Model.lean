@@ -21,7 +21,7 @@ open ProfileModel CompositionModel DeepPositiveClosure
 universe u
 variable {V : Type u}
 
-theorem member_left_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+theorem member_left_congr (mem : V → V → Prop) (_witness : V) (h : QHyp mem)
     {x x' y : V} (hxx' : Eqv mem x x') : Member mem x y ↔ Member mem x' y := by
   constructor
   · rintro ⟨z, hz, hxz⟩
@@ -29,7 +29,7 @@ theorem member_left_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
   · rintro ⟨z, hz, hxz⟩
     exact ⟨z, hz, h.trans hxx' hxz⟩
 
-theorem member_right_congr (mem : V → V → Prop) (witness : V) (h : QHyp mem)
+theorem member_right_congr (mem : V → V → Prop) (_witness : V) (h : QHyp mem)
     {x y y' : V} (hyy' : Eqv mem y y') : Member mem x y ↔ Member mem x y' := by
   obtain ⟨r, hr, hEdge⟩ := hyy'
   obtain ⟨hForth, hBack⟩ := hr y y' hEdge
@@ -100,7 +100,7 @@ theorem equalityFree_translate (phi : Form) : EqualityFree (translate phi) := by
   | fAll _ ih => exact ih
   | fEx _ ih => exact ih
 
-def modelSetoid (mem : V → V → Prop) (witness : V) (h : QHyp mem) : Setoid V where
+def modelSetoid (mem : V → V → Prop) (_witness : V) (h : QHyp mem) : Setoid V where
   r := Eqv mem
   iseqv := ⟨h.refl, h.symm, h.trans⟩
 

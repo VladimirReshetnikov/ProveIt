@@ -99,3 +99,7 @@ and the capture reader executes no captured code.
 The [Lean evidence](lean/README.md) records every fresh receipt and reused
 dependency. The eleven phase20 Lean evidence leaf files remain exact historical
 boundaries; this page does not revise their records.
+
+The [phase22 successor](../phase22/README.md) simplifies semantic transports and
+reuses the 219 root proof. Its kernel, independent actual readback, capture and independent capture
+review pass. This pointer does not revise phase21's eleven Lean evidence leaf files.

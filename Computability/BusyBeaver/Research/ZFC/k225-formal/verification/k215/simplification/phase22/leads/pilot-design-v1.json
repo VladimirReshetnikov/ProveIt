@@ -1,0 +1,135 @@
+{
+  "status": "PRECISE_SOURCE_ONLY_COVERAGE_PILOT_NOT_KERNEL_CHECKED_NOT_ADOPTED",
+  "new_directory": "/tmp/k215-batch219-coverage-pilot",
+  "packet_commit": "56b37bde8b064d852154ad8478d58ec9ab5375d6",
+  "source_candidates": [
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/K215ControlCoveragePilot.lean",
+      "sha256": "1e2874803d9c97e2c586df490d10cc75147f16c8d17954baf978bc5e3d6b20a7",
+      "bytes": 4662,
+      "lines": 98,
+      "status": "SOURCE_ONLY_NOT_COMPILED_NOT_ADOPTED"
+    },
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/K215MixedControlConsumerPilot.lean",
+      "sha256": "71416aed6dc73330d1c0a3c88c98772ca7704c9126300eadd792337b5e037fd6",
+      "bytes": 3077,
+      "lines": 63,
+      "status": "SOURCE_ONLY_NOT_COMPILED_NOT_ADOPTED"
+    },
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/KControlRowsPilot.lean",
+      "sha256": "393f5d8e978541b8edcaa3955baaf83af53b5afc002be8c1f911c05f5894a5e7",
+      "bytes": 2309,
+      "lines": 58,
+      "status": "SOURCE_ONLY_NOT_COMPILED_NOT_ADOPTED"
+    }
+  ],
+  "confirmed_static_data_fact": {
+    "source_nodes": 179,
+    "source_leaves": 4751,
+    "control_leaves": 1425,
+    "break_leaves": 98,
+    "continue_leaves": 1327,
+    "shared_caller_rows": 1423,
+    "distinct_shared_words": 1423,
+    "exceptions": [
+      {
+        "word": "001",
+        "edge": "brk",
+        "argument": 1
+      },
+      {
+        "word": "11011",
+        "edge": "brk",
+        "argument": 1
+      }
+    ],
+    "ordered_equality": "Filter only the two exact exception rows from DFS controlRows [] KSource215.t215; the result equals callers.map (word, action(metaAt templateIndex)) in the existing order. No sort, count inference or new occurrence roster required.",
+    "static_receipt": {
+      "path": "/tmp/k215-batch219-coverage-pilot/static-comparison-v1.json",
+      "sha256": "7e4180260d244fc62a43a029a9bcbaca9d18050ef09a2064d89fc988ae18fbf4"
+    },
+    "trust_boundary": "Own inert parser of literal data confirms equality. Only Lean kernel checking of shared_control_rows_exact can establish the proposed formal certificate."
+  },
+  "candidate_architecture": [
+    {
+      "module": "KControlRowsPilot",
+      "purpose": "Small reverse-prefix control-only DFS fold plus LeafAt-to-membership completeness; generic allSites weakening for an initial reuse-only pilot.",
+      "representation": "List (List Bool \u00d7 RegisterPath.Edge), false-first source order, complete consumed word and exact action."
+    },
+    {
+      "module": "K215ControlCoveragePilot",
+      "purpose": "One closed proposed pure-data equality; total control-leaf classifier; arbitrary walk-to-LeafAt conversion with consume; residual physical contract for every nonliteral control leaf using the existing validated caller theorem.",
+      "closed_certificate": "shared_control_rows_exact : sharedControlRows = callerRows := by decide +kernel",
+      "classifier_statement": "LeafAt t215 Q e \u2192 isControl e = true \u2192 literalControl Q e = true \u2228 \u2203 c, c \u2208 callers \u2227 c.word = Q \u2227 action (metaAt c.templateIndex) = e",
+      "coverage_reason": "Membership in exact ordered list equality handles every source control leaf. Validity follows separately from packet callers_checked/all_caller_standard/caller_bindings/all_caller_routes. Neither list length1423 nor distinctness alone proves this result."
+    },
+    {
+      "module": "K215MixedControlConsumerPilot",
+      "purpose": "All-outcome assembly theorem parameterized by an explicit semantic contract; exact fallback gate preserves every inc/decrement/halt obligation and rejects failed branches through allSites.",
+      "literal_gate": "if isControl e && !literalControl Q e then true else KSim.checkEdge tm215 Q e",
+      "remaining_producer_premise": "framed : \u2200 c, c \u2208 callers \u2192 C c.word (action (metaAt c.templateIndex))",
+      "remaining_finite_fallback_premise": "fallbacks : allSites literalGate [] KSource215.t215 = true",
+      "initial_reuse_only_route": "literalGate_of_old_sites proves the fallback gate from accepted KSites215.all_sites without rerunning its evaluator. This keeps old certificate imports and claims no checking-cost/source reduction."
+    }
+  ],
+  "semantic_consumer_reviewed": {
+    "candidate": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/semantic-coverage/lean/candidate/BusyBeaver/ZFC/KSim.lean",
+      "sha256": "d5b5f502c3ea0529d9c2aaf26a33d13d65e9f91a6da2cb4b3c774a9c2ac5dcd7",
+      "lines": 485
+    },
+    "scope": "Read complete candidateKSim and typed SemanticCoverageAudit as inert source. Archived candidate defines RunContract, HaltContract, EdgeContract, SemanticCovered, literal checker adapter, mixed coverage and Semantic.halts_iff with compatibility wrappers. It is not current canonical KSim and must be rebased narrowly rather than copied wholesale.",
+    "exact_intended_instantiation": "C := KSim.EdgeContract KTableCore.tm215. ContractCovered C then has the exact quantifier/body shape of KSim.SemanticCovered tm215 KSource215.p215. literal is KSim.checkEdge_contract K215FrameEngine.boxLemmas215.",
+    "required_next_theorem": "theorem caller_edge_contract (c : KFrameContracts.Caller) (hc : c \u2208 KFrameCallers.callers) : KSim.EdgeContract KTableCore.tm215 c.word (KFrameContracts.action (KFrameCallers.metaAt c.templateIndex))",
+    "why_not_claimed_here": "Packet all_caller_standard begins at the full primitive leafPort. EdgeContract begins at KSim.start, before decoding. The proposed generic mixed consumer exposes this exact unproved producer premise instead of treating the residual theorem as a full edge theorem."
+  },
+  "precise_remaining_adapter_plan": [
+    "Use caller_bindings hc to get the exact RegisterPath.walk result at consumed depth c.word.length. walk_leaf plus consume-self gives LeafAt t215 c.word (action meta).",
+    "Apply current KDecoderPrefix215.leaf_prefix. It provides the complete split word=pre++[bit], actual RoutedEntry, and uniform KZip.run from conc n vs (KSim.start word) to conc n vs (KDecoderPrefix215.leafPort pre bit q).",
+    "Retain all_caller_routes RolePath witness and caller_bindings portState equality. From RoutedEntry obtain its RolePath and r.state=q; using word=pre++[bit], pre=word.dropLast, RolePath uniqueness or the deterministic portState_of_path equation identifies q=(metaAt index).q. A physical state or short suffix by itself is insufficient.",
+    "Rewrite current conc_leafPort and packet KFrameContracts.leafPort using the complete nonempty word split. Both use the actual full-word gap n+(64-word.length); preserve the final primitive bit and marker.",
+    "Turn the prefix run into Reach and compose it with all_caller_standard hc using Reach.trans_reach1. Home supplies positive progress, including administrative zero-step cases in the prefix.",
+    "For continue, sourceResult is continuePath and overflow is false. For break, sourceGuard plus stripPath_append shows a false bit remains inside the explicit stripped suffix; therefore KSim.allOnes (stripPath false k word)=false. This is required to match the no-overflow target gap in all_caller_standard with KSim.tgtConf.",
+    "Use KSim.conc_target, plain-none growth=0 and unchanged sepsR/registers to obtain the exact RunContract. Pair it with CallerOK word.length\u226448 to conclude the exact full EdgeContract.",
+    "Apply covered_by_framed_and_literal with C=full EdgeContract and the literal soundness adapter. Use Semantic.halts_iff/semantic endpoint seam only after the consumer is rebased and all source types/profiles checked."
+  ],
+  "safe_finite_check_representation": {
+    "reason_for_ordered_equality": "Linear comparison of1423complete word/action rows against a deterministic filtered DFS catalogue. This avoids approximately two million separate linear membership searches and avoids reevaluating CallerOK/roles/Home/TM for each word.",
+    "no_new_data_roster": true,
+    "no_symbolic_TM_eval_in_classifier": true,
+    "options_in_draft": "maxRecDepth100000 and maxHeartbeats8000000 on the single pure-data certificate; these are proposals, not measured resource sufficiency.",
+    "if_sharding_needed": "Use contiguous false-first DFS subtree/control-row chunks, prove their equalities separately and compose with List.append/map/filter lemmas. Never replace equality by counts. Existing23caller batches stay unchanged.",
+    "fallback_checks": "For a saving-producing pilot, replace current105source-tree kernel blocks with the same subtree boundaries evaluating literalGate. Preserve balanced transition lookup by parameterizing literalGateFor M := if skip then true else KSim.checkEdge M and rewriting through existing KFastSites215.fast_eq; do not fall back to slow literal-table lookup. No generator/checker was run here."
+  },
+  "preserved_obligations": {
+    "full_source_leaves": 4751,
+    "source_outcomes": 6176,
+    "literal_increment_outcomes": 1900,
+    "literal_decrement_zero_and_positive_outcomes": 2850,
+    "literal_control_exceptions": 2,
+    "literal_halt_outcomes": 1,
+    "literal_outcomes_after_control_factoring": 4753,
+    "shared_template_bodies": 20,
+    "projected_expensive_body_checks": 4773,
+    "notes": "All4751source leaves/6176outcome bindings remain. Invalid/none decoder branches remain rejected by allSites; source walk totality and consume/implicit zero-padding are retained. No eventualReach proof is converted into acceptance of the old fixed4000fuel Boolean executor. No machine, register permutation, spare tail, overflow, halt-row or endpoint statement is weakened."
+  },
+  "obstructions_and_limits": [
+    "No mathematical/data mismatch found for the proposed control classifier.",
+    "The three Lean modules have not been elaborated or kernel-checked; routine proof syntax/rewrites and finite-certificate resource use remain unverified.",
+    "Full framed dispatch EdgeContract producer and current semantic-consumer rebase remain explicit work.",
+    "The initial old-sites weakening retains the old dependency closure; actual source/checking savings require fresh replacement fallback batches and endpoint validation."
+  ],
+  "execution": {
+    "Lean_compiler_invocations": 0,
+    "supplied_program_executions": 0,
+    "generators_or_checkers_run": 0,
+    "Rocq_or_TeX_execution": 0,
+    "canonical_edits": 0,
+    "commits": 0,
+    "production_adoption": false,
+    "goal_remains_active": true
+  },
+  "review_before_execution": "Root should read these complete sources and freeze input/helper hashes before any execution. Any later compile must use the owned serial pinnedLean4.32.0 supervisor and existing global lock, resource limits, source-transitive invalidation, fresh-zero-warning policy and exact maintained client/audit profiles."
+}

@@ -1,0 +1,362 @@
+{
+  "review_mode": "SOURCE_ONLY_INDEPENDENT_REVIEW_NO_PROVER_OR_SUPPLIED_CODE_EXECUTION",
+  "packet_commit": "56b37bde8b064d852154ad8478d58ec9ab5375d6",
+  "packet_baseline": "cbf94cb552a3b49509e0eee80e7455d4eb5974c6",
+  "inert_files_materialized": 221,
+  "readme_and_full_report_scope": [
+    "checked-interfaces/README.md",
+    "checked-interfaces/report.tex",
+    "checked-interfaces/results.tex",
+    "consolidation-plan/README.md",
+    "consolidation-plan/report.tex",
+    "source-identity/README.md",
+    "source-identity/report.tex",
+    "source-identity/decoder/decoder_section.tex",
+    "source-identity/rocq/rocq_reuse_section.tex",
+    "source-identity/lean/lean_negative_result.tex",
+    "proof-spine/README.md",
+    "proof-spine/proof-simplification.tex",
+    "proof-spine/00-summary.tex",
+    "proof-spine/01-baseline.tex",
+    "proof-spine/02-spine.tex",
+    "proof-spine/03-prefix.tex",
+    "proof-spine/04-validation.tex",
+    "proof-spine/05-research.tex",
+    "proof-spine/06-sources.tex"
+  ],
+  "components": [
+    {
+      "package": "checked-interfaces",
+      "component": "ConstructibleAbs normalize-first",
+      "novelty": "Concrete five-proof edit, not a new guarded-subtype principle. Already adopted from Claude commit 5a26d6 through d0cb4828f0.",
+      "source_fit": "Proposed file is byte-identical to current canonical ConstructibleAbs; SHA b644da4d75ef7db58df680ce75780e705b99d5c558cac79d868be2096b21bc86.",
+      "correctness": "Source normalization exposes ambient membership/equality before witness transport; exact same declarations and section scopes. Existing propext use in atom_clause belongs to its existing assumption profile.",
+      "evidence": "Packet reports 25 Lean invocations and six equal public type/axiom reports. Reviewer did not replay.",
+      "recommendation": "Already done; retain provenance, do not reapply or count savings twice."
+    },
+    {
+      "package": "checked-interfaces",
+      "component": "Checked lookup/direct Rocq tree",
+      "novelty": "Completes previously proposed representation-independent lookup route; current Lean RMBisim already uses the principle.",
+      "source_fit": "Current production Rocq still uses the smaller normalized list route.",
+      "correctness": "Validated lookup requires every returned pair to have an accepted local row; initial segment check is separate. Positive decrement consumes a real source step before recursive reflection. Arbitrary tree cuts affect fidelity/performance but cannot bypass checked routing obligations.",
+      "evidence": "Packet reports Coq 8.18 component+recursive check; production Rocq 9.1 branch not replayed. Current direct stack is +3,030 bytes/+103 lines vs list, and reported 11.135 s vs 8.968 s.",
+      "recommendation": "Keep list default; consider a single generic lookup proof underlying the list before adding an optional tree backend."
+    },
+    {
+      "package": "consolidation-plan",
+      "component": "Native Replacement",
+      "novelty": "Integration of prior guarded-image/collection-first ideas with a concrete formula adapter and import cut.",
+      "source_fit": "All four affected original source locations still match the cbf baseline. Independent current census differs from the old packet totals.",
+      "correctness": "Domain guard is necessary because global support lacks x-in-domain. Partial uniqueness suffices; no totality or choice in exact_image. guardRename=(1,0,k+3) maps [x,y,a,params] to relOf output-y/input-x correctly. All resource uses remain actual Form-indexed Collection.",
+      "evidence": "Packet reports 109 successful Lean invocations through generic endpoint and compatibility; no new literal K215 full certificate build. Review source-only.",
+      "recommendation": "Strongest separate semantic adoption candidate; merge deliberately with generic spine, then compile current source and retained APIs."
+    },
+    {
+      "package": "consolidation-plan",
+      "component": "Common Rocq runtime + footprint prototype",
+      "novelty": "Concrete eight-variant duplication census and checked support theorem; table-parametric boundary already exists in Lean.",
+      "source_fit": "Rocq production still repeats common runtime bodies. Forty-four common rows plus IncTail match Lean KTape interface.",
+      "correctness": "Adaptive transport is sound for the same table-independent query tree and certified query support, preserving exact result/failure/progress. No maintained executor representation theorem or universal BoxLemmas port is supplied.",
+      "evidence": "Packet reports Coq 8.16.1 proof and finite 45-row K215/K217 witness; neither production 9.1 nor whole-machine equivalence.",
+      "recommendation": "Longer project: extract common table/tape/boot boundaries, port universal engine first, then share executor. 318,724 bytes is duplication inventory, not achieved saving."
+    },
+    {
+      "package": "consolidation-plan",
+      "component": "Reachable-suffix termination",
+      "novelty": "Concrete integration of an earlier reachable-suffix induction idea into KSim.",
+      "source_fit": "Independent of phase21 AX and phase22 semantic/root edits; overlaps any future KSim decrement-fork edit only at file level.",
+      "correctness": "Reflection needs positive target simulation; preservation needs terminal drainage. RegisterPath.step=none may mean decode failure, so the explicit complete premise from sim_stop is essential.",
+      "evidence": "Packet reports fresh Lean runtime+adapters+patched KSim, not full endpoint. Generic source code uses constructive finite induction.",
+      "recommendation": "Optional until a second real client amortizes 144 + 72 new lines; single client net +188 lines."
+    },
+    {
+      "package": "source-identity",
+      "component": "Direct-program decoder roles",
+      "novelty": "Exact deletion of a duplicate 202-node source presentation, distinct from already computed ptree and tape-uniform route quantifiers.",
+      "source_fit": "Retains 234 physical roles and 281 blocks; 179 fork map + 23 primitive projection remains relevant to current decoder prefix.",
+      "correctness": "Structural checker only distinguishes terminal from internal source edges and binds physical action. It deliberately cannot distinguish two primitive opcodes; residual semantics is mandatory. Direct walk induction must retain consumed depth, zero extension, full prefix and exact port.",
+      "evidence": "Finite data audits and uncompiled checker pilot only; no direct-walk soundness theorem. Pilot still imports old K215Decoder.",
+      "recommendation": "Useful research route: split table/block provider, prove one direct-walk-to-route theorem, then exact zipper client; no endpoint saving until complete residual/coverage integration."
+    },
+    {
+      "package": "source-identity",
+      "component": "Infer AX word from DAG",
+      "novelty": "Untrusted extractor feeding the existing checker; mathematical idea sound, but submitted integration targets old local AXAtom/checker duplication.",
+      "source_fit": "Stale after phases 20/21. Current Dom+Perm AX modules total 3,927 bytes, not 13,039; their eight-atom prefixes share a 148-atom AXWord.axBody also used by 222. Current shared atom language has readwff spanning two nodes and native254 uses AXExpr. generate_l2axiomsdom.py was retired in phase 20.",
+      "correctness": "Extractor failure default is safe only because unchanged checker must pass; it is not a new soundness premise. Wrong atom ordering must never be treated as commuting.",
+      "evidence": "Uncompiled overlays; old savings 787 bytes/6 extra lines and 27 bytes for 215 alone do not apply to current shared sources.",
+      "recommendation": "Do not apply draft overlays or revive retired producer. Defer unless adapted total-maintenance/performance measurements beat current shared AX interface."
+    },
+    {
+      "package": "source-identity",
+      "component": "Rocq z465 loop reuse",
+      "novelty": "Small concrete additional local proof reuse; broader89-node macro transport is already prior work.",
+      "source_fit": "Current z465 and NEW_EQ producer still match; w199 uses exactly the proposed while_tac pattern.",
+      "correctness": "Apply sem_while at node 465, register 5, body Continue 1, identity transformer and clear poststate. Do not apply node 199 contract at 465. Old value premise retained for API.",
+      "evidence": "Uncompiled draft and typed client; four lines/304bytes per declaration is a source count.",
+      "recommendation": "Good small independent Rocq pilot; update active regenerate218.py NEW_EQ and all affected generated 215/217/218 outputs, then production toolchain client/endpoint checks."
+    },
+    {
+      "package": "source-identity",
+      "component": "GuardedSubtype experiment",
+      "novelty": "Capture-aware common induction with explicit context/slot/guard laws.",
+      "source_fit": "Two existing translator+proof targets only 89 lines or 99 with environment helpers; new core+client 179 lines. Named Constructible syntax explicitly excluded.",
+      "correctness": "Slot 0/successor laws, invariant stability and exact guard-to-subtype equivalence preserve capture and equality. No obvious source-level semantic defect found; no compiler run.",
+      "evidence": "Uncompiled, finite regression cases only.",
+      "recommendation": "Agree with packet negative recommendation; do not replace shorter current proofs for nominal sharing."
+    },
+    {
+      "package": "proof-spine",
+      "component": "Generic semantic Core/legacy facade split",
+      "novelty": "Distinct from earlier quotient unification: removes CP-specific facade imports that generic mathematics does not use.",
+      "source_fit": "All eight changed originals match packet baseline; four generic bodies and quotient tails independently match exact source substrings. Member-form substitution is a literal KQ1Model alias/forwarder.",
+      "correctness": "Generic public declaration names remain in original namespaces. WFModel receives explicit legacy WellFoundedPart import. No stronger mathematical premise is introduced by the move. Import/export/typeclass/reducibility effects still need compilation.",
+      "evidence": "Uncompiled twelve-file overlay with source-only audits. Owned current census reproduces claimed direction, with different current totals.",
+      "recommendation": "Best low-risk architectural follow-up; combine with native Replacement using stated merge rule and retain compatibility clients."
+    },
+    {
+      "package": "proof-spine",
+      "component": "Decrement prefix/oracle fork",
+      "novelty": "Specific composition of two existing executor soundness calls; related high-level decoder sharing already proposed.",
+      "source_fit": "New KOracleCut imports only KHomeReady, below KSim. Current executor soundness matches used arguments and progress contract.",
+      "correctness": "Neutral prefix starts moved=false and yields positive reachability; branch suffix starts moved=true and may be reflexive. Valid branch implies neutral validity. Explicit cut required because failed neutral oracle may fall back to a table transition. Keep left list and physical register map.",
+      "evidence": "Uncompiled Lean/Rocq fragments, finite 1,425 pair replay claims only; 36.26/39.12 percent cover decrement abstract calls, not endpoint checking time.",
+      "recommendation": "Promising next runtime component after source-only cut lemma compiles; replace decrement checking only after all affected K-family site certificates are freshly checked."
+    }
+  ],
+  "combination_matrix": [
+    {
+      "parts": [
+        "phase22-v2",
+        "checked-interfaces normalization"
+      ],
+      "status": "Already identical; no combined change or extra saving."
+    },
+    {
+      "parts": [
+        "phase21 shared AX",
+        "source-identity AX inference"
+      ],
+      "status": "Draft overlays obsolete; preserve current shared AXWord/AXExpr, adapt from current bytes only if worthwhile."
+    },
+    {
+      "parts": [
+        "native Replacement",
+        "generic spine"
+      ],
+      "status": "Compatible but text overlap in InductiveAttempts/InductiveAttemptsCore/KQ1ZF. Retain all spine files, add native KQ1ReplacementNative and native KQ1ZF. Do not overwrite spine Core with native old-import Core. Recomputed combined closure below."
+    },
+    {
+      "parts": [
+        "phase22-v2",
+        "native/spine"
+      ],
+      "status": "Different changed source locations, same semantic dependencies. Literal declarations compatible; per-theorem axioms and endpoint checks still required."
+    },
+    {
+      "parts": [
+        "decrement fork",
+        "termination transport"
+      ],
+      "status": "KSim file overlap only: change checker/decrement semantic branch and halts_iff independently, compose after isolated gates. Keep positive progress and sim_stop completeness."
+    },
+    {
+      "parts": [
+        "direct-program decoder",
+        "decrement fork"
+      ],
+      "status": "Complementary cuts: source syntax/route vs paired outcomes. No need to block small fork on broad decoder redesign; never add replay percentages or savings."
+    },
+    {
+      "parts": [
+        "checked lookup",
+        "common Rocq runtime"
+      ],
+      "status": "Different layers (source-program equivalence vs binary execution). Compatible; neither supplies the other's obligations."
+    },
+    {
+      "parts": [
+        "z465",
+        "common macro/runtime sharing"
+      ],
+      "status": "Local loop edit independent, but synchronize producer and avoid reintroducing duplicated proofs during later extraction."
+    },
+    {
+      "parts": [
+        "guarded-subtype helper",
+        "normalize-first"
+      ],
+      "status": "Normalization is already adopted; broad helper is a net-growth alternative, not another additive saving."
+    }
+  ],
+  "owned_census_path": "/tmp/k215-batch219-review-b/owned-census.json",
+  "source_metrics": [
+    {
+      "label": "packet baseline",
+      "project_modules": 174,
+      "bytes": 1752650,
+      "lines": 37648
+    },
+    {
+      "label": "current phase22 v2",
+      "project_modules": 179,
+      "bytes": 1768074,
+      "lines": 37966
+    },
+    {
+      "label": "current + native",
+      "project_modules": 178,
+      "bytes": 1762012,
+      "lines": 37842,
+      "delta_vs_current": {
+        "project_modules": -1,
+        "bytes": -6062,
+        "lines": -124
+      },
+      "removed_vs_current": [
+        "BusyBeaver.ZFC.InductiveAttempts",
+        "BusyBeaver.ZFC.KQ1Replacement",
+        "BusyBeaver.ZFC.QuotientReplacement"
+      ],
+      "added_vs_current": [
+        "BusyBeaver.ZFC.InductiveAttemptsCore",
+        "BusyBeaver.ZFC.KQ1ReplacementNative"
+      ],
+      "total_affected_maintenance_delta": {
+        "bytes": 3902,
+        "lines": 84
+      }
+    },
+    {
+      "label": "current + spine",
+      "project_modules": 172,
+      "bytes": 1742628,
+      "lines": 37457,
+      "delta_vs_current": {
+        "project_modules": -7,
+        "bytes": -25446,
+        "lines": -509
+      },
+      "removed_vs_current": [
+        "BusyBeaver.ZFC.FiniteSets",
+        "BusyBeaver.ZFC.InductiveAttempts",
+        "BusyBeaver.ZFC.PowerSyntax",
+        "BusyBeaver.ZFC.QuotientBasic",
+        "BusyBeaver.ZFC.QuotientCPGIC",
+        "BusyBeaver.ZFC.QuotientModel",
+        "BusyBeaver.ZFC.QuotientPower",
+        "BusyBeaver.ZFC.QuotientReplacement",
+        "BusyBeaver.ZFC.QuotientSeparation",
+        "BusyBeaver.ZFC.SingletonInfinity",
+        "BusyBeaver.ZFC.WellFoundedPart"
+      ],
+      "added_vs_current": [
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "BusyBeaver.ZFC.InductiveAttemptsCore",
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "BusyBeaver.ZFC.WellFoundedPartCore"
+      ],
+      "total_affected_maintenance_delta": {
+        "bytes": 1152,
+        "lines": 46
+      }
+    },
+    {
+      "label": "current + spine + native merged",
+      "project_modules": 172,
+      "bytes": 1739532,
+      "lines": 37389,
+      "delta_vs_current": {
+        "project_modules": -7,
+        "bytes": -28542,
+        "lines": -577
+      },
+      "removed_vs_current": [
+        "BusyBeaver.ZFC.FiniteSets",
+        "BusyBeaver.ZFC.InductiveAttempts",
+        "BusyBeaver.ZFC.KQ1Replacement",
+        "BusyBeaver.ZFC.PowerSyntax",
+        "BusyBeaver.ZFC.QuotientBasic",
+        "BusyBeaver.ZFC.QuotientCPGIC",
+        "BusyBeaver.ZFC.QuotientModel",
+        "BusyBeaver.ZFC.QuotientPower",
+        "BusyBeaver.ZFC.QuotientReplacement",
+        "BusyBeaver.ZFC.QuotientSeparation",
+        "BusyBeaver.ZFC.SingletonInfinity",
+        "BusyBeaver.ZFC.WellFoundedPart"
+      ],
+      "added_vs_current": [
+        "BusyBeaver.ZFC.FiniteSetsCore",
+        "BusyBeaver.ZFC.InductiveAttemptsCore",
+        "BusyBeaver.ZFC.KQ1ReplacementNative",
+        "BusyBeaver.ZFC.SingletonInfinityCore",
+        "BusyBeaver.ZFC.WellFoundedPartCore"
+      ],
+      "total_affected_maintenance_delta": {
+        "bytes": 4696,
+        "lines": 120
+      }
+    }
+  ],
+  "source_move_checks": [
+    {
+      "module": "SingletonInfinity",
+      "generic_body_exact_substring": true,
+      "quotient_tail_exact_substring": true
+    },
+    {
+      "module": "FiniteSets",
+      "generic_body_exact_substring": true,
+      "quotient_tail_exact_substring": true
+    },
+    {
+      "module": "InductiveAttempts",
+      "generic_body_exact_substring": true,
+      "quotient_tail_exact_substring": true
+    },
+    {
+      "module": "WellFoundedPart",
+      "generic_body_exact_substring": true,
+      "quotient_tail_exact_substring": true
+    }
+  ],
+  "phase22_spec_sha256": "4096334f8a48fef5ab706297cf628fc3d858055c0acdd5c3cf2d618a5a1c62c0",
+  "phase22_sources": [
+    {
+      "module": "BusyBeaver.ZFC.ConstructibleAbs",
+      "candidate_sha256": "b644da4d75ef7db58df680ce75780e705b99d5c558cac79d868be2096b21bc86"
+    },
+    {
+      "module": "BusyBeaver.ZFC.ProfileSyntax",
+      "candidate_sha256": "cc5f9f5ad575db59429407388c2112059876a73b1a71ffd28f51a058f4f3b81f"
+    },
+    {
+      "module": "BusyBeaver.ZFC.CompositionModel",
+      "candidate_sha256": "2eff1608245d9f1c4d19928d07070b03417de682121e42a2d13523eb5c4022d4"
+    },
+    {
+      "module": "BusyBeaver.ZFC.L2Root219",
+      "candidate_sha256": "1ecb57f548b494f50ea325ff8e7c98c757b7fee4e0ea51af83d36ecbd6e2cf79"
+    }
+  ],
+  "phase22_kernel_status": "Root reported v1 added propext through global iff_congr; constructive v2 with iff_congr_iff is pinned and a root-controlled serial run is live. Reviewer did not poll run; terminal result not received.",
+  "important_scope_correction": "Unchanged theorem headers and correct witness indices do not establish unchanged axiom profiles. Prior source-only semantic review established structure; root kernel audit caught v1 assumption growth. v1 failed run remains preserved.",
+  "ranked_next_steps": [
+    "Finish current phase22-v2 isolated gate; preserve v1 failure provenance.",
+    "Next source-only integration candidate: combine generic spine + native Replacement deliberately, or stage spine then native; compile scopes separately and reprint axioms.",
+    "Small Rocq candidate: z465 generic loop reuse with producer/output consistency.",
+    "Larger runtime candidate: compile only generic execCut_sound/forkTo_sound before changing any site checker; then check complete coverage for all affected variants.",
+    "Longer work: direct-program decoder route theorem with exact consumed-path contract, and common Rocq engine port."
+  ],
+  "canonical_files_edited": [],
+  "supplied_scripts_executed": [],
+  "compilers_or_TeX_executed": [],
+  "archive_intake_redone": false,
+  "external_task_messages_sent": false,
+  "limitations": [
+    "Recorded component/compiler receipts were read as package claims and not independently replayed.",
+    "Own static import census is not an elaboration, declaration-use, proof-object or runtime measurement.",
+    "Package manifests reference some files omitted at placement as duplicate repository blobs; any later replay needs materialized inputs, not a blind archive verifier run on this placed layout."
+  ]
+}

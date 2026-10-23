@@ -1,0 +1,25 @@
+{
+  "status": "TERMINAL_UNACCEPTED_ASSUMPTION_PROFILE_CHANGE_PRESERVED",
+  "outer": {
+    "path": "/tmp/k215-phase22-check/candidate-build-outer.json",
+    "sha256": "e4b26aa31c96560e0d18ad46fe05b18d2c43085b4bf7b23e45143b6f8cef18e0"
+  },
+  "source_spec": {
+    "path": "/tmp/k215-phase22-check/source-spec-v1.json",
+    "sha256": "0956bc50b7855a776ed1ff592cdb63a76542f41d07f566c2879372be14f46d06"
+  },
+  "plan_sha256": "87151eadceb831d7dc80b88234653208155aef1fb93a59add3c029b288a2a43a",
+  "compiler_record": {
+    "path": "/tmp/k215-phase22-check/candidate-build-run1/attempts/001-BusyBeaver.ZFC.ProfileSyntax/record.json",
+    "sha256": "64314422fa53eef32a524c8796fc4eac18baabde6bd809c39a6775cbac0025b7"
+  },
+  "log_sha256": "2cbeef667ac7cb18623816d8050ee5f8d837ee7a20048453442cbe4e59a0362b",
+  "profile_discrepancy_sha256": "edaa8ace6c634b75cf00f5f57b313d8eb96f9575801802d6a9ec63c715c4daf2",
+  "cause": "Lean Init.SimpLemmas.iff_congr uses propext. The candidate compiles but adds propext to previously axiom-free sat_orderedPairForm. Exact report gate correctly rejects it.",
+  "compiler_exit_code": 0,
+  "compiler_warnings": 0,
+  "outer_exit_code": 1,
+  "compiler_timeout": false,
+  "repair_pending": "Replace only the three iff_congr calls with one explicitly constructive shared congruence theorem; preserve exact existing profiles.",
+  "acceptance_policy_changed": false
+}

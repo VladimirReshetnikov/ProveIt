@@ -17,6 +17,14 @@ from the classical Tarski/Kalish–Montague route. The separately attributed
 propositional certificate and numerical program ports are described below;
 no Coq compiler was run.
 
+The latest [phase22 Lean check](k225-formal/verification/k215/simplification/phase22/README.md), independent actual readback, capture and independent capture review pass. Constructible subtype normalization, constructive
+semantic congruence and root transfer remove 179 lines / 10,782 bytes across nine
+maintained sources. Five tagged signatures drop nine unused premises; ten calls
+are updated. Four unused quotient-witness names gain underscores with positions
+and types preserved. All fresh providers and endpoint audits have zero warnings,
+and exact accepted axiom profiles remain unchanged. See the checkpoint for scope
+and the named-argument compatibility caveat.
+
 ## Statements
 
 All modules are under `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/`.

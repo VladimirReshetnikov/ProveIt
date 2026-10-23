@@ -49,7 +49,7 @@ theorem dt_comp (U : V) (θ : Form) (ρ : Nat → V) :
       · exact hirr t h
     have hθ : ∀ z, Sat mem (scons z (scons U ρ)) (rename (shiftAfter 0) θ) ↔ Sat mem (scons z ρ) θ :=
       fun z => Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
-    obtain ⟨S, hS⟩ := raw_tagged hs hirr ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
+    obtain ⟨S, hS⟩ := raw_tagged hs ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
       (scons U ρ)
     refine ⟨S, (hS t).mpr (Or.inr (Or.inl rfl)), fun z hz => ?_⟩
     have hzE : z ≠ E := fun e => htE (e ▸ hz)
@@ -63,6 +63,7 @@ theorem dt_comp (U : V) (θ : Form) (ρ : Nat → V) :
     · rintro ⟨hzU, hθz⟩
       exact Or.inr (Or.inr ⟨(hE z).mpr (Or.inr ⟨hzU, hz⟩), hzU, (hθ z).mpr hθz⟩)
 
+omit hirr ht in
 /-- A tagged set exists. -/
 theorem tag_inhabited : ∃ x, mem t x := by
   obtain ⟨s, hs'⟩ := raw_singleton hs t

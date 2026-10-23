@@ -51,10 +51,12 @@ include hs hirr ht
 
 /-! ### Tagged singletons -/
 
+omit hs hirr ht in
 theorem tsing_tagged {x v : V} (hv : IsTSing mem t x v) : mem t v := by
   obtain ⟨_, -, hv⟩ := hv
   exact (hv t).mpr (Or.inr (Or.inl rfl))
 
+omit hs ht in
 theorem tsing_members {x v : V} (hx : mem t x) (hv : IsTSing mem t x v) (z : V) (hz : mem t z) :
     mem z v ↔ z = x := by
   obtain ⟨B, hB, hv⟩ := hv
@@ -66,10 +68,11 @@ theorem tsing_members {x v : V} (hx : mem t x) (hv : IsTSing mem t x v) (z : V) 
     · exact h
   · exact fun h => Or.inr (Or.inr h)
 
+omit hirr in
 theorem tsing_exists (x : V) : ∃ v, IsTSing mem t x v := by
   obtain ⟨B, hB⟩ := raw_singleton hs x
   have hBt : B ≠ t := fun e => ht x (e ▸ (hB x).mpr rfl)
-  obtain ⟨S, hS⟩ := raw_tagged hs hirr ht B hBt (fEq 0 0) (fun _ => t)
+  obtain ⟨S, hS⟩ := raw_tagged hs ht B hBt (fEq 0 0) (fun _ => t)
   exact ⟨S, B, hB, fun w => (hS w).trans (or_congr Iff.rfl (or_congr Iff.rfl
     ⟨fun h => (hB w).mp h.1, fun h => ⟨(hB w).mpr h, rfl⟩⟩))⟩
 
@@ -96,7 +99,7 @@ theorem dt_comp_env (U E : V) (hEt : E ≠ t) (htE : ¬ mem t E)
       ∀ z, mem t z → (mem z S ↔ mem z U ∧ Sat mem (scons z ρ) θ) := by
   have hθ : ∀ z, Sat mem (scons z (scons U ρ)) (rename (shiftAfter 0) θ) ↔ Sat mem (scons z ρ) θ :=
     fun z => Sat_rename_ext θ _ _ _ fun n => by cases n <;> rfl
-  obtain ⟨S, hS⟩ := raw_tagged hs hirr ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
+  obtain ⟨S, hS⟩ := raw_tagged hs ht E hEt (fAnd (fMem 0 1) (rename (shiftAfter 0) θ))
     (scons U ρ)
   refine ⟨S, (hS t).mpr (Or.inr (Or.inl rfl)), fun w hw => ?_, fun z hz => ?_⟩
   · exact ((hS w).mp hw).imp_right (Or.imp_right fun h => h.2.1)
@@ -172,8 +175,8 @@ theorem tag_singleton_closed (r : Tag mem t) :
     intro w z hwC hzw hz
     obtain ⟨_, -, hcl⟩ := h2 w hwC
     obtain ⟨sz, hsz⟩ := raw_singleton hs z
-    obtain ⟨v, hv⟩ := tsing_exists hs hirr ht z
-    obtain ⟨w', hw'⟩ := tsing_exists hs hirr ht v
+    obtain ⟨v, hv⟩ := tsing_exists hs ht z
+    obtain ⟨w', hw'⟩ := tsing_exists hs ht v
     obtain ⟨w'', hw'', hw''C⟩ := hcl sz (fun u hu => ((hsz u).mp hu) ▸ hzw) w'
       (Or.inr ⟨z, hz, (sat_singF _ 2 0).mpr hsz, v, (sat_tsingF _ 1 0 4).mpr hv,
         (sat_tsingF _ 0 2 4).mpr hw'⟩)
@@ -186,7 +189,7 @@ theorem tag_singleton_closed (r : Tag mem t) :
       obtain ⟨_, -, hw5⟩ := hw4
       exact ⟨v', w'', hv'', (hw5 v').mpr (Or.inr (Or.inr rfl)), hw''C⟩
   -- the root's image is a tagged singleton of `r`
-  obtain ⟨w0, hw0⟩ := tsing_exists hs hirr ht r.1
+  obtain ⟨w0, hw0⟩ := tsing_exists hs ht r.1
   obtain ⟨w1, hw1, hw1C⟩ := h1 w0 (Or.inl ⟨rfl, (sat_tsingF _ 3 0 2).mpr hw0⟩)
   have hrw1 : mem r.1 w1 := by
     rcases hw1 with ⟨-, h⟩ | ⟨x', hx', hs', -⟩
@@ -214,15 +217,15 @@ theorem tag_singleton_closed (r : Tag mem t) :
     rcases hu with h | ⟨w, hwC, huw⟩
     · exact hstep w1 u.1 hw1C (h ▸ hrw1) u.2
     · exact hstep w u.1 hwC huw u.2
-  have htv : mem t v := tsing_tagged hs hirr ht hv
+  have htv : mem t v := tsing_tagged hv
   refine ⟨⟨v, htv⟩, member_raw hs hirr ht (hYm ⟨v, htv⟩ (Or.inr ⟨w', hw'C, hvw'⟩)), fun z => ?_⟩
   constructor
   · rintro ⟨w, hwv, hzw⟩
-    have : w = u := Subtype.ext ((tsing_members hs hirr ht u.2 hv w.1 w.2).mp hwv)
+    have : w = u := Subtype.ext ((tsing_members hirr u.2 hv w.1 w.2).mp hwv)
     subst this
     exact tag_trans hs hirr ht hzw (tag_symm hs hirr ht hxu)
   · intro hzx
-    exact ⟨u, (tsing_members hs hirr ht u.2 hv u.1 u.2).mpr rfl, tag_trans hs hirr ht hzx hxu⟩
+    exact ⟨u, (tsing_members hirr u.2 hv u.1 u.2).mpr rfl, tag_trans hs hirr ht hzx hxu⟩
 
 /-- **The tagged domain satisfies the quotient interface.** -/
 theorem tag_qhyp : KQHyp.QHyp (tmem mem t) where
@@ -242,7 +245,7 @@ end QHyp
 theorem zf_consistent_of_formSeed (hs : FormSeed mem) (hirr : ∀ x, ¬ mem x x) (w : V) :
     ¬ BProv ZFax_s [] Form.fBot := by
   obtain ⟨t, ht⟩ := raw_empty hs w
-  obtain ⟨x, hx⟩ := tag_inhabited hs hirr ht
+  obtain ⟨x, hx⟩ := tag_inhabited hs (t := t)
   exact KQ1ZF.zf_consistent (tmem mem t) ⟨x, hx⟩ (tag_qhyp hs hirr ht)
 
 end SetTheory.BusyBeaver.ZFC.KLower

@@ -49,7 +49,7 @@ theorem quotient_empty_form (mem : V → V → Prop) (witness : V) (h : QHyp mem
     Sat (KQ1Model.quotientMember mem witness h) env emptyForm :=
   (sat_emptyForm _ env).mpr (quotient_empty mem witness h)
 
-theorem interpreted_pair (mem : V → V → Prop) (witness : V)
+theorem interpreted_pair (mem : V → V → Prop) (_witness : V)
     (h : QHyp mem) (a b : V) :
     ∃ p, ∀ z, Member mem z p ↔ Eqv mem z a ∨ Eqv mem z b := by
   obtain ⟨p, hp⟩ := h.pairs a b

@@ -1,0 +1,75 @@
+{
+  "status": "SOURCE_ONLY_SECOND_PASS_REVIEW_UNCOMPILED_RESEARCH_LEAD",
+  "reviewer_relationship": "Same agent authored this pilot. This is a full second-pass source review, not an independent reviewer approval.",
+  "read_completely": [
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/KControlRowsPilot.lean",
+      "sha256": "393f5d8e978541b8edcaa3955baaf83af53b5afc002be8c1f911c05f5894a5e7",
+      "lines": 58
+    },
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/K215ControlCoveragePilot.lean",
+      "sha256": "1e2874803d9c97e2c586df490d10cc75147f16c8d17954baf978bc5e3d6b20a7",
+      "lines": 98
+    },
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/K215MixedControlConsumerPilot.lean",
+      "sha256": "71416aed6dc73330d1c0a3c88c98772ca7704c9126300eadd792337b5e037fd6",
+      "lines": 63
+    },
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/pilot-design-v1.json",
+      "sha256": "6f37eecb1544861c0243087de03750c24e195a9a2577f1213a480b1a398cceb7"
+    },
+    {
+      "path": "/tmp/k215-batch219-coverage-pilot/static-comparison-v1.json",
+      "sha256": "7e4180260d244fc62a43a029a9bcbaca9d18050ef09a2064d89fc988ae18fbf4"
+    }
+  ],
+  "reviewed_source_and_static_input_pins_still_match": true,
+  "conclusion": "No mathematical mismatch identified in the proposed ordered-row equality, classifier, fallback accounting or explicit semantic boundary. The sources remain unelaborated research candidates; this review establishes no Lean acceptance or production adoption.",
+  "findings": [
+    {
+      "topic": "Exact ordered identity",
+      "assessment": "Correctly stated as sharedControlRows = callerRows, where source rows carry the full consumed List Bool word and exact RegisterPath.Edge, remove only(001,brk1)and(11011,brk1), and preserve false-first DFS order. Caller rows map each actual caller to its full word and action(metaAt index). This is stronger than matching counts, and no sort/second occurrence roster is assumed. The static comparison reports exact ordered equality with1423rows and no extras/omissions; the proposed decide+kernel theorem itself has not run."
+    },
+    {
+      "topic": "Classifier reasoning",
+      "assessment": "controlRows_complete follows LeafAt structurally. control_leaf_cases uses its membership, the negated exact-exception predicate, the proposed equality, and List.mem_map to recover a caller with the same word and action. walk_leaf carries consume P d, including implicit trailing zeros, into LeafAt. This correctly separates exhaustiveness from the packet caller-validity theorems."
+    },
+    {
+      "topic": "Failed branches and complete coverage",
+      "assessment": "controlRows maps Tree.none to[] and therefore is only a control-leaf classifier; it cannot prove decoder totality. The mixed consumer separately requires allSites literalGate [] t215=true. Since allSites rejects Tree.none, that premise retains total walk existence and all nonframed obligations. No count-only or missing-branch shortcut was introduced."
+    },
+    {
+      "topic": "4753 versus4773",
+      "assessment": "Correct:1900increment outcomes+2850decrement outcomes+2literal controls+1halt=4753literal outcomes. Adding20shared local template bodies gives4773projected expensive body checks. The6176source-outcome bindings and4751source leaves all remain.1423shared occurrences are metadata applications, not1423additional literal executions; the20bodies are counted once. No runtime/source/time saving is established."
+    },
+    {
+      "topic": "Primitive-port-to-EdgeContract seam",
+      "assessment": "Correctly left explicit. shared_control_residual begins at packet leafPort, while full EdgeContract begins at conc n vs(KSim.start Q). The framed premise in covered_by_framed_and_literal has not been discharged with full EdgeContract, and C is deliberately an arbitrary proposition until that instantiation. Required work is decoder leaf_prefix composition, exact route/state and full port alignment, positive Reach1 composition, and sourceGuard-based break no-overflow target/gap rewrite. Current canonical KSim lacks the archived EdgeContract/SemanticCovered API, so a narrow consumer rebase remains necessary."
+    },
+    {
+      "topic": "Initial reuse route",
+      "assessment": "literalGate_of_old_sites is a pointwise weakening of accepted all-sites coverage and executes no evaluator inside the generic proof. Any application still retains old certificate imports. Fresh literalGate batches and full semantic assembly are required before claiming removal of old control checking cost."
+    }
+  ],
+  "minor_documentation_correction": {
+    "path": "/tmp/k215-batch219-coverage-pilot/pilot-design-v1.json",
+    "field": "safe_finite_check_representation.reason_for_ordered_equality",
+    "note": "The quadratic alternative would perform roughly1425linear caller lookups and up to about2million row comparisons, not2million separate linear membership searches. This wording does not affect the Lean statements or counts; no existing artifact was edited."
+  },
+  "validation_limits": [
+    "No Lean elaboration or kernel check, so theorem syntax/rewrites and equality-certificate resource use remain unverified.",
+    "The static comparison and authored source agree, but a separate reviewer and later pinned-toolchain checks are still distinct evidence.",
+    "No supplied scripts/proofs/generators, compiler or TeX executed during this review."
+  ],
+  "execution": {
+    "compiler_invocations": 0,
+    "supplied_program_executions": 0,
+    "canonical_edits": 0,
+    "pilot_source_edits": 0,
+    "production_adoption": false,
+    "goal_remains_active": true
+  }
+}

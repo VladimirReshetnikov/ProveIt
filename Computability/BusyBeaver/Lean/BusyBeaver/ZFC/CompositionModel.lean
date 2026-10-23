@@ -43,40 +43,22 @@ theorem fiber_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (r2 d :
   apply instance_of_matrix mem hModel fiberChoiceForm equalityFree_fiberChoiceForm
     (scons r2 (fun _ => d)) _
   intro c e
-  constructor
-  · rintro ⟨hc, s, t, u, hst, htu, hsu⟩
-    exact ⟨hc, s, t, u, (sat_orderedPairForm mem _ 2 1 6).mp hst,
-      (sat_orderedPairForm mem _ 1 0 3).mp htu,
-      (sat_orderedPairForm mem _ 2 0 4).mp hsu⟩
-  · rintro ⟨hc, s, t, u, hst, htu, hsu⟩
-    exact ⟨hc, s, t, u, (sat_orderedPairForm mem _ 2 1 6).mpr hst,
-      (sat_orderedPairForm mem _ 1 0 3).mpr htu,
-      (sat_orderedPairForm mem _ 2 0 4).mpr hsu⟩
+  exact and_congr Iff.rfl (exists_congr fun s => exists_congr fun t => exists_congr fun u =>
+    and_congr (sat_orderedPairForm mem
+      (scons u (scons t (scons s (scons c (scons e (scons r2 (fun _ => d))))))) 2 1 6)
+      (and_congr (sat_orderedPairForm mem _ 1 0 3) (sat_orderedPairForm mem _ 2 0 4)))
 
 def fiberProfileForm (r d s : Nat) : Form :=
   fAll (fAll (fIff (appForm (s + 2) 1 0)
     (fEx (fAnd (orderedPairForm 2 0 (d + 3)) (appForm (r + 3) 0 1)))))
 
 theorem sat_fiberProfileForm (mem : V → V → Prop) (env : Nat → V) (r d s : Nat) :
-    Sat mem env (fiberProfileForm r d s) ↔ FiberProfile mem (env r) (env d) (env s) := by
-  have hRight (a b : V) :
-      Sat mem (scons b (scons a env))
-        (fEx (fAnd (orderedPairForm 2 0 (d + 3)) (appForm (r + 3) 0 1))) ↔
-      ∃ t, OrderedPair mem a t (env d) ∧ App mem (env r) t b := by
-    constructor
-    · rintro ⟨t, hat, htb⟩
-      exact ⟨t, (sat_orderedPairForm mem _ 2 0 (d + 3)).mp hat,
-        (sat_appForm mem _ (r + 3) 0 1).mp htb⟩
-    · rintro ⟨t, hat, htb⟩
-      exact ⟨t, (sat_orderedPairForm mem _ 2 0 (d + 3)).mpr hat,
-        (sat_appForm mem _ (r + 3) 0 1).mpr htb⟩
-  constructor
-  · intro h a b
-    exact (sat_appForm mem _ (s + 2) 1 0).symm.trans
-      ((Sat_fIff.mp (h a b)).trans (hRight a b))
-  · intro h a b
-    apply Sat_fIff.mpr
-    exact (sat_appForm mem _ (s + 2) 1 0).trans ((h a b).trans (hRight a b).symm)
+    Sat mem env (fiberProfileForm r d s) ↔ FiberProfile mem (env r) (env d) (env s) :=
+  forall_congr' fun a => forall_congr' fun b => Sat_fIff.trans (iff_congr_iff
+    (sat_appForm mem (scons b (scons a env)) (s + 2) 1 0)
+    (exists_congr fun t => and_congr
+      (sat_orderedPairForm mem (scons t (scons b (scons a env))) 2 0 (d + 3))
+      (sat_appForm mem _ (r + 3) 0 1)))
 
 theorem equalityFree_fiberProfileForm (r d s : Nat) : EqualityFree (fiberProfileForm r d s) := by
   have hRight := And.intro (equalityFree_orderedPairForm 2 0 (d + 3))
@@ -123,22 +105,18 @@ theorem match_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (x y : 
   apply instance_of_matrix mem hModel matchChoiceForm equalityFree_matchChoiceForm
     (scons x (fun _ => y)) _
   intro a r
-  constructor
-  · rintro ⟨ha, b, hb, hr, hab⟩
-    exact ⟨ha, b, hb, (sat_bisimForm mem _ 2).mp hr, (sat_appForm mem _ 2 1 0).mp hab⟩
-  · rintro ⟨ha, b, hb, hr, hab⟩
-    exact ⟨ha, b, hb, (sat_bisimForm mem _ 2).mpr hr, (sat_appForm mem _ 2 1 0).mpr hab⟩
+  exact and_congr Iff.rfl (exists_congr fun b => and_congr Iff.rfl
+    (and_congr (sat_bisimForm mem (scons b (scons a (scons r (scons x (fun _ => y))))) 2)
+      (sat_appForm mem _ 2 1 0)))
 
 theorem backMatch_instance (mem : V → V → Prop) (hModel : ModelsGIC mem) (x y : V) :
     CollectionInstance mem (BackMatchChoice mem x y) := by
   apply instance_of_matrix mem hModel backMatchChoiceForm equalityFree_backMatchChoiceForm
     (scons x (fun _ => y)) _
   intro b r
-  constructor
-  · rintro ⟨hb, a, ha, hr, hab⟩
-    exact ⟨hb, a, ha, (sat_bisimForm mem _ 2).mp hr, (sat_appForm mem _ 2 0 1).mp hab⟩
-  · rintro ⟨hb, a, ha, hr, hab⟩
-    exact ⟨hb, a, ha, (sat_bisimForm mem _ 2).mpr hr, (sat_appForm mem _ 2 0 1).mpr hab⟩
+  exact and_congr Iff.rfl (exists_congr fun a => and_congr Iff.rfl
+    (and_congr (sat_bisimForm mem (scons a (scons b (scons r (scons x (fun _ => y))))) 2)
+      (sat_appForm mem _ 2 0 1)))
 
 theorem eqv_extensionality_of_model (mem : V → V → Prop) (witness : V) (h : ModelsCPGIC mem)
     (x y : V) (hMembers : ∀ z, Member mem z x ↔ Member mem z y) : Eqv mem x y := by

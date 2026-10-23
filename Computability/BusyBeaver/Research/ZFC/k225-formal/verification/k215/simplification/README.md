@@ -3,7 +3,13 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
-The latest [phase21 Lean check](phase21/README.md) and both independent
+The latest [phase22 Lean check](phase22/README.md), independent actual readback, capture and independent capture review pass. Nine maintained sources remove **179 Lean lines / 10,782 bytes**,
+including the attributed ConstructibleAbs normalization once. The check covers
+226 providers: 56 fresh, 170 exact reuses, plus two fresh endpoint audits, all with
+zero fresh warnings. The primary endpoint retains 179 modules and selects
+1,768,101 source bytes. Machine and endpoint statements are unchanged.
+
+The [phase21 Lean check](phase21/README.md) and both independent
 reviews pass. One shared AX expression proof removes 1,085 Lean lines / 104,946
 bytes; four retired writers bring active savings to 1,653 lines / 126,445 bytes.
 The check covers 226 providers and two fresh endpoint audits, with zero fresh
@@ -129,7 +135,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest Lean checkpoint](phase21/README.md),
+The [latest Lean checkpoint](phase22/README.md),
+[twenty-first checkpoint](phase21/README.md),
 [twentieth checkpoint](phase20/README.md),
 [nineteenth checkpoint](phase19/README.md),
 [eighteenth checkpoint](phase18/README.md),

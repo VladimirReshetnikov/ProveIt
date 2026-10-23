@@ -1,6 +1,12 @@
 # Smaller machines for Con(ZFC)
 
-The latest [phase21 Lean check](k225-formal/verification/k215/simplification/phase21/README.md) and both independent
+The latest [phase22 Lean check](k225-formal/verification/k215/simplification/phase22/README.md), independent actual readback, capture and independent capture review pass. Nine maintained sources remove **179 Lean lines / 10,782 bytes**,
+including the attributed ConstructibleAbs normalization once. The check covers
+226 providers: 56 fresh, 170 exact reuses, plus two fresh endpoint audits, all with
+zero fresh warnings. The primary endpoint retains 179 modules and selects
+1,768,101 source bytes. Machine and endpoint statements are unchanged.
+
+The [phase21 Lean check](k225-formal/verification/k215/simplification/phase21/README.md) and both independent
 reviews pass. One shared AX expression proof removes 1,085 Lean lines / 104,946
 bytes; four retired writers bring active savings to 1,653 lines / 126,445 bytes.
 The check covers 226 providers and two fresh endpoint audits, with zero fresh
