@@ -1,0 +1,383 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,array,hyperref,longtable,mathrsfs}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Sq}{\operatorname{Sq}(\Z)}
+\title{A sparse $B_4$ compiler for the ten-integer\texorpdfstring{ Con(ZFC)}{ Con(ZFC)} equation}
+\author{Research supplement for ProveIt}
+\date{23 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+The pinned ten-integer construction uses base-five digit positions to
+separate quartic monomials. That separation is substantially stronger than
+necessary. Replacing it by an explicitly certified four-sum-distinct set
+preserves existence of integer solutions through the source interface. For the same
+fixed 31-variable quartic and the same 79 fixed circuit leaves, the resulting
+ten-integer equation has exact total degree $69\,554\,088\,184$ and a
+division-free evaluator of 1,407 binary operations, compared with degree
+$589\,042\,901\,992\,797\,851\,562\,527\,064$ and 1,442 operations in the
+pinned construction. This is a source-encoding improvement, not a new
+ten-unknowns theorem, not a reduction in coefficient bit size, and not a
+claim of global optimality. The Lucas bridge and calibrated compiler
+endpoint remain explicit external dependencies.
+\end{abstract}
+
+\section{Fixed input and exact result}
+The baseline is the directory \texttt{31-sun10/signed10} at ProveIt commit\\
+\texttt{22e75dd6b87b1b199bb08c778d7cf075ae5aae08}.
+All four native ports are
+kept together, with binding \texttt{wang943-mixed-121x8801}. In particular,
+the native port called \texttt{beta} must not be confused with the auxiliary
+Sun scale $\beta_S$ below.
+
+Let $r_1,\ldots,r_{22}$ be the pinned quadratic residuals in 31 positive
+variables and set
+\[
+ P(n_1,\ldots,n_{31})=\sum_{j=1}^{22}r_j(n_1+1,\ldots,n_{31}+1)^2.
+\]
+This definition, its fixed ports, and all its coefficients are retained in
+\texttt{sources/data}. The local verifier reconstructs the coefficient
+recipes from this definition. The inherited calibration is
+\begin{equation}\label{eq:endpoint}
+ \mathrm{ZFC}\vdash
+ \bigl[(\exists n\in\N^{31})\ P(n)=0\bigr]
+ \ \longleftrightarrow\ \neg\operatorname{Con}(\mathrm{ZFC}).
+\end{equation}
+Equation~\eqref{eq:endpoint} is an imported mathematical endpoint, not a
+claim that the Python checks establish a formal compiler-correctness proof.
+
+Write $P=\sum_{|\alpha|\le4}p_\alpha n^\alpha$ and
+\[
+ c_\alpha=(4-|\alpha|)!\prod_{j=1}^{31}\alpha_j!\,p_\alpha,
+ \qquad H_0=\max_\alpha|p_\alpha|.
+\]
+There are 402 nonzero weighted coefficient records. The data includes an
+unused leading dummy coordinate $\alpha_0=0$; it is not a coded variable.
+The fifth residual is 1 at the all-one assignment, so $P(0)>0$ and $H_0\ge1$.
+The audited bound $|c_\alpha|+1<2^{4269855}$ permits
+\[
+ \beta_S=2^{4269882}>48\cdot33^4H_0.
+\]
+It is an even power of two and is identical to the baseline scale.
+
+\section{Replacing exponential positions by a finite certificate}
+Use the following 31 positive weights, in the order of the parent variables:
+\begin{center}\small
+\begin{tabular}{rrrrr}
+51609&55430&68596&78030&89463\\
+90233&110498&110508&128615&136498\\
+211819&241519&305379&312706&314312\\
+369115&417382&429683&435112&450230\\
+462314&469608&490199&501539&507151\\
+524944&550792&559943&573626&607799\\
+610895&&&&
+\end{tabular}
+\end{center}
+Put $t=610895$ and $L_c=4t=2443580$.
+
+\begin{lemma}[The finite separation certificate]\label{lem:b4}
+The map $\alpha\mapsto e(\alpha)=\sum_j\alpha_jw_j$ is injective on
+$\{\alpha\in\N^{31}:|\alpha|\le4\}$.
+\end{lemma}
+\begin{proof}
+Add the position zero and pad each multiset with zeros to length four.
+The 52,360 nondecreasing four-tuples of indices from these 32 positions have
+distinct integer sums. This is verified exhaustively by
+\texttt{verify\_sun\_b4.py}, using exact integers and no random sampling.
+Thus it is a finite, fully reproducible certificate of the asserted lemma.
+
+For provenance, the candidate set comes from the Bose--Chowla construction
+in the field with binary polynomial $x^{20}+x^3+1$. The generator has a full
+orbit of $2^{20}-1$ nonzero elements; the subfield has 32 elements. Taking
+logs of $\theta+a$, first subtracting 535448, multiplying by the unit
+208418 modulo $2^{20}-1$, and then subtracting 836756 gives the displayed
+positions. Equal four-term log
+sums would give two monic quartics in $\theta$ with the same value; their
+difference has degree at most three over the 32-element subfield, so it is
+zero and the multisets agree. The construction is supplementary: the direct
+finite check alone proves the particular integer claim used here.
+\end{proof}
+
+\section{A generalized sparse source lemma}
+All sums and exponents in what follows have fixed integer bounds. Define
+\begin{align*}
+ b&=1+3f,& \mathcal B&=\beta_Sb^4,&\mathscr C&=b\mathcal B^t,\\
+ \ell&=\sum_{j=1}^{31}\mathcal B^{w_j},&
+ D_c&=\sum_{|\alpha|\le4}c_\alpha\mathcal B^{L_c-e(\alpha)},\\
+ N_0&=\mathcal B^{t+1},&N_1&=4\mathcal B^{8t+1},&N&=N_0N_1,\\
+ M_c&=N_0-1-(b-1)\ell,&
+ T_c&=M_c+(\mathcal B-2)\mathcal B^{L_c}N_0,\\
+ J_c&=2(1+g)^4D_c+\sum_{i=0}^{8t}\mathcal B^{i+1},&
+ S_c&=g+J_cN_0,\\
+ R_c&=(S_c+T_c+1)N+T_c+1,&
+ X&=(N-1)R_c,&Y&=N^2.
+\end{align*}
+Every exponent $L_c-e(\alpha)$ is nonnegative. These are literal integer
+polynomials in $f,g$, including at assignments outside the useful branch.
+
+\begin{theorem}[Source interface]\label{thm:source}
+If $P$ has a nonnegative zero, there are arbitrarily large $f>0$ with $b$ a
+square power of two and $b\le g<\mathscr C$ such that
+$Y\mid\binom{2X}{X}$. Conversely, for $f\ne0$, $b\in\Sq$ a power of two,
+and $0\le g<2\mathscr C$, that divisibility implies a nonnegative zero of $P$.
+For all $f\ne0$, $b\in\Sq$ and $0\le g<2\mathscr C$, even before assuming
+$b$ is a power of two, one has
+\[
+ 3\mid X,\qquad X>3b,\qquad Y>\max\{b,256\}.
+\]
+\end{theorem}
+\begin{proof}
+First establish the bounds for arbitrary $g$ in the indicated interval;
+it is important not to assume that $g$ already has the desired digit shape.
+Since $b=1+3f$ is a nonzero square and $f\ne0$, we have $b\ge4$.
+Set $c=32b$. Then $2b\le c<\mathcal B$, and $1+g\le c\mathcal B^t$.
+Lemma~\ref{lem:b4} and $|c_\alpha|\le24H_0$ give
+\[
+ 0<D_c\le24H_0\sum_{j=0}^{L_c}\mathcal B^j.
+\]
+For the lower inequality, the leading coefficient is
+$c_0=24P(0)\ge24$, whereas the absolute sum of all lower terms is less than
+$\mathcal B^{L_c}$, because $24H_0<\mathcal B-1$ and all their exponents
+are distinct. The scale bound also gives
+$48H_0c^4\le\mathcal B-2$. Consequently
+\begin{align*}
+ 0<J_c
+ &\le(\mathcal B-2)\mathcal B^{4t}
+       \sum_{j=0}^{4t}\mathcal B^j
+       +\mathcal B\sum_{j=0}^{8t}\mathcal B^j\\
+ &<2\mathcal B^{8t+1}<N_1.
+\end{align*}
+Also $0\le M_c<N_0$, $g<N_0$, and
+$0\le(\mathcal B-2)\mathcal B^{L_c}<N_1$.
+Thus $0\le S_c,T_c<N$. As $\beta_S\equiv b\equiv1\pmod3$, $N\equiv1\pmod3$,
+giving $3\mid X$. Finally $R_c\ge N+1$, $X\ge N^2-1>3b$, and
+$Y=N^2>\max\{b,256\}$.
+
+Suppose now that $b$ is a power of two. Then $\mathcal B,N_0,N$ are powers
+of two. Write $\tau_2(u,v)$ for the number of binary carries in addition.
+The binary packing identity gives
+\[
+ Y\mid\binom{2X}{X}\quad\Longleftrightarrow\quad\tau_2(S_c,T_c)=0.
+\]
+For completeness, if $N=2^n$, the identity
+\[
+ (N-1)R_c=(S_c+T_c)N^2+(N-1-S_c)N+N-1-T_c
+\]
+and binary digit sums show that its digit sum is $2n-\tau_2(S_c,T_c)$.
+The valuation of $\binom{2X}{X}$ is the digit sum of $X=(N-1)R_c$.
+It is at least $2n$ exactly when the carry count is zero.
+
+The low $N_0$ block and the upper block are disjoint, so the same condition
+is equivalent to
+\[
+ \tau_2(g,M_c)=0,
+ \qquad\tau_2(J_c,(\mathcal B-2)\mathcal B^{L_c})=0.
+\]
+The base-$\mathcal B$ digits of $M_c$ are $\mathcal B-b$ at the positions
+$w_j$ and $\mathcal B-1$ elsewhere, through position $t$.
+Since $g<2b\mathcal B^t\le N_0$, the first no-carry condition is exactly
+\[
+ g=\sum_{j=1}^{31}n_j\mathcal B^{w_j},\qquad 0\le n_j<b.
+\]
+Indeed a binary no-carry addition to $\mathcal B-1$ forces a zero digit,
+and addition to $\mathcal B-b$ forces a digit below $b$.
+
+For such $n$, consider
+\[
+ H(u)=\left(1+\sum_jn_ju^{w_j}\right)^4
+       \sum_\alpha c_\alpha u^{L_c-e(\alpha)}
+       =\sum_{i=0}^{8t}h_i u^i.
+\]
+The coefficient $h_{L_c}$ is $24P(n)$ by
+Lemma~\ref{lem:b4} and the multinomial formula. All coefficients satisfy
+\[
+ |h_i|\le24H_0(1+\textstyle\sum_jn_j)^4<\mathcal B/2.
+\]
+Here distinct exponent codes ensure that, for a fixed coefficient of the
+first factor, at most one coefficient of the second factor contributes to
+a fixed $h_i$. The number
+\[
+ J'=H(\mathcal B)+(\mathcal B/2)\sum_{i=0}^{8t}\mathcal B^i
+\]
+therefore has genuine base-$\mathcal B$ digits
+$\mathcal B/2+h_i\in[1,\mathcal B)$, and $J_c=2J'$.
+The second no-carry condition is equivalent, after dividing both inputs
+by two, to the no-carry addition of $J'$ and
+$(\mathcal B/2-1)\mathcal B^{L_c}$. It holds exactly when
+$\mathcal B/2+h_{L_c}=\mathcal B/2$, or $P(n)=0$.
+This proves the reverse direction.
+
+For the forward direction, take any zero $n$. Choose an arbitrarily large
+even power of two $b$ exceeding all its coordinates; then $b\equiv1\pmod3$
+and $f=(b-1)/3>0$. The encoded $g$ is less than $b\mathcal B^t$.
+Since $P(0)>0$, some coordinate is nonzero, so $g\ge\mathcal B\ge b$.
+The preceding equivalences establish the claimed divisibility.
+\end{proof}
+
+\section{The unchanged ten-integer bridge and finalizer}
+Theorem~\ref{thm:source} supplies precisely the source interface required
+by Sun's 2026 construction. Its positive bridge, reverse bridge, and full
+residue interpolation are imported here, not reproved by the finite audit.
+The following explicit formulas retain the pinned local three-square
+quintic finalizer unchanged.
+
+The ten unknowns, all unrestricted integers, are
+$(f,g,h,k,l,w,x,y,z,m)$. All other symbols are polynomial abbreviations:
+\begin{align*}
+ L&=lY,&U&=2LX,&V&=4gwY,&W&=bw,\\
+ A&=U(V+1),&B&=2X+1,&C&=B+(A-2)h,\\
+ P_n&=U^2V,&K&=X+1+k(P_n-2),\\
+ S&=2A-5,&T&=3WC-2(W^2-1),&R_2&=(P_n^2-4)K^2+4.
+\end{align*}
+\[
+ \Delta=8\mathscr C^3gK^2-g^2\bigl(32(C-KL)^2\mathscr C^3+g^2K^2\bigr).
+\]
+\begin{align*}
+ O&=f^2l^2\Delta,&\xi&=zx,\\
+ D&=(A^2-4)C^2+4,&E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,&G&=2(A+2)(A-2)^2E^2-1,\\
+ H&=C+(B-C)F+16EFy,&I&=(G^2-1)H^2+1.
+\end{align*}
+Continue with
+\begin{align*}
+ r&=T+Sy,&\Sigma&=\xi S^5,&
+ \Theta&=(r^3-rS^2-S^3)(r^2+23S^2),\\
+ a_0&=b\bigl(1+(3O-4)b^2z^2\bigr),&
+ a_1&=R_2,&a_2&=DFI,\\
+ v_0&=1,&v_1&=a_0,&v_2&=a_0(P_n^2+K^2+3),\\
+ Z&=\Sigma m-\Theta,&A_i&=\Sigma^2v_i^2a_i\quad(0\le i\le2),\\
+ V_n&=Z^2+A_2-A_0-A_1,&
+ W_n&=V_n^2+4Z^2A_2-4A_0A_1.
+\end{align*}
+The complete equation is
+\begin{equation}\boxed{F_{B_4}=W_n^2-16V_n^2Z^2A_2=0.}\label{eq:final}
+\end{equation}
+It is division-free and has no variable exponents or unstated parameters.
+
+\begin{theorem}[Consistency equation]
+Under the inherited calibration~\eqref{eq:endpoint} and the stated Sun
+bridge theorems,
+\[
+ \mathrm{ZFC}\vdash
+ \left[\neg\exists(f,g,h,k,l,w,x,y,z,m)\in\Z^{10}\ F_{B_4}=0\right]
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+We record why the pinned finalizer applies to the new source rather than
+silently importing its conclusion for different source polynomials.
+Sun's positive construction uses only the source interface and produces
+$b,R_2\in\Sq$, $S\mid T$, $C=u_B(A)$, $A>2$, and $O>0$.
+Moreover $O\ge4$: $\Delta$ is a positive multiple of $g\ge b\ge4$,
+and $f,l$ are nonzero.
+Choose a nonzero Pell solution
+$u^2-(3O-4)v^2=1$ with $b\mid v$, and set $z=v/b$.
+Such divisibility follows by taking a power of a Pell unit modulo $b$;
+$3O-4>0$ is nonsquare because it is $2\pmod3$.
+Then $a_0$ is a square.
+Full residue interpolation chooses $\xi$ divisible by this $z$ and permits
+any prescribed residue of $y$ modulo $\xi$ while making $DFI$ square.
+The polynomial $(q^3-q-1)(q^2+23)$ has a root modulo every nonzero integer,
+so that residue can ensure $\Sigma\mid\Theta$. Put $x=\xi/z$.
+All three $a_i$ are then squares, and an integer $m$ makes one factor of
+the norm in~\eqref{eq:final} vanish.
+
+Conversely, $S$ is a nonzero odd integer. Neither factor of
+$(q^3-q-1)(q^2+23)$ has a rational root, so $\Theta\ne0$.
+If $\Sigma=0$, the final polynomial is $\Theta^8\ne0$; hence any zero
+has $\xi=zx\ne0$. Its formal norm identity is
+\[
+ F_{B_4}=\prod_{\varepsilon\in\{\pm1\}^3}
+ \left(Z+\Sigma\sum_{i=0}^2\varepsilon_i v_i\sqrt{a_i}\right).
+\]
+For the actual $a_0$ and $z\ne0$, $|a_0|>1$.
+Also $\sqrt{|a_1|}\le P_n^2+K^2+2$, so
+\[
+ |v_1|>\sqrt{|a_0|},\quad
+ |v_2|>\sqrt{|a_0|}+|v_1|\sqrt{|a_1|}.
+\]
+A rational signed sum of these weighted roots forces all roots rational:
+apply a Galois automorphism changing a root and take the largest changed
+index. Its term is too large in complex absolute value to be cancelled
+by earlier terms. Integer radicands with rational roots are nonnegative
+integer squares. A vanishing factor therefore yields $a_i\in\Sq$ and
+$\Sigma\mid\Theta$.
+
+The coprime factors $b$ and $1+(3O-4)b^2z^2$ in $a_0$ force $b$ to be
+a positive square and $O>0$. Indeed $b\equiv1\pmod3$ excludes negative
+squares; a zero second factor would force $b=1$, hence $f=O=0$, and then
+$1-4z^2\ne0$. If $O\le0$, the second factor is negative.
+Finally, if a prime has $\nu_p(S)>\nu_p(T)$, the valuations of the two
+factors of $\Theta$ are $3\nu_p(T)$ and $2\nu_p(T)$, contradicting
+$S^5\mid\Theta$. Thus $S\mid T$.
+These are precisely the hypotheses of Sun's reverse bridge:
+$b,R_2,DFI\in\Sq$, $O>0$, $\xi\ne0$, $S\mid T$.
+It returns a zero of $P$ through Theorem~\ref{thm:source}.
+Negating the resulting existence equivalence and using
+\eqref{eq:endpoint} finishes the proof.
+
+The intersective quintic and separating-weight arguments above are
+retained baseline lemmas. For the quintic, at an odd prime other than 23
+either the cubic has a simple root, or its irreducible cubic Frobenius is
+even and the discriminant $-23$ is a nonzero square; then the quadratic
+has a simple root. At 23 the cubic has the simple root 3. At 2, $-23$ is
+$1\pmod8$. Hensel lifting and CRT supply roots at every modulus.
+\end{proof}
+
+\section{Verification, limits, and integration}
+The top degree of $A_2$ is $28464t+6766$, strictly exceeding the degrees
+of $Z^2,A_0,A_1$. Thus the possible top degree of the final norm is
+$4\deg A_2=113856t+27064$. Exact leading coefficients on the diagonal
+specialization modulo 101, 1009, and 1000003 are respectively 95, 909,
+and 668382. They are nonzero, proving attainment for the fixed tuple.
+
+\begin{center}\begin{tabular}{lrr}
+\toprule
+ &Pinned baseline&This source compiler\\\midrule
+Integer unknowns&10&10\\
+Equations&1&1\\
+Degree&$126496\cdot5^{31}+27064$&$69\,554\,088\,184$\\
+Binary additions&566&484\\
+Binary subtractions&25&25\\
+Binary multiplications&851&898\\
+Total binary operations&1442&1407\\
+Fixed leaves&79&79\\\bottomrule
+\end{tabular}\end{center}
+All fixed powers are expanded into binary gates; reuse and constant leaves
+are free, as in the baseline. The cost saving is not a claim that fewer
+multiplications are used. The irregular exponentiation uses a shared
+radix-16 fixed-window circuit, and the coefficient polynomial uses
+homogeneous sparse Horner evaluation.
+
+Run \texttt{python3 build\_sun\_b4.py} followed by
+\texttt{python3 verify\_sun\_b4.py}. Python's standard library suffices.
+The checks include exact parent coefficient reconstruction, all payload
+hashes, all 52,360 four-sums, the 35-term norm identity, exact degree
+certificates, and 120 modular literal-transcription tests with 5,400 named
+value comparisons. The last tests are bounded regressions, not proofs of
+polynomial identity. The circuit construction identities and universal
+source equivalence are justified by the mathematical proof above.
+
+The imported results are Sun 2026 Theorem 4.1 and Propositions 6.1--6.2,
+whose source interface is re-established here. Their proofs use Sun 2021
+Theorems 4.12--4.13. The number-theoretic proof and endpoint have not been
+newly formalized in Lean or Rocq. The equation is an explicit candidate
+with a complete ordinary proof relative to those stated mathematical
+inputs, not an independent proof of ZFC's consistency.
+
+\begin{thebibliography}{9}
+\bibitem{sun21} Z.-W. Sun, \emph{Further results on Hilbert's Tenth Problem},
+Science China Mathematics 64 (2021), 281--306.
+\url{https://arxiv.org/html/1704.03504v7}.
+\bibitem{sun26} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, preprint, version 2, 2 September 2026.
+\url{https://arxiv.org/html/2609.01594v2}.
+\bibitem{pin} ProveIt, immutable commit
+\texttt{22e75dd6b87b1b199bb08c778d7cf075ae5aae08},
+\texttt{31-sun10/signed10} under the Con(ZFC) report collection.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/22e75dd6b87b1b199bb08c778d7cf075ae5aae08}.
+\end{thebibliography}
+\end{document}

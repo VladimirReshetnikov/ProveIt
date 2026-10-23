@@ -1,0 +1,302 @@
+\section{A companion equation in ten unrestricted integers}
+\label{sec:sun-companion}
+
+The same quadratic coefficient packing also compresses the ten-integer
+construction already present in source~31 of the repository~\cite{repo}.
+The resulting polynomial has
+\[
+ \boxed{10\text{ integer unknowns},\qquad
+ \deg F_{10}=449\,607\,016,\qquad 773\text{ binary operations}.}
+\]
+The earlier source~31 equation has degree
+$589\,042\,901\,992\,797\,851\,562\,527\,064$ and 1,442 operations.
+The comparison uses the same convention: every binary addition,
+subtraction and multiplication is charged, including multiplication by
+a fixed coefficient; repeated registers and fixed leaves are free.
+Thus this application improves both degree and circuit size, while
+retaining the same ten unrestricted integer unknowns.  It adds the
+Lucas-theoretic dependency on Sun's 2026 preprint~\cite{sun2026}; the
+nine-natural-variable construction does not need that preprint.
+
+\subsection{A different source scale, with the same quadratic kernel}
+
+Use the same 31 shifted quadratic coordinates and 22 residuals $r_j$,
+the same Sidon positions $0,a_1,\ldots,a_{31}$, and the same
+$M=799$, $d=3197$, $H=70334$ as in the preceding packing construction.
+With $|\alpha|\le2$, write
+\[
+ r_j(\mathbf n)=\sum_\alpha p_{j,\alpha}\mathbf n^\alpha,
+ \qquad c_{j,\alpha}=(2-|\alpha|)!\prod_i\alpha_i!\,p_{j,\alpha}.
+\]
+Define the fixed polynomial and target mask
+\begin{align*}
+ E(T)&=\sum_{j=0}^{21}\sum_{|\alpha|\le2}
+ c_{j,\alpha}T^{jd+2M-\sum_i\alpha_i a_i},\\
+ Z(T)&=\sum_{j=0}^{21}T^{jd+2M}.
+\end{align*}
+There are 136 nonzero weighted coefficient records and 16 distinct
+nonliteral coefficient recipes. All four native ports are bound to the
+new tuple compiled from complemented labels in the sibling \texttt{compiler} directory.
+
+For each monomial $q\prod_i\mathrm{port}_i^{e_i}$ in these records,
+majorize its magnitude by $|q|2^{\sum_i e_i b_i}$, where $b_i$ is the
+actual bit length of the corresponding native port. Let $C_{\mathrm S}$ be one
+plus the sum of all these majorants. This bit-length majorant is distinct
+from the exact positive-monomial majorant used for the nine-variable source. The delivered exact arithmetic gives
+\[
+ \operatorname{bitlength}(C_{\mathrm S})=1\,359\,515.
+\]
+Set
+\[
+ \beta_{\mathrm S}=2^{1\,359\,528}>2048C_{\mathrm S}.
+\]
+Its exponent is even, so $\beta_{\mathrm S}\equiv1\pmod3$.
+The binary payload of this additional constant occupies 169,942 bytes
+before compression and 200 bytes in the delivered compressed form.
+The number is fixed by the finite compiler data, independently of
+whether a refutation exists.
+
+For integer variables $f,g$, define
+\begin{align*}
+ b&=1+3f,& \mathcal B&=\beta_{\mathrm S}b^2,&
+ \ell&=\sum_{i=1}^{31}\mathcal B^{a_i},\\
+ \lambda&=\sum_{t=0}^{H-1}\mathcal B^t,&
+ N_0&=\mathcal B^{M+1},& N_1&=4\mathcal B^H,\\
+ N&=N_0N_1=4\mathcal B^{71134},&
+ \mathscr C&=b\mathcal B^M,&
+ M_0&=N_0-1-(b-1)\ell.
+\end{align*}
+Put
+\[
+ J_0=2(1+g)^2E(\mathcal B)+\mathcal B\lambda,
+\]
+and then
+\begin{align*}
+ S_0&=g+N_0J_0,&
+ T_0&=M_0+N_0(\mathcal B-2)Z(\mathcal B),\\
+ R_0&=(S_0+T_0+1)N+T_0+1,&
+ X&=(N-1)R_0,&Y&=N^2.
+\end{align*}
+Here $E$ is a polynomial abbreviation rather than a new unknown.
+All powers and summation limits are fixed. No sign restriction is
+imposed on these polynomials for arbitrary free inputs: the reverse
+bridge first recovers the bounds used in the next paragraph.
+
+\paragraph{The source contract.}
+These formulas have the following three properties.
+If the quadratic system has a natural solution, there are arbitrarily
+large $f>0$ and a $g$ with $b\le g<\mathscr C$, such that $b$ is a
+square and a power of two, and $Y\mid\binom{2X}{X}$.
+Conversely, $f\ne0$, $0\le g<2\mathscr C$, the same two conditions on
+$b$, and that divisibility imply a natural solution of the system.
+Finally, whenever $f\ne0$, $b$ is a square and $0\le g<2\mathscr C$,
+one has $X>3b$ and $Y>\max\{b,256\}$, even before imposing the
+power-of-two condition.
+
+\paragraph{Proof of the changed source step.}
+A square $b=1+3f$ with $f\ne0$ has $b\ge4$ and $f>0$.
+The highest exponent of $E$ is at most $H-2M-1$, so
+\[
+ |E(\mathcal B)|<2C_{\mathrm S}\mathcal B^{H-2M-1}.
+\]
+For $0\le g<2b\mathcal B^M$, the inequality
+$1+g\le3b\mathcal B^M$ gives
+\[
+ |2(1+g)^2E(\mathcal B)|
+ <36C_{\mathrm S}b^2\mathcal B^{H-1}<\mathcal B^H.
+\]
+Since $\mathcal B^H\le\mathcal B\lambda<2\mathcal B^H$,
+we obtain $0<J_0<3\mathcal B^H<N_1$ and $g<N_0$.
+The mask $M_0$ has digits $\mathcal B-b$ at the positions $a_i$
+and $\mathcal B-1$ elsewhere, so $0\le M_0<N_0$.
+Also $(\mathcal B-2)Z(\mathcal B)<N_1$.
+Consequently $0\le S_0,T_0<N$, $R_0\ge N+1$,
+$X\ge N^2-1>3b$, and $Y>\max\{b,256\}$.
+Moreover $N\equiv1\pmod3$, so $3\mid X$.
+
+If $b$ is a power of two, so are $\mathcal B,N_0,N_1,N$.
+Sun's central-binomial carry lemma~\cite[Lemma 2.2]{sun2021} gives
+\[
+ Y\mid\binom{2X}{X}
+ \quad\Longleftrightarrow\quad
+ \tau_2(S_0,T_0)=0.
+\]
+The two blocks split this into the code-validity test
+$\tau_2(g,M_0)=0$ and the residual test
+$\tau_2(J_0,(\mathcal B-2)Z(\mathcal B))=0$.
+The first test decodes
+$g=\sum_i n_i\mathcal B^{a_i}$ with $0\le n_i<b$ by
+\cite[Lemma 2.4]{sun2021}, which explicitly permits arbitrary distinct
+digit positions. For such digits, put
+\[
+ K_0=(1+g)^2E(\mathcal B)+(\mathcal B/2)\lambda,
+ \qquad J_0=2K_0.
+\]
+Every coefficient of $K_0$ lies strictly between 0 and $\mathcal B$,
+because its signed correction has magnitude at most
+\[
+ C_{\mathrm S}\left(1+\sum_i n_i\right)^2
+ <1024C_{\mathrm S}b^2<\mathcal B/2.
+\]
+The selected digits are $\mathcal B/2+2r_j(\mathbf n)$.
+Adding $(\mathcal B/2-1)Z(\mathcal B)$ without a binary carry
+forces each selected digit to equal $\mathcal B/2$, hence every
+$r_j(\mathbf n)=0$. This proves soundness.
+Conversely, a simultaneous zero is nonzero because the fifth residual
+at $\mathbf n=0$ equals 1. Choose $b=4^q$ larger than all its coordinates,
+set $f=(b-1)/3$, and encode it in $g$. Then $b\le g<\mathscr C$,
+and both carry tests hold. This proves completeness, with $q$ arbitrarily
+large. No sum of squares is used in this source step.
+
+\subsection{The precise imported Lucas interface}
+
+The positive and reverse bridge proofs in
+\cite[Propositions 6.1 and 6.2]{sun2026} use precisely the three-part
+source contract of its Proposition 2.1, established above for the new
+source, the fixed form $b=1+3f$, and the monomial bound
+$\mathscr C=2^{(1\,359\,528)M}b^{2M+1}$.
+Their proofs do not otherwise use the old base-five coefficient code.
+We use this proof-level specialization, rather than asserting that the
+new source is literally Sun's original source polynomial.
+The positive bridge supplies a Lucas certificate, one square and one
+divisibility condition; the reverse bridge recovers the source contract
+from those conditions and a positivity inequality.
+Sun's modified Lucas certificate~\cite[Theorem 3.1]{sun2026}
+and full residue interpolation~\cite[Theorem 4.1]{sun2026} are additional
+imported results. The latter permits the second Lucas witness to lie
+in any prescribed residue class modulo a suitable first witness.
+This permits a positivity witness and the divisibility
+merger to share variables. The positive bridge is the specialization
+$p=P=2$, $Q=1$ of \cite[Theorem 4.12]{sun2021}; the reverse bridge
+uses the estimates of \cite[Theorem 4.13]{sun2021}, replacing its
+Lucas-certificate call by \cite[Theorem 3.1]{sun2026}.
+
+The complete ten-variable list is
+\[
+ (f,g,h,k,l,w,x,y,z,m)\in\Z^{10}.
+\]
+Use the source quantities above and define
+\begin{align*}
+ L&=lY,&U&=2LX,\\
+ V&=4gwY,&W&=bw,\\
+ A&=U(V+1),&B_1&=2X+1,\\
+ C_1&=B_1+(A-2)h,&P&=U^2V,\\
+ K&=X+1+k(P-2),&S&=2A-5,\\
+ T&=3WC_1-2(W^2-1),&r_1&=(P^2-4)K^2+4.
+\end{align*}
+Next set
+\begin{align*}
+ \Delta&=8\mathscr C^3gK^2
+       -g^2\bigl(32(C_1-KL)^2\mathscr C^3+g^2K^2\bigr),\\
+ O&=f^2l^2\Delta,\qquad\xi=zx.
+\end{align*}
+The modified Lucas quantities are
+\begin{align*}
+ D&=(A^2-4)C_1^2+4,& E_1&=C_1^2D\xi,\\
+ F&=4(A^2-4)E_1^2+1,&G&=2(A+2)(A-2)^2E_1^2-1,\\
+ \Omega_1&=16E_1,&H_1&=C_1+(B_1-C_1)F+\Omega_1Fy,\\
+ I&=(G^2-1)H_1^2+1,&r_2&=DFI,\\
+ r_0&=b\bigl(1+(3O-4)b^2z^2\bigr).&&
+\end{align*}
+The positive bridge has $O\ge4$, since $g\ge b\ge4$ and its positive
+integer $\Delta$ is divisible by $g$.
+As proved in source~31~\cite{repo}, the coprimality of $b$ and
+$1+(3O-4)b^2z^2$, together with $b\equiv1\pmod3$, makes $r_0$ square
+and $z\ne0$ enforce $b$ square and $O>0$. Conversely, a Pell solution
+with its second coordinate divisible by $b$ supplies such $z$.
+
+\subsection{The final polynomial and its implication in both directions}
+
+Let
+\begin{align*}
+ \pi(v)&=(v^3-v-1)(v^2+23),&\Sigma&=\xi S^5,\\
+ t&=T+Sy,&
+ \Theta&=(t^3-tS^2-S^3)(t^2+23S^2).
+\end{align*}
+Define the weights and scaled radicands by
+\[
+ w_0=1,\qquad w_1=r_0,\qquad w_2=r_0(P^2+K^2+3),
+\]
+\[
+ Z_0=\Sigma m-\Theta,\qquad
+ A_i=\Sigma^2w_i^2r_i\quad(0\le i\le2),
+\]
+and put
+\[
+ V_0=Z_0^2+A_2-A_0-A_1,\qquad
+ W_0=V_0^2+4Z_0^2A_2-4A_0A_1.
+\]
+The requested integer equation is
+\[
+ \boxed{F_{10}=W_0^2-16V_0^2Z_0^2A_2=0.}
+\]
+Every symbol other than the ten listed inputs is a polynomial
+abbreviation or a fixed integer.
+
+The local quintic merger and norm arguments are inherited from
+source~31~\cite{repo}. Byte-exact copies of that proof, its mathematical
+review and its finalizer are supplied under \texttt{signed10/inherited/};
+the historical coefficient binding there is inactive. For clarity, their exact roles are as follows.
+The polynomial $\pi$ has no rational root and has a root modulo every
+positive integer. Thus $\Theta\ne0$, since $S=2A-5\ne0$.
+Divisibility $\Sigma\mid\Theta$ forces $\xi\ne0$ and $S\mid T$:
+if $v_p(S)>v_p(T)$, the two homogeneous factors have valuations
+$3v_p(T)$ and $2v_p(T)$, contradicting divisibility by $S^5$.
+Conversely, if $S\mid T$ and $\xi\ne0$, a suitable residue class of $y$
+modulo $|\xi|$ makes the divisibility true. Full residue interpolation
+selects that class while preserving the Lucas square certificate.
+This converse is existential in $y$, not a pointwise assertion for every $y$.
+
+The norm identity is
+\[
+ F_{10}=\prod_{\varepsilon\in\{\pm1\}^3}
+ \left(Z_0-\Sigma\sum_{i=0}^2\varepsilon_iw_i\sqrt{r_i}\right).
+\]
+At a zero, $\Sigma=0$ would imply $F_{10}=\Theta^8\ne0$, so
+$z\ne0$. Then $|r_0|>1$, and the structural weights satisfy
+\[
+ |w_1|>\sqrt{|r_0|},\qquad
+ |w_2|>\sqrt{|r_0|}+|w_1|\sqrt{|r_1|}.
+\]
+A rational signed sum of these roots must have each root rational:
+a Galois automorphism changing the largest indexed root cannot cancel
+its change with the smaller terms. Rational square roots of integers
+are integers, so the three radicands are squares and $\Sigma\mid\Theta$.
+This reasoning also covers negative candidate radicands, zero roots,
+and repeated square classes.
+
+The reverse Lucas bridge therefore gives a simultaneous natural zero
+of the 22 residuals. Conversely, its positive bridge, the coprime Pell
+step and full residue interpolation give the three square conditions
+and $\Sigma\mid\Theta$; an integer $m$ then kills one norm factor.
+Together with the native compiler and calibrated K215 endpoint, this
+proves
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in\Z^{10}\ F_{10}(\mathbf x)=0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This is an equivalence based on the stated mathematical dependencies,
+not a proof of consistency or a new proof-assistant certificate.
+
+\subsection{Degree and actual-instance checks}
+
+The degrees of $X,Y$ are 426,804 and 284,536. The three scaled radicands
+$A_0,A_1,A_2$ have degrees 13,947,118, 24,764,324 and 112,401,754.
+The last dominates the squared norm center and the other radicands, so
+the final leading part is $A_2^4$. The claimed exact degree is therefore
+$4\cdot112\,401\,754=449\,607\,016$.
+Independently, diagonal leading coefficients for the actual complemented
+tuple are nonzero modulo 101, 1009 and 1,000,003: they are 81, 287 and 270,876.
+These are exact finite certificates that the structural degree bound is
+attained after specializing all fixed coefficients.
+
+The verifier independently reconstructs the 136 records by evaluating
+quadratic values, gradients and homogeneous parts at the all-one
+coordinate vector, while the builder uses binomial expansion. It checks
+all 528 pair sums, every native-port hash and strict coefficient bound,
+the materialized $\beta_{\mathrm S}$, the formal norm expansion, and
+1,620 named-register comparisons against literal scalar formulas over
+three finite fields. These checks establish the finite artifact's
+transcription and quantitative claims; the unbounded equivalence rests
+on the proofs above and the stated imported theorems.

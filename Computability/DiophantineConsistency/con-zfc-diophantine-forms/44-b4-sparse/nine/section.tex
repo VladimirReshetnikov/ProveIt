@@ -1,0 +1,148 @@
+\section{Nine natural unknowns: positive coding and a near-square majorant}
+\label{sec:nine-b4}
+The sparse carry construction also gives a single equation in nine
+nonnegative unknowns. Its exact degree is
+\[
+  38176t+8744=23\,321\,536\,264,\qquad t=610895,
+\]
+with 1383 binary arithmetic operations. The positive-integer translate uses
+1378 operations and has the same degree. These are ordinary mathematical
+reductions to the inherited literal compiler and Jones ratio theorems,
+not new kernel-checked consistency results or variable-minimality claims.
+
+The fixed source is the 31-witness parent with SHA256
+\texttt{1c336ba0b3c9} (full digest in the artifact manifest),
+bound to the complete 121-by-8801, 943-tile tuple in
+\path{sun/sources/data/coefficients_binding.json}.
+Its ports $(\beta,K_0,M_C,M_F)$ have bit lengths
+$(1064921,1070004,1064921,1064922)$, and $M_F$ is already shifted.
+For $P_0(\mathbf n)=\sum r_j(\mathbf n+1)^2$, the 402 weighted
+coefficients satisfy $|c_\alpha|+1<z=2^{4269855}$ and
+$c_0=24P_0(0)>0$. Put $a=2^{4269877}$, so
+$a>\max(2z\,32^4,2048z,8)$.
+
+\paragraph{Front end and unconditional positivity.}
+The unknowns are $(\epsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0,n)\in\mathbb N^9$.
+Set $g=g_0+1$, $h=h_0+1$, $s=s_0+1$, $w=w_0+1$, $i=i_0+1$,
+$j=j_0+1$. For the certified positive $B_4$ weights $w_\ell$, put
+$L=4t$, $m_c=8t+1$, $e_c=9t+2$, and
+\begin{align*}
+ b&=2+\epsilon,& B&=ab^4,& q_0&=B^{t+1},& \ell&=\sum_kB^{w_k},\\
+ D_c&=\sum_\alpha c_\alpha B^{L-\alpha\cdot w},&
+ M_c&=q_0-1-(b-1)\ell,\\
+ J_c&=2(1+g)^4D_c+B\sum_{k=0}^{m_c-1}B^k,&
+ S_c&=g+q_0J_c,\\
+ T_c&=M_c+q_0(B-2)B^L,& N&=2B^{e_c},\\
+ R&=S_c(N^2-N)+(T_c+1)(N^2-1),&G_{\rm cap}&=32bB^t.
+\end{align*}
+The sparse carry proof applies once the ratio margin forces
+$1\leq g<4bB^t$. The quartic radix is valid because
+$|2(1+g)^4D_c|<1024zb^4B^{8t}<B^{8t+1}/2$, while every
+coefficient of the decoded product has magnitude
+$<z32^4b^4<B/2$. Also $B>4b$, and $B$ is a power of two whenever $b$ is. Crucially, positivity holds even without that bound:
+the unique leading coefficient of $D_c$ is $c_0\geq1$, hence
+\[
+ D_c(B)\geq B^L-z\sum_{k<L}B^k>0\quad(B-1>z).
+\]
+The digit mask $M_c$ is nonnegative; thus $J_c,S_c>0$, $T_c\geq0$,
+and $R\geq N^2-1\geq N\geq b$. The old negative-$R$ corrections
+are therefore unnecessary for this fixed source.
+
+\paragraph{Ratio registers.}
+All the following are circuit registers, not additional unknowns:
+\begin{gather*}
+ U=N^2w,\quad Y=N^2s,\quad M=RY,\quad P=2M^2U,\\
+ K=R+1+h(P-1),\quad A=M(U+1),\\
+ B_1=2R+1,\quad W_1=bw,\quad C=B_1+W_1+\phi,\quad J=4A-5,\\
+ Q=3W_1C-2(W_1^2-1),\quad D=(A^2-1)C^2+1,\\
+ E=iJDC^2,\quad F=(A^2-1)E^2+1,\\
+ G=A+F(CD+1-A),\quad H=B_1+jC,\quad I=(G^2-1)H^2+1,\\
+ a_0=(P^2-1)K^2+1,\quad a_1=64DFI,\quad u=JF,\\
+ v=QF+J(H-C),\quad
+ \mu=K^2G_{\rm cap}-4(C-KY)^2G_{\rm cap}-8gK^2.
+\end{gather*}
+They satisfy $A\geq2$, $J\geq3$, $D\geq A^2$ and
+$C,D,E,F,G,H,I>0$. Also $C>W_1$ and $H-C>0$, so $Q,u,v>0$ and
+\[
+ 0<\frac vu=\frac QJ+\frac{H-C}{F}\leq Q+H-C=:M_{\rm div}.
+\]
+
+\paragraph{The new structural majorant.}
+Write $t_0=iJC$, so $E=t_0DC$. Then
+\begin{align*}
+ DF&=t_0^2D^3(D-1)+D,\\
+ S_0&=t_0(8D^2-4D-1),\\
+ S_0^2-64DF&=t_0^2(8D+1)-64D\geq8D+9>0.
+\end{align*}
+Here $t_0^2\geq9$. This exact identity is a polynomial near-square
+approximation, not an asymptotic argument. Since $S_0>0$ and
+$I\leq G^2H^2$, the choices
+\[
+ V_0=PK,\qquad V_1=S_0GH
+\]
+obey $\sqrt{a_k}<V_k$; here $K>1$ makes the first bound strict. The factor 64 does not alter the
+square predicate: $64x$ is a square over $\mathbb Z$ exactly when $x$ is.
+
+\paragraph{The final equation and both directions.}
+Define
+\[
+ \Omega=u(2\mu-1),\qquad
+ \Theta=un+v-\Omega(M_{\rm div}+V_0V_1).
+\]
+The polynomial is
+\[
+ \boxed{\ F_9=(\Theta^2-\Omega^2(a_0+V_0^2a_1))^2
+              -4\Omega^4V_0^2a_0a_1=0.\ }
+\]
+For completeness, its positive-divisor finalizer is as follows. If
+$u,v>0$, $M\geq v/u$, and $\sqrt{|a_k|}<V_k$ with $V_k\geq2$,
+then this polynomial has a natural $n$ exactly when both $a_k$ are
+integer squares, $u\mid v$, and $\mu>0$.
+Indeed, factor it over roots $r_k^2=a_k$ as
+$\prod_{\eta,\xi=\pm1}[\Theta-\Omega(\eta r_0+\xi V_0r_1)]$.
+A vanishing factor makes $s=r_0+V_0r_1=\Theta/\Omega$ rational.
+For $s\ne0$, $2sr_0=s^2+a_0-V_0^2a_1$ makes both roots integer.
+For $s=0$, $|r_1|=|r_0|/V_0<1$ forces $a_1=a_0=0$.
+Thus no square-class independence is assumed. Now integrality gives
+$|r_k|\leq V_k-1$. In all cases
+\[
+ Z=M+V_0V_1+r_0+V_0r_1\geq M+1>0,
+ \qquad n+v/u=(2\mu-1)Z.
+\]
+The left side is positive, so $\mu>0$, and integrality forces $u\mid v$.
+Conversely, integer roots and these conditions give the integer
+$n=(2\mu-1)Z-v/u\geq1$. Eliminating $n$ therefore recovers exactly
+the original four Jones ratio conditions. The sparse carry theorem,
+fully bound quartic, and literal compiler endpoint give
+\[
+ \mathsf{ZFC}\vdash
+ [\neg\exists\mathbf x\in\mathbb N^9\ F_9(\mathbf x)=0]
+ \ \longleftrightarrow\ \operatorname{Con}(\mathsf{ZFC}).
+\]
+
+\paragraph{Exact degree, rather than a syntactic upper bound.}
+The leading terms of $V_1^2$ and $a_1$ cancel. Resolve this exactly by
+\begin{align*}
+ \Delta_V=V_1^2-a_1
+  &=[t_0^2(8D+1)-64D]G^2H^2
+       +64DF(H^2-1),\\
+ E_0&=un+v-\Omega M_{\rm div},\\
+ \Theta^2-\Omega^2(a_0+V_0^2a_1)
+  &=E_0^2-2E_0\Omega V_0V_1
+       +\Omega^2V_0^2\Delta_V-\Omega^2a_0.
+\end{align*}
+On diagonal specialization, $\Delta_V$ has degree $9072t+2072$
+and leader $2^{243}a^{2268t+504}$. The last display's third term uniquely dominates
+with degree $19088t+4372$ and leader $2^{523}a^{4772t+1060}$; the final norm's
+subtracted term has lower degree $31264t+7164$. Hence
+$\deg F_9=38176t+8744$ with diagonal leader $2^{1046}a^{9544t+2120}$.
+The generated telescoping certificates audit these exact cancellations.
+
+Replacing each natural coordinate by a positive coordinate minus one is
+a bijection preserving degree. In particular $b=1+\epsilon_+$ and
+$C=2R+bw+\phi_+$ permit the reported five-operation saving.
+The verifier reconstructs all 402 coefficient recipes, authenticates all
+four coefficient payloads, checks all 52,360 four-multiset sums, expands
+the new identities exactly, and checks 240 independent modular instances
+and both domain translations. These finite checks validate the artifacts;
+they do not replace the universal proof or the imported compiler theorems.

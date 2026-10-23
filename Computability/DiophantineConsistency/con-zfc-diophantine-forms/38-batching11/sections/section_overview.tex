@@ -1,0 +1,162 @@
+\section{Results, comparison, and logical meaning}
+\label{sec:overview}
+
+There is no single useful ordering of ``simplest'' Diophantine forms.
+The number of unknowns, degree, number of equations, arithmetic circuit
+size, and size of fixed coefficients are distinct resources. We therefore
+give explicit forms on several parts of that tradeoff, with a common
+fully specified coefficient tuple.
+
+Throughout, $\N=\{0,1,2,\ldots\}$ and $\Zpos=\{1,2,\ldots\}$.
+All additional letters introduced in formulas are polynomial
+abbreviations, not existentially quantified unknowns. A circuit operation
+means one binary addition, subtraction, or multiplication. Squaring and
+multiplication by a fixed coefficient count; shared registers and fixed
+leaves do not. Powers in displayed formulas always have fixed
+nonnegative integer exponents and are expanded into multiplication gates
+in the delivered circuits.
+
+\begin{theorem}[Explicit consistency forms]
+\label{thm:main}
+With the four fixed native ports specified in
+Section~\ref{sec:complemented-compiler}, the archive defines polynomials
+$F_9$, $F_9^+$, $F_{10}$, and $F_{11}$ such that ordinary mathematics
+formalizable in ZFC proves
+\begin{align*}
+ \Con(\mathrm{ZFC})
+ &\ \longleftrightarrow\ \neg\exists\mathbf x\in\N^9\ F_9(\mathbf x)=0,\\
+ &\ \longleftrightarrow\ \neg\exists\mathbf x\in\Zpos^9\ F_9^+(\mathbf x)=0,\\
+ &\ \longleftrightarrow\ \neg\exists\mathbf x\in\Z^{10}\ F_{10}(\mathbf x)=0,\\
+ &\ \longleftrightarrow\ \neg\exists\mathbf x\in\Zpos^{11}\ F_{11}(\mathbf x)=0.
+\end{align*}
+The last line also has an equivalent two-equation form in the same
+eleven unknowns. The first two lines use the parameterized Jones ratio
+theorems. The third additionally uses the stated Lucas and interpolation
+results of Sun~\cite{sun2026}. Every line uses the inherited ordinary
+compiler and literal K215 calibration at the pinned revision~\cite{repo}.
+\end{theorem}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llllr@{}}
+\toprule
+Form & Domain & Unknowns & Exact degree(s) & Operations\\
+\midrule
+Quadratic batching & $\N$ & 9 & $166\,177\,600$ & 868\\
+Positive translation & $\Zpos$ & 9 & $166\,177\,600$ & 864\\
+Sun companion & $\Z$ & 10 & $449\,607\,016$ & 773\\
+Index absorption & $\Zpos$ & 11 & $1154$ & 123\\
+Two-equation form & $\Zpos$ & 11 & $2,1152$ & 119\\
+Shifted two-equation form & $\Zpos$ & 11 & $2,1152$ & 118\\
+Translated product & $\Zpos$ & 11 & $1140$ & 129\\
+Translated shifted system & $\Zpos$ & 11 & $2,1138$ & 124\\
+\bottomrule
+\end{tabular}
+\caption{New forms in the delivered archive. The certificate circuit for
+the nine-variable degree proof is intentionally a different evaluator.}
+\label{tab:results}
+\end{table}
+
+\subsection{What improves over the pinned repository}
+
+The nine-variable degree previously reached
+\[
+ 92324\cdot5^{32}+296
+ =2\,149\,585\,634\,469\,985\,961\,914\,062\,796.
+\]
+The new degree is smaller by a factor of approximately
+$1.294\cdot10^{19}$. The 864-operation positive circuit also improves
+the separate historical 1473-operation positive circuit by $41.34\%$;
+the degree-optimized package~37 circuit uses 1500 operations. These are
+separate baseline comparisons, not an invented baseline combining the
+best features of different evaluators.
+
+The ten-integer baseline in package~31 has degree
+\[
+ 126496\cdot5^{31}+27064
+ =589\,042\,901\,992\,797\,851\,562\,527\,064
+\]
+and 1442 operations. Quadratic batching reduces the degree by
+approximately $1.310\cdot10^{18}$ and the circuit cost by $46.39\%$.
+The domain remains unrestricted integers.
+
+The eleven-positive construction removes one supplied unknown from the
+direct twelve-positive Pell-norm family. It trades degree and arithmetic
+for that reduction: the repository still has a twelve-positive degree
+1022 construction with 124 operations and a separate 108-operation
+degree 1081 construction. The present work does not improve the
+historical 67-operation single equation or the 59-operation system.
+It also leaves intact the usefulness of the 31-positive quadratic system
+and its quartic sum of squares when low degree is the primary goal.
+
+The native ports now use $339{,}476$ raw bytes rather than $506{,}664$,
+a $32.998\%$ reduction. Their largest bit length falls from
+$1{,}016{,}946$ to $681{,}374$. This is a reduction in native compiler
+constants; it is not a claim about the size of a fully expanded
+$166$-million-degree polynomial.
+
+\subsection{The three ideas}
+
+The first change is to preserve the system's quadratic structure.
+Multiplying a quadratic coefficient kernel by the square of a digit code
+can select a residual by one coefficient. A Sidon set gives unambiguous
+quadratic monomials with maximum position 799. Disjoint translated
+blocks select all 22 residuals simultaneously. A single binary carry
+test enforces every target coefficient to be zero, so there is no need
+to take a sum of squares before entering the few-variable interface.
+This reduces both the degree and the work needed to evaluate the source
+code. It also removes the old enormous Jones ceiling constant: the
+nine-variable source can use simply $b=\epsilon+2$ and
+$B=\kappa b^2$.
+
+The second change is arithmetic rather than combinatorial. The
+eleven-variable norm initially recovers only a weakened divisibility
+$E\mid H(k-R-1)$. Cancelling $H$ here would be wrong. Instead we
+recover the main Pell index first, place the remaining index in an
+interval shorter than $E/\gcd(E,H)$, and deduce the exact equality
+$2n=R+1$. This restores the full divisibility and reconstructs the
+deleted positive quotient. The proof explicitly avoids a predecessor
+bound that required the deleted quotient.
+A further positive translation of the same carrier lowers degree 1154
+to 1140 at the cost of six operations; it is supplied as a separate
+optional form.
+
+The third change uses a whole-label complemented encoding. An occupied
+label $x$ is represented by $2^\ell-1-x$. A selected tile contributes
+$x+1$, so one guarded binary field checks the entire label by requiring
+its low $\ell$ bits to vanish. This replaces one guard field per bit
+by one per label while retaining the occupied high bit needed by the
+native compiler. We recompute the complete coefficient tuple and a
+compatible packed-rank controller; changing only a few constants would
+not suffice.
+
+\subsection{What the consistency claim means}
+
+Here $\Con(\mathrm{ZFC})$ means that no finite syntactic ZFC refutation
+exists, using the effective proof presentation calibrated in the
+repository. The fixed K215 machine satisfies the inherited theorem
+\[
+ \text{K215 halts on blank input}
+ \quad\longleftrightarrow\quad
+ \text{a finite ZFC refutation exists}.
+\]
+The named repository endpoint is
+\texttt{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}.
+The compiler and arithmetic reductions connect a halt with an integer
+zero, in both directions. Negation gives Theorem~\ref{thm:main}.
+
+This is a theorem about equivalence. It does not prove either side of
+the consistency statement. In particular it creates no conflict with
+the second incompleteness theorem. All witnesses are ordinary finite
+integers; none is a variable exponent, an unspecified enumeration index,
+or an oracle for consistency.
+
+The archive separates ordinary proofs, formal source endpoints, and
+finite checks. We have not rebuilt the entire upstream proof-assistant
+development or formalized the new batching and absorption arguments in
+its kernel. The checks establish the finite facts claimed in their
+receipts; they do not establish an unbounded equivalence by testing.
+There is also no claim that nine is minimal for this particular
+consistency predicate, or that the Sidon set or operation counts are
+globally optimal.

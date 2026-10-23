@@ -1,0 +1,22 @@
+The following numbers describe explicit fixed equations, not unspecified representatives of recursively enumerable sets. Arithmetic operations count binary addition, subtraction and multiplication, including multiplication by numerals; fixed coefficient construction is excluded and specified separately. Domain is part of every claim.
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Construction & Unknowns & Exact degree & Operations\\\midrule
+Sun sparse equation & $10\Z$ & $69\,554\,088\,184$ & 1407\\
+Jones sparse equation & $9\N$ & $23\,321\,536\,264$ & 1383\\
+Positive translate & $9\Z_{>0}$ & $23\,321\,536\,264$ & 1378\\
+Jones merged guard & $13\Z$ & $226\,334\,238\,192$ & 1409\\
+Jones four guards & $14\Z$ & $226\,295\,141\,096$ & 1420\\
+Unit inner separator & $12\Z_{>0}$ & 901 & 112\\
+Shorter carrier & $12\Z_{>0}$ & 905 & 110\\
+Rebound $P_{67}$ & $15\Z_{>0}$ & 155 & 67\\\bottomrule
+\end{tabular}
+\end{center}
+The thirteen-integer construction does not use Sun's 2026 Lucas theorem; it is a genuinely different dependency choice, not a competitor to ten integers on variable count alone. Its fourteen-integer predecessor has slightly smaller degree and is retained for that reason. The twelve-positive equations also give three-equation systems of maximum degree 892 or 896, with 106 or 104 operations in their shifted presentations. The new coefficient tuple rebinds the seven-equation, sixteen-positive-variable system at degree 24 and 59 operations; those operation and variable counts are unchanged.
+
+\paragraph{Comparison with the reviewed snapshot.}
+Package 31 had ten integers at degree $126496\cdot5^{31}+27064$ and 1442 operations. Packages 34/37 had nine-variable degree $92324\cdot5^{32}+296$, with package 37 costing 1505 over $\N$ and 1500 over positives; older package 27 had 1473 operations at a larger degree. The new nine-positive circuit beats even that historical cost. Package 34's lowest twelve-positive degree was 1022 (124 operations), with intermediate tradeoffs 1023/119, 1025/116, 1033/114 and 1041/111. The new 901/112 and 905/110 forms are meaningful improvements, but the old 108-operation degree-1081 form and 102-operation shifted system remain relevant on cost alone.
+
+The smallest bound coefficient base in the reviewed collection was $2^{1012115}$, with 506664 raw payload bytes. An optional unbound tuple in package 33 had 506644 bytes. The complement-coded tuple below has base $2^{590069}$ and 295388 raw bytes, improving both comparisons. It is bound explicitly to $P_{67}$ and the 59-operation system only. The new low-variable equations use the complete older package-31 tuple, not a mixture of its ports with the new tuple.
+
+There is no single justified ``simplest'' form across all these metrics. No sub-ten unrestricted-variable or sub-nine natural-variable result is claimed. We found no validated thirty-variable parent quartic and no operation count below 67/59. The concrete contribution is instead a change in the exponent coding, a merged signed guard, a unit inner separator, and a new coefficient decoder.

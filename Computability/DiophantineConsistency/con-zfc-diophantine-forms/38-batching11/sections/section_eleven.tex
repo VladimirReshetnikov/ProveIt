@@ -1,0 +1,316 @@
+\section{Eleven positive unknowns: absorb the index quotient}
+\label{sec:eleven}
+
+The second new mechanism removes an actual supplied variable from the direct
+Pell construction. It gives a single equation in eleven positive integers,
+of exact degree $1154$ and cost $123$ binary operations, or two equations of
+maximum degree $1152$ and cost $118$ after the inherited transport shift.
+The predecessor direct family uses twelve positive integers and three
+equations. This is a different tradeoff from the nine-variable Jones
+construction: its advantage is a moderate degree and a small explicit circuit.
+The comparison is with the pinned repository collection~\cite{repo}, not a
+global minimality assertion.
+
+The old index quotient $h$ is reconstructed from a divisibility condition
+inside the already quantified carrier. The first divisibility recovered is
+weaker than the original one. A short-range argument for the Pell index makes
+it sufficient. This is why simply deleting the old index equation would not
+have worked.
+
+\subsection{The polynomial and its exact supplied domain}
+
+Use the entire fixed coefficient tuple $(\beta,K_0,M_C,M_F)$ of the compiler,
+with $M_F$ the shifted high mask. The eleven supplied unknowns are exactly
+\[
+ J,F,\alpha,z,i,T,s,w,\eta,\zeta,t\in\Z_{>0}.
+\]
+All other letters below are polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,&s_0&=s+3q,&C_w&=q-F-\alpha,\\
+ X&=wq,&Y&=s_0q^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H,&\ell&=EkY,\\
+ A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac,\\
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=\Delta(D-1)=(\Delta I)^2,\\
+ d&=Q-1,&v&=cT,&b&=c+RD.
+\end{align*}
+Here $R$ and the transport expression are
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_t&=(K_0+w)C_w+q-F-z(q-1).
+\end{align*}
+Define the sharp weight and new carrier by
+\begin{align*}
+ e&=Q(Dv^2+b^2)-1,&B_a&=2Qvb,\\
+ C_*&=E+2(X+Y)+s_0q^2,&M&=I(2T+RC_*ic),\\
+ L_0&=1+HM,&S&=HE,\\
+ L&=EL_0,&W&=Lb_0+H(Et+k-R-1).
+\end{align*}
+The finite conjugate product
+\begin{equation}
+ \mathcal N=
+ \prod_{\substack{g=\pm\sqrt G,\ \tau=\pm\sqrt A\\f=\pm\sqrt D}}
+ \left[d(W-Lg-SM\tau)^2-S^2e+S^2B_af\right]
+ \label{eq:eleven-norm}
+\end{equation}
+is an integer polynomial. Its eight formal factors define a polynomial
+identity; the displayed radicals are not additional unknowns, and independent
+formal signs are not assumed to be independent field automorphisms.
+The single equation and two-equation form are respectively
+\begin{equation}
+ \boxed{N_t(1+\mathcal N)-1=0},
+ \qquad
+ \boxed{N_t=1,\quad\mathcal N=0}.
+ \label{eq:eleven-final}
+\end{equation}
+
+For a literal division-free evaluation, put
+\begin{align*}
+ n&=(SM)^2A,&d_n&=dn,\\
+ P_H&=S^2QDv^2,&U_H&=S^2Qb^2,\\
+ e_H&=P_H+U_H-S^2,&j&=4P_HU_H,\\
+ \mathcal T&=2d(W^2+L^2G),&\kappa&=[d(W^2-L^2G)]^2,\\
+ \mathcal A&=2(d_n+e_H),&\mathcal B&=(d_n-e_H)^2-j,\\
+ a_r&=\mathcal T-\mathcal A,&b_r&=\mathcal B-\kappa,\\
+ v_r&=16d_nj-a_r(a_r\mathcal T+2b_r),&u_r&=b_r^2-a_r^2\kappa,\\
+ \mathcal N&=\kappa v_r^2-u_r(\mathcal T v_r-u_r).
+\end{align*}
+The system compares the two final terms directly. The identity follows by
+reducing a quartic modulo the quadratic with root sum $\mathcal T$ and root
+product $\kappa$, exactly as in the predecessor norm; it remains valid when
+quadratic fields coincide or a radicand specializes to a square.
+
+\subsection{Recover roots without assuming the deleted equation}
+
+At a root of the product equation, $N_t$ and $1+\mathcal N$ are integer
+units. For $x_0=d(W^2+L^2G)$, one has
+\[
+ \mathcal T=2x_0,\qquad
+ \kappa=x_0^2-4d^2W^2L^2G,\qquad
+ \mathcal N\equiv(u_r-x_0v_r)^2\pmod4.
+\]
+Thus $1+\mathcal N\ne-1$, and $\mathcal N=0$, $N_t=1$. The authentic
+transport interface now gives
+\begin{equation}
+ q\ge16,\quad C_w>0,\quad 3q<R<q^4-2,\quad
+ Y>3q^4>3R,\quad X\ge16,\quad E>R+1.
+ \label{eq:eleven-outer}
+\end{equation}
+Also $k\ge2$ and $kY<c<k(Y+1)$. For example, $C_w\le0$ would imply
+$N_t\le1-F-(z-1)(q-1)\le0$. We do \emph{not} assume $k>E$ or $R<k$:
+those predecessor bounds depended on the omitted equation.
+
+\begin{lemma}[Uniform auxiliary bound]
+Every coherent complex auxiliary branch satisfying
+\[
+ f^2=D,\qquad dy^2=e-B_af=Q(vf-b)^2-1
+\]
+obeys $|y|<M\sqrt A$ under \eqref{eq:eleven-outer}.
+\end{lemma}
+\begin{proof}
+Since $\Delta>R+2$ and $I\ge c^2$,
+\[
+ Q-b=\Delta I^2(\Delta-R)-c-R>0,
+ \qquad \sqrt D<\Delta I<d.
+\]
+For $Z=v\sqrt D+b>1$,
+\[
+ |y|^2\le\frac{QZ^2+1}{d}
+ <[Z(1+1/d)]^2,
+\]
+the last numerator difference being $QZ^2-d>0$. Consequently
+\begin{equation}
+ |y|<v\sqrt D+b+v+1
+ <cT((a+2)I+1)+c+RD+1.
+ \label{eq:eleven-ybound}
+\end{equation}
+Set $\rho=(1+1/Y)/E$. Then $c/\ell<\rho$ and $(a+3)\rho<2$.
+The exact identity
+\[
+ (a+2)^2\rho=E+2Y+X+6+\frac YX+
+ \frac5X+\frac4Y+\frac8E+\frac4{EY}
+\]
+has its last four terms less than $1$. As $Y/X=s_0q^2/w\le s_0q^2$
+and $X\ge16$, it is less than $C_*-2$. Divide
+\eqref{eq:eleven-ybound} by $\sqrt A>\ell$, and use $(c+1)/\ell<2$:
+\[
+ \frac{|y|}{\sqrt A}
+ <2TI+R(C_*-2)i^2c^3+2\le M.
+\]
+No lower bound on $k$ beyond $k\ge2$ was needed.
+\end{proof}
+
+The same outer bounds give $G>A$ and $b_0>\sqrt A$: use
+$\Delta c^2>k^2Y^2(E+Y)^2>A-1$ and
+$b_0=\ell+E\eta+Yc+X>\ell+k>\sqrt A$.
+Every root of the inner polynomial has the form $x=M\tau+y$, hence
+$|x|<2M\sqrt A$.
+If a vanishing factor in \eqref{eq:eleven-norm} had $g=-\sqrt G$, then
+\[
+ x=\frac{W+L\sqrt G}{S}
+   =t+\frac{k-R-1}{E}
+     +(M+1/H)(b_0+\sqrt G)>2M\sqrt A,
+\]
+because the first two terms have positive sum by $E>R+1$.
+This is impossible. If $G$ were nonsquare, actual quadratic conjugation
+would force this forbidden branch along with the positive branch. Thus
+$g$ is a positive integer and $x=(W-Lg)/S$ is rational.
+
+In a normal splitting field, an automorphism negating an irrational $\tau$
+would give $2M\sqrt A\le|y|+|y'|<2M\sqrt A$. Thus $\tau$ is rational,
+hence integral. Then $y=x-M\tau$ is rational, and
+$f=(e-dy^2)/B_a$ is rational, hence integral. Finally the inherited rational
+Pell saturation lemma gives $y\in\Z$: if $m\ge2$, $V\in\Z$, and
+$m^2V^2-(m^2-1)y^2=1$ with $y\in\mathbb Q$, then $y\in\Z$.
+It follows by clearing a reduced denominator, classifying the two resulting
+integer Pell solutions, and using abscissa divisibility to force ordinate
+divisibility. Here apply it with $m=\Delta I$ and $V=vf-b$.
+The complete argument, including zero cases, is reproduced in the accompanying
+proof file. In particular $x$ is integral. The carrier equality implies
+\begin{equation}
+ E\mid H(k-R-1).
+ \label{eq:eleven-weakdiv}
+\end{equation}
+At this stage it would be invalid to cancel $H$.
+
+\subsection{Recover the main index before the index quotient}
+
+Let $A_0=a+2$, and write $\chi_{A_0},\psi_{A_0}$ for the usual Pell
+sequences. The fundamental positive integer-coordinate solution for
+$A_0^2-1$ is $(A_0,1)$. Main and normalized strong norm recovery gives
+\[
+ g=\chi_{A_0}(p),\quad c=\psi_{A_0}(p),\quad
+ |f|=\chi_{A_0}(m),\quad I=\psi_{A_0}(m),\qquad p,m\ge1.
+\]
+The standard strong-divisibility and composition identities now give
+\begin{equation}
+ p\mid m,\qquad c\mid m,\qquad m\ge pc>2p.
+ \label{eq:eleven-rank}
+\end{equation}
+Here is the direct argument, to make its independence from the deleted
+equation explicit. Since $c^2\mid I$, strong divisibility first gives
+$p\mid m$. Write $m=pj$. Then
+$\psi_{A_0}(pj)=c\psi_{\chi_{A_0}(p)}(j)$, while modulo $c$ the
+second factor is $j\chi_{A_0}(p)^{j-1}$. Since
+$\chi_{A_0}(p)^2\equiv1\pmod c$, we get $c\mid j$. No ordinary-strong
+large-$c$ rank lemma is necessary. Also $c>2Y>6R$, and $p\ge2$ with
+$c\ge(2A_0-1)^{p-1}>2p$.
+
+The inherited signed auxiliary-index argument can therefore be applied
+before the main congruence modulo $H$. For clarity, its essential steps are
+included. Put $S_0=\Delta I$ and $V=c(Tf-1)-Rf^2$. The auxiliary Pell
+equation shows that
+\[
+ S_0|V|=\chi_{S_0}(j_0),\qquad |y|=\psi_{S_0}(j_0)
+\]
+for a positive odd $j_0=2r+1$. The usual odd-index polynomial $Q_r$ has
+\[
+ \chi_{S_0}(2r+1)=S_0Q_r(S_0^2),\quad
+ Q_r(1-A_0^2)=(-1)^r\psi_{A_0}(2r+1),\quad
+ Q_r(0)=(-1)^r(2r+1).
+\]
+Because $Q=\Delta(f^2-1)\equiv1-A_0^2\pmod{|f|}$ and
+$V\equiv-c\pmod{|f|}$, these give
+$\psi_{A_0}(j_0)\equiv\pm c\pmod{|f|}$. Squaring and doubling yields
+\[
+ \chi_{A_0}(2j_0)\equiv\chi_{A_0}(2p)\pmod{\chi_{A_0}(m)}.
+\]
+Signed index reduction, using $0<2p<m$, gives $j_0\equiv\pm p\pmod m$,
+hence modulo $c$. This follows by reducing modulo $2m$, reflecting indices
+to $[0,m]$, and using strict growth and
+$2\chi_{A_0}(m-1)<\chi_{A_0}(m)$ to exclude a negative representative.
+Meanwhile $Q\equiv0\pmod{c^4}$ and $V\equiv-R\pmod c$ give
+$j_0\equiv\pm R\pmod c$. Since $p,R\in(0,c/2)$, one obtains
+\begin{equation}
+ p=R.
+ \label{eq:eleven-pR}
+\end{equation}
+
+\subsection{A short index range restores the full divisibility}
+
+The first norm has fundamental unit $(2EY+1,2)$, so for $P_0=2EY+1$,
+\[
+ |\tau|=\chi_{P_0}(n),\qquad k=2\psi_{P_0}(n),\qquad n\ge1.
+\]
+Because $P_0>A_0$ and $c>k$, we have $n<p=R$. Put
+$g_0=\gcd(E,H)$ and $\mu=E/g_0$. Since $H=4XY+4Y+3$,
+\begin{equation}
+ \gcd(Y,H)=\gcd(Y,3)\le3,\qquad
+ g_0\mid X\gcd(Y,H),\qquad \mu\ge Y/3>R.
+ \label{eq:eleven-modulus}
+\end{equation}
+Equation \eqref{eq:eleven-weakdiv} gives $k\equiv R+1\pmod\mu$.
+As $P_0\equiv1\pmod E$, the Pell recurrence also gives
+$k\equiv2n\pmod E$. Hence $2n\equiv R+1\pmod\mu$. But
+$1\le n\le R-1$ gives $|2n-R-1|<R<\mu$. Therefore
+\[
+ 2n=R+1,\qquad E\mid(k-R-1).
+\]
+Set $h=(k-R-1)/E$. It is integral and positive: $R>3q\ge48$ gives
+$n\ge25$ and $k=2\psi_{P_0}(n)>2n=R+1$.
+
+Divide the carrier identity by $E$ to get
+\[
+ L_0b_0+H(t+h)=L_0g+H(M\tau+y).
+\]
+Since $L_0\equiv1\pmod H$, we obtain $g\equiv b_0\pmod H$.
+Thus $\gamma=(g-b_0)/H$ is an integer. Moreover $n\ge2$ gives
+$k\ge4P_0>X$, hence $c>X$, and
+$g-b_0>(a+1)c-ac-X=c-X>0$. So $\gamma>0$.
+All original normalized compiler equations are now restored, including
+$k-hE-R=1$ and the main congruence. The signed-quotient soundness theorem
+handles a possible negative $f$ by changing $f,T$ together, and extracts a
+blank K215 halt. The order of recovery above avoids every use of $h$ before
+its reconstruction.
+
+\subsection{Completeness and exact degree}
+
+For a canonical positive compiler witness the inherited theory gives
+$X=2^R$, $R>3q$, and $Y>2^R$. Since $q\ge16$ and
+$2^{3q}>3q^4$, its old coordinate $s_{\rm old}=Y/q^3$ satisfies
+$s_{\rm old}>3q$. Hence $s=s_{\rm old}-3q>0$ is legitimate. Define
+\[
+ t=L_0\gamma+M\tau+y-h.
+\]
+This is positive because $h<k/E$ and $\tau>\ell=EkY>k/E$.
+It makes a coherent factor in \eqref{eq:eleven-norm} vanish and preserves
+$N_t=1$. This proves both directions of existence equivalence.
+The shifted system uses
+\[
+ (K_0+w)C_w=F+z(q-1),
+\]
+with $z_{\rm old}=z+1$. Canonical witnesses have $w=2^R/q>q>F$ and
+$C_w>0$, so $z_{\rm old}\ge2$. This saves one gate while preserving
+positivity and existence.
+
+For the degree calculation, let $\mathcal N_{\rm old}$ be the predecessor's
+sharp half-carrier norm, of degree $1056$. In the localization at $E$,
+\begin{equation}
+ \mathcal N=E^{16}\mathcal N_{\rm old}
+       \left(t+\frac{k-R-1}{E}\right),\qquad s_{\rm old}=s+3q.
+ \label{eq:eleven-degreeidentity}
+\end{equation}
+Each of the eight factors gains $E^2$, and its degree in the old carrier
+is at most $16$, so the denominators clear. The rational shift has total
+degree $-2$, below $\deg t=1$, and cannot change a highest homogeneous part.
+Writing $q_0=\beta J$, $k_0=\eta+\zeta$, and $s_{00}=s+3q_0$, the
+predecessor's proved leading form gives
+\[
+ \mathcal N_{1152}
+ =2^{46}i^{48}k_0^{96}w^{90}s_{00}^{192}
+ q_0^{710}(q_0-F)^{16}\ne0.
+\]
+Thus $\deg\mathcal N=1056+16\cdot6=1152$. The transport leading form is
+$w(q_0-F-\alpha)-zq_0\ne0$, proving exact product degree $1154$ and
+system residual degrees $2,1152$, uniformly for the authentic $\beta>0$.
+
+The delivered circuit has $75$ multiplications and $48$ additions or
+subtractions for the product. Independent checks include $90$ formal norm
+products modulo three primes, $77$ carrier-denominator identities, exact
+integer and rational fixtures, $500$ parity fixtures, and two complete
+univariate polynomial calculations of degree and leading coefficient.
+Another $320$ bound fixtures deliberately satisfy $k\le E$, testing the
+hypothesis removed from the predecessor argument. The four actual fixed
+payloads are hashed and used in $40$ additional modular norm checks.
+These diagnostics support the transcription; the unbounded proof above and
+the inherited compiler calibration establish the theorem in ZFC.

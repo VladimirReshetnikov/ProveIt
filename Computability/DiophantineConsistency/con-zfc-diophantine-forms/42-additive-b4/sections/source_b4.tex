@@ -1,0 +1,797 @@
+\section{Additive coding of the quartic source}
+\label{b4:section}
+
+The main new construction replaces the positional exponents in the
+ten-integer equation of package~31 by an additive code.  The source
+quartic, its complete coefficient tuple, and the outer Lucas and
+relation-combining formulas are retained.  In particular, the
+ten-integer theorem remains Sun's theorem \cite{Sun2026}; the result
+below is an explicit improvement of its source specialization
+\cite{Package31}.  Bose--Chowla codes themselves are classical
+\cite{BoseChowla}.
+
+\begin{theorem}[The explicit ten-integer instance]
+\label{b4:main}
+The circuit \code{ten_integer/generated/b4_signed10.json} defines a
+polynomial
+\[
+ F_{B_4}\in\mathbb Z[f,g,h,k,l,w,x,y,z,m]
+\]
+of exact total degree
+\[
+ \boxed{\deg F_{B_4}=107\,286\,763\,576.}
+\]
+Its supplied division-free circuit has $2\,204$ binary additions,
+subtractions, and multiplications.  With the fixed parent quartic and
+compiler tuple specified in this report, ordinary mathematics
+formalizable in ZFC proves
+\[
+ \exists(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}\;(F_{B_4}=0)
+ \quad\Longleftrightarrow\quad
+ \neg\operatorname{Con}(\mathrm{ZFC}).
+\]
+Consequently absence of integer zeros is equivalent, in ZFC, to
+$\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+
+The proof imports the same K215 calibration, native compiler, positive
+quartic reduction, and Sun bridge as the pinned construction.  It gives
+a new proof of the entire source-coding interface.  Exact finite checks
+supplement that proof; they are not an end-to-end formal verification of
+the imported results.  Sun's ten-integer bridge is cited in its 2026
+preprint version \cite{Sun2026}.  No consistency proof, globally minimal
+equation, or new general ten-variable theorem is claimed.
+
+\subsection{The fixed source and its coefficient convention}
+\label{b4:source}
+
+Let $r_1,\ldots,r_{22}$ be the fixed positive-parent residuals specified
+in this report, in their literal order, and put
+\[
+ P_0(n_1,\ldots,n_{31})
+ =\sum_{j=1}^{22}r_j(n_1+1,\ldots,n_{31}+1)^2.
+\]
+The inherited endpoint states
+\[
+ \exists\mathbf n\in\mathbb N^{31}\;P_0(\mathbf n)=0
+ \quad\Longleftrightarrow\quad
+ \text{ZFC has a finite syntactic refutation}.
+ \tag{B4.1}\label{b4:endpoint}
+\]
+Here $\mathbb N$ includes zero.  The positive-to-natural shift is part
+of the definition and cannot be omitted.
+
+The four fixed coefficient ports are the complete Wang943 tuple of
+package~31, with port order $(\beta,K_0,M_C,M_F)$ and bit lengths
+\[
+ (1064921,\ 1070004,\ 1064921,\ 1064922).
+\]
+The high mask $M_F$ is already shifted.  None of these ports is
+existentially quantified, and no port is substituted from another
+tuple.  The exact parent and compressed integer payloads are included
+in \code{ten_integer/data/}.
+
+The source has degree four and $P_0(\mathbf0)>0$.  For the latter fact,
+the fifth residual $E-X(a-E)$ equals $1$ at the all-one parent
+assignment.  Write
+\begin{align}
+ P_0(\mathbf n)&=\sum_{|\alpha|\le4}p_\alpha\mathbf n^\alpha,
+ &
+ c_\alpha&=(4-|\alpha|)!\prod_{i=1}^{31}\alpha_i!\,p_\alpha,
+ \label{b4:coeff}\\
+ H&=\max_\alpha|p_\alpha|,
+ &
+ \beta_S&=2^{4269882}.
+ \label{b4:beta}
+\end{align}
+The included coefficient certificate proves
+\[
+ \beta_S>2\cdot24\cdot33^4H.
+ \tag{B4.2}\label{b4:bound}
+\]
+Indeed it bounds every weighted coefficient by
+$|c_\alpha|+1<2^{4269855}$, and
+$2\cdot24\cdot33^4=56924208<2^{27}$.  Since the integer factorial
+multiplier in \eqref{b4:coeff} is positive,
+$|p_\alpha|\le|c_\alpha|$.  Thus \eqref{b4:bound} follows without
+requiring decimal expansion of the enormous coefficients.
+
+The source has $402$ nonzero weighted coefficient records.  Each is
+an explicit small polynomial in the four fixed ports.  The verifier
+reconstructs every record from the $22$ shifted residual squares.
+The leading zero retained in each serialized exponent vector is a
+historical coefficient-interface convention: it is not an input digit,
+an unknown, or an extra source witness.
+
+\subsection{What the exponent code must distinguish}
+\label{b4:injectivity}
+
+\begin{definition}
+A list $0=w_0<w_1<\cdots<w_{31}$ is a quartic additive code if all
+sums of four list elements, allowing repetition and disregarding
+order, are distinct.
+\end{definition}
+
+Padding a multi-index with $4-|\alpha|$ copies of $w_0$ shows that this
+condition is equivalent to injectivity of
+\[
+ \alpha\longmapsto\alpha\cdot\mathbf w
+ :=\sum_{i=1}^{31}\alpha_iw_i
+ \qquad (|\alpha|\le4).
+ \tag{B4.3}\label{b4:injective}
+\]
+The positional weights $5^i$ satisfy this property.  They are not
+needed for either the witness-digit mask or coefficient extraction.
+An additive code gives much smaller exponents.
+
+The code used here is
+\[
+\begin{gathered}
+0,\ 42609,\ 49910,\ 91724,\ 155840,\ 213052,\ 290241,\ 337708,\\
+340502,\ 351998,\ 388348,\ 417182,\ 480443,\ 513128,\ 534148,\\
+563475,\ 579595,\ 636647,\ 639228,\ 692126,\ 725139,\ 732225,\\
+748536,\ 754497,\ 817940,\ 820267,\ 829985,\ 858576,\ 870324,\\
+879730,\ 907673,\ 942302.
+\end{gathered}
+\]
+The $i$th positive entry is assigned to the $i$th coordinate of the
+literal parent ordering.  Throughout this section set
+\[
+ T=942302,\qquad L_c=4T=3769208,\qquad M=2^{20}-1=1048575.
+ \tag{B4.4}\label{b4:span}
+\]
+
+\begin{lemma}[Finite code certificate]
+\label{b4:code}
+The displayed list is a quartic additive code.  In fact, its four-term
+multiset sums are distinct modulo $M$.
+\end{lemma}
+
+\begin{proof}
+There are $\binom{35}{4}=52360$ relevant multisets.  The included
+short checker enumerates all of them and verifies distinct residues
+modulo $M$.  This provides a direct finite certificate independent of
+the construction history.
+
+For a mathematical construction, form the binary quotient by
+$X^{20}+X^3+1$ and let $\theta$ be the residue of $X$.  Exact modular
+computations give $\theta^M=1$ and
+\[
+ \theta^{M/p}\ne1\qquad(p=3,5,11,31,41),
+\]
+the complete set of prime divisors of $M$.  Hence $\theta$ has order
+$M$.  Its $M$ distinct powers and zero exhaust the $2^{20}$ residues.
+Every nonzero residue is therefore a unit, proving that the quotient
+is a field, rather than assuming irreducibility in this step.
+
+Let $\mathbb F_{32}$ be its $32$-element subfield and choose the
+$32$ logarithms $a_c$ satisfying
+\[
+ \theta^{a_c}=\theta+c\qquad(c\in\mathbb F_{32}).
+\]
+The element $\theta$ has degree four over $\mathbb F_{32}$.  If two
+sums of four logarithms agree modulo $M$, the corresponding products
+of four factors $\theta+c$ agree.  Subtracting their monic
+degree-four polynomials leaves a polynomial of degree at most three
+over $\mathbb F_{32}$.  It must vanish identically, so unique
+factorization identifies the two multisets of factors.  This is the
+Bose--Chowla argument \cite{BoseChowla}.
+
+Translate the logarithms by $-535448$ modulo $M$ and take their
+representatives in $[0,M)$.  The sorted list is the displayed code.
+Translation preserves equality or inequality of four-term sums
+modulo $M$.  The chosen origin follows the largest cyclic gap of
+the original logarithms and reduces the maximum representative to $T$.
+The generator reproduces each finite-field calculation, all logarithms,
+the translation, and the exhaustive multiset certificate.
+\end{proof}
+
+\subsection{The coefficient identity}
+\label{b4:polarization}
+
+Define formal polynomials
+\begin{align}
+ C_{\mathbf n}(t)&=\left(1+\sum_{i=1}^{31}n_it^{w_i}\right)^4,
+ &
+ D_c(t)&=\sum_{|\alpha|\le4}c_\alpha t^{L_c-\alpha\cdot\mathbf w}.
+ \label{b4:CD}
+\end{align}
+Every exponent of $D_c$ is nonnegative, since
+$\alpha\cdot\mathbf w\le4T=L_c$.
+
+\begin{lemma}[Quartic coefficient recovery]
+\label{b4:extract}
+For every $\mathbf n$,
+\[
+ [t^{L_c}]C_{\mathbf n}(t)D_c(t)=24P_0(\mathbf n).
+ \tag{B4.5}\label{b4:recovery}
+\]
+If $0\le n_i<b$ and $q_j$ denotes any coefficient of
+$C_{\mathbf n}(t)D_c(t)$, then
+\[
+ |q_j|\le24H\left(1+\sum_i n_i\right)^4
+       \le24H\bigl(1+31(b-1)\bigr)^4.
+ \tag{B4.6}\label{b4:qbound}
+\]
+The product has degree at most $8T$.
+\end{lemma}
+
+\begin{proof}
+The multinomial term indexed by $\gamma$ in $C_{\mathbf n}$ has
+coefficient
+\[
+ \frac{4!}{(4-|\gamma|)!\prod_i\gamma_i!}\,\mathbf n^\gamma
+\]
+and exponent $\gamma\cdot\mathbf w$.  Its product with the
+$\alpha$-term of $D_c$ reaches exponent $L_c$ exactly when
+$\gamma\cdot\mathbf w=\alpha\cdot\mathbf w$.  Lemma~\ref{b4:code}
+forces $\gamma=\alpha$, and the factorials cancel.  Summing proves
+\eqref{b4:recovery}.
+
+Distinct indices in $D_c$ have distinct exponents and coefficients
+of magnitude at most $24H$.  The coefficients of $C_{\mathbf n}$
+are nonnegative and their sum is $C_{\mathbf n}(1)$.  Bounding each
+convolution coefficient by $24H C_{\mathbf n}(1)$ proves
+\eqref{b4:qbound}.  Finally,
+$\deg C_{\mathbf n}\le4T$ and $\deg D_c\le L_c=4T$.
+\end{proof}
+
+\subsection{The general mechanism behind the improvement}
+\label{b4:general}
+
+The coefficient step is not special to the particular quartic support.
+It explains why the change can be much larger than a local circuit
+simplification.
+
+\begin{proposition}[Polynomial span at fixed degree]
+\label{b4:generalspan}
+Let $d\ge2$ and let $P\in\Z[x_1,\ldots,x_n]$ have total degree at
+most $d$.  For every prime power $q\ge n+1$ there are fixed
+integer weights
+\[
+ 0=w_0<w_1<\cdots<w_n\le T\le q^d-2
+\]
+such that, on putting
+\[
+ c_\alpha=(d-|\alpha|)!\prod_i\alpha_i!\,p_\alpha,
+ \qquad
+ D_P(t)=\sum_{|\alpha|\le d}c_\alpha t^{dT-\alpha\cdot\mathbf w},
+\]
+one has the exact identity
+\[
+ [t^{dT}]
+ \left(1+\sum_{i=1}^n x_it^{w_i}\right)^dD_P(t)=d!\,P(\mathbf x).
+\]
+In particular, choosing the least power of two $q\ge n+1$ gives
+$T<[2(n+1)]^d$.
+\end{proposition}
+
+\begin{proof}
+The Bose--Chowla construction in $\F_{q^d}$ gives a set of $q$
+residue classes modulo $q^d-1$ with distinct unordered $d$-sums.
+Indeed a primitive element has degree $d$ over $\F_q$;
+equality of products of $d$ factors $\theta+c$ yields an
+identically zero polynomial of degree at most $d-1$, exactly
+as in Lemma~\ref{b4:code}.  Translate one class to zero, retain
+it and any $n$ other classes, and take their representatives in
+$[0,q^d-2]$.  Padding with zero gives the needed injectivity
+for all multi-indices of total degree at most $d$.
+The multinomial proof of Lemma~\ref{b4:extract}, with $d!$
+in place of $24$, proves the displayed identity.  Finally
+$q<2(n+1)$ for the stated choice of $q$.
+\end{proof}
+
+Thus at fixed $d$ the required exponent span is polynomial in
+the number of source variables, whereas the standard positional
+choice has span $(d+1)^n$.  This statement concerns the
+coefficient-coding stage.  A full Diophantine reduction still
+requires its bounds, masks, and both implications to be checked.
+The following proof performs that work for the delivered quartic
+instance.  The finite-field theorem is classical; no claim of
+literature priority for this general use of additive codes is made.
+
+\subsection{The new two-witness source interface}
+\label{b4:interface}
+
+For integer variables $f,g$, define the following expressions in the
+displayed order:
+\begin{align}
+ b&=1+3f,&
+ \mathcal B&=\beta_Sb^4,&
+ \ell&=\sum_{i=1}^{31}\mathcal B^{w_i},
+ \label{b4:source1}\\
+ D_c&=D_c(\mathcal B),&
+ N_0&=\mathcal B^{T+1},&
+ N_1&=4\mathcal B^{8T+1},
+ \label{b4:source2}\\
+ N&=N_0N_1,&
+ \mathscr C&=b\mathcal B^T,&
+ M_c&=N_0-1-(b-1)\ell,
+ \label{b4:source3}\\
+ T_c&=M_c+(\mathcal B-2)\mathcal B^{L_c}N_0,
+ \label{b4:source4}\\
+ J_c&=2(1+g)^4D_c+\sum_{j=0}^{8T}\mathcal B^{j+1},
+ \label{b4:source5}\\
+ S_c&=g+J_cN_0,&
+ R_c&=(S_c+T_c+1)N+T_c+1,
+ \label{b4:source6}\\
+ X&=(N-1)R_c,&
+ Y&=N^2.
+ \label{b4:source7}
+\end{align}
+All exponents and sum limits are fixed integers.  These expressions
+are ordinary polynomials in $f,g$ with fixed integer coefficients.
+
+\begin{theorem}[Complete source interface]
+\label{b4:sourceinterface}
+The following implications hold.
+\begin{enumerate}
+\item If $P_0$ has a natural zero, then for every positive bound $Z$
+there exist $f\ge Z$ and $b\le g<\mathscr C$ such that $b$ is a
+square power of two and
+\[
+ Y\mid\binom{2X}{X}.
+ \tag{B4.7}\label{b4:binomial}
+\]
+\item If $f\ne0$, $0\le g<2\mathscr C$, $b$ is a square power of two,
+and \eqref{b4:binomial} holds, then $P_0$ has a natural zero.
+\item Already under $f\ne0$, $b$ square, and
+$0\le g<2\mathscr C$, without a power-of-two assumption on $b$,
+\[
+ 3\mid X,\qquad X>3b,\qquad Y>\max\{b,256\}.
+ \tag{B4.8}\label{b4:bridgebounds}
+\]
+\end{enumerate}
+Moreover $\mathscr C=2^{4269882T}b^{4T+1}$, with an even positive
+exponent of two, so the bound has exactly the form required by
+Sun's source interface.
+\end{theorem}
+
+\begin{proof}
+We first establish signs and bounds before assuming a source zero or
+binomial divisibility.  Since $b=1+3f$ is a square and $f\ne0$,
+one has $f>0$ and $b\ge4$.  The coefficient bound
+\eqref{b4:bound} implies
+\begin{align}
+ \frac{\mathcal B}{2}
+ &>24H\bigl(1+31(b-1)\bigr)^4,
+ \label{b4:firstbound}\\
+ \mathcal B
+ &>2+2\cdot24H(32b)^4.
+ \label{b4:secondbound}
+\end{align}
+For the second inequality, replacing $33$ by $32$ in the bound for
+$\beta_S$ leaves more than two units of margin after multiplication
+by $b^4$, because $H\ge1$ and $b\ge4$.
+
+The constant coefficient $P_0(\mathbf0)$ is positive.  Thus $D_c>0$:
+its leading term is $24P_0(\mathbf0)\mathcal B^{L_c}$ and the
+absolute sum of all lower terms is at most
+\[
+ 24H\sum_{j=0}^{L_c-1}\mathcal B^j<\mathcal B^{L_c}.
+\]
+We also have
+$D_c\le24H\sum_{j=0}^{L_c}\mathcal B^j$.
+The base-$\mathcal B$ digits of $M_c$ are $\mathcal B-b$ at
+positions $w_i$ and $\mathcal B-1$ at the other positions from
+$0$ through $T$.  Therefore
+\[
+ 0\le M_c<N_0,\qquad
+ 0<(\mathcal B-2)\mathcal B^{L_c}<N_1,\qquad
+ 0\le T_c<N.
+ \tag{B4.9}\label{b4:blocksT}
+\]
+
+For $0\le g<2\mathscr C$, the inequalities
+$2b\le\mathcal B$ and $g\in\mathbb Z$ give
+$g<N_0$ and $1+g\le2b\mathcal B^T\le32b\mathcal B^T$.
+Using \eqref{b4:secondbound} and the bound for $D_c$,
+\begin{align*}
+ 0<J_c
+ &<
+ \frac{(\mathcal B-2)+\mathcal B}{\mathcal B-1}
+       \mathcal B^{8T+1}\\
+ &=2\mathcal B^{8T+1}<N_1.
+\end{align*}
+Consequently $0\le S_c<N$.  These are unconditional bounds on
+the stated source range.
+
+Because $\beta_S$ is an even power of two and $b\equiv1\pmod3$,
+we have $\mathcal B\equiv1\pmod3$ and
+$N=4\mathcal B^{9T+2}\equiv1\pmod3$.  Hence $3\mid X$.
+Also $R_c\ge N+1$, $N>\mathcal B\ge b$, and $N\ge4$, so
+$X=(N-1)R_c>3b$ and $Y=N^2>\max\{b,256\}$.
+This proves \eqref{b4:bridgebounds}.
+
+Now assume additionally that $b$ is a power of two.  Then
+$\mathcal B,N_0,N_1,N$ are powers of two.  For nonnegative integers
+$a,d$, write $\tau_2(a,d)=0$ when their binary addition has no
+carries, equivalently when their bitwise AND is zero.  The mask
+description gives
+\begin{multline}
+ 0\le g<2\mathscr C,\quad \tau_2(g,M_c)=0\\
+ \Longleftrightarrow\quad
+ g=\sum_{i=1}^{31}n_i\mathcal B^{w_i}
+ \quad\hbox{for some }0\le n_i<b.
+ \tag{B4.10}\label{b4:mask}
+\end{multline}
+Indeed the digit $\mathcal B-b$ has ones exactly in the high binary
+positions of one $\mathcal B$-digit, whereas $\mathcal B-1$ has
+ones in every position.  The only free bits of $g$ are therefore
+the low $\log_2b$ bits at the distinct slots $w_i$.  The bound
+$g<N_0$ excludes all higher slots.  Conversely every displayed
+code has the required bit pattern and is less than $\mathscr C$.
+No superincreasing property of the weights is used.
+
+For decoded $g$, write
+\[
+ (1+g)^4D_c
+ =\sum_{j=0}^{8T}q_j\mathcal B^j
+\]
+using the formal coefficients of Lemma~\ref{b4:extract}, and put
+\[
+ J'=\sum_{j=0}^{8T}
+          \left(q_j+\frac{\mathcal B}{2}\right)\mathcal B^j.
+\]
+Equations \eqref{b4:qbound} and \eqref{b4:firstbound} show that
+every displayed digit of $J'$ is an integer strictly between
+$0$ and $\mathcal B$.  In particular this is its actual
+base-$\mathcal B$ expansion, even when some $q_j$ are negative.
+Since $J_c=2J'$,
+\[
+ \tau_2(J_c,(\mathcal B-2)\mathcal B^{L_c})=0
+ \ \Longleftrightarrow\
+ \tau_2\!\left(J',
+       \left(\frac{\mathcal B}{2}-1\right)\mathcal B^{L_c}\right)=0.
+\]
+The mask on the right occupies precisely the low bits of the
+digit at $L_c$.  A digit in $[1,\mathcal B)$ avoids it exactly
+when it equals $\mathcal B/2$.  By \eqref{b4:recovery}, this is
+equivalent to $q_{L_c}=24P_0(\mathbf n)=0$.
+
+The two block decompositions, together with $S_c,T_c<N$, give
+\[
+ \tau_2(S_c,T_c)=0
+ \ \Longleftrightarrow\
+ \tau_2(g,M_c)=0
+ \ \land\
+ \tau_2(J_c,(\mathcal B-2)\mathcal B^{L_c})=0.
+ \tag{B4.11}\label{b4:blocksplit}
+\]
+Sun's binary two-block lemma \cite[Lemma~2.2]{Sun2021} states,
+for $0\le S_c,T_c<N$ with $N$ a power of two and the exact
+$R_c,X$ above, that
+\[
+ \tau_2(S_c,T_c)=0
+ \quad\Longleftrightarrow\quad
+ N^2\mid\binom{2X}{X}.
+ \tag{B4.12}\label{b4:Kummer}
+\]
+Its hypotheses have all been established before invoking it.
+Combining \eqref{b4:mask}--\eqref{b4:Kummer} proves soundness.
+
+For completeness, suppose $P_0(\mathbf n)=0$.  Choose $s$ so large
+that $b=2^{2s}>\max_i n_i$ and $(b-1)/3\ge Z$.  Since
+$4^s\equiv1\pmod3$, $f=(b-1)/3$ is an integer.  The source
+zero is not the all-zero vector, so
+$g=\sum_i n_i\mathcal B^{w_i}\ge\mathcal B\ge b$.
+The usual geometric-sum estimate gives $g<b\mathcal B^T=\mathscr C$.
+The mask and coefficient identities yield
+\eqref{b4:binomial}.  Finally the asserted monomial formula for
+$\mathscr C$ follows directly from $\mathcal B=\beta_Sb^4$.
+\end{proof}
+
+\subsection{The complete outer polynomial}
+\label{b4:outer}
+
+We now give the full outer formula, so that the artifact is specified
+by fixed constants, finite sums, and ordinary polynomial operations.
+Only the ten lowercase coordinates listed in
+Theorem~\ref{b4:main} are unknowns.  Every other symbol is a circuit
+register.
+
+Starting with the new $b,X,Y,\mathscr C$ above, set
+\begin{align}
+ L_s&=lY,& U&=2L_sX,\notag\\
+ V&=4gwY,& W_s&=bw,
+ \label{b4:bridge1}\\
+ A&=U(V+1),& B_s&=2X+1,\notag\\
+ C&=B_s+(A-2)h,& P_n&=U^2V,
+ \label{b4:bridge2}\\
+ K&=X+1+k(P_n-2),&
+ S_s&=2A-5,
+ \label{b4:bridge3}\\
+ T_s&=3W_sC-2(W_s^2-1),&
+ R_2&=(P_n^2-4)K^2+4,
+ \label{b4:bridge4}
+\end{align}
+\begin{equation}
+ \Delta=8\mathscr C^3gK^2
+       -g^2\{32(C-KL_s)^2\mathscr C^3+g^2K^2\},
+ \label{b4:bridge5}
+\end{equation}
+\begin{align}
+ O&=f^2l^2\Delta,&
+ \xi&=zx.
+ \label{b4:bridge6}
+\end{align}
+The modified Lucas certificate is
+\begin{align}
+ D_s&=(A^2-4)C^2+4,&
+ E&=C^2D_s\xi,
+ \label{b4:lucas1}\\
+ F_s&=4(A^2-4)E^2+1,&
+ G_*&=2(A+2)(A-2)^2E^2-1,
+ \label{b4:lucas2}\\
+ \Omega&=16E,&
+ H_*&=C+(B_s-C)F_s+\Omega F_sy,
+ \label{b4:lucas3}\\
+ I_*&=(G_*^2-1)H_*^2+1.
+ \label{b4:lucas4}
+\end{align}
+These are the same bridge and Lucas formulas as in package~31
+\cite{Package31}, using Sun's modified certificate and interpolation
+theorem \cite{Sun2026}.
+
+For the divisibility and nonvanishing merger, define
+\begin{align}
+ r&=T_s+S_sy,&
+ \Sigma&=\xi S_s^5,
+ \label{b4:merge1}\\
+ \Theta&=(r^3-rS_s^2-S_s^3)(r^2+23S_s^2).
+ \label{b4:merge2}
+\end{align}
+The three radicands and their separating weights are
+\begin{align}
+ r_0&=b\{1+(3O-4)b^2z^2\},&
+ r_1&=R_2,&
+ r_2&=D_sF_sI_*,
+ \label{b4:radicands}\\
+ \omega_0&=1,&
+ \omega_1&=r_0,&
+ \omega_2&=r_0(P_n^2+K^2+3).
+ \label{b4:weights}
+\end{align}
+Finally put
+\begin{align}
+ Z_c&=\Sigma m-\Theta,&
+ A_i&=\Sigma^2\omega_i^2r_i\quad(0\le i\le2),
+ \label{b4:norm1}\\
+ V_n&=Z_c^2+A_2-A_0-A_1,
+ \label{b4:norm2}\\
+ W_n&=V_n^2+4Z_c^2A_2-4A_0A_1,
+ \label{b4:norm3}\\
+ \boxed{F_{B_4}}&\boxed{{}=W_n^2-16V_n^2Z_c^2A_2.}
+ \label{b4:norm4}
+\end{align}
+The requested equation is $F_{B_4}=0$.  No radical in the proof below
+is part of its definition.  There are no divisions or variable
+exponents in \eqref{b4:source1}--\eqref{b4:norm4}.
+
+\subsection{Why the finalizer retains both implications}
+\label{b4:finalizer}
+
+For clarity we record the inherited finalizer arguments, with their
+attribution to package~31 \cite{Package31}.  They ensure that the new
+source interface is being composed with the precise outer hypotheses.
+
+\begin{lemma}[The quintic merger]
+\label{b4:quintic}
+The polynomial
+$\pi(v)=(v^3-v-1)(v^2+23)$ has a root modulo every positive integer
+and no rational root.  If $S_s\ne0$ and $\xi\ne0$, then
+$\Sigma\mid\Theta$ implies $S_s\mid T_s$.
+Conversely, when $S_s\mid T_s$, a residue class of $y$ modulo
+$|\xi|$ makes $\Sigma\mid\Theta$.  For every integer assignment
+with $S_s\ne0$, $\Theta\ne0$.
+\end{lemma}
+
+\begin{proof}
+The cubic has discriminant $-23$.  At $p=23$ it has the simple
+root $3$.  At an odd prime $p\ne23$, either it has a simple root
+or it is irreducible.  In the latter case Frobenius is an even
+three-cycle, so the discriminant is a square modulo $p$ and
+$v^2+23$ has a simple root.  Hensel lifting handles all odd prime
+powers.  Since $-23\equiv1\pmod8$, the quadratic has a root in
+the $2$-adic integers as well.  The Chinese remainder theorem
+gives a root modulo every positive integer.
+
+The rational-root theorem excludes rational roots of the cubic,
+whose only possible integer roots are $\pm1$; the quadratic is
+positive on $\mathbb Q$.  Consequently
+$\Theta=S_s^5\pi((T_s+S_sy)/S_s)$ cannot vanish.
+
+If $S_s\mid T_s$, write $T_s=S_sq$ and choose
+$y\equiv c-q\pmod{|\xi|}$ for a root $c$ of $\pi$ modulo $|\xi|$.
+Then $\Theta=S_s^5\pi(q+y)$ is divisible by $\Sigma$.
+Conversely suppose that a prime satisfies
+$a=v_p(S_s)>d=v_p(T_s)$.  Then $v_p(r)=d$; the leading term of
+the homogeneous cubic factor has uniquely smallest valuation
+$3d$, and that of the quadratic factor has uniquely smallest
+valuation $2d$.  Thus $v_p(\Theta)=5d<5a$, contradicting
+$S_s^5\mid\Theta$.  Therefore $S_s\mid T_s$.
+\end{proof}
+
+\begin{lemma}[Positivity and separating weights]
+\label{b4:separation}
+For the displayed polynomial expressions, if $z\ne0$ then
+$|r_0|>1$ and
+\[
+ \sqrt{|r_1|}\le P_n^2+K^2+2.
+ \tag{B4.13}\label{b4:r1bound}
+\]
+Any rational signed sum
+$\pm\sqrt{r_0}\pm\omega_1\sqrt{r_1}\pm\omega_2\sqrt{r_2}$
+forces every $r_i$ to be an integer square.
+Moreover, $r_0$ square and $z\ne0$ imply that $b$ is a positive
+square and $O>0$.
+\end{lemma}
+
+\begin{proof}
+The congruence $b\equiv1\pmod3$ excludes $b=0,-1$.  If
+$r_0=\pm1$, its factor $b$ must be $1$, hence $f=O=0$ and
+$r_0=1-4z^2$, a contradiction.  If $r_0=0$, its bracket vanishes,
+forcing $|b|=|z|=1$ and $3O-4=-1$; again $b=1$ gives $O=0$,
+a contradiction.  This proves $|r_0|>1$.
+
+For \eqref{b4:r1bound}, use
+$|r_1|\le(P_n^2+4)K^2+4$.  Subtracting this bound from
+$(P_n^2+K^2+2)^2$ leaves
+$P_n^4+K^4+P_n^2K^2+4P_n^2\ge0$.
+It follows that
+\[
+ |\omega_1|>\sqrt{|r_0|},\qquad
+ |\omega_2|>\sqrt{|r_0|}
+                    +|\omega_1|\sqrt{|r_1|}.
+ \tag{B4.14}\label{b4:strictweights}
+\]
+In the multiquadratic splitting field, any automorphism changing a
+nonzero term of a rational signed sum has a largest changed index.
+The magnitude of that term is at least the magnitude of its weight,
+since its nonzero radicand is an integer.  By
+\eqref{b4:strictweights}, all earlier terms together are too small
+to cancel its change.  This contradiction shows that every root
+term is rational.  A rational square root of an integer is integral.
+The argument also covers negative candidate radicands by complex
+absolute values, and zero radicands require no recovery.
+
+Finally the two factors of $r_0$ are coprime, since the bracket
+is $1$ modulo $b$.  If their product is a nonzero square, each
+factor is a signed square with the same sign.  A negative square
+cannot be $1$ modulo $3$, so $b$ is a positive square and its
+bracket is a square.  If $O\le0$ and $bz\ne0$, that bracket
+would be at most $1-4=-3$.  Hence $O>0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{b4:main}: equivalence]
+The polynomial identity underlying the finalizer is
+\[
+ F_{B_4}
+ =\prod_{\varepsilon\in\{-1,1\}^3}
+   \left(Z_c+\sum_{i=0}^2\varepsilon_i\sqrt{A_i}\right).
+ \tag{B4.15}\label{b4:normidentity}
+\]
+It follows by successively multiplying conjugate factors, or by
+expanding the $35$ terms of the three-radicand norm.  The delivered
+checker proves this exact formal identity independently.
+
+Suppose $F_{B_4}=0$.  The integer $S_s=2A-5$ is odd and nonzero,
+so Lemma~\ref{b4:quintic} gives $\Theta\ne0$.  If $\Sigma=0$,
+then every $A_i=0$ and \eqref{b4:norm4} equals $\Theta^8\ne0$.
+Thus $\Sigma\ne0$, and $\xi=zx\ne0$.  Divide a vanishing factor
+of \eqref{b4:normidentity} by $\Sigma$.  Lemma~\ref{b4:separation}
+makes every $r_i$ a square; the resulting signed sum of roots is
+an integer, so $\Sigma\mid\Theta$.
+Lemma~\ref{b4:quintic} gives $S_s\mid T_s$, and
+Lemma~\ref{b4:separation} gives $b$ square and $O>0$.
+These, $\xi\ne0$, $R_2$ square, and $D_sF_sI_*$ square are
+exactly the hypotheses of Sun's reverse bridge
+\cite[Proposition~6.2]{Sun2026}.  It yields the source range,
+the power-of-two condition, and binomial divisibility required
+by Theorem~\ref{b4:sourceinterface}.  Hence $P_0$ has a natural
+zero, and \eqref{b4:endpoint} yields a finite ZFC refutation.
+
+Conversely suppose $P_0$ has a natural zero.
+Theorem~\ref{b4:sourceinterface} supplies arbitrarily large $f$;
+choose $f\ge2$.  Sun's positive bridge
+\cite[Proposition~6.1]{Sun2026} supplies the other initial
+witnesses with $b$ square, $R_2$ square, $S_s\mid T_s$,
+$C=u_{B_s}(A)$, and $O>0$.  As
+$O=f^2l^2\Delta$ is a positive integer, $O\ge4$.
+The positive nonsquare integer $d=3O-4\equiv2\pmod3$
+has a Pell solution with its second coordinate a positive
+multiple of $b$: take a positive Pell unit to a power equal
+to the order of its class modulo $b$.  Write that second
+coordinate as $bz$ with $z>0$.  Then $r_0$ is a square.
+
+Sun's full residue-class interpolation theorem
+\cite[Theorem~4.1]{Sun2026} supplies a positive $\xi$ divisible
+by this $z$, and allows $y$ in the residue class required by
+Lemma~\ref{b4:quintic}, while making $D_sF_sI_*$ a square.
+Set $x=\xi/z$.  Thus all $r_i$ are squares,
+$\Sigma\ne0$, and $\Sigma\mid\Theta$.  Choose the integer $m$
+so that a selected signed factor of \eqref{b4:normidentity}
+vanishes.  This gives $F_{B_4}=0$.
+
+All new steps have been proved above.  The substantial imported
+machine/compiler and Lucas results are explicitly identified;
+their ordinary arithmetic proofs, not the soundness of any
+proof assistant, supply the asserted ZFC-provability.
+\end{proof}
+
+\subsection{Circuit identity, degree, and reproducibility}
+\label{b4:verification}
+
+The sparse coefficient evaluator uses the division-free identity
+\[
+ \mathcal B^{4T-\alpha\cdot\mathbf w}
+ =(\mathcal B^T)^{4-|\alpha|}
+       \prod_{i=1}^{31}
+          (\mathcal B^{T-w_i})^{\alpha_i}.
+ \tag{B4.16}\label{b4:horner}
+\]
+All exponents are nonnegative.  A multivariate Horner scheme shares
+the powers and coefficient recipes.  Equation~\eqref{b4:horner}
+is valid for arbitrary integer assignments, including
+$\mathcal B=0$; no division by $\mathcal B$ is concealed.
+The geometric sum in \eqref{b4:source5} uses binary identities
+for fixed powers and fixed-length sums.
+
+The main circuit contains $485$ additions, $25$ subtractions, and
+$1694$ multiplications, for $2204$ operations.  There are $79$
+fixed coefficient leaves after reuse and literal simplification.
+The general source-degree bounds in this instance are
+\[
+ \deg X=108T+24,\qquad
+ \deg Y=72T+16,\qquad
+ \deg\mathscr C=4T+1.
+ \tag{B4.17}\label{b4:sourcedegrees}
+\]
+Propagating degree bounds through the circuit yields
+\[
+ \deg F_{B_4}\le113856T+27064=107286763576.
+ \tag{B4.18}\label{b4:degreeupper}
+\]
+To certify attainment rather than just an upper bound, substitute
+one indeterminate for all ten unknowns.  With the actual fixed
+coefficient payloads, the coefficient at the bound in
+\eqref{b4:degreeupper} is $16$ modulo $101$.  It is also $599$
+modulo $1009$ and $622356$ modulo $1000003$.  A single nonzero
+such coefficient proves attainment, so the stated total degree
+is exact.  The checker performs exact leading-coefficient
+arithmetic modulo the primes; this is not inference from
+random numerical agreement.
+
+For comparison, package~31's positional construction has exact degree
+\[
+ 126496\cdot5^{31}+27064
+ =589042901992797851562527064
+\]
+and $1442$ operations.  The new degree is smaller by a factor of
+approximately $5.49\times10^{15}$, at the cost of $762$ additional
+arithmetic operations.  Thus the degree improvement is substantive,
+while the operation-count tradeoff remains explicit.
+
+The self-contained commands are
+\begin{quote}
+\code{python3 b4_code.py}\\
+\code{python3 build_b4_sun10.py}\\
+\code{python3 verify_b4_sun10.py}
+\end{quote}
+from \code{ten_integer/}.  They use only the Python standard
+library.  In addition to the degree proof, they regenerate the
+finite field and all $52360$ code sums, reconstruct all $402$
+weighted coefficient records, check the fixed coefficient payloads
+and bounds, and expand the norm identity exactly.  A separate
+scalar transcription evaluates the literal $402$-term coefficient
+sum and all named registers modulo three primes, independently
+of the Horner circuit.  Those modular transcription checks are
+regression evidence; the preceding lemmas supply the universal
+equivalence.
+
+The archive also includes four finalizer variants using more generic
+weights or the literal Sun four-square merger.  They share the same
+source adapter and fixed tuple.  A clean isolated rebuild reproduces
+every generated JSON file byte for byte.  Source pins, coefficient
+bindings, licenses, and inherited attribution notices accompany
+the construction.

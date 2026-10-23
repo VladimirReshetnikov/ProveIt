@@ -1,0 +1,232 @@
+\section{A complete combined instance}
+\label{composed:section}
+
+The two improvements can be composed without changing the number of
+unknowns or the arithmetic graph.  The separate directory
+\code{ten_integer_composed/} performs this composition explicitly:
+it retains the literal quartic parent and the $B_4$ code, substitutes all
+four ports of the nonzero683195 backend together, recomputes every source
+coefficient bound, and materializes a new $\beta_S$.
+The original \code{ten_integer/} instance remains available for the
+isolated degree comparison.
+
+\begin{corollary}[The combined ten-integer equation]
+\label{composed:main}
+The fixed circuit
+\code{ten_integer_composed/generated/b4_signed10.json},
+with its local \code{data/INSTANCE.json} binding, defines a polynomial
+$F^{\mathrm{nz}}_{B_4}\in\Z[f,g,h,k,l,w,x,y,z,m]$ satisfying
+\[
+ \mathrm{ZFC}\ \vdash\
+ \left[
+   \bigl(\exists\mathbf u\in\Z^{10}:
+            F^{\mathrm{nz}}_{B_4}(\mathbf u)=0\bigr)
+   \longleftrightarrow\operatorname{Ref}_{\mathrm{ZFC}}
+ \right].
+\]
+Thus its lack of integer zeros is equivalent in ZFC to
+$\Con(\mathrm{ZFC})$.  Its exact degree is $107286763576$ and its
+circuit has $2204$ binary operations.  Its native base is $2^{683195}$
+and its source-margin constant is
+\[
+ \boxed{\beta_S^{\mathrm{nz}}=2^{2743514}.}
+\]
+The four native ports together with this margin constant occupy
+$685209$ raw bytes, compared with $1066835$ for the comparison
+ten-integer instance.
+\end{corollary}
+
+This corollary uses the same imported K215, ordinary compiler/Pell,
+and Sun theorems as the main construction.  The new work is the
+fully specified composition and its coefficient and degree audit.
+
+\subsection{The positive parent is compatible with the new tuple}
+
+The literal parent polynomial is unchanged, including its old positive
+transport coordinate $z_{\rm old}$.  To verify compatibility, use the
+sixteen positive variables of the new retained59 system and write its
+transport coordinate as $z_{\rm new}$.  Define
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq^3,\\
+ E&=XY,& k&=\eta+\zeta,\\
+ c&=kY+\eta,& a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H,\\
+ D&=X+ac+\gamma H.
+\end{align*}
+The packed rank is
+\[
+ R=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+                  +(M_C+qM_F)J.
+\]
+Also put $V=of-c$, $I=ic^2$, $A_0=\Delta(f^2-1)$ and
+$L_0=EkY$.  Denote the retained residuals by
+\begin{align*}
+ u_1&=\tau^2-L_0(L_0+k)-1,&
+ u_2&=D^2-\Delta c^2-1,\\
+ u_3&=A_0(V^2-y^2)+y^2-1,&
+ u_4&=k-hE-R-1,\\
+ u_5&=(K_0+w)C-F-z_{\rm new}(q-1),&
+ u_6&=I^2-A_0,\\
+ u_7&=jc-R-V.
+\end{align*}
+These are the seven equations already bound to the complete new tuple.
+
+Extend a positive retained solution by
+\begin{align*}
+ z_{\rm old}&=z_{\rm new}+1,& N&=q^3,&L&=q^2-1,\\
+ P&=E(c-\eta)+k,&C_2&=c^2,&F_2&=f^2,\\
+ B_{\rm aux}&=I^2,&g&=y^2-V^2,
+\end{align*}
+and by the displayed expressions for the other parent auxiliaries.
+The source coordinate $y$ is unchanged.  These parent coordinates
+are distinct from the later ten-integer coordinates with the same
+letter names.
+
+\paragraph{The two sign obligations.}
+All added auxiliaries are immediately positive except $V$ and $g$.
+The inherited ordinary-kernel bootstrap gives
+\[
+ c>A\Delta^2,\qquad A=a+2,\qquad\Delta=A^2-1.
+\]
+This is equation~(3) of Section~4 in the byte-preserved source
+\code{source_proofs/ORDINARY_BLANK_PROOF.md}.  It occurs before
+auxiliary rank recovery: the first-norm index is at least $24$, the
+main index is larger, and Pell growth gives the displayed bound.
+In particular $c>2$ and $c^2>4\Delta$.  Here the ordinary strong
+equation is
+\[
+ I^2=\Delta(f^2-1),\qquad I=ic^2.
+\]
+It therefore gives
+\[
+ f^2=1+\frac{i^2c^4}{\Delta}>4c^2.
+\]
+Consequently $V=of-c>c>1$, since $o$ is a positive integer.
+The auxiliary equation now yields
+\[
+ I^2V^2-(I^2-1)y^2=1,\qquad
+ g=y^2-V^2=\frac{V^2-1}{I^2-1}>0.
+\]
+These inequalities hold for every positive retained solution.
+
+There is no identification of different normalized multipliers:
+the parent uses the ordinary $i$.  In a canonical P67 witness,
+$i_{\rm P67}=\psi_A(m)/c^2$, whereas the corresponding ordinary
+parent coordinate is $i=\Delta i_{\rm P67}$.  The direct retained59
+binding avoids conflating the two strong equations.
+
+\paragraph{Exact residual identities.}
+Under the displayed extension, all $22$ parent residuals vanish
+identically except positions $8,12,13,14,15,21,22$.  In order, these
+become
+\[
+ u_1,\quad u_2,\quad u_4-u_7,\quad u_7,\quad
+ u_5,\quad u_6,\quad u_3+(V^2-y^2)u_6.
+\]
+The only packing simplification is the polynomial identity
+\[
+ (q-F)(N-q)-C(q^2-1)
+ =\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+ \qquad(N=q^3).
+\]
+The transport identity is
+\[
+ (K_0+w)C+q-F-z_{\rm old}(q-1)-1
+ =(K_0+w)C-F-z_{\rm new}(q-1).
+\]
+Thus a positive retained solution extends to a positive literal
+parent solution.
+
+Conversely, a positive parent zero has $q>1$.  Its old transport
+equation implies
+\[
+ (K_0+w)C=F+(z_{\rm old}-1)(q-1)>0,
+\]
+hence $C>0$ and $F<q$.  Restore the deleted packing register
+\[
+ G=q(q-F)-C=(q-1)C+q\alpha>0.
+\]
+The packing identity in the inherited quartic31 proof restores the
+complete positive source.  Its ordinary kernel gives $X=wq=2^R$
+and $R>3q$, so $w>q>F$.  Therefore
+\[
+ (z_{\rm old}-1)(q-1)=(K_0+w)C-F>0.
+\]
+It follows that $z_{\rm new}=z_{\rm old}-1$ is strictly positive.
+The same identities recover the seven retained equations.  This
+establishes the positive zero-set equivalence with all auxiliaries
+and transport conventions accounted for.
+
+The nonzero backend has already established the complete arithmetic
+interface needed by this inherited kernel.  The positive parent
+therefore has a zero precisely when there is a finite refutation.
+Replacing its coordinates by $n_i+1$ gives the required source
+quartic on $\N^{31}$.  Its value at zero remains positive because
+the fifth residual is $1$ at the all-one parent assignment.
+
+\subsection{Recomputing the source margin}
+
+The new fixed port bit lengths are
+\[
+ (b_1,b_2,b_3,b_4)=(683195,688546,683195,683196).
+\]
+The symbolic coefficient recipes are unchanged.  For a weighted
+coefficient written
+$c_\alpha=\sum_e a_{\alpha,e}\prod_j A_j^{e_j}$, use the explicit
+triangle bound
+\[
+ U_\alpha=\sum_e |a_{\alpha,e}|\,
+                  2^{\sum_j e_jb_j}.
+\]
+Since $A_j<2^{b_j}$, $|c_\alpha|\le U_\alpha$.  All $402$ individual
+bounds are recomputed from these recipes and the actual port
+payloads.  Their largest certified exponent gives
+\[
+ |c_\alpha|+1<2^{2743487}.
+\]
+As before $|p_\alpha|\le|c_\alpha|$.  Because
+$2\cdot24\cdot33^4=56924208<2^{27}$, the new even power
+$\beta_S^{\rm nz}=2^{2743514}$ satisfies the full strict
+source-margin hypothesis.  The new $\beta_S$ is materialized;
+its raw length is $342940$ bytes.  Adding the four native payloads
+gives $342269+342940=685209$ bytes, a $35.77\%$ reduction against
+the five payloads of the comparison ten-integer construction.
+
+The code weights, source interface, and outer relation-combining
+formula now apply verbatim with the new values.  All required
+properties have been re-established: a fixed quartic in $31$
+natural variables, positive constant term, the exact factorial
+coefficient convention, the $B_4$ code, and the strict even-power
+margin.  No new existential parameter is introduced.
+
+\subsection{Exact degree and reproducible composition}
+
+The delivered arithmetic DAG is identical to the comparison DAG:
+$485$ additions, $25$ subtractions and $1694$ multiplications,
+with $10$ unknown leaves and $79$ fixed coefficient leaves.
+The new fixed values cannot raise its degree bound.  To exclude
+cancellation lowering it, the verifier computes the diagonal
+leading coefficient with the actual new payloads:
+\[
+ \begin{array}{c|rrr}
+ \text{prime}&101&1009&1000003\\ \hline
+ \text{leading coefficient}&36&63&258712
+ \end{array}
+\]
+Every entry is nonzero.  Thus
+\[
+ \deg F^{\rm nz}_{B_4}=113856T+27064=107286763576.
+\]
+
+The script \code{regenerate_binding.py} reads the sibling complete
+backend and base parent, copies the four coherent payloads,
+recomputes all coefficient bounds and $\beta_S$, and rewrites
+all active binding metadata.  It is followed by
+\code{b4_code.py}, \code{build_b4_sun10.py} and
+\code{verify_b4_sun10.py}.  The independent review scripts
+separately reconstruct the coefficients, check the byte binding,
+and audit the formula and degree without importing these builders.
+The source proofs and their Git blob identities are included.
+The finite certificates supplement the universal transfer proof;
+they do not replace the inherited arithmetic or logical theorems.

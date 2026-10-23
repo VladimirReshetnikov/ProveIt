@@ -1,0 +1,157 @@
+\section{A twelve-positive-variable polynomial of degree 901}
+\label{sec:positive901}
+The inner radical-separating multiplier can be removed, rather than merely
+made cheaper.  The resulting single equation has exact degree $901$ and
+$112$ binary arithmetic operations.  Its three-equation presentation has
+maximum degree $892$ and $107$ operations, or $106$ after the inherited
+positive transport shift.  A shorter carrier gives degree $905$ in $110$
+operations (shifted system: degree $896$, $104$ operations).
+Every binary $+,-,\times$, including multiplication by a numeral, is charged;
+comparisons in systems are free.  The degree-$901$ form improves the pinned
+$1022/124$ form in both degree and cost.  These are ordinary mathematical
+reductions formalizable in ZFC, not consistency proofs or new proof-assistant
+certificates.
+
+\paragraph{Fixed instance and explicit definition.}
+Select the complete source31 Wang943 $121$-by-$8801$ tuple:
+$\beta=2^{1064921}-1$, $K_0=K$, $M_C=M_C$, $M_F=M_{F,\mathrm{source}}$,
+with the \emph{shifted} mask.  The included coefficient binding gives the
+immutable source adapter and all four materialized payload hashes.  The twelve positive
+unknowns are $J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t$; all following letters
+are computed polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,\\
+ \Delta&=a^2+H,&\ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,\\
+ b_0&=X+ac,&I&=ic^2,&D&=1+\Delta I^2,&Q&=(\Delta I)^2,\\
+ d&=Q-1,&v&=cT,&b&=c+RD,&e&=Q(Dv^2+b^2)-1,\\
+ B_*&=2Qvb,&K_*&=IT+1,&L&=1+HK_*,&W&=b_0+H(t+b+\delta),
+\end{align*}
+where
+\begin{align*}
+R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+N_k&=k-hE-R,\qquad
+N_t=(K_0+w)(q-F-\alpha)+q-F-z(q-1),\\
+\delta&=(a+2)c-\ell\quad\text{(full carrier)},\qquad
+\delta=ac-\ell\quad\text{(short carrier)}.
+\end{align*}
+The integer polynomial $N$ is the eight-factor conjugate product
+\[
+ N=\prod_{g=\pm\sqrt G,\,\tau=\pm\sqrt A,\,f=\pm\sqrt D}
+ \bigl[d(W-Lg-H\tau)^2-H^2e+H^2B_*f\bigr].
+\]
+Formal radical signs specify a polynomial, not extra unknowns or independent
+Galois automorphisms.  The equation and system are
+\[
+ N_kN_t(1+N)-1=0,\qquad\text{or}\qquad N_k=1,\quad N_t=1,\quad N=0.
+\]
+For an explicit division-free evaluator put
+\begin{align*}
+ u&=dH^2A,&p&=H^2QDv^2,&r&=H^2Qb^2,&j&=4pr,\\
+ e_H&=p+r-H^2,&\mathcal T&=2d(W^2+L^2G),&\mathcal K&=[d(W^2-L^2G)]^2,\\
+ a_*&=\mathcal T-2(u+e_H),&b_*&=(u-e_H)^2-j-\mathcal K,\\
+ v_*&=16uj-a_*(a_*\mathcal T+2b_*),&u_*&=b_*^2-a_*^2\mathcal K,\\
+ N&=\mathcal K v_*^2-u_*(\mathcal T v_*-u_*).
+\end{align*}
+Eliminating $\tau,f$ gives $(x^2-2(u+e_H)x+(u-e_H)^2-j)^2-16ujx$;
+reducing modulo $x^2-\mathcal T x+\mathcal K$ proves the formula.
+Also $N\equiv(u_*-d(W^2+L^2G)v_*)^2\pmod4$.  Hence a product root
+forces $N=0$ and $N_k=N_t=\epsilon\in\{1,-1\}$.
+
+\paragraph{The two new recovery lemmas.}
+The unchanged weak compiler interface gives
+\[
+ q\ge16,\quad Y\ge q^3,\quad E=XY\ge q^4,
+ \quad 0<R<E,\quad k>E,\quad kY<c<2kY,\quad a+2<2E.
+\]
+For estimates let $g=\sqrt G,f=\sqrt D,\tau=\sqrt A$ be positive real roots.
+Direct expansion gives $1<A<\Delta c^2\le\Delta I=\sqrt Q$ and $g>\tau$.
+Moreover $g<2Ec$, $f<2EI$, $I\ge c^2$ and $c>EY$ imply
+\begin{align*}
+ b+cf&<5E^3I^2+2EI^2<6E^3I^2<\tfrac12E^4I^2<d,\\
+ Ig-cf&=\frac{I^2-c^2}{Ig+cf}
+       >\frac{I}{8Ec}=\frac{ic}{8E}>\frac Y8>1.
+\end{align*}
+The second line uses the exact identity $(Ig)^2-(cf)^2=I^2-c^2$.
+For
+\[
+ C(x)=d(x^2+A)-e,\quad
+ F(x)=[C(x)^2+DB_*^2-4d^2x^2A]^2-4C(x)^2DB_*^2,
+\]
+every complex root has the coherent form
+$x=\tau'+y$, $(\tau')^2=A$, $(f')^2=D$,
+$dy^2=Q(vf'-b)^2-1$.
+Writing $Z=b+vf>1$ gives
+\[
+ |y|<Z(1+1/d),\qquad Z/d<T,
+ \qquad |y|<b+ITg,\qquad |x|<b+(IT+1)g.
+\]
+Here the first bound follows by squaring, the second from $b+cf<d$,
+and the third from $T(Ig-cf)>T$.
+At a norm zero, a negative main root would instead give
+\[
+ x=(W+Lg)/H=b+t+\delta+b_0/H+(K_*+1/H)g>b+K_*g,
+\]
+a contradiction.  Irrational quadratic conjugation would force that negative
+branch as well.  Thus the selected $g$ is a positive integer and
+$x=(W-Lg)/H$ is rational.  This argument covers imaginary auxiliary roots.
+
+The crucial inner recovery no longer needs a large multiplier.
+If $C(x)=0$ at a root of $F$, substitution of $x^2=e/d-A$ and
+$B_*=2Qvb$, followed by exact division by $4$, gives
+\[
+ d^2A^2-deA+Q^2v^2b^2D=0.
+\]
+Reducing modulo $Q$ forces $Q\mid A(A-1)$, impossible because
+$0<A(A-1)<Q$.  Likewise $F(0)=0$ forces $Q\mid(A-1)^2$, also impossible.
+Consequently the justified rational formulas
+\[
+ f'= -\frac{C(x)^2+DB_*^2-4d^2x^2A}{2C(x)B_*},\qquad
+ \tau'=\frac{C(x)+B_*f'}{2dx},\qquad y=x-\tau'
+\]
+recover integer square roots $f',\tau'$.  The inherited rational Pell
+saturation lemma applied to $Q=(\Delta I)^2$ makes $y$ integral.
+Reduction modulo $H$ gives $\gamma=(g-b_0)/H\in\mathbb Z$, and
+$g>(a+1)c$, $c>X$ give $\gamma>0$.  The normalized signed-quotient
+compiler interface now reconstructs the accepting blank K215 computation.
+
+\paragraph{Completeness and positivity are constructive.}
+For a canonical positive compiler witness, $V=vf-b$ is a nonzero integer,
+so $y^2=V^2+(V^2-1)/d\ge V^2$ and $y\ge b-vf$.
+Both corrections satisfy $0<\delta<g$, since $\ell/c>E/2>2$.
+Set
+\[
+ t=\gamma+(IT+1)g+\tau+y-b-\delta
+   >\gamma+\tau+ITg-vf>0.
+\]
+Then $W=Lg+H(\tau+y)$, giving $N=0$ and $N_k=N_t=1$.
+No new Pell congruence, enlarged index, or divisibility restriction is used.
+The inherited substitution $z_{\rm old}=z+1$ remains positive after compiler
+reconstruction and removes one system gate.  Composing with the existing
+K215 calibration and negating proves in ZFC that absence of positive
+solutions is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+
+\paragraph{Exact degree and verification.}
+Scale all twelve unknowns by a formal parameter.  Put
+$q_0=\beta J$, $k_0=\eta+\zeta$, $Y_0=sq_0^3$,
+$E_0=wq_0Y_0$, $c_0=k_0Y_0$, $I_0=ic_0^2$, $H_0=4E_0$,
+$\ell_0=E_0c_0$, $d_0=E_0^4I_0^2$,
+$B=q_0^3(q_0-F)E_0^2I_0^2$, and $V_0=I_0T\ell_0$.
+Four conjugate factors have degree $119$; cancellation of the matching
+$f,g$ signs leaves degrees $107,107,105,97$ for the full carrier.
+Their product has nonzero leading form
+\[
+ -2^{14}H_0^{16}d_0^8B^8V_0^4\ell_0^2k_0Y_0^2
+ \left(2t+k_0-\frac{iTc_0}{E_0}\right),
+\]
+of degree $892$.  The apparent denominator cancels against the prefactors;
+independent occurrence of $t$ proves nonvanishing for every fixed $\beta>0$.
+For the short carrier the final factor instead has degree $101$ and the
+leading form is
+$2^{16}H_0^{16}d_0^8B^8V_0^4\ell_0^2k_0Y_0^2c_0$, of degree $896$.
+The nonzero leading forms of $N_k,N_t$ add $7+2$ degrees.
+The full proof supplies every cancellation and denominator check.
+The reproducible checker independently multiplies the formal radical factors,
+checks signed and degenerate fixtures, and verifies these complete polynomial
+ray degrees and analytic leading coefficients over three finite fields.
+Finite diagnostics do not substitute for the unbounded compiler theorem.

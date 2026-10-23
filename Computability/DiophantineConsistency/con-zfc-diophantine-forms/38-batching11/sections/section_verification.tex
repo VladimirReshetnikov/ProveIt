@@ -1,0 +1,154 @@
+\section{Reproduction, evidence, and remaining work}
+\label{sec:verification}
+
+\subsection{What is fully specified}
+
+The four fixed native integers are materialized in
+\texttt{compiler/coefficients/}; the binding manifest records their
+unsigned little-endian raw hashes, compressed hashes, and bit lengths.
+The native generator starts from a literal ordered 943-tile table and
+the literal K215 transitions. It does not execute an unbounded machine
+or search for a refutation. The new nine-variable $\kappa$ and
+ten-integer $\beta_{\mathrm S}$ are also materialized, and every
+other fixed leaf is an explicit finite integer polynomial in those
+ports. Historical binding metadata in inherited source copies is
+expressly inactive.
+
+The large final polynomials are supplied as division-free directed
+acyclic arithmetic circuits. This representation uniquely determines
+each coefficient of a conventional integer polynomial, and permits
+evaluation without printing all expanded monomials. In particular the
+864-operation figure does not charge repeated shared expressions
+multiple times, and it does charge all nontrivial scalar multiplications
+and fixed powers after expansion. This convention is the same one
+used for the repository comparisons.
+
+\begin{longtable}{@{}p{0.27\linewidth}p{0.67\linewidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\texttt{report.tex}, \texttt{sections/} & Complete manuscript source.\\
+\texttt{report.pdf} & Compiled and visually inspected report.\\
+\texttt{compiler/} & New native ports; builders, independent auditor,
+literal data, unbounded adapter proof, and inherited notices.\\
+\texttt{nine/} & Source kernel, fixed recipes, natural and positive
+circuits, cancellation certificate, and independent bootstrap review.\\
+\texttt{signed10/} & Ten-integer circuit, source proof, Sun interface,
+finite checks, and pinned inherited finalizer.\\
+\texttt{eleven/} & Main and optional eleven-positive circuits, complete
+proofs, root bounds, and independent mathematical review.\\
+\texttt{provenance/} & Pinned endpoint source and machine identity,
+with a manifest explaining the inherited logical boundary.\\
+\texttt{reproduce.py} & Runs all finite builders and auditors using
+only the Python standard library.\\
+\texttt{Makefile} & Convenience targets for verification and PDF build.\\
+\texttt{MANIFEST.sha256} & Hashes of archive contents, excluding itself.\\
+\bottomrule
+\end{longtable}
+
+From an extracted archive, run
+\begin{verbatim}
+python3 reproduce.py
+make pdf
+\end{verbatim}
+Python 3.10 or later is sufficient for the finite arithmetic checks;
+no third-party Python packages are required. The PDF build uses
+\texttt{pdflatex} and standard TeX packages. The finite computations
+need no network connection or external repository checkout. The
+included Lean source snapshots identify imported theorems; they are
+not a self-contained replacement for the entire upstream Lean
+development.
+
+\subsection{The executed finite certificates}
+
+The compiler has a separate auditor that does not import its builder.
+It reconstructs all four full integers and checks the label ranges,
+all 66,062 scalar native-basis identities, population balance,
+padding safety, and the residue orders used by the rank controller.
+The builder additionally checks 1,157,632 whole-label decoder cases.
+The unbounded
+controller argument is proved in the manuscript and companion proof.
+
+The nine-variable verifier independently reconstructs all 136 weighted
+coefficient records using values, gradients, and quadratic parts of
+the parent residuals at the all-one vector. It checks all 528 pair
+sums and all strict coefficient bounds, validates actual native
+payloads and the additional source constant, and compares the literal
+formula, both domain versions, and the cancellation circuit in 450
+finite-field evaluations using the actual fixed tuple. Its exact
+symbolic diagonal audit yields the nonzero leading term
+$2^{196}\kappa^{83088652}$. It also checks 768 signed-majorant and
+telescoping fixtures and an exact 72-case small packing analogue with
+invalid-digit controls. These latter examples detect transcription
+errors; the universal source proof does not rest on their coverage.
+
+The ten-integer checker independently derives the quadratic source,
+verifies the full fixed tuple and the even source exponent, expands
+the three-root norm identity formally, and compares 1620 named
+registers over three finite fields. Its actual-instance diagonal
+leading coefficients are nonzero modulo 101, 1009, and 1,000,003;
+the leading-degree structure therefore survives the fixed coefficient
+specialization. The proof-level specialization of Sun's interface is
+stated separately from these algebraic tests.
+
+The main eleven-positive checker compares 90 independently multiplied
+formal conjugate products, 77 carrier-denominator identities, exact
+integer and rational fixtures, 500 parity fixtures, and two complete
+univariate coefficient arrays for the degree calculation. Another
+320 bound fixtures deliberately have $k\le E$, so they exercise the
+case in which the predecessor's deleted index condition cannot be
+used. Forty additional norm checks use the actual coefficient tuple.
+The optional translated construction has two further complete degree
+checks and 60 independent norm products. The ordinary proofs and
+independent review notes cover both positive-domain directions.
+
+\subsection{The dependency boundary}
+
+There are four logically different layers.
+First, the finite source data and scalar identities are completely
+reproducible inside this archive. Second, the new reductions---quadratic
+batching, its signed bootstrap, index absorption, positive translation,
+and complemented label clauses---are ordinary mathematical proofs
+given here and in the accompanying proof files. Third, the normalized
+native/Pell compiler, canonical completeness choices, and literal K215
+logical calibration are inherited from the pinned repository.
+Fourth, the unrestricted-integer companion uses the explicitly named
+theorems of the external Sun papers. These sources have been identified
+and checked for the contracts used, but are not re-proved in a new
+proof-assistant kernel in this work.
+
+The ordinary proofs use finite integer arithmetic, induction,
+elementary algebra, and the stated inherited arithmetic and compiler
+theorems. Thus the displayed equivalences are formalizable in ZFC.
+That assertion is different from claiming that an automated checker
+has already accepted the complete new theorem. The source files mark
+this distinction consistently.
+
+\subsection{Promising next steps}
+
+The structural gain is already achieved without optimizing the Sidon
+set. A smaller 32-position set, or a source-aware set that separates
+only the needed coefficient matches, would reduce the two large-degree
+companions further. Such a replacement needs its own exact collision
+certificate and must retain the complement positions needed for all
+target tests. Merely assigning the 136 existing monomials distinct
+positions is insufficient: products with the other monomials in the
+digit-code square must also be excluded.
+
+The most direct formalization target is the general simultaneous
+quadratic extraction and carry decoder. It is a short independent
+lemma between the existing quadratic source and the already
+parameterized ratio theorem. The signed bootstrap should be included
+in that formalization, since a positive-source assumption on arbitrary
+outer inputs would be false. For the eleven-variable construction,
+the central new formal lemma is the reordered Pell-index recovery
+followed by the short-modulus argument; the proof should not import
+$k>E$ from the old twelve-variable formulation.
+
+The present results do not settle an eight-natural-variable or
+nine-unrestricted-integer construction for this consistency predicate.
+They do provide a large and reproducible improvement at the existing
+few-variable bounds, a new moderate-degree eleven-positive form, and
+a smaller coherent coefficient compiler. Those are separate,
+verifiable advances over the pinned report family.

@@ -1,0 +1,541 @@
+\section{Direct quadratic batching and a nine-variable equation}
+\label{sec:nine}
+
+\subsection{The exact positive quadratic source}
+
+We start with the literal 31-variable source of package~30, retained
+by the later report packages~\cite{repo}. Its strictly positive unknowns,
+in fixed order, are
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta.
+\end{gathered}
+\]
+Only in this subsection, put $q=\beta J+1$, $k=\eta+\zeta$,
+$H=4a+3$, and $C_w=q-F-\alpha$. The fixed ports are
+$(\beta,K_0,M_C,M_F)$ from Section~\ref{sec:complemented-compiler}.
+The 22 residuals, each required to vanish, are
+\begin{alignat}{2}
+ &L-q^2+1, &&N-q(L+1),\nonumber\\
+ &X-wq, &&a-E-sN,\nonumber\\
+ &E-X(a-E), &&c-k(a-E)-\eta,\nonumber\\
+ &P-E(c-\eta)-k, &&\tau^2-P(P-k)-1,\nonumber\\
+ &D-X-ac-\gamma H, &&\Delta-a^2-H,\nonumber\\
+ &C_2-c^2, &&D^2-\Delta C_2-1,\nonumber\\
+ &k-jc+V-1-hE, &&\label{eq:parent22}
+\end{alignat}
+\vspace{-6mm}
+\begin{align*}
+ &jc-V-(q-F)(N-q)+C_wL-(M_C+qM_F)J,\\
+ &(K_0+w)C_w+q-F-z(q-1)-1,\\
+ &F_2-f^2,\qquad V-of+c,\qquad g-y^2+V^2,\\
+ &I-iC_2,\qquad B_a-I^2,\qquad B_a-\Delta(F_2-1),\\
+ &y^2-B_ag-1.
+\end{align*}
+Let $r_0,\ldots,r_{21}\in\Z[n_1,\ldots,n_{31}]$ be these residuals
+after replacing every positive source coordinate by $n_i+1$.
+The delivered literal parent file \texttt{nine/parent31.json} has SHA-256
+\begin{center}\footnotesize\ttfamily
+1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287.
+\end{center}
+Its historical binding metadata is preserved as provenance; the active
+binding of this report is the new complete sibling compiler tuple.
+
+For clarity, the elimination producing the 31-variable source is exact
+on the positive domain. Its former register was
+$G_p=(q-1)(q-F)+\alpha=q(q-F)-C_w$.
+On $N=q(L+1)$ one has
+\[
+ LG_p=(q-F)(N-q)-C_wL.
+\]
+The transport row gives
+$(K_0+w)C_w+(q-F)=1+z(q-1)\ge q$.
+If $C_w\le0$, its left side is at most $q-F<q$, a contradiction.
+Thus $C_w>0$, $q-F>0$, and the reconstructed $G_p$ is positive.
+The unchanged normalized compiler theorem therefore gives
+\begin{equation}
+ \exists\mathbf n\in\N^{31}\ \bigwedge_{j=0}^{21}r_j(\mathbf n)=0
+ \quad\longleftrightarrow\quad
+ \text{K215 halts on blank input}.
+ \label{eq:parent-calibration}
+\end{equation}
+The fifth residual at $\mathbf n=0$ is $1$, so a simultaneous zero
+is never the all-zero vector. We use this small fact in completeness.
+
+\subsection{A finite Sidon certificate replaces exponential positions}
+
+Use the following increasing list of 32 positions:
+\begin{equation}
+\begin{split}
+ (0,a_1,\ldots,a_{31})={}&(0,10,35,55,62,105,144,145,159,168,232,245,\\
+ &306,323,325,353,371,374,382,494,499,525,566,578,\\
+ &610,647,681,685,741,777,783,799).
+\end{split}
+\label{eq:weights}
+\end{equation}
+All 528 unordered pair sums with repetition are distinct. The file
+\texttt{weights.json} and the independent verifier give a complete
+finite certificate. No unverified extremality claim for this set is
+needed. Put
+\[
+ M=799,\qquad d=4M+1=3197,\qquad \mathcal H=22d=70334.
+\]
+Write
+\[
+ r_j(\mathbf n)=\sum_{|\alpha|\le2}p_{j,\alpha}\mathbf n^\alpha,
+ \qquad
+ d_{j,\alpha}=(2-|\alpha|)!\prod_{i=1}^{31}\alpha_i!\,p_{j,\alpha}.
+\]
+Define the following fixed polynomials and fixed target positions:
+\begin{align}
+ E_j(T)&=\sum_{|\alpha|\le2}d_{j,\alpha}
+                    T^{2M-\sum_i a_i\alpha_i},\nonumber\\
+ E_*(T)&=\sum_{j=0}^{21}T^{jd}E_j(T),&
+ Z_*(T)&=\sum_{j=0}^{21}T^{jd+2M}.
+ \label{eq:kernel}
+\end{align}
+There are 136 nonzero weighted coefficient records and only 16
+distinct nonliteral coefficient recipes. They are all explicit
+polynomials in the four fixed native ports.
+
+\begin{lemma}[Simultaneous quadratic extraction]
+\label{lem:quadratic-extraction}
+For $c(T)=1+\sum_{i=1}^{31}n_iT^{a_i}$,
+\[
+ [T^{jd+2M}]\,c(T)^2E_*(T)=2r_j(\mathbf n)
+ \qquad(0\le j<22).
+\]
+\end{lemma}
+\begin{proof}
+Pad a monomial of total degree at most two with zero positions to
+obtain a pair from the set in \eqref{eq:weights}. The pair-sum
+certificate makes this representation unique. The coefficient of its
+monomial in $c(T)^2$ is
+$2!/((2-|\alpha|)!\prod_i\alpha_i!)$; this cancels the factorial
+weight in $d_{j,\alpha}$, leaving $2p_{j,\alpha}\mathbf n^\alpha$.
+Finally $c(T)^2E_j(T)$ has support in $[0,4M]$. Translating it by
+$jd$ puts it in $[jd,jd+4M]$; these intervals are disjoint.
+Thus no other row contributes to a target.
+\end{proof}
+
+The important distinction is between a polynomial's degree and the
+choice of a positional code for its monomials. A quadratic system
+needs unique pair sums, not separate base-five positions for a quartic
+in 31 coordinates. Moreover the 22 target tests can share the same
+unknown digit code; one does not need an extra unknown for each row.
+
+\subsection{One explicit size constant}
+
+Expand each weighted coefficient into monomials in the four positive
+native ports. Let $C_*$ be one plus the sum of the absolute values of
+all scalar coefficients times their corresponding port monomials,
+over all 136 records. Thus every $|d_{j,\alpha}|<C_*$.
+This is a bounded, finite integer expression, independent of the
+existence of any witness. Set
+\begin{equation}
+ \kappa=2^{\bitlength(2048C_*)}>2048C_*.
+ \label{eq:kappa}
+\end{equation}
+For the delivered tuple,
+\[
+ \bitlength(C_*)=1\,359\,514,\qquad
+ \boxed{\kappa=2^{1\,359\,525}.}
+\]
+The constant's unsigned little-endian binary magnitude has 169,941
+bytes; its compressed payload and all recipe hashes are included.
+This replaces any unspecified coefficient-height parameter. The
+derived fixed coefficients, including negative ones, remain signed
+integer leaves of the final circuit.
+
+\subsection{The new source code and its two-way interpretation}
+
+For the moment let $b\ge2$ and $g>0$ be integers. Set
+\begin{align}
+ B&=\kappa b^2,&Q_0&=B^{M+1},&
+ \ell&=\sum_{i=1}^{31}B^{a_i},\nonumber\\
+ \lambda&=\sum_{t=0}^{\mathcal H-1}B^t,&
+ S_0&=2(1+g)^2E_*(B)+B\lambda,\nonumber\\
+ S&=g+Q_0S_0,&
+ T&=Q_0-1-(b-1)\ell+Q_0(B-2)Z_*(B),\nonumber\\
+ N&=B^{\mathcal H+M+2}=B^{71135},&
+ R&=S(N^2-N)+(T+1)(N^2-1),\nonumber\\
+ G_{\rm cap}&=32bB^M.&&
+ \label{eq:nine-source}
+\end{align}
+Everything in this display is an integer polynomial in $b,g$ with
+fixed integer coefficients. In particular the finite sum defining
+$\lambda$ introduces no division in the polynomial.
+
+\begin{lemma}[Unconditional nonvanishing and conditional size]
+\label{lem:source-size}
+For every $b\ge2,g>0$, the integer $R$ is nonzero. If additionally
+$g<4bB^M$, then $0\le S,T<N$ and $R\ge N^2-1\ge N\ge\max\{b,8\}$.
+\end{lemma}
+\begin{proof}
+Since $Q_0\mid N$, reduction of \eqref{eq:nine-source} modulo $Q_0$
+gives
+\[
+ R\equiv (b-1)\ell\pmod{Q_0}.
+\]
+The positions in $\ell$ are distinct and at most $M$, while $b<B$.
+Consequently $0<(b-1)\ell<Q_0$, proving $R\ne0$ without a sign
+assumption on $E_*(B)$ or $R$.
+
+Now suppose $g<4bB^M$. We have $g<Q_0$, because $B>4b$.
+The highest exponent in $E_*$ is at most $\mathcal H-2M-1$.
+Using $B\ge2$ and the coefficient bound,
+\[
+ |E_*(B)|<2C_*B^{\mathcal H-2M-1},\qquad
+ 1+g<5bB^M.
+\]
+Thus
+\[
+ |2(1+g)^2E_*(B)|
+ <100C_*b^2B^{\mathcal H-1}<B^{\mathcal H}.
+\]
+Since $B^{\mathcal H}\le B\lambda<2B^{\mathcal H}$, it follows
+that $0<S_0<3B^{\mathcal H}$. The low mask
+$Q_0-1-(b-1)\ell$ is between $0$ and $Q_0-1$: its base-$B$ digits
+are $B-b$ at the chosen positions and $B-1$ elsewhere. Also
+$(B-2)Z_*(B)<B^{\mathcal H}$. The extra factor of $B$ in $N$
+therefore gives $0\le S,T<N$. Finally $T+1\ge1$ and $S\ge0$ imply
+$R\ge N^2-1$; the remaining bounds are immediate.
+\end{proof}
+
+Write $\tau_2(u,v)=0$ for addition without a binary carry, equivalently
+disjoint sets of occupied binary positions for nonnegative $u,v$.
+
+\begin{lemma}[All residuals in one carry test]
+\label{lem:carry-decoder}
+Suppose $b$ is a power of two, $b\ge2$, and $0<g<4bB^M$. Then
+\[
+ \tau_2(S,T)=0
+ \quad\longleftrightarrow\quad
+ \begin{cases}
+ g=\sum_i n_iB^{a_i},\quad 0\le n_i<b,\\
+ r_0(\mathbf n)=\cdots=r_{21}(\mathbf n)=0.
+ \end{cases}
+\]
+Conversely, every simultaneous natural zero can be encoded in this
+way for arbitrarily large powers of two $b$, with $0<g<bB^M$.
+\end{lemma}
+\begin{proof}
+Now $B$ and $Q_0$ are powers of two. The strict block bounds in
+Lemma~\ref{lem:source-size} split the carry condition into
+\[
+ \tau_2\bigl(g,Q_0-1-(b-1)\ell\bigr)=0,
+ \qquad
+ \tau_2\bigl(S_0,(B-2)Z_*(B)\bigr)=0.
+\]
+The first mask has all bits set at unchosen digit positions. At a
+chosen position its digit $B-b$ has precisely the bits above the
+lowest $\log_2b$ bits set. Hence it gives exactly the stated code
+and digit bounds.
+
+For decoded digits let $h_t$ be the coefficient of $T^t$ in
+$c(T)^2E_*(T)$. Its degree is at most $\mathcal H-1$, and
+\[
+ |h_t|\le C_*\left(1+\sum_i n_i\right)^2
+ <1024C_*b^2<B/2.
+\]
+Therefore the integer
+\[
+ S_0/2=(1+g)^2E_*(B)+(B/2)\lambda
+\]
+has ordinary base-$B$ digits $B/2+h_t$, all strictly between $0$
+and $B$. Both summands in the second carry test are even. Divide
+them by two; the mask becomes $(B/2-1)Z_*(B)$.
+At each chosen target digit, $B/2-1$ occupies all the lower binary
+positions. A digit strictly between $0$ and $B$ is disjoint from
+this mask exactly when it equals $B/2$. By
+Lemma~\ref{lem:quadratic-extraction}, the correction at the target
+is $2r_j(\mathbf n)$, so every residual vanishes.
+
+For completeness choose a power of two $b$ exceeding all coordinates
+of a given zero, and use its digit code. Since the zero is not the
+zero vector, $g>0$. The geometric estimate using $B>b$ gives
+$g\le(b-1)\sum_{e=1}^M B^e<bB^M$. The same digit calculations,
+now in the forward direction, prove both carry tests. The choice of
+$b$ can be made arbitrarily large.
+\end{proof}
+
+The central-binomial carry lemma of Jones~\cite{jones1982}, provided
+as \texttt{Jones1982.lemma\_2\_16} in the pinned
+\texttt{Carries.lean}, states that for $N=2^a$ and $0\le S,T<N$,
+\begin{equation}
+ \tau_2(S,T)=0
+ \quad\longleftrightarrow\quad
+ N^2\mid\binom{2R}{R},
+ \qquad R=S(N^2-N)+(T+1)(N^2-1).
+ \label{eq:carry-binomial}
+\end{equation}
+This theorem uses precisely the source expression
+\eqref{eq:nine-source}. It needs no quartic index or base-five
+normalization. The source construction is now complete.
+
+\subsection{The full nine-variable polynomial}
+
+The nine nonnegative unknowns are
+\[
+ (\epsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0,n)\in\N^9.
+\]
+Put $b=\epsilon+2$ and
+$g=g_0+1,h=h_0+1,s=s_0+1,w=w_0+1,i=i_0+1,j=j_0+1$.
+Use $R,N,G_{\rm cap}$ from \eqref{eq:nine-source} and define
+\begin{align}
+ U&=N^2w,&Y&=N^2s,&P&=2(RY)^2U,\nonumber\\
+ K&=R+1+h(P-1),&A&=RY(U+1),&B_1&=2R+1,\nonumber\\
+ W_1&=bw,&C&=B_1+W_1+\phi,&J&=4A-5,\nonumber\\
+ Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\nonumber\\
+ E&=iJDC^2,&F&=(A^2-1)E^2+1,\nonumber\\
+ G_p&=A+F(CD+1-A),&H&=B_1+jC,&I&=(G_p^2-1)H^2+1,\nonumber\\
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI,&u&=JF,\nonumber\\
+ v&=QF+J(H-C),&&&\nonumber\\[-1mm]
+ m&=K^2G_{\rm cap}-4(C-KY)^2G_{\rm cap}-8gK^2.&&&
+ \label{eq:jones-ratio}
+\end{align}
+Here $m$ is a register; the ninth unknown is $n$. Next set
+\begin{align}
+ \sigma&=Y(U+1),&r&=W_1+\phi,\nonumber\\
+ M_D&=AC+\sigma(r+1)^2+1,&M_F&=AE+1,\nonumber\\
+ T_{CH}&=CH+r^2,&
+ M_I&=F(DT_{CH}+2H^2+A^2)-A^2+1,\nonumber\\
+ V_0&=PK+1,&V_1&=M_DM_FM_I+1,\nonumber\\
+ M_{\rm div}&=Q^2+(H-C)^2+1,&
+ \Omega&=u(2m-1),\nonumber\\
+ \Theta&=u(n+M_{\rm div})+v
+          -\Omega(2M_{\rm div}+V_0V_1).&&
+ \label{eq:majorants}
+\end{align}
+The required equation is
+\begin{equation}
+ \boxed{F_9=
+   \bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+    -4\Omega^4V_0^2a_0a_1=0.}
+ \label{eq:F9}
+\end{equation}
+Equations \eqref{eq:weights}--\eqref{eq:F9}, together with the four
+native ports, specify a literal integer-coefficient polynomial. The
+JSON arithmetic circuit is its expanded straight-line definition.
+No square roots, tests, divisions, or variable exponents occur in it.
+
+\subsection{Signed bounds before positive source recovery}
+
+It is essential not to assume $R>0$ when applying the final polynomial.
+For a freely chosen large $g$, $E_*(B)$ can make $R$ negative. The
+following proof makes the order of implications explicit.
+
+By Lemma~\ref{lem:source-size}, $R\ne0$ for every assignment of
+the eight outer natural coordinates. Since $U,Y\ge1$,
+\[
+ |A|\ge2,\quad P\ge2R^2\ge2,\quad
+ K\ge R+P\ge2R^2+R\ge1.
+\]
+Consequently $J\ne0$, $AJ>0$, $D\ge1$, $AE\ge0$, and $F\ge1$.
+The completed-square bounds from package~37 apply with no sign
+restriction on $R$. For completeness, here are their short proofs.
+Because $A=R\sigma$ and $C=2R+r+1$,
+\begin{align*}
+ M_D-AC&=\sigma(r+1)^2+1>0,\\
+ M_D+AC&=\sigma\bigl(4R^2+2R(r+1)+(r+1)^2\bigr)+1>0.
+\end{align*}
+The quadratic expression is nonnegative; twice it is
+$(2R+r+1)^2+4R^2+(r+1)^2$.
+Thus $M_D\ge|AC|+1$ and
+$D=(AC)^2-C^2+1\le M_D^2$.
+Similarly $M_F=AE+1\ge1$ and $F\le M_F^2$.
+
+Since $H=(j+1)C-r$,
+\[
+ T_{CH}-CH=r^2\ge0,\qquad
+ T_{CH}+CH=C^2+(C-r)^2+2jC^2\ge0.
+\]
+It follows that $T_{CH}\ge|CH|$.
+Using $G_p=FDC+F-A(F-1)$, the integer inequalities
+$|H|\le H^2$ and $|AH|\le A^2+H^2$ imply
+\[
+ |G_pH|+|H|+1
+ \le FDT_{CH}+2FH^2+(F-1)A^2+1=M_I.
+\]
+Thus $M_I\ge1$ and $\sqrt{|I|}\le M_I$, even when the candidate
+$I$ is negative. Altogether
+\begin{equation}
+ V_0,V_1\ge2,\qquad
+ \sqrt{|a_t|}\le V_t-1\quad(t=0,1).
+ \label{eq:root-bounds}
+\end{equation}
+Indeed $1\le a_0\le(PK)^2$ and
+$\sqrt{|a_1|}\le M_DM_FM_I$. Also $u\ne0$ and
+\begin{equation}
+ \left|\frac vu\right|
+ =\left|\frac QJ+\frac{H-C}{F}\right|
+ \le|Q|+|H-C|\le M_{\rm div}-1.
+ \label{eq:quotient-bound}
+\end{equation}
+All these statements precede square conditions, divisibility, and $m>0$.
+
+\begin{lemma}[Signed-divisor finalizer]
+\label{lem:finalizer}
+Let integers $a_0,a_1,u,v,m,M,V_0,V_1$ satisfy $u\ne0$, $M\ge1$,
+$|v/u|\le M-1$, $V_0,V_1\ge2$, and
+$\sqrt{|a_t|}\le V_t-1$. Define $\Omega$, $\Theta$, and $F_9$ as
+above, with $M_{\rm div}=M$. Then
+\[
+ \exists n\in\N\ F_9=0
+ \quad\longleftrightarrow\quad
+ a_0,a_1\text{ are integer squares},\quad u\mid v,\quad m>0.
+\]
+\end{lemma}
+\begin{proof}
+The odd integer $2m-1$ is nonzero, so $\Omega\ne0$. Choose complex
+roots $r_t^2=a_t$. Direct multiplication factors $F_9$ into
+\[
+ \prod_{\varepsilon,\delta\in\{-1,1\}}
+       \bigl(\Theta-\Omega(\varepsilon r_0+\delta V_0r_1)\bigr).
+\]
+A zero gives one vanishing factor. Absorb its signs in the chosen
+roots, and put $s=\Theta/\Omega=r_0+V_0r_1\in\Q$.
+If $s\ne0$, the identity
+$2sr_0=s^2+a_0-V_0^2a_1$ makes both roots rational. A rational
+number with integer square is an integer. If $s=0$, the bounds give
+$|r_1|=|r_0|/V_0<1$, hence the integer $|a_1|<1$; then
+$a_1=a_0=0$. This includes negative candidate radicands and coincident
+square classes, without presuming independent field automorphisms.
+
+Set $Z=2M+V_0V_1+r_0+V_0r_1$. The root bounds give
+$Z\ge2M+1>0$. Dividing the vanishing factor by the possibly negative
+$u$ gives
+\[
+ n+M+v/u=(2m-1)Z.
+\]
+Its left side is at least $n+1>0$, so $m>0$. Its right side is
+integral, so $u\mid v$. Conversely, if these three conditions hold,
+choose integer roots and define
+$n=(2m-1)Z-M-v/u$. This is an integer at least $2$, and makes
+the corresponding factor vanish.
+\end{proof}
+
+\subsection{Soundness and completeness of the nine-variable form}
+
+The parameterized ratio theorems in
+\texttt{NineRatio.lean} have the following precise interface.
+For $R,N\ge8$, $0<b\le\min\{R,N\}$, and $G>0$, the conditions
+\[
+ a_0,a_1\text{ squares},\qquad JF\mid QF+J(H-C),\qquad m>0
+\]
+with $h,s,w,i,j>0$ and $\phi\ge0$ imply
+\begin{equation}
+ N^2\mid\binom{2R}{R},\qquad b\text{ is a power of two},
+ \qquad8g<G.
+ \label{eq:ratio-sound}
+\end{equation}
+Conversely, the first two conditions in \eqref{eq:ratio-sound}
+together with $32g<G$ produce positive $h,s,w,i,j$ and
+nonnegative $\phi$ satisfying the three displayed ratio conditions.
+These are \texttt{Jones1982.Nine.ratio\_sound} and
+\texttt{ratio\_complete}; the formulas match \eqref{eq:jones-ratio}
+with $G=G_{\rm cap}$. They quantify arbitrary admissible $R,N,b,G$
+and do not require Jones's original source packing.
+
+Suppose $F_9=0$. The unconditional bounds and
+Lemma~\ref{lem:finalizer} first give $m>0$. As $K\ge1$ and the
+subtracted square term in $m$ is nonnegative, this already implies
+\[
+ 8g<G_{\rm cap},\qquad g<4bB^M.
+\]
+Only now apply Lemma~\ref{lem:source-size}: it supplies positive
+$R,N$ and every size hypothesis of the ratio theorem. Apply
+\eqref{eq:ratio-sound}, then \eqref{eq:carry-binomial}, then
+Lemma~\ref{lem:carry-decoder}. This gives a zero of the 22 parent
+residuals, and hence a blank K215 halt by
+\eqref{eq:parent-calibration}.
+
+Conversely suppose the parent residuals have a natural zero. Choose
+$b$ and its positive code $g<bB^M$ by
+Lemma~\ref{lem:carry-decoder}. Its carry condition and
+\eqref{eq:carry-binomial} give the binomial divisibility; all ratio
+size conditions hold. Since $32g<32bB^M=G_{\rm cap}$,
+\texttt{ratio\_complete} supplies the six remaining outer witnesses.
+Lemma~\ref{lem:finalizer} supplies $n\in\N$. Translating the positive
+outer witnesses down by one gives a zero of $F_9$. We have proved
+\[
+ \exists\N^9\ F_9=0
+ \quad\longleftrightarrow\quad
+ \exists\N^{31}\ \bigwedge_jr_j=0,
+\]
+and thus the first line of Theorem~\ref{thm:main}.
+
+For strictly positive coordinates use
+\[
+ (\epsilon_+,g,h,s,w,\phi_+,i,j,n_+)\in\Zpos^9,
+ \quad b=\epsilon_++1,\quad\phi=\phi_+-1,\quad n=n_+-1.
+\]
+This coordinate bijection gives $F_9^+$, preserves exact degree,
+and saves four operations in the delivered evaluator. It does not
+extend the result to nine unrestricted integers.
+
+\subsection{Exact degree, with cancellations resolved}
+
+Treat fixed coefficients as degree zero. The actual degree cannot
+be read from the original nested expression by blindly taking
+maxima: its highest apparent terms cancel. The following exact
+identities expose the surviving leading term. Put
+$t_0=\sigma(r+1)^2$ and
+\begin{align*}
+ \delta_D&=M_D^2-D=2ACt_0+t_0^2+2AC+2t_0+C^2,\\
+ \delta_F&=M_F^2-F=2AE+E^2,\\
+ W_-&=M_I-G_pH\\
+ &=FDr^2+2FH^2+(F-1)A^2+1-FH+A(F-1)H,\\
+ \delta_I&=M_I^2-I=W_-(M_I+G_pH)+H^2-1,\\
+ \delta_V&=V_1^2-DFI\\
+ &=\delta_DM_F^2M_I^2+D\delta_FM_I^2+DF\delta_I
+                      +2M_DM_FM_I+1.
+\end{align*}
+With $E_0=u(n+M_{\rm div})+v-2\Omega M_{\rm div}$, the inner
+square in \eqref{eq:F9} is exactly
+\begin{equation}
+ E_0^2-2E_0\Omega V_0V_1+\Omega^2V_0^2\delta_V-\Omega^2a_0.
+ \label{eq:degree-inner}
+\end{equation}
+Some decisive total degrees are as follows:
+\[
+\begin{array}{c|r@{\qquad}c|r}
+ N&142270&R&426808\\
+ P&1707239&K&1707240\\
+ A&995890&C&426808\\
+ D&2845396&F&11381586\\
+ I&30161198&a_1&44388180\\
+ V_0&3414479&V_1&22194090\\
+ \Omega&16362637&\delta_D&1991784\\
+ \delta_F&9389806&\delta_I&29307585\\
+ \delta_V&43534568&E_0&17216257
+\end{array}
+\]
+The first three terms defining $\delta_V$ have degrees
+$43\,534\,568$, $42\,396\,400$, and $43\,534\,567$.
+The first uniquely dominates. The third term in
+\eqref{eq:degree-inner} uniquely dominates, at degree $83\,088\,800$.
+The final subtracted term of \eqref{eq:F9} has strictly smaller degree
+than twice this value. Hence
+\begin{equation}
+ \boxed{\deg F_9=166\,177\,600.}
+ \label{eq:degree9}
+\end{equation}
+For a nonvanishing certificate, substitute all nine natural inputs by
+$t$. The coefficient of $t^{166177600}$ is exactly
+\[
+ \boxed{2^{196}\kappa^{83088652}>0.}
+\]
+The verifier tracks at every gate a total-degree upper bound and the
+exact coefficient of the corresponding diagonal power. All sixteen
+derived native coefficients remain independent symbolic leaves; none
+is assigned zero or presumed generic. The final coefficient is
+independent of them. This proves the claimed degree for the actual
+materialized tuple as well as for every compatible specialization.
+
+The production circuits use sparse Horner evaluation of $E_*$,
+shared repeated squaring, and a divide-and-conquer geometric-sum
+identity. Their literal gate counts are 868 for $\N^9$ and 864 for
+$\Zpos^9$. The separate cancellation certificate uses 917 operations;
+it is a proof artifact, not the claimed fastest evaluator.
