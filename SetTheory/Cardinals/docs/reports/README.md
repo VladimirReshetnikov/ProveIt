@@ -2,7 +2,7 @@
 
 # Research reports
 
-Two hundred and ninety-one independent mathematical research packages, unpacked
+Two hundred and ninety independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Most directories
 hold a typeset article with its LaTeX source, a `README.md`, and in most cases
@@ -11,7 +11,7 @@ The closure-kernel reconciliation retains the base TeX source; its delivered
 PDFs remain recoverable from the committed arrival archives.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all two hundred and ninety-one reports, names the problem each one attacks
+numbers all two hundred and ninety reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or fully machine-checked. The manifest
@@ -31,11 +31,11 @@ records their claims and identifies the limited scope of checked components.
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
-| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant; explicit Diophantine forms of Con(ZFC) | 13 |
+| [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
 | [`convex-geometry/`](convex-geometry) — optimal simplex products for projection-body volume | 1 |
 | [`probability/`](probability) — tree-broadcast renormalization, longest progressions in random sets, a Bose-gas crossover, random reshuffling, exponential tilting and contingency-table sampling, nonuniform coupon collection, total variation of product laws, Gaussian quadratic forms | 9 |
 | [`set-theory/`](set-theory) — closure kernels equiconsistent with ZFC and small inconsistency-search machines | 1 |
-| **Total** | **291** |
+| **Total** | **290** |
 
 ## Later deliveries
 
@@ -3617,3 +3617,11 @@ unknowns at degree 1022 or in 108 operations, and materialized
 coefficients with B = 2^1012115. The 67-operation equation keeps the
 fewest operations. Nothing was rerun; no formalization, consistency
 proof, optimality or new general theorem is claimed.
+
+On 23 October 2026 (`ea8ae71167`), at Vladimir's request, the report moved
+to [`Computability/DiophantineConsistency/con-zfc-diophantine-forms`](../../../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md),
+beside the active research on a checked Diophantine consistency equation.
+It is no longer part of this collection, which therefore has **290
+reports** (`hilbert-tenth-problem/` 12). Batch 222 (wave 6, arrival
+`29ca562f8f`) was placed at the new location beside wave 5
+(placement `124c07c0b7`, reconciliation `613e12db0c`).
