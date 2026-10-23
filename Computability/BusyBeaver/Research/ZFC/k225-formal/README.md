@@ -10,7 +10,18 @@ Its zero-offset proposal is reconciled as
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
 
-The latest [phase22 Lean check](verification/k215/simplification/phase22/README.md), independent actual readback, capture and independent capture review pass. Nine maintained sources remove **179 Lean lines / 10,782 bytes**,
+The latest [phase23 Lean checkpoint](verification/k215/simplification/phase23/README.md), independent actual readback,
+evidence capture and independent capture review pass. Thirty-three maintained
+sources remove **243 Lean lines / 13,016 bytes**; forty declarations retire and
+three signatures become stronger. The check covers 230 providers (215 project
+modules and fifteen existing clients): 199 fresh and 31 exact phase22 reuses,
+plus two fresh endpoint audits. All selected providers and audits have zero
+warnings. The primary endpoint falls from 179 to **172 project modules** and from
+1,768,101 to **1,728,487 selected source bytes**; that import-closure measure
+overlaps the maintained-file saving. The literal 215-state machine and endpoint
+statements are unchanged; its internal PA endpoint remains open.
+
+The [phase22 Lean check](verification/k215/simplification/phase22/README.md), independent actual readback, capture and independent capture review pass. Nine maintained sources remove **179 Lean lines / 10,782 bytes**,
 including the attributed ConstructibleAbs normalization once. The check covers
 226 providers: 56 fresh, 170 exact reuses, plus two fresh endpoint audits, all with
 zero fresh warnings. The primary endpoint retains 179 modules and selects

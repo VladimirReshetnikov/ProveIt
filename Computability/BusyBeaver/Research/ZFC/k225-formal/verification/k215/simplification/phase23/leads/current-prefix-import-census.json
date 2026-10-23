@@ -1,0 +1,178 @@
+{
+  "status": "SOURCE_ONLY_CURRENT_IMPORT_CENSUS",
+  "target": "BusyBeaver.ZFC.KDecoderPrefix215",
+  "project_module_count": 23,
+  "old_site_or_forward_or_boot_batch_imports": [],
+  "modules": {
+    "BusyBeaver.ZFC.FramedWindow": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FramedWindow.lean",
+      "sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+      "imports": [
+        "Init"
+      ]
+    },
+    "BusyBeaver.ZFC.DecoderCertificate": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderCertificate.lean",
+      "sha256": "bd14c19ccb3a3755c59d6bef210a018caf559789d91a7f5be0cedabbcf1cb50b",
+      "imports": [
+        "BusyBeaver.ZFC.FramedWindow"
+      ]
+    },
+    "BusyBeaver.ZFC.KZip": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+      "sha256": "66a35e52f53f3366f9fc76e12e06b2881377d1fc3a6d816371b3fb0ef6941c7b",
+      "imports": []
+    },
+    "BusyBeaver.ZFC.KBoot": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KBoot.lean",
+      "sha256": "5aa0eca9f1830045164a1ab876a8467319d9edf9672c4d762ee6a5ce4db64a6f",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ]
+    },
+    "BusyBeaver.ZFC.KTableCore": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTableCore.lean",
+      "sha256": "8d9eb49c11dcc64bf461cfa205aa886f7ab7e43925a5315485acffc1f2c75e5d",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ]
+    },
+    "BusyBeaver.ZFC.KTable215": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KTable215.lean",
+      "sha256": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ]
+    },
+    "BusyBeaver.ZFC.KFast215": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFast215.lean",
+      "sha256": "4f33903017795959d98f52d73875965415fb3ead8e553e0b5637f5097c577c19",
+      "imports": [
+        "BusyBeaver.ZFC.KBoot",
+        "BusyBeaver.ZFC.KTable215"
+      ]
+    },
+    "BusyBeaver.ZFC.KZipTape": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZipTape.lean",
+      "sha256": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d",
+      "imports": [
+        "BusyBeaver.ZFC.KZip",
+        "BusyBeaver.ZFC.FramedWindow"
+      ]
+    },
+    "BusyBeaver.ZFC.K215Decoder": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/K215Decoder.lean",
+      "sha256": "8663e195ec5a08d1137547eaf7332cfc32ef7c353e473437bbc3fc06cf45c373",
+      "imports": [
+        "BusyBeaver.ZFC.DecoderCertificate",
+        "BusyBeaver.ZFC.KFast215",
+        "BusyBeaver.ZFC.KZipTape"
+      ]
+    },
+    "BusyBeaver.ZFC.DecoderPaths": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderPaths.lean",
+      "sha256": "a4e8638db1d4f9f1f500f0ca2a85ecbb219d3ff766559ee53fc6374996a7ef5e",
+      "imports": [
+        "BusyBeaver.ZFC.K215Decoder"
+      ]
+    },
+    "BusyBeaver.ZFC.RegisterPath": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+      "sha256": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+      "imports": [
+        "Init"
+      ]
+    },
+    "BusyBeaver.ZFC.RMDag": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+      "sha256": "36b7b8fdeaad284940fafe170b8da3ed6953e41b743034e446f68c8c5f6fd3cb",
+      "imports": []
+    },
+    "BusyBeaver.ZFC.RMEquiv": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv.lean",
+      "sha256": "61f807d4327a1e39ad441e1e737f5affd9fd7004476e12bb378c9c6663dc909c",
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RMDag"
+      ]
+    },
+    "BusyBeaver.ZFC.RMBisim": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean",
+      "sha256": "c18b757a0b981a6e78c7a1fbe449fe6d53f38039f7d99cdf0021b2a151166f81",
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ]
+    },
+    "BusyBeaver.ZFC.KSource215Program": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSource215Program.lean",
+      "sha256": "7ab40d3faf9ddb976cdac2f77727e9e43b99b13a81fb45a340ad99abdfcd8310",
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim"
+      ]
+    },
+    "BusyBeaver.ZFC.SiteCoverage": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+      "sha256": "15ad5a7b5f1ab1e656146ae823f0e012ea8ab4295b5381c8650e03885f201c24",
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim",
+        "BusyBeaver.ZFC.RMEquiv"
+      ]
+    },
+    "BusyBeaver.ZFC.DecoderSourceBinding": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecoderSourceBinding.lean",
+      "sha256": "6fa157ef9030371af52c9d101f175c624ed8e5e2edc05e6026b6644f0af15beb",
+      "imports": [
+        "BusyBeaver.ZFC.DecoderPaths",
+        "BusyBeaver.ZFC.KSource215Program",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ]
+    },
+    "BusyBeaver.ZFC.KRuntimeCore": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+      "sha256": "720237caea67c24657a25597b722e8add8a7fd099b33d699a0018654672d180e",
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ]
+    },
+    "BusyBeaver.ZFC.KHome": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHome.lean",
+      "sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ]
+    },
+    "BusyBeaver.ZFC.KHomeReady": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+      "sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+      "imports": [
+        "BusyBeaver.ZFC.KHome",
+        "BusyBeaver.ZFC.KZipTape"
+      ]
+    },
+    "BusyBeaver.ZFC.RegisterPathClean": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPathClean.lean",
+      "sha256": "c029c0720c7631ba935318af1cfa8829ba641eb7397b8a4ee183927f8dd98cde",
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ]
+    },
+    "BusyBeaver.ZFC.KSim": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+      "sha256": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+      "imports": [
+        "BusyBeaver.ZFC.KHomeReady",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ]
+    },
+    "BusyBeaver.ZFC.KDecoderPrefix215": {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KDecoderPrefix215.lean",
+      "sha256": "cb561a8bc4ae64e77abe9664bfc6e815a9856fc2b3031de367903ecdc0ada6f4",
+      "imports": [
+        "BusyBeaver.ZFC.DecoderSourceBinding",
+        "BusyBeaver.ZFC.KZipTape",
+        "BusyBeaver.ZFC.KSim"
+      ]
+    }
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "phase": 23,
+  "status": "OWNED_SOURCE_ONLY_DRAFT_NOT_EXECUTED_ROOT_REVIEW_REQUIRED",
+  "base_commit": "017861249e7da624c007e0dd6d170e32433be549",
+  "basis_result_sha256": "cd966bd654b04a3c2becbafc00ba1f13f2866fcbab64b5b6715cf6449461dc66",
+  "entrypoints": {
+    "runner": "build-candidate.py",
+    "derive": "derive_plan.py",
+    "actual": "review_actual.py"
+  },
+  "helpers": {
+    "runner": {
+      "base_path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase22/lean/check.py",
+      "base_sha256": "3b49de9ee28d320b69d33102b2dd9344862269f048b74ed8da3b2ab84a4663bc",
+      "expanded_sha256": "2938202053fa58b596117c2a7414d3fa2c4a528c43fbd2810e9cf345a3eaa58e",
+      "replacements": [
+        {
+          "before": "phase22 source-transitive",
+          "after": "phase23 source-transitive",
+          "count": 1
+        },
+        {
+          "before": "/tmp/k215-phase21-check-v12/candidate-build-run1",
+          "after": "/tmp/k215-phase22-check-v3/candidate-build-run1",
+          "count": 1
+        },
+        {
+          "before": "'phase21_checked'",
+          "after": "'phase22_checked'",
+          "count": 2
+        },
+        {
+          "before": "a2e1a93317cac5531d20fcf6724628004dff7d5fe67fb9ebd16b16cba9fbdd57",
+          "after": "cd966bd654b04a3c2becbafc00ba1f13f2866fcbab64b5b6715cf6449461dc66",
+          "count": 1
+        },
+        {
+          "before": "'phase22_owned_supervisor'",
+          "after": "'phase23_owned_supervisor'",
+          "count": 1
+        },
+        {
+          "before": "plan=read(args.map);out=args.out.resolve();out.mkdir(exist_ok=True)",
+          "after": "plan=read(args.map)\nfor path,pin in P23_RUNTIME_INPUTS.items():assert plan['present_inputs'][path]==pin==sha(path)\nout=args.out.resolve();out.mkdir(exist_ok=True)",
+          "count": 1
+        }
+      ]
+    },
+    "derive": {
+      "base_path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase22/integration/derive_plan.py",
+      "base_sha256": "d043949e6f8570a2c167866deffdbe435560aaa5936aca4f17ea80dbccc20eca",
+      "expanded_sha256": "a2cfab0b30b100e5ad9e175d901203f1cc9a0248e7e93198a07df77f49e99a3b",
+      "replacements": [
+        {
+          "before": "source-only P22 closure",
+          "after": "source-only P23 closure",
+          "count": 1
+        },
+        {
+          "before": "/tmp/k215-phase21-check-v12",
+          "after": "/tmp/k215-phase22-check-v3",
+          "count": 2
+        },
+        {
+          "before": "a2e1a93317cac5531d20fcf6724628004dff7d5fe67fb9ebd16b16cba9fbdd57",
+          "after": "cd966bd654b04a3c2becbafc00ba1f13f2866fcbab64b5b6715cf6449461dc66",
+          "count": 1
+        },
+        {
+          "before": "RUNNER_SHA='3b49de9ee28d320b69d33102b2dd9344862269f048b74ed8da3b2ab84a4663bc'",
+          "after": "RUNNER_SHA=P23_RUNNER_SHA",
+          "count": 1
+        },
+        {
+          "before": "0d335c25cf703d370ceee628a8cb0e722afa2ea0",
+          "after": "017861249e7da624c007e0dd6d170e32433be549",
+          "count": 1
+        },
+        {
+          "before": "for r in sources.values():\n pin(r['candidate']['path'],r['candidate']['sha256'])",
+          "after": "for p,h in P23_RUNTIME_INPUTS.items():pin(p,h)\nfor r in sources.values():\n pin(r['candidate']['path'],r['candidate']['sha256'])",
+          "count": 1
+        },
+        {
+          "before": "simplification/phase21/lean",
+          "after": "simplification/phase22/lean",
+          "count": 1
+        },
+        {
+          "before": "'mode':'phase22-candidate'",
+          "after": "'mode':'phase23-candidate'",
+          "count": 1
+        },
+        {
+          "before": "accepted phase21",
+          "after": "accepted phase22",
+          "count": 2
+        }
+      ]
+    },
+    "actual": {
+      "base_path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/phase22/lean/review_actual.py",
+      "base_sha256": "e18ab9129cabe38de04fa920f52cb43ca1a7e3830f2f3f00d4c46ec4e840ea01",
+      "expanded_sha256": "90e058746b540da8aa2fb9ea0f7536d53dd93ee0b4f1c6e1ce676e9f3d7cdeca",
+      "replacements": [
+        {
+          "before": "phase22 actual-result audit",
+          "after": "phase23 actual-result audit",
+          "count": 1
+        },
+        {
+          "before": "a2e1a93317cac5531d20fcf6724628004dff7d5fe67fb9ebd16b16cba9fbdd57",
+          "after": "cd966bd654b04a3c2becbafc00ba1f13f2866fcbab64b5b6715cf6449461dc66",
+          "count": 1
+        },
+        {
+          "before": "/tmp/k215-phase21-check-v12",
+          "after": "/tmp/k215-phase22-check-v3",
+          "count": 1
+        },
+        {
+          "before": "sha(a.runner)=='3b49de9ee28d320b69d33102b2dd9344862269f048b74ed8da3b2ab84a4663bc'",
+          "after": "sha(a.runner)==P23_RUNNER_SHA",
+          "count": 1
+        },
+        {
+          "before": "q=read(a.plan);count=q['expected']['provider_count'];",
+          "after": "q=read(a.plan)\n for path,h in P23_RUNTIME_INPUTS.items():assert q['present_inputs'][path]==h==sha(path)\n count=q['expected']['provider_count'];",
+          "count": 1
+        },
+        {
+          "before": "assert q['mode']=='phase22-candidate'",
+          "after": "assert q['mode']=='phase23-candidate'",
+          "count": 1
+        },
+        {
+          "before": "0d335c25cf703d370ceee628a8cb0e722afa2ea0",
+          "after": "017861249e7da624c007e0dd6d170e32433be549",
+          "count": 1
+        },
+        {
+          "before": "q['absent_inputs'][:16]==bq['absent_inputs']",
+          "after": "q['absent_inputs'][:len(bq['absent_inputs'])]==bq['absent_inputs']",
+          "count": 1
+        },
+        {
+          "before": "==16+len(q['newly_retired_module_sources'])+len(q['newly_retired_producers'])",
+          "after": "==len(bq['absent_inputs'])+len(q['newly_retired_module_sources'])+len(q['newly_retired_producers'])",
+          "count": 1
+        },
+        {
+          "before": "simplification/phase21/lean",
+          "after": "simplification/phase22/lean",
+          "count": 1
+        },
+        {
+          "before": "assert len(br['fresh_modules'])==18 and len(br['reused_modules'])==208 and len(br['audits'])==2",
+          "after": "assert sorted(br['fresh_modules']+br['reused_modules'])==sorted(bd) and len(br['audits'])==len(bq['audits'])==2",
+          "count": 1
+        },
+        {
+          "before": "accepted phase21",
+          "after": "accepted phase22",
+          "count": 2
+        },
+        {
+          "before": "'phase21_checked'",
+          "after": "'phase22_checked'",
+          "count": 1
+        },
+        {
+          "before": " phase21_checked$",
+          "after": " phase22_checked$",
+          "count": 1
+        },
+        {
+          "before": "Exact phase22 source-transitive",
+          "after": "Exact phase23 source-transitive",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

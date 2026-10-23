@@ -258,6 +258,7 @@ section Maximal
 variable (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [neg f0])
 include hC hz
 
+omit hC hz in
 theorem gam_list : ∀ L : List NF, (∀ x, x ∈ L → Gam Ax f0 x) →
     ∃ M, ∀ x, x ∈ L → x ∈ chain Ax f0 M
   | [], _ => ⟨0, fun _ hx => absurd hx List.not_mem_nil⟩
@@ -272,9 +273,10 @@ theorem gam_list : ∀ L : List NF, (∀ x, x ∈ L → Gam Ax f0 x) →
 theorem gam_consistent {L : List NF} (hL : ∀ x, x ∈ L → Gam Ax f0 x) :
     ¬ Der NF.imp (Thm Ax) L NF.bot := by
   intro d
-  obtain ⟨M, hM⟩ := gam_list hC f0 hz L hL
+  obtain ⟨M, hM⟩ := gam_list f0 L hL
   exact chain_cons hC f0 hz M (d.mono hM)
 
+omit hC hz in
 theorem gam_complete (g : NF) : Gam Ax f0 g ∨ Gam Ax f0 (neg g) := by
   let m := Cantor.toNat (code g, 0)
   have hm : enumF (Cantor.ofNat m).1 = g := by
@@ -289,7 +291,7 @@ theorem gam_complete (g : NF) : Gam Ax f0 g ∨ Gam Ax f0 (neg g) := by
 
 theorem gam_closed {L : List NF} {g : NF} (hL : ∀ x, x ∈ L → Gam Ax f0 x)
     (d : Der NF.imp (Thm Ax) L g) : Gam Ax f0 g :=
-  (gam_complete hC f0 hz g).resolve_right fun h => gam_consistent hC f0 hz (L := neg g :: L)
+  (gam_complete f0 g).resolve_right fun h => gam_consistent hC f0 hz (L := neg g :: L)
     (List.forall_mem_cons.2 ⟨h, hL⟩) (.mp (.hyp (List.mem_cons_self ..)) d.weaken)
 
 theorem gam_thm {g : NF} (h : Thm Ax g) : Gam Ax f0 g :=
@@ -314,7 +316,7 @@ theorem gam_bot : ¬ Gam Ax f0 NF.bot := fun h =>
 
 theorem gam_imp_iff (a b : NF) : Gam Ax f0 (imp a b) ↔ (Gam Ax f0 a → Gam Ax f0 b) := by
   refine ⟨gam_mp hC f0 hz, fun h => ?_⟩
-  cases gam_complete hC f0 hz a with
+  cases gam_complete f0 a with
   | inl ha => exact gam_mp hC f0 hz (gam_thm hC f0 hz (hC.k b a)) (h ha)
   | inr hna =>
       have t : Thm Ax (imp (neg a) (imp a b)) :=
@@ -356,7 +358,7 @@ theorem gam_rich (j N : Nat) : ∃ c, N ≤ c ∧ Gam Ax f0 (NF.eq c j) := by
   have hr : rn a c (neg (NF.eq a j)) = neg (NF.eq c j) := by
     simp [rn, neg, rv, hja]
   rw [hr] at hc
-  exact (gam_complete hC f0 hz (NF.eq c j)).resolve_right hc
+  exact (gam_complete f0 (NF.eq c j)).resolve_right hc
 
 end Maximal
 
@@ -383,7 +385,7 @@ theorem rel_congr (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons A
 def memD (hC : Classical NF.imp NF.bot (Thm Ax)) (f0 : NF) (hz : Cons Ax [neg f0]) : Dom hC f0 hz → Dom hC f0 hz → Prop :=
   Quotient.lift₂ (s₁ := eqvSetoid hC f0 hz) (s₂ := eqvSetoid hC f0 hz)
     (fun i j => Gam Ax f0 (rel i j))
-    (fun a1 b1 a2 b2 ha hb => propext ⟨rel_congr hC f0 hz ha hb,
+    (fun _ _ _ _ ha hb => propext ⟨rel_congr hC f0 hz ha hb,
       rel_congr hC f0 hz ((eqvSetoid hC f0 hz).iseqv.symm ha)
         ((eqvSetoid hC f0 hz).iseqv.symm hb)⟩)
 

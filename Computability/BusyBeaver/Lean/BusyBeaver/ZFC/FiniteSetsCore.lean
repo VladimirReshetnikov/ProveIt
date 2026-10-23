@@ -124,24 +124,20 @@ def kpairForm (i j k : Nat) : Form :=
   fSetByF k (fOr (SingletonInfinity.singForm (i + 1) 0) (pairForm (i + 1) (j + 1) 0))
 
 theorem sat_kpairForm (B : Base mem) (env : Nat → V) (i j k : Nat) :
-    Sat mem env (kpairForm i j k) ↔ env k = kpair B (env i) (env j) := by
-  refine sat_setBy B env k _ _ fun x => ?_
-  change (Sat mem (scons x env) (SingletonInfinity.singForm (i + 1) 0) ∨
-    Sat mem (scons x env) (pairForm (i + 1) (j + 1) 0)) ↔ _
-  rw [SingletonInfinity.sat_singForm B.toBase, sat_pairForm B, kpair_mem B]
-  rfl
+    Sat mem env (kpairForm i j k) ↔ env k = kpair B (env i) (env j) :=
+  sat_setBy B env k _ _ fun x =>
+    (or_congr (SingletonInfinity.sat_singForm B.toBase (scons x env) (i + 1) 0)
+      (sat_pairForm B _ (i + 1) (j + 1) 0)).trans (kpair_mem B _ _ x).symm
 
 /-- Graph f contains the ordered pair (x,y). -/
 def appForm (f x y : Nat) : Form :=
   fEx (fAnd (kpairForm (x + 1) (y + 1) 0) (fMem 0 (f + 1)))
 
 theorem sat_appForm (B : Base mem) (env : Nat → V) (f x y : Nat) :
-    Sat mem env (appForm f x y) ↔ mem (kpair B (env x) (env y)) (env f) := by
-  refine ⟨fun ⟨p, hp, hm⟩ => ?_,
-    fun hm => ⟨kpair B (env x) (env y), (sat_kpairForm B _ _ _ _).mpr rfl, hm⟩⟩
-  have hp' : p = kpair B (env x) (env y) := (sat_kpairForm B _ _ _ _).mp hp
-  change mem p (env f) at hm
-  rwa [hp'] at hm
+    Sat mem env (appForm f x y) ↔ mem (kpair B (env x) (env y)) (env f) :=
+  (exists_congr fun p => and_congr
+    (sat_kpairForm B (scons p env) (x + 1) (y + 1) 0) Iff.rfl).trans
+    (exists_eq_left (p := fun p => mem p (env f)) (a' := kpair B (env x) (env y)))
 
 /-- Input i; output j, for the von Neumann successor. -/
 def succForm (i j : Nat) : Form :=

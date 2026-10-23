@@ -3,7 +3,18 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
-The latest [phase22 Lean check](phase22/README.md), independent actual readback, capture and independent capture review pass. Nine maintained sources remove **179 Lean lines / 10,782 bytes**,
+The latest [phase23 Lean checkpoint](phase23/README.md), independent actual readback,
+evidence capture and independent capture review pass. Thirty-three maintained
+sources remove **243 Lean lines / 13,016 bytes**; forty declarations retire and
+three signatures become stronger. The check covers 230 providers (215 project
+modules and fifteen existing clients): 199 fresh and 31 exact phase22 reuses,
+plus two fresh endpoint audits. All selected providers and audits have zero
+warnings. The primary endpoint falls from 179 to **172 project modules** and from
+1,768,101 to **1,728,487 selected source bytes**; that import-closure measure
+overlaps the maintained-file saving. The literal 215-state machine and endpoint
+statements are unchanged; its internal PA endpoint remains open.
+
+The [phase22 Lean check](phase22/README.md), independent actual readback, capture and independent capture review pass. Nine maintained sources remove **179 Lean lines / 10,782 bytes**,
 including the attributed ConstructibleAbs normalization once. The check covers
 226 providers: 56 fresh, 170 exact reuses, plus two fresh endpoint audits, all with
 zero fresh warnings. The primary endpoint retains 179 modules and selects
@@ -135,7 +146,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest Lean checkpoint](phase22/README.md),
+The [latest Lean checkpoint](phase23/README.md),
+[twenty-second checkpoint](phase22/README.md),
 [twenty-first checkpoint](phase21/README.md),
 [twentieth checkpoint](phase20/README.md),
 [nineteenth checkpoint](phase19/README.md),

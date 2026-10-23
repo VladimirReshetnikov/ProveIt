@@ -134,7 +134,7 @@ theorem step_zc (M : TMN) (q : Nat) (l r : List Bool) :
   simp only [step, zc, headD_trim]
   split
   · rfl
-  · simp only [zc, trim_cons_trim, tail_trim]
+  · simp only [trim_cons_trim, tail_trim]
   · simp only [zl, zc, tail_trim, headD_trim]
     congr 2
     exact trim_cons_congr _ (trim_cons_congr _ (tail_trim r))

@@ -32,10 +32,6 @@ def Attempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
   ∀ z v, mem z N → app f (singleton B z) v →
     ∃ w, app f z w ∧ v = G w
 
-def HasAttempt (B : Base mem) (G : V → V) (app : V → V → V → Prop)
-    (N e a z : V) : Prop :=
-  ∃ f, Attempt B G app N e a f ∧ ∃ v, app f z v
-
 def Value (B : Base mem) (G : V → V) (app : V → V → V → Prop)
     (N e a z v : V) : Prop :=
   mem z N ∧ ∃ f, Attempt B G app N e a f ∧ app f z v
@@ -83,27 +79,7 @@ theorem extend_attempt (B : Base mem) (G : V → V) (app : V → V → V → Pro
     · obtain rfl := singleton_injective B hu
       exact ⟨v, (hg _ v).mpr (Or.inl hfv), rfl⟩
 
-/-- Only the fixed attempt-domain-existence predicate is separated here. -/
-theorem attempts_exist_of_separator (B : Base mem) (G : V → V)
-    (app : V → V → V → Prop) {N e a : V} (hN : Index B e N)
-    (hNz : ∀ z, mem z N → singleton B z ≠ e)
-    (hPoint : ∃ f, ∀ z v, app f z v ↔ z = e ∧ v = a)
-    (hExtend : ∀ f z v, ∃ g, ∀ u w,
-      app g u w ↔ app f u w ∨ (u = z ∧ w = v))
-    (hSep : ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z) :
-    ∀ z, mem z N → HasAttempt B G app N e a z := by
-  obtain ⟨X, hX⟩ := hSep
-  obtain ⟨f0, hf0, hfa⟩ := base_attempt B G app N e a hNz hPoint
-  have heX : mem e X := (hX e).mpr ⟨hN.zero_mem, f0, hf0, a, hfa⟩
-  have hcX : Closed B X := by
-    intro z hz
-    obtain ⟨hzN, f, hf, v, hfv⟩ := (hX z).mp hz
-    obtain ⟨g, hg, hgv⟩ := extend_attempt B G app hNz hf hzN hfv
-      (hExtend f (singleton B z) (G v))
-    exact (hX (singleton B z)).mpr ⟨hN.closed z hzN, g, hg, G v, hgv⟩
-  exact fun z hz => ((hX z).mp (hN.least X heX hcX z hz)).2
-
-/-- Explicit agreement/existence cuts and one partial-functional image resource
+/-- One agreement cut and one partial-functional image resource
 give closure under this fixed G; no semantic all-relations schema is postulated. -/
 theorem closure_of_instances (B : Base mem) (G : V → V) (app : V → V → V → Prop)
     {N e a : V} (hN : Index B e N)
@@ -112,24 +88,21 @@ theorem closure_of_instances (B : Base mem) (G : V → V) (app : V → V → V �
     (hExtend : ∀ f z v, ∃ g, ∀ u w,
       app g u w ↔ app f u w ∨ (u = z ∧ w = v))
     (hAgr : ∀ f g, ∃ X, ∀ z, mem z X ↔ mem z N ∧ Agree app f g z)
-    (hEx : ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z)
     (hImage : (∀ z v w, Value B G app N e a z v →
       Value B G app N e a z w → v = w) →
       ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z N ∧ Value B G app N e a z v) :
     ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (G v) Y := by
   have hAgree (f g : V) :=
     agree_of_separator B G app (a := a) hN (hAgr f g)
-  have hExists := attempts_exist_of_separator B G app hN hNz hPoint hExtend hEx
   obtain ⟨Y, hY⟩ := hImage fun z v w ⟨hzN, f, hf, hfv⟩ ⟨_, g, hg, hgw⟩ =>
     hAgree f g hf hg z hzN v w hfv hgw
   obtain ⟨f0, hf0, hfa⟩ := base_attempt B G app N e a hNz hPoint
   refine ⟨Y, (hY a).mpr ⟨e, hN.zero_mem, hN.zero_mem, f0, hf0, hfa⟩, fun v hv => ?_⟩
   obtain ⟨z, hzN, _, f, hf, hfv⟩ := (hY v).mp hv
-  obtain ⟨g, hg, w, hgw⟩ := hExists (singleton B z) (hN.closed z hzN)
-  obtain ⟨v0, hgv0, hw⟩ := hg.2 z w hzN hgw
-  have hwG : w = G v := hw.trans (congrArg G (hAgree f g hf hg z hzN v v0 hfv hgv0).symm)
+  obtain ⟨g, hg, hgv⟩ := extend_attempt B G app hNz hf hzN hfv
+    (hExtend f (singleton B z) (G v))
   exact (hY (G v)).mpr ⟨singleton B z, hN.closed z hzN,
-    hN.closed z hzN, g, hg, hwG ▸ hgw⟩
+    hN.closed z hzN, g, hg, hgv⟩
 
 /- The templates below are actual first-order formulas. Their two atom builders
 are parameters so the independently proved finite-set atoms can be reused. -/
@@ -148,11 +121,6 @@ def attemptForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → F
 def agreeForm (appF : Nat → Nat → Nat → Form) (f g z : Nat) : Form :=
   fAll (fAll (fImp
     (fAnd (appF (f + 2) (z + 2) 1) (appF (g + 2) (z + 2) 0)) (fEq 1 0)))
-
-def hasAttemptForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
-    (N e a z : Nat) : Form :=
-  fEx (fAnd (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0)
-    (fEx (appF 1 (z + 2) 0)))
 
 def valueForm (appF : Nat → Nat → Nat → Form) (stepF : Nat → Nat → Form)
     (N e a z v : Nat) : Form :=
@@ -173,51 +141,33 @@ include hApp hStep in
 theorem sat_attemptForm (env : Nat → V) (N e a f : Nat) :
     Sat mem env (attemptForm appF stepF N e a f) ↔
       Attempt B G app (env N) (env e) (env a) (env f) := by
-  change ((∀ v, Sat mem (scons v env) (appF (f + 1) (e + 1) 0) → v = env a) ∧
-    ∀ z s v, mem z (env N) ∧
-      Sat mem (scons v (scons s (scons z env))) (singForm 2 1) ∧
-      Sat mem (scons v (scons s (scons z env))) (appF (f + 3) 1 0) →
-      ∃ w, Sat mem (scons w (scons v (scons s (scons z env)))) (appF (f + 4) 3 0) ∧
-        Sat mem (scons w (scons v (scons s (scons z env)))) (stepF 0 1)) ↔ _
-  constructor
-  · rintro ⟨h0, hs⟩
-    refine ⟨fun v hv => h0 v ((hApp _ _ _ _).mpr hv), fun z v hz hv => ?_⟩
-    obtain ⟨w, hwApp, hwStep⟩ := hs z (singleton B z) v
-      ⟨hz, (sat_singForm B _ 2 1).mpr rfl, (hApp _ _ _ _).mpr hv⟩
-    exact ⟨w, (hApp _ _ _ _).mp hwApp, (hStep _ 0 1).mp hwStep⟩
-  · rintro ⟨h0, hs⟩
-    refine ⟨fun v hv => h0 v ((hApp _ _ _ _).mp hv), ?_⟩
-    rintro z s v ⟨hz, hSing, hAppV⟩
-    obtain rfl : s = singleton B z := (sat_singForm B _ 2 1).mp hSing
-    obtain ⟨w, hwApp, hwStep⟩ := hs z v hz ((hApp _ _ _ _).mp hAppV)
-    exact ⟨w, (hApp _ _ _ _).mpr hwApp, (hStep _ 0 1).mpr hwStep⟩
+  refine and_congr (forall_congr' fun v =>
+    imp_congr (hApp (scons v env) (f + 1) (e + 1) 0) Iff.rfl) ?_
+  refine (forall_congr' fun z => forall_congr' fun s => forall_congr' fun v =>
+    imp_congr (and_congr Iff.rfl (and_congr
+      (sat_singForm B (scons v (scons s (scons z env))) 2 1) (hApp _ (f + 3) 1 0)))
+      (exists_congr fun w => and_congr
+        (hApp (scons w (scons v (scons s (scons z env)))) (f + 4) 3 0)
+        (hStep _ 0 1))).trans ?_
+  change (∀ z s v, mem z (env N) ∧ s = singleton B z ∧ app (env f) s v →
+    ∃ w, app (env f) z w ∧ v = G w) ↔ _
+  exact ⟨fun hs z v hz hv => hs z (singleton B z) v ⟨hz, rfl, hv⟩,
+    fun hs z s v ⟨hz, hsz, hv⟩ => hs z v hz (hsz ▸ hv)⟩
 
 include hApp in
 theorem sat_agreeForm (env : Nat → V) (f g z : Nat) :
-    Sat mem env (agreeForm appF f g z) ↔ Agree app (env f) (env g) (env z) := by
-  change (∀ v w, Sat mem (scons w (scons v env)) (appF (f + 2) (z + 2) 1) ∧
-    Sat mem (scons w (scons v env)) (appF (g + 2) (z + 2) 0) → v = w) ↔ _
-  exact ⟨fun h v w hv hw => h v w ⟨(hApp _ _ _ _).mpr hv, (hApp _ _ _ _).mpr hw⟩,
-    fun h v w ⟨hv, hw⟩ => h v w ((hApp _ _ _ _).mp hv) ((hApp _ _ _ _).mp hw)⟩
-
-include hApp hStep in
-theorem sat_hasAttemptForm (env : Nat → V) (N e a z : Nat) :
-    Sat mem env (hasAttemptForm appF stepF N e a z) ↔
-      HasAttempt B G app (env N) (env e) (env a) (env z) := by
-  change (∃ f, Sat mem (scons f env) (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0) ∧
-    ∃ v, Sat mem (scons v (scons f env)) (appF 1 (z + 2) 0)) ↔ _
-  exact exists_congr fun _ => and_congr (sat_attemptForm B G app appF stepF hApp hStep _ _ _ _ _)
-    (exists_congr fun _ => hApp _ _ _ _)
+    Sat mem env (agreeForm appF f g z) ↔ Agree app (env f) (env g) (env z) :=
+  forall_congr' fun v => forall_congr' fun w =>
+    (imp_congr (and_congr (hApp (scons w (scons v env)) (f + 2) (z + 2) 1)
+      (hApp _ (g + 2) (z + 2) 0)) Iff.rfl).trans and_imp
 
 include hApp hStep in
 theorem sat_valueForm (env : Nat → V) (N e a z v : Nat) :
     Sat mem env (valueForm appF stepF N e a z v) ↔
-      Value B G app (env N) (env e) (env a) (env z) (env v) := by
-  change (mem (env z) (env N) ∧ ∃ f,
-    Sat mem (scons f env) (attemptForm appF stepF (N + 1) (e + 1) (a + 1) 0) ∧
-      Sat mem (scons f env) (appF 0 (z + 1) (v + 1))) ↔ _
-  exact and_congr Iff.rfl (exists_congr fun _ =>
-    and_congr (sat_attemptForm B G app appF stepF hApp hStep _ _ _ _ _) (hApp _ _ _ _))
+      Value B G app (env N) (env e) (env a) (env z) (env v) :=
+  and_congr Iff.rfl (exists_congr fun f => and_congr
+    (sat_attemptForm B G app appF stepF hApp hStep (scons f env) (N + 1) (e + 1) (a + 1) 0)
+    (hApp _ 0 (z + 1) (v + 1)))
 
 include B hApp in
 theorem agreement_separator (N f g : V) :
@@ -225,14 +175,6 @@ theorem agreement_separator (N f g : V) :
   obtain ⟨X, hX⟩ := B.sep (agreeForm appF 1 2 0) (scons f (fun _ => g)) N
   exact ⟨X, fun z => (hX z).trans
     (and_congr Iff.rfl (sat_agreeForm app appF hApp _ 1 2 0))⟩
-
-include appF stepF hApp hStep in
-theorem existence_separator (N e a : V) :
-    ∃ X, ∀ z, mem z X ↔ mem z N ∧ HasAttempt B G app N e a z := by
-  obtain ⟨X, hX⟩ := B.sep (hasAttemptForm appF stepF 1 2 3 0)
-    (scons N (scons e (fun _ => a))) N
-  exact ⟨X, fun z => (hX z).trans (and_congr Iff.rfl
-    (sat_hasAttemptForm B G app appF stepF hApp hStep _ 1 2 3 0))⟩
 
 include appF stepF hApp hStep in
 theorem value_image
@@ -253,8 +195,8 @@ theorem value_image
     (exists_congr (fun z => and_congr Iff.rfl (hr z v)))⟩
 
 include appF stepF hApp hStep in
-/-- Definability of the two fixed atoms discharges precisely the three
-formula resources, leaving only finite graph existence/extension. -/
+/-- Definability of the two fixed atoms discharges the agreement cut and
+functional image, leaving only finite graph existence/extension. -/
 theorem closure_of_forms
     (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →
       ∀ A, ∃ Y, ∀ v, mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z)
@@ -266,7 +208,6 @@ theorem closure_of_forms
     ∃ Y, mem a Y ∧ ∀ v, mem v Y → mem (G v) Y := by
   apply closure_of_instances B G app hN hNz hPoint hExtend
   · exact agreement_separator B app appF hApp N
-  · exact existence_separator B G app appF stepF hApp hStep N e a
   · exact value_image B G app appF stepF hApp hStep hRepl N e a
 
 end Syntax
@@ -291,7 +232,7 @@ theorem extend_graph (B : FiniteSets.Base mem) (f z v : V) :
   rw [FiniteSets.insert_spec B]
   exact or_congr Iff.rfl ⟨FiniteSets.kpair_inj B, by rintro ⟨rfl, rfl⟩; rfl⟩
 
-/-- Actual finite-set atoms, two Separation cuts and one Replacement image
+/-- Actual finite-set atoms, one Separation cut and one Replacement image
 produce a successor-closed set without any earlier Infinity axiom. -/
 theorem successor_closure (B : FiniteSets.Base mem)
     (hRepl : ∀ (phi : Form) (env : Nat → V), Functional (relOf mem phi env) →

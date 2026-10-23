@@ -69,37 +69,31 @@ def singForm (i j : Nat) : Form :=
 
 theorem sat_singForm (B : Base mem) (env : Nat → V) (i j : Nat) :
     Sat mem env (singForm i j) ↔ env j = singleton B (env i) := by
-  change (∀ z, Sat mem (scons z env)
-    (fIff (fMem 0 (j + 1)) (fEq 0 (i + 1)))) ↔ _
-  exact ⟨fun hs => B.ext _ _ fun z => ((Sat_fIff (mem := mem)).mp (hs z)).trans
-      (singleton_spec B (env i) z).symm,
-    fun hs z => (Sat_fIff (mem := mem)).mpr (show mem z (env j) ↔ z = env i by
-      rw [hs]; exact singleton_spec B (env i) z)⟩
+  refine (forall_congr' fun z => Sat_fIff (mem := mem)
+    (e := scons z env)).trans ?_
+  change (∀ z, mem z (env j) ↔ z = env i) ↔ _
+  exact ⟨singleton_unique B (env i) (env j),
+    fun h z => h.symm ▸ singleton_spec B (env i) z⟩
 
 def closedForm (i : Nat) : Form :=
   fAll (fImp (fMem 0 (i + 1))
     (fEx (fAnd (fMem 0 (i + 2)) (singForm 1 0))))
 
 theorem sat_closedForm (B : Base mem) (env : Nat → V) (i : Nat) :
-    Sat mem env (closedForm i) ↔ Closed B (env i) := by
-  change (∀ x, mem x (env i) → ∃ s, mem s (env i) ∧
-    Sat mem (scons s (scons x env)) (singForm 1 0)) ↔ _
-  refine ⟨fun hc x hx => ?_,
-    fun hc x hx => ⟨singleton B x, hc x hx, (sat_singForm B _ 1 0).mpr rfl⟩⟩
-  obtain ⟨s, hs, hSing⟩ := hc x hx
-  have heq : s = singleton B x := (sat_singForm B _ 1 0).mp hSing
-  simpa only [heq] using hs
+    Sat mem env (closedForm i) ↔ Closed B (env i) :=
+  forall_congr' fun x => imp_congr_right fun _ =>
+    (exists_congr fun s => and_congr Iff.rfl
+      (sat_singForm B (scons s (scons x env)) 1 0)).trans
+      (exists_eq_right (p := fun s => mem s (env i)) (a' := singleton B x))
 
 /-- Membership in every singleton-closed set containing the distinguished root. -/
 def zMemForm (z e : Nat) : Form :=
   fAll (fImp (fAnd (fMem (e + 1) 0) (closedForm 0)) (fMem (z + 1) 0))
 
 theorem sat_zMemForm (B : Base mem) (env : Nat → V) (z e : Nat) :
-    Sat mem env (zMemForm z e) ↔ LeastMember B (env e) (env z) := by
-  change (∀ X, mem (env e) X ∧ Sat mem (scons X env) (closedForm 0) →
-    mem (env z) X) ↔ _
-  exact ⟨fun h X he hc => h X ⟨he, (sat_closedForm B _ 0).mpr hc⟩,
-    fun h X hx => h X hx.1 ((sat_closedForm B _ 0).mp hx.2)⟩
+    Sat mem env (zMemForm z e) ↔ LeastMember B (env e) (env z) :=
+  forall_congr' fun X => (imp_congr
+    (and_congr Iff.rfl (sat_closedForm B (scons X env) 0)) Iff.rfl).trans and_imp
 
 /-- Induction here quantifies over represented sets; it is not unrestricted
 induction over external semantic predicates. -/

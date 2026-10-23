@@ -17,7 +17,19 @@ from the classical Tarski/Kalish–Montague route. The separately attributed
 propositional certificate and numerical program ports are described below;
 no Coq compiler was run.
 
-The latest [phase22 Lean check](k225-formal/verification/k215/simplification/phase22/README.md), independent actual readback, capture and independent capture review pass. Constructible subtype normalization, constructive
+The latest [phase23 Lean checkpoint](k225-formal/verification/k215/simplification/phase23/README.md), independent actual readback,
+evidence capture and independent capture review pass. It separates four generic
+cores from compatibility adapters, uses native quotient Collection for
+Replacement, and closes the attempt-value image by extending its recorded
+witnesses. Across 33 maintained sources it removes **243 Lean lines / 13,016
+bytes** and retires forty declarations. Three signatures become stronger:
+`gam_list` and `gam_complete` omit `hC`/`hz`, and `closure_of_instances` drops `hEx`.
+All selected providers and endpoint audits have zero warnings, with exact
+retained axiom profiles. The 215-state machine and endpoint statements are
+unchanged; its internal PA endpoint remains open. The checkpoint records the
+intentional API retirements and caller changes.
+
+The [phase22 Lean check](k225-formal/verification/k215/simplification/phase22/README.md), independent actual readback, capture and independent capture review pass. Constructible subtype normalization, constructive
 semantic congruence and root transfer remove 179 lines / 10,782 bytes across nine
 maintained sources. Five tagged signatures drop nine unused premises; ten calls
 are updated. Four unused quotient-witness names gain underscores with positions

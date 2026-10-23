@@ -124,3 +124,8 @@ separating adopted changes from prospective Lean work and recorded component cla
 
 The [uncompiled control-classifier lead](leads/README.md) is a source-only research
 pilot, outside the accepted production-source kernel check.
+
+The [phase23 successor](../phase23/README.md) separates generic cores from
+compatibility adapters and shortens further proofs. Its serial kernel check,
+independent actual readback, evidence capture and independent capture review pass.
+Phase22's eleven Lean evidence leaf files remain unchanged.

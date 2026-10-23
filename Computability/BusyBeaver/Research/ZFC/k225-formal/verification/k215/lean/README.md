@@ -6,6 +6,16 @@ module and dependency sets, baseline sources, objects, and compiler logs.
 The ten audit reports use only `propext`, `Classical.choice`, and `Quot.sound`;
 neither audit has warnings. The project sources retain 34 linter warnings.
 
+The [phase23 selected check](../simplification/phase23/README.md), independent actual readback,
+evidence capture and independent capture review pass. It covers 230 providers
+(215 project modules and fifteen existing typed clients): 199 fresh providers,
+including fourteen clients, and 31 exact phase22 reuses, plus two fresh endpoint
+audits. All selected providers and audits have zero warnings; all 93 client,
+five `WFTheory` and ten audit reports retain their exact profiles. Its serial
+checks use 120-second ordinary/audit limits and 900-second site/source-forward
+batch limits. This selected check is separate from the portable full-closure
+driver below.
+
 The [phase19 check](../simplification/phase19/README.md) passes for 226 providers
 (211 project modules and fifteen typed clients): 16 fresh and 210 exact-source
 reuses, plus two fresh endpoint audits. All retained profiles match exactly. The
@@ -51,8 +61,8 @@ source inventory and toolchain queries.
 
 The driver uses a separate Lake workspace and project object directory; it does
 not load the repository's cached project objects. The shipped Lean core remains
-the compiler trust boundary. The current source selection contains 178 project
-modules and only the external `Init` boundary.
+the compiler trust boundary. The current phase23 source selection contains 172
+project modules and only the external `Init` boundary.
 It checks the exact final module set and
 direct dependency edges, all source bytes, and all recorded object companions.
 

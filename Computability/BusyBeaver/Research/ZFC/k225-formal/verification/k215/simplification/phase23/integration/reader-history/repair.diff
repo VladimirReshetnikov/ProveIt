@@ -1,0 +1,16 @@
+--- /tmp/k215-phase23-capture-draft-v3/review_capture.py
++++ /tmp/k215-phase23-capture-reader-v4/review_capture.py
+@@ -287,7 +287,12 @@
+         for key in ['candidate', 'before']:
+             if row[key] is not None:
+                 assert pins[row[key]['path']] == row[key]['sha256']
+-        assert pins[row['canonical']] == row['candidate']['sha256']
++        # Canonical paths are historical labels of archived workspace providers.
++        # They need not be duplicate source aliases in the content-addressed index.
++        assert digest(row['canonical']) == row['candidate']['sha256']
++        archived_source = Path(run['workspace']) / (row['module'].replace('.', '/') + '.lean')
++        assert pins[str(archived_source)] == row['candidate']['sha256']
++        assert historical[str(archived_source)] == row['canonical']
+     retired_modules = plan['newly_retired_module_sources']
+     assert retired_modules == []
+     assert plan['newly_retired_producers'] == []
