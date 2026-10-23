@@ -203,10 +203,8 @@ theorem scanR {M : TMN} {q : Nat} {b w : Bool} (h : M q b = some (w, true, q)) :
   | n + 1, l, r => by
       have h1 := zR (l := l) (r := List.replicate n b ++ r) h
       refine (Reach.of_step (by simpa [List.replicate_succ] using h1)).trans ?_
-      have := scanR h n (w :: l) r
-      have e : List.replicate n w ++ w :: l = List.replicate (n + 1) w ++ l := by
-        rw [List.replicate_succ']; simp
-      rwa [e] at this
+      simpa only [List.replicate_succ', List.append_assoc, List.singleton_append] using
+        scanR h n (w :: l) r
 
 theorem scanL {M : TMN} {q : Nat} {b w : Bool} (h : M q b = some (w, false, q)) :
     ∀ (n : Nat) (l r : List Bool),
@@ -216,9 +214,7 @@ theorem scanL {M : TMN} {q : Nat} {b w : Bool} (h : M q b = some (w, false, q)) 
       rw [List.replicate_succ, List.cons_append, zl_cons]
       have h1 := zL (l := List.replicate n b ++ l) (r := r) h
       refine (Reach.of_step h1).trans ?_
-      have := scanL h n l (w :: r)
-      have e : List.replicate n w ++ w :: r = List.replicate (n + 1) w ++ r := by
-        rw [List.replicate_succ']; simp
-      rwa [e] at this
+      simpa only [List.replicate_succ', List.append_assoc, List.singleton_append] using
+        scanL h n l (w :: r)
 
 end SetTheory.BusyBeaver.ZFC.KZip

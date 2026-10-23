@@ -30,13 +30,13 @@ statements, raw reports, retained build history, and reproduction routes.
   [serial Rocq driver](../k225-formal/verification/k215/rocq/README.md), including
   `--kernel`, to compile the exact source closure and recursively run `coqchk`.
 
-The [phase24 Lean proof cleanup](../k225-formal/verification/k215/simplification/phase24/README.md) shares runtime, selector, subtype and calculus proofs,
-removing **175 lines / 8,435 bytes across thirteen maintained sources**. Its kernel
-check, independent actual readback, capture and capture review pass: **230 providers
-= 121 fresh + 109 exact phase23 reuses**, plus two fresh audits, with zero selected
-warnings. The primary endpoint stays at **172 modules** and selects **2,210 fewer
-source bytes**; this overlaps the maintained saving and must not be added. The
-215-state machine and endpoint statements stay fixed; its internal PA endpoint remains open.
+The [phase25 proof cleanup](../k225-formal/verification/k215/simplification/phase25/README.md) removes **101 lines / 2,322 bytes**
+from five files, reusing existing calculus, simulator and absoluteness lemmas.
+Kernel, actual-result, capture and archive checks pass for **230 providers
+(110 fresh / 120 exact phase24 reuses)** and two fresh audits, with zero warnings.
+The primary closure remains **172 modules / 1,723,955 source bytes**; its byte
+saving overlaps the five-file measure. The machine remains 215 states, and the
+internal PA endpoint remains open. [Previous checkpoint](../k225-formal/verification/k215/simplification/phase24/README.md).
 
 The [phase23 Lean checkpoint](../k225-formal/verification/k215/simplification/phase23/README.md), independent actual readback,
 evidence capture and independent capture review pass. Thirty-three maintained

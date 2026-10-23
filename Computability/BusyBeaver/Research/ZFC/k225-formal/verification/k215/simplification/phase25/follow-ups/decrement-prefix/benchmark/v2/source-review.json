@@ -1,0 +1,55 @@
+{
+  "status": "AUTHOR_SOURCE_ONLY_V2_TWO_LINE_REPAIR_READBACK_UNCOMPILED",
+  "authorship": "V1 paired mathematics was independently reviewed by this author before any failure. This author then added the two v2 closed-if rewrite lines, so independent root+inline review must cover this delta.",
+  "candidate": {
+    "path": "/tmp/k215-phase25-decrement-v2/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "b364a87199028a9c18738fdc3158c89e4a4b5103ecb57fa435aa53399739f487",
+    "bytes": 17687,
+    "lines": 390
+  },
+  "repair_handoff": {
+    "path": "/tmp/k215-phase25-decrement-v2/handoff.json",
+    "sha256": "39ea149df7dc1ea211552f5f8af89751cbf746caaf44aae80811bf2fde8219ca"
+  },
+  "previous_independent_source_review": {
+    "path": "/tmp/k215-phase25-decrement-benchmark-draft/source-review.json",
+    "sha256": "87fbf953b0df6eff5f88dd9bba49bb70a4a4b0574462c29c6a76d77d0e6f97d2",
+    "limit": "Historical uncompiled v1 review, not an elaboration acceptance."
+  },
+  "v1_failure": {
+    "result": "/tmp/k215-phase25-decrement-benchmark-v1/result.json",
+    "sha256": "f48b70f655aefa24294e9b1498a47eaddfd4aa9e6f016bcdca586a61435fbafc",
+    "no_probe_runs": true,
+    "diagnostics": "Only the two closed true=true/false=true conditions hiding tgtConf from existing rewrite."
+  },
+  "repair": "rw [if_pos rfl] at this / rw [if_neg Bool.false_ne_true] at this, each before existing conc_target rewrite. No tgtConf unfolding or semantic change.",
+  "metrics": {
+    "added_lines_vs_v1": 2,
+    "added_bytes_vs_v1": 87,
+    "added_lines_vs_P24": 36,
+    "added_bytes_vs_P24": 1580
+  },
+  "benchmark_plan": {
+    "path": "/tmp/k215-phase25-decrement-benchmark-draft-v2/plan.json",
+    "sha256": "a9b1431126c25f9e031db0c09f7236053a03f1eb3d34b08976215560a4132310",
+    "closure": 19,
+    "unaffected_exact_P24_reuses_per_arm": 17,
+    "fresh_calls": 6,
+    "blocks": [
+      0,
+      5,
+      10
+    ],
+    "leaf_counts": [
+      9,
+      52,
+      67
+    ],
+    "missing_original_inherited_raw_records": [
+      "BusyBeaver.ZFC.FramedWindow"
+    ]
+  },
+  "preservation": "All resource, lock, cleanup, fresh-isolation, source-transitive closure, workload/profile/warning and immutable-input/output checks byte-identical; helper changes only fixed plan hash.",
+  "execution": [],
+  "canonical_edits": false
+}

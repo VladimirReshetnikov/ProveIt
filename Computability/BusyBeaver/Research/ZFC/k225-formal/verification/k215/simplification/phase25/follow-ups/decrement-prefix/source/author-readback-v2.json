@@ -1,0 +1,70 @@
+{
+  "status": "AUTHOR_SOURCE_ONLY_MINIMAL_ELABORATION_REPAIR_V2_UNCOMPILED_NOT_ADOPTED",
+  "authorship": "Paired checker v1 authored by root_sharing. Reviewer independently reviewed v1 mathematics, then authored only these two explicit closed-if rewrites after root-owned v1 compiler failure. Therefore this v2 receipt is an author readback for the two repair lines; root+inline independent source review required.",
+  "before": {
+    "path": "/tmp/k215-phase25-decrement/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "42e5b2950a13f4b0b23b22c1bc19e8afca88d7046260850f0492a3003d15d6af",
+    "bytes": 17600,
+    "lines": 388
+  },
+  "candidate": {
+    "path": "/tmp/k215-phase25-decrement-v2/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "b364a87199028a9c18738fdc3158c89e4a4b5103ecb57fa435aa53399739f487",
+    "bytes": 17687,
+    "lines": 390
+  },
+  "accepted_baseline": {
+    "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+    "bytes": 16107,
+    "lines": 354
+  },
+  "repair": {
+    "zero": "rw [if_pos rfl] at this",
+    "positive": "rw [if_neg Bool.false_ne_true] at this",
+    "placement": "Exactly before the unchanged rw [conc_target] at this in respective sim_step.decnz branches.",
+    "meaning": "Only select the already-closed true=true/false=true conditional target of instantiated runDecnz_sound. tgtConf and its conditional overflow/growth expressions are not unfolded. No checker, executor, premise, target, valuation, resource or theorem signature changes.",
+    "diff_sha256": "73834610849312568b3a90491d6435caffd10cd3dbdc527d98a4892041c6a41e",
+    "added_lines": 2,
+    "added_bytes": 87
+  },
+  "metrics": {
+    "phase24_lines": 354,
+    "v2_lines": 390,
+    "source_lines_added_vs_phase24": 36,
+    "phase24_bytes": 16107,
+    "v2_bytes": 17687,
+    "source_bytes_added_vs_phase24": 1580
+  },
+  "preservation": {
+    "v1_recovers_exactly_after_removing_two_new_lines": true,
+    "definitions_imports_public_headers_private_helpers_unchanged": true,
+    "all_other_proof_text_unchanged": true,
+    "simulator_source_cuts_excluded": true,
+    "canonical_edits": false
+  },
+  "v1_evidence": {
+    "result": {
+      "path": "/tmp/k215-phase25-decrement-benchmark-v1/result.json",
+      "sha256": "f48b70f655aefa24294e9b1498a47eaddfd4aa9e6f016bcdca586a61435fbafc",
+      "bytes": 22411,
+      "lines": 243
+    },
+    "prefix_record": {
+      "path": "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/record.json",
+      "sha256": "46ce2648db0d2fea5da2173f1bb39c55ff8dcb770f7034ae8b37f88ee5e21131",
+      "bytes": 1977,
+      "lines": 43
+    },
+    "prefix_log": {
+      "path": "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/compiler.log",
+      "sha256": "73153789eced34b846d022c2664762b51ac424a449d792f98d48d6d2a9ebe9b6",
+      "bytes": 4038,
+      "lines": 94
+    },
+    "classification": "Two sim_step target rewrite elaboration errors only; no benchmark probe ran. The failed complete module is not accepted despite no diagnostics in earlier private helper declarations.",
+    "fixed_basis": "Exact accepted P24, unchanged; failed v1 objects never become reusable inputs."
+  },
+  "limits": "Source-only repair; not compiled, no profile or block acceptance, speed, coverage, adoption or PA/machine claim.",
+  "execution": []
+}

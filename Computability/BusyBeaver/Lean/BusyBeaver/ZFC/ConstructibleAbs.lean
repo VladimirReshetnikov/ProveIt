@@ -851,15 +851,8 @@ theorem approx_down (f d : {x // InL H hP x})
     (h : TransRec.Approx (L_zfAxioms H hR hP) (Gdef (L_zfAxioms H hR hP) (L_power H hR hP)) f d) :
     TransRec.Approx H (Gdef H hP) f.1 d.1 := by
   obtain ⟨h1, h2, h3, h4⟩ := h
-  refine ⟨fun p hp => ?_, fun b hb => ?_, fun b S S' hS hS' => ?_, fun b S hbS z => ?_⟩
-  · obtain ⟨b, S, hb, he⟩ := h1 ⟨p, inL_trans H hR hP f.2 hp⟩ hp
-    exact ⟨b.1, S.1, hb, (kpairN_eq H hR hP _ _ _).1 he⟩
-  · obtain ⟨S, hS⟩ := h2 ⟨b, inL_trans H hR hP d.2 hb⟩ hb
-    exact ⟨S.1, (kpairN_mem H hR hP _ _ _).1 hS⟩
-  · have hL := inL_of_kpair_mem H hR hP f.2 hS
-    have hL' := inL_of_kpair_mem H hR hP f.2 hS'
-    exact congrArg Subtype.val (h3 ⟨b, hL.1⟩ ⟨S, hL.2⟩ ⟨S', hL'.2⟩
-      ((kpairN_mem H hR hP _ _ _).2 hS) ((kpairN_mem H hR hP _ _ _).2 hS'))
+  obtain ⟨hfun, htotal, hdom⟩ := (isFunctionOn_iff H hR hP f d).1 ⟨h3, h2, h1⟩
+  refine ⟨hdom, htotal, hfun, fun b S hbS z => ?_⟩
   · obtain ⟨hbL, hSL⟩ := inL_of_kpair_mem H hR hP f.2 hbS
     have h4' := h4 ⟨b, hbL⟩ ⟨S, hSL⟩ ((kpairN_mem H hR hP _ _ _).2 hbS)
     refine ⟨fun hz => ?_, fun ⟨c, T, hc, hcT, hzT⟩ => ?_⟩

@@ -1,0 +1,13 @@
+# Paired decrement: controlled diagnostic draft
+
+This owned draft is unexecuted. Root has read the complete controls; independent control reviews are pending. The paired checker remains outside canonical sources. No compiler, helper, supervisor, proposal program or generator was executed during preparation.
+
+The baseline is exact accepted phase24 KSim (`cb055c60…`), and the prefix arm is the separate paired candidate (`42e5b295…`). The identical probe contains verbatim production blocks 0, 5 and 10 (9, 52 and 67 leaves), including their original `decide +kernel` proofs. Each arm has its own workspace and objects: 17 exact unaffected phase24 dependencies are copied, then KSim and KFastSites215 are rebuilt fresh. Only after both fresh pairs pass are the baseline and prefix probes compiled. No simulator-proof-cut candidate is included.
+
+The fixed plan and frozen files bind all sources, accepted aggregates, inherited dependency objects/logs, toolchain, supervisor, machine data and active producer. One original adjacent raw record for FramedWindow is absent in the inherited 17-module subset; its accepted phase24 source/object/log/aggregate bindings remain exact. No raw record is fabricated or fresh record waived. Historical toolchain metadata retains its original scope; this diagnostic uses the explicit 17-reuse/2-fresh dependency partition.
+
+Every compiler call uses the pinned existing supervisor and global `/tmp/proveit-k215-proof-build.lock`, SIGTERM → KeyboardInterrupt cleanup, `-j1`, `-M12288`, one thread, and 120 seconds for ordinary modules or 900 seconds for the probe. The compiler timer excludes lock wait. Exact ordered report names and axiom sets must agree across probes; all emitted axioms must be standard, all logs have zero warnings, and affected old objects cannot enter either cache. Inputs, staged sources, object inventories, dependencies, logs and raw records are bound and postchecked. Any fresh candidate failure preserves attempt data and emits a FAIL diagnostic result; reruns require a new output directory.
+
+After root and both control peers accept the frozen sources, root may launch `python3 -B /tmp/k215-phase25-decrement-benchmark-draft/benchmark.py --out NEW_ABSOLUTE_DIRECTORY`. The same global lock permits coordination with a separate full build. Preparation did not run this command.
+
+This is one ordered sample per arm on three existing blocks. It establishes neither full source coverage nor adoption, unchanged Boolean acceptance, general checking speed, or a machine/PA endpoint change. The larger paired checker adds 34 lines and 1,493 bytes; any adoption decision must assess measured benefit separately.

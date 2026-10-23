@@ -58,19 +58,13 @@ inductive Prov : List Form → Form → Prop
 
 /-- Context inclusion is preserved by consing the same head. -/
 theorem cons_sub {a : Form} {G G' : List Form} (hsub : ∀ x ∈ G, x ∈ G') :
-    ∀ x ∈ a :: G, x ∈ a :: G' := by
-  intro x hx
-  rcases List.mem_cons.mp hx with rfl | hx
-  · exact List.mem_cons.mpr (Or.inl rfl)
-  · exact List.mem_cons.mpr (Or.inr (hsub x hx))
+    ∀ x ∈ a :: G, x ∈ a :: G' :=
+  List.forall_mem_cons.mpr ⟨List.mem_cons_self, fun _ hx => List.mem_cons_of_mem _ (hsub _ hx)⟩
 
 /-- Context inclusion is preserved by mapping. -/
 theorem mem_map_sub {f : Form → Form} {G G' : List Form}
-    (hsub : ∀ x ∈ G, x ∈ G') : ∀ x ∈ G.map f, x ∈ G'.map f := by
-  intro x hx
-  rw [List.mem_map] at hx ⊢
-  obtain ⟨y, hy, rfl⟩ := hx
-  exact ⟨y, hsub y hy, rfl⟩
+    (hsub : ∀ x ∈ G, x ∈ G') : ∀ x ∈ G.map f, x ∈ G'.map f :=
+  fun _ hx => List.map_subset f (fun {_} => hsub _) hx
 
 /-- Weakening: enlarging the context preserves provability. -/
 theorem Prov_weaken {G : List Form} {a : Form} (h : Prov G a) :
@@ -164,12 +158,7 @@ theorem Prov_mem_cong2 (G : List Form) (i j k : Nat)
 theorem map_rename_up_S (r : Nat → Nat) (G : List Form) :
     (G.map (rename Nat.succ)).map (rename (up r))
       = (G.map (rename r)).map (rename Nat.succ) := by
-  simp only [List.map_map]
-  apply List.map_congr_left
-  intro x _
-  show rename (up r) (rename Nat.succ x) = rename Nat.succ (rename r x)
-  rw [rename_comp, rename_comp]
-  exact rename_ext x _ _ (fun n => rfl)
+  simp only [List.map_map, Function.comp_def, rename_comp] <;> rfl
 
 theorem Prov_rename {G : List Form} {phi : Form} (h : Prov G phi) :
     ∀ r, Prov (G.map (rename r)) (rename r phi) := by
@@ -197,46 +186,27 @@ theorem Prov_rename {G : List Form} {phi : Form} (h : Prov G phi) :
     exact ih (up r)
   | P_allE G a k _ ih =>
     intro r
-    have heq := rename_inst_push a r k
-    rw [heq]
-    exact .P_allE _ (rename (up r) a) (r k) (ih r)
+    simpa only [rename_inst_push] using Prov.P_allE _ (rename (up r) a) (r k) (ih r)
   | P_exI G a k _ ih =>
     intro r
-    apply Prov.P_exI _ (rename (up r) a) (r k)
-    have heq := rename_inst_push a r k
-    rw [← heq]
-    exact ih r
+    exact .P_exI _ (rename (up r) a) (r k) (by simpa only [rename_inst_push] using ih r)
   | P_exE G a c _ _ ihex ihbody =>
     intro r
-    apply Prov.P_exE _ (rename (up r) a) (rename r c)
-    · exact ihex r
-    · have hc : rename Nat.succ (rename r c) = rename (up r) (rename Nat.succ c) := by
-        rw [rename_comp, rename_comp]
-        exact rename_ext c _ _ (fun n => rfl)
-      have h2 := ihbody (up r)
-      simp only [List.map_cons] at h2
-      rw [map_rename_up_S r G] at h2
-      rw [hc]
-      exact h2
+    refine .P_exE _ (rename (up r) a) (rename r c) (ihex r) ?_
+    simpa only [List.map_cons, map_rename_up_S, rename_comp, up] using ihbody (up r)
   | P_eqRefl G k => intro r; exact .P_eqRefl _ (r k)
   | P_eqElim G i j a _ _ iheq iha =>
     intro r
-    have heqj := rename_inst_push a r j
-    have heqi := rename_inst_push a r i
-    rw [heqj]
-    apply Prov.P_eqElim _ (r i) (r j) (rename (up r) a) (iheq r)
-    rw [← heqi]
-    exact iha r
+    rw [rename_inst_push]
+    exact .P_eqElim _ (r i) (r j) (rename (up r) a) (iheq r)
+      (by simpa only [rename_inst_push] using iha r)
 
 /-- Eigenvariable generalization: from `G ⊢ a[w/0]` with `w` fresh,
 `G` shifted `⊢ a`. -/
 theorem generalize_fresh (G : List Form) (a : Form) (w : Nat)
     (hwG : ∀ g ∈ G, ¬ Free w g) (hwa : ¬ Free (w+1) a)
     (hp : Prov G (rename (inst w) a)) : Prov (G.map (rename Nat.succ)) a := by
-  have hr := Prov_rename hp (rho_w w)
-  rw [rho_inst a w hwa] at hr
-  rw [map_rho_S G w hwG] at hr
-  exact hr
+  simpa only [rho_inst a w hwa, map_rho_S G w hwG] using Prov_rename hp (rho_w w)
 
 /-- Context exchange (same elements ⇒ same provability). -/
 theorem Prov_exch {G G' : List Form} {phi : Form}
@@ -286,12 +256,8 @@ theorem Prov_cut {G : List Form} {phi : Form} (h : Prov G phi) :
   | P_ass G a hin => intro De hD; exact hD a hin
   | P_impI G a b _ ih =>
     intro De hD
-    apply Prov.P_impI
-    apply ih
-    intro x hx
-    rcases List.mem_cons.mp hx with rfl | hx
-    · exact Prov_ass_head
-    · exact Prov_cons (hD x hx)
+    exact .P_impI _ _ _ (ih _ (List.forall_mem_cons.mpr
+      ⟨Prov_ass_head, fun x hx => Prov_cons (hD x hx)⟩))
   | P_impE G a b _ _ ihab iha =>
     intro De hD; exact .P_impE _ a b (ihab De hD) (iha De hD)
   | P_botE G a _ ih => intro De hD; exact .P_botE _ a (ih De hD)
@@ -304,17 +270,9 @@ theorem Prov_cut {G : List Form} {phi : Form} (h : Prov G phi) :
   | P_orI2 G a b _ ih => intro De hD; exact .P_orI2 _ _ _ (ih De hD)
   | P_orE G a b c _ _ _ ihor iha ihb =>
     intro De hD
-    apply Prov.P_orE _ a b c (ihor De hD)
-    · apply iha
-      intro x hx
-      rcases List.mem_cons.mp hx with rfl | hx
-      · exact Prov_ass_head
-      · exact Prov_cons (hD x hx)
-    · apply ihb
-      intro x hx
-      rcases List.mem_cons.mp hx with rfl | hx
-      · exact Prov_ass_head
-      · exact Prov_cons (hD x hx)
+    exact .P_orE _ a b c (ihor De hD)
+      (iha _ (List.forall_mem_cons.mpr ⟨Prov_ass_head, fun x hx => Prov_cons (hD x hx)⟩))
+      (ihb _ (List.forall_mem_cons.mpr ⟨Prov_ass_head, fun x hx => Prov_cons (hD x hx)⟩))
   | P_allI G a _ ih =>
     intro De hD
     apply Prov.P_allI
@@ -327,14 +285,8 @@ theorem Prov_cut {G : List Form} {phi : Form} (h : Prov G phi) :
   | P_exI G a k _ ih => intro De hD; exact .P_exI _ a k (ih De hD)
   | P_exE G a c _ _ ihex ihbody =>
     intro De hD
-    apply Prov.P_exE _ a c (ihex De hD)
-    apply ihbody
-    intro x hx
-    rcases List.mem_cons.mp hx with rfl | hx
-    · exact Prov_ass_head
-    · rw [List.mem_map] at hx
-      obtain ⟨x0, hx0, rfl⟩ := hx
-      exact Prov_cons (Prov_rename (hD x0 hx0) Nat.succ)
+    refine .P_exE _ a c (ihex De hD) (ihbody _ (List.forall_mem_cons.mpr ⟨Prov_ass_head, ?_⟩))
+    exact List.forall_mem_map.mpr (fun x hx => Prov_cons (Prov_rename (hD x hx) Nat.succ))
   | P_eqRefl G k => intro De hD; exact .P_eqRefl _ k
   | P_eqElim G i j a _ _ iheq iha =>
     intro De hD; exact .P_eqElim _ i j a (iheq De hD) (iha De hD)
@@ -360,14 +312,8 @@ theorem soundness {G : List Form} {a : Form} (h : Prov G a) :
   induction h with
   | P_ass G a hin => intro e hG; exact hG a hin
   | P_impI G a b _ ih =>
-    intro e hG
-    show Sat mem e a → Sat mem e b
-    intro ha
-    apply ih e
-    intro x hx
-    rcases List.mem_cons.mp hx with rfl | hx
-    · exact ha
-    · exact hG x hx
+    intro e hG ha
+    exact ih e (List.forall_mem_cons.mpr ⟨ha, hG⟩)
   | P_impE G a b _ _ ihab iha => intro e hG; exact (ihab e hG) (iha e hG)
   | P_botE G a _ ih => intro e hG; exact (ih e hG).elim
   | P_lem G a =>
@@ -381,40 +327,23 @@ theorem soundness {G : List Form} {a : Form} (h : Prov G a) :
   | P_orI2 G a b _ ih => intro e hG; exact Or.inr (ih e hG)
   | P_orE G a b c _ _ _ ihor iha ihb =>
     intro e hG
-    rcases ihor e hG with ha | hb
-    · apply iha e
-      intro x hx
-      rcases List.mem_cons.mp hx with rfl | hx
-      · exact ha
-      · exact hG x hx
-    · apply ihb e
-      intro x hx
-      rcases List.mem_cons.mp hx with rfl | hx
-      · exact hb
-      · exact hG x hx
+    exact (ihor e hG).elim
+      (fun ha => iha e (List.forall_mem_cons.mpr ⟨ha, hG⟩))
+      (fun hb => ihb e (List.forall_mem_cons.mpr ⟨hb, hG⟩))
   | P_allI G a _ ih =>
-    intro e hG
-    show ∀ d, Sat mem (scons d e) a
-    intro d
+    intro e hG d
     exact ih (scons d e) (shift_sat G e d hG)
   | P_allE G a k _ ih =>
     intro e hG
     exact (Sat_rename_ext a (inst k) _ _ (inst_env k e)).mpr (ih e hG (e k))
   | P_exI G a k _ ih =>
     intro e hG
-    refine ⟨e k, ?_⟩
-    have := ih e hG
-    exact (Sat_rename_ext a (inst k) _ _ (inst_env k e)).mp this
+    exact ⟨e k, (Sat_rename_ext a (inst k) _ _ (inst_env k e)).mp (ih e hG)⟩
   | P_exE G a c _ _ ihex ihbody =>
     intro e hG
     obtain ⟨d, hd⟩ := ihex e hG
-    have hc : Sat mem (scons d e) (rename Nat.succ c) := by
-      apply ihbody (scons d e)
-      intro y hy
-      rcases List.mem_cons.mp hy with rfl | hy
-      · exact hd
-      · exact shift_sat G e d hG y hy
-    exact (Sat_rename_ext c Nat.succ _ _ (fun n => rfl)).mp hc
+    exact (Sat_rename_ext c Nat.succ _ _ (fun n => rfl)).mp
+      (ihbody (scons d e) (List.forall_mem_cons.mpr ⟨hd, shift_sat G e d hG⟩))
   | P_eqRefl G k => intro e hG; exact rfl
   | P_eqElim G i j a _ _ iheq iha =>
     intro e hG

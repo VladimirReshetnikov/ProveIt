@@ -1,0 +1,44 @@
+{
+  "status": "PASS_INDEPENDENT_V4_SOURCE_REPAIR_REVIEW_UNCOMPILED",
+  "scope": "Full candidate,repair.diff,report and frozen two-error compiler log read; exact v3-to-v4 two-line delta verified. No compiler/helper execution or canonical edit.",
+  "prior_peer": {
+    "path": "/tmp/k215-phase25-firstorder-peer-v3.json",
+    "sha256": "d22de04c6edea4ff02b9eb275881d199e98671dd43a8e266a475cd71443b998d",
+    "preserved": true
+  },
+  "candidate": {
+    "path": "/tmp/k215-phase25-firstorder-cuts-v4/candidate/Logic/FirstOrder/Lean/FirstOrder/Calculus.lean",
+    "sha256": "448229ba92adad5d79c52ee6e2ac32cecf75c0074196e36c5fa8f9d2b9188804",
+    "lines": 359,
+    "bytes": 15372
+  },
+  "repair_diff_sha256": "4c3a5de522e4099ee38c14350a47c04d8e83a86d0911b32f2e26c2a71f99e0bf",
+  "report_sha256": "f8413ba55133f0a189fd416fa9bbf556a40d391d651e644702f156cc6995ac93",
+  "frozen_failure": {
+    "path": "/tmp/k215-phase25-focused-v1/focused-build-run1/attempts/007-FirstOrder.Calculus/compiler.log",
+    "sha256": "1718d4f0a2364bb5462f5e2742e560d4b174e9db204ee875d53151880dfe4573",
+    "status": "COMPILER_ERROR_NOT_PASS",
+    "errors": [
+      "List.map_subset implicit element function does not elaborate directly against the explicit membership-function goal.",
+      "simp-only list leaves up r n.succ versus (r n).succ in the quantified rename-exE conclusion."
+    ]
+  },
+  "source_resolution": [
+    {
+      "declaration": "mem_map_sub",
+      "change": "Introduce explicit hx and apply map_subset to it.",
+      "reason": "The membership proof fixes the implicit mapped element before the result is checked; the source inclusion adapter and all public binders remain unchanged."
+    },
+    {
+      "declaration": "Prov_rename.P_exE",
+      "change": "Add up to the existing simp-only list.",
+      "reason": "Explicitly unfolds up r at the known successor argument identified by the raw error. Both proof/goal head renamings normalize consistently; same exact target formula and shifted context remain."
+    }
+  ],
+  "correction_of_prior_expectations": "The frozen Lean errors show the earlier source-only implicit-argument and reduction expectations were insufficient. These repairs make both inference/reduction steps explicit; earlier peers and failed evidence remain unchanged.",
+  "interface_math_axioms": "Only those two proof-body lines differ from v3. All prior declaration headers,definitions,imports and mathematical arguments remain exact; no axiom declaration or classical theorem added. Exact measured profiles still require the separate root-controlled old/new probe.",
+  "net_saved_lines": 71,
+  "net_saved_bytes": 1275,
+  "remaining": "Uncompiled source repair. Root owns focused revalidation and exact old/new profile comparison.",
+  "findings": []
+}

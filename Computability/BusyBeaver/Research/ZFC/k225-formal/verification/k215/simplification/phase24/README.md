@@ -74,3 +74,7 @@ claim to compile or adopt its future control or scheduler leads.
 The literal 215-state machine and halting/nonhalting statements remain unchanged.
 The internally encoded PA endpoint, minimum-state theorem and uncompiled
 [control lead](../phase23/leads/README.md) remain outside this proof-cleanup scope.
+
+The accepted [phase25 cleanup](../phase25/README.md) continues from this frozen
+checkpoint, removing 101 lines / 2,322 bytes from five proof files. Its full
+kernel, actual and archive checks pass; this phase24 eleven-file Lean leaf remains unchanged.

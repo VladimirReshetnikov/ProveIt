@@ -110,25 +110,21 @@ include B
 theorem runTo_sound {br : Branch} {Q : List Bool} {e : SConf} (h : runTo M br Q e = true)
     (n : Nat) {vs : List Nat} (hv : Valid br vs) : Reach1 M (conc n vs (start Q)) (conc n vs e) := by
   unfold runTo at h
-  cases hx : KHomeReady.exec M br (fun s => sMatches s e) FUEL (start Q) false with
-  | none => simp [hx] at h
-  | some s =>
-      obtain ⟨hm, _, h1⟩ := KHomeReady.exec_sound B n hv FUEL (start Q) false s hx
-      rw [← sMatches_conc n vs hm]
-      exact h1 rfl
+  obtain ⟨s, hx⟩ := Option.isSome_iff_exists.mp h
+  obtain ⟨hm, _, h1⟩ := KHomeReady.exec_sound B n hv FUEL (start Q) false s hx
+  rw [← sMatches_conc n vs hm]
+  exact h1 rfl
 
 theorem runHalt_sound (hNH : ∀ b, M 230 b = none) {Q : List Bool} (h : runHalt M Q = true)
     (n : Nat) {vs : List Nat} (hv : 10 ≤ vs.length) : Halts M (conc n vs (start Q)) := by
   unfold runHalt at h
-  cases hx : KHomeReady.exec M none isHalt FUEL (start Q) false with
-  | none => simp [hx] at h
-  | some s =>
-      obtain ⟨hh, h0, _⟩ := KHomeReady.exec_sound B n (br := none) ⟨hv, trivial⟩ FUEL (start Q) false s hx
-      refine ⟨_, h0, ?_⟩
-      obtain ⟨q, onl, l, r⟩ := s
-      simp only [isHalt, beq_iff_eq] at hh
-      subst hh
-      cases onl <;> simp [conc, zl, step_zc, hNH]
+  obtain ⟨s, hx⟩ := Option.isSome_iff_exists.mp h
+  obtain ⟨hh, h0, _⟩ := KHomeReady.exec_sound B n (br := none) ⟨hv, trivial⟩ FUEL (start Q) false s hx
+  refine ⟨_, h0, ?_⟩
+  obtain ⟨q, onl, l, r⟩ := s
+  simp only [isHalt, beq_iff_eq] at hh
+  subst hh
+  cases onl <;> simp [conc, zl, step_zc, hNH]
 
 end Sound
 
@@ -337,15 +333,10 @@ theorem halts_iff (hNH : ∀ b, M 230 b = none) {c : Configuration} {T : Conf} (
         | none => exact ⟨0, c, rfl, sim_stop hcov hs⟩
         | some c1 =>
             obtain ⟨T1, h1, j, hj⟩ := sim_step B hcov hc hs
-            have hle : j + 1 ≤ t := by
-              refine Nat.not_lt.mp fun hlt => ?_
-              have e1 : j + 1 = t + (j + 1 - t) := by omega
-              rw [e1, KZip.run_add, ht] at hj
-              obtain ⟨m, hm⟩ : ∃ m, j + 1 - t = m + 1 := ⟨j - t, by omega⟩
-              rw [hm] at hj
+            have hle : j + 1 ≤ t := Nat.not_lt.mp fun hlt => by
+              rw [show j + 1 = t + ((j - t) + 1) by omega, KZip.run_add, ht] at hj
               simp [KZip.run, hstop] at hj
-            have e2 : t = (j + 1) + (t - (j + 1)) := by omega
-            rw [e2, KZip.run_add, hj] at ht
+            rw [← Nat.add_sub_of_le hle, KZip.run_add, hj] at ht
             obtain ⟨N, c', hr, hh⟩ := ih (t - (j + 1)) (by omega) h1 ht
             exact ⟨N + 1, c', by simp only [RegisterPath.run, hs]; exact hr, hh⟩
 

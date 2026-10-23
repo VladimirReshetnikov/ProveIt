@@ -1,0 +1,69 @@
+{
+  "status": "PASS_INDEPENDENT_SOURCE_ONLY_PAIRED_DECREMENT_REVIEW_UNCOMPILED",
+  "authorship": "Reviewer did not author paired checker or its integration. Separate simulator-proof cuts are excluded from this candidate and benchmark. Earlier neutral-prefix component was independently reviewed here; its checked status does not establish this larger candidate.",
+  "candidate": {
+    "path": "/tmp/k215-phase25-decrement/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "42e5b2950a13f4b0b23b22c1bc19e8afca88d7046260850f0492a3003d15d6af",
+    "lines": 388,
+    "bytes": 17600
+  },
+  "before": {
+    "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSim.lean",
+    "sha256": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+    "bytes": 16107
+  },
+  "inputs": {
+    "/tmp/k215-phase25-decrement/report.json": "2bfddd0d00791790e5c08ab8ca324b99643b5c66195025dadcb31f79f514bb79",
+    "/tmp/k215-phase25-decrement/pins.json": "06665eb5a924db57f57dbf42df9ed50b85f29e1fa06d0f91234ab1c456857e41",
+    "/tmp/k215-phase25-decrement/candidate.diff": "8170d4cc7ebd141831b368b33caa862d6f31019715006b9f499a96c248336214"
+  },
+  "findings": [],
+  "mathematics": {
+    "explicit_cut": "q=0,head-right,entire right list singleton box(mark matching physical r); wildcard left is retained in the exact returned c, not erased. This is a target predicate, not failed-oracle detection; fallback table transitions remain available.",
+    "progress_and_validity": "Neutral prefix starts moved=false and uses Valid none vs from shared length hv.1. Its successful soundness gives Reach1. Each selected specialized tail starts moved=true at exactly c and same n/vs, giving ordinary Reach that may be reflexive. trans_reach preserves positive prefix.",
+    "zero_and_nonzero": "Both accepted tails required. Bool true selects zero target and false selects positive target. checkEdge retains original logical r<9/pathlength<=48 guards and passes physOf r. Exact prior zero break/overflow and positive increment/decrement symbolic targets are retained.",
+    "semantic_join": "sMatches_conc transports only the final target of the selected tail. No neutral/specialized executor equality, cut existence or branch noninterference lemma is assumed. Existing poststate/gap/register reasoning remains unchanged.",
+    "observable_change": "checkEdge Bool body intentionally changes; two4000fuel phases need not equal old one4000fuel acceptance. Successful checks imply semantic soundness only; all affected old literal acceptance objects are invalidated."
+  },
+  "source_scope": {
+    "private_def_added": 1,
+    "private_theorem_added": 1,
+    "public_old_headers_preserved_by_source_comparison": true,
+    "nondecrement_branches_unchanged": true,
+    "source_growth_lines": 34,
+    "source_growth_bytes": 1493,
+    "no_new_import_or_module": true,
+    "source_only_elaboration_limit": "New match split binders and dependent tail selection remain uncompiled until root runs an owned detached check.",
+    "old_public_header_count_verified": 37,
+    "all_37_old_headers_byte_exact": true,
+    "all_old_definitions_except_checkEdge_byte_exact": true,
+    "nondecrement_checkEdge_and_sim_step_cases_byte_exact": true
+  },
+  "benchmark_plan": {
+    "path": "/tmp/k215-phase25-decrement-benchmark-draft/plan.json",
+    "sha256": "62099c2f9ff9e33700684f70d46a1e72168c2803141728f62103392a597e9da1",
+    "P24_dependency_closure": 19,
+    "exact_unaffected_reuses_per_arm": 17,
+    "fresh_modules_per_arm": [
+      "KSim",
+      "KFastSites215",
+      "DecrementSameBlocks"
+    ],
+    "production_blocks": [
+      0,
+      5,
+      10
+    ],
+    "leaf_counts": [
+      9,
+      52,
+      67
+    ],
+    "source_generator_execution": false,
+    "missing_original_reused_raw_record": [
+      "BusyBeaver.ZFC.FramedWindow"
+    ],
+    "missing_raw_scope": "One inherited absence in17reused dependencies, not a fresh-record exemption. The accepted P24 aggregate/source/object/log bindings remain exact; no record is fabricated."
+  },
+  "no_execution_or_canonical_edits": true
+}

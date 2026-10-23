@@ -1,0 +1,18 @@
+--- v1/KSim.lean
++++ v2/KSim.lean
+@@ -289,6 +289,7 @@
+           · have := breakPath_length 1 Q; simp only; unfold D0; omega
+           · have := runDecnz_sound B hdec true n (vs := vregs c.registers ++ ext)
+               (valid_z hl (by rw [getD_vregs _ _ hr, hv]))
++            rw [if_pos rfl] at this
+             rw [conc_target] at this
+             simpa [growth, boxList] using this
+       | succ v =>
+@@ -299,6 +300,7 @@
+           · simp only [incPath_length, hQ]; unfold D0; omega
+           · have := runDecnz_sound B hdec false n (vs := vregs c.registers ++ ext)
+               (valid_nz hl (by rw [getD_vregs _ _ hr, hv]; omega))
++            rw [if_neg Bool.false_ne_true] at this
+             rw [conc_target] at this
+             have hd' := decr_vregs c.registers ext hr
+             rw [hv] at hd'

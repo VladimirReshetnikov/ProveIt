@@ -1,0 +1,94 @@
+/tmp/k215-phase25-decrement-benchmark-v1/prefix/workspace/BusyBeaver/ZFC/KSim.lean:292:16: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  conc ?n ?vs (tgtConf ?P ?ovf ?x)
+in the target expression
+  Reach1 M (conc n (vregs c.registers ++ ext) (start Q))
+    (conc n (vregs c.registers ++ ext)
+      (if true = true then tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (BoxSt.plain Eff.none)
+      else tgtConf (incPath Q) (allOnes Q) (BoxSt.plain (Eff.dec (physOf r)))))
+
+case decnz.zero.refine_2
+M : TMN
+B : BoxLemmas M
+p : Program
+hcov : Covered M p
+c : Configuration
+d : Nat
+hd : d ≤ 48
+k : Nat
+ext : List Nat
+hk : D0 ≤ c.path.length + k
+hext : ext ≠ []
+hl : 10 ≤ (vregs c.registers ++ ext).length
+Q : List Bool
+hQ : Q.length = d
+n : Nat
+hc : Rel p c (conc n (vregs c.registers ++ ext) (start Q))
+r : Nat
+hw : walk p (p.nnodes + 1) p.root c.path 0 = some (Edge.decnz r, d)
+hdec :
+  runDecnz M (physOf r) Q (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (BoxSt.plain Eff.none))
+      (tgtConf (incPath Q) (allOnes Q) (BoxSt.plain (Eff.dec (physOf r)))) =
+    true
+left✝ : Q.length ≤ 48
+hr : r < 9
+hv : c.registers r = 0
+hs : RegisterPath.step p c = some { path := breakPath 1 Q, registers := c.registers }
+hcl' : Clean p { path := breakPath 1 Q, registers := c.registers }.path
+this :
+  Reach1 M (conc n (vregs c.registers ++ ext) (start Q))
+    (conc n (vregs c.registers ++ ext)
+      (if true = true then tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (BoxSt.plain Eff.none)
+      else tgtConf (incPath Q) (allOnes Q) (BoxSt.plain (Eff.dec (physOf r)))))
+⊢ Reach1 M (conc n (vregs c.registers ++ ext) (start Q))
+    (zc 84 [true]
+      ({ path := breakPath 1 Q, registers := c.registers }.path ++
+          List.replicate
+            (n + ((D0 + if allOnes (stripPath false 1 Q) = true then 1 else 0) + 0 - (breakPath 1 Q).length)) false ++
+        true :: sepsR (vregs { path := breakPath 1 Q, registers := c.registers }.registers ++ ext)))
+/tmp/k215-phase25-decrement-benchmark-v1/prefix/workspace/BusyBeaver/ZFC/KSim.lean:302:16: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  conc ?n ?vs (tgtConf ?P ?ovf ?x)
+in the target expression
+  Reach1 M (conc n (vregs c.registers ++ ext) (start Q))
+    (conc n (vregs c.registers ++ ext)
+      (if false = true then tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (BoxSt.plain Eff.none)
+      else tgtConf (incPath Q) (allOnes Q) (BoxSt.plain (Eff.dec (physOf r)))))
+
+case decnz.succ.refine_2
+M : TMN
+B : BoxLemmas M
+p : Program
+hcov : Covered M p
+c : Configuration
+d : Nat
+hd : d ≤ 48
+k : Nat
+ext : List Nat
+hk : D0 ≤ c.path.length + k
+hext : ext ≠ []
+hl : 10 ≤ (vregs c.registers ++ ext).length
+Q : List Bool
+hQ : Q.length = d
+n : Nat
+hc : Rel p c (conc n (vregs c.registers ++ ext) (start Q))
+r : Nat
+hw : walk p (p.nnodes + 1) p.root c.path 0 = some (Edge.decnz r, d)
+hdec :
+  runDecnz M (physOf r) Q (tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (BoxSt.plain Eff.none))
+      (tgtConf (incPath Q) (allOnes Q) (BoxSt.plain (Eff.dec (physOf r)))) =
+    true
+left✝ : Q.length ≤ 48
+hr : r < 9
+v : Nat
+hv : c.registers r = v + 1
+hs : RegisterPath.step p c = some { path := incPath Q, registers := update c.registers r v }
+hcl' : Clean p { path := incPath Q, registers := update c.registers r v }.path
+this :
+  Reach1 M (conc n (vregs c.registers ++ ext) (start Q))
+    (conc n (vregs c.registers ++ ext)
+      (if false = true then tgtConf (breakPath 1 Q) (allOnes (stripPath false 1 Q)) (BoxSt.plain Eff.none)
+      else tgtConf (incPath Q) (allOnes Q) (BoxSt.plain (Eff.dec (physOf r)))))
+⊢ Reach1 M (conc n (vregs c.registers ++ ext) (start Q))
+    (zc 84 [true]
+      ({ path := incPath Q, registers := update c.registers r v }.path ++
+          List.replicate (n + ((D0 + if allOnes Q = true then 1 else 0) + 1 - (incPath Q).length)) false ++
+        true :: sepsR (vregs { path := incPath Q, registers := update c.registers r v }.registers ++ ext)))

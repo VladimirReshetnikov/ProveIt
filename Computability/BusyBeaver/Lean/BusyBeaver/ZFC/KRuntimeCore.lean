@@ -278,28 +278,18 @@ theorem peelLeft_sound {q : Nat} {b : Bool} {a c : Nat} {l r : List Seg} {s' : S
     (n : Nat) (vs : List Nat) (h : peelLeft q b a c l r = some (s', m)) :
     m = false ∧ conc n vs (q, true, .run b a c :: l, r) = conc n vs s' := by
   unfold peelLeft at h
-  split at h
-  · cases h
-    refine ⟨rfl, ?_⟩
-    simp only [conc, flat_cons, segList, rep_succ, List.cons_append, List.nil_append]
-  · cases h
-    refine ⟨rfl, ?_⟩
-    simp [conc, flat_cons, segList]
-  · simp at h
+  split at h <;> cases h <;> refine ⟨rfl, ?_⟩
+  · simp only [conc, flat_cons, segList, rep_succ, List.cons_append, List.nil_append]
+  · simp [conc, flat_cons, segList]
 
 omit B in
 theorem peelRight_sound {q : Nat} {b : Bool} {a c : Nat} {l r : List Seg} {s' : SConf} {m : Bool}
     (n : Nat) (vs : List Nat) (h : peelRight q b a c l r = some (s', m)) :
     m = false ∧ conc n vs (q, false, l, .run b a c :: r) = conc n vs s' := by
   unfold peelRight at h
-  split at h
-  · cases h
-    refine ⟨rfl, ?_⟩
-    simp only [conc, flat_cons, segList, rep_succ, List.cons_append, List.nil_append]
-  · cases h
-    refine ⟨rfl, ?_⟩
-    simp [conc, flat_cons, segList]
-  · simp at h
+  split at h <;> cases h <;> refine ⟨rfl, ?_⟩
+  · simp only [conc, flat_cons, segList, rep_succ, List.cons_append, List.nil_append]
+  · simp [conc, flat_cons, segList]
 
 /-- What one abstract step guarantees. -/
 def StepOk (M : TMN) (n : Nat) (vs : List Nat) (s s' : SConf) (m : Bool) : Prop :=

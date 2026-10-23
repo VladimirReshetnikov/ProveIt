@@ -1,0 +1,616 @@
+{
+  "status": "SOURCE_ONLY_UNEXECUTED_AWAITING_ROOT_INLINE_AND_SHARING_REVIEW",
+  "basis": {
+    "directory": "/tmp/k215-phase24-check-v3/candidate-build-run1",
+    "result_sha256": "c9bcee3023ea879ad0dcc353d1435aae8aef92963a4b79f51fda1506f518c910",
+    "plan_path": "/tmp/k215-phase24-check-v3/candidate-plan.json",
+    "plan_sha256": "4bda49c298304608bd3196d92a3c748140142e8a649708102d827e690f489505",
+    "provider_count": 230
+  },
+  "supervisor": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py",
+  "compiler": {
+    "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+  },
+  "toolchain": {
+    "lean": {
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+    },
+    "lake": {
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lake",
+      "sha256": "60330ab6f07dce20f3fa9ebb08e8b984ea9549eac172afeb15d9d2227060e2b3"
+    },
+    "Init.olean": {
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean",
+      "sha256": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e"
+    },
+    "project_toolchain": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/lean-toolchain",
+      "contents": "leanprover/lean4:v4.32.0\n",
+      "sha256": "2773c517aa90b66ea8a2c52bddddf84393157797f8341be0df45294fff7fd32e"
+    },
+    "scope": "Lean shipped core is the toolchain trust boundary; all 204 project modules in the exact partitioned closure are rebuilt fresh, with no external project cache.",
+    "historical_boundary_sha256": "56da8e31568b6c95df2c45245280244fd72277e2c127564ea3685dced3607445",
+    "inventory_sha256": "ab97075c54a37d010e10b51c4570b54de86a44844e62414cd17a01cb3cc9dbc1",
+    "project_modules": 204
+  },
+  "global_lock": "/tmp/proveit-k215-proof-build.lock",
+  "limits": {
+    "ordinary_seconds": 120,
+    "benchmark_seconds": 900,
+    "memory_mebibytes": 12288,
+    "workers": 1
+  },
+  "modules": [
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RegisterPath.lean",
+      "source_sha256": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+      "bytes": 6929,
+      "lines": 193,
+      "imports": [
+        "Init"
+      ],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMDag",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RMDag.lean",
+      "source_sha256": "36b7b8fdeaad284940fafe170b8da3ed6953e41b743034e446f68c8c5f6fd3cb",
+      "bytes": 12631,
+      "lines": 296,
+      "imports": [],
+      "expected_reports": []
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMEquiv",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RMEquiv.lean",
+      "source_sha256": "61f807d4327a1e39ad441e1e737f5affd9fd7004476e12bb378c9c6663dc909c",
+      "bytes": 29630,
+      "lines": 670,
+      "imports": [
+        "BusyBeaver.ZFC.RegisterPath",
+        "BusyBeaver.ZFC.RMDag"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.RMBisim",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RMBisim.lean",
+      "source_sha256": "c18b757a0b981a6e78c7a1fbe449fe6d53f38039f7d99cdf0021b2a151166f81",
+      "bytes": 21772,
+      "lines": 536,
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSource215Program",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSource215Program.lean",
+      "source_sha256": "7ab40d3faf9ddb976cdac2f77727e9e43b99b13a81fb45a340ad99abdfcd8310",
+      "bytes": 6867,
+      "lines": 200,
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZip",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KZip.lean",
+      "source_sha256": "e959ce4909f67b092ba237c26e1b53a2db112b42ef22c69ad04a73816414192c",
+      "bytes": 8404,
+      "lines": 224,
+      "imports": [],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KBoot",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KBoot.lean",
+      "source_sha256": "a7a82ed68c778937728bdd332fe2a52978dfc54bdc99b17df2a19a16fcd534c6",
+      "bytes": 2681,
+      "lines": 71,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTableCore",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KTableCore.lean",
+      "source_sha256": "8d9eb49c11dcc64bf461cfa205aa886f7ab7e43925a5315485acffc1f2c75e5d",
+      "bytes": 1119,
+      "lines": 32,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KTable215",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KTable215.lean",
+      "source_sha256": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+      "bytes": 11919,
+      "lines": 242,
+      "imports": [
+        "BusyBeaver.ZFC.KTableCore"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFast215",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KFast215.lean",
+      "source_sha256": "4f33903017795959d98f52d73875965415fb3ead8e553e0b5637f5097c577c19",
+      "bytes": 16260,
+      "lines": 27,
+      "imports": [
+        "BusyBeaver.ZFC.KBoot",
+        "BusyBeaver.ZFC.KTable215"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KRuntimeCore",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KRuntimeCore.lean",
+      "source_sha256": "4ecde56c82c57487c8f9e842fcfc27e4e925059ad7ef19e7cdd01204399d5cd2",
+      "bytes": 21572,
+      "lines": 538,
+      "imports": [
+        "BusyBeaver.ZFC.KZip"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHome",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KHome.lean",
+      "source_sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+      "bytes": 10788,
+      "lines": 249,
+      "imports": [
+        "BusyBeaver.ZFC.KRuntimeCore"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KHome.scanBound_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KHome.flat_reverse",
+          [
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KHome.home_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.FramedWindow",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/FramedWindow.lean",
+      "source_sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+      "bytes": 6667,
+      "lines": 183,
+      "imports": [
+        "Init"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.FramedWindow.arbitrary_tape_at",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ]
+    },
+    {
+      "module": "BusyBeaver.ZFC.KZipTape",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KZipTape.lean",
+      "source_sha256": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d",
+      "bytes": 10488,
+      "lines": 238,
+      "imports": [
+        "BusyBeaver.ZFC.KZip",
+        "BusyBeaver.ZFC.FramedWindow"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.rel_step",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.rel_run",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.run_reflect",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.rel_full",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.check_restore",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KZipTape.check_restore_pos",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KHomeReady",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KHomeReady.lean",
+      "source_sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+      "bytes": 4657,
+      "lines": 101,
+      "imports": [
+        "BusyBeaver.ZFC.KHome",
+        "BusyBeaver.ZFC.KZipTape"
+      ],
+      "expected_reports": [
+        [
+          "SetTheory.BusyBeaver.ZFC.KHomeReady.ready_sound",
+          [
+            "Quot.sound",
+            "propext"
+          ]
+        ],
+        [
+          "SetTheory.BusyBeaver.ZFC.KHomeReady.exec_sound",
+          [
+            "Classical.choice",
+            "Quot.sound",
+            "propext"
+          ]
+        ]
+      ],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPathClean",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RegisterPathClean.lean",
+      "source_sha256": "c029c0720c7631ba935318af1cfa8829ba641eb7397b8a4ee183927f8dd98cde",
+      "bytes": 15926,
+      "lines": 390,
+      "imports": [
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.SiteCoverage",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/SiteCoverage.lean",
+      "source_sha256": "15ad5a7b5f1ab1e656146ae823f0e012ea8ab4295b5381c8650e03885f201c24",
+      "bytes": 6237,
+      "lines": 150,
+      "imports": [
+        "BusyBeaver.ZFC.RMBisim",
+        "BusyBeaver.ZFC.RMEquiv"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KSim",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSim.lean",
+      "source_sha256": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+      "bytes": 16107,
+      "lines": 354,
+      "imports": [
+        "BusyBeaver.ZFC.KHomeReady",
+        "BusyBeaver.ZFC.RegisterPathClean",
+        "BusyBeaver.ZFC.SiteCoverage"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    },
+    {
+      "module": "BusyBeaver.ZFC.KFastSites215",
+      "source": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KFastSites215.lean",
+      "source_sha256": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+      "bytes": 824,
+      "lines": 24,
+      "imports": [
+        "BusyBeaver.ZFC.KFast215",
+        "BusyBeaver.ZFC.KSim"
+      ],
+      "expected_reports": [],
+      "warnings_forbidden": true
+    }
+  ],
+  "exact_dependency_order": [
+    "BusyBeaver.ZFC.RegisterPath",
+    "BusyBeaver.ZFC.RMDag",
+    "BusyBeaver.ZFC.RMEquiv",
+    "BusyBeaver.ZFC.RMBisim",
+    "BusyBeaver.ZFC.KSource215Program",
+    "BusyBeaver.ZFC.KZip",
+    "BusyBeaver.ZFC.KBoot",
+    "BusyBeaver.ZFC.KTableCore",
+    "BusyBeaver.ZFC.KTable215",
+    "BusyBeaver.ZFC.KFast215",
+    "BusyBeaver.ZFC.KRuntimeCore",
+    "BusyBeaver.ZFC.KHome",
+    "BusyBeaver.ZFC.FramedWindow",
+    "BusyBeaver.ZFC.KZipTape",
+    "BusyBeaver.ZFC.KHomeReady",
+    "BusyBeaver.ZFC.RegisterPathClean",
+    "BusyBeaver.ZFC.SiteCoverage",
+    "BusyBeaver.ZFC.KSim",
+    "BusyBeaver.ZFC.KFastSites215"
+  ],
+  "reused_modules": [
+    "BusyBeaver.ZFC.RegisterPath",
+    "BusyBeaver.ZFC.RMDag",
+    "BusyBeaver.ZFC.RMEquiv",
+    "BusyBeaver.ZFC.RMBisim",
+    "BusyBeaver.ZFC.KSource215Program",
+    "BusyBeaver.ZFC.KZip",
+    "BusyBeaver.ZFC.KBoot",
+    "BusyBeaver.ZFC.KTableCore",
+    "BusyBeaver.ZFC.KTable215",
+    "BusyBeaver.ZFC.KFast215",
+    "BusyBeaver.ZFC.KRuntimeCore",
+    "BusyBeaver.ZFC.KHome",
+    "BusyBeaver.ZFC.FramedWindow",
+    "BusyBeaver.ZFC.KZipTape",
+    "BusyBeaver.ZFC.KHomeReady",
+    "BusyBeaver.ZFC.RegisterPathClean",
+    "BusyBeaver.ZFC.SiteCoverage"
+  ],
+  "fresh_modules": [
+    "BusyBeaver.ZFC.KSim",
+    "BusyBeaver.ZFC.KFastSites215"
+  ],
+  "benchmark_module": "DecrementSameBlocks",
+  "benchmark_source": "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/DecrementSameBlocks.lean",
+  "benchmark_imports": [
+    "BusyBeaver.ZFC.KSource215Program",
+    "BusyBeaver.ZFC.KFastSites215"
+  ],
+  "arms": [
+    {
+      "name": "baseline",
+      "KSim_source": "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/baseline-KSim.lean"
+    },
+    {
+      "name": "prefix",
+      "KSim_source": "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/prefix-KSim.lean"
+    }
+  ],
+  "fresh_KFastSites215_source": "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/KFastSites215.lean",
+  "blocks": [
+    {
+      "index": 0,
+      "leaves": 9,
+      "declaration_text": "/-- 9 leaves. -/\ntheorem block_0 :\n    allSites (KSim.checkEdge tm215) [false]\n      (descend KSource215.t215 [false]) = true := by\n  exact KFastSites215.allSites_of_fast (by decide +kernel)",
+      "sha256": "75d38c2b00d1596b90bcdd130a0245a5d9dc8209844dc0d231dc0056ab18ed96",
+      "report_name": "SetTheory.BusyBeaver.ZFC.KSites215.block_0"
+    },
+    {
+      "index": 5,
+      "leaves": 52,
+      "declaration_text": "/-- 52 leaves. -/\ntheorem block_5 :\n    allSites (KSim.checkEdge tm215) [false, false, true, false, false, true, false, false, true, false, true, true]\n      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, false, false]) = true := by\n  exact KFastSites215.allSites_of_fast (by decide +kernel)",
+      "sha256": "d0248d607ec6005b02e0a8edfc0e7e83f63620d0aa2d5e00bcb8b4a766493abb",
+      "report_name": "SetTheory.BusyBeaver.ZFC.KSites215.block_5"
+    },
+    {
+      "index": 10,
+      "leaves": 67,
+      "declaration_text": "/-- 67 leaves. -/\ntheorem block_10 :\n    allSites (KSim.checkEdge tm215) [false, true, true, false, false, true, true, true, false, false, true, false, false, true, false, true, true]\n      (descend KSource215.t215 [true, true, false, true, false, false, true, false, false, true, true, true, false, false, true, true, false]) = true := by\n  exact KFastSites215.allSites_of_fast (by decide +kernel)",
+      "sha256": "5ff7819c3230e42bba8db66b6924d080cdd511fe8559c9611fc273ba60741fb0",
+      "report_name": "SetTheory.BusyBeaver.ZFC.KSites215.block_10"
+    }
+  ],
+  "expected_benchmark_report_names": [
+    "SetTheory.BusyBeaver.ZFC.KSites215.block_0",
+    "SetTheory.BusyBeaver.ZFC.KSites215.block_5",
+    "SetTheory.BusyBeaver.ZFC.KSites215.block_10"
+  ],
+  "expected_profile_policy": "Baseline exactly3ordered named reports, all standard axioms; candidate identical ordered names/axiom sets. KSim/KFastSites215 retain empty accepted profiles. Parser accepts wrapped multiline axiom lists. All compiler logs zero warnings.",
+  "schedule": "Stage isolated arms; compile fresh KSim and KFastSites215 for both arms before either900sbenchmark; baseline probe then prefix probe. One sample per arm; elapsed compiler time excludes global-lock wait.",
+  "inputs": {
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/result.json": "c9bcee3023ea879ad0dcc353d1435aae8aef92963a4b79f51fda1506f518c910",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/inventory.json": "b4d318c5f331057065072e0474a18933161653832c48fcabc3acbf50b28e9994",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/completed.json": "2188e36a8b0dead9a702d34e22b0393cc5c9c5f7a9b1942b954476c8b37fcb7e",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/toolchain.json": "d65727850c08f80fbfc8880f05688fdecca54260e4bca3c08d991b67541709bd",
+    "/tmp/k215-phase24-check-v3/candidate-plan.json": "4bda49c298304608bd3196d92a3c748140142e8a649708102d827e690f489505",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSites215Batch000.lean": "6eeba730ca68956cd65b384b958f2b24ffc123b276bf7ed254f5459d59fdc8bb",
+    "/tmp/k215-phase25-decrement-v2/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean": "b364a87199028a9c18738fdc3158c89e4a4b5103ecb57fa435aa53399739f487",
+    "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+    "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lake": "60330ab6f07dce20f3fa9ebb08e8b984ea9549eac172afeb15d9d2227060e2b3",
+    "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Init.olean": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e",
+    "/home/codex/.codex/worktrees/ec20/Proofs/lean-toolchain": "2773c517aa90b66ea8a2c52bddddf84393157797f8341be0df45294fff7fd32e",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py": "a3cf7cc38004bca5e2a2df10c607fe5353896c0454069b4ff24d6b5176c32fbd",
+    "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/DecrementSameBlocks.lean": "8dc60f72da9f4a4a0d44a96b8ef516efda876649f93a9dc25139c514c8447f45",
+    "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/KFastSites215.lean": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+    "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/baseline-KSim.lean": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+    "/tmp/k215-phase25-decrement-benchmark-draft-v2/sources/prefix-KSim.lean": "b364a87199028a9c18738fdc3158c89e4a4b5103ecb57fa435aa53399739f487",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RegisterPath.lean": "4dfac01d72974d3655afce04a587a7da3c0a9022bed276078b36f50424457363",
+    "/tmp/k215-phase18-check/build-run1/attempts/001-BusyBeaver.ZFC.RegisterPath/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/RegisterPath.olean": "bc854b289005d6a695b10fce455cdcd1b95b494a84fd79c9a64d8dea01d0876c",
+    "/tmp/k215-phase18-check/build-run1/attempts/001-BusyBeaver.ZFC.RegisterPath/record.json": "6e5d26b6594b0bb35afc18feabc51351d70a395c5a264e752a25c3c5490541e5",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RMDag.lean": "36b7b8fdeaad284940fafe170b8da3ed6953e41b743034e446f68c8c5f6fd3cb",
+    "/tmp/k215-phase17-check/build-run1/attempts/001-BusyBeaver.ZFC.RMDag/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/RMDag.olean": "c3df8b6617834a6b015fc5b7081e772a9892a8877eb4e648c0f441332e40fb00",
+    "/tmp/k215-phase17-check/build-run1/attempts/001-BusyBeaver.ZFC.RMDag/record.json": "05691348af998cce5a64f6584b15e4f6f21c06017ae92616d78925a3fe760e46",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RMEquiv.lean": "61f807d4327a1e39ad441e1e737f5affd9fd7004476e12bb378c9c6663dc909c",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/001-BusyBeaver.ZFC.RMEquiv/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/RMEquiv.olean": "0388e3c09aa8ef9d0fdbf8f39ad6fe051319fed70df827f9ecdbf8873d804620",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/001-BusyBeaver.ZFC.RMEquiv/record.json": "18d202a15f64816063d989263a80bbd6e2245b4d2d29472c399b2b9797abab18",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RMBisim.lean": "c18b757a0b981a6e78c7a1fbe449fe6d53f38039f7d99cdf0021b2a151166f81",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/002-BusyBeaver.ZFC.RMBisim/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/RMBisim.olean": "c1b5723f3a7f225781a4ac3f6e25b253eb929b096e9aa12f92dd2bc55f796a7b",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/002-BusyBeaver.ZFC.RMBisim/record.json": "279c2450bbeaf1919dc50de3f5f387e802cac6177074654239a27f0c60c8e06b",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSource215Program.lean": "7ab40d3faf9ddb976cdac2f77727e9e43b99b13a81fb45a340ad99abdfcd8310",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/003-BusyBeaver.ZFC.KSource215Program/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KSource215Program.olean": "8f91244a5456f3301243c0a6cc72669ac134c6e5e843b99cea537c33ba5af1c6",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/003-BusyBeaver.ZFC.KSource215Program/record.json": "5379e7fc35720f16db395bc8dae13a5aa888220ddae3551c400a62f7ab8cecf3",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KZip.lean": "e959ce4909f67b092ba237c26e1b53a2db112b42ef22c69ad04a73816414192c",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/029-BusyBeaver.ZFC.KZip/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KZip.olean": "beeb9e6a17e39d4c26647bbd55de480ce3532712e5fe283de093a4d6fe79d221",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/029-BusyBeaver.ZFC.KZip/record.json": "316e18b305f12c7f219f320a0fd17fc817322bb8435bb86fbed017839e57b189",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KBoot.lean": "a7a82ed68c778937728bdd332fe2a52978dfc54bdc99b17df2a19a16fcd534c6",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/042-BusyBeaver.ZFC.KBoot/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KBoot.olean": "43166616337d0c565a29a6c42cefac90d2ea7208417f1b12e1613a07dc61ce15",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/042-BusyBeaver.ZFC.KBoot/record.json": "8a7eb3c4f6f74882d829e61b38fb51ce6f678feca70361ee965d40eac0d66a8f",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KTableCore.lean": "8d9eb49c11dcc64bf461cfa205aa886f7ab7e43925a5315485acffc1f2c75e5d",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/037-BusyBeaver.ZFC.KTableCore/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KTableCore.olean": "6705da5ae968424f7d57ebc61a2e8470311a9f74675f6431f1049f7bf1d0a304",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/037-BusyBeaver.ZFC.KTableCore/record.json": "56692697056e90b90cd4ed04edc4e5d1253c25a2ee2d27d992a316995f3a2999",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KTable215.lean": "429775b1774d41e94ba3b7283f7f50ea45bc13716d4ef27fccffe1f686a8d24c",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/040-BusyBeaver.ZFC.KTable215/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KTable215.olean": "1e814eefb2615346a794ae8e503c2fe1c17c35fecdbaf3818657e9b88beab55c",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/040-BusyBeaver.ZFC.KTable215/record.json": "779575182d81266d2543655e0dae1e252868c7b3783a3f2836d7e9db914ebbf3",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KFast215.lean": "4f33903017795959d98f52d73875965415fb3ead8e553e0b5637f5097c577c19",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/043-BusyBeaver.ZFC.KFast215/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KFast215.olean": "44b0378d7fd176df79bca7eefdca414ad5be6c629a0f7cc4818711c1517e269e",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/043-BusyBeaver.ZFC.KFast215/record.json": "ac5c473fb4d56ce859f2cd07ceda44c3f928b09a3c2cd2d69cc76c0e0f0c5b71",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KRuntimeCore.lean": "4ecde56c82c57487c8f9e842fcfc27e4e925059ad7ef19e7cdd01204399d5cd2",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/030-BusyBeaver.ZFC.KRuntimeCore/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KRuntimeCore.olean": "85f10e0dc18d6d163a7e643f89a454f39844e8d98df8326251fb09aa9a0518b6",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/030-BusyBeaver.ZFC.KRuntimeCore/record.json": "6f7da61f62d99dd7ec36dfae9c8b768dbe0a30de0f21308fd62824bc8e32c133",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KHome.lean": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/031-BusyBeaver.ZFC.KHome/compiler.log": "377c84ad2807f431874243baa151b6cedfc166310f924f21e106e0660206ec56",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KHome.olean": "4fdf53dd70f15022f987e692aef8650fe8437880f38338de88e3babbc1f6ff5e",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/031-BusyBeaver.ZFC.KHome/record.json": "6019c2ea1087f21c4f87166f6ef4fbe4fe48366c1e31c712aab8e4240c6b2ad0",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/FramedWindow.lean": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd",
+    "/tmp/k215-phase9-zipbridge/run5/FramedWindow.log": "50655dfd16e62a9030cba16f19ee8ec3661d0766068142a53e4b107bc5751f4d",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/FramedWindow.olean": "e9ae784537a6c76cc9c51f26b6a8d124543a2c6f66b0dc886602ec092507278c",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KZipTape.lean": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/032-BusyBeaver.ZFC.KZipTape/compiler.log": "dd97edcaecece41af160007477d50ea4d0d9a61796f7b0926f91539ac5ab4204",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KZipTape.olean": "fc23b3c385cd67f2fafa095b6fd750185f4126a4f5de5c76f384459b85f93289",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/032-BusyBeaver.ZFC.KZipTape/record.json": "52ca46d8fb054928c0be900509e8cf940b5fafc969560985293a58664a040dce",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KHomeReady.lean": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/033-BusyBeaver.ZFC.KHomeReady/compiler.log": "2aa075f17f7097b1fa84897f873f5cd32f3019c7b39f9716545781dceac04450",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KHomeReady.olean": "2295dda7b0b6ab1d30ba02a6faf3364f9a2f7262724cf8d181a3e24d6cc9b254",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/033-BusyBeaver.ZFC.KHomeReady/record.json": "aa036239b543c9aca1dd5fdf76b392114d316819443f367aa2d6dd1db73bc890",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/RegisterPathClean.lean": "c029c0720c7631ba935318af1cfa8829ba641eb7397b8a4ee183927f8dd98cde",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/093-BusyBeaver.ZFC.RegisterPathClean/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/RegisterPathClean.olean": "8dd8e163913b45787f0f20bebb0b049d3b21bcf8a865e6e66cf986529ae07b15",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/093-BusyBeaver.ZFC.RegisterPathClean/record.json": "aa71324fcd7c021d07079ded0b76946bbe95bcf5a8fa7ef02e607952c29c95f3",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/SiteCoverage.lean": "15ad5a7b5f1ab1e656146ae823f0e012ea8ab4295b5381c8650e03885f201c24",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/094-BusyBeaver.ZFC.SiteCoverage/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/SiteCoverage.olean": "25d1019350904b3f8c1d562642a40dc512ef3912b1166799938b041f558e0988",
+    "/tmp/k215-phase23-check-v2/candidate-build-run1/attempts/094-BusyBeaver.ZFC.SiteCoverage/record.json": "e1895ba0b1644bc471dad056f546518694c3150db00af9de33fbf2ece4d59478",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KSim.lean": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+    "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KFastSites215.lean": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.native.tm": "9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/candidate-k215/sites215.json": "17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/generate_l2dom.py": "4453ac9a3745b4525575945d0aab506f270bbbbbbcf52c09a160f6c60f2ecd38",
+    "/tmp/k215-phase25-decrement-benchmark-draft/benchmark.py": "eab241edb7af2047d4d7b51630b080ccbdb59c3232698fc40141badce8756584",
+    "/tmp/k215-phase25-decrement-benchmark-draft/plan.json": "62099c2f9ff9e33700684f70d46a1e72168c2803141728f62103392a597e9da1",
+    "/tmp/k215-phase25-decrement-benchmark-draft/freeze.json": "fc280207eb33ab62e50b65293eb766504366c78e79c121e9387d3763f81e5cbc",
+    "/tmp/k215-phase25-decrement-benchmark-draft/source-review.json": "87fbf953b0df6eff5f88dd9bba49bb70a4a4b0574462c29c6a76d77d0e6f97d2",
+    "/tmp/k215-phase25-decrement-benchmark-draft/handoff.json": "9deb03aefb9ac725c05a969564bb3a7d76f4a03a3407cd450473ad39db8c4a28",
+    "/tmp/k215-phase25-decrement-benchmark-draft/README.md": "37e8b3cd9431f4f2d2c2b2dfa8bdf70af4a9d99336a24dd4471e133287e37bbf",
+    "/tmp/k215-phase25-decrement/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean": "42e5b2950a13f4b0b23b22c1bc19e8afca88d7046260850f0492a3003d15d6af",
+    "/tmp/k215-phase25-decrement-benchmark-v1/result.json": "f48b70f655aefa24294e9b1498a47eaddfd4aa9e6f016bcdca586a61435fbafc",
+    "/tmp/k215-phase25-decrement-benchmark-v1/before.json": "1120072068442623e4696f8530a364e3810911f40bc5e65570063d686e0dd253",
+    "/tmp/k215-phase25-decrement-benchmark-controls-peer.json": "064a398a177e25d957ecd98890c268cb6bf45e4c2a523c817da5a942c1bee04c",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/01-baseline-BusyBeaver.ZFC.KSim/KSim.lean": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/01-baseline-BusyBeaver.ZFC.KSim/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/01-baseline-BusyBeaver.ZFC.KSim/record.json": "0bb0d56fd62b3fa5ac8802798f2ebc57fa68a461808c3df9872cf33fa3fe19a0",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/02-baseline-BusyBeaver.ZFC.KFastSites215/KFastSites215.lean": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/02-baseline-BusyBeaver.ZFC.KFastSites215/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/02-baseline-BusyBeaver.ZFC.KFastSites215/record.json": "913824329d6ff7b0558d2c9e704477de6c462687a0dd227c73baf75b1ba9d5e8",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/KSim.lean": "42e5b2950a13f4b0b23b22c1bc19e8afca88d7046260850f0492a3003d15d6af",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/compiler.log": "73153789eced34b846d022c2664762b51ac424a449d792f98d48d6d2a9ebe9b6",
+    "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/record.json": "46ce2648db0d2fea5da2173f1bb39c55ff8dcb770f7034ae8b37f88ee5e21131",
+    "/tmp/k215-phase25-decrement-v2/repair.diff": "73834610849312568b3a90491d6435caffd10cd3dbdc527d98a4892041c6a41e",
+    "/tmp/k215-phase25-decrement-v2/candidate.diff": "7708e859a4492a3a224b31d9118e6ea54fb7fd9bc8459eebcbec52808b599441",
+    "/tmp/k215-phase25-decrement-v2/report.json": "b2cad5f90bd9109091f6c8de4dddfcef60a9192dda62f493235ee8a0a6e13ed3",
+    "/tmp/k215-phase25-decrement-v2/pins.json": "1f69dfdb862f0940a5808ce212480dcfba98f32b8294390a2c8fccea1173d5d6",
+    "/tmp/k215-phase25-decrement-v2/handoff.json": "39ea149df7dc1ea211552f5f8af89751cbf746caaf44aae80811bf2fde8219ca",
+    "/tmp/k215-phase25-decrement-v2/README.md": "acfb98511af445b776598df9ba3c73522c81b067674ec12785608ce874a5bab6"
+  },
+  "missing_adjacent_basis_raw_records": [
+    "BusyBeaver.ZFC.FramedWindow"
+  ],
+  "scope": "Only3existing literal215blocks (9/52/67leaves). No full4751leaf/6176outcome,45variant-batch acceptance, adoption or speedup is established. Both arms use only accepted P24 dependencies; simulator proof cuts remain excluded.",
+  "history": {
+    "previous_unmodified_draft": "/tmp/k215-phase25-decrement-benchmark-draft",
+    "failed_run": "/tmp/k215-phase25-decrement-benchmark-v1",
+    "failed_result_sha256": "f48b70f655aefa24294e9b1498a47eaddfd4aa9e6f016bcdca586a61435fbafc",
+    "classification": "FAIL_DIAGNOSTIC: two closed-if target rewriting elaboration errors in prefix KSim, before any benchmark probe. Failed prefix and successful preliminary baseline objects are not reused.",
+    "repair_candidate": "/tmp/k215-phase25-decrement-v2/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+    "repair_sha256": "b364a87199028a9c18738fdc3158c89e4a4b5103ecb57fa435aa53399739f487",
+    "history_file_pins": {
+      "/tmp/k215-phase25-decrement-benchmark-draft/benchmark.py": "eab241edb7af2047d4d7b51630b080ccbdb59c3232698fc40141badce8756584",
+      "/tmp/k215-phase25-decrement-benchmark-draft/plan.json": "62099c2f9ff9e33700684f70d46a1e72168c2803141728f62103392a597e9da1",
+      "/tmp/k215-phase25-decrement-benchmark-draft/freeze.json": "fc280207eb33ab62e50b65293eb766504366c78e79c121e9387d3763f81e5cbc",
+      "/tmp/k215-phase25-decrement-benchmark-draft/source-review.json": "87fbf953b0df6eff5f88dd9bba49bb70a4a4b0574462c29c6a76d77d0e6f97d2",
+      "/tmp/k215-phase25-decrement-benchmark-draft/handoff.json": "9deb03aefb9ac725c05a969564bb3a7d76f4a03a3407cd450473ad39db8c4a28",
+      "/tmp/k215-phase25-decrement-benchmark-draft/README.md": "37e8b3cd9431f4f2d2c2b2dfa8bdf70af4a9d99336a24dd4471e133287e37bbf",
+      "/tmp/k215-phase25-decrement/candidate/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean": "42e5b2950a13f4b0b23b22c1bc19e8afca88d7046260850f0492a3003d15d6af",
+      "/tmp/k215-phase25-decrement-benchmark-v1/result.json": "f48b70f655aefa24294e9b1498a47eaddfd4aa9e6f016bcdca586a61435fbafc",
+      "/tmp/k215-phase25-decrement-benchmark-v1/before.json": "1120072068442623e4696f8530a364e3810911f40bc5e65570063d686e0dd253",
+      "/tmp/k215-phase25-decrement-benchmark-controls-peer.json": "064a398a177e25d957ecd98890c268cb6bf45e4c2a523c817da5a942c1bee04c",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/01-baseline-BusyBeaver.ZFC.KSim/KSim.lean": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/01-baseline-BusyBeaver.ZFC.KSim/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/01-baseline-BusyBeaver.ZFC.KSim/record.json": "0bb0d56fd62b3fa5ac8802798f2ebc57fa68a461808c3df9872cf33fa3fe19a0",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/02-baseline-BusyBeaver.ZFC.KFastSites215/KFastSites215.lean": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/02-baseline-BusyBeaver.ZFC.KFastSites215/compiler.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/02-baseline-BusyBeaver.ZFC.KFastSites215/record.json": "913824329d6ff7b0558d2c9e704477de6c462687a0dd227c73baf75b1ba9d5e8",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/KSim.lean": "42e5b2950a13f4b0b23b22c1bc19e8afca88d7046260850f0492a3003d15d6af",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/compiler.log": "73153789eced34b846d022c2664762b51ac424a449d792f98d48d6d2a9ebe9b6",
+      "/tmp/k215-phase25-decrement-benchmark-v1/attempts/03-prefix-BusyBeaver.ZFC.KSim/record.json": "46ce2648db0d2fea5da2173f1bb39c55ff8dcb770f7034ae8b37f88ee5e21131",
+      "/tmp/k215-phase25-decrement-v2/repair.diff": "73834610849312568b3a90491d6435caffd10cd3dbdc527d98a4892041c6a41e",
+      "/tmp/k215-phase25-decrement-v2/candidate.diff": "7708e859a4492a3a224b31d9118e6ea54fb7fd9bc8459eebcbec52808b599441",
+      "/tmp/k215-phase25-decrement-v2/report.json": "b2cad5f90bd9109091f6c8de4dddfcef60a9192dda62f493235ee8a0a6e13ed3",
+      "/tmp/k215-phase25-decrement-v2/pins.json": "1f69dfdb862f0940a5808ce212480dcfba98f32b8294390a2c8fccea1173d5d6",
+      "/tmp/k215-phase25-decrement-v2/handoff.json": "39ea149df7dc1ea211552f5f8af89751cbf746caaf44aae80811bf2fde8219ca",
+      "/tmp/k215-phase25-decrement-v2/README.md": "acfb98511af445b776598df9ba3c73522c81b067674ec12785608ce874a5bab6"
+    },
+    "accepted_dependency_basis_unchanged": true,
+    "source_cuts_excluded": true
+  }
+}
