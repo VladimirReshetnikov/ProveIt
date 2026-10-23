@@ -27,6 +27,12 @@ This is an external Lean theorem about syntactic ZFC consistency. A
 derivation of the equivalence inside the object-language ZFC calculus is
 still a separate open task. No global simplicity minimum is claimed.
 
+[`PositiveZFC.lean`](Lean/DiophantineConsistency/PositiveZFC.lean) also gives
+a closed equation on nine strictly positive integers: replace each original
+coordinate by `v_i-1`. Its exact domain-equivalence theorem includes both
+directions, and `PositiveZFC.noPolynomialZero_iff_conZFC` proves correctness
+for the shifted ordinary polynomial.
+
 ## Fixed coefficient recipe
 
 Every data stage below is an ordinary executable Lean definition.
@@ -90,7 +96,7 @@ Here `b,g,h,i,j,w,s,phi,n` are the shifted nine free coordinates used by
 `ExecutableJones.syntaxVars` after fixing its input to one. In particular,
 with fixed Jones index `z,y`, `b=y+1+u0`, `g=u1+1`, `h=u2+1`, `s=u3+1`,
 `w=u4+1`, `phi=u5`, `i=u6+1`, `j=u7+1`, and `n=u8`.
-The fixed formulas for `N,R` use the coding sums of `Q` and are spelled out
+The fixed formulas for `N,R` use the coding sums of the source quartic and are spelled out
 by `ExecutableJones.syntaxVars` and `NinePolynomial.rankCode`.
 [`RefinedPair.value_eq`](Lean/DiophantineConsistency/RefinedPair.lean)
 proves that this compact finalizer equals the existing proved Jones
@@ -119,3 +125,15 @@ and `Quot.sound`. The concrete coefficient data are supplied by executable
 constructors; the mathematical proof layer uses classical library theorems.
 Further work targets additional code sharing, direct quadratic
 coding, and the separate object-language ZFC proof.
+
+## Direct arithmetic alternative
+
+[`NativeZFC.lean`](Lean/DiophantineConsistency/NativeZFC.lean) gives a second
+closed executable equation with the same unconditional natural-unsolvability
+equivalence, and a nine-positive counterpart. It compiles the arithmetic
+source directly into graph data, using the quadratic Cantor relation and
+explicit branches. Only the outer enumeration iteration uses a trace;
+addition, multiplication, subtraction, pairing and inverse pairing use
+their supplied arithmetic graphs. See [DIRECT_GRAPH.md](DIRECT_GRAPH.md).
+The two complete source sizes have not been measured, so no final degree
+or operation improvement is inferred from this structural change alone.

@@ -9,21 +9,6 @@ original contents. See the [active research](../README.md) for new Lean
 proofs and the current status; this README covers only the delivered
 manuscripts.
 
-**Wave 6 is now also present.** Eight packages arrived in `29ca562f8f`
-and were placed beside wave 5 by `124c07c0b7`. Their entry points are
-[38 batching/eleven](38-batching11/README.md),
-[39 direct ten](39-direct10/README.md),
-[40 packing ten](40-packing10/README.md),
-[41 Bose–Chowla](41-bose-chowla/README.md),
-[42 additive B4](42-additive-b4/README.md),
-[43 Sidon ten](43-sidon10/README.md),
-[44 sparse B4](44-b4-sparse/README.md), and
-[45 multi-output](45-multioutput/README.md).
-[PLACEMENT.md](PLACEMENT.md#placement-record-batch-222-wave-6) records their
-archive provenance and omitted duplicates. The wave-5 reconciliation below
-describes packages 31–37; comparison and new Lean work are tracked in the
-[active research status](../STATUS.md). Delivered files remain unedited.
-
 **Explicit polynomials with fixed integer coefficients whose unsolvability
 ZFC proves equivalent to Con(ZFC). Waves 5 and 6 are both in the tree: ten
 unrestricted integers at degree 237,520,456 (via Sun's reduction), nine

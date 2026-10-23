@@ -37,10 +37,14 @@ assumption enters the construction. Lean checks the full evaluation
 specification; its transitive axiom audit reports only the standard
 `propext`, `Classical.choice`, and `Quot.sound`.
 
-An independent evaluation of `ScalarPRCode.nodeCount` gives **31,889**
-nodes for this program and **31,487** after the checked scalar optimizer.
-The fixed binary Cantor-pair helper is composed with the pair of its
-operand programs, so each operand is computed once at that composition.
-Inlining the operands into the triangular formula instead produced
-6,928,507 nodes in a temporary comparison; both versions were checked
-against the same `haltingTest` specification.
+An independent evaluation of `ScalarPRCode.nodeCount` gives **14,751**
+nodes for this program and **14,323** after the checked scalar optimizer.
+Fixed Cantor-pair, gated-bundle, and axiom-stack helpers receive their
+computed arguments in one packed block, so each argument is evaluated
+once at that composition.
+
+Temporary comparisons checked against the same `haltingTest` specification
+gave 6,928,507 nodes with inline Cantor operands, and 31,889 nodes
+(31,487 optimized) after sharing just the binary Cantor operands.
+Packing the gate and stack argument blocks gives the current smaller
+program; these changes preserve its exact evaluation specification.

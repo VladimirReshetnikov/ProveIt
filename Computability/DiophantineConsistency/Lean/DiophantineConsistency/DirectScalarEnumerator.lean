@@ -106,7 +106,7 @@ def row8 {a b c u : ℕ → ℕ} (ha : R a) (hb : R b) (hc : R c) (hu : R u) :
   implication (implication (implication hc hu) ha)
     (implication (implication ha hc) (implication hb hc))
 
-def gated {a b c : ℕ → ℕ} (ha : R a) (hb : R b) (hc : R c) :
+def gatedBody {a b c : ℕ → ℕ} (ha : R a) (hb : R b) (hc : R c) :
     R (fun n => gate (a n) (b n) (c n)) := by
   let body := negation (implication
     (implication (membership ha hb) (universal hc (membership ha hb)))
@@ -116,13 +116,33 @@ def gated {a b c : ℕ → ℕ} (ha : R a) (hb : R b) (hc : R c) :
   by_cases hca : c n = a n <;> by_cases hcb : c n = b n <;>
     simp [gate, bundle222, vrel, nks, hca, hcb]
 
-def stack {a h b c u t w : ℕ → ℕ} (ha : R a) (hh : R h) (hb : R b) (hc : R c)
+def gated {a b c : ℕ → ℕ} (ha : R a) (hb : R b) (hc : R c) :
+    R (fun n => gate (a n) (b n) (c n)) :=
+  ((gatedBody Realizes.left (Realizes.left.comp Realizes.right)
+    (Realizes.right.comp Realizes.right)).comp (ha.pair (hb.pair hc))).ofEq
+      (fun _ => by simp)
+
+def stackBody {a h b c u t w : ℕ → ℕ} (ha : R a) (hh : R h) (hb : R b) (hc : R c)
     (hu : R u) (ht : R t) (hw : R w) :
     R (fun n => axStack (a n) (h n) (b n) (c n) (u n) (t n) (w n)) :=
   cantorPair (row1 ha hb) (cantorPair (row2 ha hb hc) (cantorPair (row3 ha hb hc)
     (cantorPair (row4 ha hb hc) (cantorPair (row5 ha hb hc) (cantorPair (row6 ha hc)
     (cantorPair (growth ha hb hc) (cantorPair (row8 ha hb hc hu)
     (cantorPair (universal hu hh) (cantorPair ht hw)))))))))
+
+def stack {a h b c u t w : ℕ → ℕ} (ha : R a) (hh : R h) (hb : R b) (hc : R c)
+    (hu : R u) (ht : R t) (hw : R w) :
+    R (fun n => axStack (a n) (h n) (b n) (c n) (u n) (t n) (w n)) := by
+  let r1 := Realizes.right
+  let r2 := Realizes.right.comp r1
+  let r3 := Realizes.right.comp r2
+  let r4 := Realizes.right.comp r3
+  let r5 := Realizes.right.comp r4
+  let r6 := Realizes.right.comp r5
+  let core := stackBody Realizes.left (Realizes.left.comp r1) (Realizes.left.comp r2)
+    (Realizes.left.comp r3) (Realizes.left.comp r4) (Realizes.left.comp r5) r6
+  exact (core.comp (ha.pair (hh.pair (hb.pair (hc.pair (hu.pair (ht.pair hw))))))).ofEq
+    (fun _ => by simp)
 
 def encodeState (s : St) : ℕ :=
   Nat.pair s.pl (Nat.pair s.np (Nat.pair s.tw (Nat.pair s.ws (Nat.pair s.d s.h))))

@@ -100,3 +100,7 @@ liveness, the operation count and exact leading form. Its saved ledger is
 The Lean correctness and degree theorems audit with only `propext`,
 `Classical.choice`, and `Quot.sound`; no additional axioms or `sorry` are
 introduced.
+
+Further scalar residual shears and their limited degree obstruction are
+recorded in [RESIDUAL_SHEAR_SEARCH.md](RESIDUAL_SHEAR_SEARCH.md), with a
+reproducible exact search. They do not yield a lower-cost degree-64 circuit.

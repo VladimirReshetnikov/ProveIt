@@ -167,6 +167,34 @@ the exponential-position Jones source by direct quadratic coding, and
 measuring practical coefficient-generation costs. The generic proof reifier
 is an optional tool; the closed equation uses directly constructed code.
 
+[`DirectGraphEnumerator`](DIRECT_GRAPH.md) additionally represents the
+arithmetic source directly, using quadratic Cantor graphs and explicit
+equality branches. `NativeZFC` closes that second route without requiring a
+generic scalar-program graph compilation. Its full numerical size comparison
+has not been measured.
+
+`SidonPositions.lean` supplies a checked foundation for a future direct
+quadratic coding stage. The explicit weights `(2*m^2+1)*i+i^2`, including
+index zero, have unique unordered pair sums. Their maximum is exactly
+`2*m^3+m^2+m`, with a proved cubic bound. This does not yet replace the
+Jones coding theorem in the closed equations.
+
+`QuadraticCoding.lean` now proves the associated coefficient-extraction
+identity over every commutative coefficient ring: the square of the encoded
+coordinate polynomial gives diagonal coefficients `u_i^2` and off-diagonal
+coefficients `2*u_i*u_j`. A complementary polynomial therefore extracts
+twice the value of any supplied quadratic at the cubic-size target position.
+This is a checked arithmetic foundation, not a completed change to the
+nine-variable correctness theorem.
+
+`PolynomialGraph.lean` supplies another arithmetic constructor: a supplied
+natural polynomial, or one divided by a fixed positive denominator, has a
+graph with zero additional witnesses. The denominator is cleared in its
+single integer residual. Fixed-denominator polynomial data are closed under
+addition, multiplication, and the source's Cantor pairing. These APIs retain
+explicit coefficients and do not select a representation from an existence
+proof.
+
 All checked components are covered by
 [`checks/CompilerAxioms.lean`](Lean/checks/CompilerAxioms.lean). Its audit
 reports only the standard `propext`, `Classical.choice`, and `Quot.sound`.
@@ -174,3 +202,5 @@ reports only the standard `propext`, `Classical.choice`, and `Quot.sound`.
 Object-level ZFC formalization and numerical size comparisons remain
 separate obligations. The existence-based external Lean equivalence is
 already checked and documented in [STATUS.md](STATUS.md).
+The actual object-language ZFC arithmetic foundation and remaining gaps are
+documented in [OBJECT_ZFC.md](OBJECT_ZFC.md).

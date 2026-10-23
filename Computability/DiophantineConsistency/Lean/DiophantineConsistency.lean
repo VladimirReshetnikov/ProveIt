@@ -15,3 +15,9 @@ import DiophantineConsistency.ScalarPROptimizer
 import DiophantineConsistency.EquationFromRep
 import DiophantineConsistency.ZFCFromProgram
 import DiophantineConsistency.ExplicitZFC
+import DiophantineConsistency.NativeZFC
+import DiophantineConsistency.PositiveZFC
+import DiophantineConsistency.SidonPositions
+import DiophantineConsistency.QuadraticCoding
+import DiophantineConsistency.ObjectArithmetic
+import DiophantineConsistency.PolynomialGraph

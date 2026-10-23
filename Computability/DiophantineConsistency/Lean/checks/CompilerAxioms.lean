@@ -14,6 +14,9 @@ import DiophantineConsistency.ExecutableJones
 import DiophantineConsistency.ScalarPROptimizer
 import DiophantineConsistency.SimplifiedJones
 import DiophantineConsistency.CompactedJones
+import DiophantineConsistency.CantorRepresentation
+import DiophantineConsistency.GraphBranching
+import DiophantineConsistency.PolynomialGraph
 
 #print axioms DiophantineConsistency.Expr.eval_toPolynomial
 #print axioms DiophantineConsistency.Rep.correct_toPolynomial
@@ -67,3 +70,11 @@ import DiophantineConsistency.CompactedJones
 #print axioms DiophantineConsistency.CompactedJones.witnessCount_le
 #print axioms DiophantineConsistency.CompactedJones.Lexp_le
 #print axioms DiophantineConsistency.CompactedJones.noZero_expression
+#print axioms DiophantineConsistency.CantorRepresentation.pairCoordinates
+#print axioms DiophantineConsistency.CantorRepresentation.leftCoordinate
+#print axioms DiophantineConsistency.CantorRepresentation.rightCoordinate
+#print axioms DiophantineConsistency.GraphRep.ifEq
+#print axioms DiophantineConsistency.GraphRep.ifZero
+#print axioms DiophantineConsistency.NatExpr.directGraphRep
+#print axioms DiophantineConsistency.ScaledNatural.graphRep
+#print axioms DiophantineConsistency.ScaledNatural.cantorPair

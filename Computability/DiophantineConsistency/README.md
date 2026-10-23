@@ -52,6 +52,8 @@ These two levels will be reported separately. Likewise, a Lean theorem
 about syntactic ZFC consistency is distinct from a derivation *inside* the
 repository's object-level ZFC proof calculus. Portability of an arithmetic
 argument to ZFC is not itself a checked object-level derivation.
+The concrete remaining internalization obligations and the first actual
+object-language arithmetic proofs are documented in [OBJECT_ZFC.md](OBJECT_ZFC.md).
 
 See [STATUS.md](STATUS.md) for the current evidence and remaining work.
 
@@ -63,6 +65,10 @@ compiler, program, or representation hypothesis. See
 [EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md) for the equation and proof chain.
 The earlier existence-based theorem in [ZFC.lean](Lean/DiophantineConsistency/ZFC.lean)
 and its 58-witness quartic alternative remain available as separate milestones.
+The checked shift in `PositiveZFC` gives the same variable count over strictly
+positive integers. A second closed route in
+[DIRECT_GRAPH.md](DIRECT_GRAPH.md) represents source arithmetic directly;
+its final degree and operation comparison remains to be measured.
 
 For a concrete small arithmetic circuit, see
 [SHORT_EQUATION.md](SHORT_EQUATION.md): a 69-operation, degree-111 polynomial
@@ -86,12 +92,12 @@ uses 76 operations at degree 64. It adds a multiple of another vanishing
 residual to cancel leading terms; Lean checks complete integer zero
 equivalence to P75. Each of these alternatives uses 15 positive unknowns.
 
-## Continuing toward explicit coefficients
+## Executable construction and further reductions
 
 The current computability/MRDP interfaces hide the program and polynomial
 inside propositions. Extracting executable polynomial data from those
 propositions would require an unjustified elimination from `Prop` into
-`Type`. The next phase instead builds data-valued arithmetic syntax and
+`Type`. The explicit route builds data-valued arithmetic syntax and
 representation constructors, with separate correctness proofs. A
 syntax-directed primitive-recursion compiler can then retain its polynomial
 data throughout. The proved Jones nine-variable reduction accepts any
