@@ -87,6 +87,8 @@ The closed commutativity and associativity sentences have actual ZFC
 derivations; see [OBJECT_ADDITION_LAWS.md](OBJECT_ADDITION_LAWS.md). These
 laws support internal arithmetic compiler proofs, without transferring
 arbitrary external natural-number theorems to nonstandard models.
+`ObjectAdditionCancellation` further checks left/right cancellation and the
+zero-sum criterion, with an actual closed ZFC cancellation proof.
 
 ## Multiplication, supplied expressions, and the actual equation sentence
 

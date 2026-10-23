@@ -135,3 +135,4 @@ import DiophantineConsistency.NativePellFirstIndex
 import DiophantineConsistency.NativePellPower
 import DiophantineConsistency.NativeBinaryScale
 import DiophantineConsistency.NativePellScaleBounds
+import DiophantineConsistency.ObjectAdditionCancellation

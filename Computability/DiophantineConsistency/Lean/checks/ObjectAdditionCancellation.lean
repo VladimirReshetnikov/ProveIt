@@ -1,0 +1,11 @@
+import DiophantineConsistency.ObjectAdditionCancellation
+
+open DiophantineConsistency.ObjectAdditionCancellation
+#print axioms addRel_cancel_right
+#print axioms addRel_cancel_left
+#print axioms addValue_cancel_right
+#print axioms addValue_cancel_left
+#print axioms addRel_zero_iff
+#print axioms addValue_eq_zero_iff
+#print axioms sentence_additionCancellationForm
+#print axioms zfc_proves_addition_cancellation

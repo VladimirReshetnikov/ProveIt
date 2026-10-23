@@ -35,6 +35,13 @@ every model of sealed ZFC, including nonstandard models. No model-existence
 or consistency assumption is used. The dedicated audit covers twelve
 public endpoints and uses only the standard Lean axioms.
 
+`ObjectAdditionCancellation` adds left/right cancellation and the exact
+zero-sum criterion: an internal natural sum is zero precisely when both
+inputs are zero. A supplied formula again makes each induction definable;
+successor injectivity and the empty-set axiom handle the induction step.
+Cancellation also has a closed sentence and an actual ZFC derivation.
+Its eight public theorem audits use only the standard axioms.
+
 These laws are prerequisites for internal arithmetic compiler correctness.
 They do not yet give an internal equivalence between the consistency
 sentence and polynomial unsolvability, nor a transfer principle for
