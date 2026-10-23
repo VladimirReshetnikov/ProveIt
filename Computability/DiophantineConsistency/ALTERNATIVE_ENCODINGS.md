@@ -4,7 +4,9 @@ Neither K215 nor a Jones universal polynomial is required. The immediate
 alternative implemented here is a **closed executable quartic** for actual
 syntactic ZFC refutability, retaining its concrete graph variables instead
 of applying the nine-variable Jones reduction. Its degree is at most four;
-its total variable and operation counts have not been numerically evaluated.
+its exact variable and operation counts have not been numerically evaluated.
+Lean now proves the conservative bound `nu < 2^300000` for this actual
+closed recipe; see [NATIVE_QUARTIC_SIZE.md](NATIVE_QUARTIC_SIZE.md).
 This is a different tradeoff, not a claim that it dominates every existing
 candidate.
 
@@ -18,7 +20,7 @@ in the external correctness theorem.
 |---|---|---|---|---|
 | `ExplicitZFC` | 9 naturals | Fixed finite polynomial; numerical degree not materialized | Full evaluator count not measured | Closed executable coefficient recipe; external no-zero iff `ConZFC` checked |
 | `NativeZFC` | 9 naturals | Same Jones compression, from direct arithmetic graph data | Source step has exactly 1,742 graph witnesses; this is not a final evaluator count | Closed executable recipe; external no-zero iff checked |
-| New `DirectQuarticZFC` | `nu` naturals, defined below | **At most 4**, Lean checked | **At most `6*(nu+1)` syntax-tree binary operations**, Lean checked | Closed executable syntax, actual polynomial/evaluation identity, external no-zero iff checked; no Jones index construction |
+| New `DirectQuarticZFC` | `nu` naturals, **`nu < 2^300000`**, Lean checked upper bound; exact count unmeasured | **At most 4**, Lean checked | **At most `6*(nu+1)` syntax-tree binary operations**, Lean checked | Closed executable syntax, actual polynomial/evaluation identity, external no-zero iff checked; no Jones index construction |
 | Generic `DAGQuartic` compiler | `n+2*m` naturals for `n` inputs and `m` stored nodes | At most 4, Lean checked | At most `12*m+4` tree operations, Lean checked | Signed intermediates and arbitrary constants allowed; sharing retained; no complete ZFC checker compiled through this yet |
 | Generic `NaturalDAGQuartic` compiler | `n+m` naturals | At most 4, Lean checked | At most `6*m+4` tree operations, Lean checked | Source uses nonnegative constants, addition and multiplication, comparing two output wires; no whole-checker size claim |
 | `ZFC.zfcQuarticPolynomial` | 58 naturals | At most 4, Lean checked | Not measured | Existence-based coefficient selection; not an exported executable coefficient recipe |
@@ -89,8 +91,11 @@ is insufficient to claim a small final quartic.
 The checked [structural size recurrences](STRUCTURAL_SIZES.md) now supply
 another measurement method. They propagate witness counts and expression
 depth numerically and bound the raw quartic by `nu+1<=m+2^(2*h+2)` without
-constructing its trees. Closing those metadata bounds for the whole supplied
-source is separate from evaluating its exact size.
+constructing its trees. The [closed-source metadata application](NATIVE_QUARTIC_SIZE.md)
+now proves witness count plus one at most `2^22426`, depth at most 140000,
+and actual compacted quartic variable count below `2^300000`. This is a
+conservative upper bound, not an exact count or a size advantage over other
+quartic constructions.
 
 ## Direct source: a supplied sealed-ZFC proof certificate
 

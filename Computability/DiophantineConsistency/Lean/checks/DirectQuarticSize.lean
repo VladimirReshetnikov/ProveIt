@@ -1,0 +1,9 @@
+import DiophantineConsistency.DirectQuarticSize
+
+#print axioms DiophantineConsistency.DirectQuarticSize.bounded_depth
+#print axioms DiophantineConsistency.DirectQuarticSize.iterate_witnessCount
+#print axioms DiophantineConsistency.DirectQuarticSize.representation_witnessCount
+#print axioms DiophantineConsistency.DirectQuarticSize.representation_depth
+#print axioms DiophantineConsistency.DirectQuarticSize.representation_witnessCount_le
+#print axioms DiophantineConsistency.DirectQuarticSize.variableCount_lt
+#print axioms DiophantineConsistency.DirectQuarticZFC.noNaturalZero_iff_conZFC

@@ -138,3 +138,5 @@ import DiophantineConsistency.NativePellScaleBounds
 import DiophantineConsistency.ObjectAdditionCancellation
 import DiophantineConsistency.ObjectMultiplicationLaws
 import DiophantineConsistency.ObjectDistributivity
+import DiophantineConsistency.BoundedForallDepth
+import DiophantineConsistency.DirectQuarticSize
