@@ -119,6 +119,15 @@ the actual closed sentence `noZeroForm e`. `sat_noZeroForm_iff` quantifies
 over every internal natural tuple. Numeralwise equation agreement is proved;
 external no-zero truth is not promoted to all-model satisfaction.
 
+[`ObjectOmegaSemiring.lean`](Lean/DiophantineConsistency/ObjectOmegaSemiring.lean)
+now packages the entire internal omega as a nontrivial commutative semiring,
+with exact graph and numeral-cast identities. `ObjectNaturalSemiring`
+identifies expression, equation and no-zero formula semantics with
+evaluation in that semiring for every internal tuple. This supports finite
+polynomial identities on nonstandard inputs; it is not a transfer principle
+for arbitrary external arithmetic theorems. See
+[OBJECT_OMEGA_SEMIRING.md](OBJECT_OMEGA_SEMIRING.md).
+
 [`ObjectEquation.lean`](Lean/DiophantineConsistency/ObjectEquation.lean)
 instantiates this construction at the closed nine-variable equation:
 `unsolvabilitySentence := ObjectPolynomial.noZeroForm ExplicitZFC.expression`.
