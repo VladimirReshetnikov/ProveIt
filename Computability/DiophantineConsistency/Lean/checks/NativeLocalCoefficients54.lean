@@ -1,0 +1,6 @@
+import DiophantineConsistency.NativeLocalCoefficients54
+
+open DiophantineConsistency.NativeLocalCoefficients54
+
+#print axioms coefficient_word_eq
+#print axioms literal_mode_clause_iff

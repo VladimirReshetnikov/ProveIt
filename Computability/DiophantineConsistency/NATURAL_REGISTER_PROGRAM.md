@@ -40,9 +40,10 @@ The nine dependency audits use only `propext`, `Classical.choice`, and
 `Quot.sound`, sometimes a subset.
 
 This foundation handles equality of polynomial circuit outputs. A graph
-compiler for the proof checker or enumerator still needs data-valued
-existential scopes and arithmetic primitive graphs, including the bounded
-quantifier construction. No smaller closed consistency equation or internal
+compiler for the proof checker or enumerator now also has explicit
+[existential scopes and pairing graphs](SHARED_REGISTER_RELATIONS.md).
+Relational composition, guarded arithmetic and the bounded quantifier
+construction remain to be integrated. No smaller closed consistency equation or internal
 object-ZFC biconditional follows from this module alone. The existing closed
 direct quartic and its independently checked conservative size bound remain
 in `DirectQuarticZFC.lean` and `DirectQuarticSize.lean`.

@@ -78,6 +78,8 @@ controls execute the supplied index and atomic-validation programs as well as
 the complete numeric table parser on valid and malformed small certificates.
 The subsequent [whole-table validator](ANNOTATED_RENAME_VALIDATOR.md) now has
 checked supplied PR data and exact agreement on arbitrary input codes.
-Bounds, sealing, actual schema expansion, contextwise transformations, whole
+[Bound and sealing certificates](ANNOTATED_BOUND_SEAL.md) are now checked.
+[Actual schema expansion](ANNOTATED_SCHEMAS.md) is checked too.
+Contextwise transformations, whole
 proof-line validation and the internal coded-form/omega interpretation remain
 open obligations for the original sealed-ZFC checker.

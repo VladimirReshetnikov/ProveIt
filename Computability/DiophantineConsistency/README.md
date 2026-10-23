@@ -34,7 +34,11 @@ renaming under binders, including shift and instantiation, also pass Lean;
 see [ANNOTATED_RENAME.md](ANNOTATED_RENAME.md). The complete numeric renaming
 validator now has a supplied, checked primitive-recursive program for all
 input codes; see [ANNOTATED_RENAME_VALIDATOR.md](ANNOTATED_RENAME_VALIDATOR.md).
-The rest of the checker compilation remains in progress.
+The exact additive formula bound and universal sealing now also have supplied
+programs and numeric certificates; see [ANNOTATED_BOUND_SEAL.md](ANNOTATED_BOUND_SEAL.md).
+The actual Separation and Replacement schemas now have checked constructor,
+rename and sealing programs too; see [ANNOTATED_SCHEMAS.md](ANNOTATED_SCHEMAS.md).
+The axiom-tag dispatcher and full proof-line validator remain in progress.
 The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
 already has a closed external consistency equivalence at degree at most
 four; it retains the enumerator's arithmetic graph. Lean now bounds its
@@ -42,7 +46,13 @@ natural-variable count by `nu < 2^300000`; the exact count remains unmeasured.
 See [NATIVE_QUARTIC_SIZE.md](NATIVE_QUARTIC_SIZE.md) for the checked metadata.
 The new [natural-register builder](NATURAL_REGISTER_PROGRAM.md) preserves
 sharing before quartic compilation, with one gate witness per stored
-register. Recompiling a complete checker through this builder remains open.
+register. [Shared-register relations](SHARED_REGISTER_RELATIONS.md) now hide
+explicit auxiliary inputs and implement the actual max-square pairing used
+by the direct checker, as well as the older enumerator's Cantor pairing.
+[Direct quadratic attachment](QUADRATIC_REGISTER_SYSTEM.md) now reduces each
+local max-square inverse projection to four witnesses and46 operations;
+guarded joint quotient/remainder needs one witness and16 operations. All
+have degree at most four. Recompiling the complete checker remains open.
 
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
 release replays pass. Within the nine-positive branch, the next delivered
@@ -107,7 +117,9 @@ source register `X=2^R`, the binary block base and the common cubic scale;
 see [NATIVE_PELL_POWER.md](NATIVE_PELL_POWER.md). The doubled half-binomial,
 population and mask arguments now close the full forward bridge from the
 literal source to the [native arithmetic window](NATIVE_SOURCE_WINDOW.md),
-under explicit coefficient conditions. Whole-tuple window/compiler
+under explicit coefficient conditions. The [compact54 local decoder](NATIVE_CLAUSE54.md)
+now proves exact empty-cell or single-tile acceptance from arbitrary Boolean
+selectors, with no one-hot premise. Whole-tuple window/compiler
 calibration and the converse completeness direction remain open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,

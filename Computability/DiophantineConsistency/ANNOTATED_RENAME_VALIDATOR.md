@@ -67,9 +67,10 @@ reference and bad-depth examples, reduce the all-zero supplied-program input,
 and verify semantic endpoints, metadata and standard-axiom audits.
 
 This completes an external arithmetic representation of one syntax operation.
-It does not compile sealed-ZFC refutation certificates as a whole. Bounds,
-sealing, actual schema expansion, contextwise operations and the proof-line
-validator remain open. Nor does the external natural-number simulation prove
+It does not compile sealed-ZFC refutation certificates as a whole.
+[Bound and sealing certificates](ANNOTATED_BOUND_SEAL.md) are now checked;
+[actual schema expansion](ANNOTATED_SCHEMAS.md) is checked too. Contextwise
+operations and the proof-line validator remain open. Nor does the external natural-number simulation prove
 correctness on nonstandard internal-omega elements. That requires a separate
 internal verification of the named finite local equations, coded-form
 invariants and arithmetic programs. No decoding of a nonstandard model code
