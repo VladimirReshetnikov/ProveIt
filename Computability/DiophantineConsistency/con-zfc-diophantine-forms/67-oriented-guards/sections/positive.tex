@@ -1,0 +1,152 @@
+\section{One free scale and an index absorber: fourteen positive variables}
+\label{sec:positive30}
+
+A useful new tradeoff is a polynomial of exact degree $30$ in fourteen
+strictly positive integer unknowns, with $87$ binary arithmetic operations.
+The comparison is the existing fourteen-positive degree-$52$, $79$-operation
+construction: degree decreases, cost increases. It also saves one variable
+relative to the incoming integral-root degree-$24/90$, $26/88$ and $30/79$
+constructions. No global minimality or domination is asserted.
+
+The idea is to free \emph{only} the ordinate scale $Y$ using a monic-root
+carrier, while retaining $X=wq$. The recovered divisibility $q^3\mid Y$
+then permits the adaptive $U=4qY$ index absorber to delete its quotient
+witness. Attempting to merge both scale offsets into a single square root
+does not imply their separate divisibilities, and is not used here.
+
+\subsection{Literal polynomial}
+Use the entire unchanged compact tuple from the Integral Root packet:
+$\beta=2^{590069}-1$, $K_0=K$, $M_C$, and $M_F=M_{F,\mathrm{source}}$,
+with the latter already shifted. Its four actual integer payloads and binding
+are included. The fourteen positive unknowns are
+\[
+ J,F,\alpha,z,f,i,T,w,Y,r,\eta,\zeta,u,\gamma.
+\]
+All remaining symbols are polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,& E&=XY,\\
+ k&=\eta+\zeta,& c&=kY+\eta,\\
+ a&=E+Y,& H&=4a+3,\\
+ \Delta&=a^2+H,& \ell&=EkY,\\
+ A&=\ell(\ell+k)+1,& G&=\Delta c^2+1,\\
+ U&=4qY,& v&=k-R-1,\\
+ Q&=\Delta(f^2-1),& I&=ic^2.
+\end{align*}
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ D_*&=U(X+ac)+H(U\gamma-v),\\
+ V&=f^2(cT-R)-c,\\
+ N_t&=(K_0+w)C+q-F-z(q-1).
+\end{align*}
+Define
+\begin{align*}
+ A_0&=[q^3(\ell+r)+Y]^2-q^6 A,\\
+ A_1&=D_*^2-U^2G,\\
+ A_s&=I^2-Q,\\
+ A_a&=(V+u)^2-Qu(2V+u)-1,\\
+ A_t&=N_t-1.
+\end{align*}
+The promised equation is
+\[
+ \boxed{P_{14}=A_0^2+A_1^2+A_s^2+A_a^2+A_t^2=0.}
+\]
+There are no divisions, variable exponents or hidden existential variables
+in this literal expression. The five residuals can alternatively be used
+as a system of degrees $12,14,10,15,2$, with a shared $78$-operation circuit.
+
+\subsection{Correctness of the new composition}
+At a zero, the rational square root
+$\tau=\ell+r+Y/q^3$ of the integer $A$ is integral. Hence $q^3\mid Y$;
+write $Y=sq^3$ with $s>0$. This recovery precedes every application of an
+old scale-dependent bound. The transport equation gives the inherited
+whole-tuple bounds
+\[
+ q\ge16,\quad C>0,\quad 3q<R<q^4-2,\quad E\ge q^4>R+2.
+\]
+The first Pell equation supplies
+$\tau=\chi_{P_0}(n)$ and $k=2\psi_{P_0}(n)$, where
+$P_0=2XY^2+1$ and $n>0$.
+The second residual makes $g=D_*/U$ integral. It is positive, because
+\[
+ D_*>U(X+ac)-Hk>ak(UY-5)>0.
+\]
+Thus $g=\chi_{a+2}(p)$ and $c=\psi_{a+2}(p)$ for $p>0$.
+The absorber gives $U\mid H(k-R-1)$ without cancelling $H$.
+The adaptive modulus satisfies $U\ge4q^4$, $U\mid4XY^2$ and
+$\gcd(U,H)\le3$. For the last claim, $\gcd(Y,H)\mid3$; every prime
+of $q$ divides $Y$; and if $3\mid q$ then $27\mid Y$, so $H\equiv3$
+modulo $27$. These are precisely the properties needed by the retained
+absorber proof. Moreover,
+$k\equiv2n\pmod{4XY^2}$, with $U\mid4XY^2$. Consequently
+\[
+ \mu=\frac{U}{\gcd(U,H)}>R+1,\qquad
+ 2n\equiv R+1\pmod\mu,\qquad n\ge(R+1)/2\ge25.
+\]
+The standard first/main Pell comparison gives $p>n$, and therefore
+$c>(a+2)\Delta^2$, $c>2p$ and $c>2R$.
+These bounds justify the inherited \emph{ordinary} strong-rank lemma for
+$(ic^2)^2=\Delta(f^2-1)$, yielding a main Pell index $m$ with
+$p\mid m$, $c\mid m$, $c^2\mid f^2-1$ and $m\ge c>2p$.
+
+Set $y=V+u$. The auxiliary identity is exactly
+\[
+ QV^2-(Q-1)y^2=1.
+\]
+Although $V$ need not be positive, $y$ is: the identity gives
+$|y|\ge|V|$, while $u=y-V>0$ rules out $y<0$; zero is impossible.
+With $T_{\rm old}=fT$, the signed expression
+$V=c(T_{\rm old}f-1)-Rf^2$ is the inherited auxiliary expression.
+Its index proof gives $p=R$; the absorber then gives $n<R$ and
+$2n=R+1$. Hence
+\[
+ h=\frac{k-R-1}{E}>0,\qquad
+ \gamma_{\rm old}=\gamma-\frac{k-R-1}{U}
+\]
+are integral and recover the original equations.
+The positivity of the latter is not inferred from integrality:
+$k\ge4P_0>X$, $c>k>X$ and $g>(a+1)c$ imply
+$g-(X+ac)>c-X>0$, so $\gamma_{\rm old}>0$.
+The inherited ordinary compiler therefore produces a finite ZFC refutation.
+
+Conversely, a finite refutation supplies canonical compact-tuple witnesses.
+Convert the normalized strong ordinate by $i=\Delta i_0$, and use the
+absorber shift $\gamma=\gamma_{\rm old}+(k-R-1)/U>0$.
+The Integral Root positive-gap lemma gives $\tau>\ell+s$, so
+$r=\tau-\ell-s>0$. The retained squared-modulus completeness proof chooses
+$T_{\rm old}$ divisible by $f$ and $y>V$, giving positive
+$T=T_{\rm old}/f$ and $u=y-V$. This is an existential choice of canonical
+witnesses, not a same-coordinate identity for arbitrary old witnesses.
+All five residuals vanish. The imported compiler calibration and this
+composition prove in ZFC that $P_{14}$ has a positive zero exactly when
+there is a syntactic ZFC refutation; negation yields the desired equivalence
+to $\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{Degree and replay boundaries}
+Writing $Z=UX+H(U\gamma-v)$ gives exact identities
+\begin{align*}
+ A_0&=q^6[r^2+\ell(2r-k)-1]+2q^3(\ell+r)Y+Y^2,\\
+ A_1&=2UacZ+Z^2-U^2(Hc^2+1).
+\end{align*}
+Thus their degrees are $12$ and $14$, not the naive uncancelled bounds.
+For the second, $Z$ has leading term $H_0R_0$ of degree $7$, where
+$R_0=(\beta J)^3(\beta J-F)$; its term $H_0U_0\gamma$ has only degree $6$.
+The auxiliary residual has degree $15$, with leading form
+$2E_0^2R_0f^4u$, where $E_0=w\beta JY$.
+Hence the unique degree-$30$ homogeneous part of $P_{14}$ is
+\[
+ 4w^4(\beta J)^{10}Y^4(\beta J-F)^2 f^8u^2,
+\]
+which is nonzero for the actual positive $\beta$.
+The primary circuit uses $47$ multiplications, $24$ additions and
+$16$ subtractions; the cancellation certificate is a separate circuit,
+not the advertised evaluator.
+
+The attached standard-library replay authenticates forty source pins and
+all four fixed integer payloads, verifies three universal sparse polynomial
+identities, checks liveness and costs, and compares independently coded
+literal formulas. Exact-degree specializations use the actual coefficients
+modulo three primes. Three isolated corruption controls are rejected,
+including under Python optimization. These are arithmetic and integrity
+audits, not a fresh proof-assistant endpoint; the infinite Pell and compiler
+inputs remain explicitly inherited mathematical proofs.

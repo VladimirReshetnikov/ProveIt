@@ -1,0 +1,473 @@
+\section{Degree-separated coding: a ten-integer equation}
+\label{sec:wave9-signed}
+
+There is a completely fixed integer polynomial
+\[
+ F_{10}(t,g_0,h_0,k_0,l,w,x,y,z,m)
+\]
+of exact total degree $3\,327\,948$, evaluated by a division-free circuit of
+$520$ binary arithmetic operations, for which ordinary mathematics
+formalizable in ZFC proves
+\[
+ \neg\exists(t,g_0,h_0,k_0,l,w,x,y,z,m)\in\mathbb Z^{10}\;(F_{10}=0)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+This combines the preceding degree-separated source architecture with the incoming congruence-norm finalizer. Neither ingredient alone is claimed as new. The contribution is their proved compatibility, including the constructive residue restrictions, and the smaller explicit combined circuit.
+The inherited compiler calibration and Sun arithmetic bridge remain stated
+mathematical dependencies. No consistency decision, global minimality claim,
+or new end-to-end proof-assistant certificate is asserted.
+
+The structural change is to split the extraction convolution by homogeneous
+degree. A linear label may now collide with a quadratic label: their kernels
+are separate summands. This relaxes the finite isolation problem rather than
+merely finding a better placement for the previous problem. Elementary row
+operations, one shared positivity shift, borrow-tolerant target padding,
+and exact mask-population calibration complete the construction.
+
+\subsection{Fixed source and three homogeneous kernels}
+
+Use exactly the unshifted, strictly positive, 31-coordinate parent in
+\texttt{data/parent\_quartic31.json}, with its complete original four-port
+binding $(\beta_{\rm native},K_0,M_C,M_F)$. The four included compressed
+payloads have bit lengths $(1064921,1070004,1064921,1064922)$; the last is
+\texttt{MF\_source}, already shifted, and is not shifted again.
+\texttt{INSTANCE.json} is the active binding. No package-52 transport row or
+coefficient is spliced into this tuple. The pinned parent theorem is
+\[
+ \exists p\in\mathbb Z_{>0}^{31}\;r_1(p)=\cdots=r_{22}(p)=0
+ \quad\Longleftrightarrow\quad\neg\operatorname{Con}(\mathrm{ZFC}).
+\]
+Define $\rho_{14}=-(r_{14}+r_2)$, $\rho_{15}=-(r_{15}+r_3)$, and $\rho_j=-r_j$ otherwise. The inverse row
+operations preserve the common zero set over every coefficient tuple.
+There are now 89 records: seven constant, 39 linear, and 43 quadratic.
+
+In the parent coordinate order
+\[
+\begin{split}
+ &(J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ &\hspace{22mm}N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta),
+\end{split}
+\]
+choose the positive, distinct weights
+\[
+\begin{split}
+ (w_1,\ldots,w_{31})={}&(104,76,79,60,108,8,99,55,36,54,98,11,7,10,44,32,\\
+ &106,22,17,1,3,4,37,89,97,107,39,40,86,45,92).
+\end{split}
+\]
+The row order and targets are
+\[
+\begin{split}
+ &(8,15,20,9,4,19,7,12,13,17,16,10,5,21,1,3,11,6,14,18,22,2),\\
+ &(34,229,274,319,524,533,573,767,820,1007,1053,1064,1089,1291,\\
+ &\hspace{16mm}1320,1366,1381,1410,1617,1707,1798,1939).
+\end{split}
+\]
+Let $q_j$ denote the target assigned to row $j$, and write
+$\rho_j=\sum_\alpha a_{j,\alpha}p^\alpha$. For $d=|\alpha|$ put
+\[
+ e(\alpha)=\sum_i\alpha_iw_i,\qquad
+ c_{j,\alpha}=
+ \begin{cases}2a_{j,\alpha},&d=0,1,\\
+ a_{j,\alpha}\prod_i\alpha_i!,&d=2.
+ \end{cases}
+\]
+Define the fixed integer polynomials
+\[
+ D_d(Z)=\sum_{j,\,|\alpha|=d}c_{j,\alpha}Z^{q_j-e(\alpha)},\qquad
+ U_p(Z)=\sum_i p_iZ^{w_i},\qquad
+ G_p(Z)=D_2(Z)U_p(Z)^2+D_1(Z)U_p(Z)+D_0(Z).
+\]
+All reversed exponents are nonnegative. The exact finite certificate checks,
+for every used degree-$d$ monomial $\alpha$ and every degree-$d$ monomial
+$\gamma$ in 31 variables,
+\[
+ q_j-e(\alpha)+e(\gamma)=q_k
+ \quad\Longleftrightarrow\quad j=k\text{ and }\alpha=\gamma.
+\]
+There are respectively $1,31,496$ expansion monomials in degrees $0,1,2$,
+and 22,544 source/expansion interactions. There is no requirement to
+separate a degree-one label from a degree-two label. Multinomial expansion
+and the displayed coefficient weights therefore give the universal identities
+\begin{equation}\label{eq:split-extraction}
+ [Z^{q_j}]G_p(Z)=2\rho_j(p)\quad(1\le j\le22).
+\end{equation}
+The independent checker compares the entire extracted polynomials in all
+31 coordinates and four ports, not just evaluations at test points.
+
+Write $M=108$, $Q=1939$. The exact kernel degrees and convolution height are
+\[
+ \deg D_0=1939,\qquad\deg D_1=1842,\qquad\deg D_2=1738,\qquad
+ H=\max_d(\deg D_d+dM)=1954.
+\]
+The leading coefficients of $(D_0,D_1,D_2)$ are respectively $(2,2,\beta_{\rm native})$, all positive. Every kernel separately has distinct exponents. Replacing each
+port monomial in a coefficient by its strict bit bound and taking absolute
+integer coefficients gives a maximum majorant of bit length $2134927$.
+Consequently, with
+\[
+ C_0=2^{2134927},\qquad\kappa=2134940,\qquad\beta_S=2^\kappa,
+\]
+every kernel coefficient has absolute value less than $C_0$, and
+$\beta_S>4096C_0$.
+
+\subsection{Source polynomials and pre-binary bounds}
+
+In ten unrestricted integer unknowns $(t,g_0,h_0,k_0,l,w,x,y,z,m)$ define first
+\[f=2t+1,\quad b=6t+4,\quad g=bg_0,\quad h=bh_0,\quad k=b(3k_0+2).\]
+The circuit variable names are $(f,g,h,k,l,w,x,y,z,m)$; its first four names denote the free coordinates $(t,g_0,h_0,k_0)$, not these computed registers. Then define
+\begin{gather*}
+ b=1+3f,\quad B=\beta_S b^2,\quad\ell=\sum_i B^{w_i},\quad U_c=\ell+g,\\
+ G_c=D_2(B)U_c^2+D_1(B)U_c+D_0(B),\quad A_T=\sum_j B^{q_j},\\
+ N_0=B^{109},\quad N_1=B^{1955},\quad N=N_0N_1=B^{2064},\\
+ M_0=N_0-1-(b-1)\ell,\quad J_c=2G_c+A_T,\\
+ S_c=g+J_cN_0,\quad T_c=M_0+(B-2)A_TN_0,\\
+ X=N^2+(S_c+T_c)N+N-1-S_c,\\
+ Y=\beta_S^{15}\,2^{\kappa-21}B^{2179}b
+   =2^{2195\kappa-21}b^{4359},\qquad
+ \mathcal C=bB^{108}=2^{108\kappa}b^{217}.
+\end{gather*}
+All powers have fixed nonnegative integer exponents. Every displayed
+register is an abbreviation, never an additional quantified unknown.
+
+Assume $f\ne0$, $b$ is a square, and $0\le g<2\mathcal C$.
+Then $b\equiv1\pmod3$ implies $b\ge4$, and $B>4096C_0b^2$.
+Distinct positive weights give $\ell<2B^{108}$, hence
+\[
+ B^{108}\le U_c<3bB^{108}.
+\]
+Every lower coefficient has absolute value below $C_0$. For a kernel of degree $d$ with positive integer leading coefficient $c$, the sum of absolute values of its lower evaluated terms is less than
+\[
+ C_0\frac{B^d-1}{B-1}<\tfrac12B^d.
+\]
+Consequently all three $D_j(B)>0$, and $G_c>0$ for $U_c\ge0$. This proves the pre-binary positivity without inferring it merely from positive inputs.
+
+The kernel degree bounds also give
+\[
+ |G_c|<2C_0(1+3b+9b^2)B^H\le26C_0b^2B^H,\qquad
+ 2G_c<N_1/64.
+\]
+Since $Q=1939<H$, both $A_T$ and $(B-2)A_T$ are less than $N_1/64$.
+It follows that
+\[
+ 0<J_c<N_1/32,\qquad J_c+(B-2)A_T+2<N_1.
+\]
+The digits of $M_0$ are $B-1$, except that the 31 designated cells
+have digit $B-b$. Therefore $0\le M_0<N_0$, and $g<N_0$ as well.
+The preceding strict high-block bound proves
+\begin{equation}\label{eq:split-tight-range}
+ 0\le S_c,\quad0\le T_c,\qquad S_c+T_c<N.
+\end{equation}
+Consequently $X\ge N^2>3b$ and $Y>\max(b,256)$. Because $\kappa$ is
+even, $B\equiv N\equiv1\pmod3$, $M_0\equiv0$, and
+$T_c\equiv-22$; hence $X\equiv1+T_c\equiv0\pmod3$.
+These are all established before binary-base recovery.
+
+\subsection{Borrow-tolerant extraction and exact mask population}
+
+Suppose now that $b$ is a power of two. So are $B,N_0,N$. The low
+mask condition $g\mathbin{\&}M_0=0$ is exactly
+\[
+ g=\sum_i n_iB^{w_i},\quad0\le n_i<b.
+\]
+For these digits put $p_i=n_i+1$, so $U_c=\sum_i p_iB^{w_i}$ encodes
+positive parent coordinates without expanding a successor substitution
+in every residual. Write $h_s=[Z^s]G_p(Z)$ and let $\epsilon_s$ be the
+indicator of the 22 targets. All coefficients, including unsupported
+collisions, satisfy
+\[
+ |h_s|<C_0\{(\sum_i p_i)^2+\sum_i p_i+1\}
+ \le993C_0b^2<B/4.
+\]
+The signed expansion of $J_c$ is $\sum_{s=0}^{H}(2h_s+\epsilon_s)B^s$.
+Euclidean digit normalization has incoming carries only in $\{-1,0\}$:
+\[
+ u_0=0,\quad u_{s+1}=\left\lfloor\frac{2h_s+\epsilon_s+u_s}{B}\right\rfloor,
+ \quad d_s=2h_s+\epsilon_s+u_s-Bu_{s+1}.
+\]
+At a marked cell the mask $B-2$ admits precisely digits $0,1$.
+If $h_s=0$, the unnormalized digit $1+u_s$ passes. If $h_s\ge1$,
+it lies in $[2,B)$ and fails. If $h_s\le-1$, it lies strictly between
+$-B+1$ and zero, and its normalized digit is at least two, so it fails.
+Thus incoming borrows do not affect the zero test. Positivity of $J_c$
+was proved independently, ensuring these are its ordinary digits.
+Combining the disjoint low and high blocks with
+\eqref{eq:split-extraction} proves
+\[
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ g=\sum_i n_iB^{w_i},\ 0\le n_i<b,\quad r_1(n+1)=\cdots=r_{22}(n+1)=0.
+\]
+
+For $N=2^u$ and $S,T\ge0$ with $S+T<N$, let
+$X_*=N^2+(S+T)N+N-1-S$. Its disjoint binary blocks give
+\[
+ s_2(X_*)=1+u+s_2(T)-\{s_2(S)+s_2(T)-s_2(S+T)\}.
+\]
+The braces count carries with multiplicity, and vanish precisely when
+$S\mathbin{\&}T=0$. Legendre's formula therefore implies
+\[
+ 2^{1+u+s_2(T)}\mid\binom{2X_*}{X_*}
+ \quad\Longleftrightarrow\quad S\mathbin{\&}T=0.
+\]
+The stronger range \eqref{eq:split-tight-range} is essential.
+Writing $b=2^k$, $B=2^v$, the actual mask population is
+\[
+ s_2(T_c)=(109+22)v-31k-22,\qquad u=2064v.
+\]
+Hence $1+u+s_2(T_c)=2195v-31k-21=\log_2Y$, exactly explaining the
+fixed polynomial threshold used above.
+
+Conversely, a positive parent zero is not the all-one vector: original
+row five equals one there. For arbitrarily large $b=4^s$ exceeding all
+its coordinates, encode $n_i=p_i-1$. Then $g\ge B>b$ and $g<\mathcal C$;
+the latter follows from $(b-1)\ell<bB^{108}$. All marked tests pass and
+$Y\mid\binom{2X}{X}$. This proves both directions of the entire source
+contract needed by the inherited finalizer, including its lower bound on
+forward witnesses and its pre-binary reverse bounds.
+
+\subsection{The Sun bridge registers}\label{the-sun-bridge-registers}
+
+Set \[
+ L=lY,\quad U=2LX,\quad V=4gwY,\quad W_*=bw,
+\] \[
+ A=U(V+1),\quad B_*=2X+1,\quad C=B_*+(A-2)h,
+\] \[
+ P=U^2V,\quad K=X+1+k(P-2),\quad
+ S=2A-5,\quad T=3W_*C-2(W_*^2-1),
+\] \[
+ Q=\bigl((P/2)^2-1\bigr)K^2+1,
+\] \[
+ \Delta=8\mathcal C^3gK^2-
+ g^2\bigl(32(C-KL)^2\mathcal C^3+g^2K^2\bigr).
+\] The notation \(P/2\) is only an abbreviation for the division-free
+expression \((LX)UV\), as \(U=2LX\); \texttt{Phalf} is exactly that
+expression in the circuit. Thus \(4Q=(P^2-4)K^2+4\), the old auxiliary
+square radicand.
+
+Put \(\xi=zx\), and form Sun's modified Lucas certificate \[
+ D=(A^2-4)C^2+4,\qquad E=C^2D\xi,\qquad
+ F=4(A^2-4)E^2+1,
+\] \[
+ G_*=2(A+2)(A-2)^2E^2-1,\qquad \Omega=16E,
+\] \[
+ H_*=C+(B_*-C)F+\Omega Fy,\qquad I_*=(G_*^2-1)H_*^2+1.
+\] Finally set \[
+ \rho=T+Sy,\quad \Sigma=\xi S^5,\quad
+ \Theta=(\rho^3-\rho S^2-S^3)(\rho^2+23S^2).
+\]
+
+The external bridge input is precisely Sun (2021), Theorems 4.12--4.13,
+specialized to \(p=P_{\rm theorem}=2,Q_{\rm theorem}=1\), with the
+modified Lucas certificate and residue interpolation of Sun (2026),
+Theorems 3.1 and 4.1 and Propositions 6.1--6.2. These give the following
+interface.
+
+\begin{itemize}
+\item
+  From a source witness with \(b\in2\uparrow\), \(0<g<\mathcal C\), and
+  the central-binomial divisibility, choose positive \(l,w\) and
+  integers \(h,k\) so that \(Q\) is a square, \(S\mid T\), \(\Delta>0\),
+  \(C=u_{2X+1}(A)\), and \(K=u_{X+1}(P)\).
+\item
+  Conversely, if \(b\) is square, \(f^2l^2\Delta>0\), \(\xi\ne0\),
+  \(4Q\) and \(DFI_*\) are squares, and \(S\mid T\), the bridge recovers
+  \(b\in2\uparrow\), \(0<g<2\mathcal C\), and the binomial divisibility.
+\item
+  On the forward branch, \(\xi\) can be made a multiple of any
+  prescribed positive integer, and \(y\) can be assigned any residue
+  modulo \(\xi\) while retaining the square certificate \(DFI_*\).
+\end{itemize}
+
+The exact forward values of \(C,K\) are not an extra assumption: the
+proof of Sun's 2021 Theorem 4.12 defines \(C=u_B(A,1)\) immediately
+before equation (4.16), which defines \(K=u_{QX+1}(U^PV,1)\). The
+recurrence used here is
+\(u_0(a)=0,u_1(a)=1,u_{n+1}(a)=au_n(a)-u_{n-1}(a)\).
+
+\subsection{Congruences valid for every integer
+assignment}\label{congruences-valid-for-every-integer-assignment}
+
+These identities do not assume positivity, a source solution, a Pell
+equation, or a zero of the final polynomial.
+
+First, \(B,N_0,N\) are multiples of \(b^2\). Therefore \[
+ X+1\equiv-g\equiv0\pmod b.
+\] Also \(X\) is odd, because \(b,g,B,N_0,N\) are even. Since
+\(b\equiv\beta_S\equiv1\pmod3\), all powers of \(B\) equal 1 modulo 3.
+There are 22 targets. Modulo 3 one has \(M_0=0\), \(T_c=-22=2\), and
+hence \[
+ X\equiv1+(S_c+T_c)+1-1-S_c=T_c+1=0\pmod3.
+\]
+
+The displayed formula for \(Y\) has a factor \(b\); hence \(2b\mid U\)
+and \(2b\mid A\). Consequently \(b\mid P\) and \(3\mid P\). The
+normalization \(k=b(3k_0+2)\) gives \[
+ K\equiv0\pmod b,\qquad K\equiv1+2(-2)=0\pmod3.
+\] It follows that \[
+ Q\equiv1\pmod{b^2},\qquad Q\equiv1\pmod3,
+ \qquad \gcd(b,Q)=1.
+\] In particular \(Q\ne0\), \(Q\) is odd, and for \(r=bQ\) we have
+\(r\equiv1\pmod3\), \(|r|\ge2\).
+
+Since \(h=bh_0\), \[
+ C+1=2(X+1)+(A-2)bh_0\equiv0\pmod{2b}.
+\] Consequently \(4b\mid D\): both terms of \(D=A^2C^2-4(C^2-1)\) are
+divisible by \(4b\).
+
+\subsection{The equation and unconditional two-root
+separation}\label{the-equation-and-unconditional-two-root-separation}
+
+Define \[
+ r=bQ,\quad a=r+(3\Delta-1)(rz)^2,
+ \quad d=DFI_*,\quad Z=\Sigma m-\Theta.
+\] The single equation is \[
+ \boxed{F_{10}=\bigl(Z^2-\Sigma^2(a+d)\bigr)^2
+                  -4\Sigma^4ad=0.}
+\]
+
+The crucial separation is small and unconditional. Namely, \[
+ \frac ab=Q+(3\Delta-1)bQ^2z^2\quad\hbox{is odd},\qquad
+ \frac db\quad\hbox{is even}.
+\] Both displayed quotients are integers; they are not operations in the
+emitted polynomial. Since \(b\ne0\), this proves \(a\ne d\) on every
+assignment. No magnitude comparison or large separating coefficient is
+required.
+
+The following elementary lemma explains why this is enough. If integers
+\(a\ne d\) and a rational number \(q\) satisfy \[
+ (q^2-a-d)^2=4ad,
+\] then \(q\ne0\), because at zero the difference is \((a-d)^2\). Define
+\(u=(q^2+a-d)/(2q)\) and \(v=q-u\). Expanding gives \(u^2=a,v^2=d\). A
+rational square root of an integer is integral, so both \(a,d\) are
+integer squares and \(q=u+v\in\mathbb Z\). This proof includes negative
+and zero candidate radicands without making any prior choice of real or
+complex square roots.
+
+Now \(S=2A-5\) is odd and never zero. The polynomial
+\(\pi(v)=(v^3-v-1)(v^2+23)\) has no rational root, so
+\(\Theta=S^5\pi(\rho/S)\ne0\). If \(\Sigma=0\), the final polynomial is
+\(\Theta^4\ne0\). At any zero we therefore have \(\Sigma\ne0\), and in
+particular \(\xi\ne0\), \(z\ne0\). Apply the lemma with \(q=Z/\Sigma\).
+It yields \[
+ a,d\in\operatorname{Sq}(\mathbb Z),\qquad \Sigma\mid\Theta.
+\] The latter follows from \(q=m-\Theta/\Sigma\in\mathbb Z\).
+
+The standard quintic merger then gives \(S\mid T\). For clarity: if for
+some prime \(p\) one had \(v_p(T)<v_p(S)\), then \(v_p(\rho)=v_p(T)\).
+The two factors of \(\Theta\) have valuations \(3v_p(T)\) and
+\(2v_p(T)\), respectively. Thus \(v_p(\Theta)=5v_p(T)<5v_p(S)\),
+contradicting \(S^5\mid\Theta\).
+
+\subsection{The combined square and positivity
+guard}\label{the-combined-square-and-positivity-guard}
+
+Factor \[
+ a=r\{1+(3\Delta-1)rz^2\}.
+\] The two factors are coprime. Neither is zero: \(|r|\ge2\), \(z\ne0\),
+and the second factor is 1 modulo \(r\). Since their product is a
+square, each is a signed square and both have the same sign. But
+\(r\equiv1\pmod3\) excludes a negative square. Hence \(r\) and the
+bracket are positive squares.
+
+Similarly \(r=bQ\), \(\gcd(b,Q)=1\), and \(b\equiv Q\equiv1\pmod3\).
+Each factor is a signed square, and the same modulus excludes negative
+squares. Thus \(b,Q\) are positive squares. Since \(b\) is even and
+nonzero, \(b\ge4\), and therefore \(r\ge4\).
+
+If \(\Delta\le0\), then \[
+ 1+(3\Delta-1)rz^2\le1-r\le-3,
+\] contradicting positivity of the bracket. Therefore \(\Delta>0\).
+Since \(\mathcal C=bB^{108}>0\), the formula for \(\Delta\) gives
+\(K\ne0\) and \(g>0\). If \(l=0\), then \(U=P=0\) and \(Q=1-K^2\le0\),
+contradicting its positive-square value. Thus \(l\ne0\), and
+\(f=2t+1\ne0\) was automatic. We have recovered \(f^2l^2\Delta>0\),
+exactly the old bridge hypothesis, without placing the factor \(f^2l^2\)
+in the new guard.
+
+Before applying the bridge, rewrite
+\[
+\Delta=gK^2(8\mathcal C^3-g^3)-32g^2(C-KL)^2\mathcal C^3>0.
+\]
+Since $g>0$ and $K\ne0$, this gives $g^3<8\mathcal C^3$, hence $0<g<2\mathcal C$. The pre-binary source bounds already proved now yield $X>3b$ and $Y>\max(b,256)$ independently of any bridge conclusion. All hypotheses of the reverse bridge now hold. It yields the binomial
+source contract, which decodes a positive zero of the pinned parent.
+This proves soundness for all signed integer assignments, including
+degenerate values of the individual bridge variables.
+
+\subsection{Completeness of the new congruence
+restrictions}\label{completeness-of-the-new-congruence-restrictions}
+
+Suppose the parent has a positive zero. Choose a sufficiently large
+\(b=4^s\), \(s\ge1\), in the cofinal source construction. Then
+\(t=(b-4)/6\in\mathbb Z\), and the encoded \(g\) is a multiple of
+\(b^2\). In fact \[
+ X+1\equiv-g\equiv0\pmod{b^2}.
+\] Apply the constructive bridge. It gives the exact values
+\(C=u_{2X+1}(A)\), \(K=u_{X+1}(P)\) and positive \(l,w\), as stated
+above. We show its \(h,k\) already have the imposed forms.
+
+The index \(X+1\) is even. The recurrence shows that \(u_{2j}(P)\) is
+divisible by \(P\). Since \(2b\mid U\), we have \(4b^2\mid P\), and thus
+\(b^2\mid K\). Since \(P\equiv0\pmod4\), \(v_2(P-2)=1\). In \[
+ (P-2)k=K-X-1,
+\] the right side is divisible by \(b^2\). As \(b\) is a power of two,
+\(b^2/2\mid k\), hence \(b\mid k\). Also \(P\equiv X\equiv0\pmod3\) and
+\(K\equiv0\pmod3\), so \(k\equiv2\pmod3\). Because \(b\equiv1\pmod3\),
+the integer \(k/b\) is 2 modulo 3. It is exactly of the form \(3k_0+2\).
+
+For the other restriction, the recurrence gives
+\(u_{2j+1}(A)\equiv(-1)^j\pmod{A^2}\). Since \(X\) is odd, \(C+1\) is
+divisible by \(A^2\), hence by \(4b^2\). Also \(B_*+1=2(X+1)\) is
+divisible by \(2b^2\). Thus \(2b^2\mid C-B_*\). The constructive \(A\)
+is a multiple of four, so \(v_2(A-2)=1\). Therefore \[
+ h=(C-B_*)/(A-2)
+\] is divisible by \(b^2\), in particular by \(b\); write \(h=bh_0\).
+All normalization restrictions thus preserve completeness, with no
+change to the constructive \(l,w,C,K\).
+
+These witnesses have \(\Delta>0\), and \(b,Q\) positive squares. Set
+\(r=bQ\), also a positive square. The positive integer
+\(\delta=3\Delta-1\equiv2\pmod3\) is nonsquare. Hence \(\delta r\) is a
+positive nonsquare. Pell's theorem gives integers \(u,z>0\) with \[
+ u^2-\delta r z^2=1.
+\] It follows that \(a=ru^2\) is a square.
+
+It remains to use the two free certificate variables without losing this
+chosen \(z\). Since \(S\mid T\), write \(q=T/S\). First apply the
+residue interpolation theorem with prescribed divisor \(z\) to obtain
+its positive \(\xi\). Then choose a residue class of \(y\) for which
+\(\pi(q+y)\equiv0\pmod\xi\). The polynomial \(\pi\) has a root modulo
+every positive integer, so this residue exists. Interpolation supplies
+the square \(d=DFI_*\), and \(x=\xi/z\) is integral. Then
+\(\Theta=S^5\pi(q+y)\) is divisible by \(\Sigma=\xi S^5\). Choose \[
+ m=\Theta/\Sigma+\sqrt a+\sqrt d\in\mathbb Z.
+\] The polynomial identity for \(F_{10}\) now gives \(F_{10}=0\).
+
+For the local-root fact used here, the cubic \(v^3-v-1\) has
+discriminant \(-23\). At an odd prime other than 23, either it has a
+simple linear factor, or its irreducibility makes the discriminant a
+square modulo the prime, so \(v^2+23\) has a simple root. At 23 the
+cubic has simple root 3. At 2, \(-23\equiv1\pmod8\) is a square in
+\(\mathbb Z_2\). Hensel lifting and the Chinese remainder theorem prove
+the assertion. The cubic has no rational root by the rational-root
+theorem, and neither does \(v^2+23\). These are exactly the inherited
+quintic merger facts.
+\subsection{Circuit and exact degree certificate}
+The artifact \texttt{generated/sun10.json} is a complete division-free circuit, with ten unrestricted variables and 520 live binary arithmetic gates: 331 multiplications, 164 additions, and 25 subtractions. Multiplication by a numeral counts, reused gates count once, and construction of fixed coefficient leaves is excluded. All four payload integers are included, so this operation count is not a bit-complexity claim.
+
+The decisive exact degree ledger is
+\[
+\begin{array}{c|rrrrrr}
+R&X&Y&A&C&K&Q\\\hline
+\deg R&8256&4359&16978&16980&29596&118380\\
+R&\Delta&a&d&\Sigma&Z&F_{10}\\\hline
+\deg R&68567&305331&1494190&84892&84910&3327948
+\end{array}
+\]
+The top term of the final norm is $\Sigma^4d^2$. The verifier computes the coefficient at the propagated upper degree after specializing all ten variables to one indeterminate. At degree $3327948$, using the actual fixed payload coefficients, the residues modulo $101,1009,1000003$ are respectively $80,561,342239$. Each nonzero residue certifies the exact degree independently.
+
+The supplied checks establish all 22,544 source-isolation interactions, 58 local circuit identities, the factored Lucas identity, the two-root norm, actual coefficient bindings, gate liveness, and the degree certificate. Additional finite borrow, population, source-size, congruence, and Lucas-recurrence tests supplement the universal arguments; they do not replace the imported arithmetic or compiler theorems. Both ordinary Python and optimized Python use explicit failures rather than disabled assertions.
+
+Against our previous degree-separated ten-integer circuit, the degree falls from $8469528$ to $3327948$ and the operation count from $533$ to $520$. Against the incoming congruence-norm circuit, the degree falls from $9152284$ to $3327948$ and the count from $586$ to $520$. These comparisons do not claim global optimality.
+
+\paragraph{Provenance and dependency boundary.}
+The new tail is adapted from \path{con_zfc_congruence_norms_2026-10-23}, received in commit \texttt{7331974b696693a8eed2\allowbreak aa5f0f64f1c19d9569f0}; its complete proof is retained under \texttt{upstream/}. The source encoding is the newly certified split108 placement with a global sign reversal of the two-shear source. The prior split116 source proof is preserved for provenance only; the formulas above and active layout supersede its weights and kernels. The complete original four-port tuple is retained. Sun's 2021 Theorems 4.12--4.13 and 2026 Theorems 3.1, 4.1 and Propositions 6.1--6.2 remain explicit mathematical dependencies; the pinned source compiler theorem remains a dependency as well. This is not a new proof-assistant verification of the composite endpoint.

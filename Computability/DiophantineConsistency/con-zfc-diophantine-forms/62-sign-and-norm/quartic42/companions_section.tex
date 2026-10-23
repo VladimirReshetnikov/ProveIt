@@ -1,0 +1,210 @@
+\section{A sextic in thirty-five integers and an octic in thirty}
+\label{sec:companions}
+
+The same fixed coefficient tuple also gives two equations with fewer
+unrestricted integer unknowns:
+\[
+ \begin{array}{c|r|r|r}
+  \text{equation}&\text{unknowns}&\text{residuals}&\text{exact degree}\\\hline
+  S_{35}&35&20&6\\
+  O_{30}&30&15&8
+ \end{array}
+\]
+Both satisfy the same ZFC-provable equivalence between absence of integer
+zeros and $\operatorname{Con}(\mathrm{ZFC})$. The collection's historical
+sextic and octic entries use forty-two and thirty-six unrestricted
+integers, respectively. These are improvements of seven and six
+unknowns relative to those entries, without a global minimality claim.
+
+\subsection{Move a square guard to the coordinate that will be eliminated}
+
+Let $Q_{42}^{X}$ have the same residuals as $Q_{42}$ except that
+\[
+ q-2\rho^2=0\qquad\text{is replaced by}\qquad X-8\xi^2=0.
+\]
+This replaces one unknown by one unknown. The retained equations include
+$w=4u^2$ and $X=wq$.
+
+\paragraph{Square-guard lemma.}
+The integer zero sets of $Q_{42}$ and $Q_{42}^{X}$ are in bijection under
+$\xi=u\rho$, with all other coordinates fixed.
+
+\paragraph{Proof.}
+The equations $F\alpha>0$ and $FC>0$ imply that $F,\alpha,C$ have the
+same nonzero sign. Thus $q=F+\alpha+C$ satisfies $|q|\ge3$, before either
+square guard has been used. If $u=0$, then $w=X=0$, the row
+$E(X+1)=Xa$ gives $E=0$, and
+\[
+ a=(2v+1)q^3,\qquad |a|\ge27.
+\]
+With $H=4a+3$, the main norm has $D=ac+\gamma H$ and
+$\Delta=a^2+4a+3\equiv a^2\pmod H$. Hence
+$D^2-\Delta c^2=1$ implies $H\mid1$, contrary to $|H|\ge105$.
+Therefore $u\ne0$.
+
+At a zero of $Q_{42}^{X}$, the scale equations give
+$qu^2=2\xi^2$. Write $\xi/u=A/B$ in lowest terms with $B>0$.
+Then $qB^2=2A^2$, so $B^2\mid2$ and $B=1$. Consequently
+$\rho=\xi/u$ is an integer and $q=2\rho^2$, restoring the deleted
+guard. Conversely, a zero of $Q_{42}$ has
+$X=4u^2\cdot2\rho^2=8(u\rho)^2$. The two substitutions are inverse.
+\hfill$\square$
+
+This elementary relocation matters for degree: $X=8\xi^2$ is quadratic,
+while direct substitution of $w=4u^2$ into $X=wq$ would give a cubic
+expression for $X$. The primary quartic remains the one in
+Section~\ref{sec:quartic42}.
+
+\subsection{The thirty-five-integer sextic, in full}
+
+Keep the abbreviations $q=\beta J+1$, $C=q-F-\alpha$,
+$k=\eta+\zeta$, and put $s=2v+1$. The twenty-six arithmetic unknowns are
+\begin{gather*}
+ J,F,\alpha,z,f,h,r,v,\tau_*,\eta,\zeta,y,\gamma,o,j,\\
+ E,c,a,D,L,V,I,B_*,\Delta,u,\xi.
+\end{gather*}
+Together with the nine guard unknowns from Section~\ref{sec:quartic42},
+there are thirty-five unknowns, all ranging over $\mathbb Z$.
+Here $D,L,B_*,\Delta$ remain independent coordinates. The twenty
+residuals are
+\begin{align}
+ S_1&=L-q^2+1, &
+ S_2&=8\xi^2-4u^2q, \nonumber\\
+ S_3&=a-E-sq(L+1), &
+ S_4&=E(8\xi^2+1)-8\xi^2a, \nonumber\\
+ S_5&=c-\eta-(a-E)k, &&\nonumber\\
+ S_6&=\tau_*^2+(2\tau_*-k)E(c-\eta)-1, &&\nonumber\\
+ S_7&=D-8\xi^2-ac-\gamma(4a+3), &&\nonumber\\
+ S_8&=\Delta-a^2-4a-3, &
+ S_9&=D^2-\Delta c^2-1.
+ \label{eq:sextic35-first}
+\end{align}
+The other residuals are
+\begin{align}
+ S_{10}&=k-1-hE
+    -\bigl[((q-1)(q-F)+\alpha)L+(M_C+qM_F)J\bigr], \nonumber\\
+ S_{11}&=(K_0+4u^2)C-F-z(q-1), \nonumber\\
+ S_{12}&=V+c-fo, &
+ S_{13}&=V-jc+k-1-hE, \nonumber\\
+ S_{14}&=I-(2r+1)c^2, &
+ S_{15}&=B_*-I^2, \nonumber\\
+ S_{16}&=B_*-\Delta(f^2-1), &
+ S_{17}&=y^2-B_*(y^2-V^2)-1, \nonumber\\
+ S_{18}&=F\alpha-\operatorname{Pos}(A_1,A_2,A_3), &&\nonumber\\
+ S_{19}&=FC-\operatorname{Pos}(B_1,B_2,B_3), &&\nonumber\\
+ S_{20}&=\eta\zeta-\operatorname{Pos}(T_1,T_2,T_3). &&
+ \label{eq:sextic35-second}
+\end{align}
+The equation is
+\begin{equation}
+ \boxed{\displaystyle S_{35}=\sum_{i=1}^{20}S_i^2=0.}
+ \label{eq:sextic35}
+\end{equation}
+Every residual has degree at most three. Only $S_{14}$ contains $r$,
+and the coefficient of $r^2c^4$ in $S_{35}$ is exactly four. Thus its
+degree is exactly six after the authentic coefficients are substituted.
+
+To derive this system, first change the root coordinate by
+\[
+ \tau_{\mathrm{old}}=\tau_*+P-k,
+\]
+an invertible integral linear change. Then eliminate the seven registers
+\[
+ \begin{array}{c|l}
+ P&k+E(c-\eta)\\
+ F_2&f^2\\
+ g&y^2-V^2\\
+ X&8\xi^2\\
+ N&q(L+1)\\
+ C_2&c^2\\
+ w&4u^2.
+ \end{array}
+\]
+Each register has a defining equation with coefficient $1$ or $-1$.
+After substitution, the old root restores as
+$\tau_{\mathrm{old}}=\tau_*+E(c-\eta)$. The first norm becomes
+\[
+ [\tau_*+E(c-\eta)]^2
+ -[k+E(c-\eta)]E(c-\eta)-1
+ =\tau_*^2+(2\tau_*-k)E(c-\eta)-1.
+\]
+The cancellation of the fourth-degree term is exact. Every zero of the
+twenty-residual system uniquely restores a zero of $Q_{42}^{X}$, and
+every zero of $Q_{42}^{X}$ yields one in the other direction.
+
+\subsection{The thirty-integer octic, in full}
+
+The twenty-one arithmetic unknowns are now
+\[
+ J,F,\alpha,z,f,h,r,v,\tau,\eta,y,\gamma,o,j,E,c,a,V,I,u,\xi.
+\]
+Add the same nine guard unknowns. All thirty range over $\mathbb Z$.
+The following are polynomial abbreviations, not independent unknowns:
+\begin{gather*}
+ q=\beta J+1,\quad C=q-F-\alpha,\quad s=2v+1,\quad H=4a+3,\\
+ k=1-V+jc+hE,\quad b=E(c-\eta),\quad \Delta=a^2+4a+3,\\
+ R=\bigl[(q-1)(q-F)+\alpha\bigr](q^2-1)+(M_C+qM_F)J.
+\end{gather*}
+The fifteen residuals are
+\begin{align}
+ O_1&=8\xi^2-4u^2q, &
+ O_2&=a-E-sq^3, \nonumber\\
+ O_3&=E(8\xi^2+1)-8\xi^2a, &
+ O_4&=c-\eta-(a-E)k, \nonumber\\
+ O_5&=\tau^2-(k+b)b-1, &&\nonumber\\
+ O_6&=(8\xi^2+ac+\gamma H)^2-\Delta c^2-1, &&\nonumber\\
+ O_7&=-V+jc-R, &
+ O_8&=(K_0+4u^2)C-F-z(q-1), \nonumber\\
+ O_9&=V+c-fo, &
+ O_{10}&=I-(2r+1)c^2, \nonumber\\
+ O_{11}&=I^2-\Delta(f^2-1), &
+ O_{12}&=y^2-I^2(y^2-V^2)-1, \nonumber\\
+ O_{13}&=F\alpha-\operatorname{Pos}(A_1,A_2,A_3), &&\nonumber\\
+ O_{14}&=FC-\operatorname{Pos}(B_1,B_2,B_3), &&\nonumber\\
+ O_{15}&=\eta(k-\eta)-\operatorname{Pos}(T_1,T_2,T_3). &&
+ \label{eq:octic30-residuals}
+\end{align}
+The single equation is
+\begin{equation}
+ \boxed{\displaystyle O_{30}=\sum_{i=1}^{15}O_i^2=0.}
+ \label{eq:octic30}
+\end{equation}
+Every residual has degree at most four. In $O_{11}$ the term
+$-a^2f^2$ has coefficient $-1$. No other residual contains both $a$ and
+$f$, so the coefficient of $a^4f^4$ in $O_{30}$ is exactly one. The
+degree is therefore exactly eight on the fixed-coefficient slice.
+
+Here the old root coordinate $\tau$ is retained. The twelve eliminated
+coordinates restore, after composing the substitutions, as follows:
+\[
+ \begin{array}{c|l@{\qquad}c|l}
+ N&q^3 & C_2&c^2\\
+ F_2&f^2 & g&y^2-V^2\\
+ w&4u^2 & X&8\xi^2\\
+ \zeta&k-\eta & B_*&I^2\\
+ D&8\xi^2+ac+\gamma H & \Delta&a^2+4a+3\\
+ P&k+b & L&q^2-1.
+ \end{array}
+\]
+The actual monic elimination order is
+$N,C_2,F_2,g,w,X,\zeta,B_*,D,\Delta,P,L$.
+In particular, $\zeta$ is first removed using
+$\zeta=P-E(c-\eta)-\eta$, and $P$ is later removed using the exposed
+congruence row. This yields the quadratic abbreviation for $k$, so the
+common-sign guard still has degree only three.
+
+Each elimination is an exact integral bijection on zero sets. The square
+guard lemma then restores the original $Q_{42}$ system. Applying its
+theorem proves the claimed consistency equivalences for both companions.
+
+\paragraph{Reproducibility and scope.}
+The companion generator checks nineteen monic eliminations, all fifty-four
+parent-row restoration identities, all thirty-five factored residual
+transcriptions, and both exact-degree coefficient certificates. It uses
+explicit exceptions rather than removable Python assertions. Normal and
+optimized runs agree. The literal and expanded JSON packets preserve the
+whole coefficient binding; no new coefficient transfer is assumed.
+These finite algebra checks supplement the ordinary proof. They do not
+constitute a proof-assistant certificate for the inherited unbounded
+Pell and compiler theorems. The JSON uses \texttt{rho} for $\xi$ and
+\texttt{tau\_tail} for $\tau_*$.

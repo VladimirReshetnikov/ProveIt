@@ -1,0 +1,460 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx,longtable}
+\usepackage{microtype,enumitem,xcolor,graphicx}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Structural reductions for explicit Diophantine consistency equations},pdfauthor={Prepared for Vladimir Reshetnikov with AI assistance},pdfsubject={14 positive variables of degree 30; 41 integer variables of degree 4; a smaller nine-variable packing}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZFCRef}{\operatorname{Ref}_{\ZFC}}
+\newcommand{\pop}{\operatorname{pop}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine consistency equations}
+\fancyhead[R]{\small Research contribution, 23 October 2026}
+\fancyfoot[C]{\thepage}
+
+\title{\vspace{-12mm}\textbf{Structural reductions for explicit\\Diophantine consistency equations}\\[5mm]
+\large An adaptive Pell modulus, delayed sign recovery,\\and a smaller certified nine-variable packing}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+\small AI-assisted mathematical research; internal review, not external peer review}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give a fixed polynomial of exact degree 30 in fourteen strictly positive
+integer variables, with an 83-operation division-free evaluator, and a fixed
+quartic in 41 unrestricted integer variables.  For each, ordinary mathematical
+proofs composed with the explicitly identified native compiler and machine
+calibration establish that ZFC proves its unsolvability equivalent to
+syntactic consistency of ZFC.  The first construction combines an inherited
+integral-root coordinate with a new adaptive index modulus $U=Y^2$; the
+divisibility it enforces is proved adequate before the deleted quotient is
+recovered.  The second delays the sign of the radix until a global power of
+two is recovered, then uses a scale factor of four to replace two independent
+positivity representations by one product representation.  Exact elimination
+gives companion sextic and octic equations in 36 and 31 unrestricted integers.
+A separate finite packing certificate improves the inherited nine-positive
+construction to exact degree $1{,}781{,}068$ in 470 operations.
+
+The archive supplies every polynomial, fixed integer coefficient, generator,
+source pin, proof, and finite verification receipt.  These results improve
+specific measured tradeoffs; no global minimum, proof of consistency, or new
+end-to-end proof-assistant certificate is claimed.
+\end{abstract}
+
+\vspace{3mm}
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Construction & Unknowns & Domain & Exact degree & Operations\\
+\midrule
+Adaptive modulus $P_{14}$ & 14 & $\Z_{>0}$ & 30 & 83\\
+Signed quartic $Q_{41}$ & 41 & $\Z$ & 4 & ---\\
+Eliminated companion $Q_{36}$ & 36 & $\Z$ & 6 & ---\\
+Eliminated companion $Q_{31}$ & 31 & $\Z$ & 8 & ---\\
+Certified packing $F_9$ & 9 & $\Z_{>0}$ & $1{,}781{,}068$ & 470\\
+\bottomrule
+\end{tabular}
+\end{center}
+The quartic and its companions are supplied as sums of 26, 21, and 16
+squared residuals, respectively.  No optimized gate count is asserted for
+those three presentations.
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The result, its scope, and the comparison}
+\label{sec:scope}
+
+\subsection{What is being proved}
+
+Fix the repository's recursive predicate for finite syntactic ZFC
+refutations, and write $\ZFCRef(p)$ for that predicate.  In this paper
+\[
+\Con(\ZFC)\quad\text{means}\quad
+\neg\exists p\in\N\;\ZFCRef(p).
+\]
+This fixes a proof-theoretic statement, rather than an informal assertion of
+truth of the axioms.  Every coefficient in the equations below is a fixed
+integer defined by finite data included in the archive.  None depends on
+whether a refutation exists.
+
+\begin{theorem}[Consistency equations]
+\label{thm:main}
+Let $P_{14},Q_{41},Q_{36},Q_{31},F_9$ be the literal polynomials defined in
+the accompanying components and described below, with their complete bound
+coefficient tuples.  The ordinary mathematical reductions in this paper and
+the identified inherited compiler and calibration results prove in ZFC that
+\begin{align*}
+\neg\exists\mathbf x\in\Z_{>0}^{14}\;P_{14}(\mathbf x)=0
+&\ \longleftrightarrow\ \Con(\ZFC),\\
+\neg\exists\mathbf x\in\Z^{41}\;Q_{41}(\mathbf x)=0
+&\ \longleftrightarrow\ \Con(\ZFC),\\
+\neg\exists\mathbf x\in\Z^{36}\;Q_{36}(\mathbf x)=0
+&\ \longleftrightarrow\ \Con(\ZFC),\\
+\neg\exists\mathbf x\in\Z^{31}\;Q_{31}(\mathbf x)=0
+&\ \longleftrightarrow\ \Con(\ZFC),\\
+\neg\exists\mathbf x\in\Z_{>0}^{9}\;F_9(\mathbf x)=0
+&\ \longleftrightarrow\ \Con(\ZFC).
+\end{align*}
+The respective exact total degrees are $30,4,6,8,1{,}781{,}068$.
+\end{theorem}
+
+The positive statements proved first are existence equivalences:
+an equation has a zero in its specified domain if and only if a finite
+ZFC refutation exists.  Taking negations gives Theorem~\ref{thm:main}.
+This does not prove either consistency or inconsistency.  It also does not
+conflict with the second incompleteness theorem: an equivalence to
+consistency is different from a proof of either equivalent assertion.
+
+``Provable in ZFC'' here has the ordinary mathematical meaning: all finite
+syntax, arithmetic, induction, and compiler arguments used in the proof can
+be carried out in ZFC.  We do not supply a checked object-language ZFC
+derivation, or a new closed Lean/Rocq theorem for these literal equations.
+The repository already distinguishes those levels of evidence
+\cite{active}; the distinction is maintained throughout this delivery.
+
+\subsection{Pinned and comparable baselines}
+
+The review is pinned to ProveIt commit
+\begin{center}\small\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}.\end{center}
+The general collection README still describes earlier waves at that pin.
+We compared against the later component files as well, including packages
+55, 57, 58, and 59.  The relevant comparisons are as follows
+\cite{source55,source57,source58,source59}.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l*{3}{>{\raggedright\arraybackslash}X}@{}}
+\toprule
+Criterion & Inspected predecessor & This contribution & Change\\
+\midrule
+Fourteen positive variables
+& Degree 52, 79 operations (55/59)
+& Degree 30, 83 operations
+& $42.31\%$ lower degree, four extra gates\\
+Positive degree 30
+& Fifteen variables, 79 operations (58)
+& Fourteen variables, 83 operations
+& One fewer variable, four extra gates\\
+Unrestricted integer quartic
+& 45 variables, 28 quadratic rows (57)
+& 41 variables, 26 quadratic rows
+& Four fewer variables, two fewer rows\\
+Nine positive variables
+& Degree $1{,}910{,}404$, 473 operations (59)
+& Degree $1{,}781{,}068$, 470 operations
+& $6.77\%$ lower degree, three fewer gates\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The sextic and octic companions improve the named historical 42-variable
+sextic and 36-variable octic presentations in packages 27/29, as retained
+and identified in the later collection.  We do not claim an exhaustive
+comparison of all subsequent intermediate low-degree variants.  The new
+fourteen-variable form does not dominate the fifteen-variable degree-24
+form of package 58 or the fifteen-variable 66-operation form of package 51.
+Likewise a quartic in 41 integers does not improve the separate
+minimum-variable high-degree integer constructions.
+
+There is no specified total order on ``simplest.''  Variable count, witness
+domain, degree, number of arithmetic gates, and sizes of fixed numerals are
+different measures.  We therefore give the explicit tradeoffs rather than
+claim a global optimum.  The main new mathematical content is the adaptive
+modulus and the two sign reductions.  The nine-variable improvement is a
+smaller certified finite layout.
+
+\subsection{Conventions for explicitness and cost}
+
+A register definition is an abbreviation for a polynomial expression,
+unless the variable is explicitly listed among the quantified coordinates.
+In particular a displayed chain of definitions never silently adds
+existential variables.  Expanding the abbreviations gives a member of
+$\Z[x_1,\ldots,x_n]$.  There are no variable exponents, divisions,
+square roots, bit operations, or run-time sequence evaluations in the
+delivered polynomials.  Such operations may occur in their proofs.
+
+The gate metric charges every live binary addition, subtraction, and
+multiplication, including multiplication by a fixed numeral.  Squaring
+costs one multiplication.  Reuse and fixed leaves are free, and
+constant-only arithmetic is folded.  This is an arithmetic-circuit metric,
+not bit complexity or a proof of circuit optimality.  Exact degree is
+measured after polynomial cancellation, with each unknown of degree one
+and every fixed numeral of degree zero.
+
+The fixed coefficients are intentionally given as exact binary payloads
+and finite generators instead of several million decimal digits.  If a
+decompressed file has bytes $b_0,\ldots,b_{m-1}$, its integer is
+$\sum_{j=0}^{m-1}b_j256^j$.  The compression is lossless; the byte strings,
+their hashes, and the generators all accompany the paper.  This is an
+exact definition of each numeral, with no oracle or unbounded search.
+
+\subsection{The inherited semantic endpoint}
+
+All three families retain the native coefficient/compiler route of the
+inspected repository.  The new fourteen-positive and signed low-degree
+reductions act directly on its Pell arithmetic; they do not invoke a
+universal nine-variable polynomial.  The additional nine-variable form
+does retain the inherited Matiyasevich--Jones finalizer.
+
+The fixed endpoint is the calibrated blank-tape machine K215.  The
+repository identifies the theorem
+\begin{center}
+\small\path{BusyBeaver.ZFC.KEndpoint215.blank_halts_iff_zfc_refutation}
+\end{center}
+and the syntactic endpoint \texttt{BProv ZFCax\_s [] Form.fBot}
+\cite{active}.  The native-window construction maps its finite accepting
+computations to the fixed arithmetic source and conversely.  Each full
+coefficient tuple has its own adapter and canonical completeness witnesses.
+The transformations below preserve this endpoint.  Although a route
+independent of this machine was considered, no smaller fully specified and
+verified alternative endpoint was obtained; no such result is claimed.
+
+\input{../positive14/section.tex}
+
+\input{../integer41/section.tex}
+
+\input{../nine-positive-111/section.tex}
+
+\section{Coefficient bindings and provenance}
+\label{sec:coefficients}
+
+The components use three complete tuples.  Sharing the symbol $\beta$, or
+even its numerical value, never authorizes mixing the other three ports.
+The two tuples with exponent $1{,}064{,}921$ have different transport and
+mask data.  In every tuple $K_0$ denotes the stored $K$ port and $M_F$
+denotes the already shifted \path{MF_source} port.  The shift by $\beta$
+must not be applied again.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lXrr@{}}
+\toprule
+Component & Complete source tuple & $\log_2(\beta+1)$ & Raw bytes\\
+\midrule
+\path{positive14/} & Package 44, compact complement layout & $590{,}069$ & $295{,}388$\\
+\path{integer41/} & Package 34, mixed parity unrounded layout & $1{,}064{,}921$ & $532{,}479$\\
+\path{nine-positive-111/} & Package 31, original mixed layout & $1{,}064{,}921$ & $533{,}099$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The first four compressed payloads total only 9,445 bytes.  The short
+compressed size is not used as a mathematical complexity claim; the raw
+numerals remain large.  The new constructions do not reduce the coefficient
+sizes.  The nine-variable component also contains twelve derived fixed
+leaves for the finite source code, base, and threshold.
+
+Every copied source is authenticated in a component
+\path{SOURCE_PINS.json}.  These manifests record the actual path, source
+commit, and Git blob identity, with SHA-256 where supplied.  A historical
+\path{source_commit} field inside an unchanged inherited coefficient
+manifest records that adapter's original starting point; it is distinct
+from the review snapshot above.  All retained licenses and notices stay
+with their sources.
+
+\section{Verification, formalization, and integration}
+\label{sec:verification}
+
+\subsection{What the executable checks establish}
+
+The root command is
+\begin{center}\texttt{python3 verify\_all.py}\end{center}
+from the extracted archive.  Python 3.10 or later and the standard library
+are sufficient.  The driver checks the recorded baseline blobs, runs each
+component generator and auditor in a temporary copy, verifies exact
+regeneration of the literal polynomial data, and separately rebuilds the
+native numerals.  It leaves the delivered source snapshots intact.
+
+For $P_{14}$ the checker validates all fourteen live inputs, four fixed
+leaves and 83 live gates; checks four local identities in an exact sparse
+integer polynomial ring; resolves the relevant leading homogeneous forms;
+and establishes the exact degree 30.  Modular transcription checks with the
+actual coefficients are supplementary implementation diagnostics.  The gcd
+and modulus theorem is proved for all integers in the text; its finite
+sample checks are not its proof.
+
+For the signed quartic, the checker reconstructs all four actual numerals
+from the literal 943-tile list and checks the required inequalities.  It
+checks the source packing and transport identities, every retained row
+under the substitution $w=4w_{\mathrm{scale}}$, full symbolic expansion,
+variable liveness, and the coefficient $[\tau^4]Q_{41}=1$.  Its 388-term
+expansion treats the four fixed ports as separate symbols: this is not a
+claim that exactly 388 collected monomials remain after all fixed integers
+are substituted.  The companion eliminations are polynomial identities and
+have their own exact degree certificates.
+
+For $F_9$, the finite coefficient-extraction certificate exhausts all
+22,544 source/expansion interactions and proves all 22 target identities.
+It checks native and derived coefficient bytes, three exact ring identities,
+the threshold calibration, circuit liveness and operation count, and the
+leading form proving exact degree.  The search that found the positions
+is not a proof dependency.  The fixed certificate and independent checker
+are sufficient to reproduce the result.
+
+The root driver can also run the new auditors with \path{--optimized} to
+confirm that Python's \path{-O} mode does not disable acceptance checks.
+Conditions use explicit errors rather than relying on \path{assert}.
+The provided receipts state the exact scope of each check.
+
+\subsection{What remains outside those finite checks}
+
+The universal Pell classification, rank and congruence lemmas; the
+native compiler's semantic soundness and completeness; the K215 endpoint;
+and the inherited nine-variable finalizer are mathematical proof
+dependencies.  Their relevant proof texts and source pins are included.
+The new arguments check their hypotheses in the changed coordinates,
+including the early index estimates and all sign branches.  No finite
+evaluation can establish these universal existence equivalences on its own.
+
+The active repository has a separately checked closed equation and checked
+local arithmetic results.  Those files do not automatically certify these
+new literal polynomials.  In particular, formalizing the native compiler
+bridge and producing an object-language derivation remain distinct tasks
+\cite{active}.  This delivery makes no claim to have completed either.
+The written internal review is AI-assisted and is not external peer review.
+
+\subsection{Useful next formalization targets}
+
+The most localized new target is the adaptive-modulus theorem: prove the
+integral-root scale recovery, $\gcd(Y^2,H)\mid9$, the early congruence bound,
+and the later recovery of the full modulus $Y^2$.  These are exactly where
+an unjustified cancellation could otherwise enter the argument.  Next,
+formalize the signed packing bounds uniformly in $Q=|q|$, followed by the
+Mersenne-radix sign lemma and the negative-common-sign contradiction.  The
+remaining low-degree eliminations are exact polynomial substitutions.
+
+For a repository integration, the self-contained directory can be placed
+beside the existing numbered contributions.  It does not overwrite an older
+package, replace the current formally certified equation, or require a
+network connection to run its arithmetic checks.  The root README gives
+the proposed measurements and the complete build instructions.  The
+article builds by running \texttt{python3 build\_report.py}; the two LaTeX
+passes use the included section sources.
+
+\appendix
+\section{Complete nine-variable arithmetic tail}
+\label{app:tail}
+
+For reference, the register definitions of the additional nine-variable
+equation are reproduced here.  Its source code and kernels are defined by
+the finite lists in \path{nine-positive-111/data/}; these supply the
+$S,T,R,N,t$ used below.  The nine supplied coordinates are
+$b,g,h,s,w,C,i,j,n\in\Z_{>0}$, and $j_0=j-1$.  All other symbols are
+polynomial abbreviations, local to this appendix:
+\begin{align*}
+U&=N^2w,& Y&=N^2s,& M_0&=RY,\\
+P&=2M_0^2U,& K&=R+1+h(P-1),& A&=M_0(U+1),\\
+B_1&=2R+1,& W_1&=bw,& J&=4A-5,\\
+Q&=3W_1C-2(W_1^2-1),&&&\\
+D&=(A^2-1)C^2+1,& k_0&=iJC,& E&=k_0DC,\\
+F&=(A^2-1)E^2+1,&&&\\
+G&=A+F(CD+1-A),& H_0&=C+F(B_1+j_0C),&&\\
+I&=(G^2-1)H_0^2+1,& a_0&=(P^2-1)K^2+1,& a_1&=DFI,\\
+m&=K^2(4t-g)-16t(C-KY)^2,&&&\\
+V_0&=PK,& T_{\mathrm{pair}}&=k_0(8D^2-4D-1),&V_1&=T_{\mathrm{pair}}GH_0,\\
+\Omega&=Jm,& E_0&=J(n+W_1^2)+Q,&\Theta&=E_0-\Omega(V_0+V_1).
+\end{align*}
+The single equation is
+\[
+F_9=\bigl[\Theta^2-\Omega^2(a_0+64a_1)\bigr]^2
+       -256\Omega^4a_0a_1=0.
+\]
+The exact polynomial is the literal division-free circuit in
+\path{nine-positive-111/generated/split_111_positive.json}.  The companion
+\path{split_111_natural.json} supplies the correct input shifts over
+$\{0,1,2,\ldots\}$, with the same degree and 477 operations.  This is not a
+nine-unrestricted-integer result.
+
+\section{Archive entry points}
+
+\begin{longtable}{@{}p{0.39\textwidth}p{0.56\textwidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\path{README.md} & Results, domain distinctions, reproduction and integration.\\
+\path{report/report.tex}, \path{report/report.pdf} & Main editable article and compiled paper.\\
+\path{positive14/polynomial.json} & Literal 83-gate polynomial in fourteen positive variables.\\
+\path{positive14/PROOF.md} & Complete new two-way reduction, including canonical witness construction.\\
+\path{integer41/quartic41.json} & All 41 integer variables and 26 quadratic residuals.\\
+\path{integer41/PROOF41.md}, \path{PROOF44.md} & Product-guard and delayed-sign proofs.\\
+\path{integer41/sextic36.json}, \path{octic31.json} & Exact elimination companions.\\
+\path{nine-positive-111/PROOF.md} & Full source packing, positivity, valuation and degree proof.\\
+\path{nine-positive-111/data/} & Literal parent, positions, targets and homogeneous kernels.\\
+\path{review/} & Pinned baseline statements and independent internal mathematical review.\\
+\path{certificates/} & Root verification and reproduction receipts.\\
+\path{verify_all.py} & One-command finite audit, with optional optimized-mode replay.\\
+\path{MANIFEST.sha256} & Integrity ledger of the final archive.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{active}
+Vladimir Reshetnikov and contributors,
+\emph{A Diophantine equation for syntactic consistency of ZFC},
+ProveIt active research README, pinned commit
+\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/README.md}.
+
+\bibitem{source55}
+ProveIt contribution 55, \emph{Congruence norms}, fourteen-variable proof.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/55-congruence-norms/fourteen/PROOF.md}.
+
+\bibitem{source57}
+ProveIt contribution 57, \emph{Separated degrees}, literal 45-integer quartic
+and proof.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/57-separated-degrees/quartic}.
+
+\bibitem{source58}
+ProveIt contribution 58, \emph{Integral-root carriers for Con(ZFC)},
+paper, native coefficient binding and verification files.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/58-integral-root}.
+
+\bibitem{source59}
+ProveIt contribution 59, \emph{Degree-separated encodings}, including the
+nine-positive free-coordinate adjunct.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated}.
+
+\bibitem{coefficients}
+ProveIt contributions 31, 34 and 44, native compiler coefficient adapters
+and retained Pell proofs.  Exact source locations, Git blob identities,
+payload digests, and copies of the applicable proofs are supplied in each
+component's \path{SOURCE_PINS.json}, \path{upstream/}, and native binding.
+
+\bibitem{jones}
+James P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+The nine-variable component uses the specific inherited finalizer and its
+retained proof, rather than an unspecified application of this reference.
+\end{thebibliography}
+\end{document}

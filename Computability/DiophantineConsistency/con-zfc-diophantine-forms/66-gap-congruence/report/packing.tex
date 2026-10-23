@@ -1,0 +1,104 @@
+\section{Repacked homogeneous layers and positive leading coefficients}
+\label{sec:carry-repacking}
+The source coordinate changes admit three frozen positional certificates.
+The following table records source-code heights, not final equation degrees.
+\begin{center}
+\begin{tabular}{lrrrrr}
+\hline
+Certificate & Records & $W$ & $Q$ & $(d_0,d_1,d_2)$ & $H$\\
+\hline
+Gap $N$ &86&116&2036&$(1571,1927,1836)$&2068\\
+Gap $N-q$ &85&116&2050&$(1627,1941,1850)$&2082\\
+Reflected gap $N$ &86&116&2031&$(1935,1941,1825)$&2057\\
+\hline
+\end{tabular}
+\end{center}
+Here $d_r=\deg D_r$, $Q=\max q_j$, and
+$H=\max_{0\le r\le2}(d_r+rW)$.  The incoming split116 height was 2161.
+These are certificate-backed improvements, not claims of optimal packing.
+
+For a source monomial $x^\alpha$ of degree $r$, let
+$e(\alpha)=\sum_i\alpha_iw_i$.  A coefficient $a_{j,\alpha}$ in row $j$
+receives weight $2a_{j,\alpha}$ for degrees zero and one or a diagonal
+square, and $a_{j,\alpha}$ for a quadratic cross term.  The reversed kernels
+and positive-coordinate word are
+\[
+ D_r(T)=\sum_{j,|\alpha|=r}c_{j,\alpha}T^{q_j-e(\alpha)},\qquad
+ U(T,x)=\sum_i x_iT^{w_i}.
+\]
+The independent verifier reconstructs all 22 target polynomials in all 31
+witnesses and all four independent coefficient ports.  Its finite isolation
+check establishes
+\[
+ [T^{q_j}]\bigl(D_2(T)U(T,x)^2+D_1(T)U(T,x)+D_0(T)\bigr)=2\rho_j(x).
+\]
+There are 22,481 interactions for either 86-record source and 22,450 for the
+85-record source.  The latter needs the new targets: its former incoming
+layout had an extra cross-row collision and is not reused here.
+
+\paragraph{A simpler positivity argument.}
+The reflected certificate replaces every old position $w_i$ by $117-w_i$
+and negates source row 2.  All positions remain distinct and positive; a row
+sign change preserves the common zero set.  Its leading coefficients are
+\[
+ \operatorname{lc}(D_0)=2K_0,\qquad
+ \operatorname{lc}(D_1)=2,\qquad
+ \operatorname{lc}(D_2)=\beta.
+\]
+They are all positive integers. If $M$ strictly bounds every absolute kernel
+coefficient and $B>M+1$, a polynomial of degree $d$ with positive integral
+leading coefficient is greater than
+\[
+ B^d-M\frac{B^d-1}{B-1}>0.
+\]
+Thus each $D_r(B)>0$ separately and
+$G(B,U)=D_2(B)U^2+D_1(B)U+D_0(B)>0$ for every $U\ge0$.
+Unlike the earlier proof, this does not require the quadratic layer to have
+strictly greater numerical height than the linear layer.
+
+There is a consequential leading-term tie:
+\[
+ d_2+2W=d_1+W=2057.
+\]
+For $U=\sum_iB^{w_i}+g$, the leading $B$-coefficient of $G$ is
+$\beta+2$, \emph{not} $\beta$.  The exact final degree certificates account
+for this positive sum.
+
+\paragraph{Bounds and completeness.}
+The coherent original31 tuple admits the conservative bound
+$M=2^{2134927}$ and $B=4096Mb^2$.  The coefficient audit must be repeated
+for whichever complete tuple is actually bound; ports are not mixed.
+Writing $\ell=\sum_iB^{w_i}$, distinct positions give $\ell<2B^W$.
+On $0\le g<4bB^W$, put $U=\ell+g$ and $Z=B^{H+1}$.
+A geometric-series coefficient bound gives
+\[
+ 0<G(B,U)<\frac{43Mb^2 B^{H+1}}{B-1},\qquad
+ \frac{2G(B,U)}Z<\frac1{32}.
+\]
+The reflected target gap $H-Q=26$ gives, for $A=\sum_jB^{q_j}$,
+$A<Z/64$ and $(B-2)A<Z/64$.  Therefore with
+\[
+ \begin{split}
+ N_0&=B^{W+1},\quad M_0=N_0-1-(b-1)\ell,\quad J_0=2G+A,\\
+ S&=g+N_0J_0,\qquad T=M_0+N_0(B-2)A,
+ \end{split}
+\]
+one has $S+T<N_0Z$.  These inequalities concern arbitrary bounded $g$,
+before digit recovery.  Once the low mask yields
+$g=\sum_i n_iB^{w_i}$, $0\le n_i<b$, the word $U$ encodes $x_i=n_i+1$.
+All convolution coefficients have absolute value at most
+$993Mb^2<B/4$, so the inherited sparse $+1$ signed-borrow test applies.
+
+Every sufficiently large admissible base represents a fixed positive source
+zero.  Row 5 still has value 1 at the all-one tuple, so some digit $n_i$ is
+nonzero.  Since all positions are positive, its encoded word is at least $B$
+and is divisible by $B$.  These facts preserve the lower-bound and divisibility
+conditions used in the integer composition.
+
+The unreflected certificates instead have quadratic dominance gaps
+$(25,497)$ and$(25,455)$ and positive quadratic leading coefficient 1; the
+usual geometric-series comparison proves their positivity.  Read-only
+checks, byte-identical kernel rebuilds and coherent-hash tamper controls
+accompany all three certificates.  They authenticate finite data and
+polynomial identities, not the inherited unbounded compiler theorem or
+an end-to-end kernel proof.

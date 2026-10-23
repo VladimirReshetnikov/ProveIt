@@ -1,0 +1,5 @@
+# Attribution and dependency boundary
+
+The original package-31 source and entire coefficient tuple are inherited from ProveIt. The arithmetic bridge and modified Lucas/interpolation results are those of Zhi-Wei Sun, with exact theorem interfaces stated in section.tex. The two-root norm, coprime-square positivity guard, and congruence restrictions are adapted from the incoming con_zfc_congruence_norms_2026-10-23 release, not claimed as new here. The prior split116 degree-separated source and sparse-borrow/population proof are retained under upstream/.
+
+This iteration combines these ideas, verifies their compatibility, and supplies a smaller explicit circuit and exact degree certificates. The split108 variant additionally uses the current wave's smaller globally negated degree-separated source. The compiler tuple is not mixed with any other package's tuple. SOURCE_PINS.json preserves inherited files; INSTANCE.json controls active binding. Original licensing material is in licenses/. No global minimality or new unknown-count theorem is claimed.

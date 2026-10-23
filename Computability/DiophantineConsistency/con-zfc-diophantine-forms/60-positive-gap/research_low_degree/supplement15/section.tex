@@ -1,0 +1,170 @@
+\section{Supplement: one fewer operation at degree 24}
+\label{sec:supplement-fifteen}
+
+The pinned source-58 equation has fifteen strictly positive unknowns,
+exact degree $24$, and a division-free evaluator using $90$ live binary
+arithmetic operations. A positive transport-coordinate shift lowers the
+last figure to $89$. This is a one-operation supplementary improvement;
+the domain, variable count, degree, and fixed coefficient tuple are retained.
+The coordinate shift already appears in the inherited ordinary kernel;
+here it is applied to the literal source-58 integral-root evaluator.
+
+\subsection{Fixed tuple and explicit equation}
+
+Use the complete compact source-44 tuple, with
+$\beta=2^{590069}-1$ and aliases
+\[
+ (\beta,K_0,M_C,M_F)=(\texttt{beta},\texttt{K},
+                       \texttt{MC},\texttt{MF\_source}).
+\]
+The four included unsigned little-endian integer payloads have bit lengths
+$590069,592884,590069,590070$, respectively. In particular, $M_F$ is the
+already shifted source port. The binding file, deterministic builder,
+independent auditor, literal transition data, and native proof are included
+in the supplement's \texttt{native/} directory.
+
+All fifteen supplied coordinates
+\[
+ j,F,\alpha,z,f,h,i,T,X,Y,r,\eta,\zeta,u,\gamma
+\]
+range over $\mathbb Z_{>0}$. Define polynomial abbreviations
+\begin{align*}
+ J&=3j+1,& q&=\beta J+1,& C&=q-F-\alpha,\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,\\
+ a&=E+Y,& H&=4a+3,& \Delta&=a^2+H,\\
+ D_0&=X+ac+\gamma H,& \ell&=EkY,& I&=ic^2,\\
+ G&=(q-1)(q-F)+\alpha.&&&
+\end{align*}
+Also put
+\begin{align*}
+ R&=G(q^2-1)+(M_C+qM_F)J,&
+ \widehat R&=k-hE-1,\\
+ U&=\Delta(f^2-1),& V&=f^2(cT-\widehat R)-c.
+\end{align*}
+The six residuals are
+\begin{align*}
+ A_0&=[q^3(\ell+r)+Y]^2-q^6[\ell(\ell+k)+1],\\
+ A_1&=(qD_0+XH)^2-q^2(\Delta c^2+1),\\
+ A_k&=\widehat R-R,\\
+ A_t&=C(qK_0+X)-q[F+z(q-1)],\\
+ A_a&=(V+u)^2-Uu(2V+u)-1,\\
+ A_s&=I^2-U.
+\end{align*}
+The equation is
+\[
+ P_{15}^{\rm shift}
+   =A_0^2+A_1^2+A_k^2+A_t^2+A_a^2+A_s^2=0.
+\]
+The abbreviations introduce no extra unknowns or variable exponents.
+
+\subsection{Exact identity and positive-domain converse}
+
+Source 58 uses a positive coordinate $z_{\rm old}$ and transport residual
+\[
+ A_t^{\rm old}
+   =q[K_0C+(q-F)-z_{\rm old}(q-1)]+XC-q.
+\]
+There is an exact free-ring identity
+\[
+ A_t^{\rm old}\big|_{z_{\rm old}=z+1}
+   =C(qK_0+X)-q[F+z(q-1)]=A_t.
+\]
+The five other residuals are unchanged. Thus a positive zero of the revised
+polynomial gives a positive source-58 zero by $z_{\rm old}=z+1$.
+
+For the converse, source 58's integral-root reconstruction gives
+$q\mid X$ and the positive ordinary-kernel coordinate $w=X/q$.
+The inherited ordinary proof then gives
+\[
+ C>0,\qquad X=2^R,\qquad w>q>F.
+\]
+Dividing the old transport equation by $q>0$ yields
+\[
+ (z_{\rm old}-1)(q-1)=(K_0+w)C-F>0.
+\]
+Since $q>1$, the integer $z_{\rm old}$ is at least two. Hence
+$z=z_{\rm old}-1$ is strictly positive. The two shifts give a bijection of
+the positive zero sets, proving the unconditional local arithmetic result
+\[
+ \exists\mathbf x\in\mathbb Z_{>0}^{15}\;
+                    P_{15}^{\rm shift}(\mathbf x)=0
+ \quad\Longleftrightarrow\quad
+ \exists\mathbf x\in\mathbb Z_{>0}^{15}\;P_{58}(\mathbf x)=0.
+\]
+The strict bound on $z_{\rm old}$ is necessary for this positive-domain
+argument; the polynomial identity alone would not establish the converse.
+
+The consistency corollary is conditional: if the inherited source
+calibration and arithmetic/compiler correctness yield an internal ZFC
+proof that parent unsolvability is equivalent to the chosen consistency
+sentence, then the same internal equivalence follows for the revised
+equation. The current pinned \texttt{OBJECT\_ZFC.md} leaves both
+internalization steps open. An external equivalence on standard natural
+numbers does not itself supply the required internal ZFC derivation.
+
+\subsection{Exact degree and arithmetic cost}
+
+Writing $Z=X+\gamma H$ and $D_0=ac+Z$, the exact cancellations
+\begin{align*}
+ A_0={}&q^6[r^2+\ell(2r-k)-1]+2q^3(\ell+r)Y+Y^2,\\
+ A_1={}&q^2[2acZ+Z^2-Hc^2-1]+2qD_0XH+(XH)^2
+\end{align*}
+give residual degree upper bounds $(11,9,4,3,12,10)$. The leading form is
+\[
+ \operatorname{in}_{24}(P_{15}^{\rm shift})
+   =4X^4Y^6f^8u^2\bigl[(\eta+\zeta)T+hX\bigr]^2.
+\]
+In particular, the coefficient of $X^6Y^6f^8u^2h^2$ is $4$, independently
+of the fixed ports. The concrete polynomial therefore has exact degree $24$.
+
+Every binary addition, subtraction, and multiplication costs one operation,
+including multiplication by fixed scalars; fixed leaves and previous-gate
+references are free. The old transport residual takes eight gates when its
+shared inputs are available. The new residual takes seven. The shared
+six-residual evaluator consequently drops from $79$ to $78$ operations.
+Six squarings and five additions yield the single equation, giving
+\[
+ 90\longrightarrow89
+   =47\text{ multiplications}+27\text{ additions}+15\text{ subtractions}.
+\]
+The separate cancellation-expanded evaluator has $101$ operations and is
+used only as a degree certificate. It does not enter the $89$-operation
+claim. No minimality claim is made under this metric.
+
+At the all-one positive tuple, $c=3$, $f=1$, $U=0$, and $I=9$. Thus
+$A_s=81$ and $P_{15}^{\rm shift}(1,\ldots,1)\ge6561$ independently of the
+coefficient tuple. This tuple is not a solution.
+
+\subsection{Evidence and inherited proof interface}
+
+The supplement's \texttt{reproduce.py} rebuilds the literal circuits and
+complete coefficient tuple and runs independent checks. The local auditor
+imports no builder. It proves the transport and cancellation identities
+by exact free-ring arithmetic, checks their literal circuit instances,
+and verifies the leading form and operation counts. Its validation remains
+enabled under \texttt{python3 -O}. The inherited native auditor verifies
+twelve pinned source files, reconstructs all four integers from the literal
+tile list, checks $66062$ finite basis identities, and audits the actual
+rank controller. Finite transcription checks are additional evidence.
+
+The inherited proof chain is preserved explicitly: source 58's report
+Sections 4--6 give the integral-root scale recoveries and positive-gap
+completeness; \texttt{upstream/ORDINARY\_KERNEL.md} Sections 3, 6, and 7
+give the recovered powers and transport bounds;
+\texttt{upstream/PELL\_LEMMAS.md} and \texttt{native/PROOF.md} supply the
+Pell and compact native-adapter arguments. The calibrated K215 endpoint
+externally identifies blank halting with a finite ZFC refutation.
+\texttt{PROVENANCE.json} fixes the retrieval snapshot
+\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486} and imported-file digests.
+
+The unchanged current status document is included as
+\texttt{upstream/OBJECT\_ZFC.md}. Internal source calibration and
+arithmetic/compiler correctness for the internal natural numbers of every
+ZFC model remain required. Agreement on external numerals does not treat
+all nonstandard witnesses. Historical parent claims are not used as
+evidence that this internal endpoint has been completed. The local
+positive-zero bijection is established here; its internal consistency
+corollary remains conditional on those obligations. No new end-to-end
+proof-assistant certificate or object-language ZFC equivalence derivation
+is supplied.
+

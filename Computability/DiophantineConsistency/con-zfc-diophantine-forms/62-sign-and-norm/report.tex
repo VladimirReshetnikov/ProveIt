@@ -1,0 +1,460 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[unicode,breaklinks,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Sign recovery and centered norms for explicit ZFC consistency equations},pdfauthor={AI-assisted research contribution prepared for ProveIt}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{topsep=4pt,itemsep=2pt,parsep=1pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zpos}{\mathbb Z_{>0}}
+\newcommand{\snapshot}{\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit consistency equations}
+\fancyhead[R]{\small Sign recovery and centered norms}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Sign recovery and centered norms\\for explicit ZFC consistency equations}
+\author{Research contribution prepared for the ProveIt project}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give explicit improvements to several Diophantine equations calibrated
+to the syntactic consistency of ZFC. The main short equation has thirteen
+strictly positive integer unknowns, exact total degree $114$, and an
+$83$-operation division-free evaluator. Centering an algebraic norm at a
+known large part of a Pell root replaces two root witnesses by one
+centered witness with lower degree. A separate common-sign argument gives a quartic in forty-two
+unrestricted integers: two independent positive representations can be
+replaced by one positive representation of their product, because a larger
+existing square scale lets the Pell indices recover the missing sign.
+A proved exchange of scale guards followed by exact eliminations gives a
+sextic in thirty-five integers and an octic in thirty integers. A companion sparse packing optimization gives nine
+positive unknowns, degree $1\,834\,516$, and $453$ operations.
+
+Each equation comes with a literal polynomial or arithmetic circuit,
+fixed coefficient payloads, a two-way ordinary mathematical reduction,
+and finite verification programs. The comparisons use the pinned ProveIt
+revision stated below. The native computation compiler and K215 calibration
+are inherited. We do not claim a globally simplest equation, an
+independent literature priority result, or a new end-to-end formal proof.
+These are concrete local improvements, not an established major
+breakthrough in Diophantine representation.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Results, comparisons, and the exact logical claim}
+\label{sec:overview}
+
+The most readable new short equation is $P_{13}=0$ in
+Section~\ref{sec:positive13}. It uses thirteen positive inputs and four
+\emph{fixed} integer coefficients. Its degree is $114$ and its evaluator
+uses $83$ binary additions, subtractions, and multiplications, including
+all scalar multiplications and squarings. The lowest-degree new equation
+is the quartic $Q_{42}=0$ in Section~\ref{sec:quartic42}; all forty-two of
+its unknowns range freely over $\Z$.
+
+The comparison source is the repository
+\texttt{VladimirReshetnikov/ProveIt}, directory
+\path{Computability/DiophantineConsistency/con-zfc-diophantine-forms},
+at the commit
+\begin{center}\snapshot.\end{center}
+This includes the six wave-eight packages numbered 54 through 59. In
+particular, the older collection index alone is not the comparison
+frontier. The relevant late package READMEs and exact predecessor objects
+are retained or pinned in the accompanying archive
+\cite{repo57,repo58,repo59}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}llrrl@{}}
+\toprule
+Domain & Construction & Unknowns & Degree & Binary operations\\
+\midrule
+$\Zpos$ & Source 59 short adjunct & 13 & 126 & 91\\
+$\Zpos$ & Source 57 short form & 13 & 132 & 83\\
+$\Zpos$ & \textbf{Centered norm, this work} & \textbf{13} & \textbf{114} & \textbf{83}\\
+\addlinespace
+$\Z$ & Source 57 quartic & 45 & 4 & Not optimized\\
+$\Z$ & \textbf{Common-sign quartic} & \textbf{42} & \textbf{4} & Not optimized\\
+$\Z$ & Archived sextic, sources 27/29 & 42 & 6 & Not optimized\\
+$\Z$ & \textbf{New sextic companion} & \textbf{35} & \textbf{6} & Not optimized\\
+$\Z$ & Archived octic, sources 27/29 & 36 & 8 & Not optimized\\
+$\Z$ & \textbf{New octic companion} & \textbf{30} & \textbf{8} & Not optimized\\
+\addlinespace
+$\Zpos$ & Source 59 sparse form & 9 & $1\,910\,404$ & 473\\
+$\Zpos$ & \textbf{Repacked companion} & \textbf{9} & $\boldsymbol{1\,834\,516}$ & \textbf{453}\\
+\bottomrule
+\end{tabular}
+\caption{Exact comparisons within each domain and degree or variable-count
+regime. The old sextic and octic are historical low-degree baselines, not
+the fewest-variable unrestricted-integer equations in the collection.}
+\label{tab:results}
+\end{table}
+
+There are additional useful tradeoffs in the repository. For example,
+source 58 has a fifteen-positive-variable equation of degree $24$, and
+source 57 has twelve-positive-variable equations of degree $242$ and
+$258$ \cite{repo57,repo58}. This paper does not improve those points.
+The different domains in Table~\ref{tab:results} must not be conflated:
+thirteen positive variables and thirteen unrestricted integer variables
+are different representation problems. No nine-unrestricted-variable
+claim is made here.
+
+\subsection{The theorem being proved}
+
+Fix the repository's effective presentation of ZFC and write
+$\operatorname{Ref}_{\ZFC}(p)$ for its primitive recursive proof-checking
+predicate for a refutation. Define the syntactic consistency statement by
+\[
+ \Con(\ZFC)\ \equiv\ \neg\exists p\in\N\,
+                                \operatorname{Ref}_{\ZFC}(p).
+\]
+For every polynomial $P$ in Table~\ref{tab:results} introduced by this
+work, and its stated domain $D$, the claimed mathematical theorem is
+\begin{equation}
+ \ZFC\ \vdash\
+ \left(\exists\boldsymbol{x}\in D^n\;P(\boldsymbol{x})=0\right)
+ \longleftrightarrow
+ \left(\exists p\in\N\;\operatorname{Ref}_{\ZFC}(p)\right).
+ \label{eq:logical-claim}
+\end{equation}
+Negation gives precisely the requested equivalence
+\begin{equation}
+ \ZFC\ \vdash\
+ \left(\neg\exists\boldsymbol{x}\in D^n\;P(\boldsymbol{x})=0\right)
+ \longleftrightarrow\Con(\ZFC).
+ \label{eq:consistency-claim}
+\end{equation}
+Neither implication assumes that ZFC is consistent. A proof of
+\eqref{eq:consistency-claim} is also not a proof in ZFC that $P$ has no
+zero. The latter would prove the consistency statement itself.
+
+The new steps are arithmetic: integer polynomial identities, Pell
+recurrences and classification, divisibility, elementary bounds, and
+finite coefficient constructions. They are ordinary mathematics
+formalizable in ZFC. Their composition uses the expressly identified
+native compiler and literal K215-to-refutation calibration. Thus the new
+constructions remain based on the inherited K215 endpoint. The quartic,
+sextic, octic, and thirteen-variable equation do not need a Jones or Sun
+variable-reduction theorem. The nine-variable companion retains its
+Jones ratio interface.
+
+\subsection{What ``simpler'' measures here}
+
+We report the domain, number of quantified unknowns, exact total degree,
+arithmetic operation count when optimized, and fixed coefficient size
+separately. An arithmetic register is an abbreviation, not an extra
+existential unknown. Every exponent in an emitted polynomial circuit is
+a fixed numeral, and every power is expanded to charged multiplication
+gates. Constants are leaves; reusing a computed register is free. This
+counts arithmetic operations, not bit operations on the very large
+coefficients or witnesses.
+
+The thirteen-variable result strictly improves both displayed predecessor
+points in degree without increasing either operation count. The
+common-sign construction reduces the number of integer unknowns at fixed
+quartic degree. The nine-variable result improves its predecessor by
+$75\,888$ degrees and $20$ operations. None of these finite comparisons
+establishes a global minimum. MRDP establishes existence of appropriate
+Diophantine representations \cite{matiyasevich,jones}; it does not certify
+an optimal explicit instance. Also, current unrestricted-integer
+variable-count results must not be summarized by the older eleven-variable
+record: Sun's September 2026 preprint states a ten-variable undecidability
+theorem \cite{sun2026}. That universal theorem is background, not an
+additional reduction silently applied to the equations here.
+
+\section{Fixed coefficients and inherited dependencies}
+\label{sec:binding}
+
+A display containing four unexplained coefficient symbols would specify
+only a family. Here those symbols are bound to complete finite byte
+strings, together with deterministic reconstruction programs and their
+input data. The fixed integers are unsigned, minimally encoded in
+little-endian order. The compressed payloads carry no mathematical
+ambiguity: their decompressed sizes and cryptographic digests are checked.
+The native transition table and tile definitions used to reconstruct them
+are included.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Whole native tuple & $\beta$ bits & $K_0$ bits & $M_C$ bits & $M_F$ bits\\
+\midrule
+Compact 44: $P_{13}$ and nine & 590069 & 592884 & 590069 & 590070\\
+Source 34: $Q_{42}$ and companions & 1064921 & 1065043 & 1064921 & 1064922\\
+\bottomrule
+\end{tabular}
+\caption{Bit lengths of the fixed, coherent native tuples. The full
+manifests and all four numeral payloads accompany each construction.}
+\label{tab:ports}
+\end{table}
+
+For the compact tuple, $\beta=2^{590069}-1$ and the four raw integer
+encodings occupy $295\,388$ bytes. For the quartic tuple,
+$\beta=2^{1064921}-1$ and they occupy $532\,479$ bytes. The fourth port
+$M_F$ is the \emph{already shifted} source mask in both presentations.
+The exponent of $\beta$ alone is not an instance specification, and
+individual ports from different tuples must not be mixed. The
+nine-variable final evaluator has twelve fixed leaves derived from its
+native tuple; their encodings total $2\,217\,161$ raw bytes and $47\,364$
+gzip bytes. Those final leaves are supplied too.
+
+The dependency chain has three mathematical layers. At the bottom,
+a literal K215 halting computation is equivalent to a refutation in the
+fixed ZFC calculus. The native window compiler and its cofinal padding
+turn that halting computation into positive solutions of the bound
+arithmetic source system and decode every source solution back to such
+a computation. Finally, the new polynomial transformations in this paper
+preserve existence of solutions in both directions. The archive retains
+the ordinary proofs used at each interface and records exact repository
+paths, commit pins, Git blob identities and SHA256 digests. The detailed
+reading map is
+\path{quartic42/dependencies/README.md}.
+
+The included formal endpoint is
+\begin{center}
+\small\texttt{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}.
+\end{center}
+It identifies blank halting with the repository's
+\texttt{BProv ZFCax\_s [] Form.fBot}. Its complete transitive Lean/Rocq
+development is not rebuilt in this archive. More importantly, an inherited
+machine theorem is not a new kernel certificate for the literal equations
+introduced here. We provide ordinary mathematical reductions and exact
+finite data checks; we do not provide an exported object-language ZFC
+derivation or a fresh end-to-end proof-assistant build. This boundary is
+part of the result, not an unstated hypothesis that ZFC is consistent.
+
+\input{positive13/section.tex}
+\input{quartic42/section.tex}
+\input{quartic42/companions_section.tex}
+\input{nine/section.tex}
+
+\section{Verification, source correction, and reproducibility}
+\label{sec:verification}
+
+The archive contains the final polynomial definitions, their fixed
+coefficient bindings, the mathematical proofs, and offline verification
+programs. Its new checks use the Python standard library. Historical
+scripts that require other packages are preserved only as source evidence
+when relevant; the new replay does not need to execute them. The root
+command is
+\begin{verbatim}
+python3 verify_all.py
+\end{verbatim}
+Run it from the extracted package directory. It authenticates the package,
+executes the component checks, reconstructs the bound native coefficient
+tuples, and replays the finite polynomial and circuit certificates. The
+receipt is \path{verification/REPLAY.json}. Both ordinary and optimized
+Python execution were used during preparation; acceptance does not rely
+on removable \texttt{assert} statements.
+
+For $Q_{42}$, two separate sparse polynomial implementations check the
+literal residuals, the $45\to42$ modification, all variable occurrences,
+the exact degree, and the coefficient one of $\tau^4$. A transcription
+check compares the displayed factored equations with the JSON. The
+coefficient replay regenerates all four source-34 numerals and checks
+$69\,230$ native basis conditions and $8\,801$ coefficient digits. The
+companions have explicit restoration maps after the proved scale-guard
+exchange: deleting coordinates through
+monic equations preserves the integer solution set by substitution, with
+no rational divisions.
+
+For $P_{13}$, the certificate separates a multivariate degree upper bound
+from a nonzero homogeneous leading value, so a sampled univariate degree
+is not mistaken for an upper bound. The norm identity, unit-product
+residues, complete operation ledger, and fixed coefficient binding are
+checked. The nine-variable replay verifies all $22\,544$ sparse target
+interactions, the coherent native source change, exact degree data,
+every shared power identity, and the complete circuit rewrite. It checks
+all $66\,062$ native basis identities of the compact tuple. These are
+finite certificates for exact algebra and data. They do not replace the
+unbounded two-way compiler and Pell arguments.
+
+One source correction is necessary. The predecessor quartic's prose
+writes the transport coordinate as $z-1$, whereas its authenticated
+literal equation is
+\[
+ (K_0+w)(q-F-\alpha)=F+z(q-1).
+\]
+The correct required restored guard is $z>0$. The old positive product
+coordinate would be $z+1$. After the source Pell recovery,
+$w>q>F$ and $q-F-\alpha\ge1$ prove this strict positivity directly.
+The new quartic proof states the correction; the original source file is
+retained unchanged for comparison. Neither the literal polynomial nor
+its coefficients are silently repaired to match the prose.
+
+The reviews included in the archive are internal independent-agent
+mathematical or implementation reviews in this research session. They
+are identified as such. They are not external human peer review, and
+finite diagnostics are labeled separately from universal proofs.
+
+\subsection{File map}
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\path{report.tex}, \path{report.pdf} & This article and its editable source.\\
+\path{positive13/} & The degree-$114$ polynomial, complete norm proof,
+fixed tuple binding, degree and circuit certificates.\\
+\path{quartic42/} & All 27 quadratic residuals of the quartic,
+common-sign proof, exact expansion and independent algebra check.\\
+\path{quartic42/companions/} & The sextic and octic, coordinate
+restoration data and exact elimination certificates.\\
+\path{quartic42/dependencies/} & Authenticated ordinary compiler and
+Pell dependencies, source-34 coefficient payloads and their replay.\\
+\path{nine/} & The optimized nine-variable circuits, sparse code and
+kernel certificates, compact native tuple and final fixed leaves.\\
+\path{RESULTS.json} & Machine-readable domain, variable, degree and
+operation ledger for the new forms.\\
+\path{SOURCE_SNAPSHOT.json} & Comparison revision and source locations.\\
+\path{MANIFEST.json} & SHA256 hashes of delivered files.\\
+\path{verify_all.py} & One-command offline finite verification.\\
+\path{RESEARCH_NOTES.md} & Unproved directions and rejected shortcuts,
+kept separate from the theorems.\\
+\bottomrule
+\end{longtable}
+
+Compile the article with
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The PDF was rendered and inspected after compilation. The source contains
+the complete formulas rather than relying on remote images or an online
+notebook. The archive includes the upstream licenses and notices; no
+external repository or publication is modified by this contribution.
+
+\section{Where a larger advance could come from}
+\label{sec:research}
+
+The new reductions suggest specific further work, but they do not yet
+resolve the request for a major change of scale. The two clearest new
+mechanisms are reusable: recover a missing sign from an already available
+rank modulus, and center a root before eliminating it by a norm.
+Both exploit constraints already paid for elsewhere in the equation.
+
+\paragraph{Recover more signs without duplicating positive forms.}
+The quartic argument saves three witnesses because its common-sign
+ambiguity is a single bit that the index congruence can decide. A further
+reduction would need a comparable argument for other guards. Removing
+them on the strength of the old whole-system theorem would be circular:
+that theorem assumes those very guards. In particular, simply allowing
+both scale coordinates to be negative changes the main binomial recovery
+and has not been justified here.
+
+\paragraph{Use a smaller direct binary-disjointness interface.}
+The nine-variable companion spends most of its degree converting
+\emph{binary disjointness} of two packed nonnegative integers $S,T$ into
+a divisibility threshold on a central binomial coefficient. The direct
+condition
+\[
+ \binom{S+T}{S}\equiv1\pmod2
+\]
+expresses absence of binary carries. A sufficiently economical
+Diophantine interface for this condition could avoid the large two-block
+index and threshold used here. The carry interpretation by itself is
+not such an interface; a new explicit polynomial construction with a
+complete converse is still needed.
+
+\paragraph{Combine root elimination with divisibility, not only radicals.}
+Norm equations are attractive because they remove witnesses, but a
+rational square root need not satisfy a required quotient congruence.
+The thirteen-variable norm works because the first recovered root is
+monic over the integers and the other root is then an integer difference.
+Eliminating additional roots while losing one of the divisibility guards
+can admit extraneous solutions. For example,
+\[
+ 63\left((4/3)^2-1\right)=7^2
+\]
+shows that the strong Pell-looking equation alone does not force a
+rational $f$ to be integral. This is a counterexample to that proposed
+local shortcut, not to the full guarded source system. No smaller
+equation obtained by that unsupported cancellation is claimed.
+
+\paragraph{Change the proof-checking source itself.}
+A different primitive-recursive refutation checker, direct arithmetic
+verification of a proof certificate, or a different finite tiling language
+could reduce coefficient and compiler complexity. An appeal to MRDP alone
+does not supply the necessary literal coefficients, degree bounds, or
+two-way compiler proof. This package does not replace K215 by an
+unimplemented alternative.
+
+The contributions ready for repository review are the explicit equations
+and reductions proved above. Further priority, global optimality, and
+proof-assistant certification require separate work.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{matiyasevich}
+Yu.~V. Matiyasevich,
+\emph{The Diophantineness of enumerable sets},
+Dokl. Akad. Nauk SSSR \textbf{191}(2) (1970), 279--282;
+English translation, Soviet Math. Doklady \textbf{11} (1970), 354--357.
+\url{https://www.mathnet.ru/eng/dan35274}.
+
+\bibitem{jones}
+J.~P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47}(3) (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2 September 2026, preprint.
+\url{https://arxiv.org/abs/2609.01594v2}.
+
+\bibitem{repo57}
+ProveIt contributors, \emph{Separated degrees}, package 57,
+including \path{quartic/QUARTIC45_PROOF.md} and the low-degree source.
+Pinned comparison commit \snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/57-separated-degrees}.
+
+\bibitem{repo58}
+ProveIt contributors, \emph{Integral root}, package 58,
+pinned comparison commit \snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/58-integral-root}.
+
+\bibitem{repo59}
+ProveIt contributors, \emph{Degree separated}, package 59,
+including the ordinary merger, thirteen-positive adjunct, and nine-free
+adjunct, pinned comparison commit \snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated}.
+
+\bibitem{repodeps}
+ProveIt contributors, inherited coefficient, ordinary Pell, signed-scale,
+native compiler and K215 calibration sources. Exact historical revisions,
+repository paths, byte hashes and local reading map are supplied in
+\path{quartic42/dependencies/SOURCE_PINS.json},
+\path{quartic42/dependencies/README.md}, and the component
+\path{SOURCE_PINS.json} files. Original licenses and notices accompany
+the authenticated copies.
+\end{thebibliography}
+\end{document}

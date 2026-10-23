@@ -1,0 +1,168 @@
+\section{A positive three-kernel source of height 1954}
+\label{sec:source108}
+The new source combines four ingredients: the 108-position weights of the
+incoming \emph{Separated Degrees} construction, our earlier two row shears,
+a new target placement, and a global reversal of sign. The last operation
+makes all three kernel leaders positive. The source has 89 records and
+convolution height 1954, versus 89 records and height 2161 in our previous
+source. These are source-code parameters, not additional Diophantine unknowns.
+
+\paragraph{Fixed parent and scope.}
+Use the original 31-positive-coordinate parent, whose SHA-256 is recorded
+in \texttt{SOURCE\_PINS.json}, and its complete original31 coefficient tuple.
+Its ports $\beta,K_0,M_C,M_F$ have bit lengths
+$1064921,1070004,1064921,1064922$, with
+$\beta=2^{1064921}-1$ and the already shifted $M_F$.
+No port from a different compiler tuple is substituted.
+The parent-to-refutation compiler theorem is inherited; the present finite
+certificate proves algebraic extraction identities, not that unbounded theorem.
+
+\paragraph{Row basis and exact kernels.}
+If $r_j$ are the 22 parent residuals, put
+\[
+ \rho_{14}=r_{14}+r_2,\qquad \rho_{15}=r_{15}+r_3,
+ \qquad \rho_j=r_j\ (j\ne14,15),\qquad \sigma_j=-\rho_j.
+\]
+These invertible changes preserve the common zero set. In parent coordinate
+order the weights are
+\[
+\begin{split}
+ (w_i)={}&(104,76,79,60,108,8,99,55,36,54,98,11,7,10,44,32,\\
+ &106,22,17,1,3,4,37,89,97,107,39,40,86,45,92).
+\end{split}
+\]
+The row order and corresponding targets are
+\[
+\begin{split}
+(j)={}&(8,15,20,9,4,19,7,12,13,17,16,10,5,21,1,3,11,6,14,18,22,2),\\
+(q_j)={}&(34,229,274,319,524,533,573,767,820,1007,1053,1064,\\
+ &1089,1291,1320,1366,1381,1410,1617,1707,1798,1939).
+\end{split}
+\]
+For a degree-$d$ monomial $a p^\alpha$ of $\sigma_j$, place
+$2a\alpha!/d!$ at exponent $q_j-\sum_i\alpha_iw_i$ of $D_d(T)$.
+Only $d=0,1,2$ occur. With $U_p(T)=\sum_i p_iT^{w_i}$, the exact certificate gives
+\[
+ [T^{q_j}]\bigl(D_2(T)U_p(T)^2+D_1(T)U_p(T)+D_0(T)\bigr)
+ =2\sigma_j(p).
+\]
+All kernels are explicit in \texttt{split\_kernels.json}; global negation is
+already applied there. Their degrees are $1939,1842,1738$ and leading
+coefficients $2,2,\beta$, respectively. Consequently
+\[
+ W=108,\quad Q=1939,\quad H=\max_d(\deg D_d+dW)=1954.
+\]
+The checker independently parses the parent residuals, verifies the inverse
+shears, and checks 22,544 isolation interactions yielding all 22 identities.
+
+\paragraph{A simpler unconditional sign proof.}
+Every kernel coefficient has absolute value below $C=2^{2134927}$.
+Fix $\kappa=2134940$ and set
+\[
+ B=2^\kappa b^2=8192Cb^2,\quad \ell=\sum_iB^{w_i},\quad U=\ell+g,
+ \quad G=D_2(B)U^2+D_1(B)U+D_0(B).
+\]
+For a kernel with degree $h$ and positive leader $a$, the absolute lower-tail
+contribution is less than $CB^h/(B-1)$. Since $B>2C$, each kernel is positive.
+Thus $G>0$ whenever $b,g\ge1$, without a binary-base assumption or a
+final-equation hypothesis. No cancellation between the three kernels is needed.
+
+Define
+\[
+\begin{gathered}
+ A_* =\sum_jB^{q_j},\qquad N_0=B^{109},\qquad Z=B^{1955},\\
+ M=N_0-1-(b-1)\ell,\qquad J_*=2G+A_*,\\
+ S=g+N_0J_*,\qquad T=M+N_0(B-2)A_*,\qquad G_{\rm cap}=32bB^{108}.
+\end{gathered}
+\]
+Then $S>0$ and $T\ge0$ unconditionally. On the ratio-derived range
+$g<4bB^{108}$, one has $U<6bB^{108}$ and
+\[
+ G<\frac{C}{B-1}
+ \bigl(36b^2B^{1955}+6bB^{1951}+B^{1940}\bigr),\qquad
+ \frac{2G}{Z}<\frac{86Cb^2}{B-1}<\frac1{64}.
+\]
+Also $A_*<Z/64$, $(B-2)A_*<Z/64$, and $g<N_0$. Hence
+\[
+ S+T<N_0Z=B^{2064}.
+\]
+This is proved on the full necessary range, not merely on the smaller
+range occupied by canonical witnesses.
+
+\paragraph{Signed-digit decoding without spurious zeros.}
+For $b=2^k$ and $B=2^v$, the low mask $M$ has digit $B-b$ at each of the
+31 active positions, and digit $B-1$ elsewhere below position109.
+Thus disjointness of $g$ and $M$ is equivalent to
+$g=\sum_i z_iB^{w_i}$ with $0\le z_i<b$. The word $U$ then encodes
+$p_i=z_i+1>0$. Every convolution coefficient $h_t$ satisfies
+\[
+ |h_t|<C\bigl((\textstyle\sum_i p_i)^2+\sum_i p_i+1\bigr)
+ \le993Cb^2<B/8.
+\]
+The formal coefficients of $J_*$ are $2h_t+\mathbf1_{\{t\text{ target}\}}$.
+Base-$B$ normalization therefore uses only incoming borrows $0,-1$.
+At a target, $h_t=0$ produces digit $1$ or $0$, both disjoint from $B-2$.
+For $h_t>0$ the digit lies between $2$ and $B/2$; for $h_t<0$ it lies
+between $B/2$ and $B-1$. Both nonzero cases intersect $B-2$.
+Consequently
+\[
+ S\mathbin{\&}T=0
+ \quad\Longleftrightarrow\quad
+ g\text{ encodes a positive parent zero}.
+\]
+Conversely every parent zero is encoded for all sufficiently large binary
+$b$, with $0<g<bB^{108}$ and $32g<G_{\rm cap}$.
+The all-one parent tuple is not a zero, since $r_5(1,\ldots,1)=1$;
+this proves the strict lower bound on $g$. Every weight is positive, so
+canonical $g$ is divisible by $B$ and hence by $b^2$.
+
+\paragraph{Exact recalibration for the free-coordinate finalizer.}
+Writing $v=\kappa+2k$, the mask population is
+\[
+ \operatorname{pop}(T)=131v-31k-22.
+\]
+Set
+\[
+ L=bB^{2064},\quad R=(S+T)L+L-1-S,\quad
+ c=2^{15\kappa/2-11}=2^{16012039},\quad N=cB^{1090}.
+\]
+The even choice of $\kappa$ ensures that $c$ is an integer. Unconditionally
+$R=(L-1)S+LT+L-1\ge8$. On the bounded branch $S+T<L$; if
+$u=\log_2L=k+2064v$, then
+\[
+ \operatorname{pop}(R)=u+\operatorname{pop}(T)-\tau,
+ \qquad \tau=\operatorname{pop}(S)+\operatorname{pop}(T)
+                  -\operatorname{pop}(S+T)\ge0.
+\]
+Here $\tau=0$ exactly when $S\mathbin{\&}T=0$, and
+\[
+ u+\operatorname{pop}(T)=2195v-30k-22=2\log_2N.
+\]
+Legendre's valuation identity proves
+$N^2\mid\binom{2R}{R}$ exactly when the source is satisfied.
+The degrees entering the arithmetic finalizer are $\deg R=8255$ and
+$\deg N=2180$; intermediate circuit registers are not additional variables.
+
+\paragraph{Alternative integer-route calibration.}
+For $n=B^{2064}$ put
+\[
+ X=n^2+(S+T)n+n-1-S,\qquad
+ Y=2^{2195\kappa-21}b^{4359}.
+\]
+On the bounded binary branch,
+$\operatorname{pop}(X)=\log_2Y-\tau$.
+When $b\equiv1\pmod3$, even $\kappa$ gives $B\equiv1\pmod3$,
+$T\equiv2\pmod3$ and $X\equiv0\pmod3$.
+Also $X+1\equiv-g\pmod b$. These are source interface facts; the separate
+integer finalizer must still prove its numerical and integrality obligations.
+
+\paragraph{Reproduction and contribution boundary.}
+Run \texttt{python verify\_split.py}, \texttt{python test\_split.py}, and
+\texttt{python check\_carry.py} from the source directory.
+The isolated replay also passes under Python \texttt{-O}; eleven intentional
+corruptions are rejected. Carry sanity tests accompany, but do not replace,
+the general argument above. The borrowed weights, inherited compiler, sparse
+borrow method and population theorem are credited in the provenance files.
+The new contribution is their compatible combination with the shears,
+placement, global sign and exact recalibration. No global minimum, consistency
+proof, or new end-to-end kernel certificate is asserted.

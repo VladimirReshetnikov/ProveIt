@@ -1,0 +1,663 @@
+\section{Fourteen positive unknowns at degree thirty}
+\label{sec:sc-fourteen}
+
+The construction in this section combines a free Pell ordinate with a new
+adaptive quotient modulus.  It gives a fixed polynomial with fourteen
+strictly positive integer unknowns, exact total degree $30$, and a
+division-free evaluator using $83$ binary arithmetic operations.  The
+principal improvement is the modulus $U=Y^2$: it has polynomial degree two,
+but a preceding integrality argument forces it to be large enough for the
+index recovery.  The proof establishes that size before invoking the
+strong Pell-rank theorem.
+
+\begin{theorem}\label{thm:sc-main}
+Let $P$ be the polynomial defined in
+\eqref{eq:sc-registers}--\eqref{eq:sc-polynomial}, with the complete fixed
+coefficient tuple specified below.  Then
+\[
+ \mathrm{ZFC}\vdash
+ \left(\exists\boldsymbol v\in\Z_{>0}^{14}\ P(\boldsymbol v)=0\right)
+ \ \longleftrightarrow\
+ \left(\text{there is a finite syntactic ZFC refutation}\right).
+\]
+Consequently
+\[
+ \mathrm{ZFC}\vdash
+ \left(\forall\boldsymbol v\in\Z_{>0}^{14}\ P(\boldsymbol v)\ne0\right)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The exact degree is $30$.  The supplied arithmetic circuit has $44$
+multiplications, $23$ additions, and $16$ subtractions.
+\end{theorem}
+
+Here and below, the semantic conclusion composes the new elementary
+reduction with the inherited native compiler and the literal
+K215/refutation calibration.  The full ordinary mathematical argument and
+its source dependencies are supplied; an additional end-to-end proof
+assistant certificate is not claimed.  No consistency assumption enters
+either direction.
+
+All artifact paths in this section are relative to \path{positive14/}.
+
+\subsection{The fixed polynomial and its coefficient binding}
+
+The fourteen supplied coordinates are
+\[
+ (J,F,\alpha,z,f,i,T,Y,w,\rho,\eta,\zeta,e,\gamma)
+       \in\Z_{>0}^{14}.
+\]
+All further letters in the definition are polynomial abbreviations, not
+additional quantified variables.  Use the \emph{entire} compact native
+coefficient tuple from package 44.  Its four ports are
+\[
+\begin{gathered}
+ B=2^{590069},\qquad
+ \beta=B-1,\qquad K_0=D_C+BD_R,\\
+ M_C=M_{C,\mathrm{native}},\qquad
+ M_F=M_{F,\mathrm{native}}+B-1.
+\end{gathered}
+\]
+In particular, $M_F$ is the already shifted source port.  The exact
+integers are the unsigned little-endian byte streams obtained by
+decompressing the following four delivered files.  Their hashes, finite
+coefficient recipes, and binding are recorded in
+\path{native/COEFFICIENT_BINDING.json}.
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Port & Exact payload under \path{native/coefficients/} & Raw bytes\\
+\hline
+$\beta$ & \path{beta.bin.gz} & $73\,759$\\
+$K_0$ & \path{K.bin.gz} & $74\,111$\\
+$M_C$ & \path{MC.bin.gz} & $73\,759$\\
+$M_F$ & \path{MF_source.bin.gz} & $73\,759$\\
+\hline
+\end{tabular}
+\end{center}
+The coefficient recipe uses radix $2^{67}$ and length $8807$, with the
+ordered literal list of $943$ Wang tiles and the $430$ literal K215
+transition rows included in \path{native/}.  The independent generator and
+auditor are included there too.  Thus this is one fixed four-tuple, rather
+than four freely adjustable parameters.  In particular it satisfies
+\[
+ 0<M_C<B-1,\qquad B-1<M_F<2(B-1),
+ \quad M_C\equiv2\pmod4,
+ \quad M_{F,\mathrm{native}}\equiv4\pmod8,
+\]
+and the native mask populations sum to $590069$.  Its complete native
+interface, including canonical completeness, is proved in
+\path{native/PROOF.md}.  The new construction binds all four ports
+together to this interface.
+
+Define
+\begin{equation}\label{eq:sc-registers}
+\begin{aligned}
+ q&=\beta J+1,                 & C&=q-F-\alpha,\\
+ X&=wq,                       & E&=XY,\\
+ k&=\eta+\zeta,               & c&=kY+\eta,\\
+ a&=E+Y,                      & H&=4a+3,\\
+ \Delta&=a^2+H=(a+2)^2-1,     & \ell&=EkY,\\
+ b_0&=X+ac,                   & G&=1+\Delta c^2,\\
+ R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ r&=k-R-1,                    & U&=Y^2,\\
+ D_*&=Ub_0+H(U\gamma-r),       & M&=D_*^2-U^2G,\\
+ I&=ic^2,                     & A_{\mathrm{aux}}&=\Delta(f^2-1),\\
+ W&=I^2-A_{\mathrm{aux}},      & V&=f^2(cT-R)-c,\\
+ y&=V+e,                      & N_a&=A_{\mathrm{aux}}(V^2-y^2)+y^2,\\
+ L_t&=(K_0+w)C-F-z(q-1),\\
+ A_0&=[q^3(\ell+\rho)+Y]^2-q^6[\ell(\ell+k)+1].
+\end{aligned}
+\end{equation}
+The equation is
+\begin{equation}\label{eq:sc-polynomial}
+ \boxed{P=A_0^2+M^2+W^2+N_a^2+L_t^2-1=0.}
+\end{equation}
+Only fixed nonnegative powers occur.  The definition contains no division,
+variable exponent, recurrence, bit test, or radical.  The literal evaluator
+is \path{polynomial.json}; \path{build.py} reconstructs it.  Positivity is
+part of the quantified domain in Theorem~\ref{thm:sc-main}.
+
+\subsection{The inherited interface used in the proof}
+
+For an integer $A\ge2$, define the Pell polynomials by
+\[
+ \chi_A(0)=1,\quad\psi_A(0)=0,\qquad
+ \begin{aligned}
+ \chi_A(j+1)&=A\chi_A(j)+(A^2-1)\psi_A(j),\\
+ \psi_A(j+1)&=\chi_A(j)+A\psi_A(j).
+ \end{aligned}
+\]
+These sequences appear only in the proof.  We use the standard Pell
+classification, their strong divisibility, and the elementary recurrence
+congruences.  The source proofs are preserved in
+\path{upstream/PELL_LEMMAS.md} and
+\path{upstream/ORDINARY_KERNEL.md}.
+
+The particular compiler interface needed here is as follows.  Take fifteen
+positive coordinates
+\[
+ (J,F,\alpha,z_{\rm old},f,h,i,T_{\rm old},s,w,
+       \tau,\eta,\zeta,y_{\rm old},\gamma_{\rm old}),
+\]
+put $Y=sq^3$, use the shared abbreviations above, and set
+\[
+ D=b_0+H\gamma_{\rm old},\qquad
+ V_{\rm old}=c(T_{\rm old}f-1)-Rf^2.
+\]
+The ordinary strong kernel consists of the six equations
+\begin{equation}\label{eq:sc-source}
+\begin{aligned}
+ \tau^2-\ell(\ell+k)&=1, & D^2-\Delta c^2&=1,\\
+ A_{\rm aux}(V_{\rm old}^2-y_{\rm old}^2)+y_{\rm old}^2&=1,
+       & k-hE-R&=1,\\
+ (K_0+w)C+(q-F)-z_{\rm old}(q-1)&=1,
+       & (ic^2)^2&=\Delta(f^2-1).
+\end{aligned}
+\end{equation}
+For an authentic complete tuple, a positive solution of this system gives
+a finite blank K215 computation, hence a finite ZFC refutation.  Conversely
+a finite refutation supplies canonical normalized compiler witnesses, which
+give ordinary witnesses by
+\begin{equation}\label{eq:sc-normalized}
+ i=\Delta i_{\rm norm},\qquad
+ f^2=1+\Delta i_{\rm norm}^2c^4.
+\end{equation}
+The canonical outer identities are
+\begin{equation}\label{eq:sc-canonical}
+ p=R=2n-1,\qquad R\equiv3\pmod4,\qquad
+ X=wq=2^R,\quad Y=sq^3,\quad c=\psi_{a+2}(R).
+\end{equation}
+These statements are the ordinary compiler theorem in
+\path{upstream/ORDINARY_KERNEL.md}, composed with the complete native
+adapter in \path{native/PROOF.md}.  They specify the imported semantic
+dependency precisely.  Sections below prove the new reduction to and from
+this interface.
+
+\subsection{A minimum block replaces an extra squared residual}
+
+\begin{lemma}\label{lem:sc-minimum}
+For every positive assignment to the fourteen coordinates,
+\[
+ P=0\quad\Longleftrightarrow\quad
+ A_0=M=W=L_t=0\quad\hbox{and}\quad N_a=1.
+\]
+\end{lemma}
+\begin{proof}
+We have $a>0$, $\Delta>0$, $c\ge3$, and $I=ic^2\ge9$.
+If $f=1$, then $A_{\rm aux}=0$ and $W=I^2>1$, which is incompatible
+with $P=0$.  If $f\ge2$, then $A_{\rm aux}>1$.  In this case $N_a=0$
+would imply
+\[
+ A_{\rm aux}V^2=(A_{\rm aux}-1)(V+e)^2.
+\]
+Neither $V$ nor $V+e$ could vanish, since simultaneous vanishing would
+force $e=0$.  Thus $A_{\rm aux}(A_{\rm aux}-1)$ would be a rational
+square.  A rational square root of an integer is integral, whereas
+\[
+ (A_{\rm aux}-1)^2
+ <A_{\rm aux}(A_{\rm aux}-1)<A_{\rm aux}^2.
+\]
+This contradiction shows $N_a^2\ge1$.  The sum in
+\eqref{eq:sc-polynomial} therefore forces the other four residuals to
+vanish and $N_a=\pm1$.
+
+With $W=0$ we have $A_{\rm aux}=I^2$, and
+\[
+ N_a=I^2V^2-(I^2-1)y^2.
+\]
+Modulo four this is $V^2$ if $I$ is odd and $y^2$ if $I$ is even.
+It cannot be $-1$.  The converse follows by substitution.
+\end{proof}
+
+\subsection{Scale recovery and the adaptive modulus}
+
+Suppose $P=0$.  From $A_0=0$, the rational number
+\[
+ \frac{q^3(\ell+\rho)+Y}{q^3}
+\]
+has square $\ell(\ell+k)+1\in\Z$.  It is integral, so $q^3\mid Y$.
+Consequently
+\begin{equation}\label{eq:sc-scale}
+ s=Y/q^3>0,\qquad
+ \tau=\ell+\rho+s>0,\qquad
+ \tau^2-\ell(\ell+k)=1.
+\end{equation}
+In particular $Y\ge q^3$, $X\ge q$, and the authentic value of $\beta$
+gives $q\ge16$.
+
+Put $z_{\rm old}=z+1$.  The transport identity is
+\[
+ (K_0+w)C+(q-F)-z_{\rm old}(q-1)=1+L_t=1.
+\]
+It forces $C>0$: if $C\le0$, its left side is at most
+\[
+ q-F-z_{\rm old}(q-1)
+   =1-F-(z_{\rm old}-1)(q-1)\le0.
+\]
+Hence $\alpha+C=q-F$ and $1\le F\le q-1$.  Set
+$G_0=(q-1)(q-F)+\alpha=q\alpha+(q-1)C$.  Positivity gives
+\[
+ q\le G_0\le q^2-q-1,\qquad
+ 0<(M_C+qM_F)J<(q-1)(1+2q).
+\]
+For the upper bound on $G_0$, use $F\ge1$, $C\ge1$, and
+$\alpha\le q-F-1$.  Since $J=(q-1)/(B-1)$, the mask bound follows from
+the complete tuple's inequalities.  These estimates imply
+\begin{equation}\label{eq:sc-bounds}
+ 3q+1<R<q^4-q^3<q^4-2,
+ \qquad E\ge q^4>R+2,\quad a>E>R,
+ \quad kY<c<k(Y+1).
+\end{equation}
+
+\begin{lemma}[Adaptive modulus]\label{lem:sc-modulus}
+After the scale recovery \eqref{eq:sc-scale}, the polynomial $U=Y^2$
+satisfies
+\[
+ U\mid4XY^2,\qquad
+ \mu:=\frac{U}{\gcd(U,H)}\ge\frac{Y^2}{9}>R+2.
+\]
+Neither conclusion requires a value for the main Pell index or a
+recovered index quotient.
+\end{lemma}
+\begin{proof}
+The first divisibility holds identically.  Because
+$H=4Y(X+1)+3$, we have $\gcd(Y,H)\mid3$.  Prime by prime,
+\[
+ \min(2v_t(Y),v_t(H))\le2\min(v_t(Y),v_t(H)),
+\]
+so $\gcd(Y^2,H)\mid9$.  Therefore
+\[
+ \mu\ge Y^2/9\ge q^6/9>q^4>R+2,
+\]
+where $q\ge16$ supplies the strict middle inequality.
+\end{proof}
+
+The distinction between size and degree is decisive.  Earlier
+fourteen-variable quotient absorption used $U=4q^4$.  Here the directly
+supplied coordinate $Y$ has degree one; integrality forces $Y\ge q^3$
+only on a zero.  Thus $Y^2$ has smaller polynomial degree while meeting
+the required arithmetic lower bound.
+
+\subsection{The early bound precedes strong-rank recovery}
+
+The equation $M=0$ makes $g=D_*/U$ a rational square root of the integer
+$G$, hence an integer.  It is positive \emph{before} either Pell index
+has been identified.  Indeed $r=k-R-1<k$, $a>3$, and $H<5a$, while
+\[
+ \frac{b_0}{H}>\frac{ac}{H}>\frac c5>\frac{kY}{5}
+       >\frac{k}{Y^2}=\frac kU.
+\]
+The last inequality uses $Y^3>5$.  Hence
+\[
+ g=b_0+H(\gamma-r/U)>b_0-Hk/U>0,
+ \qquad g^2-\Delta c^2=1.
+\]
+Reducing $D_*=Ug$ modulo $U$ gives
+\begin{equation}\label{eq:sc-weakdiv}
+ U\mid H(k-R-1),\qquad \mu\mid k-R-1.
+\end{equation}
+At this stage it is not legitimate to replace $\mu$ by $U$ in the second
+divisibility.
+
+Let $A=a+2$ and $P_0=2XY^2+1$.  The first norm is
+$\tau^2-XY^2(XY^2+1)k^2=1$.  Its fundamental positive unit has second
+coordinate two: coordinate one lies strictly between consecutive
+squares, and coordinate two is attained by $2XY^2+1$.  Pell
+classification, and then the main norm, give indices $n,p\ge1$ with
+\begin{equation}\label{eq:sc-indices}
+ \tau=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n),
+ \qquad g=\chi_A(p),\quad c=\psi_A(p).
+\end{equation}
+Since $P_0>A$ and $c>k$, strict growth gives $p>n$.
+The recurrence congruence $\psi_{P_0}(n)\equiv n\pmod{P_0-1}$ yields
+\begin{equation}\label{eq:sc-firstcong}
+ k\equiv2n\pmod{4XY^2}.
+\end{equation}
+By Lemma~\ref{lem:sc-modulus} and \eqref{eq:sc-weakdiv},
+$2n\equiv R+1\pmod\mu$.  Since $0<R+1<\mu$ and $n>0$, we can write
+\begin{equation}\label{eq:sc-early}
+ 2n=R+1+t\mu\quad(t\ge0),\qquad n\ge(R+1)/2\ge25,
+ \qquad p\ge26.
+\end{equation}
+This proves the required early bound without the deleted equation
+$k-hE-R=1$.  It also gives
+\begin{equation}\label{eq:sc-large}
+ c>A\Delta^2,\qquad c>2p,\qquad c>2R.
+\end{equation}
+For the first inequality, use
+$\psi_A(p)\ge(2A-1)^{p-1}\ge A^{25}>A(A^2-1)^2$.
+The recurrence gives $c>2p$; finally $c\ge\psi_A(2)=2A>2R$.
+
+\subsection{The ordinary rank and the auxiliary index}
+
+We record the exact inherited rank statement, because a weaker
+square-root observation would not suffice.
+
+\begin{lemma}[Ordinary strong rank]\label{lem:sc-rank}
+Let $A\ge2$, $\Delta=A^2-1$, and
+$c=\psi_A(p)>A\Delta^2$.  If $i,f>0$ and
+$(ic^2)^2=\Delta(f^2-1)$, then for an integer $m>0$,
+\[
+ f=\chi_A(m),\quad p\mid m,\quad c\mid m,\quad
+ I=\Delta\psi_A(m),\quad c^2\mid(f^2-1).
+\]
+In the situation above, $m\ge c>2p$.
+\end{lemma}
+\begin{proof}
+This is the ordinary strong-rank argument preserved in
+\path{upstream/ORDINARY_KERNEL.md}, Section 4.  For completeness, its
+essential rank step is recalled.  In the quadratic field, let $F_0$ be
+the abscissa of the fundamental positive integer-coordinate Pell unit.
+For some $d>0$ and $S=\psi_{F_0}(d)$,
+\[
+ A=\chi_{F_0}(d),\qquad
+ \Delta=(F_0^2-1)S^2,\qquad
+ \psi_{F_0}(dp)=Sc.
+\]
+Pell classification applied to the strong equation, using the squarefree
+discriminant, gives $f=\chi_{F_0}(u)$ and
+$I=(F_0^2-1)S\psi_{F_0}(u)$ for some $u>0$.
+Put $b=\psi_{F_0}(\gcd(u,dp))$.
+Strong divisibility and $c^2\mid I$ imply $b\ge c/\Delta$.
+Indeed, if $g_1=\gcd(c,\psi_{F_0}(u))$, then
+$c/g_1\mid(F_0^2-1)S$, while $b\ge g_1$ because
+$c\mid\psi_{F_0}(dp)$.  Thus
+$b\ge c/((F_0^2-1)S)\ge c/\Delta$.
+If $\gcd(u,dp)$ were a proper divisor of $dp$, then
+\[
+ 2b^2<\psi_{F_0}(2\gcd(u,dp))\le Sc<Ac,
+\]
+contradicting $c>A\Delta^2$.  Thus $dp\mid u$; write $u=dm$,
+so $p\mid m$ and composition gives $I=\Delta\psi_A(m)$.
+
+Write $m=pt$.  From $I=ic^2$ and
+$\psi_A(pt)=c\psi_{\chi_A(p)}(t)$, reduction modulo $c$ gives
+$c\mid\Delta t$.  Here the factor $\chi_A(p)$ is a unit modulo $c$.
+Also
+$\psi_A(p)\equiv pA^{p-1}\pmod\Delta$, whence
+$g_0:=\gcd(c,\Delta)=\gcd(p,\Delta)$ divides $p$.
+Since $c/g_0\mid t$, we obtain $c\mid pt=m$.
+Finally
+\[
+ f^2-1=\Delta\psi_A(m)^2=ic^2\psi_A(m),
+\]
+which proves the required divisibility.  This proof includes the case
+where $A$ is not the fundamental unit for the squarefree discriminant.
+\end{proof}
+
+Apply the lemma using $W=0$ and \eqref{eq:sc-large}.  Set
+$T_{\rm old}=fT>0$ and $y_{\rm old}=|V+e|$.  Then
+\begin{equation}\label{eq:sc-aux}
+ V=c(T_{\rm old}f-1)-Rf^2,\qquad
+ I^2V^2-(I^2-1)y_{\rm old}^2=1.
+\end{equation}
+Neither $V$ nor $y_{\rm old}$ vanishes; in particular $y_{\rm old}>0$.
+Pell classification with parameter $I$ supplies an index $j>0$ such that
+\[
+ I|V|=\chi_I(j),\qquad y_{\rm old}=\psi_I(j).
+\]
+The index $j$ is odd, since even-index abscissas are $\pm1$ modulo $I$.
+For $j=2v+1$, the integer polynomial $Q_v$ satisfies
+\begin{equation}\label{eq:sc-Q}
+ \chi_t(2v+1)=tQ_v(t^2),\qquad
+ Q_v(0)=(-1)^v(2v+1),\qquad
+ Q_v(1-A^2)=(-1)^v\psi_A(2v+1).
+\end{equation}
+One may verify these identities from
+$Q_0(X)=1$, $Q_1(X)=4X-3$, and
+$Q_{v+1}(X)=(4X-2)Q_v(X)-Q_{v-1}(X)$.
+
+The explicit expression for $V$ gives
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c;
+\]
+the second uses $c^2\mid f^2-1$, which has now been proved by rank
+recovery.  Since $I^2\equiv1-A^2\pmod f$, identities
+\eqref{eq:sc-Q} imply $\psi_A(j)\equiv\pm c\pmod f$.
+Squaring and using the doubling identity gives
+\[
+ \chi_A(2j)\equiv\chi_A(2p)\pmod{\chi_A(m)}.
+\]
+The signed Pell step-down therefore yields $j\equiv\pm p\pmod m$.
+To see the required uniqueness, reduce the abscissa index modulo $2m$
+and reflect it into $[0,m]$ using
+\[
+ \chi_A(t+2m)\equiv-\chi_A(t),\qquad
+ \chi_A(2m-t)\equiv-\chi_A(t)\pmod{\chi_A(m)}.
+\]
+Because $0<2p<m$, a negative representative cannot have the displayed
+positive residue: for $r,2p\le m-1$,
+$\chi_A(r)+\chi_A(2p)\le2\chi_A(m-1)<\chi_A(m)$.
+The representative $r=m$ has residue zero, and strict growth then forces
+the positive representative to be $2p$.  Thus
+$2j\equiv\pm2p\pmod{2m}$, as asserted.
+
+Since $c\mid m$, this gives $j\equiv\pm p\pmod c$.
+On the other hand $c\mid I$ and the constant term in
+\eqref{eq:sc-Q} give $j\equiv\pm R\pmod c$.
+Therefore $R\equiv\pm p\pmod c$.  The strict bounds
+$0<p,R<c/2$ in \eqref{eq:sc-large} force
+\begin{equation}\label{eq:sc-pR}
+ p=R.
+\end{equation}
+This argument uses neither the missing index quotient nor a restored
+main-root congruence.
+
+\subsection{Restore the full modulus and finish soundness}
+
+We now have $n<p=R$.  Hence
+$|2n-R-1|<R<\mu$.  Its divisibility by $\mu$ in
+\eqref{eq:sc-early} forces $2n=R+1$.
+Return to the stronger first-Pell congruence
+\eqref{eq:sc-firstcong}: it shows that
+\[
+ r=k-R-1=k-2n
+\]
+is divisible by the \emph{full} $4XY^2$, and therefore by both $E$ and
+$U$.  Moreover $r>0$, since $n\ge2$ and $\psi_{P_0}(n)>n$.
+Thus
+\begin{equation}\label{eq:sc-recover}
+ h=r/E>0,\qquad \gamma_{\rm old}=\gamma-r/U\in\Z.
+\end{equation}
+The equality $D_*=Ug$ now restores
+$g=b_0+H\gamma_{\rm old}$, with the full modulus $H$.
+Since $n\ge2$, $k\ge4P_0>X$ and $c>k>X$.
+Also $\Delta>(a+1)^2$ implies $g>(a+1)c$, so
+\[
+ g-b_0>c-X>0,\qquad \gamma_{\rm old}>0.
+\]
+All fifteen positive coordinates in \eqref{eq:sc-source} have been
+reconstructed: use \eqref{eq:sc-scale}, $z_{\rm old}=z+1$,
+$T_{\rm old}=fT$, $y_{\rm old}=|V+e|$, and
+\eqref{eq:sc-recover}.  Their six source equations hold exactly.
+The inherited compiler interface therefore gives a finite ZFC refutation.
+
+The order of the argument is essential.  Initially only
+$U\mid Hr$ and $\mu\mid r$ were available.  The bound on $\mu$ first
+made the rank theorem applicable; rank recovery gave $p=R$; only then
+did the first norm restore $U\mid r$ and the full main-root congruence.
+
+\subsection{Canonical completeness and positive replacement witnesses}
+
+Conversely suppose a finite ZFC refutation exists.  Choose canonical
+normalized compiler witnesses as in
+\eqref{eq:sc-normalized}--\eqref{eq:sc-canonical}, and replace the strong
+coordinate by $i=\Delta i_{\rm norm}$.  Retain the outer coordinates.
+The identity $R=2n-1$ and \eqref{eq:sc-firstcong} show that
+$r=k-R-1>0$ is divisible by $4XY^2$, hence by $U=Y^2$.
+Set $\gamma=\gamma_{\rm old}+r/U>0$.  Then $D_*=Ug$ and $M=0$.
+
+The replacement for the first root also has a positive gap.  Since
+$\ell=XY^2k>k$, the equation
+$\tau^2=\ell(\ell+k)+1$ gives
+\[
+ \tau<\ell+k,
+ \qquad \tau-\ell=\frac{\ell k+1}{\tau+\ell}>\frac k3.
+\]
+Canonical $n\ge2$ gives $k>XY$, and therefore
+\[
+ k/3>XY/3>Y/q^3=s.
+\]
+Thus $\rho=\tau-\ell-s$ is a positive integer.  Supplying $Y=sq^3$
+directly makes $A_0=0$.
+
+The transport shift is positive too.  Since $X=2^R$ and $R>3q$,
+$w=2^R/q>q>F$.  As $C>0$, the old transport equation gives
+\[
+ (z_{\rm old}-1)(q-1)=(K_0+w)C-F>0.
+\]
+Hence $z=z_{\rm old}-1>0$ and $L_t=0$.
+
+It remains to construct the auxiliary quotient and its positive gap;
+an arbitrary old quotient need not be divisible by $f$.
+With $I=\Delta i_{\rm norm}c^2$, choose fresh auxiliary coordinates by
+\[
+ V=\frac{\chi_I(R)}I,
+ \qquad y_{\rm old}=\psi_I(R).
+\]
+The quotient is a positive integer because $R$ is odd.
+Write $R=2v+1$; the canonical phase $R\equiv3\pmod4$ makes $v$ odd.
+Equation \eqref{eq:sc-normalized} gives
+$I^2=\Delta(f^2-1)$ and hence
+$I^2\equiv1-A^2\pmod{f^2}$.  Applying the polynomial identities
+\eqref{eq:sc-Q} modulo the \emph{square} modulus $f^2$ and modulo $c$
+yields
+\[
+ V\equiv-c\pmod{f^2},\qquad V\equiv-R\pmod c.
+\]
+Also $\gcd(c,f)=1$ and $f^2\equiv1\pmod c$.
+It follows that
+\begin{equation}\label{eq:sc-Tconstruct}
+ T=\frac{V+c+Rf^2}{cf^2}
+\end{equation}
+is a strictly positive integer, and its defining identity is exactly
+$V=f^2(cT-R)-c$.
+
+The Pell identity gives
+$I^2V^2-(I^2-1)y_{\rm old}^2=1$.
+Since $R\ge3$ and $I>1$,
+$V\ge\chi_I(3)/I=4I^2-3>1$.  Thus
+\[
+ (I^2-1)(y_{\rm old}^2-V^2)=V^2-1>0,
+\]
+so $e=y_{\rm old}-V>0$.
+Now $y=V+e=y_{\rm old}$, $W=0$, and $N_a=1$.
+All fourteen supplied coordinates are positive; Lemma~\ref{lem:sc-minimum}
+gives $P=0$.  This proves the converse and completes the semantic part of
+Theorem~\ref{thm:sc-main}.
+
+The use of the phase $R\equiv3\pmod4$ in this direction is justified
+by the authentic native compiler.  In particular its low-mask condition
+$(C-1)\mathbin{\mathrm{AND}}(M_CJ+1)=0$, together with
+$q\equiv0\pmod4$, $J\equiv1\pmod4$, and $M_C\equiv2\pmod4$,
+gives $C\equiv1\pmod4$.  Substituting in the packing expression for $R$
+then gives $R\equiv C+2\equiv3\pmod4$.  This bit condition belongs to
+the inherited proof, not the polynomial definition.
+
+\subsection{Exact degree, evaluator cost, and comparison}
+
+Assign degree one to each supplied coordinate and degree zero to fixed
+integers.  Put
+\[
+ q_0=\beta J,\quad X_0=wq_0,\quad k_0=\eta+\zeta,
+ \quad E_0=X_0Y,\quad c_0=k_0Y,\quad
+ R_0=q_0^3(q_0-F).
+\]
+These are the relevant leading homogeneous forms.  The exact residual
+degrees are
+\[
+ \deg A_0=12,\qquad \deg M=14,\qquad \deg W=10,
+ \qquad \deg N_a=15,\qquad \deg L_t=2.
+\]
+The cancellations behind the upper bounds follow from exact polynomial
+identities:
+\begin{align*}
+ A_0={}&q^6(2\ell\rho+\rho^2-\ell k-1)
+           +2q^3Y(\ell+\rho)+Y^2,\\
+ D_0={}&b_0+H\gamma,\\
+ D_0^2-G={}&2ac(X+H\gamma)+(X+H\gamma)^2-Hc^2-1,\\
+ M={}&U^2(D_0^2-G)-2UHrD_0+H^2r^2,\\
+ N_a={}&V^2-(A_{\rm aux}-1)e(2V+e).
+\end{align*}
+For $M$, the first summand has degree at most $13$, and the other two
+have degree $14$.  Their joint leading form is
+\[
+ \operatorname{in}_{14}M
+       =8X_0^2Y^2R_0(k_0Y^3+2R_0),
+\]
+which is nonzero.  The leaders of $V$ and $A_{\rm aux}$ are
+$-f^2R_0$ and $E_0^2f^2$, so
+\[
+ \operatorname{in}_{15}N_a=2E_0^2f^4eR_0.
+\]
+Only $N_a^2$ reaches degree $30$.  Therefore
+\begin{equation}\label{eq:sc-leader}
+ \operatorname{in}_{30}P
+  =4\beta^{10}J^{10}w^4Y^4f^8e^2(\beta J-F)^2.
+\end{equation}
+For example the coefficient of $J^{12}w^4Y^4f^8e^2$ is
+$4\beta^{12}\ne0$.  This proves exact degree $30$ with the actual
+fixed coefficients, rather than only a syntactic degree bound.
+
+The supplied evaluator uses $44+23+16=83$ binary operations.
+Squaring and multiplication by a numeral are charged; reuse and fixed
+leaves are free.  All fourteen witness ports, all four fixed ports, and
+all $83$ gates are live.  This is an arithmetic-circuit count; it is not a
+claim about bit complexity or the size of the fully expanded polynomial.
+
+For orientation, the relevant pinned comparisons are
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Construction & Positive variables & Degree & Operations\\
+\hline
+Package 55, fourteen-variable gap form & $14$ & $52$ & $79$\\
+Package 58, free-ordinate form & $15$ & $30$ & $79$\\
+This construction & $14$ & $30$ & $83$\\
+Package 51, shortest evaluator & $15$ & $157$ & $66$\\
+\hline
+\end{tabular}
+\end{center}
+Against the previous fourteen-variable point, the degree decreases by
+$22/52=42.3077\ldots\%$ for four additional gates.  Against the
+fifteen-variable degree-$30$ point, it deletes one positive unknown for
+four gates.  These are distinct degree, variable-count, and evaluator-cost
+tradeoffs; the result makes no global minimality claim.
+
+\subsection{Provenance and independently reproducible checks}
+
+The comparison is pinned to ProveIt commit
+\begin{center}
+\path{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+\end{center}
+\path{SOURCE_PINS.json} records forty exact copied upstream files, their
+repository paths and revisions, Git blob identities, and SHA256 hashes.
+The earlier source revision required by the compact coefficient generator
+is recorded separately in \path{native/SOURCE_PINS.json}.  The original
+notices and license files accompany the native material.
+
+The inherited ingredients are the compact native compiler (package 44),
+ordinary strong-rank and signed auxiliary-index arguments, index-quotient
+absorption (package 50), the auxiliary gap minimum (package 55), the
+squared-modulus quotient (package 51), and integral-root scale recovery
+(package 58).  The new ingredient is the choice $U=Y^2$, its early gcd and
+size lemma, and its integration with those changes.  Its proof in
+Lemma~\ref{lem:sc-modulus} does not assume a decoded power-of-two value
+for $X$ or a previously recovered index quotient.
+
+\path{verify.py} is independent of the circuit builder.  It checks source
+and coefficient hashes, circuit wiring and liveness, exact local sparse
+polynomial identities, independent scalar transcriptions, and entire
+univariate polynomial evaluations of the circuit modulo three primes.
+It also verifies the exact formal leading forms used in
+\eqref{eq:sc-leader}.  Both ordinary and optimized Python executions pass.
+The results are recorded in \path{CHECKS.json}.  The complete native
+coefficient generator and independent auditor were also rerun in an
+isolated copy; all four raw payload hashes agree with the delivered
+integers, as recorded in \path{NATIVE_REBUILD.json}.
+
+These finite checks authenticate the delivered implementation and the
+explicit finite certificate data.  The universal existence equivalence
+rests on the mathematical proof above and the stated compiler interface.
+No finite check here decides whether a positive zero or a ZFC refutation
+exists.

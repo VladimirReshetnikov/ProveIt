@@ -1,0 +1,1 @@
+Lower-operation companion. The complete proof is ../PROOF.md; inherited licenses and proofs are in ../licenses and ../upstream. Build and verify with the local Python scripts. All data and fixed coefficients are local.

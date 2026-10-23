@@ -1,0 +1,592 @@
+% Included section; theorem environments and \Z, \N, \Con, \Pos are supplied
+% by the containing report.  All artifact paths below are relative to
+% integer41/.  This file deliberately contains no preamble.
+\section{A quartic in 41 unrestricted integer unknowns}
+
+The main construction in this section is an explicitly specified polynomial
+\(Q_{41}\in\Z[x_1,\ldots,x_{41}]\) of total degree four.  It reduces the
+45 integer variables and 28 quadratic residuals of the inspected source
+quartic to 41 integer variables and 26 residuals.  The first saving comes
+from recovering the sign of the radix \emph{after} the Pell equations have
+forced a power of two.  The other three come from using a larger scale to
+exclude a negative common sign, so that two positivity representations can
+be replaced by one representation of a positive product.
+
+\begin{theorem}
+For the four fixed integer coefficients specified below, ordinary
+mathematics formalizable in ZFC proves
+\[
+ \exists\mathbf x\in\Z^{41}\;Q_{41}(\mathbf x)=0
+ \quad\Longleftrightarrow\quad
+ \text{there exists a finite ZFC refutation}.
+\]
+Consequently ZFC proves that the absence of integer zeros of \(Q_{41}\) is
+equivalent to \(\Con(\mathrm{ZFC})\).  Exact elimination of polynomially
+defined coordinates also gives an equivalent sextic in 36 integers and an
+equivalent octic in 31 integers.
+\end{theorem}
+
+The statement uses the inherited native compiler, Pell lemmas, and
+calibration of the literal blank K215 machine to syntactic ZFC
+refutability.  Those interfaces are identified below.  This is not a new
+Lean or Rocq kernel certificate and does not assert a global minimum.
+All artifact paths in this section are relative to
+\path{integer41/}.  The inspected ProveIt snapshot is
+\path{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+
+\subsection{The complete fixed coefficient tuple}
+
+The coefficient ports are fixed numerals, not quantified variables.  Use
+the \emph{whole} source34 tuple named
+\path{mixed-parity-unrounded-1064921}, including its shifted high mask.
+Put
+\[
+ d=1064921=121\cdot8801,\qquad
+ \rho=2^{121},\qquad B=2^d,\qquad \beta=B-1.
+\]
+Here is a finite recipe that fixes the other three ports completely.  Let
+\(x_{it}\) be the ordered west, north, east, and south labels of tile
+\(i\), in the literal 943-entry list
+\path{upstream/wang943_tiles.json}.  Let
+\[
+ (o_0,o_1,o_2,o_3)=(1020,1000,980,960),\qquad
+ e_t(j)=o_t+2j,\qquad W_j=2^{10+2j},
+\]
+and define the finite set
+\[
+ \mathcal E=\{0,\ldots,942\}
+ \cup\{e_t(j):0\leq t<4,\ 0\leq j<10\}
+ \cup\{1063,1064,1095,1096,2195,3296\}.
+\]
+For \(0\leq i<943\), set
+\[
+ c_i=1+\sum_{t=0}^3\sum_{j=0}^9
+       \operatorname{bit}_j(x_{it}+512)W_{10t+j}
+       +\sum_{j=40}^{43}W_j.
+\]
+The remaining coefficients are
+\(c_{e_t(j)}=W_{10t+j}\),
+\((c_{1095},c_{1096},c_{2195},c_{3296})=(W_{40},W_{41},W_{42},W_{43})\),
+and \(c_{1063}=c_{1064}=0\).  Finally put
+\[
+ \mu=1022+\sum_{j=0}^{43}W_j,\qquad
+ Z_0=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+       +(2^{27}-1)\rho^{8799},
+\]
+\begin{align*}
+ D_C&=\rho^{40}+\rho^{41}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e
+            (\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R&=\rho,\\
+ M_C&=B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+             -2\rho^{1063},\\
+ M_{F,n}&=4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^9(\rho^{1000+2j}+\rho^{1021+2j})
+       +\rho^{2195}+\rho^{3296}+Z_0,\\
+ K_0&=D_C+BD_R,\qquad M_F=M_{F,n}+\beta.
+\end{align*}
+In particular, the port \(M_F\) is \emph{not} \(M_{F,n}\).  This source
+binding includes the exact native geometry and completeness controller
+proved in \path{upstream/COEFFICIENT_PROOF.md}; agreement of four coarse
+inequalities alone would not establish the compiler interface.
+
+The actual coefficients satisfy
+\[
+ \beta\geq17,\qquad 0<M_C<\beta,
+ \qquad \beta<M_F<2\beta,\qquad K_0\geq0.
+\]
+They are supplied as gzip-compressed minimal unsigned little-endian byte
+strings in \path{coefficients/beta.bin.gz}, \path{coefficients/K.bin.gz},
+\path{coefficients/MC.bin.gz}, and
+\path{coefficients/MF_source.bin.gz}, respectively.  Their bit lengths are
+1064921, 1065043, 1064921, and 1064922; their total uncompressed size is
+532479 bytes.  The builder reconstructs all four integers from the literal
+tile list and matches every full raw SHA-256 digest in
+\path{upstream/PAYLOAD_BINDING.json}.  The file
+\path{SOURCE_PINS.json} records the exact source Git blobs.  No coefficient
+depends on waiting for a machine to halt.
+
+\subsection{All variables and all 26 quadratic residuals}
+
+There are 32 arithmetic coordinates
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,r,v,w_4,\tau,\eta,\zeta,y,\gamma,o,j,\\
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\mathrm{aux}},\Delta,u
+\end{gathered}
+\]
+and nine further coordinates, grouped as
+\(\boldsymbol\xi=(\xi_1,\xi_2,\xi_3)\),
+\(\boldsymbol\upsilon=(\upsilon_1,\upsilon_2,\upsilon_3)\), and
+\(\boldsymbol\omega=(\omega_1,\omega_2,\omega_3)\).
+Every one of these 41 coordinates ranges over \(\Z\).
+The names \(v,w_4\) are the JSON coordinates
+\path{v_scale}, \path{w_scale}; the triples correspond, in order, to
+\path{FA_pos1}, \path{FA_pos2}, \path{FA_pos3};
+\path{FC_pos1}, \path{FC_pos2}, \path{FC_pos3}; and
+\path{eta_zeta_pos1}, \path{eta_zeta_pos2}, \path{eta_zeta_pos3}.
+
+Use the following \emph{affine abbreviations}, which introduce no
+additional unknowns:
+\[
+ q=\beta J+1,\quad k=\eta+\zeta,\quad C=q-F-\alpha,
+ \quad s=2v+1,\quad i=2r+1,\quad H=4a+3.
+\]
+The positive ternary form is
+\[
+ \Pos(x,y,z)=1+x^2+y^2+z(z+1).
+\]
+It is strictly positive on \(\Z^3\) and represents every positive
+integer.  For surjectivity, apply the three-square theorem to \(4n-3\):
+exactly one of the three squares is odd, so division by four gives the
+displayed form after permuting the coordinates.
+
+Define the residuals literally as follows:
+\begin{align*}
+ r_1&=L-q^2+1, &
+ r_2&=N-q(L+1),\\
+ r_3&=X-4qw_4, &
+ r_4&=a-E-sN,\\
+ r_5&=E(X+1)-Xa, &
+ r_6&=c-\eta-k(a-E),\\
+ r_7&=P-k-E(c-\eta), &
+ r_8&=\tau^2-P(P-k)-1,\\
+ r_9&=D-X-ac-\gamma H, &
+ r_{10}&=\Delta-a^2-H,\\
+ r_{11}&=C_2-c^2, &
+ r_{12}&=D^2-\Delta C_2-1.
+\end{align*}
+The remaining rows are
+\begin{align*}
+ r_{13}&=k-1-hE-(q-F)(N-q)+CL-(M_C+qM_F)J,\\
+ r_{14}&=(K_0+4w_4)C-z(q-1)-F,\\
+ r_{15}&=F_2-f^2,\\
+ r_{16}&=V+c-fo,\\
+ r_{17}&=V-cj-hE+k-1,\\
+ r_{18}&=g+V^2-y^2,\\
+ r_{19}&=I-iC_2,\\
+ r_{20}&=B_{\mathrm{aux}}-I^2,\\
+ r_{21}&=B_{\mathrm{aux}}-\Delta F_2+\Delta,\\
+ r_{22}&=y^2-B_{\mathrm{aux}}g-1,\\
+ r_{23}&=X-2u^2,\\
+ r_{24}&=F\alpha-\Pos(\boldsymbol\xi),\\
+ r_{25}&=FC-\Pos(\boldsymbol\upsilon),\\
+ r_{26}&=\eta\zeta-\Pos(\boldsymbol\omega).
+\end{align*}
+Here \(\Pos(\boldsymbol\xi)\) means
+\(\Pos(\xi_1,\xi_2,\xi_3)\), and likewise for the other triples.
+The required single equation is
+\[
+ \boxed{\quad Q_{41}=\sum_{\nu=1}^{26}r_\nu^2=0.\quad}
+\]
+Over integers this is exactly the simultaneous vanishing of all 26 rows.
+After expanding the affine abbreviations, every row has degree at most
+two.  Only \(r_8\) contains \(\tau\), through its term \(\tau^2\), so
+\([\tau^4]Q_{41}=1\).  Thus the degree is exactly four for the actual
+fixed coefficient tuple.  The machine-readable specification is
+\path{quartic41.json}.
+
+\subsection{The inherited Pell interfaces and the proof boundary}
+
+For \(b\geq2\), define the integer Pell sequences by
+\[
+ \chi_b(n)+\psi_b(n)\sqrt{b^2-1}
+       =(b+\sqrt{b^2-1})^n\qquad(n\geq0).
+\]
+We use the ordinary Pell classification and the following two inherited
+rank results, with their size hypotheses stated explicitly.
+
+\begin{lemma}[Ordinary strong rank and signed auxiliary step-down]
+Let \(b\geq2\), \(\delta=b^2-1\),
+\(c_0=\psi_b(p)>0\), and let \(i\) be a nonzero odd integer.
+If
+\[
+ c_0>b\delta^2,\qquad (ic_0^2)^2=\delta(f^2-1),
+\]
+then \(|f|=\chi_b(m)\) for an integer \(m\geq1\) satisfying
+\(p\mid m\), \(c_0\mid m\), and \(m\geq c_0\).
+Suppose also that \(c_0>2p,2R\), \(R>0\), and, with
+\(\varrho=|i|c_0^2\), there are integers \(V,y\) satisfying
+\[
+ \varrho^2V^2-(\varrho^2-1)y^2=1,\qquad
+ V\equiv\pm c_0\pmod{|f|},\qquad V\equiv-R\pmod{c_0}.
+\]
+Then \(p=R\).
+\end{lemma}
+
+The ordinary strong-rank input is the relaxed-rank lemma cited in
+\path{upstream/SIGNED_DOMAIN_29.md}, under ``Ordinary-strong systems and
+product''.  Its use for either sign of the scale is recorded in
+\path{upstream/ODD_SCALE_27_PROOF.md}, Section 2.  For clarity, the second
+part follows from the signed auxiliary proof as follows.  Auxiliary Pell
+classification gives an odd index \(\ell=2j_0+1\) and an odd Chebyshev
+quotient \(Q_{j_0}\) with
+\[
+ Q_{j_0}(1-b^2)=(-1)^{j_0}\psi_b(\ell),\qquad
+ Q_{j_0}(0)=(-1)^{j_0}\ell.
+\]
+Reducing modulo \(|f|\), squaring the first exposed congruence, and
+applying the plus step-down lemma with \(0<2p<m\) gives
+\(\ell\equiv\pm p\pmod m\).  Reducing modulo \(c_0\) gives
+\(\ell\equiv\pm R\pmod{c_0}\).  As \(c_0\mid m\), this yields
+\(R\equiv\pm p\pmod{c_0}\).  The strict bounds
+\(0<R,p<c_0/2\) force equality.  In particular, the sign of an original
+coordinate \(c=\pm c_0\) is immaterial here.  One must establish the
+ordinary strong-rank conclusion before inferring
+\(f^2\equiv1\pmod{c_0}\); simply dividing its norm by \(\delta\) is not
+a valid substitute.
+
+The proofs below also use the ratio estimates and main-root congruences
+in \path{upstream/ODD_SCALE_27_PROOF.md}, Sections 3--4, and in
+\path{upstream/SIGNED_DOMAIN_29.md}, under ``Signed gamma''.  We record
+the substitutions and the inequalities that make those applications
+valid; no finite search is being substituted for an unbounded Pell lemma.
+
+\subsection{A sign-free packing bound and a positive global scale}
+
+At any common zero set
+\[
+ \begin{gathered}
+ Q=|q|,\quad Y=sq^3,\quad A=a+2,\quad
+ G=q(q-F)-C,\\
+ R=G(q^2-1)+(M_C+qM_F)J.
+ \end{gathered}
+\]
+The first 13 rows give, by polynomial identities,
+\[
+ \begin{gathered}
+ N=q^3,\quad E=XY,\quad a=(X+1)Y,\quad c=kY+\eta,\quad
+ \Delta=A^2-1,\quad k=R+1+hE,\\
+ \tau^2-(XY^2)(XY^2+1)k^2=1,\qquad
+ D^2-\Delta c^2=1,\qquad D=X+ac+\gamma H.
+ \end{gathered}
+\]
+For example, substituting \(a=E+Y\) into \(r_5=0\) gives
+\(E=XY\), without division.  Substituting \(L=q^2-1\) and
+\(N=q^3\) into \(r_{13}\) gives \(k-1-hE-R\).
+Rows 15--22 give the further exact identities
+\[
+ (ic^2)^2=\Delta(f^2-1),\qquad
+ (ic^2)^2(V^2-y^2)+y^2=1,\qquad
+ V=of-c=jc-R.
+\]
+
+The two guards \(F\alpha>0\) and \(FC>0\) force
+\(F,\alpha,C\) to have the same nonzero sign.  Their sum is \(q\),
+so \(|q|\geq3\).  Since \(q=\beta J+1\), the case \(J=0\) is
+impossible, and \(Q\geq\beta-1\geq16\).  This does not yet prove
+\(q>0\).
+
+If \(q=Q>0\), all three summands are positive and
+\[
+ Q+2\leq G\leq Q^2-Q-1,\qquad
+ 0<(M_C+qM_F)J<(2Q+1)(Q-1).
+\]
+If \(q=-Q<0\), put \(F_0=-F\), \(C_0=-C\).  Then
+\[
+ G=Q(Q-F_0)+C_0,\quad 2Q+1\leq G\leq Q^2-2,
+ \quad 0<(M_C+qM_F)J<2Q(Q+1).
+\]
+These follow directly from the fixed mask bounds and
+\(J=(q-1)/\beta\).  In the positive branch the resulting upper bound is
+\(Q^4-Q^3\); in the negative branch it is
+\(Q^4-Q^2+2Q+2\).  Consequently both branches satisfy
+\[
+ \boxed{\quad Q(Q^2-1)<R<Q^4-2,\qquad R>3Q+3.\quad}
+\]
+Neither \(\eta,\zeta\) nor transport has been used.
+
+Since \(s\) is odd, \(Y\ne0\) and \(|Y|\geq Q^3\).  Row 23 gives
+\(X\geq0\).  If \(X=0\), then \(a=Y\) and
+\(D=ac+\gamma H\).  Reducing the main norm modulo \(H\), using
+\(\Delta=a^2+H\), gives \(0\equiv1\pmod H\), impossible because
+\(|H|=|4Y+3|>1\).  Thus \(X>0\).  The new scale row now gives
+\[
+ X=4qw_4\geq4Q,\qquad
+ |E|=X|Y|\geq4Q^4>3R+1.
+\]
+The extra factor four costs no variable: \(w_4\) replaces the old
+coordinate \(w\) through the affine substitution \(w=4w_4\).
+
+\subsection{Recovering positivity of eta and zeta}
+
+The last guard gives \(\eta\zeta>0\), so their signs agree and neither
+is zero.  Suppose for contradiction that both are negative.  Write
+\[
+\begin{gathered}
+ \eta_0=-\eta>0,\quad\zeta_0=-\zeta>0,\quad
+ K=\eta_0+\zeta_0=-k>0,\\
+ Z=|Y|,\quad
+ b=|A|,\quad c_0=|c|,\quad P_0=2XY^2+1.
+\end{gathered}
+\]
+For \(Y>0\) one has \(KY<c_0<K(Y+1)\); for \(Y<0\) one has
+\(K(Z-1)<c_0<KZ\).  In either case \(c_0>K\), \(b\geq2\), and
+\(P_0>b\).  The last inequality follows, for example, from
+\[
+ 2XZ^2+1-\big((X+1)Z+2\big)>0
+ \quad(X\geq64,\ Z\geq4096).
+\]
+The first and main Pell classifications therefore give
+\[
+ K=2\psi_{P_0}(n),\quad |\tau|=\chi_{P_0}(n),\qquad
+ c_0=\psi_b(p),\quad |D|=\chi_b(p),\qquad n,p\geq1.
+\]
+Monotonicity implies \(p>n\): if \(p\leq n\), then
+\(c_0\leq\psi_b(n)\leq\psi_{P_0}(n)=K/2\), a contradiction.
+Because \(P_0\equiv1\pmod{|E|}\), the Pell recurrence gives
+\(\psi_{P_0}(n)\equiv n\pmod{|E|}\).  The index row and \(k=-K\)
+give
+\[
+ 2n\equiv-(R+1)\pmod{|E|}.
+\]
+As \(2n>0\) and \(0<R+1<|E|\), this entails
+\[
+ 2n\geq |E|-R-1>2R,\qquad\text{hence }p>n>R.
+\]
+In particular \(p\geq6\).  The elementary Pell growth bound
+\(\psi_b(p)\geq(2b-1)^{p-1}\) yields
+\[
+ c_0>b(b^2-1)^2,\qquad c_0>2p,\qquad c_0>2R.
+\]
+For the first inequality it suffices to observe that
+\((2b-1)^5>b^5>b(b^2-1)^2\) for \(b\geq2\); the second follows
+from \(3^{p-1}>2p\) for \(p\geq6\).
+
+Every hypothesis of the ordinary strong-rank and auxiliary lemma now
+holds.  In particular \(i=2r+1\) is nonzero and odd, the two exposed
+quotients give \(V\equiv-c\pmod{|f|}\) and
+\(V\equiv-R\pmod{c_0}\), and \(c=\pm c_0\) is permitted.  The
+lemma gives \(p=R\), contradicting \(p>n>R\).  Therefore
+\[
+ \eta>0,\qquad\zeta>0.
+\]
+This argument is the reason for the larger scale.  The weaker bound
+\(|E|>R+2\) from the unscaled construction does not supply the
+negative-index contradiction \(n>R\).
+
+\subsection{Delayed radix sign recovery: the intermediate quartic44}
+
+It remains to justify that the other signed coordinates cannot introduce
+spurious roots.  For this purpose consider the intermediate system
+\path{quartic44.json}: replace \(w_4\) by one coordinate \(w\), use
+\(X=qw\), and replace the product guard on \(\eta\zeta\) by two
+separate ternary guards \(\eta=\Pos(\mathbf e)\),
+\(\zeta=\Pos(\mathbf t)\).  It has 44 variables and 27 residuals.
+All other rows are unchanged, in particular \(X=2u^2\).  Starting with
+a zero of the 41-variable system, put \(w=4w_4\) and supply ternary
+representations of the now positive \(\eta,\zeta\).  This gives a zero
+of the intermediate system exactly.
+
+For a zero of that intermediate system the preceding sign-free packing
+bounds remain valid.  The same zero-scale exclusion gives
+\[
+ X\geq Q\geq16,\qquad |Y|\geq Q^3,\qquad
+ |E|\geq Q^4>R+2,\qquad \eta,\zeta>0.
+\]
+These are the early scale hypotheses required by the inherited signed
+Pell argument.  In particular no assumption that \(q>0\) or that
+\(w\) is a square is needed to establish them.
+
+Here are the rank and sign steps explicitly.  If \(Y<0\), put
+\(Z=-Y\), \(b=(X+1)Z-2\), \(c_0=-c=kZ-\eta\), and
+\(P_0=2XZ^2+1\).  Then
+\[
+ k(Z-1)<c_0<kZ,\quad P_0>b,\quad c_0>k,\qquad
+ k=2\psi_{P_0}(n),\quad c_0=\psi_b(p),\quad p>n.
+\]
+Now the index congruence has the positive sign:
+\(2n=R+1+t_0|E|\), \(t_0\geq0\).  Thus
+\(n\geq(R+1)/2\geq24\).  Pell growth gives
+\(c_0>b(b^2-1)^2\) and \(c_0>2p\); also
+\(b=|E|+Z-2>R\), so \(c_0>2R\).
+The inherited rank lemma and the exposed \(V\)-congruences give
+\(p=R\).  Since \(n<p=R\) and \(|E|>R+2\), there is no wrap:
+\(t_0=0\), hence \(R=2n-1\).
+
+Writing \(R=2r_0+1\), the negative-scale ratio estimate gives
+\[
+ Z>\frac{c_0}{k}\geq
+ \frac12\left(\frac{(2b-1)^2}{2P_0}\right)^{r_0}
+ >\frac{X^{r_0}}2>2^R.
+\]
+The strict middle inequality follows from
+\[
+ (2b-1)^2-2P_0X
+ =4(2X+1)Z^2-20(X+1)Z+25-2X>0;
+\]
+for \(X\geq16\) this is positive at \(Z=4\), where it equals
+\(46X+9\), and increases thereafter.  Here \(r_0\geq2\).
+The two signs of the main root imply, respectively,
+\[
+ X\equiv-2^R\pmod H
+ \quad\hbox{or}\quad X2^R\equiv1\pmod H.
+\]
+Both are impossible, because
+\(0<X+2^R<X+Z<|H|\) and \(1<X2^R<XZ<|H|\).
+Consequently \(Y>0\).
+
+For \(Y>0\), the same rank argument applies with \(b=A\) and
+\(kY<c<k(Y+1)\).  In particular the index row implies \(h\geq0\),
+the Pell indices satisfy \(p>n\geq(R+1)/2\), and the growth conditions
+of the ordinary strong-rank lemma again hold.  Thus \(p=R=2n-1\).
+The positive-scale ratio estimate gives
+\[
+ a>\frac{X^{r_0+1}}3,\qquad 0<X2^R<a<H-1.
+\]
+If \(D=-\chi_A(R)\), the main-root recurrence would give
+\(X2^R\equiv-1\pmod H\), contradicting that interval.
+Hence \(D=\chi_A(R)\), and the recurrence gives
+\(X\equiv2^R\pmod H\).  Both \(X\) and \(2^R\) lie strictly
+between zero and \(H\), so
+\[
+ \boxed{X=2^R.}
+\]
+This is precisely where the sign of the radix can finally be recovered.
+
+\begin{lemma}[Mersenne radix sign]
+For \(d\geq3\) and \(t\geq0\),
+\(-2^t\not\equiv1\pmod{2^d-1}\).
+\end{lemma}
+\begin{proof}
+Reduce \(t\) modulo \(d\), obtaining \(0\leq t_0<d\).
+The least positive residue of \(2^t\) is \(2^{t_0}\), whereas
+\(1\leq2^{t_0}\leq2^{d-1}<2^d-2\).  It therefore cannot be the
+residue \(-1\).
+\end{proof}
+
+Since \(q\mid X=2^R\), one has \(q=\pm2^t\) for some
+\(0\leq t\leq R\).  The definition \(q=\beta J+1\) and the lemma
+exclude the negative sign.  Thus \(q>0\), and common signs give
+\(F,\alpha,C>0\).  Also \(J>0\), \(w=X/q>0\), and
+\(s=Y/q^3>0\).  This argument delays the radix sign until it is justified;
+it does not attempt to recover the omitted square condition on \(w\).
+
+\subsection{Literal transport, compiler soundness, and completeness}
+
+The literal transport identity is
+\[
+ (K_0+w)C=z(q-1)+F,\qquad w=4w_4
+\]
+in the 41-variable system.  Source57's accompanying prose contains a
+coordinate typo: it writes \((z-1)(q-1)+F\) at this point, but that is
+not the expansion of its literal row.  Accordingly the conclusion needed
+here is \(z>0\).  Indeed \(R>3q\) implies \(2^R>q^2\), so
+\(w=2^R/q>q>F\).  With \(C\geq1\) and \(K_0\geq0\), transport
+gives \(z(q-1)>0\).  In the older unshifted positive-factor convention,
+the correct coordinate is \(z_{\mathrm{source}}=z+1\); its transport
+factor then equals one.
+
+After power recovery, the compiler soundness used here is the stage
+``Power and compiler recovery'' and the blank finite-window stage of
+\path{upstream/FIXED_BLANK_67_PROOF.md}, transported to the full tuple
+above by \path{upstream/COEFFICIENT_PROOF.md}.  Its inputs are the
+recovered positive coordinates, the authentic Pell kernel,
+\(q^3\mid Y\), the bounds \(3q+1<R<q^4\), and the literal transport
+identity.  The half-binomial valuation gives the population threshold;
+\(q=\beta J+1\) and the fact that \(q\) is a power of two imply
+\(q=B^{n_{\mathrm{cell}}}\) for some positive integer
+\(n_{\mathrm{cell}}\); inverse population and
+transport give the disjoint native masks.  The tuple's complete native
+geometry decodes a blank K215 accepting tableau.  Its inherited finitary
+calibration gives a finite ZFC refutation.
+
+The square condition on \(w\) and the condition that \(q\) be twice a
+square are sufficient choices of canonical witnesses in source57, not
+hypotheses of this post-power soundness stage.  A current solution need
+not satisfy those two restrictions in its existing coordinates.  To
+recover a source57 solution one may first decode the finite computation
+and then choose fresh canonical witnesses.  This distinction is necessary
+for the delayed-sign reduction.
+
+Conversely, a finite ZFC refutation supplies a blank K215 halt and the
+canonical witnesses of the full source34 adapter.  They satisfy
+\[
+ q=2^t\ (t\text{ odd}),\quad R\equiv3\pmod4,\quad R>t,
+ \quad X=2^R,\quad w=2^{R-t},
+\]
+with positive \(F,\alpha,C,\eta,\zeta\) and positive odd \(s,i\).
+The adapter proves these parity promises for its actual coefficients,
+including its rank controller; an older power-of-five assumption is not
+being transferred to the new exponent \(d\).
+Because \(R-t\) is a positive even integer, it is at least two, and
+\(4\mid w\).  Choose
+\[
+ w_4=2^{R-t-2},\qquad u=2^{(R-1)/2},\qquad
+ v=(s-1)/2,\qquad r=(i-1)/2.
+\]
+Retain the other canonical arithmetic coordinates and supply ternary
+representations of \(F\alpha\), \(FC\), and \(\eta\zeta\).
+Every displayed residual vanishes.  This proves completeness and, with
+the preceding soundness argument, the theorem.  No consistency premise
+is needed in either the fixed coefficient recipe or the equivalence.
+
+\subsection{Exact sextic and octic companions}
+
+For a sextic, delete the five indicated definition rows and eliminate
+their five coordinates everywhere by
+\[
+ N=q(L+1),\quad X=4qw_4,\quad C_2=c^2,
+ \quad F_2=f^2,\quad B_{\mathrm{aux}}=I^2.
+\]
+The remaining 21 residuals in 36 integer variables have degree at most
+three.  Their sum of squares, specified in \path{sextic36.json}, has
+exact degree six, with
+\[
+ [I^4g^2]Q_{36}=1.
+\]
+The certificate comes from the retained residual \(y^2-I^2g-1\);
+the complete sparse expansion checks the coefficient in the full sum.
+
+For an octic, instead delete ten definition rows and eliminate
+\[
+ \begin{gathered}
+ L=q^2-1,\quad N=q^3,\quad X=4qw_4,\quad
+ C_2=c^2,\quad F_2=f^2,\quad B_{\mathrm{aux}}=I^2,\\
+ g=y^2-V^2,\qquad P=E(c-\eta)+\eta+\zeta,\\
+ D=4qw_4+ac+\gamma(4a+3),\qquad \Delta=a^2+4a+3.
+ \end{gathered}
+\]
+All right-hand sides involve only retained variables.  The remaining 16
+residuals in 31 integers have degree at most four.  Their sum of squares
+in \path{octic31.json} has exact degree eight, with
+\[
+ [I^4V^4]Q_{31}=1,
+\]
+as verified in the full expansion; the contributing auxiliary residual
+is \(I^2(V^2-y^2)+y^2-1\).
+
+These are exact bijections of integer zero sets: projection forgets the
+defined coordinates, and their polynomial definitions restore them
+uniquely.  Each deleted row is a unit-coefficient definition and becomes
+the zero polynomial after substitution.  For \(N\), the simultaneous
+octic substitution uses \(q(L+1)=q^3\).  Thus neither companion needs
+a new sign, Pell, or compiler argument.
+
+\subsection{Reproduction, comparison, and limitations}
+
+Run \path{build_verify44.py}, then \path{build_verify41.py}, then
+\path{build_companions.py} with Python 3; all three also run under
+\texttt{python3 -O}.  They use the standard library, reconstruct the fixed
+integers, check their full hashes and source blob identities, check the
+packing and literal transport identities, and verify exact substitution
+and elimination.  They expand the sums of squares with symbolic fixed
+ports, check that every listed coordinate is live, and certify the exact
+degrees and displayed unit coefficients.  The resulting certificates
+are in \path{certificates/}.  Finite diagnostics for the elementary bounds
+and radix lemma supplement their proofs above; they do not certify the
+universal Pell or compiler theorems by sampling.
+
+The precise primary comparison is the inspected source57 quartic:
+45 variables and 28 rows become 41 variables and 26 rows at degree four.
+The sextic and octic improve the named historical 42-variable sextic and
+36-variable octic comparisons to 36 and 31 variables, respectively.
+These claims do not displace the collection's smaller-variable equations
+of much higher degree, and no global minimality or established worldwide
+novelty is asserted.  The contribution is the explicit delayed-sign
+guard, the absolute-radix bootstrap, and the large-scale exclusion of a
+negative common sign, composed with the inherited full coefficient and
+compiler interfaces.  The mathematical proof has internal AI-assisted
+checking; no new end-to-end proof-assistant certificate or external peer
+review is claimed.  Attribution and the exact inherited licenses are
+preserved in \path{NOTICE.md} and \path{licenses/}.

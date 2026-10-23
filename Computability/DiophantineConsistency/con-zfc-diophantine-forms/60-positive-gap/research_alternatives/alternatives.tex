@@ -1,0 +1,163 @@
+\section{Alternative substrates and the limits of the present search}
+\label{sec:alternative-substrates}
+
+The construction problem does not logically require a particular Turing
+machine, nor a particular universal-polynomial presentation.  We examined
+alternatives to the inherited substrate as well as algebraic changes to its
+final arithmetic kernel.  None of the independent-substrate routes examined
+here produced a smaller, fully instantiated polynomial with a complete
+correctness argument.  This is a statement about the work completed in this
+iteration, not an impossibility theorem or a claim that the existing
+substrate is optimal.
+
+\subsection{A direct proof-checker route}
+
+Fix an effective proof calculus for ZFC and an explicit coding of its
+formulas and finite proofs.  The predicate
+\(\operatorname{Ref}_{\mathrm{ZFC}}(p)\), asserting that \(p\) codes a
+refutation, can be chosen primitive recursive.  A direct compiler could
+therefore replace the machine simulation by a polynomial
+\(D(p,\mathbf x)\) with a verified representation theorem
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\exists\mathbf x\in\mathbb N^m\;
+       D(p,\mathbf x)=0\bigr)
+ \longleftrightarrow \operatorname{Ref}_{\mathrm{ZFC}}(p).
+\]
+After existentially quantifying \(p\), the absence of zeros would be
+equivalent to syntactic \(\operatorname{Con}(\mathrm{ZFC})\).  This is a
+valid architecture that makes no reference to K215.
+
+To turn that architecture into the requested fixed equation, the following
+data and arguments must actually be supplied.  The syntax encoding must
+specify formula parsing, bound-variable handling and substitution; axiom
+recognition must include the Separation and Replacement schemes; and the
+proof checker must specify every allowed inference.  The arithmetic
+compiler must then emit polynomial syntax, literal fixed coefficients and
+a proof relating its integer witnesses to the checker.  Finally, the
+checker must be calibrated against the same effective ZFC calculus used in
+the consistency assertion.  It is the combined cost of these components
+that should be compared with the present construction.
+
+The MRDP theorem establishes the availability of a Diophantine
+representation, but an unspecified representation or an unspecified
+universal-polynomial parameter is not an explicit coefficient instance.
+Likewise, a theorem accepting supplied representation syntax does not by
+itself construct that syntax for a particular proof checker.  The current
+ProveIt \texttt{QUARTIC\_COMPILER.md} explicitly distinguishes these two
+interfaces.  Closely related distinctions between mathematical
+construction, polynomial data and formal verification also occur in the
+Isabelle universal-pair development.\footnote{Jonas Bayer and Marco David,
+\emph{A Formal Proof of Complexity Bounds on Diophantine Equations},
+\url{https://arxiv.org/abs/2505.16963}; the associated development is
+\url{https://isa-afp.org/entries/Diophantine_Universal_Pairs.html}.}
+
+A finite logical presentation or a smaller equiconsistent theory could be
+a useful source language.  However, counting axioms does not measure the
+size of the compiled polynomial.  Such a proposal must provide effective
+proof translations sufficient to justify the intended consistency
+equivalence, and must still pay for its syntax checker.  Replacing proofs
+by finite models of ZFC would not work: ZFC itself proves that its Infinity
+axiom rules out finite models.  Replacing the theory by an assertion that
+a model of ZFC exists also requires a separate strength analysis; that
+assertion cannot simply be treated as an inexpensive equivalent axiom.
+
+\subsection{Generic degree reduction is not a new small quartic}
+
+An arithmetic circuit can be converted to quadratic equations by
+introducing values for intermediate registers, and a sum of their squares
+then has degree at most four.  This exchanges degree for unknowns.  Our
+straightforward lift of the ordinary Pell kernel did not improve the
+existing source-31 point: that source already has 31 positive unknowns and
+22 quadratic residuals.  Its comparison evaluator has 60 operations and
+its quartic sum of squares has 125 operations.  These figures are the
+existing \texttt{31-sun10/quartic31/QUARTIC60\_PROOF.md} benchmark, not a
+new result of this report.
+
+One illustrative failed elimination concerns \(X=wq\).  Combining it
+with the transport relation can remove the letter \(w\) from a polynomial
+identity, but generally leaves only \(q\mid XC\).  Restoring the old
+witness \(w=X/q\) would require \(q\mid X\).  It is invalid to cancel
+\(C\) without first establishing \(\gcd(q,C)=1\).  In the contemplated
+route, the desired coprimality depended on source-decoding consequences
+that themselves used \(q\mid X\).  We therefore did not accept this as a
+reduction in the number of variables.  This identifies a missing argument
+in that particular route; it does not rule out a different elimination.
+
+\subsection{Two auxiliary congruence routes that do not lower degree}
+
+The degree-24 integral-root construction has an auxiliary Pell norm
+\[
+ U V^2-(U-1)y^2=1,
+ \qquad U=I^2=\Delta(f^2-1),
+ \qquad y=V+u.
+\]
+Here \(\deg U=6\), \(\deg V=5\), and the supplied gap \(u\) has degree
+one.  The gap residual
+\[
+ (V+u)^2-Uu(2V+u)-1
+\]
+has degree 12, giving degree 24 after squaring.  We examined whether
+canonical congruences permit a cheaper replacement of the gap.
+
+For the canonical odd Pell index \(R\equiv3\pmod4\),
+\(y=\psi_I(R)\equiv-1\pmod{I^2}\).  Thus
+\(t=(y+1)/U\) is a positive integer.  The exact identity
+\begin{align*}
+ &U V^2-(U-1)(Ut-1)^2-1\\
+ &\hspace{12mm}=
+ U\bigl[V^2-U(U-1)t^2+2(U-1)t-1\bigr]
+\end{align*}
+gives a valid alternative residual when completeness uses these canonical
+witnesses.  Its degree is 14, because of \(U(U-1)t^2\), so its square has
+degree 28.  This useful divisibility does not lower the degree of the
+current gap construction.  Supplying \(Uu\) instead leads to denominator
+clearing and likewise did not improve the measured degree.
+
+There is a second canonical congruence.  Write
+\(A=a+2\), so \(\Delta=A^2-1\), and let
+\(D=\chi_A(R)\), \(c=\psi_A(R)\).  The odd-subsequence Pell
+identities, together with
+\(I^2\equiv1-A^2\pmod{f^2}\), give
+\[
+ Ay\equiv-D\pmod{f^2}
+ \qquad(R\equiv3\pmod4).
+\]
+For example, at \(R=3\) one has
+\(\psi_I(3)=4I^2-1\), and multiplication of its reduction modulo
+\(f^2\) by \(A\) gives \(-\chi_A(3)\).  The general identity follows
+from the same odd-subsequence recurrence.  Notice that reducing the norm
+alone gives only \((Ay)^2\equiv D^2\pmod{f^2}\); the negative branch
+cannot be selected for arbitrary supplied solutions from that square
+congruence alone.
+
+The canonical congruence suggests
+\(y=(f^2t-D)/A\).  Write \(V=f^2W-c\) and center the new quotient by
+\(t=AW+v\).  Formally retaining \(D\) as a register, after clearing the
+denominator \(A^2\) and using \(D^2-\Delta c^2=1\), the norm numerator
+is divisible by \(f^2\).  The resulting expression still contains
+\(-2A\Delta Wv f^4\).  This term has degree 14 under
+\(\deg A=2\), \(\deg\Delta=4\), \(\deg W=3\) and
+\(\deg v=\deg f=1\).  Moreover, source 58 reconstructs \(D\) rather
+than supplying it as a separate unknown, so that reconstruction would also
+have to be accounted for in a literal polynomial.  This calculation does
+not provide the hoped-for degree-22 equation.  It proves no broader
+obstruction to using this congruence in a different construction.
+
+\subsection{Scope of the reported advance}
+
+The demonstrated improvements in this report concern the explicit
+constructions and comparisons proved in its preceding sections.  The
+alternative proof substrates above remain research proposals.  They are
+not counted as delivered equations, and the calculations that failed to
+improve degree are retained to make the search boundary clear.  In
+particular, we make neither a global simplicity-minimum claim nor a claim
+that a construction independent of K215 or Jones is impossible.
+
+Throughout, a proof of
+\(\mathrm{ZFC}\vdash[\text{no zeros}\leftrightarrow
+\operatorname{Con}(\mathrm{ZFC})]\)
+is an internal equivalence theorem.  It is not a proof in ZFC of either
+side.  Finite coefficient, identity and degree audits establish their
+stated finite properties; they do not establish the consistency assertion
+by failing to find a zero.

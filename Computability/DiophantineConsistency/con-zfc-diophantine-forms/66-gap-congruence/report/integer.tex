@@ -1,0 +1,185 @@
+\section{A congruence-separated quartic norm in ten integers}
+\label{sec:round9-integer}
+
+The ten-integer route combines the new positive-gap, homogeneous-degree
+source with the two-root congruence finalizer of the incoming
+\emph{Congruence Norms} contribution. A further one-bit deletion removes
+the outer leading block without losing the congruence required by the
+arithmetic bridge. The result is an ordinary integer polynomial, not an
+exponential Diophantine formula. All named registers below are abbreviations,
+not additional unknowns. The exact coefficient payloads and literal circuit
+are included in \texttt{integer/}.
+
+\subsection{The leadless source and its calibration}
+
+Use the gap source and its exact three-kernel certificate from the source
+section. Write $W=\max_i w_i$, $H=\max_d(\deg D_d+dW)$, and
+$A_T=\sum_jB^{q_j}$. Supply exactly
+\[
+ t,g_0,h_0,k_0,l,w,x,y,z,m\in\mathbb Z.
+\]
+In the primary mirror layout, row2 is additionally negated, an invertible
+row operation; the kernel identity uses these oriented source rows.
+Set $\kappa=2134940$, $\lambda=2^\kappa$, and define
+{\small
+\begin{align*}
+ b&=6t+4,\quad g=bg_0,\quad h=bh_0,\quad k=b(3k_0+2),\quad B=\lambda b^2,\\
+ \ell&=\sum_i B^{w_i},\quad u=\ell+g,\quad N_0=B^{W+1},\quad N=B^{W+H+2},\\
+ G_c&=D_2(B)u^2+D_1(B)u+D_0(B),\quad M_c=N_0-1-(b-1)\ell,\\
+ S_c&=g+N_0(2G_c+A_T),\quad T_c=M_c+N_0(B-2)A_T-2.
+\end{align*}
+}
+The source ports for the bridge are
+\begin{equation}\label{eq:r9-ten-source}
+ \boxed{\quad X=N(S_c+T_c+1)-S_c-1,\qquad
+ Y=2^{16\kappa-23}bB^{H+2W+9},\qquad
+ \mathcal C=bB^W.\quad}
+\end{equation}
+No division appears in these expressions. The coefficient $2^{16\kappa-23}$
+is materialized, not left as an unevaluated algorithmic parameter.
+
+All signed assignments have $b\ne0$, $2\mid b$, and $b\equiv1\pmod3$.
+Because all source weights are positive, direct reduction proves
+\[
+ X\text{ odd},\qquad b\mid X+1,\qquad b\mid Y,\qquad 3\mid X.
+\]
+Indeed $B,N,N_0\equiv1\pmod3$, $\ell\equiv31$, $A_T\equiv22$, so the
+old high mask is $-22\equiv2$, the new $T_c$ is zero, and $X\equiv T_c$.
+
+The deletion of $2$ from the mask is justified only after the finalizer has
+recovered that $b$ is a positive even square. At that point $b\ge4$ and
+$4\mid g$. The low base-$B$ digit of the old mask is $B-1$, while bit1 of
+$S_c$ is zero. Thus clearing bit1 preserves binary disjointness and reduces
+the mask population by exactly one. The usual source bounds give
+$S_c+T_c<N$ for $0<g<2\mathcal C$.
+
+If $b=2^s$ and $B=2^v$, then
+\[
+ \operatorname{pop}(T_c)=(W+23)v-31s-23.
+\]
+The two disjoint blocks of $X=(S_c+T_c)N+(N-1-S_c)$ give
+\[
+ \operatorname{pop}(X)=\log_2N+\operatorname{pop}(T_c)
+ -\bigl(\operatorname{pop}(S_c)+\operatorname{pop}(T_c)
+              -\operatorname{pop}(S_c+T_c)\bigr).
+\]
+The maximum is $(H+2W+25)v-31s-23=\log_2Y$. Consequently
+\[
+ Y\mid\binom{2X}{X}\quad\Longleftrightarrow\quad S_c\mathbin{\&}T_c=0,
+\]
+and the source certificate decodes a positive common source zero. This is
+an exactly recalibrated threshold, smaller by four than the old leading-block
+threshold. It does not assume $4\mid b$ on arbitrary signed inputs.
+
+\subsection{The complete polynomial}
+
+Define the division-free bridge registers
+{\small
+\begin{align*}
+ L&=lY,&U&=2LX,&V&=4gwY,\\
+ W_b&=bw,
+ A&=U(V+1),&B_1&=2X+1,&C&=B_1+(A-2)h,\\
+ P_{1/2}&=(LX)UV,&P&=2P_{1/2},&K&=X+1+k(P-2),\\
+ S&=2A-5,&T&=3W_bC-2(W_b^2-1),&
+ Q&=(P_{1/2}^2-1)K^2+1,\\
+\end{align*}
+}
+{\small
+\begin{align*}
+ \Delta&=8\mathcal C^3gK^2
+       -g^2\bigl(32(C-KL)^2\mathcal C^3+g^2K^2\bigr).
+\end{align*}
+}
+The subscript $1/2$ names an explicitly multiplied polynomial; it is not an
+instruction to divide an unknown. Put
+{\small
+\begin{align*}
+ \xi&=zx,&D&=(A^2-4)C^2+4,&E&=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,&G&=2(A+2)(A-2)^2E^2-1,\\
+ \Omega&=16E,&H_c&=C+(B_1-C)F+\Omega Fy,&I&=(G^2-1)H_c^2+1,\\
+ \Sigma&=\xi S^5,&\rho&=T+Sy,&
+ \Theta&=(\rho^3-\rho S^2-S^3)(\rho^2+23S^2),\\
+ r&=bQ,&a&=r+(3\Delta-1)(rz)^2,&d&=DFI,\\
+ Z&=\Sigma m-\Theta.
+\end{align*}
+}
+The final equation is
+\begin{equation}\label{eq:r9-ten-final}
+ \boxed{F_{10}=(Z^2-\Sigma^2(a+d))^2-4\Sigma^4ad=0.}
+\end{equation}
+The four fixed compiler ports are inherited as a whole from the original31
+instance. The positive-gap transformations change its coordinates, not its
+coefficient binding.
+
+\subsection{Why the two-root norm is sufficient}
+
+The normalizations imply $2b\mid U,A$, $b\mid K$, $3\mid K$, and
+$Q\equiv1\pmod{b^2}$, $Q\equiv1\pmod3$. Also $2b\mid C+1$ and
+$4b\mid D$. Therefore, without any positivity assumption,
+\[
+ a/b\text{ is odd},\qquad d/b\text{ is even},\qquad a\ne d.
+\]
+The odd integer $S$ is never zero. The quintic
+$\pi(v)=(v^3-v-1)(v^2+23)$ has no rational root, so $\Theta\ne0$.
+At a zero of \eqref{eq:r9-ten-final}, $\Sigma\ne0$. With
+$q=Z/\Sigma$, the elementary identity
+\[
+ (q^2-a-d)^2=4ad
+\]
+and $a\ne d$ force $q\ne0$. The rational numbers
+\[
+ u_0=\frac{q^2+a-d}{2q},\qquad v_0=q-u_0
+\]
+satisfy $u_0^2=a$, $v_0^2=d$. They are integers because their squares
+are integers. Hence both radicands are squares and $\Sigma\mid\Theta$;
+the standard valuation argument gives $S\mid T$.
+
+The coprime factors of
+$a=r[1+(3\Delta-1)rz^2]$ are signed squares. Since $r\equiv1\pmod3$,
+they must both be positive squares. The same argument for $r=bQ$, using
+$\gcd(b,Q)=1$ and $b\equiv Q\equiv1\pmod3$, makes $b,Q$ positive
+squares. Then $b\ge4$, and the second factor of $a$ forces $\Delta>0$.
+The definition of $\Delta$ gives $K\ne0$ and $0<g<2\mathcal C$.
+If $l=0$, then $P=0$ and $Q=1-K^2\le0$, a contradiction. Thus the
+nonvanishing condition required by the inherited Sun bridge is recovered
+rather than imposed as an additional polynomial factor. That bridge now
+gives the central-binomial divisibility and hence a source zero.
+
+For completeness, choose any sufficiently large $b=4^s$ in the source
+encoding. Positive source weights give $b^2\mid g$ and
+$X+1\equiv-g\pmod{b^2}$. The constructive bridge supplies the exact
+Lucas values $C=u_{2X+1}(A)$ and $K=u_{X+1}(P)$. The recurrence and the
+facts $X$ odd, $4b^2\mid P,A^2$ show that its existing witnesses satisfy
+$b\mid h$, $b\mid k$, and $k/b\equiv2\pmod3$. Thus the displayed
+restrictions lose no canonical solutions. Pell's theorem for the positive
+nonsquare $(3\Delta-1)r$ chooses $z$ making $a$ square. The inherited
+residue interpolation chooses $\xi$ divisible by $z$ and a suitable $y$
+while keeping $d$ square and making $\Sigma\mid\Theta$. Then
+$m=\Theta/\Sigma+\sqrt a+\sqrt d$ makes \eqref{eq:r9-ten-final} vanish.
+
+These arguments compose with the source/refutation theorem to establish,
+in ZFC, that the absence of integral solutions is equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$. The complete soundness and completeness
+proof, including every source bound and congruence-class reconstruction,
+is in \texttt{integer/PROOF.md}. The bridge references are Sun's
+2021 Theorems4.12--4.13 and the modified certificate/interpolation results
+in his 2026 ten-unknowns preprint. They remain explicit mathematical
+dependencies, not claims of newly checked end-to-end kernel verification.
+
+\subsection{Exact degree and evaluator accounting}
+
+Write $r_X=4(W+H)+6$, $r_Y=2H+4W+19$, and $a_A=r_X+2r_Y+4$.
+The dominant final term is uniquely $\Sigma^4d^2$, and
+\[
+ \deg d=88a_A+126,\qquad \deg\Sigma=5a_A+2.
+\]
+Thus the exact total degree is
+\[
+ \boxed{\deg F_{10}=196a_A+260=2352W+1568H+9668.}
+\]
+Full literal circuits, live-gate counts, actual-tuple modular replay, and
+nonzero highest-degree coefficients over three primes independently check
+the stated metrics. Global shared power chains reduce evaluation gates
+without changing a single polynomial coefficient. The fixed threshold is
+materialized as one leaf; charging the five constant-only gates in the older
+evaluator convention adds five operations, with no effect on degree.

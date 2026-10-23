@@ -1,0 +1,342 @@
+\section{A root-centered equation in thirteen positive integers}
+\label{sec:positive13}
+
+The construction in this section has thirteen strictly positive integer
+unknowns, exact total degree $114$, and $83$ live binary arithmetic
+operations: $46$ multiplications, $19$ additions, and $18$ subtractions.
+Squaring and multiplication by a fixed scalar are charged. Intermediate
+registers are polynomial abbreviations and do not add unknowns.
+
+The new step merges the first Pell root and the auxiliary Pell ordinate
+using a centered two-root norm. Keeping the ordinary strong coordinate
+allows direct recovery of both deleted roots. This gives a degree
+improvement over the pinned thirteen-positive constructions of degree
+$126$ in $91$ operations and degree $132$ in $83$ operations. These are
+comparisons with the named repository constructions, without a claim of
+global minimality or literature priority.
+
+\subsection{The fixed equation}
+
+Use the entire compact44 native tuple, with
+$\beta=2^{590069}-1$. The four payloads and their exact hashes are fixed by
+\texttt{COEFFICIENT\_BINDING.json}; the aliases are
+$\beta\mapsto\beta$, $K_0\mapsto K$, $M_C\mapsto M_C$, and
+$M_F\mapsto M_{F,\mathrm{source}}$.
+The last coefficient is already shifted:
+$M_{F,\mathrm{source}}=M_{F,\mathrm{native}}+2^{590069}-1$.
+The whole tuple has $295388$ raw bytes. Its included proof supplies the
+same native blank-machine compiler interface, with the ordinary strong
+witness obtained from a canonical normalized one by
+$i_{\mathrm{ordinary}}=\Delta i_{\mathrm{normalized}}$.
+
+Supply precisely
+\[
+ J,F,\alpha,z,f,i,T,s,w,\eta,\zeta,\gamma,t
+ \quad\in\mathbb Z_{>0}.
+\]
+Define the following polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq^3,&E&=XY,& k&=\eta+\zeta,\\
+ c&=kY+\eta,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,& A_1&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{align*}
+The packing and transport expressions are
+\begin{align*}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+       +(M_C+qM_F)J,\\
+ N_t&=(K_0+w)C+q-F-z(q-1).
+\end{align*}
+For the absorbed main root put
+\begin{align*}
+ U&=4q^4,& r&=k-R-1,\\
+ D_*&=Ub_0+H(U\gamma-r),&
+ N_{\mathrm{main}}&=D_*^2-U^2G.
+\end{align*}
+The strong and auxiliary quantities are
+\begin{align*}
+ I&=ic^2,&Q&=\Delta(f^2-1),&d&=Q-1,&N_s&=I^2-d,\\
+ V&=c(Tf-1)-Rf^2,&E_{\mathrm{aux}}&=QV^2-1,\\
+ x&=t+\ell,&\delta&=x^2-A_1,&
+ N&=(d\delta-E_{\mathrm{aux}})^2-4dA_1E_{\mathrm{aux}}.
+\end{align*}
+The proposed equation is
+\begin{equation}
+ \boxed{\displaystyle
+ P_{13}=N_t(1+N_{\mathrm{main}})N_s(1+N)-1=0.}
+ \label{eq:p13-main}
+\end{equation}
+Every displayed power has a fixed nonnegative integer exponent.
+The included division-free JSON circuit expands every abbreviation.
+The coordinate $z$ here is the old positive \emph{product} transport
+coordinate. It equals $z_{\mathrm{shift}}+1$ for the coordinate used in a
+shifted equation $(K_0+w)C=F+z_{\mathrm{shift}}(q-1)$.
+
+With the fixed tuple, ordinary mathematics formalizable in ZFC proves
+\[
+ \exists\boldsymbol v\in\mathbb Z_{>0}^{13}\;
+ P_{13}(\boldsymbol v)=0
+ \quad\Longleftrightarrow\quad
+ \text{there is a finite syntactic ZFC refutation}.
+\]
+Negating this equivalence gives the required equivalence between the
+absence of positive zeros and $\operatorname{Con}(\mathrm{ZFC})$.
+The native compiler and the literal K215 calibration are inherited
+theorems; no new end-to-end proof-assistant certificate is claimed.
+
+\subsection{The centered two-root identity}
+
+For arbitrary indeterminates $d,x,A,e$ there are exact polynomial identities
+\begin{align}
+ (d(x^2-A)-e)^2-4dAe
+ &=\bigl(d(x^2+A)-e\bigr)^2-4d^2x^2A \notag\\
+ &=d^2(x^2-A)^2-2d(x^2+A)e+e^2.
+ \label{eq:p13-norm-identity}
+\end{align}
+The first expression saves one multiplication in the evaluator. If
+$d,x,A$ are positive integers and it vanishes, the middle expression gives
+the rational number
+\[
+ \tau_0=\frac{d(x^2+A)-e}{2dx},\qquad \tau_0^2=A.
+\]
+A rational square root of an integer is an integer. Therefore
+$\tau_0\in\mathbb Z$ and
+\begin{equation}
+ d(x-\tau_0)^2=e.
+ \label{eq:p13-second-root}
+\end{equation}
+This direct argument allows coincident square classes. It requires no
+unproved independence of formal radical signs and no auxiliary rational
+Pell saturation lemma.
+
+The particular shift $x=t+\ell$ gives
+\begin{equation}
+ \delta=t^2+\ell(2t-k)-1.
+ \label{eq:p13-centering}
+\end{equation}
+This cancellation lowers its degree from the apparent $22$ to $12$.
+The converse will prove positivity of the new witness
+$t=\tau-\ell+y$; positivity is not assumed to be preserved by an arbitrary
+affine change of an old tuple.
+
+\subsection{The unit guard and the two restored roots}
+
+At a positive zero of \eqref{eq:p13-main}, each of the four integer factors
+is $1$ or $-1$. Since $4\mid U$, the residue of $N_{\mathrm{main}}$ modulo
+$4$ is the square $D_*^2$. The residue of $N$ modulo $4$ is also a square.
+Neither residual can be $-2$. Thus
+$N_{\mathrm{main}}=N=0$ and their two factors are $+1$.
+
+For every integer $a$, $\Delta=a^2+4a+3$ is $0$ or $3$ modulo $4$.
+Hence $Q=\Delta(f^2-1)$ is $0$ or $1$ modulo $4$.
+It follows that $N_s=1+I^2-Q$ is $0$, $1$, or $2$ modulo $4$ and cannot
+be $-1$. Consequently
+\begin{equation}
+ Q=I^2,\qquad N_t=1,\qquad N_{\mathrm{main}}=N=0.
+ \label{eq:p13-guard-conclusions}
+\end{equation}
+Here $c>1$ and $I=ic^2>1$, so $Q>1$ and $d>0$. In particular the
+apparently troublesome case $f=1$ is excluded by the equations themselves.
+Also $x=t+\ell>0$ and $A_1>0$.
+
+If $V=0$, then $E_{\mathrm{aux}}=-1$, and
+\[
+ N=(d\delta+1)^2+4dA_1>0,
+\]
+a contradiction. Therefore $V\ne0$ and $E_{\mathrm{aux}}>0$.
+Applying \eqref{eq:p13-norm-identity} and
+\eqref{eq:p13-second-root} gives integers
+$\tau_0$ and $y_0=x-\tau_0$ with
+\[
+ \tau_0^2=A_1,\qquad dy_0^2=E_{\mathrm{aux}}.
+\]
+Thus the positive integers $\tau=|\tau_0|$ and $y=|y_0|$ satisfy
+\begin{equation}
+ \tau^2-\ell(\ell+k)=1,\qquad
+ QV^2-(Q-1)y^2=1,\qquad
+ (ic^2)^2=\Delta(f^2-1).
+ \label{eq:p13-restored-roots}
+\end{equation}
+The identity
+$\ell(\ell+k)=(XY^2)(XY^2+1)k^2$ identifies the first original Pell norm.
+Together with \eqref{eq:p13-guard-conclusions}, these are precisely the
+ordinary-strong fourteen-coordinate absorber equations, with all retained
+coordinates still positive. Neither an index quotient nor its sign has
+yet been assumed.
+
+\subsection{Early index recovery and restoration of the compiler}
+
+The original absorber proof is supplied verbatim as
+\texttt{upstream/FOURTEEN\_ABSORPTION\_PROOF.md}; its full source identity
+is recorded in the manifest. We restate its proof order because the early
+index bound is necessary for the ordinary strong-rank lemma.
+
+The equality $N_t=1$ implies $C>0$: if $C\le0$, positivity of $K_0+w$ gives
+\[
+ N_t\le q-F-z(q-1)=1-F-(z-1)(q-1)\le0.
+\]
+The authentic mask bounds then give
+\begin{equation}
+ q\ge16,\quad 3q<R<q^4-2,\quad E\ge q^4>R+2,\quad
+ kY<c<k(Y+1),\quad a+2<2E.
+ \label{eq:p13-outer-bounds}
+\end{equation}
+From $N_{\mathrm{main}}=0$, $g=D_*/U$ is a rational square root of the
+integer $G$, hence an integer. It is positive. Indeed, $H<5a$, $b_0>akY$,
+$r<k$, and $\gamma>0$ imply
+\[
+ D_*>Ub_0-Hk>ak(UY-5)>0.
+\]
+Thus $g^2-\Delta c^2=1$. Reduction of $D_*=Ug$ modulo $U$ gives
+\begin{equation}
+ U\mid H(k-R-1).
+ \label{eq:p13-absorbed-congruence}
+\end{equation}
+
+Put $A_0=a+2$ and $P_0=2XY^2+1$. The usual positive Pell sequences give
+indices $p,n\ge1$ such that
+\[
+ g=\chi_{A_0}(p),\quad c=\psi_{A_0}(p),\qquad
+ \tau=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n).
+\]
+Since $P_0>A_0$ and $c>k$, monotonicity implies $p>n$.
+The first recurrence gives $k\equiv2n\pmod{4XY^2}$, and
+$U\mid4XY^2=4ws^2q^7$. Moreover $H$ is odd and $H\equiv3\pmod q$;
+if $3\mid q$, then $H\equiv3\pmod{27}$. Hence
+$\gcd(U,H)\le3$. Defining $\mu=U/\gcd(U,H)$, we obtain
+\[
+ \mu\ge\frac{4q^4}{3}>R+1,\qquad
+ 2n\equiv R+1\pmod\mu,
+ \qquad n\ge\frac{R+1}{2}\ge25.
+\]
+The lower bound precedes recovery of $p=R$. It gives $p\ge26$, and Pell
+growth therefore proves
+\begin{equation}
+ c>A_0\Delta^2,\qquad c>2p,\qquad c>2R.
+ \label{eq:p13-rank-hypotheses}
+\end{equation}
+For example,
+$c\ge(2A_0-1)^{p-1}\ge A_0^{25}>A_0(A_0^2-1)^2$;
+also $c\ge\psi_{A_0}(2)=2A_0>2R$.
+
+The ordinary strong-rank lemma in the supplied
+\texttt{ORDINARY\_BLANK\_PROOF.md}, Section~4, now applies. It yields
+\begin{equation}
+ \begin{gathered}
+ f=\chi_{A_0}(m),\quad p\mid m,\quad c\mid m,\quad m\ge c>2p,\\
+ I=\Delta\psi_{A_0}(m),\qquad c^2\mid(f^2-1).
+ \end{gathered}
+ \label{eq:p13-strong-rank}
+\end{equation}
+This lemma treats the possible nonfundamentality of $A_0$ in the underlying
+Pell group. It is used with the verified strict hypothesis
+\eqref{eq:p13-rank-hypotheses}; it is not replaced by informal cancellation
+of $\Delta$ in the strong equation.
+
+The auxiliary equation in \eqref{eq:p13-restored-roots}, the congruence
+$V\equiv-c\pmod f$, and the odd abscissa quotient identity give an odd
+auxiliary index $j_0$ with $j_0\equiv\pm p\pmod m$.
+On the other hand $Q\equiv0\pmod c$, $f^2\equiv1\pmod c$, and
+$V\equiv-R\pmod c$ give $j_0\equiv\pm R\pmod c$.
+The signed index theorem from the ordinary source, Section~5, applies
+because $0<2p<m$. Since $c\mid m$ and $0<p,R<c/2$, it follows that
+$p=R$. This step permits either sign of $V$.
+
+Now $n<p=R$, so $|2n-R-1|<R<\mu$, and the same congruence forces
+$2n=R+1$. Consequently $r=k-2n$ is divisible by $4XY^2$, hence by both
+$E$ and $U$. Set
+\[
+ h=\frac rE,\qquad \gamma_{\mathrm{old}}=\gamma-\frac rU.
+\]
+The first is a positive integer because $\psi_{P_0}(n)>n$ for $n\ge25$.
+The second equals $(g-b_0)/H$. Since $n\ge2$, $k\ge4P_0>X$ and $c>X$;
+furthermore $g>(a+1)c$, so $g-b_0>c-X>0$.
+Thus every original ordinary compiler coordinate has been restored with
+its required positive sign. The inherited compiler soundness gives the
+blank K215 halt and hence a finite ZFC refutation.
+
+\subsection{Constructive completeness}
+
+Conversely, start with a canonical positive ordinary compiler witness of
+a blank K215 halt. Canonical normalized witnesses supply these by
+$i_{\mathrm{ordinary}}=\Delta i_{\mathrm{normalized}}$.
+Its index theorem gives $p=R=2n-1$, so $r=k-2n$ is a positive multiple
+of $4XY^2$ and therefore of $U$. Define
+\[
+ \gamma=\gamma_{\mathrm{old}}+\frac rU,
+ \qquad t=\tau-\ell+y.
+\]
+Both are positive integers. In particular
+$\tau^2=1+\ell(\ell+k)>\ell^2$ implies $\tau>\ell$.
+Retain all other supplied coordinates. Then $x=\tau+y$,
+$A_1=\tau^2$, and $E_{\mathrm{aux}}=dy^2$, so
+\eqref{eq:p13-norm-identity} gives $N=0$.
+Also $D_*=Ug$, giving $N_{\mathrm{main}}=0$, while $N_t=N_s=1$
+are unchanged. Therefore \eqref{eq:p13-main} holds.
+This proves both existential directions, with no additional cofinality
+condition on an auxiliary index.
+
+\subsection{Exact degree and finite verification}
+
+All witnesses have degree one and the four ports degree zero. Put
+\[
+ q_0=\beta J,\qquad E_0=wsq_0^4,\qquad
+ c_0=(\eta+\zeta)sq_0^3,\qquad \ell_0=E_0c_0.
+\]
+Their degrees are $1,6,5,11$, respectively. In the inner norm,
+\[
+ \deg d=14,\quad \deg V=7,\quad\deg E_{\mathrm{aux}}=28,
+ \quad\deg A_1=22,\quad\deg\delta=12.
+\]
+The three terms of the final expression in
+\eqref{eq:p13-norm-identity} have degrees $52,64,56$.
+Only the middle one reaches degree $64$, with homogeneous part
+\begin{equation}
+ N_{64}=-4E_0^6c_0^4T^2f^6.
+ \label{eq:p13-inner-head}
+\end{equation}
+In the efficient evaluator the squared core has degree at most $56$;
+its correction $-4dA_1E_{\mathrm{aux}}$ has exact degree $64$.
+
+The main residual has the exact identity
+\begin{align*}
+ N_{\mathrm{main}}
+ &=U^2\bigl[2ac(X+H\gamma)+(X+H\gamma)^2-Hc^2-1\bigr]\\
+ &\quad-2UHr(X+ac+H\gamma)+H^2r^2.
+\end{align*}
+Its three displayed terms have degrees $26$, at most $25$, and at most
+$20$, so
+\[
+ (N_{\mathrm{main}})_{26}=128q_0^8E_0^2c_0\gamma.
+\]
+The other factors have leaders
+\[
+ (N_s)_{22}=i^2c_0^4,\qquad
+ (N_t)_2=w(q_0-F-\alpha)-zq_0.
+\]
+Thus $\deg P_{13}\le2+26+22+64=114$.
+On the full diagonal, where every witness is replaced by one
+indeterminate, the four leading coefficients are
+\[
+ -2,\qquad 256\beta^{19},\qquad16\beta^{12},\qquad-64\beta^{36}.
+\]
+Their product is $2^{19}\beta^{67}\ne0$ on the fixed coefficient slice.
+This proves exact degree $114$ without treating the ports as additional
+variables or using a numerical experiment as an upper-degree proof.
+
+The primary circuit uses $83$ binary gates, all live. The independent
+standard-library checker imports no builder. It authenticates the whole
+tuple and all source pins; independently verifies $41$ named formulas
+against the literal circuit; proves the norm, centering, and main
+cancellation identities; checks the universal weighted degree bound;
+and evaluates six complete polynomial rays over three finite fields
+using the actual fixed tuple. Normal and optimized Python runs agree.
+These finite checks verify transcription, fixed data, and degree. They do
+not replace the unbounded mathematical compiler and calibration proofs.
+
+The original source50 absorber, ordinary strong-rank proof, compact native
+adapter, and source59 comparison are preserved in the included upstream
+directory. Their exact source paths, commits, Git blob identities and
+SHA256 digests are recorded in \texttt{SOURCE\_PINS.json}. The complete
+formal-assistant dependency tree of the inherited K215 endpoint is not
+claimed to have been rebuilt in this work.

@@ -1,0 +1,318 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=26mm]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Shared coefficient positions and integral Pell carriers},
+pdfauthor={Research contribution prepared for Vladimir Reshetnikov},
+pdfsubject={Explicit Diophantine equations for Con(ZFC)}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\degp}{\operatorname{deg}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Smaller Diophantine consistency equations}
+\fancyhead[R]{\small 23 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Shared coefficient positions and integral Pell carriers\\[4pt]
+\large Two reductions for explicit Diophantine equations expressing $\Con(\ZFC)$}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical research for the ProveIt repository}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We investigate simpler fixed integer polynomials whose absence of zeros
+in their stated integer domains is provably equivalent in ZFC to syntactic
+consistency of ZFC.
+The comparison uses ProveIt commit
+\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}, including the six
+wave-eight packages that are newer than the collection overview.
+Two complementary changes are developed. Compatible equal coefficient
+contributions may share an encoding position, reducing the degree and
+arithmetic cost of the nine-positive-variable construction, and also improving
+the ten-unrestricted-integer construction. A second reduction
+uses one integral Pell root to recover, in order, an index congruence and
+a missing scale divisibility; it gives a degree-26 equation in fourteen
+positive variables. All coefficients are fixed by explicit finite recipes.
+The archive contains literal arithmetic circuits, coefficient data,
+proofs, and independently written finite checks. The new reductions are
+ordinary mathematical proofs using named inherited compiler results;
+they do not constitute a new end-to-end proof-assistant certificate or a
+proof of global minimality.
+\end{abstract}
+\begin{center}
+\small
+\textbf{Principal constructions}\\[6pt]
+\begin{tabular}{@{}lrrr@{}}\toprule
+Witness domain & Unknowns & Exact degree & Binary operations\\\midrule
+Strictly positive integers & 9 & 1,675,396 & 458\\
+Unrestricted integers & 10 & 7,428,120 & 525\\
+Strictly positive integers & 14 & 26 & 92\\\bottomrule
+\end{tabular}
+\end{center}
+\clearpage
+\tableofcontents
+\clearpage
+\section{Results and the meaning of simplicity}
+\label{sec:results}
+The intended logical statement is
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \bigl(\neg\exists\mathbf x\in\Zp^n\;P(\mathbf x)=0\bigr)
+ \;\longleftrightarrow\;\Con(\ZFC).
+\end{equation}
+Here $\Con(\ZFC)$ means that there is no finite derivation of falsity from
+the fixed syntactic ZFC axiom predicate used by ProveIt. No consistency
+assumption enters the construction. In particular, proving the equivalence
+does not prove either side of it.
+
+There is no agreed total order on polynomial complexity. We report the
+witness domain, number of witnesses, exact total degree, arithmetic circuit
+size, and coefficient binding separately. A circuit operation is one live
+binary addition, subtraction, or multiplication, including multiplication
+by a fixed numeral. Reusing a register costs nothing. Each fixed power is
+implemented by ordinary multiplication gates. Coefficient leaves are fixed
+integers, and their bit lengths are a separate cost.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Construction & Positive variables & Exact degree & Operations\\\midrule
+Package 59, recommended nine-variable form~\cite{p59} & 9 & 1,910,404 & 473\\
+Shared positions, primary form & 9 & 1,675,396 & 458\\
+Shared positions, cheaper tradeoff & 9 & 1,738,228 & 457\\
+Package 59, fourteen-variable form~\cite{p59} & 14 & 52 & 79\\
+Integral carriers, primary form & 14 & 26 & 92\\
+Integral carriers, cheaper tradeoff & 14 & 30 & 85\\
+Package 58, degree-24 fifteen-variable form~\cite{p58} & 15 & 24 & 90\\
+Package 51, 66-operation positive circuit~\cite{p51} & 15 & 157 & 66\\
+\bottomrule\end{tabular}
+\caption{Comparisons at the pinned repository snapshot. Every row is a
+single polynomial equation over strictly positive integers. Earlier rows
+are cited constructions, not newly rerun end-to-end semantic proofs.}
+\label{tab:main}
+\end{table}
+
+The primary nine-variable change lowers degree by approximately $12.30\%$
+and operation count by approximately $3.17\%$ relative to package 59.
+The fourteen-variable degree falls by $50\%$, at the cost of thirteen
+additional gates. The degree-24 fifteen-variable equation and the
+66-operation equation retain their distinct advantages. Neither new
+family reduces the smallest variable count in the inspected collection.
+These are concrete improvements to that collection, not a claim that the
+longstanding problem of the globally simplest consistency equation has
+been solved.
+
+Over ten unrestricted integer variables, the shared-position adapter has
+exact degree $7{,}428{,}120$ and $525$ operations. It improves on package~59's
+$8{,}469{,}528$ at $533$ operations, and on the degree of package~57's
+$8{,}317{,}400$ at $544$ operations~\cite{p57,p59}. The older package~54
+point uses fewer operations ($513$), at degree $25{,}838{,}224$~\cite{p54}; we therefore
+do not claim the least arithmetic cost in that domain. This third
+construction uses the integer-domain finalizer based on Sun's
+ten-unknown theorem~\cite{sun}, with its hypotheses and bootstrap inherited
+from the pinned package~59. In its version of~\eqref{eq:target}, the
+quantified domain is $\Z^{10}$.
+
+The constructions deliberately retain two different complete coefficient
+bindings. The nine-variable and ten-integer families use the original source-31 tuple;
+the fourteen-variable family uses the compact source-44 tuple. Coefficient
+ports with the same names must not be exchanged between them. Their
+bindings, hashes, and regeneration instructions accompany the circuits.
+
+\section{Logical scope and inherited interfaces}
+\label{sec:scope}
+The existing ProveIt pipeline relates a literal finite computation to a
+syntactic ZFC refutation, translates that computation into arithmetic,
+and encodes the arithmetic using Pell equations or coefficient extraction.
+Our work replaces specific arithmetic reductions within that pipeline.
+The proofs below establish existence equivalences with the supplied source
+systems. Composing those equivalences with the cited native compiler and
+refutation calibration gives~\eqref{eq:target}.
+
+Three levels of evidence must be kept distinct. The mathematical proofs
+establish universal implications over integers. The finite programs check
+literal circuit transcription, all finite source identities, exact-degree
+certificates, coefficient hashes, and regeneration. A proof-assistant
+kernel certificate for a complete closed consistency equation is a
+separate artifact. ProveIt's active research records such closed
+constructions, but those theorems do not automatically certify the new
+literal polynomials here. We do not supply a newly checked object-language
+ZFC derivation or a complete new Lean/Rocq build.
+
+All operations needed by the new proofs are elementary arithmetic,
+finite polynomial identities, the stated Pell results, and the explicitly
+identified inherited computation theorem. They are formalizable in ZFC.
+The imported files retain their own statements of scope and provenance.
+The final review records any remaining reliance on those interfaces.
+
+\section{Why shared coefficient positions are valid}
+\label{sec:sharing_principle}
+A useful way to encode several equations is to extract chosen coefficients
+from a product of polynomials. Let
+\[
+ Z(B,\mathbf x)=\sum_{i=1}^{m}x_iB^{w_i},\qquad
+ A_d(B)=\sum_{u}a_{d,u}B^u.
+\]
+At a chosen target $t_j$, the degree-$d$ contribution is
+\begin{equation}\label{eq:coefficient_identity}
+ [B^{t_j}]A_d(B)Z(B,\mathbf x)^d
+ =\sum_{\substack{u+\mathbf w\cdot\boldsymbol\alpha=t_j\\
+             |\boldsymbol\alpha|=d}}
+   a_{d,u}\binom d{\boldsymbol\alpha}\mathbf x^{\boldsymbol\alpha}.
+\end{equation}
+The coefficient ring can itself be a polynomial ring in named fixed
+coefficient ports. Thus equality of two coefficient contributions can be
+checked symbolically before enormous numerals are substituted.
+
+\begin{proposition}[Sharing a compatible coefficient position]
+Suppose the right side of~\eqref{eq:coefficient_identity} equals the required
+source polynomial for each target and each homogeneous degree. Then the
+coefficient decoder is correct, regardless of whether a kernel position
+serves more than one target. When several requirements at the same position
+ask for the identical coefficient, that coefficient is stored once.
+\end{proposition}
+\begin{proof}
+Expand the finite product and collect powers of $B$. Formula
+\eqref{eq:coefficient_identity} enumerates every contribution, including
+all interactions with every monomial in $Z^d$. A kernel position contains
+one coefficient. Each target sees that coefficient whenever the exponent
+condition holds. Therefore the checked identities establish the decoder
+directly; no assumption that every target has private kernel positions is
+needed. Storing repeated requirements by addition would instead change
+the coefficient and is not the construction asserted here.
+\end{proof}
+
+This is a relaxation of the former placement constraint. It does not
+permit arbitrary collisions. The independent checker enumerates every
+relevant interaction and compares complete source polynomials. The
+following section supplies the finite certificate, the complete polynomial
+definition, and the transport of the source bounds to the final equation.
+
+\input{nine/section.tex}
+
+\input{pell/section.tex}
+
+\input{sun/section.tex}
+
+\section{Further research questions}
+\label{sec:future}
+The present results suggest several concrete next problems.
+\begin{enumerate}
+\item Can a joint search over variable positions, target positions, and
+compatible shared coefficients improve on the supplied certificates?
+The search must retain all exact source identities and positivity bounds;
+height alone is not the objective because final arithmetic cost also
+depends on exponentiation chains.
+\item Can source equations be transformed by small invertible row
+operations to create more equal kernel coefficients without increasing
+coefficient heights or breaking the calibrated source interface?
+The current construction already shows why private positions are stronger
+than correctness requires.
+\item Can the two successive congruence recoveries in the integral
+carrier be extended to absorb another quotient or another supplied root?
+The order is essential: first recover the large modulus for the Pell
+index, then use the exact index to recover scale divisibility.
+\item Can one retain the fourteen-variable degree bound while reducing
+the additional arithmetic gates? Any proposed simplification must address
+both sign selection and positivity of reconstructed canonical witnesses.
+\item Can the new finite source certificate and integral-carrier proof
+be formalized against the active ProveIt interfaces, then joined to the
+native compiler and exported as an object-level ZFC proof?
+The current closed formal consistency equations are useful reference
+endpoints, but cannot be substituted for this task.
+\item Can a substantially smaller direct ZFC proof verifier change the
+source polynomial enough to beat these constructions without the K215
+route? Merely replacing a literal machine by an unspecified universal
+polynomial does not provide a comparable explicit equation.
+\end{enumerate}
+
+These are research questions, not claimed consequences of the present
+certificates. In particular, no eight-natural-variable or nine-integer-
+variable result, no universal optimality theorem, and no consistency
+decision follows from the improvements reported here.
+
+\section{Reproduction and integration}
+\label{sec:reproduction}
+The archive contains this paper's complete LaTeX source, its compiled PDF,
+the three mathematical components, exact fixed-coefficient recipes and
+payloads, source provenance, and an integrated verification entry point.
+The top-level \path{README.md} gives the tested commands and identifies
+the primary circuits. Run the supplied verification entry point from the
+extracted archive; the finite checks do not require executing a ZFC
+refutation search. Rebuilding the paper uses two passes of
+\texttt{pdflatex -halt-on-error report.tex}.
+
+The repository comparison was frozen before the new work. The complete
+snapshot identifier is given in the abstract and in the provenance file.
+No remote repository edits are part of this delivery. The components keep
+their original source licenses and notices. Newly written material is
+provided under the repository-compatible license included in the archive.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov and contributors,
+\emph{ProveIt: DiophantineConsistency}, commit
+\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency}.
+\bibitem{p31}
+ProveIt, source 31, \emph{Con(ZFC) in Diophantine form}, source-31
+quadratic system and native coefficient binding, at the snapshot in~\cite{repo}.
+\bibitem{p44}
+ProveIt, source 44, \emph{Sparse B4 encodings}, compact native coefficient
+tuple and compiler proof, at the snapshot in~\cite{repo}.
+\bibitem{p51}
+ProveIt, source 51, \emph{Sparse arithmetic}, squared-modulus auxiliary
+quotient and 66-operation construction, at the snapshot in~\cite{repo}.
+\bibitem{p54}
+ProveIt, source 54, \emph{Calibrated carry encodings}, ten-integer
+arithmetic-cost comparison, at the snapshot in~\cite{repo}.
+\bibitem{p56}
+ProveIt, source 56, \emph{Free Pell coordinates}, free-coordinate and
+carry construction, at the snapshot in~\cite{repo}.
+\bibitem{p57}
+ProveIt, source 57, \emph{Separated degrees and Pell quotients},
+at the snapshot in~\cite{repo}.
+\bibitem{p58}
+ProveIt, source 58, \emph{Integral-root carriers for Con(ZFC)},
+at the snapshot in~\cite{repo}.
+\bibitem{p59}
+ProveIt, source 59, \emph{Degree-separated encodings and an ordinary-root
+merger for Con(ZFC)}, at the snapshot in~\cite{repo}.
+\bibitem{jones}
+J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571.
+\bibitem{bayer}
+J. Bayer, M. David, M. Hassler, Yu. Matiyasevich, and D. Schleicher,
+\emph{Diophantine equations over $\mathbb Z$: universal bounds and
+parallel formalization}, arXiv:2506.20909v2 (2025).
+\url{https://arxiv.org/abs/2506.20909v2}.
+\bibitem{sun}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, arXiv:2609.01594v2 (2026).
+\url{https://arxiv.org/abs/2609.01594v2}.
+\bibitem{sun2021}
+Z.-W. Sun, Further results on Hilbert's tenth problem,
+\emph{Science China Mathematics} \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/abs/1704.03504v7}.
+\end{thebibliography}
+\end{document}

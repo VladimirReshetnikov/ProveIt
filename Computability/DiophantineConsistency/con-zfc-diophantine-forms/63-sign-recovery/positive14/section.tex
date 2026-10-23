@@ -1,0 +1,239 @@
+\section{A degree-34 equation in fourteen positive unknowns}
+\label{sec:positive14}
+
+A second construction improves a different part of the measured frontier.
+It has fourteen strictly positive unknowns, exact degree $34$, and $87$
+live binary arithmetic operations. The inspected fourteen-positive
+degree-$52$, $79$-operation forms remain lower-cost alternatives. Thus the
+new point reduces degree by $34.62\%$, at a cost of eight extra operations;
+it does not reduce the nine-positive universal-variable bound.
+
+This construction uses the same whole source-34 coefficient tuple as the
+main result: $\beta=2^{1064921}-1$, together with its authentic $K_0,M_C,M_F$.
+The high mask $M_F$ is already shifted. The first-root carrier from source
+58 and the index modulus from source 57 are inherited ingredients. The new
+combination uses a single positive main-root carrier to eliminate the index
+quotient $h$. Keeping the normalized strong equation avoids the
+large-ordinate hypothesis needed by the ordinary-strong variant.
+
+\subsection{The explicit polynomial}
+
+Supply precisely
+\[
+ J,F,\alpha,z,f,i,T,w,Y,r,\eta,\zeta,u,t\in\mathbb Z_{>0}.
+\]
+All subsequent names are polynomial abbreviations, not extra unknowns:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,&X&=wq,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,\\
+ \Delta&=a^2+H,&b_0&=X+ac,&\ell&=EkY,&I&=ic^2.
+\end{align*}
+Define
+\begin{align*}
+ R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ M&=4q^4,\qquad e=k-R-1,\qquad Z=Mt-e,\\
+ W&=Mb_0+HZ,\qquad Q=\Delta(f^2-1),\qquad
+ V=c(Tf-1)-Rf^2.
+\end{align*}
+The five residuals are
+\begin{align}
+ A_0&=[q^3(\ell+r)+Y]^2-q^6[\ell(\ell+k)+1],\label{eq:p14-first}\\
+ A_1&=W^2-M^2(1+\Delta c^2),\label{eq:p14-main}\\
+ A_t&=(K_0+w)C-F-z(q-1),\label{eq:p14-transport}\\
+ A_s&=(f^2-1)-\Delta I^2,\label{eq:p14-strong}\\
+ A_u&=(V+u)^2-Qu(2V+u)-1.\label{eq:p14-aux}
+\end{align}
+Our second single equation is
+\begin{equation}
+ \boxed{P_{14}=A_0^2+A_1^2+A_t^2+A_s^2+A_u^2=0.}
+ \label{eq:p14}
+\end{equation}
+Only fixed powers and integer coefficients occur. The circuit is
+\path{positive14/pell14_degree34.json}. Its 78-operation residual evaluator
+becomes an 87-operation single-polynomial evaluator after five squarings
+and four additions.
+
+\subsection{Soundness and the order of index recovery}
+
+At a positive zero, all five residuals vanish. Equation
+\eqref{eq:p14-transport} gives $C>0$, because $K_0+w>0$ and
+$F+z(q-1)>0$. The old transport coordinate is $z_{\rm old}=z+1>0$.
+Substituting it in the old residual
+$(K_0+w)C+q-F-z_{\rm old}(q-1)-1$ gives exactly $A_t$,
+recovering the authentic transport equation.
+The inherited outer bounds consequently give
+\[
+ q\ge16,\qquad 3q<R<q^4-2.
+\]
+
+Equation \eqref{eq:p14-first} says that
+$\ell+r+Y/q^3$ has an integral square. A rational square root of an integer
+is integral; hence $q^3\mid Y$. Set
+\[
+ s=Y/q^3>0,\qquad \tau=\ell+r+s>0.
+\]
+Then $\tau^2=\ell(\ell+k)+1$. Write $P_0=2XY^2+1$ and $A=a+2$.
+First-Pell classification gives
+\[
+ \tau=\chi_{P_0}(n),\qquad k=2\psi_{P_0}(n),\qquad n\ge1.
+\]
+The case $n=1$ would give $\tau=\ell+1$, whereas the retained gap gives
+$\tau\ge\ell+2$. Thus $n\ge2$, and
+\begin{equation}
+ k\ge4P_0>8XY^2,\qquad
+ c>kY>8XY^3\ge8q^{10}>2R,\qquad c>X.
+ \label{eq:p14-earlybounds}
+\end{equation}
+This establishes the needed large ordinate \emph{before} restoring $h$.
+
+The main carrier is positive. Indeed $a\ge q^4\ge3$ gives $H\le5a$,
+so $b_0/H\ge c/5>k$. Consequently
+\[
+ W/H=Mb_0/H+Mt-k+R+1>0.
+\]
+By \eqref{eq:p14-main}, $D=W/M$ is an integral rational square root,
+and therefore a positive integer satisfying $D^2-\Delta c^2=1$.
+In particular,
+\begin{equation}
+ M\mid He.\label{eq:p14-divisibility}
+\end{equation}
+Neither $e/M$ nor $e/E$ has yet been assumed integral.
+
+Main-Pell classification gives $D=\chi_A(p)$ and $c=\psi_A(p)$.
+Since $P_0>A$ and $c>k$, monotonicity gives $n<p$; hence $p\ge3$
+and $c>2p$. The normalized strong equation gives
+\[
+ f=\chi_A(m),\qquad I=\psi_A(m)=ic^2.
+\]
+Strong divisibility gives $p\mid m$. If $m=pj$, the composition formula
+modulo $c$ reads
+\[
+ \frac{\psi_A(pj)}c\equiv j\chi_A(p)^{j-1}\pmod c.
+\]
+The left side is divisible by $c$ and $\chi_A(p)$ is invertible modulo $c$.
+Thus $c\mid j$, so $pc\mid m$, $c\mid m$, and $m>2p$.
+
+Put $\rho=\Delta I>1$. Equation \eqref{eq:p14-strong} implies
+$Q=\rho^2$, and \eqref{eq:p14-aux} becomes
+\[
+ \rho^2V^2-(\rho^2-1)(V+u)^2=1.
+\]
+Neither $V$ nor $V+u$ vanishes. The literal formula for $V$, together with
+$f^2\equiv1\pmod c$, gives
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+The inherited signed auxiliary-index lemma now applies with $0<2p<m$.
+For precision, its odd-index quotient identities are
+\[
+ Q_j(1-A^2)=(-1)^j\psi_A(2j+1),\qquad
+ Q_j(0)=(-1)^j(2j+1).
+\]
+They yield an auxiliary index congruent to $\pm p$ modulo $m$ and to
+$\pm R$ modulo $c$. Since $c\mid m$ and $0<p,R<c/2$, one obtains
+\begin{equation}
+ p=R.\label{eq:p14-rank}
+\end{equation}
+No assertion that the deleted quotient exists has entered this argument.
+
+We can now use \eqref{eq:p14-divisibility}. As $Y=sq^3$, the odd integer
+$H$ is congruent to $3$ modulo $q$. If $3\mid q$ then $27\mid Y$ and
+$H\equiv3\pmod{27}$, so
+\[
+ \gcd(M,H)\le3,\qquad
+ \mu=M/\gcd(M,H)\ge4q^4/3>R.
+\]
+The first recurrence gives $k\equiv2n\pmod{4XY^2}$, and $4XY^2$ is
+divisible by $M$. Therefore $\mu\mid2n-R-1$. Since $1\le n<p=R$,
+$|2n-R-1|<R<\mu$, and hence $2n=R+1$. It follows that
+$e=k-2n$ is a positive multiple of $4XY^2$. Thus
+\[
+ h=e/E>0,\qquad \gamma=t-e/M\in\mathbb Z
+\]
+are restored, with $k-hE-R=1$ and $D=b_0+\gamma H$.
+Finally $D>(a+1)c$ and \eqref{eq:p14-earlybounds} give
+$D-b_0>c-X>0$, so $\gamma>0$.
+
+Taking $y_{\rm old}=|V+u|>0$ restores the complete positive normalized
+source system. Its inherited compiler and syntactic calibration therefore
+give a finite ZFC refutation. The separate mathematical review also notes
+that $V+u$ is already positive: if it were nonpositive, then
+$V=V+u-u<V+u\le0$ would make the auxiliary left side at least $Q>1$.
+The absolute value is harmless and avoids depending on that strengthening.
+
+\subsection{Completeness: why both new coordinates are positive}
+
+Start from a canonical positive normalized compiler witness for a finite
+refutation. It has $p=R=2n-1$, $R\equiv3\pmod4$, $n\ge3$, and $k>XY$.
+Its first recurrence makes $e=k-R-1>0$ divisible by $M$. Define
+\[
+ t=\gamma+e/M>0.
+\]
+This gives $W=MD$. The plus sign in the definition of $t$ is essential;
+subtracting $e/M$ from the old positive $\gamma$ would not be justified.
+
+For the first root define $r=\tau-\ell-s$. Since
+$\tau^2=\ell^2+\ell k+1$, $\ell>k$, and $\tau<\ell+k$,
+\[
+ \tau-\ell=\frac{\ell k+1}{\tau+\ell}>\frac{k}{3}
+ >\frac{XY}{3}>\frac{Y}{q^3}=s.
+\]
+Hence $r>0$ and \eqref{eq:p14-first} holds.
+
+Retain the canonical normalized $f,i$ and set $\rho=\Delta I$.
+Choose fresh auxiliary witnesses
+\[
+ V_* =\chi_\rho(R)/\rho,\qquad y_* =\psi_\rho(R).
+\]
+Odd $R$ makes $V_*$ integral. The odd-index congruences, with
+$R\equiv3\pmod4$, give $V_*\equiv-c\pmod f$ and
+$V_*\equiv-R\pmod c$. As $\gcd(c,f)=1$ and $f^2\equiv1\pmod c$,
+\[
+ T=\frac{V_*+c+Rf^2}{cf}>0
+\]
+is an integer. The Pell identity and $V_*>1$ imply
+\[
+ y_*^2-V_*^2=\frac{V_*^2-1}{\rho^2-1}>0.
+\]
+Thus $u=y_*-V_*>0$ is integral and \eqref{eq:p14-aux} holds.
+
+The final coordinate change is the established positive transport shift.
+Canonical $X=2^R$ and $R>3q$ give $w=X/q>q>F$. The source transport
+equation is
+\[
+ (K_0+w)C=F+(z_{\rm old}-1)(q-1).
+\]
+Its left side exceeds $F$, so $z=z_{\rm old}-1>0$.
+All fourteen supplied variables are positive and all residuals vanish.
+This completes both existence directions. Negation and the inherited
+calibration prove in ZFC the required consistency equivalence for $P_{14}$.
+
+\subsection{Degree, implementation, and limits}
+
+Two exact identities expose the cancellations:
+\begin{align*}
+ A_0={}&q^6[r^2+\ell(2r-k)-1]+2q^3(\ell+r)Y+Y^2,\\
+ A_1={}&M^2[X^2+2acX-Hc^2-1]+2Mb_0HZ+H^2Z^2.
+\end{align*}
+They give the respective residual degrees $12,17,2,16,15$.
+Only $A_1^2$ reaches degree $34$. Its leading homogeneous part is
+\[
+ \operatorname{in}_{34}(P_{14})
+ =2^{14}(\beta J)^{20}w^4Y^6(\eta+\zeta)^2t^2.
+\]
+In particular the coefficient of $J^{20}w^4Y^6\eta^2t^2$ is
+$2^{14}\beta^{20}>0$, proving exact degree.
+
+The literal primary evaluator has 48 multiplications, 23 additions and 16
+subtractions. The input-plus-one translation has fourteen nonnegative
+unknowns, the same degree, and 101 operations. A transparent unshifted
+transport comparator has 88 operations. The separate cancellation graph
+is a degree certificate, not the evaluator used for the 87-operation claim.
+
+The finite verifier checks all four actual coefficient payloads against
+their pinned hashes, exact local polynomial identities, liveness and counts,
+the universal degree upper bound, degree-attaining finite-field polynomial
+rays, and independently evaluated literal formulas. These finite checks
+support the implementation. The unbounded equivalence is the mathematical
+argument above with its inherited Pell, compiler and calibration inputs;
+no new end-to-end kernel certificate is asserted.

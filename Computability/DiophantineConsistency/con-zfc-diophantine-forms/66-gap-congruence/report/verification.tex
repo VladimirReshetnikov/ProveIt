@@ -1,0 +1,19 @@
+\section{Reproduction, provenance and limitations}
+The ZIP contains the editable paper, compiled PDF, exact arithmetic circuits, explicit signed coefficient payloads, source and packing certificates, retained proofs and licenses, and newly authored verification programs. Search executables and unrelated incoming programs are not required to evaluate or check a delivered equation. The incoming archives were inspected as inert data; no upstream Python module was imported or executed.
+
+\subsection{Three different levels of evidence}
+\begin{enumerate}
+\item \emph{Byte provenance.} The original six archives have exact Git blob and SHA-256 identities. Retained members are matched to those archives, and directly retrieved formal sources are checked by their own Git blob identity. The sealed release manifest checks every included file.
+\item \emph{Finite arithmetic certificates.} These reconstruct source coordinate substitutions, check every relevant degree-specific target interaction, rebuild literal circuits, verify complete fixed-port bindings, and use exact identities and actual-coefficient leading-term witnesses. Modular samples are regression tests, not the sole basis for a polynomial identity or an upper degree bound.
+\item \emph{Universal mathematics.} Positivity recovery, carry normalization, rational square-root integrality, square-class separation, CRT and canonical Pell reconstruction prove the new existence equivalences. Their identified compiler/calculus and number-theoretic dependencies remain inherited. No finite search establishes consistency.
+\end{enumerate}
+
+\input{check_metrics.tex}
+
+\subsection{How to replay}
+From a clean extracted archive, run \texttt{python verify.py}. The driver first checks the sealed manifest and source provenance, makes an isolated copy, and runs only the enumerated authored checkers and builders. Its rebuild ledger compares generated artifacts byte-for-byte with the sealed outputs. Run \texttt{python negative\_controls.py} for deliberate corruptions; a rejected byte tamper is recorded separately from a rejected mathematical certificate. Build the PDF with \texttt{bash report/build.sh}. PDF metadata can differ across TeX environments even when the mathematical text is unchanged.
+
+The two small-variable branches intentionally use the complete original31 coefficient tuple; the short integral-root branch retains its different complete $590069$ tuple. No individual port is borrowed from a smaller tuple. The coefficients are compressed losslessly for storage; the circuit definition uses their integer values. These storage choices are not a new coefficient-height record.
+
+\subsection{Claims deliberately not made}
+The report neither proves nor refutes $\Con(\ZFC)$, establishes a global minimum, changes positive unknowns into unrestricted integer unknowns without an explicit transformation, nor presents the new full equations as kernel-checked. The direct proof-certificate local polynomial is not itself a consistency equation. The reported arithmetic-operation count excludes fixed numeral construction and says nothing about measured evaluation time with enormous integer values.
