@@ -113,3 +113,5 @@ import DiophantineConsistency.GapSourceCarry66
 import DiophantineConsistency.GapSourceContract66
 import DiophantineConsistency.GapSourceExistence66
 import DiophantineConsistency.GapNineSource66
+import DiophantineConsistency.AnnotatedCodeGraphs
+import DiophantineConsistency.GapNinePolynomial66

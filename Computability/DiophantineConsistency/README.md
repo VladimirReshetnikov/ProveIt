@@ -44,6 +44,12 @@ with the same degree and is the next local cost target to formalize. Package
 1,494,006 at higher cost. See [PROPOSAL_REVIEW_WAVE9.md](PROPOSAL_REVIEW_WAVE9.md)
 for the comparison, replay evidence and parallel alternative-encoding work.
 
+The H2082 source arithmetic and its actual nine-variable polynomial now pass
+Lean, including sharp port bounds, positivity, word/carry calibration and
+unbounded witness construction. See
+[GAP_NINE_POLYNOMIAL66.md](GAP_NINE_POLYNOMIAL66.md). The literal 443/450-gate
+binding, native source calibration and internal ZFC theorem remain open.
+
 The previous wave-eight target, now a checked source checkpoint, was
 package 59's free-coordinate degree-separated adjunct: nine
 positive variables, 473 binary operations, degree 1,910,404 (480 operations

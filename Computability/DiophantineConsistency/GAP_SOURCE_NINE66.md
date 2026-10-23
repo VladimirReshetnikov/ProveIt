@@ -51,7 +51,8 @@ and the earlier split116 arithmetic equation have equivalent unbounded
 natural zero existence. Their full positive coordinate conventions agree.
 
 The dedicated checks audit all thirteen new endpoints and the CRT-coordinate
-translation. Only Lean's standard axioms occur. An actual `MvPolynomial`
-binding and the 443/450-operation literal circuit identification are further
-stages. Authentic native source-to-refutation calibration and the internal
-object-language ZFC equivalence remain open.
+translation. Only Lean's standard axioms occur. The subsequent
+[actual nine-variable polynomial binding](GAP_NINE_POLYNOMIAL66.md) now also
+passes Lean. The 443/450-operation literal circuit identification, authentic
+native source-to-refutation calibration and the internal object-language ZFC
+equivalence remain open.
