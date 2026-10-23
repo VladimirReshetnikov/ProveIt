@@ -17,6 +17,8 @@ import DiophantineConsistency.CompactedJones
 import DiophantineConsistency.CantorRepresentation
 import DiophantineConsistency.GraphBranching
 import DiophantineConsistency.PolynomialGraph
+import DiophantineConsistency.DirectComposition
+import DiophantineConsistency.NativeFormulaGraphs
 
 #print axioms DiophantineConsistency.Expr.eval_toPolynomial
 #print axioms DiophantineConsistency.Rep.correct_toPolynomial
@@ -78,3 +80,6 @@ import DiophantineConsistency.PolynomialGraph
 #print axioms DiophantineConsistency.NatExpr.directGraphRep
 #print axioms DiophantineConsistency.ScaledNatural.graphRep
 #print axioms DiophantineConsistency.ScaledNatural.cantorPair
+#print axioms DiophantineConsistency.GraphRep.composeDirect
+#print axioms DiophantineConsistency.GraphRep.composeDirect_saves_one
+#print axioms DiophantineConsistency.NativeFormulaGraphs.stackCoordinates

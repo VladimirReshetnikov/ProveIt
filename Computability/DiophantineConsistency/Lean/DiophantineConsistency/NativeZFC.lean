@@ -1,4 +1,4 @@
-import DiophantineConsistency.DirectGraphEnumerator
+import DiophantineConsistency.NativeGraphEnumerator
 import DiophantineConsistency.CompactedJones
 import DiophantineConsistency.ExplicitZFC
 import DiophantineConsistency.PositiveDomain
@@ -18,7 +18,7 @@ namespace DiophantineConsistency.NativeZFC
 open SetTheory LeanProofs.BoundedZFCConsistency
 
 def representation : Rep Empty (fun _ => BProv ZFCax_s [] Form.fBot) :=
-  (GraphRep.existsValue DirectGraphEnumerator.program 1).ofIff
+  (GraphRep.existsValue NativeGraphEnumerator.program 1).ofIff
     (fun _ => exists_haltingTest_eq_one_iff_refutation)
 
 def sourceWitnessCount : ℕ := CompactedJones.witnessCount representation

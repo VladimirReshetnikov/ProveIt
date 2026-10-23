@@ -195,6 +195,13 @@ addition, multiplication, and the source's Cantor pairing. These APIs retain
 explicit coefficients and do not select a representation from an existence
 proof.
 
+`DirectComposition.lean` retains a graph's exposed output when substituting
+its inputs. Its exact count theorem proves that every finite composition
+uses one fewer witness than `GraphRep.compose`, including functions with no
+inputs. The native formula blocks now use this constructor. See
+[NATIVE_FORMULAS.md](NATIVE_FORMULAS.md) for the checked reduction of the
+enumerator-step graph from 6,924 witnesses to 1,811.
+
 All checked components are covered by
 [`checks/CompilerAxioms.lean`](Lean/checks/CompilerAxioms.lean). Its audit
 reports only the standard `propext`, `Classical.choice`, and `Quot.sound`.

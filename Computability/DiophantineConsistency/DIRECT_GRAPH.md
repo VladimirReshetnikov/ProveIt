@@ -44,3 +44,10 @@ this alternative: `noNaturalZero_iff_conZFC` and
 consistency, or compiler hypothesis. `hasZero_iff_explicit` connects its
 solvability to the earlier closed scalar-program construction without
 assuming consistency.
+
+`NativeZFC` now selects the further source reduction in
+[NATIVE_FORMULAS.md](NATIVE_FORMULAS.md). Its one-step graph uses exactly
+1,811 witnesses rather than this baseline's 6,924, as proved by Lean
+definitions. Polynomial formula blocks, denominator clearing, and retention
+of the existing output coordinate account for this reduction. These counts
+do not include the final quartic flattening.
