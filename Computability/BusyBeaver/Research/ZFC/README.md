@@ -1136,25 +1136,28 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–8
-(intake batches 221–224; wave-8 placement `beb0192cb8`, reconciliation
-`ea94d3bc3f`).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–9
+(intake batches 221–225; wave-9 placement `a2cd79b912`, reconciliation
+`42d8cbf310`).
 
-Each package turns the K215 calibration behind
+Most packages turn the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
-with fixed integer coefficients. It does so by compiling a local tile
+with fixed integer coefficients. They do so by compiling a local tile
 language of the blank run of [`candidate-k215/k215.tm`](candidate-k215/k215.tm)
 with the Hilbert's-tenth native-window/Pell compiler, its input interface
 removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
 
+K215 is not required: by Vladimir's direction, proposals may use other
+encodings, provided they prove their own calibration (the report's section
+"Any encoding is welcome"). Wave-9 66 already sketches a proof-certificate
+source calibrated through `KEndpoint.c222_iff_zf_refutation` instead.
+
 As the packages state them:
 
-- nine positive unknowns at degree 1,910,404 in 473 operations;
-- 10 unrestricted integers via a cited reduction of Sun, at degree
-  8,317,400;
+- nine positive unknowns in 444 operations, or at degree 1,494,006;
+- 10 unrestricted integers via a cited reduction of Sun, in 490 operations;
 - a 15-unknown equation of degree 24, and one in 66 operations;
-- the smallest coefficient tuple binding an equation now has
-  B = 2^429959.
+- the smallest coefficient tuple binding an equation has B = 2^429959.
 
 Materialized coefficient bytes do not by themselves prove the compiler
 theorem. Only the machine endpoint is checked in Lean/Rocq; the Diophantine
