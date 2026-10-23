@@ -1,0 +1,178 @@
+\section{Nine positive unknowns: refined free-carrier composition}
+\label{sec:refined-free-nine}
+
+The source transformations and positional certificates above give three
+layouts of heights $2068,2082,2057$, each with $W=116$.  All fixed coefficients
+are the complete original31 tuple; the high mask is already shifted.
+The two finalizers below give the following operation/exact-degree pairs.
+\begin{center}
+\begin{tabular}{lrrr}
+Layout&source records&simple finalizer&refined finalizer\\\hline
+$H=2082$&85&$444/1\,845\,940$&$476/1\,520\,178$\\
+$H=2068$&86&$449/1\,834\,516$&$481/1\,510\,770$\\
+$H=2057$&86&$451/1\,825\,540$&$483/1\,503\,378$
+\end{tabular}
+\end{center}
+These six points are nondominated within the delivered family.  The cheapest
+and lowest-degree recommendations improve the incoming nine-positive point
+$473/1\,910\,404$ in different ways.  There is no global minimality claim.
+The natural-domain translations cost seven further operations each and have
+the same exact degrees.
+
+\subsection{The literal calibrated source}
+The three kernels $D_0,D_1,D_2$, labels $w_i$, and targets $q_j$ are the
+literal data in the selected \texttt{nine/data/H*/} directory.  They satisfy
+the proved coefficient-extraction identities for the corresponding positive
+source.  Put $M=2^{2134927}$, $\kappa=2134939$, and set
+\begin{align*}
+ B&=2^\kappa b^2,&\ell&=\sum_i B^{w_i},& A_t&=\sum_jB^{q_j},\\
+ U_s&=\ell+g,&G_s&=D_2(B)U_s^2+D_1(B)U_s+D_0(B),\\
+ N_0&=B^{W+1},&E_c&=H+W+2,&M_s&=N_0-1-(b-1)\ell,\\
+ S_c&=g+N_0(2G_s+A_t),&&T_c=M_s+N_0(B-2)A_t.
+\end{align*}
+Here $H=\max_d(\deg D_d+dW)$ is a fixed height, not a variable.
+In the unreflected layouts the positive leading quadratic kernel dominates
+the two others.  In the reflected layout all three kernels are independently
+positive for $B>M+1$.  Its quadratic and linear heights tie, and their
+leading coefficients add to $\beta+2>0$.  Thus $G_s>0$ before a final zero
+or a binary-base hypothesis is assumed.
+
+On the branch $g<4bB^W$, the exact geometric estimates give
+$2G_s/B^{H+1}<1/32$, while each target contribution is below $1/64$ of
+that block.  Hence $S_c+T_c<B^{E_c}$.  The sparse borrow test yields
+\[
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ g\text{ encodes a positive common source zero}
+\]
+when $b$ is a power of two.  This uses the coefficients bounded by
+$993Mb^2<B/4$ and the target digit $4\rho_j+1$ tested against $B-2$.
+
+Let $H_p=E_c+W+23$, and define the fixed integers
+\begin{align*}
+ \delta&=(H_p-15)\bmod2,&\lambda&=(22-H_p\kappa)\bmod2,\\
+ e_N&=(H_p-15-\delta)/2,&e_2&=((15+\delta)\kappa+\lambda-22)/2.
+\end{align*}
+Use the polynomial registers
+\[
+ L=2^\lambda bB^{E_c},\qquad N=2^{e_2}b^\delta B^{e_N},\qquad
+ R=L(S_c+T_c+1)-S_c-1,\qquad t=bB^W.
+\]
+The exact two-block population identity proves
+\[
+ N^2\mid {2R\choose R}\quad\Longleftrightarrow\quad S_c\mathbin{\&}T_c=0.
+\]
+Indeed, if $b=2^k$ and $B=2^v$, then
+$\operatorname{pop}(T_c)=(W+23)v-31k-22$ and
+$\log_2L+\operatorname{pop}(T_c)=2\log_2N$.
+Unconditionally $R,N\ge8$ and $b\le R,N$.  The endpoint $b=1$ is harmless:
+its low mask would force $g=0$, contrary to the positive domain.
+
+\subsection{The nine-input equation}
+The nine inputs are exactly $b,g,h,s,w,C,i,j,n>0$.  Set $j_0=j-1$ and
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M_0&=RY,&P&=2M_0^2U,\\
+ K&=R+1+h(P-1),&A&=M_0(U+1),&B_1&=2R+1,&W_1&=bw,\\
+ J&=4A-5,&Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ k_0&=iJC,&E&=k_0DC,&F&=(A^2-1)E^2+1,\\
+ \Lambda&=CD+1-A,&G&=A+F\Lambda,&H_1&=C+F(B_1+j_0C),\\
+ I&=(G^2-1)H_1^2+1,&a_0&=(P^2-1)K^2+1,&a_1&=DFI,\\
+ m&=K^2(4t-g)-16t(C-KY)^2,&\Omega&=Jm,&V_0&=PK,\\
+ E_0&=J(n+W_1^2)+Q.&&&&
+\end{align*}
+All symbols are polynomial abbreviations, not extra quantified unknowns.
+For the refined version put
+\begin{align*}
+ B_8&=8D^2-4D-1,\qquad N_* =2G+\Lambda,\\
+ T_6&=k_0\{128B_8N_*-k_0^2[16(B_8+D)-8]\Lambda
+                       +C(14k_0^2-192)\},\\
+ T&=T_6+i^3\{C[C(576A-2151)-(896A^2-4256A+8442)]+1024\}
+          +288i+2048,\\
+ V_1&=TH_1,\qquad q_*=2048^2,\qquad
+ \Theta=E_0-\Omega(V_0+V_1).
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{\bigl[\Theta^2-\Omega^2(a_0+q_*a_1)\bigr]^2
+             -4q_*\Omega^4a_0a_1=0.}
+ \label{eq:round9-refined-nine}
+\end{equation}
+The cheaper simple version replaces $V_1$ by
+$k_0(8D^2-4D-1)GH_1$ and $q_*$ by $64$.
+
+\subsection{Why a free carrier preserves the equivalence}
+The refined majorant proof retained from the prior construction needs only
+$A\ge729$, $C\ge1$, and $i\ge1$.  Here $A\ge33280$, so it applies without
+the old carrier substitution and gives
+\[
+ V_0>\sqrt{a_0},\qquad V_1>2048\sqrt{DFI}>0.
+\]
+Also
+\[
+ E_0=Jn+(J-2)W_1^2+3W_1C+2>0.
+\]
+A zero of \eqref{eq:round9-refined-nine} cannot have $m=0$.
+Its real two-root factorization gives
+\[
+ E_0/J=m(V_0+V_1+r_0+r_1),\qquad
+ r_0^2=a_0,\quad r_1^2=q_*a_1.
+\]
+The strict majorants make the parenthesis positive for every sign choice;
+therefore $m>0$ is obtained \emph{before} any integrality assertion.
+It follows that $|C-KY|<K/2$, hence $C>2K>2R+1+W_1$.
+This recovers the old carrier range.  The usual ratio inequalities now give
+$a_1>a_0$, so $r_0+r_1=\Theta/\Omega$ is rational and nonzero.
+Squaring isolates both roots, which are rational and consequently integral;
+$r_1/2048$ is integral as well.  The displayed factor identity gives $J\mid Q$.
+The exact CRT replacement using $F\equiv1\pmod{JC}$ therefore supplies all
+four inherited ratio conditions: the two squares, divisibility, and positive
+margin.  Jones's theorem and the source decoder yield a syntactic refutation.
+
+Conversely, take the ratio witnesses supplied by a source zero and the
+positive roots.  Choose
+\[
+ n=m(V_0+V_1+r_0+r_1)-W_1^2-Q/J.
+\]
+It is integral.  Since $A>W_1$, $D\ge A^2$, $D>C^2$, and
+$V_1>2048D$, one has $W_1^2+Q/J<2D<V_1$, so $n>0$.
+One norm factor vanishes.  This proves the existence equivalence and,
+by negation, the ZFC-provable equivalence between no positive zero and
+$\operatorname{Con}(\mathrm{ZFC})$.  The inherited compiler and numerical
+ratio theorem remain identified dependencies; no new end-to-end kernel
+certificate is claimed.
+
+\subsection{Exact degree and implementation checks}
+Let $r=\deg R$, $\nu=\deg N$, $c_0=2W+1$, and $a=r+4\nu+2$.
+The exact local defect $T^2-2048^2DFG^2$ has703 terms, each with exponents
+at most $(15,18,6)$ in $(A,C,i)$.  The unique term attaining all three
+maxima is $9\cdot2^{18}i^6A^{15}C^{18}$.  Its complete integer expansion
+is independently reconstructed.  Consequently, for
+$\Delta_1=V_1^2-q_*a_1$,
+\[
+ \Delta_1=H_1^2(T^2-q_*DFG^2)+q_*DF(H_1^2-1),\qquad
+ \deg\Delta_1=31a+2r+44.
+\]
+Resolve the main cancellation by the exact identity
+\begin{align*}
+ \Theta^2-\Omega^2(a_0+q_*a_1)
+ ={}&E_0^2-2E_0\Omega(V_0+V_1)\\
+ &+\Omega^2[(K^2-1)+\Delta_1+2V_0V_1].
+\end{align*}
+The term $\Omega^2\Delta_1$ uniquely dominates, and its square dominates
+the remaining norm term.  Thus the refined exact degree is
+\[
+ \boxed{86r+328\nu+4c_0+260},\qquad
+ r=4E_c-1,\quad\nu=2e_N+\delta.
+\]
+Its diagonal leading coefficient is
+$81\cdot2^{88}\tau^4\rho^{86}\sigma^{328}>0$, where
+$\rho,\sigma,\tau$ are the leading coefficients of $R,N,t$.
+The simpler finalizer has degree $104r+400\nu+8W+316$.
+
+The evaluator charges every binary addition, subtraction, and multiplication,
+including multiplication by constants.  The new global backward addition
+chains share required base powers across all three kernels, the masks and
+the threshold.  They do not treat exponentiation as one operation.
+The package includes all12 literal circuits, their fixed coefficient payloads,
+1080 independent actual-coefficient modular replays, full coefficient-recipe
+checks, exact degree inequalities, and the exact703-term identity.

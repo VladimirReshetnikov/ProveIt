@@ -1,0 +1,163 @@
+\section{Nine-variable equations: positive signed kernels and tunable norms}
+The new source encoding and the free-carrier argument combine without any
+additional unknowns.  For positive integer unknowns
+\(b,g,h,s,w,C,i,j,n\), the following equations have no positive integral
+zero if and only if \(\operatorname{Con}(\mathrm{ZFC})\), provably in ZFC,
+using the inherited source/compiler and numerical ratio theorems.
+\begin{center}
+\begin{tabular}{r|r|r}
+Majorant order & Exact degree & Binary arithmetic operations\\\hline
+Baseline & 1,731,700 & 462\\
+1 & 1,663,788 & 475\\
+2 & 1,595,876 & 478\\
+3 & 1,527,964 & 482\\
+4 & 1,494,006 & 487
+\end{tabular}
+\end{center}
+The baseline improves both measures over the previous
+\(1{,}910{,}404/473\) construction.  The other rows are degree/cost
+tradeoffs, not claims to dominate on every measure.  An order-zero variant
+has degree \(1{,}731{,}700\) and 465 operations and is retained only for checking.
+
+\subsection{The source and numerical interface}
+Use the unchanged original31 four-coefficient tuple, supplied as binary
+payloads, and the signed split kernels of the preceding construction.
+Their degrees are \(1939,1842,1738\), with positive leading coefficients
+\(2,2,\beta\).  For \(M=2^{2134927}\), every coefficient has absolute
+value less than \(M\), so each kernel is positive when \(B>2M\).
+Let \(\kappa=2134940\), \(a=2^\kappa\), \(B=ab^2\), and define
+\begin{align*}
+ \ell&=\sum_i B^{w_i},& U_s&=\ell+g,&
+ G_s&=(D_2(B)U_s+D_1(B))U_s+D_0(B),\\
+ Q_s&=\sum_j B^{q_j},& N_0&=B^{109},&
+ T_s&=N_0-1-(b-1)\ell+N_0(B-2)Q_s,\\
+ S_s&=g+N_0(2G_s+Q_s),& L&=bB^{2064},&
+ N&=2^{16012039}B^{1090},\\
+ R&=L(S_s+T_s+1)-S_s-1,&t&=bB^{108}.&&
+\end{align*}
+The maximum weight is 108, convolution height is 1954, and the maximum
+target is 1939.  The global sign reversal preserves the source zero set.
+The finite source certificate verifies all 22,544 isolation interactions.
+For binary \(b=2^k,B=2^v\), the calibrated threshold is
+\[
+ \operatorname{pop}(R)=2195v-30k-22-\delta
+                      =2\log_2 N-\delta,
+\]
+where \(\delta\ge0\) is precisely the carry defect.  The even value of
+\(\kappa\) matters: \(N\) has no separate factor \(b\).
+
+Set \(j_0=j-1\) and define the shared ratio registers
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M_0&=RY,\\
+ P&=2M_0^2U,&K&=R+1+h(P-1),& A&=M_0(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&J&=4A-5,\\
+ Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,&e&=iJC,\\
+ E&=eDC,&F&=(A^2-1)E^2+1,&G&=A+F(CD+1-A),\\
+ H&=C+F(B_1+j_0C),&I&=(G^2-1)H^2+1,&&\\
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI,&V_0&=PK,\\
+ m&=K^2(4t-g)-16t(C-KY)^2,&\Omega&=Jm,&E_0&=J(n+W_1^2)+Q.
+\end{align*}
+The original numerical interface becomes exactly: \(a_0,a_1\) are
+squares, \(J\mid Q\), and \(m>0\).  The latter recovers
+\(C>K(Y-1/2)>K\) and \(C>B_1+W_1\); it is not an assumed domain restriction.
+The exact old-index correspondence is
+\(j_{\rm old}=1+((F-1)/C)B_1+Fj_0\).
+
+\subsection{Higher majorants without extra congruence restrictions}
+The baseline takes \(\lambda=8\) and
+\(T=e(8D^2-4D-1)G\).  For order \(r=0,1,2,3,4\), put
+\(s_r=128,64,8,4,1\), respectively, and \(\lambda=2048/s_r\).
+Define
+\begin{align*}
+ L_m&=CD+1-A,&N_*&=2G+L_m,\\
+ N_1&=2e^2D(D-1)L_m+3C,&N_2&=2e^2(D-1)L_m,\\
+ N_3&=2e^2(L_m-C),&N_4&=2e^2C.
+\end{align*}
+With \((c_1,c_2,c_3,c_4)=(64,40,28,21)\), let
+\[
+ T=e\left[\frac{1024D^2-512D-128}{s_r}N_*
+       -\sum_{j=1}^r\frac{c_j}{s_r}N_j\right]+\epsilon_r,
+ \qquad V_1=TH,
+\]
+where \(\epsilon_0=\lambda\),
+\(\epsilon_r=512i/s_r+\lambda\) for \(1\le r\le3\), and
+\(\epsilon_4=256i(e^2+2)+2048\).
+All displayed divisions are fixed integer coefficients.
+
+For all these choices, \(V_1>\lambda\sqrt{a_1}\) holds unconditionally.
+Here is a finite proof rather than an asymptotic series argument.  Put
+\[
+ t_r=\frac{1024D^6-512D^5-128D^4-
+                 \sum_{j=1}^r c_jD^{4-j}}{s_r}.
+\]
+The exact polynomial
+\(t_r^2-(1024/s_r)^2D^{11}(D-1)\) has only positive nonzero coefficients,
+and \(t_r>0\).  The remainders in \(N_*=D^jN_j+r_j\) are
+\begin{align*}
+ r_1&=3-A,&r_2&=3CD+3-A,\\
+ r_3&=2e^2(A-1)D^2+r_2,&r_4&=2e^2(1-A-C)D^3+r_3.
+\end{align*}
+For \(A\ge3,C,i\ge1\), \(eA/D<9i/2\), \(eC/D<3i/2\), and
+\(r_2,r_3>0\).  Thus orders one through three have adverse remainder
+less than \(288i/s_r\).  For order four it is less than
+\(252ie^2+(765/2)i\).  Each correction exceeds this loss plus \(\lambda\).
+Finally, with \(X=e^2D^3(D-1)\), strict square-root concavity yields
+\[
+ \lambda\sqrt{DF}G<\frac\lambda2 eD^2\sqrt{1-1/D}\,N_*+\lambda v,
+ \qquad v=\frac{CD+1}{2eD\sqrt{1-1/D}}<1.
+\]
+This proves \(T>\lambda\sqrt{DF}G\), and hence the required majorant.
+No parity condition on \(g,h\) is needed.
+
+\subsection{The equation and its equivalence}
+The delivered single polynomial is
+\[
+ \boxed{\quad
+ [\Theta^2-\Omega^2(a_0+\lambda^2a_1)]^2
+           -4\lambda^2\Omega^4a_0a_1=0,\qquad
+ \Theta=E_0-\Omega(V_0+V_1).
+ \quad}
+\]
+All intermediate names are abbreviations, not extra unknowns.
+Unconditionally
+\(E_0=Jn+(J-2)W_1^2+3W_1C+2>0\).
+A zero cannot have \(m=0\).  Real factorization gives signed roots
+\(u_0^2=a_0,u_1^2=\lambda^2a_1\) and
+\[
+ n+W_1^2+Q/J=m(V_0+V_1+u_0+u_1).
+\]
+Both strict majorants make the last parenthesis positive, so \(m>0\)
+follows before any assertion about rational roots.  The recovered carrier
+range implies \(a_1>C^2A^4>K^2P^2>a_0\).  Consequently
+\(x=u_0+u_1=\Theta/\Omega\ne0\); the identity
+\(2xu_0=x^2+a_0-\lambda^2a_1\) proves both roots rational, hence integral.
+Also \(u_1/\lambda\) is integral.  The factor identity now forces
+\(J\mid Q\), proving soundness by the inherited ratio theorem.
+
+Conversely use the ratio witnesses, choose positive roots, and set
+\(n=m(V_0+V_1+u_0+u_1)-W_1^2-Q/J\).
+It is an integer greater than zero because
+\(W_1^2+Q/J<2D<V_1\).  This proves completeness and the claimed
+consistency equivalence.  Natural-domain circuits use the bijective shifts,
+not an unjustified alteration of the CRT index.
+
+\subsection{Exact cancellation checks}
+Writing \(\delta_0=V_0^2-a_0\),
+\(\delta_1=V_1^2-\lambda^2a_1\), and
+\(B_*=E_0^2-2E_0\Omega(V_0+V_1)+\Omega^2(\delta_0+\delta_1)\),
+the two-defect identity is
+\[
+ F_r=B_*^2+4\Omega^2V_0V_1B_*+
+             4\Omega^4(\delta_0V_1^2+a_0\delta_1).
+\]
+Finite remainder identities resolve \(D^8\delta_1\), giving a
+division-free certificate equal to \(D^{16}F_r\).
+The exact degree follows from a multivariate upper bound and a positive
+nonzero diagonal leading monomial in the actual fixed coefficients.
+Independent modular leading-coefficient checks use all four materialized
+payloads.  The primary equation never divides by \(D\); its degree is
+recovered by subtracting \(16\deg D\) from the certificate degree.
+The package contains the explicit circuits, full proof, payload hashes,
+symbolic ring checks, source checks, and independent literal replay.
+These are mathematical proofs and reproducible finite audits, not a new
+end-to-end kernel certificate or a minimality claim.

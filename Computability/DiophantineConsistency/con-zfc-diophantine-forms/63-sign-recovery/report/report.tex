@@ -1,0 +1,707 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage{hyperref,xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Recovering signs and absorbing Pell quotients},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine consistency equations}
+\fancyhead[R]{\small 23 October 2026}\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\PP}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\refute}{\operatorname{Refute}_{\ZFC}}
+\newcommand{\pin}{\texttt{beb0192cb8}}
+\input{metrics.tex}
+\title{Recovering signs and absorbing Pell quotients\\[5pt]
+\large New explicit Diophantine equations for syntactic ZFC consistency}
+\author{Prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical research for the ProveIt collection}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an explicit quartic polynomial in \textbf{42 unrestricted integer
+unknowns}, improving the 45-integer quartic in the inspected ProveIt snapshot.
+It is the sum of the squares of 27 quadratic residuals. The new mechanism
+recovers the signs of two coupled Pell coordinates from their common sign:
+one ternary positivity certificate replaces two, while the harmless canonical
+restriction $w=4u^2$ supplies a stronger modulus that excludes the negative
+branch. No extra lifting variable is introduced.
+
+A second construction gives an equation in \textbf{14 positive unknowns},
+of \textbf{exact degree 34}, with a \textbf{\PositiveOps-operation} evaluator.
+It improves the prior degree-52 point at that variable count. An existing
+square equation carries a divisibility condition, and a positive main-root
+coordinate absorbs the index quotient. A first-index lower bound obtained
+before reconstructing that quotient is essential to the proof.
+
+The additional nine-positive construction in Section~\ref{sec:deflated-nine} gives
+another degree/circuit-size tradeoff. All equations are ordinary polynomials:
+their exponents are fixed integers and their coefficient data are explicitly
+bound. At the ordinary mathematical proof level of the named inherited
+compiler and calibration theorems, ZFC proves that each equation has no
+solution on its stated domain exactly when ZFC is syntactically consistent.
+The new reductions are proved here; finite programs check their literal
+arithmetic data. No new end-to-end proof-assistant certificate or global
+minimality theorem is asserted.
+\end{abstract}
+\clearpage\tableofcontents\clearpage
+
+\section{Results and the meaning of simplicity}
+\label{sec:results}
+
+An effective consistency equation must contain a fully specified integer
+polynomial, a declared domain for every unknown, and a proof of both
+directions of its refutation/solution equivalence. Writing a universal
+polynomial with an unspecified program index does not meet that standard.
+Neither does using a coefficient chosen according to the truth of
+$\Con(\ZFC)$. The constructions below use only finite, reproducible
+coefficient recipes; none searches for a refutation while defining a
+coefficient.
+
+The comparison snapshot is
+\begin{center}\small
+\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+\end{center}
+This commit includes sources 54--59, the newly placed eighth wave. The
+collection's top-level comparison still describes the preceding wave, so
+we use the individual new packages as the actual comparison points
+\cite{collection,p55,p57,p58,p59}.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Construction & Domain & Unknowns & Exact degree & Binary operations\\
+\midrule
+Source 57 quartic & $\ZZ$ &45&4&not optimized\\
+New $Q_{42}$ & $\ZZ$ &\textbf{42}&\textbf{4}&not optimized\\
+Sources 55/59 & $\PP$ &14&52&79\\
+New $P_{14}$ & $\PP$ &\textbf{14}&\textbf{34}&\PositiveOps\\
+Source 58 & $\PP$ &15&24&90\\
+Source 59 free-coordinate form & $\PP$ &9&1,910,404&473\\
+New degree tradeoff & $\PP$ &9&\NineDegree&\NineOps\\
+\bottomrule
+\end{tabular}
+\caption{Separate complexity measures. The unchanged degree-24 point is
+included to prevent a misleading claim that degree 34 is best at every
+positive variable count. The new nine-variable point has its own gate cost.}
+\label{tab:comparison}
+\end{table}
+
+The 42-integer result reduces the number of unknowns by $3/45=6.67\%$
+at the same degree. It also reduces the quadratic residual count from 28
+to 27 and the number of expanded terms with the four coefficient ports
+left symbolic from 407 to 391. The 14-positive result lowers degree by
+$18/52=34.62\%$, paying \PositiveExtra\ extra arithmetic operations.
+The previously supplied 66-operation, degree-157, 15-positive polynomial
+remains a separate useful tradeoff \cite{p51}.
+
+\begin{theorem}[Closed consistency equations]
+\label{thm:main}
+Bind the four ports of $Q_{42}$ and $P_{14}$ to the complete source-34
+tuple in Section~\ref{sec:coefficients}. Then
+\begin{align*}
+ \ZFC&\vdash
+ \bigl[\exists\mathbf x\in\ZZ^{42}\;Q_{42}(\mathbf x)=0\bigr]
+ \longleftrightarrow\exists p\in\NN\;\refute(p),\\
+ \ZFC&\vdash
+ \bigl[\exists\mathbf x\in\PP^{14}\;P_{14}(\mathbf x)=0\bigr]
+ \longleftrightarrow\exists p\in\NN\;\refute(p).
+\end{align*}
+Consequently their respective absence-of-solutions statements are
+provably equivalent in ZFC to $\Con(\ZFC)$.
+\end{theorem}
+
+Here $\refute$ is the syntactic refutation predicate used by the inherited
+compiler's calibrated ZFC endpoint. The theorem is an ordinary mathematical
+composition, formalizable in ZFC. It is not a report that a new Lean, Rocq,
+or object-language ZFC derivation has been compiled. Section~\ref{sec:boundary}
+identifies that distinction precisely.
+
+There is no single ordering of ``simplest'' that minimizes unknowns, degree,
+coefficient height, number of monomials, and arithmetic circuit size at once.
+For unrestricted integers and low degree, $Q_{42}$ is the main delivered
+advance. For a more compact positive-domain display, $P_{14}$ is a useful
+balanced choice. The nine-positive polynomial belongs to the smallest-variable
+part of the inspected frontier.
+
+\section{The complete 42-integer quartic}
+\label{sec:quartic}
+
+\subsection{Variables, abbreviations, and residuals}
+
+The following are the \emph{42 supplied unknowns}, all unrestricted integers:
+\begin{align*}
+&J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,\\
+&N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\!a},\Delta,u,\rho,\\
+&a_1,a_2,a_3,\ b_1,b_2,b_3,\ d_1,d_2,d_3.
+\end{align*}
+The names $v,\rho,a_i,b_i,d_i$ correspond respectively to
+\texttt{v\_scale}, \texttt{q\_half\_root},
+\texttt{FA\_pos}$i$, \texttt{FC\_pos}$i$, and
+\texttt{EZ\_pos}$i$ in the executable data. The subscript on $B_{\!a}$
+distinguishes an auxiliary variable from a fixed coefficient radix.
+
+Define the affine polynomial abbreviations
+\[
+ q=\beta J+1,\quad k=\eta+\zeta,\quad C=q-F-\alpha,
+ \quad H=4a+3,\quad s=2v+1,\quad i=2r+1,
+\]
+and
+\[
+ \Pos(x,y,t)=1+x^2+y^2+t(t+1).
+\]
+Only these six affine quantities are implicit in the following residual
+list. In particular, $N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta$
+are supplied coordinates, constrained by the listed equations, rather than
+unpaid intermediate circuit values.
+
+\begin{alignat}{2}
+ r_1&=L-q^2+1,&\qquad r_2&=N-q(L+1),\nonumber\\
+ r_3&=X-qw,&r_4&=a-E-sN,\nonumber\\
+ r_5&=E-X(a-E),&r_6&=c-k(a-E)-\eta,\nonumber\\
+ r_7&=P-E(c-\eta)-k,&r_8&=\tau^2-P(P-k)-1,\nonumber\\
+ r_9&=D-X-ac-\gamma H,&r_{10}&=\Delta-a^2-H,\nonumber\\
+ r_{11}&=C_2-c^2,&r_{12}&=D^2-\Delta C_2-1.
+ \label{eq:quartic-first}
+\end{alignat}
+The next two residuals contain the packing and transport data:
+\begin{align}
+ r_{13}&=k-1-hE-\bigl[(q-F)(N-q)-CL+(M_C+qM_F)J\bigr],\nonumber\\
+ r_{14}&=(K_0+w)C-F-z(q-1).
+ \label{eq:quartic-packing}
+\end{align}
+The remaining arithmetic residuals and the four guards are
+\begin{alignat}{2}
+ r_{15}&=F_2-f^2,&\qquad r_{16}&=V+c-fo,\nonumber\\
+ r_{17}&=V-cj+k-1-hE,&r_{18}&=g+V^2-y^2,\nonumber\\
+ r_{19}&=I-iC_2,&r_{20}&=B_a-I^2,\nonumber\\
+ r_{21}&=B_a-\Delta(F_2-1),&r_{22}&=y^2-B_ag-1,\nonumber\\
+ r_{23}&=w-4u^2,&r_{24}&=q-2\rho^2,\nonumber\\
+ r_{25}&=F\alpha-\Pos(a_1,a_2,a_3),&
+ r_{26}&=FC-\Pos(b_1,b_2,b_3),\nonumber\\
+ r_{27}&=\eta\zeta-\Pos(d_1,d_2,d_3).&&
+ \label{eq:quartic-last}
+\end{alignat}
+The requested single polynomial is exactly
+\begin{equation}
+ \boxed{\displaystyle Q_{42}=\sum_{\nu=1}^{27}r_\nu^2=0.}
+ \label{eq:quartic}
+\end{equation}
+All 27 residuals are quadratic in the supplied unknowns. The polynomial
+is therefore quartic. It has exact degree four because $\tau$ appears
+only in $r_8$, as $\tau^2$, and hence
+\[
+ [\tau^4]Q_{42}=1.
+\]
+This remains true after the large fixed ports are replaced by their actual
+integers. The exact residual and expanded symbolic polynomial data are
+\path{quartic/quartic42.json} and
+\path{quartic/quartic42_expanded.json}.
+
+\subsection{What changed from source 57}
+
+The first 22 arithmetic residuals are unchanged from the literal source-57
+quartic. Its square constraint $w=u^2$ becomes $w=4u^2$. Its two separate
+equations $\eta=\Pos(\cdot)$ and $\zeta=\Pos(\cdot)$, with six private
+coordinates, are replaced by $r_{27}=0$, with three private coordinates.
+The dyadic and simplex guards are unchanged. Thus
+\[
+ 45-6+3=42\quad\hbox{unknowns},\qquad 28-2+1=27\quad\hbox{residuals}.
+\]
+The restriction to an even square root costs no additional unknown and
+does not increase degree. Its justification concerns the canonical
+accepting witnesses; it is not a claim that every zero of the old equation
+has an even square root at the same coordinates.
+
+The source-57 prose uses an unshifted transport formula in one passage,
+while its literal row 14 is the shifted formula \eqref{eq:quartic-packing}.
+Our construction preserves the actual polynomial, and our proof uses
+\[
+ (K_0+w)C=F+z(q-1),\qquad z_{\rm old}=z+1.
+\]
+The symbolic checker explicitly verifies this identity and rejects the
+off-by-one alternative. This correction does not change the source data
+or the source's intended existence theorem.
+
+\section{Why one product guard can replace two sign guards}
+\label{sec:sign}
+
+\subsection{Elementary guards and packing bounds}
+
+\begin{lemma}[Positive ternary representation]
+For all integers $x,y,t$, $\Pos(x,y,t)>0$. Every positive integer is
+represented by $\Pos$.
+\end{lemma}
+\begin{proof}
+The integer $t(t+1)$ is nonnegative. For a positive integer $n$, the number
+$4n-3$ is $1$ modulo $4$, so it is not of the form $4^a(8b+7)$.
+Legendre's three-square theorem represents it as a sum of three squares.
+Exactly one square is odd; writing it as $(2t+1)^2$ and the other two
+as $(2x)^2,(2y)^2$ gives the required representation.
+\end{proof}
+
+At an integer zero of \eqref{eq:quartic}, every residual vanishes.
+The authentic fixed coefficient has $\beta\ge15$. From $q=2\rho^2$
+and $q=\beta J+1$, $J\le-1$ is impossible by sign, and $J=0$ would
+give $1=2\rho^2$. Thus $J>0$ and $q\ge16$.
+The two product guards give $F\alpha>0$ and $FC>0$. The integers
+$F,\alpha,C$ have the same sign and sum to $q>0$, so all three are
+positive.
+
+Restore the abbreviations
+\begin{align*}
+Y&=sq^3,&X&=wq,&E&=XY,&a&=(X+1)Y,\\
+G&=q(q-F)-C,&
+R&=G(q^2-1)+(M_C+qM_F)J.
+\end{align*}
+The first seven rows justify these identities over arbitrary integer
+assignments. For example $N=q^3$, $a-E=sN=Y$, and $r_5=0$ gives
+$E=XY$. Row 13 is exactly $k=R+1+hE$ because
+\[
+ (q-F)(N-q)-CL=(q^2-1)[q(q-F)-C].
+\]
+The exact coefficient bounds are
+$0<M_C<\beta$ and $\beta<M_F<2\beta$.
+Since $F,\alpha,C>0$ and their sum is $q$,
+\[
+ 2q-1\le G\le q^2-q-1.
+\]
+Therefore, without using the sign of $z$ or $s$,
+\begin{equation}
+ q(q^2-1)<R<q^4-q^3<q^4-2,
+ \qquad R>3q+1.
+ \label{eq:Rbounds}
+\end{equation}
+For the upper bound, use
+$(M_C+qM_F)J<(1+2q)(q-1)$ and expand.
+
+\subsection{The extra modulus margin}
+
+The new guard gives $\eta\zeta>0$, but it has not yet proved that
+either coordinate is positive. Write
+\[
+ \delta=\sgn(\eta)=\sgn(\zeta),\quad
+ K=|\eta|+|\zeta|,\quad \eta_0=|\eta|.
+\]
+Then $\delta\in\{-1,1\}$, $K\ge2$, $0<\eta_0<K$ and $k=\delta K$.
+The odd integers $s=2v+1$ and $i=2r+1$ are nonzero.
+
+Initially $w=4u^2\ge0$. If $w=0$, then $X=0$, $a=Y$, and
+$D=ac+\gamma H$. Reducing the main norm
+$D^2-\Delta c^2=1$ modulo $H$, with $\Delta=a^2+H$, gives
+$0\equiv1\pmod H$. But $|Y|\ge q^3$ implies $|4Y+3|>1$.
+Thus $w\ne0$, and consequently
+\begin{equation}
+ w\ge4,\quad X\ge4q,\quad
+ M:=|E|=X|Y|\ge4q^4>3R+1.
+ \label{eq:modulus}
+\end{equation}
+This is the decisive strengthening. With only $w=u^2$, the immediate
+bound would be $M\ge q^4$, insufficient for the sign argument below.
+
+\subsection{Pell indices before either sign is recovered}
+
+Let $Z=|Y|$, $B=|a+2|$, $P_0=2XY^2+1$, and $c_0=|c|$.
+We have $B>M>R$, $\Delta=B^2-1$, and $P_0>B\ge2$.
+The two possible signs of $Y$ give respectively
+\begin{align*}
+ Y>0&:\quad KZ<c_0<K(Z+1),\\
+ Y<0&:\quad K(Z-1)<c_0<KZ.
+\end{align*}
+In particular $c_0>K$ in both cases.
+
+Write $\psi_A(n),\chi_A(n)$ for the integer Pell sequences defined by
+\[
+ (A+\sqrt{A^2-1})^n=\chi_A(n)+\psi_A(n)\sqrt{A^2-1}.
+\]
+The first norm in row 8 is
+\[
+ \tau^2-XY^2(XY^2+1)k^2=1.
+\]
+The least positive Pell unit for $v(v+1)$ has second coordinate $2$,
+so the first and main norms supply indices $n,p\ge1$ with
+\[
+ K=2\psi_{P_0}(n),\qquad
+ c_0=\psi_B(p),\qquad |D|=\chi_B(p).
+\]
+Since $P_0>B$ and $c_0>K$, monotonicity gives $p>n$.
+The recurrence $\psi_{P_0}(n)\equiv n\pmod M$ follows from
+$P_0\equiv1\pmod M$. Together with the retained index row it gives
+\begin{equation}
+ 2\delta n\equiv R+1\pmod M.
+ \label{eq:sign-congruence}
+\end{equation}
+If $\delta=1$, then $n\ge(R+1)/2$.
+If $\delta=-1$, then
+\begin{equation}
+ n\ge\frac{M-R-1}{2}>R.
+ \label{eq:negative-rank}
+\end{equation}
+In both branches $n\ge24$ and $p\ge25$. Elementary Pell growth now gives
+\begin{equation}
+ c_0>B\Delta^2,\qquad c_0>2p,\qquad c_0>2R.
+ \label{eq:rank-bounds}
+\end{equation}
+For example $\psi_B(p)\ge(2B-1)^{p-1}$ proves the first two
+inequalities; $c_0\ge\psi_B(2)=2B>2R$ proves the third.
+
+\subsection{The auxiliary equation fixes the main index}
+
+The unchanged quadratic rows assert, with $\rho_0=|i|c_0^2$,
+\begin{gather*}
+ \rho_0^2=\Delta(f^2-1),\qquad
+ \rho_0^2V^2-(\rho_0^2-1)y^2=1,\\
+ V=of-c=jc-R.
+\end{gather*}
+The ordinary relaxed-rank theorem, applied to the positive pair $(B,c_0)$
+using \eqref{eq:rank-bounds}, gives
+\[
+ |f|=\chi_B(m),\qquad p\mid m,\quad c_0\mid m,\quad m>2p.
+\]
+Its proof is retained in \path{upstream/PELL_RELAXED_AUXILIARY_PROOF.md}.
+It uses squares of $c$ and absolute values, so it does not assume the sign
+that we are trying to prove.
+
+For clarity, the signed-index step can be traced explicitly. The auxiliary
+Pell classification supplies an odd index $\ell=2j_0+1$ and a sign $\sigma$
+with
+\[
+ V=\sigma\mathcal Q_{j_0}(\rho_0^2),
+\]
+where the integral odd Chebyshev quotient satisfies
+\[
+ \mathcal Q_j(1-B^2)=(-1)^j\psi_B(2j+1),\qquad
+ \mathcal Q_j(0)=(-1)^j(2j+1).
+\]
+The exposed quotient equations give
+$V\equiv-c\pmod{|f|}$ and $V\equiv-R\pmod{c_0}$.
+As $\rho_0^2\equiv1-B^2\pmod{|f|}$, squaring the first congruence and
+using Pell duplication yields
+\[
+ \chi_B(2\ell)\equiv\chi_B(2p)\pmod{\chi_B(m)}.
+\]
+The signed step-down lemma, with $0<2p<m$, gives
+$\ell\equiv p$ or $-p\pmod m$. The second congruence and $c_0\mid m$
+therefore imply $R\equiv p$ or $-p\pmod{c_0}$.
+The strict bounds in \eqref{eq:rank-bounds} force
+\begin{equation}
+ p=R.
+ \label{eq:pR}
+\end{equation}
+The quotient and step-down identities are the same exact inherited lemmas
+used by the signed source; their statements and proofs are included in
+\path{upstream/SIGNED_DOMAIN.md} and
+\path{upstream/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md}.
+
+If $\delta=-1$, equations \eqref{eq:negative-rank} and \eqref{eq:pR}
+contradict $p>n$. Hence $\delta=1$, proving
+\[
+ \eta>0,\qquad\zeta>0.
+\]
+This completes the new sign-recovery argument. Each positivity hypothesis
+has been obtained before the theorem requiring it is invoked.
+
+\subsection{Restore the old zero and prove the converse}
+
+Given a new zero, replace its square witness $u$ by $u_{\rm old}=2u$.
+Supply ternary representations of the now-positive $\eta$ and $\zeta$.
+All other coordinates and all four coefficient ports are unchanged.
+This is a zero of the literal source-57 quartic. Its inherited signed
+compiler theorem decodes a refutation.
+
+For completeness, start with a refutation and the source compiler's
+canonical accepting witness. Its radix is $q=2^t$ with $t$ odd, and its
+rank has $R\equiv3\pmod4$. Moreover
+\[
+ w=2^{R-t},\qquad R>t+2.
+\]
+Thus
+\[
+ u=2^{(R-t-2)/2}
+\]
+is an integer and gives $w=4u^2$. Retain the dyadic and simplex witnesses,
+and choose a ternary representation of the positive number $\eta\zeta$.
+Every new residual vanishes. This proves both directions of the new
+existence equivalence.
+
+For the imported source's transport conclusion, the literal shifted
+formula gives $z>0$ after its power recovery: $X=2^R$ implies
+$w=X/q>q>F$, whence $(K_0+w)C-F>0$. Therefore
+$z(q-1)>0$. This verifies the needed domain assertion without the
+off-by-one formula mentioned above.
+
+\input{../positive14/section.tex}
+
+\input{../nine/section.tex}
+
+\section{Exact coefficient data and semantic dependencies}
+\label{sec:coefficients}
+
+The primary quartic and 14-positive construction both use the entire
+source-34 tuple, rather than exchanging individual ports between
+different compiler instances. Let $B=2^{1064921}$. Then
+\[
+ \beta=B-1,\qquad K_0=D_C+B D_R,\qquad M_C=M_{C,\rm native},
+ \qquad M_F=M_{F,\rm native}+B-1.
+\]
+The archive contains the actual unsigned little-endian bytes for these
+four integers and a finite builder from the literal 430 machine actions
+and 943 Wang tiles. The high mask is already shifted; no second shift is
+applied.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Port & Bits & Raw bytes & Compressed bytes\\\midrule
+$\beta$ &1,064,921&133,116&164\\
+$K_0$ &1,065,043&133,131&9,771\\
+$M_C$ &1,064,921&133,116&270\\
+$M_F$ &1,064,922&133,116&261\\\midrule
+Total &&532,479&10,466\\\bottomrule
+\end{tabular}
+\caption{The complete source-34 binding. These fixed integers are leaves,
+not additional quantified unknowns. Compressed byte counts describe the
+supplied deterministic gzip files, not coefficient heights.}
+\end{table}
+
+The builder and independently written decoder have been rerun on the
+actual fixed values. They check the transition/tile correspondence,
+69,230 finite basis-convolution conditions, all 8,801 coefficient digits,
+mask populations, strict carry margins, and the finite arithmetic facts
+used by rank tuning. The universal compiler correctness is an inherited
+mathematical theorem, not a consequence of those finite checks alone.
+The source's coefficient proof and original notices are retained unchanged
+under \path{coefficients/} and \path{upstream/licenses/}.
+
+The additional nine-positive component has its own complete binding,
+explicitly identified in that component's data. It is never assembled by
+mixing one port from the source-34 tuple with another source's transport
+or mask port.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lccc@{}}\toprule
+Dependency & $Q_{42}$ & $P_{14}$ & Nine-positive form\\\midrule
+Literal native compiler / calibrated endpoint &yes&yes&yes\\
+Ordinary Pell and signed-index lemmas &yes&yes&yes\\
+Jones ratio representation &no&no&yes\\
+Sun's ten-integer reduction &no&no&no\\
+New end-to-end proof-assistant certificate &no&no&no\\\bottomrule
+\end{tabular}
+\caption{Scope of the delivered proofs. The main low-degree constructions
+do not use Jones's universal expression.}
+\end{table}
+
+The user's permission to change the computational starting point was
+taken seriously. A separate direct proof-calculus route already exists
+in the pinned repository; its native enumeration-step graph uses 1,742
+witnesses before quartic flattening
+\cite{nativegraph}. A different formally verified route through Minsky
+machines and FRACTRAN is available in the Coq literature \cite{coqh10}.
+Those are valid alternatives, but no smaller explicit closed equation
+with a measured complete coefficient binding was obtained from them in
+this iteration. The delivered results therefore retain the native
+calibration while changing its arithmetic representation.
+
+\section{Reproduction, finite certificates, and proof status}
+\label{sec:boundary}
+
+\subsection{What the programs verify}
+
+From the extracted archive root, run
+\begin{verbatim}
+python3 verify.py
+\end{verbatim}
+The verification driver checks the inherited source identities, actual
+coefficient payloads, deterministic regeneration of the new equations,
+literal evaluator counts, symbolic cancellation and exact-degree
+certificates, and independently evaluated formulas modulo large primes.
+The quartic verifier also runs with Python's assertion optimization enabled:
+its checks use explicit exceptions, not removable assertions.
+
+For the quartic, the sparse symbolic expansion proves that the first 22
+arithmetic rows are exactly the source rows, the scale change is exactly
+$-3u^2$ added to the old scale residual, and the dyadic/simplex rows are
+unchanged. All 42 variables are live. The exact expansion has 391 terms
+when the four fixed ports remain indeterminates. The coefficient of
+$\tau^4$ is exactly one. Independent AST evaluation and sparse expansion
+agree in 180 modular comparisons using the actual bound ports.
+
+The finite sign and representation checks are supplementary diagnostics.
+For example, they test 392 signed interval cases and 1,590 negative-index
+congruence cases. The universal sign theorem is the proof in
+Section~\ref{sec:sign}, not an extrapolation from those samples.
+The positive and nine-variable component certificates state their own
+precise scopes and counts.
+
+Rebuild this report with
+\begin{verbatim}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The PDF is a compiled version of the supplied LaTeX source. Recompiling
+may change PDF metadata bytes; the archive manifest authenticates the
+delivered version.
+
+\subsection{Why the composition is a theorem of ZFC}
+
+The asserted internal provability is not inferred merely from the truth
+of an external Lean theorem or from agreement on standard numerals.
+Work in ZFC with natural-number codes for formulas, finite derivations,
+and finite machine runs. The register compiler and binary simulation
+are uniform inductions on such codes and runs. The inherited ordinary
+K215 proof explicitly states this calibration in ZFC
+\cite{k215}; its exact text is retained as
+\path{upstream/K215_CALIBRATION_PROOF.md}.
+
+The calibration's model-theoretic part uses set-sized structures:
+Henkin completeness, satisfaction for set structures, a quotient
+interpretation with an internally defined well-founded part, and the
+constructible submodel of a set model. These are constructions available
+in ordinary ZFC. In particular, the well-founded-part interpretation
+quantifies over represented subsets, not arbitrary external subsets.
+It does not assume a transitive set model, an inaccessible cardinal, or
+external well-foundedness. The constructible domain inside a set model
+is an ambient subset of that model's domain; no truth predicate for the
+ambient universe is required. The exact inspected source interfaces are
+listed in \path{reviews/ZFC_INTERNALIZATION_SCOPE.md}.
+
+The arithmetic compiler and the new Pell and polynomial arguments are
+likewise uniform coded arguments over the natural numbers. Their
+composition can therefore be carried out within ZFC, with quantifiers
+ranging over the ambient theory's entire $\omega$. Equivalently, the
+same proof runs inside any model of ZFC using that model's naturals;
+there is no step converting a nonstandard internal certificate into an
+externally finite object. The proof predicate is that of the calibrated
+finite ZFC calculus, or a standard presentation connected to it by the
+usual primitive recursive proof translations. Negating its existence
+gives the stated syntactic consistency sentence.
+
+This ordinary internalization argument explains the meaning of
+Theorem~\ref{thm:main}. Exporting it as an actual derivation in the
+repository's selected object-language calculus remains a separate
+formalization task, exactly as warned in the preserved status document.
+
+\subsection{What is proved and what remains to formalize}
+
+The new work establishes ordinary mathematical existence equivalences.
+These use exact inherited theorems about the native compiler, the
+calibrated endpoint, and Pell representations. Those mathematical
+arguments can be formalized in ZFC, giving the internal consistency
+biconditionals in Theorem~\ref{thm:main}. No assumption that ZFC is
+consistent enters either direction.
+
+Three different artifacts should be distinguished:
+\begin{enumerate}
+\item The explicit polynomial and its finite arithmetic certificates,
+which are supplied here.
+\item An external proof-assistant theorem about the exact new literal
+polynomial. No newly compiled end-to-end theorem of this kind is supplied.
+\item A formal derivation inside the repository's object-language ZFC
+calculus of the desired biconditional. That exported derivation is also
+not supplied.
+\end{enumerate}
+The pinned repository has substantial checked components and separate
+closed formal routes. They do not automatically certify a changed
+literal equation. The preserved \path{upstream/OBJECT_ZFC_STATUS.md}
+records the relevant boundary at the comparison snapshot.
+
+The natural next formalization target for $Q_{42}$ is especially small:
+formalize the common-sign bootstrap with the abstract signed-rank lemma,
+then prove the exact 27-row adapter. The literal coefficient data and
+native compilation theorem can be reused. For $P_{14}$, isolate the
+first-root gap's exclusion of index one, the normalized-rank argument,
+and the main-root quotient reconstruction before composing them.
+
+The independent reviews bundled with this work are separate AI-assisted
+reviews from this research session. They are not represented as external
+human peer review or kernel certificates. The archive does not prove
+consistency, inconsistency, or any global minimality assertion.
+
+\section{Contribution and remaining opportunities}
+
+The main new quartic idea is reusable beyond this instance. When two
+coordinates are known only to have the same sign, a modulus large enough
+to separate the negative residue branch can sometimes recover their
+individual signs. A cheap restriction on canonical witnesses can provide
+that modulus while preserving every accepting computation. Here this
+removes three unrestricted integer variables without raising degree.
+
+The positive construction uses a different resource: an existing square
+root can carry a rational offset. Its integrality restores a removed
+divisibility witness, while its strict positive gap supplies an early
+index bound. Both directions matter. Merely eliminating the quotient
+from the displayed formula would introduce a circular rank argument;
+the proof here obtains the necessary bound first.
+
+Further progress should target an actual measured bottleneck: the
+remaining simplex guards in the integer quartic, the degree-17 main
+carrier in the positive form, or the source coding and radical-majorant
+degrees in the nine-positive form. A new proof calculus or machine may
+also reduce the coefficient description, but a smaller state count alone
+does not establish a smaller Diophantine equation.
+
+\begin{thebibliography}{99}
+\bibitem{collection} ProveIt contributors.
+\emph{Con(ZFC) in Diophantine form}, sources 31--59, snapshot \pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\bibitem{p34} ProveIt research source 34.
+\emph{Fourteen unrestricted integers, and a lower-degree fifteen-integer form};
+coefficient adapter and quartic50 data. Directory \path{34-integer14/}
+in \cite{collection}. Exact copied source identities are in
+\path{provenance/SOURCES.json}.
+\bibitem{p51} ProveIt research source 51.
+\emph{Sparse arithmetic}, including the 66-operation, degree-157 positive
+form. Directory \path{51-sparse-arith/} in \cite{collection}.
+\bibitem{p55} ProveIt research source 55.
+\emph{Congruence separation and positive-word fusion}.
+Directory \path{55-congruence-norms/} in \cite{collection}.
+\bibitem{p57} ProveIt research source 57.
+\emph{Separated degrees and Pell quotients}.
+Directory \path{57-separated-degrees/} in \cite{collection}.
+\bibitem{p58} ProveIt research source 58.
+\emph{Integral-root carriers for Con(ZFC)}.
+Directory \path{58-integral-root/} in \cite{collection}.
+\bibitem{p59} ProveIt research source 59.
+\emph{Degree-separated encodings and an ordinary-root merger for Con(ZFC)}.
+Directory \path{59-degree-separated/} in \cite{collection}.
+\bibitem{signed} ProveIt research source 36, retained earlier proofs.
+\emph{Signed-domain reduction} and \emph{Odd half-binomial scale}.
+\path{36-small-tuple/coefficients/source_proofs/} in \cite{collection}.
+\bibitem{rank} ProveIt research notes.
+\emph{Recovering integrality after relaxing an auxiliary Pell norm};
+\emph{Fixed-minus index parity}; \emph{Signed Pell proof}.
+\path{Computability/HilbertTenthProblem/Papers/1980/}, snapshot \pin.
+\bibitem{k215} ProveIt contributors.
+\emph{Ordinary proof of the combined215 machine}, snapshot \pin.
+\path{Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md}.
+The verbatim text and exact source hash are included in this archive.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md}.
+\bibitem{nativegraph} ProveIt contributors.
+\emph{Polynomial formula blocks in the native refutation graph},
+\path{Computability/DiophantineConsistency/NATIVE_FORMULAS.md}, snapshot \pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency/NATIVE_FORMULAS.md}.
+\bibitem{coqh10} D. Larchey-Wendling and Y. Forster.
+\emph{Hilbert's Tenth Problem in Coq (Extended Version)}.
+Logical Methods in Computer Science 18(1):35, 2022.
+\url{https://arxiv.org/abs/2003.04604}.
+\end{thebibliography}
+\end{document}

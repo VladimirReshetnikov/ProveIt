@@ -1,0 +1,192 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,longtable,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Oriented guards and smaller Diophantine consistency equations},pdfauthor={OpenAI-assisted research for Vladimir Reshetnikov}}
+\renewcommand{\labelitemi}{$\bullet$}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\providecommand{\mathscr}[1]{\mathcal{#1}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\setlength{\emergencystretch}{4em}
+\title{Oriented guards and smaller Diophantine\\consistency equations}
+\author{OpenAI-assisted research for Vladimir Reshetnikov and ProveIt}
+\date{23 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+This iteration combines six newly delivered constructions and also investigates
+architectures that do not assume K215 or Jones as a required starting point.
+The principal new structural result is a quartic in42 unrestricted integer
+unknowns, improving45: a cofinal factor-four square scale forces a large
+modulus before Pell rank recovery, allowing two positivity guards to be
+replaced by one. Exact monic projections give36-integer sextic and32-integer
+octic companions. A smaller degree-separated source gives a nine-positive
+polynomial of degree $1\,731\,700$ in462 operations and a lower-degree
+$1\,494\,006$/487 tradeoff. Congruence norms and a two-bit carry trim give
+ten integers, degree $3\,327\,556$, in519 operations. An adaptive divisor
+modulus gives fourteen positive unknowns of degree30 in87 operations.
+All are explicit fixed polynomials with complete coefficient bindings.
+The proofs are ordinary mathematics formalizable in ZFC, with identified
+inherited arithmetic/compiler dependencies and finite exact certificates;
+no consistency decision, global optimum, or new end-to-end kernel proof is
+claimed.
+\end{abstract}
+
+\section{Problem, scope and immutable baseline}
+We seek an explicit polynomial $F$ with integer coefficients and a stated
+integer domain $D$ for which ordinary mathematics establishes
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf x\in D^n\ F(\mathbf x)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+Here $\N$ includes zero; strictly positive and unrestricted integer domains
+are distinguished everywhere. Intermediate registers are polynomial
+abbreviations, not hidden quantified unknowns. Fixed numerals are supplied
+as actual payloads or explicit finite integer recipes, not selected according
+to whether consistency holds.
+
+The six original incoming archives were retrieved at
+\texttt{7331974b6966}, placed at \texttt{beb0192cb8dc}. Full immutable IDs,
+Git blob hashes, archive SHA256 values and byte counts appear in
+\texttt{INCOMING\_PINS.json}. The project is
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\end{center}
+All six original root replays passed in fresh copies; the original trees
+were left unchanged. The input packets are Free Coordinate, Integral Root,
+Separated Degrees, our preceding Degree Separated packet, Calibrated Carry,
+and Congruence Norms. We use their actual archived circuits and proofs,
+not a possibly incomplete placed tree. Independently recomputed live-gate
+counts and the reviewed formal-status snapshot accompany the report.
+
+Neither K215 nor Jones is a requirement of the problem. We considered direct
+proof predicates, other constructive DPRM compilers, and fixed-input
+universality. Those alternatives are discussed separately; none is passed
+off as a validated smaller endpoint. The successful low-degree quartic and
+its projections do not use the Jones universal expression or Sun's reduction,
+although their source calibration still uses the established native compiler.
+
+\section{Measured results and honest tradeoffs}
+Binary additions, subtractions and multiplications are charged, including
+multiplication by a numeral and gates implementing fixed powers of variables.
+Shared registers are reused; fixed coefficient leaves are free in this circuit
+metric. Coefficient storage and bit complexity remain separate measures.
+\begin{center}\small
+\begin{tabular}{@{}lrrl@{}}\toprule
+Domain, unknowns & Exact degree & Operations & Comparison\\\midrule
+$9$ positive, shorter & $1\,731\,700$ &462& Previous $1\,910\,404/473$\\
+$9$ positive, lower degree & $1\,494\,006$ &487& Degree/cost tradeoff\\
+$10\Z$ & $3\,327\,556$ &519& Previous $8\,469\,528/533$\\
+$13\Z$, no Sun2026 & $10\,461\,744$ &519& Previous $11\,543\,632/518$\\
+$14$ positive &30&87& Previous $52/79$\\
+$42\Z$ &4& not optimized & Incoming $45\Z$, degree4\\
+$36\Z$ &6& not optimized & Exact monic projection\\
+$32\Z$ &8& not optimized & Exact monic projection\\\bottomrule
+\end{tabular}
+\end{center}
+The twelve- and thirteen-positive incumbents $242/94$, $258/89$ and
+$126/91$, $132/83$ are not displaced. The fifteen-positive degree24/90 and
+26/88 forms also remain useful. The new fourteen-positive degree30 form
+saves one variable against the incoming fifteen-positive degree30/79 point
+at eight additional operations. Its five-residual system costs78 operations
+and has maximum degree15.
+
+The nine-positive family additionally includes the exact tradeoffs
+$1\,663\,788/475$, $1\,595\,876/478$ and $1\,527\,964/482$.
+Natural-coordinate translations add seven gates, so the two highlighted
+versions cost469 and494. The thirteen-integer result improves degree at
+one extra gate, not both metrics. Calibrated Carry still supplies a
+larger-degree ten-integer point with513 operations. The fifteen-positive
+66-operation degree157 form remains the absolute operation-count incumbent
+among these compared families. There is no single winner under every size
+objective and no global minimality conclusion.
+
+\paragraph{What is genuinely new.}
+The quartic improvement uses cofinal witness flexibility to establish
+$|E|>3R+1$ before rank recovery; it is not merely a gate optimization.
+The source improvement combines incoming108-position weights with the
+previous row shear, fresh target placement and a global sign reversal.
+All three reversed kernels now have positive leaders, simplifying the
+unconditional positivity argument. The nine-variable alternatives exploit
+higher Pell majorants while retaining positivity-first free-coordinate
+soundness. The ten-integer construction combines the smaller source with
+incoming two-root congruence separation and removes two provably redundant
+population bits. The fourteen-positive construction uses the recovered
+scale divisibility to replace a fixed modulus by $4qY$.
+
+\paragraph{Coefficient coherence.}
+The small-variable source families retain the whole original31 tuple,
+with native radix $2^{1064921}$; no one port is borrowed from a smaller
+adapter. The positive14 family instead uses its entire inherited compact
+$2^{590069}$ tuple. The quartic uses the complete package34
+mixed-parity-unrounded tuple at radix $2^{1064921}$, which must not be
+identified with the different original31 ports merely because the radix
+exponents match. Every binding supplies the already shifted high mask once.
+No new coefficient-storage record is claimed.
+
+\input{sections/quartic.tex}
+\input{sections/encoding.tex}
+\input{sections/nine.tex}
+\input{sections/signed108trim.tex}
+\input{sections/signed13.tex}
+\input{sections/positive.tex}
+\input{sections/alternatives.tex}
+
+\section{Formalization boundary and validation}
+The recent \texttt{dabf4e39f103} commit reports local Lean verification of
+package52's literal60-gate/22-row source,136 shifted coefficient records,
+position/kernel bounds, sparse low-mask decoding, cofinal estimates,
+ratio substitution and a margin-first finalizer. The source adapter,
+actual native calibration, assembled closed replacement expression and
+internal ZFC equivalence are still expressly separate obligations. We read
+the reported3709-job build and axiom audit; we did not rerun that Lean build.
+Existing closed \texttt{ExplicitZFC} and \texttt{NativeZFC} endpoints are
+not automatically certificates for the smaller circuits in this archive.
+
+The arithmetic proofs here establish new equivalences using precisely
+identified inherited compiler/Pell contracts. Their ordinary ZFC-formalizable
+status is distinguished from a checked external Lean theorem and from an
+exported object-language ZFC derivation. Only the ten-integer route additionally
+imports Sun's2026 result. No use is made of an assumption that ZFC is
+arithmetically sound or that either side of the consistency equivalence is true.
+
+The complete release is hash-authenticated, copied to an isolated directory,
+and replayed without network access. Exact polynomial identities, source
+isolation, coefficient payloads, gate liveness, cancelled degree upper bounds
+and nonzero leading witnesses are checked. The two quartic projections have
+unit leading coefficients on the actual fixed slice. Component mutation
+tests are distinguished from root byte-integrity corruption controls.
+Normal and optimized Python runs are recorded separately; no disabled
+assertion run is silently reported as a proof.
+
+The root receipt lists every executed stage and every regenerated file
+compared byte-for-byte. PDF generation is independent of the mathematical
+replay; PDF metadata can differ when recompiled. The distributed ZIP is
+extracted and the complete replay repeated before delivery. These finite
+checks support explicit arithmetic/data claims and implementation fidelity;
+they do not replace the universal proofs or certify an unbounded compiler
+by testing finitely many assignments.
+
+\paragraph{Corrections and rejected shortcuts.}
+The incoming Q45 prose writes a transport quotient shifted by one, while its
+literal Q45 and Q50 row is $(K_0+w)C=F+z(q-1)$. We retain the literal row;
+the corrected late argument gives $z>0$, exactly what is needed. The
+original files are preserved and the correction is documented separately.
+The unsuccessful shared-sign proposal with only $w=u^2$ is not claimed;
+its negative branch lacked the early scale gap. Likewise the initial
+positive14 draft degree34 is superseded by the adaptive-modulus degree30
+form, not counted as an additional frontier improvement. No unproved
+cofinal restriction on a canonical transport witness is used.
+
+\section*{Attribution and reproducibility}
+The retained notices credit the native compiler, Pell and signed step-down
+lemmas, Jones and Sun interfaces, and each of the six incoming constructions.
+The direct-proof and universal-machine alternatives are literature-backed
+research directions, not numerical endpoints in the result table. Internal
+independent reviews are AI-assisted and do not represent external human
+peer review. All mathematical claims, exact artifacts and their limitations
+are kept together for incorporation into ProveIt.
+\end{document}

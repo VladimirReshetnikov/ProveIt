@@ -1,0 +1,57 @@
+\section{Smaller evaluators for the integral-root equations}
+The incoming integral-root mechanism is retained, rather than advertised as a new discovery here. Three literal fifteen-positive circuits improve from operation/degree pairs $90/24$, $88/26$ and $79/30$ to
+\[
+ (88,24),\qquad(87,26),\qquad(78,30).
+\]
+All retain the entire incoming $590069$-bit-radix tuple, not the original31 tuple used by the nine- and ten-variable branches.
+
+\subsection{The explicit degree-24 polynomial}
+The positive inputs are
+\[
+ j,F,\alpha,z,f,h,i,T,X,Y,r,\eta,\zeta,u,\gamma.
+\]
+Define the following polynomial abbreviations:
+\begin{align*}
+ J&=3j+1,&q&=\beta J+1,& C_w&=q-F-\alpha,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ D_0&=X+ac+\gamma H,&\ell&=EkY,&I&=ic^2,\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ \widehat R&=k-hE-1,&U&=\Delta(f^2-1),&V&=f^2(cT-\widehat R)-c.
+\end{align*}
+The residuals are
+\begin{align*}
+ A_0&=[q^3(\ell+r)+Y]^2-q^6[\ell(\ell+k)+1],\\
+ A_1&=(qD_0+XH)^2-q^2(\Delta c^2+1),\\
+ A_k&=\widehat R-R,\\
+ A_t&=q[K_0C_w-F-z(q-1)]+XC_w,\\
+ A_a&=(V+u)^2-Uu\bigl(V+(V+u)\bigr)-1,\\
+ A_s&=I^2-U.
+\end{align*}
+Then the completed equation is
+\[
+ \boxed{A_0^2+A_1^2+A_k^2+A_t^2+A_a^2+A_s^2=0.}
+\]
+Its literal evaluator, with common subexpressions shared, has 88 live binary gates. The highest homogeneous part remains
+\[
+ 4X^4Y^6f^8u^2\bigl((\eta+\zeta)T+hX\bigr)^2,
+\]
+which is nonzero and has degree 24.
+
+\subsection{Why both changes preserve the theorem}
+First share the already computed auxiliary gap: $2V+u=V+(V+u)$. This is an identity over every commutative ring and saves one addition in each of the three circuits.
+
+For the degree-24 case only, the old transport residual is
+\[
+ A_t^{\rm old}=q[K_0C_w+(q-F)-z_{\rm old}(q-1)]+XC_w-q.
+\]
+Our residual obeys the exact all-input identity $A_t(z)=A_t^{\rm old}(z+1)$, while no other residual uses this transport coordinate. Any positive new zero is therefore an old positive zero with $z_{\rm old}=z+1$. The converse uses canonical witnesses, not a claim about arbitrary old zeros. The retained ordinary compiler proof gives
+\[
+ w=2^R/q>q>F,\quad C_w>0,\quad
+ (K_0+w)C_w-F=(z_{\rm old}-1)(q-1).
+\]
+The left side is positive, and $q>1$, so the integral $z_{\rm old}$ is at least two. Thus $z=z_{\rm old}-1$ is a valid positive new coordinate. All subsequent integral-root reconstructions leave that transport coordinate unchanged. This supplies completeness.
+
+The old integral-root theorem recovers $q^3\mid Y$ and $q\mid X$ by rational-root integrality in the first and main monic square equations. Its congruence $J=3j+1$ is retained: deleting it without an alternative proof of $\gcd(q,3)=1$ is not justified. The inherited canonical Pell gaps and signed rank argument then give the refutation equivalence. The full predecessor proof and complete coefficient binding are retained as inert sources. Translation by a constant preserves degree, and the other two modified outputs are polynomial-identical to their predecessors.
+
+The authored checker validates all source hashes, literal gates and the two identities. It performs 360 exact signed and 360 modular whole-circuit regressions, plus 6000 local checks. These are implementation checks; the two universal identities and canonical positivity argument above are the proof of the changes.

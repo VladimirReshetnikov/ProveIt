@@ -1,0 +1,123 @@
+\section{A genuinely different source: one-stack proof certificates}
+\label{sec:onestack}
+The user explicitly permits abandoning both K215 and Jones's universal
+expression. The following construction does so: it recognizes a proof
+nondeterministically, rather than arithmetizing a deterministic enumerator.
+Its finite accepting paths are mathematically equivalent to a ZFC refutation.
+The local polynomial is fully materialized. A closed global compiler-input
+proposal is supplied, but has not been elaborated, kernel compiled, or
+expanded to count its final variables. In particular, the local equation
+alone is \emph{not} a consistency equation.
+
+\subsection{Numerical calculus and stack}
+Use the numerical calculus $C_{222}$ of the pinned repository, not its machine
+implementation. Its independent semantic calibration is
+\[
+ C_{222}(1)\ \longleftrightarrow\ \text{there is a ZFC refutation}.
+\]
+The precise source lemmas are
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+Put $I(a,b)=2(a+b)(a+b+1)+4b$, $A(a,b)=I(a,b)+2$,
+$M(a,b)=I(a,b)+1$, $E(a,b)=I(a,b)+3$, $N(a)=I(a,1)$, and
+$X(a,b)=N(A(a,N(b)))$.
+The eight unconditional axiom codes are
+\begin{align*}
+ r_1&=X(a,E(a,b)),\\
+ r_2&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+ r_3&=I(E(a,b),I(M(c,a),M(c,b))),\\
+ r_4&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+ r_5&=I(E(c,a),I(M(c,b),M(a,b))),\\
+ r_6&=I(X(a,A(a,b)),b),\\
+ r_7&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+ r_8&=I(I(I(c,u),a),I(I(a,c),I(b,c))).
+\end{align*}
+The remaining guarded code $B(a,b,c)$ is defined by
+\begin{align*}
+ R(b,k,m)&=A(b,I(m,N(A(b,I(m,N(M(b,k))))))),\\
+ C(a,b,k,m)&=A(b,I(M(b,k),N(A(a,I(m,\\
+ &\hspace{18mm}N(A(a,I(A(k,I(M(k,a),M(k,b))),R(b,k,m))))))))),\\
+ B(a,b,c)&=N(I(I(M(a,b),A(c,M(a,b))),\\
+ &\hspace{18mm}A(c,I(C(a,b,c,c),N(R(b,c,c)))))).
+\end{align*}
+It is available when $c\ne a,b$. All formulas are also included as literal
+binary arithmetic DAGs in \texttt{stack\_step.json}.
+
+Encode a list by $\operatorname{Cons}(h,t)=1+(h+t)(h+t+1)/2+t$,
+with empty list $0$. Every positive natural number has a unique head and
+tail, and the tail is strictly smaller. Hence every natural number is a
+finite stack code. Define the polynomial
+\[
+ L(s,h,t)=2s-2-(h+t)(h+t+1)-2t.
+\]
+Over natural numbers, $L(s,h,t)=0$ is exactly $s=\operatorname{Cons}(h,t)$.
+The accepted stack is $\operatorname{Cons}(1,0)=2$.
+
+\subsection{Three branches, five shared witnesses}
+With natural witnesses $a,b,c,u,v$, put
+\begin{align*}
+ G&=(c-a)^2(c-b)^2-(u+1)^2,\\
+ H&=v^2\prod_{j=1}^{8}(v-r_j)^2\bigl((v-B(a,b,c))^2+G^2\bigr),\\
+ T_{\rm ax}&=L(s',v,s)^2+H,\\
+ T_{\rm mp}&=L(s,I(a,b),v)^2+L(v,a,c)^2+L(s',b,c)^2,\\
+ T_{\rm gen}&=L(s,b,c)^2+L(s',A(a,b),c)^2,\\
+ T&=T_{\rm ax}T_{\rm mp}T_{\rm gen}.
+\end{align*}
+All three factors are nonnegative. Thus $T=0$ means exactly one of the
+following permitted transitions (possibly more than one): push truth or an
+axiom; replace adjacent top entries $I(a,b),a$ by $b$; replace top entry $b$
+by $A(a,b)$. For the guarded axiom, $G=0$ implies $c\ne a,b$ because $u+1>0$.
+Conversely, for $c\ne a,b$ choose $u=|(c-a)(c-b)|-1$.
+The same $u$ can serve as the fourth parameter of $r_8$ in a different
+branch: an existential disjunction does not require distinct witness slots.
+
+\paragraph{Exact correctness of finite paths.}
+Every stack reached from $0$ contains only $C_{222}$ theorems, by induction
+on the path length and the three inference rules. Consequently reaching
+$2$ implies $C_{222}(1)$. Conversely, prove by induction on a derivation
+that its conclusion $h$ can be pushed onto \emph{any} pre-existing stack
+$S$, without changing its tail. An axiom is pushed directly. For modus
+ponens first execute the derivation of $a$, then that of $I(a,b)$, then
+apply the pop-two/push-one branch. For generalization execute the premise,
+then apply the third branch. Thus a derivation of $1$ yields a path from
+$0$ to $2$. Duplicating a premise merely increases time; no history register,
+cursor, or saved proof list is required. This proof is finitary and
+formalizable in ZFC, so the inherited semantic calibration gives
+\[
+ \exists\text{ a finite }T\text{-path from }0\text{ to }2
+ \quad\longleftrightarrow\quad \neg\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\subsection{Materialized local quartic and closed global proposal}
+The shared binary DAG has 382 operation nodes, seven inputs, and numeral
+leaves at most four. Its syntactic degree upper bound is 1,048,802.
+Inline affine arithmetic and introduce a nonnegative wire only at each
+nonlinear product. Every such product is a square or a product of
+nonnegative expressions; this is why the guard uses separate squares.
+There are 84 wire variables. Together with $a,b,c,u,v$, the local source
+has 89 natural witnesses. Its 85 quadratic residuals have a sum of squares
+of exact degree four with 3,108 monomials. These are \emph{local} counts,
+not counts for the final consistency equation.
+
+For the global closure take only three outside variables $t,x,y$, and
+$\beta(x,y,i)=x\bmod(1+(i+1)y)$. Require
+\[
+ \beta(x,y,0)=0,\quad \beta(x,y,t)=2,\quad
+ \forall i<t\ \exists\mathbf w\in\mathbb N^{89}\quad
+ Q(\beta(x,y,i),\beta(x,y,i+1),\mathbf w)=0.
+\]
+The CRT coding lemma supplies $x,y$ for every finite stack sequence.
+Conversely the displayed conditions decode a valid finite path.
+No extra $t>0$ condition is needed: $t=0$ contradicts the two endpoints.
+The displayed bounded formula is not itself an ordinary Diophantine
+polynomial. The artifact \texttt{OneStackEquation.lean} specifies its
+closed constructor translation: remainder graph representations, finite
+composition, \texttt{Rep.boundedForall}, existential closure of $(t,x,y)$,
+and finally \texttt{QuarticCompiler.compile}. This bypasses Jones entirely.
+Its primitive constructors are explicit data-valued representations in the
+pinned repository, not an unspecified appeal to MRDP.
+
+The local result and path equivalence above are mathematical proofs. The
+new Lean constructor proposal remains uncompiled, and its complete output
+is unmaterialized and uncounted. It is therefore a promising alternate
+architecture, \emph{not a claimed smaller completed consistency equation}.

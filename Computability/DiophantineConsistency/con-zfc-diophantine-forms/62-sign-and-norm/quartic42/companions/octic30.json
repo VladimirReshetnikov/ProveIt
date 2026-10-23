@@ -1,0 +1,250 @@
+{
+  "name": "octic30_from_quartic42",
+  "domain": "unrestricted integers",
+  "variables": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "tau",
+    "eta",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "E",
+    "c",
+    "a",
+    "V",
+    "I",
+    "u",
+    "rho",
+    "FA_pos1",
+    "FA_pos2",
+    "FA_pos3",
+    "FC_pos1",
+    "FC_pos2",
+    "FC_pos3",
+    "EZ_pos1",
+    "EZ_pos2",
+    "EZ_pos3"
+  ],
+  "variable_count": 30,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding": {
+    "manifest": "../dependencies/source34/COEFFICIENT_BINDING.json",
+    "compiler_manifest": "../dependencies/source34/coefficients/payloads/COEFFICIENT_BINDING.json",
+    "mask_convention": "MF is the already shifted MF_source",
+    "transfer_proof": "../dependencies/source34/coefficients/COEFFICIENT_PROOF.md",
+    "ports": {
+      "beta": "beta",
+      "K0": "K",
+      "MC": "MC",
+      "MF": "MF_source"
+    }
+  },
+  "residuals": [
+    "8*rho**2 - 4*u**2 - 4*J*u**2*beta",
+    "-1 + a - E - 2*v_scale - 3*J*beta - 6*J*v_scale*beta - 3*J**2*beta**2 - 6*J**2*v_scale*beta**2 - J**3*beta**3 - 2*J**3*v_scale*beta**3",
+    "-8*a*rho**2 + E + 8*E*rho**2",
+    "-a + a*V + c + E - E*V - j*c*a + j*E*c - eta - h*E*a + h*E**2",
+    "-1 - E*c + E*c*V - E**2*c**2 - j*E*c**2 + eta*E - eta*E*V + 2*eta*E**2*c + eta*j*E*c - eta**2*E**2 + tau**2 - h*E**2*c + h*eta*E**2",
+    "-1 + 64*rho**4 + 16*c*a*rho**2 - 3*c**2 - 4*c**2*a + 48*gamma*rho**2 + 64*gamma*a*rho**2 + 6*gamma*c*a + 8*gamma*c*a**2 + 9*gamma**2 + 24*gamma**2*a + 16*gamma**2*a**2",
+    "-V + j*c - J*MF - J*MC - 2*J*alpha*beta - J**2*beta*MF - 2*J**2*beta**2 - J**2*alpha*beta**2 + 2*J**2*F*beta**2 - 3*J**3*beta**3 + J**3*F*beta**3 - J**4*beta**4",
+    "K0 + 4*u**2 - alpha*K0 - 4*alpha*u**2 - F - F*K0 - 4*F*u**2 + J*beta*K0 + 4*J*u**2*beta - J*z*beta",
+    "V + c - f*o",
+    "I - c**2 - 2*r*c**2",
+    "3 + I**2 + 4*a + a**2 - 3*f**2 - 4*f**2*a - f**2*a**2",
+    "-1 + V**2*I**2 + y**2 - y**2*I**2",
+    "-1 - FA_pos3 - FA_pos3**2 - FA_pos2**2 - FA_pos1**2 + F*alpha",
+    "-1 - FC_pos3 - FC_pos3**2 - FC_pos2**2 - FC_pos1**2 + F - F*alpha - F**2 + J*F*beta",
+    "-1 - EZ_pos3 - EZ_pos3**2 - EZ_pos2**2 - EZ_pos1**2 + eta - eta*V + eta*j*c - eta**2 + h*eta*E"
+  ],
+  "equation_count": 15,
+  "residual_degrees": [
+    3,
+    4,
+    3,
+    3,
+    4,
+    4,
+    4,
+    3,
+    2,
+    3,
+    4,
+    4,
+    2,
+    2,
+    3
+  ],
+  "single_polynomial": "sum of squared residuals",
+  "exact_degree": 8,
+  "exact_degree_certificate": {
+    "monomial": {
+      "a": 4,
+      "f": 4
+    },
+    "coefficient": 1
+  },
+  "parent": "quartic42_x_square.json",
+  "initial_coordinate_change": null,
+  "eliminations": [
+    {
+      "variable": "N",
+      "row_before_elimination": 2,
+      "row_sign": 1,
+      "restoration": "1 + L + J*beta + J*L*beta"
+    },
+    {
+      "variable": "C2",
+      "row_before_elimination": 10,
+      "row_sign": 1,
+      "restoration": "c**2"
+    },
+    {
+      "variable": "F2",
+      "row_before_elimination": 13,
+      "row_sign": 1,
+      "restoration": "f**2"
+    },
+    {
+      "variable": "g",
+      "row_before_elimination": 15,
+      "row_sign": 1,
+      "restoration": "-V**2 + y**2"
+    },
+    {
+      "variable": "w",
+      "row_before_elimination": 19,
+      "row_sign": 1,
+      "restoration": "4*u**2"
+    },
+    {
+      "variable": "X",
+      "row_before_elimination": 19,
+      "row_sign": 1,
+      "restoration": "8*rho**2"
+    },
+    {
+      "variable": "zeta",
+      "row_before_elimination": 6,
+      "row_sign": -1,
+      "restoration": "P - E*c - eta + eta*E"
+    },
+    {
+      "variable": "Baux",
+      "row_before_elimination": 15,
+      "row_sign": 1,
+      "restoration": "I**2"
+    },
+    {
+      "variable": "D",
+      "row_before_elimination": 7,
+      "row_sign": 1,
+      "restoration": "8*rho**2 + c*a + 3*gamma + 4*gamma*a"
+    },
+    {
+      "variable": "Delta",
+      "row_before_elimination": 7,
+      "row_sign": 1,
+      "restoration": "3 + 4*a + a**2"
+    },
+    {
+      "variable": "P",
+      "row_before_elimination": 11,
+      "row_sign": 1,
+      "restoration": "1 - V + E*c + j*c - eta*E + h*E"
+    },
+    {
+      "variable": "L",
+      "row_before_elimination": 1,
+      "row_sign": 1,
+      "restoration": "2*J*beta + J**2*beta**2"
+    }
+  ],
+  "full_parent_restorations": {
+    "J": "J",
+    "F": "F",
+    "alpha": "alpha",
+    "z": "z",
+    "f": "f",
+    "h": "h",
+    "r": "r",
+    "v_scale": "v_scale",
+    "w": "4*u**2",
+    "tau": "tau",
+    "eta": "eta",
+    "zeta": "1 - V + j*c - eta + h*E",
+    "y": "y",
+    "gamma": "gamma",
+    "o": "o",
+    "j": "j",
+    "N": "1 + 3*J*beta + 3*J**2*beta**2 + J**3*beta**3",
+    "E": "E",
+    "P": "1 - V + E*c + j*c - eta*E + h*E",
+    "c": "c",
+    "a": "a",
+    "X": "8*rho**2",
+    "D": "8*rho**2 + c*a + 3*gamma + 4*gamma*a",
+    "C2": "c**2",
+    "L": "2*J*beta + J**2*beta**2",
+    "F2": "f**2",
+    "V": "V",
+    "g": "-V**2 + y**2",
+    "I": "I",
+    "Baux": "I**2",
+    "Delta": "3 + 4*a + a**2",
+    "u": "u",
+    "rho": "rho",
+    "FA_pos1": "FA_pos1",
+    "FA_pos2": "FA_pos2",
+    "FA_pos3": "FA_pos3",
+    "FC_pos1": "FC_pos1",
+    "FC_pos2": "FC_pos2",
+    "FC_pos3": "FC_pos3",
+    "EZ_pos1": "EZ_pos1",
+    "EZ_pos2": "EZ_pos2",
+    "EZ_pos3": "EZ_pos3"
+  },
+  "parent_residual_maps_to_child_row_or_zero": [
+    0,
+    0,
+    1,
+    2,
+    3,
+    4,
+    0,
+    5,
+    0,
+    0,
+    0,
+    6,
+    7,
+    8,
+    0,
+    9,
+    0,
+    0,
+    10,
+    0,
+    11,
+    12,
+    0,
+    0,
+    13,
+    14,
+    15
+  ],
+  "proof": "PROOF.md",
+  "status": "Exact polynomial elimination; equivalence to Con(ZFC) inherits the ordinary Q42 proof."
+}

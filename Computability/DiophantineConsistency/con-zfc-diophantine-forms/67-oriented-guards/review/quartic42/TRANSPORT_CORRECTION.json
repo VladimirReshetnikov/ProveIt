@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "source_rows": [
+    {
+      "file": "quartic45.json",
+      "sha256": "2b4d3d372fd899042eb3db9ee25e085193204640d28009807fde0778bc9528ac",
+      "row_index_zero_based": 13,
+      "literal": "-F*K0 - F*w - F + J*K0*beta + J*beta*w - J*beta*z - K0*alpha + K0 - alpha*w + w"
+    },
+    {
+      "file": "quartic50_source.json",
+      "sha256": "32b654ab0a54c79a400af65e84175472a038e20aa5f0b39238fb14ca6432a487",
+      "row_index_zero_based": 13,
+      "literal": "-F*K0 - F*w - F + J*K0*beta + J*beta*w - J*beta*z - K0*alpha + K0 - alpha*w + w"
+    }
+  ],
+  "correct_identity": "(K0+w)*(q-F-alpha)-F-z*(q-1)=0",
+  "incorrect_offset_difference": "q-1",
+  "restored_conclusion": "z>0, not the claimed z>1",
+  "proof": "After X=2^R, R>3q implies w>q>F; K0>=0 and C>=1 imply (K0+w)C>F, hence z(q-1)>0 and z>0."
+}

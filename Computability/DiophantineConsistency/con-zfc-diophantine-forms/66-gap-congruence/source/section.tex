@@ -1,0 +1,54 @@
+\section{Gap coordinates reduce the quadratic source}
+The incoming degree-separated source has $31$ positive coordinates and
+$22$ quadratic residuals, with $89$ coefficient records after its two
+invertible row operations. A positive-coordinate change reduces this to
+$86$ records without changing the finite positional certificate.
+
+Write $q=1+\beta J$, $k=\eta+\zeta$ and $Y=a-E$.
+The source equations give
+\[
+ Y=sN>0,\qquad E=XY>0,\qquad c-\eta=kY>0,
+ \qquad P-k=E(c-\eta)>0.
+\]
+Therefore replacing old $P$ by $T+k$ is a bijection on positive zero sets.
+The affected residuals are
+\[
+ T-Ec+E\eta,\qquad \tau^2-T^2-\eta T-\zeta T-1.
+\]
+The first loses two records and the second keeps its support. A further
+one-record reduction is obtained either by replacing old $N$ by $n+1$,
+or by replacing old $L$ by $\ell-1$. These are alternatives, not simultaneous
+changes. Their inverse maps preserve positivity because $N=q^3\ge8$ and
+$\ell=q^2\ge4$, respectively.
+
+The same $116$-maximum-weight certificate passes all interactions:
+$22\,481$ for the $N$-gap variant and $22\,451$ for the $L$-successor variant.
+The kernel degrees become $(1719,2020,1929)$, lowering the linear degree
+from $2027$; convolution height remains $2161$. The quadratic leading
+coefficient stays $+1$. Thus the inherited unconditional positivity estimate
+is strengthened, not weakened. Explicit source polynomials, kernels, and an
+independent symbolic reconstruction are included.
+
+An optional source lemma reduces the positivity guards from twelve to eight:
+$F,\alpha,z,h,s,w,\eta,\zeta$. With native $M_C,M_F\ge0$, transport first
+forces $C=q-F-\alpha>0$, and
+\[
+ R=(q^2-1)((q-1)C+q\alpha)+(M_C+qM_F)J>0.
+\]
+Hence $j\ge1$ from $R=jc-V$. The identity
+$k=jc-V+1+hE$ and $c=kY+\eta>k$ exclude $i=0$ and $g=0$:
+in either case the remaining equations force $V\le1$, which would imply
+$k\ge c$. If $\gamma=0$, then $k>E$ gives $c>X$ and
+$D=X+ac<(a+1)c$, contradicting
+$D^2=((a+2)^2-1)c^2+1$. The other coordinate positivities follow directly
+from their defining equations. This lemma is not advertised as a gate-count
+saving: the degree-separated encoder already reuses its full positive word
+in the low digit mask.
+
+A further alternative replaces old $N$ by $n+q$ simultaneously with the
+$P$-gap change. Its inverse is $n=N-q=q(q^2-1)>0$, so this is again a
+positive-zero-set bijection and leaves only $85$ coefficient records.
+Unlike the $86$-record alternatives, this source needs a new positional
+layout: the former layout has exactly one unintended target interaction.
+Only a separately audited replacement certificate may be used with this
+$85$-record version.

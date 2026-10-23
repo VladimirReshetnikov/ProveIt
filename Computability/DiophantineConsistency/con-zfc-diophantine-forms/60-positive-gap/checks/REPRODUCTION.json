@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "upstream44/native/build_coefficients.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_01.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-O",
+        "upstream44/native/audit_coefficients.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_02.log"
+    },
+    {
+      "command": [
+        "python3",
+        "upstream31/coefficients/build_coefficients.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_03.log"
+    },
+    {
+      "command": [
+        "python3",
+        "research_nine/compact_candidate/build_nine.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_04.log"
+    },
+    {
+      "command": [
+        "python3",
+        "research_nine/candidate/build_nine.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_05.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-O",
+        "research_low_degree/audit_gap_source.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_06.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-O",
+        "research_alternatives/check_positive_gap.py",
+        "--records",
+        "research_nine/compact_candidate/data/parent_source.json",
+        "--layout",
+        "research_nine/compact_candidate/data/split_code.json"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_07.log"
+    },
+    {
+      "command": [
+        "python3",
+        "research_nine/compact_candidate/write_source_table.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_08.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-O",
+        "research_nine/compact_candidate/audit_circuit.py",
+        "--binding",
+        "upstream44/native/COEFFICIENT_BINDING.json"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_09.log"
+    },
+    {
+      "command": [
+        "python3",
+        "research_low_degree/supplement15/build.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_10.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-O",
+        "research_low_degree/supplement15/verify.py"
+      ],
+      "exit_code": 0,
+      "log": "checks/replay_11.log"
+    }
+  ],
+  "key_file_sha256": {
+    "research_nine/compact_candidate/generated/gap_100_positive.json": "1863a750cc99d0806e9b80259baddb64cb7a98325743c17d7c77008836cdf5e2",
+    "research_nine/compact_candidate/generated/gap_100_natural.json": "c5d83929eba38e88bac5c1b0e4de76b2d766df815f726850f87e44d2de7305dc",
+    "research_nine/compact_candidate/generated/gap_100_positive_certificate_degree.json": "d15f7417af280959cb0ca072473b212861e73e16be29b4a49fa15771ed6c7bba",
+    "research_nine/compact_candidate/generated/INDEPENDENT_CIRCUIT_AUDIT.json": "4c969643b61a6e2948f9ae09aad73aa8d2a9add697cd072d407e593b9bb90f3f",
+    "research_alternatives/positive_gap_independent_check.json": "9ceb231e616cfc8a37850f8a7a4dd701f11ec70ec27f91c32736d2b6f5d70dcf",
+    "research_low_degree/gap_source_audit.json": "ee431289f7ba266c70e0c13939610f1dd72d2a5d8854e4792b3879d1c5aa62c3",
+    "research_low_degree/supplement15/certificates/VERIFY.json": "6a2b75bb913f9d0c339a150951cb79cff12c0689f55134f43bb476b715b6b0d1"
+  },
+  "scope": "Offline finite algebra, coefficient, circuit and degree audits. No end-to-end Lean/Rocq run, object-language ZFC derivation, consistency decision or witness search is certified."
+}

@@ -1,0 +1,188 @@
+\section{A deflated majorant in nine positive variables}
+\label{sec:deflated-nine}
+
+This contribution keeps the source and free-coordinate compiler of
+\path{59-degree-separated/nine_free_adjunct} at ProveIt commit
+\texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+It changes the polynomial that strictly majorizes a radical in the last
+norm equation.  The resulting literal polynomial has nine strictly positive
+unknowns, exact total degree \(1{,}573{,}266\), and a division-free evaluator
+with \(504\) binary operations.  The predecessor has degree
+\(1{,}910{,}404\) and \(473\) operations: the degree decreases by
+\(337{,}138\), or approximately \(17.6475\%\), at the cost of \(31\)
+additional operations.  Thus this is a degree/size tradeoff.
+
+\subsection{New algebraic ingredient}
+
+Use the inherited registers
+\begin{align*}
+ J&=4A-5,&D&=(A^2-1)C^2+1,&e&=iJC,\\
+ E&=eDC,&F&=(A^2-1)E^2+1,&L_m&=CD+1-A,\\
+ G&=A+FL_m,&H&=C+F(2R+1+(j-1)C),&I&=(G^2-1)H^2+1.
+\end{align*}
+The required domain is \(A\geq3\), \(C,i\geq1\).  Set
+\begin{align*}
+ N_*&=2G+L_m,&N_1&=2e^2D(D-1)L_m+3C,\\
+ N_2&=2e^2(D-1)L_m,&N_3&=2e^2(L_m-C),&N_4&=2e^2C.
+\end{align*}
+The new polynomial is
+\begin{align}
+ T_7={}&e\bigl[(2048D^2-1024D-256)N_*
+       -128N_1-80N_2-56N_3-42N_4 \notag\\
+       &\hspace{22mm}+i^2(1568-448A+288C)\bigr]+640i+4096.
+       \label{eq:deflated-T7}
+\end{align}
+No displayed register adds a quantified unknown.  They are abbreviations
+for ordinary integer polynomials in the nine final inputs.
+
+The simplifying relation is
+\[
+ e^2=16i^2D-i^2\bigl((40A-41)C^2+16\bigr).
+\]
+It cancels a complete high-degree part of the quotient remainder used by
+the earlier majorant.  To make this exact, define
+\begin{align*}
+ U_6={}&e\bigl[(1024D^2-512D-128)N_*
+             -64N_1-40N_2-28N_3-21N_4\bigr],\\
+ T_6={}&U_6-224i^2e(A-1-3C)+560i^2e+320i+2048.
+\end{align*}
+Then \(T_7=2T_6-1056i^2eC\).  The variable-dependent subtraction is
+justified by the following exact certificate.
+
+Put
+\begin{align*}
+ t_7={}&2048D^7-1024D^6-256D^5-128D^4
+           -80D^3-56D^2-42D-33,\\
+ d_7={}&109824D^6+36608D^5+18304D^4+9984D^3
+           +5460D^2+2772D+1089,\\
+ R_7={}&D^5T_7-et_7N_*.
+\end{align*}
+Exact expansion gives
+\[
+ t_7^2-2048^2D^{13}(D-1)=d_7>0.
+\]
+Since the sum of the absolute negative coefficients of \(t_7\) is
+\(1619<2048\), one has \(t_7>0\) for \(D\geq1\).  The delivered
+file \texttt{data/order7\_majorant\_positive\_certificate.json} gives
+the complete exact identity
+\begin{equation}
+ R_7-4096D^5
+   =\sum_{(u,v,w)\in\mathcal S} a_{uvw}(A-3)^u(C-1)^v i^w,
+ \qquad |\mathcal S|=264,
+ \label{eq:deflated-positive-certificate}
+\end{equation}
+where every \(a_{uvw}\) is a strictly positive integer.  At \(A=3,C=1\)
+the right side is
+\(49{,}748{,}823i+293{,}313{,}636i^3>0\).
+The checker reconstructs every coefficient from
+\eqref{eq:deflated-T7}; this is a finite polynomial identity and a uniform
+positivity proof, rather than a test on sampled parameter values.
+
+For completeness, write \(X=e^2D^3(D-1)\).  Then
+\(DF=X+D\) and \(G=(X/D)L_m+CD+1\).  The elementary inequality
+\(\sqrt{X+D}<\sqrt X+D/(2\sqrt X)\) gives
+\[
+ 4096\sqrt{DF}\,G
+ <2048eD^2\sqrt{1-1/D}\,N_*+4096v,
+ \qquad
+ v=\frac{CD+1}{2eD\sqrt{1-1/D}}<1.
+\]
+The final inequality follows from \(D\geq A^2\geq9\) and \(e\geq7C\).
+Combining it with \eqref{eq:deflated-positive-certificate} and the square
+identity proves the unconditional bound
+\begin{equation}
+             T_7>4096\sqrt{DF}\,G>0.
+             \label{eq:deflated-majorant}
+\end{equation}
+The divisions occur only in this proof, not in the polynomial.
+
+\subsection{Final polynomial and semantic equivalence}
+
+Keep the inherited positive source parameters and normalized margin:
+\begin{align*}
+ B&=2^{2134939}b^2,&N&=2^{17079501}bB^{1201},\\
+ t&=bB^{116},&m&=K^2(4t-g)-16t(C-KY)^2,\\
+ \Omega&=Jm,&E_0&=J\bigl(n+(bw)^2\bigr)+Q.
+\end{align*}
+Set
+\[
+\begin{aligned}
+ a_0&=(P^2-1)K^2+1,& a_1&=4096^2DFI,\\
+ V_0&=PK,& V_1&=T_7H,\\
+ \Theta&=E_0-\Omega(V_0+V_1).
+\end{aligned}
+\]
+The equation is
+\begin{equation}
+ F_9=\bigl(\Theta^2-\Omega^2(a_0+a_1)\bigr)^2
+            -4\Omega^4a_0a_1=0.
+ \label{eq:deflated-final}
+\end{equation}
+Its only unknowns are \(b,g,h,s,w,C,i,j,n\), all strictly positive.
+The source coefficients, source positions and ratio conditions are exactly
+those of the pinned predecessor.  The four full native coefficient
+payloads are supplied; there is no unspecified program-index parameter.
+
+Equation \eqref{eq:deflated-majorant} gives \(V_1>\sqrt{a_1}\), and
+\(V_0^2-a_0=K^2-1>0\).  Also
+\(E_0=Jn+(J-2)(bw)^2+3bwC+2>0\).  At a zero, \(m=0\) is impossible.
+Real factorization yields roots \(r_0^2=a_0,r_1^2=a_1\) with
+\[
+ n+(bw)^2+Q/J=m(V_0+V_1+r_0+r_1).
+\]
+Both the left side and the right-hand parenthesis are strictly positive.
+Consequently \(m>0\) follows before any integrality assertion.  The
+inherited margin argument recovers \(C>2R+1+bw\) and \(C>K\), hence
+\(a_1>a_0\).  The rational sum \(r_0+r_1\) is therefore nonzero, so
+\(2(r_0+r_1)r_0=(r_0+r_1)^2+a_0-a_1\) makes the roots rational and
+then integral.  The same rational-square argument makes \(r_1/4096\)
+integral, and the factor equation gives \(J\mid Q\).  These are the
+unchanged ratio hypotheses.
+
+Conversely, take the inherited ratio witnesses and positive roots, and put
+\(n=m(V_0+V_1+r_0+r_1)-(bw)^2-Q/J\).  It is an integer, and it is
+positive because \((bw)^2+Q/J<2D\), \(m\geq1\), and
+\(V_1>4096D\).  It makes \eqref{eq:deflated-final} vanish.  Thus the
+positive zero set is equivalent to the pinned source zero set.  Composing
+with its native compiler and K215 calibration gives, in ZFC, absence of
+positive zeros if and only if \(\operatorname{Con}(\mathrm{ZFC})\).
+This is an ordinary mathematical proof with named inherited dependencies;
+the new semantic equivalence is not claimed to have been kernel checked.
+
+\subsection{Exact degree and finite verification}
+
+Let \(\delta_j=V_j^2-a_j\) and
+\(B_*=E_0^2-2E_0\Omega(V_0+V_1)+\Omega^2(\delta_0+\delta_1)\).
+The two-defect identity gives
+\[
+ F_9=B_*^2+4\Omega^2V_0V_1B_*
+          +4\Omega^4(\delta_0V_1^2+a_0\delta_1).
+\]
+The exact majorant defect identity is
+\begin{align*}
+ D^{10}(T_7^2-4096^2DFG^2)
+  ={}&e^2d_7N_*^2
+     +2048^2D^{10}\bigl[XL_m^2-4DG(CD+1)\bigr]\\
+    &+2et_7N_*R_7+R_7^2.
+\end{align*}
+Here \(\deg R_7=187305\), with highest weighted term
+\(2880A^{10}C^{12}i^3\).  The mixed term uniquely dominates the last
+identity.  It yields
+\[
+ \deg(T_7^2-4096^2DFG^2)=280959,\qquad
+ \deg\delta_1=598873,\qquad \deg B_*=786633.
+\]
+The square \(B_*^2\) uniquely dominates the final two-defect expansion,
+proving \(\deg F_9=1{,}573{,}266\).  A separate circuit for
+\(D^{20}F_9\) supplies an exact nonzero diagonal leading coefficient
+and the matching total-degree upper bound.  Its extra operations are not
+included in the primary evaluator count.
+
+Running \texttt{python3 verify.py} checks all four native byte payloads,
+the source isolation data, the 264-term positivity identity, the defect
+identity, every delivered circuit against its deterministic builder,
+graph liveness, exact degrees, costs and domain translation.  It also
+performs 480 comparisons with a separately written literal evaluator.
+The check uses only Python's standard library.  These finite checks support
+the implementation and identities; the unbounded semantic endpoint uses
+the explicitly credited source and compiler theorems.

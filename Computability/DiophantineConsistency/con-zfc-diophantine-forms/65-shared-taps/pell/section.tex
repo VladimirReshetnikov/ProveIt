@@ -1,0 +1,393 @@
+\section{Two divisibilities and an index quotient in one Pell root}
+\label{sec:pell-carriers}
+
+This section gives a second, direct route to smaller equations. It uses the
+authentic compact native tuple and ordinary Pell kernel, and does not use
+Jones's nine-variable compression. The new result has fourteen strictly
+positive unknowns, exact degree $26$, and a $92$-operation evaluator. A
+companion has fourteen positive unknowns, degree $30$, and $85$ operations.
+The inspected wave-eight fourteen-positive point is degree $52$ at $79$
+operations. Thus the first construction halves its degree and adds thirteen
+gates; the second uses six additional gates and reduces its degree by
+$42.3\%$. These are tradeoffs within the pinned collection, with no claim
+of a global simplicity minimum.
+
+The structural step combines the integral-root divisibility carrier of
+package~58 and the main-root index absorption of package~59. A single
+existing Pell root now enforces a weak congruence first, determines the
+Pell index, and only then enforces a stronger congruence restoring another
+divisibility. This ordered recovery permits the coordinate $X$ to be
+supplied directly while deleting the old index quotient $h$.
+
+\subsection{Fixed coefficients and exact equation}
+
+Use the \emph{whole} package-44 compact tuple, whose binding is included
+under \texttt{pell/coefficients/}. Its identifier is
+\texttt{wang943-complement67-shared-anchor-length8807-prime581197}.
+Set
+\[
+ B=2^{590069},\qquad \beta=B-1,\qquad
+ K_0=D_C+BD_R,\qquad M_F=M_{F,\mathrm{native}}+B-1.
+\]
+The fourth port is $M_C$. The high mask $M_F$ is already shifted. The four
+little-endian binary integers occupy $295{,}388$ raw bytes and $9{,}445$
+gzip bytes. Their recipes, payloads, exact hashes, literal machine data,
+native adapter, and independent coefficient auditor accompany the paper.
+All four ports are fixed numerals, not quantified coordinates.
+
+The fourteen positive inputs are
+\[
+ j,F,\alpha,z,f,i,T,x,Y,r,\eta,\zeta,u,\gamma.
+\]
+Define polynomial abbreviations
+\begin{align*}
+ J&=3j+1,& q&=\beta J+1,& C&=q-F-\alpha,&X&=x+q,\\
+ E&=XY,& k&=\eta+\zeta,&c&=kY+\eta,& a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,&\ell&=EkY.
+\end{align*}
+Also set
+\begin{align*}
+ R&=\bigl[(q-1)(q-F)+\alpha\bigr](q^2-1)
+                      +(M_C+qM_F)J,\\
+ S&=4qY,\qquad M=qS=4q^2Y,\qquad v=k-R-1,\\
+ D_*&=M(X+ac)+H(M\gamma-v+SX),\\
+ U&=\Delta(f^2-1),\qquad I=ic^2,\qquad V=f^2(cT-R)-c.
+\end{align*}
+The five residuals are
+\begin{align}
+ A_0&=[q^3(\ell+r)+Y]^2-q^6[\ell(\ell+k)+1],
+                                                    \label{eq:pell-first}\\
+ A_m&=D_*^2-M^2(\Delta c^2+1),                       \label{eq:pell-main}\\
+ A_t&=q[K_0C-F-z(q-1)]+XC,                          \label{eq:pell-transport}\\
+ A_a&=(V+u)^2-Uu(2V+u)-1,                           \label{eq:pell-aux}\\
+ A_s&=I^2-U.                                       \label{eq:pell-strong}
+\end{align}
+The single equation is
+\begin{equation}
+ \boxed{P_{14,26}=A_0^2+A_m^2+A_t^2+A_a^2+A_s^2=0.}
+ \label{eq:pell26}
+\end{equation}
+There are no variable exponents, radicals, divisions or extra quantified
+registers in this definition. The supplied literal circuit is
+\texttt{pell/circuits/p14\_degree26.json}.
+
+\begin{theorem}[Fourteen-positive equation]
+\label{thm:pell26}
+For the stated authentic coefficient tuple, $P_{14,26}$ has exact total
+degree $26$ and a $92$-gate evaluator. The new reductions below, composed
+with the explicitly supplied ordinary native compiler and calibration,
+establish by ordinary mathematics formalizable in ZFC that
+\[
+ \ZFC\vdash
+ \bigl[\neg\exists\mathbf t\in\Zp^{14}\;
+                   P_{14,26}(\mathbf t)=0\bigr]
+       \longleftrightarrow\Con(\ZFC).
+\]
+This is not a newly kernel-checked end-to-end formalization or a supplied
+derivation file in the object-language ZFC calculus.
+\end{theorem}
+
+\subsection{The two-stage carrier lemma}
+
+The elementary fact behind the construction is that a rational square root
+of an integer is integral: $m^2\mid n^2$, with $m>0$, implies $m\mid n$.
+At a zero of $A_0$, it gives
+\[
+ q^3\mid Y,\qquad s=Y/q^3>0,\qquad
+ \tau=\ell+r+s>0,\qquad \tau^2=\ell(\ell+k)+1.
+\]
+Since $590069$ is odd, $\beta\equiv1\pmod3$. Thus the supplied
+$J=3j+1$ gives $q\equiv2\pmod3$. As $q\mid Y$,
+\[
+ H=4Y(X+1)+3\equiv3\pmod q,
+ \qquad \gcd(q,H)=1.
+\]
+The odd integer $H$ also satisfies $\gcd(Y,H)\mid3$. Hence
+\begin{equation}
+ \gcd(S,H)\mid3,\qquad
+ \mu:=\frac S{\gcd(S,H)}\ge\frac{4qY}{3}.
+ \label{eq:pell-mu}
+\end{equation}
+For $Y\ge q^3$ and $R<q^4-2$, this yields $\mu>R+1$.
+Moreover both $S$ and $M$ divide $4XY^2$; for $M$ the quotient is
+$XY/q^2=Xsq$, which is already integral without assuming $q\mid X$.
+
+At a zero of $A_m$, the same rational-root lemma gives the integer
+$g=D_*/M$. Reducing $Mg=D_*$ only modulo $S$ gives
+\begin{equation}
+ S\mid H(k-R-1),\qquad \mu\mid k-R-1.
+ \label{eq:pell-weak}
+\end{equation}
+The Pell argument below uses this weaker congruence to recover the exact
+index and show $M\mid v$. Only then do we return to the full modulus:
+\begin{equation}
+ M\mid HSX\quad\Longrightarrow\quad q\mid HX
+       \quad\Longrightarrow\quad q\mid X.
+ \label{eq:pell-strongdiv}
+\end{equation}
+The order of these steps prevents a circular use of the quotient $X/q$.
+
+\subsection{Soundness: recovering the indices before the quotients}
+
+At a zero of \eqref{eq:pell26}, all five residuals vanish. Restore $s$ and
+$\tau$ as above. The cleared transport equation becomes the rational
+equality
+\[
+ (K_0+X/q)C=F+z(q-1).
+\]
+Both its right side and its coefficient of $C$ are positive. Therefore
+$C>0$ before $X/q$ has been shown integral. The authentic mask bounds give
+\begin{gather}
+ q\ge16,\qquad q(q^2-1)<R<q^4-q^3+q^2-1<q^4-2,\label{eq:pell-bounds}\\
+ R-2>3q+1,\qquad E>q^4>R+2,\qquad a>R+2,
+ \qquad a+2<2E.\nonumber
+\end{gather}
+For clarity, the bounds on $R$ follow from
+\[
+ G=(q-1)(q-F)+\alpha=q\alpha+(q-1)C,
+ \quad q\le G\le q^2-q,
+\]
+and $0<(M_C+qM_F)J<(q-1)(1+2q)$. The supplied shift $X=x+q>q$
+is what proves $E>q^4$ at this stage. The inequalities
+$kY<c<k(Y+1)$ follow directly from $\eta,\zeta>0$.
+
+The integer $g=D_*/M$ is positive. Indeed, $v<k$,
+$b_0=X+ac>akY$ and $H<5a$ give
+\[
+ D_*>Mb_0-Hk>ak(MY-5)>0.
+\]
+Hence $g^2-\Delta c^2=1$. The first and main norms give positive Pell
+indices $n,p$ with
+\begin{align*}
+ \tau&=\chi_{P}(n),&k&=2\psi_{P}(n),&P&=2XY^2+1,\\
+ g&=\chi_A(p),&c&=\psi_A(p),&A&=a+2.
+\end{align*}
+Here $\chi_A(t)+\psi_A(t)\sqrt{A^2-1}
+=(A+\sqrt{A^2-1})^t$. The first norm has fundamental integer-coordinate
+solution $(2XY^2+1,2)$ for discriminant $XY^2(XY^2+1)$: a second
+coordinate $1$ is excluded by consecutive squares. Since $P>A$ and $c>k$,
+monotonicity implies $p>n$.
+
+The Pell recurrence gives $k\equiv2n\pmod{4XY^2}$. Since $S\mid4XY^2$,
+\eqref{eq:pell-weak} implies
+\[
+ 2n=R+1+t\mu\quad(t\in\mathbb Z).
+\]
+The inequalities $0<R+1<\mu$ and $n>0$ force $t\ge0$. Thus $n>24$ and
+$p\ge26$. Consequently
+\begin{equation}
+ c>A\Delta^2,\qquad c>2p,\qquad c>2R.
+ \label{eq:pell-rankbounds}
+\end{equation}
+For the first estimate it suffices that $p\ge6$ and
+$\psi_A(6)=32A^5-32A^3+6A>A(A^2-1)^2$. The second is elementary Pell
+growth, and the third follows from $c\ge\psi_A(2)=2A>2R$.
+
+The equation $A_s=0$ gives $U=I^2$ with $I=ic^2>1$, hence $f\ge2$.
+The \emph{ordinary strong-rank lemma} supplied in
+\texttt{pell/upstream/ORDINARY\_KERNEL.md}, Sections 4--5, now applies
+with all its hypotheses established. It gives an index $m$ such that
+\begin{equation}
+ f=\chi_A(m),\quad p\mid m,\quad c\mid m,\quad m>2p,
+ \quad I=\Delta\psi_A(m),\quad c^2\mid f^2-1.
+ \label{eq:pell-strongrank}
+\end{equation}
+The last divisibility is a conclusion of the rank lemma; it cannot be
+obtained by informally cancelling $\Delta$ in $I^2=\Delta(f^2-1)$.
+The copied proof handles the possibly nonfundamental squarefree Pell
+parameter and is an explicit inherited dependency.
+
+The auxiliary equation is exactly
+\[
+ I^2V^2-(I^2-1)(V+u)^2=1.
+\]
+It excludes $V=0$ and $V+u=0$. Put $y=|V+u|>0$. The supplied quotient
+and \eqref{eq:pell-strongrank} imply
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+Also $c^2\mid I$. The signed auxiliary-index lemma in the same ordinary
+source gives an auxiliary index congruent to $\pm p$ and $\pm R$ modulo
+$c$. The bounds $0<p,R<c/2$ force $p=R$. This argument does not assume
+$V>0$. Its ordinary source quotient is restored by $T_{\rm old}=fT>0$.
+
+Now $n<p=R$, so $|2n-R-1|<R<\mu$. Together with the congruence modulo
+$\mu$ this yields $2n=R+1$. Therefore
+\[
+ v=k-R-1=k-2n
+\]
+is a positive multiple of $4XY^2$. Positivity follows from $n\ge2$ and
+$\psi_P(n)>n$. In particular $M\mid v$, and
+\eqref{eq:pell-strongdiv} proves $q\mid X$. Restore
+\begin{equation}
+ w=X/q>0,\qquad h=v/E>0,\qquad
+ \gamma_{\rm old}=\gamma-v/M+w.
+ \label{eq:pell-restore}
+\end{equation}
+These are integers. The main root becomes
+$g=X+ac+H\gamma_{\rm old}$. Since $n\ge2$ gives $k\ge4P>X$, one has
+$c>X$; and $g>\sqrt\Delta c>(a+1)c$. Thus
+$\gamma_{\rm old}>(c-X)/H>0$. The transport equation is now the genuine
+integer equality $(K_0+w)C=F+z(q-1)$, corresponding to old source
+coordinate $z_{\rm old}=z+1$.
+
+All positive ordinary source coordinates are recovered and all six source
+factors equal $1$. The supplied native compiler and calibrated machine
+endpoint therefore yield a finite refutation of the specified ZFC calculus.
+
+\subsection{Completeness and the positive replacement witnesses}
+
+Conversely, a finite refutation gives canonical normalized witnesses from
+the authentic compact adapter. Transfer the strong coordinate by
+$i=\Delta i_{\rm normalized}$, as in package~58. Then
+$I^2=\Delta(f^2-1)$, $c\mid I$, and $f^2\equiv1\pmod c$.
+Canonical indices satisfy
+\[
+ p=R=2n-1,\qquad n\ge3,\qquad R\equiv3\pmod4,
+ \qquad X=2^R,\qquad Y=sq^3,
+\]
+and $k>XY$. These are inherited compiler/Pell facts, not conclusions of a
+finite numerical search.
+
+The adapter supplies $q=B^N$ and $J=1+B+\cdots+B^{N-1}$ with odd
+$N=581197^e>1$. Since $B\equiv-1\pmod3$, $J\equiv1\pmod3$ and
+$j=(J-1)/3>0$. Canonical $X=2^R$ with $R>3q$ gives $x=X-q>0$.
+The source proves $w>q>F$, which makes $z_{\rm old}\ge2$; hence the
+transport shift $z=z_{\rm old}-1$ is positive.
+
+Supply $Y$ directly and set $r=\tau-\ell-s$. The first norm and
+$\ell>k$ give $\tau<\ell+k$ and
+\[
+ \tau-\ell=\frac{\ell k+1}{\tau+\ell}
+       >\frac{k}{3}>\frac{XY}{3}>s.
+\]
+Thus $r>0$ and $A_0=0$. The positive multiple $v=k-2n$ of $4XY^2$
+satisfies $M\mid v$. Set
+\[
+ \gamma=\gamma_{\rm old}+v/M-w.
+\]
+This is positive for a particularly simple reason:
+\[
+ \frac vM\ge\frac{4XY^2}{4q^2Y}
+       =\frac{wY}{q}\ge wq^2>w.
+\]
+The resulting $D_*$ equals $Mg$, proving $A_m=0$.
+
+The auxiliary coordinates use the squared-modulus reconstruction already
+proved in package~58. For $R=2r_0+1$ with $r_0$ odd, the elementary odd
+Pell polynomials satisfy
+\begin{gather*}
+ \chi_t(2r+1)=tQ_r(t^2),\qquad Q_r(0)=(-1)^r(2r+1),\\
+ Q_r(1-A^2)=(-1)^r\psi_A(2r+1).
+\end{gather*}
+Take $V_* =\chi_I(R)/I$ and $y_* =\psi_I(R)$. They are positive integers,
+$V_*>1$, and $I^2V_*^2-(I^2-1)y_*^2=1$. The identities yield
+$V_*\equiv-c\pmod{f^2}$ and $V_*\equiv-R\pmod c$.
+Since $\gcd(c,f)=1$,
+\[
+ T=\frac{V_*+c+Rf^2}{cf^2}
+\]
+is a positive integer and gives the required $V=V_*$. Finally
+$(I^2-1)(y_*^2-V_*^2)=V_*^2-1>0$, so $u=y_*-V_*>0$.
+All five residuals vanish. This proves both existence implications in
+Theorem~\ref{thm:pell26} without changing the fixed tuple.
+
+\subsection{Exact degree and literal cost}
+
+The cancellation identities used in the degree proof are
+\begin{align*}
+ A_0={}&q^6[r^2+\ell(2r-k)-1]+2q^3(\ell+r)Y+Y^2,\\
+ D_{\rm old}={}&X+ac+\gamma H,\qquad L=-v+SX,\\
+ A_m={}&M^2[(X+\gamma H)^2+2ac(X+\gamma H)-Hc^2-1]\\
+       &\hspace{15mm}+2MD_{\rm old}HL+H^2L^2.
+\end{align*}
+These are polynomial-ring identities, not relations valid only on solutions.
+They give the exact residual degrees
+\[
+ (\deg A_0,\deg A_m,\deg A_t,\deg A_a,\deg A_s)
+       =(11,13,3,13,10).
+\]
+Put $q_0=3\beta j$, $X_0=x+q_0$, $k_0=\eta+\zeta$, and
+$R_4=q_0^3(q_0-F)$. The two highest residual forms are
+\begin{align*}
+ L_m&=32q_0^2k_0X_0^2Y^4(4q_0^2Y\gamma+R_4),\\
+ L_a&=2X_0^2Y^2f^4uR_4.
+\end{align*}
+Hence the degree-$26$ homogeneous form is $L_m^2+L_a^2$.
+The coefficient of $x^4Y^4f^8u^2j^6F^2$ is exactly $4(3\beta)^6>0$;
+$L_m^2$ contains no $f$ or $u$ and cannot change it. This establishes
+the exact degree for the authentic numerical instance.
+
+The evaluator has $49$ multiplications, $27$ additions and $16$
+subtractions, totaling $92$ live binary operations. Scalar multiplication
+is charged, every fixed power is expanded into multiplications, and all
+fourteen inputs are live. This arithmetic metric is separate from bit
+complexity and the height of the expanded coefficients.
+
+\subsection{A degree-30 companion with 85 operations}
+
+Retain the positive inputs
+\[
+ J,F,\alpha,z,f,i,T,w,Y,r,\eta,\zeta,u,\gamma,
+\]
+and put $q=\beta J+1$, $X=wq$. Use the same common expressions, but replace
+the main carrier and transport by
+\begin{align*}
+ M&=4qY,\qquad v=k-R-1,\\
+ D_*&=M(X+ac)+H(M\gamma-v),\\
+ A_t&=(K_0+w)C-F-z(q-1).
+\end{align*}
+Keep $A_0,A_m,A_a,A_s$ and the five-square sum, calling it $P_{14,30}$.
+The literal circuit is in \path{pell/circuits/p14_degree30.json}.
+
+There is no restriction modulo $3$ on $J$ here. Once $q^3\mid Y$, every
+prime common to $qY$ and $H$ is $3$. If $3\mid q$, then $27\mid Y$ and
+$H\equiv3\pmod{27}$, so its $3$-adic valuation is exactly one. If
+$3\nmid q$, then $\gcd(q,H)=1$ and $\gcd(Y,H)\mid3$. As $H$ is odd,
+\[
+ \gcd(4qY,H)\le3,
+ \qquad\frac M{\gcd(M,H)}\ge\frac{4qY}{3}>R+1.
+\]
+Also $M\mid4XY^2$. The same ordered index proof gives $p=R$ and
+$2n=R+1$, then $h=v/E>0$ and $\gamma_{\rm old}=\gamma-v/M>0$.
+Completeness uses $\gamma=\gamma_{\rm old}+v/M>0$; both gap
+constructions remain unchanged. Thus it has the same consistency
+equivalence.
+
+Its residual degrees are $(12,14,2,15,10)$. With
+$q_0=\beta J$, $X_0=wq_0$ and $R_4=q_0^3(q_0-F)$, the highest form is
+\[
+ [P_{14,30}]_{30}=4X_0^4Y^4f^8u^2R_4^2.
+\]
+The coefficient of $w^4J^{10}Y^4f^8u^2F^2$ is $4\beta^{10}>0$.
+The evaluator has $45$ multiplications, $24$ additions and $16$
+subtractions, totaling $85$ operations.
+
+\subsection{Verification and remaining formalization}
+
+The independent checker uses the standard Python library and does not
+import the circuit builders. It proves three local polynomial identities
+by exact sparse algebra, checks all gate dependencies and counts, and
+compares the DAGs with separately transcribed formulas at $200$ modular
+assignments. It also checks $48$ exact polynomial rays modulo two primes
+against the analytic leaders using the actual fixed tuple, exercises
+$10{,}584$ bounded carrier cases, and rejects a transcription mutation
+for each circuit. The ordinary mathematical degree proof above supplies
+the universal upper bound and nonzero leading coefficient; the modular
+rays are implementation checks. The same checks pass under Python's
+\texttt{-O} mode.
+
+The inherited coefficient audit independently rebuilds the four numerals,
+verifies $66{,}062$ finite basis interactions and their provenance, tests
+$38{,}663$ one-bit corruptions, and verifies $87{,}380$ small complement
+models. These checks do not replace the unbounded native compiler proof.
+An independent internal mathematical review of the new carrier is included
+as \texttt{pell/INDEPENDENT\_PROOF\_AUDIT.md}; it is AI-assisted review,
+not external human peer review.
+
+The next formalization target is the two-stage carrier lemma with its exact
+order of recovery: first the modulus $S$, then the index identity $p=R$,
+then the full modulus $M$ and $q\mid X$. Potential further reductions must
+preserve this order and justify all positive replacement witnesses.
+Whether an auxiliary root can remove another coordinate without losing
+the degree advantage remains open.

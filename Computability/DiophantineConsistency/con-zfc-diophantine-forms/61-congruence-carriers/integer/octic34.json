@@ -1,0 +1,187 @@
+{
+  "name": "octic34",
+  "domain": "unrestricted integers",
+  "variables": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w",
+    "tau",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "E",
+    "P",
+    "c",
+    "a",
+    "V",
+    "I",
+    "u",
+    "eta_pos1",
+    "eta_pos2",
+    "eta_pos3",
+    "zeta_pos1",
+    "zeta_pos2",
+    "zeta_pos3",
+    "q_half_root",
+    "FA_pos1",
+    "FA_pos2",
+    "FA_pos3",
+    "FC_pos1",
+    "FC_pos2",
+    "FC_pos3"
+  ],
+  "variable_count": 34,
+  "equation_count": 17,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding": {
+    "manifest": "upstream/34-integer14/COEFFICIENT_BINDING.json",
+    "compiler_manifest": "upstream/34-integer14/coefficients/payloads/COEFFICIENT_BINDING.json",
+    "mask_convention": "MF is the already shifted MF_source",
+    "transfer_proof": "upstream/34-integer14/coefficients/COEFFICIENT_PROOF.md",
+    "ports": {
+      "beta": "beta",
+      "K0": "K",
+      "MC": "MC",
+      "MF": "MF_source"
+    }
+  },
+  "residuals": [
+    "-2*J**3*v_scale*beta**3-J**3*beta**3-6*J**2*v_scale*beta**2-3*J**2*beta**2-6*J*v_scale*beta-3*J*beta+a-E-2*v_scale-1",
+    "-J*w*a*beta+J*w*E*beta-w*a+w*E+E",
+    "-a*zeta_pos3**2-a*zeta_pos2**2-a*zeta_pos1**2-a*eta_pos3**2-a*eta_pos2**2-a*eta_pos1**2+E*zeta_pos3**2+E*zeta_pos2**2+E*zeta_pos1**2+E*eta_pos3**2+E*eta_pos2**2+E*eta_pos1**2-eta_pos3**2-eta_pos2**2-eta_pos1**2-a*zeta_pos3-a*eta_pos3+E*zeta_pos3+E*eta_pos3-eta_pos3-2*a+c+2*E-1",
+    "E*eta_pos3**2+E*eta_pos2**2+E*eta_pos1**2-zeta_pos3**2-zeta_pos2**2-zeta_pos1**2-eta_pos3**2-eta_pos2**2-eta_pos1**2+E*eta_pos3-E*c-zeta_pos3-eta_pos3+P+E-2",
+    "P*zeta_pos3**2+P*zeta_pos2**2+P*zeta_pos1**2+P*eta_pos3**2+P*eta_pos2**2+P*eta_pos1**2+P*zeta_pos3+P*eta_pos3-P**2+tau**2+2*P-1",
+    "J**2*w**2*beta**2+2*J*w*c*a*beta+8*J*w*gamma*a*beta+8*gamma*c*a**2+16*gamma**2*a**2+6*J*w*gamma*beta+2*J*w**2*beta-4*c**2*a+6*gamma*c*a+24*gamma**2*a+2*w*c*a+8*w*gamma*a-3*c**2+9*gamma**2+6*w*gamma+w**2-1",
+    "-J**4*beta**4+J**3*F*beta**3-3*J**3*beta**3-J**2*alpha*beta**2+2*J**2*F*beta**2-J**2*beta*MF-2*J**2*beta**2-2*J*alpha*beta+zeta_pos3**2+zeta_pos2**2+zeta_pos1**2+eta_pos3**2+eta_pos2**2+eta_pos1**2-h*E-J*MF-J*MC+zeta_pos3+eta_pos3+1",
+    "J*beta*K0+J*w*beta-J*z*beta-alpha*K0-alpha*w-F*K0-F*w+K0+w-F",
+    "-f*o+V+c",
+    "zeta_pos3**2+zeta_pos2**2+zeta_pos1**2+eta_pos3**2+eta_pos2**2+eta_pos1**2-j*c-h*E+zeta_pos3+eta_pos3+V+1",
+    "-2*r*c**2-c**2+I",
+    "-f**2*a**2-4*f**2*a+I**2+a**2-3*f**2+4*a+3",
+    "V**2*I**2-y**2*I**2+y**2-1",
+    "-u**2+w",
+    "-2*q_half_root**2+J*beta+1",
+    "-FA_pos3**2-FA_pos2**2-FA_pos1**2+F*alpha-FA_pos3-1",
+    "J*F*beta-FC_pos3**2-FC_pos2**2-FC_pos1**2-F*alpha-F**2-FC_pos3+F-1"
+  ],
+  "residual_degrees": [
+    4,
+    3,
+    3,
+    3,
+    3,
+    4,
+    4,
+    2,
+    2,
+    2,
+    3,
+    4,
+    4,
+    2,
+    2,
+    2,
+    2
+  ],
+  "single_polynomial": "sum of squares of the listed residuals",
+  "exact_degree": 8,
+  "exact_degree_certificate": {
+    "monomial": {
+      "a": 4,
+      "f": 4
+    },
+    "coefficient": 1
+  },
+  "unit_eliminations": [
+    {
+      "variable": "L",
+      "definition": "(beta*J+1)**2-1",
+      "deleted_residual_index": 0
+    },
+    {
+      "variable": "N",
+      "definition": "(beta*J+1)**3",
+      "deleted_residual_index": 0
+    },
+    {
+      "variable": "X",
+      "definition": "w*(beta*J+1)",
+      "deleted_residual_index": 0
+    },
+    {
+      "variable": "D",
+      "definition": "w*(beta*J+1)+a*c+gamma*(4*a+3)",
+      "deleted_residual_index": 5
+    },
+    {
+      "variable": "Delta",
+      "definition": "a**2+(4*a+3)",
+      "deleted_residual_index": 5
+    },
+    {
+      "variable": "C2",
+      "definition": "c**2",
+      "deleted_residual_index": 5
+    },
+    {
+      "variable": "F2",
+      "definition": "f**2",
+      "deleted_residual_index": 8
+    },
+    {
+      "variable": "Baux",
+      "definition": "I**2",
+      "deleted_residual_index": 12
+    },
+    {
+      "variable": "g",
+      "definition": "y**2-V**2",
+      "deleted_residual_index": 10
+    },
+    {
+      "variable": "eta",
+      "definition": "1+eta_pos1**2+eta_pos2**2+eta_pos3*(eta_pos3+1)",
+      "deleted_residual_index": 14
+    },
+    {
+      "variable": "zeta",
+      "definition": "1+zeta_pos1**2+zeta_pos2**2+zeta_pos3*(zeta_pos3+1)",
+      "deleted_residual_index": 14
+    }
+  ],
+  "source_sha256": "2b4d3d372fd899042eb3db9ee25e085193204640d28009807fde0778bc9528ac",
+  "source_path": "57-separated-degrees/quartic/quartic45.json",
+  "symbolic_residual_term_counts": [
+    10,
+    5,
+    24,
+    16,
+    12,
+    17,
+    20,
+    10,
+    3,
+    12,
+    3,
+    7,
+    4,
+    2,
+    3,
+    6,
+    9
+  ],
+  "symbolic_sos_term_count": 814,
+  "status": "Exact integer zero-set bijection to the pinned Q45; inherits its compiler/calibration proof boundary."
+}

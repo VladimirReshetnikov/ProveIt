@@ -1,0 +1,98 @@
+\section{A smaller certified packing in nine positive unknowns}
+\label{sec:packing111}
+
+The separate accompanying directory \texttt{nine-positive-111} supplies an
+additional improvement to package 59's nine-variable equation. It retains
+the complete original package-31 coefficient tuple and the same arithmetic
+finalizer, but changes the finite isolation certificate. The new equation
+has exact total degree \(1{,}781{,}068\) and a division-free evaluator with
+\(470\) live binary operations: \(162\) additions, \(22\) subtractions,
+and \(286\) multiplications. The previous point was
+\(1{,}910{,}404\) and \(473\) operations. This is a verified finite
+packing improvement, not a new universal variable bound.
+
+The positive quadratic parent has 31 coordinates and 22 residuals. After
+the inherited row changes \(r_{14}\leftarrow r_{14}+r_2\) and
+\(r_{15}\leftarrow r_{15}+r_3\), negate row 22. All three row operations
+are invertible. The new weights, in the literal source order, are
+\[
+\begin{gathered}
+110,105,100,94,74,22,41,95,87,89,49,31,11,16,98,19,\\
+97,4,20,8,2,3,35,47,111,30,90,63,78,103,26.
+\end{gathered}
+\]
+The corresponding degree-separated kernels have degrees
+\((1954,1617,1788)\), maximum coordinate weight \(W=111\), and
+convolution height \(H=2010\). Their 89 records have exactly the intended
+22 coefficient outputs: an exhaustive certificate checks all 22,544
+source/expansion interactions. The highest quadratic kernel term is
+\(+Z^{1788}\), arising from the negated last row.
+
+Write \(M=2^{2134927}\), \(a=4096M=2^{2134939}\),
+\(B=ab^2\), \(\ell=\sum_i B^{w_i}\), and \(U=\ell+g\).
+For all positive \(b,g\), before decoding any digits, the new kernels obey
+\[
+D_2(B)>\tfrac12 B^{1788},\quad
+|D_1(B)|<2MB^{1617},\quad |D_0(B)|<2MB^{1954},
+\quad U\ge B^{111}.
+\]
+The two lower-layer ratios are bounded by \(2M/B^{282}\) and
+\(2M/B^{56}\), each below \(1/8\). Thus the source word
+\(G_s=D_2(B)U^2+D_1(B)U+D_0(B)\) is strictly positive on every outer
+assignment. On the full soundness range \(g<4bB^{111}\),
+\[
+\frac{2G_s}{B^{2011}}<\frac{86Mb^2}{B-1}<\frac1{32}.
+\]
+This uses \(86\cdot32<4095\). The marked target maximum 1954 is 56 below
+the convolution height, so the same sparse padding gives
+\(S+T<B^{2123}\). After decoding, the coefficient bound is unchanged:
+\(993Mb^2<B/4\). Consequently the inherited mask argument recovers exactly
+the same positive source zero set.
+
+The smaller code requires a new, exact valuation calibration:
+\[
+L=2bB^{2123},\quad R=L(S+T+1)-S-1,
+\qquad N=2^{16012032}B^{1121}.
+\]
+The factor 2 in \(L\) and the absence of a factor \(b\) in \(N\) are
+essential. When \(b=2^k\), \(B=2^v\), and \(v=2134939+2k\),
+the low and high masks have combined population \(134v-31k-22\).
+For \(u=\log_2L=1+k+2123v\),
+\[
+u+\operatorname{pop}(T)
+=2257v-30k-21
+=2(1121v+16012032)=2\log_2N.
+\]
+The binary two-block formula and Legendre's valuation identity therefore
+give \(N^2\mid\binom{2R}{R}\) exactly when \(S\mathbin{\&}T=0\).
+The \(k=0\) calibration is included and cannot create a spurious source zero.
+
+Compose these registers with the unmodified free-coordinate Jones finalizer
+of package 59. On the nine positive variables \(b,g,h,s,w,C,i,j,n\), its
+output has the form
+\[
+\boxed{\ F_9=\bigl[\Theta^2-\Omega^2(a_0+64a_1)\bigr]^2
+                   -256\Omega^4a_0a_1=0.\ }
+\]
+All registers and fixed integer leaves are defined in the accompanying proof
+and literal circuit. In particular, \(j_0=j-1\) is retained, the complete
+old tuple is used coherently, and no additional existential variable is hidden.
+The positivity-first finalizer proof applies because its required inequalities
+have just been reproved for this layout. Composing with the explicitly named
+inherited compiler and calibration theorems yields the ordinary ZFC-provable
+equivalence between absence of positive zeros and \(\operatorname{Con}(\mathrm{ZFC})\).
+
+The exact leading degrees are \(r=\deg R=8491\) and
+\(q=\deg N=2242\). Resolving the norm's cancellation gives
+\[
+\deg F_9=104r+400q+8W+316
+=816H+1224W+5044=1{,}781{,}068.
+\]
+The diagonal leading coefficient is
+\(2^{290}a^{890324}c^{400}>0\), with \(c=2^{16012032}\), so this
+upper bound is attained for the actual coefficient tuple. The natural-domain
+translation has the same degree and 477 operations. The supplied independent
+checker verifies the finite certificate, fixed payloads, universal ring
+identities, leading form, and circuit implementation. These finite checks do
+not replace the inherited unbounded proofs, and the new literal equation has
+not been certified end-to-end by Lean, Rocq, or an object-language ZFC kernel.

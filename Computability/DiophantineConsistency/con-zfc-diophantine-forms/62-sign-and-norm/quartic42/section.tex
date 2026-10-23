@@ -1,0 +1,417 @@
+\section{A quartic equation in forty-two unrestricted integers}
+\label{sec:quartic42}
+
+The new equation in this section has \emph{forty-two unrestricted integer
+unknowns}, exact total degree four, and twenty-seven quadratic residuals.
+It improves the supplied forty-five-integer quartic without increasing its
+degree. The four fixed coefficient ports are the complete, unchanged tuple
+of that predecessor. In particular, the high-mask port is already shifted.
+The construction uses the direct Pell/compiler route; no Jones or Sun
+variable-reduction theorem is needed for this result.
+
+\paragraph{Theorem.}
+With the fixed coefficients specified in the accompanying binding, the
+polynomial $Q_{42}$ defined below satisfies
+\[
+ \mathrm{ZFC}\ \vdash\
+ \bigl[\neg\exists\boldsymbol{x}\in\mathbb Z^{42}
+                \;Q_{42}(\boldsymbol{x})=0\bigr]
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+The argument is an ordinary arithmetic proof, composed with the expressly
+retained native compiler and machine-calibration theorems. The new literal
+polynomial has not received an end-to-end Lean or Rocq certificate. An
+exported derivation in the repository's object-language ZFC calculus is
+also distinct from the mathematical proof given here.
+
+\subsection{The idea: prove the sign after recovering the rank}
+
+Two positive coordinates in the predecessor, $\eta$ and $\zeta$, are each
+represented by a ternary positive form. Those two representations use six
+extra integer unknowns. We replace them by one representation of
+$\eta\zeta>0$, which uses three. This initially proves only that the two
+coordinates have the same sign.
+
+An existing square scale supplies the missing information. Replacing
+$w=u^2$ by $w=4u^2$ makes a modulus $e$ more than four times the decoded
+index $R$. The Pell equations first recover a rank $p=R$ without deciding
+the common sign. A negative common sign would then require a positive
+integer smaller than $e$ to be divisible by $e$. Thus both coordinates
+are positive after all. Canonical accepting witnesses have $w$ equal to
+a sufficiently large dyadic square, so the factor four does not obstruct
+completeness.
+
+This ordering is essential. Invoking the predecessor's whole soundness
+theorem before recovering the missing positive guards would be circular.
+The local rank argument below is what permits those guards to be removed.
+
+\subsection{Every variable and every residual}
+
+Write the four fixed positive integer ports as
+$\beta,K_0,M_C,M_F$, where $\beta=2^{1064921}-1$ and $M_F$ denotes the
+\emph{already shifted} source mask. The complete coefficient binding, not
+that exponent alone, specifies the instance. Let the thirty-three
+arithmetic unknowns be
+\begin{gather*}
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,\\
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_*,\Delta,u,\rho.
+\end{gather*}
+Add nine guard unknowns $A_1,A_2,A_3,B_1,B_2,B_3,T_1,T_2,T_3$.
+All forty-two range over $\mathbb Z$. In particular, $C_2,F_2,B_*$ and
+$\Delta$ are independent supplied coordinates; their defining equations
+are among the residuals. Define only the following abbreviations:
+\[
+ q=\beta J+1,\qquad C=q-F-\alpha,\qquad k=\eta+\zeta,
+ \qquad \operatorname{Pos}(x,y,t)=1+x^2+y^2+t(t+1).
+\]
+These abbreviations add no quantified unknowns. The residuals are
+\begin{align}
+ R_1&=L-q^2+1, &
+ R_2&=N-q(L+1), \nonumber\\
+ R_3&=X-wq, &
+ R_4&=a-E-(2v+1)N, \nonumber\\
+ R_5&=E(X+1)-Xa, &
+ R_6&=c-\eta-(a-E)k, \nonumber\\
+ R_7&=P-k-E(c-\eta), &
+ R_8&=\tau^2-P(P-k)-1, \nonumber\\
+ R_9&=D-X-ac-\gamma(4a+3). &&
+ \label{eq:q42-block1}
+\end{align}
+The next block is
+\begin{align}
+ R_{10}&=\Delta-a^2-4a-3, \nonumber\\
+ R_{11}&=C_2-c^2, \nonumber\\
+ R_{12}&=D^2-\Delta C_2-1, \nonumber\\
+ R_{13}&=k-1-hE
+       -\bigl[(q-F)(N-q)-CL+(M_C+qM_F)J\bigr], \nonumber\\
+ R_{14}&=(K_0+w)C-F-z(q-1), \nonumber\\
+ R_{15}&=F_2-f^2, \nonumber\\
+ R_{16}&=V+c-fo, \nonumber\\
+ R_{17}&=V-jc+k-1-hE, \nonumber\\
+ R_{18}&=g+V^2-y^2.
+ \label{eq:q42-block2}
+\end{align}
+Finally, put
+\begin{align}
+ R_{19}&=I-(2r+1)C_2, &
+ R_{20}&=B_*-I^2, \nonumber\\
+ R_{21}&=B_*-\Delta(F_2-1), &
+ R_{22}&=y^2-B_*g-1, \nonumber\\
+ R_{23}&=w-4u^2, &
+ R_{24}&=q-2\rho^2, \nonumber\\
+ R_{25}&=F\alpha-\operatorname{Pos}(A_1,A_2,A_3), &&\nonumber\\
+ R_{26}&=FC-\operatorname{Pos}(B_1,B_2,B_3), &&\nonumber\\
+ R_{27}&=\eta\zeta-\operatorname{Pos}(T_1,T_2,T_3). &&
+ \label{eq:q42-block3}
+\end{align}
+The required single equation is
+\begin{equation}
+ \boxed{\displaystyle Q_{42}=\sum_{i=1}^{27}R_i^2=0.}
+ \label{eq:q42-polynomial}
+\end{equation}
+Every residual has degree at most two in the supplied unknowns. The
+coordinate $\tau$ occurs only in $R_8$, with term $\tau^2$, so the
+coefficient of $\tau^4$ in $Q_{42}$ is exactly one. This proves exact
+degree four on the authentic fixed-coefficient slice, independently of
+any generic degree-propagation estimate.
+
+The literal JSON uses \texttt{v\_scale}, \texttt{Baux} and
+\texttt{q\_half\_root} for $v,B_*,\rho$, and named triples for the three
+positive forms. The verifier expands all twenty-seven formulas above
+and checks exact equality with that JSON. In particular, no division,
+variable exponent or unspecified coefficient appears in the definition.
+
+\subsection{Preliminary guards and restored arithmetic}
+
+For every integer triple, $\operatorname{Pos}(x,y,t)>0$, since
+$t(t+1)\ge0$. Conversely every positive integer $n$ has such a
+representation. Indeed $4n-3\equiv1\pmod4$ is not of the forbidden form
+$4^a(8b+7)$, so the three-square theorem represents it by three squares.
+Exactly one square is odd. Writing that square as $(2t+1)^2$ and the
+others as $(2x)^2,(2y)^2$ gives the claimed representation.
+
+At an integer zero of \eqref{eq:q42-polynomial}, every residual vanishes.
+The dyadic guard gives
+\[
+ q=\beta J+1=2\rho^2.
+\]
+Since $\beta\ge3$, $J<0$ would make $q<0$, while $J=0$ would require
+$1=2\rho^2$. Thus $J>0$ and, for the bound source tuple, $q\ge16$.
+The other two retained guards give $F\alpha>0$ and $FC>0$. Hence
+$F,\alpha,C$ have the same nonzero sign; their sum is $q>0$, so
+\begin{equation}
+ F>0,\qquad \alpha>0,\qquad C>0.
+ \label{eq:q42-simplex}
+\end{equation}
+
+Put $s=2v+1$, a nonzero odd integer, and set $Y=sq^3$ as a
+\emph{proof abbreviation}. The first residuals give
+\begin{gather*}
+ N=q^3,\quad X=wq,\quad a=E+Y,\quad E=XY,\quad
+ c=kY+\eta,\quad P=XY^2k+k,\\
+ H=4a+3,\quad \Delta=(a+2)^2-1,\quad
+ D=X+ac+\gamma H,\quad I=(2r+1)c^2.
+\end{gather*}
+For example $R_5=0$ and $a=E+Y$ imply
+$E(X+1)=X(E+Y)$, hence $E=XY$ with no division or nonzero assumption.
+Define the proof-only packing integer
+\begin{equation}
+ R=\bigl[(q-1)(q-F)+\alpha\bigr](q^2-1)
+       +(M_C+qM_F)J.
+ \label{eq:q42-packing}
+\end{equation}
+The retained equations then assert
+\begin{gather}
+ \tau^2-XY^2(XY^2+1)k^2=1,
+ \qquad D^2-\Delta c^2=1, \label{eq:q42-pell1}\\
+ I^2=\Delta(f^2-1),
+ \qquad I^2V^2-(I^2-1)y^2=1, \label{eq:q42-pell2}\\
+ k=R+1+hE,
+ \qquad V=fo-c=jc-R. \label{eq:q42-index}
+\end{gather}
+The last two identities expose the quotient congruences directly; an
+unproved quotient-integrality assertion is unnecessary.
+
+The source packing bounds require only \eqref{eq:q42-simplex} and the
+authentic mask bounds at this stage. With
+$G=q\alpha+(q-1)C$, one has
+\[
+ q\le G\le q^2-q,
+ \qquad 0<(M_C+qM_F)J<(q-1)(1+2q).
+\]
+Consequently
+\begin{equation}
+ q(q^2-1)<R<q^4-2,
+ \qquad R-2>3q+1.
+ \label{eq:q42-rbounds}
+\end{equation}
+No positivity assumption on $z,\eta,\zeta$ or $Y$ has been used in
+obtaining these bounds.
+
+\subsection{Bootstrap with an unknown common sign}
+
+The new guard says $\eta\zeta>0$. Let
+\[
+ \sigma=\operatorname{sign}(\eta)=\operatorname{sign}(\zeta),
+ \qquad \kappa=|k|>0,
+ \qquad \theta=\frac{\eta}{k}\in(0,1).
+\]
+The fraction $\theta$ is used only in the proof. First $u\ne0$.
+Otherwise $w=X=E=0$, $a=Y$ and $D=ac+\gamma H$. Reducing the main
+Pell norm modulo $H$ would give $0\equiv1\pmod H$, since
+$\Delta\equiv a^2\pmod H$. But $|Y|\ge q^3$ makes
+$|H|=|4Y+3|>1$. This is impossible. Therefore
+\begin{equation}
+ w=4u^2\ge4,\quad X\ge4q>0,\quad |Y|\ge q^3,
+ \quad e:=|E|\ge4q^4>4R+8.
+ \label{eq:q42-modulus}
+\end{equation}
+
+Set $A=|a+2|$, $P_0=2XY^2+1$, and $c_0=|c|$. Then
+\[
+ A>e>R+2,\qquad P_0>A\ge2,\qquad \Delta=A^2-1.
+\]
+For negative $Y$, the first inequality follows from
+$A=(X+1)|Y|-2>e$; for positive $Y$ it is immediate. Moreover
+\[
+ \frac{c_0}{\kappa}=
+ \begin{cases}
+ |Y|+\theta,&Y>0,\\
+ |Y|-\theta,&Y<0,
+ \end{cases}
+\]
+so $c_0>\kappa>0$ in either case.
+
+Let $\chi_A(n),\psi_A(n)$ be the integer Pell sequences defined by
+\[
+ \chi_A(n)+\psi_A(n)\sqrt{A^2-1}
+       =(A+\sqrt{A^2-1})^n.
+\]
+Ordinary Pell classification in \eqref{eq:q42-pell1} gives positive
+ranks $n,p$ with
+\begin{equation}
+ \kappa=2\psi_{P_0}(n),\quad |\tau|=\chi_{P_0}(n),
+ \qquad c_0=\psi_A(p),\quad |D|=\chi_A(p).
+ \label{eq:q42-ranks}
+\end{equation}
+The first fundamental unit is the standard
+$2b+1+2\sqrt{b(b+1)}$, where $b=XY^2>1$.
+Since $P_0>A$ and $c_0>\kappa$, strict Pell growth gives $p>n$.
+Also $P_0\equiv1\pmod e$, so the recurrence gives
+\begin{equation}
+ \sigma\,2n\equiv R+1\pmod e.
+ \label{eq:q42-signedindex}
+\end{equation}
+If $\sigma=1$, its least positive representative gives $2n\ge R+1$.
+If $\sigma=-1$, it gives $2n\ge e-R-1>R+1$. Thus
+\[
+ n\ge(R+1)/2\ge24,\qquad p>n.
+\]
+In particular the elementary Pell bounds imply
+\begin{equation}
+ c_0>A\Delta^2,\qquad c_0>2p,\qquad c_0>2R.
+ \label{eq:q42-cbounds}
+\end{equation}
+For the first, $p\ge6$ already suffices, since
+$\psi_A(6)=32A^5-32A^3+6A>A(A^2-1)^2$. The second follows by the
+recurrence for $A\ge2,p\ge3$; the third follows from
+$c_0\ge\psi_A(2)=2A>2R$.
+
+\subsection{Recovering the rank without a sign assumption on \texorpdfstring{$c$}{c}}
+
+We use the coefficient-independent ordinary strong-rank lemma retained
+with the source proof. In its needed form, if
+\[
+ c_0=\psi_A(p)>A(A^2-1)^2,
+ \qquad (i c_0^2)^2=(A^2-1)(f^2-1),\quad i>0,
+\]
+then there is a positive integer $m$ such that
+\begin{equation}
+ |f|=\chi_A(m),\quad p\mid m,\quad c_0\mid m,
+ \quad m\ge c_0>2p,
+ \quad i c_0^2=(A^2-1)\psi_A(m).
+ \label{eq:q42-strong}
+\end{equation}
+Here its hypotheses hold with $i=|2r+1|$, using
+\eqref{eq:q42-pell2} and \eqref{eq:q42-cbounds}.
+
+For clarity, the two substantive ingredients in that inherited lemma are
+strong divisibility and an elementary growth comparison. Write the
+quadratic field's fundamental integer-coordinate unit using a parameter
+$F_0$, and write $A=\chi_{F_0}(d)$,
+$S=\psi_{F_0}(d)$, and
+$\Delta=(F_0^2-1)S^2$. Classification yields
+$|f|=\chi_{F_0}(t)$ and
+$|I|=(F_0^2-1)S\psi_{F_0}(t)$.
+Strong divisibility, together with $c_0^2\mid I$, gives
+$\psi_{F_0}(\gcd(t,dp))\ge c_0/\Delta$.
+If that gcd were a proper divisor of $dp$, doubling its index would give
+\[
+ 2\psi_{F_0}(\gcd(t,dp))^2
+   <\psi_{F_0}(2\gcd(t,dp))
+   \le S c_0<A c_0,
+\]
+contrary to $c_0>A\Delta^2$. Hence $dp\mid t$, giving
+$t=dm$ and $p\mid m$. Writing $m=pz$, the recurrence modulo $c_0^2$
+gives $c_0\mid\Delta z$. Finally
+$\gcd(c_0,\Delta)=\gcd(p,\Delta)$ follows from
+$\psi_A(p)\equiv pA^{p-1}\pmod\Delta$, and gives $c_0\mid pz=m$.
+The archived ordinary-kernel proof supplies the complete signed and
+fundamental-unit details of this lemma.
+
+The auxiliary norm in \eqref{eq:q42-pell2} excludes $V=0$ and $y=0$.
+Pell classification at the integer parameter $|I|>1$ gives an odd rank
+$\ell=2v_0+1$ such that
+\[
+ |I|\,|V|=\chi_{|I|}(\ell),\qquad
+ |y|=\psi_{|I|}(\ell),\qquad |V|=Q_{v_0}(I^2).
+\]
+Oddness follows from the even-index residue
+$\chi_{|I|}(2t)\equiv(-1)^t\pmod{|I|}$.
+The standard odd-subsequence polynomials satisfy
+\[
+ Q_{v_0}(1-A^2)=(-1)^{v_0}\psi_A(\ell),
+ \qquad Q_{v_0}(0)=(-1)^{v_0}\ell.
+\]
+They follow directly from $Q_0(x)=1$, $Q_1(x)=4x-3$ and
+$Q_{t+1}(x)=(4x-2)Q_t(x)-Q_{t-1}(x)$.
+
+The exposed identities in \eqref{eq:q42-index} imply
+\[
+ V\equiv-c\pmod{|f|},\qquad V\equiv-R\pmod{c_0}.
+\]
+As $I^2\equiv1-A^2\pmod{|f|}$, the first congruence gives
+$\psi_A(\ell)\equiv\pm c_0\pmod{|f|}$, with all signs of $c,V$
+absorbed in the ambiguity. Squaring and applying the Pell doubling formula,
+\[
+ \chi_A(2\ell)\equiv\chi_A(2p)\pmod{\chi_A(m)}.
+\]
+The signed step-down argument gives $\ell\equiv\pm p\pmod m$.
+Indeed reduce $2\ell$ modulo $2m$, using
+$\chi_A(t+2m)\equiv-\chi_A(t)$, then reflect indices above $m$.
+The resulting representative is $\pm\chi_A(s)$, $0\le s\le m$.
+The case $s=m$ gives residue zero. A negative representative is impossible
+because
+$\chi_A(s)+\chi_A(2p)\le2\chi_A(m-1)<\chi_A(m)$.
+Strict growth then forces $s=2p$, proving the claimed index congruence.
+Its hypotheses $0<2p<m$ were proved in \eqref{eq:q42-strong}.
+
+Since $c_0\mid m$, this gives $\ell\equiv\pm p\pmod{c_0}$.
+On the other hand $c_0\mid I$, so the second exposed congruence and
+$Q_{v_0}(0)=(-1)^{v_0}\ell$ give
+$\ell\equiv\pm R\pmod{c_0}$. Therefore
+$p\equiv\pm R\pmod{c_0}$. The strict bounds
+$0<p,R<c_0/2$ in \eqref{eq:q42-cbounds} force
+\begin{equation}
+ p=R.
+ \label{eq:q42-mainrank}
+\end{equation}
+
+\subsection{The missing signs and the reverse construction}
+
+If the common sign were negative, \eqref{eq:q42-signedindex} would make
+$e$ divide $2n+R+1$. But $n<p=R$ and \eqref{eq:q42-modulus} give
+\[
+ 0<2n+R+1<3R+1<e,
+\]
+a contradiction. Thus $\eta,\zeta>0$. Represent them separately by
+$\operatorname{Pos}$, and set the old square coordinate to
+$u_{\mathrm{old}}=2u$. Every residual of the authenticated predecessor
+now vanishes. Its remaining signed-scale and compiler arguments therefore
+produce a finite ZFC refutation. The missing individual guards have been
+restored before invoking that whole-system theorem.
+
+There is a small transcription correction in the predecessor's written
+transport discussion. Its literal circuit, retained in $R_{14}$, has
+\[
+ (K_0+w)C=F+z(q-1),
+\]
+whereas the prose writes $z-1$. The needed conclusion is $z>0$.
+After its Pell recovery, $w>q>F$ and $C\ge1$ make the left side greater
+than $F$, hence $z(q-1)>0$. This proves the required guard for the
+literal shifted coordinate. Neither the equation nor its coefficients
+are changed by correcting that sentence.
+
+Conversely, a finite refutation supplies the predecessor's canonical
+accepting witnesses. Its complete coefficient adapter ensures
+\[
+ q=2^t,\qquad t\ \hbox{odd},\qquad R\ \hbox{odd},
+ \qquad w=2^{R-t},\qquad R>3q.
+\]
+Thus $R-t$ is even and at least four. Choose
+\[
+ u=2^{(R-t-2)/2},
+\]
+so $w=4u^2$. The canonical $\eta,\zeta$ are positive; represent their
+product by one $\operatorname{Pos}$ triple and keep the other coordinates.
+All twenty-seven new residuals vanish. This is an existence construction
+using canonical witnesses, rather than an invertible substitution on
+every predecessor tuple.
+
+\subsection{What has been checked}
+
+The new construction retains twenty-five predecessor residuals exactly,
+strengthens the square scale, and replaces two positive guards by one.
+It changes $(45,28,4)$ to $(42,27,4)$ in the order
+unknowns, residuals, and single-polynomial degree.
+With the four ports left symbolic, the exact expanded sum of squares
+has 391 terms, compared with 407 for the predecessor. This is a symbolic
+description count, not a claim about coefficient bit complexity or an
+optimal arithmetic circuit.
+
+The main builder and a separate implementation expand the literal
+residuals in sparse integer polynomial arithmetic. They check variable
+counts and occurrence, the unchanged rows, the two modifications, exact
+degree four, and the coefficient one of $\tau^4$. Both work under
+ordinary and optimized Python. A separate transcription check verifies
+all twenty-seven factored formulas above against the emitted JSON.
+The parent polynomial and its proof are authenticated by their pinned
+Git blob hashes; the complete coefficient tuple and semantic source
+dependencies are retained with their own provenance.
+
+These finite checks establish the displayed algebra and source binding.
+The universal solvability equivalence rests on the two-way mathematical
+argument and its expressly identified inherited arithmetic and compiler
+theorems. No consistency assumption, refutation search, global
+minimality assertion or external peer review is being substituted for
+that proof.

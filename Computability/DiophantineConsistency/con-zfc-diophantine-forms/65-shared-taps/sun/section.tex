@@ -1,0 +1,228 @@
+\section{A companion over ten unrestricted integers}
+\label{sec:shared-tap-sun}
+
+The shared-kernel-tap source also composes with the unchanged Sun finalizer
+of package~59. This gives a fixed polynomial
+\[
+ F_{10}(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z[f,g,h,k,l,w,x,y,z,m]
+\]
+of \textbf{exact total degree $7\,428\,120$}, with a division-free evaluator
+of \textbf{525 binary arithmetic operations}, such that the inherited
+compiler and arithmetic theorems, together with the new source argument,
+prove in ZFC
+\[
+ \neg\exists(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}\;(F_{10}=0)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+The domain here is all integers. Relative to package~59's ten-integer
+polynomial of degree $8\,469\,528$ with 533 gates, the degree decreases by
+$12.2959\%$ and eight arithmetic operations are saved. The comparison is
+at commit \texttt{beb0192cb8dc36f78c369c080f2adfbc1887a486}.
+
+\subsection{The revised source polynomials}
+
+Use the primary shared-tap certificate, with its complete old31 coefficient
+tuple, the original unshifted 31-coordinate positive source, and the two
+invertible row operations. The 89 weighted source records use 84 unique
+kernel taps. Each shared coefficient is inserted once. The target identities
+are
+\[
+ [Z^{q_j}]\{D_2(Z)U_p(Z)^2+D_1(Z)U_p(Z)+D_0(Z)\}
+       =2\rho_j(p),\qquad U_p(Z)=\sum_i p_iZ^{w_i}.
+\]
+The certified numerical parameters are
+\[
+ W=116,\quad Q=1841,\quad H=1873,\qquad
+ (\deg D_0,\deg D_1,\deg D_2)=(1384,1739,1641).
+\]
+The leading coefficient of $D_2$ is $+1$. Every kernel coefficient has
+absolute value below $C_0=2^{2134927}$. Put
+\[
+ \kappa=2134940,\qquad \beta_S=2^\kappa>4096C_0.
+\]
+The even exponent is part of the source binding. Define
+\begin{align*}
+ b&=1+3f,& B&=\beta_Sb^2,\\
+ \ell&=\sum_iB^{w_i},& U_c&=\ell+g,\\
+ A_T&=\sum_jB^{q_j},&N_0&=B^{117},\\
+ N_1&=B^{1874},&N&=N_0N_1=B^{1991},\\
+ M_0&=N_0-1-(b-1)\ell,&J_c&=2G_c+A_T,\\
+ S_c&=g+J_cN_0,&T_c&=M_0+(B-2)A_TN_0,\\
+ \mathcal C&=bB^{116}.
+\end{align*}
+Here the remaining expressions are
+\begin{align*}
+ G_c&=D_2(B)U_c^2+D_1(B)U_c+D_0(B),\\
+ X&=N^2+(S_c+T_c)N+N-1-S_c,\\
+ Y&=\beta_S^{15}2^{\kappa-21}B^{2114}b
+     =2^{2130\kappa-21}b^{4229}.
+\end{align*}
+These are polynomial abbreviations, with fixed exponents. Their exact
+degrees are $7964,4229,233$ for $X,Y,\mathcal C$, respectively.
+
+Suppose first that $b$ is a square, $f\ne0$, and
+$0<g<2\mathcal C$. Then $b\ge4$, and
+$B^{116}\le U_c<3bB^{116}$. The kernel estimates give
+\[
+ D_2(B)>\tfrac12B^{1641},\qquad
+ |D_1(B)|<2C_0B^{1739},\qquad |D_0(B)|<2C_0B^{1384}.
+\]
+After normalization by $B^{1641}U_c^2$, the two possibly negative terms
+are at most $2C_0/B^{18}$ and $2C_0/B^{489}$, each less than $1/8$.
+Consequently $G_c>\tfrac14B^{1641}U_c^2>0$. The upper bound
+\[
+ |G_c|<26C_0b^2B^{1873},\qquad 2G_c<N_1/64
+\]
+and the 32-position gap $H-Q$ prove
+\[
+ 0<J_c<N_1/32,\qquad J_c+(B-2)A_T+2<N_1.
+\]
+Since $0\le M_0<N_0$ and $0<g<N_0$, this yields the strict range
+\begin{equation}
+ 0\le S_c,\qquad 0\le T_c,\qquad S_c+T_c<N.
+ \label{eq:new-sun-range}
+\end{equation}
+It also gives $X\ge N^2>3b$ and $Y>\max(b,256)$. As $\kappa$ is even,
+the source congruence is $X\equiv1-22\equiv0\pmod3$.
+
+When $b$ is a power of two and $S_c\mathbin{\&}T_c=0$, the low mask recovers
+$g=\sum_i n_iB^{w_i}$ with $0\le n_i<b$. Thus $U_c$ encodes positive
+coordinates $p_i=n_i+1$. Every signed convolution coefficient $h_s$ obeys
+\[
+ |h_s|<993C_0b^2<B/4.
+\]
+The target padding in $J_c$ and the mask $B-2$ test $h_s=0$ even when
+the incoming carry is $-1$. Therefore the same borrow argument proves
+\[
+ S_c\mathbin{\&}T_c=0
+ \quad\Longleftrightarrow\quad
+ g\text{ encodes }n_i\in[0,b),\quad \rho_j(n+1)=0\text{ for all }j.
+\]
+For $b=2^k$ and $B=2^v$, the actual mask population and block exponent are
+\[
+ s_2(T_c)=139v-31k-22,\qquad \log_2N=1991v.
+\]
+Hence
+\[
+ 1+\log_2N+s_2(T_c)=2130v-31k-21=\log_2Y.
+\]
+Using \eqref{eq:new-sun-range}, the exact two-block population identity
+and Legendre's formula turn $Y\mid\binom{2X}{X}$ into precisely the source
+zero condition. Conversely a positive source zero is not the all-one
+vector, since its fifth row has value one there. Choosing arbitrarily
+large $b=4^s$ and encoding $n_i=p_i-1$ gives $B\le g<\mathcal C$ and
+the required forward source witnesses.
+
+\subsection{The explicit unchanged finalizer}
+
+Here are the fixed polynomial formulas, with local notation distinguished
+from the source base and masks:
+\begin{gather*}
+ L=lY,\quad U=2LX,\quad V=4gwY,\quad W_*=bw,\\
+ A=U(V+1),\quad B_*=2X+1,\quad C=B_*+(A-2)h,\\
+ P=U^2V,\quad K=X+1+k(P-2),\\
+ S_*=2A-5,\quad T_*=3W_*C-2(W_*^2-1),\\
+ a_1=(P^2-4)K^2+4,\\
+ \Delta_*=8\mathcal C^3gK^2
+       -g^2\{32(C-KL)^2\mathcal C^3+g^2K^2\},\\
+ O=f^2l^2\Delta_*,\quad \xi=zx,\quad
+ a_0=b\{1+(3O-4)b^2z^2\},\\
+ D=(A^2-4)C^2+4,\quad E=C^2D\xi,\quad
+ F=4(A^2-4)E^2+1,\\
+ G_*=2(A+2)(A-2)^2E^2-1,\quad \Omega=16E,\\
+ H_*=C+(B_*-C)F+\Omega Fy,\quad
+ I_*=(G_*^2-1)H_*^2+1,\quad a_2=DFI_*.
+\end{gather*}
+Finally set
+\begin{align*}
+ r&=T_*+S_*y,&\Sigma&=\xi S_*^5,\\
+ \Theta&=(r^3-rS_*^2-S_*^3)(r^2+23S_*^2),\\
+ w_0&=1,&w_1&=a_0,&w_2&=a_0(P^2+K^2+3),\\
+ Z&=\Sigma m-\Theta,&A_i&=\Sigma^2w_i^2a_i\quad(0\le i\le2),\\
+ V_n&=Z^2+A_2-A_0-A_1,&
+ W_n&=V_n^2+4Z^2A_2-4A_0A_1.
+\end{align*}
+The promised single polynomial is
+\begin{equation}
+ \boxed{F_{10}=W_n^2-16V_n^2Z^2A_2.}
+ \label{eq:new-shared-sun10}
+\end{equation}
+
+The inherited norm, separator, and intersective-quintic argument first
+gives $\Sigma\ne0$, all three $a_i$ squares, and $\Sigma\mid\Theta$.
+In particular $z\ne0$. These conclusions use no source positivity.
+The coprime factors of the square $a_0$ must be signed squares. Since
+$b\equiv1\pmod3$, it cannot be a negative square, so $b$ is a positive
+square. The case $b=1$ forces $f=O=0$ and $a_0=1-4z^2<0$, impossible.
+Thus $b\ge4$. The second factor being a square forces $O>0$, since for
+$O\le0$ it is at most $1-4b^2z^2<0$.
+
+Now $O>0$ implies $\Delta_*>0$. As $\mathcal C>0$, its displayed formula
+rules out $g\le0$ and $K=0$; division by $gK^2>0$ gives
+$g^3<8\mathcal C^3$. Hence $0<g<2\mathcal C$ before the source estimates
+are invoked. This establishes the correct order of the signed bootstrap
+and explains why no additional positive padding term is needed.
+
+Sun's inherited arithmetic bridge then recovers $b$ a power of two and
+the binomial divisibility, giving a positive source zero. The converse
+uses the cofinal forward witnesses, the same Pell bridge, and residue
+interpolation. The precise dependencies are Sun's 2021 Theorems
+4.12--4.13~\cite{sun2021} and their specialization in his 2026
+Propositions 6.1--6.2~\cite{sun},
+as preserved in the package59 proof. Thus the new part is the verified
+source replacement; the compiler and finalizer theorem are inherited.
+
+\subsection{Exact degree certificate and finite checks}
+
+The upper bound is certified by induction at every gate of the literal
+division-free circuit: leaves have degrees zero or one, a product uses
+the sum of the two bounds, and a sum or difference uses their maximum.
+For this circuit the final bound is
+\[
+ 456(7964)+896(4229)+24(233)+1760=7\,428\,120.
+\]
+An analytic leading-coefficient certificate gives the matching lower
+bound. Under the diagonal specialization, the source leading coefficients
+are
+\begin{align*}
+ x_0&=3^{7964}\beta_S^{3982},&
+ y_0&=3^{4229}\beta_S^{2129}2^{\kappa-21},&
+ c_0&=3^{233}\beta_S^{116}.
+\end{align*}
+The scaled radicand $A_2$ has degree $1\,857\,030$ and leading coefficient
+$2^{362}3^8x_0^{114}y_0^{224}c_0^6$. It uniquely dominates $V_n$, while
+$A_2^2$ dominates $W_n$. The final subtracted term has degree
+$5\,735\,370<7\,428\,120$, so $A_2^4$ is the leading term of $F_{10}$.
+Its diagonal leading coefficient is
+\[
+ 2^{1448}3^{32}x_0^{456}y_0^{896}c_0^{24}
+   =2^{3727056\kappa-17368}3^{7426392}>0.
+\]
+Thus no cancellation can lower the certified degree.
+
+Independently, after setting all ten variables equal to one indeterminate
+$t$, the verifier propagates the coefficient of the certified upper degree
+through every gate modulo a prime. It uses the actual fixed coefficients,
+authenticated against their complete compressed binary binding. The final
+leading coefficients are
+\[
+ \begin{array}{c|ccc}
+ p&101&1009&1000003\\\hline
+ [t^{7428120}]F_{10}(t,\ldots,t)\bmod p&95&646&515853.
+ \end{array}
+\]
+These residues also agree with the displayed analytic coefficient. Any
+one nonzero residue is a second certificate of the matching lower bound.
+This is an exact leading-coefficient computation, not a sample equality
+of polynomial values. Separately, exact sparse integer arithmetic verifies the source
+coefficient identities, all 59 local circuit identities, the Lucas
+factorization, and the eight-factor norm identity. Those identity checks
+establish that the circuit computes \eqref{eq:new-shared-sun10}.
+
+The machine-readable circuit and replay files are in the companion
+\texttt{sun/} component. Its evaluator has 337 multiplications, 161
+additions, and 27 subtractions. The verifier imports no circuit builder
+and passes both ordinary Python and \texttt{python -O}. Finite borrow,
+population, and source-assignment tests supplement the unbounded proofs;
+they do not decide consistency or replace the inherited arithmetic
+theorems.

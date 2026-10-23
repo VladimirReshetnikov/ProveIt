@@ -1,0 +1,978 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor,enumitem,fancyhdr,hyperref,xurl,needspace}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Positive source coordinates for a smaller Diophantine consistency candidate},
+ pdfauthor={Research contribution prepared for ProveIt}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Positive source coordinates}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\PP}{\mathbb Z_{>0}}
+\newcommand{\pop}{\operatorname{pop}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Sc}{S_{\mathrm{code}}}
+\newcommand{\Tc}{T_{\mathrm{code}}}
+\newcommand{\Gs}{G_{\mathrm{src}}}
+\newcommand{\Us}{U_{\mathrm{src}}}
+\newcommand{\Targets}{T_{\mathrm{mark}}}
+\newcommand{\Gcap}{G_{\mathrm{cap}}}
+\newcommand{\Kcode}{K_{\mathrm{code}}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\basecommit}{\code{beb0192cb8dc36f78c369c080f2adfbc1887a486}}
+
+\title{\vspace{-8mm}\textbf{Positive source coordinates for a smaller\\
+Diophantine consistency candidate}\\[4pt]
+\large Nine positive variables, exact degree \(1\,797\,796\),\\
+465 arithmetic operations, and a compact coefficient tuple}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt repository}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an explicit refinement of the latest nine-positive-variable
+construction in the reviewed ProveIt snapshot. Two positive coordinate
+changes in its quadratic source reduce the weighted source from 89 to
+86 records. Repacking that source lowers the largest coordinate exponent
+from 116 to 100 and the convolution height from 2161 to 2047. Composing
+with the existing numerical ratio and norm reduction yields one fixed
+integer polynomial of exact total degree \(1\,797\,796\), evaluated by a
+465-operation division-free circuit. The comparison construction has
+degree \(1\,910\,404\) and 473 operations. The new equation also admits
+the complete compact tuple already established in package 44, whose
+four native payloads total 295,388 raw bytes.
+
+The archive contains literal polynomial data, deterministic builders,
+materialized native coefficients, exact algebra and isolation checks,
+degree certificates, inherited proofs and licenses, and a secondary
+15-positive-variable degree-24/89-operation refinement.
+These are incremental advances. We do not establish a global simplest
+equation, a new variable bound, or a construction independent of K215
+and Jones. The new local equivalences and arithmetic construction are
+proved here; the semantic calibration remains inherited. In particular,
+this contribution does not close the repository's explicitly outstanding
+object-language ZFC internalization obligation.
+\end{abstract}
+
+\section{Result, comparison, and scope}
+\label{sec:scope}
+
+The primary equation is
+\begin{equation}
+\boxed{\;
+ F_9=\bigl[\Theta^2-\Omega^2(a_0+64a_1)\bigr]^2
+       -256\Omega^4a_0a_1=0,\qquad
+ (b,g,h,s,w,C,i,j,n)\in\PP^9 .
+\;}
+\label{eq:main}
+\end{equation}
+Every symbol on the right is a polynomial abbreviation defined below.
+The only unknowns are the nine displayed inputs. All exponents are
+fixed nonnegative integers. No variable exponent, divisibility
+condition, bitwise operation, root, or quantifier is hidden in the
+equation. Such operations occur only in its proof.
+
+The primary machine-readable specification is
+\path{research_nine/compact_candidate/generated/gap_100_positive.json}.
+Every nonliteral fixed leaf has a polynomial recipe in four specified
+integers, or is a specified power of two. The native integers are
+supplied as authenticated unsigned little-endian payloads and by a
+deterministic reconstruction program. Thus no universal-polynomial
+parameter remains unspecified.
+
+The baseline is package 59's \code{nine_free_adjunct} construction at
+the repository snapshot \basecommit. We use its cost convention:
+one operation for every binary addition, subtraction or multiplication,
+including scalar multiplications and the multiplications implementing
+fixed exponents of polynomial registers. Reuse and access to fixed
+integer coefficients are free. This is
+arithmetic circuit size, not bit complexity.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & Positive variables & Exact degree & Operations & Port bytes\\
+\midrule
+Package 59, free carrier & 9 & 1,910,404 & 473 & 533,099\\
+New source, original tuple & 9 & 1,797,796 & 465 & 533,099\\
+New source, compact tuple & 9 & 1,797,796 & 465 & 295,388\\
+Package 58, integral-root form & 15 & 24 & 90 & 295,388\\
+Supplement: shifted transport & 15 & 24 & 89 & 295,388\\
+\bottomrule
+\end{tabular}
+\caption{Measured improvements. Raw bytes count the four native
+ports, not the expanded polynomial's coefficients. The compact
+native tuple is inherited from package 44. Its use here is a new
+coherent composition, not a new native coefficient-size record.}
+\label{tab:metrics}
+\end{table}
+
+The degree decreases by \(112\,608\), approximately \(5.89446\%\);
+the circuit saves eight operations, approximately \(1.69133\%\).
+Using the compact tuple reduces native raw bytes by approximately
+\(44.5904\%\). Both complete specializations are retained separately.
+The natural-domain translation
+\[
+ F_9^{\NN}(x_1,\ldots,x_9)=F_9(x_1+1,\ldots,x_9+1),
+ \qquad \NN=\{0,1,\ldots\},
+\]
+has the same exact degree and a 472-operation supplied circuit.
+No nine-unrestricted-integer claim is made.
+
+\subsection{The proof boundary}
+
+There are three different levels.
+\begin{enumerate}
+\item \textbf{New algebra and encoding.}
+The positive source substitutions, the 86-record identities, finite
+code, range and valuation calibration, and exact circuit metrics are
+established here. With the explicitly stated numerical Jones ratio
+theorem, they identify positive zeros of \(F_9\) with common positive
+zeros of the specified quadratic source.
+\item \textbf{Inherited semantics.}
+The native compiler, Pell arguments, Wang943 language and calibrated
+K215 endpoint identify the intended source with a finite syntactic
+ZFC refutation. Those are inherited mathematical dependencies. We
+checked the new adapter and literal native data, not the entire
+transitive semantic proof chain.
+\item \textbf{Internal ZFC derivation.}
+The reviewed repository's \code{OBJECT_ZFC.md} explicitly leaves
+the actual internal equivalence derivation open. An external Lean
+theorem about the \code{BProv} predicate is not itself a derivation
+of that theorem inside the object calculus. We supply neither a new
+object-language derivation nor a new end-to-end Lean/Rocq certificate.
+\end{enumerate}
+
+The fully established new result is therefore a smaller explicit
+arithmetic candidate preserving the inherited mathematical semantics.
+If the inherited source calibration and the imported arithmetic/compiler
+correctness statements are established internally in ZFC, the
+reductions transport them to the intended statement
+\begin{equation}
+\mathrm{ZFC}\vdash
+ \left[
+ \neg\exists\mathbf x\in\PP^9\;F_9(\mathbf x)=0
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC})
+ \right].
+\label{eq:internal-target}
+\end{equation}
+This report does not present \eqref{eq:internal-target} as a newly
+exported internal theorem. A missing machine certificate alone would
+not refute an ordinary mathematical in-ZFC proof; an external
+standard-natural equivalence alone does not supply one either.
+No consistency assumption is used, and neither side of the equivalence
+is asserted to be provable in ZFC.
+
+\section{The fixed compact coefficient instance}
+\label{sec:coefficients}
+
+Use the entire native tuple from package 44:
+\[
+ \beta=B_\ast-1,\qquad K_0=D_C+B_\ast D_R,\qquad
+ M_C,\qquad M_F=M_F^{\mathrm{native}}+B_\ast-1,\qquad
+ B_\ast=2^{590069}.
+\]
+The native radix \(B_\ast\) is a fixed integer, distinct from the
+packing radix \(B=a_\ast b^2\) introduced later. The full native
+proof and data are in \path{upstream44/native/}.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Port & Bit length & Raw bytes & Gzip bytes\\
+\midrule
+\(\beta\) & 590,069 & 73,759 & 108\\
+\(K_0\) & 592,884 & 74,111 & 8,940\\
+\(M_C\) & 590,069 & 73,759 & 193\\
+\(M_F\), already shifted & 590,070 & 73,759 & 204\\
+\midrule
+Total & & 295,388 & 9,445\\
+\bottomrule
+\end{tabular}
+\end{center}
+The binding aliases \code{K} to \(K_0\), and \code{MF_source} to
+\(M_F\). No individual port may be substituted from another tuple.
+
+For an explicit finite recipe, put \(\rho=2^{67}\), \(\mu=2^{51}-2\).
+Enumerate the literal ordered 943-tile list by \(i=0,\ldots,942\).
+For tile \(i=(w_i,n_i,e_i,s_i)\), set
+\[
+ v_i=w_i+2^8n_i+2^{17}e_i+2^{25}s_i+127\cdot2^{34},
+ \qquad c_i=1+2^{10}(2^{41}-v_i).
+\]
+Adjoin copy positions \(1023+j,1013+j,1003+j,983+j\), with respective
+bit-position lists
+\[
+\begin{split}
+ &(0,\ldots,7,34),\quad(8,\ldots,16,35),\\
+ &(17,\ldots,24,36),\quad(25,\ldots,33,37).
+\end{split}
+\]
+If a copy position has bit position \(p\), set its \(c_e=2^{10+p}\).
+Adjoin \(c_{1095}=2^{48}\), \(c_{2195}=2^{49}\),
+\(c_{3296}=2^{50}\), and \(c_{1063}=c_{1064}=0\).
+Let \(\mathcal E\) be the resulting 986-position support, including
+the two zero-valued positions. Then
+\begin{align*}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}
+       +\sum_{e\in\mathcal E}c_e
+        (\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R={}&\rho^{42},\\
+ Z_\ast={}&(2^{65}-1)\sum_{e=8792}^{8804}\rho^e
+                         +(2^{19}-1)\rho^{8805},\\
+ M_C={}&B_\ast-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+                         -2\rho^{1063},\\
+ M_F^{\mathrm{native}}={}&4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^{9}\rho^{1013+j}
+       +\sum_{j=0}^{8}\rho^{1065+j}
+       +\rho^{2195}+\rho^{3296}+Z_\ast .
+\end{align*}
+The tile list is fixed archive data, not an existentially chosen program.
+The native builder reconstructs it from the 430 literal K215 transitions.
+
+Replaying the independent native auditor checks 12 pinned source files,
+66,062 native basis interactions, the literal transitions,
+38,663 one-bit mutations, the rank controller and exact payloads.
+Its 87,380 small complement models supplement the unbounded proof.
+The rank-control prime is \(581197\), with dimensions
+\(67\cdot8807=590069\). These finite checks do not replace the
+native semantic theorem.
+
+\section{Normalize positive source coordinates before packing}
+\label{sec:source}
+
+The source has 31 positive coordinates and 22 quadratic residuals.
+Names in this section refer to the source, independently of similar
+names in the final numerical tail. The new coordinate order is
+\begin{equation}
+\begin{split}
+ &(J,F,\alpha,z,f,h,i,o,j,s,w,t,\eta,\zeta,y,\gamma,\\
+ &\hspace{13mm}N,E,p,c,a,X,D,C_2,S,F_2,V,g,I,B_{\mathrm{aux}},\Delta).
+\end{split}
+\label{eq:source-order}
+\end{equation}
+Here \(t,p,S\) replace \(\tau,P,L\), respectively.
+
+\subsection{Two Pell coordinates become positive gaps}
+
+Let \(k=\eta+\zeta\). The old source includes
+\[
+ a-E=sN,\quad c-\eta=k(a-E),\quad
+ P-k=E(c-\eta),\quad \tau^2=P(P-k)+1.
+\]
+The first two rows force \(a-E>0\), \(c-\eta>0\). Consequently
+\[
+ p:=P-k=E(c-\eta)>0,\qquad
+ \tau^2=p^2+kp+1>p^2,\qquad t:=\tau-p>0.
+\]
+The changed rows are
+\begin{equation}
+\boxed{\quad p-Ec+\eta E=0,\qquad
+ t^2+2pt-\eta p-\zeta p-1=0.\quad}
+\label{eq:gap}
+\end{equation}
+Conversely, positive \(p,t\) give positive
+\(P=p+\eta+\zeta\), \(\tau=p+t\), satisfying precisely the old rows.
+Neither old variable occurs elsewhere. This is a bijection of the
+complete positive common zero sets, not a restriction to selected
+canonical witnesses.
+
+The first row loses two weighted monomial records. The second retains
+five, but replaces the active square \(P^2\) by the pair \(pt\).
+That change in the active pair pattern enables a better packing.
+Coordinate normalization before packing is the main new ingredient.
+
+\subsection{Supply the square instead of the square minus one}
+
+Write \(q=\beta J+1\). Replace the old register \(L=q^2-1\)
+by \(S=L+1\). The first two rows become
+\begin{equation}
+ S-\beta^2J^2-2\beta J-1=0,\qquad
+ N-S-\beta JS=0.
+\label{eq:square-shift}
+\end{equation}
+The inverse is positive: the first row gives \(S=q^2\ge4\),
+so \(L=S-1>0\).
+
+Retain the inherited invertible row operations
+\[
+ \rho_{14}=r_{14}+r_2,\qquad
+ \rho_{15}=r_{15}+r_3,\qquad \rho_j=r_j\ (j\ne14,15).
+\]
+Under \(L=S-1\), row 1 gains one record, row 2 loses two, and
+row 14 keeps its count. Its \(-FL\) contributes \(+F\), cancelling
+the old \(-F\), while \(-\alpha L\) contributes \(+\alpha\).
+No quadratic record changes in this second step. Thus
+\[
+ 89\longrightarrow87\longrightarrow86
+ =7\text{ constant}+36\text{ linear}+43\text{ quadratic records},
+\]
+representing 39 distinct quadratic monomials.
+
+\subsection{The transport convention and coherent rebinding}
+
+The current package-31 source and native package 44 use the shifted
+positive transport coordinate \(z_+\):
+\[
+ (K_0+w)C=F+z_+(q-1),\qquad C=q-F-\alpha.
+\]
+Our weighted source uses \(z=z_++1\):
+\[
+ (K_0+w)C+(q-F)-z(q-1)=1.
+\]
+The positive inverse uses inherited source consequences
+\(C>0\), \(F<q\), and \(w>q\), giving
+\[
+ (z-1)(q-1)=(K_0+w)C-F>0,\qquad z\ge2.
+\]
+This convention is explicit in the independent checker: it substitutes
+\(z_+=z-1\), accounting for \(+\beta J\) in row 15. No historical
+byte identity between these two source presentations is claimed.
+
+Package 44, Section 7, proves the same shifted 16-variable Pell system
+for the compact tuple. Projection of the 31-variable source forgets
+defining registers. Its canonical Pell witnesses give the reverse
+positive lift. In particular the delicate register
+\(g=y^2-V^2\) obeys
+\[
+ (I^2-1)g=V^2-1,
+\]
+and the canonical witnesses have \(I,V>1\), so \(g>0\).
+The complete native theorem supplies this lift; it is not assumed
+for arbitrary assignments without the canonical completeness argument.
+
+\section{Literal degree-separated packing}
+\label{sec:packing}
+
+The literal 86 weighted records are in
+\path{research_nine/compact_candidate/data/parent_source.json}.
+All 22 residual formulas, their targets and coordinate weights are
+also displayed in Appendix~\ref{app:source}.
+Their independent reconstruction treats all four ports as independent
+symbols. In the coordinate order \eqref{eq:source-order}, the weights
+are
+\begin{equation}
+\begin{split}
+ (w_1,\ldots,w_{31})={}&
+ (6,10,37,46,4,83,60,50,65,45,20,87,96,80,0,41,\\
+ &3,89,95,100,97,84,1,67,21,59,18,19,61,14,64).
+\end{split}
+\label{eq:weights}
+\end{equation}
+The zero weight is intentional. Assign target exponents by the paired
+lists
+\begin{align*}
+ \text{rows: }&
+ (2,18,9,20,19,7,12,17,11,10,1,15,13,21,4,16,8,3,22,5,14,6),\\
+ \text{targets: }&
+ (27,72,270,320,448,561,616,686,887,893,906,966,\\[-2pt]
+ &\hspace{13mm}1139,1190,1255,1279,1472,1499,1545,1733,1822,2016).
+\end{align*}
+Let \(q_j\) be the target of row \(j\), and \(W=100\).
+The targets are unrelated to the source abbreviation \(q=\beta J+1\).
+
+If \(\rho_j(\mathbf y)=\sum_\alpha a_{j,\alpha}\mathbf y^\alpha\),
+set
+\[
+ c_{j,\alpha}=
+ \begin{cases}
+ 2a_{j,\alpha},&|\alpha|=0,1,\\
+ a_{j,\alpha}\prod_i\alpha_i!,&|\alpha|=2,
+ \end{cases}
+\]
+and define the three kernels
+\begin{equation}
+ D_d(T)=\sum_{j,\ |\alpha|=d}
+  c_{j,\alpha}T^{q_j-\sum_i\alpha_iw_i},\qquad d=0,1,2.
+\label{eq:kernels}
+\end{equation}
+All exponents are nonnegative. Expanded lists are supplied in
+\code{data/split_kernels.json}.
+
+\begin{lemma}[Exact target extraction]
+\label{lem:extract}
+For \(U_{\mathbf y}(T)=\sum_i y_iT^{w_i}\),
+\[
+ [T^{q_j}]\bigl(D_2(T)U_{\mathbf y}(T)^2+
+               D_1(T)U_{\mathbf y}(T)+D_0(T)\bigr)=2\rho_j(\mathbf y).
+\]
+The kernel degrees are \((1545,1920,1847)\), the leading coefficient
+of \(D_2\) is \(1\), and
+\(\Kcode=\max_d(\deg D_d+dW)=2047\).
+\end{lemma}
+\begin{proof}
+For each source record and every monomial of its degree, the checker
+tests whether the shifted exponent reaches any target. The degree
+\(0,1,2\) bases have \(1,31,496\) monomials. All
+\(7+36\cdot31+43\cdot496=22451\) interactions are enumerated.
+A hit occurs only for the record's own row and monomial.
+The factorial normalization compensates for the two copies of cross
+terms in a square. Exact coefficient-polynomial comparison proves
+the identities, and the literal nonzero kernel heads give the degrees.
+\end{proof}
+
+\subsection{Packing registers and bounds}
+
+Every weighted coefficient satisfies \(|c_{j,\alpha}|<M\), with
+\[
+ M=2^{1182955},\quad a_\ast=4096M=2^{1182967},\quad
+ c_\ast=2^{9463725}.
+\]
+The exponents come from every exact coefficient recipe and the four
+port bit bounds. For positive outer \(b,g\), define
+\begin{align}
+ B&=a_\ast b^2,& \ell&=\sum_iB^{w_i},&\Us&=\ell+g,\nonumber\\
+ \Gs&=(D_2(B)\Us+D_1(B))\Us+D_0(B),&
+ \Targets&=\sum_jB^{q_j},&N_0&=B^{101},\nonumber\\
+ \mathrm{Mask}&=N_0-1-(b-1)\ell,&
+ J_{\mathrm{code}}&=2\Gs+\Targets,\nonumber\\
+ \Sc&=g+N_0J_{\mathrm{code}},&
+ \Tc&=\mathrm{Mask}+N_0(B-2)\Targets .\label{eq:pack-registers}
+\end{align}
+Finally set
+\begin{equation}
+\begin{aligned}
+ \mathcal L&=bB^{2149},&
+ R&=\mathcal L(\Sc+\Tc+1)-\Sc-1,\\
+ N&=c_\ast bB^{1128},&
+ t_{\mathrm{cap}}&=bB^{100},\qquad
+ \Gcap=32t_{\mathrm{cap}} .
+\end{aligned}
+\label{eq:calibration}
+\end{equation}
+
+\begin{lemma}[Unconditional positivity and the full soundness range]
+\label{lem:bounds}
+For every positive \(b,g\), \(\Gs>0\), \(\Sc,\Tc\ge0\),
+\(R,N\ge8\), and \(b\le R,N\). If \(g<4bB^{100}\), then
+\[
+ 0<g<N_0,\qquad \Sc+\Tc<B^{2149}\le\mathcal L.
+\]
+\end{lemma}
+\begin{proof}
+Distinct kernel exponents give
+\[
+ D_2(B)>\tfrac12B^{1847},\quad
+ |D_1(B)|<2MB^{1920},\quad |D_0(B)|<2MB^{1545}.
+\]
+Since \(\Us\ge B^{100}\), the negative contributions relative to
+\(B^{1847}\Us^2\) are below \(2M/B^{27}\) and \(2M/B^{502}\),
+each below \(1/8\). Hence \(\Gs>\tfrac14B^{1847}\Us^2>0\).
+The mask has digits \(B-b\) at selected weights and \(B-1\)
+elsewhere, so lies in \([0,N_0)\).
+Also \(R=(\mathcal L-1)\Sc+\mathcal L\Tc+\mathcal L-1\ge\mathcal L-1\).
+
+On the bounded branch, \(\ell<2B^{100}\) and \(\Us<6bB^{100}\).
+With \(Z=B^{2048}\), geometric summation gives
+\[
+ |\Gs|<\frac{43Mb^2Z}{B-1},\qquad
+ \frac{2\Gs}{Z}<\frac{86Mb^2}{B-1}<\frac1{32}.
+\]
+The maximum target is 2016, so
+\(\Targets<Z/64\), \((B-2)\Targets<Z/64\).
+As \(4b<B\), \(g<N_0\), and
+\(J_{\mathrm{code}}+(B-2)\Targets+2<Z\).
+It follows that \(\Sc+\Tc<N_0Z=B^{2149}\).
+This proves the whole range delivered by soundness, rather than
+only the narrower completeness range.
+\end{proof}
+
+\section{From digit disjointness to one binomial valuation}
+\label{sec:binary}
+
+Assume now \(b=2^k\), allowing \(k=0\), and \(B=2^v\), where
+\(v=1182967+2k\). On the bounded branch, the low-mask condition
+\(g\mathbin{\&}\mathrm{Mask}=0\) is equivalent to
+\[
+ g=\sum_i z_iB^{w_i},\qquad 0\le z_i<b.
+\]
+Put \(y_i=z_i+1\). Then \(1\le y_i\le b\) and
+\(\Us=\sum_i y_iB^{w_i}\).
+Every coefficient \(h_u\) of the source convolution satisfies
+\[
+ |h_u|<M\bigl((\sum_i y_i)^2+\sum_i y_i+1\bigr)
+       \le993Mb^2<B/4.
+\]
+At a target, the signed base-\(B\) digit of \(J_{\mathrm{code}}\)
+is \(2h_u+1\), with incoming borrow \(-1\) or \(0\).
+Its normalized digit avoids the mask \(B-2\) precisely when
+\(h_u=0\): zero gives digit 0 or 1, positive \(h_u\) gives a digit
+between 2 and \(B/2\), and negative \(h_u\) gives a digit above \(B/2\).
+Lemma~\ref{lem:bounds} ensures finite, nonoverlapping words.
+Lemma~\ref{lem:extract} therefore proves
+\begin{equation}
+ \Sc\mathbin{\&}\Tc=0
+ \quad\Longleftrightarrow\quad
+ g\text{ encodes a positive common source zero}.
+\label{eq:decode}
+\end{equation}
+Conversely, every positive source zero is encodable for every
+sufficiently large binary \(b\), with \(0<g<bB^{100}\), hence
+\(32g<\Gcap\). The strict lower bound follows because the all-one
+source tuple is not a zero: its fifth residual is 1.
+
+For \(\mathcal L=2^u\) and \(\Sc+\Tc<\mathcal L\), the two blocks
+\[
+ R=(\Sc+\Tc)\mathcal L+(\mathcal L-1-\Sc)
+\]
+give
+\[
+ \pop(R)=u+\pop(\Tc)-\tau_{\mathrm{carry}},\qquad
+ \tau_{\mathrm{carry}}
+ =\pop(\Sc)+\pop(\Tc)-\pop(\Sc+\Tc)\ge0.
+\]
+The defect vanishes exactly when \(\Sc\mathbin{\&}\Tc=0\).
+Counting the low mask and the 22 target masks gives
+\[
+ \pop(\Tc)=123v-31k-22,\qquad u=k+2149v.
+\]
+Consequently
+\begin{align*}
+ u+\pop(\Tc)&=2272v-30k-22\\
+ &=2(9463725+k+1128v)=2\log_2N,
+\end{align*}
+using \(2\cdot9463725=16\cdot1182967-22\).
+Legendre's formula
+\(\nu_2\binom{2R}{R}=\pop(R)\) then yields
+\begin{equation}
+ N^2\mid\binom{2R}{R}
+ \quad\Longleftrightarrow\quad\Sc\mathbin{\&}\Tc=0.
+\label{eq:binomial}
+\end{equation}
+The boundary \(b=1\) is included, but cannot produce a final zero:
+then \(\mathrm{Mask}=N_0-1\), while \(0<g<N_0\).
+The calibration makes no unproved restriction to a sparse family
+of binary bases.
+
+\section{The complete nine-variable polynomial}
+\label{sec:tail}
+
+For the nine positive inputs in \eqref{eq:main}, put \(j_0=j-1\ge0\).
+Use \eqref{eq:pack-registers}--\eqref{eq:calibration}, and define
+\begin{align}
+ U&=N^2w,&Y&=N^2s,&M_0&=RY,\nonumber\\
+ P&=2M_0^2U,&K&=R+1+h(P-1),&A&=M_0(U+1),\nonumber\\
+ B_1&=2R+1,&W_1&=bw,&J&=4A-5,\nonumber\\
+ Q&=3W_1C-2(W_1^2-1),&
+ D&=(A^2-1)C^2+1,&k_0&=iJC,\nonumber\\
+ E&=k_0DC,&F&=(A^2-1)E^2+1,\nonumber\\
+ G&=A+F(CD+1-A),&
+ H&=C+F(B_1+j_0C),\nonumber\\
+ I&=(G^2-1)H^2+1,&
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI.
+\label{eq:tail-registers}
+\end{align}
+Set
+\begin{align}
+ m&=K^2(4t_{\mathrm{cap}}-g)
+       -16t_{\mathrm{cap}}(C-KY)^2,\nonumber\\
+ V_0&=PK,&T_{\mathrm{pair}}&=k_0(8D^2-4D-1),&
+ V_1&=T_{\mathrm{pair}}GH,\nonumber\\
+ \Omega&=Jm,&E_0&=J(n+W_1^2)+Q,&
+ \Theta&=E_0-\Omega(V_0+V_1).
+\label{eq:norm-registers}
+\end{align}
+Then \(F_9\) is exactly \eqref{eq:main}. The fixed kernels, source
+records, coefficient tuple and the displayed definitions specify
+the entire polynomial. No intermediate register adds a witness.
+
+\subsection{The inherited numerical ratio interface}
+
+We use the numerical Jones ratio soundness and completeness theorem
+in the exact reparameterized form retained by package 59.
+Under the unconditional hypotheses in Lemma~\ref{lem:bounds}
+and the recovered carrier range \(C>B_1+W_1\), the conditions
+\[
+ a_0\text{ square},\qquad a_1\text{ square},\qquad J\mid Q,\qquad m>0
+\]
+imply binary \(b\), \(8g<\Gcap\), and
+\(N^2\mid\binom{2R}{R}\). Conversely, the encoded source witnesses
+with \(32g<\Gcap\) admit the required ratio witnesses.
+This is an imported unbounded arithmetic theorem, not a consequence
+of the finite audits.
+
+Its CRT coordinate substitution is exact. The previous condition is
+\[
+ JF\mid QF+J(H_{\mathrm{old}}-C),\qquad
+ H_{\mathrm{old}}=B_1+j_{\mathrm{old}}C,\quad j_{\mathrm{old}}\ge1 .
+\]
+Since \(F\equiv1\pmod J,\pmod C\), it is equivalent to \(J\mid Q\)
+and \(F\mid H_{\mathrm{old}}-C\).
+The positive quotient is \(B_1+j_0C\) for a unique \(j_0\ge0\).
+Conversely,
+\[
+ j_{\mathrm{old}}=1+\frac{F-1}{C}B_1+Fj_0
+\]
+is a positive integer giving exactly the displayed \(H\).
+The division occurs only in the proof; \(C\mid F-1\).
+The positive input must therefore be \(j=j_0+1\), rather than
+silently imposing \(j_0>0\). The normalized margin satisfies
+\[
+ 8m=[K^2-4(C-KY)^2]\Gcap-8gK^2.
+\]
+
+\section{The norm has no extraneous positive zeros}
+\label{sec:norm-proof}
+
+The logical order is crucial: establish the sign of \(m\) before
+assuming a carrier range or integral roots.
+
+\begin{lemma}[Unconditional strict majorants]
+For every positive input assignment,
+\[
+ V_0^2-a_0=K^2-1>0,\qquad
+ T_{\mathrm{pair}}^2-64DF=(8D+1)k_0^2-64D>0,
+\]
+and
+\begin{equation}
+\begin{split}
+ \Delta_1:=V_1^2-64a_1
+ ={}&[(8D+1)k_0^2-64D](GH)^2\\
+   &+64DF(H^2-1)>0.
+\end{split}
+\label{eq:defect}
+\end{equation}
+Also \(E_0>0\).
+\end{lemma}
+\begin{proof}
+The unconditional bounds imply
+\(A\ge2\), \(J\ge3\), \(D\ge A^2\), \(D>C^2\),
+\(F\ge A^2\), \(G>A\), \(H>1\), and \(k_0\ge3\).
+For the second identity substitute
+\(F=1+k_0^2D^2(D-1)\) and expand
+\((8D^2-4D-1)^2\). Its difference is at least \(8D+9\).
+The third identity follows from \(I=(GH)^2-H^2+1\).
+Finally \(A>W_1\), and
+\[
+ E_0=Jn+(J-2)W_1^2+3W_1C+2>0,
+\]
+including assignments where the free carrier makes \(Q\) negative.
+\end{proof}
+
+\begin{theorem}[Arithmetic zero equivalence]
+\label{thm:arith}
+With the coherent fixed coefficients and the stated numerical ratio
+theorem, \(F_9\) has a positive zero exactly when the new
+31-positive-coordinate quadratic source has a common zero.
+\end{theorem}
+\begin{proof}
+Suppose \(F_9=0\). If \(m=0\), then \(\Omega=0\) and
+\(F_9=E_0^4>0\), a contradiction. Otherwise the real norm
+factorization supplies signed real roots
+\(r_0^2=a_0\), \(r_1^2=64a_1\) with
+\[
+ n+W_1^2+\frac QJ=m(V_0+V_1+r_0+r_1).
+\]
+The left side is positive. The strict majorants make the right
+parenthesis positive for every sign choice. Thus \(m>0\), without
+an integrality assumption.
+
+The margin now gives \(g<4t_{\mathrm{cap}}\) and
+\(|C-KY|<K/2\). As \(Y\ge64\),
+\[
+ C>K(Y-\tfrac12)>2K\ge2(P+R)>2R+1+W_1.
+\]
+Here \(K\ge P+R\) and \(P>U\ge W_1\).
+Also \(A^2>P\), \(D>C^2\), \(F\ge A^2\), \(G\ge A\),
+and \(I\ge G^2\), giving
+\[
+ a_1=DFI>C^2A^4>K^2P^2>a_0 .
+\]
+The rational sum \(x=r_0+r_1=\Theta/\Omega\) is nonzero.
+The identity \(2xr_0=x^2+a_0-64a_1\) makes both roots rational,
+hence integral because their squares are integers.
+Moreover \(r_1/8\) is a rational square root of \(a_1\), hence an
+integer. The factor equation implies \(J\mid Q\). Ratio soundness
+now supplies binary \(b\), \(8g<\Gcap\), and binomial divisibility.
+Equations \eqref{eq:binomial} and \eqref{eq:decode} recover the
+positive source zero.
+
+Conversely, encode a positive source zero with sufficiently large
+binary \(b\), giving \(32g<\Gcap\) and the binomial condition.
+Ratio completeness supplies witnesses and integral roots.
+Transport the CRT coordinate as above and choose positive roots.
+Since \(W_1^2<D\), \(W_1C<D\), \(Q/J\le W_1C\), and
+\(T_{\mathrm{pair}}\ge9D\), one has
+\[
+ W_1^2+\frac QJ<2D<V_1 .
+\]
+Thus
+\[
+ n=m(V_0+V_1+r_0+r_1)-W_1^2-\frac QJ
+\]
+is a strictly positive integer. It makes one norm factor vanish,
+so \(F_9=0\) in the stipulated domain.
+\end{proof}
+The source changes of Section~\ref{sec:source} and the coherent native
+adapter transport this equivalence to the inherited semantics, at
+the proof level stated in Section~\ref{sec:scope}.
+
+\section{Exact degree, rather than naive degree propagation}
+\label{sec:degree}
+
+The main circuit has material leading cancellation. The certificate
+uses the exact identity
+\begin{equation}
+\begin{split}
+ \Theta^2-\Omega^2(a_0+64a_1)
+ ={}&E_0^2-2E_0\Omega(V_0+V_1)\\
+  &+\Omega^2[(K^2-1)+\Delta_1+2V_0V_1].
+\end{split}
+\label{eq:cancellation}
+\end{equation}
+Fixed integers have degree zero. On the all-inputs diagonal, the
+key source degrees and heads are:
+\begin{center}
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Register & Exact degree & Diagonal leading coefficient\\
+\midrule
+\(\Us\) & 200 & \(a_\ast^{100}\)\\
+\(\Gs\) & 4094 & \(a_\ast^{2047}\)\\
+\(\Sc\) & 4296 & \(2a_\ast^{2148}\)\\
+\(\Tc\) & 4236 & \(a_\ast^{2118}\)\\
+\(\mathcal L\) & 4299 & \(a_\ast^{2149}\)\\
+\(R\) & 8595 & \(2a_\ast^{4297}\)\\
+\(N\) & 2257 & \(c_\ast a_\ast^{1128}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The decisive tail degrees are
+\[
+\begin{array}{c|rrrrrrr}
+ &A&D&k_0&F&G&H&a_0\\ \hline
+ \deg&17625&35252&17627&141010&176263&149605&122942
+\end{array}
+\]
+and
+\[
+\begin{array}{c|rrrrrr}
+ &a_1&m&\Omega&V_0&V_1&\Delta_1\\ \hline
+ \deg&827998&70703&88328&61471&413999&722242.
+\end{array}
+\]
+The term \(\Omega^2\Delta_1\) uniquely dominates
+\eqref{eq:cancellation}, at degree 898898. Its square has degree
+1797796, whereas the final subtracted term
+\(256\Omega^4a_0a_1\) has degree only 1304252.
+The exact final diagonal leading coefficient is
+\begin{equation}
+ \boxed{2^{186}a_\ast^{898488}c_\ast^{400}>0.}
+\label{eq:head}
+\end{equation}
+The certificate supplies a matching multivariate upper bound, and
+the nonzero diagonal term attains it. The total degree is therefore
+exactly \(1\,797\,796\).
+
+For this calibrated family,
+\[
+ \deg F_9=104\deg R+400\deg N+8W+316
+        =816\Kcode+1224W+5044 .
+\]
+The reduction decomposes as
+\[
+ 816(2161-2047)+1224(116-100)=112608 .
+\]
+This gives a useful search objective: coordinate design and packing
+height should be optimized together, since reducing the monomial
+count alone need not reduce the final degree.
+
+The primary positive evaluator has 159 additions, 22 subtractions
+and 284 multiplications, all live. The cancellation-resolving
+circuit is a separate certificate, not the counted primary evaluator.
+The natural translation has 167 additions, 21 subtractions and
+284 multiplications. Its internal \(j_0\) is just the natural
+\(j\)-input, accounting for the subtraction saved.
+
+\section{A small degree-24 companion}
+\label{sec:low}
+
+The companion has 15 positive unknowns, exact degree 24 and
+89 operations, compared with package 58's 90.
+The substantial degree reduction is inherited from package 58;
+this contribution saves one transport operation.
+The old shared-register residual is
+\[
+ T_{\mathrm{old}}
+ =q\{K_0C+(q-F)-z_{\mathrm{old}}(q-1)\}+XC-q.
+\]
+Putting \(z_{\mathrm{old}}=z+1\) gives exactly
+\begin{equation}
+ \boxed{T_{\mathrm{new}}=C(qK_0+X)-q\{F+z(q-1)\}.}
+\label{eq:transport-low}
+\end{equation}
+The inherited source inequalities give the positive inverse via
+\((z_{\mathrm{old}}-1)(q-1)=(K_0+w)C-F>0\).
+An eight-operation residual becomes a seven-operation residual.
+The whole sum of squares has 47 multiplications, 27 additions and
+15 subtractions. Its unchanged degree-12 residual ensures exact
+degree 24 after squaring. The supplement includes both literal
+circuits, a complete proof and an exact symbolic identity/degree audit.
+This is not a degree-22 result or a variable-count improvement.
+
+\input{../research_alternatives/alternatives.tex}
+
+\section{Reproduction, provenance, and integration}
+\label{sec:repro}
+
+From the archive root run
+\begin{quote}
+\code{python3 checks/verify_all.py}
+\end{quote}
+to rebuild native coefficients and the nine-variable specializations
+and replay the independent source, circuit and supplement audits.
+Mathematical code uses only the Python standard library.
+No layout search is needed: the supplied finite certificates are
+the reproduction inputs. Exact polynomial checks are distinguished
+from modular diagnostic evaluations.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.46\linewidth}p{0.49\linewidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\path{research_nine/compact_candidate/} &
+Recommended equation, builder, circuit audits and degree certificates.\\
+\path{research_nine/candidate/} &
+Separate original-tuple specialization.\\
+\path{research_alternatives/check_positive_gap.py} &
+Independent reconstruction from the authenticated source DAG and
+all target interactions.\\
+\path{research_low_degree/audit_gap_source.py} &
+Exact \(89\to87\to86\) source identity audit.\\
+\path{research_low_degree/supplement15/} &
+Degree-24/89-operation companion and comparator.\\
+\path{upstream44/native/} &
+Complete compact tuple, native proof, pinned sources and licenses.\\
+\path{upstream31/} &
+Source-31 data, inherited proofs and original coefficient tuple.\\
+\path{upstream-status/} &
+Pinned proof-status documents and external K215 endpoint statement.\\
+\path{MANIFEST.sha256} &
+Hashes of distributed files, excluding the manifest itself.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Imported proofs retain historical wording and relative links.
+Their former frontier claims or coefficient metadata do not override
+this report's compact binding. In particular, the retained
+original-tuple parameters \(a_\ast=2^{2134939}\),
+\(c_\ast=2^{17079501}\) appear in the general source proof and
+comparison. The recommended compact parameters are
+\(2^{1182967}\), \(2^{9463725}\).
+The archive does not replace any certified Lean endpoint or claim
+a repository Lean build.
+
+\subsection{What would constitute a stronger next result}
+
+Three concrete directions remain. Further positive coordinate
+redesign could reduce the active pair constraints, or remove a
+witness with a proved positive inverse. A direct compiler for sealed
+ZFC proof codes could address the outstanding internalization
+problem without the native machine layer, but must emit literal
+coefficients and an internal correctness argument. A different
+ratio or finalization mechanism could reduce the large numerical
+coefficients in \(816\Kcode+1224W+5044\), which the present
+packing improvements leave unchanged.
+
+None of these is asserted as completed. Failing to find a zero,
+checking finite coefficients, or proving a standard-natural
+equivalence does not establish the internal consistency statement.
+The remaining formal target must account for the internal natural
+numbers of arbitrary ZFC models, including nonstandard witnesses.
+
+\appendix
+\section{Complete quadratic source}
+\label{app:source}
+In the following table, \(\mathcal B=B_{\mathrm{aux}}\) in the
+coordinate list \eqref{eq:source-order}. The generated table is
+checked against every formal coefficient in the literal source.
+Its indices \(0,\ldots,30\) correspond in order to the one-based
+weight list \(w_1,\ldots,w_{31}\) in the main text.
+\input{../research_nine/compact_candidate/source_equations.tex}
+
+\section{Payload identities and source authentication}
+
+The compact raw payload SHA-256 values are:
+\begin{quote}\small
+\(\beta\):\\
+\path{0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d}\\
+\(K_0\):\\
+\path{c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e}\\
+\(M_C\):\\
+\path{6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4}\\
+\(M_F\):\\
+\path{48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737}.
+\end{quote}
+The new 86-record source has SHA-256
+\begin{quote}\small
+\path{98a3be433694b5c5b5e99020c503cbb2e2a5adf05757b6bbc2357832472700ab}.
+\end{quote}
+The current authenticated 60-operation source has SHA-256
+\begin{quote}\small
+\path{ac2a67782d344d1e74fd93bc3f09fae0097eaed1829fd8194ae235ae84763e48},
+\end{quote}
+and Git blob \code{518b2e3f03c354ce2ecc74f8f7a75e526cd911c7}.
+The historical package-59 parent hash is not claimed for the new
+record format. Independent exact reconstruction from the current
+source removes any reliance on an unavailable historical parent file.
+
+\section{Reference map}
+
+The following sources fix the scope of inherited claims. Archival
+reference copies and licenses are included; full transitive Lean
+dependencies remain in ProveIt.
+\begin{enumerate}
+\item ProveIt, reviewed snapshot \basecommit,
+\emph{Computability/DiophantineConsistency}, especially
+\code{OBJECT_ZFC.md}, \code{PROPOSAL_REVIEW.md} and the research collection:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/beb0192cb8dc36f78c369c080f2adfbc1887a486/Computability/DiophantineConsistency}.
+\item Package 59, \emph{Free-coordinate composition with the
+degree-separated source}, \path{nine_free_adjunct/PROOF.md}, and
+its retained FreeCoordinate proof and review: numerical tail
+and comparison metrics.
+\item Package 31, \code{quartic31/QUARTIC60_PROOF.md},
+\code{quartic31_system60.json}, and ordinary compiler/Pell proofs:
+quadratic source and positive transport shift.
+\item Package 44, \code{native/PROOF.md},
+\code{COEFFICIENT_BINDING.json}, \code{SOURCE_PINS.json},
+\code{build_coefficients.py} and \code{audit_coefficients.py}:
+whole compact tuple and native semantic adapter.
+\item Package 58, report and \code{code/build.py}: degree-24 parent.
+\item \code{BusyBeaver.ZFC.KEndpoint215},
+\code{blank_halts_iff_zfc_refutation}: external literal-machine
+endpoint, distinct from the internal target in
+\eqref{eq:internal-target}.
+\item J. P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic 47 (1982), 549--571. The exact numerical
+ratio interfaces here are the repository's literal versions.
+\item J. Bayer and M. David, \emph{A Formal Proof of Complexity Bounds
+on Diophantine Equations}, ITP 2025, LIPIcs 352, 3:1--3:18;
+\url{https://arxiv.org/abs/2505.16963v2}. Associated AFP development:
+\url{https://isa-afp.org/entries/Diophantine_Universal_Pairs.html}.
+\end{enumerate}
+
+\end{document}

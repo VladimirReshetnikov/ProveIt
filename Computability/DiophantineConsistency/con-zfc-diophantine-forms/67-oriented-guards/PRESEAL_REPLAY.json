@@ -1,0 +1,123 @@
+{
+  "status": "PASS",
+  "stage_count": 23,
+  "stages": [
+    {
+      "stage": "build_sections.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "encoding/verify_split.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "encoding/test_split.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "encoding/check_carry.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "quartic/build_verify.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "quartic/build_projections.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "review/quartic42/check_literal.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "review/projections/check.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "nine/build_nine.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "nine/check_ring.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "nine/check_nine.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "nine/test_corruption.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "nine/review/check_nine_independent.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "nine/review/check_majorant_sympy.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "signed/reproduce.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "signed108/reproduce.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "signed108trim/reproduce.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "signed13/reproduce.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "positive/build.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "positive/check.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "positive/negative_controls.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "review/positive14/check_independent.py",
+      "status": "PASS"
+    },
+    {
+      "stage": "root_checks/check_endpoints.py",
+      "status": "PASS"
+    }
+  ],
+  "byte_identical_rebuilt_files": 66,
+  "sealed_files": 496,
+  "scope": "Pre-seal isolated root replay; final distributed ZIP is extracted and rerun separately.",
+  "additional_checks": [
+    "quartic/check_tex_residuals.py: PASS",
+    "root_checks/check_bindings.py: PASS"
+  ],
+  "integrity_controls": {
+    "status": "PASS",
+    "controls": [
+      {
+        "target": "quartic/quartic42.json",
+        "result": "rejected"
+      },
+      {
+        "target": "signed108trim/generated/sun10.json",
+        "result": "rejected"
+      },
+      {
+        "target": "encoding/split_code.json",
+        "result": "rejected"
+      }
+    ],
+    "scope": "Byte-integrity controls only; selective semantic mutation tests are separate."
+  }
+}
