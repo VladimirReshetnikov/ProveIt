@@ -238,13 +238,10 @@ theorem oracle_sound {q : Nat} {br : Branch} {x x' : BoxSt} {q' : Nat} {extra : 
   | plain e =>
       cases e with
       | none =>
-          simp only [oracle, Option.map_eq_some_iff] at ho
-          obtain ⟨r, hr, he⟩ := ho
-          simp only [Prod.mk.injEq] at he
-          obtain ⟨rfl, rfl, rfl⟩ := he
+          simp only [oracle, Option.map_eq_some_iff, Prod.mk.injEq] at ho
+          obtain ⟨r, hr, rfl, rfl, rfl⟩ := ho
           exact B.mark q r l vs hr hlen
-      | inc r => simp [oracle] at ho
-      | dec r => simp [oracle] at ho
+      | inc _ | dec _ => simp [oracle] at ho
   | mark r =>
       simp only [oracle] at ho
       by_cases h9 : r < 9
@@ -258,23 +255,21 @@ theorem oracle_sound {q : Nat} {br : Branch} {x x' : BoxSt} {q' : Nat} {extra : 
           by_cases h0 : q = 0
           · subst h0
             simp only [if_true] at ho
-            cases br with
-            | none => simp at ho
-            | some p =>
-                obtain ⟨r', z⟩ := p
-                by_cases hrr : r = r'
-                · subst hrr
-                  simp only [if_true] at ho
-                  cases z with
-                  | true =>
-                      simp only [if_true, Option.some.injEq, Prod.mk.injEq] at ho
-                      obtain ⟨rfl, rfl, rfl⟩ := ho
-                      exact B.dec0 r l vs h9 hlen (by simpa using hbr)
-                  | false =>
-                      simp only [Bool.false_eq_true, if_false, Option.some.injEq, Prod.mk.injEq] at ho
-                      obtain ⟨rfl, rfl, rfl⟩ := ho
-                      exact B.decp r l vs h9 hlen (by simpa using hbr)
-                · simp [hrr] at ho
+            rcases br with _ | ⟨r', z⟩
+            · simp at ho
+            · by_cases hrr : r = r'
+              · subst hrr
+                simp only [if_true] at ho
+                cases z with
+                | true =>
+                    simp only [if_true, Option.some.injEq, Prod.mk.injEq] at ho
+                    obtain ⟨rfl, rfl, rfl⟩ := ho
+                    exact B.dec0 r l vs h9 hlen (by simpa using hbr)
+                | false =>
+                    simp only [Bool.false_eq_true, if_false, Option.some.injEq, Prod.mk.injEq] at ho
+                    obtain ⟨rfl, rfl, rfl⟩ := ho
+                    exact B.decp r l vs h9 hlen (by simpa using hbr)
+              · simp [hrr] at ho
           · simp [h0] at ho
       · simp [h9] at ho
 
@@ -284,12 +279,10 @@ theorem peelLeft_sound {q : Nat} {b : Bool} {a c : Nat} {l r : List Seg} {s' : S
     m = false ∧ conc n vs (q, true, .run b a c :: l, r) = conc n vs s' := by
   unfold peelLeft at h
   split at h
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨rfl, rfl⟩ := h
+  · cases h
     refine ⟨rfl, ?_⟩
     simp only [conc, flat_cons, segList, rep_succ, List.cons_append, List.nil_append]
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨rfl, rfl⟩ := h
+  · cases h
     refine ⟨rfl, ?_⟩
     simp [conc, flat_cons, segList]
   · simp at h
@@ -300,12 +293,10 @@ theorem peelRight_sound {q : Nat} {b : Bool} {a c : Nat} {l r : List Seg} {s' : 
     m = false ∧ conc n vs (q, false, l, .run b a c :: r) = conc n vs s' := by
   unfold peelRight at h
   split at h
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨rfl, rfl⟩ := h
+  · cases h
     refine ⟨rfl, ?_⟩
     simp only [conc, flat_cons, segList, rep_succ, List.cons_append, List.nil_append]
-  · simp only [Option.some.injEq, Prod.mk.injEq] at h
-    obtain ⟨rfl, rfl⟩ := h
+  · cases h
     refine ⟨rfl, ?_⟩
     simp [conc, flat_cons, segList]
   · simp at h
@@ -352,8 +343,7 @@ theorem sstep_sound {br : Branch} {s s' : SConf} {m : Bool} (n : Nat) {vs : List
                 split at h
                 · rename_i hq
                   subst hq
-                  simp only [Option.some.injEq, Prod.mk.injEq] at h
-                  obtain ⟨rfl, rfl⟩ := h
+                  cases h
                   refine ⟨?_, fun h => by cases h⟩
                   simp only [conc, flat_cons, segList]
                   exact scanL hm _ _ _
@@ -368,14 +358,12 @@ theorem sstep_sound {br : Branch} {s s' : SConf} {m : Bool} (n : Nat) {vs : List
               simp only [sstep] at h
               split at h
               · rename_i w q2 hm
-                simp only [Option.some.injEq, Prod.mk.injEq] at h
-                obtain ⟨rfl, rfl⟩ := h
+                cases h
                 apply stepOk_one
                 simp only [conc, flat_cons, segList, List.singleton_append]
                 exact zR hm
               · rename_i w q2 hm
-                simp only [Option.some.injEq, Prod.mk.injEq] at h
-                obtain ⟨rfl, rfl⟩ := h
+                cases h
                 apply stepOk_one
                 simp only [conc, flat_cons, segList, List.singleton_append]
                 exact zL hm
@@ -391,8 +379,7 @@ theorem sstep_sound {br : Branch} {s s' : SConf} {m : Bool} (n : Nat) {vs : List
                 split at h
                 · rename_i hq
                   subst hq
-                  simp only [Option.some.injEq, Prod.mk.injEq] at h
-                  obtain ⟨rfl, rfl⟩ := h
+                  cases h
                   refine ⟨?_, fun h => by cases h⟩
                   simp only [conc, flat_cons, segList]
                   exact scanR hm _ _ _
@@ -405,19 +392,16 @@ theorem sstep_sound {br : Branch} {s s' : SConf} {m : Bool} (n : Nat) {vs : List
                   simp only [sstep] at h
                   split at h
                   · rename_i q2 x2 extra ho
-                    simp only [Option.some.injEq, Prod.mk.injEq] at h
-                    obtain ⟨rfl, rfl⟩ := h
+                    cases h
                     refine ⟨?_, fun h => by cases h⟩
                     have := oracle_sound B (flat n vs l) ho hv
                     cases extra <;>
                       simpa [conc, flat_cons, flat_nil, segList] using this
                   · split at h
                     · rename_i q2 hm
-                      simp only [Option.some.injEq, Prod.mk.injEq] at h
-                      obtain ⟨rfl, rfl⟩ := h
+                      cases h
                       apply stepOk_one
-                      obtain ⟨t, ht⟩ := box_head x (vs := vs) (by
-                        intro e; have := hv.1; rw [e] at this; simp at this)
+                      obtain ⟨t, ht⟩ := box_head x (vs := vs) (fun e => by simpa [e] using hv.1)
                       simp only [conc, flat_cons, flat_nil, segList, List.append_nil, ht]
                       exact zL hm
                     · simp at h
@@ -434,10 +418,9 @@ theorem execWith_sound {next : SConf → Option (SConf × Bool)} {tgt : SConf �
       simp only [execWith] at h
       split at h
       · rename_i ht
-        simp only [Option.some.injEq] at h
-        subst h
+        cases h
         simp only [Bool.and_eq_true] at ht
-        refine ⟨ht.2, Reach.refl M _, fun hm => by rw [hm] at ht; simp at ht⟩
+        refine ⟨ht.2, Reach.refl M _, fun hm => by simp [hm] at ht⟩
       · split at h
         · simp at h
         · rename_i s1 m hs
@@ -507,8 +490,7 @@ theorem flatT_push (n : Nat) (vs : List Nat) (t : Tok) (ts : List Tok) :
           | .run b' a' c' :: ts' => if b = b' then .run b (a + a') (c + c') :: ts' else .run b a c :: ts
           | _ => .run b a c :: ts) = tokList n vs (.run b a c) ++ flatT n vs ts := by
         match ts with
-        | [] => simp [flatT]
-        | .box x :: ts => simp [flatT]
+        | [] | .box _ :: _ => simp [flatT]
         | .run b' a' c' :: ts' =>
             by_cases hb : b = b'
             · subst hb
@@ -519,8 +501,7 @@ theorem flatT_push (n : Nat) (vs : List Nat) (t : Tok) (ts : List Tok) :
             · simp [hb, flatT]
       match a, c with
       | 0, 0 => simp [push, tokList]
-      | 0, c + 1 => exact g
-      | a + 1, c => exact g
+      | 0, _ + 1 | _ + 1, _ => exact g
 
 theorem flatT_norm (n : Nat) (vs : List Nat) (s : List Seg) : flatT n vs (norm s) = flat n vs s := by
   induction s with
@@ -538,13 +519,10 @@ theorem normL_spec (n : Nat) (vs : List Nat) (s : List Seg) :
   rw [← flatT_norm]
   unfold normL
   generalize hR : (norm s).reverse = R
-  have hs : norm s = R.reverse := by rw [← hR, List.reverse_reverse]
-  rw [hs]
+  rw [show norm s = R.reverse by rw [← hR, List.reverse_reverse]]
   match R with
-  | [] => exact ⟨0, by simp⟩
+  | [] | .run true _ _ :: _ | .box _ :: _ => exact ⟨0, by simp⟩
   | .run false a c :: t => exact ⟨a * n + c, by simp [flatT, tokList]⟩
-  | .run true a c :: t => exact ⟨0, by simp⟩
-  | .box x :: t => exact ⟨0, by simp⟩
 
 theorem sMatches_conc {s e : SConf} (n : Nat) (vs : List Nat) (h : sMatches s e = true) :
     conc n vs s = conc n vs e := by
@@ -555,8 +533,6 @@ theorem sMatches_conc {s e : SConf} (n : Nat) (vs : List Nat) (h : sMatches s e 
   have er : flat n vs r = flat n vs r' := by rw [← flatT_norm, hr, flatT_norm]
   obtain ⟨m1, h1⟩ := normL_spec n vs l
   obtain ⟨m2, h2⟩ := normL_spec n vs l'
-  cases onl
-  · simp only [conc, er, h1, h2, hl, zc_padl]
-  · simp only [conc, er, h1, h2, hl, zl_padl]
+  cases onl <;> simp only [conc, er, h1, h2, hl, zc_padl, zl_padl]
 
 end SetTheory.BusyBeaver.ZFC.KRuntimeCore
