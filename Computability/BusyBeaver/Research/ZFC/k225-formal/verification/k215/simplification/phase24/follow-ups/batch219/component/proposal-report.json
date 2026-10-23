@@ -1,0 +1,129 @@
+{
+  "status": "SOURCE_ONLY_UNCOMPILED_NOT_ADOPTED",
+  "authorship": "Owned minimal component adapting the credited proof-spine composition argument, not independent authorship of that mathematical idea.",
+  "proposal_commit": "56b37bde8b064d852154ad8478d58ec9ab5375d6",
+  "phase24_plan_sha256": "4bda49c298304608bd3196d92a3c748140142e8a649708102d827e690f489505",
+  "candidate": {
+    "path": "/tmp/k215-decrement-prefix-nextlead/NeutralPrefixCompose.lean",
+    "sha256": "d5cdf19ed390b4eec9302ff78790b939d37a612a6bcd34b79d30e84208f458f6",
+    "bytes": 1213,
+    "lines": 26
+  },
+  "diff": {
+    "path": "/tmp/k215-decrement-prefix-nextlead/candidate.diff",
+    "sha256": "f1985b43c242fdf99d622ca2eb3812ef1bcbafb1c7a7f2ffc44ae11e884fe022",
+    "bytes": 1300,
+    "lines": 29
+  },
+  "current_sources": [
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KHomeReady.lean",
+      "sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a",
+      "bytes": 4657,
+      "lines": 101
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KRuntimeCore.lean",
+      "sha256": "4ecde56c82c57487c8f9e842fcfc27e4e925059ad7ef19e7cdd01204399d5cd2",
+      "bytes": 21572,
+      "lines": 538
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KZip.lean",
+      "sha256": "e959ce4909f67b092ba237c26e1b53a2db112b42ef22c69ad04a73816414192c",
+      "bytes": 8404,
+      "lines": 224
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSim.lean",
+      "sha256": "cb055c60ca4b41dbe36ae3356d952252661b4a15836d24b71d7aff0b579be731",
+      "bytes": 16107,
+      "lines": 354
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KFastSites215.lean",
+      "sha256": "a0229a646567500c514ccf3f85cef34cc2f394c915feceb694d8eac9df0e5ea5",
+      "bytes": 824,
+      "lines": 24
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+      "sha256": "15ad5a7b5f1ab1e656146ae823f0e012ea8ab4295b5381c8650e03885f201c24",
+      "bytes": 6237,
+      "lines": 150
+    }
+  ],
+  "references": [
+    {
+      "path": "/tmp/k215-batch219-review-b/inputs/proof-spine/rocq/proposed/KOracleCut.lean",
+      "sha256": "4edb46e1c64a0cb65912e3963ce56ecd6ff7532af78159ed5a79c4818273485f",
+      "bytes": 2641,
+      "lines": 61
+    },
+    {
+      "path": "/tmp/k215-batch219-review-b/inputs/proof-spine/rocq/proposed/KSim.decnz.fragment.lean",
+      "sha256": "2eead839a8d9a3852234b649aec3977a87075174261b6c4cf1ad2bd2e8c2b881",
+      "bytes": 1260,
+      "lines": 29
+    },
+    {
+      "path": "/tmp/k215-batch219-review-b/inputs/proof-spine/03-prefix.tex",
+      "sha256": "8961d96cfa3875c48a092f8f352256fbacbbeec35e58cae2cf43c16c96d6d390",
+      "bytes": 8056,
+      "lines": 78
+    }
+  ],
+  "changes": {
+    "new_research_module_lines": 26,
+    "new_research_module_bytes": 1213,
+    "new_theorems": 1,
+    "new_definitions": 0,
+    "production_files_changed": 0,
+    "current_callers_changed": 0,
+    "current_maintained_source_savings": 0,
+    "primary_closure_change": 0
+  },
+  "proof_steps": [
+    "Valid br vs retains10\u2264vs.length, hence Valid none vs by True.",
+    "KHomeReady.exec_sound at prefix moved=false supplies Reach1.",
+    "The same theorem at tail moved=true supplies Reach without requiring tail progress.",
+    "Reach1.trans_reach composes, retaining exact conc n vs symbolic endpoints."
+  ],
+  "existing_interfaces": [
+    "KRuntimeCore.Valid",
+    "KHomeReady.exec",
+    "KHomeReady.exec_sound",
+    "KZip.Reach1.trans_reach",
+    "KRuntimeCore.sMatches_conc",
+    "KSim.checkEdge",
+    "KSim.runTo_sound",
+    "KSim.Covered",
+    "KSim.sim_step"
+  ],
+  "scope": "Only a general semantic composition component, no proof any concrete cut is found, no literal outcome tests, no new coverage or fallback selection, no checker equivalence or performance claim.",
+  "future_design": {
+    "location": "Existing KSim module privately if integrated; avoid an extra facade/module solely for this one use.",
+    "minimum_computational_change": "In decnz only, run exec none to an explicit physical-register-mark cut once, then both specialized branches from that exact SConf with moved=true; retain the full left segment list and existing targets.",
+    "inline_policy": "If this theorem has only one final caller, inline its four-line proof in fork soundness rather than preserving a one-use public interface.",
+    "public_header_impact": "Existing KSim theorem signatures can stay exact; checkEdge body changes intentionally.",
+    "caller_impact": "Local decnz sim_step soundness branches change; checkEdge-dependent literal coverage invalidates old proof receipts. All affected non215 K-family sites need fresh checks.",
+    "representation": "No SiteLeaf/trace/caller/route data changes required for within-one-leaf fork; retain complete4751leaf6176outcome coverage.",
+    "fuel": "Two independently bounded phases need not equal the old one-phase Boolean checker; any acceptance is justified by semantic soundness.",
+    "kernel_work": "A single match/let syntactically binds prefix once, but conversion may repeat work. No speedup until measured under accepted fresh literal certificates."
+  },
+  "negative_boundaries": [
+    "Starting prefix moved=true loses positive reachability.",
+    "Demanding fresh tail progress needlessly rejects reflexive suffixes.",
+    "Stopping at oracle failure is invalid because sstep may fall back to a table transition.",
+    "Physical cut retains left frame, uses physOf r and correct true=zero branch polarity.",
+    "Semantic reachability is not evidence of old fixed-fuel checker acceptance."
+  ],
+  "not_run": [
+    "Lean",
+    "Rocq",
+    "any submitted script/helper/proof",
+    "finite replay",
+    "current kernel or capture helpers"
+  ],
+  "canonical_or_frozen_edits": []
+}

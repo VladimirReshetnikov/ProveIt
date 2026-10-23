@@ -1,0 +1,60 @@
+{
+  "status": "PASS_SOURCE_REVIEW_NOT_EXECUTED",
+  "scope": "Independent checker-source review only; reviewer authored candidate theorem, which another agent reviews mathematically.",
+  "checker": {
+    "path": "/tmp/k215-decrement-prefix-component-check-v2.py",
+    "sha256": "77eac42c2223ae7c508fafbf558a372c6bbf5c84a4b89d680b9d6389befb81ba",
+    "lines": 49
+  },
+  "previous_review": {
+    "path": "/tmp/k215-decrement-prefix-checker-peer.json",
+    "sha256": "894eb6cb91125a6deb2a566f6ea6fd390a2d666a4ee8256d81a7c0e1a90f0e0e",
+    "status": "SOURCE_REVIEW_CHANGE_REQUIRED_SIGTERM_HANDLER",
+    "preserved": true
+  },
+  "v1": {
+    "path": "/tmp/k215-decrement-prefix-component-check.py",
+    "sha256": "04314dd540e0976abf48311a55083586f35a0fa4a9700838b17f25d2cddd3c08",
+    "unexecuted_copy": "/tmp/k215-decrement-prefix-component-check-v1-unexecuted.py",
+    "copy_sha256": "04314dd540e0976abf48311a55083586f35a0fa4a9700838b17f25d2cddd3c08"
+  },
+  "exact_v2_changes": [
+    "Add signal to import list.",
+    "Install SIGTERM handler raising KeyboardInterrupt immediately before run_locked.",
+    "All other bytes identical to v1."
+  ],
+  "resolution": "The imported supervisor run_locked catches BaseException during its compiler wait, kills and waits for the dedicated compiler process group before releasing the shared lock, writes failure metadata, and reraises. SIGTERM now reaches that cleanup through KeyboardInterrupt.",
+  "pins_rechecked": {
+    "fixed": 5,
+    "closure_source_object_logs": 18,
+    "completed_sha256": "2188e36a8b0dead9a702d34e22b0393cc5c9c5f7a9b1942b954476c8b37fcb7e",
+    "all_match": true,
+    "closure_modules": [
+      "BusyBeaver.ZFC.FramedWindow",
+      "BusyBeaver.ZFC.KHome",
+      "BusyBeaver.ZFC.KHomeReady",
+      "BusyBeaver.ZFC.KRuntimeCore",
+      "BusyBeaver.ZFC.KZip",
+      "BusyBeaver.ZFC.KZipTape"
+    ]
+  },
+  "bounds": {
+    "single_fresh_component": true,
+    "compiler_timeout_seconds": 120,
+    "compiler_parallelism": 1,
+    "lean_heap_limit_mebibytes": 12288,
+    "global_lock": "/tmp/proveit-k215-proof-build.lock",
+    "output": "/tmp/k215-decrement-prefix-component-check-v1",
+    "output_currently_absent": true,
+    "ordinary_timeout_and_python_interrupt_group_cleanup": true,
+    "profile": "Exactly one complete expected standard three-axiom line, no warning/error/sorry output."
+  },
+  "nonblocking_notes": [
+    "completed.json is SHA-bound before parsing but not added to final bindings recheck; its parsed metadata is fixed in memory, so this is not proof unsoundness. Adding it to bindings would make the before/after input-immutability record literally complete.",
+    "Global-lock wait is unbounded by the120second compiler timeout, matching existing supervisor semantics."
+  ],
+  "acceptance_scope": "Source pins and helper logic only. No new kernel PASS, checker acceptance, site outcome, endpoint, performance or independent theorem-mathematics claim. Root controls subsequent execution after all reviews.",
+  "executed_checkers_or_compilers": [],
+  "canonical_or_frozen_edits": [],
+  "findings": []
+}

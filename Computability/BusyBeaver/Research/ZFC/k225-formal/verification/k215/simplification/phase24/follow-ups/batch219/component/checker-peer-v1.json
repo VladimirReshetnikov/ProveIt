@@ -1,0 +1,153 @@
+{
+  "status": "SOURCE_REVIEW_CHANGE_REQUIRED_SIGTERM_HANDLER",
+  "scope": "Independent source review of owned checker only; reviewer authored candidate theorem, so no independent mathematics claim. No checker/compiler/supplied code execution.",
+  "checker": {
+    "path": "/tmp/k215-decrement-prefix-component-check.py",
+    "sha256": "04314dd540e0976abf48311a55083586f35a0fa4a9700838b17f25d2cddd3c08",
+    "lines": 46
+  },
+  "findings": [
+    {
+      "id": "SIGTERM_IMPORT_BOUNDARY",
+      "severity": "blocking_before_execution",
+      "line": 36,
+      "description": "Imported supervisor installs SIGTERM handler only under its __main__ guard. Checker imports run_locked but installs no SIGTERM handler. SIGTERM can kill parent before BaseException cleanup, leave dedicated Lean process group alive and release the shared lock.",
+      "requested_fix": "Import signal and install SIGTERM handler raising KeyboardInterrupt before run_locked is invoked; preserve default KeyboardInterrupt/SIGINT cleanup and existing timeout behavior."
+    }
+  ],
+  "verified_source_properties": [
+    "Fixed candidate/compiler/supervisor/accepted result/plan hashes match actual bytes.",
+    "Accepted result status PASS and completed SHA matches; both plan and completed230 entries.",
+    "KHomeReady six-module source/object/log closure bound exactly, with dependency object hashes matched and no stopped-prefix basis.",
+    "New OUT required and created only under fixed owned /tmp path; canonical/accepted inputs read only.",
+    "Pinned existing run_locked serializes through /tmp/proveit-k215-proof-build.lock, uses a dedicated compiler process group and kills/waits on timeout or Python interruption.",
+    "Lean flags -j1,-M12288 and environment LEAN_NUM_THREADS=1;120seconds applies to compiler wait after lock acquisition. This is Lean heap setting, not an independent operating-system address-space cap.",
+    "Expected complete one-theorem standard axiom profile and zero warning/error/sorry strings; post-input hashes checked before PASS receipt.",
+    "Only owned pinned supervisor is imported; no submitted packet code imported/executed."
+  ],
+  "nonblocking_notes": [
+    "completed.json is SHA-bound before parsing but not added to final bindings recheck; its parsed metadata is fixed in memory, so this is not proof unsoundness. Adding it to bindings would make the before/after input-immutability record literally complete.",
+    "Global-lock wait is unbounded by the120second compiler timeout, matching existing supervisor semantics."
+  ],
+  "fixed": [
+    {
+      "path": "/tmp/k215-decrement-prefix-nextlead/NeutralPrefixCompose.lean",
+      "sha256": "d5cdf19ed390b4eec9302ff78790b939d37a612a6bcd34b79d30e84208f458f6",
+      "expected": "d5cdf19ed390b4eec9302ff78790b939d37a612a6bcd34b79d30e84208f458f6",
+      "matches": true
+    },
+    {
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+      "expected": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+      "matches": true
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/lean/build.py",
+      "sha256": "a3cf7cc38004bca5e2a2df10c607fe5353896c0454069b4ff24d6b5176c32fbd",
+      "expected": "a3cf7cc38004bca5e2a2df10c607fe5353896c0454069b4ff24d6b5176c32fbd",
+      "matches": true
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-plan.json",
+      "sha256": "4bda49c298304608bd3196d92a3c748140142e8a649708102d827e690f489505",
+      "expected": "4bda49c298304608bd3196d92a3c748140142e8a649708102d827e690f489505",
+      "matches": true
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/result.json",
+      "sha256": "c9bcee3023ea879ad0dcc353d1435aae8aef92963a4b79f51fda1506f518c910",
+      "expected": "c9bcee3023ea879ad0dcc353d1435aae8aef92963a4b79f51fda1506f518c910",
+      "matches": true
+    }
+  ],
+  "completed": {
+    "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/completed.json",
+    "sha256": "2188e36a8b0dead9a702d34e22b0393cc5c9c5f7a9b1942b954476c8b37fcb7e",
+    "matches_accepted_result": true
+  },
+  "dependency_modules": [
+    "BusyBeaver.ZFC.FramedWindow",
+    "BusyBeaver.ZFC.KHome",
+    "BusyBeaver.ZFC.KHomeReady",
+    "BusyBeaver.ZFC.KRuntimeCore",
+    "BusyBeaver.ZFC.KZip",
+    "BusyBeaver.ZFC.KZipTape"
+  ],
+  "dependency_file_bindings": [
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KHomeReady.lean",
+      "sha256": "1a895e55fc21a4decd5dad6313351b4e048e06da785d7eca6634c30561f72e7a"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KHomeReady.olean",
+      "sha256": "2295dda7b0b6ab1d30ba02a6faf3364f9a2f7262724cf8d181a3e24d6cc9b254"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/033-BusyBeaver.ZFC.KHomeReady/compiler.log",
+      "sha256": "2aa075f17f7097b1fa84897f873f5cd32f3019c7b39f9716545781dceac04450"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KHome.lean",
+      "sha256": "846736440e760d1665a08622c08974c2814307d85cddc47f8f0460693c662b19"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KHome.olean",
+      "sha256": "4fdf53dd70f15022f987e692aef8650fe8437880f38338de88e3babbc1f6ff5e"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/031-BusyBeaver.ZFC.KHome/compiler.log",
+      "sha256": "377c84ad2807f431874243baa151b6cedfc166310f924f21e106e0660206ec56"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KRuntimeCore.lean",
+      "sha256": "4ecde56c82c57487c8f9e842fcfc27e4e925059ad7ef19e7cdd01204399d5cd2"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KRuntimeCore.olean",
+      "sha256": "85f10e0dc18d6d163a7e643f89a454f39844e8d98df8326251fb09aa9a0518b6"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/030-BusyBeaver.ZFC.KRuntimeCore/compiler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KZip.lean",
+      "sha256": "e959ce4909f67b092ba237c26e1b53a2db112b42ef22c69ad04a73816414192c"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KZip.olean",
+      "sha256": "beeb9e6a17e39d4c26647bbd55de480ce3532712e5fe283de093a4d6fe79d221"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/029-BusyBeaver.ZFC.KZip/compiler.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/KZipTape.lean",
+      "sha256": "a6ac1f380f1233a75d27668250a7c0bd95463b3162173c4197ef4e930d08230d"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/KZipTape.olean",
+      "sha256": "fc23b3c385cd67f2fafa095b6fd750185f4126a4f5de5c76f384459b85f93289"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/attempts/032-BusyBeaver.ZFC.KZipTape/compiler.log",
+      "sha256": "dd97edcaecece41af160007477d50ea4d0d9a61796f7b0926f91539ac5ab4204"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/workspace/BusyBeaver/ZFC/FramedWindow.lean",
+      "sha256": "ea588b0b42695917ba75370614fa1e60e0a8b30a40af649bf80be841097da4dd"
+    },
+    {
+      "path": "/tmp/k215-phase24-check-v3/candidate-build-run1/objects/BusyBeaver/ZFC/FramedWindow.olean",
+      "sha256": "e9ae784537a6c76cc9c51f26b6a8d124543a2c6f66b0dc886602ec092507278c"
+    },
+    {
+      "path": "/tmp/k215-phase9-zipbridge/run5/FramedWindow.log",
+      "sha256": "50655dfd16e62a9030cba16f19ee8ec3661d0766068142a53e4b107bc5751f4d"
+    }
+  ],
+  "execution": [],
+  "canonical_or_frozen_edits": []
+}

@@ -1,0 +1,18 @@
+# Minimal neutral-prefix composition lead
+
+**Source-only, uncompiled, and outside frozen phase24.** [NeutralPrefixCompose.lean](NeutralPrefixCompose.lean) adds one theorem using the existing executor soundness twice; [candidate.diff](candidate.diff) is its exact new-file diff. It has no computational definitions or production callers. No source/checker/table/endpoint is changed.
+
+The mathematical argument is credited to [proof-spine, at immutable placement56b37bde8b](https://github.com/VladimirReshetnikov/ProveIt/blob/56b37bde8b064d852154ad8478d58ec9ab5375d6/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215/simplification/proposals/proof-spine/rocq/proposed/KOracleCut.lean). This owned component isolates its smallest useful proof for review against the accepted phase24 interfaces. It establishes no concrete decrement certificate or checking-time reduction.
+
+Given successful neutral execution from `s` to `c` with `moved=false`, branch-validity implies neutral validity, so existing `KHomeReady.exec_sound` gives positive concrete reachability. A specialized execution from `c` to `t` with `moved=true` gives reflexive concrete reachability and its target predicate. `KZip.Reach1.trans_reach` composes them. The continuation may be reflexive; the prefix supplies progress. Both calls use the same `n`, valuation and exact symbolic middle state. The cut predicate is arbitrary because this is only the composition theorem.
+
+The actual existing APIs are `KHomeReady.exec` / `exec_sound`, `KRuntimeCore.Valid` and `KZip.Reach1.trans_reach`; there is no new `execRun` interface. `KRuntimeCore.sMatches_conc` remains available for a future equality-of-target adapter. All are pinned in [pins.json](pins.json); [report.json](report.json) records assumptions and future caller consequences.
+
+## Bounded next step after source review
+
+1. Root may compile this one detached module against the accepted phase24 dependency objects and inspect its printed axiom profile. Nothing in this folder has been compiled or executed by its author.
+2. Only if that passes, design a private paired decrement checker inside existing `KSim`, reusing `KHomeReady.exec`: neutral prefix to the explicit physical-register mark cut, then zero/nonzero continuations with `moved=true`. Preserve every left segment, guard, `physOf` mapping and exact target. A failed neutral oracle is not a valid cut because table fallback exists.
+3. If that soundness adapter uses this lemma once, inline the four-line proof there. Do not add another facade merely to preserve a single-use helper. Current `SiteLeaf`, source walk and trace/caller data need no redesign for a fork within one decrement leaf.
+4. Changing `checkEdge` invalidates its old literal acceptance receipts even with unchanged theorem headers. All affected K-family coverage clients need fresh checks, including both outcomes and complete fallback/terminal coverage. The two-phase fuel policy is semantically sound but need not equal the old Boolean policy.
+
+The new research module costs26 lines / 1,213 bytes; current maintained saving and closure change are both zero. A final in-place paired checker would add a small predicate/match and soundness proof while removing the old two full-start calls. Its exact net source cost is not claimed before that candidate exists. Syntactic prefix binding does not guarantee kernel sharing; the39.12% number in the packet refers only to abstract symbolic calls across1,425 decrement pairs, not Lean checking speed or full-endpoint work. The larger frame/classifier/direct-decoder projects are not prerequisites for this component.
