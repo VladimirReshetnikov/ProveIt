@@ -16,21 +16,24 @@ universal Diophantine equations by James P. Jones and coauthors:
 **Fixed-input specializations for Con(ZFC)** (not formalized). The research
 report
 [`con-zfc-diophantine-forms`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
-(batch 218, seven wave-2 packages pinned to `3b201cdea3`, superseding
-batch 217's eight) applies the native-window/Pell compiler below, with its
+(batch 219, eight wave-3 packages pinned to `f0ae4e0991`, superseding the
+earlier waves of batches 217 and 218) applies the native-window/Pell compiler below, with its
 input interface removed, to the blank run of the 215-state ZFC machine
 (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`). It
 gives explicit polynomials with fixed integer coefficients for which, by an
 ordinary argument formalizable in ZFC, ZFC proves "no solution" ↔
-Con(ZFC). As stated by the packages, the fewest positive unknowns are 13
-(84 operations, degree 571), and 14 are reached at degree 121. A
-15-unknown six-equation system has degree 28 at 61 operations, and the
-fewest operations remain 67 (15 unknowns, degree 155). These are fixed-instance results, so the universal
+Con(ZFC). As stated by the packages, the fewest positive unknowns are 12
+(seven different polynomials, lowest degree 1145), 26 unrestricted
+integers suffice, and the fewest operations remain 67 (15 unknowns, degree
+155). These are fixed-instance results, so the universal
 operation bounds stated below are unchanged. Neither the Diophantine bridge
 nor the compiler is formalized. The Lean development proves MRDP and
 `Jones1982.nine_unknowns`, the existence of a nine-unknown representation
-without a degree bound. The packages compare with Jones's papers and leave
-a concrete nine-unknown specialization open.
+without a degree bound. Package 18 of the report gives, on paper, a
+concrete specialization of the nine-variable theorem to its fixed
+32-unknown quartic: one equation in 9 natural unknowns of degree
+161844·5^33 + 484. Its link to `Jones1982.Nine.wset_iff_nine` is not
+formalized.
 
 The established arithmetic bounds are **74 operations for a complete
 certificate and 84 for one universal polynomial**. The

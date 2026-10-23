@@ -3575,3 +3575,16 @@ of them, degree-22 variants, 32-unknown quartic, 25-unknown sextic and
 20-unknown octic lifts, 29 unrestricted-integer unknowns and coefficients
 with B = 2^(5^18). Wave 1's 67-operation equation keeps the fewest
 operations. Same non-claims; nothing was rerun.
+
+Batch 219 (arrival `cbf94cb552`, "wave-3") replaces the wave-2 packages in
+turn by eight syntheses that, by Vladimir's direction, supersede them; the
+collection stays at **291 reports**. Placement `da064316ea` removes the
+wave-2 directories (recoverable from `8a4b00b5bf` through its parent),
+places sources 16–23 and retires the eight ZIPs; reconciliation
+`0641ffc22c` replaces the README and lists the wave-2 results that wave 3
+does not reproduce. The packages state an explicit specialization of
+Jones's nine-variable theorem (9 natural unknowns), 12 positive unknowns by
+seven different polynomials, 13 at degree 319, 26 unrestricted integers, a
+27-integer form of degree 172 in 116 operations, and materialized
+coefficients with B = 2^(5^10). The 67-operation equation keeps the fewest
+operations. Same non-claims; nothing was rerun.

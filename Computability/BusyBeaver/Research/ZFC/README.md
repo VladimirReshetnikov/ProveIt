@@ -1134,11 +1134,11 @@ published to support further work toward 214.
 
 ## Intake and theory minimization
 
-**Diophantine form of the K215 endpoint** (not formalized). Intake batch 218
-placed seven wave-2 packages, superseding batch 217's eight, as the research
-report
+**Diophantine form of the K215 endpoint** (not formalized). Intake batch 219
+placed eight wave-3 packages, superseding the earlier waves of batches 217
+and 218, as the research report
 [`con-zfc-diophantine-forms`](../../../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
-(placement `8a4b00b5bf`, reconciliation `505e0e0a30`). Each one turns
+(placement `da064316ea`, reconciliation `0641ffc22c`). Each one turns
 the K215 calibration behind `KEndpoint215.blank_halts_iff_zfc_refutation`
 into an explicit polynomial with fixed integer coefficients. The route is
 to compile a local tile language of the blank run of
@@ -1146,9 +1146,11 @@ to compile a local tile language of the blank run of
 native-window/Pell compiler with its input interface removed. By an
 ordinary argument, ZFC
 then proves "no solution" ↔ Con(ZFC). As the packages state them, the
-fewest positive unknowns are 13 (84 operations, degree 571), and the fewest
-operations remain 67 (15 unknowns, degree 155). The smallest coefficient
-recipe has B = 2^(5^18); all recipes are finite and none is materialized. Only the machine
+fewest positive unknowns are 12, nine natural unknowns are reached by an
+explicit Jones specialization, and the fewest operations remain 67 (15
+unknowns, degree 155). The smallest coefficient recipe has B = 2^(5^10)
+(943 tiles); two recipes are shipped materialized, and the materialized
+bytes do not by themselves prove the compiler theorem. Only the machine
 endpoint is checked in Lean/Rocq; the Diophantine bridge is not. The
 ZFC-provability claim rests on the ordinary calibration argument, not on
 Lean's soundness.
