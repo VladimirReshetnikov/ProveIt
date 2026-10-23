@@ -1,6 +1,6 @@
 # Literal package-52 source: checked stages
 
-The current size target is package 52's interior-regular nine-positive
+This checkpoint formalizes package 52's interior-regular nine-positive
 equation: 548 binary operations and exact degree 15,502,748. Its finite
 proposal audit is recorded in [PROPOSAL_REVIEW.md](PROPOSAL_REVIEW.md).
 The modules here formalize its actual algebraic stages, with explicit
@@ -118,14 +118,21 @@ cofinal bounds, new ratio variables and finalizer in both directions.
 Its nine natural coordinates shift `b,g,h,s,w,i` by one and use `phi,j,n`
 directly. `natural_zero_iff_source_published` discharges the coefficient
 height using only the four explicit published port-size assumptions.
-The numerical rank temporarily uses an exact `toNat`; its equality with
-the literal polynomial rank is proved separately from its range bounds,
-and the full multivariate-polynomial binding is in progress.
+The numerical rank uses an exact `toNat`; its equality with the literal
+polynomial rank is proved for arbitrary nonnegative candidate codes before
+the weak cap is recovered. `NativeNinePolynomial52` supplies the literal
+ring evaluator, and `NativeNineEquation52.polynomial` supplies an actual
+`MvPolynomial (Fin 9) ℤ` with the six natural-coordinate shifts.
+`exists_zero_iff_source_published` proves its natural-zero equivalence with
+the literal 31-input source under only the four stated port-size bounds.
+The direct finite-sum recipe does not yet have a Lean-certified identity
+with the report's optimized 548-operation evaluator.
 
-The remaining chain must bind that explicit polynomial and calibrate the
-four actual native coefficient ports to ZFC refutations. Only after that
-chain is closed can the 548-operation equation replace the current
-certified baseline.
+The remaining chain must calibrate the four authentic native coefficient
+ports to ZFC refutations. The wave-eight review has since selected a
+smaller numerical target, documented in
+[PROPOSAL_REVIEW_WAVE8.md](PROPOSAL_REVIEW_WAVE8.md). This completed source
+checkpoint and its generic components remain available for that work.
 The separate object-language work is tracked in [OBJECT_ZFC.md](OBJECT_ZFC.md).
 
 ## Reproduction
@@ -139,6 +146,7 @@ lake env lean Computability/DiophantineConsistency/Lean/checks/NativeQuadraticPa
 lake env lean Computability/DiophantineConsistency/Lean/checks/NativeQuadraticPositions.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/NativeQuadraticSource52.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/NativeNineSource52.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/NativeNineEquation52.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/LowMaskCoding.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/SelectiveCarry.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/RatioMarginFinalizer.lean

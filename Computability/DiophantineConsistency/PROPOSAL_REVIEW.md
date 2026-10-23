@@ -1,10 +1,19 @@
 # Choosing the next equation from the recent proposals
 
-Reviewed 23 October 2026, through wave-7 placement `6d375f2d2d`, merged at
+**Current decision:** following placement `beb0192cb8`, switch to package
+59's free-coordinate degree-separated adjunct: nine positive unknowns,
+473 operations, degree 1,910,404 (480 operations over naturals). All six
+wave-eight release replays pass. Keep package 54 as the smaller native-tuple
+option and preserve the completed package-52 source-polynomial checkpoint.
+See [the wave-eight review](PROPOSAL_REVIEW_WAVE8.md) for the comparison,
+source-domain differences and remaining formalization obligations.
+
+The historical review below was completed 23 October 2026 through wave-7
+placement `6d375f2d2d`, merged at
 `d869b0ddbf`. The review includes all eight new packages 46–53 and compares
 them with the wave-5/6 proposals and the current checked construction.
 
-## Decision
+## Wave-seven decision, superseded numerically
 
 **Switch the small-nine formalization target to package 52's interior-regular
 equation:** nine positive integers, 548 live binary arithmetic operations,

@@ -1,0 +1,312 @@
+{
+  "review_date": "2026-10-23",
+  "arrival": "7331974b69",
+  "placement": "beb0192cb8dc36f78c369c080f2adfbc1887a486",
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.3.5",
+    "sympy": "1.14.0",
+    "bytecode_disabled": true
+  },
+  "archives": [
+    {
+      "package": 54,
+      "archive": "docs/incoming/con-zfc-calibrated-carry-4b4349064a.zip",
+      "arrival": "7331974b69",
+      "sha256": "e8045da2c6a33b84a51cfb7fa543fb5ccd1db857d283af5094a89f09ec6be2be"
+    },
+    {
+      "package": 57,
+      "archive": "docs/incoming/ConZFC_Separated_Degrees_2026-10-23.zip",
+      "arrival": "7331974b69",
+      "sha256": "d495c1e4121d16117b14b7f298780702a638c373a2609f23a90f904ba08aef02"
+    },
+    {
+      "package": 59,
+      "archive": "docs/incoming/ZFC_Diophantine_Degree_Separated_2026-10-23.zip",
+      "arrival": "7331974b69",
+      "sha256": "68e5cf243341e41ba0555a53eb1110fa987babb3194241b9c005ddd7aba9d702"
+    }
+  ],
+  "replays": {
+    "54": {
+      "verify_release.py": "PASS",
+      "sealed_file_hashes": 382,
+      "direct_source_blobs": 100,
+      "retained_archive_member_hashes": 167,
+      "authored_checks": 14,
+      "negative_controls": 7,
+      "byte_identical_regenerated_artifacts": 112,
+      "optimized_root_policy": "EXPECTED REJECTION, exit1"
+    },
+    "57": {
+      "reproduce.py": "PASS",
+      "reproduction_steps": 13,
+      "pinned_input_files": 54,
+      "whole_native_tuple_rebuilt": "PASS",
+      "all_four_gzip_payloads_byte_identical": true,
+      "all_files_after_reproduction_byte_identical": 191,
+      "optimized_root_policy": "EXPECTED REJECTION, exit1"
+    },
+    "59": {
+      "verify.py": "PASS",
+      "stages": 25,
+      "byte_identical_regenerated_artifacts": 74,
+      "sealed_files": 537,
+      "root_integrity_controls": 3,
+      "semantic_source_certificate_controls": 10,
+      "source_checker_optimized_byte_identical": true,
+      "optimized_root_policy": "EXPECTED REJECTION, exit1"
+    }
+  },
+  "normal_policy_or_integrity_failures": [],
+  "commands": {
+    "54": [
+      "python -B verify_release.py",
+      "python -B negative_controls.py",
+      "python -B rebuild_artifacts.py",
+      "python -O -B verify_release.py --integrity-only"
+    ],
+    "57": [
+      "python -B reproduce.py (in a separate copy)",
+      "python -B coefficients/build_coefficients.py (in that copy)",
+      "python -O -B reproduce.py (pristine root)"
+    ],
+    "59": [
+      "python -B verify.py",
+      "python -B negative_controls.py",
+      "python -O -B verify.py"
+    ]
+  },
+  "logs": [
+    {
+      "name": "54-normal.log",
+      "sha256": "88ddf0b64eafdefb5c87653f5fdd9869cb69e797bd3e54394548d827d8a3036f",
+      "bytes": 88933
+    },
+    {
+      "name": "54-negative.log",
+      "sha256": "b05b7213b853c990311e0d8c1884a10d63b47d6214e464e6d5c637f1edf00da8",
+      "bytes": 515
+    },
+    {
+      "name": "54-rebuild.log",
+      "sha256": "a0e5fff8e55fd182d88e5164d8ee1fd27f7b97c77022dfb1fe6d9e0d8cc55af1",
+      "bytes": 11587
+    },
+    {
+      "name": "54-optimized-policy.log",
+      "sha256": "0e59e5b22596eec9ec235c50e74d19abcb57fbc9727055364c94a5116fa8dccc",
+      "bytes": 68
+    },
+    {
+      "name": "57-normal.log",
+      "sha256": "a68008df37af94ed9ad0c27f086c029ba6bbc492c5f0b73d55ed0bbe77caff02",
+      "bytes": 456
+    },
+    {
+      "name": "57-native-rebuild.log",
+      "sha256": "b3741e8726b41529fd1c6bdcefe5bd8311cfc4b43c8273442f126c36ec233e0d",
+      "bytes": 4322
+    },
+    {
+      "name": "57-optimized-policy.log",
+      "sha256": "1614c85f3d09dd86158bbba711d9afd72c1db5d3e61a4fcf87f41f27af285475",
+      "bytes": 60
+    },
+    {
+      "name": "59-normal.log",
+      "sha256": "2ce853ed0052f3bcb6bc1d07f59b82da71838360a67cf62b6c654805fc81228d",
+      "bytes": 3213
+    },
+    {
+      "name": "59-negative.log",
+      "sha256": "2ca0830f5b5b0e2f535f2fb1ead0509bc21ae12aa22e13b939077b3647999bea",
+      "bytes": 394
+    },
+    {
+      "name": "59-optimized-policy.log",
+      "sha256": "69f52e7d68f71eb09848d069f144b6a26f269c7239e265a126761f939c092604",
+      "bytes": 82
+    }
+  ],
+  "shared_source_comparison": {
+    "status": "PASS",
+    "source52_sha256": "ac2a67782d344d1e74fd93bc3f09fae0097eaed1829fd8194ae235ae84763e48",
+    "source57_and59_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287",
+    "indeterminates": [
+      "J",
+      "F",
+      "alpha",
+      "z",
+      "f",
+      "h",
+      "i",
+      "o",
+      "j",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "y",
+      "gamma",
+      "N",
+      "E",
+      "P",
+      "c",
+      "a",
+      "X",
+      "D",
+      "C2",
+      "L",
+      "F2",
+      "V",
+      "g",
+      "I",
+      "Baux",
+      "Delta",
+      "beta",
+      "K0",
+      "MC",
+      "MF"
+    ],
+    "literal_gates": 60,
+    "rows": [
+      {
+        "row": 1,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 2,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 3,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 4,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 5,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 6,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 7,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 8,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 9,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 10,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 11,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 12,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 13,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 14,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 15,
+        "direct_equality": false,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 16,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 17,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 18,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 19,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 20,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 21,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      },
+      {
+        "row": 22,
+        "direct_equality": true,
+        "equality_after_old_z_is_new_z_plus_one": true
+      }
+    ],
+    "direct_equal_rows": 21,
+    "transport_difference_row": 15,
+    "difference_frozen52_minus_old_source": "-beta*J",
+    "all_rows_equal_after_substitution": "z_old=z_new+1",
+    "domain_obligation": "This substitution maps z_new>0 to z_old>1. Positive z_old=1 requires a separate argument; no unconditional positive zero-set bijection is inferred.",
+    "scope": "Exact polynomial comparison over all31 source inputs and4 coefficient ports; no native calibration or unbounded semantics."
+  },
+  "compact_tuple_height_feasibility": {
+    "status": "PASS",
+    "kernel_sha256": "445de50798fe3c22a195d9e643b5684f0224c7130b56a316bcb29681a58dd02a",
+    "port_bits": [
+      590069,
+      592884,
+      590069,
+      590070
+    ],
+    "weighted_coefficients_checked": 89,
+    "maximum_termwise_majorant_bit_length": 1182955,
+    "maximum_at_degree": 1,
+    "maximum_at_exponent": 383,
+    "candidate_floor_exponent": 1182967,
+    "candidate_floor_odd": true,
+    "scope": "Finite height feasibility only. No new circuit, full source contract, native calibration or consistency endpoint asserted."
+  },
+  "scope": "Finite exact certificate, native-payload reconstruction, degree/circuit, corruption-control, and reproducibility checks. No end-to-end Lean theorem, inherited compiler calibration, or internal object-language ZFC derivation is established by replay."
+}

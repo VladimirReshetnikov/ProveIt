@@ -5,9 +5,11 @@ reduction. The results below do **not** yet produce a smaller closed equation.
 They replace the exponential-position coefficient extraction by checked
 quadratic and simultaneous arithmetic identities.
 
-After the [wave-7 review](PROPOSAL_REVIEW.md), package 52's interior-regular
-selective encoding is the next target, with package 53 retained for lower
-degree. `SelectiveQuadraticCoding` now proves extraction under isolation of
+The [wave-eight review](PROPOSAL_REVIEW_WAVE8.md) selects package 59's
+degree-separated free-coordinate adjunct. Its three degree channels,
+sparse borrow decoder and shorter population-calibrated rank are the next
+formalization target. The completed package-52 checkpoint below remains
+a reusable foundation. `SelectiveQuadraticCoding` proves extraction under isolation of
 only the used pairs, with arbitrary row targets and explicit cross-target
 exclusion. `SelectiveCertificate52` checks the 71 active pairs at maximum
 weight 174 and regular stride 349; `SelectiveCertificate46` checks its
@@ -16,9 +18,10 @@ The literal package-52 native rows are now checked in
 `NativeQuadraticParent`, together with their exact selective coefficients
 and bounds in `NativeQuadraticPositions` and `NativeCoefficientBounds`.
 Sparse decoding, the exact package-52 finalizer and their assembled
-nine-coordinate arithmetic source equivalence are also checked;
-see [SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). The literal polynomial
-binding and source-to-refutation bridge remain separate.
+nine-coordinate arithmetic source equivalence are also checked, including
+an actual source-equivalent multivariate polynomial; see
+[SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). The authentic
+source-to-refutation bridge remains separate.
 `NearSquareFinalizer` also proves the sharp majorant and final one-witness
 norm equivalence. The full-Sidon components below remain general reusable
 foundations rather than the preferred numerical positions.

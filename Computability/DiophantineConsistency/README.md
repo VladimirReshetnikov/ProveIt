@@ -19,24 +19,24 @@ answers. We first seek the fewest natural witnesses available from the
 repository's proved reductions, while retaining a quartic alternative.
 Global optimality is not asserted.
 
-After reviewing the eight wave-7 proposals, the next small-nine target is
-package 52's interior-regular equation: nine positive variables, 548 binary
-operations, degree 15,502,748 (551 operations over naturals). Package 53's
-738-operation, degree-7,344,328 form remains the lower-degree target.
-The selection, alternatives, finite replays and remaining proof obligations
-are recorded in [PROPOSAL_REVIEW.md](PROPOSAL_REVIEW.md). These proposals
-supersede wave 6 as numerical targets; the current closed Lean equations
-remain the certified baseline until a replacement is fully checked.
+After reviewing wave-eight placement `beb0192cb8`, the next small-nine
+target is package 59's free-coordinate degree-separated adjunct: nine
+positive variables, 473 binary operations, degree 1,910,404 (480 operations
+over naturals). It improves both measures over the former package-52 target.
+Package 54 retains the smaller native tuple. The selection, alternatives,
+full finite replays and remaining proof obligations are recorded in
+[PROPOSAL_REVIEW_WAVE8.md](PROPOSAL_REVIEW_WAVE8.md). The current closed Lean
+equations remain the certified baseline until a replacement is fully checked.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp
 coefficient height, sparse low-mask decoding, ratio reparameterization, and
 margin-first finalizer. The complete source-to-binomial-to-finalizer
-arithmetic equivalence also passes Lean, with explicit coefficient bounds
-and exactly nine natural coordinates. See
-[SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). Its literal polynomial
-binding and native coefficient calibration remain in progress; this result
-does not yet replace the closed consistency equation.
+arithmetic equivalence and literal multivariate-polynomial binding also
+pass Lean, with explicit coefficient bounds and exactly nine natural
+coordinates. See [SELECTIVE_SOURCE52.md](SELECTIVE_SOURCE52.md). Authentic
+native calibration and the internal ZFC derivation remain open; this
+checkpoint does not yet replace the closed consistency equation.
 
 The wave-5 and wave-6 report packages explicitly distinguish their new final
 equations from an end-to-end Lean certificate. The inherited P67 is a particularly short

@@ -53,3 +53,6 @@ import DiophantineConsistency.NativeSparseBounds52
 import DiophantineConsistency.NativeQuadraticSource52
 import DiophantineConsistency.NativeNineFinalizer52
 import DiophantineConsistency.NativeNineSource52
+import DiophantineConsistency.NativeArithmetic52
+import DiophantineConsistency.NativeNinePolynomial52
+import DiophantineConsistency.NativeNineEquation52
