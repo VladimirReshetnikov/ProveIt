@@ -1,0 +1,209 @@
+\section{A smaller complete coefficient tuple}
+\label{sec:new-coefficients}
+
+The mixed-radix clause encoding of package 25 and the arbitrary-odd-factor
+rank controller of package 24 combine without changing the 943-tile
+language.  This removes two independent power-of-five roundings:
+\[
+ \rho=2^{121},\qquad L=8801,\qquad
+ d=121\cdot8801=1064921,\qquad B=2^d.
+\]
+The largest fixed port has 1,070,004 bits, compared with 1,958,376 bits
+in packages 25 and 27.  The four raw payloads occupy 533,099 bytes instead
+of 977,220 bytes.  These reductions are approximately $45.36\%$ and
+$45.45\%$, respectively.  Variables, degree and arithmetic gate count of
+a compatible skeleton do not change.
+
+\subsection{The literal bounded recipe}
+
+Retain the ordered 943 tiles in the bundled literal table, in slot order
+west, north, east, south.  Start is tile 0 and the impossible tile is
+tile 1.  The new builder reconstructs this ordered table from all 430
+literal K215 transitions.  Put
+\begin{align*}
+ \mathcal E={}&\{0,\ldots,942\}\cup\{983,\ldots,992\}
+               \cup\{1003,\ldots,1032\}\\
+ &{}\cup\{1063,1064,1095,1096,2195,3296\}.
+\end{align*}
+The four copy offsets are $1023,1013,1003,983$; the four anchors are
+$1095,1096,2195,3296$.  Set $W_j=2^{10+2j}$ for $0\le j<44$.
+If tile $i$ has edge labels $x_{it}$, define
+\[
+ c_i=1+\sum_{t=0}^3\sum_{j=0}^9
+       \operatorname{bit}_j(x_{it}+512)W_{10t+j}
+       +\sum_{j=40}^{43}W_j.
+\]
+At copy exponent $\operatorname{offset}_t+j$, set $c_e=W_{10t+j}$.
+The four anchors receive $W_{40},\ldots,W_{43}$ in the listed order;
+$c_{1063}=c_{1064}=0$.  Put
+\[
+ \mu=1022+\sum_{j=0}^{43}W_j,\qquad
+ Z=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+       +(2^{27}-1)\rho^{8799}.
+\]
+The exact constants are
+\begin{align*}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e
+            (\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R={}&\rho^{42},\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+                -2\rho^{1063},\\
+ M_{F,0}={}&4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^{9}(\rho^{1013+j}+\rho^{1065+j})
+       +\rho^{2195}+\rho^{3296}+Z.
+\end{align*}
+The four ports, always replaced together, are
+\begin{equation}\label{eq:new-four-ports}
+ \boxed{\ \beta=B-1,\quad K=D_C+BD_R,\quad
+ M_C,\quad M_F=M_{F,0}+B-1.\ }
+\end{equation}
+The last port is already shifted.  Every number in this definition is
+computed by a bounded finite recipe, with no search for a halting run.
+
+\subsection{What the finite geometry certifies}
+
+The clause coefficients and copy/anchor geometry are unchanged from
+package 25.  If $n$ selectors are active, then $0\le n\le943$ and the low
+ten bits of the clause sum equal $n$.  The mask 1022 forces $n=0$ or 1,
+without any assumption about carry freedom in higher fields.  Once this
+is known, every radix-four field is a sum of two Boolean values.  Its
+masked low bit forces the copy or anchor to equal the selected value.
+
+The new cell circumference satisfies the exact identities
+\begin{align*}
+ \{(4393-e)\bmod8801:e\in\mathcal E\}
+ &\cap\{(5495-e)\bmod8801:e\in\mathcal E\}=\varnothing,\\
+ \{(2195-e)\bmod8801:e\in\mathcal E\}
+ &\cap\{(3296-e)\bmod8801:e\in\mathcal E\}=\{0\}.
+\end{align*}
+Thus there is a clean clause band under every rotation, and the two
+occupied anchors force whole-cell alignment.  The ordinary overlap
+identities are the same as in package 25: targets $1013+j$ compare
+sources $983+j$ and $1013+j$, while targets $1065+j$ compare $1003+j$
+and $1023+j$; the anchor targets compare $1095$ with $2195$ and $1096$
+with $3296$.  The builder checks all 69,230 scalar basis identities.
+Linearity extends them to every native assignment.
+
+The uniform pre-decoding bound is
+\[
+ \mathcal M=(989+2)(2\sum_e c_e+6),\qquad
+ T_0=\max(4\mathcal M+8,2\mu+4,16).
+\]
+Exact arithmetic gives $2^{119}<T_0<2^{120}<\rho$.  Hence 121 is the least
+odd radix width for this unchanged bound.  This is not a global minimum.
+The maximum unshifted product exponent is $5495+3296=8791$, so all eight
+padding cells are identically zero in canonical assignments, including
+after every allowed dummy change.  Their additional tests preserve
+completeness and may be ignored in soundness.  Also
+$2(2^{119}-1)+4<\rho$, so the mask fits the inherited slack estimate.
+
+The padding contributes $7\cdot119+27=860$ bits; the core high mask has
+$2\cdot53+20+2+1=129$ bits.  Materialization confirms
+\begin{gather*}
+ \operatorname{popcount}(M_{F,0})=989,\qquad
+ \operatorname{popcount}(M_C)=d-989,\\
+ 0<M_C,M_{F,0}<B-1,\qquad
+ M_C\equiv2\pmod4,\qquad M_{F,0}\equiv4\pmod8.
+\end{gather*}
+
+\subsection{An explicit controller for the actual packed rank}
+
+The new $d$ is not a power of five, so the old five-adic tuning statement
+cannot simply be reused.  Factor $d=11^2\cdot13\cdot677$ and set
+\[
+ \lambda=2341,\qquad k=2340=\lambda-1.
+\]
+Trial division proves that $\lambda$ is prime.  Exact modular arithmetic
+gives the following orders:
+\begin{center}
+\begin{tabular}{c|rrrr}
+Modulus & 121 & 13 & 677 & 2341\\ \hline
+Order of $B$ & 10 & 12 & 52 & 60
+\end{tabular}
+\end{center}
+Thus $\operatorname{ord}_d(B)=780\mid k$, and
+\[
+ B^{2340}\bmod2341^2=2556373=1+1092\cdot2341,
+ \qquad v_\lambda(B^k-1)=1.
+\]
+For $H_0=1+BD_C+B^2(D_R+1)$ the necessary unit residues are
+\begin{center}
+\begin{tabular}{r|rrr}
+Prime $p$ & $B\bmod p$ & $(B^2-1)\bmod p$ & $H_0\bmod p$\\ \hline
+11   & 2    & 3    & 9\\
+13   & 6    & 9    & 7\\
+677  & 611  & 293  & 654\\
+2341 & 2100 & 1896 & 1225
+\end{tabular}
+\end{center}
+
+Choose sufficiently large independent powers of $\lambda$ for tableau
+width $w$ and height $h$, and put $N=wh=\lambda^n$, $q=B^N$.
+The inherited language allows arbitrary sufficiently large independent
+rectangular padding.  Impose $N>d\lambda^2$ and $h>\lambda$.
+The order table gives $q\equiv B^w\equiv B\pmod{d\lambda}$.
+Activating the lower dummy in cell $j$ changes the actual packed Pell
+index by the inherited exact formula
+\[
+ \delta R=-\Gamma B^j,\qquad
+ \Gamma=\rho^{1063}(q^2-1)
+             [1+q(D_C+BD_R+B^w)].
+\]
+The unit table proves $\gcd(\Gamma,dN)=1$.
+
+\paragraph{Boolean coverage.}
+Set $T=N/\lambda$ and $C_0=d\lambda$.  Every residue modulo $dN=C_0T$
+is a Boolean subset sum of
+\[
+ \{B^{2+kj}:0\le j<T\}\cup\{B^3\}.
+\]
+Indeed, binomial lifting and $B^k\equiv1\pmod d$ show that its first
+$T$ powers are exactly the residues $1+C_0z$, $z$ modulo $T$.
+Normalize the desired residue by $B^{-2}$ and choose
+$\varepsilon\in\{0,1\}$ so that subtracting $\varepsilon B$ leaves a
+nonzero residue modulo $\lambda$.  Let $a$ be the least residue modulo
+$C_0$.  Then $1\le a<C_0<T$ and $\gcd(a,T)=1$.  Write the target as
+$a+C_0u$, solve
+\[
+ az_0+\frac{a(a-1)}2\equiv u\pmod T,
+\]
+and select the $a$ distinct orbit entries whose additive coordinates are
+$z_0,\ldots,z_0+a-1$.  Include $B^3$ exactly when $\varepsilon=1$.
+This constructs the required subset with no repeated position.
+The largest cell index is
+\[
+ 2+(\lambda-1)(N/\lambda-1)=N-N/\lambda-\lambda+3.
+\]
+Since $w<N/\lambda$, its translates by one and by $w$ do not wrap.
+The extra position 3 is distinct because $k>1$.
+
+Start with zero control bits and actual rank $R_0$.  Applying coverage to
+$(R_0-dw)\Gamma^{-1}$ tunes $R\equiv dw\pmod{dN}$, exactly the temporal
+rotation required by $X=2^R$.  The previously proved carry, slack and
+padding bounds hold under every selected change.  This proves unbounded
+completeness; the finite modular certificates alone would not do so.
+
+\subsection{Full interface and verification boundary}
+
+All of $b,L,d,N$ are odd.  With $t=dN$, the canonical Start and low-mask
+congruences still give $R\equiv3\pmod4$, while the exact mask population
+identity gives $\operatorname{popcount}(R)=3t+2$.  Therefore
+$X/q=2^{R-t}$ is a positive square.  The inherited even main-Pell
+parameter and strong auxiliary index preserve the odd positive multiplier;
+the half-binomial valuation gives $v_2(Y)=3t$, so $s=Y/q^3$ remains odd.
+These are precisely the extra completeness promises needed for the
+compatible signed reductions.
+
+Consequently the complete tuple \eqref{eq:new-four-ports} satisfies the
+same blank-K215 native interface as the source tuple, including its
+positive slack and signed parity requirements.  Composing this ordinary
+adapter proof with a compatible arithmetic-skeleton proof and the K215
+endpoint preserves the ZFC-provable equivalence between solvability and
+existence of a finite ZFC refutation.
+
+The bundled standard-library builder reconstructs the exact payloads,
+tests all finite geometry identities and modular certificates, and records
+hashes and bit lengths.  It does not decide consistency or supply an
+end-to-end Lean/Rocq certificate.  The complete new adapter proof is also
+provided separately, with the relevant pinned source proofs and notices.

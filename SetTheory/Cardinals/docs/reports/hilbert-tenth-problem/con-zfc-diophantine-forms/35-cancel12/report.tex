@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,graphicx}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Smaller explicit Diophantine forms of ZFC consistency},
+pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},
+pdfsubject={Explicit equations, proofs, coefficient recipes, and reproducible audits},
+pdfkeywords={Diophantine equations, ZFC consistency, K215, Jones reduction}}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine forms of ZFC consistency}
+\fancyhead[R]{\small Research synthesis}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}
+\newcommand{\NN}{\mathbb N}\newcommand{\ZZ}{\mathbb Z}\newcommand{\QQ}{\mathbb Q}
+\newcommand{\ZFC}{\mathrm{ZFC}}\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Sq}{\operatorname{Sq}}\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\pin}{\texttt{8c6eec9d19ef80538c8e61ff6e0180040583446a}}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Smaller explicit Diophantine forms\par of ZFC consistency}\\[0.7em]
+{\large Mixed radices, cofinal bases, and norm cancellations}\\[1em]
+Prepared for Vladimir Reshetnikov\\[0.2em]
+AI-assisted research report, 22 October 2026
+\end{center}
+\begin{abstract}
+We compare the seven current ProveIt constructions, numbered 24--30,
+and combine features that their separate presentations leave uncombined.
+The main new variable reduction gives one explicitly specified polynomial
+in sixteen unrestricted integers. Its degree is
+$813056\cdot5^{32}+10024$, and its delivered arithmetic circuit uses
+1865 binary operations. A seventeen-integer alternative has degree
+$406528\cdot5^{32}+27512$ and 1874 operations. A cofinal family of square
+radices removes one positivity witness; a smaller signed separating weight
+also lowers the degree. For positive unknowns we obtain a twelve-variable
+equation of degree 1065, and separately reduce the 1081-degree equation
+from 111 to 108 operations. Three coordinate shifts give a 31-variable
+quadratic system using 62 operations, or a quartic equation using 127.
+All families can use a new, fully materialized four-coefficient tuple with
+$B=2^{1064921}$, a substantial reduction from $2^{1953125}$.
+We give ordinary mathematical proofs, literal arithmetic circuits,
+coefficient generators, and independent finite audits. The equivalences
+are formalizable in ZFC; the new reductions are not claimed to be new
+end-to-end Lean or Rocq certificates, globally minimal presentations,
+or proofs of ZFC consistency.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Outcome, comparison, and interpretation}
+\label{sec:outcome}
+
+Write $\N=\{0,1,2,\ldots\}$ and $\N_{>0}=\{1,2,\ldots\}$.
+For every construction delivered here, with its explicitly stated domain
+$D$, the intended theorem is
+\begin{equation}\label{eq:main-theorem}
+ \ZFC\vdash
+ \bigl(\neg\exists\boldsymbol{x}\in D:
+           P(\boldsymbol{x})=0\bigr)
+ \longleftrightarrow\Con(\ZFC).
+\end{equation}
+For a system, $P=0$ in this display means that all listed equations hold.
+The consistency predicate means that no finite derivation of contradiction
+exists in the fixed effective presentation of ZFC used by the K215 endpoint.
+The proof establishes the equivalent positive statement: a solution exists
+if and only if a finite ZFC refutation exists.
+
+There is no single ordering that makes an equation with fewer variables,
+another with smaller degree, and a third with fewer arithmetic operations
+all ``simplest.'' We therefore retain the useful new points on these
+tradeoffs and identify their exact gains. An operation is one binary
+$+$, $-$, or multiplication, including multiplication by a fixed numeral.
+Reuse and equality comparisons are free. Construction of fixed integers
+is accounted for separately from evaluation of a polynomial at an input.
+The degree counts quantified variables only: coefficient ports have degree
+zero. These conventions agree with the frozen repository catalogue.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.25\textwidth}p{0.32\textwidth}p{0.32\textwidth}@{}}
+\toprule
+Criterion & Frozen predecessor & This report\\
+\midrule
+Unrestricted integer count & 17 variables, 20607 operations &
+16 variables, 1865 operations\\
+17-integer alternative & Degree $424296\cdot5^{33}+53824$ &
+Degree $406528\cdot5^{32}+27512$\\
+Single-equation degree in 12 positive variables & Degree 1069, 123 operations &
+Degree 1065, 118 operations\\
+Single-equation cost in 12 positive variables & Degree 1081, 111 operations &
+Degree 1081, 108 operations\\
+Quadratic system in 31 positive variables & 22 equations, 65 operations &
+22 equations, 62 operations\\
+31-positive-variable quartic & 130 operations & 127 operations\\
+Smallest materialized base & $B=2^{1953125}$ & $B=2^{1064921}$\\
+Four coefficient payloads & 977220 raw bytes & 533099 raw bytes\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The sixteen-integer polynomial has degree
+$813056\cdot5^{32}+10024$, which is also lower than the predecessor's
+seventeen-integer degree. It is still enormous. For a readable low-degree
+presentation, the 22-equation quadratic system is the more useful choice.
+For a compact direct positive-domain circuit, the 108-operation equation
+is preferable. For the fewest positive variables, the existing Jones
+nine-variable route remains relevant: this report does not improve the
+count nine. The established 67-operation single equation and
+59-operation higher-degree systems are also not beaten in their own
+operation-count categories.
+
+The comparisons concern explicit constructions in the inspected repository.
+They are not assertions of universal optimality. In particular, Sun's
+September 2026 preprint states an effective ten-integer representation
+theorem for every recursively enumerable set \cite{sun10}. That theorem
+gives a smaller general existence bound than sixteen. Its different
+source coding has not been instantiated into a fixed K215 polynomial in
+this delivery; calling the sixteen-integer circuit the globally smallest
+known integer equation would therefore be unjustified.
+
+\subsection{Sources and the frozen snapshot}
+
+The source repository is \repo. All comparisons and source copies in this
+archive use commit\par
+\begin{center}\small\pin\end{center}
+in the directory
+\begin{quote}\small\ttfamily
+SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/\\
+con-zfc-diophantine-forms/
+\end{quote}
+The main catalogue at that commit
+already incorporates its audit of the fourth round of submissions.
+We compare those audited files, rather than treating a historical
+summary or a package's claim about its predecessors as current evidence.
+
+The useful contributions are complementary. Package 24 provides a tight
+separating weight and a padding argument for general odd radix dimensions.
+Package 25 provides mixed-radix local decoding, compact clause bands, and
+population adjustment in fields that are identically zero. Package 30
+provides a trace/product norm evaluator and the 31-variable quartic.
+Package 29 provides a signed Jones finalizer with a stack of positivity
+certificates. Combining the last two is especially effective: the signed
+construction had not yet used the smaller quartic or the compact evaluator.
+
+\section{The proof interfaces and what is verified}
+\label{sec:interfaces}
+
+The inherited proofs used here have four precise roles.
+\begin{enumerate}
+\item The literal 215-state machine on the blank tape halts if and only if
+ZFC has a finite refutation. The pinned Lean endpoint states this as
+\texttt{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}; its statement is
+included in the archive. We use the corresponding ordinary mathematical
+calibration, rather than an assumption that ZFC proves the soundness of
+Lean as a whole.
+\item The fixed 943-tile language represents finite blank computations.
+A periodic tiling with a Start marker and no Forbidden tile yields a
+halting computation. Conversely a finite halt can be padded to arbitrarily
+large independent widths and heights. These are the exact semantic
+properties needed when we change the numerical layout.
+\item The native-window and Pell compiler translates that language into
+the direct polynomial interface. Its soundness is for arbitrary
+solutions, and its completeness constructs positive witnesses. The
+canonical witnesses additionally have square scale $w$, odd scale $s$,
+and an odd strong-Pell multiplier where the signed reductions use them.
+The materialized tuple must satisfy this whole interface; modular
+identities of four unrelated integers would not suffice.
+\item The Jones reduction translates a normalized quartic into its
+eight-coordinate ratio predicate, or into a nine-variable equation over
+$\N$. The signed finalizer uses that particular predicate and its
+cofinal-radix completeness proof. It is not a generic conversion of an
+arbitrary nine-variable polynomial into sixteen integer variables.
+\end{enumerate}
+
+The new coefficient adapter is proved in Section~\ref{sec:coefficients}.
+The new arithmetic reductions and the signed construction are proved in
+the later sections. These proofs, together with the cited inherited
+lemmas, give \eqref{eq:main-theorem} by ordinary mathematics formalizable
+in ZFC. The archive includes the relevant inherited proof notes, literal
+source data, and source locations so that this dependency is reviewable.
+The native compiler and new finalizers remain outside the existing
+end-to-end proof-assistant certificates.
+
+Finite checking has a distinct, narrower role. It verifies the literal
+tile list, numerical coefficients, convolution identities, size bounds,
+operation counts, coordinate identities, norm identities, and degree
+certificates. It does not search for a counterexample to consistency,
+simulate an unbounded machine run, or establish the universal compiler
+theorem by testing finitely many cases.
+
+\input{sections/coefficients.tex}
+\input{sections/quartic.tex}
+\input{sections/positive.tex}
+\input{sections/signed.tex}
+\input{sections/verification.tex}
+
+\begin{thebibliography}{99}
+\bibitem{repo} Vladimir Reshetnikov, \emph{ProveIt}, frozen commit
+\pin. Repository: \repo. The bundled source map gives the precise path
+of each imported text, literal data file, and construction.
+\bibitem{p24} ProveIt package \texttt{24-integer24},
+\emph{Smaller explicit Diophantine forms of ZFC consistency}.
+Especially \texttt{sections/coefficients.tex},
+\texttt{sections/positive.tex}, and the coefficient generator.
+\bibitem{p25} ProveIt package \texttt{25-hybrid12},
+\emph{Smaller Diophantine forms of ZFC consistency}.
+Especially \texttt{coefficients/PROOF.md},
+\texttt{proofs/HYBRID12\_PROOF.md}, and the inherited compiler notes.
+\bibitem{p27} ProveIt package \texttt{27-wave4},
+\emph{Smaller Diophantine presentations of ZFC consistency}.
+Especially the Wang943 compiler/interface proofs and the retained
+transport-shift proof.
+\bibitem{p29} ProveIt package \texttt{29-simpler-forms},
+\emph{Smaller explicit Diophantine forms of ZFC consistency}.
+Especially \texttt{signed17/SIGNED17\_PROOF.md}.
+\bibitem{p30} ProveIt package \texttt{30-quartic31},
+\emph{Smaller explicit Diophantine forms for Con(ZFC)}.
+Especially the literal quartic, compact Jones evaluator, and
+\texttt{positive/POSITIVE12\_PROOF.md}.
+\bibitem{jones} James P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic 47 (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+\bibitem{sun10} Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594v2, 2 September 2026, Theorem 1.1.
+\url{https://arxiv.org/abs/2609.01594v2}.
+\end{thebibliography}
+\end{document}

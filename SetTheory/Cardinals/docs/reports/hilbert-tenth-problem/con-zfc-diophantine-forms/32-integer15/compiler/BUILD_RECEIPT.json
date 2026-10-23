@@ -1,0 +1,170 @@
+{
+  "instance": "wang943-mixed121-fixed-factor-8801",
+  "source_commit": "8c6eec9d19ef80538c8e61ff6e0180040583446a",
+  "machine_sha256": "fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090",
+  "B": "2^1064921",
+  "rho": "2^121",
+  "d": 1064921,
+  "radix_bits": 121,
+  "cell_length": 8801,
+  "clause_bands": [
+    4393,
+    5495
+  ],
+  "spatial_shift": 42,
+  "filler": {
+    "8792..8798": "2^119-1",
+    "8799": "2^27-1"
+  },
+  "encoding": "gzip of minimal unsigned little-endian integers",
+  "ports": {
+    "beta": "B-1",
+    "K": "DC+B*DR",
+    "MC": "native low mask",
+    "MF_source": "native high mask+B-1"
+  },
+  "aliases": {
+    "Bm1": "beta",
+    "Kconstant": "K",
+    "K0": "K",
+    "MF": "MF_source"
+  },
+  "warning": "Replace all four ports together; MF is already shifted.",
+  "files": [
+    {
+      "port": "beta",
+      "file": "beta.bin.gz",
+      "bit_length": 1064921,
+      "bytes": 133116,
+      "gzip_bytes": 164,
+      "population": 1064921,
+      "sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+      "gzip_sha256": "6728b9561f5b2a53a437d817d37785a8af5010872ac9fd7ac48283f98af4135b"
+    },
+    {
+      "port": "K",
+      "file": "K.bin.gz",
+      "bit_length": 1070004,
+      "bytes": 133751,
+      "gzip_bytes": 9794,
+      "population": 33499,
+      "sha256": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+      "gzip_sha256": "b3f6210368562cf7d2e1315939b0273597a9dd02163aeedb9003c183b452f451"
+    },
+    {
+      "port": "MC",
+      "file": "MC.bin.gz",
+      "bit_length": 1064921,
+      "bytes": 133116,
+      "gzip_bytes": 264,
+      "population": 1063932,
+      "sha256": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+      "gzip_sha256": "c0f6ec45a1282f65db85c9bdd8ecf77dd37398140bbf7cdd9639ed8e5b5a16d0"
+    },
+    {
+      "port": "MF_source",
+      "file": "MF_source.bin.gz",
+      "bit_length": 1064922,
+      "bytes": 133116,
+      "gzip_bytes": 263,
+      "population": 991,
+      "sha256": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7",
+      "gzip_sha256": "810d212306da7f7f59b1415ac3d2dc8ae440ebac01279d88c56891e5e34220e6"
+    }
+  ],
+  "total_raw_bytes": 533099,
+  "total_gzip_bytes": 10485,
+  "geometry": {
+    "status": "PASS",
+    "basis_convolution_checks": 69230,
+    "tile_count": 943,
+    "tile_group_counts": {
+      "actions": 430,
+      "halt": 2,
+      "stay": 2,
+      "right_receiver": 398,
+      "left_receiver": 90,
+      "finish": 4,
+      "initialization": 4,
+      "reset": 3,
+      "seam": 9,
+      "forbidden": 1
+    },
+    "support_size": 989,
+    "clause_population": 53,
+    "filler_population": 860,
+    "mass_bits": 118,
+    "carry_threshold_bits": 120,
+    "mask_threshold_bits": 121,
+    "combined_threshold_bits": 121,
+    "radix_bits": 121,
+    "max_unshifted_exponent": 8791,
+    "filler_first": 8792,
+    "filler_last": 8799,
+    "clean_band_intersection": [],
+    "anchor_intersection": [
+      0
+    ]
+  },
+  "controller": {
+    "status": "PASS",
+    "d_factorization": {
+      "11": 2,
+      "13": 1,
+      "677": 1
+    },
+    "order_mod_d": 780,
+    "order_prime_factors": [
+      2,
+      3,
+      5,
+      13
+    ],
+    "multiplicative_orders": {
+      "121": 10,
+      "13": 12,
+      "677": 52,
+      "2341": 60
+    },
+    "padding_prime": 2341,
+    "step": 2340,
+    "valuation": 1,
+    "B_power_step_mod_prime_squared": 2556373,
+    "unit_residues": [
+      {
+        "prime": 11,
+        "B": 2,
+        "DC": 5,
+        "DR": 4,
+        "q_squared_minus_one": 3,
+        "bracket": 9
+      },
+      {
+        "prime": 13,
+        "B": 6,
+        "DC": 1,
+        "DR": 12,
+        "q_squared_minus_one": 9,
+        "bracket": 7
+      },
+      {
+        "prime": 677,
+        "B": 611,
+        "DC": 38,
+        "DR": 643,
+        "q_squared_minus_one": 293,
+        "bracket": 654
+      },
+      {
+        "prime": 2341,
+        "B": 2100,
+        "DC": 2051,
+        "DR": 586,
+        "q_squared_minus_one": 1896,
+        "bracket": 1225
+      }
+    ]
+  },
+  "end_to_end_formal_certificate": false,
+  "scope": "Exact finite recipe and ordinary compiler adapter; no consistency decision."
+}

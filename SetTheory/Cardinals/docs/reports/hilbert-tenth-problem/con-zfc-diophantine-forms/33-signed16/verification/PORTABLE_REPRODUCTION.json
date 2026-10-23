@@ -1,0 +1,106 @@
+{
+  "schema": "con-zfc-portable-reproduction-v1",
+  "status": "PASS",
+  "python": {
+    "implementation": "CPython",
+    "version": "3.12.14"
+  },
+  "method": {
+    "fresh_zip_archive_and_extraction": true,
+    "driver": "reproduce.py",
+    "driver_invocation_working_directory_outside_extracted_release": true,
+    "isolated_python_driver": true,
+    "user_site_packages_disabled": true,
+    "standard_library_only": true,
+    "external_checkout_used": false,
+    "network_access_used": false,
+    "archive_exclusions": [
+      "*.aux",
+      "*.log",
+      "*.out",
+      "*.toc",
+      "__pycache__",
+      "*.pyc",
+      "*.pyo"
+    ]
+  },
+  "stage_results": [
+    {
+      "script": "quartic31/build_and_verify.py",
+      "status": "PASS"
+    },
+    {
+      "script": "code/prepare_index.py",
+      "status": "PASS"
+    },
+    {
+      "script": "code/build_signed16.py",
+      "status": "PASS"
+    },
+    {
+      "script": "code/verify_signed16.py",
+      "status": "PASS"
+    },
+    {
+      "script": "positive12/build_and_verify.py",
+      "status": "PASS"
+    },
+    {
+      "script": "coefficients_small/build.py",
+      "status": "PASS"
+    },
+    {
+      "script": "coefficients_small/audit_independent.py",
+      "status": "PASS"
+    },
+    {
+      "script": "coefficients_small/audit_external_review.py",
+      "status": "PASS"
+    }
+  ],
+  "byte_comparison": {
+    "comparison_target": "Bundled files before regeneration in the clean extracted snapshot",
+    "bundled_files_compared": 98,
+    "files_byte_identical": 98,
+    "changed_files": [],
+    "missing_files": [],
+    "new_files": [],
+    "receipts_excluded_from_comparison": false
+  },
+  "active_scripts_sha256": {
+    "reproduce.py": "a4fc989a0c0dbf5f9e09ef7954aba32912f8ddcedeafd447e6969a43760ac720",
+    "code/build_signed16.py": "6515df65bc2aae4b024a1e9bd7c853644c416b9766bbc6187398e25665cc1471",
+    "code/prepare_index.py": "249176aabde332a82f0016ea6550de774422895402a1f1ad48f540939f6607c4",
+    "code/verify_signed16.py": "9d7117049a02f8c191e585d94f0c9ba5a38f27abf8b2da008fd7830fd198c863",
+    "quartic31/build_and_verify.py": "c28b6090af373e07951e259ee72283dc9db068635d05ce91d6e37c3174367cec",
+    "positive12/build_and_verify.py": "e0169891bccae33975e273521771a23ecf2f13dd43689d685bfe0de459704cd8",
+    "coefficients_small/audit_external_review.py": "e018f0ac8c4741ccc9358c446660fb2041bd44ddf38ff4af8c2dfc1c2d14a0f6",
+    "coefficients_small/audit_independent.py": "0df8e420c6aa42b0980373569f998dc5b575650232440beb74c964d402fe949e",
+    "coefficients_small/build.py": "126b7f0a8f193995947323054a6eac84c8f72734450ec0444b28f1ff4438c8b7"
+  },
+  "stdlib_modules": [
+    "__future__",
+    "argparse",
+    "ast",
+    "collections",
+    "functools",
+    "gzip",
+    "hashlib",
+    "itertools",
+    "json",
+    "math",
+    "os",
+    "pathlib",
+    "random",
+    "subprocess",
+    "sys"
+  ],
+  "signed16_operations": 1590,
+  "signed16_operation_counts": {
+    "add": 674,
+    "sub": 29,
+    "mul": 887
+  },
+  "signed16_exact_degree": 9465217590332031250000010008,
+  "scope": "One complete clean-extraction reproduction using only bundled inputs. Confirms portable generation and the supplied exact-algebra and finite arithmetic audits. Universal proofs and imported mathematical dependencies remain those described in report.tex; this is neither a ZFC consistency decision nor a new proof-assistant build."
+}

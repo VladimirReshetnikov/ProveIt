@@ -1,0 +1,132 @@
+\section{The common positive quartic and its literal index}
+\label{sec:parent}
+
+We use the unshifted positive quartic of package 30 as the coding source.
+This choice keeps the inherited coefficient index unchanged as a
+symbolic recipe.  The cheaper 60-operation system later in this report
+is an equivalent presentation; it is not silently substituted into the
+index compiler.
+
+Let $\beta,K_0,M_C,M_F$ denote the complete tuple of
+\eqref{eq:new-four-ports}; $K_0$ is that equation's port $K$ and is distinct
+from subsequent polynomial expressions also traditionally called $K$.
+The 31 positive coordinates, in their fixed order, are
+\[
+ (J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\mathrm{aux}},\Delta).
+\]
+Put
+\[
+ q=\beta J+1,\quad k=\eta+\zeta,\quad
+ H=4a+3,\quad C=q-F-\alpha.
+\]
+The parent is the sum of the squares of the residuals of these 22
+equations, with ``left minus right'' as the residual convention:
+\begin{alignat}{2}
+ L&=q^2-1, &\qquad N&=q(L+1),\notag\\
+ X&=wq, & a&=E+sN,\notag\\
+ E&=X(a-E), & c&=k(a-E)+\eta,\notag\\
+ P&=E(c-\eta)+k, & \tau^2&=P(P-k)+1,\notag\\
+ D&=X+ac+\gamma H, & \Delta&=a^2+H,\notag\\
+ C_2&=c^2, & D^2&=\Delta C_2+1,\notag\\
+ k&=jc-V+1+hE, & F_2&=f^2,\notag\\
+ V&=of-c, & g&=y^2-V^2,\notag\\
+ I&=iC_2, & B_{\mathrm{aux}}&=I^2,\notag\\
+ B_{\mathrm{aux}}&=\Delta(F_2-1), & y^2-B_{\mathrm{aux}}g&=1,
+ \label{eq:parent-quadratic}
+\end{alignat}
+together with the two transport equations
+\begin{align}
+ jc-V&=(q-F)(N-q)-CL+(M_C+qM_F)J,\label{eq:parent-mask}\\
+ (K_0+w)C+q-F-z(q-1)&=1.\label{eq:parent-transport}
+\end{align}
+The order in the literal JSON, rather than the grouping on this page,
+is authoritative for the coefficient indices.  There are no products of
+more than two coordinates in a residual after the displayed abbreviations
+are substituted: every residual has total degree at most two.
+
+Write this sum of squares as $Q_{31}$ and let
+\[
+ P_\star(x_0,x_1,\ldots,x_{31})
+   =Q_{31}(x_1+1,\ldots,x_{31}+1).
+\]
+The dummy input $x_0$ does not occur.  The coefficient of $\tau^4$ in
+$Q_{31}$ is 1, so the degree is exactly four.  At the all-zero
+nonnegative input the residual $E-X(a-E)$ is 1, hence
+$P_\star(a,0,\ldots,0)\geq1$ for every integer $a$.  Thus Sun's source
+construction applies directly; there is no need to append a variable or
+square this quartic again.
+
+\begin{proposition}\label{prop:parent}
+With the complete tuple \eqref{eq:new-four-ports}, ZFC proves
+\[
+ (\exists\boldsymbol{n}\in\N^{31}\ P_\star(0,\boldsymbol{n})=0)
+ \ \longleftrightarrow\ 
+ (\text{there is a finite ZFC refutation}).
+\]
+\end{proposition}
+\begin{proof}
+Translation by 1 is a bijection from $\N$ to $\Z_{>0}$.  A sum of integer
+squares is zero exactly when every residual is zero.  The package-30
+parent proof identifies these positive solutions with the compatible
+native arithmetic skeleton.  Section~\ref{sec:new-coefficients} supplies
+that skeleton with a complete tuple preserving its soundness,
+completeness, slack and parity interface.  The native compiler and the
+K215 endpoint then give the assertion.  The strong auxiliary Pell index
+must be converted to the ordinary index as in the inherited parent
+proof; the tuple replacement does not change that conversion.
+\end{proof}
+
+\subsection{Weighted coefficients with no unspecified index}
+
+Put $\nu=31$ and $L_\star=5^{32}=23283064365386962890625$.  Write
+\[
+ P_\star=\sum_{|\boldsymbol{a}|\le4}p_{\boldsymbol a}
+                x_0^{a_0}\cdots x_{31}^{a_{31}},\qquad
+ c_{\boldsymbol a}=(4-|\boldsymbol a|)!
+              \prod_{j=0}^{31}a_j!\ p_{\boldsymbol a}.
+\]
+Define $e(\boldsymbol a)=\sum_{j=0}^{31}a_j5^j$.
+All $58,905=\binom{36}{4}$ positions of total weight at most four are
+distinct, and $e(\boldsymbol a)<L_\star$.  There are 402 nonzero weighted
+coefficient records when the four ports are treated as fixed symbolic
+parameters.  The file \texttt{signed16/data/constants.json} gives all of
+them as explicit finite recipes.  The verifier expands the normalized
+parent symbolically and checks every record, including factorial weights.
+
+For the new tuple, the explicitly materialized integer
+\[
+ z_\star=2^{4269855}
+\]
+satisfies
+\begin{equation}\label{eq:coefficient-bound}
+ |c_{\boldsymbol a}|+1<z_\star
+ \quad\text{for every }|\boldsymbol a|\le4.
+\end{equation}
+The check uses exact integer arithmetic on the actual port payloads,
+not a floating-point estimate.  This also bounds every
+$|p_{\boldsymbol a}|$ by $z_\star$, since its factorial multiplier is a
+positive integer.
+
+For the Jones route define the fixed polynomial and fixed integers
+\begin{align*}
+ e_\star(T)&=\sum_{|\boldsymbol a|\le4}
+                  (z_\star+c_{\boldsymbol a})T^{L_\star-e(\boldsymbol a)},\\
+ y_\star&=e_\star(2z_\star),\qquad
+ \kappa=(2z_\star)^{L_\star+1}
+        =2^{99415332078933715820316769856}.
+\end{align*}
+Every digit lies strictly between 0 and $2z_\star$ and its position is
+distinct, so $0<y_\star<\kappa$.  These are bounded definitions of actual
+integers.  The huge $y_\star$ need not be a leaf of a circuit, and the
+power-of-two recipe for $\kappa$ is explicit even though expanding its
+binary string is not practical.
+
+For the ten-variable route we instead use the sparse polynomial
+\[
+ D_\star(T)=\sum_{|\boldsymbol a|\le4}
+                   c_{\boldsymbol a}T^{L_\star-e(\boldsymbol a)}.
+\]
+It has exactly the same weighted coefficient data, without the all-position
+$z_\star$ padding.  This is one reason to preserve the literal parent and
+its coordinate order across the two independent reductions.

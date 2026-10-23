@@ -1,0 +1,126 @@
+\section{A 62-operation quadratic system and its quartic}
+\label{sec:quartic}
+
+For a presentation with small degree, the most readable new result is
+a system of 22 quadratic equations in 31 strictly positive integers.
+Three coordinated changes of coordinates reduce package 30's system
+from 65 operations to 62. Its sum of squares is a single quartic using
+127 operations, compared with 130 before the changes.
+
+The 31 variables are
+\begin{align*}
+ &J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ &N,E,T,c,a,X,D,C_2,S,F_2,V,g,I,B_a,\Delta.
+\end{align*}
+All are strictly positive. Use the four fixed coefficients
+\eqref{eq:new-ports} and the affine abbreviations
+\[
+ q=\beta J+1,\qquad k=\eta+\zeta,\qquad H=4a+3,
+ \qquad C=q-F-\alpha.
+\]
+The equations are
+\begin{align}
+ S&=q^2, &N&=qS, &X&=wq,\label{eq:quad-start}\\
+ a&=E+sN, &E&=X(a-E), &c&=k(a-E)+\eta,\\
+ T&=E(c-\eta), &\tau^2&=T(T+k)+1,\\
+ D&=X+ac+\gamma H, &\Delta&=a^2+H,\\
+ C_2&=c^2, &D^2&=\Delta C_2+1,\\
+ k&=jc-V+1+hE.&&
+\end{align}
+The two packing and transport equations are
+\begin{align}
+ jc-V&=(q-F)(N-q)-C(S-1)+(M_C+qM_F)J,\\
+ (K_0+w)C&=F+z(q-1).
+\end{align}
+The remaining seven equations are
+\begin{align}
+ F_2&=f^2, &V&=of-c, &g&=y^2-V^2,\\
+ I&=iC_2, &B_a&=I^2, &B_a&=\Delta(F_2-1),\\
+ y^2-B_ag&=1.&&&\label{eq:quad-end}
+\end{align}
+Since every abbreviation is affine and every displayed product has
+at most two affine factors, every residual has total degree at most two.
+Writing the 22 residuals as $r_j$, the single polynomial
+\begin{equation}\label{eq:new-quartic}
+ Q_{31}=\sum_{j=1}^{22}r_j^2
+\end{equation}
+has degree exactly four: the coefficient of $\tau^4$ is one. Over the
+stated positive domain, $Q_{31}=0$ is equivalent to all 22 equations.
+
+\subsection{The three shifts and the positive zero sets}
+
+The predecessor coordinates being changed are denoted by
+$L_{\rm old},P_{\rm old},z_{\rm old}$. The exact substitutions are
+\[
+ L_{\rm old}=S-1,\qquad P_{\rm old}=T+k,
+ \qquad z_{\rm old}=z+1.
+\]
+All other variables are untouched.
+
+The old equations for $L_{\rm old}$ and $N$ become $S=q^2$ and
+$N=qS$. In the packing equation $L_{\rm old}$ becomes $S-1$.
+This removes two gates and introduces one, for a net saving of one.
+The old first-root definition was
+$P_{\rm old}=E(c-\eta)+k$; after the shift it is
+$T=E(c-\eta)$. The first norm becomes $\tau^2=T(T+k)+1$.
+This saves a second gate. Finally the transport identity
+\[
+ (K_0+w)C+(q-F)-(z+1)(q-1)-1
+       =(K_0+w)C-F-z(q-1)
+\]
+saves a third gate when its two sides are compared directly.
+These are polynomial identities. The sparse-ring audit verifies each of
+the 22 residuals against both the predecessor's expression and its
+literal sparse coefficient data after substitution.
+
+Given a new positive solution, $S=q^2>1$ implies
+$L_{\rm old}>0$, while $P_{\rm old}=T+k>0$ and
+$z_{\rm old}=z+1>0$. The identities give a positive predecessor solution.
+Conversely, on a positive predecessor solution,
+$S=L_{\rm old}+1=q^2$, and
+\[
+ a-E=sN>0,\qquad c-\eta=k(a-E)>0,
+ \qquad T=P_{\rm old}-k=E(c-\eta)>0.
+\]
+For the final shift, the inherited Pell/compiler theorem supplies
+$C>0$, $X=wq=2^R$, $R>3q$, and $F<q$.
+Consequently $w>q>F$, and the transport equation gives
+\[
+ (z_{\rm old}-1)(q-1)=(K_0+w)C-F>0.
+\]
+Thus $z_{\rm old}\ge2$, so the new $z$ is positive.
+This positivity step is a use of the inherited arithmetic theorem,
+not an inference from a finite test of a few tuples.
+The transformations are inverse on the positive zero sets.
+
+\begin{theorem}[The low-degree construction]
+ZFC proves that the 22-equation system above has no positive integer
+solution if and only if $\Con(\ZFC)$. Equivalently, ZFC proves the
+same statement for the quartic $Q_{31}=0$.
+\end{theorem}
+\begin{proof}
+The shifts give the proved bijection to package 30's positive quartic
+system. The complete coefficient replacement theorem permits the new
+tuple in that system. Its inherited Pell/compiler equivalence and
+the literal K215 calibration give the theorem.
+\end{proof}
+
+\subsection{Cost and the quartic used by the Jones branch}
+
+The system has 62 live binary gates: 33 multiplications and 29 additions
+or subtractions. The sum-of-squares finalizer adds 22 residual
+subtractions, 22 squares, and 21 additions, giving 127 gates.
+Its expansion has 297 monomials when the four coefficient ports remain
+independent formal symbols; the predecessor has 306 under that convention.
+This count does not identify algebraic coefficient ports with quantified
+unknowns.
+
+Replacing every positive variable by its nonnegative successor gives a
+normalized quartic: at all positive variables equal to one the residual
+$E-X(a-E)$ equals one independently of the coefficient tuple. Thus the
+shifted quartic is nonzero at the all-zero tuple, as required by Jones.
+To keep the index coefficients and their exact source map simple, the
+signed construction below uses the predecessor's literal 31-variable
+quartic, rebound to the same new tuple. It has the same existential
+meaning. Its separate source data are included, and are not confused
+with the new 297-term quartic.

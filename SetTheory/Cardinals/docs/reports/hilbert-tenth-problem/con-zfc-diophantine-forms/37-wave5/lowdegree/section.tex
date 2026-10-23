@@ -1,0 +1,61 @@
+\section{Integer-domain synthesis}
+Two combinations improve different parts of the integer frontier. All their
+coefficient ports select the same complete compact Wang943 tuple, with
+$B=2^{5^{10}}$ and the shifted high-mask port. Historical source bindings are
+not spliced into these new instances.
+
+\paragraph{A quartic in fifty unrestricted integers.}
+Source~30 removes the positive packing register $G$ by the identity
+\[
+ L\bigl(q(q-F)-C\bigr)-\bigl((q-F)(N-q)-CL\bigr)
+   =(q-F)\bigl(q(L+1)-N\bigr).
+\]
+This identity is equally valid in source~27's signed odd-scale lift. Deleting
+$G$ there, while retaining $i=2r+1$, $s=2v+1$, $w=u^2$ and six three-variable
+positive guards, gives fifty unrestricted integers and 29 quadratic equations.
+Restoring $G=q(q-F)-C$ is unique and precedes every sign-recovery argument;
+thus no positive-$s$ assumption is imported prematurely. The sum of squares
+has exact degree four, since its $\tau^4$ coefficient is one. Its comparison
+system has 111 binary operations, and the explicit quartic evaluator has 197.
+The expanded polynomial has 414 symbolic terms, including coefficient ports.
+
+\paragraph{A cheaper degree-1936 polynomial in twenty-four integers.}
+Keep the signed ratio-norm notation $I=ic^2$, $v=cT$, $b=c+RD$,
+$G=1+\Delta c^2$. The improved weight is
+\[
+ M=2(5Rac\,iI+v^2),\qquad L=1+HM.
+\]
+The inherited sign-safe bound strengthens to
+\[
+ \frac{|y'|}{\sqrt G}
+ <iI+v^2+2+4Rac\,iI
+ <5Rac\,iI+v^2=M/2,
+\]
+because $(Rac-1)iI>2$ already holds before root recovery. Both signs of
+$s,i,H$, and the $w=0$, $T=0$ boundaries, remain covered. With
+$S=X+ac+Ht$, take the eight-factor norm of
+\[
+ d(S-Lu-2HM\tau)^2-H^2e+H^2B_{\rm aux}f,
+ \qquad u^2=G,\quad\tau^2=A,\quad f^2=D.
+\]
+Source~30's trace/product remainder method evaluates this norm. Sharing
+$HQ=H^2Q$ and using a Horner final norm further reduces its circuit.
+The product $N_kN_t(1+N)-1$ now costs 161 operations at exact degree1936.
+The three-equation presentation costs 156 at maximum degree1920, using a
+direct final comparison; its SOS costs 164 at degree3840.
+The uniform leading certificate is
+\[
+ N_*=(99\cdot899)^4d_*^8H_*^{16}b_*^{16},
+ \qquad \deg N=1920.
+\]
+This replaces the previous degree1936 evaluations at 167/168 operations.
+
+\paragraph{Verification and scope.}
+The generators deliver every binary gate and every quadratic residual.
+Independent checks establish the packing syzygy, the quartic expansion,
+208 rank-eight conjugate-product comparisons, and exact finite-field degree
+certificates using the actual coefficient tuple. Full sign proofs and source
+provenance are in \texttt{lowdegree/PROOF.md}. The compiler and calibrated
+K215 endpoint remain inherited mathematical dependencies. These constructions
+assert neither consistency nor global minimality, and are not new end-to-end
+proof-assistant certificates.

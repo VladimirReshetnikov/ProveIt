@@ -1,0 +1,214 @@
+\section{The shorter inherited presentations, with the new tuple}
+
+For users prioritizing a concise system, the seven-equation 59-operation
+presentation remains useful. Its sixteen positive variables are
+\[
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+Use $q,X,Y,E,k,c,a,H,\Delta,C,R$ as defined in Section~\ref{sec:norm},
+but in this section put
+\[
+ D=X+ac+\gamma H,\quad L_0=EkY,\quad V=of-c,\quad
+ U_0=jc-R,\quad I=ic^2,\quad A_0=\Delta(f^2-1).
+\]
+Then the complete system is
+\begin{equation}\label{eq:system59}
+ \begin{aligned}
+ \tau^2-L_0(L_0+k)&=1, & D^2-\Delta c^2&=1,\\
+ A_0(V^2-y^2)+y^2&=1, & k-hE-R&=1,\\
+ (K+w)C&=F+z(q-1), & I^2&=A_0,\\
+ U_0&=V.
+ \end{aligned}
+\end{equation}
+Here $z$ is the shifted transport coordinate. The largest residual degree
+is 24. Graph lifts can lower this degree at the same arithmetic count but
+add witnesses and equations; those existing tradeoffs are not recounted as
+new results.
+
+For one polynomial at the smallest inherited arithmetic count, retain the
+fifteen positive coordinates
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma.
+\]
+Use the same common abbreviations and set
+\begin{align*}
+ V&=c(Tf-1)-Rf^2,&K_a&=(i\Delta c^2)^2,\\
+ N_0&=\tau^2-L_0(L_0+k),&N_1&=D^2-\Delta c^2,\\
+ N_a&=K_a(V^2-y^2)+y^2,&N_s&=\Delta f^2-K_a,\\
+ N_k&=k-hE-R,&N_t&=(K+w)C+q-F-z(q-1).
+\end{align*}
+Here $z$ is the unshifted coordinate. The equation is
+\begin{equation}\boxed{
+ N_0N_1N_aN_kN_tN_s-\Delta=0.}\label{eq:p67}
+\end{equation}
+It has 67 operations and exact degree 155. Its complete inherited
+unit-sign and Pell proof is included in \path{proofs/INHERITED_P67_PROOF.md};
+the new local contribution to this instance is the smaller complete
+coefficient tuple. We do not claim a 66-operation polynomial.
+
+The strongest caution in this proof is useful more generally: weak
+transport initially permits $C=0$ and a negative unit sign. Discarding
+that boundary before recovering the main Pell index would invalidate the
+argument. The source proofs retain the boundary, recover the target index,
+eliminate the negative sign, and only then conclude $C>0$.
+
+\section{Verification, reproducibility, and provenance}
+
+\subsection{What the finite checks establish}
+
+The archive is intended to be an additive, reviewable research package.
+It includes the actual four coefficients, source machine transitions,
+literal arithmetic circuits, exact coefficient recipes, source pins,
+mathematical proofs, standard-library Python programs, LaTeX source, and
+the compiled PDF. No network request is required to replay the main checks.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}@{}}
+\toprule
+Component & Verification and its scope\\
+\midrule
+\endhead
+Finite language & Reconstruct all 943 ordered tiles from the 430 literal
+machine actions, and verify the complete tile-list hash.\\
+Coefficient adapter & Independently reconstruct all four full integers;
+check 66,062 native-basis identities, exact populations and congruences,
+carry thresholds, support intersections, primality, orders, lifting, and
+actual unit residues.\\
+Positive norms & Prove the quadratic-remainder identity algebraically;
+check exact eight-conjugate evaluations on signed fixtures, predecessor
+agreement, transport substitutions, liveness and operation ledgers, and
+full polynomial degree diagnostics in two finite fields.\\
+Nine-variable evaluator & Check 675 exact symbolic correction terms,
+12,032 intermediate-value comparisons, and 128 affine-coordinate checks;
+verify all supplied inputs/gates are live.\\
+Jones constants & Verify actual compiler payload hashes and bit lengths,
+all 402 strict index bounds, the complete zero-record convention, and
+the actual $z_J$ payload.\\
+Release & Run the package from its delivered relative layout, retain
+receipts and hashes, compile the TeX document, and inspect rendered pages.\\
+\bottomrule
+\end{longtable}
+
+These checks do not test whether the actual consistency polynomial has a
+zero. They also do not replace the infinite-direction compiler or Pell
+arguments. Random agreement is corroboration, whereas a polynomial
+identity is proved by the displayed algebra or exact sparse comparison.
+Finite-field degree checks corroborate the uniform leading-term proofs;
+they are not the sole basis for the exact degree claims.
+
+\subsection{Commands and bindings}
+
+From the package root, run
+\begin{verbatim}
+python3 verify.py
+python3 reproduce.py
+\end{verbatim}
+The first performs the release checks. The second regenerates the new
+coefficients and circuits before checking them. Both use Python 3.10 or
+later with the standard library. To rebuild the article:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+
+Every recommended circuit identifies its variable domain and coefficient
+binding. The names $K_0$ and \texttt{Kconstant} alias $K$; \texttt{Bm1}
+aliases $\beta$; \texttt{MF} aliases the shifted $M_F$.
+Historical files in \texttt{source/} or \texttt{upstream/} retain their
+original coefficients and are explicitly comparisons. The recommended
+nine-variable circuit has its own newly derived index constants. No old
+Jones index is silently paired with a different quartic.
+
+The only use of the remote repository was read-only source inspection.
+No commit, branch, pull request, issue, or other remote object was created.
+Source license and attribution files are preserved. A proposed placement
+is a new directory under the user's existing
+\texttt{con-zfc-diophantine-forms} collection; the user can incorporate it
+using the repository's preferred intake process.
+
+\section{What remains worth trying}
+
+Several plausible shortcuts fail to establish what they appear to promise.
+Deleting $N_k=1$ and its coordinate $h$ would appear to give eleven positive
+variables. But that equation supplies $k\equiv R+1\pmod E$, hence the
+first-Pell-index congruence $2n\equiv R+1\pmod E$. After main-index
+recovery it forces the exact relation needed by the half-binomial population
+argument. The strict ratio alone gives bounds, not this congruence. No
+eleven-variable reduction is claimed.
+
+Likewise, replacing $\beta$ alone by a smaller base, replacing a main
+congruence-carrying root by its absolute value, or merging radical tests
+without checking repeated or negative radicands can introduce extraneous
+solutions. Coefficient numerical audits establish an interface only when
+accompanied by its completeness controller and semantic proof.
+
+The next substantial gains are likely to require one of three more
+structural advances. A smaller quadratic-residual parent would reduce the
+$5^{\nu+1}$ exponent in the Jones construction. A new way to encode the
+first-index congruence could remove an actual moderate-degree witness.
+A different finite computation language or more compact native geometry
+could reduce the fixed ports beyond the conservative layout retained here.
+These are specific remaining proof obligations, not asserted results.
+
+For incorporation now, the 59-operation system is the shortest transparent
+display, the 103-operation twelve-variable system is a useful balance of
+coordinates and evaluation size, and the 1582-operation nine-positive-
+variable polynomial is the coordinate-minimizing recommendation. Each has
+an explicit fixed instance and the requested ZFC-provable equivalence.
+
+\clearpage
+\begin{thebibliography}{9}
+\small\raggedright
+
+\bibitem{collection}
+Vladimir Reshetnikov and contributors.
+\emph{Con(ZFC) in Diophantine form}, audited wave-4 collection.
+ProveIt, commit \texttt{8c6eec9d19ef80538c8e61ff6e0180040583446a}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8c6eec9d19ef80538c8e61ff6e0180040583446a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}{Pinned collection}.
+Local copy: \path{evidence/COMPARISON_AT_PIN.md}.
+
+\bibitem{norms}
+ProveIt report packages 24 and 30.
+\emph{Smaller explicit Diophantine forms of ZFC consistency};
+\emph{A smaller twelve-positive-variable synthesis}.
+Pinned source proofs and polynomial circuits are recorded in
+\path{positive/SOURCE_PINS.json}.
+
+\bibitem{coefficients}
+ProveIt report packages 24, 25, and 27.
+Mixed-radix native compiler, Wang943 language, arbitrary-odd-dimension
+prime padding, and complete coefficient adapters.
+Exact source paths and SHA-256 values:
+\path{coefficients/SOURCES.json}; retained proofs:
+\path{coefficients/source_proofs/}.
+
+\bibitem{quartic}
+ProveIt report package 30.
+\emph{A 31-positive-variable quartic by eliminating a packing register}
+and \emph{The compact nine-variable construction}.
+Exact input manifest: \path{nine/SOURCE_MANIFEST.json}.
+
+\bibitem{endpoint}
+ProveIt. \emph{KEndpoint215.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8c6eec9d19ef80538c8e61ff6e0180040583446a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}{Pinned formal endpoint}.
+Inspected, not rebuilt in this work; provenance copy in \path{proofs/}.
+
+\bibitem{jones}
+James P. Jones. Universal Diophantine equation.
+\emph{Journal of Symbolic Logic} 47(3), 549--571 (1982).
+\href{https://doi.org/10.2307/2273588}{doi:10.2307/2273588}.
+
+\bibitem{repojones}
+ProveIt. Corrected Jones manuscript and parameterized nine-variable
+development. \path{Computability/HilbertTenthProblem/Papers/1982/} and
+\path{Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/}.
+The present composition uses the ordinary source theorem as identified in
+the retained package-30 proof, not a newly rebuilt formal specialization.
+
+\bibitem{sun}
+Zhi-Wei Sun. \emph{Ten unknowns for Hilbert's tenth problem over the integers}.
+arXiv:2609.01594v2 (2 September 2026).
+\href{https://arxiv.org/html/2609.01594v2}{Versioned primary source}.
+This general theorem is discussed for comparison only and is not instantiated
+as a ten-integer deliverable here.
+
+\end{thebibliography}

@@ -1,0 +1,49 @@
+if not __debug__: raise SystemExit('Optimized Python is not permitted: assertions are audit checks.')
+"""New-owned emitter. Received repository programs are never executed or imported."""
+import json
+from pathlib import Path
+HERE=Path(__file__).resolve().parent
+class Circuit:
+ def __init__(self):self.rows=[];self.cache={}
+ def op(self,op,a,b,n=None):
+  key=(op,*sorted([a,b],key=str)) if op in ('+','*') else (op,a,b)
+  if key in self.cache:return self.cache[key]
+  n=n or 'g'+str(len(self.rows)+1);self.rows.append([n,op,a,b]);self.cache[key]=n;return n
+ def m(self,a,b,n=None):return self.op('*',a,b,n)
+ def a(self,a,b,n=None):return self.op('+',a,b,n)
+ def s(self,a,b,n=None):return self.op('-',a,b,n)
+ def q(self,a,n=None):return self.m(a,a,n)
+
+def build():
+ C=Circuit();m,a,s,q=C.m,C.a,C.s,C.q
+ qm1=m('beta','J','qm1');Qq=a(qm1,1,'q');q2=q(Qq,'q2');q3=m(q2,Qq,'q3')
+ X=m('w',Qq,'X');Y=m('s',q3,'Y');E=m(X,Y,'E');k=a('eta','zeta','k')
+ kY=m(k,Y,'kY');ell=m(E,kY,'ell');A=a(m(ell,a(ell,k)),1,'A')
+ c=a(kY,'eta','c');av=a(E,Y,'a');H=a(m(4,av),3,'H');Delta=a(q(av),H,'Delta');c2=q(c,'c2')
+ G=a(m(Delta,c2),1,'G');b0=a(X,m(av,c),'b0');qF=s(Qq,'F','qF');Cw=s(qF,'alpha','Cw')
+ R=a(m(a(m(qm1,qF),'alpha'),s(q2,1)),m(a('MC',m(Qq,'MF')),'J'),'R')
+ Nk=s(s(k,m('h',E)),R,'Nk');Nt=s(a(m(a('K0','w'),Cw),qF),m('z',qm1),'Nt')
+ I=m('i',c2,'I');I2=q(I,'I2');Dm1=m(Delta,I2,'Dm1');D=a(Dm1,1,'D');Q=m(Delta,Dm1,'Q');d=s(Q,1,'d')
+ T2=q('T','T2');v2=m(c2,T2,'v2');b=a(c,m(R,D),'b');P=m(Q,m(D,v2),'P');U=m(Q,q(b),'U')
+ M=m(k,a(I2,T2),'M');HM=m(H,M,'HM');L=a(HM,1,'L');W=a(b0,m(H,'t'),'W')
+ H2=q(H,'H2');n=m(q(HM),A,'n');dn=m(d,n,'dn');HP=m(H2,P,'HP');HU=m(H2,U,'HU');He=s(a(HP,HU),H2,'He');j=m(4,m(HP,HU),'j')
+ # F_H(z) = ((d*z^2)^2-2*(dn+He)*d*z^2+(dn-He)^2-j)^2-16*dn*j*d*z^2.
+ W2=q(W,'W2');L2G=m(q(L),G,'L2G');Trace=m(2,m(d,a(W2,L2G)),'Trace');Knorm=m(q(d),q(s(W2,L2G)),'Knorm')
+ AA=m(2,a(dn,He),'AA');constant=s(q(s(dn,He)),j,'constant')
+ at=s(Trace,AA,'at');bt=s(constant,Knorm,'bt');coef=m(16,m(dn,j),'coef')
+ vr=s(m(at,a(m(at,Trace),m(2,bt))),coef,'vr');ur=s(q(bt),m(q(at),Knorm),'ur')
+ N=a(a(q(ur),m(Trace,m(ur,vr))),m(Knorm,q(vr)),'N')
+
+ base=dict(witnesses=['J','F','alpha','z','h','i','T','s','w','eta','zeta','t'],fixed_numerals=['beta','K0','MC','MF'],domain='strictly positive integers',proof='POSITIVE12_PROOF.md')
+ binding=json.loads((HERE/'COEFFICIENT_BINDING.json').read_text())
+ base['coefficient_binding']=binding
+ for kind,rows,extra in [('system',list(C.rows),{'comparisons':[[Nk,1],[Nt,1],[N,0]],'exact_degrees':[7,2,1072]})]:
+  save(base,kind,rows,extra)
+ out=s(m(m(Nk,Nt),a(N,1)),1,'polynomial');save(base,'product',C.rows,{'output':out,'exact_degree':1081})
+
+def save(base,kind,rows,extra):
+ data=dict(base,name='positive12_'+kind,source=rows,**extra)
+ data['ledger']={'operations':len(rows),'multiplications':sum(r[1]=='*' for r in rows),'additions_subtractions':sum(r[1]!='*' for r in rows)}
+ (HERE/('positive12_'+kind+'.json')).write_text(json.dumps(data,indent=2)+'\n');print(kind,data['ledger'])
+if __name__=='__main__':build()
+

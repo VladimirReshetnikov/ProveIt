@@ -1,0 +1,284 @@
+\section{Fourteen unrestricted integer unknowns}
+\label{sec:signed14}
+
+We combine package~30's quartic in $31$ positive unknowns, package~27's
+fast Jones evaluation, and package~29's signed square-stack and intersective
+finalizer. Two new restricted-completeness arguments and a Pell orbit remove
+three of package~29's guards. The resulting fixed polynomial has
+\[
+ \boxed{14\text{ integer unknowns},\quad
+ \deg F_{14}=813056\cdot5^{32}+2752,\quad1524\text{ binary operations}.}
+\]
+A lower-degree alternative has $16$ integer unknowns, degree
+$406528\cdot5^{32}+10008$, and $1537$ operations. These are ordinary,
+unformalized reductions, not optimality claims or a proof of consistency.
+The complete derivation and exact source boundaries are in
+\texttt{signed/SIGNED\_PROOF.md}.
+
+\subsection{Fixed index and the exact polynomial}
+Use the \emph{whole} compact943 coefficient tuple of package~30 and its
+normalized quartic $P_{31}(x,\mathbf n)=\sum_jr_j(\mathbf n+1)^2$.
+The dummy $x$ is fixed to $1$. Put $L=5^{32}$ and
+\[
+ c_\alpha=(4-|\alpha|)!\prod_j\alpha_j!\,[\mathbf X^\alpha]P_{31},
+ \qquad z=2^{45933757},
+\]
+\[
+ e(T)=\sum_{|\alpha|\le4}(z+c_\alpha)
+ T^{L-\sum_{j=0}^{31}\alpha_j5^j},\qquad y=e(2z).
+\]
+The $402$ nonzero coefficient records are in
+\texttt{signed/upstream/}\allowbreak\texttt{COMPACT\_CONSTANTS.json}. Unlisted coefficients are zero; the index
+certificate proves $|c_\alpha|+1<z$.
+Consequently $y<(2z)^{L+1}$. Define the additional fixed integer
+\[
+ \kappa=45933758(L+1)+1,\qquad a=2^\kappa.
+\]
+Thus $\kappa$ is odd and $a>y$. This enormous coefficient is given by a
+bounded recipe, \emph{not materialized}. The same applies to $y$ and the
+weighted coefficients. Fixed leaves are not existential variables.
+
+The complete list of unknowns is
+\[
+ (\varepsilon,g,h,s,w,\phi,i,j,z_1,z_2,z_3,z_4,v,u)\in\mathbb Z^{14}.
+\]
+Set $b=a\varepsilon^2$, $\omega=w^2$ and define the following
+\emph{polynomial abbreviations}, none of which is an extra unknown:
+\[
+ B=b^5,\quad q=B^L,\quad \ell=\sum_{r=1}^{31}B^{5^r},\quad
+ \lambda=\sum_{r=0}^{4L-1}B^r,\quad \theta=B-2z,
+ \quad N=q^{16},\quad G=32bB^{5^{31}}.
+\]
+\begin{align*}
+ R={}&\left[g+e(B)q^3+\ell q^5+
+ \left(2(e(B)-z\lambda)(1+B+g)^4+\lambda B+\lambda Bq^4\right)q^7\right](N^2-N)\\
+ &+\left[q^3-b\ell+\ell+\theta\lambda q^3+(B-2)q^8\right](N^2-1).
+\end{align*}
+\begin{gather*}
+ U=N^2\omega,\quad Y=N^2s,\quad M=RY,\quad P=2M^2U,
+ \quad K=R+1+h(P-1),\quad A=M(U+1),\\
+ B_1=2R+1,\quad W_1=b\omega,\quad C=B_1+W_1+\phi,
+ \quad J=4A-5,\quad Q=3W_1C-2(W_1^2-1),\\
+ D=(A^2-1)C^2+1,\quad E=iJDC^2,\quad F=(A^2-1)E^2+1,\\
+ G_1=A+F(CD+1-A),\quad H=B_1+jC,\quad I=(G_1^2-1)H^2+1,\\
+ a_0=(P^2-1)K^2+1,\quad a_1=DFI,\quad
+ m=K^2G-4(C-KY)^2G-8gK^2,\\
+ D_0=JF,\qquad T_0=QF+J(H-C).
+\end{gather*}
+Put $(d_1,d_2,d_3,d_4)=(3g-1,3s-1,3\phi+2,3m-1)$ and
+\[
+ C_0=1,\qquad B_j'=1+4d_jC_{j-1}^2z_j^2,\qquad
+ C_j=C_{j-1}B_j'\ (1\le j\le4),\qquad C_*=C_4.
+\]
+Finally set
+\begin{gather*}
+ Z=\varepsilon wi z_1z_2z_3z_4,\quad S=ZD_0^5,\quad r=T_0+D_0v,\\
+ T=(r^3-D_0^2r-D_0^3)(r^2+23D_0^2),\quad
+ w_1=C_*+1,\quad w_2=w_1(P^2+K^2+2),\quad X=Su-T,\\
+ A_0=S^2C_*,\quad A_1=S^2w_1^2a_0,\quad A_2=S^2w_2^2a_1,\\
+ V=X^2+A_2-A_0-A_1,\qquad W=V^2+4X^2A_2-4A_0A_1.
+\end{gather*}
+The requested equation is the single integer polynomial equation
+\[
+ \boxed{F_{14}=W^2-16V^2X^2A_2=0.}
+\]
+Its division-free expanded arithmetic DAG is
+\texttt{signed/generated/}\allowbreak\texttt{signed14.json}. The exported names
+\texttt{residue} and \texttt{normroot} mean $v,u$.
+
+\subsection{The signed Jones interface and a removable guard}
+The imported Jones ratio theorem, on its original domain
+$b=y+1+\varepsilon_0$, $\varepsilon_0,\phi\ge0$ and
+$g,h,s,\omega,i,j\ge1$, identifies quartic solvability with
+\[
+ a_0,a_1\in\operatorname{Sq}(\mathbb Z),\qquad D_0\mid T_0,
+ \qquad m>0.\tag{JR}
+\]
+For every integer assignment $D_0\ne0$: $J=4A-5\ne0$, and $F=0$
+would force $A=0,E=\pm1$, although $E$ would be divisible by $5$.
+Replacing a nonzero $i$ by $|i|$ leaves (JR) unchanged since only $E^2$
+occurs in its consumers.
+
+Package~29's proof of automatic $h$ positivity does not use $j$.
+For completeness, assume $b>y$, $g,s,\omega\ge1$, $\phi\ge0$,
+$a_0$ square and $m>0$. The margin gives
+\[
+ K\ne0,\quad g<4bB^{5^{31}},\quad 4(C-KY)^2<K^2.
+\]
+Writing $t=5^{31}$, one has $1+B+g<B^{t+2}\le q$ and
+$b\ell<q$. In the first bracket for $R$, the potentially negative
+term is absorbed by $\lambda Bq^4>2z\lambda(1+B+g)^4$.
+Both brackets are positive, so $R\ge2$, $C>0$, and
+$P\ge2R^2>R+2$. The margin implies $K>0$. If $h\le0$, then
+$1\le K\le R+1<P$. The case $K=1$ would imply $P-1\mid R$;
+for $2\le K<P$ the radicand lies strictly between $(PK-1)^2$ and
+$(PK)^2$. Both contradict the hypotheses. Hence $h\ge1$.
+
+\paragraph{New Pell-orbit lemma.}
+Under those hypotheses and (JR), $A\ge4$, $D\ge A^2$, $F>0$ and
+$G_1>A>1$. Since $F\equiv1\pmod D$ and $F\equiv1\pmod J$,
+the divisibility gives $H\equiv C\pmod F$. Thus
+\[
+ G_1\equiv1\pmod D,\quad I\equiv1\pmod D,
+ \qquad G_1\equiv A\pmod F,\quad I\equiv D\pmod F.
+\]
+Therefore $D,F,I$ are positive and pairwise coprime. As $DFI$ is a
+square, all three are squares. Put $d=G_1^2-1$, a positive nonsquare,
+and $x=\sqrt I>0$. Even if $H<0$, $x+H\sqrt d>0$.
+The unit $\eta=G_1+\sqrt d>1$ has norm one, so some positive power
+is the identity modulo $CF$ in the integer quadratic algebra.
+Multiplying $x+H\sqrt d$ by arbitrarily large such powers yields
+\[
+ x_n^2-dH_n^2=1,\qquad H_n\equiv H\pmod{CF},\qquad H_n\longrightarrow+\infty.
+\]
+Choose $H_n>B_1$ and put $j_n=(H_n-B_1)/C>0$. This preserves
+$a_1$ being square and $D_0\mid T_0$, and leaves $a_0,m$ unchanged.
+Thus the positivity guard on $j$ can be deleted entirely.
+
+\subsection{Cofinal bases and square witnesses: two more deleted guards}
+The proof of \texttt{USys\_of\_mem} in pinned
+\texttt{Master3.lean}, lines~303--510, chooses an exponent
+$k=xy+\sum n_j+1$ only to obtain $k\ge1$, $xy<2^k$, and
+$n_j<2^k$ for a fixed quartic witness. The rest of the construction
+uses those inequalities, not that equality. Hence it works for every
+sufficiently large exponent $k$, including any prescribed parity.
+\texttt{NineReduce.reduced\_of\_mem} and
+\texttt{NineRatio.ratio\_complete} transport that same base $b=2^k$.
+At $x=1$ we may therefore choose $k=\kappa+2r$ large enough, and set
+$\varepsilon=2^r$, giving $b=a\varepsilon^2$. Conversely any
+nonzero integer $\varepsilon$ gives $b\ge a>y$, so the old ceiling
+coordinate $\varepsilon_0=b-y-1$ is nonnegative. This is a cofinal
+restriction of the base, not an unjustified square substitution for
+$\varepsilon_0$.
+
+There is a second concrete freedom. In pinned \texttt{Ratio.lean},
+\texttt{exists\_B25core}, lines~434--442, the canonical witness is
+\[
+ \omega=2^{2R+1-k},\qquad U=N^2\omega.
+\]
+The source first proves $k<2R+1$ from $k<2^k=b\le R$, so natural
+subtraction does not truncate. Since our $k$ is odd,
+$2R+1-k$ is positive and even: this $\omega$ is a positive square.
+\texttt{NineRatio.ratio\_complete}, lines~270--279, retains that
+same $\omega$ while adding $i,j$ and changing $\phi$. Thus
+$\omega=w^2$, $w\ne0$, preserves completeness; soundness follows
+from $w^2\ge1$. There is no analogous asserted square property for $s$.
+
+Consequently only $g,s\ge1$, $\phi\ge0$ and $m>0$ require inequality
+guards. Nonvanishing of $\varepsilon,w,i$ is sufficient for the other
+restrictions. These source-inspected strengthenings are ordinary proofs,
+not newly compiled formal theorems.
+
+\subsection{Why the finalizer has exactly the intended zeros}
+Every $B_j'$ is $1$ modulo $4$ and coprime to $C_{j-1}$.
+If all $z_j\ne0$ and $C_*$ is a square, unique factorization forces
+$|B_j'|$ to be squares; their residue modulo $4$ excludes negative
+squares. Thus $d_j\ge0$, and $d_j\equiv2\pmod3$ excludes zero.
+These are exactly the four required inequalities. Conversely each
+positive $d_j\equiv2\pmod3$ is nonsquare. A Pell unit power gives
+$u_j^2-d_jv_j^2=1$ with $v_j$ divisible by $2|C_{j-1}|$.
+Taking $z_j=v_j/(2C_{j-1})\ne0$ makes every $B_j'$ a square.
+
+The polynomial $\Pi(t)=(t^3-t-1)(t^2+23)$ has no rational root but
+has a root modulo every nonzero integer. To see the latter, for an
+odd prime other than $23$, either the cubic has a simple root, or
+its irreducibility makes Frobenius a three-cycle and its discriminant
+$-23$ a nonzero square. Thus one factor has a simple root and lifts.
+At $23$ use the cubic root $3$; at $2$ use $-23\equiv1\pmod8$ and
+the standard square-root lifting. Apply the Chinese remainder theorem.
+For $D\ne0$ the homogeneous expression
+\[
+ \mathcal R(D,T,v)=((T+Dv)^3-D^2(T+Dv)-D^3)
+ ((T+Dv)^2+23D^2)
+\]
+is nonzero and satisfies
+\[
+ (D\mid T\ \&\ Z\ne0)\quad\Longleftrightarrow\quad
+ \exists v:\ ZD^5\mid\mathcal R(D,T,v).
+\]
+The forward direction applies intersectivity after $T=Dq$.
+For the converse, if $v_p(D)=\alpha>\beta=v_p(T)$, the two factors
+have valuations $3\beta,2\beta$, contradicting divisibility by $D^5$.
+The case $Z=0$ would contradict nonvanishing. This supplies exactly
+$D_0\mid T_0$ and all nonzero conditions via $S\mid T$.
+
+The new linear weight is valid even before recovering signs:
+$C_*\equiv1\pmod4$ implies
+\[
+ |C_*+1|>\sqrt{|C_*|},\qquad
+ \sqrt{|a_0|}\le P^2+K^2+1.
+\]
+For negative $C_*=-t$, necessarily $t\ge3$ and
+$(t-1)^2-t=t^2-3t+1>0$. Hence
+\[
+ |w_2|>\sqrt{|C_*|}+|w_1|\sqrt{|a_0|}.
+\]
+For complex roots $r_0^2=C_*,r_1^2=a_0,r_2^2=a_1$, multiplication gives
+\[
+ F_{14}=\prod_{\sigma\in\{-1,1\}^3}
+ \bigl[X-S(\sigma_0r_0+\sigma_1w_1r_1+\sigma_2w_2r_2)\bigr].
+\]
+If $S=0$, this is $T^8\ne0$. Otherwise a zero makes one encoded
+root sum rational. The strict absolute-weight bounds separate all
+sign choices on nonzero roots, including imaginary roots. Every
+Galois automorphism of their multiquadratic field must therefore fix
+each root, so all three roots are rational, hence integers. It follows
+that $S\mid T$ and $C_*,a_0,a_1$ are integer squares. Conversely these
+conditions yield a zero by taking
+$u=T/S+r_0+w_1r_1+w_2r_2$. Zero roots and repeated square classes
+cause no exception.
+
+Combining this exact elimination with the square stack, homogeneous
+merger, recovered $h$, sign change of $i$, and Pell orbit for $j$
+recovers the original Jones witness. Conversely the cofinal-base and
+square-$\omega$ constructions, then the stack and finalizer, produce
+an integer zero from any quartic witness. The imported compiler and
+literal K215 calibration give
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists\mathbf t\in\mathbb Z^{14}:F_{14}(\mathbf t)=0\bigr)
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\subsection{Lower-degree alternative and exact complexity}
+For $F_{16}$ keep $b=y+1+\varepsilon$, $\omega=w$ and use six
+stack discriminants
+\[
+ 3\varepsilon+2,\ 3g-1,\ 3s-1,\ 3w-1,\ 3\phi+2,\ 3m-1,
+ \qquad Z=i\prod_{r=1}^6z_r.
+\]
+The same finalizer and signed linear weights apply. Its proof uses
+only the new $j$-orbit and weight improvement, not either cofinal
+specialization. The intermediate $15$-variable construction restricts
+only $b$; its $1530$ operations and degree $813056L+4184$ are dominated
+by $F_{14}$.
+
+The fast evaluator shares fifth powers, evaluates the background digit
+sum by the complete homogeneous polynomial $h_4$, and uses fixed
+multivariate Horner evaluation for sparse corrections. In particular,
+$1+t+t^2+t^3+t^4=1+(t^2+t)(t^2+1)$ saves a gate when $t^2$ is shared.
+All scalar multiplications and squares are charged; fixed coefficient
+construction is excluded, as in the comparison convention.
+For $F_{14}$,
+\[
+\begin{array}{c|c@{\qquad}c|c}
+ R&470L&P&1900L+4\\
+ K&1900L+5&a_1&49280L+98\\
+ m&4442L+14&C_*&4442L+133\\
+ S&68750L+152&w_2&8242L+143\\
+ A_2&203264L+688&F_{14}&813056L+2752
+\end{array}
+\]
+Here $\deg A_2>\deg X^2,\deg A_0,\deg A_1$, so the successive
+leading terms of $V,W,F_{14}$ are $A_2,A_2^2,A_2^4$.
+A nonzero symbolic diagonal leading coefficient, certified modulo
+$1000003$ as a scalar times a power of the positive fixed $a$, proves
+these are exact degrees. For $F_{16}$ one obtains
+$\deg A_2=101632L+2502$.
+
+The delivered generator and checker reproduce the DAGs, counts, and
+degrees. Diagnostics include $216$ actual-coefficient modular circuit
+comparisons, $1000$ eight-factor norm evaluations, $840$ coprimality
+cases, $120$ negative-to-positive Pell orbits, and intersectivity tests
+for every modulus $1$ through $1200$. These checks supplement, and do
+not replace, the universal proofs above.

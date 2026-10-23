@@ -1,0 +1,502 @@
+\section{Two improved twelve-positive-variable constructions}
+\label{sec:positive-improved}
+
+There are two different improvements.  The economical construction evaluates
+exactly package 30's degree-$1081$ polynomial in its four coefficient ports
+in $108$, instead of $111$,
+binary arithmetic operations.  Its three-equation system costs $104$
+operations, or $103$ after a justified shift of the positive transport
+coordinate.  The second construction changes the polynomial: it has degree
+$1065$ in the same twelve positive unknowns, compared with the previous
+degree record $1069$.  It costs $118$ operations; its three-equation versions
+cost $114$ and $113$ operations, with maximum residual degree $1056$.
+The latter combines package 24's sharp weight, package 25's exclusion of
+the negative main-root branch, and package 30's quadratic-remainder norm.
+The smaller carrier permitted by the branch exclusion creates two additional
+leading cancellations.  These are comparisons with the frozen repository
+collection, not assertions of a global minimum.
+
+All results in this section use one complete coefficient tuple satisfying
+the native blank-compiler interface.  The fixed ports are
+$\beta=B-1,K_0,M_C,M_F$, with $M_F$ the shifted high mask.  They are fixed
+integers, not additional unknowns.  The coefficient construction elsewhere
+in this report supplies the tuple.  Changing only one port is not justified.
+
+\subsection{Common polynomial definitions}
+
+The supplied variables are exactly
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\mathbb Z_{>0}.
+\]
+Every other displayed symbol denotes a polynomial expression in these
+variables.  Put
+\begin{align*}
+ q&=\beta J+1,& C_w&=q-F-\alpha,&X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{align*}
+In particular $\Delta=(a+2)^2-1$.  The unchanged index and transport
+expressions are
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k&=k-hE-R,\\
+ N_t&=(K_0+w)C_w+q-F-z(q-1).
+\end{align*}
+Define the strong and auxiliary expressions
+\begin{align*}
+ I&=ic^2,&D&=1+\Delta I^2,&Q&=\Delta^2 I^2,&d&=Q-1,\\
+ v&=cT,&b&=c+RD,&e&=Q(Dv^2+b^2)-1,&B_a&=2Qvb.
+\end{align*}
+Notice that $Q=(\Delta I)^2$ is the square needed for rational Pell
+saturation; it is not an arbitrary positive auxiliary parameter.
+
+Select one of two pairs $(M,W)$, in both cases putting $L=1+HM$:
+\begin{align}
+ M_{\rm econ}&=k(I^2+T^2),&
+ W_{\rm econ}&=b_0+Ht, \label{eq:economical-new}\\
+ C_*&=E+2(X+Y)+sq^2, \nonumber\\
+ M_{\rm canc}&=I\bigl(2T+RC_*ic\bigr),&
+ W_{\rm canc}&=Lb_0+Ht. \label{eq:cancellation-new}
+\end{align}
+For a formal variable $x$ let
+\begin{align*}
+ C(x)&=d(x^2+M^2A)-e,\\
+ F_*(x)&=\bigl[C(x)^2+DB_a^2-4d^2x^2M^2A\bigr]^2
+                    -4DB_a^2C(x)^2,\\
+ F_H(u)&=H^8F_*(u/H),\\
+ N&=F_H(W-L\sqrt G)F_H(W+L\sqrt G).
+\end{align*}
+The last expression is an integer polynomial.  Its radicals describe a
+finite conjugate product and are not part of the arithmetic language or
+the list of quantified unknowns.  A complete division-free evaluator is
+given below.  The product equation and unshifted system are
+\begin{equation}
+ P=N_kN_t(1+N)-1=0,
+ \qquad\text{and}\qquad N_k=1,\quad N_t=1,\quad N=0.
+ \label{eq:two-positive-presentations}
+\end{equation}
+
+\subsection{A cheaper exact norm evaluator}
+
+The following scalar formulas define $N$ without radicals, division, or
+resultants.  They are also the basis of the literal JSON gate lists:
+\begin{align*}
+ m&=HM,&n&=m^2A,&d_n&=dn,&Z&=H^2Q,\\
+ P_H&=ZDv^2,&U_H&=Zb^2,&e_H&=P_H+U_H-H^2,&j&=4P_HU_H,\\
+ x_0&=d(W^2+L^2G),&\mathcal T&=2x_0,&
+ \kappa&=\bigl[d(W^2-L^2G)\bigr]^2,\\
+ \mathcal A&=2(d_n+e_H),&
+ \mathcal B&=(d_n-e_H)^2-j,\\
+ a_r&=\mathcal T-\mathcal A,&b_r&=\mathcal B-\kappa,&
+ c_r&=16d_nj,\\
+ v_r&=a_r(a_r\mathcal T+2b_r)-c_r,&
+ u_r&=b_r^2-a_r^2\kappa,\\
+ N&=u_r(u_r+\mathcal T v_r)+\kappa v_r^2.
+\end{align*}
+Here $d_n=dn$ means the product of $d$ and $n$; it introduces no new
+parameter.  In the emitted circuit $v^2=c^2T^2$, so the separately useful
+$T^2$ is computed once.
+
+To prove the evaluator, the elementary identity
+\[
+ (C^2+j-K)^2-4jC^2=(C^2-K-j)^2-4Kj
+\]
+rewrites $F_H(u)$, with $x=du^2$, as
+\[
+ (x^2-\mathcal A x+\mathcal B)^2-c_rx.
+\]
+For $u=W\pm L\sqrt G$, the two corresponding $x$ values have sum
+$\mathcal T$ and product $\kappa$.  Reduction modulo
+$x^2-\mathcal T x+\kappa$ first replaces
+$x^2-\mathcal A x+\mathcal B$ by $a_rx+b_r$, and then replaces its
+square minus $c_rx$ by $u_r+v_rx$.  Its norm is exactly
+$u_r^2+\mathcal T u_rv_r+\kappa v_r^2$.  This argument works when the
+radicands are squares or zero and when conjugates coincide; no
+discriminant is divided out.
+
+Three reassociations each save one multiplication relative to package 30:
+compute the common factor $H^2Q$ before forming $P_H,U_H$; compute
+$\kappa$ by multiplying before squaring; and use the displayed Horner
+form for the final norm.  These are identities over every commutative
+ring.  At the same coefficient tuple, the economical polynomial is therefore
+unchanged, including all its integer zeros.  A different complete tuple
+produces a different fixed polynomial through the same compiler interface.
+The sharper construction changes $M,L,W$ as stated;
+its new degree is proved below.
+
+\subsection{Weak signs and the inherited interface}
+
+We use three precisely identified consequences of the blank-compiler
+theorem.  First, the weak index/transport bootstrap, valid for
+$N_k=N_t=\epsilon\in\{1,-1\}$, supplies
+\begin{equation}
+ \begin{gathered}
+ C_w\ge0,\quad q\ge16,\quad X\ge q,\quad Y\ge q^3,\\
+ 3q<R<q^4-2,\quad E\ge q^4>R+2,\quad
+ k=R+\epsilon+hE>E,\quad kY<c<k(Y+1).
+ \end{gathered}\label{eq:positive-weak-bootstrap}
+\end{equation}
+Second, restoring the normalized first, main, strong and auxiliary Pell
+equations, together with the main congruence, permits the inherited signed
+auxiliary-quotient soundness theorem.  It forces $\epsilon=1$ and extracts
+a blank K215 halt.  Third, every blank halt has a canonical positive
+normalized witness.  Those canonical witnesses satisfy $C_w>0$ and
+$X=2^R$.  These are semantic compiler dependencies, not consequences of
+checking four integers modulo a few small primes.
+
+The hypotheses of the weak bootstrap follow from a root of the product
+equation before any radical is recovered.  Indeed
+\[
+ \kappa=x_0^2-4d^2W^2L^2G,
+ \qquad N\equiv(u_r+x_0v_r)^2\pmod4.
+\]
+At a zero of $P$, the three integer factors $N_k,N_t,1+N$ are units.
+The last cannot equal $-1$, since this would give $N=-2$, which is not a
+square modulo $4$.  Thus $N=0$ and $N_k=N_t=\epsilon$.  For a solution
+of the system, $\epsilon=1$ directly.  No consistency assumption is used.
+
+\subsection{All branches and the sharp separation bound}
+
+Factoring the finite norm shows that $N=0$ supplies coherent roots
+$g,\tau,f,y$, initially in a finite algebraic extension, with
+\begin{equation}
+ \begin{gathered}
+ g^2=G,\quad \tau^2=A,\quad f^2=D,\\
+ dy^2=e-B_af=Q(vf-b)^2-1,\\
+ W=Lg+H(M\tau+y).
+ \end{gathered}\label{eq:coherent-positive-roots}
+\end{equation}
+Conversely any such coherent choice makes a factor of $N$ zero.  This
+factorization neither divides by a radical nor presupposes the rationality
+of any root.  The bounds that follow apply to every complex conjugate of
+$y$; such a conjugate can be imaginary.
+
+For the economical weight, put $A_0=a+2$.  From
+\eqref{eq:positive-weak-bootstrap},
+$A_0<2E$, $c<2kY$, $D<A_0^2I^2<4E^2I^2$, and $c<I^2$.
+Every auxiliary branch satisfies
+\[
+ |y|<2(v\sqrt D+b).
+\]
+The two elementary estimates
+\[
+ 2v\sqrt D<8kEYIT<\tfrac12M_{\rm econ}kY^2,
+ \qquad
+ 2b<10RE^2I^2<\tfrac12M_{\rm econ}kY^2
+\]
+use $I^2+T^2\ge2IT$, $kY>8E$, $k>E$, and $Y^2>20R$.
+Moreover
+\[
+ \sqrt A>\ell=EkY>kY^2,
+ \qquad \sqrt G-\sqrt A>k(Y^2+Y-1)>kY^2.
+\]
+For the second inequality use
+$\sqrt G>(a+1)c>(E+Y+1)kY$ and
+$\sqrt A<\ell+k$.  We obtain the two uniform bounds
+\begin{equation}
+ |y|<M_{\rm econ}\sqrt A,
+ \qquad |M_{\rm econ}\tau+y|<M_{\rm econ}\sqrt G.
+ \label{eq:economical-separation}
+\end{equation}
+
+For the cancellation weight a tighter, differently shaped estimate is
+needed.  Let $S=\Delta I$, so $Q=S^2$.  The weak bootstrap implies
+$\Delta>R+2$ and $I^2\ge c^4$, hence
+\[
+ Q-b=\Delta I^2(\Delta-R)-c-R>0.
+\]
+Consequently $b\le d$ and $\sqrt D<S<d$.  For
+$Z_1=v\sqrt D+b>1$, every auxiliary branch satisfies
+\[
+ |y|^2\le\frac{QZ_1^2+1}{d}
+ <\left[Z_1\left(1+\frac1d\right)\right]^2.
+\]
+The strict inequality follows on subtracting the left member from the
+right: the numerator is $QZ_1^2-d>0$.  Therefore
+\begin{equation}
+ |y|<Z_1+v+1<cT((a+2)I+1)+c+RD+1.
+ \label{eq:sharp-y-new}
+\end{equation}
+Set $\rho=(1+1/Y)/E$.  Because $c/\ell<\rho$ and
+$(a+3)\rho<2$, the $T$ term in \eqref{eq:sharp-y-new}, divided by
+$\sqrt A>\ell$, is less than $2TI$.  The remaining large term is
+controlled by the exact rational identity
+\[
+ (a+2)^2\rho
+ =E+2Y+X+6+\frac YX+\frac5X+\frac4Y+\frac8E+\frac4{EY}.
+\]
+Here $Y/X=sq^2/w\le sq^2$ and
+$5/X+4/Y+8/E+4/(EY)<1$.  Since $X\ge16$, this gives
+$(a+2)^2\rho<C_*-2$.  Also $(c+1)/\ell<2$.  Thus
+\[
+ \frac{|y|}{\sqrt A}
+ <2TI+R(C_*-2)i^2c^3+2
+ \le 2TI+RC_*i^2c^3=M_{\rm canc}.
+\]
+We have proved, without recovering any square root,
+\begin{equation}
+ |y|<M_{\rm canc}\sqrt A,
+ \qquad |M_{\rm canc}\tau+y|<2M_{\rm canc}\sqrt A.
+ \label{eq:cancellation-separation}
+\end{equation}
+
+Finally, the same weak bounds imply $G>A$ and $b_0>\sqrt A$.  Indeed
+$c>kY$ and $\Delta>E^2+2EY$ give
+\[
+ \Delta c^2>k^2(E^2Y^2+EY)=A-1.
+\]
+For the second inequality $b_0>akY$ and
+\[
+ a^2k^2Y^2-A=k^2\{EY(2Y^2-1)+Y^4\}-1>0.
+\]
+
+\subsection{Why the smaller carrier is sound}
+
+In the economical construction, the two arguments of $F_*$ associated
+with the two main roots are $(W\pm L\sqrt G)/H$.  If $G$ were nonsquare,
+the vanishing of one factor of its rational quadratic norm would force
+the other to vanish as well.  But the two arguments have distance
+$2L\sqrt G/H>2M\sqrt G$, whereas each root of $F_*$ has modulus less
+than $M\sqrt G$ by \eqref{eq:economical-separation}.  This contradiction
+proves that $G$ is a square.  The selected $g$ is positive: if it were
+negative then \eqref{eq:coherent-positive-roots} would give
+$W<-L\sqrt G+HM\sqrt G<0$, contrary to $W=b_0+Ht>0$.
+
+For the cancellation construction, the weighted carrier makes the same
+conclusion possible with only $L=1+HM$, instead of package 24's
+$1+2HM$.  The branch $g=-\sqrt G$ would require
+\[
+ x=\frac{W+L\sqrt G}{H}
+   =t+\frac LH(b_0+\sqrt G)>2M\sqrt A,
+\]
+because $b_0>\sqrt A$, $\sqrt G>\sqrt A$, and $L/H>M$.
+This contradicts \eqref{eq:cancellation-separation}.  Thus the negative
+branch is impossible.  If $G$ were nonsquare, rational conjugacy would
+force that branch to vanish whenever the positive branch did, again a
+contradiction.  Hence $g=\sqrt G$ is a positive integer.
+
+In either construction, work in a finite normal splitting field containing
+the roots in \eqref{eq:coherent-positive-roots}.  Now $g$ is rational.
+If $\tau$ were irrational, an automorphism would send it to $-\tau$ while
+fixing $g$.  Subtracting the two linear relations would require a change
+of magnitude $2M\sqrt A$ in $y$.  Every conjugate of $y$ has magnitude
+strictly less than $M\sqrt A$, an impossibility.  Thus $\tau$ is rational,
+and hence an integer because $\tau^2=A\in\mathbb Z$.
+The linear relation makes $y$ rational, and
+$f=(e-dy^2)/B_a$ is rational because $B_a>0$.
+Since $f^2=D\in\mathbb Z$, $f$ is integral.
+
+\paragraph{Rational Pell saturation.}
+If integers $S\ge2,V$ and rational $y$ satisfy
+$S^2V^2-(S^2-1)y^2=1$, then $y$ is integral.
+For completeness write $y=u/v_0$ in lowest terms, $v_0>0$.
+Its equation gives $v_0^2\mid S^2-1$.
+The positive nonsquare integer $D_0=(S^2-1)/v_0^2$ has the two
+integer-coordinate Pell solutions $(S,v_0)$ and $(S|V|,|u|)$.
+Both coordinates in each pair are nonzero.  Write these pairs as
+$(\chi_j,\psi_j)$ and $(\chi_l,\psi_l)$ in powers of the fundamental
+positive integer-coordinate Pell unit.  The addition formulas give
+$\chi_{r+2j}\equiv-\chi_r\pmod{\chi_j}$ and
+$\chi_{2j-r}\equiv-\chi_r\pmod{\chi_j}$.
+Because $\chi_j\mid\chi_l$, reducing $l$ modulo $2j$ and reflecting
+into $[0,j]$ shows that $l$ is an odd multiple of $j$; strict growth
+excludes every index smaller than $j$.  The Pell multiplication formulas
+then give $\psi_j\mid\psi_l$, so $v_0\mid u$ and $v_0=1$.
+This uses the integer-coordinate Pell group, not a larger group of
+half-integral units.
+
+Apply the lemma with $S=\Delta I$ and $V=vf-b$.  It proves $y\in\mathbb Z$.
+Since $L\equiv1\pmod H$ and in both variants $W\equiv b_0\pmod H$,
+the integral linear relation now yields $g\equiv b_0\pmod H$.
+Therefore $\gamma=(g-b_0)/H$ is integral.  It is also positive:
+$g>(a+1)c$ and $c>k>E>X$ imply
+$H\gamma=g-ac-X>c-X>0$.
+
+We have restored exactly
+\begin{align*}
+ \tau^2-\ell(\ell+k)&=1,\\
+ (X+ac+H\gamma)^2-\Delta c^2&=1,\\
+ f^2-\Delta i^2c^4&=1,\\
+ Q[c(Tf-1)-Rf^2]^2-(Q-1)y^2&=1,
+ \qquad N_k=N_t=\epsilon.
+\end{align*}
+The auxiliary identity uses $f^2=D$ and
+$vf-b=c(Tf-1)-Rf^2$.  Absolute values may be taken for $\tau$ and $y$.
+If $f<0$, change the signs of $f$ and $T$ together, preserving $Tf$.
+The inherited signed-quotient compiler theorem applies, forces
+$\epsilon=1$, and recovers a blank K215 halting computation.
+
+Conversely, take a canonical positive normalized compiler witness, with
+$g=b_0+H\gamma$ and positive $\tau,f,y$.
+For the economical construction choose
+\[
+ t=\gamma+M(g+\tau)+y>0;
+\]
+for the cancellation construction choose
+\[
+ t=L\gamma+M\tau+y>0.
+\]
+The coherent factor then vanishes and $N_k=N_t=1$.
+Every canonical witness can be extended in this way; no new restriction
+on its strong Pell index is imposed.
+This proves both directions of existential equivalence with the authentic
+compiler.  Composing with the K215 syntactic-refutation calibration and
+negating existential solvability proves, within ZFC, that absence of
+positive integer solutions is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{The shifted systems}
+
+In the system only, replace the transport equation by
+\begin{equation}
+ (K_0+w)C_w=F+z(q-1).
+ \label{eq:shifted-positive-system}
+\end{equation}
+Here the new positive variable is related to the old one by
+$z_{\rm old}=z+1$.  Every shifted solution therefore gives an unshifted
+solution, so soundness is immediate.  For completeness use a canonical
+compiler witness, for which $C_w>0$, $X=wq=2^R$, $R>3q$, and $F<q$.
+Consequently $w>q>F$, and the original transport equation gives
+\[
+ (z_{\rm old}-1)(q-1)=(K_0+w)C_w-F>0.
+\]
+Thus $z_{\rm old}\ge2$ and $z=z_{\rm old}-1$ is positive.
+This positivity is proved after restoring the compiler, rather than
+inserted into the weak bootstrap.  Directly comparing the two sides of
+\eqref{eq:shifted-positive-system} saves one addition/subtraction.
+The product equations retain the unshifted variable.
+
+\subsection{Exact degrees, including the new cancellation}
+
+All four coefficient ports have degree zero and all twelve supplied
+variables have degree one.  The economical norm is the unchanged package
+30 polynomial, so its exact degree is $1072$; its product degree is $1081$.
+Its leading form, writing $q_0=\beta J$ and $k_0=\eta+\zeta$, is
+\[
+ (N_{\rm econ})_{1072}
+ =2^{32}i^{48}k_0^{96}w^{80}s^{176}q_0^{656}(q_0-F)^{16}.
+\]
+
+Here is a full upper and lower degree argument for the new construction.
+Replace every supplied variable by $\lambda$ times itself, and use a
+subscript $0$ for its highest homogeneous part.  In the rational function
+field of the unscaled variables, the relevant square roots have formal
+Laurent expansions at $\lambda=\infty$.  Their leading radicands are
+nonzero squares, so the ordinary formal binomial expansion constructs all
+branches without fractional orders.  The basic degrees are
+\[
+ \begin{array}{c|rrrrrrrrrr}
+  \text{expression}&E,H&Y&c&R&I&d&b&A,G&M&L\\ \hline
+  \text{degree}&6&4&5&4&11&46&38&22&27&33.
+ \end{array}
+\]
+Define three nonzero leading forms
+\[
+ \mathfrak B=R_0E_0^2i^2c_0^4,\qquad
+ \mathfrak D=R_0E_0Y_0i^2c_0^4,\qquad
+ \mathfrak C=R_0E_0(sq_0^2)i^2c_0^4.
+\]
+Their degrees are $38,36,35$, respectively.
+
+The first radical satisfies $\sqrt A-\ell=O(\lambda)$.
+For every $f$ branch the auxiliary roots satisfy
+\[
+ y=\varepsilon(b-vf)+O(\lambda^{-8}),\qquad
+ \varepsilon\in\{1,-1\},\qquad\deg(vf)=23.
+\]
+The exact identity
+\[
+ C_*\ell-\Delta c
+ =(2EX+Esq^2-Y^2-4E-4Y-3)c-EC_*\eta
+\]
+has unique highest homogeneous term $E_0(sq_0^2)c_0$, of degree $14$.
+Consequently
+\begin{equation}
+ M\sqrt A-b=\mathfrak C+\text{terms of order below }35.
+ \label{eq:new-cancellation-first}
+\end{equation}
+Indeed the difference is
+$Ri^2c^3(C_*\ell-\Delta c)+O(\lambda^{28})$.
+
+Let $g_+=\sqrt G$ and $\gamma_\pm=(\pm g_+-b_0)/H$.
+The small quotient root $\gamma_+$ has order $-1$, hence
+$L\gamma_+$ has order $32$.
+Also $g_+=ac+O(\lambda^5)$ and
+\[
+ g_++b_0-2\sqrt A
+   =2Y_0c_0+\text{terms of order below }9.
+\]
+Multiplying by $M$, whose top form is $R_0E_0i^2c_0^3$, gives
+\begin{equation}
+ M(g_++b_0-2\sqrt A)
+   =2\mathfrak D+\text{terms of order below }36.
+ \label{eq:new-cancellation-second}
+\end{equation}
+
+The exact sixteen-branch factorization is
+\begin{equation}
+ N=d^8H^{16}\prod(t-y-M\tau-L\gamma),
+ \label{eq:new-sixteen-factor}
+\end{equation}
+where the coherent choices of $g,\tau,f,y$ are all included with
+multiplicity.  For $\gamma_+$, four factors have degree $35$ with signed
+top forms $\pm\mathfrak C$; the other four have degree $38$ with signed
+top forms $\pm2\mathfrak B$.
+For $\gamma_-$, the two branches with $\tau=+\sqrt A$ and
+$y=+(b-vf)+O(\lambda^{-8})$ have degree $36$ and top form
+$2\mathfrak D$, by \eqref{eq:new-cancellation-first} and
+\eqref{eq:new-cancellation-second}.
+The remaining six have degree $38$: four top forms are $2\mathfrak B$
+and two are $4\mathfrak B$.
+This exhausts every branch.  It proves the degree upper bound, not just
+a degree observed on a numerical specialization.  Multiplying the
+nonzero top forms gives
+\begin{align*}
+ \deg N&=8\cdot46+16\cdot6+4\cdot35+2\cdot36+10\cdot38=1056,\\
+ N_{1056}
+ &=2^{14}d_0^8H_0^{16}\mathfrak B^{10}\mathfrak C^4\mathfrak D^2\\
+ &=2^{46}i^{48}k_0^{96}w^{74}s^{176}q_0^{646}(q_0-F)^{16}.
+\end{align*}
+This form is nonzero for every fixed $\beta>0$.
+Since
+\[
+ (N_k)_7=-hwsq_0^4,\qquad
+ (N_t)_2=w(q_0-F-\alpha)-zq_0,
+\]
+the product has exact degree $1056+7+2=1065$.
+For example its coefficient of
+\[
+ J^{667}hz\,i^{48}\eta^{96}w^{75}s^{177}
+\]
+is $2^{46}\beta^{667}>0$.
+The three-equation residual degrees are exactly $7,2,1056$; shifting
+$z$ by one preserves these leading degrees.
+
+\subsection{Literal cost, checks, and proof status}
+
+The supplied evaluator charges every binary $+,-,\times$, including one
+by a fixed numeral.  Intermediate expressions are shared; comparisons
+in systems are free under the repository convention.
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Construction & Equations & Degree & Multiplications & Total operations\\
+\hline
+Economical product &1&1081&65&108\\
+Economical system &3&1072&63&104\\
+Economical shifted system &3&1072&63&103\\
+Cancellation product &1&1065&72&118\\
+Cancellation system &3&1056&70&114\\
+Cancellation shifted system &3&1056&70&113\\
+\hline
+\end{tabular}
+\end{center}
+The checks compare each new norm with an independently implemented
+eight-dimensional multiquadratic conjugate product on $50$ signed integer
+assignments, check the parity and transport identities on those assignments,
+and reject dead gates or unused ports.  Full univariate coefficient lists
+over two primes confirm the cancellations and the stated leading forms;
+this is stronger than merely propagating degree upper bounds through the
+gates.  The mathematical arguments above, rather than those finite
+examples, establish the unbounded root-recovery theorem and uniform exact
+degrees.  No new end-to-end Lean or Rocq check is claimed, and no assertion
+that ZFC is consistent is made.

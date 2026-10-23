@@ -1,0 +1,181 @@
+\section{Combining the 31-variable quartic with the faster Jones evaluator}
+
+\subsection{The parent quartic is explicit}
+
+Package 30 eliminates one packing register from the earlier 32-variable
+quartic. Its 31 positive coordinates are
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta.
+\end{gathered}
+\]
+With affine abbreviations $q=\beta J+1$, $k=\eta+\zeta$,
+$H=4a+3$, and $C=q-F-\alpha$, the 22 equations are
+\begin{align*}
+ L&=q^2-1,&N&=q(L+1),&X&=wq,\\
+ a&=E+sN,&E&=X(a-E),&c&=k(a-E)+\eta,\\
+ P&=E(c-\eta)+k,&\tau^2&=P(P-k)+1,\\
+ D&=X+ac+\gamma H,&\Delta&=a^2+H,&C_2&=c^2,\\
+ D^2&=\Delta C_2+1,&k&=jc-V+1+hE.
+\end{align*}
+\begin{gather*}
+ jc-V=(q-F)(N-q)-CL+(M_C+qM_F)J,\\
+ (K+w)C+(q-F)-z(q-1)=1.
+\end{gather*}
+\begin{align*}
+ F_2&=f^2,&V&=of-c,&g&=y^2-V^2,\\
+ I&=iC_2,&B_a&=I^2,&B_a&=\Delta(F_2-1),\\
+ y^2-B_ag&=1.
+\end{align*}
+Let $Q_{31}$ be the sum of the squares of their left-minus-right residuals.
+Every residual is quadratic, so $Q_{31}$ is quartic. The coefficient of
+$\tau^4$ is 1, proving exact degree four for every valid fixed tuple.
+At the positive all-one tuple the residual $E-X(a-E)$ is 1; hence shifting
+every positive coordinate by $+1$ gives a quartic over $\N^{31}$ with
+strictly positive constant term, as required by the Jones normalization.
+The complete sparse polynomial is retained in
+\path{nine/source/quartic31.json}.
+
+The one-register elimination is an exact positive zero-set bijection. The
+omitted register was $G=q(q-F)-C$, and the identity
+\[
+ L[q(q-F)-C]-[(q-F)(N-q)-CL]=(q-F)[q(L+1)-N]
+\]
+restores the packing equation. Transport forces $C>0$, and then
+$G=(q-1)C+q\alpha>0$. We did not find a justified second elimination that
+preserves quadratic residuals. It would be incorrect to report a
+30-variable quartic merely by dropping a positivity obligation or raising
+the residual degree.
+
+\subsection{All Jones index constants are specified}
+
+Introduce one unused input coordinate, fixed to 1, and let $p_\alpha$ be
+the coefficients of the shifted quartic, with $\alpha\in\N^{32}$ and
+$|\alpha|\le4$. Write
+\[
+ c_\alpha=(4-|\alpha|)!\left(\prod_{j=0}^{31}\alpha_j!\right)p_\alpha,
+ \qquad e(\alpha)=\sum_{j=0}^{31}\alpha_j5^j,
+ \qquad L_J=5^{32}.
+\]
+There are 402 nonzero coefficient records; each is a specified polynomial
+in the four fixed compiler ports. Every omitted record is explicitly zero.
+
+Let the port bit lengths, in the order $\beta,K,M_C,M_F$, be
+\[
+ (b_1,b_2,b_3,b_4)=(1012115,1016946,1012115,1012116).
+\]
+For a record $c_\alpha=\sum_t a_t\prod_r\mathrm{port}_r^{e_{tr}}$,
+define the exact integer upper bound
+\[
+ H_\alpha=\sum_t|a_t|2^{\sum_r b_re_{tr}}.
+\]
+All records satisfy $|c_\alpha|\le H_\alpha$, and exact finite arithmetic
+checks $H_\alpha+1<2^{4,058,127}$. Therefore set
+\begin{equation}\boxed{z_J=2^{4,058,127}.}\label{eq:jones-z}
+\end{equation}
+The other essential fixed index is
+\begin{equation}
+ y_J=\sum_{\substack{\alpha\in\N^{32}\\|\alpha|\le4}}
+        (z_J+c_\alpha)(2z_J)^{L_J-e(\alpha)}.
+ \label{eq:jones-y}
+\end{equation}
+This is a bounded sum of exactly $\binom{36}{4}=58,905$ terms. Its digits
+are between 1 and $2z_J-1$, and their positions are distinct. Both $y_J$
+and $z_J$ are fixed integers, not unknowns, oracles, or unspecified
+enumeration indices. A conservative binary-length bound for $y_J$ is
+$4,058,128(5^{32}+1)$. Its enormous size is a genuine cost of the
+nine-variable presentation and is not hidden by the short recipe.
+
+The actual $z_J$ is supplied in compressed binary form: 507,266 raw bytes,
+527 gzip bytes. The previous instance used $z_J=2^{45,933,757}$.
+The new bound is recomputed from the new tuple. Carrying over the old
+coefficient records numerically while changing only the four compiler ports
+would not be a coherent instance.
+
+\subsection{The evaluation identity}
+
+The expensive fixed digit polynomial in a variable base $\mathcal B$ is
+\[
+ e_J(\mathcal B)=\sum_{|\alpha|\le4}
+                 (z_J+c_\alpha)\mathcal B^{L_J-e(\alpha)}.
+\]
+Set $T_J=5^{31}$ and introduce computed registers
+\[
+ t_j=\mathcal B^{5^j}\quad(0\le j\le32),\qquad
+ v_j=\mathcal B^{T_J-5^j}\quad(0\le j\le31).
+\]
+These are fixed-exponent polynomials; none is an extra witness. They are
+computed through $t_{j+1}=t_j^4t_j$, $v_{31}=1$, and
+$v_j=t_j^4v_{j+1}$. The elementary exponent identity
+\[
+ \mathcal B^{L_J-e(\alpha)}
+ =t_{31}\,t_{31}^{4-|\alpha|}\prod_jv_j^{\alpha_j}
+\]
+has no negative exponent or division. If $h_4$ denotes the complete
+homogeneous polynomial of degree four, it gives
+\begin{equation}
+ e_J(\mathcal B)=t_{31}\left[
+ z_Jh_4(t_{31},v_0,\ldots,v_{31})+
+ \sum_\alpha c_\alpha t_{31}^{4-|\alpha|}\prod_jv_j^{\alpha_j}
+ \right].\label{eq:homogeneous}
+\end{equation}
+
+The complete homogeneous term includes every zero coefficient position
+automatically. It is evaluated by the usual ascending-order updates
+$h_r\gets h_r+wh_{r-1}$ for $r=1,\ldots,4$, initialized with $h_0=1$
+and the other registers zero. The sparse correction is evaluated by
+multivariate Horner factorization. Literal records become literals, and
+identical coefficient recipes share a fixed leaf. Both transformations are
+exact identities in the compiler ports. In total, the new DAG has only
+80 live fixed leaves: $z_J$, $y_J$, and 78 distinct nonliteral recipes.
+
+The geometric register also factors without division. With
+$q_J=\mathcal B^{L_J}$,
+\[
+ \sum_{r=0}^{4L_J-1}\mathcal B^r
+ =\left[\prod_{j=0}^{31}(1+t_j+t_j^2+t_j^3+t_j^4)\right]
+     (1+q_J)(1+q_J^2),
+\]
+and each five-term factor equals $1+t_j(1+t_j)(1+t_j^2)$.
+
+All remaining Jones expressions and the source's tight two-root finalizer
+are retained verbatim as polynomial data. The complete executable
+definition, with exactly nine supplied inputs, is
+\path{nine/compact/nine31_natural.json}. The affine positive-coordinate
+version is \path{nine/compact/nine31_positive.json}.
+The finalizer has the form
+\[
+ [\Theta^2-\Omega^2(a_0+V_0^2a_1)]^2
+       -4\Omega^4V_0^2a_0a_1.
+\]
+Its input expressions are all defined in those literal DAGs; the source
+proof bounds both radicands before imposing square conditions and treats
+negative or coincident radical cases. We preserve this finalizer rather
+than replacing its proof with generic claims about independent radicals.
+
+\subsection{Metrics, proof, and remaining cost}
+
+Exact expansion verifies the sparse correction in
+\eqref{eq:homogeneous} as 675 matching symbolic terms over
+$\Z[\mathcal B,\beta,K,M_C,M_F]$. The recurrence and exponent identity
+prove its remaining baseline. This gives the exact original polynomial at
+the old binding, in 1587 operations instead of 1840: a 253-operation, or
+13.75\%, saving. The gate breakdown is 857 multiplications and 730
+additions/subtractions. The source's leading-degree certificate is uniform
+in the index, with diagonal leading coefficient $2^{274}z_J^2>0$.
+Thus coherent rebinding preserves the exact degree as well.
+
+Replacing each nonnegative supplied coordinate by a positive coordinate
+minus 1 cancels several internal shifts. The resulting evaluator costs
+1582 operations and has the same degree and zero-existence condition. The
+transformation is an explicit affine bijection, not an informal domain
+change.
+
+Jones's nine-variable reduction \cite{jones,repojones}, the normalized
+quartic, and the strict index bounds give the semantic theorem. The complete
+coefficient recipes and proof are in \path{nine/NINE_PROOF.md} and
+\path{nine/compact/CONSTANTS.json}. Although every coefficient is effectively
+specified, $y_J$ is not materialized. The nine-variable form is consequently
+the coordinate-minimizing choice among the recommendations, not the
+smallest actual numerical object or the easiest equation for human review.

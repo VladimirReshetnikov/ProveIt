@@ -1,0 +1,460 @@
+\section{Nine natural unknowns with a smaller degree}
+\label{sec:nine-improved}
+
+The fewest-variable construction already present in package 18~\cite{p18} has nine
+nonnegative unknowns. We keep its explicit quartic-to-Jones specialization,
+replace its final relation-combining step, and use bounds adapted to the
+intermediate expressions. The resulting fixed polynomial has degree
+\[
+ \boxed{93264\cdot5^{33}+288
+ =10\,857\,358\,574\,867\,248\,535\,156\,250\,288}
+\]
+and a supplied division-free circuit with $20\,547$ binary operations.
+The previous degree was $161844\cdot5^{33}+484$, at $20\,531$ operations.
+Thus the degree decreases by approximately $42.3741\%$, for sixteen
+additional operations. The number of unknowns remains nine. This is an
+improvement of the supplied fixed-instance representation; it is not a new
+nine-variable representation theorem or a global minimality assertion.
+
+\subsection{The inherited quartic, specified completely}
+
+To make every coefficient determinate, we use the literal
+\texttt{quartic32.upstream.json} of package 18~\cite{p18}. In this subsection only,
+its positive coordinates are
+\begin{align*}
+ &(J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\[-2pt]
+ &\hspace{35mm}N,E,P,c,a,X,D,C_2,G,L,F_2,V,g,I,B_{\mathrm{aux}},\Delta).
+\end{align*}
+The four fixed ports are the entire Wang943 tuple
+$\kappa=(\beta,K_0,M_C,M_F)$; its fourth port is the shifted mask.
+The affine abbreviations are
+\[
+ q=\beta J+1,\qquad k=\eta+\zeta,\qquad H=4a+3,
+ \qquad C_w=q-F-\alpha.
+\]
+The following 23 expressions are the residuals $r_j$:
+\begin{center}
+\small
+\begin{longtable}{@{}r@{\quad}l@{}}
+\toprule $j$&$r_j$\\\midrule
+\endfirsthead
+\toprule $j$&$r_j$\\\midrule
+\endhead
+1&$L-q^2+1$\\
+2&$N-q(L+1)$\\
+3&$X-wq$\\
+4&$a-E-sN$\\
+5&$E-X(a-E)$\\
+6&$c-k(a-E)-\eta$\\
+7&$P-E(c-\eta)-k$\\
+8&$\tau^2-P(P-k)-1$\\
+9&$D-X-ac-\gamma H$\\
+10&$\Delta-a^2-H$\\
+11&$C_2-c^2$\\
+12&$D^2-\Delta C_2-1$\\
+13&$k-jc+V-1-hE$\\
+14&$G-(q-1)(q-F)-\alpha$\\
+15&$jc-V-LG-(M_C+qM_F)J$\\
+16&$(K_0+w)C_w+q-F-z(q-1)-1$\\
+17&$F_2-f^2$\\
+18&$V-of+c$\\
+19&$g-y^2+V^2$\\
+20&$I-iC_2$\\
+21&$B_{\mathrm{aux}}-I^2$\\
+22&$B_{\mathrm{aux}}-\Delta(F_2-1)$\\
+23&$y^2-B_{\mathrm{aux}}g-1$\\
+\bottomrule
+\end{longtable}
+\end{center}
+All residuals have degree at most two in the 32 supplied coordinates.
+Define, with a dummy input $x$ which does not occur,
+\[
+ \mathcal P_{32}(x,\mathbf n)=\sum_{j=1}^{23}r_j(\mathbf n+\mathbf1)^2,
+ \qquad \mathbf n\in\mathbb N^{32}.
+\]
+It is a quartic: the coefficient of $n_\tau^4$ is one. It satisfies the
+normalization $\mathcal P_{32}(x,\mathbf0)\ge1$, because residual 5 equals
+one at the all-ones positive tuple.
+
+The semantic dependency is the inherited ordinary-strong quartic theorem:
+these positive residual equations are equivalent in existence to the
+inputless native/Pell equations. That theorem is a four-port interface
+result~\cite{p18,arithmetic}. Package 19~\cite{p19} proves that its \emph{entire} Wang943 tuple implements
+the same interface, including its canonical positive completion. Hence it
+can replace the original T4 tuple in all 23 residuals simultaneously.
+No conclusion is drawn from mask congruences alone, and no individual port
+is transferred in isolation. The ordinary compiler theorem and K215
+calibration then give
+\[
+ \exists\mathbf n\in\mathbb N^{32}\;\mathcal P_{32}(1,\mathbf n)=0
+ \quad\Longleftrightarrow\quad \neg\operatorname{Con}(\mathrm{ZFC}).
+\]
+This remains an ordinary mathematical proof dependency, not a new
+proof-assistant endpoint.
+
+The literal row 16 uses the old transport quotient. Some inherited notes
+write its shifted form $(K_0+w)C_w=F+z_{\rm new}(q-1)$; the conventions are
+related by $z=z_{\rm new}+1$. Canonical witnesses have $z\ge2$, as proved
+in the inherited positive-completion argument. The present coefficient
+recipe uses precisely the residual table above, without silently changing
+that convention. Inherited relative-path metadata inside the immutable
+source JSON is historical; the new complete binding is the Wang943 tuple
+specified in this report and its binding file.
+
+\subsection{Bounded definitions of every Jones coefficient}
+
+Put $\nu=32$ and $L=5^{33}$. For
+$\alpha=(\alpha_0,\ldots,\alpha_{32})\in\mathbb N^{33}$ with
+$|\alpha|\le4$, define
+\begin{align*}
+ p_\alpha&=[x^{\alpha_0}n_1^{\alpha_1}\cdots n_{32}^{\alpha_{32}}]
+                 \mathcal P_{32},\\
+ c_\alpha&=(4-|\alpha|)!\prod_{j=0}^{32}\alpha_j!\;p_\alpha,
+ &e(\alpha)&=\sum_{j=0}^{32}\alpha_j5^j.
+\end{align*}
+The factorial of the unused degree is part of the construction. There are
+$\binom{37}{4}=66\,045$ eligible multi-indices. The delivered data record
+346 nonzero coefficient polynomials in the four fixed ports.
+
+After expanding each affine abbreviation, write
+\[
+ r_j(\mathbf v)=\sum_{a,b}d_{j,a,b}\mathbf v^a\kappa^b,
+ \qquad d_{j,a,b}\in\mathbb Z.
+\]
+The following is a finite, entirely specified integer recipe:
+\[
+ \rho_j=\sum_{a,b}|d_{j,a,b}|\,2^{|a|}\kappa^b,
+ \quad s_\star=2+24\sum_{j=1}^{23}\rho_j^2,
+ \quad z_\star=2^{s_\star}.
+\]
+All four ports are positive. The coefficient $\ell^1$ norm after replacing
+$\mathbf v$ by $\mathbf n+\mathbf1$ is at most $\rho_j$; this norm is
+submultiplicative, and every factorial multiplier is at most 24. Therefore
+\[
+ \sum_{|\alpha|\le4}|c_\alpha|\le s_\star-2,
+ \qquad |c_\alpha|+1<z_\star.
+\]
+Finally put
+\begin{align*}
+ e_\star(T)&=\sum_{|\alpha|\le4}(z_\star+c_\alpha)T^{L-e(\alpha)},\\
+ u_\star&=\sum_{j=1}^{32}(2z_\star)^{5^j},
+ &y_\star&=e_\star(2z_\star).
+\end{align*}
+Since $e(\alpha)\le4\cdot5^{32}<L$, every exponent is a fixed natural
+number. All digits are positive. These are the exact index constants in
+the constructive Jones specialization; $u_\star$ enters its proof
+interface but is not a leaf of the final circuit. There is no search for
+an unknown recursively enumerable index. The index integers are not
+materialized: their exact bounded recipes and modular evaluators are the
+delivered representation.
+
+\subsection{All nine-variable polynomial expressions}
+
+From here onward the symbols are local to the Jones construction. The
+nine supplied unknowns are exactly
+\[
+ (\varepsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0,n)\in\mathbb N^9.
+\]
+Set $g=g_0+1$, $h=h_0+1$, $s=s_0+1$, $w=w_0+1$,
+$i=i_0+1$, and $j=j_0+1$. Define
+\begin{align*}
+ b&=y_\star+1+\varepsilon,&\mathcal B&=b^5,&q&=\mathcal B^L,\\
+ \ell&=\sum_{r=1}^{32}\mathcal B^{5^r},&
+ \lambda&=\sum_{r=0}^{4L-1}\mathcal B^r,&e&=e_\star(\mathcal B),\\
+ \theta&=\mathcal B-2z_\star,&N&=q^{16},&
+ G_{\rm cap}&=32b\mathcal B^{5^{32}}.
+\end{align*}
+The packed quantity is
+\begin{align*}
+R={}&\left[g+eq^3+\ell q^5+
+ \left(2(e-z_\star\lambda)(1+\mathcal B+g)^4
+       +\lambda\mathcal B+\lambda\mathcal Bq^4\right)q^7\right](N^2-N)\\
+ &+\left[q^3-b\ell+\ell+\theta\lambda q^3+
+                   (\mathcal B-2)q^8\right](N^2-1).
+\end{align*}
+Continue with
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\\
+ P&=2M^2U,&K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&C&=B_1+W_1+\phi,\\
+ J&=4A-5,&Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ E&=iJDC^2,&F&=(A^2-1)E^2+1,&G_1&=A+F(CD+1-A),\\
+ H&=B_1+jC,&I&=(G_1^2-1)H^2+1.&
+\end{align*}
+The two radicands, signed divisor, dividend, and margin are
+\begin{align*}
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI,\\
+ u&=JF,&v&=QF+J(H-C),\\
+ m&=K^2G_{\rm cap}-4(C-KY)^2G_{\rm cap}-8gK^2.
+\end{align*}
+All displayed quantities are polynomial abbreviations, not additional
+unknowns. In particular $R$ is not assumed positive.
+
+\subsection{Unconditional bounds before imposing any equation}
+
+\begin{lemma}[The packed expression never vanishes]
+\label{lem:nine-R-nonzero}
+On every nonnegative assignment of the eight outer coordinates,
+$R\ne0$, $|A|\ge2$, $P\ge2$, and $K\ge1$.
+\end{lemma}
+\begin{proof}
+The positive index recipe gives $b\ge2$. Reducing the displayed formula
+for $R$ modulo $q$ gives
+\[
+ R\equiv(b-1)\ell\pmod q.
+\]
+Indeed $q\mid N$, and all terms in its second bracket except
+$(1-b)\ell$ are divisible by $q$. Every exponent occurring in $\ell$
+belongs to $\{0,\ldots,L-1\}$, so
+\[
+ 0<(b-1)\ell\le(\mathcal B-1)\ell
+       \le(\mathcal B-1)\sum_{r=0}^{L-1}\mathcal B^r=q-1<q.
+\]
+Thus $R\ne0$. Put $\sigma=Y(U+1)$. Since $U,Y\ge1$, we have
+$\sigma\ge2$ and $A=R\sigma$, whence $|A|\ge2$.
+Moreover $P=2R^2Y^2U\ge2R^2\ge2$, and
+\[
+ K=R+1+h(P-1)\ge R+P\ge2R^2+R\ge1.
+\]
+None of these conclusions uses a square condition, divisibility condition,
+or a sign inferred from $m$.
+\end{proof}
+
+Set
+\begin{align*}
+ r&=W_1+\phi,&\sigma&=Y(U+1),&T_C&=(j+2)C^2+r^2,\\
+ M_D&=\sigma(R^2+C^2),&M_F&=AE+1,\\
+ M_I&=FD T_C+2FH^2+(F-1)A^2+1,\\
+ V_0&=PK+1,&V_1&=M_D M_F M_I+1.
+\end{align*}
+The circuit uses the equal, slightly cheaper expression
+$M_I=F(DT_C+2H^2+A^2)-A^2+1$.
+
+\begin{lemma}[Bounds adapted to the three Pell radicands]
+\label{lem:nine-structured-bounds}
+For every assignment under consideration,
+\[
+ V_0,V_1\ge2,\qquad
+ \sqrt{|a_0|}\le V_0-1,\qquad
+ \sqrt{|a_1|}\le V_1-1.
+\]
+Also $J\ne0$, $D,F\ge1$, and therefore $u=JF\ne0$.
+\end{lemma}
+\begin{proof}
+The preceding lemma gives $|A|\ge2$, so $J=4A-5\ne0$ and
+$AJ=A(4A-5)>0$. Consequently $D\ge1$,
+$AE=iAJDC^2\ge0$, and $F\ge1$.
+Since $K\ge1$,
+\[
+ 1\le a_0=(PK)^2-K^2+1\le(PK)^2,
+\]
+which proves the $V_0$ assertion.
+
+For $D$, substitute $A=R\sigma$ and calculate
+\[
+ M_D^2-D=\sigma^2(R^4+R^2C^2+C^4)+C^2-1
+       \ge\sigma^2R^4-1\ge0.
+\]
+Also $M_D\ge1$. Since $AE\ge0$,
+\[
+ 1\le F=(AE)^2-E^2+1\le(AE+1)^2=M_F^2,
+ \qquad M_F\ge1.
+\]
+To bound $I$ without an unstated sign hypothesis, use
+\[
+ H=(j+1)C-r,\qquad G_1=FDC+F-A(F-1).
+\]
+The elementary inequalities $|rC|\le r^2+C^2$,
+$|H|\le H^2$ for integer $H$, and $|AH|\le A^2+H^2$ give
+\begin{align*}
+ |CH|&\le(j+1)C^2+r|C|\le T_C,\\
+ |G_1H|&\le FD T_C+FH^2+(F-1)(A^2+H^2).
+\end{align*}
+Thus $M_I\ge|G_1H|+|H|+1$, and
+\[
+ \sqrt{|I|}\le\sqrt{G_1^2H^2+H^2+1}
+             \le|G_1H|+|H|+1\le M_I.
+\]
+All three majorants are at least one, including when $C=0$ or $H=0$.
+Multiplying the bounds for $D,F,|I|$ proves
+$\sqrt{|DFI|}\le M_D M_F M_I=V_1-1$.
+\end{proof}
+
+\subsection{A signed-divisor relation-combining lemma}
+
+The second improvement avoids squaring both the divisor and dividend.
+The useful condition is a bound on the rational quotient, which is already
+available in this application.
+
+\begin{lemma}[Combining two squares, signed divisibility, and positivity]
+\label{lem:signed-divisor-combiner}
+Let $a_0,a_1,u,v,m,M,V_0,V_1$ be integers satisfying
+\[
+ u\ne0,\quad V_0,V_1\ge2,\quad
+ \sqrt{|a_t|}\le V_t-1\ (t=0,1),\quad
+ M\ge1,\quad |v/u|\le M-1.
+\]
+For $n\in\mathbb N$, put
+\[
+ \Omega=u(2m-1),\qquad
+ \Theta=u(n+M)+v-\Omega(2M+V_0V_1)
+\]
+and
+\[
+ \mathcal C=
+ \bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+                  -4\Omega^4V_0^2a_0a_1.
+\]
+Then
+\[
+ \exists n\in\mathbb N\;\mathcal C=0
+ \quad\Longleftrightarrow\quad
+ a_0,a_1\text{ are integer squares},\quad u\mid v,\quad m>0.
+\]
+\end{lemma}
+\begin{proof}
+Because $u\ne0$ and $2m-1\ne0$, also $\Omega\ne0$.
+Choose complex square roots $r_t^2=a_t$. Multiplication gives
+\[
+ \mathcal C=
+ \prod_{\epsilon,\delta\in\{-1,1\}}
+       \bigl(\Theta-\Omega(\epsilon r_0+\delta V_0r_1)\bigr).
+\]
+If this vanishes, absorb the signs of a vanishing factor into the roots.
+Then $s=\Theta/\Omega=r_0+V_0r_1\in\mathbb Q$. If $s\ne0$, the identity
+$2sr_0=s^2+a_0-V_0^2a_1$ proves both roots rational, hence integral
+because their squares are integers. If $s=0$, the bounds imply
+$|r_1|=|r_0|/V_0\le(V_0-1)/V_0<1$. The integer $a_1$ therefore has
+absolute value less than one, so $a_1=a_0=0$. This also gives integral
+roots. No independence of quadratic fields is assumed.
+
+Set $Z=2M+V_0V_1+r_0+V_0r_1$. The root bounds give
+\[
+ Z\ge2M+V_0V_1-(V_0-1)-V_0(V_1-1)=2M+1>0.
+\]
+Dividing the vanishing linear factor by the possibly negative $u$ yields
+\[
+ n+M+v/u=(2m-1)Z.
+\]
+Its left side is at least $n+1>0$. Hence $m>0$; its right side is an
+integer, so $v/u$ is an integer and $u\mid v$.
+Conversely, under the three stated conditions choose integer roots and put
+\[
+ n=(2m-1)Z-M-v/u.
+\]
+This is an integer and
+$n\ge2M+1-M-|v/u|\ge2$. Its linear factor vanishes, proving the
+converse. This proves the lemma for both signs of $u$.
+\end{proof}
+
+In the Jones application choose the polynomial
+\[
+ M_{\rm div}=Q^2+(H-C)^2+1.
+\]
+The identity
+\[
+ \frac vu=\frac QJ+\frac{H-C}{F}
+\]
+and $J\ne0$, $F\ge1$ give
+$|v/u|\le|Q|+|H-C|\le M_{\rm div}-1$.
+No division occurs in the final polynomial; the rational identity is used
+only in its proof.
+
+\subsection{The resulting equation and consistency equivalence}
+
+Define
+\begin{align*}
+ \Omega&=JF(2m-1),\\
+ \Theta&=JF(n+M_{\rm div})+QF+J(H-C)
+               -\Omega(2M_{\rm div}+V_0V_1).
+\end{align*}
+\[
+ \boxed{\mathcal F_9^{\rm new}
+   =\bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+                   -4\Omega^4V_0^2a_0a_1.}
+\]
+Every symbol on the right was defined by finite polynomial formulas. The
+requested equation in this section is $\mathcal F_9^{\rm new}=0$ over
+$\mathbb N^9$.
+
+\begin{theorem}[The improved nine-variable specialization]
+With the exact coefficients fixed above, ZFC proves
+\[
+ \bigl(\nexists\mathbf x\in\mathbb N^9:
+                \mathcal F_9^{\rm new}(\mathbf x)=0\bigr)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+The new unconditional bounds and signed-divisor lemma show that,
+for each eight-coordinate outer assignment, existence of the ninth
+coordinate is equivalent to the same four Jones ratio conditions as
+in package 18: $a_0,a_1$ are squares, $JF\mid QF+J(H-C)$, and $m>0$.
+The inherited constructive Jones lemmas
+\texttt{Nine.ratio\_complete} and \texttt{Nine.ratio\_sound}, composed
+with their packing reduction~\cite{jones,ninemain,p18}, identify existence of those eight
+coordinates with a nonnegative zero of $\mathcal P_{32}(1,\cdot)$.
+Our explicit normalized quartic and index recipes discharge their
+hypotheses exactly as in package 18. The ordinary quartic/compiler and
+K215 calibration then identify such a zero with a finite ZFC refutation.
+Negating the resulting existence equivalence proves the theorem.
+The change is in the finalizer and its bounds, not in the inherited
+ratio theorem. The full new endpoint has not been kernel checked.
+\end{proof}
+
+\subsection{Exact degree and the operation ledger}
+
+All fixed ports and Jones index constants have degree zero. For a direct
+certificate, specialize every supplied unknown to $t$, keeping all fixed
+leaves symbolic. The following table gives exact degrees and leading
+coefficients on that line; the gate-by-gate calculation has no unresolved
+leading cancellation.
+\begin{center}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule Expression&Degree&Leading coefficient\\\midrule
+$R$&$235L$&$1$\\
+$P$&$950L+3$&$2$\\
+$K$&$950L+4$&$2$\\
+$A$&$555L+2$&$1$\\
+$a_0$&$3800L+14$&$2^4$\\
+$a_1$&$24640L+68$&$2^{46}$\\
+$JF$&$6875L+20$&$2^{14}$\\
+$m$&$2221L+11$&$-2^9$\\
+$M_D$&$790L+2$&$5$\\
+$M_F$&$3160L+9$&$2^6$\\
+$M_I$&$8370L+23$&$2^{16}$\\
+$V_0$&$1900L+7$&$2^2$\\
+$V_1$&$12320L+34$&$5\cdot2^{22}$\\
+$\Omega$&$9096L+31$&$-2^{24}$\\
+$\Theta$&$23316L+72$&$5\cdot2^{48}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here the two leading terms inside the outer square have equal degree,
+so one must check their coefficients instead of adding degree bounds
+blindly. Their difference has leading coefficient
+\[
+ (25-4)2^{96}=21\cdot2^{96}.
+\]
+The last term $4\Omega^4V_0^2a_0a_1$ has lower degree. Therefore the
+final leading coefficient is $441\cdot2^{192}\ne0$, independently of
+all fixed constants, proving the exact degree $93264L+288$.
+
+The delivered live circuit has 668 additions, 23 subtractions, and
+$19\,856$ multiplications, totaling $20\,547$ operations. It expands
+every fixed power into multiplication gates. It has exactly nine
+variable leaves and 348 nonliteral fixed leaves: $z_\star,y_\star$ and
+the 346 nonzero $c_\alpha$. These are fixed integers with bounded
+recipes. Their bit lengths are not included in the operation count.
+
+The independent verification reads the actual four Wang943 integers and
+checks their hashes, reconstructs the normalized quartic and all 346
+coefficient records, and compares the literal DAG to direct finite sums
+modulo three primes. It also verifies the exact leading coefficient,
+6,912 structured-majorant assignments including negative $R$, $C=0$ and
+$H=0$, and 134,400 bounded signed-finalizer evaluations, with 468 explicitly
+constructed completeness witnesses. These audits support implementation
+and transcription; they do not replace the universal proofs above or
+decide whether the polynomial has a solution.
+

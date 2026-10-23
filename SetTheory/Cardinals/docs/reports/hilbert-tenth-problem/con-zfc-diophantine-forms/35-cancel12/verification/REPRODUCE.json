@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "scope": "Finite identities, source authentication, and literal artifact reproduction; not a consistency decision.",
+  "python_requirement": ">=3.10, standard library only",
+  "authenticated_source_files": 81,
+  "steps": [
+    {
+      "script": "coefficients/build_coefficients.py",
+      "status": "PASS",
+      "log": "coefficients.log"
+    },
+    {
+      "script": "reviews/audit_coefficients_independent.py",
+      "status": "PASS",
+      "log": "coefficients_independent.log"
+    },
+    {
+      "script": "quartic/build_quartic31_62.py",
+      "status": "PASS",
+      "log": "quartic.log"
+    },
+    {
+      "script": "positive/build_new.py",
+      "status": "PASS",
+      "log": "positive_build.log"
+    },
+    {
+      "script": "positive/check_new.py",
+      "status": "PASS",
+      "log": "positive_checks.log"
+    },
+    {
+      "script": "integers/build_signed.py",
+      "status": "PASS",
+      "log": "signed_build.log"
+    },
+    {
+      "script": "reviews/audit_signed16.py",
+      "status": "PASS",
+      "log": "signed_independent.log"
+    }
+  ],
+  "mathematical_artifacts_identical": 17,
+  "artifact_sha256": {
+    "coefficients/beta.bin": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+    "coefficients/K.bin": "6984850dcfc65498b42b633855ea81b8c2cf6d0a84e49005cca10f25557ae395",
+    "coefficients/MC.bin": "7c2b34179cb98c9bea1954f816f93fdc1f60213c68d8e98f1541edb41f0e3a4b",
+    "coefficients/MF_source.bin": "28c55970993394dd7ee32d7299a215fd26b4d70e437a643b60594eee8c7cd3a7",
+    "coefficients/wang943_tiles.json": "66b55f1d11fca9fefc93b12fcfc8b4cabb75b08e9fd03311f9e894a1c5e5e81f",
+    "positive/economical_product.json": "e770a90303c9e21b76875010115cd180c25a8ee822f1b2b43564d893de4464dd",
+    "positive/economical_system.json": "7031c19b59aa72048b7ca6d35ca66976e4d0f5722ac06ff94869f3f68d9240bb",
+    "positive/economical_shifted_system.json": "adab4f429222ab548aff4ef512d6eb810c99a11099c6f40590bad21d3d498b5a",
+    "positive/cancellation1065_product.json": "5144fef9a1ada5bbcc0eefc3a0e9911f19d6042973a7daef718072e29be1a624",
+    "positive/cancellation1065_system.json": "ff1d941636b65cec500fb0056a7d626770afc8f315ed492bf88fce57e64eb743",
+    "positive/cancellation1065_shifted_system.json": "dcd3ce55bd88357907686020a353d7a32dc6da95df9d4ba77978054244e4a466",
+    "quartic/quartic31_system62.json": "2fcb7681eca688b62c2a53b1e2ef07fbc84025bbc21598e0aeda96d01ac4f97e",
+    "quartic/quartic31_sos127.json": "f3419ed48dfb4d3dd3003bc4af636677e8f4155fef9c12aa78c081d272823847",
+    "integers/generated/signed16.json": "58e5dbd44a564075da7c0acf6344fa17fca81994207e453d397c2eac8d1ce2ee",
+    "integers/generated/signed17.json": "1a5efcdda2c30a2bd4154be12548173b1cb2b8d1c72f95aaea785cead1b9fdd2",
+    "integers/generated/INDEX_CONSTANTS.json": "7129a6d7f1a71fa92dd83b38600a87ce68106b484f7f53b8e06faec86f2b9c79",
+    "integers/generated/INDEX_BOUND_CERTIFICATE.json": "d066882bf25ca6dc0f526c6ca4f8bd384331311895dcfb00f712e1dd526e92ee"
+  },
+  "fixed_binding": {
+    "base": "2^1064921",
+    "raw_coefficient_bytes": 533099,
+    "index_exponent": 4269855,
+    "source_quartic_sha256": "1c336ba0b3c9827ffddcf7ce895cad9dca2907f907cde7484c7f387bb2cb1287"
+  }
+}

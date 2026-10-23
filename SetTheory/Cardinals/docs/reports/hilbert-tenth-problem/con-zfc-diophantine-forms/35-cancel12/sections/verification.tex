@@ -1,0 +1,117 @@
+\section{Verification, archive contents, and remaining questions}
+\label{sec:verification}
+
+\subsection{A reproducible finite audit}
+
+The archive is self-contained for the new finite calculations. Python 3.10
+or later and its standard library suffice; no network connection, symbolic
+algebra package, proof-assistant installation, or machine simulation is
+needed. From the extracted top-level directory run
+\begin{lstlisting}
+python3 reproduce.py
+\end{lstlisting}
+The runner authenticates the included source files, rebuilds the four
+coefficient integers, runs an independent reconstruction of that tuple,
+rebuilds the low-degree and positive circuits, rebuilds both signed
+circuits and their fixed-index certificates, and runs the independent
+signed audit. It compares the regenerated literal mathematical artifacts
+with the delivered versions and writes a receipt under
+\texttt{verification/}. The source map includes SHA-256 and pinned Git
+blob identities. Imported programs are retained as reference text;
+the new builders read their JSON data and do not execute the imported
+programs.
+
+The principal checks have the following scopes.
+\begin{enumerate}
+\item \textbf{Coefficient construction.} The 430 literal actions determine
+the 943 ordered tiles. Both implementations check 69230 native-basis
+convolution identities, clause-band separation, anchor synchronization,
+zero padding fields, carry bounds, population balance, the general
+padding controller's orders and valuation, and its unit table. All four
+raw byte strings match an independent reconstruction.
+\item \textbf{Quadratic and quartic algebra.} An exact sparse polynomial
+ring verifies all 22 residual identities after the coordinate shifts,
+against both the predecessor's expressions and its literal sparse data.
+It also verifies the comparison circuit, the sum of squares, degree four,
+the coefficient of $\tau^4$, normalization, and gate liveness.
+\item \textbf{Positive norm algebra.} For each retained family, 50 exact
+conjugate products in a free radical algebra agree with the scalar
+evaluator; 50 parity checks and 50 transport identities also pass.
+Full univariate coefficient calculations over each of two prime fields
+verify the degree and leading-form predictions. The Laurent argument in
+the proof supplies the universal upper bound and nonzero leading form;
+the modular calculations are independent implementation diagnostics.
+\item \textbf{Signed algebra and fixed index.} Each signed candidate has
+an exact symbolic leading-term certificate, live-input/gate checks,
+90 modular comparisons at three primes using the actual coefficient
+tuple, 200 norm products with integral roots, and 200 further norm
+products with arbitrary signed radicands. There are 57222 finite
+separator checks and intersectivity checks through modulus 1200.
+The separate signed reviewer checks another 300 arbitrary signed-radicand
+products and 300 guard stacks, and reads the circuit as inert JSON.
+\end{enumerate}
+
+Separate proof reviews examine the infinitary steps that finite arithmetic
+cannot settle: the new padding modulus, the sharp positive-root bound,
+rational Pell saturation, the cofinal Jones radix, and the order of the
+signed nonvanishing and separation arguments. These reviews were performed
+by separate agents within this AI-assisted collaboration; they are not
+external human endorsement or proof-assistant certification.
+
+\subsection{Which files define the equations}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.31\textwidth}p{0.61\textwidth}@{}}\toprule
+Location & Role\\\midrule
+\texttt{report.tex}, \texttt{sections/} & Full mathematical exposition and proofs\\
+\texttt{report.pdf} & Compiled, visually inspected report\\
+\texttt{coefficients/} & Literal machine, four actual integer payloads, finite recipes, binding, and receipts\\
+\texttt{positive/} & Six live circuits: two single equations and their ordinary/shifted three-equation systems\\
+\texttt{quartic/} & 22-equation quadratic system, quartic sum of squares, and exact sparse data\\
+\texttt{integers/generated/} & Sixteen- and seventeen-integer circuits, fixed-index recipes, and degree certificates\\
+\texttt{sources/} & Authenticated inherited proof texts, endpoint statements, and source map\\
+\texttt{reviews/} & Independent mathematical reviews and separately implemented audits\\
+\texttt{RESULTS.json} & Explicit domain, degree, cost, and binding for every delivered form\\
+\texttt{MANIFEST.sha256} & File integrity list for the delivered release\\\bottomrule
+\end{tabular}
+\end{center}
+
+All named intermediate quantities in a circuit are abbreviations for
+polynomials, not additional quantified variables. Every fixed coefficient
+is either a delivered integer byte string or an exact finite integer
+recipe. No coefficient depends on choosing whether ZFC is consistent.
+No input port remains an unspecified free parameter in the fixed-instance
+bindings.
+
+The two signed polynomials deliberately use package 30's old literal
+31-variable quartic, with the complete new coefficient tuple. The new
+62-operation system and its 297-term quartic are a separate improvement.
+Substituting the latter into the Jones branch would require regenerating
+the weighted index coefficients; it is not done implicitly here.
+
+For the PDF, run \texttt{make pdf}, or run \texttt{pdflatex} twice on
+\texttt{report.tex}. The supplied Makefile uses no shell escape.
+The LaTeX sources use ordinary AMS, Latin Modern, geometry, microtype,
+table, listing, and hyperlink packages.
+
+\subsection{Interpretation and next useful reductions}
+
+The new results answer distinct versions of ``simpler.'' The sixteen-integer
+construction improves the current explicit signed variable count in this
+repository. The twelve-positive-variable cancellation improves degree;
+the other twelve-variable presentation improves cost. The quadratic
+system gives a short low-degree form, and the coefficient adapter reduces
+the common direct coefficient payload. These conclusions do not establish
+an optimum in any unrestricted class of Diophantine presentations.
+
+The most consequential unresolved extensions are a fully instantiated
+ten-integer construction based on Sun's different representation, further
+removal of signed positivity witnesses, and a kernel-checked proof of the
+new compiler adapter and finalizers. An improvement to the nine-positive-
+variable count or to the established 67-operation equation would require
+another idea; this report does not claim those improvements.
+
+The result proves an equivalence. Assuming ZFC is consistent, G\"odel's
+second incompleteness theorem prevents ZFC from proving that the equation
+has no solutions. ZFC can nevertheless prove that each solution encodes
+a finite refutation, and that every finite refutation supplies a solution.

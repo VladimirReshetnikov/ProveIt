@@ -1,0 +1,312 @@
+\section{A smaller complete coefficient tuple}
+\label{sec:coefficients}
+
+The new backend combines the mixed-radix local decoder and compact bands
+of package 25 with the general odd-factor Boolean padding argument of
+package 24. Neither original numerical tuple is reused piecemeal.
+All four ports are constructed together and then audited together.
+
+\subsection{The finite language and its literal encoding}
+
+The file \texttt{coefficients/k215.tm} contains the 430 literal actions
+of the 215-state machine. Its SHA-256 is
+\begin{center}\scriptsize\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{center}
+The generator never runs this machine. It reads the finite transition
+table, constructs the same 943 ordered tiles as package 25, and checks
+the canonical tile-list hash. A tile has west, north, east, and south
+edge labels. The language contains 430 transition tiles, two halted-head
+loops, two unchanged-bit tiles, 398 right-arrival tiles, 90 left-arrival
+tiles, four finish tiles, four initialization tiles, three reset tiles,
+nine seam tiles, and one Forbidden tile. Start is placed first,
+Forbidden second, and the remaining tiles are lexicographically ordered.
+
+For clarity, the finite semantic contract retained from the source is as
+follows. A marked periodic plane forces initialization between reset
+boundaries. The directed signal colors update exactly one head at each
+time step and cannot cross a boundary. A new reset row can occur only
+after a halted head has appeared. Thus a component containing Start
+contains a finite blank halting computation. Conversely, a finite halt
+admits arbitrarily wide blank margins and arbitrarily many halted padding
+rows; the seam tiles close these to a helical periodic tableau. Its width
+and height can be chosen independently among all sufficiently large
+integers, in particular among powers of the prime used below.
+
+Let
+\[
+ b_c=121,\qquad L_c=8801,\qquad d_c=b_cL_c=1064921,
+ \qquad \rho=2^{121},\qquad B=\rho^{8801}.
+\]
+The native support is
+\begin{align*}
+ \mathcal E={}&\{0,\ldots,942\}\cup\{983,\ldots,992\}
+              \cup\{1003,\ldots,1032\}\\
+ &{}\cup\{1063,1064,1095,1096,2195,3296\}.
+\end{align*}
+It has 989 elements. The two dummy positions are 1063 and 1064;
+the first permits the harmless binary variation used for index control.
+For the four edge slots use copy offsets
+$o_0=1023,o_1=1013,o_2=1003,o_3=983$.
+Put $w_j=2^{10+2j}$, for $0\le j<44$.
+If tile $i$ has labels $x_{i,t}$, its clause coefficient is
+\[
+ c_i=1+\sum_{t=0}^3\sum_{j=0}^9
+       \operatorname{bit}_j(x_{i,t}+512)w_{10t+j}
+       +\sum_{j=40}^{43}w_j.
+\]
+At the copy position $o_t+j$, set $c_{o_t+j}=w_{10t+j}$.
+At the anchors $1095,1096,2195,3296$, set the coefficients to
+$w_{40},w_{41},w_{42},w_{43}$, respectively. Both dummy coefficients
+are zero. The clause mask is
+\[
+ \mu=1022+\sum_{j=0}^{43}w_j.
+\]
+Its bit length is 97 and its population is 53.
+
+The two clause targets are $T_1=4393,T_2=5495$ and the spatial
+displacement is 42. Define the fixed integers
+\begin{align*}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e
+                      (\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R={}&\rho^{42},\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+                -2\rho^{1063},\\
+ M_{F,\mathrm{native}}={}&4+\mu(\rho^{4393}+\rho^{5495})
+      +\sum_{j=0}^9\rho^{1013+j}
+      +\sum_{j=0}^9\rho^{1065+j}+\rho^{2195}+\rho^{3296}\\
+ &{}+(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+             +(2^{27}-1)\rho^{8799}.
+\end{align*}
+Every exponent is nonnegative. The four actual ports are
+\begin{equation}\label{eq:new-ports}
+ \boxed{\beta=B-1,\quad K_0=D_C+BD_R,\quad M_C,\quad
+ M_F=M_{F,\mathrm{native}}+B-1.}
+\end{equation}
+In particular $M_F$ is already shifted. The unshifted mask is not the
+fourth arithmetic input.
+
+\subsection{Decoder, separation, and carries}
+
+The low ten bits of a clause sum count the selected tiles. Before any
+decoding there are at most 943 selectors, and all higher coefficients
+are multiples of 1024. The mask 1022 therefore forces the selector count
+to be either zero or one. Conditioned on this conclusion, each of the
+44 remaining radix-four digits is a sum of two Boolean values. It has
+no carry and its masked parity forces the two values to be equal.
+This gives both the edge-copy constraints and the anchor constraints.
+The order of these arguments matters: carry-freeness of the radix-four
+digits is used only after the selector count has been recovered.
+
+The overlap tests are unchanged. At position $1013+j$, the bare shift
+30 pairs the south copy $983+j$ with the temporal north copy $1013+j$.
+At position $1065+j$, the bare shift 62 pairs the east copy $1003+j$
+with the spatial west copy $1023+j$ shifted by 42. The two anchor tests
+at 2195 and 3296 pair copies at 1095 and 1096, respectively, with their
+temporal copies. At a clause target, the reflected coefficient from
+each support position is exactly $c_e$, and all other possible
+contributions vanish.
+
+These are identities on every native basis vector, not observations
+about selected example tableaux. There are 69230 such finite identities
+in the delivered audit. The two further support identities are
+\begin{align*}
+ \{(4393-e)\bmod8801:e\in\mathcal E\}
+ &\cap\{(5495-e)\bmod8801:e\in\mathcal E\}=\varnothing,\\
+ \{(2195-e)\bmod8801:e\in\mathcal E\}
+ &\cap\{(3296-e)\bmod8801:e\in\mathcal E\}=\{0\}.
+\end{align*}
+The first preserves a clean clause band under arbitrary rotations;
+the second forces whole-cell synchronization. The source's two-anchor
+parity argument first excludes subdigit offsets, including the one
+possible upper-dummy spill. The displayed intersection then excludes
+all remaining nonzero offsets. Thus this part of soundness uses no
+power-of-five assumption on the new dimensions.
+
+Put
+\[
+ \mathcal M=(989+2)\left(2\sum_{e\in\mathcal E}c_e+6\right).
+\]
+Its bit length is 118, while that of $4\mathcal M+8$ is 120.
+The complete conservative threshold is
+\[
+ \max(4\mathcal M+8,2\mu+4,2(2^{119}-1)+4,16)
+       =2^{120}+2<\rho.
+\]
+This bound applies before selector extraction, including all allowed
+dummy values. It preserves the no-carry and positive raw-slack
+hypotheses of the source compiler.
+
+The largest unshifted native product position is
+$5495+3296=8791$. The padding masks occupy only positions 8792 through
+8799, and $8799<8801$. They therefore test fields that are structurally
+zero in every canonical tableau, even after dummy-bit changes. Their
+population is $7\cdot119+27=860$. Consequently
+\[
+ \pc(M_C)=d_c-989,
+ \qquad\pc(M_{F,\mathrm{native}})=2\cdot53+22+1+860=989.
+\]
+Both masks are strictly between zero and $B-1$, and
+\[
+ M_C\equiv2\pmod4,\qquad M_{F,\mathrm{native}}\equiv4\pmod8.
+\]
+The population identity and residues are verified on the materialized
+integers as well as on their finite recipes.
+
+\subsection{Completeness for the new odd dimensions}
+
+It would be incorrect merely to use the new dimensions in the old
+power-of-five completeness argument. Instead factor
+\[
+ d_c=11^2\cdot13\cdot677
+\]
+and choose the independently verified prime
+$\lambda=2341$ and the step $k_c=2340=\lambda-1$.
+The exact order data are
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Modulus & 121 & 13 & 677 & 2341\\\midrule
+Order of $B$ & 10 & 12 & 52 & 60\\\bottomrule
+\end{tabular}
+\end{center}
+Thus $\ord_{d_c}(B)=780$ and $k_c$ is a common multiple of all
+orders. It is deliberately not claimed to be their least common multiple.
+Also
+\[
+ B^{2340}\bmod2341^2=2556373=1+1092\cdot2341.
+\]
+The valuation $v_{2341}(B^{2340}-1)$ is therefore exactly one.
+Writing $H_0=1+BD_C+B^2(D_R+1)$, the unit check is
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}\toprule
+$p$ & $B\bmod p$ & $D_C\bmod p$ & $(B^2-1)\bmod p$ & $H_0\bmod p$\\\midrule
+11 & 2 & 5 & 3 & 9\\
+13 & 6 & 1 & 9 & 7\\
+677 & 611 & 38 & 293 & 654\\
+2341 & 2100 & 2051 & 1896 & 1225\\\bottomrule
+\end{tabular}
+\end{center}
+
+Choose sufficiently large independent tableau width $w_c$ and height
+$h_c$ that are powers of $\lambda$, and put $N_c=w_ch_c=\lambda^n$.
+Require $N_c>d_c\lambda^2$ and $h_c>\lambda$; padding a fixed finite
+halt permits these requirements. Put $q=B^{N_c}$. Since
+$\lambda\equiv1$ modulo the relevant orders,
+\[
+ q\equiv B^{w_c}\equiv B\pmod{d_c\lambda}.
+\]
+Changing a free low dummy in cell $j$ changes the actual packed Pell
+index by $-\Gamma B^j$, where
+\[
+ \Gamma=\rho^{1063}(q^2-1)
+             [1+q(D_C+BD_R+B^{w_c})].
+\]
+Every prime factor of $d_cN_c$ is in the unit table. Thus
+$\gcd(\Gamma,d_cN_c)=1$.
+
+\begin{lemma}[Boolean coverage of the required modulus]
+Put $T=N_c/\lambda$. Every residue modulo $d_cN_c$ is a sum of a
+Boolean subset of
+\[
+ \{B^{2+k_cj}:0\le j<T\}\cup\{B^3\}.
+\]
+The chosen cells and their required spatial and temporal translates
+can all be kept nonwrapping.
+\end{lemma}
+\begin{proof}
+Let $C_0=d_c\lambda$. Then $d_cN_c=C_0T$ and $T>C_0$.
+The valuation calculation and the binomial lifting identity show that
+$B^{k_c}$ has order $T$ modulo $\lambda^n$ and order one modulo $d_c$.
+Its first $T$ powers are exactly the $T$ residues $1+C_0z$
+modulo $C_0T$. This follows either by the Chinese remainder theorem
+and cardinality or directly from the order calculation.
+
+Multiply the target by $B^{-2}$. Choose $\varepsilon\in\{0,1\}$
+so that its difference from $\varepsilon B$ is nonzero modulo
+$\lambda$. Its least residue $a$ modulo $C_0$ then satisfies
+$1\le a<C_0<T$ and $\gcd(a,T)=1$.
+Write the remaining target as $a+C_0u$. Solve
+\[
+ az_0+\frac{a(a-1)}2\equiv u\pmod T.
+\]
+The $a$ distinct orbit entries with additive coordinates
+$z_0,z_0+1,\ldots,z_0+a-1$ have the desired sum. Include $B^3$
+exactly when $\varepsilon=1$. All selections are Boolean.
+
+The largest available cell position is
+$2+(\lambda-1)(N_c/\lambda-1)=N_c-N_c/\lambda-\lambda+3$.
+As $h_c>\lambda$, the width $w_c$ is less than $N_c/\lambda$.
+Translations by one and by $w_c$ therefore remain below $N_c$.
+The additional cell 3 is distinct and also safe.
+\end{proof}
+
+Start with a canonical tableau whose dummy bits are zero, and let its
+packed index be $R_0$. Apply the lemma to
+$(R_0-d_cw_c)\Gamma^{-1}$ modulo $d_cN_c$.
+The modified tableau has $R\equiv d_cw_c\pmod{d_cN_c}$.
+This is exactly the temporal rotation demanded by $X=2^R$.
+The changes affect no selected tile, matched edge, Start marker, zero
+padding field, or carry estimate. The inherited Pell completeness
+argument now supplies all positive witnesses.
+
+\subsection{Canonical parity and the signed interfaces}
+
+Let $u_c=d_cN_c$, so $q=2^{u_c}$. All dimensions are odd. The
+canonical Start digit and forbidden selector imply that the native
+code $C$ is $1$ modulo 4. With
+\[
+ S=(C-1)+qF,\qquad
+ T_m=(M_CJ+1)+q(M_{F,\mathrm{native}}J-1),\qquad M=q^2,
+\]
+the source packing identity is
+\[
+ R=(M-S)(M-1)+T_m=(M-1-S)M+(S+T_m).
+\]
+The native masks give disjoint binary support of $S,T_m$;
+the exact population balance gives $\pc(T_m)=u_c+2$.
+The upper complement then proves $\pc(R)=3u_c+2$.
+The low residues also give $R\equiv3\pmod4$.
+
+The canonical scale $w=2^{R-u_c}$ is consequently an integer square.
+For the even main Pell parameter, its coordinate $c$ at the odd
+rank $R$ is odd; choosing the strong rank $cR$ makes the normalized
+multiplier odd, and its ordinary discriminant-scaled version is odd
+as well. Finally, the inherited half-binomial valuation identity
+$v_2(Y)=\pc(R)-2=3u_c$ shows that $s=Y/q^3$ is odd.
+Thus the new tuple supplies the full canonical odd and square
+properties, in addition to the unsigned compiler equivalence.
+
+\begin{theorem}[Complete replacement of the four ports]
+The tuple \eqref{eq:new-ports} satisfies the same blank-K215
+native-window/Pell interface as the Wang943 source, including its
+canonical odd and square witnesses. It can therefore be used as a
+whole tuple in the compatible direct forms, the ordinary quartic,
+and the Jones and signed constructions based on that quartic.
+\end{theorem}
+
+\subsection{Materialized size and reproducibility}
+
+The archive contains the actual four integers, both as raw minimal
+unsigned little-endian byte strings and as gzip files. Their sizes are
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}\toprule
+Port & Bit length & Raw bytes & Gzip bytes\\\midrule
+$\beta$ & 1064921 & 133116 & 164\\
+$K_0$ & 1070004 & 133751 & 9794\\
+$M_C$ & 1064921 & 133116 & 264\\
+$M_F$ & 1064922 & 133116 & 263\\\midrule
+Total & & 533099 & 10485\\\bottomrule
+\end{tabular}
+\end{center}
+The exponent of $B$ is about 45.48\% smaller than the preceding minimum;
+the raw payload is about 45.45\% smaller. Compression is reported only
+as a transport size, not as coefficient height. These are four actual
+integers, fixed by a terminating finite recipe independently of whether
+the machine halts. The much larger Jones index coefficients are separately
+specified by exact finite recipes in the signed construction.
+
+The builder and the independent audit use only Python's standard
+library. The latter reconstructs the tuple without importing the builder
+and checks every port against the delivered bytes. Both the generator
+and audit can be rerun without network access.

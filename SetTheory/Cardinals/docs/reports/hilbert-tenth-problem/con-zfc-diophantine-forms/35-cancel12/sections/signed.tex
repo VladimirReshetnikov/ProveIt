@@ -1,0 +1,441 @@
+\section{Sixteen unrestricted integers by a cofinal square radix}
+\label{sec:signed16}
+
+The new integer construction combines three components that were previously
+separate: package 30's compact evaluation of the Jones ratio for its
+31-variable quartic; package 29's signed relation combiner; and a new
+restriction of the coding radix to a cofinal family of scaled squares.
+The last step removes one positivity witness.  A smaller signed separator
+also lowers the degree and evaluation cost.  The result is a completely
+specified polynomial in \emph{sixteen unrestricted integers}, with
+\[
+ \deg P_{16}=813056\,5^{32}+10024,
+ \qquad \operatorname{ops}(P_{16})=1865.
+\]
+These are improvements over the delivered 17-integer circuit, not a new
+general bound for arbitrary recursively enumerable sets.  In particular,
+Sun's 2026 ten-integer theorem is a different, more general representation
+theorem, whose compiler is not instantiated here.
+
+\subsection{Fixed index and literal Jones expressions}
+
+Use the literal 31-variable quartic of package 30, supplied in the archive
+as inert source data.  Its residuals are quadratic; shifting every positive
+coordinate by one and summing their squares gives a normalized polynomial
+\(P_{31}(x,\mathbf n)\), independent of the dummy input \(x\).
+The source's fifth residual is \(EX+E-aX\), which equals one at the
+all-ones tuple, so \(P_{31}(x,\mathbf0)>0\).  Its coefficient of the
+fourth power of the retained first Pell root is one; hence its degree is
+exactly four.  The quartic is rebound to the \emph{whole} coefficient tuple
+proved in the coefficient section; its underlying four-port interface is
+unchanged.  This is a semantic use of that interface theorem, not an
+inference from matching file hashes.
+
+Put \(\nu=31\) and \(L=5^{32}\).  If \(p_\alpha\) is the coefficient
+of the exponent vector \(\alpha\in\mathbb N^{32}\), \(|\alpha|\le4\),
+in the shifted quartic, define
+\[
+ c_\alpha=(4-|\alpha|)!\prod_{r=0}^{31}\alpha_r!\,p_\alpha,
+ \qquad e(\alpha)=\sum_{r=0}^{31}\alpha_r5^r.
+\]
+There are 402 nonzero coefficient records, each a specified polynomial in
+the four fixed compiler ports.  The bit lengths of those ports, in order
+\((\beta,K_0,M_C,M_F)\), are
+\[
+ (1064921,1070004,1064921,1064922).
+\]
+For a coefficient record \(c_\alpha=\sum_t a_t\prod_j C_j^{e_{tj}}\),
+the finite exact bound
+\[
+ |c_\alpha|\le H_\alpha
+ :=\sum_t|a_t|2^{\sum_j e_{tj}\operatorname{bits}(C_j)},
+ \qquad H_\alpha+1<2^{4269855}
+\]
+is verified for every record by the supplied index certificate.  Unlisted
+records have coefficient zero.  Consequently the following are admissible
+fixed integers:
+\begin{align*}
+ z_*&=2^{4269855}, &
+ e_*(T)&=\sum_{|\alpha|\le4}(z_*+c_\alpha)
+                          T^{L-e(\alpha)},\\
+ y_*&=e_*(2z_*),&
+ b_*&=(2z_*)^{L+1}=2^{4269856(L+1)}.
+\end{align*}
+The corresponding unused Jones index coordinate is
+\(u_*=\sum_{r=1}^{31}(2z_*)^{5^r}\).  Base-five uniqueness makes the
+exponents in \(e_*\) distinct, and every digit lies strictly between one
+and \(2z_*\).  Thus
+\[
+ 2(2z_*)^L\le y_*<(2z_*)^{L+1}=b_*.
+\]
+The integer \(y_*\) is needed to state the imported index theorem but
+\emph{does not occur as a coefficient leaf of the new polynomial}.
+It is replaced there by the simple power-of-two coefficient \(b_*\).
+None of these fixed integers is an existential parameter.
+
+The eight base variables are
+\[
+ (e,g_0,h_0,s_0,w_0,\phi,i_0,j_0)\in\mathbb Z^8.
+\]
+Set \(g=g_0+1\), \(h=h_0+1\), \(s=s_0+1\), \(w=w_0+1\),
+\(i=i_0+1\), \(j=j_0+1\), and define
+\begin{align*}
+ b&=b_*e^2,& \mathcal B&=b^5,&q&=\mathcal B^L,\\
+ \ell&=\sum_{r=1}^{31}\mathcal B^{5^r},&
+ \lambda&=\sum_{r=0}^{4L-1}\mathcal B^r,&
+ N&=q^{16},\\
+ \theta&=\mathcal B-2z_*,&
+ G&=32b\mathcal B^{5^{31}}.&
+\end{align*}
+Write \(E_*=e_*(\mathcal B)\), and put
+\begin{align*}
+ R={}&\bigl[g+E_*q^3+\ell q^5+
+ \{2(E_*-z_*\lambda)(1+\mathcal B+g)^4
+       +\lambda\mathcal B+\lambda\mathcal Bq^4\}q^7\bigr](N^2-N)\\
+ &+\bigl[q^3-b\ell+\ell+\theta\lambda q^3+
+              (\mathcal B-2)q^8\bigr](N^2-1).
+\end{align*}
+Continue with the literal Jones ratio expressions:
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\\
+ P&=2M^2U,&K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&C&=B_1+W_1+\phi,\\
+ J&=4A-5,&Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ E&=iJDC^2,&F&=(A^2-1)E^2+1,&G_1&=A+F(CD+1-A),\\
+ H&=B_1+jC,&I&=(G_1^2-1)H^2+1.&
+\end{align*}
+Finally set
+\begin{align*}
+ a_0&=(P^2-1)K^2+1,&a_1&=DFI,\\
+ D_0&=JF,&T_0&=QF+J(H-C),\\
+ m&=K^2G-4(C-KY)^2G-8gK^2.&
+\end{align*}
+Every intermediate symbol is a polynomial abbreviation.  In particular,
+all exponents are fixed natural numbers, and no radical or variable
+exponent occurs in the delivered arithmetic circuit.
+
+\subsection{The new cofinal-radix lemma}
+
+\paragraph{Lemma (restriction to scaled squares).}
+For the fixed admissible Jones index, the source existential predicate
+\[
+ a_0,a_1\in\operatorname{Sq}(\mathbb Z),\qquad
+ D_0\mid T_0,\qquad m>0
+ \tag{JR}\label{eq:JR16}
+\]
+is equivalent to the parent-quartic zero predicate when
+\(b=b_*e^2\), \(e\in\mathbb Z\setminus\{0\}\), and the other
+seven source coordinates are nonnegative.
+
+\emph{Proof.}
+Soundness is immediate from \(b\ge b_*>y_*\): the integer
+\(\varepsilon=b-y_*-1\) is nonnegative, and replacing the usual source
+definition \(b=y_*+1+\varepsilon\) by this value changes no ratio
+expression.  The source soundness theorem applies literally.
+
+For completeness, inspect the constructive proof of
+\texttt{Jones1982.USys\_of\_mem} in the pinned
+\texttt{Master3.lean}.  For a fixed parent solution \(\mathbf n\),
+its choice \(b=2^v\) uses the equality
+\(v=x y_*+\sum_r n_r+1\) only to establish the initial bounds
+\(v\ge1\), \(x y_*<b\), and \(n_r<b\).
+After these bounds, the entire construction uses only those inequalities,
+the positive power-of-two condition on \(b\), and the fixed index.
+The displayed source was audited for every occurrence of that equality:
+there is no later use.  Hence the same ordinary mathematical construction
+works for every integer
+\(v\ge x y_*+\sum_r n_r+1\).
+Write \(b_*=2^\kappa\), where \(\kappa=4269856(L+1)\).
+Choose \(t\ge0\) with \(\kappa+2t\) exceeding this bound, take
+\(v=\kappa+2t\), and put \(e=2^t\).
+Then \(b=2^v=b_*e^2\).  The unchanged
+\texttt{Nine.reduced\_of\_mem} construction and
+\texttt{Nine.ratio\_complete} give the ratio witnesses.
+This is an explicit strengthening of the source construction; no
+claim that an arbitrary Diophantine witness may be replaced by a square
+is used. \hfill\(\square\)
+
+\subsection{Five base guards and one margin guard}
+
+Only \(\mathbf x=(g_0,s_0,w_0,\phi,j_0)\) needs direct
+nonnegativity guards.  The variables \(h_0,i_0\) remain signed.
+Introduce six integers \(z_1,\ldots,z_6\).  Put \(C_0=1\) and
+\begin{align*}
+ d_r&=3x_r+2,& B_r&=1+4d_r C_{r-1}^2z_r^2,&
+ C_r&=C_{r-1}B_r\quad(1\le r\le5),\\
+ d_6&=3m-1,&B_6&=1+4d_6 C_5^2z_6^2,&C_*&=C_5B_6.
+\end{align*}
+
+\paragraph{Lemma (coprime Pell guard).}
+If every \(z_r\ne0\), then
+\[
+ C_*\in\operatorname{Sq}(\mathbb Z)
+ \quad\Longrightarrow\quad
+ g_0,s_0,w_0,\phi,j_0\ge0,\quad m>0.
+\]
+Conversely these inequalities permit a choice of nonzero \(z_r\)
+for which \(C_*\) is a square.  Moreover, for arbitrary signed
+base coordinates and nonzero \(z_r\),
+\(C_r\ne0\) and \(|C_*|\ge3^6\).
+
+\emph{Proof.}
+Each \(d_r\equiv2\pmod3\) is nonzero, and each
+\(B_r\equiv1\pmod4\) is nonzero.  Also
+\(\gcd(B_r,C_{r-1})=1\), so the factors \(B_r\) are pairwise
+coprime.  If their product is a square, unique factorization makes each
+\(|B_r|\) a square.  A negative square is zero or three modulo four;
+therefore every \(B_r\) is a positive square.
+A negative \(d_r\), with both \(C_{r-1},z_r\ne0\), would give
+\(B_r\le-3\).  Thus \(d_r>0\), giving the asserted inequalities.
+
+Conversely, each positive \(d_r\equiv2\pmod3\) is nonsquare.
+The Pell equation \(u^2-d_r v^2=1\) has a nontrivial positive solution
+whose \(v\) is divisible by any specified positive integer: reduce a
+Pell unit matrix modulo that integer and take a positive power equal
+to the identity in the finite matrix group.  Take the modulus
+\(2|C_{r-1}|\) and set \(z_r=v/(2C_{r-1})\).
+This makes \(B_r=u^2\) and \(z_r\ne0\).  Induction proves
+completeness.  Finally, without any positivity assumption,
+\(|B_r|\ge3\) when \(z_r\ne0\); multiply the six inequalities.
+\hfill\(\square\)
+
+\paragraph{Lemma (the two unguarded base coordinates).}
+Assume \(e\ne0\), the five base guards are nonnegative,
+\(a_0\) is a square, and \(m>0\).  Then \(h\ge1\).
+If also \(i\ne0\), replacing \(i\) by \(|i|\) preserves
+\eqref{eq:JR16} and makes \(i_0=|i|-1\) nonnegative.
+
+\emph{Proof.}
+Here \(b\ge b_*>y_*\), so \(\mathcal B>2z_*\),
+\(G>0\), and \(g\ge1\).  From \(m>0\) obtain
+\[
+ K\ne0,\qquad g<G/8=4b\mathcal B^{5^{31}},\qquad
+ 4(C-KY)^2<K^2.
+\]
+Write \(r=5^{31}\).  The first two bounds imply
+\(1+\mathcal B+g<\mathcal B^{r+2}\le q\).
+Also \(\ell<\mathcal B^{r+1}\), so \(b\ell<q^3\).
+In the first bracket defining \(R\), the positive term
+\(\lambda\mathcal Bq^4\) strictly absorbs
+\(2z_*\lambda(1+\mathcal B+g)^4\); every remaining term is
+nonnegative.  The second bracket is positive as well.  Thus
+\(R\ge N^2-N\ge2\).
+Now \(Y,U\ge1\), \(C=2R+1+bw+\phi>0\), and
+\(P=2R^2Y^2U>R+2\).
+If \(K<0\), then \(|C-KY|>|K|\), contradicting the displayed
+strict inequality.  Hence \(K>0\).
+If \(h\le0\), then \(1\le K\le R+1<P\).
+The case \(K=1\) would imply \(P-1\mid R\), impossible.
+For \(2\le K<P\),
+\[
+ (PK-1)^2<(P^2-1)K^2+1<(PK)^2,
+\]
+contradicting squarehood of \(a_0\).  This proves \(h\ge1\).
+Finally \(i\) occurs only linearly in \(E\), whose only relevant
+consumer is \(E^2\) in \(F\).  Changing the sign of \(i\)
+therefore changes none of \(a_0,a_1,D_0,T_0,m\).
+\hfill\(\square\)
+
+\subsection{Divisibility and nonvanishing with one extra coordinate}
+
+Use the fixed intersective polynomial
+\[
+ \Pi(t)=(t^3-t-1)(t^2+23).
+\]
+It has no rational root.  It has a root modulo every positive integer:
+for odd primes other than 23, either the cubic has a simple root, or
+it is irreducible and its Frobenius three-cycle makes its discriminant
+\(-23\) a nonzero square, giving a simple root of the quadratic.
+These roots lift to all prime powers.  At 23, the cubic has the simple
+root 3; at 2, \(-23\equiv1\pmod8\) has square roots modulo every
+power of two.  The Chinese remainder theorem finishes the proof.
+
+Define the homogeneous degree-five polynomial
+\[
+ \mathcal R(D,T,v)=
+ ((T+Dv)^3-D^2(T+Dv)-D^3)((T+Dv)^2+23D^2).
+\]
+For integers \(D\ne0,T,Z\),
+\[
+ (D\mid T\ \text{and}\ Z\ne0)
+ \quad\Longleftrightarrow\quad
+ \exists v\in\mathbb Z:\ ZD^5\mid\mathcal R(D,T,v).
+ \tag{IM}\label{eq:IM16}
+\]
+Indeed \(\mathcal R=D^5\Pi(T/D+v)\) never vanishes, since
+\(T/D+v\) is rational.  If \(D\mid T\), intersectivity supplies
+\(v\) so that \(Z\mid\Pi(T/D+v)\).  Conversely, if a prime
+satisfies \(\alpha=v_p(D)>\beta=v_p(T)\), then
+\(v_p(T+Dv)=\beta\), and the two factors in \(\mathcal R\)
+have unique lowest-valuation terms of valuations \(3\beta\)
+and \(2\beta\).  Hence
+\(v_p(\mathcal R)=5\beta<5\alpha\), contradicting divisibility
+by \(D^5\).  The case \(Z=0\) is excluded by nonvanishing.
+
+For the Jones expressions, \(D_0=JF\ne0\) at \emph{every}
+integer assignment: \(J=4A-5\ne0\); and if \(F=0\), then
+\((1-A^2)E^2=1\) gives \(A=0,E=\pm1\), although
+\(E=iJDC^2\) would then be divisible by five.  This contradiction
+does not use any guard or desired square condition.
+
+\subsection{The literal sixteen-variable polynomial}
+
+Besides the eight base coordinates and six \(z_r\), introduce
+\(v,u\in\mathbb Z\).  These are all sixteen unknowns.  Put
+\begin{align*}
+ Z&=ie\prod_{r=1}^{6}z_r,& S&=ZD_0^5,&T&=\mathcal R(D_0,T_0,v),\\
+ w_1&=C_*,&w_2&=C_*(P^2+K^2+2),&X&=Su-T,\\
+ A_0&=S^2C_*,& A_1&=S^2w_1^2a_0,& A_2&=S^2w_2^2a_1,\\
+ V&=X^2+A_2-A_0-A_1,&W&=V^2+4X^2A_2-4A_0A_1.&
+\end{align*}
+The equation is
+\[
+ \boxed{\quad P_{16}=W^2-16V^2X^2A_2=0.\quad}
+\]
+
+\paragraph{Lemma (signed three-root finalizer).}
+A zero of this polynomial gives
+\[
+ S\ne0,\qquad S\mid T,\qquad
+ C_*,a_0,a_1\in\operatorname{Sq}(\mathbb Z).
+ \tag{F}\label{eq:F16}
+\]
+Conversely, these conditions on the earlier coordinates allow an
+integer choice of \(u\) making the polynomial zero.
+
+\emph{Proof.}
+If \(S=0\), then \(A_0=A_1=A_2=0\), \(X=-T\), and
+\(P_{16}=T^8\ne0\).  Thus any zero has \(S\ne0\), so
+\(i,e,z_1,\ldots,z_6\) are nonzero.  The guard lemma, before
+any squarehood conclusion, gives \(|C_*|\ge3^6\).
+Consequently
+\[
+ |w_1|>\sqrt{|C_*|}.
+\]
+For arbitrary real \(P,K\),
+\[
+ \sqrt{|(P^2-1)K^2+1|}\le P^2+K^2+1.
+\]
+To verify this, first bound the absolute radicand by
+\((P^2+1)K^2+1\), then subtract this expression from
+\((P^2+K^2+1)^2\); the result is
+\(P^4+K^4+P^2K^2+2P^2+K^2\ge0\).
+It follows that
+\[
+ |w_2|>\sqrt{|C_*|}+|w_1|\sqrt{|a_0|}.
+\]
+These estimates permit signed \(C_*,w_1,w_2\); positivity has
+not been assumed.
+
+Choose complex square roots \(r_0^2=C_*\), \(r_1^2=a_0\),
+\(r_2^2=a_1\).  Direct multiplication gives the polynomial identity
+\[
+ P_{16}=\prod_{\epsilon_0,\epsilon_1,\epsilon_2\in\{-1,1\}}
+ \bigl(X-S(\epsilon_0r_0+\epsilon_1w_1r_1+
+                                \epsilon_2w_2r_2)\bigr).
+\]
+At a zero, one of these signed sums is rational.  Under any
+automorphism of the finite Galois extension generated by the three
+roots, each root changes only by sign.  If the largest nonzero root
+whose sign changes has index 1 or 2, its weighted modulus strictly
+exceeds the sum of all earlier weighted moduli by the preceding
+bounds: a nonzero root of an integer radicand has modulus at least
+one.  A change only at index 0 is impossible as well.  Thus an
+automorphism cannot preserve the rational sum while changing a
+nonzero root.  Every root is fixed, hence rational, and a rational
+square root of an integer is an integer.  This handles negative
+candidate radicands, zero roots, and dependent square classes.
+The resulting integral signed sum equals \(u-T/S\), so
+\(S\mid T\).  This proves necessity.
+Conversely, select integral roots and take
+\(u=T/S+r_0+w_1r_1+w_2r_2\).  A factor vanishes.
+\hfill\(\square\)
+
+\paragraph{Theorem (the concrete integer equation).}
+With the fixed coefficients above,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists\mathbf t\in\mathbb Z^{16}:
+                           P_{16}(\mathbf t)=0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\emph{Proof.}
+A zero first gives \eqref{eq:F16}.  Apply \eqref{eq:IM16} to
+recover \(D_0\mid T_0\) and all nonzero conditions.
+The coprime guard gives the five nonnegative base coordinates and
+\(m>0\).  The unguarded-coordinate lemma gives \(h_0\ge0\)
+and permits replacing \(i\) by \(|i|\).
+Because \(e\ne0\), the derived source coordinate
+\(\varepsilon=b_*e^2-y_*-1\) is nonnegative.  We have therefore
+recovered the literal source Jones predicate, which gives a zero of
+the parent quartic and hence, through the whole-tuple compiler and
+the ordinary K215 calibration, a finite ZFC refutation.
+
+Conversely, a finite refutation gives a parent-quartic zero.
+The cofinal-radix lemma gives Jones witnesses with
+\(b=b_*e^2\), \(e\ne0\).  The Pell guard supplies the six
+nonzero \(z_r\) and a square \(C_*\).
+Intersectivity supplies \(v\) with \(S\mid T\), and the
+finalizer supplies \(u\).  All steps are ordinary number theory
+and finite Galois theory formalizable in ZFC.  Negating this
+two-way existential equivalence proves the assertion.
+It proves neither consistency nor inconsistency. \hfill\(\square\)
+
+\subsection{Exact complexity and reproducible checks}
+
+The square-radix substitution doubles the degree contributed by the
+radix coordinate, while removing one guard.  With \(L=5^{32}\),
+selected exact degrees are
+\[
+\begin{array}{c|r@{\qquad}c|r}
+ R&470L&P&1900L+3\\
+ K&1900L+4&m&4442L+12\\
+ a_0&7600L+14&a_1&49280L+68\\
+ D_0&13750L+20&C_*&4442L+1103\\
+ S&68750L+108&T&68750L+105\\
+ X&68750L+109&w_2&8242L+1111\\
+ A_2&203264L+2506&P_{16}&813056L+10024
+\end{array}
+\]
+The degree of \(A_2\) strictly exceeds those of
+\(X^2,A_0,A_1\).  Therefore \(V\) has leading form \(A_2\),
+\(W\) has leading form \(A_2^2\), and the leading form of the
+final output is \(A_2^4\).  On the diagonal specialization this is
+a positive integer times a power of the positive fixed coefficient
+\(b_*\).  The supplied leading-term certificate keeps that power
+symbolic, establishing the stated exact degree for the authentic
+tuple rather than only a generic upper bound.
+
+All fixed powers are expanded into binary multiplications; squaring
+and scalar multiplication are charged.  Reuse is free, and fixed
+coefficient construction is excluded from variable-evaluation cost.
+The emitted, fully live DAG has 705 additions, 26 subtractions,
+and 1134 multiplications, totaling 1865.  Its source digit polynomial
+uses the compact Horner evaluator and shared radix-five powers of
+package 30; no imported Python program is executed.
+
+The independent diagnostics evaluate actual fixed coefficients modulo
+three primes and compare 90 signed tuples both with a direct formula
+and with the unchanged inherited Jones ratio after substituting
+\(\varepsilon=b_*e^2-y_*-1\).  They also check 200 independent
+eight-factor norm products on integral roots and another 200 products
+in the rank-eight free radical algebra with arbitrary signed radicands,
+the basic separator inequalities on
+57,222 assignments, and intersectivity modulo every integer through
+1200.  These finite tests check definitions and arithmetic.  The
+unbounded correctness argument is the proof above, together with
+the explicitly identified source compiler and Jones theorems; the
+archive does not claim a new end-to-end Lean or Rocq certificate.
+
+\paragraph{Seventeen-integer companion.}
+Retaining \(b=y_*+1+\varepsilon\), guarding all six base
+coordinates as in package 29, and using the improved separator
+\(w_1=C_*\) gives a companion polynomial in seventeen integers.
+Its exact degree is \(406528\,5^{32}+27512\), and its 1874 live
+operations consist of 709 additions, 26 subtractions, and 1139
+multiplications.  It uses the same new coefficient tuple and index.
+The corresponding proof is the signed-three-root proof above with
+seven guard factors and without the cofinal-square-radix step.
+This is an explicit alternative when degree is valued more highly
+than the final integer-variable reduction.

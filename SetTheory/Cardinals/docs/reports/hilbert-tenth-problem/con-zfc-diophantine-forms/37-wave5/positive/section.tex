@@ -1,0 +1,125 @@
+\section{Positive norms: degree 1061 and a 109-operation evaluator}
+\label{sec:positive-wave5}
+
+All unknowns in this section are strictly positive.  There are exactly twelve:
+$J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t$.  Every other name is a polynomial
+abbreviation.  All constructions use the complete source-30 Wang943 tuple
+$(\beta,K_0,M_C,M_F)$, with $\beta=2^{5^{10}}-1$ and the shifted high mask
+$M_F$.  The shared coefficient rebuild reproduces all four selected bytestrings.
+
+\paragraph{Common interface.}
+Write $\omega=w$, except in the lowest-degree family, where $\omega=w+q$.
+Define
+\begin{gather*}
+ q=\beta J+1,\quad C_w=q-F-\alpha,\quad X=\omega q,\quad Y=sq^3,\quad E=XY,\\
+ k=\eta+\zeta,\quad c=kY+\eta,\quad a=E+Y,\quad H=4a+3,\quad\Delta=a^2+H,\\
+ \ell=EkY,\quad A=1+\ell(\ell+k),\quad G=1+\Delta c^2,\quad b_0=X+ac,\\
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k=k-hE-R,\qquad N_t=(K_0+\omega)C_w+q-F-z(q-1),\\
+ I=ic^2,\quad D=1+\Delta I^2,\quad Q=(\Delta I)^2,\quad d=Q-1,\\
+ v=cT,\quad b=c+RD,\quad e=Q(Dv^2+b^2)-1,\quad B_1=2Qvb.
+\end{gather*}
+Use one of
+\[
+ C_1=E+3(X+Y),\quad C_2=E+2(X+Y)+sq^2,\quad
+ C_3=E+2(X+Y)+sq,
+\]
+where $C_3$ is used only with $\omega=w+q$.  Put
+\[
+ M=I(2T+RC_jic),\qquad L=1+HM,\qquad W=Lb_0+Ht.
+\]
+The new norm is the following integer polynomial, with no additional witnesses:
+\[
+ \mathcal N=\prod_{g=\pm\sqrt G,\,\tau=\pm\sqrt A,\,f=\pm\sqrt D}
+ \left[d(W-Lg-HM\tau)^2-H^2e+H^2B_1f\right].
+\]
+The presentations are $N_k=N_t=1,\ \mathcal N=0$, and the single equation
+\[
+ P=N_kN_t(1+\mathcal N)-1=0.
+\]
+
+\paragraph{A half-sized carrier and the new restriction.}
+Source 24 used $L=1+2HM$.  Its uniform conjugate estimate
+$|y|<M\sqrt A$ remains valid here, where
+$dy^2=e-B_1f$.  Hence all roots of the inner polynomial are
+$x=M\tau+y$ with $|x|<2M\sqrt A$.
+Before any root recovery, the authentic weak interface gives
+$q\ge16$, $X\ge16$, $Y\ge4096$, $E>R+2$, $k>E$, and $c>kY$.
+Consequently $G>A$ and
+$b_0=\ell+E\eta+Yc+X>\ell+k>\sqrt A$.
+For the proposed smaller carrier, the negative main-root branch would give
+\[
+ x=\frac{W+L\sqrt G}{H}
+   =t+(M+H^{-1})(b_0+\sqrt G)>2M\sqrt A,
+\]
+a contradiction.  If $\sqrt G$ were irrational, its negative conjugate
+would also be an inner root; thus the main root is a positive integer.
+Conjugation next forces $\tau$ rational, then $y$ and $f$ rational.
+The inherited rational Pell saturation lemma makes $y$ integral.
+Reduction modulo $H$, using $L\equiv1\pmod H$, restores
+$g=b_0+H\gamma$, with $\gamma>0$.  The unchanged signed-quotient compiler
+interface then supplies the accepting tableau.  Conversely a canonical
+positive witness extends by $t=y+M\tau+L\gamma>0$.
+
+For the degree-1061 version, $Y/X=sq^2/(w+q)<sq$, so $C_3$ satisfies the
+same source-24 bound that previously used $sq^2$.  Completeness is not
+assumed: after authentic root recovery, $X=\omega q=2^R$ and $R>3q$,
+so $\omega>q$.  Thus $w=\omega-q$ is strictly positive.  Soundness of
+$\omega=w+q$ is immediate.  This coordinate change is not literal identity
+of polynomials at the same supplied $w$.
+
+\paragraph{Cheaper trace--remainder evaluation.}
+Source 30's evaluator applies to every carrier above.  Let
+\begin{align*}
+ n&=(HM)^2A,&d_n&=dn,&H_Q&=H^2Q,\\
+ H_P&=H_QDv^2,&H_U&=H_Qb^2,&H_e&=H_P+H_U-H^2,&j&=4H_PH_U,\\
+ T_r&=2d(W^2+L^2G),&K_r&=d^2(W^2-L^2G)^2,\\
+ a_t&=T_r-2(d_n+H_e),&b_t&=(d_n-H_e)^2-j-K_r,\\
+ \bar v&=16d_nj-a_t(a_tT_r+2b_t),&u_r&=b_t^2-a_t^2K_r.
+\end{align*}
+Then
+\[
+ \mathcal N=K_r\bar v^2-u_r(T_r\bar v-u_r).
+\]
+Sharing $H_Q$ saves one multiplication; the final Horner expression saves
+another.  Comparing its two terms directly saves one further operation
+for a system.  These are exact identities, including degenerate quadratic
+specializations.  Also $\mathcal N$ is a square modulo $4$, so the product
+equation forces $\mathcal N=0$ and $N_k=N_t\in\{1,-1\}$; the inherited
+weak-sign compiler restores the positive unit sign.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Choice & Product degree & Product ops & System degree & System ops\\
+\hline
+Source 30, unchanged polynomial &1081&109&1072&104 / 103\\
+$C_1$, half carrier &1069&117&1060&112 / 111\\
+$C_2$, half carrier &1065&119&1056&114 / 113\\
+$C_3$, shifted $w$ &1061&120&1052&115 / 114\\
+\hline
+\end{tabular}
+\end{center}
+The second system count uses the proved shift $z_{\rm old}=z+1$, replacing
+$N_t=1$ by $(K_0+\omega)C_w=F+z(q-1)$.  All binary $+,-,\times$ gates,
+including multiplication by numerals, are charged; comparisons are free.
+
+\paragraph{Exact degree and proof boundary.}
+For the $C_2$ norm, the leading homogeneous form is
+\[
+ 2^{46}i^{48}(\eta+\zeta)^{96}w^{74}s^{176}
+ (\beta J)^{646}(\beta J-F)^{16},
+\]
+of degree 1056.  Four of the sixteen linear conjugate factors have degree
+35, two have degree 36, and ten have degree 38; the multiplier is $d^8H^{16}$.
+For $C_3$, the first four degrees drop to 34.  Their complete leader contains
+\[
+ X_0^2Y_0^2(\eta+2\zeta)+(\eta+\zeta)s^3q_0^8w,
+\]
+which is nonzero; retaining the tied $-E_0^2\eta$ term is essential.
+This proves norm degree 1052, and $N_kN_t$ adds nine degrees.
+The standalone proof supplies all separation estimates and leading forms.
+Independent exact conjugate products and complete finite-field ray checks
+corroborate the circuits, not the unbounded compiler theorem.
+These are ordinary reductions formalizable in ZFC, not a consistency proof,
+a global optimality claim, or a new kernel-checked endpoint.

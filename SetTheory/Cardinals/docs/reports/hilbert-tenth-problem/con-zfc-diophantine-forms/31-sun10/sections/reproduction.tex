@@ -1,0 +1,99 @@
+\section{Reproduction, attribution and remaining work}
+\label{sec:reproduction}
+
+\subsection{What is in the archive}
+
+The LaTeX source consists of \texttt{report.tex}, the files under
+\texttt{sections/}, and \path{signed10/SIGNED10_SECTION.tex}.
+The compiled \texttt{report.pdf} contains the complete
+mathematical specification.  The four implementation directories serve
+distinct purposes:
+\begin{description}[leftmargin=28mm,style=nextline]
+ \item[\texttt{signed10/}] The ten-integer equation, four comparison
+ variants, explicit fixed-leaf recipes, norm polynomials, coefficient
+ payloads, a builder, and author and independent audits.
+ \item[\texttt{signed16/}] The independent Jones-based sixteen-integer
+ equation, its index data, coefficient recipes, circuit and verifier.
+ \item[\texttt{positive12/}] The 108-operation product, 103-operation
+ unshifted system and 102-operation shifted system, with symbolic and
+ concrete-instance checks.  It also contains an independent audit of the
+ new native coefficient construction.
+ \item[\texttt{quartic31/}] The 60-operation quadratic system,
+ 125-operation quartic and exact symbolic coefficient data, together with
+ an independent literal audit of the sixteen-variable equation.
+ \item[\texttt{coefficients/}] The literal machine transitions and tile
+ table, the complete finite tuple recipe, raw and compressed port bytes,
+ modular/controller certificates, and the adapter proof.
+\end{description}
+Selected pinned source proofs are under \texttt{sources/} and the local
+\texttt{upstream/} directories.  They are evidence and context; they are
+not a standalone checkout of ProveIt or all of its Lean dependencies.
+The original machine notices and repository license are preserved.
+
+\subsection{Commands and verification scope}
+
+From the extracted archive root, run
+\begin{verbatim}
+python3 verify_all.py
+make pdf
+\end{verbatim}
+The arithmetic checks require Python 3.11 or later and only its standard
+library.  They need no network access or solver.  Do not use Python's
+\texttt{-O} option: many exact assertions are part of the audit, and the
+top-level driver rejects optimized execution.  The PDF build requires a
+standard pdfLaTeX installation with the packages listed in the preamble.
+The scripts resolve their data relative to their own locations, so the
+tree can be moved into a new numbered ProveIt report directory unchanged.
+
+The finite audits establish the following concrete facts.  Every emitted
+operation has two earlier inputs and is an addition, subtraction or
+multiplication.  Every advertised variable is live.  All actual port
+bytes and their hashes agree with the complete tuple.  The parent
+normalization reconstructs the 402 weighted coefficient records exactly.
+The index and Sun-source bounds hold for those actual integers.  The
+three-root and four-root norm identities are checked as exact polynomial
+identities.  Separate literal evaluators agree with the emitted circuits
+on signed and boundary assignments modulo several primes.  These
+assignment checks supplement the mathematical transcription proofs; they
+do not replace them.
+
+Degree verification is stronger than a collection of sample values.
+Gate-by-gate propagation gives an upper bound.  Substituting a common
+indeterminate into the variable leaves, while retaining exact leading
+coefficients modulo a specified prime, produces a nonzero coefficient at
+the claimed top degree.  Thus the bound is attained for the actual fixed
+tuple.  The low-degree systems additionally have exact symbolic residual
+comparisons; the quartic has the uniform coefficient $[\tau^4]Q=1$.
+
+\subsection{What each improvement contributes}
+
+The native tuple combines the unchanged mixed-radix tile geometry with a
+different odd-factor rank controller.  Its contribution is smaller fixed
+ports, not a smaller machine or a different simulated language.  The
+ten-integer equation specializes an existing universal reduction to this
+literal source, then reduces the number of square tests, the homogeneous
+merger degree and the root-separation weights.  The sixteen-integer
+equation develops a separate base restriction and guard elimination; its
+large circuit improvement also uses the already established digit
+evaluation identities from package 27.  The 12- and 31-variable changes
+are exact algebraic refactorings and a justified positive-coordinate
+shift.  Their savings should be interpreted at their stated degree and
+domain, not as a new universal minimum operation count.
+
+\subsection{Useful next steps}
+
+The most valuable next verification step is to formalize the new
+coefficient adapter, the signed norm lemma, the quintic merger and the
+cofinal-base lemma, then connect their literal circuit definitions to
+the existing K215 endpoint.  For the ten-variable route the modified
+Lucas-certificate and residue-interpolation theorems of the 2026 preprint
+also belong in that formalization boundary.
+
+Further arithmetic sharing may reduce the 1,442-operation evaluator; no
+addition-chain or circuit minimality certificate is supplied.  A smaller
+native machine, a different tile language, or a smaller suitable
+low-degree source could improve several metrics at once, but would
+require a new calibrated compiler argument.  Reducing ten unrestricted
+integer variables is a separate research problem.  The present work
+does not claim that the general ten-unknowns bound, the nine-variable
+natural-number bound, or this particular consistency instance is optimal.

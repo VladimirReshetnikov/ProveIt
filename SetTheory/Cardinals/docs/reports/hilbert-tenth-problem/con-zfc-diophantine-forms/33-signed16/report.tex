@@ -1,0 +1,822 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,xcolor,enumitem,fancyhdr,multicol}
+\usepackage[breaklinks,colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Sixteen integer unknowns for an explicit consistency equation},pdfauthor={Research synthesis for the ProveIt project}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!15}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\mathbb Z_{>0}}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Sq}{\operatorname{Sq}(\Z)}
+\newcommand{\ZFC}{\mathsf{ZFC}}\newcommand{\Con}{\operatorname{Con}(\ZFC)}
+\newcommand{\SignedOps}{1590}
+\newcommand{\pin}{\texttt{8c6eec9d19ef80538c8e61ff6e0180040583446a}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Explicit Diophantine consistency forms}\fancyhead[R]{\small ProveIt synthesis}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Sixteen integer unknowns for an explicit consistency equation\\[5pt]\large and simpler polynomial presentations of $\operatorname{Con}(\mathsf{ZFC})$}
+\author{Research synthesis for the ProveIt project\\\small Prepared with AI assistance; ordinary mathematical proofs and reproducible artifacts}
+\date{22 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We combine the current ProveIt constructions with a positivity-normalization
+lemma for Pell equations. The resulting explicitly specified integer polynomial
+$P_{16}$ has sixteen unrestricted integer unknowns and satisfies
+\[
+ \ZFC\vdash\bigl(\nexists\mathbf x\in\Z^{16}:P_{16}(\mathbf x)=0\bigr)
+ \longleftrightarrow\Con.
+\]
+Its degree is exactly $406528\cdot5^{32}+10008$ and its delivered arithmetic
+circuit uses \SignedOps{} binary operations. The reduction removes a guard
+witness from the existing seventeen-integer construction: a signed Pell
+coordinate can be replaced by an arbitrarily large positive coordinate in
+the same residue class. A parity-sensitive radical weight lowers the degree
+further. We also obtain a 61-operation system of twenty-two quadratics in
+31 positive unknowns, with a 126-operation quartic sum of squares, and an
+identical 108-operation evaluator for the existing degree-1081 polynomial
+in twelve positive unknowns. A separate complete native coefficient tuple
+reduces the radix from the previous best $2^{1,953,125}$ to $2^{1,012,625}$.
+The arithmetic circuits, finite coefficient
+recipes, exact algebra checks, source pins, and reproduction scripts are
+included. These are improvements to explicit presentations in the inspected
+repository, not global minimality claims or a proof of consistency. The new
+proofs are ordinary mathematics; the inherited native compiler and Jones
+representation theorems remain identified dependencies.
+\end{abstract}
+\section*{Contents}
+\setcounter{tocdepth}{1}
+\begin{multicols}{2}\small
+\makeatletter\@starttoc{toc}\makeatother
+\end{multicols}
+\newpage
+
+\section{What is improved, and what ``simplest'' means}
+The reviewed repository revision is \pin. The target directory is
+\texttt{con-zfc-diophantine-forms}, under
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem}; its audited
+README describes seven wave-4 packages, numbered 24--30 \cite{repo}.
+The source snapshot is retained in the archive. Different presentations
+optimize different quantities; number of variables, degree, coefficient
+height, and arithmetic evaluation cost cannot be collapsed into one ordering.
+
+\begin{center}\small
+\begin{tabular}{p{43mm}p{39mm}p{55mm}}
+\toprule
+Measure & Inspected predecessor & This synthesis\\
+\midrule
+Explicit unrestricted-integer construction & 17 variables; 20,607 operations & 16 variables; \SignedOps{} operations\\
+Degree of that construction & $424296\cdot5^{33}+53824$ & $406528\cdot5^{32}+10008$\\
+31-positive-variable quadratic system & 22 equations; 65 operations & 22 equations; 61 operations\\
+31-positive-variable quartic & 130 operations; 306 symbolic monomials & 126 operations; 259 symbolic monomials\\
+12-positive-variable degree-1081 polynomial & 111 operations & 108 operations; exactly the same polynomial\\
+Associated three-equation system & 107 operations & 104, or 103 after a justified coordinate shift\\
+Native coefficient radix & $2^{1,953,125}$ & $2^{1,012,625}$; separate complete tuple\\
+\bottomrule
+\end{tabular}\end{center}
+
+All operation counts charge binary addition, subtraction, and multiplication,
+including scalar multiplication and squaring. Sharing an already computed
+value and comparing two system sides are free. Fixed integer coefficients
+are leaves, not additional unknowns. Fixed exponentiation is expanded into
+multiplications. Thus these are arithmetic-circuit sizes, not bit-complexity
+bounds and not measurements of the work needed to construct the coefficients.
+The monomial comparison keeps the four native coefficient ports symbolic.
+
+The repository's nine-natural-variable constructions remain better in
+variable count over $\N$; its 67-operation single equation remains better
+in operation count, and its 59-operation systems remain better in that
+metric. We do not claim a smaller universal variable bound. In particular,
+Sun's 2026 preprint gives an effective general representation theorem in
+ten unrestricted integers \cite{sun}; that different compiler is not
+instantiated here. Our sixteen-variable claim concerns the concrete,
+fully bound constructions supplied with this report.
+
+We use $\N=\{0,1,2,\ldots\}$ and $\Pos=\{1,2,\ldots\}$.
+An equation over $\Pos$ must not silently be read over $\Z$. Our main
+$P_{16}$ does allow every one of its sixteen variables to range over all
+of $\Z$.
+
+\section{Fixed source instance and logical dependencies}\label{sec:binding}
+The logical statement $\Con$ means that no finite proof of contradiction
+exists in the fixed recursive presentation of ZFC used by the repository.
+The calibrated machine is the literal 215-state machine
+\texttt{candidate-k215/k215.tm}. Its Lean endpoint states
+\begin{lstlisting}
+blank_halts_iff_zfc_refutation :
+  BlankHalts machine215 <-> BProv ZFCax_s [] Form.fBot
+\end{lstlisting}
+The source file is included. This report neither rebuilds that development
+nor relies on a metatheoretic assertion that Lean is sound to infer a theorem
+of ZFC. We use the ordinary arithmetic calibration mirrored by the endpoint,
+then compose ordinary mathematical reductions formalizable in ZFC.
+
+The native compiler contributes four fixed integers
+\[
+ \beta=B_0-1,\qquad K_0=D_C+B_0D_R,\qquad M_C,\qquad
+ M_F=M_F^{\rm native}+B_0-1,\qquad B_0=2^{5^{10}}.
+\]
+Throughout the main construction these are exactly the complete compact943
+tuple of package 30. In particular $M_F$ is the \emph{shifted} mask. The
+four gzip payloads are included, together with the original binding, layout,
+ordered 943-tile list, and coefficient proofs. The raw sizes are
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule Integer & Binary digits & Raw bytes\\\midrule
+$\beta$ & 9,765,625 & 1,220,704\\
+$K_0$ & 13,201,251 & 1,650,157\\
+$M_C$ & 9,765,625 & 1,220,704\\
+$M_F$ & 9,765,626 & 1,220,704\\\bottomrule
+\end{tabular}\end{center}
+The total is 5,312,269 raw bytes, stored in 20,260 gzip bytes. Byte hashes
+are checked during reproduction. Compression does not change coefficient
+height. No coefficient is chosen by testing whether ZFC is consistent.
+
+The imported compiler theorem identifies positive solutions of the parent
+quartic with blank halting of K215. Its hypotheses include the native-window
+language, no-carry bounds, synchronization, rank control, and the Pell
+arithmetization; they are not assertions about arbitrary choices of four
+integer ports. The source proofs are bundled, and the new transformations
+preserve this one coherent tuple. The Jones reduction is the concrete
+quartic-to-ratio construction of \cite{jones}, mirrored by
+\texttt{Jones1982.Nine.ratio\_sound},
+\texttt{ratio\_complete}, and \texttt{wset\_iff\_nine} in the repository.
+
+\section{A cheaper positive quartic}\label{sec:quartic}
+All thirty-one variables in this section are strictly positive:
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+ N,Y,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta.
+\end{gathered}
+\]
+Use only the affine abbreviations
+\[
+ q=\beta J+1,\quad k=\eta+\zeta,\quad H=4a+3,\quad
+ C=q-F-\alpha,\quad E=a-Y.
+\]
+The new system consists of the following twenty-two quadratic equations:
+\begin{alignat}{2}
+ L&=q^2-1,&\qquad N&=qL,\notag\\
+ X&=wq,& Y&=s(N+q),\notag\\
+ E&=XY,&c&=kY+\eta,\notag\\
+ P&=E(c-\eta),&\tau^2&=P(P+k)+1,\notag\\
+ D&=X+ac+\gamma H,&\Delta&=a^2+H,\notag\\
+ C_2&=c^2,&D^2&=\Delta C_2+1,\notag\\
+ k&=jc-V+1+hE,&&\notag\\
+ jc-V&=(q-F)N-CL+(M_C+qM_F)J,&&\notag\\
+ (K_0+w)C&=F+z(q-1),&&\notag\\
+ F_2&=f^2,&V&=of-c,\notag\\
+ g&=y^2-V^2,&I&=iC_2,\notag\\
+ B_{\rm aux}&=I^2,&B_{\rm aux}&=\Delta(F_2-1),\notag\\
+ y^2-B_{\rm aux}g&=1.&&\label{eq:quartic-system}
+\end{alignat}
+Let $r_1,\ldots,r_{22}$ be these left sides minus right sides, in row order,
+and define $Q_{31}^{*}=\sum r_j^2$. The JSON gives this order unambiguously.
+
+\begin{proposition}
+The positive zero set of \eqref{eq:quartic-system} is in bijection with the
+positive zero set of package 30's parent quartic. Consequently
+\[
+ \ZFC\vdash(\nexists\mathbf x\in\Pos^{31}:Q_{31}^{*}(\mathbf x)=0)
+ \longleftrightarrow\Con.
+\]
+The degree is exactly four. The system has a 61-operation circuit, and
+the displayed sum of squares has a 126-operation circuit.
+\end{proposition}
+\begin{proof}
+Write a subscript $o$ for parent coordinates. Apply the simultaneous affine
+change
+\[
+ N_o=N+q,\qquad E_o=a-Y,\qquad P_o=P+k,\qquad z_o=z+1,
+\]
+leaving all other variables fixed. Every parent residual becomes exactly
+the corresponding residual of \eqref{eq:quartic-system}. All twenty-two
+identities are checked as sparse integer-polynomial identities with symbolic
+coefficient ports. The inverse change is
+$N=N_o-q$, $Y=a-E_o$, $P=P_o-k$, $z=z_o-1$.
+
+A positive new zero restores $E_o=XY>0$; the other three restored
+coordinates are visibly positive. Conversely the parent equations give
+$N=qL>0$, $Y=sN_o>0$, and $P=E_okY>0$. For the fourth coordinate we
+use the parent's established transport-quotient lemma, also used in its
+retained59 construction. After the Pell/compiler reconstruction it gives
+$C>0$, $X=wq=2^R$, $R>3q$, and $F<q$. Thus $w>F$, and
+\[
+ 0<(K_0+w)C-F=(z_o-1)(q-1)
+\]
+forces $z_o\ge2$. This is the necessary positive-domain argument; positivity
+of $z_o$ alone would not suffice.
+
+Each of the four changes saves one gate in the scheduled system evaluation.
+For example $P_o=E_o(c-\eta)+k$ loses its final addition, while its norm
+replaces $P_o-k$ by $P+k$ at the same cost. The $N$ change deletes two
+operations and adds the one operation in $N+q$. The result is
+$61=33$ multiplications $+28$ additions/subtractions. Forming twenty-two
+residuals, twenty-two squares, and their sum costs $22+22+21=65$ more.
+Finally $\tau$ appears only as $\tau^2$ in $r_8$; the coefficient of
+$\tau^4$ in the sum of squares is exactly one.
+\end{proof}
+
+\section{A finite, fully specified Jones index}\label{sec:index}
+In this and later sections all letters are newly scoped. Put $\nu=31$ and
+$\mathcal L=5^{32}$. Define
+\[
+ Q(x,n_1,\ldots,n_{31})=
+ Q_{31}^{*}(n_1+1,\ldots,n_{31}+1),
+\]
+independently of the dummy input $x$. At the all-zero natural tuple the fifth
+residual is $-1$, so $Q(x,0)>0$. Thus $Q$ satisfies the normalization
+hypothesis of the concrete Jones theorem, and has degree four.
+
+For $\alpha\in\N^{32}$ with $|\alpha|\le4$, let $p_\alpha$ be its
+ordinary coefficient and put
+\[
+ c_\alpha=(4-|\alpha|)!\prod_{j=0}^{31}\alpha_j!\,p_\alpha,
+ \qquad e(\alpha)=\sum_{j=0}^{31}\alpha_j5^j.
+\]
+There are 391 nonzero symbolic records, each an explicitly listed polynomial
+in $(\beta,K_0,M_C,M_F)$; the shifted quartic has 571 terms with these
+ports symbolic. The new coefficient file is \texttt{data/coefficients31.json}.
+It is freshly derived from $Q_{31}^{*}$, not obtained by reusing the parent's
+old coefficient list after changing the parent.
+
+For a record $c_\alpha=\sum_{\mathbf e} a_{\mathbf e}
+\prod_{j=1}^{4}b_j^{e_j}$, use the authentic port bit lengths $\ell_j$
+in Section~\ref{sec:binding} and the finite integer bound
+\[
+ |c_\alpha|\le H_\alpha:=
+ \sum_{\mathbf e}|a_{\mathbf e}|2^{\sum_j e_j\ell_j}.
+\]
+The supplied exact arithmetic certificate verifies
+$H_\alpha+1<2^{45933757}$ for every record. Unlisted coefficients are zero.
+Set, once and for all,
+\begin{align*}
+ z_*&=2^{45933757},\\
+ e_*(T)&=\sum_{|\alpha|\le4}(z_*+c_\alpha)
+                T^{\mathcal L-e(\alpha)},\\
+ y_*&=e_*(2z_*),\qquad
+ u_* =\sum_{j=1}^{31}(2z_*)^{5^j}.
+\end{align*}
+All exponents are fixed nonnegative integers; in particular
+$e(\alpha)\le4\cdot5^{31}<\mathcal L$.
+The sum has $\binom{36}{4}=58905$ terms. Its base-$2z_*$ digits are
+strictly between 1 and $2z_*$, in distinct positions. These definitions
+satisfy precisely the admissible index hypothesis for the normalized
+quartic $Q$. The unused $u_*$ is specified to make that interface explicit.
+
+This is a finite definition of literal integer coefficients. Materializing
+the enormous integer $y_*$ is unnecessary to specify the polynomial. It is
+not an unspecified recursive-enumeration index, an existential parameter,
+or a value defined by whether a computation halts.
+
+\section{The eight-coordinate ratio predicate}\label{sec:ratio}
+Use the eight base coordinates
+\[
+ (\epsilon,g,h,s,w,\phi,i,j).
+\]
+Initially, Jones's predicate uses $\epsilon,\phi\ge0$ and
+$g,h,s,w,i,j\ge1$. Later $h,i,j$ will range over all integers.
+All other symbols in this section are polynomial abbreviations:
+\begin{gather*}
+ b=y_*+1+\epsilon,\quad B=b^5,\quad q=B^{\mathcal L},\quad
+ \ell=\sum_{r=1}^{31}B^{5^r},\quad
+ \lambda=\sum_{r=0}^{4\mathcal L-1}B^r,\\
+ e=e_*(B),\quad \theta=B-2z_*,\quad N=q^{16},\quad
+ G_c=32bB^{5^{31}}.
+\end{gather*}
+Define $R$ by
+\begin{align*}
+ R={}&\bigl[g+eq^3+\ell q^5+
+  \{2(e-z_*\lambda)(1+B+g)^4+\lambda B+\lambda Bq^4\}q^7\bigr](N^2-N)\\
+ &+\bigl[q^3-b\ell+\ell+\theta\lambda q^3+(B-2)q^8\bigr](N^2-1).
+\end{align*}
+The remaining abbreviations are
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\\
+ P&=2M^2U,&K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&C&=B_1+W_1+\phi,\\
+ J&=4A-5,&Q_1&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ E&=iJDC^2,&F&=(A^2-1)E^2+1,&G_1&=A+F(CD+1-A),\\
+ H&=B_1+jC,&I&=(G_1^2-1)H^2+1.&&
+\end{align*}
+Finally put
+\begin{gather*}
+ a_0=(P^2-1)K^2+1,\qquad a_1=DFI,\\
+ m=K^2G_c-4(C-KY)^2G_c-8gK^2,\\
+ D_0=JF,\qquad T_0=Q_1F+J(H-C).
+\end{gather*}
+The imported concrete Jones equivalence says
+\begin{equation}
+ \begin{gathered}
+ \exists\text{ base coordinates in the initial domain}:\quad
+ a_0,a_1\in\Sq,\ D_0\mid T_0,\ m>0\\
+ \Longleftrightarrow\quad \exists\mathbf n\in\N^{31}:Q(1,\mathbf n)=0.
+ \end{gathered}
+ \tag{JR}\label{eq:JR}
+\end{equation}
+This is the ratio predicate underlying the nine-variable theorem, not a
+claim that an arbitrary nine-variable polynomial has this structure.
+
+\section{Removing three positivity restrictions}\label{sec:normalization}
+\begin{lemma}\label{lem:denom}
+For every integer assignment of the eight base coordinates, $D_0\ne0$.
+Replacing a nonzero $i$ by $|i|$ preserves $a_0,a_1,D_0,T_0,m$.
+\end{lemma}
+\begin{proof}
+$J=4A-5\ne0$. If $F=0$, then $(1-A^2)E^2=1$, forcing $A=0$ and
+$E=\pm1$. But then $J=-5$ and $E=iJDC^2$ is divisible by 5, a
+contradiction. The only nonsquared occurrence of $i$ is in $E$, which
+enters the five listed quantities only through $E^2$.
+\end{proof}
+
+\begin{lemma}\label{lem:h}
+Suppose $\epsilon,\phi\ge0$, $g,s,w\ge1$, $a_0\in\Sq$, and $m>0$.
+Then $h\ge1$. In particular the proof does not assume a sign for $j$.
+\end{lemma}
+\begin{proof}
+The index gives $b\ge2$, $B=b^5>2z_*$, and $e>0$.
+Since $G_c>0$ and $g>0$, the margin implies $K\ne0$,
+\[
+ g<G_c/8=4bB^{5^{31}},\qquad 4(C-KY)^2<K^2.
+\]
+Writing $t=5^{31}$, we have
+$1+B+g<1+B+4B^{t+1}\le5B^{t+1}<B^{t+2}\le B^{5t}=q$.
+Also $\ell<B^{t+1}$, hence $b\ell<B^{t+2}\le q$.
+In the left bracket for $R$, the possibly negative term
+$-2z_*\lambda(1+B+g)^4$ is dominated by $\lambda Bq^4$.
+Every remaining term there is nonnegative and $g$ is positive. The
+right bracket is positive as well. Thus $R\ge N^2-N\ge2$.
+
+Now $Y,U\ge1$, $C=2R+1+bw+\phi>0$, and
+$P=2R^2Y^2U\ge2R^2>R+2$. The margin excludes $K\le0$:
+if $K<0$, then $|C-KY|> |K|$, and $K=0$ was already excluded.
+If $h\le0$, then $1\le K\le R+1<P$. The case $K=1$ would give
+$P-1\mid R$, impossible because $0<R<P-1$. For $2\le K<P$,
+\[
+ (PK-1)^2<(P^2-1)K^2+1<(PK)^2,
+\]
+as the two differences are $K(2P-K)>0$ and $K^2-1>0$.
+This contradicts squarehood of $a_0$.
+\end{proof}
+
+The next lemma supplies the new witness saving.
+\begin{lemma}[Positive Pell coordinates in a prescribed residue class]\label{lem:pellpositive}
+Let $a\ge2$ be an integer and $d=a^2-1$. If
+$x^2-dy^2=1$ with $x>0$ and $y\in\Z$, then for every modulus $M\ge1$
+there are solutions $(x',y')$ with $x',y'>0$, arbitrarily large $y'$, and
+$x'\equiv x$, $y'\equiv y\pmod M$.
+\end{lemma}
+\begin{proof}
+The element $u=a+\sqrt d$ is a unit of norm one in $\Z[\sqrt d]$ and
+its multiplication matrix has determinant one. In the finite group
+$\mathrm{SL}_2(\Z/M\Z)$ some positive power $u^r$ is the identity.
+Multiply $x+y\sqrt d$ by $u^{rn}$. Its coordinates are integers, its norm
+stays one, and both coordinates retain their residues modulo $M$.
+The real number $x+y\sqrt d$ is positive: its conjugate has the same
+sign and their sum is $2x>0$. Since $u>1$, the second coordinate is
+\[
+ \frac{(x+y\sqrt d)u^{rn}-(x+y\sqrt d)^{-1}u^{-rn}}{2\sqrt d}
+ \longrightarrow+\infty.
+\]
+The first coordinate is positive as well. This proves the claim, including
+negative or zero starting second coordinates.
+\end{proof}
+
+\begin{proposition}[The $j$ guard is unnecessary]\label{prop:j}
+The existential predicate \eqref{eq:JR} is unchanged if its base domain is
+replaced by
+\[
+ \epsilon,\phi\ge0,\qquad g,s,w\ge1,\qquad
+ h,j\in\Z,\qquad i\in\Z\setminus\{0\}.
+\]
+\end{proposition}
+\begin{proof}
+Only soundness of the larger domain needs proof. Lemmas~\ref{lem:denom}
+and \ref{lem:h} normalize $i$ and show $h\ge1$. We now have
+$A>1$, $C>B_1>0$, and $G_1>1$.
+The congruences $F\equiv1\pmod D$ and $F\equiv1\pmod J$ follow
+from $E=iJDC^2$. Consequently $D_0\mid T_0$ implies
+$F\mid H-C$. Modulo $D$ we have $G_1\equiv1$, hence $I\equiv1$.
+Modulo $F$, $G_1\equiv A$ and $H\equiv C$, hence $I\equiv D$.
+Therefore $D,F,I$ are pairwise coprime positive integers. Squarehood of
+$DFI$ forces each of them to be a square.
+
+Choose the positive integer $x=\sqrt I$; then
+$x^2-(G_1^2-1)H^2=1$. Apply Lemma~\ref{lem:pellpositive} with
+$a=G_1$ and modulus $CF$. Choose $H'>B_1$ congruent to $H$ modulo $CF$,
+and set $j'=(H'-B_1)/C$. This is a positive integer, since
+$H\equiv B_1\pmod C$. The new $I'$ is a square, so $DFI'$ is a square.
+Also
+\[
+ T_0'-T_0=J(H'-H)\quad\hbox{is divisible by }JF.
+\]
+All other ratio conditions remain unchanged. We have recovered a tuple in
+the original domain, to which \eqref{eq:JR} applies. The map is existential:
+it changes the numerical value of $I$, while preserving its required
+squarehood and the required congruences.
+\end{proof}
+
+\section{Encoding the remaining guards}\label{sec:guards}
+Introduce six unrestricted integer variables $z_1,\ldots,z_6$ and put
+\[
+ (d_1,d_2,d_3,d_4,d_5,d_6)=
+ (3\epsilon+2,3g-1,3s-1,3w-1,3\phi+2,3m-1).
+\]
+Starting with $C_0=1$, define
+\[
+ B_r=1+4d_rC_{r-1}^2z_r^2,\qquad
+ C_r=C_{r-1}B_r\quad(1\le r\le6),\qquad C_*=C_6.
+\]
+\begin{lemma}\label{lem:stack}
+Subject to $z_1\cdots z_6\ne0$, the condition $C_*\in\Sq$ is equivalent,
+existentially in the six $z_r$, to
+$\epsilon,\phi\ge0$, $g,s,w\ge1$, and $m>0$.
+Moreover $C_*\equiv1\pmod4$ for every integer assignment, without any
+squarehood or nonvanishing hypothesis.
+\end{lemma}
+\begin{proof}
+Each $B_r\equiv1\pmod4$ is nonzero, and
+$\gcd(B_r,C_{r-1})=1$. Thus the $B_r$ are pairwise coprime.
+If their product is a square, each $|B_r|$ is a square; a negative square
+is 0 or 3 modulo 4, so each $B_r$ is a positive square. Because
+$C_{r-1}z_r\ne0$, this forces $d_r\ge0$. Its residue 2 modulo 3 excludes
+zero, giving exactly the six desired inequalities.
+
+Conversely each positive $d_r\equiv2\pmod3$ is nonsquare, so its Pell
+equation $u^2-d_rv^2=1$ has a nontrivial positive solution. A power of its
+unit is the identity modulo $2|C_{r-1}|$, by the same finite-group argument
+as above. We may therefore take $v$ a positive multiple of
+$2|C_{r-1}|$ and set $z_r=v/(2C_{r-1})\ne0$. Then $B_r=u^2$.
+Induction proves the converse. The final congruence follows directly from
+the formulas.
+\end{proof}
+
+\section{One divisor for divisibility and nonvanishing}\label{sec:merger}
+The existing signed construction uses the degree-five intersective polynomial
+\[
+ \Pi(t)=(t^3-t-1)(t^2+23).
+\]
+For completeness the necessary arithmetic is proved here.
+\begin{lemma}\label{lem:intersective}
+$\Pi$ has no rational root but has a root modulo every nonzero integer.
+\end{lemma}
+\begin{proof}
+The monic cubic has only $\pm1$ as possible rational roots, and neither
+works. The quadratic has no real root. The cubic discriminant is $-23$.
+For an odd prime $p\ne23$, a cubic root modulo $p$ is simple and lifts.
+If there is no cubic root, the cubic is irreducible. Frobenius permutes its
+three roots by a 3-cycle, so their Vandermonde product is fixed; its square
+is $-23$. The quadratic consequently has a simple root and lifts instead.
+At $p=23$, the cubic root $3$ is simple because its derivative is $26$.
+At $p=2$, use $-23\equiv1\pmod8$. A root modulo $2^e$ for $e\ge3$
+lifts to $2^{e+1}$ by choosing one of $t$ and $t+2^{e-1}$.
+Roots modulo arbitrary integers now follow by the Chinese remainder theorem.
+\end{proof}
+
+Define the polynomial
+\[
+ \mathcal R(D,T,v)=
+ \bigl((T+Dv)^3-D^2(T+Dv)-D^3\bigr)
+ \bigl((T+Dv)^2+23D^2\bigr).
+\]
+\begin{lemma}\label{lem:merge}
+For integers $D,T,Z$ with $D\ne0$,
+\[
+ (D\mid T\ \wedge\ Z\ne0)
+ \quad\Longleftrightarrow\quad
+ \exists v\in\Z:\ ZD^5\mid\mathcal R(D,T,v).
+\]
+Also $\mathcal R(D,T,v)\ne0$ for every integer $v$.
+\end{lemma}
+\begin{proof}
+The identity $\mathcal R=D^5\Pi(T/D+v)$ proves nonvanishing.
+If $T=Dq$ and $Z\ne0$, choose $v$ by
+Lemma~\ref{lem:intersective} so that $Z\mid\Pi(q+v)$.
+Conversely $Z=0$ would force $\mathcal R=0$. If $D\nmid T$, choose
+a prime with $\alpha=v_p(D)>\beta=v_p(T)$. The first term in each
+factor of $\mathcal R$ has uniquely least valuation: respectively
+$3\beta$ and $2\beta$. Thus $v_p(\mathcal R)=5\beta<5\alpha$,
+contradicting divisibility by $D^5$.
+\end{proof}
+
+\section{The polynomial in sixteen unrestricted integers}\label{sec:main}
+The sixteen variables are exactly
+\[
+ \epsilon,g,h,s,w,\phi,i,j,z_1,z_2,z_3,z_4,z_5,z_6,v,u\in\Z.
+\]
+Using Sections~\ref{sec:ratio}--\ref{sec:guards}, put
+\begin{gather*}
+ Z=i z_1z_2z_3z_4z_5z_6,\qquad S=ZD_0^5,\qquad
+ T=\mathcal R(D_0,T_0,v),\qquad X=Su-T,\\
+ w_1=C_*+1,\qquad w_2=w_1(P^2+K^2+2),\\
+ A_0=S^2C_*,\qquad A_1=(Sw_1)^2a_0,\qquad A_2=(Sw_2)^2a_1,\\
+ V=X^2+A_2-A_0-A_1,\qquad
+ W=V^2+4X^2A_2-4A_0A_1.
+\end{gather*}
+Our equation is the ordinary integer-polynomial equation
+\begin{equation}
+ \boxed{\ P_{16}=W^2-16V^2X^2A_2=0.\ }\label{eq:p16}
+\end{equation}
+Every intermediate letter is an abbreviation. In particular none adds a
+quantifier. The coefficient leaves are completely fixed in
+Sections~\ref{sec:binding} and \ref{sec:index}.
+
+\begin{lemma}[Parity-sensitive separation]\label{lem:weights}
+At every integer assignment,
+\[
+ |w_1|>\sqrt{|C_*|},\qquad
+ |w_2|>\sqrt{|C_*|}+|w_1|\sqrt{|a_0|}.
+\]
+\end{lemma}
+\begin{proof}
+Because $C_*\equiv1\pmod4$, either $C_*\ge1$ or $C_*\le-3$.
+In both cases $(C_*+1)^2>|C_*|$. For arbitrary real $P,K$,
+\[
+ \sqrt{|(P^2-1)K^2+1|}\le P^2+K^2+1.
+\]
+Indeed bound the absolute radicand by $(P^2+1)K^2+1$ and square the
+nonnegative right side; the remaining difference is
+$P^4+K^4+P^2K^2+2P^2+K^2\ge0$. Multiplying by $|w_1|$ proves
+the second strict inequality. Negative values of $w_1,w_2$ cause no issue.
+\end{proof}
+
+\begin{lemma}[Three-root finalizer]\label{lem:finalizer}
+For fixed earlier coordinates, \eqref{eq:p16} has an integer solution in $u$
+if and only if
+\[
+ S\ne0,\qquad S\mid T,\qquad C_*,a_0,a_1\in\Sq.
+\]
+\end{lemma}
+\begin{proof}
+Lemmas~\ref{lem:denom} and \ref{lem:merge} give $T\ne0$. If $S=0$,
+then $P_{16}=T^8\ne0$. Assume $S\ne0$, and choose complex roots
+$r_0^2=C_*$, $r_1^2=a_0$, $r_2^2=a_1$. Exact multiplication gives
+\[
+ P_{16}=\prod_{\delta_0,\delta_1,\delta_2\in\{\pm1\}}
+ [X-S(\delta_0r_0+\delta_1w_1r_1+\delta_2w_2r_2)].
+\]
+A zero makes one signed radical sum equal to the rational number $u-T/S$.
+Two distinct sign patterns on nonzero roots cannot give the same sum:
+take their largest differing index; a nonzero square root of an integer has
+absolute value at least one, and Lemma~\ref{lem:weights} makes its weighted
+contribution exceed the sum of all preceding contributions. The triangle
+inequality proves this even for negative radicands.
+
+The field generated by the three roots is a finite Galois extension of
+$\Q$, and its automorphisms change their signs. Every automorphism fixes
+the rational sum; separation therefore forces it to fix each root individually.
+Each root lies in $\Q$, hence in $\Z$ because its square is an integer.
+Zero roots are already rational. Thus all three radicands are nonnegative
+integer squares and $T/S$ is an integer. Conversely, choose their integer
+roots and set $u=T/S+r_0+w_1r_1+w_2r_2$.
+\end{proof}
+
+\begin{theorem}[Main equivalence]\label{thm:main}
+For the fixed coefficients defined above,
+\[
+ \ZFC\vdash
+ \bigl(\nexists\mathbf x\in\Z^{16}:P_{16}(\mathbf x)=0\bigr)
+ \longleftrightarrow\Con.
+\]
+\end{theorem}
+\begin{proof}
+A zero gives the conditions of Lemma~\ref{lem:finalizer}.
+Since $D_0\ne0$, $S\ne0$ implies $i z_1\cdots z_6\ne0$.
+Lemma~\ref{lem:merge} recovers $D_0\mid T_0$, and
+Lemma~\ref{lem:stack} recovers $\epsilon,\phi\ge0$, $g,s,w\ge1$, $m>0$.
+Proposition~\ref{prop:j} restores $h,i,j>0$ existentially. The concrete
+Jones equivalence, the quartic equivalence, and the K215 calibration now
+give a finite ZFC refutation.
+
+Conversely a refutation supplies a positive quartic solution and then a
+base tuple satisfying \eqref{eq:JR}. Lemma~\ref{lem:stack} supplies six
+nonzero guard witnesses with $C_*\in\Sq$. Lemma~\ref{lem:merge} supplies
+$v$ with $S\mid T$; here $S\ne0$. Lemma~\ref{lem:finalizer} supplies $u$.
+Negating the existence equivalence proves the claim. The steps use integer
+arithmetic, finite-group arguments, elementary Pell theory, and finite Galois
+theory, all formalizable in ZFC.
+\end{proof}
+
+\section{Exact degree and circuit specification}\label{sec:degree}
+Write $\mathcal L=5^{32}$. Degrees below treat every fixed coefficient as
+degree zero. The relevant source degrees are
+\begin{center}\small
+\begin{tabular}{lrlr}\toprule
+Quantity & Degree & Quantity & Degree\\\midrule
+$R$ & $235\mathcal L$ & $P$ & $950\mathcal L+3$\\
+$K$ & $950\mathcal L+4$ & $a_0$ & $3800\mathcal L+14$\\
+$a_1$ & $24640\mathcal L+68$ & $m$ & $2221\mathcal L+11$\\
+$D_0$ & $6875\mathcal L+20$ & $C_5$ & $363$\\
+$C_*$ & $2221\mathcal L+1102$ & $w_1$ & $2221\mathcal L+1102$\\
+$w_2$ & $4121\mathcal L+1110$ & $S$ & $34375\mathcal L+107$\\
+$T$ & $34375\mathcal L+105$ & $X$ & $34375\mathcal L+108$\\
+$A_2$ & $101632\mathcal L+2502$ & $P_{16}$ & $406528\mathcal L+10008$\\\bottomrule
+\end{tabular}\end{center}
+The first five stacks obey $c_r=3c_{r-1}+3$, $c_0=0$; the final stack
+uses the margin. $A_2$ has strictly higher degree than $X^2,A_0,A_1$.
+Thus the leading terms of $V,W,P_{16}$ are respectively $A_2,A_2^2,A_2^4$.
+There is no top-degree cancellation. An independent diagonal coefficient
+certificate modulo $1,000,003$ gives the nonzero final leading residue
+$580506$, independent of every fixed coefficient leaf. Therefore
+\[
+ \deg P_{16}=9\,465\,217\,590\,332\,031\,250\,000\,010\,008.
+\]
+
+The delivered circuit is \texttt{data/signed16.json}. Its selected evaluator
+uses \SignedOps{} live binary gates. The large digit polynomial is evaluated
+using the complete homogeneous polynomial $h_4$. Set
+$t_j=B^{5^j}$, $v_j=B^{5^{31}-5^j}$, and $t=t_{31}$.
+Then
+\[
+ e_*(B)=t\left[z_*h_4(t,v_0,\ldots,v_{31})+
+ \sum_{|\alpha|\le4}c_\alpha t^{4-|\alpha|}\prod_jv_j^{\alpha_j}\right].
+\]
+The exponent of a summand is exactly
+$5\cdot5^{31}-\sum_j\alpha_j5^j$.
+Initialize $h_0=1$ and $h_1=h_2=h_3=h_4=0$.
+The ascending recurrence $h_r\leftarrow h_r+xh_{r-1}$, for $r=1,2,3,4$,
+evaluates the first term; multivariate Horner arithmetic evaluates the sparse
+correction. Shared fifth powers give $t_j$, while
+$v_j=t_j^4v_{j+1}$. Finally
+\[
+ \lambda=\prod_{j=0}^{31}(1+t_j+t_j^2+t_j^3+t_j^4)(1+q)(1+q^2).
+\]
+These identities are polynomial identities; the output circuit has no division.
+
+\section{An identical twelve-variable polynomial in 108 operations}\label{sec:positive12}
+This improvement preserves the exact fixed polynomial of package 30.
+Its variables are $J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t\in\Pos$.
+The four constants are the same complete tuple as before. Define
+\begin{gather*}
+ q=\beta J+1,\ C_w=q-F-\alpha,\ X=wq,\ Y=sq^3,\ E=XY,\\
+ k=\eta+\zeta,\ c=kY+\eta,\ a=E+Y,\ H=4a+3,\ \Delta=a^2+H,\\
+ \ell=EkY,\quad A=1+\ell(\ell+k),\quad G=1+\Delta c^2,\quad b_0=X+ac,\\
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k=k-hE-R,\qquad N_t=(K_0+w)C_w+(q-F)-z(q-1),\\
+ I=ic^2,\quad D=1+\Delta I^2,\quad Q_0=\Delta(D-1),\quad d=Q_0-1,\\
+ v=cT,\quad b=c+RD,\quad M=k(I^2+T^2),\quad L=HM+1,\quad W=b_0+Ht.
+\end{gather*}
+A complete scalar evaluator for the norm $\mathcal N$ is
+\begin{align*}
+ H_2&=H^2,& H_Q&=H_2Q_0,& H_P&=H_QDv^2,&H_U&=H_Qb^2,\\
+ n&=(HM)^2A,&d_n&=dn,&H_e&=H_P+H_U-H_2,&j_0&=4H_PH_U,\\
+ W_2&=W^2,& L_2G&=L^2G,&\mathrm{Tr}&=2d(W_2+L_2G),&&\\
+ K_r&=d(W_2-L_2G),&K_n&=K_r^2,&A_A&=2(d_n+H_e),&&\\
+ C_c&=(d_n-H_e)^2-j_0,&a_t&=\mathrm{Tr}-A_A,&b_t&=C_c-K_n,&&\\
+ c_f&=16d_nj_0,&v_r&=a_t(a_t\mathrm{Tr}+2b_t)-c_f,&&&&\\
+ u_r&=b_t^2-a_t^2K_n.&&&&&&
+\end{align*}
+The final norm is
+\[
+ \mathcal N=u_r(u_r+\mathrm{Tr}v_r)+K_nv_r^2.
+\]
+The equation is
+\[
+ \boxed{\ P_{12}=N_kN_t(1+\mathcal N)-1=0.\ }
+\]
+It has degree 1081 and uses 108 operations. The system
+$N_k=1$, $N_t=1$, $\mathcal N=0$ uses 104 operations, with maximum
+residual degree 1072. Replacing the transport variable by $z_o=z+1$ gives
+the comparison $(K_0+w)C_w=F+z(q-1)$ and saves one more operation.
+The positive-domain justification is the transport argument already given.
+
+\begin{proposition}
+The 108-operation circuit is identical as an integer polynomial to the
+111-operation source circuit. Its consistency equivalence is unchanged.
+\end{proposition}
+\begin{proof}
+There are precisely three algebraic savings. First share $H^2Q_0$ before
+forming $H_P,H_U$, saving one multiplication. Next compute
+$[d(W^2-L^2G)]^2$ instead of $d^2(W^2-L^2G)^2$, saving one multiplication.
+Finally Horner-evaluate
+$u_r^2+\mathrm{Tr}u_rv_r+K_nv_r^2$ as in the display, saving one gate.
+
+For an independent norm derivation, let
+$P_a=Q_0Dv^2$, $U_a=Q_0b^2$, $e_a=P_a+U_a-1$, and $B_a=2Q_0vb$.
+Then $\mathcal N$ is the eight-factor product
+\[
+ \prod_{u^2=G,\ \tau^2=A,\ f^2=D}
+ \bigl[d(W-Lu-HM\tau)^2-H^2e_a+H^2B_af\bigr],
+\]
+where each root has both signs. Eliminating $\tau,f$ first gives a quartic
+in $x=d(W\pm L\sqrt G)^2$ of the form
+$(x^2-A_Ax+C_c)^2-c_fx$. The two $x$ values have sum $\mathrm{Tr}$
+and product $K_n$. Reducing modulo $x^2-\mathrm{Tr}x+K_n$ gives
+$u_r+v_rx$, whose norm is the displayed $\mathcal N$.
+All identities hold over polynomial rings, including at repeated or zero roots.
+The source's full positive-domain soundness proof is preserved and applies
+to the identical polynomial. No new compiler binding is required.
+\end{proof}
+
+\input{coefficients_small/section.tex}
+
+\section{Verification, reproducibility, and limitations}\label{sec:verification}
+The archive is self-contained for its stated finite checks. All release scripts
+use Python's standard library; a TeX installation is needed only to rebuild
+this PDF. Run from the extracted directory:
+\begin{lstlisting}
+python3 reproduce.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The first command rebuilds the circuits and coefficient recipes and runs the
+checks. It does not search for a ZFC refutation or a Diophantine solution.
+
+The exact checks include all twenty-two affine residual identities, liveness
+and operation counts, an independent expansion of the shifted quartic and all
+391 weighted coefficient recipes, the strict index bounds, and the three-root
+norm identity as equality of sparse polynomials. The concrete native payloads
+are authenticated after decompression. The signed circuit is also compared
+with direct displayed formulas at actual-coefficient residues, with literal
+58,905-term digit-sum evaluations. Constructed Pell residue examples and
+intersectivity checks test transcription at finite values. The twelve-variable
+circuit is compared both with the predecessor and with an independent
+eight-conjugate evaluator.
+
+Finite checks supplement the universal proofs. They do not establish
+consistency, prove a nonhalting computation by testing initial steps, or
+replace the imported unbounded native compiler theorem. No new end-to-end
+Lean or Rocq certificate is claimed. In particular the paper states a
+provable equivalence; it does not assert that ZFC proves either side. Under
+the usual consistency hypothesis, the nonexistence assertion is unprovable
+in ZFC by the second incompleteness theorem. No stronger two-sided
+independence claim is needed here.
+
+The source provenance separates three contributions: the inherited K215,
+Pell, compiler, and Jones mathematics; exact refactorings of existing
+polynomials; and the new guard-removal and parity-weight arguments.
+The supplied sixteen-variable circuit is a concrete new specialization;
+we make no assertion of priority for general Pell periodicity, radical norm
+merging, or intersective polynomials.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can the current eight-coordinate Jones ratio predicate lose another
+guard without imposing a restriction on possible bases? In particular,
+replacing the base slack by a square is not justified: the recovered base
+must also be a power of two, and cofinality of squares alone does not solve
+that simultaneous condition.
+\item Can a Pell parameter already present in the predicate supply the residue
+variable $v$ in Lemma~\ref{lem:merge}? A proof would need residue-class
+surjectivity compatible with the full ratio predicate; arbitrary cofinal
+Pell solutions are insufficient.
+\item Can one remove a register from the 31-variable quadratic system,
+giving a normalized quartic in thirty variables? This would lower the Jones
+radix exponent by a factor of five, and is more valuable than a small local
+gate saving. Positivity of any restored coordinate must be proved.
+\item Can the available ten-integer representation theorem be instantiated
+with a coefficient recipe and arithmetic DAG for this exact ZFC refutation
+predicate? That would address the gap between a general existence theorem
+and the concrete sixteen-variable release.
+\item Can the fixed-coefficient choice be optimized jointly with the quartic
+index rather than measuring the native radix alone? The final $y_*$ size
+depends on the shifted quartic coefficient bounds and on $\nu$.
+\item Can the positivity-normalization theorem and the parity-sensitive
+three-root finalizer be formalized as reusable Lean or Rocq lemmas, then
+composed with the existing literal Jones and K215 endpoints? This would
+reduce the gap between the new mathematical proof and an end-to-end
+machine-checked theorem.
+\item Can the native compiler receive a standalone kernel-checked certificate
+covering its synchronization, carry bounds, and rank-control argument?
+Coefficient hashes and finite geometry checks alone do not certify that
+unbounded theorem.
+\item Is a single equation below 67 operations attainable under the same
+binary-gate convention, or a smaller low-degree system without increasing
+the witness count? The present results do not settle either question.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{repo} ProveIt contributors, \emph{Con(ZFC) in Diophantine form},
+wave-4 collection, revision \pin, inspected 22 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8c6eec9d19ef80538c8e61ff6e0180040583446a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}{Pinned repository directory}.
+\bibitem{signed17} ProveIt package 29, \emph{Seventeen unrestricted integers:
+complete new reduction}, \texttt{signed17/SIGNED17\_PROOF.md}, at \cite{repo}.
+\bibitem{quartic31} ProveIt package 30, \emph{A 31-positive-variable quartic
+by eliminating a packing register}, \texttt{arithmetic/QUARTIC31\_PROOF.md};
+and \emph{Nine-variable equation from the compact coefficients and the
+31-variable quartic}, \texttt{nine/COMPACT\_NINE\_PROOF.md}, at \cite{repo}.
+\bibitem{positive12} ProveIt package 30, \texttt{positive/POSITIVE12\_PROOF.md}
+and its arithmetic circuits, at \cite{repo}.
+\bibitem{coding} ProveIt package 27, \texttt{nine/build\_improved.py},
+complete-homogeneous and multivariate Horner evaluation, at \cite{repo}.
+\bibitem{jones} James P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), no. 3, 549--571.
+\href{https://doi.org/10.2307/2273588}{doi:10.2307/2273588}.
+\bibitem{sun} Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594v2 (2026), Theorem 1.1.
+\url{https://arxiv.org/abs/2609.01594}.
+\bibitem{endpoint} ProveIt contributors,
+\path{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean}
+and \path{Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/},
+at the same pinned revision. Selected source files accompany the archive.
+\end{thebibliography}
+\end{document}

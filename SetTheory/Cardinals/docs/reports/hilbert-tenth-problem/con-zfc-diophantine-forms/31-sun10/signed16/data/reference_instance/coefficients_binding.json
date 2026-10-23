@@ -1,0 +1,102 @@
+{
+  "variant": "wang943-compact-5pow10",
+  "status": "FROZEN; independent mathematical, finite-support and byte-for-byte binary/gzip audits passed",
+  "reviewed_repository": "VladimirReshetnikov/ProveIt",
+  "reviewed_revision": "f0ae4e0991ca44a7bb4e5671d42e33d775e48035",
+  "base": {
+    "B": "2^(5^10)",
+    "beta": "B-1",
+    "d": 9765625,
+    "rho": "2^625",
+    "rho_cell_length": 15625
+  },
+  "source_bindings": {
+    "beta": "coefficients_compact/beta.bin",
+    "K": "coefficients_compact/K.bin",
+    "MC": "coefficients_compact/MC.bin",
+    "MF": "coefficients_compact/MF_source.bin"
+  },
+  "warning": "The source coefficient named MF is MF_source=MF_native+B-1, not MF_native. Do not mix compact and fallback ports.",
+  "contract": {
+    "DC": "K mod B",
+    "DR": "floor(K/B)",
+    "MF_native": "MF_source-B+1",
+    "MC_population": 9764636,
+    "MF_native_population": 989,
+    "mod5_unit": 4,
+    "dummy_derivative_mod5": 1
+  },
+  "encoding": "Unsigned little-endian integer, minimal byte length, no header; .bin.gz is deterministic gzip of .bin",
+  "proofs": [
+    "WANG943_COEFFICIENTS.md",
+    "WANG943_COMPACT_LAYOUT.md",
+    "../audit/WANG943_INDEPENDENT_AUDIT.md"
+  ],
+  "checks": [
+    "wang943_independent_language_receipt.json",
+    "wang943_compact_receipt.json",
+    "wang943_compact_materialization_receipt.json",
+    "../audit/WANG943_COMPACT_INDEPENDENT_CHECKS.json"
+  ],
+  "files": [
+    {
+      "name": "beta",
+      "path": "coefficients_compact/beta.bin",
+      "encoding": "unsigned little-endian, minimal bytes, no header",
+      "bytes": 1220704,
+      "bit_length": 9765625,
+      "population": 9765625,
+      "sha256": "40cc309fcb5dd2942c371d18be6d955d472e6b4c3604034b316194037ac16a5d",
+      "gzip_bytes": 1219,
+      "gzip_sha256": "d74fa1f37a13a30bd345de76647c04ccb4a168f9c0f6fa958342bd808042bf87"
+    },
+    {
+      "name": "MC",
+      "path": "coefficients_compact/MC.bin",
+      "encoding": "unsigned little-endian, minimal bytes, no header",
+      "bytes": 1220704,
+      "bit_length": 9765625,
+      "population": 9764636,
+      "sha256": "2e3107193f3b376fc3cfffdaa3ef547e6dd8dfdd4548519c0e33b5ffe2f2371d",
+      "gzip_bytes": 1616,
+      "gzip_sha256": "26c82f68771defd499337403feea14a5ee27a6e79011a418cfb61f518a532b0b"
+    },
+    {
+      "name": "MF_source",
+      "path": "coefficients_compact/MF_source.bin",
+      "encoding": "unsigned little-endian, minimal bytes, no header",
+      "bytes": 1220704,
+      "bit_length": 9765626,
+      "population": 991,
+      "sha256": "8851b54fffd93780996de5f8c69315448e1369c3eea142428d2225a5149d1825",
+      "gzip_bytes": 1314,
+      "gzip_sha256": "a872d8313b7c1b86f1c2533fe8ea02043ef472d4521bd00b51f27333484f35e8"
+    },
+    {
+      "name": "K",
+      "path": "coefficients_compact/K.bin",
+      "encoding": "unsigned little-endian, minimal bytes, no header",
+      "bytes": 1650157,
+      "bit_length": 13201251,
+      "population": 33499,
+      "sha256": "e79f794af9565a7d824beb423bd03ee9ac117811b9b0e3a83ffe18f8a084de99",
+      "gzip_bytes": 16111,
+      "gzip_sha256": "7bd89ac9dc87307d870807429db0fbe313378d565fa4ebcfeddd8c170f3f6696"
+    }
+  ],
+  "total_uncompressed_bytes": 5312269,
+  "total_gzip_bytes": 20260,
+  "claim_scope": "Ordinary-mathematical compiler adapter with independent finite audits; imported arithmetic and exact K215 calibration theorems remain dependencies. Not an end-to-end proof-assistant certificate.",
+  "audit_summary": {
+    "tile_tuples": 943,
+    "clause_bit_pairs": 75440,
+    "native_basis_convolution_identities": 69230,
+    "all_rotation_clause_and_anchor_checks": "PASS",
+    "compact_raw_binary_comparison": "4 of 4 byte-for-byte PASS",
+    "compact_gzip_round_trips": "4 of 4 PASS",
+    "receipt": "../audit/WANG943_COMPACT_INDEPENDENT_CHECKS.json"
+  },
+  "historical_dependency_manifest": "COMPACT_COEFFICIENT_BINDING.upstream.json",
+  "replay_scope": "Active release replay verifies payloads, indices and arithmetic. Historical compiler builder entries in the inert upstream manifest are not release commands."
+}
+

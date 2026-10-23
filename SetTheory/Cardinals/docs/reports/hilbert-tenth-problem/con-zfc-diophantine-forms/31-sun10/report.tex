@@ -1,0 +1,132 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine forms for $\operatorname{Con}(\mathrm{ZFC})$}
+\fancyhead[R]{\small ProveIt research supplement}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{nosep}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Sq}{\operatorname{Sq}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\title{Smaller explicit Diophantine forms for\newline $\Con(\ZFC)$\\[6pt]
+\large Ten integer unknowns, compact quadratic systems,\newline and a smaller fixed coefficient instance}
+\author{Research synthesis prepared for the ProveIt repository}
+\date{October 2026\\\small Source snapshot \texttt{8c6eec9d19ef80538c8e61ff6e0180040583446a}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give explicit polynomial equations whose absence of solutions is
+provably equivalent in ZFC to its syntactic consistency.  The fixed
+instance is derived from ProveIt's calibrated blank-input K215 machine;
+no unspecified recursively enumerable index or existential coefficient
+is used.  A specialization of Sun's ten-integer construction, together
+with a coprime square merger and a quintic divisibility merger, gives an
+equation in ten unrestricted integer variables.  A separately developed
+Jones-based equation uses sixteen unrestricted integer variables and
+1,617 binary arithmetic operations.  For readers prioritizing degree or
+evaluation cost, we give a system of 22 quadratic equations in 31 positive
+variables evaluated in 60 operations, its 125-operation quartic sum of
+squares, and a 12-positive-variable system evaluated in 102 operations.
+All these compatible forms can use a new complete native coefficient
+tuple whose largest port has 1,070,004 bits, 45.36\% below the compared
+repository instance.  The archive contains ordinary mathematical proofs,
+literal coefficient data, division-free circuits and reproducible finite
+audits.  It does not claim global optimality or a new end-to-end
+proof-assistant certificate.
+\end{abstract}
+\tableofcontents
+\clearpage
+
+\input{sections/overview}
+\input{sections/coefficients}
+\input{sections/parent}
+\input{signed10/SIGNED10_SECTION}
+\input{sections/signed16}
+\input{sections/low_degree}
+\input{sections/reproduction}
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt: Con(ZFC) Diophantine forms},
+source snapshot \texttt{8c6eec9d19ef80538c8e61ff6e0180040583446a}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/8c6eec9d19ef80538c8e61ff6e0180040583446a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}.
+
+\bibitem{repo24}
+ProveIt, package 24, \emph{integer24}; in particular the general
+odd-factor controller in its coefficient construction, at the snapshot
+in \cite{repo}.  Relevant source is included under
+\texttt{coefficients/upstream/24-coefficients.tex}.
+
+\bibitem{repo25}
+ProveIt, package 25, \emph{hybrid12}, mixed-radix Wang943 coefficient
+construction, at the snapshot in \cite{repo}.  Included source:
+\texttt{coefficients/upstream/25-COEFFICIENT\_PROOF.md}.
+
+\bibitem{repo26}
+ProveIt, package 26, \emph{ratio12}, including the signed product and
+ratio normalizations, at the snapshot in \cite{repo}.
+
+\bibitem{repo27}
+ProveIt, package 27, \emph{wave4}, digit-evaluation circuits and
+coefficient/cost comparisons, at the snapshot in \cite{repo}.
+
+\bibitem{repo29}
+ProveIt, package 29, \emph{simpler-forms}, including the 17-integer
+Jones wrapper, at the snapshot in \cite{repo}.  Included source:
+\texttt{sources/SIGNED17\_SOURCE\_PROOF.md}.
+
+\bibitem{repo30}
+ProveIt, package 30, \emph{quartic31}: the positive quartic parent,
+the normalized 31-variable source, and the 12-variable specialization,
+at the snapshot in \cite{repo}.
+
+\bibitem{endpoint}
+ProveIt, \texttt{KEndpoint215.lean}, calibrated blank-input K215 endpoint,
+at the snapshot in \cite{repo}.  The exact source used here is bundled
+as \texttt{sources/KEndpoint215.lean}.
+
+\bibitem{jones}
+J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+
+\bibitem{sun2021}
+Z.-W. Sun, Further results on Hilbert's Tenth Problem,
+\emph{Science China Mathematics} \textbf{64} (2021), 281--306.
+Version used: arXiv:1704.03504v7, especially the explicit construction
+in Section 3 and the square-combining polynomial in Section 5.
+\url{https://arxiv.org/html/1704.03504v7}.
+
+\bibitem{sun2026}
+Z.-W. Sun, Ten unknowns for Hilbert's tenth problem over the integers,
+preprint, arXiv:2609.01594v2 (2026), especially Sections 3--7.
+\url{https://arxiv.org/html/2609.01594v2}.
+\end{thebibliography}
+\end{document}

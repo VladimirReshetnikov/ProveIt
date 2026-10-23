@@ -1,0 +1,136 @@
+\section{The target and the meaning of ``simpler''}
+\label{sec:overview}
+
+Let $\Con(\ZFC)$ mean that there is no finite derivation of a contradiction
+from the recursively presented first-order ZFC axioms, in the proof
+calculus used by the repository's K215 calibration.  Equivalent standard
+effective proof calculi give provably equivalent consistency statements.
+The required conclusion has the following form for one fully fixed
+$F\in\Z[X_1,\ldots,X_n]$:
+\begin{equation}\label{eq:target}
+ \ZFC\ \vdash\quad
+ \bigl[\neg\exists\boldsymbol{x}\in\Z^n\ F(\boldsymbol{x})=0\bigr]
+ \ \longleftrightarrow\ \Con(\ZFC).
+\end{equation}
+This is a proof of a biconditional.  It does not prove that either side
+holds.  Under the usual consistency hypothesis, G\"odel's second
+incompleteness theorem precludes ZFC from proving the left side once
+the biconditional has been established.
+
+There are several inequivalent notions of simplicity.  Fewer variables
+can cost enormous degree; a low-degree system can require more witnesses;
+small arithmetic circuits can contain very large fixed integers.  A
+positive-variable equation also differs from an equation in unrestricted
+integers.  We therefore retain several useful points instead of calling
+one construction an absolute minimum.
+
+\subsection{Concrete improvements over the pinned collection}
+
+All comparisons are against the immutable snapshot in \cite{repo}, not
+against a moving branch.  ``Operation'' means a binary addition,
+subtraction or multiplication in the emitted directed acyclic graph.
+Sharing is allowed; all powers of variables are expanded into such
+gates.  Fixed integers are leaves.  A system is evaluated as shared left
+and right sides to be compared; the comparisons themselves are not
+arithmetic gates.  A sum of squared residuals includes the subtraction,
+squaring and summation gates.  These conventions match the compared
+repository receipts.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{43mm}rrrr@{}}
+\toprule
+Form & Domain & Variables & Degree & Operations\\
+\midrule
+New Sun/Jones synthesis & $\Z$ & 10 & $d_{10}$ & 1,442\\
+Jones wrapper, package 29 & $\Z$ & 17 & $d_{17}$ & 20,607\\
+New Jones wrapper & $\Z$ & 16 & $d_{16}$ & 1,617\\
+Quadratic system, package 30 & $\Z_{>0}$ & 31 & 2 & 65\\
+New quadratic system & $\Z_{>0}$ & 31 & 2 & 60\\
+Quartic, package 30 & $\Z_{>0}$ & 31 & 4 & 130\\
+New quartic & $\Z_{>0}$ & 31 & 4 & 125\\
+Product, package 30 & $\Z_{>0}$ & 12 & 1,081 & 111\\
+New product evaluator & $\Z_{>0}$ & 12 & 1,081 & 108\\
+System, package 30 & $\Z_{>0}$ & 12 & 1,072 & 107\\
+New shifted system & $\Z_{>0}$ & 12 & 1,072 & 102\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here
+\[
+ d_{10}=126496\,5^{31}+27064,\qquad
+\]
+\[
+ d_{17}=424296\,5^{33}+53824,\qquad
+ d_{16}=813056\,5^{32}+10016.
+\]
+The new ten-integer equation is specified in full in
+Section~\ref{sec:signed10}.  Its exact degree is
+\[
+589042901992797851562527064,
+\]
+and its evaluator uses 851 multiplications
+and 591 additions/subtractions.  It combines the fixed quartic input
+with Sun's ten-integer reduction \cite{sun2021,sun2026} and the local
+simplifications proved there.  The contribution is an explicit
+$\Con(\ZFC)$ instance and smaller local formulas, not a new general
+ten-unknowns theorem.
+
+The collection already contains nine-variable equations over
+$\N$ or $\Z_{>0}$.  Ten unrestricted integer variables should not be
+compared with these as if the domains were identical.  The existing
+67-operation single equation and the 59-operation higher-degree system
+also remain better at their respective operation-count objectives.
+Our 60-operation system improves the quadratic/quartic point.
+
+\subsection{Fixed coefficients and the proof chain}
+
+All the new forms are tied to one complete native coefficient tuple.
+For its four ports the largest bit length falls from 1,958,376 to
+1,070,004, while their combined raw storage falls from 977,220 to
+533,099 bytes.  These are measurements of the \emph{native ports}; they
+are not a claim about the largest coefficient after expanding an entire
+high-degree polynomial.  In particular, the sixteen-variable Jones
+wrapper has a much larger fixed base coefficient specified by a bounded
+power-of-two recipe.
+
+The logical composition is
+\begin{align*}
+ \text{a zero of the displayed equation/system}
+ &\ \longleftrightarrow\ \text{a positive zero of the native parent}\\
+ &\ \longleftrightarrow\ \text{a finite blank-input K215 halt}\\
+ &\ \longleftrightarrow\ \text{a finite ZFC refutation}.
+\end{align*}
+Negating this equivalence yields \eqref{eq:target}.  The parent-to-machine
+direction uses the native compiler and arithmetic-skeleton proofs in
+the pinned repository.  The last equivalence is calibrated by
+\texttt{blank\_halts\_iff\_zfc\_refutation} and
+\texttt{nonhalting\_iff\_zfc\_consistency} in
+\texttt{KEndpoint215.lean}.  The replacement tuple is justified by the
+ordinary adapter proof in Section~\ref{sec:new-coefficients}.
+
+No coefficient depends on deciding whether K215 halts.  The 430 machine
+transitions, 943 tiles, masks, weighted quartic coefficients and all fixed
+powers are bounded, explicitly reconstructible data.  Auxiliary names
+inside the displayed formulas denote polynomial expressions, not
+additional existential variables.  Fixed sums with large numerical
+limits are ordinary polynomials; their efficient evaluators are supplied.
+
+\subsection{Verification boundary}
+
+The archive separates three kinds of evidence.  First are the inherited
+semantic results, pinned source proofs and the existing Lean endpoint.
+Second are the new ordinary mathematical proofs: the coefficient adapter,
+square and divisibility mergers, the cofinal Jones restriction, and the
+algebraic refactorings.  Third are executable finite checks of coefficient
+bytes, symbolic identities, degree witnesses and circuit transcription.
+The finite checks are useful for catching errors in a concrete equation;
+they do not prove universal compiler correctness by testing examples.
+
+The new work is not an end-to-end Lean or Rocq development.  In particular,
+the ten-variable route imports a theorem from the explicitly identified
+2026 preprint \cite{sun2026}; the sixteen-variable route independently
+uses the Jones reduction and does not depend on that preprint.  The
+ordinary proofs use finite arithmetic, induction, elementary algebra and
+the cited Diophantine theorems, all available within ZFC.  No truth or
+consistency assumption about ZFC is needed to prove the biconditional.

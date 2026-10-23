@@ -1,0 +1,162 @@
+{
+  "status": "PASS",
+  "source_pin": "8c6eec9d19ef80538c8e61ff6e0180040583446a",
+  "scope": "Finite arithmetic/interface validation plus exact algebra. Semantic equivalence uses the report proofs and inherited compiler/Pell/Jones/K215 theorems.",
+  "steps": [
+    {
+      "label": "coefficient reconstruction",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "coefficients/build_coefficients.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.113
+    },
+    {
+      "label": "positive circuit reconstruction",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "positive/build_positive_refinements.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.027
+    },
+    {
+      "label": "baseline binding",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "baseline/build_baselines.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.028
+    },
+    {
+      "label": "independent coefficient audit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "coefficients/audit_coefficients.py"
+      ],
+      "exit_code": 0,
+      "seconds": 3.084
+    },
+    {
+      "label": "positive identities and circuits",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "positive/check_positive_refinements.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.452
+    },
+    {
+      "label": "nine-variable exact algebra",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "nine/optimize_combined.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.908
+    },
+    {
+      "label": "coherent Jones rebinding",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "nine/rebind_compact.py",
+        "--coefficients",
+        "coefficients"
+      ],
+      "exit_code": 0,
+      "seconds": 0.104
+    }
+  ],
+  "coefficient_instance": "wang943-mixed115-shared-anchor-length8801-prime3433",
+  "coefficient_raw_bytes": 506664,
+  "positive_metrics": [
+    {
+      "file": "circuits/short109_product.json",
+      "variables": 12,
+      "equations": 1,
+      "degree": 1081,
+      "operations": 109
+    },
+    {
+      "file": "circuits/short109_shifted_system.json",
+      "variables": 12,
+      "equations": 3,
+      "degree": 1072,
+      "operations": 103
+    },
+    {
+      "file": "circuits/short109_system.json",
+      "variables": 12,
+      "equations": 3,
+      "degree": 1072,
+      "operations": 104
+    },
+    {
+      "file": "circuits/tight120_product.json",
+      "variables": 12,
+      "equations": 1,
+      "degree": 1069,
+      "operations": 120
+    },
+    {
+      "file": "circuits/tight120_shifted_system.json",
+      "variables": 12,
+      "equations": 3,
+      "degree": 1060,
+      "operations": 114
+    },
+    {
+      "file": "circuits/tight120_system.json",
+      "variables": 12,
+      "equations": 3,
+      "degree": 1060,
+      "operations": 115
+    }
+  ],
+  "nine_metrics": {
+    "natural": {
+      "node_count": 1714,
+      "live_operations": 1587,
+      "operations": {
+        "add": 708,
+        "sub": 22,
+        "mul": 857
+      },
+      "fixed_leaves": 80,
+      "variable_leaves": 9
+    },
+    "positive": {
+      "node_count": 1709,
+      "live_operations": 1582,
+      "operations": {
+        "add": 701,
+        "sub": 24,
+        "mul": 857
+      },
+      "fixed_leaves": 80,
+      "variable_leaves": 9
+    },
+    "status": "PASS",
+    "nu": 31,
+    "exact_degree": 2810824662446975708007812866,
+    "index_exponent": 4058127,
+    "port_bit_lengths": [
+      1012115,
+      1016946,
+      1012115,
+      1012116
+    ],
+    "z_index": {
+      "recipe": "2^4058127",
+      "byte_order": "little",
+      "raw_bytes": 507266,
+      "gzip_bytes": 527,
+      "sha256": "79fc3cae25247641782ae3e23bdb023f8fe083756773ecde14c0715ef738ac87"
+    },
+    "fixed_integer_status": "The 402 weighted coefficient records define 78 nonliteral circuit leaves plus z and y; every absent weighted coefficient is zero. The fixed y is an exact 58905-term recipe.",
+    "proof_dependency": "The new complete compiler tuple must satisfy the same quartic31 native compiler interface. Its independent geometry and padding proof is in ../coefficients/. No fresh proof-assistant endpoint is claimed."
+  },
+  "verified_recommended_circuits": 10
+}

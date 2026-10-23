@@ -1,0 +1,147 @@
+\section{A sharper equation in nine natural or positive unknowns}
+\label{sec:nine-completed-square}
+
+The new nine-variable polynomial has exact total degree
+\[
+ \boxed{92324\cdot5^{32}+296
+       =2149585634469985961914062796.}
+\]
+Its supplied integer arithmetic circuit uses \textbf{1505 binary operations}
+ over $\mathbb N=\{0,1,\ldots\}$, or \textbf{1500 operations} after the
+coordinate translation to strictly positive integers.  The earlier source27 positive circuit still uses fewer operations (1480), but at much higher degree; the new form does not dominate it on cost alone. Source~30 used
+$120724\cdot5^{32}+366$ and 1840 operations.  The new construction retains
+source~30's complete compact943 coefficient tuple and 31-witness quartic,
+combines them with source~28's signed-divisor finalizer, and refines its
+majorants.  This is an ordinary mathematical synthesis of the stated
+imported theorems, not a newly kernel-checked endpoint or a minimality claim.
+
+\paragraph{The fixed instance.}
+The four ports are the unchanged compact943 tuple
+$(\beta,K_0,M_C,M_F)$, with native radix $2^{5^{10}}$ and
+$M_F=M_{F,\mathrm{native}}+\beta$.  Let $r_1,\ldots,r_{22}$ be the
+literal quadratic residuals in \texttt{nine/source/30-quartic31/arithmetic/}.
+Their sum of squares after shifting all 31 positive coordinates by one is
+$P_{31}(x,\mathbf n)$, independent of the dummy input $x$.
+It has degree four and $P_{31}(x,\mathbf0)\ge1$ because residual~5 equals
+one at the all-ones tuple.  Source~30's exact elimination of one register
+transfers the inherited compiler theorem to this parent.
+
+Put $\nu=31$, $L=5^{32}$ and
+$c_\alpha=(4-|\alpha|)!\prod_j\alpha_j!\,[\mathbf x^\alpha]P_{31}$.
+All 402 nonzero coefficient recipes are supplied.  The recorded bit lengths
+of the four authentic ports give, for every recipe
+$c_\alpha=\sum_t a_t\boldsymbol\kappa^{\mathbf e_t}$,
+\[
+ |c_\alpha|+1\le
+ 1+\sum_t|a_t|2^{\sum_j e_{tj}\operatorname{bits}(\kappa_j)}
+ <2^{45933757}.
+\]
+Thus $z=2^{45933757}$ and
+$y=\sum_{|\alpha|\le4}(z+c_\alpha)(2z)^{L-\sum_j\alpha_j5^j}$
+give the explicit admissible Jones index.  The baseline includes all
+58,905 exponent positions.  These are bounded coefficient recipes, not
+additional unknowns or an unspecified enumeration index.
+
+\paragraph{The new majorants.}
+Use the unchanged Jones packing and ratio expressions, fully listed in
+\texttt{nine/PROOF.md}, on the eight natural outer coordinates.  In
+particular
+\[
+ A=R\sigma,\quad \sigma=Y(U+1),\quad r=bw+\phi,\quad
+ C=2R+r+1,\quad H=(j+1)C-r,
+\]
+\[
+ D=(A^2-1)C^2+1,\quad E=i(4A-5)DC^2,\quad
+ F=(A^2-1)E^2+1,\quad G=FDC+F-A(F-1).
+\]
+Source~28's unconditional congruence
+$R\equiv(b-1)\ell\pmod q$, with $0<(b-1)\ell<q$, proves $R\ne0$.
+Consequently $|A|\ge2$, $P\ge2$, $K\ge1$, $AE\ge0$ and $D,F\ge1$;
+no margin or square condition is assumed.  Replace the earlier majorants by
+\begin{align*}
+ M_D&=AC+\sigma(r+1)^2+1,& M_F&=AE+1,\\
+ T_{CH}&=CH+r^2,&
+ M_I&=F(DT_{CH}+2H^2+A^2)-A^2+1,\\
+ V_0&=PK+1,&V_1&=M_DM_FM_I+1.
+\end{align*}
+Indeed $M_D-AC>0$ and
+\[
+ M_D+AC=\sigma\{4R^2+2R(r+1)+(r+1)^2\}+1>0,
+\]
+so $M_D\ge|AC|+1\ge\sqrt D$.  Also $M_F\ge\sqrt F$, and
+\[
+ T_{CH}+CH=C^2+(C-r)^2+2jC^2\ge0,
+ \qquad T_{CH}-CH=r^2\ge0.
+\]
+Thus $T_{CH}\ge|CH|$.  The decomposition of $G$, together with
+$|H|\le H^2$ and $|AH|\le A^2+H^2$, gives
+$M_I\ge|GH|+|H|+1\ge\sqrt{|(G^2-1)H^2+1|}$.
+For $a_0=(P^2-1)K^2+1$ and $a_1=DF((G^2-1)H^2+1)$,
+we obtain $V_t\ge2$ and $\sqrt{|a_t|}\le V_t-1$.
+The proof includes negative $R$, $C=0$ and $H=0$.
+
+\paragraph{The signed finalizer.}
+Let $u=JF\ne0$, $v=QF+J(H-C)$, with $J=4A-5$, and let $m$ be the
+unchanged Jones margin.  Put $M=Q^2+(H-C)^2+1$; then
+$|v/u|\le|Q|+|H-C|\le M-1$.  With the ninth unknown $n\in\mathbb N$,
+\[
+ \Omega=u(2m-1),\qquad
+ \Theta=u(n+M)+v-\Omega(2M+V_0V_1),
+\]
+\[
+ \mathcal F_9=
+ \bigl(\Theta^2-\Omega^2(a_0+V_0^2a_1)\bigr)^2
+       -4\Omega^4V_0^2a_0a_1.
+\]
+Source~28's four-factor radical argument proves that
+$\exists n\in\mathbb N:\mathcal F_9=0$ is equivalent to
+$a_0,a_1$ being squares, $u\mid v$ and $m>0$, for either sign of $u$.
+For clarity, a vanishing factor yields integer roots $r_t^2=a_t$:
+if $s=r_0+V_0r_1\in\mathbb Q$ is nonzero, use
+$2sr_0=s^2+a_0-V_0^2a_1$; if $s=0$, the bounds force $a_1=a_0=0$.
+Then $Z=2M+V_0V_1+r_0+V_0r_1\ge2M+1$, and
+$n+M+v/u=(2m-1)Z$ gives soundness.  Conversely choose
+$n=(2m-1)Z-M-v/u\ge2$.  The unchanged Jones reduction, parent compiler
+and literal K215 calibration therefore give, provably in ZFC,
+\[
+ \bigl(\nexists\mathbf x\in\mathbb N^9:
+          \mathcal F_9(\mathbf x)=0\bigr)
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+
+\paragraph{Why the degree drops.}
+The leading terms of $V_1^2$ and $a_1$ now cancel.  This is resolved by an
+exact telescoping certificate, not a naive gate-degree estimate.  With
+$t=\sigma(r+1)^2$,
+\[
+ M_D^2-D=2ACt+t^2+2AC+2t+C^2
+\]
+has degree $1110L+8$ and diagonal leader $4$.  In
+\begin{align*}
+ V_1^2-a_1={}&(M_D^2-D)M_F^2M_I^2
+ +D(M_F^2-F)M_I^2\\
+ &+DF(M_I^2-I)+2M_DM_FM_I+1,
+\end{align*}
+the first term uniquely dominates: its degree is $24170L+72$ and leader
+$2^{46}$.  Writing $E_0=u(n+M)+v-2\Omega M$, the inner norm is exactly
+\[
+ E_0^2-2E_0\Omega V_0V_1+\Omega^2V_0^2(V_1^2-a_1)-\Omega^2a_0.
+\]
+The third term uniquely dominates with degree $46162L+148$ and leader
+$2^{98}$.  The outer square therefore has degree $92324L+296$ and
+leader $2^{196}>0$; the final subtracted term has smaller degree.
+
+\paragraph{Executable representation and checks.}
+The shared radix-five ladder and complete-homogeneous $h_4$ identity from
+source~27 evaluate the 58,905-position digit baseline without expanding it.
+Exact coefficient aliases leave 78 nonliteral coefficient leaves besides
+$z,y$.  The identity
+$1+t+t^2+t^3+t^4=1+(t^2+t)(t^2+1)$, deterministic multivariate Horner
+ordering and further distributive rewrites give the stated operation count.
+The supplied standard-library generator and verifier rebuild all 402
+coefficient recipes, prove the complete sparse digit identity, check the
+actual coefficient hashes and index bound, audit the cancellation-free
+degree circuit and compare actual-instance evaluations modulo four primes.
+Finite tests supplement the universal proof; they do not decide
+solvability or recheck the complete semantic chain in a proof-assistant
+kernel.

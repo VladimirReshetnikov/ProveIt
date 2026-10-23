@@ -1,0 +1,125 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Fourteen integer unknowns and smaller norms for Con(ZFC)},pdfauthor={AI-assisted research for ProveIt}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\PP}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Sq}{\operatorname{Sq}}
+\renewcommand{\labelitemi}{$\bullet$}
+\setlength{\emergencystretch}{3em}
+\title{Fourteen integer unknowns and smaller separating norms\\for the consistency of ZFC}
+\author{AI-assisted research prepared for Vladimir Reshetnikov's ProveIt repository}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We compare the seven recent Diophantine presentations of the blank computation of K215 and combine their strongest independent reductions. The principal new construction uses fourteen unrestricted integer unknowns. A Pell orbit removes one order constraint, and a cofinal choice of the Jones power-of-two base removes two more. We also obtain smaller twelve-positive-variable norms, a lower-degree nine-positive-variable equation, a fifty-integer quartic, and a cheaper moderate-degree twenty-four-integer equation. The smallest positive-variable form still has nine unknowns. Every equivalence below is an ordinary mathematical argument formalizable in ZFC, using the identified compiler and machine-calibration results. Finite replay checks supplement these arguments; they are not new end-to-end Lean or Rocq proofs. No consistency decision, global minimum, or universal representation record is claimed.
+\end{abstract}
+
+\section{Scope, baseline, and what ``simpler'' means}
+The review is pinned to ProveIt commit
+\texttt{8c6eec9d19ef80538c8e61ff6e0180040583446a}.
+The source collection is
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8c6eec9d19ef80538c8e61ff6e0180040583446a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms}{Con(ZFC) in Diophantine form}, specifically packages 24--30.
+The previous delivery is package 27. There is no single order on simplicity: domain, number of unknowns, equation count, total degree, arithmetic-circuit cost, coefficient height, and proof length must be distinguished. In particular, nine positive unknowns cannot simply be read as nine unrestricted integers.
+
+All operation counts charge binary addition, subtraction, and multiplication, including multiplication by numerals and squaring. Reuse of a previously computed value and comparison of two system outputs are free. Computing the fixed coefficients is not charged to evaluation of a polynomial in its unknowns. Thus these counts are not bit-complexity estimates. Huge constants are supplied either as actual binary integers or exact bounded arithmetic recipes, never as unspecified existential parameters.
+
+\begin{center}\small
+\begin{tabular}{p{0.23\linewidth}p{0.24\linewidth}p{0.39\linewidth}}
+\toprule
+Source & Main contribution & Use in this synthesis\\\midrule
+24, integer24 & Degree 1069 positive norm; sharp signed weights & Halved carrier and leading cancellation; signed weight bound\\
+25, hybrid12 & Degree 1081 at 116 operations; smaller tuple & Comparison; whole-tuple discipline retained\\
+26, ratio12 & Ratio-bounded roots and cheaper systems & Comparison of domains and free-comparison costs\\
+27, previous delivery & Fast nine-variable circuits; degree 1081/120; integer lifts & Shared-power and coefficient-alias evaluation; signed and low-degree proofs\\
+28, compact norms & Structured majorants and signed finalizer & Lower-degree nine-variable equation\\
+29, simpler forms & Explicit 17-integer Jones specialization & Square stack, intersective merger, separated three-root norm\\
+30, quartic31 & 31-variable quartic; trace/remainder norm; 111-operation product & Smaller Jones parameter; register elimination; scalar norm evaluator\\\bottomrule
+\end{tabular}
+\end{center}
+The collection's corrected reconciliation is included as \texttt{sources/README.md}. It is an intake comparison, not an independent proof of every delivered assertion. Our comparison distinguishes identical polynomials from equal-looking circuits in different coefficient tuples. In particular packages 25 and 27 share two coefficient integers but not the entire tuple. Likewise replacing a tuple in package 18's circuit changes its fixed polynomial.
+
+\subsection*{Selected new frontiers}
+Put $L=5^{32}$. The selected equations below all satisfy, in their stated domains,
+$\mathrm{ZFC}\vdash (\text{no solution})\leftrightarrow\Con(\mathrm{ZFC})$.
+\begin{center}\small
+\begin{tabular}{llrr}
+\toprule
+Domain and unknowns & Degree & Operations & Equations\\\midrule
+$14\Z$ & $813056L+2752$ & 1524 & 1\\
+$16\Z$ & $406528L+10008$ & 1537 & 1\\
+$9\PP$ & $92324L+296$ & 1500 & 1\\
+$9\N$ & $92324L+296$ & 1505 & 1\\
+$12\PP$ & $1061$ & 120 & 1\\
+$12\PP$ & $1065$ & 119 & 1\\
+$12\PP$ & $1069$ & 117 & 1\\
+$12\PP$ & $1081$ & 109 & 1\\
+$12\PP$ & $1052$ & 114 & 3\\
+$12\PP$ & $1072$ & 103 & 3\\
+$24\Z$ & $1936$ & 161 & 1\\
+$24\Z$ & $1920$ & 156 & 3\\
+$50\Z$ & $4$ & 197 & 1\\
+$50\Z$ & $2$ & 111 & 29\\\bottomrule
+\end{tabular}
+\end{center}
+The two selected twelve-variable systems use an explicit transport-coordinate shift; their variable domain is unchanged. The 109-operation product is literally the source30 polynomial evaluated more cheaply. The other new separating-weight formulas are different polynomials with proved equivalent zero existence. The fourteen-variable degree is
+$18\,930\,435\,180\,664\,062\,500\,000\,002\,752$,
+so it is not a low-degree competitor. The nine-positive degree is
+$2\,149\,585\,634\,469\,985\,961\,914\,062\,796$.
+
+\section{One coherent coefficient and theorem interface}
+To avoid any new compiler-rebinding obligation, the main new families use the entire original compact943 tuple retained by package 30:
+\[
+ B_*=2^{5^{10}},\quad \beta=B_*-1,\quad
+ K_*=D_C+B_*D_R,\quad M_C,\quad M_F=M_F^{\rm native}+B_*-1.
+\]
+The fourth coefficient is already shifted. The four raw, unsigned little-endian integers occupy 5,312,269 bytes and are included with their recipe and hashes. The smaller $2^{5^9}$ tuples of packages 25 and 27 remain valid competing coefficient choices; retaining the larger established tuple here is deliberate, not a new height record.
+
+The shared coefficient reconstructor reproduces all four source hashes and checks 69,230 support/convolution identities. These finite statements authenticate the recipe and bytes, not its unbounded compiler theorem. That theorem, its canonical completeness properties, and the finitary calibration of the literal K215 blank run remain mathematical dependencies. The resulting proof chain is
+\[
+\begin{gathered}\text{finite ZFC refutation}\ \Longleftrightarrow\ \text{K215 blank halt}\\
+\Longleftrightarrow\ \text{source Diophantine solution}\ \Longleftrightarrow\ \text{new solution}.\end{gathered}
+\]
+Negation gives the requested ZFC-provable equivalence to $\Con(\mathrm{ZFC})$.
+It does not prove either side of that equivalence.
+
+For the Jones families we use package 30's normalized quartic in 31 witnesses. It removes the register $G$ from the old 32-variable system using
+\[
+ G=q(q-F)-C,\qquad
+ L_0G=(q-F)(N-q)-CL_0,\qquad N=q(L_0+1).
+\]
+Every substitution is polynomial, and the converse restores $G>0$ on positive zeros using the transport equation. The resulting 22 quadratic residuals give a normalized quartic by summing their squares after shifting all 31 positive coordinates by one. The dummy input is fixed to one, so the Jones parameter is $\nu=31$, not 9.
+
+The 402 nonzero factorial-weighted coefficient records and their index recipes are included. Writing $L=5^{32}$ and $s_*=45{,}933{,}757$, the explicit index has
+\[
+ z_*=2^{s_*},\qquad
+ y_*=\sum_{|\alpha|\le4}(z_*+c_\alpha)(2z_*)^{L-\sum_{j=0}^{31}\alpha_j5^j}.
+\]
+There are $\binom{36}{4}=58{,}905$ positions, including zero coefficients. The bound certificate gives $|c_\alpha|+1<z_*$, and hence
+$y_*<(2z_*)^{L+1}$. The integer $z_*$ is materialized; $y_*$ and the larger base-scale constant used below are exact recipes, not materialized payloads. New finalizers are ordinary derivations from the Jones ratio interface, not literal instances of Lean's theorem about its particular \texttt{nineValue} polynomial.
+
+\input{signed/section.tex}
+\input{positive/section.tex}
+\input{nine/section.tex}
+\input{lowdegree/section.tex}
+
+\section{Validation, attribution, and limitations}
+Every new family includes a generator, explicit arithmetic circuits or sparse residuals, a mathematical proof, and replay checks. The final verification receipt records the actual completed stages and byte-identical regenerated artifacts. Separate independent reviews address the domain-restoration lemmas and root separation. Corruption controls are designed to reject a changed coefficient payload, a changed circuit, and a missing source dependency. They do not test or decide whether a genuine ZFC-refutation witness exists.
+
+The full source comparisons and proof notes identify inherited facts separately from new arguments. The symbolic identities establish polynomial equality where that is claimed; modular evaluations are diagnostics, not proofs of equality. Exact-degree claims include nonzero leading-term certificates rather than merely structural upper bounds. All original source snapshots retain their provenance and original tuple metadata; only newly generated packets select the shared binding.
+
+This archive does not replace an endpoint build. The published Lean/Rocq K215 endpoint and the inherited native-window/Pell compiler are used through their identified ordinary mathematical calibration. New cofinal-base and finalizer arguments have not been compiled into either proof assistant. Package 27's earlier licence omission is not repeated: the Wade licence and K215 notices are included alongside the repository licence and source attribution. Source scripts or snapshots omitted during repository intake are not misidentified as defects of the original sealed archives.
+
+P67 remains the lowest-operation single equation in the reviewed collection. The older low-degree and low-operation systems remain useful when they are not dominated. Fourteen unrestricted integers is a concrete improvement over the reviewed seventeen-integer construction, not a global lower bound or a claim to supersede abstract representation theorems. All claims concern the stated domains and the coherent fixed coefficient tuple.
+
+\end{document}

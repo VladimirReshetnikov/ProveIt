@@ -1,0 +1,803 @@
+\section{A sixteen-integer equation with a smaller arithmetic circuit}
+\label{sec:signed16}
+
+This section gives an explicit intermediate tradeoff between the direct
+Pell/compiler equations and the smaller-variable construction elsewhere in
+this report.  The equation has sixteen unrestricted integer unknowns,
+degree
+\[
+  813056\cdot5^{32}+10016
+  =18930435180664062500000010016,
+\]
+and an evaluator with \(1617\) binary arithmetic operations.  It combines
+package 30's 31-variable quartic, package 29's signed Jones interface and
+relation-combining construction, and package 27's digit-polynomial
+evaluation identities \cite{repo27,repo29,repo30}.  The new steps are a cofinal restriction of the
+coding base, the removal of its sign guard, smaller root-separation weights,
+and an automatic nonzero condition.  No minimum-variable or global
+operation-minimality claim is made.
+
+Every abbreviation below denotes a polynomial expression, not another
+quantified unknown.  Every exponent in the equation is a fixed natural
+number.  The large fixed coefficients are defined by finite recipes; they
+are not existential parameters.
+
+\subsection{The fixed instance and the upper-bound coefficient}
+
+Let \(Q_{31}\) be the sum of the 22 squared quadratic residuals in the
+\emph{unshifted-transport} parent
+\texttt{signed16/data/parent\_quartic31.json}.  This is the package-30 parent,
+with its whole four-port compiler tuple instantiated by the
+\(121\)-by-\(8801\) construction of this report.  In particular, this parent
+is not silently replaced by the locally shifted quartic evaluator.
+The coefficient interface is the same polynomial interface in
+\((\beta,K_0,M_C,M_F)\); all four ports use this one complete tuple.
+
+Put \(\nu=31\), \(L=5^{32}\), and define the normalized polynomial
+\[
+ {\cal P}(x,n_1,\ldots,n_\nu)
+       =Q_{31}(n_1+1,\ldots,n_\nu+1).
+\]
+The dummy input \(x\) is unused.  The degree is four, and
+\({\cal P}(x,0,\ldots,0)>0\): the fifth parent residual is \(1\) when all
+positive parent coordinates equal \(1\).
+Write
+\begin{align*}
+ {\cal P}(x,n_1,\ldots,n_\nu)
+    &=\sum_{\substack{\alpha\in\N^{\nu+1}\\|\alpha|\leq4}}
+       p_\alpha (x,n_1,\ldots,n_\nu)^\alpha,\\
+ c_\alpha&=(4-|\alpha|)!\left(\prod_{j=0}^{\nu}\alpha_j!\right)p_\alpha,
+ \qquad
+ \operatorname{exp}(\alpha)=\sum_{j=0}^{\nu}\alpha_j5^j .
+\end{align*}
+There are 402 nonzero symbolic weighted-coefficient records.  The omitted
+records mean \(c_\alpha=0\), not omitted baseline digits.  The complete
+finite coefficient bounds supplied with the new tuple establish
+\[
+ |c_\alpha|+1<2^{4269855}\qquad (|\alpha|\leq4).
+\]
+Set
+\begin{align}
+ z_*&=2^{4269855},&
+ e_*(T)&=\sum_{|\alpha|\leq4}
+        (z_*+c_\alpha)T^{L-\operatorname{exp}(\alpha)},\notag\\
+ \upsilon_*&=\sum_{j=1}^{\nu}(2z_*)^{5^j},&
+ y_*&=e_*(2z_*),&
+ \kappa&=(2z_*)^{L+1}.
+ \label{eq:s16-index}
+\end{align}
+Thus, exactly,
+\[
+ \kappa
+ =2^{4269856(5^{32}+1)}
+ =2^{99415332078933715820316769856}.
+\]
+The final polynomial uses \(z_*\), \(\kappa\), and the weighted coefficients
+as fixed leaves.  Neither \(y_*\) nor \(\upsilon_*\) is a variable or a leaf
+needed by its evaluator.
+
+\begin{lemma}[The fixed upper bound]\label{lem:s16-kappa}
+The recipes in \eqref{eq:s16-index} define positive integers and
+\(y_*<\kappa\).  They give the Jones index for the normalized parent
+\({\cal P}\) with parameter \(\nu=31\).
+\end{lemma}
+\begin{proof}
+Each digit \(z_*+c_\alpha\) lies strictly between \(1\) and \(2z_*\).
+Since every \(\alpha_j\leq4\), uniqueness of base-five expansions makes
+the positions \(\operatorname{exp}(\alpha)\) distinct.  Also
+\(\operatorname{exp}(\alpha)\leq4\cdot5^\nu<L\).
+Consequently \(y_*\) is a base-\(2z_*\) integer whose positions lie in
+\(\{0,\ldots,L\}\), with each digit less than \(2z_*\).  Therefore
+\[
+ 0<y_*
+ \leq(2z_*-1)\sum_{r=0}^{L}(2z_*)^r
+ =(2z_*)^{L+1}-1<\kappa.
+\]
+The coefficient inequality, the power-of-two choice of \(z_*\), and the
+displayed definitions of \(\upsilon_*,y_*\) are exactly the admissible
+index conditions used by the inherited parametric Jones theorem.  This
+uses that theorem at \(\nu=31\), not the convenience existence theorem
+whose internal parent has 58 variables.
+\end{proof}
+
+\subsection{The literal sixteen-coordinate equation}
+
+The unrestricted integer coordinates, in the emitted order, are
+\begin{equation}
+ t,g_0,h_0,s_0,w_0,\phi,i_0,j_0,\quad
+ z_1,z_2,z_3,z_4,z_5,z_6,\quad v,u .
+ \label{eq:s16-coordinates}
+\end{equation}
+First define
+\[
+ b=\kappa t^2,\qquad
+ g=g_0+1,\quad h=h_0+1,\quad s=s_0+1,\quad
+ w=w_0+1,\quad i=i_0+1,\quad j=j_0+1,
+\]
+and the fixed-degree coding polynomials
+\begin{gather}
+ {\cal B}=b^5,\quad q={\cal B}^{L},\quad
+ \ell=\sum_{r=1}^{\nu}{\cal B}^{5^r},\quad
+ \lambda=\sum_{r=0}^{4L-1}{\cal B}^{r},\quad
+ e=e_*({\cal B}),\quad \theta={\cal B}-2z_*,\notag\\
+ {\cal N}=q^{16},\qquad G_{\rm cap}=32b{\cal B}^{5^\nu}.
+ \label{eq:s16-coding}
+\end{gather}
+The packed rank is
+\begin{align}
+ R={}&
+ \left[
+ g+eq^3+\ell q^5+
+ \left\{
+  2(e-z_*\lambda)(1+{\cal B}+g)^4+
+  \lambda{\cal B}+\lambda{\cal B}q^4
+ \right\}q^7
+ \right]({\cal N}^2-{\cal N})\notag\\
+ &+
+ \left[
+ q^3-b\ell+\ell+\theta\lambda q^3+({\cal B}-2)q^8
+ \right]({\cal N}^2-1).
+ \label{eq:s16-rank}
+\end{align}
+Continue with the unchanged Jones ratio expressions:
+\begin{align}
+ U&={\cal N}^2w,& Y&={\cal N}^2s,& M&=RY,&
+ P&=2M^2U,\notag\\
+ K&=R+1+h(P-1),&
+ A&=M(U+1),&
+ B_{\rm J}&=2R+1,& W_{\rm J}&=bw,\notag\\
+ C&=B_{\rm J}+W_{\rm J}+\phi,&
+ J&=4A-5,&
+ Q&=3W_{\rm J}C-2(W_{\rm J}^2-1),\notag\\
+ D&=(A^2-1)C^2+1,&
+ E&=iJDC^2,&
+ F&=(A^2-1)E^2+1,\notag\\
+ G_1&=A+F(CD+1-A),&
+ H&=B_{\rm J}+jC,&
+ I&=(G_1^2-1)H^2+1.
+ \label{eq:s16-ratio-block}
+\end{align}
+Finally put
+\begin{align}
+ a_0&=(P^2-1)K^2+1,&
+ a_1&=DFI,\notag\\
+ m&=K^2G_{\rm cap}
+       -4(C-KY)^2G_{\rm cap}-8gK^2,&
+ D_0&=JF,&
+ T_0&=QF+J(H-C).
+ \label{eq:s16-tests}
+\end{align}
+The auxiliary letter \(m\) denotes the margin in this section.
+
+The five base coordinates that retain explicit sign guards are
+\[
+ (x_1,x_2,x_3,x_4,x_5)=(g_0,s_0,w_0,\phi,j_0).
+\]
+Starting with \(C_0=1\), form the six-stage stack
+\begin{align}
+ d_r&=3x_r+2,&
+ B_r&=1+4d_rC_{r-1}^2z_r^2,&
+ C_r&=C_{r-1}B_r &&(1\leq r\leq5),\notag\\
+ d_6&=3m-1,&
+ B_6&=1+4d_6C_5^2z_6^2,&
+ C_*&=C_6=C_5B_6 .
+ \label{eq:s16-stack}
+\end{align}
+The circuit names the stack outputs \texttt{guard1}, \ldots,
+\texttt{guard6}; the ratio-block expression \(B_{\rm J}=2R+1\)
+is separate.
+
+For arbitrary integer arguments define
+\begin{equation}
+ {\cal R}(D',T',v)=
+ \big((T'+D'v)^3-D'^2(T'+D'v)-D'^3\big)
+ \big((T'+D'v)^2+23D'^2\big).
+ \label{eq:s16-homogeneous}
+\end{equation}
+Using this polynomial, set
+\begin{align}
+ Z&=i\prod_{r=1}^{6}z_r,&
+ S&=ZD_0^5,& T&={\cal R}(D_0,T_0,v),\notag\\
+ w_1&=C_*,&
+ V_0&=P^2+K^2+2,&
+ w_2&=C_*V_0,\notag\\
+ X&=Su-T,&
+ A_0&=S^2C_*,&
+ A_1&=S^2w_1^2a_0,&
+ A_2&=S^2w_2^2a_1,\notag\\
+ V&=X^2+A_2-A_0-A_1,&
+ W&=V^2+4X^2A_2-4A_0A_1 .
+ \label{eq:s16-finalizer}
+\end{align}
+The promised ordinary integer polynomial is
+\begin{equation}
+ \boxed{\displaystyle F_{16}=W^2-16V^2X^2A_2.}
+ \label{eq:s16-polynomial}
+\end{equation}
+In particular, \(t\) is deliberately absent from \(Z\).  Its nonvanishing
+will follow from the recovered margin; omitting it saves one multiplication.
+
+\subsection{The exact imported interface and the new cofinal restriction}
+
+For an integer \(a\), write
+\(\operatorname{Sq}(a)\) for the assertion
+\(\exists r\in\Z\;(a=r^2)\).
+The inherited Jones ratio equivalence applies to the eight
+\emph{nonnegative} coordinates
+\[
+ \varepsilon,g_0,h_0,s_0,w_0,\phi,i_0,j_0,
+ \qquad b=y_*+1+\varepsilon.
+\]
+For the fixed normalized parent, it says that
+\begin{equation}
+ \operatorname{Sq}(a_0),\quad \operatorname{Sq}(a_1),\quad
+ D_0\mid T_0,\quad m>0
+ \label{eq:s16-jr}
+\end{equation}
+are jointly solvable if and only if \({\cal P}\) has a nonnegative
+31-tuple zero.  The ratio expressions in
+\eqref{eq:s16-coding}--\eqref{eq:s16-tests} are precisely those in this
+interface.  This section does not apply a signed interpretation to an
+unspecified nine-variable polynomial.
+
+The following strengthened completeness fact is needed to replace
+\(b=y_*+1+\varepsilon\) by \(b=\kappa t^2\).
+
+\begin{lemma}[Cofinal powers of two]\label{lem:s16-cofinal}
+Given a nonnegative parent witness
+\({\cal P}(1,n_1,\ldots,n_\nu)=0\), the Jones ratio conditions
+\eqref{eq:s16-jr} have witnesses with \(b=2^a\) for every sufficiently
+large integer \(a\).  In particular, they have witnesses with
+\(b=\kappa t^2\) and \(t>0\).
+\end{lemma}
+\begin{proof}
+Let \(\xi=(1,n_1,\ldots,n_\nu)\).
+The constructive master-system proof
+\texttt{Master3.USys\_of\_mem} chooses
+\[
+ a_0'=y_*+\sum_{r=0}^{\nu}\xi_r+1,\qquad b=2^{a_0'}.
+\]
+Inspection of that complete proof shows that the equality specifying
+\(a_0'\) is used only to obtain
+\[
+ a\geq1,\qquad y_*<b,\qquad \xi_r<b\quad(0\leq r\leq\nu).
+ \tag{C}
+\]
+These conclusions hold for every \(a\geq a_0'\), because
+\(a<2^a\).  The rest of the construction depends on (C), on \(b=2^a\),
+and on the given polynomial zero; it imposes no upper bound on \(a\).
+
+More explicitly, at this chosen base one takes the polynomial evaluations
+\[
+ e=e_*({\cal B}),\qquad
+ \ell=\sum_{r=1}^{\nu}{\cal B}^{5^r},\qquad
+ g=\sum_{r=1}^{\nu}\xi_r{\cal B}^{5^r},\qquad {\cal B}=b^5,
+\]
+together with \(q,\lambda,\theta\) from \eqref{eq:s16-coding}.
+Normalization of the parent implies \(g>0\).
+The digit bounds and the source's carry-free coding identity give
+\[
+ e<2z_*{\cal B}^{L},\qquad
+ \ell<2{\cal B}^{5^\nu},\qquad
+ g<b{\cal B}^{5^\nu}.
+\]
+The necessary positive slack is
+\[
+ \alpha_{\rm master}
+       =(b-y_*)q^2-e\ell g^2.
+\]
+It is positive uniformly in the larger base: putting \(r=5^\nu\),
+\[
+ e\ell g^2
+ <4z_*b^2{\cal B}^{L+3r}
+ \leq{\cal B}^{L+3r+1}
+ \leq{\cal B}^{2L}=q^2.
+\]
+Here \(4z_*b^2\leq b^5={\cal B}\) follows from \(b>y_*\geq2z_*\),
+and \(L+3r+1\leq2L\) follows from \(L=5r\).
+The two master quotients
+\[
+ \frac{e-y_*}{\theta},\qquad
+ \frac{\ell-\upsilon_*}{\theta}
+\]
+are positive integers: divisibility is polynomial evaluation modulo
+\({\cal B}-2z_*\), and positivity follows from
+\({\cal B}>2z_*\).  The three bit-disjointness identities in the master
+system are the inherited Jones coding identities; their hypotheses are
+(C), \(b=2^a\), and the unchanged parent zero.  Thus the same explicit
+construction works at every such larger base.
+
+The proof of \texttt{NineReduce.reduced\_of\_mem} keeps this very base
+and gives the required packed-rank/binomial condition, as well as
+\(g<b{\cal B}^{5^\nu}\).  The theorem
+\texttt{NineRatio.ratio\_complete} then takes \(b\) as a fixed parameter;
+its hypothesis \(32g<G_{\rm cap}\) follows from that last inequality.
+It supplies the positive \(h,s,w,i,j\) and nonnegative \(\phi\) in
+\eqref{eq:s16-jr}, without selecting a different base.
+
+Write \(\kappa=2^c\), where
+\(c=4269856(L+1)\).  Choose any \(r\geq0\) with
+\(c+2r\geq a_0'\) and set \(t=2^r\).  Then
+\[
+ \kappa t^2=2^{c+2r}
+\]
+is one of the permitted bases.  This gives the required positive \(t\)
+and proves the assertion constructively.
+\end{proof}
+
+\subsection{Signed coordinates whose guards are unnecessary}
+
+\begin{lemma}[A denominator that never vanishes]\label{lem:s16-denominator}
+For every integer assignment of the eight base coordinates,
+\(D_0=JF\neq0\).
+\end{lemma}
+\begin{proof}
+The integer \(J=4A-5\) is nonzero.  If
+\(F=(A^2-1)E^2+1=0\), then
+\((1-A^2)E^2=1\), so \(A=0\) and \(E=\pm1\).
+But \(J=-5\) when \(A=0\), and \(E=iJDC^2\) is divisible by \(5\).
+This is impossible.
+\end{proof}
+
+\begin{lemma}[The sign of \(i\)]\label{lem:s16-isign}
+If \(i\neq0\), replacing \(i\) by \(|i|\) preserves
+\(a_0,a_1,D_0,T_0,m\), and makes \(i_0=|i|-1\) nonnegative.
+\end{lemma}
+\begin{proof}
+The only unsquared use of \(i\) is in \(E=iJDC^2\).
+Among the five expressions under consideration, every dependence on
+\(E\) passes through \(E^2\) in \(F\).  Thus they depend only on \(i^2\).
+\end{proof}
+
+\begin{lemma}[The \(h\) guard follows from the margin]\label{lem:s16-hguard}
+Suppose \(b>y_*\), the five coordinates
+\(g_0,s_0,w_0,\phi,j_0\) are nonnegative, \(a_0\) is an integer square,
+and \(m>0\).  Then \(h\geq1\), hence \(h_0\geq0\).
+\end{lemma}
+\begin{proof}
+We have \(g,s,w,j\geq1\), \(\phi\geq0\),
+\(b\geq2\), \({\cal B}=b^5>2z_*\), \(e\geq0\),
+and \(G_{\rm cap}>0\).
+The margin inequality first gives \(K\neq0\) and
+\begin{equation}
+ g<G_{\rm cap}/8=4b{\cal B}^{5^\nu},
+ \qquad
+ 4(C-KY)^2<K^2.
+ \label{eq:s16-margin-consequences}
+\end{equation}
+Indeed \(m\leq K^2(G_{\rm cap}-8g)\); then discarding the strictly
+positive term \(8gK^2\) gives the second inequality.
+
+Put \(r=5^\nu\).  Since \({\cal B}>5\) and \(b\leq{\cal B}\),
+\[
+ 1+{\cal B}+g
+ <1+{\cal B}+4{\cal B}^{r+1}
+ \leq5{\cal B}^{r+1}
+ <{\cal B}^{r+2}
+ \leq{\cal B}^{5r}=q.
+\]
+Also \(\ell<{\cal B}^{r+1}\), hence
+\(b\ell<{\cal B}^{r+2}\leq q<q^3\).
+The potentially negative part of the first bracket in
+\eqref{eq:s16-rank} is absorbed by its positive term:
+\[
+ \lambda{\cal B}q^4
+       >2z_*\lambda(1+{\cal B}+g)^4 .
+\]
+All the remaining terms of that bracket are nonnegative, and \(g>0\).
+The second bracket is positive because \(q^3>b\ell\), \(\theta>0\),
+and \({\cal B}>2\).
+It follows that
+\[
+ R\geq{\cal N}^2-{\cal N}\geq2.
+\]
+Thus \(U,Y\geq1\), \(C=2R+1+bw+\phi>0\), and
+\[
+ P=2R^2Y^2U\geq2R^2>R+2.
+\]
+
+The second margin consequence rules out \(K\leq0\):
+\(K=0\) is impossible, and \(K<0\) would give
+\(|C-KY|=C+|K|Y>|K|\).
+Therefore \(K>0\).
+If \(h\leq0\), the relation \(K=R+1+h(P-1)\) gives
+\(1\leq K\leq R+1<P\).
+For \(K=1\) it would imply \(P-1\mid R\), contradicting
+\(0<R<P-1\).
+For \(2\leq K<P\),
+\[
+ (PK-1)^2<(P^2-1)K^2+1<(PK)^2,
+\]
+since the two differences are \(K(2P-K)>0\) and \(K^2-1>0\).
+This contradicts squarehood of \(a_0\).
+Consequently \(h\geq1\).
+\end{proof}
+
+\subsection{The coprime Pell stack}
+
+\begin{lemma}[Six guards in one square test]\label{lem:s16-stack}
+Subject to \(z_1\cdots z_6\neq0\), squarehood of \(C_*\) in
+\eqref{eq:s16-stack} implies
+\begin{equation}
+ g_0,s_0,w_0,\phi,j_0\geq0,\qquad m>0.
+ \label{eq:s16-guards}
+\end{equation}
+Conversely, if these inequalities hold, the six \(z_r\) can be chosen
+nonzero so that \(C_*\) is a square.
+\end{lemma}
+\begin{proof}
+Every \(B_r\equiv1\pmod4\), so no \(B_r\) vanishes.
+Also \(\gcd(B_r,C_{r-1})=1\).
+Inductively, the six factors \(B_r\) are pairwise coprime in absolute
+value.  If their product is a square, unique prime factorization shows
+that every \(|B_r|\) is a square.  A negative square is \(0\) or \(3\)
+modulo \(4\), so \(B_r\equiv1\pmod4\) forces every factor to be a
+positive square.  If any \(d_r<0\), the nonzero integers
+\(C_{r-1},z_r\) would give
+\(B_r=1+4d_rC_{r-1}^2z_r^2\leq-3\), a contradiction.
+Finally \(d_r\equiv2\pmod3\), so it cannot be zero.
+Thus \(d_r>0\) for all \(r\).  For \(r\leq5\) this means \(x_r\geq0\);
+for \(r=6\) it means \(m\geq1\).
+
+For the converse, each \(d_r>0\) and \(d_r\equiv2\pmod3\), so it is
+not a square.  The Pell equation
+\[
+ a^2-d_r v^2=1
+\]
+has a nontrivial positive solution.  It has a positive solution with
+\(v\) divisible by any prescribed positive integer \(M\): the matrix
+\(\left(\begin{smallmatrix}a&d_rv\\v&a\end{smallmatrix}\right)\)
+has determinant \(1\), and some positive power of its reduction modulo
+\(M\) is the identity in the finite group
+\(\mathrm{SL}_2(\Z/M\Z)\).
+Choose \(M=2|C_{r-1}|\), and put \(z_r=v/(2C_{r-1})\).
+Then \(z_r\) is a nonzero integer and \(B_r=a^2\).
+Starting with \(C_0=1\), induction makes every \(C_r\) a positive square.
+\end{proof}
+
+A useful strengthening is available before any guard inequality is known.
+If all \(z_r\neq0\), then \(d_r\neq0\), \(C_{r-1}\neq0\), and hence
+\(B_r\neq1\).  The congruence \(B_r\equiv1\pmod4\) also excludes
+\(B_r=-1\).  Therefore
+\begin{equation}
+ |C_*|>1
+ \quad\hbox{whenever}\quad z_1\cdots z_6\neq0.
+ \label{eq:s16-stack-large}
+\end{equation}
+This preguard estimate is what permits the smaller weights.
+
+\subsection{Divisibility and nonvanishing in one relation}
+
+\begin{lemma}[An intersective polynomial]\label{lem:s16-intersective}
+The polynomial
+\[
+ \Pi(T)=(T^3-T-1)(T^2+23)
+\]
+has no rational zero, but has an integer zero modulo every positive
+integer modulus.
+\end{lemma}
+\begin{proof}
+The only possible rational roots of the monic cubic are \(1,-1\),
+and neither is a root.  The quadratic has no real root.
+
+For an odd prime \(p\neq23\), the cubic has discriminant \(-23\).
+If it has a root modulo \(p\), the root is simple and lifts to every
+power of \(p\).
+If it has no such root, it is irreducible of degree three.
+Frobenius cycles its three roots in \(\mathbb F_{p^3}\), an even
+permutation, so their Vandermonde product lies in \(\mathbb F_p\).
+Its square is \(-23\), which is nonzero.  Thus \(T^2+23\) has a
+simple root modulo \(p\), again lifting to every power.
+At \(p=23\), the cubic has the simple root \(3\), since
+\(3^3-3-1=23\) and \(3(3^2)-1=26\not\equiv0\pmod{23}\).
+
+For \(p=2\), use \(-23\equiv1\pmod8\).
+If an odd \(a\) is a root of \(T^2+23\) modulo \(2^e\), \(e\geq3\),
+one of \(a\) and \(a+2^{e-1}\) is a root modulo \(2^{e+1}\):
+their squares differ by \(2^ea\) modulo \(2^{e+1}\).
+This supplies roots for all powers of two.
+The Chinese remainder theorem combines roots for the prime-power
+factors of any positive modulus.
+\end{proof}
+
+\begin{lemma}[Homogeneous divisibility merger]\label{lem:s16-merger}
+For integers \(D',T',Z'\) with \(D'\neq0\),
+\begin{equation}
+ \big(D'\mid T'\ \hbox{and}\ Z'\neq0\big)
+ \quad\Longleftrightarrow\quad
+ \exists v\in\Z:\ Z'D'^5\mid{\cal R}(D',T',v).
+ \label{eq:s16-merger}
+\end{equation}
+Moreover \({\cal R}(D',T',v)\neq0\) for every integer \(v\).
+\end{lemma}
+\begin{proof}
+The rational identity
+\[
+ {\cal R}(D',T',v)=D'^5\Pi(T'/D'+v)
+\]
+proves nonvanishing by Lemma~\ref{lem:s16-intersective}.
+If \(T'=D'q\) and \(Z'\neq0\), choose \(v\) so that
+\(Z'\mid\Pi(q+v)\); this proves the forward implication.
+
+Conversely, \(Z'=0\) would make the displayed divisibility assert
+\({\cal R}=0\), which is impossible.
+If \(D'\nmid T'\), there is a prime \(p\) with
+\(\alpha=v_p(|D'|)>\beta=v_p(|T'|)\).
+Here \(T'\neq0\).
+For \(r=T'+D'v\), one has \(v_p(r)=\beta\).
+In \(r^3-D'^2r-D'^3\), the first term has the unique least valuation
+\(3\beta\); in \(r^2+23D'^2\), it has the unique least valuation
+\(2\beta\).  Hence
+\[
+ v_p({\cal R})=5\beta<5\alpha=v_p(D'^5),
+\]
+contradicting the asserted divisibility.  Signs of \(D'\) and \(Z'\)
+do not affect this argument.
+\end{proof}
+
+\subsection{The three-root norm with signed weights}
+
+\begin{lemma}[The finalizer]\label{lem:s16-finalizer}
+Fix all coordinates except \(u\).
+For the expressions above, \(\exists u\in\Z:F_{16}=0\) is equivalent to
+\begin{equation}
+ S\neq0,\qquad S\mid T,\qquad
+ \operatorname{Sq}(C_*),\quad
+ \operatorname{Sq}(a_0),\quad
+ \operatorname{Sq}(a_1).
+ \label{eq:s16-finalizer-interface}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:s16-denominator} gives \(D_0\neq0\), and
+Lemma~\ref{lem:s16-merger} gives \(T\neq0\).
+If \(S=0\), then \(A_0=A_1=A_2=0\), \(X=-T\), and
+\(F_{16}=T^8\neq0\).
+Thus every zero has \(S\neq0\).
+Since \(S=i(z_1\cdots z_6)D_0^5\), every \(z_r\) and \(i\) is
+nonzero; in particular \eqref{eq:s16-stack-large} applies.
+
+For all real \(P,K\),
+\begin{equation}
+ \sqrt{|(P^2-1)K^2+1|}\leq P^2+K^2+1 .
+ \label{eq:s16-a0-bound}
+\end{equation}
+Indeed
+\(|(P^2-1)K^2+1|\leq(P^2+1)K^2+1\), and the difference between
+\((P^2+K^2+1)^2\) and this last upper bound is
+\[
+ P^4+K^4+P^2K^2+2P^2+K^2\geq0.
+\]
+It follows from \(|C_*|>1\) that the possibly signed weights satisfy
+\begin{align}
+ |w_1|&>\sqrt{|C_*|},\notag\\
+ |w_2|&>\sqrt{|C_*|}+|w_1|\sqrt{|a_0|}.
+ \label{eq:s16-separation}
+\end{align}
+These inequalities require neither positive radicands nor recovered
+guard inequalities.
+
+Choose complex roots
+\(\rho_0^2=C_*,\rho_1^2=a_0,\rho_2^2=a_1\).
+Algebraic multiplication gives
+\begin{equation}
+ F_{16}
+  =\prod_{\epsilon_0,\epsilon_1,\epsilon_2\in\{-1,1\}}
+     \left[
+       X-S(\epsilon_0\rho_0+
+             \epsilon_1w_1\rho_1+\epsilon_2w_2\rho_2)
+     \right].
+ \label{eq:s16-eight-factor}
+\end{equation}
+For example, first multiplying the \(\rho_0,\rho_1\) signs gives
+\(\big((X\mp\sqrt{A_2})^2-A_0-A_1\big)^2-4A_0A_1\);
+the two remaining factors are
+\(W\mp4VX\sqrt{A_2}\), whose product is
+\eqref{eq:s16-polynomial}.
+
+A zero makes one of the signed sums in
+\eqref{eq:s16-eight-factor} equal to \(X/S=u-T/S\), a rational number.
+Distinct sign patterns on nonzero roots give distinct sums:
+at the largest index where signs differ, the absolute value of the
+weighted root is at least the absolute value of its weight, since a
+nonzero integer radicand has root magnitude at least \(1\).
+Inequalities \eqref{eq:s16-separation} make this strictly larger than
+the sum of the magnitudes of all preceding weighted roots.
+The triangle inequality therefore precludes cancellation.  This remains
+valid for imaginary roots of negative radicands and for negative weights.
+Zero roots may simply be omitted from this comparison.
+
+The field \(\mathbb Q(\rho_0,\rho_1,\rho_2)\) is the splitting field of
+three quadratic polynomials, hence a finite Galois extension of
+\(\mathbb Q\).  Each automorphism changes root signs.
+Since the encoded sum is rational, every automorphism fixes it.
+The separation just proved forces every nonzero root in it to be fixed
+individually.  Therefore all three roots are rational.
+A rational root of a monic polynomial \(T^2-a\), \(a\in\Z\), is an
+integer.  Thus \(C_*,a_0,a_1\) are nonnegative integer squares.
+The encoded sum is now an integer, so \(T/S\) is an integer as well.
+This proves necessity of \eqref{eq:s16-finalizer-interface}.
+
+Conversely, under that interface choose integer square roots and set
+\[
+ u=T/S+\rho_0+w_1\rho_1+w_2\rho_2 .
+\]
+This is an integer and makes a factor in
+\eqref{eq:s16-eight-factor} vanish.
+\end{proof}
+
+\subsection{Soundness, completeness, and the consistency equivalence}
+
+\begin{theorem}[The sixteen-integer presentation]\label{thm:s16}
+For the fixed coefficients above, ordinary mathematics formalizable
+in ZFC proves
+\[
+ \big(\exists {\bf x}\in\Z^{16}:F_{16}({\bf x})=0\big)
+ \ \longleftrightarrow\
+ \big(\text{there is a finite syntactic ZFC refutation}\big).
+\]
+Consequently,
+\[
+ \mathrm{ZFC}\ \vdash\
+ \big(\nexists{\bf x}\in\Z^{16}:F_{16}({\bf x})=0\big)
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+For soundness, let \(F_{16}=0\).
+Lemma~\ref{lem:s16-finalizer} gives \(S\neq0\), \(S\mid T\), and
+the three square conditions.
+Lemma~\ref{lem:s16-merger} gives \(D_0\mid T_0\) and
+\(i z_1\cdots z_6\neq0\).
+Lemma~\ref{lem:s16-stack} recovers the five nonnegativity guards
+and \(m>0\).
+
+At this point \(t\neq0\) follows without a separate nonzero factor.
+If \(t=0\), then \(b=\kappa t^2=0\) and \(G_{\rm cap}=0\), while
+\(g=g_0+1\geq1\).  The literal margin formula would give
+\[
+ m=-8gK^2\leq0,
+\]
+a contradiction.
+Hence \(b=\kappa t^2\geq\kappa>y_*\), and
+\(\varepsilon=b-y_*-1\) is a nonnegative integer.
+Lemma~\ref{lem:s16-hguard} gives \(h_0\geq0\).
+Lemma~\ref{lem:s16-isign} replaces \(i\) by \(|i|\), preserving all
+four Jones conditions and making \(i_0\geq0\).
+We have therefore recovered an admissible nonnegative tuple for the
+unchanged Jones interface \eqref{eq:s16-jr}.
+The inherited ratio soundness theorem gives a zero of the parent
+quartic.  Its complete native/Pell compiler interface gives a blank
+K215 halting computation, and the calibrated K215 theorem gives a
+finite syntactic ZFC refutation.
+
+For completeness, a finite ZFC refutation gives a blank K215 halting
+run and then a positive parent-quartic solution by those same two
+interfaces.
+After the coordinate shift to the normalized parent, apply
+Lemma~\ref{lem:s16-cofinal}.
+It gives a Jones tuple satisfying \eqref{eq:s16-jr} at
+\(b=\kappa t^2\) with \(t>0\), all the ordinary base coordinates
+nonnegative, and \(i>0\).
+Lemma~\ref{lem:s16-stack} supplies nonzero \(z_1,\ldots,z_6\)
+for which \(C_*\) is a square.
+Now \(Z=i z_1\cdots z_6\neq0\); the inherited Jones tuple has
+\(D_0\mid T_0\).
+Lemma~\ref{lem:s16-merger} chooses \(v\) with \(S\mid T\).
+The three radicands are squares, so
+Lemma~\ref{lem:s16-finalizer} chooses the final integer \(u\)
+and gives \(F_{16}=0\).
+
+Every extra root, quotient, or exponent selected in this proof is a
+proof witness used to establish equivalence.  The displayed equation
+itself quantifies only the sixteen coordinates in
+\eqref{eq:s16-coordinates}.
+Negating the existence equivalence gives the stated consistency
+equivalence.  Neither direction assumes or proves
+\(\operatorname{Con}(\mathrm{ZFC})\).
+\end{proof}
+
+\subsection{Degree and arithmetic size}
+
+All degrees in this subsection give each of the sixteen unknowns
+degree one and every fixed coefficient degree zero.
+The largest term in the packed rank is
+\(\lambda{\cal B}q^{11}{\cal N}^2\);
+it gives \(\deg R=470L\).
+The largest term in the margin is
+\(-4K^2Y^2G_{\rm cap}\), giving \(\deg m=4442L+12\).
+The useful intermediate degrees are
+\[
+\begin{array}{c|r@{\qquad}c|r}
+ R&470L&P&1900L+3\\
+ K&1900L+4&A&1110L+2\\
+ a_0&7600L+14&a_1&49280L+68\\
+ m&4442L+12&C_5&363\\
+ C_*&4442L+1103&D_0&13750L+20\\
+ S&68750L+107&T&68750L+105\\
+ X&68750L+108&w_2&8242L+1111\\
+ A_0&141942L+1317&A_1&153984L+2434\\
+ A_2&203264L+2504&&
+\end{array}
+\]
+For the first five stack stages the degree recurrence is
+\(c_r=3c_{r-1}+3\), starting at \(c_0=0\).
+The last stage has degree
+\(3\cdot363+(4442L+12)+2=4442L+1103\).
+The seven factors of \(Z=i\prod_{r=1}^6z_r\) account for the constant
+\(107=5\cdot20+7\) in the degree of \(S\).
+
+The term \(A_2\) has strictly greater degree than \(X^2,A_0,A_1\).
+Thus \(V\) has the leading form of \(A_2\), \(W\) that of \(A_2^2\),
+and the final polynomial that of \(A_2^4\).
+All of these leading forms are nonzero: the rank has the displayed
+unique top term, the margin has its unique negative top term, and
+subsequent relevant leading forms are products and squares of
+nonzero forms.  In particular, after the authentic positive fixed
+coefficients are substituted,
+\[
+ \deg F_{16}=4(203264L+2504)=813056L+10016.
+\]
+This is an exact degree assertion, not just a structural upper bound
+that ignores cancellations.
+
+The literal pruned evaluator contains
+\[
+ 697\ \hbox{additions}
+ \;+\;26\ \hbox{subtractions}
+ \;+\;894\ \hbox{multiplications}
+ \;=\;1617\ \hbox{operations}.
+\]
+Each binary operation, including a square and multiplication by a
+fixed numeral, is charged.  Reuse and fixed leaves are free, consistently
+with the repository's arithmetic-circuit convention.  Fixed exponentiation
+is expanded into multiplication gates; no exponentiation oracle is used.
+
+For clarity, the compact evaluation of the enormous digit baseline
+does not omit its zero-coefficient positions.  If
+\(p_r={\cal B}^{5^r}\), then the baseline is represented through the
+complete homogeneous polynomial of degree four, and
+\[
+ \lambda
+ =\left(\prod_{r=0}^{\nu}
+       (1+p_r+p_r^2+p_r^3+p_r^4)\right)(1+q)(1+q^2).
+\]
+These are polynomial identities.
+The full baseline contains
+\(\binom{36}{4}=58905\) distinct positions; the 402 nonzero
+weighted-coefficient records supply its sparse correction.
+
+\subsection{Verification boundary}
+
+The final binding is
+\texttt{signed16/data/INSTANCE.json}; it names the whole compiler
+tuple, parent, weighted-coefficient records, and index recipes.
+The literal division-free polynomial is
+\texttt{signed16/generated/signed16.json}.
+The new reduction does not claim a fresh end-to-end Lean or Rocq
+certificate.  The source Lean files explain the precise Jones interfaces
+and the cofinal construction, while the native compiler and its K215
+calibration remain identified mathematical proof dependencies.
+
+The independent data-only auditor imports neither the emitter nor its DAG
+utility.  It checks all four decompressed port hashes, enumerates the
+58905 baseline positions directly, evaluates the geometric sum by a
+separate method, and compares 288 named-node values on six signed
+assignments over two primes, including \(t=0\).
+It also checks the eight-factor norm in the rank-eight ring with three
+formal square roots on 100 exact assignments.
+For the final numerical instance, the top-degree diagonal coefficients
+are nonzero modulo two primes:
+\[
+ 121738\pmod{1000003},\qquad
+ 73024\pmod{1000033}.
+\]
+Together with the propagated degree upper bound, either nonzero residue
+is an independent certificate that the top degree survives on this fixed
+coefficient slice.
+
+These checks establish transcription, coefficient binding, and algebraic
+metrics.  The universal soundness and completeness claims rest on the
+proofs above and the stated inherited interfaces, not on finite tests or
+a search for a Diophantine solution.
+

@@ -1,0 +1,257 @@
+\section{Smaller materialized coefficients without prime-power rounding}
+\label{sec:coefficients}
+
+The new arithmetic forms can use the complete Wang943 coefficient tuple of
+package 19.  A further improvement is possible by combining that package's
+exact support calculation with the repository's Boolean padding lemma for
+an arbitrary fixed odd factor \cite{wang,padding}.  The geometric radix
+dimensions need not themselves be powers of five.  What completeness
+actually requires is a suitable family of tableau sizes and enough freely
+selectable dummy bits to tune the actual packed index.
+
+\subsection{The literal finite recipe}
+
+Retain all 943 directed-signal Wang tiles, their order, the occupied ten-bit
+edge codes, the four copy tracks, and the native exponent positions of the
+compact construction.  The first tile is Start, the second is the globally
+impossible forbidden tile, and the remaining tiles are lexicographically
+ordered.  The included 430-action machine table and tile list are checked
+against one another by an independent enumeration in
+\texttt{code/build\_coefficients.py}.  The machine table's SHA-256 is
+\begin{center}\small\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090.
+\end{center}
+The finite language and its computation semantics are inherited unchanged
+from package 19; its proof is included as \texttt{upstream/wang943\_language.md}.
+
+Write $A_c=1024$.  In slot order west, north, east, south, the copy offsets
+are $1023,1013,1003,983$.  The native support is
+\begin{align*}
+\mathcal E={}&[0,942]\cup[983,992]\cup[1003,1032]\\
+ &{}\cup\{1063,1064,1095,1096,2195,3296\}.
+\end{align*}
+It has 989 elements.  If tile $i$ has edge labels $t_{i,0},\ldots,t_{i,3}$,
+put $\epsilon_{i,s,j}$ equal to bit $j$ of $t_{i,s}+512$ and define
+\[
+ c_i=1+\sum_{s=0}^3\sum_{j=0}^9
+          \epsilon_{i,s,j}A_c^{1+10s+j}+\sum_{j=41}^{44}A_c^j.
+\]
+The copy at exponent $\operatorname{offset}_s+j$ has coefficient
+$A_c^{1+10s+j}$.  The anchors $1095,1096,2195,3296$ have coefficients
+$A_c^{41},A_c^{42},A_c^{43},A_c^{44}$, respectively, and both dummy
+coefficients are zero.  These rules specify every $c_e$.
+The clause mask is
+\[
+ \mu=A_c-2+\sum_{j=1}^{44}(A_c-3)A_c^j+2^{450}(2^{78}-1).
+\]
+Set, now without five-power rounding,
+\[
+ b_c=529,\qquad L_c=12031,\qquad d_c=b_cL_c=6364399,
+ \qquad \rho=2^{529},\qquad B=2^{6364399}.
+\]
+All the following quantities are fixed integers, not unknowns:
+\begin{align*}
+D_C={}&\rho^{30}+\rho^{5517}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e
+                 (\rho^{7631-e}+\rho^{8733-e}),\\
+D_R={}&\rho^{5497},\\
+M_{F,0}={}&\mu(\rho^{7631}+\rho^{8733})
+       +\sum_{j=0}^9\rho^{1013+j}+\sum_{j=0}^9\rho^{6520+j}
+       +\rho^{2195}+\rho^{3296},\\
+M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+              -2\rho^{1063},\qquad M_{F,\mathrm{native}}=M_{F,0}+4.
+\end{align*}
+The four ports used by \emph{every} circuit in this delivery are
+\begin{equation}\label{eq:four-ports}
+ \boxed{\ \beta=B-1,\quad K_0=D_C+BD_R,\quad
+ M_C,\quad M_F=M_{F,\mathrm{native}}+B-1.\ }
+\end{equation}
+The last port is the shifted high mask.  Replacing it by the unshifted
+mask, or replacing only part of this tuple, defines a different and
+unjustified instance.
+
+\subsection{Why the smaller layout is sufficient}
+
+The native clause coefficients are unchanged.  With
+\[
+ \mathcal M=(|\mathcal E|+2)\left(2\sum c_e+6\right),\qquad
+ T_c=\max(4\mathcal M+8,2\mu+4,16),
+\]
+the exact check gives $\operatorname{bitlength}(T_c)=529$ and
+$2^{529}\ge T_c$.  Thus the same uniform carry bound holds.
+The largest unshifted product exponent is
+$8733+3296=12029<12031$.  The earlier exact support proof of target
+isolation, clean clause bands, and unique anchor alignment uses no
+five-power property.  It remains valid for the new cell length.
+
+In particular, the independent finite checks give
+\begin{align*}
+ \{(7631-e)\bmod L_c:e\in\mathcal E\}
+ &\cap\{(8733-e)\bmod L_c:e\in\mathcal E\}=\varnothing,\\
+ \{(2195-e)\bmod L_c:e\in\mathcal E\}
+ &\cap\{(3296-e)\bmod L_c:e\in\mathcal E\}=\{0\}.
+\end{align*}
+All 69,230 native-basis convolution checks agree with the prescribed
+overlap and clause contributions.  The population and residue conditions
+are exactly
+\begin{gather*}
+0<M_C,M_{F,\mathrm{native}}<B-1,\qquad
+M_C\equiv2\pmod4,\quad M_{F,\mathrm{native}}\equiv4\pmod8,\\
+\operatorname{popcount}(M_C)+
+\operatorname{popcount}(M_{F,\mathrm{native}})=d_c.
+\end{gather*}
+These calculations verify the finite hypotheses of the inherited
+soundness proof.  That proof applies to arbitrary solutions and does not
+assume that a recovered tableau size is a prime power.
+
+\subsection{A fully explicit completeness controller}
+
+Completeness needs a new argument: the old claim that the control
+multiplier is a unit modulo a power of five is no longer applicable.
+Factor
+\[
+ d_c=23^2\cdot53\cdot227,
+ \qquad \lambda=452453,\qquad k_c=452452=\lambda-1.
+\]
+Trial division verifies that $\lambda$ is prime.  Exact modular
+exponentiation gives
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Modulus & $529$ & $53$ & $227$ & $452453$\\
+\midrule
+Order of $B$ & $11$ & $52$ & $226$ & $452452$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Consequently $\operatorname{ord}_{d_c}(B)=64636$ divides $\lambda-1$,
+and $B^{k_c}\equiv1\pmod{d_c}$.  Furthermore
+\[
+ B^{k_c}\bmod\lambda^2=155849698116\ne1,
+ \qquad v_\lambda(B^{k_c}-1)=1.
+\]
+Put $H_0=1+BD_C+B^2(D_R+1)$.  The complete unit check is small:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Prime $p$ & $B\bmod p$ & $(B^2-1)\bmod p$ & $H_0\bmod p$\\
+\midrule
+23 & 3 & 8 & 8\\
+53 & 14 & 36 & 7\\
+227 & 20 & 172 & 14\\
+452453 & 167241 & 264979 & 406475\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Choose the spatial width $w_c$ and temporal height $h_c$ to be sufficiently
+large powers of $\lambda$; independent rectangular padding permits this.
+Write $N_c=w_ch_c=\lambda^n$, $q=B^{N_c}$, and impose
+$N_c>d_c\lambda^2$ and $h_c>\lambda$.  Since all relevant orders divide
+$\lambda-1$,
+\[
+ q\equiv B^{w_c}\equiv B\pmod{d_c\lambda}.
+\]
+The exact change in the packed Pell index when a lower dummy bit at
+exponent $e_*=1063$ in cell $j$ is switched on is inherited unchanged:
+\[
+ \delta R=-\Gamma B^j,\qquad
+ \Gamma=\rho^{e_*}(q^2-1)
+        \bigl[1+q(D_C+BD_R+B^{w_c})\bigr].
+\]
+The table proves that $\Gamma$ is a unit modulo $d_cN_c$.
+
+\begin{lemma}[Boolean coverage of the actual modulus]\label{lem:padding}
+Every residue modulo $d_cN_c$ is the sum of a Boolean subset of
+\[
+ \{B^{2+k_cj}:0\le j<T\}\cup\{B^3\},\qquad T=N_c/\lambda.
+\]
+Every selected cell and its spatial and temporal translations used by the
+compiler are nonwrapping.
+\end{lemma}
+\begin{proof}
+Let $C_0=d_c\lambda$, so $d_cN_c=C_0T$ and $T>C_0$.
+The valuation just proved and the binomial lifting identity show that
+$B^{k_c}$ has order $T$ modulo $\lambda^n$, and order one modulo $d_c$.
+Its first $T$ powers are therefore exactly the $T$ distinct residues
+$1+C_0z$ modulo $C_0T$.
+
+Normalize the desired residue by $B^{-2}$.  Choose
+$\varepsilon\in\{0,1\}$ so that the normalized residue minus
+$\varepsilon B$ is nonzero modulo $\lambda$.  Let $a$ be its least
+residue modulo $C_0$.  Then $1\le a<C_0<T$, $\gcd(a,T)=1$, and the
+remaining target has the form $a+C_0u$.  Choose $z_0$ solving
+\[
+ az_0+\frac{a(a-1)}2\equiv u\pmod T.
+\]
+Take the $a$ distinct orbit entries with additive coordinates
+$z_0,z_0+1,\ldots,z_0+a-1$ modulo $T$, and include $B^3$ exactly when
+$\varepsilon=1$.  Their sum is the target.  No position is reused.
+
+The largest available position is
+$2+(\lambda-1)(N_c/\lambda-1)=N_c-N_c/\lambda-\lambda+3$.
+Since $h_c>\lambda$ implies $w_c<N_c/\lambda$, its translates by one
+and by $w_c$ stay below $N_c$.  The extra position 3 is distinct because
+$k_c>1$ and satisfies the same conditions.
+\end{proof}
+
+For a canonical blank halting tableau, begin with all these dummy bits
+zero and let its actual packed index be $R_0$.  Apply the lemma to
+\[
+ (R_0-d_cw_c)\Gamma^{-1}\pmod{d_cN_c}.
+\]
+The modified tableau has
+$R\equiv d_cw_c\pmod{d_cN_c}$, exactly the temporal rotation required
+by the power $X=2^R$.  The selected dummy bits change no tile, overlap,
+marker, or carry condition.  The unchanged carry estimate preserves
+the strict slack $2C+F<q/3$ and hence positive transport coordinates.
+The inherited Pell converse supplies the remaining witnesses.
+
+All dimensions $b_c,L_c,d_c,w_c,h_c,N_c$ are odd.  More explicitly, write
+$u_c=d_cN_c=\log_2q$.  The unchanged low-mask congruences give
+$R\equiv3\pmod4$, so the canonical choice $w=2^{R-u_c}$ is a positive
+integer square.  For the canonical even Pell parameter $A_c'=a+2$,
+the coordinate $c=\psi_{A_c'}(R)$ is odd.  Choosing the strong rank
+$m_c=cR$ makes $i=\psi_{A_c'}(m_c)/c^2$ an odd positive integer, by
+the binomial expansion in the signed source \cite{normalized,oddscale}.
+The exact population identity still gives
+$\operatorname{popcount}(R)=3u_c+2$, and the half-binomial identity gives
+$v_2(Y)=3u_c$; hence the scale $s=Y/q^3$ is odd.
+This establishes the full adapter needed for the 24-integer construction;
+the modular checks alone would not establish it.
+
+\begin{theorem}[Complete coefficient replacement]\label{thm:coefficients}
+The complete tuple \eqref{eq:four-ports} satisfies the same blank-K215
+native compiler interface as package 19, including the signed source's
+canonical odd and square witness requirements.  It may replace that
+tuple in the compatible arithmetic forms in this report.
+\end{theorem}
+
+\subsection{Actual bytes and the size improvement}
+
+The four integers are included as gzip-compressed, minimal unsigned
+little-endian binary payloads.  They are already materialized, not merely
+specified by a program waiting for K215 to halt.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Port & Bits & Raw bytes & Compressed bytes\\
+\midrule
+$\beta$ & 6,364,399 & 795,550 & 806\\
+$K_0$ & 9,272,313 & 1,159,040 & 15,461\\
+$M_C$ & 6,364,399 & 795,550 & 1,151\\
+$M_F$ & 6,364,400 & 795,550 & 901\\
+\midrule
+Total & & 3,545,690 & 18,319\\
+\bottomrule
+\end{tabular}
+\end{center}
+Package 19 used $d_c=9,765,625$ and 5,312,269 raw bytes.  The new $d_c$
+is smaller by about $34.83\%$, and the raw payload by about $33.25\%$.
+All four fixed ports have smaller numerical magnitudes.  Compression size
+is reported separately; it is not an algebraic coefficient-height measure.
+The values 529 and 12031 are the least odd choices satisfying the existing
+carry threshold and existing maximum support bound, respectively.  This
+limited minimality claim fixes the tile language, mask and layout; it is
+not a minimum over all coefficient encodings.
+

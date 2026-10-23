@@ -1,0 +1,315 @@
+\section{An explicit equation in ten unrestricted integers}
+\label{sec:signed10}
+
+The smallest unknown count in this package is achieved by the following
+fully fixed equation:
+\[
+ F_{10}(f,g,h,k,l,w,x,y,z,m)=0,
+ \qquad(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}.
+\]
+Its division-free circuit uses \textbf{1,442 binary arithmetic operations}
+and has exact total degree
+\[
+ 126496\cdot5^{31}+27064
+ =589042901992797851562527064.
+\]
+The general ten-integer reduction is due to Sun's 2026 preprint; this
+report does not claim a new universal unknown-count theorem.  Our
+contribution here is its completely specified Con(ZFC) specialization,
+together with three local reductions of its degree and arithmetic circuit.
+The two primary sources are Sun's 2021 paper, especially the explicit
+proof of Theorem~3.1, and his 2026 preprint, Sections~3, 6 and~7.\footnote{
+Z.-W.~Sun, \emph{Further results on Hilbert's Tenth Problem},
+Sci. China Math. 64 (2021), 281--306,
+\url{https://arxiv.org/html/1704.03504v7};
+Z.-W.~Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+2026 preprint, \url{https://arxiv.org/html/2609.01594v2}.}
+The literal Sun final formula is retained as a reference variant.
+
+\subsection{Fixing every source coefficient}
+
+Let $r_1,\ldots,r_{22}$ denote the quadratic residuals of the positive
+31-variable system, with the complete new four-port tuple.  Define
+\[
+ P_0(n_1,\ldots,n_{31})
+ =\sum_{j=1}^{22}r_j(n_1+1,\ldots,n_{31}+1)^2.
+\]
+The preceding reduction proves that a nonnegative zero of $P_0$ exists
+exactly when ZFC is inconsistent.  Its degree is four, and $P_0(0)>0$:
+the fifth residual $E-X(a-E)$ equals one at the all-one parent assignment.
+Apply Sun's source construction to
+\[
+ P(a,n_1,\ldots,n_{31})=P_0(n_1,\ldots,n_{31}),\qquad a=0.
+\]
+The input $a$ is dummy.  This direct specialization avoids any unspecified
+index for a recursively enumerable set.
+
+For $\alpha\in\mathbb N^{32}$ with $|\alpha|\le4$, write $p_\alpha$ for
+the corresponding ordinary coefficient of $P$ and set
+\[
+ c_\alpha=(4-|\alpha|)!\prod_{j=0}^{31}\alpha_j!\,p_\alpha,
+ \qquad e(\alpha)=\sum_{j=0}^{31}\alpha_j5^j.
+\]
+Exactly 402 nonzero weighted coefficient recipes are retained in
+\texttt{signed10/data/constants.json}; unlisted coefficients are zero.
+The verifier reconstructs all of them from the shifted residual squares.
+All nonzero records have $\alpha_0=0$.  The checked coefficient bound is
+\[
+ |c_\alpha|+1<2^{4269855}.
+\]
+Fix
+\[
+ \beta_S=2^{4269882}=2^{2\cdot2134941}.
+\]
+Because $48\cdot33^4=56924208<2^{27}$ and $|p_\alpha|\le|c_\alpha|$,
+\[
+ \beta_S>33^4\,4!\,2\max_\alpha|p_\alpha|.
+\]
+This is precisely the source bound in Sun 2021 for $\nu=31$, $\delta=4$
+and $p=2$.  The additional constant is supplied both by its exact power
+and by a compressed binary payload.  The binding of every fixed leaf is
+\texttt{signed10/data/INSTANCE.json}.
+
+\subsection{The complete source polynomials}
+
+Put $t=5^{31}$ and $L_c=5^{32}=5t$.  Define
+\begin{align*}
+ b&=1+3f,&\mathcal B&=\beta_S b^4,\\
+ \ell&=\sum_{j=1}^{31}\mathcal B^{5^j},&
+ D_c&=\sum_{|\alpha|\le4}c_\alpha\mathcal B^{L_c-e(\alpha)},\\
+ N_0&=\mathcal B^{t+1},&N_1&=4\mathcal B^{9t+1},\\
+ N&=N_0N_1,&M_c&=N_0-1-(b-1)\ell,\\
+ T_c&=M_c+(\mathcal B-2)\mathcal B^{L_c}N_0,&
+ J_c&=2(1+g)^4D_c+\sum_{i=0}^{9t}\mathcal B^{i+1},\\
+ S_c&=g+J_cN_0,&R_c&=(S_c+T_c+1)N+T_c+1,\\
+ X&=(N-1)R_c,&Y&=N^2,\\
+ \mathscr C&=b\mathcal B^t.&&
+\end{align*}
+All powers and summation limits are fixed integers.  The apparent division
+by $p-1$ in Sun's general formula disappears at $p=2$.  The mask $M_c$
+is his digit mask in telescoped form.  The bound has the prescribed form
+$\mathscr C=2^{4269882t}b^{4t+1}$.
+
+Sun's source theorem supplies, from a nonnegative zero of $P_0$, witnesses
+with $f>0$, $b$ a square and a power of two, $b\le g<\mathscr C$, and
+$Y\mid\binom{2X}{X}$.  Conversely, $f\ne0$, $0\le g<2\mathscr C$, the
+same square and power conditions on $b$, and that divisibility imply a
+nonnegative zero of $P_0$.  The construction also gives the strict size
+bounds $X>3b$ and $Y>\max\{b,256\}$ required by Sun 2026.  Thus all source
+hypotheses are checked for this particular, fully fixed polynomial.
+
+\subsection{The bridge and the shared Lucas witnesses}
+
+Use the following polynomial abbreviations, in the displayed order:
+\begin{align*}
+ L&=lY,& U&=2LX,& V&=4gwY,& W&=bw,\\
+ A&=U(V+1),& B&=2X+1,& C&=B+(A-2)h,\\
+ P_n&=U^2V,& K&=X+1+k(P_n-2),\\
+ S&=2A-5,&T&=3WC-2(W^2-1),\\
+ R_2&=(P_n^2-4)K^2+4.&&
+\end{align*}
+Then set
+\begin{align*}
+ \Delta&=8\mathscr C^3gK^2
+ -g^2\bigl(32(C-KL)^2\mathscr C^3+g^2K^2\bigr),\\
+ O&=f^2l^2\Delta,\qquad \xi=zx,\\
+ D&=(A^2-4)C^2+4,\qquad E=C^2D\xi,\\
+ F&=4(A^2-4)E^2+1,\\
+ G^*&=2(A+2)(A-2)^2E^2-1,\qquad \Omega=16E,\\
+ H^*&=C+(B-C)F+\Omega Fy,\\
+ I^*&=((G^*)^2-1)(H^*)^2+1.
+\end{align*}
+These are Sun 2026's formulas (6.1)--(6.7), followed by his modified Lucas
+certificate (3.1)--(3.7).  The symbol $P_n$ only factors a repeated product.
+The integer $S$ is always nonzero and odd.
+
+His positive bridge supplies $b$ square, $R_2$ square, $S\mid T$,
+$C=u_B(A)$, and $O>0$.  In fact $O\ge4$: on this branch $g\ge b\ge4$,
+and $\Delta>0$ is a multiple of $g$; also $f,l\ne0$.
+His reverse bridge states that
+\[
+ b\text{ square},\quad O>0,\quad\xi\ne0,\quad
+ DFI^*\text{ square},\quad R_2\text{ square},\quad S\mid T
+\]
+imply a nonnegative zero of $P_0$.  These precise bridge statements are
+the external Lucas-theoretic inputs used below.
+
+\subsection{Three local simplifications}
+
+\paragraph{A quintic merger.}
+Use
+\[
+ \pi(v)=(v^3-v-1)(v^2+23),\qquad
+ \Sigma=\xi S^5,
+\]
+and
+\[
+ r=T+Sy,\qquad
+ \Theta=(r^3-rS^2-S^3)(r^2+23S^2).
+\]
+The polynomial $\pi$ has a root modulo every positive integer.  For an
+odd prime other than 23, either its cubic factor has a simple root, or
+that cubic is irreducible and its discriminant $-23$ is a square: the
+Frobenius permutation is an even 3-cycle.  In the latter case the quadratic
+factor has a simple root.  At 23 the cubic has the simple root 3.  At 2,
+$-23\equiv1\pmod8$ has a 2-adic square root.  Hensel lifting and the Chinese
+remainder theorem finish the argument.  Neither factor has a rational root.
+
+If $S\mid T$ and $\xi\ne0$, prescribe a residue class of $y$ modulo $\xi$
+so that $\Sigma\mid\Theta$; Sun's full residue interpolation for the Lucas
+witness allows exactly this prescription.  Conversely, if a prime has
+$\nu_p(S)>\nu_p(T)$, the two factors of $\Theta$ have valuations
+$3\nu_p(T)$ and $2\nu_p(T)$, contradicting $S^5\mid\Theta$.  Hence
+$\Sigma\mid\Theta$ forces $S\mid T$.  Moreover $\Theta\ne0$ whenever
+$S\ne0$, by the absence of rational roots.  This replaces Sun's degree-six
+merger with a degree-five one.
+
+\paragraph{One square in place of two.}
+Define
+\[
+ r_0=b\bigl(1+(3O-4)b^2z^2\bigr),\qquad
+ r_1=R_2,\qquad r_2=DFI^*.
+\]
+For $z\ne0$, a square $r_0$ forces $b$ to be a positive square and
+$O>0$.  Indeed its two factors are coprime.  The congruence
+$b\equiv1\pmod3$ excludes zero and negative squares.  A zero factor would
+force $b=1$, hence $f=O=0$ and $1-4z^2=0$, which is impossible.
+The remaining factor is a
+square of the form $1+(3O-4)(bz)^2$ with $bz\ne0$, so the standard Pell
+positivity lemma gives $O>0$.
+
+For completeness, the positive bridge has $O\ge4$, so $d=3O-4>0$ is
+nonsquare because it is 2 modulo 3.  A positive Pell solution
+$u^2-dv^2=1$ can be chosen with $b\mid v$: raise a fundamental Pell unit
+to the order of its image modulo $b$.  Taking $z=v/b>0$ makes $r_0$ a
+square.  Sun's interpolation theorem then chooses $\xi$ divisible by
+this $z$, so $x=\xi/z$ is still an integer.  No witness is added.
+
+\paragraph{Smaller separating weights.}
+For the actual polynomial $r_0$, $z\ne0$ implies $|r_0|>1$.  If $r_0=0$
+or $r_0=\pm1$, its factorization forces $b=1$, hence $f=O=0$; but then
+$r_0=1-4z^2\le-3$, a contradiction.  Also
+\[
+ \sqrt{|r_1|}\le P_n^2+K^2+2,
+\]
+because $|r_1|\le(P_n^2+4)K^2+4$ and the difference from the square of
+the right-hand side is
+$P_n^4+K^4+P_n^2K^2+4P_n^2\ge0$.
+Thus the possibly signed weights
+\[
+ w_0=1,\qquad w_1=r_0,\qquad w_2=r_0(P_n^2+K^2+3)
+\]
+satisfy
+\[
+ |w_1|>\sqrt{|r_0|},\qquad
+ |w_2|>\sqrt{|r_0|}+|w_1|\sqrt{|r_1|}.
+\]
+If a signed sum of these weighted roots is rational, any Galois
+automorphism changing a root has a largest changed index.  Its term has
+magnitude at least the corresponding weight and cannot be cancelled by
+the earlier terms.  Hence every root is rational, and the integer
+radicands are squares.  The same argument covers negative radicands by
+complex absolute values, and zero radicands contribute no term.
+
+\subsection{The final polynomial, without radicals or division}
+
+Set
+\[
+ X_n=\Sigma m-\Theta,\qquad
+ A_i=\Sigma^2w_i^2r_i\quad(0\le i\le2),
+\]
+and then
+\[
+ V_n=X_n^2+A_2-A_0-A_1,\qquad
+ W_n=V_n^2+4X_n^2A_2-4A_0A_1.
+\]
+The requested equation is
+\begin{equation}
+ \boxed{F_{10}=W_n^2-16V_n^2X_n^2A_2=0.}
+ \label{eq:teninteger}
+\end{equation}
+All preceding letters are polynomial abbreviations, not additional
+unknowns.  Its formal norm identity is
+\[
+ F_{10}=\prod_{\varepsilon\in\{\pm1\}^3}
+ \left(X_n+\sum_{i=0}^2\varepsilon_i\sqrt{A_i}\right).
+\]
+This identity explains the construction; equation~\eqref{eq:teninteger}
+itself contains no radicals.  Its 35-term formal expansion is included
+in the archive and checked exactly against the eight signed factors.
+
+For a nonnegative zero of $P_0$, the positive bridge, the merged-square
+Pell construction and the full residue-interpolation theorem supply
+$r_0,r_1,r_2$ square, $\Sigma\ne0$ and $\Sigma\mid\Theta$.  Choose the
+integer $m$ to make a norm factor vanish.  Conversely, if $F_{10}=0$,
+then $\Sigma=0$ would give $F_{10}=\Theta^8\ne0$.  Thus $\xi=zx\ne0$
+and $z\ne0$, so the structural separating-weight argument applies.
+A vanishing norm factor forces the three radicands to be squares and
+$\Sigma\mid\Theta$.  The quintic merger gives $S\mid T$ and the
+coprime square gives $b$ square and $O>0$.  Sun's reverse bridge gives
+a nonnegative zero of $P_0$.
+
+Combining this with the fixed parent/compiler endpoint yields
+\[
+ \mathrm{ZFC}\vdash
+ \left[\neg\exists(f,g,h,k,l,w,x,y,z,m)\in\mathbb Z^{10}\ F_{10}=0\right]
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This invokes the stated mathematical theorems, including Sun's 2026
+preprint.  The computational receipt verifies finite coefficient and
+circuit claims; it is not an end-to-end formal proof of this equivalence.
+
+\subsection{Reproduction and quantitative comparison}
+
+The two commands \texttt{python build\_signed10.py} and
+\texttt{python verify\_signed10.py}, run in the \texttt{signed10} directory,
+use only the Python standard library.  The source sum is evaluated by a
+shared-power Horner circuit; the geometric sum uses repeated doubling,
+without division.  All constant powers are expanded into binary gates.
+The main circuit has 566 additions, 25 subtractions and 851 multiplications,
+with 79 fixed leaves.  A nonzero leading coefficient after diagonal
+specialization modulo 101, 1009 and 1000003 proves that the circuit degree
+upper bound is attained.
+
+For transparency, the main degree calculation is as follows.  Here
+$t=5^{31}$, and $X_n,A_i$ refer to the finalizer rather than the source
+polynomial $X$:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Expression & Total degree\\
+\midrule
+$X$ & $120t+24$\\
+$Y$ & $80t+16$\\
+$S$ & $280t+59$\\
+$r_0$ & $1132t+250$\\
+$r_1=R_2$ & $1920t+402$\\
+$r_2=DFI^*$ & $24640t+5268$\\
+$\Sigma$ & $1400t+297$\\
+$X_n$ & $1400t+310$\\
+$A_0$ & $3932t+844$\\
+$A_1$ & $6984t+1496$\\
+$A_2$ & $31624t+6766$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The degree of $A_2$ strictly exceeds those of $X_n^2,A_0,A_1$.
+Consequently the top part of the final norm is $A_2^4$, giving
+$\deg F_{10}=126496t+27064$.  The recorded nonzero diagonal coefficients
+are exact finite certificates that these top parts do not cancel for
+the actual fixed coefficient tuple.
+
+\begin{center}
+\begin{tabular}{lrr}
+Variant & Operations & Exact degree, $t=5^{31}$\\ \hline
+Sun's four-square sextic specialization &1492&$2407680t+514640$\\
+Four squares, quintic merger &1492&$2403200t+513696$\\
+Three squares, Sun's generic weights &1445&$807360t+172560$\\
+Three squares, universal successive weights &1444&$158592t+33880$\\
+Three squares, structural signed weights &1442&$126496t+27064$
+\end{tabular}
+\end{center}
+All five variants have the same ten unrestricted integer unknowns and
+the same fixed source coefficients.  The complete proof, exact circuits,
+coefficient recipes, binary payloads, source references and verification
+receipts are in the \texttt{signed10} directory.

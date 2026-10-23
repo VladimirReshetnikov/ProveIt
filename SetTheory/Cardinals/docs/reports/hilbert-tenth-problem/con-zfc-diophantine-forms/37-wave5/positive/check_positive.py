@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""Independent exact conjugate product and complete finite-field ray degree checks."""
+import json,random,hashlib
+from pathlib import Path
+import numpy as np
+from build_positive import build,audit,VARIABLES,PORTS
+HERE=Path(__file__).resolve().parent
+
+def evaluate(p,values,mod=None):
+    env=dict(values)
+    for n,op,a,b in p['source']:
+        a=a if isinstance(a,int) else env[a];b=b if isinstance(b,int) else env[b]
+        v=a+b if op=='+' else a-b if op=='-' else a*b
+        env[n]=v if mod is None else v%mod
+    return env
+
+def conjugates(env):
+    """Multiply eight degree-two factors in an independent rank-eight algebra."""
+    G,A,D=env['G'],env['A'],env['D']
+    def mul(x,y):
+        out=[0]*8
+        for i,xi in enumerate(x):
+            for j,yj in enumerate(y):
+                out[i^j]+=xi*yj*(G if i&j&1 else 1)*(A if i&j&2 else 1)*(D if i&j&4 else 1)
+        return out
+    e=env['Q']*(env['D']*env['c']**2*env['T']**2+env['b']**2)-1
+    B=2*env['Q']*env['c']*env['T']*env['b']
+    ans=[1]+[0]*7
+    for sg in [-1,1]:
+      for sa in [-1,1]:
+       for sd in [-1,1]:
+        x=[env['W'],-sg*env['L'],-sa*env['HM'],0,0,0,0,0]
+        row=[env['d']*z for z in mul(x,x)]
+        row[0]-=env['H']**2*e;row[4]+=sd*env['H']**2*B
+        ans=mul(ans,row)
+    assert not any(ans[1:]);return ans[0]
+
+def degree_test(p,prime,seed):
+    rng=random.Random(seed);env={n:np.array([0,rng.randrange(1,prime)],dtype=np.int64) for n in VARIABLES}
+    env.update({n:np.array([v],dtype=np.int64) for n,v in zip(PORTS,[31,127,10,45])})
+    initial={k:int(v[-1]) for k,v in env.items()}
+    def trim(v):
+        v=v%prime
+        while len(v)>1 and not v[-1]:v=v[:-1]
+        return v
+    for n,op,a,b in p['source']:
+        av=np.array([a],dtype=np.int64) if isinstance(a,int) else env[a]
+        bv=np.array([b],dtype=np.int64) if isinstance(b,int) else env[b]
+        if op=='*':v=np.convolve(av,bv)
+        else:
+            v=np.zeros(max(len(av),len(bv)),dtype=np.int64);v[:len(av)]+=av;v[:len(bv)]+=bv if op=='+' else -bv
+        env[n]=trim(v)
+    out=p.get('output','N')
+    if out not in env:env[out]=trim(env['term2']-env['term1'])
+    result=dict(prime=prime,seed=seed,degree=len(env[out])-1,leading_coefficient=int(env[out][-1]),ray=initial)
+    expected=leading_form(p,initial,prime)
+    assert result['leading_coefficient']==expected,(p['name'],result,expected)
+    result['analytic_leading_form_matches']=True
+    return result
+
+def leading_form(p,r,prime):
+    q=r['beta']*r['J'];k=r['eta']+r['zeta'];ww=r['w']+(q if p['weight']=='shift' else 0)
+    X=ww*q;Y=r['s']*q**3;E=X*Y;c=k*Y;R=q**3*(q-r['F']);i=r['i'];H=4*E
+    d=E**4*i**2*c**4;B=R*E**2*i**2*c**4;D1=R*E*Y*i**2*c**4
+    if p['weight']=='short':N=H**16*(E**4*i**2*c**4*(R*E**2*i**2*c**4)**2)**8
+    elif p['weight']=='mid':
+        N=(9*2**12*d**8*H**16*B**10*D1**6 if p['carrier']=='half'
+           else 9*2**16*d**8*H**16*B**12*D1**4)
+    else:
+        if p['weight']=='tight':delta=R*E*(r['s']*q**2)*i**2*c**4
+        else:delta=R*i**2*c**3*((2*E*X+E*r['s']*q-Y**2)*c-E**2*r['eta'])
+        N=(2**14*d**8*H**16*B**10*D1**2*delta**4 if p['carrier']=='half'
+           else 9*2**16*d**8*H**16*B**12*delta**4)
+    return N*(-r['h']*E)*(ww*(q-r['F']-r['alpha'])-r['z']*q)%prime
+
+def main():
+    receipt={'exact_fixtures':{},'degree_tests':{},'source30_same_polynomial':True}
+    specs=[('short','plain'),('mid','full'),('tight','full'),('mid','half'),('tight','half'),('shift','half')]
+    for weight,carrier in specs:
+        p=audit(build(weight,carrier,'product'));rng=random.Random(21530)
+        for t in range(20):
+            vals={n:rng.randrange(-2,4) for n in VARIABLES+PORTS};env=evaluate(p,vals)
+            assert env['N']==conjugates(env),(weight,carrier,t)
+            assert env['N']%4 in [0,1]
+        receipt['exact_fixtures'][p['name']]=20
+        receipt['degree_tests'][p['name']]=[degree_test(p,prime,seed) for prime,seed in [(10007,215),(10009,216)]]
+        shifted=build(weight,carrier,'shifted_system');unshifted=build(weight,carrier,'system')
+        for t in range(20):
+            vals={n:rng.randrange(-3,5) for n in VARIABLES+PORTS}
+            shifted_values=evaluate(shifted,vals);old_values=dict(vals);old_values['z']+=1
+            old=evaluate(unshifted,old_values)
+            assert old['Nt']-1==shifted_values['transleft']-shifted_values['transright']
+            assert old['term1']==shifted_values['term1'] and old['term2']==shifted_values['term2']
+    receipt['shifted_transport_exact_fixtures_per_family']=20
+    upstream=json.loads((HERE/'upstream/30-quartic31__positive__positive12_product.json').read_text())
+    p=build('short','plain','product');rng=random.Random(3024)
+    for t in range(50):
+        vals={n:rng.randrange(1000000007) for n in VARIABLES+PORTS}
+        assert evaluate(p,vals,1000000007)[p['output']]==evaluate(upstream,vals,1000000007)[upstream['output']]
+    receipt['source30_modular_comparison_fixtures']=50
+    receipt['source24_skeleton_comparisons']={}
+    for weight,filename in [('mid','optimized_tight_separating12_product.json'),('tight','optimized_tightest_separating12_product.json')]:
+        old=json.loads((HERE/'upstream'/('24-integer24__circuits__'+filename)).read_text())
+        new=build(weight,'full','product')
+        for t in range(50):
+            vals={n:rng.randrange(1000000007) for n in VARIABLES+PORTS};vals['r']=vals['t']
+            assert evaluate(new,vals,1000000007)[new['output']]==evaluate(old,vals,1000000007)[old['output']]
+        receipt['source24_skeleton_comparisons'][weight]={'fixtures':50,'scope':'Same four-port polynomial skeleton after r=t; source24 original selected tuple differs.'}
+    receipt['scope']='Finite algebraic and degree checks, not compiler or consistency proof.'
+    (HERE/'CHECK_RESULTS.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    print(json.dumps(receipt,indent=2))
+if __name__=='__main__':main()

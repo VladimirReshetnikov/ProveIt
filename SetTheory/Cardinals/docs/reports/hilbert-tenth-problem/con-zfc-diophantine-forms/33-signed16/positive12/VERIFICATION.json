@@ -1,0 +1,64 @@
+{
+  "schema": "positive12-arithmetic-audit-v1",
+  "circuits": {
+    "positive12_system104": {
+      "operations": 104,
+      "multiplications": 63,
+      "additions_subtractions": 41,
+      "all_gates_and_ports_live": true
+    },
+    "positive12_product108": {
+      "operations": 108,
+      "multiplications": 65,
+      "additions_subtractions": 43,
+      "all_gates_and_ports_live": true
+    },
+    "positive12_shifted_system103": {
+      "operations": 103,
+      "multiplications": 63,
+      "additions_subtractions": 40,
+      "all_gates_and_ports_live": true
+    }
+  },
+  "payloads": {
+    "beta": {
+      "sha256": "40cc309fcb5dd2942c371d18be6d955d472e6b4c3604034b316194037ac16a5d",
+      "bytes": 1220704,
+      "bit_length": 9765625
+    },
+    "K": {
+      "sha256": "e79f794af9565a7d824beb423bd03ee9ac117811b9b0e3a83ffe18f8a084de99",
+      "bytes": 1650157,
+      "bit_length": 13201251
+    },
+    "MC": {
+      "sha256": "2e3107193f3b376fc3cfffdaa3ef547e6dd8dfdd4548519c0e33b5ffe2f2371d",
+      "bytes": 1220704,
+      "bit_length": 9765625
+    },
+    "MF_source": {
+      "sha256": "8851b54fffd93780996de5f8c69315448e1369c3eea142428d2225a5149d1825",
+      "bytes": 1220704,
+      "bit_length": 9765626
+    }
+  },
+  "checks": [
+    {
+      "prime": 1000000007,
+      "signed_random_port_fixtures": 60,
+      "signed_actual_port_fixtures": 60,
+      "baseline_identity_checks": 120,
+      "independent_conjugate_product_checks": 120,
+      "transport_shift_checks": 120
+    },
+    {
+      "prime": 1000000009,
+      "signed_random_port_fixtures": 60,
+      "signed_actual_port_fixtures": 60,
+      "baseline_identity_checks": 120,
+      "independent_conjugate_product_checks": 120,
+      "transport_shift_checks": 120
+    }
+  ],
+  "scope": "Finite arithmetic and payload checks. Universal identities and inherited semantic equivalence are proved in PROOF.md and upstream/POSITIVE12_PROOF.md; no new Lean or Rocq build."
+}

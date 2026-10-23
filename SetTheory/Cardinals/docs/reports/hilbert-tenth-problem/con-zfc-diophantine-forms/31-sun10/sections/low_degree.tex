@@ -1,0 +1,256 @@
+\section{Smaller positive systems and circuit evaluations}
+\label{sec:low-degree}
+
+The coefficient adapter also supports two improvements that preserve the
+positive-domain arithmetic constructions of package~30 \cite{repo30}.  One
+retains degree four and reduces the arithmetic evaluation cost; the other
+retains twelve unknowns and reduces the cost of its much higher-degree norm.
+All the identities in this section hold with the four coefficient ports
+treated as independent indeterminates.  We then specialize \emph{all four}
+ports to the new complete $121$ by $8801$ tuple.  The resulting fixed
+polynomials need not equal the historical fixed polynomials, because their
+coefficients have changed.  Their arithmetic templates have the exact
+identities proved below.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Presentation & Unknowns & Equations & Degree & Operations\\
+\hline
+Quadratic comparison system &31&22&2&60\\
+Its sum of squares &31&1&4&125\\
+Twelve-variable product &12&1&1081&108\\
+Twelve-variable system &12&3&1072&103\\
+Transport-shifted system &12&3&1072&102\\
+\hline
+\end{tabular}
+\end{center}
+
+Every unknown in this table is a strictly positive integer.  For a system,
+``degree'' means the maximum degree of a residual.  Every binary addition,
+subtraction and multiplication is charged, including a multiplication by a
+fixed numeral; a comparison and reuse of an existing register are free.
+The source costs at the same two points were $65/130$ operations for the
+quadratic system/quartic, and $107/111$ for the twelve-variable
+system/product.  These are local improvements.  The separate inherited
+$59$-operation higher-degree systems and $67$-operation single equation
+retain their lower total-operation counts.
+
+\subsection{A 60-operation quadratic system}
+
+The $31$ supplied positive integers are
+\[
+\begin{gathered}
+J,F,\alpha,z,f,h,i,o,j,s,w,\tau,\eta,\zeta,y,\gamma,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta.
+\end{gathered}
+\]
+Use the fixed ports $\beta,K_0,M_C,M_F$, where $M_F$ is the already shifted
+high mask.  Introduce only the polynomial abbreviations
+\[
+\begin{gathered}
+q=\beta J+1,\quad k=\eta+\zeta,\quad H=4a+3,
+\quad C=q-F-\alpha,\quad U=L+1,\\
+Y=a-E,\qquad Q=c-\eta,\qquad T=P-k,\qquad R=jc-V.
+\end{gathered}
+\]
+In particular, $R$ is quadratic.  The following are the $22$ comparisons:
+\begin{equation}
+\begin{aligned}
+ U&=q^2,&N&=qU,&X&=wq,&Y&=sN,\\
+ E&=XY,&Q&=kY,&T&=EQ,&\tau^2&=PT+1,\\
+ D&=X+ac+\gamma H,&\Delta&=a^2+H,&C_2&=c^2,\\
+ D^2&=\Delta C_2+1,&k&=R+1+hE.
+\end{aligned}
+\label{eq:quadratic-first}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+ R&=(q-F)(N-q)-CL+(M_C+qM_F)J,\\
+ (K_0+w)C&=F+z\beta J,\\
+ F_2&=f^2,\qquad V=of-c,\qquad g=y^2-V^2,\\
+ I&=iC_2,\qquad B_{\rm aux}=I^2,
+       \qquad B_{\rm aux}=\Delta(F_2-1),\\
+ y^2-B_{\rm aux}g&=1.
+\end{aligned}
+\label{eq:quadratic-second}
+\end{equation}
+Each equality has a quadratic residual after substituting the displayed
+abbreviations.  If these residuals are $r_1,\ldots,r_{22}$ in the displayed
+order, the single polynomial is
+\begin{equation}
+ \boxed{\qquad Q_{125}=\sum_{j=1}^{22}r_j^2.\qquad}
+ \label{eq:q125}
+\end{equation}
+Thus its positive zero set is exactly the system's positive solution set.
+
+The first four simplifications reorient existing equalities so that a
+computed difference or sum serves two purposes.  The equality
+$L=q^2-1$ becomes $L+1=q^2$, and the same $L+1$ occurs in $N=q(L+1)$.
+The equality $a=E+sN$ becomes $a-E=sN$, reusing the $a-E$ in $E=X(a-E)$.
+Similarly, $c-\eta=k(a-E)$ reuses $c-\eta$ in the equation defining $P$,
+and $P-k=E(c-\eta)$ reuses $P-k$ in $\tau^2=P(P-k)+1$.
+These are polynomial identities on all integer assignments.
+
+The fifth simplification is the positive transport-coordinate shift also
+used in package~26 \cite{repo26}.  Its original equation is
+\[
+ (K_0+w)C+(q-F)-z_{\rm old}(q-1)=1.
+\]
+Substituting $z_{\rm old}=z+1$ and $q-1=\beta J$ gives exactly the second
+equation in \eqref{eq:quadratic-second}.  A new positive solution therefore
+gives an old one.  Conversely, first apply the established compiler
+reconstruction to an old solution.  It gives
+\[
+ C>0,\qquad F<q,\qquad X=wq=2^R,\qquad R>3q,
+\]
+and hence $w>q>F$.  The original transport equation implies
+\[
+ (z_{\rm old}-1)(q-1)=(K_0+w)C-F>0.
+\]
+Thus $z_{\rm old}\ge2$, and $z=z_{\rm old}-1$ remains positive.  This
+establishes a bijection of positive zero sets.  The positivity claim is a
+consequence of the completed source reconstruction; it is not presumed in
+the initial bootstrap.
+
+The resulting comparison circuit has $33$ multiplications and $27$
+additions/subtractions, hence $60$ operations.  Forming the residuals,
+squaring them and summing gives $55$ multiplications and $70$
+additions/subtractions, hence $125$ operations.  Its degree is exactly
+four: $\tau$ occurs only in the residual
+$\tau^2-P(P-k)-1$, so the coefficient of $\tau^4$ in \eqref{eq:q125}
+is exactly one.  This argument is uniform in every fixed coefficient
+slice and does not depend on a generic numerical specialization.
+
+The supplied builder checks exact equality of all $22$ residuals with
+the source residuals after $z_{\rm old}=z+1$, treating all four ports
+symbolically.  It expands the quartic to $299$ terms when port exponents
+are included in the symbolic monomials.  Specializing actual coefficients
+can identify terms, so $299$ is stated with that convention.  The
+degree-four certificate is unaffected.
+
+\subsection{A 108-operation twelve-variable equation}
+
+The twelve supplied positive integers are now
+\[
+ J,F,\alpha,z,h,i,T,s,w,\eta,\zeta,t.
+\]
+The notation in this subsection is local.  Set
+\begin{align*}
+ q&=\beta J+1,& C_w&=q-F-\alpha,&X&=wq,&Y&=sq^3,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,&A&=1+\ell(\ell+k),&G&=1+\Delta c^2,&b_0&=X+ac.
+\end{align*}
+The transport and index registers are
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ N_k&=k-hE-R,\qquad
+ N_t=(K_0+w)C_w+q-F-z(q-1).
+\end{align*}
+For the Pell norm define
+\[
+\begin{gathered}
+ I=ic^2,\quad D=1+\Delta I^2,\quad Q=\Delta(D-1),\quad d=Q-1,
+ \quad b=c+RD,\\
+ M=k(I^2+T^2),\qquad L=HM+1,\qquad W=b_0+Ht.
+\end{gathered}
+\]
+The economical scalar evaluator is
+\begin{align*}
+ S&=H^2Q,\qquad H_P=SDc^2T^2,\qquad H_U=Sb^2,\\
+ n&=(HM)^2A,\qquad d_n=dn,\qquad H_e=H_P+H_U-H^2,\\
+ j&=4H_PH_U,\qquad \mathcal T=2d(W^2+L^2G),\\
+ r&=d(W^2-L^2G),\qquad\mathcal K=r^2,\\
+ a_1&=\mathcal T-2(d_n+H_e),\qquad b_1=(d_n-H_e)^2-j-\mathcal K,\\
+ v&=a_1(a_1\mathcal T+2b_1)-16d_nj,\\
+ u&=a_1^2\mathcal K-b_1^2.
+\end{align*}
+All these letters denote polynomial abbreviations, not new witnesses.
+Finally put
+\begin{equation}
+ N=\mathcal K v^2-u(\mathcal T v-u),\qquad
+ \boxed{\quad P_{108}=N_kN_t(1+N)-1.\quad}
+ \label{eq:p108}
+\end{equation}
+Its equation is $P_{108}=0$.  Its three-equation version is
+\begin{equation}
+ N_k=1,\qquad N_t=1,\qquad
+ \mathcal K v^2=u(\mathcal T v-u).
+ \label{eq:system103}
+\end{equation}
+Replacing the middle equation by
+\begin{equation}
+ (K_0+w)C_w=F+z(q-1)
+ \label{eq:positive102transport}
+\end{equation}
+gives the $102$-operation system.  Its $z$ is the old transport coordinate
+minus one; the positivity and equivalence proof is exactly the one above,
+applied after the twelve-variable reconstruction.
+
+\subsection{Why the compressed norm is exact}
+
+The source scalar norm is the product over the main square-root conjugates
+of a polynomial encoding the first, strong and auxiliary Pell conditions.
+For its quadratic-remainder evaluator, the two final coefficients are
+\[
+ v_r=a_1(a_1\mathcal T+2b_1)-16d_nj,
+ \qquad u_r=b_1^2-a_1^2\mathcal K,
+\]
+and the final norm is
+\[
+ u_r^2+\mathcal T u_rv_r+\mathcal K v_r^2.
+\]
+The identity
+\begin{equation}
+ u_r^2+\mathcal T u_rv_r+\mathcal K v_r^2
+ =\mathcal K v^2-u(\mathcal T v-u),\qquad
+ u=-u_r,\quad v=v_r,
+ \label{eq:factored-positive-norm}
+\end{equation}
+holds in every commutative ring.  The sign change reverses an existing
+subtraction, and the factorization saves one multiplication.
+
+Two additional ring identities give the other savings.  Sharing $H^2Q$
+between $H_P=H^2QDc^2T^2$ and $H_U=H^2Qb^2$ saves one multiplication.
+Computing
+\[
+ d^2(W^2-L^2G)^2=[d(W^2-L^2G)]^2
+\]
+saves another because the source's separate $d^2$ has no other consumer.
+Thus the product takes $108=65+43$ operations, the summands being
+multiplications and additions/subtractions.  The final comparison in
+\eqref{eq:system103} avoids one more subtraction, giving
+$103=63+40$.  The transport shift gives $102=63+39$.
+
+No new rational-root, root-separation or Pell-saturation hypothesis is
+introduced by these changes.  The norm is the identical four-port
+polynomial template.  Consequently the source's universal reconstruction,
+its product-unit sign argument and its nonzero leading homogeneous form
+remain valid.  The norm has exact degree $1072$, and $N_k,N_t$ have degrees
+$7,2$, respectively, so \eqref{eq:p108} has exact degree $1081$.
+The active coefficient tuple has $\beta>0$, which is the coefficient
+condition needed for the inherited noncancellation certificate.
+
+\subsection{Logical consequence and reproducibility}
+
+For each presentation in this section, the new complete coefficient
+adapter, the inherited arithmetic reconstruction, and the literal K215
+calibration give
+\begin{align*}
+ \text{positive solvability}
+ &\quad\Longleftrightarrow\quad \text{blank halting of K215}\\
+ &\quad\Longleftrightarrow\quad \text{existence of a finite ZFC refutation}.
+\end{align*}
+Negation yields the requested equivalence with $\operatorname{Con}(\mathrm{ZFC})$
+inside ZFC.  The construction establishes neither side of that equivalence.
+
+The quartic generator performs exact sparse-polynomial verification of
+all residuals and of the degree certificate.  The twelve-variable checker
+verifies five local ring identities exactly, audits every live input and
+operation, compares $240$ signed modular assignments with the source
+template, and checks twelve additional assignments using residues of the
+actual bound coefficients.  Both active bindings authenticate the same
+four payloads.  Their historical source files have been restored to exact
+repository bytes and checked against the pinned Git blob identifiers.
+The new algebraic and coefficient arguments remain ordinary mathematical
+proofs; these finite checks are not a new end-to-end Lean or Rocq theorem.
