@@ -27,9 +27,9 @@ wave 3 was placed. Wave 2 had in turn superseded wave 1 (`01-…` to `08-…`).
 Source numbers 01–15 are kept only because the wave-2 and wave-3 texts use
 them; the wave-3 directories continue the sequence as 16–23.
 
-Six wave-3 packages bundle a copy of the audited wave-2 README, and all six
-copies describe a superseded wave. Five are identical up to line ends
-(checked at intake):
+Seven wave-3 packages bundle a copy of the audited wave-2 README, and all
+seven copies describe a superseded wave. Five are identical up to line
+ends:
 
 - `17-primitive12/inherited/COMPARISON_AT_PIN.md`
 - `18-jones9/upstream/reports/COMPARISON_README.md`
@@ -37,23 +37,30 @@ copies describe a superseded wave. Five are identical up to line ends
 - `22-monic12/reference/comparison_at_pin.md`
 - `23-separating12/upstream/catalogue_README.md`
 
-The sixth, `21-norm12/upstream/REPOSITORY_COMPARISON.md`, has one extra final
-newline.
+Two more, `16-integer27/upstream/COMPARISON_AT_PIN.md` and
+`21-norm12/upstream/REPOSITORY_COMPARISON.md`, each have one extra final
+newline. The first intake check missed 16's copy; the audit found it.
 
 **Wave-2 results that wave 3 does not reproduce** now survive only in
 history (the wave-2 README and directories at `5b0c9ae9fd`, e.g.
-`git show 5b0c9ae9fd:<this directory>/README.md`). The wave-3 packages
-themselves say these remain better on their own measures:
+`git show 5b0c9ae9fd:<this directory>/README.md`). Several wave-3 packages
+say some of these remain better on their own measures (the quartic, the
+67-operation equation, the low-degree systems); the list itself is an
+intake comparison:
 
 - the 32-unknown positive quartic lift (and the 33 / 24 lift);
 - the positive 25-unknown sextic and 20-unknown octic lifts;
-- the 15-unknown systems of degree 22;
-- 09's 14-unknown P₁₄ of degree 121 and the other 14-unknown root norms;
-- the 15-unknown products of degree 83–99.
+- the 15-unknown six-equation systems of degree 28 (61 ops, and 12's S₆₀
+  at 60 ops) and of degree 22;
+- 09's 14-unknown P₁₄ of degree 121, its 14 / 5 / 72 / 67 system, the
+  14 / 5 / 244 / 69 system and the other 14-unknown root norms;
+- the 15-unknown products of degree 83–99 and Q₅₆ (15 / 1 / 56 / 74);
+- the 33ℤ / 1 / 159 / 134 polynomial, of lower degree than any optimized
+  wave-3 integer polynomial with at most 33 unknowns.
 
 The 67-operation equation P₆₇ (wave-1 06/08) remains the fewest-operations
-form. No wave-3 package claims fewer, and 17 ships it rebound to its own
-coefficients.
+form. No wave-3 package claims fewer; 17 ships it rebound to its own
+coefficients, and 21 ships it with instructions to bind its new tuple.
 
 ## How this report was made
 
@@ -72,8 +79,9 @@ Facts below are the packages' own, taken from two read-only intake dossiers;
 the few facts checked at intake say so. [`PLACEMENT.md`](PLACEMENT.md) is the
 recovery map for wave 3. It covers 921 archive members:
 
-- 811 staged;
-- 93 omitted as byte-identical (up to line ends) copies of repository files
+- 818 staged (811 at placement, plus 7 attribution files restored after
+  the audit);
+- 86 omitted as byte-identical (up to line ends) copies of repository files
   outside this report;
 - 17 checksum ledgers and logs excluded by the root `.gitignore`.
 
@@ -98,10 +106,13 @@ The route is unchanged from wave 2:
 
 Wave 3 adds:
 
-- **twelve positive unknowns**, by seven packages that each merge the
-  remaining Pell roots into one supplied coordinate, by different methods;
-- **nine natural unknowns**, by an explicit instance of Jones's nine-variable
-  reduction (18);
+- **twelve positive unknowns** in moderate-degree circuits, by seven
+  packages that each merge the remaining Pell roots into one supplied
+  coordinate, by different methods;
+- **nine unknowns** at astronomic degree, by an explicit instance of
+  Jones's nine-variable reduction (18): nine naturals, or nine positive
+  after the shift x ↦ x − 1, which 18 describes but does not deliver as a
+  circuit;
 - **fewer unrestricted integers**: 26, and a 27-unknown form of low degree;
 - **smaller coefficient alphabets**, two of them materialized.
 
@@ -139,13 +150,13 @@ full; where only one package has it, that package.
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
 | Fewest unknowns, any domain | **9 naturals**: an explicit specialization of Jones's nine-variable theorem to the 32-unknown quartic, one equation of degree 161844·5^33 + 484 (about 1.9·10^28) in 20,531 ops; z⋆, y⋆ and the coefficients defined but not expanded | 18 only | 18 |
-| Fewest positive unknowns | **12**, by seven genuinely different polynomials (their degrees differ). Lowest degree: 20 (1145, 123 ops). Fewest ops: 21's product (116 ops, degree 1353) and the 112-op systems of 21 and 22 | 17, 18, 19, 20, 21, 22, 23 | 17 for the count; 20 for degree; 21 for operations |
+| Fewest positive unknowns, moderate degree | **12** (18's nine-variable form also becomes 9 positive by the shift x ↦ x − 1, at its astronomic degree, but no such circuit is delivered), by seven genuinely different polynomials (their degrees differ). Lowest degree: 20 (1145, 123 ops). Fewest ops: 21's product (116 ops, degree 1353) and the 112-op systems of 21 and 22 | 17, 18, 19, 20, 21, 22, 23 | 17 for the count; 20 for degree; 21 for operations |
 | 13 positive unknowns | degree 515 at 84 ops (16, 20; different weights, not compared at intake); **degree 319 at 91 ops, 4-equation system 288 / 83** | 16, 20; 22 | 16; 22 |
 | Fewest unrestricted integers | **26ℤ**: 2465 / 192 (19), 2657 / 168 (21), 2993 / 169 (22), 3560 / 199 (23), 5265 / 229 (17) | 17, 19, 21, 22, 23 | 17; 19 for degree; 21 for operations |
-| 27 unrestricted integers | **172 / 116** (23's ordinary signed-scale product, best on all three measures among the 27ℤ forms; system 46 / 107). Also 1004 / 136–139 (16, 18, 20) and 1116 / 136–139 (17, 18, 19; 18's and 19's 136-op circuits are the same polynomial, per the dossier) | 23; 16, 18, 20; 17, 18, 19 | 23 |
+| 27 unrestricted integers | **172 / 116** (23's ordinary signed-scale product: lowest degree and fewest operations among the ordinary 27ℤ products; system 46 / 107; 23's normalized products use 114 and 115 ops at degrees 274 and 216). Also 1004 / 136–139 (16, 18, 20) and 1116 / 136–139 (17, 18, 19; 18's and 19's 136-op circuits are the same polynomial, per the dossier) | 23; 16, 18, 20; 17, 18, 19 | 23 |
 | Low-degree unrestricted-integer lifts | 54ℤ quartic (31 quadratics), 45ℤ sextic, 39ℤ octic | 20 only | 20 |
 | Smallest system overall | **59 ops** (16 / 7 / 24) | 22 | 22 |
-| Low-degree 15-unknown single equation | grouped sum of squares, degree 44 at **76 ops** (wave 2: 78) | 19 | 19 |
+| Low-degree 15-unknown single equation | grouped sums of squares, degree 44 at **76 ops** (wave 2: 78), and 19's other nondominated choices 50 / 75, 70 / 73, 80 / 72 | 19 | 19 |
 | Fewest operations | **67** (P₆₇, wave 1), unchanged | — | (wave-1 06) |
 | Smallest coefficients | **B = 2^(5^10)**, 943 tiles, materialized as four gzip payloads (20,260 bytes; 5,312,269 raw) | 19 | 19 |
 
@@ -157,16 +168,17 @@ integrality is recovered:
 | Package | Encoding | Integrality |
 |---|---|---|
 | 17 | sixteen-branch primitive element | Pell "rigidity" |
-| 18 | eight-branch norm with the strong multiplier H·i | gcd conditions and an SL₂ period |
+| 18 | eight-branch norm with the strong multiplier H·i | gcd(H, d) = gcd(H, Q − 1) = 1 and an SL₂ period |
 | 19 | four-factor norm | Pell "saturation" applied first |
 | 20 | 09's three-root witness extended by the main root | rational auxiliary-root lemma |
 | 21 | two nested quadratic norms | rational-Pell lemma |
 | 22 | monic resultant | algebraic-integer norm and saturation |
-| 23 | separating root | coprimality gcd(H, d) = 1 |
+| 23 | separating root with the strong multiplier H·i | gcd(H, d) = 1 and a Pell-matrix period modulo Hc² |
 
 The rigidity, saturation and rational-Pell lemmas of 17, 19, 20, 21 and 22
-state essentially the same fact, and 19's restricted-i variant uses 18's
-idea.
+state essentially the same fact. The H·i multiplier with gcd and period
+arguments was found independently by 18, by 23 and in 19's own earlier
+restricted-i variant.
 
 ### Coefficient recipes: use one whole tuple
 
@@ -204,12 +216,14 @@ instantiate.
 - **The 27ℤ bootstrap.** 19 says the correct bootstrap for its 27ℤ form is
   h ≥ 0, calling R < k "unjustified" (`INTEGER27_INDEPENDENT_AUDIT.md:17`).
   18 proves h ≥ 1 and k > R by a separate p ≥ 3 lemma
-  (`integer27_section.tex:126-159`), and 16 proves the main Pell index is
-  at least 3. These are different proofs for different circuits; 19 does
-  not cite 18.
+  (`integer27_section.tex:126-159`, covering both of its weights), and 16
+  proves the main Pell index is at least 3. 18's and 19's 1116-degree
+  136-op circuits are the same polynomial, so for it these are two
+  different proofs: 19 avoids R < k, while 18 proves k > R. 19 does not
+  cite 18.
 - **Positivity before root recovery.** 20 says its twelve-unknown proof
-  needs positivity before root recovery, while 21, 22 and 23 each prove
-  signed 26ℤ versions of their own twelve-unknown forms. These are
+  needs positivity before root recovery, while 17, 19, 21, 22 and 23 each
+  prove signed 26ℤ versions of their own twelve-unknown forms. These are
   different polynomials, not a contradiction.
 - **Citing 14's theorem.** 23's independent audit cautions against citing
   14's odd-i / square-w theorem as a hypothesis
@@ -217,8 +231,9 @@ instantiate.
   argument should be reused rather than cited.
 - **No package calls wave 2 wrong.** No wave-3 package says a wave-2
   statement or the wave-2 README was *wrong*. 18 found "no new fatal
-  algebraic or sign gap" in 09, 12 and 14, and 19's gate audit passed all
-  62 upstream circuits.
+  algebraic or sign gap" in 09, 12 and 14. 19's gate audit passed all 62
+  upstream circuits, but those were operation, liveness and modular-degree
+  diagnostics with small test coefficients, not proofs.
 
 ## What is not claimed
 
@@ -245,7 +260,8 @@ The packages say, in their own words (exceptions noted):
 - **No optimality, no fewer operations.** No global minimum is claimed, and
   nothing below 67 operations. 18's nine-variable form is a concrete
   specialization of Jones's theorem, not a new representation theorem.
-- **No new universal bound.** 21, 22 and 23 say so explicitly. In any case,
+- **No new universal bound.** 17, 18, 20, 21, 22 and 23 say so, in various
+  words. In any case,
   fixed-input constructions do not change the universal 84-operation
   frontier recorded in `Computability/HilbertTenthProblem/README.md`.
 
@@ -257,13 +273,18 @@ The packages say, in their own words (exceptions noted):
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean`,
   present at `HEAD`, not rebuilt at intake) mirrors. The ZFC-provability
   claim does not go through Lean's soundness.
-- **Hilbert's tenth problem.** 18's specialization instantiates the
-  existence theorem `Jones1982.nine_unknowns` /
+- **Hilbert's tenth problem.** The parametric Lean theorem
   `Jones1982.Nine.wset_iff_nine`
-  (`Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/`) on the
-  32-unknown quartic. The project README had left "a concrete nine-unknown
-  specialization" open. 18 supplies one on paper, with expanded DAGs and
-  residue checks; the link to the Lean theorem is not formalized. The
+  (`Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineMain.lean:46`)
+  is the one 18 instantiates on paper. Its literal-weight comparison
+  variant is an instance on the 32-unknown quartic; the headline
+  new-weight polynomial (degree 161844·5^33 + 484) also relies on 18's
+  unformalized majorant and two-radical finalizer lemma. The existence
+  theorem `Jones1982.nine_unknowns` is not instantiated: it fixes ν = 58
+  internally (`NineMain.lean:126-146`, checked at intake). Wave 2 had left
+  a concrete nine-unknown specialization open, as recorded in the
+  project README. 18 supplies one on paper, with expanded DAGs and residue
+  checks; nothing of it is formalized. The
   native compiler notes under
   `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
   remain unformalized.
@@ -280,23 +301,25 @@ These are disclosed here and were not fixed in the delivered files.
 
   | Dir | Driver |
   |---|---|
-  | 16 | `compiler/pruned_t4_check.py` |
+  | 16 | `verify.py` (via `compiler/pruned_t4_check.py`) |
   | 17 | `verification/check_package.py` |
   | 18 | `reproduce.py` |
   | 19 | `verify_package.py` |
   | 20 | `verify.py` |
   | 21 | `verify.py` |
-  | 22 | `code/check_bundle.py` |
+  | 22 | `code/reproduce.py` (via `code/check_bundle.py`) |
   | 23 | `reproduce.py` |
 
   Rerun from the arrival commit, as `PLACEMENT.md` explains.
 - **Licence and attribution.**
-  - 19 ships no licence or notice file. It is offered for incorporation, and
-    the repository's MIT-0 default applies unless Vladimir decides
+  - 19 ships no licence or notice file, and 20 states no licence for its new
+    material (it only retains `LICENSE.ProveIt`). Both were delivered for
+    ProveIt; the repository's MIT-0 default applies unless Vladimir decides
     otherwise.
   - 16 and 21 state "OpenAI-assisted" research; 17 and 23 state AI
-    assistance; 22 records "parallel assistant reviews"; 18's notice
-    disclaims human authorship.
+    assistance; 22 records "parallel assistant reviews"; 17's and 18's
+    notices disclaim human authorship; 19 and 20 carry no AI-assistance
+    statement.
   - 19 calls wave-2 package 15 "our previous round-two release".
   - 17's `machine/NOTICE.md` links to `machine/provenance/` and
     `machine/licenses/`, which its archive does not contain.
@@ -319,10 +342,13 @@ These are disclosed here and were not fixed in the delivered files.
   - 19's dominated twelve-unknown variants and its unshipped 25.8 MB 5^11
     fallback.
   - 20's secondary packets.
-  - 22's 13-unknown "intermediate" forms.
+  - 22 labels its 13-unknown forms "intermediate", although they are
+    frontier points (degree 319 and 288) in the table above.
 - **Not delivered.** 18 describes, but does not deliver, the positive-domain
   shift and the integer conversion of its nine-variable equation. 19's
-  exploratory scripts need NumPy.
+  exploratory scripts need NumPy. 20's `verify.py` needs SymPy, and its
+  `requirements.txt` (`sympy==1.14.0`) was omitted as a byte copy of a
+  repository file.
 
 ## Further questions and research
 
@@ -330,10 +356,10 @@ These are the open problems the packages list, merged and credited:
 
 1. **Formalize the bridge**: the primitive-element, saturation,
    separating-map, monic and denominator lemmas, the native-window/Pell
-   bridge, and 18's binding to `Jones1982.Nine.wset_iff_nine` (16, 17, 18,
-   19, 22, 23).
-2. **Fewer unknowns**: below 12 positive or 26 unrestricted integers (16,
-   19), including 11 positive (19).
+   bridge, and 18's binding to `Jones1982.Nine.wset_iff_nine` with its
+   majorant lemma (16, 17, 18, 19, 22, 23).
+2. **Fewer unknowns**: 11 positive (19). 16 asked for fewer than 13
+   positive and 27 integers, which other wave-3 packages already reach.
 3. **Lower degree and cost at 12 unknowns**: sharpen or reduce the
    separating weights while keeping their signed bounds (17, 23); norm
    cost (19); combine outer-root amalgamation with the signed domain (20).
@@ -350,8 +376,10 @@ These are the open problems the packages list, merged and credited:
 ## Licence and provenance
 
 Every package was prepared for ProveIt and reuses MIT-0 repository material
-(19 states no licence; see above). The licence and notice files that the
-packages ship are kept in place.
+(19 and 20 state none for their new material; see above). Every licence,
+notice and attribution file the packages ship is kept in place. Seven such
+files in 18's `upstream/machine/` were first omitted as repository copies;
+they were restored after the audit.
 
 | Pin | Arrival | Placement |
 |---|---|---|
@@ -397,8 +425,10 @@ Every staged file, grouped by source directory (generated from the tree):
 - `18-jones9/upstream/`: `README.md`, `SOURCES.json`, `_catalog_entries.json`, `_copied_content_comparison.json`, `_notices_payload.json`
 - `18-jones9/upstream/licenses/`: `LICENSE.ProveIt`
 - `18-jones9/upstream/machine/`: `NOTICE.md`
-- `18-jones9/upstream/machine/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`
+- `18-jones9/upstream/machine/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `SOURCE_PINS.json`
 - `18-jones9/upstream/machine/provenance/partial-selector/`: `NOTICE.md`
+- `18-jones9/upstream/machine/provenance/partial-selector/provenance/`: `ATTRIBUTION.md`, `k217-NOTICE.md`, `parent-ATTRIBUTION.md`
+- `18-jones9/upstream/machine/provenance/permuted-commands/provenance/`: `ATTRIBUTION.md`, `K218_NOTICE.md`, `PREDECESSOR_ATTRIBUTION.md`
 - `18-jones9/upstream/reports/09-combined13/arithmetic/`: `build_candidates.py`, `p67_source.json`
 - `18-jones9/upstream/reports/09-combined13/low_degree/`: `quartic32.json`
 - `18-jones9/upstream/reports/09-combined13/proofs/`: `AUDIT_STATUS.md`, `INDEPENDENT_ROOT13_AUDIT.md`, `LOW_DEGREE_PROOF.md`, `ROOT_AMALGAMATION_PROOF.md`

@@ -22,18 +22,19 @@ input interface removed, to the blank run of the 215-state ZFC machine
 (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`). It
 gives explicit polynomials with fixed integer coefficients for which, by an
 ordinary argument formalizable in ZFC, ZFC proves "no solution" ↔
-Con(ZFC). As stated by the packages, the fewest positive unknowns are 12
-(seven different polynomials, lowest degree 1145), 26 unrestricted
+Con(ZFC). As stated by the packages, the fewest positive unknowns in a
+moderate-degree circuit are 12 (seven different polynomials, lowest
+degree 1145), 26 unrestricted
 integers suffice, and the fewest operations remain 67 (15 unknowns, degree
 155). These are fixed-instance results, so the universal
 operation bounds stated below are unchanged. Neither the Diophantine bridge
 nor the compiler is formalized. The Lean development proves MRDP and
 `Jones1982.nine_unknowns`, the existence of a nine-unknown representation
 without a degree bound. Package 18 of the report gives, on paper, a
-concrete specialization of the nine-variable theorem to its fixed
-32-unknown quartic: one equation in 9 natural unknowns of degree
-161844·5^33 + 484. Its link to `Jones1982.Nine.wset_iff_nine` is not
-formalized.
+concrete instance of the parametric `Jones1982.Nine.wset_iff_nine` on its
+fixed 32-unknown quartic: one equation in 9 natural unknowns, of degree
+161844·5^33 + 484 with new weights that rely on an additional
+unformalized lemma. Nothing of it is formalized.
 
 The established arithmetic bounds are **74 operations for a complete
 certificate and 84 for one universal polynomial**. The

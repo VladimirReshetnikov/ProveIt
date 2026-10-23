@@ -3584,7 +3584,8 @@ places sources 16–23 and retires the eight ZIPs; reconciliation
 `0641ffc22c` replaces the README and lists the wave-2 results that wave 3
 does not reproduce. The packages state an explicit specialization of
 Jones's nine-variable theorem (9 natural unknowns), 12 positive unknowns by
-seven different polynomials, 13 at degree 319, 26 unrestricted integers, a
-27-integer form of degree 172 in 116 operations, and materialized
-coefficients with B = 2^(5^10). The 67-operation equation keeps the fewest
-operations. Same non-claims; nothing was rerun.
+seven different polynomials of moderate degree, 13 at degree 319, 26
+unrestricted integers, a 27-integer form of degree 172 in 116 operations,
+and materialized coefficients with B = 2^(5^10). The 67-operation equation
+keeps the fewest operations. Nothing was rerun; no formalization,
+consistency proof, optimality or new universal bound is claimed.

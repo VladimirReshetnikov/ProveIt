@@ -20,7 +20,8 @@ Members not in this tree:
   to a blob at the placement parent *outside this report* is omitted; the
   tables below name the shortest repository path holding the same bytes.
   Wave-3 copies of wave-2 files are therefore kept, since wave 2 leaves the
-  tree. Licence and notice files are always kept. All eight packages pin
+  tree. Licence, notice and attribution files are always kept (seven in 18's
+  `upstream/machine/` were restored after the audit). All eight packages pin
   `f0ae4e0991ca44a7bb4e5671d42e33d775e48035`.
 - **Checksum ledgers and logs.** `SHA256SUMS*` and `*.log` are excluded by
   the root `.gitignore`; they were not verified.
@@ -37,7 +38,7 @@ git show cbf94cb552:'docs/incoming/<archive>.zip' > /tmp/<archive>.zip
 |---|---|---:|---:|---:|---:|---|
 | `16-integer27/` | `con_zfc_27_integer_synthesis_2026-10-22.zip` | 50 | 46 | 4 | 0 | `con_zfc_27_integer_synthesis/` |
 | `17-primitive12/` | `ProveIt_ConZFC_Primitive12_2026-10-22.zip` | 80 | 67 | 12 | 1 | `con_zfc_primitive12/` |
-| `18-jones9/` | `ProveIt_ConZFC_9_12_27_2026-10-22.zip` | 173 | 100 | 61 | 12 | `con_zfc_9_12_27/` |
+| `18-jones9/` | `ProveIt_ConZFC_9_12_27_2026-10-22.zip` | 173 | 107 | 54 | 12 | `con_zfc_9_12_27/` |
 | `19-wang943/` | `twelve-variable-con-zfc.zip` | 288 | 286 | 1 | 1 | `twelve-variable-con-zfc/` |
 | `20-root12/` | `ZFC_Diophantine_Twelve_Variables_2026-10-22.zip` | 121 | 115 | 5 | 1 | `ZFC_Diophantine_Twelve_Variables/` |
 | `21-norm12/` | `con-zfc-norm12-2026-10-22.zip` | 64 | 60 | 3 | 1 | `con-zfc-norm12/` |
@@ -103,14 +104,7 @@ Total: 921 members.
 | `upstream/lean/Diophantine/Paper1982/NineReduce.lean` | `Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineReduce.lean` |
 | `upstream/lean/Diophantine/Paper1982/Section4.lean` | `Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/Section4.lean` |
 | `upstream/machine/k215.tm` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm` |
-| `upstream/machine/licenses/SOURCE_PINS.json` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/licenses/SOURCE_PINS.json` |
 | `upstream/machine/proof.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
-| `upstream/machine/provenance/partial-selector/provenance/ATTRIBUTION.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k216/provenance/ATTRIBUTION.md` |
-| `upstream/machine/provenance/partial-selector/provenance/k217-NOTICE.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k217/NOTICE.md` |
-| `upstream/machine/provenance/partial-selector/provenance/parent-ATTRIBUTION.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k217/provenance/ATTRIBUTION.md` |
-| `upstream/machine/provenance/permuted-commands/provenance/ATTRIBUTION.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/permuted/provenance/ATTRIBUTION.md` |
-| `upstream/machine/provenance/permuted-commands/provenance/K218_NOTICE.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k216/provenance/parent-NOTICE.md` |
-| `upstream/machine/provenance/permuted-commands/provenance/PREDECESSOR_ATTRIBUTION.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k217/provenance/ATTRIBUTION.md` |
 | `upstream/math/1980/BASE_TWO_PELL_89_PROOF.md` | `Computability/HilbertTenthProblem/Papers/1980/BASE_TWO_PELL_89_PROOF.md` |
 | `upstream/math/1980/EXPLORATION_FIVE_ADIC_DUMMY_CONTROL.md` | `Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_FIVE_ADIC_DUMMY_CONTROL.md` |
 | `upstream/math/1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md` | `Computability/HilbertTenthProblem/Papers/1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md` |

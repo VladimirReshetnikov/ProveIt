@@ -1146,8 +1146,9 @@ to compile a local tile language of the blank run of
 native-window/Pell compiler with its input interface removed. By an
 ordinary argument, ZFC
 then proves "no solution" ↔ Con(ZFC). As the packages state them, the
-fewest positive unknowns are 12, nine natural unknowns are reached by an
-explicit Jones specialization, and the fewest operations remain 67 (15
+fewest positive unknowns in a moderate-degree circuit are 12, nine natural
+unknowns are reached at astronomic degree by an explicit Jones
+specialization, and the fewest operations remain 67 (15
 unknowns, degree 155). The smallest coefficient recipe has B = 2^(5^10)
 (943 tiles); two recipes are shipped materialized, and the materialized
 bytes do not by themselves prove the compiler theorem. Only the machine
