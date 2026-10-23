@@ -42,26 +42,45 @@ three have one extra final newline (checked at intake):
 | 29 | `references/COMPARISON_AT_PIN.md` |
 | 30 | `review/README.upstream.md` |
 
-**Wave-3 results that wave 4 does not reproduce** now survive only in
-history. Read the wave-3 README and directories at `a477d0fc8b`, e.g.
+**Wave-3 results that wave 4 does not reproduce or rebind.** Most of them
+still ship as byte copies of the wave-3 files, inside 27 and 30, as reference
+material bound to their original wave-3 tuples. The full wave-3 README and
+directories are at `a477d0fc8b`, e.g.
 `git show a477d0fc8b:<this directory>/README.md`. This list is an intake
-comparison; where a wave-4 package itself says a result stays better, that is
-noted.
+comparison; where a wave-4 package itself says a result stays better, that
+is noted.
 
-- **27 unrestricted integers.** 23's 27ℤ product of degree 172 in 116 ops
-  (system 46 / 107) and its other 27ℤ products. The wave-4 packages say these
-  remain better tradeoffs. The 27ℤ forms of degree 1004 and 1116 (16, 18,
-  19, 20) are also lost.
-- **13 positive unknowns at degree 515, 84 ops** (16, 20).
-- **19's 15-unknown grouped sums of squares** (degree 44 at 76 ops and the
-  other nondominated choices). 27 says these remain better.
-- **19's 28ℤ forms** (258 / 128 and 426 / 127).
+| Wave-3 result | Copy in the tree |
+|---|---|
+| 23's 27ℤ product 172 / 116, which the wave-4 packages say remains a better tradeoff, and its normalized products 274 / 114 and 216 / 115 | `30-quartic31/review/23-separating12/data/integer27/` |
+| 23's 27ℤ system 46 / 107 | `27-wave4/integers/sources/23-separating12/data/integer27/ordinary27_system107.json` |
+| 13 positive unknowns at degree 515, 84 ops (16, 20) | 16's: `30-quartic31/review/16-integer27/data/improved_weight_polynomial13_84.json` |
+| the 13-unknown four-equation system 488 / 78 (16, 20) | none; it beats 24's 288 / 81 on operations |
+| 19's 15-unknown grouped sum of squares, degree 44 at 76 ops (27 says it remains better), and its other nondominated choices | 44 / 76: `27-wave4/operations/upstream/grouped_doublegap76_degree44.json` |
+| the 27ℤ forms of degree 1004 (16, 18, 20) and 1116 (17, 18, 19) | 16's 1004 / 139: `30-quartic31/review/16-integer27/data/`; 19's 1116 / 136: `30-quartic31/integers/parents/` |
+| 19's 28ℤ forms 258 / 128 and 426 / 127 | 258 / 128: `30-quartic31/integers/parents/` |
+| 20's 54 / 45 / 39ℤ lifts (improved by 27 and 29) | `27-wave4/integers/sources/previous-deliverable/domains/` |
 
-Wave-2 results listed as lost in the wave-3 README remain lost: the
-32-unknown positive quartic is now improved to 31 unknowns (30), but the
-positive sextic and octic, the degree-22 systems and the 14-unknown forms are
-not reproduced. The 67-operation equation P₆₇ (wave-1 06/08) remains the
-fewest-operations form; 24 and 25 ship it rebound to their coefficients.
+The 27ℤ forms of degree 1004 and 1116 and 19's 28ℤ forms are dominated by
+30's 25ℤ / 920 / 131 and 26ℤ / 214 / 123 on all three measures.
+
+Wave-2 results listed as lost in the wave-3 README remain lost. The
+32-unknown positive quartic is now improved to 31 unknowns (30), but none of
+the following is reproduced:
+
+- the positive sextic and octic;
+- the 15-unknown systems of degree 22 and of degree 28 (61 ops, and 12's S₆₀
+  at 60);
+- the 14-unknown forms;
+- the 15-unknown products of degree 83–99;
+- Q₅₆ (15 / 1 / 56 / 74);
+- the 33ℤ / 1 / 159 / 134 polynomial.
+
+Q₅₆ and the 33ℤ polynomial are still unbeaten on their measures by anything
+in wave 4.
+
+The 67-operation equation P₆₇ (wave-1 06/08) remains the fewest-operations
+form; 24 and 25 ship it rebound to their coefficients.
 
 ## How this report was made
 
@@ -138,14 +157,14 @@ full; where only one package has it, that package.
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
 | Fewest unrestricted integers | **17ℤ**: a signed Jones construction, one equation of degree 424296·5^33 + 53824 in 20,607 ops, on the T4 tuple | 29 only | 29 |
-| Fewest unrestricted integers, moderate degree | **24ℤ**: these are different polynomials except where noted. 26's and 27's 2432 / 163 are the same polynomial, found independently (26's shifted system: 157). 24's 1936 / 167 and 27's 1936 / 168 differ, and 30 has 2240 / 165. Also 25ℤ at 920 / 131 and 26ℤ at 214 / 123 (30) | 24, 26, 27, 30 | 24; 26 for operations |
-| Nine unknowns | **9 positive, delivered as a circuit**: 27 (1537 ops with its new majorant, degree 120764·5^33 + 368; 1480 ops for 18's polynomial). Over ℕ: 30 has the lowest degree, 120724·5^32 + 366, at 1840 ops; 28 has 93264·5^33 + 288 at 20,547 ops. These are three different new polynomials; 27 and 30 also re-evaluate 18's polynomial in 1485 and 1704 ops | 27; 30; 28 | 27 for positive; 30 for degree |
+| Fewest unrestricted integers, moderate degree | **24ℤ**: these are different polynomials except where noted. 26's and 27's 2432 / 163 are the same circuit in the four ports, found independently but bound to different tuples (26's shifted system: 157). 24's 1936 / 167 and 27's 1936 / 168 differ, and 30 has 2240 / 165. Also 25ℤ at 920 / 131 and 26ℤ at 214 / 123 (30) | 24, 26, 27, 30 | 24; 26 for operations |
+| Nine unknowns | **9 positive, delivered as a circuit**: 27 (1537 ops with its new majorant, degree 120764·5^33 + 368; 1480 ops for 18's polynomial). Over ℕ: 30 has the lowest degree, 120724·5^32 + 366, at 1840 ops; 28 has 93264·5^33 + 288 at 20,547 ops. These are three different new polynomials. 30 re-evaluates 18's polynomial in 1704 ops; 27 evaluates 18's circuit in 1485 ops but binds it to its own new tuple, so as a fixed-coefficient polynomial it is not 18's. 27 also delivers a literal-Jones-weight variant (1478 / 1473 ops) | 27; 30; 28 | 27 for positive; 30 for degree |
 | Twelve positive, lowest degree | **1069** at 123 ops (system 1060 / 118) | 24 only | 24 |
 | Twelve positive, fewest operations | **111** product, **107** system (degree 1081) | 30 only | 30 |
 | Twelve positive at degree 1081 | six different polynomials: 24 (120 ops), 25 (116), 26 (116), 27 (120), 28 (116) and 30 (111); 29 has degree 1097 at 116 | 24–28, 30; 29 | 24 |
 | Thirteen positive | 22's forms refactored to 319 / 89 (system 288 / 81) | 24 | 24 |
-| Low-degree lifts | **31-unknown positive quartic** (22 quadratics; 65-op system, 130-op SOS); integer lifts 51ℤ quartic, 42ℤ sextic, 36ℤ octic (not compared between 27 and 29 at intake) | 30; 27, 29 | 30; 27 |
-| 59-operation systems | the 16 / 7 / 24 system rebound (24, 25); 27 lowers the degree to 12, 10, 8, 6 with 17–20 unknowns | 24, 25; 27 | 27 |
+| Low-degree lifts | **31-unknown positive quartic** (22 quadratics; 65-op system, 130-op SOS); integer lifts 51ℤ quartic, 42ℤ sextic, 36ℤ octic, the same residuals in 27 and 29 found independently (different tuples) | 30; 27, 29 | 30; 27 |
+| Low-operation systems | the 16 / 7 / 24 / 59 system rebound (24, 25); 27 lowers the degree at 59 ops to 12, 10, 8, 6 with 17–20 unknowns; and a 16 / 7 / 22 / 60 system, the same in 27 and 30 | 24, 25; 27; 27, 30 | 27 |
 | Fewest operations | **67** (P₆₇, wave 1), unchanged | — | (wave-1 06) |
 | Smallest coefficients | **B = 2^(5^9)** (25, 27: two different tuples sharing β and MC bytes, differing in K and MF); 24's d = 6,364,399; 26 keeps 2^(5^10) but lowers the largest port to 9,766,251 bits | 25, 27; 24; 26 | 25 |
 
@@ -158,15 +177,19 @@ full; where only one package has it, that package.
 | 26 | 943 | 2^(5^10) | gzip; the canonical binding names raw `.bin` files that are not shipped (replay creates them) | `coefficients/COEFFICIENT_BINDING.json` |
 | 27 | 943 | 2^(5^9) | raw `expanded/*.bin` (977,220 bytes) and gzip | `INSTANCE.json` |
 | 28 | 943 | 2^(5^10) (19's tuple) | gzip, byte-identical to 19's | `INSTANCE.json` |
-| 29 | 943 / 37,075 | 2^(5^10) (19's tuple); the 17ℤ form uses T4, 2^(5^18) | gzip (19's bytes); T4 not expanded | `COEFFICIENT_BINDING.json` |
+| 29 | 943 / 37,075 | 2^(5^10) (19's tuple); the 17ℤ form uses T4, 2^(5^18) | gzip (19's bytes); T4 not expanded | `INSTANCE_BINDINGS.json` per family; `signed17/upstream/COEFFICIENT_BINDINGS.json` for the 17ℤ form |
 | 30 | 943 | 2^(5^10) (19's tuple) | raw and gzip (19's bytes); also the nine-variable index z | `COEFFICIENT_BINDING.json` |
 
 - Every package binds its four ports as one tuple and forbids splicing.
 - 25 and 27 share the β and MC bytes but differ in K and MF, so their ports
   must not be mixed.
-- The packages disagree about rebinding package 18's quartic: 28 and 30
-  rebind it to Wang943 by citing 19's interface theorem, while 29 says
-  rebinding needs a fresh proof of the quartic/compiler interface.
+- The packages disagree about rebinding package 18's quartic:
+  - 28 and 30 rebind it to 19's Wang943 by citing 19's interface theorem;
+  - 27 rebinds it and all its nine-variable forms to its own new
+    2^(5^9) tuple, calling the new tuple "a semantic dependency to be
+    validated separately";
+  - 29 says rebinding needs a fresh proof of the quartic/compiler
+    interface.
 - No package checks another wave-4 package's tuple.
 - The intake dossiers decoded 24's, 25's, 26's and 27's tuples and found
   them consistent with their bindings. 28's gzip files are byte-identical to
@@ -175,11 +198,14 @@ full; where only one package has it, that package.
 
 ### Tensions, not adjudicated at intake
 
-- **Operation records under different conventions.** 25 and 26 present
-  116 operations as tying the best twelve-unknown product. 24 brings the same
-  1353-degree polynomial of wave-3 21 down to 113 operations (system 108) by
-  sharing an odd factor that 25's and 26's evaluators do not use. 25 counts
-  21's system as 111 under a direct-comparison convention; 26 cites it at 112.
+- **Operation records.** 25 and 26 present 116 operations as tying the
+  best twelve-unknown product. Under the same counting convention, 24
+  evaluates wave-3 21's 1353-degree polynomial in 113 operations (system
+  108) with a cheaper evaluator that shares a common factor of the odd
+  components; the intake checked that product and system are unchanged.
+  Separately, 25 counts 21's system as 111 under a direct-comparison
+  convention, while 26 cites it at 112; that difference is one of
+  convention.
 - **Rebinding 18's quartic.** See the coefficient section above.
 - **Sun's ten-integer theorem.** 25, 26 and 29 cite "Sun 2026" (arXiv
   2609.01594, as v2 in 25 and v1 in 26) as a general ten-integer
@@ -267,13 +293,19 @@ These are disclosed here and were not fixed in the delivered files.
   - Several notices disclaim external human review or authorship (24, 25,
     26, 28, 29).
   - 27 states no licence for its new material and ships no K215 machine
-    notice (no `LICENSE.Wade` or `NOTICE-K215`).
+    notice (no `LICENSE.Wade` or `NOTICE-K215`), although its copied
+    `integers/sources/23-separating12/NOTICE.md` says the Wade licence is
+    preserved.
   - 30 ships only `licenses/LICENSE.ProveIt` and `licenses/NOTICE.txt`, with
-    no root licence and no statement for its new material.
+    no root licence, no statement for its new material and no K215 machine
+    notice, although it ships the machine reference
+    (`compiler/MACHINE_SOURCE.json`).
   - The repository's MIT-0 default applies to both unless Vladimir decides
     otherwise. 24, 25, 26, 28 and 29 offer their new material under MIT-0.
-  - 27 calls wave-3 package 20 "our previous delivered packet", and 30 calls
-    19's results its "previous round".
+  - 27 calls wave-3 package 20 "our previous delivered packet". 30 calls
+    19's twelve-unknown product "the former local twelve-variable
+    polynomial" and 19's integer family "the preceding locally audited
+    family".
 - **Inside the packages.**
   - 24: three pins hashed by `verify.py` were omitted at intake.
   - 25:
@@ -297,7 +329,8 @@ These are disclosed here and were not fixed in the delivered files.
     - `positive/README.md` points to a nonexistent `coefficients/` folder;
     - `check32/` and `rebuilt_nu31/` are not delivered.
 - **Retained intermediates.**
-  - 24: its monic refactors, presented as a comparison.
+  - 24: its twelve-unknown monic refactor (1529 / 114, system 1520 / 109),
+    presented as a comparison.
   - 27: its split-weight 24ℤ form.
   - 29: `compact_norm12`.
   - 30:
@@ -316,8 +349,8 @@ These are the open problems the packages list, merged and credited:
    root-recovery and signed zero-case lemmas, the finalizers, and the
    interface boundary (25, 26, 28, 30).
 2. **Fewer unknowns.**
-   - Eleven positive, which needs gcd(E, H) = 1 or extra arithmetic
-     (24, 25).
+   - Eleven positive by removing another root coordinate (24, 29); 24
+     notes this needs gcd(E, H) = 1 or extra arithmetic.
    - The new norm over fewer unrestricted integers (28), using further
      signed or odd canonical coordinates only where soundness and
      completeness survive (30).
@@ -338,6 +371,10 @@ These are the open problems the packages list, merged and credited:
    coefficient geometry optimized independently of the algebra (28), and
    an optimized native compiler that keeps the four-port interface (30).
 7. **A reproducible comparison frontier** (28).
+8. **Fewer than 67 operations** (29), and optimizing the index shift
+   together with the norm (29).
+9. **Infer more positivity guards**, including the j₀ / φ guard of the 17ℤ
+   form (29).
 
 ## Licence and provenance
 

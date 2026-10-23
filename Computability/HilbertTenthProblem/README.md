@@ -16,7 +16,7 @@ universal Diophantine equations by James P. Jones and coauthors:
 **Fixed-input specializations for Con(ZFC)** (not formalized). The research
 report
 [`con-zfc-diophantine-forms`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md)
-(batch 220, seven wave-4 packages pinned to `ae3007ca44`, superseding the
+(batch 220, seven wave-4 packages pinned to `ae3007ca44` or `a477d0fc8b`, superseding the
 earlier waves of batches 217–219) applies the native-window/Pell compiler
 below, with its input interface removed, to the blank run of the 215-state
 ZFC machine (`Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm`).
@@ -30,9 +30,11 @@ the universal operation bounds stated below are unchanged. Neither the
 Diophantine bridge nor the compiler is formalized. The Lean development
 proves MRDP and `Jones1982.nine_unknowns`, the existence of a nine-unknown
 representation without a degree bound. The report's nine-variable equations
-are paper instances of the parametric `Jones1982.Nine.wset_iff_nine` on fixed
-31- and 32-unknown quartics (not of `nine_unknowns`, which fixes ν = 58),
-with unformalized finalizers. One is delivered over nine positive unknowns,
+build on the parametric `Jones1982.Nine.wset_iff_nine` and its ratio lemmas
+for fixed 31- and 32-unknown quartics (not on `nine_unknowns`, which fixes
+ν = 58). Their new finalizers and majorants are unformalized, so the new
+polynomials are not themselves instances of the Lean theorem, which
+concerns `nineValue`. One is delivered over nine positive unknowns,
 and the lowest degree is 120724·5^32 + 366 at 1840 operations.
 
 The established arithmetic bounds are **74 operations for a complete
