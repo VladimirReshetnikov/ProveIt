@@ -19,6 +19,16 @@ answers. We first seek the fewest natural witnesses available from the
 repository's proved reductions, while retaining a quartic alternative.
 Global optimality is not asserted.
 
+Neither a K215 encoding nor a Jones universal equation is a requirement.
+Direct proof-certificate and arithmetic-trace encodings are separate research
+routes. The nine-variable comparison below is one working branch of a
+multi-measure search, not a restriction on the final construction.
+
+Wave-nine placement `a2cd79b912` has now been merged. All eight full normal
+release replays pass; the comparison, optimized checks and next-target
+selection are being recorded separately. The checked package-59 work below
+is preserved while these new proposals are evaluated.
+
 After reviewing wave-eight placement `beb0192cb8`, the next small-nine
 target is package 59's free-coordinate degree-separated adjunct: nine
 positive variables, 473 binary operations, degree 1,910,404 (480 operations
@@ -43,8 +53,10 @@ Their contracts and remaining assembly work are recorded in
 The literal old-z source, all 89 kernel records and the complete unbounded
 nine-coordinate arithmetic source equivalence now also pass Lean. The
 equation and exact port hypotheses are recorded in
-[SPLIT_SOURCE59.md](SPLIT_SOURCE59.md). Its native calibration and counted
-DAG identity remain separate obligations.
+[SPLIT_SOURCE59.md](SPLIT_SOURCE59.md). The actual nine-variable
+`MvPolynomial` and its evaluation/source equivalence also pass Lean; see
+[SPLIT_NINE_POLYNOMIAL59.md](SPLIT_NINE_POLYNOMIAL59.md). Its native
+calibration and counted DAG identity remain separate obligations.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

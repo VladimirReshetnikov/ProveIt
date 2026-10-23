@@ -75,8 +75,17 @@ with translating the positive coordinate `j_plus` by its successor.
 
 The finite replay identifies the literal 473/480-operation DAGs with this
 schedule and proves the stated degree by cancellation-aware certificates.
-The Lean arithmetic proof below uses finite polynomial sums. Its evaluator
+The Lean arithmetic proof below uses finite polynomial sums.
+`SplitNinePolynomial59.polynomial` is an actual `MvPolynomial (Fin 9) Int`,
+with a checked evaluation identity and the same source-zero equivalence;
+see [SPLIT_NINE_POLYNOMIAL59.md](SPLIT_NINE_POLYNOMIAL59.md). Its evaluator
 has not yet been identified with the counted shared DAG by a Lean theorem.
+
+A separate [joint-power instance](candidates/split116-joint-powers/README.md)
+reduces these same positive/natural polynomials to 456/463 operations.
+Its exact exponent/remap certificate is independently checked, and the
+specific Lean rewrite proof is in progress. Wave-nine proposals introduce
+further competing forms; this is a local improvement of the checked recipe.
 
 ## Checked proof chain
 

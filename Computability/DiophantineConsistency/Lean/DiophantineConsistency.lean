@@ -76,3 +76,4 @@ import DiophantineConsistency.SplitKernelData59
 import DiophantineConsistency.SplitKernels59
 import DiophantineConsistency.SplitNineSource59
 import DiophantineConsistency.NativePellStepDown
+import DiophantineConsistency.SplitNinePolynomial59
