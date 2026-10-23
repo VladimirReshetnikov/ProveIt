@@ -40,6 +40,11 @@ signed-borrow decoding, coefficient bounds, the free-carrier finalizer,
 and the assembled binomial-to-source-coefficient contract.
 Their contracts and remaining assembly work are recorded in
 [SPLIT116_FORMALIZATION.md](SPLIT116_FORMALIZATION.md).
+The literal old-z source, all 89 kernel records and the complete unbounded
+nine-coordinate arithmetic source equivalence now also pass Lean. The
+equation and exact port hypotheses are recorded in
+[SPLIT_SOURCE59.md](SPLIT_SOURCE59.md). Its native calibration and counted
+DAG identity remain separate obligations.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

@@ -3,8 +3,10 @@
 **Current decision:** following placement `beb0192cb8`, switch to package
 59's free-coordinate degree-separated adjunct: nine positive unknowns,
 473 operations, degree 1,910,404 (480 operations over naturals). All six
-wave-eight release replays pass. Keep package 54 as the smaller native-tuple
-option and preserve the completed package-52 source-polynomial checkpoint.
+wave-eight release replays pass. A separately generated compact54-sharp
+instance binds that architecture to the entire smaller package-54 tuple,
+retaining the same operation count and degree. Preserve the completed
+package-52 source-polynomial checkpoint.
 See [the wave-eight review](PROPOSAL_REVIEW_WAVE8.md) for the comparison,
 source-domain differences and remaining formalization obligations.
 

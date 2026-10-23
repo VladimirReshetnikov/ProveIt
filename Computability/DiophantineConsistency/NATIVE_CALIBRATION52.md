@@ -59,8 +59,14 @@ The existing formal endpoints do not close authentic native calibration:
   `c>A*(A²-1)²` have been established.
 - [Jones1980.half_index](../HilbertTenthProblem/Lean/Diophantine/Paper1980/PellHalf90.lean)
   uses the plus-sign quotient conditions `u=J+j*c=c+o*f`. The selected source
-  has `V=j*c-R=o*f-c`; its minus-sign step-down argument and bootstrap must
-  still be supplied. The plus-sign theorem is not directly an instance.
+  has `V=j*c-R=o*f-c`. The signed step-down argument is now checked in
+  [NativePellStepDown.lean](Lean/DiophantineConsistency/NativePellStepDown.lean),
+  with the recovered main sequence, large-size bootstrap and half-modulus
+  bounds explicit. It accepts either sign of `V`, recovers the index
+  without an oddness premise, and safely restores the strong quotient.
+  The actual source must still supply those bootstrap hypotheses; the
+  plus-sign theorem is not directly an instance. See
+  [NATIVE_PELL_STEP_DOWN.md](NATIVE_PELL_STEP_DOWN.md).
 - [KEndpoint215.blank_halts_iff_zfc_refutation](../BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean)
   already identifies the literal machine215 blank halting predicate with
   `BProv ZFCax_s [] Form.fBot`.

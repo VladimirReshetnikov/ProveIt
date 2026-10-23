@@ -7,8 +7,9 @@ quadratic and simultaneous arithmetic identities.
 
 The [wave-eight review](PROPOSAL_REVIEW_WAVE8.md) selects package 59's
 degree-separated free-coordinate adjunct. Its three degree channels,
-sparse borrow decoder and shorter population-calibrated rank are the next
-formalization target. The completed package-52 checkpoint below remains
+sparse borrow decoder, shorter population-calibrated rank and complete
+unbounded nine-coordinate arithmetic source equivalence now pass Lean;
+see [SPLIT_SOURCE59.md](SPLIT_SOURCE59.md). The completed package-52 checkpoint below remains
 a reusable foundation. `SelectiveQuadraticCoding` proves extraction under isolation of
 only the used pairs, with arbitrary row targets and explicit cross-target
 exclusion. `SelectiveCertificate52` checks the 71 active pairs at maximum

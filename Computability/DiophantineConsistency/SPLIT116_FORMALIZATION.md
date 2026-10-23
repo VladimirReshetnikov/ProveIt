@@ -84,12 +84,16 @@ The authoritative source is package 59's expanded `parent_source.json`.
 It uses the old positive transport quotient. The inherited
 `source_system60.json` copy agrees with package 52's data but is an
 auxiliary comparison, not a replacement for the authoritative predicate.
-The two source row operations, 89 weighted records and 22 target positions
-are being bound literally in Lean. All source-domain translations must
-preserve the positive quotient boundary.
+The two source row operations, all 89 weighted records and 22 target positions
+are now bound literally in Lean by `SplitCertificate59`, `SplitKernelData59`
+and `SplitKernels59`. The independent finite geometry is checked in
+`SplitGeometry59`; all three kernels equal the extracted source channels
+over any commutative ring. The sharp port-box height bound is also checked.
 
-The assembly still needs the literal source binding and the unbounded
-positive-nine existence composition. The counted
+`SplitSourceExistence` supplies the unbounded cofinal construction and exact
+nine-coordinate translations. `SplitNineSource59` joins this to the literal
+source, with only the four port bounds left explicit. See
+[SPLIT_SOURCE59.md](SPLIT_SOURCE59.md) for the equation and theorem. The counted
 473-operation DAG then needs a checked evaluation identity with the
 literal polynomial. Generic lemmas above do not discharge that identity.
 
@@ -117,6 +121,12 @@ lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceCarry.
 lake env lean Computability/DiophantineConsistency/Lean/checks/SplitNineRatio.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceWords.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceContract.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitSourceExistence.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitGeometry59.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitCertificate59.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitKernelData59.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitKernels59.lean
+lake env lean Computability/DiophantineConsistency/Lean/checks/SplitNineSource59.lean
 lake env lean Computability/DiophantineConsistency/Lean/checks/FreeCarrierRatio.lean
 python3 -B Computability/DiophantineConsistency/tools/generate_split116_compact.py --all --check
 ```
