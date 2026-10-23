@@ -19,13 +19,22 @@ answers. We first seek the fewest natural witnesses available from the
 repository's proved reductions, while retaining a quartic alternative.
 Global optimality is not asserted.
 
-The wave-5 report collection explicitly says its new final equations have
-no end-to-end Lean certificate. Its inherited P67 is a particularly short
+The wave-5 and wave-6 report packages explicitly distinguish their new final
+equations from an end-to-end Lean certificate. The inherited P67 is a particularly short
 candidate: 15 strictly positive witnesses, degree 155, and 67 binary
 arithmetic operations. Its fixed coefficient tuple and native-window/Pell
 compiler still need a formal semantic bridge. Nine-natural-variable forms
 use the already formalized Jones reduction but introduce very large powers.
 The ten-unrestricted-integer Sun construction is not formalized here.
+
+The wave-6 packages arrived on `origin/main` during this research and were
+merged at `2d7766807b`. Their direct quadratic/Sidon encodings improve the
+reported low-variable degree and operation counts substantially; for example,
+[package 45](con-zfc-diophantine-forms/45-multioutput/README.md) reports nine
+positive unknowns at degree 129,875,980 in 788 operations. These are useful
+next-stage comparison targets. The executable generic Jones route below
+prioritizes a complete checked construction and does not claim to improve
+those degree or operation counts.
 
 The first formal route is now checked:
 
@@ -43,15 +52,23 @@ These two levels will be reported separately. Likewise, a Lean theorem
 about syntactic ZFC consistency is distinct from a derivation *inside* the
 repository's object-level ZFC proof calculus. Portability of an arithmetic
 argument to ZFC is not itself a checked object-level derivation.
+The concrete remaining internalization obligations and the first actual
+object-language arithmetic proofs are documented in [OBJECT_ZFC.md](OBJECT_ZFC.md).
 
 See [STATUS.md](STATUS.md) for the current evidence and remaining work.
 
-The main checked result is
-`DiophantineConsistency.zfcNinePolynomial_noZero_iff_conZFC` in
-[ZFC.lean](Lean/DiophantineConsistency/ZFC.lean). It has no consistency or
-compiler hypothesis. The alternative `zfcQuarticPolynomial` has 58 natural
-witness slots and total degree at most four. Both use existence-based
-coefficient selection.
+The main checked result is now
+`ExplicitZFC.noNaturalZero_iff_conZFC` in
+[ExplicitZFC.lean](Lean/DiophantineConsistency/ExplicitZFC.lean). It uses a
+closed, executable nine-variable coefficient recipe and has no consistency,
+compiler, program, or representation hypothesis. See
+[EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md) for the equation and proof chain.
+The earlier existence-based theorem in [ZFC.lean](Lean/DiophantineConsistency/ZFC.lean)
+and its 58-witness quartic alternative remain available as separate milestones.
+The checked shift in `PositiveZFC` gives the same variable count over strictly
+positive integers. A second closed route in
+[DIRECT_GRAPH.md](DIRECT_GRAPH.md) represents source arithmetic directly;
+its final degree and operation comparison remains to be measured.
 
 For a concrete small arithmetic circuit, see
 [SHORT_EQUATION.md](SHORT_EQUATION.md): a 69-operation, degree-111 polynomial
@@ -69,14 +86,18 @@ saves two operations over the intermediate 77-operation sum of squares.
 The checked tradeoff in [SHORT_FRONTIER.md](SHORT_FRONTIER.md) uses
 73 operations at degree 80. It groups the six unit factors into three
 residuals and has the same complete positive zero set. The present frontier
-is 69 operations/degree 111, 73/80, and 75/68; each uses 15 positive unknowns.
+includes 69 operations/degree 111, 73/80, and 75/68.
+The further reduction in [SHORT_REDUCED_STRONG.md](SHORT_REDUCED_STRONG.md)
+uses 76 operations at degree 64. It adds a multiple of another vanishing
+residual to cancel leading terms; Lean checks complete integer zero
+equivalence to P75. Each of these alternatives uses 15 positive unknowns.
 
-## Continuing toward explicit coefficients
+## Executable construction and further reductions
 
 The current computability/MRDP interfaces hide the program and polynomial
 inside propositions. Extracting executable polynomial data from those
 propositions would require an unjustified elimination from `Prop` into
-`Type`. The next phase instead builds data-valued arithmetic syntax and
+`Type`. The explicit route builds data-valued arithmetic syntax and
 representation constructors, with separate correctness proofs. A
 syntax-directed primitive-recursion compiler can then retain its polynomial
 data throughout. The proved Jones nine-variable reduction accepts any
@@ -91,8 +112,9 @@ power, binomial, factorial, and bounded universal quantification.
 quartic and a nine-variable equation directly from supplied representation
 syntax, with a checked equivalence for both presentations.
 `ExecutableJones.fromRep` also gives a complete executable syntax path,
-including its coefficient readers and index. Integration with the concrete
-refutation program remains to be completed.
+including its coefficient readers and index. The concrete refutation program
+is now supplied by `DirectEnumerator.program`; `ExplicitZFC` closes the
+executable equation construction with the actual syntactic endpoint.
 
 ## Reproducing the checked milestones
 
@@ -107,6 +129,7 @@ lake env lean Computability/DiophantineConsistency/Lean/checks/CompilerAxioms.le
 python3 Computability/DiophantineConsistency/tools/audit_short_circuit.py
 python3 Computability/DiophantineConsistency/tools/audit_sos_circuit.py
 python3 Computability/DiophantineConsistency/tools/audit_frontier_circuit.py
+python3 Computability/DiophantineConsistency/tools/audit_reduced_strong.py
 ```
 
 The axiom audits list only `propext`, `Classical.choice`, and `Quot.sound`.

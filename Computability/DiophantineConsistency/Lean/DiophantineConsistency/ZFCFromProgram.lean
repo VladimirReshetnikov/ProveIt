@@ -3,6 +3,7 @@ import DiophantineConsistency.ComputationRepresentation
 import DiophantineConsistency.ScalarPRRepresentation
 import DiophantineConsistency.EquationFromRep
 import DiophantineConsistency.ExecutableJones
+import DiophantineConsistency.SimplifiedJones
 
 /-!
 # A consistency equation from supplied refutation-program data
@@ -34,6 +35,16 @@ theorem noExecutableZero_iff_conZFC (program : ScalarPRCode.Realizes haltingTest
     (¬ ∃ v : Fin 9 → ℕ,
       (executableExpression program).eval (fun i => (v i : ℤ)) = 0) ↔ ConZFC :=
   ExecutableJones.noZero_fromRep (refutationRep program)
+
+/-- The executable variant that deletes redundant natural gates before
+the quartic/Jones stage. Its source witness count is provably no larger. -/
+def simplifiedExpression (program : ScalarPRCode.Realizes haltingTest) : Expr (Fin 9) :=
+  SimplifiedJones.expression (refutationRep program)
+
+theorem noSimplifiedZero_iff_conZFC (program : ScalarPRCode.Realizes haltingTest) :
+    (¬ ∃ v : Fin 9 → ℕ,
+      (simplifiedExpression program).eval (fun i => (v i : ℤ)) = 0) ↔ ConZFC :=
+  SimplifiedJones.noZero_expression (refutationRep program)
 
 /-- The Jones equation specified from the supplied checked program. -/
 noncomputable def equation (program : ScalarPRCode.Realizes haltingTest) :

@@ -12,6 +12,11 @@ import DiophantineConsistency.ScalarPRCode
 import DiophantineConsistency.ScalarPRRepresentation
 import DiophantineConsistency.ExecutableJones
 import DiophantineConsistency.ScalarPROptimizer
+import DiophantineConsistency.SimplifiedJones
+import DiophantineConsistency.CompactedJones
+import DiophantineConsistency.CantorRepresentation
+import DiophantineConsistency.GraphBranching
+import DiophantineConsistency.PolynomialGraph
 
 #print axioms DiophantineConsistency.Expr.eval_toPolynomial
 #print axioms DiophantineConsistency.Rep.correct_toPolynomial
@@ -54,3 +59,22 @@ import DiophantineConsistency.ScalarPROptimizer
 #print axioms DiophantineConsistency.ExecutableJones.noZero_fromRep
 #print axioms DiophantineConsistency.ExecutableJones.eval_fromRep_polynomial
 #print axioms DiophantineConsistency.ExecutableJones.hasNaturalZero_fromRep_polynomial
+#print axioms DiophantineConsistency.NatExpr.eval_simplify
+#print axioms DiophantineConsistency.NatExpr.count_simplify_le
+#print axioms DiophantineConsistency.SimplifiedJones.witnessCount_le
+#print axioms DiophantineConsistency.SimplifiedJones.Lexp_le
+#print axioms DiophantineConsistency.SimplifiedJones.noZero_expression
+#print axioms DiophantineConsistency.SimplifiedJones.eval_expression
+#print axioms DiophantineConsistency.WitnessCompaction.exists_eval_eq_iff
+#print axioms DiophantineConsistency.CompactedJones.retainedWitnesses_le
+#print axioms DiophantineConsistency.CompactedJones.witnessCount_le
+#print axioms DiophantineConsistency.CompactedJones.Lexp_le
+#print axioms DiophantineConsistency.CompactedJones.noZero_expression
+#print axioms DiophantineConsistency.CantorRepresentation.pairCoordinates
+#print axioms DiophantineConsistency.CantorRepresentation.leftCoordinate
+#print axioms DiophantineConsistency.CantorRepresentation.rightCoordinate
+#print axioms DiophantineConsistency.GraphRep.ifEq
+#print axioms DiophantineConsistency.GraphRep.ifZero
+#print axioms DiophantineConsistency.NatExpr.directGraphRep
+#print axioms DiophantineConsistency.ScaledNatural.graphRep
+#print axioms DiophantineConsistency.ScaledNatural.cantorPair

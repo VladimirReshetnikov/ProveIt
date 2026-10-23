@@ -4,6 +4,7 @@ import DiophantineConsistency.ShortCircuit
 import DiophantineConsistency.ConsecutivePell
 import DiophantineConsistency.ShortSystem
 import DiophantineConsistency.ShortFrontier
+import DiophantineConsistency.ShortReducedStrong
 import DiophantineConsistency.FactorialRepresentation
 import DiophantineConsistency.BoundedForallRepresentation
 import DiophantineConsistency.PairingRepresentation
@@ -13,3 +14,10 @@ import DiophantineConsistency.ScalarPRCode
 import DiophantineConsistency.ScalarPROptimizer
 import DiophantineConsistency.EquationFromRep
 import DiophantineConsistency.ZFCFromProgram
+import DiophantineConsistency.ExplicitZFC
+import DiophantineConsistency.NativeZFC
+import DiophantineConsistency.PositiveZFC
+import DiophantineConsistency.SidonPositions
+import DiophantineConsistency.QuadraticCoding
+import DiophantineConsistency.ObjectArithmetic
+import DiophantineConsistency.PolynomialGraph

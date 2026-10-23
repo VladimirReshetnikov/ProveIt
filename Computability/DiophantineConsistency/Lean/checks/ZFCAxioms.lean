@@ -12,4 +12,13 @@ import DiophantineConsistency
 #print axioms DiophantineConsistency.ZFCFromProgram.noNaturalZero_iff_conZFC
 #print axioms DiophantineConsistency.ZFCFromProgram.noSyntaxZero_iff_conZFC
 #print axioms DiophantineConsistency.ZFCFromProgram.noExecutableZero_iff_conZFC
+#print axioms DiophantineConsistency.ZFCFromProgram.noSimplifiedZero_iff_conZFC
 #print axioms DiophantineConsistency.ZFCFromProgram.eval_executableExpression
+#print axioms DiophantineConsistency.DirectEnumerator.program
+#print axioms DiophantineConsistency.ExplicitZFC.eval_polynomial
+#print axioms DiophantineConsistency.ExplicitZFC.syntax_hasZero_iff_refutation
+#print axioms DiophantineConsistency.ExplicitZFC.noSyntaxZero_iff_conZFC
+#print axioms DiophantineConsistency.ExplicitZFC.noNaturalZero_iff_conZFC
+#print axioms DiophantineConsistency.NativeZFC.noNaturalZero_iff_conZFC
+#print axioms DiophantineConsistency.NativeZFC.noPositiveZero_iff_conZFC
+#print axioms DiophantineConsistency.PositiveZFC.noPolynomialZero_iff_conZFC

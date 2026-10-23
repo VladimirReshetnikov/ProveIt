@@ -1,0 +1,7 @@
+import DiophantineConsistency.ObjectArithmetic
+
+#print axioms DiophantineConsistency.ObjectArithmetic.addForm_spec
+#print axioms DiophantineConsistency.ObjectArithmetic.addRel_result_nat
+#print axioms DiophantineConsistency.ObjectArithmetic.addRel_numerals_iff
+#print axioms DiophantineConsistency.ObjectArithmetic.zfc_proves_addition_total
+#print axioms DiophantineConsistency.ObjectArithmetic.zfc_proves_addition_unique

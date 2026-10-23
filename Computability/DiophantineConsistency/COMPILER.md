@@ -1,9 +1,10 @@
 # Constructing the coefficient data
 
-The checked nine-variable milestone uses `Classical.choose` on the proved
-MRDP/Jones representation. To obtain an explicit equation, we must keep its
-arithmetic data throughout the construction. This document tracks that
-second route. None of the compiler pieces below decides consistency or
+The initial nine-variable milestone uses `Classical.choose` on the proved
+MRDP/Jones representation. The second route retains arithmetic data
+throughout and now supplies the closed executable equation in
+[`ExplicitZFC.lean`](Lean/DiophantineConsistency/ExplicitZFC.lean).
+This document tracks its construction. None of the compiler pieces below decides consistency or
 searches for a refutation while choosing coefficients.
 
 ## Data and certificates
@@ -87,6 +88,30 @@ with seven instructions becomes the single right inverse-pairing projection,
 eliminating the need to encode its recursion trace. This is a program-size
 bound; no general bound on the resulting Jones coefficient sizes is inferred.
 
+[`NaturalSimplifier.lean`](Lean/DiophantineConsistency/NaturalSimplifier.lean)
+then folds constants and removes zero/unit operations in the two natural
+expressions produced by signed splitting. Its value theorem holds for all
+natural assignments, and its size theorem counts the exact wires used by
+the quartic compiler.
+[`SimplifiedJones.lean`](Lean/DiophantineConsistency/SimplifiedJones.lean)
+uses these reduced expressions throughout the quartic/Jones construction.
+Lean proves that its source witness count and positional exponent parameter
+cannot increase, and proves the complete final solvability equivalence.
+For the trivial equality `0 = 0`, this reduces seven source witness slots
+to three, and the coding parameter from 390625 to 625. These examples check
+the actual compiler counts, not estimates from a separate cost model.
+
+[`WitnessCompaction.lean`](Lean/DiophantineConsistency/WitnessCompaction.lean)
+then packs only the source coordinates that still occur in the simplified
+natural pair. Executable occurrence lists and deduplication supply the new
+index; unused values can be filled with zero. Lean proves preservation of
+existential solvability and that the number retained is at most the original
+witness count.
+[`CompactedJones.lean`](Lean/DiophantineConsistency/CompactedJones.lean)
+uses this source without changing its gate counts, proves a further
+nonincreasing quartic witness count and Jones exponent parameter, and gives
+the final equation currently selected by `ExplicitZFC`.
+
 [`ComputationRepresentation.lean`](Lean/DiophantineConsistency/ComputationRepresentation.lean)
 turns a supplied unary graph into a closed representation of attaining a
 fixed accepted value. Construction of this expression performs no search.
@@ -97,8 +122,10 @@ when ZFC has a finite refutation, as checked by
 `exists_haltingTest_eq_one_iff_refutation` in `Bridge.lean`.
 [`ZFCFromProgram.lean`](Lean/DiophantineConsistency/ZFCFromProgram.lean)
 assembles the compiler and Jones stages from a supplied
-`ScalarPRCode.Realizes haltingTest`. Producing that concrete program data
-remains a required input, not an assumption that the file conceals.
+`ScalarPRCode.Realizes haltingTest`.
+[`DirectEnumerator.program`](DIRECT_PROGRAM.md) now supplies that input
+directly from the arithmetic source; `ExplicitZFC` instantiates the whole
+construction without any supplied-data hypotheses.
 
 ## The Jones stage
 
@@ -132,12 +159,41 @@ solvability is equivalent to the supplied predicate. This establishes an
 executable compiler from supplied representation data; practical expansion
 of the resulting very large syntax is a separate question.
 
-## Remaining integration
+## Further reductions
 
-1. A concrete program for the actual refutation semidecider, with its
-   evaluation theorem.
-2. Instantiate the program-to-ZFC constructor with the actual extracted
-   program and audit the resulting closed equation.
+The concrete refutation program and closed equation are now checked. Further
+work includes further sharing of repeated code, replacing
+the exponential-position Jones source by direct quadratic coding, and
+measuring practical coefficient-generation costs. The generic proof reifier
+is an optional tool; the closed equation uses directly constructed code.
+
+[`DirectGraphEnumerator`](DIRECT_GRAPH.md) additionally represents the
+arithmetic source directly, using quadratic Cantor graphs and explicit
+equality branches. `NativeZFC` closes that second route without requiring a
+generic scalar-program graph compilation. Its full numerical size comparison
+has not been measured.
+
+`SidonPositions.lean` supplies a checked foundation for a future direct
+quadratic coding stage. The explicit weights `(2*m^2+1)*i+i^2`, including
+index zero, have unique unordered pair sums. Their maximum is exactly
+`2*m^3+m^2+m`, with a proved cubic bound. This does not yet replace the
+Jones coding theorem in the closed equations.
+
+`QuadraticCoding.lean` now proves the associated coefficient-extraction
+identity over every commutative coefficient ring: the square of the encoded
+coordinate polynomial gives diagonal coefficients `u_i^2` and off-diagonal
+coefficients `2*u_i*u_j`. A complementary polynomial therefore extracts
+twice the value of any supplied quadratic at the cubic-size target position.
+This is a checked arithmetic foundation, not a completed change to the
+nine-variable correctness theorem.
+
+`PolynomialGraph.lean` supplies another arithmetic constructor: a supplied
+natural polynomial, or one divided by a fixed positive denominator, has a
+graph with zero additional witnesses. The denominator is cleared in its
+single integer residual. Fixed-denominator polynomial data are closed under
+addition, multiplication, and the source's Cantor pairing. These APIs retain
+explicit coefficients and do not select a representation from an existence
+proof.
 
 All checked components are covered by
 [`checks/CompilerAxioms.lean`](Lean/checks/CompilerAxioms.lean). Its audit
@@ -146,3 +202,5 @@ reports only the standard `propext`, `Classical.choice`, and `Quot.sound`.
 Object-level ZFC formalization and numerical size comparisons remain
 separate obligations. The existence-based external Lean equivalence is
 already checked and documented in [STATUS.md](STATUS.md).
+The actual object-language ZFC arithmetic foundation and remaining gaps are
+documented in [OBJECT_ZFC.md](OBJECT_ZFC.md).
