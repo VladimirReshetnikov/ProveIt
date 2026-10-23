@@ -37,12 +37,9 @@ variable {V : Type u}
 theorem native_of_zf (mem : V → V → Prop) (v : Nat → V) (h : ∀ f, ZFax_s f → Sat mem v f) :
     ∀ f, NativeAx f → Sat mem v f := by
   obtain ⟨H, hP, hR⟩ := models_ZF mem v h
-  refine (models_NativeAx mem v).mpr ⟨fun a => ?_, fun phi env => ?_, mem_irrefl H hR⟩
-  · obtain ⟨w, ha, ht, hp⟩ := ZFRank.containers H hR hP a
-    exact ⟨w, ha, ht, hp⟩
-  · refine (ProfileSyntax.sat_gicForm mem phi env).mpr fun a => ?_
-    obtain ⟨b, h1, h2⟩ := ZFRank.collection H hR hP phi env a
-    exact ⟨b, h1, h2⟩
+  exact (models_NativeAx mem v).mpr ⟨ZFRank.containers H hR hP,
+    fun phi env => (ProfileSyntax.sat_gicForm mem phi env).mpr
+      (ZFRank.collection H hR hP phi env), mem_irrefl H hR⟩
 
 /-- **A refutation of the native theory is a refutation of ZF.** -/
 theorem zf_refutation_of_native (h : BProv NativeAx [] Form.fBot) : BProv ZFax_s [] Form.fBot :=

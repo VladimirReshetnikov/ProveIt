@@ -225,25 +225,14 @@ theorem appendOp : AppendOp H (stepG H hP) (setN H hP) (setO H hP) := by
     · have hnat := wo_nat H hR
       refine (hnat.mono fun y hy => ?_).congr fun x y hx hy => ?_
       · exact (((setN_spec H hP W y).1 hy).resolve_right fun h => h.1 he).2
-      · rw [le_setO]
-        constructor
-        · intro h; exact ⟨(setN_spec H hP W x).1 hx, (setN_spec H hP W y).1 hy, Or.inl ⟨he, h⟩⟩
-        · rintro ⟨-, -, ⟨-, h⟩ | ⟨h, -⟩⟩
-          · exact h
-          · exact absurd he h
+      · simp [le_setO, he, (setN_spec H hP W x).1 hx, (setN_spec H hP W y).1 hy]
     · have hlex := wo_lex H hW.wo (P2 := fun _ => Fld H W) (r2 := fun _ => Le H W)
         fun _ _ => hW.wo
       refine (hlex.mono fun y hy => ?_).congr fun x y hx hy => ?_
       · rcases (setN_spec H hP W y).1 hy with ⟨h, -⟩ | ⟨-, -, u, v, hu, hv, rfl⟩
         · exact absurd h he
         · exact ⟨u, v, rfl, hu, hv⟩
-      · rw [le_setO]
-        constructor
-        · intro h
-          exact ⟨(setN_spec H hP W x).1 hx, (setN_spec H hP W y).1 hy, Or.inr ⟨he, h⟩⟩
-        · rintro ⟨-, -, ⟨h, -⟩ | ⟨-, h⟩⟩
-          · exact absurd h he
-          · exact h
+      · simp [le_setO, he, (setN_spec H hP W x).1 hx, (setN_spec H hP W y).1 hy]
   · obtain ⟨hx, hy, -⟩ := (le_setO H hP W x y).1 h
     exact ⟨(setN_spec H hP W x).2 hx, (setN_spec H hP W y).2 hy⟩
 
@@ -346,11 +335,8 @@ theorem tag_cw {CW : V} (hCW : IsCodeOrder H hP CW) (t : Nat) {x : V}
     (hx : ∃ m, mem m (omegaV H) ∧ mem (vempty H) m ∧ FldS H hP m x) :
     Fld H CW (kpair H (natV H t) x) := by
   obtain ⟨m, hm, h0, hx⟩ := hx
-  have hm1 := omega_succ H m hm
-  have h01 : mem (vempty H) (vsucc H m) := (vsucc_spec H m _).2 (Or.inl h0)
-  exact cw_of_fldS H hR hP hCW (omega_succ H _ hm1) (pair_fldS H hR hP hm1 h01
-    (omega_fldS H hR hP hm1 h01 (natV_mem_omega H t))
-    (fldS_mono H hR hP (natOrd H hm1) (Or.inl (vsucc_self H m)) hx))
+  exact cw_of_fldS H hR hP hCW (omega_succ H m hm)
+    (pair_fldS H hR hP hm h0 (omega_fldS H hR hP hm h0 (natV_mem_omega H t)) hx)
 
 /-- **Every internal formula code lies in the field of the code order.** -/
 theorem code_mem {CW : V} (hCW : IsCodeOrder H hP CW) :

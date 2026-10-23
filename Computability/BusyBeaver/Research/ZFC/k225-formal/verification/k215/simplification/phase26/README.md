@@ -43,3 +43,7 @@ as research and excluded from the reduction above.
 This succeeds [phase25](../phase25/README.md). The machine remains **215 states**;
 the internal PA endpoint and minimum-state theorem remain open. No submitted
 checker, generator or supplied proof ran for this checkpoint.
+
+Successor: [phase27](../phase27/README.md) removes 118 lines / 4,635 bytes from five proof files.
+Its full Lean check passes for 230 providers and two endpoint audits, with zero
+warnings and exact retained profiles. This phase26 evidence packet remains sealed.

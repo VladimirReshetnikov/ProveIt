@@ -3,6 +3,11 @@
 The literal 215-state machine and its halting and nonhalting endpoint statements
 are unchanged.
 
+The [phase27 proof cleanup](phase27/README.md) removes **118 lines / 4,635 bytes**
+from five proof files. Its full Lean check passes for **230 providers and two
+endpoint audits**, with zero warnings and exact retained profiles. The machine
+remains **215 states**; its internal PA endpoint and minimum-state theorem remain open.
+
 The [phase26 proof cleanup](phase26/README.md) removes **126 lines / 3,711 bytes**
 from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers
@@ -154,7 +159,8 @@ The successful 213-provider check preserves all thirteen earlier clients, adds
 the direct-seed client and checks all nine 215 site batches fresh. The selected
 closure and physical-file savings measure different scopes and are not additive.
 
-The [latest Lean checkpoint](phase26/README.md),
+The [latest Lean checkpoint](phase27/README.md),
+[phase26 Lean checkpoint](phase26/README.md),
 [phase25 Lean checkpoint](phase25/README.md),
 [phase24 Lean checkpoint](phase24/README.md),
 [phase23 Lean checkpoint](phase23/README.md),

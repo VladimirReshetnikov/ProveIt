@@ -120,8 +120,6 @@ theorem lexN_order (hW : IsWOS H W) {n : V} (hn : mem n (omegaV H)) :
     (∀ t t', IsTup H W n t → IsTup H W n t' → LexN H W n t t' → LexN H W n t' t → t = t') ∧
     (∀ t t' t'', IsTup H W n t → IsTup H W n t' → IsTup H W n t'' →
       LexN H W n t t' → LexN H W n t' t'' → LexN H W n t t'') := by
-  have fval : ∀ t u u' i, IsTup H W n t → mem (kpair H i u) t → mem (kpair H i u') t → u = u' :=
-    fun t u u' i ht h h' => ht.1.1 i u u' h h'
   refine ⟨fun t t' ht ht' => ?_, fun t t' ht ht' h1 h2 => ?_, fun t t' t'' ht ht' ht'' h1 h2 => ?_⟩
   · by_cases e : t = t'
     · exact Or.inl (Or.inl e)
@@ -137,8 +135,8 @@ theorem lexN_order (hW : IsWOS H W) {n : V} (hn : mem n (omegaV H)) :
     have hsym : SatSupport.AgreeP H k' t t' := fun i a b hi ha'' hb => (ha' i b a hi hb ha'').symm
     have e := diff_index H hn hk ha hu hu' huu hk' hsym hv' hv (fun e => hvv e.symm)
     subst e
-    have e1 := fval t u v' k ht hu hv'
-    have e2 := fval t' u' v k ht' hu' hv
+    have e1 := ht.1.1 k u v' hu hv'
+    have e2 := ht'.1.1 k u' v hu' hv
     subst e1; subst e2
     exact absurd (hW.antisymm u u' hl hl') huu
   · rcases h1 with rfl | ⟨k, u, u', hk, ha, hu, hu', huu, hl⟩
@@ -156,7 +154,7 @@ theorem lexN_order (hW : IsWOS H W) {n : V} (hn : mem n (omegaV H)) :
       obtain ⟨c, hc⟩ := ht'.1.2.1 i (nat_transitive H n hn k hk i hi)
       rw [ha i a c hi hai hc]
       exact ha' i c b (nat_transitive H k' hk'ω k h i hi) hc hbi
-    · have e := fval t' u' v k ht' hu' hv
+    · have e := ht'.1.1 k u' v hu' hv
       subst e
       refine Or.inr ⟨k, u, v', hk, fun i a b hi hai hbi => ?_, hu, hv', fun e => ?_,
         hW.trans u u' v' hl hl'⟩
@@ -216,12 +214,8 @@ theorem lexN_least (hW : IsWOS H W) : ∀ n, mem n (omegaV H) → ∀ Z, (∃ z,
   refine (hφ n).1 (omega_ind H (toForm id φ) (fun _ => W) ((hφ _).2 ?_) (fun n hn ih => ?_) n hn)
   · -- length zero: the only tuple is empty
     intro Z ⟨z0, hz0⟩ hZ
-    refine ⟨z0, hz0, fun z hz => Or.inl ?_⟩
-    have hemp : ∀ t, IsTup H W (vempty H) t → ∀ p, ¬ mem p t := fun t ht p hp => by
-      obtain ⟨i, y, hi, -⟩ := ht.1.2.2 p hp
-      exact vempty_spec H i hi
-    exact H.ext _ _ fun p => ⟨fun h => absurd h (hemp z0 (hZ z0 hz0) p),
-      fun h => absurd h (hemp z (hZ z hz) p)⟩
+    refine ⟨z0, hz0, fun z hz => Or.inl (tup_ext H (hZ z0 hz0) (hZ z hz) ?_)⟩
+    exact fun i _ _ hi _ _ => False.elim (vempty_spec H i hi)
   · have IH := (hφ n).1 ih
     refine (hφ _).2 ?_
     intro Z ⟨z0, hz0⟩ hZ
@@ -249,19 +243,10 @@ theorem lexN_least (hW : IsWOS H W) : ∀ n, mem n (omegaV H) → ∀ Z, (∃ z,
         rfl) Z
     -- their last values
     have hnn : mem n (vsucc H n) := vsucc_self H n
-    obtain ⟨Vals, hVals⟩ := sep_of H (fun v => ∃ t, mem t Z'' ∧ mem (kpair H n v) t)
-      (.ex 2 (.and (.mem 2 1) (pmemF 2 3 0))) (fun i => if i = 1 then Z'' else n)
-      (fun v => by
-        simp only [NSat, nsat_pmemF H]
-        simp (disch := omega) only [upd_same, upd_other]
-        rfl) (vunion H (vunion H (vunion H Z'')))
+    obtain ⟨Vals, hVals⟩ := fibre_exists H (vunion H Z'') n
     have hValsIff : ∀ v, mem v Vals ↔ ∃ t, mem t Z'' ∧ mem (kpair H n v) t := fun v => by
-      rw [hVals v]
-      refine ⟨fun h => h.2, fun ⟨t, ht, hv⟩ => ⟨?_, t, ht, hv⟩⟩
-      have h1 : mem (kpair H n v) (vunion H Z'') := (vunion_spec H _ _).2 ⟨t, hv, ht⟩
-      have h2 : mem (vpair H n v) (vunion H (vunion H Z'')) :=
-        (vunion_spec H _ _).2 ⟨_, (kpair_mem H n v _).2 (Or.inr rfl), h1⟩
-      exact (vunion_spec H _ v).2 ⟨_, (vpair_spec H n v v).2 (Or.inr rfl), h2⟩
+      rw [hVals v, vunion_spec H]
+      exact exists_congr fun _ => and_comm
     obtain ⟨t0, ht0, ht0m⟩ := (hZ' m').1 hm'
     obtain ⟨w0, hw0⟩ := (hZ t0 ht0).1.2.1 n hnn
     obtain ⟨v0, hv0, hv0min⟩ := hW.least Vals
@@ -276,16 +261,13 @@ theorem lexN_least (hW : IsWOS H W) : ∀ n, mem n (omegaV H) → ∀ Z, (∃ z,
     have htz := hZ z hz
     obtain ⟨s, hs⟩ := res_exists H z n
     have hsZ' : mem s Z' := (hZ' s).2 ⟨z, hz, hs⟩
-    -- agreement below `n` of two tuples with the same prefix
-    have agree_pre : ∀ {a b : V}, mem a Z → mem b Z → ConstructibleAbs.IsRes H a n m' →
-        ConstructibleAbs.IsRes H b n m' → SatSupport.AgreeP H n a b := by
-      intro a b _ _ ha hb i x y hi hx hy
-      exact (hZ'tup m' hm').1.1 i x y ((ha _).2 ⟨hx, i, x, hi, rfl⟩) ((hb _).2 ⟨hy, i, y, hi, rfl⟩)
     rcases hm'min s hsZ' with e | ⟨k, u, u', hk, ha, hu, hu', huu, hl⟩
     · subst e
       obtain ⟨w, hw⟩ := htz.1.2.1 n hnn
       have hle := hv0min w ((hValsIff w).2 ⟨z, (hZ'' z).2 ⟨hz, hs⟩, hw⟩)
-      have hag := agree_pre hmZ hz hmres hs
+      have hag : SatSupport.AgreeP H n m z := by
+        intro i x y hi hx hy
+        exact (hZ'tup _ hm').1.1 i x y ((hmres _).2 ⟨hx, i, x, hi, rfl⟩) ((hs _).2 ⟨hy, i, y, hi, rfl⟩)
       by_cases e : v0 = w
       · subst e
         refine Or.inl (tup_ext H htm htz fun i x y hi hx hy => ?_)

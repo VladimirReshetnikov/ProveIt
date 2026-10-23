@@ -10,6 +10,11 @@ Its zero-offset proposal is reconciled as
 See the [215 verification record](verification/k215/README.md) for statements, evidence,
 repairs, and reproduction commands. The internal PA endpoint remains open.
 
+The [phase27 proof cleanup](verification/k215/simplification/phase27/README.md) removes **118 lines / 4,635 bytes**
+from five proof files. Its full Lean check passes for **230 providers and two
+endpoint audits**, with zero warnings and exact retained profiles. The machine
+remains **215 states**; its internal PA endpoint and minimum-state theorem remain open.
+
 The [phase26 proof cleanup](verification/k215/simplification/phase26/README.md) removes **126 lines / 3,711 bytes**
 from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers

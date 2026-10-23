@@ -137,33 +137,16 @@ def Free : Nat → Form → Prop
 /-- Renamings agreeing on the free variables act equally. -/
 theorem rename_ext_free (f : Form) :
     ∀ r r', (∀ n, Free n f → r n = r' n) → rename r f = rename r' f := by
-  induction f with
-  | fMem i j =>
+  induction f
+  case fMem i j | fEq i j =>
     intro r r' h
     simp [rename, h i (Or.inl rfl), h j (Or.inr rfl)]
-  | fEq i j =>
-    intro r r' h
-    simp [rename, h i (Or.inl rfl), h j (Or.inr rfl)]
-  | fBot => intro r r' h; rfl
-  | fImp a b iha ihb =>
+  case fBot => intro r r' h; rfl
+  case fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
     intro r r' h
     simp [rename, iha _ _ (fun n hn => h n (Or.inl hn)),
           ihb _ _ (fun n hn => h n (Or.inr hn))]
-  | fAnd a b iha ihb =>
-    intro r r' h
-    simp [rename, iha _ _ (fun n hn => h n (Or.inl hn)),
-          ihb _ _ (fun n hn => h n (Or.inr hn))]
-  | fOr a b iha ihb =>
-    intro r r' h
-    simp [rename, iha _ _ (fun n hn => h n (Or.inl hn)),
-          ihb _ _ (fun n hn => h n (Or.inr hn))]
-  | fAll a ih =>
-    intro r r' h; simp [rename]
-    exact ih _ _ (fun n hn => by
-      cases n with
-      | zero => rfl
-      | succ k => simp [up, h k hn])
-  | fEx a ih =>
+  case fAll a ih | fEx a ih =>
     intro r r' h; simp [rename]
     exact ih _ _ (fun n hn => by
       cases n with
@@ -178,17 +161,10 @@ theorem rename_ext (f : Form) (r r' : Nat → Nat) (h : ∀ n, r n = r' n) :
 /-- Renaming composition. -/
 theorem rename_comp (f : Form) :
     ∀ r r', rename r (rename r' f) = rename (fun n => r (r' n)) f := by
-  induction f with
-  | fMem i j => intro r r'; rfl
-  | fEq i j => intro r r'; rfl
-  | fBot => intro r r'; rfl
-  | fImp a b iha ihb => intro r r'; simp [rename, iha, ihb]
-  | fAnd a b iha ihb => intro r r'; simp [rename, iha, ihb]
-  | fOr a b iha ihb => intro r r'; simp [rename, iha, ihb]
-  | fAll a ih =>
-    intro r r'; simp [rename, ih]
-    exact rename_ext a _ _ (fun n => by cases n <;> simp [up])
-  | fEx a ih =>
+  induction f
+  case fMem i j | fEq i j | fBot => intro r r'; rfl
+  case fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb => intro r r'; simp [rename, iha, ihb]
+  case fAll a ih | fEx a ih =>
     intro r r'; simp [rename, ih]
     exact rename_ext a _ _ (fun n => by cases n <;> simp [up])
 
@@ -213,19 +189,10 @@ theorem rename_inst_push (a : Form) (r : Nat → Nat) (k : Nat) :
   exact rename_ext a _ _ (fun n => by cases n <;> rfl)
 
 theorem rename_id (a : Form) : rename (fun n => n) a = a := by
-  induction a with
-  | fMem i j => rfl
-  | fEq i j => rfl
-  | fBot => rfl
-  | fImp a b iha ihb => simp [rename, iha, ihb]
-  | fAnd a b iha ihb => simp [rename, iha, ihb]
-  | fOr a b iha ihb => simp [rename, iha, ihb]
-  | fAll a ih =>
-    simp [rename]
-    calc rename (up fun n => n) a = rename (fun n => n) a :=
-          rename_ext a _ _ (fun n => by cases n <;> rfl)
-      _ = a := ih
-  | fEx a ih =>
+  induction a
+  case fMem i j | fEq i j | fBot => rfl
+  case fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb => simp [rename, iha, ihb]
+  case fAll a ih | fEx a ih =>
     simp [rename]
     calc rename (up fun n => n) a = rename (fun n => n) a :=
           rename_ext a _ _ (fun n => by cases n <;> rfl)
@@ -244,28 +211,15 @@ def bound : Form → Nat
   | fEx a    => bound a
 
 theorem free_lt_bound (f : Form) : ∀ n, Free n f → n < bound f := by
-  induction f with
-  | fMem i j => intro n hn; rcases hn with rfl | rfl <;> simp [bound] <;> omega
-  | fEq i j => intro n hn; rcases hn with rfl | rfl <;> simp [bound] <;> omega
-  | fBot => intro n hn; cases hn
-  | fImp a b iha ihb =>
+  induction f
+  case fMem i j | fEq i j => intro n hn; rcases hn with rfl | rfl <;> simp [bound] <;> omega
+  case fBot => intro n hn; cases hn
+  case fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
     intro n hn
     rcases hn with hn | hn
     · have := iha n hn; simp [bound]; omega
     · have := ihb n hn; simp [bound]; omega
-  | fAnd a b iha ihb =>
-    intro n hn
-    rcases hn with hn | hn
-    · have := iha n hn; simp [bound]; omega
-    · have := ihb n hn; simp [bound]; omega
-  | fOr a b iha ihb =>
-    intro n hn
-    rcases hn with hn | hn
-    · have := iha n hn; simp [bound]; omega
-    · have := ihb n hn; simp [bound]; omega
-  | fAll a ih =>
-    intro n hn; have := ih (n+1) hn; simp [bound]; omega
-  | fEx a ih =>
+  case fAll a ih | fEx a ih =>
     intro n hn; have := ih (n+1) hn; simp [bound]; omega
 
 def lmax : List Nat → Nat
@@ -500,30 +454,21 @@ theorem Sat_fIff {e : Nat → V} {a b : Form} :
 theorem Sat_ext_free (f : Form) :
     ∀ e1 e2 : Nat → V, (∀ n, Free n f → e1 n = e2 n) →
       (Sat mem e1 f ↔ Sat mem e2 f) := by
-  induction f with
-  | fMem i j =>
+  induction f
+  case fMem i j | fEq i j =>
     intro e1 e2 h
     simp [Sat, h i (Or.inl rfl), h j (Or.inr rfl)]
-  | fEq i j =>
-    intro e1 e2 h
-    simp [Sat, h i (Or.inl rfl), h j (Or.inr rfl)]
-  | fBot => intro e1 e2 h; simp [Sat]
-  | fImp a b iha ihb =>
+  case fBot => intro e1 e2 h; simp [Sat]
+  case fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
     intro e1 e2 h; simp only [Sat]
     rw [iha _ _ (fun n hn => h n (Or.inl hn)), ihb _ _ (fun n hn => h n (Or.inr hn))]
-  | fAnd a b iha ihb =>
-    intro e1 e2 h; simp only [Sat]
-    rw [iha _ _ (fun n hn => h n (Or.inl hn)), ihb _ _ (fun n hn => h n (Or.inr hn))]
-  | fOr a b iha ihb =>
-    intro e1 e2 h; simp only [Sat]
-    rw [iha _ _ (fun n hn => h n (Or.inl hn)), ihb _ _ (fun n hn => h n (Or.inr hn))]
-  | fAll a ih =>
+  case fAll a ih =>
     intro e1 e2 h; simp only [Sat]
     refine forall_congr' fun d => ih _ _ (fun n hn => ?_)
     cases n with
     | zero => rfl
     | succ m => simp only [scons]; exact h m hn
-  | fEx a ih =>
+  case fEx a ih =>
     intro e1 e2 h; simp only [Sat]
     refine exists_congr fun d => ih _ _ (fun n hn => ?_)
     cases n with
@@ -542,25 +487,17 @@ theorem up_env (r : Nat → Nat) (d : V) (e : Nat → V) (n : Nat) :
 theorem Sat_rename (f : Form) :
     ∀ (r : Nat → Nat) (e : Nat → V),
       Sat mem e (rename r f) ↔ Sat mem (fun n => e (r n)) f := by
-  induction f with
-  | fMem i j => intro r e; simp [Sat, rename]
-  | fEq i j => intro r e; simp [Sat, rename]
-  | fBot => intro r e; simp [Sat, rename]
-  | fImp a b iha ihb =>
+  induction f
+  case fMem i j | fEq i j | fBot => intro r e; simp [Sat, rename]
+  case fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
     intro r e; simp only [Sat, rename]
     rw [iha, ihb]
-  | fAnd a b iha ihb =>
-    intro r e; simp only [Sat, rename]
-    rw [iha, ihb]
-  | fOr a b iha ihb =>
-    intro r e; simp only [Sat, rename]
-    rw [iha, ihb]
-  | fAll a ih =>
+  case fAll a ih =>
     intro r e; simp only [Sat, rename]
     refine forall_congr' fun d => ?_
     rw [ih]
     exact Sat_ext a _ _ (up_env r d e)
-  | fEx a ih =>
+  case fEx a ih =>
     intro r e; simp only [Sat, rename]
     refine exists_congr fun d => ?_
     rw [ih]
@@ -573,9 +510,8 @@ bookkeeping: clients can state the intended target environment directly
 instead of chaining `Sat_rename` and `Sat_ext` by hand. -/
 theorem Sat_rename_ext (f : Form) (r : Nat → Nat) (e e' : Nat → V)
     (h : ∀ n, e (r n) = e' n) :
-    Sat mem e (rename r f) ↔ Sat mem e' f := by
-  rw [Sat_rename]
-  exact Sat_ext f _ _ h
+    Sat mem e (rename r f) ↔ Sat mem e' f :=
+  (Sat_rename f r e).trans (Sat_ext f _ _ h)
 
 /-- Environment lemma for the quantifier/equality cases. -/
 theorem inst_env (k : Nat) (e : Nat → V) (n : Nat) :
@@ -590,9 +526,8 @@ def relOf (mem : V → V → Prop) (psi : Form) (e : Nat → V) : V → V → Pr
 pointwise with the relation's two distinguished arguments and parameters. -/
 theorem Sat_rename_relOf (psi : Form) (r : Nat → Nat) (env e : Nat → V)
     (z x : V) (h : ∀ n, env (r n) = scons z (scons x e) n) :
-    Sat mem env (rename r psi) ↔ relOf mem psi e z x := by
-  unfold relOf
-  exact Sat_rename_ext psi r env _ h
+    Sat mem env (rename r psi) ↔ relOf mem psi e z x :=
+  Sat_rename_ext psi r env _ h
 
 def SetLike (mem : V → V → Prop) (R : V → V → Prop) : Prop :=
   ∀ x, ∃ y, ∀ z, R z x → mem z y
@@ -619,9 +554,8 @@ theorem closeN_valid (k : Nat) :
     rw [ih (fAll g)]
     constructor
     · intro h e'
-      have pf : ∀ n, scons (e' 0) (fun n => e' (n+1)) n = e' n := by
-        intro n; cases n <;> rfl
-      exact (Sat_ext g _ _ pf).mp (h (fun n => e' (n+1)) (e' 0))
+      exact (Sat_ext g _ _ (fun n => by cases n <;> rfl)).mp
+        (h (fun n => e' (n+1)) (e' 0))
     · intro h e d; exact h _
 
 theorem seal_valid (g : Form) :

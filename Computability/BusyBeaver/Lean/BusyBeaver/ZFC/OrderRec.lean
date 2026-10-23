@@ -148,15 +148,9 @@ theorem step_wos {W : V} (hW : IsWOS H W) : IsWOS H (G W) ∧ EndExt H W (G W) :
         (mem x (N W) ∧ mem y (N W) ∧ Le H (O W) x y)) ↔ Le H (G W) x y) := by
     intro x y _ _
     rw [hG.le_iff W hW]
-    constructor
-    · rintro (⟨-, -, h⟩ | h | ⟨-, -, h⟩)
-      · exact Or.inl h
-      · exact Or.inr (Or.inl h)
-      · exact Or.inr (Or.inr h)
-    · rintro (h | h | h)
-      · exact Or.inl ⟨(hW.fld x y h).1, (hW.fld x y h).2, h⟩
-      · exact Or.inr (Or.inl h)
-      · exact Or.inr (Or.inr ⟨(hG.ofld W hW x y h).1, (hG.ofld W hW x y h).2, h⟩)
+    refine or_congr ?_ (or_congr Iff.rfl ?_)
+    · exact ⟨fun h => h.2.2, fun h => ⟨(hW.fld x y h).1, (hW.fld x y h).2, h⟩⟩
+    · exact ⟨fun h => h.2.2, fun h => ⟨(hG.ofld W hW x y h).1, (hG.ofld W hW x y h).2, h⟩⟩
   have hwo' : IsWO mem (Le H (G W)) (Fld H (G W)) :=
     (hwo.congr hiff).mono fun x hx => (fld_step H hG hW x).1 hx
   have hf : ∀ x y, Le H (G W) x y → Fld H (G W) x ∧ Fld H (G W) y := by
@@ -198,42 +192,40 @@ theorem stage_wos : ∀ a, Ord mem a → ∀ W, IsStage H G a W →
           imp_congr_right fun _ => ?_
       exact ⟨fun ⟨_, e, h⟩ => e ▸ h, fun h => ⟨_, rfl, h⟩⟩) ?_
   intro a ha IH W hW
-  have hspec := stage_spec H hR D ha hW
   -- the images of earlier stages
-  have hstage : ∀ c, mem c a → ∃ Wc, IsStage H G c Wc := fun c hc =>
-    stage_exists' H hR D (ord_of_mem ha hc)
-  have hwos : ∀ c Wc, mem c a → IsStage H G c Wc → IsWOS H Wc := fun c Wc hc h =>
-    (IH c hc Wc h).1
   have hstepW : ∀ c Wc, mem c a → IsStage H G c Wc → IsWOS H (G Wc) ∧ EndExt H Wc (G Wc) :=
-    fun c Wc hc h => step_wos H hG (hwos c Wc hc h)
+    fun c Wc hc h => step_wos H hG (IH c hc Wc h).1
   -- comparability of the images
   have hchain : ∀ c c' Wc Wc', mem c a → mem c' a → IsStage H G c Wc → IsStage H G c' Wc' →
       mem c c' → EndExt H (G Wc) (G Wc') := fun c c' Wc Wc' hc hc' h h' hcc' =>
     EndExt.trans H ((IH c' hc' Wc' h').2 c Wc hcc' h) (hstepW c' Wc' hc' h').2
-  have hsame : ∀ c Wc Wc', mem c a → IsStage H G c Wc → IsStage H G c Wc' → Wc = Wc' :=
-    fun c Wc Wc' hc h h' => stage_unique H hR (ord_of_mem ha hc) h h'
   have hle : ∀ x y, Le H W x y ↔ ∃ c Wc, mem c a ∧ IsStage H G c Wc ∧ Le H (G Wc) x y :=
-    fun x y => hspec _
+    fun x y => stage_spec H hR D ha hW _
   -- any two images: the earlier one is end-extended by the later one
   have hcmp : ∀ c c' Wc Wc', mem c a → mem c' a → IsStage H G c Wc → IsStage H G c' Wc' →
       EndExt H (G Wc) (G Wc') ∨ EndExt H (G Wc') (G Wc) := by
     intro c c' Wc Wc' hc hc' h h'
     rcases trichotomy H hR c (ord_of_mem ha hc) c' (ord_of_mem ha hc') with e | rfl | e
     · exact Or.inl (hchain c c' Wc Wc' hc hc' h h' e)
-    · rw [hsame c Wc Wc' hc h h']
+    · rw [stage_unique H hR (ord_of_mem ha hc) h h']
       exact Or.inl (EndExt.refl H _ (hstepW c Wc' hc h').1.fld)
     · exact Or.inr (hchain c' c Wc' Wc hc' hc h' h e)
   have hfld : ∀ x, Fld H W x ↔ ∃ c Wc, mem c a ∧ IsStage H G c Wc ∧ Fld H (G Wc) x :=
     fun x => hle x x
-  -- relations of `W` are read in any image containing both points
-  have hread : ∀ c Wc x y, mem c a → IsStage H G c Wc → Fld H (G Wc) x → Fld H (G Wc) y →
-      (Le H W x y ↔ Le H (G Wc) x y) := by
-    intro c Wc x y hc h hx hy
-    rw [hle]
-    refine ⟨fun ⟨c', Wc', hc', h', hxy⟩ => ?_, fun hxy => ⟨c, Wc, hc, h, hxy⟩⟩
-    rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
-    · exact (e.1 x y).2 ⟨hxy, hx, hy⟩
-    · exact ((e.1 x y).1 hxy).1
+  -- each image end-extends into the limit before leastness is proved
+  have hext : ∀ c Wc, mem c a → IsStage H G c Wc → EndExt H (G Wc) W := by
+    intro c Wc hc h
+    refine ⟨fun x y => ⟨fun hxy => ⟨(hle x y).2 ⟨c, Wc, hc, h, hxy⟩,
+      (hstepW c Wc hc h).1.fld x y hxy⟩, fun ⟨hxy, hx, hy⟩ => ?_⟩,
+      fun x y hx hy hny => ?_⟩
+    · obtain ⟨c', Wc', hc', h', hxy⟩ := (hle x y).1 hxy
+      rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
+      · exact (e.1 x y).2 ⟨hxy, hx, hy⟩
+      · exact ((e.1 x y).1 hxy).1
+    · obtain ⟨c', Wc', hc', h', hy'⟩ := (hfld y).1 hy
+      rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
+      · exact (hle x y).2 ⟨c', Wc', hc', h', e.2 x y hx hy' hny⟩
+      · exact absurd (e.fld H hy') hny
   -- two images have a common upper image
   have hjoin : ∀ c c' Wc Wc', mem c a → mem c' a → IsStage H G c Wc → IsStage H G c' Wc' →
       ∃ d Wd, mem d a ∧ IsStage H G d Wd ∧ (∀ x, Fld H (G Wc) x → Fld H (G Wd) x) ∧
@@ -250,15 +242,15 @@ theorem stage_wos : ∀ a, Ord mem a → ∀ W, IsStage H G a W →
       exact ⟨(hfld x).2 ⟨c, Wc, hc, h, this.1⟩, (hfld y).2 ⟨c, Wc, hc, h, this.2⟩⟩
     · obtain ⟨c, Wc, hc, h, hxy'⟩ := (hle x y).1 hxy
       have hf := (hstepW c Wc hc h).1.fld x y hxy'
-      exact (hstepW c Wc hc h).1.antisymm x y hxy' ((hread c Wc y x hc h hf.2 hf.1).1 hyx)
+      exact (hstepW c Wc hc h).1.antisymm x y hxy' (((hext c Wc hc h).1 y x).2 ⟨hyx, hf.2, hf.1⟩)
     · obtain ⟨c, Wc, hc, h, hxy'⟩ := (hle x y).1 hxy
       obtain ⟨c', Wc', hc', h', hyz'⟩ := (hle y z).1 hyz
       obtain ⟨d, Wd, hd, hd', s1, s2⟩ := hjoin c c' Wc Wc' hc hc' h h'
       have f1 := (hstepW c Wc hc h).1.fld x y hxy'
       have f2 := (hstepW c' Wc' hc' h').1.fld y z hyz'
       have := (hstepW d Wd hd hd').1.trans x y z
-        ((hread d Wd x y hd hd' (s1 x f1.1) (s1 y f1.2)).1 hxy)
-        ((hread d Wd y z hd hd' (s2 y f2.1) (s2 z f2.2)).1 hyz)
+        (((hext d Wd hd hd').1 x y).2 ⟨hxy, s1 x f1.1, s1 y f1.2⟩)
+        (((hext d Wd hd hd').1 y z).2 ⟨hyz, s2 y f2.1, s2 z f2.2⟩)
       exact (hle x z).2 ⟨d, Wd, hd, hd', this⟩
     · obtain ⟨c, Wc, hc, h, hx'⟩ := (hfld x).1 hx
       obtain ⟨c', Wc', hc', h', hy'⟩ := (hfld y).1 hy
@@ -278,17 +270,8 @@ theorem stage_wos : ∀ a, Ord mem a → ∀ W, IsStage H G a W →
       refine ⟨m, hmZ, fun z hz => ?_⟩
       by_cases hzc : Fld H (G Wc) z
       · exact (hle m z).2 ⟨c, Wc, hc, h, hmin z ((hZ' z).2 ⟨hz, hzc⟩)⟩
-      · obtain ⟨c', Wc', hc', h', hz'⟩ := (hfld z).1 (hZ z hz)
-        rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
-        · exact (hle m z).2 ⟨c', Wc', hc', h', e.2 m z hmF hz' hzc⟩
-        · exact absurd (e.fld H hz') hzc
-  refine ⟨hW', fun c Wc hc h => ⟨fun x y => ?_, fun x y hx hy hny => ?_⟩⟩
-  · exact ⟨fun hxy => ⟨(hle x y).2 ⟨c, Wc, hc, h, hxy⟩, (hstepW c Wc hc h).1.fld x y hxy⟩,
-      fun ⟨hxy, hx, hy⟩ => (hread c Wc x y hc h hx hy).1 hxy⟩
-  · obtain ⟨c', Wc', hc', h', hy'⟩ := (hfld y).1 hy
-    rcases hcmp c c' Wc Wc' hc hc' h h' with e | e
-    · exact (hle x y).2 ⟨c', Wc', hc', h', e.2 x y hx hy' hny⟩
-    · exact absurd (e.fld H hy') hny
+      · exact (hext c Wc hc h).2 m z hmF (hZ z hz) hzc
+  exact ⟨hW', hext⟩
 
 end Recursion
 

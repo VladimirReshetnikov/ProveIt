@@ -6,6 +6,11 @@ The original fresh full builds below were recorded at `613f9cf28a`.
 [Phase16](simplification/phase16/README.md) retains the preceding accepted
 quotient-unification snapshot and its exact source, profile and warning records.
 
+The [phase27 proof cleanup](simplification/phase27/README.md) removes **118 lines / 4,635 bytes**
+from five proof files. Its full Lean check passes for **230 providers and two
+endpoint audits**, with zero warnings and exact retained profiles. The machine
+remains **215 states**; its internal PA endpoint and minimum-state theorem remain open.
+
 The [phase26 proof cleanup](simplification/phase26/README.md) removes **126 lines / 3,711 bytes**
 from five files, sharing completeness, rank, satisfaction and tape proofs.
 Kernel, actual-result, capture and archive checks pass for **230 providers
@@ -118,7 +123,7 @@ endpoint. The large literal tables and arithmetic certificates are kernel-checke
 data, while these final compositions stay small.
 
 The [Lean reproduction driver](lean/README.md), using Lean 4.32.0, selects 172
-project modules from the current phase26 sources and then two explicit endpoint
+project modules from the current maintained sources and then two explicit endpoint
 clients. The original fresh build selected 204. The
 [Rocq reproduction driver](rocq/README.md), using Rocq 9.1.0 and rocq-stdlib 9.0.0,
 selects 237 sources: 195 from the pinned reference and 42 for K215. Both use the
