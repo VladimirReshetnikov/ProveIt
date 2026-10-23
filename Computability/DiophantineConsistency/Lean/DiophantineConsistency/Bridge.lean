@@ -23,4 +23,12 @@ theorem zfcRefutationInputs_re : REPred zfcRefutationInputs :=
     KEndpoint.c222_iff_zf_refutation.trans
       ConstructibleChoice.zf_refutation_iff_zfc_refutation
 
+/-- The bounded arithmetic test accepts some bound exactly when the actual
+ZFC axiom predicate has a finite refutation. -/
+theorem exists_haltingTest_eq_one_iff_refutation :
+    (∃ t, haltingTest t = 1) ↔ BProv ZFCax_s [] Form.fBot :=
+  exists_haltingTest_eq_one_iff.trans
+    (KEndpoint.c222_iff_zf_refutation.trans
+      ConstructibleChoice.zf_refutation_iff_zfc_refutation)
+
 end DiophantineConsistency

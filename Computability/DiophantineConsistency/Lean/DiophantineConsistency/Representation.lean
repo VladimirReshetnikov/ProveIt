@@ -197,6 +197,39 @@ def conjunction (r : Rep σ P) (s : Rep σ Q) : Rep σ (fun v => P v ∧ Q v) :=
     exact ⟨⟨w ∘ Fin.castAdd s.witnessCount, ha⟩,
       ⟨w ∘ Fin.natAdd r.witnessCount, hb⟩⟩
 
+/-- Disjunction multiplies residuals and keeps independent witness blocks.
+The unused branch may take all its natural witnesses to be zero. -/
+def disjunction (r : Rep σ P) (s : Rep σ Q) : Rep σ (fun v => P v ∨ Q v) := by
+  let left := r.expression.rename (Sum.map id (Fin.castAdd s.witnessCount))
+  let right := s.expression.rename (Sum.map id (Fin.natAdd r.witnessCount))
+  refine ⟨r.witnessCount + s.witnessCount, left * right, ?_⟩
+  intro v
+  have hl (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+      left.eval (natAssignment v w) =
+        r.expression.eval (natAssignment v (w ∘ Fin.castAdd s.witnessCount)) := by
+    rw [Expr.eval_rename]
+    apply congrArg r.expression.eval
+    funext i
+    cases i <;> rfl
+  have hr (w : Fin (r.witnessCount + s.witnessCount) → ℕ) :
+      right.eval (natAssignment v w) =
+        s.expression.eval (natAssignment v (w ∘ Fin.natAdd r.witnessCount)) := by
+    rw [Expr.eval_rename]
+    apply congrArg s.expression.eval
+    funext i
+    cases i <;> rfl
+  simp only [Expr.eval_mul, hl, hr, mul_eq_zero]
+  rw [r.correct, s.correct]
+  constructor
+  · rintro (⟨a, ha⟩ | ⟨b, hb⟩)
+    · refine ⟨Fin.addCases a (fun _ => 0), Or.inl ?_⟩
+      simpa [Function.comp_def] using ha
+    · refine ⟨Fin.addCases (fun _ => 0) b, Or.inr ?_⟩
+      simpa [Function.comp_def] using hb
+  · rintro ⟨w, ha | hb⟩
+    · exact Or.inl ⟨w ∘ Fin.castAdd s.witnessCount, ha⟩
+    · exact Or.inr ⟨w ∘ Fin.natAdd r.witnessCount, hb⟩
+
 /-- Move a finite block of input coordinates into the existential witnesses. -/
 def existsBlock {k : ℕ} {P : (σ ⊕ Fin k → ℕ) → Prop}
     (r : Rep (σ ⊕ Fin k) P) : Rep σ (fun v => ∃ a : Fin k → ℕ, P (Sum.elim v a)) := by
