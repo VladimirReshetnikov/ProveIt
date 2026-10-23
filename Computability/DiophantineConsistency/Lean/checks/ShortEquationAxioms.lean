@@ -1,0 +1,7 @@
+import DiophantineConsistency.ShortEquation
+
+#print axioms DiophantineConsistency.ShortEquation.strong_ne_neg_one
+#print axioms DiophantineConsistency.ShortEquation.strong_eq_one
+#print axioms DiophantineConsistency.ShortEquation.replace_coefficient
+#print axioms DiophantineConsistency.ShortEquation.scaled_identity
+#print axioms DiophantineConsistency.ShortEquation.scaled_zero_iff_reduced
