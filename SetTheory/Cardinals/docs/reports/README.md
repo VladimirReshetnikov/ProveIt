@@ -3589,3 +3589,17 @@ unrestricted integers, a 27-integer form of degree 172 in 116 operations,
 and materialized coefficients with B = 2^(5^10). The 67-operation equation
 keeps the fewest operations. Nothing was rerun; no formalization,
 consistency proof, optimality or new universal bound is claimed.
+
+Batch 220 (arrival `375cc6e3d7`, "wave-4") replaces the wave-3 packages in
+turn by seven syntheses, which supersede them by Vladimir's direction; the
+collection stays at **291 reports**. Placement `604b1416b5` removes the
+wave-3 directories (recoverable from `da064316ea` through its parent),
+places sources 24–30 and retires the seven ZIPs; reconciliation
+`eab42d8e3e` replaces the README and lists the wave-3 results that wave 4
+does not reproduce. The packages state 17 unrestricted integers (a signed
+Jones construction of astronomic degree), 24 at moderate degree, nine
+positive unknowns as a delivered circuit, 12 positive unknowns at degree
+1069 or in 111 operations, a 31-unknown quartic, and materialized
+coefficients with B = 2^(5^9). The 67-operation equation keeps the fewest
+operations. Nothing was rerun; no formalization, consistency proof,
+optimality or new universal bound is claimed.
