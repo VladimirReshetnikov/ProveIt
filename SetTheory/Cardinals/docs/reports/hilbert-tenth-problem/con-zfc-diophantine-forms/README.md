@@ -1,86 +1,69 @@
 # Con(ZFC) in Diophantine form
 
 **Explicit polynomials with fixed integer coefficients whose unsolvability
-ZFC proves equivalent to Con(ZFC): seven wave-4 syntheses on the blank run of
-K215, with 17 unrestricted integers, nine positive unknowns, twelve positive
-unknowns at degree 1069, and coefficients with B = 2^(5^9)**
+ZFC proves equivalent to Con(ZFC): seven wave-5 syntheses on the blank run of
+K215, with ten unrestricted integers via Sun's reduction, fourteen via Jones,
+and twelve positive unknowns at degree 1022**
 
-This report holds seven AI-assisted research packages dated 22–23 October
-2026. They are batch 220 of ProveIt's incoming reports (arrival `375cc6e3d7`,
-"Con(ZFC) in Diophantine form (wave-4)"), placed in `604b1416b5`. Six are
-pinned to `ae3007ca44` and 26 to `a477d0fc8b`; both snapshots contain this
-report's audited wave-3 form. The packages cite wave-3 packages by their
-source numbers 16–23. No wave-4 package mentions another.
+This report holds seven AI-assisted research packages, dated 22–23 October
+2026. They are batch 221 of ProveIt's incoming reports (arrival
+`b7f8b75b5b`, "Con(ZFC) in Diophantine form (wave-5)"), placed in
+`952c1fab49`.
+
+- All seven are pinned to `8c6eec9d19`, which contains this report's
+  audited wave-4 form.
+- They cite wave-4 packages by their source numbers 24–30.
+- No wave-5 package cites another wave-5 package.
 
 ## Earlier waves are superseded
 
-Vladimir directed for wave 4 the same treatment he chose for wave 3, so
-wave 4 supersedes wave 3 and directories `16-integer27/` … `23-separating12/`
-were removed from the tree when wave 4 was placed.
+As for waves 3 and 4 (Vladimir's direction), wave 5 supersedes wave 4.
+Directories `24-integer24/` … `30-quartic31/` were removed from the tree when
+wave 5 was placed.
 
 | Wave | Batch | Arrival (archives) | Directories in every commit from … to … | Audited README |
 |---|---|---|---|---|
 | 1 | 217 | `2fd49a1a9d` | `084e120830` … `8a4b00b5bf^` | `f3af223ef7` |
 | 2 | 218 | `7be2780f26` | `8a4b00b5bf` … `da064316ea^` | `5b0c9ae9fd` |
 | 3 | 219 | `cbf94cb552` | `da064316ea` … `604b1416b5^` | `a477d0fc8b` |
-| 4 | 220 | `375cc6e3d7` | `604b1416b5` … | this file |
+| 4 | 220 | `375cc6e3d7` | `604b1416b5` … `952c1fab49^` | `52f475c7a7` |
+| 5 | 221 | `b7f8b75b5b` | `952c1fab49` … | this file |
 
-Source numbers 01–23 are kept only because the packages' texts use them; the
-wave-4 directories continue the sequence as 24–30.
+Source numbers 01–30 are kept only because the packages' texts use them; the
+wave-5 directories continue the sequence as 31–37.
 
-All seven wave-4 packages bundle a copy of the audited wave-3 README, so every
-copy describes a superseded wave. The copies are identical up to line ends;
-three have one extra final newline (checked at intake):
+Several wave-5 packages bundle copies of wave-4 files as reference material.
+These include the audited wave-4 README, for example
+`32-integer15/references/COMPARISON_AT_PIN.md` and 35's
+`sources/catalogue/`. Such copies stay bound to their original wave-4
+tuples and describe a superseded wave.
 
-| Dir | Bundled copy |
+**Wave-4 results that wave 5 does not reproduce or rebind** (an intake
+comparison by blob matching against the wave-4 tree):
+
+| Wave-4 result | Byte copy in the wave-5 tree |
 |---|---|
-| 24 | `upstream/collection_at_pin.md` |
-| 25 | `upstream/COMPARISON_AT_PIN.md` |
-| 26 | `references/README.md` |
-| 27 | `COMPARISON_AT_PIN.md` |
-| 28 | `vendor/COMPARISON_AT_PIN.md` |
-| 29 | `references/COMPARISON_AT_PIN.md` |
-| 30 | `review/README.upstream.md` |
+| 30's 25ℤ / 920 / 131 and 26ℤ / 214 / 123 forms (system 128 / 117) | `37-wave5/lowdegree/upstream/integers/` |
+| 24's 24ℤ / 1936 / 167 and 26's 24ℤ / 2432 / 163 | `34-integer14/review/24-integer24/`, `34-integer14/review/26-ratio12/` |
+| 27's nine-positive form at 1537 ops (new majorant) | `34-integer14/review/27-wave4/nine/generated/` |
+| 27's 1480-op nine-positive form of 18's circuit and its literal-weight variants | none (history only) |
+| 24's 13-unknown forms 319 / 89 and 288 / 81 | none (history only) |
+| the 42ℤ sextic and 36ℤ octic (27, 29) | none (history only) |
+| 27's 59-op systems of degree 12, 10, 8, 6 (17–20 unknowns) | none (history only) |
+| the 16 / 7 / 22 / 60 system (27, 30) | none (history only) |
 
-**Wave-3 results that wave 4 does not reproduce or rebind.** Most of them
-still ship as byte copies of the wave-3 files, inside 27 and 30, as reference
-material bound to their original wave-3 tuples. The full wave-3 README and
-directories are at `a477d0fc8b`, e.g.
-`git show a477d0fc8b:<this directory>/README.md`. This list is an intake
-comparison; where a wave-4 package itself says a result stays better, that
-is noted.
+To read the results that are in history only, use the wave-4 README and
+directories at `52f475c7a7`, e.g.
+`git show 52f475c7a7:<this directory>/README.md`. Earlier waves' lost results
+are listed in their own READMEs (see the wave table).
 
-| Wave-3 result | Copy in the tree |
-|---|---|
-| 23's 27ℤ product 172 / 116, which the wave-4 packages say remains a better tradeoff, and its normalized products 274 / 114 and 216 / 115 | `30-quartic31/review/23-separating12/data/integer27/` |
-| 23's 27ℤ system 46 / 107 | `27-wave4/integers/sources/23-separating12/data/integer27/ordinary27_system107.json` |
-| 13 positive unknowns at degree 515, 84 ops (16, 20) | 16's: `30-quartic31/review/16-integer27/data/improved_weight_polynomial13_84.json` |
-| the 13-unknown four-equation system 488 / 78 (16, 20) | none; it beats 24's 288 / 81 on operations |
-| 19's 15-unknown grouped sum of squares, degree 44 at 76 ops (27 says it remains better), and its other nondominated choices | 44 / 76: `27-wave4/operations/upstream/grouped_doublegap76_degree44.json` |
-| the 27ℤ forms of degree 1004 (16, 18, 20) and 1116 (17, 18, 19) | 16's 1004 / 139: `30-quartic31/review/16-integer27/data/`; 19's 1116 / 136: `30-quartic31/integers/parents/` |
-| 19's 28ℤ forms 258 / 128 and 426 / 127 | 258 / 128: `30-quartic31/integers/parents/` |
-| 20's 54 / 45 / 39ℤ lifts (improved by 27 and 29) | `27-wave4/integers/sources/previous-deliverable/domains/` |
+Two results remain the best on their measures:
 
-The 27ℤ forms of degree 1004 and 1116 and 19's 28ℤ forms are dominated by
-30's 25ℤ / 920 / 131 and 26ℤ / 214 / 123 on all three measures.
+- the 67-operation equation P₆₇ (wave 1), for fewest operations;
+- the 59-operation 16 / 7 / 24 system.
 
-Wave-2 results listed as lost in the wave-3 README remain lost. The
-32-unknown positive quartic is now improved to 31 unknowns (30), but none of
-the following is reproduced:
-
-- the positive sextic and octic;
-- the 15-unknown systems of degree 22 and of degree 28 (61 ops, and 12's S₆₀
-  at 60);
-- the 14-unknown forms;
-- the 15-unknown products of degree 83–99;
-- Q₅₆ (15 / 1 / 56 / 74);
-- the 33ℤ / 1 / 159 / 134 polynomial.
-
-Q₅₆ and the 33ℤ polynomial are still unbeaten on their measures by anything
-in wave 4.
-
-The 67-operation equation P₆₇ (wave-1 06/08) remains the fewest-operations
-form; 24 and 25 ship it rebound to their coefficients.
+36 ships both rebound to its coefficients, and 31 bundles the 59-operation
+system.
 
 ## How this report was made
 
@@ -88,66 +71,77 @@ The packages overlap, as before, so they are **placed, not written**
 ([docs/incoming/README.md](../../../../../../docs/incoming/README.md),
 section 2):
 
-- each keeps its delivered layout and PDF in its numbered directory, with the
-  wrapper removed;
+- each package keeps its delivered layout and PDF in its numbered directory,
+  with the wrapper removed;
 - this README is the reconciliation note;
 - no delivered file was edited, no PDF was built, and no delivered program
   was run at intake.
 
-Facts are the packages' own, from two read-only intake dossiers, whose
+Facts are the packages' own, from two read-only intake dossiers. Their
 scripts also evaluated delivered circuits modulo a large prime to tell
-polynomials apart. Agreement at random points is strong evidence of identity,
-not proof; disagreement proves difference.
-[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for wave 4. Of the 871
+polynomials apart. Agreement at random points is strong evidence of
+identity, not proof; disagreement proves the polynomials differ.
+
+[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for wave 5. Of the 1,197
 archive members:
 
-- 831 were staged;
-- 25 were omitted as byte-identical (up to line ends) copies of repository
+- 1,129 were staged;
+- 46 were omitted as byte-identical (up to line ends) copies of repository
   files outside this report;
-- 15 checksum ledgers and logs were excluded by the root `.gitignore`.
+- 22 checksum ledgers and logs were excluded by the root `.gitignore`.
 
 ## The common theorem
 
 Each package defines polynomials or small systems with four **fixed integer
-coefficient ports**: Bm1 = B − 1, Kconstant = D_C + B·D_R, MC, and the
-**shifted** MF = (native high mask) + B − 1. The ports are determined by a
-finite recipe from the literal 215-state machine
+coefficient ports**:
+
+- Bm1 = B − 1;
+- Kconstant = D_C + B·D_R;
+- MC;
+- the **shifted** MF = (native high mask) + B − 1.
+
+The ports are determined by a finite recipe from the literal 215-state
+machine
 [`candidate-k215/k215.tm`](../../../../../../Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm),
 and each package proves, by ordinary mathematics formalizable in ZFC, that
 
 > ZFC ⊢ (no solution in the stated domain) ↔ Con(ZFC).
 
-The route is unchanged: the blank run of K215 halts iff ZFC has a finite
-refutation, and a local tile language of that run is compiled by the
-repository's native-window/Pell compiler
-([`native-stream-queue/`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md))
-with its input interface removed. The nine-variable forms add Jones's
-nine-variable reduction applied to a fixed quartic.
+The route is unchanged:
+
+1. the blank run of K215 halts iff ZFC has a finite refutation;
+2. a local tile language of that run is compiled by the repository's
+   native-window/Pell compiler
+   ([`native-stream-queue/`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/README.md))
+   with its input interface removed.
+
+The low-variable forms then apply a reduction to the fixed 31-unknown
+quartic:
+
+- Jones's nine-variable reduction, for the 9ℕ and signed 14–16ℤ forms;
+- for 31's 10ℤ form, Sun's ten-integer reduction.
 
 ## The seven packages
 
 Numbers are the packages' own; **none was re-derived at intake.** "u / e / d
-/ o" means unknowns / equations / degree / operations. Operations count every
-binary +, −, × including multiplication by fixed numerals; reuse and system
-comparisons are free. Unknowns are strictly positive unless marked ℤ
-(unrestricted integers) or ℕ (naturals).
+/ o" means unknowns / equations / degree / operations, with L = 5^32.
+Operations count every binary +, −, × including multiplication by fixed
+numerals; reuse and system comparisons are free. Unknowns are strictly
+positive unless marked ℤ (unrestricted integers) or ℕ (naturals).
 
 | Dir | Archive | Title as printed | Constructions |
 |---|---|---|---|
-| [`24-integer24/`](24-integer24/) | `con_zfc_synthesis_2026-10-22.zip` | *Smaller explicit Diophantine forms of ZFC consistency* | 24ℤ / 1 / 1936 / 167 (system 1920 / 162); **12 / 1 / 1069 / 123** (system 1060 / 118), 1073 / 121, 1081 / 120; refactors of 21's polynomial to 113 ops (system 108) and of 22's 13-unknown forms to 319 / 89 (system 288 / 81); P₆₇ and retained59 rebound; coefficients with d = 6,364,399, materialized (gzip) |
-| [`25-hybrid12/`](25-hybrid12/) | `con-zfc-hybrid12-2026-10-22.zip` | *Smaller Diophantine forms of ZFC consistency* | 12 / 1 / 1081 / 116 (system 111, SOS 119), variants 117 and 118; P₆₇ and retained59 rebound; **B = 2^(5^9)**, materialized (gzip; 977,220 raw bytes) |
-| [`26-ratio12/`](26-ratio12/) | `con_zfc_synthesis_2026-10-22 (1).zip` | *Smaller explicit Diophantine forms of ZFC consistency* | 12 / 1 / 1081 / 116 (system 111, shifted system 110); 24ℤ / 1 / 2432 / 163 (system 159, shifted 157, SOS 4832 / 166); parity layout at B = 2^(5^10), largest port 9,766,251 bits |
-| [`27-wave4/`](27-wave4/) | `ZFC_Diophantine_Wave4_Synthesis_2026-10-23.zip` | *Smaller Diophantine presentations of ZFC consistency* | 12 / 1 / 1081 / 120; 24ℤ / 1 / 2432 / 163 and 24ℤ / 1 / 1936 / 168; **nine positive unknowns**: 1537 ops (degree 120764·5^33 + 368) or 1480 ops (package 18's polynomial); 59-op systems of degree 12, 10, 8, 6 (17–20 unknowns); 51ℤ quartic, 42ℤ sextic, 36ℤ octic; B = 2^(5^9), materialized (raw and gzip) |
-| [`28-compact-norms/`](28-compact-norms/) | `ProveIt_ConZFC_Compact_Norms_2026-10-23.zip` | *Smaller separating norms and a signed finalizer for Diophantine ZFC consistency* | 12 / 1 / 1081 / 116 (system 112, SOS 119); 9ℕ / 1 / 93264·5^33 + 288 / 20,547; 19's Wang943 bytes |
-| [`29-simpler-forms/`](29-simpler-forms/) | `ConZFC_Simpler_Forms_2026-10-22.zip` | *Smaller explicit Diophantine forms of ZFC consistency* | 12 / 1 / 1097 / 116 (shifted system 110, SOS 118); **17ℤ signed Jones / 1 / 424296·5^33 + 53824 / 20,607** (on the T4 tuple); 51ℤ quartic, 42ℤ sextic, 36ℤ octic |
-| [`30-quartic31/`](30-quartic31/) | `con-zfc-nine-quartic31-ae3007c.zip` | *Smaller explicit Diophantine forms for Con(ZFC)* | **12 / 1 / 1081 / 111 (system 107)**; 24ℤ / 1 / 2240 / 165; 25ℤ / 1 / 920 / 131; **26ℤ / 1 / 214 / 123** (system 128 / 117); **31-unknown quartic** (22 quadratics; SOS 130 ops); **9ℕ / 1 / 120724·5^32 + 366 / 1840**; package 18's polynomial in 1704 ops; materialized index z = 2^45933757 (`nine/z_index.bin`) |
+| [`31-sun10/`](31-sun10/) | `con_zfc_synthesis.zip` | *Smaller explicit Diophantine forms for Con(ZFC)* | **10ℤ / 1 / 126496·5^31 + 27064 / 1442** (Sun's reduction instantiated); 16ℤ / 1 / 813056·L + 10016 / 1617; 31-quartic system 22 / 2 / **60**, SOS 125; 12 / 1 / 1081 / 108, shifted system **102** |
+| [`32-integer15/`](32-integer15/) | `con_zfc_fifteen_integer_synthesis_2026-10-22.zip` | *Fifteen integer unknowns and smaller coefficient tuples…* | 15ℤ / 1 / 813056·5^33 + 4184 / 1541; 16ℤ / 1 / 406528·5^33 + 10008 / 1550 (both on the T4 tuple); 12 / 1 / 1081 / 108, systems 104 and 103 |
+| [`33-signed16/`](33-signed16/) | `ConZFC_Signed16_Synthesis_2026-10-22.zip` | *Sixteen integer unknowns for an explicit consistency equation* | 16ℤ / 1 / 406528·L + 10008 / 1590; 31-quartic system 61, SOS 126; 12 / 1 / 1081 / 108 (systems 104, 103); optional tuple B = 2^1012625 binding no equation |
+| [`34-integer14/`](34-integer14/) | `con-zfc-fourteen-integer-8c6eec9d19.zip` | *Smaller Diophantine forms for ZFC consistency* | **14ℤ / 1 / 813056·L + 2152 / 1586**; 15ℤ / 1 / 406528·L + 2528 / 1594; **9ℕ / 9 positive at 92324·L + 296**, 1559 / 1554 ops; **12 / 1 / 1022 / 124**, 1041 / 111, 1081 / 110; 50ℤ quartic (29 residuals) |
+| [`35-cancel12/`](35-cancel12/) | `con-zfc-synthesis-2026-10-22.zip` | *Smaller explicit Diophantine forms of ZFC consistency* | 16ℤ / 1 / 813056·L + 10024 / 1865; 17ℤ / 1 / 406528·L + 27512 / 1874; 12 / 1 / 1065 / 118 (systems 114, 113); 12 / 1 / 1081 / 108 (systems 104, 103); 31-quartic system 62, SOS 127 |
+| [`36-small-tuple/`](36-small-tuple/) | `con-zfc-synthesis-2026-10-22 (1).zip` | *Smaller Diophantine presentations of ZFC consistency* | **B = 2^1012115**, materialized (506,664 raw bytes); 12 / 1 / 1081 / 109 and 1069 / 120 (systems 104 / 115, shifted 103 / 114); 30's nine-variable polynomial in 1587 / 1582 ops; P₆₇ and the 59-op system rebound |
+| [`37-wave5/`](37-wave5/) | `ZFC_Diophantine_Fourteen_Integers_2026-10-23.zip` | *Fourteen integer unknowns and smaller separating norms for the consistency of ZFC* | **14ℤ / 1 / 813056·L + 2752 / 1524**; 16ℤ / 1 / 406528·L + 10008 / **1537**; **9 positive / 92324·L + 296 / 1500** (1505 over ℕ); 12-positive products of degree 1061, 1065, 1069, 1081 (120, 119, 117, 109 ops), systems 1052 / 114 and 1072 / 103; 24ℤ / 1 / 1936 / 161 (system 156); 50ℤ quartic (system 111, SOS 197) |
 
 Directory numbers follow the archives' arrival (file-time) order. Each
-directory's `README.md` is its entry point. The articles are:
-
-- 24: `con_zfc_synthesis.pdf`;
-- 25, 26, 27, 28 and 29: `report.pdf`;
-- 30: `report/synthesis_report.pdf`, with Markdown sources.
+directory's `README.md` is its entry point. The articles are `report.pdf` in
+31, 32, 33, 35, 36 and 37, and `report/synthesis_report.pdf` in 34.
 
 ## Frontier, credits and bases (intake findings)
 
@@ -156,225 +150,171 @@ full; where only one package has it, that package.
 
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
-| Fewest unrestricted integers | **17ℤ**: a signed Jones construction, one equation of degree 424296·5^33 + 53824 in 20,607 ops, on the T4 tuple | 29 only | 29 |
-| Fewest unrestricted integers, moderate degree | **24ℤ**: these are different polynomials except where noted. 26's and 27's 2432 / 163 are the same circuit in the four ports, found independently but bound to different tuples (26's shifted system: 157). 24's 1936 / 167 and 27's 1936 / 168 differ, and 30 has 2240 / 165. Also 25ℤ at 920 / 131 and 26ℤ at 214 / 123 (30) | 24, 26, 27, 30 | 24; 26 for operations |
-| Nine unknowns | **9 positive, delivered as a circuit**: 27 (1537 ops with its new majorant, degree 120764·5^33 + 368; 1480 ops for 18's polynomial). Over ℕ: 30 has the lowest degree, 120724·5^32 + 366, at 1840 ops; 28 has 93264·5^33 + 288 at 20,547 ops. These are three different new polynomials. 30 re-evaluates 18's polynomial in 1704 ops; 27 evaluates 18's circuit in 1485 ops but binds it to its own new tuple, so as a fixed-coefficient polynomial it is not 18's. 27 also delivers a literal-Jones-weight variant (1478 / 1473 ops) | 27; 30; 28 | 27 for positive; 30 for degree |
-| Twelve positive, lowest degree | **1069** at 123 ops (system 1060 / 118) | 24 only | 24 |
-| Twelve positive, fewest operations | **111** product, **107** system (degree 1081) | 30 only | 30 |
-| Twelve positive at degree 1081 | six different polynomials: 24 (120 ops), 25 (116), 26 (116), 27 (120), 28 (116) and 30 (111); 29 has degree 1097 at 116 | 24–28, 30; 29 | 24 |
-| Thirteen positive | 22's forms refactored to 319 / 89 (system 288 / 81) | 24 | 24 |
-| Low-degree lifts | **31-unknown positive quartic** (22 quadratics; 65-op system, 130-op SOS); integer lifts 51ℤ quartic, 42ℤ sextic, 36ℤ octic, the same residuals in 27 and 29 found independently (different tuples) | 30; 27, 29 | 30; 27 |
-| Low-operation systems | the 16 / 7 / 24 / 59 system rebound (24, 25); 27 lowers the degree at 59 ops to 12, 10, 8, 6 with 17–20 unknowns; and a 16 / 7 / 22 / 60 system, the same in 27 and 30 | 24, 25; 27; 27, 30 | 27 |
-| Fewest operations | **67** (P₆₇, wave 1), unchanged | — | (wave-1 06) |
-| Smallest coefficients | **B = 2^(5^9)** (25, 27: two different tuples sharing β and MC bytes, differing in K and MF); 24's d = 6,364,399; 26 keeps 2^(5^10) but lowers the largest port to 9,766,251 bits | 25, 27; 24; 26 | 25 |
+| Fewest unrestricted integers | **10ℤ**: degree 126496·5^31 + 27064 (about 5.9·10^26), 1,442 ops; instantiates Sun's 2026 ten-integer reduction (preprint arXiv:2609.01594v2, cited, not reproduced, not checked at intake) on 30's quartic | 31 only | 31 |
+| Fewest unrestricted integers, Jones route | **14ℤ**: 37 (813056·L + 2752, 1524 ops) beats 34 (813056·L + 2152 at 1586 ops) on operations, and 34 beats 37 on degree; different polynomials | 34, 37 | 34 |
+| 15ℤ and 16ℤ | 15ℤ: 34 (406528·L + 2528 / 1594), 32 (813056·5^33 + 4184 / 1541, T4 tuple). 16ℤ: 31, 32, 33, 35 and 37, all different polynomials except possibly 33's and 37's, which share the degree 406528·L + 10008 (not compared at intake); fewest ops 37 (1537) | — | 37 for 16ℤ |
+| Nine unknowns | **degree 92324·L + 296**, 9 positive at 1500 ops (37) or 1554 (34); over ℕ 1505 / 1559 (not compared at intake for identity) | 34, 37 | 34 |
+| Twelve positive, lowest degree | **1022** at 124 ops (34); 1041 / 111 (34); 1061 / 120 and system 1052 / 114 (37); 1065 (35, 37: the same template, different tuples) | 34; 37; 35 | 34 |
+| Twelve positive, fewest operations | **108** (31, 32, 33, 35): all are 30's degree-1081 polynomial evaluated more cheaply. 31's, 32's and 35's are the same fixed polynomial (identical tuples), and 33's is 30's own fixed polynomial. Systems: **102** (31, shifted) | 31, 32, 33, 35 | 31 |
+| 31-unknown positive quartic | system **60** ops, SOS 125 (31); 61 / 126 (33); 62 / 127 (35), each 30's quartic under affine shifts | 31, 33, 35 | 31 |
+| Integer quartic | **50ℤ** (34; 37, not compared at intake) | 34, 37 | 34 |
+| 24ℤ at moderate degree | 37's 1936 / 161 (system 156); wave-4 24's 1936 / 167 is bundled in 34's review copies | 37 | 37 |
+| Fewest operations | **67** (P₆₇), unchanged; the 59-op 16 / 7 / 24 system unchanged | — | (wave 1) |
+| Smallest coefficients binding an equation | **B = 2^1012115** (36, 506,664 raw bytes); 33's 2^1012625 binds none; 2^1064921 (31, 32, 35: one identical tuple; 34 shares only β) | 36 | 36 |
 
 ### Coefficient recipes: use one whole tuple
 
-| Dir | Tiles | B | Materialized | Binding |
-|---|---:|---|---|---|
-| 24 | 943 | 2^6364399 (d = 529·12031) | gzip, 3,545,690 raw bytes | `coefficients/COEFFICIENT_BINDING.json` |
-| 25 | 943 | 2^(5^9) | gzip, 977,220 raw bytes | `coefficients/COEFFICIENT_BINDING.json` |
-| 26 | 943 | 2^(5^10) | gzip; the canonical binding names raw `.bin` files that are not shipped (replay creates them) | `coefficients/COEFFICIENT_BINDING.json` |
-| 27 | 943 | 2^(5^9) | raw `expanded/*.bin` (977,220 bytes) and gzip | `INSTANCE.json` |
-| 28 | 943 | 2^(5^10) (19's tuple) | gzip, byte-identical to 19's | `INSTANCE.json` |
-| 29 | 943 / 37,075 | 2^(5^10) (19's tuple); the 17ℤ form uses T4, 2^(5^18) | gzip (19's bytes); T4 not expanded | `INSTANCE_BINDINGS.json` per family; `signed17/upstream/COEFFICIENT_BINDINGS.json` for the 17ℤ form |
-| 30 | 943 | 2^(5^10) (19's tuple) | raw and gzip (19's bytes); also the nine-variable index z | `COEFFICIENT_BINDING.json` |
+| Dir | B | Materialized | Notes |
+|---|---|---|---|
+| 31 | 2^1064921 (ρ = 2^121, cell 8801, padding prime 2341) | raw and gzip, 533,099 raw bytes; Jones index z = 2^4269855 for its 16ℤ form | the same bytes as 32's and 35's tuple |
+| 32 | 2^1064921 (31's tuple) for the positive forms; T4 (2^(5^18), not expanded) for the integer forms | gzip | "no unverified claim that the new tuple has been substituted" into the Jones forms |
+| 33 | 30's 2^(5^10) for its equations; optional 2^1012625 | gzip | optional tuple binds no delivered equation |
+| 34 | 2^1064921 with 31's β but different K, MC, MF | raw and gzip, 532,479 raw bytes; z = 2^4259933 and 78 fixed leaves | a different tuple from 31's |
+| 35 | 2^1064921 (31's tuple) | raw and gzip; z = 2^4269855 | identical bytes to 31's |
+| 36 | **2^1012115** (ρ = 2^115, padding prime 3433) | gzip, 506,664 raw bytes; new Jones index z = 2^4058127 (507,266 raw bytes) | replaces earlier tuples as a whole |
+| 37 | 30's 2^(5^10) | raw and gzip; z = 2^45933757 (`nine/generated/z_index.bin`, identical to wave-4 30's) | calls 25's and 27's 2^(5^9) tuples "valid competing" choices |
 
 - Every package binds its four ports as one tuple and forbids splicing.
-- 25 and 27 share the β and MC bytes but differ in K and MF, so their ports
-  must not be mixed.
-- The packages disagree about rebinding package 18's quartic:
-  - 28 and 30 rebind it to 19's Wang943 by citing 19's interface theorem;
-  - 27 rebinds it and all its nine-variable forms to its own new
-    2^(5^9) tuple, calling the new tuple "a semantic dependency to be
-    validated separately";
-  - 29 says rebinding needs a fresh proof of the quartic/compiler
-    interface.
-- No package checks another wave-4 package's tuple.
-- The intake dossiers decoded 24's, 25's, 26's and 27's tuples and found
-  them consistent with their bindings. 28's gzip files are byte-identical to
-  19's, and 30's `nine/z_index.bin` equals 2^45933757. These checks confirm
-  bytes, not the compiler theorem the bytes instantiate.
+- Jones forms need a fresh index on any rebinding (36).
+- The dossiers' read-only checks confirm the stated hashes and byte sizes
+  of the materialized payloads. They do not check the compiler theorem the
+  bytes instantiate.
 
 ### Tensions, not adjudicated at intake
 
-- **Operation records.** 25 and 26 present 116 operations as tying the
-  best twelve-unknown product. Under the same counting convention, 24
-  evaluates wave-3 21's 1353-degree polynomial in 113 operations (system
-  108) with a cheaper evaluator that shares a common factor of the odd
-  components; the intake checked that product and system are unchanged.
-  Separately, 25 counts 21's system as 111 under a direct-comparison
-  convention, while 26 cites it at 112; that difference is one of
-  convention.
-- **Rebinding 18's quartic.** See the coefficient section above.
-- **Sun's ten-integer theorem.** 25, 26 and 29 cite "Sun 2026" (arXiv
-  2609.01594, as v2 in 25 and v1 in 26) as a general ten-integer
-  representation result that they do not instantiate. This was not checked
-  at intake.
-- **Name collision.** 28's `compact12` (degree 1081) and 29's
-  `compact_norm12` (degree 1113, a superseded intermediate) are different
-  polynomials.
-- **No package calls wave 3 wrong.** 26 and 25 call some wave-3 weights
-  unnecessarily large (20's factors), and 27 says the wave-3 README's
-  in-place driver failures are not defects of the sealed archives.
+- **The square base.** 33 says replacing the base slack by a square "is not
+  justified" (`report.tex:763-767`). Meanwhile 31 (b = κt²), 32 (b = b*·r²),
+  34 (b = Bodd·ε²), 35 and 37 all use a square or cofinal base. They justify
+  it by inspecting the Lean proof of `Jones1982.USys_of_mem`, and 34's open
+  question 2 notes that the step depends on that inspection. The 14–16ℤ
+  forms rest on this step.
+- **Smallest-tuple claims.** 35 and 36 each claim the smallest tuple
+  without knowing of each other; 36's is smaller. 33's optional 2^1012625
+  is smaller than 35's but binds nothing.
+- **Like-for-like system counts.** 36's README compares old *unshifted*
+  systems (107, 118 ops) with its new *shifted* ones (103, 114). Like for
+  like, the new counts are 104 and 115.
+- **Corrections of wave 4.** 34 says wave-4 30's `positive/README.md` wrongly
+  points to a nonexistent `coefficients/` folder; the wave-4 README already
+  recorded this. 37 says wave-4 27's "same paper18 polynomial" is a template
+  identity only, as the wave-4 README says, and qualifies the README's
+  remark on 27's adapter (27's coefficient proof argues it). No package
+  calls a wave-4 result or the wave-4 README wrong.
 
 ## What is not claimed
 
 The packages say, in their own words (exceptions noted):
 
 - **No new formal result.** New reductions are ordinary proofs with finite
-  audits; no Lean or Rocq end-to-end certificate and no fresh endpoint build.
-- **No consistency proof.** The theorems are equivalences. 24, 27, 28, 29
-  and 30 say that the stronger two-sided claim needs an extra soundness
-  hypothesis or is not made. 25 says only that it "assumes neither side",
-  and 26 that its theorem "does not decide which side holds", adding the
-  second-incompleteness remark.
-- **Domains.** Positive-domain formulas must not be read over ℤ, and the
-  nine-variable equations must not be read over ℤ either. 28 notes that its
-  twelve-unknown proof uses h > 0.
-- **Coefficients.** Materialized bytes confirm a recipe, not the compiler,
-  the K215 endpoint or consistency. Compressed size is not coefficient height
-  (27). The nine-variable index constants are recipes, except 30's z, which
-  is materialized. The other y and coefficient leaves are not.
-- **No optimality.** No global minimum is claimed for any measure. Nothing
-  below 67 operations is claimed, nor eight positive unknowns or eleven
-  positive unknowns. The nine-variable forms are specializations of Jones's
-  theorem, not new representation theorems.
+  audits; there is no Lean or Rocq end-to-end certificate and no fresh
+  endpoint build. Sun's reduction is not formalized anywhere in the
+  repository (checked at intake: nothing in
+  `Computability/HilbertTenthProblem`).
+- **No new general theorem.** 31 "does not claim a new general ten-unknowns
+  theorem or global optimality". The ten-integer reduction is attributed to
+  Sun. 31's review says it is not an independent audit of Sun's Lucas
+  theorems.
+- **No consistency proof.** The theorems are equivalences. 31, 32, 33, 35
+  and 36 add that the stronger two-sided claim needs an extra hypothesis or
+  is not made. No such remark was found in 34 or 37; 37 says the
+  equivalence "does not prove either side".
+- **Domains.** Positive and nine-variable equations must not be read over ℤ.
+  31 warns that ten integers "should not be compared … as if the domains
+  were identical".
+- **No optimality.** No global minimum is claimed. Nothing below 67
+  operations, eleven positive unknowns or nine unknowns is claimed.
 
 ## Relation to the formal developments
 
 - **Machine endpoint.** The packages rest on the ordinary K215 calibration
-  that the Lean/Rocq endpoint `KEndpoint215.blank_halts_iff_zfc_refutation`
+  that `KEndpoint215.blank_halts_iff_zfc_refutation`
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean`, present
   at `HEAD`, not rebuilt) mirrors. The ZFC-provability claim does not go
   through Lean's soundness.
-- **Jones nine-variable theorem.** The packages relate the nine-variable
-  forms to the parametric
-  `Jones1982.Nine.wset_iff_nine`
-  (`Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/NineMain.lean:46`):
-  - 27 at ν = 32 and x = 1;
-  - 30 at ν = 31, claiming its data satisfy `Jones1982.Index 31 P31 z u y`;
-  - 28 citing `Nine.ratio_complete` and `Nine.ratio_sound`.
-
-  None of these is an instance of the existence theorem
-  `Jones1982.nine_unknowns`, which fixes ν = 58 internally. 27 and 30 say so
-  explicitly. Every new finalizer and majorant is an ordinary, unformalized
-  derivation: Lean's `wset_iff_nine` concerns `nineValue`, not the new
-  polynomials. Nothing is formalized.
-- The native compiler notes under
-  `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
-  remain unformalized.
+- **Jones.** The nine-variable and signed 14–17ℤ forms build on the
+  parametric `Jones1982.Nine.wset_iff_nine` and its lemmas
+  (`Nine.ratio_complete`, `Nine.ratio_sound`, `NineReduce.reduced_of_mem`,
+  `Master3.USys_of_mem`, `Ratio.exists_B25core`) for the fixed 31-unknown
+  quartic. They do not use `Jones1982.nine_unknowns`, which fixes ν = 58.
+  Their new finalizers, majorants, cofinal bases and Pell-orbit arguments
+  are unformalized. Several argue from the Lean proofs' structure rather
+  than from their statements.
+- **Sun.** 31's ten-integer form depends on Sun's 2026 preprint (Proposition
+  2.1, Theorems 3.1 and 4.1, Propositions 6.1–6.2, §7) and his 2021 paper.
+  Sun's results are external, unformalized and were not checked at intake.
+- **Nothing in this report is formalized.**
 
 ## Delivery discrepancies
 
 These are disclosed here and were not fixed in the delivered files.
 
-- **Drivers fail in place.** Each package's main driver reads copies omitted
-  at intake (the vendored `k215.tm`, `KEndpoint215.lean`, Lean sources) or
-  ignored ledgers:
+- **Drivers.** These drivers read files omitted at intake (`k215.tm`, Lean
+  sources, `KEndpoint215.lean`) or ignored ledgers, and fail in place:
 
-  | Dir | Driver | Note |
-  |---|---|---|
-  | 24 | `verify.py` | |
-  | 25 | `reproduce.py` | contrary to its README's statement |
-  | 26 | `reproduce.py` | |
-  | 27 | `verify.py` | needs SymPy; `requirements.txt` was omitted |
-  | 28 | `reproduce.py` | |
-  | 29 | `reproduce.py --materialize-coefficients` | the default run reads only present files, per the dossier |
-  | 30 | `verify_release.py` | needs NumPy and demands an exact file set |
+  | Dir | Driver |
+  |---|---|
+  | 31 | `verify_all.py` |
+  | 32 | `verify_all.py` |
+  | 33 | `reproduce.py --check-release` |
+  | 34 | `verify_release.py` (exact manifest; needs SymPy and NumPy) |
+  | 35 | `reproduce.py` |
+  | 37 | `verify.py` (needs NumPy and SymPy) |
 
-  Rerun from the arrival commit, as `PLACEMENT.md` explains.
+  From reading the code (not running it), 33's default run and 36's
+  `verify.py` read no omitted file. Rerun from the arrival commit, as
+  `PLACEMENT.md` explains.
 - **Licence and attribution.**
   - Notices of AI assistance:
-    - ChatGPT: 24, 28.
-    - OpenAI: 25, 26, 27.
-    - AI-assisted: 29.
-    - None: 30.
-  - Several notices disclaim external human review or authorship (24, 25,
-    26, 28, 29).
-  - 27 states no licence for its new material and ships no K215 machine
-    notice (no `LICENSE.Wade` or `NOTICE-K215`), although its copied
-    `integers/sources/23-separating12/NOTICE.md` says the Wade licence is
-    preserved.
-  - 30 ships only `licenses/LICENSE.ProveIt` and `licenses/NOTICE.txt`, with
-    no root licence, no statement for its new material and no K215 machine
-    notice, although it ships the machine reference
-    (`compiler/MACHINE_SOURCE.json`).
-  - The repository's MIT-0 default applies to both unless Vladimir decides
-    otherwise. 24, 25, 26, 28 and 29 offer their new material under MIT-0.
-  - 27 calls wave-3 package 20 "our previous delivered packet". 30 calls
-    19's twelve-unknown product "the former local twelve-variable
-    polynomial" and 19's integer family "the preceding locally audited
-    family".
+
+    | Package | Notice |
+    |---|---|
+    | 31 | AI assistance (one line) |
+    | 32 | OpenAI, no human review |
+    | 33 | "Prepared with AI assistance" |
+    | 34 | OpenAI |
+    | 35 | OpenAI, disclaiming human authorship |
+    | 36 | AI-assisted, unnamed |
+    | 37 | OpenAI |
+
+  - 33 states **no licence for its new material**.
+  - Every package ships a K215 machine notice. 37 says it fixes wave-4
+    27's omission of one.
+  - 34 calls wave-4 30 "our preceding construction". 37 calls wave-4 27
+    "the previous delivery".
 - **Inside the packages.**
-  - 24: three pins hashed by `verify.py` were omitted at intake.
-  - 25:
-    - its README suggests the directory name `24-hybrid12/`;
-    - its audits cite paths absent from the package.
-  - 26: its canonical coefficient binding names raw `.bin` files that only
-    replay creates.
-  - 27:
-    - three sub-READMEs (`integers/`, `norms/`, `operations/PROOF.md`) still
-      name older tuples, overridden by a "Release binding" banner;
-    - it has no open-questions section.
-  - 28: `INSTANCE.json` points to `18-jones9/…`, which is no longer in the
-    tree.
-  - 29:
-    - `build_shifted_norm12.py` still imports the superseded
-      `compact_norm12` intermediate;
-    - `signed17/signed17_section.tex` is an alternate section not loaded by
-      `report.tex`;
-    - a low-degree audit cites a nonexistent path.
-  - 30:
-    - `positive/README.md` points to a nonexistent `coefficients/` folder;
-    - `check32/` and `rebuilt_nu31/` are not delivered.
+  - 31's `quartic31_sos125.json` carries the degree metadata of the system
+    (2, not 4).
+  - 33's own earlier 1617-op circuit is superseded.
+  - 34's `audit/SUN_SCOPE_NOTE.md` still speaks of a "new 16-variable
+    construction".
+  - 36's system comparison mixes shifted and unshifted counts (above).
+  - 37 lists no open questions.
 - **Retained intermediates.**
-  - 24: its twelve-unknown monic refactor (1529 / 114, system 1520 / 109),
-    presented as a comparison.
-  - 27: its split-weight 24ℤ form.
-  - 29: `compact_norm12`.
-  - 30:
-    - the 2,915-operation rewrite;
-    - a dominated 24ℤ form of degree 2256;
-    - a 26ℤ alternative of degree 236;
-    - `integers/parents/`;
-    - an 1800-operation ν = 31 baseline;
-    - `.inert` copies of received code.
+  - 31's comparison variants and its inactive reference instance.
+  - 34's superseded 16 / 17-variable forms, dominated `nine31_structured*`
+    and undelivered `coefficients/exploration/`.
+  - 36's folded nine-variable copies and an exploratory moment method.
+  - 37's dominated signed15.
+- **Bundled copies.** 32's bundled Lean files differ from the repository's
+  only by a trailing blank line, so they were kept.
 
 ## Further questions and research
 
 These are the open problems the packages list, merged and credited:
 
-1. **Formalize the bridge.** This covers the separation, saturation,
-   root-recovery and signed zero-case lemmas, the finalizers, and the
-   interface boundary (25, 26, 28, 30).
+1. **Formalize.** Sun's Lucas and interpolation theorems and the
+   ten-integer adapter (31). The cofinal radix via `USys_of_mem` and the
+   Pell-orbit lemma (32). The adapter and finalizers (35).
 2. **Fewer unknowns.**
-   - Eleven positive by removing another root coordinate (24, 29); 24
-     notes this needs gcd(E, H) = 1 or extra arithmetic.
-   - The new norm over fewer unrestricted integers (28), using further
-     signed or odd canonical coordinates only where soundness and
-     completeness survive (30).
-   - Instantiating Sun's ten-integer route (25, 26, 29).
-3. **Lower degree and cheaper norms.**
-   - The degree bottleneck of the new norm (28).
-   - A smaller shared scalar norm evaluator that keeps the pre-recovery
-     root bounds (30).
-   - Other norm eliminations and fewer guards (24); a weaker inverse that
-     removes another guard (26).
-4. **Nine variables.** Generalize the signed divisibility finalizer and
-   improve the structured majorants (28). Compare the lower-degree and
-   fewer-operation forms by objective, and continue sparse radix-five
-   scheduling (30).
-5. **Low degree.** Another relation-aware register elimination in the
-   quadratic system (30).
-6. **Smaller coefficients.** A smaller tile language or layout (24, 25),
-   coefficient geometry optimized independently of the algebra (28), and
-   an optimized native compiler that keeps the four-port interface (30).
-7. **A reproducible comparison frontier** (28).
-8. **Fewer than 67 operations** (29), and optimizing the index shift
-   together with the norm (29).
-9. **Infer more positivity guards**, including the j₀ / φ guard of the 17ℤ
-   form (29).
+   - Below ten integers is a separate problem (31).
+   - Instantiate Sun's route on the other packages' tuples (32, 35).
+   - Rebuild the Jones index at ν = 31 (32).
+   - Remove more signed guards (35).
+3. **Smaller circuits** (31) and smaller tile languages (36).
+4. **A smaller parent quartic.** It would lower every Jones and Sun degree
+   (36). A new encoding of the first-index congruence (36).
+5. **Justify the square base from the statement of `USys_of_mem`**, not its
+   proof (34's open question 2; see the tension above).
 
 ## Licence and provenance
 
@@ -382,176 +322,232 @@ Every package was prepared for ProveIt and reuses MIT-0 repository material;
 see the licence notes above. Every licence, notice and attribution file the
 packages ship is kept in place.
 
-| Pins | Arrival | Placement |
+| Pin | Arrival | Placement |
 |---|---|---|
-| `ae3007ca4467011e0e051c84acb4a1dd13971b0e` (24, 25, 27–30); `a477d0fc8b` (26) | `375cc6e3d7` | `604b1416b5` |
+| `8c6eec9d19ef80538c8e61ff6e0180040583446a` | `b7f8b75b5b` | `952c1fab49` |
 
 ## Files
 
 Every staged file, grouped by source directory (generated from the tree):
 
-- `24-integer24/`: `Makefile`, `NOTICE.md`, `README.md`, `con_zfc_synthesis.pdf`, `con_zfc_synthesis.tex`, `reproduce.py`, `verify.py`
-- `24-integer24/circuits/`: `baseline67.json`, `optimized_merger12_product.json`, `optimized_merger12_system.json`, `optimized_merger13_product.json`, `optimized_merger13_system.json`, `optimized_norm12_product.json`, `optimized_norm12_system.json`, `optimized_separating_saturated12_product.json`, `optimized_separating_saturated12_sos.json`, `optimized_separating_saturated12_system.json`, `optimized_tight_separating12_product.json`, `optimized_tight_separating12_sos.json`, `optimized_tight_separating12_system.json`, `optimized_tightest_separating12_product.json`, `optimized_tightest_separating12_sos.json`, `optimized_tightest_separating12_system.json`, `retained59_system.json`, `signed_separating_saturated24_product.json`, `signed_separating_saturated24_sos.json`, `signed_separating_saturated24_system.json`
-- `24-integer24/code/`: `assemble_report.py`, `audit_materialized_coefficients.py`, `bind_coefficients.py`, `build_coefficients.py`, `build_optimized_1069.py`, `build_optimized_1073.py`, `build_optimized_1081.py`, `build_signed24.py`, `check_exact_identities.py`, `check_signed24_leading.py`, `circuit_tools.py`, `degree_check.py`, `package_release.py`, `refactor_comparison_circuits.py`
-- `24-integer24/coefficients/`: `COEFFICIENT_BINDING.json`, `K0.bin.gz`, `MC.bin.gz`, `MF.bin.gz`, `beta.bin.gz`
-- `24-integer24/evidence/`: `BASELINE_PROVENANCE.json`, `CIRCUIT_INDEX.json`, `CLEAN_UNPACK_VERIFICATION.json`, `COMPARISON_REBUILD.json`, `EXACT_IDENTITIES.json`, `FINAL_VERIFICATION.json`, `PDF_BUILD_AND_VISUAL_REVIEW.json`, `REPRODUCTION.json`, `SOURCE_PINS.json`, `coefficients_build.json`, `independent_materialized_coefficient_audit.json`, `monic_optimization_checks.json`, `nested_optimization_checks.json`, `optimized_separating_saturated12_checks.json`, `optimized_tight_separating12_checks.json`, `optimized_tightest_separating12_checks.json`, `signed24_checks.json`, `signed24_full_degree_checks.json`, `signed24_leading_certificate_checks.json`
-- `24-integer24/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
-- `24-integer24/proofs/`: `PROOF_DEPENDENCIES.md`
-- `24-integer24/sections/`: `circuits.tex`, `coefficients.tex`, `front.tex`, `integer.tex`, `positive.tex`, `references.tex`, `report_wrapper.tex`, `reproduction.tex`
-- `24-integer24/upstream/`: `baseline67_source.json`, `blank_helical_proof.md`, `collection_at_pin.md`, `fixed_blank_67_proof.md`, `merger12_product_source.json`, `merger12_system_source.json`, `merger13_product_source.json`, `merger13_system_source.json`, `monic_merger_proof.md`, `norm12_product_source.json`, `norm12_proof.md`, `norm12_system_source.json`, `odd_scale27.md`, `ordinary_blank_proof.md`, `retained59_proof.md`, `retained59_source.json`, `signed_domain29.md`, `wang943_compact_layout.md`, `wang943_language.md`, `wang943_tiles.json`
-- `25-hybrid12/`: `LICENSE`, `Makefile`, `NOTICE.md`, `README.md`, `RESULTS.json`, `report.pdf`, `report.tex`, `reproduce.py`
-- `25-hybrid12/arithmetic/`: `HYBRID12_CHECKS.json`, `build_hybrid12.py`, `hybrid12_square_unweighted_product.json`, `hybrid12_square_unweighted_sos.json`, `hybrid12_square_unweighted_system.json`, `hybrid12_square_weighted_product.json`, `hybrid12_square_weighted_sos.json`, `hybrid12_square_weighted_system.json`, `hybrid12_sum_weighted_product.json`, `hybrid12_sum_weighted_sos.json`, `hybrid12_sum_weighted_system.json`
-- `25-hybrid12/baselines/`: `product67.json`, `retained59.json`
-- `25-hybrid12/coefficients/`: `CHECKS.json`, `COEFFICIENT_BINDING.json`, `INDEPENDENT_CHECKS.json`, `PROOF.md`, `README.md`, `build_coefficients.py`, `verify_independent.py`, `wang943_tiles.json`
-- `25-hybrid12/coefficients/coefficients/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
-- `25-hybrid12/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`
-- `25-hybrid12/proofs/`: `COEFFICIENT_PROOF.md`, `HYBRID12_PROOF.md`, `INDEPENDENT_COEFFICIENT_AUDIT.md`, `INDEPENDENT_HYBRID12_AUDIT.md`
-- `25-hybrid12/provenance/`: `SOURCES.json`
-- `25-hybrid12/upstream/`: `09_ROOT_AMALGAMATION_PROOF.md`, `BLANK_HELICAL_PROOF.md`, `COMPARISON_AT_PIN.md`, `FIXED_BLANK_67_PROOF.md`, `KEndpoint215.lean`, `NORM12_PROOF.md`, `ORDINARY_BLANK_PROOF.md`, `RETAINED59_PROOF.md`, `ROOT12_PROOF.md`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `complete84_signed_quotient_absorption.md`, `complete84_signed_quotient_soundness_scout.md`
-- `25-hybrid12/verification/`: `CLEAN_EXTRACTION.json`, `FINAL_TRANSCRIPTION_REVIEW.json`, `FIXED_INSTANCE_CHECKS.json`, `HYBRID12_INDEPENDENT_CHECKS.json`, `PDF_QA.json`, `REPRODUCTION.json`, `arithmetic_builder.log.txt`, `arithmetic_independent.log.txt`, `audit_hybrid12.py`, `coefficient_builder.log.txt`, `coefficient_independent.log.txt`, `fixed_instance.log.txt`, `verify_fixed_instance.py`
-- `26-ratio12/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `README.md`, `RESULTS.json`, `SOURCE_PROVENANCE.json`, `coefficient_section.tex`, `comparison.csv`, `integer_section.tex`, `positive_section.tex`, `report.pdf`, `report.tex`, `reproduce.py`, `verification_section.tex`
-- `26-ratio12/arithmetic/`: `CHECKS24.json`, `build24.py`, `build_ratio12.py`, `integer24_product.json`, `integer24_sos.json`, `integer24_system.json`, `integer24_system_shifted.json`, `ratio12_checks.json`, `ratio12_product.json`, `ratio12_system.json`, `ratio12_system_shifted.json`
-- `26-ratio12/arithmetic/upstream/`: `build_norm12.py`
-- `26-ratio12/coefficients/`: `COEFFICIENT_BINDING.json`, `COEFFICIENT_REPLAY.json`, `PARITY_COEFFICIENT_PROOF.md`, `README.md`, `SOURCE_PROVENANCE.json`, `reproduce_coefficients.py`
-- `26-ratio12/coefficients/audit/`: `INDEPENDENT_PARITY_COEFFICIENT_REVIEW.md`, `PARITY_CROSS_AGENT_CHECKS.json`, `PARITY_INDEPENDENT_CHECKS.json`, `audit_parity_cross_agent.py`, `audit_parity_independent.py`
-- `26-ratio12/coefficients/compiler/`: `COEFFICIENT_BINDING.json`, `PARITY_GEOMETRY.json`, `PARITY_MATERIALIZATION.json`, `WANG943_COEFFICIENTS.md`, `build_parity.py`, `build_wang943.py`, `check_wang_helices.py`, `materialize_parity.py`, `parity_layout.json`, `wang943_independent_language_receipt.json`, `wang943_layout.json`, `wang943_receipt.json`, `wang943_tiles.json`
-- `26-ratio12/coefficients/compiler/coefficients_parity/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
-- `26-ratio12/coefficients/compiler/upstream/`: `BRIDGE_AUDIT.md`
-- `26-ratio12/coefficients/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`
-- `26-ratio12/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-monic12.md`, `NOTICE-norm12.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE-separating12.md`
-- `26-ratio12/proofs/`: `INDEPENDENT_24_INTEGER_REVIEW.md`, `INDEPENDENT_RATIO12_REVIEW.md`, `INDEPENDENT_REVIEW24.md`, `MANUSCRIPT_REVIEW.md`, `PROOF24.md`, `RATIO12_PROOF.md`
-- `26-ratio12/references/19-wang943/audit/`: `RATIONAL_AUXILIARY_PELL_SATURATION.md`
-- `26-ratio12/references/19-wang943/compiler/`: `WANG943_COMPACT_LAYOUT.md`
-- `26-ratio12/references/19-wang943/roots/`: `ROOT12_SATURATED_PROOF.md`
-- `26-ratio12/references/20-root12/amalgamation/`: `ROOT12_PROOF.md`
-- `26-ratio12/references/21-norm12/arithmetic/`: `build_norm12.py`, `norm12_product.json`, `norm12_system.json`
-- `26-ratio12/references/21-norm12/proofs/`: `INTEGER26_PROOF.md`, `NORM12_INDEPENDENT_AUDIT.md`, `NORM12_LOWER_DEGREE.md`, `NORM12_PROOF.md`
-- `26-ratio12/references/21-norm12/upstream/`: `BLANK_HELICAL_PROOF.md`, `FIXED_BLANK_67_PROOF.md`, `K215_AUDIT_NOTES.md`, `ORDINARY_BLANK_PROOF.md`, `PELL_LEMMA_AUDIT.md`, `PRODUCT67.json`, `SIGNED_DOMAIN_29.md`, `SIGNED_DOMAIN_29_REVIEW.md`
-- `26-ratio12/references/22-monic12/data/`: `retained16_system59.json`
-- `26-ratio12/references/22-monic12/proofs/`: `RETAINED59_PROOF.md`, `merger_proof.md`
-- `26-ratio12/references/22-monic12/reference/`: `retained_low_degree_proof.md`
-- `26-ratio12/references/23-separating12/proofs/`: `INTEGER26_PROOF.md`, `ODD_SCALE_27_PROOF.md`
-- `26-ratio12/references/23-separating12/upstream/`: `ordinary_strong_proof.md`
-- `26-ratio12/references/`: `README.md`
-- `26-ratio12/verification/`: `INDEPENDENT_CIRCUIT_CHECKS.json`, `PDF_QA.json`, `REPRODUCTION.json`, `audit_new_circuits.py`
-- `27-wave4/`: `COMPARISON_AT_PIN.md`, `INSTANCE.json`, `LICENSE.ProveIt`, `NEGATIVE_CONTROLS.json`, `PDF_QA.json`, `README.md`, `SOURCE_ADDITIONS.json`, `VERIFICATION.json`, `negative_controls.py`, `report.pdf`, `report.tex`, `verify.py`
-- `27-wave4/coefficients/`: `COEFFICIENTS.json`, `COEFFICIENT_BINDING.json`, `COEFFICIENT_PROOF.md`, `INDEPENDENT_CHECKS.json`, `README.txt`, `audit_independent.py`, `build_mixed.py`, `load_coefficients.py`, `wang943_tiles.json`
-- `27-wave4/coefficients/expanded/`: `K.bin`, `K.bin.gz`, `MANIFEST.json`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `beta.bin`, `beta.bin.gz`
-- `27-wave4/coefficients/sources/`: `k215_transitions.json`
-- `27-wave4/coefficients/upstream/`: `ODD_SCALE_27_PROOF.md`
-- `27-wave4/coefficients/upstream/audit/`: `WANG943_INDEPENDENT_AUDIT.md`
-- `27-wave4/coefficients/upstream/compiler/`: `COMPACT_COEFFICIENT_BINDING.json`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `build_wang943.py`, `build_wang943_compact.py`, `materialize_wang943_compact.py`, `wang943_compact_layout.json`, `wang943_compact_materialization_receipt.json`, `wang943_tiles.json`
-- `27-wave4/coefficients/upstream/integers/`: `COEFFICIENT_TRANSFER.md`
-- `27-wave4/integers/`: `COEFFICIENT_BINDING.json`, `INTEGER24_CHECKS.json`, `INTEGER24_PROOF.md`, `INTEGER24_RATIO_WEIGHT_PROOF.md`, `INTEGER24_SPLIT2_PROOF.md`, `LICENSE.ProveIt`, `LOW_DEGREE_CHECKS.json`, `LOW_DEGREE_PROOF.md`, `PROVENANCE.json`, `README.md`, `build_integer24.py`, `build_low_degree.py`, `integer24_original_product.json`, `integer24_original_sos.json`, `integer24_original_system.json`, `integer24_original_system_comparison.json`, `integer24_original_system_residual.json`, `integer24_ratio_product.json`, `integer24_ratio_sos.json`, `integer24_ratio_system.json`, `integer24_ratio_system_comparison.json`, `integer24_ratio_system_residual.json`, `integer24_split2_product.json`, `integer24_split2_sos.json`, `integer24_split2_system.json`, `integer24_split2_system_comparison.json`, `integer24_split2_system_residual.json`, `integer36_degree8.json`, `integer42_degree6.json`, `integer51_degree4.json`
-- `27-wave4/integers/sources/17-primitive12/proofs/`: `INTEGER26_PROOF.md`
-- `27-wave4/integers/sources/19-wang943/integers/`: `COEFFICIENT_TRANSFER.md`, `INTEGER26_UNSCALED_PROOF.md`
-- `27-wave4/integers/sources/21-norm12/arithmetic/`: `build_norm12.py`
-- `27-wave4/integers/sources/21-norm12/proofs/`: `INTEGER26_PROOF.md`, `NORM12_LOWER_DEGREE.md`, `NORM12_PROOF.md`
-- `27-wave4/integers/sources/23-separating12/`: `NOTICE.md`
-- `27-wave4/integers/sources/23-separating12/code/`: `build_integer26.py`, `build_integer27.py`
-- `27-wave4/integers/sources/23-separating12/coefficients/`: `REFINED_COMPILER_PROOF.md`, `T5263_CONSTANTS.json`
-- `27-wave4/integers/sources/23-separating12/data/integer27/`: `normalized27_poly114.json`, `ordinary27_system107.json`
-- `27-wave4/integers/sources/23-separating12/licenses/`: `LICENSE.ProveIt`
-- `27-wave4/integers/sources/23-separating12/proofs/`: `INTEGER26_PROOF.md`, `ODD_SCALE_27_PROOF.md`, `TWELVE_VARIABLE_PROOF.md`
-- `27-wave4/integers/sources/23-separating12/upstream/`: `baseline_quartic32.json`, `previous_low_degree_proof.md`, `signed_domain_29.md`
-- `27-wave4/integers/sources/previous-deliverable/domains/`: `DOMAIN_REDUCTION_PROOF.md`, `integer39_degree8.json`, `integer45_degree6.json`, `integer54_quartic.json`, `sparse_poly.py`
-- `27-wave4/nine/`: `IMPROVEMENT_PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_improved.py`, `verify_fixed_binding.py`, `verify_improved.py`
-- `27-wave4/nine/generated/`: `COEFFICIENT_ALIASES.json`, `FIXED_BINDING_VALIDATION.json`, `VALIDATION.json`, `ledger.json`, `nine_literal_dag.json`, `nine_literal_positive_dag.json`, `nine_literal_specialized_dag.json`, `nine_literal_specialized_positive_dag.json`, `nine_majorant_dag.json`, `nine_majorant_positive_dag.json`, `nine_majorant_specialized_dag.json`, `nine_majorant_specialized_positive_dag.json`, `nine_natural-majorant_dag.json`, `nine_natural-majorant_positive_dag.json`, `nine_natural-majorant_specialized_dag.json`, `nine_natural-majorant_specialized_positive_dag.json`
-- `27-wave4/nine/source/`: `COEFFICIENT_BINDINGS.json`, `LICENSE`, `NOTICE.md`, `README.md`
-- `27-wave4/nine/source/base/`: `normalized_quartic32.json`, `quartic32.upstream.json`
-- `27-wave4/nine/source/code/`: `fixed_coefficients.py`
-- `27-wave4/nine/source/nine/`: `check_nine.py`, `nine_compressor.py`, `nine_section.tex`, `verify_fixed_instance.py`
-- `27-wave4/nine/source/nine/generated/`: `constants.json`, `index_bound_s.json`, `nine_checks.json`
-- `27-wave4/nine/source/proofs/`: `independent_review.md`, `nine_source_audit.md`
-- `27-wave4/norms/`: `COEFFICIENT_BINDING.json`, `README.md`, `SEPARATION_CHECKS.json`, `SOURCE_PROVENANCE.json`, `TWO_WEIGHT_CHECKS.json`, `TWO_WEIGHT_PROOF.md`, `TWO_WEIGHT_SECTION.tex`, `build_two_weight_norm12.py`, `check_separation.py`, `two_weight_norm12_product.json`, `two_weight_norm12_sos.json`, `two_weight_norm12_system.json`
-- `27-wave4/norms/sources/20-root12/amalgamation/`: `ROOT12_PROOF.md`
-- `27-wave4/norms/sources/21-norm12/`: `LICENSE`, `NOTICE.md`
-- `27-wave4/norms/sources/21-norm12/arithmetic/`: `build_norm12.py`, `build_norm12_lower_degree.py`
-- `27-wave4/norms/sources/21-norm12/proofs/`: `NORM12_LOWER_DEGREE.md`, `NORM12_PROOF.md`
-- `27-wave4/norms/sources/22-monic12/code/`: `build_mergers.py`
-- `27-wave4/norms/sources/22-monic12/proofs/`: `merger_proof.md`
-- `27-wave4/operations/`: `COEFFICIENT_BINDING.json`, `PROOF.md`, `VERIFICATION.json`, `build_operations.py`, `lift17_Y59.json`, `lift17_Y59_sos.json`, `lift18_YE59.json`, `lift18_YE59_sos.json`, `lift19_YEc59.json`, `lift19_YEc59_sos.json`, `lift20_YEcA059.json`, `lift20_YEcA059_sos.json`, `retained16_auxgap60.json`, `retained16_auxgap60_sos.json`
-- `27-wave4/operations/upstream/`: `COEFFICIENT_BINDING_943.json`, `GROUPED_TRADEOFF_PROOF.md`, `RETAINED59_PROOF.md`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `build_grouped_tradeoffs.py`, `build_retained59.py`, `grouped_doublegap76_degree44.json`, `retained16_system59.json`
-- `27-wave4/review/`: `LOW_DEGREE_NEW_INDEPENDENT_CHECKS.json`, `NEW_SYNTHESIS_INDEPENDENT_REVIEW.md`, `NINE_IMPROVEMENTS_INDEPENDENT_CHECKS.json`, `NOVEL_NORM_INDEPENDENT_CHECKS.json`, `check_low_degree_new_independent.py`, `check_nine_improvements_independent.py`, `check_novel_norms_independent.py`
-- `27-wave4/root/`: `COMPILER_REVIEW.md`, `MIXED_INDEPENDENT_CHECKS.json`, `check_mixed_independent.py`
-- `28-compact-norms/`: `INSTANCE.json`, `LICENSE`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `README.md`, `SOURCE_MANIFEST.json`, `report.pdf`, `report.tex`, `reproduce.py`
-- `28-compact-norms/audit/`: `WANG943_COMPACT_INDEPENDENT_CHECKS.json`, `WANG943_INDEPENDENT_AUDIT.md`, `WANG943_INDEPENDENT_CHECKS.json`, `audit_wang943_compact_independent.py`, `audit_wang943_independent.py`
-- `28-compact-norms/circuits/`: `compact12_product.json`, `compact12_sos.json`, `compact12_system.json`
-- `28-compact-norms/circuits/nine/`: `constants.json`, `index_bound_s.json`, `nine_structured_dag.json`, `shifted_quartic.json`, `verification.json`
-- `28-compact-norms/code/`: `build_compact12.py`, `nine_structured.py`, `verify_compact12.py`, `verify_structured.py`
-- `28-compact-norms/compiler/`: `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_PAYLOAD_MANIFEST.json`, `COMPACT_REPRODUCE.md`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `build_wang943.py`, `build_wang943_compact.py`, `check_wang_helices.py`, `materialize_wang943_compact.py`, `wang943_compact_layout.json`, `wang943_compact_materialization_receipt.json`, `wang943_compact_receipt.json`, `wang943_independent_language_receipt.json`, `wang943_layout.json`, `wang943_receipt.json`, `wang943_tiles.json`
-- `28-compact-norms/compiler/coefficients_compact/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
-- `28-compact-norms/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.norm21`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE.norm21.md`
-- `28-compact-norms/proofs/`: `COMPACT12_PROOF.md`
-- `28-compact-norms/sections/`: `coefficients.tex`, `nine.tex`, `overview.tex`, `references.tex`, `twelve.tex`, `verification.tex`
-- `28-compact-norms/vendor/`: `COMPARISON_AT_PIN.md`
-- `28-compact-norms/vendor/inherited/`: `BLANK_HELICAL_PROOF.md`, `FIXED_BLANK_67_PROOF.md`, `K215_AUDIT_NOTES.md`, `ORDINARY_BLANK_PROOF.md`, `PELL_LEMMA_AUDIT.md`, `PRODUCT67.json`, `ROOT_AMALGAMATION_13.md`, `SIGNED_DOMAIN_29.md`, `SIGNED_DOMAIN_29_REVIEW.md`
-- `28-compact-norms/vendor/jones18/`: `NINE_BINDING.json`, `NINE_README.md`, `NINE_UPSTREAM_SOURCE_MANIFEST.json`, `quartic32.upstream.json`
-- `28-compact-norms/vendor/norm21/`: `NORM12_LOWER_DEGREE.md`, `NORM12_PROOF.md`, `build_norm12.py`
-- `28-compact-norms/verification/`: `INDEPENDENT_COMPACT12_CHECKS_OPTIMIZED.json`, `INDEPENDENT_COMPACT12_REVIEW.md`, `NINE_INDEPENDENT_AUDIT.md`, `PDF_QA.json`, `REPRODUCED.json`, `REPRODUCED_FULL.json`
-- `29-simpler-forms/`: `COEFFICIENT_BINDING.json`, `INSTANCE_BINDINGS.json`, `LICENSE`, `NOTICE.md`, `README.md`, `integer17_section.tex`, `report.pdf`, `report.tex`, `reproduce.py`
-- `29-simpler-forms/coefficients/`: `UPSTREAM_BINDING.json`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `build_wang943.py`, `build_wang943_compact.py`, `check_wang_helices.py`, `materialize_wang943_compact.py`, `wang943_compact_layout.json`, `wang943_compact_materialization_receipt.json`, `wang943_compact_receipt.json`, `wang943_layout.json`, `wang943_receipt.json`, `wang943_tiles.json`
-- `29-simpler-forms/coefficients/coefficients_compact/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
-- `29-simpler-forms/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`
-- `29-simpler-forms/low_degree/`: `INDEPENDENT_AUDIT.md`, `ODD_SCALE_LIFTS_PROOF.md`, `build_odd_scale_lifts.py`
-- `29-simpler-forms/low_degree/generated/`: `ODD_SCALE_LIFTS_CHECKS.json`, `integer36_degree8_odd_scale.json`, `integer42_degree6_odd_scale.json`, `integer51_degree4_odd_scale.json`
-- `29-simpler-forms/low_degree/upstream/19-wang943/`: `COEFFICIENT_BINDING.json`
-- `29-simpler-forms/low_degree/upstream/19-wang943/compiler/`: `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`
-- `29-simpler-forms/low_degree/upstream/19-wang943/compiler/coefficients_compact/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
-- `29-simpler-forms/low_degree/upstream/20-root12/coefficients/`: `COEFFICIENTS.json`, `COEFFICIENT_PROOF.md`
-- `29-simpler-forms/low_degree/upstream/20-root12/domains/`: `DOMAIN_REDUCTION_PROOF.md`, `build_domains.py`, `build_tradeoffs.py`, `integer39_degree8.json`, `integer45_degree6.json`, `integer54_quartic.json`, `sparse_poly.py`
-- `29-simpler-forms/low_degree/upstream/23-separating12/proofs/`: `ODD_SCALE_27_PROOF.md`
-- `29-simpler-forms/norm12/`: `COMPACT_NORM12_CHECKS.json`, `COMPACT_NORM12_PROOF.md`, `SHIFTED_NORM12_CHECKS.json`, `SHIFTED_NORM12_PROOF.md`, `build_compact_norm12.py`, `build_norm12.py`, `build_norm12_lower_degree.py`, `build_shifted_norm12.py`, `compact_norm12_product.json`, `compact_norm12_residual_system.json`, `compact_norm12_sos118.json`, `compact_norm12_sos_unshifted.json`, `compact_norm12_system110.json`, `compact_norm12_system111.json`, `shifted_norm12_product.json`, `shifted_norm12_residual_system.json`, `shifted_norm12_sos118.json`, `shifted_norm12_sos_unshifted.json`, `shifted_norm12_system110.json`, `shifted_norm12_system111.json`
-- `29-simpler-forms/references/`: `BLANK_HELICAL_PROOF.md`, `COMPARISON_AT_PIN.md`, `FIXED_BLANK_67_PROOF.md`, `KEndpoint215.lean`, `NORM12_LOWER_DEGREE.md`, `NORM12_PROOF.md`, `ORDINARY_BLANK_PROOF.md`, `PELL_LEMMA_AUDIT.md`, `RETAINED59_PROOF.md`, `ROOT_AMALGAMATION_13.md`, `SIGNED_DOMAIN_29.md`
-- `29-simpler-forms/signed17/`: `README.md`, `SIGNED17_PROOF.md`, `SOURCE_PINS.json`, `build_signed17.py`, `signed17_section.tex`
-- `29-simpler-forms/signed17/generated/`: `signed17.json`, `signed17_checks.json`
-- `29-simpler-forms/signed17/upstream/`: `COEFFICIENT_BINDINGS.json`, `LICENSE`, `NOTICE.md`
-- `29-simpler-forms/signed17/upstream/base/`: `quartic32.upstream.json`
-- `29-simpler-forms/signed17/upstream/code/`: `fixed_coefficients.py`
-- `29-simpler-forms/signed17/upstream/coefficients/`: `T4_CONSTANTS.upstream.json`, `t4_windows.json`
-- `29-simpler-forms/signed17/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
-- `29-simpler-forms/signed17/upstream/nine/`: `nine_compressor.py`, `nine_section.tex`, `verify_fixed_instance.py`
-- `29-simpler-forms/signed17/upstream/upstream/licenses/`: `LICENSE.ProveIt`
-- `29-simpler-forms/signed17/upstream/upstream/machine/`: `NOTICE.md`
-- `29-simpler-forms/signed17/upstream/upstream/machine/licenses/`: `LICENSE.Wade`
-- `29-simpler-forms/signed17/upstream/upstream/t4/bridge/`: `BRIDGE_AUDIT.md`
-- `29-simpler-forms/signed17/upstream/upstream/t4/bridge/sources/`: `blank_helical.py`, `compiler_constants.py`, `k215_transitions.json`
-- `29-simpler-forms/verification/`: `BUILD_AND_RENDER.json`, `OPTIONAL_MATERIALIZATION_CHECK.json`, `REPRODUCTION.json`
-- `30-quartic31/`: `COEFFICIENT_BINDING.json`, `PORTABILITY_TRANSFORMS.json`, `README.md`, `RELEASE_MANIFEST.json`, `audit_selected_nine.py`, `verify_release.py`
-- `30-quartic31/arithmetic/`: `AUDIT.json`, `LOW_OPERATION_REPORT.md`, `QUARTIC31_PROOF.md`, `SOURCE_LEDGER.json`, `build_arithmetic.py`, `quartic31.json`, `quartic31_circuit.json`, `quartic31_expanded.json`, `quartic31_system.json`, `retained16_gap_system60.json`
-- `30-quartic31/arithmetic/upstream/`: `RETAINED59_PROOF.pinned.md`, `quartic32.pinned.json`, `retained16_system59.pinned.json`
-- `30-quartic31/audit/`: `RATIONAL_AUXILIARY_PELL_SATURATION.md`, `WANG943_COMPACT_INDEPENDENT_CHECKS.json`, `WANG943_INDEPENDENT_AUDIT.md`, `pell_bound_checks.json`, `pell_bound_checks.py`, `pell_independent_audit.md`, `pell_independent_checks.json`, `pell_independent_checks.py`, `pell_integer_binding_checks.json`
-- `30-quartic31/compiler/`: `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_COEFFICIENT_BINDING.upstream.json`, `MACHINE_SOURCE.json`, `PINNED_SOURCE_LEDGER.json`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `wang943_compact_layout.json`, `wang943_compact_materialization_receipt.json`, `wang943_compact_receipt.json`, `wang943_independent_language_receipt.json`, `wang943_layout.json`, `wang943_tiles.json`
-- `30-quartic31/compiler/coefficients_compact/`: `K.bin`, `K.bin.gz`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `beta.bin`, `beta.bin.gz`
-- `30-quartic31/integers/`: `COEFFICIENT_BINDINGS.json`, `COEFFICIENT_TRANSFER.md`, `ODD_SCALE_FAMILY_CHECKS.json`, `README.md`, `SIGNED_ODD_SCALE_FAMILY_PROOF.md`, `SOURCE_MANIFEST.json`, `SOURCE_MANIFEST.seed.json`, `build_odd_scale_family.py`, `check_odd_scale_family.py`, `integer24_pair_norm165_degree2256.json`, `integer24_sharp_pair_norm165_degree2240.json`, `integer24_system161_degree2224.json`, `integer25_small_weight131_degree920.json`, `integer25_system126_degree872.json`, `integer26_ordinary_two_root123_degree214.json`, `integer26_system117_degree128.json`, `integer26_two_root123_degree236.json`
-- `30-quartic31/integers/parents/`: `integer27_weighted_root136_degree1116.json`, `integer28_normalized_amalgam128_degree258.json`
-- `30-quartic31/integers/upstream/20-root12/arithmetic/`: `SMALL_WEIGHT_PROOF.md`
-- `30-quartic31/integers/upstream/21-norm12/proofs/`: `NORM12_PROOF.md`
-- `30-quartic31/integers/upstream/23-separating12/proofs/`: `INTEGER26_PROOF.md`, `ODD_SCALE_27_PROOF.md`
-- `30-quartic31/licenses/`: `LICENSE.ProveIt`, `NOTICE.txt`
-- `30-quartic31/nine/`: `COMPACT_NINE_PROOF.md`, `README.md`, `Z_MATERIALIZATION.json`, `build_compact_nine.py`, `prepare_coefficients.py`, `rebuild_nu31.py`, `verify_compact_instance.py`, `z_index.bin`, `z_index.bin.gz`
-- `30-quartic31/nine/nu31/`: `ACTUAL_INSTANCE_CHECKS.json`, `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_CONSTANTS.json`, `CONSTRUCTION_CHECKS.json`, `INDEX_BOUND_CERTIFICATE.json`, `coefficients.json`, `nine_compact_magnitude_tight.json`, `nine_generic31_majorant.json`, `shifted_quartic.json`
-- `30-quartic31/positive/`: `CHECK_RESULTS.json`, `COEFFICIENT_BINDING.json`, `POSITIVE12_PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_positive.py`, `check_positive.py`, `positive12_product.json`, `positive12_system.json`
-- `30-quartic31/report/`: `MAIN.md`, `build_report.py`, `code_breaks.lua`, `header.tex`, `synthesis_report.md`, `synthesis_report.pdf`, `synthesis_report.tex`
-- `30-quartic31/review/`: `16-integer27.tree.json`, `17-primitive12.tree.json`, `18-jones9.tree.json`, `19-wang943.tree.json`, `20-root12.tree.json`, `21-norm12.tree.json`, `22-monic12.tree.json`, `23-separating12.tree.json`, `COMPARISON_REVIEW.md`, `FINAL_FROZEN_MANIFEST.json`, `FINAL_NINE_REVIEW.md`, `INDEPENDENT_REVIEW_AUDIT.json`, `INERT_SOURCE_PATHS.json`, `NU31_COMPACT_INDEX_INDEPENDENT_AUDIT.json`, `NU31_INDEPENDENT_AUDIT.json`, `QUARTIC31_INDEPENDENT_REVIEW.json`, `README.upstream.md`, `SOURCE_LEDGER.json`, `audit_modified_nine.py`, `generic_jones_circuit.py`, `independent_review_audit.py`, `inventory.json`, `optimize_nine_circuit.py`
-- `30-quartic31/review/16-integer27/data/`: `improved_weight_polynomial13_84.json`, `integer27_weighted_root_polynomial139.json`
-- `30-quartic31/review/17-primitive12/arithmetic/primitive12/generated/`: `primitive12_product.json`
-- `30-quartic31/review/17-primitive12/proofs/`: `PRIMITIVE12_PROOF.md`
-- `30-quartic31/review/18-jones9/`: `RESULTS.json`
-- `30-quartic31/review/18-jones9/base/`: `quartic32.upstream.json`
-- `30-quartic31/review/18-jones9/direct12/`: `radical12_product.json`
-- `30-quartic31/review/18-jones9/nine/`: `README.md`, `nine_compressor.py.inert`, `nine_section.tex`
-- `30-quartic31/review/18-jones9/nine/generated/`: `constants.json`, `index_bound_s.json`, `nine_checks.json`, `nine_majorant_dag.json`, `shifted_quartic.json`
-- `30-quartic31/review/18-jones9/proofs/`: `independent_review.md`, `nine_source_audit.md`
-- `30-quartic31/review/19-wang943/roots/`: `root12_saturated_product.json`
-- `30-quartic31/review/20-root12/amalgamation/`: `ROOT12_PROOF.md`, `main_root12_product.json`
-- `30-quartic31/review/20-root12/arithmetic/`: `SMALL_WEIGHT_PROOF.md`
-- `30-quartic31/review/21-norm12/arithmetic/`: `norm12_product.json`, `norm12_product_integer26.json`
-- `30-quartic31/review/21-norm12/proofs/`: `NORM12_PROOF.md`
-- `30-quartic31/review/22-monic12/data/`: `merger12_product.json`, `merger13_product.json`, `retained16_system59.json`
-- `30-quartic31/review/22-monic12/proofs/`: `RETAINED59_PROOF.md`, `merger_proof.md`
-- `30-quartic31/review/23-separating12/data/integer27/`: `normalized27_poly114.json`, `normalized27_poly115.json`, `ordinary27_poly116.json`
-- `30-quartic31/review/23-separating12/data/`: `polynomial12.json`
-- `30-quartic31/review/23-separating12/proofs/`: `ODD_SCALE_27_PROOF.md`
-- `30-quartic31/review/nine_optimized/`: `AUDIT.json`, `GENERIC_AUDIT.json`, `GENERIC_DEGREE_AUDIT.json`, `nine_generic32_majorant.json`, `nine_majorant_runs.json`
+- `31-sun10/`: `INSTANCE_BINDINGS.json`, `LICENSE`, `Makefile`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `report.pdf`, `report.tex`, `verify_all.py`
+- `31-sun10/coefficients/`: `BUILD_RECEIPT.json`, `COEFFICIENT_BINDING.json`, `COEFFICIENT_PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_coefficients.py`, `coefficient_section.tex`
+- `31-sun10/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `31-sun10/coefficients/payloads/`: `K.bin`, `K.bin.gz`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `beta.bin`, `beta.bin.gz`
+- `31-sun10/coefficients/upstream/`: `24-coefficients.tex`, `25-COEFFICIENT_PROOF.md`, `27-COEFFICIENT_PROOF.md`, `k215_transitions.json`, `wang943_tiles.json`
+- `31-sun10/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `31-sun10/positive12/`: `CHECKS.json`, `COEFFICIENT_BINDING.json`, `COEFFICIENT_INDEPENDENT_AUDIT.md`, `COEFFICIENT_INDEPENDENT_CHECKS.json`, `README.md`, `REFACTORED12_PROOF.md`, `SIGNED16_INDEPENDENT_AUDIT.md`, `SOURCE_PINS.json`, `audit_coefficients_independent.py`, `build_refactored12.py`, `check_refactored12.py`
+- `31-sun10/positive12/generated/`: `product108.json`, `shifted_system102.json`, `system103.json`
+- `31-sun10/positive12/upstream/`: `25-hybrid12README.md`, `26-ratio12README.md`, `COMPACT12_PROOF.md`, `POSITIVE12_PROOF.md`, `RATIO12_PROOF.md`, `README.md`, `build_positive.py`, `check_positive.py`, `con_zfc_synthesis.tex`, `positive12_system.json`
+- `31-sun10/quartic31/`: `INSTANCE.json`, `QUARTIC60_CHECKS.json`, `QUARTIC60_PROOF.md`, `README.md`, `SIGNED16_LITERAL_AUDIT.json`, `SIGNED16_REVIEW.md`, `SOURCE_PINS.json`, `audit_signed16_independent.py`, `build_quartic60.py`, `quartic31_sos125.json`, `quartic31_sparse.json`, `quartic31_system60.json`
+- `31-sun10/quartic31/upstream/27-wave4/operations/`: `PROOF.md`
+- `31-sun10/quartic31/upstream/27-wave4/operations/upstream/`: `RETAINED59_PROOF.md`, `build_retained59.py`, `retained16_system59.json`
+- `31-sun10/quartic31/upstream/28-compact-norms/vendor/inherited/`: `FIXED_BLANK_67_PROOF.md`, `PELL_LEMMA_AUDIT.md`
+- `31-sun10/quartic31/upstream/30-quartic31/arithmetic/`: `QUARTIC31_PROOF.md`, `build_arithmetic.py`
+- `31-sun10/quartic31/upstream/`: `PRODUCT67.json`, `quartic31.json`, `quartic31_circuit.json`, `quartic31_system.json`
+- `31-sun10/sections/`: `coefficients.tex`, `low_degree.tex`, `overview.tex`, `parent.tex`, `reproduction.tex`, `signed16.tex`
+- `31-sun10/signed10/`: `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT.md`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `NOTICE.md`, `README.md`, `SIGNED10_PROOF.md`, `SIGNED10_SECTION.tex`, `SOURCES.json`, `audit_signed10_independent.py`, `build_signed10.py`, `circuit.py`, `verify_signed10.py`
+- `31-sun10/signed10/data/`: `INSTANCE.json`, `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`, `beta_sun.bin.gz`, `coefficients_binding.json`, `constants.json`, `index_bound.json`, `parent_quartic31.json`
+- `31-sun10/signed10/generated/`: `VERIFICATION.json`, `coefficient_aliases.json`, `norm3_polynomial.json`, `norm4_polynomial.json`, `signed10.json`, `signed10_h3quintic.json`, `signed10_h4quintic.json`, `signed10_sun6.json`, `signed10_universal_weights.json`
+- `31-sun10/signed16/`: `README.md`, `build_signed16.py`, `circuit.py`, `verify_signed16.py`
+- `31-sun10/signed16/data/`: `INSTANCE.json`, `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `Z_MATERIALIZATION.json`, `beta.bin.gz`, `coefficients_binding.json`, `constants.json`, `index_bound.json`, `parent_quartic31.json`, `z_index.bin.gz`
+- `31-sun10/signed16/data/reference_instance/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`, `coefficients_binding.json`, `constants_upstream.json`, `index_bound.json`
+- `31-sun10/signed16/generated/`: `VERIFICATION.json`, `coefficient_aliases.json`, `signed16.json`
+- `31-sun10/sources/`: `BLANK_HELICAL_PROOF.md`, `COLLECTION_AT_PIN.md`, `DIGIT_CIRCUIT_SOURCE_PROOF.md`, `FIXED_BLANK_67_PROOF.md`, `NINE31_SOURCE_PROOF.md`, `ORDINARY_BLANK_PROOF.md`, `PELL_LEMMA_AUDIT.md`, `QUARTIC31_SOURCE_PROOF.md`, `SIGNED17_SOURCE_PROOF.md`
+- `31-sun10/verification/`: `PDF_QA.json`, `PORTABILITY.json`, `SUMMARY.json`
+- `32-integer15/`: `LICENSE`, `Makefile`, `NOTICE.md`, `README.md`, `RESULTS.json`, `metrics.tex`, `report.pdf`, `report.tex`, `verify_all.py`
+- `32-integer15/compiler/`: `BUILD_RECEIPT.json`, `COEFFICIENT_PROOF.md`, `INDEPENDENT_RECEIPT.json`, `NOTICE.md`, `SOURCE_LEDGER.json`, `audit_independent.py`, `build_coefficients.py`
+- `32-integer15/compiler/coefficients/`: `COEFFICIENT_BINDING.json`, `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
+- `32-integer15/compiler/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `32-integer15/compiler/upstream/`: `COEFFICIENT_PROOF.md`, `KEndpoint215.lean`, `coefficients.tex`, `fixed_factor_padding.tex`, `mixed125_adapter.md`, `mixed125_full_interface.md`, `mixed125_interface_review.md`, `wang943_language.md`, `wang943_tiles.json`
+- `32-integer15/evidence/`: `CLEAN_COPY_REBUILD.json`, `PDF_QA.json`, `VERIFICATION.json`, `compiler_audit_independent.log.txt`, `compiler_build_coefficients.log.txt`, `integer15_build_signed15.log.txt`, `integer15_check_new_lemmas.log.txt`, `integer16_build_signed16.log.txt`, `positive_optimize_positive.log.txt`, `positive_review_signed_reductions.log.txt`
+- `32-integer15/integer15/`: `COEFFICIENT_BINDING.json`, `LICENSE`, `NEW_LEMMA_CHECKS.json`, `NOTICE.md`, `README.md`, `SIGNED15_16_PROOF.md`, `SOURCE_ADDITIONS.json`, `SOURCE_PINS.json`, `build_signed15.py`, `check_new_lemmas.py`, `optimized_source.py`
+- `32-integer15/integer15/generated/`: `signed15.json`, `signed15_checks.json`
+- `32-integer15/integer15/inherited/`: `SIGNED17_PROOF.md`, `build_improved27.py`
+- `32-integer15/integer15/source_review/`: `Master3.lean`, `NineRatio.lean`, `NineReduce.lean`
+- `32-integer15/integer15/upstream/`: `COEFFICIENT_BINDINGS.json`, `LICENSE`, `NOTICE.md`
+- `32-integer15/integer15/upstream/base/`: `quartic32.upstream.json`
+- `32-integer15/integer15/upstream/code/`: `fixed_coefficients.py`
+- `32-integer15/integer15/upstream/coefficients/`: `T4_CONSTANTS.upstream.json`, `t4_windows.json`
+- `32-integer15/integer15/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
+- `32-integer15/integer15/upstream/nine/`: `nine_compressor.py`, `nine_section.tex`, `verify_fixed_instance.py`
+- `32-integer15/integer15/upstream/upstream/licenses/`: `LICENSE.ProveIt`
+- `32-integer15/integer15/upstream/upstream/machine/`: `NOTICE.md`
+- `32-integer15/integer15/upstream/upstream/machine/licenses/`: `LICENSE.Wade`
+- `32-integer15/integer15/upstream/upstream/t4/bridge/`: `BRIDGE_AUDIT.md`
+- `32-integer15/integer15/upstream/upstream/t4/bridge/sources/`: `blank_helical.py`, `compiler_constants.py`, `k215_transitions.json`
+- `32-integer15/integer16/`: `COEFFICIENT_BINDING.json`, `LICENSE`, `NEW_LEMMA_CHECKS.json`, `NOTICE.md`, `README.md`, `SIGNED15_16_PROOF.md`, `SOURCE_ADDITIONS.json`, `SOURCE_PINS.json`, `build_signed16.py`, `check_new_lemmas.py`, `optimized_source.py`
+- `32-integer15/integer16/generated/`: `signed16.json`, `signed16_checks.json`
+- `32-integer15/integer16/inherited/`: `SIGNED17_PROOF.md`, `build_improved27.py`
+- `32-integer15/integer16/upstream/`: `COEFFICIENT_BINDINGS.json`, `LICENSE`, `NOTICE.md`
+- `32-integer15/integer16/upstream/base/`: `quartic32.upstream.json`
+- `32-integer15/integer16/upstream/code/`: `fixed_coefficients.py`
+- `32-integer15/integer16/upstream/coefficients/`: `T4_CONSTANTS.upstream.json`, `t4_windows.json`
+- `32-integer15/integer16/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
+- `32-integer15/integer16/upstream/nine/`: `nine_compressor.py`, `nine_section.tex`, `verify_fixed_instance.py`
+- `32-integer15/integer16/upstream/upstream/licenses/`: `LICENSE.ProveIt`
+- `32-integer15/integer16/upstream/upstream/machine/`: `NOTICE.md`
+- `32-integer15/integer16/upstream/upstream/machine/licenses/`: `LICENSE.Wade`
+- `32-integer15/integer16/upstream/upstream/t4/bridge/`: `BRIDGE_AUDIT.md`
+- `32-integer15/integer16/upstream/upstream/t4/bridge/sources/`: `blank_helical.py`, `compiler_constants.py`, `k215_transitions.json`
+- `32-integer15/positive/`: `INDEPENDENT_SIGNED_REVIEW.md`, `OPTIMIZATION_CHECKS.json`, `OPTIMIZATION_PROOF.md`, `SIGNED_REVIEW_CHECKS.json`, `optimize_positive.py`, `positive12_product108.json`, `positive12_shifted_system103.json`, `positive12_system104.json`, `review_signed_reductions.py`
+- `32-integer15/positive/upstream/`: `POSITIVE12_PROOF.md`, `PRODUCT67.json`, `QUARTIC31_PROOF.md`, `build_positive.py.inert`, `positive12_product.json`, `positive12_system.json`, `quartic31_system.json`
+- `32-integer15/positive/upstream/review_sources/`: `Master3.lean`, `NineRatio.lean`, `NineReduce.lean`, `Ratio.lean`
+- `32-integer15/references/`: `COMPARISON_AT_PIN.md`, `Master2.lean`, `Master3.lean`, `NineRatio.lean`, `NineReduce.lean`, `Ratio.lean`, `Theorem1.lean`
+- `33-signed16/`: `INTEGRATION.md`, `Makefile`, `README.md`, `RELEASE_SHA256.json`, `SOURCE_MANIFEST.json`, `report.pdf`, `report.tex`, `reproduce.py`
+- `33-signed16/code/`: `build_signed16.py`, `prepare_index.py`, `verify_signed16.py`
+- `33-signed16/coefficients_small/`: `COEFFICIENT_BINDING.json`, `EXTERNAL_REVIEW.md`, `EXTERNAL_REVIEW_CHECKS.json`, `INDEPENDENT_CHECKS.json`, `MANIFEST.json`, `PROOF.md`, `README.md`, `SCALARS.json`, `SOURCE_HASHES.json`, `audit_external_review.py`, `audit_independent.py`, `build.py`, `section.tex`
+- `33-signed16/coefficients_small/payloads/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
+- `33-signed16/coefficients_small/source/`: `LICENSE.ProveIt`, `k215_transitions.json`, `wang943_tiles.json`
+- `33-signed16/data/`: `coefficients31.json`, `index_bound31.json`, `signed16.json`
+- `33-signed16/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `33-signed16/positive12/`: `COEFFICIENT_BINDING.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build_and_verify.py`, `positive12_product108.json`, `positive12_shifted_system103.json`, `positive12_system104.json`
+- `33-signed16/positive12/upstream/`: `COEFFICIENT_BINDING.json`, `POSITIVE12_PROOF.md`, `positive12_product.json`
+- `33-signed16/quartic31/`: `CHECKS.json`, `PROOF.md`, `README.md`, `build_and_verify.py`, `polynomials.json`, `quartic126.json`, `system61.json`
+- `33-signed16/quartic31/upstream/`: `COEFFICIENT_BINDING.pinned.json`, `LICENSE.ProveIt`, `QUARTIC31_PROOF.pinned.md`, `RETAINED59_PROOF.pinned.md`, `quartic31.pinned.json`
+- `33-signed16/upstream/`: `blank_helical_proof.md`, `coding_blocks_source.py`, `compact_constants.json`, `compact_nine_proof.md`, `fixed_blank67_proof.md`, `index_bound.json`, `nine_generic31.json`, `norm_source_notice.md`, `ordinary_blank_proof.md`, `pell_lemma_audit.md`, `prepare_coefficients.py`, `quartic31.json`, `quartic31_proof.md`, `reviewed_README.md`, `signed17_proof.md`
+- `33-signed16/upstream/compiler/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `WANG943_INDEPENDENT_AUDIT.md`, `beta.bin.gz`, `binding.json`, `build_wang943.py`, `build_wang943_compact.py`, `materialize_wang943_compact.py`, `wang943_compact_layout.json`, `wang943_tiles.json`
+- `33-signed16/verification/`: `HORNER_PRIORITY_REVIEW.json`, `PDF_QA.json`, `PORTABLE_REPRODUCTION.json`, `SIGNED16_INDEPENDENT_REVIEW.md`, `reproduction.json`, `signed16_build.json`, `signed16_independent.json`
+- `34-integer14/`: `CHECK_PLAN.json`, `COEFFICIENT_BINDING.json`, `LICENSE`, `NOTICE.md`, `PORTABILITY_TRANSFORMS.json`, `README.md`, `RELEASE_MANIFEST.json`, `requirements.txt`, `verify_release.py`
+- `34-integer14/audit/`: `COEFFICIENT_DECODER_REPLAY.json`, `COEFFICIENT_SEMANTIC_REVIEW.md`, `COFINAL_RADIX_REVIEW.md`, `FINAL_CIRCUIT_CHECKS.json`, `FINAL_NINE_AND_SIGNED_REVIEW.md`, `LINEAR_PREFIX_SQUARE_STACK.md`, `NEW_LEMMA_CHECKS.json`, `NINE_FINALIZER_INDEPENDENT_CHECKS.json`, `POSITIVE12_REVIEW.md`, `POSITIVE_INDEPENDENT_CHECKS.json`, `ProductPell.lean.txt`, `QUARTIC50_INDEPENDENT_CHECKS.json`, `RELEASE_NEGATIVE_CONTROLS.json`, `Ratio.lean.txt`, `SIGNED_H_CHECKS.json`, `SIGNED_H_PRODUCT_PELL.md`, `SUN_SCOPE_NOTE.md`, `check_final_circuits.py`, `check_new_lemmas.py`, `check_nine_finalizer_independent.py`, `check_positive_independent.py`, `check_quartic50_independent.py`, `check_signed_h.py`, `upstream28-nine.tex`, `upstream29-signed17.md`
+- `34-integer14/coefficients/`: `BUILD_CHECKS.json`, `COEFFICIENT_PROOF.md`, `INDEPENDENT_CHECKS.json`, `README.md`, `REPLAY_CHECKS.json`, `SOURCE_LEDGER.json`, `build_coefficients.py`, `verify_independent.py`, `wang943_tiles.json`
+- `34-integer14/coefficients/exploration/`: `UNPROMOTED.md`, `variable_width.py`
+- `34-integer14/coefficients/payloads/`: `COEFFICIENT_BINDING.json`, `K.bin`, `K.bin.gz`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `beta.bin`, `beta.bin.gz`
+- `34-integer14/coefficients/sources/`: `24_report.tex`, `25-hybrid12_COEFFICIENT_BINDING.json`, `25-hybrid12_PROOF.md`, `25-hybrid12_build_coefficients.py.inert`, `26-ratio12_PARITY_COEFFICIENT_PROOF.md`, `27-wave4_COEFFICIENT_BINDING.json`, `27-wave4_COEFFICIENT_PROOF.md`, `27-wave4_build_mixed.py.inert`, `WANG943_COMPACT_LAYOUT.md`, `WANG943_LANGUAGE_AND_COMPILER.md`
+- `34-integer14/integers/`: `INDEX_CONSTANTS.json`, `README.md`, `SIGNED_BINDING.json`, `SIGNED_BUILD_LEDGER.json`, `SIGNED_CHECKS.json`, `SIGNED_FAMILY_PROOF.md`, `SOURCE_LEDGER.json`, `build_signed_forms.py`, `check_signed_forms.py`, `circuit_support.py`, `signed14.json`, `signed15_linear.json`, `source_core31.json`
+- `34-integer14/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`
+- `34-integer14/low_degree/`: `CHECKS.json`, `QUARTIC50_PROOF.md`, `SOURCE_LEDGER.json`, `build_quartic50.py`, `quartic50.json`
+- `34-integer14/low_degree/upstream/`: `ODD_SCALE_LIFTS_PROOF.md`, `integer51_degree4_odd_scale.json`
+- `34-integer14/nine/`: `ACTUAL_INDEX_CHECKS.json`, `BUILD_LEDGER.json`, `CHECK_RESULTS.json`, `DEGREE_CERTIFICATE.json`, `DELIVERY_FILES.json`, `FIXED_LEAF_PAYLOADS.json`, `HORNER_SEARCH.json`, `INDEX_BOUND.json`, `INDEX_CONSTANTS.json`, `PORTABILITY_TRANSFORMS.json`, `QUARTIC31_PROOF.md`, `README.md`, `SIGNED_QUADRATIC_NINE_PROOF.md`, `SOURCE_LEDGER.json`, `STANDALONE_REPLAY.json`, `base31.json`, `bind_index.py`, `build_signed_nine.py`, `check_actual_index.py`, `check_degree.py`, `check_signed_nine.py`, `circuit_support.py`, `materialize_fixed_leaves.py`, `nine31_signed_quadratic.json`, `nine31_signed_quadratic_positive.json`, `nine31_structured.json`, `nine31_structured_positive.json`, `quartic31.json`, `quartic_coefficients.json`, `z_index.bin`, `z_index.bin.gz`
+- `34-integer14/nine/fixed_leaf_payloads/`: `c0000.magnitude.bin.gz`, `c0016.magnitude.bin.gz`, `c0029.magnitude.bin.gz`, `c0030.magnitude.bin.gz`, `c0031.magnitude.bin.gz`, `c0049.magnitude.bin.gz`, `c0062.magnitude.bin.gz`, `c0064.magnitude.bin.gz`, `c0095.magnitude.bin.gz`, `c0096.magnitude.bin.gz`, `c0097.magnitude.bin.gz`, `c0099.magnitude.bin.gz`, `c0101.magnitude.bin.gz`, `c0189.magnitude.bin.gz`, `c0190.magnitude.bin.gz`, `c0191.magnitude.bin.gz`, `c0202.magnitude.bin.gz`, `c0205.magnitude.bin.gz`, `c0207.magnitude.bin.gz`, `c0212.magnitude.bin.gz`, `c0261.magnitude.bin.gz`, `c0262.magnitude.bin.gz`, `c0263.magnitude.bin.gz`, `c0264.magnitude.bin.gz`, `c0266.magnitude.bin.gz`, `c0272.magnitude.bin.gz`, `c0273.magnitude.bin.gz`, `c0279.magnitude.bin.gz`, `c0281.magnitude.bin.gz`, `c0284.magnitude.bin.gz`, `c0286.magnitude.bin.gz`, `c0287.magnitude.bin.gz`, `c0288.magnitude.bin.gz`, `c0293.magnitude.bin.gz`, `c0295.magnitude.bin.gz`, `c0298.magnitude.bin.gz`, `c0302.magnitude.bin.gz`, `c0306.magnitude.bin.gz`, `c0308.magnitude.bin.gz`, `c0309.magnitude.bin.gz`, `c0313.magnitude.bin.gz`, `c0315.magnitude.bin.gz`, `c0321.magnitude.bin.gz`, `c0323.magnitude.bin.gz`, `c0324.magnitude.bin.gz`, `c0325.magnitude.bin.gz`, `c0327.magnitude.bin.gz`, `c0329.magnitude.bin.gz`, `c0331.magnitude.bin.gz`, `c0333.magnitude.bin.gz`, `c0336.magnitude.bin.gz`, `c0341.magnitude.bin.gz`, `c0345.magnitude.bin.gz`, `c0346.magnitude.bin.gz`, `c0348.magnitude.bin.gz`, `c0349.magnitude.bin.gz`, `c0353.magnitude.bin.gz`, `c0355.magnitude.bin.gz`, `c0357.magnitude.bin.gz`, `c0359.magnitude.bin.gz`, `c0362.magnitude.bin.gz`, `c0365.magnitude.bin.gz`, `c0369.magnitude.bin.gz`, `c0373.magnitude.bin.gz`, `c0376.magnitude.bin.gz`, `c0377.magnitude.bin.gz`, `c0378.magnitude.bin.gz`, `c0380.magnitude.bin.gz`, `c0381.magnitude.bin.gz`, `c0384.magnitude.bin.gz`, `c0388.magnitude.bin.gz`, `c0393.magnitude.bin.gz`, `c0394.magnitude.bin.gz`, `c0395.magnitude.bin.gz`, `c0397.magnitude.bin.gz`, `c0398.magnitude.bin.gz`, `c0399.magnitude.bin.gz`, `c0401.magnitude.bin.gz`
+- `34-integer14/nine/upstream/`: `27-wave4__nine__IMPROVEMENT_PROOF.md.txt`, `27-wave4__nine__build_improved.py.txt`, `28-compact-norms__code__nine_structured.py.txt`, `28-compact-norms__sections__nine.tex.txt`, `parent_constants.round4.json`, `quartic31.round4.json`
+- `34-integer14/positive/`: `CHECKS.json`, `FACTOR_DEGREES.json`, `README.txt`, `SHIFTED12_PROOF.md`, `SOURCE_LEDGER.json`, `build_shifted.py`, `check_factor_degrees.py`, `check_shifted.py`, `positive12_shift_ac2_product.json`, `positive12_shift_ac2_system.json`, `positive12_shift_ac_product.json`, `positive12_shift_ac_system.json`, `positive12_shift_b_product.json`, `positive12_shift_b_system.json`, `positive12_shift_base_product.json`, `positive12_shift_base_system.json`, `positive12_shift_half_aux_product.json`, `positive12_shift_half_aux_system.json`, `positive12_shift_half_product.json`, `positive12_shift_half_system.json`
+- `34-integer14/positive/upstream/`: `COEFFICIENT_BINDING.upstream.json`, `INHERITED_POSITIVE12_PROOF.md`, `code_build_optimized_1069.py.inert`, `sections_positive.tex`
+- `34-integer14/report/`: `MAIN.md`, `REPORT_CONFIG.json`, `build_report.py`, `code_breaks.lua`, `header.tex`, `synthesis_report.md`, `synthesis_report.pdf`, `synthesis_report.tex`
+- `34-integer14/review/24-integer24/`: `README.md`
+- `34-integer14/review/24-integer24/circuits/`: `optimized_tightest_separating12_product.json`, `signed_separating_saturated24_product.json`
+- `34-integer14/review/24-integer24/sections/`: `integer.tex`, `positive.tex`
+- `34-integer14/review/25-hybrid12/`: `README.md`, `RESULTS.json`
+- `34-integer14/review/25-hybrid12/arithmetic/`: `hybrid12_square_unweighted_product.json`
+- `34-integer14/review/25-hybrid12/coefficients/`: `README.md`
+- `34-integer14/review/25-hybrid12/proofs/`: `HYBRID12_PROOF.md`
+- `34-integer14/review/26-ratio12/`: `README.md`, `RESULTS.json`
+- `34-integer14/review/26-ratio12/arithmetic/`: `integer24_product.json`, `ratio12_product.json`
+- `34-integer14/review/26-ratio12/coefficients/`: `README.md`
+- `34-integer14/review/26-ratio12/proofs/`: `RATIO12_PROOF.md`
+- `34-integer14/review/26-ratio12/references/`: `README.md`
+- `34-integer14/review/27-wave4/`: `README.md`
+- `34-integer14/review/27-wave4/integers/`: `README.md`
+- `34-integer14/review/27-wave4/nine/`: `IMPROVEMENT_PROOF.md`, `README.md`
+- `34-integer14/review/27-wave4/nine/generated/`: `nine_natural-majorant_specialized_positive_dag.json`
+- `34-integer14/review/27-wave4/norms/`: `README.md`, `two_weight_norm12_product.json`
+- `34-integer14/review/28-compact-norms/`: `README.md`, `report.tex`
+- `34-integer14/review/28-compact-norms/circuits/`: `compact12_product.json`
+- `34-integer14/review/29-simpler-forms/`: `README.md`
+- `34-integer14/review/29-simpler-forms/norm12/`: `SHIFTED_NORM12_PROOF.md`, `shifted_norm12_product.json`
+- `34-integer14/review/29-simpler-forms/signed17/`: `README.md`, `SIGNED17_PROOF.md`
+- `34-integer14/review/29-simpler-forms/signed17/generated/`: `signed17.json`
+- `34-integer14/review/30-quartic31/`: `README.md`
+- `34-integer14/review/30-quartic31/integers/`: `README.md`
+- `34-integer14/review/30-quartic31/nine/`: `README.md`
+- `34-integer14/review/30-quartic31/positive/`: `README.md`
+- `34-integer14/review/`: `ATTRIBUTION_SOURCE_MAP.json`, `COMPARISON_REVIEW.md`, `COUNT_AUDIT.json`, `PLACEMENT.md`, `README.md`, `SOURCE_LEDGER.json`, `TREE.json`, `audit_counts.py`
+- `35-cancel12/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `README.md`, `RESULTS.json`, `report.pdf`, `report.tex`, `reproduce.py`
+- `35-cancel12/coefficients/`: `CHECKS.json`, `COEFFICIENT_BINDING.json`, `K.bin`, `K.bin.gz`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `README.md`, `beta.bin`, `beta.bin.gz`, `build_coefficients.py`, `wang943_tiles.json`
+- `35-cancel12/coefficients/upstream/`: `wang943_tiles.json`
+- `35-cancel12/integers/`: `README.md`, `SOURCE_PINS.json`, `build_signed.py`, `signed_section.tex`
+- `35-cancel12/integers/generated/`: `INDEX_BOUND_CERTIFICATE.json`, `INDEX_CONSTANTS.json`, `signed16.json`, `signed16_checks.json`, `signed17.json`, `signed17_checks.json`
+- `35-cancel12/integers/upstream/27-wave4/nine/source/proofs/`: `independent_review.md`
+- `35-cancel12/integers/upstream/29-simpler-forms/signed17/`: `SIGNED17_PROOF.md`, `build_signed17.py`
+- `35-cancel12/integers/upstream/29-simpler-forms/signed17/upstream/nine/`: `nine_section.tex`
+- `35-cancel12/integers/upstream/30-quartic31/arithmetic/`: `quartic31.json`
+- `35-cancel12/integers/upstream/30-quartic31/integers/`: `SIGNED_ODD_SCALE_FAMILY_PROOF.md`
+- `35-cancel12/integers/upstream/30-quartic31/nine/`: `COMPACT_NINE_PROOF.md`, `build_compact_nine.py`
+- `35-cancel12/integers/upstream/30-quartic31/nine/nu31/`: `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_CONSTANTS.json`, `nine_compact_magnitude_tight.json`
+- `35-cancel12/integers/upstream/30-quartic31/review/18-jones9/proofs/`: `nine_source_audit.md`
+- `35-cancel12/integers/upstream/30-quartic31/review/`: `optimize_nine_circuit.py`
+- `35-cancel12/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`
+- `35-cancel12/positive/`: `CHECK_RESULTS.json`, `README.md`, `build_new.py`, `cancellation1065_product.json`, `cancellation1065_shifted_system.json`, `cancellation1065_system.json`, `check_new.py`, `economical_product.json`, `economical_shifted_system.json`, `economical_system.json`
+- `35-cancel12/quartic/`: `QUARTIC31_62_AUDIT.json`, `QUARTIC31_62_PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_quartic31_62.py`, `quartic31_sos127.json`, `quartic31_system62.json`
+- `35-cancel12/quartic/upstream/`: `QUARTIC31_PROOF.upstream.md`, `RETAINED59_PROOF.upstream.md`, `quartic31.json`
+- `35-cancel12/reviews/`: `COEFFICIENTS_INDEPENDENT_AUDIT.json`, `COEFFICIENTS_INDEPENDENT_REVIEW.md`, `POSITIVE1065_INDEPENDENT_REVIEW.md`, `SIGNED16_INDEPENDENT_REVIEW.json`, `SIGNED16_INDEPENDENT_REVIEW.md`, `audit_coefficients_independent.py`, `audit_signed16.py`
+- `35-cancel12/sections/`: `coefficients.tex`, `positive.tex`, `quartic.tex`, `signed.tex`, `verification.tex`
+- `35-cancel12/sources/`: `SOURCE_MAP.json`
+- `35-cancel12/sources/catalogue/24-integer24/`: `README.md`
+- `35-cancel12/sources/catalogue/24-integer24/code/`: `build_coefficients.py`, `build_optimized_1069.py`
+- `35-cancel12/sources/catalogue/24-integer24/sections/`: `coefficients.tex`, `positive.tex`
+- `35-cancel12/sources/catalogue/25-hybrid12/`: `LICENSE`, `NOTICE.md`, `README.md`
+- `35-cancel12/sources/catalogue/25-hybrid12/coefficients/`: `COEFFICIENT_BINDING.json`, `PROOF.md`, `build_coefficients.py`, `wang943_tiles.json`
+- `35-cancel12/sources/catalogue/25-hybrid12/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`
+- `35-cancel12/sources/catalogue/25-hybrid12/proofs/`: `HYBRID12_PROOF.md`
+- `35-cancel12/sources/catalogue/25-hybrid12/upstream/`: `09_ROOT_AMALGAMATION_PROOF.md`, `BLANK_HELICAL_PROOF.md`, `FIXED_BLANK_67_PROOF.md`, `NORM12_PROOF.md`, `ORDINARY_BLANK_PROOF.md`, `RETAINED59_PROOF.md`, `ROOT12_PROOF.md`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `complete84_signed_quotient_absorption.md`, `complete84_signed_quotient_soundness_scout.md`
+- `35-cancel12/sources/catalogue/26-ratio12/`: `README.md`
+- `35-cancel12/sources/catalogue/26-ratio12/arithmetic/`: `build_ratio12.py`
+- `35-cancel12/sources/catalogue/26-ratio12/proofs/`: `RATIO12_PROOF.md`
+- `35-cancel12/sources/catalogue/27-wave4/`: `README.md`
+- `35-cancel12/sources/catalogue/27-wave4/coefficients/`: `COEFFICIENT_PROOF.md`, `audit_independent.py`, `build_mixed.py`
+- `35-cancel12/sources/catalogue/27-wave4/coefficients/sources/`: `k215_transitions.json`
+- `35-cancel12/sources/catalogue/27-wave4/coefficients/upstream/compiler/`: `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`
+- `35-cancel12/sources/catalogue/27-wave4/operations/`: `PROOF.md`, `build_operations.py`
+- `35-cancel12/sources/catalogue/27-wave4/operations/upstream/`: `RETAINED59_PROOF.md`, `retained16_system59.json`
+- `35-cancel12/sources/catalogue/28-compact-norms/`: `README.md`
+- `35-cancel12/sources/catalogue/28-compact-norms/proofs/`: `COMPACT12_PROOF.md`
+- `35-cancel12/sources/catalogue/28-compact-norms/vendor/inherited/`: `FIXED_BLANK_67_PROOF.md`
+- `35-cancel12/sources/catalogue/29-simpler-forms/`: `README.md`
+- `35-cancel12/sources/catalogue/30-quartic31/`: `README.md`
+- `35-cancel12/sources/catalogue/30-quartic31/arithmetic/`: `LOW_OPERATION_REPORT.md`, `QUARTIC31_PROOF.md`, `build_arithmetic.py`, `quartic31.json`, `quartic31_system.json`
+- `35-cancel12/sources/catalogue/30-quartic31/positive/`: `POSITIVE12_PROOF.md`, `build_positive.py`
+- `35-cancel12/sources/catalogue/`: `README.md`
+- `35-cancel12/verification/`: `CLEAN_EXTRACTION.json`, `PDF_BUILD.json`, `REPRODUCE.json`
+- `36-small-tuple/`: `Makefile`, `NOTICE.md`, `README.md`, `closing_sections.tex`, `nine_section.tex`, `report.pdf`, `report.tex`, `reproduce.py`, `verify.py`
+- `36-small-tuple/baseline/`: `build_baselines.py`, `product67.json`, `retained16_system59.json`
+- `36-small-tuple/baseline/upstream/`: `product67.original.json`, `retained16_system59.original.json`
+- `36-small-tuple/coefficients/`: `COEFFICIENT_BINDING.json`, `INDEPENDENT_AUDIT.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCES.json`, `audit_coefficients.py`, `build_coefficients.py`, `k215_transitions.json`, `wang943_tiles.json`
+- `36-small-tuple/coefficients/coefficients/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
+- `36-small-tuple/coefficients/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE_K215.md`
+- `36-small-tuple/coefficients/source_proofs/`: `BLANK_HELICAL_PROOF.md`, `COEFFICIENT_TRANSFER.md`, `FIXED_BLANK_67_PROOF.md`, `ODD_SCALE_27_PROOF.md`, `ORDINARY_BLANK_PROOF.md`, `SIGNED_DOMAIN_29.md`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `package24_prime_padding.tex`, `package25_mixed_clauses.md`, `package27_complete_transfer.md`
+- `36-small-tuple/evidence/`: `COMPARISON_AT_PIN.md`, `INDEPENDENT_REVIEW.md`, `PDF_QA.json`, `RELOCATION_CHECK.json`, `UPSTREAM_PROVENANCE.json`, `VERIFICATION.json`
+- `36-small-tuple/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `36-small-tuple/nine/`: `NINE_PROOF.md`, `README.md`, `SOURCE_MANIFEST.json`, `circuit_tools.py`, `coefficient_aliases.json`, `nine31_folded_checks.json`, `nine31_folded_natural.json`, `nine31_folded_positive.json`, `optimize_combined.py`, `rebind_compact.py`
+- `36-small-tuple/nine/compact/`: `CONSTANTS.json`, `INDEX_BOUND_CERTIFICATE.json`, `REBOUND_CHECKS.json`, `nine31_natural.json`, `nine31_positive.json`, `z_index.bin.gz`
+- `36-small-tuple/nine/source/`: `COMPACT_CONSTANTS.json`, `COMPACT_NINE_PROOF.md`, `LICENSE.ProveIt`, `UPSTREAM_COEFFICIENT_BINDING.json`, `nine_compact_magnitude_tight.json`, `quartic31.json`
+- `36-small-tuple/nine/source/coefficients/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
+- `36-small-tuple/positive/`: `CHECK_RESULTS.json`, `METRICS.json`, `REFINEMENT_PROOF.md`, `SOURCE_PINS.json`, `build_positive_refinements.py`, `check_positive_refinements.py`
+- `36-small-tuple/positive/circuits/`: `short109_product.json`, `short109_shifted_system.json`, `short109_system.json`, `tight120_product.json`, `tight120_shifted_system.json`, `tight120_system.json`
+- `36-small-tuple/positive/upstream/`: `LICENSE.ProveIt`, `NOTICE.original30.txt`, `POSITIVE12_PROOF.original30.md`, `TRANSPORT_SHIFT_PROOF.original29.md`, `ordinary_blank_proof.md`, `positive.original24.tex`, `positive12_product.original24.json`, `positive12_product.original30.json`
+- `36-small-tuple/proofs/`: `INHERITED_ORDINARY_PROOF.md`, `INHERITED_P67_PROOF.md`, `INHERITED_PELL_AUDIT.md`, `INHERITED_RETAINED59_PROOF.md`
+- `37-wave5/`: `INSTANCE.json`, `LICENSE`, `NEGATIVE_CONTROLS.json`, `NOTICE.md`, `PDF_QA.json`, `README.md`, `VERIFICATION.json`, `negative_controls.py`, `report.pdf`, `report.tex`, `verify.py`
+- `37-wave5/coefficients/`: `COEFFICIENT_TRANSFER.md`, `COMPACT_COEFFICIENT_BINDING.json`, `REBUILD_CHECKS.json`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `WANG943_INDEPENDENT_AUDIT.md`, `k215_transitions.json`, `rebuild.py`, `wang943_tiles.json`
+- `37-wave5/coefficients/coefficients_compact/`: `K.bin`, `K.bin.gz`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `beta.bin`, `beta.bin.gz`
+- `37-wave5/licenses/`: `LICENSE`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE-source28.md`
+- `37-wave5/lowdegree/`: `BUILD_RESULTS.json`, `CHECKS.json`, `PROOF.md`, `README.md`, `SOURCE_PROVENANCE.json`, `build.py`, `check.py`, `integer24_ratio_product.json`, `integer24_ratio_sos.json`, `integer24_ratio_system.json`, `integer50_quartic.json`, `integer50_quartic_expanded.json`, `integer50_quartic_system.json`, `section.tex`
+- `37-wave5/lowdegree/upstream/`: `COEFFICIENT_BINDING.json`
+- `37-wave5/lowdegree/upstream/arithmetic/`: `QUARTIC31_PROOF.md`, `SOURCE_LEDGER.json`, `build_arithmetic.py`, `quartic31.json`, `quartic31_system.json`
+- `37-wave5/lowdegree/upstream/compiler/`: `COMPACT_COEFFICIENT_BINDING.json`
+- `37-wave5/lowdegree/upstream/integers/`: `COEFFICIENT_BINDINGS.json`, `COEFFICIENT_TRANSFER.md`, `SIGNED_ODD_SCALE_FAMILY_PROOF.md`, `build_odd_scale_family.py`, `integer25_small_weight131_degree920.json`, `integer26_ordinary_two_root123_degree214.json`, `integer26_system117_degree128.json`
+- `37-wave5/lowdegree/upstream/positive/`: `POSITIVE12_PROOF.md`, `positive12_product.json`
+- `37-wave5/lowdegree/upstream/source27/`: `COEFFICIENT_BINDING.json`, `INTEGER24_PROOF.md`, `INTEGER24_RATIO_WEIGHT_PROOF.md`, `LOW_DEGREE_PROOF.md`, `integer51_degree4.json`
+- `37-wave5/lowdegree/upstream/source27/sources/23-separating12/proofs/`: `ODD_SCALE_27_PROOF.md`
+- `37-wave5/nine/`: `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_nine.py`, `section.tex`, `verify_nine.py`
+- `37-wave5/nine/generated/`: `COEFFICIENT_ALIASES.json`, `DEGREE_CERTIFICATE.json`, `VALIDATION.json`, `Z_MATERIALIZATION.json`, `ledger.json`, `nine_sharp_degree_certificate.json`, `nine_sharp_natural.json`, `nine_sharp_positive.json`, `nine_structured_natural.json`, `nine_structured_positive.json`, `z_index.bin`, `z_index.bin.gz`
+- `37-wave5/nine/source/27-wave4/nine/`: `IMPROVEMENT_PROOF.md`, `build_improved.py`
+- `37-wave5/nine/source/28-compact-norms/`: `LICENSE`, `NOTICE.md`
+- `37-wave5/nine/source/28-compact-norms/code/`: `nine_structured.py`
+- `37-wave5/nine/source/28-compact-norms/sections/`: `nine.tex`
+- `37-wave5/nine/source/30-quartic31/arithmetic/`: `QUARTIC31_PROOF.md`, `quartic31.json`
+- `37-wave5/nine/source/30-quartic31/compiler/`: `COMPACT_COEFFICIENT_BINDING.json`
+- `37-wave5/nine/source/30-quartic31/licenses/`: `LICENSE.ProveIt`, `NOTICE.txt`
+- `37-wave5/nine/source/30-quartic31/nine/`: `COMPACT_NINE_PROOF.md`, `build_compact_nine.py`, `prepare_coefficients.py`, `rebuild_nu31.py`
+- `37-wave5/nine/source/30-quartic31/nine/nu31/`: `COMPACT_CONSTANTS.json`, `INDEX_BOUND_CERTIFICATE.json`
+- `37-wave5/positive/`: `BUILD_RECEIPT.json`, `CHECK_RESULTS.json`, `COEFFICIENT_BINDING.json`, `PROOF.md`, `README.md`, `SOURCE_PROVENANCE.json`, `build_positive.py`, `check_positive.py`, `mid_full_product.json`, `mid_full_shifted_system.json`, `mid_full_sos.json`, `mid_full_system.json`, `mid_half_product.json`, `mid_half_shifted_system.json`, `mid_half_sos.json`, `mid_half_system.json`, `section.tex`, `shift_half_product.json`, `shift_half_shifted_system.json`, `shift_half_sos.json`, `shift_half_system.json`, `short_plain_product.json`, `short_plain_shifted_system.json`, `short_plain_sos.json`, `short_plain_system.json`, `tight_full_product.json`, `tight_full_shifted_system.json`, `tight_full_sos.json`, `tight_full_system.json`, `tight_half_product.json`, `tight_half_shifted_system.json`, `tight_half_sos.json`, `tight_half_system.json`
+- `37-wave5/positive/upstream/`: `24-integer24__circuits__optimized_tight_separating12_product.json`, `24-integer24__circuits__optimized_tightest_separating12_product.json`, `24-integer24__code__build_optimized_1069.py`, `24-integer24__code__build_optimized_1073.py`, `24-integer24__code__build_optimized_1081.py`, `24-integer24__sections__positive.tex`, `25-hybrid12__proofs__HYBRID12_PROOF.md`, `26-ratio12__proofs__RATIO12_PROOF.md`, `28-compact-norms__proofs__COMPACT12_PROOF.md`, `30-POSITIVE12_PROOF.md`, `30-quartic31__integers__COEFFICIENT_TRANSFER.md`, `30-quartic31__positive__COEFFICIENT_BINDING.json`, `30-quartic31__positive__build_positive.py`, `30-quartic31__positive__positive12_product.json`
+- `37-wave5/review/`: `FINAL_REVIEW_SUMMARY.md`, `LITERAL_STRUCTURE_CHECKS.json`, `POSITIVE_AND_INTEGER_NORM_REVIEW.md`, `SIGNED14_15_INDEPENDENT_REVIEW.md`, `SIGNED16_INDEPENDENT_REVIEW.md`, `check_literal_structure.py`
+- `37-wave5/review/upstream/`: `27-wave4__coefficients__COEFFICIENT_PROOF.md`, `27-wave4__nine__IMPROVEMENT_PROOF.md`, `29-simpler-forms__signed17__SIGNED17_PROOF.md`, `30-quartic31__arithmetic__QUARTIC31_PROOF.md`, `30-quartic31__integers__COEFFICIENT_TRANSFER.md`, `30-quartic31__nine__COMPACT_NINE_PROOF.md`, `30-quartic31__positive__POSITIVE12_PROOF.md`, `PLACEMENT.md`, `Ratio.lean`
+- `37-wave5/root/`: `COMPLETED_SQUARE_CHECKS.json`, `NINE_TELESCOPING_CHECKS.json`, `PELL_ORBIT_CHECKS.json`, `check_completed_square_bounds.py`, `check_nine_telescoping.py`, `check_pell_orbits.py`
+- `37-wave5/signed/`: `FIXED_RECIPES.json`, `LICENSE`, `NOTICE.md`, `README.md`, `SIGNED_PROOF.md`, `SOURCE_PINS.json`, `build_signed.py`, `check_signed.py`, `fast_jones_base.py`, `section.tex`
+- `37-wave5/signed/generated/`: `CHECKS.json`, `COEFFICIENT_ALIASES.json`, `LEDGER.json`, `signed14.json`, `signed15.json`, `signed16.json`
+- `37-wave5/signed/upstream/`: `29-simpler-forms__signed17__SIGNED17_PROOF.md`, `29-simpler-forms__signed17__build_signed17.py`, `30-quartic31__arithmetic__QUARTIC31_PROOF.md`, `30-quartic31__nine__COMPACT_NINE_PROOF.md`, `30-quartic31__nine__build_compact_nine.py`, `30-quartic31__nine__rebuild_nu31.py`, `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_CONSTANTS.json`, `INDEX_BOUND_CERTIFICATE.json`, `LICENSE.ProveIt`, `LICENSE.source29`, `NOTICE.source29.md`, `NOTICE.source30.txt`, `quartic31.json`
+- `37-wave5/sources/24-integer24/`: `README.md`
+- `37-wave5/sources/25-hybrid12/`: `README.md`
+- `37-wave5/sources/`: `PLACEMENT.md`, `README.md`
 - top level: `README.md` (this file), `PLACEMENT.md`
