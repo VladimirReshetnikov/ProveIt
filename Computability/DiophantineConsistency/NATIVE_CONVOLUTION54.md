@@ -95,3 +95,8 @@ also remain open. None is replaced here by a supplied correctness premise.
 All 43 public theorems have dedicated axiom checks in the four corresponding
 `Lean/checks` files. The only axioms are `propext`, `Classical.choice` and
 `Quot.sound`; several finite arithmetic facts use only `propext`.
+
+The subsequent [origin checkpoint](NATIVE_ORIGIN54.md) proves the exact
+symbolic lowMC residue and derives the Start digit C modρ=1 from the actual
+source masks. The remaining non-origin support and phase/basis work is
+not inferred from that fact.

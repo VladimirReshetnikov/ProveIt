@@ -93,3 +93,7 @@ program inlining, but the complete parser, reference loop, rename checker,
 and bounded iteration compiler still need their own compositional proofs.
 No new closed consistency equation or internal object-ZFC consistency
 biconditional is claimed by this checkpoint.
+
+The next [guarded arithmetic checkpoint](QUADRATIC_GUARDED_GRAPHS.md)
+now represents the actual list head with7 witnesses and76 operations at
+degree≤4, preserving both nil and a found entry equal to zero.

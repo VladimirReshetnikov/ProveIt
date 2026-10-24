@@ -114,3 +114,8 @@ obligation. It requires an actual interpretation of these numeric context,
 lookup, and finite-table conditions inside a model, and agreement with its
 existing internal coded-form operations. The external-natural theorems and
 the internal semiring laws do not automatically provide that transport.
+
+The next [shared-coordinate checkpoint](ANNOTATED_RULE_COORDINATES.md)
+now gives exact supplied output/premise programs for all17 actual rules.
+It retains side conditions, backward references and the full line loop as
+separate obligations.

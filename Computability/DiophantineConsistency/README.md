@@ -40,7 +40,9 @@ The actual Separation and Replacement schemas now have checked constructor,
 rename and sealing programs too; see [ANNOTATED_SCHEMAS.md](ANNOTATED_SCHEMAS.md).
 [Context validation, shifting and the assumption rule](ANNOTATED_CONTEXT_RULE.md)
 now have supplied numeric programs too, including soundness for arbitrary raw codes.
-The remaining rules, axiom-tag dispatcher and full proof-line loop remain in progress.
+[Shared validated coordinates and literal output/premise programs](ANNOTATED_RULE_COORDINATES.md)
+now cover all17 original rules. Their side conditions, backward references,
+axiom dispatch and full proof-line loop remain in progress.
 The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
 ZFC derivation of its source/target no-zero equivalence over the entire
 internal omega. Internal verification of the full checker encoding remains open.
@@ -65,7 +67,9 @@ guarded joint quotient/remainder needs one witness and16 operations. All
 have degree at most four. [Composable tree/list graphs](QUADRATIC_TREE_CODE_GRAPHS.md)
 now cover the actual numeric checker's predecessor-based projections and
 guarded list tail at five witnesses and62 operations each. Recompiling the
-complete checker remains open.
+complete checker remains open. [Guarded local graphs](QUADRATIC_GUARDED_GRAPHS.md)
+also cover the actual list head (seven witnesses,76 operations,degree≤4),
+zero tests and conditionals, including nil and found-zero behavior.
 
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
 release replays pass. Within the nine-positive branch, the next delivered
@@ -134,7 +138,9 @@ under explicit coefficient conditions. The [compact54 local decoder](NATIVE_CLAU
 now proves exact empty-cell or single-tile acceptance from arbitrary Boolean
 selectors, with no one-hot premise. The [whole-stencil carry step](NATIVE_CONVOLUTION54.md)
 now derives pointwise mask tests with all temporal rotation phases retained.
-Assignment support, literal port/basis binding, phase synchronization and whole compiler
+The [origin radix digit](NATIVE_ORIGIN54.md) is now forced to one from the
+actual source mask and exact low-MC recipe. Remaining assignment support,
+literal port/basis binding, phase synchronization and whole compiler
 calibration and the converse completeness direction remain open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,

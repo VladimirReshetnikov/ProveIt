@@ -1,0 +1,10 @@
+import DiophantineConsistency.NativeSourceOrigin54
+
+open DiophantineConsistency.NativeSourceOrigin54
+
+#print axioms repunit_mod_radix
+#print axioms source_origin_mod_radix
+#print axioms word_mod_radix
+#print axioms source_origin_digit
+#print axioms source_origin_of_lowPort
+#print axioms source_origin_digit_of_lowPort
