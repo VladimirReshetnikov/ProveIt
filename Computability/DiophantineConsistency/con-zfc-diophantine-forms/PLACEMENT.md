@@ -2965,8 +2965,9 @@ Members not in this tree:
   wave-5 to wave-9 files of this report, which stay in the tree. The tables below
   name the shortest repository path holding the same bytes. Licence, notice
   and attribution files are always kept. 75 bundles the eight wave-9 ZIPs; they are
-  mapped to their arrival commit `0c6be9a074`. Seven packages pin the
-  wave-9 placement `a2cd79b912` or the later `9cca523d9f`; 75 pins both.
+  mapped to their arrival commit `0c6be9a074`. The packages pin the
+  wave-9 placement `a2cd79b912` or the later merge `9cca523d9f`; 74 and
+  75 cite both.
 - **Checksum ledgers, logs and TeX build artifacts.** `SHA256SUMS*`, `*.log`
   and TeX auxiliaries (`*.aux`, `*.toc`, …) are excluded by the root
   `.gitignore`; they were not verified.
