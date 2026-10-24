@@ -746,3 +746,18 @@ interface and branch-local sign proof precede inherited calibration; see
 the [root review](reviews/pow2-output-profile-root-peer.md). All46 corruption
 controls fail as expected. Earlier families remain preserved. Lean stays
 paused and the canonical one-page equation is unchanged.
+
+## Shifted-t index guard is recovered:72 source predicates
+
+The [shifted-t proof](research/shifted-t-index-guard/PROOF.md) removes raw825's
+explicit sign guard. Partial parent proofs first recover104 and the four
+other required Pell pairs without using825. The actual choose-one row then
+excludes the collapsed shifted-t pair: its numerator is at least b² for
+t>=2, while the t=1 ceiling forces a digit at least2. Only after this
+contradiction does the signed-index theorem recover825>0. No factorial1
+meaning or premature call7 interpretation is assumed. A fresh triple reaches
+the actual73-domain parent before using its complete theorem. Root read the
+entire proof/checkers and matched author and independent peer receipts in
+both modes; see the [root review](reviews/shifted-t-index-guard-root-peer.md).
+There are72 predicates before projection. The measured598-variable family
+remains current until fresh complete profiles pass. Lean and page unchanged.
