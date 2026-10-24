@@ -71,6 +71,13 @@ complete checker remains open. [Guarded local graphs](QUADRATIC_GUARDED_GRAPHS.m
 also cover the actual list head (seven witnesses,76 operations,degree≤4),
 zero tests and conditionals, including nil and found-zero behavior.
 
+Wave-ten packages68–75 have now been reviewed; all eight full normal release
+replays pass. They add38-integer quartics, an11-positive degree325/113-operation
+equation, and a478-operation nine-positive equation of degree1,379,730.
+The443-operation compact54-sharp candidate remains the operation target in
+the nine-positive branch. See [the combined wave-ten review](PROPOSAL_REVIEW_WAVE10.md)
+for the domain-preserving comparison, coefficient costs and proof boundaries.
+
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
 release replays pass. Within the nine-positive branch, the next delivered
 cost target is package 66's 444-operation, degree-1,845,940 form. Package
