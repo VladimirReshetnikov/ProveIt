@@ -18,6 +18,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
+| Positive integers | 10 | 97 | 368 | Existing-square transport weight; one-operation saving, higher degree |
+| Positive integers | 10 | 102 | 344 | Existing-square transport and direct positive X; operation/degree tradeoff |
 | Positive integers | 10 | 98 | 360 | Positive index weight, zero-offset base; complete canonical one-page equation |
 | Positive integers | 10 | 103 | 332 | Positive index weight and direct positive X; degree tradeoff |
 | Positive integers | 10 | 98 | 368 | Zero-offset scaled base, shared muY and expanded transport |
@@ -1353,3 +1355,18 @@ parsing, both render modes and full tuple reconstructions pass; see the
 The selected nonzero homogeneous component proves exact degree rather
 than a sampled degree. Every earlier page, including its TeX, is preserved.
 Lean remains paused; no global simplicity minimum is claimed.
+
+
+## Existing-square transport: 97/368 and 102/344 alternatives
+
+The [complete square-weight equations](research/ten-positive-square-weight-tradeoff/README.md)
+reuse the existing I² gate in L and delete one multiplication. The ordinary
+pre-transport inequality I>k>H preserves soundness; the positive polynomial
+n shear proves completeness. Exact source, norm and leading-form checks
+give 97 operations at degree 368, or 102 operations at degree 344.
+These save one operation against 98/360 and 103/332 while raising degree.
+All six fresh root normal/optimized replays pass, with 27 actual-artifact
+corruptions rejected in each mode; see the
+[root acceptance](reviews/ten-square-weight-root-peer.md).
+The canonical 98/360 one-page PDF/TeX is retained, all predecessors are
+preserved and Lean remains paused.

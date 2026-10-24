@@ -1339,3 +1339,18 @@ parsing, both render modes and full tuple reconstructions pass; see the
 The selected nonzero homogeneous component proves exact degree rather
 than a sampled degree. Every earlier page, including its TeX, is preserved.
 Lean remains paused; no global simplicity minimum is claimed.
+
+
+## Existing-square transport: 97/368 and 102/344 alternatives
+
+The [complete square-weight equations](research/ten-positive-square-weight-tradeoff/README.md)
+reuse the existing I² gate in L and delete one multiplication. The ordinary
+pre-transport inequality I>k>H preserves soundness; the positive polynomial
+n shear proves completeness. Exact source, norm and leading-form checks
+give 97 operations at degree 368, or 102 operations at degree 344.
+These save one operation against 98/360 and 103/332 while raising degree.
+All six fresh root normal/optimized replays pass, with 27 actual-artifact
+corruptions rejected in each mode; see the
+[root acceptance](reviews/ten-square-weight-root-peer.md).
+The canonical 98/360 one-page PDF/TeX is retained, all predecessors are
+preserved and Lean remains paused.
