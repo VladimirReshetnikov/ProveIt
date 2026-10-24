@@ -22,6 +22,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 11 | 113 | 325 | Three-root transfer, package70 |
 | Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
+| Positive integers | 9 | 1,065 | 1,158,228 | D-register compression of the new radical-majorant equation |
 | Integers | 10 | 481 | 1,576,864 | Free-Lucas finalizer, package68 |
 | Integers | 38 | not optimized | 4 | Cone/determinant alternatives, packages69/71 |
 
@@ -79,6 +80,14 @@ and normal/optimized receipts are included. This subsumes our independently
 reconstructed101/78 checkpoint, also present in the arriving round11 package.
 [`short-unit-products`](research/short-unit-products/README.md) retains that
 checkpoint and a separate thirteen-positive90/55 tradeoff.
+
+For the lowest inspected nine-positive degree, the arriving radical
+majorant's1,753-operation evaluator is reduced to1,065 operations at the
+same degree1,158,228. Reusing its existing D register collects654 terms
+into312, and exact polynomial substitution/remap certificates preserve
+the entire original polynomial. See
+[`radical-d-shared`](candidates/radical-d-shared/README.md) and
+[the nine-variable review](PROPOSAL_REVIEW_WAVE11_NINE.md).
 
 1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that
