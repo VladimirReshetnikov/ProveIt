@@ -507,3 +507,17 @@ and exact nonzero leading coefficient transfer unchanged. This is a minor
 saving within the new signed degree312 route; the canonical10-positive
 105/408 PDF/TeX remains the separate lower-variable/operation display.
 Lean remains paused.
+
+
+The [thirteen-integer quadratic trace equation](candidates/integer13-quadratic-trace/README.md)
+now uses135 operations at exact degree536, down from184/1072. Normalized
+trace gives both CRT congruences before signs, the unscaled guard gives
+four-root separation, and signed Pell folding restores the main norm.
+The whole-product height proof resolves its quadratic projection, then
+explicit unrestricted n maps restore the frozen trace endpoint in both
+directions. Root reviewed the entire ordinary proof and independent
+literal checker; all four normal/optimized checker/rebuild commands pass,
+including the full495-term norm, centered425-term degree calculation,
+authentic six ports and all138 original archive members. This improves
+both current13-integer cost and degree. The10-positive105/408 page remains
+a separate lower-variable/operation display. Lean is paused.
