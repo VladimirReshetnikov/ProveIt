@@ -26,8 +26,8 @@ is an explicit polynomial with fixed integer coefficients, and by an ordinary
 argument formalizable in ZFC, ZFC proves "no solution" ↔ Con(ZFC). Wave 11
 adds finished direct quartics in the numerical proof calculus C222, with no
 coefficient tuple and without K215, this compiler or Jones (down to 394
-naturals and 663 unrestricted integers, report sources 87–89, 93–96 and
-98–110).
+naturals and 663 unrestricted integers, report sources 87, 89, 93–96 and
+98–109).
 
 That route is not required. By Vladimir's direction, a proposal is free to
 use another encoding instead of K215, Jones's universal equation or this
