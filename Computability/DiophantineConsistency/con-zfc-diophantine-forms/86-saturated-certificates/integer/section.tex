@@ -1,0 +1,389 @@
+\section{Seventeen integers: compressing congruence witnesses}
+\label{sec:integer17}
+
+The following constructions use unrestricted integer coordinates. They give
+the variable--degree pairs $(23,10)$, $(17,88)$, and $(16,184)$,
+with a $(16,192)$ sum-of-squares control.
+The first two improve the incoming $(24,10)$ and $(19,88)$ points
+\cite{budget,joint}; the last trades degree for another coordinate.
+Their literal circuits use respectively $131$, $114$, and $135$ binary
+operations; the degree-192 control uses $134$. Scalar arithmetic and
+squaring are counted. These are different
+tradeoffs from the much higher-degree ten-integer reductions. In particular,
+the $114$-operation circuit is larger than the incoming $109$-operation
+nineteen-integer circuit. No global minimum or historical priority is claimed.
+
+All four use the same six fixed integers
+\[
+ \beta=2^{1064921}-1,\qquad K_0,M_C,M_F,\qquad
+ A_c=2^{1113},\quad B_c=2^{666104}.
+\]
+The first four are the entire source-34
+\texttt{mixed-parity-unrounded-1064921} tuple; $M_F$ already includes its
+shift by $\beta$. The last two are source71's determinant scales
+\cite{source71}. The actual six integers, compressed minimal little-endian
+bytes, finite native recipe, and complete raw hashes are supplied in the
+integer component's \texttt{coefficients/} directory. The raw encodings
+total $615\,883$ bytes. These fixed leaves are not additional unknowns.
+They satisfy
+\[
+ \beta\ge17,\quad\beta\equiv1\pmod3,\quad
+ 0<M_C<\beta<M_F<2\beta,\quad K_0\ge0,\quad A_c,B_c\ge2.
+\]
+
+\subsection{Two inherited guards}
+
+Put $\operatorname{Pos}(p_1,p_2,p_3)=1+p_1^2+p_2^2+p_3(p_3+1)$.
+It takes exactly the positive integer values, by the three-square theorem
+applied to $4n-3$. The nearest-square joint-positivity lemma used in the
+incoming constructions is
+\begin{equation}\label{eq:integer-pair}
+ x,y>0\quad\Longleftrightarrow\quad
+ \exists t,p_1,p_2,p_3\in\Z:\quad
+ xy-(t^2-x-y+1)^2=\operatorname{Pos}(p_1,p_2,p_3).
+\end{equation}
+Indeed a positive left side forces $xy>0$ and excludes both inputs being
+negative. Conversely, for $x,y>0$, choose the nearer neighboring square
+to $x+y-1$. Its squared error is less than $x+y-1\le xy$, leaving a
+positive integer represented by $\operatorname{Pos}$.
+
+For $\alpha=q-F-C$ define
+\[
+ d=(A_cF)(B_cC)-(q-A_cF-B_cC)^2.
+\]
+The inequality $d>0$ forces $F,C,\alpha,q$ to have one common nonzero
+sign. To see this, put $U=A_cF$, $B=B_cC$. Then $U,B$ have a common
+sign and $|q-U-B|<\sqrt{UB}\le(|U|+|B|)/2$. Hence $q$ has their sign
+and $|q|>(|U|+|B|)/2\ge|F|+|C|$, which also fixes the sign of
+$\alpha$. Source71's separate canonical-witness estimates prove
+completeness for this determinant; that calibrated existence restriction
+is inherited, not re-proved by finite sign tests.
+
+\subsection{The complete polynomial}
+
+The seventeen independent integer coordinates are
+\[
+ (J,C,z,f,h,r,v,w,\tau,\nu,\gamma,T,c,t,p_1,p_2,p_3).
+\]
+The following are polynomial abbreviations only:
+\begin{align*}
+ J_0&=3J+1,&q&=\beta J_0+1,&W&=4(3w+1),\\
+ X&=qW,&Y&=(2v+1)q^3,&E&=XY,\\
+ a&=(X+1)Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ F&=(K_0+W)C-(q-1)z,&\alpha&=q-F-C.&&
+\end{align*}
+Continue with
+\begin{align*}
+ R&=(q-F)(q^3-q)-C(q^2-1)+(M_C+qM_F)J_0,\\
+ k&=R+1+hE,\qquad \eta=c-Yk,\qquad \zeta=k-\eta,\\
+ I&=(2r+1)c^2,\qquad V=c(Tf-1)-Rf^2,\\
+ m&=XY^2,\qquad B_0=mk,\qquad s_0=X+\gamma H,\qquad Z=\eta\zeta.
+\end{align*}
+Define five residuals:
+\begin{align}
+ A_1&=\tau^2+(2\tau-k)B_0-1,\nonumber\\
+ A_2&=2acs_0+s_0^2-Hc^2-1,\nonumber\\
+ A_3&=I^2-\Delta(f^2-1),\label{eq:integer17-rows}\\
+ A_4&=(V+\nu)^2-I^2\nu(2V+\nu)-1,\nonumber\\
+ A_5&=dZ-(t^2-d-Z+1)^2-\operatorname{Pos}(p_1,p_2,p_3).\nonumber
+\end{align}
+The ordinary integer polynomial is
+\begin{equation}\label{eq:integer17}
+ \boxed{P_{17}=A_1^2+A_2^2+A_3^2+A_4^2+A_5^2.}
+\end{equation}
+
+The centered roots $\tau_{\rm old}=\tau+B_0$ and
+$y_{\rm old}=\nu+V$ give the identities
+\[
+ A_1=\tau_{\rm old}^2-m(m+1)k^2-1,\qquad
+ A_4=I^2(V^2-y_{\rm old}^2)+y_{\rm old}^2-1.
+\]
+Also $D=ac+s_0$ gives $A_2=D^2-\Delta c^2-1$.
+
+\subsection{One quotient replaces two}
+
+\begin{lemma}[Integer quotient compression]\label{lem:integer-quotient}
+Suppose $c\ne0$ and $c\mid f^2-1$. The simultaneous integer identities
+\[
+ V=of-c=jc-R
+\]
+are equivalent, after projection of $j,o$, to
+$V=c(Tf-1)-Rf^2$ for one integer $T$.
+\end{lemma}
+\begin{proof}
+From the old identities, $c\mid of+R$. The identity
+\[
+ f(of+R)-o(f^2-1)=o+Rf
+\]
+shows that $T=(o+Rf)/c$ is integral and has the desired value of $V$.
+Conversely put $b=(f^2-1)/c$ and define
+\[
+ o=cT-Rf,\qquad j=Tf-1-Rb.
+\]
+These are integers and restore both identities. The witness-restoration
+division introduces neither division nor a $b$ coordinate into $P_{17}$.
+\end{proof}
+
+The order in which $c\mid f^2-1$ is established matters. Invoking an
+auxiliary-index theorem that already used the deleted congruences would
+be circular. Here the needed bootstrap is source70's signed orientation
+argument \emph{before} its auxiliary-congruence step
+\cite{source70}. We spell out its dependency boundary.
+
+At a $P_{17}$ zero, $A_5=0$ gives $d>0$ and $\eta\zeta>0$.
+Write $Q=|q|$, $U=|X|$, $Z_0=|Y|$, $K=|k|$, and $M=|E|$.
+The determinant, authentic mask bounds, and affine residue restrictions give
+\[
+ Q\ge16,\quad Q(Q^2-1)<R<Q^4-2,\quad
+ U\ge4Q,\quad Z_0\ge Q^3,\quad M>3R+1.
+\]
+The positive product gives $K\ge2$, $0<|\eta|<K$, and
+$K(Z_0-1)<|c|<K(Z_0+1)$. Let $B=|a+2|$ and $P=|2XY^2+1|$.
+They satisfy $P>B\ge2$ and $B>R$. Classifying the first and main
+Pell norms gives
+\[
+ K=2\psi_P(n_0),\qquad |c|=\psi_B(p),\qquad p>n_0.
+\]
+The recurrence modulo $M$ and $k=R+1+hE$ give
+$\pm2n_0\equiv R+1\pmod M$. The positive branch gives
+$n_0\ge(R+1)/2$, while the negative branch gives $n_0>R$.
+Thus $p>n_0\ge24$; Pell growth yields
+\[
+ |c|>B(B^2-1)^2,\qquad |c|>2p,\qquad |c|>2R.
+\]
+The inherited ordinary strong-rank lemma can now be applied to $A_3$.
+It gives $|f|=\chi_B(l)$ with $p\mid l$, without using either missing
+congruence. Therefore $\psi_B(p)\mid\psi_B(l)$ and
+\[
+ c\mid (B^2-1)\psi_B(l)^2=f^2-1.
+\]
+The precise retained source proof is
+\texttt{upstream/ORIENTATION\_PROOF.md}, Sections 3--4.2; its
+auxiliary-congruence argument starts in Section 4.3.
+
+Lemma~\ref{lem:integer-quotient} restores $j,o$. All other deleted
+coordinates are monic polynomial definitions, the two root shifts are
+integral, and the old positive guard triples can be restored by
+$\operatorname{Pos}$. This gives a zero of the incoming calibrated
+37-integer affine quartic \cite{round11}. Conversely, any zero of that
+source supplies the same divisibility, hence $T$; its transport row gives
+$F=(K_0+W)C-(q-1)z$ after the invertible change
+$\alpha=q-F-C$. Forget the monic coordinates, perform the root shifts,
+and use \eqref{eq:integer-pair}. Thus $P_{17}$ has an integer zero
+exactly when that source does. This is a new existence equivalence on
+its full integer solution set, with no additional canonical restriction.
+
+The exact verifier restores all 22 arithmetic rows of the literal parent:
+four match the new arithmetic residuals, one is $\pm R(cb-f^2+1)$,
+and all others vanish identically. It thereby exposes the sole use of the
+proved divisibility rather than silently treating $b$ as an unknown.
+
+\section{Sixteen integers: merging an ordinary and a rational Pell root}
+\label{sec:integer16}
+
+\begin{lemma}[Separated rational norm]\label{lem:integer-rational-norm}
+Let $A,Q,S,V\in\Z$, with $A>0$, $Q>1$, and $S^2>A$.
+Put $\delta=Q-1$ and $B_{\rm num}=S^2(QV^2-1)$. Then
+\[
+ \exists n\in\Z:\quad
+ [\delta(n^2-A)-B_{\rm num}]^2-4\delta A B_{\rm num}=0
+\]
+if and only if there are integers $u,y$ with
+$u^2=A$ and $QV^2-(Q-1)y^2=1$.
+\end{lemma}
+\begin{proof}
+If $V=0$, the displayed expression is a square plus the strictly positive
+integer $4\delta AS^2$. Thus any zero has $|V|\ge1$. The rational number
+$B=B_{\rm num}/\delta$ then satisfies $B\ge S^2>A$.
+Dividing by $\delta^2$ gives $(n^2-A-B)^2=4AB$.
+Here $n\ne0$, since $n=0$ would give $A=B$. The identity
+\[
+ (n^2+A-B)^2-4n^2A=(n^2-A-B)^2-4AB
+\]
+shows that $u=(n^2+A-B)/(2n)$ is a rational square root of the integer
+$A$, hence an integer. The rational $s=n-u$ satisfies $s^2=B$, so
+$y=s/S$ is rational and obeys $QV^2-(Q-1)y^2=1$.
+
+Source69's adjacent-coefficient Pell descent makes this $y$ integral.
+For completeness, if $y=a/d$ is reduced with $d>0$, the norm gives
+$d^2\mid Q-1$. Make $V,y$ positive by changing signs. Unless $V=1$,
+the integral coordinate
+\[
+ V'=(2Q-1)V-2(Q-1)y
+\]
+and rational $y'=(2Q-1)y-2QV$ preserve the norm. The reduced denominator
+of $y'$ remains $d$, since $2Q-1\equiv1\pmod d$.
+The inequalities $y>V$ and $QV>(Q-1)y$ imply $-V<V'<V$; the norm
+excludes $V'=0$. Strong induction on $|V|$ reaches $V=1$, where
+$y=1$ and $d=1$. This is the inherited descent proof, applied to the
+new separated norm. Conversely, take $n=u+Sy$ and factor the norm.
+\end{proof}
+
+Delete $\tau,\nu$ from the seventeen coordinates and add one unrestricted
+integer $n$. Keep every other abbreviation above and put
+\begin{align*}
+ A_0&=1+m(m+1)k^2,\qquad S=k(2m+1),\qquad\delta=I^2-1,\\
+ L&=\delta\bigl[n^2+2n(B_0+SV)+2B_0SV-mk^2-1\bigr]
+       +S^2(1-V^2),\\
+ N&=L^2-4\delta A_0S^2(I^2V^2-1).
+\end{align*}
+The new equation is the four-square polynomial
+\begin{equation}\label{eq:integer16}
+ \boxed{P_{16}=A_2^2+A_3^2+A_5^2+N^2.}
+\end{equation}
+It is exactly the norm of Lemma~\ref{lem:integer-rational-norm} with
+$Q=I^2$ and $n_{\rm total}=n+B_0+SV$, because
+\[
+ \delta(n_{\rm total}^2-A_0)-S^2(I^2V^2-1)=L.
+\]
+This centering cancels the two leading $V^2$ terms and lowers the degree.
+
+\paragraph{The separation does not assume either missing norm.}
+From $A_5=0$ alone, $d>0$ and $\eta\zeta>0$. The determinant and
+fixed coefficient bounds imply $|q|\ge16$; the definitions give
+$|Y|\ge|q|^3$ and $|X|\ge4|q|$. As $\eta,\zeta$ have the same
+sign, $|k|\ge2$ and
+\[
+ |c|>|k|(|Y|-1)>1.
+\]
+Hence $I^2>1$, while $|m|>1$ gives $A_0>0$. Finally the exact identity
+\begin{equation}\label{eq:integer-separation}
+ S^2-4A_0=k^2-4\ge0
+\end{equation}
+proves $S^2>A_0$. All hypotheses of the rational-norm lemma are therefore
+established before either deleted Pell root is extracted.
+
+At a zero of $P_{16}$, the lemma supplies integral $\tau_{\rm old}$
+and $y_{\rm old}$; put $\tau=\tau_{\rm old}-B_0$ and
+$\nu=y_{\rm old}-V$. This restores a zero of $P_{17}$. Conversely a
+$P_{17}$ zero gives a $P_{16}$ zero by $n=\tau+S\nu$.
+This proof covers arbitrary signed coordinates, and introduces no new
+divisibility restriction on canonical witnesses.
+
+\subsection{Exact degree certificates}
+
+For $P_{17}$ the degrees of $X,Y,E,a,R,k$ are $2,4,6,6,5,7$;
+$\eta,\zeta$ have degree 11 and $d$ has degree 4.
+The five residual bounds are $24,14,14,14,44$.
+Only the joint guard reaches degree 44. Its top part is
+$-\eta_{\rm top}^4$, with
+\[
+ \eta_{\rm top}=-2^4 3^8\beta^7hJ^7wv^2.
+\]
+Consequently
+\[
+ [h^8J^{56}w^8v^{16}]P_{17}=2^{32}3^{64}\beta^{56}>0,
+\]
+proving exact degree 88 on the actual fixed coefficient slice.
+
+For $P_{16}$, $\deg S=17$ and $\deg V=7$.
+The top part of $L$ is $-S_{\rm top}^2V_{\rm top}^2$, of degree 48;
+the second term of $N$ has degree at most 94. Thus $N$ has degree 96.
+Specifically,
+\begin{align*}
+ S_{\rm top}&=2^8 3^{13}\beta^{11}hJ^{11}w^2v^3,\\
+ V_{\rm top}&=f^2(324\beta^3J^3wC-81\beta^4J^4z),
+\end{align*}
+and
+\[
+ [h^8J^{120}w^{16}v^{24}z^8f^{16}]P_{16}
+   =2^{64}3^{136}\beta^{120}>0.
+\]
+The other squared rows have degrees at most $28,28,88$, proving exact
+degree 192. The direct uncentered weighted norm would have upper degree
+216. Exact homogeneous-component arithmetic, rather than a naive gate
+bound, verifies both coefficients in the supplied auditor.
+
+\subsection{A degree-184 finalizer}
+
+Let $G=A_2^2+A_3^2+A_5^2$. Instead of $G+N^2$, define
+\begin{equation}\label{eq:integer16unit}
+ \boxed{P_{16}^{\rm unit}=G+N+GN=(1+G)(1+N)-1.}
+\end{equation}
+For every integer assignment $G\ge0$. If the new polynomial is zero,
+the positive integer $1+G$ multiplies the integer $1+N$ to give 1;
+therefore $G=N=0$. Conversely these equalities make both polynomials
+zero. This exact zero-set equivalence needs no sign or congruence
+assumption about $N$.
+
+The degree is $88+96=184$, certified by
+\[
+ [h^{12}J^{116}w^{16}v^{28}z^4f^8]P_{16}^{\rm unit}
+   =2^{64}3^{132}\beta^{116}>0.
+\]
+The expanded form $G+N+GN$ uses $135$ binary operations, one more than
+the degree-192 control. The archive retains both explicit polynomials.
+
+\section{A lower-degree companion in twenty-three integers}
+\label{sec:integer23}
+
+This companion combines the incoming residue orientation with the paired
+Pell-root translations \cite{round11,budget}. Its independent coordinates are
+\[
+ \begin{gathered}
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,\nu,\gamma,o,j,\ E,a,I,\ t,p_1,p_2,p_3.
+ \end{gathered}
+\]
+Here $F,\alpha,E,a,I$ are coordinates, not their expressions in the
+seventeen-variable equation. Define
+\begin{align*}
+ J_0&=3J+1,&q&=\beta J_0+1,&W&=4(3w+1),\\
+ X&=qW,&Y&=a-E,&k&=\eta+\zeta,\\
+ c&=Yk+\eta,&V&=fo-c,&C&=q-F-\alpha,\\
+ H&=4a+3,&\Delta&=a^2+H,&B_0&=E(c-\eta),\\
+ s_0&=X+\gamma H.&&&&
+\end{align*}
+Use
+\[
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J_0
+\]
+and the earlier definitions of $d$, $Z=\eta\zeta$, and $A_5$.
+The eleven residuals, whose squared sum defines $P_{23}$, are
+\begin{align*}
+ &a-E-(2v+1)q^3, && E-X(a-E),\\
+ &\tau^2+(2\tau-k)B_0-1,&&2acs_0+s_0^2-Hc^2-1,\\
+ &k-1-hE-R,&&(K_0+W)C-(q-1)z-F,\\
+ &V+k-1-cj-hE,&&I-(2r+1)c^2,\\
+ &I^2-\Delta(f^2-1),&&(V+\nu)^2-I^2\nu(2V+\nu)-1,\\
+ &A_5.&&
+\end{align*}
+The count is $37-6+4-12=23$: replace the source affine quartic's six
+private guard coordinates by four, translate both roots, and delete twelve
+monic coordinates. Their exact restorations are
+\begin{align*}
+ N&=q^3,&X&=qW,&L&=q^2-1,&C_2&=c^2,\\
+ F_2&=f^2,&B_{\rm aux}&=I^2,&g&=\nu(2V+\nu),&\Delta&=a^2+4a+3,\\
+ D&=ac+s_0,&P&=k+B_0,&c&=(a-E)k+\eta,&V&=fo-c,
+\end{align*}
+with $\tau_{\rm old}=\tau+B_0$, $y_{\rm old}=V+\nu$.
+Every arithmetic map is integral and polynomial. The auditor checks all
+22 source arithmetic rows: twelve vanish identically and ten match the
+displayed arithmetic rows once each, up to sign. It also authenticates
+both old guard arguments.
+
+The residual degrees are at most
+$4,3,4,5,4,2,3,5,4,5,4$. Only the $I$ definition contains $r$, so
+\[
+ [r^2a^4\eta^4]P_{23}=4.
+\]
+Thus the degree is exactly ten, independently of the fixed ports.
+
+\begin{theorem}[Inherited calibration, new integer reductions]
+For each $P\in\{P_{23},P_{17},P_{16},P_{16}^{\rm unit}\}$, composition of the new
+reductions above with the named source native/compiler, Pell, and
+syntactic-refutation calibration theorems proves
+\[
+ \mathsf{ZFC}\ \vdash\
+  \bigl(\neg\exists\mathbf x\in\Z^{\dim P}:P(\mathbf x)=0\bigr)
+  \ \longleftrightarrow\ \ConZFC.
+\]
+\end{theorem}
+
+The theorem asserts the equivalence, not either side. The full native and
+logical calibration is inherited; the finite algebra/data checks are not an
+end-to-end Lean/Rocq or encoded internal-ZFC certificate. All four literal
+packets, inlined expressions, actual coefficients, exact degree receipts,
+source restorations, and shared DAGs are included. The verifier uses only
+Python's standard library and works with assertions disabled. This component's
+new steps have independent mathematical review within the AI collaboration;
+that is not external human peer review.

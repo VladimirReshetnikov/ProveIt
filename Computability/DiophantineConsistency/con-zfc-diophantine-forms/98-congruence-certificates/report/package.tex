@@ -1,0 +1,61 @@
+The root directory contains this article, its complete LaTeX sources,
+and three self-contained research components:
+\begin{description}[style=nextline,leftmargin=2em]
+\item[\texttt{integer/}]
+The four unrestricted-integer equations, their division-free DAG builder,
+ordinary proofs, exact six-coefficient payloads and finite generator,
+retained parent proofs and licenses, verification receipts, and an
+independent review of the new mathematical steps.
+\item[\texttt{direct/}]
+The 2,473- and 4,860-variable quartics, their fully expanded monomials,
+literal C222 calculus and arithmetic compiler, the eleven-coordinate
+power proof, pinned mathlib and repository calibration sources,
+independent export checker, and an explicit integer companion.
+\item[\texttt{positive/}]
+The 98- and 88-operation positive-variable equations, the full free-$J$
+proof, exact parent circuits, the separate compact44 coefficient tuple
+and its generator, and normal/optimized verification receipts.
+\end{description}
+
+The direct integer companion uses
+\[
+ \sigma(x,y,z)=x^2+y^2+z(z+1),\qquad\sigma(\Z^3)=\N.
+\]
+Nonnegativity is immediate. Surjectivity follows by writing $4m+1$ as
+three squares: exactly one is odd, giving
+$4m+1=(2x)^2+(2y)^2+(2z+1)^2$.
+Thus replacing every coordinate of $D_{2473}$ by an independent $\sigma$
+gives an explicit degree-eight equation in $7,419$ unrestricted integers
+with the same solvability status. The supplied residual JSON implements
+this substitution. This companion demonstrates a direct integer route;
+it does not compete with the smaller native integer forms.
+
+\subsection*{Reproduction}
+From the package root, with Python and SymPy installed:
+\begin{lstlisting}
+python3 verify.py
+python3 -O verify.py
+\end{lstlisting}
+Each component also has an individual verifier described in its README
+or proof file. To rebuild the article:
+\begin{lstlisting}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The root manifest binds every delivered content file. Logs produced during
+new runs are written outside those sealed content files or captured by
+the root verifier. Generated Python cache directories are not part of the
+deliverable. Source text and historical comparison snippets are explicitly
+identified as inherited material; their old counts are not silently
+relabelled as the new counts.
+
+\subsection*{Incorporation}
+This directory can be incorporated as a new proposal under
+\path{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+Choose the numerical prefix at incorporation time. The deliverable does
+not overwrite any repository source or claim to update its formal endpoint.
+The snapshot, immediate source-archive hashes, and retained member hashes
+provide a reproducible boundary for comparison. The archive's README
+summarizes the main results and the exact proof dependencies.
+

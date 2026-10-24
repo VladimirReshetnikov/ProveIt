@@ -1,0 +1,47 @@
+\section{Results and interpretation}
+The objective is a fixed ordinary polynomial, not an equation with variable
+exponents, a schematic proof predicate, or an uncompiled arithmetic circuit
+with hidden existential wires. We count only declared unknowns. Literal
+arithmetic circuits use binary addition, subtraction, and multiplication;
+squaring and multiplication by a fixed numeral each cost one operation.
+Sharing a previously computed register costs nothing. These are arithmetic
+circuit counts, not bit-operation costs.
+
+The central new combination removes a guard coordinate and replaces large
+variable radical weights by the fixed coefficients $1,2,4,8$. A rational
+projection first recovers the main root; an even shared strong ordinate
+makes the other four radicands odd, so their square-class contributions
+cannot cancel by $2$-adic valuation. A second new argument uses an upper
+bound, rather than an absolute-value bound, on a positivity certificate to
+impose exact equalities without a separate finalizer.
+
+The later power-synchronization constructions are deliberately presented as
+intermediate interfaces. Their exposed-coordinate and graph counts do not
+constitute a variable count for an ordinary polynomial. The complete
+polynomial results and those interfaces must not be conflated.
+
+\subsection{Complete polynomial endpoints}
+The following table separates the integer and positive domains. Degree and
+operation count are independently checked after specializing the actual
+fixed coefficients. These counts exclude no existential graph witnesses.
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Domain and mechanism & Variables & Degree & Operations\\
+\midrule
+Integers, interpolated parity, direct & 11 & 2912 & 200\\
+Integers, auxiliary center & 11 & 2272 & 204\\
+Integers, two centers & 11 & 2240 & 206\\
+Integers, centered budget and trace & 12 & 1000 & 180\\
+Integers, cheaper companion & 12 & 1024 & 179\\
+Integers, bounded-guard absorption & 15 & 176 & 125\\
+Strictly positive integers & 10 & 912 & 126\\
+\bottomrule
+\end{tabular}
+\end{center}
+The eleven-integer construction combines the late intersective interpolation
+lemma with the centered budget and a parity separator. The twelve-integer
+construction offers substantially lower degree and evaluation cost. Neither
+is a variable-count record against the repository's ten-integer constructions,
+which have much greater degree and use different reductions. The nine-positive
+and direct quartic families likewise remain distinct comparison points.

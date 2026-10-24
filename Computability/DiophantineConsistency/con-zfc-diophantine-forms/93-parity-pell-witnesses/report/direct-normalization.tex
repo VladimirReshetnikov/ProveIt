@@ -1,0 +1,166 @@
+\section{A smaller completed direct proof-rule quartic}
+\label{sec:direct-normalized-power}
+
+The incoming direct C222 construction has a particularly useful feature:
+its coefficients are ordinary printed integers, and the entire final
+polynomial is explicitly materialized. It uses a finite proof-flow
+certificate for twelve numerical Horn rules, followed by a CRT bounded
+family and finite arithmetic representations. No Turing-machine simulation
+or Jones universal polynomial occurs in this route. The incoming
+fixed-base affine construction has $16036$ natural unknowns, or $27916$
+unrestricted integer unknowns after its nonnegativity conversion.
+
+We reduce these counts to $14956$ and $26188$, respectively, without
+altering the twelve rules, the proof-flow encoding, or the CRT architecture.
+The change concerns a redundant truncated-subtraction certificate inside
+each of the $108$ calls to the power representation.
+
+\subsection{The rank already present in the power certificate}
+
+All variables in this subsection range over $\mathbb N=\{0,1,2,\ldots\}$.
+Write the Pell residual as
+\[
+ \mathcal N(A;X,Y)=X^2+Y^2-A^2Y^2-1.
+\]
+The active finite branch of the inherited power representation contains
+three facts:
+\begin{equation}\label{eq:norm-rank-hypotheses}
+ a>1,\qquad n\leq w,\qquad
+ \mathcal N(w+1;a,wz)=0.
+\end{equation}
+The first follows from the outer positive-parameter guard in the Pell
+representation, including when that representation uses its zero-index
+branch. The second and third are explicit residuals in the power branch.
+
+\paragraph{Rank lemma.}
+Conditions~\eqref{eq:norm-rank-hypotheses} imply
+\[
+ w\geq1,\qquad z\geq1,\qquad a>w\geq n.
+\]
+Indeed, the norm equation is precisely
+\[
+ a^2=1+w^3(w+2)z^2.
+\]
+If $w=0$ or $z=0$, it gives $a^2=1$, contradicting $a>1$.
+Consequently $w,z\geq1$, and
+\[
+ a^2=1+w^2\bigl(w(w+2)z^2\bigr)>w^2.
+\]
+The claimed inequality follows by monotonicity of squaring on naturals.
+This is an unbounded arithmetic proof, not an inference from a finite search.
+
+\subsection{Eliminating two semantic witnesses}
+
+The original finite branch introduces a natural $d$ and a natural slack $s$
+through the nonnegative disjunction polynomial
+\begin{equation}\label{eq:old-truncated-subtraction}
+ (a-d-n)^2\bigl((n-a-s)^2+d^2\bigr)=0.
+\end{equation}
+It expresses $d=\max(a-n,0)$. Under the rank lemma, the second factor
+cannot vanish, since $a>n$ makes $n-a-s\ne0$. Thus $d=a-n$.
+The same branch contains the congruence, written with natural quotient
+witnesses $q_0,q_1$,
+\[
+ x+tq_0=yd+m+tq_1.
+\]
+Substitute $d=a-n$ and move $yn$ to the left. The resulting equation is
+\begin{equation}\label{eq:translated-power-congruence}
+ x+yn+tq_0=ya+m+tq_1.
+\end{equation}
+Both sides are natural arithmetic expressions. The new compiler deletes
+$d$, $s$, and~\eqref{eq:old-truncated-subtraction}, and replaces the old
+congruence by~\eqref{eq:translated-power-congruence}. Every other byte of
+the original compiler is retained; the delivered delta checker verifies this.
+
+\paragraph{Soundness and completeness, including inactive branches.}
+When the finite branch is selected, its residuals form a sum of
+nonnegative expressions, so each vanishes. The rank lemma applies to the
+new branch as well as the old one. An old witness therefore restricts to a
+new witness. Conversely, a new finite-branch witness extends to an old one
+by setting $d=a-n$ and $s=0$. The first factor in
+\eqref{eq:old-truncated-subtraction} is then zero, and the two congruences
+are the same integer-polynomial equation.
+
+The inherited power representation separately covers exponent zero and
+zero base with positive exponent. Neither branch is changed. When one of
+these branches is selected, the finite expression is underneath a zero
+factor in the disjunction, so it imposes no condition. The erased witnesses
+can then be restored as $d=s=0$. All deleted or changed natural arithmetic
+wires can be recomputed from their inputs. There is no requirement that an
+unselected subtraction or Pell branch vanish. This observation is essential
+to the two-way existential equivalence of the complete power graph.
+
+\subsection{Composition into one literal polynomial}
+
+Replacing an existential arithmetic graph by an equivalent graph preserves
+every enclosing binomial, factorial and bounded-CRT representation. The
+unchanged global construction uses $108$ power graphs, $33$ binomial graphs,
+$3$ factorial graphs and $72$ positive-divisor Euclidean-division graphs.
+All twelve local Horn branches and both global instantiations of the local
+row remain unchanged.
+
+Let $\rho_1,\ldots,\rho_{11502}$ be the explicit quadratic residuals in
+\texttt{residuals\_affine.json}, in $14956$ natural variables. The natural
+equation is
+\[
+ P_{\mathbb N}(X)=\sum_{j=1}^{11502}\rho_j(X)^2=0.
+\]
+The residuals are literal finite integer polynomials, supplied in sparse
+form, and their complete expansion is \texttt{equation\_affine.json}.
+There are $3744$ semantic inputs and $11212$ retained nonlinear wires.
+
+To obtain the unrestricted-integer equation, introduce three fresh integer
+variables $u_i,v_i,w_i$ for each semantic input $X_i$, $0\leq i<3744$, and set
+\[
+ P_{\mathbb Z}
+ =P_{\mathbb N}
+  +\sum_{i=0}^{3743}
+    \bigl(X_i-u_i^2-v_i^2-w_i(w_i+1)\bigr)^2.
+\]
+The polynomial has $14956+3\cdot3744=26188$ integer variables and total
+degree exactly four. Every natural is of the form
+$u^2+v^2+w(w+1)$ with integer $u,v,w$: apply the three-square theorem to
+$4X+1$, whose residue modulo eight is one or five, and separate the single
+odd square from the two even squares. Conversely, the displayed expression
+is nonnegative for every integer triple. All other wires are forced to be
+nonnegative by the unchanged topological equations and nonnegative affine
+forms, so they need no additional guards.
+
+The complete integer expansion is \texttt{equation\_integer.json}; it has
+$724768$ nonzero monomials and maximum absolute coefficient
+$320307372009864$. It contains no variable-exponent, factorial, binomial,
+bounded-quantifier or symbolic-coefficient operation.
+
+\subsection{Logical calibration and evidence boundary}
+
+The unchanged proof-flow certificate is equivalent to a finite derivation of
+the distinguished target in C222. The pinned logical interfaces are
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+The fixed Horn coefficients are independently matched to
+\texttt{Code254.lean} and \texttt{KCode222.lean}; the names of those files
+do not introduce a Turing-machine simulation into this construction.
+The inherited uniform CRT/Pell proof, the normalization proved above, and
+the finite circuit lifting yield ordinary mathematical proofs formalizable
+in ZFC of
+\[
+ \operatorname{ZFC}\vdash
+ \bigl(\neg\exists X\in\mathbb N^{14956}:P_{\mathbb N}(X)=0\bigr)
+ \;\longleftrightarrow\;\operatorname{Con}(\operatorname{ZFC}),
+\]
+and the corresponding statement for $P_{\mathbb Z}$ over
+$\mathbb Z^{26188}$. No consistency assumption is used in either direction.
+
+The exact finite audits check all arithmetic-interface polynomials,
+compositions, Horn branches, source substitutions, gate residuals,
+nonnegative affine eliminations and full expanded polynomial identities.
+The original arithmetic and logical source files are supplied with immutable
+hashes. These checks do not amount to a newly compiled Lean or Rocq proof of
+the complete construction. The claimed result is an ordinary proof with
+fully materialized and exactly audited polynomial artifacts.
+
+This is a strict reduction of the incoming completed direct construction.
+It is not a global fewest-variable result, and it does not dominate the
+repository's native low-variable equations. The elementary rank argument is
+not claimed to be historically new; its useful application here is the
+removal of a redundant branch certificate from every power call.

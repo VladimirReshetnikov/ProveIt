@@ -1,0 +1,258 @@
+\section{Norm saturation in the ten integer equation}\label{sec:lucas}
+The ten unrestricted variables are
+\[
+ (t,g_0,c_0,k_0,l,w,x,y,z,m)\in\Z^{10}.
+\]
+All other symbols in this section are fixed constants or polynomial
+abbreviations, not extra quantified coordinates. The literal division-free
+arithmetic graph is \pathf{lucas_h1868/integer10.json}.
+
+\subsection{The fixed source and complete equation}
+Put $\kappa=2\,134\,940$ and define
+\[
+ b=6t+4,\quad g=bg_0,\quad k=b(3k_0+2),\quad C=6c_0-1,
+ \quad B_0=2^\kappa b^2.
+\]
+Let $w_i$ and $q_j$ be the fixed lists in Appendix~\ref{app:kernels},
+and $D_0,D_1,D_2$ the three explicitly listed sparse polynomials there.
+Define
+\begin{gather*}
+ \ell_0=\sum_{i=1}^{31}B_0^{w_i},\qquad  v_0=\ell_0+g,\\
+ J_0=D_2(B_0)v_0^2+D_1(B_0)v_0+D_0(B_0),\qquad 
+ T_0=\sum_{j=1}^{22}B_0^{q_j},\\
+ N_0=B_0^{117},\qquad N=B_0^{1986},\\
+ M_0=N_0-1-(b-1)\ell_0,\\
+ S_c=g+N_0(2J_0+T_0),\qquad T_c=M_0+N_0(B_0-2)T_0-2,\\
+ X=N(S_c+T_c+1)-S_c-1,\qquad Y=2^{34\,159\,017}bB_0^{2109},\\
+ \mathrm{cap}=bB_0^{116}.
+\end{gather*}
+The source height is $1868$, certified by all 22 exact extraction identities.
+Its actual complete coefficient tuple is the retained source-31 tuple.
+Then set
+\begin{gather*}
+ L=lY,\qquad U=2LX,\qquad V=4gwY,\qquad W=bw,\\
+ A=U(V+1),\qquad B_1=2X+1,\qquad S=2A-5,\qquad T=3WC-2(W^2-1),\\
+ P_h=(LX)UV,\qquad K=X+1+k(2P_h-2),\qquad \\
+ Q=(P_h^2-1)K^2+1,\qquad \\
+ \Delta=8\mathrm{cap}^3gK^2
+ -g^2\{32(C-KL)^2\mathrm{cap}^3+g^2K^2\}.
+\end{gather*}
+The new Lucas part is
+\begin{gather*}
+ \xi=zx,\qquad D=(A^2-4)C^2+4,\\
+ E_0=C^2\xi,\qquad E=DE_0,\qquad E_2=E_0E=C^4D\xi^2,\\
+ F=4(A^2-4)E_2+1,\qquad G=(A/2-1)(F-1)-1,\\
+ \Omega=16E,\qquad H=C+F(B_1-C+\Omega y),\\
+ I=(G^2-1)H^2+1.
+\end{gather*}
+Here $A/2=(LX)(V+1)$ is an integer polynomial abbreviation. No division
+operation appears in the literal graph. Finally put
+\begin{gather*}
+ \rho=T+Sy,\qquad \Sigma=\xi S^5,\\
+ \Theta=(\rho^3-\rho S^2-S^3)(\rho^2+23S^2),\\
+ r=bQ,\qquad a_0=r+(9\Delta-3)(rz)^2,\qquad a_1=DFI,\\
+ Z=\Sigma m-\Theta.
+\end{gather*}
+The completed ordinary polynomial equation is
+\begin{equation}\label{eq:ten}
+ \boxed{\bigl(Z^2-\Sigma^2(a_0+a_1)\bigr)^2
+              -4\Sigma^4a_0a_1=0.}
+\end{equation}
+Every exponent is a fixed nonnegative integer.
+
+\subsection{The saturation step and reliability theorem}
+The preceding construction used $E^2=C^4D^2\xi^2$ in the definitions of
+$F$ and $G$. Only those occurrences are replaced by
+$E_2=C^4D\xi^2$. The factor $D$ in $E$ and hence in $\Omega$ remains.
+Computing $E_0,E,E_2$ needs the same three multiplications as the previous
+$E,E^2$ schedule. This lowers degree without adding a variable or operation. Applied alone to
+unchanged height-1873 source data, it gives the control equation in
+\pathf{lucas/} with degree $1\,248\,364$ and 481 operations. The
+recommended equation additionally uses the certified height-1868 target
+layout and an exact shared-power plan, reaching $1\,245\,324$ and 480.
+All twelve fixed coefficient values are unchanged. The source layout
+changes target positions, not variables, residuals or coefficient ports;
+its extraction and carry compatibility proof is in
+\pathf{packing/certified/PROOF.md}.
+
+Write $u_0(A)=0$, $u_1(A)=1$,
+$u_{n+2}(A)=Au_{n+1}(A)-u_n(A)$, with the usual extension to integer indices.
+
+\begin{theorem}[Saturated Lucas reliability]\label{thm:reliability}
+Suppose $A$ is even, $|A|>2$, $B$ is odd with
+$1<B<|A|/2-1$, $C$ is odd with $|C|>1$, and $\xi\ne0$.
+Use the preceding definitions with $B$ replacing $B_1$.
+If $DFI$ is a square, then $C=\pm u_B(A)$.
+On the residue slice $3\mid A$, $B\equiv3\pmod4$,
+$C\equiv-1\pmod3$, the positive choice $C=u_B(A)$ is forced.
+\end{theorem}
+\begin{proof}
+The quantities $D,E_2,F$ are positive, $|G|>1$, and $I>0$.
+Because $D\mid E_2$, one has $F\equiv1$, $G\equiv-1$,
+$I\equiv1\pmod D$. Moreover
+\[
+ 2G=(A-2)F-A,\qquad 4I\equiv D\pmod F.
+\]
+Since $F$ is odd, these congruences make $D,F,I$ pairwise coprime.
+A square product therefore makes each a square. Choose in the proof only
+$d>0$ with $d^2=D$. The Pell/Lucas classification yields indices $s,\mu,t$
+with
+\[
+ C=u_s(A),\qquad 4C^2d\xi=u_\mu(A),\qquad H=u_t(2G).
+\]
+Odd $C$ makes $s$ odd. Since $|C|>1$, $|s|\ge3$, and Lucas growth
+implies $|C|\ge|A|^2-1$. Thus $|4C^2d\xi|>|u_3(A)|$.
+Consequently $n=|\mu|>3$ is even, $F=(v_n(A)/2)^2$, and $H,t$ are odd.
+The index-separation lemma modulo $F$ gives $s\equiv\pm t\pmod{2n}$.
+The rank-divisibility lemma, using $C^2\mid u_n(A)$, gives $C\mid n$.
+Hence $s\equiv\pm t\pmod{2C}$.
+
+For the modified expressions,
+\[
+ \frac{F-1}{\Omega\xi}=\frac{(A^2-4)C^2}{4},\qquad
+ \frac{2G+2}{\Omega\xi}=\frac{(A+2)(A-2)^2C^2}{4},
+\]
+which are integers. It follows that $F\equiv1$ and $2G\equiv-2\pmod\Omega$.
+Therefore $H\equiv B\pmod\Omega$, while
+$H=u_t(2G)\equiv u_t(-2)=t\pmod\Omega$, because $t$ is odd.
+Since $2C\mid\Omega$, we obtain $s\equiv\pm B\pmod{2C}$.
+The inequalities $|s|\le|C|$ and $B<|A|<|C|$ exclude a nonzero multiple
+of $2C$ in $s-B$ or $s+B$. Thus $s=\pm B$.
+Finally $u_{2j+1}(A)\equiv(-1)^j\pmod{A^2}$ gives
+$u_B(A)\equiv-1\pmod3$ on the stated slice, which selects the sign.
+\end{proof}
+The classical classification, index-separation, and rank-divisibility
+interfaces are Sun's Lemmas 2.1, 2.2 and Corollary 2.1 in the modified
+certificate paper. The bound on $C$ above is derived after classification;
+it is not assumed for arbitrary inputs.
+
+This is a guard-dependent improvement reusable whenever the surrounding
+arithmetic bridge proves $|C|>1$. It is not an unconditional replacement
+of the standalone modified Lucas certificate. The exceptional-index
+countercontrol in the verification section makes that boundary explicit.
+
+\subsection{Full interpolation after saturation}
+\begin{theorem}[All residue classes remain available]\label{thm:interpolate}
+Let $A>2$ be even, $B>0$ odd, $C=u_B(A)$, and $d=v_B(A)>0$, so $D=d^2$.
+For every positive integer $N_*$ there is a positive $\xi$ divisible by
+$N_*$ such that every class modulo $\xi$ contains a $y$ for which the
+modified $D,F,I$ are squares.
+\end{theorem}
+\begin{proof}
+Choose a positive period $n$ of
+$M_A=\left(\begin{smallmatrix}A&-1\\1&0\end{smallmatrix}\right)$ modulo
+$4N_*C^2d$. Then $4N_*C^2d\mid u_n(A)$. Put
+\[
+ \xi=\frac{u_n(A)}{4C^2d},\qquad r_0=\frac{v_n(A)}2.
+\]
+These are positive integers, $N_*\mid\xi$, $n$ is even, $r_0$ is odd,
+and $F=r_0^2$. Now $\Omega=4d\,u_n(A)$. The usual
+Cayley--Hamilton calculation supplies period $\lambda=4nr_0$ modulo $F$.
+Set $q_*=\lambda/\gcd(\lambda,\Omega)$. We claim
+$\gcd(q_*,\xi)=1$.
+For $p\mid\xi$, $F\equiv1\pmod\xi$ excludes $p\mid r_0$.
+The Lucas valuation bound
+$\nu_p(u_n(A))\ge\nu_p(n)$, including $p=2$ for even $A$, yields
+\[
+ \nu_p(\lambda)=\nu_p(4n)\le\nu_p(4u_n(A))\le\nu_p(\Omega).
+\]
+Every prime power of $\lambda$ supported on $\xi$ is absorbed by $\Omega$.
+
+Given a class $c_*\pmod\xi$, choose arbitrarily large positive $L_*$
+with $q_*\mid L_*$ and $L_*\equiv c_*\pmod\xi$.
+Let $j_*=B+\Omega L_*$ and $H_0=u_{j_*}(2G)$.
+Since $\lambda\mid\Omega L_*$ and $2G\equiv-A\pmod F$,
+$H_0\equiv C\pmod F$. Also $H_0\equiv B\pmod\Omega$.
+As $F\equiv1\pmod\Omega$, these congruences make
+\[
+ y=\frac{H_0-C-(B-C)F}{\Omega F}
+\]
+an integer and give $H=H_0$. The two quotient identities in the previous
+proof hold modulo $\Omega\xi$, giving
+$H_0\equiv B+\Omega L_*$ and $C+(B-C)F\equiv B$.
+After cancellation, $Fy\equiv L_*\pmod\xi$; hence
+$y\equiv c_*\pmod\xi$. The Pell identity makes $I$ a square.
+\end{proof}
+Simply substituting $d\xi$ into the previous certificate would not prove
+this statement: interpolation modulo the new $\xi$ is the substantive
+compatibility issue resolved here.
+
+\subsection{Soundness for every signed assignment}
+The unchanged source and normalization identities give, before any signs
+are known,
+\[
+ b\equiv Q\equiv1\pmod3,\quad \gcd(b,Q)=1,\quad3\mid A,K,
+ \quad a_0\equiv1,\ a_1\equiv0\pmod3.
+\]
+Thus $a_0\ne a_1$. The odd number $S$ is nonzero. The intersective
+polynomial $\pi(v)=(v^3-v-1)(v^2+23)$ has no rational root, so
+$\Theta\ne0$. Equation~\eqref{eq:ten} therefore forces $\Sigma\ne0$.
+The two-square norm identity implies that $a_0,a_1$ are integer squares
+and $\Sigma\mid\Theta$: for $q=Z/\Sigma$ the equation gives
+\[
+ \left(\frac{q^2+a_0-a_1}{2q}\right)^2=a_0,
+\]
+with a complementary rational square equal to $a_1$; $q=0$ is excluded by
+$a_0\ne a_1$. Rational squares of integers have integral roots, so $q$
+is integral. The monic homogeneous quintic's prime-valuation argument
+then gives $S\mid T$. In particular $\xi,z,x\ne0$.
+
+Factor $a_0=r\{1+(9\Delta-3)rz^2\}$. The two factors are coprime.
+The residue $r\equiv1\pmod3$ excludes a negative signed square; hence
+$r$ is a positive square. Applying the same argument to $r=bQ$ makes
+$b,Q$ positive squares. If $\Delta\le0$, the other factor would be
+negative, so $\Delta>0$. The inherited guard bounds imply
+$K\ne0$, $0<g<2\mathrm{cap}$. If $l=0$, then $Q=1-K^2\le0$,
+a contradiction. The source bounds now yield $X>3b$, $Y>256$,
+$|L|\ge Y$ and $|A|\ge2XY>2B_1+2$.
+
+One new estimate removes all exceptional Lucas coordinates:
+\[
+ \Delta>0,\ g\ge1\quad\Longrightarrow\quad
+ 4(C-KL)^2<K^2,
+\]
+so
+\[
+ |C|>|K|(|L|-1/2)\ge Y-1/2>1.
+\]
+Theorem~\ref{thm:reliability} now applies, with
+$B_1\equiv3\pmod4$, and gives $C=u_{B_1}(A)$.
+The recurrence implies $A-2\mid C-B_1$. Restore in the proof only
+$h=(C-B_1)/(A-2)$ and invoke the retained reverse binomial bridge.
+It decodes the fixed source into a finite ZFC refutation. The old stronger
+$D$ factor and its exceptional-index argument have not been silently reused.
+
+\subsection{Completeness and exact degree}
+A refutation gives the same canonical arithmetic witnesses as before,
+with $A>2$ even, $C=u_{B_1}(A)\equiv5\pmod6$, $r=bQ>0$ square,
+$\Delta>0$ and $S\mid T$. Set $c_0=(C+1)/6$.
+The integer $\delta=9\Delta-3$ has 3-adic valuation one, so $\delta r$
+is positive nonsquare. A positive Pell solution
+$u^2-\delta rz^2=1$ makes $a_0=ru^2$ a square.
+Apply Theorem~\ref{thm:interpolate} with $N_*=z$, put $x=\xi/z$, and
+use intersectivity of $\pi$ to choose the required $y$ class modulo $\xi$.
+Then $\Sigma\mid\Theta$ and $a_1$ is a square. Taking
+\[
+ m=\Theta/\Sigma+\sqrt{a_0}+\sqrt{a_1}
+\]
+solves~\eqref{eq:ten}. This is an existential equivalence, not a bijection
+between all old and new witness tuples.
+
+For exact degree let $a=\deg A=16\,384$; the unchanged source has
+$\deg X=7942$, $\deg Y=4219$, $\deg\mathrm{cap}=233$.
+The relevant degrees are
+\[
+\begin{array}{c|rrrrrrrr}
+& D&E_2&F&G&\Omega&H&I&a_1\\\hline
+\deg&2a+2&2a+10&4a+10&5a+10&2a+6&6a+17&22a+54&28a+66
+\end{array}
+\]
+and $\deg\Sigma=5a+2$. The guard degree $294\,619$ and center degree
+$81\,925$ are below their competitors. The dominant final term is
+$\Sigma^4a_1^2$, yielding
+\[
+ \deg P_{10}=4(5a+2)+2(28a+66)=76a+140=1\,245\,324.
+\]
+Independent nonzero top-coefficient evaluations modulo three primes
+certify attainment on the actual fixed-coefficient slice. The final graph
+has 300 multiplications, 155 additions and 25 subtractions: 480 operations.

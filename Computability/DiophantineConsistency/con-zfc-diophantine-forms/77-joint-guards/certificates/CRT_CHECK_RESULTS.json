@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "scope": "Exact polynomial identities and finite arithmetic controls, not a Lean theorem or compiled ordinary global polynomial.",
+  "checks": {
+    "exact_product_cases_including_empty_bound": 90,
+    "anisotropic_prime_pairs": 2030,
+    "two_coordinate_complete_fixture": true,
+    "index_free_range_residual_cases": 1930,
+    "negative_controls": 2
+  },
+  "symbolic_index_eliminations": [
+    {
+      "source": "a - i",
+      "index_degree": 1,
+      "cleared": "D*a + D - 1",
+      "divisibility_quotient": "1"
+    },
+    {
+      "source": "a**2 - 2*a*i + b**2 - 2*b*i - 2*b + 2*i**2 + 2*i + 1",
+      "index_degree": 2,
+      "cleared": "D**2*a**2 + 2*D**2*a + D**2*b**2 + D**2 - 2*D*a - 2*D*b - 2*D + 2",
+      "divisibility_quotient": "2*D*a + 2*D*b - 2*D*i - 2"
+    },
+    {
+      "source": "a*i**2 - b*i + i**3*x + 7",
+      "index_degree": 3,
+      "cleared": "D**3*a + D**3*b - D**3*x + 7*D**3 - 2*D**2*a - D**2*b + 3*D**2*x + D*a - 3*D*x + x",
+      "divisibility_quotient": "-D**2*a*i + D**2*a + D**2*b - D**2*i**2*x + D**2*i*x - D**2*x - D*a - D*i*x + 2*D*x - x"
+    },
+    {
+      "source": "a**4 - b**3",
+      "index_degree": 0,
+      "cleared": "a**4 - b**3",
+      "divisibility_quotient": "0"
+    }
+  ],
+  "special_function_interface": {
+    "old_power_graph_calls": 2,
+    "new_power_graph_calls": 1,
+    "factorial_graph_calls": 2,
+    "binomial_graph_calls": "m+1",
+    "old_outer_crt_coordinates": "m+2",
+    "new_outer_crt_coordinates": "m+1",
+    "conditional_natural_witness_count": "2m+9+2*f+p+(m+1)*b, if factorial/power/binomial graphs have f/p/b internal witnesses beyond their visible inputs and output"
+  }
+}

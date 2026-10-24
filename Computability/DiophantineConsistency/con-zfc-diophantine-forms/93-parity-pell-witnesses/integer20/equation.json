@@ -1,0 +1,160 @@
+{
+  "name": "scaled_signs20_degree18",
+  "domain": "unrestricted integers",
+  "variables": [
+    "J3",
+    "C",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "tau",
+    "eta",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "c",
+    "b",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3"
+  ],
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "abbreviations": [
+    [
+      "J",
+      "3*J3+1"
+    ],
+    [
+      "q",
+      "beta*J+1"
+    ],
+    [
+      "W",
+      "12*w3+4"
+    ],
+    [
+      "X",
+      "q*W"
+    ],
+    [
+      "Ytarget",
+      "(2*v_scale+1)*q**3"
+    ],
+    [
+      "F",
+      "(K0+W)*C-z*(q-1)"
+    ],
+    [
+      "alpha",
+      "q-F-C"
+    ],
+    [
+      "E",
+      "X*b"
+    ],
+    [
+      "a",
+      "E+b"
+    ],
+    [
+      "V",
+      "f*o-c"
+    ],
+    [
+      "k",
+      "1-V+j*c+h*E"
+    ],
+    [
+      "H",
+      "4*a+3"
+    ],
+    [
+      "Delta",
+      "a*a+H"
+    ],
+    [
+      "I",
+      "(2*r+1)*(c*c)"
+    ],
+    [
+      "R",
+      "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J"
+    ],
+    [
+      "d",
+      "(cone_A*F)*(cone_B*C)-(q-cone_A*F-cone_B*C)**2"
+    ],
+    [
+      "ueta",
+      "b*eta"
+    ],
+    [
+      "tnew",
+      "ueta*(c-eta-ueta)"
+    ],
+    [
+      "Pos",
+      "1+pair_pos1**2+pair_pos2**2+pair_pos3*(pair_pos3+1)"
+    ],
+    [
+      "ell",
+      "E*(c-eta)"
+    ],
+    [
+      "p",
+      "f*o"
+    ],
+    [
+      "S",
+      "X+gamma*H"
+    ],
+    [
+      "I2",
+      "I*I"
+    ],
+    [
+      "Q",
+      "Delta*(f*f-1)"
+    ]
+  ],
+  "residuals": [
+    "b-Ytarget",
+    "c-eta-k*b",
+    "tau*tau-ell*(k+ell)-1",
+    "(X+a*c+gamma*H)**2-Delta*(c*c)-1",
+    "c*j-V-R",
+    "I2-Q",
+    "I2*(V*V-(p+y)**2)+(p+y)**2-1",
+    "d*tnew-(pair_root**2-d-tnew+1)**2-Pos"
+  ],
+  "single_polynomial": "sum of residual squares",
+  "variable_count": 20,
+  "residual_count": 8,
+  "exact_degree": 18,
+  "residual_degrees": [
+    4,
+    5,
+    8,
+    8,
+    5,
+    8,
+    9,
+    8
+  ],
+  "leading_form": "64*r**4*c**8*f**2*o**2*(c+y)**2",
+  "coefficient_binding": "parent/coefficients/BINDING.json",
+  "parent": "parent/equation.json",
+  "proof": "PROOF.md"
+}

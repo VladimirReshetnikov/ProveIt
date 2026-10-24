@@ -1,0 +1,516 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.82in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype,xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Direct proof certificates and smaller Diophantine consistency equations},pdfauthor={AI-assisted research for the ProveIt project},pdfsubject={Explicit Diophantine representations of ZFC refutability}}
+\definecolor{ink}{RGB}{25,42,63}
+\definecolor{accent}{RGB}{0,105,112}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Direct certificates and consistency equations}
+\fancyhead[R]{\small Research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{topsep=4pt,itemsep=2pt}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{2em}
+\newcommand{\pin}{\texttt{08200eb10fde2db408c69dffd840d6920a569b1f}}
+\title{\color{ink}\LARGE Direct proof certificates and smaller\\Diophantine consistency equations\\[7pt]
+\large A materialized quartic in 3,614 natural unknowns\\
+and equations in 21, 20, and 19 integers\\
+of degrees 16, 18, and 40}
+\author{Prepared for Vladimir Reshetnikov's ProveIt project\\
+\small AI-assisted research contribution with reproducible exact algebra audits}
+\date{24 October 2026\\[3pt]\small Repository snapshot: \pin}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two complementary improvements to explicit Diophantine
+representations of ZFC refutability. First, we materialize a fixed quartic
+in 3,614 nonnegative integer unknowns, with 15,996 nonzero monomials and
+maximum absolute coefficient 127,778,545. Its construction compiles the
+repository's calibrated numerical proof calculus directly, without
+simulating a Turing machine or instantiating Jones's universal polynomial.
+A companion quartic has 6,183 unknowns and coefficient height 1,993.
+The central compilation step is a shared Chinese-remainder certificate:
+one global factorial makes every local range factorial invertible, allowing
+the latter to be removed and heterogeneous witness bounds to be used.
+The exported equations contain only ordinary polynomial monomials.
+
+Second, integral triangular coordinate changes and two Pell-root
+translations turn an existing 25-integer octic into fixed equations in
+21, 20, and 19 integers of exact degrees 16, 18, and 40. At these dimensions
+the best inspected incoming degrees were 20, 32, and 88.
+All new coordinate maps are polynomial bijections on zero sets.
+Composing the arguments with the explicitly identified inherited
+calibration theorems gives, in ZFC, equivalence between absence of solutions
+and $\Con(\ZFC)$. This is an ordinary mathematical proof with a stated
+dependency boundary, not a new end-to-end proof-assistant certificate.
+Neither consistency nor global minimality is claimed.
+\end{abstract}
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The precise result and the meaning of simplicity}
+
+Fix the usual arithmetized assertion $\Con(\ZFC)$ that no finite ZFC proof
+of contradiction exists. The target is a fixed integer-coefficient
+polynomial $P$, with its domain specified, for which
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \bigl(\neg\exists\boldsymbol{x}\in D^n\ P(\boldsymbol{x})=0\bigr)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\end{equation}
+Here $D$ is either $\N=\{0,1,\ldots\}$ or $\Z$. These are different
+representation problems: a natural-number equation must not silently be
+advertised as an unrestricted integer equation. All coefficients are fixed;
+there is no free input encoding the theory.
+
+There is no single established numerical meaning of the simplest
+Diophantine equation. Variable count, degree, coefficient height, number
+of monomials, circuit size, readability, and the complexity of the
+calibration proof compete. We therefore deliver several fully specified
+points, rather than conceal a large cost in an unspecified coefficient
+or arithmetic macro.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Equation and domain & Unknowns & Degree & Squared residuals & Coefficient information\\
+\midrule
+$P_{\mathrm{dir}}$ over $\N$ & 3,614 & 4 & 2,954 & height 127,778,545\\
+$P_{\mathrm{ht}}$ over $\N$ & 6,183 & 4 & 5,523 & height 1,993\\
+$Q_{21}$ over $\Z$ & 21 & 16 & 9 & six supplied numerals\\
+$Q_{20}$ over $\Z$ & 20 & 18 & 8 & same six numerals\\
+$Q_{19}$ over $\Z$ & 19 & 40 & 7 & same six numerals\\
+\bottomrule
+\end{tabular}
+\caption{Completed equations. Height means the maximum absolute coefficient
+of the expanded polynomial, not of a residual or a circuit.}
+\end{table}
+
+\begin{theorem}[Completed consistency representations]\label{thm:main}
+The five fixed polynomials in the table satisfy \eqref{eq:target} on
+their stated domains, by the ordinary arithmetic arguments below composed
+with the repository calibration results specified in
+Section~\ref{sec:scope}. Their variable counts and degrees are exact.
+\end{theorem}
+
+The direct construction is useful when small coefficients, degree four,
+and a proof-calculus interpretation matter. The 19-integer construction
+is the most compact new equation here by variable count; it retains the
+large fixed numerical tuple of its inherited machine-based source.
+The two routes have different calibration dependencies.
+
+\subsection{What is new relative to the inspected repository}
+
+All comparisons refer to the snapshot \pin, including the six archive
+roots in \file{docs/incoming}. The accompanying comparison inventory
+identifies each source. In particular, the incoming joint-guard package
+already contains a 25-integer octic and several small-variable projections.
+Reconstructing those equations is necessary calibration work, not a new
+result. The new coordinate projections improve the inspected
+$(n,\deg)$ points
+\[
+ (21,20)\mapsto(21,16),\quad
+ (20,32)\mapsto(20,18),\quad
+ (19,88)\mapsto(19,40).
+\]
+No claim is made to improve existing nine-positive or ten-integer
+high-degree representations by variable count.
+
+On the direct route, the repository already supplies a numerical Horn
+calculus, commutative proof certificates, and a bounded-factor carrier.
+Its large-carrier candidate reports 47,439,839 representation witnesses
+before a final ordinary-polynomial flattening. That number is a different
+compilation stage, so a ratio against our final 3,614 coordinates would
+not be a controlled like-for-like comparison. Our contribution is the
+shared compilation theorem, the combination of concrete reductions,
+and a completed literal polynomial with small numerical coefficients.
+We found no such completed small-coefficient direct quartic among the
+inspected incoming packages. This is a repository comparison, not a claim
+of worldwide priority.
+
+\subsection{An unambiguous static definition of the direct polynomial}
+
+The file \file{direct/equation.json} lists 2,954 residuals. A residual is
+a finite list of pairs $(c,\mu)$, where $c\in\Z$ and $\mu$ is a list of
+zero, one, or two variable indices in $\{0,\ldots,3613\}$. Repetition of
+an index means a square. The empty list means the constant monomial.
+If the residual lists are $\mathcal L_0,\ldots,\mathcal L_{2953}$, the
+single equation is, exactly,
+\begin{equation}\label{eq:literal-polynomial}
+ P_{\mathrm{dir}}(X_0,\ldots,X_{3613})
+ =
+ \sum_{\ell=0}^{2953}
+ \left(\sum_{(c,\mu)\in\mathcal L_\ell}
+          c\prod_{j\in\mu}X_j\right)^2=0.
+\end{equation}
+These lists are included as data, not left as the output of an unavailable
+compiler. The fully expanded coefficient list is also included in
+\file{direct/expanded_polynomial.json}. The builder reproduces both.
+The analogous two files in \file{direct/small_height} define
+$P_{\mathrm{ht}}$. No exponentiation, binomial coefficient, factorial,
+division, bounded quantifier, or variable-length product remains in these
+files. Formula \eqref{eq:literal-polynomial} is simply a compact convention
+for displaying a completely fixed polynomial.
+
+\input{calculus.tex}
+
+\section{Why a finite commutative certificate is enough}
+\label{sec:flow}
+
+This section records the mathematical content of the inherited direct
+flow mechanism~\cite{flow}, so that the bridge used by the compiler is
+visible. Let $\mathcal H$ be a finite list of instances of
+single-conclusion Horn rules with at most two premises. Axiom instances
+have zero premises. Pad missing premises with the freely available truth
+label $0$, and let $e_0=0$. For a rule $(p,q)\to v$, assign the flow
+vector $e_v-e_p-e_q$ in the free abelian group on the nonzero labels.
+
+\begin{lemma}[Single-conclusion flow]
+A nonzero label $b$ is derivable if and only if a finite multiset of
+rule instances has sum of flow vectors $e_b$.
+\end{lemma}
+\begin{proof}
+A finite proof can be expanded to a finite derivation tree. Every internal
+formula occurrence cancels between its production and its use; the root
+contributes $e_b$, and truth leaves contribute zero.
+
+Conversely let $D$ be the least set of labels containing truth and closed
+under the rules, and suppose $b\notin D$. Sum the coordinates outside
+$D$ of each rule vector. A rule with conclusion outside $D$ has at least
+one premise outside $D$, by closure, so its contribution is at most zero.
+A rule with conclusion in $D$ also contributes at most zero.
+Every nonnegative integral sum of rule vectors therefore has nonpositive
+total outside $D$, whereas $e_b$ has total one. This is a contradiction.
+Only the finitely many labels in the proposed certificate are needed
+for the finite sum.
+\end{proof}
+
+\subsection{A carrier that avoids pairwise-prime formula weights}
+
+Take $t\ge1$, $m\ge1$, with every displayed formula label at most $m$,
+and define
+\[
+ M=(m+1)^t,\qquad w(a)=1+aM.
+\]
+For $t$ rule instances with conclusions $v_i$ and premises $p_i,q_i$,
+consider
+\[
+ A(X)=\prod_{i<t}(1+v_iX),\qquad
+ C(X)=(1+X)\prod_{i<t}(1+p_iX)(1+q_iX).
+\]
+Suppose $A(M)=C(M)$. First $\deg C\le t$: otherwise
+$C(M)\ge M^{t+1}$, while
+\[
+ A(M)\le(1+mM)^t<((m+1)M)^t=M^{t+1}.
+\]
+Each of $A$ and $C$ now has at most $t$ nonconstant linear factors, all
+with labels at most $m$. Its coefficient sum is at most
+$(m+1)^t=M$. Its constant coefficient is one, so every coefficient is
+strictly less than $M$. Uniqueness of ordinary base-$M$ expansion implies
+$A=C$ in $\Z[X]$. Unique factorization over $\mathbb Q[X]$ then gives
+the flow equation with target $1$: each positive label contributes its
+own distinct factor $1+aX$. The free label zero contributes the unit.
+No coprimality of the numerical weights $1+aM$ is assumed.
+
+\subsection{An accumulator with a polynomial local step}
+
+Introduce natural states $S_0,\ldots,S_t$ satisfying
+\[
+ S_0=M+1,\quad S_t=1,\qquad
+ S_{i+1}(1+v_iM)=S_i(1+p_iM)(1+q_iM).
+\]
+Every state is positive, by induction from $S_0>0$, since all weights
+are positive. Multiplying the local equations and cancelling the
+intermediate states gives $A(M)=C(M)$, hence a proof of the target.
+
+Conversely expand a target derivation as a finite tree and traverse it
+by replacing a frontier conclusion by its premises. Let $S_i$ be the
+product of the weights on that frontier. This supplies natural accumulator
+states satisfying every step, starting with $1+M$ and ending with $1$.
+Choose $t$ to be the number of rule occurrences and $m$ to bound the labels,
+then choose the carrier $M$ by the displayed formula.
+
+The states are encoded by one ordinary beta sequence
+\[
+ \beta(x,y,i)=x\bmod(1+(i+1)y).
+\]
+Choose $y$ greater than every required state and divisible by $t!$.
+The moduli for $0\le i\le t$ are pairwise coprime by the elementary
+gcd argument used below, so finite CRT supplies $x$ with the prescribed
+digits. Crucially, this beta-sequence scale $y$, the carrier $M$, and
+the later shared-compiler scale $T$ are chosen separately. Identifying
+these scales would introduce an unjustified size cycle.
+
+\input{crt.tex}
+\input{primitives.tex}
+\input{integer.tex}
+
+\section{Logical scope, semantic dependencies, and exact audits}
+\label{sec:scope}
+
+\subsection{Composing the direct proof}
+
+The direct direction from a hypothetical zero to a refutation is:
+\begin{enumerate}
+\item Restore the eliminated nonnegative affine gates. A sum of squares
+      vanishes precisely when every residual does.
+\item Read each arithmetic gate and each positive-power, binomial,
+      factorial, and remainder certificate. Their graph theorems give
+      their intended exact natural values.
+\item Apply the shared binomial certificate to obtain all $t$ valid
+      bounded local rows. The beta equations and endpoint equations
+      produce one complete accumulator path.
+\item Apply the carrier and single-conclusion flow arguments to obtain
+      a finite $C_{222}$ derivation of the sealed target $1$.
+\item Apply the pinned C222-to-ZF and constructible-choice calibrations
+      to obtain a finite ZFC refutation.
+\end{enumerate}
+Every implication reverses existentially: a refutation gives a finite
+calculus proof; its expanded tree supplies a path; finite bounds and CRT
+supply the shared witnesses; the arithmetic graph existence theorems
+supply all auxiliary coordinates; and gates are evaluated. Positive
+representatives and positive carrier parameters are available as proved
+above. Consequently
+\[
+ \exists\boldsymbol{x}\in\N^{3614}\,
+ P_{\mathrm{dir}}(\boldsymbol{x})=0
+ \quad\longleftrightarrow\quad
+ \exists p\ \operatorname{Proof}_{\ZFC}(p,\bot).
+\]
+The companion equation is linked by explicit gate projection and
+restoration. Taking negations proves the required equivalences.
+
+\subsection{What is inherited, and what has been established here}
+
+The mathematical dependencies are explicit:
+\begin{enumerate}
+\item The numerical code constructors and axiom/rule predicates from
+      \file{Code254.lean} and \file{KCode222.lean}.
+\item The repository statements
+      \file{KEndpoint.c222_iff_zf_refutation} and
+      \file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+      They connect this concrete calculus to the intended theory.
+\item The Pell-index characterization and power graph, represented in
+      Mathlib's \file{PellMatiyasevic} development and in the pinned
+      repository Pell and power modules~\cite{pell,carneiro}.
+\item For the integer family, the older native/compiler, signed-Pell,
+      determinant-guard, exact-coefficient, and K215/refutation calibration
+      of the 25-integer parent. Immediate sources are included in
+      \file{coordinate_family/upstream}.
+\end{enumerate}
+The new work proves the shared compiler theorem, supplies elementary
+graph arguments, explains the direct flow/carrier bridge, proves all new
+coordinate maps, and materializes and independently audits the actual
+finite polynomial data. It does not rebuild the transitive proof-assistant
+dependency closure of the inherited sources. It does not supply a new
+object-language ZFC proof term or claim that the Python programs establish
+logical soundness by themselves.
+
+The proofs use finite induction, finite CRT, integer arithmetic and the
+cited number-theoretic theorems. These are provable in ZFC and apply to
+its internal natural numbers. There is no step requiring arithmetic
+soundness of ZFC, a model of ZFC, a standardness assumption about all
+proof codes, or $\Con(\ZFC)$ as a hypothesis. The calibration theorems
+are mathematical dependencies to be checked on their merits, not a
+consistency assumption. This distinction is essential when expressing
+\eqref{eq:target} as a theorem of ZFC.
+
+\subsection{Independent finite algebra checks}
+
+The direct checker uses a separate exact implementation to expand all
+2,954 residual squares and compare the resulting coefficient dictionary
+with the delivered 15,996-term polynomial. It checks canonical indices,
+degree four, all variable occurrences, and the coefficient height. It
+also recovers all 2,569 eliminated affine definitions from the original
+rows and final variable names, without using the exporter's substitution
+map, and verifies the full restored row multiset.
+
+The arithmetic controls include complete Pell certificates for six
+positive power examples, zero-exponent and zero-base controls for the
+optional total graph, changed-output rejection, 63 binomial cases
+including $k>n$, 20 factorial controls, 30 modulus-product controls,
+and a nontrivial shared CRT fixture. A static induction proves positivity
+at all 55 power call sites. These finite fixtures are regression checks;
+the universal validity comes from the mathematical graph theorems.
+
+A separate compositional sparse-polynomial audit recognizes all 56
+source wire definitions and all 34 branch residuals from the displayed
+numerical calculus. Branch fixtures and modular evaluations provide
+additional implementation controls. A separate symbolic power-graph
+audit substitutes all 61 definitional gates and matches all 17 remaining
+constraints to independently written versions of the cited Pell and
+power criteria, with exactly 27 additional natural witnesses.
+
+For the integer family, another independently implemented parser and
+sparse polynomial engine imports none of the author's polynomial engine.
+It checks the exact row bridge from the literal incoming parent, all four
+triangular inverse identities, every retained and deleted row after each
+projection, variable liveness, degree bounds, and the three nonzero
+coefficient certificates. The full fixed tuple is also reconstructed
+from its finite recipe. Both audit families pass in ordinary Python and
+with assertions disabled using \file{python3 -O}.
+
+These checks do not search for a zero of the complete equations and do
+not claim that the equations have no zeros. Their purpose is to close
+the gap between the displayed algebra and the supplied literal artifacts.
+
+\section{Artifacts and offline reproduction}
+
+The archive is designed as a self-contained contribution directory:
+\begin{description}[style=nextline]
+\item[\file{report/}]
+This source, its included sections, the compiled PDF, and a shell build
+script. The article contains the ordinary proofs and states their scope.
+\item[\file{direct/}]
+The two literal direct equations, fully expanded coefficient lists,
+deterministic generator, exact arithmetic and source audits, receipts,
+and immediate calibration/source provenance.
+\item[\file{coordinate_family/}]
+The three new integer equations, their compact parent, exact six-numeral
+payloads and reconstruction recipe, proofs, inherited source material,
+comparison inventory, and independent checkers.
+\item[\file{verify.py}]
+A root verification entry point. It checks packaged hashes and runs the
+independent algebra audits; its help lists optional reproduction checks.
+\item[\file{MANIFEST.sha256}]
+Hashes of the packaged deliverables, excluding the manifest itself.
+\end{description}
+
+The numerical and polynomial audits use Python's standard library.
+Typical commands from the extracted directory are
+\begin{verbatim}
+python3 verify.py
+python3 verify.py --help
+cd report
+sh build.sh
+\end{verbatim}
+The document build uses a normal pdfLaTeX installation with the packages
+listed in the preamble. The JSON files are deliberately plain and
+inspectable; the mathematical definitions do not require trusting a
+particular executable serialization format. The hash manifest protects
+the identity of the files audited, not the truth of their mathematics.
+
+\section{What would constitute the next substantial advance?}
+
+The strongest conceptual gain here is reuse of one large arithmetic
+certificate across many local obligations. The factorial-free range
+step exposes several concrete remaining questions.
+
+\paragraph{Share more than the global factorial.}
+The thirteen coordinate bounds still require thirteen binomial graphs.
+The direct materialization contains 55 power certificates, so improvement
+of a shared multiple-binomial or shared-power graph would affect the
+largest repeated component. A correct construction must preserve each
+coordinate's decoded residue; simply combining vanishing products does
+not establish all coordinate bounds.
+
+\paragraph{Replace the factorial scale by a cheaper sufficiently divisible scale.}
+The shared theorem needs the relevant small differences and range
+factorials to divide $T$, and it needs every prime factor of each
+$1+(i+1)T$ to exceed the evaluation bounds. The factorial is a transparent
+way to guarantee all three. A smaller graph for a scale with these
+properties could help, but a numerical reduction in $T$ alone need not
+reduce the number of polynomial unknowns.
+
+\paragraph{Avoid duplicate evaluation circuits.}
+The compiler evaluates a nonnegative majorant and a residue instance of
+the same large numerical rule circuit. A direct congruence circuit might
+share additional structure, but it must still provide an honest bound
+for prime decoding. Integer cancellation may make an expression smaller
+while destroying the nonnegative-coefficient monotonicity used in the
+proof.
+
+\paragraph{Optimize the calibration rather than the simulated machine.}
+A smaller directly calibrated proof calculus could reduce both circuit
+evaluations and the branch product. Such a proposal must include a
+complete equivalence with ZFC refutability. A short uncalibrated calculus,
+or an inconsistent strengthening, would not solve the stated problem.
+
+\paragraph{Continue the integer coordinate search with degree-aware translations.}
+The 21-variable construction succeeds because it keeps $Y=a-E$ and
+$k=\eta+\zeta$ as coordinates while eliminating other apparently equally
+natural choices. The first root is shifted before expansion; the second
+root is shifted before its companion coordinate is removed. A systematic
+search over integral triangular coordinates could uncover further
+cancellations. Exact zero-set inverses and a nonzero leading coefficient
+should be required for every candidate.
+
+\paragraph{Measure several objectives together.}
+The direct quartic with height 1,993 is larger than the variant with
+height 127,778,545. Both are meaningful outcomes of the same compiler.
+An optimization report should retain the full tuple of domain, unknowns,
+degree, height, monomials and source-circuit size. A change that is excellent
+for one objective may be poor for another.
+
+These are specific avenues opened by the present constructions. None is
+being counted as a completed further improvement. Establishing an absolute
+minimum is a separate problem, and the deliverable makes no such claim.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot
+\pin.\\
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Relevant directories: \file{Computability/HilbertTenthProblem},
+\file{Computability/DiophantineConsistency/con-zfc-diophantine-forms},
+and \file{docs/incoming}.
+
+\bibitem{flow}
+ProveIt, package 68, \emph{Commutative certificates} and the
+\emph{direct-flow-large-carrier} candidate, at the same snapshot.
+Immediate source text and the exact affine step are included with this
+contribution.
+
+\bibitem{pell}
+The Mathlib community, \emph{PellMatiyasevic}: Pell-index
+Diophantine representation and power characterization.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/PellMatiyasevic.html}.
+The relevant names include \file{Pell.matiyasevic} and
+\file{Pell.eq_pow_of_pell}. The immediate repository adaptations are
+\file{PellRepresentation.lean} and \file{PowerRepresentation.lean}.
+
+\bibitem{carneiro}
+M. Carneiro, \emph{A Lean formalization of Matiyasevi\v{c}'s theorem},
+2018. \url{https://arxiv.org/abs/1802.01795}.
+
+\bibitem{incoming}
+ProveIt incoming proposals at the pinned snapshot:
+\emph{Joint Sign Guards}; \emph{Structural Reductions, Round 11};
+\emph{Budget and Centering}; \emph{Centered Pell Norms};
+\emph{Radical Guard Descent}; and \file{report.zip}.
+The complete archive-name/hash inventory and inspected root texts are
+included in the coordinate-family comparison and provenance files.
+
+\bibitem{sun}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, 2026. \url{https://arxiv.org/abs/2609.01594}.
+This provides context for small-variable consistency equations;
+the constructions here are defined and proved through the dependencies
+explicitly stated above.
+\end{thebibliography}
+\end{document}

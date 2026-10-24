@@ -1,0 +1,334 @@
+\section{Joint guards and two Pell-root translations}
+\label{sec:integer-new}
+
+This section gives three explicit fixed-coefficient equations over unrestricted
+integers.  The principal constructions have 26 variables and degree eight,
+and 24 variables and degree ten.  A further restriction to canonical dyadic
+witnesses gives 23 variables and degree sixteen.  They improve the inspected
+repository's 27-variable octic and 26-variable degree-sixteen construction
+\cite{source68,source71}.  No global minimum or priority claim outside the
+inspected repository is made.
+
+The starting point is the literal 38-variable quartic of source 71.  Its
+fixed tuple and determinant guard are kept intact.  Two operations are
+combined here: the simultaneous-positivity lemma of source 68 is applied
+to the two remaining guards, and two integral translations of Pell-root
+coordinates permit further substitutions without the usual degree increase.
+The first operation is a synthesis of earlier results.  The paired
+translations and the resulting 24-variable system are the additional
+algebraic reduction.
+
+\subsection{One guard for two strict inequalities}
+
+Put
+\[
+ \operatorname{Pos}(p_1,p_2,p_3)
+   =1+p_1^2+p_2^2+p_3(p_3+1).
+\]
+This takes only positive integer values and represents every positive
+integer.  Indeed, apply the three-square theorem to $4n-3$ and separate its
+one odd coordinate from its two even coordinates.  This gives
+$4n-3=(2p_3+1)^2+(2p_1)^2+(2p_2)^2$.
+
+\begin{lemma}[Nearest-square simultaneous positivity; source 68]
+\label{lem:int-pair}
+For any $x,y\in\Z$,
+\[
+ x>0\ \land\ y>0
+ \quad\Longleftrightarrow\quad
+ \exists t,p_1,p_2,p_3\in\Z:
+ xy-(t^2-x-y+1)^2=\operatorname{Pos}(p_1,p_2,p_3).
+\]
+\end{lemma}
+\begin{proof}
+A solution makes $xy>0$, so $x,y$ have the same nonzero sign.  If
+$x=-a$, $y=-b$, where $a,b\ge1$, then
+$(t^2+a+b+1)^2>ab=xy$, a contradiction.
+
+Conversely let $x,y\ge1$, put $N=x+y-1$, and take
+$m=\lfloor\sqrt N\rfloor$.  Choose $t=m$ if $N-m^2\le m$, and
+$t=m+1$ otherwise.  If $N$ is a square the error is zero.  Otherwise
+$|t^2-N|\le m$ and $m^2<N$.  Hence
+\[
+ (t^2-N)^2<N\le xy,
+ \qquad xy-N=(x-1)(y-1)\ge0.
+\]
+The remaining positive integer has a $\operatorname{Pos}$ representation.
+The floor and square root are used only to choose a witness in this proof;
+they are not operations in the polynomial.
+\end{proof}
+
+Two separate strict inequalities previously cost six private integer
+coordinates.  Lemma~\ref{lem:int-pair} uses four.  When $x$ and $y$ are
+quadratic polynomial expressions, its residual has degree at most four.
+It is essential to keep both inputs quadratic while forming the octic:
+eliminating $\zeta$ too early changes $\eta\zeta$ into a cubic expression.
+
+\subsection{Fixed coefficients}
+
+The six fixed integers are
+\[
+ \beta=2^{1064921}-1,\quad K_0,\quad M_C,\quad M_F,
+ \qquad \sigma_F=2^{1113},\quad \sigma_C=2^{666104}.
+\]
+Here $(\beta,K_0,M_C,M_F)$ is the complete
+\texttt{mixed-parity-unrounded-1064921} tuple of source 34, used without
+mixing ports from other tuples.  In particular $M_F$ is already shifted
+by $\beta$.  The archive supplies every actual integer as compressed
+minimal unsigned little-endian bytes, its SHA-256 digest, and the finite
+recipe rebuilding it from the literal K215 transition table and ordered
+943-tile list.  Thus these are fixed numerals, not parameters to be chosen
+after searching for a solution.  The coefficient proof and calibration
+remain those of sources 34, 64 and 71 \cite{source64,source71}.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Fixed numeral & Bit length & Minimal raw bytes\\
+\hline
+$\beta$ & 1,064,921 & 133,116\\
+$K_0$ & 1,065,043 & 133,131\\
+$M_C$ & 1,064,921 & 133,116\\
+$M_F$ & 1,064,922 & 133,116\\
+$\sigma_F$ & 1,114 & 140\\
+$\sigma_C$ & 666,105 & 83,264\\
+\hline
+Total & & 615,883\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{The octic in 26 integers}
+
+Its independent integer coordinates are
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,\\
+ E,c,a,V,I,u,t,p_1,p_2,p_3.
+\end{gathered}
+\]
+The code names $v,w,t,p_i$ as \texttt{v\_scale}, \texttt{w\_scale},
+\texttt{pair\_root}, and \texttt{guard1},\ldots,\texttt{guard3}.
+Every expression in the following display is an abbreviation for a
+polynomial in these 26 coordinates:
+\begin{align*}
+ q&=\beta J+1, & k&=\eta+\zeta, & Y&=a-E,\\
+ C&=q-F-\alpha, & X&=2u^2, & H&=4a+3,\\
+ \delta&=a^2+H, & T&=E(c-\eta), & S&=X+\gamma H,\\
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+       +(M_C+qM_F)J.&&&
+\end{align*}
+The two guard expressions and their combined residual are
+\begin{align*}
+ G&=(\sigma_F F)(\sigma_C C)
+       -(q-\sigma_F F-\sigma_C C)^2,\\
+ Z&=\eta\zeta,\\
+ B_*&=GZ-(t^2-G-Z+1)^2-\operatorname{Pos}(p_1,p_2,p_3).
+\end{align*}
+Define the fourteen residuals
+\begin{align}
+ A_1&=X-4qw, & A_2&=a-E-q^3(2v+1),\nonumber\\
+ A_3&=E-XY, & A_4&=c-Yk-\eta,\nonumber\\
+ A_5&=\tau^2+(2\tau-k)T-1,&&\nonumber\\
+ A_6&=2acS+S^2-Hc^2-1,&&\nonumber\\
+ A_7&=k-1-hE-R,&&\nonumber\\
+ A_8&=(K_0+4w)C-(q-1)z-F,&&\nonumber\\
+ A_9&=V+c-fo, & A_{10}&=V+k-1-cj-hE,\nonumber\\
+ A_{11}&=I-(2r+1)c^2, & A_{12}&=I^2-\delta(f^2-1),\nonumber\\
+ A_{13}&=I^2(V^2-y^2)+y^2-1, & A_{14}&=B_*.
+ \label{eq:int26rows}
+\end{align}
+The requested single equation is
+\begin{equation}
+ \boxed{\displaystyle Q_{26}=\sum_{i=1}^{14}A_i^2=0.}
+ \label{eq:int26}
+\end{equation}
+All quantifiers range over $\Z$.  The abbreviations introduce no additional
+quantified coordinates and contain only fixed nonnegative powers.
+
+\begin{proposition}
+The equation $Q_{26}=0$ has an integer solution exactly when the literal
+source-71 quartic has an integer solution.  Its exact total degree is eight.
+\end{proposition}
+\begin{proof}
+The source quartic has two rows $G=\operatorname{Pos}$ and
+$Z=\operatorname{Pos}$, each with its own private triple.  Replace these
+six coordinates and two rows by $t,p_1,p_2,p_3$ and $B_*=0$.
+Lemma~\ref{lem:int-pair} proves equivalence on the projection to all the
+other coordinates.  This gives a 36-variable system of 24 residuals.
+
+Translate the first root by
+\[
+ \tau_{\rm old}=\tau+E(c-\eta).
+\]
+Then eliminate the following ten monically defined coordinates:
+\[
+\begin{array}{c|c@{\qquad}c|c}
+ X&2u^2 & C_2&c^2\\
+ F_2&f^2 & B_{\rm aux}&I^2\\
+ g&y^2-V^2 & \Delta&a^2+4a+3\\
+ D&2u^2+ac+\gamma(4a+3)&P&k+E(c-\eta)\\
+ L&q^2-1&N&q^3
+\end{array}
+\]
+These are integer-polynomial restorations with integer-polynomial inverses
+on the zero sets, given by forgetting the defined coordinates and undoing
+the root translation.  The ten definition rows become identities.
+For the first and main norms the exact identities are
+\begin{align*}
+ (\tau+T)^2-(k+T)^2+(k+T)k-1
+   &=\tau^2+(2\tau-k)T-1,\\
+ (ac+S)^2-(a^2+H)c^2-1
+   &=2acS+S^2-Hc^2-1.
+\end{align*}
+The surviving rows are exactly \eqref{eq:int26rows}, up to multiplication
+of individual residuals by $-1$, which leaves their squares unchanged.
+The literal source-row restorations are also checked by exact sparse
+polynomial arithmetic in the archive.
+
+Every residual has degree at most four.  The only residual containing
+$t$ is $B_*$, whose $t^4$ coefficient is $-1$.  Therefore
+$[t^8]Q_{26}=1$, independently of the fixed coefficients.  This proves
+exact degree eight on the actual coefficient slice.
+\end{proof}
+
+\subsection{The degree-ten equation in 24 integers}
+
+Retain the same definitions, but now set
+\begin{equation}
+ c=Yk+\eta,\qquad V=fo-c,
+ \qquad y_{\rm old}=V+\nu.
+ \label{eq:int24changes}
+\end{equation}
+Here $c,V$ are polynomial abbreviations.  Replace the coordinate $y$ by
+$\nu$ and remove the coordinates $c,V$.  The 24 independent coordinates are
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,\nu,\gamma,o,j,\\
+ E,a,I,u,t,p_1,p_2,p_3.
+\end{gathered}
+\]
+Remove $A_4,A_9$, which now vanish identically.  Replace $A_{13}$ by
+\begin{equation}
+ A'_{13}=(V+\nu)^2-I^2\nu(2V+\nu)-1.
+ \label{eq:int24aux}
+\end{equation}
+In every other residual substitute the two definitions in
+\eqref{eq:int24changes}.  The complete single equation is
+\begin{equation}
+ \boxed{\begin{aligned}
+ Q_{24}={}&A_1^2+A_2^2+A_3^2+A_5^2+A_6^2+A_7^2\\
+         &+A_8^2+A_{10}^2+A_{11}^2+A_{12}^2+(A'_{13})^2+B_*^2=0.
+ \end{aligned}}
+ \label{eq:int24}
+\end{equation}
+
+\begin{theorem}[Two root translations and two coordinate eliminations]
+The integer zero sets of $Q_{26}$ and $Q_{24}$ are related by inverse
+integer-polynomial maps.  The polynomial $Q_{24}$ has exactly 24 live
+integer variables and exact total degree ten.
+\end{theorem}
+\begin{proof}
+The two definition rows $A_4,A_9$ are monic in $c,V$.  Their right-hand
+sides in \eqref{eq:int24changes} use only retained coordinates and have
+degree two.  The auxiliary-root translation has the integral inverse
+$\nu=y_{\rm old}-V$.  The exact identity
+\[
+ I^2\bigl(V^2-(V+\nu)^2\bigr)+(V+\nu)^2-1
+  =(V+\nu)^2-I^2\nu(2V+\nu)-1
+\]
+proves restoration of the auxiliary norm for arbitrary signed integers.
+There are no sign assumptions or divisibility conditions in these maps.
+
+The degree savings require both root translations.  After eliminating
+$c$, the expression $T=E(c-\eta)$ has degree three.  Centering the first
+root makes its norm $\tau^2+(2\tau-k)T-1$ of degree four instead of six.
+After eliminating $V$, the auxiliary-root translation in
+\eqref{eq:int24aux} makes its norm degree five instead of six.  In the
+main norm the cancellation of $a^2c^2$ already displayed leaves
+$2acS+S^2-Hc^2-1$, also of degree five.  Finally
+$I-(2r+1)c^2$ has degree five.  All other residuals have degree at most
+four.  In the order displayed in \eqref{eq:int24}, their degrees are
+\[
+ 2,4,3,4,5,4,2,3,5,4,5,4.
+\]
+Thus $\deg Q_{24}\le10$.
+
+Only $A_{11}$ contains $r$.  The top part of
+$c=(a-E)(\eta+\zeta)+\eta$ gives
+\[
+ [r^2a^4\eta^4]Q_{24}=4.
+\]
+This coefficient is independent of all six fixed numerals, so the degree
+is exactly ten after actual coefficient specialization.  Exact symbolic
+checks also verify that every listed coordinate occurs.
+\end{proof}
+
+\subsection{An optional 23-variable equation of degree sixteen}
+
+Starting from $Q_{24}$, substitute simultaneously
+\begin{equation}
+ u_{\rm old}=2q\,u,\qquad w=2q\,u^2.
+ \label{eq:int23dyadic}
+\end{equation}
+Then $X=8q^2u^2$ and $A_1=X-4qw$ is identically zero.  Remove $w$ from
+the coordinate list and remove this zero residual.  The other eleven
+squared residuals define $Q_{23,16}$, a polynomial in 23 unrestricted
+integer variables, with the same six fixed coefficients.
+
+\begin{proposition}
+The absence of integer zeros of $Q_{23,16}$ has the same consistency
+equivalence as $Q_{24}$.  Its exact degree is sixteen.
+\end{proposition}
+\begin{proof}
+Any new zero restores a $Q_{24}$ zero by the integral substitutions
+\eqref{eq:int23dyadic}.  Completeness uses fresh canonical native witnesses,
+rather than asserting that every old zero satisfies the restriction.
+Source 64's canonical witnesses have
+\[
+ q=2^n,\quad n\ge4,\qquad R\text{ odd},\quad R>3q,
+ \qquad u_{\rm old}=2^{(R-1)/2}.
+\]
+Since $3\cdot2^n>2n+3$ for $n\ge4$, the exponent
+$(R-1)/2-n-1$ is a nonnegative integer.  Thus $2q$ divides
+$u_{\rm old}$, and the new $u$ is integral.  The old equation
+$2u_{\rm old}^2=4qw$ then gives exactly $w=2qu^2$.
+The source-71 determinant construction retains those canonical coordinates,
+and the new joint guard and root translations do not change this fact.
+
+With $X=8q^2u^2$, the main-norm residual has degree eight.  Every other
+residual has degree at most five.  Its unique top contribution
+$X^2=64q^4u^4$ gives
+\[
+ [J^8u^8]Q_{23,16}=4096\beta^8>0.
+\]
+Therefore the exact degree is sixteen.  This step is an existence
+equivalence obtained through canonical witnesses, not a bijection of all
+old zero sets.
+\end{proof}
+
+\subsection{Consistency theorem and verification boundary}
+
+Composing the proved transformations with the named source-71 correctness
+theorem yields, by ordinary arguments formalizable in ZFC, for each of
+$Q_{26},Q_{24},Q_{23,16}$,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf{x}\in\Z^m\;Q(\mathbf{x})=0\bigr)
+ \;\longleftrightarrow\;\operatorname{Con}(\mathrm{ZFC}).
+\]
+The consistency predicate is the specified syntactic ZFC refutation
+predicate of the inherited calibration.  The implication does not assert
+either consistency or inconsistency of ZFC.  No variable coefficient,
+variable exponent, hidden inequality, or quantified abbreviation is used.
+
+The release checker reconstructs all six actual fixed integers, checks
+their complete raw hashes, verifies every restored residual exactly,
+expands each sum of squares over the coefficient ports, proves the
+reported degree by the displayed nonzero coefficient, and checks variable
+liveness.  Its finite signed and nearest-square samples are only regression
+diagnostics; Lemma~\ref{lem:int-pair} is the universal proof.  The inherited
+unbounded native compiler, Pell classification and rank arguments, and
+literal machine/refutation calibration are not replaced by those finite
+checks.  This package adds no end-to-end proof-assistant or internally
+encoded ZFC certificate.

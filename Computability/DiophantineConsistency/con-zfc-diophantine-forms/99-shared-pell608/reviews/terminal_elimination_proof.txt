@@ -1,0 +1,88 @@
+TERMINAL NONLINEAR WIRE ELIMINATION: INDEPENDENT ORDINARY PROOF
+
+Let D be either N={0,1,2,...} or Z. Let V be a finite variable set,
+g in V, and r_0,...,r_s in Z[V] have total degree at most two. Suppose,
+after exact coefficient collection, r_0=epsilon*(g-Q), epsilon in {1,-1},
+g does not occur in Q, and deg Q<=2. Suppose every other r_i has the form
+r_i=a_i*g+P_i, with a_i an integer constant and g absent from P_i. For
+D=N assume additionally that every coefficient of Q is nonnegative.
+(It suffices more generally to prove Q(D^(V\{g})) is contained in D.)
+
+Define r'_i=a_i*Q+P_i for i=1,...,s. Every r'_i is an integer polynomial
+of degree at most two. Projection forgetting g gives a bijection from
+the D-valued zero set of the original residual family onto the D-valued
+zero set of the reduced family. The inverse is the explicit polynomial
+extension g=Q. Indeed, r_0=0 forces exactly this value of g. After that
+substitution the remaining original equalities are exactly r'_i=0.
+The nonnegative-coefficient assumption proves that the extension belongs
+to N when its arguments do. Over Z this assumption is unnecessary.
+
+Consequently F=sum_(i=0)^s r_i^2 and F'=sum_(i=1)^s (r'_i)^2 are ordinary
+polynomials of degree at most four, and their solvability over D is
+equivalent. This uses the elementary fact that a sum of squares of
+integers is zero precisely when each square is zero. There is no bound
+on witnesses, no appeal to experiments, and no unbounded conjunction in
+this reduction: V and the residual family are fixed finite objects.
+
+Iteration. Apply the same rule to a succession of current residual
+systems, saving the chosen variable g_j and its then-current recipe Q_j.
+At step j all earlier eliminated variables have already been substituted
+through every remaining row. Thus Q_j contains no g_i with i<=j. Given
+a final witness, reconstruct g_j in reverse chronological order. Every
+argument needed by Q_j is either retained or was eliminated later and
+has therefore already been reconstructed. This proves the lifting map is
+well-defined without assuming that the initial equations came from an
+acyclic circuit. Successive unique extensions compose to a bijection.
+
+Free variables. If a variable occurs in no surviving residual, removing
+it also preserves existential solvability, since it can be assigned zero
+in both N and Z. This additional projection is generally many-to-one.
+It must not be described as the bijection above. If eliminated recipes
+refer to such a free variable, initialize its value (e.g. to zero) before
+performing reverse reconstruction. Fixed parameters are not existential
+variables and must not be pruned under this rule.
+
+Exact degree. If at least one final residual has a nonzero homogeneous
+quadratic part q_i, the degree-four homogeneous part of F' is sum q_i^2.
+This is a nonzero polynomial: if it vanished identically, evaluating at
+every real tuple would force every q_i to vanish identically, contrary to
+the hypothesis. Hence the final degree is exactly four. One may also
+give an exact rational/integer test tuple on which sum q_i^2 is nonzero.
+
+Sharpness. The natural-number condition cannot simply be dropped:
+g=1-x and x=2 have no natural solution, whereas after eliminating g the
+remaining equation x=2 does. The linear-use condition prevents a degree
+increase: substituting g=x*y into g*z-1 produces a cubic residual. The
+unit coefficient is also material: 2*g-x=0 expresses a parity condition
+and cannot be solved for g by an integer polynomial in x.
+
+Implementation obligations. Normalize polynomial coefficients before
+testing any hypothesis; zero coefficients do not count as occurrences.
+Monomials must retain multiplicity, so (g,g) is nonlinear, as is (g,x).
+After each elimination perform exact coefficient collection. A trace
+should identify the chosen current row, its sign, the eliminated variable,
+and Q; an independent verifier can derive Q again and check the entire
+substitution directly. Modular tests supplement but cannot replace this
+exact symbolic check. Reconstructing the final sum-of-squares coefficients
+by an independent convolution supplies a separate export check.
+
+Choice of order. The theorem proves every accepted step, not optimality
+of a greedy strategy. In an acyclic monotone gate-definition subsystem,
+two currently eligible variables cannot occur quadratically in one
+another's definitions, so eliminating one preserves linearity of the
+other. This makes an independent-set formulation unnecessary for that
+special case. Exact cancellations, alternative defining rows, and sparse
+fill-in can nevertheless make order consequential in a general system.
+A deterministic sparse-fill priority is reasonable; measure final
+variables, rows, monomials and coefficient height separately. A reduction
+in variable count alone need not improve all measures of simplicity.
+
+FORMALIZATION STATUS
+
+This is an elementary finite algebraic proof formalizable in ZFC (indeed,
+far weaker arithmetic suffices after coding finite polynomials). It is
+not itself a generated Lean/Rocq proof or an encoded object-language ZFC
+derivation. When composed with an already established ordinary proof that
+the parent equation has a D-valued zero iff there is a ZFC refutation, it
+establishes the same equivalence for the new fixed polynomial. It cannot
+supply a missing parent consistency-calibration theorem.

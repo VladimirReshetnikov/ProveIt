@@ -1,0 +1,201 @@
+{
+  "coefficient_binding": "../coefficients/BINDING.json",
+  "degree_certificate": {
+    "actual_fixed_ports_mod_prime": {
+      "K0": 218200723,
+      "MC": 631314422,
+      "MF": 183301997,
+      "beta": 808826084,
+      "cone_A": 980664204,
+      "cone_B": 624805928
+    },
+    "coefficient_of_t_to_residual_degree": 872815224,
+    "method": "exact univariate polynomial specialization modulo a prime",
+    "prime": 1000000007,
+    "reason": "nonzero actual leading homogeneous specialization; a sum of real homogeneous squares cannot cancel",
+    "residual_degree_upper_bounds": [
+      5,
+      6,
+      6,
+      4,
+      10,
+      10,
+      10,
+      8
+    ],
+    "residual_exact_degree": 10,
+    "residual_index_zero_based": 4,
+    "slopes": {
+      "C_native": 8,
+      "E": 200,
+      "J3": 5,
+      "R_register": 404,
+      "T": 173,
+      "c": 229,
+      "eta": 104,
+      "f": 20,
+      "gamma": 148,
+      "h": 29,
+      "pair_pos1": 293,
+      "pair_pos2": 328,
+      "pair_pos3": 365,
+      "pair_root": 260,
+      "r": 40,
+      "tau": 85,
+      "v_scale": 53,
+      "w3": 68,
+      "y_gap": 125,
+      "z": 13
+    },
+    "substitution": "each unknown x is replaced by slope[x]*t",
+    "sum_of_squares_exact_degree": 20
+  },
+  "deleted_transport_row_zero_based": 6,
+  "domain": "unrestricted integers",
+  "exact_degree": 20,
+  "exact_restoration": {
+    "F": "(K0+W)*C_native-z*(q-1)",
+    "alpha": "q-F-C_native"
+  },
+  "factored_residuals": [
+    "R_register-R_native",
+    "E-X*Y",
+    "c-k*Y-eta",
+    "tau**2+(2*tau-k)*E*(c-eta)-1",
+    "D**2-Delta*c**2-1",
+    "I**2-Delta*(f**2-1)",
+    "V**2+(1-I**2)*y_gap*(2*V+y_gap)-1",
+    "G*Zeta-(pair_root**2-G-Zeta+1)**2-1-pair_pos1**2-pair_pos2**2-pair_pos3*(pair_pos3+1)"
+  ],
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "name": "degree20_20_rank_register",
+  "new_semantic_step": "monic native transport elimination followed by one rank register; forgetting the register is a zero-set bijection",
+  "parent_packet": "degree26_20.json",
+  "parent_pairing_first": false,
+  "parent_sha256": "51ad3d10079b88be5c79af83f6728ef1b8afc5e92f7b0f6d08c82ea297e64a09",
+  "parent_transport_packet": "degree28_19.json",
+  "polynomial_abbreviations": [
+    [
+      "Jnative",
+      "3*J3+1"
+    ],
+    [
+      "q",
+      "beta*Jnative+1"
+    ],
+    [
+      "W",
+      "4*(3*w3+1)"
+    ],
+    [
+      "C",
+      "C_native"
+    ],
+    [
+      "F",
+      "(K0+W)*C-z*(q-1)"
+    ],
+    [
+      "alpha",
+      "q-F-C"
+    ],
+    [
+      "X",
+      "q*W"
+    ],
+    [
+      "Y",
+      "(2*v_scale+1)*q**3"
+    ],
+    [
+      "R_native",
+      "(q*(q-F)-C)*(q**2-1)+(MC+q*MF)*Jnative"
+    ],
+    [
+      "R",
+      "R_register"
+    ],
+    [
+      "a",
+      "E+Y"
+    ],
+    [
+      "H",
+      "4*a+3"
+    ],
+    [
+      "Delta",
+      "a**2+H"
+    ],
+    [
+      "k",
+      "R+1+h*E"
+    ],
+    [
+      "zeta",
+      "k-eta"
+    ],
+    [
+      "P",
+      "k+E*(c-eta)"
+    ],
+    [
+      "D",
+      "X+a*c+H*gamma"
+    ],
+    [
+      "I",
+      "(2*r+1)*c**2"
+    ],
+    [
+      "Vcrt",
+      "f*c*T-f**2*R-c"
+    ],
+    [
+      "V",
+      "Vcrt"
+    ],
+    [
+      "G",
+      "cone_A*F*cone_B*C-(q-cone_A*F-cone_B*C)**2"
+    ],
+    [
+      "Zeta",
+      "eta*zeta"
+    ]
+  ],
+  "proof_status": "ordinary exact polynomial zero-set bijection; inherited native/Pell calibration remains explicit",
+  "representation": "finite ordered polynomial abbreviations; abbreviations are not extra unknowns",
+  "residual_count": 8,
+  "single_polynomial": "sum of the squares of the factored residuals after polynomial abbreviation expansion",
+  "variable_count": 20,
+  "variables": [
+    "J3",
+    "C_native",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "tau",
+    "eta",
+    "y_gap",
+    "gamma",
+    "T",
+    "E",
+    "c",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3",
+    "R_register"
+  ]
+}

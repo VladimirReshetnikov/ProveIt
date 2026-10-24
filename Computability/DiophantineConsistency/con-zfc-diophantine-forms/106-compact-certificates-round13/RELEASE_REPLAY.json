@@ -1,0 +1,313 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "sympy": "1.14.0",
+  "driver_optimized": false,
+  "authenticated_files": 397,
+  "top_level_invocations": 24,
+  "direct_internal_audit_invocations": 10,
+  "direct_rebuilt_variants_per_mode": 5,
+  "direct_byte_comparisons_both_modes": 52,
+  "architecture_rebuilt_variants_per_mode": 3,
+  "radical_rebuilt_graphs_per_mode": 5,
+  "norm_rebuilt_graphs_per_mode": 4,
+  "twelve_integer_rebuilt_graphs_per_mode": 1,
+  "elapsed_seconds": 148.762,
+  "jobs": [
+    {
+      "label": "direct deterministic rebuilds normal and optimized",
+      "component": "direct",
+      "script": "verify_rebuild.py",
+      "optimized": false,
+      "seconds": 4.224,
+      "returncode": 0,
+      "stdout_sha256": "f32c7315df0c7184732e0f4a1b58abde71f9c88a9dd4b0cc13b5fd8b6bd65def",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "direct independent audits normal and optimized",
+      "component": "late_direct_audit",
+      "script": "run_release.py",
+      "optimized": false,
+      "seconds": 5.856,
+      "returncode": 0,
+      "stdout_sha256": "b4db2fbbc68b8b4b13f82e524f69a2fcc8154c09dc6d4322693b3c424a8574c6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "architecture normal",
+      "component": "architecture",
+      "script": "check_architecture.py",
+      "optimized": false,
+      "seconds": 0.567,
+      "returncode": 0,
+      "stdout_sha256": "bb19bb36eb05ec8a86c36e87a65d0913139a3a51db46397df8f30c7f6422101c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "radical deterministic rebuild normal",
+      "component": "radicals",
+      "script": "build.py",
+      "optimized": false,
+      "seconds": 0.037,
+      "returncode": 0,
+      "stdout_sha256": "22fc23fb360aae789ff6b221f4fb5dd305f98fb3fa70a4306a2da321fdcd0940",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": [
+        "integer13_degree1072.json",
+        "integer14_degree378.json",
+        "integer15_degree172.json",
+        "integer15c_degree170.json",
+        "integer16_degree98.json",
+        "METRICS.json"
+      ]
+    },
+    {
+      "label": "radical producer-independent checks normal",
+      "component": "radicals",
+      "script": "check.py",
+      "optimized": false,
+      "seconds": 0.563,
+      "returncode": 0,
+      "stdout_sha256": "09eba53dc9397b52e5c15219d3ceb03db3d6cb90b60120ccd99c67d5d109082d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "centered exact identity normal",
+      "component": "radicals",
+      "script": "check_center_identity.py",
+      "optimized": false,
+      "seconds": 0.022,
+      "returncode": 0,
+      "stdout_sha256": "f4f66acd6dcf3aa5ec2939dee7b4d8757dae74a1b2290945299dfc963dcd6998",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "radical second independent audit normal",
+      "component": "radicals_audit",
+      "script": "check_radicals.py",
+      "optimized": false,
+      "seconds": 11.593,
+      "returncode": 0,
+      "stdout_sha256": "c2d8876ccfc97846bb5bd6da5b1999619a1e6a91c9e0e026c06d2dead4a5c151",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "norm deterministic rebuild normal",
+      "component": "norm",
+      "script": "build.py",
+      "optimized": false,
+      "seconds": 0.035,
+      "returncode": 0,
+      "stdout_sha256": "1895648ad02c3ec30ccaa480d37b594677120488f5226f6cd4820d852b1c0811",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": [
+        "integer10_polar.json",
+        "integer10_linear.json",
+        "integer10_cubic.json",
+        "integer10_sixterm.json"
+      ]
+    },
+    {
+      "label": "norm exact checks normal",
+      "component": "norm",
+      "script": "check.py",
+      "optimized": false,
+      "seconds": 28.216,
+      "returncode": 0,
+      "stdout_sha256": "b13776ff81e1ac574b0be3ef950b7ddcdb0c9859459747563ea570c1c2e3af6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "norm second independent audit normal",
+      "component": "norm_audit",
+      "script": "independent_checks.py",
+      "optimized": false,
+      "seconds": 11.921,
+      "returncode": 0,
+      "stdout_sha256": "7ffe76834d0a47d639b259235c3ae071237e1531364a36114046c893ee285e27",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "twelve-integer deterministic rebuild normal",
+      "component": "radicals12",
+      "script": "build.py",
+      "optimized": false,
+      "seconds": 0.025,
+      "returncode": 0,
+      "stdout_sha256": "d4c7ba2e5d27130410fce2c542d293fec2d12490af121dbe26f5e0f861821e1d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": [
+        "integer12_degree2048.json",
+        "METRICS.json"
+      ]
+    },
+    {
+      "label": "twelve-integer arithmetic checks normal",
+      "component": "radicals12",
+      "script": "check.py",
+      "optimized": false,
+      "seconds": 0.904,
+      "returncode": 0,
+      "stdout_sha256": "365a86a07edee9337501cb22ca57c5461889b7fff19dde91a90b23680fdfd4c7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "twelve-integer second independent audit normal",
+      "component": "radicals12_audit",
+      "script": "check_twelve.py",
+      "optimized": false,
+      "seconds": 13.051,
+      "returncode": 0,
+      "stdout_sha256": "ded11d32056d14ef77674395dd1a91e877f173df4e67c3a2d4a069712f02f8c9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "architecture optimized",
+      "component": "architecture",
+      "script": "check_architecture.py",
+      "optimized": true,
+      "seconds": 0.65,
+      "returncode": 0,
+      "stdout_sha256": "bb19bb36eb05ec8a86c36e87a65d0913139a3a51db46397df8f30c7f6422101c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "radical deterministic rebuild optimized",
+      "component": "radicals",
+      "script": "build.py",
+      "optimized": true,
+      "seconds": 0.097,
+      "returncode": 0,
+      "stdout_sha256": "22fc23fb360aae789ff6b221f4fb5dd305f98fb3fa70a4306a2da321fdcd0940",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": [
+        "integer13_degree1072.json",
+        "integer14_degree378.json",
+        "integer15_degree172.json",
+        "integer15c_degree170.json",
+        "integer16_degree98.json",
+        "METRICS.json"
+      ]
+    },
+    {
+      "label": "radical producer-independent checks optimized",
+      "component": "radicals",
+      "script": "check.py",
+      "optimized": true,
+      "seconds": 0.534,
+      "returncode": 0,
+      "stdout_sha256": "09eba53dc9397b52e5c15219d3ceb03db3d6cb90b60120ccd99c67d5d109082d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "centered exact identity optimized",
+      "component": "radicals",
+      "script": "check_center_identity.py",
+      "optimized": true,
+      "seconds": 0.081,
+      "returncode": 0,
+      "stdout_sha256": "f4f66acd6dcf3aa5ec2939dee7b4d8757dae74a1b2290945299dfc963dcd6998",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "radical second independent audit optimized",
+      "component": "radicals_audit",
+      "script": "check_radicals.py",
+      "optimized": true,
+      "seconds": 13.083,
+      "returncode": 0,
+      "stdout_sha256": "ea5acefba2c69a73908d1ac1d6978ef094c12da961c7894d5b15c92eaa6de51f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "norm deterministic rebuild optimized",
+      "component": "norm",
+      "script": "build.py",
+      "optimized": true,
+      "seconds": 0.09,
+      "returncode": 0,
+      "stdout_sha256": "1895648ad02c3ec30ccaa480d37b594677120488f5226f6cd4820d852b1c0811",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": [
+        "integer10_polar.json",
+        "integer10_linear.json",
+        "integer10_cubic.json",
+        "integer10_sixterm.json"
+      ]
+    },
+    {
+      "label": "norm exact checks optimized",
+      "component": "norm",
+      "script": "check.py",
+      "optimized": true,
+      "seconds": 28.74,
+      "returncode": 0,
+      "stdout_sha256": "b13776ff81e1ac574b0be3ef950b7ddcdb0c9859459747563ea570c1c2e3af6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "norm second independent audit optimized",
+      "component": "norm_audit",
+      "script": "independent_checks.py",
+      "optimized": true,
+      "seconds": 13.72,
+      "returncode": 0,
+      "stdout_sha256": "7ffe76834d0a47d639b259235c3ae071237e1531364a36114046c893ee285e27",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "twelve-integer deterministic rebuild optimized",
+      "component": "radicals12",
+      "script": "build.py",
+      "optimized": true,
+      "seconds": 0.085,
+      "returncode": 0,
+      "stdout_sha256": "d4c7ba2e5d27130410fce2c542d293fec2d12490af121dbe26f5e0f861821e1d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": [
+        "integer12_degree2048.json",
+        "METRICS.json"
+      ]
+    },
+    {
+      "label": "twelve-integer arithmetic checks optimized",
+      "component": "radicals12",
+      "script": "check.py",
+      "optimized": true,
+      "seconds": 0.979,
+      "returncode": 0,
+      "stdout_sha256": "365a86a07edee9337501cb22ca57c5461889b7fff19dde91a90b23680fdfd4c7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    },
+    {
+      "label": "twelve-integer second independent audit optimized",
+      "component": "radicals12_audit",
+      "script": "check_twelve.py",
+      "optimized": true,
+      "seconds": 13.64,
+      "returncode": 0,
+      "stdout_sha256": "b81f041b9dbaf9ad920566bf75e1b280806aecc683f55a01be8c2af8a016b7dc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_compared_files": []
+    }
+  ],
+  "scope": "Finite exact algebra, literal graph and payload checks, negative controls, and clean deterministic rebuilds. Universal source calibration remains ordinary mathematics, not a new kernel proof."
+}

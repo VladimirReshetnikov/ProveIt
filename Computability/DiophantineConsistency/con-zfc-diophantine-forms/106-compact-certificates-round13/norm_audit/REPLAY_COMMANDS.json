@@ -1,0 +1,17 @@
+{
+  "independent_checks": [
+    "python norm_audit/independent_checks.py",
+    "python -O norm_audit/independent_checks.py"
+  ],
+  "producer_replay": [
+    "Copy exactly norm/RELEASE_WHITELIST.json entries, preserving relative paths, into a clean temporary directory.",
+    "In that directory run: python check.py > CHECK_REPLAY_NORMAL.json",
+    "In that directory run: python -O check.py > CHECK_REPLAY_OPTIMIZED.json",
+    "Compare both receipts byte-for-byte with CHECKS.json.",
+    "Record hashes of integer10_polar.json, integer10_linear.json, integer10_cubic.json and integer10_sixterm.json.",
+    "In that directory run: python build.py",
+    "Verify all four graph hashes are unchanged."
+  ],
+  "dependencies": ["Python 3", "SymPy"],
+  "warning": "Run the producer build in the isolated copy, not in the frozen norm directory."
+}

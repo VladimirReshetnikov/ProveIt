@@ -1,0 +1,182 @@
+\section{Absorbing equations into a bounded positivity certificate}
+\label{sec:bounded-guard-absorption}
+
+The second new construction has \textbf{fifteen unrestricted integer
+variables, exact degree $176$, and $125$ live binary operations}.
+The incoming parity equation has degree $204$ and $128$ operations.
+The improvement does not assert that its radical norm is nonnegative.
+Instead, a low-degree \emph{upper bound} on a positivity certificate lets
+us absorb the remaining equations inside one radicand. The norm itself
+then becomes the final polynomial, without a unit product or outer square.
+
+\begin{lemma}[Bounded-certificate absorption]
+\label{lem:bounded-absorption}
+Suppose $B,H$ are real-valued expressions with $H\geq0$ and
+$B\leq\lambda H-\varepsilon$, where $0\leq\lambda<1$ and
+$\varepsilon>0$. For integer residuals $r_1,\ldots,r_m$, put
+$S=\sum_i r_i^2$. Then
+\[
+ B-HS\geq0\quad\Longrightarrow\quad H>0\ \text{and}\ r_1=\cdots=r_m=0.
+\]
+When the residuals vanish, replacing $B$ by $B-HS$ changes nothing.
+\end{lemma}
+\begin{proof}
+If $H=0$, the proposed nonnegative expression is at most
+$-\varepsilon$. If $S\neq0$, integrality gives $S\geq1$, whence
+$B-HS\leq(\lambda-S)H-\varepsilon<0$. Both are contradictions.
+\end{proof}
+
+\subsection{Complete equation and the new substitution}
+The coefficient tuple is the same fixed source34 tuple as above; write
+$A_c=\texttt{cone\_A}$ and $B_c=\texttt{cone\_B}$.
+This construction uses a different affine chart from the twelve-variable
+one. Its independent variables are exactly
+\[
+ J,C,z,f,h,r,v,w,\gamma,T,c,s,p_1,p_2,t\in\Z.
+\]
+Here $s$ denotes the old \texttt{pair\_root}, and $t$ denotes
+\texttt{t\_parity}. Define the ordinary polynomial registers
+\begin{align*}
+ J_0&=3J+1,\quad q=\beta J_0+1,\quad W=4(3w+1),\quad X=qW,\\
+ Y&=(2v+1)q^3,\quad E=XY,\quad a=E+Y,\quad H_0=4a+3,\\
+ \Delta&=a^2+H_0,\quad F=(K_0+W)C-z(q-1),\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J_0,\\
+ k&=R+1+hE,\quad \eta=c-kY,\quad \zeta=k-\eta,\\
+ D&=X+ac+H_0\gamma,\quad I=(2r+1)c^2,\quad V=fcT-f^2R-c,\\
+ G&=A_cF B_cC-(q-A_cF-B_cC)^2,\quad Z_0=\eta\zeta,\\
+ B_0&=GZ_0-(s^2-G-Z_0+1)^2-1-p_1^2-p_2^2.
+\end{align*}
+The two formerly separate residuals are
+\[
+ r_m=D^2-\Delta c^2-1,\qquad
+ r_s=I^2-\Delta(f^2-1).
+\]
+The entire new substitution is
+\begin{equation}
+ S=r_m^2+r_s^2,\qquad
+ B_*=B_0-q^2k^2S,\qquad
+ B_g=4B_*+1.
+ \label{eq:absorbed-guard}
+\end{equation}
+Previously $B_g=4B_0+1$ and the two residuals were imposed separately.
+Finish the equation by setting
+\begin{align*}
+ A_4&=q(3w+1)Y^2(XY^2+1)k^2,\quad A=4A_4+1,\\
+ Q&=I^2,\quad \delta=Q-1,\quad C_a=\delta(QV^2-1),\\
+ x&=2t+1,\quad U=t(t+1)-A_4-B_g+4C_a,\\
+ M&=U^2+4x^2C_a-AB_g.
+\end{align*}
+The requested single, division-free integer polynomial is
+\begin{equation}
+ \boxed{P_{15}=M^2-16x^2U^2C_a.}
+ \label{eq:absorbed-fifteen}
+\end{equation}
+All displayed registers are abbreviations, not additional unknowns.
+The literal ordered specification is
+\texttt{finalizers/absorbed15\_degree176.json}; the accompanying
+\texttt{absorbed15\_degree176\_dag.json} contains only binary
+addition, subtraction and multiplication gates.
+
+\subsection{The universal upper bound, including every sign case}
+Let $u=A_cF$ and $v_0=B_cC$, solely for the following identities:
+\[
+ 4(q^2-3G)=\bigl(3(u+v_0)-4q\bigr)^2+3(u-v_0)^2,
+ \qquad
+ 4Z_0=k^2-(2\eta-k)^2.
+\]
+Thus $G\leq q^2/3$ and $Z_0\leq k^2/4$ without using any residual.
+If both are nonnegative, their product is at most $q^2k^2/12$.
+If $GZ_0\leq0$, subtracting the square in $B_0$ leaves a nonpositive
+quantity before its additional $-1-p_1^2-p_2^2$.
+The remaining case has $G=-g$ and $Z_0=-z_0$ with $g,z_0>0$;
+then
+\[
+ (s^2-G-Z_0+1)^2\geq(g+z_0+1)^2>gz_0=GZ_0.
+\]
+Consequently the following is a genuinely universal upper bound:
+\begin{equation}
+ B_0\leq\frac{q^2k^2}{12}-1.
+ \label{eq:guard-global-bound}
+\end{equation}
+No positivity of $G$, $Z_0$, or the old guard was assumed.
+If $B_g$ is an integer square, its residue $1$ modulo $4$ makes
+$B_g\geq1$, so $B_*\geq0$.
+Lemma~\ref{lem:bounded-absorption}, with $H=q^2k^2$,
+$\lambda=1/12$ and $\varepsilon=1$, now forces $r_m=r_s=0$.
+This also handles $qk=0$: that branch cannot give a square $B_g$.
+
+\subsection{Parity extraction and noncircular restoration}
+The unchanged three-root identity is
+\begin{equation}
+ 256P_{15}=
+ \prod_{\epsilon_1,\epsilon_2,\epsilon_3\in\{-1,1\}}
+ \left(x+\epsilon_1\sqrt A+2\epsilon_2\sqrt{B_g}
+                 +4\epsilon_3\sqrt{C_a}\right).
+ \label{eq:absorbed-norm-identity}
+\end{equation}
+It is a polynomial identity, valid for arbitrary integer radicands,
+including negative values and $C_a=0$.
+At a zero, a signed radical sum is rational. Write each nonzero
+radicand as an integer square times a signed squarefree integer and
+group by rational squareclass. Distinct classes are linearly independent
+over $\Q$. Since $A$ and $B_g$ are odd, their square factors are odd.
+A nontrivial class containing the $A$ term has an odd coefficient plus
+even coefficients, so cannot cancel. A class containing $B_g$ but not
+$A$ has twice an odd coefficient plus a multiple of four, so cannot
+cancel either. A class containing only a nonzero $C_a$ term also cannot
+cancel. Thus $A,B_g$ are positive integer squares and $C_a$ is a
+nonnegative integer square. If $C_a=0$, simply omit its zero radical;
+the same argument still forces $A$ and $B_g$ to be squares.
+
+The deduction order matters. First squarehood of $B_g$ and
+\eqref{eq:guard-global-bound} force \emph{both} old residuals to vanish.
+Only now use $r_s=0$ to establish $\delta\neq0$.
+Indeed the affine scales give $|q|\geq\beta-1\geq16$,
+$|X|\geq4|q|$, $|Y|\geq|q|^3$, and hence $\Delta>1$.
+The equation $I^2=\Delta(f^2-1)$ excludes $I^2=1$.
+There is therefore no assumption of a nonzero auxiliary radicand hidden
+in the earlier squareclass extraction.
+
+Choose integral roots $u^2=A$, $d^2=B_g$, and $e^2=C_a$.
+For $Q>1$, the adjacent-coefficient Pell denominator lemma makes
+$y=e/\delta$ integral from
+$QV^2-(Q-1)y^2=1$; its elementary descent is retained in the source.
+For $Q=0$, $C_a=1$ and $\delta=-1$, so integrality is immediate.
+Put $P_0=k+E(c-\eta)$ and restore the three deleted private coordinates by
+\[
+ \tau_{\rm old}=2u-2P_0+k,\qquad
+ y_{\rm gap}=y-V,\qquad
+ p_3=(d-1)/2.
+\]
+These are integers and make every residual of the pinned
+seventeen-integer parent vanish. In particular $S=0$ gives $B_*=B_0$,
+so the restored positivity equation is exactly the original one.
+Conversely, any parent zero has $S=0$ and leaves the guard unchanged;
+its integral roots $u,d,e$ give
+$t=(u+2d+4e-1)/2\in\Z$ and make
+\eqref{eq:absorbed-norm-identity} vanish. This is a two-way existence
+reduction using every parent zero, not just canonical witnesses.
+
+\subsection{Exact measurements and proof boundary}
+The residuals $r_m,r_s$ have degree $14$, while $q^2k^2$ has degree
+$16$. Thus the added penalty has degree $44$, exactly the old guard
+radicand's degree. Structural degree propagation bounds
+\eqref{eq:absorbed-fifteen} by $176$. At the authentic fixed coefficients,
+an explicit line has degree-$176$ coefficient
+$179645231$ modulo $1000000007$, which is nonzero. An independent
+finite-difference calculation agrees; a separately chosen independent
+line gives $215929316$ modulo the same prime. These are lower-bound
+certificates paired with the universal structural upper bound.
+
+The literal circuit has $24$ additions, $29$ subtractions and $72$
+multiplications: $125$ operations in total, including squaring and
+constant multiplication. Independent checks verify all $15$ variable
+leaves, all six fixed ports, liveness, local polynomial cuts, and the
+zero-radicand corner. Finite diagnostics supplement the proof, not replace it.
+
+The construction imports the incoming parity package's explicitly retained
+native/Pell/refutation calibration and its original coefficient binding.
+Under that ordinary theorem, ZFC proves that integer nonsolvability of
+\eqref{eq:absorbed-fifteen} is equivalent to syntactic $\Con(\ZFC)$.
+No consistency proof, new end-to-end kernel certificate, or global
+minimality claim follows from these arithmetic and circuit checks.

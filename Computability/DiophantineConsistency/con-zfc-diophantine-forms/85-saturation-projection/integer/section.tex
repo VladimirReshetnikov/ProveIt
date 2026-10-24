@@ -1,0 +1,348 @@
+\section{Removing one integer witness from the joint-sign family}
+\label{int-section}
+
+The smallest-degree branch and the smallest-variable branch need different
+comparisons.  Here we improve four recent equations over \emph{unrestricted
+integers}.  The principal endpoint is a single polynomial in eighteen
+integer variables, of exact degree $88$, with $105$ live binary arithmetic
+operations.  Its direct predecessor in the incoming joint-guards packet
+uses nineteen variables, degree $88$, and $109$ operations.
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+\multicolumn{3}{c}{Incoming predecessor}&\multicolumn{3}{c}{This composition}\\
+Variables&Degree&Operations&Variables&Degree&Operations\\
+\midrule
+19&88&109&18&88&105\\
+20&32&112&19&32&108\\
+21&20&115&20&20&111\\
+22&16&118&21&16&114\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry in this table has domain $\Z$; none is obtained by silently
+relabelling positive witnesses.  All four new equations retain precisely
+the same six fixed numerals as their direct predecessors.  These are new
+compositions and measured endpoints, not a new general elimination lemma:
+source~73, \emph{Guard reanchoring}, already uses the complement coordinate
+and monic transport elimination proved below.  Its application there is to
+an earlier forty-one-variable system.  The incoming joint-sign projection
+family retains the eliminable transport coordinate, which lets the same
+method produce the four improvements in the table.
+
+\subsection{An exact integer-polynomial projection}
+\label{int-projection}
+
+Suppose a source system contains polynomial abbreviations $q,W$ independent
+of two integer coordinates $F,\alpha$, and put $C=q-F-\alpha$.
+Suppose one of its rows is
+\begin{equation}
+ (K_0+W)C-F-z(q-1)=0.                         \label{int-old-transport}
+\end{equation}
+First replace $\alpha$ by the free integer coordinate $C$.  This is an
+invertible polynomial change of coordinates, with inverse
+$\alpha=q-F-C$.  The row is now monic in $F$.  Define
+\begin{equation}
+ \widehat F=(K_0+W)C-z(q-1),\qquad
+ \widehat\alpha=q-\widehat F-C.               \label{int-restore}
+\end{equation}
+Substitute these polynomials in every other row and delete
+Equation~\eqref{int-old-transport}.
+
+\begin{proposition}
+\label{int-projection-thm}
+The old and new integer zero sets are in bijection.  The projection fixes
+every other coordinate and sends $(F,\alpha)$ to $C=q-F-\alpha$;
+its inverse is Equation~\eqref{int-restore}.
+\end{proposition}
+\begin{proof}
+At an old zero the transport row gives $F=\widehat F$, and then
+$\alpha=\widehat\alpha$.  All substituted rows vanish.  Conversely,
+restore these two values at a new zero.  The deleted row vanishes
+identically, while every retained row vanishes by the defining
+substitution.  Both compositions fix the original coordinates, because
+the old transport equation determines $F$ uniquely.  There is no division,
+positivity assumption, coprimality assumption, or new choice of canonical
+Pell witnesses in this argument.
+\end{proof}
+
+The rank expression also becomes shorter:
+\begin{align}
+ &\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+       +(M_C+qM_F)J \notag\\
+ &\hspace{15mm}=
+   \bigl(q(q-\widehat F)-C\bigr)(q^2-1)
+       +(M_C+qM_F)J.                         \label{int-rank-identity}
+\end{align}
+This is a literal polynomial identity after the substitution, not merely
+an equality at solutions.  The determinant guard remains valid with
+$F=\widehat F$ because it is substituted everywhere, including its sign
+constraints.  No coefficient port is replaced or borrowed from another
+construction.
+
+\subsection{The complete eighteen-variable polynomial}
+\label{int-polynomial}
+
+The eighteen unknowns are exactly
+\begin{equation}
+ J_3,C,z,f,h,r,v,w,\tau,y,\gamma,o,j,c,t,p_1,p_2,p_3\in\Z.
+                                                        \label{int-vars}
+\end{equation}
+The variable $C$ is unrestricted; its required sign is enforced by the
+polynomial's inherited guard.  All following symbols are polynomial
+abbreviations and do not add quantified variables.  Define
+\begin{align*}
+ J&=3J_3+1,&q&=\beta J+1,\\
+ W&=4(3w+1),&X&=qW,\\
+ Y&=(2v+1)q^3,&F&=(K_0+W)C-z(q-1),\\
+ E&=XY,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H,\\
+ V&=fo-c,&I&=(2r+1)c^2,\\
+ k&=1-V+jc+hE,&\eta&=c-kY,\\
+ \zeta&=k-\eta,&T&=\eta\zeta.
+\end{align*}
+Then put
+\begin{align*}
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ d&=(A F)(B C)-(q-AF-BC)^2,\\
+ P_+&=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{align*}
+Here $P_+\ge1$ for every integer triple; its standard surjectivity onto
+positive integers is used only in the inherited joint-sign theorem.
+The six residuals are
+\begin{align}
+ L_1&=\tau^2-EkY(k+EkY)-1,\notag\\
+ L_2&=(X+ac+\gamma H)^2-\Delta c^2-1,\notag\\
+ L_3&=cj-V-R,\notag\\
+ L_4&=I^2-\Delta(f^2-1),\notag\\
+ L_5&=I^2(V^2-y^2)+y^2-1,\notag\\
+ L_6&=dT-(t^2-d-T+1)^2-P_+.                    \label{int-six-rows}
+\end{align}
+The complete equation is
+\begin{equation}
+ \boxed{\quad Q_{18}=L_1^2+L_2^2+L_3^2+L_4^2+L_5^2+L_6^2=0,
+          \qquad\mathbf x\in\Z^{18}.\quad}    \label{int-Q18}
+\end{equation}
+The JSON uses the names \texttt{v\_scale}, \texttt{w3},
+\texttt{pair\_root}, and \texttt{pair\_pos1--3} for $v,w,t,p_1,p_2,p_3$.
+Those are only spelling changes.  Its $105$-gate straight-line program is
+an explicit division-free definition of the same ordinary polynomial.
+
+\subsection{The six fixed numerals}
+\label{int-coefficients}
+
+The tuple is the complete source-34 native binding named
+\texttt{mixed-parity-unrounded-1064921}, together with the two determinant
+scales.  In the displayed equation,
+\[
+ \beta=2^{1064921}-1,\qquad A=2^{1113},\qquad B=2^{666104}.
+\]
+The other three fixed integers $K_0,M_C,M_F$ are supplied as literal,
+compressed, minimal unsigned little-endian byte strings, with their
+complete finite construction retained alongside them.  In particular
+$M_F$ is the \emph{already shifted} source port.  It is not shifted again.
+All six numeral payloads together occupy $615883$ bytes before compression.
+
+For clarity, the finite construction of the native ports is as follows.
+The retained literal $215$-state table determines $943$ ordered Wang tiles
+by the explicit finite map in
+\path{integer/upstream/guards/upstream/source34/source34_builder.py}.
+With radix $\rho=2^{121}$ and block length $8801$, that map builds a
+$989$-element support $\mathcal E$, its explicit nonnegative coefficients
+$c_e$, and the dictionary
+\[
+ d_s=\mathbf1_{s\in\{40,41,1100,2200\}}
+      +\sum_{e\in\mathcal E}c_e
+          \bigl(\mathbf1_{s=4393-e}+\mathbf1_{s=5495-e}\bigr).
+\]
+Here the indicator sum counts coincident contributions.  Put
+$D_C=\sum_s d_s\rho^s$ and $\mathcal B=\rho^{8801}$.
+The finite recipes then give
+\begin{align*}
+ K_0&=D_C+\mathcal B\rho,\\
+ M_C&=\mathcal B-1
+         -\sum_{e\in\mathcal E\setminus\{1\}}\rho^e
+         -2\rho^{1063},\\
+ M_F&=(\mathcal B-1)+4+
+      \mu(\rho^{4393}+\rho^{5495})
+      +\sum_{j=0}^{9}(\rho^{1000+2j}+\rho^{1021+2j})\\
+     &\hspace{8mm}+\rho^{2195}+\rho^{3296}
+       +(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+       +(2^{27}-1)\rho^{8799},\\
+ \mu&=1022+\sum_{j=0}^{43}2^{10+2j}.
+\end{align*}
+The finite support, every tile and coefficient, and the generating table
+are included as data and executable finite recipes.  This is not an
+appeal to an unspecified universal polynomial or a free compiler index.
+The verifier reconstructs the entire tuple, compares its integer values
+to the literal bytes, and replays $69230$ finite convolution-basis checks.
+These finite checks bind the numerals; the unbounded semantic theorem is
+a separate inherited argument.
+
+\subsection{Why the joint row really enforces two positive signs}
+
+The inherited guard has a useful elementary proof, which also explains why
+the eighteen displayed inputs may range over all integers.  For integers
+$x,y,t$ put
+\[
+ G(x,y,t)=xy-(t^2-x-y+1)^2.
+\]
+Then $x,y>0$ if and only if $G(x,y,t)>0$ for some integer $t$.
+Indeed, $G>0$ implies $xy>0$.  If $x=-a,y=-b$ with $a,b>0$, then
+$(t^2+a+b+1)^2>ab$, a contradiction.  Conversely, for positive $x,y$ put
+$n=x+y-1$.  We have $xy\ge n$.  If $n$ is a square, take $t^2=n$.
+Otherwise write $m^2<n<(m+1)^2$ and choose whichever of $m,m+1$ makes
+$|t^2-n|$ smaller.  This distance is at most $m$, so
+$(t^2-n)^2\le m^2<n\le xy$.
+
+Every positive integer is a value of
+$1+p_1^2+p_2^2+p_3(p_3+1)$.  This follows from the three-square theorem
+applied to $4n-3$: exactly one square is odd modulo four, giving the
+displayed expression after division by four.  Consequently
+\[
+ x,y>0\quad\Longleftrightarrow\quad
+ \exists t,p_1,p_2,p_3\in\Z\quad
+ G(x,y,t)=1+p_1^2+p_2^2+p_3(p_3+1).
+\]
+Apply this to $x=d,y=T$ in $L_6$.  The new projection substitutes $F$
+in both occurrences of the determinant and in the rank; it does not
+delete this guard or infer positivity from the spelling of a variable.
+The further interpretation of $d>0$ and $T>0$ is exactly the retained
+parent's determinant and signed-Pell argument.
+
+\subsection{Correctness and its precise proof boundary}
+\label{int-correctness}
+
+Let $Q_{19}^{\mathrm{old}}$ be the exact incoming polynomial
+\path{joint/joint19_degree88.json} in the archive
+\path{ZFC_Diophantine_Joint_Guards_2026-10-24.zip}.
+The repository is pinned at commit \texttt{c1a102936aca};
+the complete identifier appears on the title page.
+Its source graph and the exact parent-to-polynomial binding are retained.
+The preceding projection gives the unconditional identity
+\[
+ Q_{18}(\mathbf x)=
+ Q_{19}^{\mathrm{old}}(\mathbf x,
+       F=\widehat F,\alpha=\widehat\alpha),
+\]
+where the input correspondence replaces the old $F,\alpha$ by the new
+$C$.  The deleted squared residual is identically zero.
+Consequently
+\begin{equation}
+ \exists\mathbf x\in\Z^{18}\ Q_{18}=0
+ \quad\Longleftrightarrow\quad
+ \exists\mathbf y\in\Z^{19}\ Q_{19}^{\mathrm{old}}=0.       \label{int-bijection}
+\end{equation}
+This equivalence is proved over arbitrary integer values of the six
+coefficient ports, so there is no hidden numerical or sign assumption
+in the new step.
+
+For the authentic tuple the retained parent proof proceeds through the
+joint-positivity lemma, determinant sign restoration, the signed-power
+bootstrap, native Wang-tableau compilation, Pell calibration, and the
+literal machine/refutation theorem.  Composing that ordinary proof chain
+with Equation~\eqref{int-bijection} yields the intended theorem
+\[
+ \ZFC\ \vdash\
+ \bigl(\neg\exists\mathbf x\in\Z^{18}\ Q_{18}(\mathbf x)=0\bigr)
+       \ \longleftrightarrow\ \Con(\ZFC).
+\]
+This statement neither assumes nor proves consistency.  The new
+projection is an elementary argument formalizable in ZFC.  The archive
+does not provide a new end-to-end Lean/Rocq certificate or an exported
+object-language ZFC derivation: it inherits the named unbounded
+calibration interfaces, their ordinary proofs, and their existing formal
+verification limitations.  A finite replay cannot replace those interfaces.
+
+\subsection{Exact degree and operation count}
+\label{int-degree}
+
+Give each quantified coordinate degree one and the fixed ports degree
+zero.  The six residual degrees in Equation~\eqref{int-six-rows} are
+\[
+ (34,14,5,14,10,44).
+\]
+In particular, the rank row rises from degree four to degree five after
+the projection; this does not change the dominant degree.  Write
+$X_*,Y_*,E_*,\eta_*$ for the top homogeneous parts.  They are
+\begin{align*}
+ X_*&=36\beta J_3w,&Y_*&=54\beta^3J_3^3v,\\
+ E_*&=X_*Y_*,&\eta_*&=-hX_*Y_*^2.
+\end{align*}
+Thus $T$ has degree $22$ and top part $-\eta_*^2$, whereas $d$ has
+degree at most four.  Only $L_6^2$ reaches degree $88$, with top part
+$\eta_*^8$.  In particular
+\begin{equation}
+ [h^8w^8v^{16}J_3^{56}]Q_{18}
+       =2^{32}3^{64}\beta^{56}>0.                    \label{int-top}
+\end{equation}
+This proves exact degree on the actual fixed-coefficient slice, rather
+than merely giving a degree propagated through a circuit.
+
+The delivered DAG uses $54$ multiplications, $27$ additions, and $24$
+subtractions.  Every square and every scalar multiplication is charged;
+fixed numeral leaves and reuse of a register are free.  The six residuals
+need $94$ operations, and six squarings plus five additions give $105$.
+The predecessor needs $109$.  Restoring $F$ costs additional arithmetic,
+but eliminating its transport row and shortening the rank expression
+save four live operations overall.  No minimum-operation claim is made.
+
+\subsection{Three companion tradeoffs}
+\label{int-companions}
+
+The same transformation applies to the incoming $20/32$, $21/20$, and
+$22/16$ joint-sign polynomials.  Their three resulting packets have,
+respectively, nineteen, twenty, and twenty-one unrestricted coordinates.
+They retain some intermediate coordinates that Equation~\eqref{int-Q18}
+eliminates.  Precisely:
+\begin{itemize}
+\item The nineteen-variable, degree-$32$ form retains $\eta$ and the row
+      $c-\eta-kY=0$.
+\item The twenty-variable, degree-$20$ form also retains $E$ and the row
+      $E-XY=0$, while $a=E+Y$ remains an abbreviation.
+\item The twenty-one-variable, degree-$16$ form also retains $a$ and
+      $a-E-Y=0$.  Its source rows use $a-E$ in place of $Y$ where specified
+      by the parent.  It retains the parent's reduced auxiliary residual
+      $\Delta(f^2-1)(V^2-y^2)+y^2-1$.
+\end{itemize}
+The last replacement is justified in the parent by retaining
+$I^2-\Delta(f^2-1)$ and subtracting its multiple $V^2-y^2$ from the
+original auxiliary row.  It is a zero-set-preserving row operation, not
+an unrestricted polynomial identity.  Our new substitution preserves the
+particular parent polynomial for each endpoint.
+
+Their independently checked degree certificates are
+\begin{align*}
+ [\eta^4h^4w^4v^4J_3^{16}]Q_{19}&=2^{12}3^{20}\beta^{16},\\
+ [f^4v^4J_3^{12}]Q_{20}&=2^43^{12}\beta^{12},\\
+ [a^4f^8o^4]Q_{21}&=1.
+\end{align*}
+All are positive for the authentic tuple.  The expanded row degrees and
+literal circuit counts are in the verification receipts.  These exact
+integer-domain improvements coexist with lower-variable, much-higher-degree
+equations; no scalar measure makes every tradeoff comparable.
+
+\subsection{Reproduction and provenance}
+\label{int-reproduction}
+
+The component commands are \texttt{python3 build.py},
+\texttt{python3 verify.py}, and \texttt{python3 -O verify.py}.
+The independent checker does not import the new builder.  It authenticates
+the retained source files and coefficient tuple, rechecks the parent DAGs
+against their literal polynomials, proves every new residual identity by
+exact sparse algebra over validated cut registers, checks degree bounds
+and nonzero top coefficients, verifies the sum-of-squares finalizer,
+and rejects an operation-preserving sign corruption.  Normal and optimized
+Python runs pass.  No diagnostic search for a consistency-equation zero
+is used.
+
+The primary polynomial is \path{transport18_degree88.json}; the three
+companions are \path{transport19_degree32.json},
+\path{transport20_degree20.json}, and
+\path{transport21_degree16.json}.  Each declares every witness, fixed
+numeral, gate, residual, and restoration map.  The inherited proof chain,
+source~73's earlier method, literal finite recipes, fixed bytes, licenses,
+and source hashes are retained under \texttt{upstream/}.  The method is
+credited to that earlier report; the current contribution is its exact
+composition with the newer joint-sign family.

@@ -1,0 +1,526 @@
+\section{Residue orientation: a quartic in forty unrestricted integers}
+\label{int:main}
+
+The main structural improvement of this contribution is the removal of a
+dedicated positivity witness.  Source~64 uses the equation $X=2u^2$ to
+start its Pell argument with $X\geq0$.  We allow $X$ to have either sign,
+recover $X=\pm2^R$ with $R$ odd, and select the positive branch by the
+congruence $X\equiv2\pmod3$.  The congruence is obtained by affine
+restrictions on two existing coordinates, so it introduces no unknown.
+The preferred quartic uses the even simpler direct restriction
+$X=3X_3-1$ and has $393$ expanded symbolic monomials.  We first prove the
+equivalent $40$-variable version with two affine restrictions, whose monic
+$X$ definition supports the best sextic and octic projections; the direct
+version is specified in Subsection~\ref{int:direct}.
+
+\begin{theorem}\label{int:theorem}
+There is an explicitly specified fixed polynomial $Q_{40}^{\mathrm{aff}}$ in forty
+unrestricted integer unknowns, of exact total degree four, such that
+ordinary mathematics formalizable in ZFC proves
+\[
+  (\exists\mathbf x\in\mathbb Z^{40})\ Q_{40}^{\mathrm{aff}}(\mathbf x)=0
+  \quad\Longleftrightarrow\quad
+  \text{there is a finite syntactic ZFC refutation}.
+\]
+Consequently ZFC proves that the absence of integer zeros of $Q_{40}^{\mathrm{aff}}$
+is equivalent to $\operatorname{Con}(\mathrm{ZFC})$.
+Exact polynomial projections give corresponding equations in thirty-four
+integers of degree six and twenty-nine integers of degree eight.
+\end{theorem}
+
+The statement imports the explicitly identified native-compiler, fixed-tuple,
+K215 calibration, and Pell-rank theorems of the repository.  The new part is
+the sign-uniform power-recovery argument below and its application to literal
+polynomials.  It is an ordinary proof, with exact finite algebraic checks
+and an independent review; it is not a new end-to-end Lean/Rocq certificate
+or an exported derivation in an internally encoded ZFC calculus.
+
+\subsection{The fixed integers and the complete quadratic system}
+\label{int:literal}
+
+Use the whole source34 \texttt{mixed-parity-unrounded-1064921} tuple.
+Its ports are
+\[
+ \beta=2^{1064921}-1,\qquad K_0,\qquad M_C,\qquad M_F.
+\]
+The last port is the already shifted high mask.  All four literal integers
+are supplied as lossless gzip payloads of minimal unsigned little-endian
+bytes.  Their bit lengths are respectively
+$1064921,1065043,1064921,1064922$; their combined uncompressed payload
+is $532479$ bytes.  The included standard-library verifier reconstructs
+every byte from the retained $943$-tile list and checks the original hashes.
+No coefficient is selected by assuming consistency.  The relevant fixed
+facts are
+\begin{equation}\label{int:fixed-bounds}
+ \beta\geq17,\qquad 0<M_C<\beta<M_F<2\beta,
+ \qquad K_0\geq0,\qquad \beta\equiv1\pmod3.
+\end{equation}
+
+The thirty-one core unknowns are
+\[
+\begin{gathered}
+J_3,F,\alpha,z,f,h,r,v,w_3,\tau,\eta,\zeta,y,\gamma,o,j,\\
+N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_0,\Delta.
+\end{gathered}
+\]
+There are also three private triples $\mathbf u,\mathbf v,\mathbf e$,
+for a total of forty unknowns.  In the JSON packet, $v$ is
+\texttt{v\_scale}, $B_0$ is \texttt{Baux}, and the triples are
+\texttt{FA\_pos1,...,3}, \texttt{FC\_pos1,...,3}, and
+\texttt{eta\_zeta\_pos1,...,3}.  Every coordinate ranges over all integers.
+Define only the following polynomial abbreviations:
+\begin{align*}
+ J_0&=3J_3+1,& W&=4(3w_3+1),&q&=\beta J_0+1,\\
+ C&=q-F-\alpha,& k&=\eta+\zeta,\\
+ \mathcal R&=(q-F)(N-q)-CL+(M_C+qM_F)J_0.
+\end{align*}
+Also set $\operatorname{Pos}(x_1,x_2,x_3)=1+x_1^2+x_2^2+x_3(x_3+1)$.
+The exact main equation is $Q_{40}^{\mathrm{aff}}=\sum_{\nu=1}^{25}r_\nu^2=0$,
+where the twenty-five residuals are the following quadratic polynomials:
+\begin{align*}
+ r_1&=L-q^2+1,                         &r_2&=N-q(L+1),\\
+ r_3&=X-qW,                           &r_4&=a-E-(2v+1)N,\\
+ r_5&=E(X+1)-Xa,                      &r_6&=c-\eta+(E-a)k,\\
+ r_7&=P-k-E(c-\eta),                  &r_8&=\tau^2-P^2+Pk-1,\\
+ r_9&=D-X-ac-\gamma(4a+3),            &r_{10}&=\Delta-a^2-4a-3,\\
+ r_{11}&=C_2-c^2,                     &r_{12}&=D^2-C_2\Delta-1.
+\end{align*}
+\begin{align*}
+ r_{13}&=k-1-hE-\mathcal R,
+   &r_{14}&=(K_0+W)C-z(q-1)-F,\\
+ r_{15}&=F_2-f^2,
+   &r_{16}&=V+c-fo,\\
+ r_{17}&=V-jc+k-1-hE,
+   &r_{18}&=V^2+g-y^2,\\
+ r_{19}&=I-(2r+1)C_2,
+   &r_{20}&=B_0-I^2,\\
+ r_{21}&=B_0-\Delta(F_2-1),
+   &r_{22}&=y^2-1-B_0g,\\
+ r_{23}&=F\alpha-\operatorname{Pos}(\mathbf u),
+   &r_{24}&=FC-\operatorname{Pos}(\mathbf v),\\
+ r_{25}&=\eta\zeta-\operatorname{Pos}(\mathbf e).
+\end{align*}
+No abbreviation adds an existential unknown.  Expanding these rows gives
+exactly the literal packet \texttt{quartic40.json}.  Each row has degree
+two.  Only $r_8$ contains $\tau$, and its coefficient of $\tau^2$ is one;
+therefore $[\tau^4]Q_{40}^{\mathrm{aff}}=1$, proving exact degree four on the actual
+fixed-coefficient slice.
+
+\subsection{What changed from the parent}
+\label{int:parent}
+
+In source64's $41$-variable quartic, make the affine substitutions
+\[
+ J_{\rm old}=3J_3+1,\qquad
+ w_{{\rm scale},\rm old}=3w_3+1,
+\]
+then delete the residual $X-2u^2$ and its private coordinate $u$.
+The other twenty-five rows are unchanged under those substitutions.
+Since $\beta\equiv1\pmod3$, the new rows imply
+\begin{equation}\label{int:orientation-residue}
+ q\equiv2\pmod3,\qquad W\equiv1\pmod3,
+ \qquad X=qW\equiv2\pmod3.
+\end{equation}
+The work is to prove that this residue restriction can replace the deleted
+positivity witness without introducing spurious zeros.
+
+\subsection{Bounds before any sign is chosen}
+\label{int:bounds}
+
+At an integer zero every residual is zero.  The form
+$\operatorname{Pos}$ is strictly positive on $\mathbb Z^3$ and represents
+every positive integer.  To see surjectivity, apply Legendre's three-square
+theorem to $4n-3$, which is $1$ modulo $4$ and cannot have the exceptional
+form $4^a(8b+7)$; its representation has one odd and two even squares.
+
+The two guards $F\alpha>0$ and $FC>0$ force $F,\alpha,C$ to have a common
+nonzero sign.  Thus $q=F+\alpha+C$ has that sign and $|q|\geq3$.
+Write $Q=|q|$.  Because $q=\beta J_0+1$, one has $J_0\neq0$ and
+$Q\geq\beta-1\geq16$.  Set
+\[
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J_0.
+\]
+The first two rows give $L=q^2-1$, $N=q^3$, and hence $\mathcal R=R$.
+The sign-free packing estimate is
+\begin{equation}\label{int:R-bounds}
+       Q(Q^2-1)<R<Q^4-2.
+\end{equation}
+Here is a direct reminder of its proof.  If $q=Q>0$, put
+$G=Q(Q-F)-C$.  Then
+\[
+ Q+2\leq G\leq Q^2-Q-1,
+ \quad0<(M_C+QM_F)J_0<(2Q+1)(Q-1).
+\]
+If $q=-Q<0$, put $F_0=-F$, $C_0=-C$; now
+$G=Q(Q-F_0)+C_0$ satisfies
+\[
+ 2Q+1\leq G\leq Q^2-2,
+ \quad0<(QM_F-M_C)(Q+1)/\beta<2Q(Q+1).
+\]
+Multiplying the displayed bounds for $G$ by $Q^2-1$ gives
+\eqref{int:R-bounds} in both cases.  This uses no sign of $X,Y,k$.
+
+Let $s=2v+1$, $i=2r+1$, and $Y=sq^3$.  Rows $r_4,r_5$ give
+$a=E+Y$ and $E=XY$; thus $a=(X+1)Y$.
+The nonzero integer $W=12w_3+4$ has $|W|\geq4$.  Since $s$ is odd,
+writing $U=|X|$, $Z=|Y|$, and $M=|E|$ gives
+\begin{equation}\label{int:UZ-bounds}
+ U\geq4Q\geq64,\qquad Z\geq Q^3\geq4096,
+ \qquad M=UZ\geq4Q^4>3R+1.
+\end{equation}
+The last guard implies that $\eta,\zeta$ have a common nonzero sign.
+Put
+\[
+ \xi=\operatorname{sgn}X,\quad
+ \sigma=\operatorname{sgn}k,\quad
+ \delta=\operatorname{sgn}Y,\quad
+ K=|k|,\quad \eta_0=|\eta|,\quad c_0=|c|.
+\]
+Then $K\geq2$, $0<\eta_0<K$, and
+\begin{equation}\label{int:c-ratio}
+ c_0=KZ+\delta\eta_0,\qquad
+ K(Z-1)<c_0<K(Z+1),\qquad
+ \operatorname{sgn}c=\sigma\delta.
+\end{equation}
+Set $A=a+2$, $H=4a+3$, and define the positive absolute Pell parameters
+\[
+ B=|A|=(U+\xi)Z+2\xi\delta,\qquad
+ P_*=|2XY^2+1|=2UZ^2+\xi.
+\]
+Their signs in these expressions are valid because $(U-1)Z>2$.
+They satisfy
+\begin{equation}\label{int:BP-bounds}
+ B\geq(4Q-1)Q^3-2>Q^4>R,\qquad P_*>B\geq2,\qquad c_0>K.
+\end{equation}
+For instance $P_*-B\geq2UZ^2-(U+1)Z-3>0$ in
+\eqref{int:UZ-bounds}.  These inequalities hold in every sign branch.
+
+\subsection{A sign-uniform Pell power-recovery argument}
+\label{int:signed-power}
+
+For $b\geq2$, use the standard Pell polynomials
+\[
+ \chi_b(t)+\psi_b(t)\sqrt{b^2-1}
+       =(b+\sqrt{b^2-1})^t.
+\]
+The following proof retains all signs until the last congruence.
+
+\paragraph{Classify the first and main norms.}
+The source rows imply
+\[
+ \tau^2-XY^2(XY^2+1)k^2=1,\qquad
+ D^2-(B^2-1)c^2=1.
+\]
+Consecutive-product Pell classification gives positive indices $n,p$ with
+\begin{equation}\label{int:classify}
+ |\tau|=\chi_{P_*}(n),\quad K=2\psi_{P_*}(n),\quad
+ |D|=\chi_B(p),\quad c_0=\psi_B(p).
+\end{equation}
+There is no hidden positive-$X$ hypothesis: if $X<0$, put $m=UZ^2$;
+the first coefficient is $m(m-1)=(m-1)m$ and its positive Pell parameter
+is $2m-1=P_*$.  Since $P_*>B$ and $c_0>K$, monotonicity of $\psi$
+implies $p>n$.  Otherwise
+$c_0=\psi_B(p)\leq\psi_{P_*}(n)=K/2$, a contradiction.
+
+\paragraph{Establish the ordinary-rank hypotheses.}
+Modulo $M=|E|$, the parameter $P_*$ is congruent to $\xi$.
+The recurrence for $\psi$ gives
+$\psi_{P_*}(n)\equiv\xi^{n-1}n\pmod M$.
+The index row $k=R+1+hE$ therefore gives
+\begin{equation}\label{int:first-index}
+ \sigma\xi^{n-1}2n\equiv R+1\pmod M.
+\end{equation}
+If the sign on the left is positive, $n\geq(R+1)/2$.
+If it is negative, then $2n\geq M-R-1>2R$, so $n>R$.
+Thus in both branches $p>n\geq(R+1)/2\geq24$.
+The elementary bound $\psi_B(p)\geq(2B-1)^{p-1}$ gives
+\begin{equation}\label{int:rank-hypotheses}
+ c_0>B(B^2-1)^2,\qquad c_0>2p,\qquad c_0>2R.
+\end{equation}
+The first already follows for $p\geq6$; the last also follows from
+$c_0\geq\psi_B(2)=2B>2R$.
+
+The ordinary strong equation is
+\[
+ (ic^2)^2=(B^2-1)(f^2-1),\qquad i=2r+1\neq0.
+\]
+The inherited ordinary strong-rank lemma, now with its size hypothesis
+proved in every sign branch, supplies an $m$ such that
+\begin{equation}\label{int:strong-rank}
+ |f|=\chi_B(m),\qquad p\mid m,\qquad c_0\mid m,\qquad m>2p.
+\end{equation}
+The exact source is the retained
+\texttt{PELL\_RELAXED\_AUXILIARY\_PROOF.md}; its signed use and the
+next step are detailed in the retained odd-scale and signed-domain notes.
+Only $B,c_0,|f|,|i|$ occur in its hypotheses.
+
+\paragraph{Recover the main rank before orienting signs.}
+Let $\rho=|i|c_0^2$.  The auxiliary equations and exposed quotients give
+\[
+ \rho^2V^2-(\rho^2-1)y^2=1,\qquad
+ V\equiv-c\pmod{|f|},\qquad V\equiv-R\pmod{c_0}.
+\]
+For an odd auxiliary index $\ell=2t+1$ and a sign $e_0$, Pell
+classification gives $V=e_0 Q_t(\rho^2)$, where
+\[
+ Q_t(1-B^2)=(-1)^t\psi_B(2t+1),\qquad
+ Q_t(0)=(-1)^t(2t+1).
+\]
+Here $\rho^2\equiv1-B^2\pmod{|f|}$ and
+$\rho^2\equiv0\pmod{c_0}$.  Squaring the first quotient congruence
+removes both $e_0$ and the sign of $c$.  The inherited signed Pell
+step-down theorem, using $0<2p<m$, gives
+$\ell\equiv\pm p\pmod m$; the second congruence gives
+$\ell\equiv\pm R\pmod{c_0}$.
+Since $c_0\mid m$, one obtains $R\equiv\pm p\pmod{c_0}$.
+The intervals in \eqref{int:rank-hypotheses} imply
+\begin{equation}\label{int:p-equals-R}
+                         p=R.
+\end{equation}
+This is precisely the sign-insensitive auxiliary interface used by the
+parent, with its prerequisites newly established also for $X<0$.
+
+\paragraph{Unwrap the first index.}
+Since $n<p=R$, the negative-sign branch of \eqref{int:first-index},
+which required $n>R$, is impossible.  In the positive branch write
+$2n=R+1+v_0M$, with $v_0\geq0$.  If $v_0\geq1$, then
+$M>3R+1$ again implies $n>R$.  Therefore
+\begin{equation}\label{int:unwrap}
+ \sigma\xi^{n-1}=1,\qquad 2n=R+1,\qquad R\text{ is odd}.
+\end{equation}
+
+\paragraph{One ratio estimate handles all signs.}
+Put $r_0=n-1=(R-1)/2\geq2$.  The elementary upper and lower Pell
+growth bounds give
+\[
+ \frac{c_0}{K}
+ =\frac{\psi_B(2r_0+1)}{2\psi_{P_*}(r_0+1)}
+ \geq\frac12\left(\frac{(2B-1)^2}{2P_*}\right)^{r_0}.
+\]
+For $U\geq64$ and $Z\geq6$,
+\begin{equation}\label{int:uniform-ratio}
+               \frac{(2B-1)^2}{2P_*}>U-3.
+\end{equation}
+Indeed $B\geq(U-1)Z-2$ and $P_*\leq2UZ^2+1$, and
+\begin{align*}
+ &(2(U-1)Z-5)^2-(U-3)(4UZ^2+2)\\
+ &\qquad=4(U+1)Z^2-20(U-1)Z+31-2U\\
+ &\qquad=U(4Z^2-20Z-2)+(4Z^2+20Z+31)>0.
+\end{align*}
+Both final parentheses are positive for $Z\geq6$.
+Together with \eqref{int:c-ratio}, this implies
+\[
+ Z+1>\frac{(U-3)^{r_0}}2\geq\frac{61^{r_0}}2.
+\]
+As $61^{r_0}/2-1>2^{2r_0+1}$ for $r_0\geq2$, we obtain
+\begin{equation}\label{int:large-Y}
+                            Z>2^R.
+\end{equation}
+The verifier checks the exact polynomial identity and positive coefficient
+certificates after shifting $U=64+u$, $Z=6+z$; the displayed argument is
+the universal proof rather than a finite-box test.
+
+\paragraph{Exclude reciprocal roots and recover a signed power.}
+Let $e=\operatorname{sgn}c$ and write $D=\lambda\chi_A(R)$ with
+$\lambda\in\{1,-1\}$.  Since $R$ is odd,
+$\psi_A(R)=\psi_B(R)$, even for $A<0$; hence $c=e\psi_A(R)$.
+The polynomial Pell congruences, valid for either sign of $A,H$, are
+\begin{equation}\label{int:root-congruences}
+ \chi_A(R)-a\psi_A(R)\equiv2^R\pmod H,\qquad
+ \chi_A(R)+a\psi_A(R)\equiv2^{-R}\pmod H.
+\end{equation}
+The odd modulus makes $2$ invertible.  At index one the two congruences
+are $A-a=2$ and $2(A+a)\equiv1\pmod H$; the recurrence proves all indices.
+
+If $\lambda=-e$, the row $D-ac=X+\gamma H$ gives
+$X2^R\equiv-e\pmod H$.  But
+\[
+ 1<U2^R<UZ<4(U-1)Z-4\leq|H|-1,
+\]
+by \eqref{int:large-Y}.  Neither sign of $X2^R$ can be congruent to
+either unit modulo $|H|$.  This branch is impossible.
+If $\lambda=e$, the same row gives $X\equiv e2^R\pmod H$; now
+\[
+ |X-e2^R|\leq U+2^R<U+Z<4(U-1)Z-3\leq|H|.
+\]
+This multiple of $H$ must be zero.  We have proved, before assuming
+any positive sign of $X$,
+\begin{equation}\label{int:signed-power-conclusion}
+                      X=e2^R,\qquad R\text{ odd}.
+\end{equation}
+
+\subsection{Orientation, soundness, and canonical completeness}
+\label{int:finish}
+
+Because $R$ is odd, $2^R\equiv2\pmod3$, while
+$-2^R\equiv1\pmod3$.  Combining
+\eqref{int:signed-power-conclusion} with
+\eqref{int:orientation-residue} forces $e=1$ and $X=2^R$.
+The integer
+\[
+                         u=2^{(R-1)/2}
+\]
+therefore restores the deleted row $X=2u^2$.
+Restore also $J_{\rm old}=3J_3+1$ and
+$w_{{\rm scale},\rm old}=3w_3+1$.
+Every parent residual now vanishes literally.  The source64 quartic41
+theorem gives the finite ZFC refutation.  Its theorem is invoked only
+after its square guard has been restored, so no positive-$X$ argument
+has been used circularly.
+
+Conversely, a finite refutation supplies the canonical source34 witnesses
+used in quartic41 completeness.  With $d=1064921$, they satisfy
+\[
+ \begin{gathered}
+ q=2^t,\quad t\text{ odd},\quad R\equiv3\pmod4,\quad
+ X=2^R,\quad R-t\geq2\text{ even},\\
+ J_{\rm old}=\frac{2^t-1}{2^d-1},\qquad
+ w_{{\rm scale},\rm old}=2^{R-t-2}.
+ \end{gathered}
+\]
+Modulo $3$ the first old coordinate is $1$, since $\beta\equiv1$
+and $2^t\equiv2$.  The second is $1$ because its exponent is
+nonnegative and even.  Thus
+\[
+ J_3=\frac{J_{\rm old}-1}{3},\qquad
+ w_3=\frac{w_{{\rm scale},\rm old}-1}{3}
+\]
+are integers.  Retain all other coordinates and discard $u$ to obtain a
+zero of $Q_{40}^{\mathrm{aff}}$.  It is the canonical completeness family that is
+preserved; no claim is made that every parent zero lifts to the two
+affine restrictions.  This proves Theorem~\ref{int:theorem} for $Q_{40}^{\mathrm{aff}}$.
+
+\subsection{The smaller direct-coordinate quartic}
+\label{int:direct}
+
+For the preferred main quartic, retain the parent $J,w_{\rm scale}$ and
+replace only $X$ by $3X_3-1$, while deleting $X-2u^2$ and $u$.
+Denote this polynomial by $Q_{40}^{\mathrm{dir}}$; it is the complete
+packet in \texttt{quartic40\_direct.json}.
+Equivalently, use all twenty-five rows of Subsection~\ref{int:literal}
+with the core list modified by $J_3\mapsto J$, $w_3\mapsto w_{\rm scale}$,
+and $X\mapsto X_3$, and now use the abbreviations
+\[
+ J_0=J,\qquad q=\beta J+1,\qquad W=4w_{\rm scale},
+ \qquad X=3X_3-1.
+\]
+The other abbreviations and the nine private guard coordinates are
+unchanged.  The resulting sum of squares has $40$ unknowns, $25$
+quadratic residuals, exact degree four, and $393$ expanded symbolic
+monomials.  Its coefficient of $\tau^4$ remains one.
+
+Here $X\equiv2\pmod3$ gives $X\neq0$ immediately.  The retained equation
+$X=qW$ and $q\neq0$ then give $W\neq0$, so $|W|\geq4$ and
+$|X|\geq4|q|$.  Thus every bound and every step of the sign-uniform
+argument applies without change, recovering $X=e2^R$ with $R$ odd.
+The residue selects $e=1$, after which
+$u=2^{(R-1)/2}$ and $X_{\rm old}=3X_3-1$ restore the parent.
+For completeness, canonical $X_{\rm old}=2^R$ with $R$ odd gives the
+integer $X_3=(2^R+1)/3$; keep $J,w_{\rm scale}$ and all remaining
+coordinates and discard $u$.  This direct version needs no separate
+residue restriction on $J,w_{\rm scale}$ or on $\beta$.
+
+The two-affine-coordinate version is retained for the projections below:
+there $X=Wq$ is a monic polynomial definition.  Directly solving
+$3X_3-1=Wq$ would require division by $3$, which is not an allowed
+integer-polynomial restoration and is not used here.
+
+\subsection{The exact sextic and octic projections}
+\label{int:projections}
+
+Deleting a row $v-P(\text{other coordinates})$ and substituting its
+integer-polynomial right-hand side everywhere gives a bijection of integer
+zero sets.  The inverse restores $v$.  The transformations below use the
+centered-root and triangular elimination ideas of source62; their purpose
+here is to transfer the new deletion to additional degree slices.
+
+\paragraph{Thirty-four integers, degree six.}
+Make the triangular change
+$\tau_{\rm old}=\tau_{\rm tail}+E(c-\eta)$ and eliminate
+\[
+ \begin{gathered}
+ P=\eta+\zeta+E(c-\eta),\quad N=q(L+1),\quad X=Wq,\\
+ C_2=c^2,\qquad F_2=f^2,\qquad g=y^2-V^2.
+ \end{gathered}
+\]
+The first norm becomes exactly
+\[
+ \tau_{\rm tail}^2+
+ (2\tau_{\rm tail}-\eta-\zeta)E(c-\eta)-1.
+\]
+The leading quartic terms cancel, so every surviving row has degree at
+most three.  Six coordinates and six defining rows disappear, leaving
+thirty-four integers and nineteen rows.  The only row involving $r$ is
+$I-(2r+1)c^2$, so the coefficient of $r^2c^4$ in their sum of squares
+is exactly $4$.  The equation in \texttt{sextic34.json} has exact degree six.
+
+\paragraph{Twenty-nine integers, degree eight.}
+Put $k_0=1-V+jc+hE$ and eliminate the eleven coordinates
+\[
+\begin{gathered}
+ L=q^2-1,\quad N=q^3,\quad X=Wq,\quad C_2=c^2,\quad F_2=f^2,\\
+ g=y^2-V^2,\quad B_0=I^2,\quad
+ D=Wq+ac+\gamma(4a+3),\\
+ \Delta=a^2+4a+3,\quad
+ \zeta=k_0-\eta,\quad P=k_0+E(c-\eta).
+\end{gathered}
+\]
+Every right-hand side uses retained coordinates only.  The index-exposure
+row $r_{17}$ supplies the monic definition of $\zeta$, while $r_7$
+supplies the restoration of $P$.  Fourteen rows remain, all of degree at
+most four.  The ordinary strong row
+\[
+ I^2-(a^2+4a+3)(f^2-1)
+\]
+is the only row containing both $a$ and $f$; its square contributes
+$a^4f^4$ with coefficient $1$.  Therefore the equation in
+\texttt{octic29.json} has exact degree eight.  Both projections preserve
+the exact fixed tuple and inherit the same consistency equivalence.
+
+\subsection{A general principle and what the comparison means}
+\label{int:principle}
+
+\begin{proposition}[Orientation after arithmetic recovery]
+Suppose a polynomial system, without a designated sign guard, has an
+arithmetic proof that every integer zero satisfies $X=\pm b^r$, where
+$r$ lies in a specified set of integer indices.  Let $m$ be a fixed modulus
+such that the possible residues of $b^r$ and $-b^r$ are disjoint.  If
+affine restrictions on existing coordinates force $X$ into the positive
+residue class, preserve a complete canonical witness family, and the
+deleted guard can be restored from the recovered positive power, then
+they replace that guard without introducing new unknowns.
+\end{proposition}
+\begin{proof}
+Disjointness excludes the negative branch of the recovered power.
+The original sign guard can then be restored if it follows from the
+recovered positive power, as $X=2u^2$ does here for odd $r$.
+Canonical completeness supplies the converse existence implication.
+\end{proof}
+
+In this construction $b=2$, $m=3$, and the index is odd: the two residue
+sets are the singletons $\{2\}$ and $\{1\}$.  The important requirement
+is the sign-uniform recovery theorem; simply dropping a square guard
+and imposing a residue would be unjustified without it.
+
+At the inspected source pin the comparable variable counts are
+$41,35,30$ at degrees $4,6,8$.  The new counts are $40,34,29$,
+with respectively $25,19,14$ residuals.  Their exact expanded sums of
+squares, with the four fixed ports left as coefficient symbols, have
+$393,614,1238$ monomials when the direct quartic is selected; the
+two-affine-coordinate quartic used for projections has $614$.
+The prior $41$-variable quartic has $388$.
+The affine restrictions enlarge these expanded
+expressions.  Thus the gain is in unrestricted-integer variables and
+residual counts at fixed degree, not a decrease in every size measure.
+Native coefficient payload size is unchanged; no new bound for nine
+positive or ten unrestricted integer unknowns is asserted.
+
+The standard-library builder and a separately authored verifier both check
+all literal affine substitutions, all twenty-five restoration identities
+for each projection, exact symbolic expansions, liveness, degrees,
+nonzero degree certificates, source hashes, and the actual coefficient
+payloads.  Both pass in normal and optimized Python execution.  These
+checks establish the finite algebraic claims.  The unbounded Pell,
+native-compiler, and syntactic-refutation implications remain the stated
+mathematical proof and its named dependencies.
+

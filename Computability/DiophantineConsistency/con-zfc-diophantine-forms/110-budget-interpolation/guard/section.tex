@@ -1,0 +1,316 @@
+\section{Twelve integers by centered-budget root fusion}
+\label{sec:twelve-budget-fusion}
+
+The preceding thirteen-integer CRT construction spends one coordinate on a
+nearest-square joint guard. We remove that coordinate by fusing the
+centered-budget guard with the five-root norm. The key is an early
+rational-squareclass projection: it recovers the cubic scale before
+individual radicals are known to be rational, then forces the main root
+to be integral through a fixed obstruction modulo $3$. This also removes
+the old guard multiplier and the inflated main-root coefficient.
+
+The preferred equation has \textbf{twelve unrestricted integer variables,
+exact total degree $1000$, and $180$ live binary arithmetic operations}.
+An auxiliary-only centering gives degree $1024$ in $179$ operations.
+The incoming CRT endpoint has thirteen integers, degree $1088$, and $195$
+operations under the same counting convention. These are comparisons of
+explicit constructions, not optimality or historical-priority claims.
+The same six fixed source34 numerals are retained.
+A late-arriving trace/interpolation precursor already obtains thirteen
+integers, degree $1072$, and $190$ operations by trace before separation,
+removing the guard multiplier and enlarged main-root coefficient.
+We credit that parallel source explicitly; the present improvement
+combines its trace method with the centered-budget guard and the
+modulo-$3$ main-root projection. Its proof is retained in
+\texttt{provenance/trace\_precursor/TRACE13\_PROOF.md}.
+
+\subsection{The literal polynomial}
+
+Supply exactly the twelve independent integers
+\[
+ j,C,z,h,r,v,w,T,c,n,p_2,p_3\in\mathbb Z.
+\]
+Uppercase $C$ and lowercase $c$ are distinct.  Every other symbol in this
+section is a polynomial abbreviation or proof notation, never a hidden
+existential variable.  The fixed coefficients are
+$\beta,K_0,M_C,M_F,A_c,B_c$, where
+\[
+ \beta=2^{1064921}-1,\qquad A_c=2^{1113},\qquad B_c=2^{666104}.
+\]
+The other three native ports are the authenticated source34 values;
+$M_F$ is already shifted and is not shifted again.  Define
+\begin{align*}
+ J&=6j+1,\quad q=\beta J+1,\quad W=4(3w+1),\quad X=qW,\\
+ Y&=qv,\quad E=XY,\quad a=(X+1)Y,\quad H=4a+3,\\
+ \Delta&=a^2+4a+3,\\
+ F&=(K_0+W)C-z(q-1),\quad \alpha=q-F-C,\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,\quad \eta=c-Yk,\quad i=2r+1,\\
+ D_f&=1+\Delta i^2c^4,\quad Q=\Delta(D_f-1),\quad \delta=Q-1,\\
+ V&=D_f(cT-R)-c,\quad C_y=QV^2-1,\quad L=XY^2k,\\
+ D_t&=1+L(L+k),\quad D_m=1+\Delta c^2,\quad b_0=X+ac.
+\end{align*}
+The packed expression for $R$ agrees identically with the original one
+because $(q-1)(q-F)+\alpha=q(q-F)-C$.  The new guard is
+\begin{align*}
+ D_{\rm err}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ B&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ A_g&=B-1-p_2^2-p_3(p_3+1).
+\end{align*}
+Finally put
+\[
+ M=2q^2,\qquad U=MH,
+ \qquad
+ Z=U(n+V+L)+M b_0+H(v-q^2).
+\]
+The term $UL$ is an integral carrier shear.  Omitting it gives the
+auxiliary-only companion.
+
+Let $F_{32}(Z;A_1,\ldots,A_5)$ denote the product of
+$Z-\sum_{i=1}^5\epsilon_i\sqrt{A_i}$ over all
+$\epsilon\in\{-1,1\}^5$.  Invariance under formal sign changes makes
+this an integer polynomial, of degree at most $16$ in each $A_i$.
+Our polynomial is
+\begin{equation}
+\label{eq:budget12-norm}
+ P_{12}=\delta^{16}F_{32}\left(
+ Z;M^2D_m,U^2D_f,U^2D_t,U^2A_g,
+ \frac{U^2C_y}{\delta}\right).
+\end{equation}
+The displayed denominator is completely cleared.  One division-free
+interpretation, useful independently of the optimized circuit, works in
+the free rank-four algebra with $u^2=d=M^2D_m$ and
+$v_0^2=e=U^2A_g$.  With $A=U^2D_f$, $B_0=U^2D_t$,
+$C_0=U^2C_y$, and $\mathcal R=Z+u+v_0$, set
+\begin{align*}
+ \mathcal J&=\delta(\mathcal R^2-A-B_0)-C_0,\\
+ \mathcal K&=\mathcal J^2-4\bigl(\delta^2AB_0+
+                      \delta C_0(A+B_0)\bigr),\\
+ \mathcal N&=\mathcal K^2-64\delta^3AB_0C_0\mathcal R^2.
+\end{align*}
+The product of the four formal conjugates of $\mathcal N$ is exactly
+\eqref{eq:budget12-norm}.  All operations are polynomial even when the
+specialized algebra is not a field.  The optimized evaluator in
+\texttt{five\_square\_norm.py} computes this same polynomial; the norm
+appendix gives its $83$-operation implementation and the complete
+$20{,}349$-coefficient identity check.
+
+\subsection{The noncircular reality bootstrap}
+
+For every integer input, $q$ is even, $q\equiv2\pmod3$, and
+$|q|\ge16$; also $|X|\ge64$.  If $v=0$ then $a=0$, $\Delta=3$,
+$H=3$.  Otherwise $|Y|\ge16$ and $|a|\ge63\cdot16=1008$.
+Consequently $\Delta$ is always positive and odd, $H\ne0$. Moreover $X\equiv2\pmod3$, hence
+$a\equiv0\pmod3$, $H\equiv0\pmod3$, and $b_0\equiv2\pmod3$.
+Since $H\equiv3\pmod q$ and $q\equiv2\pmod3$,
+$\gcd(H,2q^2)=1$ unconditionally.
+
+The denominator $\delta$ never vanishes at an integer input.  For
+$c=0$, $Q=0$, $\delta=-1$, and $C_y/\delta=1$.  For $c\ne0$,
+$Q>1$ and $D_f>|c|+1$.  Since $b=cT-R$ is integral,
+$V=D_fb-c$ has $|V|\ge1$.  Thus
+\[
+ \frac{C_y}{\delta}
+ =V^2+\frac{V^2-1}{Q-1}\ge1.
+\]
+The other three non-guard radicands are positive as well: for $D_t$
+use $s(s+1)\ge0$ for the integer $s=XY^2$.
+
+Suppose $P_{12}=0$.  A complex linear factor of its norm vanishes.
+If $A_g<0$, its radical supplies the only nonzero imaginary part of
+that factor, which is impossible.  Hence $A_g\ge0$, and
+\[
+ B=A_g+1+p_2^2+p_3(p_3+1)>0.
+\]
+It follows that $B>0$, $k\ne0$, and
+\begin{equation}
+\label{eq:budget12-centered-interval}
+ D_{\rm err}<q^2,\qquad 4\eta^2<k^2.
+\end{equation}
+No Pell root, native sign, or calibration theorem was used to obtain
+these facts. In particular, $v\ne0$ has not been assumed; it will follow
+from the early projection below.
+
+\subsection{Early integer projection and main-root recovery}
+
+We use the following elementary projection principle. Suppose a signed
+sum of square roots of nonnegative integers, with integer coefficients,
+plus an integer multiple of a nonnegative rational-square root $y$ is
+rational. If every rational value of $y$ allowed by the construction is
+integral, the sum is an integer. Indeed, decompose each radical into a
+rational multiple of a positive squarefree radical. Independence of
+distinct squarefree radicals identifies the sum with its squareclass-$1$
+part. Every term in that part is integral; irrational terms can cancel
+but contribute nothing to it.
+
+Here every rational $y=\sqrt{C_y/\delta}$ is integral even before any
+scale recovery. For $c=0$ it equals $1$. Otherwise $Q>1$ globally and
+adjacent-coefficient Pell descent applies to
+$QV^2-(Q-1)y^2=1$. To recall the proof, write $y=a/s$ in lowest terms;
+then $s^2\mid Q-1$. The norm-preserving transformation
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV
+\]
+keeps $V'$ integral and the reduced denominator $s$ unchanged. With
+positive signs and $|V|>1$, it gives $-|V|<V'<|V|$; the norm excludes
+$V'=0$. Descent reaches $|V|=|y|=1$, proving $s=1$.
+
+Write $d,f,t,g,y$ for the nonnegative roots of $D_m,D_f,D_t,A_g,C_y/\delta$.
+A vanishing factor has independent signs and reads
+\[
+ Z=M\epsilon_d d+U(\epsilon_f f+\epsilon_t t+
+                         \epsilon_g g+\epsilon_y y).
+\]
+Divide by $M$. Since $U/M=H$ is integral, the projection principle gives
+$Z/M\in\mathbb Z$. But
+\[
+ Z/M=H(n+V+L)+b_0+H(v-q^2)/M.
+\]
+Thus $M\mid H(v-q^2)$, and the unconditional coprimality gives
+\[
+ v_{\rm old}=(v-q^2)/(2q^2)\in\mathbb Z,\qquad
+ v=q^2(2v_{\rm old}+1),\qquad Y=(2v_{\rm old}+1)q^3.
+\]
+In particular $v\ne0$ and $|Y|\ge|q|^3\ge4096$. This inference does
+not assert that each individual radical is already rational.
+
+Now project the undivided factor onto squareclass $1$. Every projected
+$f,t,g,y$ contribution is integral. If $d$ were irrational, its projection
+would be zero, forcing $H\mid Z$. That is impossible: $H\equiv0\pmod3$
+whereas $Z\equiv Mb_0\equiv1\pmod3$. Thus $d$ is rational and integral.
+Put $d_s=\epsilon_d d$. The same projection modulo $H$ gives
+$H\mid M(d_s-b_0)$, so
+\[
+ \gamma=(d_s-b_0)/H\in\mathbb Z.
+\]
+The actual signed main root and its congruence have now been restored
+without separating the remaining four radicals.
+
+\subsection{Four-root separation on all signed inputs}
+
+Set $x=|X|$, $m=|Y|$, $K=|k|$, and $C_*=|c|$. The budget and early CRT give
+\[
+ x\ge64,\quad m\ge|q|^3\ge4096,\quad K\ge1,\qquad
+ K(m-\tfrac12)<C_*<K(m+\tfrac12).
+\]
+In particular the integer $C_*$ is at least $16$. We do not assume
+$K\ge2$ before first-root integrality. Direct estimates give
+\begin{align*}
+ \sqrt\Delta&>(x-1)m-3>3,\\
+ K(xm^2-1)&<t<K(xm^2+1),\quad t>3C_*,\\
+ d&>((x-1)m-3)K(m-1)>\tfrac34t.
+\end{align*}
+The last comparison follows from
+\[
+ 4((x-1)m-3)(m-1)-3(xm^2+1)
+   =m^2(x-4)-4m(x+2)+9>0:
+\]
+already $m\ge16$ gives $(x-4)m-4(x+2)\ge12x-72>0$.
+Also
+\[
+ f^2-(C_*^2-1)d^2\ge(\Delta-1)C_*^2+2>0,
+\]
+so $f>(C_*-1)d\ge15d>2t$ and $f>3C_*^2$.
+The unmultiplied guard is particularly small:
+\[
+ g<|q|K,\qquad
+ \frac{g}{C_*}<\frac{|q|}{m-1/2}
+       \le\frac{|q|}{|q|^3-1/2}<\frac1{255}.
+\]
+For the final inequality, use $|q|^2\ge256$ and $|q|>1/2$.
+
+If $b=cT-R=0$, then $V=-c$ and $Q>C_*^2>1$, so
+\[
+ C_*^2<y^2=C_*^2+\frac{C_*^2-1}{Q-1}<C_*^2+1.
+\]
+Thus $y>g$ and $y+g<C_*+1+C_*/255<3C_*<t$. The order
+$f,t,y,g$ is strictly superincreasing. If $b\ne0$, then
+$|V|\ge f^2-C_*>2f$, hence $y>2f$ and the order $y,f,t,g$ is
+strictly superincreasing. Zero $g$ is omitted.
+
+Subtract the already integral main-root term from the norm factor and
+divide by $U$. The remaining signed sum of $f,t,g,y$ is rational.
+Independence of distinct squarefree radicals now makes every term
+rational: the largest term in any nontrivial square class cannot cancel
+the smaller ones. Integer radicands make $f,t,g$ integral, and the same
+adjacent-coefficient descent makes $y$ integral.
+
+\subsection{Exact source restoration}
+
+Let $f_s,t_s,p_{1,s},y_s$ be the signed integer roots in the original
+vanishing factor. The early projection has already recovered the exact
+source scale, signed main root $d_s$, and integral $\gamma$.
+
+We map this zero pointwise to the normalized centered-budget
+seventeen-integer source, not to the old determinant-guard source.
+Set its radix coordinate to $J_3=2j$, take
+\[
+ f_{\rm source}=f_s,\quad v_{\rm scale}=v_{\rm old},\quad w_3=w,
+ \quad \tau_{\rm source}=t_s-L,\quad y_{\rm source}=y_s-V,
+\]
+and retain $h,r,T,c,z$, together with the restored $F,\alpha,\gamma$.
+The six source residuals vanish: the first and auxiliary rows are the
+exact integral translations of the recovered norms; the main row uses
+$d_s=X+ac+H\gamma$; the transport row vanishes identically; and the
+normalized strong row is $f_s^2=1+\Delta i^2c^4$.  In particular the
+source's packed $V=f_s^2(cT-R)-c$ is exactly our $V$.
+
+Finally, since $A_g=p_{1,s}^2$, the same coordinates already satisfy
+\[
+ B=1+p_{1,s}^2+p_2^2+p_3(p_3+1)>0.
+\]
+This proves a genuine zero of the pinned centered-budget17 source.
+Its ordinary soundness theorem supplies a finite syntactic ZFC
+refutation.  No implication from the disk budget to the old determinant
+guard is asserted; the source's late half-binomial argument is what
+restores its original positivity guards.
+
+\subsection{Canonical completeness and scope}
+
+Conversely, use the authentic canonical source34 family associated to
+a finite refutation.  Its prescribed half-binomial $Y$, unchanged by
+normalized strong/auxiliary completion, satisfies
+\[
+ D_{\rm err}\le q^2/2,\qquad 0<\eta/k<1/4,
+ \qquad B>q^2k^2/4>0.
+\]
+The centered source proves these estimates uniformly for that specified
+$Y$; there is no appeal to choosing $Y$ freely or taking a limit.
+The canonical repunit $J$ is odd and is $1$ modulo $3$, so
+$j=(J-1)/6$ is integral. Every positive integer $N$ has a representation
+$1+p_1^2+p_2^2+p_3(p_3+1)$: apply the three-square theorem to $4N-3$,
+which is $1$ or $5$ modulo $8$, and separate one odd and two even squares. Set
+$v=Y/q=q^2(2v_{\rm old}+1)$ and represent $B$ as
+$1+p_1^2+p_2^2+p_3(p_3+1)$.  Thus $A_g=p_1^2$.
+With canonical integral roots $d=b_0+H\gamma,f,t,y$, choose
+\[
+ n=\gamma+f+t+p_1+y-V-L-\frac{v-q^2}{M}.
+\]
+Every term is integral, and substitution makes the displayed norm
+factor vanish.  This proves completeness.
+
+The carrier translation $n\mapsto n+L$ is an integer-polynomial
+bijection for fixed remaining coordinates.  It changes neither the
+existence theorem nor the CRT restorations.  Its exact degree reduction
+is a separate leading-form calculation, supplied in
+\texttt{DEGREE\_PROOF.md} and checked by \texttt{check\_degree.py};
+no uncancelled gate-degree estimate is presented as an exact degree.
+The two literal circuits are \texttt{budget12\_tau\_centered.json}
+and \texttt{budget12\_aux\_centered.json}.
+
+Thus, under the same pinned ordinary native/compiler and calibration
+theorems, ZFC proves
+\[
+ \bigl[\forall\mathbf x\in\mathbb Z^{12},\ P_{12}(\mathbf x)\ne0\bigr]
+ \quad\Longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}).
+\]
+This is neither an assumption nor a proof of consistency.  It adds an
+unbounded algebraic reduction, not a new native-kernel certificate or
+encoded object-language ZFC derivation.  The local provenance directory
+contains the centered-budget17/18 proof interfaces and the root-fusion
+ordinary dependencies; \texttt{SOURCE\_PINS.json} authenticates those
+copies.  Exact proof-cut diagnostics check the restoration identities,
+positive-coefficient root-bound certificates, and agreement of all six
+coefficient payloads.  Such finite checks complement, but do not replace,
+the unbounded argument and its explicitly inherited calibration.

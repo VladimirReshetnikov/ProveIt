@@ -1,0 +1,89 @@
+{
+  "name": "center18_degree80",
+  "domain": "unrestricted integers",
+  "variables": [
+    "J3",
+    "C",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "tau_center",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "c",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3"
+  ],
+  "variable_count": 18,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "coefficient_binding": "../coefficients/BINDING.json",
+  "definitions": {
+    "J": "3*J3+1",
+    "q": "beta*J+1",
+    "W": "4*(3*w3+1)",
+    "X": "q*W",
+    "Y": "(2*v_scale+1)*q**3",
+    "E": "X*Y",
+    "a": "(X+1)*Y",
+    "H": "4*a+3",
+    "Delta": "a**2+H",
+    "V": "f*o-c",
+    "k": "1-V+j*c+h*E",
+    "eta": "c-Y*k",
+    "u": "E*Y*k",
+    "A": "u*(u+k)+1",
+    "F": "(K0+W)*C-z*(q-1)",
+    "alpha": "q-F-C",
+    "I": "(2*r+1)*c**2",
+    "Q": "I**2",
+    "delta": "Q-1",
+    "R": "(q*(q-F)-C)*(q**2-1)+(MC+q*MF)*J",
+    "det": "(cone_A*F)*(cone_B*C)-(q-cone_A*F-cone_B*C)**2",
+    "T": "eta*(k-eta)",
+    "pos": "1+pair_pos1**2+pair_pos2**2+pair_pos3*(pair_pos3+1)",
+    "G": "det*T-(pair_root**2-det-T+1)**2-pos"
+  },
+  "compact_residuals": [
+    "tau_center**2+2*(2*u+k)*tau_center+k**2-4",
+    "(X+a*c+gamma*H)**2-Delta*c**2-1",
+    "c*j-V-R",
+    "Q-Delta*(f**2-1)",
+    "Q*(V**2-y**2)+y**2-1",
+    "G"
+  ],
+  "residuals": [
+    "tau_center ** 2 + 2 * (2 * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) + (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) * tau_center + (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3))) ** 2 - 4",
+    "((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) * c + gamma * (4 * (((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) + 3)) ** 2 - ((((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) ** 2 + (4 * (((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) + 3)) * c ** 2 - 1",
+    "c * j - (f * o - c) - (((beta * (3 * J3 + 1) + 1) * (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1))) - C) * ((beta * (3 * J3 + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J3 + 1) + 1) * MF) * (3 * J3 + 1))",
+    "((2 * r + 1) * c ** 2) ** 2 - ((((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) ** 2 + (4 * (((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) + 3)) * (f ** 2 - 1)",
+    "((2 * r + 1) * c ** 2) ** 2 * ((f * o - c) ** 2 - y ** 2) + y ** 2 - 1",
+    "(cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) * (cone_B * C) - (beta * (3 * J3 + 1) + 1 - cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - cone_B * C) ** 2) * ((c - (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) - (c - (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))))) - (pair_root ** 2 - (cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) * (cone_B * C) - (beta * (3 * J3 + 1) + 1 - cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - cone_B * C) ** 2) - (c - (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) - (c - (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3))))) + 1) ** 2 - (1 + pair_pos1 ** 2 + pair_pos2 ** 2 + pair_pos3 * (pair_pos3 + 1))"
+  ],
+  "residual_count": 6,
+  "single_equation": "(1+G)*(1+S)-1, where G is the last residual and S is the sum of squares of all other residuals",
+  "exact_degree": 80,
+  "degree_witness": {
+    "monomial": "h**6*w3**8*v_scale**14*J3**50*tau_center**2",
+    "coefficient_expression": "-2**34*3**58*beta**50"
+  },
+  "parent": "forms/pivot18_degree88.json",
+  "root_change": {
+    "forward": "tau_center=2*tau-2*u-k",
+    "inverse": "tau=(tau_center+2*u+k)/2; numerator even at every new zero"
+  },
+  "proof_status": "Ordinary arithmetic proof plus inherited source theorem; no new proof-assistant certificate."
+}

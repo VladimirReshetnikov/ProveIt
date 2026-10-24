@@ -1,0 +1,271 @@
+\section{A direct-calculus quartic in 1190 integers}\label{sec:direct}
+
+\subsection{The literal endpoint and its source}
+
+The second construction improves a different part of the frontier. It
+starts from the received synchronized equation in 522 nonnegative
+coordinates~\cite{sync}, which directly encodes the numerical calculus
+$C_{222}$. It uses neither K215 nor Jones's universal polynomial. All
+coefficients of the final polynomial are ordinary small integers.
+
+Let $R_0,\ldots,R_{599}$ be the entire ordered list of quadratic residuals
+in \path{direct/output/equation.json}, on the stated coordinates
+$x_0,\ldots,x_{1189}$. Define the one ordinary polynomial
+\begin{equation}\label{eq:direct1190}
+ Q_{\mathrm{direct}}(x_0,\ldots,x_{1189})
+   =\sum_{j=0}^{599}R_j(x_0,\ldots,x_{1189})^2,
+ \qquad x_i\in\Z.
+\end{equation}
+The adjacent file \texttt{expanded\_polynomial.json} gives this same
+polynomial as a complete list of 26,411 collected monomials. A term
+$[c,[i_1,\ldots,i_s]]$ means $c\prod_{r=1}^{s}x_{i_r}$; the empty index
+list is the constant monomial. Every coefficient is a literal integer.
+There is no remaining power with variable exponent, factorial, binomial,
+variable-length product, or unspecified coefficient.
+
+\begin{theorem}[Direct integer endpoint]\label{thm:direct1190}
+The polynomial in \eqref{eq:direct1190} has exact degree four, uses all
+1190 displayed coordinates, and has coefficient height $83\,900\,628$.
+The largest absolute coefficient in any residual is $4556$.
+Composing the arithmetic equivalences below with the ordinary inherited
+$C_{222}$ calibration proves
+\[
+ \ZFC\vdash
+ \left(\neg\exists\boldsymbol x\in\Z^{1190}\;
+                   Q_{\mathrm{direct}}(\boldsymbol x)=0\right)
+ \longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+
+The frozen natural parent has 522 coordinates, 400 quadratic residuals,
+20,225 collected monomials, and height $83\,900\,628$. Its exact source
+file and the complete received package are included under
+\texttt{direct/source/} and \texttt{direct/upstream/synchronized/}.
+The new reduction preserves all 522 coordinates and 400 residuals until
+the integer-domain conversion is complete. In particular, it modifies
+no proof-calculus rule, shared Pell frame, CRT relation, or coefficient
+of the natural parent.
+
+The parent represents a finite $C_{222}$ derivation through a commutative
+Horn flow, a finite accumulator path, CRT certificates, and synchronized
+Pell graphs. Its global proof constructs compatible witnesses for a
+common binomial radix, one power frame, and common auxiliary Pell
+parameters. Those simultaneous-existence theorems are inherited. Our
+new transformation begins after the full natural polynomial has been
+fixed; it does not identify independently chosen witnesses.
+
+\subsection{A finite certificate for the necessary signs}
+
+Replacing every one of the 522 natural coordinates by an individually
+guarded integer gives the received 2088-integer companion. Many of those
+guards are redundant because the equations already imply the required
+signs. The following elementary rule makes the redundancy explicit.
+
+\begin{lemma}[Scaled sign inference]\label{lem:directsign}
+Suppose a residual is
+\[
+ c x+Q(\boldsymbol y)=0,\qquad c\in\Z\setminus\{0\},
+\]
+where $x$ does not occur in $Q$ and every coefficient of $-cQ$ is
+nonnegative. If all variables occurring to an odd power in a monomial
+of $Q$ are nonnegative, then $x\ge0$.
+\end{lemma}
+\begin{proof}
+The residual implies $c^2x=-cQ$. Every even power of an integer is
+nonnegative. The hypotheses on odd powers and coefficients therefore
+make the right side nonnegative. Since $c^2>0$, we obtain $x\ge0$.
+\end{proof}
+
+This rule proves a sign; it does not eliminate $x$ by division or claim
+an integral polynomial formula for $x$. Its monic special case is the
+usual implication from $x=F(\boldsymbol y)$ when $F$ has nonnegative
+coefficients. The actual certificate has one useful nonmonic instance:
+a row equivalent to $16A=20+4T$ proves $A\ge0$ from $T\ge0$. This saves
+one further three-coordinate guard beyond the monic-only construction.
+
+The delivered certificate selects 234 source coordinates for explicit
+guards, then gives 288 applications of Lemma~\ref{lem:directsign}.
+Each record specifies the target, the original residual, the multiplier
+$c^2$, the entire polynomial $-cQ$, and its odd-power dependencies.
+The records are ordered so that every needed sign is already proved.
+In particular, circular implications cannot serve as unconditional
+nonnegativity arguments.
+
+An independent enumeration checks that the 234 guarded coordinates
+are exactly those that occur as the head of no eligible rule of
+Lemma~\ref{lem:directsign} in the literal residual list. Their closure
+reaches all 522 coordinates. The selected guard count is therefore
+minimal for this specific single-row inference system. That finite
+statement says nothing about stronger multi-row arguments, sign
+normalizations, or a different presentation of the polynomial.
+
+\begin{lemma}[Quadratic nonnegativity guard]\label{lem:directguard}
+For every $x\in\Z$,
+\[
+ x\ge0\quad\Longleftrightarrow\quad
+ \exists a,b,c\in\Z\quad x=a^2+b^2+c(c+1).
+\]
+\end{lemma}
+\begin{proof}
+The reverse implication follows from the nonnegativity of squares and
+of the product of two consecutive integers. For the forward direction,
+$4x+1$ is $1$ or $5$ modulo $8$ and is not divisible by $4$.
+Legendre's three-square theorem represents it as a sum of three integer
+squares. Modulo $4$, exactly one representing square is odd. Reorder
+the terms and write
+\[
+ 4x+1=(2a)^2+(2b)^2+(2c+1)^2.
+\]
+Subtract one and divide by four.
+\end{proof}
+
+For each of the 234 selected coordinates $x_i$, append the quadratic
+residual
+\begin{equation}\label{eq:directguard}
+ x_i-a_i^2-b_i^2-c_i^2-c_i=0,
+\end{equation}
+using three fresh unrestricted integer variables. The resulting
+checkpoint has
+\[
+ 522+3\cdot234=1224\quad\text{coordinates},\qquad
+ 400+234=634\quad\text{quadratic residuals}.
+\]
+Its expanded quartic has 23,590 nonzero monomials and coefficient
+height $83\,900\,628$.
+
+\begin{proposition}[Natural/integer existence equivalence]
+\label{prop:directdomain}
+The 1224-coordinate integer checkpoint has a zero if and only if the
+frozen 522-coordinate natural parent has a zero.
+\end{proposition}
+\begin{proof}
+At an integer zero, Lemma~\ref{lem:directguard} makes the 234 guarded
+source coordinates nonnegative. Apply the 288 ordered records of the
+sign certificate: each is justified by Lemma~\ref{lem:directsign} and
+by previously proved hypotheses. Every original coordinate is then
+natural. The unchanged first 400 residuals give a natural parent zero.
+
+Conversely, start with any natural parent zero and use
+Lemma~\ref{lem:directguard} independently for the 234 selected
+coordinates. The resulting choices satisfy all new residuals.
+Uniqueness of the added guard witnesses is neither claimed nor needed.
+\end{proof}
+
+\subsection{Removing signed coordinates without losing a guard}
+
+\begin{lemma}[Integral monic projection]\label{lem:directprojection}
+Suppose an integer residual system includes $v-F(\boldsymbol w)=0$
+or its negative, with $F\in\Z[\boldsymbol w]$ independent of $v$.
+Substitute $F$ for $v$ in every other residual and delete the defining
+row and coordinate. Projection is a bijection on the integer zero sets,
+with inverse $v=F(\boldsymbol w)$.
+\end{lemma}
+\begin{proof}
+Every source zero has $v=F(\boldsymbol w)$ and therefore projects to a
+zero of the substituted system. Conversely, a target zero extends
+uniquely by the displayed value of $v$, which is an integer and satisfies
+the defining row and every original residual.
+\end{proof}
+
+The received exact projection algorithm~\cite{batched} applies this
+lemma while requiring every residual to remain quadratic. Affine
+restorations preserve that degree bound automatically. A quadratic
+restoration is allowed only when its target occurs only as a scalar
+multiple, never in a product with another coordinate, in every other
+remaining row. The support cap controls expression size and never
+truncates a polynomial. All changed residuals are computed exactly.
+
+The integer checkpoint admits 34 delivered substitutions: 23 affine
+and 11 quadratic. No unconstrained coordinate is discarded. Negative
+restoration coefficients are permitted over $\Z$. Every guard constraint
+is preserved either as a substituted residual or through the exact
+restoration formula of a deleted guard row. Its consequence is not lost
+merely because its original coordinate is eliminated. Apply all inverse
+maps in reverse order to recover the complete guarded checkpoint, then
+apply Proposition~\ref{prop:directdomain}.
+
+The projected equation therefore has $1224-34=1190$ coordinates and
+$634-34=600$ quadratic residuals. Over $\Z$, a sum of squares vanishes
+exactly when every residual vanishes. This proves existence equivalence
+between \eqref{eq:direct1190} and the frozen natural parent.
+
+\subsection{Logical calibration and the verification boundary}
+
+The parent's numerical-calculus calibration is
+\[
+ C_{222}(1) \longleftrightarrow\
+ \operatorname{BProv}(\mathrm{ZF},\bot)
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\ZFC,\bot).
+\]
+The named interfaces are
+\path{KEndpoint.c222_iff_zf_refutation} and
+\path{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Their source copies and pins are included in the inherited provenance.
+The second uses the constructible-universe equiconsistency argument.
+The calibration is a dependency of the parent, not a newly proved
+property of the 1190-variable polynomial.
+
+Negating the composed existence equivalences proves
+Theorem~\ref{thm:direct1190}. All new transformations are finite algebra
+and ordinary arithmetic formalizable in ZFC, including its internal
+natural and integer domains. There is no appeal to an external
+enumeration that works only for standard witnesses. There is also no
+new complete Lean/Rocq proof term or encoded object-language ZFC
+derivation. The result asserts the equivalence and proves neither
+consistency nor existence of a zero.
+
+The independent standard-library checker imports neither the producer
+nor the optimizer. It authenticates the frozen parent bytes, checks the
+whole unchanged source prefix, all literal guards, the complete ordered
+sign certificate, all 34 substitutions and coordinate maps, and both
+expanded coefficient dictionaries. It verifies that every coordinate
+occurs and that degree four is attained. Four deliberately corrupted
+artifacts are rejected without relying on hash failure: an inference
+coefficient, a guard sign, a restoration, and an expanded coefficient.
+Normal and optimized Python runs pass. A second independent projection
+implementation also replays the substitutions.
+
+The complete preserved synchronized release additionally passes its own
+replay, checking 88 manifest entries and regenerating 22 equation files.
+These finite checks establish the literal artifact identities. They do
+not replace the unbounded Pell/CRT theorems or the inherited calculus
+calibration. The full transitive proof-assistant dependency closure was
+not rebuilt.
+
+\subsection{Exact tradeoffs against the incoming direct equations}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & Integers & Rows & Terms & Height\\
+\midrule
+Received synchronized lift & 2088 & 922 & 26791 & 83901150\\
+Received batched endpoint & 1690 & 842 & 21381 & 2649643805758\\
+New guarded checkpoint & 1224 & 634 & 23590 & 83900628\\
+New signed projection & \textbf{1190} & \textbf{600} & 26411 & \textbf{83900628}\\
+\bottomrule
+\end{tabular}
+\caption{Complete direct-calculus equations over unrestricted integers.
+All entries have exact degree four. The two received points are taken
+from the recent incoming synchronized and batched archives~\cite{sync,batched}.}
+\label{tab:direct}
+\end{table}
+
+Compared with the received 1690-integer direct equation, the new endpoint
+saves 500 variables ($29.59\%$) and 242 residuals ($28.74\%$), while
+adding 5030 monomials ($23.53\%$). Its coefficient height is substantially
+smaller. Against the synchronized integer lift of the same 522-variable
+natural parent, all displayed size measures improve except the unchanged
+degree. The 1224-coordinate checkpoint is retained as a
+smaller-expression tradeoff, and the natural parent itself is unchanged.
+
+The contribution is a new explicit reduction and combination of the
+received constructions. The three-square theorem, sign inference, and
+monic projection are standard facts. We claim neither worldwide
+priority nor global simplicity. In particular, other repository
+quartics use far fewer variables with very different coefficient
+payloads. The improvement here is a smaller complete direct-calculus
+quartic with literal coefficients and an independently checkable domain
+conversion.

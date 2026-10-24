@@ -1,0 +1,62 @@
+\subsection{A division-free norm and exact degree certificates}
+The five-root product used here is an explicitly specified integer polynomial,
+not a call to a square-root oracle. The following evaluator works over every
+commutative ring. Its inputs are $x,a,b,c,d,C,\delta$; it equals
+\[
+ \delta^{16}\prod_{\epsilon\in\{-1,1\}^5}
+ \left(x-\epsilon_1\sqrt a-\epsilon_2\sqrt b-
+ \epsilon_3\sqrt c-\epsilon_4\sqrt d-\epsilon_5\sqrt{C/\delta}\right)
+\]
+where the displayed interpretation uses $\delta\ne0$, while the evaluator
+itself is a polynomial even at $\delta=0$. Define
+\begin{align*}
+ x_2&=x^2,\quad s_0=c+d,\quad t_0=a+b,\quad J_0=\delta(x_2+s_0-t_0)-C,\\
+ K_0'&=J_0^2+4\delta\{\delta(s_0x_2+cd-ab)-Ct_0\},\\
+ K_1'&=4\delta x(J_0+2\delta d),\\
+ K_2'&=4\delta x(J_0+2\delta c),\\
+ K_3'&=4\delta(J_0+2\delta x_2),\quad Z_0=64\delta^3abC,\\
+ f_0&=(K_0')^2+c(K_1')^2+d(K_2')^2+cd(K_3')^2-Z_0(x_2+s_0),\\
+ f_1&=K_0'K_1'+dK_2'K_3'-Z_0x,\\
+ f_2&=K_0'K_2'+cK_1'K_3'-Z_0x,\\
+ f_3&=K_0'K_3'+K_1'K_2'-Z_0,\\
+ g_0&=f_0^2+4\{df_2^2-c(f_1^2+df_3^2)\},\\
+ g_1&=f_0f_2-2cf_1f_3.
+\end{align*}
+The answer is $g_0^2-16dg_1^2$. The primes on the $K_i'$ distinguish
+these local registers from the fixed native numeral $K_0$.
+
+For verification, work in the free rank-four algebra with basis
+$1,u,v,uv$, $u^2=c$, $v^2=d$. The cleared three-root norm at $x+u+v$
+has coefficients $f_0,2f_1,2f_2,2f_3$. Taking its norm first under
+$u\mapsto-u$ and then under $v\mapsto-v$ gives exactly the evaluator.
+This is a free-algebra identity and makes no independence assumption about
+the square classes. The supplied literal DAG shares the repeated products
+and uses $83$ binary operations. The inspected predecessor has $93$;
+a late concurrent packet already supplies an intermediate factoring
+improvement, which we credit rather than treating all factoring as new.
+An independent reverse-order conjugate expansion agrees on all $20{,}349$
+nonzero monomials.
+
+For the preferred twelve-variable specialization, exact sparse expansion
+at named polynomial cuts gives a degree upper bound of $1000$, including
+all leading cancellations caused by the auxiliary and first-root centers.
+A nonzero actual-coefficient certificate is
+\[
+ [j^{456}w^{152}v^{168}h^{16}r^{64}c^{128}z^{16}]P
+   =2^{952}3^{608}\beta^{456}>0.
+\]
+The exponents sum to $1000$. Thus the certificate proves the exact degree
+after specializing all six fixed ports, rather than merely computing a
+formal degree before specialization. The cheaper companion has exact degree
+$1024$, with
+\[
+ [j^{464}w^{160}v^{176}h^{16}r^{64}c^{128}z^{16}]P'
+   =2^{960}3^{624}\beta^{464}>0.
+\]
+The files \texttt{guard/DEGREE\_PROOF.md} and
+\texttt{guard/check\_degree.py} contain the complete cut expansion,
+weights, strict component comparisons, and coefficient calculations.
+The independent audit also evaluates the literal circuits on a different
+actual-coefficient univariate line, obtaining a nonzero coefficient at each
+claimed top degree. This second check is a transcription diagnostic;
+the general upper bound and exact nonzero monomial are the degree proof.

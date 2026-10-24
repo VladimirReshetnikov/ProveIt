@@ -1,0 +1,215 @@
+\section{Coordinated changes of variables: 21, 20, and 19 integers}
+\label{sec:coordinated}
+
+The incoming \emph{Joint Sign Guards} package already supplies a
+25-integer octic and equations in 21, 20, and 19 integers of degrees
+20, 32, and 88. Thus reproducing the octic is a calibration step, not
+a new frontier claim. The following coordinated changes of variables
+give new equations in the same respective dimensions of exact degrees
+\textbf{16, 18, and 40}. They use the same complete source-34 numerical
+tuple and the same two determinant scales. Every transformation below
+is an integer-polynomial bijection on zero sets after an integral
+triangular change of coordinates.
+
+\subsection{The fixed coefficients and the common abbreviations}
+
+The fixed coefficients are
+\[
+ \beta=2^{1064921}-1,\qquad K_0,M_C,M_F,\qquad
+ A=2^{1113},\quad B=2^{666104}.
+\]
+Here $K_0,M_C,M_F$ are the fully supplied source-34 integers;
+$M_F$ is already shifted. The six numerals are bound by the packaged
+coefficient manifest and reconstructed from the literal machine/table
+recipe. They occupy 615883 minimal unsigned bytes. They are fixed
+coefficients, never existential parameters. In particular $\beta>0$.
+
+For the 21-variable presentation take
+\[
+\begin{gathered}
+ J_3,C,z,f,h,r,v,w_3,s,k,y,\gamma,o,j,Y,c,I,t,p_1,p_2,p_3
+ \quad\in\mathbb Z.
+\end{gathered}
+\]
+The letter $s$ is the shifted first Pell root (\texttt{tau\_gap} in the
+literal packets); it has no connection with the scale variable $v$.
+Define polynomial abbreviations
+\begin{gather*}
+ J_0=3J_3+1,\qquad W=4(3w_3+1),\qquad q=\beta J_0+1,\qquad X=Wq,\\
+ F=(K_0+W)C-z(q-1),\qquad E=XY,\qquad a=(X+1)Y,\\
+ \eta=c-Yk,\qquad\zeta=k-\eta,\qquad V=fo-c,\\
+ \Delta=a^2+4a+3,\qquad D=X+ac+\gamma(4a+3),\\
+ R=(q-F)(q^3-q)-C(q^2-1)+(M_C+qM_F)J_0,\\
+ G=AFBC-(q-AF-BC)^2,\qquad Z=\eta\zeta,\\
+ T=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{gather*}
+The alignment is typographical only: all names on the left are
+polynomial abbreviations and add no unknowns.
+
+The nine residuals of the 21-variable equation are
+\begin{align*}
+ R_1&=Y-(2v+1)q^3,\\
+ R_2&=s^2+(2s-k)EYk-1,\\
+ R_3&=D^2-\Delta c^2-1,\\
+ R_4&=k-1-hE-R,\\
+ R_5&=V-jc+k-1-hE,\\
+ R_6&=I-(2r+1)c^2,\\
+ R_7&=I^2-\Delta(f^2-1),\\
+ R_8&=y^2-1-I^2(y^2-V^2),\\
+ R_9&=GZ-(t^2-G-Z+1)^2-T.
+\end{align*}
+Set $Q_{21}=\sum_{i=1}^9R_i^2$. The displayed degrees are,
+in this order,
+\[
+ 4,6,8,5,4,3,8,6,8.
+\]
+In the highest-degree part of $Z=(c-Yk)(k-c+Yk)$, the monomial
+$-Y^2k^2$ occurs with coefficient $-1$. The coefficient of $Y^4k^4$
+in $R_9$ is consequently $-1$, and no other residual contributes
+$Y^8k^8$ to its square. Thus
+\[
+ [Y^8k^8]Q_{21}=1,
+\]
+and the exact degree is sixteen, including after all fixed ports are
+specialized to their actual values.
+
+\subsection{Why these coordinates are effective}
+
+The literal incoming 25-integer packet uses
+$k_0=1-V+jc+hE$ in three arithmetic rows, while retaining
+$\eta+\zeta$ in its quotient and positivity rows. To obtain the convenient
+uniform presentation used here, put
+$\varepsilon=V-jc+\eta+\zeta-1-hE$. Add $(E-a)\varepsilon$ to its main-ordinate row,
+add $-E(c-\eta)\varepsilon$ to its first-norm row, and add $\varepsilon$ to its packed-rank
+row. Keep $\varepsilon$ itself. These are reversible elementary row operations,
+so the integer zero set is unchanged. The exact checker compares all
+thirteen resulting rows with the independently reconstructed packet.
+
+In this presentation of the source 25-integer octic use the integral triangular changes
+\[
+ C=q-F-\alpha,\qquad Y=a-E,\qquad k=\eta+\zeta,
+ \qquad s=\tau-E(c-\eta).
+\]
+Their inverses are
+\[
+ \alpha=q-F-C,\quad a=E+Y,\quad\zeta=k-\eta,
+ \quad\tau=s+E(c-\eta).
+\]
+The source rows then determine four coordinates monically:
+\[
+ F=(K_0+W)C-z(q-1),\qquad E=XY,\qquad
+ \eta=c-Yk,\qquad V=fo-c.
+\]
+Delete the four defining rows and substitute these four integer
+polynomials everywhere. This reduces 25 coordinates and 13 residuals
+to 21 coordinates and 9 residuals. The first norm is controlled by
+the exact identity, with $u=E(c-\eta)=EYk$,
+\[
+ (s+u)^2-(k+u)^2+(k+u)k-1
+   =s^2+(2s-k)u-1.
+\]
+The cancellation prevents a needless squaring of the degree-five
+expression $EYk$.
+
+Retaining both $Y$ and $k$ is essential to the bound. It keeps
+$\eta,\zeta$ quadratic, even after $E$ and $F$ have been removed.
+The determinant $G$ and product $Z$ are both quartic, so the combined
+positivity residual remains of degree eight. Expanding the quotient
+coordinates too early was responsible for the larger degree of the
+inspected incoming projections.
+
+For complete rigor, map an old zero forward by the four triangular
+definitions and then forget $F,E,\eta,V$. The four deleted source
+equations imply precisely the restoration polynomials above. Conversely,
+restore these coordinates at any new zero and invert the triangular
+changes; every source residual vanishes, including the four deleted
+defining equations. The two maps are inverse on zero sets. There is
+no division, denominator condition, or sign assumption in this argument.
+Therefore the inherited equivalence with finite ZFC refutability transfers
+to $Q_{21}$.
+
+\subsection{Twenty integers and degree eighteen}
+
+In $Q_{21}$ make the integral change $y=fo+b$, where $b$ is unrestricted,
+and eliminate $I=(2r+1)c^2$ using $R_6$. All other coordinates remain.
+The key cancellation is
+\[
+ (fo+b)^2-(fo-c)^2=(c+b)(2fo+b-c).
+\]
+The resulting auxiliary residual is
+\[
+ (fo+b)^2-1-(2r+1)^2c^4(c+b)(2fo+b-c),
+\]
+of degree nine. The seven other residuals have degrees at most eight.
+The final equation $Q_{20}=0$ is their sum of squares, has twenty integer
+coordinates, and has exact degree eighteen because
+\[
+ [r^4c^{10}f^2o^2]Q_{20}=64.
+\]
+Only the auxiliary row contributes this monomial. The variable change and
+monic elimination are reversible over the integers. Hence $Q_{20}$ has a
+zero exactly when $Q_{21}$ does.
+
+\subsection{Nineteen integers and degree forty}
+
+Finally substitute
+\[
+ Y=(2v+1)\bigl(\beta(3J_3+1)+1\bigr)^3
+\]
+in $Q_{20}$ and remove $R_1$. This leaves the nineteen coordinates
+\[
+ J_3,C,z,f,h,r,v,w_3,s,k,b,\gamma,o,j,c,t,p_1,p_2,p_3.
+\]
+Use exactly the common abbreviations above, the additional definitions
+$I=(2r+1)c^2$ and $y=fo+b$, and the seven residuals
+$R_2,R_3,R_4,R_5,R_7,R_8,R_9$. These are completely specified ordinary
+polynomials, with respective degrees
+\[
+ 12,14,7,7,14,9,20.
+\]
+Their squared sum is $Q_{19}$. Its exact degree is forty, since
+\[
+ [v^8J_3^{24}k^8]Q_{19}=2^8\,3^{24}\,\beta^{24}>0.
+\]
+This coefficient is the image of the $Y^8k^8$ certificate. Every other
+residual has degree at most fourteen before squaring, so it cannot alter
+the degree-forty coefficient. The monic restoration of $Y$ again gives a
+bijection of integer zero sets.
+
+\subsection{Proof boundary and measured comparison}
+
+Each new system therefore has a zero exactly when the existing
+25-integer octic has a zero. Combining with its named native/compiler,
+signed-Pell, determinant and K215/refutation calibration gives, by ordinary
+mathematics formalizable in ZFC,
+\[
+ \mathrm{ZFC}\ \vdash\quad
+ \neg\exists\boldsymbol{x}\in\mathbb Z^n\,
+       Q_n(\boldsymbol{x})=0
+ \quad\longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}),
+ \qquad n\in\{19,20,21\}.
+\]
+No absence of zeros or consistency assertion is proved here. No new
+end-to-end proof-assistant certificate or internally encoded derivation
+in the repository's object-language ZFC calculus is claimed.
+
+The comparison includes all six incoming archives visible at the pinned
+repository snapshot, not just numbered proposals. The changes in
+$(n,\deg)$ are
+\[
+ (21,20)\longrightarrow(21,16),\qquad
+ (20,32)\longrightarrow(20,18),\qquad
+ (19,88)\longrightarrow(19,40).
+\]
+These are degree reductions of 20\%,
+43.75\%, and approximately 54.55\% at unchanged dimensions. Other
+measures may increase; fixed coefficient payload size is unchanged.
+Existing ten-integer and nine-positive high-degree equations remain
+different tradeoffs. No worldwide priority or global minimum is asserted.
+
+Exact finite checks verify every defining-row identity, both integral
+root translations, all compact-display residuals, all variable counts and
+liveness, the stated residual degree bounds, and the three nonzero
+coefficient certificates. They also reconstruct the complete numerical
+tuple. These computations audit the literal algebra; the zero-set maps
+above supply the universal proof.

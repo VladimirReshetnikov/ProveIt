@@ -1,0 +1,207 @@
+\section{Rational descent and the positive domain}
+The two equations in this section have strictly positive integer
+variables. Both use the complete compact44 coefficient tuple, with
+$\beta=2^{590069}-1$, $K_0$ its $K$ port and $M_F$ its already shifted
+$M_{F,\mathrm{source}}$ port. The whole tuple is fixed by
+\pathf{positive/native/ACTIVE_BINDING.json}; none of the ports is mixed
+with the larger tuple used in the low-degree integer equations.
+
+\subsection{A denominator theorem for adjacent Pell coefficients}
+\begin{lemma}\label{lem:descent}
+If $Q>1$ and $V$ are integers, $y\in\Q$, and
+$QV^2-(Q-1)y^2=1$, then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+Take absolute values, so $V,y>0$; zero is impossible. Write $y=a/m$
+in lowest terms, $m>0$. The equation implies $m^2\mid Q-1$.
+If $V=1$, then $y=1$. Otherwise $y>V$ and $QV>(Q-1)y$.
+Define
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad y'=(2Q-1)y-2QV.
+\]
+The first quantity is integral, the norm remains one, and the strict
+inequalities give $-V<V'<V$. The norm excludes $V'=0$.
+The reduced denominator of $y'$ is still $m$, since $2Q-1\equiv1\pmod m$.
+Strong induction on $|V|$ reaches $V=1$ without changing the denominator,
+so $m=1$.
+\end{proof}
+This special descent replaces an auxiliary prime-support requirement.
+It is not a claim that general rational Pell coordinates are integral.
+
+\subsection{Eleven positive variables without prime support}
+Use the eleven variables
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma>0.
+\]
+The complete register definition is
+\begin{gather*}
+ J=3j+1,\qquad q=\beta J+1,\qquad C=q-F-\alpha,\\
+ E=XY,\qquad k=\eta+\zeta,\qquad c=kY+\eta,\\
+ a=E+Y,\qquad H=4a+3,\qquad \Delta=a^2+H,\\
+ \ell=EkY,\qquad M=q^3(q-1),\qquad B_t=(qK_0+X)C-qF,\\
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ \widehat R=q^3(q+F+\alpha),\qquad D_\tau=\ell(\ell+k)+1,\\
+ I=ic^2,\qquad D_f=1+\Delta I^2,\qquad Q=\Delta^2I^2,\\
+ \delta=Q-1,\qquad V=D_f(cT-R)-c,\qquad D_{\rm num}=QV^2-1,\\
+ \overline V=D_f(cT+\widehat R),\qquad L=3\overline V,\qquad W=1+(q-1)L,\\
+ \overline Z=M(\ell+k+n+L)+(q-1)Y-q^3WB_t.
+\end{gather*}
+The adaptive main carrier and three-root norm are
+\begin{gather*}
+ r_0=k-R-1,\qquad S_0=4qY,\qquad U=4q^2Y,\\
+ D_*=U(X+ac)+H(U\gamma+S_0X-r_0),\\
+ A_1=D_*^2-U^2(1+\Delta c^2),\\
+ A_N=M^2D_\tau,\qquad B_N=M^2D_f,\qquad C_N=M^2D_{\rm num},\\
+ N_c=\delta^2\{(\overline Z^2-A_N-B_N)^2-4A_NB_N\}\\
+ \hspace{1em}-2\delta C_N(\overline Z^2+A_N+B_N)+C_N^2,\\
+ N_8=N_c^2-64\delta^3A_NB_NC_N\overline Z^2.
+\end{gather*}
+The literal ordinary equation is
+\begin{equation}\label{eq:positive11}
+ P_{11}=(1+N_8)(1+A_1)-1=0.
+\end{equation}
+Its graph is \pathf{positive/p11_degree277.json}. The only change to the
+retained three-root source is $I=ic^2$ in place of $iq(q-1)c^2$.
+
+\paragraph{Soundness.}
+The retained unconditional estimates need only $I\ge c^2$, so they
+remain valid. In particular
+\[
+ 1<D_\tau<D_f<Q,\quad |V|>1,\quad
+ D_y=\frac{QV^2-1}{Q-1}>V^2>1.
+\]
+The three positive rational radicands $D_\tau,D_f,D_y$ are distinct,
+and no signed sum of their roots is zero. To recall why, if $cT-R=0$
+then $V=-c$ and $\sqrt{D_f}>\sqrt{D_\tau}+\sqrt{D_y}$.
+Otherwise $|V|\ge D_f-c$ gives the reverse strict dominance
+$\sqrt{D_y}>\sqrt{D_f}+\sqrt{D_\tau}$. The fixed-mask bound
+$|R|<\widehat R$ gives $L>\sqrt{D_f}+\sqrt{D_y}$ and $L>k$.
+
+The octic norm identity makes $N_8=0$ imply a rational signed sum
+$\overline Z/M=\tau_*+f_*+y_*$ of those roots. For completeness, rational
+extraction is elementary: if signed roots $x_1,x_2,x_3$ with distinct
+squares $a,b,c$ have nonzero rational sum $t$, put
+\[
+ u=(t^2-a-b-c)/2,\qquad v=(u^2-ab-ac-bc)/(2t).
+\]
+Then $u=x_1x_2+x_1x_3+x_2x_3$, $v=x_1x_2x_3$, and
+\[
+ x_1=\frac{a(a+u)}{at+v},\qquad
+ at+v=x_1(x_1+x_2)(x_1+x_3)\ne0.
+\]
+All three roots are rational. The first two are integral because their
+squares are integers. Apply Lemma~\ref{lem:descent} to the third, with the
+unconditionally integral $Q,V$. It too is integral. This is exactly the
+step that removes $q(q-1)$ from $I$; no carrier divisibility or later
+native calibration has been assumed.
+
+Restore positive witnesses $i_{\rm old}=i$, $f_{\rm old}=|f_*|$,
+$u=|y_*|-V$, and $r=n+L-f_*-y_*>0$.
+The signed roots, not their absolute values, must be used in $r$.
+The first carrier becomes $M\tau_*$, and the four residuals of the
+retained weighted transport interface vanish. That interface restores
+the positive native source and hence a finite refutation.
+Finally $N_8$ and $A_1$ are squares modulo 4 (with $4\mid U$).
+Their unit-product finalizer cannot use a factor $-1$, which would require
+a residual $-2\pmod4$. Thus~\eqref{eq:positive11} forces
+$N_8=A_1=0$ without assuming the residuals nonnegative.
+
+\paragraph{Completeness.}
+Choose the canonical outer source. A positive Pell pair can be chosen
+with $I$ divisible by $c^2$, because the determinant-one Pell matrix has
+finite order modulo $c^2$. The retained auxiliary reconstruction needs
+only $c\mid I$. It supplies positive $T,u$; choose $L,W$ afterwards,
+then the transport witness $r$. Its bound $r>L$ ensures
+$n=r-L+f+y>0$. This gives $N_8=A_1=0$. Alternatively the more divisible
+old pair works with new $i=q(q-1)i_{\rm old}$. Either argument proves
+existence, not equality of the old and new coordinate assignments.
+
+\paragraph{Exact degree and cost.}
+The successive exact degrees of $I,D_f,Q,V,L,W,\overline Z,N_c,N_8,A_1$
+are $5,14,18,18,18,19,24,132,264,13$.
+Put $q_0=3\beta j$, $k_0=\eta+\zeta$. The top forms are
+\begin{gather*}
+ Q_0=i^2k_0^4X^4Y^8,\\
+ \overline Z_0=-3i^2q_0^7k_0^4X^2Y^6(q_0+F+\alpha)B_{t,0},\\
+ [A_1]_{13}=32q_0^2k_0X^2Y^4
+                 (4q_0^2Y\gamma+q_0^3(q_0-F)),
+\end{gather*}
+where $B_{t,0}=(K_0q_0+X)(q_0-F-\alpha)-q_0F$.
+Only $Q_0^4\overline Z_0^8[A_1]_{13}$ reaches degree 277.
+The coefficient of
+$j^{60}i^{24}\eta^{49}X^{42}Y^{85}\alpha^{16}\gamma$
+is $128\cdot3^8(3\beta)^{60}>0$, independently of the other three ports.
+The two deleted multiplications reduce the cost from 113 to 111.
+
+\subsection{Twelve positive variables with an adaptive saturated carrier}
+Use
+\[
+ j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma>0.
+\]
+Define $J=6j+1$, $f=t+1$, and the same $q,C,E,k,c,a,H,\Delta,\ell,R,B_t$
+as above with this new $J$. Now put
+\begin{gather*}
+ v=k-R-1,\qquad U=q^2Y,\\
+ D_*=U(X+ac)+H(U\gamma+qXY-v),\\
+ W=(q-1)k+1,\qquad M=q^3(q-1),\\
+ Z=M(\ell+k+r)+(q-1)Y-q^3WB_t,\\
+ A_0=Z^2-M^2\{\ell(\ell+k)+1\},\qquad A_1=D_*^2-U^2(1+\Delta c^2),\\
+ \rho=f^2-1,\qquad d=\Delta c^4,\qquad Q=\Delta\rho,\\
+ V=f^2(cT-R)-c,\qquad \\
+ h(s)=(1-Q)s^2+2(1-Q)Vs+V^2-1,\\
+ a_N=h(n),\qquad b_N=2(1-Q)(n+V),\\
+ A_N=da_N+(1-Q)\rho,\qquad N_*=A_N^2-db_N^2\rho.
+\end{gather*}
+The complete equation is
+\begin{equation}\label{eq:positive12}
+ P_{12}=(1+A_0)(1+A_1)(1+N_*)-1=0.
+\end{equation}
+Its graph is \pathf{positive/p12_degree78.json}. Compared with source69,
+$U=q^5$ becomes $q^2Y$, and $q^4X$ becomes $qXY$ in $D_*$.
+No new unknown is introduced.
+
+\paragraph{Soundness in the required logical order.}
+The parity argument is unchanged: $q$ is even, so $M,U$ are even, and
+the three residuals are squares modulo 4. The product finalizer therefore
+forces all three to vanish. The first carrier, without the strong or
+auxiliary equation, gives $q^3\mid Y$, $q-1\mid B_t$, $C>0$, and
+$3q<R<q^4-2$. Thus $U\ge q^5$ and the original positivity bound for
+$D_*$ survives. The first and main Pell classifications give the first
+index at least two and $c>8XY^3>2R$. Hence $V>1$ before $q\mid X$
+has been recovered.
+
+If $N_*=0$, the proof-only rational number $i=A_N/(db_N)$ satisfies
+$di^2=\rho$ and $h(n-i)=0$. Set $y=V+n-i$; then
+$QV^2-(Q-1)y^2=1$. Lemma~\ref{lem:descent} makes $y$, then $i$, integral.
+Taking appropriate absolute values restores positive strong and auxiliary
+witnesses. The source73 adaptive transport theorem applies because it
+uses $q^3\mid Y$ to show $U\mid4XY^2$, not a circular assumption
+$q\mid X$. It restores the remaining positive source and refutation.
+
+\paragraph{Completeness.}
+The canonical $J$ is $1\pmod6$, so $j=(J-1)/6>0$.
+The source73 lift chooses
+$\gamma=\gamma_{\rm old}-w+(k-R-1)/U>0$, since
+$(k-R-1)/U\ge4XY/q^2>w$. Let $t=f-1>0$ and $n=i+u>0$.
+The identity
+\[
+ \left.N_*\right|_{\rho=di^2}=d^2h(n-i)h(n+i)
+\]
+gives $N_*=0$, while the carrier residuals vanish. The dependence on the
+retained native calibration is the same as in the source69/source73
+composition, not a new formal certificate.
+
+\paragraph{Exact degree and cost.}
+With $q_0=6\beta j$, $k_0=\eta+\zeta$,
+$R_0=q_0^3(q_0-F)$ and
+$B_0=(K_0q_0+X)(q_0-F-\alpha)-q_0F$,
+\begin{gather*}
+ [A_0]_{15}=-2q_0^8k_0^2XY^2B_0,\\
+ [A_1]_{13}=8q_0^2k_0X^2Y^4(q_0^2Y\gamma+R_0),\\
+ [N_*]_{50}=4k_0^8X^8Y^{16}t^8R_0^2n^2.
+\end{gather*}
+Their product is the unique degree-78 contribution. Its coefficient at
+$j^{18}\eta^{11}X^{12}Y^{23}t^8n^2\gamma\alpha F^2$
+is $64(6\beta)^{18}>0$, independent of the other ports.
+The literal evaluator has 56 multiplications, 26 additions and
+19 subtractions: 101 live operations.

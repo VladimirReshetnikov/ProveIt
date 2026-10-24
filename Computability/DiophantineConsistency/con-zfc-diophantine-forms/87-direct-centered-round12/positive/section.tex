@@ -1,0 +1,203 @@
+\section{Eleven positive variables: transport only the two small gaps}
+\label{sec:positive211}
+The new polynomial has eleven positive variables, degree $211$, and $113$
+live binary arithmetic operations.  It improves the incoming centered
+$257/114$ construction in both degree and evaluation cost.  The earlier
+$277/111$ point still uses two fewer operations.  Centering itself is not
+new: our contribution is a second center, a cheaper gap bound, and a
+cofinality argument that permits a useful change of the auxiliary witness.
+
+\subsection{The literal polynomial}
+Use the complete compact44 coefficient tuple
+$\beta,K_0,M_C,M_F$, with $M_F$ already shifted, as bound in
+\texttt{positive/native/ACTIVE\_BINDING.json}.  The unknowns are
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma\in\mathbb Z_{>0}.
+\]
+Set
+\begin{align*}
+ J&=3j+1,&q&=\beta J+1,&C&=q-F-\alpha,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,&I&=ic^2,&D_f&=1+\Delta I^2,\\
+ Q&=\Delta(D_f-1),&\delta&=Q-1,&D_\tau&=\ell(\ell+k)+1.
+\end{align*}
+The coefficient and transport registers are
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ M&=q^3(q-1),\qquad B_t=(qK_0+X)C-qF.
+\end{align*}
+Here are the new centers and the small transport gap:
+\begin{align*}
+ T_o&=T+q+\alpha,& b&=cT_o-R,&V&=D_f b-c,\\
+ D&=(a+2)I,&L&=kT_o+F,&W&=1+(q-1)L,\\
+ \overline Z&=M(\ell+k+n+L+V+D)+(q-1)Y-q^3WB_t.
+\end{align*}
+Keep the adaptive main carrier
+\begin{align*}
+ r_0&=k-R-1,&S&=4qY,&U&=qS,\\
+ D_*&=U(X+ac)+H(U\gamma+SX-r_0),\qquad
+ A_1=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+Define the three-root norm without any division:
+\begin{align*}
+ A&=M^2D_\tau,\quad B=M^2D_f,\quad C_N=M^2(QV^2-1),\\
+ T_N&=\delta^2AB,\quad R_N=\delta C_N,\\
+ J_N&=\delta(\overline Z^2-A-B)-C_N,\\
+ N_c&=J_N^2-4[T_N+R_N(A+B)],\\
+ N_8&=N_c^2-64T_NR_N\overline Z^2,\\
+ \boxed{P_{11}}&\boxed{=N_8+A_1+N_8A_1=0.}
+\end{align*}
+All registers are abbreviations, not additional quantified coordinates.
+\par The exact circuit is \path{positive/p11_degree211.json}.
+
+\subsection{Recover divisibility before using positivity}
+Write, only in the proof,
+\[
+ D_y=\frac{QV^2-1}{Q-1},\qquad
+ \tau=\sqrt{D_\tau},\quad f=\sqrt{D_f},\quad y=\sqrt{D_y}.
+\]
+The inherited unconditional separation lemma applies for every integral
+$b$, without assuming $C>0$ or $V>0$.  Indeed $I\ge c^2$, $c\ge3$ imply
+$1<D_\tau<D_f<Q$ and $|V|>1$.  If $b=0$, then $V=-c$ and
+$f>\tau+y$; otherwise $y>f+\tau$.  The radicands are distinct, since
+$D_y=D\in\{D_\tau,D_f\}$ would imply $Q(D-V^2)=D-1$, with
+$0<D-1<Q$.  Thus no signed sum vanishes.
+
+The norm equation gives
+$\overline Z/M=\tau_*+f_*+y_*$ with the appropriate signed roots.
+These roots are rational.  An explicit extraction identity is as follows:
+for squares $a_1,a_2,a_3$ and nonzero sum $s=x_1+x_2+x_3$, put
+\[
+ u=\frac{s^2-a_1-a_2-a_3}{2},\qquad
+ v=\frac{u^2-a_1a_2-a_1a_3-a_2a_3}{2s}.
+\]
+Then $x_i=a_i(a_i+u)/(a_is+v)$; the denominator equals
+$x_i(x_i+x_j)(x_i+x_k)$ and cannot vanish by distinctness.
+The first two roots are integral because their squares are integers.
+The adjacent-Pell rational-integrality lemma makes $y_*$ integral from
+$QV^2-(Q-1)y_*^2=1$.  For completeness, write $y_*=a/m$ reduced;
+$m^2\mid Q-1$, and the norm-preserving descent
+\[
+ V'=(2Q-1)V-2(Q-1)y_*,\qquad
+ y'=(2Q-1)y_*-2QV
+\]
+has integral $V'$, unchanged reduced denominator $m$, and
+$0<|V'|<|V|$ when $|V|>1$.  The terminal case $|V|=1$ forces $m=1$.
+
+Therefore $M\mid\overline Z$, and reduction modulo $q^3$ gives
+$q^3\mid Y$.  This is the key dependency order: no transport-gap sign
+or positivity of $C$ has been used yet.
+
+\subsection{A degree-two bound for the auxiliary gap}
+The authentic masks give $0<(M_C+qM_F)J<2q^2$ and $q\ge16$.  Directly,
+\[
+ -Fq^3<R<q^3(q+\alpha).
+\]
+For the upper inequality, subtract the bound
+$q(q-1)(q^2-1)+\alpha(q^2-1)+2q^2$ from $q^3(q+\alpha)$;
+the difference is $q^3-q^2-q+\alpha(q^3-q^2+1)>0$.
+Since $c>Y\ge q^3$, we get
+\[
+ c(q+\alpha)>R,\qquad b>cT\ge c,\qquad V>1.
+\]
+Also $\delta>(\Delta-1)D_f$, $c<2kY$, and
+$\Delta-1=(a+2)^2-2>4Y^2$.  Consequently
+\begin{align*}
+ 0<y-V
+ &=\frac{V^2-1}{\delta(y+V)}
+ <\frac{b}{\Delta-1}\\
+ &<\frac{cT_o+Fq^3}{\Delta-1}<kT_o+F=L.
+\end{align*}
+The second center satisfies
+\[
+ D^2-D_f=I^2-1>0,\qquad 0<D-f=\frac{I^2-1}{D+f}<I.
+\]
+Thus the huge root $y$ is transported only through $y-V$, and the strong
+root $f$ through the favorable gap $D-f$.
+
+\subsection{Soundness and cofinal completeness}
+Recover positive witnesses
+\[
+ u=y-V,\qquad
+ r=n+L+V+D-f_*-y_*,\qquad f_{\rm old}=|f_*|,\quad i_{\rm old}=i.
+\]
+Indeed $r\ge n+L-(y-V)+D-f>0$.  The weighted first carrier with
+this $r$ and weight $L$ is $M\tau_*$.  The strong and auxiliary residuals,
+and $A_1$, vanish.  The inherited weighted-source theorem therefore yields
+a finite ZFC refutation.  The signed roots, not their absolute values,
+must be used inside $r$.
+
+Conversely, canonical source witnesses give the outer coordinates and a
+normalized strong pair $f,I$, and the inherited auxiliary lemma supplies
+one positive pair $V_0,y_0$ with
+\[
+ QV_0^2-(Q-1)y_0^2=1,\qquad V_0=f^2(cT_0-R)-c.
+\]
+The matrix
+\[
+ B_Q=\begin{pmatrix}2Q-1&2(Q-1)\\2Q&2Q-1\end{pmatrix}
+\]
+has determinant one, positive entries, and preserves the norm.
+Some positive power is the identity modulo $h=cf^2$, by finiteness of
+$\operatorname{SL}_2(\mathbb Z/h\mathbb Z)$.  Its iterates give unbounded
+positive pairs with $V_j\equiv V_0\pmod h$, so
+\[
+ T_j=(V_j+c+Rf^2)/(cf^2)
+\]
+is integral and unbounded.  Choose $T_o=T_j>q+\alpha$ with
+$L=kT_o+F>I$.  Then $T=T_o-q-\alpha>0$.
+The canonical weighted carrier supplies
+$r>qW-2k>2L>L+I$; hence
+\[
+ n=r-L-V-D+f+y=r-L-(D-f)+(y-V)>0.
+\]
+It has $\overline Z=M(\tau+f+y)$, and the unchanged adaptive carrier
+supplies positive $\gamma$.  This proves completeness without assuming
+an unjustified size condition on the original auxiliary witness.
+Finally, $N_8$ and $A_1$ are squares modulo four, so their unit-product
+finalizer vanishes exactly when both vanish.  Negating solvability gives
+$\operatorname{Con}(\mathrm{ZFC})$ in ZFC, with the same explicitly
+inherited compiler and calibration boundary.
+
+\subsection{Exact degree, not a generic-gate bound}
+Put $z=\overline Z-M(V+D)$, $e=I^2-1$, and
+$H_0=z^2+2MDz+M^2e-A$.  Then
+\[
+ J_N=\delta[H_0+2MV(z+MD)]-M^2(V^2-1).
+\]
+The identity $B=M^2(D^2-e)$ cancels the apparent degree-102 part of
+$N_c$.  Its degree-99 head is $8Q_0^2M_0^3V_0^2D_0z_0$, and the
+norm has degree-198 head
+\[
+ 64Q_0^4M_0^6V_0^4D_0^2(z_0^2-M_0^2D_{\tau,0}).
+\]
+With $q_0=3\beta j$, $k_0=\eta+\zeta$,
+$L_0=k_0(T+q_0+\alpha)$ and
+$B_{t,0}=(K_0q_0+X)(q_0-F-\alpha)-q_0F$, we have
+\[
+ z_0=M_0(\ell_0-L_0B_{t,0}),\qquad
+ z_0^2-M_0^2D_{\tau,0}
+ =M_0^2L_0B_{t,0}(L_0B_{t,0}-2\ell_0)\ne0.
+\]
+Multiplying by the degree-13 adaptive-carrier head shows that the
+coefficient of
+\[
+ j^{48}i^{18}\eta^{39}X^{30}Y^{67}F^4T^2\alpha^2\gamma
+\]
+is $8192(3\beta)^{48}>0$.  This certifies exact degree 211 on the
+actual coefficient slice, independently of $K_0,M_C,M_F$.
+
+\subsection{A materialized incoming degree70 companion}
+\sloppy
+The manuscript-only incoming \texttt{report.zip} already proposes a
+12-positive-variable equation of degree 70 with 100 operations.  Its advertised
+JSON was absent.  We supply it as
+\texttt{positive/p12\_degree70.json}, with independent checks matching
+all metrics, but do not claim its theorem as new here.  It replaces the
+normalized strong norm by the ordinary strong norm after an early index
+bound licenses ordinary rank recovery.  Its exact residual degrees are
+$15,13,42$.  The full proof is retained verbatim in
+\path{positive/interfaces/incoming_report.tex}; the crucial endpoint
+is the ordinary source, not a possibly nonintegral division of the strong
+multiplier by $\Delta$.

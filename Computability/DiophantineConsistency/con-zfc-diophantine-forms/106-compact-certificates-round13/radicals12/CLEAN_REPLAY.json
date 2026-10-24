@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "mode": "Copied only whitelisted files into a fresh isolated directory; no prior-round runtime paths used.",
+  "source_pin_files_verified": 40,
+  "commands": [
+    {
+      "command": "python build.py",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"integer12_degree2048\",\n  \"variable_count\": 12,\n  \"exact_degree\": 2048,\n  \"live_binary_operations\": 233,\n  \"operation_counts\": {\n    \"mul\": 148,\n    \"add\": 53,\n    \"sub\": 32\n  }\n}"
+    },
+    {
+      "command": "python check.py",
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"operations\": 233,\n  \"degree\": 2048,\n  \"checks\": 72,\n  \"leading_coefficients\": [\n    14607,\n    2944\n  ]\n}"
+    },
+    {
+      "command": "python -O check.py",
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"operations\": 233,\n  \"degree\": 2048,\n  \"checks\": 72,\n  \"leading_coefficients\": [\n    14607,\n    2944\n  ]\n}"
+    }
+  ],
+  "byte_identical_outputs": [
+    "integer12_degree2048.json",
+    "METRICS.json",
+    "CHECKS.json"
+  ],
+  "circuit_sha256": "d6b66b291ba4299b958a44a3aea9105d415638a6911fbab68bdd404b2478b10c",
+  "normal_and_optimized_checks_agree": true
+}

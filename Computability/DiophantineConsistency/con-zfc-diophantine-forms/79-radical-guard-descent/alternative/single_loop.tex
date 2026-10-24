@@ -1,0 +1,143 @@
+\section{An alternative route: one loop for unordered proof certificates}
+\label{sec:single-loop}
+
+This section gives a source-level improvement independent of Turing-machine
+simulation and Jones compression.  It does not claim a new measured final
+polynomial.  The affine-product construction in package~68 uses one bounded
+universal block for proof steps and a second for a common-multiple condition.
+Padding the proof makes the two blocks share one index.  The resulting source
+has four outer natural parameters instead of five and one bounded universal
+block instead of two.  The three separate label bounds are merged into one joint bound, reducing
+its local witness count from $23$ to $22$.
+The number of witnesses after arithmetic closure has not been evaluated.
+
+\subsection{Statement}
+
+Let a Horn calculus have natural-number labels, a freely derivable truth
+label~$0$, and rules $(p,q)\longrightarrow c$ with one conclusion and two
+premise slots.  Axioms have premises $(0,0)$; unary rules are padded by~$0$.
+Include the harmless rule $(0,0)\longrightarrow0$ and fix target~$1$.
+Write $D$ for its least set of derivable labels.
+
+For $M\geq1$, put $f_M(j)=1+jM$.  Let
+\[
+ \beta(x,y,i)=x\bmod\bigl(1+(i+1)y\bigr).
+\]
+The following predicate has outer natural parameters $T,x,y,M_0$, where
+$M=M_0+1$:
+\begin{align}
+ \beta(x,y,0)&=M+1,& \beta(x,y,T)&=1, \label{eq:sl-endpoint}\\
+ \forall i<T\quad\exists p,q,c,d,k\in\mathbb N:\quad
+ (p,q)&\longrightarrow c, \nonumber\\
+ p+q+c+d&=T,\label{eq:sl-bounds}\\
+ M&=(i+1)k,\label{eq:sl-common}\\
+ \beta(x,y,i+1)f_M(c)&=
+ \beta(x,y,i)f_M(p)f_M(q).\label{eq:sl-transition}
+\end{align}
+The rule relation in this display can have its own fixed local witnesses.
+Only one occurrence of bounded universal quantification is present.
+
+\paragraph{Theorem.}
+The predicate has a solution if and only if $1\in D$.
+This equivalence is provable by elementary finite mathematics in ZFC.
+
+\subsection{Soundness}
+
+The endpoints imply $T>0$: at $T=0$ the same beta value would equal both
+$M+1\geq2$ and~$1$.  Equation~\eqref{eq:sl-common}, as $i$ runs from~$0$
+to~$T-1$, says that every positive integer at most~$T$ divides~$M$.
+For distinct $1\leq a<b\leq T$, the weights $f_M(a)$ and $f_M(b)$ are
+coprime.  Indeed, a common divisor $d$ divides $(b-a)M$ and is coprime
+to~$M$, hence divides $b-a$.  But $b-a\mid M$, forcing $d=1$.
+
+Put $S_i=\beta(x,y,i)$.  Since all the weights are positive, $S_0=M+1>0$
+and~\eqref{eq:sl-transition} imply $S_i>0$ for every $i\leq T$.
+Multiplying the transition identities and cancelling the positive intermediate
+states gives
+\[
+ \prod_{i<T} f_M(c_i)
+ =f_M(1)\prod_{i<T}f_M(p_i)f_M(q_i).
+\]
+Pairwise coprimality of the positive-label weights, together with $f_M(0)=1$,
+forces exact equality of positive-label multiplicities.  For example, choose
+one prime divisor of each $f_M(j)$ and compare its valuation; that divisor
+occurs in no other weight.  In the free abelian group on positive labels,
+\[
+ \sum_{i<T}(e_{c_i}-e_{p_i}-e_{q_i})=e_1,
+ \qquad e_0:=0.
+\]
+If $1\notin D$, sum the finitely many coordinates outside~$D$.  A rule with
+conclusion outside~$D$ has at least one premise outside~$D$, while a rule
+with conclusion inside~$D$ contributes at most zero.  Thus the left side
+has nonpositive sum and the right side has sum~$1$, a contradiction.
+
+This argument does not accept cyclic proofs.  Its use of one conclusion per
+rule is essential; the corresponding assertion for several conclusions is
+false.
+
+\subsection{Completeness and the order of the choices}
+
+Take a finite proof tree of label~$1$.  Expand it from its root, recording a
+rule every time an open nonzero obligation is replaced by its two premises;
+zero premises are discarded.  Let $L$ be the number of recorded rules and
+$m$ the greatest sum $p+q+c$ in a recorded rule.  Choose
+\[
+ T\geq\max(1,L,m),\qquad M=T!,\qquad M_0=M-1.
+\]
+Pad the list to length~$T$ with $(0,0)\longrightarrow0$.  These padding steps
+leave the accumulator unchanged because $f_M(0)=1$.
+
+At each stage let $S_i$ be the product of $f_M(j)$ over the current multiset
+of nonzero open obligations.  Removing the chosen conclusion and inserting
+its premises proves~\eqref{eq:sl-transition}.  The initial value is $M+1$;
+the final value is~$1$.  Every row-label sum is at most~$T$, supplying the joint slack; and the quotients
+$k_i=M/(i+1)$ establish~\eqref{eq:sl-common}.
+
+Only after these finite integers have been chosen do we choose a beta scale.
+For instance, take
+\[
+ y=T!\bigl(1+\max_{0\leq i\leq T}S_i\bigr).
+\]
+Then the moduli $1+(i+1)y$, for $0\leq i\leq T$, are pairwise coprime:
+their index differences are at most~$T$ and divide~$y$.  They also exceed
+the required residues.  The finite Chinese remainder theorem supplies
+$x$ with $\beta(x,y,i)=S_i$ simultaneously.  This completes the proof.
+The scale~$y$ and the common multiple~$M$ are distinct witnesses; identifying
+them would generally destroy completeness.  The arithmetic closure
+compiler's own scales must likewise remain independent.
+
+\subsection{Literal local-polynomial adapter}
+
+Package~68 supplies a nonnegative local polynomial
+$H(S,S',m,M_0;\mathbf u)$ with $23$ natural witnesses and degree~$50$.
+It checks one padded numeric C222 rule, its three label bounds, and its
+affine accumulator update.  Write $H_0$ for its Horn product plus accumulator-update square, removing
+the three old bound squares and their slack coordinates.  Here $\mathbf u$
+denotes the twenty retained witnesses and includes the three label coordinates
+$p,q,v$.  With a fresh joint-bound witness $b_0$, define
+\[
+ J(S,S',T,M_0,i;\mathbf u,b_0,k)
+ =H_0(S,S',M_0;\mathbf u)
+  + (p+q+v+b_0-T)^2 +\bigl(M_0+1-(i+1)k\bigr)^2.
+\]
+The retained nonnegativity makes $J=0$ precisely the conjunction of the rule/update, joint-bound, and divisor
+conditions.  This source has five exposed step coordinates and $22$ local
+natural witnesses.  Its degree remains exactly~$50$: the new summands
+have degrees at most~$4$ and cannot remove the degree-$50$ part of the Horn product.
+
+One now applies the supplied bounded-forall constructor once to the single
+family $J=0$, conjoins the beta endpoint conditions, and existentially binds
+the four outer parameters.  This is a precise source recipe, but the full
+ordinary polynomial and its total cost have not been materialized here.
+The old C222 calibration remains an inherited obligation if this source is
+used as a Con(ZFC) endpoint.  No result in this section fills the repository's
+separate gap between an external theorem and a checked internal ZFC proof.
+
+The executable controls test $988$ artificial Horn systems with up to three
+rules on labels $0,1,2$.  They construct and verify a certificate for all
+$185$ systems in that family where target~$1$ is derivable, including beta
+encoding, and reject all $185$ corrupted divisor quotients.  A separate
+counterfeit uses $M=1$, axiom~$3$, and rule $(1,0)\longrightarrow0$:
+the accumulator $2,4,1,1$ passes the raw update but fails the divisibility
+condition.  These tests support implementation checks; the unbounded theorem
+is the proof above.

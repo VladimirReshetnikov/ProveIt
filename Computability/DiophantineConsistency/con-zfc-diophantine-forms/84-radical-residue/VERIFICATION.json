@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "source_identity": {
+    "status": "PASS",
+    "pinned_files": 26
+  },
+  "positive_builder_and_natural_translation": {
+    "status": "PASS",
+    "positive_operations": 131,
+    "natural_operations": 141,
+    "degree": 1152,
+    "translation": "x=x0+1 in each of ten coordinates; exact literal substitution"
+  },
+  "checks": [
+    {
+      "script": "ten_positive/independent_check.py",
+      "status": "PASS",
+      "receipt": "ten_positive/generated/INDEPENDENT_CHECKS.json"
+    },
+    {
+      "script": "ten_positive/rebuild_coefficients.py",
+      "status": "PASS",
+      "receipt": "ten_positive/generated/COEFFICIENT_CHECKS.json"
+    },
+    {
+      "script": "ten_positive/local_checks.py",
+      "status": "PASS",
+      "receipt": "ten_positive/generated/LOCAL_CHECKS.json"
+    },
+    {
+      "script": "integer/independent_review.py",
+      "status": "PASS",
+      "receipt": "integer/certificates/INDEPENDENT_REVIEW.json"
+    },
+    {
+      "script": "integer/verify.py",
+      "status": "PASS",
+      "receipt": "integer/certificates/VERIFY.json"
+    }
+  ],
+  "symbolic_integer_suite": true,
+  "proof_boundary": "Exact finite algebra, byte reconstruction and diagnostics. Unbounded semantic results use the ordinary mathematical proofs in the report and the explicitly inherited native compiler/calibration theorem."
+}

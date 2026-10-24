@@ -1,0 +1,177 @@
+# Centering the auxiliary norm in twelve integer variables
+
+## Result and inherited boundary
+
+The incoming `ConZFC_Valuation_and_Signed_Certificates_2026-10-23.zip`
+contains a rational auxiliary-root polynomial with 12 unrestricted integer
+variables, exact degree 2400, and 215 binary operations, and an integral
+auxiliary-root polynomial with the same variables, degree 2912, and 209
+operations. Two polynomial changes of coordinates improve that pair:
+
+| New polynomial | Integer variables | Exact degree | Live operations |
+|---|---:|---:|---:|
+| centered rational | 12 | 2368 | 216 |
+| centered integral | 12 | 2400 | 210 |
+
+The second dominates the old 2400/215 point in arithmetic cost. The first
+lowers the degree with one additional gate. These are incremental algebraic
+improvements, not a variable-count breakthrough or a global simplicity
+claim. The named archived mathematical endpoint, its six fixed constants,
+and its native/compiler/calibration assumptions are unchanged. There is no
+new end-to-end Lean or Rocq certificate.
+
+## Entire change of variables
+
+Retain every front-end definition in the parent `PRIME_TWELVE.md`, including
+all twelve independent integers
+
+    j,C,z,h,r,v,w,T,c,n,t,s
+
+and the six fixed integer coefficients. In particular `S=I H^5`,
+`Q=Delta^2 I^2`, `delta=Q-1`, `Cy=Q V^2-1`. The coefficients A and B of the
+intersective quintic are unchanged, as are the four integer radicands
+
+    a0=B^2 Dm, a1=9 S^2 Df, a2=81 S^2 Dt, a3=729 S^2 Dg.
+
+The parent polynomials are respectively
+
+    delta^16 F32(S n-A; a0,a1,a2,a3,S^2 Cy/delta),
+    F32(S n-A; a0,a1,a2,a3,S^2 delta Cy),
+
+where F32 is the ordinary polynomial obtained by multiplying the 32 signed
+radical factors, as explicitly evaluated by the retained division-free
+`norm5.py` circuit.
+
+For the new rational polynomial substitute
+
+    n_old = n + V.
+
+For the new integral polynomial substitute
+
+    n_old = n + Q V.
+
+V and Q are integer polynomials in the other eleven coordinates, independent
+of n. Each substitution is therefore an automorphism of the full integer
+coordinate lattice, with inverse `n=n_old-V` or `n=n_old-QV`. Consequently
+this is an exact bijection on zero sets, with no extra positivity, parity,
+invertibility, nonvanishing, or canonical-witness hypothesis. In particular
+all exceptional branches are preserved, and the parent semantic theorem
+transfers without altering any Pell or proof-calibration argument.
+
+The delivered graphs contain only integer constants, the twelve independent
+variables, the six fixed coefficient leaves, and binary +, -, and *. There
+are no literal divisions or square-root operations.
+
+## Why polynomial degree falls
+
+Set `z0=S n-A`. Introduce the two formal square roots with squares a2 and
+a3 only to analyze the retained biquadratic norm circuit. The crucial
+scalar cuts are exact integer-polynomial identities:
+
+    delta (S V+z0)^2 - S^2 Cy
+      = delta z0^2 + 2 delta S V z0 - S^2(V^2-1),
+
+    (S Q V+z0)^2 - S^2 delta Cy
+      = z0^2 + 2 S Q V z0 + S^2(Q V^2+delta).
+
+The first removes the degree-150 scalar contribution; the second removes
+the degree-182 contribution. This is why simple syntactic degree propagation
+through the unexpanded circuit would be incorrect.
+
+Give every independent variable degree one and every fixed coefficient
+port degree zero. The unchanged front-end degree table is
+
+    S:34, Q and delta:32, V:25, z0:35,
+    a0:70, a1:88, a2:102, a3:114.
+
+Use weights 51 and 57 for sqrt(a2) and sqrt(a3). In a four-component
+biquadratic expression, the table below gives each component's polynomial
+degree plus its radical's weight. An entry is an upper bound unless the
+strict leading argument below identifies it as attained.
+
+| Stage | Centered rational | Centered integral |
+|---|---|---|
+| Initial adjusted square q | 146,142,148,140 | 150,142,148,108 |
+| First adjusted square | 296,288,294,290 | 300,292,298,290 |
+| Second adjusted square | 592,584,590,586 | 600,592,598,590 |
+| First final norm, scalar | 1184 | 1200 |
+| First final norm, radical component | 1182 | 1198 |
+| Final scalar | **2368** | **2400** |
+
+To check the table independently, squaring four weighted components
+(a,b,c,f) gives component bounds
+
+    max(2a,2b,2c,2f), max(a+b,c+f),
+    max(a+c,b+f), max(a+f,b+c).
+
+The first scalar correction has degree at most 270 and the second at most
+522. They cannot affect any scalar leading term in the displayed table.
+The final two quadratic norms both have a strictly dominant scalar term.
+This establishes the degree upper bounds by exact algebra.
+
+For the rational endpoint, the unique largest initial weighted component
+is `-2 Q S V sqrt(a3)`. Its square gives the unique first scalar top term;
+all subsequent scalar top terms remain unique. Writing a subscript 0 for
+the highest homogeneous part, the exact final top form is
+
+    2^16 Q0^16 S0^16 V0^16 a3_0^8.
+
+As `a3_0=-3^7 S0^2 s^2 eta0^4`, this becomes
+
+    2^16 3^56 Q0^16 S0^32 V0^16 s^16 eta0^32.
+
+The physical front-end leading forms are
+
+    q0=6 beta j, W0=12 w,
+    Y0=2 q0^3 v, a0_phys=2 q0^4 W0 v,
+    I0=s r c^2, Q0=a0_phys^4 I0^2,
+    S0=2^10 I0 a0_phys^5,
+    V0=a0_phys^2 I0^2 (4 I0 T-R0),
+    eta0=-h a0_phys Y0.
+
+Here `a0_phys` is the leading form of the source coordinate a, not the first
+norm radicand a0. Selecting the T term throughout the last factor yields
+
+    [j^1248 w^288 v^320 h^32 s^128 r^112 c^224 T^16] P
+       = 2^2512 3^1592 beta^1248 > 0.
+
+Its exponents sum to 2368. This proves exact attainment after specialization
+to the actual fixed coefficient tuple; other fixed ports cannot cancel it.
+
+For the integral endpoint the unique initial scalar top term is
+`S0^2 Q0 V0^2`. It remains dominant through all four squarings/norms, so the
+final top form is
+
+    S0^32 Q0^16 V0^32
+      = 2^320 a0_phys^288 I0^128 (4 I0 T-R0)^32.
+
+Therefore
+
+    [j^1152 w^288 v^288 s^160 r^160 c^320 T^32] P
+       = 2^2400 3^1440 beta^1152 > 0,
+
+proving exact degree 2400 for the fixed tuple.
+
+## Arithmetic cost and exact checks
+
+The rational translation adds one addition: `S*(n+V)-A` replaces `S*n-A`.
+For the integral version first evaluate `QV=Q*V` and `Cy=QV*V-1`.
+This reassociation uses exactly the two multiplications previously used by
+`Q*(V*V)-1`, while making QV available for the translation. Thus the
+integral translation also adds only one addition, not a new multiplication.
+Independent live-node counting gives 139 multiplications, 45 additions and
+32 subtractions for the rational polynomial, and 133,45,32 for the integral
+polynomial.
+
+`check_centered12.py` checks the exact output-polynomial identity against
+each archived graph after the stated substitution. It uses exact expression
+interning modulo associativity and commutativity of + and *; it does not
+rely on random evaluations or equal cryptographic hashes. It separately
+expands both central cancellation identities over the integers in four
+independent cut variables, checks the weighted-degree recurrence and the
+strict scalar comparisons, and recounts the graph operations.
+
+The resulting checker certifies the algebraic reduction and metrics. The
+unbounded consistency equivalence remains the explicit inherited theorem,
+now transferred by the elementary polynomial bijection above. Finite
+checks do not decide ZFC consistency.

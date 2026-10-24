@@ -1,0 +1,169 @@
+\section{Eliminating every arithmetic macro}
+\label{sec:primitives}
+
+This section specifies the fixed finite graph certificates used by the
+direct materialization. All coordinates here are nonnegative integers.
+A displayed product or square is subsequently expressed by addition and
+multiplication gates; the final gate rows are quadratic.
+
+\subsection{A positive-power graph with 27 auxiliary coordinates}
+
+For positive inputs $n,k$ and proposed output $m$, write
+\[
+ \mathcal N(a,x,y)=x^2+y^2-1-a^2y^2.
+\]
+The positive-power graph has the following 27 additional coordinates:
+\[
+\begin{gathered}
+ W,A,T,Z,X,Y,U,V,S,R,B,\ a_0,y_0,b_0,q,d,\\
+ b_+,b_-,s_+,s_-,r_+,r_-,x_+,x_-,g,w_n,w_k.
+\end{gathered}
+\]
+Impose the finite equations
+\begin{align}
+ A&=a_0+2,&Y&=k+y_0,&B&=b_0+2,\label{eq:powbounds}\\
+ \mathcal N(A,X,Y)&=0,&
+ \mathcal N(A,U,V)&=0,&
+ \mathcal N(B,S,R)&=0,\label{eq:pownorms}\\
+ B&=1+4Yq,& V&=Y^2(d+1),\label{eq:powdiv}\\
+ B+Ub_+&=A+Ub_-,&
+ S+Us_+&=X+Us_-,&
+ R+4Yr_+&=k+4Yr_-,\label{eq:powcong}\\
+ X+Yn+Tx_+&=YA+m+Tx_-,\label{eq:powfinalcong}\\
+ 2An&=T+n^2+1,& T&=m+g+1,\label{eq:powmodulus}\\
+ W&=n+w_n,&W&=k+w_k,&
+ \mathcal N(W+1,A,WZ)&=0.\label{eq:powlast}
+\end{align}
+Existence of these coordinates is equivalent to $m=n^k$.
+This is the positive specialization of the Pell--Matiyasevich
+power criterion~\cite{pell,carneiro}, with every strict inequality
+represented by a natural slack, every divisibility represented by a
+quotient, and every possibly signed congruence quotient represented as
+a difference of two naturals. The first three norms and congruences
+characterize the $k$th Pell solution at parameter $A$. The last norm,
+the bounds on $W$, the modulus definition, and the strict output bound
+are precisely the remaining power criterion.
+
+The condition $Y\ge k\ge1$ excludes the exceptional zero-index Pell
+solution. The modulus $4Y$ is positive. Also \eqref{eq:powlast} gives
+\[
+ A^2=1+W^3(W+2)Z^2.
+\]
+Since $A\ge2$ and $W\ge n\ge1$, one has $Z\ge1$ and $A>W\ge n$.
+Thus the integer rearrangement in \eqref{eq:powfinalcong} is equivalent
+to the original natural-subtraction congruence involving $A-n$.
+These side conditions are part of the proof, not optional simplifications.
+
+The optional unrestricted builder retains the zero-exponent and zero-base
+branches. The delivered constructions do not need those branches, because
+the preceding section and an independently checked call-site induction
+establish positive inputs to all 55 power uses.
+
+\subsection{Binomial coefficients by a base digit}
+
+For $n,k\in\N$, put
+\[
+ q=2^n+1,\qquad L=q^k,\qquad P=(q+1)^n.
+\]
+The binomial theorem expands $P$ in base $q$, with the coefficient
+$\binom nk$ in digit position $k$, because all coefficients are at most
+$2^n<q$. In particular, positions above $n$ have digit zero.
+For proposed output $c$, add just four natural coordinates $h,r,r_s,c_s$
+besides the three power graphs, and impose
+\begin{equation}\label{eq:choosegraph}
+ P=L(qh+c)+r,\qquad L=r+r_s+1,\qquad q=c+c_s+1.
+\end{equation}
+The last two equations say $0\le r<L$ and $0\le c<q$. Uniqueness of
+quotient, remainder, and base digit proves that \eqref{eq:choosegraph}
+holds exactly when $c=\binom nk$.
+
+\subsection{Factorials as a ceiling quotient}
+
+For $n\in\N$, define
+\[
+ \rho=(n+2)^{n+2},\qquad c=\binom{\rho+n}{n},\qquad P=(\rho+1)^n.
+\]
+Then
+\begin{equation}\label{eq:factorialformula}
+ n!=\left\lceil\frac Pc\right\rceil.
+\end{equation}
+For $n=0,1$ this is immediate. For $n\ge2$,
+\[
+ \frac Pc=n!\prod_{i=1}^n\frac{\rho+1}{\rho+i}
+ =n!\prod_{i=1}^n\left(1-\frac{i-1}{\rho+i}\right).
+\]
+Using $1-\prod(1-a_i)\le\sum a_i$ for $0\le a_i\le1$, we obtain
+\[
+ 0\le n!-\frac Pc
+ <\frac{n!\,n(n-1)}{2(\rho+1)}<1.
+\]
+The final strict bound follows, for example, from
+$n!\,n(n-1)/2<n^{n+2}<(n+2)^{n+2}=\rho$.
+This proves \eqref{eq:factorialformula}, including the case where the
+quotient is already integral.
+
+For proposed output $f$ and two natural coordinates $r,s$, impose
+\[
+ P+c=cf+r+1,\qquad c=r+s+1.
+\]
+Since $c>0$, these say $c(f-1)<P\le cf$, which is equivalent to
+$f=\lceil P/c\rceil$. The required powers and binomial graph are those
+already specified.
+
+\subsection{Ordinary quadratic rows and one quartic}
+
+Every arithmetic-circuit addition or multiplication is represented by a
+new natural coordinate $z$ and the row
+\[
+ z-x-y=0\qquad\hbox{or}\qquad z-xy=0.
+\]
+Numerals and shared nodes are treated once at each distinct evaluation.
+Signed equality is kept as an equality between two nonnegative
+circuits. Each graph obligation is then an ordinary residual of degree
+at most two. A finite conjunction of rows $R_\ell=0$ is equivalent over
+$\N$ to the one equation $\sum_\ell R_\ell^2=0$.
+
+Before affine elimination, the resulting fixed system has 6,183
+coordinates and 5,523 rows. Every residual coefficient has absolute
+value at most four. Its expanded squared sum has 17,430 monomials and
+coefficient height 1,993. These are measured exact coefficient
+dictionaries, rather than an asymptotic bound.
+
+\subsection{Removing nonnegative affine gates}
+
+Suppose a retained gate has the defining row $z-L=0$, where $L$ is an
+affine polynomial with nonnegative integer coefficients in earlier
+coordinates. Substituting $L$ everywhere and deleting this defining
+row and coordinate is a bijection on natural zero sets: the inverse
+restores $z=L$. Substitution of an affine polynomial preserves the
+quadratic degree bound.
+
+We apply this operation in topological order when the expanded affine
+replacement has at most four terms. The support threshold controls
+coefficient and expression growth; it is unrelated to correctness.
+Exactly 2,569 coordinates and rows disappear. This yields
+\[
+ 6183-2569=3614,\qquad 5523-2569=2954.
+\]
+The resulting quartic has 15,996 monomials and coefficient height
+127,778,545, which is less than $2^{27}$. The increase in coefficient
+height is the explicit cost of removing these affine wires.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Measured quantity & Retained wires & Affine elimination\\
+\midrule
+Outer coordinates & 5 & 5\\
+Other witness coordinates & 1,665 & 1,665\\
+Gate coordinates & 4,513 & 1,944\\
+Power / binomial / factorial graphs & 55 / 16 / 2 & 55 / 16 / 2\\
+Quadratic rows & 5,523 & 2,954\\
+Expanded monomials & 17,430 & 15,996\\
+Maximum residual coefficient & 4 & 4,556\\
+Maximum quartic coefficient & 1,993 & 127,778,545\\
+\bottomrule
+\end{tabular}
+\caption{Exactly measured direct materializations of the same certificate.}
+\end{table}

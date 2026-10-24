@@ -1,0 +1,388 @@
+\section{A smaller direct quartic with explicit coefficients}
+\label{sec:direct-oriented}
+
+The second completed construction in this report compiles a numerical proof
+calculus directly.  Its final polynomial has small, completely materialized
+integer coefficients.  The construction uses the calibrated $C_{222}$
+calculus and a shared Chinese-remainder certificate; it does not require a
+K215 transition table or Jones's universal polynomial.
+
+Let $R_1,\ldots,R_{2089}$ be the literal quadratic residuals, in the
+listed coordinate order, in \path{direct/eq/equation.json}. Define
+\begin{equation}\label{eq:direct2473}
+ P_{2473}(x_1,\ldots,x_{2473})
+       =\sum_{j=1}^{2089}R_j(x_1,\ldots,x_{2473})^2.
+\end{equation}
+Every coefficient in every $R_j$ is a supplied integer. The companion
+\path{direct/eq/expanded_polynomial.json} gives all $20\,580$ collected
+monomials of the same polynomial, without any arithmetic macros.
+
+\begin{theorem}[Direct consistency equation]
+\label{thm:direct2473}
+The polynomial $P_{2473}$ has exact degree four and coefficient height
+$127\,808\,289<2^{27}$. Ordinary mathematics formalizable in ZFC proves
+\[
+ \bigl(\nexists x\in\mathbb N^{2473}\;P_{2473}(x)=0\bigr)
+       \quad\longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}),
+ \qquad \mathbb N=\{0,1,2,\ldots\}.
+\]
+This theorem uses the identified C222/refutability calibration and the
+Pell--Matiyasevich characterization. It does not assert either side of the
+displayed equivalence.
+\end{theorem}
+
+The materialized incoming direct construction had $3\,614$ natural
+coordinates and $2\,954$ quadratic residuals. The present construction
+removes $1\,141$ coordinates, a $31.57\%$ reduction, and $865$ residuals.
+Its expanded monomial count is larger. Thus it is a new point in a tradeoff
+between coordinate count and expanded size, not a statement of global
+minimality.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Construction & Variables & Rows & Monomials & Height\\
+\hline
+Parent, affine gates removed & 3614 & 2954 & 15996 & 127778545\\
+New, affine gates removed & 2473 & 2089 & 20580 & 127808289\\
+Parent, affine gates retained & 6183 & 5523 & 17430 & 1993\\
+New, affine gates retained & 4860 & 4476 & 14719 & 1837\\
+\hline
+\end{tabular}
+\end{center}
+All four rows describe exact quartics over nonnegative integers. The second
+new equation, with retained affine gates, improves each displayed quantity
+against its corresponding parent. Its exact data are under
+\path{direct/small_height/}. The proofs of existence equivalence apply to
+both variants.
+
+\subsection{An eleven-coordinate graph for positive exponentiation}
+
+The main new arithmetic fact is a compact positive-power certificate with
+only eleven auxiliary natural coordinates before gate expansion. For
+$a,x,y\in\mathbb N$, write
+\[
+ \mathcal N(a,x,y)=x^2+y^2-1-a^2y^2.
+\]
+The intended inputs are $n,k>0$ and the proposed output is $m\in\mathbb N$.
+Take eleven auxiliary coordinates
+\[
+ U,\alpha,z,y,q,d,g,b,s,r,h\in\mathbb N.
+\]
+Define the following ordinary polynomial abbreviations:
+\begin{align*}
+ W&=n+k,& Z&=z+1,&Y&=k+y,\\
+ A&=n+\alpha+1,&T&=m+g+1,&V&=Y^2(d+1),\\
+ B&=1+4Y(q+1),&
+ X&=Y(\alpha+1)+m+Th,\\
+ S&=X+Us,&R&=k+4Yr.
+\end{align*}
+They are abbreviations, not extra quantified coordinates. The complete
+graph consists of six equations:
+\begin{align}
+ \mathcal N(A,X,Y)&=0,&\mathcal N(A,U,V)&=0,
+       &\mathcal N(B,S,R)&=0,\label{eq:op-norms}\\
+ B&=A+Ub,&2An&=T+n^2+1,
+       &\mathcal N(W+1,A,WZ)&=0.\label{eq:op-rest}
+\end{align}
+
+\begin{theorem}[Positive-power graph]
+\label{thm:positive-power11}
+For every $n,k>0$ and every $m\in\mathbb N$, equations
+\eqref{eq:op-norms}--\eqref{eq:op-rest} have a solution in their eleven
+auxiliary natural coordinates exactly when $m=n^k$.
+\end{theorem}
+
+\begin{proof}
+We first recall the standard finite Pell--Matiyasevich criterion and then
+prove each reduction to the displayed graph. The primary source is the
+Mathlib theorem \texttt{Pell.eq\_pow\_of\_pell}, together with its
+\texttt{matiyasevic} theorem for the Pell coordinate at a prescribed
+index. The supplied source is pinned to Mathlib commit
+\texttt{81a5d257c8e410db227a6665ed08f64fea08e997}; the repository's
+\path{PellRepresentation.lean} and \path{PowerRepresentation.lean}
+state the equivalent explicit finite arithmetic criteria.
+
+For positive $n,k$, the original criterion existentially chooses
+$W,A,T,Z,X,Y,U,V,S,R,B$ subject to
+\begin{gather*}
+ A\ge2,\quad Y\ge k,\quad B\ge2,\quad
+ \mathcal N(A,X,Y)=\mathcal N(A,U,V)=\mathcal N(B,S,R)=0,\\
+ B\equiv1\pmod{4Y},\qquad V\in Y^2\mathbb Z_{>0},\\
+ B\equiv A\pmod U,\quad S\equiv X\pmod U,
+       \quad R\equiv k\pmod{4Y},\\
+ X+Yn\equiv YA+m\pmod T,\quad
+ 2An=T+n^2+1,\quad T>m,\\
+ W\ge n,k,\qquad \mathcal N(W+1,A,WZ)=0.
+\end{gather*}
+These conditions are equivalent to $m=n^k$. In particular, the modular
+conditions are not informal substitutes for a finite graph: they will
+be replaced by the explicit natural quotients below.
+
+First we justify orienting all four congruences. Since
+$V\ge Y^2\ge Y\ge1$, the first two norms imply
+\[
+ U\ge X,\qquad U\ge A.
+\]
+Also $B>0$ and $S>0$, the latter following from its norm. If
+$0<a\le u$, every positive representative of $a$ modulo $u$ is
+$a+u j$ for some $j\in\mathbb N$. This includes the boundary $a=u$,
+where the least positive representative is $u$. Hence
+\[
+ B=A+Ub,\qquad S=X+Us
+\]
+for natural $b,s$. As $0<k\le Y<4Y$, one similarly has
+$R=k+4Yr$ for a natural $r$.
+
+For the last congruence, the first norm gives
+\[
+ X^2-(A-1)^2Y^2=1+2(A-1)Y^2>0,
+\]
+and thus $X>(A-1)Y$. Therefore
+\[
+ D:=X+Yn-YA-m>(n-1)Y-m\ge-m>-T.
+\]
+Because $D$ is an integer multiple of positive $T$, it cannot be
+negative. Consequently
+\begin{equation}\label{eq:power-natural-quotient}
+ X+Yn=YA+m+Th\qquad(h\in\mathbb N).
+\end{equation}
+This interval argument, rather than an assumption about the signs of
+formal quotient witnesses, licenses the fourth orientation.
+
+Next we fix $W=n+k$. The standard completeness proof chooses
+$W=\max(n,k)$ but uses only $W\ge n,k$ and $W>0$ after that choice.
+Here is the actual construction for any such $W$. For the Pell sequence
+\[
+ x_j(a)+y_j(a)\sqrt{a^2-1}
+       =(a+\sqrt{a^2-1})^j,
+\]
+put $A=x_W(W+1)$ and $Z=y_W(W+1)/W$. The recurrence congruence
+$y_j(a)\equiv j\pmod{a-1}$ proves that $Z$ is an integer. It is
+positive. Its Pell equation is exactly the last norm, and the usual
+elementary growth estimate gives
+\[
+ n^k\le n^W<(W+1)^W\le A.
+\]
+Set $X=x_k(A)$, $Y=y_k(A)$, and $T=2An-n^2-1$. Then $Y\ge k$.
+Moreover $A\ge n+1$ gives
+\[
+ T-A=(2n-1)A-n^2-1\ge n^2+n-2\ge0,
+\]
+so $T\ge A>n^k$. The identity
+$A^2-1\equiv(n-A)^2\pmod T$, evaluated in the quadratic-ring
+recurrence, gives $X+Yn\equiv YA+n^k\pmod T$. The standard
+Pell-index theorem supplies the remaining $U,V,S,R,B$ for this fixed
+$A,X,Y,k$. Thus $W=n+k$ preserves completeness.
+
+The original graph with $W=n+k$ has $A\ge2$ and
+\[
+ A^2=1+W^3(W+2)Z^2.
+\]
+Hence $Z\ge1$ and $A>W\ge n$. We may write
+\[
+ Z=z+1,\quad A=n+\alpha+1,\quad Y=k+y,
+ \quad T=m+g+1,\quad V=Y^2(d+1).
+\]
+Since $B\ge2$ and $B\equiv1\pmod{4Y}$, the positive quotient
+$(B-1)/(4Y)$ is at least one; write $B=1+4Y(q+1)$.
+All the new coordinates are natural. Equation
+\eqref{eq:power-natural-quotient} now solves for
+$X=Y(\alpha+1)+m+Th$, and the other two oriented equations solve
+for $S=X+Us$ and $R=k+4Yr$. Substituting these three nonnegative
+polynomial expressions removes three coordinates and three equations.
+The result is precisely the eleven-coordinate graph in the theorem.
+
+Conversely, from a solution of that graph, $W\ge2$ and $Z\ge1$
+force $A>W\ge n$ through the last norm. All original inequalities,
+norms and congruences are then restored by the displayed definitions.
+The original Pell--Matiyasevich criterion gives $m=n^k$.
+\end{proof}
+
+\subsection{Why positive inputs suffice at every use}
+
+The completed direct compiler has exactly $55$ power graphs, $16$
+binomial graphs and two factorial graphs. Its outer length and label
+bound are parameterized by $t=t_0+1$ and $m_0+1$, respectively.
+Every encoded CRT coordinate is also an independent natural coordinate
+plus one. These choices preserve completeness because the Chinese
+remainder theorem specifies residue classes, and representatives can
+be increased by positive multiples of their common modulus.
+
+All bases and exponents of the actual power calls are positive. The
+carrier has positive base and exponent $t>0$. Each range-binomial
+graph has positive upper argument and positive lower argument. The
+factorial arguments are positive and their radius arguments are shifted
+by two. Finally the modulus-product powers use a previous factorial
+output, which is at least one. This is an induction through the acyclic
+arithmetic-macro dependencies. The supplied audit checks that dependency
+induction at all $55$ actual call sites. Theorem
+\ref{thm:positive-power11} is not asserted for zero-base or
+zero-exponent inputs.
+
+\subsection{The inherited direct source and its bounded compiler}
+
+For clarity, the full semantic chain is recorded here. The exact C222
+constructors, eight unconditional axiom families, guarded bundle,
+modus-ponens branch, and generalization branch are supplied by
+\path{direct/direct_calculus.py}. They are literal compositions of
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,
+\quad M=I+1,\quad A=I+2,\quad E=I+3.
+\]
+The axiom and inference formulas were audited against the supplied
+\path{Code254.lean} and \path{KCode222.lean}. The imported calibration is
+\[
+ C_{222}(1)\ \longleftrightarrow\
+ \mathrm{ZF}\text{ has a finite refutation}
+ \ \longleftrightarrow\
+ \mathrm{ZFC}\text{ has a finite refutation}.
+\]
+Its named results are
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+The immediate source files are included with their pinned provenance.
+
+The numerical calculus has single-conclusion Horn rules, padded to two
+premise slots using the freely derivable truth code $0$. Its target
+is code $1$. A finite nonnegative multiset of rule instances proves the
+target precisely when its conclusion-minus-premise balance is the
+target unit vector, after ignoring coordinate $0$. For soundness,
+if the target were underivable, sum the balance over all underivable
+formulas. Each rule contributes at most zero, whereas the target
+contributes one. Completeness counts nodes in a finite proof tree.
+
+For $t$ rule instances with all labels in $[0,m]$, choose
+$M=(m+1)^t$. With $m,t\ge1$, the identity
+\[
+ \prod_{i<t}(1+v_iM)
+    =(1+M)\prod_{i<t}(1+p_iM)(1+q_iM)
+\]
+implies the corresponding identity of polynomials in a formal variable.
+Indeed, if the right product had more than $t$ nonconstant factors,
+its value would be at least $M^{t+1}$, whereas the left value is
+at most $(1+mM)^t<M^{t+1}$. Thus each side has at most $t$
+nonconstant factors. Its coefficient sum is at most $(m+1)^t=M$,
+and each individual coefficient is strictly below $M$. Base-$M$
+uniqueness then proves the polynomial identity, and unique
+factorization gives the exact positive-label balance.
+
+One accumulator realizes this equality with polynomial local steps
+\[
+ S_0=1+M,\quad S_t=1,\qquad
+ S_{i+1}(1+v_iM)=S_i(1+p_iM)(1+q_iM).
+\]
+Completeness expands open obligations in a proof tree; the accumulator
+is the product of the affine weights of those obligations. A beta code
+stores the finite sequence. The source has thirteen per-row natural
+coordinates: three labels, four schema coordinates and six
+sequence/quotient/remainder coordinates. No proof-order or cycle test
+is omitted without justification: the single-conclusion balance
+argument supplies exactly that justification.
+
+The finite bounded block is compiled using the following shared CRT
+principle. Write its nonnegative local polynomial as $P=E-F$, where
+$E,F$ have nonnegative coefficients. With coordinate bounds $u_j\le V$,
+put
+\[
+ H=E(t,z,u)+F(t,z,u)+t+V+1,\quad T=H!,\quad
+ B_*=\prod_{i<t}(1+(i+1)T).
+\]
+The whole bounded block is equivalent to finitely many existential
+conditions
+\[
+ B_*\mid\binom{A_j}{u_j+1},\qquad
+ B_*\mid1+(C+1)T,\qquad
+ B_*\mid E(C,z,A)-F(C,z,A).
+\]
+For soundness, a prime divisor of $1+(i+1)T$ is greater than $H$.
+The binomial condition selects a residue in $[0,u_j]$ for each
+coordinate, the index condition selects residue $i$, and the size
+bound turns the local congruence into equality. For completeness,
+the moduli $1+(i+1)T$ are pairwise coprime. The CRT supplies all
+residue classes, and $(u_j+1)!\mid T$ permits cancellation of the
+falling-factorial denominator. This proves both directions without
+treating factorial or binomial notation as polynomial syntax.
+
+The builder eliminates the product, binomial and factorial operations
+by the explicit arithmetic identities and finite graphs retained in
+\path{direct/upstream/parent_crt.tex} and
+\path{direct/upstream/parent_primitives.tex}. Their only modified
+primitive is Theorem~\ref{thm:positive-power11}. For example,
+\[
+ \binom nk\text{ is digit }k\text{ of }(2^n+2)^n
+       \text{ in base }2^n+1,
+\]
+so three power graphs and four quotient/remainder coordinates suffice.
+The factorial identity used is
+\[
+ n!=\left\lceil
+ \frac{(\rho+1)^n}{\binom{\rho+n}{n}}
+ \right\rceil,\qquad \rho=(n+2)^{n+2}.
+\]
+For $n\ge2$, the difference between $n!$ and the fraction is in
+$[0,1)$, because
+\[
+ 0\le n!-n!\prod_{i=1}^n\frac{\rho+1}{\rho+i}
+ <\frac{n!n(n-1)}{2(\rho+1)}<1.
+\]
+The cases $n=0,1$ are immediate. Ceiling, division and bounds are
+implemented by ordinary natural slack equations. The complete finite
+builder emits all their arithmetic gates and residuals.
+
+\subsection{A final sign saving and exact gate elimination}
+
+The local source $P=E-F$ is a product of sums of squares plus further
+squares, hence $E\ge F$ on every natural assignment. Its final
+divisibility condition therefore has a natural quotient:
+\[
+ E=F+B_*q,\qquad q\in\mathbb N.
+\]
+Replacing the two-natural encoding of a signed quotient by this one
+coordinate is valid before any local rule is known to hold.
+
+An arithmetic gate $z=x+y$ or $z=xy$ contributes its quadratic
+defining residual. A finite conjunction of residual equations is
+equivalent to their sum of squares being zero. When a gate is
+$z=L$ for an affine polynomial $L$ with nonnegative coefficients in
+earlier coordinates, substitution is a bijective elimination of that
+natural coordinate. It preserves the quadratic residual degree bound.
+The exporter applies this operation only when the expanded affine
+support has at most four terms; that threshold controls size and
+does not affect correctness. It removes $2\,387$ coordinates and
+rows from the retained-affine variant:
+\[
+ 4860-2387=2473,\qquad 4476-2387=2089.
+\]
+All remaining rows are literally supplied, so this is a completed
+ordinary polynomial rather than an unmaterialized compiler proposal.
+
+\subsection{Verification and the logical boundary}
+
+The independent checker imports no builder code. It reconstructs the
+entire sum of squares, compares every coefficient with the supplied
+expanded polynomial, checks that every declared coordinate occurs,
+and verifies the degree, coefficient heights and residual inventories.
+It checks all $55$ power blocks for exactly eleven primitive auxiliaries
+plus output and exactly six semantic constraint labels. Both final
+variants pass in ordinary Python and with optimization enabled.
+
+A separate symbolic audit eliminates every arithmetic gate in one
+power block and compares the resulting six polynomial constraints
+with an independently written version of
+\eqref{eq:op-norms}--\eqref{eq:op-rest}. It also verifies the three
+restoration identities, the positive-input induction at every actual
+call site, and seven constructive Pell fixtures, including a fixture
+with intermediate values exceeding two million bits. Altering the
+claimed power output is detected in every fixture. These checks test
+the translation and its guards, not the consistency of ZFC.
+
+The new power theorem and all coordinate eliminations have ordinary
+proofs. The C222/refutability calibration, the standard Pell-index
+theorem and the inherited shared-CRT construction remain identified
+mathematical dependencies. Their immediate sources are included; the
+full transitive Lean dependency closure was not rebuilt, and no new
+end-to-end Lean certificate or object-language ZFC proof term is
+claimed. Composing those results with the proved transformations gives
+Theorem~\ref{thm:direct2473}; negating refutation existence gives its
+consistency formulation.

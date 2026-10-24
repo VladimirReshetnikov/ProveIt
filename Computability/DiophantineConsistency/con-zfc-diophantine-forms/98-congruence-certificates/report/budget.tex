@@ -1,0 +1,60 @@
+\section{A product certificate that computes its own bound}\label{sec:budget}
+This separate theorem concerns a prospective alternative source. It is
+not included in the measured cost claims for the delivered quartics.
+
+Consider a binary Horn calculus on natural-number labels. The derivable
+labels form the least set containing zero and closed under the permitted
+rule instances $v\leftarrow(p,q)$. Thus zero is true and may be used as a
+dummy premise; any other axiom is represented by a rule
+$v\leftarrow(0,0)$. Label one is the target. For $N$ instances set
+\[
+ E=\prod_{i=0}^{N-1}(1+v_i)(1+p_i)(1+q_i),\qquad M=2E+2.
+\]
+Let $C_0=1$, $C_N=E$, and use the local recurrences
+\begin{align}
+ C_{i+1}&=C_i(1+v_i)(1+p_i)(1+q_i),\label{eq:budgetrec}\\
+ S_{i+1}(1+Mv_i)&=S_i(1+Mp_i)(1+Mq_i),\label{eq:flowrec}
+\end{align}
+with $S_0=M+1$ and $S_N=1$.
+
+\begin{theorem}[Product budget]
+There exist $N$, permitted rule instances, and positive integer streams
+satisfying these equations if and only if label one has a finite derivation.
+\end{theorem}
+\begin{proof}
+Telescoping gives $A(M)=B(M)$ for
+\[
+ A(T)=\prod_i(1+v_iT),\qquad
+ B(T)=(1+T)\prod_i(1+p_iT)(1+q_iT).
+\]
+The coefficients are nonnegative. Their sums are $A(1)\le E$ and
+$B(1)\le2E<M$, so every coefficient is a base-$M$ digit. Uniqueness of
+base expansion gives equality in $\Z[T]$. Unique factorization into
+the normalized factors $1+aT$, for $a>0$, yields exact multiset balance:
+\[
+ \{v_i:v_i>0\}
+ =\{1\}\mathbin{\uplus}\{p_i:p_i>0\}
+          \mathbin{\uplus}\{q_i:q_i>0\}.
+\]
+If the target were outside the least set of derivable labels, count
+occurrences outside that set. Every rule with an underivable conclusion
+has at least one underivable premise, so the output count is at most
+the premise count. The multiset balance makes it one greater, a contradiction.
+This counting argument permits cyclic rule dependencies and repeated
+instances; it does not require an acyclic ordering of the supplied list.
+
+Conversely, expand the target backwards along a finite proof tree. First
+compute $E$ from its labels, then $M$. Let $S_i$ be the product of $1+Ma$
+over the currently demanded nonzero labels. These positive integers start
+at $M+1$, end at one, and obey \eqref{eq:flowrec}. The running product
+gives \eqref{eq:budgetrec}. There is no circular choice: the labels fix
+$E$ and $M$ before the streams are assigned.
+\end{proof}
+
+This removes a common-multiple condition or an externally supplied power
+bound from that flow interface. It does not itself produce a smaller
+fixed-arity Diophantine equation. Both finite streams still require
+unbounded sequence coding, with all variables and operations paid.
+The latest direct compiler already uses an efficient single power bound;
+adding the second stream is not assumed to improve its measured size.
+

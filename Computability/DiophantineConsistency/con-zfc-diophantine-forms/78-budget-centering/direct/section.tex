@@ -1,0 +1,349 @@
+\section{Proof certificates with linear factors and a coefficient budget}
+\label{sec:coefficient-budget}
+
+This section develops a different arithmetic source for proof existence.
+The proved contribution is a certificate theorem and its literal local
+polynomial.  The final elimination of the unbounded trace has not been
+materialized or measured.  Thus the local counts below are not a claim of a
+new complete Diophantine-variable record.
+
+Source~68 of the repository\cite{source68} already replaces ordered proofs by nonnegative
+Horn flow and encodes formula labels with the pairwise coprime numbers
+$1+Mj$.  It requires a second bounded universal block ensuring that $M$ is
+divisible by all integers up to a label bound.  We remove that requirement.
+We use the linear factors $X+j$, respect the actual arity of each rule, and
+carry a separate, small arithmetic budget bounding polynomial coefficients.
+The budget is chosen before the evaluation point.  No factorial, primality
+test, common-multiple test, or variable exponent occurs in the new source.
+The later elimination of bounded universal quantification may still use such
+graphs; their costs have not disappeared from a final compiler by assertion.
+
+\newtheorem{budgetlemma}{Lemma}[section]
+\newtheorem{budgettheorem}[budgetlemma]{Theorem}
+\newtheorem{budgetcorollary}[budgetlemma]{Corollary}
+
+\subsection{Exact evaluation detects a polynomial identity}
+
+All formula labels are natural numbers, including zero.  A rule has one
+conclusion and zero, one, or two premises.  An occurrence of zero as an
+actual premise is a genuine obligation.  In the C222 application, zero is
+discharged by the explicit truth axiom; it is not discarded as a free
+coordinate in the following construction.
+
+For a finite list of rule instances
+$R_i=(P_i\longrightarrow c_i)$, $0\leq i<N$, put
+\begin{align}
+ B_i&=\prod_{p\in P_i}(1+p)+c_i,
+ &T_0&=1,
+ &T_{i+1}&=T_i B_i,                                      \label{eq:budget-update}\\
+ C(X)&=\prod_{i<N}(X+c_i),
+ &Q(X)&=\prod_{i<N}\prod_{p\in P_i}(X+p),
+ &M&=T_N+1.                                               \label{eq:budget-polynomials}
+\end{align}
+Products count repeated premises with their multiplicities.  An empty
+product is one.  If two numerical premise slots $p_i,q_i$ are used, pad
+unused slots with zero.  Then
+\[
+ B_i=(1+p_i)(1+q_i)+c_i
+\]
+for a binary rule; the same expression specializes to $1+p_i+c_i$ for a
+unary rule and to $1+c_i$ for an axiom.
+
+\begin{budgetlemma}[Coefficient budget]
+Every coefficient of $C(X)-(X+1)Q(X)$ has absolute value at most $T_N$.
+Consequently,
+\begin{equation}
+ C(M)=(M+1)Q(M)
+ \quad\Longleftrightarrow\quad C(X)=(X+1)Q(X)\text{ in }\mathbb Z[X].
+ \label{eq:budget-evaluation}
+\end{equation}
+\end{budgetlemma}
+\begin{proof}
+Each $B_i$ is at least both $1+c_i$ and
+$\prod_{p\in P_i}(1+p)$.  Thus
+$C(1)\leq T_N$ and $Q(1)\leq T_N$.
+Write $Q(X)=\sum_j q_jX^j$, with $q_j\geq0$ and missing coefficients zero.
+The coefficient of $X^j$ in $(X+1)Q(X)$ is $q_j+q_{j-1}$.
+These are distinct entries in the coefficient list, so their sum is at
+most $Q(1)$, including at either endpoint.  Every coefficient of $C$ is
+at most $C(1)$.  The difference of two nonnegative numbers each at most
+$T_N$ has absolute value at most $T_N$, not $2T_N$.
+
+It remains to use a simple injectivity argument.  If a nonzero integer
+polynomial $H(X)=\sum h_jX^j$ has $|h_j|<M$, let $k$ be the least index
+with $h_k\ne0$.  Dividing $H(M)=0$ by $M^k$ and reducing modulo $M$ gives
+$M\mid h_k$, contradicting $0<|h_k|<M$.  Apply this to
+$H=C-(X+1)Q$ and $M=T_N+1$.  The reverse implication is immediate.
+\end{proof}
+
+The factor two sometimes used in such a coefficient bound is unnecessary.
+Also, the product
+$\prod_i(1+c_i)(1+p_i)(1+q_i)$ is an unnecessarily large budget.
+The factor $B_i$ in~\eqref{eq:budget-update} gives the required two
+majorizations separately and lowers the budget update from degree four to
+degree three in its displayed coordinates.
+
+\begin{budgetlemma}[Linear-factor uniqueness]
+The polynomial identity in~\eqref{eq:budget-evaluation} holds exactly when
+\begin{equation}
+ \sum_{i<N}\left(e_{c_i}-\sum_{p\in P_i}e_p\right)=e_1
+ \quad\text{in the free abelian group on }\mathbb N.
+ \label{eq:budget-flow}
+\end{equation}
+\end{budgetlemma}
+\begin{proof}
+The distinct monic linear factors $X+j$, $j\in\mathbb N$, have distinct
+roots.  Their multiplicities in an identity of products are equal.
+This can be proved without invoking a general factorization theorem:
+cancel the common copies of $X+j$ from the two sides and evaluate at
+$X=-j$; a remaining copy on only one side would make exactly that side
+zero.  This applies also to $j=0$, whose factor is $X$.
+The resulting multiplicity equations are precisely
+\eqref{eq:budget-flow}.
+\end{proof}
+
+\subsection{Why cycles cannot manufacture a refutation}
+
+Let $\mathcal R$ be any collection of single-conclusion rules with at most
+two premises and labels in $\mathbb N$.  Let $D$ be its least set of
+derivable labels, starting from the zero-premise rules.
+
+\begin{budgetlemma}[Single-conclusion flow]
+Label $1$ is derivable if and only if some finite list of instances from
+$\mathcal R$, with repetitions permitted, satisfies
+\eqref{eq:budget-flow}.
+\end{budgetlemma}
+\begin{proof}
+Unroll a finite proof into a tree.  Every non-root node contributes once
+as a conclusion and once as a premise of its parent, leaving only the
+root vector $e_1$.
+
+Conversely, for a proposed finite list, form the finite closure of just
+the rules in that list.  If $1$ is outside this closure, sum the coordinates
+of the alleged flow equation that correspond to labels outside the closure.
+Whenever a conclusion is outside, at least one premise is outside, since
+the set is closed under the listed rule.  The contribution of that rule
+to this sum is therefore at most zero.  When its conclusion is inside,
+its contribution is again at most zero.  The total on the left is at most
+zero, whereas the right side contributes one.  This is impossible.
+The finite closure also gives a constructive proof DAG, which can then be
+unrolled to a finite tree.
+\end{proof}
+
+Repeated premises, self-loops, and disconnected cyclic components do not
+invalidate the proof.  The single-conclusion condition is essential: a
+rule $a\longrightarrow(a,1)$ would have net vector $e_1$ without a way to
+derive either conclusion from no axioms.
+
+\begin{budgettheorem}[Two-accumulator certificate]
+Label $1$ is derivable in $\mathcal R$ if and only if there exist $N,M$,
+a list of $N$ valid rule instances $P_i\longrightarrow c_i$, and natural
+sequences $S_0,\ldots,S_N$, $T_0,\ldots,T_N$ such that
+\begin{align}
+ S_0&=M+1, & S_N&=1, & T_0&=1, & M&=T_N+1,                \label{eq:budget-ends}\\
+ S_{i+1}(M+c_i)&=S_i\prod_{p\in P_i}(M+p),
+ &&&& (0\leq i<N),\nonumber\\
+ T_{i+1}&=T_i\left(\prod_{p\in P_i}(1+p)+c_i\right),
+ &&&& (0\leq i<N).                                       \label{eq:budget-transitions}
+\end{align}
+No external bound on the labels is required.
+\end{budgettheorem}
+\begin{proof}
+For soundness, the budget recurrence implies $T_i\geq1$ and hence $M\geq2$.
+Every factor $M+j$ is positive.  Starting from $S_0=M+1>0$, the first
+recurrence shows inductively that every $S_i$ is positive.  Multiply all
+of these recurrences and cancel the nonzero internal accumulators.
+The endpoints give
+$C(M)=(M+1)Q(M)$.
+The coefficient-budget lemma, linear-factor uniqueness, and the flow
+lemma now prove derivability of $1$.
+
+For completeness, start with a finite proof tree.  List its nodes in a
+top-down order in which the next expanded node is on the current frontier.
+First compute the entire sequence $T_i$ from this list of labels; set
+$M=T_N+1$ only afterwards.  Let $S_i$ be the product of $M+j$ over the
+open frontier at stage $i$.  Initially the frontier is just label $1$;
+at the end it is empty.  Expanding a node labelled $c_i$ removes its
+factor $M+c_i$ and inserts the factors for its actual premises.  This
+gives both recurrences and all four endpoints.  A zero-labelled leaf is
+expanded with its actual zero-premise truth axiom when that axiom is used.
+There is no circular choice of a scale or upper bound.
+\end{proof}
+
+The empty list cannot certify target $1$: it would require simultaneously
+$M=2$ and $S_0=S_N=1=M+1$.  The argument is entirely finitary and uses
+ordinary induction, integer arithmetic, and a finite closure construction.
+It can be carried out within ZFC, without a standard-model soundness
+assumption or an assumption that ZFC is consistent.
+
+\subsection{The local arithmetic rows are quadratic after branch sharing}
+
+Write the current and next accumulator values as $S,S',T,T'$, and use
+$p,q,c$ for the two premise slots and conclusion.  The local flow and
+budget constraints are as follows:
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Rule arity & Flow equation & Budget equation\\
+\hline
+Zero & $S'(M+c)=S$ & $T'=T(1+c)$\\
+One & $S'(M+c)=S(M+p)$ & $T'=T(1+p+c)$\\
+Two & $S'(M+c)=S(M+p)(M+q)$
+    & $T'=T(1+p+q+pq+c)$\\
+\hline
+\end{tabular}
+\end{center}
+For the explicit truth axiom $c=0$, the first row specializes further to
+$S'M=S$ and $T'=T$.
+
+Only the binary row needs additional local arithmetic wires.  Introduce
+\[
+ u=S(M+p),\qquad w=pq.
+\]
+Then its four residuals are
+\begin{equation}
+ u-S(M+p),\quad S'(M+c)-u(M+q),\quad w-pq,\quad
+ T'-T(1+p+q+w+c).                                        \label{eq:budget-four-rows}
+\end{equation}
+They are all quadratic.  The witnesses $u,w$ are uniquely determined and
+natural whenever the displayed input coordinates are natural.
+
+The supplied local JSON augments the literal branch rows of
+source~68's \texttt{horn\_shared\_source.json}.  Its binary modus-ponens
+branch originally uses no scratch wires, so $u,w$ occupy its existing
+shared slots \texttt{q0}, \texttt{q1}.  No active branch loses a wire or
+shares two distinct values in one slot.  The most demanding inherited
+branch still uses thirteen slots.  The generalization branch retains its
+own original \texttt{q0}; it needs no new arithmetic wire.  The ten
+zero-premise branches, including truth, need no new arithmetic wire either.
+
+For each branch, add the displayed residual squares to that branch's
+existing sum of squares.  Multiply the twelve resulting nonnegative
+branch polynomials.  Over the naturals it vanishes exactly when one valid
+branch and its corresponding accumulator update hold.  The construction
+has twenty local existential coordinates:
+\[
+ p,q,c,\quad a,b,c_{\rm schema},d,\quad q_0,\ldots,q_{12},
+\]
+where the JSON uses \texttt{v} for the conclusion to avoid the displayed
+name collision.  Its five exposed coordinates are $S,S',T,T',M$.
+The truth factor rises from degree two to degree four, the inherited
+bundle factor stays at degree eight, and all other factors have degree
+four.  The local polynomial therefore has exact degree
+$11\cdot4+8=52$.  This follows both from exact sparse expansion of every
+factor and from nonvanishing of products over $\mathbb Z$.
+
+The following comparison uses exactly the same inherited Horn rows and
+the same unflattened branch-product representation.  It does not compare
+the size of two final Diophantine polynomials.
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Source-interface quantity & Source 68 & This construction\\
+\hline
+Local existential coordinates & 23 & 20\\
+Exposed local coordinates & 4 & 5\\
+Local polynomial degree & 50 & 52\\
+Outer certificate coordinates & 5 & 4\\
+Bounded universal families & 2 & 1\\
+Beta values needed at one step & 2 & 4\\
+\hline
+\end{tabular}
+\end{center}
+The extra beta values are a real cost: they encode the second accumulator.
+Their arithmetic graph witnesses must be counted before asserting a net
+improvement in a compiled polynomial.
+
+\subsection{A completely specified trace interface}
+
+Use four outer natural coordinates $N,x,y,M$ and
+\[
+ \beta(x,y,j)=x\bmod(1+(j+1)y),\qquad
+ S_i=\beta(x,y,2i),\qquad T_i=\beta(x,y,2i+1).
+\]
+Impose the four endpoint equations~\eqref{eq:budget-ends}.  For every
+$i<N$, require a zero of the supplied local polynomial with exposed
+coordinates $(S_i,S_{i+1},T_i,T_{i+1},M)$.  This is one bounded universal
+family; there is no additional family expressing divisibility of a scale
+by all labels.
+
+Every finite pair of accumulator sequences has such a common beta code.
+For example, choose $y$ larger than all sequence entries and divisible by
+$1,2,\ldots,2N+1$.  The moduli $1+(j+1)y$, $0\leq j\leq2N+1$, are
+pairwise coprime: a common divisor is coprime to $y$, divides the index
+difference, and that difference divides $y$.  The Chinese remainder
+theorem supplies $x$, and the choice of $y$ makes the desired residues
+their least nonnegative remainders.  This choice is made after $M$ and
+the two traces; it creates no circular scale dependency.
+
+For the calibrated C222 rule relation, the resulting finite-certificate
+predicate is equivalent to existence of a C222 refutation of label $1$.
+Composing with that calculus's inherited syntactic calibration gives the
+same consistency target.  This route checks rule instances directly; its
+source does not simulate K215 and does not use a Jones finalizer.
+
+The remaining work is precise.  Substitute literal remainder graphs for
+the four beta values, apply a certified bounded-universal elimination to
+the unflattened local source, quantify the four outer coordinates, and
+only then choose a final degree-reduction or variable-compression
+strategy.  The full ordinary polynomial, its complete variable count,
+and its coefficient payload have not been produced here.  The theorem
+above is not a substitute for those artifacts.
+
+\subsection{An optional normalized variant}
+
+If one wishes to retain the earlier free-zero convention, use weights
+$1+jX$ and pad every rule to two premises.  Keep
+$T'=T((1+p)(1+q)+c)$ and $M=T_N+1$.  The same coefficient proof applies
+to products of $1+jX$, and factor uniqueness recovers all positive-label
+multiplicities; the factor for zero is one.  The soundness theorem then
+uses zero as a designated derivable label.
+
+The flow equation is
+\[
+ S'(1+Mc)=S(1+Mp)(1+Mq).
+\]
+It has a useful exact quadratic lift with four natural auxiliary values:
+\[
+ w=pq,\quad u=MS,\quad u'=MS',\quad v=Mw.
+\]
+The six quadratic residuals are
+\begin{gather*}
+ w-pq,\quad u-MS,\quad u'-MS',\quad v-Mw,\\
+ S'+cu'-S-u(p+q+v),\qquad T'-T(1+p+q+w+c).
+\end{gather*}
+Their sum of squares is quartic, and its zeros are exactly the two desired
+updates together with the uniquely determined natural auxiliaries.
+Expanding the fifth residual gives
+$S'(1+Mc)-S(1+Mp)(1+Mq)$ exactly.  This optional construction explains
+how to reuse the previous padded Horn-flow interface, but the unnormalized
+linear-factor source is cheaper locally because it respects rule arity.
+
+\subsection{Checks and a necessary negative control}
+
+The standalone checker reconstructs all twelve branch sum-of-squares
+polynomials exactly from their literal residuals.  It checks 178 exact
+natural branch fixtures against independently written C222 constructor
+formulas, including both signs of the guarded bundle.  It exhausts all
+60,880 lists of up to three zero-, one-, or two-premise rules on labels
+$\{0,1,2\}$, checking the coefficient bound, numerical identity,
+polynomial identity, flow equation, and derived-target implication.
+Four toy proof-tree fixtures cover repeated premises and explicit truth
+leaves; they are finite artificial Horn systems, not ZFC refutations.
+The optional normalized lift has its own exact arithmetic checks.
+
+The budget endpoint is essential.  Take $M=11$ and the two rules
+$10\longrightarrow3$ and the axiom $7$.
+The target $1$ is underivable, but
+\[
+ (M+3)(M+7)=(M+1)(M+10),\qquad 14\cdot18=12\cdot21.
+\]
+Indeed $S=(12,18,1)$ satisfies both local flow updates, and $M$ is larger
+than every label.  The budget is $T=(1,14,112)$, so the required endpoint
+would be $M=113$, not $11$.  The complete checker rejects the fake.
+Thus an unspecified assertion that the evaluation point is ``large''
+cannot replace the coefficient proof.
+
+These finite checks are diagnostic evidence for the implementation.
+The general mathematical justification is the preceding proof, and no
+kernel-checked formalization of this new source is claimed.

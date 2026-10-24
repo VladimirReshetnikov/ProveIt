@@ -1,0 +1,203 @@
+\section{Commuting restrictions: 37 integers at degree four}
+The degree-four, degree-six and degree-eight unrestricted-integer endpoints
+improve from the inspected incoming sizes $38,32,27$ to
+\[
+ \boxed{37\text{ variables, degree }4},\qquad
+ \boxed{31\text{ variables, degree }6},\qquad
+ \boxed{26\text{ variables, degree }8}.
+\]
+This is a compatibility result: source 70's residue orientation and source 71's
+calibrated determinant guard restrict the \emph{same} canonical source-34
+witness family, so their savings combine. Neither ingredient alone is new here.
+The conclusions use the explicitly inherited unbounded Pell, native compiler
+and syntactic-calibration theorems. They are not new kernel-checked consistency
+biconditionals, and no global minimality is claimed.
+
+\subsection{The explicit 37-variable quartic}
+Use the authentic fixed tuple $(\beta,K_0,M_C,M_F)$, with
+$\beta=2^{1064921}-1$ and $M_F$ already shifted by $\beta$.
+The only new fixed numerals are
+\[
+ A_0=2^{1113},\qquad B_0=2^{666104}.
+\]
+All six integers are regenerated from their recipes and actual payload bytes;
+their total minimal unsigned size is $615{,}883$ bytes.
+Let
+\[
+ q=\beta J+1,\quad C=q-F-\alpha,\quad X=3X_3-1,\quad
+ H=4a+3,\quad k=\eta+\zeta,
+ \quad \operatorname{Pos}(x,y,z)=1+x^2+y^2+z(z+1).
+\]
+These are polynomial abbreviations, not additional unknowns.
+The 37 unrestricted integer unknowns are
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,
+ N,E,P,c,a,X_3,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta,\\
+ e_1,e_2,e_3,t_1,t_2,t_3.
+\end{gathered}
+\]
+Here $v,w$ abbreviate the JSON names \texttt{v\_scale,w\_scale},
+$e_1,e_2,e_3$ the retained $\eta\zeta$ positivity coordinates,
+and $t_1,t_2,t_3$ the new guard coordinates.
+Define the following 24 residuals by subtracting each right side from its
+left side:
+\begin{align*}
+ L&=q^2-1,&N&=q(L+1),&X&=4qw,\\
+ a-E&=(2v+1)N,&E(X+1)&=Xa,&c&=(a-E)k+\eta,\\
+ P&=k+E(c-\eta),&\tau^2&=P^2-Pk+1,&D&=X+ac+\gamma H,\\
+ \Delta&=a^2+4a+3,&C_2&=c^2,&D^2-\Delta C_2&=1,\\
+ F_2&=f^2,&V+c&=fo,&V-cj+k-1&=hE,\\
+ g&=y^2-V^2,&I&=(2r+1)C_2,&B_{\rm aux}&=I^2,\\
+ B_{\rm aux}&=\Delta(F_2-1),&y^2-B_{\rm aux}g&=1.
+\end{align*}
+The remaining four equations are
+\begin{align*}
+ 0={}&k-hE+FN+qL-qN+q^2-1-F(q+L)\\
+ &{}-\alpha L-(M_C+qM_F)J,\\
+ (K_0+4w)C={}&F+z(q-1),\\
+ \eta\zeta={}&\operatorname{Pos}(e_1,e_2,e_3),\\
+ (A_0F)(B_0C)-(q-A_0F-B_0C)^2={}&\operatorname{Pos}(t_1,t_2,t_3).
+\end{align*}
+The polynomial is the sum of these 24 squared residuals. All residuals are
+quadratic or lower in the displayed unknowns, and the coefficient of
+$\tau^4$ is exactly one. Thus the polynomial has exact degree four after
+authentic coefficient specialization. Its complete expanded residual list is
+\texttt{determinant37\_quartic\_direct.json}.
+
+\subsection{Arbitrary-signed soundness, before canonicality}
+Put $U=A_0F$ and $V_0=B_0C$.
+The determinant row gives $UV_0>(q-U-V_0)^2\ge0$.
+Consequently $U,V_0$ have the same nonzero sign and
+\[
+ |q-U-V_0|<\sqrt{UV_0}\le\frac{|U|+|V_0|}{2}.
+\]
+Thus $q,F,C$ have one sign, and
+$|q|>(A_0|F|+B_0|C|)/2\ge|F|+|C|$ forces $\alpha$ to share it.
+This restores both old product guards using two fresh Pos triples.
+No canonical-witness or positive-radix assumption has been made.
+
+It remains to restore the deleted square witness, not to assume it.
+Set $Q=|q|$, $Y=(2v+1)q^3$ and $R$ equal to the authentic packing index.
+The retained lift yields
+\[
+ E=XY,\quad a=(X+1)Y,\quad c=kY+\eta,\quad
+ k=R+1+hE,\quad V=of-c=jc-R.
+\]
+The common-sign packing estimates imply
+$Q\ge16$ and $Q(Q^2-1)<R<Q^4-2$.
+Since $X=3X_3-1\ne0$ and $X=4qw$,
+\[
+ |X|\ge4Q,\qquad |Y|\ge Q^3,\qquad |E|\ge4Q^4>3R+1.
+\]
+Write $B=|a+2|$, $P_0=|2XY^2+1|$, $c_0=|c|$, $K=|k|$.
+The first and main Pell norms, valid for either sign of $X$, give
+\[
+ K=2\psi_{P_0}(n),\qquad c_0=\psi_B(p),\qquad p>n.
+\]
+Here $P_0>B>R$ and $K(|Y|-1)<c_0<K(|Y|+1)$.
+The index congruence is
+\[
+ \operatorname{sgn}(k)\operatorname{sgn}(X)^{n-1}\,2n
+ \equiv R+1\pmod {|E|}.
+\]
+Its positive branch has $n\ge(R+1)/2$ and its negative branch has $n>R$.
+These estimates establish the inherited ordinary strong-rank hypotheses.
+The signed auxiliary step-down then gives $p=R$ without choosing any sign.
+The negative branch is impossible, and no wrap is possible in the other:
+$R=2n-1$ is odd.
+
+For $U_0=|X|\ge64$, $Z_0=|Y|\ge4096$ and $r_0=(R-1)/2$,
+Pell growth gives
+\[
+ \frac{c_0}{K}\ge\frac12
+ \left(\frac{(2B-1)^2}{2P_0}\right)^{r_0}
+ >\frac{(U_0-3)^{r_0}}2.
+\]
+The strict inequality follows from the universally positive difference
+\[
+ (2(U_0-1)Z_0-5)^2-(U_0-3)(4U_0Z_0^2+2)>0.
+\]
+After $U_0=64+u$, $Z_0=6+z$ it is
+$4uz^2+28uz+22u+260z^2+1860z+1703$.
+Hence $Z_0>2^R$.
+The signed Pell identities modulo the odd $H$ give either
+$X2^R=\pm1\pmod H$ or $X=e2^R\pmod H$, $e\in\{\pm1\}$.
+The strict bounds $1<|X|2^R<|H|-1$ and
+$|X-e2^R|<|H|$ exclude the reciprocal branch and unwrap the direct one.
+Therefore $X=e2^R$ with odd $R$.
+Only now does $X\equiv2\pmod3$ force $e=1$.
+Restoring $u_{\rm old}=2^{(R-1)/2}$ recovers the missing row
+$X=2u_{\rm old}^2$ and every original Q41 equation.
+The inherited Q41/native/calibration theorem supplies the finite refutation.
+
+\subsection{Why completeness survives both restrictions}
+The canonical source-34 witnesses have $q=2^t$ with odd $t$,
+$R\equiv3\pmod4$, and $X=2^R$; thus $(X+1)/3$ is integral.
+The new determinant holds for this same canonical family, including all
+permitted rank-controller dummy changes. In radix $\rho=2^{121}$,
+each occupied cell has its fixed top $C$ digit at position 3296 and its
+fixed top $F$ digit at position 8791, of coefficient
+$c_0=105534389824824194647382298625$.
+The carry-free native bounds and literal scale identities
+\[
+ 121\cdot8791+1113=1064921-97,\qquad
+ 121\cdot3296+666104=1064921-1
+\]
+imply, uniformly in tableau size and rank tuning,
+\[
+ q/2\le U<4q/5,\qquad q/2\le V_0<3q/5.
+\]
+Writing $q=2s$, $U=s+x$, $V_0=s+y$ gives
+$0\le x<3s/5$, $0\le y<s/5$, so
+\[
+ UV_0-(q-U-V_0)^2
+ =s^2+s(x+y)-x^2-xy-y^2>\frac{12}{25}s^2>0.
+\]
+A Pos representation supplies the three new guard coordinates.
+Thus the same canonical witnesses satisfy both restrictions simultaneously.
+This does not assert that every old zero satisfies the new determinant.
+
+\subsection{The sextic and octic companions}
+For projections use the equally valid affine quartic
+$J_{\rm old}=3J_3+1$, $w_{\rm old}=3w_3+1$ rather than replacing $X$.
+It still has $X\equiv2\pmod3$.
+Canonical completeness holds because $\beta\equiv1\pmod3$ gives
+$J_{\rm old}\equiv1\pmod3$, while
+$w_{\rm old}=2^{R-t-2}\equiv1\pmod3$ has a nonnegative even exponent.
+Put $q=\beta(3J_3+1)+1$ and $W=4(3w_3+1)$.
+
+For the sextic set $\tau_{\rm old}=\tau_{\rm tail}+E(c-\eta)$ and restore
+\[
+ P=k+E(c-\eta),\quad N=q(L+1),\quad X=Wq,\quad
+ C_2=c^2,\quad F_2=f^2,\quad g=y^2-V^2.
+\]
+Six coordinates and six defining rows disappear. The first norm becomes
+$\tau_{\rm tail}^2+(2\tau_{\rm tail}-k)E(c-\eta)-1$.
+All 18 residuals in 31 variables have degree at most three, and their
+sum of squares has coefficient four at $r^2c^4$.
+
+For the octic put $k_0=1-V+jc+hE$ and restore
+\[
+\begin{gathered}
+ L=q^2-1,\quad N=q^3,\quad X=Wq,\quad C_2=c^2,\quad F_2=f^2,\\
+ g=y^2-V^2,\quad B_{\rm aux}=I^2,\quad
+ D=Wq+ac+\gamma(4a+3),\quad\Delta=a^2+4a+3,\\
+ \zeta=k_0-\eta,\qquad P=k_0+E(c-\eta).
+\end{gathered}
+\]
+Eleven coordinates and eleven rows disappear. The 13 residuals in 26
+variables have degree at most four, and the sum of squares has coefficient
+one at $a^4f^4$. These are exact integer-polynomial zero-set bijections,
+with no hidden division. Explicit restorations are contained in each JSON.
+
+\paragraph{Alternative and checks.}
+Source 69's weighted-cone guard also composes, giving the same three sizes.
+Its canonical fixed-anchor bounds survive the same parity tuning, but its
+six numerals require $881{,}696$ raw bytes, so the determinant is preferred.
+The checker verifies all eight packets against source 70's literal packets,
+all restoration identities and authentic coefficient payloads, liveness,
+exact degrees, and altered-guard negative controls.
+Finite replay is evidence for those algebraic and fixed-data claims, not a
+substitute for the unbounded mathematical arguments or a new formal proof
+of the repository's internal consistency biconditional.

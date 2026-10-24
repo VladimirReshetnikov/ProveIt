@@ -1,0 +1,844 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,xcolor,enumitem,fancyhdr}
+\usepackage[breaklinks,colorlinks,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\definecolor{navy}{RGB}{23,44,67}
+\definecolor{accent}{RGB}{22,100,119}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!15}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Diophantine consistency: descent and proof budgets}
+\fancyhead[R]{\small\texttt{2605669a5323}}
+\fancyfoot[C]{\thepage}
+\setlist{nosep,leftmargin=1.5em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/ProveIt}}
+\newcommand{\pin}{\texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}}
+\newcommand{\file}[1]{\texttt{\detokenize{#1}}}
+\allowdisplaybreaks[2]
+
+\begin{document}
+\thispagestyle{empty}
+{\color{accent}\sffamily\bfseries RESEARCH ITERATION \hfill 23 OCTOBER 2026}
+\vspace{1.0cm}
+{\color{navy}\Huge\bfseries Diophantine consistency\\[4pt] without redundant\\[4pt] denominator guards\par}
+\vspace{0.5cm}
+{\Large Pell descent, ordinary strong norms,\\a 31-integer sextic, and radix-budget proof certificates\par}
+\vspace{0.5cm}
+Prepared for Vladimir Reshetnikov\\
+AI-assisted mathematical research; exact arithmetic artifacts included.
+\vspace{0.6cm}
+
+\begin{abstract}
+We give new explicit arithmetic reductions of the repository's consistency
+equations. The eleven-positive-variable construction drops from degree 325
+and 113 arithmetic operations to degree \textbf{277} and \textbf{111}
+operations. A more substantial rearrangement of the proof yields a
+twelve-positive-variable equation of degree \textbf{70} in \textbf{100}
+operations, improving the previous degree-82 construction. A compatible
+composition of two recent signed-domain arguments yields a sextic in
+\textbf{31 unrestricted integers}, improving the 32-integer sextic.
+A separate nine-positive-variable construction lowers degree to
+\textbf{1,158,240}, at the cost of 811 operations.
+
+The most different research direction is a direct proof-certificate
+encoding: a descending coefficient budget replaces an entire coprimality
+block by uniqueness of positional notation. Its finite-certificate theorem
+is proved, but its final ordinary Diophantine compiler output has not been
+materialized or counted. It is not included among the completed polynomial
+size records.
+
+The completed equations use exactly specified fixed coefficients and compose
+with the named ordinary native-encoding and refutation-calibration proofs
+already in ProveIt. We supply full proofs of the new reductions and precise
+source boundaries. We do not claim global minimality, a world-first result,
+a proof of consistency, or a new end-to-end Lean/Rocq derivation.
+\end{abstract}
+
+\vfill
+\small
+Reviewed snapshot: \pin.\\
+The commit time is 24 October in UTC and 23 October in Washington State.\\
+Primary deliverable: a self-contained ZIP containing this report, its complete
+LaTeX source, literal polynomial graphs, actual coefficient data, generators,
+proof notes, source ledgers, and verification scripts.
+\newpage
+\tableofcontents
+\newpage
+
+\section{What is established, and what is being optimized}
+
+\subsection{Logical target}
+
+Fix the recursive syntactic ZFC refutation predicate used by the inherited
+repository calibration. Write $\Con(\ZFC)$ for the arithmetical assertion
+that no finite refutation exists. The target is a fixed integer polynomial
+$P$ and a specified domain $\mathcal D$ for which
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \left[\neg\exists\mathbf x\in\mathcal D^m\;P(\mathbf x)=0\right]
+ \longleftrightarrow\Con(\ZFC).
+\end{equation}
+The two sides of this equivalence are not asserted separately. The ordinary
+proof proceeds by constructing finite refutations from zeros and constructing
+zeros from finite refutations. It does not assume that ZFC is consistent or
+arithmetically sound.
+
+The new arguments below are elementary finite arithmetic and Pell arguments
+formalizable in ZFC. Their endpoint uses the repository's already supplied
+ordinary compiler/calibration theorems. The repository is separately working
+toward a kernel-checked derivation in its encoded object-language ZFC; that
+formalization remains distinct from an ordinary mathematical proof. This
+archive does not close that formalization task.
+
+\subsection{A measured improvement has several coordinates}
+
+The pinned proposal review \cite{review} distinguishes variable count,
+domain, total degree, arithmetic-circuit size, and fixed-coefficient size.
+That distinction matters here. The following are comparisons with specific
+frontier points, not an ordering of every equation by a single notion of
+``simplest.''
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr rrr@{}}
+\toprule
+ &\multicolumn{3}{c}{Pinned predecessor}&\multicolumn{3}{c}{This contribution}\\
+Domain &Variables&Degree&Ops.&Variables&Degree&Ops.\\
+\midrule
+Positive integers &11&325&113&11&277&111\\
+Positive integers &12&82&102&12&70&100\\
+Integers, sextic &32&6&--&31&6&--\\
+Positive integers &9&1,379,730&478&9&1,158,240&811\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The eleven-variable degree falls by $48/325\approx14.77\%$. The
+twelve-variable degree falls by $12/82\approx14.63\%$, with two fewer
+operations. The nine-variable degree falls by approximately $16.05\%$,
+while its operation count increases; it is a degree/size tradeoff. The
+repository's 443-operation nine-positive-variable target therefore remains
+the better choice when operation count is the priority.
+
+One operation means a live binary addition, subtraction, or multiplication;
+squaring and scalar multiplication are charged. Fixed numerals and reuse of
+a computed register are free. These counts do not measure bit complexity.
+Named registers are polynomial abbreviations, not existential variables.
+The integer sextic has 18 cubic-or-lower residuals and 815 terms when the
+fixed coefficients are treated as coefficient symbols; no optimized scalar
+circuit count is claimed for it.
+
+\subsection{Contributions and inherited work}
+
+The rational integrality lemma comes from package 69. The three-root norm
+comes from package 70. The adaptive carrier comes from package 73. The
+ordinary strong-rank lemma predates those packages. The present positive
+equations exploit their compatibility and change the order in which facts
+are established. Similarly, the integer sextic combines package 75's signed
+bootstrap with package 71's determinant guard.
+
+The direct coefficient-budget certificate is a different architecture
+relative to the inspected direct source in package 68. Its basic mathematical
+tools---coefficient bounds, positional uniqueness, and factorization---are
+classical. The new contribution is their particular use to remove the source's
+entire common-multiple block. We make no claim that these general tools are new.
+
+\section{Two elementary lemmas that remove expensive guards}\label{sec:lemmas}
+
+\subsection{Rational integrality by descent}
+
+\begin{lemma}[Adjacent-coefficient Pell descent; package 69]\label{lem:descent}
+Let $Q>1$ and $V$ be integers, and let $y\in\Q$. If
+\begin{equation}\label{eq:adjacent}
+ QV^2-(Q-1)y^2=1,
+\end{equation}
+then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+The equation excludes $V=0$ and $y=0$. Take absolute values and write
+$y=a/m$ in lowest terms, $m>0$. Since $(Q-1)a^2/m^2$ is an integer,
+$m^2\mid Q-1$. If $V=1$, then $y=1$ and $m=1$.
+
+For $V>1$ set
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+The first coordinate is an integer because $m\mid Q-1$. Direct expansion
+preserves \eqref{eq:adjacent}. The inequalities $y>V$ and
+$QV>(Q-1)y$ imply $-V<V'<V$; the new norm excludes $V'=0$.
+Moreover $2Q-1\equiv1\pmod m$, so $y'$ has the same reduced denominator
+$m$. Strong induction on the positive integer $|V|$ reaches $V=1$ without
+changing this denominator. Thus $m=1$.
+\end{proof}
+
+The adjacency and the unit right side are essential. For example,
+$2\cdot1^2-4(1/2)^2=1$ has a nonintegral second coordinate. A generic
+resultant is insufficient: it initially recovers rational witnesses, and
+the descent is what promotes them to integers.
+
+\subsection{A rational sum of three square roots}
+
+\begin{lemma}\label{lem:three}
+Let $d_1,d_2,d_3$ be positive rational numbers, pairwise distinct, with no
+zero signed sum of their positive square roots. If a signed sum of those
+roots is rational, then each signed root is rational.
+\end{lemma}
+\begin{proof}
+Write the signed roots as $x_1,x_2,x_3$, their squares as $a,b,c$, and
+their rational nonzero sum as $s$. Set
+\[
+ u=\frac{s^2-a-b-c}{2},\qquad
+ v=\frac{u^2-ab-ac-bc}{2s}.
+\]
+Then $u=x_1x_2+x_1x_3+x_2x_3$ and $v=x_1x_2x_3$. Consequently
+\[
+ x_1=\frac{a(a+u)}{as+v},\qquad
+ as+v=x_1(x_1+x_2)(x_1+x_3).
+\]
+The denominator is nonzero: cancellation with another root would make
+their squares equal. The two cyclic formulas prove the other cases.
+\end{proof}
+
+The universal conjugate identity used below is
+\begin{align}\label{eq:octic}
+ F_8(x;a,b,c)
+ &=\bigl[(x^2-a-b-c)^2-4(ab+ac+bc)\bigr]^2-64abcx^2\\
+ &=\prod_{\varepsilon\in\{-1,1\}^3}
+   (x-\varepsilon_1\sqrt a-\varepsilon_2\sqrt b-\varepsilon_3\sqrt c).
+ \nonumber
+\end{align}
+The supplied verifier proves this identity by exact polynomial multiplication.
+
+\section{An eleven-positive-variable polynomial of degree 277}\label{sec:eleven}
+
+\subsection{Fixed coefficients and common registers}
+
+Use the complete compact44 coefficient tuple
+$(\beta,K_0,M_C,M_F)$ of package 44 \cite{native44}, with
+\[
+ \beta=2^{590069}-1,\qquad M_F=M_{F,\mathrm{native}}+\beta.
+\]
+The high mask is shifted exactly once. Appendix~\ref{sec:coefficients}
+specifies the tuple by finite arithmetic and a literal action seed; actual
+integer payloads and deterministic generators are also included. The four
+entries must be used together.
+
+The eleven independent variables, all in $\Zp$, are
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma.
+\]
+Define the following polynomial registers:
+\begin{align*}
+ J&=3j+1,& q&=\beta J+1,& C&=q-F-\alpha,\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,\\
+ a&=E+Y,& H&=4a+3,& \Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,& I&=ic^2,& D_f&=1+\Delta I^2,\\
+ Q&=\Delta^2 I^2,& \delta&=Q-1,& D_\tau&=\ell(\ell+k)+1.
+\end{align*}
+Also set
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ \widehat R&=q^3(q+F+\alpha),& M&=q^3(q-1),\\
+ B_t&=(qK_0+X)C-qF,& V&=D_f(cT-R)-c,\\
+ L&=(D_f+1)(cT+\widehat R),& W&=1+(q-1)L,\\
+ Z&=M(\ell+k+n+L)+(q-1)Y-q^3WB_t.
+\end{align*}
+The adaptive main-root residual is
+\begin{align*}
+ r_0&=k-R-1,& S&=4qY,& U&=qS,\\
+ D_*&=U(X+ac)+H(U\gamma+SX-r_0),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+
+For the norm write
+\begin{align*}
+ A&=M^2D_\tau,& B_f&=M^2D_f,& C_n&=M^2(QV^2-1),\\
+ N_c&=\delta^2\bigl[(Z^2-A-B_f)^2-4AB_f\bigr]
+       -2\delta C_n(Z^2+A+B_f)+C_n^2,\\
+ N_8&=N_c^2-64\delta^3AB_fC_nZ^2.
+\end{align*}
+Our equation is the single, division-free polynomial equation
+\begin{equation}\boxed{P_{11}=N_8+A_1+N_8A_1=0.}\label{eq:p11}\end{equation}
+Its actual graph is \file{positive/p11_positive_degree277.json}.
+
+\subsection{Unconditional root separation and the smaller majorant}
+
+Before imposing any residual, put
+\[
+ t=\sqrt{D_\tau},\quad f=\sqrt{D_f},\quad
+ D_y=\frac{QV^2-1}{Q-1},\quad y=\sqrt{D_y}.
+\]
+These are proof notation only. Positive inputs give $c\ge3$, $a\ge2$,
+$\Delta\ge15$, and $I\ge c^2$. In particular
+\[
+ 1<D_\tau<D_f<Q,\qquad
+ t<\ell+k<(a+1)c,\qquad f>(a+1)c^2.
+\]
+Let $b=cT-R$. If $b=0$, then $V=-c$; otherwise
+$|V|\ge D_f-c>1$. Thus
+\[
+ D_y=V^2+\frac{V^2-1}{Q-1}>V^2>1.
+\]
+If $D_y$ equaled either $D_\tau$ or $D_f$, the equation
+$Q(D_y-V^2)=D_y-1$ would put a nonzero integer multiple of $Q$ strictly
+between $0$ and $Q$. Hence the three radicands are pairwise distinct.
+
+If $b=0$, then $y<c+1<f-t$; if $b\ne0$, then
+$y>|V|\ge f^2-c>2f>f+t$. One root therefore strictly dominates the other
+two, so no signed sum is zero. Lemma~\ref{lem:three} applies whenever the
+octic norm vanishes.
+
+The authentic masks satisfy $0<M_C<\beta$ and $0<M_F<2\beta$. As in
+package 70, these imply $|R|<\widehat R$ for every positive input tuple,
+without assuming $C>0$. Put $B_*=cT+\widehat R$ and
+$\overline V=D_fB_*$. Then
+\[
+ |V|\le D_f(cT+|R|)+c,\qquad
+ \overline V-|V|\ge D_f-c>f.
+\]
+Also $Q-1>D_f$ and
+\[
+ y-|V|=\frac{V^2-1}{(Q-1)(y+|V|)}
+       <\frac{|V|}{Q-1}<B_*.
+\]
+Consequently
+\begin{equation}\label{eq:sharp-majorant}
+ f+y<L=(D_f+1)B_*,\qquad L>k.
+\end{equation}
+This sharpens the older $3D_fB_*$ majorant without adding an operation.
+
+\subsection{Soundness: why the deleted factor is redundant}
+
+Both $N_8$ and $A_1$ are $0$ or $1$ modulo $4$. Therefore
+$(1+N_8)(1+A_1)=1$ forces both factors to be $1$: a factor $-1$ would
+make its residual $-2\equiv2\pmod4$. Thus \eqref{eq:p11} implies
+$N_8=A_1=0$.
+
+By \eqref{eq:octic}, the zero norm gives signed roots with
+\[
+ Z/M=\tau_*+f_*+y_*,\qquad
+ \tau_*^2=D_\tau,\quad f_*^2=D_f,\quad y_*^2=D_y.
+\]
+Lemma~\ref{lem:three} makes all three roots rational. The first two are
+integers, since their squares are integers. For the third,
+\[
+ QV^2-(Q-1)y_*^2=1
+\]
+has integral $Q,V$, so Lemma~\ref{lem:descent} gives $y_*\in\Z$.
+
+This is the precise improvement. Package 70 inserted $q(q-1)$ into $I$
+to recover $y_*$ by a denominator-coprimality argument. Descent proves its
+integrality directly, so those two multiplications and their degree cost
+are unnecessary.
+
+Set
+\[
+ f_{\rm old}=|f_*|,\quad u=|y_*|-V,\quad
+ r=n+L-f_*-y_*.
+\]
+The inequalities above give $u,r>0$. The signed roots, not their absolute
+values, must be used in $r$. Subtracting $M(f_*+y_*)$ from $Z$ yields
+\[
+ Z_0=M(\ell+k+r)+(q-1)Y-q^3WB_t=M\tau_*.
+\]
+We have recovered the weighted first carrier, the normalized strong norm,
+and the auxiliary norm:
+\begin{align*}
+ Z_0^2&=M^2D_\tau,\\
+ f_{\rm old}^2-\Delta(ic^2)^2&=1,\\
+ (V+u)^2-\Delta(f_{\rm old}^2-1)u(2V+u)&=1.
+\end{align*}
+Together with $A_1=0$, these are precisely the weighted/adaptive source
+interface proved in package 70 \cite{source70}. Its soundness is valid for
+every positive integral weight; here that weight is $L$. It yields a finite
+ZFC refutation through the inherited compact44 native interface.
+
+\subsection{Completeness and order of choices}
+
+A finite refutation supplies canonical normalized source witnesses
+\cite{source61,native44}. Retain their $q,X,Y,k,c,R,f,i$ and choose the
+positive auxiliary pair as in the source. In particular, $c\mid I$ permits
+the usual odd-index auxiliary construction. Compute $L,W$ only after these
+choices. No new divisibility by $q(q-1)$ is needed.
+
+Write $s=Y/q^3$, and let $t_0=B_t/(q-1)=q(z_{\rm source}-1)\ge q$.
+The first positive root satisfies $\ell<\tau<\ell+k$, and $0<s<k$.
+Choose
+\[
+ r=Wt_0+\tau-\ell-k-s,\qquad
+ n=r-L+f+y.
+\]
+Since $q\ge16$ and $L>k$, we have
+$r>qW-2k>L$, so $n>0$. The weighted carrier and adaptive main carrier
+lift as in the source, and $Z=M(\tau+f+y)$, giving $N_8=A_1=0$.
+This establishes both existence implications without assuming consistency.
+
+\subsection{Exact degree and size}
+
+The relevant degrees are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{register}&I&D_f&Q&V&L&W&Z&N_c&N_8&A_1\\\hline
+\deg&5&14&18&18&18&19&24&132&264&13.
+\end{array}
+\]
+The apparent degree-14 leading terms in $A_1$ cancel; exact expansion gives
+degree 13. Let $q_0=3\beta j$, $k_0=\eta+\zeta$, and
+$B_0=(K_0q_0+X)(q_0-F-\alpha)-q_0F$. Then
+\begin{align*}
+ [Q]_{18}&=i^2k_0^4X^4Y^8,\\
+ [Z]_{24}&=-i^2q_0^7k_0^4X^2Y^6(q_0+F+\alpha)B_0,\\
+ [A_1]_{13}&=32q_0^2k_0X^2Y^4
+    \bigl(4q_0^2Y\gamma+q_0^3(q_0-F)\bigr).
+\end{align*}
+The leading form of $N_8$ is $[Q]_{18}^4[Z]_{24}^8$. In $P_{11}$ the
+monomial
+\[
+ j^{60}i^{24}\eta^{49}X^{42}Y^{85}\alpha^{16}\gamma
+\]
+has coefficient $2^7(3\beta)^{60}>0$. Its total degree is 277, independently
+of the other three fixed ports. Thus the degree is exactly 277 on the actual
+coefficient slice. The delivered graph has 64 multiplications, 30 additions,
+and 17 subtractions: 111 operations, or 108 before the finalizer.
+
+\section{A twelve-positive-variable polynomial of degree 70}\label{sec:twelve}
+
+\subsection{The ordinary strong norm becomes available earlier}
+
+The normalized equation $f^2-\Delta(ic^2)^2=1$ is convenient because it
+classifies $f$ immediately. The older ordinary equation
+\[
+ (ic^2)^2=\Delta(f^2-1)
+\]
+has lower degree, but its rank-recovery proof needs the additional estimate
+$c>(a+2)\Delta^2$. Applying that estimate only after auxiliary index
+recovery would be circular. The adaptive carrier yields an independent
+lower bound on the first Pell index, so the estimate can be proved before
+using the strong equation. This changes the dependency order and licenses
+the smaller norm.
+
+\subsection{Complete equation}
+
+Use the same compact44 coefficients. The twelve positive variables are
+\[
+ j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma.
+\]
+Set $J=6j+1$, $q=\beta J+1$, and retain $C,E,k,c,a,H,\Delta,\ell,R,B_t$
+from Section~\ref{sec:eleven}. This time define
+\begin{align*}
+ U&=q^2Y,&v&=k-R-1,&W&=1+(q-1)k,&M&=q^3(q-1),\\
+ D_*&=U(X+ac)+H(U\gamma+qE-v),\\
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t,\\
+ A_0&=Z^2-M^2[\ell(\ell+k)+1],\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+Define the ordinary norm merger by
+\begin{align*}
+ f&=t+1,&\rho&=f^2-1,&Q&=\Delta\rho,&d&=c^4,\\
+ V&=f^2(cT-R)-c,\\
+ h(z)&=(1-Q)z^2+2(1-Q)Vz+V^2-1,\\
+ b_N&=2(1-Q)(n+V),& A_N&=d\,h(n)+(1-Q)Q,\\
+ N&=A_N^2-d\,b_N^2Q.
+\end{align*}
+The equation is
+\begin{equation}\boxed{P_{12}=(1+A_0)(1+A_1)(1+N)-1=0.}\label{eq:p12}\end{equation}
+Its graph is \file{positive/p12_positive_degree70.json}. Computing $qE$
+reuses the existing $E=XY$, saving a multiplication compared with a literal
+left-to-right evaluation of $qXY$.
+
+\subsection{Recovering the outer coordinates without the strong norm}
+
+Because $\beta,J$ are odd, $q$ is even. Thus $A_0,A_1$ are squares modulo
+4; $b_N$ is even, so $N$ is a square modulo 4 as well. The unit-product
+argument gives $A_0=A_1=N=0$.
+
+The first two residuals alone give the following facts
+\cite{source61,source73}. We include the order because it is essential.
+From $A_0=0$, the rational square root $Z/M$ is integral. Reducing $M\mid Z$
+modulo $q^3$ and $q-1$ gives
+\[
+ q^3\mid Y,\qquad q-1\mid B_t.
+\]
+Write $s=Y/q^3>0$ and $b=B_t/(q-1)$. The identity
+$Z/M=\ell+k+r+s-Wb$, together with $|Z/M|<\ell+k$, forces $b>0$.
+It follows that $B_t>0$ and $C>0$. The mask bounds now imply
+\[
+ q\ge16,\qquad 3q<R<q^4-2.
+\]
+Since $q\equiv2\pmod3$ and $q^3\mid Y$, we have $\gcd(q,H)=1$.
+
+The estimate $U\ge q^5$ shows $D_*>0$. From $A_1=0$, the rational root
+$D_*/U$ is an integer $g>0$. Its divisibility condition gives
+$U\mid H(qXY-v)$. Since $q^5\mid U$ and $q^4\mid qXY$, we obtain
+\begin{equation}\label{eq:early-congruence}
+ q^4\mid v=k-R-1.
+\end{equation}
+
+Put $A=a+2$ and $P_0=2XY^2+1$. Positive Pell classification gives
+indices $m_1,p\ge1$ with
+\[
+ |Z/M|=\chi_{P_0}(m_1),\qquad
+ k=2\psi_{P_0}(m_1),\qquad c=\psi_A(p).
+\]
+Here $P_0>A$ and $c>k$, so $p>m_1$. The first recurrence yields
+$k\equiv2m_1\pmod{4XY^2}$, and $q^4\mid4XY^2$. Combining this with
+\eqref{eq:early-congruence},
+\[
+ 2m_1\equiv R+1\pmod{q^4}.
+\]
+Because $0<R+1<q^4$ and $2m_1>0$, the multiplier is nonnegative, hence
+\begin{equation}\label{eq:index-lower}
+ m_1\ge(R+1)/2\ge24,\qquad p>m_1.
+\end{equation}
+This lower bound has been obtained before imposing the strong or auxiliary
+norms. Pell growth now gives
+\[
+ c>A\Delta^2,\qquad c>2p,\qquad c>2R.
+\]
+For the first bound, $p\ge6$ already suffices, since
+$\psi_A(6)=32A^5-32A^3+6A>A(A^2-1)^2$. For the third, $m_1\ge2$ gives
+$c>kY\ge4P_0Y>8XY^3\ge8q^9>2R$.
+
+\subsection{The merger recovers ordinary integral witnesses}
+
+Before using $N=0$, $f=t+1\ge2$, $Q>1$, and the preceding estimates imply
+\[
+ V=f^2(cT-R)-c>f^2c/2-c\ge c>1.
+\]
+Thus $b_N\ne0$. Define rational proof coordinates
+\[
+ i_*=\frac{A_N}{db_N},\qquad u_*=n-i_*,\qquad y_*=V+u_*.
+\]
+The zero norm gives $d i_*^2=Q$, and expanding $h(n-i_*)$ gives
+$h(u_*)=0$. Equivalently,
+\[
+ QV^2-(Q-1)y_*^2=1.
+\]
+Lemma~\ref{lem:descent} gives $y_*\in\Z$. Therefore $u_*\in\Z$ and
+$i_*\in\Z$. Set $i=|i_*|>0$ and $y=|y_*|$. We recover
+\begin{equation}\label{eq:ordinary-recovered}
+ (ic^2)^2=\Delta(f^2-1),\qquad
+ (ic^2)^2V^2-((ic^2)^2-1)y^2=1.
+\end{equation}
+The exact algebraic identity behind completeness is
+\begin{equation}\label{eq:ordinary-factorization}
+ N\big|_{Q=di^2}=d^2h(n-i)h(n+i).
+\end{equation}
+
+\subsection{Ordinary strong-rank recovery and the source lift}
+
+The ordinary strong-rank lemma \cite{ordinary} applies to
+\eqref{eq:ordinary-recovered}, $c=\psi_A(p)$, and $c>A\Delta^2$.
+It yields
+\[
+ f=\chi_A(m),\qquad c\mid m,\quad m>2p,
+ \qquad ic^2=\Delta\psi_A(m),\qquad c^2\mid f^2-1.
+\]
+For completeness, the mechanism is as follows. Write
+$A=\chi_{F_0}(e)$ for the fundamental Pell parameter and
+$\Delta=(F_0^2-1)S^2$, with $S=\psi_{F_0}(e)<A$. The supplied ordinary
+strong equation expresses $f=\chi_{F_0}(u)$ and
+$ic^2=(F_0^2-1)S\psi_{F_0}(u)$. Strong divisibility, with
+$b=\psi_{F_0}(\gcd(u,ep))$, gives $b\ge c/\Delta$. If the gcd were a
+proper divisor of $ep$, then
+\[
+ 2b^2<\psi_{F_0}(2\gcd(u,ep))\le Sc<Ac,
+\]
+contradicting $c>A\Delta^2$. Hence $u=em$ and $p\mid m$. Writing $m=pt$,
+the recurrence gives $c\mid\Delta t$. Also
+$\gcd(c,\Delta)=\gcd(p,\Delta)$, so $c\mid m$. These facts give the
+displayed conclusions. The full inherited statement is retained verbatim.
+
+With $M_*=ic^2$, the signed auxiliary-index lemma
+\cite{source61} now applies to
+\[
+ M_*^2V^2-(M_*^2-1)y^2=1,
+ \qquad V\equiv-c\pmod f,\quad V\equiv-R\pmod c.
+\]
+It yields $p=R$. Returning to \eqref{eq:early-congruence} and using
+$0<m_1<p=R<q^4$, the congruence forces $2m_1=R+1$ exactly.
+Consequently $v=k-2m_1$ is a positive multiple of $4XY^2$.
+Since $U=q^2Y$ divides $4XY^2$, the main-carrier divisibility reduces to
+$q\mid HX$, hence $q\mid X$.
+
+Put $w=X/q>0$, $h=v/E>0$, and
+$\gamma_{\rm old}=\gamma+w-v/U$. These are integers; Pell growth gives
+$\gamma_{\rm old}>0$ and
+$g=X+ac+H\gamma_{\rm old}$. The cleared transport has
+$B_t=q[(K_0+w)C-F]>0$ and $q-1\mid B_t$, so
+\[
+ z=\frac{(K_0+w)C-F}{q-1}>0
+\]
+is an integer. Finally choose $T_{\rm old}=fT$, preserving
+$V=c(T_{\rm old}f-1)-Rf^2$.
+
+These coordinates satisfy the \emph{ordinary} source kernel
+\cite{ordinary}, which composes with compact44's proved native interface.
+One must not claim that dividing $i$ by $\Delta$ always produces a normalized
+source witness: that quotient need not be integral. The ordinary source
+lift is the correct endpoint.
+
+\subsection{Completeness and exact degree}
+
+A finite refutation gives canonical normalized source witnesses. Replace
+its normalized multiplier by
+$i_{\rm ordinary}=\Delta i_{\rm normalized}$. This preserves the strong
+root and the auxiliary parameter. Choose the positive auxiliary pair with
+$u=y-V>0$ and set $n=i_{\rm ordinary}+u>0$ and $t=f-1>0$.
+The canonical odd cell count makes $J\equiv1\pmod6$, so the supplied
+$j=(J-1)/6$ is positive. The adaptive carrier lifts by
+$\gamma=\gamma_{\rm old}-w+v/U>0$, and the first carrier lifts as in
+package 73. Identity~\eqref{eq:ordinary-factorization} gives $N=0$.
+
+The exact residual degrees are $(15,13,42)$; the product has degree 70.
+Writing $q_0=6\beta j$, $k_0=\eta+\zeta$,
+$R_0=q_0^3(q_0-F)$ and
+$B_0=(K_0q_0+X)(q_0-F-\alpha)-q_0F$, their leading forms are
+\begin{align*}
+ [A_0]_{15}&=-2q_0^8k_0^2XY^2B_0,\\
+ [A_1]_{13}&=8q_0^2k_0X^2Y^4(q_0^2Y\gamma+R_0),\\
+ [N]_{42}&=4k_0^8X^4Y^{12}t^8R_0^2n^2.
+\end{align*}
+Thus the degree-70 monomial
+\[
+ j^{18}F^2\eta^{11}X^8Y^{19}t^8n^2\gamma\alpha
+\]
+has coefficient $64(6\beta)^{18}>0$. The literal graph uses 55
+multiplications, 26 additions, and 19 subtractions: 100 operations, or
+94 for the three-residual system. Both the upper degree and this nonzero
+coefficient are checked by exact sparse polynomial arithmetic.
+
+\input{../sextic31/section.tex}
+
+\input{nine_section.tex}
+
+\input{radix_budget_section.tex}
+
+\section{Reproducibility, proof boundaries, and integration}
+
+\subsection{Contents and primary commands}
+
+The archive is designed to extract as a new research contribution. It does
+not modify the upstream repository. Run its standard-library verifier from
+the extracted root:
+\begin{lstlisting}
+python3 verify_all.py
+python3 -O verify_all.py
+\end{lstlisting}
+The positive graphs have independent exact formula checks, conjugate and
+resultant identities, degree cancellations, leading-coefficient certificates,
+and literal coefficient checks. The sextic verifier reconstructs each
+residual from retained source rows and verifies all six eliminations. The
+nine-variable verifier checks the polynomial tables and the positivity
+certificate used by the new majorant. The direct-certificate verifier
+includes positive cases and a counterfeit accepted when its budget is omitted.
+
+The coefficient builders reconstruct actual integers from literal finite
+machine data; the integer payloads are also included. Mathematical-byte
+hashes and source Git-blob hashes are recorded for reproducibility. A hash
+is a checksum, not the mathematical definition of an otherwise missing
+coefficient.
+
+\subsection{What the checks do and do not establish}
+
+There are three separate layers of evidence:
+\begin{enumerate}
+\item Exact finite identities and data: the delivered polynomials, degrees,
+operation counts, coefficient payloads, and algebraic transformations.
+\item Universal ordinary mathematics: the descent, rank arguments, sign
+restoration, canonical witness constructions, and coefficient-budget theorem.
+\item The inherited native encoding and syntactic refutation calibration,
+followed by the separate project of an end-to-end kernel formalization.
+\end{enumerate}
+Finite enumeration is evidence for a finite program or an algebraic identity
+only within its actual scope. The universal arguments are proved in the
+text and the retained source proofs. None of the scripts searches for a
+ZFC contradiction or establishes nonhalting by simulation.
+
+The four completed equations in the comparison table are specific
+constructions. We have not proved any lower bound that would make one
+globally simplest. In particular, a reduction in the degree of a nine-variable
+polynomial does not improve the nine-variable count itself.
+
+\subsection{Recommended next mathematical step}
+
+For a compact completed equation, the degree-70 twelve-positive form is the
+strongest combined degree-and-operation improvement in this package. For an
+unrestricted integer equation with modest degree, the 31-variable sextic is
+the useful new target. The nine-variable construction is an alternative when
+degree receives more weight than evaluator size.
+
+For a more fundamental change of encoding, compile the direct descending
+budget source against the repository's now-complete literal ZFC refutation
+checker. Its next gate is precise: materialize and count the ordinary
+polynomial obtained from the one bounded-universal block, and transport
+its acceptance theorem through the actual encoded ZFC syntax. The source
+improvement is already proved, but a final size improvement from that route
+must be measured rather than inferred from its source counts.
+
+\appendix
+\section{A finite specification of the compact44 coefficients}\label{sec:coefficients}
+
+This appendix supplies a finite arithmetic definition of every fixed
+coefficient in $P_{11}$ and $P_{12}$. It is the exact package-44 recipe,
+not a new coefficient optimization. The compact54 tuple used by a different
+repository target is not substituted here.
+
+\subsection{Literal action seed}
+
+Let $s$ be the following decimal integer, formed by concatenating the printed
+lines without spaces. Its length is 1,294 decimal digits and 4,298 bits.
+\input{action_seed.tex}
+For $0\le q<215$ and $b\in\{0,1\}$, set
+\[
+ d_{q,b}=\left\lfloor\frac{s}{1024^{2q+b}}\right\rfloor\bmod1024,
+ \quad t=d_{q,b}\bmod256,
+ \quad v=\left\lfloor d_{q,b}/256\right\rfloor\bmod2.
+\]
+The move is right if $\lfloor d_{q,b}/512\rfloor=1$ and left otherwise.
+These are the 430 literal actions of the package-36 labeling; the initial
+state is 93 and the halt state is 215. This is not the repository's separate
+dense-state labeling. The delivered verifier reconstructs the original
+transition file from these digits.
+
+\subsection{Ordered tile language}
+
+Let $\mathcal R$ and $\mathcal L$ be the sorted sets of targets of right and
+left actions, respectively; their cardinalities are 199 and 45. Let
+$r(t)=6+\operatorname{rank}_{\mathcal R}(t)$ and
+$l(t)=6+199+\operatorname{rank}_{\mathcal L}(t)$, with ranks starting at
+zero. Put $h(q,b)=2(q+1)+b$. Form a set of quadruples from the following
+finite families:
+\begin{align*}
+ &(0,h(q,b),r(t),v) &&\text{for right actions},\\
+ &(l(t),h(q,b),0,v) &&\text{for left actions},\\
+ &(0,h(215,b),0,h(215,b)),\ (0,b,0,b) &&(b=0,1),\\
+ &(r(t),b,0,h(t,b)) &&(t\in\mathcal R,\ b=0,1),\\
+ &(0,b,l(t),h(t,b)) &&(t\in\mathcal L,\ b=0,1),\\
+ &(0,c,0,438) &&(c\in\{0,1,h(215,0),h(215,1)\}),\\
+ &(2,434,2,0),\ (2,435,3,1),\ (3,436,4,h(93,0)),\ (4,436,4,0),\\
+ &(1,438,1,c) &&(c\in\{434,435,436\}),\\
+ &(a,437,b,437) &&(a\in\{0,1,4\},\ b\in\{0,1,2\}),\\
+ &(5,0,0,0).&&
+\end{align*}
+Order the 943 distinct tiles with $(2,435,3,1)$ first, $(5,0,0,0)$ second,
+and all others in lexicographic order. Denote them $\tau_0,\ldots,\tau_{942}$.
+
+\subsection{Finite sums defining the four integers}
+
+Put $\rho=2^{67}$, $B=\rho^{8807}$, and $\beta=B-1$. Define the permutation
+of $0,\ldots,40$ by the concatenated list
+\[
+ \pi=(0,\ldots,7,34,8,\ldots,16,35,17,\ldots,24,36,
+       25,\ldots,33,37,38,39,40),
+\]
+and set $w_j=2^{10+\pi_j}$. For the four fields use
+\[
+ (b_s)=(0,9,19,28),\quad (d_s)=(9,10,9,10),\quad
+ (o_s)=(256,512,256,512),\quad (e_s)=(1023,1013,1003,983).
+\]
+Define a finite table $c_e$ by
+\[
+ c_i=1+2^{51}-\sum_{s=0}^3\sum_{j=0}^{d_s-1}
+ w_{b_s+j}\left(\left\lfloor\frac{(\tau_i)_s+o_s}{2^j}\right\rfloor\bmod2\right)
+       -\sum_{j=38}^{40}w_j\quad(0\le i\le942),
+\]
+together with
+\[
+ \begin{gathered}
+ c_{e_s+j}=w_{b_s+j}\quad(0\le s<4,\ 0\le j<d_s),\\
+ c_{1095}=w_{38},\ c_{2195}=w_{39},\ c_{3296}=w_{40},\quad
+ c_{1063}=c_{1064}=0.
+ \end{gathered}
+\]
+Let $\mathcal E$ be this table's address set, including the two zero entries.
+Set
+\begin{align*}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}
+       +\sum_{e\in\mathcal E}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R={}&\rho^{42},\qquad K_0=D_C+BD_R,\\
+ M_C={}&B-1-\sum_{e\in\mathcal E\setminus\{1\}}\rho^e-2\rho^{1063}.
+\end{align*}
+Let
+\[
+ \mathcal T=\{1013,\ldots,1022\}\cup\{1065,\ldots,1073\}
+            \cup\{2195,3296\},\qquad \mu=2^{51}-2.
+\]
+Then
+\begin{align*}
+ M_{F,\mathrm{native}}={}&4+\mu(\rho^{4393}+\rho^{5495})
+    +\sum_{t\in\mathcal T}\rho^t\\
+ &+(2^{65}-1)\sum_{e=8792}^{8804}\rho^e+(2^{19}-1)\rho^{8805},\\
+ M_F={}&M_{F,\mathrm{native}}+B-1.
+\end{align*}
+These are fixed finite sums with fixed exponents. They are not additional
+unknowns, variable-exponent terms in the equation, or unevaluated compiler
+parameters. All four integers are also supplied as minimal little-endian
+bytes and verified against the inherited binding. Their total uncompressed
+payload is 295,388 bytes, and their gzip payload is 9,445 bytes.
+
+\section{Source ledger and formalization status}
+
+All repository references used for new comparisons are pinned to
+\pin. The complete source ledger in the archive records exact original
+paths and Git-blob hashes. Original files keep their original authorship
+and license notices. The new text and scripts are marked as AI-assisted.
+
+The primary status distinction is explicit in the pinned repository:
+ordinary paper proofs of the compact native interface exist, while complete
+Lean native calibration and an encoded internal-ZFC consistency biconditional
+remain active work. The latest commit completes a literal numeric checker,
+not that final internal transport. This contribution does not silently treat
+a standard-model checker theorem as the requested internal derivation.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{review} ProveIt, \emph{Wave-ten proposals and the current targets},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md}{pinned proposal review}.
+\bibitem{native44} ProveIt package 44, \emph{Complement-packed Wang943 native interface},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md}{proof and exact coefficient recipe}.
+\bibitem{source61} ProveIt package 61, \emph{Positive congruence carriers and signed auxiliary-index recovery},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/positive}{source proofs}.
+\bibitem{source69} ProveIt package 69, \emph{A Pell descent removes the denominator guards},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md}{degree-82 proof}.
+\bibitem{source70} ProveIt package 70, \emph{Three-root transport: an eleven-positive-variable extension},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/PROOF.md}{degree-325 proof}.
+\bibitem{source73} ProveIt package 73, \emph{Adaptive carriers and a twice-centered auxiliary norm},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/73-guard-reanchoring/positive/PROOF.md}{adaptive-carrier proof}.
+\bibitem{ordinary} ProveIt, \emph{Ordinary strong norms and signed witnesses for the blank computation},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/sources/catalogue/25-hybrid12/upstream/ORDINARY_BLANK_PROOF.md}{retained ordinary-kernel proof}.
+\bibitem{source71} ProveIt package 71, \emph{Calibrated determinant guards},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards}{proofs and nine-variable predecessor}.
+\bibitem{source75} ProveIt package 75, \emph{Signed bootstrap},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap}{signed-power proof}.
+\bibitem{source68} ProveIt package 68, \emph{Commutative affine-product certificates},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/COMMUTATIVE_CERTIFICATES.md}{direct source and flow theorem}.
+\bibitem{jones} J. P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), 549--571.
+\href{https://doi.org/10.2307/2273588}{doi:10.2307/2273588}.
+\end{thebibliography}
+\end{document}

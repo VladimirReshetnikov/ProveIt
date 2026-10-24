@@ -1,0 +1,198 @@
+{
+  "status": "PASS",
+  "repository_commit": "7e533c33819ee1f703b69f2778a767cdc069940d",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "source_releases_unchanged": true,
+  "source_files": {
+    "ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24": 93,
+    "con-zfc-parity-norms-2026-10-23/con-zfc-parity-norms-2026-10-23": 317
+  },
+  "receipts": {
+    "rootfusion_normal": {
+      "source": "ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24",
+      "python_optimized": false,
+      "stages": [
+        {
+          "stage": "release",
+          "script": "verification/verify_release.py",
+          "python_flags": [
+            "-B"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 6.344,
+          "stdout_sha256": "75e24bb631c8ab7f8f747d7fd8eb4145b36e53172de087b65ef7093b4c6ce09c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "status": "PASS",
+      "scope": "Full release for rootfusion both modes and parity normal; parity optimized driver rejects by policy, then seven standalone algebraic auditors are run."
+    },
+    "rootfusion_optimized": {
+      "source": "ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24",
+      "python_optimized": true,
+      "stages": [
+        {
+          "stage": "release",
+          "script": "verification/verify_release.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 5.959,
+          "stdout_sha256": "6cdd59b99bfc9beabf66a748e295976c23154a582d17cd354ba843750ab12935",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "status": "PASS",
+      "scope": "Full release for rootfusion both modes and parity normal; parity optimized driver rejects by policy, then seven standalone algebraic auditors are run."
+    },
+    "parity_normal": {
+      "source": "con-zfc-parity-norms-2026-10-23/con-zfc-parity-norms-2026-10-23",
+      "python_optimized": false,
+      "stages": [
+        {
+          "stage": "release",
+          "script": "verify_release.py",
+          "python_flags": [
+            "-B"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 17.668,
+          "stdout_sha256": "19b614e5548c03d44a6da79094d4afcd4247995da28c7b8709aaee6e4d44736e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "status": "PASS",
+      "scope": "Full release for rootfusion both modes and parity normal; parity optimized driver rejects by policy, then seven standalone algebraic auditors are run."
+    },
+    "parity_optimized": {
+      "source": "con-zfc-parity-norms-2026-10-23/con-zfc-parity-norms-2026-10-23",
+      "python_optimized": true,
+      "stages": [
+        {
+          "stage": "driver_policy",
+          "script": "verify_release.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 1,
+          "expected_policy_rejection": true,
+          "status": "EXPECTED_REJECTION",
+          "seconds": 0.239,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "a1ec056ada1c1c7d52dffefcaf802079ee046cae5a1d69ef677fd3d6eb3d45ab"
+        },
+        {
+          "stage": "audit",
+          "script": "audit.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 0.732,
+          "stdout_sha256": "7ea9d307432e9690042070fe89b38b2f22c9db58bb2619e23044744585aa1a96",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "stage": "audit_norm_family",
+          "script": "audit_norm_family.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 10.482,
+          "stdout_sha256": "dcc8bc1225d0c6ffc0bb2ceb977601bbcc099548739d4a28c608620a77d0274d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "stage": "audit_shift",
+          "script": "audit_shift.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 0.759,
+          "stdout_sha256": "245cfa6718013bcaaf1d9ea2751f6095048d887253eb911766cb7b0474562f82",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "stage": "audit_compact_kernel",
+          "script": "audit_compact_kernel.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 2.425,
+          "stdout_sha256": "850c6e653912efd9325d5dd6d78e711b9507e59f510caf5d8534ae4a36998859",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "stage": "independent_checks",
+          "script": "independent_checks.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 0.377,
+          "stdout_sha256": "d0920898f68981d3c527c8ca264a04151e1e628b41b67c53caab88915cd4f1f8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "stage": "independent_graph_audit",
+          "script": "independent_graph_audit.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 0.45,
+          "stdout_sha256": "882b5da2b9eafcd0ca85cb0a254fd9d71434471edab4be76ca2090881194bdb8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "stage": "independent_compact_audit",
+          "script": "independent_compact_audit.py",
+          "python_flags": [
+            "-B",
+            "-O"
+          ],
+          "returncode": 0,
+          "expected_policy_rejection": false,
+          "status": "PASS",
+          "seconds": 3.531,
+          "stdout_sha256": "78392163a744640184f8c6f25a82510fe762b2b6756b9b9e58f6a2bcc643cf2e",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "status": "PASS",
+      "scope": "Full release for rootfusion both modes and parity normal; parity optimized driver rejects by policy, then seven standalone algebraic auditors are run."
+    }
+  },
+  "elapsed_seconds": 19.245,
+  "scope": "Finite exact arithmetic, source binding, literal rebuilds and corruption diagnostics. No whole-repository build, no Lean or internal-ZFC certificate, no search for consistency-polynomial zeros."
+}

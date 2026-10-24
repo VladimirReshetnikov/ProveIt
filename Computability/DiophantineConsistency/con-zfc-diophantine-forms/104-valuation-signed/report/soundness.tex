@@ -1,0 +1,608 @@
+\section{Soundness over unrestricted integers}\label{sec:soundness}
+
+The proof first excludes a zero multiplier. It then applies the valuation
+lemma before making any positivity assumption about the guard. This order
+is needed because all twelve coordinates are unrestricted integers.
+
+\subsection{The zero-multiplier boundary}
+
+\begin{lemma}\label{lem:nonzero-scale}
+Neither \eqref{eq:primary} nor \eqref{eq:companion} has an integer zero
+with $S=0$. At every zero, $I,s,r,c$ are nonzero and $Q>1$.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:residues}, $H\ne0$. Thus $S=0$ implies $I=0$,
+$Q=0$, and $\delta=-1$. All scaled radicands except $B^2\Dm$ vanish,
+and both final polynomials specialize to
+\[
+ \bigl(A^2-B^2\Dm\bigr)^{16}.
+\]
+The two factors of the inner expression over $\Q(\sqrt{\Dm})$ are
+\[
+ A\pm B\sqrt{\Dm}
+ =H^5\pi\!\left(\frac{u\pm\sqrt{\Dm}}{H}\right).
+\]
+Since $\Dm\ge1$, both arguments belong to a real extension of $\Q$ of
+degree at most two. Lemma~\ref{lem:intersective} says neither factor can
+vanish. Therefore $S\ne0$. Now $I=src^2$ is nonzero, so each of
+$s,r,c$ is nonzero; $Q=(\Delta I)^2>1$ follows from $\Delta>1$.
+\end{proof}
+
+\subsection{Root extraction without a sign assumption}
+
+Suppose first that $\primary=0$. The unconditional fact $\delta\ne0$
+allows the rational interpretation in \eqref{eq:primary}. In a splitting
+field, one factor of the norm vanishes. After division by $S\ne0$,
+the five radical terms, up to independent signs, are
+\begin{equation}\label{eq:normalized-roots}
+ \frac{B\sqrt{\Dm}}{S},\qquad
+ \sqrt{\Cc/\delta},\qquad
+ 3\sqrt{\Df},\qquad9\sqrt{\Dt},\qquad27\sqrt{\Dg}.
+\end{equation}
+Their signed sum is the rational number $n-A/S$. The first four terms
+are nonzero by the residues in Lemma~\ref{lem:residues}. Their squared
+$3$-adic orders are, respectively,
+\begin{equation}\label{eq:orders}
+ -2\vt(S),\qquad0,\qquad2,\qquad4.
+\end{equation}
+Here $\vt(S)=\vt(I)+5\vt(H)\ge5$. If $\Dg\ne0$, the last
+squared order is
+\[
+ 6+\vt(\Dg)\ge6;
+\]
+it need not be even. If $\Dg=0$, omit the zero term. Every subset
+with at least two surviving terms has a unique even minimum, because
+any such subset contains one of the first four terms. Thus
+Lemma~\ref{lem:separation} makes all terms in
+\eqref{eq:normalized-roots} rational. This argument also covers
+$\Dg<0$; no realness premise was used.
+
+Since $B/S\ne0$, it follows that $\Dm,\Df,\Dt,\Dg$ have rational
+square roots. A rational square root of an integer is an integer, so
+there are integers $d,f,\tau,g$ with
+\begin{equation}\label{eq:extracted-integer-roots}
+ d^2=\Dm,\qquad f^2=\Df,\qquad
+ \tau^2=\Dt,\qquad g^2=\Dg.
+\end{equation}
+The auxiliary root is initially rational; Section~\ref{sec:aux-integral}
+will prove it integral.
+
+For $\companion=0$, replace the second term of
+\eqref{eq:normalized-roots} by $\sqrt{\delta\Cc}$. It again has
+squared $3$-adic order zero, so the same proof supplies an integer
+$\widetilde y$ with $\widetilde y^2=\delta\Cc$ and all four roots
+in \eqref{eq:extracted-integer-roots}.
+
+\subsection{The strict guards}
+
+The extracted square $g^2=\Dg$ proves $\Dg\ge0$. Since $s$ is a
+nonzero integer, $P\le0$ would give
+\[
+ \Dg=(3P-4)s^2+1\le-3.
+\]
+Hence $P>0$. We record the elementary guard principle to make this
+sign inference explicit.
+
+\begin{lemma}[Joint positivity]\label{lem:joint-positive}
+For integers $A_1,A_2$, there exists an integer $t$ such that
+\[
+ A_1A_2-(t^2-A_1-A_2+1)^2>0
+\]
+if and only if $A_1>0$ and $A_2>0$.
+\end{lemma}
+\begin{proof}
+The inequality implies $A_1A_2>0$. If both factors were negative, then
+$t^2-A_1-A_2+1>|A_1|+|A_2|\ge2\sqrt{A_1A_2}$, a contradiction.
+Conversely, put $M=A_1+A_2-1\ge1$. An integer square nearest to the
+integer $M$ differs from $M$ by an integer of absolute value strictly
+less than $\sqrt M$: between consecutive squares $a^2,(a+1)^2$, the
+nearest-square error is at most $a$, and at an endpoint it is zero.
+Since $M\le A_1A_2$, this choice proves the strict inequality.
+\end{proof}
+
+Applying the forward implication to $A_1=G$, $A_2=\eta\zeta$ yields
+\begin{equation}\label{eq:strict-guards}
+ G>0,\qquad \eta\zeta>0.
+\end{equation}
+The determinant guard also restores the signs required by the inherited
+signed kernel. Set $U=\Acone F$, $W=\Bcone C$, and
+$\alpha=q-F-C$. From $UW>(q-U-W)^2$ one obtains $UW>0$. If $q$
+had the opposite sign to $U,W$, the square would be at least
+$(|U|+|W|)^2\ge4UW$, impossible. Moreover
+\[
+ |q|>|U|+|W|-\sqrt{UW}\ge\tfrac12(|U|+|W|).
+\]
+Since both cone scales are at least two, $F,C,\alpha$ have the same
+nonzero sign as $q$.
+
+For clarity, $R>0$ already follows at this point. The authentic fixed
+tuple has $0<M_C<\beta<M_F$. If $q>0$, then $J>0$ and
+\[
+ q(q-F)-C=q\alpha+(q-1)C>0.
+\]
+Both summands in the definition of $R$ are positive. If $q=-q_0<0$,
+write $C=-C_0$, $\alpha=-\alpha_0$, with $C_0,\alpha_0>0$.
+Then
+\[
+ q(q-F)-C=q_0(C_0+\alpha_0)+C_0>0,
+ \quad J<0,\quad M_C-q_0M_F<0.
+\]
+Again both summands defining $R$ are positive. Thus no later rank
+argument is being used to justify this preliminary sign fact.
+
+\subsection{The rational auxiliary root is integral}\label{sec:aux-integral}
+
+\begin{lemma}[Adjacent-coefficient descent]\label{lem:adjacent-descent}
+Let $Q>1$ be an integer and let $V\in\Z$, $y\in\Q$ satisfy
+\[
+ QV^2-(Q-1)y^2=1.
+\]
+Then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+Changing signs makes $V,y$ positive. The norm excludes $V=0$.
+Write $y=u/b$ in lowest terms with $b>0$. The equation implies
+$b^2\mid Q-1$, so $(Q-1)y$ is integral. If $V>1$, use
+\begin{align*}
+ V'&=(2Q-1)V-2(Q-1)y,\\
+ y'&=(2Q-1)y-2QV.
+\end{align*}
+This transform preserves the norm, and $V'$ is integral. Because
+$2Q-1\equiv1\pmod b$, the reduced denominator of $y'$ is still
+$b$. The norm gives $y>V$ and $(Q-1)y<QV$, hence
+$-V<V'<V$. The norm also excludes $V'=0$. Taking absolute values
+therefore gives descent in the positive integer $V$ without changing
+$b$. At $V=1$ the equation gives $|y|=1$, so $b=1$.
+\end{proof}
+
+For the primary equation, the rational root $y$ extracted from
+$\Cc/\delta$ satisfies the lemma's equation because
+$\delta=Q-1$ and $\Cc=QV^2-1$. For the companion, take
+$y=\widetilde y/\delta$; its square is again $\Cc/\delta$.
+Lemma~\ref{lem:nonzero-scale} supplies $Q>1$ in both cases. Thus the
+same integer auxiliary Pell witness is recovered from both polynomials.
+
+\subsection{Recovering the main congruence}
+
+Absorb the signs of a vanishing conjugate factor into the integral
+roots. The primary equation gives
+\begin{equation}\label{eq:root-sum}
+ Sn=A+Bd+S(y+3f+9\tau+27g).
+\end{equation}
+For the companion, replace $y$ on the right by $\widetilde y$.
+Consequently $H^5\mid A+Bd$ in both cases. Since
+\[
+ A+Bd=\Phi_H(HT+d-b_0),
+\]
+this restores exactly the missing congruence. Indeed, if $p^e\Vert H$
+and $v_p(HT+d-b_0)=b<e$, the leading fifth power in
+\[
+ \Phi_H(z)=z^5+3H^2z^3-19H^3z^2-57H^5
+\]
+has valuation $5b$, strictly below all three other terms. Divisibility
+by $p^{5e}$ is impossible. Doing this for each prime divisor of $H$
+proves $H\mid HT+d-b_0$, and therefore
+\begin{equation}\label{eq:gamma-restored}
+ \gamma=\frac{d-b_0}{H}\in\Z,\qquad d=X+ac+\gamma H.
+\end{equation}
+This introduces no independent coordinate; $\gamma$ is reconstructed
+from an existing zero.
+
+\subsection{The precise inherited signed-kernel interface}
+
+The recovered equations are
+\begin{align}
+ d^2-\Delta c^2&=1,& d&=X+ac+\gamma H,\nonumber\\
+ f^2-\Delta I^2&=1,& I&=src^2\ne0,\nonumber\\
+ (\Delta I)^2V^2-((\Delta I)^2-1)y^2&=1,&
+ V&=f^2(c-R+4IT)-c,\nonumber\\
+ \tau^2-XY^2(XY^2+1)k^2&=1,&
+ G&>0,\quad\eta\zeta>0. \label{eq:restored-kernel}
+\end{align}
+The generalized signed-kernel proof used by the incoming twelve-variable
+construction is preserved as
+\path{integer12/proofs/INTERPOLATION12.md}, Sections 5--7, and its
+independent arithmetic audit as
+\path{integer12/proofs/INDEPENDENT_TWELVE_AUDIT.md}, Sections 2--4.
+They specify which ordinary rank, orientation, and native-decoding
+theorems are inherited. We give the normalized strong-rank argument here
+because it prevents an incorrect parity shortcut.
+
+For an integer $A_*>1$, define the Pell polynomials by
+\begin{equation}\label{eq:pell-def}
+ \chi_{A_*}(m)+\psi_{A_*}(m)\sqrt{A_*^2-1}
+   =(A_*+\sqrt{A_*^2-1})^m,\qquad m\ge0.
+\end{equation}
+The inherited first/main rank bootstrap, applied to the first and last
+Pell equations and the strict guards in \eqref{eq:restored-kernel},
+gives
+\[
+ c_*=|c|=\psi_{A_*}(p),\qquad A_*=|a+2|,\qquad p\ge25.
+\]
+The normalized strong equation in \eqref{eq:restored-kernel} gives
+\[
+ |I|=\psi_{A_*}(m),\qquad |f|=\chi_{A_*}(m),\qquad m\ge1.
+\]
+This uses the usual integral Pell classification for
+$A_*^2-1$: $A_*+\sqrt{A_*^2-1}$ is the fundamental positive unit
+with integer coefficients, as follows by descent on the first coordinate.
+
+Since $c_*^2\mid |I|$, strong divisibility of the Lucas sequence
+$\psi_{A_*}$ gives $p\mid m$. Write $m=p\ell$. Expanding the
+$\ell$th power of the unit at index $p$ gives
+\[
+ \frac{\psi_{A_*}(p\ell)}{c_*}
+ \equiv\ell\chi_{A_*}(p)^{\ell-1}\pmod{c_*}.
+\]
+The left side is divisible by $c_*$, and the Pell identity gives
+$\gcd(\chi_{A_*}(p),c_*)=1$. Hence $c_*\mid\ell$ and, in
+particular, $pc_*\mid m$. These are the strong-rank inputs needed
+by the inherited signed auxiliary descent. They do not require $I/c^2$
+to be odd.
+
+For the auxiliary interface put $\rho=\Delta I$. The discarded
+exposed quotient coordinates are restored by the integer polynomials
+\begin{align*}
+ o&=f(c-R+4IT),\\
+ j_{\rm aux}&=\Delta s^2r^2c^3(c-R)+4src\Df T.
+\end{align*}
+Direct expansion gives
+\[
+ V=fo-c=cj_{\rm aux}-R,
+ \qquad \rho^2=\Delta(f^2-1).
+\]
+Also $\rho^2\equiv1-A_*^2\pmod{|f|}$ and
+$\rho^2\equiv0\pmod{c_*}$. In the auxiliary Pell classification,
+the first coordinate is $|\rho V|$. Its index is odd because
+\[
+ \chi_{|\rho|}(2j)\equiv(-1)^j\pmod{|\rho|},
+ \qquad |\rho|>1,
+\]
+whereas $\rho\mid\rho V$. This step likewise needs no oddness of
+$\rho$.
+
+The inherited signed auxiliary step-down now yields $p=R$ and
+$2n_{\rm first}=R+1$; its main-root residue gives
+$X=\operatorname{sgn}(c)2^R$. In particular $R$ is odd, so the
+fixed residue $X\equiv2\pmod3$ selects $c>0$ and $X=2^R$.
+The inherited first-index sign identity gives $k>0$, and
+$c/k=Y+\eta/k$, with $0<\eta/k<1$ and $|Y|>1$, then gives
+$Y>0$. Finally $q\mid2^R$, $q\equiv1\pmod\beta$, and the
+inherited Mersenne-radix sign lemma give $q>0$. The post-power native
+decoder and its fixed blank-input calibration supply a finite syntactic
+ZFC refutation. The relevant native proofs are retained under
+\path{integer12/inherited/root_fusion/provenance/}, including
+\texttt{PROOF44.md} and the \texttt{upstream\_ordinary/} calibration
+documents. This is a composition of their ordinary theorems, rather than
+a claim that finite circuit checks establish the unbounded compiler.
+
+\begin{remark}
+An attempted restoration $r_{\rm old}=(\Delta sr-1)/2$ would be
+invalid when $\Delta sr$ is even. The normalized rank argument above
+is the reason arbitrary nonzero multipliers are admissible. The proof
+does not silently import the older odd-multiplier coordinate chart.
+\end{remark}
+
+\section{Completeness and the interpolated residue}\label{sec:completeness}
+
+The only new completeness choice is a residue for the shorter quintic.
+We reproduce the interpolation mechanism because its quantifier order
+is essential: one strong Pell witness must be fixed before the requested
+residue class is selected.
+
+The inherited canonical native construction supplies the outer data and
+main Pell roots with
+\begin{equation}\label{eq:canonical}
+ \begin{gathered}
+ A_*=a+2>1\text{ even},\qquad R\equiv3\pmod4,\\
+ c=\psi_{A_*}(R)>0,\qquad d=\chi_{A_*}(R),\qquad
+ \gamma=(d-X-ac)/H\in\Z,\\
+ G>0,\qquad\eta\zeta>0,\qquad \tau^2=\Dt.
+ \end{gathered}
+\end{equation}
+In particular $c\equiv R\pmod4$, since the recurrence gives
+$\psi_{A_*}(j+2)\equiv-\psi_{A_*}(j)\pmod4$ when $A_*$ is even.
+The source-34 tuple's bounded recipe and the exact canonical hypotheses
+are recorded in Appendix~\ref{app:coeff} and the inherited coefficient
+proof. This is the canonical family used in the incoming interpolation
+theorem, not a restriction imposed on arbitrary zeros.
+
+\begin{lemma}[Full residue interpolation]\label{lem:interpolation}
+Let $A_*>1$ be even, $\Delta=A_*^2-1$, $R\equiv3\pmod4$, and
+$c=\psi_{A_*}(R)>0$. For every prescribed $N>0$, there is a fixed
+positive pair $(I,f)$ such that
+\[
+ f^2-\Delta I^2=1,\qquad4Nc^2\mid I,
+\]
+and, for this same pair, every residue class $a_0\pmod I$ is represented
+by an integer $T$ for which
+\begin{equation}\label{eq:interpolation-equations}
+ V=f^2(c-R+4IT)-c,\qquad
+ (\Delta I)^2V^2-((\Delta I)^2-1)y^2=1
+\end{equation}
+has an integer solution $y$.
+\end{lemma}
+\begin{proof}
+The Pell recurrence matrix has determinant one, so it has finite order
+modulo $4Nc^2$. Choose a positive even multiple $m$ of that order and
+put
+\[
+ I=\psi_{A_*}(m),\qquad f=\chi_{A_*}(m).
+\]
+Then $4Nc^2\mid I$, $I$ is even, $f$ is odd, and $\gcd(f,I)=1$.
+
+We first justify the valuation fact
+\begin{equation}\label{eq:lucas-valuation}
+ v_p(I)\ge v_p(m)\qquad(p\mid I).
+\end{equation}
+For an odd prime dividing $\Delta$, the recurrence reduces to
+$\psi_{A_*}(j)\equiv jA_*^{j-1}\pmod p$, so the first zero
+index is $p$. For an odd prime not dividing $\Delta$, the norm-one
+group in the split quadratic algebra or quadratic field over
+$\mathbf F_p$ has order dividing $p-1$ or $p+1$, respectively; the
+first zero index is therefore prime to $p$. If $p\mid\psi_{A_*}(j)$,
+binomial expansion of the corresponding norm-one unit shows that
+multiplying $j$ by $p$ raises the second-coordinate valuation by
+exactly one, while multiplying it by a number prime to $p$ leaves
+that valuation unchanged. In the first-zero case the initial valuation
+is at least one, proving \eqref{eq:lucas-valuation} in both odd-prime
+cases. At $p=2$, because $A_*$ is even and $m$ is even, the doubling
+identity gives
+\[
+ v_2(\psi_{A_*}(m))=v_2(m)+v_2(A_*).
+\]
+This proves the remaining case, and hence $\gcd(m,I^2)\mid I$.
+
+Write $\alpha=A_*+\sqrt\Delta$, so
+$\alpha^m=f+I\sqrt\Delta$. In the integer-coefficient quadratic
+algebra modulo $f^2$, its norm-one relation gives
+\[
+ \alpha^{4m}\equiv1-4f\alpha^m\pmod{f^2},
+ \qquad \alpha^{4mf}\equiv1\pmod{f^2}.
+\]
+The second congruence follows by raising the first to the positive
+power $f$. Thus $\lambda=4mf$ is a period of both Pell coordinates
+modulo $f^2$. Since $\gcd(f,I)=1$ and
+\eqref{eq:lucas-valuation} holds,
+\[
+ \gcd(\lambda,4I^2)\mid4I.
+\]
+For any specified class $a_0\pmod I$, the two congruences
+\begin{equation}\label{eq:interpolation-crt}
+ L\equiv R\pmod\lambda,\qquad
+ L\equiv R-4Ia_0\pmod{4I^2}
+\end{equation}
+are therefore compatible. Choose a positive solution $L$. It is
+$3\pmod4$. Put $\rho=\Delta I$ and
+\[
+ V_0=\chi_\rho(L)/\rho,\qquad y=\psi_\rho(L).
+\]
+The quotient $V_0$ is integral because the index is odd.
+
+For completeness, the exact odd Chebyshev polynomials
+$Q_j(X)=\chi_b(2j+1)/b$, $X=b^2$, satisfy
+\[
+ Q_0=1,\quad Q_1=4X-3,\quad
+ Q_{j+1}=(4X-2)Q_j-Q_{j-1}.
+\]
+Induction gives
+\[
+ Q_j(X)\equiv(-1)^j(2j+1)\pmod{4X},\qquad
+ Q_j(1-A_*^2)=(-1)^j\psi_{A_*}(2j+1).
+\]
+Since $\rho^2=\Delta(f^2-1)\equiv1-A_*^2\pmod{f^2}$,
+these identities and \eqref{eq:interpolation-crt} imply
+\begin{equation}\label{eq:two-aux-residues}
+ V_0\equiv-c\pmod{f^2},\qquad
+ V_0\equiv-R+4Ia_0\pmod{4I^2}.
+\end{equation}
+Here $L\equiv3\pmod4$ makes $(L-1)/2$ odd; the period $\lambda$
+identifies $\psi_{A_*}(L)$ with $c$ modulo $f^2$.
+
+Because $c-R$ is divisible by four and $f^2=1+\Delta I^2$,
+the integer
+\[
+ N_0=V_0+c-f^2(c-R)
+\]
+is divisible by $f^2$ and congruent to $4Ia_0\pmod{4I^2}$.
+The coprimality $\gcd(f^2,4I^2)=1$ now gives
+\[
+ T=\frac{N_0}{4If^2}\in\Z,\qquad T\equiv a_0\pmod I,
+\]
+where the last step also uses $f^2\equiv1\pmod I$.
+Rearrangement supplies the first equation in
+\eqref{eq:interpolation-equations}; the Pell identity for
+$\chi_\rho(L),\psi_\rho(L)$ supplies the second. The initial pair
+$(I,f)$ depended only on $N$ and the canonical data, not on $a_0$.
+\end{proof}
+
+\begin{remark}
+The squared-modulus period is $4mf$, not $4m$. The latter is generally
+incorrect. Also, even $I$ and odd $f$ are choices made for completeness;
+soundness did not restrict $I$ to be even. These two details are recorded
+explicitly in the inherited independent arithmetic audit.
+\end{remark}
+
+We can now finish completeness for both new equations. Starting with a
+finite ZFC refutation, use the inherited canonical data
+\eqref{eq:canonical}. Lemma~\ref{lem:joint-positive} selects $t$
+with $P>0$. If $P=1$, choose $s=1,g=0$. If $P\ge2$, then
+$3P-4>0$ is $2\pmod3$ and hence nonsquare; ordinary Pell existence
+gives positive $s,g$ with
+\[
+ g^2-(3P-4)s^2=1.
+\]
+Apply Lemma~\ref{lem:interpolation} with $N=s$, then put
+$r=I/(sc^2)\in\Z$. At this stage the pair $(I,f)$ and the coordinate
+$r$ are fixed.
+
+By intersectivity, choose $a_0$ with
+$\pi(a_0+\gamma)\equiv0\pmod I$. The interpolation lemma supplies
+$T\equiv a_0\pmod I$ and its integer auxiliary root $y$, without
+changing $I,f,r$. The main canonical root $d$ satisfies
+\[
+ A+Bd=\Phi_H(HT+d-b_0)=H^5\pi(T+\gamma),
+\]
+so $(A+Bd)/S$ is an integer. Choose
+\begin{equation}\label{eq:complete-final-coordinate}
+ n=\frac{A+Bd}{S}+y+3f+9\tau+27g.
+\end{equation}
+One conjugate factor in \eqref{eq:primary} then vanishes. For
+\eqref{eq:companion}, replace $y$ in
+\eqref{eq:complete-final-coordinate} by $\delta y$. Every choice is
+made from already fixed data: native coordinates, $t$, $s$, the pair
+$(I,f)$ and $r$, the intersective residue, $(T,y)$, and finally $n$.
+There is no circular dependence of the modulus on the requested residue.
+
+Together with Section~\ref{sec:soundness}, this proves that each new
+polynomial has an integer zero if and only if there is a finite
+syntactic ZFC refutation, with the inherited ordinary calibration
+identified above. The elementary arithmetic arguments and those
+calibration proofs are formalizable in ZFC, yielding
+\eqref{eq:target}. This does not supply a new machine-checked internal
+ZFC derivation of the complete biconditional.
+
+\section{The literal denominator-free norm}\label{sec:clearing}
+
+We give a finite ring recipe for the denominator clearing in
+\eqref{eq:primary}. This also specifies exactly what the executable
+\texttt{norm5.py} computes. Use generic arguments
+$x,a_1,a_2,d_0,e_0,N_0,\delta_0$, and work temporarily in the
+free rank-four algebra with basis $1,u_0,v_0,u_0v_0$ and relations
+$u_0^2=d_0$, $v_0^2=e_0$. For a four-tuple $z=(z_0,z_1,z_2,z_3)$,
+its square has coordinates
+\begin{align*}
+ [z^2]_0&=z_0^2+d_0z_1^2+e_0z_2^2+d_0e_0z_3^2,\\
+ [z^2]_1&=2(z_0z_1+e_0z_2z_3),\\
+ [z^2]_2&=2(z_0z_2+d_0z_1z_3),\\
+ [z^2]_3&=2(z_0z_3+z_1z_2).
+\end{align*}
+Let $\mathbf e=(1,0,0,0)$ and define
+\begin{align*}
+ \mathbf t&=(x^2+d_0+e_0,-2x,-2x,2),\\
+ \mathbf q&=\delta_0\bigl(\mathbf t-(a_1+a_2)\mathbf e\bigr)
+                      -N_0\mathbf e,\\
+ r_0&=\delta_0^2a_1a_2,\qquad s_0=\delta_0N_0,\\
+ \mathbf h&=\mathbf q^2-4\bigl(r_0+s_0(a_1+a_2)\bigr)\mathbf e,\\
+ \mathbf f&=\mathbf h^2-64r_0s_0\mathbf t.
+\end{align*}
+If $\mathbf f=(f_0,f_1,f_2,f_3)$, put
+\begin{align*}
+ g_0&=f_0^2+e_0f_2^2-d_0(f_1^2+e_0f_3^2),\\
+ g_1&=2(f_0f_2-d_0f_1f_3),\\
+ \mathcal C(x;a_1,a_2,d_0,e_0,N_0,\delta_0)&=g_0^2-e_0g_1^2.
+\end{align*}
+Every operation in this recipe is addition, subtraction, or
+multiplication in the coefficient ring. No root, division, or
+data-dependent loop occurs in the exported arithmetic circuit.
+
+The three-root identity
+\[
+ F_8(x;a,b,c)
+ =\bigl((x^2-a-b-c)^2-4(ab+ac+bc)\bigr)^2-64abcx^2
+\]
+shows that $\mathbf f$ represents
+$\delta_0^4F_8(x-u_0-v_0;a_1,a_2,N_0/\delta_0)$.
+The final two quadratic norms therefore give the universal polynomial
+identity
+\begin{equation}\label{eq:cleared-norm-identity}
+ \mathcal C
+ =\delta_0^{16}\Fn(x;a_1,a_2,d_0,e_0,N_0/\delta_0).
+\end{equation}
+The right side is interpreted after clearing denominators, so the identity
+is a polynomial identity even at $\delta_0=0$.
+For the principal construction substitute
+\[
+ (x,a_1,a_2,d_0,e_0,N_0,\delta_0)
+ =(Z,B^2\Dm,9S^2\Df,81S^2\Dt,729S^2\Dg,S^2\Cc,\delta).
+\]
+For the companion, replace the last two arguments by
+$(S^2\delta\Cc,1)$.
+
+The independent exact checker constructs $F_{32}$ by successive binomial
+translations $F(x+\sqrt a)F(x-\sqrt a)$ and compares every integer
+coefficient after denominator clearing. All $20349$ terms match
+\eqref{eq:cleared-norm-identity}. Its intermediate term counts are
+$2,6,35,495,20349$. This is an exact universal polynomial check;
+the additional modular evaluations in the release serve as transcription
+controls for the specialized front end.
+
+\section{Attained degree and arithmetic cost}\label{sec:degree}
+
+The degrees of the relevant registers are
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrrrrrr@{}}\toprule
+Register &$S$&$A$&$B$&$\Dm$&$\Df$&$\Dt$&$\Dg$&$\delta$&$V$&$\Cc$\\
+\midrule
+Degree &34&35&28&14&20&34&46&32&25&82\\\bottomrule
+\end{tabular}
+\end{center}
+The norm $\Fn$ is even in $Z$ and homogeneous of degree $16$ in
+$Z^2$ and the five radicands. Consequently its cleared version is a
+homogeneous polynomial of degree $16$ in
+\[
+ \delta Z^2,\quad \delta B^2\Dm,\quad9\delta S^2\Df,
+ \quad81\delta S^2\Dt,\quad729\delta S^2\Dg,\quad S^2\Cc.
+\]
+These six input degrees are, respectively,
+\[
+ 102,\quad102,\quad120,\quad134,\quad146,\quad150.
+\]
+The coefficient of the sixteenth power of the last input is one.
+Therefore $(S^2\Cc)^{16}$ is the entire degree-$2400$ contribution;
+every other contribution has smaller degree. This yields the degree
+upper bound and reduces attainment to a single leading-form check.
+
+Write
+\begin{align*}
+ q_0&=6\beta j,& W_{00}&=12w,\\
+ a_0&=2q_0^4W_{00}v
+     =2^7 3^5\beta^4j^4wv,& I_0&=src^2,\\
+ R_0&=-q_0^3(W_{00}C-q_0z),& b&=4I_0T-R_0.
+\end{align*}
+The leading forms of $\Delta,H,Q,\Df,V$ are respectively
+$a_0^2,4a_0,a_0^4I_0^2,a_0^2I_0^2,a_0^2I_0^2b$.
+It follows that the leading form of $\primary$ is exactly
+\begin{equation}\label{eq:primary-leading}
+ 2^{320}a_0^{288}I_0^{128}b^{32}.
+\end{equation}
+Selecting the maximal $T$ power in $b^{32}$ gives the explicit coefficient
+\begin{equation}\label{eq:primary-coefficient}
+ \bigl[j^{1152}w^{288}v^{288}s^{160}r^{160}c^{320}T^{32}\bigr]
+ \primary
+ =2^{2400}3^{1440}\beta^{1152}>0.
+\end{equation}
+The exponents sum to $2400$. Since no other fixed port occurs in this
+coefficient, specializing to the actual six-tuple cannot make it vanish.
+
+For the companion, the radicand $S^2\delta\Cc$ has degree $182$,
+uniquely above the other radicands and $Z^2$. Its sixteenth power is
+the degree-$2912$ part, with leading form
+\[
+ 2^{320}a_0^{352}I_0^{160}b^{32}.
+\]
+In particular,
+\begin{equation}\label{eq:companion-coefficient}
+ \bigl[j^{1408}w^{352}v^{352}s^{192}r^{192}c^{384}T^{32}\bigr]
+ \companion
+ =2^{2848}3^{1760}\beta^{1408}>0.
+\end{equation}
+The exponents sum to $2912$. These are attained degrees of the
+specialized polynomials, not only syntactic degree estimates for circuits
+with generic coefficient ports.
+
+The final live-node census is
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Polynomial & Additions & Multiplications & Subtractions & Total\\
+\midrule
+$\primary$ &44&139&32&215\\
+$\companion$ &44&133&32&209\\\bottomrule
+\end{tabular}
+\end{center}
+All declared variables and all six coefficient leaves are live. The
+counts include the complete denominator clearing and the complete norm,
+not just the arithmetic front end. A multiplication by a fixed scalar
+is counted, as is each square; already computed registers may be reused.
+The exporter removes unused registers and coalesces identical operations.
+No assertion of optimal circuit complexity is made.

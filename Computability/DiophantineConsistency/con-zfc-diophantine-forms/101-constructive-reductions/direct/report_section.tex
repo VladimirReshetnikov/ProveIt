@@ -1,0 +1,313 @@
+\section{A direct quartic with 495 nonnegative unknowns}
+\label{sec:projected-direct}
+
+The direct branch encodes finite derivations in the repository's calibrated
+numerical calculus $C_{222}$.  Its immediate parent is the incoming
+synchronized-certificate construction with 522 nonnegative unknowns.
+Combining its arithmetic certificates with branchwise projection of rule
+labels gives the following fully materialized equation.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Measure & Synchronized parent & Projected equation\\
+\hline
+Nonnegative unknowns &522&495\\
+Quadratic residuals &400&391\\
+Exact total degree &4&4\\
+Expanded monomials &20,225&15,377\\
+Maximum absolute coefficient &83,900,628&83,867,632\\
+\hline
+\end{tabular}
+\end{center}
+
+The actual polynomial is
+\[
+ P_{495}(z_0,\ldots,z_{494})=\sum_{j=1}^{391}R_j(z_0,\ldots,z_{494})^2.
+\]
+Every coefficient of every quadratic $R_j$, and every collected coefficient
+of $P_{495}$, is supplied as an ordinary integer in the literal artifacts.
+The notation does not quantify additional registers.  The source equations
+below explain the construction; all their powers, binomials, factorials,
+and bounded quantifiers have been removed from the delivered quartic.
+
+This is a measured improvement of the direct, modest-coefficient quartic
+branch.  It is not a claim that 495 is an optimal variable count.  The
+construction does not encode a run of K215 and does not use Jones's
+universal polynomial.  Its ordinary consistency theorem imports the
+identified $C_{222}$ calibration; it is not a new end-to-end proof-assistant
+certificate.
+
+\subsection{Project the premise and conclusion labels first}
+
+Write
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,\qquad A(a,b)=I(a,b)+2.
+\]
+The calibrated source has twelve branches.  Its truth and axiom branches
+have premise labels $p=q=0$ and conclusion label
+$v=h_b(a,b,c,d)$, with truth represented by $h_b=0$.
+The exact nine nonzero conclusion polynomials are the inherited numerical
+constructors.  The two inference branches admit the parameterizations
+\[
+ (p,q,v)=(a,I(a,b),b),\qquad
+ (p,q,v)=(b,0,A(a,b)).
+\]
+For modus ponens these parameters are the old first premise and conclusion;
+for generalization they are its generalization parameter and premise.
+Every old instance therefore has a new instance, and substitution recovers
+an old instance from every new one.  Since existential quantification
+distributes over a finite disjunction, unused parameters in an unselected
+branch impose no compatibility condition.
+
+There is one further local saving.  The bundle branch's conclusion is
+independent of its fourth parameter.  Its guard
+\[
+ g^2=(d_{\rm old}+1)^2,
+ \qquad g=(c-a)(c-b),\qquad d_{\rm old}\ge0,
+\]
+can be replaced by $g^2=d+1$, $d\ge0$.  Both existential conditions mean
+$g\ne0$.  An old witness gives $d=d_{\rm old}^2+2d_{\rm old}$; a new
+witness gives $d_{\rm old}=|g|-1$.  The fourth parameter in another
+selected branch retains its original meaning.
+
+Fix outer parameters $t,m\ge1$ and $x,y,M_0\ge0$.  Set $M=M_0+1$ and
+$w(j)=1+Mj$.  For each branch let
+\[
+ e_b=S' w(v_b)-S w(p_b)w(q_b).
+\]
+Let $e_0,\ldots,e_8$ be the truth and eight unguarded axiom residuals;
+let $e_{\rm MP},e_{\rm GEN},e_{\rm B}$ be the two inference and bundle
+residuals.  Put $G=((c-a)(c-b))^2-d-1$.  The complete row equation is
+\begin{align*}
+0={}&\left(e_0\cdots e_8e_{\rm MP}e_{\rm GEN}\right)^2
+                   (e_{\rm B}^2+G^2)\\
+ &+\bigl[x-S-(1+(i+1)y)u\bigr]^2
+  +\bigl[x-S'-(1+(i+2)y)v\bigr]^2.
+\end{align*}
+Every summand is nonnegative.  Consequently this equation is equivalent
+to the two beta reconstructions together with one valid selected rule's
+accumulator identity.  Only eight bounded row coordinates remain:
+\[
+ (a,b,c,d,S,S',u,v),\qquad
+ (a,b,c,d,S,S',u,v)\le(m,m,m,m,y,y,x,x)
+\]
+coordinatewise.  The implementation also shares $S'M$ in
+$S'w(h)=S'+(S'M)h$ and squares the product of the eleven unguarded
+residuals once.  These are exact polynomial identities, not probabilistic
+fingerprint equalities.
+
+\subsection{A small circuit bounds all labels}
+
+At $a=b=c=d=m$, a literal certificate bounds every constructor by a fixed
+power of $R_0=m+2$.  Assign exponent one to $m$, exponent
+$\lceil\log_2 c\rceil$ to a positive numeral $c$, exponent zero to zero,
+and propagate
+\[
+ e_{U+V}=\max(e_U,e_V)+1,\qquad e_{UV}=e_U+e_V.
+\]
+Since $R_0\ge2$, induction proves $U\le R_0^{e_U}$ at every gate.
+All constructor coefficients are nonnegative, so the diagonal evaluation
+also bounds the labels when the four parameters are merely at most $m$.
+The largest certified exponent is $3,445,903$; use
+\[
+ h(m)=(m+2)^{4,194,304},\qquad M=(h(m)+1)^t.
+\]
+The fixed power defining $h$ takes 22 squarings.  This high semantic degree
+does not raise the quartic degree of its arithmetic graph.
+
+Here is the exact carrier argument.  For the $t$ selected rule instances
+define
+\[
+ B_0(X)=\prod_{i<t}(1+v_iX),\qquad
+ B_1(X)=(1+X)\prod_{i<t}(1+p_iX)(1+q_iX).
+\]
+The endpoints $S_0=M+1$, $S_t=1$ and the accumulator identities imply
+$B_0(M)=B_1(M)$.  All states are positive, by induction from the first
+endpoint and positivity of the label weights.  With $h=h(m)$,
+\[
+ B_0(M)\le(1+hM)^t<((h+1)M)^t=M^{t+1}.
+\]
+Thus $\deg B_1\le t$, since a nonnegative integer polynomial of greater
+degree would have value at least $M^{t+1}$.  Both polynomials now have
+coefficient sum at most $(h+1)^t=M$, and constant coefficient one.  Each
+coefficient is therefore strictly smaller than $M$.  Uniqueness of
+base-$M$ digits proves $B_0=B_1$.  Comparing the multiplicities of the
+distinct factors $1+jX$, $j>0$, gives the exact Horn balance for target
+label one.  The inherited closure-separation argument turns that balance
+into a finite derivation, without excluding cycles or repeated premises.
+
+Conversely, expand a finite derivation to a finite tree.  Choose $t$ for
+its rule occurrences and choose $m$ afterward to bound their four
+parameters, including each new bundle slack $g^2-1$.  Products of the
+weights of outstanding obligations give the required integral
+accumulator trace.  The independent parameter $m$ avoids any need to pad
+the derivation until its horizon bounds its own labels.
+
+\subsection{Compile and contract}
+
+Choose $y$ above the finitely many states and divisible by $t!$, then
+choose a beta code $x$ for the trace.  Its natural quotients are at most
+$x$.  Conversely, the bounds $S,S'\le y$ make both reconstructions
+canonical remainders, since $y<1+(i+1)y$.
+
+A second literal majorant certificate uses base $2+t+x+y+m+M_0$ and
+fixed exponent $8,388,608$.  It bounds both nonnegative sides of the
+row equation at all upper row bounds, as well as the index and the
+individual bounds.  The inherited fixed-vector CRT theorem then applies
+to the eight columns.  Its factorial factors cancel because the CRT
+moduli are one modulo the chosen common factorial.
+
+The resulting finite arithmetic circuit makes 11 binomial requests and
+24 positive-power requests, with 19 distinct Pell indices and 10 distinct
+power bases.  The shared binomial radix and common Pell-frame theorems
+apply to this finite family unchanged.  In soundness one identifies the
+power graphs first, the binomial digits second, and the factorial/CRT
+semantics afterward.  In completeness one chooses the intended acyclic
+semantic values first and the shared auxiliary certificates afterward.
+This order avoids circular justification of the shared radix or frame.
+
+The emitted parent of the final quartic has 823 natural variables and
+719 quadratic residuals.  Exact nonnegative monic substitutions eliminate
+328 further variables and residuals.  The inverse substitutions have
+nonnegative integer coefficients, and the retained residuals remain
+quadratic.  Thus both existence implications hold over the naturals.
+The independent replay verifies all 328 substitutions and the complete
+15,377-term sum-of-squares expansion.
+
+\section{Recover nonnegativity from the equations themselves}
+\label{sec:frame-domain}
+
+Converting every natural coordinate independently would waste many
+variables.  The displayed equations already force most coordinates to
+have the required signs.  A finite certificate shows that guarding only
+170 of the 495 coordinates suffices.  The main additional argument uses
+the common Pell frame before invoking any exponentiation semantics.
+
+\subsection{Local sign implications}
+
+Suppose a literal residual can be written
+\[
+ A(\mathbf z)z_i=B(\mathbf z),
+\]
+where neither $A$ nor $B$ involves $z_i$.  If previously established facts
+prove $A>0$ and $B\ge0$, then $z_i\ge0$; if $B>0$, then $z_i>0$.
+The certificate uses this elementary implication and the weakening
+$z_i>0\Rightarrow z_i\ge0$.  Its sign checks allow even powers without
+assuming a sign for their bases.  Positive integer monomials can also
+pay an explicitly bounded negative constant term.
+
+Starting with the 170 declared guards, 531 such checked implications
+prove 447 of the 495 coordinates nonnegative.  Crucially, this first
+stage proves all prerequisites of the following common-frame argument.
+No $T$ or Pell abscissa whose sign is recovered by that argument is used
+prematurely.
+
+\subsection{One frame proves 29 further signs}
+
+The exact raw compiler identities restore polynomially from the final
+495 coordinates.  Let $W,A,Z$ be its common frame, and let
+$(n,k,m)$ range over the finite power requests.  The frame identities are
+\[
+ W=2+\sum_{\xi\in\mathcal A}\xi,\qquad
+ A^2=1+W^3(W+2)Z^2.
+\]
+Here $\mathcal A$ is the finite set of distinct base, exponent, and output
+atoms in the circuit; distinct atoms with equal values are still counted
+separately.  The exact list is supplied.  Before the new argument,
+all these atoms are nonnegative, every base $n$ is strictly positive,
+$A\ge0$, and $Z\ge1$.  These facts are checked through the literal
+restorations, including the factorial output used as a power base.
+Consequently
+\[
+ W\ge2,\qquad 1\le n\le W,\qquad A>W^2.
+\]
+The last strict inequality follows immediately by squaring; no Pell
+classification or already-established power semantics is needed.
+
+Each of the ten distinct base moduli satisfies
+\[
+ T_n=2An-n^2-1.
+\]
+Therefore $T_n\ge2A-W^2-1>0$.  For each power request the exact oriented
+congruence is
+\[
+ X+Yn=YA+m+T_nq,
+\]
+and the first sign stage has already established $Y,m,q\ge0$.
+Since $A-n>0$, rearranging gives
+\[
+ X=Y(A-n)+m+T_nq\ge0.
+\]
+This recovers the signs of all 19 distinct index abscissae.  After adding
+the ten modulus signs and these 19 abscissa signs, 21 further local
+implications prove all 495 coordinates nonnegative.
+
+The order matters: base positivity precedes the frame argument, modulus
+positivity precedes abscissa recovery, and full natural-domain arithmetic
+semantics is invoked only after every coordinate has been recovered.
+This separates a short ordered-ring proof from the much stronger
+Pell-index argument used later to identify actual powers.
+
+\subsection{A quartic in 977 unrestricted integers}
+
+For an integer $x$, the classical three-square theorem gives
+\[
+ x\ge0\quad\Longleftrightarrow\quad
+ \exists u,v,w\in\mathbb Z:\quad x=u^2+v^2+w(w+1).
+\]
+Soundness is immediate.  For completeness, $4x+1$ has a representation
+by three squares; modulo four exactly one square is odd.  Writing that
+odd integer as $2w+1$ and the even integers as $2u,2v$ proves the formula.
+
+Adjoin this quadratic identity for each of the 170 guarded coordinates.
+The other coordinates require no separate representation, because the
+checked domain-recovery theorem forces their nonnegativity.  Keeping the
+original coordinates at this stage preserves degree two in every
+residual.  The intermediate unrestricted-integer system therefore has
+\[
+ 495+3\cdot170=1005\quad\text{variables},\qquad
+ 391+170=561\quad\text{quadratic residuals}.
+\]
+Twenty-eight further signed monic substitutions preserve quadratic
+degree and existence over the integers.  The final literal equation has
+\[
+ \boxed{\begin{gathered}
+ 977\ \text{unrestricted integer unknowns},\qquad
+ 533\ \text{quadratic residuals},\qquad \deg P_{977}=4,\\
+ 24,632\ \text{expanded monomials},\qquad
+ \max|\text{coefficient}|=83,869,250.
+ \end{gathered}}
+\]
+The comparison with the synchronized parent's 2088-integer quartic is
+a reduction of 1111 integer variables, or approximately $53.2\%$, while
+retaining degree four.  This is a comparison within the direct branch;
+the repository's much smaller-variable high-degree constructions remain
+different tradeoffs.
+
+Every integer zero of $P_{977}$ restores the guarded 495-coordinate
+system, hence a completely nonnegative zero of $P_{495}$ and a calibrated
+finite refutation.  Conversely, a refutation gives a natural zero,
+three-square witnesses for the 170 guards, and then a zero of the
+contracted integer system.  Composing with the named ordinary source
+calibration and negating yields the desired ZFC-provable biconditional
+between absence of integer zeros and $\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{What the finite verifier establishes}
+
+The domain checker is independent of the sign-discovery code.  It
+rederives every local implication from a literal quadratic residual and
+checks 1535 raw polynomial restorations.  Of the raw equations, 1040
+restore to zero identities and 391 restore to final residuals.  It also
+binds all 1243 raw arithmetic-gate metadata records to their exact
+defining residuals before expanding them.  Finally it checks the frame
+norm and sum, ten modulus identities, and all 24 oriented power
+identities.  The ordinary inequalities above then justify its 29
+additional sign conclusions.
+
+Corruption controls require rejection after a gate operand is changed,
+a guard is deleted, a pivot orientation is reversed, a frame conclusion
+is omitted, or a modulus identity is replaced.  Normal and optimized
+Python runs perform the checks explicitly.  These finite verifications
+certify the formulas, transformations, and coefficient data; they do not
+replace the unbounded source proof or decide whether a refutation exists.

@@ -1,0 +1,244 @@
+\section{One-sided residue control in ten positive variables}
+\label{sec:positive-ten-centered}
+
+We obtain a fixed polynomial in ten strictly positive integer unknowns,
+of exact degree $912$ and with $126$ live binary arithmetic operations.
+The inspected four-root residue predecessor has degree $1152$ and $131$
+operations. Thus the degree falls by $20.83\%$, with five fewer operations.
+The coefficient tuple and calibration are unchanged. This is not a
+nine-variable result or a claim of global optimality.
+
+The useful refinement is to bound a rational main-carrier residue only
+\emph{from above}. Its large negative values are harmless for the positive
+transport gap. An auxiliary translation and two root centers then allow a
+degree-two weight instead of the predecessor's degree-$38$ majorant.
+The full local proof and retained interfaces are in
+\texttt{positive/ten\_centered/PROOF.md}; the argument below makes the new
+inequalities and choice order explicit.
+
+\subsection{Complete ordinary polynomial}
+
+The fixed ports are the coherent compact44 numerals
+$\beta,K_0,M_C,M_F$, with $\beta=2^{590069}-1$ and $M_F$ already shifted.
+Their actual bytes and generation recipe are delivered. The only unknowns are
+\[
+ j,F,\alpha,i,T,X,s,n,\eta,\zeta\in\mathbb Z_{>0}.
+\]
+Every subsequent symbol is a polynomial abbreviation:
+\begin{align*}
+ J&=3j+1,\quad  q=\beta J+1,\quad  h=F+\alpha,\quad  C=q-h,\\
+ Y&=q^3s,\quad  E=XY,\quad  k=\eta+\zeta,\quad  c=kY+\eta,\\
+ a&=E+Y,\quad  H=4a+3,\quad  \Delta=a^2+H,\quad  \ell=EkY,\\
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ B_t&=(qK_0+X)C-qF,\quad  I=ic^2,\quad  D_f=1+\Delta I^2,\\
+ Q&=\Delta^2I^2,\quad  \delta=Q-1,\quad  T_o=T+h,\quad  C_f=(a+2)I,\\
+ V&=D_f(cT_o-R)-c,\quad D_t=\ell(\ell+k)+1,\quad D_d=1+\Delta c^2,\\
+ L&=kT_o,\quad W=1+(q-1)L,\quad v=k-R-1,\\
+ U&=q^5,\quad S=q^4,\quad b_0=X+ac,\quad M=(q-1)U.
+\end{align*}
+Set
+\begin{align*}
+ Z={}&M\bigl(H(\ell+k+n+L+s+V+C_f)+b_0\bigr)
+       \\ &{}-HUWB_t+H(q-1)(SX-v),\\
+ A&=M^2H^2D_t,\quad B=M^2H^2D_f,\\
+ D&=M^2D_d,\quad C_N=M^2H^2(QV^2-1).
+\end{align*}
+The final division-free kernel is
+\begin{align*}
+ \sigma&=A+B+D,\quad \pi=AB+(A+B)D,\quad \rho=ABD,\\
+ a_N&=\delta(Z^2-\sigma)+C_N,\quad t_N=\delta C_NZ^2,\\
+ k_N&=a_N^2+4(t_N-\delta^2\pi),\quad r_N=16\delta^3\rho,\\
+ b_N&=a_Nk_N-r_N,\\
+ e_N&=k_N^2+16t_Na_N^2-4r_N(\delta Z^2+C_N),\\
+ \boxed{P_{10}}&\boxed{{}=e_N^2-64t_Nb_N^2=0.}
+\end{align*}
+The graph uses $75$ multiplications, $34$ additions, and $17$ subtractions;
+squares and scalar products are charged. Numeral leaves and reuse are free.
+
+In proof only write $D_y=(QV^2-1)/\delta$. The exact kernel is $\delta^8$
+times the product of the sixteen factors
+\[
+ Z-\varepsilon_1MH\sqrt{D_t}-\varepsilon_2MH\sqrt{D_f}
+  -\varepsilon_3MH\sqrt{D_y}-\varepsilon_4M\sqrt{D_d}.
+\]
+The independent checker verifies the whole $495$-term identity.
+All clearing factors are positive on the declared domain.
+
+\subsection{Root recovery precedes the sign bootstrap}
+
+Write $t,f,y,d$ for the positive roots of $D_t,D_f,D_y,D_d$.
+The predecessor's unconditional separation proof remains valid with $T_o$
+in place of $T$. Indeed $q\ge16$, $Y\ge q^3$, $c\ge2Y+1$, $a\ge2Y$, and
+\[
+ \ell<t<\ell+k<(a+1)c,\qquad
+ f>(a+1)c^2,\qquad 0<d/H<c,\qquad t>2c+1.
+\]
+If the integer $cT_o-R$ is zero, then $c<y<c+1$ and the four roots are
+superincreasing in order $d/H,y,t,f$. Otherwise
+$y>|V|\ge D_f-c>f+t+d/H$, and their superincreasing order is $d/H,t,f,y$.
+Thus every nonempty signed subset sum is nonzero. Square-class character
+independence in a multiquadratic field shows that a rational signed sum
+forces each root rational. At a norm zero we therefore have signed roots
+$\tau_*,f_*,y_*,d_*$ and
+\begin{equation}
+ \ell+k+n+L+s+V+C_f-\frac{WB_t}{q-1}
+ +\frac{b_0}{H}+\frac{SX-v}{U}
+ =\tau_*+f_*+y_*+\frac{d_*}{H}.
+ \label{eq:p10-centered-root}
+\end{equation}
+The first, strong and main roots are integral because their squares are
+integers. The adjacent-coefficient Pell descent makes $y_*$ integral from
+$QV^2-(Q-1)y_*^2=1$. It uses only integer $Q>1$ and $V$: the transformation
+\[
+ (V,y)\longmapsto
+ ((2Q-1)V-2(Q-1)y,(2Q-1)y-2QV)
+\]
+preserves the reduced denominator of rational $y$, has integral first
+coordinate, and strictly decreases its positive absolute value until
+$|V|=1$, where $|y|=1$. No native bound or main-root orientation is used.
+
+Integer first and main roots give Pell indices $m,p\ge1$ with
+\[
+ |\tau_*|=\chi_{2XY^2+1}(m),\quad k=2\psi_{2XY^2+1}(m),\qquad
+ |d_*|=\chi_{a+2}(p),\quad c=\psi_{a+2}(p).
+\]
+Here $p\ge2$; $m=1$ would force $k=2$, $c=2Y+1<2(a+2)$, a contradiction.
+Thus, \emph{before} $C>0$,
+\begin{equation}
+ k>8XY^2,\qquad c>8XY^3\ge8q^9.
+ \label{eq:p10-centered-growth}
+\end{equation}
+The actual mask inequalities give the unconditional estimate
+$|R|<\widehat R=q^3(q+h)$. Since $h\ge2$, \eqref{eq:p10-centered-growth}
+implies $ch>\widehat R$, and therefore
+\[
+ 0<cT_o-R<c(T+2h),\qquad V>1.
+\]
+As $\delta-(\Delta-1)D_f=\Delta(I^2-1)>0$ and
+$\Delta-1>4(Y+1)$, the auxiliary gap satisfies
+\begin{equation}
+ 0<y-V<\frac{V}{\delta}
+ <\frac{c(T+2h)}{\Delta-1}
+ <\frac{k(T+2h)}4<\frac L2.
+ \label{eq:p10-centered-ybound}
+\end{equation}
+Moreover $f<C_f$, since $C_f^2-D_f=I^2-1>0$.
+
+Define rational proof coordinates
+\[
+ r=\tau_*-\ell-k-s+\frac{WB_t}{q-1},\qquad
+ \gamma=\frac{d_*-b_0}{H}-\frac{SX-v}{U}.
+\]
+For either main-root sign, $d_*\le d<(a+2)c$ and $2c/H<k/2$, giving
+\begin{align}
+ \gamma
+ &<\frac{k}{2}+\frac{k}{q^5}+\frac1q+\frac{h}{q^2}
+ <\frac{3k}{4}+\frac h4
+ <k+\frac h2\le\frac{k(T+h)}2=\frac L2.
+ \label{eq:p10-centered-gamma}
+\end{align}
+The middle bound uses $q\ge16$, $h\ge2$; the last uses
+$(k-1)(h-1)\ge1$ and $T\ge1$. There is no lower bound on $\gamma$.
+Equation~\eqref{eq:p10-centered-root} now reads
+$r+\gamma+f_*+y_*=n+L+V+C_f$.
+Equations~\eqref{eq:p10-centered-ybound}--\eqref{eq:p10-centered-gamma}
+therefore give $r>n>0$ for all root signs. Hence
+\[
+ \frac{WB_t}{q-1}=\ell+k+s+r-\tau_*>0,
+\]
+so $B_t>0$, $C>0$, and only now $3q<R<q^4-2$ is available.
+
+\subsection{Residues, reconstruction, and canonical completeness}
+
+The residue argument of the four-root predecessor applies unchanged:
+all added centers are integers. The normalized strong and signed auxiliary
+lemmas give $p=R$. Integrality of $r+\gamma$, together with
+$\gcd(H,q)=1$, yields $q^5\mid q^4X-v$. The first Pell recurrence and
+$1\le m<R<q^4$ then force $R=2m-1$ and $q\mid X$; consequently
+\[
+ (q-1)(d_*-b_0)/H\in\mathbb Z.
+\]
+This step does not cancel $H$ against $q-1$. Instead Pell growth gives
+$Y>q2^R$. Modulo $H$, the main Pell polynomials satisfy
+\[
+ \chi_{a+2}(R)-ac\equiv2^R,\qquad
+ 2^R(\chi_{a+2}(R)+ac)\equiv1.
+\]
+A negative $d_*$ would make $(q-1)(1+2^RX)/H$ an integer strictly between
+zero and one. For positive $d_*$, $(q-1)(2^R-X)/H$ is an integer with
+absolute value less than one. Thus $d_*>0$, $X=2^R$, and $H\mid d_*-b_0$.
+Now $\gamma,r$ are integers and $(q-1)\mid B_t$.
+The normalized source is restored by
+\[
+ w=X/q,\quad h_{\rm src}=v/(XY),\quad
+ \gamma_{\rm old}=(d_*-ac-X)/H,
+\]
+\[
+ f_{\rm old}=|f_*|,\quad \tau_{\rm old}=|\tau_*|,
+ \quad y_{\rm old}=|y_*|,\quad T_{\rm src}=f_{\rm old}T_o,
+ \quad z=1+\frac{(K_0+w)C-F}{q-1}.
+\]
+These are positive integers and satisfy every retained source equation.
+
+Conversely choose canonical outer source witnesses and then a normalized
+strong pair $f,I=ic^2$. With $M_a=\Delta I$, the canonical auxiliary
+construction is
+\[
+ V^*=\chi_{M_a}(R)/M_a,\qquad y^*=\psi_{M_a}(R),\qquad
+ T_o=\frac{V^*+c+Rf^2}{cf^2}.
+\]
+For $R\ge7$, its growth gives
+$T_o>M_a^4/c\ge c^7>q>h$, and also $T_o>(a+2)I=C_f$.
+Thus $T=T_o-h>0$. Form $L,W$ only after these choices; then $L>C_f,k$.
+The canonical index gives $v\ge4XY^2$, so
+\[
+ \gamma=\gamma_{\rm old}-X/q+v/q^5>0.
+\]
+With $t_0=B_t/(q-1)\ge q$, set
+$r=Wt_0+\tau-\ell-k-s>qW-2k>2L$. Finally
+\[
+ n=r+\gamma+f+y^*-L-V^*-C_f>r-L-C_f>0.
+\]
+This gives \eqref{eq:p10-centered-root} with positive roots and hence
+$P_{10}=0$. No additional congruence on $Y$ or auxiliary quotient is imposed.
+The choice order is outer source, strong pair, auxiliary pair, $L,W$, then
+$r,n$; in particular no cofinality or freshness assumption is hidden.
+
+\subsection{Exact degree and evidence boundary}
+
+Let $K=MH$, and scale the ten unknowns by a formal parameter $\lambda$.
+In the Laurent-series field over the rational-function coefficient field,
+choose roots with the indicated leading centers. Exact defects give
+\begin{align*}
+ K\sqrt{D_t}&=K\ell+O(\lambda^{12}),\\
+ K\sqrt{D_f}&=KC_f-\frac{KI^2}{2C_f}
+                  +\text{terms of degree less than }17,\\
+ K\sqrt{D_y}&=KV+O(\lambda^7),\\
+ M\sqrt{D_d}&=Mb_0+O(\lambda^{11}),\\
+ Z&=K(\ell+C_f+V)+Mb_0+O(\lambda^{15}).
+\end{align*}
+Here the large centers have degrees $21,27,49,16$, respectively; the
+remaining strong-root defect has degree $17$. Of the sixteen norm factors,
+eight have degree $49$, four degree $27$, two degree $21$, and two degree
+$17$. Their leading terms are nonzero. Clearing $\delta^8$, of degree
+$336$, gives
+\[
+ \deg P_{10}=8\cdot49+4\cdot27+2\cdot21+2\cdot17+336=912.
+\]
+Writing $q_0=3\beta j$, $k_0=\eta+\zeta$, exact simplification yields
+\[
+ \operatorname{in}_{912}(P_{10})=
+ 2^{44}q_0^{558}i^{38}k_0^{86}X^{68}s^{154}(T+F+\alpha)^8.
+\]
+Thus the coefficient of $j^{558}i^{38}\eta^{86}X^{68}s^{154}T^8$ is
+$2^{44}(3\beta)^{558}>0$. The exact norm and circuit identities, six
+actual-coefficient finite-field degree replays, and ordinary and optimized
+Python runs are included. They certify formulas and measurements, not
+unbounded semantics. The semantic conclusion composes the proof above
+with the retained ordinary native/compiler calibration:
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\text{$P_{10}$ has no strictly positive integer zero}\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+No consistency assumption or new end-to-end formalization is claimed.

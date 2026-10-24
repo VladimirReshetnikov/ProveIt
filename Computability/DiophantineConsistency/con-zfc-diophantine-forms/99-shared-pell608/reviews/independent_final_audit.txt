@@ -1,0 +1,98 @@
+INDEPENDENT FINITE AUDIT OF THE FINAL 608-NATURAL / 1685-INTEGER PAIR
+
+Audited directory: research/optimized/final.
+
+The affine checker does not replay the constructor's gate-selection heuristic.
+It identifies the proposed retained variables by their raw metadata, checks
+every raw defining equation independently, and reconstructs the omitted
+affine wires needed by every semantic constraint and retained definition.
+Exact sparse substitution reproduces all 700 rows of before_terminal.json.
+All 1,182 raw gate definitions are monic, triangular, and coefficientwise
+nonnegative after solving for their output. There are 724 needed omitted
+affine gates, each with at most four terms in its fully substituted affine
+recipe. No free input or otherwise dead gate was omitted. Thus the raw
+1,541-variable / 1,424-row system and its 817-variable / 700-row affine
+export have bijective natural zero sets, via unique polynomial extension.
+
+The independent terminal checker derives and checks all 209 reconstruction
+recipes directly from the then-current defining rows. It scans every other
+row for nonlinear occurrences, checks 218 consumer substitutions, and
+reproduces the 608-variable / 491-row residual system exactly. Independent
+ordered convolution of those residuals produces exactly 7,582 nonzero
+monomials, maximum absolute coefficient 79,824,571, and total degree four.
+No unused variables were dropped. This stage also gives a bijection of
+natural zero sets by the terminal-elimination lemma.
+
+INTEGER DOMAIN CONVERSION
+
+There are exactly 359 original raw variables without a defining gate:
+five outer variables and 354 additional arithmetic witnesses. Every one
+is still present among the final 608 natural variables. The other 249
+final variables are retained gates. For each of the 359 free inputs v,
+the integer export adds three fresh integer variables a_v,b_v,c_v and
+the quadratic residual
+
+             8v + 3 - a_v^2 - b_v^2 - c_v^2.
+
+The final integer equation is the sum of squares of the original 491
+residuals and these 359 additional residuals. It therefore has 1,685
+unrestricted integer variables and 850 residuals. Independent expansion
+gives exactly 12,082 nonzero monomials and maximum absolute coefficient
+79,827,802. Its total degree is exactly four. In particular each fresh
+square witness occurs with coefficient one in its pure fourth-power term.
+
+Completeness of the conversion follows from Legendre's three-square
+theorem: if v>=0, then 8v+3 is positive and is not of the excluded form
+4^a(8b+7), so it is a sum of three integer squares. The new witnesses
+for different inputs are disjoint, hence all 359 guards can be satisfied
+simultaneously without modifying the natural solution.
+
+For soundness, an integer zero makes every residual zero. Each guard
+implies 8v+3>=0. Since v is an integer, this forces v>=0. Thus all 359
+original free inputs are nonnegative. At this point the retained gate
+variables have not yet been assumed nonnegative; that would be an invalid
+shortcut. Instead, lift the integer solution through the terminal and
+affine eliminations. Both lifting maps are polynomial identities over Z,
+so the result satisfies every original raw equation over Z. Process the
+raw gate definitions in increasing output-variable order. Each output
+is a polynomial with nonnegative integer coefficients in earlier values.
+The free values are nonnegative, and induction therefore makes every raw
+gate value nonnegative as well. This proves that the lifted assignment is
+a natural-valued raw solution. Projecting it gives the required natural
+608-variable solution. Hence the natural and integer equations have
+equivalent solvability, with no positivity assumption on unguarded gate
+variables used before the induction establishes it.
+
+VERIFICATION SCOPE
+
+All three independent programs ran successfully with ordinary Python and
+with python -O. None imports the constructor, exporter, compressor, or
+arithmetic-macro implementation. The integer checker imports only the two
+other independently authored checkers and rechecks the full finite chain.
+Eight deliberate corruptions were rejected: an affine export coefficient,
+a nonunit raw gate coefficient, a terminal reconstruction coefficient,
+a final natural coefficient, a nonlinear terminal consumer, an omitted
+free-input guard, an incorrect guard constant, and an incorrect final
+integer coefficient.
+
+The programs prove finite polynomial identities, reconstruction hypotheses,
+input-guard coverage, and exact polynomial exports. The ordinary proof
+of the arithmetic macros and the source's syntactic ZFC-refutation
+calibration remain separate mathematical dependencies. These checks are
+not a newly generated Lean/Rocq proof or an encoded object-ZFC derivation.
+
+FILES TO BUNDLE
+
+verify_affine_independent.py
+verify_terminal_independent.py
+verify_integer_independent.py
+final608_affine.normal.json
+final608_affine.optimized.json
+final608_terminal.normal.json
+final608_terminal.optimized.json
+final1685_integer.normal.json
+final1685_integer.optimized.json
+
+Keep the three programs in one directory because the integer checker
+imports the other two. Each receives the output-data directory as its
+positional argument; --output optionally chooses the receipt path.

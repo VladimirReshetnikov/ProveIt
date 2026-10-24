@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype}
+\usepackage{xcolor,fancyhdr}
+\usepackage{xurl}
+\usepackage[breaklinks,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\hypersetup{pdftitle={Smaller Diophantine consistency equations},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Pell saturation, transport projection, and coprime proof-flow certificates},pdfkeywords={Diophantine equations, ZFC, consistency, Pell equations}}
+\usepackage{listings}
+\definecolor{ink}{RGB}{28,46,62}
+\definecolor{accent}{RGB}{21,100,116}
+\setlength{\headheight}{15pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Diophantine consistency: saturation and projection}
+\fancyhead[R]{\small\texttt{c1a102936aca}}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\Npos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\pin}{\texttt{c1a102936aca437e9999530a0111e6ddab56dc6d}}
+\allowdisplaybreaks[2]
+\input{metrics.tex}
+
+\begin{document}
+\thispagestyle{empty}
+{\sffamily\bfseries\color{accent}RESEARCH CONTRIBUTION\hfill 23 OCTOBER 2026\par}
+\vspace{0.65cm}
+{\Huge\bfseries\color{ink}Smaller Diophantine\\[4pt]consistency equations\par}
+\vspace{0.35cm}
+{\Large Pell saturation, exact transport elimination,\\and coprime proof-flow certificates\par}
+\vspace{0.4cm}
+Prepared for Vladimir Reshetnikov and the ProveIt project.\\
+AI-assisted mathematical research with explicit polynomial artifacts.
+
+\begin{abstract}
+We improve two different parts of the current ProveIt frontier. A transport
+coordinate change, already available in an earlier source but not applied to
+the newest joint-sign family, gives one polynomial in \textbf{18 unrestricted
+integers}, of exact degree \textbf{88}, evaluated in \textbf{105} binary
+arithmetic operations. Its predecessor has 19 variables and 109 operations.
+Three companion projections improve the variable counts at degrees 32, 20,
+and 16 as well.
+
+A separate Pell-certificate reduction removes a redundant factor from its
+strong ordinate. The square root needed to restore that factor is already
+certified by another part of the same equation. This gives a
+\textbf{nine-positive-variable} polynomial of degree \textbf{\CheapDegree}
+in \textbf{\CheapOps} operations, improving the current 440-operation,
+degree-1,845,940 construction in both measures. A complete-radical majorant
+gives another nine-variable point of degree \textbf{\RadicalDegree} in
+\textbf{\RadicalOps} operations. All fixed coefficients and ordinary
+division-free evaluation circuits are supplied.
+
+The new existence equivalences are proved with explicit reverse maps. Their
+consistency interpretation composes with the precisely pinned ordinary
+native/compiler and syntactic-refutation calibration theorems. We do not
+claim a new end-to-end Lean/Rocq certificate, a completed derivation in the
+repository's encoded object-language ZFC, or global minimality. A distinct
+Fermat-label proof-flow construction removes acyclicity and common-multiple
+parameters at the finite-certificate level; its final fixed-dimensional
+Diophantine closure remains open and is not counted as a finished equation.
+\end{abstract}
+\vfill
+\small
+Reviewed repository snapshot: \pin.\\
+Both supplied repository directories were inspected, including all five
+archives then in \file{docs/incoming}. All comparisons are to this frozen
+snapshot, not to a moving branch. The local date is 23 October; the snapshot's
+commit timestamp is 24 October in UTC.
+\newpage
+\normalsize
+\tableofcontents
+\newpage
+
+\section{The mathematical target and the actual improvement}
+
+\subsection{A single fixed polynomial and a specified domain}
+
+Fix the recursive proof predicate of the syntactic ZFC calculus used in
+ProveIt. With $\bot$ its chosen contradictory sentence, write
+\[
+ \Con(\ZFC)\;:=\;\forall p\in\N\;
+          \neg\operatorname{Proof}_{\ZFC}(p,\ulcorner\bot\urcorner).
+\]
+The requested endpoint is an integer-coefficient polynomial $P$, with no
+remaining program or theory parameter, and a domain $D$ for which
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \bigl(\neg\exists\mathbf x\in D^m\ P(\mathbf x)=0\bigr)
+       \longleftrightarrow\Con(\ZFC).
+\end{equation}
+The two sides of this biconditional are not asserted separately. A positive
+solution, a natural solution, and an unrestricted integer solution are
+different assertions. In this report $\N$ includes zero.
+
+All displayed intermediate symbols are polynomial abbreviations unless
+expressly declared as unknowns. Fixed powers have fixed nonnegative integer
+exponents. Fixed coefficients are given both as lossless integer bytes and
+by deterministic finite recipes. No coefficient depends on a consistency
+decision, a future search, or a choice of a refutation. The literal JSON
+circuits define ordinary polynomials even where their full monomial
+expansions would be inconvenient to print.
+
+\subsection{Measured results}
+
+\begin{center}
+\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Construction & Domain & Variables & Exact degree & Operations\\
+\midrule
+Transport projection & $\Z$ & 18 & 88 & 105\\
+Companion & $\Z$ & 19 & 32 & 108\\
+Companion & $\Z$ & 20 & 20 & 111\\
+Companion & $\Z$ & 21 & 16 & 114\\
+Pell saturation, short bound & $\Zp$ & 9 & \CheapDegree & \CheapOps\\
+Pell saturation, radical bound & $\Zp$ & 9 & \RadicalDegree & \RadicalOps\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For each of the first four rows, its predecessor has one more integer
+variable, the same degree, and four more operations. The reduction is an
+exact integer-polynomial projection, so it applies to every source zero;
+it does not rely on a new restriction to specially chosen canonical zeros.
+
+The short nine-positive construction reduces degree from 1,845,940 to
+\CheapDegree, an improvement of approximately 11.76\%, while also reducing
+440 operations to \CheapOps. Its natural-number translation has the same
+degree and \CheapNaturalOps\ operations. The complete-radical construction
+is a separate degree/circuit tradeoff; the inspected incoming radical
+candidate has degree 1,158,228 and 1,753 operations. The new point has lower
+degree and the measured circuit cost given above. The smaller ten-integer
+and nine-natural variable counts already present in the repository remain
+separate results: the 18-integer equation is useful for its much lower degree
+and short expression, not as a fewest-variable record.
+
+An operation is a live binary addition, subtraction, or multiplication.
+Squaring and multiplication by a fixed scalar are charged. Reusing an
+already computed value and supplying a fixed integer leaf are free under
+the repository's convention. This is arithmetic circuit size, not bit
+complexity; the fixed coefficients are large. A sum of six residual squares
+is one polynomial equation, rather than six separate asserted equations.
+
+\subsection{What is new, and what is reused}
+
+The transport coordinate change itself is already explicit in source 73,
+\emph{Reanchored sign constraints and adaptive Pell carriers}. The new
+result is its application to the newer joint-sign projection family, with
+complete equations, inverse maps, exact degrees, and paid circuits. The
+argument is elementary; the improved endpoint is the contribution.
+
+The saturated positive Pell certificate changes the certificate itself.
+It exploits a square root already forced elsewhere, retains the necessary
+coprimality conditions, and replaces the old majorant. The incoming
+round-eleven Lucas construction uses a related saturation idea in a
+different unrestricted-integer certificate. We credit that precursor.
+The positive certificate, its interface proof, and its full-equation
+costs are established here. The subsequent complete-radical optimization
+also builds on the incoming radical-majorant methodology; it is supported
+by exact integer coefficient certificates, not an asymptotic expansion
+used as an inequality.
+
+The Fermat-label appendix is a genuinely different source architecture
+relative to the inspected budget and height-register constructions. Its
+ingredients are classical. We claim its proved finite-certificate theorem
+and identify the remaining compiler costs; we do not claim historical
+priority or an unmaterialized final polynomial record.
+
+\subsection{Proof layers and formalization status}\label{sec:boundary}
+
+There are four distinct kinds of evidence in this package:
+\begin{enumerate}
+ \item Complete ordinary proofs of the new projections, Pell saturation,
+       radical bounds, and finite proof-flow equivalence.
+ \item Exact finite checks binding the literal equations to those proofs:
+       polynomial identities, coefficient reconstruction, nonzero leading
+       coefficients, topology, liveness, and arithmetic operation counts.
+ \item The inherited ordinary compiler/refutation calibration, pinned to
+       immutable source data and retained proof notes. This supplies the
+       link from the unchanged arithmetic source to ZFC refutations.
+ \item A possible future kernel-checked derivation of the entire composed
+       sentence inside the repository's encoded ZFC calculus.
+\end{enumerate}
+The new results establish the stated solvability reductions. Their
+$\Con(\ZFC)$ interpretation follows by composition with the retained ordinary
+calibration theorems. This contribution does not independently reprove the
+entire inherited semantic chain or supply its unfinished kernel-checked
+internalization. The repository itself records unfinished native
+phase/global calibration and internal-model transport obligations; this
+package does not silently mark them complete. Its already checked generic
+consistency equation remains a separate formal checkpoint.
+
+The elementary constructions use finite arithmetic, induction, Pell
+recurrences, and finite coded derivations. They are suitable for
+formalization in ZFC. To interpret \eqref{eq:target} as an ordinary theorem,
+compose them with the named ordinary calibration proofs. To interpret it
+as a claim about a newly exported proof object in the repository's formal
+calculus would be stronger and is not justified by this delivery. Finite
+tests alone do not prove an unbounded consistency equivalence.
+
+\input{integer/section.tex}
+\input{nine/section.tex}
+\input{alternative/section.tex}
+
+\section{Reproducibility, source binding, and integration}
+
+\subsection{What the archive contains}
+
+The main deliverables are this article and its editable LaTeX source.
+The \file{integer/} directory contains four explicit equations, paid
+circuits, six fixed coefficient payloads and their recipes, source copies,
+the inverse maps, and independent polynomial checks. The \file{nine/}
+directory contains both positive constructions, natural translations,
+the complete fixed-leaf binding, source/layout/kernel data, and the
+radical-majorant certificates. The \file{alternative/} directory contains
+the separate finite proof-flow construction and its diagnostic examples.
+\file{provenance/BASELINE.json} pins the reviewed commit and all five
+incoming ZIPs by SHA-256 and Git blob identifier. Component notices retain
+the inherited licenses and attribution.
+
+Use Python 3.10 or newer for the standard-library checks:
+\begin{lstlisting}
+python3 verify.py
+\end{lstlisting}
+The verification receipt distinguishes exact algebra from finite
+diagnostics and the inherited unbounded proof dependencies. The optional
+discovery calculations are separate from checking the released polynomial
+and its certificates. The full coefficient bytes are included, so validation
+does not require a network connection or a live GitHub branch.
+
+To rebuild this PDF with a standard LaTeX installation:
+\begin{lstlisting}
+make pdf
+\end{lstlisting}
+To rebuild the release ZIP and its content manifest:
+\begin{lstlisting}
+python3 make_archive.py
+\end{lstlisting}
+
+\subsection{What should be incorporated into ProveIt}
+
+The most direct new candidate is the 18-integer degree-88 equation: its
+proof interface is a short polynomial automorphism and monic elimination.
+It improves a recently delivered low-degree branch without changing its
+coefficient tuple. The three lower-degree companions should be retained
+with it rather than choosing a single point without a cost criterion.
+
+For the nine-positive branch, the saturated short-majorant circuit improves
+both cost and degree over the current 440-operation candidate. The
+complete-radical form should be retained as a second candidate when total
+degree is the priority. Its large positivity certificate is a finite
+proof object that can be checked independently; it should not be confused
+with a short hand-expanded formula or a proof of the native compiler.
+
+The direct proof-flow construction belongs with source-level alternatives.
+Its removal of a global proof-order certificate is established, but the
+lookup and aggregation costs must be compiled and counted before it can
+replace a finished consistency equation. These are concrete next
+obligations, not missing parameters hidden inside the reported metrics.
+
+\subsection{Limits of the result}
+
+No global simplicity minimum is proved. The fewest possible number of
+variables for a polynomial specific to this consistency statement is not
+determined. We do not infer historical novelty from the absence of a formula
+in the inspected snapshot. Large fixed numerals, high total degree, short
+arithmetic circuits, and low witness counts remain different objectives.
+
+No zero search or consistency assertion is part of verification. The
+equations are designed so that any zero provides a finite refutation and
+any finite refutation supplies a zero through the stated proof chain.
+Their mathematical significance is the biconditional, including the
+reverse construction, not an empirical failure to find a solution.
+
+\begingroup
+\small
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+Vladimir Reshetnikov and contributors.
+\emph{ProveIt, DiophantineConsistency research directory}, snapshot
+\texttt{c1a102936aca437e9999530a0111e6ddab56dc6d}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c1a102936aca437e9999530a0111e6ddab56dc6d/Computability/DiophantineConsistency}.
+
+\bibitem{incoming}
+ProveIt incoming research reports, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c1a102936aca437e9999530a0111e6ddab56dc6d/docs/incoming}.
+Individual archive hashes appear in \file{provenance/BASELINE.json}.
+
+\bibitem{source73}
+ProveIt source 73.
+\emph{Reanchored sign constraints and adaptive Pell carriers},
+section ``Exact local equivalence,'' 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c1a102936aca437e9999530a0111e6ddab56dc6d/Computability/DiophantineConsistency/con-zfc-diophantine-forms/73-guard-reanchoring}.
+
+\bibitem{source66}
+ProveIt source 66 and compact54-sharp candidate.
+\emph{A refined free-carrier nine-positive equation}; retained source,
+packing, ratio, and native coefficient proofs. Snapshot as in \cite{repo}.
+
+\bibitem{joint}
+\emph{Joint guards and Pell carriers for Diophantine consistency}.
+Incoming \file{ZFC_Diophantine_Joint_Guards_2026-10-24.zip};
+\file{joint/PROOF.md}, \file{joint/COMPACT_BASE24.json}, and
+the 19-variable degree-88 projection. Pinned in \cite{incoming}.
+
+\bibitem{round11}
+\emph{Structural reductions for Diophantine consistency equations}.
+Incoming \file{ConZFC_Structural_Reductions_Round11_2026-10-24.zip},
+Lucas norm-saturation components. Pinned in \cite{incoming}.
+
+\bibitem{radicalprior}
+\emph{Radical majorants, guard compression, and Pell descent}.
+Incoming \file{con-zfc-radical-guard-descent-2026-10-23.zip},
+nine-positive degree-1,158,228 component. Pinned in \cite{incoming}.
+
+\bibitem{sun2026}
+Zhi-Wei Sun.
+\emph{Ten unknowns for Hilbert's tenth problem over the integers}.
+arXiv:2609.01594v1, 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+
+\bibitem{bayer2025}
+Jonas Bayer, Marco David, Malte Ha{\ss}ler, Yuri Matiyasevich,
+and Dierk Schleicher.
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}. arXiv:2506.20909v2, 2025.
+\url{https://arxiv.org/abs/2506.20909}.
+
+\bibitem{jones1982}
+James P. Jones.
+Universal Diophantine equation.
+\emph{Journal of Symbolic Logic} 47(3), 549--571, 1982.
+\url{https://doi.org/10.2307/2273588}.
+\end{thebibliography}
+\endgroup
+\end{document}

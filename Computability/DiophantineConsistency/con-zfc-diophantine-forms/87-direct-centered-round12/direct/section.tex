@@ -1,0 +1,358 @@
+\section{A fully materialized equation from unordered proofs}
+\label{sec:direct-materialized}
+
+This section closes a different gap from the low-variable record search.
+The height-certificate source previously ended at an unelaborated compiler
+interface. We now give an ordinary polynomial with every coefficient and
+monomial materialized. It is independent of the K215 transition table and
+of Jones's universal polynomial. Its size is large: the purpose is a
+complete, reproducible direct baseline, not a claim of a new variable record.
+
+The recommended artifact is the literal ordinary polynomial $Q$ in
+\texttt{direct/fixed\_base/equation\_integer.json}. It has 27,916 unrestricted
+integer variables, exact degree four, 758,275 nonzero monomials, and
+maximum absolute coefficient 320,307,372,009,918. In ZFC,
+\[
+ \operatorname{Con}(\mathrm{ZFC})\quad\longleftrightarrow\quad
+ \neg\exists\boldsymbol{x}\in\mathbb Z^{27916}\;Q(\boldsymbol{x})=0.
+\]
+The natural-domain companion has 16,036 nonnegative variables. It is
+specified exactly as the sum of the squared residuals in
+\texttt{fixed\_base/residuals\_affine.json}; rebuilding also emits its
+collected sparse polynomial \texttt{equation\_affine.json}. Here
+$\mathbb N=\{0,1,2,\ldots\}$. Each sparse entry
+\texttt{[coefficient,[indices]]} denotes that coefficient times the product
+of the listed variables; repeated indices denote repeated factors and
+indices start at zero. All coefficients are literal integers, not bounded
+search recipes. The compact archive retains the full integer polynomial
+and exact residual/circuit data; rebuilding restores redundant expanded
+intermediates and checks their recorded SHA256 hashes.
+
+The derivation is mathematical; we do not claim a newly kernel-checked
+end-to-end translation. We first explain the two-stream source and then
+replace its height stream by a fixed binary bound. The final measurements
+above include this reduction and affine-wire elimination.
+
+\subsection{The fixed proof source}
+
+The inherited file \texttt{fixed\_base/horn\_shared\_source.json} specifies twelve
+padded single-conclusion rules. Their local relation is
+\[
+ H(p,q,c;\boldsymbol w)=\prod_{j=0}^{11}
+             \left(\sum_{r\in\mathcal R_j}r(p,q,c,\boldsymbol w)^2\right)=0.
+\]
+There are seventeen shared nonnegative witnesses. The residual lists
+$\mathcal R_j$, including the fixed bundled axiom, are included literally.
+Their expanded sums of squares are independently reproduced exactly by
+the checker. The historical JSON field name
+\texttt{quadratic\_residuals} is not a degree assertion: the bundled branch
+also contains quartic residuals. The total product has degree fifty.
+The first rule is truth $(0,0,0)$; zero premises pad axioms and one-premise
+rules. Target code one is falsity.
+
+For clarity, the calibration does not pass through execution of K215.
+The repository theorem \texttt{c222\_iff\_zf\_refutation} in
+\texttt{KEndpoint.lean}, followed by
+\texttt{zf\_refutation\_iff\_zfc\_refutation} in
+\texttt{ConstructibleChoice.lean}, identifies derivability of target one
+in this numerical calculus with a syntactic ZFC refutation. The exact
+numeric constructors and twelve rules are in \texttt{KCode222.lean} and
+\texttt{Code254.lean}. These are dependencies of the mathematical
+calibration, not claims that the new Python compiler has been checked by Lean.
+
+A finite family of valid rules has a \emph{flow certificate} for one when,
+for every positive label $j$,
+\[
+ \#\{i:c_i=j\}=[j=1]+\#\{i:p_i=j\}+\#\{i:q_i=j\}.
+ \tag{F}
+\]
+Derivability implies (F) by unfolding a proof tree. Conversely, if one is
+not derivable, sum these balances over the nonderivable labels in the
+finite support. Each valid single-conclusion rule contributes at most
+zero: a nonderivable conclusion has a nonderivable premise. The right
+side requires a positive net contribution at one, a contradiction.
+This argument permits cycles and repeated premises but uses both
+nonnegative multiplicities and the single-conclusion hypothesis.
+
+\subsection{The coefficient-height certificate}
+
+Given $N$ rule instances, put
+\[
+ A(X)=\prod_{i<N}(1+c_iX),\quad
+ B(X)=(1+X)\prod_{i<N}(1+p_iX)(1+q_iX),\quad
+ R_N=2\prod_{i<N}((1+p_i)(1+q_i)+c_i).
+\]
+Every coefficient of $A-B$ has absolute value at most $R_N$.
+Consequently, for $M=R_N+1$, equality $A(M)=B(M)$ forces $A=B$:
+the least nonzero coefficient of a nonzero polynomial vanishing at $M$
+would be a nonzero multiple of $M$ of absolute value smaller than $M$.
+The distinct roots $-1/j$ recover (F) from the polynomial identity.
+
+This yields the two-accumulator source
+\begin{align*}
+&S_0=M+1,\quad S_N=1,\quad R_0=2,\quad M=R_N+1,\\
+&S_{i+1}(1+c_iM)=S_i(1+p_iM)(1+q_iM),\\
+&R_{i+1}=R_i((1+p_i)(1+q_i)+c_i),\qquad H(p_i,q_i,c_i;\boldsymbol w_i)=0.
+\end{align*}
+All factors are positive. Telescoping gives $A(M)=B(M)$; the second
+accumulator supplies the coefficient bound. Conversely, expand a proof
+tree in open-obligation order, compute the complete $R_N$ first, choose
+$M=R_N+1$, and let $S_i$ be the product of the open-obligation factors.
+There is no circular choice of the coefficient bound.
+
+Encode the two sequences using a common beta scale:
+\[
+ \beta(x,y,i)=x\bmod(1+(i+1)y).
+\]
+Every pair of finite natural sequences admits such an encoding with
+separate $x,z$ and one common $y$, by choosing $y$ large and divisible by
+$N!$, then using the Chinese remainder theorem. The factorial divisibility
+here is used only in the existence proof; it is not an additional
+universally quantified condition in the final source.
+
+The five external parameters are $N,x,z,y,M_0$, with $M=M_0+1$.
+Four beta endpoint equations are imposed. In the one bounded row block,
+the four beta values are replaced by four triples $(r,q,s)$ satisfying
+\[
+ x=qd+r,\qquad d=r+s+1,\qquad d=1+(i+1)y,
+\]
+with the appropriate code and index. Thus the row has exactly
+$20+4\cdot3=32$ natural witnesses: twenty for labels and Horn witnesses,
+and twelve for the beta graphs. There is a fixed signed polynomial
+$P=e-f$ with $e,f$ having nonnegative coefficients such that the source is
+\[
+ \text{four endpoint equations}\quad\land\quad
+ \forall i<N\;\exists\boldsymbol w\in\mathbb N^{32}\quad
+ e(i,\boldsymbol w)=f(i,\boldsymbol w).
+ \tag{S}
+\]
+For this two-stream comparison, $e,f$ can be represented as nonnegative
+arithmetic DAGs. The delivered \texttt{fixed\_base/row\_source.json} instead
+contains the twenty-nine-witness specialization described below. Both use
+the following identities without expanding the large Horn product:
+$(e-f)+(g-h)=(e+g)-(f+h)$ and
+$(e-f)(g-h)=(eg+fh)-(eh+fg)$.
+
+\subsection{One uniform witness bound and one CRT block}
+
+This materialization uses a small improvement to the generic bounded
+universal compiler: one common bound $U$ replaces thirty-two independent
+coordinate bounds, and the factorial $(U+1)!$ is computed only once.
+Set
+\[
+ T=(e(N,U,\ldots,U)+f(N,U,\ldots,U)+N)!,\qquad
+ D_j=1+(j+1)T,\qquad B=\prod_{j<N}D_j.
+\]
+The bounded block in (S) is equivalent to the following finite
+existential conditions, with encoded coordinates $a_1,\ldots,a_{32}$
+and one encoded index $v$:
+\begin{align*}
+ B&\mid (U+1)!\binom{a_i}{U+1} &&(1\leq i\leq32),\\
+ B&\mid 1+(v+1)T,\\
+ e(v,\boldsymbol a)&\equiv f(v,\boldsymbol a)\pmod B.
+\end{align*}
+
+For soundness, fix $j<N$ and take a prime $p\mid D_j$. Since
+$\gcd(p,T)=1$ and $T$ is the displayed factorial, $p$ exceeds its factorial
+argument. Divisibility of each falling factorial supplies a residue
+$w_i\leq U$ with $a_i\equiv w_i\pmod p$. This statement also handles
+truncated natural subtraction: if a vanishing factor arises from
+$a_i<t$, choose $w_i=a_i$. The index congruence gives $v\equiv j\pmod p$.
+Hence $e(j,\boldsymbol w)\equiv f(j,\boldsymbol w)\pmod p$.
+Monotonicity of nonnegative-coefficient polynomials bounds both values
+strictly below $p$, so they are equal. For completeness choose $U$ above
+all finitely many row witnesses. The $D_j$ are pairwise coprime because
+$T$ is divisible by all positive differences below $N$; CRT supplies the
+encoded columns and index. The argument is also valid for $N=0$.
+The original source's endpoints themselves exclude $N=0$.
+
+This is a uniform-bound specialization of the pinned theorem
+\texttt{boundedForallCertificate}. It removes no semantic requirement and
+needs no unproved new representation theorem.
+
+\subsection{Eliminating every nonpolynomial operation}
+
+The file \texttt{fixed\_base/build\_direct.py} implements the following explicit
+identities. Remainders and quotients always have positive denominators
+and are encoded by $n=qd+r$, $d=r+s+1$. Congruence modulo $d$, including
+$d=0$, is encoded by $a+du=b+dv$ with two natural quotients. If
+$Q=((N+1)T+1)^N+2$, then
+\[
+ B=\bigl(T^N N!\binom{Q+N}{N}\bigr)\bmod(TQ-1).
+\]
+The denominator is positive since $T\geq1$ and $Q\geq3$.
+The binomial and factorial identities are
+\begin{align*}
+ \binom nk&=\left\lfloor\frac{(2^n+2)^n}{(2^n+1)^k}\right\rfloor
+                \bmod(2^n+1),\\
+ r&=(n+2)^{n+2},\quad C=\binom{r+n}{n},\qquad
+ n!=\left\lfloor\frac{(r+1)^n+C-1}{C}\right\rfloor.
+\end{align*}
+They include all boundary cases, including $k>n$ and $n=0$.
+The predecessor $C-1$ is represented by $C=C_-+1$; here $C>0$.
+The pinned \texttt{FactorialRepresentation.lean} proves these identities,
+and \texttt{BoundedForallRepresentation.lean} supplies the product formula.
+
+Natural exponentiation is replaced by its fully explicit finite Pell
+certificate, not by an oracle. Write
+\[
+ \mathcal N(a,x,y):\quad x^2+y^2-a^2y^2=1.
+\]
+The graph of $(x,y)=(X_n(a),Y_n(a))$, for $a>1$, is given by $n\leq y$
+and the disjunction of $x=1,y=0$ with the existence of $u,w,s,t,b$ satisfying
+\begin{gather*}
+ \mathcal N(a,x,y),\quad \mathcal N(a,u,w),\quad \mathcal N(b,s,t),
+ \quad b>1,\quad w>0,\\
+ b\equiv1\pmod{4y},\quad b\equiv a\pmod u,\quad y^2\mid w,
+ \quad s\equiv x\pmod u,\quad t\equiv n\pmod{4y}.
+\end{gather*}
+This is exactly the pinned finite Matiyasevich certificate in
+\texttt{PellRepresentation.lean}. To represent $m=n^k$, use the disjunction
+\[
+ (k=0\land m=1)\ \lor\
+ \left(k>0\land\left[(n=0\land m=0)\ \lor\
+       (n>0\land\mathcal C(m,n,k))\right]\right),
+\]
+where $\mathcal C$ asserts existence of $w,a,t,z,x,y$ with the displayed
+Pell-coordinate graph at $(a,k,x,y)$ and
+\begin{gather*}
+ x\equiv y(a\mathbin{\dot-}n)+m\pmod t,\qquad
+ 2an=t+n^2+1,\qquad m<t,\\
+ n\leq w,\qquad k\leq w,\qquad \mathcal N(w+1,a,wz).
+\end{gather*}
+Here $\dot-$ is truncated natural subtraction. Its graph is encoded by
+$(a=d+n)$ or $(a\leq n\land d=0)$. These formulas are the exact
+\texttt{PowerRepresentation.lean} criterion. Strict and weak inequalities
+use natural slack variables; divisibility uses a natural quotient.
+Conjunctions are sums of nonnegative residual polynomials, and
+disjunctions are their products. Consequently inactive branch witnesses
+are harmless. In particular, no positivity assumption about an arbitrary
+power base is hidden in the generated polynomial.
+
+The delivered fixed-base call ledger contains 108 power certificates,
+108 indexed Pell certificates, 33 binomial calls, three factorial calls,
+and 72 division/remainder calls. The ledger records actual input and output
+node indices and existential ranges for each call.
+
+\subsection{Why the final polynomial is quartic}
+
+All signed expressions are maintained as differences of natural
+arithmetic circuits. Every addition or multiplication node receives a
+fresh natural wire and a defining residual of degree at most two.
+The final equality residuals are linear in the appropriate output wires.
+The delivered polynomial is the sum of the squares of all these residuals.
+A zero therefore enforces every circuit gate and every arithmetic
+certificate. Conversely, any certificate uniquely supplies all gate
+wires. Thus flattening preserves existence of zeros in both directions.
+A nonzero squared multiplication residual ensures exact degree four;
+the checker also verifies the degree of the fully collected polynomial.
+
+Rebuilding emits \texttt{residuals.json} and \texttt{equation.json}, containing,
+respectively, the complete residual list and its fully collected sum of
+squares. Independent integer arithmetic reconstructs every gate and every
+coefficient. The test suite also expands all twelve Horn branches exactly,
+checks row evaluations against a separately written source expression,
+checks all zero-base and zero-exponent boundaries, and includes a genuine
+nonzero-exponent Pell witness for $1^1=1$. These finite checks support
+artifact fidelity; the all-input equivalence rests on the proofs above.
+
+\subsection{The recommended smaller source: a fixed binary height bound}
+
+The completed compiler makes a further source improvement measurable.
+Choose an independent maximum label $m$, and impose
+$p_i,q_i,c_i\leq m$ by three natural slack variables per row. Since
+$m+1\leq2^m$ for every natural $m$,
+\[
+ A(1)\leq(m+1)^N\leq2^{mN},\qquad
+ B(1)\leq2(m+1)^{2N}\leq2^{2mN+1}.
+\]
+It is therefore enough to set
+\[
+ M_0=2^{2mN+1},\qquad M=M_0+1.
+ \tag{BH}
+\]
+The entire $R$ stream and its beta code disappear. There is now only the
+$S$ stream, with endpoints $\beta(x,y,0)=M_0+2$ and
+$\beta(x,y,N)=1$. Its local transition is unchanged. The row has
+$20+6+3=29$ witnesses instead of thirty-two: twenty for Horn/labels,
+six for two beta triples, and three label upper-bound slacks. One global
+power certificate imposes (BH). Thus eight power certificates disappear
+net, reducing 116 power calls to 108.
+
+Completeness chooses a finite proof tree, then $N$ and a bound $m$ on
+its labels, then $M_0$ by (BH), then the $S$ sequence, and finally its
+beta encoding and the uniform CRT witness bound $U$. In particular,
+$m$ is \emph{not} identified with $U$: the latter also bounds local
+remainders and quotients depending on $M$. Such an identification would
+introduce a circular, potentially impossible bound. Soundness uses the
+same coefficient-height lemma and flow theorem as before. For $N=0$,
+(BH) gives $M_0=2$ and the two endpoints are contradictory.
+
+The folder \texttt{direct/fixed\_base/} gives this source and its complete
+polynomials. A second, slightly tighter but three-wire-larger version
+uses $M_0=2(m+1)^{2N}$; it is an intermediate comparison, not needed
+in the recommended release and not a distinct arithmetic theorem.
+
+\subsection{Eliminating affine wires and allowing unrestricted integers}
+
+Addition gates do not need existential output wires. Substitute their
+affine expressions into the next multiplication residual. Scalar products
+are affine too and are substituted likewise. Retain a wire only for a
+multiplication whose expanded expression is genuinely quadratic in
+previous retained wires and semantic inputs. Every residual still has
+degree at most two. The substitution is triangular and uniquely
+restores every omitted wire. All substituted affine forms have
+nonnegative coefficients, so natural witnesses are preserved.
+
+Applied to the fixed-binary-height source, this gives the recommended
+natural polynomial (expanded by rebuilding as
+\texttt{fixed\_base/equation\_affine.json}):
+\begin{center}
+\begin{tabular}{lr}
+Natural variables & 16,036\\
+Exact degree & 4\\
+Monomials & 700,865\\
+Semantic inputs & 3,960\\
+Retained nonlinear wires & 12,076\\
+Squared residuals & 12,366\\
+Maximum absolute coefficient & 320,307,372,009,917
+\end{tabular}
+\end{center}
+The number of monomials increases: fewer variables is not fewer expanded
+terms. The full affine substitution map is rebuilt and checked.
+
+For a polynomial over unrestricted integers, only the 3,960 semantic
+inputs need explicit nonnegativity constraints. For each such input $x$,
+append
+\[
+ x-a^2-b^2-c(c+1)=0.
+\]
+Every natural $x$ has this form: apply the three-square theorem to
+$4x+1$, whose representation has one odd and two even coordinates, then
+divide the identity by four after removing the odd square's constant.
+Conversely $a^2+b^2+c(c+1)\geq0$ for integer $a,b,c$.
+Internal circuit wires may remain unrestricted because their triangular
+multiplication definitions force the unique nonnegative values after
+semantic inputs are nonnegative. Adding the squares of these 3,960
+quadratic residuals gives the literal integer-domain polynomial in
+\texttt{fixed\_base/equation\_integer.json}:
+\[
+ \boxed{\text{27,916 unrestricted integer variables, exact degree four,
+ 758,275 monomials.}}
+\]
+Its maximum absolute coefficient is 320,307,372,009,918.
+Both lack-of-solutions statements are provably equivalent in ZFC to
+$\operatorname{Con}(\mathrm{ZFC})$. Neither count competes with the
+low-variable branch; the advance is an explicit, independently auditable
+ordinary equation from the direct proof source.
+
+\subsection{Scope and limitations}
+
+The direct equation is much larger than the low-variable Pell-based
+constructions. It should not be described as a numerical record.
+Its contribution is completion: no bounded quantifier, variable exponent,
+factorial, binomial coefficient, unknown compiler output, or unspecified
+coefficient remains in the final polynomial file. The fixed numeric proof
+source, the general arithmetic representations, and the flattening theorem
+are separate, auditable layers. Future source optimizations can now be
+measured against an actual ordinary equation rather than an interface.

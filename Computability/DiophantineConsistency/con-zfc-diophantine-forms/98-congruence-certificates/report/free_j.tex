@@ -1,0 +1,143 @@
+This companion result extends the domain of an existing positive-variable
+construction. Its numerical saving is only two operations; its new
+argument proves that a formerly excluded congruence class cannot create
+a spurious solution.
+
+This section uses the separate, coherent compact44 tuple
+$\beta_+=2^{590069}-1$, $K_0,M_C,M_F$, with $M_F$ already shifted.
+It is not interchangeable with Section~\ref{sec:integer}'s source-34
+tuple. The four exact payloads and their finite recipe are retained under
+\texttt{positive/coefficients/}.
+
+\subsection{The complete positive-variable polynomials}
+For twelve strictly positive coordinates use
+\[
+ J,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma.
+\]
+For thirteen use
+\[
+ J,F,\alpha,f,i,T,X,Y,r,\eta,\zeta,u,\gamma.
+\]
+All symbols in this subsection are local to these formulas. Define
+\begin{align*}
+ q&=\beta_+J+1,&C&=q-F-\alpha,&E&=XY,&k&=\eta+\zeta,\\
+ c&=kY+\eta,&a&=(X+1)Y,&H&=4a+3,&\Delta&=(a+2)^2-1,\\
+ \ell&=EkY,&M&=q^3(q-1),&W&=(q-1)k+1,&U&=q^2Y,\\
+ B_t&=(qK_0+X)C-qF,&&&&&
+\end{align*}
+and
+\begin{align*}
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t,\\
+ A_0&=Z^2-M^2[\ell(\ell+k)+1],\\
+ R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ v&=k-R-1,\\
+ D_*&=U(X+ac)+H(U\gamma+qE-v),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+In both tails put $Q=\Delta(f^2-1)$ and $V=f^2(cT-R)-c$.
+In the twelve-coordinate case $f=t+1$ is an abbreviation. Let
+\[
+ d=c^4,\quad h_0(z)=(1-Q)z^2+2(1-Q)Vz+V^2-1,
+\]
+\[
+ b_n=2(1-Q)(n+V),\quad A_n=d\,h_0(n)+(1-Q)Q,\quad
+ L=A_n^2-d\,b_n^2Q.
+\]
+The twelve-positive equation is
+\[
+ P_{12}^+=(1+A_0)(1+A_1)(1+L)-1=0.
+\]
+For thirteen positive coordinates set $I=ic^2$ and $y_*=V+u$, giving
+\[
+ P_{13}^+=(1+A_0)(1+A_1)
+       [QV^2+(1-Q)y_*^2][1+I^2-Q]-1=0.
+\]
+Their complete DAGs have 98 and 88 operations and exact degrees 70 and 51.
+The parents first compute $J=6j+1$ or $J=3j+1$; the new versions accept
+positive $J$ directly and remove those two operations.
+
+\subsection{Recovering divisibility despite a common factor three}
+The product finalizers still recover their intended equations without
+assuming $q$ even. Indeed $M=q^3(q-1)$ is always even;
+$\Delta\equiv0$ or $3\pmod4$, so $A_1$ is never $2\pmod4$.
+The remaining tail factors have the same exclusion of $-1$ as in the
+ordinary parent proofs. Thus their unit argument applies on the enlarged
+positive domain.
+
+The unchanged first carrier proves $C>0$, $q^3\mid Y$, $q\ge16$,
+and $3q<R<q^4-2$. The main carrier then gives a positive integer
+$D=D_*/U$ with $D^2-\Delta c^2=1$ and
+\[
+ U\mid H(qE-v).
+\]
+The needed weaker coprimality statement is exact:
+\begin{equation}
+ \gcd(q,H)=\gcd(q^5,H)=\gcd(q,3)\in\{1,3\}.\label{eq:gcd3}
+\end{equation}
+For primes other than three this follows from $H\equiv3\pmod{q^3}$.
+If $3\mid q$, then $27\mid Y$ and $H\equiv3\pmod{27}$, so its
+$3$-adic valuation is exactly one. Since $q^5\mid U$, the displayed
+divisibility still yields $q^4\mid(qE-v)$, and $q^4\mid qE$ gives
+$q^4\mid v$.
+
+The retained first/main Pell classification supplies indices $n_0,p$ with
+\[
+ k=2\psi_{2XY^2+1}(n_0),\quad c=\psi_{a+2}(p),\quad p>n_0,
+ \quad 2n_0\equiv R+1\pmod{q^4}.
+\]
+Consequently $n_0\ge25$. The early rank bounds and the parent ordinary
+strong and auxiliary arguments, now licensed by $q^4\mid v$, give
+$p=R$ and then $R=2n_0-1$ exactly. These arguments do not use the
+discarded residue restriction. In particular $U\mid v$, and the main
+carrier gives
+\begin{equation}
+ q\mid3X,\qquad X\equiv2^R\pmod{H/g},\quad
+ g=\gcd(q,H)\in\{1,3\}.\label{eq:weakprojection}
+\end{equation}
+The new task is to turn this weaker projection into equality before
+assuming that $q$ divides $X$.
+
+\subsection{Pell growth eliminates the exceptional branch}
+Write $R=2r_0+1$, with $r_0=n_0-1\ge24$, and $P_0=2XY^2+1$,
+$A=(X+1)Y+2$. Pell growth gives
+\[
+ \frac ck\ge\frac12\left(\frac{(2A-1)^2}{2P_0}\right)^{r_0},
+ \qquad\frac ck<Y+1.
+\]
+The exact identity
+\[
+ X(2A-1)^2-2P_0(X+1)^2
+ =12XY(X+1)+9X-2(X+1)^2>0
+\]
+for $X,Y\ge1$ improves this to
+\begin{equation}
+ Y+1>\frac12\left(\frac{(X+1)^2}{X}\right)^{r_0}.\label{eq:growth}
+\end{equation}
+For $X\ge2$, the base is at least $9/2$. The elementary inequality
+$9^{16}>6\cdot8^{16}$ and $r_0\ge24$ imply $Y>2^R$.
+Both $X$ and $2^R$ lie in $(0,a)$, whereas $H/g\ge H/3>a$.
+Their congruence in \eqref{eq:weakprojection} therefore gives $X=2^R$.
+
+For $X=1$, equation~\eqref{eq:growth} implies $Y\ge2^{R-2}$.
+Then $H=8Y+3$ and $0<2^R-1<H/2$. Congruence modulo $H$ is impossible;
+modulo $H/3$, the only possible positive multiple is $H/3$ itself.
+It would give $8Y=3\cdot2^R-6$, impossible modulo eight for $R\ge3$.
+Thus $X=1$ is excluded and again $X=2^R$.
+
+Now $q\mid3\cdot2^R$ makes $q=2^u$ or $q=3\cdot2^u$.
+The authentic Mersenne modulus eliminates the latter. If
+$2^d-1\mid3\cdot2^u-1$, reduce $u$ modulo $d$ to $r\in\{0,\ldots,d-1\}$.
+For $r\le d-2$, the number $3\cdot2^r$ lies strictly between one and
+$2^d-1$. For $r=d-1$, its residue is $2^{d-1}+1$, also not one.
+Here $d=590069\ge4$. Hence $q$ is a power of two and $q\mid X$.
+The original source witnesses can now be restored exactly as in the
+parent. Canonical refutation witnesses already have positive $J$, so
+completeness is unchanged. This proves the same ordinary consistency
+equivalence on the larger domain.
+
+The exact degree certificates remain nonzero after replacing the old
+leading coefficient $6\beta_+$ or $3\beta_+$ of $q$ by $\beta_+$.
+The retained leading coefficients are $64\beta_+^{18}$ and
+$-32\beta_+^{15}$. The circuit check confirms the counts
+$54M+25A+19S=98$ and $48M+23A+17S=88$.
+

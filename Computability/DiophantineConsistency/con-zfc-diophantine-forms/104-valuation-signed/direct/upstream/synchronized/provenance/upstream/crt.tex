@@ -1,0 +1,289 @@
+\section{A shared CRT compiler with binomial bounds}
+\label{sec:shared-crt}
+
+All variables in this section range over $\mathbb N=\{0,1,2,\ldots\}$.
+Let $E(k,z,w)$ and $F(k,z,w)$ be fixed polynomials with nonnegative
+integer coefficients, where $k$ is one index, $z$ is a finite tuple of
+external parameters, and $w=(w_1,\ldots,w_d)$ is a finite witness tuple.
+The nonnegative coefficient hypothesis is used only for monotonicity.
+For a proposed vector of witness bounds $u=(u_1,\ldots,u_d)$, choose a
+natural $V$ with $u_j\le V$ for every $j$, and put
+\[
+ H=E(N,z,u)+F(N,z,u)+N+V+1,\qquad T=H!,\qquad
+ B=\prod_{k=0}^{N-1}(1+(k+1)T).
+\]
+The empty product is $1$.  In particular $T\ge1$, $B\ge1$, and
+$H\ge u_j+1$ for every coordinate.
+
+\begin{theorem}[Shared binomial certificate]
+\label{thm:shared-binomial}
+For fixed $N,z,u,V$ as above, the following assertions are equivalent:
+\begin{enumerate}
+\item For every $k<N$ there is $w\in\mathbb N^d$ with
+      $w_j\le u_j$ for all $j$ and $E(k,z,w)=F(k,z,w)$.
+\item There are $C,A_1,\ldots,A_d\in\mathbb N$ such that
+\begin{align}
+ B&\mid\binom{A_j}{u_j+1} &&(1\le j\le d),\label{eq:choose-bounds}\\
+ B&\mid1+(C+1)T,\label{eq:index-divisibility}\\
+ E(C,z,A)&\equiv F(C,z,A)\pmod B.\label{eq:evaluation-congruence}
+\end{align}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Write $D_k=1+(k+1)T$.  We have $\gcd(D_k,T)=1$.
+The numbers $D_0,\ldots,D_{N-1}$ are pairwise coprime: if $i<j<N$
+and $g=\gcd(D_i,D_j)$, then $g\mid(j-i)T$ and $\gcd(g,T)=1$,
+so $g\mid j-i$.  But $j-i\le N\le H$, hence $j-i\mid H!=T$,
+and $g=1$.  Consequently $\gcd(B,T)=1$ as well.
+
+Suppose first that the arithmetic certificate exists.  Fix $k<N$.
+Choose a prime $p\mid D_k$; this is possible since $D_k>1$.
+Then $p\mid B$ and $p\nmid T$.  A prime at most $H$ divides $H!$,
+so $p>H$.  For every $j$, the integer identity
+\[
+ (u_j+1)!\binom{A_j}{u_j+1}
+       =\prod_{r=0}^{u_j}(A_j-r)
+\]
+and \eqref{eq:choose-bounds} show that $p$ divides the product on the
+right.  This identity also holds when $A_j\le u_j$, because both sides
+are zero.  Primality therefore supplies $w_j\in\{0,\ldots,u_j\}$
+with $A_j\equiv w_j\pmod p$.  Comparing
+\eqref{eq:index-divisibility} with $D_k\equiv0\pmod p$, and cancelling
+$T$ modulo $p$, gives $C\equiv k\pmod p$.  Polynomial evaluation and
+\eqref{eq:evaluation-congruence} imply
+\[
+ E(k,z,w)\equiv F(k,z,w)\pmod p.
+\]
+Monotonicity gives
+\[
+ 0\le E(k,z,w)\le E(N,z,u)<p,
+ \qquad 0\le F(k,z,w)\le F(N,z,u)<p.
+\]
+These congruent natural numbers are equal, proving the bounded row.
+
+Conversely, choose one bounded witness $w^{(k)}$ for each $k<N$.
+By the Chinese remainder theorem and the pairwise coprimality just proved,
+choose natural $C,A_j$ satisfying
+\[
+ C\equiv k\pmod{D_k},\qquad
+ A_j\equiv w_j^{(k)}\pmod{D_k}
+ \quad(k<N,\ 1\le j\le d).
+\]
+The latter congruence makes the falling-factorial product vanish modulo
+$D_k$, since its factor indexed by $w_j^{(k)}$ vanishes.  Thus
+\[
+ B\mid (u_j+1)!\binom{A_j}{u_j+1}.
+\]
+Now $(u_j+1)!$ divides $H!=T$ and $\gcd(B,T)=1$; we may cancel this
+factor to obtain \eqref{eq:choose-bounds}.  The index congruences give
+\eqref{eq:index-divisibility}; the valid rows and polynomial congruence
+give \eqref{eq:evaluation-congruence}.  Pairwise coprimality combines
+the congruences modulo the $D_k$ into congruences modulo $B$.
+When $N=0$, there are no row obligations and $B=1$, so both directions
+hold without any separate side condition.
+\end{proof}
+
+\paragraph{Why the factorial cancellation matters.}
+The repository's supplied CRT certificate uses
+$B\mid(u_j+1)!\binom{A_j}{u_j+1}$ separately for every coordinate.
+Its exact source does not require $H\ge u_j+1$, so simply dropping these
+factorials from that source would be unjustified.  The explicit added bound
+$V+1$ repairs this issue.  It also permits heterogeneous bounds at no
+additional factorial cost.  A representation of each binomial coefficient
+is still necessary; the theorem does not eliminate that obligation.
+
+\subsection{A finite arithmetic expression for the modulus product}
+
+The product defining $B$ is explanatory notation and is eliminated before
+the final polynomial is issued.  Set
+\[
+ Q=(1+(N+1)T)^N+2,\qquad L=TQ-1.
+\]
+Then the exact natural-number identity is
+\begin{equation}
+ \label{eq:product-expression}
+ B=\left(T^N N!\binom{Q+N}{N}\right)\bmod L.
+\end{equation}
+Indeed, the numerator equals
+$\prod_{i=1}^N(TQ+iT)$ and reduces modulo $L$ to
+$\prod_{i=1}^N(1+iT)=B$.  Further,
+\[
+ B\le(1+NT)^N<(1+(N+1)T)^N+1\le TQ-1=L,
+\]
+with the strict inequality also valid for $N=0$, when the left side is
+$1$ and the middle upper bound is $2$.  Thus $B$ is the remainder.
+The denominator is positive because $T\ge1$ and $Q\ge3$.
+This is the same explicit product mechanism used by the repository's
+\nolinkurl{BoundedForallRepresentation.productGraph}; the elementary
+calculation above records the needed identity independently.
+
+Powers, binomial coefficients, factorials, and the final remainder are each
+replaced by their fixed finite polynomial graph.  In particular, no
+variable-length product, variable exponent, or bounded universal quantifier
+remains in the emitted ordinary polynomial.
+
+\subsection{Keeping the majorants as arithmetic circuits}
+
+A signed arithmetic circuit $P$ admits natural polynomial circuits $E,F$
+such that $P=E-F$.  The recursive pairs are $(X,0)$ for a variable,
+$(c,0)$ or $(0,-c)$ for an integer constant according to its sign,
+\[
+ (E_1,F_1)+(E_2,F_2)=(E_1+E_2,F_1+F_2),
+\]
+\[
+ (E_1,F_1)-(E_2,F_2)=(E_1+F_2,F_1+E_2),
+\]
+and
+\[
+ (E_1,F_1)(E_2,F_2)=
+ (E_1E_2+F_1F_2,\ E_1F_2+F_1E_2).
+\]
+Every operation preserves nonnegative coefficients.  Repeated subexpressions
+are shared as nodes in a finite directed acyclic graph.  Expanding this DAG
+into a tree is mathematically harmless but can make the representation far
+larger.  The compiler uses node values as natural witnesses and emits their
+quadratic defining equations only once per use-site evaluation.
+
+\section{Eliminating local Horn wires before bounded compilation}
+
+The pinned \nolinkurl{affine_shared_step.json} source contains twelve Horn
+branches.  Its existential coordinates include thirteen shared names
+$q_0,\ldots,q_{12}$.  In each branch the actual wire definitions are
+triangular polynomials with nonnegative coefficients, and the first rows of
+that branch assert exactly $q_i-f_i=0$.  Consequently, on natural inputs,
+the definitions determine a unique natural value for every wire used by that
+branch.  Substitution removes all thirteen existential wire coordinates.
+
+There are fifty-six branch-specific definition occurrences and thirty-four
+remaining branch residuals.  These are verified from the pinned JSON by exact
+sparse-polynomial comparison.  Branch definitions use separate scopes.  This
+does not assume one set of wire values makes all branches vanish: existential
+quantification distributes over the finite disjunction, and precisely one
+vanishing branch is sufficient.  The product of the twelve branch sums of
+squares implements that disjunction.
+
+The affine step originally has twenty-three natural witness coordinates.
+Wire elimination leaves ten:
+\[
+ p,q,v,a,b,c,d,\delta_p,\delta_q,\delta_v.
+\]
+Here $(p,q)\to v$ is the rule, $a,b,c,d$ are its four schema witnesses,
+and the three deltas implement $p,q,v\le m$.
+Using Theorem~\ref{thm:shared-binomial} with heterogeneous bounds removes
+the latter three witnesses too: bound $p,q,v$ directly by $m$ in the CRT
+certificate.  Bound all remaining per-row witnesses by $V=m+U$, where
+$U$ is one additional outer natural variable.  Such $U$ always exists for
+any finite valid certificate.
+
+\subsection{Thirteen per-row coordinates}
+
+Retain the five outer parameters $t,x,y,m,M_0$ and put $M=M_0+1$.
+The carrier condition is $M=(m+1)^t$.  At row $i<t$, set
+$D_i=1+(i+1)y$ as an arithmetic expression, without introducing a
+separately bounded row coordinate.  Besides the seven Horn coordinates
+$p,q,v,a,b,c,d$, use six row coordinates $S,S',u,r,u',r'$.
+The four beta equations are
+\begin{align*}
+ x-S-D_i u&=0,& S+r+1-D_i&=0,\\
+ x-S'-(D_i+y)u'&=0,& S'+r'+1-(D_i+y)&=0.
+\end{align*}
+Since $D_i,D_i+y\ge1$, these say exactly that $S$ and $S'$ are
+the consecutive beta digits.  The remaining accumulator equation is
+\[
+ S'(1+vM)=S(1+pM)(1+qM).
+\]
+Let $P$ be the product of the twelve substituted Horn branch sums of squares,
+plus the square of this accumulator residual and the squares of the four
+beta residuals.  It is a fixed nonnegative polynomial in the index,
+the external parameters and these thirteen row coordinates.  Split its
+arithmetic circuit as $P=E-F$ as above.
+
+For the first three encoded coordinates use the bound $m$, and for the
+other ten use $V=m+U$.  Form
+\[
+ H=E(t,z,u)+F(t,z,u)+t+V+1,
+ \qquad u=(m,m,m,V,\ldots,V),
+\]
+where $z=(t,x,y,m,M_0)$ denotes the external parameters (the polynomial
+need not actually use $t$ except through the index bound).
+The shared certificate then expresses all rows with thirteen binomial
+graphs and no per-coordinate factorial graphs.
+
+The endpoints need four natural witnesses $u_0,r_0,u_t,r_t$ and the rows
+\begin{align*}
+ x-(M_0+2)-(y+1)u_0&=0,\\
+ M_0+r_0+2-y&=0,\\
+ x-1-(1+(t+1)y)u_t&=0,\\
+ r_t+2-(1+(t+1)y)&=0.
+\end{align*}
+They assert $\beta(0)=M+1$ and $\beta(t)=1$ exactly.
+
+\paragraph{Logical dependency boundary.}
+The changes in this section preserve the numerical C222 Horn rule predicate
+of package 68.  They do not supply a new proof that this predicate is
+equivalent to ZFC refutability.  That calibration is inherited from the
+repository's pinned C222-to-ZF and constructible-choice arguments, including
+the sealed target code $1$ and free truth code $0$.  The equivalence of
+complete accumulator certificates with finite Horn proofs is the pinned
+single-conclusion flow theorem, composed with the bounded-factor carrier
+theorem.  Given those dependencies, all subsequent transformations here are
+explicit arithmetic equivalences provable in ZFC; none assumes
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+The pertinent sources are pinned to the repository snapshot on the
+title page:
+\begin{itemize}
+\item The DiophantineConsistency Lean modules for bounded-forall
+      certificates and their representation, Pell equations,
+      exponentiation, and factorials.
+\item Package 68's \nolinkurl{COMMUTATIVE_CERTIFICATES.md} and
+      \nolinkurl{affine_shared_step.json}.
+\item The candidate \nolinkurl{direct-flow-large-carrier/README.md}.
+\end{itemize}
+The provenance inventory supplies their complete repository paths and
+the immediate source copies.
+
+\section{Specializing every power graph to positive arguments}
+
+The completed source can choose $t\ge1$ and $m\ge1$ without losing a
+certificate.  A zero-length accumulator path contradicts its distinct
+endpoints, and if all labels were zero then every accumulator update would
+leave the state unchanged.  Hence the existence predicate is preserved by
+the parameterizations $t=t_0+1$, $m=m_0+1$.
+
+Likewise each encoded CRT coordinate may be required positive.  The Chinese
+remainder theorem specifies residue classes only; adding a positive multiple
+of $B$ preserves all required congruences.  Thus one may parameterize
+$A_j=\alpha_j+1$ for natural $\alpha_j$.  This affects encoded coordinates,
+not the decoded row witnesses: the latter may still be zero, including the
+free truth code.  The range certificate remains valid because its proof
+already establishes divisibility of the binomial value for every CRT
+representative of the prescribed small residues.
+
+Under these choices every power graph used in the construction has positive
+base and positive exponent.  The carrier and modulus powers have exponent
+$t>0$; the factorial graphs are called at $t$ and $H$, both positive;
+their radius and auxiliary binomial arguments are positive.  In each
+coordinate-range binomial graph the upper argument $A_j$ is positive and
+the lower argument $u_j+1$ is positive.  Therefore its three power calls
+$2^{A_j}$, $(2^{A_j}+2)^{A_j}$, and $(2^{A_j}+1)^{u_j+1}$ are positive
+cases.  The zero-base and zero-exponent branches of a general power graph
+are unnecessary in this specialized construction.  Their removal is
+justified by this argument inventory; it is not a correct optimization of
+the unrestricted exponentiation relation.
+
+For the positive-power certificate, its final Pell norm gives
+\[
+ A^2=1+W^3(W+2)Z^2,
+ \qquad W\ge n\ge1,\quad A\ge2.
+\]
+Consequently $Z\ge1$ and $A>W\ge n$.  Hence the natural subtraction
+$A\mathbin{\dot{-}}n$ in the original power theorem equals ordinary
+integer subtraction.  The congruence can be written with nonnegative
+polynomial sides as
+\[
+ X+Yn+Tq_+=YA+m+Tq_-.
+\]
+This is the only subtraction-elimination point that needs a separate
+inequality argument in the power specialization.

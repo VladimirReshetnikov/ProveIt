@@ -1,0 +1,62 @@
+{
+  "name": "pivot20_degree20",
+  "domain": "unrestricted integers",
+  "variables": [
+    "J3",
+    "C",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "tau",
+    "eta",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "E",
+    "c",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3"
+  ],
+  "variable_count": 20,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "coefficient_binding": "../coefficients/BINDING.json",
+  "residuals": [
+    "E - (beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * (E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 - E)",
+    "c - eta - (1 - (f * o - c) + j * c + h * E) * (E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 - E)",
+    "tau ** 2 - E * (c - eta) * (1 - (f * o - c) + j * c + h * E + E * (c - eta)) - 1",
+    "((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + (E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) * c + gamma * (4 * (E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) + 3)) ** 2 - ((E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) ** 2 + 4 * (E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) + 3) * c ** 2 - 1",
+    "c * j - (f * o - c) - (((beta * (3 * J3 + 1) + 1 - 1) * (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1))) + (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - C)) * ((beta * (3 * J3 + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J3 + 1) + 1) * MF) * (3 * J3 + 1))",
+    "((2 * r + 1) * c ** 2) ** 2 - ((E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) ** 2 + 4 * (E + (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) + 3) * (f ** 2 - 1)",
+    "((2 * r + 1) * c ** 2) ** 2 * ((f * o - c) ** 2 - y ** 2) + y ** 2 - 1",
+    "(cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) * (cone_B * (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - C))) - (beta * (3 * J3 + 1) + 1 - cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - cone_B * (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - C))) ** 2) * (eta * (1 - (f * o - c) + j * c + h * E - eta)) - (pair_root ** 2 - (cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) * (cone_B * (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - C))) - (beta * (3 * J3 + 1) + 1 - cone_A * ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - cone_B * (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - (beta * (3 * J3 + 1) + 1 - ((K0 + 4 * (3 * w3 + 1)) * C - z * (beta * (3 * J3 + 1) + 1 - 1)) - C))) ** 2) - eta * (1 - (f * o - c) + j * c + h * E - eta) + 1) ** 2 - (1 + pair_pos1 ** 2 + pair_pos2 ** 2 + pair_pos3 * (pair_pos3 + 1))"
+  ],
+  "residual_count": 8,
+  "single_equation": "sum of squares of all residuals",
+  "exact_degree": 20,
+  "degree_witness": {
+    "monomial": "f**4*v_scale**4*J3**12",
+    "coefficient_expression": "2**4*3**12*beta**12",
+    "positivity_reason": "beta=2^1064921-1>0"
+  },
+  "parent": "upstream/joint__joint21_degree20.json",
+  "parent_sha256": "bb74a2635ba5130e07525716e75dcb2072bca04bb836df2436ce7a2e7f11a56d",
+  "deleted_parent_row_zero_based": 5,
+  "parent_restoration": {
+    "F": "(K0+(4*(3*w3+1)))*C-z*((beta*(3*J3+1)+1)-1)",
+    "alpha": "(beta*(3*J3+1)+1)-((K0+(4*(3*w3+1)))*C-z*((beta*(3*J3+1)+1)-1))-C"
+  },
+  "proof_status": "New elementary zero-set isomorphism; inherited native/Pell/calibration theorem remains explicit."
+}

@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "isolation": "Copied only RELEASE_WHITELIST.json files to a clean temporary directory",
+  "commands": [
+    "python build.py",
+    "python check.py > CLEAN_CHECK.json",
+    "cmp CLEAN_CHECK.json CHECKS.json"
+  ],
+  "all_four_rebuilt_graphs_byte_identical": true,
+  "independent_receipt_byte_identical": true,
+  "normal_and_optimized_receipts_byte_identical": true,
+  "external_dependencies": [
+    "Python3",
+    "SymPy"
+  ],
+  "no_external_local_paths_required": true
+}

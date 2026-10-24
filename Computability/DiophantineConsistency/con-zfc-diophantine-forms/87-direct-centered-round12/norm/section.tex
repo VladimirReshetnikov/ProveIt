@@ -1,0 +1,118 @@
+\section{A different optimization: center the final radical}
+Here $B$ abbreviates the already defined $B_1$.
+The inherited baseline equation uses ten unrestricted integer variables and has degree
+$1\,245\,324$ and $480$ binary arithmetic operations.  The new short guard,
+polarization of the final norm, exact scalar retiming, and reuse of
+$uv=(LX)V$ in $\operatorname{halfA}=LX+uv$
+and $P_h=Uuv$ give a
+$471$-operation equation at the same degree.  A further idea trades a small
+increase in circuit size for a lower degree: translate the final witness by
+an integer polynomial approximating the largest radical.
+
+\begin{center}
+\begin{tabular}{lrr}
+Literal circuit & Operations & Exact degree\\\hline
+\texttt{integer10\_polar.json}&471&1\,245\,324\\
+\texttt{integer10\_center0.json}&485&1\,179\,788\\
+\texttt{integer10\_center1.json}&496&1\,114\,252\\
+\texttt{integer10\_center2.json}&545&1\,080\,888
+\end{tabular}
+\end{center}
+All four use ten unrestricted integers and the same actual fixed integer
+leaves. These are cost--degree tradeoffs, not uniform improvements or claims
+of minimality.
+
+\subsection{A universal coordinate-change lemma}
+Write $Z=\Sigma m-\Theta$, and let the previous final norm be
+\[
+ N=(Z^2-\Sigma^2(a_0+a_1))^2-4\Sigma^4a_0a_1.
+\]
+Suppose integer polynomials $P,J$, independent of $m$, satisfy $a_1=P^2+J$.
+Define
+\[
+ T=Z+\Sigma P,\qquad
+ U=Z^2+2\Sigma PZ+\Sigma^2(a_0-J),\qquad
+ N_c=U^2-4\Sigma^2a_0T^2.
+\]
+Then $N_c(m)=N(m+P)$ identically. Indeed,
+$U=T^2+\Sigma^2(a_0-a_1)$ and polarization gives the identity.
+The substitutions $m\mapsto m\pm P$ are inverse bijections on integers,
+including when $\Sigma=0$. Thus this change requires no new number theory,
+nonzero assumption, or loss of signed solutions. The cancellation in $J$
+is displayed explicitly instead of hidden in $a_1-P^2$.
+
+\subsection{Two economical centers}
+Keep the inherited registers
+\[
+ D=(A^2-4)C^2+4,\quad E_0=C^2\xi,\quad E=DE_0,
+ \quad F=4(A^2-4)C^4D\xi^2+1,
+\]
+\[
+ G=(A/2-1)(F-1)-1,\quad
+ H=C+F(B-C+16Ey),\quad I=(G^2-1)H^2+1,
+ \quad a_1=DFI.
+\]
+Here $A/2$ denotes the already available integer polynomial
+$\operatorname{halfA}$, not a division operation in the circuit.
+The first center takes
+\[
+ R_0=2AE,\qquad J_{DF}=D-16E^2.
+\]
+The second, stronger center takes
+\[
+ R_0=2AE_0(D-2C^2),\qquad
+ J_{DF}=D+16E_0^2\bigl((3C^2-4)D-4C^2(C^2-1)\bigr).
+\]
+In either case $DF=R_0^2+J_{DF}$, hence
+\[
+ P=R_0GH,\qquad J=J_{DF}G^2H^2-DF(H^2-1)
+\]
+satisfy $a_1=P^2+J$. In the stronger version, $DF$ has degree six in
+$A$, but its square defect has degree only two in $A$.
+
+\subsection{A further correction with integral coefficients}
+For the second center put $c_2=C^2$, $h=A/2$, and define
+\begin{align*}
+ L_*&=1+16E_0^2(3c_2-4),& F_0&=1+64E_0^2(c_2-1),\\
+ \Omega_0&=-64E_0(c_2-1),& H_0&=C+F_0(B-C+\Omega_0y),\\
+ V_0&=-F_0H_0,& J_f&=E_0(c_2A^2+4-8c_2),\\
+ W_*&=B-C+16Ey.
+\end{align*}
+Use the following division-free definition:
+\[
+ Q_*=(2h^2-2)EH-A\bigl[J_f(C+(F+F_0)W_*)+4c_2F_0^2y\bigr].
+\]
+One verifies $4c_2\xi A Q_*=GH-V_0$. This is an identity, not a quotient
+used to define $Q_*$. Its coefficients are integral in $h$, but need not
+be integral in an unconstrained formal variable $A$.
+Finally put
+\begin{align*}
+ P&=R_0GH+L_*Q_*,\\
+ J_0&=-4(c_2-1)-256E_0^2(c_2-1)^2,\\
+ J&=J_0(GH)^2+c_2L_*AGH\bigl(AV_0-4\xi(4-6c_2)Q_*\bigr)\\
+ &\hspace{1cm}-(L_*Q_*)^2-DF(H^2-1).
+\end{align*}
+Then $a_1=P^2+J$ again. To prove it, write
+$J_{DF}=c_2L_*A^2+J_0$ and
+$R_0=2Ac_2\xi(A^2c_2+4-6c_2)$, expand, and use the identity for $Q_*$.
+This establishes the third centered equation without excluding exceptional
+values of $A,C,\xi$.
+
+\subsection{Exact degree and verification boundary}
+For the fixed source, $a=\deg A=16\,384$,
+$\deg\Sigma=81\,922$, $\deg a_0=294\,382$, and
+$\deg a_1=458\,818$. The first two centered degrees are
+$72a+140$ and $68a+140$. The deepest center reaches
+\[
+ 4\deg\Sigma+\deg a_0+\deg a_1=1\,080\,888.
+\]
+Here the cross-term $-4\Sigma^2a_0T^2$ dominates; further corrections to
+this same radical alone do not remove that obstruction.
+The independently authored checker verifies the exact polynomial
+identities, integrality in $\operatorname{halfA}$, actual numeral payloads,
+full source-to-equation replays, topology, liveness, and operation counts.
+Nonzero highest-degree coefficients modulo three primes certify attainment
+of the stated degrees. Finite replay is an audit of transcription, not a
+replacement for the universal identity or the inherited consistency
+calibration. These results are mathematical proofs, not new Lean/Rocq
+certificates.

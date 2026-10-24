@@ -1,0 +1,353 @@
+\section{Adjacent Pell descent and the eleven-positive-variable equation}
+\label{sec:positive11}
+
+The second contribution uses a different coherent tuple, the compact
+source-44 numerals with $\beta=2^{590069}-1$. The same letters
+$K_0,M_C,M_F$ now refer to that tuple. They are bound separately in
+\texttt{coefficients/ACTIVE\_BINDING.json}. The four actual integer
+payloads and their complete regeneration recipe are included.
+
+\subsection{A rational coordinate is already integral}
+
+The following descent is source 69's key lemma. Its application here
+removes a factor previously inserted solely to prove integrality.
+
+\begin{lemma}[Adjacent-coefficient integrality]
+\label{lem:descent}
+Let $Q>1$ be an integer. If $V\in\Z$, $y\in\Q$, and
+\[
+ QV^2-(Q-1)y^2=1,
+\]
+then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+Changing signs permits $V,y>0$; neither is zero. Write $y=b/m$ in
+lowest terms with $m>0$. The equation implies $m^2\mid Q-1$, hence
+$m\mid Q-1$. If $V=1$ then $y=1$ and $m=1$.
+
+For $V>1$ define
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+The first is an integer. The identity
+$(2Q-1)^2-4Q(Q-1)=1$ preserves the equation. Its original form gives
+$y>V$ and $QV>(Q-1)y$; the latter also follows by squaring positive
+quantities, since the difference of their squares is $QV^2+Q-1>0$.
+These inequalities give $-V<V'<V$. The preserved norm excludes $V'=0$.
+Moreover $y'$ has the same reduced denominator $m$ as $y$ because
+$2Q-1\equiv1\pmod m$. Replace both new coordinates by their absolute
+values and use induction on the positive integer $V$. The descent reaches
+$V=1$ without changing $m$, proving $m=1$.
+\end{proof}
+
+The adjacent coefficients and right side $1$ matter. For example,
+$2\cdot1^2-4(1/2)^2=1$ has a nonintegral rational coordinate, so no
+general statement for arbitrary positive coefficients is being used.
+
+\subsection{The exact eleven-variable polynomial}
+
+Supply precisely
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma\in\Z_{>0}.
+\]
+All symbols in the following displays are polynomial abbreviations:
+\begin{align*}
+ J&=3j+1,&q&=\beta J+1,&C&=q-F-\alpha,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,&I&=ic^2,&D_\tau&=\ell(\ell+k)+1.
+\end{align*}
+The removal of $q(q-1)$ from $I$ is the structural change from source 70.
+Define
+\begin{align*}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ \widehat R&=q^3(q+F+\alpha),& M&=q^3(q-1),\\
+ B_t&=(qK_0+X)C-qF,&D_f&=1+\Delta I^2,\\
+ Q&=\Delta(D_f-1)=\Delta^2I^2,&\delta&=Q-1,\\
+ V&=D_f(cT-R)-c,&\overline V&=D_f(cT+\widehat R),\\
+ L&=3\overline V,&W&=1+(q-1)L,\\
+ \overline Z&=M(\ell+k+n+L)+(q-1)Y-q^3WB_t.
+\end{align*}
+For the retained main carrier put
+\begin{align*}
+ v_0&=k-R-1,& S&=4qY,&U&=qS,\\
+ D_*&=U(X+ac)+H(U\gamma+SX-v_0),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+For the three-root norm set
+\begin{align*}
+ A&=M^2D_\tau,&B_f&=M^2D_f,&C_n&=M^2(QV^2-1),\\
+ T_n&=\delta^2AB_f,&R_n&=\delta C_n,\\
+ J_n&=\delta(\overline Z^2-A-B_f)-C_n,\\
+ N_c&=J_n^2-4\bigl(T_n+R_n(A+B_f)\bigr),\\
+ N_8&=N_c^2-64T_nR_n\overline Z^2.
+\end{align*}
+The polynomial is
+\begin{equation}
+ \boxed{P_{11}=N_8+A_1+N_8A_1=0.}
+ \label{eq:P11}
+\end{equation}
+This literal division-free circuit has 111 binary operations.
+
+\subsection{Radical recovery without a prime-support multiplier}
+
+The universal identity
+\begin{align*}
+ F_8(z;a,b,c)
+ &=\bigl((z^2-a-b-c)^2-4(ab+ac+bc)\bigr)^2-64abc z^2\\
+ &=\prod_{\varepsilon\in\{\pm1\}^3}
+   (z-\varepsilon_1\sqrt a-\varepsilon_2\sqrt b-\varepsilon_3\sqrt c)
+\end{align*}
+is a polynomial identity. For positive rational radicands all eight
+displayed roots are real; it does not require independent square classes.
+
+We recall source 70's elementary radical lemma. If three positive rational
+radicands are pairwise distinct and no signed sum of their square roots
+is zero, any rational signed sum of them makes each root rational.
+Indeed let signed roots $x_1,x_2,x_3$ have nonzero rational sum $z$,
+and write $a_i=x_i^2$. The quantities
+\[
+ u=\frac{z^2-a_1-a_2-a_3}{2},\qquad
+ v=\frac{u^2-a_1a_2-a_1a_3-a_2a_3}{2z}
+\]
+are rational and equal to $\sum_{i<j}x_ix_j$ and $x_1x_2x_3$.
+Then
+\[
+ x_1=\frac{a_1(a_1+u)}{a_1z+v},\qquad
+ a_1z+v=x_1(x_1+x_2)(x_1+x_3)\ne0.
+\]
+The other two formulas are cyclic. Distinct radicands exclude the two
+possible cancellations in each denominator.
+
+Here the three radicands before multiplication by $M^2$ are
+\[
+ D_\tau,\qquad D_f,\qquad D_y=\frac{QV^2-1}{Q-1}.
+\]
+All of the following bounds hold for arbitrary positive supplied inputs,
+before any equation or the inequality $C>0$ has been assumed. In
+particular $c\ge3$, $a\ge2$, $\Delta\ge15$, $I\ge c^2$, and
+\[
+ 1<D_\tau<D_f<Q.
+\]
+Put $b=cT-R$. If $b=0$, $V=-c$; otherwise
+$|V|\ge D_f-c>1$. Thus $|V|>1$ in all cases and
+$D_y=V^2+(V^2-1)/(Q-1)>V^2$.
+If $D_y$ equalled either integer $D\in\{D_\tau,D_f\}$, then
+$Q(D-V^2)=D-1$, impossible because $0<D-1<Q$.
+
+Writing $t_\tau=\sqrt{D_\tau}$ and $f=\sqrt{D_f}$ gives
+\[
+ t_\tau<(a+1)c,\qquad f>(a+1)c^2\ge3c^2.
+\]
+When $b=0$, $\sqrt{D_y}<c+1<f-t_\tau$. When $b\ne0$,
+$\sqrt{D_y}>D_f-c>2f>f+t_\tau$. One root therefore dominates
+the sum of the other two, excluding a zero signed sum.
+
+The authentic mask bounds give
+$0<M_C<\beta$ and $0<M_F<2\beta$. They imply
+$|R|<\widehat R$ for every positive input. For example
+\[
+ |R|<q^4+Fq^3+(\alpha+2)q^2<q^3(q+F+\alpha),
+\]
+using $q\ge16$, $\alpha\ge1$. The positive integer gap, together with
+$D_f>c$, gives $|V|<\overline V$. Hence
+\[
+ f<\overline V,\qquad \sqrt{D_y}<2|V|<2\overline V,
+ \qquad L>f+\sqrt{D_y},\quad L>k.
+\]
+These are exactly the estimates needed for source 70's root transport;
+none uses the removed factor $q(q-1)$ in $I$.
+
+At a zero of $N_8$, the identity
+\[
+ N_8=\delta^4 F_8(\overline Z;M^2D_\tau,M^2D_f,M^2D_y)
+\]
+supplies signed roots with
+$\overline Z/M=\tau_*+f_*+y_*$. The radical lemma makes them rational.
+The first two are integral because their squares are integers. The third
+satisfies
+\[
+ QV^2-(Q-1)y_*^2=1.
+\]
+Lemma~\ref{lem:descent} therefore gives $y_*\in\Z$ directly.
+This replaces source 70's prime-support argument and is why the stronger
+divisibility of $I$ is unnecessary.
+
+\subsection{Soundness and constructive completeness}
+
+For soundness recover
+\[
+ f_{\rm old}=|f_*|,\quad u_{\rm old}=|y_*|-V,
+ \quad r_{\rm old}=n+L-f_*-y_*,\quad i_{\rm old}=i.
+\]
+The inequalities above make $u_{\rm old},r_{\rm old}$ strictly positive.
+The signed roots must be used in $r_{\rm old}$; replacing them there by
+absolute values would change the transport identity. With
+\[
+ Z=M(\ell+k+r_{\rm old})+(q-1)Y-q^3WB_t
+\]
+one obtains $Z=M\tau_*$. The four source-70 weighted-carrier equations
+are now
+\begin{align*}
+ Z^2-M^2D_\tau&=0,&A_1&=0,\\
+ f_{\rm old}^2-\Delta(i_{\rm old}c^2)^2-1&=0,\\
+ (V+u_{\rm old})^2-\Delta(f_{\rm old}^2-1)
+            u_{\rm old}(2V+u_{\rm old})-1&=0.
+\end{align*}
+Its theorem applies to every positive integer transport weight, here
+$L$. It restores the normalized positive source and hence a finite
+refutation.
+
+For clarity, this inherited weighted-carrier theorem has a specific
+order of recovery. First $M\mid Z$ yields $q^3\mid Y$ and
+$(q-1)\mid B_t$, and the positive transport gap gives $B_t>0$, thus
+$C>0$. Only then are the native bounds $3q<R<q^4-2$ used. The adaptive
+main carrier gives a positive main Pell root, the strong/auxiliary
+equations recover its index, and its large modulus recovers $q\mid X$
+and the deleted index quotient. This order avoids using native bounds
+before their hypotheses have been established.
+
+Conversely choose canonical normalized source witnesses for a finite
+refutation. A positive Pell pair with ordinate divisible by $c^2$ is
+available; it follows either from the canonical source or from a positive
+power of the Pell matrix that is the identity modulo $c^2$. Thus
+$I=ic^2$ with $i>0$. The actual auxiliary reconstruction lemma of source
+61 applies to every positive such pair with $c\mid I$, canonical
+$R\ge3$, $R\equiv3\pmod4$, and $c=\psi_{a+2}(R)$, supplying
+positive $T,u$ and $y=V+u$. Here $\psi_A(R)$ is the coefficient of
+$\sqrt{A^2-1}$ in $(A+\sqrt{A^2-1})^R$.
+Choose these before computing $L,W$. Canonical transport has
+$t_0=B_t/(q-1)\ge q$, $s_0=Y/q^3<k$, and $\ell<\tau<\ell+k$.
+Its positive gap can therefore be set to
+\[
+ r=Wt_0+\tau-\ell-k-s_0>qW-2k>L.
+\]
+Now $n=r-L+f+y>0$ and $\overline Z=M(\tau+f+y)$, so $N_8=0$.
+The adaptive main-carrier witness is supplied by the same canonical
+construction. This proves completeness with no extra strong-index
+congruence.
+
+Finally $N_8$ is a square modulo $4$, and so is $A_1$ because $4\mid U$.
+The equation $P_{11}=0$ is $(1+N_8)(1+A_1)=1$. The negative-unit case
+would require both residuals to be $-2$, impossible modulo $4$.
+Thus this single equation is equivalent to their simultaneous vanishing.
+
+\subsection{Exact degree and its coefficient certificate}
+
+The exact degrees are
+\[
+\begin{array}{c|rrrrrrrr}
+ \text{register}& I&D_f&Q&V&L&\overline Z&N_8&A_1\\\hline
+ \text{degree}&5&14&18&18&18&24&264&13.
+\end{array}
+\]
+The degree-fourteen terms in $A_1$ cancel; the exact audit checks this
+identity rather than trusting naive gate degrees. Writing
+$q_0=3\beta j$ and $k_0=\eta+\zeta$, the leading forms satisfy
+\[
+ \lead_{264}(N_8)=Q_0^4\overline Z_0^8,
+\]
+where
+\begin{align*}
+ Q_0&=i^2k_0^4X^4Y^8,\\
+ B_{t,0}&=(K_0q_0+X)(q_0-F-\alpha)-q_0F,\\
+ \overline Z_0&=-3i^2q_0^7k_0^4X^2Y^6(q_0+F+\alpha)B_{t,0},\\
+ \lead_{13}(A_1)&=32q_0^2k_0X^2Y^4
+                    \bigl(4q_0^2Y\gamma+q_0^3(q_0-F)\bigr).
+\end{align*}
+In particular the degree-277 monomial has coefficient
+\[
+ [j^{60}i^{24}\eta^{49}X^{42}Y^{85}\alpha^{16}\gamma]P_{11}
+ =2^7\,3^8(3\beta)^{60}>0.
+\]
+The degree falls by $48$, or about $14.77\%$, from source 70's 325.
+The live arithmetic count falls by two multiplications, from 113 to 111.
+
+\section{A twelve-positive-variable companion of degree 78}
+
+This construction composes source 69's norm merger with source 70's
+adaptive main carrier. Supply
+\[
+ j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma\in\Z_{>0}.
+\]
+Use $J=6j+1$, $q=\beta J+1$, and the same compact tuple and common
+registers $C,E,k,c,a,H,\Delta,\ell,R,M,B_t$ as above. Set
+\begin{align*}
+ W&=(q-1)k+1,\\
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t,\\
+ A_0&=Z^2-M^2\bigl(\ell(\ell+k)+1\bigr).
+\end{align*}
+Use the adaptive $S=4qY$, $U=qS$, $D_*$ and $A_1$ from the preceding
+section, in place of source 69's scales $q^4,q^5$.
+The remaining registers are
+\begin{align*}
+ f&=t+1,&\rho&=f^2-1,&d&=\Delta c^4,&Q&=\Delta\rho,\\
+ V&=f^2(cT-R)-c,\\
+ h(z)&=(1-Q)z^2+2(1-Q)Vz+V^2-1,\\
+ b_N&=2(1-Q)(n+V),&A_N&=d\,h(n)+(1-Q)\rho,\\
+ N&=A_N^2-d\,b_N^2\rho.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{P_{12}=(1+A_0)(1+A_1)(1+N)-1=0.}
+ \label{eq:P12}
+\end{equation}
+
+\subsection{The merger and its exact recovery}
+
+Assume $d,\rho>0$, $Q>1$, $V>1$, $n>0$ and $N=0$.
+Then $b_N\ne0$. Define the proof-only rational numbers
+\[
+ i_*=\frac{A_N}{d b_N},\qquad u_*=n-i_*.
+\]
+One gets $d i_*^2=\rho$ and $h(u_*)=0$. Writing $y_*=V+u_*$,
+the latter equation is $QV^2-(Q-1)y_*^2=1$.
+Lemma~\ref{lem:descent} gives $y_*\in\Z$, hence $u_*,i_*\in\Z$.
+Recover the positive witnesses $i=|i_*|$ and $u=|y_*|-V$;
+the second is positive because $|y_*|>|V|$.
+Conversely, if $d i^2=\rho$ and $h(u)=0$, set $n=i+u$. The identity
+\[
+ N\big|_{\rho=di^2}=d^2h(n-i)h(n+i)
+\]
+shows $N=0$. This is an exact polynomial identity; it is not an
+unjustified rational-root resultant inference.
+
+The required hypotheses precede this recovery. The equations $A_0=A_1=0$
+alone give $C>0$, $q^3\mid Y$ and positive first and main Pell indices.
+The first index is at least two; otherwise $k=2$, $\eta=\zeta=1$
+would contradict the smallest possible main ordinate. Therefore
+\[
+ c>kY>8XY^3\ge8q^9>2R.
+\]
+Since $f=t+1\ge2$, this gives
+$V=f^2(cT-R)-c>c>1$. The adaptive carrier has the same hypotheses and
+rank consequences here as in source 70. In particular $q\equiv2\pmod3$
+and $q^3\mid Y$ make its relevant gcd at most $3$, while its remaining
+modulus exceeds $R+1$. Thus replacing $q^5,q^4$ by $4q^2Y,4qY$
+does not weaken the source reconstruction.
+
+The recovered $i,u$ restore the four positive source residuals, with
+transport weight $k$. Conversely, canonical witnesses have
+$J\equiv1\pmod6$ because the radix exponent and repunit length are odd;
+they supply $t=f-1>0$ and $n=i+u>0$. The first transport and adaptive
+main-carrier gaps are positive by the canonical construction. This
+proves the existence equivalence with the same native source.
+
+The radix $q$ is even, $4\mid U$, and $b_N$ is even. Hence all three
+residuals $A_0,A_1,N$ are squares modulo $4$. Their unit-product
+finalizer in \eqref{eq:P12} is equivalent to their separate vanishing:
+any factor $-1$ would again require a residual $-2$.
+
+\subsection{Degree and arithmetic cost}
+
+The exact residual degrees are $15,13,50$, so the product has degree 78.
+An explicit coefficient surviving fixed-port specialization is
+\[
+ [j^{18}F^2\eta^{11}X^{12}Y^{23}t^8n^2\gamma\alpha]P_{12}
+ =1024(6\beta)^{18}>0.
+\]
+The new scale computation costs one more live gate than the old scale,
+giving 103 operations. This is a degree improvement from 82 to 78,
+about $4.88\%$, and an explicit tradeoff rather than domination of the
+old circuit in every measure.

@@ -1,0 +1,230 @@
+# Modular binomial certificates through a cofinal Pell frame
+
+## Status and precise scope
+
+This note proves the new arithmetic transformation used in `modular_binomial.py`.
+It replaces the eleven **full numerator powers** `(q+1)^n` used by the supplied
+eight-column direct C222 proof certificate with residues of already indexed Pell
+coordinates. It does not change the C222 logical source, factorial identities,
+CRT product identity, local nonnegative source polynomial, or their calibration.
+The inherited low-digit estimates are retained. The final exported object is an
+ordinary quartic over nonnegative integers, because every displayed multiplication
+is materialized by quadratic gates and every residual is squared and summed.
+No variable exponentiation remains in that final object.
+
+The input package is `ConZFC_407_888_Quartics_2026-10-24.zip` from ProveIt commit
+`ec80841c07e91be8956ce6ed4af9a9c0b782d3d9`. Its arithmetic source is source690.
+The new builder currently creates source655 (12 exact positive-power calls, three
+exact binomial calls, eight binomial-divisibility calls, 15 independent Pell
+indices). The exported natural equation and its exact projection certificate are
+separate finite artifacts; these finite checks do not replace this unbounded proof.
+
+## 1. Notation and inherited range hypotheses
+
+For `A>=2` write `D=A^2-1` and define the Pell coordinates by
+
+    X_0=1, Y_0=0,
+    X_(j+1)=A X_j+D Y_j,
+    Y_(j+1)=X_j+A Y_j.
+
+Thus `X_j+Y_j s=(A+s)^j` in the ring `Z[s]/(s^2-D)`.
+
+The direct source supplies natural `H,t,x,y,M0`, with `H>=2` and
+`H>=k` for every requested binomial lower index `k`. Concretely,
+`R=2+t+x+y+M0`, `H=R^8388608`, and lower indices belong to
+`{H,t,t+1,y+1,x+1}`. Every upper argument `n` is positive. The source has
+one positive CRT modulus `B`. Its recycled radix is
+
+    q=B(V_H+1),
+    rho_H=(H+2)^(H+2),
+    V_H=(rho_H+1)^H.
+
+The current graph still represents `rho_H,V_H` and every denominator `q^k`
+by exact positive-power certificates. The inherited aggregate representative
+bound is `sum a_i <= 8B`. Soundness of the existing radix proof establishes,
+**in its original dependency order**, that `q>=2`, `B|q`, and
+
+    binom(n,j)<q for all 0<=j<=k
+
+for each of the eleven requested pairs `(n,k)`. Only these lower coefficients
+need bounds. In particular we do not need `(q+1)^n` itself to be bounded by q.
+
+The new transformation removes only the graphs for the full powers `(q+1)^n`.
+Their indices n remain requested Pell indices. Index correctness is supplied
+by the unchanged shared index criterion and exact additive-index identities.
+
+## 2. A cofinal parameter instead of a fixed parameter
+
+Let S be the finite set of semantic atoms appearing as a base, exponent or
+output of an **exact** positive-power request retained in the graph. Put
+
+    W=2+sum_(a in S) a,
+    Z=z+1,
+    L^2-(((W+1)^2-1)(WZ)^2)=1,
+    A=L+sigma,   sigma>=0.                         (1)
+
+The old construction used A itself in the norm. We use L as the growth
+lower bound and allow A to increase freely above it.
+
+Classifying nonnegative solutions of the norm in (1) gives
+`L=X_e(W+1)` and `WZ=Y_e(W+1)`. Since `Y_e(W+1)=e (mod W)`,
+`e>0` and `W|e`, so `e>=W`. Consequently
+
+    L >= (W+1)^e >= (W+1)^W > W^W,
+    A >= L > W^W.                                 (2)
+
+For every retained exact-power request `(n,k,m)`, all its atoms are at most W.
+Its old modulus `T_n=2An-n^2-1` therefore satisfies
+`T_n>m` and `T_n>n^k`. The old Pell congruence proves `m=n^k` exactly as
+before. The shared index proofs require `A>=2`, positivity of their indices,
+and their explicitly retained `Y>=index` rows; they do not require those
+indices to be bounded by W. Thus the modular-only indices need not enter S.
+
+Completeness is cofinal: after choosing all genuine semantic values, choose
+W as above, set `L=X_W(W+1)`, `Z=Y_W(W+1)/W`, and then choose **any** integer
+A>=L. It supplies the natural slack `sigma=A-L`. All original exact-power
+and shared-index completeness arguments remain valid for this A.
+
+## 3. One root congruence for every binomial
+
+Let
+
+    b=q+1,  M=q*q^H=q^(H+1).
+
+The denominator `q^H` already occurs in the H-factorial digit graph, so M
+needs only one multiplication, not another variable-exponent power graph.
+Add a natural quotient h0 and impose
+
+    2 A b = b^2+1+M h0.                            (3)
+
+This means that b is a root of `T^2-2AT+1` modulo M.
+
+**Cofinal solvability of (3).** Since `gcd(b,q)=1`,
+`gcd(2b,M)=gcd(2,M)`, which is either one or two. If M is even then q is even
+and b is odd, so `b^2+1` is even. Therefore the linear congruence
+`2b A = b^2+1 (mod M)` always has a solution. Its solutions form an arithmetic
+progression, hence include arbitrarily large A. Choose one above L and b;
+then `h0=(2Ab-b^2-1)/M` is a nonnegative integer. This is compatible with
+(1) and with all shared Pell-index witnesses. No circular choice is involved:
+q,H and their genuine exact powers are chosen before A.
+
+**Uniform residue identity.** Equation (3) makes the assignment `s -> b-A`
+a ring homomorphism
+
+    Z[s]/(s^2-(A^2-1)) -> Z/MZ,
+
+because `(b-A)^2-(A^2-1)=b^2-2Ab+1=0 (mod M)`. Applying it to
+`(A+s)^n=X_n+Y_n s` proves
+
+    R_n := X_n+(b-A)Y_n = b^n (mod M).             (4)
+
+This is a formal polynomial identity, valid for every n>=0. It does not
+require the full value b^n to be stored or bounded.
+
+**Positivity.** For n>=1 we have Y_n>0 and X_n>=0. The norm gives
+
+    X_n^2-(A-1)^2 Y_n^2 = 1+2(A-1)Y_n^2 >0.
+
+Hence `X_n>(A-1)Y_n` and
+
+    R_n > (b-1)Y_n >=0.                            (5)
+
+The signed expression R_n is therefore a positive integer.
+
+## 4. Exact binomial digits
+
+Fix a requested pair `(n,k)` with `1<=k<=H`; put `d=q^k`.
+The quotient ring identity (4) holds modulo `qd=q^(k+1)`, because `qd|M`.
+Let c be the proposed binomial value. Replace the old full-power digit graph
+by natural witnesses h,r,s,o satisfying
+
+    X_n+bY_n = A Y_n+r+d c+qd h,
+    d=r+s+1,
+    q=c+o+1.                                      (6)
+
+Thus `0<=r<d`, `0<=c<q`, and `r+dc` is the least nonnegative residue of R_n
+modulo qd. By (4), it is also the least residue of `(q+1)^n` modulo qd.
+The carry-free low-digit hypothesis gives that residue as
+
+    sum_(j<k) binom(n,j) q^j + binom(n,k) q^k,
+
+whose first part lies in `[0,d)`. Uniqueness of Euclidean division by d
+therefore gives `c=binom(n,k)` and identifies r. This proves soundness.
+Conversely take the actual binomial digit and lower residue. Equation (4)
+makes `(R_n-r-dc)/(qd)` an integer; (5) and `0<=r+dc<qd` make it
+nonnegative. It supplies h, and the ordinary positive gaps supply s,o.
+
+For k=0 the same argument works with d=1 and r=0, although the source only
+requires positive lower indices.
+
+## 5. Binomial divisibility without the digit
+
+For a range request, the needed relation is only `B|binom(n,k)`. Since
+`B|q` and `k<=H`, we have
+
+    Bd=B q^k | q^(H+1)=M.
+
+Use natural witnesses h,r,s satisfying
+
+    X_n+bY_n = A Y_n+r+Bd h,
+    d=r+s+1.                                      (7)
+
+Equation (7) says the least residue of R_n modulo Bd lies in `[0,d)`.
+The same is true of `(q+1)^n` by (4). Its binomial expansion has lower part
+r0 in `[0,d)` and higher quotient
+
+    binom(n,k) + q*integer.
+
+Since `B|q`, reduction modulo Bd gives
+
+    r0+d*(binom(n,k) mod B).
+
+This lies in `[0,d)` exactly when `B|binom(n,k)`. Thus (7) is equivalent to
+the desired divisibility, using the same low-digit hypothesis as the old
+fused certificate. Completeness again follows from (5): the quotient
+`(R_n-r)/(Bd)` is nonnegative.
+
+## 6. Soundness order and preservation of the calibrated source
+
+1. The lower growth norm and the unchanged indexed-Pell criteria prove
+   correctness of all 12 retained exact powers. In particular the powers
+   of q are exact. Their base equation rules out q=0, so `q=B(V_H+1)`
+   gives B>=1 before correctness of the CRT product is used.
+2. Equation (3) and the recovered Pell coordinates prove (4) simultaneously
+   for every requested upper argument n. This statement does not depend on
+   correctness of any binomial or factorial.
+3. The old factorial low-digit bound validates the H-factorial binomial
+   using (6), so its unchanged algebraic identity gives T=H!.
+4. Validate the t-factorial similarly. The inherited raw remainder bound
+   on B and the aggregate bound `sum a_i<=8B` now prove the remaining
+   carry-free low-digit inequalities. This is exactly the old radix proof;
+   no final CRT product identity has yet been presumed.
+5. Apply (6) to the CRT-product binomial and (7) to the eight range tests.
+   Then the old CRT-product, decoding, local C222 certificate and logical
+   calibration proofs apply without modification.
+
+Completeness reverses the source construction. Start from a finite calibrated
+C222 refutation; choose the existing padded horizon, canonical CRT column
+representatives, factorial values, recycled radix and exact denominator
+powers. Form W and L from the retained exact-power requests. Choose A
+cofinally in the residue class (3), then build the unchanged shared index
+witnesses and all rows (6),(7). This constructs a solution of the new raw
+quartic. The checked monic contraction preserves existence in both directions.
+
+All arguments are finite elementary arithmetic, Pell recurrences, Euclidean
+division, and finite CRT, formalizable in ZFC. They combine with the supplied
+C222/refutation calibration to prove the same Con(ZFC) equivalence. They do
+not prove that the polynomial has no solutions or that ZFC is consistent.
+
+## 7. Optional signed quotient witnesses
+
+The quotients h in (6),(7) need not initially be required nonnegative in an
+integer-domain compilation. Once the other coordinates and bounded residues
+are nonnegative, (4),(5) show that the displayed residue is the least one;
+then `R_n=residue+positive_modulus*h` forces h>=0. The root quotient h0
+also has a recoverable sign: exact q is among the atoms bounded by W, hence
+A>W>=q and A>=q+1=b. Thus `2Ab-b^2-1>=b^2-1>0` and (3) forces h0>0.
+Removing their independent sign guards is valid if the integer compiler
+leaves their product wires signed until this semantic recovery and proves
+all other needed signs without using the deleted guards. The separate
+mixed-domain certificate must check that dependency condition.

@@ -1,0 +1,118 @@
+\section{The exact sparse source kernels}\label{app:kernels}
+These are the fixed source polynomials used in Section~\ref{sec:lucas}.
+The four coefficients $\beta,K_0,M_C,M_F$ here are the whole original31
+tuple in \pathf{lucas_h1868/data/coefficients_binding.json}, not the compact44
+tuple of the positive equations. Their actual unsigned integer bytes are
+in the adjacent compressed payloads. Derived signed fixed leaves are
+in \pathf{lucas_h1868/fixed/}; \pathf{FIXED_COEFFICIENTS.json} specifies
+the sign-byte convention, exact raw and compressed hashes, and bit lengths.
+The literal graph also retains the exact integer-polynomial recipes for
+every derived leaf. No undetermined parameter remains.
+\paragraph{Weights and target exponents.}
+The 31 weights, in source variable order, are
+\[\begin{gathered}
+1,7,61,36,16,85,20,67,43,11,34,13,96,80,29,50\\
+2,109,110,112,116,91,53,55,27,101,92,9,107,37,60
+\end{gathered}\]
+The 22 target exponents, in residual order, are
+\[\begin{gathered}
+1141,28,1437,1069,1836,1354,1814,614,267,1408,1403\\
+889,337,1587,413,673,1139,772,1131,1018,1055,85
+\end{gathered}\]
+For each $d=0,1,2$, define $D_d(B)=\sum_e c_{d,e}B^e$ using the
+following complete lists. A missing exponent has coefficient zero.
+\begin{longtable}{rrl}
+\toprule Layer $d$ & Exponent $e$ & Coefficient $c_{d,e}$\\\midrule\endhead
+0 & 85 & $-2$\\
+0 & 337 & $-2$\\
+0 & 413 & $2 K_{0}$\\
+0 & 614 & $-2$\\
+0 & 889 & $-2$\\
+0 & 1408 & $-6$\\
+1 & 1 & $-2$\\
+1 & 26 & $2$\\
+1 & 27 & $- 2 \beta$\\
+1 & 176 & $-2$\\
+1 & 214 & $2$\\
+1 & 217 & $-6$\\
+1 & 241 & $2$\\
+1 & 245 & $2$\\
+1 & 257 & $2$\\
+1 & 322 & $2$\\
+1 & 352 & $- 2 K_{0}$\\
+1 & 406 & $- 2 K_{0} - 2$\\
+1 & 412 & $2 K_{0} \beta + 2 \beta$\\
+1 & 572 & $2$\\
+1 & 763 & $2$\\
+1 & 953 & $2$\\
+1 & 960 & $-2$\\
+1 & 981 & $2$\\
+1 & 995 & $2$\\
+1 & 1018 & $2$\\
+1 & 1024 & $2$\\
+1 & 1027 & $2$\\
+1 & 1047 & $2$\\
+1 & 1058 & $-2$\\
+1 & 1114 & $2$\\
+1 & 1140 & $- 4 \beta$\\
+1 & 1242 & $2$\\
+1 & 1258 & $-2$\\
+1 & 1292 & $-8$\\
+1 & 1346 & $2$\\
+1 & 1348 & $2$\\
+1 & 1403 & $-2$\\
+1 & 1495 & $-2$\\
+1 & 1586 & $- 2 M_{C} - 2 M_{F}$\\
+1 & 1704 & $2$\\
+1 & 1727 & $2$\\
+2 & 0 & $- \beta$\\
+2 & 27 & $2$\\
+2 & 39 & $-1$\\
+2 & 101 & $-4$\\
+2 & 143 & $-1$\\
+2 & 182 & $-1$\\
+2 & 318 & $-1$\\
+2 & 372 & $-1$\\
+2 & 376 & $- \beta$\\
+2 & 394 & $-2$\\
+2 & 408 & $-1$\\
+2 & 424 & $-1$\\
+2 & 588 & $2$\\
+2 & 641 & $-2$\\
+2 & 714 & $-2$\\
+2 & 774 & $-1$\\
+2 & 783 & $2$\\
+2 & 804 & $-2$\\
+2 & 894 & $-1$\\
+2 & 1056 & $-1$\\
+2 & 1139 & $- 2 \beta^{2}$\\
+2 & 1142 & $-1$\\
+2 & 1149 & $1$\\
+2 & 1158 & $-1$\\
+2 & 1165 & $1$\\
+2 & 1176 & $-2$\\
+2 & 1179 & $-2$\\
+2 & 1402 & $- \beta$\\
+2 & 1432 & $1$\\
+2 & 1499 & $-1$\\
+2 & 1553 & $-1$\\
+2 & 1578 & $1$\\
+2 & 1579 & $- \beta$\\
+2 & 1584 & $- \beta$\\
+2 & 1585 & $- 2 M_{F} \beta + 2 \beta^{2}$\\
+2 & 1593 & $-1$\\
+2 & 1609 & $1$\\
+2 & 1629 & $-1$\\
+2 & 1636 & $1$\\
+\bottomrule\end{longtable}
+The certified layout has 86 coefficient records sharing 81 stored tap
+positions, $W=116$, height 1868 and maximum target 1836.
+Its layer degrees are 1408, 1727 and 1636, with leading coefficients
+$-6,2,1$. The dominance gaps are 460,25,0 and target headroom is 32.
+Every coefficient value is retained, so the original bound
+$2^{2\,134\,927}$ remains valid; the fixed extraction radix satisfies
+$B_0\ge4096\cdot2^{2\,134\,927}b^2$ whenever the source scale is positive.
+The separate factored-gap source in \pathf{packing/factor_gap/}
+reduces 86 weighted records to 85 by an exact positive zero-set bijection.
+No better completed packing endpoint is claimed for that source, and it
+is not silently substituted into the recommended equation.

@@ -1,0 +1,194 @@
+\subsection{Optimal natural selector weights}
+\label{sec:natural-selectors}
+
+This section gives a completed local improvement to the direct
+commutative-certificate architecture.  Its global bounded closure has not
+been compiled, so the local dimensions below are not a new final
+consistency-equation variable count.
+
+\begin{theorem}[Natural interpolation weights]
+Let $k\geq1$, and let $G_0,\ldots,G_{k-1}$ be integer polynomials
+nonnegative on natural inputs.  Set
+\[
+ g_k(r)=\prod_{j=0}^{k-1}(r-j),\qquad
+ L_i(r)=\prod_{\substack{0\leq j<k\\j\ne i}}(r-j),
+\]
+and define
+\[
+ W_i(r)=
+ \begin{cases}
+ L_i(r),&k-1-i\text{ even},\\
+ (r-k)L_i(r),&k-1-i\text{ odd}.
+ \end{cases}
+\]
+Then $g_k$ and every $W_i$ are nonnegative on $\mathbb N$, and
+\[
+ \exists r\in\mathbb N:\quad
+ g_k(r)+\sum_{i=0}^{k-1}W_i(r)G_i=0
+ \quad\Longleftrightarrow\quad
+ \bigvee_{i=0}^{k-1}G_i=0.
+\]
+Each $W_i$ has the smallest possible degree among real polynomials
+nonnegative on $\mathbb N$, positive at $i$, and zero at every other
+integer in $\{0,\ldots,k-1\}$: degree $k-1$ in the even case and $k$
+in the odd case.
+\end{theorem}
+\begin{proof}
+For $r<k$, the factors give $g_k(r)=0$ and $W_i(r)=0$ unless $r=i$.
+At $r=i$, the sign of $L_i(i)$ is $(-1)^{k-1-i}$; the optional factor
+$i-k$ changes the negative sign.  For $r\geq k$, all relevant factors
+are nonnegative, and $g_k(r)>0$.  Thus every summand in the displayed
+equation is nonnegative, a zero forces $r<k$, and its unique surviving
+branch weight is positive.  This proves both directions.
+
+For optimality, $k-1$ required distinct roots force degree at least
+$k-1$.  At that degree a candidate equals $cL_i$; nonnegativity at
+large natural arguments forces $c>0$.  Its value at $i$ has the required
+sign exactly in the even case.  The odd case therefore needs degree at
+least $k$, attained by the stated construction.
+\end{proof}
+
+The incoming Round11 source uses twelve nonnegative Horn branch
+polynomials $h_0,\ldots,h_{11}$, with respective degrees $2$, ten
+copies of $4$, and $8$ for the bundle branch $h_9$.  The truth branch is
+$h_0=p^2+q^2+v^2$.  Retain $M=M_0+1$ and the accumulator residuals
+\begin{align*}
+ E&=S'(1+vM)-S(1+pM)(1+qM),\\
+ F&=R'-R\bigl((1+p)(1+q)+v\bigr).
+\end{align*}
+At a truth step $p=q=v=0$, the equations say $S'=S$ and $R'=R$.
+All such steps can therefore be deleted from a finite certificate,
+preserving its endpoints and final height.  The existential trace length
+and its finite CRT code are replaced by those of the shortened trace.
+The distinguished endpoints are $S_0=M+1$ and $S_N=1$, with $M>0$, so a successful trace cannot consist entirely of deleted steps. Conversely every trace without these steps is already an old trace.
+This establishes equality of the global existential source predicates;
+it does not assert equality of their local zero sets at a fixed step.
+
+Group the remaining eleven factors as
+\[
+ (G_0,\ldots,G_5)=
+ (h_9,h_1h_2,h_3h_4,h_5h_6,h_7h_8,h_{10}h_{11}).
+\]
+Every group has degree eight.  The resulting literal local polynomial is
+\[
+ \mathcal L=g_6(r)+\sum_{i=0}^{5}W_i(r)G_i+E^2+F^2.
+\]
+Its degree is exactly $14$, with $21$ local natural witnesses and five
+exposed state/parameter coordinates.  The former three-bit construction
+uses $23$ local witnesses at the same degree.  Exact sparse expansion of
+the supplied rows gives $50\,461$ monomials; the leading term of
+$\mathcal L(t,\ldots,t)$ is $723072t^{14}$.  The source JSON, selector
+weights, entire expanded polynomial, and a standard-library verifier are
+included.  The exact degree assertion is therefore independently
+reproducible.
+
+There is a second improvement using two ternary selectors $u,w$.  The
+$k=3$ weights are
+\[
+ U_0(x)=(x-1)(x-2),\quad
+ U_1(x)=x(x-2)(x-3),\quad
+ U_2(x)=x(x-1),
+\]
+of degrees $2,3,2$.  Use the group array
+\[
+ (G_{ij})=
+ \begin{pmatrix}
+ h_9&h_5&h_1h_2\\
+ h_6&h_7&h_8\\
+ h_3h_4&h_{10}&h_{11}
+ \end{pmatrix}
+\]
+and the polynomial
+\[
+ \mathcal L_{12}=g_3(u)+g_3(w)
+ +\sum_{i,j=0}^{2}U_i(u)U_j(w)G_{ij}+E^2+F^2.
+\]
+The degree-eight groups occupy corners with weight degree four.  Every
+other group contributes at degree at most ten.  Thus this source has
+$22$ local witnesses and degree exactly $12$; its $40\,990$-monomial
+expansion has leading coefficient $627840$ under uniform substitution.
+Nonnegativity and the two selector penalties prove the same local and
+global source equivalence.  The new local tradeoffs are consequently
+$(21,14)$ and $(22,12)$ in place of $(23,14)$.
+
+The incoming index-free inert-prime closure has conditional coordinate
+count $2m+9+2f+p+(m+1)b$, for local witness dimension $m$ and chosen
+factorial, power, and binomial graph costs $f,p,b$.  Holding the remaining
+graph conventions fixed, the change $m=23\longrightarrow21$ saves
+$4+2b$ coordinates at that interface.  This is a conditional compiler
+accounting identity; it does not replace materialization of the entire
+direct consistency polynomial.  The degree-twelve alternative instead
+saves $2+b$ coordinates under that same convention.
+
+\subsection{Exact local arithmetic graphs}
+
+A second improvement exploits the natural domain directly.  For natural
+$x_1,\ldots,x_s$, their sum vanishes exactly when they all vanish.
+Hence a mask $(\sum x_i)F^2$ can replace $(\sum x_i^2)F^2$ without
+changing its zeros.  In particular,
+\[
+ C(n,p)=(n+p)(n-p-1)^2
+\]
+is a nonnegative cubic with zeros exactly at $p=\operatorname{pred}(n)$.
+The corresponding signed quadratic residual $(n+p)(n-p-1)$ has the same
+zero set and may be squared when a strict residual-system compiler is
+required.
+
+More significantly, the quadratic polynomial
+\[
+ Z(n,b,p)=(n+b-p-1)^2+bp
+\]
+jointly represents predecessor and zero test:
+\[
+ Z=0\quad\Longleftrightarrow\quad
+ p=\operatorname{pred}(n),\qquad b=\mathbf1_{n=0}.
+\]
+Indeed $bp=0$ and $n+b=p+1$.  If $b=0$, then $n=p+1\geq1$; if
+$p=0$, then $n+b=1$, giving only $(n,b)=(0,1)$ or $(1,0)$.
+The converse is immediate.  Hiding $p$ gives a one-witness zero-test
+graph of degree two.  If both outputs are already present, no extra
+witness is needed.
+
+For a conditional, one may use the one-witness quartic
+\[
+ n(c-b)^2+\bigl((c-a)(n-s-1)\bigr)^2,
+\]
+or the two-witness cubic
+\[
+ Z(n,t,p)+t(c-a)^2+n(c-b)^2.
+\]
+Their zeros project exactly to $c=a$ when $n=0$, and $c=b$ otherwise.
+For the quartic, $n=0$ makes $n-s-1$ nonzero for every natural $s$;
+$n>0$ forces the first branch directly.  For the cubic, the joint graph
+fixes the exact branch bit.  Completeness uses the canonical predecessor
+and bit.
+
+Keeping the incoming two-witness max-square pairing polynomial $Q$
+unchanged, the tree projections use $Q(p,a,b;t,s)+C(n,p)$.  The actual
+found-marker list head uses
+\[
+ Q(p,a,b;t,s)+(n+p+c)(n-p-1)^2+n(c-a-1)^2.
+\]
+At $n=0$ the middle term forces $p=c=0$; at $n>0$ it forces $p=n-1$
+and the last term forces $c=a+1$.  Thus nil and the stored-zero marker
+are both preserved.  All naturalness assumptions are explicit.
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+Local graph & Hidden witnesses & Degree & Tree operations\\
+\hline
+Predecessor & $0$ & $4\to3$ & $10\to8$\\
+Zero test & $1$ & $4\to2$ & $14\to10$\\
+Tree projection/list tail & $4$ & $4$ & $49\to47$\\
+Conditional & $1$ & $4$ & $16\to15$\\
+List head & $5$ & $4$ & $59\to55$\\
+\hline
+\end{tabular}
+\end{center}
+
+The comparison is against the incoming Joint Guards package and counts
+literal binary-expression trees, including repeated square operands and
+the same final addition of zero.  Full expansions and separate shared-DAG
+counts are supplied.  These are exact local graph improvements, without
+a claimed end-to-end compiler or object-level formal certificate.

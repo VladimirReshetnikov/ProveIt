@@ -1,0 +1,860 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Pell Congruences, Shared Positivity, and Smaller Diophantine Consistency Equations},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Explicit Diophantine equations equivalent to syntactic inconsistency of ZFC},pdfkeywords={Diophantine equations, ZFC, consistency, Pell equations, CRT}}
+\usepackage{enumitem,fancyhdr}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Refute}{\operatorname{Ref}}
+\newcommand{\SOS}{\operatorname{SOS}}
+\newcommand{\pin}{\texttt{cf4a5218a5a4e4358d3f5314151b6b05d4aa384e}}
+\pagestyle{fancy}\fancyhf{}\lhead{Pell congruences and Diophantine consistency}\rhead{\thepage}
+\setlength{\headheight}{14pt}
+\title{Pell Congruences, Shared Positivity, and\ Smaller Diophantine Consistency Equations}
+\author{Research contribution prepared for Vladimir Reshetnikov\\\small AI-assisted derivation and independent internal audits}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give explicit fixed-coefficient polynomials whose absence of integer
+solutions is equivalent, by ordinary mathematics formalizable in ZFC, to
+syntactic consistency of ZFC. Relative to the pinned wave-10 ProveIt
+snapshot, the principal new integer tradeoffs include a quartic in 37
+unknowns, an octic in 26, degree 10 in 24, degree 16 in 22, degree 20 in
+20, degree 32 in 18, and degree 88 in 17. The main new compression replaces two auxiliary
+quotients by one coordinate using a congruence which the preliminary Pell
+rank argument already proves. This avoids a circular appeal to the exact
+rank which those quotients are intended to certify. A parity-forced
+change of the first Pell root, an exact transport projection, and compatibility between existing
+determinant and residue guards yield further reductions. We also give
+eleven-positive-variable degree 269 and twelve-positive-variable degree
+78 equations. A separately certified nine-positive-variable companion
+trades more arithmetic gates for lower degree. All coefficients, literal
+polynomials, builders and finite certificates accompany the article.
+These are improvements to an inspected collection, not a proof of global
+minimality or a new machine-independent calibration. The native compiler,
+specified machine/refutation equivalence and named Pell rank theorems
+remain explicit dependencies; no new end-to-end proof-assistant
+certificate is claimed.
+\end{abstract}
+\tableofcontents
+
+\section{Results, comparison and logical meaning}
+\label{sec:results}
+
+The comparison is frozen at ProveIt commit \pin. This is the README
+reconciliation after wave 10, including packages 68--75. The repository's
+own review lists 38 unrestricted integer variables at degree four, 32 at
+degree six, 27 at degree eight, and 26 at degree sixteen. It also retains
+an older 24-integer degree-1936 form. These are domain-qualified results:
+the older sextic in 25 \emph{positive} variables and octic in 20 positive
+variables do not describe unrestricted-integer zero sets
+\cite{repo,review}.
+
+The following new forms all use exactly the stated domain, actual fixed
+integer coefficients, and one final polynomial equation.
+\begin{center}
+\begin{tabular}{rrrrl}
+\toprule
+Domain & Unknowns & Exact degree & Residuals & Main mechanism\\
+\midrule
+$\Z$ & 37 & 4 & 24 & Determinant plus residue orientation\\
+$\Z$ & 31 & 6 & 18 & Monic projection\\
+$\Z$ & 26 & 8 & 13 & Monic projection\\
+$\Z$ & 24 & 10 & 11 & Centered root and transport projection\\
+$\Z$ & 23 & 12 & 11 & Shared positivity\\
+$\Z$ & 22 & 16 & 10 & Shared positivity and transport projection\\
+$\Z$ & 20 & 20 & 8 & Retain the rank as one coordinate\\
+$\Z$ & 19 & 28 & 7 & CRT and transport projection\\
+$\Z$ & 18 & 32 & 6 & Further product projection\\
+$\Z$ & 17 & 88 & 5 & Eliminate the remainder coordinate\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``residuals'' means that the single polynomial is the sum of their
+squares. The six-residual, eighteen-variable form is displayed in full
+in Section~\ref{sec:explicit}. Named polynomial registers in that display
+are abbreviations, not additional quantified variables.
+
+The integer results are accompanied by the following positive-domain
+tradeoffs. An operation is one live binary addition, subtraction or
+multiplication; squares and multiplication by constants are charged.
+Fixed numerals and reuse of a previously computed register are free.
+This is an arithmetic-circuit convention, not bit complexity.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Construction & Positive unknowns & Exact degree & Operations\\
+\midrule
+Wave-10 source 70 & 11 & 325 & 113\\
+New saturated transport & 11 & 269 & 111\\
+Wave-10 source 69 & 12 & 82 & 102\\
+New adaptive saturated merger & 12 & 78 & 102\\
+Wave-10 source 71 & 9 & 1,379,730 & 478\\
+New full-radical majorant & 9 & 1,158,228 & 726\\
+\bottomrule
+\end{tabular}
+\end{center}
+The nine-variable companion improves degree but increases evaluator size.
+It does not replace the separate 443-operation local nine-variable target
+reported by the active research. The eleven-variable result improves
+both degree and the stated operation count.
+
+\subsection{The exact metamathematical assertion}
+Fix the recursively specified ZFC calculus used by the repository's
+machine calibration and let $\Refute_{\mathrm{ZFC}}(p)$ mean that $p$ codes
+a finite derivation of a contradiction. Put
+\[
+ \Con(\mathrm{ZFC})\;\equiv\;\neg\exists p\in\N\;\Refute_{\mathrm{ZFC}}(p).
+\]
+The construction establishes, with the explicitly named inherited
+interfaces, the arithmetic theorem
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \left(\exists\boldsymbol x\in\Z^n\;P(\boldsymbol x)=0\right)
+ \longleftrightarrow
+ \exists p\in\N\;\Refute_{\mathrm{ZFC}}(p).       \label{eq:logical}
+\end{equation}
+Negating both sides gives the requested no-solution equivalence. Positive
+variables replace $\Z^n$ in the positive companions. No coefficient is
+defined by deciding consistency, waiting for a refutation, or consulting
+an oracle. No assertion that ZFC is consistent is needed in proving the
+biconditional.
+
+Ordinary mathematical formalizability and a supplied formal proof are
+different deliverables. The new arguments below use integer arithmetic,
+finite recurrences, classical number theory and induction, all available
+in ZFC. This package does not contain a newly kernel-checked Lean/Rocq
+proof or a serialized derivation of \eqref{eq:logical} in the
+repository's object-language calculus. Its finite computer checks
+certify coefficients and algebra, not the unbounded semantic interfaces.
+
+\subsection{What is new and what is reused}
+The determinant guard is package 71's construction; residue orientation
+is package 70's; the nearest-square joint positivity lemma is package
+68's. We prove their simultaneous compatibility, then add a lossless
+CRT parametrization at the correct stage of the signed Pell argument.
+The elementary CRT identity is not asserted to be a new number-theoretic
+theorem. Its use to remove these two source quotients, with a proof that
+the needed congruence is available before auxiliary rank recovery, is
+the new structural reduction. Replacing the slack coordinate by the
+native $C$ coordinate also makes the transport row monic in $F$, enabling
+one more exact projection. Centering and further projection produce
+the new literal equations and their degree certificates. No external
+priority claim beyond the inspected sources is made.
+
+The main integer family uses neither Jones's universal polynomial nor
+Sun's ten-integer reduction. It still uses the calibrated native encoding
+of K215. A separate analysis of direct proof-checker and finitely
+axiomatized class-theory routes appears in Section~\ref{sec:alternatives};
+those alternatives are not counted as completed new equations here.
+
+\section{Fixed coefficients and the inherited source}
+\label{sec:source}
+
+The integer forms use the complete source-34 tuple
+\[
+ (\beta,K_0,M_C,M_F),\qquad \beta=2^{1064921}-1,
+\]
+with $M_F$ already shifted by $\beta$. Two additional fixed scales are
+\begin{equation}
+ A_F=2^{1113},\qquad A_C=2^{666104}.           \label{eq:scales}
+\end{equation}
+These six numbers are constants of the polynomial, not witness variables.
+The package stores all six actual integers as gzip-compressed minimal
+unsigned little-endian byte strings, with hashes of the decompressed
+integers. Their total uncompressed size is 615,883 bytes. This is a real
+coefficient-size cost, not hidden in the variable count.
+
+\subsection{A finite recipe, not a parameter family}
+The retained \texttt{coefficients/source34/build\_coefficients.py} defines
+the four native constants by a finite recipe from the literal 430
+transitions of K215. It derives and verifies the ordered 943-tile table.
+With $\rho=2^{121}$, block length 8801, and $B=\rho^{8801}$, the recipe
+constructs finite selector/copy weights and a finite convolution
+polynomial $D_C$. It sets
+\begin{align*}
+ \beta&=B-1,& K_0&=D_C+B\rho,\\
+ M_C&=\text{the specified low mask},&
+ M_F&=\text{the specified high mask}+B-1.
+\end{align*}
+The masks, tile order, support positions and every finite sum are literal
+in that short builder and its retained coefficient proof. The supplied
+payloads are checked against the builder, including the mask shift.
+Consequently the displayed formulas specify one closed polynomial once
+these attached fixed numerals are substituted. The builder never runs
+the blank machine to completion. The compact source-44 tuple used later
+for positive companions is kept separately and is never mixed into
+these integer coefficients. The nine-positive-variable companion uses
+the complete source-31 tuple instead: its transport shift is
+$D_R=\rho^{42}$, whereas source 34 uses $D_R=\rho$. Equality of their
+$\beta$ values does not make the other coefficients interchangeable.
+
+\subsection{The source theorem we import}
+Packages 64 and 70 supply the signed native/Pell source used here
+\cite{source64,source70}. The following is the exact logical boundary.
+The source has arithmetic identities which, after eliminating its
+monic registers, read
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=qW,\\
+ Y&=s_0q^3,& E&=XY,& a&=(X+1)Y,\\
+ H&=4a+3,&\Delta&=(a+2)^2-1,& k&=\eta+\zeta,\\
+ c&=kY+\eta,& P&=k+E(c-\eta),&D&=X+ac+H\gamma,\\
+ I&=i_0c^2,& I^2&=\Delta(f^2-1),&
+ V&=fo-c=jc-R.
+\end{align*}
+The remaining abbreviations are
+\[
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,
+ \qquad k=R+1+hE.
+\]
+Here $s_0,i_0$ are odd, $W$ is a nonzero multiple of four, and the
+source enforces the common-sign requirements
+\[
+ F\alpha>0,\quad FC>0,\quad\eta\zeta>0.
+\]
+Its four remaining norm/transport equations are
+\begin{align}
+ \tau_0^2-P^2+Pk-1&=0,                         \label{eq:oldfirst}\\
+ D^2-\Delta c^2-1&=0,                         \label{eq:oldmain}\\
+ I^2V^2-(I^2-1)y_0^2-1&=0,                   \label{eq:oldaux}\\
+ (K_0+W)C-F-z(q-1)&=0.                        \label{eq:oldtransport}
+\end{align}
+Package 70 removes the separate $X=2u_0^2$ witness by imposing
+$J=3J_3+1$ and $W=4(3w_3+1)$. Its signed power theorem first proves
+$X=\pm2^R$ with odd $R$; then $X\equiv2\pmod3$ forces the positive
+sign. Completing the source gives a finite refutation, and any finite
+refutation gives canonical source witnesses.
+
+One part of this proof must be distinguished from its conclusion. Before
+using either congruence for $V$ or the auxiliary norm
+\eqref{eq:oldaux}, the first/main norms, the index relation and the
+ordinary strong equation yield
+\begin{equation}
+ |c|=\psi_b(p),\quad |f|=\chi_b(m),\quad
+ p\mid m,\quad c\ne0,\quad f\ne0,
+ \qquad b=|a+2|\ge2.                         \label{eq:earlyrank}
+\end{equation}
+The proof appears in package 70, Sections 4.1--4.2, and the retained
+ordinary strong-rank proof. The exact rank $p=R$ is obtained only later.
+This distinction is essential in Section~\ref{sec:crt}.
+
+\section{Compatible sign reductions and a 37-variable quartic}
+\label{sec:sign}
+
+For integers define
+\[
+ \Pos(x,y,z)=1+x^2+y^2+z(z+1).
+\]
+It is always positive and represents every positive integer. For the
+latter assertion apply the three-square theorem to $4n-3$; one of the
+three squares is odd and the other two are even. The familiar
+representation of nonnegative integers by $x^2+y^2+z^2+z$ is also
+formally documented in \cite{threeSquares}.
+
+\begin{lemma}[Determinant sign recovery]
+For fixed $A_F,A_C\ge2$, put
+\[
+ U=A_FF,\quad W_C=A_CC,\quad q=F+\alpha+C,\quad
+ G=UW_C-(q-U-W_C)^2.
+\]
+If $G>0$, then $F,C,\alpha$ have one common nonzero sign.
+\end{lemma}
+\begin{proof}
+The inequality implies $UW_C>0$ and
+$|q-U-W_C|<\sqrt{UW_C}\le(|U|+|W_C|)/2$.
+Thus $q$ has their common sign and
+$|q|>(|U|+|W_C|)/2\ge|F|+|C|$. Subtracting $F+C$ gives the same
+strict sign for $\alpha$. No sign of $q$ has been assumed.
+\end{proof}
+
+\begin{proposition}[Simultaneous canonical completeness]
+The determinant guard with \eqref{eq:scales} and the two affine residue
+restrictions of package 70 are simultaneously satisfiable on the
+canonical source witnesses of every finite refutation.
+\end{proposition}
+\begin{proof}
+The source-34 canonical family has $q=2^t$, $t=1064921N$ odd,
+$R\equiv3\pmod4$ and $R>t$. Its original coordinates satisfy
+\[
+ J=\frac{2^t-1}{2^{1064921}-1},\qquad
+ w_{\rm old}=2^{R-t-2}.
+\]
+Therefore $J\equiv1\pmod3$ and $w_{\rm old}\equiv1\pmod3$, so
+$J=3J_3+1$ and $w_{\rm old}=3w_3+1$ have integer inverse coordinates.
+
+Package 71 proves, for this same rank-tuned family,
+\[
+ \frac q2\le A_FF<\frac{4q}{5},\qquad
+ \frac q2\le A_CC<\frac{3q}{5}.               \label{eq:canonicalbox}
+\]
+Its proof is retained in the archive. The highest occupied $C$ digit is
+at exponent 3296 in radix $2^{121}$; all lower support is at most 2195.
+The leading $F$ digit at exponent 8791 has coefficient
+105534389824824194647382298625. The rank controller changes a dummy
+at exponent 1063, below these leading positions, and the carry bounds
+cover every permitted dummy change. Thus the estimates are compatible
+with the parity/rank tuning, rather than results for two unrelated
+witness families.
+
+Write $U=q/2+x$, $W_C=q/2+y$. Then
+$0\le x<3q/10$, $0\le y<q/10$, and
+\[
+ G=(q/2)^2+(q/2)(x+y)-x^2-xy-y^2>3q^2/25>0.
+\]
+Choose a ternary $\Pos$ representation of this positive integer.
+\end{proof}
+
+Consequently package 70's two guards on $F\alpha$ and $FC$, with six
+private coordinates, can be replaced by $G=\Pos$ with three. Soundness
+restores the two former guards \emph{before} invoking the signed power
+theorem. Completeness uses the one compatible family just proved. The
+result is a quartic in 37 integers, the sum of 24 quadratic residuals.
+Its coefficient of $\tau_0^4$ is one.
+
+The direct-coordinate alternative replaces only $X$ by $3X_3-1$ and
+also has 37 unknowns. It is included as
+\texttt{quartic37\_direct.json}; it has a shorter expanded expression.
+The affine-$J,w$ version is used for the monic projections below,
+because it retains a monic definition of $X$.
+
+\section{The new CRT compression}
+\label{sec:crt}
+
+\begin{lemma}[One parameter for two source congruences]
+\label{lem:crt}
+Let $c,f$ be nonzero integers with $c\mid f^2-1$. For every integer $R$,
+the simultaneous congruences
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c
+\]
+hold exactly for the integers
+\begin{equation}
+ V=fcT-f^2R-c,\qquad T\in\Z.                 \label{eq:crt}
+\end{equation}
+For fixed $c,f,R$, this parametrization is one-to-one.
+\end{lemma}
+\begin{proof}
+Since $f^2\equiv1\pmod c$, we have $\gcd(f,c)=1$. Write
+$V=fo-c$. The second congruence implies
+\[
+ c\mid f(o+fR)=V+c+f^2R,
+\]
+so $c\mid o+fR$. Set $T=(o+fR)/c$.
+Conversely, from \eqref{eq:crt} take
+\begin{equation}
+ o=cT-fR,\qquad
+ j=fT-1-\frac{(f^2-1)R}{c}.                  \label{eq:restoreoj}
+\end{equation}
+The second expression is an integer by hypothesis, and these give
+$V=fo-c=jc-R$. The formulas are inverse. Signs do not enter the proof.
+\end{proof}
+
+\begin{lemma}[The CRT hypothesis is available early]
+Every tuple satisfying the preliminary signed source equations used in
+\eqref{eq:earlyrank} satisfies $f^2\equiv1\pmod{c^2}$.
+\end{lemma}
+\begin{proof}
+The Pell identity is
+$\chi_b(m)^2-1=(b^2-1)\psi_b(m)^2$.
+Since $p\mid m$, divisibility of the Pell sequence gives
+$\psi_b(p)\mid\psi_b(m)$. Use \eqref{eq:earlyrank} and square the
+divisibility. This does not use the auxiliary norm, either quotient
+$o,j$, or the later conclusion $p=R$.
+\end{proof}
+
+\begin{theorem}[Lossless quotient elimination]
+In the residue-oriented, determinant-guarded source, the two rows
+$V=fo-c$ and $V=jc-R$, and their private coordinates $o,j$, may be
+replaced by the one row \eqref{eq:crt} and one coordinate $T$ without
+changing existence of an integer solution.
+\end{theorem}
+\begin{proof}
+For soundness first recover the signs and preliminary rank facts from
+the equations which do not use $o,j,V,y_0$. The preceding lemma supplies
+the hypothesis of Lemma~\ref{lem:crt}. Restore $o,j$ by
+\eqref{eq:restoreoj}; the rest of the source, including its auxiliary
+norm, is now literally available. Its final rank/calibration proof
+applies. For completeness take any source solution and use the forward
+CRT formula for $T$. All other coordinates stay unchanged.
+\end{proof}
+
+There is no stronger requirement $f\equiv\pm1\pmod c$. Nor do we
+impose $f^2\mid V+c$: that would retain only a subprogression and need a
+new completeness argument. The coefficient of $cT$ in
+\eqref{eq:crt} is $f$, and this distinction is what makes the reduction
+lossless. The only displayed division is in the \emph{proof} of the
+inverse map, after its integrality is proved; the final polynomial has
+no division.
+
+\section{Centered roots and shared positivity}
+\label{sec:centering}
+
+Two algebraic identities lower the degrees of the projections. First,
+put $P=k+E(c-\eta)$ and $\tau_0=\tau+E(c-\eta)$. Then
+\begin{equation}
+ \tau_0^2-P^2+Pk-1
+ =\tau^2+(2\tau-k)E(c-\eta)-1.               \label{eq:centerfirst}
+\end{equation}
+This integral triangular change is inherited from the recent source
+projections. Second, put $y_0=V+u$ in the auxiliary norm:
+\begin{equation}
+ I^2V^2-(I^2-1)y_0^2-1
+ =V^2+(1-I^2)u(2V+u)-1.                      \label{eq:centeraux}
+\end{equation}
+When $V$ is itself a polynomial, this eliminates its unnecessarily
+repeated leading square from the product with $I^2$.
+
+\begin{lemma}[A parity-forced half-centered root]
+\label{lem:half}
+For integers $P,k$, integer roots of \eqref{eq:oldfirst} are in
+bijection with integer roots of
+\begin{equation}
+ t^2+2t(2P-k)+k^2-4=0.                       \label{eq:half}
+\end{equation}
+The maps are $t=2\tau_0-2P+k$ and
+$\tau_0=(t+2P-k)/2$.
+\end{lemma}
+\begin{proof}
+Substitution gives four times the old residual. Conversely the new
+residual differs from $(t-k)^2$ by $4tP-4$. Hence a zero has
+$(t-k)^2\equiv0\pmod4$ and $t-k$ even. Its inverse is integral and
+restores the old norm. No parity promise is an added constraint.
+\end{proof}
+
+After $\eta=c-kY$ has been substituted, the usual centered first row
+has degree 24. Formula \eqref{eq:half} has degree 18. This is useful in
+the intermediate twenty-variable, degree-44 unpaired form, although the
+shared guard dominates the degree of the eventual seventeen-variable
+form.
+
+\begin{lemma}[Shared strict positivity; package 68]
+\label{lem:pair}
+For integers $x,y$, put
+\[
+ \mathcal G(x,y,s)=xy-(s^2-x-y+1)^2.
+\]
+Then $x,y>0$ if and only if $\mathcal G(x,y,s)>0$ for some integer $s$.
+\end{lemma}
+\begin{proof}
+A positive value implies $xy>0$. If $x=-a,y=-b$ with $a,b\ge1$,
+the subtracted square is at least $(a+b+1)^2>ab$, a contradiction.
+Conversely set $N=x+y-1\ge1$. Then $xy\ge N$. Choose the closest
+integer square $s^2$ to $N$; writing $m=\lfloor\sqrt N\rfloor$ shows
+that either $s=m$ or $m+1$ gives $|s^2-N|\le m$, with square error
+strictly below $N$ unless $N$ is square, when the error is zero.
+Thus $(s^2-N)^2<N\le xy$.
+\end{proof}
+
+The two equations $G=\Pos$ and $\eta\zeta=\Pos$, with six private
+coordinates, may therefore be replaced by
+\begin{equation}
+ G\eta\zeta-(s^2-G-\eta\zeta+1)^2
+ =1+p_1^2+p_2^2+p_3(p_3+1),                  \label{eq:shared}
+\end{equation}
+with four private coordinates. This step is an existence equivalence,
+not an identity between the old and new sums of squares. Its proof and
+credit are retained explicitly \cite{source68}.
+
+\section{A complete polynomial in eighteen integers}
+\label{sec:explicit}
+
+\subsection{A transport coordinate which can be eliminated}
+Replace the independent coordinate $\alpha$ by $C=q-F-\alpha$.
+This is an integral triangular bijection, with inverse
+$\alpha=q-F-C$. The transport equation is now monic in $F$:
+\begin{equation}
+ F=(K_0+W)C-z(q-1).                         \label{eq:transportprojection}
+\end{equation}
+Substitute this expression everywhere and delete the transport row and
+the independent coordinate $F$. The packing index becomes
+\begin{equation}
+ R=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J. \label{eq:newR}
+\end{equation}
+These are polynomial maps in both directions on the corresponding zero
+sets. No divisibility, sign, rank or consistency assumption is needed
+for this projection. Its degree cost depends on which arithmetic
+coordinates have already been eliminated: here $R$ has degree five and
+$G$ degree four, while the leading forms of $k$ and the shared guard
+remain unchanged.
+
+\subsection{The polynomial}
+This section specifies the principal compact form without hidden
+quantifiers. Supply exactly the following eighteen integers, with no
+positivity restrictions:
+\begin{equation}
+ j,C,z,f,h,r,v,w,\tau,\eta,u,\gamma,T,c,s,p_1,p_2,p_3.
+ \label{eq:variables19}
+\end{equation}
+Use the six fixed coefficients from Section~\ref{sec:source}. Define
+polynomial abbreviations in the following order:
+\begin{gather}
+ J=3j+1,\qquad q=\beta J+1,\qquad W=4(3w+1),\nonumber\\
+ F=(K_0+W)C-z(q-1),\quad X=qW,\quad Y=(2v+1)q^3,\nonumber\\
+ E=XY,\qquad a=E+Y,\qquad H=4a+3,\qquad\Delta=a^2+H,\nonumber\\
+ R=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ k=R+1+hE,\qquad\zeta=k-\eta,\qquad I=(2r+1)c^2,\nonumber\\
+ V=fcT-f^2R-c,\qquad D=X+ac+H\gamma,\nonumber\\
+ G=A_FF\,A_CC-(q-A_FF-A_CC)^2,\qquad Z_\eta=\eta\zeta.
+                                                        \label{eq:regs19}
+\end{gather}
+The six residuals are
+\begin{align}
+ r_c&=c-kY-\eta,\nonumber\\
+ r_0&=\tau^2+(2\tau-k)E(c-\eta)-1,\nonumber\\
+ r_m&=D^2-\Delta c^2-1,\nonumber\\
+ r_s&=I^2-\Delta(f^2-1),\nonumber\\
+ r_a&=V^2+(1-I^2)u(2V+u)-1,\nonumber\\
+ r_g&=GZ_\eta-(s^2-G-Z_\eta+1)^2
+                 -1-p_1^2-p_2^2-p_3(p_3+1).             \label{eq:rows19}
+\end{align}
+The requested single Diophantine equation is
+\begin{equation}
+ \boxed{P_{18}=r_c^2+r_0^2+r_m^2+r_s^2+r_a^2+r_g^2=0.}
+                                                        \label{eq:p19}
+\end{equation}
+All exponents are fixed. There are no variable powers, rational
+coefficients, implicit sign conditions or additional quantified registers.
+The JSON witness names \texttt{J3}, \texttt{C\_native},
+\texttt{v\_scale}, \texttt{w3}, \texttt{y\_gap} and
+\texttt{pair\_root} correspond to $j,C,v,w,u,s$ here.
+
+\begin{theorem}
+\label{thm:p19}
+The polynomial \eqref{eq:p19} has exact total degree 32. With the
+fixed coefficients above, it has an integer zero if and only if the
+specified ZFC calculus has a finite refutation. In particular ZFC proves
+that it has no integer zero if and only if $\Con(\mathrm{ZFC})$.
+\end{theorem}
+\begin{proof}[Soundness]
+A zero makes all six residuals vanish. Lemma~\ref{lem:pair} applied to
+$r_g$ gives $G>0$ and $\eta\zeta>0$. The determinant lemma restores
+the two earlier common-sign guards. Restore the polynomial registers in
+\eqref{eq:regs19}, $\alpha=q-F-C$, the old first root
+$\tau_0=\tau+E(c-\eta)$, and $y_0=V+u$.
+Then $r_c$ supplies the original $c=kY+\eta$, and every preliminary
+signed source equation is present. Its early strong-rank conclusion
+\eqref{eq:earlyrank} gives $c,f\ne0$ and $c\mid f^2-1$ without using
+either missing quotient. Lemma~\ref{lem:crt} now restores the integer
+quotients $o,j_{\rm aux}$ in \eqref{eq:restoreoj}. Equations
+\eqref{eq:centerfirst}--\eqref{eq:centeraux} recover all original norms,
+and \eqref{eq:transportprojection} supplies the original transport
+equation identically. Thus the guarded,
+residue-oriented source is fully restored. Its signed power and native
+calibration theorems yield a finite refutation.
+\end{proof}
+\begin{proof}[Completeness]
+From a finite refutation choose the common canonical source witnesses of
+Section~\ref{sec:sign}, including both affine residue restrictions and
+$G>0$. Compress the two source quotients by Lemma~\ref{lem:crt}.
+Project all monically defined arithmetic coordinates, use
+\eqref{eq:transportprojection}, and choose the
+integral centered roots. Since $G$ and $\eta\zeta$ are positive,
+Lemma~\ref{lem:pair} and the ternary $\Pos$ representation supply
+$s,p_1,p_2,p_3$. Every row of \eqref{eq:rows19} vanishes. All choices
+are finite arithmetic constructions from a hypothetical refutation;
+none assumes such a refutation actually exists.
+\end{proof}
+\begin{proof}[Exact degree]
+The leading forms in the input degree are
+\[
+ q_1=3\beta j,\quad X_2=36\beta jw,\quad
+ Y_4=54\beta^3j^3v,\quad E_6=1944\beta^4j^4vw.
+\]
+Thus $[k]_7=hE_6$ and $[Z_\eta]_8=\eta hE_6$.
+The guard has degree 16, with leading form $-\eta^2h^2E_6^2$.
+The other five residuals have degrees $11,14,14,14,14$.
+Consequently the degree-32 leading form of $P_{18}$ is precisely
+\[
+ \eta^4h^4E_6^4
+ =1944^4\beta^{16}j^{16}v^4w^4h^4\eta^4,
+\]
+whose coefficient is positive for the actual $\beta$. This is an
+exact-degree proof after coefficient specialization.
+\end{proof}
+
+\subsection{A seventeen-variable equation of degree 88}
+Delete $\eta$ from \eqref{eq:variables19}, define $\eta=c-kY$, and
+delete $r_c$. Put $P=k+E(c-\eta)$ and replace $r_0$ by
+\[
+ r_0^{\rm half}=\tau^2+2\tau(2P-k)+k^2-4.
+\]
+Keep the other four rows. The sum of squares of these five rows is an explicit equation
+$P_{17}=0$ in seventeen unrestricted integers. Lemma~\ref{lem:half}
+supplies the integral inverse root, so the proof of
+Theorem~\ref{thm:p19} applies.
+
+The leading forms are now
+\[
+ [\eta]_{11}=-hE_6Y_4,\quad
+ [\zeta]_{11}=hE_6Y_4,\quad
+ [Z_\eta]_{22}=-h^2E_6^2Y_4^2.
+\]
+The shared guard has degree 44 with leading form
+$-h^4E_6^4Y_4^4$. Its square has degree 88 and positive leading
+coefficient. All other rows have degree at most 18. Hence the claimed
+degree is exact. The gain in variables comes with a higher degree;
+neither $P_{17}$ nor $P_{18}$ dominates the other in both measures.
+
+\subsection{Twenty variables at degree twenty}
+There is a particularly useful alternative between the lower-degree
+forms and $P_{18}$. Add two independent integer coordinates $E$ and
+$R_*$ to the eighteen coordinates in \eqref{eq:variables19}.
+Let $R_{\rm native}$ denote the polynomial on the right of
+\eqref{eq:newR}. Add the two residuals
+\[
+ r_R=R_*-R_{\rm native},\qquad r_E=E-XY.
+\]
+In every other abbreviation use $R=R_*$, keep $E$ independent, and set
+$a=E+Y$ as before. Take the sum of squares of these two rows and the six
+rows in \eqref{eq:rows19}. This defines $P_{20}$ in twenty integers.
+The two new rows uniquely restore $E$ and $R$, so the zero sets are
+polynomially isomorphic after forgetting these two coordinates. The
+consistency equivalence follows immediately from Theorem~\ref{thm:p19}.
+
+The residual degrees are now $5,6,6,4,10,10,10,8$, in the order
+$r_R,r_E,r_c,r_0,r_m,r_s,r_a,r_g$. In particular $k$ has degree two and
+$V$ degree three. The degree-ten part of the auxiliary row is
+\[
+ [r_a]_{10}=-8r^2c^5ufT+8r^2c^4uf^2R_*.
+\]
+No other row involves both $r$ and $u$. Thus the coefficient of
+$r^4c^8u^2f^4R_*^2$ in $P_{20}$ is exactly $64$, proving exact degree
+20 independently of the large fixed coefficients. This illustrates why
+choosing \emph{which} polynomial coordinate to retain matters: retaining
+the native index $R$ is better here than retaining the auxiliary $V$.
+
+\section{The rest of the integer tradeoff family}
+\label{sec:family}
+
+The exact packets include intermediate forms so that the reductions can
+be inspected locally. From the 37-variable quartic, the six monic
+eliminations
+\[
+ P=k+E(c-\eta),\quad N=q(L+1),\quad X=qW,\quad
+ C_2=c^2,\quad F_2=f^2,\quad g=y_0^2-V^2
+\]
+together with \eqref{eq:centerfirst} give 31 variables and cubic
+residuals. Eliminating eleven lift coordinates in total from the
+37-variable source, including
+$L=q^2-1$, $N=q^3$, $B_{\rm aux}=I^2$, $D$, $\Delta$, and
+$\zeta=1-V+cj+hE-\eta$, gives 26 variables and quartic residuals.
+The defining rows vanish identically under the supplied restoration
+maps. Their inverse simply restores each deleted coordinate.
+
+In that 26-variable system, set $V=fo-c$ and $y_0=V+u$.
+The auxiliary row becomes \eqref{eq:centeraux}, of degree five;
+every other remaining row has degree at most four. There are 25
+variables. The two sign arguments have degrees at most two and three,
+so shared positivity has degree six and removes two private coordinates.
+This gives the 23-integer, degree-12 form.
+
+For the CRT family it is advantageous to restore
+$\zeta=R+1+hE-\eta$ from the packing-index row instead of the
+auxiliary quotient row. Retain $V$ initially, impose
+$V-fcT+f^2R+c=0$, and substitute $I=(2r+1)c^2$.
+Before sharing the sign guards there are 24 variables and eleven rows,
+with maximum residual degree eight. Then proceed as follows.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Unpaired source change & Variables & Residuals & SOS degree\\
+\midrule
+Retain $V,E,a$ & 24 & 11 & 16\\
+Eliminate $V=fcT-f^2R-c$ & 23 & 10 & 26\\
+Eliminate $a=E+(2v+1)q^3$ & 22 & 9 & 26\\
+Eliminate $E=XY$ & 21 & 8 & 28\\
+Eliminate $\eta=c-kY$ and half-center & 20 & 7 & 44\\
+\bottomrule
+\end{tabular}
+\end{center}
+Sharing the two remaining sign guards changes these to 22/20, 21/26,
+20/26, 19/32, and 18/88 in variables/degree. The 21/26 form is dominated
+by 20/26 and is not a primary release target. The other listed target
+packets are included, except that the degree-88 endpoint is emitted
+directly in its smaller transport-projected form.
+
+Finally apply the transport projection
+\eqref{eq:transportprojection}--\eqref{eq:newR}. It sends 25/10 to
+24/10, 23/12 to 22/16, 20/26 to 19/28, 19/32 to 18/32, and 18/88 to
+17/88. Each deletes exactly one coordinate and one row. The 23/12 form
+remains a useful tradeoff because projection increases its degree.
+The 20/26 form is retained as a derivation step and is dominated by the
+rank-register construction $P_{20}$ above. The compact packets in
+\texttt{transport/} retain ordered
+polynomial abbreviations rather than expanding a large guard needlessly;
+these are ordinary fixed-degree polynomials, with no additional unknowns.
+
+When $a$ is retained, the literal builder uses the lower-degree rows
+$E(X+1)-Xa$ and $c-\eta-k(a-E)$, together with $a-E-Y$.
+After $a$ is eliminated they become $E-XY$ and $c-\eta-kY$.
+These are exact row operations because
+\begin{align*}
+ E(X+1)-Xa&=(E-XY)-X(a-E-Y),\\
+ c-\eta-k(a-E)&=(c-\eta-kY)-k(a-E-Y).
+\end{align*}
+There is no unsupported substitution of a rational quotient.
+
+The highest-degree certificates are also transparent. Before deleting
+$V$, the centered auxiliary row has leading term
+$-4r^2c^4u^2$ among its degree-eight terms. After deleting $V$, its
+degree-thirteen pure-$j$ term is
+$648\beta^4r^2c^4uf^2j^4$. Its square has coefficient
+$419904\beta^8>0$. This persists when $a$ is eliminated, proving exact
+degree 26 for the twenty-variable shared-guard endpoint. For every
+expanded packet the independent finite audit additionally certifies a concrete
+nonzero specialized leading coefficient modulo 1,000,000,007. For the
+transport packets it certifies the leading coefficient of a specified
+univariate specialization, with every actual fixed coefficient reduced
+modulo the same prime. A second algorithm verifies this coefficient
+using finite differences and the proved degree upper bound.
+Such a nonzero modular residue is an exact nonvanishing certificate,
+not a randomized numerical estimate.
+
+\input{../positive/positive_reductions.tex}
+
+\input{nine_section.tex}
+
+\section{Verification, interpretation and integration}
+\label{sec:verification}
+
+The release is designed to make each mathematical claim inspectable.
+The integer builder reads the source packets as inert arithmetic
+expressions, replaces the two guard rows, emits the projected and CRT
+families, and records exact counts, liveness and degree certificates.
+The parser accepts only integer literals, names, additions,
+subtractions, products and fixed nonnegative powers. An independent
+checker uses a separately written sparse polynomial ring and does not
+import the builder. It verifies the source bridge, row operations,
+successive projections, parity identity, factored formulas and actual
+coefficient specializations. A separate transport checker proves the
+local inverse identities, compares every retained row and definition,
+and verifies degree by finite differences independently of the builder's
+univariate polynomial algorithm.
+
+The coefficients are independently regenerated from the retained finite
+machine/tile recipe. The positive and nine-variable directories contain
+their own offline verifiers and coherent fixed coefficient payloads.
+The accompanying receipts state the checks actually performed. All new
+release checks use explicit failures rather than Python assertions;
+an optimized-Python run is also supported.
+
+It is neither possible nor useful to validate a consistency equation by
+exhaustively searching for a zero. A finite-box search would say little
+about \eqref{eq:logical}. The checks here instead establish exact finite
+claims: the emitted polynomial is the proved polynomial, its coefficients
+are the specified numerals, its transforms are algebraically correct,
+and its counts and leading forms are accurate. The proofs of unbounded
+Pell rank, native source soundness and machine/refutation calibration
+remain the explicitly retained mathematical inputs.
+
+The recommended starting point for integration is the eighteen-variable
+equation \eqref{eq:p19}: it has only six residuals, moderate degree 32,
+and a direct reconstruction proof. For a lower degree at the cost of
+one coordinate, use the nineteen-variable degree-28 form; at the cost
+of two, use the twenty-variable degree-20 form. For fewer
+integer variables, use the seventeen-variable degree-88 form. For a
+quartic target, use the direct 37-variable variant. There is no
+mathematically justified total ordering which calls one of these
+``the simplest'' without specifying a metric.
+
+\section{Alternative encodings and further research}
+\label{sec:alternatives}
+
+The current snapshot contains a direct syntactic proof-checker route and
+an executable direct quartic construction. Its native-independent
+internal ZFC derivation and useful measured size remain unfinished in
+the reviewed sources \cite{alternatives}. We did not treat an abstract
+appeal to DPRM, an unexpanded compiler call, or a finite local transition
+relation as a smaller completed consistency equation.
+
+A promising separate direction replaces the many axiom-schema branches
+of a direct ZF/ZFC checker by a fixed finite first-order axiomatization
+of a suitable class theory. A conservative equiconsistency theorem,
+exact proof calculus, and its internal arithmetic encoding would still
+be required. Counting fewer local constructors alone does not measure
+the global polynomial: syntax validation and unbounded proof aggregation
+can dominate. The accompanying alternative-route note makes these
+remaining requirements explicit.
+
+The following questions arise directly from the proved reductions.
+\begin{enumerate}
+\item \textbf{Formalize the quotient lemma at its actual dependency point.}
+  Prove the preliminary $p\mid m$ interface, then $f^2\equiv1\pmod{c^2}$,
+  before importing any exact auxiliary index. This is a smaller and
+  cleaner formal target than immediately formalizing the whole polynomial.
+\item \textbf{Search for other inverses already supplied by a norm.}
+  The CRT reduction uses $f$ as its own inverse modulo $c$. Other norm
+  equations may supply polynomial inverses for scale or transport
+  congruences and eliminate further quotient coordinates.
+\item \textbf{Jointly optimize projection and degree.}
+  Eliminating a monic coordinate can substantially increase the degree
+  of a shared positivity guard. An optimizer should keep separate
+  scores for arithmetic rows and sign rows, with verified inverse maps.
+\item \textbf{Reduce the seventeen-variable guard degree.}
+  Its degree 88 comes entirely from applying shared positivity after
+  eliminating $\eta$. A different representation of that sign condition
+  could improve the last tradeoff without changing any machine encoding.
+\item \textbf{Lower fixed coefficient height.}
+  The determinant proof uses special source-34 leading anchors. A
+  genuine proof for the whole smaller compact tuple could shrink the
+  fixed numerals; substituting unrelated ports is not justified.
+\item \textbf{Improve full-radical evaluation.}
+  The new nine-variable degree gain costs 248 additional gates relative
+  to source 71. More factorization or a shorter certified majorant
+  would be needed for simultaneous improvement in both measures.
+\item \textbf{Complete a distinct calibration.}
+  A direct proof-checker or finite-theory route should deliver its
+  literal coefficients and the internal consistency biconditional,
+  together with actual variable and operation counts. It would then be
+  meaningfully comparable with the completed native-source equations.
+\end{enumerate}
+
+The present contribution gives substantial new low-degree tradeoffs and
+an independently reusable quotient-elimination argument. It does not
+prove an absolute minimum, remove the inherited native calibration, or
+establish external novelty beyond the inspected repository and cited
+mathematics.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt: Con(ZFC) in Diophantine form},
+  snapshot \pin, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/cf4a5218a5a4e4358d3f5314151b6b05d4aa384e/Computability/DiophantineConsistency/con-zfc-diophantine-forms}{repository collection}.
+\bibitem{review} ProveIt, \emph{PROPOSAL\_REVIEW\_WAVE10.md}, same snapshot;
+  retained comparison and proof-status boundary.
+\bibitem{source64} ProveIt package 64, \emph{Structural reductions},
+  \texttt{integer41/PROOF41.md}, \texttt{PROOF44.md}, and literal quartic.
+\bibitem{source68} ProveIt package 68, \emph{Joint positivity},
+  \texttt{integer\_system/PAIR\_GUARD\_PROOF.md}.
+\bibitem{source69} ProveIt package 69, \emph{Cones and Pell saturation},
+  \texttt{positive/PROOF.md} and \texttt{integer/PROOF.md}.
+\bibitem{source70} ProveIt package 70, \emph{Residue orientation and root
+  transfer}, \texttt{integer/PROOF.md}, \texttt{eleven/PROOF.md}, and
+  literal source packets.
+\bibitem{source71} ProveIt package 71, \emph{Calibrated determinant guards},
+  \texttt{proofs/DETERMINANT\_GUARD.md} and
+  \texttt{nine\_positive/PROOF.md}.
+\bibitem{source74} ProveIt package 74, \emph{Centered Pell gaps},
+  the adaptive carrier and cofactor argument.
+\bibitem{alternatives} ProveIt, \emph{ALTERNATIVE\_ENCODINGS.md}, same snapshot.
+\bibitem{threeSquares} A. Danilkin and L. Chevalier,
+  \emph{Three Squares Theorem}, Archive of Formal Proofs, 2023,
+  \url{https://isa-afp.org/entries/Three_Squares.html}.
+\bibitem{matiyasevich} Yu. V. Matiyasevich, \emph{Matiyasevich theorem},
+  Scholarpedia 3(7), 7095 (2008),
+  \url{https://www.scholarpedia.org/article/Matiyasevich_theorem}.
+\end{thebibliography}
+\end{document}

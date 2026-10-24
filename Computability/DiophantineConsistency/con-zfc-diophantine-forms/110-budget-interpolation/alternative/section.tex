@@ -1,0 +1,183 @@
+\section{Power fusion in the alternative tiling certificate}
+\label{sec:power-fused-tiling}
+
+This section gives an arithmetic improvement, not a new numerical bound for
+ordinary Diophantine equations. For every fixed finite strict-boundary Wang
+tile set, the previous five-power interface can be replaced by either
+seven exposed natural coordinates and three power graphs, or eight exposed
+natural coordinates and two power graphs. All graph witnesses remain to be
+compiled and counted. The construction does not require Jones's universal
+formula, K215, or restriction to square boards.
+
+\subsection{Recovering geometry instead of guessing its exponents}
+Fix $k\geq1$ tiles with edge colors $(w_t,e_t,n_t,s_t)$. Color zero is
+required exactly on the outer boundary. Choose a power of two $C=2^c$
+greater than $k$ and all colors, put $A_0=4C^2$, and choose a power of two
+$D\geq32kA_0$. Initially use natural coordinates $a,Q,G,Z,r$ and the graph
+\[
+ P=1+(C-1)G=2^{c(a+1)}.
+\]
+Thus $P\geq C$ and $G\geq1$. Set
+\[
+ H=A_0P,\qquad R=DP^3,\qquad B=R/2,\qquad L=R^{2k}.
+\]
+For a formal vector $x=(x_0,\ldots,x_{k-1})$, write $U=\sum_t x_t$;
+$W_0,E_0,N_0,S_0$ denote its sums over tiles having the indicated edge
+color zero. The seven residuals $\ell_j(x)=\sum_t a_{jt}x_t+c_j$ are
+\[
+\begin{aligned}
+&U-G,\quad (Q-1)W_0-(P-1),\quad QW_0-CE_0,\\
+&C\sum_t e_tx_t-\sum_t w_tx_t,\quad
+ Q\sum_t s_tx_t-\sum_t n_tx_t,\\
+&Q-1-(C-1)N_0,\quad QS_0-PN_0.
+\end{aligned}
+\]
+Here $x$ is not a tuple of certificate variables. It is recovered from $Z$.
+The third and sixth residuals have been reversed relative to the predecessor
+so that unbounded positive $Q$ cannot create negative packed summands.
+Define ordinary polynomial expressions
+\[
+\begin{aligned}
+ K_j&=\sum_{t=0}^{k-1}(H+a_{jt})R^{k-1-t},\\
+ F_j&=K_jZ+(B-HG+c_j)R^{k-1},\\
+ T_7&=F_7+Q\frac{L}{2P},\\
+ M_0&=G\sum_{t=0}^{k-1}R^t,\\
+ M_1&=R^{2k-1}-1-(R-1-B)R^{k-1},\\
+ M_*&=L-1-(R-1-B)R^{k-1},\\
+ A&=M_0+M_1\sum_{j=1}^{6}L^j+M_*L^7,\\
+ Y&=Z+\sum_{j=1}^{6}F_jL^j+T_7L^7.
+\end{aligned}
+\]
+The apparent quotient $L/(2P)$ means the ordinary polynomial
+$(D^{2k}/2)P^{6k-1}$. Impose the total-binomial graph
+$\binom AY=2r+1$, with value zero when $Y>A$.
+
+\paragraph{Bootstrap.}
+Before bounding $Q$, every $H+a_{jt}$ is positive, every offset is at
+least $B-HP-P>0$, and $F_7\geq Z$. Binary Lucas parity gives
+$Y\subseteq_{\rm bits}A<L^8$. Therefore
+\[
+ T_7<L,\qquad Z<L,\qquad Q<2P.
+\]
+The bottom $L$-block now gives $Z\subseteq_{\rm bits}M_0$, so
+$Z=\sum_{t<k}x_tR^t$ with $x_t\subseteq_{\rm bits}G$ and $x_t<P$.
+This establishes the bounds before using any no-carry argument.
+
+After these bounds, $|a_{jt}|\leq H/2$ and $|c_j|\leq2P$.
+Noncentral convolution coefficients are less than $2kHG<R/8$.
+The central coefficient is
+\[
+ d_j=B+\ell_j(x)+H(U-G),\qquad
+ 0<B-HG-2P\leq d_j\leq B+2kHG+2P<R.
+\]
+Thus $F_j<R^{2k-1}$ with no carries. The guard occupies only the unused
+highest digit, because
+$QL/(2P)=(QR/(2P))R^{2k-1}$ and $QR/(2P)<R$.
+All lanes separate. Their central masks allow only the bit $B$, so
+$d_j=B$. The first row gives $(H+1)(U-G)=0$, and then every $\ell_j=0$.
+
+\paragraph{Geometry.}
+Write $P=C^N$. The mask $G=1+C+\cdots+C^{N-1}$ and $k<C$ make
+$U=G$ an exact one-tile-per-cell identity. Boundary rows imply
+\[
+ (Q-1)W_0=P-1>0,\quad (C-1)N_0=Q-1,\quad QS_0=PN_0.
+\]
+Hence $Q\geq2$, $\gcd(Q,N_0)=1$, and $Q\mid P$. Since $P$ is a
+power of two, $Q=2^u$; $C-1\mid Q-1$ gives $c\mid u$, so $Q=C^w$.
+Also $Q-1\mid P-1$ gives $w\mid N$. These assertions use the elementary
+identity $b^s-1\mid b^t-1$ if and only if $s\mid t$ for positive $s,t$.
+Taking $h=N/w$ recovers the rectangle, including its exact four boundary
+masks. The two color residuals check all adjacent edges. Conversely, a
+rectangle gives these masks and $a=wh-1$; its guard is at most $L/2$,
+while $F_7<R^{2k-1}$, so it satisfies the packed condition.
+This proves the five-coordinate, one-power/one-binomial interface for
+arbitrary rectangles.
+
+\subsection{A three-power interface with seven coordinates}
+Replace $G$ by $g+1$, so $P=C+(C-1)g\geq C$, and keep the same circuit.
+Use the seven coordinates $Q,g,Z,v,q,s,t$ and require
+\[
+\begin{aligned}
+ Pv&=2^{A+1},\\
+ s+t+1&=2^{(A+1)Y},\\
+ (s+t+1)(2q+1)+s&=(Pv+1)^A.
+\end{aligned}
+\tag{T3}
+\]
+The first graph makes $P$ a power of two and therefore a power of $C$.
+For $d=2^{A+1}$, all binomial coefficients of $(d+1)^A$ are smaller
+than $d$. The last two equations say that its quotient by $d^Y$ is odd,
+with a legitimate remainder $s<d^Y$. Thus they are exactly the binomial
+parity condition, including rejection of $Y>A$.
+
+For completeness, a genuine tiling has $Y\leq A$, $P\leq A$, and
+$A\geq10$. These bounds follow directly from the highest digit of $M_*$
+and $R\geq512P^3$. Thus $2^{A+1}/P$ is an integer; choose it as $v$
+and use the Euclidean quotient and remainder. Geometry's separate power
+graph and area index have both disappeared.
+
+\subsection{Exact synchronization: two graphs and eight coordinates}
+The following elementary lemma removes another power graph. Suppose
+$n,Y,d,e$ are positive, $d>n+1$, $1\leq Y\leq n$, $e=2^n$, $d\mid e$,
+and
+\[
+ e-1=(d-1)\bigl(Y+(d-1)j\bigr).
+\]
+Then $d=2^u$ and $d-1\mid e-1$ give $e=d^h$ with $h\leq n$.
+The displayed equation gives $h\equiv Y\pmod{d-1}$, so the bound forces
+$h=Y$. Without the size bound the conclusion is false: $e=8,d=2,Y=1$
+satisfies the congruence with $j=6$.
+
+Take the eight natural coordinates $Q,g,Z,v,q,u,t,j$ and define
+\[
+\begin{aligned}
+ n&=(A+1)Y,& d&=P(n+v+1),\\
+ e&=d(u+t+1),& W&=e(2q+1)+du+1,\\
+ S&=e-1-(d-1)\bigl(Y+(d-1)j\bigr).
+\end{aligned}
+\]
+Require just the two graphs and one ordinary residual
+\[
+ e=2^n,\qquad W=(d+1)^A,\qquad S=0.
+\tag{T2}
+\]
+Pre-bootstrap positivity gives $Y\geq1$; $P\geq2$ gives
+$d\geq2(n+1)>n+1$. The lemma yields $e=d^Y$, whence
+$d=2^{A+1}$. Since $P\mid d$, the required geometry follows. Moreover
+$0\leq du+1<e$, as $e-(du+1)=d(t+1)-1\geq1$. The second graph
+therefore has odd Euclidean quotient, exactly the binomial parity test.
+
+For the converse set $d=2^{A+1}$, $e=d^Y$, and write
+$(d+1)^A=em+s$ with $0\leq s<e$. Here $m$ is positive odd and
+$s\equiv1\pmod d$. Choose
+\[
+ q=\frac{m-1}{2},\quad u=\frac{s-1}{d},\quad
+ t=\frac ed-u-1,\quad
+ j=\frac{(e-1)/(d-1)-Y}{d-1},\quad v=\frac dP-n-1.
+\]
+All are nonnegative integers. For the only delicate bound, use
+$Y\leq A$, $P\leq A$, $A\geq10$, and
+\[
+ 2^{A+1}>A^3+A^2+A\geq P\bigl((A+1)Y+1\bigr).
+\]
+The exponential inequality holds at $A=10$ and propagates by induction.
+This proves the eight-coordinate, two-power interface.
+
+\paragraph{Honest ordinary-polynomial accounting.}
+If exact fixed-base and general-base graph polynomials have respectively
+$p_2,p_g$ internal natural witnesses, and total binomial has $b$, the
+three interfaces have respectively
+\[
+ 5+p_2+b,\qquad 7+2p_2+p_g,\qquad 8+p_2+p_g
+\]
+ordinary-polynomial variables after sum-of-squares combination. In the last
+case the literal template is $E_2(n,e)^2+E_g(d+1,A,W)^2+S^2=0$, with
+independent internal witness tuples. Since $\deg A,\deg Y\leq48k$, its
+degree is at most
+\[
+ 2\max\{(96k+2)\delta_2,(96k+3)\delta_g,192k+3\}.
+\]
+The missing graph implementations, direct ZFC-checker tile instance and
+internal ZFC interpretation remain explicit obligations. The supplied
+standard-library checks and fixed-power expression DAGs validate the
+arithmetic implementation but are not a proof-assistant formalization.

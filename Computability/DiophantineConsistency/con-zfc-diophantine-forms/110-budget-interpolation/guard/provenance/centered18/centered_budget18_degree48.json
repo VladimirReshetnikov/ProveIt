@@ -1,0 +1,81 @@
+{
+  "name": "centered_budget18_degree48",
+  "domain": "unrestricted integers",
+  "variables": [
+    "J3",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "tau",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "c",
+    "p1",
+    "p2",
+    "p3"
+  ],
+  "variable_count": 18,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "coefficient_binding": "COEFFICIENT_BINDING.json",
+  "compact_registers": {
+    "q": "beta*(3*J3+1)+1",
+    "W": "4*(3*w3+1)",
+    "X": "q*W",
+    "Y": "(2*v_scale+1)*q**3",
+    "E": "X*Y",
+    "a": "(X+1)*Y",
+    "C": "q-F-alpha",
+    "V": "f*o-c",
+    "k": "1-V+j*c+h*E",
+    "eta": "c-Y*k",
+    "I": "(2*r+1)*c**2",
+    "Delta": "a**2+4*a+3",
+    "R": "((q-1)*(q-F)+alpha)*(q**2-1)+(MC+q*MF)*(3*J3+1)",
+    "L": "X*Y**2*k",
+    "Derr": "(cone_A*F-q)**2+(cone_B*C-q)**2",
+    "Hbudget": "k**2*(q**2-Derr)-4*q**2*eta**2",
+    "Pos": "1+p1**2+p2**2+p3*(p3+1)"
+  },
+  "compact_residuals": [
+    "tau**2+(2*tau-k)*L-1",
+    "(X+a*c+gamma*(4*a+3))**2-Delta*c**2-1",
+    "c*j-V-R",
+    "(K0+W)*C-F-z*(q-1)",
+    "I**2-Delta*(f**2-1)",
+    "I**2*(V**2-y**2)+y**2-1",
+    "Hbudget-Pos"
+  ],
+  "residuals": [
+    "tau ** 2 + (2 * tau - (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) ** 2 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) - 1",
+    "((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) * c + gamma * (4 * (((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) + 3)) ** 2 - ((((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) ** 2 + 4 * (((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) + 3) * c ** 2 - 1",
+    "c * j - (f * o - c) - (((beta * (3 * J3 + 1) + 1 - 1) * (beta * (3 * J3 + 1) + 1 - F) + alpha) * ((beta * (3 * J3 + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J3 + 1) + 1) * MF) * (3 * J3 + 1))",
+    "(K0 + 4 * (3 * w3 + 1)) * (beta * (3 * J3 + 1) + 1 - F - alpha) - F - z * (beta * (3 * J3 + 1) + 1 - 1)",
+    "((2 * r + 1) * c ** 2) ** 2 - ((((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) ** 2 + 4 * (((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) + 1) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)) + 3) * (f ** 2 - 1)",
+    "((2 * r + 1) * c ** 2) ** 2 * ((f * o - c) ** 2 - y ** 2) + y ** 2 - 1",
+    "(1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3))) ** 2 * ((beta * (3 * J3 + 1) + 1) ** 2 - ((cone_A * F - (beta * (3 * J3 + 1) + 1)) ** 2 + (cone_B * (beta * (3 * J3 + 1) + 1 - F - alpha) - (beta * (3 * J3 + 1) + 1)) ** 2)) - 4 * (beta * (3 * J3 + 1) + 1) ** 2 * (c - (2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))) ** 2 - (1 + p1 ** 2 + p2 ** 2 + p3 * (p3 + 1))"
+  ],
+  "residual_count": 7,
+  "single_equation": "sum of squares of all residuals",
+  "exact_degree": 48,
+  "degree_witness": {
+    "monomial": "h**4*w3**6*v_scale**8*J3**30",
+    "coefficient": "2**20*3**36*beta**30"
+  },
+  "first_root_restoration": "tau + (beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3) ** 2 * (1 - (f * o - c) + j * c + h * ((beta * (3 * J3 + 1) + 1) * (4 * (3 * w3 + 1)) * ((2 * v_scale + 1) * (beta * (3 * J3 + 1) + 1) ** 3)))",
+  "proof": "PROOF.md",
+  "semantic_boundary": "Pointwise sound restoration to unrestricted Q41 after centered Pell bootstrap; canonical completeness, not equivalence to every determinant-parent zero. Inherited unbounded compiler and Pell theorems; not a new kernel-checked result."
+}

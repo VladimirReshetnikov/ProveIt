@@ -1,0 +1,256 @@
+\section{Two positive-domain improvements by combining the wave-10 mechanisms}
+\label{sec:positive-improvements}
+
+The integer-domain construction in the preceding sections is not the only
+useful endpoint.  The same review yields two improvements to the positive
+frontier.  They are separate, fully specified polynomials with the authentic
+compact44 coefficient tuple.  Their contribution is a precise composition
+of the mechanisms in sources~69 and~70, rather than a claim that the generic
+norm or descent methods are new.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Construction & Positive variables & Exact degree & Operations\\
+\hline
+Source 70 & 11 & 325 & 113\\
+Guard-free strong ordinate & 11 & 277 & 111\\
+Source 69 & 12 & 82 & 102\\
+Adaptive main carrier & 12 & 78 & 103\\
+\hline
+\end{tabular}
+\end{center}
+
+The operation convention counts every live binary addition, subtraction,
+and multiplication on witnesses, including squaring and scalar
+multiplication. Fixed integer leaves and register reuse are free. These are
+arithmetic-circuit counts, not bit-complexity estimates.
+
+\subsection{An adjacent-coefficient descent}
+
+We use the following arithmetic lemma from source~69\cite{source69}.
+Its role here is to remove a hypothesis that source~70 enforced by an
+additional factor in its strong Pell ordinate.
+
+\begin{lemma}[Source 69: rational ordinate descent]
+\label{lem:adjacent-descent}
+Let $Q>1$ and $V$ be integers. If $y\in\mathbb Q$ and
+\[
+ QV^2-(Q-1)y^2=1,
+\]
+then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+Write $y=a/m$ in lowest terms, with $m>0$. The equation implies
+$m^2\mid Q-1$, and excludes $V=0$ and $y=0$. Change signs to make both
+positive. If $V=1$ then $y=1$. Otherwise define
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+The first is integral because $m\mid Q-1$. Direct expansion preserves the
+norm. The reduced denominator of $y'$ is exactly $m$, since
+$2Q-1\equiv1\pmod m$. Moreover $y>V$ and $QV>(Q-1)y$, and hence
+$-V<V'<V$. The norm excludes $V'=0$. Strong induction on the positive
+integer $V$, after taking absolute values, reaches the case $V=1$
+without changing the denominator. Thus $m=1$.
+\end{proof}
+
+The exact polynomial norm identity in this proof is checked by the supplied
+twelve-variable verifier. No finite enumeration is being used in place of
+the induction.
+
+\subsection{Eleven positive unknowns in degree 277}
+
+Use the eleven inputs and every register of source~70's eleven-positive
+construction\cite{source70}, with exactly one change:
+\[
+ \boxed{I=ic^2\quad\hbox{in place of}\quad I=iq(q-1)c^2.}
+\]
+The inputs are
+\[
+ (j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma)\in\Pos^{11}.
+\]
+The fixed numerals are $\beta,K_0,M_C,M_F$, with
+$\beta=2^{590069}-1$ and the already-shifted $M_F$.
+All abbreviations below are polynomial registers, not extra unknowns.
+For completeness the definition is
+\begin{align*}
+ J&=3j+1,&q&=\beta J+1,&C&=q-F-\alpha,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ \ell&=EkY,&I&=ic^2,&M&=q^3(q-1),\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ R_+&=q^3(q+F+\alpha),&
+ B_t&=(qK_0+X)C-qF,&D_\tau&=\ell(\ell+k)+1,\\
+ D_f&=1+\Delta I^2,&Q&=\Delta(D_f-1),&\delta&=Q-1,\\
+ V&=D_f(cT-R)-c,&L&=3D_f(cT+R_+),&W&=1+(q-1)L,\\
+ Z&=M(\ell+k+n+L)+(q-1)Y-q^3WB_t,\\
+ S&=4qY,&U&=qS,&v&=k-R-1,\\
+ D_*&=U(X+ac)+H(U\gamma+SX-v),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+Now put
+\begin{align*}
+ A&=M^2D_\tau,&B_f&=M^2D_f,&C_y&=M^2(QV^2-1),\\
+ N_c&=\delta^2\bigl[(Z^2-A-B_f)^2-4AB_f\bigr]
+       -2\delta C_y(Z^2+A+B_f)+C_y^2,\\
+ N_8&=N_c^2-64\delta^3AB_fC_yZ^2.
+\end{align*}
+The required equation is
+\begin{equation}
+ \boxed{P_{11}:=(1+N_8)(1+A_1)-1=0.}
+ \label{eq:positive277}
+\end{equation}
+The exact division-free definition is also supplied as
+\texttt{positive/eleven/p11\_positive\_degree277.json}.
+
+\begin{prop}
+ZFC proves that \eqref{eq:positive277} has no zero in $\Pos^{11}$ if and
+only if $\operatorname{Con}(\mathrm{ZFC})$. Its exact total degree is 277
+and its emitted evaluator has 111 live binary operations.
+\end{prop}
+\begin{proof}
+We give the complete change to the upstream proof; its normalized Pell
+and native compiler interfaces remain the ones in sources~61 and~70
+\cite{source61,source70}. The source~70 inequalities use only $I\ge c^2$,
+which still holds. In particular, writing
+\[
+ D_y=\frac{QV^2-1}{Q-1},
+\]
+the three positive rational radicands $D_\tau,D_f,D_y$ are pairwise
+distinct, and no signed sum of their square roots is zero. The octic norm
+therefore recovers rational signed roots $\tau_*,f_*,y_*$ with squares
+$D_\tau,D_f,D_y$. The first two are integers because their squares are
+integers. Lemma~\ref{lem:adjacent-descent} makes the third an integer.
+Here $Q,V$ are integers and $Q>1$ before any equation is imposed.
+
+This replaces the old argument that the denominator of $y_*$ divides $M$
+and is coprime to $Q-1$. That argument was the only reason for the extra
+$q(q-1)$ in $I$. The unchanged recovery formulas are
+\[
+ f_{\rm old}=|f_*|,\quad y_{\rm old}=|y_*|,\quad
+ u=y_{\rm old}-V>0,\quad r=n+L-f_*-y_*>0.
+\]
+The signed roots must be used in the formula for $r$. The source proof's
+bound $L>|f_*|+|y_*|$ makes it positive. The strong ordinate $I=ic^2$
+has exactly the divisibility needed by the normalized index theorem.
+Consequently the original four-residual positive source interface is
+recovered, and its calibration yields a finite syntactic ZFC refutation.
+
+Conversely any positive zero of source~70 maps directly to a zero here:
+replace its input $i$ by $q(q-1)i$ and leave every other input unchanged.
+This preserves $I$ and every downstream register. Hence source~70's
+completeness supplies completeness here with no new index restriction.
+The unit-product finalizer is unchanged: both $N_8$ and $A_1$ are squares
+modulo 4, so neither can equal $-2$.
+
+For exact degree, the changed register degrees are
+\[
+\begin{array}{c|rrrrrrrrr}
+\text{register}&I&D_f&Q&L&W&Z&N_c&N_8&A_1\\\hline
+\text{degree}&5&14&18&18&19&24&132&264&13.
+\end{array}
+\]
+Writing $q_0=3\beta j$, $k_0=\eta+\zeta$ and
+$B_0=(K_0q_0+X)(q_0-F-\alpha)-q_0F$, the leading forms are
+\begin{align*}
+ Q_0&=i^2k_0^4X^4Y^8,\\
+ Z_0&=-3i^2q_0^7k_0^4X^2Y^6(q_0+F+\alpha)B_0,\\
+ (A_1)_{13}&=32q_0^2k_0X^2Y^4
+      \bigl(4q_0^2Y\gamma+q_0^3(q_0-F)\bigr).
+\end{align*}
+The unique top term of $N_8$ is $Q_0^4Z_0^8$. Therefore the coefficient
+of
+\[
+ j^{60}i^{24}\eta^{49}X^{42}Y^{85}\alpha^{16}\gamma
+\]
+in $P_{11}$ is $2^7 3^8(3\beta)^{60}>0$. The monomial has degree 277.
+The exact checker verifies these identities and the literal graph count:
+65 multiplications, 29 additions and 17 subtractions.
+\end{proof}
+
+\subsection{Twelve positive unknowns in degree 78}
+
+For a second endpoint, keep all source~69 twelve-variable registers
+\cite{source69}, except replace its main Pell carrier by
+\begin{align*}
+ S&=4qY, & U&=qS=4q^2Y,\\
+ D_*&=U(X+ac)+H\bigl(U\gamma+SX-(k-R-1)\bigr),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+The source's first carrier $A_0$, two-root resultant $N$, and finalizer
+are unchanged:
+\begin{equation}
+ \boxed{P_{12}=(1+A_0)(1+A_1)(1+N)-1=0.}
+ \label{eq:positive78}
+\end{equation}
+Its full literal definition is
+\texttt{positive/twelve/equation.json}; the twelve positive inputs are
+$j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma$.
+
+To make the unchanged part explicit, use $J=6j+1$, $q=\beta J+1$,
+$C=q-F-\alpha$, and the same $E,k,c,a,H,\Delta,\ell,R,B_t$ formulas
+as above. Put
+\begin{align*}
+ W_0&=1+(q-1)k,& M&=q^3(q-1),\\
+ Z_0&=M(\ell+k+r)+(q-1)Y-q^3W_0B_t,\\
+ A_0&=Z_0^2-M^2\bigl(\ell(\ell+k)+1\bigr),\\
+ f&=t+1,& \rho&=f^2-1,& d&=\Delta c^4,\\
+ Q&=\Delta\rho,& V&=f^2(cT-R)-c,\\
+ h(z)&=(1-Q)z^2+2(1-Q)Vz+V^2-1,\\
+ A_N&=dh(n)+(1-Q)\rho,& B_N&=2(1-Q)(n+V),\\
+ N&=A_N^2-dB_N^2\rho.
+\end{align*}
+All coefficients are fixed integers and all powers have fixed exponents.
+
+\begin{prop}
+ZFC proves that \eqref{eq:positive78} has no zero in $\Pos^{12}$ if and
+only if $\operatorname{Con}(\mathrm{ZFC})$. Its exact total degree is 78
+and its emitted evaluator has 103 live binary operations.
+\end{prop}
+\begin{proof}
+The unit-product finalizer still works: $q$ is even, $4\mid U$, and all
+three residuals are squares modulo 4. First $A_0=0$ gives $q^3\mid Y$
+and $C>0$, hence $q\ge16$, $q\equiv2\pmod3$ and
+$3q<R<q^4-2$. The new $D_*$ is positive, since
+$D_*>Uac-Hk>ak(UY-5)>0$. Thus $A_1=0$ recovers the positive main
+Pell root. The first and main roots give $c>2R$ before the strong or
+auxiliary equations are used. Consequently $V>1$, and the unchanged
+resultant and Lemma~\ref{lem:adjacent-descent} recover positive integral
+strong and auxiliary coordinates. The normalized auxiliary-index theorem
+then gives $p=R$.
+
+For the altered carrier set $\mu=S/\gcd(S,H)$. Since $q^3\mid Y$,
+$q\equiv2\pmod3$ and $H=4Y(X+1)+3$, one has $\gcd(S,H)\le3$.
+Thus $\mu\ge4qY/3>q^4>R+1$. Both $S$ and $U$ divide $4XY^2$
+without assuming $q\mid X$. Carrier divisibility gives
+$\mu\mid k-R-1$, and the first Pell recurrence gives
+$k\equiv2n_{\rm first}\pmod{4XY^2}$. With
+$1\le n_{\rm first}<p=R<\mu$, these imply
+$2n_{\rm first}=R+1$. Therefore $v=k-R-1$ is a positive multiple of
+$4XY^2$, hence of $U$. Returning to the carrier gives $q\mid HX$,
+and $\gcd(q,H)=1$ gives $q\mid X$.
+
+Writing $w=X/q$, the restored source gap is
+$\gamma_{\rm old}=\gamma+w-v/U$. It is integral and positive because
+the main root is greater than $(a+1)c$ and $c>X$.
+This recovers the source~69 interface. Conversely its canonical witnesses
+lift by $\gamma=\gamma_{\rm old}+v/U-w>0$, using
+$v/U\ge XY/q^2=wY/q\ge wq^2>w$. No new canonical restriction is
+introduced.
+
+The exact residual degrees are $15,13,50$. Their product has degree 78:
+its coefficient at
+\[
+ j^{18}F^2\eta^{11}X^{12}Y^{23}t^8n^2\gamma\alpha
+\]
+is $1024(6\beta)^{18}>0$. The supplied checker verifies the complete
+carrier expansions, resultant identities and this coefficient. It counts
+58 multiplications, 26 additions and 19 subtractions. Thus this endpoint
+trades one operation for four degrees compared with source~69.
+\end{proof}
+
+These two improvements preserve the native compiler and syntactic
+consistency calibration. Their exact algebra is independently replayable,
+but they are not presented as new end-to-end proof-assistant certificates.

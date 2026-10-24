@@ -1,0 +1,272 @@
+\section{A direct majorant of the complete Pell radical}
+\label{sec:directmajorant}
+
+Another new construction improves a different measure of simplicity:
+the total degree with nine positive unknowns.  It retains package~71's
+source encoding and replaces its final square-root bound.  The resulting
+polynomial has degree $1\,158\,228$, compared with $1\,379\,730$ for that
+package, and its explicit circuit has $1\,753$ arithmetic operations,
+compared with $478$.  Thus this is a degree--circuit-size tradeoff.
+The improvement is approximately $16.05\%$ in degree.  It neither lowers
+the number of unknowns nor asserts a global minimum.
+
+\subsection{Why approximate the complete radical?}
+
+The previous finalizer constructs a polynomial upper bound for
+$\sqrt{DF}\,G$ and then multiplies it by $H$.  Errors in that bound are
+therefore multiplied by a high-degree polynomial.  We instead construct
+a polynomial upper bound for the complete radical
+\[
+ \sqrt{DF\bigl((G^2-1)H^2+1\bigr)}.
+\]
+The discovery calculation uses a formal expansion at $A=\infty$.
+The proof of the resulting bound consists entirely of finite integer
+polynomial identities and positive coefficients.
+
+In this subsection $A,C,i,Z$ are independent variables.  Define
+\begin{align*}
+ J&=4A-5,& D&=(A^2-1)C^2+1,\\
+ e&=iJC,& E&=eDC,\\
+ F&=(A^2-1)E^2+1,& L_0&=CD+1-A,\\
+ G&=A+FL_0,& H&=C+FZ,\\
+ I&=(G^2-1)H^2+1,& Q_*&=DFI.
+\end{align*}
+As a polynomial in $A$, $Q_*$ has degree $46$ and leading coefficient
+\[
+ (1024C^{24}i^5Z)^2.
+\]
+Write $Q_*=\sum_{k=0}^{46}q_k A^k$.  Define $t_{23},\ldots,t_0$ in
+$\mathbb Q(C,i,Z)$ by the finite recurrence
+\begin{align}
+ t_{23}&=1024C^{24}i^5Z,\nonumber\\
+ t_{23-k}
+ &=\frac{q_{46-k}-\sum_{\ell=1}^{k-1}
+                 t_{23-\ell}t_{23-k+\ell}}{2t_{23}}
+       \qquad(1\leq k\leq23).                 \label{eq:majorantrecurrence}
+\end{align}
+This is the polynomial part of the formal square root with positive
+leading term.  The recurrence is a finite specification of coefficients;
+no division by an unknown remains in the final equation.
+Set
+\begin{equation}
+ \mathcal P(A,C,i,Z)=65536C^7\sum_{r=0}^{23}t_r A^r,
+ \qquad \sigma=65536C^7.                       \label{eq:majorantP}
+\end{equation}
+Exact coefficient arithmetic proves
+$\mathcal P\in\mathbb Z[A,C,i,Z]$.  It has $654$ nonzero terms, all of
+which are supplied in \texttt{nine\_positive/data/radical.json}.
+The same file gives every coefficient of
+\begin{equation}
+ \mathcal D=\mathcal P^2-\sigma^2Q_*.
+                                                    \label{eq:localdefect}
+\end{equation}
+The coordinate degrees of these two polynomials are
+\[
+ \deg_{(A,C,i,Z)}\mathcal P=(23,31,5,1),\qquad
+ \deg_{(A,C,i,Z)}\mathcal D=(22,42,10,2).
+\]
+There are $3781$ nonzero defect terms.  Denominators in the formal
+coefficient recurrence cancel after the displayed factor $65536C^7$;
+there are no negative exponents in either delivered table.
+
+\subsection{A uniform inequality certified by positive coefficients}
+
+The decisive certificates are the following exact identities, represented
+by their complete coefficient lists:
+\begin{enumerate}
+ \item $\mathcal P(X+3,Y+1,i,Z)$ has $1816$ nonzero coefficients,
+       all strictly positive.
+ \item $\mathcal D(X+3,Y+1,U+1,V+1)$ has $32\,637$ nonzero
+       coefficients, all strictly positive.  Its constant coefficient is
+       \[
+          295870595720775501924817.
+       \]
+\end{enumerate}
+The lists are in \texttt{certificates/P\_shifted.json} and
+\texttt{certificates/defect\_shifted.json} within the nine-positive
+component.  Regeneration by rational coefficient arithmetic and an
+independent implementation using only integer sparse polynomials agree.
+These are finite algebraic certificates for statements over the whole
+domain, rather than sampled inequalities.
+
+\begin{lemma}[Complete-radical majorant]
+For all integers $A\geq3$ and $C,i,Z\geq1$,
+\begin{equation}
+ \mathcal P(A,C,i,Z)>65536C^7\sqrt{DFI}>0.
+                                                    \label{eq:majorantineq}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Here $J,D,E,F$ are positive.  Since
+$CD+1-A\geq A^2-A+1>0$, we have $G>A\geq3$; also $H,I>0$.
+The first certificate evaluated at $X=A-3$, $Y=C-1$ gives
+$\mathcal P>0$.  All its monomials are nonnegative, and its terms of
+$X$- and $Y$-degree zero are positive when $i,Z\geq1$.
+The second certificate evaluated at
+$(X,Y,U,V)=(A-3,C-1,i-1,Z-1)$ gives $\mathcal D>0$.
+Strictness holds even on every boundary because its constant is positive.
+Equation~\eqref{eq:localdefect}, together with $\mathcal P>0$, now gives
+\eqref{eq:majorantineq}.
+\end{proof}
+
+The use of a formal expansion in the discovery process therefore does
+not introduce an asymptotic qualification into the theorem.  The bound
+holds before any solution of the final equation has been assumed.
+
+\subsection{The fixed equation and its nine unknowns}
+
+All nine unknowns
+\[
+ b,g,h,s,w,C,i,j,n\in\mathbb Z_{>0}
+\]
+retain the domain and meaning in the copied source-71 prefix.  The source
+polynomials $R,N,t$ are the fixed source-65 encoding polynomials; their
+complete weights, target positions and coefficient kernels are included
+in the component's data directory.  The whole original-31 native
+coefficient tuple is supplied by literal payloads and a finite generator.
+No coefficient is left as a free program parameter.
+
+For clarity, the ratio registers needed below are
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,& M&=RY,\\
+ P_0&=2M^2U,&K&=R+1+h(P_0-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&J&=4A-5,\\
+ Q_0&=3W_1C-2(W_1^2-1),&&&&\\[-6pt]
+ m&=K^2(4t-g)-16t(C-KY)^2,&&&&\\
+ \Omega&=Jm,&E_0&=J(n+W_1^2)+Q_0,&V_0&=P_0K,\\
+ a_0&=(P_0^2-1)K^2+1,& Z&=B_1+(j-1)C.&&
+\end{align*}
+In the local polynomials above, substitute this $A$, this $C$, the free
+$i$, and this $Z$.  In particular $H=C+FZ$ is exactly the inherited
+Lucas-certificate register.  Define
+\begin{equation}
+ V_1=\mathcal P(A,C,i,Z),\qquad
+ a_1=(65536C^7)^2DFI,\qquad
+ \Theta=E_0-\Omega(V_0+V_1).                 \label{eq:newnineinputs}
+\end{equation}
+The new equation is
+\begin{equation}
+ \boxed{\quad
+ F_9=(\Theta^2-\Omega^2(a_0+a_1))^2
+                       -4\Omega^4a_0a_1=0.\quad}   \label{eq:newnine}
+\end{equation}
+Every named register is a polynomial abbreviation, not an additional
+unknown.  The division-free DAG \texttt{equation9.json} is the complete
+literal instance.  The source bounds $R,N\geq8$ imply $A\geq3$ on every
+ambient positive input, and $C,i,Z\geq1$ is immediate.  Consequently the
+majorant lemma applies without a circular appeal to the final equation.
+
+\subsection{Why the replacement preserves the ratio theorem}
+
+The original first majorant satisfies $V_0>\sqrt{a_0}>0$, since
+$V_0^2-a_0=K^2-1>0$.  The lemma gives
+$V_1>\sqrt{a_1}>0$.  Moreover
+\[
+ E_0=Jn+(J-2)W_1^2+3W_1C+2>0.
+\]
+Thus a zero of~\eqref{eq:newnine} cannot have $m=0$: that would give
+$F_9=E_0^4>0$.  Factoring the two-root norm over the reals gives signed
+roots $r_0^2=a_0$, $r_1^2=a_1$ with
+\begin{equation}
+ \frac{E_0}{J}=m(V_0+V_1+r_0+r_1).             \label{eq:marginorientation}
+\end{equation}
+The strict majorants make the parenthesis positive for every sign choice,
+so $m>0$ follows before any root-integrality argument.  The unchanged
+margin argument now recovers the required free-carrier bounds and makes
+$DFI>a_0$, hence $a_1>a_0$.
+
+The sum $r_0+r_1=\Theta/\Omega$ is rational and nonzero.  The identity
+\[
+ 2(r_0+r_1)r_0=(r_0+r_1)^2+a_0-a_1
+\]
+therefore makes both roots rational, and an integer with a rational square
+root has an integral square root.  Although the scale
+$65536C^7$ depends on the current positive input, it is a nonzero integer.
+Consequently $r_1/(65536C^7)$ is a rational square root of $DFI$ and is
+also integral.  No fixed-scale assumption is needed.  Equation
+\eqref{eq:marginorientation} then recovers $J\mid Q_0$ exactly as before.
+All the inherited ratio conditions, and hence the source zero, follow.
+
+Conversely, a source zero supplies the original ratio witnesses and
+integral roots.  Choose the positive roots
+$r_0=\sqrt{a_0}$ and $r_1=65536C^7\sqrt{DFI}$, and take
+\[
+ n=m(V_0+V_1+r_0+r_1)-W_1^2-Q_0/J.
+\]
+This is an integer.  The unchanged estimate $W_1^2+Q_0/J<2D$, together
+with $F>D$, $I\geq1$ and $V_1>65536\sqrt{DFI}>2D$, shows $n>0$.
+One norm factor vanishes.  This proves the same source-zero equivalence
+as source~71.  Composing with the retained native-source and syntactic
+refutation calibration, and negating, gives the ordinary theorem
+formalizable in ZFC:
+\[
+ \mathsf{ZFC}\vdash
+ \bigl(\text{$F_9$ has no positive integer zero}\bigr)
+       \ \longleftrightarrow\ \operatorname{Con}(\mathsf{ZFC}).
+\]
+The new component supplies no additional end-to-end Lean or
+object-language ZFC certificate; the inherited calibration boundary is
+stated explicitly in its proof and provenance files.
+
+\subsection{Exact degree and the change of dominant term}
+
+Let $r=7963$, $\nu=2115$, $W=116$ be the degrees of $R$, $N$ and the
+maximum source weight, and put $a=r+4\nu+2=16425$.  Then
+\begin{align*}
+ \deg\Omega&=5a+2W+3=82360,&\deg V_0&=3a+r+1=57239,\\
+ \deg\delta_0&=3a+r+2=57240,&
+ \delta_0&=V_0^2-a_0=K^2-1.
+\end{align*}
+The unique highest weighted-degree term of $\mathcal P$ is
+$2^{26}A^{23}C^{31}i^5Z$, giving
+\[
+ \deg V_1=23a+r+36=385774.
+\]
+The corresponding unique term of its defect is
+\[
+ 141664530202624\,A^{22}C^{42}i^{10}Z^2,
+\]
+so $\delta_1=V_1^2-a_1$ has degree $22a+2r+52=377328$.
+To resolve the cancellations in the outer norm, set
+\[
+ B_*=E_0^2-2E_0\Omega(V_0+V_1)+\Omega^2(\delta_0+\delta_1).
+\]
+It has degree $542048$, and the exact identity
+\begin{equation}
+ F_9=B_*^2+4\Omega^2V_0V_1B_*
+                 +4\Omega^4(\delta_0V_1^2+a_0\delta_1)       \label{eq:resolvednorm}
+\end{equation}
+shows the following four degrees:
+\begin{center}
+\begin{tabular}{lr}
+$B_*^2$ & $1\,084\,096$\\
+$4\Omega^2V_0V_1B_*$ & $1\,149\,781$\\
+$4\Omega^4\delta_0V_1^2$ & $1\,158\,228$\\
+$4\Omega^4a_0\delta_1$ & $821\,246$
+\end{tabular}
+\end{center}
+The third term is uniquely largest.  Its leading coefficient is positive,
+so the exact degree is
+\[
+ \boxed{\deg F_9=72r+276\nu+8W+224=1\,158\,228.}
+\]
+The dominant term is different from that of the previous finalizer;
+merely substituting the new defect degree into its old formula would be
+incorrect.  If $\rho,\sigma_N,\tau$ are the positive diagonal leading
+coefficients of $R,N,t$, respectively, the new leading coefficient is
+$2^{90}\tau^4\rho^{72}\sigma_N^{276}>0$.  For the actual source constants
+$\alpha=2^{2134939}$ and $c=2^{17079501}$ this becomes
+\[
+ 2^{162}\alpha^{578828}c^{276}>0.
+\]
+Thus specialization to the actual native coefficients cannot remove the
+leading term.
+
+The final circuit contains $923$ multiplications, $810$ additions and
+$20$ subtractions.  This count includes every multiplication by a fixed
+integer and counts reuse once.  The independent verifier reconstructs
+all $654$ majorant coefficients directly from the final DAG, checks the
+whole finalizer as a polynomial identity, and verifies $45$ retained
+named source expressions against source~71.  Both independent checkers
+use only the Python standard library and pass with and without Python's
+optimization flag.

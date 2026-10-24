@@ -1,0 +1,161 @@
+\section{One radix for every binomial graph}
+\label{sec:common-radix}
+
+The direct certificate contains sixteen binomial relations. Thirteen
+certify the ranges of the CRT-encoded local coordinates; the other three
+occur inside the two factorial graphs and the modulus-product graph.
+The earlier implementation gives every binomial relation its own radix.
+That repetition is unnecessary.
+
+\begin{theorem}[Common radix]
+Let $n_1,\ldots,n_s,k_1,\ldots,k_s$ be nonnegative integers and set
+\[
+ S=\sum_{i=1}^s n_i,\qquad Q=2^S+1.
+\]
+For each $i$ define $L_i=Q^{k_i}$ and $P_i=(Q+1)^{n_i}$.
+Then $c_i=\binom{n_i}{k_i}$ for every $i$ if and only if there exist
+nonnegative integers $h_i,r_i,u_i,v_i$ satisfying
+\begin{align*}
+ P_i&=L_i(Qh_i+c_i)+r_i,\\
+ L_i&=r_i+u_i+1,\\
+ Q&=c_i+v_i+1
+ \qquad(1\le i\le s).
+\end{align*}
+We use the convention $\binom nk=0$ when $k>n$.
+\end{theorem}
+
+\begin{proof}
+The binomial theorem gives
+\[
+ (Q+1)^{n_i}=\sum_{j=0}^{n_i}\binom{n_i}{j}Q^j.
+\]
+Every coefficient lies between zero and $2^{n_i}$, and
+$2^{n_i}\le 2^S<Q$. Thus this is a carry-free base-$Q$ expansion.
+The three displayed equations state that $r_i$ is the remainder on
+division by $Q^{k_i}$ and that $c_i$ is the remainder of the quotient
+on division by $Q$. Uniqueness of Euclidean division identifies $c_i$
+with the indicated base digit. Conversely the actual digit and the
+two quotient/remainder decompositions supply all four nonnegative
+witnesses.
+\end{proof}
+
+The sixteen actual lower arguments have only four distinct values:
+the CRT factorial argument $H$, the certificate length $t$, and the
+two range cutoffs $m+1$ and $V+1$. Consequently the sixteen binomial
+graphs need only
+\[
+ 1+16+4=21
+\]
+power graphs: one for $2^S$, sixteen numerator powers, and four shared
+denominator powers. The earlier compilation uses forty-eight powers
+for those same binomial relations. The seven power calls outside them
+are unchanged, giving a reduction from fifty-five to twenty-eight.
+
+\paragraph{Why deferred arithmetic graphs are legitimate.}
+The common radix may depend on an upper argument that itself uses a
+factorial output. The factorial graph also uses that common radix.
+This introduces a dependency cycle between graph predicates, but it
+does not introduce a circular soundness argument. In any satisfying
+assignment the common-radix theorem applies to all sixteen assigned
+upper arguments, so every binomial output is its exact mathematical
+value. All the original higher-level identities then follow.
+For completeness, first choose the true outputs of the original
+abstract power, binomial, and factorial certificate. These determine
+all sixteen upper arguments. Choose the common radix from those
+values, and only then fill its digit and power witnesses. The
+gate-level arithmetic circuit remains triangular: graph outputs are
+existential coordinates, not recursively evaluated program calls.
+
+\section{One offset for every signed congruence}
+\label{sec:one-offset}
+
+The natural-number certificate implements a signed congruence by
+\[
+ L_i+M_iq_i^+=R_i+M_iq_i^-.
+\]
+A separate negative part for every quotient is unnecessary.
+
+\begin{theorem}[Common quotient offset]
+For any finite family of integer triples $(L_i,R_i,M_i)$, existence
+of nonnegative $q_i^+,q_i^-$ satisfying the preceding equations is
+equivalent to existence of nonnegative $Q,q_1,\ldots,q_s$ satisfying
+\[
+ L_i+M_iq_i=R_i+M_iQ\qquad(1\le i\le s).
+\]
+No sign or nonzero hypothesis on $M_i$ is required for this statement.
+\end{theorem}
+
+\begin{proof}
+Given the separate pairs, choose a natural $Q$ with
+$Q\ge\max_i q_i^-$. Put $q_i=q_i^++Q-q_i^-$. All $q_i$ are natural,
+and substitution gives the common-offset equations. Conversely set
+$q_i^+=q_i$ and $q_i^-=Q$. Both constructions are finite elementary
+arithmetic operations.
+\end{proof}
+
+This transformation is applied across the entire finite certificate,
+including congruences inside the power graphs and the outer CRT
+evaluation congruence. It changes neither the externally visible
+power/binomial/factorial outputs nor the numerical proof predicate.
+
+\section{The positivity dependency in the shared frame}
+\label{sec:positivity-order}
+
+All twenty-eight power exponents are positive before any power theorem
+is used. This follows from the literal nonnegative arithmetic graph:
+$t=t_0+1$, $m=m_0+1$, the encoded CRT representatives are shifted by
+one, and the factorial and common-radix exponents contain these positive
+terms. Hence every shared Pell ordinate satisfies $Y_j\ge k_j>0$,
+and their product is positive.
+
+Twenty-seven power bases are also positive by those same syntactic
+facts. The remaining base is the proposed factorial value $T=H!$;
+its positivity must not be assumed. The corresponding factorial
+certificate contains
+\[
+ P+c=cf+r+1,\qquad c=r+s+1.
+\]
+Its numerator $P=(\rho+1)^H$ is positive by one of the already
+applicable power graphs. Therefore $c>0$, and $f=0$ would imply
+$P+c=r+1\le c$, a contradiction. Thus $f\ge1$, proving positivity
+of the final power base. Only after this two-stage argument are all
+twenty-eight power outputs identified with their mathematical values.
+
+The independent audit records the actual call indices in each stage;
+it checks all exponents first and identifies the factorial numerator
+and both ceiling rows by exact polynomial comparison. This avoids
+using correctness of a factorial graph to justify a power theorem
+whose own positivity assumption is needed to establish that factorial
+graph.
+
+\section{Literal checkpoints and verification scope}
+
+Before the subsequent monic quadratic eliminations, the materialized
+checkpoints are:
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Construction & Variables & Quadratic rows & Monomials & Degree\\
+\hline
+Inherited shared certificate & 3614 & 2954 & 15996 & 4\\
+Common radix & 2108 & 1745 & 10629 & 4\\
+Common radix and quotient offset & 1968 & 1717 & 10545 & 4\\
+Full shared Pell frame & 1153 & 1021 & 9234 & 4\\
+\hline
+\end{tabular}
+\end{center}
+All variables in this table are nonnegative integers. Every polynomial
+is supplied both as the sum of the listed quadratic residual squares
+and as a complete expanded coefficient dictionary.
+
+The builder-free audit reconstructs the natural affine restoration,
+checks the new graph identities over the free integer polynomial ring,
+verifies every displayed census, and independently expands the quartic.
+The common-radix arithmetic controls include upper and lower boundary
+cases and an undersized-radix carry counterexample. The actual shared
+frame is also instantiated for the pair $2^1,3^1$, with all eighty
+literal residuals checked exactly. A separate $A=2$ fixture with
+indices $1,2$ checks the pooled modulus $64$ and period $32$.
+These are regression checks; the unbounded theorems and the inherited
+calculus-to-refutation calibration remain mathematical proof obligations
+and are not replaced by finite testing.

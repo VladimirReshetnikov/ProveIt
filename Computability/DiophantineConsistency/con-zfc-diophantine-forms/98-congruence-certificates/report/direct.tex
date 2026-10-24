@@ -1,0 +1,217 @@
+This branch represents the actual finite proof-certificate calculus directly.
+Its integer coefficients are small literal numbers. The construction does
+not encode a K215 computation and does not specialize a Jones universal
+polynomial. It retains the existing C222/Horn/CRT compiler and improves a
+repeated arithmetic component with a complete soundness and completeness
+proof. The decisive component is the Diophantine graph of positive powers.
+
+\subsection{An eleven-coordinate certificate for a positive power}
+Let $n,k>0$ and $m\in\N$. Use eleven natural auxiliary coordinates
+\[
+ U,a,z,y,q,d,g,b,s,r,h.
+\]
+Define, without adding coordinates,
+\begin{align*}
+ W&=n+k,&Z&=z+1,&Y&=k+y,&T&=m+g+1,\\
+ A&=n+a+1,&V&=Y^2(d+1),&B&=1+4Y(q+1),\\
+ X&=Y(a+1)+m+Th,&S&=X+Us,&R&=k+4Yr.
+\end{align*}
+For this section only, put
+$\mathcal P(A,X,Y)=X^2+Y^2-1-A^2Y^2$. The six equations are
+\begin{align}
+ \mathcal P(A,X,Y)&=0,&\mathcal P(A,U,V)&=0,&\mathcal P(B,S,R)&=0,
+ \label{eq:powernorms}\\
+ B&=A+Ub,&2An&=T+n^2+1,&\mathcal P(W+1,A,WZ)&=0.
+ \label{eq:powerother}
+\end{align}
+
+\begin{theorem}[Positive-power graph]\label{thm:power}
+For $n,k>0$ and $m\in\N$, equations
+\eqref{eq:powernorms}--\eqref{eq:powerother} have a natural solution
+in the eleven displayed auxiliaries exactly when $m=n^k$.
+\end{theorem}
+
+The underlying Pell--Matiyasevich criterion is classical and is available
+as \texttt{Pell.matiyasevic} and \texttt{Pell.eq\_pow\_of\_pell}
+in the pinned mathlib source\cite{mathlib}. The new point here is the
+strictly positive specialization, the direction of the congruence
+quotients, and exact elimination of coordinates.
+
+\subsection{An intermediate certificate and soundness}
+Before eliminating $X,S,R$, take the fourteen coordinates
+\[
+ A,X,U,S,R,z,y,q,d,g,b,s,r,h.
+\]
+Keep $W=n+k$, $Z=z+1$, $Y=k+y$, $T=m+g+1$, $V=Y^2(d+1)$,
+and $B=1+4Y(q+1)$. In addition to the four Pell norms impose
+\begin{align*}
+ B&=A+Ub,&S&=X+Us,&R&=k+4Yr,\\
+ X+Yn&=YA+m+Th,&2An&=T+n^2+1.
+\end{align*}
+The last norm is
+\[
+ A^2=1+W^3(W+2)Z^2.
+\]
+Since $W\ge2$ and $Z\ge1$, it gives $A>W\ge n$, in particular
+$A\ge2$. All the standard criterion's size conditions now follow:
+$Y\ge k>0$, $V\ge Y^2$, $B\ge5$, and $T>m$.
+The directed equalities imply the required congruences modulo
+$U,4Y,T$. The original positive-input criterion therefore gives $m=n^k$.
+The inequality $A>n$ also ensures that the occurrence of $A-n$ in the
+formal source is an ordinary nonnegative difference, rather than an
+unintended truncated-subtraction expression.
+
+\subsection{Why four signed quotients become natural}
+This argument holds for any solution of the original positive-input
+criterion, not just a selected completeness witness. Since
+$V\ge Y^2\ge Y\ge1$, its first two Pell norms give $U\ge X$ and
+$U\ge A$. Also $B\ge2$ and the third norm gives $S\ge1$.
+
+If $0<c\le u$, a positive integer congruent to $c$ modulo $u$ must
+have the form $c+uq$ with $q\ge0$. This includes $c=u$, when the least
+positive residue-zero representative is $u$. Apply it to $(A,U)$ and
+$(X,U)$ to obtain the first two natural quotients. Since
+$0<k\le Y<4Y$, the congruence for $R$ similarly gives $R=k+4Yr$ with
+$r\ge0$.
+
+For the last quotient, the first norm implies
+\[
+ X^2-(A-1)^2Y^2=1+2(A-1)Y^2>0,
+\]
+hence $X>(A-1)Y$. Therefore
+\[
+ D=X+Yn-YA-m>(n-1)Y-m\ge-m>-T.
+\]
+The old power congruence makes $D$ a multiple of the positive $T$.
+Every negative multiple is at most $-T$, so $D\ge0$ and $D=Th$ with
+$h\in\N$. This proves the sign, rather than inferring it from the
+positivity of some summands.
+
+\subsection{Fixing the bound \texorpdfstring{$W$}{W} and proving completeness}
+The standard completeness proof chooses $W=\max(n,k)$, but uses only
+$W\ge n,k$ and $W>0$. Its explicit construction works with $W=n+k$.
+Write
+\[
+ \chi_j(A)+\psi_j(A)\sqrt{A^2-1}
+ =(A+\sqrt{A^2-1})^j.
+\]
+Choose
+\[
+ A=\chi_W(W+1),\qquad Z=\psi_W(W+1)/W.
+\]
+The recurrence modulo $W$ gives $W\mid\psi_W(W+1)$, and
+$\psi_W(W+1)\ge W>0$, so $Z$ is a positive integer. Its norm gives
+the last equation. Standard Pell growth yields
+\[
+ n^k\le n^W<(W+1)^W\le A.
+\]
+The strict comparison is between bases $n<W+1$, not between the first
+two powers. Put $X=\chi_k(A)$, $Y=\psi_k(A)$, and
+$T=2An-n^2-1$. Then $Y\ge k$ and, since $A\ge n+1$,
+\[
+ T-A=(2n-1)A-n^2-1\ge n^2+n-2\ge0.
+\]
+Hence $T\ge A>m=n^k$. Reduction in the quadratic ring modulo $T$,
+with the substitution $\sqrt{A^2-1}=n-A$, gives
+$X+Yn\equiv YA+n^k\pmod T$.
+The standard Pell-index certificate supplies $U,V,S,R,B$ with the
+remaining congruences and positive $Y^2$-multiple $V$.
+
+The proved quotient signs and the nonnegative slacks
+\[
+ y=Y-k,\quad d=V/Y^2-1,\quad g=T-m-1,\quad z=Z-1,
+ \quad q=(B-1)/(4Y)-1
+\]
+then give the fourteen-coordinate certificate. The last quotient is
+nonnegative because $B>1$, $Y\ge1$, and $B\equiv1\pmod{4Y}$.
+
+Finally $A>n$ permits the bijective substitution $A=n+a+1$.
+The three directed equalities solve exactly as
+\[
+ X=Y(a+1)+m+Th,\qquad S=X+Us,\qquad R=k+4Yr.
+\]
+These are polynomials with nonnegative coefficients. They eliminate
+three coordinates and their equations while preserving natural witnesses
+in both directions. The eleven-coordinate theorem follows.
+
+\subsection{The complete source and final quartics}
+The retained compiler checks the literal C222 numerical proof rules,
+uses a single finite-stream certificate and uniform CRT coding, and
+expresses its binomial, factorial, and power operations by supplied
+arithmetic graphs. There are exactly 55 power calls, 16 binomial calls,
+and two factorial calls in the complete graph. Their input-positivity
+dependencies are acyclic. The outer length and label bound, and each
+encoded local-coordinate stream, are independent natural coordinates plus one.
+Thus the carrier base and exponent are positive, and each range-binomial
+call has positive upper and lower arguments. The factorial inputs are
+the positive stream length and a sum with an added one. Within each
+factorial graph, the radius base and exponent are the input plus two;
+the subsequent binomial and power inputs are therefore positive. Finally,
+the factorial output used as a base in the modulus-product graph is at
+least one before that power call is evaluated. Induction in this macro
+dependency order proves positivity at all 55 calls; the supplied symbolic
+audit checks the actual complete call inventory.
+
+These conventions preserve completeness. A refutation of target label
+one has positive length, its label bound can be enlarged, and a CRT
+representative can be made positive by adding a positive multiple of its
+modulus. Thus the new graph is used only on its proved domain, without
+excluding a genuine finite refutation. It is not asserted to represent
+zero-base or zero-exponent cases.
+
+One further quotient can be oriented globally. The local row polynomial
+is a product of sums of squares plus additional squares, written as
+$P=E-F$. Hence $E-F\ge0$ on every natural assignment. Its final
+congruence modulo a positive $B$ can be written $E=F+Bq$, $q\in\N$,
+instead of representing an arbitrary signed quotient by two naturals.
+
+Every arithmetic wire is computed by a triangular addition or
+multiplication of natural quantities. Eliminating a monic affine defining
+row whose restoration has nonnegative coefficients is a bijection on
+natural solution sets. The builder performs exactly those eliminations,
+with a support cap that affects size but not correctness.
+
+The delivered main polynomial is literally
+\begin{equation}
+ \boxed{D_{2473}(x_0,\ldots,x_{2472})
+   =\sum_{i=1}^{2089}q_i(\boldsymbol{x})^2=0,
+   \qquad\boldsymbol{x}\in\N^{2473}.}\label{eq:directquartic}
+\end{equation}
+All $q_i$ are the explicitly enumerated quadratic integer polynomials in
+\texttt{direct/eq/equation.json}. The same polynomial is fully expanded
+in \texttt{expanded\_polynomial.json}; thus the formula does not conceal
+an unspecified polynomial or a compiler-existence assertion. For example,
+the first residual is
+\[
+ x_{13}-1-2x_0-x_0^2-2x_0x_9-2x_9-x_9^2.
+\]
+The exact polynomial has 20,580 monomials, degree four, and coefficient
+height 127,808,289. The alternative retaining affine wires has 4,860
+natural variables, 4,476 quadratic rows, 14,719 monomials, and height
+1,837. Every residual coefficient of that variant has absolute value
+at most four.
+
+\begin{theorem}[Direct consistency equation]
+With the supplied literal source calculus and inherited ordinary
+C222/Horn/CRT calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\boldsymbol{x}\in\N^{2473}\;
+ D_{2473}(\boldsymbol{x})=0\bigr)\longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+The analogous assertion holds for the 4,860-variable variant.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:power} and the final quotient argument preserve the
+complete arithmetic graph's existential relation. The triangular affine
+eliminations preserve natural solutions, and a sum of integer squares
+is zero exactly when every residual is zero. The inherited ordinary
+source calibration identifies the original graph with existence of a
+finite C222, hence ZFC, refutation. Compose these equivalences and negate.
+\end{proof}
+The independent checker expands every residual square and matches every
+coefficient, verifies all declared variables occur, and checks the 55
+power-block census. It imports neither the author's builder nor a symbolic
+algebra package. Its finite result supports the transcription; the
+unbounded source calibration remains the stated mathematical dependency.
+

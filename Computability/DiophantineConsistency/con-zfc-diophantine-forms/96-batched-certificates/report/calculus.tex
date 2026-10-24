@@ -1,0 +1,70 @@
+\section{The fixed numerical calculus}
+\label{app:calculus}
+
+The following inherited numerical source
+\cite{shared} makes the fixed logical
+content of the coefficient dictionary
+explicit. For natural inputs define
+\begin{align*}
+ I(a,b)&=2(a+b)(a+b+1)+4b,\\
+ M(a,b)&=I(a,b)+1,& A(a,b)&=I(a,b)+2,& E(a,b)&=I(a,b)+3,\\
+ N(a)&=I(a,1),&X(a,b)&=N(A(a,N(b))).
+\end{align*}
+They are numerical constructors, not
+free function symbols in the final
+polynomial. The eight unconditional
+axiom-code families are
+\begin{align*}
+ r_1(a,b)&=X(a,E(a,b)),\\
+ r_2(a,b,c)&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+ r_3(a,b,c)&=I(E(a,b),I(M(c,a),M(c,b))),\\
+ r_4(a,b,c)&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+ r_5(a,b,c)&=I(E(c,a),I(M(c,b),M(a,b))),\\
+ r_6(a,b)&=I(X(a,A(a,b)),b),\\
+ r_G(a,b,c)&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+ r_8(a,b,c,d)&=I(I(I(c,d),a),I(I(a,c),I(b,c))).
+\end{align*}
+For the guarded bundle define
+\begin{align*}
+ R(b,k,h)&=A(b,I(h,N(A(b,I(h,N(M(b,k))))))),\\
+ S(a,b,k)&=A(k,I(M(k,a),M(k,b))),\\
+ C_0(a,b,k,h)&=I(S(a,b,k),R(b,k,h)),\\
+ C_1(a,b,k,h)&=N(A(a,C_0(a,b,k,h))),\\
+ C_2(a,b,k,h)&=N(A(a,I(h,C_1(a,b,k,h)))),\\
+ C(a,b,k,h)&=A(b,I(M(b,k),C_2(a,b,k,h))),\\
+ V(a,b,c)&=I(M(a,b),A(c,M(a,b))),\\
+ K(a,b,c)&=A(c,I(C(a,b,c,c),N(R(b,c,c)))),\\
+ \mathcal B(a,b,c)&=N(I(V(a,b,c),K(a,b,c))).
+\end{align*}
+Its side condition is $c\ne a,c\ne b$,
+represented by one natural $d$ through
+\[
+ (c-a)^2(c-b)^2=(d+1)^2.
+\]
+For completeness take
+$d=|(c-a)(c-b)|-1$.
+
+The twelve padded branches for
+premises $p,q$ and conclusion $v$ are
+truth $p=q=v=0$; the eight axiom
+branches $p=q=0,v=r_i$; the guarded
+bundle $p=q=0,v=\mathcal B(a,b,c)$;
+modus ponens $q=I(p,v)$; and
+generalization $q=0,v=A(a,p)$.
+The four schema coordinates are
+shared across the disjunction,
+but only the selected branch
+must hold. Squaring each branch's
+residuals and multiplying the
+branch sums implements exactly
+that convention.
+
+The source audit matches the
+composed constructors to the
+pinned branch identities.
+The calibration to ZFC
+refutability uses the named
+repository theorems; it is not
+inferred merely from a resemblance
+between these integers and
+logical formulas.

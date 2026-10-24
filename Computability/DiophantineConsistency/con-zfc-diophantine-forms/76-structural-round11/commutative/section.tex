@@ -1,0 +1,162 @@
+\section{A coefficient height register removes the common multiple block}
+
+The previous commutative source assigned label $j$ the factor $1+jM$,
+then required $M$ to be divisible by every positive integer up to a label
+bound. That made the evaluated factors pairwise coprime, but introduced a
+second bounded-universal certificate. The following alternative dispenses
+with pairwise coprimality entirely. Its arithmetic ingredient is an elementary
+bounded-height root argument; the proposed improvement is its application to
+this proof source, not a claim of historical priority for that argument.
+
+\paragraph{Polynomial identity from one integer evaluation.}
+For a finite list of padded rules $(p_i,q_i,c_i)$, $i<N$, put
+\[
+ A(X)=\prod_{i<N}(1+c_iX),\qquad
+ B(X)=(1+X)\prod_{i<N}(1+p_iX)(1+q_iX),
+\]
+\[
+ R=2\prod_{i<N}\bigl((1+p_i)(1+q_i)+c_i\bigr).
+\]
+All labels are nonnegative. If $M>R$, then
+\[
+ A(M)=B(M)\quad\Longleftrightarrow\quad A=B\text{ in }\mathbb Z[X].
+\]
+Indeed, each factor in the definition of $R/2$ is at least both
+$1+c_i$ and $(1+p_i)(1+q_i)$. Thus $A(1)\le R/2$ and $B(1)\le R$.
+Their coefficients are nonnegative, so every coefficient of $A-B$ has
+absolute value at most $R<M$. If $a_k$ were its first nonzero coefficient,
+$(A-B)(M)=0$, divided by $M^k$ and reduced modulo $M$, would give
+$M\mid a_k$, a contradiction.
+
+Distinct positive labels $j$ give distinct rational roots $-1/j$ of the
+linear factors. The polynomial identity therefore says exactly
+\[
+ \#\{i:c_i=j\}=\mathbf1_{j=1}+
+ \#\{i:p_i=j\}+\#\{i:q_i=j\}\qquad(j>0).
+\]
+Zero labels contribute the unit factor. Consequently the same
+single-conclusion Horn-flow theorem recovers derivability of target $1$.
+For the calibrated numerical C222 calculus this is equivalent in ZFC to a
+ZFC refutation. There is no separate primality or coprimality hypothesis.
+
+\paragraph{Two registers and no label bounds.}
+Use natural registers $S_i,R_i$ and require
+\[
+ S_0=M+1,\quad S_N=1,\quad R_0=2,\quad M=R_N+1,
+\]
+\begin{align*}
+ S_{i+1}(1+c_iM)&=S_i(1+p_iM)(1+q_iM),\\
+ R_{i+1}&=R_i\bigl((1+p_i)(1+q_i)+c_i\bigr).
+\end{align*}
+The first recurrence preserves strict positivity from $S_0>0$, so
+multiplying and cancelling yields $A(M)=B(M)$. The second recurrence
+provides the required coefficient bound exactly. This proves soundness
+without any chronological semantics for the encoded list.
+
+For completeness, fix a finite proof tree and list its nodes by expanding
+open obligations. Compute the height product first, set $M=R_N+1$, and
+then let $S_i$ be the product of $1+jM$ over its open obligations. Both
+recurrences and all endpoints follow. Choosing $M$ after the finite rule
+list but before the $S_i$ avoids a circular bound on a code already
+containing $M$.
+
+\paragraph{The literal local polynomial.}
+Let $H(p,q,c;\mathbf w)$ be the inherited nonnegative degree-$50$ Horn
+polynomial, with seventeen local witnesses. With $M=M_0+1$, define
+\begin{align*}
+ E&=S'(1+cM)-S(1+pM)(1+qM),\\
+ F&=R'-R\bigl((1+p)(1+q)+c\bigr),\\
+ L&=H+E^2+F^2.
+\end{align*}
+This uses twenty local natural witnesses, namely $p,q,c,\mathbf w$, and
+five exposed coordinates $S,S',R,R',M_0$. Its exact degree remains $50$:
+$E$ has degree five and $F$ degree three, so the additional squares cannot
+cancel the degree-$50$ homogeneous part of $H$. The JSON supplies every
+Horn factor and both new residuals literally.
+
+\paragraph{One bounded block.}
+Write $\beta(x,y,i)=x\bmod(1+(i+1)y)$. The five outer coordinates are
+$N,x,z,y,M_0$. The endpoint conditions are
+\[
+ \beta(x,y,0)=M_0+2,\quad \beta(x,y,N)=1,\qquad
+ \beta(z,y,0)=2,\quad \beta(z,y,N)=M_0.
+\]
+The only bounded-universal block is
+\[
+ \forall i<N\;\exists\mathbf u\in\mathbb N^{20}:\quad
+ L\bigl(\beta(x,y,i),\beta(x,y,i+1),
+         \beta(z,y,i),\beta(z,y,i+1),M_0;\mathbf u\bigr)=0.
+\]
+Both finite register sequences admit a common $y$: take $y$ larger than
+all their entries and divisible by $N!$, and apply the Chinese remainder
+theorem separately to $x$ and $z$. This divisibility is used only to prove
+existence of the beta encoding. It is not an extra input condition and
+it is not a condition on $M$.
+
+Compared with the preceding source, the label-bound parameter, three
+local slack witnesses, and the entire common-multiple bounded block are
+removed. A second accumulator stream is introduced. The number of outer
+parameters stays five. The supplied closed Lean constructor uses the
+current remainder, bounded-forall, and quartic APIs, but has not been
+elaborated or expanded. These are source-level counts, \emph{not} a
+claim that the completed consistency equation has twenty variables or
+that its compiled size beats the existing frontier.
+
+\paragraph{Checks and limitations.}
+The independent finite checks include $24\,844$ height fixtures, $100$
+constructed proof-tree paths, twelve simultaneous beta encodings, $800$
+literal residual comparisons, and twelve exact inherited Horn
+sum-of-squares identities. At $M=1$, the rule with premise $1$ and
+conclusion $3$ supplies the spurious unchecked accumulator path $2\to1$;
+the new height bound rejects it because $R_N=10$. This negative control
+shows why discarding the common-multiple block without replacing its
+collision protection would be unsound. The global ordinary polynomial
+remains unmaterialized, and no new proof-assistant certificate is claimed.
+
+\paragraph{A degree-oriented selector variant.}
+There is a further local reduction without increasing the old source's
+local witness count. The twelve inherited branch factors have degrees
+$2,4,4,4,4,4,4,4,4,8,4,4$. Partition them into six groups of degree
+$8$, the truth group of degree $2$, and one unused group assigned value
+$1$. Let $G_0,\ldots,G_7$ be these nonnegative products. Introduce three
+selectors $b_0,b_1,b_2$ and their multilinear Boolean indicators
+\[
+ \chi_i(\mathbf b)=\prod_{k=0}^2
+ \begin{cases}b_k,&\text{bit }k\text{ of }i\text{ is }1,\\
+ 1-b_k,&\text{otherwise}.
+ \end{cases}
+\]
+Replace the Horn product by
+\[
+ \sum_{k=0}^2[b_k(b_k-1)]^2+
+ \sum_{i=0}^7G_i\chi_i(\mathbf b)^2.
+\]
+All summands are nonnegative. A zero forces Boolean selectors and hence
+one vanishing selected group; the unused group cannot be selected.
+Conversely, any vanishing original branch admits a selector assignment.
+Its exact degree is $8+6=14$. The leading terms cannot cancel because
+they are the common monomial $b_0^2b_1^2b_2^2$ times a sum of nonzero
+nonnegative leading forms of products of sums of squares. Adding $E^2$
+and $F^2$ preserves this degree.
+
+Thus the degree-oriented local source has twenty-three witnesses,
+matching the old source, but degree fourteen instead of fifty and only
+one bounded block instead of two. A separate one-selector tradeoff uses
+twenty-one witnesses at degree twenty. Both have literal JSON and
+uncompiled constructor files. Their finite selector audits cover
+$34\,768$ and $45\,556$ assignments respectively; all three generated
+constructors also pass bracket and variable-range checks, which are not
+Lean elaboration.
+
+\paragraph{Optional elimination of one outer parameter.}
+There is an exact four-parameter source variant. Set
+$h=\beta(z,y,N)$ and substitute $h$ for $M_0$ throughout, retaining only
+$N,x,z,y$. The endpoint conditions reduce to
+$\beta(x,y,0)=h+2$, $\beta(x,y,N)=1$, and $\beta(z,y,0)=2$;
+the fourth endpoint becomes an identity. Restoring $M_0=h$ proves the
+converse equivalence. The local polynomial and its witness count are
+unchanged. However, composing the bounded step now requires another
+remainder graph rather than a parameter coordinate. The compiled size
+may therefore increase; four outer parameters is only a source-level
+tradeoff, not a final Diophantine variable reduction. No additional
+generated constructor or numerical compiler claim is supplied for it.

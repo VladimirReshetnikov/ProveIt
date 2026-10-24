@@ -1,0 +1,183 @@
+\section{Centered norms: twenty-four and twenty-two integers}
+\label{sec:centered}
+
+Two additional changes improve the variable/degree tradeoff. Both use the
+integral coordinate shear
+\begin{equation}
+ y_{\rm old}=fo+y,\qquad y=y_{\rm old}-fo.
+ \label{eq:auxshear}
+\end{equation}
+This is a bijection on integer coordinates, since $f,o$ are retained.
+Together with $V=fo-c$, it gives the exact factorization
+\begin{equation}
+ y_{\rm old}^{\,2}-V^2=(c+y)(2fo+y-c).
+ \label{eq:auxdiff}
+\end{equation}
+The leading square cancels, saving one degree in this difference.
+These equations use $y$ for the centered root; it no longer denotes
+the uncentered $y$ of Section~\ref{sec:integer}.
+
+\subsection{A degree-ten equation in twenty-four integers}
+
+Start with the 26-integer octic described above. Retain $\zeta$ as an
+unknown, set $k=\eta+\zeta$, eliminate $D=X+ac+\gamma H$ and $V=fo-c$,
+and apply \eqref{eq:auxshear}. The centered auxiliary residual is
+\begin{equation}
+ A_{\rm aux}=(fo+y)^2-I^2(c+y)(2fo+y-c)-1.
+ \label{eq:aux24}
+\end{equation}
+Its degree is five. The directly substituted main norm
+$N=(X+ac+\gamma H)^2-\Delta c^2-1$ still has degree six. A different
+row representing that norm will lower its degree.
+
+Put $b=ac+\gamma H$ and $Y=a-E$, as before, and define
+\begin{equation}
+ M=XE+2Eb+Y\bigl[H(2ac\gamma+H\gamma^2-c^2)-1\bigr].
+ \label{eq:main24}
+\end{equation}
+Since $\Delta=a^2+H$, direct expansion gives
+\[
+ b^2-\Delta c^2=H(2ac\gamma+H\gamma^2-c^2).
+\]
+Consequently the following identity holds as an identity of polynomials:
+\begin{equation}
+ \boxed{M=YN+(X+2b)(E-XY).}
+ \label{eq:nonzeroscale}
+\end{equation}
+The retained row $E-XY=0$ therefore makes $M=YN$. The other retained
+row gives $Y=(2v+1)q^3$. This is never zero at an integer solution:
+$2v+1\ne0$, and $q=\beta J+1\ne0$ because $\beta>1$ and $J$ is an
+integer. Thus replacing $N=0$ by $M=0$ is reversible on the common
+zeros of the other rows. This explicit nonvanishing argument excludes
+the extra zero component that an arbitrary multiplication could introduce.
+No positivity, native calibration or Pell theorem is used to establish it.
+
+The unknowns of $P_{24}$ are the twenty-three names in
+\eqref{eq:vars23}, together with $\zeta$; $y$ has the centered meaning.
+Keep the definitions of $q,C,Y,H,\Delta,X,R,G,\Pi$ from
+Section~\ref{sec:integer}, but now use $k=\eta+\zeta$, $V=fo-c$,
+and $b=ac+\gamma H$. Its twelve residuals are
+\begin{align}
+ s_1&=Y-(2v+1)q^3, &
+ s_2&=E-XY,\nonumber\\
+ s_3&=c-\eta-kY, &
+ s_4&=\tau^2+(2\tau-k)E(c-\eta)-1,\nonumber\\
+ s_5&=M, &
+ s_6&=k-R-1-hE,\nonumber\\
+ s_7&=(K_0q+X)C-qF-Z(q-1), &
+ s_8&=k+V-cj-hE-1,\nonumber\\
+ s_9&=I-(2r+1)c^2, &
+ s_{10}&=I^2-\Delta(f^2-1),\nonumber\\
+ s_{11}&=A_{\rm aux}, &
+ s_{12}&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2-\Pi.
+ \label{eq:24residuals}
+\end{align}
+The single equation is
+\begin{equation}
+ \boxed{P_{24}=\sum_{\nu=1}^{12}s_\nu^2=0,
+ \qquad\mathbf x\in\Z^{24}.}
+ \label{eq:P24}
+\end{equation}
+Every residual has degree at most five. The complete degree-ten part is
+\begin{equation}
+ \boxed{\lead_{10}(P_{24})=
+ 64a^4\gamma^2(c+2\gamma)^2(a-E)^2
+ +4I^4f^2o^2(c+y)^2.}
+ \label{eq:leading24}
+\end{equation}
+These are the leading squares of $M$ and $A_{\rm aux}$. In particular,
+$[I^4f^2o^2y^2]P_{24}=4$, independently of the fixed ports.
+The supplied circuit has 135 binary arithmetic operations.
+
+\begin{theorem}[The 24-integer reduction]
+The polynomial $P_{24}$ has exactly twenty-four unrestricted integer
+unknowns and exact degree ten. Its integer solvability is equivalent to
+that of the 26-integer octic and hence to the pinned finite-refutation
+predicate. Its unsolvability satisfies \eqref{eq:target} for
+$\mathcal D=\Z^{24}$.
+\end{theorem}
+\begin{proof}
+The monic definitions of $D,V$ have polynomial inverse restorations.
+The shear \eqref{eq:auxshear} is invertible over the integers.
+Finally \eqref{eq:nonzeroscale}, together with $E=XY$ and the proved
+$Y\ne0$, makes the main-norm replacement reversible. Each step preserves
+existence of common integer zeros. A sum of integer squares vanishes
+exactly when all its residuals vanish. The degree certificate
+\eqref{eq:leading24} proves the remaining claim.
+\end{proof}
+
+\subsection{A degree-fourteen equation in twenty-two integers}
+
+Start with $P_{23}$ rather than $P_{24}$, so that $\zeta$ is again the
+abbreviation $1-V+jc+hE-\eta$. Apply the same shear to $y$. Define
+\[
+ Q=\Delta(f^2-1),\qquad S=I^2-Q,
+ \qquad A_{\rm old}=y_{\rm old}^{\,2}
+       -I^2(y_{\rm old}^{\,2}-V^2)-1.
+\]
+The residual $S$ is already present. Replace $A_{\rm old}$ by
+\begin{equation}
+ A_{\rm new}=(fo+y)^2-Q(c+y)(2fo+y-c)-1.
+ \label{eq:aux22}
+\end{equation}
+The exact identity
+\begin{equation}
+ A_{\rm new}=A_{\rm old}+S(y_{\rm old}^{\,2}-V^2)
+ \label{eq:row22}
+\end{equation}
+shows that this is an invertible elementary row operation in the presence
+of $S=0$. It needs no division or nonvanishing assumption.
+
+Now $I$ occurs only in its definition $I=(2r+1)c^2$ and in $S$.
+Eliminate it, deleting its definition row. The strong row becomes
+\begin{equation}
+ S_{22}=(2r+1)^2c^4-\Delta(f^2-1).
+ \label{eq:strong22}
+\end{equation}
+The complete single equation can therefore be written using the already
+displayed $r_1,\ldots,r_7,r_{11}$ as
+\begin{equation}
+ \boxed{P_{22}=\sum_{\nu=1}^{7}r_\nu^2
+              +S_{22}^{,2}+A_{\rm new}^{,2}+r_{11}^{,2}=0,
+ \qquad\mathbf x\in\Z^{22}.}
+ \label{eq:P22}
+\end{equation}
+The twenty-two unknowns are precisely \eqref{eq:vars23} with $I$
+removed. In the unchanged residuals and abbreviations, $V=fo-c$ and
+none depends on $y$, so the centered meaning of $y$ creates no further
+replacement. The fixed coefficient tuple is unchanged.
+
+The only degree-seven residual is $A_{\rm new}$. Its leading form is
+$-2a^2f^3o(c+y)$; all other residuals have degree at most six. Hence
+\begin{equation}
+ \boxed{\lead_{14}(P_{22})=4a^4f^6o^2(c+y)^2,
+ \qquad[a^4f^6o^2y^2]P_{22}=4.}
+ \label{eq:leading22}
+\end{equation}
+The degree is exactly fourteen at the actual fixed coefficients.
+The supplied circuit uses 123 binary operations.
+
+\begin{theorem}[The 22-integer reduction]
+The polynomial $P_{22}$ has twenty-two unrestricted integer unknowns,
+ten squared residuals, and exact degree fourteen. Its integer solvability
+is equivalent to that of $P_{23}$ and thus to finite ZFC refutability
+through the pinned calibration. In particular \eqref{eq:target} holds
+for $(P,\mathcal D)=(P_{22},\Z^{22})$.
+\end{theorem}
+\begin{proof}
+The root shear is an integral bijection. In the common-zero system,
+\eqref{eq:row22} has the inverse row operation of subtracting
+$S(y_{\rm old}^{,2}-V^2)$. After this change the monic definition of
+$I$ can be eliminated, with its displayed integer polynomial as inverse
+restoration. These steps preserve the entire integer zero set up to the
+specified coordinate maps. The previous soundness and completeness
+implications for $P_{23}$ therefore apply. Equation~\eqref{eq:leading22}
+proves exact degree fourteen.
+\end{proof}
+
+Direct substitution of $I=(2r+1)c^2$ into the old auxiliary norm would
+raise the degree much more. The order matters: remove $I$ from that norm
+using the strong row, cancel the leading square by centering, and only
+then eliminate $I$. The 22-integer result and the degree-ten companion
+are distinct useful tradeoffs; neither dominates the other in both
+variable count and degree.

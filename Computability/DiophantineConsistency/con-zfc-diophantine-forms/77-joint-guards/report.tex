@@ -1,0 +1,257 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,longtable,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Joint sign guards and Pell descent for smaller consistency equations},pdfauthor={OpenAI-assisted research for Vladimir Reshetnikov}}
+\renewcommand{\labelitemi}{$\bullet$}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\providecommand{\mathscr}[1]{\mathcal{#1}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\setlength{\emergencystretch}{4em}
+\title{Joint sign guards and Pell descent\\for smaller consistency equations}
+\author{OpenAI-assisted research for Vladimir Reshetnikov and ProveIt}
+\date{24 October 2026 (UTC)}
+\begin{document}\maketitle
+\begin{abstract}
+This iteration combines sign recovery, calibrated native guards, simultaneous
+positivity, and carefully ordered elimination of arithmetic coordinates.
+The resulting unrestricted-integer family includes a quartic in 37 unknowns,
+a sextic in 31, an octic in 25, and polynomials in 23, 22, 21, 20 and 19
+unknowns at degrees 12, 16, 20, 32 and 88 respectively. The important gain is not a new universal-machine bound: it is
+that joint sign compression and zero-set row reduction allow many more
+source coordinates to disappear without introducing rational witnesses.
+We give complete fixed coefficient bindings and compact defining equations.
+
+Independently, adjacent-coefficient Pell descent removes a denominator guard
+from the eleven-positive-variable construction, lowering degree 325 to 277
+and operations 113 to 111. A centered transport gives degree 257 in 114 operations, a further degree/cost
+tradeoff. The direct proof-checker route also gains smaller exact local
+polynomial graphs, and the inert-prime certificate no longer needs a CRT
+index variable or a second variable-power graph. Those compiler-interface
+advances are not presented as completed small consistency equations.
+
+All endpoint arguments are ordinary mathematics with explicit inherited
+Pell, native compiler and refutation-calibration dependencies. Finite replays
+and independent symbolic checks supplement those arguments; they do not
+constitute a new end-to-end Lean/Rocq certificate or a proof of consistency.
+No global minimality or literature-wide priority is claimed.
+\end{abstract}
+\tableofcontents
+\section{The target and the distinction between an equation and an interface}
+We seek a fixed polynomial $P\in\Z[x_1,\ldots,x_n]$ and a stated domain $D$
+for which
+\[
+\mathrm{ZFC}\vdash
+\bigl(\neg\exists\boldsymbol{x}\in D^n\ P(\boldsymbol{x})=0\bigr)
+\longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+Here $\N$ includes zero; $\N_{>0}$ and $\Z$ are different domains.
+A polynomial register is an abbreviation, not a hidden witness. Fixed
+coefficient integers are specified independently of consistency, by complete
+finite recipes and authenticated payloads. None of our defining equations
+contains an unknown exponent, factorial or binomial coefficient.
+The alternative CRT interface does use such functions and is explicitly
+excluded from the completed-polynomial rankings.
+
+The constructions are compared along several axes: domain, unknown count,
+degree, arithmetic operations, coefficient payload and proof burden.
+An unrestricted-integer equation is not dominated by a positive-domain
+equation merely because their nominal variable counts agree.
+Likewise a reduction in variables at the cost of degree is a tradeoff,
+not an unqualified simplification of every representation.
+Our principal completed family uses the coherent source34 tuple and two
+additional powers of two. The positive Pell family uses compact44 instead.
+No individual coefficient is exchanged between these tuples.
+
+The fresh starting point is repository commit
+\texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}.
+All eight original wave-ten archives are pinned and retained unchanged.
+The ordinary proofs establish the reductions relative to the named inherited
+results, not a newly checked derivation in the repository's encoded ZFC
+calculus. This distinction does not turn a finite test into a universal
+proof, nor does it assume the truth of $\Con(\mathrm{ZFC})$.
+\input{baseline/section.tex}
+\input{guards/section.tex}
+
+\section{A complete compact equation in twenty-four integers}
+\label{sec:compact}
+This section prints a common base for the smaller projections, so that the
+construction is more than a table of claimed sizes.
+Take the six fixed integers $\beta,K_0,M_C,M_F,A_0,B_0$ bound in the preceding
+section, with $A_0=2^{1113}$ and $B_0=2^{666104}$.
+The 24 unrestricted unknowns are
+\[
+ J_3,F,\alpha,z,f,h,r,v,w_3,\tau,\eta,y,\gamma,o,j,E,c,a,V,I,t,p_1,p_2,p_3.
+\]
+The aliases $v,t,p_i$ stand for \texttt{v\_scale}, \texttt{pair\_root}, and
+\texttt{pair\_pos}$i$ in the literal JSON. Define
+\begin{align*}
+ J&=3J_3+1,&q&=\beta J+1,&W&=4(3w_3+1),\\
+ X&=qW,&Y&=(2v+1)q^3,&C&=q-F-\alpha,\\
+ k&=1-V+jc+hE,&H&=4a+3,&\Delta&=a^2+H,\\
+ R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+ D_0&=(A_0F)(B_0C)-(q-A_0F-B_0C)^2,&T_0&=\eta(k-\eta),\\
+ \Pi&=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{align*}
+Every displayed symbol on a left-hand side is only an abbreviation.
+The twelve residuals are
+\begin{align*}
+ e_1&=a-E-Y,\\
+ e_2&=E(X+1)-aX,\\
+ e_3&=c-k(a-E)-\eta,\\
+ e_4&=\tau^2-E(c-\eta)\bigl[k+E(c-\eta)\bigr]-1,\\
+ e_5&=(X+ac+\gamma H)^2-\Delta c^2-1,\\
+ e_6&=jc-V-R,\\
+ e_7&=(K_0+W)C-F-z(q-1),\\
+ e_8&=V+c-fo,\\
+ e_9&=I-(2r+1)c^2,\\
+ e_{10}&=I^2-\Delta(f^2-1),\\
+ e_{11}&=I^2V^2-(I^2-1)y^2-1,\\
+ e_{12}&=D_0T_0-(t^2-D_0-T_0+1)^2-\Pi.
+\end{align*}
+Then
+\[
+ \boxed{P_{24}=e_1^2+e_2^2+\cdots+e_{12}^2=0,
+ \qquad\boldsymbol{x}\in\Z^{24}.}
+\]
+It has exact degree 12. The new last row forces $D_0>0$ and $T_0>0$
+by the universal simultaneous-positivity lemma below. It replaces two
+separate ternary positivity witnesses by four witnesses, without changing
+the other arithmetic coordinates.
+
+For the 25-variable octic, add an unrestricted $\zeta$, add the residual
+$\zeta-k+\eta$, and use $T_0=\eta\zeta$ only in the last row. Keep $k$ and
+all other rows exactly as printed. This is an existential extension whose
+projection is the 24-variable equation, but its degree is8 because the last
+row is now quartic rather than sextic. The coefficient of $t^8$ is 1.
+The independent root script \texttt{check\_displayed\_system.py} expands
+and compares every printed row with both literal JSON artifacts.
+
+The pair lemma and the further projections are proved next. In particular,
+when a row is replaced using another retained equation, we assert equality
+of zero sets, not equality of the entire sum-of-squares polynomials.
+\input{joint/section.tex}
+
+\section{Literal shared circuits for the integer family}
+The residual systems also admit small shared binary evaluators. The fixed
+numeral leaves are free in the same counting convention as the input
+packages; every live scalar multiplication, squaring, addition and subtraction
+is charged. Registers are reused, not re-expanded into expression trees.
+The following counts specify delivered circuits, not optimal circuits.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Integer unknowns & Exact degree & One polynomial & Residual system\\
+\midrule
+25&8&127&102\\
+23&12&121&100\\
+22&16&118&99\\
+21&20&115&98\\
+20&32&112&97\\
+19&88&109&96\\
+\bottomrule
+\end{tabular}
+\end{center}
+The system column charges the union of live gates needed to evaluate all
+residuals, not the sum of separately recomputed expressions. The polynomial
+column additionally forms and sums their squares. The 23-variable circuit
+here is the variant eliminating $V$; the distinct variant eliminating $I$
+has a smaller expanded support and is supplied separately.
+
+The circuit proof is literal polynomial equality, stronger than equality
+of zero sets. It validates each restored-coordinate definition and each
+residual with named symbolic intermediate expressions, then structurally
+inlines those expressions to match the corresponding JSON packet.
+For example, the nineteen-variable first norm simplifies using the exact
+small-ring identity
+\[
+ (XY)(kY)\bigl(k+(XY)(kY)\bigr)
+ =XY^2(XY^2+1)k^2.
+\]
+Such identities avoid expanding the entire degree-88 sum of squares while
+still proving an identity for every integer assignment. Random modular
+evaluation alone would not suffice. The independent checker separately
+checks topology, liveness, all declared inputs, counted binary operations,
+and the symbolic residual bindings. No modular test is substituted for
+an unbounded circuit identity.
+
+The degree-88 equation in 19 unrestricted integers thus uses 109 operations,
+with the same six numerical payloads as the other determinant constructions.
+That improves the selected older 24-integer degree-1936/161-operation point
+on variables, degree and this circuit-cost convention. Coefficient payloads
+and proof dependencies are still separate comparison axes, so this is not
+a global claim of the simplest possible equation.
+
+\input{pell/section.tex}
+\input{certificates/section.tex}
+
+\section{Comparison and what has not been achieved}
+The completed native family is a synthesis of previously separate tools,
+not a claim that each ingredient was invented here. The new mathematical
+obligations are their simultaneous canonical completeness, the ordering of
+sign and rank recovery, and the exact inverse reconstruction after each
+coordinate deletion. A superficially similar substitution can fail if it
+uses a canonical bound on arbitrary signed inputs, or if it forgets an
+integrality condition. The proof and independent checkers address these
+specific risks.
+
+The lower-variable integer projections keep the same six fixed payloads.
+They do not claim reduced maximum expanded coefficient height or a minimum
+arithmetic circuit. Their definitions are factored where expansion is
+unhelpful; those registers still introduce no unknowns.
+Historical integer points include 25 variables at degree 920,26 at degree 214,
+and 24 at degree 1936. The new low-degree integer tradeoffs should be compared
+with those domains, not with the existing25-positive sextic or20-positive
+octic. Ten unrestricted variables and nine positive variables already exist
+at much larger degrees, so our variable counts are not absolute records.
+
+The 11-positive degree277 construction improves both degree and gate count
+relative to the inspected325/113 predecessor. Its centered companion is a
+separate degree/cost tradeoff. Attempts to merge a fourth Pell root and reach
+ten low-degree positive unknowns still encounter preservation of the main
+root and transport residue channels. Radical rationality alone would not
+repair that obstruction. No such ten-variable theorem is claimed.
+
+The direct compiler optimizations preserve the existing max-square pairing
+and zero-test semantics. A different Cantor coding could make pairing itself
+quadratic with no private auxiliary coordinate, but changing a whole proof
+checker requires a recursive code translation and a correctness theorem.
+That possibility is not a drop-in replacement for the current frozen
+checker. The CRT interface similarly still requires complete polynomial
+graphs for its remaining special functions. Neither local node counts nor
+uncompiled graphs are counted as final consistency-polynomial sizes.
+
+\section{Reproducibility and the formal proof boundary}
+The release contains editable TeX, compiled PDF, literal/factored equation
+specifications, complete coefficient bindings, source pins and inherited
+proof texts, normal and optimized finite checks, and independent audits.
+Original input ZIPs are preserved for authentication and replay.
+Run \texttt{python3 verify.py} in an extracted release; add
+\texttt{--replay-originals} to rerun the original incoming verifiers as well.
+Run \texttt{python3 negative\_controls.py} for the root integrity controls.
+The replay works in an isolated temporary copy and compares selected rebuilt
+artifacts byte for byte. It does not decide whether any consistency equation
+has a solution.
+
+There are three separate assurances. The exact algebra checks certify the
+finite displayed transformations and literal artifacts. The accompanying
+unbounded arguments establish soundness and completeness of the new steps.
+The inherited compiler/Pell/refutation interfaces provide the semantic
+calibration to finite ZFC proofs. This packet does not newly formalize their
+entire composition or export an encoded object-language ZFC biconditional.
+The current upstream formal developments are reported with their own scope;
+no local diagnostic is used to upgrade an upstream claim to a fresh kernel
+check.
+
+\paragraph{Source references.}
+The project is Vladimir Reshetnikov's ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/DiophantineConsistency}.
+Full immutable hashes, archive Git blob IDs and SHA256 values are recorded
+in the pin manifests. The reviewed comparison is
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md}.
+Authored proofs identify the relevant original archive and theorem at each
+import boundary. All copied sources retain their notices and provenance.
+\end{document}

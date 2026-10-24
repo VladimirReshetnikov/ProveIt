@@ -1,0 +1,397 @@
+\section{A shared certificate for a finite family of powers}
+\label{sec:shared-arithmetic}
+
+The principal change is a change of quantified witnesses.  A compiler that
+expands every arithmetic relation independently repeats number-theoretic
+infrastructure that can be chosen once for the entire finite system.
+We prove simultaneous existence before identifying any witness slots.
+The resulting identifications preserve existential solvability, rather
+than the set of assignments to the old auxiliary coordinates.
+These reductions are new relative to the audited direct-compiler lineage;
+we make no claim that every underlying observation is new to the literature.
+
+\subsection{The classical positive-power interface}
+
+For an integer $a\geq2$, let $\chi_a(j),\psi_a(j)$ be the natural Pell
+sequences determined by
+\begin{align*}
+ \chi_a(0)&=1,&\psi_a(0)&=0,\\
+ \chi_a(j+1)&=a\chi_a(j)+(a^2-1)\psi_a(j),&
+ \psi_a(j+1)&=\chi_a(j)+a\psi_a(j).
+\end{align*}
+Thus $\chi_a(j)^2-(a^2-1)\psi_a(j)^2=1$.  Write
+\[
+ \mathcal P(a;x,y)=x^2+y^2-(ay)^2-1.
+\]
+We use the classical Pell characterization of exponentiation, in the
+explicit form proved by \texttt{matiyasevic} and
+\texttt{eq\_pow\_of\_pell} in Mathlib~\cite{mathlibpell}.
+For $n,k>0$, the graph $m=n^k$ is characterized by natural witnesses
+\[
+ W,A,T,Z,X,Y,U,V,B,S,R
+\]
+with $A,B\geq2$, $k\leq Y$, $n,k\leq W$, and
+\begin{align}
+ \mathcal P(A;X,Y)&=\mathcal P(A;U,V)
+ =\mathcal P(B;S,R)=0,\label{eq:sa-three-norms}\\
+ V&>0,\qquad Y^2\mid V,\label{eq:sa-v-divides}\\
+ B&\equiv1\pmod{4Y},&B&\equiv A\pmod U,\label{eq:sa-b-crt}\\
+ S&\equiv X\pmod U,&R&\equiv k\pmod{4Y},\label{eq:sa-index-congruences}\\
+ X+Yn&\equiv YA+m\pmod T,\label{eq:sa-power-congruence}\\
+ 2An&=T+n^2+1,\qquad m<T,\label{eq:sa-t-bound}\\
+ \mathcal P(W+1;A,WZ)&=0.\label{eq:sa-majorant-norm}
+\end{align}
+The first block recovers $X=\chi_A(k)$ and $Y=\psi_A(k)$; the last
+block supplies the size bound that makes the power congruence exact.
+The displayed congruence moves $Yn$ to the left so that the compiler need
+not evaluate a potentially negative intermediate expression.
+
+For clarity, the classical facts needed below are
+\begin{gather}
+ \psi_a(j)\geq j,\qquad \chi_a(j)\geq a^j,\qquad
+ \psi_a(j)\equiv j\pmod{a-1},\label{eq:sa-classical-bounds}\\
+ \psi_a(j)^2\mid\psi_a\bigl(j\psi_a(j)\bigr),\qquad
+ d\mid e\Longrightarrow\psi_a(d)\mid\psi_a(e).
+ \label{eq:sa-classical-divisibility}
+\end{gather}
+Both sequences are strictly increasing in their index.  Their dependence
+on $a$ is polynomial, so
+congruent base parameters give congruent values at the same index.
+These are the same Pell inputs used by the inherited construction.
+
+\subsection{Orienting the congruence quotients}
+
+A congruence $F\equiv G\pmod H$ is often compiled using two natural
+quotients, $F+Hu=G+Hv$.  Canonical completeness witnesses let us orient
+the four congruences in the positive-power interface and use one quotient
+each.  The orientation is proved for a chosen complete family; it is not
+assumed for every old certificate.
+
+\begin{lemma}[Oriented positive-power witnesses]
+\label{lem:sa-orientation}
+In the completeness direction of the positive-power interface, witnesses
+can be chosen satisfying
+\begin{align*}
+ B&=A+Uq_B,&S&=X+Uq_S,\\
+ R&=k+4Yq_R,&X+Yn&=YA+m+Tq_P,
+\end{align*}
+with $q_B,q_S,q_R,q_P\in\N$.  They also satisfy
+$B=1+4Y(q_4+1)$ for a natural $q_4$.
+\end{lemma}
+
+\begin{proof}
+Choose $X=\chi_A(k)$, $Y=\psi_A(k)$ and an auxiliary even index
+$M\geq2$ for which $Y^2\mid\psi_A(M)$.  Put
+$U=\chi_A(M)$ and $V=\psi_A(M)$.  The standard coprimality argument
+permits a natural CRT witness $B\equiv A\pmod U$,
+$B\equiv1\pmod{4Y}$.  Since $U>A$, the residue $A$ lies strictly
+between zero and $U$, and therefore $B\geq A$.
+This proves the first orientation and $B\geq2$.
+
+Take $S=\chi_B(k)$ and $R=\psi_B(k)$.  Joint induction in the two
+recurrences shows that both coordinates are nondecreasing in the base
+parameter: their initial values agree and their nonnegative recurrence
+coefficients increase with the parameter.  Thus $B\geq A$ gives
+$S\geq X$.  Also $R\geq k$.  The two corresponding congruences now
+have nonnegative difference quotients.
+
+For the remaining orientation, the recurrence gives
+\[
+ \chi_A(k)-A\psi_A(k)=-\psi_A(k-1)\qquad(k\geq1).
+\]
+Consequently
+\[
+ L_0:=X+nY-AY=n\psi_A(k)-\psi_A(k-1)>0.
+\]
+The power congruence says $L_0\equiv m\pmod T$, while the canonical
+choice has $0<m<T$.  If $L_0=m+Tq$ with an integer $q\leq-1$, then
+$L_0\leq m-T<0$, a contradiction.  Hence $q=q_P\geq0$.
+Finally, $(B-1)/(4Y)$ is a positive integer, since a zero quotient
+would give $B=1$; subtracting one defines $q_4\in\N$.
+\end{proof}
+
+Each oriented equality immediately implies its old congruence, so
+soundness is preserved.  In the old two-quotient convention the lift is
+simply $(u,v)=(0,q)$.  Two further bounds need no independent slack.
+First, $Y\geq k>0$ and $B=1+4Y(q_4+1)$ imply $B\geq5$.
+Second, the equations $T=m+g+1$ and $2An=T+n^2+1$ imply $A\geq2$:
+if $A\leq1$, then
+\[
+ 2An\leq2n\leq n^2+1<T+n^2+1,
+\]
+contradicting the defining equality.  This inference precedes the use
+of any Pell theorem and does not assume that the candidate output is
+already the correct power.
+
+\subsection{Simultaneous choice of the majorant and auxiliary pair}
+
+\begin{theorem}[One Pell infrastructure for a finite family]
+\label{thm:sa-shared-pell}
+Let $(n_j,k_j)$, $1\leq j\leq r$, be a nonempty finite family with
+$n_j,k_j>0$.  The conjunction $m_j=n_j^{k_j}$ admits the preceding
+positive-power certificates with a common $W,A,Z,U,V,B$ and a common
+$q_B$.  One may impose the exact equation
+\[
+ W=\sum_{j=1}^r(n_j+k_j).
+\]
+Calls with the same exponent may additionally share their complete
+Pell-index block.
+\end{theorem}
+
+\begin{proof}
+We prove completeness by an explicit order of choices.  Fix the intended
+outputs and put $W=\sum_j(n_j+k_j)$.  Then $W\geq n_j,k_j$ and
+$W\geq2$.  Choose
+\[
+ A=\chi_{W+1}(W),\qquad WZ=\psi_{W+1}(W).
+\]
+The ordinate is divisible by $W$ by
+\eqref{eq:sa-classical-bounds}, so $Z$ is natural.  The common last
+norm holds, and for every $j$,
+\[
+ n_j^{k_j}\leq n_j^W<(W+1)^W\leq A.
+\]
+The classical power-bound lemma therefore gives
+\[
+ 0<m_j<T_j:=2An_j-n_j^2-1.
+\]
+No property of the original choice $\max(n_j,k_j)$, beyond its two
+upper bounds, was needed.
+
+Index the distinct supplied exponents by $e_1,\ldots,e_s$ and set
+\[
+ X_\ell=\chi_A(e_\ell),\quad Y_\ell=\psi_A(e_\ell),\quad
+ M=2\prod_{\ell=1}^s e_\ell Y_\ell,
+ \quad U=\chi_A(M),\quad V=\psi_A(M).
+\]
+Every $e_\ell Y_\ell$ divides $M$, so
+\eqref{eq:sa-classical-divisibility} gives $Y_\ell^2\mid V$ for
+every $\ell$.  Also $M\geq2$ and $V>0$.
+The recurrence $\psi_a(j+2)=2a\psi_a(j+1)-\psi_a(j)$ shows
+$\psi_a(j)\equiv j\pmod2$, and hence $V$ is even.
+The Pell norm implies $\gcd(U,V)=1$.  Thus $U$ is odd and coprime
+to every $Y_\ell$, whence
+\[
+ \gcd\left(U,4\prod_{\ell=1}^sY_\ell\right)=1.
+\]
+Since $M\geq2$, strict index growth gives $U>A$.
+
+Choose one nonnegative CRT witness
+\[
+ B\equiv A\pmod U,
+ \qquad B\equiv1\pmod{4\prod_\ell Y_\ell}.
+\]
+It satisfies $B\geq A$ and all the required individual congruences
+$B\equiv1\pmod{4Y_\ell}$.  Define
+$S_\ell=\chi_B(e_\ell)$ and $R_\ell=\psi_B(e_\ell)$.
+Lemma~\ref{lem:sa-orientation} supplies all the natural oriented
+quotients.  In particular, each positive quotient $V/Y_\ell^2$ gives
+the row $V=Y_\ell^2(v_\ell+1)$ with $v_\ell\in\N$.
+The same index block can be supplied to every call having exponent
+$e_\ell$.  The output gap and the power-congruence quotient remain
+specific to its base and output.
+
+For soundness, take any natural solution of the shared system.
+The equation for $W$ gives all the required upper bounds.  The positive
+output gap and the $T_j$ equation establish $A\geq2$ as above.
+For each individual call, reuse the common $W,A,Z,U,V,B$ in the
+classical interface.  Its own index block proves $Y\geq k>0$,
+$V>0$, $Y^2\mid V$ and $B\geq2$, and its oriented rows imply the
+old congruences.  The classical theorem gives $m_j=n_j^{k_j}$.
+Soundness does not require an arbitrary shared auxiliary pair to arise
+from the particular product index $M$ used in the completeness proof.
+\end{proof}
+
+The product defining $M$ and the CRT choice of $B$ occur only in this
+proof.  They are not variable-exponent expressions or additional
+operations in the final polynomial.  The final system stores the
+common norm and congruence rows and the individual finite certificates.
+The released implementation shares exponent blocks only for literally
+identical supplied atoms; it has twenty such blocks.  It does not merge
+different expressions merely because they might have equal values on
+some solutions.
+
+\subsection{Quadratic rows and positive-input specialization}
+
+The norm $x^2-(a^2-1)y^2=1$ can be compiled with a single product
+register $h=ay$ and the quadratic residual
+\[
+ x^2+y^2-h^2-1=0.
+\]
+The witness $h$ is uniquely determined and natural.  In the main norm
+the same $AY$ product is already needed by the power-congruence row.
+Squares that occur as terms of a quadratic residual need no separate
+register.  Likewise $Y=k+y_0$ and $T=m+g+1$ are exact affine
+parametrizations of the two bounds, with explicit inverse maps
+$y_0=Y-k$ and $g=T-m-1$ on old solutions.
+
+These changes apply to the positive branch.  A general exponentiation
+graph must still handle $k=0$, where $m=1$, and $n=0<k$, where $m=0$.
+The present source establishes positive bases and exponents at every
+emitted call, so those branches are unnecessary here.  This is a property
+of the full construction, not an assumption that arbitrary power inputs
+are positive.  In particular the nested calls introduced below remain
+positive before their candidate factorial outputs have been identified.
+An unguarded norm is quadratic in the form just displayed; multiplying
+it by a Boolean selector would instead be cubic, so the simplification
+is not asserted for an unchanged guarded implementation.
+
+\section{One radix for all binomial coefficients}
+\label{sec:shared-radix}
+
+Suppose a finite family of binomial graphs has natural upper arguments
+$N_i$ and lower arguments $K_i$.  The independent compiler used a
+separate radix $2^{N_i}+1$ for each call.  Set instead
+\[
+ L=\sum_i N_i,\qquad b=2^L,\qquad q=b+1.
+\]
+Here $b=2^L$ is one power graph, compiled by the preceding quadratic
+certificate; it is not retained as an exponentiation operator.
+
+\begin{lemma}[Common-radix digit extraction]
+\label{lem:sa-common-radix}
+For every $i$, the coefficient $c_i=\binom{N_i}{K_i}$ is characterized
+by natural $h_i,r_i,u_i,v_i$ satisfying
+\begin{align*}
+ (q+1)^{N_i}&=q^{K_i}(qh_i+c_i)+r_i,\\
+ q^{K_i}&=r_i+u_i+1,\\
+ q&=c_i+v_i+1.
+\end{align*}
+The powers in these displayed semantic equations can all be replaced
+by the finite positive-power graphs when their inputs are positive.
+\end{lemma}
+
+\begin{proof}
+Since $L\geq N_i$, we have $q>2^{N_i}$.  The binomial coefficients
+are nonnegative and their sum is $2^{N_i}$, so every coefficient in
+\[
+ (q+1)^{N_i}=\sum_{j=0}^{N_i}\binom{N_i}{j}q^j
+\]
+is smaller than $q$.  This is therefore its base-$q$ expansion without
+carries.  Its digit in position $K_i$ is $\binom{N_i}{K_i}$, with the
+usual value zero for $K_i>N_i$.
+The first two rows perform Euclidean division by $q^{K_i}$; the last
+row restricts the next remainder to the interval $[0,q)$.
+Together they select exactly that digit.  Conversely Euclidean
+division supplies $h_i,r_i$ and both nonnegative slacks.
+\end{proof}
+
+The digit lemma itself also handles $N_i=0$ or $K_i=0$ under the
+convention $q^0=1$.  In the positive-only released construction the
+upper and lower arguments are positive, so $L>0$ and all power calls
+remain in their supported branch.  Equal lower arguments now use the
+same denominator power $q^{K_i}$; equal upper arguments use the same
+numerator power.  Literal cache equality, rather than an unproved
+algebraic simplification, determines these additional identifications.
+
+The distinction between $L$ and the Pell majorant $W$ is essential.
+The latter bounds the inputs of all power calls, including bases $q$
+and $q+1$.  Setting $q=2^W+1$ would create a circular size requirement.
+Our order of choices is different: fix the intended high-level arithmetic
+values, then their binomial upper arguments and $L$; choose $q=2^L+1$;
+then all power bases and exponents are fixed, permitting the subsequent
+choice of $W,A,Z,U,V,B$.
+
+For soundness, the shared Pell system first establishes every power
+graph pointwise.  The literal equation $L=\sum_iN_i$ then gives the
+bound for every digit extraction.  Thus the binomial graphs are proved
+before using any factorial correctness claim.  In completeness, even
+when a factorial output appears in an upper argument, we first assign
+its intended value and then construct these arithmetic certificates.
+No upper argument refers to a private Pell witness.
+
+\section{A self-bounding factorial certificate}
+\label{sec:self-bounding-factorial}
+
+The inherited factorial macro chose a radius using a further large
+power.  Its only purpose was to make a rational approximation close
+enough to the integer $n!$.  The candidate factorial output itself
+provides a sufficient radius, provided both implications are proved.
+
+\begin{theorem}[Self-bounding factorial]
+\label{thm:sa-factorial}
+For $n,m\in\N$, put
+\[
+ Q=mn^2,\qquad C=\binom{Q+n}{n},\qquad P=(Q+1)^n.
+\]
+Then
+\[
+ m=n!\quad\Longleftrightarrow\quad
+ m=\left\lceil\frac{P}{C}\right\rceil.
+\]
+Equivalently, $m=n!$ holds precisely when natural $r,s$ satisfy
+\begin{equation}
+ P+C=mC+r+1,\qquad C=r+s+1.
+ \label{eq:sa-factorial-rows}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Always $P,C\geq1$.  The two rows are equivalent to
+\[
+ P=C(m-1)+(r+1),\qquad 1\leq r+1\leq C,
+\]
+and hence to $m-1<P/C\leq m$.  They force $m\geq1$: if $m=0$,
+the first row would give $P+C=r+1\leq C$, contradicting $P\geq1$.
+Conversely the ceiling inequalities give the natural witnesses
+$r=P+C-mC-1$ and $s=C-r-1$.
+
+When $n=0$, one has $Q=0$ and $P=C=1$, so both sides assert $m=1$.
+Now assume $n\geq1$ and $m\geq1$, so $Q=mn^2>0$.  Write $F=n!$
+and use the exact rational identity
+\[
+ R:=\frac{P}{C}=F\prod_{i=1}^{n}\frac{Q+1}{Q+i}.
+\]
+Every factor lies in $(0,1]$, giving $0<R\leq F$.
+Let $d_i=(i-1)/(Q+i)$.  These numbers lie in $[0,1)$, and
+\[
+ \sum_{i=1}^n d_i
+ \leq\frac{n(n-1)}{2Q}
+ <\frac{n^2}{2Q}=\frac{1}{2m}.
+\]
+Induction gives the elementary inequality
+$\prod_i(1-d_i)\geq1-\sum_i d_i$.  Therefore
+\begin{equation}
+ R>F\left(1-\frac{1}{2m}\right).
+ \label{eq:sa-factorial-ratio}
+\end{equation}
+
+For soundness, suppose $m=\lceil R\rceil$.  Since $F$ is an integer
+and $R\leq F$, we have $m\leq F$.  On the other hand $R\leq m$
+and \eqref{eq:sa-factorial-ratio} imply
+\[
+ F<\frac{m}{1-1/(2m)}
+   =m+\frac{m}{2m-1}\leq m+1.
+\]
+The first inequality is strict, including when $m=1$.  Integrality
+therefore gives $F\leq m$, and so $F=m$.
+
+For completeness, set $m=F$.  The same estimate gives
+$R>F-\tfrac12>F-1$, while $R\leq F$.  Thus $\lceil R\rceil=F$,
+and the displayed natural remainder witnesses exist.
+\end{proof}
+
+The proof addresses the apparent circularity directly: $m$ is initially
+an arbitrary candidate; the fixed-point condition forces it to be the
+factorial.  Merely replacing the radius by a smaller expression is not
+safe.  For example, the choice $Q=mn$ has a false fixed point at
+$n=4,m=23$, although $4!=24$.  The quadratic radius and its strict
+estimate are doing mathematical work.
+
+In the compiler, allocate the output $m$ and replace the old radius
+power by the polynomial expression $mn^2$.  Keep the remaining
+binomial graph, numerator power and rows
+\eqref{eq:sa-factorial-rows}.  For a positive factorial input $n$,
+one has $Q+n\geq n>0$ and $Q+1\geq1$ even before proving $m=n!$.
+Hence the nested binomial upper argument, lower argument, numerator
+base and numerator exponent are positive without using the desired
+factorial conclusion.  The power and binomial graph proofs may therefore
+be applied first, followed by Theorem~\ref{thm:sa-factorial}.
+
+Finally, all binomial coefficients, ceilings, Pell sequences, divisibility
+symbols and powers with variable exponents in these sections belong to
+the correctness proof and the semantic description of macros.  The
+released equation contains only a fixed finite list of integer quadratic
+residuals.  Their sum of squares is an ordinary polynomial of degree
+four with fixed integer coefficients; no such semantic operation remains
+in that polynomial.

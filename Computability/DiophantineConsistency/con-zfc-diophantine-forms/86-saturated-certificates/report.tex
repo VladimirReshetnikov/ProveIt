@@ -1,0 +1,546 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+  urlcolor=blue!45!black,pdftitle={Saturated Pell certificates and quotient recovery for Diophantine consistency},
+  pdfauthor={AI-assisted research contribution for the ProveIt project}]{hyperref}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\ConZFC}{\operatorname{Con}(\mathsf{ZFC})}
+\newcommand{\RefZFC}{\operatorname{Ref}_{\mathsf{ZFC}}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: saturated certificates}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\allowdisplaybreaks[2]
+
+\title{\vspace{-12mm}\textbf{Saturated Pell certificates and quotient recovery}\\[3mm]
+  \large Eight explicit Diophantine equations for syntactic consistency of ZFC}
+\author{\normalsize Research contribution prepared for Vladimir Reshetnikov's ProveIt project\\
+  \small AI-assisted mathematical construction and exact independent audits}
+\date{24 October 2026 (UTC)}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+
+\begin{abstract}
+We give explicit, materialized integer polynomials with new variable--degree--cost
+tradeoffs for the absence of a finite ZFC refutation. The main nine-positive
+construction has exact total degree \(999\,518\); a shorter companion uses
+435 binary arithmetic operations at degree \(1\,628\,768\). A strong-Pell
+growth argument gives eleven positive unknowns at degree 213 in 112 operations.
+For unrestricted integer unknowns, quotient recovery and a separated rational
+norm give seventeen unknowns at degree 88 and sixteen at degree 184; a
+degree-ten companion uses twenty-three integers.
+
+The improvements are complete ordinary arithmetic reductions. They compose
+with explicitly identified inherited source/compiler and logical-calibration
+theorems; they do not assume consistency. Every fixed integer is supplied,
+and the archive includes literal division-free circuits, exact algebra
+certificates, ordinary proofs, and standard-library verifiers. The positive
+majorant is certified by an identity with 36,309 positive coefficients.
+We do not claim a global minimum, external historical priority, or a new
+end-to-end proof-assistant derivation inside the encoded ZFC calculus.
+\end{abstract}
+
+\section{Outcome, target, and comparison}
+\label{sec:outcome}
+
+\subsection{The precise logical target}
+
+Fix the repository's syntactic ZFC axiom predicate and proof calculus. Let
+\(\RefZFC(p)\) mean that \(p\) codes a finite derivation of falsity, with
+all axiom and inference checks included. We use
+\[
+ \ConZFC\ \equiv\ \neg\exists p\in\N\;\RefZFC(p).
+\]
+The desired conclusion for a fixed polynomial \(P\) and an explicitly
+declared witness domain \(\mathcal D\) is
+\begin{equation}
+ \mathsf{ZFC}\ \vdash\
+ \left[
+   \left(\neg\exists\mathbf x\in\mathcal D\;P(\mathbf x)=0\right)
+   \longleftrightarrow \ConZFC
+ \right].
+ \label{eq:target}
+\end{equation}
+This is a proof of an equivalence, not a proof of either side. In particular,
+there is no appeal to the consistency or soundness of ZFC as a premise.
+The relevant construction proves an existential equivalence with a finite
+refutation and then negates it.
+
+There is no single established numerical meaning of \emph{simplest}. A smaller
+number of unknowns may require a higher degree; a lower degree may need a
+larger arithmetic circuit; compact native constants can require a different
+source packing. We therefore provide the measured alternatives in
+Table~\ref{tab:results}, instead of asserting a nonexistent optimality theorem.
+The distinction between positive and unrestricted integer witnesses is
+substantive and is retained in every claim.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{llrrr}
+\toprule
+Construction & Witness domain & Unknowns & Exact degree & Operations\\
+\midrule
+Complete-radical H1868 & \(\Zp\) & 9 & \(\mathbf{999\,518}\) & 1086\\
+Simple H1868 & \(\Zp\) & 9 & \(1\,474\,688\) & 449\\
+Simple compact H2082 & \(\Zp\) & 9 & \(1\,628\,768\) & \(\mathbf{435}\)\\
+Strong-Pell weight & \(\Zp\) & 11 & \(\mathbf{213}\) & 112\\
+Rational norm, product finish & \(\Z\) & 16 & \(\mathbf{184}\) & 135\\
+Rational norm, squared finish & \(\Z\) & 16 & 192 & 134\\
+Quotient recovery & \(\Z\) & 17 & \(\mathbf{88}\) & 114\\
+Low-degree synthesis & \(\Z\) & 23 & \(\mathbf{10}\) & 131\\
+\bottomrule
+\end{tabular}
+\caption{Complete new polynomials. All degrees count only the listed
+unknowns, with the supplied coefficient tuple fixed.}
+\label{tab:results}
+\end{table}
+
+For a readily inspectable equation over unrestricted integers,
+\(P_{17}\) in Section~\ref{sec:integer17} is a useful primary presentation:
+five squared residuals, seventeen unknowns, exact degree 88. If one fewer
+integer unknown matters more than degree, Section~\ref{sec:integer16}
+gives the sixteen-variable alternatives. If the number of positive unknowns
+is the leading measure, Section~\ref{sec:nine-saturation} supplies the
+nine-variable constructions. These choices do not displace shorter
+higher-variable equations already present in the repository.
+
+\subsection{Measured improvements over the inspected inputs}
+
+The reviewed repository commit is
+\[
+ \texttt{c1a102936aca437e9999\allowbreak530a0111e6ddab56dc6d}.
+\]
+The review includes all five archives then present in \file{docs/incoming};
+their exact byte hashes are recorded in \file{provenance/SOURCES.json}.
+The comparisons below refer to these fixed inputs, not to a continually
+changing branch.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{p{43mm}p{49mm}p{48mm}}
+\toprule
+Comparison & Inspected input & New construction\\
+\midrule
+Nine positives, small circuit &
+Degree \(1\,845\,940\), 440 operations \cite{repo} &
+Degree \(1\,628\,768\), 435 operations\\
+Nine positives, lower degree &
+Degree \(1\,158\,228\), 1753 operations \cite{radical} &
+Degree \(999\,518\), 1086 operations\\
+Eleven positives, centered &
+Degree 257, 114 operations \cite{joint} &
+Degree 213, 112 operations\\
+Integers, fixed degree 88 &
+19 unknowns, 109 operations \cite{joint} &
+17 unknowns, 114 operations\\
+Integers, fixed degree ten &
+24 unknowns \cite{budget} &
+23 unknowns, 131 operations\\
+\bottomrule
+\end{tabular}
+\caption{Specific comparisons. A variable reduction can increase the
+operation count; it is not described as improvement in every measure.}
+\label{tab:comparisons}
+\end{table}
+
+The incoming standalone report also gives a nine-positive degree
+\(1\,158\,240\) equation in 811 operations \cite{reportincoming}.
+The new degree-\(999\,518\) form lowers its reported degree but uses more
+operations. That standalone report contains no executable companion in its
+archive, so its operation figure is treated as a reported comparator.
+The incoming eleven-positive degree-277 / 111-operation equation remains
+one operation shorter than our degree-213 form \cite{joint}.
+The active size plan also retains a fifteen-positive degree-157 equation
+in only 66 operations \cite{repo}; we make no claim to beat that total
+operation count.
+
+\subsection{Counting rules and fixed coefficients}
+
+The operation measure counts each live binary addition, subtraction, and
+multiplication in the delivered straight-line circuit once. A square is
+one multiplication. Multiplication by a fixed scalar is also counted.
+Intermediate registers can be reused. Fixed integer leaves are free in
+this arithmetic-circuit measure, so their storage cost is stated separately.
+No division, variable exponent, inequality test, logarithm, bit operation,
+or proof predicate occurs in a delivered polynomial evaluator.
+
+The following are the native coefficient costs, not the coefficients of a
+fully expanded enormous polynomial:
+\begin{center}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Coherent tuple & Ports & Raw bytes & Largest port, bits\\
+\midrule
+Compact54-sharp (nine, H2082) & 4 & 215492 & 434054\\
+Original31 (nine, H1868) & 4 & 533099 & 1070004\\
+Compact44 (eleven positives) & 4 & 295388 & 592884\\
+Source34 plus determinant scales & 6 & 615883 & 1065043\\
+\bottomrule
+\end{tabular}
+\end{center}
+The full raw and compressed costs, individual bit lengths, and raw hashes
+are in \file{COEFFICIENT_COSTS.json}. The nine-variable circuits also
+materialize derived kernel coefficients and power-of-two scale leaves;
+their bindings and actual bytes are supplied separately. These are
+polynomials with specified finite integer constants, not a universal
+polynomial with an unspecified program-index parameter. The coherent
+tuples must not be mixed merely because two radix exponents happen to agree.
+
+For witnesses in \(\N=\{0,1,\ldots\}\), any positive-domain construction
+can be translated by \(x_j=u_j+1\). This preserves total degree and
+existence equivalence. The reported operation counts are for the original
+positive circuits; the translated circuit is a different counted artifact.
+Likewise, the integer constructions are not obtained by silently allowing
+negative inputs in a positive-domain theorem.
+
+\section{Proof architecture and inherited dependencies}
+\label{sec:status}
+
+\subsection{What the ordinary proof composes}
+
+Each component establishes, in its stated domain,
+\[
+ \exists\mathbf x\;P_{\rm new}(\mathbf x)=0
+ \quad\longleftrightarrow\quad
+ \exists\mathbf y\;\mathcal S_{\rm authenticated}(\mathbf y)=0.
+\]
+The authenticated arithmetic sources have inherited ordinary theorems
+relating their zeros to the fixed native computation and then to
+\(\exists p\,\RefZFC(p)\). Composition gives
+\eqref{eq:target}. The archive retains the relevant source proofs,
+the concrete coefficient adapters, and their provenance.
+It does not re-prove the entire earlier machine/tableau/calculus chain.
+
+In the nine-positive branch the inherited interfaces are the native
+positive source, the exact sparse carry packing, the numerical ratio
+theorem, and the old ProductPell certificate. We prove the new saturated
+certificate and both complete finalizers. The eleven-positive branch
+inherits a weighted native Pell source and its canonical weight lifting;
+we prove the smaller weight works before the required source positivity
+has been established. The integer branch inherits signed orientation,
+strong-rank recovery, and canonical determinant completeness; we prove
+the quotient elimination and subsequent norm merger without assuming
+either omitted equation in their own justifications.
+
+These are ordinary unbounded proofs. The hypothetical proof or computation
+can be arbitrarily long. The arguments use finite polynomial identities,
+integer divisibility, induction on recurrence indices, and standard
+Pell and three-square results available in ZFC. They never infer a
+universal result from a bounded search.
+
+\subsection{Three different verification artifacts}
+
+It is necessary to distinguish:
+\begin{enumerate}
+ \item An ordinary mathematical proof of the new reductions, composed
+ with the named ordinary source/calibration lemmas.
+ \item Exact finite verification of the delivered identities, constants,
+ circuits, source restorations, and degree certificates.
+ \item A proof-assistant theorem for the entire new equation, or an
+ actual derivation inside the repository's encoded object-language ZFC.
+\end{enumerate}
+This contribution supplies the first two. It does not supply the third.
+The exact K215 machine already has external Lean and Rocq correctness
+theorems \cite{repo}; the recent native arithmetic/compiler and internal-ZFC
+formalization have distinct remaining obligations. In particular, an
+external theorem about the standard arithmetic predicate is not
+automatically an exported object-language proof covering every internal
+natural of a nonstandard model.
+
+The retained \file{provenance/OBJECT_ZFC_AT_PIN.md} states that boundary
+precisely. We do not promote the finite Python audits, or a general claim
+of formalizability, into a newly checked internal biconditional. The
+ordinary theorem in this report is a composition with identified
+inherited mathematical lemmas; it is not a fresh end-to-end kernel
+certificate. The repository's current size-reduction plan explicitly
+pauses extension of Lean formalization \cite{repo}.
+
+\subsection{Scope of the new ideas}
+
+The incoming round-11 work already used norm saturation for a different
+ten-integer Sun/Lucas construction \cite{round11}. Incoming papers also
+used whole-radical approximation, root centering, determinant guards,
+joint positivity, and adjacent-coefficient rational Pell descent
+\cite{radical,budget,joint}. Those ideas are credited.
+
+The new content is the positive ProductPell saturation theorem, its
+exact full-radical correction and measured complete equations; the
+strong-Pell growth bound replacing a larger guard by \(i^3+cT\);
+the explicit removal of a quotient witness after a noncircular bootstrap;
+and the separated weighted rational norm that removes one further
+integer coordinate. The lower-degree twenty-three-integer equation
+is a new composition of already available local transformations.
+These are precise improvements relative to the reviewed sources.
+No claim of historical priority beyond that comparison is made.
+
+\input{nine/section.tex}
+\input{positive11/section.tex}
+\input{integer/section.tex}
+
+\section{Reproducibility, audit coverage, and repository use}
+\label{sec:reproduction}
+
+\subsection{Complete literal artifacts}
+
+The JSON packets encode finite division-free arithmetic DAGs with a
+single output. The integer component additionally includes fully
+inlined residual expressions. The variable lists are part of the packet;
+temporary registers do not enlarge them. All large fixed coefficients
+are present as compressed minimal little-endian integer bytes, with
+their signs where needed and SHA-256 bindings. The nine-positive
+majorant is a supplied integer coefficient table rather than a runtime
+Laurent-series operation.
+
+The principal files are:
+\begin{center}
+\small
+\begin{tabular}{p{64mm}p{76mm}}
+\toprule
+Purpose & Path\\
+\midrule
+Nine-positive literal polynomials & \path{nine/equations/}\\
+Majorant and positive defect tables & \path{nine/data/}\\
+Independent nine-positive proof and audit & \path{nine/certificates/}\\
+Eleven-positive polynomial & \path{positive11/p11_positive_degree213.json}\\
+Integer literal circuits & \path{integer/circuits/}\\
+Integer inlined residual packets & \path{integer/equations/}\\
+Expanded ordinary proofs & \path{positive11/PROOF.md}, \path{integer/PROOF.md}\\
+Input provenance and formal status & \path{provenance/}, \path{PROOF_STATUS.md}\\
+Release integrity and fresh transcripts & \path{MANIFEST.sha256}, \path{verification/}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Exact checks and diagnostics}
+
+The release driver \file{verify_all.py} invokes five audits in normal
+Python and with assertions disabled by \file{-O}. All active checks use
+explicit error conditions rather than relying on removable assertions.
+The audits have the following roles.
+
+\begin{itemize}
+ \item The primary nine-positive audit verifies the literal regenerated
+ circuits, source extraction, actual fixed coefficient recipes,
+ topological order, liveness, operation counts, and cancellation-aware
+ degrees. Independently written direct modular formula evaluations are
+ transcription diagnostics.
+ \item The independent H1868 audit imports no producer. It reconstructs
+ all 22 source identities and 20,466 convolution interactions, the
+ source height and binary population threshold, the 3035-term radicand,
+ the 333-term corrected majorant, the 36,309-term positive shifted
+ defect, and the unique highest-degree contribution.
+ \item The local saturation audit checks 5472 arithmetic cases and
+ constructs three complete Pell fixtures. These are diagnostic
+ controls for the separate unbounded proof.
+ \item The eleven-positive audit binds the exact circuit to the literal
+ formulas, checks fixed coefficient bytes, expands the 1110-term
+ double-centered norm in abstract variables, and verifies a nonzero
+ degree-213 coefficient. Constructed Pell fixtures test the growth
+ mechanism without standing in for its proof.
+ \item The integer audit checks all source arithmetic restorations,
+ the sole quotient-divisibility remainder, exact local norm identities,
+ rational-root diagnostic cases, degree-attaining coefficients, fixed
+ ports, and the complete literal DAGs. It does not assume degree
+ attainment from an upper-bound propagation.
+\end{itemize}
+
+The positive majorant certificate is stronger than a collection of sampled
+inequalities: its exact translated polynomial identity and positive
+coefficients prove the bound throughout the stated domain. Conversely,
+the modular evaluations and small Pell examples are not represented as
+proofs of the compiler semantics or of ZFC consistency.
+
+From the root of an extracted archive, the full finite replay is
+\begin{verbatim}
+python3 verify_all.py --both
+\end{verbatim}
+Only Python 3.10 or later and its standard library are needed. No symbolic
+algebra package is required for this replay. The generator and each
+verifier can also be run separately; the root README gives the exact
+commands. Compilation of this report needs only a conventional TeX Live
+installation:
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+
+\subsection{Integration and limitations}
+
+The archive is suitable for placement as another research contribution
+under the repository's Diophantine-consistency collection. It need not
+replace any currently certified equation or change an existing theorem
+statement. A reviewer can inspect the ordinary lemmas, replay the finite
+checks, and select an equation according to the domain and cost measure
+that matters for the next stage.
+
+The independently implemented audits and reciprocal mathematical reviews
+were performed within the AI collaboration. They are not external human
+peer review. The finite data are authenticated against the supplied
+snapshot; the complete older native/compiler and logical-calibration
+chain remains an identified dependency. The number of variables, exact
+degrees, circuit counts, and coefficient payloads are concrete artifacts.
+Their global optimality is not established.
+
+\section{Alternative encodings and what remains open}
+\label{sec:alternatives}
+
+The request permits constructions unrelated to K215 or a Jones universal
+polynomial. We examined that possibility as a separate design question.
+The repository already has a direct annotated checker for sealed ZFC
+proofs, explicit primitive-recursive programs for its syntax operations,
+and a complete numeric refutation checker \cite{repo}. Merely suggesting
+direct proof encoding would therefore repeat existing work.
+
+A direct checker could provide a valuable route to the exact internal
+ZFC target without importing the numerical machine-calibration bridge.
+However, a checker program, an existence theorem from MRDP, and a
+fully instantiated small ordinary polynomial are different deliverables.
+To compete with the present equations, that route still needs a measured
+shared arithmetic graph, a complete explicit coefficient binding, and
+unbounded source/target correctness at the chosen witness domain.
+An unspecified program-index constant does not resolve those obligations.
+
+The active repository reports a complete direct-checker program tree of
+83,281 nodes, or 76,313 after its certified optimization, while its
+smaller shared quadratic graph remains unfinished \cite{repo}.
+Those are program-tree sizes, not counts of Diophantine variables.
+We have not converted them into an advertised smaller equation.
+Likewise, the ten-integer results of Sun are relevant comparison
+architecture \cite{sun}, but do not by themselves materialize a smaller
+fixed consistency polynomial for this particular calculus.
+
+The useful general lesson from the new constructions is local and concrete:
+when an arithmetic certificate already forces a square or a divisibility,
+its polynomial presentation can sometimes exploit that consequence
+without preserving the original witness parameterization. The soundness
+proof must establish the consequence before using it; completeness can
+rebuild suitable witnesses existentially. Positive Pell saturation,
+quotient recovery, and the guard-only root separation each apply that
+principle at a different stage. They improve completed equations while
+leaving the compiler-independent route as an explicit open construction
+problem.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt: DiophantineConsistency research and incoming contributions}.
+Reviewed commit
+\texttt{c1a102936aca437e9999\allowbreak530a0111e6ddab56dc6d},
+24 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/c1a102936aca437e9999530a0111e6ddab56dc6d/Computability/DiophantineConsistency}{Pinned research directory}.
+The source status, size plan, K215 status, and object-ZFC obligation are
+retained under \file{provenance/}.
+
+\bibitem{round11}
+ProveIt incoming contribution.
+\emph{Structural Reductions, Round 11}.
+\file{ConZFC_Structural_Reductions_Round11_2026-10-24.zip},
+at the pinned repository's \file{docs/incoming/}.
+H1868 packing, norm saturation for the ten-integer construction, and
+the 37-integer affine quartic source.
+
+\bibitem{joint}
+ProveIt incoming contribution.
+\emph{ZFC Diophantine Joint Guards}.
+\file{ZFC_Diophantine_Joint_Guards_2026-10-24.zip}.
+Joint positivity, integer low-degree alternatives, and the
+eleven-positive centered interfaces.
+
+\bibitem{budget}
+ProveIt incoming contribution.
+\emph{Budget and Centering}.
+\file{con-zfc-budget-and-centering-2026-10-23.zip}.
+Paired root translations and integer degree-ten comparison.
+
+\bibitem{radical}
+ProveIt incoming contribution.
+\emph{Radical Guard Descent / Cross-Guard Descent}.
+\file{con-zfc-radical-guard-descent-2026-10-23.zip}.
+Whole-radical majorants and coefficient/data recipes.
+
+\bibitem{reportincoming}
+ProveIt incoming contribution.
+\emph{Standalone report}, \file{report.zip}, containing \file{report.tex},
+at the pinned \file{docs/incoming/}.
+Its nine-positive degree-\(1\,158\,240\), 811-operation entry is a reported
+comparison; this archive contains no executable companion.
+
+\bibitem{source54}
+ProveIt contributors.
+\emph{54-calibrated-carry} and the later compact54-sharp H2082 candidate.
+The complete coherent compact tuple, source adapter, inherited proof
+notes, and 440-operation parent DAG are retained under
+\file{nine/baseline/compact2082/}.
+
+\bibitem{source70}
+ProveIt contributors.
+\emph{70-residue-orientation}.
+Signed strong-rank recovery and the eleven-positive native Pell source.
+Relevant proof files are retained under \file{integer/upstream/}
+and \file{positive11/provenance/}.
+
+\bibitem{source71}
+ProveIt contributors.
+\emph{71-determinant-guards}.
+Positive nine-coordinate and calibrated determinant interfaces.
+Relevant proofs, scales, and notices are retained in the corresponding
+components. Source labels follow the pinned repository placements.
+
+\bibitem{productpell}
+ProveIt contributors.
+\emph{ProductPell.lean}, the positive Pell certificate in the formalized
+Jones development.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/c1a102936aca437e9999530a0111e6ddab56dc6d/Computability/HilbertTenthProblem/Lean/Diophantine/Paper1982/ProductPell.lean}{Pinned source file}.
+
+\bibitem{jones}
+James P. Jones.
+Universal Diophantine equation.
+\emph{The Journal of Symbolic Logic} \textbf{47}(3), 549--571, 1982.
+
+\bibitem{sun}
+Zhi-Wei Sun.
+\emph{Ten unknowns for Hilbert's tenth problem over the integers}.
+arXiv:2609.01594, version 2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+
+\bibitem{parallel}
+Jonas Bayer, Marco David, Malte Ha{\ss}ler, Yuri Matiyasevich,
+and Dierk Schleicher.
+\emph{Diophantine equations over \(\mathbb Z\): universal bounds and
+parallel formalization}. arXiv:2506.20909, version 2, 2025.
+\url{https://arxiv.org/abs/2506.20909}.
+\end{thebibliography}
+
+\end{document}

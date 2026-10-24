@@ -1,0 +1,200 @@
+\section{Joint positivity and a projection family}
+\label{sec:joint-projections}
+
+All variables in this section range over unrestricted integers.  The six fixed
+numerals are the unchanged authentic source-34 tuple and the two determinant
+scales.  Write $d=U_cV_c-(q-U_c-V_c)^2$, where
+$U_c=2^{1113}F$ and $V_c=2^{666104}(q-F-\alpha)$.
+The separate symbol $W=4(3w_3+1)$ denotes the scale in the compact
+arithmetic system.  These are polynomial abbreviations, not additional unknowns.
+
+\subsection{An elementary universal two-sign lemma}
+
+The following construction is the joint-positivity lemma of source 68,
+\emph{Joint Positivity and Free Lucas}, Sections 1--2 of its
+\texttt{PAIR\_GUARD\_PROOF.md}.  We claim its composition with the new
+determinant/residue system, not the lemma as a new discovery.
+
+Put
+\[
+ G(x,y,t)=xy-(t^2-x-y+1)^2,
+ \qquad \operatorname{Pos}(p_1,p_2,p_3)
+ =1+p_1^2+p_2^2+p_3(p_3+1).
+\]
+For integers $x,y$,
+\[
+ x>0\ \&\ y>0
+ \quad\Longleftrightarrow\quad
+ \exists t,p_1,p_2,p_3\in\mathbb Z:
+ G(x,y,t)=\operatorname{Pos}(p_1,p_2,p_3).       \tag{JP}
+\]
+Indeed, $G>0$ implies $xy>0$.  If $x=-a,y=-b$ with $a,b\geq1$,
+then $(t^2+a+b+1)^2\geq(a+b+1)^2>ab$, a contradiction.  This proves
+soundness for every signed assignment, including arbitrary $t$.
+
+Conversely, for $x,y\geq1$ set $N=x+y-1$ and $m=\lfloor\sqrt N\rfloor$.
+Choose $t=m$ when $N-m^2\leq m$, and $t=m+1$ otherwise.  Then
+$|t^2-N|\leq m$.  The error is zero when $N$ is a square; otherwise
+$(t^2-N)^2\leq m^2<N\leq xy$, since $xy-N=(x-1)(y-1)\geq0$.
+Thus $G>0$.  Every positive integer $n$ is a value of
+$\operatorname{Pos}$: apply the three-square theorem to $4n-3$, which is
+positive and congruent to $1$ or $5$ modulo $8$.  Exactly one square is odd,
+so the representation has the form
+$(2p_3+1)^2+(2p_1)^2+(2p_2)^2$.  Division by four gives the asserted
+identity.  The floor and square root are only a witness-selection recipe
+in this proof; neither appears in a polynomial.
+
+\subsection{The 25-variable octic and its 24-variable projection}
+
+The 26-variable determinant/residue octic has eleven arithmetic rows and
+two private ternary positivity rows asserting
+\[
+ d>0,\qquad \eta\zeta_0>0,
+ \qquad \zeta_0=1-V+jc+hE-\eta.
+\]
+Delete those six private coordinates and two rows.  Appending
+\[
+ d\eta\zeta_0-(t^2-d-\eta\zeta_0+1)^2
+       -\operatorname{Pos}(p_1,p_2,p_3)=0             \tag{J24}
+\]
+gives 24 variables and 12 rows.  Its joint row has degree six.  Its top
+part is $-\eta^2(hE+jc)^2$, so the sum of squares has exact degree twelve,
+with coefficient $+1$ at $\eta^4h^4E^4$.
+
+To keep degree eight, retain one extra coordinate $\zeta$, impose
+$\zeta=\zeta_0$, and replace $\zeta_0$ by $\zeta$ only in the joint row.
+Both $d$ and $\eta\zeta$ are now quadratic, so the new row has degree four.
+This gives 25 variables and 13 rows.  Its coefficient at $t^4$ is $-1$;
+no other row mentions $t$.  Hence the final polynomial has coefficient
+$+1$ at $t^8$ and exact degree eight.  The eleven old arithmetic rows
+are unchanged and may still contain $\zeta_0$; the restoring row makes
+this intentional choice equivalent to using $\zeta$ everywhere.
+
+For either construction, (JP) restores the two old positive quantities,
+and their ternary representations restore all six deleted coordinates.
+Conversely, every parent zero supplies those quantities and therefore the
+four new witnesses by the explicit recipe above.  Thus this step preserves
+existence at every fixed assignment of retained arithmetic coordinates.
+It requires no additional canonical restriction.  Canonical completeness
+is inherited only where it is actually used upstream, in the determinant
+and residue constructions.
+
+\subsection{A degree-sensitive row operation}
+
+Use the compact system's abbreviations
+\[
+ X=4q(3w_3+1),\quad Y=(2v_{\rm scale}+1)q^3,
+ \quad k=1-V+jc+hE,\quad\Delta=a^2+4a+3.
+\]
+The relevant rows are
+\[
+\begin{gathered}
+ a-E-Y=0,\quad E-X(a-E)=0,\quad c-\eta-k(a-E)=0,\\
+ V+c-fo=0,\quad I-(2r+1)c^2=0,\\
+ S=I^2-\Delta(f^2-1)=0,\quad
+ A=I^2(V^2-y^2)+y^2-1=0.
+\end{gathered}
+\]
+Define $A_{\rm red}=\Delta(f^2-1)(V^2-y^2)+y^2-1$.  The exact identity
+\[
+       A-A_{\rm red}=(V^2-y^2)S                 \tag{RI}
+\]
+allows either auxiliary row while $S$ is retained.  It is a two-sided
+zero-set row operation, not equality of the two free polynomials.
+
+Every elimination below uses a monic defining row and an integer-polynomial
+inverse.  Substitution maps old zeros to new zeros; restoring the deleted
+coordinate makes its defining row zero and recovers every other old row.
+There is no division, sign assumption, or new Pell existence theorem.
+
+\begin{itemize}
+\item At 23 variables, eliminate $V=fo-c$ and keep $A$.  The auxiliary and
+joint rows have degree six, so the final degree is twelve.  Alternatively,
+use (RI), eliminate $I=(2r+1)c^2$, and keep $V$; the degree is again twelve.
+The latter coordinate choice has a smaller expanded support in the exact
+independent audit, but no claim of circuit minimality follows.
+\item At 22 variables, use (RI) and eliminate both $V,I$.  The reduced
+auxiliary has degree eight and top term $a^2f^4o^2$, giving final degree
+sixteen.
+\item At 21 variables, instead retain the original $A$ and eliminate
+$V,I,a$, with $a=E+Y$.  The main, strong, and auxiliary rows have degree at
+most ten; all other rows have degree at most six.  This gives degree twenty.
+\item At 20 variables, still keep the original $A$ and retain $\eta$.
+The first two rows give $E=XY$ and $a=(X+1)Y$.  Together with the $V,I$
+restorations, these leave eight rows.  The joint row has degree sixteen,
+the main/strong and first Pell rows have degree at most fourteen, and the
+original auxiliary has degree ten.  The final degree is thirty-two.
+\item At 19 variables, also eliminate $\eta=c-Yk$.  The joint row has
+degree forty-four and the other six rows have degree at most thirty-four.
+The final degree is eighty-eight.
+\end{itemize}
+
+The choice of auxiliary row is essential for the degree ledger.
+Keeping $A_{\rm red}$ at the 20-variable endpoint would needlessly raise
+its degree.  These endpoints may all be defined directly from the compact
+24-variable source by the stated substitutions and, only where specified,
+the row identity (RI).
+
+\subsection{Exact-degree certificates on the authentic slice}
+
+For brevity in this table only, write $J=J_3$, $v=v_{\rm scale}$ and
+$w=w_3$.  Each entry is an exact coefficient of the final sum of squares.
+\begin{center}
+\begin{tabular}{ccll}
+Variables & Degree & Monomial & Coefficient\\\hline
+25 & 8  & $t^8$ & $1$\\
+24 & 12 & $\eta^4h^4E^4$ & $1$\\
+23 & 12 & $\eta^4h^4E^4$ & $1$\\
+22 & 16 & $a^4f^8o^4$ & $1$\\
+21 & 20 & $f^4v^4J^{12}$ & $2^4 3^{12}\beta^{12}$\\
+20 & 32 & $\eta^4h^4w^4v^4J^{16}$ & $2^{12}3^{20}\beta^{16}$\\
+19 & 88 & $h^8w^8v^{16}J^{56}$ & $2^{32}3^{64}\beta^{56}$
+\end{tabular}
+\end{center}
+All are positive because the authentic fixed $\beta=2^{1064921}-1$ is
+positive.  The 23-variable certificate applies to both coordinate choices.
+
+Here is an unbounded check of the last three entries.  The leading forms
+are
+\[
+ X_*=36\beta Jw,\qquad Y_*=54\beta^3J^3v.
+\]
+At 21 variables the strong row has top term $-Y_*^2f^2$.
+The main row has no $f$, and the original auxiliary has no $J$, so the
+displayed coefficient can come only from the strong square.
+At 20 variables, $E_*=X_*Y_*=1944\beta^4J^4wv$ and the joint top form is
+$-\eta^2h^2E_*^2$; its square is the only contribution of degree 32.
+At 19 variables,
+\[
+ \eta_*=-hX_*Y_*^2=-2^4 3^8\beta^7 hJ^7wv^2.
+\]
+Since $\deg\eta>\deg k$, the joint top form is $-\eta_*^4$.
+Its square gives the displayed degree-88 monomial, with no other residual
+of sufficiently high degree to contribute.  These arguments preclude
+cancellation at the actual numeral values, rather than merely asserting
+a generic gate-degree bound.
+
+The 19-variable coordinate list is exactly
+\[
+ J_3,F,\alpha,z,f,h,r,v_{\rm scale},w_3,\tau,y,\gamma,o,j,c,
+ t,p_1,p_2,p_3.
+\]
+In particular $X,Y,E,a,V,I,\eta$ and the coefficient ports are not hidden
+quantified variables.
+
+\subsection{Certificate scope}
+
+All residuals are serialized as ordinary, completely inlined polynomial
+expressions.  High-degree packets retain factorization to avoid a wasteful
+expanded sum of squares.  A separate standard-library checker authenticates
+the compact source identities, the row operation, every deleted defining
+row, the literal surviving-row substitutions, the declared variable set,
+and the exact homogeneous coefficient certificates.  It passes both
+normal and optimized Python execution.  Finite tests are not substituted
+for the universal proof of (JP), the inverse maps, or the inherited
+compiler, Pell, and refutation-calibration theorems.
+
+Consequently the ordinary mathematical existence equivalence with a finite
+ZFC refutation extends to every listed packet.  No new kernel-checked
+Lean/Rocq theorem or encoded object-ZFC derivation is claimed, and this
+bounded family of variable/degree tradeoffs is not an optimality theorem.

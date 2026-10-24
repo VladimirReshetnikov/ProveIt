@@ -1,0 +1,182 @@
+# Independent mathematical review: modular digits and signed Pell auxiliaries
+
+Reviewed the current `modular_binomial.py`, its inherited additive/shared index
+builders, `MODULAR_BINOMIAL_PROOF.md`, the mixed-domain classifier in
+`build_mixed.py`, and the primary Pell development retained as
+`research/PellMatiyasevic.lean` (especially `modEq_of_xn_modEq`,
+`xn_modEq_x2n_add`, `dvd_of_ysq_dvd`, `yn_modEq_a_sub_one`, and
+`matiyasevic`). This review examines unbounded arguments; it is not another
+replay of the finite projection checks.
+
+## Assessment
+
+The modular-binomial replacement is mathematically sound under its explicitly
+inherited low-digit and direct-source calibration hypotheses. The signed
+auxiliary-index relaxation is also sound, with the important interpretation
+that arbitrary signed auxiliary coordinates are not required to acquire a
+positive sign on the same assignment. They identify the correct main Pell
+index; if a literal all-natural parent witness is required, regenerate the
+auxiliary frame canonically afterwards.
+
+I found no missing hypothesis in the combined argument, provided that this
+regeneration distinction and the positivity of all requested indices are
+stated. The exact variable counts belong to the separately checked emitted
+polynomial artifacts, not to this mathematical review.
+
+The S,R sign relaxation is already proved in the incoming
+`ConZFC_Shared_Pell_1873.zip`,
+`con_zfc_batched_pell/proofs/SIGNED_INDEX_THEOREM.md`. It must be credited
+as an inherited result, not a new theorem of this iteration. The only
+additional observation needed here is that a signed U can be replaced by
+its absolute value for classification and congruence moduli; the present
+compiler keeps V positive. The derivation below independently validates
+the exact imported statement and this harmless U extension.
+
+## 1. Independent validation of the inherited signed index criterion
+
+Write chi_A(i), psi_A(i) for the standard positive Pell coordinates at A>=2.
+Suppose the retained main coordinates X,Y are nonnegative, the requested
+index k>=1, and Y>=k. The main norm gives
+
+    X=chi_A(i), Y=psi_A(i)
+
+for some i>=1. In particular i<=Y.
+
+Let V>0 remain natural, while U may be any integer. The auxiliary norm gives
+
+    |U|=chi_A(m), V=psi_A(m), m>=1.
+
+The retained condition Y^2|V implies Y|m by the standard Lucas divisibility
+lemma. It also gives Y<=V, and strict increase of psi_A then gives i<=m.
+These facts do not assume a sign for U.
+
+The second base B remains natural and at least two. In the actual builder
+B=1+4V(q4+1), with q4>=0, so B≡1 modulo4Y. The equation
+B=A+U*bq, with bq any integer, gives B≡A modulo |U|.
+
+The auxiliary norm at B, with arbitrary integer S,R, gives
+
+    |S|=chi_B(j), |R|=psi_B(j)
+
+for some j>=0. The congruence S≡X modulo U gives
+
+    chi_A(j)≡±chi_A(i) modulo chi_A(m),
+
+using the recurrence's congruence in its base. If the sign is plus, the
+primary theorem `modEq_of_xn_modEq` gives j≡±i modulo4m. If it is minus,
+`xn_modEq_x2n_add` gives
+
+    chi_A(j+2m)≡-chi_A(j)≡chi_A(i) modulo chi_A(m),
+
+and the same theorem applies to j+2m. In either case
+
+    j≡±i modulo2m,
+
+hence j≡±i modulo2Y, since Y|m.
+
+On the other side, psi_B(j)≡j moduloB-1. Since B≡1 modulo4Y and
+R≡k modulo4Y, the possible sign of R yields
+
+    j≡±k modulo4Y,
+
+and therefore also modulo2Y. Combining gives either
+`i≡k (mod2Y)` or `i≡-k (mod2Y)`. As 1<=i,k<=Y, the first possibility
+forces i=k. The second forces i+k=2Y; its upper bound forces i=k=Y.
+Thus in all cases i=k, which is exactly the index conclusion required by
+the power and modular-digit arguments.
+
+The exceptional small cases in the primary positive-index theorem cause
+no gap: that theorem assumes i>0 and i<=m, which have already been proved.
+In particular no inference is made from the more general unsigned
+congruence statement at i=0.
+
+## 2. Positivity of newly added indices
+
+The modular builder requests an index for every upper binomial argument.
+The direct constructor shifts each encoded column by one, so all eight
+range upper arguments are positive. The two factorial upper arguments are
+`rho_n+n` with n>=1 and rho_n>0. The product upper argument is `q0+t`,
+with q0>=2 and t>=1. Thus every new seed has a positive requested index;
+there is no unhandled n=0 case in the shared positive-index certificate.
+Derived indices use the exact Pell addition law, so allowing only the
+seed auxiliary roots to be signed leaves the derived main pairs correct.
+
+## 3. The common residue root exists cofinally
+
+For q>=2, b=q+1 and M=q^(H+1), the new condition is
+
+    2Ab=b^2+1 (modM).
+
+Because gcd(b,M)=1, gcd(2b,M) is either1 or2. In the even case b is odd,
+so b^2+1 is even. The congruence therefore has solutions, and its residue
+class contains arbitrarily large A. This validates choosing A only after
+all genuine semantic powers, q, H, W and the growth lower bound L have
+been fixed. Replacing the old norm for A by a norm for L, followed by
+A=L+sigma with sigma>=0, is essential: without this cofinal freedom the
+new congruence would not have a completeness proof.
+
+The lower norm indeed proves A>W^W: its second coordinate WZ is positive,
+the corresponding Pell index e is divisible by W, hence e>=W, and the
+first coordinate is at least(W+1)^e. All retained exact power inputs and
+outputs appear among the atoms defining W. Modular-only upper indices do
+not need this size bound; their correct main Pell pairs come from the
+independent index criterion.
+
+## 4. Ring identity and extraction
+
+The assignment sqrt(A^2-1) -> b-A defines a homomorphism into Z/MZ because
+(b-A)^2-(A^2-1)=b^2-2Ab+1. Thus
+
+    X_n+(b-A)Y_n ≡ b^n (modM).
+
+This identity is valid for every nonnegative n and does not assume that
+b^n has been materialized or bounded. For positive n it is a positive
+integer: X_n>(A-1)Y_n, so the expression exceeds(b-1)Y_n.
+
+For each exact requested digit with d=q^k, the retained inequalities
+0<=r<d and0<=c<q identify r+dc as the unique least residue modulo qd.
+The inherited low-digit bound binom(n,j)<q for0<=j<=k then gives
+c=binom(n,k). For divisibility requests, B|q implies Bd|M and makes the
+least residue modulo Bd equal
+
+    r0+d*(binom(n,k) modB), 0<=r0<d.
+
+It lies below d if and only if B divides binom(n,k). The separate
+factorial and CRT arguments can therefore consume exactly their old
+semantic conclusions.
+
+## 5. Omitted quotient signs and auxiliary reconstruction
+
+For modular quotients, the bounded residue and the positivity just proved
+force the quotient nonnegative. The common root quotient is nonnegative
+because the common growth frame makes A>=q+1. Ordinary power quotients
+are likewise nonnegative once the exact output has been identified as the
+least bounded residue of a positive Pell expression. The endpoint and CRT
+quotient signs must use their stated Euclidean-remainder/source-positivity
+arguments; they do not follow merely from the labels used by the compiler.
+
+In contrast, U,S,R and their congruence quotients need not have positive
+signs on an arbitrary integer zero. Absolute values can break the displayed
+congruences. Soundness should use the signed-index result above directly.
+If comparison with the old all-natural auxiliary frame is desired, once
+all main indices have been identified, invoke the inherited simultaneous
+index completeness construction at the same A and rebuild its shared
+U,V,B and individual S,R. No other semantic quantity depends on those
+auxiliary choices. Completeness in the other direction is immediate,
+because every old positive auxiliary witness is permitted in the signed
+system.
+
+The mixed-domain sign certificate separately proves all coordinates needed
+as nonnegative without depending on the omitted guards. Its exclusion of
+quotient-product outputs is appropriate. This review does not replace the
+separate exact check that every emitted row and classified variable matches
+that certificate.
+
+## Scope of acceptance
+
+Accepted as ordinary mathematical reductions, formalizable in ZFC, composed
+with the inherited direct proof-calculus calibration and low-digit bounds.
+This review does not claim to have compiled a new Lean proof of the signed
+variant, validated every transitive direct-source calibration theorem, or
+proved ZFC consistency. The newly emitted finite polynomial and monic
+projection certificates supply the remaining finite algebraic evidence.

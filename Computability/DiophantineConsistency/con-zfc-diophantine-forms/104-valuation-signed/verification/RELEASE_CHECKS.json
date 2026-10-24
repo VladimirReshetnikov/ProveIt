@@ -1,0 +1,192 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "optimized": false,
+  "manifest_files": 299,
+  "checks": [
+    {
+      "check": "integer12/build_prime12.py",
+      "status": "PASS"
+    },
+    {
+      "check": "integer12/build_prime12.py",
+      "status": "PASS"
+    },
+    {
+      "check": "integer12/check_prime12.py",
+      "status": "PASS"
+    },
+    {
+      "check": "integer12/check_norm_exact.py",
+      "status": "PASS"
+    },
+    {
+      "check": "direct/build.py",
+      "status": "PASS"
+    },
+    {
+      "check": "direct/verify.py",
+      "status": "PASS"
+    },
+    {
+      "check": "direct/verify_projection.py",
+      "status": "PASS"
+    },
+    {
+      "check": "build.py",
+      "status": "PASS"
+    },
+    {
+      "check": "check.py",
+      "status": "PASS"
+    }
+  ],
+  "main_circuits": {
+    "prime_separated12_degree2400.json": {
+      "operations": 215,
+      "counts": {
+        "mul": 139,
+        "add": 44,
+        "sub": 32
+      },
+      "upper_degree": 2400,
+      "register_degrees": {
+        "Dg": 46,
+        "Df": 20,
+        "Q": 32,
+        "delta": 32,
+        "V": 25,
+        "Cy": 82,
+        "Dt": 34,
+        "A": 35,
+        "B": 28,
+        "S": 34,
+        "center": 35,
+        "cn": 150
+      },
+      "independent_norm_points": 72,
+      "zero_multiplier_slices": 36,
+      "deliberate_corruption_rejected": true
+    },
+    "prime_separated12_degree2912.json": {
+      "operations": 209,
+      "counts": {
+        "mul": 133,
+        "add": 44,
+        "sub": 32
+      },
+      "upper_degree": 2912,
+      "register_degrees": {
+        "Dg": 46,
+        "Df": 20,
+        "Q": 32,
+        "delta": 32,
+        "V": 25,
+        "Cy": 82,
+        "Dt": 34,
+        "A": 35,
+        "B": 28,
+        "S": 34,
+        "center": 35,
+        "cn": 182
+      },
+      "independent_norm_points": 72,
+      "zero_multiplier_slices": 36,
+      "deliberate_corruption_rejected": true
+    }
+  },
+  "exact_generic_norm": {
+    "identity": "delta^16 F32(x;a,b,c,d,cn/delta)",
+    "method": "Exact integer coefficients; independent successive binomial translations and conjugate products",
+    "independent_stage_terms": [
+      2,
+      6,
+      35,
+      495,
+      20349
+    ],
+    "matched_terms": 20349,
+    "coordinate_order": [
+      "x",
+      "a",
+      "b",
+      "c",
+      "d",
+      "cn",
+      "delta"
+    ],
+    "maximum_individual_exponents": [
+      32,
+      16,
+      16,
+      16,
+      16,
+      16,
+      16
+    ],
+    "canonical_coefficient_sha256": "2ca48f61e4505f15ed2d935397d08f1a656611fb012f1927cbbd93c08af929dd",
+    "subject_sha256": "9e8ed600620e7971f24ddb54df7e5f7f6e31777cbcd1920af7e3fea5b97f318d",
+    "seconds": 0.631114
+  },
+  "direct": {
+    "corruption_controls_rejected": 4,
+    "domain_inference": {
+      "guarded": 234,
+      "inferred": 288,
+      "minimum_guards_within_scaled_literal_row_rule_family": 234,
+      "natural_coordinates": 522
+    },
+    "file_sha256": {
+      "input/domain_conversion_certificate.json": "c025cd2dab18eebe592cd73c90d3a28eafea71f05e3a3afe38e1bc49a4e67e61",
+      "input/equation.json": "4cb3791d6d8d25b91538cc4de07c4b73477eb75c74abde6cc2724b7c25792757",
+      "output/equation.json": "ecedebee7a8147c89f2401a658f7d7efad27952681de417dbc55af3e63ccb083",
+      "output/expanded_polynomial.json": "3f33f1bd12c4b74f56dd350eee67f9f8b0f49a0d41ae94bda4d01607e592cbb9",
+      "output/terminal_elimination_certificate.json": "6d7472eb7705147a2a359e279b7c0fb4a2cecc8c90479ae23c96a2e1a3eb3abc"
+    },
+    "frozen_parent_sha256": "8b983a7357d16201ac5b7dfa6e12e809692ee26a29383ae84e2af2b891994f48",
+    "independent_authorship": "separate assistant reviewer",
+    "input_metrics": {
+      "exact_degree": 4,
+      "expanded_monomials": 23590,
+      "max_abs_expanded_coefficient": 83900628,
+      "max_abs_row_coefficient": 4556,
+      "quadratic_rows": 634,
+      "variables": 1224
+    },
+    "output_metrics": {
+      "exact_degree": 4,
+      "expanded_monomials": 26411,
+      "max_abs_expanded_coefficient": 83900628,
+      "max_abs_row_coefficient": 4556,
+      "quadratic_rows": 600,
+      "variables": 1190
+    },
+    "projection": {
+      "eliminations": 34,
+      "free_coordinates_removed": 0,
+      "restoration_degrees": {
+        "1": 23,
+        "2": 11
+      }
+    },
+    "scope": "Exact finite arithmetic, ordered nonnegativity and inverse polynomial substitution; inherited calculus theorem not re-proved",
+    "status": "PASS"
+  },
+  "supplemental": {
+    "universal_free_register_identity": true,
+    "identical_prefix_through": "vn2",
+    "parent_operations": 100,
+    "new_operations": 98,
+    "new_breakdown": {
+      "*": 54,
+      "+": 27,
+      "-": 17
+    },
+    "degree": 70,
+    "degree_proof": "identical polynomial; inherited attained-degree certificate",
+    "scope": "Exact polynomial preservation and counts; no new calibration or semantic theorem",
+    "scalar_controls": 50,
+    "compact44_payload_hashes": true
+  },
+  "scope": "Exact finite artifacts, identities, and certificates. The unbounded arithmetic proofs and inherited logical calibrations remain the identified mathematical dependencies."
+}
