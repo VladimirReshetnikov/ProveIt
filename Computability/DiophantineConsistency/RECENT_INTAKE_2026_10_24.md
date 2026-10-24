@@ -955,3 +955,27 @@ actual corruptions and passes two complete controls.
 This 50-character gain is retained as a research alternative. The canonical
 98/360 PDF and TeX stay unchanged until a larger improvement is ready.
 Lean remains paused and the reduction goal continues.
+
+## Six shared sums permit six product guards
+
+The [anchored product-guard proof](research/shared-remainder-product-guards/PROOF.md)
+replaces twelve scalar sign guards by six quadratic product guards. It
+uses only ten exact source row sums and four retained anchor pairs:
+r+s=a+b>=0 together with rs>=0 forces both removed signs. The signs are
+restored before any existing Pell or source interpretation is invoked.
+Every raw arithmetic coordinate, including the complete W/A/Pell data,
+stays fixed; only guard witnesses are rebuilt.
+
+The full parent drops from 1,454 coordinates and 1,248 residuals to
+**1,436 coordinates and 1,242 residuals**, with 56 predicate graphs.
+Fresh root normal/optimized checks and rebuilds pass, as does the
+independent peer review; see the [root acceptance](reviews/shared-remainder-product-guards-root-peer.md).
+The literal checker verifies 16 source identities and rejects 23 actual
+corruptions. A separate audit checks all 118 old/new graphs and the
+32 possible abstract anchor selections, with 192 difference identities.
+Only the fixed six replacements are materialized.
+
+Projected quartic savings remain to be measured from complete equations
+and certificates. The current best checked direct quartic still has
+569 integer unknowns. The canonical compact page is unchanged and Lean
+remains paused.
