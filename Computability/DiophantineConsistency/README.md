@@ -104,6 +104,14 @@ now reaches399 variables,8,286 terms and height83,843,274, with complete
 support/height alternatives. All are exact quartics with ordinary literal
 coefficients, independent of K215 and Jones.
 
+Retaining arithmetic wires now gives
+[integer quartics with coefficient height427](candidates/retained-radius-integers/README.md):
+1,742 variables and6,200 terms. This dominates the older3776/7058
+low-height points in all four measured sizes. Further exact projections
+give1,095 variables/5,044 terms/height4,750, and950/886/872-variable
+choices with larger coefficients. These are coefficient/variable/support
+tradeoffs; the complete ten-positive page remains the displayed equation.
+
 The [407/888/917 review](PROPOSAL_REVIEW_QUARTICS407888.md),
 [1,190-integer projection](candidates/synchronized-signed-projections/README.md)
 and earlier synchronized/batched families remain reproducible checkpoints.
