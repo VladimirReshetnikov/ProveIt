@@ -15,7 +15,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 
 | Domain | Unknowns | Operations | Exact degree | Evidence |
 |---|---:|---:|---:|---|
-| Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
+| Positive integers | 9 | 406 / 414 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
 | Positive integers | 10 | 99 | 368 | Zero-offset scaled base, shared muY and positive short projector |
@@ -984,3 +984,14 @@ supplies the new bound. An independent ordinary/source peer and both
 normal/optimized root replays pass; see the
 [acceptance record](reviews/factorial-radius-guard-root-record.md). Projected
 counts remain separate. The canonical PDF and Lean sources are unchanged.
+
+## Shared minimal reflection saves two more operations
+
+The complete [minimal-reflection sibling](research/nine-folded-minimal-reflection/README.md)
+reuses the stored product F-1 and sets G=A(F-1)+F. It preserves positivity
+and both residue interfaces while using only two new operations. The nine-
+positive whole-tuple circuits now have406/1,191,570 and414/1,316,546
+operations/degree. Root reviewed the complete ordinary proof and all literal
+checks, then replayed both checker/rebuild modes; see the
+[root review](reviews/nine-minimal-reflection-root-peer.md). Full fixed
+coefficients and source domains are retained. The canonical PDF is unchanged.
