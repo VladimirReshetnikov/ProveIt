@@ -101,3 +101,19 @@ including the full495-term norm, centered425-term degree calculation,
 authentic six ports and all138 original archive members. This improves
 both current13-integer cost and degree. The10-positive105/408 page remains
 a separate lower-variable/operation display. Lean is paused.
+
+
+The [five exact original-row sign consequences](research/guard-seed-consequences/README.md)
+remove two factorial-output guards, the moduli-product and CRT quotient
+guards, and one endpoint quotient guard before any arithmetic semantics.
+The CRT numerator uses its independently proved defining sums, avoiding
+a circular quotient dependency. The [complete102-guard family](candidates/projected-radius-mixed-signs/README.md)
+now gives973/714/688/686/685 integer variables, all degree4. A literal
+102-triple transfer plus15 new Legendre witnesses restores the full988
+parent; all integer projections are reversed first. Root reviewed both
+ordinary proofs and independent checkers. Full normal/optimized checks
+and rebuilds pass every original-row identity, the975-step sign ledger,
+all coefficients and inverses. Each matched988/729/703/701/700 parent loses
+15 variables, five rows and73 collected terms at unchanged height. The
+smaller-coefficient retained710 family and canonical PDF/TeX are preserved;
+Lean remains paused.

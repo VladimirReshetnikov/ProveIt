@@ -41,10 +41,10 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 729 | not optimized | 4 | Mixed-domain lower-height projection;5,989 terms, height63,905,891 |
+| Integers | 714 | not optimized | 4 | Mixed-domain lower-height projection;5,916 terms, height63,905,891 |
 | Integers | 1,580 / 933 | not optimized | 4 | Retained-wire mixed guards;5,392 /4,236 terms, heights427 /4,750 |
 | Integers | 788 / 724 / 710 | not optimized | 4 | Retained-wire mixed projections;6,000 /9,350 /9,314 terms, heights737,653 /737,653 /938,261 |
-| Integers | 700 / 701 / 703 | not optimized | 4 | Signed comparisons, derived A/D bounds and complete integer projection;10,437 /9,101 /9,006 terms, height2,445,790,974,704 |
+| Integers | 685 / 686 / 688 | not optimized | 4 | Signed comparisons, seven derived guard signs and complete integer projection;10,364 /9,028 /8,933 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
@@ -346,3 +346,19 @@ including the full495-term norm, centered425-term degree calculation,
 authentic six ports and all138 original archive members. This improves
 both current13-integer cost and degree. The10-positive105/408 page remains
 a separate lower-variable/operation display. Lean is paused.
+
+
+The [five exact original-row sign consequences](research/guard-seed-consequences/README.md)
+remove two factorial-output guards, the moduli-product and CRT quotient
+guards, and one endpoint quotient guard before any arithmetic semantics.
+The CRT numerator uses its independently proved defining sums, avoiding
+a circular quotient dependency. The [complete102-guard family](candidates/projected-radius-mixed-signs/README.md)
+now gives973/714/688/686/685 integer variables, all degree4. A literal
+102-triple transfer plus15 new Legendre witnesses restores the full988
+parent; all integer projections are reversed first. Root reviewed both
+ordinary proofs and independent checkers. Full normal/optimized checks
+and rebuilds pass every original-row identity, the975-step sign ledger,
+all coefficients and inverses. Each matched988/729/703/701/700 parent loses
+15 variables, five rows and73 collected terms at unchanged height. The
+smaller-coefficient retained710 family and canonical PDF/TeX are preserved;
+Lean remains paused.
