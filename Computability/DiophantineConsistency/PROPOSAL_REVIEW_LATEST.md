@@ -825,3 +825,19 @@ rows, so all exponent-positivity, guard and equation conclusions remain
 unchanged. Neither constructor has fixed parity from these premises.
 Frozen certificates and polynomials are preserved; subsequent proofs use
 the corrected descriptions. Lean remains paused.
+
+## Direct positive X and zero-offset research
+
+The [direct-base research](research/ten-positive-direct-base/README.md)
+replaces X=wq by X=q+x and adds a delayed divisibility carrier. Its
+complete prototype has ten positive unknowns,107 operations and degree340.
+The [ordinary peer](reviews/ten-positive-direct-base-ordinary-peer.md)
+checks the unbounded proof and a separate complete free-ring center cut:
+remove the H denominator after whole-product projection, then recover q|X,
+then justify X/q⁴ as an integer. Full materialized-candidate verification
+is underway; this research checkpoint alone adds no accepted frontier.
+The [zero-offset draft](research/ten-positive-zero-offset/PROOF.md) proposes
+removing the inner constant offset in the scaled main base. Its stronger
+ratio estimate suggests one fewer operation at unchanged degree; independent
+review and literal checks are pending. The canonical101/368 page and
+paused Lean remain unchanged.
