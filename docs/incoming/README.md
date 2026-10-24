@@ -27,6 +27,26 @@ publication keep their separate scopes.
 
 ## Current queue
 
+## Queue status after batch 226
+
+The eight wave-10 archives of `9513bd88ce` ("Con(ZFC) in Diophantine form
+(wave-10)") are placed beside waves 5–9 in
+[con-zfc-diophantine-forms](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md).
+By Vladimir's direction, no earlier wave is deleted.
+
+Placement `d79b41884d` adds sources 68–75:
+
+- 703 files staged;
+- 440 repository copies omitted, mostly earlier-wave files byte-identical up
+  to line ends, and 75's bundled copies of the eight wave-9 ZIPs, mapped to
+  their arrival commit;
+- 49 ignored checksum ledgers, logs and TeX build artifacts.
+
+It retires all eight ZIPs and appends its recovery map to `PLACEMENT.md`.
+Reconciliation `cf4a5218a5` covers waves 5–10. The report is outside the
+research-report collection, which stays at 290. Nothing was rerun. The queue
+is clear.
+
 ## Queue status after batch 225
 
 The eight wave-9 archives of `0c6be9a074` ("Con(ZFC) in Diophantine form
@@ -1639,6 +1659,7 @@ ProveIt-era batches (from this directory):
 | 223 | Eight wave-7 manuscripts from `4b4349064a`, placed beside waves 5 and 6 (Vladimir's direction: do not delete previous waves): placement `6d375f2d2d` adds sources 46–53 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms` (1,571 members = 1,043 staged + 524 copies omitted + 4 ignored; PLACEMENT.md record appended), retiring all eight ZIPs; reconciliation README `9e51c5f456` covers waves 5–7 (10ℤ at degree 21,111,400 53 or 582 ops 52; nine positive at 7,344,328 53; eleven positive 954 / 113 52; twelve 897 / 108 52; 66-op fifteen-positive P66 51). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–7 |
 | 224 | Six wave-8 manuscripts from `7331974b69`, placed beside waves 5–7 (Vladimir's direction: do not delete previous waves): placement `beb0192cb8` adds sources 54–59 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms` (1,736 members = 974 staged + 759 copies omitted + 3 ignored; PLACEMENT.md record appended), retiring all six ZIPs; reconciliation README `ea94d3bc3f` covers waves 5–8 (nine positive 1,910,404 / 473 59; 10ℤ 8,317,400 / 544 57 or 513 ops 54; 13ℤ without Sun 11,543,632 / 518 59; twelve positive 242 / 94 57; fifteen positive degree 24 58; binding tuple 2^429959 54). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–8 |
 | 225 | Eight wave-9 manuscripts from `0c6be9a074`, placed beside waves 5–8 (Vladimir's direction: do not delete previous waves): placement `a2cd79b912` adds sources 60–67 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms` (1,829 members = 1,030 staged + 766 copies omitted + 33 ignored; PLACEMENT.md record appended), retiring all eight ZIPs; reconciliation README `42d8cbf310` covers waves 5–9 (nine positive 444 ops 66 or degree 1,494,006 67; 10ℤ 490 ops 66 or degree 3,327,556 67; 13ℤ without Sun 10,461,744 67; 12/13/14/15 positive at degree 118/34/26/24; 41ℤ quartic 64) and records Vladimir's direction that proposals may use encodings other than K215 and Jones. No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–9 |
+| 226 | Eight wave-10 manuscripts from `9513bd88ce`, placed beside waves 5–9 (Vladimir's direction: do not delete previous waves): placement `d79b41884d` adds sources 68–75 of `Computability/DiophantineConsistency/con-zfc-diophantine-forms` (1,192 members = 703 staged + 440 copies omitted + 49 ignored; 75's bundled wave-9 ZIPs mapped to arrival `0c6be9a074`; PLACEMENT.md record appended), retiring all eight ZIPs; reconciliation README `cf4a5218a5` covers waves 5–10 (10ℤ 1,576,864 / 481 68; eleven positive 325 / 113 70; nine positive degree 1,379,730 71; twelve positive 82 69; 38ℤ quartic, 32ℤ sextic, 27ℤ octic 69 and 71). No write, nothing rerun. | [README.md](../../Computability/DiophantineConsistency/con-zfc-diophantine-forms/README.md): frontier, waves 5–10 |
 
 
 

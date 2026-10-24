@@ -1136,9 +1136,9 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–9
-(intake batches 221–225; wave-9 placement `a2cd79b912`, reconciliation
-`42d8cbf310`).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–10
+(intake batches 221–226; wave-10 placement `d79b41884d`, reconciliation
+`cf4a5218a5`).
 
 Every finished equation so far turns the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
@@ -1149,14 +1149,15 @@ removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
 
 K215 is not required: by Vladimir's direction, proposals may use other
 encodings, provided they prove their own calibration (the report's section
-"Any encoding is welcome"). Wave-9 66 already sketches a proof-certificate
-source calibrated instead through `KEndpoint.c222_iff_zf_refutation` and
+"Any encoding is welcome"). Wave-9 66 and wave-10 68 already sketch a
+proof-certificate source calibrated instead through `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`.
 
 As the packages state them:
 
-- nine positive unknowns in 444 operations, or at degree 1,494,006;
-- 10 unrestricted integers via a cited reduction of Sun, in 490 operations;
+- nine positive unknowns in 444 operations, or at degree 1,379,730;
+- 10 unrestricted integers via a cited reduction of Sun, in 481 operations
+  at degree 1,576,864;
 - a 15-unknown equation of degree 24, and one in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^429959.
 
