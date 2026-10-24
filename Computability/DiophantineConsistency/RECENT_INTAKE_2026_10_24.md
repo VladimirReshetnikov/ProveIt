@@ -33,3 +33,16 @@ normal/optimized replays and all30 sealed files. The lower-degree
 148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
 The current10-positive105/408 PDF and TeX are unchanged by this minor
 integer-domain simplification; Lean remains paused.
+
+
+The [mixed retained-wire family](candidates/projected-radius-mixed-retained/README.md)
+now gives1,580/933/788/724/710 unrestricted integer variables, all at
+exact degree4. It keeps all original raw rows and coefficients, proves
+A and D nonnegative from four original-row bounds, and copies107 guard
+triples into the literal reviewed994 equation, with six fresh Legendre
+witnesses for its two remaining guards. The full592-wire map is over
+integers. All five collected quartics and complete signed inverses pass
+independent and deterministic checks in both Python modes. Heights remain
+427/4,750/737,653/737,653/938,261; each matched159-guard sibling loses
+156 coordinates,52 rows and780 terms. The smaller706-variable, larger-height
+family remains a separate tradeoff. The canonical PDF/TeX and Lean are unchanged.
