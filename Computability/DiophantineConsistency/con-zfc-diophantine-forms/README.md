@@ -24,45 +24,66 @@ circuit counts, proof assessments and its next formalization target:
   (`1affa014c2`) keeps the 443-operation target. It records 71's lower-degree
   nine-positive form, 69's and 71's 38-integer quartics and 70's
   eleven-positive form as alternative targets.
+- During wave 11, the research session reviewed the arrivals as they came
+  ([PROPOSAL_REVIEW_WAVE11.md](../PROPOSAL_REVIEW_WAVE11.md) and the
+  `PROPOSAL_REVIEW_*.md` files of 23–24 October) and built its own
+  candidates on them; [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md)
+  compares packages and candidates together. Several of its candidates
+  dominate wave-11 packages the day they arrived (ten positive at
+  degree 368 in 99 operations; direct quartics below 400 variables).
 
 The delivered packages remain unchanged.
 
 **Explicit polynomials with fixed integer coefficients whose unsolvability
-ZFC proves equivalent to Con(ZFC). Waves 5–10 are all in the tree. The stated
-frontier is now:**
+ZFC proves equivalent to Con(ZFC). Waves 5–11 are all in the tree. The stated
+frontier, over the packages of this collection, is now:**
 
-- **nine positive unknowns** in 444 operations at degree 1,845,940 (66), or at
-  degree 1,379,730 in 478 operations (71);
-- **ten unrestricted integers** at degree 1,576,864 in 481 operations (68),
-  the fewest operations and the lowest degree at once, via Sun's reduction;
-- **thirteen unrestricted integers without Sun's reduction** at degree
-  10,461,744 (67, unchanged);
-- **eleven positive unknowns** at degree 325 in 113 operations (70), down
-  from 954;
-- **twelve positive unknowns** at degree 82 (69), or in 89 operations (57's
-  258 form);
-- **thirteen positive unknowns** at degree 28 (72), or in 83 operations at
-  degree 114 (62);
+- **nine positive unknowns** in 420 operations at degree 1,472,168 (101), or
+  at degree 997,810 in 1,057 operations (101);
+- **ten positive unknowns** at degree 718 in 126 operations (109), or at
+  degree 706 in 133 (107); the first ten-positive package form is 84's
+  1,152 / 131;
+- **ten unrestricted integers** at degree 1,245,324 in 467 operations and at
+  degree 1,080,888 in 507 (106), via Sun's reduction;
+- **eleven unrestricted integers without Sun's reduction** at degree 2,240 in
+  206 operations (110); twelve at degree 1,000 in 180 (110); thirteen at
+  degree 1,072 in 190 (97); fourteen at degree 378 in 145 (106); fifteen at
+  172 in 123 (106); sixteen at 98 in 138 (106) and 112 in 119 (93);
+  seventeen at 88 in 110 (88);
+- **direct quartics in the numerical proof calculus C222**, with no
+  coefficient tuple and without K215, Jones or Sun: 394 naturals (108) and
+  663 unrestricted integers (108), the first finished equations on that
+  route;
+- **eleven positive unknowns** at degree 211 in 110 operations (105);
+- **twelve positive unknowns** at degree 70 in 98 operations (98), or in 89
+  operations (57's 258 form);
+- **thirteen positive unknowns** at degree 28 (72), at degree 51 in 88
+  operations (98), or in 83 operations at degree 114 (62);
 - **fourteen positive unknowns** at degree 24 (72), or in 79 operations at
   degree 52 (55, 59);
 - **fifteen positive unknowns** at degree 24 in 88 operations (66), and in
   66 operations (51's P66, degree 157), both unchanged;
-- **a quartic in 38 unrestricted integers**, a sextic in 32 and an octic in
-  27 (69 and 71, independently), and a degree-16 form in 26 (68);
+- **a quartic in 37 unrestricted integers** (76, 82; 77), a sextic in 30
+  (76), an octic in 25 in 127 operations (77), and a degree-14 form in 22
+  (79, 81);
 - **the smallest native tuple binding an equation**, B = 2^429959 (54,
-  unchanged).
+  unchanged); the direct quartics bind no tuple at all.
 
-An in-repository result, not an intake package, has **ten positive
-unknowns** at exact degree 816 in 124 operations:
-[candidates/ten-positive-scaled-norm](../candidates/ten-positive-scaled-norm/README.md).
-Its proof is relative to package 61's interface and has two independent
-review rounds. The only earlier ten-positive equation has 131 operations
-at degree 1,152. It is in the radical-residue arrival `440dd03ab8`, which
-has not been placed yet and is reviewed in
-[PROPOSAL_REVIEW_RADICAL_RESIDUE_POSITIVE.md](../PROPOSAL_REVIEW_RADICAL_RESIDUE_POSITIVE.md).
+Two results in this repository are not intake packages. The four-root
+ten-positive equation
+[candidates/ten-positive-scaled-norm](../candidates/ten-positive-scaled-norm/README.md)
+(degree 816, 124 operations, two adversarial review rounds) was written
+here on 23 October 2026; wave-11 packages 107 and 109 descend from it (109
+bundles it as `positive10/provenance/parent816/`), and the research session
+reduced it to its
+[ten-positive-zero-offset](../candidates/ten-positive-zero-offset/README.md)
+candidate at degree 368 in 99 operations, which dominates every ten-positive
+package form. The research session's other candidates are compared in
+[PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
 
-The report holds forty-five research packages; all but 60, 66 and 68 state
-AI assistance (74 only for its reviews).
+The report holds eighty research packages; all but 60, 66, 68, 97, 102, 106
+and 110 state AI assistance (74 only for its reviews; 77, 78 and 101 only in
+their TeX author lines; 88 only in copied notices).
 
 - **Wave 5**, sources 31–37: batch 221 (arrival `b7f8b75b5b`, placed in
   `952c1fab49`), pinned to `8c6eec9d19`.
@@ -84,6 +105,10 @@ AI assistance (74 only for its reviews).
   23 October 2026. They are pinned to the wave-9 placement `a2cd79b912` or
   to the later merge `9cca523d9f`, which preceded the wave-9 README.
 
+- **Wave 11**, sources 76–110: batch 227 (nineteen arrivals `c1a102936a` to
+  `e13c748234`, placed in `240bf9e422` and `c16a89ad94`), pinned to
+  `2605669a53`, `cf4a5218a5`, `9a33342a03`, `a88aefd7dd`, `08200eb10f`,
+  `04a1d79222`, `7e533c3381` and `ec80841c07` among others.
 **Earlier waves are kept.** By Vladimir's direction, waves 6–10 are each
 placed beside the earlier waves rather than replacing them. Wave-7 packages
 cite wave-5 and wave-6 packages by number; no wave-7 package cites another.
@@ -110,19 +135,25 @@ The only requirement is the theorem itself:
 A route of its own must state and prove its own calibration, as carefully as
 the K215 endpoint does here.
 
-Every finished equation so far encodes the K215 blank run through the
-native compiler, and most also use Jones's reduction or Sun's;
-[The common theorem](#the-common-theorem) below describes that route. That
-is a fact about the existing packages, not a rule. Part of the route has
+Until wave 11, every finished equation encoded the K215 blank run through
+the native compiler, and most also used Jones's reduction or Sun's;
+[The common theorem](#the-common-theorem) below describes that route. Wave
+11 adds a second finished route: direct quartics in the repository's
+numerical proof calculus C222 (87, 89, 93–96, 98–110, see the wave-11
+section), with no coefficient tuple and without K215, Jones or Sun. Neither
+route is a rule. Part of the route has
 checked infrastructure here: the K215 endpoint in Lean and Rocq, and the
 Lean development of Jones's reduction. The compiler and the Diophantine
 bridge are not formalized.
 
 Other routes in the repository:
-- **Explored by packages.** Wave 9's 60, 66 and 67 and wave 10's 68 and 75
-  discuss or build pieces of routes past K215 and Jones; 73 proves a lemma on
-  encoding proof syntax, and 70–72 discuss alternatives (see the wave-9 and
-  wave-10 sections below). None has yet produced a finished equation.
+- **Finished by packages.** Wave 11's direct C222 quartics (87's 27,916
+  integers down to 108's 394 naturals and 663 integers) are complete
+  explicit polynomials on a route without K215 or Jones; their calibration
+  is two Lean interfaces plus an ordinary proof of "polynomial zero iff
+  C222 derivation" (wave-11 section). Wave 9's 60, 66 and 67 and wave 10's
+  68 and 75 had discussed or built pieces of such routes; 68's local step
+  is the source both wave-11 lineages compile.
 - **In the active research.** It records its own alternatives in
   [ALTERNATIVE_ENCODINGS.md](../ALTERNATIVE_ENCODINGS.md). These include a
   Lean-checked direct quartic for syntactic ZFC refutability that skips the
@@ -146,7 +177,8 @@ They remain in history:
 | 7 | 223 | `4b4349064a` | `6d375f2d2d` … (kept) | `8e5fa20d8f` |
 | 8 | 224 | `7331974b69` | `beb0192cb8` … (kept) | `46988b7869` |
 | 9 | 225 | `0c6be9a074` | `a2cd79b912` … (kept) | `f55088fc27` |
-| 10 | 226 | `9513bd88ce` | `d79b41884d` … | this file |
+| 10 | 226 | `9513bd88ce` | `d79b41884d` … (kept) | `3956ae57a3` |
+| 11 | 227 | `c1a102936a` … `e13c748234` (19 commits) | `240bf9e422`, `c16a89ad94` … | this file |
 
 Until `ea8ae71167`, every one of these READMEs lived at
 `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md`.
@@ -172,8 +204,8 @@ values where available, to tell polynomials apart. Agreement at random points
 is strong evidence of identity, not proof; disagreement proves the
 polynomials differ.
 
-[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for all six waves: the
-batch-221 record, then the appended batch-222 to batch-226 records.
+[`PLACEMENT.md`](PLACEMENT.md) is the recovery map for all seven waves: the
+batch-221 record, then the appended batch-222 to batch-227 records.
 
 | Wave | Archive members | Staged | Omitted copies | Ignored |
 |---|---:|---:|---:|---:|
@@ -183,6 +215,7 @@ batch-221 record, then the appended batch-222 to batch-226 records.
 | 8 | 1,736 | 974 | 759 | 3 |
 | 9 | 1,829 | 1,030 | 766 | 33 |
 | 10 | 1,192 | 703 | 440 | 49 |
+| 11 | 7,386 | 5,291 | 2,043 | 52 |
 
 Omitted copies are byte-identical (up to line ends) to repository files.
 Most of the later waves' are copies of earlier-wave files of this
@@ -190,7 +223,13 @@ report, which stay in the tree. Copies within one wave are kept: 59's copies
 of 56's and 57's files are staged twice. 75's bundled copies of the eight
 wave-9 ZIPs are omitted and mapped to their arrival commit `0c6be9a074`.
 Wave 10 also ships ignored TeX build artifacts. Ignored members are checksum ledgers and logs, excluded by the root
-`.gitignore`.
+`.gitignore`. Wave 11's packages bundle one another and earlier arrivals
+wholesale (77 carries all eight wave-10 archives), which is why 2,043 of its
+members are copies. Its omission rule is narrower than before: a member whose
+only repository copies are the research session's volatile files
+(`candidates/`, `research/`, worktree copies) is kept, because that session
+copies and rewrites arriving packages; the first placement had omitted
+1,119 such members and `c16a89ad94` restored them.
 
 ## The common theorem
 
@@ -301,15 +340,23 @@ Wave 10 works mostly on guards and roots:
 - **Composed sources and finalizers**: 71's nine-positive form, and 68's
   ten-integer form with a strengthened Lucas-index lemma.
 
-## Combined frontier, waves 5–10 (intake findings)
+## Combined frontier, waves 5–11 (intake findings)
 
-Numbers are the packages' own. At intake, four read-only dossiers recounted
-every operation count and measured the degrees of the headline circuits; all
-checked figures agree with the claims. The mathematics was not re-derived,
-and every dominance statement assumes the competing proofs are correct.
+Numbers are the packages' own. At intake, read-only dossiers recounted
+every operation count and measured the degrees of the headline circuits
+(five dossiers for wave 11, four for each earlier wave); all checked
+figures agree with the claims. The mathematics was not re-derived, and
+every dominance statement assumes the competing proofs are correct. Only
+packages of this collection are ranked here. The active research session's
+own candidates, several of which dominate rows below (ten positive at
+degree 368 in 99 operations, eleven positive at 211 / 111, twelve positive
+at 70 / 96, 13ℤ at 536 / 135, direct quartics below 400 variables), are
+compared in its [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
 
 - "u / e / d / o" means unknowns / equations / degree / operations; pairs
-  are degree / operations.
+  are degree / operations. For the direct quartics (degree 4 throughout)
+  the measures are variables / residuals / expanded terms / coefficient
+  height.
 - Operations count every binary +, −, × including multiplication by fixed
   numerals; reuse and system comparisons are free. Fixed leaves are free,
   so a constant folded into a leaf costs nothing. Packages differ in what
@@ -321,7 +368,10 @@ and every dominance statement assumes the competing proofs are correct.
   - 68's ten-integer form (481) would cost 486 if the five gates building
     its threshold were charged;
   - 72's 98 and 101 leave six derived constants as leaves; computing them
-    takes 7 operations.
+    takes 7 operations;
+  - the wave-11 ten-integer and nine-positive forms use eleven or twelve
+    derived leaves (radix and threshold powers, recipe outputs), all
+    materialized and checked.
 - Unknowns are strictly positive unless marked ℤ (unrestricted integers)
   or ℕ (naturals). Natural-coordinate companions have separate counts:
   - in wave 7, package 52 adds three operations, 47 adds four, and 53's
@@ -332,7 +382,9 @@ and every dominance statement assumes the competing proofs are correct.
   - in wave 9, every nine-positive form adds seven, and 63's fourteen-positive
     form adds fourteen;
   - in wave 10, 71's nine-positive form adds seven and 74's twelve-positive
-    product adds twelve.
+    product adds twelve;
+  - in wave 11, 85's nine-positive forms add seven, 84's ten-positive form
+    ten, and 110's ten.
 
   The domain translation and its actual circuit must be stated.
 
@@ -342,24 +394,377 @@ lower directory number counts as earlier.
 
 | Criterion | Best stated | Found by | Base |
 |---|---|---|---|
-| Nine positive, fewest operations | unchanged: **444** at degree 1,845,940 (ℕ: 451) | 66 | 66 |
-| Nine positive, lowest degree | **1,379,730 / 478** (ℕ: 485). It combines 65's source, 63's majorant and 62's power rewrite | 71 | 71 |
-| Nine positive, Pareto frontier | 1,845,940 / 444, 1,834,516 / 449, 1,825,540 / 451 (66); 1,738,228 / 457, 1,675,396 / 458 (65); 1,663,788 / 475 (67); 1,520,178 / 476 (66); 1,379,730 / 478 (71). Newly dominated by 71: 66's 481 and 483 and 67's 487 | 65, 66, 67, 71 | — |
-| 10ℤ (Sun's reduction) | **1,576,864 / 481**, the lowest degree and the fewest operations at once. It dominates every earlier 10ℤ form, including 66's 490 and 494 and 67's 519 | 68 | 68 |
-| Fewest integers without Sun's 2026 reduction | unchanged: **13ℤ**, 10,461,744 / 519 (67) and 11,543,632 / 518 (59) | 67; 59 | — |
-| Eleven positive | **325 / 113** (system 110), dominating 52's 954 / 113 | 70 | 70 |
-| Twelve positive, Pareto frontier | **82 / 102** (69); 110 / 100 and the sum of squares 164 / 99 (74); 57's 242 / 94 and **258 / 89**. Dominated: 70's 84 / 103, 71's 110 / 102, 73's 110 / 105 and 164 / 104, 75's 114 / 105 and SOS 172 / 104, and 61's forms | 69; 74; 57 | — |
-| Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 has the same polynomial in 93); **114 / 83** (62). Dominated: 70's and 75's 30 / 94 (one polynomial) and 61's 34 / 93 | 72; 73; 62 | — |
-| Fourteen positive, Pareto frontier | **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
-| Nine positive on a smaller tuple | unchanged: 60's 1,797,796 / 465 and 62's 1,834,516 / 453 (2^590069); 54's 490 (2^429959) | 60, 62; 54 | — |
-| Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
+| Nine positive, fewest operations | **420** at degree 1,472,168 (ℕ: not shipped) | 101 | 101 |
+| Nine positive, lowest degree | **997,810 / 1,057** | 101 | 101 |
+| Nine positive, Pareto frontier | 1,472,168 / 420 (101); 1,376,378 / 456 (105); 1,158,228 / 726 (82); 997,810 / 1,057 (101). Dominated by these: 66's 444 and every earlier nine-positive form; 101's 428 and 85's 434 ≡ 86's 435 (one polynomial), 105's 442, 86's 449, 79's 1,753, 85's 1,074, 86's 1,086 | 82, 101, 105 | — |
+| Nine positive on the 2^429959 tuple | **1,626,248 / 428** (101); 1,628,768 / 434 (85; 86 evaluates the same polynomial in 435); 1,520,186 / 442 (105). Earlier: 54's 490 | 85, 101, 105 | 85 |
+| Ten positive | **718 / 126** (109) and **706 / 133** (107), both descendants of this repository's four-root equation; dominated: 84's 1,152 / 131 (ℕ 141), the first ten-positive package form, and 110's 912 / 126 | 84, 107, 109 | 84 |
+| 10ℤ (Sun's reduction), Pareto frontier | **1,245,324 / 467**, 1,179,788 / 470, 1,114,252 / 473, **1,080,888 / 507** (106, re-evaluating 87's 471 form and the research session's three shears of it). Other polynomials: 76's 480 / 1,245,324, 83's 484 / 1,179,788, 487 / 1,114,252 and 521 / 1,081,125, 87's 485, 496 and 545 / 1,080,888, 91's re-evaluations. All dominate 68's 1,576,864 / 481 | 76, 83, 87, 106 | 76 (degree), 87 (operations) |
+| 11ℤ, without Sun's reduction | **2,240 / 206**, 2,272 / 204, **2,912 / 200** — the first eleven-integer forms; the "fewest integers without Sun" row moves from 13ℤ (67, 59) to 11ℤ | 110 | 110 |
+| 12ℤ | **1,000 / 180**, 1,024 / 179 (110). Dominated: 104's 2,400 / 215 and 2,912 / 209, 109's 2,304 / 216, 108's 2,400 / 210 (104's form, n replaced by n + QV), 106's 2,048 / 233, 97's 4,832 / 248 and 16,000 / 223 (the first twelve-integer forms) | 97, 104, 106, 108, 109, 110 | 97 |
+| 13ℤ | **1,072 / 190** (97); 1,392 / 186 and 1,408 / 185 (88). Dominated: 88's 1,088 / 195, 96's 1,072 / 195 (88's polynomial reanchored), 98's 1,072 / 195, 106's 1,072 / 192, 90's 475 and 473, 91's 205, 92's 211 and 205, and 67's 10,461,744 / 519 | 88, 97 | 88 |
+| 14ℤ | **378 / 145** (106); **792 / 137** (88). Dominated: 98's 414 / 148, 101's 568 / 147 and 540 / 160, 88's 696 / 150, 90's 652 / 230 and 664 / 223, 91's 696 / 151, 92's 862 / 150 | 88, 106 | 88 |
+| 15ℤ | **172 / 123** and 170 / 134 (106). Dominated: 92's 204 / 128 and 352 / 124, 110's 176 / 125, 98's 218 / 130, 90's 214 / 139, 91's 244 / 137, 93's 306 / 139, 88's 344 / 131 | 106 | 88 (first 15ℤ form, 344 / 131) |
+| 16ℤ, Pareto frontier | **98 / 138** (106); 108 / 132 (91); **112 / 119** (93); 124 / 118 (98); **160 / 115** (92). Dominated: 92's 152 / 120, 132 / 128 and 120 / 123, 93's 112 / 120, 86's 184 / 135 and 192 / 134 | 86, 91, 92, 93, 98, 106 | 86 |
+| 17ℤ | **88 / 110** (88). 82's and 86's 17ℤ / 88 forms are different polynomials (82 uncounted, 86 at 114); 84's 112 / 124 and 110 / 140 dominated | 82, 86, 88 | 82 |
+| 18ℤ–20ℤ | 18ℤ **32 / 112** (88; 82's 18ℤ / 32 uncounted, 84's 80 / 115 dominated); 19ℤ **28 / 116** (88; 82 uncounted; 89's 19ℤ / 40 and 83's 19ℤ / 32 dominated); 20ℤ **18 / 115** (93) and 20 / 111 (85; the pivot polynomial of 83, 84 and 85); 88's 24 / 120 dominated | 82, 83, 85, 88, 89, 93 | 82 (18ℤ, 19ℤ), 83 (20ℤ) |
+| 21ℤ–24ℤ | 21ℤ / 16 (89, 9 residuals; 83 ≡ 84 ≡ 85 at 114 operations; 87, different); 22ℤ / 14 (79; 81 at 123) and 22ℤ / 16 / 118 (77); 23ℤ / 10 (83 ≡ 86 at 131) and 23ℤ / 12 (77 at 121; 79, 81, 82); 24ℤ / 10 (78; 81 at 135; 82). All beat 68's 26ℤ / 16 and 37's 24ℤ / 1,936 | 77, 78, 79, 81, 83, 86, 89 | 77 |
+| Integer octic | **25ℤ** in 127 operations (77). Dominated: the 26ℤ octics of 76, 77, 78, 79, 81, 82 and 68's 28ℤ, 69's and 71's 27ℤ | 77 | 77 |
+| Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
+| Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
+| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **394 / 320 / 39,208 / 84,233,382** and **395 / 321 / 7,323 / 83,842,758** (108); 395 / 313 / 8,292 (109); 407 / 323 / 8,420 (100); 895 / 773 / **4,863** (95, fewest terms); 6,183 / 5,523 / 17,430 / **1,993** (89, lowest height). Lineage: 87 (27,916ℤ, 16,036ℕ) → 89 (3,614) → 95 (522) → 100 (407) → 108, 109 (395) | 89, 95, 100, 108, 109 | 87 (earliest), 89 (this lineage) |
+| Direct C222 quartic, ℤ | **663 / 397 / 7,268 / 2.45·10^12** and 687 / 421 / 5,602 / 63,906,013 (108); 1,190 / 600 / 26,411 / 83,900,628 (104); 1,685 / 850 / 12,082 / 79,827,802 (99); 3,292 / 2,887 / **11,218** / 14,869,246 (103, fewest terms); 3,776 / 2,015 / 20,194 / **47,959** (102); 7,058 / 5,297 / 24,277 / **1,992** (102, lowest height) | 99, 102, 103, 104, 108 | 87 |
+| Eleven positive | **211 / 110** (105's evaluator of the research session's polynomial). Dominated: 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 83, 105 | 76 (277), 83 (211) |
+| Twelve positive, Pareto frontier | **70 / 98** (98's free-J form; 104 evaluates the 100-operation polynomial of 80 / 87 in 98 too); 57's **258 / 89**. Dominated: 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98; 57 | 80 (claim), 87 (first artifact), 98 |
+| Thirteen positive, Pareto frontier | **28 / 98** (72); **51 / 88** (98); **114 / 83** (62). Dominated: 73's and 74's 30 / 92, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 98; 62 | — |
+| Fourteen positive, Pareto frontier | unchanged: **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
 | Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
-| Integer quartic | **38ℤ**, two different polynomials (25 residuals each) | 69; 71 | 69 |
-| Integer sextic | **32ℤ**, two different polynomials (19 residuals each). The four 34ℤ sextics of 70, 72, 73 and 75 are dominated | 69; 71 | 69 |
-| Integer octic | **27ℤ**, two different polynomials (14 residuals each). 68's 28ℤ, 70's 29ℤ and 75's 30ℤ (which ties 62's) are dominated | 69; 71 | 69 |
-| Integer, degree 16 | 26ℤ, 13 residuals | 68 | 68 |
-| Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125; 24ℤ at 1936 / 161. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54). 69's and 71's integer forms use six coefficient payloads (881,696 and 615,883 raw bytes) instead of four; 73's sextic is the first low-degree residual-system integer form bound to the 2^590069 tuple (39's and 52's ten-integer forms and 58's 60ℤ translation already were) | 54 | 54 |
+| Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
+| Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1,837 to 10^21) | 54; 87–89 | 54 |
+
+## Wave 11 (sources 76–110)
+
+Thirty-six archives arrived in nineteen commits between 23 October 2026,
+18:35, and 24 October, 12:14 (`c1a102936a` to `e13c748234`), all titled
+"Con(ZFC) in Diophantine form". They were placed as one batch (227) in
+arrival order. The packages call themselves rounds 11, 12 and 13 of their
+own series; several were written within minutes of one another and none
+cites a sibling that arrived after its pin. Thirty-five directories hold
+them: `ZFC_Diophantine_Centered_Compression_2026-10-24_Dependency.zip`
+(`922185752d`) is a byte copy of 77's archive inside a wrapper and has no
+directory, and `report.zip` is a single TeX file (80). The research
+session reviewed most of these arrivals as they came
+([PROPOSAL_REVIEW_WAVE11.md](../PROPOSAL_REVIEW_WAVE11.md),
+[PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md) and the
+`PROPOSAL_REVIEW_*.md` files dated 23–24 October); 94, 105–110 and parts
+of 86, 87, 101 had no review there at placement.
+
+Unless marked, unknowns are strictly positive; "u / d / o" is unknowns /
+exact degree / operations; ℤ is unrestricted integers and ℕ naturals. For
+the direct quartics (degree 4, no coefficient tuple) the figures are
+variables / residuals / expanded terms / coefficient height.
+
+| Dir | Archive | Title as printed | Constructions |
+|---|---|---|---|
+| [`76-structural-round11/`](76-structural-round11/) | `ConZFC_Structural_Reductions_Round11_2026-10-24.zip` | *Structural reductions for Diophantine consistency equations* | **10ℤ 1,245,324 / 480** (31's tuple; also 1,248,364 / 481); 11 / 277 / 111; **12 / 78 / 101**; **37ℤ quartic**, **30ℤ sextic**, 26ℤ octic, 25ℤ / 10, 24ℤ / 12, 23ℤ / 16 (34's tuple); uncompiled height-register source (`commutative/`) |
+| [`77-joint-guards/`](77-joint-guards/) | `ZFC_Diophantine_Joint_Guards_2026-10-24.zip` | *Joint sign guards and Pell descent for smaller consistency equations* | **25ℤ octic in 127 operations**; 23ℤ / 12 / 121, 22ℤ / 16 / 118, 21ℤ / 20 / 115, 20ℤ / 32 / 112, 19ℤ / 88 / 109; 37ℤ quartics and 31ℤ sextics in cone and determinant variants; 11 / 277 / 111 and **11 / 257 / 114**; bundles all eight wave-10 archives; `certificates/` gadgets for the direct route |
+| [`78-budget-centering/`](78-budget-centering/) | `con-zfc-budget-and-centering-2026-10-23.zip` | *Smaller Diophantine Forms for Con(ZFC): two Pell-root translations, joint positivity, and coefficient-bounded proof certificates* (README: *Pell translations and coefficient budgets for Con(ZFC)*) | 26ℤ / 8, **24ℤ / 10**, 23ℤ / 16 (no counts); 11 / 277 / 111; 12 / 78 / 103; local two-accumulator Horn certificate (`direct/`, not materialized) |
+| [`79-radical-guard-descent/`](79-radical-guard-descent/) | `con-zfc-radical-guard-descent-2026-10-23.zip` (wrapper `con-zfc-cross-guard-descent-2026-10-23`) | *Radical majorants, guard compression, and Pell descent for Diophantine consistency equations* | **9 / 1,158,228 / 1,753** (31's tuple); 11 / 277 / 111; 31ℤ / 6, 26ℤ / 8, 23ℤ / 12, **22ℤ / 14** (no counts); single-loop local source (`alternative/`) |
+| [`80-twelve-manuscript/`](80-twelve-manuscript/) | `report.zip` | *Diophantine consistency without redundant denominator guards* (cover page; no `\title`) | one TeX file; claims 11 / 277 / 111, **12 / 70 / 100**, a 31ℤ sextic and 9 / 1,158,240 / 811; ships no artifact (see below) |
+| [`81-centered-pell-norms/`](81-centered-pell-norms/) | `con-zfc-centered-pell-norms.zip` | *Centered Pell norms and shared positivity: a degree-fourteen consistency equation in twenty-two integers* | **22ℤ / 14 / 123**, 23ℤ / 12 / 122, 24ℤ / 10 / 135, 26ℤ / 8 / 131, 31ℤ / 6 / 144, 25ℤ / 12 / 128; 11 / 277 / 111; 12 / 78 / 103 |
+| [`82-pell-congruences/`](82-pell-congruences/) | `con_zfc_pell_congruences_2026-10-23.zip` | *Pell Congruences, Shared Positivity, and Smaller Diophantine Consistency Equations* (README: *Pell congruences and smaller Diophantine consistency equations*) | **9 / 1,158,228 / 726**; **11 / 269 / 111**; 12 / 78 / 102; **20ℤ / 20, 19ℤ / 28, 18ℤ / 32, 17ℤ / 88** (no counts); 37ℤ quartic, 31ℤ sextic, 26ℤ octic, 24ℤ / 10, 23ℤ / 12, 22ℤ / 16 |
+| [`83-polynomial-shears/`](83-polynomial-shears/) | `ConZFC_Polynomial_Shears_2026-10-23.zip` | *Polynomial shears and sign recovery for Diophantine consistency* | 10ℤ 1,179,788 / 484, 1,114,252 / 487, 1,081,125 / 521; **11 / 211 / 112**; 23ℤ / 10, 21ℤ / 16, 20ℤ / 20, 19ℤ / 32, 18ℤ / 88 (no counts) |
+| [`84-radical-residue/`](84-radical-residue/) | `con-zfc-radical-residue-2026-10-23.zip` | *Ten-variable Diophantine consistency: four square roots and small rational residues* (README: *… by small rational residues*) | **10 / 1,152 / 131** (ℕ 141), the first ten-positive package equation; 17ℤ / 112 / 124, 17ℤ / 110 / 140, 18ℤ / 80 / 115; pivots 21ℤ–18ℤ (83's polynomials) |
+| [`85-saturation-projection/`](85-saturation-projection/) | `con-zfc-saturation-and-projection-2026-10-23.zip` | *Smaller Diophantine consistency equations: Pell saturation, exact transport elimination, and coprime proof-flow certificates* | **9 / 1,628,768 / 434** (ℕ 441) and 9 / 1,103,950 / 1,074 on the 2^429959 tuple; 18ℤ / 88 / 105, 19ℤ / 32 / 108, 20ℤ / 20 / 111, 21ℤ / 16 / 114; coprime Horn-flow theorem (`alternative/`, not compiled) |
+| [`86-saturated-certificates/`](86-saturated-certificates/) | `ConZFC_Saturated_Certificates_2026-10-24.zip` | *Saturated Pell certificates and quotient recovery: eight explicit Diophantine equations for syntactic consistency of ZFC* (README: *… for Con(ZFC)*) | 9 / 1,628,768 / 435 (85's polynomial), **9 / 1,474,688 / 449**, **9 / 999,518 / 1,086** (31's tuple); 11 / 213 / 112; 23ℤ / 10 / 131 (83's polynomial), **17ℤ / 88 / 114**, 16ℤ / 192 / 134, 16ℤ / 184 / 135 |
+| [`87-direct-centered-round12/`](87-direct-centered-round12/) | `ConZFC_Direct_Centered_Round12_2026-10-24.zip` | *Direct and centered Diophantine consistency equations* | **direct C222 quartic, 27,916ℤ / 758,275 terms** (and a 16,036ℕ residual system), the earliest finished direct equation; **10ℤ 1,245,324 / 471**, 1,179,788 / 485, 1,114,252 / 496, **1,080,888 / 545**; 11 / 211 / 113; 12 / 70 / 100 (80's claim, materialized); 21ℤ / 16 and 20ℤ–18ℤ forms |
+| [`88-root-fusion13/`](88-root-fusion13/) | `ConZFC_13_Integer_Norms_2026-10-24.zip` (wrapper `con-zfc-root-fusion-2026-10-24`) | *Thirteen Integer Variables through a Single Five-Radical Norm* | **13ℤ 1,088 / 195**, 1,392 / 186, 1,408 / 185; **14ℤ 696 / 150, 792 / 137**; 15ℤ 344 / 131; quotient companions 20ℤ / 24 / 120, 19ℤ / 28 / 116, 18ℤ / 32 / 112, **17ℤ / 88 / 110** (34's tuple) |
+| [`89-shared-certificates/`](89-shared-certificates/) | `ConZFC_Shared_Certificates_2026-10-24.zip` | *Direct proof certificates and smaller Diophantine consistency equations* (README: *Direct certificates and coordinated Diophantine reductions*) | **direct quartic ℕ 3,614 / 2,954 / 15,996 / 127,778,545**, the first of the affine-step lineage, and 6,183ℕ at height 1,993; **21ℤ / 16** (9 residuals), 20ℤ / 18, **19ℤ / 40** (six-payload tuple) |
+| [`90-fixed-prime-radicals/`](90-fixed-prime-radicals/) | `ConZFC_FixedPrime_Radicals_2026-10-23.zip` (wrapper `con-zfc-padic-compression`) | *Thirteen integer variables for Diophantine ZFC consistency* | 13ℤ 1,392 / 475, 1,408 / 473; **14ℤ 652 / 230, 664 / 223**, 700 / 217, 748 / 215; 15ℤ 214 / 139; bundles 82's archive |
+| [`91-prime-separation13/`](91-prime-separation13/) | `ConZFC_Prime_Separation_13_Integer_2026-10-23.zip` | *Prime separation for Diophantine ZFC consistency* | 13ℤ 1,392 / 205; 14ℤ 696 / 151; 15ℤ 244 / 137; **16ℤ 108 / 132**; 10ℤ re-evaluations of 83's forms (477, 481, 484, 518) |
+| [`92-parity-norms/`](92-parity-norms/) | `con-zfc-parity-norms-2026-10-23.zip` | *Parity norms for a smaller Diophantine consistency equation* (README: *… smaller ZFC consistency equation*) | 13ℤ 1,392 / 211, 1,888 / 205; 14ℤ 862 / 150, 1,696 / 147; **15ℤ 204 / 128, 352 / 124**; **16ℤ 160 / 115**, 152 / 120, 132 / 128, 120 / 123; bundles 82 |
+| [`93-parity-pell-witnesses/`](93-parity-pell-witnesses/) | `con-zfc-parity-norms-2026-10-23 (2).zip` (wrapper `con-zfc-parity-norms`; a different package from 92) | *Parity and Pell Witnesses: smaller explicit Diophantine equations for syntactic consistency and a reduced direct proof-calculus quartic* (README: *Parity and Pell witnesses for syntactic Con(ZFC)*) | **16ℤ / 112 / 119** (and 112 / 120); 15ℤ 306 / 139, 310 / 136; **20ℤ / 18 / 115**; direct quartic 26,188ℤ / 724,768 terms (14,956ℕ) |
+| [`94-direct-projection7617/`](94-direct-projection7617/) | `ConZFC_Direct_Projection_7617.zip` | *Projection before Diophantine encoding: a smaller direct quartic for Con(ZFC)* (README: *An eight-column direct C222 consistency polynomial*) | direct quartic **7,617ℤ / 4,379 / 148,220 / 8.97·10^21**; the source projection inherited by 103 |
+| [`95-synchronized-certificates/`](95-synchronized-certificates/) | `ConZFC_Synchronized_Certificates_2026-10-24.zip` | *Synchronized arithmetic certificates for ZFC refutability* | direct quartics **ℕ 522 / 400 / 20,225 / 83,900,628**, 529, 596 / 474 / 7,263 / 63,909,160, 895 / 773 / 4,863 / 63,908,265; ℤ 2,088 |
+| [`96-batched-certificates/`](96-batched-certificates/) | `con_zfc_batched_certificates_2026-10-23.zip` (wrapper `con-zfc-batched-certificates`) | *Shared arithmetic certificates for Diophantine consistency equations* | direct quartics ℕ 667, 680, 1,153, 1,968, 2,108; ℤ 1,690 (and 1,702); **13ℤ 1,072 / 195** (88's polynomial reanchored, 1,088 → 1,072); bundles 88 and 89 |
+| [`97-twelve-interpolation/`](97-twelve-interpolation/) | `ConZFC_Twelve_Integer_Interpolation_2026-10-24.zip` (wrapper `con_zfc_trace_and_interpolation`) | *Twelve Integer Variables through Interpolated Pell Certificates* | **12ℤ 4,832 / 248**, 16,000 / 223, the first twelve-integer forms; **13ℤ 1,072 / 190**; bundles 88 |
+| [`98-congruence-certificates/`](98-congruence-certificates/) | `ConZFC_Congruence_Certificates_2026-10-24.zip` | *Congruence, Radical Norms, and Direct Proof Certificates for Diophantine ZFC Consistency* (README: *… for Con(ZFC)*) | **12 / 70 / 98**, **13 / 51 / 88** (free-J forms); 13ℤ 1,072 / 195, **14ℤ 414 / 148**, 558 / 149, 15ℤ 218 / 130, **16ℤ 124 / 118**; direct quartics ℕ 2,473 and 4,860 (height 1,837) |
+| [`99-shared-pell608/`](99-shared-pell608/) | `ConZFC_Shared_Pell_608_2026-10-23.zip` | *Shared Arithmetic Witnesses for Direct ZFC-Consistency Quartics* | direct quartics ℕ 608 / 491 / 7,582 / 79,824,571 and **ℤ 1,685 / 850 / 12,082 / 79,827,802**; a self-bounding factorial radius |
+| [`100-quartics407-888/`](100-quartics407-888/) | `ConZFC_407_888_Quartics_2026-10-24.zip` | *Residue certificates and nonnegative gates for the consistency of ZFC* (README: *Explicit quartics for Con(ZFC)*) | direct quartics **ℕ 407 / 323 / 8,420 / 83,843,774**, 410; **ℤ 888 / 470 / 10,156 / 2.45·10^12**, 917 / 499 / 6,986 / 63,906,036 |
+| [`101-constructive-reductions/`](101-constructive-reductions/) | `ConZFC_Constructive_Reductions_2026-10-23.zip` | *Smaller Diophantine Equations for ZFC Consistency: four-root separation, normalized radix positions, and direct certificates with recovered domains* | **9 / 1,472,168 / 420** and **9 / 997,810 / 1,057** (31's tuple), 9 / 1,626,248 / 428 (2^429959 tuple); **14ℤ 568 / 147**, 540 / 160; direct quartics ℕ 495 and ℤ 977 |
+| [`102-direct-quartics3776/`](102-direct-quartics3776/) | `ConZFC_Direct_Quartics_3776_3671_2026-10-23.zip` (wrapper `conzfc_signed_quartic`) | *Smaller direct quartic equations for ZFC consistency: signed witnesses, sign normalization, and polynomial elimination* | direct quartics **ℤ 3,776 / 2,015 / 20,194 / 47,959**, 3,671, **7,058 at height 1,992**; parents are research-session candidates |
+| [`103-shared-pell1873/`](103-shared-pell1873/) | `ConZFC_Shared_Pell_1873.zip` (wrapper `con_zfc_batched_pell`) | *A shared Pell certificate for Con(ZFC)* (README: *An explicit quartic for Con(ZFC), with shared Pell certificates*) | direct quartics ℤ 1,873 / 1,468 / 77,523 / 1.32·10^18 and **3,292 / 2,887 / 11,218 / 14,869,246**; a signed Pell-index theorem |
+| [`104-valuation-signed/`](104-valuation-signed/) | `ConZFC_Valuation_and_Signed_Certificates_2026-10-23.zip` | *Valuation separation and signed certificates: explicit Diophantine forms of Con(ZFC)* | **12ℤ 2,400 / 215**, 2,912 / 209; direct quartic **ℤ 1,190 / 600 / 26,411 / 83,900,628**; 12 / 70 / 98 (the 100-operation polynomial re-evaluated); bundles 88, 95, 97 |
+| [`105-bootstrap-certificates/`](105-bootstrap-certificates/) | `ConZFC_Bootstrap_Certificates_2026-10-24.zip` | *Factorial fixed points and smaller Diophantine consistency equations* | **9 / 1,376,378 / 456** (31's tuple), 9 / 1,520,186 / 442 (2^429959); **11 / 211 / 110** (the research session's polynomial, nine operations saved on 88's 13ℤ forms too); direct quartics ℕ 467, 468, 469 and ℤ 956 / 510 / 10,988 / 2.45·10^12, 989 / 543 / 7,705 / 63,910,295 |
+| [`106-compact-certificates-round13/`](106-compact-certificates-round13/) | `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24.zip` | *Compact proof certificates for ZFC consistency* (round 13; no `\title`) | **10ℤ 1,245,324 / 467, 1,179,788 / 470, 1,114,252 / 473, 1,080,888 / 507** (31's tuple; re-evaluations of 87's and the research session's polynomials); 12ℤ 2,048 / 233; 13ℤ 1,072 / 192; **14ℤ 378 / 145**; **15ℤ 172 / 123**, 170 / 134; **16ℤ 98 / 138**; direct quartics ℕ 1,859, 2,560 and ℤ 3,179 |
+| [`107-dyadic-pell/`](107-dyadic-pell/) | `ConZFC_Dyadic_Pell_Reductions_2026-10-23.zip` | *Dyadic descaling and delayed Pell sign recovery* | **10 / 706 / 133** (descends from this repository's `ten-positive-scaled-norm`); direct quartic ℤ 780 / 434 / 9,628 / 2.45·10^12; bundles 100 |
+| [`108-pell-residues/`](108-pell-residues/) | `ConZFC_Pell_Residues_2026-10-23.zip` | *Pell residues instead of power values* (README.txt: *Pell residues instead of power values: explicit Diophantine consistency equations for ProveIt*) | direct quartics **ℕ 395 / 321 / 7,323 / 83,842,758**, **394 / 320 / 39,208 / 84,233,382**, **ℤ 663 / 397 / 7,268 / 2.45·10^12**, 687 / 421 / 5,602 / 63,906,013; 12ℤ 2,400 / 210, 2,368 / 216 (104's forms with n replaced by n + QV, n + V); bundles 100 and 104 |
+| [`109-valuations-centered/`](109-valuations-centered/) | `ConZFC_Valuations_and_Centered_Certificates.zip` | *Fixed Valuations and Centered Certificates: smaller explicit Diophantine equations for Con(ZFC)* | **12ℤ 2,304 / 216**, 2,336 / 215, 2,848 / 209; **10 / 718 / 126** (descends from `ten-positive-scaled-norm`, bundled as `positive10/provenance/parent816/`); direct quartics ℕ 395 / 313 / 8,292 / 83,843,425, 398, ℤ 853; bundles 97 and 100 |
+| [`110-budget-interpolation/`](110-budget-interpolation/) | `ZFC_Diophantine_Budget_Interpolation_2026-10-24.zip` | *Budget constraints and radical compression for Diophantine consistency* (README: *Centered-budget Diophantine reductions: portable research release*) | **11ℤ 2,240 / 206**, 2,272 / 204, 2,912 / 200, the first eleven-integer forms; **12ℤ 1,000 / 180, 1,024 / 179**; 15ℤ 176 / 125; 10 / 912 / 126 (ℕ 136); bundles 88 and 92; tiling-certificate interfaces (`alternative/`, uncompiled) |
+
+Directory numbers follow arrival order, and archive-name order within one
+commit. 90's archive wraps `con-zfc-padic-compression`, 93's
+`con-zfc-parity-norms`, 96's `con-zfc-batched-certificates`, 97's
+`con_zfc_trace_and_interpolation`, 102's `conzfc_signed_quartic` and 103's
+`con_zfc_batched_pell`. 108's entry point is `README.txt`. Each other
+directory's `README.md` is its entry point.
+
+### Coefficient tuples
+
+Four fixed tuples occur, never mixed within one construction:
+- the compact44 four-port tuple, B = 2^590069 (positive forms of 76–87,
+  98, 104, 107, 109, 110);
+- the six-payload source-34 tuple, B = 2^1064921 with two cone scales
+  (every unrestricted-integer form with 11–37 unknowns, in 76–79, 81–84,
+  86–93, 96–98, 104, 106, 108–110);
+- the original 31 tuple, B = 2^1064921 with its own masks (nine-positive
+  and ten-integer forms of 76, 79, 82, 83, 86, 87, 91, 101, 105, 106);
+- the compact54 tuple, B = 2^429959 (nine-positive forms of 85, 86, 101,
+  105).
+
+The direct quartics bind no tuple: their coefficients are the small
+integers of the expanded polynomials. Every payload shipped in the batch
+decompresses to the repository's values; the dossiers checked them all.
+
+### Encodings beyond K215 and Jones
+
+Wave 10 said of 68's `direct/` constructor that "its final polynomial is
+neither produced nor counted". Wave 11 finishes it, twice over. Eight
+packages (87's `direct/fixed_base`, 89, 94, 95, 96, 99, 102, 103; also
+100's and 106's quartics, see their rows) encode the repository's numerical
+proof calculus **C222** directly: a zero of the polynomial is a finite C222
+derivation of the contradiction code, which is a finite ZF refutation by the
+Lean theorem `KEndpoint.c222_iff_zf_refutation`
+(`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean`), hence a
+finite ZFC refutation by `ConstructibleChoice.zf_refutation_iff_zfc_refutation`.
+Powers, binomials, factorials, remainders and bounded quantifiers are
+expanded into quadratic rows through the repository's Pell and power
+representation modules (`PellRepresentation.criterion_iff_pell` and its
+siblings under `Computability/DiophantineConsistency/Lean/`), so every
+direct equation is a sum of squares of quadratic residuals: a **quartic with
+literal coefficients and no coefficient tuple**. None of them simulates
+K215, instantiates Jones's equation, uses Sun's reduction or runs the
+native-window/Pell compiler. The Lean side is inherited (the two refutation
+interfaces and the representation modules, copied inertly into the
+packages); the step "polynomial zero iff C222 derivation" is an ordinary
+proof in each package, checked by finite replays, not a Lean theorem. None
+of the packages uses `DirectQuarticZFC.noNaturalZero_iff_conZFC`; they
+compile C222 themselves.
+
+Two lineages, both rooted in 68:
+
+- **Affine shared step.** 68's `direct/affine_shared_step.json` (its
+  23-witness local step) is compiled by 89 into the first finished equation
+  of this line, 3,614 naturals with 55 separate Pell frames. 95, 96 and 99
+  then share the Pell frames in three different ways within six minutes of
+  one another (95: one global frame for 27 power requests and one common
+  binomial radix; 96: a common radix, a common offset for signed quotients
+  and a pooled frame including the outputs; 99: one frame excluding the
+  outputs, with a self-bounding factorial radius), reaching 522, 667 and
+  608 naturals. 102 works on the research session's prime-lift descendant
+  of 89 with signed witnesses and sign normalization, for low height.
+- **Horn fixed base.** 68's `direct/horn_shared_source.json` is compiled
+  by 87's `direct/fixed_base` (27,916 integers), projected by 94 to eight
+  columns (7,617 integers) and batched by 103 onto one bootstrap Pell base
+  with a signed-index theorem (1,873 integers).
+
+For these quartics the cost axes are variables, residuals, expanded terms
+and coefficient height at fixed degree 4; operation counts are not
+meaningful. The dossier re-expanded every shipped residual list and
+recovered every published expansion, term count and height exactly.
+
+| Domain | Fewest variables | Pareto points (variables / residuals / terms / height) |
+|---|---|---|
+| ℕ | **522 / 400 / 20,225 / 83,900,628** (95) | 529 / 407 / 10,782 / 211,184,624 and 596 / 474 / 7,263 / 63,909,160 (95); 895 / 773 / 4,863 / 63,908,265 (95, fewest terms); 6,183 / 5,523 / 17,430 / 1,993 (89, lowest height) |
+| ℤ | **1,685 / 850 / 12,082 / 79,827,802** (99) | 3,292 / 2,887 / 11,218 / 14,869,246 (103, fewest terms); 3,776 / 2,015 / 20,194 / 47,959 (102); 7,058 / 5,297 / 24,277 / 1,992 (102, lowest height) |
+
+95's 596-variable form dominates 89 (3,614), 96 (667, 680, 1,153, 1,968,
+2,108) and 99 (608) in variables, terms and height at once; 99's 1,685
+dominates 96's 1,690, 103's 1,873, 95's 2,088, 102's 3,671 and 94's 7,617
+in all three. The batching that saves the most variables (96, 103) raises
+the height by many orders of magnitude; 95 and 99 save variables without
+that. 94 (10-23 20:24) and 103 both inherit 94's source projection byte for
+byte. The research session has since pushed this route further in its own
+candidates (naturals 502 and below, integers 1,190 and below, and the
+72-predicate direct quartics down to 595 variables of `81b3e239a1`); those
+are not packages and are listed in its own comparison, not here.
+
+Bundled copies: 68's two local-step files recur byte for byte in 87, 89, 94,
+95, 96, 102 and 103; 96's `direct/upstream/` is 89's whole `direct/`, and
+its `guard13/upstream/` is 88's complete archive.
+
+Other pieces outside the common route, none a finished equation: 76's
+height-register source and three uncompiled Lean constructors
+(`commutative/`); 77's natural-domain checker gadgets and an index-free
+inert-prime CRT closure (`certificates/`); 78's two-accumulator Horn
+certificate with a linear budget (`direct/`, "not materialized"); 79's
+single-loop affine certificate source (`alternative/`); 81's CRT compiler
+lemma (`exploratory/`); 83's local selector polynomials (`alternative/`);
+85's coprime Fermat-label Horn-flow theorem (`alternative/`, "not an
+ordinary fixed-dimensional polynomial"); 110's tiling-certificate
+interfaces with uncompiled power and binomial graphs (`alternative/`).
+
+Within the common route, Jones's reduction enters only through the
+nine-positive forms (79, 82, 85, 86, 101, 105, via 66's and 71's sources),
+and Sun's only through the ten-integer forms (76, 83, 87, 91, 106). Every
+form with 11 to 37 unrestricted integers, and every ten-, eleven-,
+twelve- and thirteen-positive form, uses neither.
+
+### Identities and dominance (intake findings)
+
+**How the dossiers checked.** Five read-only dossiers evaluated every
+literal circuit with their own code, modulo 2^127 − 1 with the actual
+fixed values (the two 1.16-million-degree forms modulo 2^31 − 1), measured
+degrees exactly along random lines (the smaller ones by finite
+differences, the larger by top-coefficient tracking or Lagrange
+agreement), recounted every live operation, and re-expanded every direct
+quartic from its residual list. All 160-odd measured figures agree with
+the packages' claims; no claimed count or degree was found wrong.
+
+- **One eleven-positive polynomial, five times.** 76, 77, 78, 79 and 81
+  ship the same 11 / 277 / 111 polynomial (77 and 79 byte-identical, 78 and
+  81 byte-identical, 76 differently scheduled); 87 bundles it as an
+  interface copy. Base: 76. 82's 269 / 111, 77's 257 / 114, 83's 211 / 112,
+  86's 213 / 112, 87's 211 / 113 and the research session's 211 / 111
+  (re-evaluated by 105 in 110 operations) are six further, pairwise
+  different polynomials; none is a coordinate shift of another.
+- **Twelve positive.** 76's 78 / 101 and 82's 78 / 102 are one polynomial;
+  78's and 81's 78 / 103 are another. 80's claimed 70 / 100 polynomial is
+  materialized by 87 (100 operations), bundled by 98 and 104 (104 in 98
+  operations); 98's 70 / 98 free-J polynomial is the research session's
+  96 / 70 candidate (identical), and is the 100-operation polynomial with
+  J replaced by 6j+1 — a restriction, not a shift.
+- **Nine positive.** 85's 434 and 86's 435 evaluate one polynomial (also the
+  research session's 433 evaluator and 105's bundled parent). 79's 1,753
+  and 82's 726 are different polynomials of the same degree 1,158,228. 86's
+  449 and 105's parent are one polynomial. 101's 420, 428 and 1,057, 105's
+  442 and 456, 86's 1,086 and 85's 1,074 are all distinct.
+- **Ten integers.** 76's 480 and 481, 68's 481, 83's 484 / 487 / 521 (76's
+  polynomial with the last coordinate sheared by a polynomial), 87's 471
+  (a different short-guard polynomial) and 485 / 496 / 545 (its shears) are
+  ten pairwise different polynomials on one tuple and twelve shared fixed
+  leaves. 91's 477 / 481 / 484 / 518 re-evaluate 83's and 76's polynomials;
+  106's 467 / 470 / 473 / 507 re-evaluate 87's polar form and the research
+  session's three shears of it.
+- **Integer forms with 12 to 37 unknowns.** Only three identities hold
+  across packages: 76's 37ℤ quartics ≡ 82's (two variants each); 83's
+  21ℤ–18ℤ pivots ≡ 84's ≡ 85's transports (85 ships the only counted
+  evaluators); 83's 23ℤ / 10 ≡ 86's (86 counts it, 131). Everything else of
+  equal size is a different polynomial: 77's four 37ℤ quartics differ from
+  76's in one guard row; the three 13ℤ / 1,392 forms of 88, 90 and 91 and
+  the three 17ℤ / 88 forms of 82, 86 and 88 have identical per-variable
+  degree profiles and are not related by renaming, shift or sign; 108's
+  12ℤ forms are 104's with n replaced by n + QV and n + V.
+- **Independent rediscoveries.** Three fixed-prime (3-adic) separations
+  (90, 91, 104) and two parity separations (92, 93) were found
+  independently; none cites the others. 95, 96 and 99 share a Pell frame
+  across power graphs in three different ways within six minutes. The
+  wave-10 further questions (68's guard lemma on a 27ℤ octic; 70's
+  orientation with 69's or 71's guard) are realized by 76, 77 and 82; 76
+  acknowledges this.
+- **Dominance at intake.** Among packages, 101's 420 / 1,472,168 and
+  1,057 / 997,810 and 105's 456 / 1,376,378 are the new nine-positive
+  frontier; 105's 11 / 211 / 110 dominates every other eleven-positive
+  form; 98's 70 / 98 dominates every wave-10 twelve-positive polynomial;
+  110's 12ℤ 1,000 / 180 dominates every other twelve-integer form; 106's
+  15ℤ 172 / 123 and 16ℤ 98 / 138, 93's 16ℤ 112 / 119 and 92's 16ℤ 160 / 115
+  are new Pareto points; 108's 394- and 395-variable and 663-variable
+  direct quartics are the smallest direct equations in the batch. The
+  combined frontier near the top of this README gives the rest.
+
+### Tensions, not adjudicated at intake
+
+- **Baselines moved during the wave.** The research session's own
+  candidates (built on the same arrivals, and on this repository's
+  `ten-positive-scaled-norm`) often dominate a package the day it arrives:
+  its 99 / 368 ten-positive equation dominates 84's 1,152 / 131, 107's
+  706 / 133, 109's 718 / 126 and 110's 912 / 126; its 13ℤ 536 / 135, 14ℤ
+  312 / 117 and 12ℤ 1,200 / 145 dominate most 13–14ℤ package forms. Those
+  candidates are not packages and are listed in
+  [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md), not here.
+  Several packages compare themselves against research-session evaluators
+  (433, 475, 111) rather than package points (85's 434, 71's 478, 76's 111).
+- **Same polynomial, claimed improvement.** 86 presents 435 / 1,628,768 as
+  improving a 440-operation research evaluator; the polynomial is 85's,
+  evaluated one operation worse. 91's and 106's ten-integer "improvements"
+  are re-evaluations of 83's, 76's, 87's and the research session's
+  polynomials.
+- **80's report.** Its abstract promises "a self-contained ZIP containing
+  literal polynomial graphs"; the ZIP holds one TeX file that does not
+  compile (`\input`s absent). Its printed eleven-positive formula is not the
+  delivered 277 / 111 polynomial (different weight L and gate split); its
+  twelve-positive 70 / 100 claim is materialized elsewhere (87, 98, 104,
+  research); its 9 / 1,158,240 / 811 claim has no artifact anywhere in the
+  batch (82 ships the missing section revised to 726 / 1,158,228). 84 and
+  87 record the missing artifacts.
+- **Four-root limits.** 77's `pell/FOUR_ROOT_LIMITS.md` shows a four-radical
+  rationality extension fails as stated; 78's four-radical appendix labels
+  itself an ingredient with the carrier problem open; 84 and this
+  repository's `ten-positive-scaled-norm` prove the four-root extraction
+  with the stronger subset-sum hypothesis.
+- **Restricted optimality.** 83 and 106 state their shear forms are
+  "optimal" within polynomial translations of the final coordinate; 87
+  bypasses that family by changing the guard (545 / 1,080,888 against 83's
+  521 / 1,081,125).
+- **A counterexample to a 76 lemma without its guard.** 76 reports that its
+  Lucas saturation theorem is false without |C| > 1 (A = 72, B = 31,
+  C = −1) and discharges the guard first.
+- **No package calls this README wrong.** 88, 92 and 110 carry copies of it
+  at their pins.
+
+### Delivery discrepancies (wave 11)
+
+- **Drivers fail in place.** Every root driver authenticates a manifest or
+  pinned-upstream hashes first. The placement omits members byte-identical
+  to repository files, so all 35 drivers stop in the placed tree; rerun
+  from the arrival archives, as `PLACEMENT.md` explains. (The first
+  placement had also omitted members matched only by research-session
+  files, among them 95's headline residual lists and 103's signed-index
+  theorem; `c16a89ad94` restored those 1,119 members.) 77's and 82's
+  manifests are git-ignored (`SHA256SUMS*`). Writers in place: 78, 79, 84,
+  85, 86, 88, 90, 91 (receipt), 92, 93, 96 (`guard13/build_reanchored.py`
+  regenerates its equation), 101, 103, 108 (`render_residuals.py`), 109
+  (root verifier's default receipt path).
+- **Dependencies.** SymPy: 76 (builders), 77 (required; refuses `-O`), 78
+  (audit), 79 (optional), 83, 87, 98, 106 (Python ≥ 3.12), 110 (also three
+  parallel jobs by default). All others are standard library. 82's positive
+  driver drops `-O` for its children (research review).
+- **Titles.** PDF metadata title empty: 79, 92, 93, 95. README H1 differs
+  from the TeX title: 78 (three wordings), 82, 84, 89, 92, 94, 98, 100, 103,
+  104, 108, 110. No `\title`: 80, 84, 85, 106.
+- **Licence and attribution.** No root licence for new material: 77, 106,
+  109, 110. No root NOTICE: 85, 96, 101, 106, 110. No AI-assistance
+  statement anywhere: 97, 102, 106, 110; statement only in the TeX author
+  line: 77, 78, 101; only in copied notices: 88. 104's README is dated
+  23 October while its sources are dated 24 October; 94's and 103's PDFs
+  are dated 23 October and their READMEs 24 October (UTC).
+- **Inside packages.** 76's three `Height*CommutativeEquation.lean`
+  constructors define objects and prove nothing. 85's README says the
+  natural translation shifts one coordinate; the circuit shifts all nine.
+  88's `check_integrated.py` references unshipped inputs. 94's
+  `COMPARISON.json` gives 87's height as …918; it is …914. 96 ships a
+  1,702ℤ form absent from its table. 98 ships a 14ℤ 558 / 149 graph its
+  `FAMILY.md` excludes. 106's replay authenticates 397 of 398 manifest
+  entries. 107's `dyadic10/README.md` names a file with a stray space.
+  110 cites "wave-12" points (16ℤ / 106 / 123, 17ℤ / 48 / 110) that exist
+  nowhere; only residual files for 17ℤ–19ℤ forms are bundled. 93's
+  "incoming 22ℤ parent" of degree 14 is its own centring of 77's degree-16
+  form.
+- **Bundled copies.** 77 bundles all eight wave-10 archives; 90 bundles
+  82's archive; 110 bundles 88's and 92's; 107 and 108 bundle 100's; 109
+  bundles 97's and 100's whole tree and this repository's
+  `ten-positive-scaled-norm`; 96 bundles 88's whole archive and 89's
+  `direct/`; 97 and 104 bundle 88; 92 bundles 82; 91 bundles 82's
+  `inherited/` and 83's `norm10/`; 93 bundles 86's integer component, 77's
+  joint files and 87's fixed-base files; 88 and 92 carry this README at
+  their pins. All are omitted from the tree and mapped in `PLACEMENT.md`.
+- **Retained intermediates.** 76's 481-operation Lucas form; 77's 26ℤ octic
+  and 24ℤ / 12 checkpoints; 81's 25ℤ / 12; 82's ten integer intermediates;
+  86's two 16ℤ forms; 90's six self-declared controls; 102's three
+  intermediates; 104's 1,224 checkpoint and 2,912 companion; 109's
+  monotone31 checkpoints.
+
+### Further questions (wave 11)
+
+1. **Direct route.** Combine 108's Pell residues, 99's self-bounding
+   factorial and 103's signed indices in one compiler; the research
+   session has begun this. Bound the height together with the variable
+   count: the batching that saves the most variables (96, 103) raises the
+   height by orders of magnitude.
+2. **Combinations (intake observations, untested as proofs).** 106's 3-adic
+   15ℤ / 172 with 93's parity 16ℤ / 112 for a cheaper 15ℤ form; 110's 11ℤ
+   budget with 104's valuation weights for a 10ℤ form without Sun; 97's
+   interpolation with 110's budget for 11 integers below degree 2,000.
+3. **Ten positive at fewer operations.** The research session's 99 / 368
+   descends from this repository's four-root equation; 107's dyadic
+   descaling and 109's fixed valuations are alternative descendants and
+   have not been combined with its folding lemma.
+4. **Formal status.** No wave-11 equation is Lean-checked end to end; the
+   direct quartics rest on two Lean interfaces and an ordinary proof of
+   "polynomial zero iff C222 derivation". Formalizing that step for one
+   small direct quartic (108's 394 naturals) would make it the first fully
+   checked Con(ZFC) equation.
 
 ## Wave 10 (sources 68–75)
 
@@ -545,6 +950,69 @@ coefficient ports symbolic. Every measured figure agrees with its claim.
    - 72's elimination with 73's guard change, for a smaller sextic.
 3. **Coefficients.** Bind the new integer forms to a four-port compact
    tuple, as 73 does for its sextic.
+
+### Frontier after wave 10, as placed
+
+The combined frontier near the top of this README supersedes this table,
+which is kept as the state after wave 10.
+
+Numbers are the packages' own. At intake, four read-only dossiers recounted
+every operation count and measured the degrees of the headline circuits; all
+checked figures agree with the claims. The mathematics was not re-derived,
+and every dominance statement assumes the competing proofs are correct.
+
+- "u / e / d / o" means unknowns / equations / degree / operations; pairs
+  are degree / operations.
+- Operations count every binary +, −, × including multiplication by fixed
+  numerals; reuse and system comparisons are free. Fixed leaves are free,
+  so a constant folded into a leaf costs nothing. Packages differ in what
+  they fold:
+  - 66 stores a threshold power as a leaf (otherwise 495 and 499 operations,
+    not 490 and 494);
+  - the ten-integer circuits of 65 (525) and 67 (519, 520, 522) contain 7
+    gates on constants only;
+  - 68's ten-integer form (481) would cost 486 if the five gates building
+    its threshold were charged;
+  - 72's 98 and 101 leave six derived constants as leaves; computing them
+    takes 7 operations.
+- Unknowns are strictly positive unless marked ℤ (unrestricted integers)
+  or ℕ (naturals). Natural-coordinate companions have separate counts:
+  - in wave 7, package 52 adds three operations, 47 adds four, and 53's
+    calibrated form adds six;
+  - in wave 8, 54 adds three, 57 two, 55 six, 56 seven (nine for its
+    reference form), 59 seven (four for its initial form), and 58's
+    natural translation fifteen;
+  - in wave 9, every nine-positive form adds seven, and 63's fourteen-positive
+    form adds fourteen;
+  - in wave 10, 71's nine-positive form adds seven and 74's twelve-positive
+    product adds twelve.
+
+  The domain translation and its actual circuit must be stated.
+
+The base is the earliest-arriving package that presents the construction in
+full; where only one package has it, that package. Within one wave, the
+lower directory number counts as earlier.
+
+| Criterion | Best stated | Found by | Base |
+|---|---|---|---|
+| Nine positive, fewest operations | unchanged: **444** at degree 1,845,940 (ℕ: 451) | 66 | 66 |
+| Nine positive, lowest degree | **1,379,730 / 478** (ℕ: 485). It combines 65's source, 63's majorant and 62's power rewrite | 71 | 71 |
+| Nine positive, Pareto frontier | 1,845,940 / 444, 1,834,516 / 449, 1,825,540 / 451 (66); 1,738,228 / 457, 1,675,396 / 458 (65); 1,663,788 / 475 (67); 1,520,178 / 476 (66); 1,379,730 / 478 (71). Newly dominated by 71: 66's 481 and 483 and 67's 487 | 65, 66, 67, 71 | — |
+| 10ℤ (Sun's reduction) | **1,576,864 / 481**, the lowest degree and the fewest operations at once. It dominates every earlier 10ℤ form, including 66's 490 and 494 and 67's 519 | 68 | 68 |
+| Fewest integers without Sun's 2026 reduction | unchanged: **13ℤ**, 10,461,744 / 519 (67) and 11,543,632 / 518 (59) | 67; 59 | — |
+| Eleven positive | **325 / 113** (system 110), dominating 52's 954 / 113 | 70 | 70 |
+| Twelve positive, Pareto frontier | **82 / 102** (69); 110 / 100 and the sum of squares 164 / 99 (74); 57's 242 / 94 and **258 / 89**. Dominated: 70's 84 / 103, 71's 110 / 102, 73's 110 / 105 and 164 / 104, 75's 114 / 105 and SOS 172 / 104, and 61's forms | 69; 74; 57 | — |
+| Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 has the same polynomial in 93); **114 / 83** (62). Dominated: 70's and 75's 30 / 94 (one polynomial) and 61's 34 / 93 | 72; 73; 62 | — |
+| Fourteen positive, Pareto frontier | **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
+| Nine positive on a smaller tuple | unchanged: 60's 1,797,796 / 465 and 62's 1,834,516 / 453 (2^590069); 54's 490 (2^429959) | 60, 62; 54 | — |
+| Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
+| Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
+| Integer quartic | **38ℤ**, two different polynomials (25 residuals each) | 69; 71 | 69 |
+| Integer sextic | **32ℤ**, two different polynomials (19 residuals each). The four 34ℤ sextics of 70, 72, 73 and 75 are dominated | 69; 71 | 69 |
+| Integer octic | **27ℤ**, two different polynomials (14 residuals each). 68's 28ℤ, 70's 29ℤ and 75's 30ℤ (which ties 62's) are dominated | 69; 71 | 69 |
+| Integer, degree 16 | 26ℤ, 13 residuals | 68 | 68 |
+| Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125; 24ℤ at 1936 / 161. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54). 69's and 71's integer forms use six coefficient payloads (881,696 and 615,883 raw bytes) instead of four; 73's sextic is the first low-degree residual-system integer form bound to the 2^590069 tuple (39's and 52's ten-integer forms and 58's 60ℤ translation already were) | 54 | 54 |
 
 ## Wave 9 (sources 60–67)
 
@@ -1735,6 +2203,9 @@ The packages say, in their own words (exceptions noted):
     octics of wave 9 use no Jones lemma.
   - In wave 10, only 71's nine-positive form uses the Jones ratio
     finalizer.
+  - In wave 11, the nine-positive forms of 79, 82, 85, 86, 101 and 105 keep
+    the ratio finalizer through 66's and 71's sources. No other wave-11
+    form uses a Jones lemma; the direct quartics use none.
   - No package uses `Jones1982.nine_unknowns`, which fixes ν = 58.
 
   These new codes, decoders, finalizers, majorants and Pell-index arguments
@@ -1777,6 +2248,21 @@ The packages say, in their own words (exceptions noted):
     443-operation nine-positive target and its one-page P69
     presentation, and records the wave-10 records as alternative
     targets.
+  - It reviewed the wave-11 arrivals one by one as they came
+    ([PROPOSAL_REVIEW_WAVE11.md](../PROPOSAL_REVIEW_WAVE11.md) and the
+    later `PROPOSAL_REVIEW_*.md` files), and built its own candidates on
+    them and on this repository's `ten-positive-scaled-norm`; its current
+    comparison is [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
+- **Direct C222 route (wave 11).** The direct quartics of 87, 89, 93–96 and
+  98–110 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
+  (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean`) and
+  `ConstructibleChoice.zf_refutation_iff_zfc_refutation`, and on the
+  representation modules under `Computability/DiophantineConsistency/Lean/`
+  (`PellRepresentation.criterion_iff_pell` and its siblings), all present at
+  `HEAD` and copied inertly into the packages. The step "polynomial zero iff
+  finite C222 derivation" is an ordinary proof in each package, checked by
+  finite replays. None of these packages uses
+  `DirectQuarticZFC.noNaturalZero_iff_conZFC`.
 - **Nothing delivered in this report is formalized.** The active stage
   proofs for 52 live outside this directory.
 
@@ -1809,11 +2295,11 @@ Every staged file, grouped by source directory (generated from the tree):
 - `31-sun10/positive12/generated/`: `product108.json`, `shifted_system102.json`, `system103.json`
 - `31-sun10/positive12/upstream/`: `25-hybrid12README.md`, `26-ratio12README.md`, `COMPACT12_PROOF.md`, `POSITIVE12_PROOF.md`, `RATIO12_PROOF.md`, `README.md`, `build_positive.py`, `check_positive.py`, `con_zfc_synthesis.tex`, `positive12_system.json`
 - `31-sun10/quartic31/`: `INSTANCE.json`, `QUARTIC60_CHECKS.json`, `QUARTIC60_PROOF.md`, `README.md`, `SIGNED16_LITERAL_AUDIT.json`, `SIGNED16_REVIEW.md`, `SOURCE_PINS.json`, `audit_signed16_independent.py`, `build_quartic60.py`, `quartic31_sos125.json`, `quartic31_sparse.json`, `quartic31_system60.json`
+- `31-sun10/quartic31/upstream/`: `PRODUCT67.json`, `quartic31.json`, `quartic31_circuit.json`, `quartic31_system.json`
 - `31-sun10/quartic31/upstream/27-wave4/operations/`: `PROOF.md`
 - `31-sun10/quartic31/upstream/27-wave4/operations/upstream/`: `RETAINED59_PROOF.md`, `build_retained59.py`, `retained16_system59.json`
 - `31-sun10/quartic31/upstream/28-compact-norms/vendor/inherited/`: `FIXED_BLANK_67_PROOF.md`, `PELL_LEMMA_AUDIT.md`
 - `31-sun10/quartic31/upstream/30-quartic31/arithmetic/`: `QUARTIC31_PROOF.md`, `build_arithmetic.py`
-- `31-sun10/quartic31/upstream/`: `PRODUCT67.json`, `quartic31.json`, `quartic31_circuit.json`, `quartic31_system.json`
 - `31-sun10/sections/`: `coefficients.tex`, `low_degree.tex`, `overview.tex`, `parent.tex`, `reproduction.tex`, `signed16.tex`
 - `31-sun10/signed10/`: `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT.md`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `NOTICE.md`, `README.md`, `SIGNED10_PROOF.md`, `SIGNED10_SECTION.tex`, `SOURCES.json`, `audit_signed10_independent.py`, `build_signed10.py`, `circuit.py`, `verify_signed10.py`
 - `31-sun10/signed10/data/`: `INSTANCE.json`, `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`, `beta_sun.bin.gz`, `coefficients_binding.json`, `constants.json`, `index_bound.json`, `parent_quartic31.json`
@@ -1838,8 +2324,8 @@ Every staged file, grouped by source directory (generated from the tree):
 - `32-integer15/integer15/upstream/base/`: `quartic32.upstream.json`
 - `32-integer15/integer15/upstream/code/`: `fixed_coefficients.py`
 - `32-integer15/integer15/upstream/coefficients/`: `T4_CONSTANTS.upstream.json`, `t4_windows.json`
-- `32-integer15/integer15/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
 - `32-integer15/integer15/upstream/nine/`: `nine_compressor.py`, `nine_section.tex`, `verify_fixed_instance.py`
+- `32-integer15/integer15/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
 - `32-integer15/integer15/upstream/upstream/licenses/`: `LICENSE.ProveIt`
 - `32-integer15/integer15/upstream/upstream/machine/`: `NOTICE.md`
 - `32-integer15/integer15/upstream/upstream/machine/licenses/`: `LICENSE.Wade`
@@ -1852,8 +2338,8 @@ Every staged file, grouped by source directory (generated from the tree):
 - `32-integer15/integer16/upstream/base/`: `quartic32.upstream.json`
 - `32-integer15/integer16/upstream/code/`: `fixed_coefficients.py`
 - `32-integer15/integer16/upstream/coefficients/`: `T4_CONSTANTS.upstream.json`, `t4_windows.json`
-- `32-integer15/integer16/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
 - `32-integer15/integer16/upstream/nine/`: `nine_compressor.py`, `nine_section.tex`, `verify_fixed_instance.py`
+- `32-integer15/integer16/upstream/nine/generated/`: `constants.json`, `index_bound_s.json`
 - `32-integer15/integer16/upstream/upstream/licenses/`: `LICENSE.ProveIt`
 - `32-integer15/integer16/upstream/upstream/machine/`: `NOTICE.md`
 - `32-integer15/integer16/upstream/upstream/machine/licenses/`: `LICENSE.Wade`
@@ -1893,6 +2379,7 @@ Every staged file, grouped by source directory (generated from the tree):
 - `34-integer14/positive/`: `CHECKS.json`, `FACTOR_DEGREES.json`, `README.txt`, `SHIFTED12_PROOF.md`, `SOURCE_LEDGER.json`, `build_shifted.py`, `check_factor_degrees.py`, `check_shifted.py`, `positive12_shift_ac2_product.json`, `positive12_shift_ac2_system.json`, `positive12_shift_ac_product.json`, `positive12_shift_ac_system.json`, `positive12_shift_b_product.json`, `positive12_shift_b_system.json`, `positive12_shift_base_product.json`, `positive12_shift_base_system.json`, `positive12_shift_half_aux_product.json`, `positive12_shift_half_aux_system.json`, `positive12_shift_half_product.json`, `positive12_shift_half_system.json`
 - `34-integer14/positive/upstream/`: `COEFFICIENT_BINDING.upstream.json`, `INHERITED_POSITIVE12_PROOF.md`, `code_build_optimized_1069.py.inert`, `sections_positive.tex`
 - `34-integer14/report/`: `MAIN.md`, `REPORT_CONFIG.json`, `build_report.py`, `code_breaks.lua`, `header.tex`, `synthesis_report.md`, `synthesis_report.pdf`, `synthesis_report.tex`
+- `34-integer14/review/`: `ATTRIBUTION_SOURCE_MAP.json`, `COMPARISON_REVIEW.md`, `COUNT_AUDIT.json`, `PLACEMENT.md`, `README.md`, `SOURCE_LEDGER.json`, `TREE.json`, `audit_counts.py`
 - `34-integer14/review/24-integer24/`: `README.md`
 - `34-integer14/review/24-integer24/circuits/`: `optimized_tightest_separating12_product.json`, `signed_separating_saturated24_product.json`
 - `34-integer14/review/24-integer24/sections/`: `integer.tex`, `positive.tex`
@@ -1920,7 +2407,6 @@ Every staged file, grouped by source directory (generated from the tree):
 - `34-integer14/review/30-quartic31/integers/`: `README.md`
 - `34-integer14/review/30-quartic31/nine/`: `README.md`
 - `34-integer14/review/30-quartic31/positive/`: `README.md`
-- `34-integer14/review/`: `ATTRIBUTION_SOURCE_MAP.json`, `COMPARISON_REVIEW.md`, `COUNT_AUDIT.json`, `PLACEMENT.md`, `README.md`, `SOURCE_LEDGER.json`, `TREE.json`, `audit_counts.py`
 - `35-cancel12/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `README.md`, `RESULTS.json`, `report.pdf`, `report.tex`, `reproduce.py`
 - `35-cancel12/coefficients/`: `CHECKS.json`, `COEFFICIENT_BINDING.json`, `K.bin`, `K.bin.gz`, `MC.bin`, `MC.bin.gz`, `MF_source.bin`, `MF_source.bin.gz`, `README.md`, `beta.bin`, `beta.bin.gz`, `build_coefficients.py`, `wang943_tiles.json`
 - `35-cancel12/coefficients/upstream/`: `wang943_tiles.json`
@@ -1933,8 +2419,8 @@ Every staged file, grouped by source directory (generated from the tree):
 - `35-cancel12/integers/upstream/30-quartic31/integers/`: `SIGNED_ODD_SCALE_FAMILY_PROOF.md`
 - `35-cancel12/integers/upstream/30-quartic31/nine/`: `COMPACT_NINE_PROOF.md`, `build_compact_nine.py`
 - `35-cancel12/integers/upstream/30-quartic31/nine/nu31/`: `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_CONSTANTS.json`, `nine_compact_magnitude_tight.json`
-- `35-cancel12/integers/upstream/30-quartic31/review/18-jones9/proofs/`: `nine_source_audit.md`
 - `35-cancel12/integers/upstream/30-quartic31/review/`: `optimize_nine_circuit.py`
+- `35-cancel12/integers/upstream/30-quartic31/review/18-jones9/proofs/`: `nine_source_audit.md`
 - `35-cancel12/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`
 - `35-cancel12/positive/`: `CHECK_RESULTS.json`, `README.md`, `build_new.py`, `cancellation1065_product.json`, `cancellation1065_shifted_system.json`, `cancellation1065_system.json`, `check_new.py`, `economical_product.json`, `economical_shifted_system.json`, `economical_system.json`
 - `35-cancel12/quartic/`: `QUARTIC31_62_AUDIT.json`, `QUARTIC31_62_PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_quartic31_62.py`, `quartic31_sos127.json`, `quartic31_system62.json`
@@ -1942,6 +2428,7 @@ Every staged file, grouped by source directory (generated from the tree):
 - `35-cancel12/reviews/`: `COEFFICIENTS_INDEPENDENT_AUDIT.json`, `COEFFICIENTS_INDEPENDENT_REVIEW.md`, `POSITIVE1065_INDEPENDENT_REVIEW.md`, `SIGNED16_INDEPENDENT_REVIEW.json`, `SIGNED16_INDEPENDENT_REVIEW.md`, `audit_coefficients_independent.py`, `audit_signed16.py`
 - `35-cancel12/sections/`: `coefficients.tex`, `positive.tex`, `quartic.tex`, `signed.tex`, `verification.tex`
 - `35-cancel12/sources/`: `SOURCE_MAP.json`
+- `35-cancel12/sources/catalogue/`: `README.md`
 - `35-cancel12/sources/catalogue/24-integer24/`: `README.md`
 - `35-cancel12/sources/catalogue/24-integer24/code/`: `build_coefficients.py`, `build_optimized_1069.py`
 - `35-cancel12/sources/catalogue/24-integer24/sections/`: `coefficients.tex`, `positive.tex`
@@ -1966,7 +2453,6 @@ Every staged file, grouped by source directory (generated from the tree):
 - `35-cancel12/sources/catalogue/30-quartic31/`: `README.md`
 - `35-cancel12/sources/catalogue/30-quartic31/arithmetic/`: `LOW_OPERATION_REPORT.md`, `QUARTIC31_PROOF.md`, `build_arithmetic.py`, `quartic31.json`, `quartic31_system.json`
 - `35-cancel12/sources/catalogue/30-quartic31/positive/`: `POSITIVE12_PROOF.md`, `build_positive.py`
-- `35-cancel12/sources/catalogue/`: `README.md`
 - `35-cancel12/verification/`: `CLEAN_EXTRACTION.json`, `PDF_BUILD.json`, `REPRODUCE.json`
 - `36-small-tuple/`: `Makefile`, `NOTICE.md`, `README.md`, `closing_sections.tex`, `nine_section.tex`, `report.pdf`, `report.tex`, `reproduce.py`, `verify.py`
 - `36-small-tuple/baseline/`: `build_baselines.py`, `product67.json`, `retained16_system59.json`
@@ -2016,9 +2502,9 @@ Every staged file, grouped by source directory (generated from the tree):
 - `37-wave5/signed/`: `FIXED_RECIPES.json`, `LICENSE`, `NOTICE.md`, `README.md`, `SIGNED_PROOF.md`, `SOURCE_PINS.json`, `build_signed.py`, `check_signed.py`, `fast_jones_base.py`, `section.tex`
 - `37-wave5/signed/generated/`: `CHECKS.json`, `COEFFICIENT_ALIASES.json`, `LEDGER.json`, `signed14.json`, `signed15.json`, `signed16.json`
 - `37-wave5/signed/upstream/`: `29-simpler-forms__signed17__SIGNED17_PROOF.md`, `29-simpler-forms__signed17__build_signed17.py`, `30-quartic31__arithmetic__QUARTIC31_PROOF.md`, `30-quartic31__nine__COMPACT_NINE_PROOF.md`, `30-quartic31__nine__build_compact_nine.py`, `30-quartic31__nine__rebuild_nu31.py`, `COMPACT_COEFFICIENT_BINDING.json`, `COMPACT_CONSTANTS.json`, `INDEX_BOUND_CERTIFICATE.json`, `LICENSE.ProveIt`, `LICENSE.source29`, `NOTICE.source29.md`, `NOTICE.source30.txt`, `quartic31.json`
+- `37-wave5/sources/`: `PLACEMENT.md`, `README.md`
 - `37-wave5/sources/24-integer24/`: `README.md`
 - `37-wave5/sources/25-hybrid12/`: `README.md`
-- `37-wave5/sources/`: `PLACEMENT.md`, `README.md`
 - `38-batching11/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `README.md`, `VERIFICATION.json`, `report.pdf`, `report.tex`, `reproduce.py`
 - `38-batching11/compiler/`: `COEFFICIENT_BINDING.json`, `INDEPENDENT_AUDIT.json`, `PROOF.md`, `SOURCE_PINS.json`, `audit_complemented.py`, `build_complemented.py`
 - `38-batching11/compiler/coefficients/`: `K.bin.gz`, `MC.bin.gz`, `MF_source.bin.gz`, `beta.bin.gz`
@@ -2083,11 +2569,11 @@ Every staged file, grouped by source directory (generated from the tree):
 - `42-additive-b4/coefficient_backend/source_proofs/`: `BLANK_HELICAL_PROOF.md`, `COEFFICIENT_TRANSFER.md`, `WANG943_COEFFICIENTS.md`, `WANG943_COMPACT_LAYOUT.md`, `package36_PROOF.md`
 - `42-additive-b4/review/`: `B4_INDEPENDENT_AUDIT.json`, `B4_INDEPENDENT_REVIEW.md`, `COMPOSED_B4_INDEPENDENT_AUDIT.json`, `COMPOSED_B4_INDEPENDENT_REVIEW.md`, `COMPOSED_BINDING_INDEPENDENT_AUDIT.json`, `UNSUCCESSFUL_REDUCTIONS.md`, `audit_b4_independent.py`, `audit_composed_binding.py`
 - `42-additive-b4/sections/`: `coefficient_refinement.tex`, `composed_variant.tex`, `source_b4.tex`
+- `42-additive-b4/sources/`: `COLLECTION_README.md`, `README.md`
 - `42-additive-b4/sources/31-sun10/coefficients/`: `COEFFICIENT_PROOF.md`
 - `42-additive-b4/sources/31-sun10/quartic31/`: `QUARTIC60_PROOF.md`
 - `42-additive-b4/sources/31-sun10/signed10/`: `INDEPENDENT_MATHEMATICAL_REVIEW.md`
 - `42-additive-b4/sources/31-sun10/sources/`: `PELL_LEMMA_AUDIT.md`
-- `42-additive-b4/sources/`: `COLLECTION_README.md`, `README.md`
 - `42-additive-b4/ten_integer/`: `LICENSE.upstream31`, `NOTICE.md`, `NOTICE.upstream31.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `b4_code.py`, `bose_chowla32.json`, `build_b4_sun10.py`, `circuit.py`, `upstream_NOTICE.md`, `upstream_SIGNED10_PROOF.md`, `upstream_verify_signed10.py`, `verify_b4_sun10.py`
 - `42-additive-b4/ten_integer/data/`: `INSTANCE.json`, `constants.json`
 - `42-additive-b4/ten_integer/generated/`: `CLEAN_REBUILD.json`, `VERIFICATION.json`, `b4_signed10.json`, `b4_signed10_h3quintic.json`, `b4_signed10_h4quintic.json`, `b4_signed10_sun6.json`, `b4_signed10_universal_weights.json`
@@ -2309,10 +2795,10 @@ Every staged file, grouped by source directory (generated from the tree):
 - `52-sparse-pell/report/`: `comparison.tex`, `metrics.tex`, `nine.tex`, `positive_details.tex`, `report.pdf`, `report.tex`, `vectors.tex`, `verification.tex`
 - `52-sparse-pell/review/`: `NATIVE_INDEPENDENT_CHECKS.json`, `POSITIVE_LEADING_FORM_CHECKS.json`, `POSITIVE_THEOREM_REVIEW.md`, `SOURCE_PINS.json`, `VARIANT_LEDGER_CHECKS.json`, `WAVE6_COMPARISON.md`, `check_native_independently.py`, `check_parent_coefficients.py`, `check_positive_leading_form.py`, `check_variant_ledgers.py`
 - `52-sparse-pell/review/postpin/`: `COMPILER.md`, `SOURCE.json`, `STATUS.md`
+- `52-sparse-pell/review/sources/`: `INCOMING_README.md`, `README.md`
 - `52-sparse-pell/review/sources/44-b4-sparse/`: `LICENSE`, `NOTICE.md`
 - `52-sparse-pell/review/sources/44-b4-sparse/native/`: `NOTICE-upstream.md`
 - `52-sparse-pell/review/sources/44-b4-sparse/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
-- `52-sparse-pell/review/sources/`: `INCOMING_README.md`, `README.md`
 - `53-selective-quad/`: `DEPENDENCY_MAP.json`, `LICENSE`, `NOTICE.md`, `PLACEMENT.md`, `README.md`, `REBUILD_FILES.json`, `REPLAY_SUMMARY.json`, `negative_controls.py`, `report.pdf`, `report.tex`, `results.tex`, `validation.tex`, `verify.py`
 - `53-selective-quad/batching/`: `BUILD_RECEIPT.json`, `CHECK_RESULTS.json`, `COEFFICIENT_BINDING.json`, `DEPENDENCIES.md`, `LICENSE`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_eleven.py`, `check_eleven.py`, `full_product.json`, `full_shifted_system.json`, `full_sos.json`, `full_system.json`, `report.pdf`, `report.tex`, `section.tex`, `short_product.json`, `short_shifted_system.json`, `short_sos.json`, `short_system.json`
 - `53-selective-quad/elimination/`: `AUDIT_RESULTS.json`, `INDEPENDENT_REVIEW.md`, `PACKAGE_AUDIT_RESULTS.json`, `TRANSPORT_OBSTRUCTION.json`, `audit_eleven.py`, `audit_package.py`
@@ -2521,6 +3007,7 @@ Every staged file, grouped by source directory (generated from the tree):
 - `62-sign-and-norm/positive13/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`
 - `62-sign-and-norm/quartic42/`: `AUDIT.json`, `DEPENDENCY_AUDIT.json`, `INDEPENDENT_ALGEBRA.json`, `INDEPENDENT_REVIEW.md`, `PROOF.md`, `READABLE_FORMULAS.json`, `SOURCE_PINS.json`, `build_verify.py`, `companions_section.tex`, `independent_algebra.py`, `quartic42.json`, `quartic42_expanded.json`, `section.tex`, `verify_dependencies.py`
 - `62-sign-and-norm/quartic42/companions/`: `AUDIT.json`, `INDEPENDENT_CHECK.json`, `INDEPENDENT_REVIEW.md`, `PROOF.md`, `build_companions.py`, `check_low_degree_companions.py`, `octic30.json`, `octic30_expanded.json`, `octic30_readable.json`, `quartic42_x_square.json`, `sextic35.json`, `sextic35_expanded.json`, `sextic35_readable.json`
+- `62-sign-and-norm/quartic42/dependencies/`: `README.md`, `SOURCE_PINS.json`
 - `62-sign-and-norm/quartic42/dependencies/12-gap-norm14/proofs/`: `quartic32_proof.md`
 - `62-sign-and-norm/quartic42/dependencies/12-gap-norm14/quadratic/`: `quartic32.json`
 - `62-sign-and-norm/quartic42/dependencies/20-root12/`: `LICENSE.ProveIt`
@@ -2531,7 +3018,6 @@ Every staged file, grouped by source directory (generated from the tree):
 - `62-sign-and-norm/quartic42/dependencies/23-separating12/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`
 - `62-sign-and-norm/quartic42/dependencies/23-separating12/proofs/`: `ODD_SCALE_27_PROOF.md`
 - `62-sign-and-norm/quartic42/dependencies/29-simpler-forms/`: `integer54_quartic.json`
-- `62-sign-and-norm/quartic42/dependencies/`: `README.md`, `SOURCE_PINS.json`
 - `62-sign-and-norm/quartic42/dependencies/source34/`: `LICENSE`, `NOTICE.md`
 - `62-sign-and-norm/quartic42/dependencies/source34/licenses/`: `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`
 - `62-sign-and-norm/verification/`: `PDF_QA.json`, `REPLAY.json`, `REPLAY_OPTIMIZED.json`
@@ -2600,10 +3086,10 @@ Every staged file, grouped by source directory (generated from the tree):
 - `66-gap-congruence/integer/upstream/`: `GAP_SOURCE_PROOF.md`
 - `66-gap-congruence/integer_audit/`: `AUDIT.md`, `INDEPENDENT_INTEGER_AUDIT.json`, `independent_integer_audit.py`
 - `66-gap-congruence/nine/`: `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_nine.py`, `check_defect_exact.py`, `section.tex`, `verify_nine.py`
+- `66-gap-congruence/nine/data/`: `OLD_TUPLE_BINDING.json`
 - `66-gap-congruence/nine/data/H2057/`: `kernels.json`, `layout.json`, `source.json`
 - `66-gap-congruence/nine/data/H2068/`: `kernels.json`, `layout.json`, `source.json`
 - `66-gap-congruence/nine/data/H2082/`: `kernels.json`, `layout.json`, `source.json`
-- `66-gap-congruence/nine/data/`: `OLD_TUPLE_BINDING.json`
 - `66-gap-congruence/nine/fixed/`: `BINDING.json`, `c_33afcc0215e266df.bin.gz`, `c_50b8a3599b18e0a9.bin.gz`, `c_e3dd773f14077424.bin.gz`, `c_f69b40d0743298dc.bin.gz`, `threshold_16012032.bin.gz`, `threshold_17079501.bin.gz`
 - `66-gap-congruence/nine/generated/`: `DEFECT_IDENTITY.json`, `H2057_refined_natural.json`, `H2057_refined_positive.json`, `H2057_simple_natural.json`, `H2057_simple_positive.json`, `H2068_refined_natural.json`, `H2068_refined_positive.json`, `H2068_simple_natural.json`, `H2068_simple_positive.json`, `H2082_refined_natural.json`, `H2082_refined_positive.json`, `H2082_simple_natural.json`, `H2082_simple_positive.json`, `METRICS.json`, `VERIFICATION.json`
 - `66-gap-congruence/nine/upstream/`: `INHERITED_LICENSE`, `INHERITED_NOTICE.md`
@@ -2757,4 +3243,806 @@ Every staged file, grouped by source directory (generated from the tree):
 - `75-signed-bootstrap/review/latest/`: `PINS.json`, `REVIEW.md`, `STATUS.md`
 - `75-signed-bootstrap/review/positive/`: `AUDIT.md`, `BINDINGS_CHECK.json`, `CHECK.json`, `PORTABILITY.json`, `check.py`, `check_bindings.py`, `portability.py`
 - `75-signed-bootstrap/review/signed34/`: `CHECK.json`, `MATHEMATICAL_REVIEW.md`, `MIXED_SOURCE_COMPARISON.json`, `check_independent.py`
+- `76-structural-round11/`: `DEPENDENCIES.md`, `LICENSE.NEW`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `RELEASE_CHECKS.json`, `REPLAY.json`, `negative_controls.py`, `verify.py`
+- `76-structural-round11/commutative/`: `BOOLEAN_CHECKS.json`, `CONSTRUCTOR_CHECKS.json`, `HEIGHT_CERTIFICATE.md`, `HEIGHT_CHECKS.json`, `HeightBooleanCommutativeEquation.lean`, `HeightCommutativeEquation.lean`, `HeightSelectedCommutativeEquation.lean`, `README.md`, `REPLAY_COMMANDS.json`, `SELECTOR_CHECKS.json`, `SOURCE_PIN.json`, `build_height_boolean.py`, `build_height_selector.py`, `build_height_step.py`, `check_constructor_literals.py`, `check_height_boolean.py`, `check_height_certificate.py`, `check_height_selector.py`, `emit_height_constructor.py`, `height_boolean_step.json`, `height_selector_step.json`, `height_shared_step.json`, `section.tex`
+- `76-structural-round11/inherited/round10/calculus_api/sources/`: `BoundedForallRepresentation.lean`, `Bridge.lean`, `ComposeRepresentation.lean`, `ComputationRepresentation.lean`, `NativeFormulaGraphs.lean`, `NativeGraphEnumerator.lean`, `QuarticCompiler.lean`, `RemainderRepresentation.lean`, `Representation.lean`
+- `76-structural-round11/inherited/round10/integer_licenses/`: `LICENSE.SignAndNorm`, `LICENSE.Source34`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE.SignAndNorm.md`, `NOTICE.Source34.md`
+- `76-structural-round11/low_degree_audit/`: `ARCHIVE_MATCHES.json`, `AUDIT.md`, `README.md`, `RESULTS.json`, `RESULTS_RELEASE.json`, `SOURCE_ARCHIVE_PINS.json`, `audit_literals.py`
+- `76-structural-round11/lucas/`: `CHECKS.json`, `INTERPOLATION_CHECKS.json`, `METRICS.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `build.py`, `check.py`, `check_interpolation.py`, `independent_formula.py`, `integer10.json`, `section.tex`
+- `76-structural-round11/lucas/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `76-structural-round11/lucas_audit/`: `AUDIT.md`, `BASELINE_PIN.json`, `INDEPENDENT_CHECKS.json`, `INDEPENDENT_CHECKS_NORMAL.json`, `INDEPENDENT_H1868_CHECKS.json`, `INDEPENDENT_H1868_CHECKS_NORMAL.json`, `check_independent.py`
+- `76-structural-round11/lucas_h1868/`: `CHECKS.json`, `INTERPOLATION_CHECKS.json`, `METRICS.json`, `NOTICE.md`, `OPTIMIZED_POWER_PLAN.json`, `PROOF.md`, `README.md`, `REBUILD_CHECKS.json`, `RELEASE_FILES.json`, `REPLAY_COMMANDS.json`, `build.py`, `check.py`, `check_interpolation.py`, `independent_formula.py`, `integer10.json`, `section.tex`
+- `76-structural-round11/lucas_h1868/data/`: `code.json`, `kernels.json`
+- `76-structural-round11/lucas_h1868/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `76-structural-round11/packing/`: `RELEASE_FILES.json`
+- `76-structural-round11/packing/certified/`: `CHECKS.json`, `PROOF.md`, `check.py`, `kernels.json`, `layout.json`
+- `76-structural-round11/packing/factor_gap/`: `PROOF.md`, `check.py`, `source.json`
+- `76-structural-round11/positive/`: `PROOF.md`, `PROOF11.md`, `build.py`, `build11.py`, `check.py`, `check11.py`, `check_coefficients.py`, `p11_degree277.json`, `p12_degree78.json`
+- `76-structural-round11/positive/native/`: `NOTICE-upstream.md`
+- `76-structural-round11/positive/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `76-structural-round11/positivity/`: `BINDING.json`, `CHECK_RESULTS.json`, `INHERITED_HASHES.json`, `PROOF.md`, `README.md`, `RELEASE_FILES.json`, `REPLAY_COMMANDS.json`, `build.py`, `check.py`, `degree10_25.json`, `degree12_24.json`, `degree16_23.json`, `octic26.json`, `quartic37.json`, `quartic37_direct.json`, `section.tex`, `sextic30.json`
+- `76-structural-round11/positivity/inherited/`: `source71_LICENSE`, `source71_NOTICE.md`
+- `76-structural-round11/report/`: `DISPLAYED_ROWS_CHECKS.json`, `PDF_QA.json`, `build.sh`, `check_displayed_rows.py`, `evidence.tex`, `explicit_low.tex`, `generate_kernel_appendix.py`, `height.tex`, `kernels.tex`, `low_degree.tex`, `lucas.tex`, `next.tex`, `positive.tex`, `references.tex`, `report.pdf`, `report.tex`
+- `76-structural-round11/review/`: `ARCHIVE_PINS.json`, `FETCH_LEDGER.json`, `FORMAL_PINS.json`, `LITERAL_COUNTS.json`, `RECENT_COMMITS.json`, `UPSTREAM_README.md`, `WAVE10_REVIEW.md`, `check_literal_counts.py`
+- `76-structural-round11/review/formal/`: `ALTERNATIVE_ENCODINGS.md`, `OBJECT_ZFC.md`, `PROPOSAL_REVIEW_WAVE10.md`, `PROPOSAL_REVIEW_WAVE10_GUARDS.md`, `PROPOSAL_REVIEW_WAVE10_NATIVE.md`, `README.md`, `STATUS.md`
+- `76-structural-round11/review/formal/lean/`: `BoundedForallRepresentation.lean`, `QuarticCompiler.lean`, `RemainderRepresentation.lean`
+- `76-structural-round11/root_audit/`: `check_height_independent.py`
+- `77-joint-guards/`: `DEPENDENCIES.md`, `DISPLAYED_SYSTEM_CHECK.json`, `INCOMING_PINS.json`, `README.md`, `REBUILD_FILES.json`, `REBUILD_NUMERALS.json`, `REPLAY_COMMANDS.json`, `build_report.sh`, `check_displayed_system.py`, `negative_controls.py`, `report.pdf`, `report.tex`, `verify.py`
+- `77-joint-guards/baseline/`: `ANNOTATED_REFUTATION_PR.md`, `ARRIVAL_COMMIT.json`, `BASELINE_REVIEW.md`, `ConZFC_Joint_Positivity_Free_Lucas_2026-10-23.normal.stdout.txt`, `ConZFC_Joint_Positivity_Free_Lucas_2026-10-23.optimized.stdout.txt`, `DIRECT_GRAPH.md`, `DIRECT_PROGRAM.md`, `EXECUTION_SURFACE.json`, `FORMAL_SOURCE_PINS.json`, `FRONTIER_COUNTS.json`, `MANIFEST_CHECKS.json`, `NATIVE_CALIBRATION52.md`, `NATIVE_CLAUSE54.md`, `NATIVE_SPARSE_DIGITS54.md`, `NATURAL_REGISTER_PROGRAM.md`, `OBJECT_NUMERIC_WIRE.md`, `OBJECT_QUARTIC_COMPILER.md`, `OBJECT_ZFC.md`, `PDF_QA.json`, `PROPOSAL_REVIEW_WAVE10.md`, `PROPOSAL_REVIEW_WAVE10_GUARDS.md`, `PROPOSAL_REVIEW_WAVE10_NATIVE.md`, `QUADRATIC_GUARDED_GRAPHS.md`, `QUADRATIC_REGISTER_SYSTEM.md`, `QUADRATIC_TREE_CODE_GRAPHS.md`, `REPLAY_RESULTS.json`, `SHARED_REGISTER_RELATIONS.md`, `SMALL_INTEGER_FRONTIER.md`, `SMALL_INTEGER_SCAN.json`, `STATUS.md`, `ZFC_Diophantine_Signed_Bootstrap_2026-10-23.normal.stdout.txt`, `check_manifests.py`, `con-zfc-centered-pell-gaps-2026-10-23.normal.stdout.txt`, `con-zfc-centered-pell-gaps-2026-10-23.optimized.stdout.txt`, `con-zfc-cones-pell-2026-10-23.normal.stdout.txt`, `con-zfc-cones-pell-2026-10-23.optimized.stdout.txt`, `con-zfc-diophantine-forms_README.md`, `con_zfc_calibrated_determinant_guards_2026-10-23.normal.stdout.txt`, `con_zfc_calibrated_determinant_guards_2026-10-23.optimized.stdout.txt`, `con_zfc_congruence_and_sextic_2026-10-23.normal.stdout.txt`, `con_zfc_congruence_and_sextic_2026-10-23.optimized.stdout.txt`, `con_zfc_guard_reanchoring.normal.stdout.txt`, `con_zfc_guard_reanchoring.optimized.stdout.txt`, `count_frontier.py`, `replay_archives.py`, `section.tex`
+- `77-joint-guards/certificates/`: `CRT_CHECK_RESULTS.json`, `INDEX_FREE_CRT.md`, `LOCAL_CHECK_RESULTS.json`, `LOCAL_GADGET_PROOFS.md`, `README.md`, `SOURCE_PINS.json`, `build_local_gadgets.py`, `check_index_free_crt.py`, `if_zero_quartic.json`, `list_head_quartic.json`, `max_square_pair_quartic.json`, `max_square_pair_sextic.json`, `max_square_pair_sos_quartic.json`, `predecessor_quartic.json`, `section.tex`, `tree_left_quartic.json`, `tree_right_quartic.json`, `unpair_left_quartic.json`, `unpair_right_quartic.json`, `zero_test_quartic.json`
+- `77-joint-guards/circuits/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `PROOF.md`, `README.md`, `build.py`, `check.py`, `joint19_degree88_dag.json`, `joint20_degree32_dag.json`, `joint21_degree20_dag.json`, `joint22_degree16_dag.json`, `joint23_degree12_dag.json`, `joint25_octic_dag.json`, `section.tex`
+- `77-joint-guards/guards/`: `CHECK.json`, `COEFFICIENT_BINDING.json`, `DISPLAY_CHECK.json`, `METRICS.json`, `PROOF.md`, `README.md`, `UPSTREAM_COPY_RECEIPT.json`, `build.py`, `build_coefficients.py`, `check.py`, `check_displayed.py`, `cone26_octic.json`, `cone31_sextic.json`, `cone37_quartic_affine.json`, `cone37_quartic_direct.json`, `determinant26_octic.json`, `determinant31_sextic.json`, `determinant37_quartic_affine.json`, `determinant37_quartic_direct.json`, `section.tex`
+- `77-joint-guards/guards/upstream/determinant/`: `LICENSE`, `NOTICE.md`
+- `77-joint-guards/guards/upstream/residue/`: `LICENSE`, `NOTICE.md`
+- `77-joint-guards/guards/upstream/residue/dependencies/`: `LICENSE.ProveIt`
+- `77-joint-guards/guards/upstream/residue/dependencies/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `77-joint-guards/joint/`: `BUILD_CHECK.json`, `CHECK_normal.json`, `CHECK_optimized.json`, `COMPACT_BASE24.json`, `PROJECTION_BUILD.json`, `PROJECTION_CHECK_normal.json`, `PROJECTION_CHECK_optimized.json`, `PROOF.md`, `README.md`, `SOURCE_PIN.json`, `build.py`, `build_projections.py`, `check.py`, `check_projections.py`, `joint19_degree88.json`, `joint20_degree32.json`, `joint21_degree20.json`, `joint22_degree16.json`, `joint23_degree12.json`, `joint23_degree12_eliminate_I.json`, `joint24_degree12.json`, `joint25_octic.json`, `section.tex`
+- `77-joint-guards/joint/upstream/`: `determinant26_octic.json`
+- `77-joint-guards/pell/`: `CENTERED_PROOF.md`, `CHECK_CENTERED.json`, `CHECK_CENTERED_OPTIMIZED.json`, `COMPOSITION_SOURCES.json`, `FOUR_ROOT_LIMITS.md`, `LICENSE`, `NEW_LEMMA_CHECKS.json`, `NEW_LEMMA_CHECKS_OPTIMIZED.json`, `NOTICE.md`, `OPTIMIZED_VERIFICATION.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `build_centered.py`, `check_new_lemmas.py`, `p11_positive_degree257.json`, `p11_positive_degree277.json`, `section.tex`, `verify.py`, `verify_centered.py`
+- `77-joint-guards/pell/coefficients/`: `ACTIVE_BINDING.json`
+- `77-joint-guards/pell/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `77-joint-guards/review/`: `ROOT_REPLAY.json`, `ROOT_REPLAY_INPUTS.json`
+- `77-joint-guards/review/certificates/`: `CRT_CHECKS.json`, `CRT_CHECKS_OPTIMIZED.json`, `LOCAL_CHECKS.json`, `LOCAL_CHECKS_OPTIMIZED.json`, `MATHEMATICAL_REVIEW.md`, `REVIEW_RECEIPT.json`, `independent_crt_check.py`, `independent_local_check.py`
+- `77-joint-guards/review/circuits/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `REVIEW.md`, `independent_check.py`
+- `77-joint-guards/review/guards/`: `ALTERNATE23_SUPPORT.json`, `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `JOINT_CHECKS.json`, `JOINT_CHECKS_OPTIMIZED.json`, `MATHEMATICAL_REVIEW.md`, `PROJECTION_CHECKS.json`, `PROJECTION_CHECKS_OPTIMIZED.json`, `independent_check.py`, `independent_check_joint.py`, `independent_check_projections.py`
+- `77-joint-guards/review/positive/`: `CHECK257.json`, `CHECK277.json`, `MATHEMATICAL_REVIEW.md`, `NORMAL257.stdout.json`, `NORMAL277.stdout.json`, `OPTIMIZED257.stdout.json`, `OPTIMIZED277.stdout.json`, `check_257.py`, `check_277.py`
+- `78-budget-centering/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `build_release.py`, `independent_integer_audit.py`, `independent_positive_degree_audit.py`, `report.pdf`, `report.tex`, `verify.py`
+- `78-budget-centering/direct/`: `CHECKS.json`, `LOCAL_METRICS.json`, `NOTICE-source68.md`, `NOTICE.md`, `README.md`, `TOY_CERTIFICATES.json`, `build.py`, `core.py`, `horn_source_rows.json`, `linear_budget_local.json`, `section.tex`, `verify.py`
+- `78-budget-centering/integer/`: `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build_and_verify.py`, `section.tex`
+- `78-budget-centering/integer/certificates/`: `COEFFICIENT_CHECKS.json`, `FINITE_DIAGNOSTICS.json`, `ROOT_INDEPENDENT_AUDIT.json`, `decic24_CHECKS.json`, `degree16_23_CHECKS.json`, `octic26_CHECKS.json`
+- `78-budget-centering/integer/generated/`: `decic24.json`, `decic24_expanded.json`, `degree16_23.json`, `degree16_23_expanded.json`, `octic26.json`, `octic26_expanded.json`
+- `78-budget-centering/integer/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE-source64.md`, `NOTICE-source71.md`
+- `78-budget-centering/positive/`: `MANIFEST.sha256.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `section.tex`
+- `78-budget-centering/positive/coefficients/`: `ACTIVE_BINDING.json`
+- `78-budget-centering/positive/eleven/`: `OPTIMIZED_VERIFICATION.json`, `VERIFICATION.json`, `build.py`, `p11_positive_degree277.json`, `verify.py`
+- `78-budget-centering/positive/licenses/`: `LICENSE.69-cones-pell`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.eleven`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `78-budget-centering/positive/twelve/`: `build.py`, `equation.json`, `verify.py`
+- `78-budget-centering/positive/twelve/certificates/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`
+- `78-budget-centering/verification/`: `DOCUMENT_QA.json`, `INDEPENDENT_POSITIVE_DEGREES.json`, `MATHEMATICAL_REVIEW.json`, `RELEASE_CHECKS.json`, `__independent_positive_degree_audit_py.stdout.txt`, `direct_verify_py.stdout.txt`, `integer_build_and_verify_py.stdout.txt`, `positive_eleven_verify_py.stdout.txt`, `positive_twelve_verify_py.stdout.txt`
+- `79-radical-guard-descent/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `PDF_LAYOUT_CHECKS.json`, `PROVENANCE.json`, `README.md`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `make_archive.py`, `report.pdf`, `report.tex`, `verify_all.py`
+- `79-radical-guard-descent/alternative/`: `LOCAL_ADAPTER_CHECKS.json`, `README.md`, `SINGLE_LOOP_CHECKS.json`, `build_local_adapter.py`, `single_loop.py`, `single_loop.tex`, `single_loop_local.json`
+- `79-radical-guard-descent/alternative/upstream/`: `NOTICE-source68.md`
+- `79-radical-guard-descent/integer/`: `build.py`
+- `79-radical-guard-descent/integer/audit/`: `INDEPENDENT_CHECKS.json`, `REVIEW.md`, `check_independent.py`
+- `79-radical-guard-descent/integer/certificates/`: `ALGEBRA.json`, `degree12_23.json`, `degree14_22.json`, `octic26.json`, `sextic31.json`
+- `79-radical-guard-descent/integer/coefficients/`: `BINDING.json`
+- `79-radical-guard-descent/integer/forms/`: `compact23_display.json`, `degree12_23.json`, `degree12_23_expanded.json`, `degree14_22.json`, `degree14_22_expanded.json`, `octic26.json`, `octic26_expanded.json`, `sextic31.json`, `sextic31_expanded.json`
+- `79-radical-guard-descent/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `79-radical-guard-descent/nine_positive/`: `COEFFICIENT_REBUILD.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build.py`, `equation9.json`, `majorant_section.tex`, `rebuild_coefficients.py`, `regenerate_majorant.py`, `verify.py`
+- `79-radical-guard-descent/nine_positive/certificates/`: `INDEPENDENT_DAG_AUDIT.json`, `INDEPENDENT_MAJORANT_AUDIT.json`, `P_shifted.json`, `defect_shifted.json`, `horner_choices.json`, `majorant_regeneration.json`
+- `79-radical-guard-descent/nine_positive/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `79-radical-guard-descent/nine_positive/data/`: `radical.json`
+- `79-radical-guard-descent/nine_positive/independent/`: `MAJORANT_AUDIT.md`, `audit_laurent_dag.py`, `audit_laurent_majorant.py`
+- `79-radical-guard-descent/nine_positive/licenses/`: `LICENSE.Source65`, `LICENSE.Source71`
+- `79-radical-guard-descent/positive11/`: `ALGEBRA_AUDIT.json`, `COEFFICIENT_REBUILD.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_DAG_AUDIT.json`, `INDEPENDENT_DAG_AUDIT_OPTIMIZED.json`, `LICENSE.upstream`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `audit.py`, `build.py`, `p11_positive_degree277.json`, `rebuild_coefficients.py`, `verify.py`
+- `79-radical-guard-descent/positive11/coefficients/`: `ACTIVE_BINDING.json`
+- `79-radical-guard-descent/positive11/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `79-radical-guard-descent/positive11/native_recipe/`: `NOTICE-upstream.md`
+- `79-radical-guard-descent/provenance/`: `ALTERNATIVE_ENCODINGS.md`, `NATIVE_CALIBRATION52.md`, `OBJECT_ZFC.md`, `PROPOSAL_REVIEW_WAVE10.md`
+- `80-twelve-manuscript/`: `report.tex`
+- `81-centered-pell-norms/`: `CATALOGUE_ENTRY.md`, `LICENSE`, `MANIFEST.sha256.json`, `NOTICE.md`, `README.md`, `RESULTS.json`, `make_manifest.py`, `verify.py`
+- `81-centered-pell-norms/coefficients/`: `ACTIVE_BINDING.json`
+- `81-centered-pell-norms/coefficients/recipe/`: `NOTICE-upstream.md`, `RESTORED_DEPENDENCIES.json`
+- `81-centered-pell-norms/coefficients/recipe/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `81-centered-pell-norms/exploratory/`: `HOMOGENEOUS_CHECKS.json`, `HOMOGENEOUS_CLOSURE.md`, `check_homogeneous_closure.py`
+- `81-centered-pell-norms/integer/`: `CHECKS.json`, `CIRCUIT_CHECKS.json`, `DETERMINISM_CHECK.json`, `INTEGER23_INDEPENDENT_AUDIT.json`, `INTEGER23_MATHEMATICAL_REVIEW.md`, `INTEGER_EXTENSIONS_INDEPENDENT_AUDIT.json`, `INTEGER_EXTENSIONS_MATHEMATICAL_REVIEW.md`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFY_RESULTS.json`, `build.py`, `circuits.py`, `degree10_24.json`, `degree10_24_circuit.json`, `degree12_23.json`, `degree12_23_circuit.json`, `degree12_25.json`, `degree12_25_circuit.json`, `degree14_22.json`, `degree14_22_circuit.json`, `independent_check.py`, `independent_extensions.py`, `octic26.json`, `octic26_circuit.json`, `sextic31.json`, `sextic31_circuit.json`, `verify.py`
+- `81-centered-pell-norms/integer/coefficients/`: `BINDING.json`
+- `81-centered-pell-norms/integer/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `81-centered-pell-norms/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `81-centered-pell-norms/positive11/`: `INDEPENDENT_AUDIT.json`, `audit.py`, `build.py`, `p11_positive_degree277.json`
+- `81-centered-pell-norms/positive12/`: `audit.py`, `build.py`, `equation.json`
+- `81-centered-pell-norms/positive12/certificates/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`
+- `81-centered-pell-norms/provenance/`: `NATIVE_CALIBRATION52.md`, `OBJECT_ZFC.md`, `SOURCE_PINS.json`
+- `81-centered-pell-norms/report/`: `centered.tex`, `compiler.tex`, `integer.tex`, `positive.tex`, `report.pdf`, `report.tex`
+- `81-centered-pell-norms/validation/`: `PDF_QA.json`, `POSITIVE_COMPOSITION_REVIEW.md`, `VERIFICATION.json`, `VERIFICATION_NORMAL.json`
+- `82-pell-congruences/`: `LICENSE`, `NOTICE.md`, `README.md`, `SOURCE_PROVENANCE.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `verify.py`
+- `82-pell-congruences/certificates/`: `ALTERNATIVE_ROUTES_REVIEW.md`, `INDEPENDENT_INTEGER_AUDIT.json`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `INTEGER_CHECKS.json`, `NINE_INDEPENDENT_REVIEW.md`, `PDF_QA.json`, `RANK_REGISTER_REVIEW.md`, `crt_degree16_24_degree.json`, `crt_degree26_22_degree.json`, `crt_degree26_23_degree.json`, `crt_degree28_21_degree.json`, `crt_degree44_20_degree.json`, `degree10_25_degree.json`, `degree12_23_degree.json`, `degree20_22_degree.json`, `degree26_20_degree.json`, `degree32_19_degree.json`, `octic26_degree.json`, `quartic37_degree.json`, `quartic37_direct_degree.json`, `sextic31_degree.json`
+- `82-pell-congruences/coefficients/`: `BINDING.json`, `VERIFICATION.json`, `verify.py`
+- `82-pell-congruences/inherited/determinant71/`: `NOTICE.md`
+- `82-pell-congruences/integer/`: `audit.py`, `build.py`, `crt_degree16_24.json`, `crt_degree26_22.json`, `crt_degree26_23.json`, `crt_degree28_21.json`, `crt_degree44_20.json`, `degree10_25.json`, `degree12_23.json`, `degree20_22.json`, `degree26_20.json`, `degree32_19.json`, `octic26.json`, `polynomial.py`, `quartic37.json`, `quartic37_direct.json`, `sextic31.json`
+- `82-pell-congruences/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `82-pell-congruences/nine_full_radical/`: `COEFFICIENT_RECONSTRUCTION.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `build_correction.py`, `check_laurent_cone.py`, `laurent9_positive.json`, `laurent_candidate.json`, `laurent_cone_certificate.json`, `laurent_correction_nopad_4JDbasis.json`, `laurent_symbolic.py`, `section.tex`, `verify.py`
+- `82-pell-congruences/nine_full_radical/upstream/31-sun10/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `82-pell-congruences/nine_full_radical/upstream/71-determinant-guards/nine_positive/`: `LICENSE`, `NOTICE.md`
+- `82-pell-congruences/positive/`: `AUDIT11.json`, `AUDIT12.json`, `LICENSE`, `NATIVE_FETCH.json`, `NOTICE.md`, `PROOF.md`, `UPSTREAM_FETCH.json`, `VERIFICATION.json`, `build11.py`, `build12.py`, `p11_positive_degree269.json`, `p12_positive_degree78.json`, `positive_reductions.tex`, `verify.py`, `verify11.py`, `verify12.py`
+- `82-pell-congruences/positive/native/`: `NOTICE-upstream.md`
+- `82-pell-congruences/positive/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `82-pell-congruences/report/`: `nine_section.tex`, `report.pdf`, `report.tex`
+- `82-pell-congruences/transport/`: `PROOF.md`, `README.md`, `build_transport.py`, `check_transport.py`, `degree10_24.json`, `degree16_22.json`, `degree20_20_rank_register.json`, `degree28_19.json`, `degree32_18.json`, `degree88_17.json`
+- `82-pell-congruences/transport/certificates/`: `DOMINATED_TRANSPORT_PROBES.json`, `INDEPENDENT_TRANSPORT_AUDIT.json`, `TRANSPORT_CHECKS.json`, `degree10_24_degree.json`, `degree16_22_degree.json`, `degree20_20_rank_register_degree.json`, `degree28_19_degree.json`, `degree32_18_degree.json`, `degree88_17_degree.json`
+- `82-pell-congruences/transport/parents/`: `crt_degree44_20.json`, `degree10_25.json`, `degree12_23.json`, `degree20_22.json`, `degree26_20.json`, `degree32_19.json`, `octic26.json`, `quartic37.json`, `quartic37_direct.json`, `sextic31.json`
+- `83-polynomial-shears/`: `LICENSE.NEW`, `MANIFEST.sha256`, `Makefile`, `NOTICE.md`, `PDF_QA.json`, `PROVENANCE.json`, `README.md`, `VERIFICATION.json`, `report.pdf`, `report.tex`, `verify.py`
+- `83-polynomial-shears/alternative/`: `LICENSE.ProveIt`, `NOTICE.md`, `README.md`, `section.tex`
+- `83-polynomial-shears/alternative/gadgets/`: `CHECKS.json`, `PROOF.md`, `build_and_verify.py`, `conditional_cubic.json`, `conditional_quartic.json`, `joint_zero_predecessor_quadratic.json`, `list_head_quartic.json`, `predecessor_cubic.json`, `predecessor_quadratic_relation.json`, `predecessor_quadratic_with_bit.json`, `predecessor_sos_quartic.json`, `tree_left_quartic.json`, `tree_right_quartic.json`, `zero_test_quadratic.json`
+- `83-polynomial-shears/alternative/selector/`: `CHECKS.json`, `PROOF.md`, `build_and_verify.py`, `height_selector12.json`, `height_selector12_expanded.json`, `height_selector14.json`, `height_selector14_expanded.json`
+- `83-polynomial-shears/calibration/`: `LICENSE.ProveIt`, `NOTICE.source63.md`, `README.md`, `SOURCE_PINS.json`
+- `83-polynomial-shears/integer/`: `BINDING.json`, `BUILD_CHECKS.json`, `INDEPENDENT_CHECKS.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `check.py`, `section.tex`
+- `83-polynomial-shears/integer/forms/`: `centered23_degree10.json`, `pivot18_degree88.json`, `pivot19_degree32.json`, `pivot20_degree20.json`, `pivot21_degree16.json`
+- `83-polynomial-shears/integer/upstream/`: `guards__PROOF.md`, `joint__COMPACT_BASE24.json`, `joint__PROOF.md`, `joint__joint19_degree88.json`, `joint__joint20_degree32.json`, `joint__joint21_degree20.json`, `joint__joint22_degree16.json`, `joint__joint25_octic.json`
+- `83-polynomial-shears/integer/upstream/licenses/`: `upstream__determinant__LICENSE`, `upstream__determinant__NOTICE.md`, `upstream__residue__LICENSE`, `upstream__residue__NOTICE.md`, `upstream__residue__dependencies__LICENSE.ProveIt`, `upstream__residue__dependencies__licenses__LICENSE-source57`, `upstream__residue__dependencies__licenses__LICENSE.ProveIt`, `upstream__residue__dependencies__licenses__LICENSE.Wade`, `upstream__residue__dependencies__licenses__NOTICE-K215.md`, `upstream__residue__dependencies__licenses__NOTICE-normalized-source.txt`, `upstream__residue__dependencies__licenses__NOTICE-source25.md`, `upstream__residue__dependencies__licenses__NOTICE-source34.md`, `upstream__residue__dependencies__licenses__NOTICE-source57.md`
+- `83-polynomial-shears/norm10/`: `INDEPENDENT_AUDIT.json`, `METRICS.json`, `README.md`, `ROOT_CERTIFICATES.json`, `SOURCE_PINS.json`, `VERIFICATION.json`, `audit_independent.py`, `build.py`, `integer10_cubic.json`, `integer10_linear.json`, `integer10_sixterm.json`, `verify.py`
+- `83-polynomial-shears/norm10/data/`: `code.json`, `kernels.json`
+- `83-polynomial-shears/norm10/licenses/`: `LICENSE`, `LICENSE.Round11`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `83-polynomial-shears/norm10/upstream/`: `NOTICE.R11.md`, `OBJECT_ZFC.md`, `OPTIMIZED_POWER_PLAN.json`, `PACKING_H1868_PROOF.md`, `SATURATED_LUCAS_PROOF.md`, `integer10.json`
+- `83-polynomial-shears/positive11/`: `ALGEBRA_AUDIT.json`, `COEFFICIENT_REBUILD.json`, `DOUBLE_CENTER_CERTIFICATE.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_REVIEW.md`, `LICENSE.upstream`, `NOTICE.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `audit.py`, `build.py`, `p11_positive_degree211.json`, `rebuild_coefficients.py`, `section.tex`, `verify.py`
+- `83-polynomial-shears/positive11/coefficients/`: `ACTIVE_BINDING.json`
+- `83-polynomial-shears/positive11/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `83-polynomial-shears/positive11/native_recipe/`: `NOTICE-upstream.md`
+- `83-polynomial-shears/positive11/upstream/`: `CENTERED_PROOF.md`, `degree277_PROOF.md`, `p11_positive_degree257.json`
+- `84-radical-residue/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PDF_QA.json`, `README.md`, `VERIFICATION.json`, `report.pdf`, `report.tex`, `verify_all.py`
+- `84-radical-residue/audit/`: `MATHEMATICAL_AUDIT.md`, `README.md`, `audit_summary.json`
+- `84-radical-residue/integer/`: `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `circuit.py`, `independent_review.py`, `section17.tex`, `verify.py`
+- `84-radical-residue/integer/certificates/`: `BUILD.json`, `CIRCUITS.json`, `COMPACT_BASE18.json`, `INDEPENDENT_REVIEW.json`, `VERIFY.json`, `VERIFY_OPTIMIZED.json`
+- `84-radical-residue/integer/coefficients/`: `BINDING.json`
+- `84-radical-residue/integer/forms/`: `center18_degree80.json`, `center18_degree80_dag.json`, `norm17_degree110.json`, `norm17_degree110_dag.json`, `norm17_degree112.json`, `norm17_degree112_dag.json`, `pivot18_degree88.json`, `pivot19_degree32.json`, `pivot20_degree20.json`, `pivot21_degree16.json`
+- `84-radical-residue/integer/upstream/`: `guards__COEFFICIENT_BINDING.json`, `joint__COMPACT_BASE24.json`, `joint__PROOF.md`, `joint__joint19_degree88.json`, `joint__joint20_degree32.json`, `joint__joint21_degree20.json`, `joint__joint22_degree16.json`
+- `84-radical-residue/integer/upstream/licenses/upstream/determinant/`: `LICENSE`, `NOTICE.md`
+- `84-radical-residue/integer/upstream/licenses/upstream/residue/`: `LICENSE`, `NOTICE.md`
+- `84-radical-residue/integer/upstream/licenses/upstream/residue/dependencies/`: `LICENSE.ProveIt`
+- `84-radical-residue/integer/upstream/licenses/upstream/residue/dependencies/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `84-radical-residue/ten_positive/`: `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `PROOF.md`, `SOURCE_PINS.json`, `build.py`, `independent_check.py`, `local_checks.py`, `rebuild_coefficients.py`
+- `84-radical-residue/ten_positive/coefficients/`: `BINDING.json`, `UPSTREAM_BINDING.json`
+- `84-radical-residue/ten_positive/generated/`: `COEFFICIENT_CHECKS.json`, `INDEPENDENT_CHECKS.json`, `LOCAL_CHECKS.json`, `p10_natural.json`, `p10_positive.json`
+- `84-radical-residue/ten_positive/upstream/`: `OBJECT_ZFC.md`, `SIZE_REDUCTION.md`, `STATUS.md`, `k215_transitions.json`
+- `84-radical-residue/ten_positive/upstream/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `85-saturation-projection/`: `LICENSE`, `MANIFEST.sha256`, `Makefile`, `README.md`, `make_archive.py`, `metrics.tex`, `report.pdf`, `report.tex`, `verify.py`
+- `85-saturation-projection/alternative/`: `VERIFICATION.json`, `section.tex`, `verify.py`
+- `85-saturation-projection/integer/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `build.py`, `evaluate.py`, `section.tex`, `transport18_degree88.json`, `transport19_degree32.json`, `transport20_degree20.json`, `transport21_degree16.json`, `verify.py`
+- `85-saturation-projection/integer/upstream/`: `DEPENDENCIES.md`, `INCOMING_PINS.json`
+- `85-saturation-projection/integer/upstream/circuits/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `PROOF.md`, `README.md`, `build.py`, `check.py`, `joint19_degree88_dag.json`, `joint20_degree32_dag.json`, `joint21_degree20_dag.json`, `joint22_degree16_dag.json`, `joint23_degree12_dag.json`, `joint25_octic_dag.json`, `section.tex`
+- `85-saturation-projection/integer/upstream/guards/`: `CHECK.json`, `COEFFICIENT_BINDING.json`, `DISPLAY_CHECK.json`, `METRICS.json`, `PROOF.md`, `README.md`, `UPSTREAM_COPY_RECEIPT.json`, `build.py`, `build_coefficients.py`, `check.py`, `check_displayed.py`, `cone26_octic.json`, `cone31_sextic.json`, `cone37_quartic_affine.json`, `cone37_quartic_direct.json`, `determinant26_octic.json`, `determinant31_sextic.json`, `determinant37_quartic_affine.json`, `determinant37_quartic_direct.json`, `section.tex`
+- `85-saturation-projection/integer/upstream/guards/upstream/determinant/`: `LICENSE`, `NOTICE.md`
+- `85-saturation-projection/integer/upstream/guards/upstream/residue/`: `LICENSE`, `NOTICE.md`
+- `85-saturation-projection/integer/upstream/guards/upstream/residue/dependencies/`: `LICENSE.ProveIt`
+- `85-saturation-projection/integer/upstream/guards/upstream/residue/dependencies/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `85-saturation-projection/integer/upstream/joint/`: `BUILD_CHECK.json`, `CHECK_normal.json`, `CHECK_optimized.json`, `COMPACT_BASE24.json`, `PROJECTION_BUILD.json`, `PROJECTION_CHECK_normal.json`, `PROJECTION_CHECK_optimized.json`, `PROOF.md`, `README.md`, `SOURCE_PIN.json`, `build.py`, `build_projections.py`, `check.py`, `check_projections.py`, `joint19_degree88.json`, `joint20_degree32.json`, `joint21_degree20.json`, `joint22_degree16.json`, `joint23_degree12.json`, `joint23_degree12_eliminate_I.json`, `joint24_degree12.json`, `joint25_octic.json`, `section.tex`
+- `85-saturation-projection/integer/upstream/joint/upstream/`: `determinant26_octic.json`
+- `85-saturation-projection/nine/`: `COEFFICIENT_RECONSTRUCTION.json`, `FIXED_RECONSTRUCTION.json`, `METRICS.json`, `PROOF.md`, `RADICAL_METRICS.json`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build.py`, `build_radical.py`, `discover_radical.py`, `radical_P.json`, `radical_P_shifted.json`, `radical_defect.json`, `radical_defect_shifted.json`, `radical_meta.json`, `radical_upper_P.json`, `radical_upper_defect.json`, `radical_upper_defect_shifted.json`, `reconstruct_fixed.py`, `saturated_natural.json`, `saturated_positive.json`, `saturated_radical_natural.json`, `saturated_radical_positive.json`, `section.tex`, `verify.py`
+- `85-saturation-projection/nine/coefficients/`: `COEFFICIENT_BINDING.json`, `COMPACT54_ARITHMETIC.md`, `COMPACT54_SEED.txt`
+- `85-saturation-projection/nine/coefficients/compact_tuple/`: `COEFFICIENT_BINDING.json`
+- `85-saturation-projection/nine/fixed/`: `BINDING.json`, `base_scale.bin.gz`, `c_1f49e78f6521d0fe.bin.gz`, `c_33afcc0215e266df.bin.gz`, `c_50b8a3599b18e0a9.bin.gz`, `c_a749e84ec6806d92.bin.gz`, `c_bd70eebd66b6d548.bin.gz`, `c_d048f06bd476e521.bin.gz`, `c_e24dea94f889b837.bin.gz`, `c_e3dd773f14077424.bin.gz`, `c_f69b40d0743298dc.bin.gz`, `threshold_6480184.bin.gz`
+- `85-saturation-projection/nine/provenance/`: `GAP_CIRCUIT_RECIPE66.md`, `GAP_NINE_POLYNOMIAL66.md`, `LICENSE.59`, `NATIVE_CLAUSE54.md`, `NATIVE_CONVOLUTION54.md`, `NATIVE_SOURCE_WINDOW.md`, `NOTICE.md`, `NOTICE.tuple.md`, `OBJECT_ZFC.md`, `nine-NOTICE.md`, `nine-upstream-INHERITED_LICENSE`, `nine-upstream-INHERITED_NOTICE.md`, `parent-CONFIG.json`, `parent-HEIGHT_CERTIFICATE.json`, `parent-PROVENANCE.json`, `parent-README.md`, `verify_one_page_tuple54.py`
+- `85-saturation-projection/nine/provenance/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE_K215.md`
+- `85-saturation-projection/nine/upstream/`: `gap2082_natural.json`, `gap2082_positive.json`
+- `85-saturation-projection/provenance/`: `BASELINE.json`, `DIRECT_INPUTS.json`, `DiophantineConsistency-OBJECT_ZFC.md`, `DiophantineConsistency-README.md`, `DiophantineConsistency-SIZE_REDUCTION.md`, `gap2082-shared-products-README.md`
+- `85-saturation-projection/verification/`: `PDF_QA.json`, `RELEASE_CHECKS.json`, `SATURATION_INDEPENDENT_REVIEW.md`, `SEMANTIC_DEPENDENCIES_REVIEW.md`
+- `86-saturated-certificates/`: `CANDIDATES.json`, `COEFFICIENT_COSTS.json`, `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROOF_STATUS.md`, `README.md`, `report.pdf`, `report.tex`, `verify_all.py`
+- `86-saturated-certificates/integer/`: `METRICS.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `negative_controls.py`, `polynomial.py`, `section.tex`, `verify.py`
+- `86-saturated-certificates/integer/certificates/`: `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `NEGATIVE_CONTROLS.json`, `NORMAL_STDOUT.json`, `OPTIMIZED_STDOUT.json`, `VERIFIED.json`, `VERIFIED_NORMAL.json`, `VERIFIED_OPTIMIZED.json`
+- `86-saturated-certificates/integer/circuits/`: `integer16_degree184.json`, `integer16_degree192.json`, `integer17_degree88.json`, `integer23_degree10.json`
+- `86-saturated-certificates/integer/coefficients/`: `BINDING.json`
+- `86-saturated-certificates/integer/equations/`: `integer16_degree184.json`, `integer16_degree192.json`, `integer17_degree88.json`, `integer23_degree10.json`
+- `86-saturated-certificates/integer/licenses/`: `LICENSE-source57`, `LICENSE.Current.ProveIt`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE-source64.md`, `source71_LICENSE`, `source71_NOTICE.md`
+- `86-saturated-certificates/integer/upstream/`: `NATIVE_PELL_STEP_DOWN.md`, `joint_COMPACT_BASE24.json`, `joint_PROOF.md`, `joint_joint19_degree88.json`, `quartic37.json`, `structural_round11_PROOF.md`
+- `86-saturated-certificates/nine/`: `METRICS.json`, `README.md`, `build.py`, `poly.py`, `section.tex`, `verify.py`, `verify_majorant.py`
+- `86-saturated-certificates/nine/baseline/compact2082/`: `README.md`, `parent.json`
+- `86-saturated-certificates/nine/baseline/compact2082/coefficients/`: `COEFFICIENT_BINDING.json`
+- `86-saturated-certificates/nine/baseline/compact2082/coefficients/compact_tuple/`: `COEFFICIENT_BINDING.json`
+- `86-saturated-certificates/nine/baseline/compact2082/fixed/`: `BINDING.json`, `base_scale.bin.gz`, `c_1f49e78f6521d0fe.bin.gz`, `c_33afcc0215e266df.bin.gz`, `c_50b8a3599b18e0a9.bin.gz`, `c_a749e84ec6806d92.bin.gz`, `c_bd70eebd66b6d548.bin.gz`, `c_d048f06bd476e521.bin.gz`, `c_e24dea94f889b837.bin.gz`, `c_e3dd773f14077424.bin.gz`, `c_f69b40d0743298dc.bin.gz`, `threshold_6480184.bin.gz`
+- `86-saturated-certificates/nine/baseline/compact2082/provenance/`: `LICENSE.59`, `NOTICE.md`, `NOTICE.tuple.md`, `nine-NOTICE.md`, `nine-upstream-INHERITED_LICENSE`, `nine-upstream-INHERITED_NOTICE.md`
+- `86-saturated-certificates/nine/baseline/compact2082/provenance/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE_K215.md`
+- `86-saturated-certificates/nine/baseline/h1868/`: `PROOF.md`, `check.py`
+- `86-saturated-certificates/nine/certificates/`: `FULL_NINE_SOUNDNESS.md`, `FULL_RADICAL_H1868_AUDIT.md`, `H1868_DEGREE_CHECKS.json`, `HORNER_CHOICES.json`, `SATURATED_POSITIVE_PELL_AUDIT.md`, `SATURATION_CHECKS.json`, `VERIFY_NORMAL.json`, `audit_h1868_degree.py`, `check_saturation.py`
+- `86-saturated-certificates/nine/data/`: `code.json`, `correction.json`, `kernels.json`, `saturated_P.json`, `saturated_corrected_P.json`, `saturated_corrected_certificate.json`, `saturated_defect.json`
+- `86-saturated-certificates/nine/equations/`: `compact2082_simple.json`, `h1868_complete.json`, `h1868_simple.json`
+- `86-saturated-certificates/nine/fixed/h1868/`: `BINDING.json`
+- `86-saturated-certificates/nine/licenses/`: `LICENSE-radical-parent`, `LICENSE.Source65`, `LICENSE.Source71`, `NOTICE-radical-parent.md`
+- `86-saturated-certificates/nine/native_original31/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `86-saturated-certificates/positive11/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `build.py`, `p11_positive_degree213.json`, `section.tex`, `verify.py`
+- `86-saturated-certificates/positive11/coefficients/`: `ACTIVE_BINDING.json`
+- `86-saturated-certificates/positive11/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `86-saturated-certificates/positive11/provenance/`: `INDEPENDENT_REVIEW.md`, `INPUT_SHA256.json`, `joint_guards_CENTERED_PROOF.md`, `joint_guards_PROOF.md`, `joint_guards_build_centered.py`, `upstream_NOTICE.md`
+- `86-saturated-certificates/provenance/`: `REPOSITORY_STATUS.md`, `SIZE_REDUCTION_AT_PIN.md`, `SOURCES.json`
+- `86-saturated-certificates/verification/`: `PDF_QA.json`, `RELEASE_CHECKS_BOTH.json`, `integer_normal.stdout.txt`, `integer_optimized.stdout.txt`, `nine_independent_normal.stdout.txt`, `nine_independent_optimized.stdout.txt`, `nine_normal.stdout.txt`, `nine_optimized.stdout.txt`, `pell_saturation_normal.stdout.txt`, `pell_saturation_optimized.stdout.txt`, `positive11_normal.stdout.txt`, `positive11_optimized.stdout.txt`
+- `87-direct-centered-round12/`: `COMPACT_STORAGE.json`, `DEPENDENCIES.md`, `LICENSE.NEW`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `REPLAY.json`, `RUNTIME.json`, `negative_controls.py`, `verify.py`
+- `87-direct-centered-round12/checks/`: `FULL_REPLAY.json`, `NEGATIVE_CONTROLS.json`, `PDF_QA.json`, `RELEASE_VALIDATION.json`
+- `87-direct-centered-round12/direct/`: `CLEAN_REPLAY.json`, `COMPACT_RELEASE_WHITELIST.json`, `README.md`, `REPLAY_COMMANDS.json`, `SOURCE_PINS.json`, `section.tex`
+- `87-direct-centered-round12/direct/fixed_base/`: `CHECKS.json`, `LIVENESS.json`, `README.md`, `REPLAY_SHA256.json`, `build_direct.py`, `check_direct.py`, `circuit.json`, `equation_integer.json`, `reduce_affine.py`, `residuals_affine.json`, `row_source.json`, `summary.json`, `summary_affine.json`, `summary_integer.json`, `verify_replay.py`
+- `87-direct-centered-round12/direct/sources/`: `ArithmeticRepresentation.lean`, `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `DivisionRepresentation.lean`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `QuarticCompiler.lean`, `RemainderRepresentation.lean`, `Representation.lean`
+- `87-direct-centered-round12/direct_audit/`: `FINAL_AUDIT.json`, `MATHEMATICAL_AUDIT.md`, `NEGATIVE_CHECKS.json`, `REPLAY_COMMANDS.json`, `SOURCE_PINS.json`, `check_affine.py`, `negative_controls.py`
+- `87-direct-centered-round12/direct_audit/fixed_base/`: `AFFINE_CHECK.json`, `COMPOSITION_CHECK.json`, `HORN_CHECK.json`, `INTERFACE_CHECK.json`, `SOURCE_BINDING_CHECK.json`, `STRUCTURE_CHECK.json`, `check_composition.py`, `check_horn.py`, `check_interfaces.py`, `check_source_binding.py`, `check_structure.py`
+- `87-direct-centered-round12/inherited/round11/inherited/round10/integer_licenses/`: `LICENSE.SignAndNorm`, `LICENSE.Source34`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE.SignAndNorm.md`, `NOTICE.Source34.md`
+- `87-direct-centered-round12/inherited/round11/packing/certified/`: `CHECKS.json`, `PROOF.md`, `check.py`, `kernels.json`, `layout.json`
+- `87-direct-centered-round12/licenses/`: `LICENSE.ProveIt`
+- `87-direct-centered-round12/low_degree/`: `BINDING.json`, `CHECK_NORMAL.json`, `CHECK_OPTIMIZED.json`, `FILE_HASHES.json`, `PROOF.md`, `README.md`, `SOURCE_HASHES.json`, `UPSTREAM_FETCH_PROVENANCE.json`, `build.py`, `check.py`, `integer18_degree88.json`, `integer19_degree32.json`, `integer20_degree20.json`, `integer20_degree20_free_scale.json`, `integer21_degree16.json`, `section.tex`
+- `87-direct-centered-round12/low_degree/inherited/`: `CENTERED_NORM_PROOF.md`, `JOINT_PROJECTION_PROOF.md`, `ROUND11_PROOF.md`, `degree12_24.json`
+- `87-direct-centered-round12/low_degree/inherited/round11_dependencies/`: `source71_LICENSE`, `source71_NOTICE.md`
+- `87-direct-centered-round12/low_degree_supplement/`: `FILE_HASHES.json`, `LIBRARY_CHECK.json`, `LIBRARY_CHECK_OPTIMIZED.json`, `REVIEW.md`, `check_library.py`
+- `87-direct-centered-round12/norm/`: `BASELINE_PROOF.md`, `CHECKS.json`, `METRICS_center0.json`, `METRICS_center1.json`, `METRICS_center2.json`, `METRICS_polar.json`, `NOTICE.md`, `OPTIMIZED_POWER_PLAN.json`, `PROOF.md`, `README.md`, `REBUILD_CHECKS.json`, `REPLAY_COMMANDS.json`, `build.py`, `check.py`, `independent_formula.py`, `independent_formula_short_guard.py`, `integer10_center0.json`, `integer10_center1.json`, `integer10_center2.json`, `integer10_polar.json`, `section.tex`
+- `87-direct-centered-round12/norm/data/`: `code.json`, `kernels.json`
+- `87-direct-centered-round12/norm/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `87-direct-centered-round12/norm_audit/`: `AUDIT.md`, `INDEPENDENT_CHECKS.json`, `INDEPENDENT_CHECKS_OPTIMIZED.json`, `check_independent.py`, `section.tex`
+- `87-direct-centered-round12/positive/`: `CHECKS.json`, `PROOF11.md`, `PROOF12.md`, `README.md`, `build.py`, `check.py`, `p11_degree211.json`, `p12_degree70.json`, `section.tex`
+- `87-direct-centered-round12/positive/interfaces/`: `incoming_report.tex`, `p11_degree277.json`, `p12_degree78.json`
+- `87-direct-centered-round12/positive/native/`: `NOTICE-upstream.md`
+- `87-direct-centered-round12/positive/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `87-direct-centered-round12/report/`: `ConZFC_Round12.pdf`, `ConZFC_Round12.tex`, `build.sh`
+- `87-direct-centered-round12/review/`: `FETCH_LEDGER.json`, `LITERAL_COUNTS.json`, `ROUND12_REVIEW.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/`: `LICENSE`, `NOTICE.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/certificates/`: `INDEPENDENT_MATHEMATICAL_REVIEW.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/inherited/determinant71/`: `NOTICE.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/nine_full_radical/`: `LICENSE`, `NOTICE.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/nine_full_radical/upstream/31-sun10/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/nine_full_radical/upstream/71-determinant-guards/nine_positive/`: `LICENSE`, `NOTICE.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/positive/`: `LICENSE`, `NOTICE.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/positive/native/`: `NOTICE-upstream.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/positive/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/report/`: `report.tex`
+- `87-direct-centered-round12/review/library/pell_congruences/con_zfc_pell_congruences_2026-10-23/transport/`: `PROOF.md`, `degree20_20_rank_register.json`, `degree28_19.json`, `degree32_18.json`, `degree88_17.json`
+- `87-direct-centered-round12/small_audit/`: `CHECKS.json`, `CHECKS_NORMAL.json`, `CHECKS_OPTIMIZED.json`, `REPORT.md`, `check.py`
+- `87-direct-centered-round12/source/short_guard/`: `CHECKS.json`, `PROOF.tex`, `check.py`, `layout.json`
+- `88-root-fusion13/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `88-root-fusion13/coefficients/`: `BINDING.json`
+- `88-root-fusion13/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `88-root-fusion13/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `88-root-fusion13/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `88-root-fusion13/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `88-root-fusion13/provenance/upstream_ordinary/`: `SOURCES.json`
+- `88-root-fusion13/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `88-root-fusion13/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `89-shared-certificates/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.md`, `README.md`, `VERIFICATION.json`, `verify.py`
+- `89-shared-certificates/coordinate_family/`: `COEFFICIENT_BINDING.json`, `COORDINATE_AUDIT.normal.json`, `COORDINATE_AUDIT.optimized.json`, `COORDINATE_PROOF.md`, `COORDINATE_VERIFICATION.json`, `INCOMING_PINS.json`, `LAYOUT_AND_PORTABILITY.json`, `MANIFEST.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build_coordinate_family.py`, `build_family.py`, `check_coordinate_maps.py`, `coordinate_audit.md`, `coordinate_section.tex`, `incoming_joint25.json`
+- `89-shared-certificates/coordinate_family/comparison/`: `ZFC_Diophantine_Joint_Guards_2026-10-24__README.md`, `con-zfc-budget-and-centering-2026-10-23__README.md`, `con-zfc-centered-pell-norms__README.md`, `con-zfc-radical-guard-descent-2026-10-23__README.md`, `report__report.tex`, `round11__README.md`
+- `89-shared-certificates/coordinate_family/equations/`: `compact_octic25.json`, `coordinate19_degree40.json`, `coordinate20_degree18.json`, `coordinate21_degree16.json`, `degree16_23.json`, `dodecic24.json`, `octic25.json`, `octic26_unmerged.json`, `quartic37.json`, `sextic31.json`
+- `89-shared-certificates/coordinate_family/upstream/licenses/`: `LICENSE`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE71.md`
+- `89-shared-certificates/direct/`: `AUDIT.normal.json`, `AUDIT.optimized.json`, `AUDIT.small_height.normal.json`, `AUDIT.small_height.optimized.json`, `BUILD.json`, `CALCULUS_AUDIT.json`, `LITERAL_AUDIT.json`, `LITERAL_AUDIT.optimized.json`, `POWER_GRAPH_AUDIT.json`, `README.md`, `SOURCE_AUDIT.json`, `audit_calculus.py`, `audit_literal.py`, `audit_power_graph.py`, `audit_source.py`, `build_equation.py`, `check_equation.py`, `direct_calculus.py`, `equation.json`, `expanded_polynomial.json`, `shared_crt_audit.md`, `wire_eliminated_source.json`
+- `89-shared-certificates/direct/provenance/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `89-shared-certificates/direct/small_height/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`
+- `89-shared-certificates/provenance/`: `SOURCES.json`, `new_incoming_comparison.md`
+- `89-shared-certificates/report/`: `LAYOUT_QA.json`, `calculus.tex`, `crt.tex`, `integer.tex`, `primitives.tex`, `report.pdf`, `report.tex`
+- `90-fixed-prime-radicals/`: `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `verify.py`
+- `90-fixed-prime-radicals/checks/`: `ADAPTER_CHECKS.json`, `ROOT_VERIFICATION.json`, `ROOT_VERIFICATION_OPTIMIZED.json`
+- `90-fixed-prime-radicals/code/`: `check_adapters.py`
+- `90-fixed-prime-radicals/coefficients/`: `BINDING.json`, `VERIFICATION.json`, `verify.py`
+- `90-fixed-prime-radicals/forms/`: `COMPACT15_CHECKS.json`, `COMPACT15_PROOF.md`, `DEGREE_PROOF.md`, `METRICS.json`, `METRICS15.json`, `NORM_DAG_CHECKS.json`, `PROOF15.md`, `SOURCE_PIN.json`, `VERIFICATION.json`, `build15_compact.py`, `build_forms.py`, `check_norm_dag.py`, `generic_three_quadratic_norm.json`, `integer13_degree1392.json`, `integer13_degree1408.json`, `integer14_degree652.json`, `integer14_degree664.json`, `integer14_degree700.json`, `integer14_degree748.json`, `integer15_degree214.json`, `norm4_cleared_dag.json`, `norm5_cleared_dag.json`, `norm_dag.py`, `verify_final_forms.py`
+- `90-fixed-prime-radicals/forms/coefficients/`: `BINDING.json`
+- `90-fixed-prime-radicals/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `90-fixed-prime-radicals/proofs/`: `INDEPENDENT_REVIEW13.md`, `INDEPENDENT_REVIEW15.md`, `NORMALIZATION.md`, `PENTAGONAL_GUARD.md`
+- `90-fixed-prime-radicals/report/`: `report.pdf`, `report.tex`
+- `90-fixed-prime-radicals/upstream/`: `ALTERNATIVE_ENCODINGS.md`, `BASELINE_AUDIT.md`, `WAVE10_REVIEW.md`
+- `90-fixed-prime-radicals/upstream/calibration/`: `NOTICE.source63.md`, `README.md`, `SOURCE_PINS.json`
+- `90-fixed-prime-radicals/upstream/inherited/determinant71/`: `NOTICE.md`
+- `90-fixed-prime-radicals/upstream/transport/`: `PROOF.md`, `degree88_17.json`
+- `91-prime-separation13/`: `LICENSE`, `NOTICE.md`, `PDF_QA.json`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `VERIFICATION_NORMAL.json`, `build_pass2.txt`, `build_pass3.txt`, `report.pdf`, `report.tex`, `verify_all.py`
+- `91-prime-separation13/independent_audit/`: `COMPACT_NORM_CHECK.json`, `FOUR_ROOT_REVIEW.md`, `PRIMARY_FORMULA_CHECK.json`, `check_compact_norms.py`, `check_primary_formula.py`
+- `91-prime-separation13/inherited/`: `PARENT_SOURCE_PROVENANCE.json`, `README.md`, `degree88_17.json`, `source70_integer_section.tex`, `source71_report.tex`
+- `91-prime-separation13/inherited/calibration/`: `LICENSE.ProveIt`, `NOTICE.source63.md`, `README.md`, `SOURCE_PINS.json`
+- `91-prime-separation13/inherited/determinant71/`: `NOTICE.md`
+- `91-prime-separation13/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `91-prime-separation13/new_integer_compact/`: `BUILD_METRICS.json`, `build.py`, `five_root_integer13_compact.json`, `fixed3_crt_integer16_compact.json`, `four_root_integer14_compact.json`, `three_root_integer15_compact.json`
+- `91-prime-separation13/new_integer_compression/`: `BUILD_METRICS.json`, `DEGREE_LOWER_CERTIFICATES.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `build.py`, `check_degrees.py`, `circuit.py`, `five_root_integer13.json`, `fixed3_crt_integer16.json`, `four_root_integer14.json`, `three_root_integer15.json`
+- `91-prime-separation13/new_integer_compression/coefficients/`: `BINDING.json`
+- `91-prime-separation13/reviews/`: `FIVE_ROOT_INTEGER13_REVIEW.md`, `FOUR_ROOT_INTEGER14_REVIEW.md`, `VALUATION_SEPARATION_REVIEW.md`
+- `91-prime-separation13/ten_integer/`: `CHECKS_cubic.json`, `CHECKS_linear.json`, `CHECKS_predecessor.json`, `CHECKS_sixterm.json`, `LICENSE.NEW`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `SUMMARY.json`, `VERIFICATION_NORMAL.json`, `VERIFICATION_OPTIMIZED.json`, `VERIFICATION_RUNS.json`, `integer10_cubic.json`, `integer10_linear.json`, `integer10_predecessor.json`, `integer10_sixterm.json`, `optimize.py`, `optimize_shears.py`, `verify.py`
+- `91-prime-separation13/ten_integer/provenance/`: `LICENSE.NEW`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.json`, `report.pdf`, `report.tex`
+- `91-prime-separation13/ten_integer/provenance/alternative/`: `section.tex`
+- `91-prime-separation13/ten_integer/provenance/calibration/`: `LICENSE.ProveIt`, `NOTICE.source63.md`, `README.md`, `SOURCE_PINS.json`
+- `91-prime-separation13/ten_integer/provenance/integer/`: `section.tex`
+- `91-prime-separation13/ten_integer/provenance/positive11/`: `section.tex`
+- `91-prime-separation13/ten_integer/upstream/`: `INDEPENDENT_AUDIT.json`, `METRICS.json`, `README.md`, `ROOT_CERTIFICATES.json`, `SOURCE_PINS.json`, `VERIFICATION.json`, `audit_independent.py`, `build.py`, `integer10_cubic.json`, `integer10_linear.json`, `integer10_sixterm.json`, `verify.py`
+- `91-prime-separation13/ten_integer/upstream/data/`: `code.json`, `kernels.json`
+- `91-prime-separation13/ten_integer/upstream/licenses/`: `LICENSE`, `LICENSE.Round11`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `91-prime-separation13/ten_integer/upstream/upstream/`: `NOTICE.R11.md`, `OBJECT_ZFC.md`, `OPTIMIZED_POWER_PLAN.json`, `PACKING_H1868_PROOF.md`, `SATURATED_LUCAS_PROOF.md`, `integer10.json`
+- `92-parity-norms/`: `AUDIT.json`, `COMPACT_INDEPENDENT_AUDIT.json`, `COMPACT_KERNEL_AUDIT.json`, `COMPACT_METRICS.json`, `COMPACT_NORM_REVIEW.md`, `DEGREE_CERTIFICATES.json`, `GRAPH_AUDIT.json`, `LICENSE`, `NORM_FAMILY_AUDIT.json`, `NORM_FAMILY_METRICS.json`, `NOTICE.md`, `PARITY_MERGER_REVIEW.md`, `PDF_QA.json`, `PROOF.md`, `PROOF15.md`, `README.md`, `RELEASE_VERIFICATION.json`, `SHIFT_AUDIT.json`, `SOURCE_PROVENANCE.json`, `THIRTEEN_MATHEMATICAL_REVIEW.md`, `abstract_norm5_dag.json`, `audit.py`, `audit_compact_kernel.py`, `audit_norm_family.py`, `audit_shift.py`, `build.py`, `build_norm_family.py`, `centered16_sos.json`, `centered16_sos_dag.json`, `centered16_unit_product.json`, `centered16_unit_product_dag.json`, `compact_norm.py`, `independent_checks.py`, `independent_compact_audit.py`, `independent_graph_audit.py`, `independent_proof_audit.md`, `norm4_expanded.json`, `norm4_kernel.json`, `norm5_expanded.json`, `norm5_kernel.json`, `parity13_direct.json`, `parity13_direct_dag.json`, `parity13_shifted.json`, `parity13_shifted_dag.json`, `parity14_sos.json`, `parity14_sos_dag.json`, `parity14_unit_product.json`, `parity14_unit_product_dag.json`, `parity15_sos.json`, `parity15_sos_dag.json`, `parity15_unit_product.json`, `parity15_unit_product_dag.json`, `parity16_sos.json`, `parity16_sos_dag.json`, `parity16_unit_product.json`, `parity16_unit_product_dag.json`, `results.json`, `verify_release.py`
+- `92-parity-norms/coefficients/`: `BINDING.json`, `VERIFICATION.json`, `verify.py`
+- `92-parity-norms/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `92-parity-norms/parent/`: `degree88_17.json`
+- `92-parity-norms/provenance/`: `forms-README.md`
+- `92-parity-norms/report/`: `parity-norms.pdf`, `parity-norms.tex`
+- `92-parity-norms/upstream/pell-congruences-source/`: `LICENSE`, `NOTICE.md`, `README.md`, `SOURCE_PROVENANCE.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `verify.py`
+- `92-parity-norms/upstream/pell-congruences-source/certificates/`: `ALTERNATIVE_ROUTES_REVIEW.md`, `INDEPENDENT_INTEGER_AUDIT.json`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `INTEGER_CHECKS.json`, `NINE_INDEPENDENT_REVIEW.md`, `PDF_QA.json`, `RANK_REGISTER_REVIEW.md`, `crt_degree16_24_degree.json`, `crt_degree26_22_degree.json`, `crt_degree26_23_degree.json`, `crt_degree28_21_degree.json`, `crt_degree44_20_degree.json`, `degree10_25_degree.json`, `degree12_23_degree.json`, `degree20_22_degree.json`, `degree26_20_degree.json`, `degree32_19_degree.json`, `octic26_degree.json`, `quartic37_degree.json`, `quartic37_direct_degree.json`, `sextic31_degree.json`
+- `92-parity-norms/upstream/pell-congruences-source/coefficients/`: `BINDING.json`, `VERIFICATION.json`, `verify.py`
+- `92-parity-norms/upstream/pell-congruences-source/inherited/determinant71/`: `NOTICE.md`
+- `92-parity-norms/upstream/pell-congruences-source/integer/`: `audit.py`, `build.py`, `crt_degree16_24.json`, `crt_degree26_22.json`, `crt_degree26_23.json`, `crt_degree28_21.json`, `crt_degree44_20.json`, `degree10_25.json`, `degree12_23.json`, `degree20_22.json`, `degree26_20.json`, `degree32_19.json`, `octic26.json`, `polynomial.py`, `quartic37.json`, `quartic37_direct.json`, `sextic31.json`
+- `92-parity-norms/upstream/pell-congruences-source/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `92-parity-norms/upstream/pell-congruences-source/nine_full_radical/`: `COEFFICIENT_RECONSTRUCTION.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `build_correction.py`, `check_laurent_cone.py`, `laurent9_positive.json`, `laurent_candidate.json`, `laurent_cone_certificate.json`, `laurent_correction_nopad_4JDbasis.json`, `laurent_symbolic.py`, `section.tex`, `verify.py`
+- `92-parity-norms/upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `92-parity-norms/upstream/pell-congruences-source/nine_full_radical/upstream/71-determinant-guards/nine_positive/`: `LICENSE`, `NOTICE.md`
+- `92-parity-norms/upstream/pell-congruences-source/positive/`: `AUDIT11.json`, `AUDIT12.json`, `LICENSE`, `NATIVE_FETCH.json`, `NOTICE.md`, `PROOF.md`, `UPSTREAM_FETCH.json`, `VERIFICATION.json`, `build11.py`, `build12.py`, `p11_positive_degree269.json`, `p12_positive_degree78.json`, `positive_reductions.tex`, `verify.py`, `verify11.py`, `verify12.py`
+- `92-parity-norms/upstream/pell-congruences-source/positive/native/`: `NOTICE-upstream.md`
+- `92-parity-norms/upstream/pell-congruences-source/positive/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `92-parity-norms/upstream/pell-congruences-source/report/`: `nine_section.tex`, `report.pdf`, `report.tex`
+- `92-parity-norms/upstream/pell-congruences-source/transport/`: `PROOF.md`, `README.md`, `build_transport.py`, `check_transport.py`, `degree10_24.json`, `degree16_22.json`, `degree20_20_rank_register.json`, `degree28_19.json`, `degree32_18.json`, `degree88_17.json`
+- `92-parity-norms/upstream/pell-congruences-source/transport/certificates/`: `DOMINATED_TRANSPORT_PROBES.json`, `INDEPENDENT_TRANSPORT_AUDIT.json`, `TRANSPORT_CHECKS.json`, `degree10_24_degree.json`, `degree16_22_degree.json`, `degree20_20_rank_register_degree.json`, `degree28_19_degree.json`, `degree32_18_degree.json`, `degree88_17_degree.json`
+- `92-parity-norms/upstream/pell-congruences-source/transport/parents/`: `crt_degree44_20.json`, `degree10_25.json`, `degree12_23.json`, `degree20_22.json`, `degree26_20.json`, `degree32_19.json`, `octic26.json`, `quartic37.json`, `quartic37_direct.json`, `sextic31.json`
+- `93-parity-pell-witnesses/`: `CANDIDATES.json`, `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `RELEASE_CHECKS.json`, `build_report.py`, `verify.py`
+- `93-parity-pell-witnesses/direct-quartic/`: `ARTIFACT_SHA256.json`, `README.md`, `REPLAY.json`, `SOURCE_PINS.json`, `UPSTREAM_MATHEMATICAL_AUDIT.md`, `UPSTREAM_SOURCE_PINS.json`, `affine_map.json`, `build_direct.py`, `circuit.json`, `equation.json`, `equation_affine.json`, `equation_integer.json`, `nonnegativity_residuals.json`, `normalization.tex`, `reduce_affine.py`, `replay.py`, `residuals.json`, `residuals_affine.json`, `row_source.json`, `summary.json`, `summary_affine.json`, `summary_integer.json`
+- `93-parity-pell-witnesses/direct-quartic/audit/`: `AFFINE_CHECK.json`, `COMPOSITION_CHECK.json`, `HORN_CHECK.json`, `INTERFACE_CHECK.json`, `NORMALIZATION_CHECK.json`, `SOURCE_BINDING_CHECK.json`, `STRUCTURE_CHECK.json`, `check_affine.py`, `check_composition.py`, `check_horn.py`, `check_interfaces.py`, `check_normalization.py`, `check_source_binding.py`, `check_structure.py`
+- `93-parity-pell-witnesses/direct-quartic/licenses/`: `LICENSE.ProveIt`
+- `93-parity-pell-witnesses/direct-quartic/sources/`: `ArithmeticRepresentation.lean`, `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `DivisionRepresentation.lean`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `QuarticCompiler.lean`, `RemainderRepresentation.lean`, `Representation.lean`
+- `93-parity-pell-witnesses/direct-quartic/upstream/`: `SHA256.json`, `build_direct.py`, `reduce_affine.py`, `summary_affine.json`, `summary_integer.json`
+- `93-parity-pell-witnesses/integer-norms/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `INDEPENDENT_REVIEW.md`, `METRICS.json`, `MOD4_PROOF.md`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `UPSTREAM_PROOF.md`, `build.py`, `check.py`, `polynomial.py`, `upstream17.json`, `upstream_builder.py`
+- `93-parity-pell-witnesses/integer-norms/circuits/`: `integer15_mod4_degree306.json`, `integer15_mod4_degree310.json`, `integer15_odd_degree306.json`, `integer15_odd_degree310.json`, `integer16_mod4_degree112.json`, `integer16_odd_degree112.json`
+- `93-parity-pell-witnesses/integer-norms/coefficients/`: `BINDING.json`
+- `93-parity-pell-witnesses/integer-norms/equations/`: `integer15_mod4_degree306.json`, `integer15_mod4_degree310.json`, `integer15_odd_degree306.json`, `integer15_odd_degree310.json`, `integer16_mod4_degree112.json`, `integer16_odd_degree112.json`
+- `93-parity-pell-witnesses/integer-norms/independent_degree/`: `CHECKS.json`, `CHECKS_MOD4.json`, `NOTE.md`, `NOTE_MOD4.md`, `PARITY_AUDIT.md`, `audit.py`, `audit_mod4.py`, `ring.py`
+- `93-parity-pell-witnesses/integer-norms/licenses/`: `LICENSE-source57`, `LICENSE.Current.ProveIt`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE-source64.md`, `source71_LICENSE`, `source71_NOTICE.md`
+- `93-parity-pell-witnesses/integer20/`: `BUILD_CHECKS.json`, `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `build.py`, `check.py`, `circuit.json`, `equation.json`, `parent_ring.py`
+- `93-parity-pell-witnesses/integer20/parent/`: `PROOF.md`, `README.md`, `VERIFY.normal.json`, `VERIFY.optimized.json`, `build.py`, `circuit.json`, `equation.json`
+- `93-parity-pell-witnesses/integer20/parent/coefficients/`: `BINDING.json`
+- `93-parity-pell-witnesses/integer20/parent/provenance/`: `PARENT_CIRCUIT_PROOF.md`, `PARENT_COEFFICIENT_BINDING.json`, `PARENT_PROOF.md`, `PINS.json`, `parent.json`, `parent_dag.json`
+- `93-parity-pell-witnesses/provenance/`: `NATIVE_CALIBRATION52.md`, `OBJECT_ZFC.md`, `PROPOSAL_REVIEW_WAVE11.md`, `PROPOSAL_REVIEW_WAVE11_INTEGER.md`, `PROPOSAL_REVIEW_WAVE11_POSITIVE.md`, `SNAPSHOT.json`
+- `93-parity-pell-witnesses/provenance/k215-calibration/`: `LICENSE.ProveIt`, `NOTICE.source63.md`, `README.md`, `SOURCE_PINS.json`
+- `93-parity-pell-witnesses/provenance/saturated-parent/`: `METRICS.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `negative_controls.py`, `polynomial.py`, `section.tex`, `verify.py`
+- `93-parity-pell-witnesses/provenance/saturated-parent/certificates/`: `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `NEGATIVE_CONTROLS.json`, `NORMAL_STDOUT.json`, `OPTIMIZED_STDOUT.json`, `VERIFIED.json`, `VERIFIED_NORMAL.json`, `VERIFIED_OPTIMIZED.json`
+- `93-parity-pell-witnesses/provenance/saturated-parent/circuits/`: `integer16_degree184.json`, `integer16_degree192.json`, `integer17_degree88.json`, `integer23_degree10.json`
+- `93-parity-pell-witnesses/provenance/saturated-parent/coefficients/`: `BINDING.json`
+- `93-parity-pell-witnesses/provenance/saturated-parent/equations/`: `integer16_degree184.json`, `integer16_degree192.json`, `integer17_degree88.json`, `integer23_degree10.json`
+- `93-parity-pell-witnesses/provenance/saturated-parent/licenses/`: `LICENSE-source57`, `LICENSE.Current.ProveIt`, `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE-source64.md`, `source71_LICENSE`, `source71_NOTICE.md`
+- `93-parity-pell-witnesses/provenance/saturated-parent/upstream/`: `NATIVE_PELL_STEP_DOWN.md`, `joint_COMPACT_BASE24.json`, `joint_PROOF.md`, `joint_joint19_degree88.json`, `quartic37.json`, `structural_round11_PROOF.md`
+- `93-parity-pell-witnesses/report/`: `con-zfc-parity-norms.pdf`, `con-zfc-parity-norms.tex`, `direct-normalization.tex`, `report.tex`
+- `94-direct-projection7617/`: `LICENSE.NEW`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `RUNTIME.json`, `SCHEMA.md`, `build.py`, `check_exact.py`, `check_signed_independent.py`, `polynomial.py`, `verify.py`
+- `94-direct-projection7617/checks/`: `COMPARISON.json`, `DIRECT_FINAL_INDEPENDENT.json`, `DIRECT_FINAL_INDEPENDENT_OPTIMIZED.json`, `PDF_VISUAL_QA.json`, `RELEASE_VERIFY.json`, `REPLAY_CHECK.json`, `checkpoint9476_exact_check.json`, `checkpoint9476_metrics.json`
+- `94-direct-projection7617/equations/`: `EXACT_CHECK.json`, `circuit_integer.json`, `equation_integer.json`, `residuals_integer.json`, `row_source.json`, `source_circuit_before_pruning.json`, `summary_integer.json`, `variable_map.json`
+- `94-direct-projection7617/licenses/`: `LICENSE.ProveIt`
+- `94-direct-projection7617/proofs/`: `INDEPENDENT_REVIEW.md`, `SIGNED_COMPILER.md`
+- `94-direct-projection7617/provenance/`: `ARITHMETIC_SOURCE_PINS.json`, `BASELINE_INTEGER_METRICS.json`, `BASELINE_MATHEMATICAL_AUDIT.md`, `BASELINE_NOTICE.md`, `BASELINE_PINS.json`, `LOGICAL_SOURCE_PINS.json`
+- `94-direct-projection7617/provenance/arithmetic/`: `ArithmeticRepresentation.lean`, `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `DivisionRepresentation.lean`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `QuarticCompiler.lean`, `RemainderRepresentation.lean`, `Representation.lean`
+- `94-direct-projection7617/report/`: `ConZFC_Direct_Projection.pdf`, `ConZFC_Direct_Projection.tex`, `PDF_BUILD.json`, `build_report.py`, `metrics.tex`
+- `94-direct-projection7617/source/`: `PREPROCESSING_PROOF.md`, `PROJECTION_CHECK.json`, `build_direct.py`, `check_projection.py`, `circuit.json`, `row_source.json`, `summary_circuit.json`
+- `95-synchronized-certificates/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `report.pdf`, `report.tex`, `verify.py`
+- `95-synchronized-certificates/code/`: `affine_contract.py`, `audit_factored_source.py`, `audit_shared_power.py`, `audit_shared_product.py`, `direct_source.py`, `direct_source_factored.py`, `make_integer.py`, `release.py`, `shared_index_power.py`, `shared_power.py`, `shared_product_power.py`, `synchronized_builder.py`, `verify_synchronized.py`
+- `95-synchronized-certificates/equations/`: `CENSUS.json`
+- `95-synchronized-certificates/equations/integer2088/`: `VERIFICATION.json`, `conversion_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `95-synchronized-certificates/equations/natural522/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `95-synchronized-certificates/equations/natural529/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `95-synchronized-certificates/equations/natural596/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `95-synchronized-certificates/equations/source895/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `macro_inventory.json`, `majorant_certificate.json`
+- `95-synchronized-certificates/proofs/`: `contraction.md`, `factored_source.md`, `final_math_review.md`, `independent_mathematical_review.md`, `independent_structure_review.md`, `integer_guards.md`, `shared_indices.md`, `shared_powers.md`
+- `95-synchronized-certificates/provenance/repository/`: `INCOMING_INDEX.json`, `PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md`, `PROPOSAL_REVIEW_LATEST.md`, `README.md`
+- `95-synchronized-certificates/provenance/upstream/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `audit_calculus.py`, `audit_source.py`, `build_equation.py`, `calculus.tex`, `crt.tex`, `direct_calculus.py`, `primitives.tex`, `wire_eliminated_source.json`
+- `95-synchronized-certificates/provenance/upstream/calibration/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `95-synchronized-certificates/receipts/`: `pdf_qa.json`, `verification_normal.json`, `verification_optimized.json`
+- `96-batched-certificates/`: `LICENSE`, `MANIFEST.json`, `PROVENANCE.json`, `README.md`, `RELEASE.json`, `verify.py`
+- `96-batched-certificates/direct/`: `COMPONENT_AUDIT.normal.json`, `COMPONENT_AUDIT.optimized.json`, `LICENSE`, `PROVENANCE.json`, `README.md`, `audit_common_radix.py`, `build_common_radix.py`, `common_radix_section.tex`, `shared_frame_fixture.py`, `terminal_elimination.py`, `verify.py`, `verify_projection.py`
+- `96-batched-certificates/direct/output/common_radix/`: `AUDIT.json`, `BUILD.json`, `construction_trace.json`, `equation.json`, `expanded_polynomial.json`
+- `96-batched-certificates/direct/output/common_radix_offset/`: `AUDIT.json`, `BUILD.json`, `construction_trace.json`, `equation.json`, `expanded_polynomial.json`
+- `96-batched-certificates/direct/output/compact667/`: `INDEPENDENT_PROJECTION.json`, `TERMINAL_ELIMINATION.json`, `equation.json`, `expanded_polynomial.json`, `terminal_elimination_certificate.json`
+- `96-batched-certificates/direct/output/compact680/`: `TERMINAL_ELIMINATION.json`, `equation.json`, `expanded_polynomial.json`, `terminal_elimination_certificate.json`
+- `96-batched-certificates/direct/output/shared_frame/`: `AUDIT.json`, `BUILD.json`, `FIXTURES.json`, `construction_trace.json`, `equation.json`, `expanded_polynomial.json`
+- `96-batched-certificates/direct/upstream/`: `LICENSE`, `NOTICE.md`, `PROVENANCE.md`
+- `96-batched-certificates/direct/upstream/direct/`: `AUDIT.normal.json`, `AUDIT.optimized.json`, `AUDIT.small_height.normal.json`, `AUDIT.small_height.optimized.json`, `BUILD.json`, `CALCULUS_AUDIT.json`, `LITERAL_AUDIT.json`, `LITERAL_AUDIT.optimized.json`, `POWER_GRAPH_AUDIT.json`, `README.md`, `SOURCE_AUDIT.json`, `audit_calculus.py`, `audit_literal.py`, `audit_power_graph.py`, `audit_source.py`, `build_equation.py`, `check_equation.py`, `direct_calculus.py`, `equation.json`, `expanded_polynomial.json`, `shared_crt_audit.md`, `wire_eliminated_source.json`
+- `96-batched-certificates/direct/upstream/direct/provenance/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `96-batched-certificates/direct/upstream/direct/small_height/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`
+- `96-batched-certificates/direct/upstream/report/`: `calculus.tex`, `crt.tex`, `integer.tex`, `primitives.tex`, `report.tex`
+- `96-batched-certificates/guard13/`: `AUDIT.json`, `LICENSE`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_reanchored.py`, `equation.json`, `section.tex`, `verify_reanchored.py`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/`: `BINDING.json`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/`: `SOURCES.json`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `96-batched-certificates/guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `96-batched-certificates/integer/`: `LICENSE`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `audit_common_radix.py`, `build_integer.py`, `section.tex`, `terminal_elimination.py`, `verify_integer.py`, `verify_projection.py`
+- `96-batched-certificates/integer/input/`: `domain_conversion_certificate.json`, `equation.json`
+- `96-batched-certificates/integer/output/`: `BUILD.json`, `INDEPENDENT_PROJECTION.json`, `equation.json`, `expanded_polynomial.json`, `terminal_elimination_certificate.json`
+- `96-batched-certificates/integer/signed_output/`: `BUILD.json`, `INDEPENDENT_INTEGER_AUDIT.json`, `INDEPENDENT_PROJECTION.json`, `equation.json`, `expanded_polynomial.json`, `terminal_elimination_certificate.json`
+- `96-batched-certificates/integer/source/`: `parent_natural.json`
+- `96-batched-certificates/report/`: `batched_powers.tex`, `calculus.tex`, `comparison_table.tex`, `guard13_section.tex`, `metrics.tex`, `report.pdf`, `report.tex`, `source_and_crt.tex`
+- `96-batched-certificates/verification/`: `MATHEMATICAL_REVIEW.md`, `PDF_QA.json`, `RELEASE_AUDIT.normal.json`, `RELEASE_AUDIT.optimized.json`
+- `97-twelve-interpolation/`: `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `build_trace13.py`, `build_twelve.py`, `check_twelve.py`, `verify.py`
+- `97-twelve-interpolation/equations/`: `METRICS.json`, `SCHEMA.md`, `monotone_intersective12_degree16000.json`, `monotone_intersective12_degree4832.json`, `trace13_degree1072.json`
+- `97-twelve-interpolation/inherited/root_fusion/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `97-twelve-interpolation/inherited/root_fusion/coefficients/`: `BINDING.json`
+- `97-twelve-interpolation/inherited/root_fusion/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `97-twelve-interpolation/inherited/root_fusion/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `97-twelve-interpolation/inherited/root_fusion/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `97-twelve-interpolation/inherited/root_fusion/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `97-twelve-interpolation/inherited/root_fusion/provenance/upstream_ordinary/`: `SOURCES.json`
+- `97-twelve-interpolation/inherited/root_fusion/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `97-twelve-interpolation/inherited/root_fusion/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `97-twelve-interpolation/proofs/`: `INDEPENDENT_REVIEW_HILBERT.md`, `INDEPENDENT_TWELVE_AUDIT.md`, `INTERPOLATION12.md`, `TRACE13_PROOF.md`
+- `97-twelve-interpolation/provenance/`: `INHERITED_FILES.json`, `REVIEWED_INCOMING.json`
+- `97-twelve-interpolation/provenance/signed_guards/`: `JOINT_GUARDS_PROOF.md`, `LICENSE`, `NOTICE.md`, `SOURCE.json`
+- `97-twelve-interpolation/report/`: `coefficient_recipe.tex`, `report.pdf`, `report.tex`, `trace13.tex`
+- `97-twelve-interpolation/verification/`: `BUILD_INFO.json`, `PDF_QA.json`, `RELEASE_CHECKS.json`, `RELEASE_CHECKS_OPTIMIZED.json`, `TRACE13_CHECKS.json`, `TRACE13_CHECKS_OPTIMIZED.json`, `TWELVE16000_CHECKS.json`, `TWELVE16000_OPTIMIZED_CHECKS.json`, `TWELVE4832_CHECKS.json`, `TWELVE4832_OPTIMIZED_CHECKS.json`
+- `97-twelve-interpolation/verification/trace_build/`: `TRACE13_CHECKS.json`, `trace13_degree1072.json`
+- `98-congruence-certificates/`: `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `RESULTS.json`, `verify.py`
+- `98-congruence-certificates/direct/`: `LICENSE`, `ORIENTED_AUDIT.normal.json`, `ORIENTED_AUDIT.optimized.json`, `ORIENTED_POWER_PROOF.md`, `PROVENANCE.json`, `README.md`, `audit_oriented.py`, `build_equation.py`, `build_integer_companion.py`, `direct_calculus.py`, `direct_section.tex`, `integer_companion.json`, `verify.py`, `wire_eliminated_source.json`
+- `98-congruence-certificates/direct/eq/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`
+- `98-congruence-certificates/direct/independent_review/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `CHECKS_SMALL_HEIGHT.json`, `CHECKS_SMALL_HEIGHT_OPTIMIZED.json`, `REVIEW.md`, `check_export.py`
+- `98-congruence-certificates/direct/small_height/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`
+- `98-congruence-certificates/direct/upstream/`: `Bridge.lean`, `CALIBRATION_PINS.json`, `LICENSE-mathlib`, `PARENT_BUILD.json`, `PellMatiyasevic.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `build_equation.py`, `direct_calculus.py`, `direct_flow_large_carrier_README.md`, `parent_calculus.tex`, `parent_crt.tex`, `parent_primitives.tex`
+- `98-congruence-certificates/integer/`: `FAMILY.md`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build.py`, `dag_support.py`, `five_square_norm.py`, `verification_normal.txt`, `verification_optimized.txt`, `verify.py`
+- `98-congruence-certificates/integer/coefficients/`: `BINDING.json`
+- `98-congruence-certificates/integer/equations/`: `integer13_crt_valuation_degree1072.json`, `integer14_crt_valuation_degree414.json`, `integer14_crt_valuation_degree558.json`, `integer15_crt_valuation_degree218.json`, `integer16_crt_valuation_degree124.json`
+- `98-congruence-certificates/integer/independent_review/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `REVIEW.md`, `check.py`
+- `98-congruence-certificates/integer/upstream/fixed_prime/`: `LICENSE`, `NOTICE.md`
+- `98-congruence-certificates/integer/upstream/fixed_prime/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `98-congruence-certificates/integer/upstream/fixed_prime/proofs/`: `INDEPENDENT_REVIEW13.md`, `INDEPENDENT_REVIEW15.md`, `NORMALIZATION.md`, `PENTAGONAL_GUARD.md`
+- `98-congruence-certificates/integer/upstream/fixed_prime/report/`: `report.tex`
+- `98-congruence-certificates/integer/upstream/fixed_prime/upstream/calibration/`: `NOTICE.source63.md`, `README.md`
+- `98-congruence-certificates/integer/upstream/fixed_prime/upstream/inherited/determinant71/`: `NOTICE.md`
+- `98-congruence-certificates/integer/upstream/fixed_prime/upstream/transport/`: `PROOF.md`
+- `98-congruence-certificates/integer/upstream/root_fusion/`: `LICENSE`
+- `98-congruence-certificates/integer/upstream/root_fusion/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `98-congruence-certificates/integer/upstream/root_fusion/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `98-congruence-certificates/integer/upstream/root_fusion/provenance/upstream_ordinary/`: `SOURCES.json`
+- `98-congruence-certificates/integer/upstream/root_fusion/report/`: `crt1088.tex`, `report.tex`
+- `98-congruence-certificates/positive/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `PROOF.md`, `check.py`, `p12_free_J.json`, `p13_free_J.json`
+- `98-congruence-certificates/positive/coefficients/`: `BINDING.json`, `README.md`, `SHA256.json`
+- `98-congruence-certificates/positive/coefficients/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `98-congruence-certificates/positive/coefficients/recipe/`: `NOTICE-upstream.md`
+- `98-congruence-certificates/positive/parents/`: `ORDINARY13.md`, `README.md`, `p12_ordinary_degree70.json`, `p13_ordinary_degree51.json`
+- `98-congruence-certificates/provenance/`: `README.md`, `SOURCES.json`
+- `98-congruence-certificates/provenance/comparison16/`: `README.md`
+- `98-congruence-certificates/provenance/comparison16/integer/`: `PROOF.md`
+- `98-congruence-certificates/provenance/comparison16/integer/circuits/`: `integer16_degree184.json`, `integer16_degree192.json`
+- `98-congruence-certificates/report/`: `budget.tex`, `degree_details.tex`, `direct.tex`, `free_j.tex`, `integer.tex`, `package.tex`, `report.pdf`, `report.tex`, `results.tex`, `verification.tex`
+- `98-congruence-certificates/verification/`: `PDF_QA.json`, `README.md`, `REPLAY_NORMAL.json`, `REPLAY_OPTIMIZED.json`
+- `99-shared-pell608/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `README.md`, `integer_indices.tex`, `natural_rows.tex`, `report.pdf`, `report.tex`, `shared_arithmetic_sections.tex`, `verify_all.py`
+- `99-shared-pell608/artifacts/natural/`: `BUILD.json`, `before_terminal.json`, `elimination_trace.json`, `envelope_certificate.json`, `equation.json`, `expanded_polynomial.json`, `raw_builder.json`
+- `99-shared-pell608/artifacts/natural/integer/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `guard_certificate.json`
+- `99-shared-pell608/provenance/`: `PROPOSAL_REVIEW_LATEST.md`, `SIZE_REDUCTION.md`, `SOURCE_PINS.json`, `STATUS.md`
+- `99-shared-pell608/provenance/inherited/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`, `original_direct_calculus.py`, `parent_BUILD.json`
+- `99-shared-pell608/provenance/mathlib/`: `LICENSE`, `PellMatiyasevic.lean`
+- `99-shared-pell608/reviews/`: `FINAL_SEMANTIC_AUDIT.json`, `FINAL_SEMANTIC_AUDIT.optimized.json`, `FINAL_SEMANTIC_REVIEW.md`, `RELEASE_VALIDATION.json`, `VERIFY.normal.json`, `VERIFY.optimized.json`, `alternative_math_factorial_review.md`, `alternative_math_new_lemma_results.json`, `alternative_math_power_fixture_results.json`, `alternative_math_power_review.md`, `alternative_math_shared_pell_review.md`, `alternative_math_shared_radix_review.md`, `final1685_integer.normal.json`, `final1685_integer.optimized.json`, `final608_affine.normal.json`, `final608_affine.optimized.json`, `final608_terminal.normal.json`, `final608_terminal.optimized.json`, `independent_final_audit.txt`, `terminal_elimination_proof.txt`
+- `99-shared-pell608/src/`: `base_builder.py`, `build.py`, `compress.py`, `direct_calculus.py`, `integer_export.py`, `power_builder.py`, `shared_power_builder.py`, `wire_eliminated_source.json`
+- `99-shared-pell608/tests/`: `alternative_math_new_lemma_checks.py`, `alternative_math_power_fixtures.py`, `audit_final_semantics.py`, `audit_reductions.py`, `verify_affine_independent.py`, `verify_integer_independent.py`, `verify_printed_equation.py`, `verify_terminal_independent.py`
+- `100-quartics407-888/`: `LICENSE`, `NOTICE.md`, `README.md`, `report.pdf`, `report.tex`, `reproduce.py`, `verify.py`
+- `100-quartics407-888/appendix/`: `integer888_rows.tex`, `integer917_rows.tex`, `natural407_rows.tex`
+- `100-quartics407-888/code/`: `additive_index.py`, `audit_new.py`, `build.py`, `build_fused.py`, `build_projected.py`, `render_residuals.py`, `reuse_radix.py`, `source_identity.py`
+- `100-quartics407-888/code/integer_pipeline/`: `audit_common_radix.py`, `build_integer.py`, `independent_polynomial.py`, `sign_inference.py`, `terminal_elimination.py`, `verify_integer.py`, `verify_projection.py`
+- `100-quartics407-888/code/psd_contract/`: `check.py`, `contract.py`, `negative_controls.py`
+- `100-quartics407-888/equations/integer888/`: `BUILD.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT_OPTIMIZED.json`, `SOURCE_PINS.json`, `domain_conversion.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source_natural.json`
+- `100-quartics407-888/equations/integer917/`: `BUILD.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT_OPTIMIZED.json`, `SOURCE_PINS.json`, `domain_conversion.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source_natural.json`
+- `100-quartics407-888/equations/natural407/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `100-quartics407-888/equations/natural410/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `100-quartics407-888/equations/source690/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `gate_ledger.json`, `index_derivations.json`, `label_majorant.json`, `local_majorant.json`, `macro_inventory.json`, `radix_certificate.json`
+- `100-quartics407-888/proofs/`: `integer_sign_inference.md`, `nonnegative_contraction.md`, `radix_and_pell.md`
+- `100-quartics407-888/provenance/`: `COMPARISON.json`, `INDEPENDENT_PROJECTED_AUDIT.json`, `UPSTREAM_SHA256.json`, `incoming_index.json`, `prior_projection_proof.md`, `projected_raw_audit_input.json`
+- `100-quartics407-888/receipts/`: `document_check.json`, `mathematical_review.md`, `verification_normal.json`, `verification_optimized.json`
+- `100-quartics407-888/upstream/`: `LICENSE`, `NOTICE.md`, `PROVENANCE.json`
+- `100-quartics407-888/upstream/code/`: `affine_contract.py`, `audit_factored_source.py`, `audit_shared_power.py`, `audit_shared_product.py`, `direct_source.py`, `direct_source_factored.py`, `make_integer.py`, `release.py`, `shared_index_power.py`, `shared_power.py`, `shared_product_power.py`, `synchronized_builder.py`, `verify_synchronized.py`
+- `100-quartics407-888/upstream/proofs/`: `contraction.md`, `factored_source.md`, `final_math_review.md`, `independent_mathematical_review.md`, `independent_structure_review.md`, `integer_guards.md`, `shared_indices.md`, `shared_powers.md`
+- `100-quartics407-888/upstream/provenance/upstream/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `audit_calculus.py`, `audit_source.py`, `build_equation.py`, `calculus.tex`, `crt.tex`, `direct_calculus.py`, `primitives.tex`, `wire_eliminated_source.json`
+- `100-quartics407-888/upstream/provenance/upstream/calibration/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `101-constructive-reductions/`: `ARTIFACT_INDEX.json`, `INTEGRATION.md`, `LICENSE`, `MANIFEST.sha256`, `README.md`, `SCHEMAS.md`, `verify_all.py`
+- `101-constructive-reductions/direct/`: `AUDIT.json`, `DOMAIN_CERTIFICATE.json`, `DOMAIN_CHECK.json`, `DOMAIN_CHECK_OPTIMIZED.json`, `DOMAIN_NEGATIVE_CONTROLS.json`, `DOMAIN_NEGATIVE_CONTROLS_OPTIMIZED.json`, `PROOF_PROJECTED.md`, `RAW_FRAME_INTERFACE.json`, `README.md`, `SOURCE_PINS.json`, `domain_guard_seeds.json`, `report_section.tex`
+- `101-constructive-reductions/direct/code/`: `affine_contract.py`, `audit_projected.py`, `build_domain_certificate.py`, `build_integer.py`, `build_projected.py`, `check_domain_certificate.py`, `direct_source.py`, `direct_source_factored.py`, `domain_negative_controls.py`, `projected_source.py`, `shared_power.py`, `shared_product_power.py`, `sign_rule_producer.py`, `signed_contract.py`, `synchronized_builder.py`, `verify_integer.py`, `verify_synchronized.py`
+- `101-constructive-reductions/direct/equations_v3/cap64/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `101-constructive-reductions/direct/equations_v3/source/`: `equation.json`, `expanded_polynomial.json`, `label_bound_certificate.json`, `macro_inventory.json`, `majorant_certificate.json`
+- `101-constructive-reductions/direct/integer977/`: `METRICS.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `101-constructive-reductions/direct/provenance/`: `contraction.md`, `final_math_review.md`, `shared_indices.md`, `shared_powers.md`
+- `101-constructive-reductions/direct/provenance/upstream/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `audit_calculus.py`, `audit_source.py`, `build_equation.py`, `calculus.tex`, `crt.tex`, `direct_calculus.py`, `primitives.tex`, `wire_eliminated_source.json`
+- `101-constructive-reductions/direct/provenance/upstream/calibration/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `101-constructive-reductions/direct/reviews/`: `integer-agent-review.md`, `integer977-review.md`
+- `101-constructive-reductions/integer14/`: `AUDIT.json`, `AUDIT.optimized.json`, `LICENSE`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `crt14_degree540.json`, `crt14_degree568.json`, `report_section.tex`, `section.tex`, `verify.py`
+- `101-constructive-reductions/integer14/upstream/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `101-constructive-reductions/integer14/upstream/coefficients/`: `BINDING.json`
+- `101-constructive-reductions/integer14/upstream/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `101-constructive-reductions/integer14/upstream/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `101-constructive-reductions/integer14/upstream/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `101-constructive-reductions/integer14/upstream/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `101-constructive-reductions/integer14/upstream/provenance/upstream_ordinary/`: `SOURCES.json`
+- `101-constructive-reductions/integer14/upstream/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `101-constructive-reductions/integer14/upstream/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `101-constructive-reductions/nine/`: `COEFFICIENT_RECONSTRUCTION.json`, `EXACT_AUDIT.json`, `LICENSE`, `METRICS.json`, `NORMALIZATION_CHECKS.json`, `NOTICE.md`, `README.md`, `REBUILD_CHECK.json`, `SOURCE_PINS.json`, `VERIFICATION.json`, `build.py`, `exact_audit.py`, `exact_audit.stdout.txt`, `exact_audit_optimized.stdout.txt`, `normalization_check.py`, `poly.py`, `report_section.tex`, `verify.py`, `verify_coefficients.py`
+- `101-constructive-reductions/nine/certificates/`: `HORNER_CHOICES.json`
+- `101-constructive-reductions/nine/compact/`: `SOURCE_PINS.json`
+- `101-constructive-reductions/nine/compact/coefficients/`: `COEFFICIENT_BINDING.json`, `COMPACT54_ARITHMETIC.md`, `COMPACT54_SEED.txt`
+- `101-constructive-reductions/nine/compact/coefficients/compact_tuple/`: `COEFFICIENT_BINDING.json`
+- `101-constructive-reductions/nine/compact/data/`: `code.json`, `kernels.json`
+- `101-constructive-reductions/nine/compact/provenance/`: `GAP_CIRCUIT_RECIPE66.md`, `GAP_NINE_POLYNOMIAL66.md`, `LICENSE.59`, `NATIVE_CLAUSE54.md`, `NATIVE_CONVOLUTION54.md`, `NATIVE_SOURCE_WINDOW.md`, `NOTICE.md`, `NOTICE.tuple.md`, `OBJECT_ZFC.md`, `nine-NOTICE.md`, `nine-upstream-INHERITED_LICENSE`, `nine-upstream-INHERITED_NOTICE.md`, `parent-CONFIG.json`, `parent-HEIGHT_CERTIFICATE.json`, `parent-PROVENANCE.json`, `parent-README.md`, `verify_one_page_tuple54.py`
+- `101-constructive-reductions/nine/compact/provenance/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-partial-selector.md`, `NOTICE_K215.md`
+- `101-constructive-reductions/nine/data/`: `code.json`, `correction.json`, `kernels.json`, `saturated_P.json`, `saturated_corrected_P.json`, `saturated_corrected_certificate.json`, `saturated_defect.json`
+- `101-constructive-reductions/nine/equations/`: `boundary_complete.json`, `boundary_simple.json`, `compact_simple.json`
+- `101-constructive-reductions/nine/fixed/boundary/`: `BINDING.json`
+- `101-constructive-reductions/nine/fixed/compact/`: `BINDING.json`, `c000.bin.gz`, `c001.bin.gz`, `c002.bin.gz`, `c003.bin.gz`, `c004.bin.gz`, `c005.bin.gz`, `c007.bin.gz`, `threshold_scale.bin.gz`
+- `101-constructive-reductions/nine/inherited/`: `FULL_NINE_SOUNDNESS.md`, `FULL_RADICAL_H1868_AUDIT.md`, `SATURATED_POSITIVE_PELL_AUDIT.md`, `h1868_code.json`, `h1868_kernels.json`
+- `101-constructive-reductions/nine/licenses/`: `LICENSE-radical-parent`, `LICENSE.Source65`, `LICENSE.Source71`, `NOTICE-radical-parent.md`
+- `101-constructive-reductions/nine/native_original31/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `101-constructive-reductions/nine/reviews/`: `integer-agent-review.md`
+- `101-constructive-reductions/provenance/`: `COMPARISON_SNAPSHOT.json`
+- `101-constructive-reductions/report/`: `ConZFC_Constructive_Reductions.pdf`, `ConZFC_Constructive_Reductions.tex`
+- `101-constructive-reductions/verification/`: `MANUSCRIPT_REVIEW.md`, `PDF_QA.json`, `ROOT_NORMAL.json`, `ROOT_OPTIMIZED.json`, `direct_integer_normal.json`
+- `102-direct-quartics3776/`: `LICENSE`, `MEASUREMENTS.json`, `README.md`, `verify.py`
+- `102-direct-quartics3776/elimination/`: `build.py`, `check.py`
+- `102-direct-quartics3776/equations/fewer_variables/`: `BUILD.json`, `INDEPENDENT_REPLAY.json`, `INDEPENDENT_REPLAY_OPTIMIZED.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.txt`
+- `102-direct-quartics3776/equations/main/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `residuals.txt`
+- `102-direct-quartics3776/guard_minimization/`: `PROOF.md`, `build.py`, `check.py`, `corruption_controls.py`, `explore.py`, `preliminary.json`, `retained_preliminary.json`, `retained_seed_names.json`, `seed_names.json`
+- `102-direct-quartics3776/guard_minimization/candidate/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `CORRUPTION_CONTROLS.json`, `equation.json`, `expanded_polynomial.json`, `guard_certificate.json`
+- `102-direct-quartics3776/guard_minimization/retained_candidate/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `equation.json`, `expanded_polynomial.json`, `guard_certificate.json`
+- `102-direct-quartics3776/proofs/`: `INDEPENDENT_SEMANTIC_REVIEW.md`, `PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md`, `PROPOSAL_REVIEW_LATEST.md`, `PROPOSAL_REVIEW_SHARED_CERTIFICATES_DIRECT.md`
+- `102-direct-quartics3776/report/`: `Makefile`, `metrics.tex`, `report.pdf`, `report.tex`
+- `102-direct-quartics3776/signed_quotients/`: `PROOF_SIGNED.md`, `build.py`, `check.py`, `verify_sources.py`
+- `102-direct-quartics3776/signed_quotients/candidate/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `equation.json`, `expanded_polynomial.json`, `transformation_certificate.json`
+- `102-direct-quartics3776/signed_quotients/retained_candidate/`: `BUILD.json`, `CHECK.json`, `CHECK_OPTIMIZED.json`, `equation.json`, `expanded_polynomial.json`, `transformation_certificate.json`
+- `102-direct-quartics3776/signed_quotients/source/`: `CHECK_PARENT.json`, `LICENSE.upstream`, `POWER_AUDIT.json`, `PROOF.md`, `SOURCE_PINS.json`, `SOURCE_REPLAY.json`, `SOURCE_REPLAY_OPTIMIZED.json`, `natural_equation.json`
+- `102-direct-quartics3776/signed_quotients/source/affine/`: `BUILD.json`
+- `102-direct-quartics3776/signed_quotients/source/retained/`: `equation.json`
+- `102-direct-quartics3776/signed_quotients/source/upstream/`: `CALCULUS_AUDIT.json`, `audit_calculus.py`, `audit_power_graph.py`, `build_equation.py`, `check_equation.py`, `direct_calculus.py`, `wire_eliminated_source.json`
+- `102-direct-quartics3776/source_calibration/`: `BoundedForallRepresentation.lean`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `RemainderRepresentation.lean`, `SOURCE_URLS.json`
+- `102-direct-quartics3776/verification/`: `NORMAL.json`, `OPTIMIZED.json`
+- `103-shared-pell1873/`: `FORMAT.md`, `LICENSE.upstream`, `NOTICE.md`, `README.md`, `build.py`, `check_refined_batch.py`, `polynomial.py`, `positive_arithmetic.py`, `signed_backend.py`, `verify_batch.py`, `verify_polynomial.py`, `verify_recurrence.py`, `verify_release.py`, `verify_signed_index.py`, `verify_source.py`, `verify_source_negative.py`
+- `103-shared-pell1873/checks/`: `PDF_LAYOUT_CHECK.json`, `REFINED_BATCH_FINITE_CHECKS.json`, `RELEASE_BATCH_NORMAL.json`, `RELEASE_BATCH_OPTIMIZED.json`, `RELEASE_POLYNOMIAL_PRIMARY_NORMAL.json`, `RELEASE_POLYNOMIAL_PRIMARY_OPTIMIZED.json`, `RELEASE_POLYNOMIAL_SMALL_HEIGHT_NORMAL.json`, `RELEASE_POLYNOMIAL_SMALL_HEIGHT_OPTIMIZED.json`, `RELEASE_RECURRENCE_PRIMARY_NORMAL.json`, `RELEASE_RECURRENCE_PRIMARY_OPTIMIZED.json`, `RELEASE_RECURRENCE_SMALL_HEIGHT_NORMAL.json`, `RELEASE_RECURRENCE_SMALL_HEIGHT_OPTIMIZED.json`, `RELEASE_SIGNED_INDEX_NORMAL.json`, `RELEASE_SIGNED_INDEX_OPTIMIZED.json`, `RELEASE_SOURCE_NEGATIVE_NORMAL.json`, `RELEASE_SOURCE_NEGATIVE_OPTIMIZED.json`, `RELEASE_SOURCE_NORMAL.json`, `RELEASE_SOURCE_OPTIMIZED.json`, `RELEASE_VERIFY.json`, `SOURCE_NEGATIVE_CONTROLS.json`
+- `103-shared-pell1873/equations/`: `circuit.json`, `local_row.json`, `metrics.json`, `polynomial.json`, `residuals.json`, `semantic_certificate.json`
+- `103-shared-pell1873/equations_small_height/`: `circuit.json`, `local_row.json`, `metrics.json`, `polynomial.json`, `residuals.json`, `semantic_certificate.json`
+- `103-shared-pell1873/proofs/`: `BATCHED_PELL_THEOREM.md`, `FINAL_SOURCE_REPORT_REVIEW.md`, `INDEPENDENT_BATCH_REVIEW.md`, `RECURRENCE_REDUCTION_PROOF.md`, `SIGNED_INDEX_INDEPENDENT_REVIEW.md`, `SIGNED_INDEX_THEOREM.md`, `SOURCE_AND_DOMAIN_AUDIT.md`, `SOURCE_PROJECTION.md`, `UPSTREAM_PRIME_LIFT.md`
+- `103-shared-pell1873/provenance/`: `ARITHMETIC_SOURCE_PINS.json`, `LICENSE.mathlib`, `LOGICAL_SOURCE_PINS.json`, `PellMatiyasevic.lean`, `SOURCE_METADATA.json`
+- `103-shared-pell1873/provenance/arithmetic/`: `ArithmeticRepresentation.lean`, `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `DivisionRepresentation.lean`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `QuarticCompiler.lean`, `RemainderRepresentation.lean`, `Representation.lean`
+- `103-shared-pell1873/report/`: `Batched_Pell_1873.pdf`, `Batched_Pell_1873.tex`
+- `103-shared-pell1873/source/`: `build_direct.py`
+- `104-valuation-signed/`: `LICENSE`, `MANIFEST.json`, `METRICS.json`, `NOTICE.md`, `README.md`, `SOURCE_PINS.json`, `verify.py`
+- `104-valuation-signed/direct/`: `BUILD.json`, `INDEPENDENT_CHECK.json`, `INDEPENDENT_CHECK_OPTIMIZED.json`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `LICENSE`, `NOTICE.md`, `PROJECTION_CHECK.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `UPSTREAM_REPLAY_OPTIMIZED.json`, `audit_common_radix.py`, `build.py`, `projection_sweep.json`, `section.tex`, `terminal_elimination.py`, `verify.py`, `verify_projection.py`
+- `104-valuation-signed/direct/input/`: `domain_conversion_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `104-valuation-signed/direct/output/`: `equation.json`, `expanded_polynomial.json`, `terminal_elimination_certificate.json`
+- `104-valuation-signed/direct/source/`: `parent_natural.json`
+- `104-valuation-signed/direct/upstream/synchronized/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `report.pdf`, `report.tex`, `verify.py`
+- `104-valuation-signed/direct/upstream/synchronized/code/`: `affine_contract.py`, `audit_factored_source.py`, `audit_shared_power.py`, `audit_shared_product.py`, `direct_source.py`, `direct_source_factored.py`, `make_integer.py`, `release.py`, `shared_index_power.py`, `shared_power.py`, `shared_product_power.py`, `synchronized_builder.py`, `verify_synchronized.py`
+- `104-valuation-signed/direct/upstream/synchronized/equations/`: `CENSUS.json`
+- `104-valuation-signed/direct/upstream/synchronized/equations/integer2088/`: `VERIFICATION.json`, `conversion_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `104-valuation-signed/direct/upstream/synchronized/equations/natural522/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `104-valuation-signed/direct/upstream/synchronized/equations/natural529/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `104-valuation-signed/direct/upstream/synchronized/equations/natural596/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `104-valuation-signed/direct/upstream/synchronized/equations/source895/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `macro_inventory.json`, `majorant_certificate.json`
+- `104-valuation-signed/direct/upstream/synchronized/proofs/`: `contraction.md`, `factored_source.md`, `final_math_review.md`, `independent_mathematical_review.md`, `independent_structure_review.md`, `integer_guards.md`, `shared_indices.md`, `shared_powers.md`
+- `104-valuation-signed/direct/upstream/synchronized/provenance/repository/`: `INCOMING_INDEX.json`, `PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md`, `PROPOSAL_REVIEW_LATEST.md`, `README.md`
+- `104-valuation-signed/direct/upstream/synchronized/provenance/upstream/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `audit_calculus.py`, `audit_source.py`, `build_equation.py`, `calculus.tex`, `crt.tex`, `direct_calculus.py`, `primitives.tex`, `wire_eliminated_source.json`
+- `104-valuation-signed/direct/upstream/synchronized/provenance/upstream/calibration/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `104-valuation-signed/direct/upstream/synchronized/receipts/`: `pdf_qa.json`, `verification_normal.json`, `verification_optimized.json`
+- `104-valuation-signed/integer12/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `EXACT_NORM.json`, `EXACT_NORM_OPTIMIZED.json`, `LICENSE.UPSTREAM`, `README.md`, `build_prime12.py`, `check_norm_exact.py`, `check_prime12.py`, `circuit.py`, `norm5.py`
+- `104-valuation-signed/integer12/baselines/`: `monotone_intersective12_degree16000.json`, `monotone_intersective12_degree4832.json`
+- `104-valuation-signed/integer12/equations/`: `prime_separated12_degree2400.json`, `prime_separated12_degree2912.json`
+- `104-valuation-signed/integer12/inherited/root_fusion/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `104-valuation-signed/integer12/inherited/root_fusion/coefficients/`: `BINDING.json`
+- `104-valuation-signed/integer12/inherited/root_fusion/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `104-valuation-signed/integer12/inherited/root_fusion/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `104-valuation-signed/integer12/inherited/root_fusion/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `104-valuation-signed/integer12/inherited/root_fusion/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `104-valuation-signed/integer12/inherited/root_fusion/provenance/upstream_ordinary/`: `SOURCES.json`
+- `104-valuation-signed/integer12/inherited/root_fusion/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `104-valuation-signed/integer12/inherited/root_fusion/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `104-valuation-signed/integer12/proofs/`: `INDEPENDENT_REVIEW_HILBERT.md`, `INDEPENDENT_TWELVE_AUDIT.md`, `INTERPOLATION12.md`, `PRIME_TWELVE.md`, `TRACE13_PROOF.md`
+- `104-valuation-signed/integer12/provenance/`: `INHERITED_FILES.json`, `REVIEWED_INCOMING.json`
+- `104-valuation-signed/integer12/provenance/signed_guards/`: `JOINT_GUARDS_PROOF.md`, `LICENSE`, `NOTICE.md`, `SOURCE.json`
+- `104-valuation-signed/report/`: `closing.tex`, `coefficient_recipe.tex`, `direct.tex`, `direct_metrics.tex`, `report.pdf`, `report.tex`, `soundness.tex`
+- `104-valuation-signed/reviews/`: `ARTICLE_REVIEW.json`, `ARTICLE_REVIEW.md`, `DIRECT_QUARTIC_INDEPENDENT_REVIEW.md`, `PRIME_TWELVE_INDEPENDENT_REVIEW.md`
+- `104-valuation-signed/supplemental/ordinary98/`: `CHECKS.json`, `PARENT_PROOF.md`, `PROVENANCE.json`, `README.md`, `build.py`, `carrier.py`, `check.py`, `ordinary12_98.json`, `ordinary12_parent100.json`
+- `104-valuation-signed/supplemental/ordinary98/inherited/`: `PARENT_LITERAL.json`, `SHORT_UNIT_PRODUCTS.md`
+- `104-valuation-signed/supplemental/ordinary98/native/`: `NOTICE-upstream.md`
+- `104-valuation-signed/supplemental/ordinary98/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `104-valuation-signed/verification/`: `PDF_QA.json`, `RELEASE_CHECKS.json`, `RELEASE_CHECKS_OPTIMIZED.json`
+- `105-bootstrap-certificates/`: `BASELINES.md`, `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `README.md`, `RESULTS.json`, `build_report.sh`, `verify.py`
+- `105-bootstrap-certificates/checks/`: `BASELINE_AUDIT.json`, `INTEGER_REVIEW.md`, `INTEGER_REVIEW_ADDENDUM.json`, `PDF_QA.json`, `RELEASE_NORMAL.json`, `RELEASE_OPTIMIZED.json`, `REPORT_REVIEW.md`, `verify_baselines.py`
+- `105-bootstrap-certificates/checks/baselines/`: `eleven111.json`, `nine433.json`, `nine475.json`, `thirteen195.json`
+- `105-bootstrap-certificates/checks/baselines/integer1690/`: `equation.json`, `expanded_polynomial.json`
+- `105-bootstrap-certificates/checks/baselines/natural522/`: `equation.json`, `expanded_polynomial.json`
+- `105-bootstrap-certificates/direct/`: `AUDIT.json`, `LICENSE`, `MANIFEST.json`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `verify.py`
+- `105-bootstrap-certificates/direct/code/`: `affine_contract.py`, `audit_bootstrap.py`, `audit_factored_source.py`, `audit_shared_power.py`, `audit_shared_product.py`, `bootstrap_builder.py`, `bootstrap_factorial.py`, `bootstrap_frame_audit.py`, `direct_source.py`, `direct_source_factored.py`, `hybrid_source.py`, `make_integer.py`, `release.py`, `shared_index_power.py`, `shared_power.py`, `shared_product_power.py`, `shift_power.py`, `synchronized_builder.py`, `verify_synchronized.py`
+- `105-bootstrap-certificates/direct/equations/natural467/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `105-bootstrap-certificates/direct/equations/natural468/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `105-bootstrap-certificates/direct/equations/natural469/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `105-bootstrap-certificates/direct/equations/parent781/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `factorial_radius_certificate.json`, `macro_inventory.json`, `majorant_certificate.json`
+- `105-bootstrap-certificates/direct/equations/parent782/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `factorial_radius_certificate.json`, `macro_inventory.json`, `majorant_certificate.json`
+- `105-bootstrap-certificates/direct/equations/parent783/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `factorial_radius_certificate.json`, `macro_inventory.json`, `majorant_certificate.json`
+- `105-bootstrap-certificates/direct/proofs/`: `NEW_RESULTS.md`
+- `105-bootstrap-certificates/direct/proofs/independent_review/`: `FACTORIAL_IMPLEMENTATION_PINS.json`, `FACTORIAL_RADIUS_CHECKS.json`, `FACTORIAL_RADIUS_CHECKS_OPTIMIZED.json`, `check_factorial_radius.py`, `factorial_bootstrap_audit.md`, `factorial_final_implementation_audit.md`, `factorial_square_radius.md`
+- `105-bootstrap-certificates/direct/proofs/inherited_synchronized/`: `contraction.md`, `factored_source.md`, `final_math_review.md`, `independent_mathematical_review.md`, `independent_structure_review.md`, `integer_guards.md`, `shared_indices.md`, `shared_powers.md`
+- `105-bootstrap-certificates/direct/provenance/repository/`: `INCOMING_INDEX.json`, `PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md`, `PROPOSAL_REVIEW_LATEST.md`, `README.md`
+- `105-bootstrap-certificates/direct/provenance/synchronized/`: `LICENSE`, `NOTICE.md`, `PROVENANCE.json`, `README.md`, `report.tex`
+- `105-bootstrap-certificates/direct/provenance/upstream/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `audit_calculus.py`, `audit_source.py`, `build_equation.py`, `calculus.tex`, `crt.tex`, `direct_calculus.py`, `primitives.tex`, `wire_eliminated_source.json`
+- `105-bootstrap-certificates/direct/provenance/upstream/calibration/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `105-bootstrap-certificates/integer/`: `PROOF.md`, `SOURCE_PINS.json`, `build_integer.py`, `projection.py`, `verify_integer.py`
+- `105-bootstrap-certificates/integer/equations/integer956/`: `equation.json`, `guarded.json`, `metrics.json`, `polynomial.json`, `projection.json`, `sign_certificate.json`
+- `105-bootstrap-certificates/integer/equations/integer989/`: `equation.json`, `guarded.json`, `metrics.json`, `polynomial.json`, `projection.json`, `sign_certificate.json`
+- `105-bootstrap-certificates/nine/`: `LICENSE`, `MANIFEST.json`, `PROOF.md`, `README.md`, `REVIEW.md`, `SOURCE_PINS.json`, `build.py`, `notes.tex`, `verify.py`
+- `105-bootstrap-certificates/nine/equations/`: `compact2082.json`, `h1868.json`
+- `105-bootstrap-certificates/nine/fixed/compact2082/`: `BINDING.json`, `base_scale.bin.gz`, `c_1f49e78f6521d0fe.bin.gz`, `c_33afcc0215e266df.bin.gz`, `c_50b8a3599b18e0a9.bin.gz`, `c_a749e84ec6806d92.bin.gz`, `c_bd70eebd66b6d548.bin.gz`, `c_d048f06bd476e521.bin.gz`, `c_e24dea94f889b837.bin.gz`, `c_e3dd773f14077424.bin.gz`, `c_f69b40d0743298dc.bin.gz`, `threshold_6480184.bin.gz`
+- `105-bootstrap-certificates/nine/fixed/h1868/`: `BINDING.json`
+- `105-bootstrap-certificates/nine/inherited/`: `compact54-proof.md`, `h1868-full-soundness.md`, `h1868-peer-review.md`, `h1868-source-proof.md`, `latest-comparison.md`, `saturated-peer-review.md`, `saturated-proof.md`, `saturation-audit.md`
+- `105-bootstrap-certificates/nine/licenses/`: `INHERITED_LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-radical-parent.md`
+- `105-bootstrap-certificates/nine/parents/`: `compact2082.json`, `h1868.json`
+- `105-bootstrap-certificates/nine/receipts/`: `normal.json`, `optimized.json`
+- `105-bootstrap-certificates/nine/source/h1868/`: `code.json`, `kernels.json`
+- `105-bootstrap-certificates/norms/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `LICENSE`, `MANIFEST.json`, `PORTABILITY.json`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build_and_check.py`, `normal-summary.txt`, `norms.py`, `optimized-summary.txt`
+- `105-bootstrap-certificates/norms/equations/`: `norm13_crt_degree1088_short_norm.json`, `norm13_crt_guard_degree1072_short_norm.json`, `norm13_degree1392_short_norm.json`, `norm13_degree1408_short_norm.json`, `positive11_degree211_short_norm.json`
+- `105-bootstrap-certificates/norms/proofs/`: `FACTORIAL_IMPLEMENTATION_PINS.json`, `FACTORIAL_RADIUS_CHECKS.json`, `FACTORIAL_RADIUS_CHECKS_OPTIMIZED.json`, `check_factorial_radius.py`, `factorial_bootstrap_audit.md`, `factorial_final_implementation_audit.md`, `factorial_square_radius.md`
+- `105-bootstrap-certificates/norms/upstream/`: `compact_norms.py`, `exact_polynomial.py`, `positive11_111.json`
+- `105-bootstrap-certificates/norms/upstream/positive11/`: `ADAPTIVE_PROOF.md`, `ALGEBRA_AUDIT.json`, `COEFFICIENT_REBUILD.json`, `DOUBLE_CENTER_CERTIFICATE.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_REVIEW.md`, `LICENSE.upstream`, `NOTICE.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `SOURCE_PINS.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `audit.py`, `build.py`, `p11_positive_degree211.json`, `rebuild_coefficients.py`, `section.tex`, `verify.py`
+- `105-bootstrap-certificates/norms/upstream/positive11/coefficients/`: `ACTIVE_BINDING.json`
+- `105-bootstrap-certificates/norms/upstream/positive11/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `105-bootstrap-certificates/norms/upstream/positive11/native_recipe/`: `NOTICE-upstream.md`
+- `105-bootstrap-certificates/norms/upstream/positive11/upstream/`: `CENTERED_PROOF.md`, `PROOF112.md`, `degree277_PROOF.md`, `p11_positive_degree257.json`
+- `105-bootstrap-certificates/norms/upstream/rootfusion/`: `LICENSE`, `README.md`, `REANCHORED_PROOF.md`, `build_equations.py`, `build_reanchored.py`, `build_reanchored_original.py`, `five_square_norm.py`, `norm13_crt_degree1088.json`, `norm13_crt_guard_degree1072.json`, `norm13_degree1392.json`, `norm13_degree1408.json`
+- `105-bootstrap-certificates/norms/upstream/rootfusion/coefficients/`: `BINDING.json`
+- `105-bootstrap-certificates/norms/upstream/rootfusion/report/`: `report.pdf`, `report.tex`
+- `105-bootstrap-certificates/report/`: `compiler_contracts.tex`, `main.pdf`, `main.tex`, `metrics.tex`
+- `106-compact-certificates-round13/`: `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24.pdf`, `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24.tex`, `MANIFEST.sha256.json`, `README.md`, `RELEASE_REPLAY.json`, `build_report.py`, `verify.py`
+- `106-compact-certificates-round13/architecture/`: `BENCHMARKS.json`, `CHECKS.json`, `HEIGHT_CERTIFICATE.json`, `LICENSE.Mathlib`, `PELL_SOURCE_PIN.json`, `PROOF.md`, `PellMatiyasevic_reference.lean`, `README.md`, `RELEASE_WHITELIST.json`, `build_architecture_final.py`, `check_architecture.py`, `section.tex`
+- `106-compact-certificates-round13/architecture/factorial_carrier/`: `BUILD.json`, `affine_restoration.json`, `circuit.json`, `equation.json`, `expanded_polynomial.json`
+- `106-compact-certificates-round13/architecture/rounded_negative/`: `BUILD.json`, `affine_restoration.json`, `circuit.json`, `equation.json`, `expanded_polynomial.json`
+- `106-compact-certificates-round13/architecture/rounded_positive/`: `BUILD.json`, `affine_restoration.json`, `circuit.json`, `equation.json`, `expanded_polynomial.json`
+- `106-compact-certificates-round13/direct/`: `CLEAN_REBUILD.json`, `NOTICE.md`, `README.md`, `RELEASE_SHA256.json`, `RELEASE_WHITELIST.json`, `SOURCE_PINS.json`, `build_compact.py`, `build_direct.py`, `build_forward.py`, `build_integer.py`, `build_parametric.py`, `build_projected.py`, `build_radius.py`, `build_sign_normalized.py`, `projected_section.tex`, `section.tex`, `verify_rebuild.py`
+- `106-compact-certificates-round13/direct/forward/`: `BUILD.json`, `affine_restoration.json`, `circuit.json`, `equation.json`, `expanded_polynomial.json`, `radius_certificate.json`
+- `106-compact-certificates-round13/direct/projected/`: `BUILD.json`, `affine_restoration.json`, `circuit.json`, `equation.json`, `expanded_polynomial.json`, `projection_certificate.json`
+- `106-compact-certificates-round13/direct/projected_guarded_integer/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `sign_certificate.json`
+- `106-compact-certificates-round13/direct/projected_integer/`: `BUILD.json`, `equation.json`, `expanded_polynomial.json`, `normalization_certificate.json`
+- `106-compact-certificates-round13/direct/projected_signed_template/`: `BUILD.json`, `affine_restoration.json`, `circuit.json`, `equation.json`, `expanded_polynomial.json`, `projection_certificate.json`
+- `106-compact-certificates-round13/direct/sources/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FIXED_POWER_BOUND_PROOF.md`, `FactorialRepresentation.lean`, `INCOMING_PROJECTION_PROOF.md`, `INCOMING_SIGN_NORMALIZATION_PROOF.md`, `LICENSE.Mathlib`, `LICENSE.ProveIt`, `LICENSE.incoming_signed`, `NOTICE.incoming_projection.md`, `NOTICE.shared_certificates.md`, `ORIENTATION_PROOF.md`, `PELL_SOURCE_PIN.json`, `PRIME_LIFT_PROOF.md`, `PellMatiyasevic_reference.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`, `wire_eliminated_source.json`
+- `106-compact-certificates-round13/direct_audit/`: `FACTORED_SOURCE_CHECK.json`, `FORWARD_EXACT_CHECK.json`, `FORWARD_EXACT_CHECK.optimized.json`, `RELEASE_PROJECTED_WHITELIST.json`, `REPLAY_PROJECTED_COMMANDS.json`, `check_exact.py`, `check_factoring.py`
+- `106-compact-certificates-round13/late_direct_audit/`: `DELTA_AUDIT.md`, `FINAL_AUDIT.json`, `FINAL_REPLAY.json`, `NEGATIVE_CONTROLS.json`, `NEGATIVE_CONTROLS.optimized.json`, `PROJECTED_CHECK.json`, `PROJECTED_CHECK.optimized.json`, `PROJECTED_INTEGER_CHECK.json`, `PROJECTED_INTEGER_CHECK.optimized.json`, `RELEASE_WHITELIST.json`, `REPLAY_COMMANDS.json`, `check_normalized.py`, `check_projected.py`, `negative_controls.py`, `run_release.py`
+- `106-compact-certificates-round13/late_review/`: `LATE_ADDENDUM.md`, `LATE_LITERAL_AUDIT.json`, `LATE_SIGN_AUDIT.json`, `LATE_SOURCE_PINS.json`
+- `106-compact-certificates-round13/norm/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `CLEAN_REPLAY.json`, `METRICS.json`, `NOTICE.md`, `PROOF.md`, `README.md`, `RELEASE_SHA256.json`, `RELEASE_WHITELIST.json`, `REPLAY_COMMANDS.json`, `SOURCE_PINS.json`, `build.py`, `check.py`, `independent_formula_short_guard.py`, `integer10_cubic.json`, `integer10_linear.json`, `integer10_polar.json`, `integer10_sixterm.json`, `section.tex`
+- `106-compact-certificates-round13/norm/data/`: `code.json`, `kernels.json`
+- `106-compact-certificates-round13/norm/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `106-compact-certificates-round13/norm/source/`: `BASELINE_PROOF.md`, `PROOF.md`, `README.md`, `ROOT_CERTIFICATES.json`, `SHORT_GUARD_PROOF.tex`, `cubic.json`, `integer10_polar.json`, `linear.json`, `sixterm.json`
+- `106-compact-certificates-round13/norm_audit/`: `AUDIT_REVIEW.md`, `BUILD_REPLAY.txt`, `CHECK_REPLAY_NORMAL.json`, `CHECK_REPLAY_OPTIMIZED.json`, `INDEPENDENT_CHECKS.json`, `INDEPENDENT_CHECKS_OPTIMIZED.json`, `ISOLATED_REPLAY.json`, `RELEASE_SHA256.json`, `RELEASE_WHITELIST.json`, `REPLAY_COMMANDS.json`, `independent_checks.py`
+- `106-compact-certificates-round13/radicals/`: `CENTER_IDENTITY.json`, `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `CLEAN_REPLAY.json`, `LICENSE`, `METRICS.json`, `PDF_QA.json`, `PROOF.md`, `README.md`, `RELEASE_SHA256.json`, `RELEASE_WHITELIST.json`, `SOURCE_PINS.json`, `build.py`, `check.py`, `check_center_identity.py`, `integer13_degree1072.json`, `integer14_degree378.json`, `integer15_degree172.json`, `integer15c_degree170.json`, `integer16_degree98.json`, `section.tex`, `standalone.pdf`, `standalone.tex`
+- `106-compact-certificates-round13/radicals/coefficients/`: `BINDING.json`
+- `106-compact-certificates-round13/radicals/inherited/`: `CALIBRATION_STATUS.md`, `CRT1088.tex`, `FORMALIZATION_BOUNDARY.md`, `NORMALIZED_NORMS_PROOF.md`, `PRIME_PACKAGE_SOURCE_PINS.json`, `PRIME_SEPARATION_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `SQUARED_MODULUS_PROOF.md`, `degree88_17.json`
+- `106-compact-certificates-round13/radicals/inherited/pell_congruences/`: `LICENSE`, `NOTICE.md`, `RANK_REGISTER_REVIEW.md`
+- `106-compact-certificates-round13/radicals/inherited/pell_congruences/inherited/determinant71/`: `NOTICE.md`
+- `106-compact-certificates-round13/radicals/inherited/pell_congruences/report/`: `nine_section.tex`, `report.tex`
+- `106-compact-certificates-round13/radicals/inherited/pell_congruences/transport/`: `PROOF.md`, `degree88_17.json`
+- `106-compact-certificates-round13/radicals/inherited/pell_congruences/transport/parents/`: `crt_degree44_20.json`
+- `106-compact-certificates-round13/radicals/inherited/upstream_ordinary/`: `SOURCES.json`
+- `106-compact-certificates-round13/radicals/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `106-compact-certificates-round13/radicals12/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `CLEAN_REPLAY.json`, `LICENSE`, `METRICS.json`, `PDF_QA.json`, `PROOF.md`, `README.md`, `RELEASE_SHA256.json`, `RELEASE_WHITELIST.json`, `SOURCE_PINS.json`, `build.py`, `check.py`, `circuit.py`, `integer12_degree2048.json`, `section.tex`, `standalone.pdf`, `standalone.tex`
+- `106-compact-certificates-round13/radicals12/coefficients/`: `BINDING.json`
+- `106-compact-certificates-round13/radicals12/inherited/`: `INDEPENDENT_REVIEW_HILBERT.md`, `INDEPENDENT_TWELVE_AUDIT.md`, `INHERITED_FILES.json`, `INTERPOLATION12.md`, `LICENSE`, `NOTICE.md`, `REVIEWED_INCOMING.json`, `TRACE13_PROOF.md`
+- `106-compact-certificates-round13/radicals12/inherited/root_fusion_provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `106-compact-certificates-round13/radicals12/inherited/root_fusion_provenance/upstream_ordinary/`: `SOURCES.json`
+- `106-compact-certificates-round13/radicals12/inherited/signed_guards/`: `JOINT_GUARDS_PROOF.md`, `LICENSE`, `NOTICE.md`, `SOURCE.json`
+- `106-compact-certificates-round13/radicals12/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `106-compact-certificates-round13/radicals12_audit/`: `AUDIT.normal.json`, `AUDIT.optimized.json`, `AUDIT_REVIEW.md`, `README.md`, `check_twelve.py`
+- `106-compact-certificates-round13/radicals_audit/`: `AUDIT.normal.json`, `AUDIT.optimized.json`, `AUDIT_REVIEW.md`, `SOURCE_BINDINGS.json`, `check_radicals.py`
+- `106-compact-certificates-round13/review/`: `C222_SOURCE_CHECK.json`, `C222_SOURCE_REVIEW.md`, `COMPARE.json`, `FETCH_LEDGER_UPDATED.json`, `INCOMING_ARCHIVE_PINS.json`, `LITERAL_COUNTS.json`, `ROUND13_REVIEW.md`
+- `107-dyadic-pell/`: `INTEGRATION.md`, `LICENSE`, `MANIFEST.sha256`, `README.md`, `VERIFICATION.json`, `verify.py`
+- `107-dyadic-pell/direct780/`: `INDEPENDENT_REVIEW.md`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `check.py`, `parameters.json`, `verify.py`
+- `107-dyadic-pell/direct780/certificates/`: `CHECK.json`, `INDEPENDENT_CHECK.json`, `VERIFY.json`, `VERIFY_OPTIMIZED.json`, `guard_changes.json`
+- `107-dyadic-pell/direct780/equations/`: `METRICS.json`, `domain_certificate.json`, `equation.json`, `expanded_polynomial.json`, `projection.json`, `signed_source.json`
+- `107-dyadic-pell/direct780/upstream/`: `LICENSE`, `NOTICE.md`, `README.md`
+- `107-dyadic-pell/direct780/upstream/proofs/`: `integer_sign_inference.md`, `nonnegative_contraction.md`, `radix_and_pell.md`, `shared_indices.md`, `shared_powers.md`
+- `107-dyadic-pell/direct780/upstream/source690/`: `equation.json`, `gate_ledger.json`, `index_derivations.json`, `interface.json`, `macro_inventory.json`
+- `107-dyadic-pell/direct780/vendor/`: `terminal_elimination.py`
+- `107-dyadic-pell/dyadic10/`: `CHECKS.json`, `INDEPENDENT_REVIEW.md`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `audit.py`, `build.py`, `circuit.py`, `p10_dyadic_degree706.json`
+- `107-dyadic-pell/dyadic10/upstream/`: `PROOF816.md`
+- `107-dyadic-pell/provenance/`: `LICENSE.ProveIt`, `SOURCES.json`
+- `107-dyadic-pell/report/`: `direct.tex`, `dyadic.tex`, `report.pdf`, `report.tex`
+- `108-pell-residues/`: `LICENSE`, `NOTICE.txt`, `README.txt`, `RELEASE.json`, `metrics.tex`, `report.pdf`, `report.tex`, `reproduce.py`, `verify.py`
+- `108-pell-residues/appendix/`: `integer_rows.tex`, `natural_rows.tex`, `small_rows.tex`
+- `108-pell-residues/certificates/`: `INTEGER_LEDGER.json`, `integer_domain_bounds.json`
+- `108-pell-residues/code/`: `build_modular.py`, `check_modular_structure.py`, `check_natural.py`, `check_signed_pell.py`, `modular_binomial.py`, `release_support.py`, `render_residuals.py`, `verify_modular_lemmas.py`
+- `108-pell-residues/code/integer_domain/`: `audit_common_radix.py`, `bound_search.py`, `build_mixed.py`, `check_mixed.py`, `independent_polynomial.py`, `sign_inference_original.py`, `terminal_elimination.py`, `verify_projection.py`
+- `108-pell-residues/equations/integer663/`: `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT_OPTIMIZED.json`, `METRICS.json`, `domain_certificate.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source.json`, `terminal_elimination_certificate.json`
+- `108-pell-residues/equations/integer687/`: `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT_OPTIMIZED.json`, `METRICS.json`, `domain_certificate.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source.json`, `terminal_elimination_certificate.json`
+- `108-pell-residues/equations/natural394/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `108-pell-residues/equations/natural395/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `108-pell-residues/equations/source655/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `label_majorant.json`, `local_majorant.json`, `macro_inventory.json`, `radix_certificate.json`, `raw_audit_input.json`
+- `108-pell-residues/inherited/integer_domain/`: `PRIOR_GUARD_MINIMIZATION.md`, `SIGNED_INDEX_THEOREM.md`, `SOURCE_PINS.json`
+- `108-pell-residues/proofs/`: `MIXED_DOMAIN_PROOF.md`, `independent_mathematical_review.txt`, `inherited_radix_and_pell.txt`, `modular_binomial.txt`
+- `108-pell-residues/provenance/`: `PRIOR_SEARCH.json`, `SNAPSHOT.json`
+- `108-pell-residues/receipts/`: `document_check.json`, `mathematical_review.json`, `modular_structure_normal.json`, `modular_structure_optimized.json`, `release_normal.json`, `release_optimized.json`, `reproduction.json`
+- `108-pell-residues/supplemental/integer12/`: `CENTERING_CHECK.json`, `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `EXACT_NORM.json`, `EXACT_NORM_OPTIMIZED.json`, `LICENSE.UPSTREAM`, `PARENT_LICENSE`, `PARENT_NOTICE.md`, `README.md`, `README_CENTERING.txt`, `build_centered12.py`, `build_prime12.py`, `check_centered12.py`, `check_norm_exact.py`, `check_prime12.py`, `circuit.py`, `norm5.py`
+- `108-pell-residues/supplemental/integer12/baselines/`: `monotone_intersective12_degree16000.json`, `monotone_intersective12_degree4832.json`
+- `108-pell-residues/supplemental/integer12/equations/`: `centered12_integral2400.json`, `centered12_rational2368.json`, `prime_separated12_degree2400.json`, `prime_separated12_degree2912.json`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/coefficients/`: `BINDING.json`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/`: `SOURCES.json`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `108-pell-residues/supplemental/integer12/inherited/root_fusion/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `108-pell-residues/supplemental/integer12/proofs/`: `CENTERING_PROOF.txt`, `INDEPENDENT_REVIEW_HILBERT.md`, `INDEPENDENT_TWELVE_AUDIT.md`, `INTERPOLATION12.md`, `PRIME_TWELVE.md`, `TRACE13_PROOF.md`
+- `108-pell-residues/supplemental/integer12/provenance/`: `CENTERING_PARENT_ARCHIVE.json`, `INHERITED_FILES.json`, `REVIEWED_INCOMING.json`
+- `108-pell-residues/supplemental/integer12/provenance/signed_guards/`: `JOINT_GUARDS_PROOF.md`, `LICENSE`, `NOTICE.md`, `SOURCE.json`
+- `109-valuations-centered/`: `MANIFEST.json`, `README.md`, `REVIEW.md`, `build_report.py`, `verify.py`
+- `109-valuations-centered/direct_quartic/`: `LICENSE`, `MANIFEST.sha256`, `NOTICE.md`, `PARENT_SHA256.json`, `PEER_REPLAY_CENTERED_FACTORIAL.json`, `PEER_REVIEW_CENTERED_FACTORIAL.md`, `PEER_REVIEW_POSITIVE718.md`, `PROVENANCE.json`, `README.md`, `centered_factorial_build.py`, `centered_factorial_proof.md`, `centered_verify.py`, `render_centered.py`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/`: `LICENSE`, `NOTICE.md`, `README.md`, `report.pdf`, `report.tex`, `reproduce.py`, `verify.py`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/appendix/`: `integer888_rows.tex`, `integer917_rows.tex`, `natural407_rows.tex`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/code/`: `additive_index.py`, `audit_new.py`, `build.py`, `build_fused.py`, `build_projected.py`, `render_residuals.py`, `reuse_radix.py`, `source_identity.py`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/code/integer_pipeline/`: `audit_common_radix.py`, `build_integer.py`, `independent_polynomial.py`, `sign_inference.py`, `terminal_elimination.py`, `verify_integer.py`, `verify_projection.py`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/code/psd_contract/`: `check.py`, `contract.py`, `negative_controls.py`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/equations/integer888/`: `BUILD.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT_OPTIMIZED.json`, `SOURCE_PINS.json`, `domain_conversion.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source_natural.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/equations/integer917/`: `BUILD.json`, `INDEPENDENT_AUDIT.json`, `INDEPENDENT_AUDIT_OPTIMIZED.json`, `SOURCE_PINS.json`, `domain_conversion.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source_natural.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/equations/natural407/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/equations/natural410/`: `VERIFICATION.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/equations/source690/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `gate_ledger.json`, `index_derivations.json`, `label_majorant.json`, `local_majorant.json`, `macro_inventory.json`, `radix_certificate.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/proofs/`: `integer_sign_inference.md`, `nonnegative_contraction.md`, `radix_and_pell.md`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/provenance/`: `COMPARISON.json`, `INDEPENDENT_PROJECTED_AUDIT.json`, `UPSTREAM_SHA256.json`, `incoming_index.json`, `prior_projection_proof.md`, `projected_raw_audit_input.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/receipts/`: `document_check.json`, `mathematical_review.md`, `verification_normal.json`, `verification_optimized.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/upstream/`: `LICENSE`, `NOTICE.md`, `PROVENANCE.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/upstream/code/`: `affine_contract.py`, `audit_factored_source.py`, `audit_shared_power.py`, `audit_shared_product.py`, `direct_source.py`, `direct_source_factored.py`, `make_integer.py`, `release.py`, `shared_index_power.py`, `shared_power.py`, `shared_product_power.py`, `synchronized_builder.py`, `verify_synchronized.py`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/upstream/proofs/`: `contraction.md`, `factored_source.md`, `final_math_review.md`, `independent_mathematical_review.md`, `independent_structure_review.md`, `integer_guards.md`, `shared_indices.md`, `shared_powers.md`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/`: `BUILD.json`, `LICENSE`, `NOTICE.md`, `README.md`, `audit_calculus.py`, `audit_source.py`, `build_equation.py`, `calculus.tex`, `crt.tex`, `direct_calculus.py`, `primitives.tex`, `wire_eliminated_source.json`
+- `109-valuations-centered/direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/`: `BoundedForallCertificate.lean`, `BoundedForallRepresentation.lean`, `Bridge.lean`, `CALIBRATION_PINS.json`, `COMMUTATIVE_CERTIFICATES.md`, `FactorialRepresentation.lean`, `PellRepresentation.lean`, `PowerRepresentation.lean`, `direct_flow_large_carrier_README.md`
+- `109-valuations-centered/direct_quartic/appendix/`: `integer853_rows.tex`, `natural395_rows.tex`
+- `109-valuations-centered/direct_quartic/centered_output/`: `METRICS.json`, `equation.json`, `expanded_polynomial.json`, `factorial_graphs.json`, `gate_ledger.json`, `index_derivations.json`, `label_majorant.json`, `local_majorant.json`, `macro_inventory.json`, `radix_certificate.json`, `raw_audit_input.json`
+- `109-valuations-centered/direct_quartic/centered_output/integer_cap16/`: `BUILD.json`, `SOURCE_PINS.json`, `domain_conversion.json`, `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`, `guarded.json`, `source_natural.json`
+- `109-valuations-centered/direct_quartic/centered_output/natural_cap16/`: `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `109-valuations-centered/direct_quartic/centered_output/natural_cap64/`: `elimination_certificate.json`, `equation.json`, `expanded_polynomial.json`
+- `109-valuations-centered/direct_quartic/receipts/`: `normal.json`, `optimized.json`, `parent_authentication.json`
+- `109-valuations-centered/integer12/`: `CHECKS.json`, `CHECKS_OPTIMIZED.json`, `MANIFEST.json`, `PEER_REPLAY.json`, `PEER_REVIEW.md`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `REVIEW_FRONTIER_CHECKS.json`, `build.py`, `dag.py`, `five_square_norm.py`, `review_integer.py`, `verify.py`
+- `109-valuations-centered/integer12/coefficients/`: `BINDING.json`
+- `109-valuations-centered/integer12/equations/`: `prime_three_monotone31_centered_12_degree2304.json`, `prime_three_monotone31_integer_12_degree2848.json`, `prime_three_monotone31_rational_12_degree2336.json`, `prime_three_pure19_centered_12_degree2304.json`, `prime_three_pure19_integer_12_degree2848.json`, `prime_three_pure19_rational_12_degree2336.json`
+- `109-valuations-centered/positive10/`: `CHECKS718.json`, `PROOF718.md`, `README.md`, `SOURCE_PIN.json`, `circuit718.py`, `equation718.json`, `verify718.py`
+- `109-valuations-centered/positive10/licenses/`: `FETCH_MANIFEST.json`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.package44`, `LICENSE.root`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE-package44.md`, `NOTICE-upstream-native44.md`, `NOTICE_K215.md`, `README.md`, `SOURCE_PINS-native44.json`
+- `109-valuations-centered/positive10/provenance/compact44/`: `NOTICE-upstream.md`
+- `109-valuations-centered/positive10/provenance/compact44/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `109-valuations-centered/positive10/provenance/parent816/`: `INDEPENDENT_REVIEW.md`, `PROOF.md`, `README.md`, `circuit.py`, `p10_positive_degree816.json`
+- `109-valuations-centered/receipts/`: `pdf_qa.json`, `root_direct_normal.json`, `root_integer_normal.json`, `root_release_optimized.json`
+- `109-valuations-centered/receipts/replays/`: `release-normal.json`
+- `109-valuations-centered/report/`: `integer853_rows.tex`, `natural395_rows.tex`, `report.pdf`, `report.tex`
+- `110-budget-interpolation/`: `DEPENDENCIES.md`, `PACKAGING_INVENTORY.json`, `README.md`, `REPLAY_PLAN.json`, `build_report.sh`, `check_sources.py`, `make_archive.py`, `verify.py`
+- `110-budget-interpolation/alternative/`: `CHECK.json`, `CHECK_OPTIMIZED.json`, `FOUR_TILE_DAG.json`, `INDEPENDENT_PROOF_REVIEW.md`, `MANIFEST.sha256.json`, `PROOF.md`, `PROVENANCE.json`, `README.md`, `SOURCES.md`, `THREE_POWERS_INTERFACE.json`, `TWO_POWERS_INTERFACE.json`, `build_dag.py`, `build_interfaces.py`, `check.py`, `core.py`, `prior_build_dag.py`, `section.tex`
+- `110-budget-interpolation/baseline/`: `COMMITS_SINCE_55ca592.json`, `COMPARE_SINCE_55ca592.json`, `FETCH_LEDGER.json`, `PROPOSAL_REVIEW_FIXED_PRIME_RADICALS.md`, `PROPOSAL_REVIEW_LATEST.md`, `PROPOSAL_REVIEW_PARITY_FAMILIES.md`, `PROPOSAL_REVIEW_POLYNOMIAL_SHEARS_NORM10.md`, `PROPOSAL_REVIEW_PRIME_SEPARATION.md`, `PROPOSAL_REVIEW_ROOT_FUSION13.md`, `README.project.md`, `README.upstream.md`, `REPLAY_REVIEW.md`, `SOURCE_MAP.md`, `comparison.tex`, `download_extra.json`, `download_list.json`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/`: `FUTURE_WORK.md`, `LICENSE`, `MANIFEST.json`, `README.md`, `RELEASE.json`, `build_equations.py`, `five_square_norm.py`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/`: `BINDING.json`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/`: `METRICS.json`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `quotient18_transport.json`, `quotient19_transport.json`, `quotient20.json`, `quotient20_transport.json`, `verify.py`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/`: `METRICS.json`, `SCHEMA.md`, `norm13_crt_degree1088.json`, `norm13_degree1392.json`, `norm13_degree1408.json`, `norm14_degree696.json`, `norm14_degree792.json`, `norm15_degree344.json`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/`: `SOURCES.json`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/report/`: `crt1088.tex`, `report.pdf`, `report.tex`
+- `110-budget-interpolation/baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/`: `CLEARED_EXACT_AUDIT.json`, `CRT_AUDIT.json`, `EXACT_AUDIT.json`, `INTEGRATED_AUDIT.json`, `INTEGRATED_AUDIT_OPTIMIZED.json`, `PDF_QA.json`, `RELEASE_AUDIT.json`, `RELEASE_AUDIT_OPTIMIZED.json`, `audit.py`, `audit_cleared.py`, `check_crt.py`, `check_integrated.py`, `exact_polynomial.py`, `five_square_norm_expanded.json`, `verify_release.py`
+- `110-budget-interpolation/baseline/late/`: `DIRECT_EXPANSION_CHECK.json`, `FETCH_LEDGER.json`, `LATE_COMPARISON.md`, `STATIC_AUTHENTICATION.json`, `download_list.json`, `late_comparison.tex`
+- `110-budget-interpolation/baseline/replay/`: `check_parity_identity.py`, `run_upstream_audits.py`
+- `110-budget-interpolation/baseline/replay/results/`: `PARITY_IDENTITY.json`, `PARITY_IDENTITY_OPTIMIZED.json`, `REPLAY_SUMMARY.json`
+- `110-budget-interpolation/baseline/replay/results/parity_normal/`: `release.json`, `release.stdout.txt`, `summary.json`
+- `110-budget-interpolation/baseline/replay/results/parity_optimized/`: `AUDIT.json`, `COMPACT_INDEPENDENT_AUDIT.json`, `COMPACT_KERNEL_AUDIT.json`, `GRAPH_AUDIT.json`, `NORM_FAMILY_AUDIT.json`, `SHIFT_AUDIT.json`, `audit.stdout.txt`, `audit_compact_kernel.stdout.txt`, `audit_norm_family.stdout.txt`, `audit_shift.stdout.txt`, `driver_policy.stderr.txt`, `independent_checks.stdout.txt`, `independent_compact_audit.stdout.txt`, `independent_graph_audit.stdout.txt`, `summary.json`
+- `110-budget-interpolation/baseline/replay/results/rootfusion_normal/`: `release.json`, `release.stdout.txt`, `summary.json`
+- `110-budget-interpolation/baseline/replay/results/rootfusion_optimized/`: `release.json`, `release.stdout.txt`, `summary.json`
+- `110-budget-interpolation/baseline/replay/tex_check/`: `comparison_check.tex`
+- `110-budget-interpolation/eleven/`: `CHECK_NORMAL.json`, `CHECK_OPTIMIZED.json`, `DEGREE_CHECK.json`, `DEGREE_PROOF.md`, `METRICS.json`, `NORM_ORDER_SEARCH.json`, `PROOF.md`, `README.md`, `SEMANTIC_CUT_CHECK.json`, `SEMANTIC_CUT_CHECK_OPTIMIZED.json`, `SOURCE_PINS.json`, `budget_intersective11_degree2240.json`, `budget_intersective11_degree2272.json`, `budget_intersective11_degree2912.json`, `build.py`, `check.py`, `check_degree.py`, `check_semantic_cuts.py`, `section.tex`
+- `110-budget-interpolation/eleven/licenses/`: `LICENSE-interpolation12`, `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-centered-compression.md`, `NOTICE-interpolation12.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `110-budget-interpolation/eleven/provenance/centered17/`: `BUDGET_PROOF.md`, `COEFFICIENT_BINDING.json`, `PROOF.md`, `SOURCE_PINS.json`, `normalized17_degree48.json`
+- `110-budget-interpolation/eleven/provenance/centered17/upstream/`: `CENTERED_BUDGET_PROOF.md`, `WAVE11_GUARDS_PROOF.md`, `WAVE11_JOINT_PROOF.md`, `centered_budget18_degree48.json`, `joint19_degree88.json`
+- `110-budget-interpolation/eleven/provenance/centered18/`: `COEFFICIENT_BINDING.json`, `PROOF.md`, `SOURCE_PINS.json`, `centered_budget18_degree48.json`
+- `110-budget-interpolation/eleven/provenance/centered18/upstream/`: `WAVE11_GUARDS_PROOF.md`, `joint19_degree88.json`
+- `110-budget-interpolation/eleven/provenance/interpolation12/`: `INTERPOLATION12.md`, `LICENSE`, `NOTICE.md`, `README.md`, `SCHEMA.md`, `build_twelve.py`, `check_twelve.py`, `monotone_intersective12_degree4832.json`
+- `110-budget-interpolation/eleven/provenance/rootfusion/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `110-budget-interpolation/eleven/provenance/rootfusion/upstream_ordinary/`: `SOURCES.json`
+- `110-budget-interpolation/eleven/provenance/trace_precursor/`: `LICENSE`, `NOTICE.md`, `README.md`, `TRACE13_PROOF.md`
+- `110-budget-interpolation/finalizers/`: `ABSORPTION_CHECKS.json`, `ABSORPTION_METRICS.json`, `ABSORPTION_PROOF.md`, `README.md`, `absorbed15_degree176.json`, `absorbed15_degree176_dag.json`, `build_absorption.py`, `check_absorption.py`, `section.tex`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/`: `AUDIT.json`, `COMPACT_INDEPENDENT_AUDIT.json`, `COMPACT_KERNEL_AUDIT.json`, `COMPACT_METRICS.json`, `COMPACT_NORM_REVIEW.md`, `DEGREE_CERTIFICATES.json`, `GRAPH_AUDIT.json`, `LICENSE`, `NORM_FAMILY_AUDIT.json`, `NORM_FAMILY_METRICS.json`, `NOTICE.md`, `PARITY_MERGER_REVIEW.md`, `PDF_QA.json`, `PROOF.md`, `PROOF15.md`, `README.md`, `RELEASE_VERIFICATION.json`, `SHIFT_AUDIT.json`, `SOURCE_PROVENANCE.json`, `THIRTEEN_MATHEMATICAL_REVIEW.md`, `abstract_norm5_dag.json`, `audit.py`, `audit_compact_kernel.py`, `audit_norm_family.py`, `audit_shift.py`, `build.py`, `build_norm_family.py`, `centered16_sos.json`, `centered16_sos_dag.json`, `centered16_unit_product.json`, `centered16_unit_product_dag.json`, `compact_norm.py`, `independent_checks.py`, `independent_compact_audit.py`, `independent_graph_audit.py`, `independent_proof_audit.md`, `norm4_expanded.json`, `norm4_kernel.json`, `norm5_expanded.json`, `norm5_kernel.json`, `parity13_direct.json`, `parity13_direct_dag.json`, `parity13_shifted.json`, `parity13_shifted_dag.json`, `parity14_sos.json`, `parity14_sos_dag.json`, `parity14_unit_product.json`, `parity14_unit_product_dag.json`, `parity15_sos.json`, `parity15_sos_dag.json`, `parity15_unit_product.json`, `parity15_unit_product_dag.json`, `parity16_sos.json`, `parity16_sos_dag.json`, `parity16_unit_product.json`, `parity16_unit_product_dag.json`, `results.json`, `verify_release.py`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/`: `BINDING.json`, `VERIFICATION.json`, `verify.py`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/parent/`: `degree88_17.json`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/provenance/`: `forms-README.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/report/`: `parity-norms.pdf`, `parity-norms.tex`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/`: `LICENSE`, `NOTICE.md`, `README.md`, `SOURCE_PROVENANCE.json`, `VERIFICATION.json`, `VERIFICATION_OPTIMIZED.json`, `verify.py`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/certificates/`: `ALTERNATIVE_ROUTES_REVIEW.md`, `INDEPENDENT_INTEGER_AUDIT.json`, `INDEPENDENT_MATHEMATICAL_REVIEW.md`, `INTEGER_CHECKS.json`, `NINE_INDEPENDENT_REVIEW.md`, `PDF_QA.json`, `RANK_REGISTER_REVIEW.md`, `crt_degree16_24_degree.json`, `crt_degree26_22_degree.json`, `crt_degree26_23_degree.json`, `crt_degree28_21_degree.json`, `crt_degree44_20_degree.json`, `degree10_25_degree.json`, `degree12_23_degree.json`, `degree20_22_degree.json`, `degree26_20_degree.json`, `degree32_19_degree.json`, `octic26_degree.json`, `quartic37_degree.json`, `quartic37_direct_degree.json`, `sextic31_degree.json`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/coefficients/`: `BINDING.json`, `VERIFICATION.json`, `verify.py`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/inherited/determinant71/`: `NOTICE.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/integer/`: `audit.py`, `build.py`, `crt_degree16_24.json`, `crt_degree26_22.json`, `crt_degree26_23.json`, `crt_degree28_21.json`, `crt_degree44_20.json`, `degree10_25.json`, `degree12_23.json`, `degree20_22.json`, `degree26_20.json`, `degree32_19.json`, `octic26.json`, `polynomial.py`, `quartic37.json`, `quartic37_direct.json`, `sextic31.json`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-K215.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/`: `COEFFICIENT_RECONSTRUCTION.json`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `VERIFICATION.json`, `build.py`, `build_correction.py`, `check_laurent_cone.py`, `laurent9_positive.json`, `laurent_candidate.json`, `laurent_cone_certificate.json`, `laurent_correction_nopad_4JDbasis.json`, `laurent_symbolic.py`, `section.tex`, `verify.py`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/licenses/`: `LICENSE`, `LICENSE.Wade`, `NOTICE-K215.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/upstream/71-determinant-guards/nine_positive/`: `LICENSE`, `NOTICE.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/positive/`: `AUDIT11.json`, `AUDIT12.json`, `LICENSE`, `NATIVE_FETCH.json`, `NOTICE.md`, `PROOF.md`, `UPSTREAM_FETCH.json`, `VERIFICATION.json`, `build11.py`, `build12.py`, `p11_positive_degree269.json`, `p12_positive_degree78.json`, `positive_reductions.tex`, `verify.py`, `verify11.py`, `verify12.py`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/positive/native/`: `NOTICE-upstream.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/positive/native/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/report/`: `nine_section.tex`, `report.pdf`, `report.tex`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/transport/`: `PROOF.md`, `README.md`, `build_transport.py`, `check_transport.py`, `degree10_24.json`, `degree16_22.json`, `degree20_20_rank_register.json`, `degree28_19.json`, `degree32_18.json`, `degree88_17.json`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/transport/certificates/`: `DOMINATED_TRANSPORT_PROBES.json`, `INDEPENDENT_TRANSPORT_AUDIT.json`, `TRANSPORT_CHECKS.json`, `degree10_24_degree.json`, `degree16_22_degree.json`, `degree20_20_rank_register_degree.json`, `degree28_19_degree.json`, `degree32_18_degree.json`, `degree88_17_degree.json`
+- `110-budget-interpolation/finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/transport/parents/`: `crt_degree44_20.json`, `degree10_25.json`, `degree12_23.json`, `degree20_22.json`, `degree26_20.json`, `degree32_19.json`, `octic26.json`, `quartic37.json`, `quartic37_direct.json`, `sextic31.json`
+- `110-budget-interpolation/guard/`: `CHECK_NORMAL.json`, `CHECK_OPTIMIZED.json`, `DEGREE_CHECK.json`, `DEGREE_PROOF.md`, `EARLY_CRT_LEMMA.md`, `METRICS.json`, `NORM_EVALUATOR_PROOF.md`, `PROOF.md`, `SEMANTIC_CUT_CHECK.json`, `SEMANTIC_CUT_CHECK_OPTIMIZED.json`, `SOURCE_PINS.json`, `audit_support.py`, `budget12_aux_centered.json`, `budget12_tau_centered.json`, `build.py`, `check.py`, `check_degree.py`, `check_exact_cuts.py`, `check_semantic_cuts.py`, `circuit.py`, `degree_section.tex`, `exact_polynomial.py`, `five_square_norm.py`, `formal_radicals.py`, `section.tex`
+- `110-budget-interpolation/guard/coefficients/`: `BINDING.json`
+- `110-budget-interpolation/guard/licenses/`: `LICENSE-source57`, `LICENSE.ProveIt`, `LICENSE.Wade`, `LICENSE.source71`, `NOTICE-K215.md`, `NOTICE-centered-compression.md`, `NOTICE-normalized-source.txt`, `NOTICE-source25.md`, `NOTICE-source34.md`, `NOTICE-source57.md`, `NOTICE.source68.md`, `NOTICE.source71.md`
+- `110-budget-interpolation/guard/provenance/centered17/`: `BUDGET_PROOF.md`, `COEFFICIENT_BINDING.json`, `PROOF.md`, `SOURCE_PINS.json`, `normalized17_degree48.json`
+- `110-budget-interpolation/guard/provenance/centered17/upstream/`: `CENTERED_BUDGET_PROOF.md`, `WAVE11_GUARDS_PROOF.md`, `WAVE11_JOINT_PROOF.md`, `centered_budget18_degree48.json`, `joint19_degree88.json`
+- `110-budget-interpolation/guard/provenance/centered18/`: `COEFFICIENT_BINDING.json`, `PROOF.md`, `SOURCE_PINS.json`, `centered_budget18_degree48.json`
+- `110-budget-interpolation/guard/provenance/centered18/upstream/`: `WAVE11_GUARDS_PROOF.md`, `joint19_degree88.json`
+- `110-budget-interpolation/guard/provenance/rootfusion/`: `CALIBRATION_STATUS.md`, `CON_ZFC_FORMS_README.md`, `FORMALIZATION_BOUNDARY.md`, `INDEPENDENT_CRT_ARITHMETIC_REVIEW.md`, `INDEPENDENT_INTEGER_NORM_AUDIT.md`, `JOINT_GUARD_AND_PROJECTIONS.md`, `NORMALIZED_NORMS_PROOF.md`, `RESIDUE_AND_DETERMINANT.md`, `REVIEWED_FRONTIER.md`, `SOURCE_EXTRACTION.json`, `SQUARED_MODULUS_PROOF.md`
+- `110-budget-interpolation/guard/provenance/rootfusion/upstream_ordinary/`: `SOURCES.json`
+- `110-budget-interpolation/guard/provenance/trace_precursor/`: `LICENSE`, `NOTICE.md`, `README.md`, `TRACE13_PROOF.md`
+- `110-budget-interpolation/positive/ten_centered/`: `FUTURE_WORK.md`, `LICENSE`, `NOTICE.md`, `PROOF.md`, `README.md`, `SOURCE_PINS.json`, `build.py`, `degree_specialization.py`, `independent_check.py`, `rebuild_coefficients.py`, `section.tex`, `verify.py`
+- `110-budget-interpolation/positive/ten_centered/coefficients/`: `BINDING.json`, `UPSTREAM_BINDING.json`
+- `110-budget-interpolation/positive/ten_centered/generated/`: `COEFFICIENT_CHECKS.json`, `DEGREE_SPECIALIZATIONS.json`, `INDEPENDENT_CHECKS.json`, `VERIFICATION_NORMAL.json`, `VERIFICATION_OPTIMIZED.json`, `normal_build.py.stdout.txt`, `normal_degree_specialization.py.stdout.txt`, `normal_independent_check.py.stdout.txt`, `normal_rebuild_coefficients.py.stdout.txt`, `optimized_build.py.stdout.txt`, `optimized_degree_specialization.py.stdout.txt`, `optimized_independent_check.py.stdout.txt`, `optimized_rebuild_coefficients.py.stdout.txt`, `p10_natural.json`, `p10_positive.json`
+- `110-budget-interpolation/positive/ten_centered/upstream/`: `SOURCE_PINS.json`, `TEN_POSITIVE_PROOF.md`
+- `110-budget-interpolation/positive/ten_centered/upstream/interfaces/`: `OBJECT_ZFC.md`, `SIZE_REDUCTION.md`, `STATUS.md`, `k215_transitions.json`
+- `110-budget-interpolation/positive/ten_centered/upstream/interfaces/licenses/`: `LICENSE.ProveIt`, `LICENSE.Wade`, `NOTICE-normalized-source.txt`, `NOTICE-original245.txt`, `NOTICE_K215.md`
+- `110-budget-interpolation/provenance/certificate_predecessor/`: `NOTICE.md`, `PROOF.md`, `TM_COMPILER_PROOF.md`, `build_dag.py`, `core.py`
+- `110-budget-interpolation/provenance/certificate_predecessor/upstream/`: `NOTICE-K215.md`
+- `110-budget-interpolation/report/`: `PDF_QA.json`, `coefficients.tex`, `report.pdf`, `report.tex`, `summary.tex`, `validation.tex`
+- `110-budget-interpolation/report/qa/`: `before_layout_hashes.json`, `changed_pages.json`
+- `110-budget-interpolation/review/budget/`: `RECEIPT_NORMAL.json`, `RECEIPT_OPTIMIZED.json`, `REVIEW.md`, `audit_budget.py`, `probe_norm.py`
+- `110-budget-interpolation/review/eleven/`: `RECEIPT_NORMAL.json`, `RECEIPT_OPTIMIZED.json`, `REVIEW.md`, `independent_review.py`
+- `110-budget-interpolation/review/positive/`: `REVIEW.md`, `REVIEW_NORMAL.json`, `REVIEW_OPTIMIZED.json`, `independent_review.py`
 - top level: `README.md` (this file), `PLACEMENT.md`
