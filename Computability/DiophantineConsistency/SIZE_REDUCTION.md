@@ -59,15 +59,20 @@ has475/482 positive/natural operations and the unchanged degree1,379,730.
 The complete original31 tuple is preserved on that branch.
 
 A shorter complete page is also available:
-[`bfs-collected/equation.pdf`](candidates/one-page-compression/bfs-collected/equation.pdf).
-Its literal seed has771 digits instead of1294, and the complete printed
-coefficient recipe is12.1% shorter by extracted nonwhitespace characters.
+[`merged-mask-base62/equation.pdf`](candidates/one-page-compression/merged-mask-base62/equation.pdf).
+Its436-character numeral, complete alphabet, positional sum and decoder
+reduce the coefficient recipe to2293 nonwhite characters,8.8% below the
+preserved771-digit page's2514. The original recipe has2861 characters.
+The decimal-only merged-mask variant uses2478, and an original-tuple
+notation variant uses2424. Base62 changes printed notation rather than
+the integer's information content; the full alphabet overhead is charged.
 An explicit finite quotient/sum decoder replaces the old action packing.
 It uses a bijective control-state renaming that fixes start and halt;
 all430 transition conjugacies and all four coefficient reconstructions
 are checked. The new `K` differs from the old one, so this is a separate
 whole-tuple specification with an ordinary state-conjugacy argument.
-See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) for its scope and replay.
+See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) and
+[SEED_PREDICTORS54.md](SEED_PREDICTORS54.md) for scope and replay.
 
 For the alternative direct-proof route,
 [`direct-flow-large-carrier`](candidates/direct-flow-large-carrier/README.md)
@@ -116,8 +121,9 @@ row maps, the whole fixed six-port tuple and an exact leading form are checked.
 2. Simplify the short positive equations and new root/guard mergers.
    Seek an actual improvement over the existing variable/degree/operation
    choices, proving both directions of each witness transformation.
-3. Reduce the printed constant recipes. The current full page contains
-   a1294-digit action seed. A shorter seed or arithmetic decoder is useful
+3. Reduce the printed constant recipes. The shortest inspected full page
+   contains a436-character base62 action seed and a complete decoder.
+   A shorter seed or arithmetic decoder is useful
    only if the complete definition remains printed and independently
    reconstructs the entire coherent tuple.
 4. Explore alternate proof-certificate and flow encodings. Identify a

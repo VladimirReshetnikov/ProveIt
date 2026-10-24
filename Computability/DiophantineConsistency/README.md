@@ -18,11 +18,14 @@ and alternative encodings. Completed proof checkpoints are retained;
 unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
-The complete [shorter one-page equation](candidates/one-page-compression/bfs-collected/equation.pdf)
-now uses a771-digit seed, down from1294, with a12.1% shorter printed
-coefficient recipe. Its standalone TeX includes every constant; a finite
-state-renaming decoder and transition-conjugacy argument explain the change.
-See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md).
+The complete [shorter one-page equation](candidates/one-page-compression/merged-mask-base62/equation.pdf)
+prints a436-character base62 numeral, its entire alphabet and positional
+sum, and every coefficient definition. Its recipe is8.8% shorter than the
+previous771-digit page's. A decimal-only variant and an original-tuple
+variant remain available. State renaming reduces payload bits; changing
+numeral notation reduces printed symbols. See
+[SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) and
+[SEED_PREDICTORS54.md](SEED_PREDICTORS54.md) for those distinct gains.
 
 A new [twelve-positive equation](research/ordinary-unit-products/README.md)
 has100 live operations and exact degree70. It materializes and checks an

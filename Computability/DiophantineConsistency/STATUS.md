@@ -16,11 +16,16 @@ The lower-degree package71 branch also saves three gates, reaching475
 positive /482 natural operations at the unchanged degree1,379,730; see
 [`order7-shared-products`](candidates/order7-shared-products/README.md).
 
-The shorter complete page uses a771-digit seed and an explicit fixed
-sum/quotient decoder, reducing the printed coefficient recipe by12.1%.
-It includes standalone TeX and an ordinary control-state conjugacy proof;
-all430 transitions and four-port reconstructions pass finite checks.
-The renamed tuple changes `K`; see [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md).
+The shortest inspected complete page prints a436-character base62 numeral
+with its entire alphabet and positional sum. Its complete coefficient
+recipe has2293 nonwhite characters, down from2514 on the preserved771-digit
+page and2861 on the original page. A decimal-only merged-mask recipe has
+2478 characters; an original-tuple base62 variant has2424. All pages include
+standalone TeX/PDF; every decoded action, coefficient byte and printed
+payload character passes normal/optimized checks. Numeral notation and
+information compression are distinguished in
+[SEED_PREDICTORS54.md](SEED_PREDICTORS54.md). The renamed tuple changes K;
+[SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) supplies its ordinary conjugacy proof.
 
 The [ordinary-norm twelve-positive equation](research/ordinary-unit-products/README.md)
 now has a literal100-operation circuit of exact degree70. Its ordinary

@@ -1,0 +1,171 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.45in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\jot}{0pt}
+\let\bigsum\sum
+\renewcommand{\sum}{\bigsum\nolimits}
+\setlength{\columnsep}{14pt}
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+\newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\rng}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A completely specified Diophantine consistency equation}\\[-1pt]
+{\small Fifteen strictly positive integer unknowns; all fixed constants defined on this page.}
+\end{center}
+\vspace{-7pt}
+\begin{multicols}{2}
+\small
+The unknowns are
+\[
+ J,F,\alpha,z,f,h,i,T,s,w,\tau,\eta,\zeta,y,\gamma\in\mathbb Z_{>0}.
+\]
+Use the following polynomial abbreviations (no extra unknowns):
+\[
+\begin{gathered}
+q=\beta J+1,\quad C=q-F-\alpha,\quad X=wq,\\
+Y=sq^3,\quad E=XY,\quad k=\eta+\zeta,\quad c=kY+\eta,\\
+a=E+Y,\quad H=4a+3,\quad\Delta=a^2+H,\\
+D=X+ac+\gamma H,\\
+R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+V=c(Tf-1)-Rf^2.
+\end{gathered}
+\]
+The equation is
+\[
+\boxed{N_0N_1N_aN_kN_tN_s-1=0,}
+\]
+where
+\begin{align*}
+N_0&=\tau^2-(XY^2)(XY^2+1)k^2,\\
+N_1&=D^2-\Delta c^2,\\
+N_a&=\Delta(f^2-1)(V^2-y^2)+y^2,\\
+N_k&=k-hE-R,\\
+N_t&=(K+w)C+(q-F)-z(q-1),\\
+N_s&=f^2-\Delta(ic^2)^2.
+\end{align*}
+
+\textbf{Fixed coefficients.}
+All sums below have the displayed fixed finite limits. Division and
+floor are used only to define constants; the equation above is polynomial.
+Put
+\[
+\begin{gathered}
+\rho=2^{89},\quad B=\rho^{4831},\quad\beta=B-1,\\
+\lambda=2^{29},\quad\theta=2^{42},\quad Q=2^{40},
+\end{gathered}
+\]
+\[
+\begin{gathered}
+G_m(x)=\sum_{j=0}^{m-1}x^j,\\
+\mu=510+2^{17}+2^{26}+2^{28}+\lambda(2^{44}-1).
+\end{gathered}
+\]
+Let
+\begin{align*}
+\mathcal S={}&\rng0{456}\cup\rng{495}{504}\cup\{507,508\}\\
+ &\cup\rng{517}{537}\cup\rng{539}{549}\\
+ &\cup\rng{567}{583}\cup\{1203,1807\}.
+\end{align*}
+Then
+\begin{align*}
+M_C={}&B-1-\sum_{e\in\mathcal S\setminus\{1\}}\rho^e-2\rho^{507},\\
+M_F={}&B-1+4+\mu(\rho^{2409}+\rho^{3015})\\
+ &+\rho^{528}G_{10}(\rho)+\rho^{585}G_{11}(\rho)+\rho^{1203}+\rho^{1807}\\
+ &+(2^{87}-1)\rho^{4823}G_4(\rho)+(2^{38}-1)\rho^{4827},\\
+K={}&\rho^{33}+\rho^{68}+\rho^{664}+\rho^{1268}+\rho^{4877}\\
+ &+(\rho^{2409}+\rho^{3015})\Phi(1/\rho),
+\end{align*}
+where the rational intermediate expression is
+\begin{align*}
+\Phi(x)={}&O G_{457}(x)+\lambda\sum_{i=0}^{456}\ell_i x^{r_i}\\
+ &-(255\,2^9+2^{27})x^{374}-(255\,2^{18}+2^{27})x^4\\
+ &+\lambda\bigl[(x^{539}+2^{21}x^{517})G_{11}(2x)\\
+ &\qquad +(2^{11}x^{528}+2^{32}x^{495})G_{10}(2x)\\
+ &\qquad +\theta(x^{539}+x^{1203}+x^{1807})\bigr]\\
+ &+\bigl[(2^9+\lambda(2+2^{33}))x^{567}\\
+ &\qquad +(2^{18}+\lambda(2^{22}+2^{33}))x^{575}\bigr]G_8(2x)\\
+ &+(2^{27}+\lambda(2^{11}+2^{32}))x^{583}.
+\end{align*}
+The resulting $\beta,K,M_C,M_F$ are fixed positive integers.
+
+\textbf{The ranks $r_i$ and labels $\ell_i$.}
+First define the following 457 fixed quadruples
+$t_i=(w_i,n_i,e_i,s_i)$.
+From the integer $\mathcal A$ printed below, for $0\le j<430$ put
+\[
+\begin{gathered}
+b_j=\fl{\mathcal A/1024^j}\bmod1024,\quad u_j=b_j\bmod256,\\
+v_j=\fl{b_j/256}\bmod2,\quad d_j=\fl{b_j/512}.
+\end{gathered}
+\]
+Here $a\bmod b=a-b\fl{a/b}$. Set
+\[
+t_{2+j}=\bigl((1-d_j)(512+u_j),\ 512+j,\ d_j(256+u_j),\ v_j\bigr).
+\]
+The remaining quadruples are
+\[
+\begin{array}{c|c|l}
+\text{index}&\text{range}&t_i\\\hline
+0&& (2,3,3,1)\\
+1&& (5,0,0,0)\\
+432+j&0\le j<2&(0,942+j,0,942+j)\\
+434+j&0\le j<2&(0,j,0,j)\\
+436+j&0\le j<4&(0,(j\bmod2)+942\fl{j/2},0,6)\\
+440&&(2,2,2,0)\\
+441&&(3,4,4,698)\\
+442&&(4,4,4,0)\\
+443+j&0\le j<3&(1,6,1,2+j)\\
+446+3j+k&0\le j,k<3&(j^2,5,k,5)\\
+455&&(256,0,0,512)\\
+456&&(0,0,512,512)
+\end{array}
+\]
+Define, for these fixed indices,
+\begin{align*}
+\kappa_i&=2^{30}w_i+2^{20}n_i+2^{10}e_i+s_i,\\
+\ell_i&=2w_i+2^{11}n_i+2^{22}e_i+2^{32}s_i,\\
+r_0&=0,\quad r_1=1,\\
+r_i&=2+\sum_{j=2}^{456}\fl{\frac{Q+\kappa_i-\kappa_j-1}{Q}}
+ \quad(2\le i\le456),\\
+O&=1+255\,2^9+255\,2^{18}+2^{27}+\lambda.
+\end{align*}
+All subscripts in these definitions are bound constant indices, not
+additional Diophantine unknowns.
+
+\textbf{The integer $\mathcal A$.} Digit values are $0,\ldots,61$ in this alphabet:
+{\fontsize{8}{9.1}\selectfont\ttfamily
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\par}
+For the following 722 characters, put
+$\mathcal A=\sum_{j=0}^{721}\epsilon_j62^{721-j}$,
+where $\epsilon_j$ is the value of character $j$ (starting at zero).
+
+\begingroup
+\fontsize{8}{9.1}\selectfont\ttfamily
+RCtYkANMQ1gmPqxuKhLmpi1mjCvu243YjyAxv9hbC2UsurRLykLFhuHVBGGUZ5\par
+whVShV0FQcVVQSR2GS6JAW1DGYxGKlA4rJavFCW5i63LLSs8xEGvWTbLjSFULV\par
+ODe48Kw2ghEaa5Q9PZZVHtki7C45jfVYROOzvVT9DAGjL0BlBSHQU8WPUF3SpC\par
+kTfDQF7mUboMEAeyPWARCyClpnxtqgsit318hQgiIdKauxc6memnYNtycB0s7z\par
+K8dMgYaLRxNjlcLvJzZ9Z5wdCG3wjd5P6ZVqC2SXVaimqXrTY5dNxbCH2B5VKA\par
+Sp16kht0JV65p4VclYsI6zi6nIr7elpUCOX7IHdu6qKiu6Kt5MqlYZjChEzG6y\par
+W1WsPdMB7lPL3oOCFqFncCtVEMUounam1fyhduQYoTyTCIEMqcD2BPQfMVaBa9\par
+BZHQ8k7rpS3eiM7Rsak5uUsoP1Tf1uhWshndLuN8yz7UdD5QXM6AJ3ovPdWsqO\par
+HGBeRaR8kch4R9JVbkAxS2ByaeE2O6czIT0sWtpasWDdZB9FuDQUFYhSvPPPr8\par
+nSQmnMkF90CBzWkpeP81azGOWtiT2XTxpaLcR4ecaK1uZyvBleYknk6QTwECl5\par
+XJ3nJBoP4sMTGaV6unoGzq9s1KN4KtXrVRuTpi6EuqizW9njcp9Uikq1VNjVtw\par
+W1AGLJu3eaWg0EEF7vROqLuNbzEheYnyi4SORWVp\par
+\endgroup
+\medskip
+\normalfont\footnotesize
+Absence of positive integer solutions is equivalent to $\mathrm{Con}(\mathrm{ZFC})$
+by the inherited native/Pell argument and the checked P69--P67 reduction.
+The full native calibration and its internal ZFC formalization remain open
+Lean obligations. This page specifies the equation, not its proof.
+\end{multicols}
+\end{document}
