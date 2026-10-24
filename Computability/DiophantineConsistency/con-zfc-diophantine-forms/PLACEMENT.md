@@ -3548,7 +3548,16 @@ Members not in this tree:
   many bundled copies of this batch's own siblings (`upstream/`, `inherited/`,
   `baseline/` folders). The tables below name the shortest repository path
   holding the same bytes. Licence, notice and attribution files are always
-  kept. A member equal to an arrival ZIP (77 bundles wave-10's Signed
+  kept. **Refinement in `240bf9e422`'s follow-up:** the active research
+  session copies arriving packages into `Computability/DiophantineConsistency/`
+  outside this report (its `candidates/`, `research/`, `tools/` and worktree
+  copies), and rewrites them. A member whose only repository copies lie there
+  is kept, so that every package stays self-contained; the first placement
+  had omitted 1,119 such members, among them headline equation files, and
+  they were restored in the next commit. Only matches to this report, to the
+  arrival archives and to stable repository files (Lean sources, the Hilbert
+  Tenth project, Busy Beaver research) are still omitted.
+  A member equal to an arrival ZIP (77 bundles wave-10's Signed
   Bootstrap archive, 90 and 110 bundle siblings of this batch) is mapped to
   the earliest arrival commit holding it, because this placement retires the
   `docs/incoming/` paths.
@@ -3565,44 +3574,44 @@ git show <arrival>:'docs/incoming/<archive>.zip' > /tmp/<archive>.zip
 
 | Dir | Archive | Arrival | Members | Placed | Omitted copies | Ignored | Wrapper |
 |---|---|---|---:|---:|---:|---:|---|
-| `76-structural-round11/` | `ConZFC_Structural_Reductions_Round11_2026-10-24.zip` | `c1a102936a` | 366 | 153 | 213 | 0 | `con-zfc-structural-reductions-round11/` |
-| `77-joint-guards/` | `ZFC_Diophantine_Joint_Guards_2026-10-24.zip` | `c1a102936a` | 301 | 189 | 111 | 1 | `ZFC_Diophantine_Joint_Guards/` |
+| `76-structural-round11/` | `ConZFC_Structural_Reductions_Round11_2026-10-24.zip` | `c1a102936a` | 366 | 177 | 189 | 0 | `con-zfc-structural-reductions-round11/` |
+| `77-joint-guards/` | `ZFC_Diophantine_Joint_Guards_2026-10-24.zip` | `c1a102936a` | 301 | 211 | 89 | 1 | `ZFC_Diophantine_Joint_Guards/` |
 | `78-budget-centering/` | `con-zfc-budget-and-centering-2026-10-23.zip` | `c1a102936a` | 113 | 87 | 26 | 0 | `con-zfc-budget-and-centering-2026-10-23/` |
-| `79-radical-guard-descent/` | `con-zfc-radical-guard-descent-2026-10-23.zip` | `c1a102936a` | 170 | 95 | 75 | 0 | `con-zfc-cross-guard-descent-2026-10-23/` |
+| `79-radical-guard-descent/` | `con-zfc-radical-guard-descent-2026-10-23.zip` | `c1a102936a` | 170 | 102 | 68 | 0 | `con-zfc-cross-guard-descent-2026-10-23/` |
 | `80-twelve-manuscript/` | `report.zip` | `c1a102936a` | 1 | 1 | 0 | 0 | none |
-| `81-centered-pell-norms/` | `con-zfc-centered-pell-norms.zip` | `9a33342a03` | 142 | 84 | 58 | 0 | `con-zfc-centered-pell-norms/` |
-| `82-pell-congruences/` | `con_zfc_pell_congruences_2026-10-23.zip` | `eae4f1952b` | 230 | 128 | 101 | 1 | `con_zfc_pell_congruences_2026-10-23/` |
-| `83-polynomial-shears/` | `ConZFC_Polynomial_Shears_2026-10-23.zip` | `440dd03ab8` | 175 | 112 | 63 | 0 | `con_zfc_polynomial_shears/` |
-| `84-radical-residue/` | `con-zfc-radical-residue-2026-10-23.zip` | `440dd03ab8` | 108 | 76 | 32 | 0 | `con-zfc-radical-residue-2026-10-23/` |
-| `85-saturation-projection/` | `con-zfc-saturation-and-projection-2026-10-23.zip` | `440dd03ab8` | 235 | 133 | 102 | 0 | `con-zfc-saturation-and-projection-2026-10-23/` |
-| `86-saturated-certificates/` | `ConZFC_Saturated_Certificates_2026-10-24.zip` | `d42be5cd87` | 255 | 124 | 131 | 0 | `con-zfc-saturated-certificates-2026-10-24/` |
-| `87-direct-centered-round12/` | `ConZFC_Direct_Centered_Round12_2026-10-24.zip` | `a83816984d` | 319 | 179 | 140 | 0 | `con-zfc-direct-and-centered-round12/` |
-| `88-root-fusion13/` | `ConZFC_13_Integer_Norms_2026-10-24.zip` | `751bc067e2` | 93 | 12 | 81 | 0 | `con-zfc-root-fusion-2026-10-24/` |
-| `89-shared-certificates/` | `ConZFC_Shared_Certificates_2026-10-24.zip` | `751bc067e2` | 116 | 79 | 37 | 0 | `con_zfc_shared_certificates/` |
-| `90-fixed-prime-radicals/` | `ConZFC_FixedPrime_Radicals_2026-10-23.zip` | `1072d31072` | 104 | 45 | 59 | 0 | `con-zfc-padic-compression/` |
-| `91-prime-separation13/` | `ConZFC_Prime_Separation_13_Integer_2026-10-23.zip` | `f6b6c83b1c` | 176 | 103 | 72 | 1 | `con_zfc_prime_separation_2026-10-23/` |
-| `92-parity-norms/` | `con-zfc-parity-norms-2026-10-23.zip` | `f6b6c83b1c` | 317 | 198 | 117 | 2 | `con-zfc-parity-norms-2026-10-23/` |
-| `93-parity-pell-witnesses/` | `con-zfc-parity-norms-2026-10-23 (2).zip` | `e2b2f16765` | 235 | 159 | 76 | 0 | `con-zfc-parity-norms/` |
-| `94-direct-projection7617/` | `ConZFC_Direct_Projection_7617.zip` | `b594a5e988` | 75 | 48 | 27 | 0 | `con_zfc_direct_projection/` |
-| `95-synchronized-certificates/` | `ConZFC_Synchronized_Certificates_2026-10-24.zip` | `8f8fac484b` | 89 | 58 | 28 | 3 | `con_zfc_synchronized_certificates/` |
-| `96-batched-certificates/` | `con_zfc_batched_certificates_2026-10-23.zip` | `8f8fac484b` | 233 | 128 | 101 | 4 | `con-zfc-batched-certificates/` |
-| `97-twelve-interpolation/` | `ConZFC_Twelve_Integer_Interpolation_2026-10-24.zip` | `85ae407001` | 138 | 16 | 122 | 0 | `con_zfc_trace_and_interpolation/` |
-| `98-congruence-certificates/` | `ConZFC_Congruence_Certificates_2026-10-24.zip` | `a6269e4da6` | 205 | 112 | 93 | 0 | `con_zfc_congruence_certificates/` |
-| `99-shared-pell608/` | `ConZFC_Shared_Pell_608_2026-10-23.zip` | `a6269e4da6` | 79 | 69 | 10 | 0 | `con-zfc-shared-pell-2026-10-23/` |
-| `100-quartics407-888/` | `ConZFC_407_888_Quartics_2026-10-24.zip` | `3635835b1e` | 130 | 105 | 24 | 1 | `ConZFC_407_888_Quartics/` |
-| `101-constructive-reductions/` | `ConZFC_Constructive_Reductions_2026-10-23.zip` | `3635835b1e` | 339 | 154 | 185 | 0 | `ConZFC_Constructive_Reductions_2026-10-23/` |
-| `102-direct-quartics3776/` | `ConZFC_Direct_Quartics_3776_3671_2026-10-23.zip` | `3635835b1e` | 101 | 74 | 26 | 1 | `conzfc_signed_quartic/` |
-| `103-shared-pell1873/` | `ConZFC_Shared_Pell_1873.zip` | `3635835b1e` | 93 | 63 | 29 | 1 | `con_zfc_batched_pell/` |
-| `104-valuation-signed/` | `ConZFC_Valuation_and_Signed_Certificates_2026-10-23.zip` | `3635835b1e` | 302 | 128 | 170 | 4 | `ConZFC_Valuation_and_Signed_Certificates/` |
-| `105-bootstrap-certificates/` | `ConZFC_Bootstrap_Certificates_2026-10-24.zip` | `e13c748234` | 328 | 204 | 124 | 0 | `con-zfc-bootstrap-certificates/` |
-| `106-compact-certificates-round13/` | `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24.zip` | `e13c748234` | 399 | 250 | 148 | 1 | `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24/` |
-| `107-dyadic-pell/` | `ConZFC_Dyadic_Pell_Reductions_2026-10-23.zip` | `e13c748234` | 68 | 57 | 10 | 1 | `ConZFC_Dyadic_Pell_Reductions_2026-10-23/` |
-| `108-pell-residues/` | `ConZFC_Pell_Residues_2026-10-23.zip` | `e13c748234` | 214 | 103 | 110 | 1 | `ConZFC_Pell_Residues/` |
-| `109-valuations-centered/` | `ConZFC_Valuations_and_Centered_Certificates.zip` | `e13c748234` | 287 | 205 | 81 | 1 | `ConZFC_Valuations_and_Centered_Certificates/` |
-| `110-budget-interpolation/` | `ZFC_Diophantine_Budget_Interpolation_2026-10-24.zip` | `e13c748234` | 849 | 452 | 379 | 18 | `ZFC_Diophantine_Budget_Interpolation/` |
+| `81-centered-pell-norms/` | `con-zfc-centered-pell-norms.zip` | `9a33342a03` | 142 | 87 | 55 | 0 | `con-zfc-centered-pell-norms/` |
+| `82-pell-congruences/` | `con_zfc_pell_congruences_2026-10-23.zip` | `eae4f1952b` | 230 | 131 | 98 | 1 | `con_zfc_pell_congruences_2026-10-23/` |
+| `83-polynomial-shears/` | `ConZFC_Polynomial_Shears_2026-10-23.zip` | `440dd03ab8` | 175 | 128 | 47 | 0 | `con_zfc_polynomial_shears/` |
+| `84-radical-residue/` | `con-zfc-radical-residue-2026-10-23.zip` | `440dd03ab8` | 108 | 81 | 27 | 0 | `con-zfc-radical-residue-2026-10-23/` |
+| `85-saturation-projection/` | `con-zfc-saturation-and-projection-2026-10-23.zip` | `440dd03ab8` | 235 | 177 | 58 | 0 | `con-zfc-saturation-and-projection-2026-10-23/` |
+| `86-saturated-certificates/` | `ConZFC_Saturated_Certificates_2026-10-24.zip` | `d42be5cd87` | 255 | 155 | 100 | 0 | `con-zfc-saturated-certificates-2026-10-24/` |
+| `87-direct-centered-round12/` | `ConZFC_Direct_Centered_Round12_2026-10-24.zip` | `a83816984d` | 319 | 200 | 119 | 0 | `con-zfc-direct-and-centered-round12/` |
+| `88-root-fusion13/` | `ConZFC_13_Integer_Norms_2026-10-24.zip` | `751bc067e2` | 93 | 67 | 25 | 1 | `con-zfc-root-fusion-2026-10-24/` |
+| `89-shared-certificates/` | `ConZFC_Shared_Certificates_2026-10-24.zip` | `751bc067e2` | 116 | 88 | 28 | 0 | `con_zfc_shared_certificates/` |
+| `90-fixed-prime-radicals/` | `ConZFC_FixedPrime_Radicals_2026-10-23.zip` | `1072d31072` | 104 | 60 | 44 | 0 | `con-zfc-padic-compression/` |
+| `91-prime-separation13/` | `ConZFC_Prime_Separation_13_Integer_2026-10-23.zip` | `f6b6c83b1c` | 176 | 112 | 63 | 1 | `con_zfc_prime_separation_2026-10-23/` |
+| `92-parity-norms/` | `con-zfc-parity-norms-2026-10-23.zip` | `f6b6c83b1c` | 317 | 203 | 112 | 2 | `con-zfc-parity-norms-2026-10-23/` |
+| `93-parity-pell-witnesses/` | `con-zfc-parity-norms-2026-10-23 (2).zip` | `e2b2f16765` | 235 | 192 | 43 | 0 | `con-zfc-parity-norms/` |
+| `94-direct-projection7617/` | `ConZFC_Direct_Projection_7617.zip` | `b594a5e988` | 75 | 58 | 17 | 0 | `con_zfc_direct_projection/` |
+| `95-synchronized-certificates/` | `ConZFC_Synchronized_Certificates_2026-10-24.zip` | `8f8fac484b` | 89 | 79 | 7 | 3 | `con_zfc_synchronized_certificates/` |
+| `96-batched-certificates/` | `con_zfc_batched_certificates_2026-10-23.zip` | `8f8fac484b` | 233 | 197 | 31 | 5 | `con-zfc-batched-certificates/` |
+| `97-twelve-interpolation/` | `ConZFC_Twelve_Integer_Interpolation_2026-10-24.zip` | `85ae407001` | 138 | 106 | 26 | 6 | `con_zfc_trace_and_interpolation/` |
+| `98-congruence-certificates/` | `ConZFC_Congruence_Certificates_2026-10-24.zip` | `a6269e4da6` | 205 | 150 | 55 | 0 | `con_zfc_congruence_certificates/` |
+| `99-shared-pell608/` | `ConZFC_Shared_Pell_608_2026-10-23.zip` | `a6269e4da6` | 79 | 74 | 5 | 0 | `con-zfc-shared-pell-2026-10-23/` |
+| `100-quartics407-888/` | `ConZFC_407_888_Quartics_2026-10-24.zip` | `3635835b1e` | 130 | 123 | 6 | 1 | `ConZFC_407_888_Quartics/` |
+| `101-constructive-reductions/` | `ConZFC_Constructive_Reductions_2026-10-23.zip` | `3635835b1e` | 339 | 246 | 93 | 0 | `ConZFC_Constructive_Reductions_2026-10-23/` |
+| `102-direct-quartics3776/` | `ConZFC_Direct_Quartics_3776_3671_2026-10-23.zip` | `3635835b1e` | 101 | 91 | 9 | 1 | `conzfc_signed_quartic/` |
+| `103-shared-pell1873/` | `ConZFC_Shared_Pell_1873.zip` | `3635835b1e` | 93 | 75 | 17 | 1 | `con_zfc_batched_pell/` |
+| `104-valuation-signed/` | `ConZFC_Valuation_and_Signed_Certificates_2026-10-23.zip` | `3635835b1e` | 302 | 235 | 62 | 5 | `ConZFC_Valuation_and_Signed_Certificates/` |
+| `105-bootstrap-certificates/` | `ConZFC_Bootstrap_Certificates_2026-10-24.zip` | `e13c748234` | 328 | 263 | 65 | 0 | `con-zfc-bootstrap-certificates/` |
+| `106-compact-certificates-round13/` | `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24.zip` | `e13c748234` | 399 | 294 | 104 | 1 | `ConZFC_Compact_Proof_Certificates_Round13_2026-10-24/` |
+| `107-dyadic-pell/` | `ConZFC_Dyadic_Pell_Reductions_2026-10-23.zip` | `e13c748234` | 68 | 59 | 8 | 1 | `ConZFC_Dyadic_Pell_Reductions_2026-10-23/` |
+| `108-pell-residues/` | `ConZFC_Pell_Residues_2026-10-23.zip` | `e13c748234` | 214 | 185 | 27 | 2 | `ConZFC_Pell_Residues/` |
+| `109-valuations-centered/` | `ConZFC_Valuations_and_Centered_Certificates.zip` | `e13c748234` | 287 | 231 | 55 | 1 | `ConZFC_Valuations_and_Centered_Certificates/` |
+| `110-budget-interpolation/` | `ZFC_Diophantine_Budget_Interpolation_2026-10-24.zip` | `e13c748234` | 849 | 566 | 264 | 19 | `ZFC_Diophantine_Budget_Interpolation/` |
 | none (duplicate archive) | `ZFC_Diophantine_Centered_Compression_2026-10-24_Dependency.zip` | `922185752d` | 1 | 0 | 1 | 0 | none |
 
-Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
+Total: 7386 members = 5291 staged + 2043 omitted copies + 52 ignored.
 
 ### `76-structural-round11/` (`ConZFC_Structural_Reductions_Round11_2026-10-24.zip`)
 
@@ -3610,18 +3619,9 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 |---|---|
 | `commutative/horn_shared_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/horn_shared_source.json` |
 | `inherited/round10/calculus_api/SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/SOURCE_PINS.json` |
-| `inherited/round10/calculus_api/sources/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
-| `inherited/round10/calculus_api/sources/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `inherited/round10/calculus_api/sources/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
-| `inherited/round10/calculus_api/sources/ComposeRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/ComposeRepresentation.lean` |
-| `inherited/round10/calculus_api/sources/ComputationRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/ComputationRepresentation.lean` |
 | `inherited/round10/calculus_api/sources/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `inherited/round10/calculus_api/sources/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `inherited/round10/calculus_api/sources/NativeFormulaGraphs.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeFormulaGraphs.lean` |
-| `inherited/round10/calculus_api/sources/NativeGraphEnumerator.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeGraphEnumerator.lean` |
-| `inherited/round10/calculus_api/sources/QuarticCompiler.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuarticCompiler.lean` |
-| `inherited/round10/calculus_api/sources/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
-| `inherited/round10/calculus_api/sources/Representation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean` |
 | `inherited/round10/direct/AFFINE_PRODUCT_CERTIFICATES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/AFFINE_PRODUCT_CERTIFICATES.md` |
 | `inherited/round10/direct/COMMUTATIVE_CERTIFICATES.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/COMMUTATIVE_CERTIFICATES.md` |
 | `inherited/round10/free_carrier_audit/strengthened_lucas.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/report/lucas.tex` |
@@ -3679,15 +3679,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `lucas_audit/inherited/data/kernels.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/gapN86_kernels.json` |
 | `lucas_audit/inherited/integer10.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/integer10.json` |
 | `lucas_h1868/FIXED_COEFFICIENTS.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/FIXED_COEFFICIENTS.json` |
-| `lucas_h1868/PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/BASELINE_PROOF.md` |
 | `lucas_h1868/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
 | `lucas_h1868/data/K.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/K.bin.gz` |
 | `lucas_h1868/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `lucas_h1868/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `lucas_h1868/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `lucas_h1868/data/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `lucas_h1868/data/coefficients_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/data/coefficients_binding.json` |
-| `lucas_h1868/data/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `lucas_h1868/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `lucas_h1868/fixed/c000.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c000.signed-le.gz` |
 | `lucas_h1868/fixed/c001.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c001.signed-le.gz` |
@@ -3701,7 +3698,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `lucas_h1868/fixed/c009.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c009.signed-le.gz` |
 | `lucas_h1868/fixed/radix.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/radix.signed-le.gz` |
 | `lucas_h1868/fixed/threshold.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/threshold.signed-le.gz` |
-| `lucas_h1868/integer10.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_baseline.json` |
 | `lucas_h1868/provenance/BASELINE_SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/signed/SOURCE_PINS.json` |
 | `lucas_h1868/provenance/PACKING_SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/SOURCE_PINS.json` |
 | `lucas_h1868/provenance/upstream/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/COEFFICIENT_PROOF.md` |
@@ -3709,9 +3705,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `lucas_h1868/provenance/upstream/DEGREE_SEPARATED_SOURCE.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated/sun/section.tex` |
 | `lucas_h1868/provenance/upstream/QUARTIC31_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/nine/QUARTIC31_PROOF.md` |
 | `lucas_h1868/provenance/upstream/SIGNED10_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/SIGNED10_PROOF.md` |
-| `packing/certified/PROOF.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_PROOF.md` |
-| `packing/certified/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
-| `packing/certified/layout.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `packing/certified/prior_kernels.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/gapN86_kernels.json` |
 | `packing/certified/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `packing/factor_gap/prior_source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
@@ -3768,14 +3761,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positivity/inherited/quartic38.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/integer_forms/quartic38.json` |
 | `positivity/inherited/quartic41.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/quartic41.json` |
 | `positivity/inherited/quartic45.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/57-separated-degrees/quartic/quartic45.json` |
-| `review/formal/ALTERNATIVE_ENCODINGS.md` | `Computability/DiophantineConsistency/ALTERNATIVE_ENCODINGS.md` |
-| `review/formal/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `review/formal/PROPOSAL_REVIEW_WAVE10.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md` |
-| `review/formal/PROPOSAL_REVIEW_WAVE10_GUARDS.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10_GUARDS.md` |
-| `review/formal/PROPOSAL_REVIEW_WAVE10_NATIVE.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10_NATIVE.md` |
-| `review/formal/lean/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
-| `review/formal/lean/QuarticCompiler.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuarticCompiler.lean` |
-| `review/formal/lean/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
 | `review/packages/69-cones-pell/README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/README.md` |
 | `review/packages/69-cones-pell/integer/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/integer/PROOF.md` |
 | `review/packages/69-cones-pell/integer/octic27.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/integer/octic27.json` |
@@ -3826,24 +3811,8 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `baseline/ANNOTATED_REFUTATION_PR.md` | `Computability/DiophantineConsistency/ANNOTATED_REFUTATION_PR.md` |
 | `baseline/ConZFC_Joint_Positivity_Free_Lucas_2026-10-23.normal.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/ConZFC_Joint_Positivity_Free_Lucas_2026-10-23.optimized.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
-| `baseline/DIRECT_GRAPH.md` | `Computability/DiophantineConsistency/DIRECT_GRAPH.md` |
-| `baseline/DIRECT_PROGRAM.md` | `Computability/DiophantineConsistency/DIRECT_PROGRAM.md` |
-| `baseline/NATIVE_CALIBRATION52.md` | `Computability/DiophantineConsistency/NATIVE_CALIBRATION52.md` |
-| `baseline/NATIVE_CLAUSE54.md` | `Computability/DiophantineConsistency/NATIVE_CLAUSE54.md` |
-| `baseline/NATIVE_SPARSE_DIGITS54.md` | `Computability/DiophantineConsistency/NATIVE_SPARSE_DIGITS54.md` |
-| `baseline/NATURAL_REGISTER_PROGRAM.md` | `Computability/DiophantineConsistency/NATURAL_REGISTER_PROGRAM.md` |
-| `baseline/OBJECT_QUARTIC_COMPILER.md` | `Computability/DiophantineConsistency/OBJECT_QUARTIC_COMPILER.md` |
-| `baseline/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `baseline/PROPOSAL_REVIEW_WAVE10.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md` |
-| `baseline/PROPOSAL_REVIEW_WAVE10_GUARDS.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10_GUARDS.md` |
-| `baseline/PROPOSAL_REVIEW_WAVE10_NATIVE.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10_NATIVE.md` |
-| `baseline/QUADRATIC_GUARDED_GRAPHS.md` | `Computability/DiophantineConsistency/QUADRATIC_GUARDED_GRAPHS.md` |
-| `baseline/QUADRATIC_REGISTER_SYSTEM.md` | `Computability/DiophantineConsistency/QUADRATIC_REGISTER_SYSTEM.md` |
-| `baseline/QUADRATIC_TREE_CODE_GRAPHS.md` | `Computability/DiophantineConsistency/QUADRATIC_TREE_CODE_GRAPHS.md` |
-| `baseline/SHARED_REGISTER_RELATIONS.md` | `Computability/DiophantineConsistency/SHARED_REGISTER_RELATIONS.md` |
 | `baseline/ZFC_Diophantine_Signed_Bootstrap_2026-10-23.normal.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/con-zfc-centered-pell-gaps-2026-10-23.normal.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/con-zfc-centered-pell-gaps-2026-10-23.optimized.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
@@ -3860,11 +3829,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `baseline/con_zfc_guard_reanchoring.normal.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/con_zfc_guard_reanchoring.optimized.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `certificates/upstream/INERT_PRIME_CLOSURE_WAVE10.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/certificates/INERT_PRIME_CLOSURE.md` |
-| `circuits/PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_CIRCUIT_PROOF.md` |
 | `circuits/exact_ring.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/exact_ring.py` |
-| `circuits/joint22_degree16_dag.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent_dag.json` |
-| `guards/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
-| `guards/PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `guards/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `guards/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `guards/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -3916,8 +3881,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `incoming/con_zfc_calibrated_determinant_guards_2026-10-23.zip` | `docs/incoming/con_zfc_calibrated_determinant_guards_2026-10-23.zip (arrival 9513bd88ce)` |
 | `incoming/con_zfc_congruence_and_sextic_2026-10-23.zip` | `docs/incoming/con_zfc_congruence_and_sextic_2026-10-23.zip (arrival 9513bd88ce)` |
 | `incoming/con_zfc_guard_reanchoring.zip` | `docs/incoming/con_zfc_guard_reanchoring.zip (arrival 9513bd88ce)` |
-| `joint/PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `joint/joint22_degree16.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent.json` |
 | `pell/SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/SOURCE_PINS.json` |
 | `pell/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `pell/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
@@ -3997,7 +3960,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/upstream/source71_DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
 | `integer/upstream/source75_REVIEW.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/review/MATHEMATICAL_REVIEW.md` |
 | `integer/upstream/source75_SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `nine_positive/PROOF.md` | `Computability/DiophantineConsistency/candidates/radical-d-shared/source/PARENT_PROOF.md` |
 | `nine_positive/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/circuit.py` |
 | `nine_positive/coefficients/BUILD_RECEIPT.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `nine_positive/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
@@ -4021,8 +3983,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine_positive/coefficients/upstream/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
 | `nine_positive/data/kernels.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/sun/data/kernels.json` |
 | `nine_positive/data/layout.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/sun/data/layout.json` |
-| `nine_positive/data/radical.json` | `Computability/DiophantineConsistency/candidates/radical-d-shared/source/radical.json` |
-| `nine_positive/equation9.json` | `Computability/DiophantineConsistency/candidates/radical-d-shared/source/parent.json` |
 | `nine_positive/independent/independent_ring.py` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/independent_ring.py` |
 | `nine_positive/upstream/nine71.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/nine_positive/generated/composed9_positive.json` |
 | `nine_positive/upstream/nine71_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/nine_positive/PROOF.md` |
@@ -4045,10 +4005,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive11/upstream/70-residue-orientation__eleven__independent_audit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/independent_audit.py` |
 | `positive11/upstream/70-residue-orientation__eleven__p11_positive_degree325.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/p11_positive_degree325.json` |
 | `positive11/upstream/70-residue-orientation__positive__section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/positive/section.tex` |
-| `provenance/ALTERNATIVE_ENCODINGS.md` | `Computability/DiophantineConsistency/ALTERNATIVE_ENCODINGS.md` |
-| `provenance/NATIVE_CALIBRATION52.md` | `Computability/DiophantineConsistency/NATIVE_CALIBRATION52.md` |
-| `provenance/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `provenance/PROPOSAL_REVIEW_WAVE10.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md` |
 
 ### `81-centered-pell-norms/` (`con-zfc-centered-pell-norms.zip`)
 
@@ -4087,7 +4043,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `coefficients/recipe/source/proofs__INHERITED_P67_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/FIXED_BLANK_67_PROOF.md` |
 | `coefficients/recipe/source/proofs__INHERITED_PELL_AUDIT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/PELL_LEMMA_AUDIT.md` |
 | `coefficients/recipe/source/proofs__INHERITED_RETAINED59_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/proofs/INHERITED_RETAINED59_PROOF.md` |
-| `integer/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `integer/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -4106,8 +4061,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/upstream/signed40_sextic.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/signed40_sextic.json` |
 | `positive11/exact_ring.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/exact_ring.py` |
 | `positive11/independent_ring.py` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/independent_ring.py` |
-| `provenance/NATIVE_CALIBRATION52.md` | `Computability/DiophantineConsistency/NATIVE_CALIBRATION52.md` |
-| `provenance/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
 | `provenance/source61_signed_index.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/positive/SIGNED_INDEX_LEMMA.md` |
 | `provenance/source69_pell_descent.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
 | `provenance/source70_eleven_proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/PROOF.md` |
@@ -4117,7 +4070,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -4150,9 +4102,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `inherited/orientation70/quartic40_direct.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/quartic40_direct.json` |
 | `inherited/orientation70/sextic34.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/sextic34.json` |
 | `inherited/quartic41.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/quartic41.json` |
-| `nine_full_radical/PROOF.md` | `Computability/DiophantineConsistency/candidates/radical-jd-shared/source/PARENT_PROOF.md` |
 | `nine_full_radical/circuit_helper.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
-| `nine_full_radical/laurent9_positive.json` | `Computability/DiophantineConsistency/candidates/radical-jd-shared/source/parent.json` |
 | `nine_full_radical/upstream/31-sun10/coefficients/BUILD_RECEIPT.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `nine_full_radical/upstream/31-sun10/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `nine_full_radical/upstream/31-sun10/coefficients/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/COEFFICIENT_PROOF.md` |
@@ -4233,18 +4183,13 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
 | `integer/coefficients/cone_A.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_A.bin.gz` |
 | `integer/coefficients/cone_B.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_B.bin.gz` |
-| `integer/upstream/guards__PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `integer/upstream/joint__PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer/upstream/joint__joint22_degree16.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent.json` |
 | `norm10/FIXED_COEFFICIENTS.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/FIXED_COEFFICIENTS.json` |
 | `norm10/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
 | `norm10/data/K.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/K.bin.gz` |
 | `norm10/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `norm10/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `norm10/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `norm10/data/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `norm10/data/coefficients_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/data/coefficients_binding.json` |
-| `norm10/data/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `norm10/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `norm10/fixed/c000.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c000.signed-le.gz` |
 | `norm10/fixed/c001.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c001.signed-le.gz` |
@@ -4258,16 +4203,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `norm10/fixed/c009.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c009.signed-le.gz` |
 | `norm10/fixed/radix.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/radix.signed-le.gz` |
 | `norm10/fixed/threshold.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/threshold.signed-le.gz` |
-| `norm10/integer10_cubic.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_cubic.json` |
-| `norm10/integer10_linear.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_linear.json` |
-| `norm10/integer10_sixterm.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_sixterm.json` |
-| `norm10/upstream/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `norm10/upstream/PACKING_H1868_PROOF.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_PROOF.md` |
-| `norm10/upstream/SATURATED_LUCAS_PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/BASELINE_PROOF.md` |
-| `norm10/upstream/integer10.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_baseline.json` |
-| `positive11/DOUBLE_CENTER_CERTIFICATE.json` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/DOUBLE_CENTER_CERTIFICATE.json` |
-| `positive11/PROOF.md` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/PROOF112.md` |
-| `positive11/audit.py` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/audit112.py` |
 | `positive11/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `positive11/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
 | `positive11/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MF_source.bin.gz` |
@@ -4277,7 +4212,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive11/native_recipe/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md` |
 | `positive11/native_recipe/build_coefficients.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/build_coefficients.py` |
 | `positive11/native_recipe/k215_transitions.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/37-wave5/coefficients/k215_transitions.json` |
-| `positive11/p11_positive_degree211.json` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/parent112.json` |
 | `positive11/upstream/44-b4-sparse__native__COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/COEFFICIENT_BINDING.json` |
 | `positive11/upstream/61-congruence-carriers__positive__SIGNED_INDEX_LEMMA.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/positive/SIGNED_INDEX_LEMMA.md` |
 | `positive11/upstream/69-cones-pell__positive__PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
@@ -4299,9 +4233,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/coefficients/cone_A.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_A.bin.gz` |
 | `integer/coefficients/cone_B.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_B.bin.gz` |
 | `integer/requirements.txt` | `Algebra/SurrealNumbers/docs/surreal/gamma-functions/data/requirements.txt` |
-| `integer/upstream/guards__COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
-| `integer/upstream/joint__PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer/upstream/joint__joint22_degree16.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent.json` |
 | `integer/upstream/pell__upstream__69-cones-pell__positive__PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
 | `ten_positive/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `ten_positive/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
@@ -4309,10 +4240,8 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `ten_positive/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/beta.bin.gz` |
 | `ten_positive/upstream/K215_README.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md` |
 | `ten_positive/upstream/K215_proof.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
-| `ten_positive/upstream/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
 | `ten_positive/upstream/ORDINARY_BLANK_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `ten_positive/upstream/PELL_LEMMA_AUDIT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/PELL_LEMMA_AUDIT.md` |
-| `ten_positive/upstream/SIZE_REDUCTION.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `ten_positive/upstream/compact44_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/COEFFICIENT_BINDING.json` |
 | `ten_positive/upstream/compact44_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md` |
 | `ten_positive/upstream/compact44_recipe.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/build_coefficients.py` |
@@ -4329,11 +4258,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `integer/upstream/circuits/PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_CIRCUIT_PROOF.md` |
 | `integer/upstream/circuits/exact_ring.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/exact_ring.py` |
-| `integer/upstream/circuits/joint22_degree16_dag.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent_dag.json` |
-| `integer/upstream/guards/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
-| `integer/upstream/guards/PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `integer/upstream/guards/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer/upstream/guards/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer/upstream/guards/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -4377,15 +4302,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/upstream/guards/upstream/source34/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `integer/upstream/guards/upstream/source34/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `integer/upstream/guards/upstream/source34/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `integer/upstream/joint/PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer/upstream/joint/joint22_degree16.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent.json` |
 | `integer/upstream/source73_report.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/73-guard-reanchoring/report.tex` |
-| `nine/PROOF.md` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/PROOF.md` |
-| `nine/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/ARCHIVE_VERIFICATION.json` |
-| `nine/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/port_binding.json` |
-| `nine/coefficients/COMPACT54_ARITHMETIC.md` | `Computability/DiophantineConsistency/candidates/one-page/COMPACT54_ARITHMETIC.md` |
-| `nine/coefficients/COMPACT54_SEED.txt` | `Computability/DiophantineConsistency/candidates/one-page/COMPACT54_SEED.txt` |
-| `nine/coefficients/compact_tuple/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/COEFFICIENT_BINDING.json` |
 | `nine/coefficients/compact_tuple/K.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/K.bin.gz` |
 | `nine/coefficients/compact_tuple/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MC.bin.gz` |
 | `nine/coefficients/compact_tuple/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MF_source.bin.gz` |
@@ -4394,43 +4311,11 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/data/H2082/layout.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/layout.json` |
 | `nine/data/H2082/source.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/source.json` |
 | `nine/data/parent_source.json` | `Computability/DiophantineConsistency/data/split59/parent_source.json` |
-| `nine/fixed/BINDING.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/BINDING.json` |
-| `nine/fixed/base_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/base_scale.bin.gz` |
-| `nine/fixed/c_1f49e78f6521d0fe.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c001.bin.gz` |
-| `nine/fixed/c_33afcc0215e266df.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c007.bin.gz` |
-| `nine/fixed/c_50b8a3599b18e0a9.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/c_50b8a3599b18e0a9.bin.gz` |
-| `nine/fixed/c_a749e84ec6806d92.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c015.bin.gz` |
-| `nine/fixed/c_bd70eebd66b6d548.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c001.bin.gz` |
-| `nine/fixed/c_d048f06bd476e521.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c011.bin.gz` |
-| `nine/fixed/c_e24dea94f889b837.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c008.bin.gz` |
-| `nine/fixed/c_e3dd773f14077424.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c006.bin.gz` |
-| `nine/fixed/c_f69b40d0743298dc.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/c_f69b40d0743298dc.bin.gz` |
-| `nine/fixed/threshold_6480184.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/threshold_6480184.bin.gz` |
-| `nine/provenance/GAP_CIRCUIT_RECIPE66.md` | `Computability/DiophantineConsistency/GAP_CIRCUIT_RECIPE66.md` |
-| `nine/provenance/GAP_NINE_POLYNOMIAL66.md` | `Computability/DiophantineConsistency/GAP_NINE_POLYNOMIAL66.md` |
-| `nine/provenance/NATIVE_CLAUSE54.md` | `Computability/DiophantineConsistency/NATIVE_CLAUSE54.md` |
-| `nine/provenance/NATIVE_CONVOLUTION54.md` | `Computability/DiophantineConsistency/NATIVE_CONVOLUTION54.md` |
-| `nine/provenance/NATIVE_SOURCE_WINDOW.md` | `Computability/DiophantineConsistency/NATIVE_SOURCE_WINDOW.md` |
-| `nine/provenance/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
 | `nine/provenance/SOURCE31_ADAPTER.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/SOURCE31_ADAPTER.md` |
 | `nine/provenance/interface_proof.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/interface_proof.md` |
 | `nine/provenance/nine-PROOF.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/nine-PROOF.md` |
-| `nine/provenance/parent-CONFIG.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/CONFIG.json` |
-| `nine/provenance/parent-HEIGHT_CERTIFICATE.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/HEIGHT_CERTIFICATE.json` |
-| `nine/provenance/parent-PROVENANCE.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/PROVENANCE.json` |
-| `nine/provenance/parent-README.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/README.md` |
 | `nine/provenance/source-GAP_SOURCE_PROOF.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/source-GAP_SOURCE_PROOF.md` |
-| `nine/radical_P.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/radical_P.json` |
-| `nine/radical_defect.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/radical_defect.json` |
-| `nine/radical_upper_P.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/radical_upper_P.json` |
-| `nine/radical_upper_defect.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/radical_upper_defect.json` |
-| `nine/upstream/gap2082_natural.json` | `Computability/DiophantineConsistency/candidates/gap2082-shared-products/gap2082_natural.json` |
-| `nine/upstream/gap2082_positive.json` | `Computability/DiophantineConsistency/candidates/gap2082-shared-products/gap2082_positive.json` |
-| `nine/verify.py` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/archive_verify.py` |
 | `provenance/73-guard-reanchoring-report.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/73-guard-reanchoring/report.tex` |
-| `provenance/DiophantineConsistency-OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `provenance/DiophantineConsistency-SIZE_REDUCTION.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
-| `provenance/gap2082-shared-products-README.md` | `Computability/DiophantineConsistency/candidates/gap2082-shared-products/README.md` |
 
 ### `86-saturated-certificates/` (`ConZFC_Saturated_Certificates_2026-10-24.zip`)
 
@@ -4451,17 +4336,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/upstream/64-structural-reductions_integer41_PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
 | `integer/upstream/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
 | `integer/upstream/FIXED_BLANK_67_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
-| `integer/upstream/NATIVE_PELL_STEP_DOWN.md` | `Computability/DiophantineConsistency/NATIVE_PELL_STEP_DOWN.md` |
 | `integer/upstream/ODD_SCALE_27_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ODD_SCALE_27_PROOF.md` |
 | `integer/upstream/ORIENTATION_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
 | `integer/upstream/RATIONAL_PELL_DESCENT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
 | `integer/upstream/SIGNED_DOMAIN_29.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/SIGNED_DOMAIN_29.md` |
-| `integer/upstream/joint_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
 | `integer/upstream/polynomial_original.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/polynomial.py` |
 | `nine/baseline/ProductPell.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/audit/ProductPell.lean.txt` |
-| `nine/baseline/compact2082/README.md` | `Computability/DiophantineConsistency/candidates/gap2082-shared-products/README.md` |
-| `nine/baseline/compact2082/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/port_binding.json` |
-| `nine/baseline/compact2082/coefficients/compact_tuple/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/COEFFICIENT_BINDING.json` |
 | `nine/baseline/compact2082/coefficients/compact_tuple/K.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/K.bin.gz` |
 | `nine/baseline/compact2082/coefficients/compact_tuple/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MC.bin.gz` |
 | `nine/baseline/compact2082/coefficients/compact_tuple/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MF_source.bin.gz` |
@@ -4470,46 +4350,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/baseline/compact2082/data/H2082/layout.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/layout.json` |
 | `nine/baseline/compact2082/data/H2082/source.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/source.json` |
 | `nine/baseline/compact2082/data/parent_source.json` | `Computability/DiophantineConsistency/data/split59/parent_source.json` |
-| `nine/baseline/compact2082/fixed/BINDING.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/BINDING.json` |
-| `nine/baseline/compact2082/fixed/base_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/base_scale.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_1f49e78f6521d0fe.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c001.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_33afcc0215e266df.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c007.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_50b8a3599b18e0a9.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/c_50b8a3599b18e0a9.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_a749e84ec6806d92.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c015.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_bd70eebd66b6d548.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c001.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_d048f06bd476e521.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c011.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_e24dea94f889b837.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c008.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_e3dd773f14077424.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c006.bin.gz` |
-| `nine/baseline/compact2082/fixed/c_f69b40d0743298dc.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/c_f69b40d0743298dc.bin.gz` |
-| `nine/baseline/compact2082/fixed/threshold_6480184.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/threshold_6480184.bin.gz` |
-| `nine/baseline/compact2082/parent.json` | `Computability/DiophantineConsistency/candidates/gap2082-shared-products/gap2082_positive.json` |
 | `nine/baseline/compact2082/provenance/SOURCE31_ADAPTER.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/SOURCE31_ADAPTER.md` |
 | `nine/baseline/compact2082/provenance/interface_proof.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/interface_proof.md` |
 | `nine/baseline/compact2082/provenance/nine-PROOF.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/nine-PROOF.md` |
 | `nine/baseline/compact2082/provenance/source-GAP_SOURCE_PROOF.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/source-GAP_SOURCE_PROOF.md` |
-| `nine/baseline/h1868/PROOF.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_PROOF.md` |
 | `nine/baseline/h1868/prior_kernels.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/gapN86_kernels.json` |
 | `nine/baseline/inherited/nine71.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/nine_positive/generated/composed9_positive.json` |
 | `nine/baseline/inherited/nine71_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/nine_positive/PROOF.md` |
 | `nine/baseline/inherited/ratio59_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated/nine_free_adjunct/PROOF.md` |
 | `nine/baseline/inherited/source65_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/PROOF.md` |
-| `nine/certificates/FULL_NINE_SOUNDNESS.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/FULL_NINE_SOUNDNESS.md` |
-| `nine/certificates/FULL_RADICAL_H1868_AUDIT.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_AUDIT.md` |
-| `nine/certificates/SATURATED_POSITIVE_PELL_AUDIT.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/SATURATED_PELL.md` |
-| `nine/certificates/audit_h1868_degree.py` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/archive_audit.py` |
 | `nine/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/circuit.py` |
 | `nine/data/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `nine/data/K.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/K.bin.gz` |
 | `nine/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `nine/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `nine/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `nine/data/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
-| `nine/data/correction.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/correction.json` |
-| `nine/data/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
-| `nine/data/saturated_corrected_P.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/saturated_corrected_P.json` |
 | `nine/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
-| `nine/equations/h1868_complete.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/equations/h1868_complete.json` |
-| `nine/fixed/h1868/BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/BINDING.json` |
 | `nine/fixed/h1868/base_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/base_scale.bin.gz` |
 | `nine/fixed/h1868/c000.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c000.bin.gz` |
 | `nine/fixed/h1868/c001.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c001.bin.gz` |
@@ -4542,7 +4398,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/native_original31/upstream/27-COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/upstream/27-COEFFICIENT_PROOF.md` |
 | `nine/native_original31/upstream/k215_transitions.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/37-wave5/coefficients/k215_transitions.json` |
 | `nine/native_original31/upstream/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `nine/section.tex` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/section.tex` |
 | `positive11/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `positive11/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
 | `positive11/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MF_source.bin.gz` |
@@ -4556,7 +4411,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive11/provenance/source70_weighted_carrier_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/positive/section.tex` |
 | `provenance/K215_STATUS_AT_PIN.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md` |
 | `provenance/OBJECT_ZFC_AT_PIN.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/review/upstream/OBJECT_ZFC.md` |
-| `provenance/SIZE_REDUCTION_AT_PIN.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `verification/integer_normal.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `verification/integer_optimized.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `verification/nine_independent_normal.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
@@ -4573,16 +4427,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | Delivered member | Same bytes in the repository |
 |---|---|
 | `direct/fixed_base/horn_shared_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/horn_shared_source.json` |
-| `direct/sources/ArithmeticRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRepresentation.lean` |
-| `direct/sources/BoundedForallCertificate.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean` |
-| `direct/sources/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
-| `direct/sources/DivisionRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/DivisionRepresentation.lean` |
-| `direct/sources/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/FactorialRepresentation.lean` |
-| `direct/sources/PellRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PellRepresentation.lean` |
-| `direct/sources/PowerRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PowerRepresentation.lean` |
-| `direct/sources/QuarticCompiler.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuarticCompiler.lean` |
-| `direct/sources/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
-| `direct/sources/Representation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean` |
 | `direct_audit/sources/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct_audit/sources/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct_audit/sources/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
@@ -4613,9 +4457,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `inherited/round11/inherited/round10/integer_source/WANG943_LANGUAGE_AND_COMPILER.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/33-signed16/upstream/compiler/WANG943_COEFFICIENTS.md` |
 | `inherited/round11/inherited/round10/norm/final10/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/PROOF.md` |
 | `inherited/round11/inherited/round10/packing/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/PROOF.md` |
-| `inherited/round11/packing/certified/PROOF.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_PROOF.md` |
-| `inherited/round11/packing/certified/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
-| `inherited/round11/packing/certified/layout.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `inherited/round11/packing/certified/prior_kernels.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/gapN86_kernels.json` |
 | `inherited/round11/packing/certified/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `low_degree/coefficients/NEW_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/coefficients/NEW_BINDING.json` |
@@ -4629,7 +4470,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `low_degree/coefficients/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `low_degree/coefficients/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `low_degree/coefficients/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `low_degree/inherited/JOINT_PROJECTION_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
 | `low_degree/inherited/round11_dependencies/34-integer14_coefficients_COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
 | `low_degree/inherited/round11_dependencies/34-integer14_coefficients_sources_WANG943_LANGUAGE_AND_COMPILER.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/33-signed16/upstream/compiler/WANG943_COEFFICIENTS.md` |
 | `low_degree/inherited/round11_dependencies/62-sign-and-norm_quartic42_companions_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/62-sign-and-norm/quartic42/companions/PROOF.md` |
@@ -4646,17 +4486,13 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `low_degree/inherited/round11_dependencies/quartic38.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/integer_forms/quartic38.json` |
 | `low_degree/inherited/round11_dependencies/quartic41.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/quartic41.json` |
 | `low_degree/inherited/round11_dependencies/quartic45.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/57-separated-degrees/quartic/quartic45.json` |
-| `norm/BASELINE_PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/BASELINE_PROOF.md` |
 | `norm/FIXED_COEFFICIENTS.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/FIXED_COEFFICIENTS.json` |
-| `norm/PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/PARENT_PROOF.md` |
 | `norm/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
 | `norm/data/K.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/K.bin.gz` |
 | `norm/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `norm/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `norm/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `norm/data/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `norm/data/coefficients_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/data/coefficients_binding.json` |
-| `norm/data/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `norm/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `norm/fixed/c000.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c000.signed-le.gz` |
 | `norm/fixed/c001.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c001.signed-le.gz` |
@@ -4670,7 +4506,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `norm/fixed/c009.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c009.signed-le.gz` |
 | `norm/fixed/radix.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/radix.signed-le.gz` |
 | `norm/fixed/threshold.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/threshold.signed-le.gz` |
-| `norm/integer10_polar.json` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/parent471.json` |
 | `norm/provenance/BASELINE_SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/signed/SOURCE_PINS.json` |
 | `norm/provenance/PACKING_SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/packing/SOURCE_PINS.json` |
 | `norm/provenance/upstream/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/COEFFICIENT_PROOF.md` |
@@ -4709,20 +4544,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive/native/source/proofs__INHERITED_PELL_AUDIT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/PELL_LEMMA_AUDIT.md` |
 | `positive/native/source/proofs__INHERITED_RETAINED59_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/proofs/INHERITED_RETAINED59_PROOF.md` |
 | `requirements.txt` | `Algebra/SurrealNumbers/docs/surreal/gamma-functions/data/requirements.txt` |
-| `source/short_guard/PROOF.tex` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/SHORT_GUARD_PROOF.tex` |
-| `source/short_guard/layout.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `source/source_original.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 
 ### `88-root-fusion13/` (`ConZFC_13_Integer_Norms_2026-10-24.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -4733,71 +4560,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/LATEX_BUILD.log` |
-| `verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
+| `verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 
 ### `89-shared-certificates/` (`ConZFC_Shared_Certificates_2026-10-24.zip`)
 
@@ -4824,28 +4602,18 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `coordinate_family/upstream/source68/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `coordinate_family/upstream/source70/section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/section.tex` |
 | `coordinate_family/upstream/source71/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `direct/CALCULUS_AUDIT.json` | `Computability/DiophantineConsistency/candidates/shared-crt-beta-majorant/source/CALCULUS_AUDIT.json` |
 | `direct/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `direct/audit_power_graph.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_power_graph.py` |
-| `direct/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct/check_equation.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/check_equation.py` |
-| `direct/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/provenance/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/provenance/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/provenance/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct/provenance/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/provenance/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/provenance/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct/provenance/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
 | `report/build.sh` | `Topology/UnknotRecognition/proposals/06/docs/build.sh` |
 
 ### `90-fixed-prime-radicals/` (`ConZFC_FixedPrime_Radicals_2026-10-23.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -4856,29 +4624,15 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `coefficients/source34/build_coefficients.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `coefficients/source34/k215.tm` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm` |
 | `coefficients/source34/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `forms/DEGREE_PROOF.md` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/DEGREE_PROOF.md` |
-| `forms/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `forms/coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `forms/coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `forms/coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
 | `forms/coefficients/payloads/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
 | `forms/coefficients/payloads/cone_A.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_A.bin.gz` |
 | `forms/coefficients/payloads/cone_B.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_B.bin.gz` |
-| `forms/integer13_degree1392.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/integer13_degree1392.json` |
-| `forms/integer13_degree1408.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/integer13_degree1408.json` |
-| `forms/integer14_degree652.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/integer14_degree652.json` |
-| `forms/integer14_degree664.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/integer14_degree664.json` |
-| `forms/integer14_degree700.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/integer14_degree700.json` |
-| `forms/integer14_degree748.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/integer14_degree748.json` |
-| `forms/norm4_cleared_dag.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/norm4_cleared_dag.json` |
-| `forms/norm5_cleared_dag.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/forms/norm5_cleared_dag.json` |
-| `forms/verify_final_forms.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/univariate.py` |
-| `report/report.tex` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/report/report.tex` |
-| `upstream/ALTERNATIVE_ENCODINGS.md` | `Computability/DiophantineConsistency/ALTERNATIVE_ENCODINGS.md` |
 | `upstream/DETERMINANT_REPORT.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/report.tex` |
 | `upstream/RATIONAL_PELL_DESCENT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
 | `upstream/SIGNED_INDEX_LEMMA.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/positive/SIGNED_INDEX_LEMMA.md` |
-| `upstream/WAVE10_REVIEW.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md` |
 | `upstream/calibration/K215_CALIBRATION_PROOF.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `upstream/calibration/ZFC_INTERNALIZATION_SCOPE.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/63-sign-recovery/reviews/ZFC_INTERNALIZATION_SCOPE.md` |
 | `upstream/inherited/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
@@ -4958,9 +4712,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `ten_integer/upstream/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `ten_integer/upstream/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `ten_integer/upstream/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `ten_integer/upstream/data/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `ten_integer/upstream/data/coefficients_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/data/coefficients_binding.json` |
-| `ten_integer/upstream/data/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `ten_integer/upstream/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `ten_integer/upstream/fixed/c000.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c000.signed-le.gz` |
 | `ten_integer/upstream/fixed/c001.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c001.signed-le.gz` |
@@ -4974,20 +4726,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `ten_integer/upstream/fixed/c009.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c009.signed-le.gz` |
 | `ten_integer/upstream/fixed/radix.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/radix.signed-le.gz` |
 | `ten_integer/upstream/fixed/threshold.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/threshold.signed-le.gz` |
-| `ten_integer/upstream/integer10_cubic.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_cubic.json` |
-| `ten_integer/upstream/integer10_linear.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_linear.json` |
-| `ten_integer/upstream/integer10_sixterm.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_sixterm.json` |
-| `ten_integer/upstream/upstream/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `ten_integer/upstream/upstream/PACKING_H1868_PROOF.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_PROOF.md` |
-| `ten_integer/upstream/upstream/SATURATED_LUCAS_PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/BASELINE_PROOF.md` |
-| `ten_integer/upstream/upstream/integer10.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/parent_baseline.json` |
 | `SHA256SUMS.txt` | not staged: checksum ledger |
 
 ### `92-parity-norms/` (`con-zfc-parity-norms-2026-10-23.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -4999,11 +4743,9 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `coefficients/source34/k215.tm` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm` |
 | `coefficients/source34/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
 | `inherited/PAYLOAD_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
-| `provenance/forms-README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `provenance/incoming-README.md` | `docs/incoming/README.md` |
 | `provenance/source61-congruence-carriers.tex` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/source/SOURCE61.tex` |
 | `provenance/source67-README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/README.md` |
-| `upstream/pell-congruences-source/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `upstream/pell-congruences-source/coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `upstream/pell-congruences-source/coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `upstream/pell-congruences-source/coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5036,9 +4778,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `upstream/pell-congruences-source/inherited/orientation70/quartic40_direct.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/quartic40_direct.json` |
 | `upstream/pell-congruences-source/inherited/orientation70/sextic34.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/sextic34.json` |
 | `upstream/pell-congruences-source/inherited/quartic41.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/quartic41.json` |
-| `upstream/pell-congruences-source/nine_full_radical/PROOF.md` | `Computability/DiophantineConsistency/candidates/radical-jd-shared/source/PARENT_PROOF.md` |
 | `upstream/pell-congruences-source/nine_full_radical/circuit_helper.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
-| `upstream/pell-congruences-source/nine_full_radical/laurent9_positive.json` | `Computability/DiophantineConsistency/candidates/radical-jd-shared/source/parent.json` |
 | `upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/BUILD_RECEIPT.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/COEFFICIENT_PROOF.md` |
@@ -5112,20 +4852,10 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | Delivered member | Same bytes in the repository |
 |---|---|
 | `direct-quartic/horn_shared_source.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/direct/horn_shared_source.json` |
-| `direct-quartic/sources/ArithmeticRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRepresentation.lean` |
-| `direct-quartic/sources/BoundedForallCertificate.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean` |
-| `direct-quartic/sources/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
 | `direct-quartic/sources/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct-quartic/sources/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
-| `direct-quartic/sources/DivisionRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/DivisionRepresentation.lean` |
-| `direct-quartic/sources/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/FactorialRepresentation.lean` |
 | `direct-quartic/sources/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct-quartic/sources/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct-quartic/sources/PellRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PellRepresentation.lean` |
-| `direct-quartic/sources/PowerRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PowerRepresentation.lean` |
-| `direct-quartic/sources/QuarticCompiler.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuarticCompiler.lean` |
-| `direct-quartic/sources/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
-| `direct-quartic/sources/Representation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean` |
 | `integer-norms/coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer-norms/coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer-norms/coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5136,33 +4866,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer-norms/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `integer-norms/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `integer-norms/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `integer-norms/independent_degree/ring.py` | `Computability/DiophantineConsistency/candidates/joint22-centered/build.py` |
-| `integer20/parent/PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/PROOF.md` |
-| `integer20/parent/README.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/README.md` |
-| `integer20/parent/VERIFY.normal.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/VERIFY.normal.json` |
-| `integer20/parent/VERIFY.optimized.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/VERIFY.optimized.json` |
-| `integer20/parent/build.py` | `Computability/DiophantineConsistency/candidates/joint22-centered/build.py` |
-| `integer20/parent/circuit.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/circuit.json` |
-| `integer20/parent/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/BINDING.json` |
 | `integer20/parent/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer20/parent/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer20/parent/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
 | `integer20/parent/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
 | `integer20/parent/coefficients/cone_A.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_A.bin.gz` |
 | `integer20/parent/coefficients/cone_B.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_B.bin.gz` |
-| `integer20/parent/equation.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/equation.json` |
-| `integer20/parent/provenance/PARENT_CIRCUIT_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_CIRCUIT_PROOF.md` |
-| `integer20/parent/provenance/PARENT_COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
-| `integer20/parent/provenance/PARENT_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer20/parent/provenance/PINS.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PINS.json` |
-| `integer20/parent/provenance/parent.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent.json` |
-| `integer20/parent/provenance/parent_dag.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/parent_dag.json` |
-| `integer20/parent_ring.py` | `Computability/DiophantineConsistency/candidates/joint22-centered/build.py` |
-| `provenance/NATIVE_CALIBRATION52.md` | `Computability/DiophantineConsistency/NATIVE_CALIBRATION52.md` |
-| `provenance/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `provenance/PROPOSAL_REVIEW_WAVE11.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE11.md` |
-| `provenance/PROPOSAL_REVIEW_WAVE11_INTEGER.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE11_INTEGER.md` |
-| `provenance/PROPOSAL_REVIEW_WAVE11_POSITIVE.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE11_POSITIVE.md` |
 | `provenance/k215-calibration/K215_CALIBRATION_PROOF.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `provenance/k215-calibration/ZFC_INTERNALIZATION_SCOPE.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/63-sign-recovery/reviews/ZFC_INTERNALIZATION_SCOPE.md` |
 | `provenance/saturated-parent/coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
@@ -5180,28 +4889,16 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `provenance/saturated-parent/upstream/64-structural-reductions_integer41_PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
 | `provenance/saturated-parent/upstream/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
 | `provenance/saturated-parent/upstream/FIXED_BLANK_67_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
-| `provenance/saturated-parent/upstream/NATIVE_PELL_STEP_DOWN.md` | `Computability/DiophantineConsistency/NATIVE_PELL_STEP_DOWN.md` |
 | `provenance/saturated-parent/upstream/ODD_SCALE_27_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ODD_SCALE_27_PROOF.md` |
 | `provenance/saturated-parent/upstream/ORIENTATION_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
 | `provenance/saturated-parent/upstream/RATIONAL_PELL_DESCENT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
 | `provenance/saturated-parent/upstream/SIGNED_DOMAIN_29.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/SIGNED_DOMAIN_29.md` |
-| `provenance/saturated-parent/upstream/joint_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
 | `provenance/saturated-parent/upstream/polynomial_original.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/polynomial.py` |
 
 ### `94-direct-projection7617/` (`ConZFC_Direct_Projection_7617.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `provenance/arithmetic/ArithmeticRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRepresentation.lean` |
-| `provenance/arithmetic/BoundedForallCertificate.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean` |
-| `provenance/arithmetic/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
-| `provenance/arithmetic/DivisionRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/DivisionRepresentation.lean` |
-| `provenance/arithmetic/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/FactorialRepresentation.lean` |
-| `provenance/arithmetic/PellRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PellRepresentation.lean` |
-| `provenance/arithmetic/PowerRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PowerRepresentation.lean` |
-| `provenance/arithmetic/QuarticCompiler.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuarticCompiler.lean` |
-| `provenance/arithmetic/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
-| `provenance/arithmetic/Representation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean` |
 | `provenance/logical/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `provenance/logical/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `provenance/logical/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
@@ -5225,33 +4922,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | Delivered member | Same bytes in the repository |
 |---|---|
 | `build_report.sh` | `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/161-selectors-build.sh` |
-| `code/affine_contract.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/affine_contract.py` |
-| `code/audit_shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_power.py` |
-| `code/audit_shared_product.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_product.py` |
-| `code/direct_source.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source.py` |
-| `code/direct_source_factored.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source_factored.py` |
-| `code/shared_index_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_index_power.py` |
-| `code/shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_power.py` |
-| `code/shared_product_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_product_power.py` |
-| `code/synchronized_builder.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/synchronized_builder.py` |
-| `equations/natural522/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1224/natural_parent.json` |
-| `equations/natural529/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1231/natural_parent.json` |
-| `equations/natural596/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1298/natural_parent.json` |
-| `equations/source895/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1597/natural_parent.json` |
-| `equations/source895/majorant_certificate.json` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source850/majorant_certificate.json` |
-| `provenance/repository/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md` |
 | `provenance/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `provenance/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `provenance/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `provenance/upstream/calibration/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `provenance/upstream/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `provenance/upstream/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `provenance/upstream/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `provenance/upstream/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `provenance/upstream/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `provenance/upstream/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `provenance/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `provenance/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
 | `report.aux` | not staged: TeX build artifact (`*.aux`) |
 | `report.log` | not staged: log file (`*.log`) |
 | `report.out` | not staged: TeX build artifact (`*.out`) |
@@ -5260,29 +4936,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `direct/audit_common_radix.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/audit_common_radix.py` |
-| `direct/upstream/direct/CALCULUS_AUDIT.json` | `Computability/DiophantineConsistency/candidates/shared-crt-beta-majorant/source/CALCULUS_AUDIT.json` |
 | `direct/upstream/direct/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/upstream/direct/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `direct/upstream/direct/audit_power_graph.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_power_graph.py` |
-| `direct/upstream/direct/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct/upstream/direct/check_equation.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/check_equation.py` |
-| `direct/upstream/direct/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/upstream/direct/provenance/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/upstream/direct/provenance/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/upstream/direct/provenance/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct/upstream/direct/provenance/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/upstream/direct/provenance/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/upstream/direct/provenance/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct/upstream/direct/provenance/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct/upstream/direct/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `direct/verify_projection.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/verify_projection.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5293,74 +4952,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `guard13/upstream/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/LATEX_BUILD.log` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
-| `integer/audit_common_radix.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/audit_common_radix.py` |
-| `integer/terminal_elimination.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/terminal_elimination.py` |
-| `integer/verify_projection.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/verify_projection.py` |
+| `guard13/upstream/con-zfc-root-fusion-2026-10-24/verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 | `report/report.aux` | not staged: TeX build artifact (`*.aux`) |
 | `report/report.log` | not staged: log file (`*.log`) |
 | `report/report.out` | not staged: TeX build artifact (`*.out`) |
@@ -5370,22 +4977,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `MANIFEST.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/MANIFEST.json` |
-| `README.md` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/README.md` |
-| `build_trace13.py` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/build_trace13.py` |
-| `build_twelve.py` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/build_twelve.py` |
-| `check_twelve.py` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/check_twelve.py` |
-| `equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/equations/METRICS.json` |
-| `equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/equations/SCHEMA.md` |
-| `equations/monotone_intersective12_degree16000.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree16000.json` |
-| `equations/monotone_intersective12_degree4832.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree4832.json` |
-| `equations/trace13_degree1072.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/equations/trace13_degree1072.json` |
-| `inherited/root_fusion/FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `inherited/root_fusion/MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `inherited/root_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `inherited/root_fusion/RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `inherited/root_fusion/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `inherited/root_fusion/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `inherited/root_fusion/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `inherited/root_fusion/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `inherited/root_fusion/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5396,121 +4987,38 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `inherited/root_fusion/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `inherited/root_fusion/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `inherited/root_fusion/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `inherited/root_fusion/companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `inherited/root_fusion/companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `inherited/root_fusion/companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `inherited/root_fusion/companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `inherited/root_fusion/companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `inherited/root_fusion/companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `inherited/root_fusion/equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `inherited/root_fusion/equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `inherited/root_fusion/equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `inherited/root_fusion/equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `inherited/root_fusion/equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `inherited/root_fusion/equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `inherited/root_fusion/equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `inherited/root_fusion/equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `inherited/root_fusion/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `inherited/root_fusion/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `inherited/root_fusion/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `inherited/root_fusion/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `inherited/root_fusion/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `inherited/root_fusion/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `inherited/root_fusion/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `inherited/root_fusion/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `inherited/root_fusion/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `inherited/root_fusion/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `inherited/root_fusion/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `inherited/root_fusion/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `inherited/root_fusion/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `inherited/root_fusion/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `inherited/root_fusion/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `inherited/root_fusion/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `inherited/root_fusion/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `inherited/root_fusion/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `inherited/root_fusion/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `inherited/root_fusion/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `inherited/root_fusion/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `inherited/root_fusion/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `inherited/root_fusion/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `inherited/root_fusion/verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `inherited/root_fusion/verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `inherited/root_fusion/verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `inherited/root_fusion/verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/LATEX_BUILD.log` |
-| `inherited/root_fusion/verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `inherited/root_fusion/verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `inherited/root_fusion/verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `inherited/root_fusion/verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `inherited/root_fusion/verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `inherited/root_fusion/verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `inherited/root_fusion/verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `inherited/root_fusion/verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `inherited/root_fusion/verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
-| `proofs/INDEPENDENT_REVIEW_HILBERT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_REVIEW_HILBERT.md` |
-| `proofs/INDEPENDENT_TWELVE_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_TWELVE_AUDIT.md` |
-| `proofs/INTERPOLATION12.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/INTERPOLATION12.md` |
-| `proofs/TRACE13_PROOF.md` | `Computability/DiophantineConsistency/candidates/integer13-quadratic-trace/source/TRACE13_PROOF.md` |
-| `provenance/INHERITED_FILES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/INHERITED_FILES.json` |
-| `provenance/REVIEWED_INCOMING.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/REVIEWED_INCOMING.json` |
-| `provenance/signed_guards/JOINT_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `provenance/signed_guards/RESIDUE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `provenance/signed_guards/SOURCE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/signed_guards/SOURCE.json` |
-| `report/coefficient_recipe.tex` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/coefficient_recipe.tex` |
-| `report/report.aux` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.aux` |
-| `report/report.log` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.log` |
-| `report/report.out` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.out` |
-| `report/report.pdf` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.pdf` |
-| `report/report.tex` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.tex` |
-| `report/report.toc` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.toc` |
-| `report/trace13.tex` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/trace13.tex` |
-| `verification/BUILD_INFO.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/BUILD_INFO.json` |
-| `verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/report/report.log` |
-| `verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/PDF_QA.json` |
-| `verification/RELEASE_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/RELEASE_CHECKS.json` |
-| `verification/RELEASE_CHECKS_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/RELEASE_CHECKS_OPTIMIZED.json` |
-| `verification/TRACE13_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TRACE13_CHECKS.json` |
-| `verification/TRACE13_CHECKS_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TRACE13_CHECKS.json` |
-| `verification/TWELVE16000_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TWELVE16000_CHECKS.json` |
-| `verification/TWELVE16000_OPTIMIZED_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TWELVE16000_CHECKS.json` |
-| `verification/TWELVE4832_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TWELVE4832_CHECKS.json` |
-| `verification/TWELVE4832_OPTIMIZED_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TWELVE4832_CHECKS.json` |
-| `verification/trace_build/TRACE13_CHECKS.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verification/TRACE13_CHECKS.json` |
-| `verification/trace_build/trace13_degree1072.json` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/equations/trace13_degree1072.json` |
-| `verify.py` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/verify.py` |
+| `inherited/root_fusion/verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
+| `report/report.aux` | not staged: TeX build artifact (`*.aux`) |
+| `report/report.log` | not staged: log file (`*.log`) |
+| `report/report.out` | not staged: TeX build artifact (`*.out`) |
+| `report/report.toc` | not staged: TeX build artifact (`*.toc`) |
+| `verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 
 ### `98-congruence-certificates/` (`ConZFC_Congruence_Certificates_2026-10-24.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
 | `direct/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/upstream/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/upstream/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/upstream/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct/upstream/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/upstream/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/upstream/PellRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PellRepresentation.lean` |
-| `direct/upstream/PowerRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PowerRepresentation.lean` |
-| `direct/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/upstream/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
-| `direct/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `integer/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `integer/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5521,8 +5029,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `integer/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `integer/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `integer/dag_support.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `integer/upstream/fixed_prime/report/report.tex` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/report/report.tex` |
 | `integer/upstream/fixed_prime/upstream/calibration/K215_CALIBRATION_PROOF.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `integer/upstream/fixed_prime/upstream/calibration/ZFC_INTERNALIZATION_SCOPE.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/63-sign-recovery/reviews/ZFC_INTERNALIZATION_SCOPE.md` |
 | `integer/upstream/fixed_prime/upstream/inherited/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
@@ -5538,42 +5044,21 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer/upstream/fixed_prime/upstream/inherited/determinant71/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
 | `integer/upstream/fixed_prime/upstream/inherited/k215_proof.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `integer/upstream/fixed_prime/upstream/inherited/orientation70/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `integer/upstream/root_fusion/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `integer/upstream/root_fusion/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `integer/upstream/root_fusion/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `integer/upstream/root_fusion/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `integer/upstream/root_fusion/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `integer/upstream/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `integer/upstream/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `integer/upstream/root_fusion/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer/upstream/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `integer/upstream/root_fusion/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `integer/upstream/root_fusion/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `integer/upstream/root_fusion/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `integer/upstream/root_fusion/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `integer/upstream/root_fusion/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `integer/upstream/root_fusion/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `integer/upstream/root_fusion/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `integer/upstream/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `integer/upstream/root_fusion/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `integer/upstream/root_fusion/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `integer/upstream/root_fusion/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `integer/upstream/root_fusion/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `positive/CHECKS.json` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/CHECKS.json` |
-| `positive/CHECKS_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/CHECKS_OPTIMIZED.json` |
-| `positive/PROOF.md` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/PROOF.md` |
-| `positive/check.py` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/check.py` |
-| `positive/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/coefficients/BINDING.json` |
-| `positive/coefficients/README.md` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/coefficients/README.md` |
-| `positive/coefficients/SHA256.json` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/coefficients/SHA256.json` |
 | `positive/coefficients/payloads/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `positive/coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
 | `positive/coefficients/payloads/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MF_source.bin.gz` |
@@ -5583,91 +5068,40 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive/coefficients/recipe/SOURCE_PINS.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/SOURCE_PINS.json` |
 | `positive/coefficients/recipe/build_coefficients.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/build_coefficients.py` |
 | `positive/coefficients/recipe/k215_transitions.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/37-wave5/coefficients/k215_transitions.json` |
-| `positive/p12_free_J.json` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/p12_free_J.json` |
-| `positive/p13_free_J.json` | `Computability/DiophantineConsistency/candidates/free-j-polarized-positive/source/positive/p13_free_J.json` |
-| `positive/parents/ORDINARY13.md` | `Computability/DiophantineConsistency/research/ordinary-unit-products/ORDINARY13.md` |
-| `positive/parents/README.md` | `Computability/DiophantineConsistency/research/ordinary-unit-products/README.md` |
-| `positive/parents/p12_ordinary_degree70.json` | `Computability/DiophantineConsistency/research/ordinary-unit-products/p12_ordinary_degree70.json` |
-| `positive/parents/p13_ordinary_degree51.json` | `Computability/DiophantineConsistency/candidates/one-page-ordinary13/parent-polynomial.json` |
 | `requirements.txt` | `Algebra/SurrealNumbers/docs/surreal/gamma-functions/data/requirements.txt` |
 
 ### `99-shared-pell608/` (`ConZFC_Shared_Pell_608_2026-10-23.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `provenance/inherited/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `provenance/inherited/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `provenance/inherited/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `provenance/inherited/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `provenance/inherited/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `provenance/inherited/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `provenance/inherited/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `provenance/inherited/original_direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `src/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `tests/verify_affine_independent.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/verification/verify_affine_independent.py` |
 
 ### `100-quartics407-888/` (`ConZFC_407_888_Quartics_2026-10-24.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `code/integer_pipeline/audit_common_radix.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/audit_common_radix.py` |
-| `code/integer_pipeline/terminal_elimination.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/terminal_elimination.py` |
-| `code/integer_pipeline/verify_projection.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/verify_projection.py` |
-| `upstream/code/affine_contract.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/affine_contract.py` |
-| `upstream/code/audit_shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_power.py` |
-| `upstream/code/audit_shared_product.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_product.py` |
-| `upstream/code/direct_source.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source.py` |
-| `upstream/code/direct_source_factored.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source_factored.py` |
-| `upstream/code/shared_index_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_index_power.py` |
-| `upstream/code/shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_power.py` |
-| `upstream/code/shared_product_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_product_power.py` |
-| `upstream/code/synchronized_builder.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/synchronized_builder.py` |
 | `upstream/provenance/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `upstream/provenance/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `upstream/provenance/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `upstream/provenance/upstream/calibration/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `upstream/provenance/upstream/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `upstream/provenance/upstream/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `upstream/provenance/upstream/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `upstream/provenance/upstream/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `upstream/provenance/upstream/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `upstream/provenance/upstream/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `upstream/provenance/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `upstream/provenance/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
 | `SHA256SUMS` | not staged: checksum ledger |
 
 ### `101-constructive-reductions/` (`ConZFC_Constructive_Reductions_2026-10-23.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `direct/code/affine_contract.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/affine_contract.py` |
-| `direct/code/direct_source.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source.py` |
-| `direct/code/direct_source_factored.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source_factored.py` |
-| `direct/code/shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_power.py` |
-| `direct/code/shared_product_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_product_power.py` |
-| `direct/code/synchronized_builder.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/synchronized_builder.py` |
 | `direct/provenance/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/provenance/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `direct/provenance/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct/provenance/upstream/calibration/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/provenance/upstream/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/provenance/upstream/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct/provenance/upstream/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/provenance/upstream/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/provenance/upstream/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct/provenance/upstream/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct/provenance/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/provenance/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `integer14/PROOF.md` | `Computability/DiophantineConsistency/candidates/constructive-integer14-shared/source/parent/PROOF.md` |
-| `integer14/README.md` | `Computability/DiophantineConsistency/candidates/constructive-integer14-shared/source/parent/README.md` |
-| `integer14/SOURCE_PINS.json` | `Computability/DiophantineConsistency/candidates/constructive-integer14-shared/source/parent/SOURCE_PINS.json` |
-| `integer14/crt14_degree568.json` | `Computability/DiophantineConsistency/candidates/constructive-integer14-shared/source/parent-equation.json` |
-| `integer14/upstream/FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `integer14/upstream/MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `integer14/upstream/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `integer14/upstream/RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `integer14/upstream/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `integer14/upstream/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `integer14/upstream/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer14/upstream/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer14/upstream/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5678,75 +5112,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer14/upstream/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `integer14/upstream/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `integer14/upstream/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `integer14/upstream/companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `integer14/upstream/companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `integer14/upstream/companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `integer14/upstream/companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `integer14/upstream/companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `integer14/upstream/companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `integer14/upstream/companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `integer14/upstream/companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `integer14/upstream/companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `integer14/upstream/companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `integer14/upstream/equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `integer14/upstream/equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `integer14/upstream/equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `integer14/upstream/equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `integer14/upstream/equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `integer14/upstream/equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `integer14/upstream/equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `integer14/upstream/equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `integer14/upstream/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `integer14/upstream/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `integer14/upstream/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `integer14/upstream/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `integer14/upstream/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `integer14/upstream/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `integer14/upstream/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `integer14/upstream/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `integer14/upstream/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer14/upstream/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `integer14/upstream/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `integer14/upstream/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `integer14/upstream/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `integer14/upstream/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `integer14/upstream/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `integer14/upstream/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `integer14/upstream/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `integer14/upstream/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `integer14/upstream/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `integer14/upstream/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `integer14/upstream/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `integer14/upstream/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `integer14/upstream/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `integer14/upstream/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `integer14/upstream/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `integer14/upstream/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `integer14/upstream/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `integer14/upstream/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `integer14/upstream/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `integer14/upstream/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `integer14/upstream/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `integer14/upstream/verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `integer14/upstream/verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `integer14/upstream/verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `integer14/upstream/verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `integer14/upstream/verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `integer14/upstream/verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `integer14/upstream/verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `integer14/upstream/verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `integer14/upstream/verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `integer14/upstream/verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `integer14/upstream/verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `integer14/upstream/verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `integer14/upstream/verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `integer14/upstream/verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `integer14/upstream/verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
 | `nine/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/circuit.py` |
-| `nine/compact/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/port_binding.json` |
-| `nine/compact/coefficients/COMPACT54_ARITHMETIC.md` | `Computability/DiophantineConsistency/candidates/one-page/COMPACT54_ARITHMETIC.md` |
-| `nine/compact/coefficients/COMPACT54_SEED.txt` | `Computability/DiophantineConsistency/candidates/one-page/COMPACT54_SEED.txt` |
-| `nine/compact/coefficients/compact_tuple/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/COEFFICIENT_BINDING.json` |
 | `nine/compact/coefficients/compact_tuple/K.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/K.bin.gz` |
 | `nine/compact/coefficients/compact_tuple/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MC.bin.gz` |
 | `nine/compact/coefficients/compact_tuple/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MF_source.bin.gz` |
@@ -5758,27 +5139,15 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/compact/data/source.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/source.json` |
 | `nine/compact/inherited_h2082_kernels.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/kernels.json` |
 | `nine/compact/inherited_h2082_layout.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/layout.json` |
-| `nine/compact/provenance/GAP_CIRCUIT_RECIPE66.md` | `Computability/DiophantineConsistency/GAP_CIRCUIT_RECIPE66.md` |
-| `nine/compact/provenance/GAP_NINE_POLYNOMIAL66.md` | `Computability/DiophantineConsistency/GAP_NINE_POLYNOMIAL66.md` |
-| `nine/compact/provenance/NATIVE_CLAUSE54.md` | `Computability/DiophantineConsistency/NATIVE_CLAUSE54.md` |
-| `nine/compact/provenance/NATIVE_CONVOLUTION54.md` | `Computability/DiophantineConsistency/NATIVE_CONVOLUTION54.md` |
-| `nine/compact/provenance/NATIVE_SOURCE_WINDOW.md` | `Computability/DiophantineConsistency/NATIVE_SOURCE_WINDOW.md` |
-| `nine/compact/provenance/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
 | `nine/compact/provenance/SOURCE31_ADAPTER.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/SOURCE31_ADAPTER.md` |
 | `nine/compact/provenance/interface_proof.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/interface_proof.md` |
 | `nine/compact/provenance/nine-PROOF.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/nine-PROOF.md` |
-| `nine/compact/provenance/parent-CONFIG.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/CONFIG.json` |
-| `nine/compact/provenance/parent-HEIGHT_CERTIFICATE.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/HEIGHT_CERTIFICATE.json` |
-| `nine/compact/provenance/parent-PROVENANCE.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/PROVENANCE.json` |
-| `nine/compact/provenance/parent-README.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/README.md` |
 | `nine/compact/provenance/source-GAP_SOURCE_PROOF.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/source-GAP_SOURCE_PROOF.md` |
 | `nine/data/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `nine/data/K.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/K.bin.gz` |
 | `nine/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `nine/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `nine/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `nine/data/correction.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/correction.json` |
-| `nine/data/saturated_corrected_P.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/saturated_corrected_P.json` |
 | `nine/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `nine/fixed/boundary/base_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/base_scale.bin.gz` |
 | `nine/fixed/boundary/c000.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c000.bin.gz` |
@@ -5795,12 +5164,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/fixed/compact/base_scale.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/54-calibrated-carry/integer/fixed/beta_source.bin.gz` |
 | `nine/fixed/compact/c006.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/beta.bin.gz` |
 | `nine/fixed/compact/c008.bin.gz` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/54-calibrated-carry/integer/fixed/q00b46663e441.bin.gz` |
-| `nine/inherited/FULL_NINE_SOUNDNESS.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/FULL_NINE_SOUNDNESS.md` |
-| `nine/inherited/FULL_RADICAL_H1868_AUDIT.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_AUDIT.md` |
 | `nine/inherited/NineRatio.lean` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/32-integer15/references/NineRatio.lean` |
-| `nine/inherited/SATURATED_POSITIVE_PELL_AUDIT.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/SATURATED_PELL.md` |
-| `nine/inherited/h1868_code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
-| `nine/inherited/h1868_kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `nine/inherited/nine71.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/nine_positive/generated/composed9_positive.json` |
 | `nine/inherited/nine71_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/nine_positive/PROOF.md` |
 | `nine/inherited/ratio59_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated/nine_free_adjunct/PROOF.md` |
@@ -5830,22 +5194,8 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `signed_quotients/source/PROOF.md` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/PROOF.md` |
-| `signed_quotients/source/SOURCE_PINS.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/SOURCE_PINS.json` |
-| `signed_quotients/source/affine/BUILD.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/affine/BUILD.json` |
-| `signed_quotients/source/natural_equation.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/affine/equation.json` |
-| `signed_quotients/source/retained/equation.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/retained/equation.json` |
-| `signed_quotients/source/upstream/CALCULUS_AUDIT.json` | `Computability/DiophantineConsistency/candidates/shared-crt-beta-majorant/source/CALCULUS_AUDIT.json` |
 | `signed_quotients/source/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `signed_quotients/source/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `signed_quotients/source/upstream/audit_power_graph.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_power_graph.py` |
-| `signed_quotients/source/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/build_equation.py` |
-| `signed_quotients/source/upstream/check_equation.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/check_equation.py` |
-| `signed_quotients/source/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `signed_quotients/source/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `source_calibration/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
 | `source_calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
-| `source_calibration/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/FactorialRepresentation.lean` |
 | `source_calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `source_calibration/KEind222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEind222.lean` |
 | `source_calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
@@ -5853,27 +5203,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `source_calibration/KQ1ZF.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KQ1ZF.lean` |
 | `source_calibration/KSeedDirect222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KSeedDirect222.lean` |
 | `source_calibration/KUpper222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KUpper222.lean` |
-| `source_calibration/PellRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PellRepresentation.lean` |
-| `source_calibration/PowerRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PowerRepresentation.lean` |
-| `source_calibration/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
 | `SHA256SUMS` | not staged: checksum ledger |
 
 ### `103-shared-pell1873/` (`ConZFC_Shared_Pell_1873.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `proofs/SIGNED_INDEX_THEOREM.md` | `Computability/DiophantineConsistency/research/main-root-and-modulus-signs/SIGNED_INDEX_THEOREM_SOURCE.md` |
-| `proofs/UPSTREAM_PRIME_LIFT.md` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/PROOF.md` |
-| `provenance/arithmetic/ArithmeticRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRepresentation.lean` |
-| `provenance/arithmetic/BoundedForallCertificate.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallCertificate.lean` |
-| `provenance/arithmetic/BoundedForallRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/BoundedForallRepresentation.lean` |
-| `provenance/arithmetic/DivisionRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/DivisionRepresentation.lean` |
-| `provenance/arithmetic/FactorialRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/FactorialRepresentation.lean` |
-| `provenance/arithmetic/PellRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PellRepresentation.lean` |
-| `provenance/arithmetic/PowerRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/PowerRepresentation.lean` |
-| `provenance/arithmetic/QuarticCompiler.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/QuarticCompiler.lean` |
-| `provenance/arithmetic/RemainderRepresentation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/RemainderRepresentation.lean` |
-| `provenance/arithmetic/Representation.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Representation.lean` |
 | `provenance/logical/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `provenance/logical/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `provenance/logical/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
@@ -5897,59 +5232,13 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `direct/audit_common_radix.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/audit_common_radix.py` |
-| `direct/input/expanded_polynomial.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1224/expanded_polynomial.json` |
-| `direct/output/expanded_polynomial.json` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/from1224-support4/expanded_polynomial.json` |
-| `direct/source/parent_natural.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1224/natural_parent.json` |
-| `direct/terminal_elimination.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/terminal_elimination.py` |
 | `direct/upstream/synchronized/build_report.sh` | `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/161-selectors-build.sh` |
-| `direct/upstream/synchronized/code/affine_contract.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/affine_contract.py` |
-| `direct/upstream/synchronized/code/audit_shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_power.py` |
-| `direct/upstream/synchronized/code/audit_shared_product.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_product.py` |
-| `direct/upstream/synchronized/code/direct_source.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source.py` |
-| `direct/upstream/synchronized/code/direct_source_factored.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source_factored.py` |
-| `direct/upstream/synchronized/code/shared_index_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_index_power.py` |
-| `direct/upstream/synchronized/code/shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_power.py` |
-| `direct/upstream/synchronized/code/shared_product_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_product_power.py` |
-| `direct/upstream/synchronized/code/synchronized_builder.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/synchronized_builder.py` |
-| `direct/upstream/synchronized/equations/natural522/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1224/natural_parent.json` |
-| `direct/upstream/synchronized/equations/natural529/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1231/natural_parent.json` |
-| `direct/upstream/synchronized/equations/natural596/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1298/natural_parent.json` |
-| `direct/upstream/synchronized/equations/source895/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1597/natural_parent.json` |
-| `direct/upstream/synchronized/equations/source895/majorant_certificate.json` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source850/majorant_certificate.json` |
-| `direct/upstream/synchronized/provenance/repository/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md` |
 | `direct/upstream/synchronized/provenance/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/upstream/synchronized/provenance/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `direct/upstream/synchronized/provenance/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct/upstream/synchronized/provenance/upstream/calibration/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/upstream/synchronized/provenance/upstream/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/upstream/synchronized/provenance/upstream/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct/upstream/synchronized/provenance/upstream/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/upstream/synchronized/provenance/upstream/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/upstream/synchronized/provenance/upstream/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct/upstream/synchronized/provenance/upstream/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct/upstream/synchronized/provenance/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/upstream/synchronized/provenance/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `direct/verify_projection.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/verify_projection.py` |
-| `integer12/CHECKS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/CHECKS.json` |
-| `integer12/CHECKS_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/CHECKS.json` |
-| `integer12/EXACT_NORM.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/EXACT_NORM.json` |
-| `integer12/EXACT_NORM_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/EXACT_NORM_OPTIMIZED.json` |
-| `integer12/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/README.md` |
-| `integer12/baselines/monotone_intersective12_degree16000.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree16000.json` |
-| `integer12/baselines/monotone_intersective12_degree4832.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree4832.json` |
-| `integer12/build_prime12.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/build_prime12.py` |
-| `integer12/check_norm_exact.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/check_norm_exact.py` |
-| `integer12/check_prime12.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/check_prime12.py` |
-| `integer12/circuit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/circuit.py` |
-| `integer12/equations/prime_separated12_degree2400.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/equations/prime_separated12_degree2400.json` |
-| `integer12/equations/prime_separated12_degree2912.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/equations/prime_separated12_degree2912.json` |
-| `integer12/inherited/root_fusion/FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `integer12/inherited/root_fusion/MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `integer12/inherited/root_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `integer12/inherited/root_fusion/RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `integer12/inherited/root_fusion/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `integer12/inherited/root_fusion/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `integer12/inherited/root_fusion/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer12/inherited/root_fusion/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer12/inherited/root_fusion/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -5960,86 +5249,24 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer12/inherited/root_fusion/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `integer12/inherited/root_fusion/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `integer12/inherited/root_fusion/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `integer12/inherited/root_fusion/companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `integer12/inherited/root_fusion/equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `integer12/inherited/root_fusion/equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `integer12/inherited/root_fusion/equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `integer12/inherited/root_fusion/equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `integer12/inherited/root_fusion/equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `integer12/inherited/root_fusion/equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `integer12/inherited/root_fusion/equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `integer12/inherited/root_fusion/equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `integer12/inherited/root_fusion/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `integer12/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `integer12/inherited/root_fusion/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `integer12/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `integer12/inherited/root_fusion/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `integer12/inherited/root_fusion/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `integer12/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `integer12/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `integer12/inherited/root_fusion/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `integer12/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `integer12/inherited/root_fusion/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `integer12/inherited/root_fusion/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `integer12/inherited/root_fusion/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `integer12/inherited/root_fusion/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `integer12/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `integer12/inherited/root_fusion/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `integer12/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `integer12/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `integer12/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `integer12/inherited/root_fusion/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `integer12/inherited/root_fusion/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `integer12/inherited/root_fusion/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `integer12/inherited/root_fusion/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `integer12/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `integer12/inherited/root_fusion/verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `integer12/inherited/root_fusion/verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `integer12/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `integer12/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `integer12/inherited/root_fusion/verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/LATEX_BUILD.log` |
-| `integer12/inherited/root_fusion/verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `integer12/inherited/root_fusion/verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `integer12/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `integer12/inherited/root_fusion/verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `integer12/inherited/root_fusion/verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `integer12/inherited/root_fusion/verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `integer12/inherited/root_fusion/verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `integer12/inherited/root_fusion/verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `integer12/inherited/root_fusion/verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `integer12/inherited/root_fusion/verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
-| `integer12/norm5.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `integer12/proofs/INDEPENDENT_REVIEW_HILBERT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_REVIEW_HILBERT.md` |
-| `integer12/proofs/INDEPENDENT_TWELVE_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_TWELVE_AUDIT.md` |
-| `integer12/proofs/INTERPOLATION12.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/INTERPOLATION12.md` |
-| `integer12/proofs/PRIME_TWELVE.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/PRIME_TWELVE.md` |
-| `integer12/proofs/TRACE13_PROOF.md` | `Computability/DiophantineConsistency/candidates/integer13-quadratic-trace/source/TRACE13_PROOF.md` |
-| `integer12/provenance/INHERITED_FILES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/INHERITED_FILES.json` |
-| `integer12/provenance/REVIEWED_INCOMING.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/REVIEWED_INCOMING.json` |
-| `integer12/provenance/signed_guards/JOINT_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `integer12/provenance/signed_guards/RESIDUE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `integer12/provenance/signed_guards/SOURCE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/signed_guards/SOURCE.json` |
-| `supplemental/ordinary98/PARENT_PROOF.md` | `Computability/DiophantineConsistency/research/ordinary-unit-products/README.md` |
 | `supplemental/ordinary98/inherited/ADAPTIVE_CARRIER_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/73-guard-reanchoring/positive/PROOF.md` |
 | `supplemental/ordinary98/inherited/ORDINARY_BLANK_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
-| `supplemental/ordinary98/inherited/SHORT_UNIT_PRODUCTS.md` | `Computability/DiophantineConsistency/research/short-unit-products/README.md` |
 | `supplemental/ordinary98/native/ACTIVE_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/native/ACTIVE_BINDING.json` |
 | `supplemental/ordinary98/native/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/COEFFICIENT_BINDING.json` |
 | `supplemental/ordinary98/native/FETCH_PROVENANCE.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/native/FETCH_PROVENANCE.json` |
@@ -6070,52 +5297,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `direct/upstream/synchronized/report.aux` | not staged: TeX build artifact (`*.aux`) |
 | `direct/upstream/synchronized/report.log` | not staged: log file (`*.log`) |
 | `direct/upstream/synchronized/report.out` | not staged: TeX build artifact (`*.out`) |
+| `integer12/inherited/root_fusion/verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 | `verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 
 ### `105-bootstrap-certificates/` (`ConZFC_Bootstrap_Certificates_2026-10-24.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `checks/baselines/eleven111.json` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/positive11.json` |
-| `checks/baselines/natural522/equation.json` | `Computability/DiophantineConsistency/candidates/synchronized-row-guards/integer1224/natural_parent.json` |
-| `checks/baselines/nine433.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/saturated_positive.json` |
-| `checks/baselines/nine475.json` | `Computability/DiophantineConsistency/candidates/order7-shared-products/order7_positive.json` |
-| `direct/code/affine_contract.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/affine_contract.py` |
-| `direct/code/audit_shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_power.py` |
-| `direct/code/audit_shared_product.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_product.py` |
-| `direct/code/direct_source.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source.py` |
-| `direct/code/direct_source_factored.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source_factored.py` |
-| `direct/code/shared_index_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_index_power.py` |
-| `direct/code/shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_power.py` |
-| `direct/code/shared_product_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_product_power.py` |
-| `direct/code/synchronized_builder.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/synchronized_builder.py` |
 | `direct/equations/parent781/index_shift_certificate.json` | `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/intake212-catalogue/diagnostics.json` |
 | `direct/equations/parent782/index_shift_certificate.json` | `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/intake212-catalogue/diagnostics.json` |
 | `direct/equations/parent783/index_shift_certificate.json` | `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/intake212-catalogue/diagnostics.json` |
-| `direct/provenance/repository/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md` |
 | `direct/provenance/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/provenance/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `direct/provenance/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct/provenance/upstream/calibration/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/provenance/upstream/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/provenance/upstream/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct/provenance/upstream/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/provenance/upstream/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/provenance/upstream/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct/provenance/upstream/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct/provenance/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct/provenance/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `nine/fixed/compact2082/base_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/base_scale.bin.gz` |
-| `nine/fixed/compact2082/c_1f49e78f6521d0fe.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c001.bin.gz` |
-| `nine/fixed/compact2082/c_33afcc0215e266df.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c007.bin.gz` |
-| `nine/fixed/compact2082/c_50b8a3599b18e0a9.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/c_50b8a3599b18e0a9.bin.gz` |
-| `nine/fixed/compact2082/c_a749e84ec6806d92.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c015.bin.gz` |
-| `nine/fixed/compact2082/c_bd70eebd66b6d548.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c001.bin.gz` |
-| `nine/fixed/compact2082/c_d048f06bd476e521.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c011.bin.gz` |
-| `nine/fixed/compact2082/c_e24dea94f889b837.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c008.bin.gz` |
-| `nine/fixed/compact2082/c_e3dd773f14077424.bin.gz` | `Computability/DiophantineConsistency/candidates/split116-compact/compact54/fixed/c006.bin.gz` |
-| `nine/fixed/compact2082/c_f69b40d0743298dc.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/c_f69b40d0743298dc.bin.gz` |
-| `nine/fixed/compact2082/threshold_6480184.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/fixed/threshold_6480184.bin.gz` |
 | `nine/fixed/h1868/base_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/base_scale.bin.gz` |
 | `nine/fixed/h1868/c000.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c000.bin.gz` |
 | `nine/fixed/h1868/c001.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c001.bin.gz` |
@@ -6128,19 +5325,11 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/fixed/h1868/c008.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c008.bin.gz` |
 | `nine/fixed/h1868/c009.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/c009.bin.gz` |
 | `nine/fixed/h1868/threshold_scale.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/fixed/h1868/threshold_scale.bin.gz` |
-| `nine/inherited/compact54-proof.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/README.md` |
 | `nine/inherited/gap-source-proof.md` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/provenance/source-GAP_SOURCE_PROOF.md` |
-| `nine/inherited/h1868-full-soundness.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/FULL_NINE_SOUNDNESS.md` |
-| `nine/inherited/h1868-peer-review.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/PEER_REVIEW.md` |
-| `nine/inherited/h1868-source-proof.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/H1868_PROOF.md` |
 | `nine/inherited/original31-binding.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `nine/inherited/original31-coefficient-proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/COEFFICIENT_PROOF.md` |
 | `nine/inherited/ratio-proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated/nine_free_adjunct/PROOF.md` |
-| `nine/inherited/saturated-peer-review.md` | `Computability/DiophantineConsistency/candidates/saturated-nine/PEER_REVIEW.md` |
-| `nine/inherited/saturated-proof.md` | `Computability/DiophantineConsistency/candidates/saturated-nine/source/PROOF.md` |
-| `nine/inherited/saturation-audit.md` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/SATURATED_PELL.md` |
 | `nine/inherited/source65-proof.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps/nine/PROOF.md` |
-| `nine/parents/compact2082.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/saturated_positive.json` |
 | `nine/ports/compact2082/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/K.bin.gz` |
 | `nine/ports/compact2082/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MC.bin.gz` |
 | `nine/ports/compact2082/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/coefficients/compact_tuple/MF_source.bin.gz` |
@@ -6152,15 +5341,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `nine/source/compact2082/kernels.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/kernels.json` |
 | `nine/source/compact2082/layout.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/layout.json` |
 | `nine/source/compact2082/source.json` | `Computability/DiophantineConsistency/candidates/gap2082-compact54/data/H2082/source.json` |
-| `nine/source/h1868/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
-| `nine/source/h1868/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `nine/source/h1868/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
-| `norms/upstream/compact_norms.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `norms/upstream/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `norms/upstream/positive11/ADAPTIVE_PROOF.md` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/PROOF.md` |
-| `norms/upstream/positive11/DOUBLE_CENTER_CERTIFICATE.json` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/DOUBLE_CENTER_CERTIFICATE.json` |
-| `norms/upstream/positive11/PROOF.md` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/PROOF112.md` |
-| `norms/upstream/positive11/audit.py` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/audit112.py` |
 | `norms/upstream/positive11/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `norms/upstream/positive11/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
 | `norms/upstream/positive11/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MF_source.bin.gz` |
@@ -6170,7 +5351,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `norms/upstream/positive11/native_recipe/PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md` |
 | `norms/upstream/positive11/native_recipe/build_coefficients.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/build_coefficients.py` |
 | `norms/upstream/positive11/native_recipe/k215_transitions.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/37-wave5/coefficients/k215_transitions.json` |
-| `norms/upstream/positive11/p11_positive_degree211.json` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/parent112.json` |
 | `norms/upstream/positive11/upstream/44-b4-sparse__native__COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/COEFFICIENT_BINDING.json` |
 | `norms/upstream/positive11/upstream/61-congruence-carriers__positive__SIGNED_INDEX_LEMMA.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/positive/SIGNED_INDEX_LEMMA.md` |
 | `norms/upstream/positive11/upstream/69-cones-pell__positive__PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell/positive/PROOF.md` |
@@ -6179,11 +5359,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `norms/upstream/positive11/upstream/70-residue-orientation__eleven__independent_audit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/independent_audit.py` |
 | `norms/upstream/positive11/upstream/70-residue-orientation__eleven__p11_positive_degree325.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/eleven/p11_positive_degree325.json` |
 | `norms/upstream/positive11/upstream/70-residue-orientation__positive__section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/positive/section.tex` |
-| `norms/upstream/positive11/upstream/PROOF112.md` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/upstream/PROOF112.md` |
-| `norms/upstream/positive11_111.json` | `Computability/DiophantineConsistency/candidates/positive11-adaptive-shears/positive11.json` |
-| `norms/upstream/rootfusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `norms/upstream/rootfusion/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `norms/upstream/rootfusion/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `norms/upstream/rootfusion/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `norms/upstream/rootfusion/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `norms/upstream/rootfusion/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6194,37 +5369,24 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `norms/upstream/rootfusion/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `norms/upstream/rootfusion/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `norms/upstream/rootfusion/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `norms/upstream/rootfusion/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `norms/upstream/rootfusion/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `norms/upstream/rootfusion/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `norms/upstream/rootfusion/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `norms/upstream/rootfusion/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `norms/upstream/rootfusion/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
 
 ### `106-compact-certificates-round13/` (`ConZFC_Compact_Proof_Certificates_Round13_2026-10-24.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `direct/sources/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct/sources/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct/sources/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
-| `direct/sources/FIXED_POWER_BOUND_PROOF.md` | `Computability/DiophantineConsistency/candidates/shared-crt-fixed-power-bound/PROOF.md` |
 | `direct/sources/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct/sources/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct/sources/PRIME_LIFT_PROOF.md` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/PROOF.md` |
 | `direct/sources/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct/sources/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct/sources/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct/sources/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
 | `norm/FIXED_COEFFICIENTS.json` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/FIXED_COEFFICIENTS.json` |
 | `norm/circuit.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
 | `norm/data/K.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/K.bin.gz` |
 | `norm/data/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MC.bin.gz` |
 | `norm/data/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/MF_source.bin.gz` |
 | `norm/data/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/beta.bin.gz` |
-| `norm/data/code.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/code.json` |
 | `norm/data/coefficients_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/data/coefficients_binding.json` |
-| `norm/data/kernels.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/kernels.json` |
 | `norm/data/source.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/source.json` |
 | `norm/fixed/c000.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c000.signed-le.gz` |
 | `norm/fixed/c001.signed-le.gz` | `Computability/DiophantineConsistency/candidates/norm-tail-sharing/source10/fixed/c001.signed-le.gz` |
@@ -6245,15 +5407,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `norm/provenance/upstream/DEGREE_SEPARATED_SOURCE.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/59-degree-separated/sun/section.tex` |
 | `norm/provenance/upstream/QUARTIC31_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/nine/QUARTIC31_PROOF.md` |
 | `norm/provenance/upstream/SIGNED10_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/signed10/SIGNED10_PROOF.md` |
-| `norm/source/BASELINE_PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/BASELINE_PROOF.md` |
-| `norm/source/PROOF.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/PARENT_PROOF.md` |
-| `norm/source/README.md` | `Computability/DiophantineConsistency/candidates/short-guard-shears/README.md` |
-| `norm/source/SHORT_GUARD_PROOF.tex` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/SHORT_GUARD_PROOF.tex` |
-| `norm/source/cubic.json` | `Computability/DiophantineConsistency/candidates/short-guard-shears/cubic.json` |
-| `norm/source/integer10_polar.json` | `Computability/DiophantineConsistency/candidates/short-guard-shears/source/parent471.json` |
-| `norm/source/linear.json` | `Computability/DiophantineConsistency/candidates/short-guard-shears/linear.json` |
-| `norm/source/sixterm.json` | `Computability/DiophantineConsistency/candidates/short-guard-shears/sixterm.json` |
-| `radicals/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `radicals/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `radicals/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `radicals/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6264,15 +5417,9 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `radicals/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `radicals/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `radicals/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `radicals/inherited/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `radicals/inherited/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `radicals/inherited/CRT1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `radicals/inherited/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `radicals/inherited/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `radicals/inherited/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
-| `radicals/inherited/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `radicals/inherited/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `radicals/inherited/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `radicals/inherited/pell_congruences/inherited/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
 | `radicals/inherited/pell_congruences/inherited/ODD_SCALE_27_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ODD_SCALE_27_PROOF.md` |
 | `radicals/inherited/pell_congruences/inherited/PAIR_GUARD_PROOF68.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
@@ -6298,14 +5445,12 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `radicals/inherited/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `radicals/inherited/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `radicals/inherited/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `radicals/inherited/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `radicals/inherited/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `radicals/inherited/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `radicals/inherited/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `radicals/inherited/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `radicals/inherited/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `radicals/inherited/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `radicals12/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `radicals12/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `radicals12/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `radicals12/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6316,42 +5461,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `radicals12/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `radicals12/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `radicals12/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `radicals12/inherited/INDEPENDENT_REVIEW_HILBERT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_REVIEW_HILBERT.md` |
-| `radicals12/inherited/INDEPENDENT_TWELVE_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_TWELVE_AUDIT.md` |
-| `radicals12/inherited/INHERITED_FILES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/INHERITED_FILES.json` |
-| `radicals12/inherited/INTERPOLATION12.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/INTERPOLATION12.md` |
-| `radicals12/inherited/REVIEWED_INCOMING.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/REVIEWED_INCOMING.json` |
-| `radicals12/inherited/TRACE13_PROOF.md` | `Computability/DiophantineConsistency/candidates/integer13-quadratic-trace/source/TRACE13_PROOF.md` |
-| `radicals12/inherited/root_fusion_provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `radicals12/inherited/root_fusion_provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `radicals12/inherited/root_fusion_provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `radicals12/inherited/root_fusion_provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `radicals12/inherited/root_fusion_provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `radicals12/inherited/root_fusion_provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `radicals12/inherited/root_fusion_provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `radicals12/inherited/root_fusion_provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `radicals12/inherited/root_fusion_provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `radicals12/inherited/root_fusion_provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `radicals12/inherited/root_fusion_provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `radicals12/inherited/root_fusion_provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `radicals12/inherited/root_fusion_provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `radicals12/inherited/root_fusion_provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `radicals12/inherited/root_fusion_provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `radicals12/inherited/root_fusion_provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `radicals12/inherited/root_fusion_provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `radicals12/inherited/root_fusion_provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `radicals12/inherited/root_fusion_provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `radicals12/inherited/signed_guards/JOINT_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `radicals12/inherited/signed_guards/RESIDUE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `radicals12/inherited/signed_guards/SOURCE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/signed_guards/SOURCE.json` |
 | `requirements.txt` | `Algebra/SurrealNumbers/docs/surreal/gamma-functions/data/requirements.txt` |
 | `late_direct_audit/FINAL_REPLAY.log` | not staged: log file (`*.log`) |
 
@@ -6360,12 +5485,10 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | Delivered member | Same bytes in the repository |
 |---|---|
 | `direct780/upstream/ConZFC_407_888_Quartics_2026-10-24.zip` | `docs/incoming/ConZFC_407_888_Quartics_2026-10-24.zip (arrival 3635835b1e)` |
-| `direct780/vendor/terminal_elimination.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/terminal_elimination.py` |
 | `dyadic10/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `dyadic10/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
 | `dyadic10/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MF_source.bin.gz` |
 | `dyadic10/coefficients/beta.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/beta.bin.gz` |
-| `dyadic10/upstream/PROOF816.md` | `Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/PROOF.md` |
 | `provenance/calibration61.tex` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/source/SOURCE61.tex` |
 | `provenance/calibration61_README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/README.md` |
 | `provenance/compact44_native_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md` |
@@ -6375,30 +5498,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `code/integer_domain/audit_common_radix.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/audit_common_radix.py` |
-| `code/integer_domain/terminal_elimination.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/terminal_elimination.py` |
-| `code/integer_domain/verify_projection.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/verify_projection.py` |
-| `inherited/integer_domain/SIGNED_INDEX_THEOREM.md` | `Computability/DiophantineConsistency/research/main-root-and-modulus-signs/SIGNED_INDEX_THEOREM_SOURCE.md` |
 | `inputs/ConZFC_407_888_Quartics_2026-10-24.zip` | `docs/incoming/ConZFC_407_888_Quartics_2026-10-24.zip (arrival 3635835b1e)` |
-| `supplemental/integer12/CHECKS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/CHECKS.json` |
-| `supplemental/integer12/CHECKS_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/CHECKS.json` |
-| `supplemental/integer12/EXACT_NORM.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/EXACT_NORM.json` |
-| `supplemental/integer12/EXACT_NORM_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/EXACT_NORM_OPTIMIZED.json` |
-| `supplemental/integer12/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/README.md` |
-| `supplemental/integer12/baselines/monotone_intersective12_degree16000.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree16000.json` |
-| `supplemental/integer12/baselines/monotone_intersective12_degree4832.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree4832.json` |
-| `supplemental/integer12/build_prime12.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/build_prime12.py` |
-| `supplemental/integer12/check_norm_exact.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/check_norm_exact.py` |
-| `supplemental/integer12/check_prime12.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/check_prime12.py` |
-| `supplemental/integer12/circuit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/circuit.py` |
-| `supplemental/integer12/equations/prime_separated12_degree2400.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/equations/prime_separated12_degree2400.json` |
-| `supplemental/integer12/equations/prime_separated12_degree2912.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/equations/prime_separated12_degree2912.json` |
-| `supplemental/integer12/inherited/root_fusion/FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `supplemental/integer12/inherited/root_fusion/MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `supplemental/integer12/inherited/root_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `supplemental/integer12/inherited/root_fusion/RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `supplemental/integer12/inherited/root_fusion/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `supplemental/integer12/inherited/root_fusion/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `supplemental/integer12/inherited/root_fusion/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `supplemental/integer12/inherited/root_fusion/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `supplemental/integer12/inherited/root_fusion/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6409,113 +5509,35 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `supplemental/integer12/inherited/root_fusion/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `supplemental/integer12/inherited/root_fusion/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `supplemental/integer12/inherited/root_fusion/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `supplemental/integer12/inherited/root_fusion/companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `supplemental/integer12/inherited/root_fusion/equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `supplemental/integer12/inherited/root_fusion/equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `supplemental/integer12/inherited/root_fusion/equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `supplemental/integer12/inherited/root_fusion/equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `supplemental/integer12/inherited/root_fusion/equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `supplemental/integer12/inherited/root_fusion/equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `supplemental/integer12/inherited/root_fusion/equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `supplemental/integer12/inherited/root_fusion/equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `supplemental/integer12/inherited/root_fusion/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `supplemental/integer12/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `supplemental/integer12/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `supplemental/integer12/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `supplemental/integer12/inherited/root_fusion/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `supplemental/integer12/inherited/root_fusion/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `supplemental/integer12/inherited/root_fusion/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `supplemental/integer12/inherited/root_fusion/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `supplemental/integer12/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/LATEX_BUILD.log` |
-| `supplemental/integer12/inherited/root_fusion/verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `supplemental/integer12/inherited/root_fusion/verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `supplemental/integer12/inherited/root_fusion/verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `supplemental/integer12/inherited/root_fusion/verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `supplemental/integer12/inherited/root_fusion/verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `supplemental/integer12/inherited/root_fusion/verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `supplemental/integer12/inherited/root_fusion/verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
-| `supplemental/integer12/norm5.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `supplemental/integer12/proofs/INDEPENDENT_REVIEW_HILBERT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_REVIEW_HILBERT.md` |
-| `supplemental/integer12/proofs/INDEPENDENT_TWELVE_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/proofs/INDEPENDENT_TWELVE_AUDIT.md` |
-| `supplemental/integer12/proofs/INTERPOLATION12.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/INTERPOLATION12.md` |
-| `supplemental/integer12/proofs/PRIME_TWELVE.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/PRIME_TWELVE.md` |
-| `supplemental/integer12/proofs/TRACE13_PROOF.md` | `Computability/DiophantineConsistency/candidates/integer13-quadratic-trace/source/TRACE13_PROOF.md` |
-| `supplemental/integer12/provenance/INHERITED_FILES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/INHERITED_FILES.json` |
-| `supplemental/integer12/provenance/REVIEWED_INCOMING.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/REVIEWED_INCOMING.json` |
-| `supplemental/integer12/provenance/signed_guards/JOINT_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
 | `supplemental/integer12/provenance/signed_guards/RESIDUE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `supplemental/integer12/provenance/signed_guards/SOURCE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/provenance/signed_guards/SOURCE.json` |
 | `SHA256SUMS` | not staged: checksum ledger |
+| `supplemental/integer12/inherited/root_fusion/verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 
 ### `109-valuations-centered/` (`ConZFC_Valuations_and_Centered_Certificates.zip`)
 
 | Delivered member | Same bytes in the repository |
 |---|---|
-| `direct_quartic/ConZFC_407_888_Quartics/code/integer_pipeline/audit_common_radix.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/audit_common_radix.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/code/integer_pipeline/terminal_elimination.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/terminal_elimination.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/code/integer_pipeline/verify_projection.py` | `Computability/DiophantineConsistency/candidates/synchronized-signed-projections/source/verify_projection.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/affine_contract.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/affine_contract.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/audit_shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_power.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/audit_shared_product.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/audit_shared_product.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/direct_source.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/direct_source_factored.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/direct_source_factored.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/shared_index_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_index_power.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/shared_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_power.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/shared_product_power.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/shared_product_power.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/code/synchronized_builder.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/code/synchronized_builder.py` |
 | `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/affine_shared_step.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/affine_shared_step.json` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/audit_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/audit_calculus.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/build_equation.py` | `Computability/DiophantineConsistency/candidates/synchronized-factorial-radius/source/provenance/upstream/build_equation.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/Bridge.lean` | `Computability/DiophantineConsistency/Lean/DiophantineConsistency/Bridge.lean` |
 | `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/Code254.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean` |
 | `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/KCode222.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KCode222.lean` |
 | `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/direct_flow_large_carrier_README.md` | `Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md` |
 | `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/calibration/inherited_onestack_section.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/66-gap-congruence/direct/section.tex` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/direct_calculus.py` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/direct_calculus.py` |
-| `direct_quartic/ConZFC_407_888_Quartics/upstream/provenance/upstream/wire_eliminated_source.json` | `Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/source/wire_eliminated_source.json` |
-| `integer12/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `integer12/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `integer12/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `integer12/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6526,8 +5548,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `integer12/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `integer12/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `integer12/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `integer12/dag.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `integer12/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
 | `integer12/source_interpolation.zip` | `docs/incoming/ConZFC_Twelve_Integer_Interpolation_2026-10-24.zip (arrival 85ae407001)` |
 | `positive10/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `positive10/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
@@ -6565,11 +5585,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive10/provenance/compact44/source/proofs__INHERITED_P67_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/FIXED_BLANK_67_PROOF.md` |
 | `positive10/provenance/compact44/source/proofs__INHERITED_PELL_AUDIT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/PELL_LEMMA_AUDIT.md` |
 | `positive10/provenance/compact44/source/proofs__INHERITED_RETAINED59_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/proofs/INHERITED_RETAINED59_PROOF.md` |
-| `positive10/provenance/parent816/INDEPENDENT_REVIEW.md` | `Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/INDEPENDENT_REVIEW.md` |
-| `positive10/provenance/parent816/PROOF.md` | `Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/PROOF.md` |
-| `positive10/provenance/parent816/README.md` | `Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/README.md` |
-| `positive10/provenance/parent816/circuit.py` | `Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/circuit.py` |
-| `positive10/provenance/parent816/p10_positive_degree816.json` | `Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/p10_positive_degree816.json` |
 | `positive10/provenance/source61/congruence_carriers.pdf` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/report/congruence_carriers.pdf` |
 | `positive10/provenance/source61/congruence_carriers.tex` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/source/SOURCE61.tex` |
 | `direct_quartic/ConZFC_407_888_Quartics/SHA256SUMS` | not staged: checksum ledger |
@@ -6579,12 +5594,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | Delivered member | Same bytes in the repository |
 |---|---|
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24.zip` | `docs/incoming/ConZFC_13_Integer_Norms_2026-10-24.zip (arrival 751bc067e2)` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/FUTURE_WORK.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/FUTURE_WORK.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/MANIFEST.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/MANIFEST.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/README.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/RELEASE.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/RELEASE.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/build_equations.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/build_equations.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6595,78 +5604,22 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/METRICS.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/PROOF.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/README.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/VERIFICATION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/VERIFICATION.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/build.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/build.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient18_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient18_transport.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient19_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient19_transport.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient20.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/quotient20_transport.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/quotient20_transport.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/companions/quotient_fusion/verify.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/companions/quotient_fusion/verify.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/METRICS.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/METRICS.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/SCHEMA.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/norm13_crt_degree1088.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_crt_degree1088.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/norm13_degree1392.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1392.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/norm13_degree1408.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm13_degree1408.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/norm14_degree696.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree696.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/norm14_degree792.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm14_degree792.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/equations/norm15_degree344.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/equations/norm15_degree344.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/five_square_norm.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/norm5.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/provenance/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/report/crt1088.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/crt1088.tex` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/report/report.pdf` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.pdf` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/report/report.tex` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/report/report.tex` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/CLEARED_EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CLEARED_EXACT_AUDIT.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/CRT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/CRT_AUDIT.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/EXACT_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/EXACT_AUDIT.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/INTEGRATED_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/INTEGRATED_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/INTEGRATED_AUDIT_OPTIMIZED.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/LATEX_BUILD.log` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/LATEX_BUILD.log` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/PDF_QA.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/PDF_QA.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/RELEASE_AUDIT.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/RELEASE_AUDIT_OPTIMIZED.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/RELEASE_AUDIT_OPTIMIZED.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/audit.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/audit_cleared.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/audit_cleared.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/check_crt.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_crt.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/check_integrated.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/check_integrated.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/five_square_norm_expanded.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/parent/five_square_norm_expanded.json` |
-| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/verify_release.py` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/verification/verify_release.py` |
-| `baseline/PROPOSAL_REVIEW_FIXED_PRIME_RADICALS.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_FIXED_PRIME_RADICALS.md` |
-| `baseline/PROPOSAL_REVIEW_PARITY_FAMILIES.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_PARITY_FAMILIES.md` |
-| `baseline/PROPOSAL_REVIEW_POLYNOMIAL_SHEARS_NORM10.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_POLYNOMIAL_SHEARS_NORM10.md` |
-| `baseline/PROPOSAL_REVIEW_PRIME_SEPARATION.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_PRIME_SEPARATION.md` |
-| `baseline/PROPOSAL_REVIEW_ROOT_FUSION13.md` | `Computability/DiophantineConsistency/PROPOSAL_REVIEW_ROOT_FUSION13.md` |
 | `baseline/README.md` | `docs/incoming/README.md` |
-| `baseline/README.upstream.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `baseline/con-zfc-parity-norms-2026-10-23.zip` | `docs/incoming/con-zfc-parity-norms-2026-10-23.zip (arrival f6b6c83b1c)` |
 | `baseline/replay/results/parity_normal/release.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/replay/results/parity_optimized/audit.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
@@ -6679,7 +5632,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `baseline/replay/results/parity_optimized/independent_graph_audit.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/replay/results/rootfusion_normal/release.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `baseline/replay/results/rootfusion_optimized/release.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
-| `eleven/provenance/centered17/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
 | `eleven/provenance/centered17/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `eleven/provenance/centered17/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `eleven/provenance/centered17/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6691,10 +5643,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `eleven/provenance/centered17/upstream/ODD_SCALE_27_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ODD_SCALE_27_PROOF.md` |
 | `eleven/provenance/centered17/upstream/PELL_SIGNED_PROOF.md` | `Computability/HilbertTenthProblem/Papers/1980/PELL_SIGNED_PROOF.md` |
 | `eleven/provenance/centered17/upstream/RESIDUE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `eleven/provenance/centered17/upstream/WAVE11_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `eleven/provenance/centered17/upstream/WAVE11_JOINT_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
 | `eleven/provenance/centered17/upstream/package61_report.tex` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/source/SOURCE61.tex` |
-| `eleven/provenance/centered18/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
 | `eleven/provenance/centered18/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `eleven/provenance/centered18/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `eleven/provenance/centered18/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6704,43 +5653,21 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `eleven/provenance/centered18/coefficients/cone_A.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_A.bin.gz` |
 | `eleven/provenance/centered18/coefficients/cone_B.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_B.bin.gz` |
 | `eleven/provenance/centered18/upstream/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `eleven/provenance/centered18/upstream/WAVE11_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `eleven/provenance/interpolation12/INTERPOLATION12.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/INTERPOLATION12.md` |
-| `eleven/provenance/interpolation12/README.md` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/README.md` |
-| `eleven/provenance/interpolation12/SCHEMA.md` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/equations/SCHEMA.md` |
-| `eleven/provenance/interpolation12/build_twelve.py` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/build_twelve.py` |
-| `eleven/provenance/interpolation12/check_twelve.py` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/check_twelve.py` |
-| `eleven/provenance/interpolation12/monotone_intersective12_degree4832.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/baselines/monotone_intersective12_degree4832.json` |
-| `eleven/provenance/rootfusion/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `eleven/provenance/rootfusion/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `eleven/provenance/rootfusion/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `eleven/provenance/rootfusion/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `eleven/provenance/rootfusion/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `eleven/provenance/rootfusion/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `eleven/provenance/rootfusion/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `eleven/provenance/rootfusion/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `eleven/provenance/rootfusion/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `eleven/provenance/rootfusion/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `eleven/provenance/rootfusion/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `eleven/provenance/rootfusion/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `eleven/provenance/rootfusion/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `eleven/provenance/rootfusion/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `eleven/provenance/rootfusion/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `eleven/provenance/rootfusion/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `eleven/provenance/rootfusion/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `eleven/provenance/rootfusion/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `eleven/provenance/rootfusion/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `eleven/provenance/rootfusion/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `eleven/provenance/rootfusion/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `eleven/provenance/rootfusion/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `eleven/provenance/rootfusion/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `eleven/provenance/rootfusion/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `eleven/provenance/rootfusion/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `eleven/provenance/rootfusion/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `eleven/provenance/rootfusion/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `eleven/provenance/trace_precursor/README.md` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/README.md` |
-| `eleven/provenance/trace_precursor/TRACE13_PROOF.md` | `Computability/DiophantineConsistency/candidates/integer13-quadratic-trace/source/TRACE13_PROOF.md` |
-| `finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6752,11 +5679,9 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/source34/k215.tm` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/k215.tm` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/coefficients/source34/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/inherited/PAYLOAD_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
-| `finalizers/source/con-zfc-parity-norms-2026-10-23/provenance/forms-README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/provenance/incoming-README.md` | `docs/incoming/README.md` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/provenance/source61-congruence-carriers.tex` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/source/SOURCE61.tex` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/provenance/source67-README.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards/README.md` |
-| `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/coefficients/BINDING.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/coefficients/payloads/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/coefficients/payloads/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/coefficients/payloads/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6789,9 +5714,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/inherited/orientation70/quartic40_direct.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/quartic40_direct.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/inherited/orientation70/sextic34.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/sextic34.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/inherited/quartic41.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/quartic41.json` |
-| `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/PROOF.md` | `Computability/DiophantineConsistency/candidates/radical-jd-shared/source/PARENT_PROOF.md` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/circuit_helper.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/norm/final10/circuit.py` |
-| `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/laurent9_positive.json` | `Computability/DiophantineConsistency/candidates/radical-jd-shared/source/parent.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/BUILD_RECEIPT.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/saturated-h1868-d/source/data/COEFFICIENT_BINDING.json` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/nine_full_radical/upstream/31-sun10/coefficients/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/coefficients/COEFFICIENT_PROOF.md` |
@@ -6857,7 +5780,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/positive/upstream/source70_weighted_source.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/positive/section.tex` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/positive/upstream/source72_signed_lemma.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/72-congruence-sextic/report.tex` |
 | `finalizers/source/con-zfc-parity-norms-2026-10-23/upstream/pell-congruences-source/positive/upstream/source74_report.tex` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/74-centered-pell-gaps/report.tex` |
-| `guard/coefficients/BINDING.json` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/coefficients/BINDING.json` |
 | `guard/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `guard/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `guard/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6868,8 +5790,6 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `guard/coefficients/recipe/source34_binding.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/BUILD_CHECKS.json` |
 | `guard/coefficients/recipe/source34_builder.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/build_coefficients.py` |
 | `guard/coefficients/recipe/wang943_tiles.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/35-cancel12/coefficients/wang943_tiles.json` |
-| `guard/exact_polynomial.py` | `Computability/DiophantineConsistency/candidates/fixed-prime-compact-norms/exact_polynomial.py` |
-| `guard/provenance/centered17/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
 | `guard/provenance/centered17/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `guard/provenance/centered17/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `guard/provenance/centered17/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6881,10 +5801,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `guard/provenance/centered17/upstream/ODD_SCALE_27_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ODD_SCALE_27_PROOF.md` |
 | `guard/provenance/centered17/upstream/PELL_SIGNED_PROOF.md` | `Computability/HilbertTenthProblem/Papers/1980/PELL_SIGNED_PROOF.md` |
 | `guard/provenance/centered17/upstream/RESIDUE_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation/integer/PROOF.md` |
-| `guard/provenance/centered17/upstream/WAVE11_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `guard/provenance/centered17/upstream/WAVE11_JOINT_PROOF.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
 | `guard/provenance/centered17/upstream/package61_report.tex` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/source/SOURCE61.tex` |
-| `guard/provenance/centered18/COEFFICIENT_BINDING.json` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_COEFFICIENT_BINDING.json` |
 | `guard/provenance/centered18/coefficients/K0.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/K0.bin.gz` |
 | `guard/provenance/centered18/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MC.bin.gz` |
 | `guard/provenance/centered18/coefficients/MF.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/MF.bin.gz` |
@@ -6894,36 +5811,21 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `guard/provenance/centered18/coefficients/cone_A.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_A.bin.gz` |
 | `guard/provenance/centered18/coefficients/cone_B.bin.gz` | `Computability/DiophantineConsistency/candidates/joint22-centered/coefficients/cone_B.bin.gz` |
 | `guard/provenance/centered18/upstream/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `guard/provenance/centered18/upstream/WAVE11_GUARDS_PROOF.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `guard/provenance/rootfusion/CALIBRATION_STATUS.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CALIBRATION_STATUS.md` |
 | `guard/provenance/rootfusion/COEFFICIENT_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `guard/provenance/rootfusion/CON_ZFC_FORMS_README.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/CON_ZFC_FORMS_README.md` |
 | `guard/provenance/rootfusion/DETERMINANT_GUARD.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards/proofs/DETERMINANT_GUARD.md` |
-| `guard/provenance/rootfusion/FORMALIZATION_BOUNDARY.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
-| `guard/provenance/rootfusion/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_CRT_ARITHMETIC_REVIEW.md` |
-| `guard/provenance/rootfusion/INDEPENDENT_INTEGER_NORM_AUDIT.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/INDEPENDENT_INTEGER_NORM_AUDIT.md` |
-| `guard/provenance/rootfusion/JOINT_GUARD_AND_PROJECTIONS.md` | `Computability/DiophantineConsistency/candidates/joint22-centered/provenance/PARENT_PROOF.md` |
-| `guard/provenance/rootfusion/NORMALIZED_NORMS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/NORMALIZED_NORMS_PROOF.md` |
 | `guard/provenance/rootfusion/PAIR_GUARD_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity/integer_system/PAIR_GUARD_PROOF.md` |
 | `guard/provenance/rootfusion/PROOF41.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF41.md` |
 | `guard/provenance/rootfusion/PROOF44.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions/integer41/PROOF44.md` |
-| `guard/provenance/rootfusion/RESIDUE_AND_DETERMINANT.md` | `Computability/DiophantineConsistency/candidates/scalar-carrier12/source/RESIDUE_AND_DETERMINANT.md` |
-| `guard/provenance/rootfusion/REVIEWED_FRONTIER.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `guard/provenance/rootfusion/SIGNED_BOOTSTRAP.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/75-signed-bootstrap/guards/PROOF.md` |
-| `guard/provenance/rootfusion/SOURCE_EXTRACTION.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SOURCE_EXTRACTION.json` |
-| `guard/provenance/rootfusion/SQUARED_MODULUS_PROOF.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/SQUARED_MODULUS_PROOF.md` |
 | `guard/provenance/rootfusion/upstream_ordinary/ConstructibleChoice.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean` |
 | `guard/provenance/rootfusion/upstream_ordinary/KEndpoint.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean` |
 | `guard/provenance/rootfusion/upstream_ordinary/KEndpoint215.lean` | `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint215.lean` |
-| `guard/provenance/rootfusion/upstream_ordinary/SOURCES.json` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/upstream_ordinary/SOURCES.json` |
 | `guard/provenance/rootfusion/upstream_ordinary/dominated_calculus.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/dominated/proof.md` |
 | `guard/provenance/rootfusion/upstream_ordinary/fixed_blank67.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/FIXED_BLANK_67_PROOF.md` |
 | `guard/provenance/rootfusion/upstream_ordinary/k215_ordinary.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
 | `guard/provenance/rootfusion/upstream_ordinary/ordinary36.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `guard/provenance/rootfusion/upstream_ordinary/source25_ordinary_blank.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/36-small-tuple/coefficients/source_proofs/ORDINARY_BLANK_PROOF.md` |
 | `guard/provenance/rootfusion/upstream_ordinary/source34_coefficients.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md` |
-| `guard/provenance/trace_precursor/README.md` | `Computability/DiophantineConsistency/candidates/interpolation-shared-norms/source/README.md` |
-| `guard/provenance/trace_precursor/TRACE13_PROOF.md` | `Computability/DiophantineConsistency/candidates/integer13-quadratic-trace/source/TRACE13_PROOF.md` |
 | `positive/ten_centered/coefficients/K.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/K.bin.gz` |
 | `positive/ten_centered/coefficients/MC.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MC.bin.gz` |
 | `positive/ten_centered/coefficients/MF_source.bin.gz` | `Computability/DiophantineConsistency/candidates/ten-positive-free-j/coefficients/MF_source.bin.gz` |
@@ -6938,10 +5840,8 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `positive/ten_centered/generated/optimized_rebuild_coefficients.py.stderr.txt` | `Logic/FirstOrder/compactness-check/source.log` |
 | `positive/ten_centered/upstream/interfaces/K215_README.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md` |
 | `positive/ten_centered/upstream/interfaces/K215_proof.md` | `Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md` |
-| `positive/ten_centered/upstream/interfaces/OBJECT_ZFC.md` | `Computability/DiophantineConsistency/OBJECT_ZFC.md` |
 | `positive/ten_centered/upstream/interfaces/ORDINARY_BLANK_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/ORDINARY_BLANK_PROOF.md` |
 | `positive/ten_centered/upstream/interfaces/PELL_LEMMA_AUDIT.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/sources/PELL_LEMMA_AUDIT.md` |
-| `positive/ten_centered/upstream/interfaces/SIZE_REDUCTION.md` | `Computability/DiophantineConsistency/candidates/valuation-shared-norms/source/inherited/root_fusion/provenance/REVIEWED_FRONTIER.md` |
 | `positive/ten_centered/upstream/interfaces/compact44_BINDING.json` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/COEFFICIENT_BINDING.json` |
 | `positive/ten_centered/upstream/interfaces/compact44_PROOF.md` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md` |
 | `positive/ten_centered/upstream/interfaces/compact44_recipe.py` | `Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/build_coefficients.py` |
@@ -6958,6 +5858,7 @@ Total: 7386 members = 4183 staged + 3162 omitted copies + 41 ignored.
 | `report/qa/bounds.json` | `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/67-under246-research-agent_state-symbolic_merge_survivors.json` |
 | `requirements.txt` | `Algebra/SurrealNumbers/docs/surreal/gamma-functions/data/requirements.txt` |
 | `SHA256SUMS.json` | not staged: checksum ledger |
+| `baseline/ConZFC_13_Integer_Norms_2026-10-24/con-zfc-root-fusion-2026-10-24/verification/LATEX_BUILD.log` | not staged: log file (`*.log`) |
 | `baseline/replay/tex_check/build.log` | not staged: log file (`*.log`) |
 | `eleven/check_normal.log` | not staged: log file (`*.log`) |
 | `eleven/check_optimized.log` | not staged: log file (`*.log`) |
