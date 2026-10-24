@@ -16,6 +16,12 @@ The lower-degree package71 branch also saves three gates, reaching475
 positive /482 natural operations at the unchanged degree1,379,730; see
 [`order7-shared-products`](candidates/order7-shared-products/README.md).
 
+The shorter complete page uses a771-digit seed and an explicit fixed
+sum/quotient decoder, reducing the printed coefficient recipe by12.1%.
+It includes standalone TeX and an ordinary control-state conjugacy proof;
+all430 transitions and four-port reconstructions pass finite checks.
+The renamed tuple changes `K`; see [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md).
+
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
 at the repository owner's request. Live catalogue/intake/research links

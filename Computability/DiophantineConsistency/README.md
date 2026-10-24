@@ -18,6 +18,12 @@ and alternative encodings. Completed proof checkpoints are retained;
 unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
+The complete [shorter one-page equation](candidates/one-page-compression/bfs-collected/equation.pdf)
+now uses a771-digit seed, down from1294, with a12.1% shorter printed
+coefficient recipe. Its standalone TeX includes every constant; a finite
+state-renaming decoder and transition-conjugacy argument explain the change.
+See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md).
+
 ## Approach and comparison
 
 There is no single established meaning of "simplest": number of variables,

@@ -47,6 +47,17 @@ branch: [`order7-shared-products`](candidates/order7-shared-products/README.md)
 has475/482 positive/natural operations and the unchanged degree1,379,730.
 The complete original31 tuple is preserved on that branch.
 
+A shorter complete page is also available:
+[`bfs-collected/equation.pdf`](candidates/one-page-compression/bfs-collected/equation.pdf).
+Its literal seed has771 digits instead of1294, and the complete printed
+coefficient recipe is12.1% shorter by extracted nonwhitespace characters.
+An explicit finite quotient/sum decoder replaces the old action packing.
+It uses a bijective control-state renaming that fixes start and halt;
+all430 transition conjugacies and all four coefficient reconstructions
+are checked. The new `K` differs from the old one, so this is a separate
+whole-tuple specification with an ordinary state-conjugacy argument.
+See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) for its scope and replay.
+
 1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that
    remove live gates, with local exact identities and independent modular
