@@ -1,0 +1,330 @@
+\section{Eleven integer variables with a short divisibility carrier}
+\label{sec:short-carrier}
+This section gives the degree-440 equation and two cheaper companions.
+Its two essential reductions are to replace a fifth-power carrier by
+a first-power carrier, and to replace a variable-dependent index modulus
+by $4q^4$. The full supported-modulus interpolation theorem is needed for
+the converse. Reusing only the older interpolation modulo the strong
+ordinate would leave a gap.
+
+\subsection{The fixed constants and the complete polynomial}
+The only unknowns are
+\[
+ (j,C,z,h,r,v,w,T,c,n,s)\in\Z^{11}.
+\]
+Use the unchanged source-34 tuple
+\[
+ \beta,K_0,M_C,M_F,A_c,B_c,
+ \qquad \beta=2^{1064921}-1,\quad
+ A_c=2^{1113},\quad B_c=2^{666104}.
+\]
+The fourth port $M_F$ is the \emph{already shifted} mask. The six exact
+numerals, their bit lengths, hashes, and executable finite reconstruction
+are in \code{norm/coefficients}; their common identity is
+\code{mixed-parity-unrounded-1064921}. These are constants, not six extra
+unknowns or tunable parameters. The tuple must not be mixed with another
+source's smaller coefficients.
+
+Define the following polynomial abbreviations:
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,&a&=(X+1)Y,\\
+ H&=4a+3,&\Delta&=(a+2)^2-1,\\
+ F&=(K_0+W)C-z(q-1),\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+4h q^4,&\eta&=c-Yk,\\
+ D_{\mathrm{err}}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ \mathcal B&=k^2(q^2-D_{\mathrm{err}})-4q^2\eta^2,\\
+ \ell&=XY^2,&D_\tau&=1+\ell(\ell+1)k^2,\\
+ D&=3\mathcal B-4,&D_g&=1+4D D_\tau s^2,\\
+ P&=D_\tau D_g,\\
+ I&=2rc^2,&D_f&=1+\Delta I^2,\\
+ Q&=\Delta^2 I^2,&\delta&=Q-1,\\
+ V&=D_f(c-R+4IT)-c,&C_y&=QV^2-1,\\
+ D_a&=\delta C_y,&K&=X(3c-2X)+2,\\
+ z_c&=HT+K,&\mathcal A&=(z_c^2+3H^2)(z_c^3-19H^3),\\
+ S&=srH,&Z&=S\bigl(n+(2Q-1)V\bigr)-\mathcal A,\\
+ u&=S^2D_f,&b&=4S^2D_a,&e&=16S^2P.
+\end{align*}
+The equation is
+\begin{equation}\label{eq:three-root}
+ \boxed{
+ \left[(Z^2-u-b-e)^2-4(ub+ue+be)\right]^2
+       -64ubeZ^2=0.}
+\end{equation}
+It contains only fixed nonnegative exponents and integer arithmetic. Its
+literal division-free evaluator is
+\code{norm/scalar11\_q4\_center.json}: 126 operations and exact degree 440.
+The following proof uses radicals to analyze the polynomial; no radicals
+or concealed existential witnesses occur in the equation itself.
+
+The constant recipe constructs 943 fixed tiles from the retained literal
+430-action table, assigns the fixed bit weights and positional offsets,
+and forms the two masks and convolution constant by finite sums. It never
+simulates the machine. Its code and complete input data are included; the
+check reconstructs all four native ports and separately checks $A_c,B_c$.
+The six uncompressed numeral payloads total 615,883 bytes. Thus a short
+126-operation evaluator does not mean that the full coefficient
+description has only 126 symbols.
+
+\subsection{The algebraic norm and the exceptional coordinates}
+Let
+\[
+ \mathcal F_8(Z;u,b,e)=
+ [(Z^2-u-b-e)^2-4(ub+ue+be)]^2-64ubeZ^2.
+\]
+In a free multiquadratic algebra this is the product of
+\[
+ Z-\epsilon_1\sqrt u-\epsilon_2\sqrt b-\epsilon_3\sqrt e
+ \quad(\epsilon_i\in\{-1,1\}).
+\]
+This identity holds even when radicands coincide or are negative or zero.
+An independent exact checker multiplies all eight factors and compares
+all 35 collected coefficients.
+
+The fixed affine front gives $q$ even, $q\equiv2\pmod3$, $|X|\ge64$,
+$|Y|\ge4096$, $H$ odd and nonzero, and $\Delta>1$.
+Also $D_\tau\ge1$ because $\ell(\ell+1)\ge0$ for every integer $\ell$.
+The polynomial
+\[
+ \pi(x)=(x^2+3)(x^3-19)
+\]
+has no rational root. It has a root modulo every positive integer, by
+the retained elementary prime-power and CRT proof in
+\code{norm/source/PRIME\_TWELVE.md}. Since
+\[
+ \mathcal A=H^5\pi(T+K/H),
+\]
+we have $\mathcal A\ne0$ for every integer assignment.
+
+If $S=0$, every scaled radicand in~\eqref{eq:three-root} is zero and
+the polynomial is $\mathcal A^8\ne0$. Thus $r,s\ne0$ at a zero.
+This does \emph{not} yet imply $c\ne0$. The order of recovery matters.
+We first prove $D_a>0$ in both possible cases. If $c=0$, then $I=Q=0$
+and $D_a=(-1)(-1)=1$. If $c\ne0$, then $|I|\ge2c^2$,
+$Q>1$, and $D_f>|c|+1$. As $V=D_f b_0-c$ for an integer $b_0$,
+either $b_0=0$ and $|V|=|c|$, or
+$|V|\ge D_f-|c|>1$. Thus $C_y,\delta,D_a>0$.
+
+In a vanishing conjugate factor, $P=D_\tau D_g$ is therefore the sole
+possibly negative radicand. If it were negative its nonzero imaginary
+contribution could not cancel the two real roots and real center.
+Since $D_g$ is odd, it follows that $D_g>0$. If $\mathcal B\le1$, then
+$D\le-1$ and $D_g\le-3$, a contradiction. Hence $\mathcal B\ge2$.
+For $c=0$, however,
+\[
+ \mathcal B=k^2\{q^2(1-4Y^2)-D_{\mathrm{err}}\}\le0.
+\]
+Consequently $c\ne0$, and only now do we invoke the strong and auxiliary
+Pell equations with $I\ne0$ and $Q>1$.
+
+\subsection{Square recovery and auxiliary integrality}
+The normalized vanishing factor is a rational signed sum of
+\[
+ \sqrt{D_f},\qquad 2\sqrt{D_a},\qquad4\sqrt P.
+\]
+All three radicands are positive odd integers. In the squarefree
+decomposition of their roots, the integer square-root coefficients are
+odd. Within a nontrivial squareclass the weights have distinct 2-adic
+orders $0,1,2$; the term with least order cannot cancel. Linear independence
+of distinct squarefree radicals therefore forces all three roots to be
+integers. Furthermore
+\[
+ \gcd(D_\tau,D_g)=\gcd(D_\tau,1+4D D_\tau s^2)=1,
+\]
+so $D_\tau=\tau^2$ and $D_g=g^2$ separately.
+
+The square root of $D_a$ initially gives a rational $y$ satisfying
+\begin{equation}\label{eq:adjacent-norm}
+ QV^2-(Q-1)y^2=1.
+\end{equation}
+We recall the relevant integrality argument explicitly. In lowest terms
+$y=a_1/b_1$, one has $b_1^2\mid Q-1$. For $|V|>1$ the usual
+adjacent-coefficient Pell transformation is
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+After choosing signs, it satisfies $|V'|<|V|$, keeps $V'$ integral, and
+preserves the reduced denominator of $y$, since $2Q-1\equiv1\pmod{b_1}$.
+The norm excludes $V'=0$. Descent ends at $|V|=1$, where $|y|=1$.
+Thus $b_1=1$. All normalized roots in the factor are now integers, and
+the factor equation yields $S\mid\mathcal A$.
+
+\subsection{The smaller index modulus}
+The retained signed rank proof uses a first-Pell congruence modulo
+$|XY|>3R+1$. We may instead use
+\[
+ M=4q^4>3R+1.
+\]
+The inequality follows from the unchanged packing bound
+$0<R<q^4-2$. Since $4\mid W$,
+\[
+ 2XY^2=2W(2v+1)^2q^7\equiv0\pmod M.
+\]
+The signed first Pell parameter $P_0=|2XY^2+1|$ is therefore
+$\operatorname{sign}(X)\pmod M$. Its classification gives
+$|k|=2\psi_{P_0}(n_0)$ and the congruence
+\[
+ \epsilon\,2n_0\equiv R+1\pmod M,
+ \qquad
+ \epsilon=\operatorname{sign}(k)\operatorname{sign}(X)^{n_0-1}.
+\]
+For the positive sign $2n_0\ge R+1$; for the negative sign
+$2n_0\ge M-R-1>2R$. The remaining strong/auxiliary folding argument
+does not use $h$ separately. It gives a main index $p=R$ with $p>n_0$.
+Hence the negative branch is impossible. Both $2n_0$ and $R+1$ lie
+strictly between zero and $M$, so
+\[
+ 2n_0=R+1.
+\]
+Only after this equality is proved do we reduce the same recurrence
+modulo $|XY|$. It restores $k\equiv R+1\pmod{XY}$ and the old integral
+coordinate $h_{\mathrm{old}}=(k-R-1)/(XY)$. The downstream source
+argument is consequently unchanged. Conversely the canonical positive
+first-Pell witness has the new congruence modulo $M$, so
+$h=(k-R-1)/M$ is integral. This changes neither the witness domain nor
+the coefficient tuple.
+
+\subsection{Why fifth-power divisibility suffices}
+The strong and auxiliary norms, the actual residues
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c,
+\]
+the condition $c^2\mid I$, and the centered budget strip give the
+pre-projection conclusions of the retained signed folding theorem:
+\[
+ R=2t_0+1,\quad t_0\ge24,\quad
+ |Y|>\frac{(|X|-3)^{t_0}}2-1.
+\]
+These conclusions precede the missing main projector; it is not being
+assumed in order to prove itself. In particular, with $x=|X|$,
+\[
+ |H|>x(x-3)^{t_0}>x^{t_0+1}/2^{t_0},\qquad x\ge2^{64}.
+\]
+From $S\mid\mathcal A$ and $H\mid S$, reduction modulo $H$ gives
+$H\mid K^5$. Define $K_q=X(X+2ac)-1$. The exact identity
+\[
+ K=HXc-2K_q
+\]
+and oddness of $H$ give $H\mid K_q^5$. The signed Pell projection
+congruence is
+\[
+ 2^R K_q\equiv\Pi\pmod H,
+ \quad \Pi=(\sigma X-2^R)(2^R\sigma X+1),\quad
+ \sigma=\operatorname{sign}(c).
+\]
+Thus $H\mid\Pi^5$. Each factor of $\Pi$ has absolute value smaller
+than $2^{R+1}x$, and hence
+\[
+ |\Pi|^5<2^{20t_0+20}x^{10}<|H|.
+\]
+For the last inequality, use
+\[
+ 64(t_0-9)-(21t_0+20)=43t_0-596\ge436.
+\]
+Therefore $\Pi=0$, its odd second factor is nonzero, and
+$\sigma X=2^R$. This recovers the exact old projector and permits the
+retained orientation, half-binomial recovery, and source restoration.
+The invalid inference $H\mid K^5\Rightarrow H\mid K$ is never used.
+
+\subsection{Completeness with the strong pair fixed}
+Start with the canonical outer tuple from a finite refutation. It has
+$\mathcal B>64$ and $D_\tau=\tau^2$. Moreover $D_\tau\equiv1\pmod3$,
+so $D D_\tau$ is positive and $2\pmod3$, hence a nonsquare. A positive
+Pell solution, squared once, supplies $s,g>0$ with
+\[
+ g^2=1+4D D_\tau s^2.
+\]
+Choose one positive strong pair with $4sc^2\mid I$ and
+$f^2-\Delta I^2=1$, and set $r=I/(2c^2)$. Then $r$ is an integer
+divisible by $2s$. Every prime of $sr$ divides $I$, although $sr$ need
+not divide $I$.
+
+The supported-modulus interpolation theorem retained from Round 14 says
+that, for this \emph{fixed} strong pair, every residue class modulo any
+positive modulus whose primes divide $I$ occurs as $T$ in an integral
+auxiliary solution~\eqref{eq:adjacent-norm}. Its proof uses a Pell period
+$\lambda=4m_0f$ and an index increment
+$d=\operatorname{lcm}(\lambda,4I)$. For each $p\mid I$, the resulting
+map $h\mapsto T(h)$ satisfies
+\[
+ v_p(T(h_1)-T(h_2))=v_p(h_1-h_2).
+\]
+It is therefore a permutation modulo each supported prime power, and
+CRT supplies the specified modulus. The full proof, including the
+2-adic case and the precise initial index, is retained in
+\code{norm/source/POWERED\_SATURATION\_PARENT.md}, Section 5, and
+was independently reviewed for this use.
+
+The canonical source already has $H\mid K$; write $\kappa=K/H$.
+Choose a root of $\pi(T+\kappa)$ modulo $sr$, and interpolate that
+class while leaving $I,f,r$ fixed. Then
+\[
+ \frac{\mathcal A}{S}
+   =\frac{H^4\pi(T+\kappa)}{sr}\in\Z.
+\]
+Finally choose
+\[
+ n=\mathcal A/S+f+2\delta y+4\tau g-(2Q-1)V.
+\]
+One factor of the norm vanishes. The order is outer tuple, guard pair,
+fixed strong pair, intersective residue, auxiliary solution, and $n$.
+This proves completeness without changing a strong witness after a
+residue has been selected.
+
+\subsection{Exact degree and the two cheaper companions}
+For the primary equation the important degrees are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{register}&k&\mathcal B&D_\tau&P&I&S&D_f&Q&V&D_a\\\hline
+\deg&5&20&30&82&3&8&18&30&23&106.
+\end{array}
+\]
+Thus $\deg(u,b,e)=(34,122,98)$. Put
+$B_0=Sn-\mathcal A$ and $C_0=S(2Q-1)V$, so $Z=B_0+C_0$.
+The universal identity
+\[
+ b-C_0^2=S^2(-V^2-4Q+4)
+\]
+gives $\deg(Z^2-b)=96$. Writing $\omega=Z^2-b$, the inner bracket
+of~\eqref{eq:three-root} is
+\[
+ (\omega-u-e)^2-4(ub+ue+be).
+\]
+Its unique highest-degree contribution is $-4be$, of degree 220.
+The correction $64ubeZ^2$ has degree 376. Hence the total degree is
+exactly 440, with leading form $16b_0^2e_0^2$. On the authentic
+coefficient slice a specific attained coefficient is
+\[
+ [j^{264}w^{40}v^{52}h^{12}s^{12}r^{24}c^{32}z^4]P_{440}
+   =2^{476}3^{306}\beta^{264}>0.
+\]
+The exponent sum is 440. The checker independently propagates leading
+forms through the actual graph and verifies the cancellation identity.
+An identical 136-operation graph exposes all cancellations and has
+syntactic degree bound 440; the selected 126-operation graph denotes the
+same polynomial but has the looser naive syntactic bound 488.
+
+Keeping $k=R+1+hXY$ instead gives degree 464 and 125 operations. Removing
+the center shear as well gives degree 488 and 121 operations. Translation
+of the unrestricted coordinate $n$ preserves zero existence exactly.
+The two auxiliary identical graphs of degrees 464 and 440 are audit
+artifacts, not additional frontier claims.
+
+One charged operation is saved by the exact identity
+\[
+ P=D_\tau+D(2D_\tau s)^2
+   =D_\tau(1+4D D_\tau s^2).
+\]
+The short-modulus evaluator also shares $4q^2$ with the budget, computing
+$4q^4=(4q^2)q^2$ with one additional multiplication.
+The actual operation counts for the three selected graphs are
+\[
+\begin{array}{c|rrr|r}
+\text{degree}&\text{multiplications}&\text{additions}&\text{subtractions}&\text{total}\\\hline
+488&77&23&21&121\\
+464&79&24&22&125\\
+440&80&24&22&126.
+\end{array}
+\]

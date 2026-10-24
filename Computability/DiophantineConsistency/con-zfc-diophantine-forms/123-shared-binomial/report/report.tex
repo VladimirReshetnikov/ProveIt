@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Shared Binomial Certificates and Short Carriers for Diophantine Consistency},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency}
+\fancyhead[R]{\small 24 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!20}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.7in}
+{\color{MidnightBlue}\large PROVEIT RESEARCH REPORT\par}
+\vspace{0.35in}
+{\Huge\bfseries Shared Binomial Certificates\par}
+\vspace{0.12in}
+{\Huge\bfseries and Short Carriers\par}
+\vspace{0.3in}
+{\LARGE Explicit Diophantine forms of $\Con(\ZFC)$\par}
+\vspace{0.45in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 24 October 2026\par}
+\vspace{0.5in}
+\begin{minipage}{0.94\linewidth}
+\textbf{Main outputs.} A direct quartic in 319 nonnegative integers; an
+eleven-integer equation of degree 966 with a 111-operation evaluator; and
+an eleven-integer equation of degree 440 with a 126-operation evaluator.
+Every coefficient and arithmetic operation is supplied in the companion
+archive. The new constructions preserve the finite-refutation endpoint of
+the explicitly retained ordinary source proofs.
+
+\medskip
+\textbf{Main idea.} Reuse the same binomial certificate to certify a
+factorial and the product of the CRT moduli. On the small-variable side,
+move a coprime square condition into a Pell coefficient, and use a short
+carrier whose weaker divisibility is sufficient for exact recovery.
+
+\medskip
+\textbf{Scope.} These are concrete improvements against the inspected
+repository and all eight incoming archives. No global minimum, historical
+priority theorem, proof of consistency, or newly completed Lean/Rocq
+endpoint is claimed. The arithmetic proofs, finite artifact checks, and
+inherited semantic calibration are identified separately.
+\end{minipage}
+\vfill
+{\small Comparison pin:\par
+\texttt{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}\par
+\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We construct and export new fixed polynomial equations whose absence of
+solutions is equivalent, by ordinary arguments formalizable in ZFC and the
+retained source calibration, to $\Con(\ZFC)$. The direct proof-certificate
+route has 319 nonnegative variables, degree four, 254 quadratic residuals,
+10,283 collected monomials, and coefficient height 86,842,335. It improves
+the inspected 349-variable endpoint in variables, residuals, terms, and
+height. Its architecture needs only six full power certificates instead
+of nineteen: a single exact binomial serves both the factorial and the
+reciprocal CRT product, while common Pell residues handle eleven digit
+requests. This route does not simulate K215 or specialize Jones's universal
+polynomial.
+
+A complementary native-source construction uses eleven unrestricted
+integer variables. A coprime product is absorbed into the strong Pell
+coefficient; congruences modulo four recover positivity of the extracted
+factors. Together with a short powered-divisibility carrier this gives
+degree 966 at 111 operations, or degree 882 at 112 operations. A three-root
+companion gives degree 464 at 125 operations and degree 440 at 126
+operations. The report supplies the mathematical definitions, both
+directions of the new reductions, the exact degree arguments, the
+coefficient conventions, and a reproducible audit. Existing lemmas and
+unbounded source theorems are credited explicitly.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Outcome and the meaning of simplicity}
+The target is a \emph{fixed} polynomial $P$ with integer coefficients and
+a specified domain $D$ such that
+\begin{equation}\label{eq:goal}
+ \ZFC\vdash
+ \bigl(\neg\exists\mathbf x\in D^m\; P(\mathbf x)=0\bigr)
+ \ \longleftrightarrow\ \Con(\ZFC).
+\end{equation}
+Here $\N=\{0,1,2,\ldots\}$; $\Z$ means unrestricted integers. A named
+polynomial intermediate is not an additional quantified variable.
+The fixed coefficients are literal finite data, reconstructed without
+running a refutation search. The equivalence does not assume consistency.
+
+There is no single agreed numerical order on all such equations. Variable
+count, degree, collected support, coefficient height, and arithmetic
+circuit length measure different costs. An enormous integer hidden in a
+coefficient is not free from an overall description-length perspective.
+Accordingly we give a small set of explicitly measured tradeoffs.
+
+\subsection{Measured improvements}
+For the first table, operations count every live binary addition,
+subtraction, and multiplication, including multiplication by a fixed
+scalar and squaring. Reuse of an existing register is free. Fixed
+coefficient leaves are reported separately.
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Construction over $\Z$ & Variables & Degree & Operations & Status\\\midrule
+Incoming coprime fusion, direct &11&728&122&baseline\\
+Incoming coprime fusion, centered&11&688&126&baseline\\
+Incoming all-root fusion&11&1632&114&baseline\\\midrule
+Short carrier, direct&11&488&121&this report\\
+Short carrier, centered&11&464&125&this report\\
+Short carrier, smaller index modulus&11&440&126&this report\\
+Pell-coefficient saturation&11&966&111&this report\\
+Saturation, smaller index modulus&11&882&112&this report\\\bottomrule
+\end{tabular}
+\end{center}
+The 464/125 point improves both degree and cost relative to 688/126. The
+440/126 point reduces the same baseline degree to 440 at unchanged cost. The
+966/111 point improves both measures relative to 1632/114. These statements
+compare the same unrestricted integer domain and the same six fixed
+coefficient values.
+
+For a collected polynomial $\sum_\alpha c_\alpha X^\alpha$, its height
+is $\max_\alpha|c_\alpha|$, and its support size counts nonzero collected
+coefficients. Both following equations are quartics over $\N$.
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Construction&Variables&Residuals&Terms&Height\\\midrule
+Incoming factorial-carrier endpoint&349&268&12,768&86,915,503\\
+Shared binomial and modular residues&319&254&10,283&86,842,335\\\bottomrule
+\end{tabular}
+\end{center}
+This removes 30 variables (8.60\%), 14 residuals, and 2,485 terms
+(19.46\%). The number of full power certificates drops from 19 to 6;
+the number of exact binomial certificates drops from two to one. All
+coefficients of both expanded quartics were independently re-expanded
+from their residual lists for the comparison.
+
+\subsection{The baseline includes the incoming archives}
+The comparison uses the public repository at the pin on the title page,
+including its latest proposal review, the active candidate and research
+directories, and all eight ZIPs then in \code{docs/incoming}.
+The newer incoming reports dominate several entries of the main comparison
+table. In particular, the 349-variable quartic and the eleven-integer
+688/126 and 1632/114 circuits are incoming baselines, not results of this
+work. Their source paths and hashes are retained in the archive provenance.
+
+Other architectures remain relevant. The repository already has
+nine-positive-variable equations and a ten-integer construction, and it
+retains a 37-integer quartic with enormous fixed coefficients. The new
+319-variable quartic is therefore not a fewest-variable quartic record.
+Its advantage is within a direct, explicitly expanded proof-certificate
+architecture with modest numerical coefficients. The eleven-variable
+native-source equations instead use six very large fixed integers.
+
+\subsection{Attribution and research scope}
+The squared-radius factorial identity used below was already proved in
+package 105 and appears in the incoming synchronized-exponents work.
+Common modular Pell residues occur in package 108. The reciprocal CRT
+product, derived label range, and shared-factorial Horn-flow source occur
+in Round 14. The new direct contribution is their complete integration:
+the factorial and CRT binomials become \emph{the same certificate}, the
+digit base is validated before that certificate is interpreted, and a
+complete smaller quartic is exported.
+
+On the small-variable side, powered divisibility and supported-modulus
+Pell interpolation come from Round 14, and selective coprime fusion comes
+from the incoming coprime-projection report. The new work combines them
+with a smaller index modulus and a Pell-coefficient saturation that
+recovers signs by congruences modulo four. This report makes no claim that
+these ideas are absent from all mathematical literature.
+
+\section{Logical endpoint and evidence boundaries}
+The common semantic endpoint is the existence of a finite syntactic
+refutation. For a fixed, effective presentation of ZFC, write
+\[
+ \operatorname{Ref}_{\ZFC}\equiv
+ \exists p\;\operatorname{Proof}_{\ZFC}(p,\bot),\qquad
+ \Con(\ZFC)\equiv\neg\operatorname{Ref}_{\ZFC}.
+\]
+Each construction proves $\exists P=0\leftrightarrow
+\operatorname{Ref}_{\ZFC}$. Negation gives~\eqref{eq:goal}. Nothing in this
+argument proves $\Con(\ZFC)$ itself or decides whether a zero exists.
+
+\begin{theorem}[Ordinary correctness of the delivered reductions]
+Compose the explicitly retained ordinary native/calculus-to-refutation
+theorems with the arithmetic reductions proved in this report. The
+polynomial in \code{direct/equation319/natural/equation.json} has a zero in $\N^{319}$
+if and only if ZFC has a finite refutation. Each of the five selected
+eleven-variable polynomials in the comparison table has a zero in
+$\Z^{11}$ if and only if ZFC has a finite refutation. These finite
+arithmetical arguments are formalizable in ZFC.
+\end{theorem}
+
+Three kinds of evidence must be kept separate.
+\begin{enumerate}
+\item \textbf{Ordinary mathematical proofs.} The report and retained
+sources establish the unbounded number-theoretic and refutation
+equivalences, including witness existence and all sign cases.
+\item \textbf{Finite exact checks.} Independent programs authenticate
+coefficient bytes, reconstruct the fixed tuple, verify the entire
+polynomial expressions and elimination certificates, count operations,
+and certify degrees. These checks do not decide consistency.
+\item \textbf{Proof-assistant status.} ProveIt has separate formal
+endpoints and extensive local proofs. This archive supplies no new
+end-to-end Lean/Rocq build and no literal internal object-language ZFC
+derivation of the newly displayed equations. Ordinary formalizability
+is the claim in this report; a new kernel certificate is a further task.
+\end{enumerate}
+
+The direct route starts from the numerical C222 calculus and its retained
+ordinary equivalence to finite ZF refutability, followed by the retained
+ZF/ZFC refutation equivalence. The statement is applied before a
+machine-specific simulation endpoint: the new direct builder does not
+read or simulate the K215 transition table. The small-variable branch
+deliberately retains the complete existing native-source coefficient
+tuple and its calibration.
+
+\input{direct_section}
+\clearpage
+\input{norm_section}
+\clearpage
+\input{lowops_section}
+\clearpage
+\input{validation_section}
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{proveit} V. Reshetnikov and ProveIt contributors,
+\emph{ProveIt}, pinned commit
+\texttt{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The precise parent proof texts, numerical payloads, and source notices
+used here are retained in the archive.
+\bibitem{incoming} ProveIt incoming research packets,
+\emph{Coprime Projection}, \emph{Powered Saturation and Factorial Carriers,
+Round 14}, \emph{Synchronized Exponents}, and the other incoming packets
+listed in the provenance inventory, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6/docs/incoming}.
+\bibitem{jones} J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+\bibitem{sun} Z.-W. Sun, Further results on Hilbert's tenth problem,
+\emph{Science China Mathematics} \textbf{64} (2021), 281--306.
+\url{https://arxiv.org/abs/1704.03504}.
+\bibitem{bayer} J. Bayer, M. David, M. Hassler, Yu. Matiyasevich,
+and D. Schleicher, Diophantine equations over $\Z$: universal bounds and
+parallel formalization, arXiv:2506.20909.
+\url{https://arxiv.org/abs/2506.20909}.
+\bibitem{afp} M. David and collaborators, Universal Pairs for Diophantine
+Equations, \emph{Archive of Formal Proofs}, 2025.
+\url{https://isa-afp.org/entries/Diophantine_Universal_Pairs.html}.
+\end{thebibliography}
+\end{document}

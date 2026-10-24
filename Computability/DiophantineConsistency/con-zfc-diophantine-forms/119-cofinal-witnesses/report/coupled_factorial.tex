@@ -1,0 +1,202 @@
+\section{A signed factorial output: the 508-variable refinement}
+\label{sec:508}
+
+The preceding 512-variable equation is a useful control because it changes
+only three rows of the final parent. A further change at the arithmetic
+source recovers the factorial output's sign from the equations. Its three
+private sign witnesses can therefore be removed. Sharing the existing square
+also permits one additional exact projection in the rebuilt system.
+
+\subsection{The changed source}
+Keep $F$ as an unrestricted integer, retain the cofinal horizon
+$t=16+u^2$, and change the arithmetic definitions to
+\[
+ \rho=F^2t^2,\qquad
+ R=2+t+x+y+F^2,\qquad K=2R,\qquad
+ \boxed{y=V(V-1).}
+ \tag{12}\label{eq:signedchanges}
+\]
+The power request remains $V=(\rho+1)^t$, but its meaning is established
+only after the initial sign argument. The existing source already has the
+wire for $F^2$ because its reciprocal product uses
+$B=\binom{F^2+t}{t}$. Thus \eqref{eq:signedchanges} adds no fresh square
+coordinate. The formula for $y$ is quadratic in the existing $V,y$.
+
+Deleting the factorial guard is not justified by silently assuming $F=t!$.
+Indeed, before the power requests are interpreted, $F$ and $V$ may have
+either sign. The crucial simplification is that every integer $v$ satisfies
+$v(v-1)\ge0$: either $v\ge1$ or $v\le0$. Consequently the literal new
+modulus row gives
+\[
+ y=V(V-1)\ge0,\qquad y+1\ge1
+ \tag{13}\label{eq:consecutivepositive}
+\]
+before any indexed-Pell or power interpretation. This use of discreteness
+does not hold for arbitrary real $V$; the domain here is $\Z$.
+All independent seed indices are therefore positive, in particular
+\[
+ t,\ K,\ F^2t^2+t,\ F^2+t,\ y+1,\ x+1\;>0.
+ \tag{14}\label{eq:earlyy}
+\]
+The remaining seeds are the retained positive encoded representatives.
+The local constructor bound is also positive on those
+representatives. Here $x\ge0$ and every unchanged seed guard are retained.
+In particular $R\ge2+t>0$ after \eqref{eq:earlyy}.
+
+The unchanged common budget and guarded frame norm give the same parameter
+bounds as in the parent. Every seed inequality implies a positive Pell ordinate. Their shared
+auxiliary product is nonzero, so its norm establishes the previously
+required auxiliary-coordinate bound. The signed indexed-Pell theorem is
+therefore licensed in the same manner as in the parent. The old positivity
+certificate is replaced by these actual seed formulas; it is not cited
+unchanged after the deletion of its factorial premise. No exceptional
+zero-output case or parity restriction on the horizon is needed.
+
+\subsection{Recovering powers and the factorial in the correct order}
+Let $D$ denote the proposed factorial binomial output. The retained natural
+remainders give $D\ge1$ and a common radix $q\ge2$. The request $q^t$
+orients the shared $t$-indexed Pell pair. Thus
+\[
+ V=(F^2t^2+1)^t\ge1.
+\]
+The raw ceiling rows give $DF=V+s$, where $s\ge0$. Since $D\ge1$,
+this forces $F\ge1$ before any factorial value is assumed. Since $t\ge16$,
+$V\ge F^2t^2+1\ge F+2$, and therefore
+\[
+ y-F-1=V(V-1)-F-1\ge0.
+\]
+The old endpoint slack can now be recovered.
+
+The reciprocal raw index row is $C+F^2+1=B i_q$, with $C\ge1$ and
+$B\ge0$ still guarded. It gives $B>0$. In the signed power request
+$N=B^K$, the only possible inverse case is $B=1,N=-1$. But then the
+other base at exponent $K$ is $N+V+1\ge2$. That request orients the
+$K$-indexed pair and excludes the inverse case. The common radix has its
+intended value
+\[
+ q=N(N+V+1)^K>V^2.
+\]
+Every remaining seed is similarly oriented by a request at base $q$ or
+$q+1$. This establishes all power meanings without first interpreting the
+factorial or the binomials whose digits are under validation.
+
+Now $\rho=F^2t^2\ge t$, and for $0\le j\le t$,
+\[
+ \binom{\rho+t}{j}\le\binom{\rho+t}{t}
+ \le(\rho+1)^t=V<q.
+\]
+The first digit graph therefore really gives $D=\binom{\rho+t}{t}$.
+The exact factorial argument is recorded next, rather than inferred from
+finite sample calculations.
+
+\begin{lemma}[Self-bounding factorial at the squared radius]
+Let $F,t$ be positive integers, $\rho=F^2t^2$,
+$V=(\rho+1)^t$, and $D=\binom{\rho+t}{t}$. Then
+\[
+ F-1<V/D\le F\quad\Longleftrightarrow\quad F=t!.
+\]
+\end{lemma}
+\begin{proof}
+Write $G=t!$. The exact identity is
+\[
+ \frac VD=G\prod_{i=1}^t
+   \left(1-\frac{i-1}{\rho+i}\right).
+\]
+All factors lie in $(0,1]$, and
+\[
+ \sum_{i=1}^t\frac{i-1}{\rho+i}
+ <\frac{1}{2F^2}.
+\]
+The elementary product bound gives
+$G(1-1/(2F^2))<V/D\le G$.
+If $F-1<V/D\le F$, then $G>F-1$, so $G\ge F$.
+On the other hand,
+\[
+ G<\frac{F}{1-1/(2F^2)}
+   =F+\frac{F}{2F^2-1}\le F+1,
+\]
+and integrality gives $G\le F$. Thus $F=G$.
+Conversely, if $F=G$, then
+$F-1<F-1/(2F)<V/D\le F$; when $F=1$ the same strict inequality
+also holds. The ceiling remainder $DF-V$ lies in $[0,D-1]$, giving
+the required natural ceiling witnesses.
+\end{proof}
+
+The source ceiling rows are precisely the inequality in this lemma, so
+$F=t!$. The second digit is also safe: for $0\le j\le t$,
+\[
+ \binom{F^2+t}{j}\le(F^2+t)^t\le(\rho+1)^{2t}=V^2<q.
+\]
+It recovers the reciprocal product $B$ and $B\ge2$. The later amplified
+CRT and derived-label bounds are preserved: after $F\ge1$ the new
+$R=2+t+x+y+F^2$ is at least the old $2+t+x+y+F$. The same local
+majorant exponent, factorial growth floor, representative bounds, and
+strengthened CRT precision therefore apply. No preceding bootstrap step
+used that later factorial growth estimate.
+
+\subsection{Completeness and the literal polynomial}
+Choose the cofinal padded horizon as before and set $F=t!$,
+$\rho=F^2t^2$, and $V=(\rho+1)^t$. A slightly stronger pending-product
+bound is useful. Put $a=Ft\ge16$, $L=a+1$, and $B_0=a^2+1$.
+There are at most $t+1$ pending weights, each at most $L$, so
+$S_i\le L^{t+1}$. Since $a\ge3$ and $t\ge2$,
+\[
+ B_0>(a-1)L,\qquad (a-1)^t\ge(a-1)^2\ge L.
+\]
+It follows, using integer powers only, that
+\[
+ V=B_0^t>L^t(a-1)^t\ge L^{t+1}\ge S_i.
+\]
+Now $V\ge3$, so the prescribed modulus $y=V(V-1)$ is at least $V$
+and exceeds every accumulator. Also $F\mid(V-1)$ because
+$V\equiv1\pmod F$, and hence $F\mid y$. We have already established
+$y\ge F+1$. These are exactly the inherited CRT requirements; the earlier
+sufficient convenience $y>V^2$ is unnecessary. The first CRT is valid. The larger new
+$R$ satisfies every subsequent lower bound. The factorial lemma supplies
+the ceiling witnesses, the unchanged digit arguments supply their quotients,
+and simultaneous Pell completeness supplies the common frame. Thus every
+finite refutation gives a zero of the new arithmetic system.
+
+The source is then factored, projected through monic integral definitions,
+and translated by the same recorded pipeline as its matched parent. The
+principal result is
+\[
+ \boxed{P_{508}(x_0,\ldots,x_{507})
+       =\sum_{j=0}^{307}Q_j(x_0,\ldots,x_{507})^2=0.}
+ \tag{15}\label{eq:P508}
+\]
+The full $Q_j$ are printed in Appendix~\ref{app:principal-residuals} and supplied in
+\file{direct/principal/equation.json}. Their full collected expansion is
+\file{direct/principal/expanded_polynomial.json}.
+
+\begin{theorem}[Principal unrestricted-integer equation]
+The polynomial in \eqref{eq:P508} has 508 occurring integer variables,
+308 quadratic residuals, exact degree four, 6,545 collected monomials, and
+coefficient height 996,521. ZFC proves
+\[
+ \bigl[\forall\mathbf x\in\Z^{508}\;P_{508}(\mathbf x)\ne0\bigr]
+ \longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+\begin{proof}
+The product of consecutive integers establishes the modulus sign, and hence
+all seed signs, without assuming a factorial or power meaning. The ordered recovery gives the
+same bounded local proof-certificate semantics, whose soundness gives
+\eqref{eq:calibration}. The constructive paragraph above proves the
+converse from any finite refutation. Every source modification is
+identified by an exact quadratic-row certificate. The subsequent monic
+eliminations and integer translations have recorded integral inverse maps,
+so they preserve integer-zero existence. Finally a sum of integral squares
+vanishes exactly when all its residuals vanish. Exact coefficient expansion
+establishes the finite metrics, including a nonzero degree-four part.
+All quantified mathematical steps are formalizable in ZFC, yielding
+\eqref{eq:target} for $D=\Z$ and $n=508$.
+\end{proof}
+
+The matched parent has 517 variables, 310 rows, 6,774 terms, and coefficient
+height 3,904,267. This refinement improves all four of those quantities
+while retaining degree four and unrestricted integer unknowns. It removes
+about $1.74\%$ of the variables and $3.38\%$ of the monomials; coefficient
+height falls by about $74.48\%$. Those are measured improvements in this
+particular direct construction, not a claim that 508 is the smallest
+possible integer-variable count.

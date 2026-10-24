@@ -1,0 +1,111 @@
+\section{The fixed scalar equations in mathematical notation}
+This section gives a typeset reference for the literal register displays in the complete proofs that follow. The independent unknowns are
+\[
+ (j,C,z,h,r,v,w,T,c,n,s)\in\Z^{11}.
+\]
+The fixed source34 coefficients are $\beta,K_0,M_C,M_F,A_{\rm cone},B_{\rm cone}$, with
+\[
+ \beta=2^{1064921}-1,\qquad A_{\rm cone}=2^{1113},\qquad B_{\rm cone}=2^{666104}.
+\]
+The other three integers are completely specified by the included authenticated byte payloads and printed-seed recipe. In particular $M_F$ is already shifted by $\beta$. No coefficient is an additional quantified unknown.
+
+\subsection{The lower cost pair}
+Define the following polynomial abbreviations:
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,&E_0&=XY,\\
+ a&=E_0+Y,&H&=4a+3,&\Delta&=a^2+H.
+\end{align*}
+Then set
+\begin{align*}
+ F&=(K_0+W)C-z(q-1),\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE_0,\qquad \eta=c-Yk,\\
+ D_{\rm err}&=(A_{\rm cone}F-q)^2+(B_{\rm cone}C-q)^2,\\
+ \mathcal B&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ D&=3\mathcal B-4,\qquad L=XY^2k,\qquad D_t=1+L(L+k),\\
+ D_g&=1+DD_ts^2,\qquad P_g=D_tD_g,\\
+ I&=rc^2,\qquad D_f=1+\Delta I^2,\qquad Q=\Delta^2 I^2,\qquad\delta=Q-1,\\
+ V&=D_f(c-R+4IT)-c,\qquad C_y=QV^2-1,\\
+ K&=X(3c-2X)+2,\qquad z_c=HT+K,\\
+ A_c&=(z_c^2+3H^2)(z_c^3-19H^3),\qquad S=srH,\\
+ A&=9S^2D_f,\qquad B=S^2\delta C_y,\qquad G=81S^2P_g.
+\end{align*}
+The centered coordinate is $Z=S(n+QV)-A_c$; the direct coordinate is $Z=Sn-A_c$. In both cases the final polynomial is
+\begin{equation}\label{eq:paired}
+ \mathcal P=
+ \left[(Z^2+A-B-G)^2-4(AZ^2+BG)\right]^2
+ -64(AZ^2)(BG).
+\end{equation}
+Every display is a polynomial abbreviation; powers here have fixed nonnegative integer exponents. Expanding the abbreviations gives a single fixed ordinary integer polynomial in exactly eleven unknowns.
+
+The paired identity defining the proof interface is
+\begin{align*}
+ \mathcal P
+ &=\left[(Z^2-A-B-G)^2-4(AB+AG+BG)\right]^2-64ABGZ^2\\
+ &=\prod_{\epsilon\in\{-1,1\}^3}
+   (Z-\epsilon_1\sqrt A-\epsilon_2\sqrt B-\epsilon_3\sqrt G).
+\end{align*}
+The last equality is a universal polynomial identity, not an assumption about radical independence or signs. The actual graph evaluates the first, polynomial-only expression. Its weighted guard uses
+\[
+ D_{81}=243\mathcal B-324,\quad
+ D_{g,81}=81+D_{81}D_ts^2=81D_g,\quad
+ P_{81}=D_tD_{g,81},\quad G=S^2P_{81},
+\]
+which removes one scalar multiplication without changing the polynomial.
+
+For the centered degree calculation put $U=Sn-A_c$. The exact cancellation is
+\begin{equation}\label{eq:center}
+ Z^2-B=U^2+2SQVU+S^2\bigl[Q(V^2+1)-1\bigr].
+\end{equation}
+The lower-cost degrees are $\deg A=34$, $\deg B=122$, $\deg G=110$, and the right side of \eqref{eq:center} has degree $96$. Thus the paired inner bracket has top form $-4B_*G_*$ and the whole centered norm has top form $16B_*^2G_*^2$. One attained coefficient is
+\[
+ [j^{260}w^{56}v^{64}h^{12}s^{12}r^{24}c^{32}C^4]\mathcal P
+ =2^{460}3^{326}\beta^{260}>0.
+\]
+Its exponents sum to $464$. Without centering, $B_*^4$ is the highest homogeneous form, of degree $488$. The full proofs below establish the global bounds and authentic-coefficient attainment, not just a sampled degree.
+
+\subsection{The lower degree split carrier pair}
+Keep the prefix and norm in \eqref{eq:paired}, but change $Y$ to $qv$ and replace the carrier definitions by
+\begin{align*}
+ M&=2q^2,& D_c&=HM,& S&=srHM^5,\\
+ z_c&=D_cT+MK+H(v-q^2),&&&\\
+ A_c&=(z_c^2+3D_c^2)(z_c^3-19D_c^3).&&&
+\end{align*}
+The ordinary proof must not assume the old cubic scale at this point. Instead it first obtains integral radicals and $S\mid A_c$, even when $c=0$ or $v=0$. Since $M^5\mid A_c$ and $M\mid D_c$, a least-valuation argument forces $M\mid z_c$. The unconditional identity $\gcd(H,M)=1$ then gives
+\[
+ v=q^2(2v_{\rm old}+1),\qquad
+ v_{\rm old}=\frac{v-q^2}{2q^2}\in\Z,
+ \qquad Y=(2v_{\rm old}+1)q^3.
+\]
+Only after recovering that scale may one exclude $c=0$ and apply adjacent-Pell descent. The separate $H$ component of the carrier still yields only fifth-power main projection, which is handled by the same quantitative saturation argument. Completeness satisfies both carrier components by finite CRT and the supported-modulus interpolation theorem with the strong pair held fixed.
+
+Here $\deg A=46$, $\deg B=114$, $\deg G=94$, and \eqref{eq:center} has degree $92$. The centered norm consequently has degree $416$, with an attained coefficient
+\[
+ [j^{224}w^{56}v^{52}C^{16}s^{12}r^{24}c^{32}]\mathcal P
+ =2^{400}3^{290}\beta^{224}>0.
+\]
+The direct companion has highest homogeneous form $B_*^4$ and degree $456$. Its full leading-form proof keeps both degree-five summands of the leading part of $k$; discarding either would be incorrect.
+
+\subsection{Key direct identities}
+For the natural architecture the intended meanings are
+\[
+ \rho=F^2,\qquad V_0=(F^2+1)^t,\qquad
+ B_0=\binom{F^2+t}{t},\qquad K_0'=2R_0,\qquad
+ N=B_0^{K_0'},\qquad q=N^{K_0'}.
+\]
+Here $R_0=2+t+x+y+F$, and $K_0'$ is the direct amplification exponent, not the fixed scalar coefficient $K_0$ above; likewise $B_0,V_0,R_0$ are local direct-proof names. The raw ceiling rows, before binomial interpretation, are
+\[
+ V_0+B_0=B_0F+u+1,\qquad B_0=u+v+1.
+\]
+They imply $V_0+v=B_0F$, then $F\ge1$, $B_0>F$, and $V_0<B_0^2$. This orders the radix bootstrap before exact binomial recovery. The fixed-point theorem forces $F=t!$ for the padded horizon $t\ge16$, after which
+\[
+ \prod_{i=1}^{t}\left(1+\frac{F^2}{i}\right)
+ =\binom{F^2+t}{t}=B_0.
+\]
+The signed compiler's residue identity is
+\[
+ m^2=(q+1)^{2k},\quad m\equiv1\pmod q,\quad q\ge3
+ \quad\Longrightarrow\quad m=(q+1)^k.
+\]
+It is implemented without an extra unknown by the existing remainder replacement $r=1+qu$. This is an existence-preserving restriction after power semantics, not a bijection on unrestricted coordinate spaces. The complete proof below establishes the needed order of signs, powers, and CRT decoding.

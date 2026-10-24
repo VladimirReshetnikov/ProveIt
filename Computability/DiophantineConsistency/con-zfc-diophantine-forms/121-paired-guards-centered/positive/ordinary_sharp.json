@@ -1,0 +1,725 @@
+{
+  "domain": "strictly positive integers",
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding": {
+    "note": "whole compact44 tuple; MF is already shifted and must not be shifted again",
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 592884,
+        "file": "K.bin.gz",
+        "gzip_sha256": "b70752bb38570b1e93d480469c63ace9ed4b4552f94eb89d96bc600b1e2a4b6a",
+        "raw_sha256": "c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e"
+      },
+      "MC": {
+        "bits": 590069,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "271fabccdd555bda2c54c4c3a7379cc02eeba4893c07178bfd557a7683b74d5e",
+        "raw_sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4"
+      },
+      "MF": {
+        "bits": 590070,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "935cd87f8b23f24a20fd742c48d2a9cbca6afd494b6b074445df72c98b0c6e3b",
+        "raw_sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737"
+      },
+      "beta": {
+        "bits": 590069,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "466796f146d60db9929fa0f0f62d70d5e6afbcea9940342764571f1ca6bea87c",
+        "raw_sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d"
+      }
+    }
+  },
+  "proof_status": "Ordinary unbounded arithmetic reduction relative to retained coherent source calibration; not a newly machine-checked endpoint.",
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "i",
+    "T",
+    "w",
+    "Y",
+    "n",
+    "eta",
+    "zeta"
+  ],
+  "name": "ordinary_fused_auxiliary_majorant_sharp",
+  "operations": 92,
+  "operation_breakdown": {
+    "*": 54,
+    "+": 20,
+    "-": 18
+  },
+  "exact_degree": 278,
+  "syntactic_degree": 316,
+  "output": "N",
+  "source": [
+    [
+      "bJ",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "bJ",
+      1
+    ],
+    [
+      "qmF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qmF",
+      "alpha"
+    ],
+    [
+      "X",
+      "*",
+      "q",
+      "w"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "mu",
+      "+",
+      "q2",
+      1
+    ],
+    [
+      "Xp1",
+      "+",
+      "X",
+      1
+    ],
+    [
+      "muY",
+      "*",
+      "mu",
+      "Y"
+    ],
+    [
+      "Am1",
+      "*",
+      "muY",
+      "Xp1"
+    ],
+    [
+      "4Am1",
+      "*",
+      4,
+      "Am1"
+    ],
+    [
+      "Hp",
+      "-",
+      "4Am1",
+      1
+    ],
+    [
+      "Ap1",
+      "+",
+      "Am1",
+      2
+    ],
+    [
+      "Dp",
+      "*",
+      "Am1",
+      "Ap1"
+    ],
+    [
+      "muY2",
+      "*",
+      "muY",
+      "muY"
+    ],
+    [
+      "V0",
+      "*",
+      "X",
+      "muY2"
+    ],
+    [
+      "V0k",
+      "*",
+      "V0",
+      "k"
+    ],
+    [
+      "V0kk",
+      "+",
+      "V0k",
+      "k"
+    ],
+    [
+      "V0k2",
+      "*",
+      "V0k",
+      "V0kk"
+    ],
+    [
+      "Dtau",
+      "+",
+      "V0k2",
+      1
+    ],
+    [
+      "G1",
+      "*",
+      "bJ",
+      "qmF"
+    ],
+    [
+      "G",
+      "+",
+      "G1",
+      "alpha"
+    ],
+    [
+      "q2m1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "Gq",
+      "*",
+      "G",
+      "q2m1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "MCqMF",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "RJ",
+      "*",
+      "MCqMF",
+      "J"
+    ],
+    [
+      "R",
+      "+",
+      "Gq",
+      "RJ"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "kR",
+      "-",
+      "k",
+      "R"
+    ],
+    [
+      "e",
+      "-",
+      "kR",
+      1
+    ],
+    [
+      "K0w",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "K0wC",
+      "*",
+      "K0w",
+      "C"
+    ],
+    [
+      "Bt",
+      "-",
+      "K0wC",
+      "F"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "I",
+      "*",
+      "i",
+      "c2"
+    ],
+    [
+      "DtauI",
+      "*",
+      "Dtau",
+      "I"
+    ],
+    [
+      "Afull",
+      "+",
+      "Am1",
+      1
+    ],
+    [
+      "Cg",
+      "*",
+      "Afull",
+      "DtauI"
+    ],
+    [
+      "DtauI2",
+      "*",
+      "DtauI",
+      "I"
+    ],
+    [
+      "DpI2",
+      "*",
+      "Dp",
+      "DtauI2"
+    ],
+    [
+      "Df",
+      "+",
+      "DpI2",
+      1
+    ],
+    [
+      "Q",
+      "*",
+      "Dp",
+      "DpI2"
+    ],
+    [
+      "delta",
+      "-",
+      "Q",
+      1
+    ],
+    [
+      "Tp",
+      "+",
+      "T",
+      "alpha"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "Tp"
+    ],
+    [
+      "cTR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "DfcTR",
+      "*",
+      "Df",
+      "cTR"
+    ],
+    [
+      "V",
+      "-",
+      "DfcTR",
+      "c"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "QV2",
+      "*",
+      "Q",
+      "V2"
+    ],
+    [
+      "Dnum",
+      "-",
+      "QV2",
+      1
+    ],
+    [
+      "P1",
+      "*",
+      "q3",
+      "bJ"
+    ],
+    [
+      "mu2",
+      "*",
+      "mu",
+      "mu"
+    ],
+    [
+      "P1mu2",
+      "*",
+      "P1",
+      "mu2"
+    ],
+    [
+      "nV",
+      "+",
+      "n",
+      "V"
+    ],
+    [
+      "nVCg",
+      "+",
+      "nV",
+      "Cg"
+    ],
+    [
+      "LB",
+      "*",
+      "cTR",
+      "Bt"
+    ],
+    [
+      "nVL",
+      "-",
+      "nVCg",
+      "LB"
+    ],
+    [
+      "Hn",
+      "*",
+      "Hp",
+      "nVL"
+    ],
+    [
+      "threec",
+      "*",
+      3,
+      "c"
+    ],
+    [
+      "twoX",
+      "*",
+      2,
+      "X"
+    ],
+    [
+      "gap",
+      "-",
+      "threec",
+      "twoX"
+    ],
+    [
+      "Kpos0",
+      "*",
+      "X",
+      "gap"
+    ],
+    [
+      "Kpos",
+      "+",
+      "Kpos0",
+      2
+    ],
+    [
+      "lin",
+      "+",
+      "Hn",
+      "Kpos"
+    ],
+    [
+      "Zpart1",
+      "*",
+      "P1mu2",
+      "lin"
+    ],
+    [
+      "lowY",
+      "*",
+      "bJ",
+      "Y"
+    ],
+    [
+      "q3WBt",
+      "*",
+      "q3",
+      "Bt"
+    ],
+    [
+      "inner",
+      "-",
+      "lowY",
+      "q3WBt"
+    ],
+    [
+      "mu2inner",
+      "*",
+      "mu2",
+      "inner"
+    ],
+    [
+      "P1e",
+      "*",
+      "P1",
+      "e"
+    ],
+    [
+      "brk",
+      "-",
+      "mu2inner",
+      "P1e"
+    ],
+    [
+      "Zpart2",
+      "*",
+      "Hp",
+      "brk"
+    ],
+    [
+      "Znum",
+      "+",
+      "Zpart1",
+      "Zpart2"
+    ],
+    [
+      "Mtot",
+      "*",
+      "P1mu2",
+      "Hp"
+    ],
+    [
+      "M2",
+      "*",
+      "Mtot",
+      "Mtot"
+    ],
+    [
+      "dM2",
+      "*",
+      "delta",
+      "M2"
+    ],
+    [
+      "pair",
+      "*",
+      "Dtau",
+      "Df"
+    ],
+    [
+      "fa",
+      "*",
+      "dM2",
+      "pair"
+    ],
+    [
+      "fc",
+      "*",
+      "M2",
+      "Dnum"
+    ],
+    [
+      "Z2",
+      "*",
+      "Znum",
+      "Znum"
+    ],
+    [
+      "fs",
+      "*",
+      "delta",
+      "Z2"
+    ],
+    [
+      "omega",
+      "-",
+      "fs",
+      "fc"
+    ],
+    [
+      "diff",
+      "-",
+      "omega",
+      "fa"
+    ],
+    [
+      "diff2",
+      "*",
+      "diff",
+      "diff"
+    ],
+    [
+      "fafc",
+      "*",
+      "fa",
+      "fc"
+    ],
+    [
+      "fourfafc",
+      "*",
+      4,
+      "fafc"
+    ],
+    [
+      "N",
+      "-",
+      "diff2",
+      "fourfafc"
+    ]
+  ],
+  "register_degrees": {
+    "J": 1,
+    "F": 1,
+    "alpha": 1,
+    "i": 1,
+    "T": 1,
+    "w": 1,
+    "Y": 1,
+    "n": 1,
+    "eta": 1,
+    "zeta": 1,
+    "beta": 0,
+    "K0": 0,
+    "MC": 0,
+    "MF": 0,
+    "bJ": 1,
+    "q": 1,
+    "qmF": 1,
+    "C": 1,
+    "X": 2,
+    "k": 1,
+    "kY": 2,
+    "c": 2,
+    "q2": 2,
+    "mu": 2,
+    "Xp1": 2,
+    "muY": 3,
+    "Am1": 5,
+    "4Am1": 5,
+    "Hp": 5,
+    "Ap1": 5,
+    "Dp": 10,
+    "muY2": 6,
+    "V0": 8,
+    "V0k": 9,
+    "V0kk": 9,
+    "V0k2": 18,
+    "Dtau": 18,
+    "G1": 2,
+    "G": 2,
+    "q2m1": 2,
+    "Gq": 4,
+    "qMF": 1,
+    "MCqMF": 1,
+    "RJ": 2,
+    "R": 4,
+    "q3": 3,
+    "kR": 4,
+    "e": 4,
+    "K0w": 1,
+    "K0wC": 2,
+    "Bt": 2,
+    "c2": 4,
+    "I": 5,
+    "DtauI": 23,
+    "Afull": 5,
+    "Cg": 28,
+    "DtauI2": 28,
+    "DpI2": 38,
+    "Df": 38,
+    "Q": 48,
+    "delta": 48,
+    "Tp": 1,
+    "cT": 3,
+    "cTR": 4,
+    "DfcTR": 42,
+    "V": 42,
+    "V2": 84,
+    "QV2": 132,
+    "Dnum": 132,
+    "P1": 4,
+    "mu2": 4,
+    "P1mu2": 8,
+    "nV": 42,
+    "nVCg": 42,
+    "LB": 6,
+    "nVL": 42,
+    "Hn": 47,
+    "threec": 2,
+    "twoX": 2,
+    "gap": 2,
+    "Kpos0": 4,
+    "Kpos": 4,
+    "lin": 47,
+    "Zpart1": 55,
+    "lowY": 2,
+    "q3WBt": 5,
+    "inner": 5,
+    "mu2inner": 9,
+    "P1e": 8,
+    "brk": 9,
+    "Zpart2": 14,
+    "Znum": 55,
+    "Mtot": 13,
+    "M2": 26,
+    "dM2": 74,
+    "pair": 56,
+    "fa": 130,
+    "fc": 158,
+    "Z2": 110,
+    "fs": 158,
+    "omega": 158,
+    "diff": 158,
+    "diff2": 316,
+    "fafc": 288,
+    "fourfafc": 288,
+    "N": 316
+  },
+  "parent_sha256": "158e7d2c47c432892c214100154cc284cc07e8ac1ed0f529376e691e6f7b3bec"
+}

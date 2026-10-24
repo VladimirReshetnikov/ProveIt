@@ -1,0 +1,229 @@
+\section{Ten positive unknowns with an 89-operation evaluator}
+\label{sec:positive}
+
+The direct result above keeps modest coefficients and unrestricted integer
+unknowns. A complementary calculation shortens the existing compact native
+route. This section's domain is explicitly $\Z_{>0}^{10}$, and its large
+fixed coefficients are inherited from the coherent compact44 BFS tuple.
+It is not a 10-variable unrestricted-integer result.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Polynomial & Variables & Operations & Exact degree\\
+\midrule
+Uncentered & 10 & 89 & 288\\
+Upper center & 10 & 91 & 283\\
+Sharp center & 10 & 92 & 278\\
+Direct, uncentered & 10 & 94 & 262\\
+Direct, upper center & 10 & 96 & 258\\
+Direct, sharp center & 10 & 97 & 254\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The centered parents in the incoming saturated-Pell packet cost, in the
+same order, $92/283$, $93/278$, $98/258$, and $99/254$, where each pair is
+operations/degree \cite{saturated}. Thus all four centered companions
+improve cost at unchanged degree. The uncentered 89-operation equation is
+a new cost/degree tradeoff. The earlier square-gap and auxiliary-index
+ideas in the incoming structural-compression packet are explicitly credited
+\cite{structural}; the new step is their combination with coprime Pell
+fusion and the resulting replacement of the transport majorant.
+
+\subsection{Complete polynomial definition}
+Use the positive unknowns
+\[
+ J,F,\alpha,i,T,w,Y,n,\eta,\zeta.
+\]
+On the direct chart replace $w$ by a positive unknown $x$. The four
+constants $\beta,K_0,M_C,M_F$ are the entire compact44 BFS tuple supplied
+in \file{positive/coefficients/}. In particular $\beta=2^{590069}-1$.
+The full fixed finite recipe, including its 436-character seed and all
+finite index bounds, is \file{positive/coefficients/recipe_compact44.py}.
+It reconstructs every coefficient and checks its complete raw-byte hash.
+The high mask $M_F$ is already shifted; no second shift or mixture with
+the differently ordered original44 tuple is permitted.
+
+Define only polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& \mu&=q^2+1,\\
+ k&=\eta+\zeta,&c&=kY+\eta,\\
+ X&=wq\quad\text{(ordinary)},&&
+ X=q+x\quad\text{(direct)},\\
+ A&=\mu Y(X+1)+1,&H&=4A-5,&\Delta&=A^2-1,\\
+ V_0&=X(\mu Y)^2,&E&=V_0(V_0+1)k^2+1,\\
+ R&=\bigl[(q-1)(q-F)+\alpha\bigr](q^2-1)\\
+  &\qquad +(M_C+qM_F)J,\\
+ e&=k-R-1,&C&=q-F-\alpha,&U&=ic^2,\\
+ D_f&=1+\Delta U^2E,&Q&=\Delta^2U^2E,&\delta&=Q-1,\\
+ b&=c(T+\alpha)-R,&V&=D_fb-c,&D_y&=QV^2-1,\\
+ K_+&=X(3c-2X)+2.
+\end{align*}
+The ordinary chart uses
+\[
+ B=(K_0+w)C-F,\quad h=q-1,\quad P=q^3(q-1),\quad D_{\rm low}=0,
+\]
+and the direct chart uses
+\[
+ B=(qK_0+X)C-qF,\quad h=q(q-1),\quad
+ P=q^4(q-1),\quad D_{\rm low}=(q-1)X.
+\]
+Select a center
+\[
+ C_g=0,\qquad C_g=(A+1)UE,\qquad\text{or}\qquad C_g=AUE,
+\]
+respectively. Finally set
+\begin{align*}
+ M&=P\mu^2H,\\
+ Z&=P\mu^2\{H(n+V+C_g-bB)+K_+\}\\
+  &\qquad +H\{\mu^2(hY-q^3B-D_{\rm low})-Pe\},\\
+ s&=\delta Z^2,\qquad u=\delta M^2ED_f,\qquad v=M^2D_y.
+\end{align*}
+The single equation, for any of the six choices, is
+\[
+ \boxed{N=(s-u-v)^2-4uv=0.}
+ \tag{16}\label{eq:positiveN}
+\]
+All abbreviations use only addition, subtraction, multiplication, and fixed
+nonnegative integer exponents. The literal JSON circuits expand every one
+of them; no square root or auxiliary predicate occurs in $N$.
+
+\subsection{The auxiliary coordinate is a sufficient transport bound}
+The inherited coprime recovery, before any transport sign conclusion, gives
+positive integers $\tau,f,y$ with
+\[
+ E=\tau^2,\quad D_f=f^2,\quad I=U\tau,\quad
+ Q=(\Delta I)^2,\quad QV^2-(Q-1)y^2=1.
+ \tag{17}\label{eq:recovered}
+\]
+For clarity, here $I$ is a proof-only recovered integer, not an additional
+unknown. The coprime step is valid because $D_f\equiv1\pmod E$.
+The two rational radicands $ED_f$ and $D_y/\delta$ cannot coincide:
+after multiplying by $\delta$ and reducing modulo $E$, equality would give
+$0\equiv-1$. Thus the rational signed-sum argument makes both roots
+rational; square-class coprimality separates $E$ and $D_f$, and the
+retained adjacent-coefficient descent makes $y$ integral. This order does
+not presuppose the later projection or the sign of $B$.
+
+Write $\psi_A(m)$ for the Pell ordinate at base $A$.
+The retained uniform folding and first-index arguments give
+$c=\psi_A(p)$ for an odd positive $p$, together with
+$c>8q^5$, $c>2X$, $H>3X$, and $K_+>0$.
+The native mask bound
+$R<q^4+(\alpha+2)q^2<c\alpha/4$ then gives
+\[
+ b=c(T+\alpha)-R>c.
+\]
+Since $c\ge3$, the odd index $p$ is at least three, so
+$c\ge4A^2-1=4\Delta+3$.
+
+\begin{lemma}[Fifth-index gap after fusion]
+Under the recovered conditions above,
+\[
+ b>8Q,\qquad g:=\tau f<Q,\qquad 0<y-V<b/4.
+\]
+\end{lemma}
+\begin{proof}
+From $b>c$,
+\[
+ V=D_fb-c>(D_f-1)c=\Delta I^2c>4Q.
+\]
+Put $S=\Delta I$, so $Q=S^2$. Pell classification applied to
+$(SV)^2-(S^2-1)y^2=1$ gives $SV=\chi_S(\nu)$ with positive odd
+$\nu$. The values at $\nu=1,3$ give $V=1,4Q-3$, both excluded.
+Thus $\nu\ge5$ and
+\[
+ V\ge16Q^2-20Q+5>8Q^2.
+\]
+Since $D_f<Q$, this yields $b=(V+c)/D_f>8Q$.
+Also $f<AI$, so $g<AUE<Q$.
+Finally $Q-1>2D_f$ and
+\[
+ 0<y-V=\frac{V^2-1}{(Q-1)(y+V)}
+       <\frac{V}{2(Q-1)}<\frac b4.
+\]
+Each inequality precedes the transport sign recovery.
+\end{proof}
+
+For explanation only, divide the carrier by $M$ and put $W=1+hb$.
+The exact identity is
+\[
+ \frac ZM=n+V+C_g+\frac{K_+}{H}+\frac{Y}{q^3}
+          -\frac{WB}{h}-\frac e{\mu^2}-d,
+ \tag{18}\label{eq:carrierpositive}
+\]
+where $d=0$ ordinarily and $d=X/q^4$ directly. At a norm zero,
+$Z/M=\varepsilon_g g+\varepsilon_y y$.
+Since $Q>X$, we have $g+d<2Q<b/4$. Also
+$b-e=c(T+\alpha)-k+1>0$, so $e/\mu^2<b/4$ even when $e$ is negative.
+If $B\le-1$, solving \eqref{eq:carrierpositive} for $n$ gives
+\[
+ n<\frac{3b}{4}+\frac{WB}{h}
+   \le\frac{3b}{4}-b-\frac1h<0.
+\]
+This contradicts the domain of $n$. A positive center $C_g$ only decreases
+the right side. Thus all six equations force $B\ge0$ using the existing
+coordinate $b$ itself; the old separately computed transport majorant is
+unnecessary. The cheapest pair can also discard the center.
+
+\subsection{Completeness and the consistency theorem}
+After $B\ge0$ is established, the unchanged source arguments recover
+$C>0$, $3q<R<q^4-2$, the exact index $p=R$, denominator divisibilities,
+and $X=2^R$. They reconstruct the same unscaled native source witness;
+the scaled strong-Pell witness is not divided and reused without proof.
+The retained native/controller/refutation calibration therefore applies.
+
+Conversely, start with the parent's canonical data supplied by a finite
+refutation. Choose a fresh strong Pell period with
+$c^2\tau\mid I$, which is possible by the finite order of the
+determinant-one Pell matrix modulo $c^2\tau$. Put
+$i=I/(c^2\tau)>0$. The retained auxiliary-completeness construction gives
+positive $T$, the auxiliary value $V$, and a gap $u_*=y-V>4I^2$.
+It also gives
+\[
+ \kappa=K_+/H<c<I,\quad s_Y=Y/q^3<Y<c<I,\quad
+ UE=I\tau<I^2.
+\]
+First work on the ordinary chart, with
+$B_t=(K_0+w)C-F$ and $W=1+(q-1)b$.
+The inherited canonical divisibilities make $\kappa$, $s_Y$,
+$t_*=B_t/(q-1)\ge0$, and $r_*=e/\mu^2\ge0$ integers. Choose
+\[
+ n=g-C_g+u_*-\kappa-s_Y+Wt_*+r_*.
+\]
+For the uncentered choice $g>2c>\kappa+s_Y$ proves $n>0$.
+For the centered choices, $0<C_g-g<2UE$ and the total negative loss
+is less than $2I^2+2I<4I^2<u_*$. The norm then vanishes.
+The direct chart takes $x=X-q>0$ and adds the positive integral correction
+$(W_{\rm direct}-W_{\rm ordinary})t_*+X/q^4$ to $n$.
+Here the inherited canonical power divisibility gives $q^4\mid X$.
+Thus every finite refutation supplies positive zeros in both charts.
+
+It follows that, for every polynomial $N$ in the table,
+\[
+ \ZFC\vdash
+ [\forall\mathbf z\in\Z_{>0}^{10}\;N(\mathbf z)\ne0]
+ \longleftrightarrow\Con(\ZFC).
+\]
+The complete new proof, with the precise inherited theorem interfaces,
+is \file{positive/PROOF.md}.
+
+\subsection{Exact degree, rather than a syntactic upper estimate}
+Let $q_0=\beta J$, $k_0=\eta+\zeta$, and $x_0=q_0+x$.
+Uniform formal scaling of all ten variables gives the following nonzero
+highest homogeneous parts for the uncentered pair:
+\begin{align*}
+ N_{288,\mathrm{top}}
+ &=-2^{10}q_0^{152}w^{30}Y^{62}i^{10}k_0^{32}(q_0-F)^2,\\
+ N_{262,\mathrm{top}}
+ &=-2^{10}q_0^{126}x_0^{30}Y^{62}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+They are nonzero for the actual positive fixed $\beta$.
+In the formal Laurent-series field, the rational remainder in
+$Z/M=V+C_g+\mathcal E$ has degree at most six. The centered radical
+defects have degrees at least seventeen, so the changed transport cannot
+alter their leading terms. Pairing the two signs of each radical yields
+the exact centered degrees in the table. The proof provides the complete
+leading forms and global degree bound; exact one-variable specialization
+checks are supplementary transcription controls, not the sole degree proof.

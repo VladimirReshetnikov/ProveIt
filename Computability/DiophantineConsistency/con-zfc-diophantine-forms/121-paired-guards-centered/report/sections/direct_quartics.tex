@@ -1,0 +1,186 @@
+\section{A different route: a direct quartic in 489 integers}
+\label{sec:paired-direct}
+
+The direct C222 proof-certificate branch admits a new ordinary polynomial
+\[
+ P_{489}(z_1,\ldots,z_{489})=\sum_{j=1}^{308}R_j(z)^2,
+ \qquad z\in\mathbb Z^{489},
+\]
+where the accompanying equation file lists every integral quadratic $R_j$.
+Its expanded polynomial has exact degree $4$, $6905$ nonzero monomials,
+and coefficient height $11302118$.  A simpler sibling has $493$ integer
+variables, $310$ residuals, $7174$ monomials and height $10945213$.
+Both improve the inherited $517$-integer direct quartic, not the
+much-higher-degree eleven-variable frontier.
+
+These are fully materialized polynomials, with no hidden natural variables,
+variable exponents or unspecified program constants. Their interpretation
+as consistency equations inherits the existing ordinary C222/ZFC and
+signed-Pell calibration. Subject to precisely that calibration, the new
+reductions prove
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\forall z\in\mathbb Z^{489}\;P_{489}(z)\ne0\bigr)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+No new kernel-checked internal derivation, proof of consistency, global
+minimality, or historical priority is asserted. The retained source closure
+includes the finite calculus and its pinned calibration, not just a compiler
+acting on an unnamed predicate.
+
+
+\paragraph{Attribution and the different measurement stages.}
+The paired-product principle already appears in the upstream anchored-product construction with six pairs at commit \texttt{59ee8f2} (24 October 2026, 22:32 UTC).
+Its \href{https://github.com/VladimirReshetnikov/ProveIt/blob/59ee8f21244635b42f706a74c4e9631226dd1f7c/Computability/DiophantineConsistency/reviews/shared-remainder-product-guards-root-peer.md}{full accepted review}
+reports $56$ predicates, $1436$ coordinates and $1242$ rows in the
+\emph{unprojected} parent, saving $18$ coordinates and six rows.
+It makes no projected-count claim. Its six pairs use retained scalar
+anchors before power recovery. Here twelve pairs are restored after
+power recovery on the later factorial-carrier source; the measured
+projections are $517\to493$ and, with the further $F^2$ change, $489$.
+We credit the overlapping product-sign principle and claim no priority
+for it. The authenticated late review is preserved with these artifacts.
+
+\subsection{Two signs need one guard when their sum is known}
+For integers $r,s$ with $r+s\ge0$,
+\[
+ r,s\ge0\quad\Longleftrightarrow\quad
+ \exists a,b,c\in\mathbb Z:\quad rs=a^2+b^2+c(c+1).       \tag{PG}
+\]
+Indeed the right-hand side is nonnegative, so a negative $r$ would force
+$s\le0$, contradicting the sum hypothesis; interchange $r,s$ for the
+other case. Conversely every natural $n$ is $a^2+b^2+c(c+1)$: represent
+$4n+1$ by three squares, permute its unique odd coordinate to $2c+1$,
+and divide the other coordinates by two. This is the usual consequence
+of Legendre's three-square theorem. The sum hypothesis cannot be omitted:
+$r=s=-1$ has positive product.
+
+The direct source has twelve digit remainder/slack pairs: two exact-binomial
+pairs and ten range-binomial pairs. Each has an existing row
+\[
+ r+s=q^k-1,
+\]
+where $k$ is one of the positive indices $t,t+1,y+1,x+1$.
+Replacing their twenty-four separate three-witness guards by twelve copies
+of (PG) preserves quadratic residuals. After all monic eliminations, this
+reduces $517$ variables to $493$, rather than merely subtracting thirty-six
+from an unreduced variable count.
+
+\subsection{The signs are recovered after, not before, the powers}
+Keep the factorial ceiling remainder and slack $f_r,f_s$, and the first
+exact-digit output slack $o_0$, separately nonnegative. Their raw rows give
+\[
+ D=f_r+f_s+1\ge1,\qquad q=D+o_0+1\ge2.                 \tag{B1}
+\]
+All seed-exponent guards and encoded-representative guards are retained.
+Together with the shared square budget, they establish the signed
+indexed-Pell hypotheses independently of the twelve removed digit signs.
+The request $q^t$ orients the $t$-indexed pair; thus
+$V=(\rho+1)^t\ge1$ has the correct positive value. The unchanged ceiling
+identity is
+\[
+ DF=V+f_s,                                                \tag{B2}
+\]
+which forces $F\ge1$ and then $V\ge2$.
+
+The retained guard $B\ge0$, with $C+F^2+1=B i_q$ and $C\ge1$, gives
+$B>0$. The signed request $B^K$ gives its positive output $N$, except
+possibly for the inverse case $B=1,N=-1$. In either case the other
+$K$-indexed base $N+V+1$ is at least two. It orients the shared pair,
+excludes the inverse case, and recovers $N=B^K>0$ and
+$q=N(N+V+1)^K$. Every remaining index has a request at base $q$ or $q+1$.
+All nineteen powers are therefore recovered before any replaced sign is
+used. Now $q^k-1\ge0$, so (PG) restores each original remainder and slack
+sign. The old carry-free digit, amplified-CRT and Horn-flow proofs apply.
+
+In the reverse direction an old semantic certificate has $r,s\ge0$,
+so each product $rs$ receives three witnesses by (PG). This is an
+existence-preserving map, not an identification of old and new guard
+coordinates.
+
+\subsection{An existing square can guard the factorial radius}
+The stronger endpoint changes only three source rows:
+\[
+ \rho=F^2t^2,\qquad y=F^2+r_0+1,\qquad
+ R=2+t+x+y+F^2,\qquad K=2R.                              \tag{SQ}
+\]
+The old rows used $F$ in place of $F^2$ at these three positions. The
+wire $F^2$ already exists for the reciprocal product
+$B=\binom{F^2+t}{t}$. No extra square coordinate is introduced; instead,
+the independent nonnegativity guard on $F$ is removed.
+
+Before interpreting $F$, its square gives $\rho\ge0$, $y\ge1$ and
+$R\ge19$, since $t=t_0+16$ and $x,r_0,t_0\ge0$. Thus all seed
+indices remain positive: $t,K,\rho+t,F^2+t,x+1,y+1$, the positive
+encoded representatives and the positive derived label sum. The new
+ordered lower-bound certificate establishes these facts directly from the
+modified polynomial; it does not reuse an assumption $F\ge0$.
+Equations (B1)--(B2) and the preceding power recovery now force $F\ge1$.
+Only after this step is $F$ used as a natural source parameter.
+
+Once $F\ge1$, the larger radius satisfies $\rho\ge Ft^2$.
+The new $R$ dominates the old $2+t+x+y+F$, so the same local majorant
+exponent remains valid. When the factorial is recovered, $t\ge16$ gives
+$F=t!\ge16!>2^{44}$; hence the old bounds
+\[
+ L,J<R^E<2^R<2^K,\qquad 3\ell(t+1)\le2F\le K
+\]
+continue to validate the source and derived-label range. The literal
+compiler then removes the factorial guard and one additional monic wire,
+giving $489$ variables.
+
+\subsection{A self-bounding factorial at any sufficiently large radius}
+Let $t,F,\rho$ be positive integers, $\rho\ge Ft^2$, and put
+\[
+ V=(\rho+1)^t,\qquad D=\binom{\rho+t}{t}.
+\]
+There are natural $f_r,f_s$ satisfying
+\[
+ D=f_r+f_s+1,\qquad DF=V+f_s                              \tag{F}
+\]
+if and only if $F=t!$. To prove this write $L=t!$. The exact product
+identity gives
+\[
+ \frac VD=L\prod_{i=1}^t\left(1-\frac{i-1}{\rho+i}\right),
+ \qquad L\left(1-\frac1{2F}\right)<\frac VD\le L.
+\]
+The lower bound follows from
+$\sum(i-1)/(\rho+i)\le t(t-1)/(2\rho)<1/(2F)$.
+Rows (F) say $F-1<V/D\le F$, so $F\le L$. If $F<L$, then
+$L\ge F+1$ and $L(2F-1)\ge2F^2$; consequently
+$L-L/(2F)\ge F$, contradicting the strict lower bound. Thus $F=L$.
+Conversely, for $F=L$, the ratio lies in $(L-1,L]$; choose
+$f_s=DL-V$ and $f_r=D-f_s-1$.
+
+The polynomial does not assume the proposed $D$ is already this binomial.
+Recover powers first. The common radix satisfies $q>V^2$. Once (B2)
+has forced $F\ge1$, one has $\rho\ge t$, and every coefficient through
+degree $t$ in $(q+1)^{\rho+t}$ is at most
+$\binom{\rho+t}{t}\le V<q$. Thus the first exact digit is valid and (F)
+forces $F=t!$. For the second exact binomial use
+$F^2+t\le(\rho+1)^2$, giving coefficient bound $V^2<q$.
+Only then identify $B$, derive $B\ge2$, and validate the remaining ranges.
+This order avoids a circular interpretation of the product binomial.
+
+\subsection{Completeness and the exact polynomial maps}
+The square-anchored variant is reconstructed from a finite proof, not
+obtained by keeping the old tuple unchanged. Choose the padded horizon
+$t\ge16$ beyond the finite proof-tree length, local parameters and label
+sums, then set $F=t!$. Construct the positive Horn-flow accumulators with
+weights $1+jF$. Choose a multiple $y$ of $t!$ exceeding every accumulator
+and $F^2$, so $r_0=y-F^2-1\ge0$. The beta CRT gives $x$ and the endpoint
+quotients. Define $\rho,R,K$ by (SQ), construct the reciprocal CRT
+representatives at precision $2K$, and then define the powers and radix.
+The wider-radius lemma supplies the factorial ceilings; the original
+carry bounds supply all digit witnesses; simultaneous Pell completeness
+supplies the shared frame. Finally apply (PG) to every product.
+
+The Horn factorization is an exact polynomial identity. Every subsequent
+coordinate deletion has an integral monic restoration; reversing the
+recorded list supplies the inverse of projection. The final JSON contains
+all $308$ residuals and all $489$ coordinates, and the independent
+expanded coefficient list verifies degree, support and height. The full
+proof, deterministic builder, lower-bound certificates, changes to the
+three radius rows, and both projection/restoration maps accompany this
+section. Finite regression tests supplement these universal arguments;
+they do not fabricate a zero or test consistency.

@@ -1,0 +1,186 @@
+% Complete proof from norm/DEGREE_PROOF.md; literal text, no Markdown math interpretation.
+\section{Exact degrees and literal cost of the round-15 norm pair}
+
+
+
+\subsection*{Frozen circuits and domain}
+
+
+
+The selected files are \texttt{integral\_\allowbreak{}centered\_\allowbreak{}paired.json} (11 unrestricted integer variables, exact degree 464, 119 live binary operations) and \texttt{integral\_\allowbreak{}direct\_\allowbreak{}paired.json} (11 unrestricted integer variables, exact degree 488, 118 live binary operations). Their mathematical prefix is the frozen three-adic construction in \texttt{../\allowbreak{}scalar/\allowbreak{}PROOF.md}. The complete six ports are beta, K0, MC, MF, cone\_\allowbreak{}A, cone\_\allowbreak{}B; all six authentic byte payloads and their binding are included under \texttt{coefficients/\allowbreak{}}.
+
+
+
+Every binary addition, subtraction and multiplication is charged, including scalar multiplication and squaring. Reuse is free. Integer literals, variables, and the six fixed coefficient ports are leaves, not operations and not new unknowns. Every retained arithmetic node is live. The selected pair has respectively (74 multiplications, 24 additions, 21 subtractions) and (74 multiplications, 23 additions, 21 subtractions).
+
+
+
+The generator is original local code and imports no upstream executable. The independent skeptic's full register-cut audit is in \texttt{../\allowbreak{}scalar\_\allowbreak{}audit/\allowbreak{}}; \texttt{check\_\allowbreak{}norm.py} independently checks full-byte bindings, all 35 coefficients of the universal radical identity, the center identity, topology, and the exact leading coefficient of every literal DAG node (with the proved cancellation substituted at its one identified node).
+
+
+
+\subsection*{A paired quadratic-norm identity}
+
+
+
+For formal independent A,B,G,Z put
+
+
+
+N(Z;A,B,G) =\allowbreak{} [(Z\textasciicircum{}\allowbreak{}2+\allowbreak{}A-B-G)\textasciicircum{}\allowbreak{}2 - 4(AZ\textasciicircum{}\allowbreak{}2+\allowbreak{}BG)]\textasciicircum{}\allowbreak{}2 - 64(AZ\textasciicircum{}\allowbreak{}2)(BG).
+
+
+
+In the free triquadratic algebra this equals
+
+
+
+product over eps in \{-1,1\}\textasciicircum{}\allowbreak{}3 of (Z-eps1 sqrt(A)-eps2 sqrt(B)-eps3 sqrt(G)).
+
+
+
+Equivalently it is [(Z\textasciicircum{}\allowbreak{}2-A-B-G)\textasciicircum{}\allowbreak{}2-4(AB+\allowbreak{}AG+\allowbreak{}BG)]\textasciicircum{}\allowbreak{}2-64ABGZ\textasciicircum{}\allowbreak{}2. These are identities of complete integer polynomials, not numerical ray checks. Multiplying all eight conjugates gives exactly 35 monomials and zero coefficients on all seven non-scalar radical basis elements. Reusing AZ\textasciicircum{}\allowbreak{}2 and BG saves one binary multiplication over the source's symmetric norm schedule.
+
+
+
+In the selected circuits, A=\allowbreak{}9S\textasciicircum{}\allowbreak{}2 Df, B=\allowbreak{}S\textasciicircum{}\allowbreak{}2 delta Cy, G=\allowbreak{}81S\textasciicircum{}\allowbreak{}2 P. The direct coordinate is Z=\allowbreak{}Sn-Ac; the centered coordinate is Z=\allowbreak{}S(n+\allowbreak{}QV)-Ac. The center is an integral shear, so it preserves integer-zero existence without any congruence condition on n.
+
+
+
+\subsection*{Weighted guard: one additional exact multiplication saving}
+
+
+
+The selected literal graph stores D81=\allowbreak{}243Budget-324, Dg81=\allowbreak{}81+\allowbreak{}D81 Dt s\textasciicircum{}\allowbreak{}2, P81=\allowbreak{}Dt Dg81, and G=\allowbreak{}S\textasciicircum{}\allowbreak{}2 P81. The complete polynomial identity
+
+
+
+81+\allowbreak{}(243Budget-324)Dt s\textasciicircum{}\allowbreak{}2 =\allowbreak{} 81[1+\allowbreak{}(3Budget-4)Dt s\textasciicircum{}\allowbreak{}2]
+
+
+
+proves Dg81=\allowbreak{}81Dg and P81=\allowbreak{}81P. Thus G remains exactly 81S\textasciicircum{}\allowbreak{}2P, with no zero-set change, new restriction, division, or change in witness ordering. Absorbing the constant 81 into the existing guard constants saves one scalar multiplication. The proof uses conceptual D,Dg,P; their weighted counterparts are the live literal registers. The checker verifies this entire identity, not numerical instances.
+
+
+
+\subsection*{Prefix degrees and their leading forms}
+
+
+
+A subscript star denotes the highest homogeneous part in the eleven variables, with the six authenticated ports fixed constants. Let
+
+
+
+q\textasteriskcentered{}\allowbreak{}=\allowbreak{}6 beta j, X\textasteriskcentered{}\allowbreak{}=\allowbreak{}12w q\textasteriskcentered{}\allowbreak{}, Y\textasteriskcentered{}\allowbreak{}=\allowbreak{}2v (q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}3, a\textasteriskcentered{}\allowbreak{}=\allowbreak{}X\textasteriskcentered{}\allowbreak{}Y\textasteriskcentered{}\allowbreak{}, F\textasteriskcentered{}\allowbreak{}=\allowbreak{}12w C-6 beta j z, R\textasteriskcentered{}\allowbreak{}=\allowbreak{}-(q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}3 F\textasteriskcentered{}\allowbreak{}.
+
+
+
+Then the exact leading forms needed below are
+
+
+
+I\textasteriskcentered{}\allowbreak{}=\allowbreak{}r c\textasciicircum{}\allowbreak{}2, S\textasteriskcentered{}\allowbreak{}=\allowbreak{}4s r a\textasteriskcentered{}\allowbreak{}, Df\textasteriskcentered{}\allowbreak{}=\allowbreak{}(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2 (I\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2, Q\textasteriskcentered{}\allowbreak{}=\allowbreak{}(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}4 (I\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2, V\textasteriskcentered{}\allowbreak{}=\allowbreak{}-Df\textasteriskcentered{}\allowbreak{} R\textasteriskcentered{}\allowbreak{}=\allowbreak{}(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2 (I\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2 (q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}3 F\textasteriskcentered{}\allowbreak{}, Ac\textasteriskcentered{}\allowbreak{}=\allowbreak{}(4a\textasteriskcentered{}\allowbreak{}T)\textasciicircum{}\allowbreak{}5, Dt\textasteriskcentered{}\allowbreak{}=\allowbreak{}h\textasciicircum{}\allowbreak{}2 (a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}4 (Y\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2, D\textasteriskcentered{}\allowbreak{}=\allowbreak{}-12(q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2 (Y\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2 h\textasciicircum{}\allowbreak{}2(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2, P\textasteriskcentered{}\allowbreak{}=\allowbreak{}-12s\textasciicircum{}\allowbreak{}2 h\textasciicircum{}\allowbreak{}6(q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}10(Y\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}6.
+
+
+
+In particular the exact degrees are
+
+
+
+I 3; S 8; Df 18; Q 30; V 23; Cy 76; delta Cy 106; Dt 34; Dg 60; P 94; Ac 35; A 34; B 122; G 110.
+
+
+
+The dominant term of V is -Df R, not the interpolation term 4Df I T. This distinction is essential after decoupling the strong scale.
+
+
+
+The two nonzero norm-leading factors are
+
+
+
+B\textasteriskcentered{}\allowbreak{}=\allowbreak{}16s\textasciicircum{}\allowbreak{}2 r\textasciicircum{}\allowbreak{}10 c\textasciicircum{}\allowbreak{}16 (a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}14(q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}6(F\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2, G\textasteriskcentered{}\allowbreak{}=\allowbreak{}-2\textasciicircum{}\allowbreak{}6 3\textasciicircum{}\allowbreak{}5 s\textasciicircum{}\allowbreak{}4 r\textasciicircum{}\allowbreak{}2 h\textasciicircum{}\allowbreak{}6(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}12(q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2(Y\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}6.
+
+
+
+Both are nonzero polynomials for the authentic positive beta.
+
+
+
+\subsection*{Centered degree 464: global upper bound and exact attainment}
+
+
+
+Write W=\allowbreak{}Sn-Ac and C0=\allowbreak{}SQV, so Z=\allowbreak{}W+\allowbreak{}C0. The complete exact identity
+
+
+
+Z\textasciicircum{}\allowbreak{}2-B =\allowbreak{} W\textasciicircum{}\allowbreak{}2+\allowbreak{}2SQVW+\allowbreak{}S\textasciicircum{}\allowbreak{}2[Q(V\textasciicircum{}\allowbreak{}2+\allowbreak{}1)-1]
+
+
+
+has degree 96: the three displayed terms have degrees 70, 96, and 92. Its degree-96 part is -2S\textasteriskcentered{}\allowbreak{}Q\textasteriskcentered{}\allowbreak{}V\textasteriskcentered{}\allowbreak{}Ac\textasteriskcentered{}\allowbreak{}, which is nonzero. Adding A cannot affect this degree. Hence
+
+
+
+v=\allowbreak{}Z\textasciicircum{}\allowbreak{}2+\allowbreak{}A-B-G has degree 110 and top form -G\textasteriskcentered{}\allowbreak{}.
+
+
+
+The paired inner bracket is
+
+
+
+v\textasciicircum{}\allowbreak{}2-4(AZ\textasciicircum{}\allowbreak{}2+\allowbreak{}BG).
+
+
+
+Here v\textasciicircum{}\allowbreak{}2 has degree 220; AZ\textasciicircum{}\allowbreak{}2 has degree 156; BG has degree 232. Therefore the bracket has degree 232 and top form -4B\textasteriskcentered{}\allowbreak{}G\textasteriskcentered{}\allowbreak{}. Its square has degree 464. The final correction 64(AZ\textasciicircum{}\allowbreak{}2)(BG) has degree 388, so it cannot cancel that top form.
+
+
+
+Consequently the entire highest homogeneous form is
+
+
+
+16(B\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2(G\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2 =\allowbreak{}2\textasciicircum{}\allowbreak{}24 3\textasciicircum{}\allowbreak{}10 s\textasciicircum{}\allowbreak{}12 r\textasciicircum{}\allowbreak{}24 c\textasciicircum{}\allowbreak{}32 h\textasciicircum{}\allowbreak{}12(a\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}52(q\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}16(Y\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}12(F\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}4 =\allowbreak{}2\textasciicircum{}\allowbreak{}452 3\textasciicircum{}\allowbreak{}322 beta\textasciicircum{}\allowbreak{}260 j\textasciicircum{}\allowbreak{}260 w\textasciicircum{}\allowbreak{}52 v\textasciicircum{}\allowbreak{}64 h\textasciicircum{}\allowbreak{}12 s\textasciicircum{}\allowbreak{}12 r\textasciicircum{}\allowbreak{}24 c\textasciicircum{}\allowbreak{}32(12wC-6 beta jz)\textasciicircum{}\allowbreak{}4.
+
+
+
+For example, the coefficient of
+
+
+
+j\textasciicircum{}\allowbreak{}260 w\textasciicircum{}\allowbreak{}56 v\textasciicircum{}\allowbreak{}64 C\textasciicircum{}\allowbreak{}4 h\textasciicircum{}\allowbreak{}12 s\textasciicircum{}\allowbreak{}12 r\textasciicircum{}\allowbreak{}24 c\textasciicircum{}\allowbreak{}32
+
+
+
+is exactly 2\textasciicircum{}\allowbreak{}460 3\textasciicircum{}\allowbreak{}326 beta\textasciicircum{}\allowbreak{}260, strictly positive. Its total degree is 464. A second endpoint has j\textasciicircum{}\allowbreak{}264 w\textasciicircum{}\allowbreak{}52 v\textasciicircum{}\allowbreak{}64 z\textasciicircum{}\allowbreak{}4 h\textasciicircum{}\allowbreak{}12 s\textasciicircum{}\allowbreak{}12 r\textasciicircum{}\allowbreak{}24 c\textasciicircum{}\allowbreak{}32 with coefficient 2\textasciicircum{}\allowbreak{}456 3\textasciicircum{}\allowbreak{}326 beta\textasciicircum{}\allowbreak{}264. This proves exact degree over the authentic integers, not just over a finite field and not only along a sampled line.
+
+
+
+\subsection*{Direct degree 488}
+
+
+
+In the uncentered circuit Z has degree 35, hence Z\textasciicircum{}\allowbreak{}2 has degree 70. The largest term of Z\textasciicircum{}\allowbreak{}2+\allowbreak{}A-B-G is uniquely -B\textasteriskcentered{}\allowbreak{}, degree 122. Its square has degree 244, while AZ\textasciicircum{}\allowbreak{}2 and BG have degrees 104 and 232. Thus the inner bracket has top form (B\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}2, and the output's entire top form is (B\textasteriskcentered{}\allowbreak{})\textasciicircum{}\allowbreak{}4, degree 488. The final correction has degree 336 and cannot cancel it.
+
+
+
+One attained monomial is
+
+
+
+j\textasciicircum{}\allowbreak{}248 w\textasciicircum{}\allowbreak{}64 v\textasciicircum{}\allowbreak{}56 C\textasciicircum{}\allowbreak{}8 s\textasciicircum{}\allowbreak{}8 r\textasciicircum{}\allowbreak{}40 c\textasciicircum{}\allowbreak{}64,
+
+
+
+whose coefficient is exactly 2\textasciicircum{}\allowbreak{}448 3\textasciicircum{}\allowbreak{}312 beta\textasciicircum{}\allowbreak{}248 \textgreater{}\allowbreak{} 0.
+
+
+
+\subsection*{Tested but dominated alternatives}
+
+
+
+The unfused symmetric comparison graphs cost two additional multiplications: centered 464/\allowbreak{}121 and direct 488/\allowbreak{}120. One saving comes from the paired norm and the other from the weighted guard. Expanding the center cancellation directly gives a syntactic degree-464 circuit but costs 136 operations. Replacing delta\textasteriskcentered{}\allowbreak{}y by y and clearing the auxiliary denominator gives degree 560 and 125 operations uncentered (126 centered). These are not selected. No field-normalization shortcut or unproved division is used in either selected integer circuit.

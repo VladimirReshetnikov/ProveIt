@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\hypersetup{pdftitle={Paired sign conditions and centered Pell carriers for Diophantine consistency},
+  pdfauthor={Research notes for ProveIt},
+  pdfsubject={Explicit Diophantine consistency constructions, proofs, and verification boundaries}}
+\usepackage{etoolbox}
+\usepackage{needspace}
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+% Leave a visible gap between two-digit section numbers and TOC titles.
+\makeatletter
+\patchcmd{\l@section}{\setlength\@tempdima{1.5em}}{\setlength\@tempdima{2.3em}}{}%
+  {\PackageError{report}{Could not widen TOC section numbers}{Check the article class definition.}}
+\renewcommand{\@maketitle}{%
+  \begin{center}
+    {\Large\@title\par}\vskip 0.5em
+    {\normalsize\@author\par}\vskip 0.25em
+    {\normalsize\@date\par}
+  \end{center}\vskip 0.3em}
+\makeatother
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\DeclareMathOperator{\lcm}{lcm}
+\setlength{\emergencystretch}{2em}
+\title{Paired sign conditions and centered Pell carriers\\for Diophantine consistency}
+\author{Research notes for ProveIt}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\input{summary.tex}
+\clearpage
+\tableofcontents
+\input{scope.tex}
+\input{sections/direct_quartics.tex}
+\input{sections/centered_fifteen.tex}
+\input{sections/compact_twelve.tex}
+\input{sections/positive_family.tex}
+\input{sections/integer_family.tex}
+\input{validation.tex}
+\input{references.tex}
+\end{document}

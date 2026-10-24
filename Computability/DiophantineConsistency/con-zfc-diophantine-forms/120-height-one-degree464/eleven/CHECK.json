@@ -1,0 +1,1072 @@
+{
+  "status": "PASS",
+  "source_files_authenticated": 96,
+  "universal": {
+    "norm_coefficients": 35,
+    "eight_conjugates": true,
+    "short_projection_identity": true,
+    "center_identity": true,
+    "degree_revealing_identity": true
+  },
+  "coefficients": {
+    "payloads_authenticated": 6,
+    "recipe_rebuilt": true,
+    "recipe_audit": {
+      "basis_convolution_checks": 69230,
+      "b": 121,
+      "L": 8801,
+      "d": 1064921,
+      "mass_bits": 118,
+      "threshold_bits": 121,
+      "max_product_exponent": 8791,
+      "padding_exponents": [
+        8792,
+        8793,
+        8794,
+        8795,
+        8796,
+        8797,
+        8798,
+        8799
+      ],
+      "padding_popcount": 860,
+      "d_factorization": {
+        "11": 2,
+        "13": 1,
+        "677": 1
+      },
+      "orders": {
+        "121": 10,
+        "13": 12,
+        "677": 52
+      },
+      "lambda": 2341,
+      "k": 2340,
+      "non_Wieferich_residue": 2556373,
+      "unit_rows": {
+        "11": [
+          2,
+          3,
+          7
+        ],
+        "13": [
+          6,
+          9,
+          1
+        ],
+        "677": [
+          611,
+          293,
+          53
+        ],
+        "2341": [
+          2100,
+          1896,
+          594
+        ]
+      }
+    }
+  },
+  "equations": [
+    {
+      "name": "powered_coprime11_direct",
+      "topology": {
+        "live_nodes": 147,
+        "operations": 121,
+        "counts": {
+          "mul": 77,
+          "add": 23,
+          "sub": 21
+        },
+        "naive_degree_bound": 488
+      },
+      "all_register_identities": [
+        {
+          "register": "J",
+          "expression": "6*j+1",
+          "free_inputs": [
+            "j"
+          ]
+        },
+        {
+          "register": "qm",
+          "expression": "beta*J",
+          "free_inputs": [
+            "J",
+            "beta"
+          ]
+        },
+        {
+          "register": "q",
+          "expression": "qm+1",
+          "free_inputs": [
+            "qm"
+          ]
+        },
+        {
+          "register": "q2",
+          "expression": "q*q",
+          "free_inputs": [
+            "q"
+          ]
+        },
+        {
+          "register": "q3",
+          "expression": "q*q*q",
+          "free_inputs": [
+            "q"
+          ]
+        },
+        {
+          "register": "W",
+          "expression": "12*w+4",
+          "free_inputs": [
+            "w"
+          ]
+        },
+        {
+          "register": "X",
+          "expression": "q*W",
+          "free_inputs": [
+            "W",
+            "q"
+          ]
+        },
+        {
+          "register": "Y",
+          "expression": "(2*v+1)*q*q*q",
+          "free_inputs": [
+            "q",
+            "v"
+          ]
+        },
+        {
+          "register": "E",
+          "expression": "X*Y",
+          "free_inputs": [
+            "X",
+            "Y"
+          ]
+        },
+        {
+          "register": "a",
+          "expression": "(X+1)*Y",
+          "free_inputs": [
+            "X",
+            "Y"
+          ]
+        },
+        {
+          "register": "H",
+          "expression": "4*a+3",
+          "free_inputs": [
+            "a"
+          ]
+        },
+        {
+          "register": "Delta",
+          "expression": "a*a+H",
+          "free_inputs": [
+            "H",
+            "a"
+          ]
+        },
+        {
+          "register": "F",
+          "expression": "(K0+W)*C-z*qm",
+          "free_inputs": [
+            "C",
+            "K0",
+            "W",
+            "qm",
+            "z"
+          ]
+        },
+        {
+          "register": "R",
+          "expression": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J",
+          "free_inputs": [
+            "C",
+            "F",
+            "J",
+            "MC",
+            "MF",
+            "q"
+          ]
+        },
+        {
+          "register": "k",
+          "expression": "R+1+h*E",
+          "free_inputs": [
+            "E",
+            "R",
+            "h"
+          ]
+        },
+        {
+          "register": "c2",
+          "expression": "c*c",
+          "free_inputs": [
+            "c"
+          ]
+        },
+        {
+          "register": "eta",
+          "expression": "c-Y*k",
+          "free_inputs": [
+            "Y",
+            "c",
+            "k"
+          ]
+        },
+        {
+          "register": "U",
+          "expression": "cone_A*F",
+          "free_inputs": [
+            "F",
+            "cone_A"
+          ]
+        },
+        {
+          "register": "Vc",
+          "expression": "cone_B*C",
+          "free_inputs": [
+            "C",
+            "cone_B"
+          ]
+        },
+        {
+          "register": "Derr",
+          "expression": "(U-q)**2+(Vc-q)**2",
+          "free_inputs": [
+            "U",
+            "Vc",
+            "q"
+          ]
+        },
+        {
+          "register": "Budget",
+          "expression": "k*k*(q*q-Derr)-4*q*q*eta*eta",
+          "free_inputs": [
+            "Derr",
+            "eta",
+            "k",
+            "q"
+          ]
+        },
+        {
+          "register": "ell",
+          "expression": "X*Y*Y",
+          "free_inputs": [
+            "X",
+            "Y"
+          ]
+        },
+        {
+          "register": "L",
+          "expression": "ell*k",
+          "free_inputs": [
+            "ell",
+            "k"
+          ]
+        },
+        {
+          "register": "Dt",
+          "expression": "1+ell*(ell+1)*k*k",
+          "free_inputs": [
+            "ell",
+            "k"
+          ]
+        },
+        {
+          "register": "D",
+          "expression": "3*Budget-4",
+          "free_inputs": [
+            "Budget"
+          ]
+        },
+        {
+          "register": "Dg",
+          "expression": "1+D*Dt*s*s",
+          "free_inputs": [
+            "D",
+            "Dt",
+            "s"
+          ]
+        },
+        {
+          "register": "I",
+          "expression": "2*r*c*c",
+          "free_inputs": [
+            "c",
+            "r"
+          ]
+        },
+        {
+          "register": "I2",
+          "expression": "I*I",
+          "free_inputs": [
+            "I"
+          ]
+        },
+        {
+          "register": "strong",
+          "expression": "Delta*I*I",
+          "free_inputs": [
+            "Delta",
+            "I"
+          ]
+        },
+        {
+          "register": "Df",
+          "expression": "1+Delta*I*I",
+          "free_inputs": [
+            "Delta",
+            "I"
+          ]
+        },
+        {
+          "register": "Q",
+          "expression": "Delta*Delta*I*I",
+          "free_inputs": [
+            "Delta",
+            "I"
+          ]
+        },
+        {
+          "register": "delta",
+          "expression": "Q-1",
+          "free_inputs": [
+            "Q"
+          ]
+        },
+        {
+          "register": "bfront",
+          "expression": "c-R+4*I*T",
+          "free_inputs": [
+            "I",
+            "R",
+            "T",
+            "c"
+          ]
+        },
+        {
+          "register": "V",
+          "expression": "Df*bfront-c",
+          "free_inputs": [
+            "Df",
+            "bfront",
+            "c"
+          ]
+        },
+        {
+          "register": "Cy",
+          "expression": "Q*V*V-1",
+          "free_inputs": [
+            "Q",
+            "V"
+          ]
+        },
+        {
+          "register": "Da",
+          "expression": "(Q-1)*(Q*V*V-1)",
+          "free_inputs": [
+            "Q",
+            "V"
+          ]
+        },
+        {
+          "register": "K",
+          "expression": "X*(3*c-2*X)+2",
+          "free_inputs": [
+            "X",
+            "c"
+          ]
+        },
+        {
+          "register": "H2",
+          "expression": "H*H",
+          "free_inputs": [
+            "H"
+          ]
+        },
+        {
+          "register": "H3",
+          "expression": "H*H*H",
+          "free_inputs": [
+            "H"
+          ]
+        },
+        {
+          "register": "S",
+          "expression": "s*r*H",
+          "free_inputs": [
+            "H",
+            "r",
+            "s"
+          ]
+        },
+        {
+          "register": "S2",
+          "expression": "S*S",
+          "free_inputs": [
+            "S"
+          ]
+        },
+        {
+          "register": "zc",
+          "expression": "H*T+K",
+          "free_inputs": [
+            "H",
+            "K",
+            "T"
+          ]
+        },
+        {
+          "register": "zc2",
+          "expression": "zc*zc",
+          "free_inputs": [
+            "zc"
+          ]
+        },
+        {
+          "register": "Ac",
+          "expression": "(zc*zc+3*H*H)*(zc*zc*zc-19*H*H*H)",
+          "free_inputs": [
+            "H",
+            "zc"
+          ]
+        },
+        {
+          "register": "Z",
+          "expression": "S*n-Ac",
+          "free_inputs": [
+            "Ac",
+            "S",
+            "n"
+          ]
+        },
+        {
+          "register": "P",
+          "expression": "Dt*Dg",
+          "free_inputs": [
+            "Dg",
+            "Dt"
+          ]
+        },
+        {
+          "register": "u",
+          "expression": "4*S*S*Df",
+          "free_inputs": [
+            "Df",
+            "S"
+          ]
+        },
+        {
+          "register": "b",
+          "expression": "S*S*Da",
+          "free_inputs": [
+            "Da",
+            "S"
+          ]
+        },
+        {
+          "register": "e",
+          "expression": "16*S*S*P",
+          "free_inputs": [
+            "P",
+            "S"
+          ]
+        },
+        {
+          "register": "Z2",
+          "expression": "Z*Z",
+          "free_inputs": [
+            "Z"
+          ]
+        },
+        {
+          "register": "ub_sum",
+          "expression": "u+b",
+          "free_inputs": [
+            "b",
+            "u"
+          ]
+        },
+        {
+          "register": "ub_product",
+          "expression": "u*b",
+          "free_inputs": [
+            "b",
+            "u"
+          ]
+        },
+        {
+          "register": "vnorm",
+          "expression": "Z*Z-u-b-e",
+          "free_inputs": [
+            "Z",
+            "b",
+            "e",
+            "u"
+          ]
+        },
+        {
+          "register": "ynorm",
+          "expression": "vnorm*vnorm-4*(u*b+u*e+b*e)",
+          "free_inputs": [
+            "b",
+            "e",
+            "u",
+            "vnorm"
+          ]
+        },
+        {
+          "register": "output",
+          "expression": "ynorm*ynorm-64*u*b*e*Z*Z",
+          "free_inputs": [
+            "Z",
+            "b",
+            "e",
+            "u",
+            "ynorm"
+          ]
+        }
+      ],
+      "degree": {
+        "exact_degree": 488,
+        "monomial": {
+          "C": 8,
+          "j": 248,
+          "w": 64,
+          "v": 56,
+          "h": 0,
+          "s": 8,
+          "r": 40,
+          "c": 64,
+          "T": 0,
+          "z": 0,
+          "n": 0
+        },
+        "coefficient_factors": {
+          "2": 480,
+          "3": 312,
+          "beta": 248
+        },
+        "leading_form_terms": 9,
+        "nonzero_for_authentic_beta": true,
+        "leading_form": "b_top^4"
+      },
+      "actual_DAG_leading": {
+        "all_live_nodes": 147,
+        "exact_center_cut": false,
+        "upper_bound_and_attained_coefficient": true
+      }
+    },
+    {
+      "name": "powered_coprime11_aux",
+      "topology": {
+        "live_nodes": 148,
+        "operations": 122,
+        "counts": {
+          "mul": 77,
+          "add": 24,
+          "sub": 21
+        },
+        "naive_degree_bound": 488
+      },
+      "all_register_identities": [
+        {
+          "register": "J",
+          "expression": "6*j+1",
+          "free_inputs": [
+            "j"
+          ]
+        },
+        {
+          "register": "qm",
+          "expression": "beta*J",
+          "free_inputs": [
+            "J",
+            "beta"
+          ]
+        },
+        {
+          "register": "q",
+          "expression": "qm+1",
+          "free_inputs": [
+            "qm"
+          ]
+        },
+        {
+          "register": "q2",
+          "expression": "q*q",
+          "free_inputs": [
+            "q"
+          ]
+        },
+        {
+          "register": "q3",
+          "expression": "q*q*q",
+          "free_inputs": [
+            "q"
+          ]
+        },
+        {
+          "register": "W",
+          "expression": "12*w+4",
+          "free_inputs": [
+            "w"
+          ]
+        },
+        {
+          "register": "X",
+          "expression": "q*W",
+          "free_inputs": [
+            "W",
+            "q"
+          ]
+        },
+        {
+          "register": "Y",
+          "expression": "(2*v+1)*q*q*q",
+          "free_inputs": [
+            "q",
+            "v"
+          ]
+        },
+        {
+          "register": "E",
+          "expression": "X*Y",
+          "free_inputs": [
+            "X",
+            "Y"
+          ]
+        },
+        {
+          "register": "a",
+          "expression": "(X+1)*Y",
+          "free_inputs": [
+            "X",
+            "Y"
+          ]
+        },
+        {
+          "register": "H",
+          "expression": "4*a+3",
+          "free_inputs": [
+            "a"
+          ]
+        },
+        {
+          "register": "Delta",
+          "expression": "a*a+H",
+          "free_inputs": [
+            "H",
+            "a"
+          ]
+        },
+        {
+          "register": "F",
+          "expression": "(K0+W)*C-z*qm",
+          "free_inputs": [
+            "C",
+            "K0",
+            "W",
+            "qm",
+            "z"
+          ]
+        },
+        {
+          "register": "R",
+          "expression": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J",
+          "free_inputs": [
+            "C",
+            "F",
+            "J",
+            "MC",
+            "MF",
+            "q"
+          ]
+        },
+        {
+          "register": "k",
+          "expression": "R+1+h*E",
+          "free_inputs": [
+            "E",
+            "R",
+            "h"
+          ]
+        },
+        {
+          "register": "c2",
+          "expression": "c*c",
+          "free_inputs": [
+            "c"
+          ]
+        },
+        {
+          "register": "eta",
+          "expression": "c-Y*k",
+          "free_inputs": [
+            "Y",
+            "c",
+            "k"
+          ]
+        },
+        {
+          "register": "U",
+          "expression": "cone_A*F",
+          "free_inputs": [
+            "F",
+            "cone_A"
+          ]
+        },
+        {
+          "register": "Vc",
+          "expression": "cone_B*C",
+          "free_inputs": [
+            "C",
+            "cone_B"
+          ]
+        },
+        {
+          "register": "Derr",
+          "expression": "(U-q)**2+(Vc-q)**2",
+          "free_inputs": [
+            "U",
+            "Vc",
+            "q"
+          ]
+        },
+        {
+          "register": "Budget",
+          "expression": "k*k*(q*q-Derr)-4*q*q*eta*eta",
+          "free_inputs": [
+            "Derr",
+            "eta",
+            "k",
+            "q"
+          ]
+        },
+        {
+          "register": "ell",
+          "expression": "X*Y*Y",
+          "free_inputs": [
+            "X",
+            "Y"
+          ]
+        },
+        {
+          "register": "L",
+          "expression": "ell*k",
+          "free_inputs": [
+            "ell",
+            "k"
+          ]
+        },
+        {
+          "register": "Dt",
+          "expression": "1+ell*(ell+1)*k*k",
+          "free_inputs": [
+            "ell",
+            "k"
+          ]
+        },
+        {
+          "register": "D",
+          "expression": "3*Budget-4",
+          "free_inputs": [
+            "Budget"
+          ]
+        },
+        {
+          "register": "Dg",
+          "expression": "1+D*Dt*s*s",
+          "free_inputs": [
+            "D",
+            "Dt",
+            "s"
+          ]
+        },
+        {
+          "register": "I",
+          "expression": "2*r*c*c",
+          "free_inputs": [
+            "c",
+            "r"
+          ]
+        },
+        {
+          "register": "I2",
+          "expression": "I*I",
+          "free_inputs": [
+            "I"
+          ]
+        },
+        {
+          "register": "strong",
+          "expression": "Delta*I*I",
+          "free_inputs": [
+            "Delta",
+            "I"
+          ]
+        },
+        {
+          "register": "Df",
+          "expression": "1+Delta*I*I",
+          "free_inputs": [
+            "Delta",
+            "I"
+          ]
+        },
+        {
+          "register": "Q",
+          "expression": "Delta*Delta*I*I",
+          "free_inputs": [
+            "Delta",
+            "I"
+          ]
+        },
+        {
+          "register": "delta",
+          "expression": "Q-1",
+          "free_inputs": [
+            "Q"
+          ]
+        },
+        {
+          "register": "bfront",
+          "expression": "c-R+4*I*T",
+          "free_inputs": [
+            "I",
+            "R",
+            "T",
+            "c"
+          ]
+        },
+        {
+          "register": "V",
+          "expression": "Df*bfront-c",
+          "free_inputs": [
+            "Df",
+            "bfront",
+            "c"
+          ]
+        },
+        {
+          "register": "Cy",
+          "expression": "Q*V*V-1",
+          "free_inputs": [
+            "Q",
+            "V"
+          ]
+        },
+        {
+          "register": "Da",
+          "expression": "(Q-1)*(Q*V*V-1)",
+          "free_inputs": [
+            "Q",
+            "V"
+          ]
+        },
+        {
+          "register": "K",
+          "expression": "X*(3*c-2*X)+2",
+          "free_inputs": [
+            "X",
+            "c"
+          ]
+        },
+        {
+          "register": "H2",
+          "expression": "H*H",
+          "free_inputs": [
+            "H"
+          ]
+        },
+        {
+          "register": "H3",
+          "expression": "H*H*H",
+          "free_inputs": [
+            "H"
+          ]
+        },
+        {
+          "register": "S",
+          "expression": "s*r*H",
+          "free_inputs": [
+            "H",
+            "r",
+            "s"
+          ]
+        },
+        {
+          "register": "S2",
+          "expression": "S*S",
+          "free_inputs": [
+            "S"
+          ]
+        },
+        {
+          "register": "zc",
+          "expression": "H*T+K",
+          "free_inputs": [
+            "H",
+            "K",
+            "T"
+          ]
+        },
+        {
+          "register": "zc2",
+          "expression": "zc*zc",
+          "free_inputs": [
+            "zc"
+          ]
+        },
+        {
+          "register": "Ac",
+          "expression": "(zc*zc+3*H*H)*(zc*zc*zc-19*H*H*H)",
+          "free_inputs": [
+            "H",
+            "zc"
+          ]
+        },
+        {
+          "register": "shift",
+          "expression": "Q*V",
+          "free_inputs": [
+            "Q",
+            "V"
+          ]
+        },
+        {
+          "register": "Z",
+          "expression": "S*(n+shift)-Ac",
+          "free_inputs": [
+            "Ac",
+            "S",
+            "n",
+            "shift"
+          ]
+        },
+        {
+          "register": "P",
+          "expression": "Dt*Dg",
+          "free_inputs": [
+            "Dg",
+            "Dt"
+          ]
+        },
+        {
+          "register": "u",
+          "expression": "4*S*S*Df",
+          "free_inputs": [
+            "Df",
+            "S"
+          ]
+        },
+        {
+          "register": "b",
+          "expression": "S*S*Da",
+          "free_inputs": [
+            "Da",
+            "S"
+          ]
+        },
+        {
+          "register": "e",
+          "expression": "16*S*S*P",
+          "free_inputs": [
+            "P",
+            "S"
+          ]
+        },
+        {
+          "register": "Z2",
+          "expression": "Z*Z",
+          "free_inputs": [
+            "Z"
+          ]
+        },
+        {
+          "register": "ub_sum",
+          "expression": "u+b",
+          "free_inputs": [
+            "b",
+            "u"
+          ]
+        },
+        {
+          "register": "ub_product",
+          "expression": "u*b",
+          "free_inputs": [
+            "b",
+            "u"
+          ]
+        },
+        {
+          "register": "vnorm",
+          "expression": "Z*Z-u-b-e",
+          "free_inputs": [
+            "Z",
+            "b",
+            "e",
+            "u"
+          ]
+        },
+        {
+          "register": "ynorm",
+          "expression": "vnorm*vnorm-4*(u*b+u*e+b*e)",
+          "free_inputs": [
+            "b",
+            "e",
+            "u",
+            "vnorm"
+          ]
+        },
+        {
+          "register": "output",
+          "expression": "ynorm*ynorm-64*u*b*e*Z*Z",
+          "free_inputs": [
+            "Z",
+            "b",
+            "e",
+            "u",
+            "ynorm"
+          ]
+        }
+      ],
+      "degree": {
+        "exact_degree": 464,
+        "monomial": {
+          "C": 4,
+          "j": 260,
+          "w": 56,
+          "v": 64,
+          "h": 12,
+          "s": 12,
+          "r": 24,
+          "c": 32,
+          "T": 0,
+          "z": 0,
+          "n": 0
+        },
+        "coefficient_factors": {
+          "2": 484,
+          "3": 318,
+          "beta": 260
+        },
+        "leading_form_terms": 5,
+        "nonzero_for_authentic_beta": true,
+        "leading_form": "16*b_top^2*e_top^2"
+      },
+      "actual_DAG_leading": {
+        "all_live_nodes": 148,
+        "exact_center_cut": true,
+        "upper_bound_and_attained_coefficient": true
+      }
+    }
+  ],
+  "exact_artifact_regeneration": true
+}

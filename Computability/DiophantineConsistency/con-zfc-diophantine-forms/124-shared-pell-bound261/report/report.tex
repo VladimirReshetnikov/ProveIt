@@ -1,0 +1,485 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.93in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,enumitem,xcolor,fancyhdr}
+\usepackage[unicode,colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\definecolor{ink}{RGB}{23,45,68}
+\definecolor{accent}{RGB}{26,91,116}
+\hypersetup{pdftitle={One Pell bound and one error congruence: an explicit Diophantine consistency equation},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}Diophantine consistency / shared Pell bounds}\fancyhead[R]{\small 24 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[3]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\Refut}{\operatorname{Ref}}
+\newcommand{\X}[1]{X_{#1}(A)}\newcommand{\Y}[1]{Y_{#1}(A)}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\input{metrics.tex}
+\begin{document}
+\thispagestyle{empty}
+{\color{accent}\large RESEARCH CONTRIBUTION TO PROVEIT}\par\vspace{8pt}
+{\color{ink}\LARGE\bfseries One Pell bound and one error congruence}\par\vspace{7pt}
+{\Large An explicit quartic equation for the consistency of ZFC}\par\vspace{12pt}
+Prepared for Vladimir Reshetnikov\hfill 24 October 2026\par
+AI-assisted mathematical research; ordinary proofs and exact finite verification\par\vspace{12pt}
+\begin{abstract}
+We construct a fixed polynomial $P\in\Z[z_0,\ldots,z_{\LastVar}]$ of exact degree four such that
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\mathbf z\in\N^{\NumVars}\;P(\mathbf z)=0\bigr)
+ \longleftrightarrow \Con(\mathrm{ZFC}).
+\]
+Here $\N=\{0,1,2,\ldots\}$. The polynomial is given by \NumRows{} literal quadratic residuals, their sum of squares, and a complete collected coefficient file. Its expanded support has \NumTerms{} monomials and coefficient height \CoeffHeight. It improves the newest inspected direct construction, with 349 natural variables, by \SavedVars{} variables. A separate sparse companion has \SparseVars{} variables and \SparseTerms{} expanded monomials.
+
+The main change concerns exponentiation certificates. A single indexed Pell certificate bounds all the indices. One quadratic congruence, a sum of squared errors modulo $A-1$, then identifies all the indices simultaneously. The modulus is large enough because the existing common Pell frame already supplies an exponential lower bound for $A$. A radix chosen after the CRT representatives removes a separate size constraint. The construction uses the direct numerical proof calculus $C_{222}$ and does not simulate K215 or instantiate Jones's universal polynomial.
+
+The new arithmetic reductions are proved below. The existing proof-calculus calibration and indexed-Pell theorem are named dependencies. The package supplies exact algebraic certificates and independent checks, not a new end-to-end Lean, Rocq, or encoded object-ZFC derivation. No assertion of ZFC's consistency, global minimality, or worldwide priority is made.
+\end{abstract}
+\vspace{6pt}\hrule\vspace{7pt}
+\textbf{Main files.} In \code{portable/equations/primary/natural/}, \code{equation.json} fixes the residuals and variable order, and \code{expanded_polynomial.json} fixes every collected coefficient. Appendix~\ref{app:literal} prints every residual of the principal equation. The source code, proof notes, provenance, verification receipts, and rebuild instructions accompany this report.
+\newpage
+\tableofcontents
+\newpage
+
+\section{The result and the comparison that it supports}
+
+The comparison snapshot is ProveIt commit
+\code{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}.
+The three directories requested for review were the Hilbert Tenth Problem project, the delivered Diophantine-consistency forms, and \code{docs/incoming}. The last of these contains newer results than the opening summary of the delivered collection. In particular, the round-14 factorial-carrier archive supplies the 349-variable direct natural quartic used as the immediate baseline~\cite{repo,round14}.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Construction & Variables & Rows & Degree & Terms & Height\\
+\midrule
+Incoming direct baseline & 349 & 268 & 4 & 12,768 & 86,915,503\\
+New principal equation & \NumVars & \NumRows & 4 & \NumTerms & \CoeffHeight\\
+New sparse companion & \SparseVars & \SparseRows & 4 & \SparseTerms & \SparseHeight\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every row in the table has the domain $\N^n$. ``Rows'' counts quadratic residuals before their squares are summed; it does not mean that the final claim concerns a system instead of one equation. ``Terms'' counts distinct nonzero monomials after exact collection. ``Height'' is the largest absolute coefficient of that collected polynomial.
+
+The principal point prioritizes the number of variables within this direct quartic architecture. Pooling constraints creates denser residuals, so fewer variables need not mean fewer expanded terms. The sparse companion retains separate upper bounds and index congruences and offers a different tradeoff. The repository already contains nine-positive-variable equations of much higher degree and a 37-integer quartic with very large fixed coefficient payloads. The new equations do not supersede those results under a variables-only measure.
+
+\subsection{A completely fixed polynomial}
+
+Let $r_0,\ldots,r_{\LastRow}$ be the quadratic integer polynomials printed in Appendix~\ref{app:literal}, with variables indexed from zero. Define
+\begin{equation}\label{eq:P}
+ P(z_0,\ldots,z_{\LastVar})
+   =\sum_{\ell=0}^{\LastRow}r_\ell(z_0,\ldots,z_{\LastVar})^2.
+\end{equation}
+This is the definition of the principal equation. All its coefficients are literal integers. There is no variable coefficient tuple, hidden computability predicate, exponentiation operation, factorial operation, or bounded universal quantifier in~\eqref{eq:P}. Those notions occur only in the proof of how the literal polynomial was obtained.
+
+The JSON representation is also exact: a term \code{[c,[i1,...,ik]]} denotes $c z_{i_1}\cdots z_{i_k}$; repeated indices are repeated factors and an empty index list denotes the constant monomial. The polynomial is independently expanded from this residual list and compared coefficient by coefficient with the supplied collected form.
+
+\begin{theorem}[Consistency equation]\label{thm:main}
+For the fixed polynomial~\eqref{eq:P}, ordinary mathematics formalizable in ZFC proves
+\[
+ \exists\mathbf z\in\N^{\NumVars}\;P(\mathbf z)=0
+ \quad\longleftrightarrow\quad
+ \exists p\;\Refut_{\mathrm{ZFC}}(p).
+\]
+Here $\Refut_{\mathrm{ZFC}}$ is the finite syntactic refutation relation used by the retained ProveIt calibration. Negating gives the displayed consistency equivalence in the abstract.
+\end{theorem}
+
+The rest of the paper proves the new arithmetic transformations and identifies the unchanged interfaces needed to finish this theorem. In particular, it does not assume that the standard natural numbers satisfy $\Con(\mathrm{ZFC})$.
+
+\section{The common Pell frame}
+
+For an integer $A\ge2$, define the Pell sequences by
+\begin{align}
+ X_0(A)&=1,&Y_0(A)&=0,\nonumber\\
+ X_{j+1}(A)&=A X_j(A)+(A^2-1)Y_j(A),&
+ Y_{j+1}(A)&=X_j(A)+A Y_j(A).\label{eq:pellrec}
+\end{align}
+Thus $Y_1(A)=1$, $Y_2(A)=2A$, and
+\begin{equation}\label{eq:secondrec}
+ Y_{j+2}(A)=2A Y_{j+1}(A)-Y_j(A).
+\end{equation}
+The standard Pell classification says that every nonnegative integral solution of
+\[
+ X^2-(A^2-1)Y^2=1
+\]
+is exactly $(X_j(A),Y_j(A))$ for a unique $j\ge0$. This classification, the standard indexed-Pell criterion used below, and their precise interfaces are retained with the source packet~\cite{shared,indexed}.
+
+\begin{lemma}[Elementary consequences]\label{lem:pellfacts}
+For $A\ge2$, the sequence $Y_j(A)$ is strictly increasing for $j\ge0$, $Y_j(A)\ge j$, and
+\[
+ Y_j(A)\equiv j\pmod{A-1}.
+\]
+For $j\ge1$,
+\[
+ Y_{j+1}(A)>(2A-1)Y_j(A),\qquad X_j(A)\ge A^j.
+\]
+\end{lemma}
+\begin{proof}
+The congruence follows from~\eqref{eq:secondrec}, whose reduction modulo $A-1$ has coefficient $2$, together with the initial values $0,1$. Strict increase follows inductively from the same recurrence: if $0\le Y_{j-1}<Y_j$, then $2A Y_j-Y_{j-1}>(2A-1)Y_j\ge Y_j+1$. Consequently $Y_j\ge j$. Finally~\eqref{eq:pellrec} gives $X_{j+1}\ge A X_j$, and induction gives the last bound.
+\end{proof}
+
+Consider the finite list of power requests $m=n^k$ in the arithmetic compiler. The list is fixed by the finite source program; it is not a variable-length list of equations. Let $\mathcal A$ be the set of distinct syntactic atoms occurring as a base, exponent, or proposed output. Set
+\begin{equation}\label{eq:W}
+ W=2+\sum_{a\in\mathcal A}a.
+\end{equation}
+Every atom has a natural value. Every exponent is positive by the actual source syntax. Distinct symbolic atoms can have the same numerical value; they remain separately counted if their stored identities differ.
+
+The existing global frame imposes, with $Z=z+1\ge1$,
+\begin{equation}\label{eq:frame}
+ A^2-W^3(W+2)Z^2=1.
+\end{equation}
+In particular all proposed bases, exponents, and outputs are strictly below $W$ before any assertion that an output equals its intended power.
+
+\begin{lemma}[Exponential size without interpreting powers]\label{lem:frame}
+At every natural solution of~\eqref{eq:W}--\eqref{eq:frame},
+\[
+ A\ge(W+1)^W.
+\]
+For $W\ge3$, this implies $A-1>W^3$ and $A-1>W$.
+\end{lemma}
+\begin{proof}
+Rewrite~\eqref{eq:frame} as
+\[
+ A^2-\bigl((W+1)^2-1\bigr)(WZ)^2=1.
+\]
+Pell classification at base $W+1$ gives
+$A=X_h(W+1)$ and $WZ=Y_h(W+1)$ for some $h>0$.
+Lemma~\ref{lem:pellfacts}, reduced modulo $W$, gives $h\equiv0\pmod W$. Thus $h\ge W$, and $A\ge(W+1)^h\ge(W+1)^W$.
+For $W=3$, $4^3-1>3^3$; for $W\ge4$, $(W+1)^W\ge(W+1)^4>W^3+1$. The concrete source has a positive power with exponent $t\ge\Horizon$, so the small exceptional cases never arise.
+\end{proof}
+
+This proof order matters. A merely quadratic estimate $A>W^2$ is enough for some elementary comparisons but is not the estimate used for the pooled error congruence. The exponential conclusion is already supplied by the unchanged frame.
+
+\section{One indexed certificate for all indices}
+
+\subsection{The single retained indexed-Pell interface}
+
+Only once, at index $W$, retain the inherited full indexed-Pell certificate. Write its principal pair as $(U,V)$. One equivalent form of the retained criterion uses natural witnesses $U_1,V_1,S_1,R_1,B,b,s,r,q,v$ and imposes
+\begin{align}
+ U^2-(A^2-1)V^2&=1,\nonumber\\
+ U_1^2-(A^2-1)V_1^2&=1,\nonumber\\
+ S_1^2-(B^2-1)R_1^2&=1,\nonumber\\
+ B&=1+4V(q+1)=A+U_1b,\label{eq:anchor}\\
+ V_1&=V^2(v+1),\nonumber\\
+ S_1&=U+U_1s,\nonumber\\
+ R_1&=W+4Vr,\nonumber
+\end{align}
+together with $V\ge W\ge1$. The indexed-Pell theorem identifies
+\[
+ (U,V)=(X_W(A),Y_W(A)).
+\]
+Conversely, at the true pair its witnesses exist, with the indicated nonnegative quotient orientations. The supplied implementation uses its literal inherited variant; the audit verifies all these obligations, including the positive multiple of $V^2$ and the comparison congruences.
+
+This single classical arithmetic theorem is an explicit dependency. The new construction does not silently drop any condition from it. The inequality $V\ge W$ will be supplied by the common bound below, so a private variable for that inequality is unnecessary.
+
+\subsection{Separate indices with a common bound}
+
+Let $k_1,\ldots,k_m$ be the distinct seed exponent atoms. Additional exponents can be derived from seeds by checked Pell addition identities. The source has \SeedCount{} seed indices and \DerivedCount{} such derived index. Every seed occurs in $\mathcal A$, is positive, and is strictly below $W$. Hence
+\begin{equation}\label{eq:seedcount}
+ m\le\sum_{i=1}^m k_i\le W-2.
+\end{equation}
+For each seed keep just its principal Pell norm
+\begin{equation}\label{eq:seednorm}
+ X_i^2-(A^2-1)Y_i^2=1.
+\end{equation}
+The following two equations replace all its separate index tests:
+\begin{align}
+ V&=W+1+\sum_{i=1}^m Y_i+g,\label{eq:cap}\\
+ \sum_{i=1}^m(Y_i-k_i)^2&=(A-1)Q,\label{eq:pool}
+\end{align}
+where $g,Q\in\N$. Equation~\eqref{eq:cap} both supplies the anchor's condition $V\ge W$ and forces every $Y_i<V$. Equation~\eqref{eq:pool} is quadratic in the already stored graph variables.
+
+\begin{theorem}[One bound and one congruence]\label{thm:pool}
+Suppose $W\ge3$, $1\le k_i<W$, $m\le W-2$, and $A-1>W^3$. With all witnesses natural, the principal norms~\eqref{eq:seednorm}, the retained certificate~\eqref{eq:anchor}, and~\eqref{eq:cap}--\eqref{eq:pool} hold for some auxiliary witnesses if and only if
+\[
+ (X_i,Y_i)=(X_{k_i}(A),Y_{k_i}(A))\quad(1\le i\le m).
+\]
+The right-to-left implication includes fresh witnesses for the anchor.
+\end{theorem}
+\begin{proof}
+For soundness,~\eqref{eq:cap} gives $V\ge W$, so the anchor theorem gives $V=Y_W(A)$. Classify each principal norm as
+$(X_i,Y_i)=(X_{j_i}(A),Y_{j_i}(A))$, allowing $j_i=0$ at this stage. Because $Y_i<V$, strict monotonicity gives $0\le j_i<W$.
+
+Reduce~\eqref{eq:pool} modulo $A-1$. Lemma~\ref{lem:pellfacts} gives
+\[
+ A-1\mid E,\qquad E=\sum_{i=1}^m(j_i-k_i)^2.
+\]
+But
+\[
+ 0\le E\le m(W-1)^2<W^3<A-1.
+\]
+The only multiple of $A-1$ in this interval is zero. Thus every square is zero and $j_i=k_i$, simultaneously.
+
+For completeness, choose the true principal pairs and a full certificate at index $W$. Since $Y_{k_i}(A)\equiv k_i\pmod{A-1}$, the integer
+\[
+ Q=\frac{\sum_i(Y_{k_i}(A)-k_i)^2}{A-1}
+\]
+exists and is nonnegative. It remains to show that the bound has a natural slack. By Lemma~\ref{lem:pellfacts},
+\begin{align*}
+ Y_W(A)-\sum_iY_{k_i}(A)
+ &> (2A-1-m)Y_{W-1}(A)\\
+ &\ge 2A-W+1>W.
+\end{align*}
+The first inequality uses $k_i<W$ and the second uses $m\le W-2$ and $Y_{W-1}\ge1$. Therefore
+$g=Y_W(A)-W-1-\sum_iY_{k_i}(A)\ge0$.
+\end{proof}
+
+\begin{remark}[What is actually bounded]
+The ordinates $Y_i$ can be far larger than $A-1$. They are not assumed to be small residues. The small quantities are the recovered indices $j_i$ and their errors $j_i-k_i$, after reducing the polynomial congruence. The certified Pell bound supplies the finite index interval; the frame supplies a modulus larger than the total squared error. Both components are needed.
+\end{remark}
+
+\subsection{Why the hypotheses cannot simply be weakened}
+
+Without the upper bound, congruence identifies indices only modulo $A-1$. For example, at $A=4$, $k=2$, the wrong index $j=5$ gives $Y_5(4)=3905\equiv2\pmod3$. Its principal Pell norm still holds.
+
+The pooled equation also needs a modulus bound for the whole error sum. The weaker condition $A>W$ is insufficient: take $W=5$, $A=7$, target indices $(1,1,1)$, and actual indices $(3,2,2)$. Every actual index is below $W$, but the squared error is $4+1+1=6=A-1$. These examples test omitted hypotheses; the retained frame excludes them.
+
+\section{Recovering the powers without a circular argument}
+
+For a distinct base $n$, the old common frame defines $T_n\in\N$ by
+\begin{equation}\label{eq:Tn}
+ 2An=T_n+n^2+1.
+\end{equation}
+This equation forces $n\ge1$, even when a proposed factorial output is being used as a base and its factorial meaning has not yet been proved. Since $n<W<A$, the function $2An-n^2-1$ is increasing on the relevant interval. Lemma~\ref{lem:frame} therefore gives
+\[
+ T_n\ge2A-2>W^W\ge n^k,
+ \qquad 0\le m<W<T_n
+\]
+for every power request. The final power row is
+\begin{equation}\label{eq:powerrow}
+ X_k(A)+nY_k(A)=AY_k(A)+m+T_nh,\qquad h\in\N.
+\end{equation}
+
+Put $H_j=X_j(A)-(A-n)Y_j(A)$. The recurrences give the exact identities
+\[
+ H_0=1,\qquad H_{j+1}=nH_j+T_nY_j(A),
+\]
+and hence
+\begin{equation}\label{eq:powidentity}
+ H_k-n^k=T_n\sum_{j=0}^{k-1}n^{k-1-j}Y_j(A).
+\end{equation}
+Thus~\eqref{eq:powerrow} implies $m\equiv n^k\pmod{T_n}$, and both numbers lie in $[0,T_n)$, so $m=n^k$. Conversely the sum on the right of~\eqref{eq:powidentity} supplies a nonnegative quotient $h$.
+
+The chronological order of the proof is as follows. Read the proposed natural inputs and outputs, form $W$, and prove the frame bounds. Interpret the single anchor. The pooled theorem then identifies all seed indices; exact addition identities identify the remaining indices. Only now interpret all the powers. Factorial, binomial, digit, and CRT semantics are established afterwards. This avoids using the intended values of the very outputs whose correctness is being certified.
+
+In the converse direction, first evaluate the intended finite arithmetic circuit. This fixes its genuine outputs and $W$. Choose $A=X_W(W+1)$ and $Z=Y_W(W+1)/W$ to satisfy~\eqref{eq:frame}; the quotient is a positive integer by the recurrence modulo $W$. Construct the one anchor, all true principal pairs, and the two shared slacks. The anchor's witnesses and its enormous ordinate do not enter the semantic atom set defining $W$.
+
+\section{A radix chosen after the witnesses}
+
+The second new reduction is independent of the Pell-index simplification. It removes an artificial bound on the CRT representatives by allowing the later digit radix to depend on their sum.
+
+\subsection{Arithmetic setup and the source bound}
+
+The unchanged direct source has horizon $t=t_0+\Horizon$, proof code $x$, sequence scale $y$, and factorial $F=t!$. Define
+\[
+ R=2+t+x+y+F,\qquad K=R,\qquad
+ B=\binom{F^2+t}{t},\qquad N=B^K.
+\]
+The baseline used $K=2R$ and a separate aggregate bound on the representatives. Let $C,A_1,\ldots,A_8$ be the nine independently chosen positive CRT representatives, and write
+\[
+ S=C+\sum_{i=1}^8 A_i.
+\]
+There is no upper bound on $S$. Let
+\[
+ \rho=Ft^2,\qquad V_0=(\rho+1)^t.
+\]
+The replacement digit radix is
+\begin{equation}\label{eq:radix}
+ q=N(V_0+1+S)^K.
+\end{equation}
+The symbol $V_0$ here is part of the factorial graph; it is unrelated to the Pell anchor ordinate $V$.
+
+The retained finite constructor supplies two literal majorant certificates. For every bounded local tuple $\mathbf w$, the nonnegative local source polynomial $L$ and the derived formula-label bound $J$ satisfy
+\[
+ 0\le L(\mathbf w),J(\mathbf w)<R^E,\qquad E=2^{23}=8,388,608.
+\]
+For arbitrary encoded constructor arguments bounded by $s\ge1$,
+\[
+ J\le(s+1)^\ell,\qquad\ell=2^{22}=4,194,304.
+\]
+These are verified gatewise bounds for the actual expressions; neither exponent is an unspecified asymptotic constant.
+
+\subsection{The bootstrap and every digit bound}
+
+The raw reciprocal-index row forces $B>0$. Once the positive-power certificates have been interpreted, $N=B^K\ge1$, $V_0\ge1$, $S\ge1$, and $K\ge2$. Consequently
+\[
+ q=N(V_0+1+S)^K>V_0^2.
+\]
+This is the bound used by the existing noncircular factorial and reciprocal-product digit bootstrap. It does not require the intended factorial value in advance. That bootstrap first establishes $F=t!$ and the exact product meaning of $B$~\cite{round14}.
+
+Every ordinary range graph has top argument $n\le S$ and a lower index $k<K$. For $0\le j\le k$,
+\[
+ \binom nj\le\max(1,n)^k\le S^k<(V_0+1+S)^K\le q.
+\]
+Thus its binomial digits are carry-free without a constraint such as $S\le9N^2$.
+
+The derived label argument $J(A_1,\ldots,A_4)$ need not be at most $S$, and is deliberately not included as an independently bounded representative. Its separate majorant gives
+\[
+ J(A_1,\ldots,A_4)\le(S+1)^\ell.
+\]
+The factorial floor and induction establish
+\[
+ 3\ell(t+1)\le2F,
+\]
+so $\ell(t+1)<R=K$. Therefore for every required label digit $0\le j\le t+1$,
+\[
+ \binom{J}{j}\le\max(1,J)^{t+1}
+ \le(S+1)^{\ell(t+1)}<(V_0+1+S)^K\le q.
+\]
+All ten range requests are covered: nine independent representatives and this one derived label expression.
+
+\subsection{Why the smaller amplification exponent works}
+
+After the factorial is identified, the fixed horizon floor gives $R^E<2^R$. For a concrete certificate let $a=\lfloor\log_2(\Horizon!)\rfloor$. The finite checks verify
+\[
+ aE<2^a,\qquad 2E\le2^a,\qquad
+ 2\cdot(\Horizon!)\ge3\ell(\Horizon+1).
+\]
+At $r_0=2^a$, $r_0^E=2^{aE}<2^{r_0}$. For $r\ge r_0$,
+$(1+1/r)^E<2$, by the binomial estimate bounded by the finite geometric sum with ratio $E/r\le1/2$. Integer induction gives $r^E<2^r$ for all such $r$. The factorial budget persists when $t$ is increased because
+$2(t+1)!\ge3\ell(t+1)^2\ge3\ell(t+2)$.
+
+Thus the bounded local source values are below $2^K$ already for $K=R$. For a prime $p\mid B$, put $m_p=v_p(B)\ge1$ and $e=Km_p\ge K$. Then $p^e\ge2^K$. This supplies the same uniqueness interval used by the amplified CRT proof.
+
+Completeness still uses CRT precision $2K$. A range factor vanishing modulo $p^{2Km_p}$ loses at most $k-1<K\le Km_p$ in valuation when divided by $k!$ for $k\ge1$, leaving divisibility by $p^{Km_p}$; for $k=0$ no division loss occurs. The representatives may be chosen arbitrarily large in their prescribed classes. Choose them first, form their finite sum $S$, and then define $q$ by~\eqref{eq:radix}. All digit witnesses exist by the proved bounds. Removing the aggregate upper bound therefore simplifies the converse construction as well as the polynomial.
+
+\section{From the arithmetic source to finite refutations}
+
+\subsection{The fixed numerical calculus}
+
+The direct source uses ordinary natural-number polynomial constructors
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,\quad
+ M(a,b)=I(a,b)+1,\quad A_\forall(a,b)=I(a,b)+2,
+\]
+and $E_=(a,b)=I(a,b)+3$, with derived negation and existential quantification. These are the literal constructors of the retained $C_{222}$ calculus. It has a free truth code $0$, a falsity code $1$, eight unconditional axiom families, a guarded seed bundle, modus ponens, and generalization. The bundle's two disequalities have the exact natural witness form
+\[
+ (c-a)^2(c-b)^2=(d+1)^2.
+\]
+The complete constructor expressions are retained as source data and code. No new logical axiom scheme is proposed in this release.
+
+The inherited calibrated interfaces are
+\begin{align*}
+ C_{222}(1)&\longleftrightarrow
+       \text{a finite syntactic ZF refutation exists},\\
+ \text{ZF has a finite refutation}&\longleftrightarrow
+       \text{ZFC has a finite refutation}.
+\end{align*}
+Their repository names are~\cite{endpoint}
+\begin{quote}\small
+\code{KEndpoint.c222_iff_zf_refutation}\\
+\code{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{quote}
+The second interface uses the usual constructible-universe equiconsistency argument. The first is a theorem about the numerical calculus, independently of a Turing-machine enumerator.
+
+\subsection{The shared-factorial Horn-flow argument}
+
+The local polynomial selects one valid rule for each position. All possible formula labels in a row are at most $t$, by the derived label-range test. With $F=t!$, assign label $j$ the weight
+\[
+ w_j=1+jF\quad(0\le j\le t).
+\]
+The positive weights $w_1,\ldots,w_t$ are pairwise coprime. Indeed a common prime divisor of $w_j,w_k$ cannot divide $F$ and would divide $j-k$; it would therefore be at most $t$ and divide $t!$, a contradiction. The truth weight is $w_0=1$.
+
+The beta-coded accumulator states have endpoints $S_0=w_1$, $S_t=1$ and local rule equalities
+\[
+ S_{i+1}w_{c_i}=S_iw_{p_i}w_{q_i}.
+\]
+Unused premises have label zero. Positive-state propagation legitimizes telescoping. Prime valuations isolate each positive label and give
+\[
+ \#\{i:c_i=j\}-\#\{i:p_i=j\}-\#\{i:q_i=j\}
+     =\mathbf1_{j=1}.
+\]
+To see why this implies an actual derivation, let $D$ be the closure of truth under the selected valid rules. If falsity were outside $D$, every rule concluding outside $D$ would have a premise outside $D$. Summing the displayed balance over labels outside $D$ gives the contradiction $1\le0$. Cyclic rule multisets therefore cannot create a false refutation.
+
+Conversely, expand a finite proof to a finite tree, choose $t$ beyond its size and every required label and parameter, and then define $F=t!$. Run the pending-obligation multiset backwards from falsity to truth, taking products of its weights as states. Pad with truth steps. Choose the beta scale and common proof code by CRT. This order chooses the finite horizon before the factorial and accumulators, avoiding a circular size requirement.
+
+The reciprocal moduli $1+F^2/i$, their amplified prime powers, the ten binomial range graphs, and the bounded local source polynomial compact this finite certificate into the fixed arithmetic circuit. The new radix proof changes their digit bounds, not their logical meaning or CRT precision. The retained round-14 proofs give the full arithmetic bridge~\cite{round14}.
+
+\subsection{Finishing Theorem~\ref{thm:main}}
+
+At a zero of~\eqref{eq:P}, every residual is zero. The certified reverse substitutions restore a natural zero of the raw quadratic system. The frame and pooled-index theorem interpret all powers; the radix argument and unchanged arithmetic lemmas interpret the factorial, binomials, ranges, and amplified CRT. The Horn-flow theorem then gives $C_{222}(1)$, and the calibrated logical interfaces give a finite ZFC refutation.
+
+Conversely, a finite ZFC refutation supplies a $C_{222}$ derivation by the same calibration. The constructive source theorem supplies the intended arithmetic data, with the chosen horizon floor. Choose CRT representatives and the new radix, evaluate the finite power circuit, and construct the frame, anchor, all principal pairs, and shared error/bound witnesses. The certified forward projection supplies a natural zero of the literal residual system, hence of $P$.
+
+All new arguments use finite recurrences, integer arithmetic, finite maxima, CRT, and induction. They work in ZFC's internal arithmetic and do not assume that ZFC is arithmetically sound. The retained logical and indexed-Pell results remain explicit dependencies; the finite verification does not replace them.
+
+\section{Literal compilation, verification, and proof boundaries}
+
+The final program uses \PowerCount{} positive-power requests, one factorial graph, two exact binomial graphs, and ten range graphs. The new principal raw quadratic system has \RawVars{} variables and \RawRows{} residuals. Certified elimination removes \Eliminations{} coordinates and the same number of defining rows, leaving \NumVars{} variables and \NumRows{} rows.
+
+The contraction procedure performs exact substitutions only when the restored coordinate is integral and nonnegative on the retained natural domain. Most restorations have nonnegative coefficients. The supplied certificates also allow the explicitly verified rational sum-of-squares cases; a negative coefficient by itself is not treated as a valid natural restoration. The independent checker verifies those certificates and every substituted residual.
+
+The release checks have distinct roles:
+\begin{itemize}
+\item Exact source inspection verifies the actual seed set, its membership in the frame atoms, exclusion of the cap from the aggregate, the complete anchor, the common upper bound, and the squared-error residual.
+\item Exact arithmetic inspection verifies the actual radix expression, exponent $K=R$, the ten lower-index bounds, and the finite majorant and factorial budgets.
+\item An independent affine-export replay verifies 466 nonnegative affine restorations from the 872-coordinate semantic graph to the 406-coordinate raw system, comparing all 339 exported residuals. This binds the inspected semantic rows to the input of the final contraction.
+\item Contraction replay verifies every elimination and reverse restoration over the natural domain.
+\item Independent sparse-polynomial expansion verifies every collected coefficient, exact degree four, the coefficient height, variable liveness, and the term count. Checks with altered rows or altered radix data are rejected.
+\item Normal and optimized Python runs check that acceptance conditions do not disappear when \code{assert} statements are disabled.
+\end{itemize}
+
+Finite Pell and digit controls exercise examples and omitted-hypothesis counterexamples. They are supporting checks, not proofs for unbounded inputs. The universal mathematical arguments are Theorem~\ref{thm:pool}, the radix proof, and the precisely retained dependencies. No program searches for a zero of the final consistency equation or claims to decide its solvability.
+
+\section{Unrestricted integers and what remains open}
+
+The principal equation is over nonnegative integers. If an equation with unrestricted integer variables is desired immediately, define
+\[
+ H(u,v,w)=u^2+v^2+w(w+1).
+\]
+This has nonnegative integer values and takes every value in $\N$. For the converse assertion, Legendre's three-square theorem applied to $4n+1$ gives one odd square and two even squares; division by four yields the displayed representation. Thus
+\begin{equation}\label{eq:integer}
+ \widehat P(\mathbf u,\mathbf v,\mathbf w)
+    =P\bigl(H(u_0,v_0,w_0),\ldots,H(u_{\LastVar},v_{\LastVar},w_{\LastVar})\bigr)
+\end{equation}
+is an explicit ordinary integer polynomial with \IntegerVars{} unrestricted integer variables. Its unsolvability is equivalent in ZFC to $\Con(\mathrm{ZFC})$. Its exact degree is eight: the highest homogeneous part of $P$ remains nonzero after the substitution, as is seen by setting every $v_i,w_i$ to zero, which leaves the injective monomial substitution $z_i\mapsto u_i^2$.
+
+Equation~\eqref{eq:integer} is supplied as a compact literal substitution recipe, rather than an unnecessarily large expansion. It is a domain-complete companion, not a claimed improvement on the repository's specialized integer quartics.
+
+The strongest next target is a direct signed adaptation of the shared cap. Its proof must preserve the signs used in Pell classification and in the aggregate inequality; simply allowing the existing variables to be negative would invalidate the argument. Another target is a sparser contraction of the pooled row. Both have a concrete mathematical starting point, but neither is silently included in the proved endpoint here.
+
+The present contribution establishes a new construction relative to the inspected repository: a shared semantic index interval and one bounded-error congruence replace many full Pell-index certificates. The general Pell facts and bounded congruence principle are classical. Establishing worldwide priority for their particular composition would require a separate literature investigation.
+
+\section{Reproduction and provenance}
+
+The archive is self-contained for finite verification and deterministic reconstruction. Use the included \code{README.md} for the exact commands and dependency versions. \code{verify_release.py} checks the principal and sparse literal equations, the audit certificates, and the recorded file hashes. The complete inherited source dependency is pinned by its original archive hash; the builder's local paths are relative to the delivery, not to the development workspace.
+
+The TeX source is this file with its generated metric and residual-list inputs. A normal TeX Live installation can compile it with repeated \code{pdflatex -interaction=nonstopmode -halt-on-error report.tex} calls until references stabilize. The final PDF was rendered and visually inspected. Rebuilding a PDF under another TeX distribution can change its bytes without changing the mathematics.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo} V.~Reshetnikov et al., \emph{ProveIt}, snapshot
+\code{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6/Computability/DiophantineConsistency}.
+\bibitem{round14} \emph{Diophantine consistency equations with powered saturation and factorial carriers}, round 14, 24 October 2026. Pinned incoming archive in ProveIt; retained unchanged in the accompanying provenance. In particular: \code{FACTORIAL_CARRIER_PROOF.md}, \code{DERIVED_LABEL_RANGE_PROOF.md}, and \code{HYBRID_PROOF.md}.
+\bibitem{shared} ProveIt, \emph{Simultaneous positive-power certificates}, retained \code{shared_powers.md}, and the shared-index/product compiler sources. These specify the full positive-power interface, common-frame exponential bound, and simultaneous witness construction.
+\bibitem{indexed} ProveIt, \code{DiophantineConsistency.PellRepresentation.criterion_iff_pell}, and its retained ordinary indexed-Pell proof interface. Used only for the one anchor at index $W$ in this construction.
+\bibitem{endpoint} ProveIt, \code{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}, \code{KSeedDirect222.lean}, \code{KCode222.lean}, and the constructible-choice refutation interface, at the same frozen commit. Repository theorem names are given in Section 6.
+\bibitem{mr} Yu.~V.~Matiyasevich and J.~Robinson, \emph{Reduction of an arbitrary Diophantine equation to one in 13 unknowns}, Acta Arithmetica 27 (1975), 521--553. \url{https://doi.org/10.4064/aa-27-1-521-553}. Classical context for Pell-index representations; no claim that the new finite compiler was already present in that paper.
+\end{thebibliography}
+
+\appendix
+\section{The literal principal equation}\label{app:literal}
+
+All variables in this appendix range over $\N$, including zero. The single equation is exactly $\sum_{\ell=0}^{\LastRow}r_\ell^2=0$. Constants and indices in the following generated listing are copied from the same literal JSON verified by the coefficient checker. No abbreviation in this appendix introduces an additional unknown.
+
+The residual file has SHA-256
+\begin{center}\small\ttfamily\EquationHash\end{center}
+The collected coefficient file has SHA-256
+\begin{center}\small\ttfamily\PolynomialHash\end{center}
+\begingroup
+\small
+\setlength{\abovedisplayskip}{5pt}\setlength{\belowdisplayskip}{5pt}
+\allowdisplaybreaks[4]
+\input{residuals.tex}
+\endgroup
+\end{document}

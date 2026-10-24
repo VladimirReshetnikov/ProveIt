@@ -1,0 +1,58 @@
+\section{A credited compact evaluator for the twelve-integer endpoint}
+The retained twelve-integer degree-$500$ carrier has a pointwise-identical
+$139$-gate evaluator, improving its prior $148$ gates without changing any zero.
+The count is $84$ multiplications, $32$ additions, and $23$ subtractions.
+This is an evaluator adaptation, not a new semantic twelve-variable reduction.
+
+Credit for the $28$-gate universal four-root norm schedule belongs to the
+existing repository proof at commit
+\texttt{84e16e43092614bae262ca59651cb9d77e31a255},
+\texttt{candidates/ten-positive-zero-offset/source/ORIGINAL\_PROOF.md}.
+The received structural-compression addendum explains the schedule; both
+texts and the upstream license are retained. The new adaptation combines
+that schedule with the already verified lower-degree centered carrier.
+
+Let the five already computed prefix registers be
+\[
+ z=Z_{\rm total}^2,\quad a=4U^2D_\tau,\quad b=36U^2D_f,
+ \quad c=324U^2D_a,\quad d=729U^2G_0.
+\]
+Here $z,a,b,c,d$ are temporary norm arguments, not extra variables.
+Set
+\begin{align*}
+ \sigma_1&=a+b+c,&\sigma_2&=ab+(a+b)c,&\sigma_3&=abc,\\
+ U_c&=z+d,&P_o&=U_c-\sigma_1,\\
+ P_e&=P_o^2+4(zd-\sigma_2),\\
+ G_e&=P_e^2+16(zdP_o^2-4\sigma_3U_c),\\
+ G_o&=P_eP_o-16\sigma_3.
+\end{align*}
+The compact output is
+\[
+ \boxed{N_c=G_e^2-64zdG_o^2.}
+\]
+Sharing $a+b$, $ab$, $P_o^2$, and $zd$ gives exactly $28$ binary gates
+in the tail; the unchanged prefix needs $111$.
+
+For the exact proof, the three-root norm is
+\[
+ N_3(w)=\big[(w-\sigma_1)^2-4\sigma_2\big]^2-64\sigma_3w.
+\]
+Put $w=U_c\pm r$, where $r^2=4zd$. Direct substitution gives
+$N_3(U_c\pm r)=G_e\pm4rG_o$. Their product is $N_c$, proving
+that the compact formula is the full sixteen-sign norm, including every
+singular specialization. It equals the predecessor's norm as a universal
+integer polynomial.
+
+The identity map on all twelve coordinates is therefore a two-way map
+between the new and predecessor zero sets. All inherited unbounded
+squareclass, CRT, guard, and native/compiler/refutation arguments remain
+unchanged. Exact degree $500$ and the genuine fixed-coefficient witness
+\[
+ [j^{228}w^{76}v^{84}h^8z^8r^{32}c^{64}]N_c
+   =2^{488}3^{332}\beta^{228}>0
+\]
+transfer by pointwise equality. An independent checker compares the exact
+live prefixes up to associative/commutative rewrites and all $495$ universal tail monomials, verifies live-node
+counts, and rejects a changed opcode at every one of the $139$ live gates.
+No claim of new consistency proof, global optimum, or new end-to-end
+proof-assistant certification is made.

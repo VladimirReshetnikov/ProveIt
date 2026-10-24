@@ -1,0 +1,119 @@
+\section{Reproduction, validation, and remaining work}
+\label{sec:validation}
+
+\subsection{What the archive contains}
+The root \code{README.md} is the execution guide. The compiled PDF and
+all its editable TeX sections are included. The mathematical artifacts
+are organized as follows.
+\begin{description}[style=nextline]
+\item[\code{direct/}]
+The literal 319-variable quartic, all 254 quadratic residuals, its fully
+collected 10,283-term coefficient list, readable versions of both lists,
+the raw source, and every natural-valued restoration polynomial. The
+builder, independent verifier, source theorem, imported compiler code,
+original notices, source ledger, and comparison receipt are supplied.
+The optional \code{equation320/} companion uses 320 naturals and 255
+residuals, has 13,828 terms and height 15,248,812; it trades one variable
+and more terms for much smaller height through the inherited square-shell
+syntax translation.
+\item[\code{norm/}]
+The three selected eleven-integer DAGs of degrees 488, 464, and 440;
+two polynomial-identical cancellation-exposing audit DAGs; the six
+literal coefficient numerals and their reconstruction recipe; all
+retained ordinary proof dependencies; and the new exact finite checker.
+\item[\code{lowops/}]
+The two product-form eleven-integer equations of degrees 966 and 882,
+their ordinary proof, literal graphs, independent polynomial and degree
+audit, and source bindings to the same fixed tuple.
+\item[\code{reviews/}]
+Separate mathematical reviews of the three new transformations. These
+are independent research-agent audits within this workflow, not an
+external human endorsement. Their scope is stated in each file.
+\end{description}
+The top-level SHA-256 manifest covers the shipped files. The hashes are
+integrity checks, not substitutes for the actual numeral data or proofs.
+
+\subsection{The direct finite audit}
+The principal raw system has 465 natural coordinates and 400 quadratic
+rows. The delivered contraction removes 146 coordinates and 146 rows.
+For each deletion the certificate gives a polynomial restoration that is
+nonnegative on the remaining natural coordinates. The independent checker
+restores each deleted row exactly, verifies every substitution, expands
+the entire sum of squares, and compares every collected coefficient.
+This proves a finite equation-to-equation equivalence independently of
+the number-theoretic interpretation of the raw system.
+
+The readable residual and polynomial files are parsed back into the
+same coefficients. Altered residual, restoration, and coefficient controls
+are rejected. Both normal and optimized Python execution rebuild the
+principal and companion artifacts, comparing all 20 generated JSON
+files byte for byte in temporary directories. The complete 349-variable
+baseline is also re-expanded and its contraction replayed, so the table
+does not rely only on an inherited headline count.
+
+The semantic regression suite checks 18,049 factorial cases, 270 radix
+bounds, 49 growth budgets, 1,530 modular Pell residue instances, and 516
+digit/divisibility instances. These finite cases are useful implementation
+checks. The unbounded lemmas are proved in the report and retained source
+proofs; their validity is not inferred from these sample counts.
+
+\subsection{The small-variable finite audits}
+The norm checker does not import its producer. It binds every live
+register to an independently transcribed formula in a free polynomial
+ring, checks all 35 coefficients of the three-root norm, proves the
+center cancellation and short-projector identities, checks topology and
+liveness, and propagates an exact nonzero leading coefficient through
+each actual graph. The primary degree-440 coefficient displayed in
+Section~\ref{sec:short-carrier} is therefore an attained coefficient on
+the actual fixed-coefficient slice.
+
+The product-form checker likewise independently binds the complete
+register definitions, verifies the pairwise-coprimality congruences and
+the exact leading induction, and counts every live operation. A separate
+review rederived its leading forms and confirmed the final
+111/112-operation census. Reusing the existing $4q^2$ register saves
+one operation in the second graph without changing its polynomial.
+
+All new checks use explicit exceptions rather than removable Python
+assertions. The inherited coefficient constructor deliberately requires
+normal execution; the normal audit rebuilds it and compares every native
+coefficient numerically with the authenticated payload. Optimized checks
+retain the same payload authentication and all new exact algebra checks.
+The archive does not bypass that constructor's execution contract.
+
+\subsection{Offline commands}
+Only Python 3's standard library is needed for the polynomial artifacts.
+The root reproduction wrapper supplies the exact command set; the main
+component commands are:
+\begin{lstlisting}
+python3 -B direct/verify.py
+python3 -B direct/check_semantics.py
+python3 -B direct/reproduce.py
+python3 -B -O direct/reproduce.py
+python3 -B norm/check.py
+python3 -B -O norm/check.py
+python3 -B lowops/check.py
+python3 -B -O lowops/check.py
+\end{lstlisting}
+No command searches for a root or decides consistency. The TeX source can
+be compiled with a standard TeX Live installation, running
+\code{pdflatex -interaction=nonstopmode -halt-on-error report.tex}
+in \code{report/} until references stabilize.
+
+\subsection{What remains open}
+The strongest unresolved issue is a genuine lower bound or a new
+architecture that improves the small-variable and small-coefficient
+objectives together. This work does not reduce the minimum variable
+count already achieved elsewhere in the repository. It improves the
+eleven-integer degree/circuit tradeoffs and a direct modest-height
+quartic architecture.
+
+Two next steps are concrete. First, internalize the new signed product
+recovery and supported-modulus witness construction in the proof
+assistant, keeping its calibration theorem explicit. Second, investigate
+whether the shared factorial/CRT certificate admits a further reduction
+of the independent index certificates or bounded local columns. Any such
+claim must preserve the noncircular digit proof and the complete
+refutation witness order. Merely hiding a certificate inside an
+unexpanded abbreviation does not reduce its charged complexity.
+

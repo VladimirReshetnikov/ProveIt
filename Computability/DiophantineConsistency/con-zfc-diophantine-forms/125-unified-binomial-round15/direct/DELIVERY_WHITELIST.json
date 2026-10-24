@@ -1,0 +1,55 @@
+{
+  "files": [
+    "direct/PROOF.md",
+    "direct/build_residue.py",
+    "direct/center_integer.py",
+    "direct/build_signed.py",
+    "direct/terminal_elimination.py",
+    "direct/factor_horn.py",
+    "direct/translate_coordinates.py",
+    "direct/unified_reparam_derived_shell/METRICS.json",
+    "direct/unified_reparam_derived_shell/PROJECTION_CHECK.json",
+    "direct/unified_reparam_derived_shell/equation.json",
+    "direct/unified_reparam_derived_shell/expanded_polynomial.json",
+    "direct/unified_reparam_derived_shell/factored_source.json",
+    "direct/unified_reparam_derived_shell/factorization_certificate.json",
+    "direct/unified_reparam_derived_shell/guarded.json",
+    "direct/unified_reparam_derived_shell/positive_seed_certificate.json",
+    "direct/unified_reparam_derived_shell/projected.json",
+    "direct/unified_reparam_derived_shell/projection_certificate.json",
+    "direct/unified_reparam_derived_shell/pruned_source.json",
+    "direct/unified_reparam_derived_shell/pruning_certificate.json",
+    "direct/unified_reparam_derived_shell/source.json",
+    "direct/unified_reparam_derived_shell/transform_certificate.json",
+    "direct/unified_reparam_derived_shell/translation_certificate.json",
+    "direct/integer442/METRICS.json",
+    "direct/integer442/equation.json",
+    "direct/integer442/expanded_polynomial.json",
+    "direct/integer442/projected.json",
+    "direct/integer442/translation_certificate.json",
+    "direct/NOTICE.md",
+    "direct/ROUND14_NOTICE.md",
+    "direct/licenses/LICENSE.Mathlib",
+    "direct/licenses/LICENSE.ProveIt",
+    "direct/licenses/LICENSE.incoming_signed"
+  ],
+  "required_inputs": [
+    "architecture/unified_derived_shell/raw/equation.json",
+    "architecture/unified_derived_shell/raw/raw_audit_input.json",
+    "architecture/UNIFIED_PRODUCT_PROOF.md"
+  ],
+  "primary": "direct/integer442",
+  "source_stages": "direct/unified_reparam_derived_shell",
+  "commands": [
+    "python direct/build_residue.py architecture/unified_derived_shell/raw direct/rebuilt_source --reparam",
+    "python direct/center_integer.py direct/rebuilt_source direct/rebuilt_integer442"
+  ],
+  "primary_metrics": {
+    "degree": 4,
+    "height": 128446,
+    "monomials": 4652,
+    "row_height": 256,
+    "rows": 290,
+    "variables": 442
+  }
+}

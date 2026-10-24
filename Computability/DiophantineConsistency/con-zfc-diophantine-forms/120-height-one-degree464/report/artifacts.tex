@@ -1,0 +1,182 @@
+\section{Explicit artifacts and reproducibility}\label{sec:artifacts}
+
+The archive is intended to be integrated as one research packet. The
+new checker entry points use relative paths and can be run offline.
+The complete polynomial data are supplied, rather than only instructions
+to select a polynomial after a future computation.
+
+\subsection{The height-one polynomial}
+
+\file{height_one/output/polynomial.json} contains the ordered coordinate
+metadata and every one of the 34,086 nonzero coefficients. A sparse term
+$[c,[i_1,\ldots,i_k]]$ denotes
+$c z_{i_1}\cdots z_{i_k}$, with zero-based coordinate indices and
+repetition denoting powers. The empty index list denotes a constant.
+The companion \file{polynomial.txt} prints the entire ordinary equation
+in the same coordinate order.
+
+\begin{center}
+\begin{tabular}{lr@{\qquad}lr}
+\toprule
+Metric & Count & Degree of monomial & Count\\
+\midrule
+Original coordinates & 519 & 0 & 1\\
+Original quadratic rows & 321 & 1 & 2\\
+Binary constant wires & 96 & 2 & 20,853\\
+Scaled-factor wires & 155 & 3 & 2,378\\
+Normalized coordinates & 770 & 4 & 10,852\\
+Normalized rows & 572 & Total & 34,086\\
+\midrule
+Signed term occurrences & 2,378 & Coefficient $+1$ & 21,934\\
+Equality-cycle dummies & 297 & Coefficient $-1$ & 12,152\\
+Final coordinates & 7,431 & Unit aliases & 1,208\\
+\bottomrule
+\end{tabular}
+\end{center}
+All 519 input coordinates, all 770 normalized coordinates, and all 7,431
+output coordinates occur. The exact dimension identity is
+$3\cdot2378+297=7431$. There are 52 singleton alias groups; they
+require no agreement cycle. The unit group already has more than two
+members and needs no padding dummy.
+
+The complete correspondence certificate records every constant and
+scaling definition, signed occurrence, alias pair, product witness,
+agreement cycle, and unit-path index. It is sufficient to reconstruct
+the lifting and projection maps without importing the original proof
+compiler. The independent verifier imports neither the new producer nor
+upstream arithmetic code. It checks all 321 source-row pullbacks as
+exact polynomial identities and independently expands the full
+$2\mathcal H=\sum Q_i^2$ certificate.
+
+The release also checks total and individual degrees, the coefficient
+alphabet, constant term, variable occurrence, and exact equality of the
+JSON and plaintext polynomials. Two actual modified-artifact checks
+flip a coefficient and remove the unit-anchor constant; both are
+rejected by the full verifier at the expanded-polynomial comparison.
+Five deterministic signed evaluations supplement the exact checks;
+they are not the proof of a universal identity.
+
+\subsection{The eleven-variable circuits}
+
+The two circuit JSON files under \file{eleven/} list integer leaves,
+eleven coordinate leaves, six authenticated fixed-coefficient leaves,
+and binary arithmetic nodes. Their output register fixes the complete
+polynomial. \file{eleven/coefficients/} contains all six compressed
+integer payloads, byte-order and binding information, and the finite
+source recipe. A coefficient leaf therefore denotes a literal fixed
+integer, not an unbound parameter.
+
+The independent checker verifies the universal three-radical norm
+identity, the actual graph definitions, dependency order, liveness,
+variable set, arithmetic count, exact degree cancellations, and attained
+leading coefficients. It authenticates the whole coefficient tuple and
+reconstructs the native recipe. The proof review separately checks the
+unbounded logical implications, including the case $c=0$, the reduced
+guard, the exact Pell period, the supported-modulus hypothesis, and
+the order of witness selection.
+
+\subsection{Running the checks}
+
+From the extracted packet root, the supported release command is
+\begin{quote}
+\file{python3 verify_all.py}
+\end{quote}
+It runs the two independent verifiers in a temporary copy, compares
+deterministic regeneration with the shipped data, and checks the release
+manifest. Both new compilers and their exact verifiers use only the
+Python standard library; no SymPy, theorem prover, or network access
+is required. The release runs ordinary and optimized Python checks.
+The new verifiers use explicit exceptions and authenticate the rebuilt
+coefficient values in both modes, even when assertions in an inherited
+recipe are disabled.
+
+To regenerate the PDF, run two passes, or use \file{latexmk}, from
+\file{report/}. The LaTeX source and all included sections are supplied.
+PDF bytes may differ with TeX versions, metadata, or timestamps;
+polynomial JSON regeneration is byte-for-byte deterministic.
+
+The included receipts record actual successful executions. They certify
+the finite artifact checks described above. They do not constitute a
+satisfiability search, a proof of Con(ZFC), or an automatically generated
+derivation of the inherited unbounded arithmetic calibration.
+
+\section{Further research questions}\label{sec:further}
+
+\subsection{Reduce dimension while retaining height one}
+
+The general compiler deliberately assigns two fresh aliases and one
+product witness to every signed occurrence. This gives a transparent
+collision proof but is not a minimal allocation. Several precise
+optimization problems follow. Which linear occurrences can remain
+unpadded while preserving disjointness between the quadratic agreement
+terms and the row-block terms? Can two occurrences share a product
+witness without introducing another zero or a coefficient of magnitude
+two? Which agreement classes can be represented by a smaller positive
+semidefinite form with the same integer kernel and coefficient alphabet?
+Any optimization should supply both its zero-set proof and a complete
+collected-coefficient audit.
+
+The current binary normalization uses 96 constant wires and 155 shared
+scaled-factor wires. Alternative addition chains, signed-digit constant
+representations, and selective use of a different 519- or 517-variable
+source may reduce the normalized occurrence count before the height-one
+compiler is applied. The correct objective is the final count
+$3L+d_2+\delta_u$, not the smallest intermediate source dimension alone.
+
+\subsection{Compile the low-variable circuit directly}
+
+Another route is to quadratize the 122-operation circuit and then apply
+the height-one compiler. Its native coefficients have very large bit
+lengths, so explicit coefficient construction may dominate the resulting
+variable count. A meaningful comparison must include those constant
+wires. Treating the six source ports as free constants in a circuit
+count and then omitting their cost in a height-one encoding would not
+be a fair comparison.
+
+\subsection{Lower the eleven-variable degree further}
+
+The degree-464 leading form is $16b_{122}^2e_{110}^2$. Thus the fused
+guard radical and the auxiliary radical are the present bottleneck.
+Reducing only an expression that lies below those two leading degrees
+will not lower the final degree. Possible targets include a smaller
+budget guard preserving the unconditional parity information, a
+different coprime fusion, or a carrier that continues to exclude both
+$r=0$ and $s=0$ with less degree.
+
+The supported-modulus theorem must continue to be applied with a fixed
+strong pair. A proposed carrier change is incomplete if it chooses a
+residue first and then silently changes that pair to realize the residue.
+Likewise, a weakened projection must compare the entire powered
+divisibility product with the actual modulus. The generous authentic
+coefficient bound may permit other exponents or smaller scales, but
+each such claim needs a new quantitative proof.
+
+\subsection{Formalize the local new transformations first}
+
+The height-one compiler offers a relatively compact formalization
+target: finite sparse polynomial identities, a graph-cycle kernel,
+nonnegativity, and an explicit zero-set bijection. A proof assistant
+could first verify the generic compiler and then check the literal
+occurrence certificate. This would avoid formalizing C222 arithmetic
+again merely to validate the coefficient transformation.
+
+For the eleven-variable equation, useful separable targets are the
+guard divisibility lemma, three-root separation with weights $2,1,4$,
+the powered projection bound, and the supported-modulus interpolation
+interface. The latter needs explicit attention to the exact period
+$4m_0f$ and the two-adic valuation step. An eventual end-to-end result
+must connect these local proofs to the concrete source equation and
+its internal consistency statement, preserving the exact coefficient
+tuple throughout.
+
+\subsection{Define a reproducible simplicity objective}
+
+The two new endpoints make the tradeoff visible. Height one is attained
+with thousands of variables; eleven variables are attained with large
+fixed coefficients and higher degree. A next comparison could minimize
+a specified encoded byte length, weighted arithmetic cost, or
+lexicographic tuple of degree, dimension, height, and support. Without
+such a choice, a global claim of ``the simplest equation'' is not a
+well-defined conclusion of this packet. What is established here is
+two concrete, fully specified improvements and the proofs needed to
+evaluate them.

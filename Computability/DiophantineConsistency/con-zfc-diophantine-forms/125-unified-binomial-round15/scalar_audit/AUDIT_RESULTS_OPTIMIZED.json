@@ -1,0 +1,141 @@
+{
+  "auditor": "independent_audit.py; no producer executable imports",
+  "coefficient_payloads": {
+    "beta": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+    "K0": "18c40dd3b52b2882ee8346d098942ae487b54d0d040d9cd88f826b050794d1af",
+    "MC": "3fc17cf73716c7528a91d45dc2bfffa8b76fb86d6d14f5451cf32c125a588777",
+    "MF": "78a7befe6b09c6f59bb325aec1ef35caa72bc6a7d2d01fa39071b9c6e8d92722",
+    "cone_A": "66463b4c98a7cd43faffe6cc0462f7f4fa65b7fd9bc57cba38789e585d59c615",
+    "cone_B": "42be64ea01465eb227e9c993dba41affc2d9244aed8ec8f33d3268bda7c6b401"
+  },
+  "identities": {
+    "full_norm_monomials": 35,
+    "full_norm_identity": true,
+    "paired_norm_identity": true,
+    "weighted_guard_identity": true,
+    "universal_centering_identity": true,
+    "source_centering_identity": true
+  },
+  "graphs": {
+    "integral_direct": {
+      "operations": 120,
+      "operation_counts": {
+        "mul": 76,
+        "add": 23,
+        "sub": 21
+      },
+      "syntactic_degree_bound": 488,
+      "verified_registers": 51,
+      "sha256": "e594d67ff1eab24c8b377a02555f07e1f5697fbaef0a8bfcedbd4d6d3c44fb74",
+      "authentic_degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 488,
+        "leading_coefficient": 587871
+      }
+    },
+    "integral_centered": {
+      "operations": 121,
+      "operation_counts": {
+        "mul": 76,
+        "add": 24,
+        "sub": 21
+      },
+      "syntactic_degree_bound": 488,
+      "verified_registers": 52,
+      "sha256": "8c0232477bc9412c447c78cdcb983660a3b9625826eea97f3f82e4a79fbd9dbd",
+      "authentic_degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 464,
+        "leading_coefficient": 338332
+      }
+    },
+    "integral_centered_expandedcut": {
+      "operations": 136,
+      "operation_counts": {
+        "mul": 86,
+        "add": 27,
+        "sub": 23
+      },
+      "syntactic_degree_bound": 464,
+      "verified_registers": 54,
+      "sha256": "e4224ab00494979b7ec068e777ad0cdab4d2035087c99bd9c9d6a5bf3df283a5",
+      "authentic_degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 464,
+        "leading_coefficient": 338332
+      }
+    },
+    "integral_direct_paired": {
+      "operations": 118,
+      "operation_counts": {
+        "mul": 74,
+        "add": 23,
+        "sub": 21
+      },
+      "syntactic_degree_bound": 488,
+      "verified_registers": 51,
+      "sha256": "3825390a058f023efedeaae7e35f11f25b2cb1cbe63461cee1e14a5377501928",
+      "authentic_degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 488,
+        "leading_coefficient": 587871
+      }
+    },
+    "integral_centered_paired": {
+      "operations": 119,
+      "operation_counts": {
+        "mul": 74,
+        "add": 24,
+        "sub": 21
+      },
+      "syntactic_degree_bound": 488,
+      "verified_registers": 52,
+      "sha256": "e1934d7614f0b2449ed8543f191c08f9af05b2053ec15eb824fb48f8f9d4ff73",
+      "authentic_degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 464,
+        "leading_coefficient": 338332
+      }
+    }
+  },
+  "mutation_controls": [
+    {
+      "name": "final norm minus changed to plus",
+      "rejected": true,
+      "reason": "register identity output"
+    },
+    {
+      "name": "I changes r to c",
+      "rejected": true,
+      "reason": "register identity I"
+    },
+    {
+      "name": "carrier constant sign changed",
+      "rejected": true,
+      "reason": "register identity K"
+    },
+    {
+      "name": "fusion guard sign changed",
+      "rejected": true,
+      "reason": "register identity Dg81"
+    },
+    {
+      "name": "three-adic coefficient 9 becomes 1",
+      "rejected": true,
+      "reason": "register identity A"
+    },
+    {
+      "name": "center QV becomes Q+V",
+      "rejected": true,
+      "reason": "register identity Cy"
+    }
+  ],
+  "exact_degree_certification": "Universal paired-norm and centering identities bind the 119-gate centered graph to the expanded-cut graph with upper bound 464; nonzero authentic finite-field leading coefficient proves lower bound 464. The direct graph has syntactic upper bound 488 and matching lower bound.",
+  "semantic_review": "SEMANTIC_AUDIT.md",
+  "status": "PASS"
+}

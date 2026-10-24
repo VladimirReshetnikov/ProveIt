@@ -1,0 +1,324 @@
+\section{A quartic with coefficient height one}\label{sec:heightone}
+
+The principal new mechanism is a coefficient reduction that applies to any
+finite quadratic system over the integers. It uses nonnegative quadratic
+forms to enforce agreement between separate occurrences of a variable.
+The separation is essential: algebraically identifying these occurrences
+before collecting coefficients would destroy the height bound.
+
+\subsection{The block identity}
+
+Let $\sigma_1,\ldots,\sigma_k\in\{-1,1\}$. For two lists of real numbers
+$m=(m_1,\ldots,m_k)$ and $w=(w_1,\ldots,w_k)$, define
+\begin{align}
+\mathcal B_\sigma(m,w)
+  ={}&\sum_{i=1}^k(m_i^2+w_i^2-m_iw_i)\\[-2mm]
+   &+\sum_{1\le i<j\le k}\sigma_i\sigma_j(m_im_j+w_iw_j).
+   \label{eq:block}
+\end{align}
+The exact identity
+\begin{equation}
+ 2\mathcal B_\sigma(m,w)=
+ \left(\sum_i\sigma_i m_i\right)^2+
+ \left(\sum_i\sigma_i w_i\right)^2+
+ \sum_i(m_i-w_i)^2
+ \label{eq:block-sos}
+\end{equation}
+proves both nonnegativity and the equivalence
+\begin{equation}
+ \mathcal B_\sigma(m,w)=0
+ \quad\Longleftrightarrow\quad
+ w_i=m_i\ (1\le i\le k),\qquad \sum_i\sigma_i m_i=0.
+ \label{eq:block-zero}
+\end{equation}
+These statements hold over any ordered field, and consequently over
+$\mathbb Z$ as well as $\mathbb R$. The factor $1/2$ in the proof is harmless:
+the definition \eqref{eq:block} is already an integer polynomial.
+
+Ordinary squaring of a residual produces coefficients $2$ in its mixed
+terms. Formula \eqref{eq:block} distributes each diagonal contribution
+between two matching constraints. After division by two, every displayed
+coefficient is $1$ or $-1$. The remaining issue is to prevent distinct
+displayed terms from becoming the same monomial.
+
+\subsection{Separating occurrences and preserving degree four}
+
+First write each source row as a list of signed monomial occurrences,
+\begin{equation}
+ R_j(x)=\sum_{i=1}^{k_j}\sigma_{ji}M_{ji}(x),
+ \qquad \deg M_{ji}\le 2.
+ \label{eq:unit-rows}
+\end{equation}
+A coefficient $c$ can be written as $|c|$ occurrences with sign
+$\operatorname{sgn}(c)$. Section~\ref{sec:binary-normalization} gives a
+more economical preliminary normalization for large coefficients.
+Occurrences remain distinct even when their monomials agree in the
+source row.
+
+For each occurrence introduce two entirely fresh variables $a_{ji},b_{ji}$
+and set $m_{ji}=a_{ji}b_{ji}$. Label the two factors as follows:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Source monomial & Label of $a_{ji}$ & Label of $b_{ji}$\\
+\midrule
+$x_p x_q$ & $x_p$ & $x_q$\\
+$x_p$ & $x_p$ & $1$\\
+$1$ & $1$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Even for $x_p^2$, the two aliases are different variables with the same
+label. No alias is used in two occurrences. Introduce one further fresh
+variable $w_{ji}$ for each occurrence, and use the block
+$\mathcal B_{\sigma_j}(m_j,w_j)$.
+
+All $m_{ji}$ have degree exactly two, including padded linear and constant
+occurrences. Thus the $m_{ji}m_{j\ell}$ terms have degree four,
+the $m_{ji}w_{ji}$ terms have degree three, and the $w_{ji}w_{j\ell}$
+terms have degree two. This deliberate separation of degrees is what
+allows the agreement constraints below to be added without coefficient
+collisions.
+
+\subsection{Agreement cycles and the single unit anchor}
+
+For a list $z_1,\ldots,z_d$ with $d\ge3$, put $z_{d+1}=z_1$ and define
+\begin{equation}
+ \mathcal C(z_1,\ldots,z_d)
+   =\sum_{i=1}^d z_i^2-\sum_{i=1}^d z_i z_{i+1}
+   =\frac12\sum_{i=1}^d(z_i-z_{i+1})^2.
+ \label{eq:cycle}
+\end{equation}
+This polynomial is nonnegative and vanishes exactly when all its entries
+agree. Its coefficients are $1$ and $-1$. The restriction $d\ge3$ is
+necessary: at $d=2$ the two edge monomials coincide and give coefficient
+$-2$.
+
+Group all aliases carrying the same old-variable label $x_p$.
+For a group of size at least three, add its cycle \eqref{eq:cycle}.
+For a group of size two, add one fresh dummy alias with the same label
+and use the resulting triangle. A singleton needs no agreement
+constraint. An unused source variable can be omitted when only existence
+of solutions matters; all source variables of the instantiated equation
+occur.
+
+List all aliases with label $1$ as $u_1,\ldots,u_d$. Add fresh unit
+aliases if necessary so that $d\ge2$, and put
+\begin{align}
+ \mathcal U(u_1,\ldots,u_d)
+   & =1+\sum_{i=1}^d u_i^2-u_1-u_d
+       -\sum_{i=1}^{d-1}u_i u_{i+1}\label{eq:unit-anchor}\\
+   & =\frac12\left[(1-u_1)^2+
+       \sum_{i=1}^{d-1}(u_i-u_{i+1})^2+(u_d-1)^2\right].
+       \nonumber
+\end{align}
+It vanishes exactly when every $u_i=1$. Only this block contributes a
+constant term, namely $1$, or linear terms, namely $-u_1-u_d$.
+
+\begin{definition}[The height-one polynomial]\label{def:heightone}
+For the fixed occurrence lists \eqref{eq:unit-rows}, define
+\begin{equation}
+ \mathcal H=
+ \sum_j\mathcal B_{\sigma_j}(m_j,w_j)
+   +\sum_{\text{old-variable groups}}\mathcal C
+   +\mathcal U.
+ \label{eq:heightone}
+\end{equation}
+The second sum includes the prescribed triangles for groups of size two
+and omits singletons. All sums are fixed and finite. All coordinates
+range independently over $\mathbb Z$.
+\end{definition}
+
+\begin{theorem}[Coefficient and zero-set theorem]\label{thm:heightone}
+For a finite quadratic integer system with at least one nonzero monomial
+occurrence, the construction above
+produces an ordinary polynomial $\mathcal H$ with the following properties:
+\begin{enumerate}
+\item Every nonzero coefficient of its fully collected expansion is
+      $1$ or $-1$; its constant coefficient is $1$.
+\item Its total degree is exactly four, and its degree in each individual
+      variable is at most two.
+\item It is nonnegative on every real tuple.
+\item It has an integer zero if and only if all source rows have a
+      simultaneous integer zero.
+\item If every source variable occurs, projection to one representative
+      of each old-variable alias group is a bijection on integer zero
+      sets. Its inverse is explicitly polynomial.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Nonnegativity follows from \eqref{eq:block-sos}, \eqref{eq:cycle}, and
+\eqref{eq:unit-anchor}. Suppose that $\mathcal H=0$. Every block is
+nonnegative, so every block is zero. The cycles make each old-variable
+alias group constant; choose its common value as $x_p$. The anchor makes
+all unit aliases equal to one. Consequently each $m_{ji}$ becomes its
+source monomial $M_{ji}(x)$. Formula \eqref{eq:block-zero} then gives
+$R_j(x)=0$ for every source row.
+
+Conversely, given a simultaneous source zero $x$, set every old-variable
+alias to its label's value, every unit alias to one, every agreement
+dummy to its group's value, and $w_{ji}=M_{ji}(x)$. Every block vanishes.
+All added values are uniquely forced on a zero, which proves the
+bijection and its explicit inverse. Before coefficient normalization,
+this inverse has degree at most two in the source variables.
+
+For the coefficient claim, partition the collected monomials by degree
+and by the variable families they contain. At degree four, the terms
+$m_{ji}^2$ use exactly one private alias pair, each with exponent two;
+the terms $m_{ji}m_{j\ell}$ use two distinct private pairs. Each pair
+belongs to precisely one occurrence, so neither kind can collide with
+another term. Across different rows all alias supports are disjoint.
+
+At degree three, each $-m_{ji}w_{ji}$ contains its own private $w$ variable
+and its private alias pair. These monomials are all different.
+At degree two, the terms containing $w$ variables come only from the row
+blocks. A square uses one $w$ index; a mixed term uses a pair from the
+same row. They are distinct, and no $w$ is an alias. The remaining
+quadratic terms are precisely the agreement cycles and unit anchor.
+Their alias groups are disjoint. Every cycle has at least three distinct
+vertices, so each undirected edge occurs once. The anchor path likewise
+has no repeated edge. Its two linear terms are distinct because $d\ge2$.
+The constant term occurs once. Thus every displayed term contributes to
+a distinct monomial, proving height exactly one.
+
+Any occurrence contributes $a_{ji}^2b_{ji}^2$ with coefficient one, so
+degree four is attained. The same enumeration shows that no individual
+exponent exceeds two.
+\end{proof}
+
+The polynomial is a rational sum of squares, through the identity for
+$2\mathcal H$. An integer sum-of-squares representation of $\mathcal H$
+itself is neither used nor asserted. The proof relies on the order of
+$\mathbb Z$ or $\mathbb R$; reducing the single equation modulo a prime
+does not preserve its zero-set interpretation.
+
+\subsection{A small example: one addition equation}
+
+For $x+y-z=0$, take three unit aliases $u_1,u_2,u_3$, put
+$m_1=xu_1$, $m_2=yu_2$, $m_3=zu_3$, and introduce $w_1,w_2,w_3$.
+Then
+\begin{align*}
+\mathcal H_{+}={}&\sum_{i=1}^3(m_i^2+w_i^2-m_iw_i)
+ +m_1m_2-m_1m_3-m_2m_3\\
+ &+w_1w_2-w_1w_3-w_2w_3
+ +1+u_1^2+u_2^2+u_3^2-u_1-u_3-u_1u_2-u_2u_3.
+\end{align*}
+Its collected coefficients are all $\pm1$, its degree is four, and
+$\mathcal H_+=0$ holds exactly when
+\[
+ x+y=z,\qquad (u_1,u_2,u_3)=(1,1,1),\qquad(w_1,w_2,w_3)=(x,y,z).
+\]
+This example shows why addition is compatible with height one. No
+positivity restriction on $x,y,z$, or on any auxiliary variable, is
+needed.
+
+\subsection{Normalizing large coefficients}\label{sec:binary-normalization}
+
+Expanding a coefficient of magnitude $c$ into $c$ occurrences is correct
+but can be wasteful. The delivered compiler first constructs each needed
+positive integer $c$ from a shared unit and smaller constants. For
+$c=2d+\epsilon$ with $\epsilon\in\{0,1\}$, introduce a constant wire
+$C_c$ and the row
+\begin{equation}
+ C_c-C_d-C_d-\epsilon=0.
+ \label{eq:binary-constant}
+\end{equation}
+The repeated $C_d$ is retained as two signed occurrences. Constant wires
+are ordered by their defining dependencies. Here $C_1$ denotes the
+literal constant $1$ and requires no additional coordinate. The resulting
+finite triangular system forces each
+$C_c$ to equal its stated integer and has a unique extension of every
+source tuple. Sharing the binary ancestors avoids repeating the same
+constant construction.
+
+For a coefficient multiplying a quadratic monomial $x_p x_q$, introduce
+or reuse a scaled wire $S_{c,p}$ with
+\begin{equation}
+ S_{c,p}-C_c x_p=0,
+ \label{eq:scaled-wire}
+\end{equation}
+and replace $c x_p x_q$ by $S_{c,p}x_q$. A linear term $c x_p$ may
+be written directly as $C_c x_p$, and a constant $c$ as $C_c$.
+Signs remain in $\sigma_{ji}$. All new rows are quadratic and use only
+unit signed occurrences. Substituting the forced constants and scaled
+wires restores each original source row exactly. This is a polynomial
+identity, independently checked in the release, rather than a test on
+sampled source zeros.
+
+The binary normalization and the height-one construction compose. Every
+source tuple has a uniquely specified extension to the new coordinates
+at a zero. For the delivered normalization, its constant wires are
+constant and its scaled wires are linear in the source variables; the
+full inverse on zero sets therefore still has degree at most two.
+In fact, if $L$ denotes this explicit extension, the stronger identity
+\begin{equation}
+ \mathcal H(L(x))=\sum_j R_j(x)^2
+ \label{eq:forward-value}
+\end{equation}
+holds for every source tuple, not only for source zeros. The constant
+and scaling rows vanish identically under $L$, each pair of row squares
+in \eqref{eq:block-sos} contributes twice the original squared residual,
+and all agreement and unit blocks vanish.
+
+\subsection{Size accounting and the instantiated equation}
+
+Let $L=\sum_j k_j$ be the number of signed occurrences after normalization.
+The row blocks use $3L$ variables: two aliases and one $w$ per occurrence.
+Let $d_2$ count old-variable labels appearing exactly twice among aliases,
+and let $\delta_u\in\{0,1,2\}$ be the number of additional unit aliases
+needed to make the unit group have size at least two. The exact count is
+\begin{equation}
+ N=3L+d_2+\delta_u.
+ \label{eq:height-count}
+\end{equation}
+A block with $k$ occurrences contributes $k^2+2k$ distinct monomials:
+$k$ quartic squares, $\binom{k}{2}$ quartic cross terms, $k$ cubic terms,
+and $k+\binom{k}{2}$ quadratic terms. A $d$-vertex agreement cycle
+contributes $2d$ monomials, and a $d$-unit anchor contributes $2d+2$.
+These formulas are exact because the proof excluded collisions.
+
+The instantiated source is the 519-integer, 321-row C222 system from
+the incoming powered-saturation packet \cite{round14}, with its complete
+quadratic residual list included unchanged. The artifact inventory and
+measured counts appear in Section~\ref{sec:artifacts}. In particular,
+the output contains every collected coefficient of $\mathcal H$; it
+does not leave an input program, compiler choice, or coefficient oracle
+to be supplied later.
+
+The general construction changes the coefficient objective decisively:
+height one is the least positive coefficient height of any nonzero
+integer polynomial. This observation is only an optimum for that one
+coordinate of the complexity problem. It makes no claim that the
+resulting number of variables, support, or total description length is
+minimal. The existing height-two construction \cite{heighttwo} has fewer
+variables, and the existing native quartic has far fewer variables with
+much larger coefficients. Those remain distinct tradeoffs.
+
+\subsection{Logical consequence and precise novelty scope}
+
+The construction is entirely finite. Its soundness and completeness use
+identities of integer polynomials, finite dependency induction, and
+nonnegativity of squares. These arguments are formalizable in ZFC.
+Composing Theorem~\ref{thm:heightone} with the retained C222 calibration
+therefore gives
+\begin{equation}
+ \ZFC\vdash
+ \left[\forall z\in\mathbb Z^{\HeightOneVariables},\ \mathcal H(z)\ne0\right]
+ \ \longleftrightarrow\ \Con(\ZFC).
+ \label{eq:heightone-consistency}
+\end{equation}
+The height-one transformation does not introduce another unbounded
+number-theoretic lemma. Its dependence on the inherited arithmetic
+encoding is identified separately in Section~\ref{sec:calibration}.
+
+More generally, quadratic circuit conversion followed by this theorem
+reduces integer Diophantine solvability to multiquadratic quartics of
+height one and constant coefficient one. This is a direct corollary of
+the proved construction; it is not a claim to have newly established
+the classical undecidability theorem. Searches of the frozen repository,
+the current incoming packets, and selected literature did not locate
+this particular block-and-cycle compiler. That bounded audit is not a
+worldwide priority result. The concrete contribution is the proved
+compiler, its independently checked fully instantiated consistency
+polynomial, and its comparison with the supplied height-two endpoint.
