@@ -1,0 +1,100 @@
+{
+  "parent": "candidates/shared-crt-prime-lift",
+  "files": {
+    "build_equation.py": {
+      "parent_sha256": "c90247219577ea3713a5b1377f7197ae239482ede433b8ba4b042f22cbc91c68",
+      "candidate_sha256": "c286c29e71678c905a9cc6c9628e7c0ffe10f994e0f29078c3d4c6e595ae9468",
+      "exact_replacements": [
+        [
+          "        W, A, T, Z, X, Y = [self.new(tag + \".\" + s) for s in (\"W\", \"A\", \"T\", \"Z\", \"X\", \"Y\")]\n",
+          "        W = self.add(n, k)  # Rebuild the canonical Pell certificate at this fixed bound.\n        A, T, Z, X, Y = [self.new(tag + \".\" + s) for s in (\"A\", \"T\", \"Z\", \"X\", \"Y\")]\n"
+        ],
+        [
+          "        gap, wn, wk = [self.new(tag + \".slack.\" + s) for s in (\"gap\", \"wn\", \"wk\")]\n",
+          "        gap = self.new(tag + \".slack.gap\")\n"
+        ],
+        [
+          "        self.eq(W, self.add(n, wn), tag + \".base_bound\", e2)\n",
+          ""
+        ],
+        [
+          "        self.eq(W, self.add(k, wk), tag + \".exponent_bound\", e2)\n",
+          ""
+        ]
+      ]
+    },
+    "direct_calculus.py": {
+      "parent_sha256": "68200f7a6a063c4ef8c3c1462f104f0e1f5b99e43f9fccb3db991ca1e80b9348",
+      "candidate_sha256": "68200f7a6a063c4ef8c3c1462f104f0e1f5b99e43f9fccb3db991ca1e80b9348",
+      "exact_replacements": []
+    },
+    "wire_eliminated_source.json": {
+      "parent_sha256": "1e7cf2f3ea9397e138c7543d47ccd00a967b8fbb2fd4c8d58f176c409033c1bb",
+      "candidate_sha256": "1e7cf2f3ea9397e138c7543d47ccd00a967b8fbb2fd4c8d58f176c409033c1bb",
+      "exact_replacements": []
+    },
+    "affine_shared_step.json": {
+      "parent_sha256": "c858ecd4f87f06e16d9f7b075ccdfe911af22d928e722a470ca292ec731fdc03",
+      "candidate_sha256": "c858ecd4f87f06e16d9f7b075ccdfe911af22d928e722a470ca292ec731fdc03",
+      "exact_replacements": []
+    },
+    "check_equation.py": {
+      "parent_sha256": "431c01eab52a0183e604385792ea29597aeb4c583f12c50f7ab62cf7d58a8c3b",
+      "candidate_sha256": "c9580e6d67bc5f10370fc2847d2064e6df14bae8a95979beb62236c3b70d43c4",
+      "exact_replacements": [
+        [
+          "    W = max(n, k)\n",
+          "    W = n + k\n"
+        ],
+        [
+          "    cases += [(1, 1), (2, 1), (3, 1), (1, 2), (2, 2), (3, 2)]\n",
+          "    cases += [(1, 1), (2, 1), (1, 2), (2, 2)]  # Keep complete finite witnesses modest.\n"
+        ],
+        [
+          "            for key in (\"W\", \"A\", \"T\", \"Z\", \"X\", \"Y\"):\n",
+          "            for key in (\"A\", \"T\", \"Z\", \"X\", \"Y\"):\n"
+        ],
+        [
+          "                \"pow0.slack.wn\": z[\"W\"] - n,\n",
+          ""
+        ],
+        [
+          "                \"pow0.slack.wk\": z[\"W\"] - k,\n",
+          ""
+        ]
+      ]
+    },
+    "audit_power_graph.py": {
+      "parent_sha256": "735f67d38cd4f36276693a43d20d777dfa689a32efcf090d4cd86628c11eaf12",
+      "candidate_sha256": "762fe526a51ed2a13508cf8351fbffd81f81d68541bc0977c2f38e66f0cf76de",
+      "exact_replacements": [
+        [
+          "Substitute every definitional gate symbolically and compare all 17 remaining\n",
+          "Substitute every definitional gate symbolically and compare all 15 remaining\n"
+        ],
+        [
+          "    W,A,T,Z,X,Y = [names['pow0.'+x] for x in ['W','A','T','Z','X','Y']]\n",
+          "    W = n+k\n    A,T,Z,X,Y = [names['pow0.'+x] for x in ['A','T','Z','X','Y']]\n"
+        ],
+        [
+          "        'base_bound': W-n-named('slack.wn'),\n",
+          ""
+        ],
+        [
+          "        'exponent_bound': W-k-named('slack.wk'),\n",
+          ""
+        ],
+        [
+          "    require(local_certificates == 27, 'positive certificate variable count')\n",
+          "    require(local_certificates == 24, 'fixed-bound positive certificate variable count')\n"
+        ]
+      ]
+    },
+    "audit_calculus.py": {
+      "parent_sha256": "86a43d8499845070c24251f69f75af9e5292350173e6d53ee38c2ebbfadd49eb",
+      "candidate_sha256": "86a43d8499845070c24251f69f75af9e5292350173e6d53ee38c2ebbfadd49eb",
+      "exact_replacements": []
+    }
+  },
+  "semantic_change": "For each power, W=n+k, delete W and the two bound slacks/rows; reconstruct fresh canonical Pell witnesses for completeness."
+}

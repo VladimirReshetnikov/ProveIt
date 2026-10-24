@@ -1,0 +1,232 @@
+{
+  "status": "PASS",
+  "reviewer": "audit_consistency",
+  "read_only_candidate_review": true,
+  "ordinary_findings": {
+    "generic_height_contract": [
+      "H>=N",
+      "H>=E(N,z,u)",
+      "H>=F(N,z,u)"
+    ],
+    "literal_E_ge_D_squared": true,
+    "H_positive_before_macro_semantics": true,
+    "H_ge_t_requires_endpoint": "y=M0+r0+2",
+    "off_source_unconditional_H_ge_t": false,
+    "completeness_reconstructs_CRT_columns": true,
+    "new_lean_or_object_ZFC_derivation": false
+  },
+  "commands": [
+    {
+      "command": "python3 -B Computability/DiophantineConsistency/candidates/shared-crt-beta-majorant/majorant_audit.py --output /tmp/beta-peer-majorant.json",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B Computability/DiophantineConsistency/candidates/shared-crt-beta-majorant/check.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -O -B Computability/DiophantineConsistency/candidates/shared-crt-beta-majorant/check.py",
+      "exit_code": 0
+    }
+  ],
+  "pins": {
+    "PROOF.md": "62c07380b4b500be1f428653e6b7d96495e61e29f0ea5190ff4b5f6a991b069c",
+    "majorant_audit.py": "2a8dde92cf2b2ce2826d7423cd7fcf5f6a07ae838a0282d46c93e0eeb446d977",
+    "check.py": "52f2a71af258dea3497c200794d2cc5b556a9f6bb89ad1ff2c3f0562e4b916ba",
+    "SOURCE_PINS.json": "24c87812fb3d991db9d9b9d36b8f68c96858d4e891f1345244ff9068026eb34f",
+    "affine/equation.json": "8c45f940ba0515c39a7d0d31d3f234a274143c051fe879954baac21f336a147d",
+    "affine/expanded_polynomial.json": "5c6695900b1c5cc3bbae132446f68bcbfe8b0c0a0790461fe256c99fe6ab12b2",
+    "retained/equation.json": "c17f37e317628dd9b9387d27cb170d7d7743f3881ded2f869841aeb7fe653a6f",
+    "retained/expanded_polynomial.json": "bbfaa992e9415c9dec979cf2bf7c50853ffa83b73f8d1e2da3d61d290abf0d59"
+  },
+  "majorant_certificate": {
+    "E": [
+      "v",
+      570
+    ],
+    "F": [
+      "v",
+      571
+    ],
+    "H_at_least_t_uses_endpoint": true,
+    "H_positive_before_endpoint_or_power_semantics": true,
+    "actual_endpoint_row": {
+      "gate": null,
+      "label": "endpoint.first_remainder",
+      "terms": [
+        [
+          1,
+          [
+            2
+          ]
+        ],
+        [
+          -1,
+          [
+            110
+          ]
+        ]
+      ]
+    },
+    "additive_majorant_path": [
+      {
+        "nonnegative_sibling": [
+          "v",
+          567
+        ],
+        "operation": "add",
+        "output": [
+          "v",
+          570
+        ],
+        "selected_child": [
+          "v",
+          564
+        ],
+        "selected_side": "left"
+      },
+      {
+        "nonnegative_sibling": [
+          "v",
+          562
+        ],
+        "operation": "add",
+        "output": [
+          "v",
+          564
+        ],
+        "selected_child": [
+          "v",
+          559
+        ],
+        "selected_side": "left"
+      },
+      {
+        "nonnegative_sibling": [
+          "v",
+          552
+        ],
+        "operation": "add",
+        "output": [
+          "v",
+          559
+        ],
+        "selected_child": [
+          "v",
+          556
+        ],
+        "selected_side": "right"
+      },
+      {
+        "nonnegative_sibling": [
+          "v",
+          555
+        ],
+        "operation": "add",
+        "output": [
+          "v",
+          556
+        ],
+        "selected_child": [
+          "v",
+          554
+        ],
+        "selected_side": "left"
+      }
+    ],
+    "bound_arithmetic_nodes": 437,
+    "bound_leaves": [
+      "M0",
+      "crt.extra_bound",
+      "m0",
+      "t0",
+      "x",
+      "y"
+    ],
+    "denominator": [
+      "v",
+      104
+    ],
+    "denominator_squared": [
+      "v",
+      554
+    ],
+    "factorial_argument": [
+      "v",
+      572
+    ],
+    "global_H_at_least_t_negative_control": {
+      "H_bits": 1343982,
+      "H_sha256_little_endian": "d3c519d1d5646bfb0ef0f7cbdcd0e0f78024d6d07a0bd11a7ffca5fd3970ee8e",
+      "t0": "H evaluated with all free inputs zero",
+      "verified": "H remains constant, while t=t0+1=H+1",
+      "y": 0
+    },
+    "reconstructed_endpoint_terms": [
+      [
+        -2,
+        []
+      ],
+      [
+        1,
+        [
+          2
+        ]
+      ],
+      [
+        -1,
+        [
+          4
+        ]
+      ],
+      [
+        -1,
+        [
+          99
+        ]
+      ]
+    ],
+    "scope": "Exact gate-path and row identities. Universal inequality proof in PROOF.md; no new C222/ZFC calibration",
+    "status": "PASS"
+  },
+  "metrics": {
+    "affine": {
+      "affine_gate_variables_eliminated": 2576,
+      "binomial_graphs": 16,
+      "exact_degree": 4,
+      "expanded_monomials": 15670,
+      "factorial_graphs": 2,
+      "max_abs_expanded_coefficient": 127285252,
+      "max_abs_row_coefficient": 4556,
+      "positive_power_specialization": true,
+      "power_graphs": 55,
+      "quadratic_rows": 2943,
+      "unused_variables_removed": 0,
+      "variable_kinds": {
+        "gate": 1933,
+        "outer": 5,
+        "witness": 1665
+      },
+      "variables": 3603
+    },
+    "retained": {
+      "affine_gate_variables_eliminated": 0,
+      "binomial_graphs": 16,
+      "exact_degree": 4,
+      "expanded_monomials": 17417,
+      "factorial_graphs": 2,
+      "max_abs_expanded_coefficient": 1992,
+      "max_abs_row_coefficient": 4,
+      "positive_power_specialization": true,
+      "power_graphs": 55,
+      "quadratic_rows": 5519,
+      "unused_variables_removed": 0,
+      "variable_kinds": {
+        "gate": 4509,
+        "outer": 5,
+        "witness": 1665
+      },
+      "variables": 6179
+    }
+  }
+}
