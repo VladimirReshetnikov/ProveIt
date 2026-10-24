@@ -443,3 +443,13 @@ and exact degree independently of the semantic compiler obligations.
 All new mathematical statements must have complete proofs: no `sorry`,
 `admit`, or additional axioms. Transitive axiom audits and reproducible
 build commands will accompany completed milestones.
+
+
+The [identical integer14 simplification](candidates/constructive-integer14-shared/README.md)
+reduces147 to145 live operations at unchanged degree568. Two complete
+`(1+x)-1=x` substitutions preserve the entire polynomial and all six
+fixed coefficients. Root reviewed the literal checker, all node maps,
+normal/optimized replays and all30 sealed files. The lower-degree
+148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
+The current10-positive105/408 PDF and TeX are unchanged by this minor
+integer-domain simplification; Lean remains paused.

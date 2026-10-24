@@ -37,7 +37,7 @@ not establish the size of a complete consistency equation.
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue and prime-separation two-root norms |
 | Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
 | Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
-| Integers | 14 | 137 / 147 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
+| Integers | 14 | 137 / 145 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
@@ -268,3 +268,13 @@ coefficient tables, both checker/build modes and root's ordinary review pass.
 The prior888/917 and1190 checkpoints remain preserved. Further semantic
 sign relaxations and lower-height retention are under separate research;
 no unmaterialized count is promoted.
+
+
+The [identical integer14 simplification](candidates/constructive-integer14-shared/README.md)
+reduces147 to145 live operations at unchanged degree568. Two complete
+`(1+x)-1=x` substitutions preserve the entire polynomial and all six
+fixed coefficients. Root reviewed the literal checker, all node maps,
+normal/optimized replays and all30 sealed files. The lower-degree
+148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
+The current10-positive105/408 PDF and TeX are unchanged by this minor
+integer-domain simplification; Lean remains paused.

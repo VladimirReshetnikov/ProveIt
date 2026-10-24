@@ -28,7 +28,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
 | Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
 | Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
-| Integers | 14 | 137 / 147 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
+| Integers | 14 | 137 / 145 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
@@ -422,3 +422,13 @@ coefficient tables, both checker/build modes and root's ordinary review pass.
 The prior888/917 and1190 checkpoints remain preserved. Further semantic
 sign relaxations and lower-height retention are under separate research;
 no unmaterialized count is promoted.
+
+
+The [identical integer14 simplification](candidates/constructive-integer14-shared/README.md)
+reduces147 to145 live operations at unchanged degree568. Two complete
+`(1+x)-1=x` substitutions preserve the entire polynomial and all six
+fixed coefficients. Root reviewed the literal checker, all node maps,
+normal/optimized replays and all30 sealed files. The lower-degree
+148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
+The current10-positive105/408 PDF and TeX are unchanged by this minor
+integer-domain simplification; Lean remains paused.

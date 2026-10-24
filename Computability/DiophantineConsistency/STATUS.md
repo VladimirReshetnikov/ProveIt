@@ -388,3 +388,13 @@ certificate proves all667 original signs from161 guards before interpreting
 arithmetic. Complete reverse projection retains every guard. These improve
 the888/917 checkpoints as recorded in the comparison; no semantic sign
 relaxation beyond the literal row certificate is included in these counts.
+
+
+The [identical integer14 simplification](candidates/constructive-integer14-shared/README.md)
+reduces147 to145 live operations at unchanged degree568. Two complete
+`(1+x)-1=x` substitutions preserve the entire polynomial and all six
+fixed coefficients. Root reviewed the literal checker, all node maps,
+normal/optimized replays and all30 sealed files. The lower-degree
+148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
+The current10-positive105/408 PDF and TeX are unchanged by this minor
+integer-domain simplification; Lean remains paused.

@@ -23,3 +23,13 @@ calibration theorem. The current [comparison](PROPOSAL_REVIEW_LATEST.md)
 counts only checked, complete equations, with domains and whole tuples
 kept explicit. The canonical PDF changes only after a reviewed significant
 displayed improvement; a small circuit optimization alone need not change it.
+
+
+The [identical integer14 simplification](candidates/constructive-integer14-shared/README.md)
+reduces147 to145 live operations at unchanged degree568. Two complete
+`(1+x)-1=x` substitutions preserve the entire polynomial and all six
+fixed coefficients. Root reviewed the literal checker, all node maps,
+normal/optimized replays and all30 sealed files. The lower-degree
+148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
+The current10-positive105/408 PDF and TeX are unchanged by this minor
+integer-domain simplification; Lean remains paused.
