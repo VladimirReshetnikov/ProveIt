@@ -18,14 +18,27 @@ and alternative encodings. Completed proof checkpoints are retained;
 unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
-The complete [shorter one-page equation](candidates/one-page-compression/merged-mask-base62/equation.pdf)
-prints a436-character base62 numeral, its entire alphabet and positional
-sum, and every coefficient definition. Its recipe is8.8% shorter than the
-previous771-digit page's. A decimal-only variant and an original-tuple
-variant remain available. State renaming reduces payload bits; changing
-numeral notation reduces printed symbols. See
+The current [equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) print a complete equation in **13 positive
+unknowns, exact degree51, with90 live arithmetic operations**. Every fixed
+constant is defined on the one Letter page, including the full436-character
+numeral, its alphabet and decoder. Compared with the previous
+15-positive69-operation degree155 page, this saves two unknowns and lowers
+degree, while adding21 operations and using a larger coherent compact44
+coefficient tuple. The [candidate proof and checks](candidates/one-page-ordinary13/README.md)
+include all943 tiles, the corrected initialization, every coefficient and
+the whole90-gate identity. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
+binds the displayed PDF/TeX to that candidate.
+
+The previous [fifteen-positive page](candidates/one-page-compression/merged-mask-base62/equation.pdf)
+and its other notation variants remain available. Its corrected recipe
+has2297 nonwhite characters,8.8% below the corrected771-digit recipe.
+State renaming reduces payload bits; changing numeral notation reduces
+printed symbols. See
 [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) and
-[SEED_PREDICTORS54.md](SEED_PREDICTORS54.md) for those distinct gains.
+[SEED_PREDICTORS54.md](SEED_PREDICTORS54.md) for those distinct gains, and
+[INITIALIZATION_CORRECTION.md](INITIALIZATION_CORRECTION.md) for the
+earlier transition-only calibration gap and its full tile-level repair.
 
 The displayed `equation.pdf` and its TeX source are maintained research
 outputs. After a substantial improvement to the displayed construction,

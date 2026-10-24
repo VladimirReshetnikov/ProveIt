@@ -49,6 +49,12 @@ exclude named polynomial abbreviations. Positive, natural and unrestricted
 integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
+The maintained [equation.pdf](equation.pdf) now displays the13-positive
+90-operation degree51 point in full, including every constant, with
+standalone [TeX](equation.tex). The15-positive69-operation degree155
+page is preserved as a different cost/coefficient tradeoff. Significant
+improvements will update this canonical display; minor changes need not.
+
 ## Work now underway
 
 The arrivals in`c1a102936a` and`9a33342a03` have been reviewed;

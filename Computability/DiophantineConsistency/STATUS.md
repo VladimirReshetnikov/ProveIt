@@ -24,7 +24,16 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 [latest review](PROPOSAL_REVIEW_LATEST.md). New complete positive-domain
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
-The shortest inspected complete page prints a436-character base62 numeral
+The current [equation.pdf](equation.pdf), with standalone
+[TeX](equation.tex), now prints13 positive unknowns, exact degree51 and
+90 operations. It improves the preceding15-positive69-operation degree155
+display in variables and degree, with21 more operations and larger
+compact44 coefficients. All constants are printed on one page. Full
+typed tile conjugacy, the numerical controller and the literal90-gate
+identity pass ordinary review and exact normal/optimized checks; see
+the [candidate](candidates/one-page-ordinary13/README.md).
+
+The preserved fifteen-positive page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
 recipe has2297 nonwhite characters, down from2518 on the preserved771-digit
 page and2861 on the original page. A decimal-only merged-mask recipe has
