@@ -90,6 +90,17 @@ of this brief:
    Hence every window of the present type needs three source unknowns:
    {J, C, F or t}.
 
+Two shortcuts fail for the same reasons. Dropping C's own mask test does
+not work: a stray bit of C outside the data positions is moved by the
+convolution kernels (shifts by 30, 62, 1100, 2201 and 4393 − e within a
+cell) to positions that are not tested, so it stays invisible unless C is
+itself a tested field. Avoiding the reduction modulo q − 1 by zero-padding
+the top rows does not work either: the temporal stride is the row width,
+which the compiler reads only from R modulo dN (the rank controller sets
+R ≡ d·width mod dN, so 2^R ≡ B^width mod q − 1), and every linear layout of
+a space-time diagram leaves one neighbour offset unbounded, so the stride
+is intrinsically a cyclic rotation and some word must carry its residue.
+
 So a one-word window cannot keep "F has no bits at the test positions"
 as its validity condition. It must make the tableau word C
 **self-certifying**: validity of the tiling has to be a population
