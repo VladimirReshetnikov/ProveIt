@@ -55,6 +55,7 @@ commits and are deliberately retained in the delivered provenance records.
 | Explicit, computable coefficient recipe for ZFC | Lean checked | `ExplicitZFC.expression` is a closed executable definition; numerical payload not materialized |
 | P67 compiler correctness in Lean | Open | The report's ordinary proof is not yet a Lean proof |
 | Object-level ZFC derivation | Open | External equivalence and internal provability are separate claims |
+| Completely specified one-page equation | Checked presentation and coefficient identities | `candidates/one-page/equation.pdf`: one Letter page, exactly15 positive unknowns, no external coefficient data,1294-digit action seed plus fixed sums/powers/integer division; all4whole compact54 ports byte-identical, packed seed bound to actual Lean dense215; ordinary P69 calibration documented, end-to-end Lean/internal-ZFC theorem remains open |
 | Global simplicity minimum | Not claimed | No common ordering of all size measures; no optimality theorem |
 | Short-equation local simplification | Lean checked | `ShortEquation.scaled_zero_iff_reduced`, no compiler hypothesis |
 | Literal 69-operation polynomial | Lean checked | `ShortCircuit.eval_polynomial_zero_iff_baselineValue_zero`; scalar and MvPolynomial evaluation both included |

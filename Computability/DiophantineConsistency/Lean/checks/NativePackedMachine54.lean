@@ -1,0 +1,7 @@
+import DiophantineConsistency.NativePackedMachine54
+
+open DiophantineConsistency.NativePackedMachine54
+
+#print axioms rows_eq_dense
+#print axioms machine_eq_dense
+#print axioms blank_halts_iff_dense

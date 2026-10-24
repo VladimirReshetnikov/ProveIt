@@ -44,6 +44,11 @@ The remaining rules, axiom-tag dispatcher and full proof-line loop remain in pro
 The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
 ZFC derivation of its source/target no-zero equivalence over the entire
 internal omega. Internal verification of the full checker encoding remains open.
+A [complete one-page equation](candidates/one-page/README.md) now specifies
+the15-positive-variable P69 and every fixed coefficient using one1294-digit
+integer and fixed arithmetic formulas. The printed seed and all four coefficient
+values are independently checked; the full native/internal-ZFC calibration
+remains open. Both TeX sources and the one-page PDF are included.
 The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
 already has a closed external consistency equivalence at degree at most
 four; it retains the enumerator's arithmetic graph. Lean now bounds its

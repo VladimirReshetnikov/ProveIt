@@ -191,3 +191,4 @@ import DiophantineConsistency.NativeStencil54
 import DiophantineConsistency.NativeWindowConvolution54
 import DiophantineConsistency.QuadraticRegisterComposition
 import DiophantineConsistency.QuadraticTreeCodeGraphs
+import DiophantineConsistency.NativePackedMachine54
