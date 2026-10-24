@@ -1136,11 +1136,10 @@ published to support further work toward 214.
 
 **Diophantine form of the K215 endpoint** (not formalized). The report
 [`con-zfc-diophantine-forms`](../../../DiophantineConsistency/con-zfc-diophantine-forms/README.md)
-is now under `Computability/DiophantineConsistency`. It holds waves 5–10
-(intake batches 221–226; wave-10 placement `d79b41884d`, reconciliation
-`cf4a5218a5`).
+is now under `Computability/DiophantineConsistency`. It holds waves 5–11
+(intake batches 221–227; wave-11 placement `240bf9e422` and `c16a89ad94`).
 
-Every finished equation so far turns the K215 calibration behind
+Until wave 11, every finished equation turned the K215 calibration behind
 `KEndpoint215.blank_halts_iff_zfc_refutation` into an explicit polynomial
 with fixed integer coefficients. It does so by compiling a local tile
 language of the blank run of [`candidate-k215/k215.tm`](candidate-k215/k215.tm)
@@ -1149,17 +1148,22 @@ removed. By an ordinary argument, ZFC then proves "no solution" ↔ Con(ZFC).
 
 K215 is not required: by Vladimir's direction, proposals may use other
 encodings, provided they prove their own calibration (the report's section
-"Any encoding is welcome"). Wave-9 66 and wave-10 68 already sketch
-proof-certificate sources over the C222 calculus. 66 calibrates through
+"Any encoding is welcome"). Wave-9 66 and wave-10 68 sketched
+proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
-`ConstructibleChoice.zf_refutation_iff_zfc_refutation`; 68 inherits that
-bridge from 66.
+`ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
+that route: explicit direct quartics with no coefficient tuple, down to 394
+naturals and 663 unrestricted integers (sources 87–89, 93–96, 98–110); the
+step "polynomial zero iff C222 derivation" is an ordinary proof in each
+package, not a Lean theorem.
 
 As the packages state them:
 
-- nine positive unknowns in 444 operations, or at degree 1,379,730;
-- 10 unrestricted integers via a cited reduction of Sun, in 481 operations
-  at degree 1,576,864;
+- nine positive unknowns in 420 operations, or at degree 997,810;
+- ten positive unknowns at degree 718 in 126 operations, and eleven
+  unrestricted integers without Sun's reduction at degree 2,240;
+- 10 unrestricted integers via a cited reduction of Sun, in 467 operations
+  at degree 1,245,324;
 - a 14-unknown equation of degree 24, and a 15-unknown one in 66 operations;
 - the smallest coefficient tuple binding an equation has B = 2^429959.
 

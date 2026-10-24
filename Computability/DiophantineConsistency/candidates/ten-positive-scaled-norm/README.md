@@ -1,5 +1,18 @@
 # Ten positive unknowns, degree 816: a scaled, centered sixteen-fold norm
 
+> **Superseded by its descendants.** The research session took this
+> equation as parent and reduced it in steps:
+> [ten-positive-quadratic-projection](../ten-positive-quadratic-projection/README.md)
+> (105 operations, degree 408),
+> [ten-positive-short-projection](../ten-positive-short-projection/README.md)
+> (101 / 368) and
+> [ten-positive-zero-offset](../ten-positive-zero-offset/README.md)
+> (99 / 368, 24 October 2026). Those replace the main Pell root by the
+> ψ-only exponent register X(3c − 2X) + 2 and a strong/auxiliary folding
+> lemma, so only three roots remain. This directory is kept as the
+> four-root parent and for its two reviewed proof rounds. Wave-11 package
+> 109 bundles it as `positive10/provenance/parent816/`.
+
 One integer-coefficient polynomial N in **ten strictly positive unknowns**
 
     j, F, alpha, i, T, w, Y, n, eta, zeta
