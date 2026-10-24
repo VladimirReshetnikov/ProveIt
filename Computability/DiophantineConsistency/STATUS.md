@@ -439,3 +439,16 @@ polynomial has10,437 terms and height2,445,790,974,704;729 retains lower
 height63,905,891. Each matched994/735/709/707/706 checkpoint loses six
 variables, two rows and28 terms. The710-variable retained-wire option
 has much smaller height938,261. Canonical PDF/TeX and Lean are unchanged.
+
+
+Two [identical prefix rewrites](candidates/constructive-integer14-quadratic-shared/README.md)
+reduce the new14-integer degree312 equation from121 to119 operations.
+Reusing q² and factoring ell(ell+1)k²=(ell*k)(ell*k+k) preserve the entire
+polynomial over every commutative ring. Complete148-to146 node coverage,
+all removed private definitions, every named register, the full35-term
+norm and all six payloads pass independent root review and both complete
+checker/rebuild modes. All33 packet seals pass. The signed ordinary proof
+and exact nonzero leading coefficient transfer unchanged. This is a minor
+saving within the new signed degree312 route; the canonical10-positive
+105/408 PDF/TeX remains the separate lower-variable/operation display.
+Lean remains paused.
