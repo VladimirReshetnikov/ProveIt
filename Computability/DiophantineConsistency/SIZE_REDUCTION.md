@@ -1334,3 +1334,20 @@ renderer, parser and artifact checks pass. See the
 Separate complete tradeoffs use 93 operations at degree 278 and direct
 positive X charts with 98/258 and 99/254. Earlier pages and complete source
 packets remain preserved. No global optimum or new Lean endpoint is claimed.
+
+## A derived anchor permits a seventh product-guard exchange
+
+The [new ordinary source proof](research/shared-binomial-digit-product-guard/PROOF.md)
+replaces scalar guards on raw123 and raw564 by one product guard. Retained
+raw94/raw95 signs and literal rows derive raw91>=1; with retained raw537,
+the exact source identity gives raw123+raw564>=1. The product then restores
+both removed signs before any inherited source interpretation. Each
+direction fixes the whole raw body and rebuilds only guard auxiliaries.
+
+The complete literal parent has **55 guards, 1,433 variables and 1,241 rows**.
+Four exact source ideals, every guard graph, full maps and whole inherited
+seals pass independent normal/optimized checks with 27 corruption controls.
+See the [root acceptance](reviews/shared-binomial-digit-product-root-peer.md).
+No projected improvement is predicted: the measured default remains the
+557-variable quartic pending a separate full compiler packet. The canonical
+92/283 page and paused Lean work are unchanged.

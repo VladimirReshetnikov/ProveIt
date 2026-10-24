@@ -1,0 +1,7 @@
+# Acceptance of a seventh product-guard exchange
+
+The [complete ordinary proof](../research/shared-binomial-digit-product-guard/PROOF.md) and [independent root review](../research/shared-binomial-digit-product-guard/PEER_REVIEW.md) are accepted. Three retained scalar graphs give raw94, raw95 and raw537 nonnegative. The literal body rows then derive raw91>=1 and raw123+raw564=raw91+raw537>=1. One product graph restores both removed signs before the inherited source theorem begins. This is a uniform theorem over every unrestricted integer body zero; only guard auxiliaries are reconstructed.
+
+All four fresh normal/optimized checker and pure builder commands passed. The two checker receipts match the author byte-for-byte, and all 265 inherited and 294 independent peer bindings authenticate. The independent collector verifies every coefficient of four source ideals and all 55 complete guard graphs, rejecting 27 actual corruptions. The whole source body, frame, power ports and numerical consistency endpoint are unchanged.
+
+The new literal parent has 1433 variables and 1241 rows with 55 guards. These dimensions are not a projected quartic result. The existing 557-variable family remains the accepted measured default until a separate complete compiler packet is checked. The canonical 92/283 page and paused Lean work are unchanged. The closed ordinary packet seal is 14d504be627beaba1caf9c5f704da6762bfd693a1416a84f1bedf9d9df7197f0.
