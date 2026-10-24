@@ -36,6 +36,9 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 598 | not optimized | 4 | Power-output73-guard raw/default projection;9,600 terms, height2,445,790,974,704 |
+| Integers | 603 / 602 | not optimized | 4 | Power-output73-guard raw projections;8,794 /8,710 terms, heights964,213 /45,769,499 |
+| Integers | 831 / 686 / 624 / 610 | not optimized | 4 | Power-output73-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 601 | not optimized | 4 | Encoded-index74-guard raw/default projection;9,661 terms, height2,445,790,974,704 |
 | Integers | 606 / 605 | not optimized | 4 | Encoded-index74-guard raw projections;8,808 /8,724 terms, heights964,213 /45,769,499 |
 | Integers | 834 / 689 / 627 / 613 | not optimized | 4 | Encoded-index74-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -1150,3 +1153,18 @@ Root read the complete wrapper and replayed both modes of all10 integrity
 controls; the frozen601 normal/optimized receipt bytes also match under the
 runner. See the [root review](reviews/historical-archives-compat-root-peer.md).
 This changes reproduction only, with no equation or Lean change.
+
+## Complete73-predicate quartics reach598 integer unknowns
+
+The [power-output profile packet](research/pow2-output-sign-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches598
+variables,9,600 terms and height2,445,790,974,704. Lower-height alternatives
+reach603/8,794/964,213 and602/8,710/45,769,499 (variables/terms/height).
+Only raw104's guard is deleted. Every original domain row, both directions
+of the592-coordinate raw/compact integer bijection, every fresh signed
+inverse and every quartic coefficient passed normal/optimized root replay,
+as did both deterministic rebuilds. The weak641-prefix/43-frame source
+interface and branch-local sign proof precede inherited calibration; see
+the [root review](reviews/pow2-output-profile-root-peer.md). All46 corruption
+controls fail as expected. Earlier families remain preserved. Lean stays
+paused and the canonical one-page equation is unchanged.

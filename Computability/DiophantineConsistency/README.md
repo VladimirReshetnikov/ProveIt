@@ -99,11 +99,11 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
-The latest [encoded-index quartic family](research/encoded-index-sign-profile/README.md)
-reaches601 integer unknowns with9,661 terms at degree4. It also offers606
-unknowns with coefficient height964,213, or605 with height45,769,499.
+The latest [power-output quartic family](research/pow2-output-sign-profile/README.md)
+reaches598 integer unknowns with9,600 terms at degree4. It also offers603
+unknowns with coefficient height964,213, or602 with height45,769,499.
 All original source rows, guard predicates, integer inverses and complete
-coefficients were independently checked before applying the74-predicate
+coefficients were independently checked before applying the73-predicate
 ordinary source theorem. The earlier families below remain preserved.
 
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
@@ -1176,3 +1176,18 @@ Root read the complete wrapper and replayed both modes of all10 integrity
 controls; the frozen601 normal/optimized receipt bytes also match under the
 runner. See the [root review](reviews/historical-archives-compat-root-peer.md).
 This changes reproduction only, with no equation or Lean change.
+
+## Complete73-predicate quartics reach598 integer unknowns
+
+The [power-output profile packet](research/pow2-output-sign-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches598
+variables,9,600 terms and height2,445,790,974,704. Lower-height alternatives
+reach603/8,794/964,213 and602/8,710/45,769,499 (variables/terms/height).
+Only raw104's guard is deleted. Every original domain row, both directions
+of the592-coordinate raw/compact integer bijection, every fresh signed
+inverse and every quartic coefficient passed normal/optimized root replay,
+as did both deterministic rebuilds. The weak641-prefix/43-frame source
+interface and branch-local sign proof precede inherited calibration; see
+the [root review](reviews/pow2-output-profile-root-peer.md). All46 corruption
+controls fail as expected. Earlier families remain preserved. Lean stays
+paused and the canonical one-page equation is unchanged.

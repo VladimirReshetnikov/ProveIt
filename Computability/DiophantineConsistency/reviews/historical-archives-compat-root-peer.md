@@ -15,7 +15,8 @@ receipts exactly match their sealed records. The controls cover literal argv
 and cwd, child failure, missing commands, preexisting exact/mismatched files,
 symlinks, modified/replaced created files, interruption and concurrent lock
 lifetimes. The author's actual frozen601 normal/optimized replays match
-its old sealed receipts byte for byte. This is a reproducibility repair,
+its old sealed receipts byte for byte. Root subsequently replayed both frozen601 modes through the runner and
+matched both sealed receipts exactly. This is a reproducibility repair,
 with no new mathematical proof or size claim. All14 closed-packet members
 and the external tool binding are hash-correct and unignored.
 
