@@ -18,7 +18,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 15 | 66 | 157 | Short-operation baseline |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 99 / 100 | 164 / 70 | Ordinary-norm100/70 improves100/110 and102/82 |
-| Positive integers | 13 | 90 | 55 | Unit-product tradeoff against92/30 and83/114 |
+| Positive integers | 13 | 90 | 51 | Ordinary strong norm improves the90/55 unit product |
 | Positive integers | 11 | 113 | 325 | Three-root transfer, package70 |
 | Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
@@ -80,6 +80,9 @@ and normal/optimized receipts are included. This subsumes our independently
 reconstructed101/78 checkpoint, also present in the arriving round11 package.
 [`short-unit-products`](research/short-unit-products/README.md) retains that
 checkpoint and a separate thirteen-positive90/55 tradeoff.
+The latter is now improved to
+[ninety operations and degree51](research/ordinary-unit-products/ORDINARY13.md)
+by the same early-rank theorem, with no added unknown or gate.
 
 For the lowest inspected nine-positive degree, the arriving radical
 majorant's1,753-operation evaluator is reduced to1,065 operations at the

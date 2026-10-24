@@ -28,6 +28,9 @@ proof establishes the strong-rank bound before using the norm merger;
 normal/optimized independent circuit, identity and degree checks pass.
 The101/78 and thirteen-positive90/55 checkpoints are retained in
 [`short-unit-products`](research/short-unit-products/README.md).
+The ordinary strong-norm variant improves the thirteen-positive form to
+90 operations and exact degree51; see
+[ORDINARY13.md](research/ordinary-unit-products/ORDINARY13.md).
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),

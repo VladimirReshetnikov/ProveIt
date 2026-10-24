@@ -1,5 +1,10 @@
 # Materialized ordinary-norm endpoint: twelve positive variables, 100/70
 
+The same early-rank argument also gives a
+[thirteen-positive90/51 equation](ORDINARY13.md), improving the earlier90/55
+unit-product form at unchanged cost. Its separate literal circuit and
+normal/optimized checks preserve this twelve-variable checkpoint.
+
 [p12_ordinary_degree70.json](p12_ordinary_degree70.json) is a literal
 division-free polynomial circuit in **twelve strictly positive integer
 unknowns**, with **100 live binary operations and exact degree 70**.

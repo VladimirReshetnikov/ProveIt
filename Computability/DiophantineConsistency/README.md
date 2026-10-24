@@ -29,6 +29,9 @@ has100 live operations and exact degree70. It materializes and checks an
 arriving manuscript's ordinary-norm reduction, including its early rank
 bound and two-way witness reconstruction. The coherent compact44 tuple is
 retained; native calibration and the internal-ZFC proof remain separate.
+Its [thirteen-positive companion](research/ordinary-unit-products/ORDINARY13.md)
+has90 operations and exact degree51, lowering the preceding90/55 form's
+degree at the same arithmetic cost.
 
 ## Approach and comparison
 
