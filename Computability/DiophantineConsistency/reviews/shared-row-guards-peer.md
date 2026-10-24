@@ -8,7 +8,7 @@ its sign. The checker derives P directly from that row, excludes x
 from its right side, checks every coefficient nonnegative and requires
 every odd-power coordinate to have been certified at an earlier step.
 Even powers need no sign premise. Thus each certified x is nonnegative.
-The two nonmonic cases are treated by a positive coefficient, rather
+Nonmonic rows are treated by a positive coefficient, rather
 than an unjustified integral division; sixteen steps have coefficient4.
 
 The seed guards are exactly `x=a²+b²+c(c+1)` on fresh unrestricted
