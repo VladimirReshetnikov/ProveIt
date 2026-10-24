@@ -98,6 +98,13 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
+The latest [output-sign quartic family](research/factorial-radius-output-sign-profile/README.md)
+reaches604 integer unknowns with9,676 terms at degree4. It also offers609
+unknowns with coefficient height964,213, or608 with height45,769,499.
+All original source rows, guard predicates, integer inverses and complete
+coefficients were independently checked before applying the75-predicate
+ordinary source theorem. The earlier families below remain preserved.
+
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
 now reaches607 integer variables, or612 with coefficient height964,213
 and611 with height45,769,499. These complete degree4 equations have
@@ -1061,3 +1068,18 @@ normal/optimized replays; see the
 [root review](reviews/factorial-radius-output-sign-root-peer.md). There
 are75 predicates before projection. Actual quartic sizes remain a separate
 measurement; no new Lean or canonical-page change is made.
+
+## Complete75-predicate quartics accepted
+
+The [output-sign profile packet](research/factorial-radius-output-sign-profile/README.md)
+contains17 complete degree4 equations with all integer inverse certificates
+and full coefficients. Raw/default-affine support8/16 reaches604 variables
+and9,676 terms at height2,445,790,974,704. Lower-height choices include
+609 variables/8,823 terms/height964,213 and608/8,739/45,769,499; raw
+low-height profiles reach837/692/630/616 variables at heights
+4,750/737,653/737,653/938,261. The early missing sign is rederived from
+actual source coefficients before prefix closure, then every domain row,
+integer restoration and quartic coefficient is checked. Root replayed
+both checker and rebuild modes; see the
+[root review](reviews/factorial-radius-output-profile-root-peer.md). The
+canonical one-page equation and Lean sources remain unchanged.

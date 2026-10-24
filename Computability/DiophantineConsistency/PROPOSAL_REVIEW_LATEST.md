@@ -36,6 +36,9 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 604 | not optimized | 4 | Output-sign75-guard raw/default-affine projection;9,676 terms, height2,445,790,974,704 |
+| Integers | 609 / 608 | not optimized | 4 | Output-sign75-guard raw projections;8,823 /8,739 terms, heights964,213 /45,769,499 |
+| Integers | 837 / 692 / 630 / 616 | not optimized | 4 | Output-sign75-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 607 / 608 / 610 | not optimized | 4 | Factorial-bound76-guard projections;10,042 /8,706 /8,611 terms, height2,445,790,974,704 |
 | Integers | 612 / 611 | not optimized | 4 | Factorial-bound raw projections;8,849 /8,753 terms, heights964,213 /45,769,499 |
 | Integers | 840 / 695 / 633 / 619 | not optimized | 4 | Factorial-bound raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -1037,3 +1040,18 @@ normal/optimized replays; see the
 [root review](reviews/factorial-radius-output-sign-root-peer.md). There
 are75 predicates before projection. Actual quartic sizes remain a separate
 measurement; no new Lean or canonical-page change is made.
+
+## Complete75-predicate quartics accepted
+
+The [output-sign profile packet](research/factorial-radius-output-sign-profile/README.md)
+contains17 complete degree4 equations with all integer inverse certificates
+and full coefficients. Raw/default-affine support8/16 reaches604 variables
+and9,676 terms at height2,445,790,974,704. Lower-height choices include
+609 variables/8,823 terms/height964,213 and608/8,739/45,769,499; raw
+low-height profiles reach837/692/630/616 variables at heights
+4,750/737,653/737,653/938,261. The early missing sign is rederived from
+actual source coefficients before prefix closure, then every domain row,
+integer restoration and quartic coefficient is checked. Root replayed
+both checker and rebuild modes; see the
+[root review](reviews/factorial-radius-output-profile-root-peer.md). The
+canonical one-page equation and Lean sources remain unchanged.

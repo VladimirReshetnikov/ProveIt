@@ -624,3 +624,18 @@ normal/optimized replays; see the
 [root review](reviews/factorial-radius-output-sign-root-peer.md). There
 are75 predicates before projection. Actual quartic sizes remain a separate
 measurement; no new Lean or canonical-page change is made.
+
+## Complete75-predicate quartics accepted
+
+The [output-sign profile packet](research/factorial-radius-output-sign-profile/README.md)
+contains17 complete degree4 equations with all integer inverse certificates
+and full coefficients. Raw/default-affine support8/16 reaches604 variables
+and9,676 terms at height2,445,790,974,704. Lower-height choices include
+609 variables/8,823 terms/height964,213 and608/8,739/45,769,499; raw
+low-height profiles reach837/692/630/616 variables at heights
+4,750/737,653/737,653/938,261. The early missing sign is rederived from
+actual source coefficients before prefix closure, then every domain row,
+integer restoration and quartic coefficient is checked. Root replayed
+both checker and rebuild modes; see the
+[root review](reviews/factorial-radius-output-profile-root-peer.md). The
+canonical one-page equation and Lean sources remain unchanged.
