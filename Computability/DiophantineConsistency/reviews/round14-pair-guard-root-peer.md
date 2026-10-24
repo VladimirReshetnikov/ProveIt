@@ -1,0 +1,9 @@
+# Acceptance of the Round14 guard-domain compression
+
+The [ordinary theorem and independent root review](../research/round14-pair-guard-compression/PEER_REVIEW.md) are accepted. For every fixed unrestricted integer body zero, the original63/60 scalar guard conditions are equivalent to45/44 retained scalar conditions plus9/8 separate product conditions. The four retained common-numerator anchors and the factorial remainder/digit identity restore every removed sign before the inherited source interpretation begins.
+
+Root read the full proof and checker and independently replayed normal/optimized checks. Both complete receipts match the author byte-for-byte. All19 source identities,123 old guard graphs, complete old auxiliary maps and34 whole parent pins are authenticated. The strengthened realization boundary proves every old auxiliary belongs only to its own guard row and avoids every body residual in both source views. Actual escaping-auxiliary and missing-appended-coordinate mutations are among28 rejections.
+
+The mixed and factored sources are separate fixed-tuple theorem instances. The factored bodies include appended private Horn coordinates after the old guard-auxiliary block:0..549 plus739, and0..553 plus734. A fresh layout must preserve these complete noncontiguous body maps. No pointwise identification of mixed/factored body tuples or old/new guard witness vectors is asserted. Legendre's existing graph realizes each individual nonnegative product using fresh witnesses; one product of all products would be unsound.
+
+This packet materializes no changed equation or guard layout and predicts no projected variable count. A separate complete compiler, restoration and coefficient check is required before a new endpoint can be accepted. The ordinary seal is edf48f051199dfb5eeedbee6771df42958d5682fd47c64cb4e47fec4b80d685c. The existing517/519 equations, canonical92/283 page and paused Lean work remain unchanged.

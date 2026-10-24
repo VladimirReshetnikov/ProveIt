@@ -1438,3 +1438,22 @@ tuples,10 source corruptions and28 malformed artifacts. See the
 These save operations with slightly higher degree than their centered
 parents. The canonical complete92/283 PDF and standalone TeX remain
 stable while further changes are batched. Lean remains paused.
+
+## Pointwise guard compression for both Round14 sources
+
+The [new ordinary theorem](research/round14-pair-guard-compression/PROOF.md)
+licenses nine individual pair exchanges in the517 ancestry and eight
+in519. Exact common-numerator and factorial/digit identities restore all
+removed signs over every unrestricted integer body zero, before source
+semantics. Both directions fix the entire body tuple and choose fresh
+Legendre witnesses. Mixed and factored source views are proved separately.
+
+Independent normal/optimized checks bind19 exact identities,123 old guard
+graphs and complete noncontiguous body maps, and reject28 actual corruptions.
+Every old guard auxiliary is checked to occur only in its own guard row;
+the appended private Horn body coordinate is retained. See the
+[root acceptance](reviews/round14-pair-guard-root-peer.md).
+This is an ordinary guard-domain result, with no new materialized equation
+or projected count. Existing517/519 quartics and the complete92/283 PDF
+and TeX remain unchanged until separate complete candidate checks pass.
+Lean remains paused.
