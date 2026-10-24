@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "name": "generate-check",
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_scaled_shared.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.124,
+      "log": "verification/generate-check.log",
+      "log_sha256": "87b1260f6e3bac72e446b8e39a97c38fbad0940c045fa7bbc3c9b87fe2b2222c"
+    },
+    {
+      "name": "generate-check-optimized",
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_scaled_shared.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.115,
+      "log": "verification/generate-check-optimized.log",
+      "log_sha256": "87b1260f6e3bac72e446b8e39a97c38fbad0940c045fa7bbc3c9b87fe2b2222c"
+    },
+    {
+      "name": "independent-check",
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm-shared/check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.507,
+      "log": "verification/independent-check.log",
+      "log_sha256": "d2d6f091014a0f0c8232451ec7bf3a83cbf3d00df951c5aacf556e89c934e547"
+    },
+    {
+      "name": "independent-check-optimized",
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm-shared/check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.493,
+      "log": "verification/independent-check-optimized.log",
+      "log_sha256": "ee7bebede471de3290e20aa0384465bcde85cd5ca2c52b010cabce98ef64a953"
+    }
+  ],
+  "scope": "Whole exact123-operation polynomial, source/tuple binding, prefix remap, associativity and independent centered degree; no Lean."
+}
