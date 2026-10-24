@@ -874,3 +874,19 @@ full four-port binding, universal center/norm identities and an attained
 nonzero degree340 coefficient. This lowers degree by28 at six extra
 operations relative to101/368. The cheaper complete canonical page stays
 unchanged; no global optimum or new Lean endpoint is claimed.
+
+## Bootstrap guard exchange accepted; coefficient benefit still being measured
+
+The [guard-exchange proof](research/bootstrap-guard-exchange/README.md)
+replaces base0.T's sign guard by the bootstrap Zminus1 guard, keeping78
+guards. Signed-A/B index recovery and four actual source calls exclude
+negative A without assuming raw86 even or interpreting a factorial early.
+The converse changes one free bootstrap coordinate, six gates and one
+constraint. The [root review](reviews/bootstrap-guard-exchange-root-peer.md)
+and [independent peer](reviews/bootstrap-guard-exchange-peer.md) check
+both whole-source existence maps. Both root author/peer normal/optimized
+runs reproduce the final receipts, and all four research seals pass.
+Actual coefficient profiling is separate; no new projected count follows
+from the exchange alone. The [paired-index proposal](research/paired-index-guards/README.md)
+is another unfinished lead, with its exact local factorial/binomial
+obligation recorded. Canonical101/368 PDF/TeX and paused Lean are unchanged.
