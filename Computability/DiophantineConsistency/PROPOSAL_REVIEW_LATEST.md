@@ -36,8 +36,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | 645 | not optimized | 4 | Main-root/modulus guard reduction, lower-height projection;5,580 terms, height63,905,891 |
-| Integers | 1,559 / 912 | not optimized | 4 | Retained-wire mixed guards;5,289 /4,134 terms, heights427 /4,750 |
-| Integers | 767 / 703 / 689 | not optimized | 4 | Retained-wire mixed projections;5,897 /9,247 /9,211 terms, heights737,653 /737,653 /938,261 |
+| Integers | 1,496 / 849 | not optimized | 4 | Retained-wire79-guard equations;4,995 /3,827 terms, heights427 /4,750 |
+| Integers | 704 / 640 / 626 | not optimized | 4 | Retained-wire79-guard projections;5,590 /8,940 /8,904 terms, heights737,653 /737,653 /938,261 |
 | Integers | 616 / 617 / 619 | not optimized | 4 | Main-root/modulus sign recovery and private sign orbits;10,028 /8,692 /8,597 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
@@ -718,3 +718,18 @@ coefficient collections, every100 copied/fresh guard-row identity, all
 four passing normal/optimized checker/rebuild replays and closed seals.
 These are checked whole equations, not estimates from deleting guards.
 Lean and the ten-positive display remain separate and unchanged.
+
+## Retained-coefficient79-guard quartics accepted
+
+The [new raw family](candidates/retained-radius-main-root-signs/README.md)
+keeps all original coefficients and gives1496/849/704/640/626 integer
+variables, with exact degree4 and heights427/4750/737653/737653/938261.
+The smallest has386 rows and8,904 collected terms. Each profile saves
+63 variables and21 rows at unchanged height against its100-guard parent.
+The [root review](reviews/main-root-raw-quartics-root-peer.md) records
+the complete1256-row integer bijection into904, all592 affine inverses,
+and the composed79-copied/63-fresh-witness transfer into literal967.
+All100 target guard rows and every full collected polynomial are checked.
+All four root normal/optimized checker/rebuild replays and closed seals
+pass. The616-variable compact quartic is a separate height tradeoff;
+no new Lean or native calibration endpoint is claimed.

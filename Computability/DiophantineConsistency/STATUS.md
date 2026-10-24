@@ -683,3 +683,18 @@ coefficient collections, every100 copied/fresh guard-row identity, all
 four passing normal/optimized checker/rebuild replays and closed seals.
 These are checked whole equations, not estimates from deleting guards.
 Lean and the ten-positive display remain separate and unchanged.
+
+## Retained-coefficient79-guard quartics accepted
+
+The [new raw family](candidates/retained-radius-main-root-signs/README.md)
+keeps all original coefficients and gives1496/849/704/640/626 integer
+variables, with exact degree4 and heights427/4750/737653/737653/938261.
+The smallest has386 rows and8,904 collected terms. Each profile saves
+63 variables and21 rows at unchanged height against its100-guard parent.
+The [root review](reviews/main-root-raw-quartics-root-peer.md) records
+the complete1256-row integer bijection into904, all592 affine inverses,
+and the composed79-copied/63-fresh-witness transfer into literal967.
+All100 target guard rows and every full collected polynomial are checked.
+All four root normal/optimized checker/rebuild replays and closed seals
+pass. The616-variable compact quartic is a separate height tradeoff;
+no new Lean or native calibration endpoint is claimed.
