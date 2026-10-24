@@ -79,8 +79,10 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 [position-zero](candidates/position-zero-norm-sharing/README.md) nine-positive
 419/1,472,168 and compact54 427/1,626,248 forms, plus a lower-degree
 1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
-The [scaled ten-positive equation](candidates/ten-positive-scaled-norm-shared/README.md)
-now reaches123/816; eleven-positive111/211 is a different tradeoff.
+The [scaled ten-positive equation](candidates/ten-positive-scaled-norm-reuse/README.md)
+now reaches122/816 by reusing the already computed `beta*J`. The current
+page retains its valid123-operation evaluator for this minor improvement;
+eleven-positive111/211 is a different tradeoff.
 Exact [shared norms](candidates/interpolation-shared-norms/README.md) give
 thirteen-integer184/1,072.
 [Fixed-prime separation](PROPOSAL_REVIEW_VALUATION_INTEGER12.md) and
@@ -88,8 +90,8 @@ thirteen-integer184/1,072.
 the twelve-integer choices to208/2,400 and202/2,912.
 [CRT/valuation composition](reviews/congruence-certificates-peer.md) adds
 fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
-reduces the13-positive form to88/51 by freeing J. The displayed90/51 page
-is retained for this minor change.
+reduces the13-positive form to88/51 by freeing J. The preserved13-positive
+page retains its90/51 evaluator.
 
 The direct C222 route now supplies complete
 [integer quartics in862/863/865 variables](candidates/projected-radius-integers/README.md),

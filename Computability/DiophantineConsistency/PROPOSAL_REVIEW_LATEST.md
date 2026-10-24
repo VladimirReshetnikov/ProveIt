@@ -18,7 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 123 | 816 | Scaled centered sixteen-fold norm with shared product |
+| Positive integers | 10 | 122 | 816 | Scaled centered sixteen-fold norm with shared product and reused alias |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | **88** | **51** | Free positive J; previous90/51 page retained |
@@ -323,6 +323,13 @@ saves one more operation, reaching123/816 by an exact identity. Its complete
 independent typed-tile/native/controller rebinding and printed-formula checks
 and has become the canonical display. The preceding13-positive90/51 page
 retains its lower-degree/fewer-operation tradeoff.
+
+The [122-operation sibling](candidates/ten-positive-scaled-norm-reuse/README.md)
+then deletes `q-1` by reusing the earlier `beta*J`, with a complete ordered
+gate remap and a universal polynomial identity. Independent normal/-O
+checks preserve all ten unknowns, four complete ports and degree816.
+The displayed123-operation page remains valid and is retained for this
+minor evaluator change.
 
 
 ## Position zero, fixed-prime interpolation, and the new direct source

@@ -21,7 +21,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
-| Positive integers | 10 | 123 | 816 | Scaled centered sixteen-fold norm with shared product |
+| Positive integers | 10 | 122 | 816 | Scaled centered sixteen-fold norm with shared product and reused alias |
 | Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
@@ -56,8 +56,8 @@ The maintained [equation.pdf](equation.pdf) now displays the10-positive
 standalone [TeX](equation.tex). It uses the same complete fixed recipe as
 the preceding13-positive90/51 page, now preserved as the lower-degree/cost
 alternative. This is a significant three-variable reduction; it increases
-degree and operations. Minor evaluator changes in an identical polynomial
-need not trigger another rendering.
+degree and operations. A further identical122-operation evaluator is
+checked separately; this minor change does not trigger another rendering.
 
 ## Work now underway
 

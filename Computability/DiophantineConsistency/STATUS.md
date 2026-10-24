@@ -343,21 +343,23 @@ The trace companion improves13-integer195/1072 to190/1072. Both full
 release modes, all whole coefficient bytes and root's separate ordinary
 review pass. The [congruence family](reviews/congruence-certificates-peer.md)
 also adds14-integer148/414 and16-integer118/124 tradeoffs. Free positive J
-reduces13-positive90/51 to88/51; the canonical page remains90/51 under the
-policy of waiting for a significant displayed improvement. The ten-positive
-proposal now passes review; its identical shared-product sibling reaches123/816.
+reduces13-positive90/51 to88/51; that preserved page retains90/51. The
+ten-positive proposal now passes review; its identical shared-product
+sibling reaches123/816 and a further reused alias reaches122/816. The
+canonical page now displays the complete10-positive123/816 version.
 
 
 The latest accepted reductions are9-positive419/1472168 and compact427/1626248
-(position-zero encoding plus an identical norm),10-positive123/816 (scaled
-centered norm),12-integer215/2400 or209/2912 (fixed-prime separation), and
+(position-zero encoding plus an identical norm),10-positive122/816 (scaled
+centered norm),12-integer208/2400 or202/2912 (fixed-prime separation), and
 13-integer184/1072 (identical shared norms). Complete ordinary reviews and
 normal/optimized scoped checks pass. The [new direct source](PROPOSAL_REVIEW_QUARTICS407888.md)
 yields407 naturals or888 integers, with a917-integer lower-height alternative.
-The [502-natural radius composition](candidates/synchronized-factorial-radius/README.md)
-is also frozen and independently reviewed. Its further composition and the
-new valuation-circuit savings are underway. The ten-positive alternate
-page has now passed independent review and become the canonical display.
+The [projected factorial-radius composition](candidates/projected-factorial-radius/README.md)
+now reaches399 naturals, and its
+[signed projection](candidates/projected-radius-integers/README.md) reaches862
+integers, with an891-integer lower-height alternative. The ten-positive
+page has passed independent review and become the canonical display.
 The previous13-positive90/51 page is preserved.
 
 
