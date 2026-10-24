@@ -36,6 +36,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | 891 | not optimized | 4 | Lower-height projection;6,797 terms, height63,905,891 |
+| Integers | 3,776 / 7,058 | not optimized | 4 | Retained-wire height tradeoffs;20,194 /24,277 terms, heights47,959 /1,992 |
 | Integers | 862 / 863 / 865 | not optimized | 4 | Actual-row guards and signed projection;11,245 /9,909 /9,814 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
