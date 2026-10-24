@@ -905,3 +905,29 @@ corruptions rejected in each mode; see the
 [root acceptance](reviews/ten-square-weight-root-peer.md).
 The canonical 98/360 one-page PDF/TeX is retained, all predecessors are
 preserved and Lean remains paused.
+
+## A second signed output reduces the quartic family to 569 integers
+
+The [62-predicate ordinary proof](research/power3-output-square-frame/PROOF.md)
+appends the square of output106, uses it only in the frame, and removes
+that output's scalar guard. Actual call3 keeps output106. Independent
+supports orient its t pair before the signed residue recovers106=f^t>0.
+The delayed bound for130 and its five related signs are restored before
+later source semantics. Fresh completeness rebuilds the changed frame
+and private Pell witnesses. Both common factorial radii remain unchanged.
+
+The [complete equations and certificates](research/power3-square-frame-source-prototype/README.md)
+include 24 RAW/CSE configurations. The best has **569 integer unknowns,
+363 residuals, 7,197 monomials and exact degree four**, with coefficient
+height 2,445,790,974,704. Its 885 signed restorations recover every parent
+coordinate; none is unconstrained. Savings vary by configuration, as
+recorded in the [combined root review](reviews/power3-square-frame-root-peer.md).
+Lower-height CSE alternatives include 574/5740/964213, 573/5804/45769613,
+581/5731/938261, 596/5521/737653, 654/4784/737653 and 783/3599/4750
+(variables/terms/height). The retained parent is 1454/4791/428.
+
+Both ordinary checker modes, both complete finite checker modes and both
+full rebuilds pass fresh root review and match retained author receipts.
+All prior packets remain preserved. This improves the direct quartic
+family; the canonical ten-positive 98-operation/degree-360 page is unchanged.
+Lean formalization remains paused, and equation-size research continues.

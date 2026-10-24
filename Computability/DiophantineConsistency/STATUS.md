@@ -1,6 +1,6 @@
 # Research status
 
-Updated 23 October 2026. This is a work log, not a completion certificate.
+Updated 24 October 2026. This is a work log, not a completion certificate.
 
 **Current direction:** Lean formalization is paused at the owner's request.
 The active goal continues with equation-size and complexity reduction;
@@ -25,14 +25,14 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints10 positive unknowns, exact degree368 and
-101 operations, including all constants on one Letter page in9-point type.
-It saves one operation and lowers degree by20 compared with the preserved
-102/388 display. The entire closed fixed recipe is unchanged. Universal
-formula binding, weighted-root/short-projector positive witness proofs,
-complete native/controller transfer, independent coefficient regeneration,
-both renderer modes and visual layout pass review; see the
-[candidate](candidates/one-page-short10/README.md).
+[TeX](equation.tex), prints10 positive unknowns, exact degree360 and
+98 operations, including all constants on one Letter page in9-point type.
+It saves three operations and lowers degree by8 compared with the preserved
+101/368 display. The entire closed fixed recipe is unchanged. Universal
+formula binding, independent parsing of the actual TeX, pre-transport index
+bounds, positive witness reconstruction, native/controller transfer,
+complete coefficient regeneration and both renderer modes pass review;
+see the [candidate](candidates/one-page-index-weight10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
@@ -1271,3 +1271,29 @@ corruptions rejected in each mode; see the
 [root acceptance](reviews/ten-square-weight-root-peer.md).
 The canonical 98/360 one-page PDF/TeX is retained, all predecessors are
 preserved and Lean remains paused.
+
+## A second signed output reduces the quartic family to 569 integers
+
+The [62-predicate ordinary proof](research/power3-output-square-frame/PROOF.md)
+appends the square of output106, uses it only in the frame, and removes
+that output's scalar guard. Actual call3 keeps output106. Independent
+supports orient its t pair before the signed residue recovers106=f^t>0.
+The delayed bound for130 and its five related signs are restored before
+later source semantics. Fresh completeness rebuilds the changed frame
+and private Pell witnesses. Both common factorial radii remain unchanged.
+
+The [complete equations and certificates](research/power3-square-frame-source-prototype/README.md)
+include 24 RAW/CSE configurations. The best has **569 integer unknowns,
+363 residuals, 7,197 monomials and exact degree four**, with coefficient
+height 2,445,790,974,704. Its 885 signed restorations recover every parent
+coordinate; none is unconstrained. Savings vary by configuration, as
+recorded in the [combined root review](reviews/power3-square-frame-root-peer.md).
+Lower-height CSE alternatives include 574/5740/964213, 573/5804/45769613,
+581/5731/938261, 596/5521/737653, 654/4784/737653 and 783/3599/4750
+(variables/terms/height). The retained parent is 1454/4791/428.
+
+Both ordinary checker modes, both complete finite checker modes and both
+full rebuilds pass fresh root review and match retained author receipts.
+All prior packets remain preserved. This improves the direct quartic
+family; the canonical ten-positive 98-operation/degree-360 page is unchanged.
+Lean formalization remains paused, and equation-size research continues.
