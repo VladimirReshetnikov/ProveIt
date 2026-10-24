@@ -2,6 +2,11 @@
 
 Updated 23 October 2026. This is a work log, not a completion certificate.
 
+**Current direction:** Lean formalization is paused at the owner's request.
+The active goal continues with equation-size and complexity reduction;
+see [SIZE_REDUCTION.md](SIZE_REDUCTION.md). The Lean statuses below record
+completed checkpoints, rather than instructions to continue formalization.
+
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
 at the repository owner's request. Live catalogue/intake/research links

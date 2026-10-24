@@ -11,6 +11,13 @@ witness domain, whose absence of zeros is equivalent to the absence of a
 finite derivation of falsity from the repository's ZFC axiom predicate.
 Neither consistency nor inconsistency is assumed.
 
+The current priority is equation size and complexity. At the repository
+owner's request, Lean formalization is paused. Research continues on
+smaller arithmetic circuits, simpler complete printed coefficient recipes,
+and alternative encodings. Completed proof checkpoints are retained;
+unfinished formalization files are not being extended during this phase.
+See [the active size-reduction plan](SIZE_REDUCTION.md).
+
 ## Approach and comparison
 
 There is no single established meaning of "simplest": number of variables,
