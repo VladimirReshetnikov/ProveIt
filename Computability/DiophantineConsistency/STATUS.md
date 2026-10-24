@@ -951,3 +951,17 @@ operations/degree. Root reviewed the complete ordinary proof and all literal
 checks, then replayed both checker/rebuild modes; see the
 [root review](reviews/nine-minimal-reflection-root-peer.md). Full fixed
 coefficients and source domains are retained. The canonical PDF is unchanged.
+
+## Complete76-predicate quartics accepted
+
+The [factorial-radius profile packet](research/factorial-radius-guard-profile/README.md)
+contains15 complete equations and full quartics, including607 variables
+with10,042 terms at height2,445,790,974,704. Fresh raw configurations give
+612 variables/8,849 terms/height964,213 and611/8,753/45,769,499. Lower-height
+choices reach840/695/633/619 variables at heights4,750/737,653/737,653/938,261.
+All have exact degree4. The full source domain, every integer restoration
+and every quartic coefficient passed both independent modes and both
+deterministic root rebuilds; see the
+[root review](reviews/factorial-radius-profile-root-peer.md). Only after
+restoring the complete76-predicate parent is its ordinary theorem applied.
+No projected count was inferred from guard count. Lean remains paused.

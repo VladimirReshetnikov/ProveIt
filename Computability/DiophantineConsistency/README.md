@@ -98,6 +98,12 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
+The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
+now reaches607 integer variables, or612 with coefficient height964,213
+and611 with height45,769,499. These complete degree4 equations have
+independently checked integer inverses and every coefficient; the ordinary
+76-predicate proof is applied only after source restoration.
+
 The latest [paired-guard quartic family](research/paired-index-guard-profile/README.md)
 reaches610 integer unknowns with10,053 terms, or611/613 with8,717/8,622
 terms at the same coefficient height2,445,790,974,704. Its639-variable
@@ -1016,3 +1022,17 @@ operations/degree. Root reviewed the complete ordinary proof and all literal
 checks, then replayed both checker/rebuild modes; see the
 [root review](reviews/nine-minimal-reflection-root-peer.md). Full fixed
 coefficients and source domains are retained. The canonical PDF is unchanged.
+
+## Complete76-predicate quartics accepted
+
+The [factorial-radius profile packet](research/factorial-radius-guard-profile/README.md)
+contains15 complete equations and full quartics, including607 variables
+with10,042 terms at height2,445,790,974,704. Fresh raw configurations give
+612 variables/8,849 terms/height964,213 and611/8,753/45,769,499. Lower-height
+choices reach840/695/633/619 variables at heights4,750/737,653/737,653/938,261.
+All have exact degree4. The full source domain, every integer restoration
+and every quartic coefficient passed both independent modes and both
+deterministic root rebuilds; see the
+[root review](reviews/factorial-radius-profile-root-peer.md). Only after
+restoring the complete76-predicate parent is its ordinary theorem applied.
+No projected count was inferred from guard count. Lean remains paused.
