@@ -302,3 +302,19 @@ record the full proof and exact circuit/degree/whole-tuple checks. All four
 normal/optimized checks and rebuilds pass; the unique leading component
 has a positive selected coefficient2^28*beta^184. The prior102/388 packet
 is preserved; a complete new page is under review. Lean remains paused.
+
+## Complete79-guard compact quartics accepted
+
+The [materialized compact family](candidates/projected-radius-main-root-signs/README.md)
+gives full integer quartics in904/645/619/617/616 variables. The smallest
+has376 quadratic rows,10,028 collected terms and coefficient height
+2,445,790,974,704; the645-variable point has5,580 terms and height63,905,891.
+Every profile saves63 unknowns and21 rows over its matching100-guard
+parent at unchanged height. Complete signed inverses first restore all79
+guards, then592 raw affine wires. The ordered21-sign theorem supplies
+63 fresh witnesses at unchanged body values into the literal967 equation.
+The [root review](reviews/main-root-quartics-root-peer.md) records full
+coefficient collections, every100 copied/fresh guard-row identity, all
+four passing normal/optimized checker/rebuild replays and closed seals.
+These are checked whole equations, not estimates from deleting guards.
+Lean and the ten-positive display remain separate and unchanged.

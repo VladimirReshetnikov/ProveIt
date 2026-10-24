@@ -35,10 +35,10 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 708 | not optimized | 4 | Mixed-domain lower-height projection;5,887 terms, height63,905,891 |
+| Integers | 645 | not optimized | 4 | Main-root/modulus guard reduction, lower-height projection;5,580 terms, height63,905,891 |
 | Integers | 1,559 / 912 | not optimized | 4 | Retained-wire mixed guards;5,289 /4,134 terms, heights427 /4,750 |
 | Integers | 767 / 703 / 689 | not optimized | 4 | Retained-wire mixed projections;5,897 /9,247 /9,211 terms, heights737,653 /737,653 /938,261 |
-| Integers | 679 / 680 / 682 | not optimized | 4 | Signed comparisons, derived guards and private sign orbits;10,335 /8,999 /8,904 terms, height2,445,790,974,704 |
+| Integers | 616 / 617 / 619 | not optimized | 4 | Main-root/modulus sign recovery and private sign orbits;10,028 /8,692 /8,597 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 The nine-variable953/999,518 point improves both operations and degree over
@@ -702,3 +702,19 @@ record the full proof and exact circuit/degree/whole-tuple checks. All four
 normal/optimized checks and rebuilds pass; the unique leading component
 has a positive selected coefficient2^28*beta^184. The prior102/388 packet
 is preserved; a complete new page is under review. Lean remains paused.
+
+## Complete79-guard compact quartics accepted
+
+The [materialized compact family](candidates/projected-radius-main-root-signs/README.md)
+gives full integer quartics in904/645/619/617/616 variables. The smallest
+has376 quadratic rows,10,028 collected terms and coefficient height
+2,445,790,974,704; the645-variable point has5,580 terms and height63,905,891.
+Every profile saves63 unknowns and21 rows over its matching100-guard
+parent at unchanged height. Complete signed inverses first restore all79
+guards, then592 raw affine wires. The ordered21-sign theorem supplies
+63 fresh witnesses at unchanged body values into the literal967 equation.
+The [root review](reviews/main-root-quartics-root-peer.md) records full
+coefficient collections, every100 copied/fresh guard-row identity, all
+four passing normal/optimized checker/rebuild replays and closed seals.
+These are checked whole equations, not estimates from deleting guards.
+Lean and the ten-positive display remain separate and unchanged.
