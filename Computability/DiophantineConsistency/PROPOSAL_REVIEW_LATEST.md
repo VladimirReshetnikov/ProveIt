@@ -18,7 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 103 | 408 | Direct positive J, symmetric norm and quadratic main-Pell projection |
+| Positive integers | 10 | 102 | 388 | Shifted strong multiplier, shorter transport and quadratic main-Pell projection |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | **88** | **51** | Free positive J; previous90/51 page retained |
@@ -633,3 +633,20 @@ norm identities, four successful normal/optimized checks and rebuilds,
 and closed seals. The [initial research note](reviews/signed14-guard-research.md)
 also records why two tempting smaller positivity gadgets fail. Lean and
 the canonical ten-positive page remain unchanged.
+
+## Ten-positive102/388 accepted
+
+The [shifted strong equation](candidates/ten-positive-shifted-strong/README.md)
+now reaches102 operations and exact degree388 in ten positive unknowns.
+It uses I=(i+q²)c² and the shorter transport L=HI+b. The shift preserves
+the unconditional lower bound and square-ordinate divisibility; a new
+rational-rho bound licenses the smaller transport before parity recovery.
+Canonical completeness keeps the strong ordinate and constructs a fresh
+positive final n, including zero transport quotient. The complete norm
+has a nonzero selected coefficient2^28*beta^224 in degree388. The
+[root review](reviews/shifted-strong10-root-peer.md) and
+[independent ordinary peer](reviews/ten-positive-shifted-strong-ordinary-peer.md)
+record the full proof, exact gate/degree/whole-tuple checks, four passing
+normal/optimized replays and closed seals. A new complete one-page display
+is being prepared for the combined gain over105/408; its predecessor
+will be preserved. Lean remains paused.

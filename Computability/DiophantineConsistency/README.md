@@ -82,7 +82,7 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 409/1,191,572 and compact54 417/1,316,548 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
 The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
-now reaches103/408 with [direct positive J](candidates/ten-positive-free-j/README.md).
+now reaches102/388 with a [shifted strong coordinate and shorter transport](candidates/ten-positive-shifted-strong/README.md).
 Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
@@ -655,3 +655,20 @@ norm identities, four successful normal/optimized checks and rebuilds,
 and closed seals. The [initial research note](reviews/signed14-guard-research.md)
 also records why two tempting smaller positivity gadgets fail. Lean and
 the canonical ten-positive page remain unchanged.
+
+## Ten-positive102/388 accepted
+
+The [shifted strong equation](candidates/ten-positive-shifted-strong/README.md)
+now reaches102 operations and exact degree388 in ten positive unknowns.
+It uses I=(i+q²)c² and the shorter transport L=HI+b. The shift preserves
+the unconditional lower bound and square-ordinate divisibility; a new
+rational-rho bound licenses the smaller transport before parity recovery.
+Canonical completeness keeps the strong ordinate and constructs a fresh
+positive final n, including zero transport quotient. The complete norm
+has a nonzero selected coefficient2^28*beta^224 in degree388. The
+[root review](reviews/shifted-strong10-root-peer.md) and
+[independent ordinary peer](reviews/ten-positive-shifted-strong-ordinary-peer.md)
+record the full proof, exact gate/degree/whole-tuple checks, four passing
+normal/optimized replays and closed seals. A new complete one-page display
+is being prepared for the combined gain over105/408; its predecessor
+will be preserved. Lean remains paused.

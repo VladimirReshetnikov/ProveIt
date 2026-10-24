@@ -21,7 +21,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
-| Positive integers | 10 | 103 | 408 | Direct positive J, symmetric norm and quadratic main-Pell projection |
+| Positive integers | 10 | 102 | 388 | Shifted strong multiplier, shorter transport and quadratic main-Pell projection |
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
@@ -479,3 +479,20 @@ norm identities, four successful normal/optimized checks and rebuilds,
 and closed seals. The [initial research note](reviews/signed14-guard-research.md)
 also records why two tempting smaller positivity gadgets fail. Lean and
 the canonical ten-positive page remain unchanged.
+
+## Ten-positive102/388 accepted
+
+The [shifted strong equation](candidates/ten-positive-shifted-strong/README.md)
+now reaches102 operations and exact degree388 in ten positive unknowns.
+It uses I=(i+q²)c² and the shorter transport L=HI+b. The shift preserves
+the unconditional lower bound and square-ordinate divisibility; a new
+rational-rho bound licenses the smaller transport before parity recovery.
+Canonical completeness keeps the strong ordinate and constructs a fresh
+positive final n, including zero transport quotient. The complete norm
+has a nonzero selected coefficient2^28*beta^224 in degree388. The
+[root review](reviews/shifted-strong10-root-peer.md) and
+[independent ordinary peer](reviews/ten-positive-shifted-strong-ordinary-peer.md)
+record the full proof, exact gate/degree/whole-tuple checks, four passing
+normal/optimized replays and closed seals. A new complete one-page display
+is being prepared for the combined gain over105/408; its predecessor
+will be preserved. Lean remains paused.
