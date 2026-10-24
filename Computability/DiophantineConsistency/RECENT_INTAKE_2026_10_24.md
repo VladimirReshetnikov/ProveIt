@@ -255,7 +255,7 @@ will be preserved. Lean remains paused.
 ## Canonical page updated to102/388
 
 The maintained [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) now print the complete ten-positive102-operation,
+[equation.tex](equation.tex) at that checkpoint printed the complete ten-positive102-operation,
 exact-degree388 equation, including every fixed constant, on one Letter
 page. This batches the direct-J, shifted-strong and shorter-transport
 improvements into one update over the preserved105/408 page: three fewer
@@ -362,3 +362,18 @@ and rebuild replays, complete53-entry seals and full coefficient binding
 pass. The entire polynomial change has degree at most360, preserving the
 degree368 leading component. A complete one-page specification is being
 reviewed for the next canonical PDF/TeX update. Lean remains paused.
+
+## Canonical complete page updated to101/368
+
+[equation.pdf](equation.pdf) and committed standalone [equation.tex](equation.tex)
+now print ten positive unknowns,101 operations and exact degree368. This
+batches the fixed root weight and positive short projector: one operation
+and20 degrees below the preceding canonical102/388 page, with the entire
+constant recipe unchanged. The [complete new page](candidates/one-page-short10/README.md)
+includes all436 seed characters,62-symbol alphabet and943 tiles. The
+[independent root page review](reviews/short10-page-peer.md) binds all101
+live gates universally, verifies all four full ports, and records passing
+normal/optimized page peers, renderer replays, author reconstructions and
+27 closed seals. The full rendered page was visually checked. All prior
+pages remain preserved; [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
+binds the exact canonical PDF, TeX and polynomial. Lean remains paused.
