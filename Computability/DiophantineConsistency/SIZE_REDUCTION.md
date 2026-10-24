@@ -35,13 +35,13 @@ not establish the size of a complete consistency equation.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational-root norm tradeoff |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated three-root norm |
 | Integers | 16 | 115 / 119 / 132 | 160 / 112 / 108 | Parity/residue and prime-separation two-root norms |
-| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,088 | Guard-first five-root fusion |
+| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,072 | Guard-first fusion and reanchored positivity guard |
 | Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluator |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
-| Nonnegative integers | 3,603 | not optimized | 4 | Direct shared CRT and beta majorant;15,670 terms, height127,285,252 |
-| Nonnegative integers | 3,443 | not optimized | 4 | Fixed positive-power bound;15,754 terms, height127,302,193 |
-| Nonnegative integers | 5,960 | not optimized | 4 | Retained-wire fixed-power variant; coefficient height1,992 |
-| Integers | 8,619 | not optimized | 4 | Direct shared CRT with semantic-input three-square guards |
+| Nonnegative integers | 522 | not optimized | 4 | Synchronized frame;20,225 terms, height83,900,628 |
+| Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Support/height alternatives:10,782 /7,263 /4,863 terms |
+| Integers | 1,224 | not optimized | 4 | Synchronized actual-row guards;23,590 terms, height83,900,628 |
+| Integers | 1,231 / 1,298 / 1,597 | not optimized | 4 | Guarded alternatives:14,148 /10,628 /8,232 terms |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
 multiplications charged and fixed numeral leaves free. Variable counts
@@ -75,10 +75,15 @@ reduces the natural points to3,603/6,179; its index bound uses an endpoint
 row before the CRT interpretation. Both parity small-integer families
 have now passed separate ordinary reviews and their scoped replays.
 Prime separation adds16/108/132 after its full normal/optimized review.
-Fixing every positive-power common bound to`W=n+k` removes165 semantic
-coordinates and reaches3,443/5,960 natural variables; this separate
-candidate slightly increases affine monomials and height, so the
-beta-majorant point remains a tradeoff. Further composition is underway.
+Fixing every positive-power common bound to`W=n+k`, deleting both
+redundant lower-bound slacks and composing the beta majorant gives
+3,328/5,739 natural variables. Actual-row guards yield6,604 integers.
+Those complete checkpoints remain preserved. The newer synchronized
+shared-frame construction supersedes them with the table's522-natural
+and1,224-integer points; complete ordinary and exact finite reviews pass.
+The separate batched667-natural/1,690-integer proposal also passes its
+scoped review. Its shared-offset and signed-projection ideas are being
+combined with the new certified integer family in separate candidates.
 
 The first completed reduction is
 [`gap2082-shared-products`](candidates/gap2082-shared-products/README.md):

@@ -76,7 +76,18 @@ rational-root integrality after exposing the early main Pell bound, then
 restores the signed source and positive inverse. Separate ordinary review
 and exact normal/optimized algebra checks pass.
 
-The [direct C222 quartic](PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md) is a
+The latest [synchronized direct review](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
+accepts522/529/596/895-natural-variable quartics with a common Pell frame
+and radix, after full ordinary review and normal/optimized rebuilding.
+Our [actual-row guard family](candidates/synchronized-row-guards/README.md)
+gives1,224/1,231/1,298/1,597 unrestricted integer variables. Every omitted
+guard is justified by its exact integer row certificate before arithmetic
+interpretation. The main1,224-variable equation has23,590 terms and height
+83,900,628. The separate [batched direct review](reviews/batched-direct-peer.md)
+also accepts its1,690-integer companion; signed projection is now being
+applied to the newer integer family. All are degree4. Lean remains paused.
+
+The historical [direct C222 quartic](PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md) is a
 complete ordinary alternative independent of K215, native coefficients
 and Jones. Its52-stage incoming replay and ordinary proof passed separate
 reviews. The newer [shared-direct construction](PROPOSAL_REVIEW_SHARED_CERTIFICATES_DIRECT.md)

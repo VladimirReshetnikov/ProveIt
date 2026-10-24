@@ -24,16 +24,16 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 10 | 471 | 1,245,324 | Round12 short guard; full replay and ordinary guard review |
 | Integers | 10 | **475 / 478 / 512** | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact older shears |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
-| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,088 | Complete guard-first five-root fusion |
+| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,072 | Guard-first fusion and reanchored positivity guard |
 | Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluators |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
 | Integers | 16 | 115 / 119 / 132 | 160 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
-| Nonnegative integers | 3,603 | not optimized | 4 | Shared CRT and beta majorant;15,670 collected terms |
-| Nonnegative integers | 3,443 | not optimized | 4 | Fixed positive-power bound;15,754 terms, slightly greater height |
-| Nonnegative integers | 5,960 | not optimized | 4 | Retained-wire fixed-bound variant;coefficient height1,992 |
-| Integers | 8,619 | not optimized | 4 | Prime-lift shared CRT with semantic-input guards;39,811 terms |
+| Nonnegative integers | 522 | not optimized | 4 | Synchronized arithmetic;20,225 terms, height83,900,628 |
+| Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Distinct support/height tradeoffs |
+| Integers | 1,224 | not optimized | 4 | Actual-row sign certificates;23,590 terms, height83,900,628 |
+| Integers | 1,231 / 1,298 / 1,597 | not optimized | 4 | Guarded support/height tradeoffs |
 
 The nine-variable953/999,518 point improves both operations and degree over
 the earlier1,073/1,103,950 radical form; the latter's smaller compact54
@@ -212,12 +212,53 @@ has15,754 monomials and height127,302,193, slightly above the frozen
 prime-lift parent in those metrics. No claim to dominate every metric
 is made. The retained-wire form has16,894 terms and unchanged height1,992.
 
+## Simultaneous arithmetic and smaller integer conversions
+
+The [synchronized-certificate review](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
+accepts a complete522-natural-variable quartic with20,225 monomials and
+height83,900,628. All27 power requests share one Pell frame,22 index
+blocks and10 base moduli. A finite-unit period proves simultaneous
+index-witness existence. Pell classification supplies the exponential
+bound needed for power uniqueness; its weaker quadratic consequence
+alone would be insufficient. Powers are interpreted pointwise before
+binomial digits and semantic macro induction, resolving the deferred
+radix cycle. The reduced beta source and actual23-squaring majorant
+are independently checked. Full normal/optimized replays reproduce22
+JSON files and reject three corrupted contraction certificates.
+
+The [batched direct review](reviews/batched-direct-peer.md) separately
+accepts667-natural and1,690-integer constructions with a common signed
+quotient offset, pooled Pell frame and exact signed monic projection.
+All16 direct and6 integer files rebuild byte-identically in both modes;
+the integer child was explicitly rerun under optimized Python because
+its wrapper omits the flag. This is a different shared-frame architecture.
+
+Our [actual-row guard family](candidates/synchronized-row-guards/README.md)
+guards only234 coordinates of each synchronized natural parent.
+Every other coordinate is proved nonnegative from its literal rows at
+arbitrary integer zeros, before interpreting arithmetic. The complete
+quartics have1,224/1,231/1,298/1,597 integer variables and respectively
+23,590/14,148/10,628/8,232 monomials. Their heights are83,900,628,
+211,184,624,63,909,160 and63,908,265. Actual parent bytes, ordered sign
+certificates, all fresh guards and every collected coefficient pass
+independent normal/optimized checks. Minimality of234 seeds is proved
+only within the explicitly restricted elementary inference class.
+
+The [reanchored guard review](PROPOSAL_REVIEW_REANCHORED_GUARD13.md)
+improves the thirteen-integer195-operation form from degree1088 to1072
+at the same source34 coefficients. It moves a nonzero square scale
+inside the lower-degree argument of the joint positivity pair. The
+guard's signs and magnitude bound survive with fresh private witnesses.
+Both complete scoped replays and the attained leading coefficient pass.
+
 ## Newer arrivals still being assessed
 
-The prime-separation archive and both differently named parity archives
-are reviewed above. The second parity ZIP is not substituted for the
-first. New local slack deletions, composition of the direct reductions
-and fewer integer-domain guards remain under investigation.
+The congruence-certificate,608-shared-Pell and twelve-integer interpolation
+archives arriving ina6269e4da6 remain under review. Preliminary claims
+are not promoted to the table. The earlier direct7617 projection is
+queued; its local-source ideas may compose with the newer frame engine.
+Signed projections of the checked234-guard family are underway as
+separate candidates. Both differently named parity ZIPs remain distinct.
 The centered-compression dependency ZIP contains a byte-identical existing
 joint-guards archive rather than a new equation. Further shared-CRT bound
 and Pell power-certificate reductions are being checked as separate
