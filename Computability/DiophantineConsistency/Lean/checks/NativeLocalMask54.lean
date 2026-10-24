@@ -1,0 +1,5 @@
+import DiophantineConsistency.NativeLocalMask54
+
+#print axioms DiophantineConsistency.NativeLocalMask54.addition_residue
+#print axioms DiophantineConsistency.NativeLocalMask54.localContribution_eq_cell
+#print axioms DiophantineConsistency.NativeLocalMask54.source_local_masks

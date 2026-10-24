@@ -1,0 +1,4 @@
+import DiophantineConsistency.NativeWordPopulation
+
+#print axioms DiophantineConsistency.NativeWordPopulation.word_population
+#print axioms DiophantineConsistency.NativeWordPopulation.sparse_population

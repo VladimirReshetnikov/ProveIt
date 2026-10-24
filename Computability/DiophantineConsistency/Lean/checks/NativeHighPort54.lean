@@ -1,0 +1,23 @@
+import DiophantineConsistency.NativeHighPort54
+
+#print axioms DiophantineConsistency.NativeHighPort54.entries_length
+#print axioms DiophantineConsistency.NativeHighPort54.position_injective
+#print axioms DiophantineConsistency.NativeHighPort54.position_lt
+#print axioms DiophantineConsistency.NativeHighPort54.coefficient_lt
+#print axioms DiophantineConsistency.NativeHighPort54.cellDigit_at
+#print axioms DiophantineConsistency.NativeHighPort54.cellDigit_lt
+#print axioms DiophantineConsistency.NativeHighPort54.cellDigit_zero
+#print axioms DiophantineConsistency.NativeHighPort54.cellDigit_left
+#print axioms DiophantineConsistency.NativeHighPort54.cellDigit_right
+#print axioms DiophantineConsistency.NativeHighPort54.cell_sum
+#print axioms DiophantineConsistency.NativeHighPort54.highPort_recipe
+#print axioms DiophantineConsistency.NativeHighPort54.word_cell
+#print axioms DiophantineConsistency.NativeHighPort54.highPort_lt
+#print axioms DiophantineConsistency.NativeHighPort54.highPort_mod_radix
+#print axioms DiophantineConsistency.NativeHighPort54.highPort_mod_eight
+#print axioms DiophantineConsistency.NativeHighPort54.highPort_population
+#print axioms DiophantineConsistency.NativeHighPort54.maskDigits_lt
+#print axioms DiophantineConsistency.NativeHighPort54.maskDigits_left
+#print axioms DiophantineConsistency.NativeHighPort54.maskDigits_right
+#print axioms DiophantineConsistency.NativeHighPort54.mask_word
+#print axioms DiophantineConsistency.NativeHighPort54.source_clause_masks

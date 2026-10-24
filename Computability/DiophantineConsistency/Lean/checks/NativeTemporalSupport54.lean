@@ -1,0 +1,6 @@
+import DiophantineConsistency.NativeTemporalSupport54
+
+#print axioms DiophantineConsistency.NativeTemporalSupport54.lower_dummy_mem
+#print axioms DiophantineConsistency.NativeTemporalSupport54.shiftDigits_sparse
+#print axioms DiophantineConsistency.NativeTemporalSupport54.binaryRotation_sparse
+#print axioms DiophantineConsistency.NativeTemporalSupport54.clause_pair_one_zero
