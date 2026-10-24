@@ -1,0 +1,269 @@
+\section{Thirteen integers: trace before separation}
+\label{sec:trace13}
+
+The companion equation has thirteen unrestricted integer coordinates,
+exact degree $1072$, and $190$ live binary operations. It improves the
+inspected CRT companion of \cite{fusion}, which has degree $1088$ and
+$195$ operations, while preserving its complete fixed coefficient tuple.
+The key step recovers a divisibility condition from a norm zero before
+requiring individual radicals to be rational. Consequently the original
+large-scale separation bounds become available earlier, and two scaling
+devices can be removed.
+
+\subsection{Complete specification}
+
+Use the six constants \eqref{eq:ports} and exactly the coordinates
+\begin{equation}
+ \boxed{j,C,z,h,r,v,w,T,c,n,t,p_2,p_3\in\Z.}
+ \label{eq:trace13variables}
+\end{equation}
+The common front end is recomputed with $Y=qv$:
+\begin{align}
+ J&=6j+1,&q&=\beta J+1,&W_0&=12w+4,\nonumber\\
+ X&=qW_0,&Y&=qv,&E&=XY,\nonumber\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\nonumber\\
+ F&=(K_0+W_0)C-z(q-1),&\alpha&=q-F-C,\nonumber\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta.
+ \label{eq:trace13front}
+\end{align}
+Let $G,O$ have their exact definitions in \eqref{eq:pair12}, using these
+new values of $F,q,\eta,\zeta$. Define
+\begin{align}
+ I&=(2r+1)c^2,&\Df&=1+\Delta I^2,&Q&=\Delta^2I^2,\nonumber\\
+ \delta&=Q-1,&V&=\Df(cT-R)-c,&C_y&=QV^2-1,\nonumber\\
+ L_\tau&=XY^2k,&\Dt&=1+L_\tau(L_\tau+k),\nonumber\\
+ \Dm&=1+\Delta c^2,&b&=X+ac,\nonumber\\
+ A_g&=O-1-p_2^2-p_3(p_3+1),\nonumber\\
+ M&=2q^2,&U&=MH,&
+ Z&=U(n+V)+Mb+H(v-q^2).
+ \label{eq:trace13registers}
+\end{align}
+In particular this section's $I,V,A_g$ differ from the twelve-variable
+definitions. There is no multiplier $v^2$ in $A_g$ and no factor
+$4H+1$ on the main radical. Using the polynomial \eqref{eq:norm32}, put
+\begin{equation}
+ \boxed{P_{13}^{\rm tr}=
+ \delta^{16}\F_{32}\left(
+ Z;M^2\Dm,U^2\Df,U^2\Dt,U^2A_g,\frac{U^2C_y}{\delta}
+ \right)=0.}
+ \label{eq:trace13poly}
+\end{equation}
+The degree in the final radicand of $\F_{32}$ is at most sixteen, so
+the displayed denominator clears symbolically. The delivered arithmetic
+graph contains only integer leaves and binary $+,-,\times$; neither
+division nor radical extraction is an evaluator operation.
+
+\subsection{A congruence from the rational part}
+
+\begin{lemma}[Rational-part divisibility]\label{lem:trace13rational}
+Let $a_i\in\Q$, possibly zero or negative, and choose roots
+$\alpha_i^2=a_i$. Suppose every rational $\alpha_i$ is integral.
+If $Z,L_1,\ldots,L_m\in\Z$ and
+$Z=\sum_iL_i\alpha_i$, then $\gcd(L_1,\ldots,L_m)$ divides $Z$.
+\end{lemma}
+\begin{proof}
+In the finite multiquadratic splitting field
+$K=\Q(\alpha_1,\ldots,\alpha_m)$ apply
+$\pi(x)=\operatorname{Tr}_{K/\Q}(x)/[K:\Q]$.
+A rational root is fixed and contributes its integer value. An
+irrational root has minimal polynomial $x^2-a_i$, of trace zero;
+trace transitivity therefore gives $\pi(\alpha_i)=0$. Thus
+$Z=\sum_iL_i\pi(\alpha_i)$ is an integer linear combination of the
+$L_i$. Imaginary roots also have rational part zero. Independence of
+square classes and separation of magnitudes are unnecessary.
+\end{proof}
+
+Here the four radicands $\Dm,\Df,\Dt,A_g$ are integers. For the
+remaining rational radicand $D_y=C_y/\delta$, a rational root is
+integral by Lemma~\ref{lem:descent} when $Q>1$; when $Q=0$ it equals
+$\pm1$. The following checks establish that these cases exhaust every
+integer assignment, before imposing the equation.
+
+Always $q$ is even, $q\equiv2\pmod3$, $|q|\ge16$, and
+$|X|\ge64$. At $v=0$ we have $Y=a=0$, $H=3$, and $\Delta=3$.
+Otherwise $|Y|\ge16$ and $|a|\ge63\cdot16$. Hence in both cases
+$H\ne0$ is odd and $\Delta\ge3$ is positive and odd. The radicands
+$\Df,\Dm$ are at least one. Writing $u=XY^2\in\Z$ gives
+$\Dt=1+u(u+1)k^2\ge1$.
+
+At $c=0$, $Q=0,\delta=-1,C_y=-1$, and $D_y=1$. At $c\ne0$,
+$2r+1\ne0$ gives $Q\ge9$ and $\Df>|c|+1$. For the integer
+$b_1=cT-R$, either $b_1=0$ and $|V|=|c|\ge1$, or
+$|V|\ge\Df-|c|>1$. Thus
+\begin{equation}
+ \delta\ne0,\qquad
+ D_y=V^2+\frac{V^2-1}{Q-1}\ge1\quad(c\ne0).
+ \label{eq:trace13realness}
+\end{equation}
+All four non-guard radicands are positive, including on the exceptional
+$c=0$ and $v=0$ slices.
+
+At a zero of \eqref{eq:trace13poly}, one conjugate factor vanishes.
+Absorb its signs into roots $d,f,\tau,g,y$ to obtain
+\begin{equation}
+ Z=Md+U(f+\tau+g+y),\qquad
+ (d^2,f^2,\tau^2,g^2,y^2)=(\Dm,\Df,\Dt,A_g,D_y).
+ \label{eq:trace13factor}
+\end{equation}
+Lemma~\ref{lem:trace13rational} gives $M\mid Z$ immediately. This
+does not assume that all five roots are rational or that $A_g\ge0$.
+Since
+\[
+ Z=M\bigl(H(n+V)+b\bigr)+H(v-q^2),
+\]
+we have $M\mid H(v-q^2)$. But $Y=qv$ implies
+$H\equiv3\pmod q$, and $3\nmid q$ with $H$ odd gives
+\begin{equation}
+ \gcd(H,M)=1,\qquad
+ v=q^2(2v_0+1),\qquad
+ Y=(2v_0+1)q^3,\quad
+ v_0=\frac{v-q^2}{2q^2}\in\Z.
+ \label{eq:trace13scale}
+\end{equation}
+Thus $v,Y\ne0$ and $|Y|\ge|q|^3\ge4096$ are established before
+squarehood or Pell-index recovery. This early recovery is the new step.
+
+\subsection{Unscaled guard, separation, and restoration}
+
+If $A_g<0$, its radical in \eqref{eq:trace13factor} would be the only
+nonzero imaginary term; therefore $A_g\ge0$. Consequently
+$O=A_g+1+p_2^2+p_3(p_3+1)>0$, and \eqref{eq:pairlemma} gives
+$G>0$ and $\eta\zeta>0$. This also excludes $c=0$, since there
+$\eta\zeta=-Y(Y+1)k^2\le0$.
+
+Put $x=|X|\ge64$, $m=|Y|\ge4096$, $K=|k|$, and $C_0=|c|$.
+The strip guard gives $K\ge2$ and
+\begin{equation}
+ K(m-1)<C_0<K(m+1).
+ \label{eq:trace13strip}
+\end{equation}
+Denote positive roots by $d_+,f_+,\tau_+,y_+$, and let
+$g_+=\sqrt{A_g}\ge0$. With $a_*=|a|\ge(x-1)m$, the bounds
+$\sqrt\Delta>a_*-3>xm/2$ yield
+\begin{gather}
+ f_+>\frac{xm}{2}C_0^2>3C_0^2,\qquad
+ K(xm^2-1)<\tau_+<K(xm^2+1),\nonumber\\
+ \tau_+>2C_0,\qquad f_+>2\tau_+,\qquad
+ Q>\Df>\Dt>1,\quad Q>C_0^2,\nonumber\\
+ \frac{C_0}{5}<\frac{d_+}{|H|}<\frac{C_0}{2}.
+ \label{eq:trace13bounds}
+\end{gather}
+For example, $f_+>2\tau_+$ follows from
+$mK(m-1)^2>4(m^2+1/x)$. The last comparison uses
+$a_*-3<\sqrt\Delta<a_*+3$ and
+$4a_*-3\le|H|\le4a_*+3$.
+The determinant identity
+\[
+ 12G=4q^2-\bigl(3(U_c+Z_c)-4q\bigr)^2-3(U_c-Z_c)^2
+\]
+gives $G<q^2$. Since $\eta\zeta\le k^2/4$, the unscaled guard gives
+\begin{equation}
+ g_+<\frac{|q|K}{2}<\frac{C_0}{10}.
+ \label{eq:trace13guardbound}
+\end{equation}
+Here the final inequality uses the already recovered $m\ge|q|^3$.
+
+If $b_1=cT-R=0$, then $V=-c$ and
+$C_0<y_+<C_0+1$. Otherwise
+$|V|\ge f_+^2-C_0>2f_+$ and $y_+>|V|>2f_+$.
+After omitting a zero $g_+$, the following orders are strictly
+superincreasing:
+\begin{equation}
+ \begin{array}{ll}
+ b_1=0:&g_+,\ d_+/|H|,\ y_+,\ \tau_+,\ f_+,\\
+ b_1\ne0:&g_+,\ d_+/|H|,\ \tau_+,\ f_+,\ y_+.
+ \end{array}
+ \label{eq:trace13orders}
+\end{equation}
+The two smallest sum to less than $0.6C_0$; in the first case the
+three smallest sum to less than $1.6C_0+1<2C_0<\tau_+$.
+The other comparisons follow from \eqref{eq:trace13bounds}.
+Divide \eqref{eq:trace13factor} by $U$. Its main-root coefficient is
+$M/U=1/H$, so Lemma~\ref{lem:separation} applies to precisely these
+magnitudes. All roots are rational; the integer radicands make
+$d,f,\tau,g$ integral, and Lemma~\ref{lem:descent} makes $y$ integral.
+
+Reducing the integral relation \eqref{eq:trace13factor} modulo $H$
+and using \eqref{eq:trace13scale} recovers
+$\gamma=(d-b)/H\in\Z$. Thus we have the exact normalized kernel
+\begin{equation}
+ \begin{gathered}
+ f^2=\Df,\quad\tau^2=\Dt,\quad
+ QV^2-(Q-1)y^2=1,\\
+ (b+H\gamma)^2=\Dm,\quad A_g=g^2,\quad
+ Y=(2v_0+1)q^3.
+ \end{gathered}
+ \label{eq:trace13kernel}
+\end{equation}
+It is the incoming unscaled normalized integer kernel of \cite{fusion},
+with its old scale coordinate $v_0$ and its guard square coordinate
+replaced by $g$. Its transport substitution and entire fixed tuple
+are unchanged.
+
+Conversely, take any solution of that kernel, writing its guard root as
+$p_1$ and its main root as $d=b+H\gamma$. Set
+\begin{equation}
+ v=q^2(2v_0+1),\qquad
+ n=\gamma+f+\tau+p_1+y-V-v_0.
+ \label{eq:trace13inverse}
+\end{equation}
+Every other supplied coordinate is retained. These integer choices give
+\eqref{eq:trace13factor}, so one norm factor vanishes. The two directions
+prove an existence equivalence with the unchanged kernel. Its ordinary
+native/K215 interpretation is the inherited dependency described in
+Section~\ref{sec:calibration}; it is not supplied by a finite norm test.
+
+\subsection{Exact degree and complete arithmetic cost}
+
+Removing $v^2$ from the old guard saves two gates; removing its optimized
+main scale $4U+M$ saves two more. The established factorization
+$\Dt=1+L_\tau(L_\tau+k)$ saves one further gate. The complete new
+count is $118$ multiplications, $40$ additions and $32$ subtractions.
+All thirteen variables, all six ports, and every one of the $190$ gates
+are live. This includes the whole cleared norm.
+
+For the degree calculation write
+\[
+ d=M^2\Dm,\quad e=U^2A_g,\quad A'=U^2\Df,
+ \quad B'=U^2\Dt,\quad C'=U^2C_y,
+\]
+and $s_0=Un+Mb+H(v-q^2)$, so $Z=UV+s_0$. Their degrees are
+$14,40,26,34,72$, while $\deg U=6$, $\deg V=19$,
+$\deg\delta=22$, and $\deg s_0=7$. The first scalar component of the
+biquadratic cleared three-root computation is exactly
+\[
+ J_0=\delta(s_0^2+2UVs_0+d+e-A'-B')-U^2(V^2-1).
+\]
+Giving $\sqrt d,\sqrt e$ weights $7,20$, exact sparse expansion gives
+the successive four-component weighted degrees
+\begin{equation}
+ (62,54,67,49),\quad(134,116,129,121),\quad
+ (268,250,263,255).
+ \label{eq:trace13componentdegrees}
+\end{equation}
+The unique top scalar is $16\delta^4U^4V^4e^2$ of degree $268$.
+The two remaining quadratic norms square it twice, giving degree $1072$.
+
+For explicit attainment on the actual coefficient slice put
+\[
+ q_0=6\beta j,\quad a_0=12wvq_0^2,\quad i_0=2r,
+ \quad R_0=q_0^4z-12q_0^3wC,\quad
+ \eta_0=-q_0v(R_0+ha_0).
+\]
+The full leading form is
+\begin{equation}
+ (P_{13}^{\rm tr})_{1072}
+ =2^{112}q_0^{64}a_0^{128}i_0^{64}c^{128}R_0^{16}\eta_0^{32}.
+ \label{eq:trace13top}
+\end{equation}
+In particular,
+\begin{equation}
+ [j^{480}w^{160}v^{192}h^{32}r^{64}c^{128}z^{16}]
+ P_{13}^{\rm tr}=2^{976}3^{640}\beta^{480}>0.
+ \label{eq:trace13coefficient}
+\end{equation}
+The exponent sum is $1072$. The $h^{32}$ and then $z^{16}$ selections
+are unique, so relations among the other five constants cannot cancel
+this coefficient. The degree certificate checks these identities exactly;
+modular evaluations separately check transcription of the complete graph.

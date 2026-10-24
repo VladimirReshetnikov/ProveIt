@@ -1,0 +1,111 @@
+\section{Complete bounded coefficient recipe}\label{app:coeff}
+
+The following is the full source-34 finite arithmetic recipe~\cite{coeff},
+reproduced from the incoming root-fusion report with its licenses retained.
+All ranges are bounded constants. The ordered \(943\) tile records
+\((x_{i0},x_{i1},x_{i2},x_{i3})\), in west, north, east, south order,
+are supplied in
+\path{inherited/root_fusion/coefficients/recipe/wang943_tiles.json}.
+Their ordering is part of the definition: selector \(0\) is Start
+and selector \(1\) is Forbidden.
+The supplied \texttt{k215.tm} contains all \(430\) working actions
+from which the source builder reconstructs the whole ordered list.
+Its SHA-256 is
+\begin{center}\small\texttt{
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090}.
+\end{center}
+Thus this finite table is delivered data, not an unspecified machine
+or a free coefficient parameter.
+
+Put
+\[
+b=121,\quad L_0=8801,\quad d=bL_0=1064921,\quad
+\rho=2^{121},\quad B_0=2^{1064921}.
+\]
+For \(0\le s<4\), \(0\le j<10\), define
+\[
+e_s(j)=o_s+2j,\qquad(o_0,o_1,o_2,o_3)=(1020,1000,980,960),
+\]
+and \(w_j=2^{10+2j}\) for \(0\le j<44\). Let
+\[
+\begin{split}
+\mathcal E={}&\{0,\ldots,942\}
+ \cup\{e_s(j):0\le s<4,\ 0\le j<10\}\\
+ &\cup\{1063,1064,1095,1096,2195,3296\}.
+\end{split}
+\]
+It has \(989\) elements and maximum \(3296\).
+For each tile \(0\le i<943\), set
+\[
+c_i=1+\sum_{s=0}^3\sum_{j=0}^9
+       \operatorname{bit}_j(x_{is}+512)w_{10s+j}
+       +\sum_{j=40}^{43}w_j .
+\]
+Here \(\operatorname{bit}_j(m)=\lfloor m/2^j\rfloor\bmod2\)
+is used only to define the finitely many fixed integer coefficients.
+It is not an operation on a quantified Diophantine variable.
+The other coefficients are
+\[
+c_{e_s(j)}=w_{10s+j},\quad
+(c_{1095},c_{1096},c_{2195},c_{3296})=(w_{40},w_{41},w_{42},w_{43}),
+\quad c_{1063}=c_{1064}=0.
+\]
+Define
+\begin{align*}
+\mu&=1022+\sum_{j=0}^{43}w_j,\\
+Z_{\rm pad}&=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+                +(2^{27}-1)\rho^{8799},\\
+D_C&=\rho^{40}+\rho^{41}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+D_R&=\rho,\\
+M_C&=B_0-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e
+                   -2\rho^{1063},\\
+M_{F,\rm native}
+ &=4+\mu(\rho^{4393}+\rho^{5495})
+     +\sum_{j=0}^9(\rho^{1000+2j}+\rho^{1021+2j})
+     +\rho^{2195}+\rho^{3296}+Z_{\rm pad}.
+\end{align*}
+The six actual fixed ports are precisely
+\[
+\boxed{\begin{gathered}
+\beta=B_0-1,\quad K_0=D_C+B_0D_R,\quad M_C,\quad
+M_F=M_{F,\rm native}+B_0-1,\\
+A_{\rm cone}=2^{1113},\qquad B_{\rm cone}=2^{666104}.
+\end{gathered}}
+\]
+All displayed exponents are fixed integers. In particular,
+\(M_F\) already includes its shift; shifting it again would change
+the equation and invalidate the binding.
+
+\begin{table}[ht]\centering
+\begin{tabular}{lrr}\toprule
+Fixed numeral & Bit length & Minimal unsigned bytes\\\midrule
+\(\beta\)&1\,064\,921&133\,116\\
+\(K_0\)&1\,065\,043&133\,131\\
+\(M_C\)&1\,064\,921&133\,116\\
+\(M_F\)&1\,064\,922&133\,116\\
+\(A_{\rm cone}\)&1\,114&140\\
+\(B_{\rm cone}\)&666\,105&83\,264\\\midrule
+Total&&615\,883\\\bottomrule
+\end{tabular}
+\caption{Exact fixed payload sizes before compression.
+The archive stores deterministic gzip encodings of the minimal
+unsigned little-endian bytes and binds their raw hashes.}
+\end{table}
+
+The source proof verifies the whole coefficient interface, not just
+these sizes. It establishes local tile decoding, carry-free geometry,
+whole-cell rotation, mask populations, positive canonical slack, and
+an explicit rank controller. In particular
+\[
+\operatorname{pc}(M_C)+\operatorname{pc}(M_{F,\rm native})=d,\quad
+M_C\equiv2\pmod4,\quad M_{F,\rm native}\equiv4\pmod8.
+\]
+The controller uses
+\(d=11^2\cdot13\cdot677\), \(\lambda=2341\), and a proved Boolean
+subset coverage lemma; it does not assume that \(d\) is a power of
+five. Its construction supplies odd canonical exponents, odd cubic
+scale, and the canonical parity promises in \eqref{eq:canonical}.
+The complete inherited proof and literal builder are included,
+with their internal source pins and licenses preserved.
+
