@@ -42,8 +42,8 @@ not establish the size of a complete consistency equation.
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | 708 | not optimized | 4 | Mixed-domain lower-height projection;5,887 terms, height63,905,891 |
-| Integers | 1,580 / 933 | not optimized | 4 | Retained-wire mixed guards;5,392 /4,236 terms, heights427 /4,750 |
-| Integers | 788 / 724 / 710 | not optimized | 4 | Retained-wire mixed projections;6,000 /9,350 /9,314 terms, heights737,653 /737,653 /938,261 |
+| Integers | 1,559 / 912 | not optimized | 4 | Retained-wire mixed guards;5,289 /4,134 terms, heights427 /4,750 |
+| Integers | 767 / 703 / 689 | not optimized | 4 | Retained-wire mixed projections;5,897 /9,247 /9,211 terms, heights737,653 /737,653 /938,261 |
 | Integers | 679 / 680 / 682 | not optimized | 4 | Signed comparisons, derived guards and private sign orbits;10,335 /8,999 /8,904 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
@@ -445,3 +445,20 @@ normal/optimized checks and deterministic rebuilds passed. This minor
 two-operation saving does not trigger a new canonical PDF/TeX rendering;
 its complete105-operation page remains available pending a substantial
 improvement. Lean remains paused.
+
+## Raw100-guard low-height quartics accepted
+
+The [retained-wire100-guard packet](candidates/retained-radius-mixed-orbits/README.md)
+gives complete integer quartics in1559/912/767/703/689 unknowns, at
+coefficient heights427/4750/737653/737653/938261. Each saves21 unknowns
+and seven quadratic rows over its corresponding frozen107-guard raw
+parent, without increasing height. All original raw coefficients remain.
+An exact zero-set bijection restores592 triangular monic affine wires
+and copies all100 guard triples to the actual frozen967 equation before
+using its sign theorem; no fresh witness or sign premise is needed for
+the bridge. Each signed projection first restores the whole raw parent.
+The [root review](reviews/retained-orbits-root-peer.md) records all1277
+row identities, complete coefficient collections, four successful
+normal/optimized checks/rebuilds and closed seals. The contracted679
+quartic remains a different coefficient-height tradeoff. No new Lean
+endpoint is claimed and formalization remains paused.

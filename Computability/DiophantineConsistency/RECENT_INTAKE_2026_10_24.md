@@ -200,3 +200,20 @@ normal/optimized checks and deterministic rebuilds passed. This minor
 two-operation saving does not trigger a new canonical PDF/TeX rendering;
 its complete105-operation page remains available pending a substantial
 improvement. Lean remains paused.
+
+## Raw100-guard low-height quartics accepted
+
+The [retained-wire100-guard packet](candidates/retained-radius-mixed-orbits/README.md)
+gives complete integer quartics in1559/912/767/703/689 unknowns, at
+coefficient heights427/4750/737653/737653/938261. Each saves21 unknowns
+and seven quadratic rows over its corresponding frozen107-guard raw
+parent, without increasing height. All original raw coefficients remain.
+An exact zero-set bijection restores592 triangular monic affine wires
+and copies all100 guard triples to the actual frozen967 equation before
+using its sign theorem; no fresh witness or sign premise is needed for
+the bridge. Each signed projection first restores the whole raw parent.
+The [root review](reviews/retained-orbits-root-peer.md) records all1277
+row identities, complete coefficient collections, four successful
+normal/optimized checks/rebuilds and closed seals. The contracted679
+quartic remains a different coefficient-height tradeoff. No new Lean
+endpoint is claimed and formalization remains paused.
