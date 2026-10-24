@@ -1,0 +1,53 @@
+{
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_short_projection.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "verification/generator-normal.txt",
+      "log_sha256": "63eb1d3cea090cb329971e37569005f2417d53420f3460590420dc1aa5800973",
+      "wall_seconds_rounded": 0.047
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/candidates/ten-positive-short-projection/check.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/checker-normal.txt",
+      "log_sha256": "d5069500da80b93d04527c460f0f5595f0c19881a71d6b12435912b9f7afb56e",
+      "wall_seconds_rounded": 0.271
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_short_projection.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "verification/generator-optimized.txt",
+      "log_sha256": "63eb1d3cea090cb329971e37569005f2417d53420f3460590420dc1aa5800973",
+      "wall_seconds_rounded": 0.048
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/candidates/ten-positive-short-projection/check.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/checker-optimized.txt",
+      "log_sha256": "e105097771cf14ee379fc47755821157260a3a056e37cccbbbf0fc30153065b1",
+      "wall_seconds_rounded": 0.269
+    }
+  ],
+  "status": "PASS"
+}

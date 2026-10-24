@@ -82,7 +82,7 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 409/1,191,572 and compact54 417/1,316,548 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
 The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
-now reaches102/368 with a [fixed root weight and shorter transport](candidates/ten-positive-weighted-roots/README.md).
+now reaches101/368 with a [fixed root weight and positive short projector](candidates/ten-positive-short-projection/README.md).
 Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
@@ -768,3 +768,18 @@ and [independent peer](reviews/comparison-base-sign-peer.md) record full
 normal/optimized author and peer replays, all passing. New compact/raw
 quartics are being materialized separately; this theorem alone supplies no
 new projected coefficient count. Lean remains paused.
+
+## Positive short projector reaches101 operations at degree368
+
+The [short-projector equation](candidates/ten-positive-short-projection/README.md)
+uses ten positive unknowns and101 live operations at exact degree368.
+Kpos=X(3c-2X)+2 is positive after main folding and obeys
+Kpos=H*X*c-2*Kquad. Only2 is cancelled modulo odd H; P is retained in
+the whole-product argument. Every old positive zero maps to a new one
+by the strictly positive shift n_new=n_old+3*(Kquad/H)-X*c. The
+[root review](reviews/short10-root-peer.md) and [independent ordinary peer](reviews/ten-positive-short-projection-ordinary-peer.md)
+check the full unbounded proof. All four root normal/optimized checker
+and rebuild replays, complete53-entry seals and full coefficient binding
+pass. The entire polynomial change has degree at most360, preserving the
+degree368 leading component. A complete one-page specification is being
+reviewed for the next canonical PDF/TeX update. Lean remains paused.

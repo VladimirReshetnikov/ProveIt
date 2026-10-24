@@ -712,3 +712,18 @@ and [independent peer](reviews/comparison-base-sign-peer.md) record full
 normal/optimized author and peer replays, all passing. New compact/raw
 quartics are being materialized separately; this theorem alone supplies no
 new projected coefficient count. Lean remains paused.
+
+## Positive short projector reaches101 operations at degree368
+
+The [short-projector equation](candidates/ten-positive-short-projection/README.md)
+uses ten positive unknowns and101 live operations at exact degree368.
+Kpos=X(3c-2X)+2 is positive after main folding and obeys
+Kpos=H*X*c-2*Kquad. Only2 is cancelled modulo odd H; P is retained in
+the whole-product argument. Every old positive zero maps to a new one
+by the strictly positive shift n_new=n_old+3*(Kquad/H)-X*c. The
+[root review](reviews/short10-root-peer.md) and [independent ordinary peer](reviews/ten-positive-short-projection-ordinary-peer.md)
+check the full unbounded proof. All four root normal/optimized checker
+and rebuild replays, complete53-entry seals and full coefficient binding
+pass. The entire polynomial change has degree at most360, preserving the
+degree368 leading component. A complete one-page specification is being
+reviewed for the next canonical PDF/TeX update. Lean remains paused.

@@ -18,7 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 102 | 368 | Fixed root weight, unshifted strong multiplier and shorter transport |
+| Positive integers | 10 | 101 | 368 | Fixed root weight, unshifted multiplier and positive short projector |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | **88** | **51** | Free positive J; previous90/51 page retained |
@@ -747,3 +747,18 @@ and [independent peer](reviews/comparison-base-sign-peer.md) record full
 normal/optimized author and peer replays, all passing. New compact/raw
 quartics are being materialized separately; this theorem alone supplies no
 new projected coefficient count. Lean remains paused.
+
+## Positive short projector reaches101 operations at degree368
+
+The [short-projector equation](candidates/ten-positive-short-projection/README.md)
+uses ten positive unknowns and101 live operations at exact degree368.
+Kpos=X(3c-2X)+2 is positive after main folding and obeys
+Kpos=H*X*c-2*Kquad. Only2 is cancelled modulo odd H; P is retained in
+the whole-product argument. Every old positive zero maps to a new one
+by the strictly positive shift n_new=n_old+3*(Kquad/H)-X*c. The
+[root review](reviews/short10-root-peer.md) and [independent ordinary peer](reviews/ten-positive-short-projection-ordinary-peer.md)
+check the full unbounded proof. All four root normal/optimized checker
+and rebuild replays, complete53-entry seals and full coefficient binding
+pass. The entire polynomial change has degree at most360, preserving the
+degree368 leading component. A complete one-page specification is being
+reviewed for the next canonical PDF/TeX update. Lean remains paused.
