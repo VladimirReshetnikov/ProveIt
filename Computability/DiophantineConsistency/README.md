@@ -79,11 +79,12 @@ has22 unknowns, degree14 and119 operations. Its complete integer zero set
 is carried bijectively to the parent by an explicit polynomial shear.
 
 The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
-[tight main folding](research/nine-folded-saturation-tight/README.md) nine-positive
-409/1,191,572 and compact54 417/1,316,548 forms, plus a lower-degree
+[shared odd-rank](research/nine-folded-shared-odd-rank/README.md) nine-positive
+405/1,191,570 and compact54 413/1,316,546 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
-The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
-now reaches99/368 with a [zero-offset scaled base and shared muY](candidates/ten-positive-zero-offset/README.md).
+The [expanded-transport ten-positive equations](research/ten-positive-expanded-transport/README.md)
+reach98/368 with a zero-offset scaled base and shared muY, or103/340
+with a direct positive main-base input.
 Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
@@ -98,11 +99,11 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
-The latest [output-sign quartic family](research/factorial-radius-output-sign-profile/README.md)
-reaches604 integer unknowns with9,676 terms at degree4. It also offers609
-unknowns with coefficient height964,213, or608 with height45,769,499.
+The latest [shifted-t quartic family](research/shifted-t-index-guard-profile/README.md)
+reaches595 integer unknowns with9,586 terms at degree4. It also offers600
+unknowns with coefficient height964,213, or599 with height45,769,499.
 All original source rows, guard predicates, integer inverses and complete
-coefficients were independently checked before applying the75-predicate
+coefficients were independently checked before applying the72-predicate
 ordinary source theorem. The earlier families below remain preserved.
 
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
@@ -1083,3 +1084,141 @@ integer restoration and quartic coefficient is checked. Root replayed
 both checker and rebuild modes; see the
 [root review](reviews/factorial-radius-output-profile-root-peer.md). The
 canonical one-page equation and Lean sources remain unchanged.
+
+## Encoded-index sign is recovered:74 source predicates
+
+The corrected [encoded-index proof](research/encoded-index-sign/PROOF.md)
+removes raw59's explicit sign guard. Raw59 is not a power argument: its
+only source use is E=raw59+1. Early direct signs give M>=1,E>=0 and a
+modified642-coordinate prefix supplies the unchanged43-argument frame.
+A weak-radix carry argument restores the factorial index bounds; then only
+the first ten actual powers, exact binomial digits and the moduli-product
+remainder prove M=product(1+fj)>1, hence raw59>=0. This reaches the actual
+75-predicate source before using its semantic chain. Full author,
+independent peer and root normal/optimized checks pass; see the
+[root review](reviews/encoded-index-sign-root-peer.md). There are74
+predicates before projection. No projected metric, Lean or page change is
+claimed by this source theorem alone.
+
+## Identical-polynomial transport contraction reaches98/103 operations
+
+The complete [expanded-transport graphs](research/ten-positive-expanded-transport/README.md)
+have ten positive inputs and98 operations at degree368, or103 operations
+at degree340. Expanding W=1+gL moves L*B into the center, saving one
+operation with the identical polynomial. The direct version also shares
+q(q-1) in its carrier, saving a second. Full literal row maps, recursive
+free-ring coefficient identities, whole payloads and all four normal/optimized
+checker/rebuild root replays pass; see the
+[root review](reviews/ten-expanded-transport-root-peer.md). Every parent
+positive witness and ordinary proof step transfers by identity. Lean remains
+paused; the canonical101/368 page is unchanged while minor gains are batched.
+
+## Complete74-predicate quartics reach601 integer unknowns
+
+The [encoded-index profile packet](research/encoded-index-sign-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches601
+variables,9,661 terms and height2,445,790,974,704. Lower-height alternatives
+reach606/8,808/964,213 and605/8,724/45,769,499 (variables/terms/height).
+Every original domain row, both directions of the full raw/compact integer
+bijection, every fresh signed inverse and every quartic coefficient passed
+normal/optimized root replay, along with both deterministic rebuilds. The
+modified prefix/frame and independent74-predicate source peer are checked
+before semantic calibration; see the [root review](reviews/encoded-index-profile-root-peer.md).
+No count was extrapolated from a deleted guard. Earlier families remain
+preserved. Lean stays paused and the canonical one-page equation is unchanged.
+
+## Actual power-output sign is recovered:73 source predicates
+
+The [power-output proof](research/pow2-output-sign/PROOF.md) removes the
+raw104 sign guard. Exact early rows give B=raw104>=-1 and D=B+2>=1;
+the modified641-coordinate prefix and weak frame still bound every
+positive base/index. Under B=-1, actual indices t and k122=t+1 are
+consecutive. Sign-safe calls0/9 recover the paired seeds, then actual call2
+forces a positive residue strictly below its divisor, a contradiction.
+No local factorial semantics precede this sign recovery. Both existence
+maps reach the actual74-predicate parent before inheriting its theorem.
+Root read the full proof and checker and matched author/peer receipts in
+both modes; see the [root review](reviews/pow2-output-sign-root-peer.md).
+There are73 source predicates. Projected sizes require a separate complete
+materialization; the measured601-variable family, canonical PDF and Lean
+pause are unchanged.
+
+## Six e13 proposal packages screened with reproducible inert checks
+
+The [six-archive intake](research/incoming-e13c748234/README.md) records
+complete hashes,2145 member pins, historical reuse and explicit domain
+comparisons. Independent data checks reproduce33 full quartic expansions,
+39 supported DAG censuses and54 coefficient bindings in both interpreter
+modes. After the source76–110 placement, exact old inputs are read from
+pinned Git blobs in memory. Root reviewed the report/checker and matched
+both sealed receipts; see the [root review](reviews/incoming-e13-root-peer.md).
+Squared/centered factorial and common modular Pell identities are useful
+new research leads. The squared-radius transfer has an explicit missing-
+K-bound obstruction, so no one-gate compiler improvement is assumed.
+Natural395/394 and other advertised endpoint tradeoffs await their own full
+ordinary/literal calibration review. The current measured601-integer family
+and98/368 ten-positive evaluator are unchanged; Lean remains paused.
+
+## Replaying sealed checks after incoming archive placement
+
+The source76–110 placement removed old incoming ZIP paths. The separate
+[compatibility runner](research/historical-archives-compat/README.md) supplies
+35 exact hash-checked historical ZIPs temporarily from pinned Git objects,
+runs an argv command, then removes only unchanged files it created. Existing
+paths are preserved and concurrent wrapper lifetimes are serialized. This
+keeps all sealed proof/checker bytes unchanged. For example:
+
+```sh
+python -B Computability/DiophantineConsistency/tools/with_historical_archives.py -- python -B Computability/DiophantineConsistency/research/encoded-index-sign-profile/check.py --output /tmp/encoded74-check.json
+```
+
+Root read the complete wrapper and replayed both modes of all10 integrity
+controls; the frozen601 normal/optimized receipt bytes also match under the
+runner. See the [root review](reviews/historical-archives-compat-root-peer.md).
+This changes reproduction only, with no equation or Lean change.
+
+## Complete73-predicate quartics reach598 integer unknowns
+
+The [power-output profile packet](research/pow2-output-sign-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches598
+variables,9,600 terms and height2,445,790,974,704. Lower-height alternatives
+reach603/8,794/964,213 and602/8,710/45,769,499 (variables/terms/height).
+Only raw104's guard is deleted. Every original domain row, both directions
+of the592-coordinate raw/compact integer bijection, every fresh signed
+inverse and every quartic coefficient passed normal/optimized root replay,
+as did both deterministic rebuilds. The weak641-prefix/43-frame source
+interface and branch-local sign proof precede inherited calibration; see
+the [root review](reviews/pow2-output-profile-root-peer.md). All46 corruption
+controls fail as expected. Earlier families remain preserved. Lean stays
+paused and the canonical one-page equation is unchanged.
+
+## Shifted-t index guard is recovered:72 source predicates
+
+The [shifted-t proof](research/shifted-t-index-guard/PROOF.md) removes raw825's
+explicit sign guard. Partial parent proofs first recover104 and the four
+other required Pell pairs without using825. The actual choose-one row then
+excludes the collapsed shifted-t pair: its numerator is at least b² for
+t>=2, while the t=1 ceiling forces a digit at least2. Only after this
+contradiction does the signed-index theorem recover825>0. No factorial1
+meaning or premature call7 interpretation is assumed. A fresh triple reaches
+the actual73-domain parent before using its complete theorem. Root read the
+entire proof/checkers and matched author and independent peer receipts in
+both modes; see the [root review](reviews/shifted-t-index-guard-root-peer.md).
+There are72 predicates before projection. The measured598-variable family
+remains current until fresh complete profiles pass. Lean and page unchanged.
+
+## Complete72-predicate quartics reach595 integer unknowns
+
+The [shifted-t profile packet](research/shifted-t-index-guard-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches595
+variables,9,586 terms and height2,445,790,974,704. Lower-height alternatives
+reach600/8,770/964,213 and599/8,696/45,769,499 (variables/terms/height).
+Only raw825's guard is deleted. Every domain row, both directions of all592
+raw/compact restorations, every fresh signed inverse and every quartic
+coefficient passed normal/optimized root replay and both deterministic
+rebuilds. Both the95-identity source checker and independent15-cut peer are
+pinned and replayed, with exact call7/t=1 chronology and50 corruption
+controls; see the [root review](reviews/shifted-t-index-profile-root-peer.md).
+Earlier families remain preserved. This is the direct quartic lane; the
+fewer-variable norm/display tradeoffs remain separate. Lean stays paused
+and the canonical one-page equation is unchanged.
