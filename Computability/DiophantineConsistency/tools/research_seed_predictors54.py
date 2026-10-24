@@ -211,6 +211,7 @@ def main():
     bfs_ports,*_=tuple54.construct(seed54.row_seed(bfs))
     decoded_ports,*_=tuple54.construct(seed54.row_seed(merged_decode(merged)))
     original_ports,*_=tuple54.construct(old_seed)
+    mode_conjugacy=seed54.check_mode_conjugacy(original,bfs,rename,tuple54)
     for name in bfs_ports:
         need(bfs_ports[name]==decoded_ports[name],"complete merged coefficient equality")
         raw=bfs_ports[name].to_bytes((bfs_ports[name].bit_length()+7)//8,'little')
@@ -231,6 +232,8 @@ def main():
         (path/'equation.tex').write_text(tex)
         ports=original_ports if preserves else bfs_ports
         data={"status":"PASS","base":62 if base62 else 10,"seed_decimal_digits":len(str(value)),"seed_characters":len(literal),"seed_bits":value.bit_length(),"alphabet":ALPHABET if base62 else "0123456789","all_alphabet_indices_checked":True,"positional_sum_equals_seed":True,"all430_actions_exact":True,"original_state_labels_preserved":preserves,"all_original_tuple_bytes_preserved":preserves,"all_frozen_BFS_tuple_bytes_preserved":not preserves,"source_seed_sha256":seed54.sha(original_file.read_bytes()),"ports":[{"port":k,"bits":v.bit_length(),"bytes":(v.bit_length()+7)//8,"sha256":seed54.sha(v.to_bytes((v.bit_length()+7)//8,'little'))}for k,v in ports.items()],"notation_only":base62 and preserves,"information_note":"Base62 changes notation, not information. Merged masks add33 bits to the frozen BFS seed while shortening its decoder."if not preserves else "The original seed integer and original tuple are unchanged; only numeral notation and the proved selector display change.","scope":"Exact finite seed/action/coefficient bytes and inherited ordinary state conjugacy. No Lean or object-ZFC calibration claimed."}
+        data['mode_conjugacy']=mode_conjugacy
+        data['initialization_corrected']=not preserves
         if args.render:data['render']=render(tex,path,literal,base62)
         (path/('VERIFY.optimized.json'if not __debug__ else'VERIFY.json')).write_text(json.dumps(data,indent=2)+'\n')
         records.append({k:v for k,v in data.items()if k not in ('ports','alphabet')})

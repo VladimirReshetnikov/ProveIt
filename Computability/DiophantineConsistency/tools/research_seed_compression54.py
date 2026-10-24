@@ -154,6 +154,8 @@ t_{2+j}=\bigl((1-d_j)(512+u_j),\ 512+j,\ d_j(256+u_j),\ v_j\bigr).
 \]
 """
     tex = tex[:start] + decoder + tex[end:]
+    require(tex.count("(3,4,4,698)") == 1, "original initialization tile")
+    tex = tex.replace("(3,4,4,698)", "(3,4,4,512+2u_0)")
     lines = [str(c)[i:i+62] for i in range(0,len(str(c)),62)]
     seed_display = "\n".join(line + r"\par" for line in lines)
     tex = tex.replace(r"\input{seed-display.tex}", seed_display)
@@ -231,6 +233,33 @@ def check_collected_phi(actions, ports, module):
         ports["K"].to_bytes((ports["K"].bit_length()+7)//8,"little"),"collected full K bytes")
 
 
+def check_mode_conjugacy(original, renamed, rename, module):
+    """Exact457-mode image, including the initialization and halt rows."""
+    _, old_actions, old_modes, _ = module.construct(row_seed(original))
+    _, new_actions, new_modes, _ = module.construct(row_seed(renamed))
+    require(old_actions[0][2:4] == new_actions[0][2:4] == [1, 1], "first-action start premise")
+    require(new_actions[0][4] == rename[old_actions[0][4]], "initial state is renamed")
+    def horizontal(v):
+        if 256 <= v <= 471:
+            return 256+rename[v-256]
+        if 512 <= v <= 727:
+            return 512+rename[v-512]
+        return v
+    def vertical(v):
+        if 512 <= v <= 943:
+            q, bit = divmod(v-512, 2)
+            return 512+2*rename[q]+bit
+        return v
+    image = {(horizontal(w), vertical(n), horizontal(e), vertical(s))
+             for w,n,e,s in old_modes}
+    require(image == set(new_modes), "all457 modes conjugate including initialization")
+    require(old_modes[441] == (3,4,4,698) and
+            new_modes[441] == (3,4,4,512+2*rename[93]), "literal initialization mode")
+    return {"all457_modes_conjugate": True, "first_action_writes1_moves_right": True,
+            "old_initializer": list(old_modes[441]), "new_initializer": list(new_modes[441]),
+            "initializer_state_old": 93, "initializer_state_new": rename[93]}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir",type=Path,default=RESEARCH/"candidates/one-page-compression/bfs-fixed216")
@@ -250,6 +279,7 @@ def main():
     direct_ports, _, _, _ = module.construct(row_seed(actions))
     decoded_ports, _, _, _ = module.construct(row_seed(decode(c)))
     old_ports, _, _, _ = module.construct(original_seed)
+    mode_conjugacy = check_mode_conjugacy(original, actions, rename, module)
     check_collected_phi(actions,direct_ports,module)
     check_collected_phi(original,old_ports,module)
     port_records = []
@@ -281,7 +311,8 @@ def main():
         "decoder_uses_only":"fixed finite sums, integer quotient/remainder, powers, addition and multiplication",
         "all430_decoded_actions_equal_renamed_actions":True,
         "state_permutation_bijective":True,"start0_and_halt215_fixed":True,
-        "all430_transition_conjugacies":True,"measurements":measurements,"ports":port_records,
+        "all430_transition_conjugacies":True,"mode_conjugacy":mode_conjugacy,
+        "initialization_corrected":True,"measurements":measurements,"ports":port_records,
         "collected_selector_all457_coefficients_equal":True,
         "collected_selector_full_K_bytes_equal":True,
         "collected_phi_display":args.collected_phi,

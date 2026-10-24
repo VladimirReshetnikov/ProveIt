@@ -55,7 +55,12 @@ def construct(seed):
     modes += [(0, 942 + j, 0, 942 + j) for j in range(2)]
     modes += [(0, j, 0, j) for j in range(2)]
     modes += [(0, j % 2 + 942 * (j // 2), 0, 6) for j in range(4)]
-    modes += [(2, 2, 2, 0), (3, 4, 4, 698), (4, 4, 4, 0)]
+    # The native start row begins after the first blank transition. Its
+    # head color must follow a control-state renaming too. For the original
+    # seed target93 gives698; the BFS seed target1 gives514.
+    require(actions[0][2:4] == [1, 1], "first blank action writes1 and moves right")
+    initial_head = 512 + 2 * actions[0][4]
+    modes += [(2, 2, 2, 0), (3, 4, 4, initial_head), (4, 4, 4, 0)]
     modes += [(1, 6, 1, 2 + j) for j in range(3)]
     modes += [(j * j, 5, k, 5) for j in range(3) for k in range(3)]
     modes += [(256, 0, 0, 512), (0, 0, 512, 512)]

@@ -92,9 +92,9 @@ The complete original31 tuple is preserved on that branch.
 A shorter complete page is also available:
 [`merged-mask-base62/equation.pdf`](candidates/one-page-compression/merged-mask-base62/equation.pdf).
 Its436-character numeral, complete alphabet, positional sum and decoder
-reduce the coefficient recipe to2293 nonwhite characters,8.8% below the
-preserved771-digit page's2514. The original recipe has2861 characters.
-The decimal-only merged-mask variant uses2478, and an original-tuple
+reduce the coefficient recipe to2297 nonwhite characters,8.8% below the
+preserved771-digit page's2518. The original recipe has2861 characters.
+The decimal-only merged-mask variant uses2482, and an original-tuple
 notation variant uses2424. Base62 changes printed notation rather than
 the integer's information content; the full alphabet overhead is charged.
 An explicit finite quotient/sum decoder replaces the old action packing.

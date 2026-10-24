@@ -26,9 +26,9 @@ points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The shortest inspected complete page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
-recipe has2293 nonwhite characters, down from2514 on the preserved771-digit
+recipe has2297 nonwhite characters, down from2518 on the preserved771-digit
 page and2861 on the original page. A decimal-only merged-mask recipe has
-2478 characters; an original-tuple base62 variant has2424. All pages include
+2482 characters; an original-tuple base62 variant has2424. All pages include
 standalone TeX/PDF; every decoded action, coefficient byte and printed
 payload character passes normal/optimized checks. Numeral notation and
 information compression are distinguished in

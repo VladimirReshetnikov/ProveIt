@@ -1,14 +1,14 @@
 # Shorter complete seed descriptions
 
-Three further standalone pages pass complete finite checks. The frozen
-771-digit checkpoint is unchanged. No Lean was edited or invoked.
+Three further standalone pages pass complete finite checks. The771-digit seed is unchanged; its initialization tile is corrected
+as explained in [INITIALIZATION_CORRECTION.md](INITIALIZATION_CORRECTION.md). No Lean was edited or invoked.
 
 | Display | Printed seed symbols | Seed bits | Recipe nonwhite characters | Whole page nonwhite characters |
 |---|---:|---:|---:|---:|
 | Original decimal page | 1294 | 4298 | 2861 | 3584 |
-| Frozen BFS decimal, collected selector | 771 | 2561 | 2514 | 3131 |
-| New merged masks, decimal | 781 | 2594 | **2478** | **3095** |
-| New merged masks, base62 | 436 | 2594 | **2293** | **2910** |
+| Frozen BFS decimal, collected selector | 771 | 2561 | 2518 | 3135 |
+| New merged masks, decimal | 781 | 2594 | **2482** | **3099** |
+| New merged masks, base62 | 436 | 2594 | **2297** | **2914** |
 | Original tuple, base62 and collected selector | 722 | 4298 | **2424** | **3147** |
 
 Each PDF has exactly one Letter page, uses the existing fonts, and has no
@@ -28,8 +28,8 @@ The original-tuple variant is useful when preserving every coefficient is
 preferred. It changes only the numeral notation and the already proved
 selector display. It retains all 215492 original raw coefficient bytes.
 Compared with the original page, its recipe and whole page each shrink by
-437 characters. Its recipe is also 90 characters shorter than the frozen
-BFS page's, although its whole page is 16 characters longer because it keeps
+437 characters. Its recipe is also 94 characters shorter than the frozen
+BFS page's, although its whole page is12 characters longer because it keeps
 the original title and longer proof-boundary explanation.
 
 ## Merging two bit masks and avoiding an alphabet decoder
@@ -119,7 +119,7 @@ to translate the read order. It offers no displayed saving here.
 
 Directly packing rotated row flags in base15 eliminates their exception
 mask and prefix count, but its decimal seed grows to875 digits. Its tested
-complete recipe has2542 characters, exceeding the frozen2514. A joint
+complete recipe has2542 characters, exceeding the corrected2518. A joint
 base60 packing of discovery/rotated-flag row codes needs887 digits and2550
 recipe characters. These probes illustrate why payload and decoder size
 must be assessed together. Variable-width targets likewise save bits but

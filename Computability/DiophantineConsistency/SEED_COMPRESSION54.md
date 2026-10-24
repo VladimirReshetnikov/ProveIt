@@ -3,6 +3,12 @@
 Lean work is paused. This investigation uses ordinary mathematics and
 Python finite checks only.
 
+The initialization tile was corrected after the original transition-only
+review missed its state occurrence. All current pages include that
+correction and pass full943-tile and457-mode conjugacy checks. See
+[INITIALIZATION_CORRECTION.md](INITIALIZATION_CORRECTION.md); the former
+displays are preserved as superseded history.
+
 The original complete P69 page prints a 1294-digit seed. A state-renamed
 version now prints **one 771-digit seed**, using the same fifteen positive
 unknowns and the same six-factor equation. Both new TeX files are standalone:
@@ -13,15 +19,15 @@ seed digit exactly.
 | Display | Seed digits | Coefficient-recipe nonwhite characters | Entire-page nonwhite characters |
 |---|---:|---:|---:|
 | Original page | 1294 | 2861 | 3584 |
-| BFS fixed-base decoder | 771 | 2539 | 3156 |
-| BFS decoder, collected selector polynomial | 771 | **2514** | **3131** |
+| BFS fixed-base decoder | 771 | 2543 | 3160 |
+| BFS decoder, collected selector polynomial | 771 | **2518** | **3135** |
 
 Character counts use the same `pdftotext -raw` extraction. The coefficient
 recipe starts at “Fixed coefficients” and ends after the seed; it excludes
 the shorter new title and proof-boundary note. Thus the actual constant
-recipe improves by 347 characters, about 12.1%; the seed alone improves by
+recipe improves by 343 characters, about 12.0%; the seed alone improves by
 523 decimal digits, about 40.4%. TeX source length is not a printed-glyph
-metric: the collected standalone source is 5876 ASCII bytes, compared with
+metric: the collected standalone source is 5881 ASCII bytes, compared with
 the original source after inlining its separately stored seed display.
 
 ## Closed arithmetic decoder
@@ -76,6 +82,13 @@ Every one of the 430 transitions satisfies
 delta'(pi(q),read) = (same write, same direction, pi(next)).
 ```
 
+The native initializer is also renamed: the compact recipe uses
+`(3,4,4,512+2u_0)` rather than the former hardcoded698. Here the first
+decoded target is1. Separate horizontal and vertical color bijections
+map all943 native tiles and all457 compact modes, including the start,
+halt, forbidden and initialization rows. Transition conjugacy alone
+would not justify this additional compiler premise.
+
 For any tape and head position, mapping only the control state by `pi`
 therefore commutes with one transition. Induction on the number of steps
 gives equal tapes, equal head positions and corresponding states at every
@@ -89,7 +102,7 @@ the native modes, arithmetic ranks and coefficient sums from them gives
 byte-for-byte equality with direct construction of the renamed machine's
 whole tuple. The original `beta`, `MC` and `MF_source` are unchanged in all
 161235 bytes. The new `K` has 434054 bits and 54257 bytes, with SHA256
-`3f1376ca786de2b66b990d3fc6a0df22e26a9f29957d06c9de3c2fe0d9101785`.
+`562494dbbe6e4651e55697f28596e801e341d50338bb902781c252912f3b2163`.
 Its value changes; it must not be described as the original compact54 K.
 The existing native bit-width caps remain the same.
 
