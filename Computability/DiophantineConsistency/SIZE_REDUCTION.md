@@ -21,8 +21,8 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
-| Positive integers | 10 | 99 | 368 | Zero-offset scaled base, shared muY and positive short projector |
-| Positive integers | 10 | 105 | 340 | Direct positive X, zero-offset main base and delayed divisibility carrier |
+| Positive integers | 10 | 98 | 368 | Zero-offset scaled base, shared muY and expanded transport |
+| Positive integers | 10 | 103 | 340 | Direct positive X, shared carrier and expanded transport |
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
@@ -910,3 +910,16 @@ independent peer and root normal/optimized checks pass; see the
 [root review](reviews/encoded-index-sign-root-peer.md). There are74
 predicates before projection. No projected metric, Lean or page change is
 claimed by this source theorem alone.
+
+## Identical-polynomial transport contraction reaches98/103 operations
+
+The complete [expanded-transport graphs](research/ten-positive-expanded-transport/README.md)
+have ten positive inputs and98 operations at degree368, or103 operations
+at degree340. Expanding W=1+gL moves L*B into the center, saving one
+operation with the identical polynomial. The direct version also shares
+q(q-1) in its carrier, saving a second. Full literal row maps, recursive
+free-ring coefficient identities, whole payloads and all four normal/optimized
+checker/rebuild root replays pass; see the
+[root review](reviews/ten-expanded-transport-root-peer.md). Every parent
+positive witness and ordinary proof step transfers by identity. Lean remains
+paused; the canonical101/368 page is unchanged while minor gains are batched.

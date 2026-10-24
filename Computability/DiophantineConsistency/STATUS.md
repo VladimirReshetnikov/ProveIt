@@ -1020,3 +1020,16 @@ independent peer and root normal/optimized checks pass; see the
 [root review](reviews/encoded-index-sign-root-peer.md). There are74
 predicates before projection. No projected metric, Lean or page change is
 claimed by this source theorem alone.
+
+## Identical-polynomial transport contraction reaches98/103 operations
+
+The complete [expanded-transport graphs](research/ten-positive-expanded-transport/README.md)
+have ten positive inputs and98 operations at degree368, or103 operations
+at degree340. Expanding W=1+gL moves L*B into the center, saving one
+operation with the identical polynomial. The direct version also shares
+q(q-1) in its carrier, saving a second. Full literal row maps, recursive
+free-ring coefficient identities, whole payloads and all four normal/optimized
+checker/rebuild root replays pass; see the
+[root review](reviews/ten-expanded-transport-root-peer.md). Every parent
+positive witness and ordinary proof step transfers by identity. Lean remains
+paused; the canonical101/368 page is unchanged while minor gains are batched.
