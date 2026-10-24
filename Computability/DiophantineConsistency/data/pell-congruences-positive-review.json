@@ -1,0 +1,427 @@
+{
+  "arrival": {
+    "archive": "docs/incoming/con_zfc_pell_congruences_2026-10-23.zip",
+    "arrival_commit": "eae4f1952b",
+    "files": 230,
+    "raw_bytes": 6849876,
+    "sha256": "7c21ff5d05ef52c754399a6e62f37ac7622baa6e82a702d855bfb68d82fc1a4a"
+  },
+  "coefficient_binding": {
+    "MF_convention": "already-shifted MF_source",
+    "all_four_ports_reconstructed": true,
+    "beta": "2^590069-1",
+    "whole_tuple": "compact44"
+  },
+  "commands": [
+    {
+      "command": "python positive/verify.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python -O positive/verify.py",
+      "reason": "Driver launches normal child interpreter, then reads missing AUDIT12_OPTIMIZED.json",
+      "status": "FAIL"
+    },
+    {
+      "command": "python -O positive/verify11.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python -O positive/verify12.py",
+      "status": "PASS"
+    },
+    {
+      "command": "PYTHONOPTIMIZE=1 python -O positive/verify.py",
+      "source_modified": false,
+      "status": "PASS"
+    }
+  ],
+  "comparison": {
+    "cross_composition": "No additional point claimed; ordinary-root variant would need its own radical/integrality proof and circuit certificate.",
+    "eleven": "111/269 dominates 111/277 and113/325, but trades degree with114/257; forthcoming112/211 review separate.",
+    "twelve": "102/78 is dominated by100/70 and101/78 current research recipes."
+  },
+  "original_tree": {
+    "all_manifest_hashes_pass": true,
+    "files": 230,
+    "sha256_manifest_entries": 229,
+    "unchanged_after_replay": true
+  },
+  "proof_observations": [
+    "Adjacent-coefficient rational Pell descent preserves reduced denominator and decreases integral first coordinate.",
+    "First/main carriers give q^3|Y, C>0, positive main root and c>2R before strong/auxiliary use.",
+    "Exact cofactor g=gcd(3,Y) is coprime to q, so q^3|(Y/g) and qY/g>=q^4; no unsupported cancellation by 3.",
+    "Eleven-variable distinct positive radicals have nonzero sum by dominant-root estimates; rational extraction precedes integrality.",
+    "Separate L=3Df(cT+Rhat) bounds roots while h=Df*cT pays positive inverse carrier; canonical r>L.",
+    "Twelve-variable V>c>1 makes denominator db nonzero before rational extraction.",
+    "Modulo-four unit finalizers are valid; eleven-variable case only needs N8 not equal -2.",
+    "Whole compact44 ordinary compiler/calibration remains inherited; finite replay does not establish it."
+  ],
+  "proposed_points": [
+    {
+      "degree": 269,
+      "operations": 111,
+      "packet": "positive/p11_positive_degree269.json",
+      "positive_variables": 11,
+      "proof_review": "PASS",
+      "sha256": "3b2bce6603be7c6cf615a9a5e018edf6db9a3c25f95912d4b385726ce3814ce6"
+    },
+    {
+      "degree": 78,
+      "dominated_by": {
+        "degree": 70,
+        "operations": 100,
+        "path": "research/ordinary-unit-products/p12_ordinary_degree70.json",
+        "positive_variables": 12
+      },
+      "operations": 102,
+      "packet": "positive/p12_positive_degree78.json",
+      "positive_variables": 12,
+      "proof_review": "PASS",
+      "sha256": "4edbac20bfd95dcd79588c9505ba49b0e990b7bb2fe808073e30ce4ec17c802b"
+    }
+  ],
+  "receipts": {
+    "direct_optimized11": {
+      "checker": "independent standard-library sparse ring",
+      "exact_degree": {
+        "exact_degrees": {
+          "A": 16,
+          "A1": 13,
+          "Bf": 22,
+          "Cnum": 62,
+          "Df": 14,
+          "I": 5,
+          "L": 18,
+          "N8": 256,
+          "Ncenter": 128,
+          "P11": 269,
+          "Q": 18,
+          "Rhat": 4,
+          "V": 18,
+          "W": 18,
+          "Zbar": 23,
+          "h": 17
+        },
+        "generic_gate_degree_without_cancellation_is_not_used": true,
+        "leading_coordinate_definitions": {
+          "k0": "eta+zeta",
+          "q0": "3*beta*j"
+        },
+        "leading_form_monomials_in_q0_k0_coordinates": 2595,
+        "selected_fixed_slice_coefficient": "8*(3*beta)^36",
+        "selected_original_monomial": "j^36*i^24*eta^57*X^42*Y^93*T^8*alpha^8*gamma"
+      },
+      "literal": {
+        "all_gates_and_inputs_live": true,
+        "exact_named_contracts": 60,
+        "operation_breakdown": {
+          "*": 65,
+          "+": 29,
+          "-": 17
+        },
+        "operations": 111,
+        "system_operations": 108
+      },
+      "packet_sha256": "3b2bce6603be7c6cf615a9a5e018edf6db9a3c25f95912d4b385726ce3814ce6",
+      "scope": "Finite literal algebra, leading forms, liveness and costs; see independent mathematical review for the unbounded proof.",
+      "source_pin": "cf4a5218a5a4e4358d3f5314151b6b05d4aa384e",
+      "status": "PASS",
+      "universal_identities": {
+        "eight_conjugate_identity": true,
+        "elementary_root_extraction": true,
+        "main_degree_cancellation": true,
+        "norm_center_and_tail_compression": true,
+        "unit_product_identity": true
+      }
+    },
+    "direct_optimized12": {
+      "bounded_descent_steps": 28,
+      "bounded_rational_pell_cases": 65,
+      "canonical_local_examples": [
+        {
+          "A": 2,
+          "R": 3,
+          "c": 15,
+          "f_bits": 85,
+          "n_bits": 76
+        },
+        {
+          "A": 3,
+          "R": 3,
+          "c": 35,
+          "f_bits": 267,
+          "n_bits": 255
+        },
+        {
+          "A": 4,
+          "R": 3,
+          "c": 63,
+          "f_bits": 562,
+          "n_bits": 548
+        },
+        {
+          "A": 5,
+          "R": 3,
+          "c": 99,
+          "f_bits": 982,
+          "n_bits": 966
+        }
+      ],
+      "domain": "strictly positive integers",
+      "exact_degree": 78,
+      "exact_identities": [
+        "carrier formulas",
+        "both carrier cancellations",
+        "norm polynomial cut",
+        "norm factorization on strong equation",
+        "unit-product finalizer",
+        "Pell descent norm"
+      ],
+      "leading_coefficient": "64*(6*beta)^18",
+      "leading_monomial": "j^18 F^2 eta^11 X^12 Y^23 t^8 n^2 gamma alpha",
+      "live_binary_operations": 102,
+      "negative_controls": [
+        "nonadjacent coefficients admit nonintegral rational ordinate",
+        "omitting f shift admits rho=0 local degeneracy"
+      ],
+      "norm_cut_terms": 32,
+      "operation_breakdown": {
+        "*": 57,
+        "+": 26,
+        "-": 19
+      },
+      "residual_degrees": [
+        15,
+        13,
+        50
+      ],
+      "scope": "Exact finite arithmetic and data checks. The unbounded proofs and inherited semantic boundary are stated in PROOF.md.",
+      "status": "PASS",
+      "symbolic_carrier_terms": {
+        "A0": 13128,
+        "A1": 4417
+      },
+      "witnesses": 12
+    },
+    "normal11": {
+      "checker": "independent standard-library sparse ring",
+      "exact_degree": {
+        "exact_degrees": {
+          "A": 16,
+          "A1": 13,
+          "Bf": 22,
+          "Cnum": 62,
+          "Df": 14,
+          "I": 5,
+          "L": 18,
+          "N8": 256,
+          "Ncenter": 128,
+          "P11": 269,
+          "Q": 18,
+          "Rhat": 4,
+          "V": 18,
+          "W": 18,
+          "Zbar": 23,
+          "h": 17
+        },
+        "generic_gate_degree_without_cancellation_is_not_used": true,
+        "leading_coordinate_definitions": {
+          "k0": "eta+zeta",
+          "q0": "3*beta*j"
+        },
+        "leading_form_monomials_in_q0_k0_coordinates": 2595,
+        "selected_fixed_slice_coefficient": "8*(3*beta)^36",
+        "selected_original_monomial": "j^36*i^24*eta^57*X^42*Y^93*T^8*alpha^8*gamma"
+      },
+      "literal": {
+        "all_gates_and_inputs_live": true,
+        "exact_named_contracts": 60,
+        "operation_breakdown": {
+          "*": 65,
+          "+": 29,
+          "-": 17
+        },
+        "operations": 111,
+        "system_operations": 108
+      },
+      "packet_sha256": "3b2bce6603be7c6cf615a9a5e018edf6db9a3c25f95912d4b385726ce3814ce6",
+      "scope": "Finite literal algebra, leading forms, liveness and costs; see independent mathematical review for the unbounded proof.",
+      "source_pin": "cf4a5218a5a4e4358d3f5314151b6b05d4aa384e",
+      "status": "PASS",
+      "universal_identities": {
+        "eight_conjugate_identity": true,
+        "elementary_root_extraction": true,
+        "main_degree_cancellation": true,
+        "norm_center_and_tail_compression": true,
+        "unit_product_identity": true
+      }
+    },
+    "normal12": {
+      "bounded_descent_steps": 28,
+      "bounded_rational_pell_cases": 65,
+      "canonical_local_examples": [
+        {
+          "A": 2,
+          "R": 3,
+          "c": 15,
+          "f_bits": 85,
+          "n_bits": 76
+        },
+        {
+          "A": 3,
+          "R": 3,
+          "c": 35,
+          "f_bits": 267,
+          "n_bits": 255
+        },
+        {
+          "A": 4,
+          "R": 3,
+          "c": 63,
+          "f_bits": 562,
+          "n_bits": 548
+        },
+        {
+          "A": 5,
+          "R": 3,
+          "c": 99,
+          "f_bits": 982,
+          "n_bits": 966
+        }
+      ],
+      "domain": "strictly positive integers",
+      "exact_degree": 78,
+      "exact_identities": [
+        "carrier formulas",
+        "both carrier cancellations",
+        "norm polynomial cut",
+        "norm factorization on strong equation",
+        "unit-product finalizer",
+        "Pell descent norm"
+      ],
+      "leading_coefficient": "64*(6*beta)^18",
+      "leading_monomial": "j^18 F^2 eta^11 X^12 Y^23 t^8 n^2 gamma alpha",
+      "live_binary_operations": 102,
+      "negative_controls": [
+        "nonadjacent coefficients admit nonintegral rational ordinate",
+        "omitting f shift admits rho=0 local degeneracy"
+      ],
+      "norm_cut_terms": 32,
+      "operation_breakdown": {
+        "*": 57,
+        "+": 26,
+        "-": 19
+      },
+      "residual_degrees": [
+        15,
+        13,
+        50
+      ],
+      "scope": "Exact finite arithmetic and data checks. The unbounded proofs and inherited semantic boundary are stated in PROOF.md.",
+      "status": "PASS",
+      "symbolic_carrier_terms": {
+        "A0": 13128,
+        "A1": 4417
+      },
+      "witnesses": 12
+    },
+    "normal_full": {
+      "actual_fixed_coefficients": [
+        {
+          "bits": 590069,
+          "port": "beta",
+          "raw_bytes": 73759
+        },
+        {
+          "bits": 592884,
+          "port": "K0",
+          "raw_bytes": 74111
+        },
+        {
+          "bits": 590069,
+          "port": "MC",
+          "raw_bytes": 73759
+        },
+        {
+          "bits": 590070,
+          "port": "MF",
+          "raw_bytes": 73759
+        }
+      ],
+      "authenticated_upstream_files": 44,
+      "byte_identical_circuit_rebuilds": 2,
+      "independent_native_audit": "PASS",
+      "native_reconstruction": "PASS",
+      "polynomials": [
+        {
+          "degree": 269,
+          "domain": "positive integers",
+          "gates": 111,
+          "unknowns": 11
+        },
+        {
+          "degree": 78,
+          "domain": "positive integers",
+          "gates": 102,
+          "unknowns": 12
+        }
+      ],
+      "scope": "Exact finite algebra and data; not an end-to-end formal certificate.",
+      "status": "PASS"
+    },
+    "optimized_full_with_inherited_environment": {
+      "actual_fixed_coefficients": [
+        {
+          "bits": 590069,
+          "port": "beta",
+          "raw_bytes": 73759
+        },
+        {
+          "bits": 592884,
+          "port": "K0",
+          "raw_bytes": 74111
+        },
+        {
+          "bits": 590069,
+          "port": "MC",
+          "raw_bytes": 73759
+        },
+        {
+          "bits": 590070,
+          "port": "MF",
+          "raw_bytes": 73759
+        }
+      ],
+      "authenticated_upstream_files": 44,
+      "byte_identical_circuit_rebuilds": 2,
+      "independent_native_audit": "PASS",
+      "native_reconstruction": "PASS",
+      "polynomials": [
+        {
+          "degree": 269,
+          "domain": "positive integers",
+          "gates": 111,
+          "unknowns": 11
+        },
+        {
+          "degree": 78,
+          "domain": "positive integers",
+          "gates": 102,
+          "unknowns": 12
+        }
+      ],
+      "scope": "Exact finite algebra and data; not an end-to-end formal certificate.",
+      "status": "PASS"
+    }
+  },
+  "scope": "11- and 12-positive companions only; no Lean work or new native/internal calibration",
+  "scratch_logs": {
+    "normal.log": "ec29f8b7818a866d6f5fee69ac65c38e4de0e9efe296182d035cbb7e93de5a69",
+    "optimized-env.log": "ec29f8b7818a866d6f5fee69ac65c38e4de0e9efe296182d035cbb7e93de5a69",
+    "optimized.log": "06e0af702e4305ef92e680b719bf340033c785a6713deea7db392536d158976e",
+    "optimized11.log": "1dfbc7185d09a912ca852bf947777befbaa65c139d7d1c3633b2ea8b4a7d4766",
+    "optimized12.log": "d1aaba375c95e42510d68520052599af7146591c88e7101a139efa4f4fcb3ae0"
+  },
+  "status": "PASS ordinary mathematical and finite algebra review; advertised bare -O driver has packaging defect"
+}

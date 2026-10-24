@@ -1,0 +1,211 @@
+{
+  "status": "PASS",
+  "arrival": {
+    "archive": "docs/incoming/con_zfc_pell_congruences_2026-10-23.zip",
+    "arrival_commit": "eae4f1952b",
+    "sha256": "7c21ff5d05ef52c754399a6e62f37ac7622baa6e82a702d855bfb68d82fc1a4a",
+    "files": 230,
+    "raw_bytes": 6849876
+  },
+  "sympy": "1.14.0",
+  "python_optimization": 1,
+  "authenticated_inherited_sources": 34,
+  "whole_tuple_raw_hashes": {
+    "K0": "18c40dd3b52b2882ee8346d098942ae487b54d0d040d9cd88f826b050794d1af",
+    "MC": "3fc17cf73716c7528a91d45dc2bfffa8b76fb86d6d14f5451cf32c125a588777",
+    "MF": "78a7befe6b09c6f59bb325aec1ef35caa72bc6a7d2d01fa39071b9c6e8d92722",
+    "beta": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+    "cone_A": "66463b4c98a7cd43faffe6cc0462f7f4fa65b7fd9bc57cba38789e585d59c615",
+    "cone_B": "42be64ea01465eb227e9c993dba41affc2d9244aed8ec8f33d3268bda7c6b401"
+  },
+  "exact_coordinate_and_halfcenter_identities": true,
+  "signed_CRT_control_cases": 56700,
+  "canonical_scale_checks": true,
+  "rank_register_uniform_degree20_coefficient": 64,
+  "literal_results": {
+    "degree88_17": {
+      "variables": 17,
+      "residuals": 5,
+      "exact_degree": 88,
+      "residual_degree_upper_bounds": [
+        18,
+        14,
+        14,
+        14,
+        44
+      ],
+      "selected_row": 4,
+      "leading_coefficient_mod_prime": 596057387,
+      "literal_sha256": "0ec2ef40f57d6d2b1a18a27e11dda1a06faa67fb97fe66b23576ab0680298698",
+      "all_declared_inputs_live": true
+    },
+    "degree32_18": {
+      "variables": 18,
+      "residuals": 6,
+      "exact_degree": 32,
+      "residual_degree_upper_bounds": [
+        11,
+        14,
+        14,
+        14,
+        14,
+        16
+      ],
+      "selected_row": 5,
+      "leading_coefficient_mod_prime": 611877164,
+      "literal_sha256": "20a02f0564efc569157130f4a8cf438fc7e8adbb9911b09bc63eba2bfdb87ad0",
+      "all_declared_inputs_live": true
+    },
+    "degree28_19": {
+      "variables": 19,
+      "residuals": 7,
+      "exact_degree": 28,
+      "residual_degree_upper_bounds": [
+        6,
+        9,
+        7,
+        10,
+        10,
+        14,
+        12
+      ],
+      "selected_row": 5,
+      "leading_coefficient_mod_prime": 252991311,
+      "literal_sha256": "e7f0f4c9e1a24339a3fc76bfceb6adc031a88c7fd1f42870c95bd11aed0dff77",
+      "all_declared_inputs_live": true
+    },
+    "degree20_20_rank_register": {
+      "variables": 20,
+      "residuals": 8,
+      "exact_degree": 20,
+      "residual_degree_upper_bounds": [
+        5,
+        6,
+        6,
+        4,
+        10,
+        10,
+        10,
+        8
+      ],
+      "selected_row": 4,
+      "leading_coefficient_mod_prime": 872815224,
+      "literal_sha256": "fac5aed96082661797d3ce34a6de913294e7c0b2b882accf4d31e7f86b7bff09",
+      "all_declared_inputs_live": true
+    }
+  },
+  "scoped_replay": {
+    "status": "PASS",
+    "commands": [
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "coefficients/verify.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.196,
+        "log": "0.log",
+        "stdout_sha256": "160895a58e64baca4ce82f076b46b677320239a2688543062fe074340463d3d7"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "integer/build.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.84,
+        "log": "1.log",
+        "stdout_sha256": "d5c474ebef1ba3f6f4ac0ed36cb7d8305bcc2bbc6e0550b60df53df058fd38c5"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "integer/audit.py"
+        ],
+        "returncode": 0,
+        "seconds": 17.848,
+        "log": "2.log",
+        "stdout_sha256": "4ee7d842431bf7513b09db2e21dadc3787f9ac52665ace92485e21685c4a4883"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "transport/build_transport.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.18,
+        "log": "3.log",
+        "stdout_sha256": "1adcf9ddcf5221bc5b5714e0fafa5e35f6413809972b38dd343ec19610aa33de"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "transport/check_transport.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.397,
+        "log": "4.log",
+        "stdout_sha256": "51a5e79f17d2b29ce9186bc26d43e3a3ea99b19034a57987f359095284c6eba3"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "-O",
+          "coefficients/verify.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.186,
+        "log": "0-O.log",
+        "stdout_sha256": "160895a58e64baca4ce82f076b46b677320239a2688543062fe074340463d3d7"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "-O",
+          "integer/build.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.859,
+        "log": "1-O.log",
+        "stdout_sha256": "d5c474ebef1ba3f6f4ac0ed36cb7d8305bcc2bbc6e0550b60df53df058fd38c5"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "-O",
+          "integer/audit.py"
+        ],
+        "returncode": 0,
+        "seconds": 18.015,
+        "log": "2-O.log",
+        "stdout_sha256": "4ee7d842431bf7513b09db2e21dadc3787f9ac52665ace92485e21685c4a4883"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "-O",
+          "transport/build_transport.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.179,
+        "log": "3-O.log",
+        "stdout_sha256": "1adcf9ddcf5221bc5b5714e0fafa5e35f6413809972b38dd343ec19610aa33de"
+      },
+      {
+        "command": [
+          "/home/codex/.local/bin/python3",
+          "-O",
+          "transport/check_transport.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.393,
+        "log": "4-O.log",
+        "stdout_sha256": "51a5e79f17d2b29ce9186bc26d43e3a3ea99b19034a57987f359095284c6eba3"
+      }
+    ],
+    "byte_identical_literals": 20,
+    "parent_bindings": true,
+    "scope": "Integer/coefficient/transport Python-only replays; no other components, Lean or TeX."
+  },
+  "proof_scope": "Ordinary early-rank/CRT/guard/monic projection review in companion note. No Lean, object-ZFC derivation, new native calibration or full release replay."
+}
