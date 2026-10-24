@@ -42,8 +42,8 @@ not establish the size of a complete consistency equation.
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | 891 | not optimized | 4 | Lower-height projection;6,797 terms, height63,905,891 |
-| Integers | 1,742 / 1,095 | not optimized | 4 | Retained-wire small coefficients;6,200 /5,044 terms, heights427 /4,750 |
-| Integers | 950 / 886 / 872 | not optimized | 4 | Retained-wire projections;6,808 /10,158 /10,122 terms, heights737,653 /737,653 /938,261 |
+| Integers | 1,736 / 1,089 | not optimized | 4 | Retained-wire small coefficients;6,172 /5,016 terms, heights427 /4,750 |
+| Integers | 944 / 880 / 866 | not optimized | 4 | Retained-wire projections;6,780 /10,130 /10,094 terms, heights737,653 /737,653 /938,261 |
 | Integers | 862 / 863 / 865 | not optimized | 4 | Actual-row guards and signed projection;11,245 /9,909 /9,814 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
