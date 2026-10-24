@@ -951,3 +951,57 @@ operations/degree. Root reviewed the complete ordinary proof and all literal
 checks, then replayed both checker/rebuild modes; see the
 [root review](reviews/nine-minimal-reflection-root-peer.md). Full fixed
 coefficients and source domains are retained. The canonical PDF is unchanged.
+
+## Complete76-predicate quartics accepted
+
+The [factorial-radius profile packet](research/factorial-radius-guard-profile/README.md)
+contains15 complete equations and full quartics, including607 variables
+with10,042 terms at height2,445,790,974,704. Fresh raw configurations give
+612 variables/8,849 terms/height964,213 and611/8,753/45,769,499. Lower-height
+choices reach840/695/633/619 variables at heights4,750/737,653/737,653/938,261.
+All have exact degree4. The full source domain, every integer restoration
+and every quartic coefficient passed both independent modes and both
+deterministic root rebuilds; see the
+[root review](reviews/factorial-radius-profile-root-peer.md). Only after
+restoring the complete76-predicate parent is its ordinary theorem applied.
+No projected count was inferred from guard count. Lean remains paused.
+
+## Exact odd-rank sharing reaches405/413 operations
+
+The complete [shared odd-rank sibling](research/nine-folded-shared-odd-rank/README.md)
+reuses the literal source register RankPlusOne in B1=R+RankPlusOne, since
+R=RankPlusOne-1. It deletes one private multiplication and preserves the
+entire polynomial for every assignment. Both whole-tuple nine-positive
+circuits now have405/1,191,570 and413/1,316,546 operations/degree. Full
+node/operand inventories, coefficients, norms and attained-degree checks
+passed both checker/rebuild modes under root replay; see the
+[root review](reviews/nine-shared-odd-rank-root-peer.md). The canonical
+page and Lean pause are unchanged.
+
+## Early output-sign recovery reduces the source to75 predicates
+
+The ordinary [output-sign extension](research/factorial-radius-output-sign/PROOF.md)
+removes the raw93 guard. The exact unconditional eight-row ideal gives
+N=f*r+(f-1)*s+f>=2 from the retained f>=2,r>=0,s>=0 predicates, before
+the prefix proof or any power meaning. This restores the sole missing
+early sign premise and reaches the actual76-predicate source; the reverse
+map forgets that triple. Root reviewed all source coefficients and both
+normal/optimized replays; see the
+[root review](reviews/factorial-radius-output-sign-root-peer.md). There
+are75 predicates before projection. Actual quartic sizes remain a separate
+measurement; no new Lean or canonical-page change is made.
+
+## Complete75-predicate quartics accepted
+
+The [output-sign profile packet](research/factorial-radius-output-sign-profile/README.md)
+contains17 complete degree4 equations with all integer inverse certificates
+and full coefficients. Raw/default-affine support8/16 reaches604 variables
+and9,676 terms at height2,445,790,974,704. Lower-height choices include
+609 variables/8,823 terms/height964,213 and608/8,739/45,769,499; raw
+low-height profiles reach837/692/630/616 variables at heights
+4,750/737,653/737,653/938,261. The early missing sign is rederived from
+actual source coefficients before prefix closure, then every domain row,
+integer restoration and quartic coefficient is checked. Root replayed
+both checker and rebuild modes; see the
+[root review](reviews/factorial-radius-output-profile-root-peer.md). The
+canonical one-page equation and Lean sources remain unchanged.

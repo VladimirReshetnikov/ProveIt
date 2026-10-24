@@ -15,7 +15,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 
 | Domain | Unknowns | Operations | Exact degree | Evidence |
 |---|---:|---:|---:|---|
-| Positive integers | 9 | 406 / 414 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
+| Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
 | Positive integers | 10 | 99 | 368 | Zero-offset scaled base, shared muY and positive short projector |
@@ -36,6 +36,12 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 604 | not optimized | 4 | Output-sign75-guard raw/default-affine projection;9,676 terms, height2,445,790,974,704 |
+| Integers | 609 / 608 | not optimized | 4 | Output-sign75-guard raw projections;8,823 /8,739 terms, heights964,213 /45,769,499 |
+| Integers | 837 / 692 / 630 / 616 | not optimized | 4 | Output-sign75-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
+| Integers | 607 / 608 / 610 | not optimized | 4 | Factorial-bound76-guard projections;10,042 /8,706 /8,611 terms, height2,445,790,974,704 |
+| Integers | 612 / 611 | not optimized | 4 | Factorial-bound raw projections;8,849 /8,753 terms, heights964,213 /45,769,499 |
+| Integers | 840 / 695 / 633 / 619 | not optimized | 4 | Factorial-bound raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 610 / 611 / 613 | not optimized | 4 | Paired77-guard projections;10,053 /8,717 /8,622 terms, height2,445,790,974,704 |
 | Integers | 639 | not optimized | 4 | Paired77-guard lower-height projection;5,605 terms, height63,905,891 |
 | Integers | 843 / 698 / 636 / 622 | not optimized | 4 | Paired77-guard raw projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -995,3 +1001,57 @@ operations/degree. Root reviewed the complete ordinary proof and all literal
 checks, then replayed both checker/rebuild modes; see the
 [root review](reviews/nine-minimal-reflection-root-peer.md). Full fixed
 coefficients and source domains are retained. The canonical PDF is unchanged.
+
+## Complete76-predicate quartics accepted
+
+The [factorial-radius profile packet](research/factorial-radius-guard-profile/README.md)
+contains15 complete equations and full quartics, including607 variables
+with10,042 terms at height2,445,790,974,704. Fresh raw configurations give
+612 variables/8,849 terms/height964,213 and611/8,753/45,769,499. Lower-height
+choices reach840/695/633/619 variables at heights4,750/737,653/737,653/938,261.
+All have exact degree4. The full source domain, every integer restoration
+and every quartic coefficient passed both independent modes and both
+deterministic root rebuilds; see the
+[root review](reviews/factorial-radius-profile-root-peer.md). Only after
+restoring the complete76-predicate parent is its ordinary theorem applied.
+No projected count was inferred from guard count. Lean remains paused.
+
+## Exact odd-rank sharing reaches405/413 operations
+
+The complete [shared odd-rank sibling](research/nine-folded-shared-odd-rank/README.md)
+reuses the literal source register RankPlusOne in B1=R+RankPlusOne, since
+R=RankPlusOne-1. It deletes one private multiplication and preserves the
+entire polynomial for every assignment. Both whole-tuple nine-positive
+circuits now have405/1,191,570 and413/1,316,546 operations/degree. Full
+node/operand inventories, coefficients, norms and attained-degree checks
+passed both checker/rebuild modes under root replay; see the
+[root review](reviews/nine-shared-odd-rank-root-peer.md). The canonical
+page and Lean pause are unchanged.
+
+## Early output-sign recovery reduces the source to75 predicates
+
+The ordinary [output-sign extension](research/factorial-radius-output-sign/PROOF.md)
+removes the raw93 guard. The exact unconditional eight-row ideal gives
+N=f*r+(f-1)*s+f>=2 from the retained f>=2,r>=0,s>=0 predicates, before
+the prefix proof or any power meaning. This restores the sole missing
+early sign premise and reaches the actual76-predicate source; the reverse
+map forgets that triple. Root reviewed all source coefficients and both
+normal/optimized replays; see the
+[root review](reviews/factorial-radius-output-sign-root-peer.md). There
+are75 predicates before projection. Actual quartic sizes remain a separate
+measurement; no new Lean or canonical-page change is made.
+
+## Complete75-predicate quartics accepted
+
+The [output-sign profile packet](research/factorial-radius-output-sign-profile/README.md)
+contains17 complete degree4 equations with all integer inverse certificates
+and full coefficients. Raw/default-affine support8/16 reaches604 variables
+and9,676 terms at height2,445,790,974,704. Lower-height choices include
+609 variables/8,823 terms/height964,213 and608/8,739/45,769,499; raw
+low-height profiles reach837/692/630/616 variables at heights
+4,750/737,653/737,653/938,261. The early missing sign is rederived from
+actual source coefficients before prefix closure, then every domain row,
+integer restoration and quartic coefficient is checked. Root replayed
+both checker and rebuild modes; see the
+[root review](reviews/factorial-radius-output-profile-root-peer.md). The
+canonical one-page equation and Lean sources remain unchanged.
