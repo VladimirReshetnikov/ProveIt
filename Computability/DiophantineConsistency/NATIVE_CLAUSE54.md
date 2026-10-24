@@ -72,3 +72,8 @@ extract a marked matching tiling and prove its K215 run interpretation.
 Canonical tiling/padding and Pell witnesses are also needed for the reverse
 direction. The local decoder closes none of those global obligations by
 assumption, and asserts no internal ZFC consistency biconditional.
+
+The later [whole-stencil convolution checkpoint](NATIVE_CONVOLUTION54.md)
+proves the exact stencil mass, no-carry bound, binary rotation normalization
+and transport to pointwise digit tests. Assignment-support and port/basis
+bindings, clean-band/phase recovery and machine calibration remain separate.

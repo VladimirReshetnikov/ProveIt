@@ -202,3 +202,9 @@ coding is used; it is not needed merely to state the sealed target.
 This route needs no assumption that ZFC is consistent. It needs considerably
 more formalization than the external iff; bounded consistency reflection and
 quotation soundness do not discharge those remaining obligations.
+
+The [literal tree-to-quartic compiler](OBJECT_QUARTIC_COMPILER.md) now also
+has an unconditional proof in the actual sealed ZFC calculus. It identifies
+the source and compiled no-zero sentences on the entire internal omega.
+It does not internalize an arbitrary external representation theorem or
+close the full checker-to-consistency calibration.

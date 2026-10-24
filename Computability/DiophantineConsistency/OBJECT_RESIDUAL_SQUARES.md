@@ -43,3 +43,7 @@ complete arithmetic proof checker with its polynomial in every model.
 Nonstandard coding and representation correctness, native compiler
 calibration, and the final consistency/unsolvability biconditional remain
 separate obligations.
+
+The subsequent [object quartic compiler](OBJECT_QUARTIC_COMPILER.md) combines
+this theorem with exact literal gate semantics and proves the source/target
+no-zero sentence biconditional in the actual sealed ZFC calculus.
