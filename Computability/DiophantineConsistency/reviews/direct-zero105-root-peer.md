@@ -27,3 +27,7 @@ The canonical101/368 page is retained while minor cost gains are batched.
 Manifest81181c10352dfbfa23c4c71044ce3c266b30458b0d605cfcf4e2f5b99b2494d7.
 Equationbea07edb73ff6cdf8f0f7c45dec63fa96b42848066cdb82661fd1e9fd4cd282f.
 Proof852b579bc75497f1be33ff1d02e45d94b59bc1b2acecc1609cefcec006ff99e8.
+
+The whitespace-only diff check reports four inherited trailing spaces in the
+two exact SOURCE61.tex copies. Their authenticated source bytes are preserved;
+all new proof, checker, producer and common prose pass that check.

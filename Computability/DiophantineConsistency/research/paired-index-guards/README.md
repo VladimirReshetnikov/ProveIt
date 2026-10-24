@@ -1,4 +1,4 @@
-# Paired index-slack replacement: promising route, source bridge pending
+# Paired index-slack replacement with a local factorial bridge
 
 This is research only. It does not remove guards from any accepted
 equation or claim new variable/coefficient counts. All accepted packets,
@@ -17,10 +17,11 @@ The proposed domain change starts with the frozen 78-guard source:
   K/raw86 and k90/raw90. Keep the current t0/base0.T bootstrap premises.
 
 Original zeros satisfy these new guards: all old slacks are nonnegative,
-and the product formula already gives V>=1. The potential reverse map is
-pointwise regeneration of the three removed old guard triples, after
-the arguments below. The complete actual-source bridge in the final
-section remains to be checked before accepting this replacement.
+and the product formula already gives V>=1. The reverse map is pointwise
+regeneration of the three removed old guard triples. The complete ordinary
+local source proof is in LOCAL_FACTORIAL.md; its exact original-row cuts
+and dependency checks accompany this research. A new projected quartic
+family remains a separate materialization and review task.
 
 ## 1. The carrier excludes zero ordinates
 
@@ -85,8 +86,8 @@ constructor certificate already uses the correct original rows, so
 none of its positivity conclusions depends on the mislabeled formulas.
 Here raw63>=3 and K>=3; there is no assumed parity of K.
 
-Keep the K and k90=K+f0*K^2 seed guards. The intended local source
-bridge described below would establish factorial0.output f0=K!,
+Keep the K and k90=K+f0*K^2 seed guards. The local source
+bridge in LOCAL_FACTORIAL.md establishes factorial0.output f0=K!,
 hence f0 even. Therefore base103 is odd. Its actual power row is
 
     X_t-(A-base103)*Y_t-raw104=T103*h.
@@ -104,39 +105,22 @@ have opposite parity.
 The selected calls have bases t+1>=2 and raw531=raw530+1>=2,
 respectively. Whichever index is even has strictly positive slack
 by section2. The new product guard then forces the other slack to be
-nonnegative. This would recover both original index guards pointwise.
+nonnegative. This recovers both original index guards pointwise.
 
-## 4. Exact remaining source obligation
+## 4. The local source obligation is closed
 
-The missing finite/mathematical bridge must derive f0=K! using only
-the kept K and k90 seed guards and their actual calls. It must not
-invoke the full 21-power interpretation, since that would assume
-the two index guards being recovered.
+LOCAL_FACTORIAL.md gives the complete unbounded bridge using only calls
+1,5,6 at the retained K and k90 seeds. In order it proves raw93>=1,
+f0>=1, radix raw530>raw93, exact choose0 digit extraction and
+f0=ceil(raw93/raw91)=K!. All three actual digit/division bounds are
+checked from complete original-row ideals. The bound on every coefficient
+through K prevents lower-digit carry; no upper-digit or other power
+meaning is required. The self-referential factorial radius is handled
+by a strict rational-product bound, including the small boundary cases.
 
-The promising dependency order is:
-
-1. The kept K guard orients its main pair and gives actual pow1
-   raw93=(1+f0*K^2)^K>=1. The existing prefix factorial-ceiling ideal
-   then gives f0>=1, before any native interpretation.
-2. raw530=M*(1+raw93+raw113), with M>=1, gives raw530>raw93. No
-   intended meaning of raw113 is needed; it is already nonnegative.
-3. The K and k90 pairs give the actual binomial0 power calls at
-   base raw530 and raw531=raw530+1. The quadratic division/mask rows
-   should then extract C(K+f0*K^2,K) into raw91. Their full actual
-   row/inequality ledger still needs to be produced.
-4. The ceiling/remainder rows imply
-   f0=ceil((1+f0*K^2)^K/C(K+f0*K^2,K)). The standard factorial
-   interval, with f0>=1 and radius f0*K^2, identifies this as K!.
-   A self-contained bound proof and the exact source bindings remain
-   required; they are not assumed complete by this note.
-
-There is a useful low-digit bound for step3: for 0<=j<=K and
-R=f0*K^2>=K, C(K+R,j)<=C(K+R,K)<=(R+1)^K=raw93<raw530. It follows
-from coefficient monotonicity up toK and the multiset-count bound.
-This may avoid needing any other power or factorial meaning to
-justify the binomial extraction.
-
-Until these actual source cuts and bounds are checked, this is a
-specific research lead rather than an accepted guard reduction or
-new quartic family. The root's separate A/bootstrap-guard exchange
-research is not used here.
+The same document verifies the new V-1 predicate recovers raw1214 and
+all nonzero ordinates before the even-index argument, and closes both
+directions of zero-existence at the unchanged source body. Neither a
+full21-power interpretation nor the two omitted index guards are used
+to establish the local bridge. The separate A/bootstrap-guard exchange
+is not used here. No projected metric or new quartic family is claimed.

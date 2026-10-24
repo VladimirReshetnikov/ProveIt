@@ -522,3 +522,15 @@ same zero-offset kernels. Root replayed all four normal/optimized checks
 and rebuilds, all complete payloads and degree340 certificates; see the
 [root review](reviews/direct-zero105-root-peer.md). Lean remains paused.
 The canonical101/368 PDF is unchanged while these small gains are batched.
+
+## Paired index guard theorem accepted
+
+The ordinary [paired-index proof](research/paired-index-guards/LOCAL_FACTORIAL.md)
+replaces raw1214's sign with V>=1 and replaces the two t/k122 index-slack
+guards with one guard on their product. The exact local factorial bridge
+uses only calls1/5/6 at retained K/shifted-K pairs; call2 is used only
+for parity. This gives77 predicates instead of78 before projection. Both
+zero-existence directions and full source identities passed author,
+independent peer and root review in normal/optimized Python; see the
+[root acceptance](reviews/paired-index-guards-root-peer.md). Projected
+equation sizes remain a separate task; no count is inferred from this theorem.
