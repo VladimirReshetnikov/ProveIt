@@ -83,7 +83,7 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 409/1,191,572 and compact54 417/1,316,548 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
 The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
-now reaches101/368 with a [fixed root weight and positive short projector](candidates/ten-positive-short-projection/README.md).
+now reaches99/368 with a [zero-offset scaled base and shared muY](candidates/ten-positive-zero-offset/README.md).
 Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
@@ -890,3 +890,18 @@ Actual coefficient profiling is separate; no new projected count follows
 from the exchange alone. The [paired-index proposal](research/paired-index-guards/README.md)
 is another unfinished lead, with its exact local factorial/binomial
 obligation recorded. Canonical101/368 PDF/TeX and paused Lean are unchanged.
+
+## Complete ten-positive99/368 endpoint accepted
+
+The [zero-offset equation](candidates/ten-positive-zero-offset/README.md)
+uses ten positive unknowns,99 live operations and exact degree368. The
+stronger directly proved ratio bound permits A=mu*a+1; sharing the
+already-needed muY product in A-1=(muY)(X+1) removes a second operation.
+The [root review](reviews/zero99-root-peer.md) and [independent ordinary peer](reviews/ten-positive-zero-offset-ordinary-peer.md)
+check full fresh canonical completeness, including positive auxiliary T
+and final n, and every soundness license. All four root normal/optimized
+literal checker/rebuild replays, both focused peer modes and62 closed
+seals pass. Complete coefficient payloads, all99 live definitions and the
+attained degree368 leading component are bound. This improves101/368 by
+two operations. The complete canonical101/368 PDF/TeX is preserved while
+minor presentation updates are batched, as requested. Lean stays paused.

@@ -18,7 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 101 | 368 | Fixed root weight, unshifted multiplier and positive short projector |
+| Positive integers | 10 | 99 | 368 | Zero-offset scaled base, shared muY and positive short projector |
 | Positive integers | 10 | 107 | 340 | Direct positive X and delayed divisibility carrier; cost/degree tradeoff |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
@@ -872,3 +872,18 @@ Actual coefficient profiling is separate; no new projected count follows
 from the exchange alone. The [paired-index proposal](research/paired-index-guards/README.md)
 is another unfinished lead, with its exact local factorial/binomial
 obligation recorded. Canonical101/368 PDF/TeX and paused Lean are unchanged.
+
+## Complete ten-positive99/368 endpoint accepted
+
+The [zero-offset equation](candidates/ten-positive-zero-offset/README.md)
+uses ten positive unknowns,99 live operations and exact degree368. The
+stronger directly proved ratio bound permits A=mu*a+1; sharing the
+already-needed muY product in A-1=(muY)(X+1) removes a second operation.
+The [root review](reviews/zero99-root-peer.md) and [independent ordinary peer](reviews/ten-positive-zero-offset-ordinary-peer.md)
+check full fresh canonical completeness, including positive auxiliary T
+and final n, and every soundness license. All four root normal/optimized
+literal checker/rebuild replays, both focused peer modes and62 closed
+seals pass. Complete coefficient payloads, all99 live definitions and the
+attained degree368 leading component are bound. This improves101/368 by
+two operations. The complete canonical101/368 PDF/TeX is preserved while
+minor presentation updates are batched, as requested. Lean stays paused.

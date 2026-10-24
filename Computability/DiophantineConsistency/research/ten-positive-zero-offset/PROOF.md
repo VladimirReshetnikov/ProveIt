@@ -8,8 +8,9 @@ equation changes only
 Here A is the full Pell parameter; the page convention is A_page=A-1.
 All ten strictly positive integer inputs, the coherent four fixed ports,
 I=i*c², weighted roots(3*tau,f,y), Kpos=X*(3c-2X)+2 and every other
-definition are unchanged. The intended count is100 operations, obtained
-by deleting the private a+2 addition. No literal count is accepted merely
+definition are unchanged. The intended count is99 operations, obtained
+by deleting the private a+2 addition and sharing the existing mu*Y
+product in A-1=(mu*Y)*(X+1). No literal count is accepted merely
 from this note; the complete materialized graph needs its own checks.
 No Lean or encoded internal-ZFC endpoint is asserted.
 
@@ -179,8 +180,18 @@ omega0^4, with selected coefficient2^28*beta^184>0 at
 J^184*i^20*w^40*Y^76*eta^40*alpha^4*F^4. The old degree certificate
 therefore survives for either entire coherent tuple.
 
-The proposed count100 requires a full row/operand map deleting only
-the private a+2 gate and replacing its multiplication operand. All
+The proposed count99 also uses the universal identity
+
+    mu*(X*Y+Y)=(mu*Y)*(X+1).
+
+The existing muY=mu*Y gate is already needed by V0. Move that gate
+before A's construction, insert Xp1=X+1, and compute A-1=muY*Xp1.
+The private E=XY,a=E+Y,a2=a+2 gates are omitted from the original101
+schedule; a remains only a proof abbreviation. Three deleted gates and
+one insertion give99 operations:59 multiplications,23 additions and17
+subtractions. A complete parent/child operand and reordered-row map is
+required; the arithmetic polynomial is identical to the unfactored
+zero-offset expression, not just equisolvable. All
 payloads, ordinary proof pins, norm coefficients, exact degree forms
 and live count must be checked separately before accepting the literal
 candidate. This proof establishes the unbounded arithmetic reduction;
