@@ -28,7 +28,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
 | Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
 | Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
-| Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
+| Integers | 14 | 137 / 147 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |

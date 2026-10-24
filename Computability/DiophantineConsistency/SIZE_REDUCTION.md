@@ -37,7 +37,7 @@ not establish the size of a complete consistency equation.
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue and prime-separation two-root norms |
 | Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
 | Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
-| Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
+| Integers | 14 | 137 / 147 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
