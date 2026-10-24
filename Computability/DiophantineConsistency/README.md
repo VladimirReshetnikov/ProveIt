@@ -99,14 +99,14 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
-The latest [squared-output-frame quartic family](research/squared-range-frame-source-prototype/README.md)
-reaches 575 integer unknowns with 7,225 terms at degree 4. It also offers 580
-unknowns with coefficient height 964,213, or 579 with height 45,769,613.
-The [complete ordinary source proof](research/range-output-square-frame/FULL_SOURCE.md)
+The latest [existing-square-frame quartic family](research/power0-square-frame-source-prototype/README.md)
+reaches 572 integer unknowns with 7,211 terms at degree four. It also offers
+577 unknowns with coefficient height 964,213, or 576 with height 45,769,613.
+The [complete ordinary source proof](research/power0-output-square-frame/FULL_SOURCE.md)
 is exactly bound to every checked integer inverse and complete quartic,
 including the invertible modulus-sharing step; see the
-[combined root review](reviews/squared-range-frame-root-peer.md).
-This saves 16 variables and 2,432 terms over 591/9,657 at the same height.
+[combined root review](reviews/power0-square-frame-root-peer.md).
+This saves three variables and fourteen terms over 575/7,225 at the same height.
 
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
 now reaches607 integer variables, or612 with coefficient height964,213
@@ -1296,3 +1296,23 @@ than 591/9,657. Lower-height alternatives give 580/5,768/964,213 and
 579/5,832/45,769,613 (variables/terms/height). These improve the direct
 quartic family; compact norm equations remain separate. All predecessors
 are preserved, the canonical ten-positive page is unchanged and Lean is paused.
+
+
+## An existing square reduces the direct quartic family to 572 integers
+
+The [63-predicate ordinary proof](research/power0-output-square-frame/PROOF.md)
+uses the existing square of the first power output in its frame and derives
+that output's sign after a separate guarded output orients the t pair.
+Both earlier pairing arguments use the replacement support. Fresh
+completeness rebuilds the entire new frame and private Pell data.
+The [complete RAW/CSE quartics](research/power0-square-frame-source-prototype/README.md)
+are exactly bound to that proof; see the
+[combined root review](reviews/power0-square-frame-root-peer.md).
+
+The best equation has 572 integer unknowns, 7,211 terms, degree four and
+coefficient height 2,445,790,974,704. It saves three variables, one residual
+and fourteen terms against 575/7,225 at unchanged height. Lower-height
+alternatives give 577/5,754/964,213 and 576/5,818/45,769,613
+(variables/terms/height). All 24 full polynomial checks, both independent
+checker modes and both root rebuilds pass. The compact canonical page
+is unchanged by this quartic step; Lean remains paused.

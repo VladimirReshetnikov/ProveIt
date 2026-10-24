@@ -849,3 +849,23 @@ than 591/9,657. Lower-height alternatives give 580/5,768/964,213 and
 579/5,832/45,769,613 (variables/terms/height). These improve the direct
 quartic family; compact norm equations remain separate. All predecessors
 are preserved, the canonical ten-positive page is unchanged and Lean is paused.
+
+
+## An existing square reduces the direct quartic family to 572 integers
+
+The [63-predicate ordinary proof](research/power0-output-square-frame/PROOF.md)
+uses the existing square of the first power output in its frame and derives
+that output's sign after a separate guarded output orients the t pair.
+Both earlier pairing arguments use the replacement support. Fresh
+completeness rebuilds the entire new frame and private Pell data.
+The [complete RAW/CSE quartics](research/power0-square-frame-source-prototype/README.md)
+are exactly bound to that proof; see the
+[combined root review](reviews/power0-square-frame-root-peer.md).
+
+The best equation has 572 integer unknowns, 7,211 terms, degree four and
+coefficient height 2,445,790,974,704. It saves three variables, one residual
+and fourteen terms against 575/7,225 at unchanged height. Lower-height
+alternatives give 577/5,754/964,213 and 576/5,818/45,769,613
+(variables/terms/height). All 24 full polynomial checks, both independent
+checker modes and both root rebuilds pass. The compact canonical page
+is unchanged by this quartic step; Lean remains paused.

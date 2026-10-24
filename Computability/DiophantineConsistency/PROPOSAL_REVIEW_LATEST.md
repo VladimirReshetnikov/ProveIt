@@ -36,6 +36,9 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 572 | not optimized | 4 | Existing-square 63-guard CSE/default projection; 7,211 terms, height 2,445,790,974,704 |
+| Integers | 577 / 576 | not optimized | 4 | Existing-square 63-guard CSE projections; 5,754 / 5,818 terms, heights 964,213 / 45,769,613 |
+| Integers | 787 / 657 / 599 / 584 | not optimized | 4 | Existing-square 63-guard lower-height CSE projections; heights 4,750 / 737,653 / 737,653 / 938,261 |
 | Integers | 575 | not optimized | 4 | Squared-output 64-guard CSE/default projection; 7,225 terms, height 2,445,790,974,704 |
 | Integers | 580 / 579 | not optimized | 4 | Squared-output 64-guard CSE projections; 5,768 / 5,832 terms, heights 964,213 / 45,769,613 |
 | Integers | 790 / 660 / 602 / 587 | not optimized | 4 | Squared-output 64-guard CSE low-height projections; heights 4,750 / 737,653 / 737,653 / 938,261 |
@@ -1307,3 +1310,23 @@ degree four; the current transport argument needs a bound on
 of a direct one-word substitution is not an impossibility theorem for
 all encodings. No degree floor or nine-variable lower bound has been
 proved. The canonical page and accepted metric tables are unchanged.
+
+
+## An existing square reduces the direct quartic family to 572 integers
+
+The [63-predicate ordinary proof](research/power0-output-square-frame/PROOF.md)
+uses the existing square of the first power output in its frame and derives
+that output's sign after a separate guarded output orients the t pair.
+Both earlier pairing arguments use the replacement support. Fresh
+completeness rebuilds the entire new frame and private Pell data.
+The [complete RAW/CSE quartics](research/power0-square-frame-source-prototype/README.md)
+are exactly bound to that proof; see the
+[combined root review](reviews/power0-square-frame-root-peer.md).
+
+The best equation has 572 integer unknowns, 7,211 terms, degree four and
+coefficient height 2,445,790,974,704. It saves three variables, one residual
+and fourteen terms against 575/7,225 at unchanged height. Lower-height
+alternatives give 577/5,754/964,213 and 576/5,818/45,769,613
+(variables/terms/height). All 24 full polynomial checks, both independent
+checker modes and both root rebuilds pass. The compact canonical page
+is unchanged by this quartic step; Lean remains paused.
