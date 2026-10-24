@@ -513,3 +513,20 @@ Both independent peer modes, renderer replays and full coefficient
 reconstruction modes pass; the page was visually reviewed. The previous
 [105/408 PDF](candidates/one-page-quadratic10/equation.pdf) and its TeX
 remain preserved. Lean formalization remains paused.
+
+## Twenty-one pointwise guard consequences accepted
+
+The [main-root/modulus proof](research/main-root-and-modulus-signs/README.md)
+recovers15 main-root signs and six power-modulus signs from the unchanged
+raw equations with79 retained guards. Its independent semantic-prefix
+proof precedes a strict A>W^W bound, signed-index recovery and negative-root
+residue contradiction. Only then does a positive-base power call establish
+f0>0 and the final modulus sign. All15 actual exponents are proved positive.
+The [root review](reviews/main-root-signs-root-peer.md) and
+[independent peer](reviews/main-root-modulus-signs-peer.md) verify the
+complete original-row, constructor and21-call ledger; all six root
+normal/optimized checks, rebuilds and peer runs pass. At the same body
+tuple,79 existing triples and63 fresh Legendre witnesses reach the literal
+frozen967 equation. Complete new quartics and signed projections are being
+materialized separately; no unverified projected count is added here.
+Lean and the current canonical PDF/TeX remain unchanged.
