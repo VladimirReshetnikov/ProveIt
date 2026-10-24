@@ -956,3 +956,19 @@ both modes; see the [root review](reviews/pow2-output-sign-root-peer.md).
 There are73 source predicates. Projected sizes require a separate complete
 materialization; the measured601-variable family, canonical PDF and Lean
 pause are unchanged.
+
+## Six e13 proposal packages screened with reproducible inert checks
+
+The [six-archive intake](research/incoming-e13c748234/README.md) records
+complete hashes,2145 member pins, historical reuse and explicit domain
+comparisons. Independent data checks reproduce33 full quartic expansions,
+39 supported DAG censuses and54 coefficient bindings in both interpreter
+modes. After the source76–110 placement, exact old inputs are read from
+pinned Git blobs in memory. Root reviewed the report/checker and matched
+both sealed receipts; see the [root review](reviews/incoming-e13-root-peer.md).
+Squared/centered factorial and common modular Pell identities are useful
+new research leads. The squared-radius transfer has an explicit missing-
+K-bound obstruction, so no one-gate compiler improvement is assumed.
+Natural395/394 and other advertised endpoint tradeoffs await their own full
+ordinary/literal calibration review. The current measured601-integer family
+and98/368 ten-positive evaluator are unchanged; Lean remains paused.
