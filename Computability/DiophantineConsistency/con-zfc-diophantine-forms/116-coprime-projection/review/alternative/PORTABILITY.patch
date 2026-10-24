@@ -1,0 +1,174 @@
+--- provenance/audit_power_graph.original.py
++++ audit_power_graph.py
+@@ -5,6 +5,12 @@
+ from pathlib import Path
+ import copy, hashlib, json, math, random
+ import sympy as sp
++
++def require(condition, message):
++    """Optimization-safe equivalent of the original audit assertions."""
++    if not condition:
++        raise AssertionError(message)
++
+ HERE=Path(__file__).resolve().parent
+ SOURCE=HERE.parent.parent/'alternative'
+ 
+@@ -15,15 +21,15 @@
+         op=node['op']
+         if op=='var': value=env[node['name']]
+         elif op=='const':
+-            assert type(node['value']) is int
++            require(type(node['value']) is int, 'Independent audit invariant at original line 18')
+             value=node['value']
+         elif op in ('add','mul'):
+-            assert all(type(j) is int and 0 <= j < i for j in node['args'])
++            require(all(type(j) is int and 0 <= j < i for j in node['args']), 'Independent audit invariant at original line 21')
+             terms=[values[j] for j in node['args']]
+             value=sum(terms) if op=='add' else math.prod(terms)
+         elif op=='pow_fixed':
+-            assert type(node['base']) is int and 0 <= node['base'] < i
+-            assert type(node['exponent']) is int and node['exponent'] >= 0
++            require(type(node['base']) is int and 0 <= node['base'] < i, 'Independent audit invariant at original line 25')
++            require(type(node['exponent']) is int and node['exponent'] >= 0, 'Independent audit invariant at original line 26')
+             value=values[node['base']]**node['exponent']
+         else: raise AssertionError('Nonordinary operation: '+str(op))
+         values.append(value % modulus if modulus else value)
+@@ -57,41 +63,41 @@
+     expected_inputs={c+str(i) for i in range(r) for c in ('n','k','m')}
+     expected_aux={'p_'+c for c in ('z','U','v','q','b')} | {'p_'+c+str(i) for i in range(r) for c in ('y','h','s','t')}
+     if retained: expected_aux.add('p_A')
+-    assert set(data['variables'])==expected_inputs|expected_aux
+-    assert len(data['variables'])==len(set(data['variables']))
+-    assert set(data['inputs'])==expected_inputs
+-    assert data['variable_count']==len(data['variables'])
+-    assert data['auxiliary_count']==4*r+5+retained
+-    assert data['residual_count']==2+2*r+retained
++    require(set(data['variables'])==expected_inputs|expected_aux, 'Independent audit invariant at original line 60')
++    require(len(data['variables'])==len(set(data['variables'])), 'Independent audit invariant at original line 61')
++    require(set(data['inputs'])==expected_inputs, 'Independent audit invariant at original line 62')
++    require(data['variable_count']==len(data['variables']), 'Independent audit invariant at original line 63')
++    require(data['auxiliary_count']==4*r+5+retained, 'Independent audit invariant at original line 64')
++    require(data['residual_count']==2+2*r+retained, 'Independent audit invariant at original line 65')
+     env={name:sp.Symbol(name) for name in data['variables']}
+     actual=evaluate(data,env)
+     expected,ports=independent_formula(env,r,retained)
+-    assert set(expected)==set(data['residuals'])
++    require(set(expected)==set(data['residuals']), 'Independent audit invariant at original line 69')
+     for name,expr in expected.items():
+-        assert sp.expand(actual[data['residuals'][name]]-expr)==0, name
++        require(sp.expand(actual[data['residuals'][name]]-expr)==0, name)
+     for name,expr in ports.items():
+-        assert sp.expand(actual[data['defined_ports'][name]]-expr)==0, name
++        require(sp.expand(actual[data['defined_ports'][name]]-expr)==0, name)
+     root=data['nodes'][data['output']]
+-    assert root['op']=='add'
+-    assert len(root['args'])==len(expected)
++    require(root['op']=='add', 'Independent audit invariant at original line 75')
++    require(len(root['args'])==len(expected), 'Independent audit invariant at original line 76')
+     squared=[]
+     for j in root['args']:
+         node=data['nodes'][j]
+-        assert node['op']=='pow_fixed' and node['exponent']==2
++        require(node['op']=='pow_fixed' and node['exponent']==2, 'Independent audit invariant at original line 80')
+         squared.append(node['base'])
+-    assert sorted(squared)==sorted(data['residuals'].values())
++    require(sorted(squared)==sorted(data['residuals'].values()), 'Independent audit invariant at original line 82')
+     actual_degrees={name:sp.Poly(expr,*env.values()).total_degree() for name,expr in expected.items()}
+     exact_degree=2*max(actual_degrees.values()) # SOS leading real homogeneous forms cannot cancel.
+-    assert data['degree_upper_bound']>=exact_degree
+-    assert exact_degree==(max(8*r+8,4*r+12,12) if retained else 12*r+8)
+-    if not retained: assert data['exact_degree']==exact_degree
++    require(data['degree_upper_bound']>=exact_degree, 'Independent audit invariant at original line 85')
++    require(exact_degree==(max(8*r+8,4*r+12,12) if retained else 12*r+8), 'Independent audit invariant at original line 86')
++    if not retained: require(data['exact_degree']==exact_degree, 'Independent audit invariant at original line 87')
+     rng=random.Random(6191+r+retained)
+     for _ in range(50):
+         numerical={name:rng.randrange(8) for name in env}
+         rows,ports=independent_formula(numerical,r,retained)
+         for p in (101,1009,65537):
+             values=evaluate(data,numerical,p)
+-            assert values[data['output']]==sum(v*v for v in rows.values())%p
++            require(values[data['output']]==sum(v*v for v in rows.values())%p, 'Independent audit invariant at original line 94')
+     return {'auxiliary_count':len(expected_aux),'input_count':len(expected_inputs),
+             'residual_count':len(expected),'exact_residual_degrees':actual_degrees,
+             'exact_polynomial_degree':exact_degree,'random_modular_cases':150}
+@@ -110,13 +116,13 @@
+ 
+ def witness_k1(data, bases, negative=False):
+     r=len(bases); retained='p_A' in data['variables']
+-    assert not (negative and retained)
++    require(not (negative and retained), 'Independent audit invariant at original line 113')
+     W=2+sum(2*n+1 for n in bases)
+     alpha,frame_y=pell(W+1,W)
+-    assert frame_y%W==0
++    require(frame_y%W==0, 'Independent audit invariant at original line 116')
+     A=-alpha if negative else alpha
+     U,V=pell(alpha,2 if negative else 4)
+-    assert U%2==1
++    require(U%2==1, 'Independent audit invariant at original line 119')
+     b=((1-A)*pow(U,-1,4))%4
+     while b<1 or A+U*b<5: b+=4
+     B=A+U*b
+@@ -125,13 +131,13 @@
+     for i,n in enumerate(bases):
+         env.update({f'n{i}':n,f'k{i}':1,f'm{i}':n,
+                     f'p_y{i}':0,f'p_h{i}':0,f'p_s{i}':b,f'p_t{i}':0})
+-    assert all(type(x) is int and x>=0 for x in env.values())
++    require(all(type(x) is int and x>=0 for x in env.values()), 'Independent audit invariant at original line 128')
+     values=evaluate(data,env)
+-    assert values[data['output']]==0
+-    assert values[data['defined_ports']['A']]==A
+-    for name,index in data['residuals'].items(): assert values[index]==0,name
++    require(values[data['output']]==0, 'Independent audit invariant at original line 130')
++    require(values[data['defined_ports']['A']]==A, 'Independent audit invariant at original line 131')
++    for name,index in data['residuals'].items(): require(values[index]==0, name)
+     bad=env.copy(); bad['m0']+=1
+-    assert evaluate(data,bad)[data['output']]!=0
++    require(evaluate(data,bad)[data['output']]!=0, 'Independent audit invariant at original line 134')
+     return {'bases':bases,'sign':-1 if negative else 1,'maximum_witness_bits':max(x.bit_length() for x in env.values())}
+ 
+ 
+@@ -143,19 +149,19 @@
+         if (x,y)==(1,0): break
+     else: raise AssertionError('Finite regression period cap exceeded')
+     U,V=pell(a,order)
+-    assert U%M==1 and V%M==0 and V>0
++    require(U%M==1 and V%M==0 and V>0, 'Independent audit invariant at original line 146')
+     b=((1-a)*pow(U,-1,4*D))%(4*D)
+     if b==0: b+=4*D
+     B=a+U*b
+-    assert B>a and (B-1)%(4*D)==0
+-    assert math.gcd(U,4*D)==1
++    require(B>a and (B-1)%(4*D)==0, 'Independent audit invariant at original line 150')
++    require(math.gcd(U,4*D)==1, 'Independent audit invariant at original line 151')
+     for k,(X,Yi) in zip(ks,coords):
+         S,R=pell(B,k)
+-        assert (S-X)%U==0 and S>=X
+-        assert (R-k)%(4*Yi)==0 and R>=k
+-        assert V%(Yi*Yi)==0
+-        assert X*X-(a*a-1)*Yi*Yi==1
+-        assert S*S-(B*B-1)*R*R==1
++        require((S-X)%U==0 and S>=X, 'Independent audit invariant at original line 154')
++        require((R-k)%(4*Yi)==0 and R>=k, 'Independent audit invariant at original line 155')
++        require(V%(Yi*Yi)==0, 'Independent audit invariant at original line 156')
++        require(X*X-(a*a-1)*Yi*Yi==1, 'Independent audit invariant at original line 157')
++        require(S*S-(B*B-1)*R*R==1, 'Independent audit invariant at original line 158')
+     return {'base':a,'indices':ks,'period_mod_4D_squared':order,'maximum_coordinate_bits':max(U.bit_length(),V.bit_length())}
+ 
+ 
+@@ -171,11 +177,14 @@
+            checked+=1
+            if X*X-(alpha*alpha-1)*Y*Y==1:
+             accepted+=1
+-            assert (Y,k,h,m)==(1,1,0,n)
++            require((Y,k,h,m)==(1,1,0,n), 'Independent audit invariant at original line 174')
+     return {'local_tuples_checked':checked,'accepted_tuples':accepted}
+ 
+ 
+ def main():
++    source_pin=json.loads((HERE/"SOURCE_CHECK.json").read_text())
++    for relative, expected in [("prior/PellMatiyasevic_reference.lean",source_pin["pinned_mathlib_source_sha256"]),("prior/PellRepresentation.lean",source_pin["wrapper_sha256"]),("PROOF.md",source_pin["proof_md_sha256_at_review"])]:
++        require(hashlib.sha256((SOURCE/relative).read_bytes()).hexdigest()==expected,"Pinned source changed: "+relative)
+     files=['POWER_ONE_9AUX.json','POWER_TWO_13AUX.json','POWER_TWO_14AUX.json']
+     result={'status':'PASS','scope':'Standalone positive-power graphs; not source calibration or Lean verification.','artifacts':{},'full_k1_witnesses':[]}
+     for filename in files:

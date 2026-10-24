@@ -1,0 +1,118 @@
+\section{Supplement: exact contractions of five existing equations}
+
+This supplement gives five smaller arithmetic evaluators. Each computes
+\emph{exactly the same polynomial} as its pinned parent, on every input and
+for arbitrary values of the four coefficient ports. Thus the improvements
+preserve the full zero sets, coefficient height, expanded support and exact
+total degree. Their consistency interpretation is inherited from the
+ordinary parent proofs; this supplement does not supply a new native
+compiler or an internal proof-assistant formalization.
+
+All unknowns are strictly positive integers. Binary addition, subtraction,
+multiplication, squaring and multiplication by a scalar each cost one
+operation; fixed constants and reuse cost zero.
+\begin{center}\small
+\begin{tabular}{rrrrrr}
+Variables & Parent & New & Products & Sums/differences & Degree\\\hline
+10 & 99 & 98 & 58 & $22+18$ & 368\\
+10 & 105 & 103 & 61 & $23+19$ & 340\\
+11 & 111 & 107 & 59 & $31+17$ & 211\\
+12 & 96 & 95 & 52 & $25+18$ & 70\\
+13 & 88 & 87 & 47 & $22+18$ & 51
+\end{tabular}
+\end{center}
+The parents are the literal JSON equations at ProveIt commit
+\file{84e16e43092614bae262ca59651cb9d77e31a255}; exact paths and SHA256
+hashes are in \file{supplement/SOURCE_PINS.json}. Global optimality is not claimed.
+The incoming Bootstrap package already evaluates this eleven-variable
+polynomial in 110 operations at degree 211; the new 107-operation circuit
+saves three relative to that point and four relative to its literal
+111-operation parent.
+
+\subsection{Contraction of an affine carrier}
+For arbitrary elements of any commutative ring,
+\begin{equation}
+ pqz+qY-p(1+qL)B=pq(z-LB)+qY-pB.
+ \label{eq:supp-affine}
+\end{equation}
+This follows by distributing both products. When $pq$ is already used in
+another part of the equation, the right side avoids constructing the
+carrier $1+qL$: four old operations are replaced by three.
+
+The scaled ten-variable version is the equally exact identity
+\begin{align*}
+ &pqu(Hz+K)+H\{u[qY-p(1+qL)B]-pqe\}\\
+ &\qquad=pqu\{H(z-LB)+K\}+H\{u(qY-pB)-pqe\}.
+\end{align*}
+In the degree-368 equation set $p=q_{\rm source}^3$,
+$q=q_{\rm source}-1$, $u=\mu^2$, $z=n+V$, $B=B_t$ and $K=K_{\rm pos}$.
+No unknown is shifted or reparametrized: $z-LB$ is only an internal
+polynomial abbreviation. It need not be positive. This distinction means
+that no additional unbounded witness argument is required.
+
+For the degree-340 direct form the carrier coefficient is
+$q_{\rm source}(q_{\rm source}-1)$ and one further exact factorization is
+used:
+\[
+ q_{\rm source}(q_{\rm source}-1)Y-(q_{\rm source}-1)X
+  =(q_{\rm source}-1)(q_{\rm source}Y-X).
+\]
+After contraction the former intermediate
+$q_{\rm source}(q_{\rm source}-1)$ has no other consumer. Eliminating it
+saves the second operation. The degree-70 and degree-51 equations use
+\eqref{eq:supp-affine} directly in their first Pell carrier.
+
+\subsection{A shorter norm in the eleven-variable evaluator}
+Define
+\[
+ \mathcal N(s,a,b,c)
+ =\bigl((s+c-a-b)^2-4(sc+ab)\bigr)^2-64scab.
+\]
+Sharing $sc$ and $ab$ gives a 13-operation evaluator. For arbitrary
+$z,a,b,c,\delta$ the following identity holds:
+\begin{align*}
+ &\left(\bigl[\delta(z-a-b)-c\bigr]^2
+        -4[\delta^2ab+\delta c(a+b)]\right)^2
+       -64\delta^3abc z\\
+ &\qquad=\mathcal N(\delta z,\delta a,\delta b,c).
+ \label{eq:supp-norm}
+\end{align*}
+To check it, put $J=\delta(z-a-b)-c$. The inner expression on the right is
+\[
+ (J+2c)^2-4(\delta zc+\delta^2ab)
+ =J^2-4[\delta^2ab+\delta c(a+b)],
+\]
+and the final product is the same $64\delta^3abc z$.
+Thus the old 18-operation tail after $z=\overline Z^2$ becomes three
+scalings followed by the 13-operation norm, saving two operations.
+One more operation is saved by reusing $E=XY$ in
+$U=q^2Y$ and $qE$, instead of first constructing the private intermediate
+$S=qY$. Combined with the affine-carrier contraction, this gives
+$111-2-1-1=107$ operations. The eleven-variable restriction
+$J=3j+1$ is retained exactly; no enlarged-domain theorem is asserted.
+
+\subsection{Exact and reproducible verification}
+The package supplies all five new circuits, the five complete pinned
+parent circuits, all four actual coefficient payloads, their reconstruction
+recipe, inherited proof notes and source notices. The coefficient integers
+are represented without omission as unsigned minimal little-endian bytes
+inside gzip files. Their individual bit lengths are 590069, 592884, 590069
+and 590070 for $\beta,K_0,M_C,M_F$, respectively. In particular
+$\beta=2^{590069}-1$. The already shifted $M_F$ is used unchanged.
+
+The independent \texttt{check.py} imports neither builder. It reconstructs
+small free-polynomial identities directly from the literal parent and child
+gates, collects every coefficient over the integers, and then propagates
+certified register equality through the entire circuit. The five complete
+output equalities follow by structural induction. It also verifies
+acyclicity, complete liveness, exact operation counts, every source hash,
+every compressed and raw coefficient hash, and rejection of altered output
+gates. The largest local comparison has 35 collected terms. Normal and
+optimized Python runs both pass. Modular controls in the builders are
+supplementary diagnostics and are not the identity proof.
+
+Exact degrees transfer from the pinned parents by the proved polynomial
+identities. The larger syntax-only bounds, respectively 416, 384, 262, 82
+and 58, are deliberately distinguished from the exact degrees in the table.
+This supplement establishes a finite algebraic optimization, not a proof
+that any of these polynomials lacks zeros.

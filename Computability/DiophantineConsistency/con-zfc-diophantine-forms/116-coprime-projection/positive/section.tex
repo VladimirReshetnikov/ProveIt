@@ -1,0 +1,332 @@
+\section{Coprime Pell fusion: ten positive variables and degree 266}
+\label{sec:positive-fusion}
+
+The following construction improves the pinned ten-positive-variable
+endpoints from $(103,340)$ and $(98,368)$, where the ordered pair records
+live binary arithmetic operations and exact total degree, to
+\[
+                    \boxed{(96,266)}.
+\]
+The operation split is 57 multiplications, 20 additions and 19 subtractions.
+Multiplication by a constant counts as an operation. This is an ordinary
+unbounded arithmetic reduction relative to the retained source/native
+calibration, not a new Lean or encoded internal-ZFC certificate. No
+consistency or global minimality claim is made.
+
+\subsection{Complete polynomial}
+All ten variables
+\[
+       J,F,\alpha,i,T,x,Y,n,\eta,\zeta
+\]
+range over strictly positive integers. The four fixed integer coefficients
+are the complete original compact44 tuple bound in \texttt{equation.json}
+and its coefficient payloads. In particular,
+\[
+ \beta\ge31\text{ is odd},\qquad K_0>0,\qquad
+ 0<M_C<\beta<M_F<2\beta.
+\]
+Here $M_F$ already includes its source shift. The distinct repaired BFS44
+tuple must not be mixed with this tuple; its $K_0$ is not the same integer.
+Define the following polynomial abbreviations:
+\begin{align*}
+q&=\beta J+1,& X&=q+x,& \mu&=q^2+1,\\
+A&=\mu Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+k&=\eta+\zeta,&c&=kY+\eta,&V_0&=X\mu^2Y^2,\\
+D&=V_0(V_0+1)k^2+1,&G&=(q-1)(q-F)+\alpha,\\
+R&=G(q^2-1)+(M_C+qM_F)J,&e&=k-R-1,\\
+C&=q-F-\alpha,&B&=(qK_0+X)C-qF,\\
+E&=ic^2,&\mathcal F&=1+\Delta DE^2,&Q&=\Delta^2DE^2,\\
+\delta&=Q-1,&b&=c(T+\alpha)-R,&V&=\mathcal F b-c,\\
+D_y&=QV^2-1,&L&=HDE+b,&W&=1+q(q-1)L,\\
+P&=q^4(q-1),&M&=P\mu^2H,&K_+&=X(3c-2X)+2.
+\end{align*}
+Finally set
+\begin{align*}
+Z={}&P\mu^2\{H(n+V)+K_+\}\\
+ &+H\{\mu^2[q(q-1)Y-q^3WB-(q-1)X]-Pe\},\\
+a={}&D\mathcal F,\qquad s=\delta Z^2,\qquad
+u=\delta M^2a,\qquad v=M^2D_y.
+\end{align*}
+The single equation is
+\begin{equation}\label{eq:fused-positive}
+             \boxed{\mathcal N=(s-v-u)^2-4uv=0.}
+\end{equation}
+There are no additional quantified abbreviation variables and no radicals
+or divisions in its evaluator. The complete circuit uses the stored names
+\texttt{Dtau}$=D$, \texttt{Df}$=\mathcal F$, and \texttt{I}$=E$.
+The latter is \emph{not} the actual strong Pell ordinate introduced in the
+proof below.
+
+The structural change is to make the first radicand $D$ a factor of the
+strong squared ordinate. Since $\mathcal F\equiv1\pmod D$, a square
+product $D\mathcal F$ forces its two factors to be squares separately.
+This permits a two-radical quartic norm in place of the parent's
+three-radical octic norm.
+
+\subsection{Exact contraction of the literal evaluator}
+The first fused evaluator had 98 operations; the current 96-operation
+schedule is identically equal to it. Write $U=\mu^2$, $S=q^3$,
+$g=q(q-1)$ and $D_{\rm low}=(q-1)X$, so $P=Sg$ and $W=1+gL$.
+The literal evaluator uses
+\[
+ Z=PU\{H(n+V-LB)+K_+\}
+       +H\{U(gY-SB-D_{\rm low})-Pe\}.
+\]
+Subtracting the earlier displayed expression gives
+$HULB(Sg-P)=0$ universally. Delete the private $gL,W,WB$ definitions
+and insert only $LB$ and $(n+V)-LB$. Also compute
+$P=q^3[q(q-1)]$ using the existing $q(q-1)$ register, deleting the
+private $q^4$ register. This saves two operations; all remaining kernel
+and norm gates are unchanged. The final split is 57 multiplications,
+20 additions and 19 subtractions. The abbreviation $W$ remains useful
+in the proof but is not separately evaluated. The complete polynomial,
+its degree, and both positive witness maps are unchanged. This same
+contraction appears in upstream commit 49379c31d, yielding comparison
+endpoints 98/368 and 103/340; the fused endpoint is 96/266.
+
+\subsection{Root extraction and the implicit strong ordinate}
+The exact rational carrier identity is
+\begin{equation}\label{eq:fused-center}
+\frac ZM=n+V+\frac{K_+}{H}+\frac Y{q^3}
+ -\frac{WB}{q(q-1)}-\frac X{q^4}-\frac e{\mu^2}.
+\end{equation}
+For every positive input, $q\ge32$, $X>q$, $A>4$, $c\ge3$, $E\ge c^2$
+and $D>1$. The parent's elementary adjacent-radicand bounds, strengthened
+by the new factor $D$, give
+\[
+ \delta>c^2-1>0,\qquad \mathcal F>c+2,\qquad \mathcal F<\delta.
+\]
+If $b=0$, then $V=-c$ and $c^2<D_y/\delta<c^2+1$. If $b\ne0$, then
+$|V|\ge\mathcal F-c>1$. Thus $a$ and $D_y/\delta$ are positive
+rational numbers before integrality is established.
+
+They are unequal: $\delta a=D_y$ would reduce modulo $D>1$ to
+$0=-1$, since $D\mid Q$ and $D\mid a$. The elementary norm identity
+\[
+ (z^2-r_1^2-r_2^2)^2-4r_1^2r_2^2
+ =\prod_{\epsilon,\nu\in\{-1,1\}}(z-\epsilon r_1-\nu r_2)
+\]
+applied to \eqref{eq:fused-positive} therefore gives a nonzero rational
+signed sum
+\[
+ \frac ZM=\epsilon\sqrt a+\nu\sqrt{D_y/\delta}.
+\]
+Both radicals are rational: squaring this relation and solving linearly
+for either radical proves the assertion, since $Z/M\ne0$. As $a$ is an
+integer, it is an integer square. Furthermore
+$\gcd(D,\mathcal F)=1$, so unique factorization supplies positive integers
+\[
+       D=\tau^2,\qquad \mathcal F=f^2.
+\]
+Define the actual strong ordinate
+\[
+       I_* = \tau E.
+\]
+It is an integer even though it is not asserted to be a polynomial in the
+ten inputs. Then
+\[
+ f^2-\Delta I_*^2=1,\qquad Q=(\Delta I_*)^2,\qquad
+ c^2\mid I_*,\qquad I_*\ge c.
+\]
+The retained adjacent-coefficient rational-to-integral descent applied to
+$QV^2-(Q-1)y^2=1$ proves that $y=\sqrt{D_y/\delta}$ is a positive integer.
+Consequently the carrier relation is
+\begin{equation}\label{eq:fused-signed}
+                  Z/M=\epsilon\tau f+\nu y.
+\end{equation}
+None of these steps assumes parity of $q$, transport positivity, or
+$\mu^2\mid e$.
+
+\subsection{Soundness with delayed denominator cancellation}
+Write $\chi_A(t),\psi_A(t)$ for the standard Pell sequences defined by
+\[
+ \chi_A(t)+\psi_A(t)\sqrt{A^2-1}
+       =(A+\sqrt{A^2-1})^t.
+\]
+The retained all-index strong/auxiliary folding lemma applies to
+$A,c,I_*,f,V,y$: its hypotheses include $A\ge3$, $c\le I_*$,
+$f>2I_*$ and $V=-c\pmod f$. It gives
+$c=\psi_A(p)$ for an odd $p\ge1$. The first Pell equation gives
+\[
+ k=2\psi_{2V_0+1}(n_0),\qquad
+ \tau=\chi_{2V_0+1}(n_0),\qquad n_0\ge1.
+\]
+The case $n_0=1$ would give $c=2Y+1$ strictly between
+$\psi_A(1)=1$ and $\psi_A(2)=2A$. Hence
+\begin{equation}\label{eq:fused-cbound}
+ c>kY\ge k\ge4(2V_0+1)>8X\mu^2Y^2.
+\end{equation}
+The unchanged mask estimate gives $R<c\alpha/4$. As in the parent this
+implies
+\[
+ b>0,\quad V>0,\quad |e/\mu^2|<b/2,\quad 0<y-V<b/2.
+\]
+The adjacent-root estimate uses $\mathcal F<\delta$. Also $c>2X$, so
+$K_+>0$.
+
+The new polynomial transport majorant is adequate because $f<AI_*$
+and therefore $\tau f<ADE$. Since $D>X$ and $E\ge1$,
+\begin{equation}\label{eq:fused-majorant}
+       \tau f+X/q^4<(A+1)DE<HDE.
+\end{equation}
+If $B\le-1$, then $WB/[q(q-1)]<-L$. Solving
+\eqref{eq:fused-center}--\eqref{eq:fused-signed} for $n$ and using
+\eqref{eq:fused-majorant}, the two $b/2$ bounds, $K_+/H>0$ and $Y/q^3>0$
+gives $n<HDE+b-L=0$, a contradiction. Thus $B\ge0$, and its definition
+forces $C>0$. The unchanged mask bounds now give
+\[
+                         3q<R<q^4-2.
+\]
+The normalized strong-rank and signed auxiliary-index lemmas apply since
+$c^2\mid I_*$, $c>2R$, $c>2p$, $V=-c\pmod f$ and $V=-R\pmod c$.
+They give $p=R$. Oddness of $p$ gives $R$ odd, and the original mask
+parity calculation gives $q$ even and $J$ odd.
+
+Only at this point use
+\[
+                   \gcd(\mu^2,q^4(q-1)H)=1.
+\]
+Indeed $H=-1\pmod\mu$, $\gcd(q,\mu)=1$, and evenness of $q$ handles
+$q-1$. Since \eqref{eq:fused-signed} is integral, separating the single
+modulus $\mu^2$ in \eqref{eq:fused-center} yields $\mu^2\mid e$.
+The first Pell congruence and the unchanged strict comparison
+$2V_0+1>A$ give $n_0=(R+1)/2$. Put $R=2r+1$; then $r\ge48$.
+
+The retained zero-offset ratio lemma, uniform in $X\ge32$, is
+\[
+ \xi<\frac{\psi_A(2r+1)}{\psi_{2X\mu^2Y^2+1}(r+1)}
+       <\xi\left(1+\frac1{Y(X+1)}\right)^{2r},
+ \qquad \xi=\frac{(X+1)^{2r}}{X^r}.
+\]
+It gives $Y>X^r/3$ and $X^{r+1}<3Y(X+1)<H$. From the integral center,
+$H\mid PK_+$. Since $H$ is odd and
+\[
+ K_+=HXc-2K_2,\qquad K_2=X[X+2(A-2)c]-1,
+\]
+cancel only 2 and apply the universal projection lemma:
+\[
+          H\mid q^4(q-1)(X-2^R)(2^RX+1).
+\]
+The whole product has absolute value less than $X^{r+1}<H$ when
+$X\ge q\ge32$, $r\ge48$, as in the direct-base parent. Thus $X=2^R$.
+This is whole-product vanishing, not cancellation of $q$ through $H$ or
+a choice of a square-root branch separately at each prime. Projection
+now also makes $K_+/H$ integral.
+
+Removing the integral terms from \eqref{eq:fused-center} leaves
+$Y/q^3-WB/[q(q-1)]-X/q^4$ integral. Clear the denominator and reduce
+modulo $q$ to obtain $q\mid X$. Hence $q=2^\kappa$; since
+$R>3q>4\kappa$, also $q^4\mid X$. Set
+\[
+ w=X/q,\qquad B_t=(K_0+w)C-F,\qquad B=qB_t.
+\]
+The remaining partial fractions give $q^3\mid Y$ and $q-1\mid B_t$,
+using $W=1\pmod{q-1}$. Thus $t=B_t/(q-1)\ge0$ is an integer.
+The fixed-minus auxiliary parity lemma gives $R=3\pmod4$, and the
+same ratio rounding recovers the source half-binomial $Y$.
+
+The parent's fresh unscaled source reconstruction, at
+$A_{\mathrm{source}}=Y(X+1)+2$, now applies to the recovered data.
+It does not reuse $I_*$ or equate the two Pell parameters. The pinned
+source61/native/controller calibration yields a finite syntactic
+refutation. This proves soundness with exactly that inherited calibration.
+
+\subsection{Completeness by a new strong Pell period}
+A finite refutation supplies the parent's canonical source data with
+$X=2^R>q$, $R=3\pmod4$, $r\ge48$, $q^3\mid Y$, $q^4\mid X$ and
+$t\ge0$. Retain $J,F,\alpha,Y$ and set $x=X-q>0$. The unchanged
+zero-offset ratio lemma supplies positive integers
+\[
+ c=\psi_A(R),\quad k=2\psi_{2V_0+1}(r+1),\quad
+ \tau=\chi_{2V_0+1}(r+1),
+\]
+\[
+ \eta=c-kY>0,\qquad\zeta=k-\eta>0,\qquad
+ \rho=(k-R-1)/\mu^2\ge1.
+\]
+Choose a positive $m$ such that $\tau c^2\mid\psi_A(m)$. This exists
+by finiteness: the determinant-one recurrence matrix
+\[
+          \begin{pmatrix}2A&-1\\1&0\end{pmatrix}
+\]
+has a positive power equal to the identity modulo $\tau c^2$. Its
+corresponding Pell ordinate is zero modulo that modulus. Set
+\[
+ I_*=\psi_A(m),\qquad i=\frac{I_*}{\tau c^2}>0,
+          \qquad f=\chi_A(m).
+\]
+Then $E=ic^2$, $D=\tau^2$ and
+$\mathcal F=1+\Delta DE^2=f^2$. No divisibility of the parent's
+former strong ordinate is assumed.
+
+The retained universal auxiliary-completeness lemma applies to this
+arbitrary new strong pair because $R=3\pmod4$, $c=\psi_A(R)$ and
+$c\mid I_*$. It supplies positive $T_*,u_*$ with
+\[
+ V=f^2(cT_*-R)-c,\qquad y=V+u_*,\qquad QV^2-(Q-1)y^2=1.
+\]
+The same explicit growth estimate gives $T_*>\alpha$; put
+$T=T_*-\alpha>0$. Thus the auxiliary witness is also genuinely rebuilt.
+
+Projection gives an integer $k_+=K_+/H$ with $0<k_+<Xc$.
+As in the parent, $f>(A-1)I_*>Xc$ and $\tau>Y\ge Y/q^3$.
+Since $\tau,f\ge3$, $\tau f>\tau+f>Y/q^3+k_+$. Define
+\[
+ n=Wt+\rho+\tau f+u_*-Y/q^3-k_++X/q^4.
+\]
+It is a positive integer, including when $t=0$. Substitution into
+\eqref{eq:fused-center} gives $Z/M=\tau f+y$, so one factor of the
+quartic norm vanishes. This constructs all ten positive coordinates
+from every refutation. A pointwise positive inverse between the old
+and new witness coordinates is neither needed nor asserted.
+
+\subsection{Exact degree and reproducible scope}
+Give each variable degree one and each fixed coefficient degree zero.
+The degree bounds for the polynomial abbreviations are
+\[
+ A:4,\ D:16,\ E:5,\ \mathcal F:34,\ Q:42,\ V:38,\ L:25,
+ \ W:27,\ M:13,\ Z:51.
+\]
+The uncancelled syntactic bound on $\mathcal N$ is 288. Put $Z_0=Z-MV$;
+its degree is 40, with highest part furnished uniquely by
+$-H\mu^2q^3WB$. The exact identity
+\[
+ \omega:=s-v
+  =\delta Z_0^2+2\delta MVZ_0-M^2(V^2-1)
+\]
+has summand bounds 122, 133 and 102. Also $\deg u=118$ and
+$\deg v=144$. Hence
+\[
+ \mathcal N=(\omega-u)^2-4uv
+\]
+has unique top candidate $\omega^2$ of degree266; the other term bounds
+are 251,236 and262.
+
+Set $q_0=\beta J$, $X_0=q_0+x$, $k_0=\eta+\zeta$ and
+\[
+ B_0=(q_0K_0+X_0)(q_0-F-\alpha)-q_0F.
+\]
+The complete leading form is
+\[
+ \omega_0=2^7q_0^{63}X_0^{15}i^5Y^{31}k_0^{16}B_0(q_0-F).
+\]
+The highest power of $x$ in $\omega_0^2$ is32. Selecting
+$\alpha^2F^2\eta^{32}$ in the remaining factors gives
+\[
+ [J^{126}x^{32}i^{10}Y^{62}\eta^{32}\alpha^2F^2],\mathcal N
+                  =2^{14}\beta^{126}>0.
+\]
+The exponents sum to 266, proving the exact total degree at the actual
+fixed tuple.
+
+The portable packet contains the full circuit, coherent coefficient
+payloads, copied ordinary dependencies, \texttt{build.py}, and a Python
+standard-library-only independent \texttt{check.py}. Both normal and
+optimized Python runs check the complete literal circuit, all fixed
+payload hashes, the full norm and centering identities, 24 exact
+independent-formula controls, actual-payload modular controls, nonzero
+leading homogeneous witnesses, six finite Pell-period/fused-kernel cases,
+64 signed whole-polynomial old/new comparisons, and five rejected mutations. These finite checks are transcription and
+algebra checks; they do not replace the unbounded proof or the inherited
+native/source calibration. The inherited arithmetic calibration is pinned to
+repository commit \texttt{84e16e43092614ba}\allowbreak\texttt{e262ca59651cb9d77e31a255}.

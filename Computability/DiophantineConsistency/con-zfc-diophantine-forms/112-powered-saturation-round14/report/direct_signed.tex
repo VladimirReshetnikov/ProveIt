@@ -1,0 +1,258 @@
+\section{A signed direct certificate in 519 integer variables}
+\label{sec:direct519}
+
+The principal unrestricted-integer endpoint is
+\[
+  P_{519}(z_1,\ldots,z_{519})=\sum_{j=1}^{321}R_j(z)^2,
+\]
+where every $R_j$ is the literal integral quadratic listed in the
+accompanying equation file.  Its exact degree is four, its collected
+expansion has $6253$ nonzero monomials, and its largest absolute
+coefficient is $411060$.  There are no implicit sign conditions,
+variable exponents, unspecified arithmetic ports, or program parameters
+in this polynomial.  Its ordinary mathematical correctness proof gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl[\forall z\in\mathbb Z^{519}\;P_{519}(z)\ne0\bigr]
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This is an equivalence, not a proof of consistency.  No new complete
+Lean proof or object-language derivation is asserted.
+
+\subsection{The signed arithmetic interface}
+
+Start with the square-shell reciprocal prime-power source in the preceding
+sections, retaining the large carrier
+\[
+ M=M_0+1=((t+1)^t)^{2^{22}},\qquad
+ R=2+t+x+y+M_0,\qquad K=2R.
+\]
+Let $F$ denote the proposed factorial, $\rho=Ft^2$,
+$V=(\rho+1)^t$, $B=\binom{F^2+t}{t}$, $N=B^K$, and
+$q=N(N+V+1)^K$.  Until the arithmetic graphs are justified these are
+names for their proposed outputs, not assumptions about their meanings.
+
+Replace the common Pell budget by
+\[
+ W=2+\sum_{a\in\mathcal A}a^2,
+\]
+where $\mathcal A$ is the finite set of distinct actual base, exponent,
+and output atoms of the nineteen power requests.  The atom list and its
+affine expansion certificate are supplied.  Thus $W\ge2$ and $|a|<W$
+without a sign premise on any power output.  Retain the shared norm
+\[
+ A^2-W^3(W+2)(z+1)^2=1,\qquad A,z\ge0.
+\]
+Pell classification at base $W+1$, together with
+$Y_j(W+1)\equiv j\pmod W$, gives
+$A\ge(W+1)^W$.  Therefore, for $1\le n<W$,
+\[
+ T_n=2An-n^2-1>W^W+W>0.
+\]
+
+The finite indexed-Pell certificate inherited from the prime-power
+construction admits signed comparison coordinates and signed principal
+abscissa.  Its hypotheses are $A\ge2$, comparison base at least two,
+$|U|\ge2$, $1\le k\le Y$, the three norm equations, the divisibility
+$Y^2\mid V_{\rm aux}$, and its four congruences.  It gives
+\[
+ |X|=X_k(A),\qquad Y=Y_k(A).
+\]
+For completeness, the signed extension follows by classifying absolute
+values of all three norm solutions.  The abscissa congruence gives the
+comparison index congruent to either sign of the principal index modulo
+$2n$, and the ordinate congruence gives either sign of $k$ modulo $4Y$.
+Squared divisibility gives $Y\mid n$.  Consequently the principal index
+is congruent to $k$ or $-k$ modulo $2Y$.  Both lie in $[1,Y]$, so they
+coincide, including the endpoint case.  This is the same indexed-Pell
+lemma used by the inherited 553-integer proof, not a finite-test inference.
+
+For the signed power row
+\[
+ X+(n-A)Y=m+T_n u
+\]
+with $1\le n,k<W$ and $|m|<W$, a positive $X$ yields
+$m\equiv n^k\pmod {T_n}$ and hence $m=n^k$ by the strict interval bound.
+A negative $X$ instead gives $mn^k\equiv-1\pmod {T_n}$: multiply the two
+conjugate expressions and use the norm.  Since
+$|mn^k+1|<T_n$, this forces $mn^k=-1$.  It is impossible for $n\ge2$;
+for $n=1$ it allows only $m=-1$.  Thus a single request with base at least
+two orients the shared index pair for all requests at that exponent.
+
+\subsection{Why the auxiliary nonzero guard disappears}
+
+The earlier 553-integer construction inserted a three-witness guard for
+$U^2\ge2$.  It is unnecessary in the present reciprocal source.
+Every seed exponent is already positive before any power has been
+interpreted.  The complete list consists of
+\[
+ t,\ K,\ Ft^2+t,\ F^2+t,\ y+1,\ x+1,
+ \quad\hbox{and the positive encoded representatives.}
+\]
+The seed $t+1$ is derived by the existing addition identity and is positive
+as well.  The retained seed guards imply $t\ge1$, $x,F,r_0\ge0$ and
+positive encoded representatives.  The final carrier squaring already
+implies $M_0+1\ge0$, whether or not its power input has the intended value.
+Hence
+\[
+ y=M_0+r_0+2\ge1,\qquad
+ R=t+x+r_0+2(M_0+1)+2\ge3.
+\]
+Every seed inequality $Y_i=k_i+e_i$, $e_i\ge0$, therefore gives $Y_i\ge1$.
+The unchanged common auxiliary product
+\[
+ V_{\rm aux}=\prod_iY_i^2\,(v+1),\qquad v\ge0,
+\]
+is positive.  Its norm yields $U^2\ge A^2\ge4$, proving the omitted
+guard without a circular use of any power output.  The emitted certificate
+expands each seed exponent after substituting
+$M_0=Z-1$, $y=Z+r_0+1$ with $Z\ge0$; every resulting polynomial has
+nonnegative coefficients and positive constant term.
+
+\subsection{The noncircular recovery order}
+
+Sixty natural seed coordinates are guarded by
+$s=a^2+b^2+c(c+1)$.  Legendre's three-square theorem applied to $4s+1$
+proves that this represents exactly the nonnegative integers.  The
+coordinate list and an ordered exact sign-inference certificate are part
+of the artifact; all other coordinates are unrestricted.
+
+Let $D$ be the factorial binomial output, and let $r,s,o$ be its retained
+nonnegative remainders and slacks.  Before interpreting any binomial,
+the actual raw rows imply
+\[
+ D=r+s+1\ge1,\qquad q=D+o+1\ge2.
+\]
+The existing request $q^t$ therefore orients the $t$-indexed pair.  The
+request $(t+1)^t$ now has its true value, recovering $M_0\ge0$ and the
+usual endpoint signs.  The request $(Ft^2+1)^t$ is at a positive base,
+possibly initially one, and shares the already oriented pair; hence
+$V\ge1$.  The raw factorial rows give $DF=V+s$, so $F\ge1$ and then
+$V\ge2$.
+
+The reciprocal index row is
+\[
+ C+F^2+1=B i_q.
+\]
+Here $C\ge1$ and the output $B$ is retained nonnegative, so $B>0$.
+The request $B^K$ either has its intended positive output $N$, or its
+only remaining inverse case has $B=1$ and $N=-1$.  In both cases the
+second $K$-indexed base satisfies
+\[
+ N+V+1\ge2.
+\]
+That request orients the $K$ pair and excludes the inverse case.  Thus
+$N=B^K>0$ and the radix has its intended value.  Every remaining seed
+has an actual request at base $q$ or $q+1$, both at least two.  All its
+exponents are positive by the preceding subsection.  This recovers all
+nineteen powers, without first assuming the factorial, product-binomial,
+or range-binomial conclusions under validation.
+
+The natural source's ordered factorial, low-digit, prime-power lifting,
+and CRT arguments now apply unchanged.  Required Euclidean quotients
+are nonnegative automatically from their positive divisors and bounded
+nonnegative remainders.  The auxiliary congruence quotients and comparison
+coordinates need not become nonnegative; only the proved Pell congruences
+use them.  Simultaneous Pell completeness supplies compatible witnesses
+for any genuine semantic certificate.
+
+\subsection{Factoring the Horn squares over the integers}
+
+Write the nine ordinary axiom balances, including truth, and the two
+inference balances as $L_1,\ldots,L_{11}$.  Let $D_b$ be the guarded
+bundle balance and
+\[
+ G=(c-a)^2(c-b)^2-(d+1)^2.
+\]
+The original Horn summand is
+\[
+ \left(\prod_{i=1}^{11}L_i^2\right)(D_b^2+G^2).
+\]
+Instead form signed intermediate products and one final square:
+\[
+ H=\prod_{i=1}^{11}L_i,
+ \qquad H^2(D_b^2+G^2).
+\]
+These are identically equal over every commutative ring.  Likewise form
+$h=(c-a)(c-b)$ and $G=h^2-(d+1)^2$ before squaring $G$.
+This removes duplicated square gates.  The two beta squares remain
+outside the Horn product.  Merely replacing $H^2$ by $H$ in their common
+sum would be unsound because of cancellation; that change is not made.
+
+The factorization certificate identifies every original square root,
+the eleven product links, and every changed row.  It checks that no
+intermediate factor escapes this subnetwork.  Given an old zero, define
+the new signed factors and products; given a new zero, restore the old
+squared factors and their products.  The visible Horn value and all
+other coordinates agree exactly.  Existing sign guards mention none
+of the changed internal coordinates.  Therefore the change preserves
+integer-zero existence in both directions, independently of arithmetic
+or logical assumptions.
+
+\subsection{Projection and integral translation}
+
+After the sixty sign guards, the signed source has 734 coordinates and
+536 rows.  Factorization has 735 coordinates and 535 rows before pruning.
+The recorded monic projection deletes 214 coordinates, of which 168 have
+affine and 46 have quadratic integral restorations, and removes two
+unconstrained coordinates.  It leaves 519 coordinates and 321 rows.
+Every deleted defining row is exactly $z-Q$ up to sign.  A quadratic
+$Q$ is substituted only where $z$ occurs linearly in every other row,
+so all residuals remain quadratic.  Reversing the substitutions gives
+the unique integral lift of every deleted defined coordinate.
+
+Finally translate each retained encoded seed, $t_0$, $M_0$, and retained
+coordinate whose name ends in \texttt{minus1} by minus one: the convention
+is $z_{\rm old}=z_{\rm new}-1$.  The exact coordinate indices, not the
+names, define the transformation in its certificate.  Its inverse adds
+one, so this is a bijection of $\mathbb Z^{519}$.  It absorbs offsets
+that otherwise inflate constant and linear coefficients.  The degree
+and variable count stay unchanged, while monomials fall from 6816 to
+6253 and coefficient height from 6474801 to 411060.  This is a coordinate
+choice, not a claim of globally minimal height.
+
+\subsection{Finite evidence and logical scope}
+
+The independent-friendly artifact consists of the raw quadratic source,
+square-budget and sign certificates, source-factorization certificate,
+monic elimination certificate, integral translation certificate, final
+quadratic residual list, and fully collected quartic coefficients.
+The standard-library reproduction script imports no downloaded builder.
+Exact coefficient reconstruction checks these finite algebraic claims;
+the unbounded Pell, CRT, and proof-flow arguments establish their meaning.
+
+The numerical-calculus calibration remains
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} followed by
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+Square-shell recursive recoding fixes truth and falsity and transports
+all formula and variable positions.  No K215 execution, Jones polynomial,
+or Sun variable reduction occurs in this construction.  Full transitive
+formal-kernel checking, global minimality, and worldwide priority are
+not claimed.
+
+\subsection{The separate 517 variable tradeoff}
+
+Applying the same signed compiler to the derived-label factorial-carrier
+source yields a second quartic in 517 unrestricted integers, with 310
+residuals, 6774 collected monomials, and coefficient height 3904267.
+The complete arithmetic proof for that source is separate: it replaces
+the large carrier by $F=t!$ and certifies the derived label sum by a
+range binomial rather than a ninth independent local coordinate.
+It is not a further projection of $P_{519}$.
+
+The signed proof adapts without an additional guard.  Here
+$y=F+r_0+1\ge1$ and $K=2(2+t+x+y+F)>0$ immediately.  The additional
+seed exponent is the derived label sum $J$; its constructor circuit
+uses only nonnegative addition and multiplication and has an explicit
+positive constant summand.  Therefore $J\ge1$ before power recovery.
+The emitted version-two positivity certificate follows these gates
+compositionally, retaining positive lower bounds capped at 64; it
+does not expand the enormous polynomial $J$.  All other seed indices
+are the same positive types already listed.  Thus the product again
+forces $V_{\rm aux}>0$ and $|U|\ge2$ without a guard.  The raw $q\ge2$
+argument orients $t$ directly, the factorial ceiling forces $F\ge1$,
+and the same two-request argument orients $K$.  Source factorization,
+integral projection, and the explicitly recorded coordinate translation
+then establish the 517-variable endpoint.  It improves the variable
+count by two but has more terms and larger coefficients than the
+primary 519-variable presentation; neither dominates the other.

@@ -1,0 +1,244 @@
+\section{Recovering signs from bounded power certificates}\label{sec:signed}
+\subsection{Why the old order of reasoning costs variables}
+
+The direct arithmetic source has a finite collection of proposed power identities \(m=n^k\). A common Pell frame provides a parameter large enough to certify all these powers simultaneously. Its former radius was the sum of the distinct power bases, exponents and proposed outputs, plus two. This is useful when those quantities are already known nonnegative.
+
+Several proposed outputs obtain that sign only from Euclidean-division rows. For example, an output may satisfy
+\[
+m=M Lq+r,\qquad L=r+s+1.
+\]
+If \(M\ge1\) and \(q,r,s\ge0\), then \(m\ge0\). The source therefore paid for a nonnegativity certificate for \(q\), so that \(m\) could occur in the radius, so that the power certificate could prove \(m=n^k\). Once the power is known, \(m>0\) already forces \(q\ge0\). The apparent circularity can be removed by changing how the radius bounds \(m\).
+
+Let \(\mathcal A\) be the 43 distinct original frame atoms. Let \(\mathcal M\subset\mathcal A\) be the nine selected power outputs. Replace the final frame-definition row by
+\begin{equation}\label{eq:newradius}
+\boxed{W=2+\sum_{a\in\mathcal A\setminus\mathcal M}a+
+\sum_{m\in\mathcal M}m^2.}
+\end{equation}
+The 34 unselected atoms retain direct or derived nonnegative signs. The selected nine are allowed to be arbitrary integers at this stage. Nevertheless,
+\[
+0\le a\le W-2\quad(a\notin\mathcal M),\qquad
+m^2\le W-2\quad(m\in\mathcal M),
+\]
+so every selected output satisfies \(|m|<W\). Squaring the outputs changes the frame row from linear to quadratic; its square remains quartic in the final equation.
+
+\subsection{An exact signed-output lemma}
+
+For an integer \(A\ge2\), define the Pell sequences by
+\[
+\chi_A(j)+\psi_A(j)\sqrt{A^2-1}
+=\bigl(A+\sqrt{A^2-1}\bigr)^j\qquad(j\ge0).
+\]
+These expressions abbreviate the integer sequences given by the initial values \(\chi_A(0)=1,\psi_A(0)=0\), \(\chi_A(1)=A,\psi_A(1)=1\), and recurrence \(u_{j+2}=2Au_{j+1}-u_j\).
+
+\begin{lemma}[Signed power recovery]\label{lem:signedpower}
+Suppose \(W,A,n,k,m\) are integers satisfying
+\[
+W\ge4,\quad A>W^W,\quad 2\le n<W,\quad 1\le k<W,\quad |m|<W.
+\]
+Put \(T=2An-n^2-1\). Suppose also
+\[
+Y=\psi_A(k),\qquad X\in\{\chi_A(k),-\chi_A(k)\},\qquad
+T\mid X-(A-n)Y-m.
+\]
+Then \(X=\chi_A(k)\) and \(m=n^k\).
+\end{lemma}
+
+\begin{proof}
+First \(T>A\). Indeed \(n\ge2\), \(n\le W-1\), and \(A>W^W\) give
+\[
+T-A=(2n-1)A-n^2-1>A-(W-1)^2-1>0.
+\]
+Set \(x=\chi_A(k)\), \(y=\psi_A(k)\),
+\(p=x-(A-n)y\), and \(q=x+(A-n)y\). The Pell norm gives the exact identity
+\[
+pq=x^2-(A-n)^2y^2=1+Ty^2.
+\]
+The recurrence gives \(p\equiv n^k\pmod T\): its initial values are 1 and \(n\), and modulo \(T\) the sequence \(n^j\) satisfies the same recurrence, because \(n^2-2An+1=-T\).
+
+If \(X=-x\), the proposed power row gives \(m\equiv-q\pmod T\). Consequently \(T\mid mn^k+1\). This multiple is nonzero: \(n^k\ge2\) cannot divide \(-1\). On the other hand,
+\[
+|mn^k+1|\le(W-1)^W+1<W^W<T,
+\]
+a contradiction. The strict inequality follows directly by expanding \(((W-1)+1)^W\).
+
+Thus \(X=x\). The row now gives \(T\mid m-n^k\), while
+\[
+|m-n^k|\le(W-1)+(W-1)^{W-1}<W^W<T.
+\]
+The multiple must be zero, proving \(m=n^k\).
+\end{proof}
+
+The lower bound \(n\ge2\) is essential. If \(n=1\), the negative-root branch admits \(m=-1\), and \(mn^k+1=0\) defeats the argument. Every selected call below has the same source base, raw coordinate 531, whose retained constructor proof gives a value at least two. The transformation is not applied to arbitrary base-one calls.
+
+\subsection{The nine actual deletions}
+
+Raw indices refer to the frozen 1,259-coordinate body before projection. They are zero-based labels, not additional unknowns. The omitted scalar guards and their associated calls are as follows.
+
+\begin{center}\small
+\begin{tabular}{rrrrl}
+\toprule
+Call & Output & Exponent & Retained index slack & Omitted guard\\
+\midrule
+7&546&110&825&548: exact-binomial high quotient\\
+10&573&44&891&575: range quotient\\
+12&583&46&934&584: range quotient\\
+13&591&48&964&592: range quotient\\
+14&599&50&994&600: range quotient\\
+15&607&52&1024&609: range quotient\\
+17&617&54&1084&618: range quotient\\
+18&625&56&1114&627: range quotient\\
+20&635&58&1174&636: range quotient\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Precisely source row 1176 is replaced by \eqref{eq:newradius}. All other original body rows and variable records are retained. The former intermediate summation gates may still define unused bookkeeping coordinates; the integer projection eliminates such coordinates through their defining rows. No unconstrained variable is silently deleted.
+
+The 75-predicate parent becomes a 66-predicate parent. A nonnegative expression \(E\) is encoded by
+\begin{equation}\label{eq:guard}
+E=a^2+b^2+c(c+1),\qquad a,b,c\in\Z.
+\end{equation}
+The right side is always nonnegative for integer inputs. Conversely every nonnegative integer is represented: apply the three-square theorem to \(4E+1\), whose representation has one odd and two even coordinates. Dividing by four gives \eqref{eq:guard}. Thus these rows are exact sign conditions, with no implicit natural-number domain on the witnesses.
+
+The new unprojected system has \(1259+3\cdot66=1457\) variables and \(1177+66=1243\) quadratic rows. In particular, all sign requirements used in the proof are actual polynomial constraints.
+
+\subsection{The bootstrap must precede the power interpretation}
+
+Deleting the quotient guards also removes some old intermediate sign deductions. Reusing the entire old sign ledger without checking its premises would be invalid. The new certificate instead filters it in dependency order.
+
+One initial sign is recovered before this filtering. Let \(f,N,r,s,C\) denote raw coordinates \(87,93,94,95,91\). The unchanged rows give
+\[
+C=r+s+1,\qquad fC=N+s,
+\]
+and hence
+\[
+N=fr+(f-1)s+f\ge2,
+\]
+using only the retained conditions \(f\ge2\), \(r,s\ge0\). No factorial or power interpretation is used here.
+
+With that initial fact and the retained scalar predicates, 605 of the 643 original prefix-coordinate signs are certified. The 38 missing prefix signs lie in the nine deleted quotient/output blocks and their local arithmetic. Every unselected frame atom still has a nonnegative sign. All 431 originally listed strict-positive constructor deductions remain licensed. The selected exponents are positive; their actual retained index-slack constraints give \(Y\ge k\ge1\).
+
+The unchanged initial modulus guard establishes \(A\ge2\). The bootstrap Pell row has the form
+\[
+A^2-W^3(W+2)Z^2=1.
+\]
+The standard classification at base \(W+1\) writes \(W|Z|=\psi_{W+1}(\ell)\). Since \(A\ge2\), the bootstrap row forces \(Z\ne0\). The congruence \(\psi_{W+1}(\ell)\equiv\ell\pmod W\) therefore makes \(\ell\) a positive multiple of \(W\). No sign of the original \(Z\) is assumed. Therefore
+\[
+A\ge\chi_{W+1}(W)>W^W.
+\]
+The magnitude conclusions of \eqref{eq:newradius} supply all the bounds required by Lemma~\ref{lem:signedpower}.
+
+The common unit and the signed comparison-base argument are unchanged. They use the retained strict common-product guard, the exact unit norm, and each selected index slack to recover
+\[
+Y=\psi_A(k),\qquad |X|=\chi_A(k).
+\]
+They do not require the omitted quotient signs or prior power meanings. The original polynomial row identities supply the required divisibility relation. Thus Lemma~\ref{lem:signedpower} proves all nine selected outputs positive with their exact power values.
+
+\subsection{Restoring the omitted inequalities}
+
+For a range quotient, the unchanged exact identities are
+\[
+m=M Lq+r,\qquad L=r+s+1,
+\]
+where \(M\ge1\), \(r,s\ge0\), so \(L\ge1\) and \(0\le r<L\). If \(q\le-1\), then
+\[
+m\le-ML+r\le-L+r<0,
+\]
+contrary to the recovered value \(m=n^k>0\). Hence all eight omitted range quotients are nonnegative.
+
+The extra exact-binomial quotient has the identities
+\[
+m=L(C+bq)+r,\qquad L=r+s+1,\qquad b=C+z+1,
+\]
+where \(C,r,s,z\ge0\). If \(q\le-1\), then \(C+bq\le C-b\le-1\), again giving \(m\le-L+r<0\). This proves raw coordinate 548 nonnegative. The other two exact-binomial high-quotient guards are retained: their seed-index dependencies do not license the same early use of this lemma.
+
+After these nine signs have been recovered, all premises of the old prefix and factorial/index arguments are restored. The remaining proof can establish the exact arithmetic meanings in its original order: the powers, the factorial/binomial identities, the CRT range conditions, and finally the finite proof-certificate condition.
+
+\subsection{Soundness and completeness are existence maps}
+
+The new radius changes the private Pell data. It is false that an arbitrary old integer zero becomes a new zero merely by deleting guard witnesses. Nor does a new zero satisfy the old final frame-definition row at the same coordinates.
+
+For soundness, first apply the preceding bootstrap and signed-power recovery at the new source tuple. The old arithmetic proof uses the frame-definition equality to obtain magnitude bounds and a large Pell parameter; those conclusions have just been established directly for the new radius. It does not use the literal sum elsewhere in the semantic computation. The remaining original source proof therefore produces the same finite C222 derivation and syntactic refutation. Equivalently, once the genuine semantic data are known, the old private frame can be rebuilt. The certificate records that the original power arguments are allocated before the private Pell coordinates, so that this rebuilding does not change those arguments.
+
+For completeness, begin with a genuine finite derivation and its original semantic arithmetic witnesses. Compute the true terminal powers, then define the new \(W\) by \eqref{eq:newradius}. Take
+\[
+A=\chi_{W+1}(W),\qquad Z=\psi_{W+1}(W)/W.
+\]
+The quotient is an integer by the displayed index congruence. Construct the main pairs at their fixed indices, then choose a common unit and comparison parameter by the inherited finite-period and CRT construction. Finally construct the progression quotients and the ordinary power quotients. Every requested base, exponent and output was fixed before these private parameters. This is a finite ordered construction, not a simultaneous fixed-point assumption.
+
+All retained guard values have their required signs in this canonical construction. Choose fresh triples for \eqref{eq:guard}. This gives a zero of the complete new 1,457-variable system. The exact integer projections then give zeros of \(P_{586}\) and \(P_{591}\).
+
+\begin{proposition}\label{prop:existence}
+The new 66-predicate integer source has a zero if and only if the calibrated finite C222 proof certificate exists. Its two projected quartics have integer-zero existence equivalent to that source.
+\end{proposition}
+
+\begin{proof}
+The preceding two constructions give the source equivalence. For projection, each eliminated coordinate has a unique integer polynomial restoration obtained from an actual monic defining row. Substitute it into every surviving row, including the guard rows. Reverse these substitutions to lift any projected zero. The complete identities and variable partitions are supplied and independently checked. No sign assumption is used during this algebraic lifting; signs are interpreted only at the restored source tuple.
+\end{proof}
+
+\subsection{A stronger radius in the quotients themselves}\label{sec:quotient}
+
+The preceding construction bounds each selected output directly by its square. It can be improved by bounding the quotient that produces that output. Let \(\mathcal Q\) be the nine omitted quotient coordinates listed above. Use instead
+\begin{equation}\label{eq:quotientradius}
+\boxed{W=5+\sum_{a\in\mathcal A\setminus\mathcal M}a+
+\sum_{q\in\mathcal Q}q^2.}
+\end{equation}
+The nine terminal outputs are absent from this expression. All other source rows and all 66 predicates are the same as before. This is the source for the preferred 577-variable equation.
+
+Every unsigned atom now satisfies \(0\le a\le W-5\), and each omitted quotient satisfies \(|q|<W\). In particular, every selected base and exponent obeys
+\[
+2\le n\le W-5,\qquad 1\le k\le W-5,
+\]
+so \(W\ge7\). The same independent prefix reasoning is available.
+
+Write \(b\) for the radix, raw coordinate 530, and \(M\) for raw coordinate 129. The unchanged constructor rows give
+\[
+b=M(1+N+N'),\qquad M\ge1,\quad N\ge2,\quad N'\ge0.
+\]
+Thus \(1\le M\le b<W\) before any intended product or factorial interpretation. Each range-block denominator \(L\) is an unsigned frame atom, so \(L<W\). Its remainder row gives \(0\le r<L\). The exact identity \(m=MLq+r\) consequently implies
+\[
+|m|\le ML|q|+r<W^3+W<W^4.
+\]
+For the extra binomial quotient, \(b=C+z+1\) gives \(0\le C<b<W\), and
+\[
+|m|\le L(C+b|q|)+r<W^3+W^2+W<W^4.
+\]
+These bounds use neither the omitted signs nor a selected power's meaning.
+
+\begin{lemma}[Exponent margin compensates for a polynomial output bound]\label{lem:margin}
+The conclusion of Lemma~\ref{lem:signedpower} still holds if its bounds are replaced by
+\[
+W\ge7,\quad A>W^W,\quad 2\le n\le W-5,\quad
+1\le k\le W-5,\quad |m|<W^4.
+\]
+\end{lemma}
+\begin{proof}
+Again \(T>A\). The negative-root case would make the nonzero integer \(mn^k+1\) a multiple of \(T\). But
+\[
+|mn^k+1|\le(W^4-1)W^{W-5}+1
+\le W^{W-1}<W^W<T.
+\]
+For the positive-root case,
+\[
+|m-n^k|<W^4+W^{W-5}\le2W^{W-1}<W^W<T.
+\]
+The same congruence arguments therefore recover \(X>0\) and \(m=n^k\).
+\end{proof}
+
+This is the main strengthening. A polynomial magnitude bound on a proposed output suffices when the exponent has a fixed margin below the common radius. The radius constant five supplies that margin without an extra variable.
+
+\subsection{Selective reuse of the inherited power proof}
+
+Equation~\eqref{eq:quotientradius} does not imply that every original proposed output is smaller than \(W\), and it is not asserted to be larger than the old linear radius. The proof must account for this explicitly.
+
+The nine selected calls are settled by Lemma~\ref{lem:margin}. Their positive values then restore the nine omitted quotient signs by the same division arguments as before. The other twelve power calls retain their direct output bounds from the 34 unsigned frame atoms. In particular, the inherited local factorial and missing-index bootstrap interprets calls 1, 5 and 6 and orients calls 0 and 9; none is among the selected nine. Its parity step also uses the unchanged row for call 2, without presupposing that power's meaning. Call 2 is also among the twelve retained calls. Every magnitude bound needed in that bootstrap is therefore still available. One replays its argument for those twelve calls, using the already proved selected powers when needed. This establishes all 21 requested powers without applying an invalid global bound to the selected outputs.
+
+Once the powers are known, the later factorial, binomial, CRT and proof-decoding arguments no longer need a bound \(m<W\) on a selected terminal output. Soundness reaches the same finite refutation.
+
+For completeness, choose genuine semantic data and true powers first. The nine quotients are then ordinary Euclidean witnesses fixed by those data. Define \(W\) by \eqref{eq:quotientradius}, and rebuild all private Pell parameters in the previous order. Every base and exponent is smaller than \(W\), so its true power is smaller than \(W^W<A\); this supplies the size condition needed by the canonical power-witness construction even when that output is larger than \(W\). There is no dependence of a radius input on a subsequently chosen private Pell variable.
+
+\begin{corollary}\label{cor:quotient}
+The quotient-radius 66-predicate source has a zero exactly when the calibrated finite C222 proof certificate exists. Exact integer elimination gives \(P_{577}\) with 577 variables and 363 rows, and \(P_{582}\) with 582 variables and 368 rows. Both have exact degree four.
+\end{corollary}
+
+The quotient-radius system removes all 27 private sign witnesses and leaves the old terminal-output eliminations available. Its 577-variable projection has 880 explicit integer restorations; the 582-variable projection has 875. These are full inverse certificates against the actual source, not dimension estimates.

@@ -1,0 +1,397 @@
+\section{A square gap that removes the radical weight}
+\label{sec:gap}
+
+The parent uses $9B_\tau$ in place of $B_\tau$, so its signed radical
+relation contains $3\tau$. Deleting that weight requires more than checking
+the intended integral witnesses: a rational signed sum of irrational
+roots could otherwise introduce extra solutions. The following argument
+excludes every such cancellation before any source semantics is used.
+
+\begin{lemma}[A square gap]
+\label{lem:gap}
+Let $x\ge2$ and $t\ge1$ be integers. Put
+\[
+\Delta=t(x+1)(t(x+1)+2),\qquad v=t^2x,
+\quad D=xt(x+1)(t(x+1)+2)(t^2x+1).
+\]
+Then $\Delta v(v+1)=t^2D$ is not a rational square.
+In particular $\Delta I^2=v(v+1)k^2$ has no solution with nonzero
+integers $I,k$.
+\end{lemma}
+
+\begin{proof}
+Set $m=\lfloor x/2\rfloor$ and $h=t^2x(x+1)+tx+m$.
+For $x=2m$, direct expansion gives
+\[
+D-h^2=m[2t^2+4(m+1)t-m]>0,
+\tag{23}
+\]
+\[
+(h+1)^2-D=2m(4m+1)t^2-4m^2t+(m+1)^2>0.
+\tag{24}
+\]
+Here $m\ge1$. The first is positive already after replacing $t$ by 1.
+In the second, $t^2\ge t$ gives the positive lower bound
+$(4m^2+2m)t+(m+1)^2$.
+For $x=2m+1$, where $m\ge1$, the exact identities are
+\[
+D-h^2=t^2x(x+2)+2tx(m+2)-m^2>0,
+\tag{25}
+\]
+\[
+(h+1)^2-D=[tx-(m+1)]^2>0.
+\tag{26}
+\]
+The first is positive at $t=1$ and increases thereafter. In the second,
+$tx\ge2m+1>m+1$. Thus $h^2<D<(h+1)^2$ in both parity classes.
+An integer that is a rational square is an integer square, by reduction
+of its rational square root to lowest terms.
+Finally the prohibited equation would imply $D=(\Delta I/(tk))^2$.
+The excluded point $x=t=1$ gives $D=16$; the domain is essential.
+\end{proof}
+
+\begin{lemma}[Rationality of three separated radicals]
+\label{lem:rational}
+Let $a,b,c$ be positive, pairwise distinct rational numbers with
+\[
+(a+b-c)^2\ne4ab.
+\tag{27}
+\]
+If $u^2=a$, $v^2=b$, $w^2=c$ and $u+v+w$ is rational, then
+$u,v,w$ are rational.
+\end{lemma}
+
+\begin{proof}
+Write $s=u+v+w$. If $s=0$, squaring $w=-u-v$ twice contradicts
+(27), so $s\ne0$. For $K_a=s^2+a-b-c$, squaring
+$2vw=K_a-2su$ gives
+\[
+4sK_a u=K_a^2+4s^2a-4bc.
+\tag{28}
+\]
+At least one of $K_a,K_b,K_c$ is nonzero, since otherwise subtracting
+them would give $a=b=c$. The corresponding identity makes one root
+rational. The sum of the other two is rational and nonzero, since their
+squares differ. If that sum is $r=v+w$, then
+$v=(r^2+b-c)/(2r)$ and $w=r-v$.
+\end{proof}
+
+\begin{theorem}[Unweighted separation]
+\label{thm:separation}
+Use $\Delta,v$ from Lemma~\ref{lem:gap}. Suppose an integer $\mu>3$
+divides $t$, integers $I,k$ satisfy $I\ge k\ge1$, and $V$ is a
+nonzero integer. Put
+\[
+d_\tau=1+v(v+1)k^2,\quad d_f=1+\Delta I^2,\quad
+Q=\Delta^2I^2,\quad d_y=\frac{QV^2-1}{Q-1}.
+\tag{29}
+\]
+Every rational signed sum of $\sqrt{d_\tau},\sqrt{d_f},\sqrt{d_y}$
+has all three radicals rational.
+\end{theorem}
+
+\begin{proof}
+We have $\Delta>v+1>1$, so $Q>1$ and all three radicands are positive.
+Lemma~\ref{lem:gap} excludes $d_\tau=d_f$.
+If $d_\tau=d_y$, then $Q(d_\tau-V^2)=d_\tau-1$,
+but its right side is strictly between 0 and $Q$, since
+$v(v+1)k^2<\Delta^2I^2$.
+If $d_f=d_y$, rearrangement gives $d_f-V^2=1/\Delta$,
+contradicting integrality. Thus they are pairwise distinct.
+
+For the remaining triangle obstruction, put $\delta=Q-1$ and
+$D_{\rm n}=QV^2-1$. Equality in (27) would imply
+\[
+[\delta(d_\tau+d_f)-D_{\rm n}]^2-4\delta^2d_\tau d_f=0.
+\tag{30}
+\]
+Modulo $\mu$ we have $\Delta=v=Q=0$,
+$\delta=D_{\rm n}=-1$, and $d_\tau=d_f=1$.
+The left side is $-3$ modulo $\mu$, impossible for $\mu>3$.
+Lemma~\ref{lem:rational} applies, with arbitrary signs on the roots.
+\end{proof}
+
+\subsection{Application on the full positive input domain}
+
+In (16), $X\ge32$, $t=\mu Y$, $\mu>3$, $c=kY+\eta>k$ and
+$I=ic^2\ge c^2>k$. Also $D_f>2c$ and $b$ is integral.
+If $b\le0$, then $V=D_fb-c\le-c$; if $b\ge1$, then
+$V\ge D_f-c>c$. Thus $V\ne0$ before the polynomial equation is used.
+Every hypothesis of Theorem~\ref{thm:separation} is unconditional on the
+supplied positive domain.
+
+The octic identity
+\[
+F_8(s;a,b,c)=[(s+c-a-b)^2-4(sc+ab)]^2-64scab
+\tag{31}
+\]
+factors, with $s=x^2$, into the eight signed linear radical factors.
+Since $M,\delta>0$, equation (21) implies
+\[
+\frac ZM=\epsilon_1\tau+\epsilon_2 f+\epsilon_3 y,\qquad
+\tau^2=D_\tau,\quad f^2=D_f,\quad y^2=D_{\rm n}/\delta,
+\tag{32}
+\]
+with positive roots.
+Theorem~\ref{thm:separation} makes all three roots rational.
+The first two are integers because their squares are integers; the
+retained adjacent-Pell descent lemma makes the third integral under the
+unchanged $Q=\Delta^2I^2$ and integer-$V$ hypotheses \cite{zero}.
+
+\section{The auxiliary Pell index supplies its own transport bound}
+\label{sec:transport}
+
+Removing the weight alone gives 98 operations at degree 368.
+We now show that the already encoded auxiliary Pell solution grows enough
+to remove the separate $HI$ term in the transport majorant.
+This is the additional reduction to (21).
+
+For $A\ge2$, write
+\[
+\chi_A(m)+\psi_A(m)\sqrt{A^2-1}
+=(A+\sqrt{A^2-1})^m.
+\]
+The unchanged strong/auxiliary folding argument, after the integral roots
+are recovered, gives $c=\psi_A(p)$ for an odd positive $p$.
+The parity does not require the later equality $p=R$:
+the auxiliary index is odd, and, with $m$ the strong Pell index, both
+reduction modulo $2m$ and reflection
+from an index $u$ to $2m-u$ preserve oddness.
+Since $c\ge3$, $p=1$ is excluded, hence
+\[
+c\ge\psi_A(3)=4A^2-1=4\Delta+3.
+\tag{33}
+\]
+
+Before transport, the retained first-index growth and mask estimate give
+\[
+c>8X\mu^2Y^2,\qquad R<c\alpha/4.
+\tag{34}
+\]
+These bounds do not use $C>0$, the main index equality, or the sign of
+$B_t$. In particular
+\[
+b=c(T+\alpha)-R>c(T+3\alpha/4)>c.
+\tag{35}
+\]
+
+\begin{lemma}[Auxiliary index at least five]
+\label{lem:auxfive}
+Under the recovered kernel equations and (33)--(35),
+\[
+b>8Q>2HI.
+\tag{36}
+\]
+\end{lemma}
+
+\begin{proof}
+Set $S_0=\Delta I$, so $Q=S_0^2$.
+The auxiliary equation is
+$S_0^2V^2-(S_0^2-1)y^2=1$.
+Here $V>0$. Pell classification gives
+$S_0V=\chi_{S_0}(\nu)$ at a positive index $\nu$.
+Even indices have $\chi_{S_0}(\nu)\equiv\pm1\pmod{S_0}$,
+whereas $S_0$ divides $S_0V$, so $\nu$ is odd.
+
+By (33)--(35),
+\[
+V=D_fb-c>\Delta I^2c>4\Delta^2I^2=4Q.
+\]
+The possibilities $\nu=1$ and $\nu=3$ would give respectively
+$V=1$ and $V=4Q-3$, and are impossible.
+Therefore $\nu\ge5$, and monotonicity gives
+\[
+V\ge16Q^2-20Q+5>8Q^2.
+\tag{37}
+\]
+The last inequality holds for $Q\ge3$, far below the actual lower bound.
+Because $D_f=\Delta I^2+1<Q$,
+$b=(V+c)/D_f>8Q$.
+Finally $\Delta-H=(A-2)^2>0$ gives $8Q>2HI$.
+\end{proof}
+
+\begin{lemma}[Quarter bounds for the two error terms]
+\label{lem:quarter}
+With $u=y-V$, the recovered positive roots satisfy
+\[
+0<u<b/4,\qquad e/\mu^2<b/4.
+\tag{38}
+\]
+\end{lemma}
+
+\begin{proof}
+The auxiliary equation gives
+\[
+u=\frac{V^2-1}{(Q-1)(y+V)}
+<\frac{V}{2(Q-1)}<\frac{D_fb}{2(Q-1)}.
+\]
+Here $y>V>1$, and
+$Q-1-2D_f=\Delta(\Delta-2)I^2-3>0$.
+Thus $u<b/4$.
+Also $b-e=c(T+\alpha)-k+1>0$, so $e<b$.
+Since $b>0$ and $\mu^2>4$, $e/\mu^2<b/4$.
+This upper bound also holds when $e$ is negative; no premature
+divisibility or positivity of $e$ is assumed.
+\end{proof}
+
+\subsection{Soundness of the shorter carrier}
+
+The retained bound $3\tau+f<HI$ implies $\tau+f<HI<b/2$.
+The normalized center from (18) is
+\[
+\frac ZM=n+V+\frac{K_{\rm pos}}H+\frac Y{q^3}
+-\frac{WB_t}{q-1}-\frac e{\mu^2}.
+\tag{39}
+\]
+Suppose $B_t\le-1$.
+With the new $W=1+(q-1)b$, $WB_t/(q-1)<-b$.
+The parent growth estimate already gives $K_{\rm pos}>0$.
+Using (32), (36) and (38),
+\[
+\begin{split}
+n
+&=\epsilon_1\tau+\epsilon_2f+(\epsilon_3y-V)
+-K_{\rm pos}/H-Y/q^3+WB_t/(q-1)+e/\mu^2\\
+&<b/2+b/4+b/4-b=0,
+\end{split}
+\]
+contrary to $n>0$. Thus $B_t\ge0$ and hence $C>0$.
+
+Everything after this transport step is unchanged.
+In the original order the proof recovers $3q<R<q^4-2$, $p=R$, parity,
+and then $\mu^2\mid e$. The first index is $(R+1)/2$.
+The ratio estimate and whole-product projection force $X=2^R$;
+no noninvertible factor is cancelled modulo $H$.
+The remaining transport and half-binomial conditions reconstruct the
+same unscaled native source and a finite syntactic refutation.
+The new $W$ retains residue $1$ modulo $q-1$.
+
+\subsection{Completeness}
+
+Use the parent's fresh canonical zero-offset witnesses from a finite
+refutation. Retain every coordinate except $n$. At these witnesses
+\[
+s_0=Y/q^3\ge1,\quad t_0=B_t/(q-1)\ge0,\quad
+\rho=(k-R-1)/\mu^2\ge1,\quad
+u=y-V>0,\quad\kappa=K_{\rm pos}/H>0
+\]
+are integers. With the new $W$, choose
+\[
+n=Wt_0+\rho+\tau+f+u-s_0-\kappa.
+\tag{40}
+\]
+The parent gives $\tau>k>Y\ge s_0$ and $f>\kappa$.
+Also $W>0$ because $b>c>0$, so $n>0$.
+Equation (39) becomes $Z/M=\tau+f+y$, and a norm factor vanishes.
+This is canonical reconstruction, not an asserted positive pointwise
+inverse from every parent tuple.
+
+\begin{corollary}
+At the coherent coefficients of Appendix~\ref{app:constants},
+$P_{96}$ has a positive integer zero exactly when the pinned ZFC calculus
+has a finite refutation. Therefore ordinary mathematics formalizable in
+ZFC gives (1) with $D=\Pos$ and $n=10$.
+\end{corollary}
+
+\section{Exact degrees and the direct-base companion}
+\label{sec:degree}
+
+The degree must be calculated for the entire norm. Following only the
+centered difference can miss a different leading term. Write
+\[
+s=\delta Z^2,\quad a=\delta M^2D_\tau,\quad
+b_*=\delta M^2D_f,\quad c_*=M^2D_{\rm n},\quad d=s-c_*.
+\]
+Then
+\[
+E=d^2-2(s+c_*)(a+b_*)+(a-b_*)^2.
+\tag{41}
+\]
+For the new scaled carrier the relevant degrees are
+\[
+\deg a=74,\quad\deg b_*=76,\quad
+\deg s=\deg c_*=104,\quad\deg d=86.
+\]
+The term $d^2$ has degree 172, but $-2(s+c_*)b_*$ has degree 180
+and dominates it. Since $s$ and $c_*$ have the same leading component,
+\[
+E_0=-4(c_*)_0(b_*)_0,\qquad
+(P_{96})_0=16(c_*)_0^2(b_*)_0^2.
+\tag{42}
+\]
+The subtracted norm term has degree 358, below 360.
+Thus the exact degree is \textbf{360}.
+Its full leading component is
+\[
+2^{20}q_0^{184}w^{36}i^{20}Y^{76}
+(\eta+\zeta)^{40}(q_0-F)^4,\qquad q_0=\beta J.
+\tag{43}
+\]
+For example,
+\[
+[J^{184}w^{36}i^{20}Y^{76}\eta^{40}F^4]P_{96}
+=2^{20}\beta^{184}>0.
+\tag{44}
+\]
+
+\subsection{The direct-base equation of degree 332}
+
+Replace $w$ by a positive input $x$ and set $X=q+x$.
+Keep the same zero-offset main parameter and radicands. Use
+\[
+B=(qK_0+X)C-qF,\quad W=1+q(q-1)b,\quad
+P_0=q^4(q-1),\quad M=P_0\mu^2H,
+\]
+\[
+\begin{split}
+Z={}&P_0\mu^2[H(n+V)+K_{\rm pos}]\\
+&+H[\mu^2(q(q-1)Y-q^3WB-(q-1)X)-P_0e].
+\end{split}
+\tag{45}
+\]
+Evaluate the same unweighted norm (19)--(21).
+The square gap and auxiliary index argument use $X\ge32$, not $q\mid X$,
+so apply before the direct carrier recovers that divisibility.
+The retained inequality $3\tau+f+X/q^4<HI<b/2$ supplies the corresponding
+transport estimate.
+
+For canonical completeness the direct parent has the exact map
+\[
+x=X-q,\qquad
+n_{\rm direct}=n_{\rm scaled}+(q-1)^2bt_0+X/q^4>0.
+\tag{46}
+\]
+Its numerator and denominator scale by $q$ and the norm output by $q^8$.
+The late-divisibility proof and original source reconstruction remain valid
+\cite{direct}.
+
+The direct evaluator has 102 operations.
+Its norm degrees are $(68,70,96,96,80)$, so the degree is 332.
+The leading component is
+\[
+2^{20}q_0^{156}X_0^{36}i^{20}Y^{76}
+(\eta+\zeta)^{40}(q_0-F)^4,\qquad X_0=q_0+x.
+\tag{47}
+\]
+The coefficient of $J^{156}x^{36}i^{20}Y^{76}\eta^{40}F^4$ is
+$2^{20}\beta^{156}>0$.
+This companion trades six more operations for 28 fewer degrees.
+
+\subsection{Retained intermediate equations}
+
+The packet retains the weight-only reductions, before shortening the
+transport carrier: 98 operations at degree 368 and 104 at degree 340.
+They isolate the new radical-separation theorem.
+The final 96/360 and 102/332 endpoints improve both degree and operations.
+
+For the weight-only step the exact identity
+\[
+P_9-P_1
+=16a(5a-s-b_*-c_*)(E_9+E_1)-512sc_*ab_*
+\tag{48}
+\]
+has nonzero differences of exact degrees 362 and 334 respectively,
+where $E_\lambda=d^2-2(s+c_*)(\lambda a+b_*)+(\lambda a-b_*)^2$.
+Even this first step changes the polynomial, unlike the integer norm
+rewrites.
+

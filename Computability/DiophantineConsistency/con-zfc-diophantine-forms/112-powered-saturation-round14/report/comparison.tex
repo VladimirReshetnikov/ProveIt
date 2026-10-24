@@ -1,0 +1,65 @@
+\section{Comparison with the pinned frontier}
+The comparison is frozen on 24 October 2026 at public repository commit
+\begin{center}\small\texttt{84e16e43092614bae262ca59651cb9d77e31a255}.\end{center} The active research is substantially ahead of the archival manuscript-collection README. The supplied prime-power and reciprocal-shell packets are included as baselines even where they have not yet reached that public snapshot.
+
+All following direct polynomials are quartics. Here $r$ counts quadratic residuals, $s$ counts collected monomials, and $h$ is the maximum absolute coefficient after expanding the single sum of squares.
+\begin{center}\small
+\begin{tabular}{@{}llrrrr@{}}\toprule
+Construction & Domain & Variables & $r$ & $s$ & $h$\\\midrule
+Prime-power & $\N$ &375&294&7907&$h_N$\\
+Prime-power & $\Z$ &553&348&7911&$h_Z$\\
+Reciprocal, old syntax & $\N$ &363&291&6674&83842716\\
+Reciprocal, shell syntax & $\N$ &364&292&6613&7002666\\
+Signed shell & $\Z$ &660&386&6408&3877579\\
+Public75, default & $\Z$ &604&372&9676&2445790974704\\
+Public75, affine16 & $\Z$ &609&377&8823&964213\\\midrule
+Round 14 centered & $\Z$ &519&321&6253&411060\\
+Round 14 derived & $\Z$ &517&310&6774&3904267\\
+Round 14 derived labels & $\N$ &349&268&12768&86915503\\\bottomrule
+\end{tabular}\end{center}
+The large baseline heights are
+\[
+ h_N=4951760157141530951222074278254,\qquad
+ h_Z=534790096971332833190424347930.
+\]
+All seven baseline entries were independently re-expanded from JSON residuals and compared coefficient by coefficient with the delivered polynomial, without importing a producer. The three round 14 principal entries also passed independent full expansion, source-projection, and coordinate-translation audits.
+
+\subsection{What is and is not dominated}
+The $519$-integer quartic strictly improves the supplied $553$-integer and $660$-integer equations, and the pinned public $609$-integer equation, simultaneously in variables, collected monomials, and coefficient height, at unchanged degree. Its $411060$ bound applies to every expanded coefficient, not only a radix or construction constant. The $517$-integer companion saves two more unknowns but has $521$ more monomials and a higher coefficient bound; neither new integer endpoint dominates the other in all three measures.
+
+The $349$-natural endpoint saves fourteen variables relative to the $363$-natural reciprocal equation but has $6094$ more terms and slightly larger height. Its intermediate $350$-natural factorial-slack companion has $11472$ terms and height $86523090$, another explicit tradeoff. These domains must not be merged: nonnegative unknowns are not unrestricted integer unknowns without a further proved transformation.
+
+The native-compiler route already retains a quartic in $37$ unrestricted integer variables, with $31$-variable sextic and $26$-variable octic companions, at very large fixed coefficients. Thus neither $519$ nor $517$ is a global fewest-variable quartic record. Payload bytes, coefficient bit lengths, and the height of the expanded output polynomial are different quantities.
+
+\subsection{Small variable arithmetic circuits}
+Selected pinned circuit points are
+\[
+\begin{array}{c|r|r|r}
+\text{domain}&\text{unknowns}&\text{operations}&\text{exact degree}\\\hline
+\Z_{>0}&9&405&1191570\\
+\Z_{>0}&10&99&368\\
+\Z_{>0}&10&105&340\\
+\Z_{>0}&11&111&211\\
+\Z_{>0}&12&96&70\\
+\Z&10&471&1245324\\
+\Z&12&145&1200\\
+\Z&12&141&1456\\
+\Z&13&135&536\\
+\Z&14&117&312\\\hline
+\Z&12&141&768\quad\text{(this report)}
+\end{array}
+\]
+The $145$- and $141$-operation twelve-integer baselines and $105$-operation ten-positive count were independently recomputed from live graphs; exact baseline degrees use their source proofs. The new norm lowers degree from $1456$ to $768$, a $47.25\%$ reduction at the same operation count. It also reduces both degree and operations relative to the $1200$-degree, $145$-operation point. It does not beat every other point on every axis. No comparable fully expanded coefficient height was measured for these norms. The scalar tuple's $1064921$-bit $\beta$ is not interchangeable with the compact44 tuple's $590069$-bit $\beta$.
+
+\subsection{Rejected shortcuts and remaining questions}
+The shared-projection $83$-operation proposal is refuted for its original weakened interface by zeros at unbounded ordinary inputs for a fixed empty-language program. The valid universal operation baseline remains $84$ operations, degree $187$, and $18$ positive witnesses; $92$ operations, degree $325$, and $17$ witnesses is another tradeoff. These are universal input/witness counts, not direct fixed-ZFC certificate counts. The refutation does not refute every possible $83$-operation construction, the modified75 compiler, or the unchanged source34 tuple.
+
+Further research should target specific verifiable improvements:
+\begin{enumerate}
+\item Can a lower-degree intersective carrier satisfy the required prime-local conditions while preserving a no-rational-root bootstrap? The general saturation lemma makes the exact allowable degree and rank margin explicit.
+\item Can a further integral shear reduce the degree below $768$ without increasing the live operation count? Any candidate needs a polynomial identity and a nonzero specialized leading coefficient, not just a syntactic estimate.
+\item Can the $517$-integer branch inherit the $519$-integer branch's small coefficient height? Integral shifts and monic projections should be compared using a reproducible Pareto search rather than an unqualified ``simplest'' score.
+\item Can another positive label constructor or exact local bound improve the $349$-natural support while keeping the shared-factorial proof? The derived label must remain outside the aggregate representative bound.
+\item Can the signed scalar folding, full supported-modulus interpolation, and direct C222 calibration be internalized in the proof assistant? This would close a different proof obligation from finite coefficient checking.
+\end{enumerate}
+No lower-bound theorem, global minimum, or historical priority claim is made.

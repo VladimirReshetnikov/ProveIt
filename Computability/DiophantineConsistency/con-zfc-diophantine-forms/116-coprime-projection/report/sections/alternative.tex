@@ -1,0 +1,212 @@
+\section{A completed ordinary power graph with nine auxiliaries}
+\label{sec:signed-power-frame}
+
+\paragraph{Result and scope.}
+For positive integers $n,k$ and a natural $m$, the relation $m=n^k$
+has the following ordinary polynomial graph with \textbf{nine auxiliary
+natural variables and exact degree $20$}. More generally, $r$ simultaneous
+positive-power requests use $4r+5$ auxiliaries and exact degree $12r+8$.
+The inputs are separate from the auxiliaries. This is a complete polynomial
+result, not a special-function interface, and does not claim a new
+fewest-variable consistency equation.
+
+The common scale and common Pell-index certificate are inherited from the
+reviewed synchronized construction. The new reduction eliminates the common
+Pell base as an independent coordinate even though its substituted expression
+$A=B-Ub$ can be negative. Instead of introducing a sign witness, we prove
+that the entire negative branch is harmless. No historical minimality claim is made.
+
+\subsection{The explicit ordinary polynomial}
+Fix $r\geq1$ and inputs $n_i,k_i\geq1$, $m_i\geq0$. Quantify only
+\[
+ z,U,v,q,b,\qquad y_i,h_i,s_i,t_i\quad(1\leq i\leq r)
+\]
+over $\mathbb N$. Define polynomial abbreviations
+\begin{align*}
+ W&=2+\sum_i(n_i+k_i+m_i),&Y_i&=k_i+y_i,&D&=\prod_iY_i,\\
+ V&=D^2(v+1),&B&=1+4D(q+1),&A&=B-Ub,\\
+ T_i&=2An_i-n_i^2-1,&X_i&=Y_i(A-n_i)+m_i+T_i h_i,\\
+ S_i&=X_i+Us_i,&R_i&=k_i+4Y_it_i.
+\end{align*}
+Set $N(a,x,y)=x^2-(a^2-1)y^2-1$. The entire equation is
+\begin{equation}
+\boxed{\begin{aligned}
+E_r={}&\bigl[A^2-W^3(W+2)(z+1)^2-1\bigr]^2+N(A,U,V)^2\\
+&+\sum_{i=1}^r\bigl(N(A,X_i,Y_i)^2+N(B,S_i,R_i)^2\bigr)=0.
+\end{aligned}}
+\label{eq:signed-power}
+\end{equation}
+All products have the fixed length $r$, and every exponent in the displayed
+recipe is the numeral $2$ or $3$. In particular $A,T_i,X_i$ are polynomial
+abbreviations, not additional variables or assumed positive quantities.
+
+\paragraph{Theorem.}
+For the stated input domain, $E_r=0$ has a solution in its $4r+5$ natural
+auxiliaries if and only if $m_i=n_i^{k_i}$ for every $i$.
+
+\subsection{The signed elimination argument}
+Suppose $E_r=0$. All residuals vanish. The scale equation yields
+$|A|>W^2$, while $Y_i\geq k_i\geq1$ and $n_i,k_i,m_i\leq W$.
+The potentially dangerous case is $A=-\alpha<0$. Put
+$\tau_i=2\alpha n_i+n_i^2+1>m_i$. Then
+\[
+X_i=-(\alpha+n_i)Y_i+m_i-\tau_i h_i<0.
+\]
+Writing $x_i=-X_i>0$, its norm gives $x_i\leq\alpha Y_i$. Its definition
+therefore implies
+\[
+n_iY_i+\tau_i h_i\leq m_i,\qquad Y_i\leq m_i\leq W<\alpha.
+\]
+If $Y_i>1$, the factorization
+\[
+(\alpha Y_i-x_i)(\alpha Y_i+x_i)=Y_i^2-1
+\]
+has positive integer factors, with the second greater than $\alpha Y_i$.
+Thus $Y_i^2-1>\alpha Y_i$, contradicting $Y_i<\alpha$. Hence $Y_i=1$,
+$k_i=1$, $x_i=\alpha$, and $m_i=n_i+\tau_i h_i$. Since $\tau_i>m_i$,
+we obtain $h_i=0$ and $m_i=n_i=n_i^{k_i}$.
+
+This proves soundness of the complete negative branch without using an
+index theorem, changing a congruence sign, or adding a positivity witness.
+The branch is real: the checker includes explicit negative-$A$ zeros.
+If any requested exponent is at least two, that branch is impossible.
+
+\subsection{Positive soundness}
+For $A>0$ we have $A>W^2$, so $A\geq2$, $A>n_i$, and
+\[
+T_i\geq2A-2>W\geq m_i.
+\]
+All coordinates needed by the standard Pell-index criterion are now
+nonnegative, and $Y_i,V>0$, $B\geq5$. The definitions supply
+\[
+Y_i^2\mid V,\quad B\equiv1\pmod{4Y_i},\quad B\equiv A\pmod U,
+\quad S_i\equiv X_i\pmod U,\quad R_i\equiv k_i\pmod{4Y_i}.
+\]
+Together with the three norms and $k_i\leq Y_i$, the exact
+Matiyasevich criterion identifies
+$X_i=\chi_A(k_i)$ and $Y_i=\psi_A(k_i)$, where
+\[
+\chi_a(j)+\psi_a(j)\sqrt{a^2-1}=(a+\sqrt{a^2-1})^j.
+\]
+The imported criterion includes its signed-index analysis; it is the
+statement exposed by Mathlib's \texttt{Pell.matiyasevic} and the repository's
+\texttt{PellRepresentation.criterion\_iff\_pell}.
+
+The scale norm is at Pell base $W+1$, with second coordinate $W(z+1)>0$.
+Classification gives an index $j>0$. Modulo $W$, its recurrence gives
+$\psi_{W+1}(j)\equiv j$, so $W\mid j$ and $j\geq W$. Consequently
+\[
+A\geq(W+1)^j>W^W\geq n_i^{k_i},\qquad T_i>n_i^{k_i}.
+\]
+For $H_j=\chi_A(j)-(A-n_i)\psi_A(j)$ the exact recurrence is
+\[
+H_0=1,\qquad H_{j+1}=n_iH_j+T_i\psi_A(j).
+\]
+Thus $H_{k_i}\equiv n_i^{k_i}\pmod{T_i}$. The definition of $X_i$ also
+gives $H_{k_i}=m_i+T_i h_i$. Both proposed and true outputs lie in
+$[0,T_i)$, establishing equality.
+
+\subsection{Simultaneous completeness}
+Assume all requested powers are true, and calculate $W$ first. Choose
+\[
+A=\chi_{W+1}(W),\quad z=\psi_{W+1}(W)/W-1,
+\quad X_i=\chi_A(k_i),\quad Y_i=\psi_A(k_i).
+\]
+The recurrence modulo $W$ makes $z$ natural. Set $y_i=Y_i-k_i$ and
+\[
+h_i=\sum_{j=0}^{k_i-1}n_i^{k_i-1-j}\psi_A(j)\geq0.
+\]
+The recurrence above proves the required expression for $X_i$. These powers
+and finite sums occur in the witness proof only, not in equation
+\eqref{eq:signed-power}.
+
+Put $D=\prod_iY_i$. In the finite ring
+\[
+(\mathbb Z/4D^2\mathbb Z)[s]/(s^2-(A^2-1)),
+\]
+the element $A+s$ is a unit with inverse $A-s$. A positive finite-group
+order supplies $U=\chi_A(\ell)\equiv1\pmod{4D^2}$ and
+$V=\psi_A(\ell)\equiv0\pmod{4D^2}$, with $V>0$. Hence
+$v=V/D^2-1\geq0$, and $\gcd(U,4D)=1$. CRT gives
+\[
+B\equiv A\pmod U,\qquad B\equiv1\pmod{4D}.
+\]
+Increase $B$ by a multiple of $4DU$ until $B>A$ and $B>1$, and set
+\[
+b=(B-A)/U,\qquad q=(B-1)/(4D)-1.
+\]
+Finally take $S_i=\chi_B(k_i)$, $R_i=\psi_B(k_i)$ and
+\[
+s_i=(S_i-X_i)/U,\qquad t_i=(R_i-k_i)/(4Y_i).
+\]
+Polynomial dependence on the base proves these quotients integral.
+Monotonicity for $B>A$ proves them nonnegative. Every residual vanishes,
+and $A=B-Ub$ restores exactly the chosen scale. No source consistency,
+prime-distribution assertion, or circular existence argument is used.
+
+\subsection{Honest counts and the tiling boundary}
+With independent input ports,
+\[
+\deg V=2r+1,\quad\deg A\leq r+1,\quad
+\deg X_i,\deg S_i\leq r+3.
+\]
+The auxiliary norm has degree $6r+4$, while each local norm has degree at
+most $2r+6$. Its leading component contains
+$-16q^2v^2(\prod_iY_i)^6$, so the final degree is exactly $12r+8$.
+For one request, the delivered DAG has 12 total variables, 9 auxiliaries,
+4 residuals and degree 20. For two requests it has 19 total variables,
+13 auxiliaries, 6 residuals and degree 32.
+
+Retaining $A$ as an independent natural variable and adding the residual
+$B-A-Ub$ gives a lower-degree sibling. For two requests this uses 14
+auxiliaries and degree at most 24. This is a coordinate--degree tradeoff,
+not universal dominance.
+
+The preceding two-power strict-boundary tiling interface has 8 exposed
+coordinates. Literal substitution now gives an ordinary polynomial with
+21 natural variables, or 22 for the lower-degree sibling. For $k$ tiles,
+the complete substituted degree bounds are respectively $1728k+8$ and
+$1152k+8$; they are \emph{not} the standalone graph degrees 32 and 24.
+The complete four-corner fixture has bounds 6920 and 4616, including every
+fixed-power packed-circuit operation.
+
+\paragraph{Not a new consistency endpoint.}
+A strict-boundary tile set correctly initialized and calibrated to an
+actual ZFC proof checker is still required. The raw 943-tile list cannot
+simply be substituted: it contains an all-zero tile, admitting a trivial
+one-cell rectangle under this generic boundary condition. We therefore
+claim a completed power-graph lemma and generic tiling compiler, not a
+21-variable $\operatorname{Con}(\mathrm{ZFC})$ polynomial or an improvement
+to the calibrated 9/10-positive and 11-integer frontiers.
+
+\paragraph{Validation.}
+The packet includes complete polynomial DAGs, separately transcribed
+evaluators, 1500 modular whole-polynomial comparisons, 16 full positive- and
+negative-base exponent-one witnesses, genuinely different-index CRT
+fixtures, 479080 finite negative-base controls, exact-degree certificates,
+and corruption tests. Normal and optimized Python runs pass using explicit
+exceptions rather than disabled assertions. Source hashes are pinned.
+These tests supplement the universal proof; no new Lean verification,
+encoded internal ZFC proof object, or proof of consistency is claimed.
+
+
+\paragraph{Independent ordinary review.}
+The separate review accepts the signed branch, positive branch, common-scale
+bound and simultaneous CRT construction. Its independent symbolic checker
+compares every generic port and residual with the literal emitted DAG and
+confirms exact degrees 20, 32 and 24 for the three generic artifacts. It
+does not certify the separate tiling-source calibration.
+
+\paragraph{Sources and reproduction.}
+The copied Mathlib source is pinned to commit
+\texttt{4dc43842a11f} (full hash in the source pin); its relevant
+\href{https://github.com/leanprover-community/mathlib4/blob/4dc43842a11f257ffba2a611c943a133a65cb4b2/Mathlib/NumberTheory/PellMatiyasevic.lean}{Pell-index theorem}
+is included with its license. The exact repository wrapper and inherited
+shared-frame proofs are separately authenticated in
+\texttt{SOURCE\_PINS.json}. No incoming archive was changed.
+
+The complete recipe can be rebuilt with \texttt{python build.py --check};
+the separate checker is \texttt{python check.py}. Repeat both with
+\texttt{python -O} to verify that no crucial test relies on an assertion
+which optimized mode can remove. The numerical input-domain restrictions
+remain part of the theorem in every mode.

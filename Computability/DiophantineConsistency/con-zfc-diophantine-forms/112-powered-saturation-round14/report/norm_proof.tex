@@ -1,0 +1,254 @@
+\section{The twelve integer equation}\label{sec:norm}
+\subsection{A complete polynomial definition}
+The independent coordinates are
+\[j,C,z,h,r,v,w,T,c,n,t,s\in\Z.\]
+The six fixed ports
+\[\beta,K_0,M_C,M_F,A_{\rm cone},B_{\rm cone}\]
+are the complete unchanged source34 tuple, including the already shifted $M_F$. In particular $\beta=2^{1064921}-1$. All six full values are supplied as compressed minimal unsigned little-endian bytes, not placeholders. Define
+\begin{align*}
+ J&=6j+1,\qquad q=\beta J+1,\qquad W_0=12w+4,\\
+ X&=qW_0,\qquad Y=(2v+1)q^3,\qquad E=XY,\\
+ a&=E+Y,\qquad H=4a+3,\qquad \Delta=a^2+H=(a+2)^2-1,\\
+ F&=(K_0+W_0)C-z(q-1),\\
+ R&=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,\qquad \eta=c-Yk,\qquad \zeta=k-\eta,\\
+ U&=A_{\rm cone}F,\qquad W=B_{\rm cone}C,\\
+ G&=UW-(q-U-W)^2,\\
+ \Pair&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2,\\
+ D_g&=(3\Pair-4)s^2+1,\\
+ I&=rc^2,\qquad D_f=1+\Delta I^2,\qquad Q=\Delta^2I^2,\\
+ \delta&=Q-1,\qquad C_y=QV^2-1,\\
+ V&=D_f(c-R+4IT)-c,\\
+ \ell&=XY^2,\qquad D_\tau=1+\ell(\ell+1)k^2,\\
+ \Kred&=X(2X-3c)-2,\qquad z_c=HT+\Kred,\\
+ A_c&=(z_c^2+3H^2)(z_c^3-19H^3),\\
+ S&=srH,\qquad Z=S(n+QV)-A_c.
+\end{align*}
+Define the sign-invariant polynomial
+\[
+ \FNorm(Z;u_1,u_2,u_3,u_4)
+ =\prod_{\varepsilon\in\{\pm1\}^4}
+ \left(Z-\sum_{i=1}^4\varepsilon_i\sqrt{u_i}\right).
+\]
+Independent sign invariance makes it an ordinary integer polynomial. The equation is
+\begin{equation}\label{eq:mainnorm}
+ \boxed{P_{12}=\FNorm
+ \bigl(Z;9S^2D_f,81S^2D_\tau,729S^2D_g,S^2\delta C_y\bigr)=0.}
+\end{equation}
+The literal graph inlines all definitions with only integer leaves and $+,-,\times$; it contains no radicals, divisions, variable powers, or additional unknown registers. The shear $n_{\rm old}=n+QV$ is a bijection of $\Z$ for fixed other coordinates, because $QV$ does not involve $n$.
+
+\subsection{Guard recovery before the strong scale is nonzero}
+The unchanged unconditional front end gives $q$ even, $q\equiv2\pmod3$, $|q|\ge\beta-1$, $|X|\ge4|q|$, $|Y|\ge4096$, $H$ odd and nonzero, $\Delta>1$, $D_f,D_\tau\ge1$, and $\delta\ne0$. Modulo three,
+\[
+ H\equiv\Delta\equiv Q\equiv0,\quad
+ D_f\equiv D_\tau\equiv1,\quad\delta\equiv C_y\equiv-1.
+\]
+If $S=0$, every radicand vanishes, leaving $A_c^{16}$. But
+\[
+ A_c=H^5\pi\left(T+\frac{\Kred}{H}\right),\qquad
+ \pi(x)=(x^2+3)(x^3-19)
+\]
+is nonzero: the quadratic has no real zero, and the rational-root theorem excludes a rational cube root of $19$. Thus $s,r\ne0$. This does not yet prove $c\ne0$.
+
+At a zero divide a vanishing conjugate factor by $S$. The inherited prime-order separation lemma applies to the normalized roots. Their squared $3$-adic orders, in the order auxiliary, $3\sqrt{D_f}$, $9\sqrt{D_\tau}$, $27\sqrt{D_g}$, are
+\[
+ 0,\quad2,\quad4,\quad6+v_3(D_g),
+\]
+with a zero guard root omitted. This remains valid at $I=0$, where $\delta=C_y=-1$. The signed rational sum forces each root rational. Thus $D_g=g^2$ for an integer $g$; since $s\ne0$, $\Pair\le0$ would make $D_g<0$, so $\Pair>0$.
+
+For integers $u,v$, if $uv-(t^2-u-v+1)^2>0$, then $uv>0$. Both cannot be negative, because the squared term would be at least $(|u|+|v|+1)^2>uv$. Hence $u,v>0$. Apply this with $u=G$, $v=\eta\zeta$ to get $G>0$ and $\eta\zeta>0$. If $c=0$, however,
+\[
+ \eta\zeta=-Y(Y+1)k^2\le0.
+\]
+Therefore $c\ne0$, and only now $I=rc^2\ne0$ and $Q>1$.
+
+The retained adjacent-coefficient Pell descent applied to the extracted rational auxiliary root gives an integer $y$ with
+\begin{equation}\label{eq:auxpell}
+ QV^2-(Q-1)y^2=1.
+\end{equation}
+For the integral radicand, divide the normalized integer root by $\delta$ before this descent. The other roots are integers $f,\tau$ satisfying $f^2=D_f$ and $\tau^2=D_\tau$. Every sign of $I,V,c,a$ remains allowed. The integral factor gives $S\mid A_c$ and therefore
+\begin{equation}\label{eq:fifthdiv}H\mid\Kred^5.\end{equation}
+It would be invalid to infer $H\mid\Kred$ from divisibility alone: $243\mid3^5$ but $243\nmid3$.
+
+\subsection{The inherited preprojection index interface}
+For any integer $A$, the Pell polynomials are defined by $\chi_A(0)=1$, $\chi_A(1)=A$, $\psi_A(0)=0$, $\psi_A(1)=1$, and the recurrence $u(n+2)=2Au(n+1)-u(n)$. Thus the signed-base expressions below are defined even when $a+2<0$.
+
+The scalar-parent signed folding and index proof requires: the unchanged cubic $Y$ and packing definitions; $G>0$ and $\eta\zeta>0$; $I\ne0$, $c^2\mid I$, $|I|\ge|c|$; the two Pell equations; and
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+These follow from the definitions and
+\[
+ V+R=\Delta I^2(c-R)+4ID_fT.
+\]
+Neither $s\mid I$ nor an odd strong multiplier is needed.
+
+For the precise chronology, put $B_0=|a+2|$, $C_0=|c|$, $I_0=|I|$. Pell classification gives $|f|=\chi_{B_0}(m_0)$, $I_0=\psi_{B_0}(m_0)$. The auxiliary Pell index at $\rho=\Delta I_0$ is odd. Reduction modulo $|f|$ and folding modulo $2m_0$ gives $C_0=\psi_{B_0}(p)$; $2I_0<|f|$ excludes wrapping. Strong divisibility and $C_0^2\mid I_0$, through the Lucas multiplication formula, give $p\mid m_0$ and $C_0\mid m_0$. The auxiliary residue gives $R\equiv\pm p\pmod{C_0}$; the first-index bounds $0<R,p<C_0/2$ force $p=R$. These steps precede and do not use the main projection or \eqref{eq:fifthdiv}.
+
+With $x=|X|$, $m=|Y|$, $\sigma=\operatorname{sign}(c)$, the retained rank and ratio estimates then give
+\begin{equation}\label{eq:indexbounds}
+\begin{gathered}
+ R=2r_0+1,\quad r_0\ge24,\quad c=\sigma\psi_{a+2}(R),\\
+ m>\frac{(x-3)^{r_0}}2-1,\qquad |H|>x(x-3)^{r_0}.
+\end{gathered}
+\end{equation}
+Indeed $|H|\ge4(x-1)m-3$, and the remaining difference exceeds $(x-2)(x-3)^{r_0}-4x+1>0$ for $x\ge64,r_0\ge1$. The complete inherited folding and rank proofs are bundled. This is their exact interface, not a claim that finite arithmetic tests prove it.
+
+\subsection{Powered divisibility restores the exact projection}
+\begin{theorem}[Fifth-power saturation]\label{thm:saturation}
+Every integer zero of \eqref{eq:mainnorm} restores the same exact signed main projection as the pinned scalar source.
+\end{theorem}
+\begin{proof}
+Set $K=X(X+2ac)-1$ and $\Pi=(\sigma X-2^R)(2^R\sigma X+1)$. The exact identity and retained signed Pell congruence are
+\begin{equation}\label{eq:unitcong}
+ 2K=\Kred+HcX,\qquad 2^RK\equiv\Pi\pmod H.
+\end{equation}
+Since $H$ is odd, \eqref{eq:fifthdiv} gives $H\mid K^5$. Taking fifth powers in the congruence gives $H\mid\Pi^5$. No nonunit is cancelled modulo a composite $H$.
+
+For every raw integer assignment, the authentic tuple gives $x\ge4(\beta-1)\ge2^{64}$. Both factors of $\Pi$ have absolute value less than $2^{R+1}x$, so
+\[
+ |\Pi|^5<2^{10R+10}x^{10}=2^{20r_0+20}x^{10}.
+\]
+By \eqref{eq:indexbounds} and $x-3>x/2$, $|H|>x^{r_0+1}/2^{r_0}$. For $r_0\ge24$,
+\[
+ 64(r_0-9)-(21r_0+20)=43r_0-596\ge436>0.
+\]
+Thus $x^{r_0-9}>2^{21r_0+20}$ and $|\Pi|^5<|H|$. Divisibility forces $\Pi=0$. Its second factor is odd and nonzero, so $\sigma X=2^R$. Put $d=\sigma\chi_{a+2}(R)$. The signed projection congruence now gives $H\mid d-X-ac$, restoring
+\[
+ \gamma=(d-X-ac)/H\in\Z.
+\]
+All other source rows and guards are unchanged, so the generalized signed native theorem gives the same finite-refutation endpoint.
+\end{proof}
+
+\begin{lemma}[A general saturation bound]
+Let $b,d$ be positive integers, $r$ a nonnegative integer, and $x\ge1$. Suppose $|H|>x^{r+1}/2^r$, $|\Pi|<2^{4r+4}x^2$, $x\ge2^b$, and
+\[
+ b(r+1-2d)>(4d+1)r+4d.
+\]
+Then $H\mid\Pi^d$ implies $\Pi=0$. For all $r\ge r_{\min}$ it suffices that $b>4d+1$ and the displayed inequality holds at $r_{\min}$.
+\end{lemma}
+\begin{proof}
+The exponent inequality gives $x^{r+1-2d}>2^{(4d+1)r+4d}$. Therefore $|\Pi|^d<2^{4dr+4d}x^{2d}<x^{r+1}/2^r<|H|$. An integer multiple of $H$ in that strict range is zero. The margin is affine in $r$ with positive slope under $b>4d+1$.
+\end{proof}
+The choice $(b,d,r_{\min})=(64,5,24)$ has margin $436$. This is a sufficient bound, not an optimality statement.
+
+\subsection{Full supported-modulus Pell interpolation}\label{sec:interpolation}
+For $A>1$, define $\chi_A(n),\psi_A(n)$ by
+\[
+ (A+\sqrt{A^2-1})^n=\chi_A(n)+\psi_A(n)\sqrt{A^2-1}.
+\]
+\begin{theorem}\label{thm:interpolation}
+Let canonical native data satisfy: $A_0>1$ is even, $\Delta=A_0^2-1$, $R\equiv3\pmod4$, and $c=\psi_{A_0}(R)>0$ with $c\equiv R\pmod4$. Fix $s>0$. Choose one positive even $m_0$ such that
+\[
+ I=\psi_{A_0}(m_0),\qquad f=\chi_{A_0}(m_0),\qquad4sc^2\mid I.
+\]
+For every positive $M$ whose prime factors divide $I$, this same fixed pair admits every residue of $T$ modulo $M$ in
+\[
+ V=f^2(c-R+4IT)-c,\qquad QV^2-(Q-1)y^2=1,\quad Q=\Delta^2I^2,
+\]
+with integers $V,y,T$.
+\end{theorem}
+\begin{proof}
+The inherited finite matrix-period argument supplies the strong pair. Its index valuation lemma gives $v_p(m_0)\le v_p(I)$ for $p\mid I$, and $\lambda=4m_0f$ is a period modulo $f^2$. Keep the pair fixed. Set
+\[
+ \rho=\Delta I,\quad D=\rho^2-1,\quad
+ d=\operatorname{lcm}(\lambda,4I),\quad V_\nu=\chi_\rho(\nu)/\rho
+ \quad(\nu>0\text{ odd}).
+\]
+The quotient is integral. Since $\gcd(f,I)=1$,
+\begin{equation}\label{eq:dvaluation}v_p(d)=v_p(4I)\quad(p\mid I).\end{equation}
+The inherited base interpolation supplies $\nu_0\equiv3\pmod4$ and an integral $T_0$. For $h\ge0$ let
+\[
+ \nu(h)=\nu_0+dh,\qquad T(h)=\frac{V_{\nu(h)}+c-f^2(c-R)}{4If^2}.
+\]
+This is integral. The period preserves the numerator modulo $f^2$; the identity $V_\nu\equiv-\nu\pmod{4\rho^2}$ for $\nu\equiv3\pmod4$ preserves it modulo $4I$. The two moduli are coprime. Each index supplies $y=\psi_\rho(\nu(h))$.
+
+We claim the stronger isometry
+\begin{equation}\label{eq:isometry}
+ v_p\bigl(T(h_1)-T(h_2)\bigr)=v_p(h_1-h_2)\quad(p\mid I,\ h_1\ne h_2).
+\end{equation}
+For odd $\nu>0$ and a nonzero increment $d_0$ divisible by four, Pell addition gives
+\begin{equation}\label{eq:addition}
+ V_{\nu+d_0}-V_\nu
+ =V_\nu(\chi_\rho(d_0)-1)
+ +\psi_\rho(\nu)D\frac{\psi_\rho(d_0)}\rho.
+\end{equation}
+Negative increments follow by interchanging indices. For $p\mid\rho$, $\psi_\rho(\nu)$ and $D$ are units. The lifting facts are
+\begin{align}
+ v_p(\psi_\rho(d_0)/\rho)&=v_p(d_0),\label{eq:psilift}\\
+ v_p(\chi_\rho(d_0)-1)&=2\bigl(v_p(\rho)+v_p(d_0)\bigr)&& (p\text{ odd}),\\
+ v_2(\chi_\rho(d_0)-1)&=2\bigl(v_2(\rho)+v_2(d_0)\bigr)-1.
+\end{align}
+To prove them, put $U=\chi_\rho(4)$, $B=\psi_\rho(4)$. Explicitly
+\[
+ B=4\rho(2\rho^2-1),\qquad U-1=8\rho^2(\rho^2-1).
+\]
+For odd $p\mid\rho$, write $b=v_p(B)\ge1$. In the second coordinate of $(U+B\sqrt D)^k$, if $p\nmid k$ the linear term $kU^{k-1}B$ has valuation $b$, and all higher odd terms have valuation at least $3b>b$. If $k=p$, the linear term has valuation $b+1$, middle odd terms at least $3b+1$, and the last term valuation $pb>b+1$, including $p=3,b=1$. Iterating the prime-to-$p$ and $p$ steps proves \eqref{eq:psilift} for odd primes. At $p=2$, $\rho$ is even and $U$ odd; odd multiplication preserves valuation by the same expansion. Every doubling adds exactly one via $\psi_\rho(2n)=2\chi_\rho(n)\psi_\rho(n)$ with odd $\chi_\rho(n)$. Starting at index four gives the asserted $2$-adic formula.
+
+The norm identity
+\[
+ (\chi_\rho(d_0)-1)(\chi_\rho(d_0)+1)=D\psi_\rho(d_0)^2
+\]
+gives the first-coordinate valuations: the second factor is a unit for odd $p$, while at two it has valuation one because $\chi_\rho(d_0)\equiv1\pmod8$. Thus in \eqref{eq:addition} the second term has valuation exactly $v_p(d_0)$ and the first strictly greater. Substitute $d_0=d(h_1-h_2)$, divide by $4If^2$, and use \eqref{eq:dvaluation} to prove \eqref{eq:isometry}.
+
+For every $p^e\mid M$, the isometry makes $h\mapsto T(h)$ well-defined and injective on $\Z/p^e\Z$, hence bijective. CRT then supplies any requested $T$ modulo $M$, using a nonnegative representative of $h$. This does not extrapolate a low-precision linear congruence to arbitrarily high prime powers.
+\end{proof}
+
+\subsection{Completeness and quantifier order}
+Start with the canonical signed native witness of a finite refutation. Keep $j,C,z,h,v,w,c$. Choose $t$ so $\Pair>0$, then a positive nonzero $s$ and integer $g$ with $g^2=(3\Pair-4)s^2+1$. The retained positivity theorem supplies this, including $\Pair=1$.
+
+Choose one strong pair with $4sc^2\mid I$, and set $r=I/c^2$. Then $r>0$, $4s\mid r$, and every prime factor of $M=sr$ divides $I$. The native projection gives $H\mid K$ and hence $H\mid\Kred$; put $\kappa=\Kred/H\in\Z$. The inherited intersectivity theorem for $\pi$ supplies $a\pmod M$ with $\pi(a+\kappa)\equiv0\pmod M$. Theorem~\ref{thm:interpolation} supplies $T\equiv a\pmod M$ with the same $I,f$. Hence
+\[
+ A_c/S=H^4\pi(T+\kappa)/(sr)\in\Z.
+\]
+Choose
+\[
+ n=A_c/S+\delta y+3f+9\tau+27g-QV.
+\]
+A conjugate factor vanishes. The order is native witness, $t$, $s$, one fixed strong pair $I,f,r$, one intersective residue, $T,y$, and then $n$. No strong pair changes after choosing a residue. This completes both directions.
+
+A conservative companion keeps $I=src^2$ and $S=srH$, with degree $800$ and $141$ operations. There $M=sr=I/c^2$ divides $I$, so the original interpolation theorem suffices. The selected release is the stronger proved degree-$768$ equation.
+
+\subsection{Universal norm identity and exact degree}
+Put $B=Sn-A_c$, $L=SQV$, $D=S^2[Q(V^2+1)-1]$, and $\alpha=9S^2D_f$, $\beta_1=81S^2D_\tau$, $\gamma=729S^2D_g$. Then $S^2\delta C_y=L^2-D$. Pairing auxiliary signs first gives
+\begin{equation}\label{eq:pairednorm}
+ P_{12}=\prod_U\bigl((B-U)^2+2L(B-U)+D\bigr),
+\end{equation}
+where $U$ runs over the eight signed sums of square roots of $\alpha,\beta_1,\gamma$. This polynomial identity holds without positive radicands. The reduced graph makes cancellation explicit at its first quadratic register:
+\[
+ q_0=B^2+2LB+D+\gamma-\alpha-\beta_1.
+\]
+The degrees are
+\[
+\begin{array}{c|rrrrrrrrr}
+\text{register}&I&S&Q&V&A_c&B&L&D&\alpha,\beta_1,\gamma\\\hline
+\text{degree}&3&8&30&23&35&35&61&92&34,50,62.
+\end{array}
+\]
+Each factor in \eqref{eq:pairednorm} has unique top contribution $2LB$, of degree $96$. All competitors have degree at most $92$, apart from $B^2$ of degree $70$. Thus $(P_{12})_{\rm top}=(2L_{\rm top}B_{\rm top})^8$. The reduced graph also has syntactic degree bound $768$, with register bounds $96,192,384,349$ at $q_0,v_0,n_0,n_1$.
+
+To prove attainment at the actual tuple, put
+\begin{align*}
+ q_0'&=6\beta j,&W_{00}&=12w,\\
+ a_0&=2v(q_0')^4W_{00}=2^7 3^5\beta^4j^4wv,\\
+ F_0&=W_{00}C-q_0'z,&R_0&=-(q_0')^3F_0,\\
+ B_{\rm top}&=-4^5a_0^5T^5,&L_{\rm top}&=-4sr^5c^8a_0^7R_0.
+\end{align*}
+Then $(P_{12})_{\rm top}=2^{104}s^8r^{40}c^{64}a_0^{96}R_0^8T^{40}$, and
+\begin{align*}
+ [j^{408}w^{104}v^{96}C^8s^8r^{40}c^{64}T^{40}]P_{12}
+ &=2^{816}3^{512}\beta^{408}>0,\\
+ [j^{416}w^{96}v^{96}z^8s^8r^{40}c^{64}T^{40}]P_{12}
+ &=2^{808}3^{512}\beta^{416}>0.
+\end{align*}
+Both exponent sums are $768$; none of the other five ports can cancel these terms. The $141$-operation graph has naive degree bound $976$, not its exact degree. Its reduced graph represents exactly the same polynomial at $149$ operations.
+
+The independent auditor constructs the generic norm as the resultant of
+\[
+ u^4-2(\alpha+\beta_1)u^2+(\alpha-\beta_1)^2
+\]
+and
+\[
+ (Z-u)^4-2(\gamma+d)(Z-u)^2+(\gamma-d)^2,
+\]
+checks all $495$ terms against the norm tail, and checks the transformed prefix separately. These exact identities establish transcription and degree facts, not the inherited native calibration.

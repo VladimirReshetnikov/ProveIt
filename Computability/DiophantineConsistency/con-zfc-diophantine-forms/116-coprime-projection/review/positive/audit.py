@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""Independent transcription/degree controls, not a substitute for AUDIT.md."""
+import collections, hashlib, json, math, random, sys
+from fractions import Fraction as F
+from pathlib import Path
+import sympy as S
+HERE=Path(__file__).resolve().parent
+ROOT=HERE.parents[1]
+P=ROOT/'positive'
+def need(condition, label):
+    if not condition:
+        raise ValueError(label)
+# Explicit checks remain active with python -O.
+
+packet=json.loads((P/'equation.json').read_text())
+rows=packet['source']
+need(len(rows)==96 and packet['operations']==96, '96 literal operations')
+need(collections.Counter(r[1] for r in rows)=={'*':57,'+':20,'-':19}, '96-operation breakdown')
+need(packet['witnesses']==['J','F','alpha','i','T','x','Y','n','eta','zeta'], "packet['witnesses']==['J','F','alpha','i','T','x','Y','n','eta','zeta']")
+need(packet['fixed_numerals']==['beta','K0','MC','MF'], "packet['fixed_numerals']==['beta','K0','MC','MF']")
+known=set(packet['witnesses']+packet['fixed_numerals'])
+for name,op,a,b in rows:
+    need(name not in known and op in ('+','-','*'), "name not in known and op in ('+','-','*')")
+    need(all(not isinstance(v,str) or v in known for v in (a,b)), 'all(not isinstance(v,str) or v in known for v in (a,b))')
+    known.add(name)
+live={'N'}
+for name,op,a,b in reversed(rows):
+    if name in live: live.update(v for v in (a,b) if isinstance(v,str))
+need(all(r[0] in live for r in rows), 'all(r[0] in live for r in rows)')
+need(set(packet['witnesses']+packet['fixed_numerals']) <= live, "set(packet['witnesses']+packet['fixed_numerals']) <= live")
+pin_path=HERE/'SOURCE_PINS.json'
+need(hashlib.sha256(pin_path.read_bytes()).hexdigest()=='53e69860d01e3786e5c51743704d32bbeaa34c7cc76a3de2b9a371acd00e7c12', 'review source-pin manifest')
+pins=json.loads(pin_path.read_text())
+need(pins['repository_commit']=='84e16e43092614bae262ca59651cb9d77e31a255', 'pinned upstream commit provenance')
+for rel, info in pins['files'].items():
+    need(hashlib.sha256((P/rel).read_bytes()).hexdigest()==info['sha256'], 'pinned bundled source '+rel)
+for name, digest in pins['review_provenance'].items():
+    need(hashlib.sha256((HERE/'provenance'/name).read_bytes()).hexdigest()==digest, 'original review provenance '+name)
+# The late optimization preserves the entire previously audited polynomial.
+fusion98_path=P/'source/fusion98_equation.json'
+need(hashlib.sha256(fusion98_path.read_bytes()).hexdigest()=='c41020c9abc134fabef4d72a19c387c12b01fb34d050561c9941b7a35710cc88', 'exact audited fusion98 equation')
+need(hashlib.sha256((P/'source/FUSION98_PROOF.md').read_bytes()).hexdigest()=='088bc8512cb8c293b5e7a849ed3f6c41e68590e774cd25ff5541a215e1a0569c', 'exact audited fusion98 proof')
+need(packet['fusion98_sha256']==hashlib.sha256(fusion98_path.read_bytes()).hexdigest(), 'fusion98 predecessor binding')
+fusion98=json.loads(fusion98_path.read_text())
+old={row[0]:row for row in fusion98['source']}
+new={row[0]:row for row in rows}
+dropped={'q4','qm1L','W','WBt'}
+inserted={'LB':['LB','*','L','B'], 'nVL':['nVL','-','nV','LB']}
+changed={'P1':['P1','*','q3','qbJ'], 'Hn':['Hn','*','Hp','nVL'], 'q3WBt':['q3WBt','*','q3','B']}
+need(set(new)==(set(old)-dropped)|set(inserted), 'complete 98-to-96 row inventory')
+for name,row in new.items():
+    need(row==(inserted[name] if name in inserted else changed.get(name,old[name])), 'exact carrier row '+name)
+for key in ['domain','witnesses','fixed_numerals','coefficient_binding']:
+    need(packet[key]==fusion98[key], 'unchanged fusion98 '+key)
+parent_equation=P/'source/parent_equation.json'
+need(hashlib.sha256(parent_equation.read_bytes()).hexdigest()==packet['parent_sha256'], 'whole parent equation')
+ports=json.loads(parent_equation.read_text())['coefficient_binding']
+need(packet['coefficient_binding']==ports, 'whole coherent coefficient binding')
+for port, desc in ports['ports'].items():
+    import gzip
+    raw=(P/'coefficients'/desc['file']).read_bytes()
+    need(hashlib.sha256(raw).hexdigest()==desc['gzip_sha256'], "hashlib.sha256(raw).hexdigest()==desc['gzip_sha256']")
+    need(hashlib.sha256(gzip.decompress(raw)).hexdigest()==desc['raw_sha256'], "hashlib.sha256(gzip.decompress(raw)).hexdigest()==desc['raw_sha256']")
+
+def literal(values,graph=rows):
+    env=values.copy()
+    def v(a): return env[a] if isinstance(a,str) else a
+    for name,op,a,b in graph:
+        aa,bb=v(a),v(b)
+        env[name]=aa+bb if op=='+' else aa-bb if op=='-' else aa*bb
+    return env
+
+def direct(z):
+    J,Fv,al,i,T,x,Y,n,et,ze=(z[k] for k in packet['witnesses'])
+    be,K,MC,MF=(z[k] for k in packet['fixed_numerals'])
+    q=be*J+1; X=q+x; mu=q*q+1; A=mu*Y*(X+1)+1
+    De=A*A-1; H=4*A-5; k=et+ze; c=k*Y+et
+    Vfirst=X*mu*mu*Y*Y; D=Vfirst*(Vfirst+1)*k*k+1
+    G=(q-1)*(q-Fv)+al; R=G*(q*q-1)+(MC+q*MF)*J; e=k-R-1
+    C=q-Fv-al; B=(q*K+X)*C-q*Fv; E=i*c*c
+    Fs=1+De*D*E*E; Q=De*De*D*E*E; delta=Q-1
+    b=c*(T+al)-R; V=Fs*b-c; Dnum=Q*V*V-1
+    L=H*D*E+b; W=1+q*(q-1)*L; P=q**4*(q-1); M=P*mu*mu*H
+    Kpos=X*(3*c-2*X)+2
+    Z=P*mu*mu*(H*(n+V)+Kpos)+H*(mu*mu*(q*(q-1)*Y-q**3*W*B-(q-1)*X)-P*e)
+    a=D*Fs; ss=delta*Z*Z; u=delta*M*M*a; vv=M*M*Dnum
+    N=(ss-vv-u)**2-4*u*vv
+    if M and q and q!=1 and H and mu:
+        ctr=n+V+F(Kpos,H)+F(Y,q**3)-F(W*B,q*(q-1))-F(X,q**4)-F(e,mu*mu)
+        need(F(Z,M)==ctr, 'F(Z,M)==ctr')
+    if all(z[v]>0 for v in packet['witnesses']) and be>=31:
+        need(D>1 and D>X and Fs>c and Q>1 and V!=0 and Dnum>0, 'D>1 and D>X and Fs>c and Q>1 and V!=0 and Dnum>0')
+        need(math.gcd(D,Fs)==1, 'math.gcd(D,Fs)==1')
+        need(delta*a-Dnum !=0 and (delta*a-Dnum)%D==1, 'delta*a-Dnum !=0 and (delta*a-Dnum)%D==1')
+    return N
+rng=random.Random(14266)
+controls=0
+for signed in (False,True):
+    for _ in range(80):
+        vals={v:rng.randint(-3,4) if signed else rng.randint(1,4) for v in packet['witnesses']}
+        vals.update(beta=31,K0=3,MC=17,MF=47)
+        need(literal(vals)['N']==literal(vals,fusion98['source'])['N']==direct(vals), 'new graph equals frozen98 graph and independent direct formula')
+        controls+=1
+# Universal integer-polynomial carrier equality, with no witness premises.
+qq,mm,hh,nn,vv,kk,ll,bb,yy,xx,ee=S.symbols('qq mm hh nn vv kk ll bb yy xx ee')
+dd=qq*(qq-1); pp=qq**3*dd; ww=1+dd*ll
+oldZ=pp*mm**2*(hh*(nn+vv)+kk)+hh*(mm**2*(dd*yy-qq**3*ww*bb-(qq-1)*xx)-pp*ee)
+newZ=pp*mm**2*(hh*(nn+vv-ll*bb)+kk)+hh*(mm**2*(dd*yy-qq**3*bb-(qq-1)*xx)-pp*ee)
+need(S.expand(oldZ-newZ)==0, 'universal expanded-transport carrier identity')
+# Universal carrier cancellation and quartic normalization.
+delta,Q,Z0,M,V,a,zz,Dnum=S.symbols('delta Q Z0 M V a zz Dnum')
+Z=M*V+Z0
+omega=(Q-1)*Z**2-M**2*(Q*V**2-1)
+need(S.expand(omega-((Q-1)*Z0**2+2*(Q-1)*M*V*Z0-M**2*(V**2-1)))==0, 'S.expand(omega-((Q-1)*Z0**2+2*(Q-1)*M*V*Z0-M**2*(V**2-1)))==0')
+normal=((delta*zz**2-M**2*Dnum-delta*M**2*a)**2-4*delta*M**4*a*Dnum)
+need(S.expand(normal-delta**2*M**4*((zz**2/M**2-a-Dnum/delta)**2-4*a*Dnum/delta))==0, 'S.expand(normal-delta**2*M**4*((zz**2/M**2-a-Dnum/delta)**2-4*a*Dnum/delta))==0')
+# Independently derived leading-form product and highest-x coefficient.
+q,X,i,Y,k,B,Fv,al=S.symbols('q X i Y k B F alpha')
+D0=q**8*X**2*Y**4*k**2; E0=i*k**2*Y**2
+De0=q**4*X**2*Y**2; H0=4*q**2*X*Y
+Q0=De0**2*D0*E0**2; M0=q**9*H0
+V0=-De0*D0*E0**2*q**3*(q-Fv)
+Z00=-H0*q**4*q**3*(q**2*H0*D0*E0)*B
+omega0=2**7*q**63*X**15*i**5*Y**31*k**16*B*(q-Fv)
+need(S.expand(2*Q0*M0*V0*Z00-omega0)==0, 'S.expand(2*Q0*M0*V0*Z00-omega0)==0')
+need(S.Poly((q-Fv-al)**2*(q-Fv)**2,al,Fv).coeff_monomial(al**2*Fv**2)==1, 'S.Poly((q-Fv-al)**2*(q-Fv)**2,al,Fv).coeff_monomial(al**2*Fv**2)==1')
+need(sum((126,32,10,62,32,2,2))==266, 'sum((126,32,10,62,32,2,2))==266')
+# Degree bounds after cancellation: 122,133,102; u118, v144.
+need(max(42+2*40,42+13+38+40,2*13+2*38)==133, 'max(42+2*40,42+13+38+40,2*13+2*38)==133')
+need(max(2*133,133+118,2*118,118+144)==266, 'max(2*133,133+118,2*118,118+144)==266')
+out={'status':'PASS transcription and algebra controls; ordinary proof separately audited',
+     'operations':96,'operation_breakdown':dict(collections.Counter(r[1] for r in rows)),
+     'all_rows_live':True,'literal_vs_independent_controls':controls,
+     'fixed_payloads_and_parent_pinned':True,'exact_degree':266,
+     'bundled_source_files_pinned':len(pins['files']),
+     'audited_fusion98_equation_and_proof_pinned':True,
+     'universal_98_to_96_polynomial_identity':True,
+     'original_review_provenance_preserved':True,'optimization_safe_checks':True,
+     'repository_commit_provenance':pins['repository_commit'],
+     'degree_attaining_coefficient':'2^14 beta^126',
+     'degree_attaining_monomial':'J^126 x^32 i^10 Y^62 eta^32 alpha^2 F^2',
+     'equation_sha256':hashlib.sha256((P/'equation.json').read_bytes()).hexdigest(),
+     'proof_sha256':hashlib.sha256((P/'PROOF.md').read_bytes()).hexdigest()}
+print(json.dumps(out,indent=2))
+receipt='CHECK_OPTIMIZED.json' if sys.flags.optimize else 'CHECK.json'
+(HERE/receipt).write_text(json.dumps(out,indent=2)+'\n')

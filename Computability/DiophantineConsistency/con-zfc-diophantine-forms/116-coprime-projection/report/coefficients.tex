@@ -1,0 +1,53 @@
+\section{Fixed numeral definitions and reproducibility}
+The integer equations use one complete
+source34 tuple. Put $\rho=2^{121}$ and $B=\rho^{8801}=2^{1064921}$.
+The supplied file \texttt{integer/coefficients/recipe/wang943\_tiles.json}
+is the entire fixed ordered list of $943$ tiles, in west--north--east--south
+order. It is reconstructed, entry for entry, from all $430$ transitions of
+the included fixed blank machine. The first two selectors are the specified
+start and forbidden tiles; their order is part of the numeral definition.
+No search for a halting computation enters this finite reconstruction.
+
+For tile $i$ let $x_{it}$ be its four fixed labels. Set
+\begin{align*}
+ W_j&=2^{10+2j},\qquad (o_0,o_1,o_2,o_3)=(1020,1000,980,960),\\
+ E&=\{0,\ldots,942\}\cup\{o_t+2j:0\le t<4,\ 0\le j<10\}\\
+  &\quad\cup\{1063,1064,1095,1096,2195,3296\},\\
+ c_i&=1+\sum_{t=0}^3\sum_{j=0}^9
+       \operatorname{bit}_j(x_{it}+512)W_{10t+j}
+       +\sum_{j=40}^{43}W_j\quad(0\le i\le942).
+\end{align*}
+At a copy position put $c_{o_t+2j}=W_{10t+j}$; at the four anchors
+$1095,1096,2195,3296$ put $W_{40},W_{41},W_{42},W_{43}$ respectively.
+The two dummy coefficients at $1063,1064$ are zero. Thus $|E|=989$.
+
+Define the fixed integers
+\begin{align*}
+ \mu&=1022+\sum_{j=0}^{43}W_j,\\
+ Z_p&=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e
+                  +(2^{27}-1)\rho^{8799},\\
+ D_C&=\rho^{40}+\rho^{41}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in E}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+ M_C&=B-1-\sum_{e\in E,\ e\ne1}\rho^e-2\rho^{1063},\\
+ M_{F,n}&=4+\mu(\rho^{4393}+\rho^{5495})
+       +\sum_{j=0}^9(\rho^{1000+2j}+\rho^{1021+2j})\\
+       &\quad+\rho^{2195}+\rho^{3296}+Z_p.
+\end{align*}
+The actual polynomial ports are
+\[
+ \beta=B-1,\quad K_0=D_C+B\rho,\quad M_C,\quad M_F=M_{F,n}+B-1,
+\]
+with the two additional cone numerals $A_c=2^{1113}$ and $B_c=2^{666104}$.
+The six complete payloads total $615{,}883$ uncompressed bytes. A payload
+with little-endian bytes $b_0,\ldots,b_{m-1}$ means precisely the integer
+$\sum_{i=0}^{m-1}b_i256^i$, not a digest standing in for an unspecified
+number. Payload hashes, finite recipe reconstruction, complete tile equality,
+and the ordinary coefficient-adapter proof are all supplied.
+
+The ten-positive construction deliberately uses a different complete
+compact44 tuple, with $\beta=2^{590069}-1$. Its four whole payloads total
+$295{,}388$ bytes; its actual bytes and source-specific binding are retained under
+\texttt{positive/coefficients}, with the pinned ordinary adapter texts
+under \texttt{positive/source}. None of its ports is substituted
+into a source34 integer construction. In both tuples $M_F$ has already been
+shifted; shifting it a second time would define the wrong polynomial.

@@ -1,0 +1,684 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,xurl,hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,pdftitle={Two reductions for Diophantine consistency},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\newcommand{\pin}{\texttt{84e16e43092614bae262ca59651cb9d77e31a255}}
+\newcommand{\file}[1]{{\small\nolinkurl{#1}}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Two reductions for Diophantine consistency}
+\fancyhead[R]{\small 24 October 2026}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{\vspace{-1.5em}\textbf{Two reductions for Diophantine consistency}\\[.4em]
+\large A two-root equation of degree 278 and a smaller direct integer quartic}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\
+\small Integration packet for the ProveIt research program}
+\date{24 October 2026}
+
+\begin{document}
+\maketitle\thispagestyle{empty}
+\begin{abstract}
+We give two explicit reductions relative to the ordinary calibrated source
+theorems in a fixed ProveIt snapshot. The first gives an integer-coefficient
+polynomial in ten strictly positive unknowns with exact degree 278 and a
+93-operation evaluator. Its immediate predecessor has degree 368 and 99
+operations. The construction saturates a strong Pell discriminant by the first
+Pell radicand, recovers two integral roots from their coprime product, and uses
+an upper polynomial center to shorten the transport condition. Two exact
+center identities establish the degree.
+
+The second changes the shared numerical bound in the direct proof-certificate
+construction. Squaring selected signed outputs permits recovery of their
+intended powers before imposing their signs. Together with additional exact
+source consequences this yields a quartic in 576 unrestricted integers with
+7,172 terms; a smaller-coefficient companion has 582 integers and 6,200 terms.
+These improve the corresponding 604- and 609-variable source equations.
+Every coefficient, residual, arithmetic circuit and reconstruction certificate
+is supplied in the packet.
+
+Both reductions preserve existence of a finite ZFC refutation. Composing the
+ordinary source calibrations gives ZFC-provable equivalences between
+unsolvability and syntactic $\Con(\mathrm{ZFC})$. The new algebra is checked
+exactly, but no new end-to-end Lean/Rocq or encoded object-ZFC proof is claimed.
+Neither global optimality nor the consistency of ZFC is asserted.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results, baseline, and meaning of simplicity}
+
+All source comparisons use ProveIt commit \pin. This is essential: the active
+research is considerably ahead of the numbered manuscript collection. The
+99-operation zero-offset equation and the 75-predicate direct quartic family
+are the immediate baselines, not the older 101-operation printed page or
+earlier hundreds-of-operation norm constructions \cite{zerooffset,output75}.
+
+\begin{center}\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Construction & Domain & Unknowns & Degree & Operations\\
+\midrule
+Zero-offset parent & $\Zp$ & 10 & 368 & 99\\
+Two-root equation, this packet & $\Zp$ & 10 & 278 & 93\\
+Simple integer substitution & $\Z$ & 30 & 556 & 163\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first improvement saves six live arithmetic operations and lowers degree
+by 90, or about $24.5\%$, without adding a positive unknown. Operations are
+binary additions, subtractions and multiplications, including squaring and
+multiplication by a small numeral. Named polynomial abbreviations are not
+additional unknowns. Fixed coefficient construction is accounted for
+separately.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Unrestricted integer quartic & Unknowns & Terms & Coefficient height\\
+\midrule
+Matched prior small-variable profile & 604 & 9,676 & 2,445,790,974,704\\
+New small-variable profile & 576 & 7,172 & 2,445,790,974,704\\
+Matched prior smaller-height profile & 609 & 8,823 & 964,213\\
+New smaller-height profile & 582 & 6,200 & 964,213\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here a term means a nonzero collected monomial, and height is the maximum
+absolute coefficient of the complete expanded polynomial. Thus the first
+quartic saves 28 variables and 2,504 terms at the same height. The second saves
+27 variables and 2,623 terms at the same height. They are two measured
+tradeoffs, not a claim to have characterized a complete Pareto frontier.
+
+There is no established scalar ordering that makes all these objects
+``simplest.'' A quartic in many integer variables and a degree-278 polynomial
+in ten positive variables answer different questions. The repository also
+retains fewer-variable integer constructions based on Sun's reduction, and
+nine-positive constructions with much larger degree. Sun's general
+ten-integer theorem likewise is not displaced by a ten-positive result
+\cite{sun2026}. The present contributions are concrete improvements on two
+specified routes.
+
+\subsection{What is proved inside ZFC}
+
+Fix the syntactic ZFC proof predicate used by the repository and write
+$\Con(\mathrm{ZFC})$ for the assertion that it has no finite refutation.
+The desired statement for an integer polynomial $P$ and a domain $D$ is
+\[
+\mathrm{ZFC}\vdash
+\bigl(\forall\mathbf{x}\in D^m\;P(\mathbf{x})\ne0\bigr)
+\longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+This is an equivalence, not a proof of either side. It does not contradict
+the second incompleteness theorem. We give ordinary mathematical derivations
+of the new arithmetic equivalences and explicitly name the inherited source
+calibrations. The finite algorithms used in the proofs, including recurrence
+periods, are justified by ordinary finite arithmetic and finite group
+arguments within ZFC; no standard-model-only soundness premise is added.
+
+Three evidence levels should remain distinct. The new polynomial identities
+and all delivered coefficients have exact executable checks. The unbounded
+soundness and completeness arguments are ordinary proofs. The repository's
+native/calibration and internal-ZFC formalization boundaries remain as
+documented in the source snapshot. This packet does not close those formal
+development tasks merely by running a polynomial checker.
+
+\section{The complete ten-positive-variable equation}
+\label{sec:equation}
+
+The only unknowns are
+\[
+J,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\Zp.
+\]
+The four fixed integers are $\beta,K_0,M_C,M_F$. Appendix~\ref{app:constants}
+gives a closed finite recipe, including every seed character. All symbols
+below are polynomial abbreviations. Put
+\begin{align*}
+q&=\beta J+1,&C&=q-F-\alpha,&X&=wq,\\
+k&=\eta+\zeta,&c&=kY+\eta,&\mu&=q^2+1,\\
+A&=\mu Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+V_0&=X\mu^2Y^2,&\ell&=V_0k,&D&=\ell(\ell+k)+1.
+\end{align*}
+The source index, transport expression and index error are
+\begin{align*}
+R&=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+B_t&=(K_0+w)C-F,& e&=k-R-1.
+\end{align*}
+The changed strong and auxiliary quantities are
+\begin{align*}
+I_0&=ic^2,& B_f&=1+\Delta D I_0^2,&Q&=\Delta^2 D I_0^2,\\
+\delta&=Q-1,&b&=c(T+\alpha)-R,&V&=B_fb-c,\\
+C_y&=QV^2-1,&P&=AI_0D,&W&=1+(q-1)b.
+\end{align*}
+Finally define
+\begin{align*}
+K_+&=X(3c-2X)+2, &P_1&=q^3(q-1), &M&=P_1\mu^2H,\\
+Z&=P_1\mu^2[H(n+V+P)+K_+]\\
+ &\hspace{1.4em}+H[\mu^2((q-1)Y-q^3WB_t)-P_1e],\\
+s&=\delta Z^2,&u&=\delta M^2DB_f,&v&=M^2C_y.
+\end{align*}
+The requested single equation on this domain is
+\begin{equation}\label{eq:main}
+\boxed{\mathcal P=(s-u-v)^2-4uv=0.}
+\end{equation}
+
+In particular, this is an ordinary polynomial equation with fixed integer
+coefficients. The radicals and divisions used in its proof do not occur in
+its evaluation. The delivered arithmetic graph has 55 multiplications,
+22 additions and 16 subtractions; every row, all ten inputs and all four
+coefficient ports are live.
+
+The whole BFS-renamed compact44 coefficient tuple is used. It satisfies
+\begin{equation}\label{eq:portbox}
+\beta\text{ odd},\quad\beta\ge31,\quad K_0>0,
+\qquad 0<M_C<\beta<M_F<2\beta.
+\end{equation}
+The values of $\beta,M_C,M_F$ agree with the original compact44 tuple, but
+$K_0$ differs under the coherent state/color renaming. We use its separate
+source transfer, not a numerical identification of the two $K_0$ values
+\cite{bfspage}. The printed recipe has
+$\beta=2^{590069}-1$; the four payload bit lengths are
+$590069,592884,590069,590070$ for $\beta,K_0,M_C,M_F$, respectively.
+The small operation count should not conceal these coefficient sizes.
+
+\begin{theorem}\label{thm:ten}
+For the complete fixed tuple in Appendix~\ref{app:constants},
+Equation~\eqref{eq:main} has a solution in $\Zp^{10}$ if and only if
+the calibrated source-61 system has a positive solution. By its inherited
+ordinary calibration, this is equivalent to the existence of a finite
+syntactic ZFC refutation. The exact total degree of $\mathcal P$ is 278.
+\end{theorem}
+
+\section{Two elementary extraction lemmas}
+
+\begin{lemma}[Unequal two-root extraction]\label{lem:two}
+Let $r,y>0$ have rational squares. If $r\ne y$ and a signed sum of
+$r,y$ is rational, then both $r$ and $y$ are rational.
+\end{lemma}
+\begin{proof}
+Write $x=\varepsilon r+\eta y\in\mathbb Q$, with both signs in
+$\{1,-1\}$. Since $r\ne y$, $x\ne0$. Then
+$2\varepsilon xr=x^2+r^2-y^2$, so $r$ is rational, and the equation
+for $x$ gives rationality of $y$.
+\end{proof}
+
+\begin{lemma}[Adjacent-coefficient descent]\label{lem:adjacent}
+Let $Q>1$ and $V$ be integers. If $y\in\mathbb Q$ satisfies
+$QV^2-(Q-1)y^2=1$, then $y$ is an integer.
+\end{lemma}
+\begin{proof}
+Replace $V,y$ by their absolute values. Neither is zero. Write $y=a/m$
+in lowest terms with $m>0$. The equation implies $m^2\mid Q-1$.
+For $V=1$ we have $y=1$. For $V>1$, set
+\[
+V'=(2Q-1)V-2(Q-1)y,\qquad
+y'=(2Q-1)y-2QV.
+\]
+The number $V'$ is an integer and the same norm equation holds for
+$(V',y')$. Moreover $y>V$ and $QV>(Q-1)y$, by subtracting the relevant
+squares. Consequently $-V<V'<V$, and the norm excludes $V'=0$.
+The reduced denominator of $y'$ is still $m$, because
+$2Q-1\equiv1\pmod m$. Strong induction on $|V|$ reaches $V=1$ and
+forces $m=1$.
+\end{proof}
+
+Square-root saturation itself has a predecessor in the repository's
+nine-positive route \cite{ninesaturation}. The following use of it avoids
+the weighted three-root noncancellation argument of the ten-positive parent.
+
+\begin{proposition}[The saturated certificate]\label{prop:saturation}
+Every positive zero of \eqref{eq:main} yields positive integers $\tau,f,y$
+such that
+\[
+D=\tau^2,\qquad B_f=f^2,\qquad
+f^2-\Delta(I_0\tau)^2=1,\qquad
+QV^2-(Q-1)y^2=1.
+\]
+In particular, $I=I_0\tau$ is a genuine strong Pell ordinate and
+$c^2\mid I$.
+\end{proposition}
+\begin{proof}
+At every positive input, $q\ge32$, $A>4$, $c\ge3$, $I_0\ge c^2$ and
+$D>1$. Directly from the definitions,
+\[
+Q-1>c^2-1>0,\qquad B_f>c+2,\qquad B_f<Q-1.
+\]
+If $b=0$, then $V=-c$; otherwise $|V|\ge B_f-c>1$. Thus $C_y>0$.
+Set $r=\sqrt{DB_f}$ and $y=\sqrt{C_y/\delta}$ as positive real roots.
+The four-conjugate identity for $(x^2-a-b)^2-4ab$ gives
+\begin{equation}\label{eq:rootrelation}
+Z/M=\varepsilon r+\eta y.
+\end{equation}
+Its prefactor $\delta^2M^4$ is positive. If $r=y$, clearing denominators
+would give $(Q-1)DB_f=QV^2-1$. Reduction modulo $D$ gives $0=-1$,
+because $D\mid Q$, a contradiction.
+
+Lemma~\ref{lem:two} gives rational $r,y$. A rational number with integer
+square is an integer, so $r\in\Z$. Since $B_f\equiv1\pmod D$,
+$\gcd(D,B_f)=1$. Prime valuations in the integer square $r^2=DB_f$
+show that both factors are squares. Lemma~\ref{lem:adjacent} gives
+$y\in\Z$. Only now define $I=I_0\tau$; its stated properties follow.
+\end{proof}
+
+\section{Soundness: restoring the source in the right order}
+
+For $A\ge2$, write
+\[
+\chi_A(j)+\psi_A(j)\sqrt{A^2-1}
+       =(A+\sqrt{A^2-1})^j.
+\]
+The inherited normalized source proof supplies the strong-rank and signed
+auxiliary-index lemmas, and the immediate zero-offset parent supplies its
+ratio and projection refinements \cite{source61,zerooffset}. Their exact
+hypotheses, rather than just their conclusions, are used below.
+
+\subsection{Folding and first growth before transport}
+
+The strong equation and auxiliary residues
+\[
+V\equiv-c\pmod f,\qquad c\le I,
+\]
+give $c=\psi_A(p)$ for a positive odd index $p$. One way to see the folding
+step is to reduce an auxiliary Pell index modulo the strong period:
+$\psi_A(j+2m)\equiv-\psi_A(j)\pmod{\chi_A(m)}$ and
+$\psi_A(2m-j)\equiv\psi_A(j)$. The representatives have size at most $I$,
+whereas $f>2I$. Thus the residue of $c$ determines a positive representative.
+The odd auxiliary index preserves its parity through this folding.
+
+The first norm gives
+$k=2\psi_{2V_0+1}(n_0)$ for $n_0\ge1$. If $n_0=1$, then $k=2$,
+$\eta=\zeta=1$, and $c=2Y+1$ lies strictly between $\psi_A(1)$ and
+$\psi_A(2)$, which is impossible. Hence
+\begin{equation}\label{eq:earlyc}
+c>kY\ge k\ge4(2V_0+1)>8X\mu^2Y^2.
+\end{equation}
+No transport conclusion, parity conclusion for $q$, or divisibility of $e$
+has yet been used. In particular, $c>2X$ now proves $K_+>0$.
+
+The unchanged mask estimate is
+$R<q^4+(\alpha+2)q^2$. Equation~\eqref{eq:earlyc} gives
+$R<c\alpha/4$ and hence $b>0$. The same two cases $R\ge0$ and $R<0$
+as in the parent give $|e|<b$, so $|e/\mu^2|<b/2$.
+Since $B_f<Q-1$ and $V>0$,
+\[
+0<y-V=\frac{V^2-1}{(Q-1)(y+V)}<\frac b2.
+\]
+
+\subsection{The upper center removes a large transport term}
+
+The new center has the exact defect
+\begin{equation}\label{eq:defect}
+P^2-r^2=D(I_0^2D-1)>0.
+\end{equation}
+Thus $r<P$. Dividing the definition of $Z$ by $M$ in the proof gives
+\[
+Z/M=n+V+P+K_+/H+Y/q^3-WB_t/(q-1)-e/\mu^2.
+\]
+Put $t=B_t/(q-1)$ and $\rho=e/\mu^2$ temporarily as rationals. The
+signed-root equation implies
+\begin{equation}\label{eq:ntransport}
+n=\varepsilon r-P+(\eta y-V)-K_+/H-Y/q^3+Wt+\rho.
+\end{equation}
+If $B_t\le-1$, then $Wt<-b$. The terms $\varepsilon r-P$,
+$-K_+/H$ and $-Y/q^3$ are negative; the other two errors together are
+less than $b$. Equation~\eqref{eq:ntransport} would give $n<0$.
+Consequently $B_t\ge0$, and since $F>0$ and $K_0+w>0$, also $C>0$.
+The source masks now give
+\begin{equation}\label{eq:Rbounds}
+3q<R<q^4-2.
+\end{equation}
+
+This is the important use of the upper center. The old weight contained
+a large strong-ordinate term. Here $W=1+(q-1)b$ suffices. Its degree is 5,
+which will be used in the exact degree calculation.
+
+\subsection{Rank, parity, projection, and the unscaled source}
+
+For reference, the normalized rank argument is short. If
+$c=\psi_A(p)>2$ and $c^2\mid\psi_A(m)$, strong divisibility gives
+$m=pv$. Put $D_m=\chi_A(p)$. Then
+$\psi_A(m)=c\psi_{D_m}(v)$ and
+$\psi_{D_m}(v)\equiv vD_m^{v-1}\pmod c$, with $D_m$ a unit modulo $c$.
+Thus $c\mid v$, so $pc\mid m$ and $m>2p$.
+
+Apply this to the recovered $I=I_0\tau$. The signed auxiliary-index
+lemma also uses $V\equiv-R\pmod c$, which follows from $f^2\equiv1\pmod c$.
+Its strict bounds $0<p,R<c/2$ follow from \eqref{eq:earlyc},
+\eqref{eq:Rbounds}, and Pell growth. It therefore gives $p=R$.
+Since $p$ is odd, $R$ is odd. Odd $q$ would make $J$ even and the defining
+expression for $R$ even, because $\beta$ is odd. Thus $q$ is even.
+
+Only at this point use
+$\gcd(\mu^2,q^3(q-1)H)=1$. In the signed-center identity,
+$n,V,P,r,y$ are integers, so a partial-fraction argument yields
+$\mu^2\mid e$. The first-Pell congruence and the comparison
+$2V_0+1>A$ now force $n_0=(R+1)/2$. Write $R=2h+1$; then $h\ge48$.
+For $a=Y(X+1)$, the zero-offset ratio estimate is
+\[
+\xi<\frac{\psi_A(2h+1)}{\psi_{2V_0+1}(h+1)}
+<\xi(1+1/a)^{2h},\qquad
+\xi=\frac{(X+1)^{2h}}{X^h}.
+\]
+It gives $Y>X^h/3$ and $X^{h+1}<H$.
+
+Set $K_{\rm quad}=X(X+2(A-2)c)-1$. The exact identity
+$K_+=HXc-2K_{\rm quad}$ and the oddness of $H$ transfer the projection
+divisibility to $K_{\rm quad}$. The Pell projection then yields
+\[
+H\mid q^3(q-1)(X-2^R)(2^RX+1).
+\]
+For $X\ge q\ge32$ and $h\ge48$, its entire absolute value is less than
+\[
+q^4 2^{2R+2}X^2<X^{h+1}<H.
+\]
+The dividend is therefore zero, and its second factor is positive, so
+$X=2^R$. No nonunit factor is cancelled through the composite modulus.
+The remaining partial fractions give $q^3\mid Y$ and $q-1\mid B_t$.
+The retained fixed-minus parity lemma gives $R\equiv3\pmod4$, and ratio
+rounding recovers the required half-binomial coefficient $Y$.
+
+These are exactly the data from which the parent constructs fresh unscaled
+source-61 witnesses. The reconstruction does not divide the scaled base or
+reuse the current strong witness as an unscaled one. Its calibrated source
+theorem, including the allowed positive $J=1$ case, yields a finite
+refutation. This proves soundness.
+
+\section{Completeness: the new witnesses really exist}
+
+It is not enough to retain the predecessor's witnesses: the new strong
+ordinate must be divisible by $\tau$, and the upper center subtracts a large
+positive term from the expression for $n$. Both points need proof.
+
+Canonical source data give $X=2^R$, $R\equiv3\pmod4$,
+$q^3\mid Y$, and $B_t=(q-1)t$ with $t\ge0$. Retain $J,F,\alpha,w,Y$,
+and choose
+\[
+c=\psi_A(R),\quad
+k=2\psi_{2V_0+1}((R+1)/2),\quad
+\tau=\chi_{2V_0+1}((R+1)/2).
+\]
+The unchanged ratio argument gives $Y<c/k<Y+1$, so
+$\eta=c-kY$ and $\zeta=k-\eta$ are positive integers. Also
+$\rho=(k-R-1)/\mu^2$ is a positive integer.
+
+\begin{lemma}[Divisible strong witnesses]
+For any positive integer $L$ and $A\ge2$, there is a positive index $m$
+with $L\mid\psi_A(m)$.
+\end{lemma}
+\begin{proof}
+The matrix $\begin{pmatrix}A&A^2-1\\1&A\end{pmatrix}$ has determinant one.
+Its reduction modulo $L$ belongs to a finite group, so some positive power
+is the identity. The lower-left entry of its $m$th power is $\psi_A(m)$.
+\end{proof}
+
+Apply the lemma with $L=c^2\tau$ and set
+\[
+I=\psi_A(m),\qquad f=\chi_A(m),\qquad
+i=I/(c^2\tau),\qquad I_0=I/\tau.
+\]
+These are positive integers, $I_0=ic^2$, and the saturated strong equation
+holds. No index variable or exponent is introduced into the polynomial.
+
+Put $S=\Delta I$ and $Q=S^2$. The standard odd-index auxiliary witnesses are
+\[
+V_*=\frac{\chi_S(R)}{S},\qquad y_*={\psi_S(R)},\qquad
+T_*=\frac{V_*+c+Rf^2}{cf^2}.
+\]
+The retained odd-index polynomial identities give
+$V_*\equiv-c\pmod{f^2}$ and $V_*\equiv-R\pmod c$.
+Since $f^2\equiv1\pmod c$, $T_*$ is an integer and
+$V_*=f^2(cT_*-R)-c$.
+
+Here $R\ge5$. Monotonicity and the explicit fourth and fifth Pell terms give
+\begin{align*}
+V_*&\ge\chi_S(5)/S=16Q^2-20Q+5>Q^2,\\
+u_*:=y_*-V_*&=\frac{\psi_S(R-1)}{S}\ge8Q-4.
+\end{align*}
+The exact gap identity follows from
+$\chi_S(R)-S\psi_S(R)=-\psi_S(R-1)$.
+Since $f^2<Q$ and $Q/c>q>\alpha$, $T_*>\alpha$.
+Thus $T=T_*-\alpha$ is a positive integer and the equation's $V$ equals $V_*$.
+
+The projection gives the positive integer $\kappa=K_+/H<Xc$.
+Set $s_0=Y/q^3\ge1$ and define
+\begin{equation}\label{eq:complete_n}
+n=Wt+\rho+\tau f+u_*-P-s_0-\kappa.
+\end{equation}
+It is an integer. Moreover $P<Q$ because
+$Q/P=\Delta^2I_0/A>1$. Equation~\eqref{eq:earlyc} implies
+$X<c/8$ and $Y<c$, hence
+$s_0+\kappa<Xc+Y<c^2<Q$. Therefore
+\[
+P+s_0+\kappa<2Q<8Q-4\le u_*.
+\]
+All other terms in \eqref{eq:complete_n} are nonnegative, so $n>0$.
+The normalized center now equals $\tau f+y_*$, making one factor of
+\eqref{eq:main} vanish. This proves completeness, including positivity of
+both changed witnesses $i$ and $n$.
+
+\section{Exact degree and an unrestricted-integer version}
+
+The direct syntactic degree propagation of the 93-gate graph gives 316.
+The exact degree is smaller. Introduce proof-only polynomial abbreviations
+\[
+z=Z-M(V+P),\qquad d=P^2-DB_f=(I_0D)^2-D,
+\]
+and
+\[
+B=2M(P+V)z+z^2+M^2d,\qquad
+C_0=\delta B-M^2(V^2-1).
+\]
+A complete ring identity is
+\begin{align}\label{eq:centeridentity}
+\mathcal P={}&C_0^2+4\delta M^2PV C_0
+-4\delta M^4P^2(V^2-1)\nonumber\\
+&+4\delta M^4d(QV^2-1).
+\end{align}
+It follows by substituting $Z=M(V+P)+z$ and $DB_f=P^2-d$ into the
+norm and using $\delta=Q-1$; the checker compares every coefficient of
+this six-indeterminate identity.
+
+The relevant degrees are
+\[
+\deg Q=48,\quad\deg M=13,\quad\deg V=42,\quad\deg P=28,
+\quad\deg z\le19,\quad\deg d=46.
+\]
+Thus $\deg B\le74$ and $\deg C_0\le122$. The four terms in
+\eqref{eq:centeridentity} have degrees at most $244,266,240,278$.
+The only degree-278 contribution is $4Q_0^2M_0^4d_0V_0^2$, where subscripts
+denote leading homogeneous forms. To avoid confusing $V_0$ here with the
+earlier register, its fully expanded factorization is
+\begin{equation}\label{eq:leading}
+2^{10}q_0^{146}i^{10}w^{28}Y^{60}(\eta+\zeta)^{32}(q_0-F)^2,
+\qquad q_0=\beta J.
+\end{equation}
+In particular the coefficient of
+$J^{146}i^{10}w^{28}Y^{60}\eta^{32}F^2$ is
+$2^{10}\beta^{146}>0$. The exponents sum to 278, proving the claimed
+exact degree. This proof is independent of the numerical values of
+$K_0,M_C,M_F$.
+
+For an immediate unrestricted-integer equation, substitute, for each of
+the ten positive inputs,
+\begin{equation}\label{eq:legendre}
+x_j=1+a_j^2+b_j^2+c_j(c_j+1),\qquad a_j,b_j,c_j\in\Z.
+\end{equation}
+This expression parametrizes precisely the positive integers. The converse
+uses the three-square theorem on $4(x_j-1)+1$, with one odd and two even
+squares. Thus the resulting 30-variable equation has the same refutation
+equivalence. Its degree is exactly 556: substitution of independent
+nonzero quadratic leading forms into the nonzero product
+\eqref{eq:leading} stays nonzero. The stated evaluator adds seven operations
+per input, for $93+70=163$ operations. This companion is explicit and
+useful for domain clarity, but it is not advertised as a new unrestricted
+variable-count or low-degree record.
+
+\input{direct_section.tex}
+
+\section{Verification, integration, and limitations}
+
+The mathematical specification and reproducibility package are complementary.
+The ten-positive polynomial has a complete closed coefficient recipe in
+this report and a literal arithmetic graph in \file{ten_positive/equation.json}.
+The direct quartics have complete residual systems, complete collected
+monomial tables and all integer reconstruction maps in \file{direct/}.
+No unknown coefficient or program index remains to be chosen later.
+
+The checks performed for the ten-positive result include:
+\begin{itemize}
+\item the entire retained/changed boundary against the 99-gate parent;
+\item exact new front-register identities and every coefficient of the
+four-conjugate norm and double-center identity;
+\item degree bounds for every centered summand, the complete nonzero leading
+form, and its explicit degree-278 coefficient;
+\item all four coefficient payloads reconstructed from the 436-character
+seed, including the 943 tiles and 66,062 finite native convolution checks;
+\item separate independent proof review of root extraction, dependency order,
+finite-period witnesses and the auxiliary growth needed for $n>0$.
+\end{itemize}
+
+The direct route additionally checks every original-row identity used for
+the changed bound and recovered predicates, every monic integer inverse,
+every residual, and every coefficient of both expanded quartics. The normal
+and optimized Python replays preserve the checks: essential verifications
+do not disappear under \texttt{python -O}. Bounded examples and modular
+samples are diagnostic controls, not substitutes for the unbounded proofs.
+
+The archive includes a top-level \file{verify.py}, a source ledger, licenses
+and deterministic build commands. The original repository is not required
+to evaluate the shipped polynomials or run the standalone checks. The source
+pin remains useful for reviewing the inherited semantic calibrations.
+
+There are two principal limits. First, the ten-positive route still uses the
+native K215 source calibration; its smaller arithmetic does not make it an
+independent foundational encoding. The direct quartic route supplies that
+different encoding. Second, neither new ordinary equivalence is presented
+as a new end-to-end proof-assistant theorem. Exact algebra checks certify
+the finite artifacts and support transcription accuracy; they do not
+themselves certify all source semantics or prove $\Con(\mathrm{ZFC})$.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can the signed-output frame be generalized without creating
+expensive quadratic dependencies?} Squaring an argument removes its sign
+premise but may prevent an earlier monic quadratic substitution. The actual
+variable count must be measured after projection. A joint choice of frame
+terms and elimination order may improve the 576-variable profile.
+\item \textbf{Can the two-root adjacent certificate eliminate another
+positive unknown?} The present reduction compresses square conditions, not
+the free source coordinates or the auxiliary index witness. A further
+reduction must supply complete source reconstruction and canonical
+completeness; a shorter norm formula alone is insufficient.
+\item \textbf{Can better rational centers lower the degree again?} The
+upper center $P=AI_0D$ has a degree-46 defect. A closer center may reduce that
+defect, but clearing a new denominator can increase degree and interfere
+with the projection's coprimality. Both effects must be counted together.
+\item \textbf{Can saturation transfer to the signed low-variable branch?}
+An unrestricted-integer witness absorbs changes to the center easily, but
+some signed parents require an \emph{odd} strong multiplier. A finite-period
+argument guarantees divisibility, not oddness. For example, at Pell base 2,
+the least index with $7\mid\psi_2(m)$ is 4; all such indices are multiples
+of 4 and their ordinates are even. An odd-index divisibility theorem is a
+real additional obligation, not an automatic corollary of this packet.
+\item \textbf{Can the ordinary source calibrations be internalized with
+small certificates?} The local root extraction and finite-period lemmas
+are natural targets once formalization resumes. The final internal-ZFC
+statement must still quantify over all internally coded witnesses.
+\end{enumerate}
+
+\appendix
+\section{A closed recipe for every coefficient}
+\label{app:constants}
+
+This appendix retains the entire coherent BFS-renamed compact44 recipe from
+the pinned one-page source \cite{bfspage}. Its $K$ is the main equation's
+$K_0$. All summation ranges, indices, sets, ranks, quotients and exponents
+here are fixed or bound in the coefficient definitions; none is an extra
+Diophantine unknown. The recipe was reconstructed and compared with every
+raw payload byte. It is attributed as inherited data, not as a new machine
+construction. In particular, the initializer uses the decoded first target.
+
+\input{constant_recipe.tex}
+
+\section{File formats and reproduction}
+
+An arithmetic graph row \texttt{[name,op,left,right]} defines one new
+register using one of \texttt{+,-,*}; an operand is either an earlier name or
+an integer literal. The output register is \texttt{N}. Coefficients are
+unsigned little-endian integers stored in deterministic compressed payloads;
+the closed recipe above also constructs them without reading those payloads.
+
+The direct polynomial files use explicit sparse monomial lists. A monomial's
+variable indices and exponents, together with its integer coefficient,
+determine it completely. The residual systems are convenient for proof and
+evaluation, while the expanded files permit independent coefficient-level
+comparison. The direct package README specifies the exact JSON fields.
+
+From the unpacked archive directory:
+\begin{verbatim}
+python3 -B verify.py
+python3 -B -O verify.py
+python3 -B ten_positive/build.py --check
+python3 -B ten_positive/rebuild_coefficients.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The first two commands replay the shipped finite certificates. The report
+does not require network access or a proof-assistant installation to build.
+The full source ledgers distinguish copied upstream results from new files.
+
+\begin{thebibliography}{9}
+\bibitem{zerooffset}
+ProveIt contributors, \emph{Ten strictly positive integers, 99 operations,
+degree 368}, \file{Computability/DiophantineConsistency/candidates/ten-positive-zero-offset/},
+at the fixed snapshot. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/ten-positive-zero-offset}.
+\bibitem{source61}
+ProveIt research package 61, \emph{Congruence carriers},
+\file{con-zfc-diophantine-forms/61-congruence-carriers/report/congruence_carriers.tex},
+especially the source theorem, normalized rank, signed auxiliary index and
+positive auxiliary reconstruction. The complete source is copied in
+\file{ten_positive/upstream/SOURCE61.tex}.
+\bibitem{bfspage}
+ProveIt contributors, \emph{A complete ten-variable consistency equation},
+\file{candidates/one-page-short10/}, and the inherited complete BFS source
+transfer. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/candidates/one-page-short10}.
+\bibitem{ninesaturation}
+ProveIt contributors, \emph{Tightened nine-positive main-root folding},
+\file{research/nine-folded-saturation-tight/PROOF.md}, at the fixed snapshot.
+The source proof is copied as \file{ten_positive/upstream/NINE_SATURATION_PRIOR.md}.
+\bibitem{output75}
+ProveIt contributors, \emph{Fresh 75-predicate integer quartic profiles},
+\file{research/factorial-radius-output-sign-profile/}, at the fixed snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/84e16e43092614bae262ca59651cb9d77e31a255/Computability/DiophantineConsistency/research/factorial-radius-output-sign-profile}.
+\bibitem{directproofs}
+ProveIt contributors, direct C222 source, shared powers and shared index
+certificates; signed comparison-base, paired-index, factorial-radius and
+output-sign reductions. Exact source paths and hashes are included in
+\file{direct/source/} and the direct source ledger.
+\bibitem{sun2026}
+Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+\end{document}

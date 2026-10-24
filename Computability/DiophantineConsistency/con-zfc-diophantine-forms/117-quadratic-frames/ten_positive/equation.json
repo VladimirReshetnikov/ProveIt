@@ -1,0 +1,733 @@
+{
+  "coefficient_binding": {
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 592884,
+        "file": "K.bin.gz",
+        "gzip_sha256": "5f5ec60cd7d9df99c4dec802a9cfb108ad8d20e1f2ac462ea7014038e4830027",
+        "raw_sha256": "4364134a56b54cf132beeb9acd8e832be68f9083f4359ace4a588a1ea76a60f7"
+      },
+      "MC": {
+        "bits": 590069,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "71ecc4fe568471f83978d00ee7a4e03614203d6af36611c0660dbd4fd3eb2276",
+        "raw_sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4"
+      },
+      "MF": {
+        "bits": 590070,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "ea069f55029bab743997b0a79b0535d5ad558686848a03cb41d72faf596a6a6a",
+        "raw_sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737"
+      },
+      "beta": {
+        "bits": 590069,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "07d42a69e7593ac08bcb2957c965c02f179588b0c3b232c3c640258d0aaeab04",
+        "raw_sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d"
+      }
+    },
+    "tuple": "whole BFS-renamed compact44, corrected initializer; MF_source shifted exactly once"
+  },
+  "domain": "strictly positive integers",
+  "exact_degree": 278,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "name": "ten_positive_saturated_centered",
+  "operation_breakdown": {
+    "*": 55,
+    "+": 22,
+    "-": 16
+  },
+  "operations": 93,
+  "output": "N",
+  "parent_sha256": "047ea8145ef52ab939322f2147c75272e7a182016be78a453fbdf2d3c2a6a493",
+  "proof": "PROOF.md",
+  "proof_status": "Ordinary unbounded arithmetic equivalence, relative to the pinned native/source interface; no new formalized ZFC derivation.",
+  "register_degrees": {
+    "4Am1": 5,
+    "A": 5,
+    "Am1": 5,
+    "Ap1": 5,
+    "Bt": 2,
+    "C": 1,
+    "Df": 38,
+    "DfcTR": 42,
+    "Dnum": 132,
+    "Dp": 10,
+    "DpI2": 38,
+    "Dprod": 56,
+    "Dtau": 18,
+    "F": 1,
+    "G": 2,
+    "G1": 2,
+    "Gq": 4,
+    "Hn": 47,
+    "Hp": 5,
+    "I": 5,
+    "I2D": 28,
+    "ID": 23,
+    "J": 1,
+    "K0": 0,
+    "K0w": 1,
+    "K0wC": 2,
+    "Kpos": 4,
+    "Kpos0": 4,
+    "M2": 26,
+    "MC": 0,
+    "MCqMF": 1,
+    "MF": 0,
+    "Mtot": 13,
+    "N": 316,
+    "P1": 4,
+    "P1e": 8,
+    "P1mu2": 8,
+    "Pcenter": 28,
+    "Q": 48,
+    "QV2": 132,
+    "R": 4,
+    "RJ": 2,
+    "T": 1,
+    "Tp": 1,
+    "V": 42,
+    "V0": 8,
+    "V0k": 9,
+    "V0k2": 18,
+    "V0kk": 9,
+    "V2": 84,
+    "W": 5,
+    "WBt": 7,
+    "X": 2,
+    "Xp1": 2,
+    "Y": 1,
+    "Z2": 110,
+    "Znum": 55,
+    "Zpart1": 55,
+    "Zpart2": 19,
+    "ac": 288,
+    "ac4": 288,
+    "alpha": 1,
+    "bJ": 1,
+    "beta": 0,
+    "brk": 14,
+    "c": 2,
+    "c2": 4,
+    "cT": 3,
+    "cTR": 4,
+    "dM2": 74,
+    "delta": 48,
+    "diff": 158,
+    "diff2": 316,
+    "e": 4,
+    "eta": 1,
+    "fa": 130,
+    "fc": 158,
+    "fs": 158,
+    "gap": 2,
+    "i": 1,
+    "inner": 10,
+    "k": 1,
+    "kR": 4,
+    "kY": 2,
+    "lin": 47,
+    "mu": 2,
+    "mu2": 4,
+    "mu2inner": 14,
+    "muY": 3,
+    "muY2": 6,
+    "n": 1,
+    "nV": 42,
+    "nVP": 42,
+    "q": 1,
+    "q2": 2,
+    "q2m1": 2,
+    "q3": 3,
+    "q3WBt": 10,
+    "qMF": 1,
+    "qm1L": 5,
+    "qm1Y": 2,
+    "qmF": 1,
+    "sumac": 158,
+    "threec": 2,
+    "twoX": 2,
+    "w": 1,
+    "zeta": 1
+  },
+  "source": [
+    [
+      "bJ",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "bJ",
+      1
+    ],
+    [
+      "qmF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qmF",
+      "alpha"
+    ],
+    [
+      "X",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "mu",
+      "+",
+      "q2",
+      1
+    ],
+    [
+      "Xp1",
+      "+",
+      "X",
+      1
+    ],
+    [
+      "muY",
+      "*",
+      "mu",
+      "Y"
+    ],
+    [
+      "Am1",
+      "*",
+      "muY",
+      "Xp1"
+    ],
+    [
+      "4Am1",
+      "*",
+      4,
+      "Am1"
+    ],
+    [
+      "Hp",
+      "-",
+      "4Am1",
+      1
+    ],
+    [
+      "Ap1",
+      "+",
+      "Am1",
+      2
+    ],
+    [
+      "Dp",
+      "*",
+      "Am1",
+      "Ap1"
+    ],
+    [
+      "muY2",
+      "*",
+      "muY",
+      "muY"
+    ],
+    [
+      "V0",
+      "*",
+      "X",
+      "muY2"
+    ],
+    [
+      "V0k",
+      "*",
+      "V0",
+      "k"
+    ],
+    [
+      "V0kk",
+      "+",
+      "V0k",
+      "k"
+    ],
+    [
+      "V0k2",
+      "*",
+      "V0k",
+      "V0kk"
+    ],
+    [
+      "Dtau",
+      "+",
+      "V0k2",
+      1
+    ],
+    [
+      "G1",
+      "*",
+      "bJ",
+      "qmF"
+    ],
+    [
+      "G",
+      "+",
+      "G1",
+      "alpha"
+    ],
+    [
+      "q2m1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "Gq",
+      "*",
+      "G",
+      "q2m1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "MCqMF",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "RJ",
+      "*",
+      "MCqMF",
+      "J"
+    ],
+    [
+      "R",
+      "+",
+      "Gq",
+      "RJ"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "kR",
+      "-",
+      "k",
+      "R"
+    ],
+    [
+      "e",
+      "-",
+      "kR",
+      1
+    ],
+    [
+      "K0w",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "K0wC",
+      "*",
+      "K0w",
+      "C"
+    ],
+    [
+      "Bt",
+      "-",
+      "K0wC",
+      "F"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "I",
+      "*",
+      "i",
+      "c2"
+    ],
+    [
+      "ID",
+      "*",
+      "I",
+      "Dtau"
+    ],
+    [
+      "I2D",
+      "*",
+      "I",
+      "ID"
+    ],
+    [
+      "DpI2",
+      "*",
+      "Dp",
+      "I2D"
+    ],
+    [
+      "Df",
+      "+",
+      "DpI2",
+      1
+    ],
+    [
+      "Q",
+      "*",
+      "Dp",
+      "DpI2"
+    ],
+    [
+      "delta",
+      "-",
+      "Q",
+      1
+    ],
+    [
+      "Tp",
+      "+",
+      "T",
+      "alpha"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "Tp"
+    ],
+    [
+      "cTR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "DfcTR",
+      "*",
+      "Df",
+      "cTR"
+    ],
+    [
+      "V",
+      "-",
+      "DfcTR",
+      "c"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "QV2",
+      "*",
+      "Q",
+      "V2"
+    ],
+    [
+      "Dnum",
+      "-",
+      "QV2",
+      1
+    ],
+    [
+      "A",
+      "+",
+      "Am1",
+      1
+    ],
+    [
+      "Pcenter",
+      "*",
+      "A",
+      "ID"
+    ],
+    [
+      "qm1L",
+      "*",
+      "bJ",
+      "cTR"
+    ],
+    [
+      "W",
+      "+",
+      "qm1L",
+      1
+    ],
+    [
+      "P1",
+      "*",
+      "q3",
+      "bJ"
+    ],
+    [
+      "mu2",
+      "*",
+      "mu",
+      "mu"
+    ],
+    [
+      "P1mu2",
+      "*",
+      "P1",
+      "mu2"
+    ],
+    [
+      "nV",
+      "+",
+      "n",
+      "V"
+    ],
+    [
+      "nVP",
+      "+",
+      "nV",
+      "Pcenter"
+    ],
+    [
+      "Hn",
+      "*",
+      "Hp",
+      "nVP"
+    ],
+    [
+      "threec",
+      "*",
+      3,
+      "c"
+    ],
+    [
+      "twoX",
+      "*",
+      2,
+      "X"
+    ],
+    [
+      "gap",
+      "-",
+      "threec",
+      "twoX"
+    ],
+    [
+      "Kpos0",
+      "*",
+      "X",
+      "gap"
+    ],
+    [
+      "Kpos",
+      "+",
+      "Kpos0",
+      2
+    ],
+    [
+      "lin",
+      "+",
+      "Hn",
+      "Kpos"
+    ],
+    [
+      "Zpart1",
+      "*",
+      "P1mu2",
+      "lin"
+    ],
+    [
+      "qm1Y",
+      "*",
+      "bJ",
+      "Y"
+    ],
+    [
+      "WBt",
+      "*",
+      "W",
+      "Bt"
+    ],
+    [
+      "q3WBt",
+      "*",
+      "q3",
+      "WBt"
+    ],
+    [
+      "inner",
+      "-",
+      "qm1Y",
+      "q3WBt"
+    ],
+    [
+      "mu2inner",
+      "*",
+      "mu2",
+      "inner"
+    ],
+    [
+      "P1e",
+      "*",
+      "P1",
+      "e"
+    ],
+    [
+      "brk",
+      "-",
+      "mu2inner",
+      "P1e"
+    ],
+    [
+      "Zpart2",
+      "*",
+      "Hp",
+      "brk"
+    ],
+    [
+      "Znum",
+      "+",
+      "Zpart1",
+      "Zpart2"
+    ],
+    [
+      "Mtot",
+      "*",
+      "P1mu2",
+      "Hp"
+    ],
+    [
+      "M2",
+      "*",
+      "Mtot",
+      "Mtot"
+    ],
+    [
+      "dM2",
+      "*",
+      "delta",
+      "M2"
+    ],
+    [
+      "Dprod",
+      "*",
+      "Dtau",
+      "Df"
+    ],
+    [
+      "fa",
+      "*",
+      "dM2",
+      "Dprod"
+    ],
+    [
+      "fc",
+      "*",
+      "M2",
+      "Dnum"
+    ],
+    [
+      "Z2",
+      "*",
+      "Znum",
+      "Znum"
+    ],
+    [
+      "fs",
+      "*",
+      "delta",
+      "Z2"
+    ],
+    [
+      "sumac",
+      "+",
+      "fa",
+      "fc"
+    ],
+    [
+      "diff",
+      "-",
+      "fs",
+      "sumac"
+    ],
+    [
+      "diff2",
+      "*",
+      "diff",
+      "diff"
+    ],
+    [
+      "ac",
+      "*",
+      "fa",
+      "fc"
+    ],
+    [
+      "ac4",
+      "*",
+      4,
+      "ac"
+    ],
+    [
+      "N",
+      "-",
+      "diff2",
+      "ac4"
+    ]
+  ],
+  "syntactic_degree": 316,
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "i",
+    "T",
+    "w",
+    "Y",
+    "n",
+    "eta",
+    "zeta"
+  ]
+}

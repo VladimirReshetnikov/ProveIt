@@ -1,0 +1,236 @@
+\section{An alternative source: an explicit equational proof kernel}
+\label{sec:relational-kernel}
+
+This appendix supplies a concrete local component of a different source
+encoding.  It does not supply a new consistency equation.  The broad route
+through finitely axiomatized class theory and relation algebra is prior
+work: Carl and Moroz used finite NBG in their Diophantine provability
+construction, and Formisano, Gavazzi, and Omodeo subsequently proposed a
+Tarski--Givant relational version.  The latter paper does not print its
+proper-axiom tuple; its Section~3.3 leaves those formulas outside its scope.
+Consequently it cannot, by citation alone, calibrate a concrete new
+polynomial to ZFC.  Our contribution here is an independently derived,
+completely explicit local inference polynomial and an executable finite
+proof checker for a supplied finite collection of equation schemata.
+No priority claim is made for the local algebraic identity.
+
+\subsection{A total coding of terms}
+
+Work over $\mathbb N=\{0,1,2,\ldots\}$.  Let the abstract term language have
+two constants $\epsilon,\iota$, two unary constructors $N,V$, and two binary
+constructors $U,M$.  These will eventually stand for membership, identity,
+complement, converse, union, and relation composition, respectively.  The
+coding theorem itself is purely syntactic and does not require that
+interpretation.  Set
+\begin{align*}
+ [\epsilon]&=0,& [\iota]&=1,\\
+ [N(A)]&=4[A]+2,&[V(A)]&=4[A]+3,\\
+ B(a,z)&=2(a+z)(a+z+1)+4z+4,\\
+ [U(A,Z)]&=B([A],[Z]),&[M(A,Z)]&=B([A],[Z])+1.
+\end{align*}
+Every displayed constructor is a polynomial with integer coefficients.
+In particular there is no division in the code of a compound term.
+This is the polynomial form of the numbering in Section~3.1 of
+Formisano--Gavazzi--Omodeo; the complete bijection proof is included here
+to make the component independently checkable.
+
+\paragraph{Theorem A.1 (total coding).}
+The coding map is a bijection from these finite terms onto $\mathbb N$.
+
+\paragraph{Proof.}
+The Cantor function
+\[
+ C(a,z)=\frac{(a+z)(a+z+1)}2+z
+\]
+is a bijection $\mathbb N^2\longrightarrow\mathbb N$.  Indeed, for a given
+$g$, the unique $s$ satisfying
+$s(s+1)/2\leq g<(s+1)(s+2)/2$ gives
+$z=g-s(s+1)/2$ and $a=s-z$.  Then $0\leq z\leq s$, so these are natural
+numbers, and the formulas also prove uniqueness.  Moreover
+$C(a,z)\geq\max(a,z)$.
+
+The two constants occupy $0,1$.  Codes congruent to $2$ and $3$ modulo $4$
+have the unique forms $4a+2$ and $4a+3$, respectively.  The remaining
+numbers are $4(g+1)$ and $4(g+1)+1$ with $g\geq0$; the unique inverse of
+$C$ identifies their two children.  Since $B=4(C+1)$, these are precisely
+the two binary constructor cases.  In every case the child codes are
+strictly smaller than the parent code.  Strong induction on a natural
+number therefore constructs one finite term having that code; the
+disjoint residue cases and the uniqueness of the Cantor inverse prove
+that this term is unique.  This also proves injectivity of the original
+coding map.  All inductions and integer computations are available in
+ZFC. \hfill$\square$
+
+Thus a natural-number witness never needs a separate certificate that
+it denotes a valid term.  Equalities are stored as two coordinates
+$(a,b)$, representing the equation between the uniquely decoded terms.
+This avoids packing and immediately unpacking an equality as a further
+Cantor pair.
+
+\subsection{The seven-variable local polynomial}
+
+Let $(a,b)$ and $(c,d)$ be two already proved equations and let $(u,v)$
+be a proposed conclusion.  Introduce only one additional natural witness
+$z$.  Define
+\begin{align*}
+ T&=(a-c)^2+(u-b)^2+(v-d)^2,\\
+ q&=u-4a-2,\\
+ A&=\bigl(q(q-1)\bigr)^2+\bigl(v-u-4(b-a)\bigr)^2,\\
+ r&=u-B(a,z),\\
+ D&=\bigl(r(r-1)\bigr)^2
+       +\bigl(v-u-2(b-a)(a+b+2z+1)\bigr)^2,\\
+ K(u,v,a,b,c,d,z)&=TAD.
+\end{align*}
+There are seven variables in $K$, not seven witnesses for the whole
+provability problem: six coordinates are inputs and outputs of a single
+local inference.  The history encoding is a separate cost.
+
+\paragraph{Theorem A.2 (exact local inference).}
+For natural values of its seven arguments, $K=0$ holds if and only if at
+least one of the following five inference cases holds:
+\begin{enumerate}
+\item $a=c$, $u=b$, and $v=d$ (common-left transitivity);
+\item $u=4a+2$ and $v=4b+2$ (complement congruence);
+\item $u=4a+3$ and $v=4b+3$ (converse congruence);
+\item $u=B(a,z)$ and $v=B(b,z)$ (union in the right argument);
+\item $u=B(a,z)+1$ and $v=B(b,z)+1$ (composition in the right argument).
+\end{enumerate}
+Here ``in the right argument'' means adjoining the same right operand
+$z$ to both members of a proved equality; it does not mean changing that
+right operand.
+
+\paragraph{Proof.}
+The integer ring has no zero divisors, so $K=0$ is equivalent to the
+vanishing of one factor.  Each factor is a sum of squares of integers.
+For $T$, this gives exactly case~1.  For $A$, it gives
+$q(q-1)=0$ and $v-u=4(b-a)$.  Hence $q$ is $0$ or $1$ and the same unary
+tag is used on both sides, proving cases~2 and~3.
+
+For $D$, it gives $r\in\{0,1\}$ and the stated difference equation.
+Direct expansion gives the polynomial identity
+\[
+ B(b,z)-B(a,z)=2(b-a)(a+b+2z+1).
+\]
+Thus $u=B(a,z)+r$ and $v=B(b,z)+r$, proving cases~4 and~5.
+Every listed case conversely annihilates its indicated factor.
+The argument establishing this union of arithmetic cases works over all
+integers; nonnegativity is used only for the term interpretation from
+Theorem~A.1. \hfill$\square$
+
+The two adjacent constructor tags are therefore selected without
+introducing a Boolean variable.  The finite-difference identity also
+avoids calculating $B(a,z)$ and $B(b,z)$ independently.  The included
+straight-line circuit has 41 live binary additions, subtractions, and
+multiplications; a square counts as one multiplication, and its constants
+are $1,2,4$.  The circuit is an evaluator for this local polynomial, not
+an operation count for a completed consistency equation.
+
+\paragraph{Exact degree.}
+The three factors have degrees $2,4,8$, respectively, so
+$\deg K\leq14$.  Specializing $a=t$ and all other inputs to zero gives
+leading terms $t^2$, $256t^4$, and $16t^8$.  Therefore the resulting
+univariate polynomial has leading term $4096t^{14}$, proving
+$\deg K=14$.
+
+\subsection{Finite proof checking and the remaining obligations}
+
+Fix a finite list of equation schemata.  Each side is a finite term
+template over the six constructors, with a finite number of schematic
+variables.  Supplying natural values for those variables produces an
+exact instance by the constructor polynomials.  The code contains no
+axiomhood oracle: the list of templates is literal input data.
+
+A proof line records its conclusion, and either (i) a schema index and
+its instantiation values, or (ii) two strictly earlier line indices and
+the witness $z$.  A line of kind~(ii) is accepted exactly when $K=0$ for
+its two parent equations.  One-parent congruence steps repeat the same
+parent index.  The first line must be a schema instance.  This explicit
+requirement excludes an unjustified cyclic first line.
+
+\paragraph{Theorem A.3 (finite-checker adequacy).}
+For the supplied schema list, the checker accepts a proof of a target
+equation exactly when that equation has a finite derivation from those
+schemata using the five inference cases in Theorem~A.2.
+
+\paragraph{Proof.}
+If the checker accepts, induction over its finite list proves each line.
+At a schema line this follows by exact instantiation.  At an inference
+line both parents have smaller indices, so the induction hypothesis and
+Theorem~A.2 give its conclusion.  Conversely, list the nodes of a finite
+derivation tree in a children-before-parent order.  Record the two
+earlier indices for a transitivity step, duplicate the earlier index
+for a congruence step, and use the code of its right operand for a binary
+congruence.  For the other steps $z=0$ suffices.  Theorem~A.2 makes the
+kernel vanish at each inference, and exact constructor evaluation
+verifies every schema instance. \hfill$\square$
+
+This theorem concerns the stated finite equational calculus, without a
+claim that an arbitrary schema list expresses set theory.  A finished
+replacement for the existing Con(ZFC) equation still requires all of:
+\begin{enumerate}
+\item A completely printed finite relational class-theory axiom tuple,
+including the logical relation-algebra schemata and a precise target
+equation expressing collapse.
+\item Proof transformations, formalizable in ZFC, establishing that this
+target is derivable exactly when the chosen ZFC calculus is inconsistent.
+In particular the quasi-projection assumptions required for the
+Tarski--Givant translation must be proved or included correctly.
+\item An explicit polynomial compiler for arbitrarily long accepted
+finite histories, with every bound, chronology condition, coefficient,
+and witness accounted for.
+\item Complete global variable, degree, coefficient, and evaluator counts
+after that compiler is instantiated.
+\end{enumerate}
+None of these global costs can be inferred from the seven local
+coordinates or 41 local operations.  The component provides a distinct
+testable source direction, while leaving the established consistency
+equation unchanged.
+
+\subsection{An explicit combined row polynomial}
+
+There is also a direct polynomial form of schema admission.  Suppose
+the $j$th supplied schema has at most $m$ schematic variables.  Evaluating
+its left and right templates using the constructor polynomials gives
+fixed polynomials $L_j(\mathbf x),R_j(\mathbf x)\in
+\mathbb Z[x_1,\ldots,x_m]$; unused coordinates are simply ignored.
+Define
+\[
+ H(u,v,\mathbf x)=\prod_{j=1}^{s}
+ \bigl((u-L_j(\mathbf x))^2+(v-R_j(\mathbf x))^2\bigr),
+ \qquad
+ F=K(u,v,a,b,c,d,z)H(u,v,\mathbf x).
+\]
+The empty product is $1$.  Over natural inputs, $F=0$ means exactly
+that the output is a listed schema instance or follows from the two
+parents by one of the five inference cases.  The same $m$ schema
+coordinates may be shared between all $s$ factors: a zero product
+requires only one schema factor to vanish.  Conversely witnesses for
+that chosen schema can be padded with zeros.  This observation does
+not share witnesses between multiple simultaneously required premises.
+
+If the chosen logical basis includes reflexivity, histories can start
+with the fixed justified row $(0,0)$.  Every later row can then carry two
+strictly earlier parent indices, including axiom rows, which use the
+initial row as harmless dummy parents.  Using $F=0$ for those later rows
+avoids a separate Boolean axiom/inference tag.  The first row is fixed
+and verified; it is never admitted merely by a self-referential
+inference.  Induction gives the same soundness and completeness proof
+as above.  This combined row polynomial still has an unbounded-history
+compilation obligation.  In particular the variable count $7+m$ is a
+local row count, not a variable bound for a Con(ZFC) equation.
+
+\paragraph{Reproduction.}
+Run \texttt{python3 relational\_kernel.py}.  The included finite checks
+cover 10,000 complete code roundtrips, 10,000 Cantor inverse roundtrips,
+2,048 binary constructor cases, 20,000 seeded arithmetic comparisons,
+8,640 positive inference cases, and valid/invalid finite proofs.  These
+checks supplement the universal proofs above; they do not establish the
+missing NBG calibration or global history compilation.
+
+\paragraph{Primary references.}
+M.~Carl and B.~Z.~Moroz, \emph{On a Diophantine representation of the
+predicate of provability}, MPI preprint~2006/129,
+\url{https://webdoc.sub.gwdg.de/ebook/serien/e/mpi_mathematik/2006/129.pdf}.
+A.~Formisano, I.~Gavazzi, and E.~G.~Omodeo,
+\emph{Diophantine Modeling of Provability in Algebraic Logic}, CILC~2025,
+\url{https://ceur-ws.org/Vol-4003/paper13.pdf}.
