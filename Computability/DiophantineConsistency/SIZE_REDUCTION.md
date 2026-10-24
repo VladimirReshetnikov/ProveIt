@@ -22,7 +22,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 99 | 368 | Zero-offset scaled base, shared muY and positive short projector |
-| Positive integers | 10 | 107 | 340 | Direct positive X and delayed divisibility carrier; cost/degree tradeoff |
+| Positive integers | 10 | 105 | 340 | Direct positive X, zero-offset main base and delayed divisibility carrier |
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
@@ -756,3 +756,16 @@ Python, along with both deterministic rebuilds; see the
 [root review](reviews/default-affine613-root-peer.md). All78 original
 guards remain. This is a new projection configuration, separate from the
 bootstrap guard exchange. The canonical one-page equation remains unchanged.
+
+## Combined direct/zero-offset105/340 accepted
+
+The complete [ten-positive105/340 candidate](candidates/ten-positive-direct-zero-offset/README.md)
+combines the direct coordinate X=q+x with A=mu*Y*(X+1)+1 and shared muY.
+It improves107/340 to105/340; the accepted99/368 candidate retains the
+lower operation count. All107 direct-parent and99 zero-offset-parent
+definitions are bound to the same literal105 rows. The ordinary proof
+retains delayed q-divisibility, and its positive completeness map uses the
+same zero-offset kernels. Root replayed all four normal/optimized checks
+and rebuilds, all complete payloads and degree340 certificates; see the
+[root review](reviews/direct-zero105-root-peer.md). Lean remains paused.
+The canonical101/368 PDF is unchanged while these small gains are batched.

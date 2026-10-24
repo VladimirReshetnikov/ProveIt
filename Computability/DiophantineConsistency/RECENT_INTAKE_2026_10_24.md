@@ -509,3 +509,16 @@ Python, along with both deterministic rebuilds; see the
 [root review](reviews/default-affine613-root-peer.md). All78 original
 guards remain. This is a new projection configuration, separate from the
 bootstrap guard exchange. The canonical one-page equation remains unchanged.
+
+## Combined direct/zero-offset105/340 accepted
+
+The complete [ten-positive105/340 candidate](candidates/ten-positive-direct-zero-offset/README.md)
+combines the direct coordinate X=q+x with A=mu*Y*(X+1)+1 and shared muY.
+It improves107/340 to105/340; the accepted99/368 candidate retains the
+lower operation count. All107 direct-parent and99 zero-offset-parent
+definitions are bound to the same literal105 rows. The ordinary proof
+retains delayed q-divisibility, and its positive completeness map uses the
+same zero-offset kernels. Root replayed all four normal/optimized checks
+and rebuilds, all complete payloads and degree340 certificates; see the
+[root review](reviews/direct-zero105-root-peer.md). Lean remains paused.
+The canonical101/368 PDF is unchanged while these small gains are batched.
