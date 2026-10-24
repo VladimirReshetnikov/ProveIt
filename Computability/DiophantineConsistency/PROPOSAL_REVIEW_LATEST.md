@@ -1055,3 +1055,18 @@ integer restoration and quartic coefficient is checked. Root replayed
 both checker and rebuild modes; see the
 [root review](reviews/factorial-radius-output-profile-root-peer.md). The
 canonical one-page equation and Lean sources remain unchanged.
+
+## Encoded-index sign is recovered:74 source predicates
+
+The corrected [encoded-index proof](research/encoded-index-sign/PROOF.md)
+removes raw59's explicit sign guard. Raw59 is not a power argument: its
+only source use is E=raw59+1. Early direct signs give M>=1,E>=0 and a
+modified642-coordinate prefix supplies the unchanged43-argument frame.
+A weak-radix carry argument restores the factorial index bounds; then only
+the first ten actual powers, exact binomial digits and the moduli-product
+remainder prove M=product(1+fj)>1, hence raw59>=0. This reaches the actual
+75-predicate source before using its semantic chain. Full author,
+independent peer and root normal/optimized checks pass; see the
+[root review](reviews/encoded-index-sign-root-peer.md). There are74
+predicates before projection. No projected metric, Lean or page change is
+claimed by this source theorem alone.
