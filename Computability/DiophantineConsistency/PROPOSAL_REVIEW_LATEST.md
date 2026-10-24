@@ -33,6 +33,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | 522 | not optimized | 4 | Synchronized arithmetic;20,225 terms, height83,900,628 |
 | Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Distinct support/height tradeoffs |
 | Integers | 1,224 | not optimized | 4 | Actual-row sign certificates;23,590 terms, height83,900,628 |
+| Integers | 1,190 | not optimized | 4 | Signed monic projection;26,411 terms, same height |
 | Integers | 1,231 / 1,298 / 1,597 | not optimized | 4 | Guarded support/height tradeoffs |
 
 The nine-variable953/999,518 point improves both operations and degree over
@@ -244,6 +245,16 @@ certificates, all fresh guards and every collected coefficient pass
 independent normal/optimized checks. Minimality of234 seeds is proved
 only within the explicitly restricted elementary inference class.
 
+The [signed projections](candidates/synchronized-signed-projections/README.md)
+further give1,190 integer variables,600 residuals and26,411 terms at
+height83,900,628. Seven complete points retain variable/support/height
+tradeoffs. Each monic substitution is replayed against every residual,
+including sign guards. Reverse restoration uniquely recovers the full
+guarded integer parent before the natural sign certificate is used.
+No unconstrained coordinate is dropped. Both full normal/optimized
+generator and independent-checker runs pass, including14 corruptions;
+root separately reviewed and replayed the entire construction.
+
 The [reanchored guard review](PROPOSAL_REVIEW_REANCHORED_GUARD13.md)
 improves the thirteen-integer195-operation form from degree1088 to1072
 at the same source34 coefficients. It moves a nonzero square scale
@@ -257,8 +268,8 @@ The congruence-certificate,608-shared-Pell and twelve-integer interpolation
 archives arriving ina6269e4da6 remain under review. Preliminary claims
 are not promoted to the table. The earlier direct7617 projection is
 queued; its local-source ideas may compose with the newer frame engine.
-Signed projections of the checked234-guard family are underway as
-separate candidates. Both differently named parity ZIPs remain distinct.
+Further combinations are researched as separate candidates. Both
+differently named parity ZIPs remain distinct.
 The centered-compression dependency ZIP contains a byte-identical existing
 joint-guards archive rather than a new equation. Further shared-CRT bound
 and Pell power-certificate reductions are being checked as separate

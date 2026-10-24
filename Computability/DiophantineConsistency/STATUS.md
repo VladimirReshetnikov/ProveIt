@@ -82,10 +82,13 @@ and radix, after full ordinary review and normal/optimized rebuilding.
 Our [actual-row guard family](candidates/synchronized-row-guards/README.md)
 gives1,224/1,231/1,298/1,597 unrestricted integer variables. Every omitted
 guard is justified by its exact integer row certificate before arithmetic
-interpretation. The main1,224-variable equation has23,590 terms and height
-83,900,628. The separate [batched direct review](reviews/batched-direct-peer.md)
+interpretation. [Signed projection](candidates/synchronized-signed-projections/README.md)
+then reaches1,190 integers,26,411 terms and height83,900,628. Complete
+reverse restoration recovers every original guard and sign condition.
+The separate [batched direct review](reviews/batched-direct-peer.md)
 also accepts its1,690-integer companion; signed projection is now being
-applied to the newer integer family. All are degree4. Lean remains paused.
+applied to the newer integer family with seven complete tradeoff points.
+All are degree4. Lean remains paused.
 
 The historical [direct C222 quartic](PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md) is a
 complete ordinary alternative independent of K215, native coefficients

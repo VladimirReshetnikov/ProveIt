@@ -41,6 +41,7 @@ not establish the size of a complete consistency equation.
 | Nonnegative integers | 522 | not optimized | 4 | Synchronized frame;20,225 terms, height83,900,628 |
 | Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Support/height alternatives:10,782 /7,263 /4,863 terms |
 | Integers | 1,224 | not optimized | 4 | Synchronized actual-row guards;23,590 terms, height83,900,628 |
+| Integers | 1,190 | not optimized | 4 | Signed projection of the certified parent;26,411 terms, same height |
 | Integers | 1,231 / 1,298 / 1,597 | not optimized | 4 | Guarded alternatives:14,148 /10,628 /8,232 terms |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
@@ -81,6 +82,9 @@ redundant lower-bound slacks and composing the beta majorant gives
 Those complete checkpoints remain preserved. The newer synchronized
 shared-frame construction supersedes them with the table's522-natural
 and1,224-integer points; complete ordinary and exact finite reviews pass.
+Signed monic projection then reaches1,190 integers, preserving every
+guard through a complete reverse-restoration certificate. Its larger
+26,411-term expansion is an explicit cost of the variable reduction.
 The separate batched667-natural/1,690-integer proposal also passes its
 scoped review. Its shared-offset and signed-projection ideas are being
 combined with the new certified integer family in separate candidates.

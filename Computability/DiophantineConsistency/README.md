@@ -75,18 +75,20 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records a
 fourteen-integer148/748,156/664 and163/652 tradeoffs.
 
 The direct C222 route now supplies a complete
-[quartic in1,224 unrestricted integers](candidates/synchronized-row-guards/README.md),
-with23,590 explicitly collected monomials and coefficient height83,900,628.
+[quartic in1,190 unrestricted integers](candidates/synchronized-signed-projections/README.md),
+with26,411 explicitly collected monomials and coefficient height83,900,628.
 Its [synchronized natural parent](PROPOSAL_REVIEW_SYNCHRONIZED_CERTIFICATES.md)
-has522 variables. Alternative integer forms use1,231/1,298/1,597 variables
-for fewer terms or smaller coefficients. One global Pell frame, a common
+has522 variables. Its certified1,224-integer parent and the signed-projection
+alternatives retain different term/height tradeoffs. One global Pell frame, a common
 binomial radix and actual-row sign certificates improve the earlier
 27,916/8,619/6,604-integer checkpoints. The separate
 [batched review](reviews/batched-direct-peer.md) validates the shared-offset
 and signed-projection route at1,690 integers. These equations use ordinary
 literal coefficients and are independent of K215 and Jones. Separate
 ordinary proofs, full incoming replays and exact normal/optimized candidate
-checks pass. Internal formalization remains open and Lean remains paused.
+checks pass. Signed restoration preserves every guard before recovering
+the original natural domain. Internal formalization remains open and Lean
+remains paused.
 
 The [two parity-family reviews](PROPOSAL_REVIEW_PARITY_FAMILIES.md) add
 fifteen-integer128-operation/degree204 and124/352 choices, and
