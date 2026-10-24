@@ -117,3 +117,19 @@ all coefficients and inverses. Each matched988/729/703/701/700 parent loses
 15 variables, five rows and73 collected terms at unchanged height. The
 smaller-coefficient retained710 family and canonical PDF/TeX are preserved;
 Lean remains paused.
+
+
+The [scalar-carrier twelve-integer equations](candidates/scalar-carrier12/README.md)
+now use145 operations/degree1200 and141/1456, improving208/2400 and202/2912
+with the same twelve unrestricted variables and all six original constants.
+A scalar intersective quintic enforces H|K and excludes zero strong scale;
+prime-order separation leaves four roots, and signed folding recovers the
+missing main norm before its whole-product projection. The completeness
+proof keeps one strong witness fixed while selecting the translated
+intersective residue. Direct nonodd step-down is proved from the auxiliary
+index polynomial. Full independent ordinary review, separate all-register
+ring binding, all495 norm coefficients, exact every-gate leading induction,
+whole payloads/parent inventory and final normal/optimized checks pass.
+Both degrees are halved; cost falls by63 and61 operations. Canonical
+10-positive105/408 PDF/TeX remains the lower-variable/operation tradeoff;
+Lean stays paused.

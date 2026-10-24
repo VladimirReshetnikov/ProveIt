@@ -35,7 +35,7 @@ not establish the size of a complete consistency equation.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational-root norm tradeoff |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated three-root norm |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue and prime-separation two-root norms |
-| Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
+| Integers | 12 | 145 / 141 | 1,200 / 1,456 | Scalar intersective carrier, main folding and four-root prime separation |
 | Integers | 13 | 135 | 536 | Trace before signs, main-root folding and quadratic projection |
 | Integers | 14 | 119 | 312 | Signed main-root recovery, quadratic projection and identical shared prefix |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
@@ -362,3 +362,19 @@ all coefficients and inverses. Each matched988/729/703/701/700 parent loses
 15 variables, five rows and73 collected terms at unchanged height. The
 smaller-coefficient retained710 family and canonical PDF/TeX are preserved;
 Lean remains paused.
+
+
+The [scalar-carrier twelve-integer equations](candidates/scalar-carrier12/README.md)
+now use145 operations/degree1200 and141/1456, improving208/2400 and202/2912
+with the same twelve unrestricted variables and all six original constants.
+A scalar intersective quintic enforces H|K and excludes zero strong scale;
+prime-order separation leaves four roots, and signed folding recovers the
+missing main norm before its whole-product projection. The completeness
+proof keeps one strong witness fixed while selecting the translated
+intersective residue. Direct nonodd step-down is proved from the auxiliary
+index polynomial. Full independent ordinary review, separate all-register
+ring binding, all495 norm coefficients, exact every-gate leading induction,
+whole payloads/parent inventory and final normal/optimized checks pass.
+Both degrees are halved; cost falls by63 and61 operations. Canonical
+10-positive105/408 PDF/TeX remains the lower-variable/operation tradeoff;
+Lean stays paused.
