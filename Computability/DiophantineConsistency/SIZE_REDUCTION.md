@@ -1495,3 +1495,32 @@ records are bound. The restricted associative search has no global minimality
 claim. See the [root acceptance](reviews/saturated-direct-carrier-cse-root-peer.md).
 These minor gains are batched; the canonical92/283 PDF and TeX remain unchanged,
 and Lean remains paused.
+
+## Complete paired-guard quartics reach 496 integer variables
+
+The [reviewed full source compiler](research/round14-pair-guard-projections/README.md)
+materializes twelve projection profiles and all24 plain/centered quartics from
+the sealed ordinary pair-guard theorem. Centered derived support16 gives
+**498 variables,309 rows,6,615 terms,height3,904,259**, improving the preceding
+517/310/6,774/3,904,267 in every measure. Quadratic-first gives **496 variables,
+307 rows,5,924 terms,height5,061,227**, with higher coefficient height.
+The lower-height ancestry gives502/320/6,111/411,053, or501/319/5,615/620,468.
+Every unknown is an unrestricted integer and every complete equation has exact
+degree four. All alternatives and predecessors remain preserved.
+
+The whole producer/checker/vendor closure was reviewed independently before
+its first full run. Root and peer each ran both full checker modes and both
+deterministic rebuild modes; all receipts match the author exactly. Every
+coefficient, monic restoration, source body/ideal/power map, signed inverse
+fixture and full translation is checked, rejecting38 actual corruptions per
+mode. Each inverse explicitly initializes the two genuinely free coordinates
+before reverse monic restoration. A separate independent collector, fully read
+and replayed by root in both modes, verifies all26 complete quartics and all
+calibration chains and rejects eight additional malformed binding controls.
+
+The [root acceptance](reviews/round14-pair-guard-projections-root-peer.md)
+composes those finite premises with the sealed ordinary guard theorem and
+its explicit inherited C222/Pell/refutation calibration. The canonical compact
+92/283 PDF and TeX remain unchanged; Lean remains paused. A later incoming
+Round15 proposal claims442 variables and is a separate review priority; that
+claim is not promoted by this acceptance.

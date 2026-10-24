@@ -44,6 +44,13 @@ The [direct-carrier sharing extension](research/saturated-direct-carrier-cse/REA
 also saves one multiplication in each of five complete direct variants,
 including96/258,97/254 and94/262; their entire polynomials are preserved.
 
+For degree-four equations, the [complete paired-guard family](research/round14-pair-guard-projections/README.md)
+now reaches **496 unrestricted integer unknowns**, with5,924 terms and height
+5,061,227. A498-variable alternative has6,615 terms and smaller height3,904,259;
+a502-variable branch lowers height to411,053. Every full equation, coefficient
+list and inverse certificate is retained; see the
+[root acceptance](reviews/round14-pair-guard-projections-root-peer.md).
+
 The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),
 as are the earlier [degree816 page](candidates/one-page-scaled10/equation.pdf)
