@@ -14,9 +14,19 @@ checks. The earlier remaining-obligation discussion records what had to
 be proved; that fixed-blank specialization is now closed at the ordinary
 mathematical level. Native/internal-ZFC formalization remains separate.
 
+The [centered extension](candidates/fixed-root-centers/README.md) now gives
+fourteen-positive74/312 and76/191. An auxiliary ordinate shift cancels the
+large leading term. The ordinary variant first exposes the early main
+Pell bound, then proves rational strong-root integrality by balanced-unit
+reduction and restores the scaled auxiliary ordinate by adjacent descent.
+Its [independent ordinary review](candidates/fixed-root-centers/INDEPENDENT_REVIEW.md)
+checks that order and the signed fixed-blank reconstruction. Complete
+literal/algebra/degree and normal/optimized checks pass, with the same whole
+compact36 tuple. The earlier73/342 and75/293 remain operation tradeoffs.
+
 The universal bound **84 operations,18 positive witnesses, degree187** is
 distinct from the fixed consistency forms, including66/157 and our
-440-operation positive-nine equation. The separate74-operation result is a
+433-operation positive-nine equation. The separate74-operation result is a
 comparison certificate; its fully paid sum-of-squares polynomial costs100.
 Those counts cannot be substituted for one another.
 
@@ -55,7 +65,8 @@ former50 and appending the existing23/25-row schedules gives respectively
 **73/342 and75/293, each with14 retained positive unknowns** as candidate
 algebraic size points. The degrees use`deg(P)=49`, rather than the universal
 parent's81; the dominating forms are nonzero products on the fixed`beta>0`
-slice. No circuit was emitted or evaluated here.
+slice. The initial metadata-only lead has since been materialized and
+checked in the candidate directories linked above.
 
 On the retained positive domain,`D>c>0` and`b=c+R*D` cannot vanish for any
 integer`R`, so`B!=0`. The norm argument restores a unique nonzero integral

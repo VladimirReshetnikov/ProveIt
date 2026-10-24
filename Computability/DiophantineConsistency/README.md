@@ -38,10 +38,21 @@ degree at the same arithmetic cost.
 The [Hilbert Tenth root-elimination transfer](candidates/fixed-root-elimination/README.md)
 also gives fourteen-positive73-operation/degree342 and75-operation/degree293
 equations, with a separately reviewed signed-root reconstruction.
+Its [centered extension](candidates/fixed-root-centers/README.md) now gives
+74/312 and76/191, including an ordinary strong-root integrality proof that
+uses the early Pell bound before extracting either deleted root.
 Over unrestricted integers, a
 [centered joint-guard equation](candidates/joint22-centered/README.md)
 has22 unknowns, degree14 and119 operations. Its complete integer zero set
 is carried bijectively to the parent by an explicit polynomial shear.
+
+The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records a
+433-operation nine-positive equation at degree1,628,768, a lower-degree
+953-operation form at999,518, ten-positive131/1,152 and eleven-positive
+111/211. It also reviews a complete direct C222 quartic with27,916 integer
+variables and explicitly collected coefficients, independent of
+K215 and Jones. All52 authored normal/optimized release stages pass;
+the ordinary proof and internal formalization boundary are stated separately.
 
 ## Approach and comparison
 
@@ -132,7 +143,8 @@ equation, and a478-operation nine-positive equation of degree1,379,730.
 An exact shared-product rewrite now reduces the compact54-sharp candidate
 from443 to440 operations, retaining degree1,845,940 and every coefficient;
 see [the new candidate](candidates/gap2082-shared-products/README.md).
-This is the current operation target in the nine-positive branch.
+This historical operation target is retained as a checkpoint; the current
+size-only nine-positive target has433 operations, as recorded above.
 The same algebra improves package71 to475 operations at degree1,379,730;
 see [the lower-degree rewrite](candidates/order7-shared-products/README.md).
 See [the combined wave-ten review](PROPOSAL_REVIEW_WAVE10.md)

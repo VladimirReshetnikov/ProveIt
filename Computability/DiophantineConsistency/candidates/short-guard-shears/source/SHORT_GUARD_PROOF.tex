@@ -1,0 +1,45 @@
+\section{A source-aware approximation guard}
+Let $W=116$, $B=2^{2134940}b^2$, and $\mathcal C=bB^W$.
+The canonical digit code is
+\[
+ g=\sum_{i=1}^{31}(p_i-1)B^{w_i},\qquad
+ 1\le p_i\le b,
+\]
+where the weights are distinct positive integers at most $W$.
+The coordinate $a$ has weight $W$. Source equation~4 is
+$a=E+(N+1)s$; all three coordinates on the right are positive, so
+$a\ge3$. Consequently $g\ge2B^W$, and in particular $g\ge B^W$.
+The usual digit bound gives $g<\mathcal C$: indeed
+\[
+ g\le(b-1)\sum_{j=1}^{W}B^j
+ < (b-1)\frac{B^{W+1}}{B-1}<bB^W,
+\]
+since $B>b$. Moreover $B^W\ge b^2$, whence
+\[
+ g^3\ge B^{3W}\ge b^2B^{2W}=\mathcal C^2.
+\]
+
+Write $e=C-KL$ and replace the former approximation guard by
+\[
+ \boxed{\quad R=g(\mathcal C-g)K^2-\mathcal C^2e^2.\quad}
+\]
+For arbitrary integers with $\mathcal C>0$, the condition $R>0$
+forces $K\ne0$ and $0<g<\mathcal C$. The identity
+\[
+ 4g(\mathcal C-g)=\mathcal C^2-(\mathcal C-2g)^2
+ \le\mathcal C^2
+\]
+then gives $4e^2<K^2$. Thus the new guard implies the previous
+range and approximation conclusions, and in fact halves the permitted range.
+
+Conversely take a canonical source code and the existing approximation
+$|e|<|K|/(4g)$, with $K\ne0$. Since $\mathcal C-g$ is a positive integer,
+\[
+ \frac{R}{K^2}
+ >g(\mathcal C-g)-\frac{\mathcal C^2}{16g^2}
+ \ge g-\frac{g}{16}=\frac{15g}{16}>0.
+\]
+This proves completeness without a stronger approximation theorem or a new
+coefficient bound. The argument depends only on the verified top digit and
+existing radix and source conventions. Source encoding $g$ is not the
+separate source coordinate also named $g$ (whose weight is $9$).
