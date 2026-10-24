@@ -1,0 +1,926 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,enumitem,xcolor,fancyhdr,xurl,hyperref,listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Twelve Integer Variables through Interpolated Pell Certificates},
+ pdfauthor={Research contribution for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Interpolated Pell certificates}
+\fancyhead[R]{\small ProveIt research contribution}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}\emergencystretch=2em
+\setlist{nosep,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\F}{\mathcal F}
+\newcommand{\Dm}{D_{\mathrm m}}\newcommand{\Df}{D_{\mathrm f}}
+\newcommand{\Dt}{D_{\tau}}\newcommand{\Da}{D_{\mathrm a}}
+\newcommand{\Dg}{D_{\mathrm g}}\newcommand{\Pair}{\operatorname{Pair}}
+\newcommand{\NF}{\operatorname{NF}}
+\numberwithin{equation}{section}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=black!20}
+\title{\vspace{-8mm}\textbf{Twelve Integer Variables through\\Interpolated Pell Certificates}\\[3mm]
+\large A monotone intersective merger, trace before separation,\\
+and explicit Diophantine equations for syntactic consistency}
+\author{Research contribution prepared for\\Vladimir Reshetnikov's ProveIt project}
+\date{24 October 2026\\\small Reviewed repository commit:
+\texttt{04a1d79222d55cabe4ba52897863fc33baa8c268}}
+\begin{document}\maketitle
+\begin{abstract}
+We construct an ordinary polynomial in twelve unrestricted integer variables,
+with exact total degree $4832$ and $248$ binary arithmetic operations, whose lack of integer solutions is equivalent
+in ZFC to syntactic $\Con(\mathrm{ZFC})$, by composition with explicitly named
+ordinary calibration theorems already used in ProveIt. The new reduction
+shares a positivity witness with a strong Pell certificate. Full residue
+interpolation of the auxiliary Pell coordinate then lets that same coordinate
+enforce a divisibility condition and exclude a zero multiplier. A strictly
+increasing intersective quintic,
+$(x^2+31)(x^3+x+1)$, performs this merger while the main Pell square root is
+still algebraic. Its absence of roots in real quadratic fields and the
+strict positivity of its divided difference are essential.
+
+A second construction uses thirteen unrestricted integers, exact degree
+$1072$, and $190$ binary arithmetic operations, improving the inspected
+thirteen-integer $1088$-degree/$195$-operation construction in both measures.
+Its new ingredient is a normalized field trace that recovers a congruence
+before square-root separation. Both polynomials have fully specified fixed
+coefficients, literal division-free arithmetic graphs, and offline checks.
+We make no claim of global minimality, a world variable-count record, or
+historical priority for every constituent idea. The new proofs are ordinary
+mathematical proofs; this package does not add an end-to-end Lean or encoded
+object-language ZFC derivation.
+\end{abstract}
+\clearpage\tableofcontents\clearpage
+
+\section{What is improved, and what is meant by an equation}
+
+The task is to specify a polynomial $P\in\Z[x_1,\ldots,x_m]$, together with
+its domain, for which
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \bigl[\neg\exists\mathbf x\in\Z^m\;P(\mathbf x)=0\bigr]
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+ \label{eq:target}
+\end{equation}
+The consistency sentence refers to the recursive finite-proof coding in
+the inherited calibration. Proving this biconditional does not prove
+either side of it. No coefficient is selected by deciding consistency,
+waiting for a proof search, or choosing an unspecified enumeration index.
+
+There is no single numerical meaning of ``simplest.'' A polynomial with
+fewer variables may have much larger degree, a shorter circuit may use
+large constants, and an expanded expression may be enormous despite a
+small circuit. We preserve these distinctions. An arithmetic circuit here
+has only integer leaves, the declared variable leaves, and binary
+addition, subtraction and multiplication. Squaring costs a multiplication;
+fixed-scalar multiplication is charged; reuse of a computed value is free.
+Every intermediate letter in a formula below is a polynomial abbreviation,
+not an additional quantified coordinate.
+
+The comparison snapshot includes the requested Hilbert Tenth directory,
+the Diophantine consistency collection, and all fifteen ZIP archives then
+present in \texttt{docs/incoming}. Their hashes are recorded in the package.
+The incoming root-fusion manuscript already contains a thirteen-integer
+construction of degree $1088$ and $195$ operations. The active development
+and other incoming proposals include ten-integer constructions of much
+larger degree. Thus the twelve-variable result is a new tradeoff within
+the inspected construction families, not a new universal variable bound.
+Sun's recent ten-unknown representation theorem also rules out presenting
+twelve unknowns as the current general record~\cite{sun2026}.
+
+\begin{table}[ht]\centering
+\begin{tabular}{lrrl}\toprule
+Construction & Vars. & Degree & Arithmetic\\\midrule
+Incoming five-root CRT norm &13&1088&195 operations\\
+Trace-first companion, this package &13&1072&190 operations\\
+Interpolated quintic merger, this package &12&4832&248 operations\\
+Shorter twelve-variable companion &12&16000&223 operations\\
+\bottomrule\end{tabular}
+\caption{The directly relevant comparison. All domains are unrestricted
+integers. The twelve-variable tradeoff spends degree to remove one more
+coordinate. The machine-readable metrics report its full operation census.}
+\end{table}
+
+The main conceptual advance is not merely an arithmetic rewrite. The
+former construction represents a strict positivity condition using three
+square/triangular coordinates, one of which is absorbed into a norm. The
+new construction uses a Pell positivity witness, shares its multiplier
+with the strong certificate, and reuses the auxiliary coordinate as an
+intersective residue. The proof must establish full residue coverage;
+ordinary existence of Pell solutions would not suffice.
+
+\section{Fixed data and the calibrated arithmetic interface}
+\label{sec:interface}
+
+Both constructions use the same coherent six-integer tuple:
+\begin{equation}
+ \beta=2^{1064921}-1,\quad K_0,\quad M_C,\quad M_F,
+ \quad A_c=2^{1113},\quad B_c=2^{666104}.
+ \label{eq:ports}
+\end{equation}
+The full finite recipe and all actual numeral bytes are included. In
+particular $M_F=M_{F,\mathrm{native}}+\beta$ is already shifted. It must
+not be shifted again. Appendix~\ref{app:coeff} prints the bounded recipe.
+The ordered $943$-tile table and $430$ machine actions are supplied data,
+so the recipe specifies actual integers rather than free parameters.
+
+For the twelve-variable construction use precisely
+\begin{equation}
+ \boxed{j,C,z,h,r,v,w,T,c,n,t,s\in\Z.}
+ \label{eq:variables12}
+\end{equation}
+Capital $C$ and lowercase $c$ are distinct coordinates. Define
+\begin{align}
+ J&=6j+1,&q&=\beta J+1,&W_0&=12w+4,\nonumber\\
+ X&=qW_0,&Y&=(2v+1)q^3,&E&=XY,\nonumber\\
+ a&=E+Y,&A&=a+2,&H&=4a+3,&\Delta&=A^2-1=a^2+H.
+ \label{eq:front12}
+\end{align}
+Use the polynomial transport substitution
+\begin{align}
+ F&=(K_0+W_0)C-z(q-1),&\alpha&=q-F-C,\nonumber\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta,\nonumber\\
+ b&=X+ac,&\Dm&=1+\Delta c^2,\nonumber\\
+ L_\tau&=XY^2k,&\Dt&=1+L_\tau(L_\tau+k).
+ \label{eq:transport12}
+\end{align}
+The last factorization is the established identity
+$XY^2(XY^2+1)k^2=L_\tau(L_\tau+k)$; its reuse is credited to the
+existing Hilbert Tenth construction.
+
+The two strict guards are combined by
+\begin{align}
+ U_c&=A_cF,&Z_c&=B_cC,\nonumber\\
+ G&=U_cZ_c-(q-U_c-Z_c)^2,&P_\eta&=\eta\zeta,\nonumber\\
+ O&=GP_\eta-(t^2-G-P_\eta+1)^2.
+ \label{eq:pair12}
+\end{align}
+For integer $x,y$, there is an integer $t$ with
+\begin{equation}
+ \Pair(x,y,t):=xy-(t^2-x-y+1)^2>0
+ \quad\Longleftrightarrow\quad x>0\text{ and }y>0.
+ \label{eq:pairlemma}
+\end{equation}
+The forward implication follows because two negative factors make the
+squared term larger than their product. For the converse put
+$N=x+y-1$ and choose the nearest integer square $t^2$. If
+$m=\lfloor\sqrt N\rfloor$, one of $m,m+1$ gives
+$|t^2-N|\le m$, with strict squared error $<N\le xy$ unless the
+error is zero. This proves the claim. The square root in this witness
+selection is not an operation in the Diophantine polynomial.
+
+The inherited signed Pell/native interface identifies finite ZFC
+refutations with canonical solutions of the transport, first and main
+Pell equations, the strict guards, and a strong/auxiliary rank certificate.
+In the completeness direction it provides
+\begin{equation}
+ A>2\text{ even},\quad R>0,\quad R\equiv3\pmod4,\quad
+ c=\psi_A(R)>0,\quad d=\chi_A(R)=b+H\gamma,
+ \label{eq:canonical}
+\end{equation}
+with integral $\gamma$, together with $\tau^2=\Dt$ and $G,P_\eta>0$.
+Here
+\begin{equation}
+ \chi_A(m)+\psi_A(m)\sqrt{A^2-1}
+   =(A+\sqrt{A^2-1})^m.
+ \label{eq:pellseq}
+\end{equation}
+The determinant guard uses canonical native witnesses; it is an
+existence-preserving restriction, not a statement about every older witness.
+
+Our strong square is already normalized: $f^2-\Delta I^2=1$ with
+$I=src^2$. A direct rank argument in Section~\ref{sec:calibration}
+therefore supplies the strong-index conclusion without extending an
+odd-only source parametrization. The auxiliary congruences remain
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$. The new merger proves
+$I\ne0$. No half-integer old coordinate is introduced.
+
+\section{A monotone intersective quintic}
+\label{sec:quintic}
+
+Define
+\begin{equation}
+ \Pi(x)=(x^2+31)(x^3+x+1)
+       =x^5+32x^3+x^2+31x+31.
+ \label{eq:pi}
+\end{equation}
+The particular combination of properties below is what the construction
+uses. The general technique of intersective divisibility mergers is
+classical and is used in Sun's recent reduction; the inspected repository
+also already uses the different quintic $(x^2+23)(x^3-x-1)$.
+
+\begin{lemma}\label{lem:pi}
+The polynomial $\Pi$ has a root modulo every positive integer, has no
+root in any real extension of $\Q$ of degree at most two, and is strictly
+increasing on $\R$.
+\end{lemma}
+\begin{proof}
+The cubic $f=x^3+x+1$ has discriminant $-31$ and no rational root:
+the only possible rational roots are $1,-1$, and neither is a root.
+It is therefore irreducible over $\Q$. Its roots cannot lie in a field
+of degree at most two. The quadratic $x^2+31$ has no real root.
+
+For an odd prime $p\ne31$, either $f$ has a root in $\F_p$, or it is
+an irreducible cubic. In the latter case Frobenius permutes its three
+roots as a three-cycle. The Vandermonde product is fixed by that even
+permutation, so its square, the discriminant $-31$, is a nonzero square
+in $\F_p$. Thus $x^2+31$ has a simple root. In the former case a cubic
+root is simple because the discriminant is nonzero modulo $p$.
+At $p=31$, $x=3$ is a simple cubic root, since $f(3)=31$ and
+$f'(3)=28$. These simple roots lift to every power of the corresponding
+odd prime. At $2$, $-31\equiv1\pmod8$, and an odd square root lifts
+successively to every $2$-power. The Chinese remainder theorem supplies
+a root modulo any positive integer.
+
+Finally
+\[
+ \Pi'(x)=5x^4+96x^2+2x+31
+        =5x^4+95x^2+(x+1)^2+30>0.
+\]
+\end{proof}
+
+For nonzero integer $H$ put
+\begin{equation}
+ \Theta(H,\xi,T)=H^5\Pi\left(\frac{\xi+HT}{H}\right).
+ \label{eq:theta}
+\end{equation}
+This is a homogeneous integer polynomial of degree five in $H,\xi+HT$.
+If $\xi$ is integral and $H^5\mid\Theta(H,\xi,T)$, then $H\mid\xi$.
+Indeed, if $p$ has $\nu_p(\xi)<\nu_p(H)$, the monic leading term
+$(\xi+HT)^5$ has strictly smaller $p$-valuation than every other term.
+Its valuation is $5\nu_p(\xi)<5\nu_p(H)$, a contradiction.
+
+The merger must operate before the main root $d=\sqrt{\Dm}$ is known to
+be integral. Set $u=HT-b$. Reducing $d^2=\Dm$ gives
+\begin{equation}
+ \Theta(H,d-b,T)=\mathcal A+\mathcal B d,
+ \label{eq:AB}
+\end{equation}
+where
+\begin{align}
+ \mathcal A={}&u^5+10u^3\Dm+5u\Dm^2
+       +32H^2(u^3+3u\Dm)+H^3(u^2+\Dm)
+       +31H^4u+31H^5,\nonumber\\
+ \mathcal B={}&5u^4+10u^2\Dm+\Dm^2
+       +32H^2(3u^2+\Dm)+2H^3u+31H^4.
+ \label{eq:ABexplicit}
+\end{align}
+Since $\Dm>0$ and $H\ne0$, the coefficient $\mathcal B$ is positive.
+One purely algebraic certificate is
+\[
+ \mathcal B=5u^4+10u^2\Dm+\Dm^2+32H^2\Dm
+ +95H^2u^2+H^2(u+H)^2+30H^4>0.
+\]
+Also $\mathcal A\pm\mathcal B\sqrt{\Dm}\ne0$, by
+Lemma~\ref{lem:pi}, even if $\Dm$ is not a square. This excludes a
+zero multiplier without first assuming squarehood.
+
+\section{The twelve-variable polynomial}
+\label{sec:polynomial12}
+
+Keep all definitions in Section~\ref{sec:interface} and define
+\begin{align}
+ I&=src^2,&\Df&=1+\Delta I^2,&Q&=\Delta^2I^2,\nonumber\\
+ V&=\Df(c-R+4IT)-c,&
+ \Da&=(Q-1)(QV^2-1),\nonumber\\
+ \Dg&=(3O-4)s^2+1,&S&=IH^5,&Z&=Sn-\mathcal A.
+ \label{eq:strong12}
+\end{align}
+The two uses of $T$ are intentional: it is both the auxiliary Pell
+coordinate in $V$ and the intersective residue in $u=HT-b$.
+Put $\ell_0=XY^2$. Use bounds on the root magnitudes, with one bound
+for each stage:
+\begin{align}
+ K_T&=T^2+c^2+1,&B_0&=256K_T^2,\nonumber\\
+ B_b&=1+c^2+R+c^2(s^2+r^2)(T^2+1),\nonumber\\
+ B_{\rm a}&=Q(\Df B_b+c^2+1),&
+ B_{\rm f}&=\Delta+I^2+3,&B_{\tau}&=2+\ell_0^2+k^2.
+ \label{eq:bounds12}
+\end{align}
+The four separating weights are
+\begin{align}
+ W_1&=2B_0+1,&W_2&=W_1(2B_{\rm a}+1),\nonumber\\
+ W_3&=W_2(2B_{\rm f}+1),&
+ W_4&=W_3(2B_\tau+1).
+ \label{eq:weight12}
+\end{align}
+They are odd, hence nonzero, on every integer assignment. Their positivity
+will be proved from a vanishing norm factor before using them to separate
+roots. Define the five integer polynomial radicands
+\begin{align}
+ T_0&=\mathcal B^2\Dm,&T_1&=S^2W_1^2\Da,\nonumber\\
+ T_2&=S^2W_2^2\Df,&T_3&=S^2W_3^2\Dt,&T_4&=S^2W_4^2\Dg.
+ \label{eq:radicands12}
+\end{align}
+For formal radicals let
+\begin{equation}
+ \F_{32}(z;t_0,t_1,t_2,t_3,t_4)
+   =\prod_{\varepsilon\in\{-1,1\}^5}
+       \left(z-\sum_{i=0}^4\varepsilon_i\sqrt{t_i}\right).
+ \label{eq:norm32}
+\end{equation}
+The sign symmetries make this an element of
+$\Z[z,t_0,\ldots,t_4]$. The requested equation is
+\begin{equation}
+ \boxed{P_{12}(j,C,z,h,r,v,w,T,c,n,t,s)
+       :=\F_{32}(Z;T_0,T_1,T_2,T_3,T_4)=0.}
+ \label{eq:main12}
+\end{equation}
+There is no division in this formula and no variable exponent. The
+radical product defines a finite polynomial. The delivered literal graph
+implements it using only $+,-,\times$; a small recurrence is supplied
+in Section~\ref{sec:normcircuit}.
+
+\section{Soundness of the twelve-variable reduction}
+\label{sec:soundness12}
+
+\begin{lemma}[Adjacent-coefficient descent]\label{lem:descent}
+For integers $Q>1,V$ and rational $e$, the equation
+$QV^2-(Q-1)e^2=1$ implies $e\in\Z$.
+\end{lemma}
+\begin{proof}
+Write $e=a/d$ in lowest terms. Then $d^2\mid Q-1$. If $|V|=1$,
+then $|e|=1$. Otherwise take positive absolute values and set
+\[
+ V'=(2Q-1)V-2(Q-1)e,\qquad e'=(2Q-1)e-2QV.
+\]
+The norm is unchanged; $V'$ is integral; and the reduced denominator of
+$e'$ remains $d$, since $2Q-1\equiv1\pmod d$. The inequalities
+$e>V$ and $(Q-1)e<QV$ give $-V<V'<V$. The norm excludes $V'=0$.
+Descent in the positive integer $|V|$ reaches $1$ without changing the
+denominator, which must consequently have been $1$.
+\end{proof}
+
+\begin{lemma}[Separation over a multiquadratic field]\label{lem:separation}
+If nonzero complex square roots of rational numbers have strictly
+superincreasing absolute values and their signed sum is rational, every
+one of those roots is rational.
+\end{lemma}
+\begin{proof}
+If a root is irrational, some automorphism of their multiquadratic
+splitting field changes its sign. Subtracting the conjugate rational
+relation yields a nonempty vanishing signed subsum. Its largest term
+has absolute value greater than the sum of the absolute values of the
+others, contradicting the triangle inequality. Square classes need not
+be independent, and negative radicands are allowed.
+\end{proof}
+
+For every integer assignment to the front end, $q$ is even,
+$q\equiv2\pmod3$, $|q|\ge16$, $|X|\ge64$ and $|Y|\ge4096$.
+Thus $|a|\ge63\cdot4096$, $H\ne0$ and $\Delta>1$.
+The radicands $\Dm,\Df,\Dt$ are positive: for the last use
+$u(u+1)\ge0$ for the integer $u=XY^2$.
+
+Suppose $P_{12}=0$. If $S=0$, the four radicands $T_1,\ldots,T_4$
+are zero and the polynomial specializes to
+\[
+ (\mathcal A^2-\mathcal B^2\Dm)^{16}.
+\]
+Both factors $\mathcal A\pm\mathcal B\sqrt{\Dm}$ are nonzero by
+Lemma~\ref{lem:pi}. This is a contradiction. Therefore
+\begin{equation}
+ S\ne0,\qquad I\ne0,\qquad s\ne0,\quad r\ne0,\quad c\ne0.
+ \label{eq:nonzero12}
+\end{equation}
+In particular $Q>1$ and $\Df=1+\Delta s^2r^2c^4>|c|+1$.
+Writing $b'=c-R+4IT\in\Z$, either $b'=0$ and $|V|=|c|\ge1$,
+or $|V|\ge\Df-|c|>1$. Hence $\Da>0$.
+
+We first recover positivity without assuming any individual root is
+rational. The weights $W_i$ are odd, hence nonzero. All radicands
+except $\Dg$ are positive. If $\Dg<0$, its radical would be the only
+nonzero imaginary term in a vanishing factor, which is impossible.
+Thus $\Dg\ge0$. Since $s\ne0$, its defining expression forces $O>0$:
+if $O\le0$, then $\Dg\le1-4s^2<0$. The pairing lemma gives
+$G>0$ and $\eta\zeta>0$.
+
+We also need $R>0$ before bounding the roots. The determinant inequality
+implies that $F,C,\alpha$ have the sign of $q$. To see this, $U_c,Z_c$
+have the same sign and
+$|U_c+Z_c|<2|q|$; since $A_c,B_c\ge2$, we get
+$|F|+|C|<|q|$. If $q>0$, then
+$q(q-F)-C=q\alpha+(q-1)C>0$, and the mask term in $R$ is positive.
+If $q=-q_1<0$, write $C=-C_1$, $\alpha=-\alpha_1$ with
+$C_1,\alpha_1>0$. Then
+$q(q-F)-C=q_1(C_1+\alpha_1)+C_1>0$.
+Also $J<0$ and $M_C+qM_F=M_C-q_1M_F<0$, because the actual
+fixed tuple has $M_F>\beta>M_C>0$. Thus $R>0$ in this case as well.
+
+The three bounds $B_{\rm a},B_{\rm f},B_\tau$ are now positive.
+The inequality
+\[
+ 4|srT|\le(s^2+r^2)(T^2+1)
+\]
+gives $|c-R+4IT|\le B_b$ and $|V|\le\Df B_b+c^2+1$.
+Consequently
+\begin{equation}
+ \sqrt{\Da}<Q|V|\le B_{\rm a},\qquad
+ \sqrt{\Df}\le B_{\rm f},\qquad
+ \sqrt{\Dt}\le B_\tau.
+ \label{eq:rootbounds12}
+\end{equation}
+For the last two, use
+$\sqrt{1+\Delta I^2}\le1+(\Delta+I^2)/2$ and
+$\sqrt{\ell_0(\ell_0+1)}\le|\ell_0|+1$, together with
+$2|xy|\le x^2+y^2$.
+
+The main radical admits a much smaller bound than its polynomial
+numerator suggests. Put $v_0=u/H$ and $z_0=\sqrt{\Dm}/|H|$.
+The uniform front-end size bounds imply
+\[
+ \left|\frac bH\right|<1+\frac{|c|}{3},\qquad
+ z_0<\frac{|c|}{2}.
+\]
+Indeed $|a/H|<1/3$, $|X/H|<1$ and
+$\sqrt{1+\Delta c^2}<(|a|+3)|c|$, while
+$|H|\ge4|a|-3>2(|a|+3)$.
+Thus $v_0^2\le3K_T$ and $z_0^2\le K_T$. Homogeneity of the quintic gives
+\begin{align*}
+ \frac{\mathcal B}{H^4}
+ &=5v_0^4+10v_0^2z_0^2+z_0^4+96v_0^2+32z_0^2+2v_0+31\\
+ &\le76K_T^2+323K_T+32\le431K_T^2.
+\end{align*}
+Since $|I|=|sr|c^2\ge c^2$,
+\begin{equation}
+ \frac{\mathcal B\sqrt{\Dm}}{|S|}
+ =\frac{\mathcal B}{H^4}\frac{z_0}{|I|}
+ <\frac{431}{2}K_T^2<256K_T^2=B_0.
+ \label{eq:homogeneousbound}
+\end{equation}
+This uses the denominator already present in the congruence merger; it
+adds no coordinate and no division to the polynomial.
+
+Divide a vanishing norm factor by $S$. The five magnitudes, in order, are
+\[
+ \frac{\mathcal B\sqrt{\Dm}}{|S|},\quad
+ W_1\sqrt{\Da},\quad W_2\sqrt{\Df},\quad
+ W_3\sqrt{\Dt},\quad W_4\sqrt{\Dg}.
+\]
+The first is less than $W_1/2$. After adding the auxiliary term, the sum
+of the first two is less than
+$W_1(1/2+B_{\rm a})=W_2/2$.
+The same induction bounds the sum of the first three by $W_3/2$
+and the first four by $W_4/2$.
+Every nonzero root of an integer radicand has magnitude at least $1$.
+Hence these terms are strictly superincreasing, after a zero guard term
+is omitted. No upper bound on the last guard radical is needed.
+Lemma~\ref{lem:separation} makes all five roots rational. Their integer
+radicands and $\mathcal B\ne0$ give signed integers
+\[
+ d^2=\Dm,\quad a_1^2=\Da,\quad g^2=\Dg,\quad
+ \tau^2=\Dt,\quad f^2=\Df.
+\]
+By Lemma~\ref{lem:descent}, $e=a_1/(Q-1)$ is integral and
+$QV^2-(Q-1)e^2=1$.
+
+The integral factor relation now implies
+\begin{equation}
+ S\mid\mathcal A+\mathcal B d
+      =\Theta(H,d-b,T).
+ \label{eq:div12}
+\end{equation}
+The monic valuation argument following \eqref{eq:theta} gives $H\mid d-b$,
+so $\gamma=(d-b)/H$ is an integer and the main congruence is restored.
+The previously recovered guards $G>0$ and $\eta\zeta>0$ remain available.
+
+Set $\rho=\Delta I$. Then
+\[
+ \rho^2=\Delta(f^2-1),\qquad c^2\mid\rho,
+ \qquad V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+For the last congruence use $c^2\mid I$ and
+$\Df\equiv1\pmod c$. The direct normalized rank argument in Section~\ref{sec:calibration}
+now recovers the signed native interface. Consequently a polynomial zero
+gives a finite refutation under the inherited native calibration.
+
+\section{Full residue interpolation and completeness}
+\label{sec:interpolation}
+
+The crucial converse allows $T$ to take every residue modulo a fixed
+strong witness $I$. Choosing a separate $I$ after choosing each residue
+would not prove the statement needed by the merger.
+
+\begin{lemma}[Positivity by a Pell square]\label{lem:positivity}
+For every integer $O$,
+\[
+ O>0\quad\Longleftrightarrow\quad
+ \exists s\in\Z\setminus\{0\}\;[(3O-4)s^2+1\text{ is a square}].
+\]
+\end{lemma}
+\begin{proof}
+For $O\le0$ the expression is negative. At $O=1$, take $s=1$,
+giving zero. For $O\ge2$, the positive integer $3O-4$ is $2$ modulo
+$3$, hence nonsquare. The ordinary Pell equation supplies a nontrivial
+solution. This is the positivity device used in Sun's relation-combining
+argument~\cite{sun2026}.
+\end{proof}
+
+\begin{theorem}[Native auxiliary interpolation]\label{thm:interpolation}
+Let $A>2$ be even, $\Delta=A^2-1$, $R>0$ with $R\equiv3\pmod4$,
+and $c=\psi_A(R)$. Given any positive integer $N$, there is a positive
+integer $I$ divisible by $Nc^2$ and an integer $f>0$ satisfying
+$f^2-\Delta I^2=1$, such that for every residue $a_0\pmod I$ there
+is an integer $T$ for which
+\[
+ V=f^2(c-R+4IT)-c,\qquad
+ (\Delta I)^2V^2-((\Delta I)^2-1)e^2=1
+\]
+has an integer $e$. The chosen $T$ can be made arbitrarily large and
+satisfies $T\equiv a_0\pmod I$.
+\end{theorem}
+\begin{proof}
+Finite order of the Pell matrix modulo $4Nc^2$ gives an index $m>0$
+with $I=\psi_A(m)$ divisible by $4Nc^2$. Put $f=\chi_A(m)$.
+In particular $m$ is even, $f$ is odd and $\gcd(f,I)=1$.
+The standard Lucas valuation formulas give
+\begin{equation}
+ p\mid I\quad\Longrightarrow\quad\nu_p(m)\le\nu_p(I).
+ \label{eq:valuation}
+\end{equation}
+For odd primes these are the rank-of-apparition valuation formulas;
+at $2$, since $A$ is even,
+$\nu_2(\psi_A(m))=\nu_2(A)+\nu_2(m)$. These are exactly the
+specializations of the formulas used in the full-residue argument of
+Sun~\cite{sun2026,sanna}. It follows that
+\[
+ \gcd(4mf,4I^2)\mid4I.
+\]
+The factor $f$ causes no obstruction because it is coprime to $I$.
+
+Choose an arbitrarily large positive $\ell$ by the Chinese remainder
+theorem with
+\begin{equation}
+ \ell\equiv R\pmod{4mf},\qquad
+ \ell\equiv R-4Ia_0\pmod{4I^2}.
+ \label{eq:ellcrt}
+\end{equation}
+In particular $\ell\equiv3\pmod4$. The period $4mf$, rather than
+merely $4m$, is necessary modulo $f^2$. Indeed for
+$\alpha=A+\sqrt\Delta$ we have
+$\alpha^{2m}=2f\alpha^m-1$. Squaring and then raising to the
+$f$th power gives $\alpha^{4mf}\equiv1\pmod{f^2}$ in
+$\Z[\sqrt\Delta]$.
+
+Set $D=\Delta I$ and
+\[
+ V_0=\chi_D(\ell)/D,\qquad e=\psi_D(\ell).
+\]
+For odd $\ell$, $\chi_D(\ell)$ is divisible by $D$, and the Pell
+identity gives $D^2V_0^2-(D^2-1)e^2=1$.
+The odd Chebyshev identity, using $D^2\equiv-\Delta\pmod{f^2}$,
+gives
+\[
+ V_0\equiv-\psi_A(\ell)\equiv-c\pmod{f^2}.
+\]
+For $\ell\equiv3\pmod4$, the same odd polynomial has constant
+term $-\ell$ and every nonconstant term is divisible by $4D^2$;
+hence
+\[
+ V_0\equiv-\ell\pmod{4I^2}.
+\]
+Since $A$ is even, the Pell recurrence modulo $4$ gives
+$c=\psi_A(R)\equiv R\pmod4$. Also
+$f^2=1+\Delta I^2$, so
+\[
+ V_0+c-f^2(c-R)\equiv R-\ell\equiv4Ia_0\pmod{4I^2}.
+\]
+This numerator is divisible by $f^2$ and by $4I$. As $f$ is odd
+and coprime to $I$, define the integer
+\[
+ T=\frac{V_0+c-f^2(c-R)}{4If^2}.
+\]
+Dividing the preceding congruence by $4I$, and using
+$f^2\equiv1\pmod I$, gives $T\equiv a_0\pmod I$.
+As $\ell$ tends to infinity through the CRT progression, $V_0$ and
+then $T$ tend to infinity. This proves full residue coverage for the
+single chosen pair $(I,f)$.
+\end{proof}
+
+\begin{theorem}[Completeness of the twelve-variable equation]
+Every canonical native refutation witness extends to an integer zero
+of $P_{12}$.
+\end{theorem}
+\begin{proof}
+Retain its front-end coordinates and its roots $d,\tau$, and first
+choose $t$ with $O>0$. Lemma~\ref{lem:positivity} gives $s>0$ and
+an integer $g$ with $g^2=(3O-4)s^2+1$.
+Apply Theorem~\ref{thm:interpolation} with $N=s$. It gives a fixed
+$I$ divisible by $sc^2$; put $r=I/(sc^2)$. Write
+$\gamma=(d-b)/H\in\Z$.
+
+By Lemma~\ref{lem:pi}, choose $a_0\pmod I$ with
+$\Pi(\gamma+a_0)\equiv0\pmod I$. Use the interpolation theorem
+to choose the same auxiliary $T$ in that residue. Then
+\[
+ \Theta(H,d-b,T)=H^5\Pi(\gamma+T)
+\]
+is divisible by $S=IH^5$. The auxiliary root gives
+$a_1=(Q-1)e$ with $a_1^2=\Da$.
+All five radicals in \eqref{eq:radicands12} now have integral roots.
+Choose
+\[
+ n=\frac{\mathcal A+\mathcal B d}{S}
+       +W_1a_1+W_2f+W_3\tau+W_4g.
+\]
+Every quantity on the right has already been chosen, and the quotient
+is integral. It makes one norm factor vanish. There is no circular
+selection of $I,T,n$, and no extra divisibility promise on the canonical
+native data.
+\end{proof}
+
+\section{Exact degree and the literal norm circuit}
+\label{sec:normcircuit}
+
+For three radicals use the eight-factor norm
+\begin{equation}
+ \F_8(x;A,B,C)
+ =\bigl((x^2-A-B-C)^2-4(AB+AC+BC)\bigr)^2-64ABCx^2.
+ \label{eq:norm8}
+\end{equation}
+Compute $\F_8(x-u-v;A,B,C)$ in the rank-four algebra
+with $u^2=D$, $v^2=E$, using the basis $1,u,v,uv$.
+If the resulting vector is $(f_0,f_1,f_2,f_3)$, set
+\begin{align*}
+ g_0&=f_0^2+Ef_2^2-D(f_1^2+Ef_3^2),\\
+ g_1&=2(f_0f_2-Df_1f_3),\\
+ \F_{32}(x;A,B,C,D,E)&=g_0^2-Eg_1^2.
+\end{align*}
+Every operation is polynomial. The archive retains the small inherited
+norm implementation and checks it against an independent formal
+conjugate product. The twelve-variable graph specializes the cleared
+norm routine at denominator $1$; no denominator leaf remains.
+
+The important front-end degrees of $P_{12}$ are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{register}&a&H&\Delta&I&\Df&Q&V&\Da&O&\Dg\\\hline
+\deg&6&6&12&4&20&32&25&114&44&46.
+\end{array}
+\]
+Also $\deg\mathcal A=35$, $\deg\mathcal B=28$,
+$\deg S=34$ and $\deg Z=35$.
+The bound degrees are $4,58,12,20$ for
+$B_0,B_{\rm a},B_{\rm f},B_\tau$, respectively.
+Thus $\deg(W_1,W_2,W_3,W_4)=(4,62,74,94)$.
+The five radicands have respective degrees
+\[
+70,\quad190,\quad212,\quad250,\quad302.
+\]
+The last is uniquely largest, and $\deg Z=35<151$.
+The unique highest contribution in the norm is therefore $T_4^{16}$,
+of degree $4832$.
+
+For a specialization-proof nonzero coefficient put
+\[
+ q_0=6\beta j,\qquad Y_0=2vq_0^3,\qquad
+ a_0=24wvq_0^4,\qquad I_0=src^2.
+\]
+The leading form of the guard is
+$(\Dg)_{46}=-3s^2h^4a_0^4Y_0^4$.
+Together with the weight definitions this gives
+\[
+ (P_{12})_{4832}
+ =2^{704}3^{16}a_0^{544}Y_0^{128}I_0^{160}
+   c^{64}s^{32}h^{64}(T^2+c^2)^{64}(s^2+r^2)^{32}T^{64}.
+\]
+Selecting $T^{128}$ from the first binomial and $r^{64}$ from the
+second gives
+\begin{equation}
+ [j^{2560}w^{544}v^{672}h^{64}s^{192}r^{224}c^{384}T^{192}]P_{12}
+   =2^{5024}3^{3120}\beta^{2560}>0.
+ \label{eq:degree12}
+\end{equation}
+The variable exponents sum to $4832$. This is an exact degree certificate
+on the actual fixed coefficient tuple.
+
+\subsection{A shorter circuit at degree 16000}
+
+There is a useful operation--degree tradeoff. Use the same front end,
+$S,Z,\mathcal A,\mathcal B$, but set
+\[
+ B_*^{\rm short}=1+\mathcal B^2\Dm+\Dt+\Df+\Da+\Dg^2,
+ \qquad \mathcal W^{\rm short}=2B_*^{\rm short}+1.
+\]
+and replace the five radicands by
+\[
+ \mathcal B^2\Dm,\quad
+ S^2(\mathcal W^{\rm short})^2\Da,\quad
+ S^2(\mathcal W^{\rm short})^4\Dg,\quad
+ S^2(\mathcal W^{\rm short})^6\Dt,\quad
+ S^2(\mathcal W^{\rm short})^8\Df.
+\]
+Use these in the same $\F_{32}$ norm centered at $Z$.
+The same proof works; even before the guard has been recovered,
+this bounds all five unweighted absolute magnitudes once $S\ne0$.
+Its literal graph costs $223$ binary operations. Here
+$\deg\mathcal W^{\rm short}=114$, and the five radicand degrees are
+$70,410,570,786,1000$. The exact degree is $16000$.
+Writing
+\[
+ R_0=-q_0^3(12wC-q_0z),\qquad b'_0=4I_0T-R_0,
+\]
+its highest homogeneous part is
+\[
+ 2^{448}a_0^{1728}I_0^{1088}(b'_0)^{256}.
+\]
+In particular the coefficient of
+$j^{6912}w^{1728}v^{1728}s^{1344}r^{1344}c^{2688}T^{256}$
+is $2^{13056}3^{8640}\beta^{6912}>0$.
+Both versions have exactly the same twelve integer coordinates, the same
+six coefficient numerals, and the same solvability equivalence.
+The archive supplies both literal graphs.
+
+\input{trace13.tex}
+
+\section{Consistency calibration and proof boundaries}
+\label{sec:calibration}
+
+\begin{theorem}[Ordinary consistency equivalence]
+For the fixed tuple in Appendix~\ref{app:coeff}, both $P_{12}$ and
+$P_{13}^{\mathrm{tr}}$ satisfy \eqref{eq:target}, with respectively
+twelve and thirteen unrestricted integer coordinates.
+\end{theorem}
+\begin{proof}
+For $P_{12}$, Section~\ref{sec:soundness12} restores the main and first
+Pell roots, strict determinant and strip guards, a nonzero integer $I$,
+and both auxiliary congruences. Write $B_0=|a+2|\ge2$ and
+$c_0=|c|$. The inherited signed first/main rank bootstrap gives
+$c_0=\psi_{B_0}(p)$ with $p\ge25$~\cite{signed,guards}.
+The normalized strong equation $f^2-\Delta I^2=1$ directly gives
+$|I|=\psi_{B_0}(m)$ and $|f|=\chi_{B_0}(m)$ for some $m>0$.
+Since $c_0^2\mid|I|$, strong divisibility gives $p\mid m$.
+Write $m=pk$, and put $C_0=\chi_{B_0}(p)$. Binomial expansion yields
+\[
+ \frac{\psi_{B_0}(pk)}{c_0}\equiv kC_0^{k-1}\pmod{c_0}.
+\]
+The left side is divisible by $c_0$, whereas $\gcd(C_0,c_0)=1$.
+Thus $c_0\mid k$, and in particular $c_0\mid m$ and $m>2p$.
+These are precisely the strong-index inputs for the inherited signed
+auxiliary step-down. No generalized odd-multiplier lemma is required.
+
+For that step-down put $\rho=\Delta I$. Then
+\[
+ \rho^2\equiv-\Delta\pmod{|f|},\qquad
+ \rho^2\equiv0\pmod{c_0}.
+\]
+The exposed quotient equations also have integral polynomial witnesses:
+\begin{align*}
+ o&=f(c-R+4IT),\\
+ j_{\rm aux}
+   &=\Delta s^2r^2c^3(c-R)+4src\,\Df T,\\
+ V&=fo-c=cj_{\rm aux}-R.
+\end{align*}
+The auxiliary Pell index is odd because
+$\chi_{|\rho|}(2k)\equiv(-1)^k\pmod{|\rho|}$, independently of
+the parity of $\rho$. The signed rank and ratio argument now gives
+$p=R$, $2n_{\rm first}=R+1$, and $X=\operatorname{sign}(c)2^R$.
+Since $X\equiv2\pmod3$, it selects $c>0$ and $X=2^R$.
+The first-index sign identity gives $k>0$, hence $Y>0$.
+Finally the Mersenne-radix sign lemma excludes negative $q$.
+The post-power native decoder therefore applies directly
+\cite{signed,guards}. These retained proofs cover the signed stages
+before any positive-domain theorem is invoked.
+
+Conversely, the inherited canonical native construction supplies
+\eqref{eq:canonical}, including its even $A$ and $R\equiv3\pmod4$.
+The interpolation theorem constructs a new strong and auxiliary witness
+without altering those native coordinates. The completeness proof then
+constructs the polynomial zero.
+
+The trace companion has a direct two-way restoration to the incoming
+normalized integer kernel, as proved in its section. The inherited
+native-window/compiler theorem identifies the kernel's existence with
+blank halting of the fixed K215 machine, and the retained ordinary K215
+calibration identifies that halting with existence of a finite refutation
+of the specified ZFC calculus. These are mathematical theorems used as
+lemmas, with their exact source versions and explanatory proofs retained.
+All new arguments use finite algebra, induction, elementary number theory,
+Pell recurrences, finite fields and finite coding, available in ZFC.
+Compose the existence equivalences and negate them.
+\end{proof}
+
+Three assertions must be distinguished. First, the new reductions have
+the ordinary unbounded proofs supplied here. Second, the consistency
+interpretation imports the named ordinary native and syntactic-calibration
+theorems; this report does not reprove the entire compiler from its local
+tile list. Third, executable audits certify finite identities, numeral
+bindings, degrees and graph transcription. Those audits are not proofs of
+the unbounded compiler theorem. The repository separately records that its
+complete native Lean calibration and encoded object-ZFC derivation remain
+unfinished~\cite{active,boundary}. This package does not change that status.
+
+The inherited native/compiler and K215 texts supply ordinary proofs, not
+conjectural placeholders. The dependency ledger identifies the exact lemmas
+being composed. A future proof-assistant formalization must cover that
+composition as well as the final polynomial algebra.
+
+\section{Reproduction, attribution and further research}
+
+The archive contains the three literal equations, builders, exact algebra
+checks, separate mathematical audits, a manifest, all six fixed numeral
+payloads, and their complete finite reconstruction. The retained
+\texttt{inherited/root\_fusion} directory is an unchanged copy of the
+inspected incoming source package. Its licenses, provenance and proof
+boundaries remain attached. No existing repository files were overwritten
+or published by this delivery.
+
+The top-level verification entry point regenerates the graphs in memory,
+checks the delivered equations and coefficients, runs independent
+transcription diagnostics and negative controls, and writes an explicit
+receipt. The precise reproduction commands and dependency requirements
+are in \texttt{README.md}. Python optimization must not remove acceptance
+checks. No verifier searches for a consistency witness, simulates an
+unbounded machine execution, or treats a bounded lack of zeros as evidence
+of consistency. The mathematical reviews are internal independent reviews
+of this research session, not external human peer review.
+
+\subsection{Further research questions}
+\begin{enumerate}
+\item \textbf{Reduce the separating weights further.} Bounding square-root
+magnitudes instead of radicands already reduces the twelve-variable degree
+from $16000$ to $4832$, using homogeneity and distinct weights. Further
+source-specific bounds may improve the tradeoff again.
+Any such change must retain the order of the proof: exclude $S=0$,
+recover positivity, and then separate arbitrary integer assignments.
+\item \textbf{Fuse square conditions through proved coprimality.} The
+strong and auxiliary conditions might be combined into a single square
+if the multiplier is chosen to absorb precisely the obstructing prime
+factors. Any saving must include the resulting degree increase and must
+preserve full residue interpolation of the shared $T$.
+\item \textbf{Use trace before separation elsewhere.} The trace lemma
+extracts congruences even when irrational radicals cancel. Search for
+other redundant guard multipliers and scaling weights in the existing
+nine-positive and ten-integer circuits. Rational radicands require a
+separate integrality theorem; monicity cannot be assumed.
+\item \textbf{Find smaller real-quadratic-safe mergers.} The monotone
+quintic supplies intersectivity, real-quadratic nonvanishing and a
+nonzero odd coefficient simultaneously. Can another polynomial reduce
+the degree or number of operations while retaining all three properties?
+An ordinary rational-root-free polynomial is insufficient here.
+\item \textbf{Remove another witness through a proved shared family.}
+Setting $I=sc^2$ would erase $r$, but would require simultaneous Pell
+solvability with a prescribed positivity witness. Neither this report nor
+the finite checks establish that assertion. A theorem furnishing such a
+family would be a substantive further variable reduction.
+\item \textbf{Complete the native formal certificate.} The most valuable
+formalization target is the shared source-to-refutation calibration and
+its internal-ZFC export. Certifying only the small final norm identities
+does not close that semantic boundary.
+\item \textbf{Compare alternative source encodings on equal terms.}
+The direct numerical-calculus quartics already in the incoming collection
+avoid K215 and Jones, at a cost in variables. The norm and interpolation
+lemmas here are not intrinsically tied to K215; applying them to an
+alternative calibrated source requires an actual complete source packet
+and new counts, not an unspecified universal coefficient.
+\end{enumerate}
+
+\appendix
+\input{coefficient_recipe.tex}
+
+\begin{thebibliography}{99}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, reviewed commit
+\texttt{04a1d79222d55cabe4ba52897863fc33baa8c268}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/04a1d79222d55cabe4ba52897863fc33baa8c268/Computability/DiophantineConsistency}.
+\bibitem{fusion} \emph{Thirteen Integer Variables through a Single
+Five-Radical Norm}, incoming package
+\texttt{ConZFC\_13\_Integer\_Norms\_2026-10-24.zip}, in \cite{repo}.
+Complete package retained under \texttt{inherited/root\_fusion}.
+\bibitem{coeff} ProveIt source-34 finite coefficient recipe and ordinary
+compiler proof, retained in \cite{fusion},
+\path{provenance/upstream_ordinary/source34_coefficients.md} and
+\texttt{coefficients/recipe/}.
+\bibitem{signed} ProveIt ordinary and signed Pell/native proofs, retained
+in \cite{fusion}, \path{provenance/upstream_ordinary/ordinary36.md},
+\path{provenance/RESIDUE_AND_DETERMINANT.md}, and
+\path{provenance/NORMALIZED_NORMS_PROOF.md}.
+\bibitem{guards} ProveIt, \emph{Joint guards and signed residue
+orientation}, incoming
+\texttt{ZFC\_Diophantine\_Joint\_Guards\_2026-10-24.zip}.
+The two relevant proofs and their notices are retained in
+\path{provenance/signed_guards/}.
+\bibitem{calibration} ProveIt ordinary K215 consistency calibration,
+retained in \cite{fusion},
+\path{provenance/upstream_ordinary/k215_ordinary.md}.
+\bibitem{active} ProveIt, \emph{A Diophantine equation for syntactic
+consistency of ZFC}, active research README at the reviewed commit.
+\bibitem{boundary} ProveIt, \emph{Object-ZFC formalization status}, as
+retained in the incoming package's
+\path{provenance/CALIBRATION_STATUS.md} and pinned source ledger.
+\bibitem{sun2026} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594v2, 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\bibitem{sanna} C. Sanna, \emph{The $p$-adic valuation of Lucas sequences},
+Fibonacci Quarterly \textbf{54} (2016), 118--124. The valuation results are
+also explicitly stated and applied in \cite{sun2026}, Lemmas 2.3--2.4.
+\end{thebibliography}
+\end{document}

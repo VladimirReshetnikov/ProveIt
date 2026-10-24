@@ -1,0 +1,394 @@
+\section{A coprime carrier: thirteen integers at degree 1088}
+\label{sec:crt1088}
+
+The preceding construction can be reduced further without adding a
+variable or a fixed coefficient. The explicit factor \(q^3\) in the
+scale \(Y=(2v+1)q^3\) is expensive after repeated substitution. We instead
+supply \(Y=qv\), then recover the missing divisibility and odd quotient
+through the same root norm that recovers the main Pell congruence.
+The two relevant moduli are provably coprime on every integer assignment.
+This gives an explicit polynomial of exact degree \(1088\) in the same
+thirteen unrestricted integer unknowns.
+
+\subsection{Complete specification}
+
+The coordinates remain
+\[
+j,C,z,h,r,v,w,T,c,n,t,p_2,p_3\in\Z.
+\]
+Use the same six fixed numerals \(\beta,K_0,M_C,M_F,
+A_{\rm cone},B_{\rm cone}\) as in Section~\ref{sec:equation}; in
+particular \(\beta=2^{1064921}-1\), and \(M_F\) is already shifted.
+The following definitions replace the earlier front end:
+\begin{align}
+J&=6j+1,&q&=\beta J+1,&W&=12w+4,\nonumber\\
+X&=qW,&Y&=qv,&E&=XY,\nonumber\\
+a&=E+Y,&H&=4a+3,&\Delta&=a^2+4a+3.
+\label{eq:crtfront}
+\end{align}
+The transport parametrization is unchanged:
+\begin{align}
+F&=(K_0+W)C-z(q-1),&\alpha&=q-F-C,\nonumber\\
+R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta.
+\label{eq:crttransport}
+\end{align}
+Put
+\begin{align}
+i&=2r+1,&I&=ic^2,&\Df&=1+\Delta I^2,\nonumber\\
+Q&=\Delta^2I^2,&\delta&=Q-1,&V&=\Df(cT-R)-c,\nonumber\\
+C_y&=QV^2-1,&\Dt&=1+XY^2(XY^2+1)k^2,\nonumber\\
+\Dm&=1+\Delta c^2,&b_0&=X+ac.
+\label{eq:crtpell}
+\end{align}
+The rational notation \(\Dy=C_y/\delta\) is used only in the proof.
+Define
+\begin{align}
+G&=(A_{\rm cone}F)(B_{\rm cone}C)
+   -(q-A_{\rm cone}F-B_{\rm cone}C)^2,\nonumber\\
+\Ag&=v^2\bigl[G\eta\zeta-(t^2-G-\eta\zeta+1)^2\bigr]
+       -1-p_2^2-p_3(p_3+1).
+\label{eq:crtguard}
+\end{align}
+The multiplier \(v^2\) in the guard is intentional. It will force
+\(v\ne0\), and its effect on the radical's magnitude will be controlled.
+
+For the new carrier set
+\begin{align}
+M&=2q^2,&\Lambda&=4H+1,&U&=MH,\nonumber\\
+Z&=U(n+V)+M\Lambda b_0+H(v-q^2),\nonumber\\
+A_0&=M^2\Lambda^2\Dm,&A_1&=U^2\Df,&A_2&=U^2\Dt,\nonumber\\
+A_3&=U^2\Ag,&A_4^{\rm num}&=U^2C_y.
+\label{eq:crtcarrier}
+\end{align}
+Here \(M\) is a carrier modulus, unrelated to the native mask numerals.
+The requested equation is the single ordinary polynomial
+\begin{equation}
+\boxed{\quad
+P_{13}^{\rm CRT}
+=\delta^{16}\F_{32}\left(
+Z;A_0,A_1,A_2,A_3,\frac{A_4^{\rm num}}{\delta}
+\right)=0.
+\quad}
+\label{eq:crtpolynomial}
+\end{equation}
+The denominator is cleared symbolically, exactly as in
+Section~\ref{sec:circuit}. No additional existential variable, variable
+exponent, numerical root extraction, or division operation is part of
+the polynomial.
+
+\subsection{Unconditional realness, including the zero-scale branch}
+
+At every integer assignment, \(q\) is even,
+\(q\equiv2\pmod3\), and \(|q|\ge16\). The factor \(3w+1\)
+never vanishes, so \(|X|\ge64\). The new \(Y=qv\) may initially
+vanish; it must not be silently assumed nonzero.
+
+If \(v=0\), then \(Y=a=0\), \(\Delta=3\), and \(H=3\).
+If \(v\ne0\), then \(|Y|\ge16\) and
+\(|a|=|X+1||Y|\ge63\cdot16\), so \(\Delta>0\) and
+\(|H|>3\). In both cases \(\Delta\) is odd, \(H\ne0\), and
+\begin{equation}
+3<\frac{\Lambda}{H}=4+\frac1H<5.
+\label{eq:crtlambda}
+\end{equation}
+In particular \(\Lambda\ne0\), and the carrier scales are nonzero.
+
+The radicands \(\Dm\) and \(\Df\) are at least one. With
+\(u=XY^2\in\Z\), the integer inequality \(u(u+1)\ge0\) gives
+\(\Dt=1+k^2u(u+1)\ge1\). For the auxiliary radicand, if \(c=0\),
+then \(Q=0,\delta=-1,C_y=-1\), and \(\Dy=1\). If \(c\ne0\),
+then
+\[
+Q=\Delta^2i^2c^4>1,\qquad \Df=1+\Delta i^2c^4>|c|+1.
+\]
+Writing \(b=cT-R\in\Z\), either \(b=0\) and \(|V|=|c|\ge1\),
+or \(b\ne0\) and \(|V|\ge\Df-|c|>1\). Therefore
+\[
+\Dy=V^2+\frac{V^2-1}{Q-1}\ge1.
+\]
+We have proved, without using a guard, a Pell equation, or native
+decoding, that \(\delta\ne0\) and all four non-guard radicands are
+positive on every integer assignment.
+
+At a zero of \eqref{eq:crtpolynomial}, one of the conjugate linear
+factors vanishes over \(\mathbb C\). If \(\Ag<0\), its radical
+would be the only nonzero imaginary summand in a factor with a real
+center and four real summands. Thus \(\Ag\ge0\). It follows that
+\begin{equation}
+v^2\Pair(G,\eta\zeta,t)
+=\Ag+1+p_2^2+p_3(p_3+1)>0.
+\label{eq:crtguardrecover}
+\end{equation}
+Consequently \(v\ne0\) and \(\Pair(G,\eta\zeta,t)>0\). The
+joint-positivity lemma gives \(G>0\) and \(\eta\zeta>0\).
+The latter excludes \(c=0\): that case would give
+\(\eta\zeta=-Y(Y+1)k^2\le0\). Hence at a zero we have
+\(c\ne0,Q>1,\delta>0\).
+
+This proves the required hypotheses in their proper order. In
+particular, \(v=0\) is excluded because its guard radicand is strictly
+negative; it was not excluded when proving unconditional realness.
+
+\subsection{Separation with only \texorpdfstring{$|Y|\ge|q|$}{|Y|>=|q|}}
+
+Set
+\[
+x=|X|,\qquad m_Y=|Y|,\qquad K=|k|,\qquad C_0=|c|.
+\]
+The recovered strict guards imply
+\begin{equation}
+x\ge64,\quad m_Y\ge|q|\ge16,\quad K\ge2,\qquad
+K(m_Y-1)<C_0<K(m_Y+1).
+\label{eq:crtweakbounds}
+\end{equation}
+Indeed \(\eta/k\in(0,1)\) and \(c=k(Y+\eta/k)\).
+In particular \(C_0>30\). Let
+\[
+d_+=\sqrt{\Dm},\quad f_+=\sqrt{\Df},\quad
+\tau_+=\sqrt{\Dt},\quad y_+=\sqrt{\Dy},\quad
+g_+=\sqrt{\Ag},\quad \lambda=\Lambda/H.
+\]
+The guard root \(g_+\) may be zero; the others are positive.
+
+As before, the determinant inequality \(G>0\) proves \(G<q^2\):
+with \(U_c=A_{\rm cone}F\), \(W_c=B_{\rm cone}C\), its two factors
+have the same sign and \(|U_c|+|W_c|<2|q|\).
+Since \(\eta\zeta\le k^2/4\), the scaled guard gives
+\begin{equation}
+g_+<\frac{|v||q|K}{2}
+=\frac{Km_Y}{2}<\frac{8C_0}{15}.
+\label{eq:crtguardbound}
+\end{equation}
+The last bound uses \(m_Y\ge16\) and
+\(C_0>K(m_Y-1)\).
+
+The first norm gives
+\begin{equation}
+K(xm_Y^2-1)<\tau_+<K(xm_Y^2+1),\qquad \tau_+>2C_0.
+\label{eq:crttaubound}
+\end{equation}
+The main root has a useful lower comparison with \(\tau_+\):
+\[
+d_+>\bigl((x-1)m_Y-3\bigr)K(m_Y-1)>\frac34\tau_+.
+\]
+For the second inequality, expansion gives
+\begin{align*}
+&4\bigl((x-1)m_Y-3\bigr)(m_Y-1)-3(xm_Y^2+1)\\
+&\hspace{12mm}=m_Y^2(x-4)-4m_Y(x+2)+9>0
+\end{align*}
+for \(x\ge64,m_Y\ge16\). Combining this with
+\eqref{eq:crtlambda} deliberately places the scaled main root above
+the first root:
+\begin{equation}
+\lambda d_+>2\tau_+.
+\label{eq:crtmainbound}
+\end{equation}
+Also
+\[
+f_+^2>\Delta C_0^4,\qquad
+d_+^2=\Delta C_0^2+1<2\Delta C_0^2,
+\]
+so
+\begin{equation}
+f_+>\frac{C_0}{2}d_+>15d_+>2\lambda d_+.
+\label{eq:crtstrongbound}
+\end{equation}
+
+The estimates \(f_+>3C_0^2\) and \(Q>f_+^2\) hold here too,
+since \(|a|\) is large and \(i\ne0\). Thus the same two auxiliary
+cases remain valid:
+\begin{equation}
+\begin{cases}
+C_0<y_+<C_0+1,&cT-R=0,\\
+y_+>2f_+,&cT-R\ne0.
+\end{cases}
+\label{eq:crtycases}
+\end{equation}
+In the first case,
+\(y_++g_+<(23/15)C_0+1<2C_0<\tau_+\).
+Equations~\eqref{eq:crtmainbound} and \eqref{eq:crtstrongbound}
+give strict superincreasing order
+\[
+f_+,\quad \lambda d_+,\quad \tau_+,\quad y_+,\quad g_+.
+\]
+In the second case the order is
+\[
+y_+,\quad f_+,\quad \lambda d_+,\quad \tau_+,\quad g_+.
+\]
+Zero \(g_+\) is omitted. Each entry exceeds the sum of all entries
+to its right, not merely the next entry.
+
+Dividing a vanishing factor by \(U\) expresses a rational number
+as a signed sum of precisely these magnitudes. Lemma~\ref{lem:radicals}
+makes all five roots rational. The roots \(d,f,\tau,p_1\) of the
+integer radicands \(\Dm,\Df,\Dt,\Ag\) are integral, and
+Lemma~\ref{lem:descent} makes the rational auxiliary root \(y\)
+integral. The factor's signs can be absorbed into these integer roots.
+
+\subsection{Two coprime congruences, with no hidden scale promise}
+
+Because \(Y=qv\),
+\[
+H=4(X+1)qv+3\equiv3\pmod q.
+\]
+The fixed odd exponent gives \(\beta\equiv1\pmod3\), and
+\(J=6j+1\), so \(q\equiv2\pmod3\). Since \(H\) is odd,
+\begin{equation}
+\gcd(H,M)=\gcd(H,2q^2)=1,\qquad \Lambda\equiv1\pmod H.
+\label{eq:crtcoprime}
+\end{equation}
+These are universal arithmetic facts about the displayed formulas.
+They are not assertions about unspecified canonical witnesses.
+
+The signed integer roots satisfy
+\begin{equation}
+U(n+V)+M\Lambda b_0+H(v-q^2)
+=M\Lambda d+U(f+\tau+p_1+y).
+\label{eq:crtrootrelation}
+\end{equation}
+Modulo \(M\), this gives \(H(v-q^2)\equiv0\), so
+\eqref{eq:crtcoprime} yields
+\begin{equation}
+v=q^2(2v_{\rm old}+1),\qquad
+v_{\rm old}=\frac{v-q^2}{2q^2}\in\Z.
+\label{eq:crtoldscale}
+\end{equation}
+Consequently \(Y=qv=(2v_{\rm old}+1)q^3\), exactly the original
+source scale, including its odd quotient. Modulo \(H\),
+\eqref{eq:crtrootrelation} gives
+\(M\Lambda(d-b_0)\equiv0\). Both multipliers are units modulo
+\(H\), so
+\begin{equation}
+\gamma=\frac{d-b_0}{H}\in\Z.
+\label{eq:crtoldgamma}
+\end{equation}
+This restores the main Pell root and its required congruence.
+
+The normalized strong and auxiliary witnesses are restored by
+\eqref{eq:restore}--\eqref{eq:restore2}, unchanged. Since
+\(\Pair(G,\eta\zeta,t)>0\), the universal ternary \(\pos\)
+representation supplies the old private guard variables. They need
+not equal the new ones: the latter represent
+\(v^2\Pair(G,\eta\zeta,t)\). This distinction is necessary for
+soundness. The transport equation already holds identically by
+\eqref{eq:crttransport}.
+
+\begin{theorem}[Coprime-carrier reduction]\label{thm:crt1088}
+The polynomial \(P_{13}^{\rm CRT}\) has an integer zero if and only
+if the normalized integer system \(\Cal\) has an integer solution.
+Consequently, with the same inherited ordinary calibration,
+\[
+\mathrm{ZFC}\ \vdash\
+\left(\neg\exists\boldsymbol{x}\in\Z^{13}
+\ P_{13}^{\rm CRT}(\boldsymbol{x})=0\right)
+\ \longleftrightarrow\ \Con(\mathrm{ZFC}).
+\]
+The polynomial has exact total degree \(1088\).
+\end{theorem}
+\begin{proof}
+The preceding argument restores a solution of \(\Cal\) from a
+polynomial zero. Conversely, start with a solution of \(\Cal\),
+whose old scale is \(Y=(2v_{\rm old}+1)q^3\), and put
+\[
+v=Y/q=q^2(2v_{\rm old}+1)\ne0.
+\]
+All native quantities remain unchanged. Retain its \(t\), for which
+\(\Pair(G,\eta\zeta,t)>0\), and regenerate \(p_1,p_2,p_3\)
+as a \(\pos\) representation of the positive integer
+\(v^2\Pair(G,\eta\zeta,t)\). Then the new \(\Ag=p_1^2\).
+Finally choose
+\begin{equation}
+n=\Lambda\gamma+f+\tau+p_1+y-V-\frac{v-q^2}{M}\in\Z.
+\label{eq:crtchoose-n}
+\end{equation}
+Every quantity on the right is fixed before \(n\), and substitution
+gives \eqref{eq:crtrootrelation}. One norm factor therefore vanishes.
+This is the exact sign convention for the displayed centered carrier.
+The calibration conclusion composes this new algebraic equivalence
+with the inherited ordinary proof for \(\Cal\). Exact degree is
+proved below.
+\end{proof}
+
+For a canonical refutation witness the same construction uses its
+actual \(Y\); no extra divisibility or freedom of choice is asserted.
+The earlier odd strong normalization is also unchanged: with
+\(A=a+2\) even and \(R,c\) odd, the recurrence gives
+\(\psi_A(Rc)\) odd, and division by the odd \(c^2\) gives odd
+\(i\). This parity fact follows from the recurrence, not from only
+the first term of a binomial congruence.
+
+\subsection{Exact degree and a coefficient certificate}
+
+The lower-degree scale changes the relevant degrees to
+\[
+\begin{array}{c|rrrrrrrr}
+\text{register}&a&\Delta&\Df&Q&R&V&C_y&\Ag\\\hline
+\text{degree}&4&8&14&22&5&19&60&30
+\end{array}
+\]
+We also have \(\deg\Dt=22\), \(\deg U=6\), and
+\(\deg Z=25\). In the biquadratic evaluator of
+Section~\ref{sec:circuit}, take
+\[
+d=M^2\Lambda^2\Dm,\quad e=U^2\Ag,\quad
+A=U^2\Df,\quad B=U^2\Dt,\quad \Cn=U^2C_y.
+\]
+Their respective degrees are \(22,42,26,34,72\). Assign formal
+weights \(11\) and \(21\) to the roots of \(d\) and \(e\).
+Writing
+\[
+s=Un+M\Lambda b_0+H(v-q^2),\qquad Z=s+UV,
+\]
+the scalar coefficient of the first norm register has the exact cut
+\begin{equation}
+J_0=\delta(s^2+2UVs+d+e-A-B)-U^2(V^2-1).
+\label{eq:crtcut}
+\end{equation}
+Here \(\deg s=11\). The four weighted component degrees are
+\[
+64,\quad58,\quad68,\quad54.
+\]
+The unique highest component is \(2\delta Z\sqrt e\), of
+weight \(68\). The scalar subtraction in the next squaring has
+degree at most \(128<136\), and the last tail subtraction has
+weight at most \(248<272\). Therefore the cleared three-root
+norm has unique leading scalar
+\[
+16Q_0^4Z_0^4e_0^2
+\]
+of degree \(272\). The two quadratic norm operations give exact
+degree \(1088\) and top form \(2^{16}Q_0^{16}Z_0^{16}e_0^8\).
+
+For a numerical-slice certificate, define
+\begin{align*}
+q_0&=6\beta j,&W_0&=12w,&Y_0&=q_0v,&X_0&=q_0W_0,\\
+a_0&=X_0Y_0,&i_0&=2r,&F_0&=W_0C-q_0z,&R_0&=-q_0^3F_0,\\
+k_0&=R_0+ha_0,&\eta_0&=-Y_0k_0,&Q_0&=a_0^4i_0^2c^4,\\
+V_0&=-a_0^2i_0^2c^4R_0,&U_0&=8q_0^2a_0,&Z_0&=U_0V_0,\\
+e_0&=-U_0^2v^2\eta_0^4.&&&&
+\end{align*}
+Direct substitution gives the nonzero leading polynomial
+\begin{equation}
+\bigl(P_{13}^{\rm CRT}\bigr)_{1088}
+=2^{112}q_0^{64}a_0^{128}i_0^{64}c^{128}
+ R_0^{16}v^{16}\eta_0^{32}.
+\label{eq:crttop}
+\end{equation}
+In particular,
+\begin{equation}
+\left[j^{480}w^{160}v^{208}h^{32}r^{64}c^{128}z^{16}\right]
+P_{13}^{\rm CRT}
+=2^{976}3^{640}\beta^{480}>0.
+\label{eq:crtcoefficient}
+\end{equation}
+The exponent \(h^{32}\) uniquely selects the \(ha_0\) term in
+\(k_0\) throughout \(\eta_0^{32}\); \(z^{16}\) then uniquely
+selects the \(q_0^4z\) term throughout \(R_0^{16}\).
+All remaining factors are monomials. The exponent sum is \(1088\),
+so this proves exact degree on the actual fixed coefficient slice,
+independently of possible relations among the other five numerals.
+
+The gain comes from a complete carrier construction with a proved
+coprimality identity and explicit two-way witness maps. The inherited calibration and its stated formalization boundary remain
+exactly those identified in the earlier sections.

@@ -1,0 +1,519 @@
+\section{Positive Pell saturation and a degree below one million}
+\label{sec:nine-saturation}
+
+This section gives three explicit polynomials in the same nine strictly
+positive unknowns
+\[
+ b,g,h,s,w,C,i,j,n\in\Zp.
+\]
+Their other registers are polynomial abbreviations, not additional
+existential variables. The finite source tables, fixed integer payloads,
+and division-free arithmetic circuits accompany the report.
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Polynomial & Exact degree & Binary operations\\
+\hline
+Compact H2082, simple majorant & \(1\,628\,768\) & \(435\)\\
+H1868, simple majorant & \(1\,474\,688\) & \(449\)\\
+H1868, complete-radical majorant & \(\mathbf{999\,518}\) & \(1086\)\\
+\hline
+\end{tabular}
+\end{center}
+An operation is one addition, subtraction, or multiplication; squaring and
+scalar multiplication each cost one, shared registers are reused, and fixed
+integer leaves cost zero. These are different points in a degree--cost
+comparison. The first improves the inspected 440-operation H2082 equation;
+the last improves the inspected nine-positive degree frontier, including the
+incoming radical-guard construction \cite{repo,radical,reportincoming}.
+The variable count is unchanged.
+
+The incoming round-11 package already applies \emph{norm saturation} to a
+different ten-integer Sun/Lucas certificate \cite{round11}. We credit that
+idea explicitly. The new steps here are its transfer to the positive
+ProductPell certificate, a majorant of the complete radical \(DFI\), and their
+composition with the H1868 source. The whole-radical approximation viewpoint
+also builds on the incoming majorant work \cite{radical,reportincoming}.
+No historical priority or global minimum is claimed.
+
+\subsection{Removing one square factor from the positive certificate}
+
+For \(A\ge2\), let
+\[
+ \psi_A(0)=0,\qquad \psi_A(1)=1,\qquad
+ \psi_A(t+2)=2A\psi_A(t+1)-\psi_A(t),
+\]
+and let \(\chi_A\) have initial values \(1,A\) and the same recurrence.
+Thus
+\[
+ \chi_A(t)^2-(A^2-1)\psi_A(t)^2=1.
+\]
+We use the standard positive Pell parametrization and the divisibility and
+congruence lemmas used in Jones's ProductPell proof \cite{jones,productpell}.
+
+\begin{lemma}[Saturated positive ProductPell]
+\label{lem:saturated-positive}
+Let \(A\ge2\), \(B\ge3\) be odd, \(C\ge B\), and \(J\ge1\).
+For \(i,j\in\Zp\), define
+\begin{align}
+ D&=(A^2-1)C^2+1,& r&=iJC^2,\notag\\
+ F&=(A^2-1)Dr^2+1,& L_m&=CD+1-A,\notag\\
+ G&=A+FL_m,& H&=C+F\bigl(B+(j-1)C\bigr),\notag\\
+ I&=(G^2-1)H^2+1. \label{eq:saturated-pell}
+\end{align}
+Then
+\[
+ C=\psi_A(B)
+ \quad\Longleftrightarrow\quad
+ \exists i,j\in\Zp\;\;DFI\text{ is an integer square}.
+\]
+\end{lemma}
+
+\begin{proof}
+All displayed radicands are positive. The defining equations give
+\[
+\begin{array}{lll}
+ F\equiv1\pmod D,&G\equiv1\pmod D,&I\equiv1\pmod D,\\
+ F\equiv1\pmod C,&G\equiv1\pmod C,&H\equiv B\pmod C,\\
+ G\equiv A\pmod F,&H\equiv C\pmod F,&I\equiv D\pmod F.
+\end{array}
+\]
+Consequently \(D,F,I\) are pairwise coprime. A square product therefore
+makes each factor a square. Write \(D=d^2\), \(d>0\), and introduce only
+inside the proof
+\[
+ E'=iJdC^2.
+\]
+Then \(F=(A^2-1)E'^2+1\) and \(C^2\mid E'\). Pell parametrization supplies
+\[
+ C=\psi_A(t),\qquad E'=\psi_A(u),\qquad H=\psi_G(v).
+\]
+Here \(2\le t<C\), and the square-divisibility lemma
+\[
+ \psi_A(t)^2\mid\psi_A(u)\ \Longrightarrow\ \psi_A(t)\mid u
+\]
+gives \(C\mid u\). Since \(F=\chi_A(u)^2\), recurrence congruence and
+\(H\equiv C\pmod F\) imply
+\[
+ \psi_A(v)\equiv\psi_A(t)\pmod{\chi_A(u)}.
+\]
+The Pell step-down congruence gives \(v\equiv\pm t\pmod{2u}\), and hence
+\(v\equiv\pm t\pmod C\). But \(G\equiv1\pmod C\) gives
+\(\psi_G(v)\equiv v\pmod C\), so \(B\equiv\pm t\pmod C\).
+The bounds leave \(B=t\) or \(B+t=C\). The latter is impossible:
+\(\psi_A(t)\equiv t\pmod2\) makes \(C-t\) even, whereas \(B\) is odd.
+
+For completeness suppose \(C=\psi_A(B)\), and put \(d=\chi_A(B)\).
+Periodicity of the invertible Pell recurrence modulo \(JDC^2\) supplies
+a positive index \(u\) and \(i_{\rm old}>0\) with
+\[
+ \psi_A(u)=i_{\rm old}JDC^2.
+\]
+Set \(i=d\,i_{\rm old}\). Then the new \(F\) equals
+\[
+ (A^2-1)(i_{\rm old}JDC^2)^2+1=\chi_A(u)^2.
+\]
+Put \(H_0=\psi_G(B)\). Recurrence congruences give
+\(H_0\equiv C\pmod F\) and \(H_0\equiv B\pmod C\).
+Because \(F\equiv1\pmod C\), the integer \(q=(H_0-C)/F\) satisfies
+\(q\equiv B\pmod C\). Moreover \(L_m\ge C\), \(G\ge FC\), and
+\(\psi_G(B)\ge BG\) for \(B\ge2\); thus
+\[
+ H_0\ge BFC\ge FB+C,\qquad q\ge B.
+\]
+Therefore \(j=1+(q-B)/C\) is positive and realizes the displayed \(H\).
+Finally \(I=\chi_G(B)^2\), proving the square-product condition.
+\end{proof}
+
+The earlier positive construction used
+\[
+ F_{\rm old}=(A^2-1)(i_{\rm old}JDC^2)^2+1.
+\]
+Its proof used \(D\mid E_{\rm old}\) only to obtain \(F\equiv1\pmod D\).
+The new polynomial provides that congruence directly, while retaining
+\(C^2\mid E'\), the divisibility actually needed by the index argument.
+The completeness map \(i=d\,i_{\rm old}\) is an embedding, not a claimed
+bijection of all witness tuples.
+
+\subsection{The H1868 source as a positive-domain prefix}
+
+The source data are pinned to repository snapshot
+\texttt{c1a102936aca} (the full hash is in the provenance files) and the incoming
+round-11 H1868 certificate \cite{repo,round11}. They retain the complete
+original31 coefficient tuple. Its four fixed integers are materialized in
+the archive; they are neither free parameters nor unspecified program
+indices. The compact H2082 companion instead retains its own coherent
+compact tuple from the source-54 lineage \cite{source54}.
+
+For H1868 the 31 coordinate weights, in the supplied source order, are
+\[
+\begin{split}
+&(1,7,61,36,16,85,20,67,43,11,34,13,96,80,29,50,\\
+&\hspace{12mm}2,109,110,112,116,91,53,55,27,101,92,9,107,37,60).
+\end{split}
+\]
+The 22 target positions, in source-row order, are
+\[
+\begin{split}
+&(1141,28,1437,1069,1836,1354,1814,614,267,1408,1403,\\
+&\hspace{12mm}889,337,1587,413,673,1139,772,1131,1018,1055,85).
+\end{split}
+\]
+The literal files
+\texttt{\detokenize{nine/data/source.json}},
+\texttt{\detokenize{nine/data/code.json}}, and
+\texttt{\detokenize{nine/data/kernels.json}}
+specify the source residuals \(\rho_j\) and the three integer polynomials
+\(D_0,D_1,D_2\). They satisfy, as exact polynomial identities,
+\begin{equation}
+ [T^{q_j}]\left(D_2(T)U_{\mathbf p}(T)^2+
+ D_1(T)U_{\mathbf p}(T)+D_0(T)\right)=2\rho_j(\mathbf p),
+ \qquad U_{\mathbf p}(T)=\sum_\ell p_\ell T^{w_\ell}.
+ \label{eq:h1868-identities}
+\end{equation}
+Equal kernel coefficients at a shared position are retained once.
+The audit checks all absent monomials as well as the intended ones:
+22 identities, 20,466 convolution interactions, and 81 stored positions.
+The kernel degrees are \((1408,1727,1636)\), with leading coefficients
+\((-6,2,1)\); therefore the convolution height is \(1868\), the maximum
+weight is \(116\), and the maximum target is \(1836\).
+
+Put \(\kappa=2134939\). Define
+\begin{align}
+ B_c&=2^\kappa b^2,&
+ \ell&=\sum_\ell B_c^{w_\ell},&
+ T_c&=\sum_j B_c^{q_j},\notag\\
+ U_s&=\ell+g,&
+ G_s&=(D_2(B_c)U_s+D_1(B_c))U_s+D_0(B_c),\notag\\
+ N_0&=B_c^{117},&
+ M_c&=N_0-1-(b-1)\ell,\notag\\
+ S_c&=g+N_0(2G_s+T_c),&
+ T_m&=M_c+N_0(B_c-2)T_c,\notag\\
+ L_c&=2bB_c^{1986},&
+ R&=L_c(S_c+T_m+1)-S_c-1,\notag\\
+ N&=2^{16012032}B_c^{1055},&
+ t_c&=bB_c^{116}. \label{eq:h1868-prefix}
+\end{align}
+The factor \(2\) in \(L_c\), and the absence of an additional \(b\) in
+\(N\), are essential.
+
+Here every kernel coefficient has magnitude below \(2^{2134927}\).
+The quadratic layer dominates the linear and constant layers by 25 and
+460 powers of \(B_c\), respectively. The inherited geometric-series and
+sparse-carry bounds consequently give \(G_s>0\), \(R,N\ge8\), and
+\(b\le R,N\) on all positive inputs, before the base is known to be binary.
+On the recovered range \(g<4t_c\), they give
+\[
+ S_c+T_m<B_c^{1986}<L_c.
+ \label{eq:h1868-range}
+\]
+The coefficient bound and the unchanged 32-position target headroom are
+exactly the hypotheses used by the inherited sparse-carry proof
+\cite{round11,source71}.
+
+For clarity, the binary threshold can be recalculated directly.
+If \(b=2^k\), \(B_c=2^v\), and \(L_c=2^u\), then
+\[
+ v=\kappa+2k,\quad u=1+k+1986v,\quad
+ \operatorname{pop}(T_m)=139v-31k-22.
+\]
+The two-block identity for \(R\) gives
+\[
+ \operatorname{pop}(R)=u+\operatorname{pop}(T_m)-\tau,\qquad
+ \tau=\operatorname{pop}(S_c)+\operatorname{pop}(T_m)
+       -\operatorname{pop}(S_c+T_m)\ge0.
+\]
+Moreover
+\[
+ u+\operatorname{pop}(T_m)=2125\kappa+4210k-21=2\log_2N.
+\]
+Legendre's identity therefore gives
+\begin{equation}
+ N^2\mid \binom{2R}{R}
+ \quad\Longleftrightarrow\quad S_c\mathbin{\mathrm{AND}}T_m=0.
+ \label{eq:h1868-calibration}
+\end{equation}
+The sparse-carry theorem decodes the right side into a positive common
+source zero. Conversely a fixed source zero packs for all sufficiently
+large binary \(b\), with \(0<g<t_c\). Positivity of \(g\) follows because
+the all-one source tuple is not a zero: its fifth residual equals \(1\).
+The endpoint \(b=1\) cannot create a spurious solution, since its low mask
+would force \(g=0\).
+
+\subsection{The common ratio registers}
+
+From either authenticated prefix define
+\begin{align}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\notag\\
+ P&=2M^2U,&K&=R+1+h(P-1),&A&=M(U+1),\notag\\
+ B_1&=2R+1,&W_1&=bw,&J&=4A-5,\notag\\
+ Q&=3W_1C-2(W_1^2-1),&
+ a_0&=(P^2-1)K^2+1,\notag\\
+ m&=K^2(4t_c-g)-16t_c(C-KY)^2,&
+ \Omega&=Jm,\notag\\
+ E_0&=J(n+W_1^2)+Q,&V_0&=PK. \label{eq:nine-ratio}
+\end{align}
+Use \eqref{eq:saturated-pell} with \(B=B_1\), and abbreviate
+\[
+ Z=B_1+(j-1)C,\qquad a_{1,\rm raw}=DFI.
+\]
+The inherited numerical ratio theorem converts the source conditions into
+\[
+ a_0\text{ square},\qquad C=\psi_A(B_1),\qquad
+ J\mid Q,\qquad m>0,
+ \label{eq:nine-ratio-contract}
+\]
+with the weak soundness bound \(g<4t_c\) and the stronger completeness bound
+\(g<t_c\) \cite{jones,source71,productpell}.
+When that theorem is phrased using the old ProductPell witnesses, the
+equivalence is interpreted existentially. After recovering \(C=\psi_A(B_1)\)
+we may reconstruct the old witnesses. We do not divide an arbitrary new
+\(i\) by \(\sqrt D\).
+
+\subsection{Two exact majorants}
+
+The simple choice is
+\begin{equation}
+ T_{\rm simple}=ADr,\qquad V_1=T_{\rm simple}GH,\qquad
+ a_1=a_{1,\rm raw}.
+ \label{eq:simple-majorant}
+\end{equation}
+Its unconditional certificate is particularly short:
+\begin{align}
+ T_{\rm simple}^2-DF&=D(Dr^2-1)>0,\notag\\
+ V_1^2-a_{1,\rm raw}
+ &=D(Dr^2-1)G^2H^2+DF(H^2-1)>0.
+ \label{eq:simple-majorant-certificate}
+\end{align}
+This supplies the 435-operation compact-H2082 polynomial and the
+449-operation H1868 polynomial in the table.
+
+For the lower-degree construction we approximate the \emph{complete}
+radical \(\sqrt{DFI}\). Here is an exact finite definition of the supplied
+333-term polynomial, so its construction does not depend on a numerical
+approximation. Regard
+\[
+ \mathcal R(A)=D(A)F(A)I(A)=\sum_{k=0}^{36}q_k(C,i,Z)A^k
+\]
+as a polynomial in \(A\), with \(J=4A-5\).
+Its leading coefficient is \(2^{20}C^{38}i^{10}Z^2\). In the rational
+function field \(\mathbb Q(C,i,Z)\), set
+\begin{equation}
+ t_{18}=1024C^{19}i^5Z,\qquad
+ t_{18-r}=
+ \frac{q_{36-r}-\sum_{s=1}^{r-1}t_{18-s}t_{18-r+s}}{2t_{18}}
+ \quad(1\le r\le18).
+ \label{eq:radical-recurrence}
+\end{equation}
+Put
+\begin{align}
+ \sigma&=1024C^5i,\notag\\
+ \mathcal P_0&=\sigma\sum_{k=0}^{18}t_k A^k,\notag\\
+ \mathcal P&=\mathcal P_0+297874C^{24}i^6Z.
+ \label{eq:complete-majorant}
+\end{align}
+The finite coefficient calculation proves
+\(\mathcal P_0,\mathcal P\in\mathbb Z[A,C,i,Z]\); the authoritative literal
+integer table is
+\texttt{\detokenize{nine/data/saturated_corrected_P.json}}.
+The divisions in \eqref{eq:radical-recurrence} describe a finite way to
+derive that fixed table. The delivered evaluator uses only its integer
+coefficients, addition, subtraction, and multiplication.
+
+\begin{proposition}[Complete-radical certificate]
+\label{prop:complete-majorant}
+For \(A\ge3\), \(C,i,Z\ge1\),
+\[
+ \mathcal P>\sigma\sqrt{DFI}>0.
+\]
+\end{proposition}
+\begin{proof}
+The independent exact checker reconstructs \(DFI\) from its defining
+polynomials and verifies
+\[
+ \left(\mathcal P^2-\sigma^2DFI\right)
+ (x+3,y+1,u+1,v+1)=\mathcal C(x,y,u,v),
+\]
+where the supplied coefficient table for \(\mathcal C\) has 36,309
+strictly positive nonzero coefficients and constant term
+\[
+ 8341416066461366340.
+ \label{eq:defect-positive-constant}
+\]
+It also verifies that \(\mathcal P(x+3,y+1,i,Z)\) has positive
+coefficients and a positive constant term. Thus the defect and the
+majorant itself are strictly positive on the required domain. These exact
+polynomial identities prove the inequality.
+\end{proof}
+
+For this variant use
+\begin{equation}
+ a_1=\sigma^2DFI,\qquad V_1=\mathcal P.
+ \label{eq:complete-variant}
+\end{equation}
+The finite recurrence, literal coefficient tables, and positive-defect
+certificate serve different purposes: the recurrence explains the
+construction; the table defines the exact polynomial; the certificate
+proves its uniform inequality. The Laurent approximation itself is not
+used as an asymptotic assumption.
+
+\subsection{The single equation and its proof}
+
+For either choice \eqref{eq:simple-majorant} or
+\eqref{eq:complete-variant}, put
+\begin{equation}
+ \Theta=E_0-\Omega(V_0+V_1),\qquad
+ \boxed{\;
+ \mathcal F_9=
+ \left(\Theta^2-\Omega^2(a_0+a_1)\right)^2
+       -4\Omega^4a_0a_1=0.\;}
+ \label{eq:saturated-nine-equation}
+\end{equation}
+
+\begin{theorem}
+\label{thm:saturated-nine}
+The polynomial \(\mathcal F_9\) has a positive integer zero if and only if
+its authenticated positive source has a zero. With the inherited
+source-calculus calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \left(
+   \neg\exists(b,g,h,s,w,C,i,j,n)\in\Zp^9\;
+       \mathcal F_9=0
+ \right)
+ \longleftrightarrow\ConZFC.
+\]
+\end{theorem}
+
+\begin{proof}
+The unconditional source bounds give \(A\ge33280\), \(A>W_1\), and
+\(J>3A>0\). Also
+\[
+ A^2-P=M^2(U^2+1)\ge1,\qquad
+ D\ge A^2,\qquad D>C^2.
+\]
+Both radicands are positive. We have \(V_0^2-a_0=K^2-1>0\);
+the chosen majorant gives \(V_1>\sqrt{a_1}\). Furthermore
+\[
+ E_0=Jn+(J-2)W_1^2+3W_1C+2>0.
+\]
+If \(m=0\), then \(\mathcal F_9=E_0^4>0\). Otherwise factoring the
+two-root norm over the reals gives signs \(\epsilon_0,\epsilon_1\) with
+\[
+ \frac{E_0}{J}
+ =m\left(V_0+V_1+\epsilon_0\sqrt{a_0}
+                    +\epsilon_1\sqrt{a_1}\right).
+\]
+The parenthesis is positive for every sign pair. Thus \(m>0\)
+\emph{before} any Pell-index or square-root-integrality argument.
+
+The margin now gives \(|C-KY|<K/2\), and therefore
+\[
+ C>2K>2R+1+W_1>B_1.
+\]
+Since \(D>PC^2\), \(F>D\), and \(C>K\),
+\[
+ a_{1,\rm raw}>D^2>P^2K^2\ge a_0.
+\]
+This also separates the radicands in the scaled variant. Hence
+\(\Theta/\Omega\), a signed sum of their roots, is rational and nonzero.
+For signed roots \(u_0,u_1\),
+\[
+ 2(u_0+u_1)u_0=(u_0+u_1)^2+a_0-a_1
+\]
+makes both roots rational, then integral. In the complete variant,
+\(\sqrt{a_1}/\sigma\) is a rational square root of the integer
+\(DFI\), so it too is integral. The same norm-factor identity yields
+\(J\mid E_0\), and hence \(J\mid Q\).
+Lemma~\ref{lem:saturated-positive} gives \(C=\psi_A(B_1)\).
+The ratio theorem and the authenticated carry test now recover a source
+zero. If necessary, reconstruct the old ProductPell witnesses before
+invoking the original ratio theorem; the other ratio registers remain
+fixed.
+
+Conversely a source zero supplies the ratio conditions, with \(m>0\).
+Lemma~\ref{lem:saturated-positive} supplies positive \(i,j\) making \(DFI\)
+a square. Let \(z_0,z_1\) be the positive integral roots of the chosen
+\(a_0,a_1\), and define
+\[
+ n=m(V_0+V_1+z_0+z_1)-W_1^2-Q/J.
+\]
+This is an integer. It is positive because
+\[
+ W_1^2+Q/J
+ =(1-2/J)W_1^2+(3W_1C+2)/J<2D,
+\]
+whereas \(V_1>4D\). For the simple majorant the latter follows directly
+from \(V_1=ADrGH\). For the complete majorant,
+\(F>3D\), \(G\ge3\), and \(H\ge2\) give \(DFI>99D^2\), and
+Proposition~\ref{prop:complete-majorant} applies. This choice of \(n\)
+makes one norm factor vanish. The existence equivalence follows, and
+negating it gives the displayed consistency equivalence.
+\end{proof}
+
+\subsection{Why the degree is exactly 999,518}
+
+The complete-radical construction needs a cancellation-aware calculation.
+For H1868 the positive leading terms of the source are
+\[
+ R\sim4bB_c^{3971},\qquad
+ N=2^{16012032}B_c^{1055}.
+\]
+Thus, writing \(r_R=\deg R\), \(\nu=\deg N\), and \(a=\deg A\),
+\[
+ r_R=7943,\qquad \nu=2110,\qquad
+ a=r_R+4\nu+2=16385.
+\]
+For weights \((a,1,1,r_R)\) on \((A,C,i,Z)\), the unique leading
+monomials of the complete majorant and its defect are
+\[
+\begin{array}{ll}
+ \mathcal P:&1048576A^{18}C^{24}i^6Z,\\
+ \mathcal P^2-\sigma^2DFI:
+   &624687054848A^{18}C^{48}i^{12}Z^2 .
+\end{array}
+\]
+Consequently
+\[
+ \deg V_1=18a+r_R+30=302903,\qquad
+ \deg\delta_1=18a+2r_R+60=310876,
+\]
+where \(\delta_1=V_1^2-a_1\). Also, for \(\delta_0=V_0^2-a_0\),
+\[
+\begin{aligned}
+ \deg\Omega&=5a+2W+3,&\deg E_0&=a+4,\\
+ \deg V_0&=3a+r_R+1,&\deg\delta_0&=3a+r_R+2.
+\end{aligned}
+\]
+Put
+\[
+ \mathcal B=E_0^2-2E_0\Omega(V_0+V_1)
+                         +\Omega^2(\delta_0+\delta_1).
+\]
+Its unique leading contribution is \(\Omega^2\delta_1\). The exact identity
+\[
+ \mathcal F_9=\mathcal B^2+4\Omega^2V_0V_1\mathcal B
+            +4\Omega^4(\delta_0V_1^2+a_0\delta_1)
+\]
+has four displayed contribution degrees
+\[
+ 950392,\qquad \boxed{999518},\qquad 991546,\qquad 753714.
+\]
+The maximum is unique and its leading coefficient is positive. Therefore
+\[
+ \deg\mathcal F_9=59a+4r_R+8W+103=999518
+\]
+is attained, not merely an upper bound from a circuit.
+
+\paragraph{Verification and proof boundary.}
+The independent standard-library audit reconstructs the source identities,
+the positive population threshold, the 3035-term local radicand, the
+333-term majorant, the complete positive-defect certificate, and the exact
+degree comparison without importing the producer. A separate literal
+circuit checker verifies the exported equations and operation counts.
+The three complete Pell fixtures and 5472 local arithmetic checks support
+transcription checks; they are not experiments concerning ZFC's
+consistency. The consistency theorem uses the identified ordinary
+source/compiler calibration \cite{repo,source71}. This work supplies no new
+end-to-end Lean/Rocq certificate or exported derivation in an internal ZFC
+calculus.
