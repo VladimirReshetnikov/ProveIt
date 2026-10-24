@@ -63,7 +63,9 @@ expressions and witness counts.
 A [complete one-page equation](candidates/one-page/README.md) now specifies
 the15-positive-variable P69 and every fixed coefficient using one1294-digit
 integer and fixed arithmetic formulas. The printed seed and all four coefficient
-values are independently checked; the full native/internal-ZFC calibration
+values are independently checked. The [arithmetic mode ranks and symbolic
+coefficient sum](ONE_PAGE_TUPLE54.md) now bind in Lean to the exact native
+table and whole stencil, without expanding the large ports. The full native/internal-ZFC calibration
 remains open. Both TeX sources and the one-page PDF are included.
 The independent [direct executable quartic](ALTERNATIVE_ENCODINGS.md)
 already has a closed external consistency equivalence at degree at most
@@ -164,9 +166,11 @@ actual source mask and exact low-MC recipe. The [sparse assignment](NATIVE_SPARS
 is now reconstructed from the source, including the positive cell count,
 exact word, origin and Boolean/capacity bounds. The [literal clause bands](NATIVE_CLEAN_BANDS54.md)
 now equal the corresponding local coefficient sums plus the explicit
-temporal contribution, including cyclic collisions. High-mask binding,
-phase synchronization, whole compiler calibration and converse completeness
-remain open.
+temporal contribution, including cyclic collisions. The [exact high mask](NATIVE_HIGH_PORT54.md)
+and [paired temporal support argument](NATIVE_TEMPORAL_SUPPORT54.md) now
+derive the actual local clause-mask zero in every cell before phase alignment.
+The coefficient interface remains explicit; phase synchronization, whole
+compiler calibration and converse completeness remain open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

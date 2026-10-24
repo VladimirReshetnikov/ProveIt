@@ -48,6 +48,17 @@ entire internal carrier. The resulting literal quartic has one auxiliary
 coordinate and represents `bit = if n=0 then 1 else 0`. Completeness chooses
 the internal predecessor as the positivity slack, including at zero.
 
+`ObjectConditional` preserves the actual shared zero-test/selection rows.
+The resulting quartic represents conditional selection with two auxiliary
+coordinates throughout internal omega. `ObjectListHead` likewise preserves
+the actual nine-coordinate system and seven auxiliary coordinates for the
+guarded list head. Its completeness proof derives the output bound in
+internal order and obtains the bound slack by the internal addition graph.
+Its soundness handles nil separately, and its positive branch uses strict
+ordered multiplication to cancel the nonzero code. Both literal expressions
+retain degree at most four. No external subtraction or standard-code
+hypothesis is inserted into these internal statements.
+
 The dedicated check file imports these actual expressions, checks their
 universal semantics and audits their dependency axioms. These results do
 not complete the full checker interpretation. Internal formula/context

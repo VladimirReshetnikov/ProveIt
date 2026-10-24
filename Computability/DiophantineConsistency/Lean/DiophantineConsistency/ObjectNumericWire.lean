@@ -21,6 +21,10 @@ theorem left_cons (a b : N H) : treeLeft H (cons H a b)=a := by
   simp only [treeLeft,cons,ObjectPredecessor.pred_add_one,ObjectUnpair.unpair_pair]
 theorem right_cons (a b : N H) : treeRight H (cons H a b)=b := by
   simp only [treeRight,cons,ObjectPredecessor.pred_add_one,ObjectUnpair.unpair_pair]
+theorem left_zero : treeLeft H 0=0 := by
+  simp only [treeLeft,ObjectPredecessor.pred_zero,ObjectUnpair.unpair_zero]
+theorem right_zero : treeRight H 0=0 := by
+  simp only [treeRight,ObjectPredecessor.pred_zero,ObjectUnpair.unpair_zero]
 theorem head_cons (a b : N H) : listHead H (cons H a b)=a+1 := by
   simp only [listHead,cons,ObjectNaturalDiscrete.add_one_ne_zero H,if_false]
   exact congrArg (·+1) (left_cons H a b)
@@ -29,6 +33,11 @@ theorem tail_cons (a b : N H) : listTail H (cons H a b)=b := by
   exact right_cons H a b
 theorem head_zero : listHead H 0=0 := by simp [listHead]
 theorem tail_zero : listTail H 0=0 := by simp [listTail]
+
+theorem tail_eq_treeRight (code : N H) : listTail H code=treeRight H code := by
+  by_cases hz : code=0
+  · simp only [hz,tail_zero,right_zero]
+  · simp only [listTail,if_neg hz]
 
 theorem zero_or_cons (code : N H) :
     code=0 ∨ code=cons H (treeLeft H code) (treeRight H code) := by

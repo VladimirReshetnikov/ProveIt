@@ -32,6 +32,10 @@ theorem unpair_pair (a b : N H) : unpair H (ObjectNatPairing.pair H a b)=(a,b) :
   · exact ((ObjectPairingInjective.pair_eq_pair_iff H _ _ _ _).mp
       (pair_unpair H (ObjectNatPairing.pair H a b))).2
 
+theorem unpair_zero : unpair H (0 : N H)=(0,0) := by
+  have hp : ObjectNatPairing.pair H (0 : N H) 0=0 := by simp [ObjectNatPairing.pair]
+  simpa only [hp] using unpair_pair H (0 : N H) 0
+
 theorem unpair_eq_iff (z a b : N H) :
     unpair H z=(a,b) ↔ z=ObjectNatPairing.pair H a b := by
   constructor

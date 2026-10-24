@@ -38,10 +38,13 @@ example {V : Type} {mem : V → V → Prop} (H : ZFAxioms mem)
 #print axioms ObjectPredecessorSyntax.zfc_proves_total
 #print axioms ObjectNumericWire.left_cons
 #print axioms ObjectNumericWire.right_cons
+#print axioms ObjectNumericWire.left_zero
+#print axioms ObjectNumericWire.right_zero
 #print axioms ObjectNumericWire.head_cons
 #print axioms ObjectNumericWire.tail_cons
 #print axioms ObjectNumericWire.head_zero
 #print axioms ObjectNumericWire.tail_zero
+#print axioms ObjectNumericWire.tail_eq_treeRight
 #print axioms ObjectNumericWire.zero_or_cons
 #print axioms ObjectNumericWire.cons_eq_cons_iff
 #print axioms ObjectNumericWire.left_cast

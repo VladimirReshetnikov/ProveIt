@@ -41,6 +41,7 @@ example {V : Type} {mem : V → V → Prop} (H : ZFAxioms mem)
 #print axioms ObjectPairingInjective.pair_eq_pair_iff
 #print axioms ObjectUnpair.pair_unpair
 #print axioms ObjectUnpair.unpair_pair
+#print axioms ObjectUnpair.unpair_zero
 #print axioms ObjectUnpair.unpair_eq_iff
 #print axioms ObjectUnpair.unpair_cast
 #print axioms ObjectUnpair.pairEquiv
