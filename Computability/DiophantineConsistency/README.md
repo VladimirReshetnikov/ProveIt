@@ -754,3 +754,17 @@ All100 target guard rows and every full collected polynomial are checked.
 All four root normal/optimized checker/rebuild replays and closed seals
 pass. The616-variable compact quartic is a separate height tradeoff;
 no new Lean or native calibration endpoint is claimed.
+
+## Comparison-base positivity guard removed existentially
+
+The [comparison-base proof](research/comparison-base-sign/README.md) permits
+negative B and then lifts it to a positive comparison base while preserving
+all78 other guard values. Its complete1177-row audit accounts for62 private
+coordinates,141 unit gates and every46 affected nongate constraints. The
+signed-index and21-sign proofs precede the lift; q4 positivity is supplied
+at the new tuple, not asserted at the old tuple. Three fresh Legendre
+witnesses reach the literal904 source. The [root review](reviews/comparison-base-sign-root-peer.md)
+and [independent peer](reviews/comparison-base-sign-peer.md) record full
+normal/optimized author and peer replays, all passing. New compact/raw
+quartics are being materialized separately; this theorem alone supplies no
+new projected coefficient count. Lean remains paused.
