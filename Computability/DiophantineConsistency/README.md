@@ -24,6 +24,12 @@ coefficient recipe. Its standalone TeX includes every constant; a finite
 state-renaming decoder and transition-conjugacy argument explain the change.
 See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md).
 
+A new [twelve-positive equation](research/ordinary-unit-products/README.md)
+has100 live operations and exact degree70. It materializes and checks an
+arriving manuscript's ordinary-norm reduction, including its early rank
+bound and two-way witness reconstruction. The coherent compact44 tuple is
+retained; native calibration and the internal-ZFC proof remain separate.
+
 ## Approach and comparison
 
 There is no single established meaning of "simplest": number of variables,

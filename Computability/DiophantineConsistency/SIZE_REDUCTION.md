@@ -17,7 +17,8 @@ not establish the size of a complete consistency equation.
 |---|---:|---:|---:|---|
 | Positive integers | 15 | 66 | 157 | Short-operation baseline |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
-| Positive integers | 12 | 99 / 100 / 102 | 164 / 110 / 82 | Current degree/cost tradeoffs from packages74/69 |
+| Positive integers | 12 | 99 / 100 | 164 / 70 | Ordinary-norm100/70 improves100/110 and102/82 |
+| Positive integers | 13 | 90 | 55 | Unit-product tradeoff against92/30 and83/114 |
 | Positive integers | 11 | 113 | 325 | Three-root transfer, package70 |
 | Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
@@ -66,6 +67,18 @@ the specified source constructor from140,639,095,370 to47,439,839
 representation witnesses. These are **before** the final quartic compiler;
 no final polynomial count or new small-equation frontier point is claimed.
 The universal ordinary proof and count-only finite checks are included.
+
+The new short-equation research includes a literal
+[`twelve-positive100/70`](research/ordinary-unit-products/README.md)
+equation, materialized from the report-only manuscript arriving in
+`c1a102936a`. An early carrier congruence proves the rank bound needed
+to use the ordinary strong norm before eliminating its root. This removes
+one multiplication and lowers degree78 to70. The two-way witness maps,
+selected nonzero leading coefficient, independent circuit/algebra checks
+and normal/optimized receipts are included. This subsumes our independently
+reconstructed101/78 checkpoint, also present in the arriving round11 package.
+[`short-unit-products`](research/short-unit-products/README.md) retains that
+checkpoint and a separate thirteen-positive90/55 tradeoff.
 
 1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that

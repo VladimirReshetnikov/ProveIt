@@ -22,6 +22,13 @@ It includes standalone TeX and an ordinary control-state conjugacy proof;
 all430 transitions and four-port reconstructions pass finite checks.
 The renamed tuple changes `K`; see [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md).
 
+The [ordinary-norm twelve-positive equation](research/ordinary-unit-products/README.md)
+now has a literal100-operation circuit of exact degree70. Its ordinary
+proof establishes the strong-rank bound before using the norm merger;
+normal/optimized independent circuit, identity and degree checks pass.
+The101/78 and thirteen-positive90/55 checkpoints are retained in
+[`short-unit-products`](research/short-unit-products/README.md).
+
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
 at the repository owner's request. Live catalogue/intake/research links
