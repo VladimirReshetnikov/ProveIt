@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Centered Pell norms and shared positivity},
+ pdfauthor={Research contribution prepared for the ProveIt project},
+ pdfsubject={Explicit Diophantine consistency equations and exact algebra audits},
+ pdfkeywords={Diophantine equations, ZFC consistency, Pell equations, arithmetic circuits}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\lhead{Diophantine consistency}\rhead{Centered norms and shared positivity}\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Pos}{\operatorname{Pos}}\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\DeclareMathOperator{\lead}{in}
+\title{Centered Pell norms and shared positivity\\\large A degree-fourteen consistency equation in twenty-two integers}
+\author{Research contribution prepared for the ProveIt project\\\small AI-assisted mathematical research and executable algebra audits}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an explicit sum of ten squares in twenty-two unrestricted
+integer unknowns, of exact total degree fourteen. Its integer solvability is
+equivalent to finite ZFC refutability through the repository's specified
+native/compiler calibration. Centering an auxiliary Pell root and applying
+an elementary row operation permit the last coordinate elimination.
+A second norm transformation, justified by a scale that never vanishes,
+gives a degree-ten equation in twenty-four integers. The intermediate
+degree-twelve equation in twenty-three integers uses only 122 binary
+operations. These constructions combine the signed-power bootstrap,
+a calibrated determinant, and a shared strict-positivity certificate.
+Complete leading forms and exact polynomial identity checks certify the
+new endpoints. Companions have thirty-one integer unknowns at degree six
+and twenty-six at degree eight. Separately, adjacent-coefficient Pell descent removes an
+unnecessary divisibility factor from the eleven-positive-variable form,
+lowering its degree from 325 to 277 and its circuit from 113 to 111 binary
+operations. A twelve-positive-variable companion has degree 78 in 103
+operations. We also prove an index-elimination lemma for a different CRT
+proof-certificate architecture; that lemma is not yet compiled into another
+consistency polynomial. All fixed coefficient integers, polynomial circuits,
+proof dependencies, checks, and source pins accompany this article.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Outcome, comparison, and the exact claim}
+
+The smallest new low-degree construction is $P_{22}$ in
+Section~\ref{sec:centered}: twenty-two unrestricted integer unknowns,
+ten squared residuals, exact degree fourteen, and 123 binary arithmetic
+operations. It is obtained by explicit transformations of the completely
+displayed degree-twelve polynomial $P_{23}$ in Section~\ref{sec:integer}.
+A degree-ten companion $P_{24}$ retains twenty-four unknowns. All
+coefficient integers are materialized in the archive. Their domains are
+respectively $\Z^{22}$, $\Z^{23}$ and $\Z^{24}$, with no sign conditions
+left outside the equations.
+
+The repository was inspected at commit
+\texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}. Its catalogue includes
+sources 31--75 and the reconciled wave-10 frontier. Comparisons in this
+article refer to that pin, not to the older baseline used by each incoming
+package. The source numbers below refer to directories in
+\texttt{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+
+\begin{center}
+\begin{tabular}{@{}p{3.2cm}p{5.1cm}p{6.3cm}@{}}
+\toprule
+Domain and objective & Prior inspected construction & This contribution\\
+\midrule
+Low-degree integer tradeoffs & $26$ integers, degree $16$ (68); also $24$ integers, degree $1936$ in the catalogue & $22$ integers, degree $14$; $23$ integers, degree $12$; $24$ integers, degree $10$\\
+Integer sextic & $32$ integers (69, 71) & $31$ integers, eighteen residuals\\
+Integer octic & $27$ integers (69, 71) & $26$ integers, fourteen residuals\\
+Eleven positive integers & Degree $325$, $113$ operations (70) & Degree $277$, $111$ operations\\
+Twelve positive integers & Degree $82$, $102$ operations (69) & Degree $78$, $103$ operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each new first-row construction improves both coordinates of the prior
+26-integer/degree-16 result. The 22- and 23-integer equations improve both
+coordinates of the older 24-integer/degree-1936 result as well; $P_{24}$
+keeps its variable count and lowers its degree. The last row trades one extra arithmetic operation
+for four degrees. The nine-positive-unknown and ten-integer-variable
+high-degree records are unchanged. Thus there is no assertion of an
+absolute smallest equation, or of a uniform improvement in every complexity
+measure. In particular, operation counts do not measure bit complexity:
+some coefficient integers have more than a million bits.
+
+\subsection{The consistency statement and its proof boundary}
+
+Let $\operatorname{Ref}_{\ZFC}$ mean existence of a finite refutation in
+the recursively specified calculus used by the pinned K215 calibration.
+The target is the internal mathematical assertion
+\begin{equation}
+ \ZFC\vdash
+ \left(\neg\exists\mathbf x\in\mathcal D\;P(\mathbf x)=0\right)
+ \longleftrightarrow\Con(\ZFC).
+ \label{eq:target}
+\end{equation}
+Here $(P,\mathcal D)$ can be any of the seven delivered endpoint/domain
+pairs, in particular $(P_{22},\Z^{22})$. Consistency is syntactic:
+$\Con(\ZFC)$ abbreviates absence of a
+finite refutation. No assumption of consistency or arithmetic soundness
+is used in the reductions.
+
+The new coordinate transformations, positivity lemmas and Pell descent
+are proved below in ordinary mathematics formalizable in ZFC. The final
+interpretation uses the repository's stated native/compiler theorem
+identifying its particular fixed-coefficient source with
+$\operatorname{Ref}_{\ZFC}$, and its canonical-witness theorem.
+Those dependencies are included and pinned, rather than replaced by finite
+tests. In particular, the integer construction depends on sources 64, 71
+and 75, and the positive constructions on sources 44, 61, 69 and 70.
+
+This is an ordinary mathematical contribution with executable algebra
+audits. It is not a newly compiled Lean/Rocq certificate of
+\eqref{eq:target}. The repository's \texttt{OBJECT\_ZFC.md} distinguishes
+external Lean equivalence from an actual derivation in its encoded ZFC
+calculus; that formalization obligation is not silently declared closed
+here. Likewise, \texttt{NATIVE\_CALIBRATION52.md} distinguishes the native
+arithmetic from its complete formal machine/tableau bridge. The archive
+retains both status documents. If one requires a new end-to-end formal
+derivation file rather than the inherited ordinary calibration theorem,
+that stronger deliverable remains open.
+
+\subsection{What is new, and what is inherited}
+
+The cone, the nearest-square positivity lemma, and the adjacent-coefficient
+Pell descent already occur separately in the latest incoming packages.
+We do not claim those ingredients as new. The contributions here are their
+specific compositions, the additional eliminations those compositions
+permit, the resulting literal smaller equations, and the proofs and exact
+audits of the new endpoints. In particular, the shared guard makes
+elimination of both $D$ and $V$ affordable at degree twelve. The centered
+auxiliary norm, the nonzero-scale replacement of the main norm, and the
+strong-norm row operation then yield the 24-integer/degree-10 and
+22-integer/degree-14 endpoints. These last steps go beyond simply
+substituting monically defined coordinates.
+The CRT index substitution in Section~\ref{sec:homogeneous-closure} is a
+separate newly developed compiler-stage improvement. No global historical
+priority claim is made for any of these mechanisms.
+
+\input{integer.tex}
+\input{centered.tex}
+\input{positive.tex}
+\input{compiler.tex}
+
+\section{Reproducibility and interpretation of the checks}
+
+The top-level command \texttt{python3 verify.py} checks the delivered
+polynomials, their fixed numerals, and their regeneration. It requires only
+Python's standard library. The PDF is compiled from this \LaTeX{} source;
+the executable arithmetic does not depend on a \LaTeX{} installation.
+
+The integer audit reconstructs the compact eleven residuals independently,
+restores the arithmetic rows of the signed forty-variable source, compares
+them as exact integer polynomials, and expands the final sum of squares.
+It finds 16,360 monomials when the fixed ports are temporarily left as
+symbolic coefficient parameters. These are not floating-point tests.
+An independently written audit also verifies the exact degree certificate
+after coefficient specialization: its selected coefficient is the numeral
+$1$, so no relation among the fixed ports can cancel it. A separate
+independent extension audit verifies the centered equations, the complete
+leading forms of $P_{24}$ and $P_{22}$, and their source restorations.
+It expands respectively 5,634 and 16,525 symbolic-port monomials and finds
+the displayed coefficient $4$ in each leading form.
+
+The positive audits check every named cut in the arithmetic circuits,
+the universal norm identities, the cancellation in the main Pell residual,
+and nonzero leading coefficients on the authentic fixed-coefficient slice.
+The eleven-variable circuit has 65 multiplications, 29 additions and
+17 subtractions. The twelve-variable circuit has 58 multiplications,
+26 additions and 19 subtractions. Squares and scalar products are charged;
+fixed leaves and reference reuse are free. Replacing a register by a
+polynomial abbreviation does not create another quantified unknown.
+
+The positive coefficient recipe is replayed from the literal transition
+table and the native finite language. Missing duplicate source files in
+the placed upstream package were restored byte-for-byte using their pinned
+hashes, so the delivered replay works without the original checkout.
+The integer component ships all six actual coefficient payloads and their
+bindings, including its two determinant scales. The two components use
+different coherent native tuples; their ports must never be mixed.
+
+Finite diagnostic examples exercise the Pell descent, the shared sign
+guard, and the CRT theorem, including negative controls. They support
+the implementation. They cannot prove ZFC consistent, establish the absence
+of all roots, or replace any universal theorem. The mathematical proof
+uses the written existence implications; the checks establish exact finite
+data and algebraic implementation facts.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can the 22-integer equation be lowered to degree twelve?}
+The centered strong-norm row operation already eliminates
+$I=(2r+1)c^2$ at degree fourteen. Its remaining bottleneck is the
+degree-seven auxiliary residual, whose leading term is
+$-2a^2f^3o(c+y)$. A further relation that reduces this term could improve
+the endpoint without restoring a coordinate. Alternatively, can another
+coordinate be removed while retaining degree fourteen?
+\item \textbf{Can the determinant be recalibrated on a smaller native
+tuple?} The current integer construction inherits the source-34 radix
+$2^{1064921}$. The positive constructions use $2^{590069}$. Reusing smaller
+ports requires a whole-tuple canonical-witness proof of the determinant
+margin and the odd-rank promises; replacing one numeral in isolation is
+invalid.
+\item \textbf{Can the eleven-variable norm be centered at its auxiliary
+root without creating a sign loop?} The bound on $f+y$ drives the degree
+of the transport coordinate. A bound on $f+(y-V)$ would be much smaller
+when $V>0$, but soundness must establish the needed sign before using the
+transport to prove $C>0$. Removing that dependence loop would be a
+substantive further improvement.
+\item \textbf{Can the CRT index lemma produce a complete alternative
+source?} Instantiate it with an explicit proof checker, compile factorial,
+binomial, power and remainder graphs, count all witnesses and operations,
+and prove the actual syntactic ZFC calibration. Only then can it be
+compared with the finished native equations.
+\item \textbf{Can the ordinary proof be internalized modularly?}
+The polynomial coordinate maps, the strict-positivity equivalence and
+the adjacent-Pell descent are small, separate targets. Their internal
+ZFC derivations should precede the larger native compiler calibration.
+The relevant endpoint must quantify over all internal naturals, not only
+external numeral instances.
+\item \textbf{Which complexity measure should govern further search?}
+The variables/degree pair favors $P_{22}$ and $P_{23}$ over the older
+24-variable degree-1936 tradeoff. The fewest-variable objective still favors the
+high-degree nine-positive or ten-integer forms. A reproducible search
+should report the domain, degree, live operations and fixed-coefficient
+size together, and preserve these distinct objectives.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{repo} V. Reshetnikov and ProveIt contributors,
+\emph{Con(ZFC) in Diophantine form}, repository catalogue at commit
+\texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}, 23 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms}{Pinned repository catalogue}.
+\bibitem{s44} ProveIt source 44, \emph{Complement-packed Wang943
+coefficients}, \texttt{44-b4-sparse/native/PROOF.md}, with literal
+coefficient recipe and inherited compiler proofs.
+\bibitem{s61} ProveIt source 61, \emph{Congruence carriers}, especially
+\texttt{positive/SIGNED\_INDEX\_LEMMA.md} and the normalized positive
+source interface.
+\bibitem{s64} ProveIt source 64, \emph{Structural reductions},
+\texttt{integer41/PROOF41.md} and \texttt{PROOF44.md}.
+\bibitem{s68} ProveIt source 68, \emph{Joint positivity, free Lucas
+coordinates, and commutative proof certificates},
+\texttt{integer\_system/PAIR\_GUARD\_PROOF.md}.
+\bibitem{s69} ProveIt source 69, \emph{Weighted cones and rational Pell
+descent}, \texttt{positive/PROOF.md}.
+\bibitem{s70} ProveIt source 70, \emph{Residue orientation and root
+transfer}, \texttt{positive/section.tex} and \texttt{eleven/PROOF.md}.
+\bibitem{s71} ProveIt source 71, \emph{Calibrated determinant guards for
+Diophantine ZFC consistency}, \texttt{proofs/DETERMINANT\_GUARD.md}.
+\bibitem{s75} ProveIt source 75, \emph{Signed-power bootstrap and
+alternative certificate interfaces}, \texttt{guards/PROOF.md} and
+\texttt{certificates/INERT\_PRIME\_CLOSURE.md}.
+\bibitem{jones} J. P. Jones, Universal Diophantine equation,
+\emph{Journal of Symbolic Logic} \textbf{47} (1982), 549--571.
+\url{https://doi.org/10.2307/2273588}.
+\end{thebibliography}
+\end{document}

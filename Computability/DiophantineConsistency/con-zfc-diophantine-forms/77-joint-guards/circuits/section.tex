@@ -1,0 +1,55 @@
+\section{Shared arithmetic circuits for the integer family}
+\label{sec:joint-circuits}
+
+The joint-sign equations admit short shared evaluators without changing
+their polynomials.  In the following table, every binary addition,
+subtraction and multiplication is charged, including scalar multiplication
+and squaring.  Fixed numeral leaves and reuse of registers are free.
+\begin{center}
+\begin{tabular}{rrrr}
+Integer variables & Exact degree & Full polynomial gates & Residual gates\\\hline
+19&88&109&96\\
+20&32&112&97\\
+21&20&115&98\\
+22&16&118&99\\
+23&12&121&100\\
+25&8&127&102
+\end{tabular}
+\end{center}
+These are delivered circuit upper bounds, not assertions of minimum
+arithmetic complexity.  Each circuit is literally equal to the source
+sum of squared residuals, not merely equivalent in integer solvability.
+The source tuple, variable list, signs and auxiliary-row choice are unchanged.
+
+The schedule shares $q-1$, $q^2$, $q^3$, $W$, $X$, $Y$, $C$, $k$,
+$H$, $\Delta$ and the determinant terms.  It evaluates
+$W=12w_3+4$, and, where the actual packet has eliminated the coordinates,
+uses the polynomial identities
+\[
+ E=XY,\quad a=E+Y,\quad a-E=Y,\quad
+ \eta=c-kY,\quad c-\eta=kY.
+\]
+For a coordinate that remains free these identities are \emph{not}
+assumed: the appropriate subtraction and restoring residual remain.
+In particular the twenty-five-variable equation retains both its free
+$\zeta$ and its restoring row.
+
+The independent checker does not expand the high-degree final sum of
+squares.  It first binds the factored source residuals by exact full-inlining
+syntax-tree comparison, or the already-expanded lower-degree rows by exact
+sparse algebra.  It then validates $X,Y,W$ against the original inputs,
+checks every residual in the polynomial ring with these three independent
+cut registers, and verifies the finalizer over independent residual symbols.
+The largest cut residual has $1{,}931$ monomials.  Substitution of the
+validated cuts proves exact equality with the original polynomial.
+
+The compact displayed nineteen-variable first norm is licensed by the
+small exact identity
+\[
+ E(kY)\bigl(k+E(kY)\bigr)=XY^2(XY^2+1)k^2\qquad(E=XY).
+\]
+Both normal and optimized Python checks validate all six circuits, including
+live-operation accounting and the unchanged sum-of-squares finalizer.
+No numerical sampling, approximate arithmetic or reduction modulo another
+residual is used.  These algebraic and finite-data checks do not add a new
+unbounded compiler theorem or a new formal consistency calibration.

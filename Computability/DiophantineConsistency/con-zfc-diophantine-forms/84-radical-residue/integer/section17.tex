@@ -1,0 +1,57 @@
+\subsection{Complete display of the seventeen-variable equation}
+
+For an explicit standalone specification, the seventeen unrestricted
+integer coordinates are
+\[
+ J_3,C,z,f,h,r,v,w_3,\gamma,o,j,c,t,p_1,p_2,p_3,\xi.
+\]
+Here $z$ remains the transport coordinate and $t$ is the joint-guard
+root coordinate. Set $\lambda=2^{1113}$ and $\mu=2^{666104}$; the other
+four fixed coefficients are the complete source34 tuple
+$\beta,K_0,M_C,M_F$, with $\beta=2^{1064921}-1$ and $M_F$ already shifted.
+Use only the following polynomial abbreviations:
+\begin{align*}
+ J&=3J_3+1,&q&=\beta J+1,&W&=4(3w_3+1),\\
+ X&=qW,&Y&=(2v+1)q^3,&E&=XY,\\
+ a&=(X+1)Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ V&=fo-c,&k&=1-V+jc+hE,&\eta&=c-Yk,\\
+ u&=EYk,&A&=u(u+k)+1,&I&=(2r+1)c^2,\\
+ Q&=I^2,&\delta&=Q-1,&F&=(K_0+W)C-z(q-1).
+\end{align*}
+Further put
+\begin{align*}
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ d&=(\lambda F)(\mu C)-(q-\lambda F-\mu C)^2,\\
+ T&=\eta(k-\eta),\\
+ P_{\rm pos}&=1+p_1^2+p_2^2+p_3(p_3+1),\\
+ G&=dT-(t^2-d-T+1)^2-P_{\rm pos},\\
+ B_0&=QV^2-1,\\
+ L&=\xi^2+2I(2u+k)\xi+Q(k^2-4),\\
+ D_n&=\delta L-4B_0,\\
+ N&=D_n^2-64\delta QAB_0.
+\end{align*}
+The promised single equation is
+\begin{equation}\label{eq:full17}
+ \boxed{P_{17}=M^2+B_p^2+S_p^2+G^2+N^2=0,}
+\end{equation}
+where
+\[
+ M=(X+ac+\gamma H)^2-\Delta c^2-1,\quad
+ B_p=cj-V-R,\quad S_p=Q-\Delta(f^2-1).
+\]
+There are no hidden quantified coordinates or divisions in this display.
+Its five residual degrees are $14,5,14,44,56$. The coefficient of
+\[
+ r^{12}c^{24}h^4f^4o^4J_3^{44}w_3^8v^{12}
+\]
+in $P_{17}$ is exactly $2^{52}3^{52}\beta^{44}>0$, certifying degree
+$112$ after specialization to the actual coefficient tuple. The supplied
+literal arithmetic DAG uses $124$ binary operations under the stated
+counting convention; this is a verified construction, with no claim of
+operation minimality.
+
+The scale $I$ in the merger is essential. Taking $I=2$, $Q=4$, $V=2$,
+and $A=5$ makes the unscaled auxiliary radicand
+$(QV^2-1)/(Q-1)=5$. The unscaled norm then accepts the spurious rational
+sum $\sqrt5-\sqrt5=0$, although neither square root is integral. The
+scaled radicands are $20$ and $5$, and the same sum-zero input is rejected.

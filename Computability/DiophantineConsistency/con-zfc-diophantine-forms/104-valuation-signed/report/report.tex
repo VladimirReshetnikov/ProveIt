@@ -1,0 +1,341 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,xcolor,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+ citecolor=blue!45!black,pdftitle={Valuation separation and signed certificates for Diophantine consistency},
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}\fancyhead[L]{\small Diophantine consistency: two arithmetic reductions}
+\fancyhead[R]{\small ProveIt}\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\vp}{v_p}\newcommand{\vt}{v_3}
+\newcommand{\Fn}{\mathcal F_{32}}
+\newcommand{\Dm}{D_{\mathrm m}}\newcommand{\Df}{D_{\mathrm f}}
+\newcommand{\Dt}{D_{\tau}}\newcommand{\Dg}{D_{\mathrm g}}
+\newcommand{\Cc}{C_{\mathrm y}}
+\newcommand{\Acone}{A_{\mathrm{cone}}}\newcommand{\Bcone}{B_{\mathrm{cone}}}
+\newcommand{\primary}{P_{2400}}\newcommand{\companion}{P_{2912}}
+\input{direct_metrics.tex}
+\title{\textbf{Valuation separation and signed certificates}\\[3pt]
+Explicit Diophantine forms of $\Con(\ZFC)$}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\
+\small A reproducible contribution to the ProveIt project}
+\date{23 October 2026, Pacific time\\[-1pt]
+\small Repository snapshot \texttt{85ae4070019efd66ea3e58e9a67d287528094e8b}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two explicit improvements to Diophantine representations of syntactic
+ZFC refutability. The first is an integer-coefficient polynomial in twelve
+unrestricted integer variables, of exact degree $2400$, evaluated by $215$
+live binary arithmetic operations. It improves the inspected twelve-integer
+construction of degree $4832$ and $248$ operations. A companion has degree
+$2912$ and $209$ operations. The main observation is that the existing
+interpolated Pell certificate already separates its radicals at the prime
+$3$. Constant weights replace growing polynomial weights. Retaining the
+auxiliary Pell root as a rational square root, then clearing its denominator
+inside a norm, gives a second degree reduction. A classical intersective
+quintic can replace the previous monotone carrier.
+
+The second construction is a fully expanded quartic in \DirectVariables{}
+unrestricted integers, obtained from the recent synchronized direct
+proof-certificate construction. Its coefficients are ordinary decimal
+integers of absolute value at most \DirectHeight{}. It uses the calibrated
+numerical proof calculus directly, independently of K215 and Jones's
+universal polynomial.
+
+For each supplied equation, composing the proved arithmetic transformations
+with the identified inherited ordinary calibration proofs establishes,
+within ZFC, that absence of solutions is equivalent to $\Con(\ZFC)$.
+Neither consistency nor inconsistency is assumed. These are ordinary
+mathematical proofs and reproducible finite certificates; no new
+proof-assistant derivation of the complete internal ZFC biconditional is
+claimed. The contribution includes exact equations, coefficient recipes,
+independent checks, source provenance, and further research questions.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+\section{Results, comparison, and meaning of the claim}\label{sec:results}
+
+Fix the usual syntactic statement
+\[
+ \Con(\ZFC)\equiv
+ \neg\exists p\in\N\;\operatorname{Proof}_{\ZFC}(p,\bot).
+\]
+The task is to specify a fixed polynomial $P$ with integer coefficients and
+prove
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \left(\neg\exists\mathbf x\in\Z^n\;P(\mathbf x)=0\right)
+ \longleftrightarrow \Con(\ZFC).
+\end{equation}
+Proving this equivalence does not prove either side. In particular, the
+construction does not evade the second incompleteness theorem by purporting
+to prove its own polynomial has no zero.
+
+\begin{theorem}[Supplied equations]\label{thm:main}
+The package specifies polynomials $\primary,\companion\in
+\Z[j,C,z,h,r,v,w,T,c,n,t,s]$ with exact degrees $2400$ and $2912$,
+respectively. Their delivered straight-line circuits use $215$ and $209$
+live binary operations. Each satisfies \eqref{eq:target} with $n=12$,
+through the ordinary inherited native/compiler calibration identified in
+Section~\ref{sec:dependencies}.
+
+It also supplies a literal quartic $Q_{\mathrm{direct}}$ in
+\DirectVariables{} unrestricted integer variables with
+\DirectMonomials{} collected nonzero monomials and coefficient height
+\DirectHeight{}. This polynomial satisfies \eqref{eq:target} through the
+independent numerical-calculus calibration in Section~\ref{sec:direct}.
+\end{theorem}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+Construction & Domain & Variables & Degree & Operations\\
+\midrule
+Prior interpolated norm & $\Z$ & 12 & 4832 & 248\\
+Prior shorter evaluator & $\Z$ & 12 & 16000 & 223\\
+New cleared norm & $\Z$ & 12 & \textbf{2400} & \textbf{215}\\
+New integral-radicand norm & $\Z$ & 12 & \textbf{2912} & \textbf{209}\\
+Supplemental identical evaluator & $\Z_{>0}$ & 12 & 70 & \textbf{98}\\
+Prior identical polynomial & $\Z_{>0}$ & 12 & 70 & 100\\
+\bottomrule
+\end{tabular}
+\caption{Counts for complete delivered circuits. A fixed scalar multiplication
+and a square each cost one multiplication. Fixed numeral leaves and reuse
+of an already computed value cost no operations. Domains are kept separate.}
+\label{tab:main}
+\end{table}
+
+The reduction from $4832$ to $2400$ is $50.33\%$ in total degree; the
+operation reduction from $248$ to $215$ is $13.31\%$. The companion uses
+six fewer operations at higher degree. Both new twelve-integer points
+improve the two inspected twelve-integer baselines in both measures.
+
+There is no established scalar meaning of simplicity. The repository
+already contains ten-integer equations, nine-positive equations, and
+integer quartics with far fewer variables than the direct construction
+but very large fixed coefficients. We do not claim a global minimum or a
+new record for number of integer variables. The defensible claims are the
+particular equations, their proved transformations, and the measured
+improvements against identified parents.
+
+The comparison includes recent incoming archives, not only the older
+collection README. The synchronized direct archive already contains a
+$522$-natural-variable quartic and a $2088$-integer companion; another
+incoming direct construction contains $1690$ integer variables.
+The direct comparison includes both benchmarks~\cite{sync,batched}.
+An earlier experiment improving an $8619$-integer checkpoint was not
+selected as the principal result once these newer inputs were inspected.
+
+\section{A literal twelve-integer equation}\label{sec:equation}
+\subsection{Coordinates and fixed coefficients}
+
+All twelve independent variables range over all of $\Z$:
+\[
+ (j,C,z,h,r,v,w,T,c,n,t,s).
+\]
+Uppercase $C$ and lowercase $c$ are distinct. Every other symbol below is
+a polynomial abbreviation, not an additional existential variable.
+Use the complete coherent source-34 six-tuple
+\[
+ (\beta,K_0,M_C,M_F,\Acone,\Bcone),
+ \qquad
+ \beta=2^{1064921}-1,\quad
+ \Acone=2^{1113},\quad\Bcone=2^{666104}.
+\]
+Appendix~\ref{app:coeff} gives the bounded arithmetic recipe for all six
+numerals. The archive includes the entire finite tile table, machine table,
+recipe, and actual integer payloads. $M_F$ already includes its prescribed
+shift. None of these numerals is a free program index or a value chosen by
+searching for a proof.
+
+\subsection{The arithmetic kernel}
+Define the following polynomial registers:
+\begin{align}
+ J&=6j+1,& q&=\beta J+1,& W_0&=12w+4,\nonumber\\
+ X&=qW_0,& Y&=(2v+1)q^3,& E&=XY,\nonumber\\
+ a&=E+Y,& H&=4a+3,& \Delta&=a^2+H=(a+2)^2-1.
+ \label{eq:outer}
+\end{align}
+The transport and rank registers are
+\begin{align}
+ F&=(K_0+W_0)C-z(q-1),\nonumber\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ k&=R+1+hE,& \eta&=c-Yk,& \zeta&=k-\eta. \label{eq:transport}
+\end{align}
+Set
+\begin{align}
+ G&=(\Acone F)(\Bcone C)-(q-\Acone F-\Bcone C)^2,\nonumber\\
+ P&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2,\nonumber\\
+ \Dg&=(3P-4)s^2+1,& I&=src^2,\nonumber\\
+ \Df&=1+\Delta I^2,& Q&=\Delta^2 I^2,& \delta&=Q-1,\nonumber\\
+ V&=\Df(c-R+4IT)-c,& \Cc&=QV^2-1,\nonumber\\
+ \Dt&=1+XY^2(XY^2+1)k^2,&
+ \Dm&=1+\Delta c^2. \label{eq:kernel}
+\end{align}
+The symbol $P$ in \eqref{eq:kernel} denotes the joint guard, not the final
+polynomial $\primary$.
+
+\subsection{The smaller intersective carrier}
+Use the classical quintic
+\begin{equation}\label{eq:pi}
+ \pi(x)=(x^2+3)(x^3-19)=x^5+3x^3-19x^2-57.
+\end{equation}
+Its intersectivity is a special case of Hyde, Lee, and
+Spearman~\cite{hls}. The contribution here is its use in the new
+valuation-separated certificate; the quintic itself is not new.
+Write
+\[
+ b_0=X+ac,\qquad u=HT-b_0,\qquad
+ \Phi_H(x)=x^5+3H^2x^3-19H^3x^2-57H^5.
+\]
+Thus $\Phi_H(x)=H^5\pi(x/H)$ as a polynomial identity, with no division
+required to evaluate it. In the formal quadratic algebra $d^2=\Dm$,
+the remainder $\Phi_H(u+d)=A+Bd$ is computed by
+\begin{align}
+ Q_0&=u^2+\Dm+3H^2,&
+ C_0&=u(u^2+3\Dm)-19H^3,&
+ C_1&=3u^2+\Dm,\nonumber\\
+ A&=Q_0C_0+2u\Dm C_1,&
+ B&=Q_0C_1+2uC_0,\nonumber\\
+ S&=IH^5,& Z&=Sn-A. \label{eq:carrier}
+\end{align}
+The coefficient $B$ is unrelated to any native radix.
+
+\subsection{The ordinary norm polynomial}
+Let $\Fn$ be the universal integer polynomial characterized by
+\begin{equation}\label{eq:norm}
+ \Fn(Z;A_0,\ldots,A_4)
+ =
+ \prod_{\epsilon\in\{-1,1\}^5}
+ \left(Z-\sum_{i=0}^4\epsilon_i\sqrt{A_i}\right).
+\end{equation}
+Changing the sign of any formal radical permutes the factors, so every
+surviving radical exponent is even. This defines an ordinary polynomial,
+not a square-root operation allowed in the delivered circuit.
+The primary equation is
+\begin{equation}\label{eq:primary}
+\boxed{\;
+ \primary=
+ \delta^{16}\Fn\left(
+ Z;\,B^2\Dm,\,9S^2\Df,\,81S^2\Dt,\,729S^2\Dg,\,
+ \frac{S^2\Cc}{\delta}
+ \right)=0 .
+ \;}
+\end{equation}
+The degree of $\Fn$ in each radicand is at most $16$, so the denominator
+clears completely over $\Z$. Section~\ref{sec:clearing} gives an explicitly
+division-free interpretation. We also prove $\delta\ne0$ on every
+integer assignment, so its rational interpretation creates no exceptional
+solutions. The lower-operation companion is
+\begin{equation}\label{eq:companion}
+\boxed{\;
+ \companion=
+ \Fn\left(
+ Z;\,B^2\Dm,\,9S^2\Df,\,81S^2\Dt,\,729S^2\Dg,\,
+ S^2\delta\Cc
+ \right)=0 .
+ \;}
+\end{equation}
+Both equations use exactly the same twelve coordinates and fixed tuple.
+
+\section{Why the separating weights can be constant}\label{sec:valuation}
+Earlier constructions separated radicals by making each successive
+coefficient larger than all preceding terms. Such inequalities require
+polynomial weights, whose degrees accumulate in the final norm. Here
+the existing congruences provide separation at one fixed prime.
+
+\begin{lemma}[Unique least valuation]\label{lem:separation}
+Let $r_1,\ldots,r_m$ be nonzero algebraic numbers with $r_i^2\in\Q$.
+Suppose that in every subset containing at least two indices, the least
+value of $\vp(r_i^2)$ occurs at exactly one index and is even. Then no
+nonempty signed subset sum is zero. Consequently, if a signed sum
+containing every $r_i$ is rational, all the $r_i$ are rational.
+\end{lemma}
+\begin{proof}
+Fix a subset with at least two terms. Divide its roots by a rational
+power of $p$ so that the uniquely least squared valuation becomes zero.
+The distinguished square is a unit of $\Z_{(p)}$; the other squares
+belong to $p\Z_{(p)}$. Form the product of the distinguished root minus
+every signed sum of the other roots. Sign invariance makes this product
+an integer polynomial in the squares. Modulo $p$, it is a power of the
+distinguished unit square, hence nonzero. None of its factors vanishes.
+A nonzero singleton cannot vanish either.
+
+Now work in the multiquadratic splitting field generated by the roots.
+Apply any $\Q$-automorphism to the rational sum and subtract. The roots
+whose signs change give a vanishing signed subset sum after division by
+$2$. The first part forces every root to be fixed by every automorphism,
+and hence to belong to the fixed field $\Q$.
+\end{proof}
+The lemma allows negative rational radicands. It does not assume the
+positivity guard before extracting it. Equivalently, one may group roots
+by rational square class and use the fact that rational numbers with a
+unique least $p$-adic valuation cannot sum to zero.
+
+\begin{lemma}[Intersectivity and the zero scale]\label{lem:intersective}
+The polynomial $\pi$ in \eqref{eq:pi} has a root modulo every positive
+integer and no root in a real extension of $\Q$ of degree at most two.
+\end{lemma}
+\begin{proof}
+The factor $x^2+3$ has no real root, and $x^3-19$ is irreducible by
+Eisenstein at $19$. A degree-three element cannot belong to an extension
+of degree one or two.
+
+If $p\equiv1\pmod3$, a primitive cube root of unity $\omega$ in
+$\mathbf F_p$ gives $(2\omega+1)^2=-3$, a simple quadratic root.
+This includes $p=19$. If $p\equiv2\pmod3$, cubing permutes
+$\mathbf F_p^\times$. Since $p\nmid19$, the cubic has a nonzero simple
+root. This also handles $p=2$. Simple-root lifting supplies roots at
+every power of these primes.
+For $p=3$, write $x=1+3t$. The equation $x^3=19$ becomes
+\[
+ t+3t^2+3t^3=2.
+\]
+The left side minus two has root $t=2$ and derivative $1$ modulo $3$.
+Its successive lifts give roots modulo every power of $3$. The Chinese
+remainder theorem finishes. This is the $n=19$ case of the classical
+classification~\cite{hls}.
+\end{proof}
+
+\begin{lemma}[Unconditional residues]\label{lem:residues}
+For every integer assignment,
+\begin{gather*}
+ q\equiv-1,\quad W_0\equiv1,\quad X\equiv-1,\quad
+ a\equiv H\equiv\Delta\equiv0\pmod3,\\
+ \Dm\equiv\Df\equiv\Dt\equiv1,\quad
+ Q\equiv0,\quad \delta\equiv\Cc\equiv-1,\quad
+ u\equiv B\equiv1\pmod3.
+\end{gather*}
+Also $H\ne0$, $\Delta>1$, $\Dm\ge1$, and $\delta\ne0$.
+\end{lemma}
+\begin{proof}
+The exponent $1064921$ is odd, so $\beta\equiv1\pmod3$.
+The residues follow directly. For the odd remainder,
+\[
+ B\equiv5u^4+10u^2\Dm+\Dm^2\equiv16\equiv1\pmod3.
+\]
+Thus $B\ne0$ without a monotonicity argument.
+The equation $4a+3=0$ has no integer solution. Since $J$ is odd and
+nonzero, $|q|\ge\beta-1\ge16$, $|W_0|\ge4$, $|X|\ge64$, and
+$|Y|\ge4096$. Hence $|a|\ge63\cdot4096$, giving $\Delta>1$.
+Finally $Q=(\Delta I)^2$ is either zero or greater than one.
+\end{proof}
+
+\input{soundness.tex}
+\input{direct.tex}
+\input{closing.tex}
+\end{document}

@@ -1,0 +1,639 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Polynomial shears and sign recovery for Diophantine consistency},pdfauthor={AI-assisted research prepared for the ProveIt project}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\dd}{\operatorname{deg}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\title{Polynomial shears and sign recovery\\for Diophantine consistency}
+\author{Research prepared for Vladimir Reshetnikov's ProveIt project\\\small AI-assisted mathematical development and executable audits}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct explicit improvements to the currently supplied Diophantine
+forms of $\Con(\ZFC)$. A triangular polynomial change of the final integer
+coordinate lowers the degree of a ten-integer equation from $1\,245\,324$
+to $1\,179\,788$, $1\,114\,252$, or $1\,081\,125$, using respectively
+$484$, $487$, and $521$ binary arithmetic operations. The predecessor uses
+$480$. The first two substitutions have very short factored formulas; the
+third attains a lower bound for this particular family of final-coordinate
+translations. Integral changes of coordinates and monic elimination also
+give equations in $23,21,20,19,18$ unrestricted integers at degrees
+$10,16,20,32,88$. A separate positive-domain argument gives eleven positive
+unknowns at degree $211$ in $112$ operations. All these are fixed ordinary
+polynomials, with actual coefficient payloads, literal arithmetic data,
+proofs, and reproducible checks.
+
+A further section develops natural-number selectors and direct proof-checker
+graphs. These improve an alternative proof-certificate source but do not
+constitute a completed new global consistency equation. We do not claim a
+globally simplest equation, a reduction below nine positive unknowns, or a
+new end-to-end proof-assistant certificate. The completed equations inherit
+the precisely identified native/compiler/refutation calibration; the new
+algebraic reductions and their additional sign argument are proved here.
+\end{abstract}
+\tableofcontents
+
+\section{Results, comparison, and meaning of simplicity}
+
+The goal is an explicit fixed polynomial $P$ and a specified domain $D$ for
+which ordinary mathematics formalizable in ZFC proves
+\begin{equation}\label{eq:goal}
+ \ZFC\vdash
+ \bigl(\neg\exists\boldsymbol x\in D\;P(\boldsymbol x)=0\bigr)
+ \longleftrightarrow \Con(\ZFC).
+\end{equation}
+Consistency here is the syntactic assertion that there is no finite proof
+of contradiction in the repository's calibrated recursive ZFC calculus.
+No choice of coefficient depends on the truth of consistency.
+
+The reviewed checkout is ProveIt commit
+\file{c1a102936aca437e9999530a0111e6ddab56dc6d}. It includes the placed
+sources 31--75 and the five archives then in \file{docs/incoming}.
+In particular, the comparisons below include the incoming structural,
+joint-guard, centering, and radical-descent results; comparing only with
+the placed wave-ten README would overstate the improvement.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Domain & Unknowns & Exact degree & Additional measurement\\
+\midrule
+$\Z$ & 10 & $1\,179\,788$ & 484 operations\\
+$\Z$ & 10 & $1\,114\,252$ & 487 operations\\
+$\Z$ & 10 & $1\,081\,125$ & 521 operations\\
+$\Pos$ & 11 & 211 & 112 operations\\
+$\Z$ & 23 & 10 & 11 squared residuals\\
+$\Z$ & 21 & 16 & 9 squared residuals\\
+$\Z$ & 20 & 20 & 8 squared residuals\\
+$\Z$ & 19 & 32 & 7 squared residuals\\
+$\Z$ & 18 & 88 & 6 squared residuals\\
+\bottomrule
+\end{tabular}
+\caption{Completed new equations in this delivery. Operations mean live
+binary $+,-,\times$ gates, including scalar products and squaring; fixed
+integer leaves and reuse are free. No optimized operation claim is made
+for the five residual-system equations.}
+\label{tab:results}
+\end{table}
+
+The useful short ten-integer choice is the degree-$1\,114\,252$ equation:
+it saves $131\,072$ degrees, about $10.53\%$, for seven extra gates.
+The degree-$1\,081\,125$ choice saves $164\,199$ degrees, about $13.19\%$,
+at a larger arithmetic cost. The eleven-positive equation improves the
+incoming degree-$257$, 114-operation construction in both degree
+and operation count. The new $19$-integer equation has degree $32$, compared with the
+incoming $19$-integer degree-$88$ equation; the latter also yields a new
+$18$-integer degree-$88$ form.
+
+There is no scalar definition of ``simplest'' inherent in the problem.
+Number of unknowns, domain, total degree, circuit size, coefficient size,
+and verification burden are distinct. In particular, an equation in
+$\Pos^{11}$ is not an eleven-unrestricted-integer equation. The established
+nine-positive and ten-integer variable counts remain relevant. Sun's
+ten-integer theorem is a recent primary reference for the latter type of
+compression \cite{sun2026}; Jones's paper is the classical reference for
+the nine-positive route \cite{jones1982}. Our new changes do not improve
+those general variable bounds.
+
+\section{A general polynomial-shear principle}
+
+\begin{lemma}[Triangular shear]\label{lem:shear}
+Let $P\in\Z[\boldsymbol v,m]$ and $R\in\Z[\boldsymbol v]$. Set
+\[
+ P_R(\boldsymbol v,m)=P(\boldsymbol v,m+R(\boldsymbol v)).
+\]
+Then $(\boldsymbol v,m)\mapsto(\boldsymbol v,m+R(\boldsymbol v))$ is a
+bijection of $\Z^{n+1}$ with inverse
+$(\boldsymbol v,m)\mapsto(\boldsymbol v,m-R(\boldsymbol v))$.
+It restricts to a bijection between the integer zeros of $P_R$ and of $P$.
+\end{lemma}
+\begin{proof}
+Both maps are integral polynomial maps, and their two compositions are the
+identity. Substituting into the displayed definition of $P_R$ proves the
+zero-set statement. No positivity, divisibility, or nonvanishing premise
+is needed.
+\end{proof}
+
+The following norm shape makes a suitable shear especially effective:
+\begin{equation}\label{eq:norm}
+ P=\bigl((\Sigma m-\Theta)^2-\Sigma^2(a_0+a_1)\bigr)^2
+       -4\Sigma^4a_0a_1.
+\end{equation}
+Every displayed symbol other than $m$ is a polynomial in the other
+coordinates. Suppose $R$ is a polynomial approximation to one radical in
+the purely algebraic sense that $\varepsilon=a_1-R^2$ has smaller degree
+than $a_1$. Writing $Z_0=\Sigma m-\Theta$, the shifted equation is exactly
+\begin{equation}\label{eq:centered-norm}
+ P_R=\bigl(Z_0^2+2\Sigma RZ_0-\Sigma^2(a_0+\varepsilon)\bigr)^2
+       -4\Sigma^4a_0a_1.
+\end{equation}
+This follows by expanding $(Z_0+\Sigma R)^2$ and canceling $R^2-a_1$.
+An approximation inequality for square roots is unnecessary. The identity
+holds on every signed integer assignment, including assignments where
+$a_1$ is negative or zero.
+
+\begin{proposition}[Degree accounting]\label{prop:degree}
+Let $s,z,r,d_0,d_1,e$ be upper bounds on the degrees of
+$\Sigma,Z_0,R,a_0,a_1,\varepsilon$, respectively. Then
+\[
+ \dd P_R\leq
+ \max\{2\max(2z,s+r+z,2s+d_0,2s+e),\ 4s+d_0+d_1\}.
+\]
+When one of these contributions strictly dominates all other contributions
+and its leading homogeneous part is nonzero, the bound is attained.
+\end{proposition}
+\begin{proof}
+Apply $\dd(fg)\leq\dd f+\dd g$ and
+$\dd(f+g)\leq\max(\dd f,\dd g)$ to \eqref{eq:centered-norm}.
+Under strict dominance, lower-degree summands cannot cancel the highest
+homogeneous part.
+\end{proof}
+
+\section{The fixed ten-integer source and final norm}
+
+\subsection{Exact data rather than an unspecified universal parameter}
+
+The predecessor is the incoming Round11 H1868 norm-saturated equation
+\cite{round11}. Its literal 480-operation graph is included unchanged as
+\file{norm10/upstream/integer10.json}. Its proof, source-packing proof,
+four native integer payloads, twelve actual live fixed integer leaves, and
+licenses are retained. The new graphs are complete ordinary polynomial
+graphs; the predecessor file is used to construct and independently check
+them, rather than being an existential parameter in the new equations.
+
+The ten unrestricted integer variables are
+\[
+ t,g_0,c_0,k_0,\ell,w,x,y,z,m.
+\]
+Use the following source abbreviations:
+\[
+ b=6t+4,\qquad g=bg_0,\qquad k=b(3k_0+2),\qquad
+ B_c=2^{2134940}b^2.
+\]
+The finite weight list, target list, and three fixed sparse kernel
+polynomials are the literal data in
+\file{norm10/data/code.json} and \file{norm10/data/kernels.json}.
+Write them as $w_i,q_j,D_0,D_1,D_2$, respectively, and set
+\begin{align*}
+ e_c&=\sum_i B_c^{w_i},& U_c&=e_c+g,\\
+ G_c&=D_2(B_c)U_c^2+D_1(B_c)U_c+D_0(B_c),&
+ T_c&=\sum_j B_c^{q_j},\\
+ N_0&=B_c^{117},&N&=B_c^{1986},\\
+ M_c&=N_0-1-(b-1)e_c,\\
+ S_c&=g+N_0(2G_c+T_c),&
+ T'_c&=M_c+N_0(B_c-2)T_c-2,\\
+ X&=N(S_c+T'_c+1)-S_c-1,\\
+ Y&=2^{34159017}b B_c^{2109},&\mathcal C&=bB_c^{116}.
+\end{align*}
+These are fixed finite sums and fixed nonnegative powers. Kernel
+coefficients are explicitly materialized integers, determined by the
+whole inherited native tuple. Neither a program index chosen by a
+nonconstructive existence theorem nor a variable exponent occurs in the
+equation.
+
+\subsection{Polynomial registers}
+
+Define
+\begin{align*}
+ &L=\ell Y,\quad U=2LX,\quad V=4gwY,\quad W=bw,\\
+ &h_A=LX(V+1),\quad A=2h_A,\quad B_1=2X+1,\quad C=6c_0-1,\\
+ &P_h=(LX)UV,\quad K=X+1+k(2P_h-2),\\
+ &S=2A-5,\quad T=3WC-2(W^2-1),\\
+ &Q=(P_h^2-1)K^2+1,\\
+ &\Delta=8\mathcal C^3gK^2
+       -g^2\bigl(32(C-KL)^2\mathcal C^3+g^2K^2\bigr),\\
+ &\xi=zx,\quad D=(A^2-4)C^2+4,\\
+ &E_0=C^2\xi,\quad E=DE_0,\quad E_2=E_0E,\\
+ &F=4(A^2-4)E_2+1,\quad G=(h_A-1)(F-1)-1,\\
+ &\Omega=16E,\quad H=C+F(B_1-C+\Omega y),\\
+ &I=(G^2-1)H^2+1,\\
+ &\rho=T+Sy,\quad \Sigma=\xi S^5,\\
+ &\Theta=(\rho^3-\rho S^2-S^3)(\rho^2+23S^2),\\
+ &r=bQ,\quad a_0=r+(9\Delta-3)(rz)^2,\quad a_1=DFI.
+\end{align*}
+The half-parameter $h_A$ is explicitly the integer polynomial above.
+No division is being used to define it. Every register is an abbreviation;
+only the original ten coordinates are quantified.
+
+The supplied predecessor theorem says that the polynomial \eqref{eq:norm}
+has an integer zero exactly when the calibrated calculus has a finite
+refutation. We inherit that theorem, including its Pell and native-source
+proof obligations. The present section's transformations do not change
+any of its source parameters or coefficient payloads.
+
+\section{Three new ten-integer equations}
+
+\subsection{Four additional gates}
+
+Take
+\begin{equation}\label{eq:R0}
+ R_0=2AEGH.
+\end{equation}
+The new equation is \eqref{eq:norm} with $m$ replaced everywhere by
+$m+R_0$. The essential cancellation is
+\begin{equation}\label{eq:first-defect}
+ DF-(2AE)^2=D-16E^2.
+\end{equation}
+Indeed $DF=4(A^2-4)E^2+D$. Consequently,
+\begin{equation}\label{eq:R0def}
+ a_1-R_0^2=(D-16E^2)G^2H^2+DF(1-H^2).
+\end{equation}
+The shared register $2A$ already occurs in $S=2A-5$. Only three new
+multiplications and the addition to $m$ are needed. The exact graph has
+$484$ live operations.
+
+\subsection{Seven additional gates}
+
+A better short substitution is
+\begin{equation}\label{eq:R1}
+ R_1=2AE_0(D-2C^2)GH.
+\end{equation}
+Put $P_1=2AE_0(D-2C^2)$ and $u=C^2$. Direct polynomial expansion gives
+\begin{equation}\label{eq:second-defect}
+ DF-P_1^2
+ =D+16E_0^2\bigl(u(3u-4)A^2-16(u-1)^2\bigr).
+\end{equation}
+For a transparent derivation, put $A=2h_A$ and
+$D=4D_*\!,\ D_*=u(h_A^2-1)+1$. Then
+\[
+ DF=256(h_A^2-1)u^2D_*^2\xi^2+4D_*,\qquad
+ P_1=8u\xi h_A\bigl(2uh_A^2+2-3u\bigr).
+\]
+The $h_A^6$ and $h_A^4$ terms cancel on subtraction; the remaining
+expression is exactly \eqref{eq:second-defect}. Hence
+\begin{equation}\label{eq:R1def}
+ a_1-R_1^2=(DF-P_1^2)G^2H^2+DF(1-H^2).
+\end{equation}
+Compared with \eqref{eq:R0def}, two further powers of the high-degree
+parameter $A$ disappear. The resulting graph has $487$ operations.
+
+\subsection{A six-term polynomial part}
+
+Let $h=h_A$, $u=C^2$, and $J=B_1-C$. Define the following short polynomial:
+\begin{align}
+ T_*={}&\xi J\bigl(u(2h^2-11)+6\bigr)\nonumber\\
+ &+16u\xi^2y\bigl(u^2(8h^4-52h^2+143)
+                 +u(32h^2-176)+48\bigr)+3y,\label{eq:Tstar}\\
+ R_6={}&32768u^7\xi^4h^9\bigl((h-1)T_*-2y\bigr).
+ \label{eq:R6}
+\end{align}
+This polynomial has integer coefficients. It is obtained by matching the
+six highest powers $h^{14},\ldots,h^9$ in a formal square root of $a_1$.
+That discovery description is not needed as a correctness assumption:
+the finite formula \eqref{eq:R6} and exact expansion of $a_1-R_6^2$ are
+the certificate.
+
+For reproducibility, the file \file{norm10/ROOT_CERTIFICATES.json}
+gives the full coefficient list of $R_6$ and of its defect. In the five
+independent indeterminates $(h,B_1,C,\xi,y)$, $R_6$ has $26$ monomials and
+the defect has $2306$. The independent standard-library checker multiplies
+the polynomials and checks every coefficient. The defect has degree at
+most $22$ in $h$; its relevant total-degree bound after source substitution
+is proved next. The complete literal graph uses $521$ live operations.
+
+\subsection{Exact total degrees}
+
+The source has
+\[
+ \dd h_A=\dd A=16384,\qquad \dd B_1=7942,
+ \qquad \dd C=1,\quad\dd\xi=2,\quad\dd y=1.
+\]
+The weighted degrees in these five indeterminates therefore give valid
+upper bounds after substitution. For the actual source the relevant
+degrees are
+\begin{center}
+\begin{tabular}{@{}lrlr@{}}
+\toprule
+Register&Degree&Register&Degree\\
+\midrule
+$D$&32770&$E$&32774\\
+$F$&65546&$G$&81930\\
+$H$&98321&$a_1$&458818\\
+$\Sigma$&81922&$\Theta$&81925\\
+$a_0$&294619&$\Sigma m-\Theta$&81925\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every proposed $R$ has degree $229409$. The cancellation identities give
+\[
+ \dd(a_1-R_0^2)=426050,\qquad
+ \dd(a_1-R_1^2)=393282,
+\]
+and the full finite defect certificate gives
+\[
+ \dd(a_1-R_6^2)\leq368449.
+\]
+Applying Proposition~\ref{prop:degree} yields respectively
+\[
+ 1\,179\,788,\qquad1\,114\,252,\qquad1\,081\,125.
+\]
+These are exact degrees, not merely syntactic upper bounds.
+For $R_0$ and $R_1$, the highest term comes from the square of
+$-\Sigma^2(a_1-R^2)$. For $R_6$, the square in
+\eqref{eq:centered-norm} has degree at most $1\,064\,586$, whereas
+\[
+ \dd(-4\Sigma^4a_0a_1)
+ =4(81922)+294619+458818=1\,081\,125.
+\]
+There can be no cancellation between these unequal degrees.
+
+The checker evaluates the claimed leading homogeneous coefficient after
+the diagonal specialization of all ten variables at a common parameter,
+using the actual fixed integers reduced modulo three explicitly supplied
+primes. For $R_6$, the residues at $1000003,1000033,1000037$ are
+$347224,762141,563833$, respectively. Each nonzero residue proves that the
+integer leading coefficient is nonzero. A single nonzero residue suffices;
+the additional residues are transcription controls. The leading terms for
+the first two variants are likewise certified. This proves attainment of
+the upper bounds without constructing million-degree expanded polynomials.
+
+\begin{theorem}\label{thm:ten}
+The three literal polynomials in
+\file{norm10/integer10_linear.json},
+\file{norm10/integer10_cubic.json}, and
+\file{norm10/integer10_sixterm.json} have the variable counts, exact degrees,
+and operation counts shown in Table~\ref{tab:results}. Each is related to
+the pinned predecessor by an integral triangular polynomial automorphism.
+Composing with the inherited predecessor theorem gives \eqref{eq:goal}
+for each of these polynomials on $\Z^{10}$.
+\end{theorem}
+\begin{proof}
+The literal graphs implement \eqref{eq:norm} with the respective formulas
+\eqref{eq:R0}, \eqref{eq:R1}, and \eqref{eq:R6} substituted for the shift.
+Lemma~\ref{lem:shear} proves both existence implications, on all signed
+assignments. The preceding degree calculation and finite graph counts prove
+the quantitative statements. The source-to-refutation equivalence is
+exactly the inherited theorem, and negating existence yields the assertion.
+\end{proof}
+
+\subsection{A lower bound for this restricted transformation family}
+
+There is a useful stopping criterion. Keep the entire source, $\Sigma$,
+$\Theta$, $a_0$, and $a_1$ fixed, and allow only polynomial translations of
+$m$ with integer coefficients. In every resulting equation,
+\[
+ P_R=\mathcal B_R^2-4\Sigma^4a_0a_1
+\]
+for some integer polynomial $\mathcal B_R$. The second summand has the
+odd degree $1\,081\,125$. The nonzero square $\mathcal B_R^2$ has even
+degree. If its degree is larger, it cannot cancel against the second
+summand; if it is smaller, it cannot cancel that summand either. Equality
+of degrees is impossible by parity. The case $\mathcal B_R=0$ is immediate.
+Thus every such translation has degree at least $1\,081\,125$.
+The six-term choice attains this bound.
+
+This is an exact optimality statement for a sharply specified transformation
+family. It is not a lower bound for arbitrary polynomial coordinate
+changes, alternative norm representations, source encodings, or all
+Diophantine equations expressing consistency.
+
+\section{Fewer unrestricted integer variables}
+\label{sec:integer}
+\input{integer/section.tex}
+
+\section{An eleven-positive equation of degree 211}
+\label{sec:positive}
+\input{positive11/section.tex}
+
+\section{Alternative direct proof sources}
+\label{sec:alternative}
+\input{alternative/section.tex}
+
+\section{Logical calibration and what is verified}
+
+All completed equations have literal finite arithmetic descriptions with
+fixed integer coefficients. The ten-integer group retains the Round11
+H1868 tuple; the integer residual group retains the coherent six-numeral
+joint-guard tuple; the positive group retains the complete compact44 tuple.
+These tuples must not be mixed. A symbol that appears in one group need
+not denote the same integer in another.
+
+The completed reductions prove the following chain:
+\[
+ \text{new zero exists}\quad\Longleftrightarrow\quad
+ \text{calibrated predecessor zero exists}\quad\Longleftrightarrow\quad
+ \text{finite ZFC refutation exists}.
+\]
+For the polynomial shears and monic eliminations, the first equivalence is
+an explicit zero-set bijection. The positive-domain component additionally
+uses the proved sign-recovery and canonical-witness estimates. The second
+equivalence imports the inherited native/compiler/calculus theorem. Its
+ordinary ZFC calibration is a stated mathematical theorem, not a conclusion
+drawn from an external Lean theorem. The pinned primary K215 proof
+\cite{k215} explicitly establishes
+\[
+ \ZFC\vdash
+ \bigl(\operatorname{Halt}(K215,\text{blank})
+       \longleftrightarrow\neg\Con(\ZFC)\bigr).
+\]
+It composes the dominated-calculus refutation theorem, a quantified
+source-to-machine simulation, and the exact finite blank startup.
+The native arithmetic representation and cited Pell/compiler proofs
+then connect this fixed halting predicate with the predecessor equations.
+Our integral polynomial transformations and sign argument compose with
+those ordinary proofs within ZFC, giving \eqref{eq:goal}.
+
+The distinction from the remaining object-calculus work is explained in
+the retained source-63 scope review \cite{zfcscope}. The ordinary argument
+codes finite runs and derivations in ambient ZFC and uses uniform
+induction over its entire $\omega$. Its model-theoretic steps use set
+models, their satisfaction relations, and first-order completeness; they
+do not assume transitive models or external well-foundedness. Thus the
+claim uses the identified ordinary mathematical calibration as a
+dependency. It does not promote correctness on external numerals to
+correctness on every internal natural number. No appeal to the actual
+truth of $\Con(\ZFC)$ is made at any stage.
+
+There are three separate verification claims:
+\begin{enumerate}
+\item The new universal algebraic and arithmetic implications are proved
+      in this manuscript, with exact coefficient certificates where an
+      expansion is too long to print.
+\item The supplied programs check literal polynomial transcription,
+      coefficient payloads, graph topology, exact algebra, and degree
+      witnesses. Finite signed evaluations are secondary regression
+      controls; they are not proofs of an unbounded semantic equivalence.
+\item A fresh end-to-end Lean/Rocq proof, or an explicit sealed
+      object-language ZFC derivation, is not supplied. The repository's
+      \file{OBJECT_ZFC.md} correctly distinguishes an external equivalence
+      from an internal derivation. This delivery does not close those
+      formalization obligations by renaming them.
+\end{enumerate}
+The direct-proof source in Section~\ref{sec:alternative} has a different
+boundary: its local source theorem is proved, but it is not substituted for
+the completed native source without constructing and measuring the full
+bounded-quantifier elimination. It therefore does not support a claimed
+new global number of variables or polynomial degree.
+
+\section{Reproduction and integration}
+
+\file{README.md} gives commands and the file map. Run the root
+\file{verify.py} from any working directory. Standard-library checkers are
+provided for the ten-integer and positive components. The integer
+elimination and independent symbolic audits document their SymPy
+requirements explicitly; the alternative generators need only the standard
+library. All acceptance checks use explicit exceptions,
+rather than depending on Python's removable \file{assert} statements.
+The root check records which commands actually ran and whether they passed.
+
+The archive contains the editable manuscript, compiled PDF, complete new
+literal equations, all required actual coefficient payloads, source pins,
+the relevant predecessor interfaces, independent audits, licenses, and
+notices. The optional article build uses pdfLaTeX and the packages named in
+this file. It uses no network connection. The source snapshot and incoming
+archive identities are fixed in \file{PROVENANCE.json}.
+
+For repository intake, place the archive's wrapper directory in a new
+proposal subdirectory under
+\file{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+No directory number is reserved here. The delivery makes no edit to the
+repository's main branch or existing packages. Comparisons should retain
+both domains and all measured tradeoffs, particularly the operation cost
+of the six-term ten-integer variant.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Go beyond translations of the last coordinate.}
+The odd-degree argument proves that $1\,081\,125$ is the floor for
+polynomial translations of $m$ with the present four norm inputs fixed.
+Can a joint triangular change of $y$, $z$, or a source parameter lower
+$\dd(\Sigma^4a_0a_1)$ without increasing the circuit cost excessively?
+This question has a clear obstruction and a concrete target.
+
+\item \textbf{Reduce the cost of the six-term shear.}
+Its factored expression adds $41$ live operations. Can the $26$-monomial
+polynomial share additional powers and products with $D,F,G,H$ and the
+source prefix? A claimed improvement should be accompanied by a literal
+graph and exact identity, rather than a heuristic cost estimate.
+
+\item \textbf{Audit other radical norms for removable leading squares.}
+The method applies whenever a large radicand has an integral polynomial
+part. For unrestricted coordinates, completeness is automatic under a
+triangular shear. Positive coordinates require a new range argument; a
+formal square-root expansion by itself cannot supply that argument.
+
+\item \textbf{Improve the degree-211 positive endpoint.}
+The new transport offset supplies a strict sign before native code
+recovery. Can a smaller positive offset do the same uniformly? Can the
+majorant or root center be simplified while preserving the order of the
+sign-recovery argument? A negative or zero intermediate must not be
+excluded by an unstated positivity assumption.
+
+\item \textbf{Continue the monic elimination search with degree control.}
+The $18$-integer form has six residuals and degree $88$. Search for other
+polynomial changes that expose a monic row while keeping the largest
+residual below degree $44$. A Gröbner-style symbolic search can assist,
+but the final certificate should give explicit integral restoration maps.
+
+\item \textbf{Compile the direct certificate source and measure it.}
+The natural-domain selector and functional graph improvements reduce
+local cost without requiring K215. The next necessary object is a complete
+ordinary-polynomial constructor with its actual witness, gate, and
+coefficient counts, including bounded-universal elimination. Local counts
+alone are not a size comparison with the finished equations.
+
+\item \textbf{Close the internal-ZFC proof boundary.}
+Formalize the actual coefficient-bound native compiler, its source
+calibration, and the new simple shear/monic-elimination lemmas in the
+repository's sealed object-language framework. The new local algebra is
+short; uniform correctness of the inherited coding over the internal
+natural numbers of every ZFC model remains the substantial work.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{jones1982}
+J. P. Jones, \emph{Universal Diophantine equation}, Journal of Symbolic
+Logic 47 (1982), 549--571.
+\href{https://doi.org/10.2307/2273588}{doi:10.2307/2273588}.
+
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, inspected repository snapshot
+\file{c1a102936aca437e9999530a0111e6ddab56dc6d}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+See the DiophantineConsistency catalogue and its source-pinned research
+packages; their individual notices are retained with reused artifacts.
+
+\bibitem{k215}
+ProveIt contributors, \emph{Ordinary proof of the combined215 machine},
+\file{Computability/BusyBeaver/Research/ZFC/candidate-k215/proof.md},
+at the inspected repository snapshot. Retained verbatim as
+\file{calibration/K215_CALIBRATION_PROOF.md}; its Git blob is
+\file{5b62cecff23a798a4b34255d1f843e72ad11b623}.
+
+\bibitem{zfcscope}
+ProveIt source 63, \emph{Ordinary ZFC provability and the separate
+object-calculus obligation},
+\file{63-sign-recovery/reviews/ZFC_INTERNALIZATION_SCOPE.md}.
+Retained verbatim under \file{calibration/}, with its original source
+snapshot and scope qualifications.
+
+\bibitem{round11}
+ProveIt incoming package,
+\emph{Structural reductions for Diophantine consistency equations,
+Round eleven}, archive
+\file{ConZFC_Structural_Reductions_Round11_2026-10-24.zip},
+especially \file{lucas_h1868/PROOF.md}. Exact archive and member pins are
+recorded in the accompanying provenance files.
+
+\bibitem{joint}
+ProveIt incoming package,
+\emph{Joint sign guards and Pell descent for smaller consistency equations},
+\file{ZFC_Diophantine_Joint_Guards_2026-10-24.zip}.
+
+\bibitem{centering}
+ProveIt incoming package,
+\emph{Joint guards and two Pell-root translations},
+\file{con-zfc-budget-and-centering-2026-10-23.zip}.
+
+\bibitem{radical}
+ProveIt incoming package,
+\emph{Radical majorants, guard compression, and Pell descent},
+\file{con-zfc-radical-guard-descent-2026-10-23.zip}.
+
+\bibitem{source68}
+ProveIt source 68, \emph{Joint positivity and free Lucas coordinates},
+\file{68-joint-positivity}, notably its direct certificate source.
+
+\bibitem{source71}
+ProveIt source 71, \emph{Calibrated determinant guards},
+\file{71-determinant-guards}.
+
+\bibitem{source75}
+ProveIt source 75, \emph{Signed-power recovery and inert-prime certificates
+for ZFC consistency}, \file{75-signed-bootstrap}.
+\end{thebibliography}
+\end{document}

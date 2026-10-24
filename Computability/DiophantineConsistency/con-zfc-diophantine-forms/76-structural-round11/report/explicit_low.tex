@@ -1,0 +1,126 @@
+\section{Compact literal low degree equations}\label{app:low}
+This appendix removes any ambiguity about what is meant by the completed
+integer packets. Each equation is $\sum_i r_i^2=0$ for the residuals below.
+The six constants are $\beta,K_0,M_C,M_F,A,B$ from
+\pathf{positivity/BINDING.json}, with $A=2^{1113}$ and $B=2^{666104}$.
+The symbolic $A,B$ here are unrelated to the Lucas parameters.
+
+\subsection{The 37 integer quartic}
+The 37 variables are
+\[
+\begin{split}
+&J_3,F,\alpha,z,f,h,r,v,w_3,\tau,\eta,\zeta,y,\gamma,o,j,\\
+&N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_{\rm aux},\Delta,\\
+&t_1,t_2,t_3,e_1,e_2,e_3.
+\end{split}
+\]
+Here and below line breaks in a variable list do not indicate operations.
+Put $J=3J_3+1$, $q=\beta J+1$, $W=4(3w_3+1)$,
+$k=\eta+\zeta$, $H=4a+3$, $C=q-F-\alpha$ and
+\[
+ R=(q-F)(N-q-L)+\alpha L+(M_C+qM_F)J,\quad
+ T=AFBC-(q-AF-BC)^2.
+\]
+With $\Pos(p,q,r)=1+p^2+q^2+r(r+1)$, the 24 residuals are
+\begin{align*}
+&L-q^2+1, &&N-q(L+1),\\
+&a-E-(2v+1)N, &&X-Wq,\\
+&E+X(E-a), &&c-\eta+(E-a)k,\\
+&P-k-E(c-\eta), &&\tau^2-P^2+Pk-1,\\
+&C_2-c^2, &&D-X-ac-\gamma H,\\
+&\Delta-a^2-H, &&D^2-\Delta C_2-1,\\
+&k-1-hE-R, &&(K_0+W)C-F-z(q-1),\\
+&F_2-f^2, &&V+c-fo,\\
+&V-cj+k-1-hE, &&g+V^2-y^2,\\
+&I-(2r+1)C_2, &&B_{\rm aux}-I^2,\\
+&B_{\rm aux}-\Delta(F_2-1), &&y^2-B_{\rm aux}g-1,\\
+&T-\Pos(t_1,t_2,t_3), &&\eta\zeta-\Pos(e_1,e_2,e_3).
+\end{align*}
+The direct 37-variable companion instead leaves $J,w$ free, uses
+$X=3X_3-1$, and removes $X$ as a coordinate. Its literal rows are retained
+in \pathf{positivity/quartic37_direct.json}. Both versions delete the old
+$X=2u^2$ guard only under the proved residue orientation.
+
+\subsection{The 30 integer sextic}
+Use the 30 coordinates
+\[
+\begin{split}
+&J_3,F,\alpha,z,f,h,r,v,w_3,\tau,\eta,\zeta,y,\gamma,o,j,\\
+&E,c,a,D,L,F_2,g,I,\\
+&t_1,t_2,t_3,e_1,e_2,e_3.
+\end{split}
+\]
+Define $J,q,W,k,H,C,T$ as above, $X=Wq$, and
+$R=((q-1)(q-F)+\alpha)L+(M_C+qM_F)J$. The 17 residuals are
+\begin{align*}
+ &L-q^2+1,\\
+ &a-E-(2v+1)q(L+1),\\
+ &E+X(E-a),\\
+ &c-\eta+(E-a)k,\\
+ &\tau^2+(2\tau-k)E(c-\eta)-1,\\
+ &D-X-\gamma H,\\
+ &D^2+2acD-Hc^2-1,\\
+ &k-1-hE-R,\\
+ &(K_0+W)C-F-z(q-1),\\
+ &F_2-f^2,\\
+ &fo-c-cj+k-1-hE,\\
+ &g+F_2o^2-2foc+c^2-y^2,\\
+ &I-(2r+1)c^2,\\
+ &I^2-(a^2+4a+3)(F_2-1),\\
+ &y^2-I^2g-1,\\
+ &T-\Pos(t_1,t_2,t_3),\\
+ &\eta\zeta-\Pos(e_1,e_2,e_3).
+\end{align*}
+The coordinate called $D$ here is the centered root, not the old $D$.
+Its restoration is $D_{\rm old}=D+ac$; likewise
+$\tau_{\rm old}=\tau+E(c-\eta)$.
+
+\subsection{The 26 integer octic and its three companions}
+Use 26 variables
+\[
+\begin{split}
+&J_3,F,\alpha,z,f,h,r,v,w_3,\tau,\eta,y,\gamma,o,j,E,c,a,V,I,\\
+&t_1,t_2,t_3,e_1,e_2,e_3.
+\end{split}
+\]
+Put
+\[
+\begin{gathered}
+ J=3J_3+1,\quad q=\beta J+1,\quad W=4(3w_3+1),\quad X=Wq,\\
+ C=q-F-\alpha,\quad k=1-V+jc+hE,\quad H=4a+3,\quad
+ \Delta=a^2+H,\\
+ D=X+ac+\gamma H,\quad P=k+E(c-\eta),\\
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ T=AFBC-(q-AF-BC)^2,\qquad Z_+=\eta(k-\eta).
+\end{gathered}
+\]
+The 13 residuals are
+\begin{align*}
+ &a-E-(2v+1)q^3,&& E+X(E-a),\\
+ &c-\eta+(E-a)k,&& \tau^2-PE(c-\eta)-1,\\
+ &D^2-\Delta c^2-1,&& k-1-hE-R,\\
+ &(K_0+W)C-F-z(q-1),&& V+c-fo,\\
+ &I-(2r+1)c^2,&& I^2-\Delta(f^2-1),\\
+ &I^2(V^2-y^2)+y^2-1,&& T-\Pos(t_1,t_2,t_3),\\
+ &Z_+-\Pos(e_1,e_2,e_3).&&
+\end{align*}
+The following literal substitutions define the companions without any
+implicit existential register:
+\begin{enumerate}
+\item For 25 variables and degree 10, replace $\alpha$ by the free
+coordinate $C$, substitute $F=(K_0+W)C-z(q-1)$ and
+$\alpha=q-F-C$ everywhere, and delete the transport residual and the
+coordinate $F$.
+\item For 24 variables and degree 12, delete the six sign coordinates
+and the two sign residuals, insert four coordinates $s,p,q_+,r_+$, and
+insert the one residual
+\[
+ TZ_+-(s^2-T-Z_++1)^2-\Pos(p,q_+,r_+).
+\]
+\item For 23 variables and degree 16, perform both operations in that
+order or the reverse order. Their existence proofs and exact degree
+certificates were given in the main text.
+\end{enumerate}
+The JSON packets use \pathf{v_scale}, \pathf{cone_A}, \pathf{cone_B},
+and \pathf{t} where this appendix uses $v,A,B,s$. These are renamings
+only. Their ordered variable lists are authoritative for evaluators.

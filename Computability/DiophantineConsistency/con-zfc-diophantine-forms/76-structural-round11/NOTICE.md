@@ -1,0 +1,9 @@
+# Authorship attribution and proof boundary
+
+Prepared by dot, an OpenAI-powered assistant, for Vladimir Reshetnikov. This release contains AI-assisted mathematical research, literal algebraic constructions and independently authored verification implementations. It is not represented as a human-authored paper, peer-reviewed result or endorsement by upstream contributors. New material is under LICENSE.NEW (MIT No Attribution). Inherited files retain their own licenses and notices, including ProveIt and Wade/K215 notices.
+
+The principal new mechanism is guard-dependent Lucas norm saturation, with a proof of full residue interpolation. The main endpoint combines it with certified H1868 packing and an exact fixed-power plan. The second structural mechanism replaces numerical pairwise-coprimality requirements by coefficient-height identity recovery in a proof certificate; its global constructor is uncompiled and unmaterialized. The 37-integer quartic composition and a joint-positivity combination had already been suggested upstream; this release proves compatible constructions and further eliminations, rather than claiming those suggestions as new.
+
+All completed consistency reductions use the explicitly retained native/compiler, Pell and calculus calibration interfaces. Finite replay is not a proof of consistency or of those unbounded semantic interfaces. No historical priority, global optimum, fresh Lean/Rocq certificate or formal end-to-end object-language ZFC derivation is claimed.
+
+Retained upstream snapshots are byte-exact historical references. Their original relative links, commands and old numerical claims describe those source packages, not the operational contract of this release. Use README.md, REPLAY.json, DEPENDENCIES.md and MANIFEST.json for the current contract. No entire copyrighted primary article, arrival archive, exploratory search log, cache or abandoned prototype is included.

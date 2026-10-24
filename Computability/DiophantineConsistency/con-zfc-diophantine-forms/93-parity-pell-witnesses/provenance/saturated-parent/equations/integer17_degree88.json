@@ -1,0 +1,91 @@
+{
+  "name": "integer17_degree88",
+  "domain": "all unrestricted integers",
+  "variables": [
+    "J",
+    "C",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v",
+    "w",
+    "tau",
+    "nu",
+    "gamma",
+    "T",
+    "c",
+    "t",
+    "p1",
+    "p2",
+    "p3"
+  ],
+  "variable_count": 17,
+  "fixed_ports": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "registers": {
+    "J0": "3*J+1",
+    "q": "beta*J0+1",
+    "W": "4*(3*w+1)",
+    "X": "q*W",
+    "Y": "(2*v+1)*q**3",
+    "E": "X*Y",
+    "a": "(X+1)*Y",
+    "H": "4*a+3",
+    "Delta": "a**2+H",
+    "F": "(K0+W)*C-(q-1)*z",
+    "alpha": "q-F-C",
+    "R": "(q-F)*(q**3-q)-C*(q**2-1)+(MC+q*MF)*J0",
+    "k": "R+1+h*E",
+    "eta": "c-Y*k",
+    "zeta": "k-eta",
+    "I": "(2*r+1)*c**2",
+    "V": "c*(T*f-1)-R*f**2",
+    "m": "X*Y**2",
+    "B0": "m*k",
+    "main_gap": "X+gamma*H",
+    "det": "(cone_A*F)*(cone_B*C)-(q-cone_A*F-cone_B*C)**2",
+    "Z": "eta*zeta",
+    "pos": "1+p1**2+p2**2+p3*(p3+1)",
+    "guard": "det*Z-(t**2-det-Z+1)**2-pos",
+    "main": "2*a*c*main_gap+main_gap**2-H*c**2-1",
+    "strong": "I**2-Delta*(f**2-1)"
+  },
+  "residuals": [
+    "tau**2+(2*tau-k)*B0-1",
+    "main",
+    "strong",
+    "(V+nu)**2-I**2*nu*(2*V+nu)-1",
+    "guard"
+  ],
+  "fully_inlined_residuals": [
+    "tau ** 2 + (2 * tau - ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)))) * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3) ** 2 * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)))) - 1",
+    "2 * (((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + 1) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) * c * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + gamma * (4 * (((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + 1) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) + 3)) + ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + gamma * (4 * (((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + 1) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) + 3)) ** 2 - (4 * (((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + 1) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) + 3) * c ** 2 - 1",
+    "((2 * r + 1) * c ** 2) ** 2 - ((((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + 1) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) ** 2 + (4 * (((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) + 1) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) + 3)) * (f ** 2 - 1)",
+    "(c * (T * f - 1) - ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1)) * f ** 2 + nu) ** 2 - ((2 * r + 1) * c ** 2) ** 2 * nu * (2 * (c * (T * f - 1) - ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1)) * f ** 2) + nu) - 1",
+    "(cone_A * ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z) * (cone_B * C) - (beta * (3 * J + 1) + 1 - cone_A * ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z) - cone_B * C) ** 2) * ((c - (2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3 * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)))) * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) - (c - (2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3 * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)))))) - (t ** 2 - (cone_A * ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z) * (cone_B * C) - (beta * (3 * J + 1) + 1 - cone_A * ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z) - cone_B * C) ** 2) - (c - (2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3 * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)))) * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3)) - (c - (2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3 * ((beta * (3 * J + 1) + 1 - ((K0 + 4 * (3 * w + 1)) * C - (beta * (3 * J + 1) + 1 - 1) * z)) * ((beta * (3 * J + 1) + 1) ** 3 - (beta * (3 * J + 1) + 1)) - C * ((beta * (3 * J + 1) + 1) ** 2 - 1) + (MC + (beta * (3 * J + 1) + 1) * MF) * (3 * J + 1) + 1 + h * ((beta * (3 * J + 1) + 1) * (4 * (3 * w + 1)) * ((2 * v + 1) * (beta * (3 * J + 1) + 1) ** 3))))) + 1) ** 2 - (1 + p1 ** 2 + p2 ** 2 + p3 * (p3 + 1))"
+  ],
+  "residual_count": 5,
+  "single_equation": "sum of the squares of the listed residuals = 0",
+  "combination": "sum_of_squares",
+  "polynomial_expression": "(tau**2+(2*tau-k)*B0-1)**2+(main)**2+(strong)**2+((V+nu)**2-I**2*nu*(2*V+nu)-1)**2+(guard)**2",
+  "exact_degree": 88,
+  "leading_certificate": {
+    "powers": {
+      "h": 8,
+      "w": 8,
+      "v": 16,
+      "J": 56
+    },
+    "coefficient": "2**32*3**64*beta**56"
+  },
+  "coefficient_binding": "../coefficients/BINDING.json",
+  "proof": "../PROOF.md",
+  "semantic_scope": "New ordinary reductions; inherited named native/compiler/Pell and ZFC-refutation calibration. Not a new internal-ZFC proof certificate."
+}

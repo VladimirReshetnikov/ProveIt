@@ -1,0 +1,126 @@
+\section{A sharp limit for final coordinate centering}
+The ten-integer equations now have the following literal circuit counts.
+The comparison uses the current pinned short-guard family, rather than an
+older incoming package. These changes preserve the corresponding
+polynomials exactly; they do not improve the variable counts or degrees.
+\begin{center}
+\begin{tabular}{lrrr}
+Variant & Prior operations & New operations & Exact degree\\\hline
+Polar &471&467&1,245,324\\
+Linear &475&470&1,179,788\\
+Cubic &478&473&1,114,252\\
+Six term &512&507&1,080,888
+\end{tabular}
+\end{center}
+Every live binary addition, subtraction and multiplication costs one,
+including squares and scalar products. Fixed integer leaves and reuse cost
+zero. The full graphs, actual coefficients and independent checks are in
+\texttt{norm/}; no intermediate register adds an unknown.
+
+The more substantive result is a limitation of this entire centering route.
+With the short-guard prefix fixed, no polynomial translation of the final
+coordinate alone can produce degree below $1{,}080{,}888$. This includes
+arbitrary real polynomial translations, not only the integral corrections
+previously considered. It is not a lower bound for different guards, norm
+carriers, source encodings, or changes of other coordinates.
+
+\subsection{The fixed norm and its leading forms}
+Retain the ten coordinates $(t,g_0,c_0,k_0,l,w,x,y,z,m)$ and the source
+registers from the supplied short-guard parent. In particular,
+\[
+ \Delta=g(\mathrm{cap}-g)K^2-\mathrm{cap}^2(C-KL)^2,
+ \qquad a_0=r+(9\Delta-3)(rz)^2,\qquad a_1=DFI.
+\]
+Set $Z=\Sigma m-\Theta$. The unpolarized final norm is
+\[
+ N=(Z^2-\Sigma^2(a_0+a_1))^2-4\Sigma^4a_0a_1.
+\]
+For a nonzero polynomial $P$, write $P_{\rm top}$ for its highest
+homogeneous part. The relevant degrees are
+\[
+\begin{array}{c|rrrrrrr}
+ P&g&\mathrm{cap}&K&L&r&a_0&a_1\\\hline
+ \deg P&2&233&28548&4220&114189&294382&458818.
+\end{array}
+\]
+The first term of $\Delta$ has degree $57331$, while its negative square
+term has degree $66002$. Therefore, with
+\[
+ U=3\,\mathrm{cap}_{\rm top}K_{\rm top}L_{\rm top}r_{\rm top}z,
+ \qquad V=(2AEGH)_{\rm top},
+\]
+we have
+\[
+ (a_0)_{\rm top}=-U^2,\qquad (a_1)_{\rm top}=V^2.
+\]
+The second identity also follows from the exact defect identity:
+$\deg(a_1-(2AEGH)^2)=426050<458818$. Both $U$ and $V$ are nonzero.
+Since $\deg\Sigma=81922$, the fixed cross term has degree
+\[
+ d=4(81922)+294382+458818=1080888
+\]
+and highest homogeneous part
+\[
+ (-4\Sigma^4a_0a_1)_{\rm top}=(2\Sigma_{\rm top}^{2}UV)^2.
+\]
+This is a nonzero square, not merely a coefficient whose sign was sampled.
+
+\subsection{The lower bound for every polynomial translation}
+Let $R$ be any real polynomial in the first nine coordinates, and define
+\[
+ B_R=[\Sigma(m+R)-\Theta]^2-\Sigma^2(a_0+a_1).
+\]
+The translated norm is $B_R^2-4\Sigma^4a_0a_1$. If
+$2\deg B_R>d$, its degree is $2\deg B_R>d$. If $2\deg B_R<d$, its
+degree is $d$. At equality, its degree-$d$ part is
+\[
+ (B_{R,\rm top})^2+(2\Sigma_{\rm top}^{2}UV)^2.
+\]
+A sum of squares of real polynomials can vanish identically only when
+both summands vanish identically. The second is nonzero, so cancellation
+is impossible. Thus every such translated norm has degree at least $d$.
+The six-term shift attains $d$, proving the restricted-family optimum.
+The old odd-degree argument does not apply after the short-guard change;
+this positive-leading-square argument replaces it.
+
+Further degree progress in this ten-variable family must therefore change
+more than the final polynomial translation: for example the guard, the norm
+carrier, the prefix, or another coordinate. This conclusion does not rule
+out any of those routes.
+
+\subsection{The exact arithmetic savings}
+Write $t_c=t_{c,0}-2$ in the unchanged source. Reuse
+\[
+ X_+=n_n(s_c+t_{c,0}-1)-s_c,
+ \quad X=X_+-1,
+ \quad K=X_++\mathrm{twice\_k}(P_{1/2}-1).
+\]
+This removes two unnecessary constant adjustments. Since $F=F_{-1}+1$,
+use $G=hF_{-1}-F$ instead of $(h-1)F_{-1}-1$. Share
+$S^3=SS^2$ and $S^5=S^2S^3$ between $\Sigma$ and $\Theta$.
+For the linear and cubic shifts, share $GH$ by writing
+$I=(GH)^2-H^2+1$.
+
+For the six-term shift put $u=C^2$, $h=A/2$ and $E_0=u\xi$. Its compact
+factorization uses
+\[
+ u^7\xi^4=u^3E_0^4,\qquad u\xi^2=E_0\xi.
+\]
+These save two multiplications without changing the existing shift.
+Together the exact identities account for the counts in the table.
+
+\subsection{Verification and mathematical boundary}
+The independent checker imports neither the producer nor its circuit
+helper. It checks exact local polynomial equalities for every retained
+source register and the complete norm, all actual coefficient payloads and
+recipes, topology, backward liveness, operation counts, the expanded radical
+defects, and nonzero actual-coefficient degree certificates. It also performs
+$360$ signed modular native replays per variant and rejects four final-sign
+mutations. Normal and optimized Python runs agree.
+
+The new algebra preserves the inherited ordinary mathematical equivalence
+to finite ZFC refutability. Its compiler, Pell and interpolation interfaces
+remain explicit dependencies. The result is not a consistency proof or a
+new end-to-end proof-assistant certificate. No new low-degree integer chart
+was established here: the incoming $23/10$ and $20/18$ points remain prior
+work rather than contributions of this iteration.

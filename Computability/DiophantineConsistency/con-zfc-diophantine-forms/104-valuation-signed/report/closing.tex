@@ -1,0 +1,279 @@
+\section{What the contribution changes, and what it imports}\label{sec:dependencies}
+
+\subsection{The two distinct calibration chains}
+For the twelve-integer equations the proof has the following form:
+\begin{align*}
+ \exists\boldsymbol x\in\Z^{12}\;\primary(\boldsymbol x)=0
+ &\ \Longleftrightarrow\ 
+ \text{the fixed source-34 native instance has a witness}\\
+ &\ \Longleftrightarrow\ \operatorname{Halt}(\mathrm{K215},\text{blank})\\
+ &\ \Longleftrightarrow\ \exists p\;\operatorname{Proof}_{\ZFC}(p,\bot).
+\end{align*}
+The first arrow is the new arithmetic reduction plus the identified
+signed native kernel. The later arrows are the repository's ordinary
+compiler and exact-table machine calibration. The companion equation has
+the same chain. The complete inherited directory is retained at
+\path{integer12/inherited/root_fusion/}; in particular,
+\path{provenance/CALIBRATION_STATUS.md} distinguishes the ordinary
+mathematical claim from the encoded proof-assistant target.
+The inherited proof sources include the signed native arithmetic,
+the finite-window tableau decoder, the source-34 coefficient adapter,
+and the exact K215 ordinary calibration. Their original paths,
+hashes, notices, and historical dependency pins are preserved.
+
+The direct equation instead has the chain
+\begin{align*}
+ \exists\boldsymbol x\in\Z^{1190}\;
+ Q_{\mathrm{direct}}(\boldsymbol x)=0
+ &\ \Longleftrightarrow\ 
+ \text{the fixed 522-natural-coordinate equation has a witness}\\
+ &\ \Longleftrightarrow\ C_{222}(1)\\
+ &\ \Longleftrightarrow\ \exists p\;\operatorname{Proof}_{\ZFC}(p,\bot).
+\end{align*}
+The first arrow is established by the finite sign certificate and
+reversible substitutions in Section~\ref{sec:direct}. The natural
+equation's arithmetic compiler and numerical-calculus calibration are
+imported with their ordinary proofs and source pins. This route makes no
+use of a Turing-machine transition table or a Jones universal polynomial.
+
+The displayed implications are used as ordinary mathematical theorems
+formalizable in ZFC on its own natural and integer domains. Composing
+and negating them proves \eqref{eq:target}. No argument assumes that every
+ZFC theorem is true, or that a finite run has searched all proofs.
+
+\subsection{The formalization boundary is material}
+The supplied derivations are ordinary mathematical proofs, supplemented
+by finite exact certificates. No new complete Lean or Rocq development
+was built. In particular, an externally stated theorem about a machine
+and a proof predicate is distinct from a derivation of a quoted
+biconditional in the project's internal \texttt{SetTheory.Form} calculus.
+The latter requires an additional syntactic translation and formal
+composition for all internally coded witnesses.
+
+The archived sources themselves record these distinctions. We preserve
+them instead of treating compilation, finite simulations, or hashes as
+a substitute for an unbounded theorem. If a reviewer declines to accept
+an imported ordinary calibration until independently re-establishing it,
+the newly checked conclusion is the exact equivalence with that
+calibrated parent. The final $\Con(\ZFC)$ interpretation then retains the
+explicit calibration dependency. This is the usual dependency structure
+of a mathematical reduction, and it identifies the remaining work for a
+fully kernel-checked deliverable.
+
+Existing formal work on Diophantine complexity bounds illustrates a
+different scale of machine-checked result~\cite{bayerdavid}. It supplies
+context, not a theorem automatically validating the present literal
+polynomials or their coefficient instantiations.
+
+\section{A small additional improvement: twelve positive variables}
+\label{sec:supplement}
+The supplemental directory contains a separate optimization of the
+repository's ordinary twelve-positive-variable polynomial. Its variables
+remain positive, its exact degree remains $70$, and its zero set is
+unchanged. Only the evaluation schedule changes from $100$ to $98$
+binary operations.
+
+In the parent's unchanged registers set
+\[
+ d=c^4,\qquad e=1-Q,\qquad v=V+n,\qquad
+ E_{\mathrm a}=QV^2-1,\qquad h=ev^2+E_{\mathrm a},\qquad b=eQ.
+\]
+Then the following is an identity over the polynomial ring:
+\begin{equation}\label{eq:polarized}
+ (dh+b)^2-dQ(2ev)^2=(dh-b)^2+4dbE_{\mathrm a}.
+\end{equation}
+Indeed the difference between the two squared terms is $4dhb$ and
+$h-E_{\mathrm a}=ev^2$. The right side reuses $E_{\mathrm a}$ and saves
+two operations in the complete circuit.
+
+This is a modest evaluator improvement. Norm polarization is already
+used elsewhere in the repository. It is not a new representation
+theorem, variable reduction, or degree result. Its complete authentic
+coefficient tuple is the \emph{compact44} tuple with
+$\beta=2^{590069}-1$, preserved separately under
+\path{supplemental/ordinary98/native/}.
+It must not be mixed with the source-34 tuple in
+Section~\ref{sec:equation}.
+
+\section{Assessment and concrete next research questions}
+\label{sec:assessment}
+
+The most transferable observation is the prime-valuation separator.
+It replaces size comparisons between radicals by congruence information
+that the certificate already carries. Once the least squared valuations
+are separated, the argument is insensitive to how large the witnesses
+are. It also handles an initially negative guard radicand. The use of
+the classical quintic is useful because its quadratic remainder has
+$B\equiv1\pmod3$; monotonicity is no longer needed to prove $B\ne0$.
+
+The rational auxiliary root is a second independent improvement. Root
+extraction first proves it rational, the adjacent-Pell descent proves it
+integral, and the final equation carries only the denominator-cleared
+norm. This moves an integrality proof into the arithmetic argument and
+reduces the polynomial's degree.
+
+The direct result suggests treating sign obligations as part of the
+optimization problem. A natural coordinate whose sign follows from
+existing equations needs no separate guard. The finite certificate
+makes this saving reviewable, and signed monic projection preserves it
+without imposing an incorrect positivity condition on eliminated
+coordinates.
+
+These observations were not found in the inspected parent constructions
+in the forms used here. That is a repository-relative statement, not a
+claim of worldwide priority. The classical carrier, norm invariance,
+Legendre's theorem, CRT, Pell identities, and monic substitution are
+established mathematics. Further novelty assessment should examine
+earlier relation-combining and valuation-separation literature, including
+the broader Diophantine complexity tradition~\cite{mr}.
+
+Several specific questions remain open in this packet:
+\begin{enumerate}
+ \item Can a different congruence arrangement separate the same roots
+ with a lower-degree carrier or a lower-degree scale $S$? Every proposed
+ replacement must retain intersectivity, exclusion of zero-scale roots,
+ and full residue interpolation.
+ \item Can the auxiliary Pell denominator be shared more efficiently
+ with the main congruence certificate? A shorter circuit alone is not a
+ proof that its total degree or zero set is preserved.
+ \item Can multi-row sign deductions or coordinate sign changes improve
+ the direct quartic beyond the $234$ guards needed by the present
+ single-row rule family? The restricted optimality certificate leaves
+ these stronger methods entirely open.
+ \item Can the arithmetic reductions be formalized against the exact
+ internal ZFC syntax, including coefficient binding and inherited
+ unbounded calibration? This would strengthen the verification status,
+ even if no numerical metric improved.
+\end{enumerate}
+No prospective bound from these questions is included in the result
+table.
+
+\section{Reproduction and package map}\label{sec:reproduction}
+Python 3.10 or later and its standard library suffice for the arithmetic
+checks. A TeX distribution with the packages named in
+\path{report/report.tex} builds the article. From the package root:
+\begin{verbatim}
+python3 verify.py
+python3 -O verify.py
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The root verifier regenerates the two twelve-integer circuits and checks
+their exact output; checks the full generic norm identity by an
+independent coefficient calculation; checks the coefficient payload
+hashes, circuit structure and arithmetic front ends; rebuilds the direct
+equation and checks its full sign and projection certificates; and
+checks the identical-polynomial supplemental optimization. The normal
+and optimized runs both use explicit exceptions, not assertions that
+can disappear under \texttt{-O}.
+
+The release manifest binds the deliverable files. Checks generate
+temporary receipts by default and do not rewrite the retained source
+certificates. The archived reports record the completed runs. A compact
+map is:
+\begin{center}
+\small
+\begin{tabular}{@{}p{.30\linewidth}p{.64\linewidth}@{}}
+\toprule
+Path & Contents\\
+\midrule
+\path{report/} & Article sources, bounded coefficient appendix, and PDF.\\
+\path{integer12/} & Two new circuits, builders, independent arithmetic
+checks, new proof, baseline circuits, and inherited native dependencies.\\
+\path{direct/} & Literal 1190-variable quartic, residuals, 1224-variable
+checkpoint, sign/projection certificates, independent checker, and
+complete synchronized parent.\\
+\path{supplemental/ordinary98/} & Identical twelve-positive polynomial,
+98-operation evaluator, proof, and its separate coefficient tuple.\\
+\path{reviews/} & Independent assistant reviews of the new mathematics
+and literal direct artifacts.\\
+\path{verification/} & Release receipts and PDF layout review.\\
+\path{SOURCE_PINS.json} & Repository commit and received archive hashes.\\
+\path{MANIFEST.json} & Final deliverable file hashes.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The primary equations are supplied as exact straight-line integer
+circuits because writing their fully expanded coefficient lists would
+obscure both the definition and the proof. A straight-line circuit with
+fixed integer leaves defines a unique ordinary polynomial. The direct
+quartic is supplied in both residual and completely expanded form.
+
+\appendix
+\input{coefficient_recipe.tex}
+
+\begin{thebibliography}{12}
+\bibitem{hls}
+Andrea M. Hyde, Paul D. Lee, and Blair K. Spearman.
+\emph{Polynomials $(x^3-n)(x^2+3)$ Solvable Modulo Any Integer}.
+American Mathematical Monthly \textbf{121}(4) (2014), 355--358.
+\href{https://doi.org/10.4169/amer.math.monthly.121.04.355}
+{doi:10.4169/amer.math.monthly.121.04.355}.
+The $n=19$ case supplies the classical intersective carrier;
+an elementary proof is given here.
+
+\bibitem{mr}
+Yuri V. Matiyasevich and Julia Robinson.
+\emph{Reduction of an arbitrary Diophantine equation to one in 13 unknowns}.
+Acta Arithmetica \textbf{27} (1975), 521--553.
+\href{https://doi.org/10.4064/aa-27-1-521-553}
+{doi:10.4064/aa-27-1-521-553}.
+
+\bibitem{bayerdavid}
+Jonas Bayer and Marco David.
+\emph{A Formal Proof of Complexity Bounds on Diophantine Equations}.
+In ITP 2025, LIPIcs \textbf{352}, 3:1--3:18.
+\href{https://doi.org/10.4230/LIPIcs.ITP.2025.3}
+{doi:10.4230/LIPIcs.ITP.2025.3}.
+
+\bibitem{repo}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt}, repository snapshot
+\texttt{85ae4070019efd66ea3e58e9a67d287528094e8b}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The supplied source pins record all selected incoming archives.
+
+\bibitem{interpolation}
+ProveIt incoming archive.
+\emph{ConZFC Twelve Integer Interpolation},
+\path{docs/incoming/ConZFC_Twelve_Integer_Interpolation_2026-10-24.zip},
+at the snapshot in~\cite{repo}.
+The ordinary proof \path{proofs/INTERPOLATION12.md} and independent
+audit are preserved under \path{integer12/proofs/}.
+
+\bibitem{rootfusion}
+ProveIt root-fusion package, inherited by~\cite{interpolation}.
+Ordinary native/compiler proofs, normalized signed arithmetic,
+coefficient bindings, and calibration status.
+Preserved verbatim under \path{integer12/inherited/root_fusion/}.
+
+\bibitem{coeff}
+ProveIt source-34 coefficient construction.
+\path{integer12/inherited/root_fusion/provenance/COEFFICIENT_PROOF.md},
+with authentic native input files and ordinary source copies in the
+same dependency tree. The finite recipe is reproduced in
+Appendix~\ref{app:coeff}.
+
+\bibitem{sync}
+ProveIt incoming archive.
+\emph{ConZFC Synchronized Certificates},
+\path{docs/incoming/ConZFC_Synchronized_Certificates_2026-10-24.zip},
+at the snapshot in~\cite{repo}. Complete received package preserved
+under \path{direct/upstream/synchronized/}.
+
+\bibitem{batched}
+ProveIt incoming archive.
+\emph{ConZFC Batched Certificates},
+\path{docs/incoming/con_zfc_batched_certificates_2026-10-23.zip},
+at the snapshot in~\cite{repo}. This supplies the 1690-integer comparison
+point and the attributed signed monic projection implementation.
+
+\bibitem{ordinary}
+ProveIt ordinary-unit-products research directory, at the snapshot
+in~\cite{repo}. Parent evaluator and ordinary proof preserved under
+\path{supplemental/ordinary98/}, with the independently pinned compact44
+native inputs and inherited notices.
+\end{thebibliography}
+

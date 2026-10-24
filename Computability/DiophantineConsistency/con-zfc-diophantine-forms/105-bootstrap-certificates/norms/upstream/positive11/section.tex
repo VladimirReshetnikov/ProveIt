@@ -1,0 +1,316 @@
+\subsection{Eleven positive unknowns: an auxiliary offset and two root centers lower degree to 211}
+\label{sec:positive-eleven-offset}
+
+The following construction has eleven strictly positive integer unknowns,
+exact degree $211$, and $112$ live binary arithmetic operations. The
+centered predecessor in the incoming joint-guards package has degree $257$
+in $114$ operations; the uncentered Pell-descent version has degree
+$277$ in $111$ operations. The improvement is therefore a strict improvement in both degree and evaluator size over the centered predecessor.
+
+The new step is the affine substitution
+\[
+ T_{\rm old}=T+F+\alpha.
+\]
+It makes the auxiliary quantity positive at an earlier stage of the proof,
+so an expensive exceptional-sign term can be removed from the transport
+weight. A second center absorbs the strong root, leaving a degree-two
+gap bound. This is an existence-preserving substitution on canonical source
+witnesses, not a bijection of the entire positive zero sets.
+
+\subsection{The complete polynomial}
+
+Use the coherent compact44 fixed tuple $(\beta,K_0,M_C,M_F)$, where
+$\beta=2^{590069}-1$ and $M_F$ is already shifted. The tuple is defined by
+the retained finite recipe and actual integer payloads. The unknowns are
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma>0.
+\]
+Every remaining symbol is a polynomial abbreviation. Define
+\begin{align*}
+ J&=3j+1,\qquad q=\beta J+1,\qquad C=q-F-\alpha,\\
+ E&=XY,\qquad k=\eta+\zeta,\qquad c=kY+\eta,\\
+ a&=E+Y,\qquad H=4a+3,\qquad\Delta=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,\qquad I=ic^2,\qquad M=q^3(q-1),\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ B_t&=(qK_0+X)C-qF,\qquad D_\tau=\ell(\ell+k)+1,\\
+ D_f&=1+\Delta I^2,\qquad Q=\Delta^2I^2,\qquad\delta=Q-1,\\
+ T_{\rm old}&=T+F+\alpha,\qquad C_f=(a+2)I,\\
+ V&=D_f(cT_{\rm old}-R)-c,\qquad L=kT_{\rm old},\\
+ W&=1+(q-1)L,\\
+ \overline Z&=M(\ell+k+n+L+V+C_f)+(q-1)Y-q^3WB_t,\\
+ r_0&=k-R-1,\qquad S=4qY,\qquad U=qS,\\
+ D_*&=U(X+ac)+H(U\gamma+SX-r_0),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+The three-root norm is
+\begin{align*}
+ A&=M^2D_\tau,\qquad B_f=M^2D_f,\qquad C_{\rm num}=M^2(QV^2-1),\\
+ T_N&=\delta^2AB_f,\qquad R_N=\delta C_{\rm num},\\
+ J_N&=\delta(\overline Z^2-A-B_f)-C_{\rm num},\\
+ N_c&=J_N^2-4[T_N+R_N(A+B_f)],\\
+ N_8&=N_c^2-64T_NR_N\overline Z^2.
+\end{align*}
+The proposed single polynomial equation is
+\begin{equation}\label{eq:offset-p211}
+ \boxed{P_{11}=N_8+A_1+N_8A_1=0.}
+\end{equation}
+Its literal graph is \texttt{p11\_positive\_degree211.json}.
+
+\subsection{Recovering radicals before any transport sign}
+
+Put, only in this proof,
+\[
+ t=\sqrt{D_\tau},\qquad f=\sqrt{D_f},\qquad
+ y=\sqrt{\frac{QV^2-1}{Q-1}}.
+\]
+The unconditional three-root separation argument of source70 continues to
+apply: it requires only $T_{\rm old}>0$ and $I\ge c^2$, not positivity of
+$C$. We recall its substance. Let $b=cT_{\rm old}-R$. If $b=0$, then
+$V=-c$, $y<c+1$, and $f-t>(a+1)c(c-1)>c+1$. If $b\ne0$, then
+\[
+ y>|V|\ge D_f-c>2f>f+t.
+\]
+Here $f>3c^2$ and $f>t$ follow directly from $\Delta\ge15$ and
+$c>kY$. Thus one of the three roots strictly dominates the other two.
+Their positive rational radicands are pairwise distinct: $D_\tau<D_f<Q$,
+and equality of the third radicand to either integer $D\in\{D_\tau,D_f\}$
+would imply $Q(D-V^2)=D-1$, impossible since $0<D-1<Q$.
+
+A rational signed sum of three such roots forces them all rational. For
+signed roots $x_1,x_2,x_3$ with rational nonzero sum $s$ and squares $a,b,c$,
+set
+\[
+ u=\frac{s^2-a-b-c}{2},\qquad
+ v=\frac{u^2-ab-ac-bc}{2s}.
+\]
+Then
+\[
+ x_1=\frac{a(a+u)}{as+v},\qquad
+ as+v=x_1(x_1+x_2)(x_1+x_3)\ne0,
+\]
+and the cyclic formulas prove the assertion.
+
+The universal norm identity
+\[
+ \bigl[(x^2-a-b-c)^2-4(ab+ac+bc)\bigr]^2-64abcx^2
+ =\prod_{\varepsilon\in\{-1,1\}^3}
+ (x-\varepsilon_1\sqrt a-\varepsilon_2\sqrt b-\varepsilon_3\sqrt c)
+\]
+therefore shows that $N_8=0$ supplies rational signed roots with
+\[
+ \frac{\overline Z}{M}=\tau_*+f_*+y_*,\qquad
+ \tau_*^2=D_\tau,\quad f_*^2=D_f,\quad
+ QV^2-(Q-1)y_*^2=1.
+\]
+The first two roots are integers. The adjacent-coefficient Pell descent
+of source69 makes $y_*$ an integer as well. In that descent, writing
+$y_*=a/m$ in lowest terms gives $m^2\mid Q-1$. After replacing $V$ and
+$y_*$ by their absolute values at each step, the transformation
+\[
+ (V,y_*)\longmapsto
+ ((2Q-1)V-2(Q-1)y_*,\ (2Q-1)y_*-2QV)
+\]
+preserves the norm and the denominator, while strictly reducing $|V|>1$.
+Strong induction reaches $|V|=1$, where $|y_*|=1$.
+
+Since $M\mid\overline Z$, reduction modulo $q^3$ and $q-1$ now gives
+\[
+ q^3\mid Y,\qquad q-1\mid B_t.
+\]
+No sign of $B_t$ has been used. The equation $A_1=0$ also gives an
+integral main root $D_*/U$, whose absolute value can be classified.
+Writing $\chi_A,\psi_A$ for the usual Pell sequences, positive
+classification supplies indices $m_1,p\ge1$ such that
+\[
+ |\tau_*|=\chi_{2XY^2+1}(m_1),\qquad
+ k=2\psi_{2XY^2+1}(m_1),\qquad c=\psi_{a+2}(p).
+\]
+Because $c\ge3$, $p\ge2$. The case $m_1=1$ would give
+$k=2$, $\eta=\zeta=1$, $c=2Y+1$, contradicting
+$c\ge2(a+2)\ge4Y+4$. Hence
+\begin{equation}\label{eq:offset-early-c}
+ c>kY\ge4(2XY^2+1)Y>8XY^3\ge8q^9.
+\end{equation}
+This is established before $C>0$, before the source bounds on $R$, and
+before interpreting any recovered transport gap.
+
+\subsection{The affine offset eliminates the exceptional-sign case}
+
+Define the proof-only bound $\widehat R=q^3(q+F+\alpha)$.
+The fixed-mask estimates give unconditionally
+\[
+ |R|<\widehat R.
+\]
+Put $h=F+\alpha\ge2$. Since $q\ge16$,
+\[
+ q^3(q+h)\le q^3(q/2+1)h<q^4h<ch
+\]
+by \eqref{eq:offset-early-c}. Thus
+\[
+ cT_{\rm old}-R=cT+ch-R>cT\ge c,
+ \qquad V>D_fc-c>1.
+\]
+The new auxiliary coordinate is therefore positive at the required point
+of the proof. This is what permits deletion of the predecessor's
+$4qD_f$ exceptional-sign weight.
+
+The same bound $ch>\widehat R$ also gives
+\[
+ 0<cT_{\rm old}-R<c(T+2h),\qquad 0<V<D_fc(T+2h).
+\]
+Moreover,
+\[
+ \delta-(\Delta-1)D_f=\Delta(I^2-1)>0,
+ \qquad c<k(Y+1),\qquad \Delta-1>2(Y+1).
+\]
+The last inequality follows from $a\ge2Y$ and $Y\ge1$. Therefore
+\[
+ 0<y-V=\frac{V^2-1}{\delta(y+V)}<\frac{V}{\delta}
+ <\frac{c(T+2h)}{\Delta-1}<\frac{k(T+2h)}2<k(T+h)=L.
+\]
+Also $f<C_f=(a+2)I$, since $C_f^2-D_f=I^2-1>0$. We conclude
+\begin{equation}\label{eq:offset-small-L}
+ L+C_f+V-f-y>0.
+\end{equation}
+
+Let $s=Y/q^3>0$ and $b=B_t/(q-1)\in\mathbb Z$. The recovered norm
+identity reads
+\[
+ \tau_*+f_*+y_*=\ell+k+n+L+V+C_f+s-Wb.
+\]
+If $b\le0$, its right side is strictly larger than
+$|\tau_*|+|f_*|+|y_*|$, because $|\tau_*|<\ell+k$ and
+\eqref{eq:offset-small-L} holds. Hence $B_t>0$, which forces $C>0$.
+Only now do we invoke the native source bounds $3q<R<q^4-2$.
+
+Set
+\[
+ f_{\rm old}=|f_*|,\quad i_{\rm old}=i,\quad u=|y_*|-V,\quad
+ r=n+L+V+C_f-f_*-y_*.
+\]
+All are positive integers, with $r>n$. They satisfy the weighted source70
+carrier with weight $h_*=L$, its normalized strong norm, its auxiliary
+norm, and its adaptive main norm. That inherited interface is sound for
+every positive integer $h_*$. Its native/compiler and syntactic-refutation
+calibration therefore supplies a finite ZFC refutation.
+
+\subsection{Completeness and the exact cost of the offset}
+
+A finite refutation gives the canonical compact source, with
+$R\equiv3\pmod4$, $R>3q$, $F+\alpha<q$, and the earlier bound on $c$.
+Choose its normalized strong pair $f,I$, $I=ic^2$, and write
+$M_*=\Delta I$. The inherited positive auxiliary reconstruction uses
+\[
+ V_* =\frac{\chi_{M_*}(R)}{M_*},\qquad
+ y_* =\psi_{M_*}(R),\qquad
+ T_{\rm old}=\frac{V_*+c+Rf^2}{cf^2}.
+\]
+It proves the last quantity integral and $y_*>V_*>0$. The stronger bound
+needed for the new offset is elementary. Since $R\ge7$,
+\[
+ V_*\ge M_*^{R-1}\ge M_*^6,\qquad f^2<M_*^2,\qquad M_*\ge c^2,
+\]
+and hence
+\[
+ T_{\rm old}>\frac{V_*}{cf^2}>\frac{M_*^4}{c}\ge c^7>q>F+\alpha.
+\]
+Thus $T=T_{\rm old}-F-\alpha>0$ is integral. No new cofinality assumption
+or congruence on the strong Pell pair has been introduced.
+
+The same growth also proves $T_{\rm old}>C_f$: because $I\ge c^2$,
+\[
+ T_{\rm old}>\frac{M_*^4}{c}=\Delta^4I\frac{I^3}{c}>(a+2)I=C_f.
+\]
+After these choices compute $L,W$. We have $L=kT_{\rm old}>C_f$ and
+$L>k$. The canonical transport has $t_0=B_t/(q-1)\ge q$, $s<k$, and
+$\tau>\ell$, so
+\[
+ r=Wt_0+\tau-\ell-k-s>qW-2k>2L.
+\]
+Consequently
+\[
+ n=r-L-V_*-C_f+f+y_*=r-L-C_f+f+(y_*-V_*)>0.
+\]
+This makes $\overline Z=M(\tau+f+y_*)$ and $N_8=0$; the inherited
+adaptive carrier supplies positive $\gamma$ and $A_1=0$. Completeness
+is proved on canonical witnesses, which is exactly what an existence
+equivalence requires.
+
+Both residuals are squares modulo four. Thus the factorization
+\[
+ 1+P_{11}=(1+N_8)(1+A_1)
+\]
+shows $P_{11}=0$ if and only if $N_8=A_1=0$: a negative unit would
+require a residual $-2$, impossible modulo four.
+
+\subsection{Exact degree and verification}
+
+The degree audit uses an exact universal double-center identity. For
+independent variables $z,a,b,c,e,f$, set
+\[
+ x=z+b+c,\quad B=b^2-e,\quad C=c^2-f,\quad
+ N_c^\circ=(x^2-a-B-C)^2-4(aB+aC+BC),
+\]
+\[
+ N^\circ=(N_c^\circ)^2-64aBCx^2.
+\]
+Give $(z,a,b,c,e,f)$ the weights $(8,16,11,22,18,26)$.
+Exact expansion, recorded in a $229$-term certificate, gives
+\[
+ [N_c^\circ]_{63}=8bc^2z,\qquad
+ [N^\circ]_{126}=64b^2c^4(z^2-a).
+\]
+Substitute
+\[
+ z=\overline Z-MV-MC_f,\quad a=A,\quad b=MC_f,\quad c=MV,
+\]
+\[
+ e=M^2(I^2-1),\qquad f=-\frac{M^2(V^2-1)}\delta.
+\]
+These are exact because $C_f^2-D_f=I^2-1$ and
+$(MV)^2-C_{\rm num}/\delta=-M^2(V^2-1)/\delta$. Multiplication by
+$\delta^2$ and $\delta^4$ gives the actual inner and outer norm.
+The power of $f$ is at most four, so the cleared identity is polynomial.
+Since $\deg\delta=18$, the exact residual degrees are
+\[
+ \deg N_c=99,\qquad \deg N_8=198,\qquad\deg A_1=13,
+ \qquad\deg P_{11}=211.
+\]
+
+For an attained-degree certificate on the actual fixed tuple, put
+\begin{align*}
+ q_0&=3\beta j,\qquad k_0=\eta+\zeta,\qquad I_0=ik_0^2Y^2,\\
+ D_{f,0}&=X^2Y^2I_0^2,\qquad Q_0=X^4Y^4I_0^2,\qquad C_{f,0}=XYI_0,\\
+ L_0&=k_0(T+F+\alpha),\qquad\ell_0=Xk_0Y^2,\qquad R_0=q_0^3(q_0-F),\\
+ B_{t,0}&=(K_0q_0+X)(q_0-F-\alpha)-q_0F.
+\end{align*}
+Then
+\begin{align*}
+ [N_8]_{198}&=64Q_0^4q_0^{32}D_{f,0}^4R_0^4C_{f,0}^2
+                 L_0B_{t,0}(L_0B_{t,0}-2\ell_0),\\
+ [A_1]_{13}&=32q_0^2k_0X^2Y^4(4q_0^2Y\gamma+R_0).
+\end{align*}
+The coefficient of
+\[
+ j^{48}i^{18}\eta^{39}X^{30}Y^{67}T^2F^4\alpha^2\gamma
+\]
+is $2^{13}(3\beta)^{48}>0$, independently of $K_0,M_C,M_F$.
+The literal graph has $64$ multiplications, $31$ additions, and $17$
+subtractions. Scalar multiplication and squaring are charged; fixed
+numeral leaves and register reuse are free. The two-residual system has
+$109$ operations, and the single equation has $112$.
+
+The separate exact audit checks every named polynomial contract, the exact
+double-center cancellation, the eight-conjugate identity, radical-extraction
+identities, the attained leading coefficient, liveness, and operation
+counts. The complete compact44 payload is verified and independently
+reconstructed from its finite recipe. Normal and optimized Python runs
+pass with explicit checks.
+
+Combining soundness and completeness with the named inherited source
+proves the ordinary mathematical consistency equivalence on the stated
+positive domain. It does not lower the existing nine-positive variable
+count, prove global minimality, or provide a new end-to-end formal
+calibration. The new content is the offset, the resulting early sign
+argument, its canonical completeness proof, and the degree-$211$ endpoint.
+

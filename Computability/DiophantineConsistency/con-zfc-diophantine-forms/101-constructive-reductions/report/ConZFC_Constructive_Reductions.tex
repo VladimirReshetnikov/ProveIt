@@ -1,0 +1,452 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Smaller Diophantine Equations for ZFC Consistency},pdfauthor={ChatGPT, prepared for Vladimir Reshetnikov},pdfsubject={Explicit polynomial reductions, exact certificates, and proof dependencies}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Con}{Con}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[1]
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine equations for ZFC consistency}
+\fancyhead[R]{\small Constructive reductions}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Smaller Diophantine Equations\\for ZFC Consistency}\\[5mm]
+\large Four-root separation, normalized radix positions,\\and direct certificates with recovered domains}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+\small AI-assisted research by ChatGPT; proofs and exact artifacts supplied for review}
+\date{23 October 2026\\\small Comparison snapshot: \texttt{7e533c33819ee1f703b69f2778a767cdc069940d}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We give seven explicit ordinary Diophantine polynomials, each with a
+two-way existence reduction to a fixed syntactic refutation predicate for
+ZFC. The principal unrestricted-integer proposal uses fourteen unknowns,
+has exact degree 540, and admits a 160-operation arithmetic circuit. A
+147-operation companion has degree 568. Three positive-domain equations
+retain nine unknowns while improving their immediate predecessors in
+degree and circuit length; the shortest has 420 operations. A separate
+direct proof-calculus construction gives a quartic in 495 nonnegative
+unknowns. Recovering most coordinate signs from its own equations reduces
+the unrestricted-integer lift to 977 unknowns, with 24,632 explicitly
+listed monomials and coefficient height 83,869,250.
+
+The new arguments are ordinary mathematical proofs composed with pinned
+ProveIt calibration theorems. Exact finite checks reconstruct coefficients,
+replay transformations, establish degree certificates, and reject
+corrupted data. We supply neither a new end-to-end proof-assistant theorem
+nor an object-language ZFC proof file. No global minimality or historical
+priority is claimed. The contribution is a reproducible improvement of
+several distinct measures within the inspected repository, together with
+structural ideas that can be developed further.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The result and what ``simplest'' measures}
+\label{sec:overview}
+
+An ordinary Diophantine equation is a polynomial equation with fixed
+integer coefficients. Its unknowns range over a specified integer domain.
+Every exponent in such a polynomial is a fixed nonnegative integer; a
+variable exponent, factorial, or binomial symbol cannot remain as a
+primitive in the final equation. All seven delivered artifacts meet this
+requirement. Registers in the compact formulas denote polynomial
+abbreviations. They are not extra existential unknowns.
+
+There are several conflicting measures of simplicity: the number of
+unknowns, total degree, arithmetic-circuit length, coefficient magnitude,
+and the size of the correctness argument. A circuit can be very short
+while referring to large fixed coefficients. An expanded quartic can have
+modest coefficients while needing many variables. The same distinction
+underlies the study of universal variable--degree pairs
+\cite{bayer}, although the present problem concerns a single fixed
+consistency instance rather than a universal family.
+
+\begin{table}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrl}
+\toprule
+Equation & Domain & Unknowns & Exact degree & Further measure\\
+\midrule
+Boundary, simple & $\mathbb Z_{>0}$ & 9 & 1,472,168 & 420 operations\\
+Boundary, complete & $\mathbb Z_{>0}$ & 9 & 997,810 & 1,057 operations\\
+Compact, simple & $\mathbb Z_{>0}$ & 9 & 1,626,248 & 428 operations\\
+$P_{540}$ & $\mathbb Z$ & 14 & 540 & 160 operations\\
+$P_{568}$ & $\mathbb Z$ & 14 & 568 & 147 operations\\
+$P_{495}$ & $\mathbb Z_{\ge0}$ & 495 & 4 & 15,377 monomials\\
+$P_{977}$ & $\mathbb Z$ & 977 & 4 & 24,632 monomials\\
+\bottomrule
+\end{tabular}
+\caption{The seven delivered polynomials. The domain is part of each claim.}
+\label{tab:results}
+\end{table}
+
+For unrestricted integer variables with moderate degree and a short
+formula, our main proposal is $P_{540}$. Its lower-operation companion
+$P_{568}$ provides a useful alternative. If positive integers are the
+intended domain, the 420-operation equation is the shortest new evaluator
+in this packet. The compact 428-operation form keeps a smaller fixed
+coefficient tuple. If a direct proof-calculus source and an entirely
+expanded polynomial with moderate coefficients are the priority, use
+$P_{977}$.
+
+The comparison is deliberately specific. At the inspected commit~\cite{proveit},
+incoming fourteen-integer forms included degree 652 with 230 operations,
+degree 696 with 150 operations, and degree 792 with 137 operations. Thus
+$(568,147)$ improves $(696,150)$ in both measurements, and $(540,160)$
+offers a still lower degree. The degree-792 form retains a smaller circuit.
+Other incoming constructions use fewer than fourteen unrestricted
+integers, at much higher degree. The new fourteen-variable equations are
+not variable-count records.
+
+The direct comparison is particularly large: the synchronized parent has
+a quartic lift in 2,088 unrestricted integers. Our final lift has 977,
+a reduction of 1,111 variables, or approximately $53.2\%$. Its coefficient
+height is also slightly smaller, and the quartic degree is unchanged.
+These numbers compare actual collected equations under the same domain,
+not a natural-domain equation against an integer-domain one.
+
+\subsection{The precise logical claim}
+
+Fix the repository's sealed recursive presentation of the ZFC axioms and
+its finite first-order derivation predicate. Write
+\[
+ \Con(\mathrm{ZFC})\equiv
+ \neg\exists p\in\mathbb N\;
+       \operatorname{Refutation}_{\mathrm{ZFC}}(p).
+\]
+This notation concerns syntactic consistency. It is not an assumption
+that every theorem of ZFC is true in an intended universe.
+
+\begin{theorem}[Ordinary consistency equivalence]
+\label{thm:main}
+For each delivered polynomial $P$ and its domain $D^n$ in
+Table~\ref{tab:results}, the new reductions and the named inherited
+calibration theorems give an ordinary proof formalizable in ZFC of
+\[
+ \exists\mathbf x\in D^n\;P(\mathbf x)=0
+ \quad\longleftrightarrow\quad
+ \exists p\in\mathbb N\;
+       \operatorname{Refutation}_{\mathrm{ZFC}}(p).
+\]
+Consequently,
+\[
+ \boxed{\mathrm{ZFC}\vdash
+  \bigl(\nexists\mathbf x\in D^n:\ P(\mathbf x)=0\bigr)
+        \longleftrightarrow\Con(\mathrm{ZFC}).}
+\]
+\end{theorem}
+
+The proof is compositional: Sections~\ref{sec:crt14},
+\ref{sec:radix-origin}, \ref{sec:projected-direct}, and
+\ref{sec:frame-domain} prove the new existence equivalences;
+Section~\ref{sec:dependencies} identifies the imported endpoints. None of
+these implications assumes consistency. In particular, the theorem does
+not assert the absence of solutions. A proof of that further assertion
+inside ZFC would also prove its consistency; the present biconditional
+does not supply such a proof.
+
+\subsection{Three ideas responsible for the improvements}
+
+\paragraph{Separate the guard before combining radicals.}
+The fourteen-integer equation keeps one square-root witness explicit.
+Only four Pell radicals remain in the norm. Their magnitudes already
+admit a strict superincreasing order under a weak scale hypothesis.
+That observation removes a large auxiliary amplifier. Rational extraction
+can therefore precede the CRT argument that restores the stronger cubic
+scale. Centering the norm around polynomial root approximations gives
+the degree-540 form.
+
+\paragraph{Use the units digit of the coefficient layout.}
+The positive nine-variable interface does not require an empty radix
+position zero. A uniform origin translation preserves every source
+coefficient identity, lowers the convolution height, and permits a new
+exact population-count calibration. Shared powers then shorten the
+literal evaluator. This is a reduction in a valid encoding, not merely a
+change in the formatting of a polynomial.
+
+\paragraph{Recover domains from the arithmetic certificate.}
+The direct quartic already forces most of its coordinates to be
+nonnegative. The common Pell frame supplies additional signs using only
+ordered-ring inequalities, before invoking its stronger power semantics.
+Only 170 coordinates need explicit nonnegativity representations.
+Applying signed eliminations afterward yields the 977-integer equation.
+This order prevents the usual independent representation of every
+natural coordinate from dominating the variable count.
+
+\input{../integer14/report_section.tex}
+\input{../nine/report_section.tex}
+\input{../direct/report_section.tex}
+
+\section{Logical dependencies and reproducibility}
+\label{sec:dependencies}
+
+\subsection{The direct branch reaches consistency without a machine run}
+
+The direct source is the numerical calculus $C_{222}$, with distinguished
+contradiction code one. Two inherited theorems identify its consistency
+meaning~\cite{calibration}. In the retained source, the first theorem is
+\begin{quote}\small\ttfamily
+KEndpoint.c222\_iff\_zf\_refutation
+\end{quote}
+and states that derivability of the distinguished code in $C_{222}$ is
+equivalent to a finite ZF refutation. It appears before the
+machine-parameter section of \texttt{KEndpoint.lean}; it has no machine,
+tape, simulation, boot, coverage, or halting premise. Its upper direction
+uses the interpretation of the numerical rules, and its lower direction
+uses the established semantic completeness chain of the calculus.
+
+The second theorem is
+\begin{quote}\small\ttfamily
+ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation.
+\end{quote}
+Its forward implication uses theory inclusion. Its reverse implication
+uses the constructible model of a model of ZF, together with first-order
+soundness and completeness. These are the inherited ordinary calibration
+results needed for the direct polynomial. Their complete immediate
+declaration files and their exact source hashes are retained under
+\path{direct/provenance/upstream/calibration/}.
+
+The retained calibration revision is
+\texttt{08200eb10fde2db408c69dffd840d6920a569b1f}. This is intentionally
+distinct from the comparison snapshot in the title: the incoming parent
+pinned those earlier theorem bodies, and this packet preserves its pins
+instead of silently replacing them with a later branch. The ordinary CRT,
+binomial, factorial, power, and shared-frame proofs are also retained.
+
+Thus the direct branch encodes derivations in a numerical calculus and
+does not simulate K215 or substitute parameters into Jones's universal
+polynomial. Some files in the inherited Lean import graph also support
+machine constructions. No claim is made that the entire import graph is
+free of machine-related modules.
+
+\subsection{The compact branches preserve their native calibrations}
+
+The fourteen-integer branch retains the coherent source-34/source-71
+coefficient tuple and its signed native kernel, ordinary compiler
+calibration, and K215/refutation endpoint. The new proof establishes a
+two-way existence equivalence to that kernel, including the restoration
+of its strong variables. The six fixed coefficient values are finite
+literal integers in the packet. Their finite reconstruction is checked;
+their semantic interpretation comes from the inherited compiler proof.
+
+The nine-variable branch likewise keeps its two coherent native tuples
+separate: the original31 \texttt{gapN86} source and the compact54
+\texttt{gapNq85} source. It imports the positive sparse-carry encoding,
+the numerical ratio theorem, the saturated ProductPell theorem, and the
+native source/refutation calibration. The new proof checks the exact
+premises affected by the origin shift and recalibrates the threshold;
+it does not infer those unbounded implications from a few sampled values.
+
+The conversion from a nonnegative integer to three integer witnesses is
+classical. For $x\in\mathbb Z$, the exact characterization
+$(\exists u,v,w\in\mathbb Z:\ x=u^2+v^2+w^2+w)\Longleftrightarrow x\ge0$
+is also recorded in the
+Archive of Formal Proofs formalization of the three-square theorem
+\cite{three-squares}. Here it is used only after the 170-coordinate domain
+recovery theorem has been established.
+
+\subsection{Four distinct levels of evidence}
+
+It is useful to separate what has actually been delivered.
+\begin{enumerate}
+ \item \textbf{Explicit equations.} All seven final polynomials are
+ literally determined. The large-coefficient forms have acyclic circuits
+ and materialized fixed leaves. Both quartics have complete expanded
+ coefficient lists as well as quadratic sum-of-squares presentations.
+ \item \textbf{Ordinary mathematical proofs.} The article proves the
+ new source changes, guard and radical arguments, domain recovery, and
+ witness restorations. The retained sources state the precise inherited
+ semantic calibrations used in composition.
+ \item \textbf{Exact finite certificate checks.} Independent arithmetic
+ implementations check relevant identities, source layouts, leading
+ terms, sign implications, contractions, and collected coefficients.
+ Rebuilding recovers the delivered equation files byte for byte.
+ \item \textbf{Formal proof artifacts.} Existing pinned Lean declarations
+ are retained as dependencies. This work has not built a new kernel-checked
+ theorem for the seven final polynomials or exported a derivation in the
+ sealed object-language ZFC system. Those remain concrete formalization
+ tasks, not claims supported by the Python checks.
+\end{enumerate}
+
+The internal mathematical reviews in the packet were conducted by separate
+AI work streams. They are useful adversarial checks of the construction,
+not external peer review. The finite verifiers themselves are short
+ordinary programs and remain subject to inspection; their rejection
+controls exercise actual failure paths, including when Python assertions
+are disabled.
+
+\subsection{Reproduce all finite results}
+
+Python's standard library is sufficient. From the extracted packet root,
+run
+\begin{Verbatim}[fontsize=\small]
+python3 verify_all.py --output verification/rechecked.json
+python3 -O verify_all.py --output verification/rechecked_O.json
+\end{Verbatim}
+The driver copies the three components to a temporary directory, checks
+the delivered artifacts before rebuilding them, and compares all
+reconstructed final equations with the original bytes. It leaves the
+delivered equation and certificate files unchanged. The two recorded root
+receipts are \path{verification/ROOT_NORMAL.json} and
+\path{verification/ROOT_OPTIMIZED.json}.
+
+The finite checks include the following substantive obligations:
+\begin{itemize}
+ \item All 495 coefficients of the four-root norm, four exact root-defect
+ identities, both degree-leading forms, all six fixed coefficient values,
+ and the literal fourteen-variable circuits.
+ \item All 22 source extraction identities for each positive packing,
+ including absent monomials; 20,466 and 22,450 convolution interactions;
+ all eight native coefficient ports; and 54 or 55 exact register identities
+ per final nine-variable circuit.
+ \item The complete 36,309-term positivity certificate for the full
+ radical majorant and the cancellation-resolved degree calculation.
+ \item The direct source constructor identities, both majorants, arithmetic
+ certificate interfaces, 328 nonnegative contractions, and the full
+ quartic expansion.
+ \item The 170-guard sign certificate, 1,535 raw coordinate restorations,
+ 1,243 gate bindings, the common frame and power identities, 28 signed
+ integer contractions, and all 24,632 final quartic coefficients.
+ \item Rejection after a guard, gate operand, pivot orientation, frame
+ conclusion, modulus identity, restoration coefficient, or expanded
+ coefficient is corrupted.
+\end{itemize}
+Finite modular comparisons retained by the fourteen-variable audit are
+transcription diagnostics. They are not substituted for exact symbolic
+identities, degree arguments, or unbounded semantic proofs.
+
+\section{Repository integration and next mathematical targets}
+\label{sec:next}
+
+\subsection{Files to treat as authoritative}
+
+The root \texttt{README.md} maps each construction to its literal file.
+For $P_{540}$ and $P_{568}$ use the JSON circuits immediately under
+\path{integer14/}; for the three nine-variable forms use
+\path{nine/equations/}. The natural quartic is
+\path{direct/equations_v3/cap64/equation.json}, and the integer quartic is
+\path{direct/integer977/equation.json}. Each quartic directory also contains
+\texttt{expanded\_polynomial.json}. The accompanying schema note specifies
+coefficient signs, variable indices, fixed leaves, and monomial conventions.
+
+The archive keeps original source notices and the repository's MIT No
+Attribution license. The comparison ledger records the inspected main
+commit, incoming archive names, Git object identifiers, and downloaded
+SHA-256 values. Original archive filenames containing a later date have
+not been renamed. The packet-wide SHA-256 manifest binds the final files;
+it is an integrity record, not a mathematical proof.
+
+No existing numbered repository construction is silently replaced. A new
+entry should state the domain and all selected size measures explicitly.
+The word ``simpler'' should be qualified by those measures. In particular,
+the 420-operation original31 form uses a larger native coefficient tuple
+than the 428-operation compact54 form. Keeping both makes that choice
+visible instead of hiding the coefficient cost in fixed leaves.
+
+\subsection{Research questions made concrete by this packet}
+
+\paragraph{Can the four-root mechanism keep thirteen variables?}
+The gain at fourteen variables comes from retaining the guard root.
+Reabsorbing it without reintroducing the removed amplifier is a precise
+target. Any proposed fifth-root fusion must handle dependent square
+classes and both branches $cT-R=0$ and $cT-R\ne0$; a generic norm identity
+alone will not establish rational extraction.
+
+\paragraph{Can a better center reduce degree below 540?}
+The exact defect identities explain which factors remain expensive.
+They provide a starting point for a systematic search over polynomial
+root approximations. A candidate center must retain the CRT congruences,
+integrality of the final witness, and control of exceptional branches.
+Degree estimates must be resolved after cancellation on the authentic
+fixed-coefficient slice.
+
+\paragraph{Can source layout and evaluator be optimized jointly?}
+The uniform radix shift is maximal in its restricted class. That leaves
+nonuniform weight changes, target changes, source row transformations,
+and globally shared addition chains. A useful search objective is the
+actual final circuit and degree, with coefficient bytes reported alongside
+them. Optimizing convolution height alone can miss an evaluator saving.
+
+\paragraph{How few signs really need guards?}
+The set of 170 guards is sufficient, not proved minimal. A smaller seed
+set for the present sign rules, additional multi-row inequalities, or
+stronger frame consequences may save more variables. The explicit
+certificate separates discovery from verification, so a heuristic search
+may propose guards while an independent checker establishes the result.
+The final count should be measured after signed contractions, since a
+guard's cost can depend on the resulting elimination opportunities.
+
+\paragraph{Can the direct source be reduced before arithmetic compilation?}
+The successful projection removes deterministic labels before applying
+CRT. Further source changes should preserve exact parameter dependencies,
+the finite-tree completeness argument, and the carrier coefficient bound.
+Sharing expressions across mutually exclusive rule branches may give
+additional savings without changing the underlying numerical calculus.
+
+\paragraph{Can the whole endpoint be checked in one proof kernel?}
+A particularly valuable next deliverable would connect the emitted
+literal quartic, its coefficient expansion, the domain certificate, and
+the inherited $C_{222}$ consistency endpoint in a single kernel-checked
+theorem. The certificate formats and pinned declarations in this packet
+make that task specific. It requires formalizing the universal arguments,
+not merely embedding successful Python exit codes in a theorem statement.
+
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{proveit}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt: Hilbert's tenth problem, Diophantine consistency forms,
+and incoming proposals.}
+Comparison commit \texttt{7e533c33819ee1f703b69f2778a767cdc069940d}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/7e533c33819ee1f703b69f2778a767cdc069940d/docs/incoming}.
+The accompanying comparison ledger records individual archive hashes.
+
+\bibitem{calibration}
+ProveIt contributors.
+\emph{KEndpoint and ConstructibleChoice calibration sources.}
+Retained revision \texttt{08200eb10fde2db408c69dffd840d6920a569b1f}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/08200eb10fde2db408c69dffd840d6920a569b1f/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean}.
+Exact immediate copies and SHA-256 pins are included in the packet.
+
+\bibitem{three-squares}
+Anna Danilkin and Lo\"ic Chevalier.
+\emph{Three Squares Theorem.}
+Archive of Formal Proofs, 3 May 2023.
+\url{https://isa-afp.org/entries/Three_Squares.html}.
+
+\bibitem{bayer}
+Jonas Bayer, Marco David, Malte Ha\ss ler, Yuri Matiyasevich, and
+Dierk Schleicher.
+\emph{Diophantine equations over $\mathbb Z$: universal bounds and
+parallel formalization.}
+arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/html/2506.20909v3}.
+
+\end{thebibliography}
+\end{document}

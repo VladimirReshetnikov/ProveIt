@@ -1,0 +1,83 @@
+\section{The exact numerical calculus encoded by the source}
+
+The local source uses the numerical calculus $C_{222}$, independently of
+any machine that enumerates it.  Its primitive codes are the following
+ordinary nonnegative polynomials:
+\begin{align*}
+ I(a,b)&=2(a+b)(a+b+1)+4b,\\
+ M(a,b)&=I(a,b)+1,& A(a,b)&=I(a,b)+2,& E(a,b)&=I(a,b)+3,\\
+ N(a)&=I(a,1),& X(a,b)&=N(A(a,N(b))).
+\end{align*}
+They are, respectively, the repository's implication, membership,
+universal quantification, equality, negation, and existential-quantification
+codes.  The falsity code is $1$, and the free truth code is $0$.
+
+The eight unconditional axiom codes are
+\begin{align*}
+ r_1(a,b)&=X(a,E(a,b)),\\
+ r_2(a,b,c)&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+ r_3(a,b,c)&=I(E(a,b),I(M(c,a),M(c,b))),\\
+ r_4(a,b,c)&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+ r_5(a,b,c)&=I(E(c,a),I(M(c,b),M(a,b))),\\
+ r_6(a,b)&=I(X(a,A(a,b)),b),\\
+ r_G(a,b,c)&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+ r_8(a,b,c,d)&=I(I(I(c,d),a),I(I(a,c),I(b,c))).
+\end{align*}
+The guarded seed bundle is also a fixed composition of these polynomials.
+To state it without a long nested line, define
+\begin{align*}
+ R(b,k,h)&=A(b,I(h,N(A(b,I(h,N(M(b,k))))))),\\
+ S(a,b,k)&=A(k,I(M(k,a),M(k,b))),\\
+ C_0(a,b,k,h)&=I(S(a,b,k),R(b,k,h)),\\
+ C_1(a,b,k,h)&=N(A(a,C_0(a,b,k,h))),\\
+ C_2(a,b,k,h)&=N(A(a,I(h,C_1(a,b,k,h)))),\\
+ C(a,b,k,h)&=A(b,I(M(b,k),C_2(a,b,k,h))),\\
+ V(a,b,c)&=I(M(a,b),A(c,M(a,b))),\\
+ K(a,b,c)&=A(c,I(C(a,b,c,c),N(R(b,c,c)))),\\
+ \mathcal B(a,b,c)&=N(I(V(a,b,c),K(a,b,c))).
+\end{align*}
+The bundle is an axiom when $c\ne a$ and $c\ne b$.  These conditions
+are represented using one natural witness $d$ by
+\[
+ (c-a)^2(c-b)^2-(d+1)^2=0.
+\]
+Existence of such $d$ is equivalent to the two disequalities: in the
+forward direction the product cannot be zero, and in the reverse direction
+take $d=|(c-a)(c-b)|-1$.
+
+There are precisely twelve branches in the padded two-premise relation:
+truth $(p,q,v)=(0,0,0)$; each of the eight unconditional axiom instances
+with $p=q=0$; the guarded bundle with $p=q=0$; modus ponens
+$q=I(p,v)$; and generalization $q=0$, $v=A(a,p)$.
+The four natural schema coordinates $a,b,c,d$ are shared across this
+finite disjunction.  Their values need satisfy only the chosen branch.
+
+\paragraph{An exact arithmetic audit, beyond random replay.}
+The supplementary script \nolinkurl{audit_calculus.py} independently
+implements the displayed formulas and compares them with the delivered
+source by sparse-polynomial arithmetic.  A composite expression is replaced
+by a source wire name only after its coefficient dictionary equals that
+wire's defining polynomial exactly.  In this way it recognizes all fifty-six
+branch-specific wire definitions and verifies all thirty-four remaining
+source residuals.  Each replacement is a finite ring identity.  This
+checks the arithmetic translation compositionally, without expanding the
+very large nested bundle polynomial and without treating a finite random
+sample as an identity proof.
+
+The direct comparison is against
+\nolinkurl{Code254.lean} and \nolinkurl{KCode222.lean} at the pinned repository
+commit.  The semantic dependencies are then
+\[
+ C_{222}(1)
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\mathrm{ZF},\bot)
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\mathrm{ZFC},\bot).
+\]
+The named repository theorems are
+\nolinkurl{KEndpoint.c222_iff_zf_refutation} and
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The latter uses the constructible-universe proof that ZF and ZFC are
+equiconsistent.  The current construction inherits those mathematical
+calibration results.  It does not claim to have rechecked their full Lean
+dependency closure, and the new compiler is not itself a Lean proof.

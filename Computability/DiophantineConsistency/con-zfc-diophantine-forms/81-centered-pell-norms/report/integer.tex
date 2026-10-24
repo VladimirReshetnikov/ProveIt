@@ -1,0 +1,278 @@
+\section{The main equation: twenty-three unrestricted integers}
+\label{sec:integer}
+
+\subsection{Fixed numerals and the complete polynomial}
+
+Use the coherent source-34 tuple, named
+\texttt{mixed-parity-unrounded-1064921}, together with source 71's two
+determinant scales:
+\[
+ \beta=2^{1064921}-1,\qquad A_0=2^{1113},\qquad B_0=2^{666104}.
+\]
+The remaining three native numerals are $K_0,M_C,M_F$. Their complete
+integer bytes, their hashes and their native binding are in
+\texttt{integer/coefficients/BINDING.json} and its six payloads.
+$M_F$ is the already shifted source mask. These symbols are fixed
+coefficients, not unknowns. They are the exact integers of the pinned
+source, not arbitrary integers satisfying some inequalities.
+
+The twenty-three unknowns, all unrestricted integers, are
+\begin{equation}
+ J,F,\alpha,f,h,r,v,\tau,\eta,y,\gamma,o,j,E,c,a,I,u,Z,t,p_1,p_2,p_3.
+ \label{eq:vars23}
+\end{equation}
+In the data files, $v,t,p_1,p_2,p_3$ are named
+\texttt{v\_scale}, \texttt{pair\_root}, and
+\texttt{pair\_pos1}, \texttt{pair\_pos2}, \texttt{pair\_pos3}.
+Define only polynomial abbreviations:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,&Y&=a-E,\\
+ H&=4a+3,&\Delta&=a^2+H,&X&=4qu^2,\\
+ D&=X+ac+\gamma H,&V&=fo-c,&k&=1-V+jc+hE,\\
+ \zeta&=k-\eta,&\Pi&=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{align*}
+Also put
+\begin{align*}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)J,\\
+ G&=(A_0F)(B_0C)-(q-A_0F-B_0C)^2.
+\end{align*}
+The eleven residuals are
+\begin{align}
+ r_1&=Y-(2v+1)q^3,\nonumber\\
+ r_2&=E-XY,\nonumber\\
+ r_3&=c-\eta-kY,\nonumber\\
+ r_4&=\tau^2+(2\tau-k)E(c-\eta)-1,\nonumber\\
+ r_5&=D^2-\Delta c^2-1,\nonumber\\
+ r_6&=jc-V-R,\nonumber\\
+ r_7&=(K_0q+X)C-qF-Z(q-1),\nonumber\\
+ r_8&=I-(2r+1)c^2,\nonumber\\
+ r_9&=I^2-\Delta(f^2-1),\nonumber\\
+ r_{10}&=y^2+I^2(V^2-y^2)-1,\nonumber\\
+ r_{11}&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2-\Pi.
+ \label{eq:23residuals}
+\end{align}
+The proposed single Diophantine equation is
+\begin{equation}
+ \boxed{\displaystyle P_{23}=\sum_{\nu=1}^{11}r_\nu^2=0,
+ \qquad\mathbf x\in\Z^{23}.}
+ \label{eq:P23}
+\end{equation}
+All abbreviations are to be substituted; none introduces another
+existential coordinate. Every exponent involving an unknown is fixed.
+The companion JSON circuit evaluates precisely this polynomial in
+122 live binary arithmetic operations.
+
+\begin{theorem}[The 23-integer reduction]
+The polynomial \eqref{eq:P23} has exact total degree twelve.
+Its integer solvability is equivalent to the existence of a finite ZFC
+refutation through the pinned native/compiler calibration of
+sources 64, 71 and 75. Consequently its unsolvability has the consistency
+interpretation \eqref{eq:target}, with the proof boundary stated in
+Section 1.
+\end{theorem}
+
+We prove the new parts in detail, and specify the inherited interface at
+the point where it is used.
+
+\subsection{One certificate for two positive quantities}
+
+For integers $b_1,b_2,b_3$ put
+\[
+ \Pos(b_1,b_2,b_3)=1+b_1^2+b_2^2+b_3(b_3+1).
+\]
+This is always strictly positive. Conversely every positive integer $n$
+has this form: $4n-3$ is positive and congruent to $1$ or $5$ modulo $8$,
+so Legendre's three-square theorem applies. Modulo $4$, exactly one of
+the three squares is odd. Writing its root as $2b_3+1$ and the other two
+as $2b_1,2b_2$ proves the assertion.
+
+\begin{lemma}[Shared positivity, source 68]
+\label{lem:shared}
+For integers $x,y$, one has $x>0$ and $y>0$ if and only if there are
+integers $t,b_1,b_2,b_3$ such that
+\begin{equation}
+ xy-(t^2-x-y+1)^2=\Pos(b_1,b_2,b_3).
+ \label{eq:pair}
+\end{equation}
+\end{lemma}
+\begin{proof}
+If the left side is positive, then $xy>0$. Both numbers therefore have
+the same nonzero sign. They cannot both be negative: writing
+$x=-a,y=-b$, with $a,b\ge1$, makes the subtracted square at least
+$(a+b+1)^2>ab$.
+
+Conversely suppose $x,y\ge1$ and set $N=x+y-1$. Then
+$xy-N=(x-1)(y-1)\ge0$. Let $m=\lfloor\sqrt N\rfloor$. Choose $t=m$
+if $N-m^2\le m$, and $t=m+1$ otherwise. If $N$ is a square the error
+is zero. Otherwise $|t^2-N|\le m$ and $m^2<N$, so
+$(t^2-N)^2<N\le xy$. The resulting positive difference has a
+$\Pos$ representation. The square root and floor select witnesses in
+the proof; they are not operations in the polynomial.
+\end{proof}
+
+Apply this to $x=G$, $y=\eta\zeta$. The final row in
+\eqref{eq:23residuals} therefore enforces exactly
+\[
+ G>0,\qquad\eta\zeta>0.
+\]
+It uses four private coordinates instead of the six needed by two
+independent three-square representations. The equivalence holds for every
+integer assignment, including assignments with a negative radix.
+
+\subsection{The determinant and its canonical calibration}
+
+Set $U=A_0F$ and $W=B_0C$. If $G=UW-(q-U-W)^2>0$, then $U,W$ have
+one common nonzero sign and
+\[
+ |q-U-W|<\sqrt{UW}\le\frac{|U|+|W|}{2}.
+\]
+It follows that $q$ has that common sign and
+\[
+ |q|>\frac{A_0|F|+B_0|C|}{2}\ge |F|+|C|.
+\]
+Thus $F,C$ and $\alpha=q-F-C$ all have the same strict sign as $q$.
+In particular $F\alpha>0$ and $FC>0$. A new zero can therefore restore
+the two older native sign guards by independent $\Pos$ representations.
+This implication is elementary and uses no native compiler theorem.
+
+The converse uses canonical witnesses; the determinant is not intended
+to contain every positive source assignment. Source 71 proves that the
+canonical native accepting words for this exact tuple satisfy
+\begin{equation}
+ \frac q2\le A_0F<\frac{4q}{5},\qquad
+ \frac q2\le B_0C<\frac{3q}{5},\qquad q>0.
+ \label{eq:canonicalcone}
+\end{equation}
+Here is the numerical content of that calibration, so its dependence is
+auditable. The native radix is $\rho=2^{121}$ and the cell length is
+8801. Every occupied canonical cell has top $C$ digit $1$ at position
+3296. Its top $F$ digit at position 8791 is
+\[
+ c_0=105534389824824194647382298625,
+ \qquad 2^{96}\le c_0<c_0+1\le3\cdot2^{95}.
+\]
+The carry-free block bounds are
+\begin{align*}
+ \rho^{3296}&\le C_j<(1+1/\rho)\rho^{3296},\\
+ c_0\rho^{8791}&\le F_j<(c_0+1)\rho^{8791}.
+\end{align*}
+The exponent identities
+\[
+ 121\cdot8791+1113=1064921-97,\qquad
+ 121\cdot3296+666104=1064921-1
+\]
+give \eqref{eq:canonicalcone} after summing the canonical cells.
+The full digit-support and carry proof is retained as
+\texttt{integer/upstream/DETERMINANT\_GUARD.md}.
+
+To see that these bounds imply $G>0$, write $s=q/2$,
+$A_0F=s+x$, $B_0C=s+y$. Then $0\le x<3s/5$ and
+$0\le y<s/5$, whence
+\[
+ G=s^2+s(x+y)-(x^2+y^2+xy)>\frac{12}{25}s^2>0.
+\]
+Source 71's bounds explicitly allow the lower dummy digits used to tune
+the rank. Source 75's signed-bootstrap change modifies only its square
+witness and cleared transport quotient, leaving $J,F,C,\alpha$
+unchanged. Thus the canonical determinant and the signed bootstrap apply
+to the same family of witnesses. This compatibility is needed for
+completeness and was checked separately.
+
+\subsection{Restoring the signed source}
+
+Source 75 supplies a forty-integer-variable source with the arithmetic
+constraints $X=4qu^2$ and
+\[
+ (K_0q+X)C-qF-Z(q-1)=0.
+\]
+Its signed Pell argument recovers $X=2^R>0$, $q>0$ and the odd rank
+$R$, without assuming these signs at the start. The transport equation
+then gives $q\mid Z$, restoring the older quotient. Canonical
+completeness has $q=2^s$, with $s$ and $R$ odd and $R-s-2\ge0$,
+so $u=2^{(R-s-2)/2}$ exists. This inherited existential source reduction
+is retained in \texttt{integer/upstream/SIGNED\_BOOTSTRAP.md}.
+
+To restore its literal arithmetic from a zero of $P_{23}$, use
+\begin{align*}
+ L&=q^2-1,&N&=q^3,&P&=k+E(c-\eta),\\
+ C_2&=c^2,&F_2&=f^2,&g&=y^2-V^2,&B_{\rm aux}&=I^2,
+\end{align*}
+together with the abbreviations already displayed and the root shear
+\[
+ \tau_{\rm old}=\tau+E(c-\eta).
+\]
+All these restored coordinates are integer polynomials. The shear is
+exact because, writing $P-k=E(c-\eta)$,
+\[
+ (\tau+P-k)^2-P^2+Pk-1
+ =\tau^2+(2\tau-k)E(c-\eta)-1.
+\]
+Twelve of the signed source's twenty-two arithmetic rows become zero
+polynomial identities; the other ten become $r_1,\ldots,r_{10}$ up to
+sign. The independent audit verifies this entire identity list.
+
+The last row restores $G>0$ and $\eta\zeta>0$ by
+Lemma~\ref{lem:shared}. The determinant then restores the old
+$F\alpha$ and $FC$ sign guards. This gives a signed-source zero and
+therefore a finite refutation by its inherited soundness theorem.
+
+Conversely, a finite refutation supplies canonical signed-source
+witnesses. The determinant is positive on them by
+\eqref{eq:canonicalcone}, and $\eta\zeta>0$. Select the four shared
+positivity witnesses, apply the inverse root shear, and project away the
+monically defined coordinates. Every residual in \eqref{eq:23residuals}
+vanishes. This proves the two existence implications. The determinant
+replacement is an existence equivalence using canonical witnesses;
+the subsequent monic eliminations themselves are bijections of zero sets.
+
+\subsection{Exact degree, not a gate-propagation estimate}
+
+In the displayed order the residual degrees are
+\[
+ 4,4,3,4,6,4,4,3,4,6,6.
+\]
+Their sum of squares has the following complete degree-twelve homogeneous
+part, where every supplied unknown has degree one:
+\begin{equation}
+ \boxed{\lead_{12}(P_{23})=
+ 256\beta^4J^4u^8+I^4f^4o^4
+       +\eta^4(-fo+jc+hE)^4.}
+ \label{eq:leading23}
+\end{equation}
+Indeed the degree-six parts of $r_5,r_{10},r_{11}$ are respectively
+$16\beta^2J^2u^4$, $I^2f^2o^2$, and
+$-\eta^2(-fo+jc+hE)^2$. Every other residual has lower degree.
+In particular
+\[
+ [\eta^4j^4c^4]P_{23}=1.
+\]
+This proves exact degree twelve after the authentic fixed integers are
+substituted. It cannot be invalidated by a specialization relation among
+the coefficient ports.
+
+\subsection{The sextic and octic companions}
+
+The elimination chain also yields useful lower-degree alternatives.
+Starting from source 75's centered 34-variable sextic, replace its two
+native sign guards by the determinant guard. This deletes six private
+unknowns and introduces three, giving a 31-variable, 18-residual sextic.
+Its coefficient $[r^2c^4]=4$ certifies the degree. Its supplied circuit
+has 144 operations.
+
+Eliminate $L=q^2-1$, $\Delta=a^2+4a+3$, and $B_{\rm aux}=I^2$.
+Replace the two remaining positivity representations by the shared
+certificate while retaining $\zeta$ as a coordinate. This gives
+$31-3-6+4=26$ integer unknowns, fourteen residuals, degree eight and
+131 operations. The private monomial $t^8$ has coefficient $1$.
+
+Finally eliminate
+\[
+ \zeta=1-V+jc+hE-\eta,\quad
+ D=4qu^2+ac+\gamma(4a+3),\quad V=fo-c.
+\]
+The first elimination makes the shared guard sextic. The other two make
+the main and auxiliary norms sextic as well, so they cost no further
+increase in the final degree. These are the three eliminations producing
+\eqref{eq:P23}. The retained 25-variable intermediate documents this
+chain, but is dominated by the 23-variable endpoint and is not counted
+as a separate frontier result.

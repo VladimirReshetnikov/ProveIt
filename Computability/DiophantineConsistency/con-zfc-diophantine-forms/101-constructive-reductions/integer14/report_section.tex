@@ -1,0 +1,317 @@
+\section{Four Pell roots: fourteen integers at degrees 540 and 568}
+\label{sec:crt14}
+
+This section gives two ordinary polynomials whose fourteen coordinates all
+range over the unrestricted integers. The first has exact degree $540$ and
+$160$ live binary arithmetic operations; the second has degree $568$ and
+$147$ operations. The fixed coefficient tuple has $615\,883$ raw minimal
+unsigned bytes, with the original six integer payloads retained. Operations
+count shared binary addition, subtraction, and multiplication, including
+multiplication by a fixed constant. A register is a polynomial abbreviation,
+not an additional quantified coordinate.
+
+\subsection{Literal definition}
+
+The variables, in circuit order, are
+\[
+ j,C,z,h,r,v,w,T,c,n,t,p_2,p_3,p_1\in\mathbb Z.
+\]
+Use the six fixed integers of the retained source-34/source-71 tuple:
+\[
+ \beta=2^{1064921}-1,\quad K_0,M_C,M_F,\quad
+ A_{\mathrm c}=2^{1113},\quad B_{\mathrm c}=2^{666104}.
+\]
+Here $M_F$ is already shifted by $\beta$. The exact integer bytes, finite
+machine-and-tile recipe, original licenses, and ordinary calibration texts
+are included in the component's \texttt{upstream/} directory. This tuple is
+larger than some other native tuples in ProveIt; the present determinant
+scales are proved for this whole tuple and are not mixed with another one.
+
+Define
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=qv,&E&=XY,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H.
+\end{align*}
+Then define the transport and rank registers
+\begin{align*}
+ F&=(K_0+W)C-z(q-1),\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J.
+\end{align*}
+Continue with
+\begin{align*}
+ k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta,\\
+ i&=2r+1,&I&=ic^2,&D_f&=1+\Delta I^2,\\
+ Q&=\Delta^2I^2,&\delta&=Q-1,&V&=D_f(cT-R)-c,\\
+ C_y&=QV^2-1,&\ell&=XY^2,&L&=\ell k,\\
+ D_\tau&=1+\ell(\ell+1)k^2,&D_m&=1+\Delta c^2,\\
+ b_0&=X+ac,&F_0&=(a+2)I.
+\end{align*}
+Put
+\begin{align*}
+ \operatorname{Pos}(u_1,u_2,u_3)&=1+u_1^2+u_2^2+u_3(u_3+1),\\
+ G&=(A_{\mathrm c}F)(B_{\mathrm c}C)
+       -(q-A_{\mathrm c}F-B_{\mathrm c}C)^2,\\
+ B&=v^2G\eta\zeta-(t^2-v^2G-\eta\zeta+1)^2
+       -\operatorname{Pos}(p_1,p_2,p_3),\qquad S=B^2.
+\end{align*}
+Let
+\[
+ \mathcal F_{16}(x;A_1,A_2,A_3,A_4)
+ =\prod_{\varepsilon\in\{-1,1\}^4}
+       \left(x-\sum_{j=1}^4\varepsilon_j\sqrt{A_j}\right).
+\]
+Sign invariance makes this an integer polynomial in its displayed
+arguments. Its exact $495$ nonzero coefficients are verified against the
+independent product of the sixteen factors.
+
+For the centered equation define
+\begin{align*}
+ M&=4q^2,&U&=MH,\\
+ Z&=U(n+2V+2L+k+2F_0)+2Mb_0+2H(v-q^2),\\
+ N&=\delta^8\mathcal F_{16}
+   \left(Z;4U^2D_f,4U^2D_\tau,4M^2D_m,\frac{4U^2C_y}{\delta}\right).
+\end{align*}
+\[\boxed{P_{540}=N+S+NS=0.}\]
+The denominator is cleared symbolically; the literal evaluator contains
+only integer polynomial operations. For the shorter companion use instead
+\begin{align*}
+ M&=2q^2,&U&=MH,\\
+ Z&=U(n+V)+Mb_0+H(v-q^2),\\
+ N&=\delta^8\mathcal F_{16}
+ \left(Z;U^2D_f,U^2D_\tau,M^2D_m,\frac{U^2C_y}{\delta}\right).
+\end{align*}
+\[\boxed{P_{568}=N+S+NS=0.}\]
+All other registers remain unchanged.
+
+\subsection{The two guard facts}
+
+For integers $x,y,t$ define
+\[
+ \operatorname{Pair}(x,y,t)=xy-(t^2-x-y+1)^2.
+\]
+Then
+\[
+ (\exists t\in\mathbb Z)\;\operatorname{Pair}(x,y,t)>0
+ \quad\Longleftrightarrow\quad x>0\ \text{and}\ y>0.
+\]
+The forward direction follows because positive Pair forces $xy>0$, whereas
+for $x=-u,y=-v$ with $u,v>0$ its subtracted square is at least
+$(u+v+1)^2>uv$. For the reverse direction set $K=x+y-1$ and choose a
+nearest integer square $t^2$. Between consecutive squares $m^2,(m+1)^2$
+the error is at most $m$, so $(t^2-K)^2<K\le xy$; square endpoints,
+including $K=1$, have zero error.
+
+The polynomial Pos represents precisely the positive integers. Positivity
+is immediate; surjectivity follows from the three-square theorem applied
+to $4n-3$, with one odd and two even square coordinates. Consequently,
+$B=0$ forces $v\ne0$, $G>0$, and $\eta\zeta>0$. Conversely these three
+conditions admit private witnesses making $B=0$.
+
+Since $S=B^2\ge0$, the equation
+\[
+ P=(1+S)(1+N)-1=0
+\]
+forces $S=N=0$: $1+S$ is a positive integer divisor of $1$. No sign
+hypothesis about the norm $N$ is used.
+
+\subsection{Rational extraction before the cubic scale is known}
+
+The front end gives $q\equiv2\pmod6$ and $|q|\ge16$. Also
+$W=4(3w+1)\ne0$, hence $x=|X|\ge64$. When $v=0$ we have $a=0$,
+$H=3$, $\Delta=3$; when $v\ne0$, $m=|Y|\ge16$ and $|a|\ge1008$.
+Thus $H\ne0$ and $\Delta\ge3$ on the entire integer domain.
+The three integer radicands $D_m,D_f,D_\tau$ are positive, the last by
+$\ell(\ell+1)\ge0$.
+
+If $c=0$, then $Q=0$, $\delta=-1$, and $C_y/\delta=1$. If $c\ne0$,
+then $Q\ge9$, $D_f>|c|+1$, and the integer $V=D_f(cT-R)-c$ has
+$|V|\ge1$. Therefore
+\[
+ \frac{C_y}{\delta}=V^2+\frac{V^2-1}{Q-1}\ge1.
+\]
+In particular $\delta$ never vanishes, including all exceptional branches.
+
+At a polynomial zero, the guard supplies $v\ne0$, $G>0$, and
+$\eta\zeta>0$. Write $K=|k|$, $C_0=|c|$. Then $K\ge2$ and
+$0<\eta/k<1$, so
+\[
+ K(m-1)<C_0<K(m+1),\qquad C_0>30.
+\]
+Let $d,f,\tau,y$ be the positive square roots of
+$D_m,D_f,D_\tau,C_y/\delta$, respectively. They satisfy
+\[
+ \frac{d}{|H|}<\frac{C_0}{2},\qquad
+ \tau>2C_0,\qquad f>2\tau.
+\]
+For the first inequality use $H^2-4\Delta=12a^2+8a-3$.
+For the second use
+$K(xm^2-1)<\tau<K(xm^2+1)$.
+For the third,
+\[
+ d>((x-1)m-3)K(m-1)>\frac34\tau,
+ \qquad f>\frac{C_0}{2}d>15d.
+\]
+The middle comparison follows by expanding
+$m^2(x-4)-4m(x+2)+9>0$ for $x\ge64,m\ge16$.
+Also $f>3C_0^2$ and $Q>f^2$.
+
+If $cT-R=0$, then $C_0<y<C_0+1$. Otherwise
+$y>|V|\ge f^2-C_0>2f$. Hence either
+\[
+ f,\tau,y,d/|H|\quad\text{or}\quad y,f,\tau,d/|H|
+\]
+is a strictly superincreasing descending list: every entry exceeds the
+sum of all later entries. For example,
+$y+d/|H|<1.5C_0+1<2C_0<\tau$ in the first case.
+The deleted source amplifier $4H+1$ is unnecessary because the guard root
+is now a separate explicit coordinate, leaving these four roots to separate.
+
+A rational signed sum of positive roots with rational squares and strictly
+superincreasing magnitudes makes every root rational. Indeed, a nontrivial
+Galois automorphism changing at least one radical sign would yield a
+nonempty vanishing signed subsum after subtraction, contradicting the
+largest-term inequality. This argument allows dependent square classes.
+At $N=0$ one conjugate factor vanishes; division by $2U$ in the centered
+case, or $U$ in the companion, gives exactly such a rational sum.
+Thus $d,f,\tau$ are integers.
+
+The auxiliary rational $y$ is also integral. For any integers $Q>1,V$,
+\[
+ QV^2-(Q-1)y^2=1,\quad y\in\mathbb Q
+ \quad\Longrightarrow\quad y\in\mathbb Z.
+\]
+If $y=a/b$ is reduced, then $b^2\mid Q-1$. The transformation
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV
+\]
+preserves the equation and denominator, keeps $V'$ integral, and for
+$V>1$ gives $-V<V'<V$. Here $y>V$ and $(Q-1)y<QV$ give the two
+strict inequalities. The equation excludes $V'=0$. Descent reaches
+$|V|=1$, where $|y|=1$, proving the claim.
+
+\subsection{The congruences and the consistency equivalence}
+
+Absorb the conjugate signs into integer roots. In the centered case their
+relation is
+\[
+ Z=2Md+2U(f+\tau+y).
+\]
+Since $H\equiv3\pmod q$, $q\equiv2\pmod3$, and $H$ is odd,
+$\gcd(H,4q^2)=1$. Reduction modulo $M=4q^2$ yields
+$2q^2\mid v-q^2$, and reduction modulo $H$ yields $H\mid d-b_0$.
+Therefore
+\[
+ v=q^2(2v_{\rm old}+1),\quad
+ Y=(2v_{\rm old}+1)q^3,\quad
+ \gamma=(d-b_0)/H\in\mathbb Z.
+\]
+The companion with $M=2q^2$ gives the same conclusions without the
+factors $2$. No cubic-scale promise was used in the preceding extraction.
+
+These roots, the restored scale, and the two strict guards give the retained
+parent's normalized signed kernel. Its original strong variables can be
+restored explicitly:
+\begin{align*}
+ I_{\rm old}&=\Delta i c^2,& r_{\rm old}&=(\Delta i-1)/2,\\
+ o_{\rm old}&=f(cT-R),&j_{\rm old}&=D_fT-1-R\Delta i^2c^3.
+\end{align*}
+The quotient is integral because $\Delta i$ is odd. Substitution gives
+$I_{\rm old}^2=\Delta(f^2-1)=Q$ and
+$fo_{\rm old}-c=cj_{\rm old}-R=V$. Private old guard witnesses are
+regenerated from $G>0,\eta\zeta>0$.
+
+Conversely, take a normalized source witness, set
+$v=q^2(2v_{\rm old}+1)$, and choose the private guard witnesses by Pair
+and Pos. For the centered equation choose
+\[
+ n=2(\gamma+f+\tau+y-V-L-F_0)-k
+        -\frac{v-q^2}{2q^2}.
+\]
+For the companion choose
+\[
+ n=\gamma+f+\tau+y-V-\frac{v-q^2}{2q^2}.
+\]
+Both are integers and make the selected conjugate factor vanish. Every
+quantity is chosen before $n$, so the construction is not circular.
+
+We have proved an exact two-way existence reduction to the normalized
+kernel. Composing with the parent's explicitly identified ordinary native
+compiler and K215/refutation calibration yields, for $d=540,568$,
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\boldsymbol x\in\mathbb Z^{14}
+              \ P_d(\boldsymbol x)=0\right)
+ \longleftrightarrow\operatorname{Con}(\mathrm{ZFC}).
+\]
+This imports ordinary mathematical theorems and their stated canonical
+completeness. It does not promote finite arithmetic checks into an unbounded
+semantic proof, or supply the separately open encoded-ZFC proof artifact.
+
+\subsection{Exact degrees, including cancellation}
+
+Treat the fixed coefficients as degree zero. For leading parts set
+\begin{align*}
+ q_0&=6\beta j,&W_0&=12w,&X_0&=q_0W_0,&Y_0&=q_0v,\\
+ a_0&=X_0Y_0,&i_0&=2r,&R_0&=q_0^4z-q_0^3W_0C,\\
+ k_0&=R_0+ha_0,&\eta_0&=-Y_0k_0,&Q_0&=a_0^4i_0^2c^4,\\
+ V_0&=-a_0^2i_0^2c^4R_0,&L_0&=X_0Y_0^2k_0,&F_{00}&=a_0i_0c^2.
+\end{align*}
+The degrees of $\delta,U,V,L,F_0,\eta$ are $22,6,19,11,7,7$.
+The guard has top part $-\eta_0^4$, so $S$ has degree $56$ and
+leading part $\eta_0^8$.
+
+For the centered equation use approximate roots
+\[
+ r_y=2UV,\quad r_\tau=U(2L+k),\quad
+ r_f=2UF_0,\quad r_d=2Mb_0,
+ \quad s=Un+2H(v-q^2).
+\]
+The center is their sum plus $s$. The four exact square defects are
+\begin{align*}
+ 4U^2C_y/\delta-r_y^2&=4U^2(V^2-1)/\delta,\\
+ 4U^2D_\tau-r_\tau^2&=U^2(4-k^2),\\
+ 4U^2D_f-r_f^2&=4U^2(1-I^2),\\
+ 4M^2D_m-r_d^2&=4M^2(1+Hc^2-2acX-X^2).
+\end{align*}
+The approximate root degrees are $25,17,13,7$, and the corresponding
+formal square-root correction degrees are at most $3,5,5,4$.
+To justify this calculation, scale every variable by an indeterminate $u$
+and work over the Laurent-series field of the rational function field in
+the original coordinates. Each radicand is an approximate-root square
+times $1$ plus negative-degree terms, so the binomial series supplies its
+formal root with that leading sign. The delivered polynomial uses no series.
+
+Eight conjugate factors have degree $25$, four degree $17$, two degree
+$13$, and the last two degree $7$. For the final two, the leading terms
+are $U_0n$ and $U_0(n+c)$, where $U_0=16q_0^2a_0$.
+The product therefore has degree $308$, and the clearing factor
+$\delta^8$ adds $176$. Thus $\deg N=484$, and
+\[
+ (P_{540})_{540}
+ =2^{28}U_0^{16}Q_0^8V_0^8L_0^4F_{00}^2\eta_0^8 n(n+c).
+\]
+In particular the actual fixed-coefficient slice satisfies
+\[
+ [j^{240}w^{82}v^{94}h^{12}r^{34}c^{68}z^8n^2]P_{540}
+   =2^{530}3^{322}\beta^{240}>0.
+\]
+The selected exponents sum to $540$, proving exact degree.
+
+For the simpler companion only the auxiliary root is centered. Eight
+factors have degree $25$ and eight have degree $17$; the norm has degree
+$8\cdot25+8\cdot17+8\cdot22=512$. Now $U_0=8q_0^2a_0$, and
+\[
+ (P_{568})_{568}=2^8U_0^{16}Q_0^8V_0^8L_0^8\eta_0^8.
+\]
+Its selected coefficient is
+\[
+ [j^{256}w^{88}v^{104}h^{16}r^{32}c^{64}z^8]P_{568}
+ =2^{520}3^{344}\beta^{256}>0.
+\]
+The exact audits check these entire leading forms, all four square-defect
+identities, all $495$ coefficients of the generic norm, all six fixed
+integer payloads against their finite reconstruction, and both literal
+DAGs. Finite modular comparisons are additionally retained as transcription
+diagnostics; the unbounded logical argument is the one above.

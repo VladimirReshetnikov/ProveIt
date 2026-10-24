@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "independent_of_producer": true,
+  "results": [
+    {
+      "name": "degree10_24",
+      "variables": 24,
+      "residuals": 12,
+      "exact_degree": 10,
+      "compact_residual_degrees": [
+        4,
+        4,
+        2,
+        3,
+        5,
+        4,
+        4,
+        2,
+        3,
+        4,
+        5,
+        4
+      ],
+      "expanded_symbolic_port_terms": 5634,
+      "leading_form": "64*a**4*gamma**2*(c+2*gamma)**2*(a-E)**2+4*I**4*f**2*o**2*(c+y)**2",
+      "degree_witness": {
+        "powers": {
+          "I": 4,
+          "f": 2,
+          "o": 2,
+          "y": 2
+        },
+        "coefficient": 4
+      },
+      "live_binary_operations": 135,
+      "operation_counts": {
+        "mul": 68,
+        "add": 35,
+        "sub": 32
+      },
+      "full_circuit_polynomial_identity": true,
+      "semantic_side_condition": "Y=(2*v_scale+1)*(beta*J+1)^3 is nonzero on common zeros; beta=2^1064921-1>1 and all coordinates integral."
+    },
+    {
+      "name": "degree14_22",
+      "variables": 22,
+      "residuals": 10,
+      "exact_degree": 14,
+      "compact_residual_degrees": [
+        4,
+        4,
+        3,
+        4,
+        6,
+        4,
+        4,
+        6,
+        7,
+        6
+      ],
+      "expanded_symbolic_port_terms": 16525,
+      "leading_form": "4*a**4*f**6*o**2*(c+y)**2",
+      "degree_witness": {
+        "powers": {
+          "a": 4,
+          "f": 6,
+          "o": 2,
+          "y": 2
+        },
+        "coefficient": 4
+      },
+      "live_binary_operations": 123,
+      "operation_counts": {
+        "mul": 62,
+        "add": 31,
+        "sub": 30
+      },
+      "full_circuit_polynomial_identity": true,
+      "semantic_side_condition": "None beyond the inherited source equivalence: the auxiliary operation is invertible, the y change is an integer shear, and I is eliminated by a monic equation."
+    }
+  ],
+  "checks": [
+    "complete exact residual lists",
+    "full source40 arithmetic restoration",
+    "all new row identities",
+    "variable count and liveness",
+    "full symbolic SOS expansions",
+    "complete leading forms",
+    "fixed-port-independent degree witnesses",
+    "complete circuit identities and live operation counts",
+    "source pin and all fixed integer hashes"
+  ],
+  "boundary": "Algebraic verification is exact. The nonzero-Y argument and inherited sign, canonical cone, Pell and compiler proofs are mathematical dependencies stated separately."
+}

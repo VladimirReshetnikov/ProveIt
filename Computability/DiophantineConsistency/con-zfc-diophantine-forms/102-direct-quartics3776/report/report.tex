@@ -1,0 +1,1150 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Smaller direct quartic equations for ZFC consistency},pdfauthor={Research assistance for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Ftwo}{\mathbb F_2}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\degp}{\operatorname{deg}}
+\input{metrics.tex}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Direct quartic consistency equations}
+\fancyhead[R]{\small ProveIt research supplement}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{Smaller direct quartic equations for ZFC consistency\\[0.3em]\large Signed witnesses, sign normalization, and polynomial elimination}
+\author{Research supplement prepared for Vladimir Reshetnikov}
+\date{23 October 2026\\\small Repository snapshot \texttt{278bc68df1af}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an explicit integer-coefficient polynomial $P$ of exact degree
+four in $\MainVars$ unrestricted integer variables. On the established
+ordinary mathematical dependencies of ProveIt's direct C222 construction,
+ZFC proves that $P$ has an integer zero exactly when a finite syntactic ZFC
+refutation exists. The complete polynomial has $\MainTerms$ nonzero
+monomials and coefficient height $\MainHeight$. Its zero set is specified
+both by a fully expanded coefficient file and by $\MainRows$ quadratic
+residuals whose squares sum to $P$.
+
+The starting direct quartic used 8,619 integers. The new reduction removes
+an unnecessary natural-number encoding of 221 signed quotients, normalizes
+110 signs using exact polynomial symmetries, derives hundreds of other
+sign conditions from existing equations, and eliminates auxiliary
+coordinates with polynomial inverse maps. The resulting dimension
+reduction is $\MainSaved$ variables, or $\MainPercent\%$, with no increase
+in degree, while the coefficient height drops from 127,285,349 to
+47,959. A second equation uses only 3,671 variables at the larger height
+3,835,369,234. All new transformations have universal
+mathematical proofs and finite exact certificates checked by independent
+programs. This is a measured improvement of the direct, moderate-coefficient
+quartic family, not a minimum-variable record or a proof of global
+simplicity. No new end-to-end Lean proof or explicitly emitted
+object-language ZFC derivation is claimed.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The result and the meaning of simplicity}
+\label{sec:result}
+
+The task is to give a fixed polynomial whose lack of integer solutions
+expresses syntactic consistency of ZFC, with a construction simpler than
+the existing alternatives. There is no agreed total ordering of
+polynomials by simplicity. Number of variables, degree, number of terms,
+coefficient height, description length, and complexity of a correctness
+proof can favor different constructions. A claim of the globally
+``simplest'' equation would need both a specified ordering and an
+optimality argument. We make neither claim.
+
+This supplement improves a particular useful region of that comparison:
+\emph{explicit quartics with ordinary literal coefficients, obtained
+directly from a finite proof calculus}. The starting equation is the
+8,619-integer companion of the 3,609-natural-variable shared-CRT prime-lift
+construction at repository commit
+\texttt{278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b}~\cite{repo-integer,repo-prime}.
+Its arithmetic represents C222 derivations and uses neither the K215
+Turing machine nor Jones's universal Diophantine expression.
+
+\begin{theorem}[The explicit new equation]
+\label{thm:main}
+Let $P\in\Z[X_0,\ldots,X_{\MainLast}]$ be the polynomial in the delivered
+\texttt{equations/main/expanded\_polynomial.json}, equivalently the sum of
+the squared residuals in the adjacent \texttt{equation.json}. Then
+\[
+\boxed{\quad
+\ZFC\vdash
+\left[\neg\exists\boldsymbol x\in\Z^{\MainVars}\;
+P(\boldsymbol x)=0\right]\ \longleftrightarrow\ \Con(\ZFC).
+\quad}
+\]
+Here $\Con(\ZFC)$ means that no finite derivation of falsity exists from
+the repository's specified sealed ZFC axiom predicate. The ordinary proof
+uses the named C222/calculus and finite arithmetic representation theorems
+listed in Section~\ref{sec:source}, together with the new transformations
+proved below. The polynomial has the exact measurements
+\[
+\begin{aligned}
+\text{unknowns}&=\MainVars,&
+\text{degree}&=4,\\
+\text{nonzero monomials}&=\MainTerms,&
+\max|\text{coefficient}|&=\MainHeight.
+\end{aligned}
+\]
+Every unknown ranges over \emph{all} integers. There are no free
+parameters or unspecified coefficient choices.
+\end{theorem}
+
+The notation $\ZFC\vdash$ states ordinary mathematical provability. The
+proof consists of uniform finite constructions, elementary arithmetic,
+classical number theory, and the named ordinary logical calibration
+theorems. It does not assert that this archive contains a new
+machine-checked derivation of that sentence. In particular, the proof
+does not infer ZFC-provability merely from the existence of a Lean
+declaration. The distinction is discussed in Section~\ref{sec:internal}.
+
+\subsection{Measured improvements}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Construction & Integer & Quadratic & Quartic & Coefficient\\
+& unknowns & residuals & terms & height\\
+\midrule
+Frozen direct parent & 8,619 & 4,619 & 39,811 & 127,285,349\\
+Signed quotients & 6,628 & 3,733 & 31,237 & 127,285,349\\
+Reduced sign guards & 4,879 & 3,150 & 22,910 & 127,285,349\\
+Retained-wire guards & 7,058 & 5,297 & 24,277 & 1,992\\
+Fewer-variable companion & 3,671 & 1,942 & 26,271 & 3,835,369,234\\
+Recommended $P$ & \MainVarsComma & \MainRowsComma & \MainTermsComma & \MainHeightComma\\
+\bottomrule
+\end{tabular}
+\caption{Complete materialized polynomials, all over unrestricted
+integers and all of exact degree four. ``Height'' refers to the expanded
+polynomial, not just the residual coefficients.}
+\label{tab:main}
+\end{table}
+
+Two source presentations give different useful final equations. More
+aggressive elimination of the affine-source intermediate reaches 3,671
+variables, but increases coefficient height substantially. Starting
+from the retained-wire presentation and limiting substitutions to
+two-term right-hand sides instead yields the recommended
+3,776-variable polynomial. It has only 105 more variables, 6,077 fewer
+monomials, and approximately 79,972 times smaller coefficient height.
+It improves all tabulated size measures of the frozen 8,619-variable
+parent, with degree fixed at four. The 7,058-variable equation remains
+available when minimizing coefficient height itself is the priority.
+
+Small-variable alternatives already exist. The repository has nine
+natural-variable and ten integer-variable equations of much higher
+degree; its latest accepted ten-integer table includes degree 1,080,888
+at 512 arithmetic operations~\cite{repo-frontier}. Sun's 2026 preprint
+gives a general ten-integer-variable representation theorem~\cite{sun2026}.
+The present work does not improve that variable count. Likewise,
+proof-theoretic Diophantine encodings independent of a Turing-machine
+simulation are not a new general idea; Carl and Moroz developed such an
+approach explicitly~\cite{carl-moroz}. Our contribution is the concrete
+reduction of a fully specified direct quartic and the reusable exact
+transformation certificates.
+
+\section{A literal polynomial, not an arithmetic shorthand}
+\label{sec:literal}
+
+All construction variables are enumerated in a fixed list. In a sparse
+row, an entry $(c,[i_1,\ldots,i_s])$ denotes the ordinary monomial
+$cX_{i_1}\cdots X_{i_s}$; the empty list denotes the constant $c$.
+Repeated indices denote ordinary integer powers. Every residual in the
+final equation has $s\le2$.
+
+Write the final residual list as $f_0,\ldots,f_{\MainLastRow}$. The defining
+equation is simply
+\begin{equation}
+\label{eq:definition}
+\boxed{\qquad P(\boldsymbol X)
+=\sum_{r=0}^{\MainLastRow} f_r(\boldsymbol X)^2=0,
+\qquad\boldsymbol X\in\Z^{\MainVars}.\qquad}
+\end{equation}
+Both every $f_r$ and every collected coefficient of $P$ are provided.
+There are no variable exponents, factorials, binomial coefficients,
+bounded universal quantifiers, remainder operators, or residual
+computability predicates in these files. Such operations occur only in
+the proof explaining how the earlier natural parent was constructed.
+
+Over the integers, a sum of squares vanishes exactly when each summand
+vanishes. Thus the residual presentation and the expanded polynomial
+have identical zero sets. This is the only conjunction operation in the
+final definition. The upper bound $\deg P\le4$ follows immediately;
+the exact expansion contains nonzero degree-four terms, proving equality.
+The independent checker also verifies that every declared variable
+occurs in the expanded polynomial.
+
+The JSON format is not an additional mathematical parameter. It is an
+unambiguous finite coefficient table, in the same sense as a printed
+list of integers. The source, construction algorithms, certificates,
+and hashes make the table reproducible. A human-readable residual
+listing is included for inspection without a JSON viewer.
+
+\section{The established direct source and its logical meaning}
+\label{sec:source}
+
+This section identifies the imported results and summarizes the
+unbounded source argument. It is included to prevent a local polynomial
+optimization from being mistaken for an independent construction of the
+entire consistency encoding.
+
+\subsection{The exact natural parent}
+
+Let $\mathcal S_0$ be the frozen natural system in
+\texttt{signed\_quotients/source/natural\_equation.json}. Its complete byte string has
+SHA-256
+\begin{center}\small\ttfamily
+e851ff1d420a39be069e63f6f117557356c38e6d8272a481258fe38cb38dc6ea.
+\end{center}
+It has 3,609 nonnegative coordinates and 2,949 residuals of degree at most
+two. Its squared sum has 15,752 monomials and height 127,285,349. Of its
+coordinates, 1,670 are semantic inputs and 1,939 are retained arithmetic
+wires. The parent generator is bundled and reconstructs the complete
+equation byte for byte. Its arithmetic calls expand 55 positive power
+graphs, 16 binomial graphs, and two factorial graphs into ordinary
+quadratic rows.
+
+The same source also has a retained-wire natural presentation with
+6,180 variables, 5,520 quadratic rows, 17,421 quartic monomials, and
+coefficient height 1,992. Eliminating 2,571 nonnegative affine wire
+definitions yields exactly $\mathcal S_0$. Each deleted wire has a
+unique nonnegative polynomial restoration, so the two natural
+presentations have equivalent zero existence. Both complete parents
+are regenerated by the supplied source verifier. The retained
+presentation, whose literal file hash begins \texttt{39b3e264c051},
+is the starting point of the recommended low-height final equation.
+
+The established ordinary source theorem is
+\begin{equation}
+\label{eq:parent-correctness}
+\exists\boldsymbol y\in\N^{3609}\ \mathcal S_0(\boldsymbol y)
+\quad\longleftrightarrow\quad
+\text{there exists a finite syntactic ZFC refutation}.
+\end{equation}
+We import the proved source and representation theorems behind this
+statement, rather than assume a new simulator calibration. The current
+repository distinguishes this direct chain from some native
+machine/coefficient chains whose complete formal bridges remain separate
+research tasks~\cite{repo-direct-review,repo-shared-review}.
+
+\subsection{Numerical calculus}
+
+The numerical calculus C222 has truth label $0$, falsity label $1$, a
+fixed finite set of numerical rule families, modus ponens, and
+generalization. Its constructors are ordinary polynomials derived from
+Cantor pairing; for example,
+\[
+\operatorname{Imp}(a,b)=2(a+b)(a+b+1)+4b.
+\]
+The relation, quantifier, and equality constructors use fixed offsets.
+The supplied direct source includes all twelve padded single-conclusion
+branches. Unused premise positions receive the truth label $0$.
+
+The decisive source declarations are pinned to commit
+\texttt{9a33342a03d1} (the full revision is in the source ledger):
+\begin{lstlisting}
+KEndpoint.c222_iff_zf_refutation :
+  KCode222.C222 Code254.F <-> BProv ZFax_s [] Form.fBot
+
+ConstructibleChoice.zf_refutation_iff_zfc_refutation :
+  BProv ZFax_s [] Form.fBot <-> BProv ZFCax_s [] Form.fBot
+\end{lstlisting}
+These are unconditional calculus/refutation interfaces, not
+hypotheses about execution of a Turing machine. The ordinary arguments
+use first-order soundness and completeness, finite proof transformations,
+and the constructible-model relative-consistency theorem. They do not
+require an externally transitive model or an assumption of
+$\Con(\ZFC)$. We retain the source pins and attribution and do not claim
+to have rebuilt the complete Lean dependency closure.
+
+\subsection{Finite flow and the product carrier}
+
+For finitely many valid rule instances let $c_i$ be the conclusion and
+$p_i,q_i$ their truth-padded premises. The balance at every positive
+label $j$ is
+\begin{equation}
+\label{eq:flow}
+\#\{i:c_i=j\}=[j=1]+\#\{i:p_i=j\}+\#\{i:q_i=j\}.
+\end{equation}
+A proof tree gives these balances. Conversely, take the closure of truth
+under the finitely supported rules. If $1$ were outside this closure,
+sum the conclusion-minus-premise balance over labels outside it. Every
+rule whose conclusion is outside has at least one premise outside, so
+its contribution is nonpositive. Rules whose conclusion is inside also
+contribute at most zero. The target contributes $1$, a contradiction.
+This argument allows cycles, repeated premises, and repeated rule
+instances. It uses one conclusion per rule and nonnegative
+multiplicities.
+
+If there are $t\ge1$ instances with labels at most $m\ge1$, define
+\[
+A(Z)=\prod_{i<t}(1+c_iZ),\qquad
+B(Z)=(1+Z)\prod_{i<t}(1+p_iZ)(1+q_iZ),\qquad M=(m+1)^t.
+\]
+Equality $A(M)=B(M)$ first bounds the number of nonconstant factors of
+$B$ by $t$: otherwise $B(M)>M^{t+1}$, whereas
+$A(M)<M^{t+1}$. Consequently $A(1),B(1)\le M$, and each nonconstant
+coefficient is strictly less than $M$, because the constant coefficient
+is one. A least nonzero coefficient of $A-B$, reduced modulo $M$, would
+be both divisible by $M$ and smaller than $M$ in absolute value. Thus
+$A=B$ as polynomials. Multiplicities of the distinct roots $-1/j$ give
+\eqref{eq:flow}.
+
+A single accumulator encodes the equality by positive transitions
+\[
+S_0=M+1,\qquad S_t=1,\qquad
+S_{i+1}(1+c_iM)=S_i(1+p_iM)(1+q_iM).
+\]
+A proof tree supplies integral accumulator values by following its open
+obligations. The accumulator sequence is beta-coded with moduli
+$1+(i+1)y$. The proof, label bound, carrier, trace, beta code, and later
+row-witness bound are chosen in that order. The label bound and the
+bound on all arithmetic witnesses are distinct, so there is no circular
+size requirement.
+
+\subsection{Uniform CRT and prime-power lifting}
+
+The bounded row relation has nonnegative-coefficient polynomial sides
+$E,F$, an index bound $N$, external parameters $z$, and coordinate
+bounds $u_1,\ldots,u_d$. Put
+\[
+H=E(N,z,u)+F(N,z,u)+N,\quad T=H!,\quad
+D_i=1+(i+1)T,\quad B=\prod_{i<N}D_i.
+\]
+The natural source uses encoded columns $A_j$ and encoded index $C$
+satisfying
+\begin{align}
+B&\mid\binom{A_j}{u_j+1} &&(1\le j\le d),\label{eq:crt-range}\\
+B&\mid1+(C+1)T,\qquad
+E(C,z,A)\equiv F(C,z,A)\pmod B.\label{eq:crt-row}
+\end{align}
+These conditions are equivalent to the existence of a bounded valid row
+for every $i<N$~\cite{repo-prime}.
+
+For soundness choose a prime $p\mid D_i$. It is coprime to $H!$, hence
+$p>H$. Multiplying \eqref{eq:crt-range} by $(u_j+1)!$ and using the
+falling-factorial identity shows that $p$ divides some $A_j-r$ with
+$0\le r\le u_j$. This remains true when $A_j\le u_j$, since then the
+falling product has a zero factor. Therefore each column has a bounded
+decoded representative modulo $p$. The index congruence yields $C=i$
+modulo $p$. Both decoded values $E,F$ are at most $H<p$, so their
+congruence is equality.
+
+For completeness the $D_i$ are pairwise coprime. For each coordinate
+let $R_j=(u_j+1)!$ and let $R_{ij}$ contain precisely the prime-power
+part of $R_j$ supported on primes dividing $D_i$. Choose the column by
+CRT with
+\[
+A_j\equiv w_j^{(i)}\pmod{D_iR_{ij}},\qquad
+C\equiv i\pmod{D_i}.
+\]
+These lifted column moduli remain pairwise coprime.
+The falling product is divisible by $D_iR_{ij}$; cancel $R_{ij}$ and
+then the coprime remaining factor $R_j/R_{ij}$ to obtain
+\eqref{eq:crt-range}. A positive column is chosen modulo the product of
+the lifted periods. Merely adding $B$ is not sufficient without
+factorial coprimality: for instance, $3\mid\binom13$ but
+$3\nmid\binom43$.
+
+This construction does not require $H\ge u_j+1$. All factorization and
+CRT operations here construct witnesses in the proof; they are not
+operators left in the final polynomial. The supplied finite Pell-based
+power, binomial, and factorial representations replace the displayed
+arithmetic macros by ordinary quadratic rows. Their exact call-site
+positivity hypotheses and coefficient identities are audited by the
+bundled original independent checkers.
+
+The central arithmetic interfaces are
+\texttt{PellRepresentation.criterion\_iff\_pell} and
+\texttt{PowerRepresentation.criterion\_iff\_pow}. Their source uses
+the finite Matiyasevich Pell criterion and its power consequence,
+respectively; selected exact source files are retained under
+\texttt{source\_calibration}. Appendix~\ref{app:power} displays the
+particular positive power criterion used here. This is a named
+number-theoretic dependency, not an unexpanded power operation in
+the final coefficient table.
+
+\section{Removing the natural encoding of signed quotients}
+\label{sec:quotients}
+
+The first new reduction changes the domain of a witness to the domain
+the mathematical relation actually needs. An integer congruence
+quotient may be negative. The natural parent represents it by a
+difference of two nonnegative witnesses, then computes the two products
+separately. Applying a generic natural-to-integer conversion to those
+witnesses adds more unnecessary variables.
+
+\begin{lemma}[Private signed quotient]
+\label{lem:signed}
+Suppose a natural system contains private coordinates $q_+,q_-,u,v$
+used only in
+\[
+u=Mq_+,\qquad v=Mq_-,\qquad E+c(u-v)=0,
+\]
+where $M$ is a nonnegative expression in retained natural coordinates,
+$c\in\Z$, and $E$ is independent of these four coordinates. Replace the
+three rows by
+\[
+E+cMz=0,\qquad z\in\Z.
+\]
+Existence of a solution of the original natural system is equivalent to
+existence of a solution of the new mixed-domain system.
+\end{lemma}
+
+\begin{proof}
+Projection takes $z=q_+-q_-$. Conversely, from a signed witness $z$
+choose
+\[
+q_+=\max(z,0),\quad q_-=\max(-z,0),\quad
+u=Mq_+,\quad v=Mq_-.
+\]
+These are natural numbers and satisfy all three original rows. Private
+use ensures that no other constraint has changed. The proof also covers
+$M=0$ and does not divide by the modulus.
+\end{proof}
+
+The replacement is not a bijection: many pairs $(q_+,q_-)$ have the
+same difference. This is immaterial for existential equivalence, and
+the displayed canonical lift is sufficient. It would be incorrect to
+claim that simply allowing both old quotient coordinates to be signed
+and discarding their guards leaves an arbitrary natural source sound;
+the private-use property and the explicit lift are essential.
+
+In the frozen parent there are exactly 221 qualifying pairs. The
+certificate checks the complete occurrence set of each pair, its common
+affine modulus, its two private product wires, and their opposite linear
+coefficients in the single final use row. Two additional private
+affine bridge wires are first substituted out. Each quotient block
+then removes three coordinates and two defining rows. Thus
+\[
+3609-3\cdot221-2=2944,\qquad
+2949-2\cdot221-2=2505.
+\]
+The resulting core has 221 signed quotient coordinates, 1,228 natural
+semantic coordinates, and 1,495 natural arithmetic wires.
+
+All retained gate definitions have nonnegative coefficients in retained
+natural coordinates and contain no signed quotient. The common moduli
+also have this property. Therefore the restoration in
+Lemma~\ref{lem:signed} genuinely returns natural product wires; this is
+verified syntactically rather than assumed from variable names.
+
+\subsection{The initial integer lift}
+
+For completeness, the basic nonnegativity certificate is
+\begin{equation}
+\label{eq:three-square}
+x=a^2+b^2+c(c+1),\qquad a,b,c\in\Z.
+\end{equation}
+
+\begin{lemma}
+An integer $x$ admits \eqref{eq:three-square} if and only if $x\ge0$.
+\end{lemma}
+\begin{proof}
+Every summand is nonnegative for integer arguments. Conversely,
+$4x+1$ is not of the form $4^r(8s+7)$, so Legendre's three-square
+theorem applies. Exactly one square is odd modulo four. Write the roots
+as $2a,2b,2c+1$, subtract one, and divide by four.
+\end{proof}
+
+Initially guard all 1,228 remaining semantic natural coordinates using
+\eqref{eq:three-square}. The arithmetic wires are natural by topological
+induction. This gives
+\[
+2944+3\cdot1228=6628\quad\text{variables},\qquad
+2505+1228=3733\quad\text{rows}.
+\]
+The next two sections show why most of those guards are unnecessary.
+
+\section{Normalizing signs by exact symmetries}
+\label{sec:signs}
+
+A natural witness may be needed only up to a sign that the equations
+cannot distinguish. In that case it is enough that every integer
+solution has an equivalent representative with the desired sign. This
+is a different reason for omitting a guard than proving that the
+original coordinate is automatically nonnegative.
+
+\subsection{The general sign criterion}
+
+For a quadratic residual
+$f(\boldsymbol X)=\sum_\alpha c_\alpha\boldsymbol X^\alpha$, replace
+$X_i$ by $(-1)^{s_i}X_i$, where $s\in\Ftwo^n$. The residual changes
+only by an overall sign if
+\begin{equation}
+\label{eq:parity}
+\langle \alpha-\beta,s\rangle=0\pmod2
+\quad\text{for every pair of monomials in }\supp(f).
+\end{equation}
+The coefficients need not be positive. Condition \eqref{eq:parity} is
+an exact finite linear system over $\Ftwo$, and it guarantees
+$f((-1)^sX)=\pm f(X)$ for every integer assignment. Its intersection
+over all residuals is a diagonal sign-symmetry group of the entire
+zero set.
+
+\begin{lemma}[Independent sign normalization]
+\label{lem:normalize}
+Suppose the core system has sign symmetries $\sigma_1,\ldots,\sigma_k$
+such that $\sigma_i$ flips a selected semantic coordinate $z_i$ and
+changes no other semantic coordinate. Suppose none of the $z_i$ is
+guarded. Then every solution of the core plus the remaining semantic
+guards can be changed to one with $z_1,\ldots,z_k\ge0$, while preserving
+all those guards and all core zero equations.
+\end{lemma}
+\begin{proof}
+Apply $\sigma_i$ exactly when $z_i<0$. It changes $z_i$ to its absolute
+value and leaves every other semantic coordinate unchanged. Diagonal
+sign changes commute, so later choices do not undo earlier
+normalizations. Every core residual is multiplied by a unit $\pm1$,
+and each guarded semantic coordinate keeps its value. A zero coordinate
+needs no change.
+\end{proof}
+
+\subsection{The 110 normalizations in the actual equation}
+
+The core parity matrix has rank 2,834 on 2,944 coordinates. The emitted
+certificate supplies 110 independent sign symmetries, two for each of
+the 55 power graphs. The checker does not trust a rank calculation as a
+semantic premise: it directly checks \eqref{eq:parity} for every
+generator and every actual residual.
+
+The first symmetry negates the coordinate $Z$ in the power certificate
+and its product wire $WZ$. The product definition is multiplied by
+$-1$, while occurrences of its square are unchanged. The second
+negates the Pell coordinate $U$ and the two signed congruence quotients
+attached to modulus $U$. Products $Uq$ are unchanged, and the Pell
+equation uses $U^2$. All other semantic coordinates are fixed.
+
+The first case illustrates why inspecting only the exponents of $Z$
+in the final core is insufficient: $Z$ occurs linearly in the
+definition of $WZ$. Coordinated sign changes of a semantic witness and
+its wires reveal the actual symmetry. The second case is enabled by
+the earlier signed-quotient reduction; natural quotient pairs would
+obscure the simple sign action.
+
+These 110 normalizations save 330 guard auxiliaries. Some arithmetic
+wires may be negative before normalization, so naturality of all wires
+must be proved \emph{after} normalization, as in the next section.
+
+\section{Recovering signs from the equations themselves}
+\label{sec:bounds}
+
+The remaining guard optimization is an exact proof of lower bounds,
+not an assumption that an arithmetic-looking variable is positive.
+The proof certificate starts with a chosen seed set of guarded
+semantic coordinates and the normalized coordinates from
+Lemma~\ref{lem:normalize}. It then derives lower bounds for every
+natural core coordinate.
+
+\subsection{A finite positivity calculus}
+
+Maintain a proved lower bound $L_i\in\{0,1,2\}$ for some coordinates;
+unbounded coordinates may still have either sign. For a polynomial
+$G$, substitute $X_i=L_i+T_i$ for the bounded coordinates, with
+$T_i\ge0$. If the resulting coefficients are nonnegative and every
+unbounded variable has even exponent in each monomial, then $G\ge0$.
+If the constant coefficient is positive, then $G>0$.
+
+This criterion is deliberately sufficient rather than complete. It
+can be checked by finite integer polynomial arithmetic. Squares of
+unbounded coordinates are allowed, which is useful before every wire
+has acquired a sign bound.
+
+\begin{lemma}[Positive-multiplier inference]
+\label{lem:bounds}
+Suppose an actual residual, oriented by a possible factor $-1$, has
+the form
+\[
+A(\boldsymbol X)x=B(\boldsymbol X),
+\]
+where $A,B$ do not contain $x$, and previously proved bounds establish
+$A>0$. Then:
+\begin{enumerate}
+\item $B\ge0$ implies $x\ge0$;
+\item $B>0$ implies $x\ge1$ for integer $x$;
+\item $B-A>0$ implies $x\ge2$ for integer $x$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The first two conclusions follow from multiplication by a positive
+number. For the third, $A(x-1)=B-A>0$, so $x>1$; integrality gives
+$x\ge2$. No division is inserted in the polynomial system.
+\end{proof}
+
+Examples include $A=2+s$, which makes the guard on $A$ redundant when
+$s\ge0$, and the less obvious row
+\[
+B=1+4Yq_4.
+\]
+Once $B\ge2$ and $Y\ge1$ are known, it forces $q_4\ge1$ without a
+guard on $q_4$. This is a genuine use of a positive multiplier, not
+mere propagation of nonnegative coefficients.
+
+\subsection{The certified seed set}
+
+The complete certificate keeps 645 semantic guards. Its 110 sign
+normalizations and 2,382 ordered lower-bound inferences recover
+nonnegativity of all 2,723 natural core coordinates. The 221 signed
+quotients retain no sign bound. Among the 1,228 semantic natural
+coordinates, the exact accounting is
+\[
+1228=645\ \text{guarded}
+\ +\ 110\ \text{normalized}
+\ +\ 473\ \text{inferred}.
+\]
+Some coordinates receive stronger bounds after an initial bound, which
+explains why the number of inference steps exceeds the number of new
+coordinates proved nonnegative.
+
+The seed selection is an optimization heuristic. Its success is not a
+mathematical hypothesis: a separate checker verifies the supplied
+ordered proof, including the strict positivity of every multiplier and
+the exact polynomial row used at every step. It does not call the
+optimizer. Minimality of the 645-coordinate seed set is not asserted.
+
+\begin{theorem}[The 4,879-variable equation]
+\label{thm:guarded}
+The system consisting of the 2,505-row signed core and the 645 displayed
+three-square guards has an integer solution if and only if the frozen
+natural parent has a natural solution. Its squared sum has 4,879
+integer coordinates, 3,150 quadratic residuals, 22,910 nonzero terms,
+and coefficient height 127,285,349.
+\end{theorem}
+\begin{proof}
+For soundness first normalize the 110 signs. The retained guards remain
+valid. Replay the lower-bound proof to recover all natural core
+coordinates. Apply the signed-quotient lift and the two affine bridge
+restorations to obtain a natural parent solution. For completeness,
+project any natural parent solution to the signed core. Every one of
+its 645 guarded coordinates is natural, so the three-square theorem
+provides the fresh guard auxiliaries. All other omitted guards are
+unneeded in this direction.
+
+The variable and row counts are
+$2944+3\cdot645=4879$ and $2505+645=3150$. Exact expansion of the
+supplied finite rows gives the remaining measurements.
+\end{proof}
+
+\begin{corollary}[The retained-wire companion]
+\label{cor:retained}
+The same methods applied to the retained-wire natural parent give an
+equivalent integer equation in 7,058 variables, with 5,297 quadratic
+rows, 24,277 monomials, and coefficient height 1,992.
+\end{corollary}
+\begin{proof}
+The exact signed-quotient certificate first removes 442 private affine
+bridges and the same 221 quotient pairs. The resulting core has
+$6180-442-3\cdot221=5075$ variables and
+$5520-442-2\cdot221=4636$ rows. It retains 1,228 semantic natural
+inputs, 221 signed quotients, and 3,626 arithmetic wires.
+
+The sign certificate uses the same 110 independent semantic
+normalizations, now with the additional literal wire sign changes.
+It retains 661 guards, 16 more than the affine-source case, and
+recovers 457 other semantic signs. Its 4,942 ordered bound steps prove
+nonnegativity of all 4,854 natural core coordinates. The same
+normalization, inference, and quotient-restoration arguments apply.
+Thus the integer dimensions are $5075+3\cdot661=7058$ and
+$4636+661=5297$. Full expansion gives the remaining exact measurements.
+\end{proof}
+
+\section{Polynomial elimination without a degree increase}
+\label{sec:elimination}
+
+After sign normalization and guard reduction, every actual coordinate
+of the displayed system ranges over $\Z$. This licenses an especially
+simple second reduction: solve monic equations and substitute them.
+There is no need to preserve a separate natural domain at this stage,
+because its required effects are already encoded by the remaining rows.
+
+\begin{theorem}[Degree-preserving monic projection]
+\label{thm:elimination}
+Consider a system of polynomials of degree at most two over $\Z$ with
+one distinguished equation
+\[
+z-R(\boldsymbol x)=0,
+\]
+where $R$ is independent of $z$. Assume either:
+\begin{enumerate}
+\item $R$ has degree at most one; or
+\item $R$ has degree at most two, and every other residual contains
+    $z$ only as a scalar-linear term $cz$.
+\end{enumerate}
+Delete the distinguished row and substitute $R$ for $z$ everywhere
+else. The resulting residuals have degree at most two, and projection
+off $z$ is a bijection between the two integer zero sets. Its inverse
+is the polynomial map $\boldsymbol x\mapsto(\boldsymbol x,R(\boldsymbol x))$.
+\end{theorem}
+\begin{proof}
+Every source solution has $z=R(\boldsymbol x)$ and therefore projects
+to a target solution. Conversely, adjoining that value makes the
+distinguished row and all substituted rows zero, uniquely. An affine
+substitution in a quadratic polynomial remains quadratic. In the
+second case each other row is $cz+G(\boldsymbol x)$ and becomes
+$cR+G$, also quadratic. All coefficients remain integers, so there is
+no divisibility side condition or exceptional denominator.
+\end{proof}
+
+\begin{remark}
+The second criterion excludes occurrences such as $z^2$ and $zw$.
+Substituting a quadratic expression there could raise the residual
+degree to four and the squared-sum degree to eight. The implementation
+checks actual monomials in every affected row, not just a textual
+occurrence count. Solving $2z=R$ without a divisibility certificate is
+also excluded; the pivot coefficient must be $1$ or $-1$.
+\end{remark}
+
+The algorithm repeatedly chooses a permitted sparse substitution. It
+records the exact current defining row, pivot variable, right-hand
+side, and full set of affected rows. Original variable and row indices
+remain fixed throughout the certificate; surviving coordinates are
+renumbered only at the end. A complete reverse lift is obtained by
+processing the certificate backwards. Composition of the polynomial
+lifts gives an integer polynomial inverse to the final projection on
+the zero sets.
+
+The recommended final pass starts with the 7,058-variable equation
+of Corollary~\ref{cor:retained} and removes $\ElimVars$ variables:
+$\AffineElims$ by affine substitution and $\QuadraticElims$ by the
+linear-occurrence quadratic rule. It permits at most two monomials
+in each substituted right-hand side, as a size heuristic to avoid
+dense coefficient growth. The support caps are not
+correctness assumptions. A separate checker imports no optimizer and
+replays every exact sparse substitution, including changes to guards.
+
+For the smaller-variable companion, a second pass starts with the
+4,879-variable affine-source equation and removes 1,208 coordinates:
+461 affine and 747 quadratic substitutions. This gives 3,671 variables,
+1,942 residuals, and the larger coefficient height in the comparison
+table. That pass uses support caps 18 and 24, respectively. Both complete
+equations and both exact inverse-map certificates are retained.
+
+Applying Theorem~\ref{thm:elimination} successively to
+Corollary~\ref{cor:retained}, then using
+\eqref{eq:parent-correctness}, proves Theorem~\ref{thm:main}. The
+same argument applied to Theorem~\ref{thm:guarded} proves the
+consistency equivalence for the 3,671-variable companion. The
+coefficient differences recorded in Table~\ref{tab:main} are real; a final
+polynomial is not identical to its parent polynomial. What is preserved
+at this stage is a polynomial bijection of integer zero sets.
+
+\section{Why the equivalence is provable in ZFC}
+\label{sec:internal}
+
+There are three distinct assertions that must not be conflated:
+\begin{enumerate}
+\item a standard-model equivalence checked separately for selected
+    finite inputs;
+\item an ordinary uniform mathematical proof available within ZFC;
+\item a new emitted object-language proof or a complete kernel-checked
+    implementation of that proof.
+\end{enumerate}
+The delivered result is of the second kind, supported by exact
+coefficient and transformation certificates. It does not claim the
+third kind.
+
+The new transformations are elementary and uniform. A quotient lift
+uses integer order and maximum; a sign normalization uses finitely
+many polynomial symmetries; the lower-bound proof is a finite sequence
+of ordered-ring implications; and each monic elimination is an exact
+polynomial identity with a polynomial inverse. ZFC proves the
+required laws of its internally defined integers and proves the
+three-square theorem. Therefore the finite certificates can be
+expanded into ordinary ZFC derivations of these transformations.
+
+The source arithmetic also uses uniform theorems: finite products,
+induction, prime factorization, CRT, Pell identities, and syntactic
+proof transformations. The carrier and CRT arguments apply to every
+internal natural number in a model of ZFC, including numbers that
+are nonstandard from an external viewpoint. They are not an appeal to
+the assertion that a particular finite diagnostic test happened to pass.
+The ordinary C222 calibration and ZF/ZFC refutation transport are
+named logical theorems with set-theoretic proofs; their use is
+explicit in the dependency ledger.
+
+The consistency sentence is syntactic. The theorem states
+\[
+\ZFC\vdash
+\bigl(\exists\boldsymbol x\in\Z^{\MainVars}\;P(\boldsymbol x)=0\bigr)
+\ \longleftrightarrow\
+\bigl(\exists p\;\operatorname{Proof}_{\ZFC}(p,\bot)\bigr).
+\]
+Negating both sides yields the displayed no-zero form. No soundness or
+consistency assumption is used to prove the biconditional itself.
+In particular, this work does not prove that $P$ lacks solutions.
+If ZFC is consistent, a ZFC proof that $P$ lacks solutions would,
+through this biconditional, give a ZFC proof of its own consistency.
+The construction is compatible with the second incompleteness theorem.
+
+The archive includes ordinary dependency proof notes and pinned source
+interfaces, but not a newly rebuilt Lean checkout or a line-by-line
+formal ZFC proof. That remaining formalization task should be described
+accurately. It is different from leaving an unidentified coefficient,
+an arbitrary compiler choice, or a conjectural simulation premise in
+the polynomial.
+
+\section{Exact verification and reproducibility}
+\label{sec:verification}
+
+The verification is designed around the risks introduced by the new
+construction: incorrect occurrence restrictions, sign changes that
+affect another guarded variable, circular positivity arguments,
+unsafe polynomial substitutions, and a mismatch between the stated
+residuals and their expanded squared sum.
+
+The release verifier checks the following distinct objects.
+\begin{enumerate}
+\item \textbf{The fixed source.} The pinned direct arithmetic generator
+    reproduces the complete natural parent. Original independent
+    auditors check the actual twelve calculus branches, positive-power
+    interfaces, and affine restoration. The package contains the
+    relevant mathematical proof notes and licenses.
+\item \textbf{Signed quotient blocks.} Every quotient and product use
+    is located in the complete source row list. The exact common
+    modulus, opposite signs, private-use restrictions, and nonnegative
+    restoration of all remaining arithmetic wires are checked.
+\item \textbf{Sign symmetries.} Every monomial of every core residual
+    satisfies the parity test for each supplied generator. The checker
+    also verifies that only the intended semantic coordinate changes.
+\item \textbf{Lower-bound derivations.} Each step cites an actual row,
+    uses only earlier bounds, and establishes strict positivity of its
+    multiplier by exact shifted polynomial arithmetic. At the end,
+    every intended natural coordinate has a nonnegative bound.
+\item \textbf{Elimination.} A separate implementation reconstructs the
+    solved equation and substitutes it into every actual occurrence.
+    It verifies the degree criterion, deleted rows, surviving indices,
+    and exact final renumbering.
+\item \textbf{The polynomial.} All squared residuals are fully expanded
+    and collected. Every coefficient, monomial, degree, variable, term
+    count, and height is compared to the released file. Hashes identify
+    the exact data subjected to these checks.
+\end{enumerate}
+
+These checks use exact integer arithmetic. They do not rely on
+floating-point agreement, randomly selected zeros, or a finite search
+for a contradiction. The checkers use explicit failure conditions;
+Python's \texttt{-O} option does not disable their acceptance logic.
+Normal and optimized runs are included in the release evidence. The
+independent checkers do not import the new optimization routines.
+
+The universal proofs establish why a syntactically valid certificate
+preserves existence for all witnesses. The finite checker establishes
+that the delivered coefficients and certificates instantiate those
+theorems. Neither role replaces the other.
+
+\subsection{Practical commands}
+
+Python 3.11 or later and its standard library suffice for the exact
+arithmetic verification. No network call or package installation is
+performed by the verification driver.
+\begin{lstlisting}
+python3 verify.py
+python3 -O verify.py
+\end{lstlisting}
+The README gives the additional regeneration commands, including the
+slower optimization pass for both supplied final endpoints. A
+standard TeX Live or MiKTeX installation builds this article:
+\begin{lstlisting}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The complete frozen data allow verification independently of later
+changes to ProveIt. The intended integration is a new candidate or
+incoming research supplement; no existing repository file needs to be
+overwritten.
+
+\section{What is new, and what has not been established}
+
+The specific new contribution is the combination of signed-domain
+compilation, exact sign symmetries, certified order propagation, and
+degree-preserving polynomial elimination on this fixed direct
+consistency equation. The first two methods interact: replacing
+natural quotient pairs by signed quotients exposes the Pell-modulus
+sign symmetry and makes its normalizing map particularly simple.
+The sign proof then removes guard variables; unrestricted polynomial
+elimination can finally remove semantic slack coordinates as well as
+arithmetic wires without maintaining an artificial natural domain.
+
+The constituent mathematical ideas have recognizable precedents:
+differences of naturals, sign symmetries, three-square representations,
+and monic substitutions are classical. We do not claim that these
+general ideas were previously unknown. The exact combined application,
+finite certificates, and resulting full polynomial are the advance
+relative to the inspected repository snapshot. Establishing priority
+in the broader literature would require a separate review.
+
+The following statements are deliberately not made:
+\begin{itemize}
+\item that this is the fewest possible number of unknowns;
+\item that degree four is minimal for this particular consistency
+    encoding;
+\item that the guarded seed set or elimination order is optimal;
+\item that a literal polynomial with fewer variables must have a
+    simpler proof or a shorter description;
+\item that the finite audits decide ZFC consistency; or
+\item that a new complete Lean proof or an explicit formal ZFC proof
+    file is present.
+\end{itemize}
+The useful claim is narrower and fully measured: a large reduction of
+the explicit direct quartic's dimension, with the same logical target,
+the same exact degree, reproducible ordinary coefficients, and
+constructive proof maps.
+
+\section{Further research questions}
+\label{sec:future}
+
+\paragraph{1. Optimize guard seeds with a proved lower bound.}
+The current seed set is found by a heuristic and certified afterward.
+The inference rules define a directed dependency structure with
+alternative prerequisites. Can an integer-programming or satisfiability
+formulation find a smaller seed set, and can a matching lower-bound
+certificate prove optimality within a clearly stated inference calculus?
+An improvement here saves three variables per deleted guard before
+subsequent eliminations.
+
+\paragraph{2. Use larger sign groups or affine symmetries.}
+The current certificate uses independent diagonal sign normalizations.
+More general transformations, such as a sign change accompanied by an
+integral translation of congruence quotients, may preserve the zero set
+even when diagonal parity alone does not. Such a transformation needs
+an explicit inverse and must preserve the necessary semantic signs.
+Classifying these symmetries of the positive power graph is a concrete
+next target.
+
+\paragraph{3. Compile the arithmetic graph directly with mixed domains.}
+Here the signed quotient reduction is applied to a frozen natural
+parent so that the comparison is exact. A compiler that tracks natural,
+strictly positive, sign-normalizable, and unrestricted coordinates from
+the outset could avoid creating redundant witnesses. Its output should
+still carry a simple independently checked certificate, rather than
+require trusting a more elaborate optimizer.
+
+\paragraph{4. Jointly optimize dimension, sparsity, and coefficient height.}
+The final monic elimination increases coefficient height. Different
+pivot choices or retaining selected scalar wires could yield a better
+dimension/height tradeoff. A useful search should maintain the complete
+expanded polynomial at each accepted endpoint and report a small
+nondominated set rather than promote one arbitrary weighted score.
+
+\paragraph{5. Replace a complete arithmetic primitive.}
+The direct construction contains 55 power graphs. A smaller
+fully proved positive power representation, or a representation shared
+across compatible calls, could yield a larger improvement than further
+local row simplification. The exact source/Pell index hypotheses must
+be retained. Replacing the graph by a plausible rational Pell condition
+without proving integrality is insufficient.
+
+\paragraph{6. Produce the end-to-end internal proof artifact.}
+The ordinary ZFC proof is assembled here, but its actual emitted
+internal derivation is still a separate deliverable. The new algebraic
+and sign certificates are finite and suitable for a small trusted
+checker. Formalizing these generic certificate validators once would
+make later size optimizations much less expensive to certify. The
+source calibration and the new literal coefficient binding should
+remain separate theorem interfaces.
+
+\paragraph{7. Compare with small-variable encodings on description length.}
+A quartic with thousands of moderate coefficients and a high-degree
+ten-variable polynomial optimize different resources. A fair comparison
+could measure a fixed binary description format, including all literal
+coefficients and any bounded coefficient recipes, together with the
+cost of a proof checker. This would make the request for a ``simplest''
+equation more precise without confusing arithmetic operation counts
+with coefficient bit complexity.
+
+\appendix
+\section{The arithmetic criterion behind the sign symmetries}
+\label{app:power}
+
+For positive inputs $n,k$ and natural output $m$, the parent power
+graph has 27 semantic auxiliary witnesses. Four difference-of-natural
+quotients become four signed witnesses after our first reduction,
+leaving 23 auxiliary coordinates before wire flattening. Write
+\[
+\mathcal N(a,x,y)=x^2-(a^2-1)y^2-1.
+\]
+The full positive criterion consists of the following seventeen
+constraints. All auxiliary coordinates are initially natural except
+the four new congruence quotients $z_1,z_2,z_3,z_4$:
+\begin{align*}
+A&=a_2+2,&Y&=k+y_k,&B&=b_2+2,\\
+\mathcal N(A,X,Y)&=0,&\mathcal N(A,U,V)&=0,&\mathcal N(B,S,R)&=0,\\
+B&=1+4Yq_4,&V&=Y^2(v_d+1),\\
+B+Uz_1&=A,&S+Uz_2&=X,\\
+R+4Yz_3&=k,&X+Yn+Tz_4&=YA+m,\\
+2An&=T+n^2+1,&T&=m+g+1,\\
+W&=n+w_n,&W&=k+w_k,\\
+\mathcal N(W+1,A,WZ)&=0.&&
+\end{align*}
+These expressions are displayed before arithmetic wire flattening;
+their degrees are not the degree bound on the final residuals. The
+actual generator replaces their product expressions by the retained
+quadratic gate equations and shares repeated subexpressions.
+
+The last norm rewrites as
+\[
+A^2=1+W^3(W+2)Z^2.
+\]
+Since $A\ge2$ and $W\ge n\ge1$, it forces $Z\ne0$ and
+$A>W\ge n$. Therefore the natural truncated difference
+$A\mathbin{\dot-}n$ in the inherited power theorem equals the ordinary
+integer difference $A-n$ in the rearranged congruence. Also
+$Y\ge k\ge1$, so $V=Y^2(v_d+1)>0$ and the zero-index Pell branch is
+absent. These facts justify the positive specialization of the
+imported power criterion.
+
+The sign symmetries are now visible at the unflattened level:
+$Z\mapsto-Z$ changes no norm, and
+$(U,z_1,z_2)\mapsto(-U,-z_1,-z_2)$ changes neither the norms nor the
+congruences. The literal flattened certificate checks every wire
+needed to realize the same action. Bounds inferred from these rows
+are used only after the necessary natural coordinates are guarded or
+normalized, so the proof does not silently assume $V>0$ when
+$v_d=-1$ might otherwise be possible.
+
+\section{Data and proof-certificate conventions}
+
+Variable lists are ordered and indexed from zero. Each sparse polynomial
+uses sorted monomials and nonzero integer coefficients; duplicates are
+collected. The final expanded table has exactly $\MainTerms$ entries.
+The main equation and its expansion are identified by the hashes in
+\texttt{equations/main/BUILD.json} and the release manifest. The
+polynomial hash is
+\begin{center}\small\ttfamily\MainPolynomialHash\end{center}
+
+For an elimination step, the certificate stores an original coordinate
+index $v$, a current monic defining row, a polynomial expression $R$,
+and the full set of current rows containing $v$. The checker first
+verifies the identity of the defining row with $\pm(X_v-R)$, then
+checks the degree criterion and substitutes into every occurrence.
+The certificate can be interpreted backwards without rerunning the
+optimization search.
+
+For a sign step, the certificate stores the list of flipped coordinate
+indices and the unique semantic pivot. For a lower-bound step it stores
+the target coordinate, new bound, and the actual source row index.
+The multiplier and right-hand side are reconstructed from that row by
+the checker. Therefore a claimed lower bound cannot smuggle an
+additional equation into the proof.
+
+\section{A small illustrative quotient block}
+
+This example is explanatory and does not replace the full C222 instance.
+Suppose a retained natural modulus is $M=7$ and a row requires a
+difference $E=-21$. The old equations
+\[
+u=7q_+,\quad v=7q_-,\quad -21+u-v=0
+\]
+can be replaced by $-21+7z=0$. The signed witness $z=3$ restores as
+$q_+=3,q_-=0,u=21,v=0$. Reversing the sign of $E$ gives $z=-3$ and
+restores with the two natural quotient parts exchanged. If $M=0$,
+both systems require only $E=0$, and the canonical lift still works.
+This last case explains why avoiding a division by $M$ is valuable.
+
+For an illustrative elimination, the rows
+\[
+z-x^2-y^2=0,\qquad 3z+w-7=0
+\]
+reduce to $3x^2+3y^2+w-7=0$, with inverse $z=x^2+y^2$ and no degree
+increase. If the second row instead contains $z^2$, this quadratic
+elimination is disallowed by the certificate rule.
+
+\section{Provenance and scope of the release}
+
+The comparison snapshot is fixed even if the repository advances while
+this research is in progress. The archive retains the exact natural
+source, original arithmetic generator and auditors, relevant ordinary
+proof notes, source-calibration interfaces, licenses, the new complete
+integer equations, independent checkers, and the article source and
+compiled PDF. Intermediate experimental outputs that do not support a
+released endpoint are omitted.
+
+No remote repository mutation is needed to use the deliverable. The
+package can be reviewed and placed under
+\texttt{Computability/DiophantineConsistency/candidates} or
+\texttt{docs/incoming} at the owner's discretion. The release manifest
+records the exact file bytes; reproducing a PDF on a different TeX
+installation may legitimately change PDF metadata while leaving its
+mathematical content unchanged.
+
+\begin{thebibliography}{20}
+\bibitem{repo-integer}
+V. Reshetnikov and contributors, \emph{An explicit quartic over 8,619
+unrestricted integers}, ProveIt, pinned snapshot
+\texttt{278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b},
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b/Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/integer/README.md}.
+
+\bibitem{repo-prime}
+V. Reshetnikov and contributors, \emph{Factorial-free CRT without a
+factorial-size bound}, same snapshot,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b/Computability/DiophantineConsistency/candidates/shared-crt-prime-lift/PROOF.md}.
+
+\bibitem{repo-direct-review}
+V. Reshetnikov and contributors, \emph{Ordinary correctness review:
+direct C222 quartic, round 12}, same snapshot,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b/Computability/DiophantineConsistency/PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md}.
+
+\bibitem{repo-shared-review}
+V. Reshetnikov and contributors, \emph{Shared-direct certificate
+review}, same snapshot,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b/Computability/DiophantineConsistency/PROPOSAL_REVIEW_SHARED_CERTIFICATES_DIRECT.md}.
+
+\bibitem{repo-frontier}
+V. Reshetnikov and contributors, \emph{Later arrivals and current size
+reductions}, same snapshot,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/278bc68df1af125d62f9cbfe28c9fd3ebcf50d5b/Computability/DiophantineConsistency/PROPOSAL_REVIEW_LATEST.md}.
+
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, arXiv:2609.01594v2, 2026 preprint,
+\url{https://arxiv.org/html/2609.01594v2}.
+
+\bibitem{sun2021}
+Z.-W. Sun, \emph{Further results on Hilbert's tenth problem},
+Science China Mathematics \textbf{64} (2021), 281--306;
+\url{https://arxiv.org/abs/1704.03504}.
+
+\bibitem{carl-moroz}
+M. Carl and B. Z. Moroz, \emph{On a Diophantine representation of the
+predicate of provability}, MPIM Preprint Series 2007 (132),
+\url{https://archive.mpim-bonn.mpg.de/id/eprint/581/}.
+
+\bibitem{bayer-david}
+J. Bayer and M. David, \emph{A Formal Proof of Complexity Bounds on
+Diophantine Equations}, ITP 2025, LIPIcs \textbf{352}, 3:1--3:18,
+\url{https://doi.org/10.4230/LIPIcs.ITP.2025.3}.
+\end{thebibliography}
+\end{document}

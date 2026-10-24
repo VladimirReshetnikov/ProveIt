@@ -1,0 +1,146 @@
+\section{A separate compiler improvement: the modulus supplies the index}
+\label{sec:homogeneous-closure}
+
+The results above improve complete equations in the existing native-compiler
+family.  This section concerns a different source architecture.  It removes
+one existential coordinate from the inert-prime CRT certificate of source~75.
+Its factorial, binomial and variable-exponent operations have not been
+compiled and counted as a new ordinary polynomial.  Thus it is a proved
+compiler lemma, not another claimed Con(ZFC) endpoint.
+
+\subsection{The homogeneous substitution}
+
+Fix an explicit polynomial
+\(R(i,w_1,\ldots,w_m;\mathbf x)\in\mathbb Z[i,\mathbf w,\mathbf x]\),
+where \(m\ge1\), and let \(R_{\rm abs}\) replace each coefficient by its
+absolute value.  The external parameters \(\mathbf x\) are natural numbers.
+For \(n\ge1\) and \(U\ge0\), put
+\begin{align*}
+ H&=R_{\rm abs}(n,U,\ldots,U;\mathbf x)+n+U+1,&
+ s&=4H!,\\
+ m_i&=s(i+1)-1\quad(0\le i<n),&
+ B&=\prod_{i=0}^{n-1}m_i.
+\end{align*}
+If an arithmetic DAG already represents \(R=e-f\) with nonnegative
+coefficient polynomials, the majorant \(e+f\) can be used instead, preserving
+that sharing.  Write \(R=\sum_{a=0}^d R_a(\mathbf w;\mathbf x)i^a\), with
+\(d=0\) for the zero polynomial, and define the ordinary integer polynomial
+\begin{equation}
+ \widehat R(s,\mathbf w;\mathbf x)
+ =\sum_{a=0}^{d}R_a(\mathbf w;\mathbf x)(1-s)^a s^{d-a}.
+ \label{eq:homogeneous-index}
+\end{equation}
+The right side is a finite polynomial definition.  The notation
+\(s^dR((1-s)/s,\mathbf w;\mathbf x)\) explains the construction, but does
+not introduce division into its polynomial representation.
+
+For a fixed binary tree, define a norm recursively by
+\(\mathcal N(z)=z\) and
+\(\mathcal N(L,R)=\mathcal N(L)^2+\mathcal N(R)^2\).
+Use the convention \(\binom Ak=0\) when \(0\le A<k\).
+
+\paragraph{Homogeneous-index closure theorem.}
+For each fixed \(n,U,\mathbf x\) as above, the bounded assertion
+\[
+ \forall i<n\;\exists\mathbf w\in\{0,\ldots,U\}^{m}
+                    \quad R(i,\mathbf w;\mathbf x)=0
+\]
+is equivalent to the existence of natural \(A_1,\ldots,A_m\) such that
+\begin{equation}
+ B\mid\mathcal N\left(
+   \binom{A_1}{U+1},\ldots,\binom{A_m}{U+1},
+   \widehat R(s,\mathbf A;\mathbf x)\right).
+ \label{eq:homogeneous-certificate}
+\end{equation}
+There is no separately encoded index and no index-congruence leaf.
+
+\begin{proof}
+Every prime divisor of \(m_i\) exceeds \(H\), because a prime at most
+\(H\) divides \(H!\) and makes \(m_i\equiv-1\).  The \(m_i\) are pairwise
+coprime: a common prime divisor of \(m_i,m_j\) would divide \(j-i\), since
+it cannot divide \(s\), but \(0<|j-i|<n\le H\).  Each \(m_i\) is
+\(3\pmod4\), so it has a prime divisor \(p_i\equiv3\pmod4\).
+Over \(\mathbb F_{p_i}\), a sum of two squares vanishes only when both
+entries vanish.  Induction on the norm tree therefore makes vanishing of
+its value equivalent to vanishing of all its leaves.
+
+Suppose \eqref{eq:homogeneous-certificate} holds.  For each \(i\), all leaves
+vanish modulo \(p_i\).  The identity
+\[
+ (U+1)!\binom{A_j}{U+1}=\prod_{r=0}^{U}(A_j-r)
+\]
+and \(p_i>H>U+1\) give \(A_j\equiv w_j\pmod{p_i}\) for some
+\(0\le w_j\le U\).  The same prime works for all coordinates.
+Furthermore \(s(i+1)\equiv1\pmod{p_i}\), so
+\[
+ \widehat R(s,\mathbf A;\mathbf x)
+       \equiv s^dR(i,\mathbf w;\mathbf x)\pmod{p_i}.
+\]
+Since \(s\) is invertible modulo \(p_i\), the residual is zero modulo
+\(p_i\).  Its absolute value is at most
+\(R_{\rm abs}(n,U,\ldots,U;\mathbf x)<H<p_i\), so it is zero in
+\(\mathbb Z\).
+
+Conversely, select bounded witnesses for every \(i<n\).  CRT gives
+natural \(A_j\) with \(A_j\equiv w_{ij}\pmod{m_i}\).  Every \(m_i\) is
+coprime to \((U+1)!\), so all binomial leaves vanish modulo \(m_i\).
+The same homogeneous identity and the local equality show that the
+residual leaf does also.  Pairwise coprimality then proves
+\eqref{eq:homogeneous-certificate}.
+\end{proof}
+
+The proof is finite arithmetic formalizable in ZFC; it uses no consistency
+or arithmetic-soundness assumption.  Existentially quantifying \(U\)
+recovers unbounded witnesses at the finitely many indices.  Since the norm
+has at least two leaves, it is nonnegative, and its divisibility can be
+written as one equality \(\mathcal N=Bv\) with \(v\in\mathbb N\).
+
+\subsection{The finite product and the exact saving}
+
+As in source~75, the product defining \(B\) has the special-function
+expression
+\begin{align*}
+ Q&=(sn)^n+1,& M&=sQ+1,\\
+ B&=s^n n!\binom{Q+n}{n}\bmod M.
+\end{align*}
+Indeed the numerator is \(\prod_{j=1}^{n}s(Q+j)\), whose factors reduce
+to \(sj-1\).  Their positive product is below \((sn)^n<Q<M\), so its
+least remainder is the required product.  The variable exponent and the
+special functions remain genuine compilation obligations.
+
+Source~75 used the leaves
+\[
+ \binom{A_j}{U+1}\ (1\le j\le m),\qquad
+ R(c,\mathbf A;\mathbf x),\qquad s(c+1)-1.
+\]
+Equation~\eqref{eq:homogeneous-index} removes the existential coordinate
+\(c\), rather than merely dropping its check.  The number of leaves falls
+from \(m+2\) to \(m+1\).  A balanced norm tree with \(k\) leaves has maximum
+degree \(2^{\lceil\log_2k\rceil}\) in its leaf symbols.  When
+\(m=2^r-1\), \(r\ge1\), this bound falls from \(2^{r+1}\) to \(2^r\).
+This is not an unconditional degree reduction after substitution and
+compilation: homogenization changes the degree in \(s\), and all graph
+witnesses and shared operations still need to be counted.
+
+More generally, a modulus of the form \(si+t\), with \(s\) a unit modulo
+the selected prime divisor, supplies the residue \(i=-t/s\).  The
+corresponding finite homogeneous polynomial uses \((-t)^a s^{d-a}\).
+This is a reusable way of recovering an index from the modulus itself.
+
+\subsection{Checks and limits}
+
+The authored standard-library checker verifies 1,125 exact homogeneous
+identities, 650 modular index identities, 35 product and coprimality cases,
+156,584 finite-field norm evaluations, and 896 full CRT fixtures.  Of the
+last set, 79 satisfy the certificate, 594 fail a range condition, and 223
+fail the local residual.  Four negative controls check why one needs an
+inert prime, the nested norm, a residual bound and an invertible scale.
+The tests run with ordinary and optimized Python and contain no assertions
+that optimization could suppress.  The universal theorem rests on the
+written proof, not these finite diagnostics.
+
+This component does not instantiate a new proof-checker source, eliminate
+the special-function graphs, or establish a new minimum-variable
+consistency equation independent of K215.  Its exact contribution is the
+one-coordinate, one-leaf improvement to a separately identified compiler
+stage.

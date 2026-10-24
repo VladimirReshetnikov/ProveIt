@@ -1,0 +1,903 @@
+{
+  "name": "tree_right_quartic",
+  "domain": "all visible and auxiliary variables are natural numbers, including zero",
+  "inputs": [
+    "n",
+    "b"
+  ],
+  "auxiliaries": [
+    "p",
+    "a",
+    "t",
+    "s"
+  ],
+  "auxiliary_count": 4,
+  "total_variables": 6,
+  "meaning": "b = right component of Nat.unpair(max(n-1,0)); right also equals actual listTail",
+  "expression": [
+    "+",
+    [
+      "*",
+      "t",
+      [
+        "-",
+        "t",
+        1
+      ]
+    ],
+    [
+      "+",
+      [
+        "*",
+        [
+          "+",
+          [
+            "-",
+            [
+              "-",
+              "a",
+              "b"
+            ],
+            "s"
+          ],
+          [
+            "*",
+            "t",
+            [
+              "+",
+              [
+                "*",
+                2,
+                "s"
+              ],
+              1
+            ]
+          ]
+        ],
+        [
+          "+",
+          [
+            "-",
+            [
+              "-",
+              "a",
+              "b"
+            ],
+            "s"
+          ],
+          [
+            "*",
+            "t",
+            [
+              "+",
+              [
+                "*",
+                2,
+                "s"
+              ],
+              1
+            ]
+          ]
+        ]
+      ],
+      [
+        "+",
+        [
+          "*",
+          [
+            "+",
+            [
+              "-",
+              [
+                "*",
+                4,
+                [
+                  "-",
+                  [
+                    "-",
+                    "p",
+                    "a"
+                  ],
+                  "b"
+                ]
+              ],
+              [
+                "*",
+                [
+                  "+",
+                  [
+                    "+",
+                    "a",
+                    "b"
+                  ],
+                  "s"
+                ],
+                [
+                  "+",
+                  [
+                    "+",
+                    "a",
+                    "b"
+                  ],
+                  "s"
+                ]
+              ]
+            ],
+            "t"
+          ],
+          [
+            "+",
+            [
+              "-",
+              [
+                "*",
+                4,
+                [
+                  "-",
+                  [
+                    "-",
+                    "p",
+                    "a"
+                  ],
+                  "b"
+                ]
+              ],
+              [
+                "*",
+                [
+                  "+",
+                  [
+                    "+",
+                    "a",
+                    "b"
+                  ],
+                  "s"
+                ],
+                [
+                  "+",
+                  [
+                    "+",
+                    "a",
+                    "b"
+                  ],
+                  "s"
+                ]
+              ]
+            ],
+            "t"
+          ]
+        ],
+        [
+          "+",
+          [
+            "*",
+            [
+              "*",
+              [
+                "-",
+                [
+                  "-",
+                  "n",
+                  "p"
+                ],
+                1
+              ],
+              [
+                "-",
+                [
+                  "-",
+                  "n",
+                  "p"
+                ],
+                1
+              ]
+            ],
+            [
+              "+",
+              [
+                "*",
+                "n",
+                "n"
+              ],
+              [
+                "*",
+                "p",
+                "p"
+              ]
+            ]
+          ],
+          0
+        ]
+      ]
+    ]
+  ],
+  "formula": "((t * (t - 1)) + (((((a - b) - s) + (t * ((2 * s) + 1))) * (((a - b) - s) + (t * ((2 * s) + 1)))) + (((((4 * ((p - a) - b)) - (((a + b) + s) * ((a + b) + s))) + t) * (((4 * ((p - a) - b)) - (((a + b) + s) * ((a + b) + s))) + t)) + (((((n - p) - 1) * ((n - p) - 1)) * ((n * n) + (p * p))) + 0))))",
+  "tree_binary_operations": 49,
+  "shared_dag_binary_operations": 29,
+  "degree": 4,
+  "monomials": 62,
+  "expanded_terms": [
+    {
+      "coefficient": "1",
+      "powers": [
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        3,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "2",
+      "powers": [
+        2,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "2",
+      "powers": [
+        2,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        1,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        1,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        4,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        3,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        3,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "8",
+      "powers": [
+        0,
+        3,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-8",
+      "powers": [
+        0,
+        2,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "6",
+      "powers": [
+        0,
+        2,
+        0,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "12",
+      "powers": [
+        0,
+        2,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "24",
+      "powers": [
+        0,
+        2,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        0,
+        2,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "6",
+      "powers": [
+        0,
+        2,
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "16",
+      "powers": [
+        0,
+        2,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "17",
+      "powers": [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-16",
+      "powers": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-16",
+      "powers": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        1,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "12",
+      "powers": [
+        0,
+        1,
+        0,
+        2,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "24",
+      "powers": [
+        0,
+        1,
+        0,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-4",
+      "powers": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "12",
+      "powers": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "32",
+      "powers": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "30",
+      "powers": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-8",
+      "powers": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": "-10",
+      "powers": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        3
+      ]
+    },
+    {
+      "coefficient": "8",
+      "powers": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "2",
+      "powers": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        0,
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "2",
+      "powers": [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "17",
+      "powers": [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-8",
+      "powers": [
+        0,
+        0,
+        1,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-16",
+      "powers": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "-32",
+      "powers": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "8",
+      "powers": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "-8",
+      "powers": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        0,
+        0,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "8",
+      "powers": [
+        0,
+        0,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        0,
+        0,
+        0,
+        2,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "6",
+      "powers": [
+        0,
+        0,
+        0,
+        2,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "16",
+      "powers": [
+        0,
+        0,
+        0,
+        2,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "17",
+      "powers": [
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "coefficient": "-6",
+      "powers": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        3
+      ]
+    },
+    {
+      "coefficient": "8",
+      "powers": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        2
+      ]
+    },
+    {
+      "coefficient": "4",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        1
+      ]
+    },
+    {
+      "coefficient": "3",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": "-6",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "coefficient": "-2",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "coefficient": "-1",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        4
+      ]
+    },
+    {
+      "coefficient": "1",
+      "powers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    }
+  ]
+}

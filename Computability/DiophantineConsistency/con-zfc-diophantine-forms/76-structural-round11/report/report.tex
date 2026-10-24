@@ -1,0 +1,135 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\hypersetup{pdftitle={Structural reductions for Diophantine consistency equations},pdfauthor={dot AI assisted research for Vladimir Reshetnikov}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pathf}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\title{Structural reductions for Diophantine consistency equations}
+\author{AI assisted research prepared by dot for Vladimir Reshetnikov}
+\date{Round eleven\quad 24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This report gives a norm-saturation reduction for a fixed ten-integer
+Diophantine equation, lowering its exact degree from $1\,576\,864$ to
+$1\,245\,324$ with 480 arithmetic operations after a certified packing improvement. A separate
+coefficient-height certificate replaces an entire bounded common-multiple
+block in the commutative proof source; its degree-oriented local relation
+has 23 natural witnesses and degree 14 instead of 50. The latter is a
+proved source-level improvement, not a materialized global consistency
+polynomial. Completed companions use 37 integers at degree 4, 30 at degree
+6, 26 at degree 8, 25 at degree 10, 24 at degree 12, and 23 at degree 16.
+Positive-domain reductions give 11 variables at degree 277 with 111
+operations and 12 at degree 78 with 101 operations. Actual fixed
+coefficients, literal equations, restoration proofs, independently
+written audits, and a clean replay archive accompany the report. These
+are ordinary mathematical reductions over explicitly retained inherited
+calibrations, not new end-to-end proof-assistant certificates or global
+minimality claims.
+\end{abstract}
+
+\section{Results and exact meaning of the consistency claim}
+Let $\operatorname{Ref}_{\mathrm{ZFC}}(p)$ be the fixed recursive syntactic
+refutation predicate used by the retained source calculus, and set
+\[
+ \Con(\mathrm{ZFC})\equiv\neg\exists p\in\N\,
+ \operatorname{Ref}_{\mathrm{ZFC}}(p).
+\]
+For every completed polynomial $P$ in this report, the mathematical
+reduction establishes, in reasoning formalizable in ZFC,
+\begin{equation}\label{eq:goal}
+ \mathrm{ZFC}\vdash
+ \bigl[\neg\exists\mathbf x\in D^n\;P(\mathbf x)=0\bigr]
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}),
+\end{equation}
+where $D=\Z$ or $D=\Z_{>0}$ is stated explicitly. This does not prove
+$\Con(\mathrm{ZFC})$, decide solvability, or assume arithmetic soundness of
+ZFC. It is a reduction to the same syntactic predicate, not a claim that
+ZFC proves its own consistency. The inherited source/compiler and Pell
+calibrations are essential mathematical dependencies. Their formal
+integration remains distinct from the new algebraic arguments.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Domain and construction & Variables & Exact degree & Operations & Prior comparator\\
+\midrule
+Integer norm saturation & 10 & $1\,245\,324$ & 480 & $1\,576\,864$/481\\
+Positive three-root descent & 11 & 277 & 111 & 325/113\\
+Positive adaptive saturation & 12 & 78 & 101 & 82/102\\
+Integer compatible guards & 37 & 4 & --- & 38/4\\
+Integer centered projection & 30 & 6 & --- & 32/6\\
+Integer exact projection & 26 & 8 & --- & 27/8\\
+Integer transport pivot & 25 & 10 & --- & separate tradeoff\\
+Integer joint positivity & 24 & 12 & --- & separate tradeoff\\
+Integer joint positivity and pivot & 23 & 16 & --- & 26/16\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the first three rows the comparator lists degree/operations at the
+same variable count. For the integer low-degree rows it lists
+variables/degree. The two 37-variable quartics are distinct equivalent
+presentations. Low-degree operation schedules have not been optimized or
+assigned comparative operation claims.
+
+An operation means one binary addition, subtraction, or multiplication;
+scalar multiplication and squaring count, fixed integer leaves and shared
+reuse do not. These are arithmetic-circuit counts, not bit complexity.
+Large fixed coefficients cannot be hidden when comparing overall
+simplicity. Here they are retained as exact byte payloads, with their
+recipes, bit lengths and hashes. A positive variable is not an unrestricted
+integer variable; conversion between those domains is not free.
+
+\paragraph{What is structurally new in this iteration.}
+The ten-variable reduction removes a redundant factor of a Pell norm
+inside the Lucas square certificate while proving that full residue-class
+interpolation survives. The commutative source uses deterministic
+coefficient-height injectivity instead of numerical pairwise coprimality.
+The low-degree work proves compatible compositions and additional exact
+eliminations. In particular, the incoming README already suggested the
+37-variable quartic composition and a joint-positivity combination. They
+are not represented here as previously unexplored ideas. The 30-variable
+sextic and the transport-pivot companions are further completed reductions.
+No claim of historical priority for a general mathematical technique is
+made.
+
+\paragraph{Comparison snapshot.}
+The repository snapshot is
+\pathf{2605669a532342f153b13eb6b4a0af4b54f5fa37}.
+The eight incoming packages 68--75 were compared as complete archives,
+not merely their placed subdirectories. Nine-positive-variable equations
+remain outside the improved rows: the inspected degree/cost tradeoffs
+include $1\,845\,940$/444 and $1\,379\,730$/478. The present result does
+not reduce the nine-positive or ten-integer variable frontier.
+
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{lucas.tex}
+\input{low_degree.tex}
+\input{positive.tex}
+\input{height.tex}
+\input{evidence.tex}
+\input{next.tex}
+\clearpage
+\appendix
+\input{explicit_low.tex}
+\input{kernels.tex}
+\clearpage
+\input{references.tex}
+\end{document}

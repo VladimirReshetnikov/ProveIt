@@ -1,0 +1,217 @@
+\section{Norm saturation without an extra variable}
+
+The ten-integer equation from the preceding packet used a Lucas certificate
+whose internal square carried a redundant copy of a number that the same
+certificate proves to be square. Removing that copy lowers the exact degree
+from $1\,576\,864$ to $1\,248\,364$, with the same ten unrestricted
+integer unknowns and the same $481$ binary operations. The fixed source
+prefix and all twelve actual fixed integer leaves are unchanged.
+
+\subsection{The modified polynomial}
+
+Retain the source registers $X,Y,\mathscr C$, and write
+\[
+\begin{gathered}
+ b=6t+4,\quad g=bg_0,\quad k=b(3k_0+2),\quad C=6c_0-1,\quad \xi=zx,\\
+ L=lY,\quad U=2LX,\quad V=4gwY,\quad W=bw,\\
+ A=U(V+1),\quad B_1=2X+1,\quad P_{1/2}=(LX)UV,\\
+ K=X+1+k(2P_{1/2}-2),\quad Q=(P_{1/2}^2-1)K^2+1,\\
+ S=2A-5,\qquad T=3WC-2(W^2-1),\\
+ \Delta=8\mathscr C^3gK^2-g^2\{32(C-KL)^2\mathscr C^3+g^2K^2\}.
+\end{gathered}
+\]
+Define the new certificate registers
+\[
+\begin{gathered}
+ D=(A^2-4)C^2+4,\quad E_0=C^2\xi,\quad E=DE_0,\quad E_2=E_0E,\\
+ F=4(A^2-4)E_2+1,\quad G=(A/2-1)(F-1)-1,\quad \Omega=16E,\\
+ H=C+F(B_1-C+\Omega y),\qquad I=(G^2-1)H^2+1.
+\end{gathered}
+\]
+Here $A/2=(LX)(V+1)$ is an integer polynomial, not a division operation.
+The sole structural change is
+\[
+ E^2=C^4D^2\xi^2\quad\longmapsto\quad E_2=C^4D\xi^2
+\]
+in $F$ and $G$; the old expression for $\Omega$ is retained.
+Sharing $E_0,E,E_2$ uses the same three multiplications as the former
+$E$ and $E^2$.
+
+Put
+\[
+\begin{gathered}
+ \rho=T+Sy,\quad \Sigma=\xi S^5,\quad
+ \Theta=(\rho^3-\rho S^2-S^3)(\rho^2+23S^2),\\
+ r=bQ,\quad a_0=r+(9\Delta-3)(rz)^2,\quad a_1=DFI,
+ \quad Z=\Sigma m-\Theta.
+\end{gathered}
+\]
+The completed ordinary equation is
+\begin{equation}\label{eq:norm-saturated-ten}
+ \boxed{\bigl(Z^2-\Sigma^2(a_0+a_1)\bigr)^2
+          -4\Sigma^4a_0a_1=0.}
+\end{equation}
+The ten variables are $t,g_0,c_0,k_0,l,w,x,y,z,m\in\mathbb Z$.
+The complete source prefix, sparse kernel data, actual fixed coefficients,
+and division-free circuit are supplied in the accompanying \texttt{lucas}
+component. No consistency-dependent integer is selected.
+
+\subsection{Reliability with the weaker internal square}
+
+Suppose $A$ is even, $|A|>2$, $B$ is odd with
+$1<B<|A|/2-1$, $C$ is odd with $|C|>1$, and $\xi\ne0$.
+Use the displayed certificate with $B$ in place of $B_1$.
+If $DFI$ is square, then
+\[
+ C=\pm u_B(A),\qquad u_0(A)=0,\quad u_1(A)=1,\quad
+ u_{n+2}(A)=Au_{n+1}(A)-u_n(A).
+\]
+If additionally $3\mid A$, $B\equiv3\pmod4$, and
+$C\equiv-1\pmod3$, the sign is positive.
+
+Indeed $D,F,I$ are positive. Since $D\mid E_2$,
+\[
+ F\equiv I\equiv1\pmod D,
+ \qquad 2G=(A-2)F-A,
+ \qquad4I\equiv D\pmod F.
+\]
+As $F$ is odd, these are pairwise coprime. Each is therefore a square.
+Let $d=\sqrt D>0$, a proof-only integer. Pell classification supplies
+indices $s,\mu,t$ such that
+\[
+ C=u_s(A),\qquad4C^2d\xi=u_\mu(A),\qquad H=u_t(2G).
+\]
+The coordinate $C$ is odd and not $\pm1$, so $s$ is odd and $|s|\ge3$.
+Alternatively, the bound needed for the next index can be seen directly:
+$d\ge|A|$, hence $|u_\mu(A)|\ge4|A|>|u_2(A)|$;
+$\mu$ is even and nonzero, so $n=|\mu|\ge4$.
+Then $F=(v_n(A)/2)^2$. The standard index-separation and rank-divisibility
+lemmas give
+\[
+ s\equiv\pm t\pmod{2n},\qquad C\mid n.
+\]
+The two crucial new polynomial identities are
+\[
+ \frac{F-1}{\Omega\xi}=\frac{(A^2-4)C^2}{4},\qquad
+ \frac{2G+2}{\Omega\xi}
+       =\frac{(A+2)(A-2)^2C^2}{4}.
+\]
+Both right-hand sides are integers. Thus $H\equiv B\pmod\Omega$,
+while $H=u_t(2G)\equiv u_t(-2)=t\pmod\Omega$ because $t$ is odd.
+Since $2C\mid\Omega$, we obtain $s\equiv\pm B\pmod{2C}$.
+Lucas growth gives $|s|\le|C|$ and $B<|A|<|C|$, so the only
+possible representatives are $s=B$ and $s=-B$.
+Finally
+\[
+ u_{2j+1}(A)\equiv(-1)^j\pmod{A^2}
+\]
+shows that $u_B(A)\equiv-1\pmod3$ on the indicated slice, and selects
+the positive sign.
+
+\subsection{Full residue interpolation}
+
+The modified certificate must also retain the full residue freedom used
+by the divisibility merger. Let $A>2$ be even, $B>0$ odd,
+$C=u_B(A)$ and $d=v_B(A)>0$, so $D=d^2$.
+For every $N>0$ there is a positive $\xi$ divisible by $N$ such that
+every residue class modulo $\xi$ contains a $y$ for which $DFI$ is square.
+
+Choose a positive matrix period $n$ modulo $4NC^2d$ for
+\[
+ M_A=\begin{pmatrix}A&-1\\1&0\end{pmatrix},
+ \qquad \xi=\frac{u_n(A)}{4C^2d},\qquad r_0=\frac{v_n(A)}2.
+\]
+Then $N\mid\xi$, $n$ is even, $r_0$ is odd, $F=r_0^2$, and
+\[
+ \Omega=16C^2d^2\xi=4d\,u_n(A).
+\]
+The Cayley--Hamilton period $\lambda=4nr_0$ works modulo $F$.
+For $q=\lambda/\gcd(\lambda,\Omega)$ we have
+$\gcd(q,\xi)=1$: if $p\mid\xi$, then $p\nmid r_0$ and the Lucas
+valuation bound gives
+\[
+ \nu_p(\lambda)=\nu_p(4n)
+ \le\nu_p(4u_n(A))\le\nu_p(\Omega).
+\]
+Thus the extra factor $d$ in $\Omega$ strengthens, rather than weakens,
+the required absorption of prime powers.
+
+For a prescribed class $c\pmod\xi$, choose a positive $L$ with
+$q\mid L$ and $L\equiv c\pmod\xi$. Set
+$j=B+\Omega L$ and $H_0=u_j(2G)$.
+The period gives $H_0\equiv C\pmod F$, while the displayed
+identities give $H_0\equiv B\pmod\Omega$.
+As $F\equiv1\pmod\Omega$, the number
+\[
+ y=\frac{H_0-C-(B-C)F}{\Omega F}
+\]
+is integral. Working modulo $\Omega\xi$ instead yields
+$Fy\equiv L\pmod\xi$, and therefore $y\equiv c\pmod\xi$.
+The Pell identity makes $I$ square. This is a direct proof for the new
+scale: simply multiplying the old $\xi$ by $d$ would not establish
+residue freedom modulo the new $\xi$.
+
+\subsection{Signed soundness and completeness}
+
+The unchanged normalizations give $a_0\equiv1\pmod3$ and
+$a_1\equiv0\pmod3$ on every signed assignment. Hence $a_0\ne a_1$.
+The root-free homogeneous quintic makes $\Theta\ne0$ because $S$ is
+odd and nonzero. At a zero of \eqref{eq:norm-saturated-ten}, therefore,
+$\Sigma\ne0$. The two-square norm argument gives integral square roots
+of $a_0,a_1$, together with $\Sigma\mid\Theta$; prime valuations then
+give $S\mid T$.
+
+The coprime factorization of $a_0$ and its residue class force $b,Q$ to
+be positive squares and $\Delta>0$. Thus $K\ne0$, $0<g<2\mathscr C$,
+and $l\ne0$; the last assertion follows from $Q=1-K^2\le0$ if $l=0$.
+The source bounds give $X>3b$ and $Y>256$, so $|L|\ge Y$ and
+$|A|>2B_1+2$.
+
+The indispensable new observation is that the guard already excludes
+the exceptional Lucas coordinates:
+\[
+ 4(C-KL)^2<K^2,\qquad
+ |C|>|K|(|L|-\tfrac12)\ge Y-\tfrac12>1.
+\]
+Thus the weakened internal square does not need to reproduce the old
+standalone exclusion of $C=\pm1$. Reliability gives $C=u_{B_1}(A)$.
+The proof-only integer $(C-B_1)/(A-2)$ restores the former arithmetic
+interface, after which the unchanged reverse bridge and fixed source
+calibration supply a finite refutation.
+
+Conversely a refutation supplies the same canonical source witnesses.
+With $r=bQ$ a positive square and $\Delta>0$, the coefficient
+$(9\Delta-3)r$ is positive nonsquare because its $3$-adic valuation is
+odd. Pell's theorem supplies $z>0$ making $a_0$ square. Use the new
+interpolation theorem with $N=z$, and put $x=\xi/z$.
+Intersectivity of $(v^3-v-1)(v^2+23)$ prescribes a class of $y$ modulo
+$\xi$ giving $\Sigma\mid\Theta$ while $a_1$ remains square.
+Then
+\[
+ m=\Theta/\Sigma+\sqrt{a_0}+\sqrt{a_1}
+\]
+solves \eqref{eq:norm-saturated-ten}. This proves the existential
+consistency equivalence with no sign assumptions on arbitrary inputs.
+
+\subsection{Degree and evidence}
+
+Let $a=\deg A=16424$. The relevant degrees are
+\[
+\begin{array}{c|rrrrrrr}
+ \text{register}&D&E_2&F&G&H&I&a_1\\\hline
+ \deg&2a+2&2a+10&4a+10&5a+10&6a+17&22a+54&28a+66.
+\end{array}
+\]
+Also $\deg\Sigma=5a+2$. The unique dominant final summand is
+$\Sigma^4a_1^2$, giving exact degree
+\[
+ 4(5a+2)+2(28a+66)=76a+140=1\,248\,364.
+\]
+Three nonzero leading coefficients modulo independent primes, evaluated
+with the actual fixed tuple, certify that the upper bound is attained.
+The included checkers replay the complete source-plus-finalizer formula,
+all signed residue conditions, the new identities, and concrete modular
+interpolation constructions. These are transcription and arithmetic
+checks; the universal proof above and the explicitly retained source
+calibration remain distinct from finite tests and from proof-assistant
+kernel certification.

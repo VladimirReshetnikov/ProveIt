@@ -1,0 +1,7 @@
+# Attribution and proof boundary
+
+The original31 quadratic source, compiler-to-refutation calibration and complete four-port tuple are inherited from ProveIt. The binomial bridge and classical Lucas classification, rank and interpolation interfaces are those of Zhi-Wei Sun. The intersective quintic, two-root norm, positivity merger, fixed-residue orientation, and earlier source packing are retained from the preceding construction and are not new here.
+
+Round11 introduces norm saturation: E2=C^4 D xi^2 replaces E^2=C^4 D^2 xi^2 only inside F and G, while Omega=16C^2 D xi is retained. The new proof supplies full residue interpolation for the modified formula and uses the unchanged guard to exclude exceptional C before Lucas index recovery. The additional certified H1868 target layout and exact 78-step shared-power plan improve the final degree and arithmetic cost without changing the fixed coefficient values. The literal arithmetic graph and checks execute no upstream program.
+
+Original licensing material is retained in licenses/. Mathematical dependencies and source pins are in provenance/. Newly authored round11 material is AI-assisted and distributed under the top-level LICENSE.NEW. The reduction is ordinary mathematics formalizable in ZFC, not a fresh kernel verification or exported object-language derivation. No consistency, global optimality, or historical-priority claim is made.

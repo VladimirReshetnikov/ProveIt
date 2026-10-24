@@ -1,0 +1,339 @@
+\section{Coprime scale carriers and fixed prime separation}
+\label{sec:r13-radicals}
+
+A low-degree scale and fixed prime separation can be combined without
+adding a variable. The resulting complete integer equations are
+\begin{center}
+\begin{tabular}{lrrr}\toprule
+Construction & Variables & Exact degree & Binary operations\\\midrule
+Normalized five-root norm &13&1072&192\\
+Ordinary four-root norm &14&378&145\\
+Ordinary three-root norm &15&172&123\\
+Centered three-root norm &15&170&134\\
+Centered two-root norm &16&98&138\\\bottomrule
+\end{tabular}
+\end{center}
+All variables range over unrestricted integers. These are explicit
+cost--degree tradeoffs, not global minima. In particular, the first row
+improves the incoming $13/1088/195$ point; the second substantially lowers
+both degree and evaluation cost from the inspected $14/652/163$ point.
+The $16$-variable row lowers degree but increases cost relative to
+$16/108/132$.
+
+The source is the literal signed CRT parent
+\texttt{degree88\_17.json}, with its inherited ordinary native compiler
+and K215 calibration. We restore each of its five residuals below.
+This is not a new Lean/Rocq certificate, and it proves neither consistency
+nor a historical or global optimality claim.
+
+\subsection{Complete common prefix}
+The base thirteen coordinates are
+\[
+ j,C,z,h,r,v,w,T,c,n,t,p_2,p_3.
+\]
+The fixed six numerals are the coherent source-34 tuple
+$\beta,K_0,M_C,M_F$, with $M_F$ already shifted, and
+$A_{\rm cone}=2^{1113}$, $B_{\rm cone}=2^{666104}$.
+In particular $\beta=2^{1064921}-1$. All named registers below are
+polynomial abbreviations, not extra quantified variables:
+\begin{align*}
+J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+X&=qW,&Y&=qv,&E&=XY,\\
+a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+F&=(K_0+W)C-z(q-1),&&&\\
+R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,&&&\\
+k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta,\\
+u&=EYk,&A_\tau&=u(u+k)+1,&A_m&=1+\Delta c^2,\\
+b_0&=X+ac,&I&=(2r+1)c^2,&M&=2q^2,\\
+U&=MH,&e&=v-q^2.&&
+\end{align*}
+The determinant and guard radicand are
+\begin{align*}
+d&=(A_{\rm cone}F)(B_{\rm cone}C)
+ -(q-A_{\rm cone}F-B_{\rm cone}C)^2,\\
+A_g&=d\eta\zeta-(t^2-d-\eta\zeta+1)^2
+     -1-p_2^2-p_3(p_3+1).
+\end{align*}
+For the ordinary variants, add the coordinate $f$ and set
+\[
+ Q=I^2,\qquad S=Q-\Delta(f^2-1),\qquad
+ V=fcT-f^2R-c.
+\]
+For the thirteen-variable normalized variant instead use
+\[
+ A_f=1+\Delta I^2,\qquad Q=\Delta^2I^2,\qquad
+ V=A_f(cT-R)-c.
+\]
+In both cases put $\delta=Q-1$, $C_y=QV^2-1$. The rational expression
+$A_y=C_y/\delta$ is proof notation only, never a circuit division.
+Where the coordinate $\gamma$ is retained, write
+$D=(b_0+H\gamma)^2-A_m$. Where $p_1$ is retained, write
+$G=A_g-p_1^2$.
+
+\subsection{Five literal norm specifications}
+Let
+\[
+ \mathcal F_m(x;a_1,\ldots,a_m)
+ =\prod_{\varepsilon\in\{-1,1\}^m}
+   \left(x+\sum_i\varepsilon_i\sqrt{a_i}\right).
+\]
+Sign invariance proves that this is an integer polynomial. The following
+expressions are cleared symbolically; their JSON circuits use only binary
+addition, subtraction and multiplication.
+
+For thirteen variables take $Z=U(n+V)+Mb_0+He$ and
+\[
+ N_{13}=\delta^{16}\mathcal F_5\left(
+ Z;81U^2A_f,9U^2A_\tau,M^2A_m,729U^2A_g,
+ \frac{U^2C_y}{\delta}\right).
+\]
+The equation is $N_{13}=0$.
+
+For fourteen variables, add $f$, retain the same $Z$, and use
+\[
+ N_{14}=\delta^8\mathcal F_4\left(
+ Z;9U^2A_\tau,81U^2A_g,M^2A_m,
+ \frac{U^2C_y}{\delta}\right),\qquad
+ P_{14}=(1+N_{14})(1+S)-1.
+\]
+For fifteen variables, add $f,\gamma$, and use
+\[
+ N_{15}=\delta^4\mathcal F_3\left(
+ M(n+V)+e;9M^2A_\tau,81M^2A_g,
+ \frac{M^2C_y}{\delta}\right),
+ \qquad P_{15}=(1+N_{15})(1+S)(1+D)-1.
+\]
+
+The centered variants use $t_0=2u+k$, $\ell=k^2-4$.
+For fifteen variables add $f,p_1$ and set
+\begin{align*}
+ Z_c&=U(n+3t_0+2V)+2Mb_0+He,\\
+ N_{15c}&=\delta^4\mathcal F_3\left(
+ Z_c;36U^2A_\tau,4M^2A_m,\frac{4U^2C_y}{\delta}\right),\\
+ P_{15c}&=(1+N_{15c})(1+S)(1+4G)-1.
+\end{align*}
+For sixteen variables add $f,\gamma,p_1$, put $x=Mn+e$, and define
+\begin{align*}
+ j_0&=\delta\{x^2+M(6t_0+4V)x+9M^2\ell\}
+       -4M^2(V^2-1),\\
+ h_0&=12\delta t_0VM^2,\\
+ N_{16}&=j_0(j_0+2h_0)
+  +144\delta M^4\{4A_\tau(1-V^2)+\delta\ell V^2\},\\
+ P_{16}&=(1+N_{16})(1+S)(1+D)(1+4G)-1.
+\end{align*}
+The exact identity, valid also at $\delta=0$, is
+\[
+ N_{16}=\delta^2\mathcal F_2\left(
+ M(n+3t_0+2V)+e;36M^2A_\tau,
+ \frac{4M^2C_y}{\delta}\right)
+\]
+after symbolic clearing. An independent integer-coefficient check compares
+all $29$ nonzero terms in the centered identity.
+
+\subsection{Unit products recover the rows before denominator use}
+For integers, if residuals $R_i$ never equal $-2$, then
+\[
+ (1+N)\prod_i(1+R_i)=1
+ \quad\Longleftrightarrow\quad N=R_1=\cdots=R_s=0.
+\]
+Indeed every factor of the integer unit $1$ is $\pm1$. Each $R_i$ factor
+is $+1$, forcing the one unrestricted norm factor to be $+1$ too.
+There is no missing assumption on the norm modulo four.
+
+Here $a$ is even and $\Delta\equiv3\pmod4$. If $f$ is odd then
+$S\equiv I^2\pmod4$; if $f$ is even then $S\equiv I^2-1\pmod4$.
+Thus $S$ is never $2$ modulo four. The same is true of $D$: for even $c$
+its residues are $0,3$, and for odd $c$ they are $0,1$.
+Finally $4G\equiv0\pmod4$. All the stated finalizers therefore recover
+their individual residuals, in particular $S=0$, before interpreting a
+rational norm.
+
+Since $a\in6\mathbb Z$, $\Delta=(a+1)(a+3)\ge3$.
+In ordinary variants $S=0$ excludes $Q=1$, as it would give
+$\Delta(f^2-1)=1$. In the normalized variant $Q=\Delta^2I^2$ excludes
+$Q=1$ directly. Hence $\delta\ne0$ at every zero in question.
+
+\subsection{Prime separation before guard recovery}
+The fixed residues give
+\[
+ q\equiv X\equiv2\pmod3,\quad a\equiv H\equiv\Delta\equiv0\pmod3,
+ \quad A_\tau\equiv A_m\equiv1\pmod3.
+\]
+To check $A_\tau$, write $A_\tau=1+b(b+1)k^2$ with
+$b=XY^2\equiv0$ or $2$ modulo three.
+Also $H$ is nonzero and odd. Under $S=0$, the square $Q=I^2$ is divisible
+by three, hence by nine. The normalized $Q$ is already divisible by nine.
+Thus $A_y$ is a three-adic unit of residue one.
+
+The weighted roots used by the ordinary fourteen-variable norm have
+squared orders
+\[
+ -2v_3(H),\quad0,\quad2,\quad4+v_3(A_g)
+\]
+for $d_0/H,y,3\tau,9p_1$ respectively. The normalized construction
+inserts $9f$ of squared order four and uses $27p_1$ of squared order
+at least six. A zero guard root is harmless.
+
+Here is the precise separation argument. In any subset of at least two
+nonzero roots, the smallest squared order is unique and even. Divide
+out its power of three and multiply the putative zero sum over all signs
+of the remaining roots. The product is a polynomial in the rational
+squares and is a nonzero unit modulo three, a contradiction.
+Subtracting a Galois conjugate of a rational signed root sum would give
+exactly such a forbidden signed subsum. Every root is therefore rational.
+This argument allows negative radicands; their rationality subsequently
+rules that case out. No positivity guard is assumed beforehand.
+
+Roots of integer squares are integral. For the auxiliary root, $Q=0$
+gives $y=\pm1$. For $Q>1$, rational $y$ in
+$QV^2-(Q-1)y^2=1$ is integral by adjacent-Pell descent. In lowest terms
+$y=A/m$ gives $m^2\mid Q-1$. The transformation
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV
+\]
+preserves the norm and the denominator, and after taking positive signs
+satisfies $0<V'<V$ when $V>1$. The endpoint $|V|=1$ forces $m=1$.
+Thus the case $c=0$, and consequently $Q=0$, has not been silently excluded.
+
+\subsection{Coprime carriers and exact source restoration}
+Because $Y=qv$, we have $H\equiv3\pmod q$. Since $q\equiv2\pmod3$
+and $H$ is odd,
+\[
+ \gcd(H,2q^2)=1.
+\]
+After root recovery the ordinary fourteen-variable factor is
+\[
+ U(n+V)+Mb_0+He=Md_0+U(3\tau+y+9p_1).
+\]
+Reduction modulo $M$ and $H$ gives respectively
+\[
+ v=q^2(2v_{\rm old}+1),\qquad
+ \gamma=\frac{d_0-b_0}{H}\in\mathbb Z.
+\]
+The normalized case adds $9f$ and replaces $9p_1$ by $27p_1$;
+the same argument applies. The centered main carrier instead has
+$2M(d_0-b_0)$ modulo $H$, still invertible because $H$ is odd.
+The variants retaining $\gamma$ need only the first congruence.
+In all cases $Y=(2v_{\rm old}+1)q^3$ exactly, including its odd quotient.
+The removed $v^2$ guard multiplier is unnecessary: $v\ne0$ follows
+now from the recovered congruence, not from an assumed inequality.
+
+The integral guard root restores $G=0$, which implies $d>0$ and
+$\eta\zeta>0$ by the standard joint-positivity identity. For completeness,
+if both factors were negative their magnitudes $b,e>0$ would require
+$(t^2+b+e+1)^2<be$, which is impossible. Thus $c=0$ is impossible too,
+since it would give $\eta\zeta=-Y(Y+1)k^2\le0$.
+
+For the ordinary variants set old $J_3=2j$, old scale $v_{\rm old}$
+as above, and restore the two centered source coordinates by
+\[
+ \tau_{\rm old}=2\tau-(2u+k),\qquad y_{\rm gap}=y-V.
+\]
+The first and auxiliary parent residuals become exactly
+\begin{align*}
+ \tau_{\rm old}^2+2\tau_{\rm old}(2u+k)+k^2-4
+   &=4(\tau^2-A_\tau),\\
+ V^2+(1-Q)y_{\rm gap}(2V+y_{\rm gap})-1
+   &=QV^2-(Q-1)y^2-1.
+\end{align*}
+The other three rows are the main norm, $S$ and $G$.
+Every remaining parent abbreviation agrees literally. This restores the
+five-row signed CRT source directly, without inventing a new rank lemma.
+For normalized thirteen variables instead set
+\[
+ r_{\rm old}=\frac{\Delta(2r+1)-1}{2},\qquad
+ T_{\rm old}=fT.
+\]
+The first quotient is integral because $\Delta$ is odd. Then
+$I_{\rm old}=\Delta I$, the parent's $V$ agrees exactly, and its strong
+row follows from $f^2=A_f$.
+
+Conversely, the inherited canonical refutation witnesses have odd
+$J\equiv1\pmod3$, so $J=6j+1$. Put
+$v=q^2(2v_{\rm old}+1)$ and retain their guard witnesses.
+For example the ordinary fourteen-variable construction chooses
+\[
+ n=\gamma+3\tau+y+9p_1-V-e/M.
+\]
+The centered fifteen-variable construction chooses
+\[
+ n=6\tau+2y+2\gamma-3t_0-2V-e/M.
+\]
+The other formulas omit the coordinates not fused by their norms.
+All values are integers and make one conjugate factor vanish.
+The normalized thirteen-variable case uses the same canonical odd strong
+normalization and fresh auxiliary reconstruction proved in the incoming
+prime-separation package. Its ordinary calibration boundary is unchanged.
+
+\subsection{Universal degree bounds and actual coefficient certificates}
+Fix the six ports. The exact propagated prefix bounds are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{register}&H&k&u&A_\tau&A_g&Q&V&M&U&S,D\\\hline
+\text{degree}&4&5&11&22&28&6&7&2&6&10
+\end{array}
+\]
+in the ordinary case, with $\deg G=28$. The normalized case instead has
+$\deg A_f=14$, $\deg Q=22$ and $\deg V=19$.
+Direct degree propagation through the exact DAGs proves the final upper
+bounds $378,172,98$ for ordinary fourteen, ordinary fifteen and centered
+sixteen variables. Two cancellation-sensitive cases require more.
+
+\paragraph{Thirteen variables.}
+Pair the two signs of the auxiliary root first. Write
+\[
+ Z=UV+s,\qquad s=Un+Mb_0+H(v-q^2),
+\]
+and, for each of the sixteen sign choices, put
+\[
+ B=s\mathbin{\pm}9Uf\mathbin{\pm}3U\tau
+     \mathbin{\pm}Md_0\mathbin{\pm}27Up_1.
+\]
+Assign formal root weights $7,11,5,14$ to $f,\tau,d_0,p_1$.
+Each squared radicand has degree at most twice its root weight, so
+reduction in this formal root algebra never increases weighted degree.
+Thus $B$ has weight at most $20$. The paired factor is exactly
+\begin{align*}
+ \delta\{(UV+B)^2-U^2C_y/\delta\}
+ &=\delta B^2+2\delta UVB-U^2(V^2-1).
+\end{align*}
+The identity uses $C_y=(\delta+1)V^2-1$. Its three terms have bounds
+$62,67,50$. The sixteen-factor product therefore has degree at most
+$16\cdot67=1072$, and is exactly the cleared five-root norm.
+This argument is polynomial algebra, including all exceptional inputs.
+
+\paragraph{Centered fifteen variables.}
+Use the exact centered two-root identity with its scale $M$ replaced by
+$U$, and its carrier argument replaced by
+\[
+ x=Un+2Mb_0+H(v-q^2)\mathbin{\pm}2Md_0.
+\]
+With $d_0$ of weight five, $x$ has weight at most seven. Define
+\begin{align*}
+ j&=\delta\{x^2+U(6t_0+4V)x+9U^2\ell\}
+      -4U^2(V^2-1),\\
+ h&=12\delta t_0VU^2.
+\end{align*}
+Their weights are at most $30$ and $36$. Every term of
+\[
+ j^2+2hj+576\delta U^4A_\tau(1-V^2)
+       +144\delta^2U^4\ell V^2
+\]
+has weight at most $66$. The exact identity uses only
+$t_0^2=4A_\tau+\ell$, not a Pell zero. Taking the two main-root
+conjugates gives norm degree at most $132$; the strong and guard
+finalizers add $10+28$, yielding $170$.
+
+Independent modular-line certificates modulo $65521$ and $65519$, using
+the actual six numeral byte strings, attain every stated bound with a
+nonzero leading coefficient. They are rigorous lower certificates
+combined with the preceding universal upper proofs.
+All literal DAGs pass topology, variable closure, liveness and coefficient
+hash checks. An independent exact sparse-algebra audit verifies every
+prefix, carrier, radicand, norm and finalizer, using all $20\,349$
+coefficients of the generic five-root norm; deliberate corruptions are
+rejected. Signed modular diagnostics additionally include $c=0$, $v=0$
+and their intersection. These algebraic checks do not establish an
+unbounded compiler theorem: the named ordinary source calibration remains
+an explicit mathematical dependency.

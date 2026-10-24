@@ -1,0 +1,531 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem,microtype,xcolor,fancyhdr}
+\usepackage{hyperref}
+\definecolor{inkblue}{HTML}{164C63}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+  pdftitle={Dyadic descaling and delayed Pell sign recovery for Diophantine consistency},
+  pdfauthor={OpenAI-assisted research prepared for Vladimir Reshetnikov}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Refut}{\operatorname{Ref}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZFp}{\mathsf{ZF}}
+\newcommand{\vTwo}{\nu_2}
+\newcommand{\sha}{\texttt{ec80841c07e91be8956ce6ed4af9a9c0b782d3d9}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Diophantine consistency: two reductions}
+\rhead{\small ProveIt research package}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\textbf{Dyadic descaling and delayed Pell sign recovery}\\[4pt]
+  \large Two explicit reductions for Diophantine expressions of $\Con(\ZFC)$}
+\author{Prepared for Vladimir Reshetnikov\\
+  \small Research, implementation, and separate proof review with ChatGPT}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We construct two explicit polynomial equations whose unsolvability is
+equivalent to $\Con(\ZFC)$, using precisely stated calibration theorems
+already present in ProveIt. The first equation has ten strictly positive
+unknowns, exact total degree $706$, and a division-free circuit with $133$
+binary arithmetic operations. Its immediate parent has degree $816$ and
+$124$ operations. The essential change is to separate four rational square
+classes by distinct powers of two. This removes a strong-Pell scale factor
+that had been needed for real-size separation. Three centers and a quadratic
+transport majorant then determine the lower exact degree.
+
+The second equation is a quartic in $780$ unrestricted integers, defined
+both by $434$ explicit quadratic residuals and by all $9,628$ collected
+monomials. It improves the $888$-integer parent in the latest direct
+certificate package. Its largest absolute coefficient is
+$2,445,790,974,704$, unchanged from that parent. This route uses the direct
+C222 proof-certificate calibration rather than K215 or Jones's universal
+equation. The reduction removes $36$ nonnegativity guards by proving their
+consequences in a strict order: elementary signs, the Pell frame, indexed
+powers, and finally signs of power quotients.
+
+The new algebraic and number-theoretic reductions are proved here;
+the two source calibrations are inherited, not silently replaced by
+experiments. Literal data, exact rebuilding programs, source hashes,
+audit receipts, and an independent AI-assisted proof review accompany
+the article. We do not claim global minimality, a new universal-variable
+record, or an end-to-end proof-assistant certificate.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{The target and the two results}
+\label{sec:overview}
+
+Fix the usual recursive presentation of ZFC used by the repository's
+calibration. Write $\Refut_{\ZFC}(p)$ for its primitive-recursive predicate
+that $p$ is a finite syntactic refutation, and abbreviate
+\[
+  \Con(\ZFC)\;\equiv\;\neg\exists p\in\N\;\Refut_{\ZFC}(p).
+\]
+The desired assertion for a polynomial $P$ and an explicitly specified
+domain $D$ is
+\begin{equation}\label{eq:target}
+ \ZFC\vdash
+ \left(\forall \boldsymbol x\in D^v\;P(\boldsymbol x)\ne0\right)
+ \longleftrightarrow \Con(\ZFC).
+\end{equation}
+The useful way to establish this is to prove, internally by ordinary
+arithmetizable mathematics, that a zero exists exactly when a finite
+refutation exists. There is no assertion here that ZFC proves its own
+consistency, or that a numerical search could establish unsolvability.
+
+The word ``simplest'' requires a choice of cost. Unknown count, degree,
+arithmetic circuit length, number of monomials, coefficient height,
+compressed coefficient storage, and proof dependencies are different
+measures. A sparse quartic with hundreds of unknowns can have much smaller
+coefficients than a compact formula in ten unknowns. This work therefore
+states concrete improvements and their costs rather than an unproved
+absolute optimum.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & Unknowns & Domain & Degree & Further size measure\\
+\midrule
+Immediate scaled-norm parent & 10 & $\Pos$ & 816 & 124 operations\\
+Dyadic construction here & 10 & $\Pos$ & \textbf{706} & 133 operations\\
+Direct parent & 888 & $\Z$ & 4 & 10,156 monomials\\
+Delayed-sign construction here & \textbf{780} & $\Z$ & 4 & 9,628 monomials\\
+\bottomrule
+\end{tabular}
+\caption{Exact comparisons to the two pinned immediate parents.
+Domains and coefficient bindings are kept distinct.}
+\label{tab:main}
+\end{table}
+
+The first change reduces degree by $110/816\approx13.48\%$ and adds nine
+arithmetic operations. It does not dominate its parent in every cost.
+The second removes $108/888\approx12.16\%$ of the integer unknowns while
+preserving degree and coefficient height. It is a reduction within the
+direct proof-certificate architecture, not a claim that no smaller
+integer quartic occurs elsewhere in the repository.
+
+All comparisons use the fixed repository snapshot\newline
+\sha. The reviewed
+collection already contains nine-positive-variable and ten-integer
+equations, and earlier native-calibration quartics have far fewer than
+$780$ integer unknowns. The latter use a different coefficient regime.
+The direct $407$-natural-variable parent is also retained unchanged by
+our new integer-domain conversion. These comparisons prevent a domain
+change or an obsolete baseline from being mistaken for a record.
+
+\subsection{What changes mathematically}
+
+The ten-positive-variable parent makes several real radicals grow at
+different rates, so an irrational square class cannot disappear from a
+signed sum. That requirement inflates its strong Pell ordinate.
+Here we arrange instead that each radicand is a unit at the prime $2$,
+then weight the four roots by $1,2,4,8$. Within any common rational square
+class, the weighted coefficients have distinct powers of two. The least
+power cannot cancel. The same rational-root conclusion follows without
+size ordering, and one scale factor can be deleted.
+
+The direct construction addresses a different source of growth.
+An integer version of a natural-number certificate often attaches three
+new variables to each sign requirement. Some sign requirements become
+theorems after the arithmetic meaning of the certificate is established.
+We prove those meanings before inferring the remaining signs, and record
+the exact dependency order. Removing $36$ such requirements saves
+$3\cdot36=108$ integer variables.
+
+Neither the use of valuations nor the elementary quotient recurrence is
+claimed as a new general principle. The contributions are their concrete
+applications, the compatible proof ordering, the complete fixed
+polynomials, and the quantified improvements at the pinned source.
+General work on universal pairs illustrates why degree and variable
+count must be tracked separately \cite{bayer2026}; Sun's ten-integer
+theorem concerns a different, universal reduction \cite{sun2026}.
+Neither new endpoint here invokes Sun's ten-integer theorem.
+
+\section{Inherited calibration and precise proof boundaries}
+\label{sec:calibration}
+
+\subsection{The complete fixed coefficient tuple}
+
+For the first construction the fixed numerals are
+\[
+   \beta=2^{590069}-1,\qquad K_0,\qquad M_C,\qquad M_F.
+\]
+The last three are literal integers supplied by the unchanged compact44
+coefficient files. Each file is a gzip-compressed little-endian binary
+integer. Their complete compressed and uncompressed SHA-256 bindings
+appear in the circuit JSON and its builder. The designation $M_F$ means
+the \emph{already shifted} high mask. There is no additional shift.
+These fixed numerals satisfy
+\begin{equation}\label{eq:ports}
+ K_0>0,\qquad 0<M_C<\beta<M_F<2\beta.
+\end{equation}
+They are part of the polynomial's definition, not existential parameters,
+an unspecified enumeration index, or a truth-dependent choice.
+The four compressed payloads together occupy about nine kilobytes;
+their uncompressed representation has $295,388$ bytes.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+Numeral & Supplied file & Bit length\\
+\midrule
+$\beta$ & \texttt{beta.bin.gz} & 590,069\\
+$K_0$ & \texttt{K.bin.gz} & 592,884\\
+$M_C$ & \texttt{MC.bin.gz} & 590,069\\
+$M_F$ & \texttt{MF\_source.bin.gz} & 590,070\\
+\bottomrule
+\end{tabular}
+\caption{The whole compact44 binding. No ports from another tuple are mixed in.}
+\end{table}
+
+\subsection{The native positive source interface}
+
+Here is the exact inherited theorem used for the ten-positive equation.
+It is Theorem \texttt{thm:source} of package 61, including the canonical
+promises immediately following it \cite{source61}. Define, for positive
+source coordinates
+\[
+ J,F,\alpha,z,f,h,i,T_{\rm old},s,w,\tau,\eta,\zeta,y,\gamma,
+\]
+the registers
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,& X&=wq,& Y&=sq^3,\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,& a&=E+Y,\\
+ H_0&=4a+3,& \Delta_0&=(a+2)^2-1,& \ell&=EkY,& I_0&=ic^2.
+\end{align*}
+Set
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ D&=X+ac+H_0\gamma,\qquad
+ V_{\rm old}=c(T_{\rm old}f-1)-Rf^2.
+\end{align*}
+The source equations are
+\begin{align}
+ \tau^2-\ell(\ell+k)&=1,&D^2-\Delta_0c^2&=1,\nonumber\\
+ f^2-\Delta_0I_0^2&=1,&
+ \Delta_0(f^2-1)(V_{\rm old}^2-y^2)+y^2&=1,\label{eq:source}\\
+ k-hE-R&=1,&(K_0+w)C+(q-F)-z(q-1)&=1.\nonumber
+\end{align}
+
+\begin{theorem}[Inherited calibrated positive source]\label{thm:calibration}
+For the entire tuple just specified, a positive solution of
+\eqref{eq:source} yields a finite syntactic refutation of ZFC.
+Conversely, a finite refutation yields positive solutions with
+\begin{align*}
+ q&=B^N,\quad B=\beta+1,\quad N>1\text{ odd},\quad
+ J=1+B+\cdots+B^{N-1},\\
+ R&\equiv3\pmod4,\qquad X=2^R,\qquad
+ c=\psi_{a+2}(R),\\
+ k&=2\psi_{2XY^2+1}((R+1)/2),\qquad
+ \tau=\chi_{2XY^2+1}((R+1)/2).
+\end{align*}
+The two implications are ordinary mathematics formalizable in ZFC.
+\end{theorem}
+
+Here $\chi_A(n)+\psi_A(n)\sqrt{A^2-1}
+=(A+\sqrt{A^2-1})^n$. The source theorem composes the native compiler,
+its compact44 adapter, and the literal blank-K215/refutation calibration.
+We inherit that composition. The source is retained and pinned in the
+package; this article does not re-prove every compiler and machine lemma.
+The immediate degree-$816$ proof \cite{parent816} gives the precise Pell
+rank, index, parity, ratio, and auxiliary-completeness interfaces used
+below, and is included unchanged for inspection.
+
+\subsection{The independent direct source interface}
+
+The second route starts with the exact $690$-natural-variable quadratic
+residual system in the pinned incoming package
+\emph{ConZFC\_407\_888\_Quartics} \cite{direct407}. Its natural zero set
+is calibrated to finite ZFC refutations through the direct C222/Horn
+certificate, beta coding, binomial arithmetic, and shared Pell frames.
+Its existing positive-to-integer conversion has $888$ unknowns.
+Our transformation changes the sign certificates and then performs exact
+monic eliminations. It preserves the source system's natural zero set.
+The original archive, including the source explanation and provenance,
+is retained byte for byte.
+
+Thus the logical dependency has two independently specified forms:
+\[
+\begin{split}
+ N_{706}=0\text{ in }\Pos^{10}
+ &\longleftrightarrow\text{native positive source zero}
+ \longleftrightarrow\exists p\;\Refut_{\ZFC}(p),\\
+ P_{780}=0\text{ in }\Z^{780}
+ &\longleftrightarrow\text{direct natural source zero}
+ \longleftrightarrow\exists p\;\Refut_{\ZFC}(p).
+\end{split}
+\]
+Negating each chain gives \eqref{eq:target}.
+The new reductions do not upgrade the inherited chain to an exported
+object-language ZFC proof or a complete Lean/Rocq formalization.
+
+\input{dyadic}
+\input{direct}
+
+\section{Verification and reproducible artifacts}
+\label{sec:verification}
+
+The package is designed so that a reader can inspect an equation without
+first running any source program. The ten-positive equation is given by
+the full register definitions in this article and by a literal JSON
+circuit. The $780$-integer equation is given by an ordered variable list,
+all $434$ quadratic residuals, and a separately collected sparse expansion.
+The supplied source files and checks define no hidden computation oracle.
+
+\subsection{Ten-positive checks}
+
+The coefficient loader checks both gzip and uncompressed hashes, minimal
+binary lengths, bit lengths, $\beta+1=2^{590069}$, and
+\eqref{eq:ports}. The builder checks that every circuit input and row is
+live, that no forward reference occurs, and that the literal circuit has
+exactly $79$ multiplications, $33$ additions, and $21$ subtractions.
+Squares and multiplication by a fixed scalar each count as one binary
+multiplication. Fixed integer leaves themselves are free in this cost;
+the count is not bit complexity.
+
+An independent formula evaluator retains the proof's $W$ abbreviation
+while the circuit distributes the corresponding product. Exact modular
+comparison checks their agreement at $100$ inputs. Four full univariate
+restrictions, over two explicitly recorded prime fields, have degree
+$706$ and the proved leading coefficient. The code also checks $150$
+finite parity/majorant cases and $172$ finite canonical-gap cases.
+The universal upper bound and nonzero top form are mathematical proofs
+in the degree section, not conclusions drawn from sampled points.
+
+\subsection{Direct-quartic checks}
+
+The direct checker authenticates the original archive and its selected
+members, replays the staged sign certificate against literal rows,
+verifies the exact semantic inputs to the shared frame and each power
+request, and reconstructs the signed projection. The sparse expansion is
+independently collected and compared coefficient for coefficient with
+the delivered polynomial. Its nonzero degree-four terms certify exact
+degree four. The proof distinguishes these finite algebraic checks from
+the inherited unbounded computation calibration.
+
+The top-level replay regenerates outputs in temporary directories and
+compares them with the frozen delivery. Checks are run under ordinary
+Python and under \texttt{python -O}; correctness conditions use explicit
+exceptions rather than relying on assertions that optimization can
+disable. A separate AI-assisted review checks the new mathematical proof
+ordering. Neither the replay nor the review is described as a proof
+assistant checking the complete consistency theorem.
+
+\subsection{Files and exact commands}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.61\textwidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\texttt{report/report.tex}, its two section files, and
+\texttt{report/report.pdf} & Editable article and compiled reading copy.\\
+\texttt{dyadic10/PROOF.md} & Complete text proof and polynomial recipe.\\
+\texttt{dyadic10/circuit.py} and
+\texttt{p10\_dyadic\_degree706.json} & All 133 arithmetic rows; ten witnesses;
+fixed coefficient binding.\\
+\texttt{dyadic10/coefficients/} & The four literal, unchanged coefficient payloads.\\
+\texttt{direct780/equations/} & Literal residual equation, full collected polynomial,
+sign certificate, signed parent, inverse projection, and exact metrics.\\
+\texttt{direct780/PROOF.md} & Complete new delayed-sign and projection proof.\\
+\texttt{direct780/upstream/} & Immutable direct parent archive and required extracts.\\
+\texttt{provenance/} & Pinned calibration snapshots and source ledger.\\
+\texttt{verify.py} and \texttt{VERIFICATION.json} & Whole-package replay and receipt.\\
+\texttt{MANIFEST.sha256} & Checksums for the final delivered files.\\
+\bottomrule
+\end{longtable}
+
+From the extracted package directory, run
+\begin{verbatim}
+python3 verify.py
+python3 -O verify.py
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The verification uses the Python standard library. Building the PDF
+requires a normal LaTeX installation with the packages named in its
+preamble. The mathematical proof can be read without either runtime.
+
+\section{Limitations, interpretation, and further research}
+\label{sec:further}
+
+\subsection{What has and has not been achieved}
+
+The concrete outcome is two improvements with explicit domains and
+complete polynomial data. The first is a smaller degree at a fixed count
+of ten positive unknowns; the second is a smaller integer quartic within
+the direct C222 certificate architecture. Both have the required
+consistency equivalence after composition with the stated inherited
+calibration theorem. The new proofs are ordinary mathematics and use
+only finite algebra, divisibility, Pell recurrences, inequalities, and
+induction that can be expressed in ZFC.
+
+We have not established that either equation is globally simplest.
+The ten-positive equation does not lower the repository's best known
+positive variable count from nine. Its $133$-operation circuit is longer
+than the parent's $124$-operation circuit. The direct quartic does not
+beat the variable counts of the native-coefficient quartics; it retains
+the different direct certificate route and its comparatively modest
+coefficient height. The parent $407$-natural-variable polynomial is not
+claimed as a new result here.
+
+The native tuple and the C222 source calibration are inherited results,
+not new independent machine-verification projects. No kernel-checked
+endpoint for the whole new equivalence is supplied. We also have not
+established priority in the literature for the broad methods of
+valuation separation, centering, or recovering quotient signs. The
+specific new combinations and their full equation data are the bounded
+research claims of this package.
+
+\subsection{Questions suggested by the reductions}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Optimize degree without rebuilding root-size barriers.}
+The dyadic lemma permits deleting the extra strong scale. Can the
+remaining factor $c^2$ in $I=ic^2$ be replaced by a smaller expression
+while retaining the exact auxiliary-index theorem? A proposed change
+must recover the condition $c\mid m$ used by that theorem; a smaller
+formula alone is insufficient.
+
+\item \textbf{Compress the weighted norm evaluator.}
+The present circuit uses a general sixteen-fold norm identity.
+Can its special weighted and centered arguments be evaluated in fewer
+operations without expanding the degree-$706$ polynomial? Any saving
+should be verified as equality of the entire fixed polynomial.
+
+\item \textbf{Separate arithmetic and sign inference systematically.}
+The $780$-integer construction recovers the signs of power quotients
+after identifying their arithmetic values. Which other coordinates have
+an analogous delayed sign proof? A useful search should operate on
+proof dependencies, not just syntactic nonnegative monomials.
+
+\item \textbf{Optimize the direct system before guarding.}
+Which quadratic changes of variables preserve a reverse restoration
+and expose more signs without increasing degree? A simultaneous search
+over domain proofs and monic eliminations may improve on treating the
+two optimizations separately.
+
+\item \textbf{Choose an explicit simplicity objective.}
+For example, compare a lexicographic objective of unknown count, degree,
+and fixed-payload bytes with a description-length objective charging
+every binary numeral and circuit operation. This would distinguish
+legitimate improvements from incompatible claims about ``simplest.''
+
+\item \textbf{Close a formalization boundary.}
+The new dyadic lemma and the power-quotient recurrence are small enough
+to formalize separately. A full endpoint additionally needs the fixed
+polynomial semantics, source calibration, and derivation inside the
+chosen formal presentation of ZFC. These are separate obligations from
+testing a builder.
+\end{enumerate}
+
+\appendix
+\section{Domain conventions and conversion}
+
+Throughout, $\N=\{0,1,2,\ldots\}$ and $\Pos=\{1,2,3,\ldots\}$.
+The ten-positive construction can be viewed as a ten-natural equation
+by substituting $x_j+1$ for each unknown. This preserves its exact degree
+and adds at most ten additions to the displayed circuit.
+It does not make the unknowns unrestricted integers.
+
+If an elementary all-integer conversion is wanted for that same
+polynomial, the identity
+\[
+ u>0\quad\longleftrightarrow\quad
+ \exists a,b,c\in\Z\;u=1+a^2+b^2+c(c+1)
+\]
+follows from the three-squares theorem (equivalently the standard
+representation of nonnegative integers used in \cite{sun2026}).
+Applying it independently gives a polynomial in $30$ unrestricted
+integers of degree $1412$. This is merely an explicit domain conversion,
+not a competitive new endpoint, so it is not counted as a third result.
+
+\section{Attribution and source access}
+
+The project snapshot is
+\begin{center}\small\sha.\end{center}
+The native coefficient files come from package 44; the calibrated source
+interface is package 61; the immediate positive parent is the in-repository
+degree-$816$ candidate. That candidate acknowledges earlier four-root,
+centering, and residue constructions. This work preserves those credits
+and adds its own concrete dyadic descaling and degree computation.
+The direct source is the immutable incoming $407/888$ archive. Its
+shared-frame and direct certificate results are retained as inherited
+material. The new sign recovery and the resulting $780$-variable data
+are distinguished from that archive.
+
+The package license is MIT No Attribution for new material. Inherited
+licenses and notices are retained with the material to which they apply.
+All implementation and review in the present package are AI-assisted;
+the independent review means a separate analysis task, not an external
+journal referee or a proof assistant.
+
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{parent816}
+ProveIt contributors, \emph{Ten positive unknowns, degree 816: a scaled,
+centered sixteen-fold norm}, candidate and proof at snapshot \sha.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ec80841c07e91be8956ce6ed4af9a9c0b782d3d9/Computability/DiophantineConsistency/candidates/ten-positive-scaled-norm/PROOF.md}
+{Pinned complete parent proof}. Included unchanged in
+\texttt{dyadic10/upstream/PROOF816.md}.
+
+\bibitem{source61}
+ProveIt contributors, \emph{Congruence carriers}, package 61,
+Theorem \texttt{thm:source}, canonical promises, and Pell lemmas.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ec80841c07e91be8956ce6ed4af9a9c0b782d3d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers/report/congruence_carriers.tex}
+{Pinned LaTeX source}.
+
+\bibitem{source44}
+ProveIt contributors, \emph{Complement-packed native clauses: a smaller
+complete coefficient tuple}, package 44, native proof and binding.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ec80841c07e91be8956ce6ed4af9a9c0b782d3d9/Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native/PROOF.md}
+{Pinned native proof}.
+
+\bibitem{direct407}
+ProveIt incoming research package, \emph{ConZFC\_407\_888\_Quartics},
+archive SHA-256
+\texttt{59f847872298260ee35e9d8e4cd0b52d2d78658ac523981fe060e81f40ca4a59}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/ec80841c07e91be8956ce6ed4af9a9c0b782d3d9/docs/incoming/ConZFC_407_888_Quartics_2026-10-24.zip}
+{Pinned original archive}. Included unchanged under \texttt{direct780/upstream/}.
+
+\bibitem{bayer2026}
+J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich, and D. Schleicher,
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/html/2506.20909v3}.
+
+\bibitem{sun2026}
+Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/html/2609.01594v2}.
+\end{thebibliography}
+\end{document}

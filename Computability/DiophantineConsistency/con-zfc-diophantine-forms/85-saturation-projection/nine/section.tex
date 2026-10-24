@@ -1,0 +1,389 @@
+\section{Removing a redundant Pell factor}
+\label{nine-section}
+
+The central improvement replaces a square of an already certified square
+by that square itself.  The square root needed to explain the replacement
+exists only in the proof; it does not become an additional unknown.
+This changes the arithmetic certificate, so it requires a new soundness
+argument.  It produces two complete division-free polynomial circuits:
+\begin{center}
+\begin{tabular}{lrrr}
+Construction & Positive unknowns & Exact degree & Operations\\\hline
+Frozen H2082 shared-product parent &9&1,845,940&440\\
+Saturated certificate, simple bound &9&1,628,768&434\\
+Saturated certificate, whole radical &9&1,103,950&1,074
+\end{tabular}
+\end{center}
+Operations are live binary additions, subtractions and multiplications;
+squares and scalar products are charged, and fixed numeral leaves and
+register reuse are free.  The natural-number translations use respectively
+441 and 1,081 operations, with unchanged degrees.  These are two different
+tradeoffs, rather than a claim that either is globally simplest.
+
+\subsection{The new Pell representation}
+
+Let $\psi_A(0)=0$, $\psi_A(1)=1$ and
+$\psi_A(t+2)=2A\psi_A(t+1)-\psi_A(t)$.  Let $\chi_A$ be the companion
+sequence with initial values $1,A$.  Thus
+\[
+ \chi_A(t)^2-(A^2-1)\psi_A(t)^2=1.
+\]
+For $A\ge2$, the positive Pell solutions are exactly these pairs.
+
+\begin{theorem}[Saturated positive Pell certificate]
+\label{nine-saturation}
+Let $A,B,C,J$ be positive integers satisfying
+$A\ge3$, $1<B<A$, $C>B$ and $J\ge A$.  For $i\ge1$ and $j_0\ge0$ put
+\begin{align*}
+ D&=1+(A^2-1)C^2,&e_0&=iJC^2,\\
+ F&=1+(A^2-1)De_0^2,&\Lambda&=CD+1-A,\\
+ G&=A+F\Lambda,&H&=C+F(B+j_0C),\\
+ I&=1+(G^2-1)H^2.&&
+\end{align*}
+Then $C=\psi_A(B)$ if and only if some such $i,j_0$ make $DFI$ a square.
+\end{theorem}
+
+\begin{proof}
+All displayed radicands and $G,H$ are positive.  In particular
+$D\ge A^2$ and $\Lambda\ge A^2-A+1>0$.  The congruences
+\begin{align*}
+ F&\equiv1\pmod D,&G&\equiv1\pmod D,&I&\equiv1\pmod D,\\
+ G&\equiv A\pmod F,&H&\equiv C\pmod F,&I&\equiv D\pmod F
+\end{align*}
+show that $D,F,I$ are pairwise coprime.  If their product is a square,
+each factor is a square.  Set $d=\sqrt D\in\Z_{>0}$.  Then
+\[
+ F=1+(A^2-1)(iJC^2d)^2.
+\]
+Pell classification gives positive indices $s,m,t$ such that
+\[
+ C=\psi_A(s),\qquad iJC^2d=\psi_A(m),\qquad H=\psi_G(t).
+\]
+The standard rank argument gives $C\mid m$.  Here are its essential
+details, including the case of even $C$.  From
+$\psi_A(s)\mid\psi_A(m)$ the divisibility law gives $s\mid m$; write
+$m=su$.  Expanding the Pell addition identities yields
+\[
+ \psi_A(su)\equiv
+ u\chi_A(s)^{u-1}\psi_A(s)\pmod{\psi_A(s)^3}.
+\]
+Since $\gcd(\chi_A(s),\psi_A(s))=1$, the stronger divisibility
+$\psi_A(s)^2\mid\psi_A(m)$ implies $\psi_A(s)\mid u$, hence $C\mid m$.
+The usual divisibility law itself follows by Euclidean reduction of the
+addition identities and strict growth of $\psi_A$.
+
+Because $G\equiv A\pmod F$ and $H\equiv C\pmod F$, recurrence reduction
+gives
+\[
+ \psi_A(s)\equiv\psi_A(t)\pmod{\chi_A(m)}.
+\]
+This implies $s\equiv\pm t\pmod{2m}$.  A short proof avoids any
+exceptional-index assumption.  Put $x=\chi_A(m)$.  The addition identities
+give
+\[
+ \psi_A(v+2m)\equiv-\psi_A(v),\qquad
+ \psi_A(2m-v)\equiv\psi_A(v)\pmod x.
+\]
+Every index folds to $r\in[0,m]$, with residue $\pm\psi_A(r)$ and index
+congruent to $\pm r\pmod{2m}$.  The Pell identity and $A\ge3$ imply
+$x>2\psi_A(m)$.  The signed representatives therefore lie strictly between
+$-x/2$ and $x/2$.  Equal residues are equal integers, and strict growth
+forces equal folded indices.
+
+On the other hand $G\equiv1\pmod C$ and $H\equiv B\pmod C$, so
+$t\equiv B\pmod C$.  Therefore $s\equiv\pm B\pmod C$.  Since $C>1$,
+we have $s\ge2$; the inequality $\psi_A(s)\ge As$, together with $B<A$,
+gives $0<s+B<C$.  Consequently the only possibility is $s=B$.
+
+Conversely, suppose $C=\psi_A(B)$ and put $d=\chi_A(B)$, so $d^2=D$.
+The determinant-one matrix
+\[
+ M_A=\begin{pmatrix}2A&-1\\1&0\end{pmatrix}
+\]
+has finite order modulo $JdC^2$.  Choose a positive multiple $m$ of this
+order and set $i=\psi_A(m)/(JdC^2)>0$.  Then $F=\chi_A(m)^2$.
+Let $T$ be a positive period of $M_G$ modulo $F$.  Choose arbitrarily large
+$t\equiv B\pmod{TC}$ and put $H_0=\psi_G(t)$.  We have
+\[
+ H_0\equiv C\pmod F,\qquad H_0\equiv B\pmod C,
+\]
+using respectively $G\equiv A\pmod F$ and $G\equiv1\pmod C$.
+Since $F\equiv1\pmod C$, the quotient $(H_0-C)/F$ is $B$ modulo $C$.
+Taking $t$ sufficiently large makes that quotient at least $B$; hence
+\[
+ j_0=\frac{(H_0-C)/F-B}{C}\in\N.
+\]
+Then $H=H_0$ and $I=\chi_G(t)^2$.  This supplies the required witnesses.
+All divisions here occur in the witness proof, not in the polynomial.
+\end{proof}
+
+The old certificate used
+\[
+ F_{\rm old}=1+(A^2-1)D^2(i_{\rm old}JC^2)^2.
+\]
+An old valid witness gives a particularly simple new witness:
+$i=\sqrt D\,i_{\rm old}$.  It preserves $F,G,H,I$ exactly.  The converse
+is supplied by Theorem~\ref{nine-saturation}, rather than by an unjustified
+division of the free integer $i$ by $\sqrt D$.
+
+\subsection{Binding to the actual compact54-sharp source}
+
+Both new equations retain the entire H2082 source prefix and its coherent
+compact54-sharp coefficient tuple from commit
+\texttt{c1a102936aca437e9999530a0111e6ddab56dc6d}.
+The complete layout, three kernel polynomials and coefficient leaves are
+included as literal data.  The four original coefficient ports occupy
+215,492 raw bytes; the eleven expanded live fixed leaves occupy 1,565,018
+raw bytes.  These are different representations of the fixed data and
+must not be confused with the number of unknowns.
+
+For the inherited two-block words $S_{\rm code},T_{\rm code}$, define
+\begin{align*}
+ B_{\rm code}&=2^{864026}b^2,&
+ L&=bB_{\rm code}^{2200},\\
+ N&=2^{6480184}B_{\rm code}^{1162},&
+ R&=L(S_{\rm code}+T_{\rm code}+1)-S_{\rm code}-1,\\
+ t_{\rm cap}&=bB_{\rm code}^{116}.&&
+\end{align*}
+The supplied source tables define both words without a free program index.
+The inherited source theorem gives $R,N\ge8$ and the required
+carry/binomial calibration.  Define the ratio registers
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\\
+ P_0&=2M^2U,&K&=R+1+h(P_0-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&J&=4A-5,\\
+ Q_0&=3W_1C-2(W_1^2-1),&&&\\
+ a_0&=1+(P_0^2-1)K^2,&V_0&=P_0K,&&\\
+ m_0&=K^2(4t_{\rm cap}-g)-16t_{\rm cap}(C-KY)^2,&&&\\
+ \Omega&=Jm_0,&E_0&=J(n+W_1^2)+Q_0.&&
+\end{align*}
+The nine inputs are
+\[
+ b,g,h,s,w,C,i,j,n\in\Z_{>0}.
+\]
+Set $j_0=j-1$ and use $B=B_1$ in Theorem~\ref{nine-saturation}.
+The source bounds imply $A\ge33280$, $1<B_1<A$ and $J\ge A$ on every
+ambient positive assignment.  The hypothesis $C>B_1$ will be established
+from the final equation before the representation theorem is invoked.
+
+\subsection{The 434-operation equation}
+
+Define
+\[
+ T_0=ADe_0,\qquad V_1=T_0GH,\qquad a_1=DFI,\qquad
+ \Theta=E_0-\Omega(V_0+V_1).
+\]
+The first new equation is
+\begin{equation}
+ \boxed{\bigl(\Theta^2-\Omega^2(a_0+a_1)\bigr)^2
+                    -4\Omega^4a_0a_1=0.}
+ \label{nine-cheap-equation}
+\end{equation}
+Its unconditional majorant is exceptionally small:
+\begin{align}
+ T_0^2-DF&=D(De_0^2-1)>0,\label{nine-cheap-defect}\\
+ V_1^2-a_1&=(T_0^2-DF)(GH)^2+DF(H^2-1)>0.\nonumber
+\end{align}
+Thus $V_1>\sqrt{a_1}>0$.  Also $V_0^2-a_0=K^2-1>0$.
+These inequalities hold before a solution has been assumed.
+
+\begin{proposition}
+\label{nine-cheap-equivalence}
+Equation~\eqref{nine-cheap-equation} has a positive solution exactly when
+the same pinned native source has a solution.
+\end{proposition}
+
+\begin{proof}
+The identity
+\[
+ E_0=Jn+(J-2)W_1^2+3W_1C+2>0
+\]
+shows that a zero cannot have $m_0=0$, since then its left side would be
+$E_0^4$.  Factoring the two-root norm over the reals gives signed roots
+$r_0^2=a_0$, $r_1^2=a_1$ satisfying
+\begin{equation}
+ \frac{E_0}{J}=m_0(V_0+V_1+r_0+r_1).
+ \label{nine-sign-first}
+\end{equation}
+The strict majorants make the parenthesis positive for every sign choice;
+therefore $m_0>0$ before any square-root integrality is used.
+
+The unchanged margin argument now gives $|C-KY|<K/2$ and
+$C>B_1+W_1$.  Moreover $A^2>P_0$, $D>C^2$, $F\ge A^2$ and $I\ge A^2$,
+so
+\[
+ DFI>C^2A^4>K^2P_0^2>a_0.
+\]
+Hence the rational sum $x=\Theta/\Omega=r_0+r_1$ is nonzero.  The identity
+$2xr_0=x^2+a_0-a_1$ makes each root rational, hence integral.
+Equation~\eqref{nine-sign-first} then gives $J\mid Q_0$.
+Theorem~\ref{nine-saturation} gives $C=\psi_A(B_1)$.
+The retained arithmetic ratio/binomial theorem recovers the source zero.
+If its original auxiliary certificate is desired explicitly, the finite
+period argument in Theorem~\ref{nine-saturation} can be repeated using
+the modulus $JDC^2$ instead of $J\sqrt D C^2$.
+
+Conversely, use the inherited canonical ratio witnesses from a source zero.
+Set $i=\sqrt D\,i_{\rm old}$ to preserve the old $F,G,H,I$, keeping all
+other ratio coordinates fixed.  Choose positive integral roots and put
+\[
+ n=m_0(V_0+V_1+\sqrt{a_0}+\sqrt{a_1})-W_1^2-Q_0/J.
+\]
+This is an integer.  The retained bound $W_1^2+Q_0/J<2D$, together with
+$V_1>2D$ from $T_0=ADe_0>2D$, proves $n>0$.  One norm factor vanishes.
+\end{proof}
+
+Composing this existential equivalence with the named source/refutation
+calibration, and then negating, gives the intended ordinary argument in
+$\ZFC$.  The new proof does not by itself close the repository's
+remaining internal-model calibration or produce a new kernel-checked
+object-language consistency biconditional.
+
+\subsection{A smaller-degree majorant of the whole radical}
+
+Temporarily treat $A,C,i,Z$ as independent indeterminates, put $J=4A-5$,
+and replace $H$ by $C+FZ$.  Set
+\[
+ \mathcal Q=DF\bigl((G^2-1)H^2+1\bigr).
+\]
+Its $A$-degree is 36, with leading coefficient
+$(1024C^{19}i^5Z)^2$.  Write $\mathcal Q=\sum q_k A^k$ and define
+\begin{align*}
+ t_{18}&=1024C^{19}i^5Z,\\
+ t_{18-k}&=\frac{q_{36-k}-\sum_{\ell=1}^{k-1}
+                  t_{18-\ell}t_{18-k+\ell}}{2t_{18}}
+                  \qquad(1\le k\le18).
+\end{align*}
+This finite calculation takes place in the coefficient field
+$\mathbb Q(C,i,Z)$.  It specifies the polynomial part of the formal
+square root; it is not a division performed on numerical witnesses.
+Exact arithmetic shows that
+\[
+ \sigma=1024C^5i,\qquad
+ \mathcal P=\sigma\sum_{r=0}^{18}t_r A^r
+\]
+has 333 integer monomials and no negative exponents.  Define
+\begin{equation}
+ \mathcal L=2^{20}C^{24}i^6Z,\qquad
+ \mathcal P_+=\mathcal P+\mathcal L,\qquad
+ \mathcal D=\mathcal P_+^2-\sigma^2\mathcal Q.
+ \label{nine-radical-polynomial}
+\end{equation}
+The complete coefficient lists are supplied.  Two exact integer-polynomial
+identities give the uniform inequalities:
+\begin{itemize}
+ \item $\mathcal P(A+3,C+1,i+1,Z+1)$ has 6,650 strictly positive coefficients,
+       with constant $15\,915\,642\,730\,652$.
+ \item The translated defect $\mathcal D(A+3,C+1,i+1,Z+1)$ has
+       36,309 strictly positive coefficients. Its constant is
+       $32\,237\,226\,735\,615\,909\,648$.
+\end{itemize}
+Consequently
+\begin{equation}
+ \mathcal P_+(A,C,i,Z)>\sigma\sqrt{\mathcal Q}>0
+ \quad(A\ge3, C,i,Z\ge1).
+ \label{nine-whole-bound}
+\end{equation}
+This is a universal positivity certificate.  The uncorrected formal
+polynomial part would be invalid: its defect at $(3,1,1,1)$ is
+$-1\,140\,296\,347\,768\,021\,232$.  The correction in
+\eqref{nine-radical-polynomial} is therefore substantive.
+
+For the second fixed equation put
+\[
+ Z=B_1+(j-1)C,\quad
+ V_1=\mathcal P_+(A,C,i,Z),\quad a_1=(1024C^5i)^2DFI,
+\]
+and use exactly the norm equation~\eqref{nine-cheap-equation}.
+The previous proof applies with one additional observation: once the
+signed root $r_1$ is integral, $r_1/\sigma$ is a rational square root of
+the integer $DFI$, hence is itself an integer.  Thus the scale introduces
+no extra square solutions.  In the converse direction $F>D$ and
+$\sigma\ge1024$ imply $V_1>2D$, so the witness $n$ remains positive.
+
+The supplied graph evaluates the 333 coefficients by fixed polynomial
+operations.  All 24 multivariate Horner orders were counted; the selected
+order is $Z,i,C,A$.  This yields 1,074 live binary operations.  It is a
+finite evaluated circuit count, not a claim of an optimal arithmetic circuit.
+
+\subsection{Exact degrees and the changed dominant term}
+
+The source has
+\[
+ r=\deg R=8799,\qquad \nu=\deg N=2324,\qquad W=116,
+ \qquad a=r+4\nu+2=18097.
+\]
+The common register degrees are
+\begin{align*}
+ \deg\Omega&=5a+2W+3=90720,\\
+ \deg V_0&=3a+r+1=63091,\\
+ \deg\delta_0&=3a+r+2=63092,\qquad \delta_0=K^2-1,\\
+ \deg E_0&=a+4=18101,\qquad\deg a_0=126182.
+\end{align*}
+For either majorant write $\delta_1=V_1^2-a_1$ and
+\[
+ B_* =E_0^2-2E_0\Omega(V_0+V_1)+\Omega^2(\delta_0+\delta_1).
+\]
+The universal exact identity
+\begin{equation}
+ F_9=B_*^2+4\Omega^2V_0V_1B_*
+           +4\Omega^4(\delta_0V_1^2+a_0\delta_1)
+ \label{nine-resolved-norm}
+\end{equation}
+resolves the leading cancellations that a raw syntactic degree count misses.
+
+For the simple majorant,
+\[
+ \deg V_1=18a+r+24=334569,
+ \qquad\deg\delta_1=34a+2r+48=632944.
+\]
+The latter follows directly from~\eqref{nine-cheap-defect}.  The square
+$B_*^2$ is uniquely dominant in~\eqref{nine-resolved-norm}; therefore
+\[
+ \deg F_9=92r+352\nu+8W+284=1\,628\,768.
+\]
+Its leading coefficient is positive on the actual source tuple.
+
+For the complete-radical bound the unique greatest weighted monomials,
+with weights $(a,1,1,r)$ on $(A,C,i,Z)$, are
+\[
+ 2^{20}A^{18}C^{24}i^6Z\quad\hbox{in }\mathcal P_+,
+ \qquad
+ 2^{41}A^{18}C^{48}i^{12}Z^2\quad\hbox{in }\mathcal D.
+\]
+Hence $\deg V_1=334575$, $\deg\delta_1=343404$ and
+$\deg B_*=524844$.  The four summands in~\eqref{nine-resolved-norm},
+splitting its last parenthesis, have degrees
+\begin{center}
+\begin{tabular}{lr}
+$B_*^2$&1,049,688\\
+$4\Omega^2V_0V_1B_*$&1,103,950\\
+$4\Omega^4\delta_0V_1^2$&1,095,122\\
+$4\Omega^4a_0\delta_1$&832,466
+\end{tabular}
+\end{center}
+The second term is now uniquely dominant, with positive leading
+coefficient.  Thus the exact degree is
+\[
+ \boxed{\deg F_9=63r+236\nu+8W+221=1\,103\,950.}
+\]
+Translation of positive inputs to natural successors preserves these
+degrees; the natural $j$ directly supplies the existing $j-1$ coordinate.
+
+\subsection{What the executable evidence proves}
+
+The independent verifier uses a separately implemented sparse integer
+polynomial ring and does not import either circuit builder or the rational
+discovery code.  It checks the entire radical identity, shifted positive
+coefficient lists, all local certificate formulas, the exact final norm,
+source-prefix structural equality, topology, liveness, operation counts,
+all fixed-leaf hashes and the resolved degree comparisons.  It rejects
+both the uncorrected radical truncation and a corrupted final norm.
+The complete coefficient generators and parent proofs are retained as
+explicit dependencies; no finite check is presented as a consistency test.
+
+The main mathematical change is the saturation theorem, whose soundness
+and finite-period completeness were proved above.  The whole-radical
+certificate is a second new uniform lemma.  The remaining native/compiler
+and syntactic-refutation interfaces are inherited, and their unresolved
+formal verification boundary remains visible.

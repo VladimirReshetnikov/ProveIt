@@ -1,0 +1,169 @@
+\section{Two certificate reductions and two measured alternatives}
+\label{sec:architecture}
+
+The principal improvements here are a fixed polynomial majorant for the
+CRT bound and one-sided witnesses for every Pell congruence. The arithmetic
+proofs are independent of the proof-calculus calibration. Their composition
+with that calibration does not assume consistency.
+
+\subsection{One fixed majorant instead of a second row circuit}
+
+Let $E,F$ be the nonnegative arithmetic circuits splitting the row
+polynomial. Take
+\[
+ R=4+N+x+y+m+M_0+U.
+\]
+This bounds each external row input, the row index, the labels bounded by
+$m$, the accumulator values bounded by $y$, and the other local coordinates
+bounded by $U$. It also bounds every range-certificate cutoff, including
+$m+1,U+1,y$, and $N$.
+
+Assign exponent $1$ to inputs; exponent $0$ to constants $0,1$; and exponent
+$1$ to constants $2,3,4$. At addition take the larger input exponent plus
+one, and at multiplication take their sum. Every circuit node with assigned
+exponent $d$ is at most $R^d$. Indeed, multiplication preserves the
+induction bound, and addition uses $2R^d\le R^{d+1}$ because $R\ge4$.
+
+Let $d=\max(d_E,d_F)$, and choose a fixed power of two $\widehat d\ge d$.
+Then
+\[
+ 0\le E\le K,\qquad0\le F\le K,\qquad K=R^{\widehat d}.
+\]
+These are \emph{separate} bounds. They do not assert $E+F\le K$.
+The CRT soundness argument only requires separate bounds: a decoded
+congruence modulo a prime $p>K$ between $E,F\in[0,K]$ is equality.
+A stronger optional convention replaces $d$ by $\max(d_E,d_F)+1$,
+which also bounds $E+F$; the benchmark appendix uses that harmlessly
+larger convention. Both audited source circuits fit under
+$\widehat d=2^{23}$. Exactly 23 squaring gates compute $K$, without
+introducing a variable-exponent power graph. Put $T=K!$ as before.
+The radius also ensures that all range factorials divide $T$, so ordinary
+CRT gives completeness of the factorial-free binomial certificates.
+
+The choice is noncircular: proof and labels, carrier, obligation stream,
+beta scale and code, local bound $U$, then $R,K,T$, then CRT representatives.
+The earlier independent radius benchmark decreased 2799 natural variables
+to 2672. Subsequent source factoring and forward-quotient substitutions in
+the main construction improve this further; 2672 is not the final record.
+
+\subsection{All indexed Pell congruences can point forward}
+
+For $A\ge2$, write $X_A(j),Y_A(j)$ for the canonical Pell sequence, with
+\[
+\begin{split}
+ X_A(0)&=1,\quad Y_A(0)=0,\\
+ X_A(j+1)&=AX_A(j)+(A^2-1)Y_A(j),\\
+ Y_A(j+1)&=X_A(j)+AY_A(j).
+\end{split}
+\]
+Simultaneous induction proves monotonicity of both coordinates in $A$.
+It also proves $Y_A(j)\ge j$.
+
+The existing indexed-Pell completeness construction, for target index
+$k>0$, chooses
+\[
+ X=X_A(k),\quad Y=Y_A(k),\quad h=2kY,\quad
+ U=X_A(h),\quad V=Y_A(h).
+\]
+Here $h\ge2$, so $U>A$. It chooses $B$ simultaneously satisfying
+$B\equiv A\pmod U$ and $B\equiv1\pmod{4Y}$, then takes
+$S=X_B(k)$ and $R_1=Y_B(k)$. The latter index is the original target
+$k$, not the auxiliary $h$. Since $0\le A<U$, the residue condition
+forces $B\ge A$. Hence $S\ge X$ and $R_1\ge k$. The same completeness
+witness therefore admits natural quotients satisfying
+\[
+ B=A+Uq_B,\qquad S=X+Uq_S,\qquad R_1=k+4Yq_R.
+\]
+Each equation implies its former congruence, so soundness is preserved
+by restriction. The canonical simultaneous witnesses prove completeness;
+there is no claim that every old auxiliary witness has the new orientation.
+
+The exact source is Mathlib's \texttt{PellMatiyasevic.lean} at commit
+\texttt{4dc43842a11f257ffba2a611c943a133a65cb4b2}, lines 761--807.
+The inert source, its Apache license, exact blob identity and SHA256 are
+included in the architecture packet. The construction uses $V>0$,
+$Y^2\mid V$ and $\gcd(U,4Y)=1$ simultaneously, as required by the
+existing indexed-Pell theorem.
+
+\subsection{The power congruence can also point forward}
+
+For $A\ge n\ge1$, define
+\[
+ F_j=X_A(j)-(A-n)Y_A(j).
+\]
+Then $F_0=1,F_1=n$ and $F_{j+1}=2AF_j-F_{j-1}$. We prove
+$F_j\ge nF_{j-1}\ge0$ by induction. Its induction step is
+\[
+ F_{j+1}-nF_j=(2A-n)F_j-F_{j-1}
+ \ge\bigl(n(2A-n)-1\bigr)F_{j-1}\ge0.
+\]
+Thus $F_k\ge n^k$. If $T=2An-n^2-1>0$, the recurrence also gives
+$F_k\equiv n^k\pmod T$, since the recurrence error of $n^j$ is a
+multiple of $T$. Therefore
+\[
+ X_A(k)+nY_A(k)=AY_A(k)+n^k+Tq
+ \qquad(q\in\mathbb N).
+\]
+The positive power graph's last norm implies $A>W\ge n$:
+$A^2=1+W^3(W+2)Z^2$, and $A\ge2$ forces $Z\ge1$.
+Its canonical witnesses therefore satisfy the forward equation. Conversely,
+forgetting the sign of the quotient recovers the inherited exact power
+criterion. Zero base or exponent is not silently included: all calls in
+this specialized compiler are separately proved positive.
+
+\subsection{Negative CRT moduli as a valid alternative}
+
+Suppose the row condition is $\prod_j C_j=0$ and $R_0=0$, where all
+$C_j,R_0$ are sums of squares. Bound each $C_j$ and $R_0$ separately
+by $K$, with $K\ge4,N$ and all range cutoffs. Put
+\[
+ T=K!,\quad D_i=(i+1)T-1,\quad B=\prod_{i<N}D_i.
+\]
+The $D_i$ are pairwise coprime by the usual difference argument, and each
+is $3\pmod4$. Hence each has a prime divisor $p\equiv3\pmod4$;
+since $p\nmid K!$, necessarily $p>K$.
+Using the usual binomial range certificates, the index congruence
+$B\mid(C+1)T-1$, and
+\[
+ \left(\prod_jC_j(C,A)\right)^2+R_0(C,A)^2\equiv0\pmod B
+\]
+recovers every row. Indeed, over such a prime, a sum of two squares is
+zero only when both terms are zero. Primality then selects a vanishing
+$C_j$, and the separate bounds turn the selected branch and $R_0$ into
+exact zeros. Ordinary CRT proves completeness.
+
+No variable-length product remains in the output. With
+$Q=(1+(N+1)T)^N+2$ one has
+\[
+ B=\left(T^N N!\binom{Q+N}{N}\right)\bmod(TQ+1).
+\]
+The numerator is $\prod_{j=1}^N(TQ+jT)$, which reduces to
+$\prod_{j=1}^N(jT-1)$, and $B<Q<TQ+1$. For $N=0$ the product is
+$1$, the congruences modulo $1$ are vacuous, and the same identity holds.
+The rounded-radius negative-modulus benchmark has 2678 natural variables,
+six more than its matched positive-modulus comparison. It is a proved
+alternative, not the recommended minimum.
+
+\subsection{Factorial separation without a coefficient height}
+
+If $M\ge1$ and $\max(m-1,0)!\mid M$, then the numbers
+$1+jM$, $1\le j\le m$, are pairwise coprime. A common divisor for
+labels $j<k$ is coprime to $M$ and divides $k-j$, while $k-j$ divides
+$M$. Therefore it is $1$. Prime valuations now recover every positive
+label multiplicity from a product equality, for arbitrary proof length.
+The factors themselves need not be prime. Label zero contributes the
+unit factor and remains invisible. For $m=0$ the target factor $1+M>1$
+makes the equality impossible; for $m=1$ any positive $M$ works.
+
+Thus $M=m!$ is a correct replacement carrier when $m\ge1$. It is
+chosen before the obligation stream, never from its later CRT bound.
+The matched native-graph benchmark costs 2872 instead of 2672 variables:
+one extra factorial, one extra binomial and four extra power graphs.
+A completely fixed $M$ without a label restriction is unsound, as shown by
+$1+(M+2)M=(1+M)^2$ and the underivable single rule $(1,0)\to M+2$.
+
+All arguments above are finite arithmetic theorems formalizable in ZFC.
+They remain internal theorems in nonstandard models; they do not rely on
+external standardness of a proposed certificate. The included finite tests
+and literal polynomial replays verify implementation fidelity, not a new
+kernel proof of those all-input statements.

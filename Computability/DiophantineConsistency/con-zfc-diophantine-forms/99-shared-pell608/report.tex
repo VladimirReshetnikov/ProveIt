@@ -1,0 +1,638 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,xcolor,enumitem,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Shared Arithmetic Witnesses for Direct ZFC-Consistency Quartics},pdfauthor={ProveIt research contribution}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,frame=single}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Norm}{\mathcal N}
+\newcommand{\Ccal}{\mathcal C}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Shared arithmetic witnesses for ZFC consistency}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\allowdisplaybreaks
+\title{\textbf{Shared Arithmetic Witnesses\\for Direct ZFC-Consistency Quartics}\\[5pt]
+\large An explicit 608-natural-variable equation\\and a 1,685-integer-variable companion}
+\author{Prepared for Vladimir Reshetnikov's ProveIt project\\
+\small AI-assisted research with independent mathematical and exact algebraic reviews}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an ordinary integer polynomial of exact degree four in 608
+nonnegative unknowns whose absence of zeros is provably equivalent in ZFC
+to syntactic $\Con(\mathrm{ZFC})$. Its literal specification has 491 quadratic
+residuals, 7,582 expanded nonzero monomials, and coefficient height
+79,824,571. A degree-four companion in 1,685 unrestricted integer unknowns
+has 850 residuals, 12,082 monomials, and height 79,827,802.
+The construction uses the existing numerical C222 proof calculus directly;
+it does not simulate K215 or instantiate Jones's universal polynomial.
+
+The principal new compression is simultaneous arithmetic certification:
+one Pell growth solution, one auxiliary Pell solution, and one Chinese
+remainder parameter serve every positive exponentiation in the complete
+construction. Equal exponent arguments share their index certificates.
+All binomial graphs share one radix, fixed by the sum of their upper
+arguments. A self-bounding identity replaces the large power previously
+used in each factorial graph. Cofinal beta codes and certified elimination
+of intermediate variables complete the reduction.
+
+The 608-variable result reduces the inspected incoming direct construction's
+3,614 variables by 83.18\%. It is a new compact point in this direct
+quartic branch, not a global minimum in variables or degree. We supply
+ordinary unbounded proofs and independent exact checks of the emitted
+polynomials. No new end-to-end Lean proof or encoded object-language ZFC
+derivation is claimed.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Result, meaning, and comparison}
+
+Throughout, $\N=\{0,1,2,\ldots\}$. Consistency means the absence of a
+finite syntactic refutation in the fixed ZFC calculus used by ProveIt,
+not the existence of a standard model or an additional soundness assumption.
+Write its arithmetic proof predicate as $\operatorname{Prf}_{\rm ZFC}(p,\bot)$:
+\[
+ \Con(\mathrm{ZFC})\;:\!\iff\;
+ \neg\exists p\in\N\ \operatorname{Prf}_{\rm ZFC}(p,\bot).
+\]
+
+\begin{definition}[The delivered natural polynomial]
+Let $r_0,\ldots,r_{490}\in\Z[x_0,\ldots,x_{607}]$ be the literal quadratic
+polynomials in \texttt{artifacts/natural/equation.json}, printed completely
+in Appendix~\ref{app:literal}. Define
+\begin{equation}\label{eq:main}
+ \boxed{D_{\N}(x_0,\ldots,x_{607})
+      =\sum_{i=0}^{490} r_i(x_0,\ldots,x_{607})^2.}
+\end{equation}
+The companion \texttt{expanded\_polynomial.json} is the same polynomial
+with all products expanded and equal monomials collected.
+\end{definition}
+
+\begin{theorem}[Main result]\label{thm:main}
+For the fixed polynomial~\eqref{eq:main}, ZFC proves
+\[
+ \bigl(\exists\mathbf x\in\N^{608}\ D_{\N}(\mathbf x)=0\bigr)
+ \;\longleftrightarrow\;
+ \exists p\in\N\ \operatorname{Prf}_{\rm ZFC}(p,\bot).
+\]
+Consequently ZFC proves
+\[
+ \boxed{\bigl(\forall\mathbf x\in\N^{608}\ D_{\N}(\mathbf x)\ne0\bigr)
+         \;\longleftrightarrow\;\Con(\mathrm{ZFC}).}
+\]
+The unrestricted-integer polynomial $D_{\Z}$ specified in
+Section~\ref{sec:integer} satisfies the corresponding theorem over
+$\Z^{1685}$. Both polynomials have exact degree four.
+\end{theorem}
+
+The proof is assembled in Sections~2--\ref{sec:assembly}. Its classical
+arithmetic inputs and inherited proof-calculus calibration are stated
+explicitly. The assertion that ZFC proves the equivalence denotes an ordinary
+mathematical derivation formalizable in ZFC, including its finite arithmetic
+constructions. It does not assert that this archive contains a proof object
+in the repository's encoded ZFC calculus. The distinction does not make the
+equivalence conditional on a consistency assumption.
+
+\subsection{The measured improvement}
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Construction & Unknowns & Residuals & Monomials & Height\\
+\midrule
+Earlier direct C222, $\N$ &16,036&12,366&700,865&$3.2031\cdot10^{14}$\\
+Incoming shared certificates, $\N$ &3,614&2,954&15,996&127,778,545\\
+\textbf{This construction, $\N$}&\textbf{608}&\textbf{491}&\textbf{7,582}&\textbf{79,824,571}\\
+\textbf{This construction, $\Z$}&\textbf{1,685}&\textbf{850}&\textbf{12,082}&\textbf{79,827,802}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every row has degree four. The first two rows are authenticated comparison
+artifacts, not newly proved results of this report
+\cite{repo,sharedparent,directreview}. The first height is
+320,307,372,009,917 exactly. Relative to the incoming natural parent,
+the final equation uses 3,006 fewer variables, 2,463 fewer residuals,
+and 8,414 fewer monomials. These are complete-polynomial counts.
+
+The pinned repository already contains nine-positive-variable constructions,
+ten-integer-variable constructions, and a 37-integer-variable quartic on
+different branches \cite{repo}. This report does not improve their variable
+counts. Its contribution is a much smaller direct proof-calculus quartic,
+with moderate literal coefficients and a complete finite materialization.
+Sun's ten-integer-variable representation theorem is also already represented
+in the repository \cite{sun}; it is not a new result here.
+
+There is no canonical scalar definition of simplicity. Variables, degree,
+monomials, coefficient height, circuit size, printed description, and proof
+dependencies are different costs. We do not claim that 608 is optimal,
+that degree four is minimal for this particular consistency predicate, or
+that the new sharing lemmas are unprecedented in all literature.
+Their concrete use and complete composition are new relative to the
+inspected incoming direct construction.
+
+\section{A fixed numerical proof calculus}
+
+\subsection{The inherited logical endpoint}
+
+The source is C222, with truth label $0$ and contradiction label $1$.
+The supplied provenance contains the actual source declarations
+\begin{lstlisting}
+KEndpoint.c222_iff_zf_refutation :
+  KCode222.C222 Code254.F <-> BProv ZFax_s [] Form.fBot
+
+ConstructibleChoice.zf_refutation_iff_zfc_refutation :
+  BProv ZFax_s [] Form.fBot <-> BProv ZFCax_s [] Form.fBot
+\end{lstlisting}
+The ASCII arrows stand for the corresponding Lean equivalence symbol.
+The first declaration has no machine-execution hypothesis. The second uses
+constructible-universe removal of Choice. We inherit these mathematical
+calibrations; we neither redefine consistency to mean acceptance by a new
+checker nor infer them merely from numerical tests. Their exact source
+files and hashes are included in
+\texttt{provenance/inherited/CALIBRATION\_PINS.json}.
+
+The audited repository head is
+\texttt{8b328dc1801a506cdf448798702192a1d8d96f18}.
+The immediate incoming archive retains the calibration pin
+\texttt{08200eb10fde2db408c69dffd840d6920a569b1f}.
+These pins serve different purposes.
+
+\subsection{Literal arithmetic rules}
+
+The numerical constructors are
+\[
+ I(a,b)=2(a+b)(a+b+1)+4b,\quad
+ A(a,b)=I(a,b)+2,\quad M(a,b)=I(a,b)+1,\quad E(a,b)=I(a,b)+3.
+\]
+Also put $N(a)=I(a,1)$ and $X(a,b)=N(A(a,N(b)))$.
+These constructor symbols are scoped to this section, separately from
+the later Pell notation.
+The nine axiom-code expressions, in literal order, are
+\begin{align*}
+ h_1&=X(a,E(a,b)),\\
+ h_2&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+ h_3&=I(E(a,b),I(M(c,a),M(c,b))),\\
+ h_4&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+ h_5&=I(E(c,a),I(M(c,b),M(a,b))),\\
+ h_6&=I(X(a,A(a,b)),b),\\
+ h_7&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+ h_8&=I(I(I(c,d),a),I(I(a,c),I(b,c))),\\
+ h_9&=\operatorname{Bundle}(a,b,c).
+\end{align*}
+The last expression has the complete finite definition
+\begin{align*}
+ \operatorname{Req}(x,k,z)
+   &=A(x,I(z,N(A(x,I(z,N(M(x,k))))))),\\
+ \operatorname{Sub}(k,x,y)&=A(k,I(M(k,x),M(k,y))),\\
+ t_1&=I(\operatorname{Sub}(k,x,y),\operatorname{Req}(y,k,z)),\\
+ t_2&=N(A(x,t_1)),\qquad t_3=N(A(x,I(z,t_2))),\\
+ \operatorname{Clos}(x,y,k,z)&=A(y,I(M(y,k),t_3)),\\
+ b_1&=A(z,I(\operatorname{Clos}(x,y,z,z),N(\operatorname{Req}(y,z,z)))),\\
+ b_2&=I(M(x,y),A(z,M(x,y))),\\
+ \operatorname{Bundle}(x,y,z)&=N(I(b_2,b_1)).
+\end{align*}
+
+Use premise labels $p,q$ and conclusion label $v$. The twelve branch
+polynomials are $p^2+q^2+v^2$ (truth), the nine expressions
+$p^2+q^2+(v-h_j)^2$, with the additional term
+\[
+ \left(((c-a)(c-b))^2-(d+1)^2\right)^2
+\]
+in the ninth, and the two rule expressions
+\[
+ (q-I(p,v))^2,\qquad q^2+(v-A(a,p))^2.
+\]
+Let $\mathscr H$ be their product. Over naturals $\mathscr H=0$ says
+exactly that one branch holds. The ninth branch's extra equation enforces
+$c\ne a,b$, with witness $d=|(c-a)(c-b)|-1$ when the product is nonzero.
+All expressions are evaluated using shared additions and multiplications;
+there is no unspecified axiom predicate.
+
+\section{Finite proof flow and a cofinal beta code}
+
+\subsection{The bounded carrier}
+
+Fix $t,m\ge1$, $M=(m+1)^t$, and labels $c_i,p_i,q_i\le m$ for $i<t$.
+Consider
+\[
+ P(Z)=\prod_{i<t}(1+c_iZ),\qquad
+ Q(Z)=(1+Z)\prod_{i<t}(1+p_iZ)(1+q_iZ).
+\]
+\begin{lemma}[The inherited bounded-factor carrier]\label{lem:carrier}
+$P(M)=Q(M)$ if and only if $P=Q$ as integer polynomials.
+\end{lemma}
+\begin{proof}
+If $\deg Q\ge t+1$, then $Q(M)\ge M^{t+1}$, whereas
+\[
+ P(M)\le(1+mM)^t<((m+1)M)^t=M^{t+1}.
+\]
+Equality therefore forces both polynomials to have at most $t$ nonconstant
+linear factors. Each has coefficient sum at most $(m+1)^t=M$ and
+constant coefficient $1$; every coefficient is strictly below $M$.
+If $P-Q$ were nonzero, its least nonzero coefficient would be divisible
+by $M$, by dividing the zero evaluation by the appropriate power of $M$
+and reducing modulo $M$. Its absolute value is smaller than $M$,
+a contradiction.
+\end{proof}
+
+Unique factorization in $\Q[Z]$ gives, for each positive label $j$,
+\[
+ \#\{i:c_i=j\}-\#\{i:p_i=j\}-\#\{i:q_i=j\}=[j=1].
+\]
+Truth label $0$ contributes a factor $1$. This is a finite nonnegative
+flow of valid single-conclusion Horn rules to target $1$.
+Such a flow implies derivability: if $1$ were outside the derivable
+closure, sum the finitely supported balance outside that closure.
+Every rule with its conclusion outside has at least one premise outside,
+so each contribution is nonpositive; the target contributes $1$,
+a contradiction. Cycles and repeated premises cause no exception.
+Conversely a finite proof tree supplies the balances.
+
+\subsection{One integral accumulator}
+
+Encode the flow by
+\[
+ S_0=M+1,\quad S_t=1,\qquad
+ S_{i+1}(1+c_iM)=S_i(1+p_iM)(1+q_iM).
+\]
+Telescoping and Lemma~\ref{lem:carrier} give the balances. Conversely,
+process a proof tree by expanding open obligations; let $S_i$ be the
+product of their positive weights $1+jM$. All intermediate values are
+natural numbers.
+
+\begin{lemma}[Cofinal beta coding]\label{lem:beta}
+Every finite natural trace $S_0,\ldots,S_t$ has $x,y\in\N$ with
+\[
+ S_i\le y,\qquad x\bmod(1+(i+1)y)=S_i\quad(0\le i\le t).
+\]
+The scale $y$ can be chosen arbitrarily large.
+\end{lemma}
+\begin{proof}
+Choose $y$ above all trace entries and divisible by $t!$. The moduli
+$1+(i+1)y$ are pairwise coprime: a common divisor at indices $i<j$
+is coprime to $y$ and divides $j-i$, while $j-i$ divides $y$.
+CRT supplies $x$. All prescribed residues are smaller than their moduli.
+\end{proof}
+
+A local row therefore needs only the eleven witnesses
+\[
+ (p,q,v,a,b,c,d,S,S',u,u'),
+\]
+with label bounds $m$, digit bounds $y$, and common bound
+$V=m+y+U$ for the remaining six witnesses. Besides $\mathscr H=0$,
+the local equations are
+\begin{align*}
+ S'(1+vM)&=S(1+pM)(1+qM),\\
+ x&=S+(1+(i+1)y)u,\\
+ x&=S'+(1+(i+2)y)u'.
+\end{align*}
+Since $S,S'\le y$, these are exact beta digits. The two deleted
+remainder-slack coordinates reconstruct uniquely. Removing them without
+the digit bounds would be invalid.
+
+The endpoint equations, with $M=M_0+1$, are
+\begin{align*}
+ x&=M_0+2+(y+1)u_0,& y&=M_0+r_0+2,\\
+ x&=1+(1+(t+1)y)u_t,& 1+(t+1)y&=r_t+2.
+\end{align*}
+The code chooses $t=t_0+1,m=m_0+1$. A proof of target $1$ can be
+chosen with $t,m\ge1$, so these shifts preserve existence.
+
+\section{Eliminating the bounded universal quantifier}
+
+Let the sum of the three local squared residuals and $\mathscr H$ be
+the signed polynomial $E-F$, where $E,F$ are the actual nonnegative
+arithmetic circuits emitted by \texttt{direct\_calculus.py}.
+
+\begin{lemma}[Heterogeneous CRT certificate]\label{lem:crt}
+Let the $j$th local coordinate have bound $u_j\le V$. Suppose
+$H>E(i,\mathbf w),F(i,\mathbf w)$ on every allowed local assignment,
+$H\ge t$, and $H\ge u_j+1$. Set
+\[
+ T=H!,\qquad d_i=1+(i+1)T,\qquad \mathcal B=\prod_{i<t}d_i.
+\]
+Then $\forall i<t\ \exists\mathbf w\le\mathbf u:\ E(i,\mathbf w)=F(i,\mathbf w)$
+is equivalent to existence of encoded coordinates $a_j\ge1$ and $C\ge0$
+satisfying
+\[
+ \mathcal B\mid\binom{a_j}{u_j+1},\qquad
+ \mathcal B\mid 1+(C+1)T,\qquad
+ E(C,\mathbf a)\equiv F(C,\mathbf a)\pmod{\mathcal B}.
+\]
+\end{lemma}
+\begin{proof}
+Fix $i<t$ and a prime divisor $\ell$ of $d_i$.
+As $\ell\nmid H!$, we have $\ell>H$. The index condition gives
+$C\equiv i\pmod\ell$. Multiplying the binomial by $(u_j+1)!$ gives
+the falling factorial $\prod_{h=0}^{u_j}(a_j-h)$.
+Primality supplies some $w_j\in[0,u_j]$ with
+$a_j\equiv w_j\pmod\ell$. Thus $E(i,\mathbf w)\equiv
+F(i,\mathbf w)\pmod\ell$; both values are below $\ell$, so they agree.
+One decodes modulo a prime divisor, not the generally composite $d_i$.
+
+Conversely choose all finite local witnesses first. The $d_i$ are
+pairwise coprime since $T$ is divisible by every positive index
+difference. CRT supplies the encoded coordinates and index.
+The falling factorial vanishes modulo each $d_i$. Since
+$(u_j+1)!\mid T$ and $\gcd(T,\mathcal B)=1$, cancel this factorial
+to obtain the stated divisibility. Representatives $a_j$ can be made
+positive by adding multiples of $\mathcal B$; the same falling-factorial
+argument proves preservation of the binomial condition.
+\end{proof}
+
+\subsection{A certified majorant}
+
+For a nonnegative circuit with inputs at most $\Omega\ge4$, assign
+exponents by $d(\text{input})=1$, $d(0)=d(1)=0$,
+$d(2)=d(3)=d(4)=1$, and
+\[
+ d(f+g)=1+\max(d(f),d(g)),\qquad d(fg)=d(f)+d(g).
+\]
+Induction gives $f\le\Omega^{d(f)}$. The supplied 486-node certificate
+for the actual $E+F$ circuit gives $D=6,893,164$.
+Use
+\[
+ \Omega=t+x+y+m+M_0+V+4,\qquad H=\Omega^D+t+V+1.
+\]
+This meets every hypothesis of Lemma~\ref{lem:crt}. The fixed power
+$\Omega^D$ is expanded by repeated squaring into multiplication gates.
+$D$ is a majorant exponent, not the final polynomial's total degree.
+This change may increase witness magnitudes substantially.
+
+\subsection{The product of moduli}
+
+Use the exact arithmetic identity
+\begin{align*}
+ Q&=(1+(t+1)T)^t+2,\\
+ \mathcal B&=\left(T^t\,t!\binom{Q+t}{t}\right)\bmod(TQ-1).
+\end{align*}
+The numerator is $\prod_{j=1}^{t}(TQ+jT)$, congruent to
+$\prod_{j=1}^{t}(1+jT)$ modulo $TQ-1$.
+The latter product is positive and smaller than $TQ-1$, because
+$T\ge1$ and $Q$ exceeds its elementary factor bound.
+Division is encoded by $n=dq+r$, $d=r+s+1$ with natural witnesses.
+All remaining variable powers, binomials, and factorials are replaced
+by the finite certificates in the next section.
+
+\input{shared_arithmetic_sections.tex}
+
+\section{Quadratic compilation and safe elimination}\label{sec:compile}
+
+Each arithmetic operation receives its monic gate equation
+$g-a-b=0$ or $g-ab=0$. An unguarded Pell norm
+$x^2-(a^2-1)y^2=1$ is compiled economically:
+\[
+ h=ay,\qquad x^2+y^2-h^2-1=0.
+\]
+Only one product coordinate is needed. This relies on unguarded
+residuals: multiplying the last row by a selector would make it cubic.
+All power inputs in this construction are independently proved positive.
+
+\begin{lemma}[Natural affine elimination]\label{lem:affine}
+If $g=L$ is a monic gate and $L$ is affine with nonnegative integer
+coefficients in earlier coordinates, substituting $L$ for $g$ and
+removing its defining row preserves quadratic degree and gives a
+bijection of natural zero sets.
+\end{lemma}
+\begin{proof}
+Projection has the unique inverse $g=L\ge0$. Affine substitution
+preserves degree at most two. Iterate in topological order.
+The implementation's support cap of four is a sparse-size choice only.
+\end{proof}
+
+\begin{lemma}[Terminal nonlinear elimination]\label{lem:terminal}
+Suppose a residual is $g-Q$, where $g$ is absent from $Q$, $Q$ has
+nonnegative coefficients and degree at most two, and every occurrence
+of $g$ in every other residual is linear. Substituting $Q$ for $g$ and
+deleting $g-Q$ preserves quadratic degree and gives a bijection of
+natural zero sets.
+\end{lemma}
+\begin{proof}
+Every other row is $a g+P$, with $g$ absent from $P$, and becomes
+$aQ+P$, still quadratic. Restore $g=Q\ge0$ uniquely.
+Reverse the elimination order to restore a sequence of such coordinates;
+each recipe refers only to coordinates present at its deletion stage.
+\end{proof}
+
+The raw system has 1,541 variables and 1,424 residuals, including
+1,182 triangular nonnegative gate definitions. Removing 724 affine
+coordinates leaves 817 variables and 700 residuals. A further 209
+terminal eliminations leave 608 variables and 491 residuals.
+Every retained coordinate is used. The independent checker derives
+each recipe from its defining row, checks all consumers, and does not
+import the selection heuristic.
+
+Squaring and summing gives $D_{\N}$, with 7,582 collected monomials.
+A final residual has a nonzero quadratic homogeneous part.
+The sum of squares of all such parts cannot vanish identically over
+$\mathbb R$, so the degree is exactly four.
+
+\section{An unrestricted-integer quartic}\label{sec:integer}
+
+Among the 608 variables, 359 are original nongate inputs and 249
+are retained arithmetic gates. Let $I$ be the exact set of 359 input
+indices printed in Appendix~\ref{app:integer}. Introduce three
+integer variables $a_j,b_j,c_j$ for every $j\in I$, and set
+\begin{equation}\label{eq:integer}
+ \boxed{D_{\Z}=D_{\N}+
+  \sum_{j\in I}(8x_j+3-a_j^2-b_j^2-c_j^2)^2.}
+\end{equation}
+This is an ordinary polynomial in $608+3\cdot359=1,685$ integer variables.
+
+\begin{proposition}
+$D_{\Z}$ has an integer zero if and only if $D_{\N}$ has a natural zero.
+\end{proposition}
+\begin{proof}
+For a natural zero, Legendre's three-square theorem supplies the guards:
+$8x_j+3$ cannot be $4^a(8b+7)$.
+Conversely, the guards force the 359 original inputs to be nonnegative.
+First reverse both elimination stages as polynomial substitutions over
+$\Z$, without assuming the retained gates are natural. This restores
+the raw integer system. Induction through all 1,182 positive triangular
+gate definitions makes every raw gate nonnegative. Thus the restored
+assignment is a natural solution, whose projection is a natural zero
+of $D_{\N}$.
+\end{proof}
+The order matters: nonnegativity of the 249 unguarded gates is a
+conclusion of their restored equations. The integer polynomial has
+850 residuals, 12,082 monomials, and height 79,827,802.
+
+\section{Assembly inside ZFC and exact verification}\label{sec:assembly}
+
+Starting with a natural zero, reverse the eliminations to obtain the
+raw arithmetic equations. The shared Pell theorem identifies every
+power output. Positivity of all inputs is checked in actual macro order.
+The common-radix lemma identifies the binomials; the self-bounding
+factorial theorem then identifies the factorial outputs. No positivity
+of an uncalibrated factorial output is assumed.
+Division and the product identity recover the CRT certificate.
+Lemma~\ref{lem:crt} supplies local rule instances, whose exact beta
+digits form one accumulator trace. The carrier and flow arguments
+yield C222 derivability of $1$. The inherited logical endpoint gives
+a syntactic ZFC refutation.
+
+Conversely a finite refutation gives a finite C222 proof and an
+accumulator trace. Choose its carrier, then its cofinal beta code,
+then a bound on all remaining local witnesses. Form the factorial
+CRT moduli and encoded columns. Assign all semantic factorial and
+binomial values, then choose the common digit radix from the sum of
+the binomial upper arguments. This fixes all power inputs.
+Choose the shared Pell witnesses last. The resulting raw assignment
+projects to a zero of $D_{\N}$; the integer companion follows.
+
+These arguments use finite syntax, finite induction, integer
+polynomial arithmetic, finite CRT, and the stated classical
+number-theory theorems. ZFC proves them about its internal natural
+numbers. There is no restriction to externally standard codes.
+This proves Theorem~\ref{thm:main}; negating its solvability equivalence
+gives the requested consistency equivalence. It proves neither
+consistency nor inconsistency.
+
+\subsection{Independent checks}
+
+Separate constructor and checker implementations cover:
+\begin{itemize}
+\item all 25 power graphs, 20 shared index certificates,
+      14 binomial graphs, two factorial graphs, and 221 literal
+      semantic interface rows;
+\item the actual separate global sums for the Pell and digit bounds,
+      and dependency checks excluding circular dependence on private
+      Pell witnesses;
+\item the changed numerical source, all 486 majorant nodes, and the
+      complete raw 1,424-row artifact;
+\item all 724 affine and 209 terminal reconstructions, including
+      218 exact consumer substitutions;
+\item every integer guard and every expanded coefficient in both
+      final polynomials.
+\end{itemize}
+Normal Python and \texttt{python -O} executions pass. Eight corruption
+controls reject altered coefficients, nonunit definitions, nonlinear
+consumers, incorrect restorations, missing guards, and wrong guard
+constants. Independent fixtures also test the new arithmetic lemmas.
+These checks validate implementations and finite identities; the
+unbounded correctness arguments are the proofs and reviews.
+
+\subsection{Reproduction and artifact conventions}
+
+Python 3 and its standard library suffice. From the archive root:
+\begin{lstlisting}
+python3 verify_all.py
+python3 -O verify_all.py
+python3 src/build.py --output /tmp/con-zfc-natural
+python3 src/integer_export.py --input /tmp/con-zfc-natural
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The verifier regenerates the defining outputs in a temporary directory
+and compares them byte for byte. A monomial record
+\texttt{[c,[i,j,j]]} denotes $c x_i x_j^2$; an empty index list denotes
+the constant monomial. Indices are zero-based.
+Abbreviations in the proofs are not additional variables.
+
+A SHA-256 manifest identifies the distributed files. The theorem is
+tied to the printed residual list and machine-readable literals,
+not merely a changing script. No remote repository has been modified
+or published by this contribution.
+
+\subsection{Limits and the next question}
+
+The inspected direct parent was already a fully materialized ordinary
+construction. This work improves its complete dimensions.
+The remaining limitation is dimensional: 608 naturals is far above
+the few-variable branches. Shared Pell indices and CRT parameters
+may be enormous; the source majorant can increase witness sizes
+further. Small equation size is not a practical search method.
+
+The reusable result is that a finite family of powers can share
+its large-parameter Pell infrastructure. A further target is a
+more variable-efficient interface for the twenty distinct indices,
+or a cheaper direct encoding of the eleven local flow coordinates.
+Such a change must retain a simultaneous-existence proof. It is
+not supplied or counted here.
+
+\begingroup\small\raggedright
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov and ProveIt contributors.
+\emph{DiophantineConsistency: size research and status}.
+Snapshot \texttt{8b328dc1801a506cdf448798702192a1d8d96f18}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Frozen comparison files are in \texttt{provenance/}.
+\bibitem{sharedparent}
+ProveIt incoming contribution.
+\emph{Shared certificates},
+\texttt{ConZFC\_Shared\_Certificates\_2026-10-24.zip},
+in the pinned snapshot's \texttt{docs/incoming}.
+Its SHA-256 is in \texttt{provenance/SOURCE\_PINS.json}.
+The original filename's date is preserved.
+\bibitem{directreview}
+ProveIt contributors.
+\emph{Ordinary correctness review: direct C222 quartic, round 12}.
+\texttt{PROPOSAL\_REVIEW\_DIRECT\_C222\_ROUND12.md}
+in the pinned DiophantineConsistency directory.
+\bibitem{calibration}
+ProveIt contributors.
+\emph{Code254, KCode222, KEndpoint, and ConstructibleChoice}.
+Source pin \texttt{08200eb10fde2db408c69dffd840d6920a569b1f}.
+Exact interfaces and hashes are in \texttt{provenance/inherited/}.
+\bibitem{mathlibpell}
+M. Carneiro and Mathlib contributors.
+\emph{Pell's equation and Matiyasevic's theorem},
+\texttt{Mathlib/NumberTheory/PellMatiyasevic.lean}.
+Especially \texttt{matiyasevic}, \texttt{eq\_pow\_of\_pell},
+and the Pell divisibility and congruence lemmas.
+Inspected blob \texttt{db9c757dd7cac29260397150fd190d72715ea3f8}.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/PellMatiyasevic.html}.
+The source and Apache license are included.
+\bibitem{sun}
+Z.-W. Sun.
+\emph{Ten unknowns for Hilbert's tenth problem over the integers}.
+arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+Used for comparison and its statement of the classical Gauss--Legendre
+theorem; not as this construction's compiler.
+\end{thebibliography}
+\endgroup
+
+\appendix
+\section{Complete natural residual list}\label{app:literal}
+
+This is the literal definition of every $r_i$ in
+$D_{\N}=\sum_{i=0}^{490}r_i^2$. All $x_0,\ldots,x_{607}$ range over
+$\N$. A continuation line continues the same polynomial.
+\begingroup
+\footnotesize
+\setlength{\jot}{2pt}
+\input{natural_rows.tex}
+\endgroup
+
+\clearpage
+\section{Integer input-guard index set}\label{app:integer}
+
+Keep the 608 coordinates and add three fresh integer coordinates for
+each following index, in ascending order. Together with
+\eqref{eq:integer}, this defines the entire integer polynomial.
+\input{integer_indices.tex}
+
+\end{document}

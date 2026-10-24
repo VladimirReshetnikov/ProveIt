@@ -1,0 +1,297 @@
+\section{The direct proof-calculus source}
+\label{sec:source}
+
+This section records the inherited source mechanism
+\cite{shared,flow} so that the consistency interpretation
+is explicit. The new compression acts on the whole
+source, not merely a local arithmetic relation.
+
+The fixed numerical calculus $C_{222}$ uses implication
+code $I(a,b)=2(a+b)(a+b+1)+4b$, with offsets $1,2,3$
+for membership, universal quantification and equality.
+Negation is $I(a,1)$. Appendix~\ref{app:calculus}
+gives all constructors and twelve rule branches.
+Truth is the freely available code $0$; contradiction
+is code $1$. The numerical calculus is calibrated
+to syntactic ZFC refutability by the named inherited
+theorems in Section~\ref{sec:verification}.
+
+\subsection{Finite flow certificates}
+
+A padded rule with premises $p,q$ and conclusion $v$
+has vector $e_v-e_p-e_q$, where $e_0=0$ and positive
+labels are independent basis vectors. A finite list
+of valid instances satisfying
+\begin{equation}
+ \sum_i(e_{v_i}-e_{p_i}-e_{q_i})=e_1
+\label{eq:flow}
+\end{equation}
+already implies derivability of $1$.
+Let $D$ be the closure under the listed rules of
+truth and their axiom conclusions. If $1\notin D$,
+sum the coordinates outside $D$. A conclusion
+outside $D$ has at least one premise outside $D$,
+so every rule contributes at most zero there.
+The right side contributes one, a contradiction.
+Only finitely many labels occur, so this is a
+finite sum. Cycles and repeated premises cause
+no exception.
+
+Conversely a finite proof tree gives the flow by
+counting its nodes. Expand it starting from the
+open obligation $1$, replacing each conclusion
+by its selected premises.
+
+\subsection{A carrier recovering the exact flow}
+
+Let $t,m\ge1$ be the number of instances and a
+bound on their labels, and put $M=(m+1)^t$.
+Set
+\[
+ A(X)=\prod_{i<t}(1+v_iX),\qquad
+ C(X)=(1+X)\prod_{i<t}(1+p_iX)(1+q_iX).
+\]
+Both have nonnegative coefficients and constant
+term one. Then
+\begin{equation}
+ A(M)=C(M)\quad\Longleftrightarrow\quad A(X)=C(X).
+\label{eq:carrier}
+\end{equation}
+If $\deg C\ge t+1$, its evaluation is at least
+$M^{t+1}$, whereas
+\[
+ A(M)\le(1+mM)^t<((m+1)M)^t=M^{t+1}.
+\]
+Thus each product has at most $t$ nonconstant
+factors and coefficient sum at most $M$.
+Every individual coefficient is strictly below
+$M$, because the constant term is one and
+a nonconstant product has another positive
+coefficient. Every coefficient of $A-C$
+therefore has absolute value below $M$.
+Its least nonzero coefficient, if any, would
+be divisible by $M$, by reducing its zero
+evaluation after removing the corresponding
+power of $M$. This is impossible.
+
+Unique factorization in $\mathbb Q[X]$ now
+recovers the exact multiplicities of the
+distinct factors $1+jX$ for $j>0$, giving
+\eqref{eq:flow}. No coprimality of their
+integer values is assumed.
+
+Natural accumulator states satisfy
+\begin{equation}
+ S_0=M+1,\quad S_t=1,\quad
+ S_{i+1}(1+v_iM)=S_i(1+p_iM)(1+q_iM).
+\label{eq:accumulator}
+\end{equation}
+Positive factors force every state positive,
+and telescoping gives \eqref{eq:carrier}.
+For completeness take $S_i$ to be the product
+of the weights of current open obligations
+in the proof-tree expansion. Every update
+is then an integer identity.
+
+One beta code represents the accumulator:
+$\beta(x,y,i)=x\bmod(1+(i+1)y)$.
+Choose $y$ sufficiently large and divisible
+by every relevant positive index difference.
+The moduli are pairwise coprime and exceed
+all sequence entries, so CRT supplies $x$.
+The choice order is finite proof, $t,m$,
+carrier, accumulator, then $x,y$.
+The later witness bound is independent of
+the earlier label bound $m$.
+
+\subsection{Thirteen local coordinates}
+
+The local row uses three labels $p,q,v$,
+four schema coordinates $a,b,c,d$ and six
+beta/accumulator coordinates $S,S',u,r,u',r'$.
+For $D_i=1+(i+1)y$ its arithmetic rows are
+\begin{align*}
+ x&=S+D_i u,&D_i&=S+r+1,\\
+ x&=S'+(D_i+y)u',&D_i+y&=S'+r'+1,\\
+ S'(1+vM)&=S(1+pM)(1+qM).
+\end{align*}
+The first four rows give exact consecutive
+beta digits, since the divisors are positive.
+
+For each rule branch square and sum its
+residuals; multiply the twelve branch sums
+to impose their disjunction. Add the
+squares of the five other local rows.
+This is a fixed nonnegative polynomial
+$L(i,\mathbf z,\mathbf w)$.
+Its implementation uses nonnegative-coefficient
+circuits $E,F$ with $L=E-F$. For multiplication,
+\[
+ (E_1,F_1)(E_2,F_2)=
+ (E_1E_2+F_1F_2,\ E_1F_2+F_1E_2).
+\]
+Addition and subtraction use componentwise
+addition and the appropriate swap. The
+difference is preserved and both components
+are monotone in natural inputs.
+
+\section{Removing the bounded universal quantifier}
+\label{sec:crt}
+
+Give the local witnesses bounds $u_j$ and
+choose $V\ge u_j$ for every $j$. Define
+\[
+ H=E(t,\mathbf z,\mathbf u)+F(t,\mathbf z,\mathbf u)+t+V+1,
+ \qquad T=H!,\qquad
+ B_0=\prod_{i<t}(1+(i+1)T).
+\]
+Existence of bounded witnesses for every
+index $i<t$ is equivalent to natural
+$C,A_1,\ldots,A_d$ satisfying
+\begin{align}
+ B_0&\mid\binom{A_j}{u_j+1}
+             &&\text{for each }j,\label{eq:crt-range}\\
+ B_0&\mid1+(C+1)T,\label{eq:crt-index}\\
+ E(C,\mathbf z,\mathbf A)&\equiv
+       F(C,\mathbf z,\mathbf A)\pmod{B_0}.
+       \label{eq:crt-row}
+\end{align}
+
+\begin{proof}[Soundness]
+Fix $i<t$ and a prime divisor $p$ of
+$D_i=1+(i+1)T>1$.
+It is coprime to $T=H!$, so $p>H$.
+The integer identity
+\[
+ (u_j+1)!\binom{A_j}{u_j+1}
+       =\prod_{r=0}^{u_j}(A_j-r)
+\]
+also holds for $A_j\le u_j$, when both
+sides vanish. Primality supplies a
+$w_j\in[0,u_j]$ with $A_j\equiv w_j\pmod p$.
+Comparing the index divisibility with
+$D_i\equiv0$ and cancelling $T$ gives
+$C\equiv i\pmod p$.
+The row congruence yields
+$E(i,\mathbf z,\mathbf w)\equiv
+F(i,\mathbf z,\mathbf w)\pmod p$.
+Monotonicity places both natural values
+strictly below $p$, hence they are equal.
+\end{proof}
+
+\begin{proof}[Completeness]
+A common divisor of $D_i,D_j$ for $i<j<t$
+divides $(j-i)T$ and is coprime to $T$,
+so it divides $j-i$. But $j-i\mid H!$,
+making the common divisor one.
+CRT now chooses $C\equiv i$ and
+$A_j\equiv w_j^{(i)}\pmod{D_i}$
+for valid bounded row witnesses.
+Their falling-factorial products vanish
+modulo every $D_i$. Since
+$(u_j+1)!\mid T$ and $\gcd(B_0,T)=1$,
+that factorial cancels, giving the
+binomial divisibility. The index and
+polynomial congruences follow by
+substitution and pairwise coprimality.
+\end{proof}
+
+Soundness deliberately uses a prime
+divisor of each modulus. A product
+vanishing modulo a composite number
+does not by itself supply a small root.
+Completeness deliberately establishes
+$H\ge u_j+1$ before factorial cancellation.
+
+For the actual source, the three labels
+have bound $m$ and the other ten local
+coordinates have bound $V=m+U_0$ for an
+extra natural $U_0$. There are thirteen
+range-binomial graphs. Endpoint equations
+directly encode $S_0=M+1,S_t=1$.
+Writing $t=t_0+1,m=m_0+1$ loses no proof:
+zero length contradicts the endpoints,
+and zero label bound makes every update
+constant. Encoded coordinates may be
+shifted to $A_j=\alpha_j+1$, since adding
+a multiple of $B_0$ preserves the
+falling-factorial divisibility and its
+factorial cancellation.
+
+\subsection{Eliminating the remaining arithmetic macros}
+
+The explanatory product is replaced by
+\[
+ Q_0=(1+(t+1)T)^t+2,\qquad
+ B_0=
+ \left(T^t\,t!\binom{Q_0+t}{t}\right)\bmod(TQ_0-1).
+\]
+The numerator is
+$\prod_{i=1}^t(TQ_0+iT)$ and reduces
+to the intended product modulo $TQ_0-1$.
+That product is smaller than the
+positive modulus, so it is the exact
+remainder.
+
+For a natural $n$, let
+$\rho=(n+2)^{n+2}$,
+$C=\binom{\rho+n}{n}$ and
+$P=(\rho+1)^n$. Then
+\[
+ n!=\left\lceil P/C\right\rceil.
+\]
+For $n\ge2$,
+\[
+ \frac PC=n!\prod_{i=1}^n
+ \left(1-\frac{i-1}{\rho+i}\right),
+ \qquad
+ 0\le n!-\frac PC
+ <\frac{n!\,n(n-1)}{2(\rho+1)}<1.
+\]
+The cases $0,1$ are immediate.
+Natural $r,s$ impose the ceiling by
+$P+C=Cf+r+1$ and $C=r+s+1$.
+Each other division uses the analogous
+quotient/remainder equations.
+All binomials use the shared radix,
+and all powers use the shared Pell
+certificate. No arithmetic macro
+remains in the final polynomial.
+
+\subsection{The positivity order at arbitrary zeros}
+
+All twenty-three exponent groups are
+positive from structural shifts and
+nonnegative arithmetic, before any
+power output is known correct.
+Consequently every group has
+$Y_j\ge e_j>0$ and the common index
+certificate recovers all its Pell
+pairs first.
+
+Twenty-seven of the twenty-eight
+power bases are structurally positive.
+The remaining base is the factorial
+output $T$, which must be proved
+positive rather than silently assumed.
+Apply the local power argument first
+to the structurally positive bases.
+In particular the factorial numerator
+$P=(\rho+1)^H$ is positive.
+The retained ceiling rows
+$P+C=CT+r+1$ and $C=r+s+1$
+would imply $P\le0$ if $T=0$.
+Hence $T>0$ and the final power
+$T^t$ is valid.
+
+The common radix power has literal
+base two and a positive exponent, so
+its correctness is available before
+the binomial digit argument.
+Its coefficient bound depends only
+on the assigned natural upper
+arguments, not on their prior
+semantic correctness.
+This order resolves the apparent
+cycle introduced by deferring
+factorial and binomial outputs.

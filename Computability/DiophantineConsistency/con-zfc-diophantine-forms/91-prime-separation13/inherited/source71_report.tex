@@ -1,0 +1,724 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,
+  pdftitle={Calibrated determinant guards for Diophantine ZFC consistency},
+  pdfauthor={Prepared for Vladimir Reshetnikov; AI-assisted research}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\RefCode}{\operatorname{Ref}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\PhiG}{\mathcal G}
+\newcommand{\pin}{\texttt{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\title{Calibrated determinant guards\\for Diophantine ZFC consistency\\[5pt]
+  \large A quartic in 38 integers, a sextic in 32, an octic in 27,\\
+  and two positive-variable improvements}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository\\
+  \small AI-assisted mathematical research; exact finite certificates included}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The principal result is a new way to remove positivity witnesses without
+raising the degree of a Diophantine equation. The canonical native encoding
+already fixes the leading digits of two packed integers. Fixed rescalings
+place those canonical witnesses in a narrow region where one quadratic
+determinant is positive. Positivity of that determinant, for arbitrary
+signed assignments, recovers both common-sign conditions previously imposed
+separately. Replacing two ternary positivity representations by one reduces
+the inspected 41-integer quartic to \textbf{38 unrestricted integer variables}
+and 25 quadratic residuals. Exact coordinate eliminations give a sextic in
+\textbf{32 integers} and an octic in \textbf{27 integers}.
+
+Two independent companions give twelve positive variables at degree
+\textbf{110} in \textbf{102} binary operations, and nine positive variables
+at degree \textbf{1,379,730} in \textbf{478} operations. Every coefficient is
+fixed by supplied finite data. The new proofs compose with explicitly named
+native-compiler, Pell and syntactic-refutation results in ProveIt to give the
+requested ZFC-provable unsolvability/consistency equivalences. No consistency
+assumption, global optimum, literature-priority claim, or new end-to-end
+proof-assistant certificate is asserted.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{What is constructed and what improves}
+\label{sec:results}
+
+The target is an ordinary polynomial with fixed integer coefficients,
+not an exponential equation and not a formula with hidden quantifiers.
+The convention for consistency is syntactic:
+\[
+ \Con(\ZFC)\;\equiv\;\neg\exists p\,\RefCode_{\ZFC}(p),
+\]
+where $\RefCode_{\ZFC}$ is the fixed recursive refutation predicate used by the
+repository's calibrated endpoint. The desired theorem is an equivalence
+\emph{provable in ZFC}; it does not ask ZFC to prove either consistency or
+the absence of zeros separately.
+
+The immutable comparison snapshot is \pin. In particular, the comparison
+includes all eight wave-9 packages 60--67. The collection README's older
+frontier is insufficient for this comparison. The main previous integer
+points are package 64's 41-variable quartic and package 62's 35-variable
+sextic and 30-variable octic \cite{p64,p62}. Table~\ref{tab:frontier}
+records the changes, with different witness domains kept explicit.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+Domain & Unknowns & Degree & Operations & Prior point & Definition\\
+\midrule
+$\Z$ & \textbf{38} & 4 & -- & 41 / 4 & $Q_{38}$\\
+$\Z$ & \textbf{32} & 6 & -- & 35 / 6 & $S_{32}$\\
+$\Z$ & \textbf{27} & 8 & -- & 30 / 8 & $O_{27}$\\
+$\Z_{>0}$ & 12 & \textbf{110} & \textbf{102} & 118 / 104 ops & $P_{12}$\\
+$\Z_{>0}$ & 9 & \textbf{1,379,730} & \textbf{478} & 1,494,006 / 487 ops & $F_9$\\
+$\N$ & 9 & 1,379,730 & 485 & separate translation & $F_{9,\N}$\\
+\bottomrule
+\end{tabular}
+\caption{New explicit equations against the inspected wave-9 frontier.
+The first three prior points are unknowns / degree. Operation counts for
+the integer forms have not been optimized.}\label{tab:frontier}
+\end{table}
+
+The variable reductions are $3/41\approx7.32\%$, $3/35\approx8.57\%$, and
+$3/30=10\%$, respectively. The nine-positive companion reduces the best
+inspected degree by 114,276, or approximately $7.65\%$, and saves nine
+operations relative to that same predecessor. Package 62's 453-operation
+nine-positive equation still has a lower operation count at higher degree.
+The ten-unrestricted-variable frontier is not improved.
+
+There is no agreed scalar measure of ``simplest.'' In this report a degree
+reduction, a variable reduction, and a shorter evaluator are separate
+achievements. Binary arithmetic counts charge every $+,-,\times$, including
+squarings and multiplication by fixed numerals; reuse and constant leaves
+are free. They are not bit-complexity estimates. All quoted degrees count
+only existential unknowns, after specializing the fixed coefficient ports.
+
+\begin{theorem}[Constructed consistency equations]\label{thm:main}
+With the complete coefficient bindings in the archive, the constructions
+below satisfy, by composition with the named inherited compiler and
+calibration theorems,
+\begin{align*}
+ \ZFC&\vdash (\neg\exists\mathbf x\in\Z^{38}\ Q_{38}(\mathbf x)=0)
+                      \leftrightarrow\Con(\ZFC),\\
+ \ZFC&\vdash (\neg\exists\mathbf x\in\Z^{32}\ S_{32}(\mathbf x)=0)
+                      \leftrightarrow\Con(\ZFC),\\
+ \ZFC&\vdash (\neg\exists\mathbf x\in\Z^{27}\ O_{27}(\mathbf x)=0)
+                      \leftrightarrow\Con(\ZFC).
+\end{align*}
+The analogous assertions hold for $P_{12}$ over $\Z_{>0}^{12}$, $F_9$ over
+$\Z_{>0}^9$, and its explicitly shifted companion over $\N^9$.
+\end{theorem}
+
+The proof dependency is substantive: this article gives complete ordinary
+proofs of its new reductions, and imports the established native arithmetic
+and refutation calibration used by the cited packages. It does not replace
+those dependencies by numerical tests. Section~\ref{sec:scope} separates
+that mathematical composition from the repository's still distinct task
+of exporting a checked derivation in its object-language ZFC calculus.
+
+\section{The new principle: one determinant for two sign conditions}
+\label{sec:guard}
+
+For integer variables define
+\[
+ \Pos(x,y,z)=1+x^2+y^2+z(z+1).
+\]
+It is always positive, since $z(z+1)\ge0$ for every integer $z$.
+Conversely every positive integer $n$ is a value of $\Pos$: Legendre's
+three-square theorem applies to $4n-3\equiv1\pmod4$, which is not of the
+excluded form $4^a(8b+7)$. Exactly one of the three squares is odd. Writing
+that term as $(2z+1)^2$ and the other two as $(2x)^2,(2y)^2$ gives the
+claimed representation.
+
+The previous quartic used two independent triples to impose
+\begin{equation}\label{eq:oldguards}
+ F\alpha=\Pos(f_1,f_2,f_3),\qquad
+ FC=\Pos(c_1,c_2,c_3),\qquad q=F+\alpha+C.
+\end{equation}
+These rows require six private integer witnesses. The new idea is to use
+the special location of \emph{canonical} accepting witnesses to choose a
+stronger quadratic condition that requires only one triple.
+
+\begin{lemma}[Weighted determinant guard]\label{lem:guard}
+Let $A_0,B_0$ be fixed integers satisfying
+$A_0,B_0\ge2$. For integers $q,F,C$ put
+\[
+ U=A_0F,\quad V=B_0C,\quad W=q-U-V,
+ \qquad\PhiG=UV-W^2.
+\]
+If $\PhiG>0$, then $q,F,C,q-F-C$ are nonzero and have the same sign.
+\end{lemma}
+\begin{proof}
+$UV>W^2\ge0$ implies that $U,V$ have one common nonzero sign.
+Set $L=|U|+|V|$. The elementary inequality
+$2\sqrt{|U||V|}\le L$ gives $|W|<L/2$. Thus $q=U+V+W$
+has the same sign as $U,V$, and
+\[
+ |q|>L/2=(A_0|F|+B_0|C|)/2
+                   \ge |F|+|C|.
+\]
+So $q,F,C$ have one sign and $|q|>|F|+|C|$, which gives the same sign
+to $q-F-C$. The proof does not assume $q>0$.
+\end{proof}
+
+Consequently the single quadratic row
+\begin{equation}\label{eq:newguard}
+ \boxed{A_0B_0FC-(q-A_0F-B_0C)^2=\Pos(t_1,t_2,t_3)}
+\end{equation}
+implies both positivity conditions in~\eqref{eq:oldguards}. One may view
+the left side as the determinant of
+$\left(\begin{smallmatrix}U&W\\W&V\end{smallmatrix}\right)$.
+The linear relation to $q$ recovers the common sign of this definite matrix.
+
+Soundness alone is easy; completeness is the actual research issue.
+Arbitrarily strengthening a positivity condition can destroy every witness.
+Here the fixed native coefficient geometry supplies a uniform region
+near $U=V=q/2$, in which the determinant remains positive.
+
+\begin{lemma}[Uniform canonical region]\label{lem:region}
+Let $s>0$, $q=2s$, and
+$s\le U<8s/5$, $s\le V<6s/5$. Then
+\[
+ UV-(q-U-V)^2>\frac{12}{25}s^2>0.
+\]
+\end{lemma}
+\begin{proof}
+Write $U=s+x,V=s+y$, with $0\le x<3s/5$ and $0\le y<s/5$.
+Then $W=-x-y$ and
+\[
+ UV-W^2=s^2+s(x+y)-x^2-xy-y^2
+               >s^2-(9+3+1)s^2/25.
+\]
+\end{proof}
+
+The reduction is therefore asymmetric in the useful way. An arbitrary
+new zero restores an old zero by Lemma~\ref{lem:guard}; a refutation supplies
+fresh canonical witnesses that satisfy Lemma~\ref{lem:region}. Equality of
+the two zero sets on the same old coordinates is neither asserted nor
+needed.
+
+\section{Why the actual native encoding lies in that region}
+\label{sec:canonical}
+
+This section fixes the coefficients, rather than treating the guard as a
+family with unbound parameters. Use the \emph{whole} source-34 tuple
+\texttt{mixed-parity-unrounded-1064921} \cite{p34}. Write
+\[
+ \rho=2^{121},\quad L_0=8801,\quad B=\rho^{L_0}=2^{1064921},
+ \qquad\beta=B-1.
+\]
+The first native tile, with ordered labels $(2,435,3,1)$, has clause
+coefficient
+\begin{equation}\label{eq:c0}
+ c_0=105534389824824194647382298625,
+ \qquad 2^{96}\le c_0<c_0+1\le3\cdot2^{95}<2^{97}<\rho.
+\end{equation}
+The two new fixed numerals are simply powers of two:
+\begin{equation}\label{eq:scales}
+ \boxed{A_0=2^{1113},\qquad B_0=2^{666104}.}
+\end{equation}
+In particular $A_0,B_0\ge2$. These are additional coefficients,
+not existential variables. The archive reconstructs all six ports and
+checks the four inherited raw values against their pinned SHA-256 hashes.
+
+\subsection{Leading digits of the canonical \texorpdfstring{$C$}{C} word}
+
+A finite accepting computation supplies a padded cyclic native word with
+$N$ occupied cells and $q=B^N$. At each cell $j$, the source construction
+puts one genuine tile, its occupied edge copies, and its four occupancy
+anchors. The largest support exponent of its native integer $C_j$ is 3296,
+with coefficient one. The next possible exponent is 2195. Therefore
+\begin{equation}\label{eq:Cblock}
+ \rho^{3296}\le C_j<\rho^{3296}+\rho^{2196}
+                         \le(1+1/\rho)\rho^{3296}.
+\end{equation}
+The rank-tuning dummy is at exponent 1063; changing its permitted value
+cannot affect either leading-support fact. The inequalities hold for every
+size of a canonical accepting rectangle, including after all dummy changes.
+
+\subsection{Leading digits of the canonical \texorpdfstring{$F$}{F} word}
+
+Let $D_C,D_R$ be the fixed native convolution coefficients, so
+$K_0=D_C+BD_R$ and $D_R=\rho$. The rank controller gives a whole-cell
+temporal shift $w_c$ with
+\[
+ R\equiv1064921w_c\pmod{1064921N}.
+\]
+Thus the canonical transport word is the residue
+\[
+ F\equiv(D_C+BD_R+B^{w_c})C\pmod{q-1}.
+\]
+The actual block at cell $j$, with cyclic indices, is
+\begin{equation}\label{eq:Fblockexact}
+ F_j=D_CC_j+D_RC_{j-1}+C_{j-w_c}.
+\end{equation}
+The largest exponent in $D_C$ is 5495, with coefficient $c_0$.
+The unique pair reaching exponent $8791=5495+3296$ in $D_CC_j$ has
+coefficients $c_0$ and one. The other two summands in~\eqref{eq:Fblockexact}
+have exponents at most 3297 and 3296.
+
+It is necessary to exclude a carry into that leading coefficient. Let
+$S=\sum_e c_e$ be the sum of the source clause coefficients. The sum of
+coefficients of $D_C$ is $4+2S$. Each canonical $C_j$ coefficient is at
+most three; the possible larger dummy value is still only three. Hence
+each convolution coefficient in~\eqref{eq:Fblockexact} is at most
+\[
+ 3(4+2S)+6=6S+18<991(2S+6)=\mathcal M<\rho.
+\]
+The last inequality is among the reconstructed source's strict finite
+carry bounds; the stronger $4\mathcal M+8<\rho$ is checked. Thus no carry
+changes the top digit, and
+\begin{equation}\label{eq:Fblock}
+ c_0\rho^{8791}\le F_j<(c_0+1)\rho^{8791}.
+\end{equation}
+Every block is strictly below $B-1$ since $8791<8801$ and $c_0<\rho$.
+Their base-$B$ word is therefore the canonical representative in $(0,q-1)$;
+the residue calculation has not confused zero with $q-1$.
+
+\subsection{One estimate for every accepting witness length}
+
+Put $J_N=(q-1)/(B-1)=\sum_{j<N}B^j$. The exponents were chosen because
+\[
+ 121\cdot8791+1113=1064921-97,\qquad
+ 121\cdot3296+666104=1064921-1.
+\]
+Summing~\eqref{eq:Cblock} and~\eqref{eq:Fblock} therefore gives
+\[
+ \frac{c_0}{2^{97}}BJ_N\le A_0F<\frac{c_0+1}{2^{97}}BJ_N,
+ \qquad
+ \frac12BJ_N\le B_0C<\frac12(1+1/\rho)BJ_N.
+\]
+For all $N\ge1$,
+$q\le BJ_N<qB/(B-1)$. Using~\eqref{eq:c0}, $\rho\ge8$ and $B\ge16$ gives
+\[
+ \frac q2\le A_0F<\frac34\frac{16}{15}q=\frac45q,
+ \qquad
+ \frac q2\le B_0C<\frac12\frac98\frac{16}{15}q=\frac35q.
+\]
+Set $s=q/2$. Lemma~\ref{lem:region} applies. This proves completeness
+of the new determinant guard for the actual coefficient tuple. The large
+sizes of $A_0,B_0$ express a known disparity of native digit positions; they
+do not encode the answer to the consistency question.
+
+\section{The complete 38-integer quartic}
+\label{sec:quartic}
+
+All variables in this section range over \emph{unrestricted integers}.
+There are 32 arithmetic variables
+\[
+\begin{gathered}
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,\\
+ N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta,u
+\end{gathered}
+\]
+and six guard variables $t_1,t_2,t_3,e_1,e_2,e_3$, totaling 38.
+In the machine-readable packets, $v,w,B_a$ are named
+\texttt{v\_scale}, \texttt{w\_scale}, \texttt{Baux}.
+For readability define the polynomial abbreviations
+\begin{align*}
+ q&=\beta J+1,&C&=q-F-\alpha,&k&=\eta+\zeta,&H&=4a+3.
+\end{align*}
+\begin{align*}
+ \PhiG&=A_0B_0FC-(q-A_0F-B_0C)^2,\\
+ \mathcal R&=q(N-q-L)+F(q+L-N)+\alpha L+(M_C+qM_F)J.
+\end{align*}
+$q,C,k,H,\mathcal R,\PhiG$ are not additional unknowns.
+Every displayed residual in the following list has degree at most two:
+\begin{align*}
+ r_1&=L-q^2+1,&r_2&=N-q(L+1),\\
+ r_3&=X-4wq,&r_4&=a-E-(2v+1)N,\\
+ r_5&=E(X+1)-Xa,&r_6&=c-\eta-(a-E)k,\\
+ r_7&=P-E(c-\eta)-k,&r_8&=\tau^2-P^2+Pk-1,\\
+ r_9&=D-X-ac-\gamma H,&r_{10}&=\Delta-a^2-4a-3,\\
+ r_{11}&=C_2-c^2,&r_{12}&=D^2-\Delta C_2-1,\\
+ r_{13}&=k-1-hE-\mathcal R,&
+ r_{14}&=(K_0+4w)C-F-z(q-1),\\
+ r_{15}&=F_2-f^2,&r_{16}&=V+c-fo,\\
+ r_{17}&=V-jc+k-1-hE,&r_{18}&=V^2+g-y^2,\\
+ r_{19}&=I-(2r+1)C_2,&r_{20}&=B_a-I^2,\\
+ r_{21}&=B_a-\Delta(F_2-1),&r_{22}&=y^2-B_ag-1,\\
+ r_{23}&=X-2u^2,&r_{24}&=\PhiG-\Pos(t_1,t_2,t_3),\\
+ r_{25}&=\eta\zeta-\Pos(e_1,e_2,e_3).&&
+\end{align*}
+The promised single equation is
+\begin{equation}\label{eq:Q38}
+ \boxed{Q_{38}=\sum_{\nu=1}^{25}r_\nu^2=0.}
+\end{equation}
+The use of a sum is just a compact specification of one polynomial.
+All 25 residuals and its expanded symbolic coefficient list are included.
+The coefficient of $\tau^4$ is exactly one, so its degree is exactly four
+on the actual fixed coefficient slice.
+
+\subsection{Existence equivalence}
+
+At an integer zero of $Q_{38}$ every residual is zero. The new guard gives
+$F\alpha>0$ and $FC>0$ by Lemma~\ref{lem:guard}. Represent these two
+positive integers by the old six private Pos variables. All other rows
+are literally the corresponding package-64 quartic rows. Thus an integer
+zero of $Q_{38}$ supplies a zero of that package's $Q_{41}$ and, by its
+native/Pell soundness and K215 calibration, a finite ZFC refutation.
+
+Conversely a refutation supplies the canonical witnesses in package 64's
+completeness proof. They use the whole source-34 tuple, and satisfy all
+retained rows, including $X=2u^2$ and the divisible-by-four scale.
+Section~\ref{sec:canonical} proves $\PhiG>0$ for those very witnesses,
+after rank tuning. A ternary Pos representation supplies the new three
+variables. Hence $Q_{38}$ has an integer zero.
+
+The quantifier order matters: one first obtains an accepting computation,
+then a canonical native witness, then the new Pos representation. This
+is why restricting the old numerical witnesses is legitimate. No search
+for the absence of a witness, and no assumption of $\Con(\ZFC)$, occurs.
+
+\subsection{Coefficient and proof costs}
+
+The four old native numerals occupy 532,479 bytes in minimal unsigned
+little-endian form. The two new leaves add 83,404 bytes, for a total of
+615,883 bytes. The archive also provides short power-of-two recipes
+and compressed payloads. This is a real coefficient-storage tradeoff for
+three fewer variables at unchanged degree. It is not a claim that the
+expanded polynomial's total bit length decreases. In fact the $J^2$
+coefficient of the new residual is $-\beta^2(B_0-1)^2$, so squaring
+that residual contributes $\beta^4(B_0-1)^4$ to the $J^4$ coefficient.
+Including the retained rows, the exact coefficient is
+\[
+ [J^4]Q_{38}=\beta^4(B_0-1)^4+\beta^4+\beta^2(\beta-M_F)^2.
+\]
+It has exactly 6,924,100 bits for the supplied tuple, as checked both by
+exact inequalities and by reconstruction. This is a lower bound on the
+maximum coefficient bit length, not a claim that this coefficient is the
+largest. Variable count, coefficient height and arithmetic description
+length must therefore be assessed separately.
+
+The inherited signed Pell argument remains unchanged. In particular the
+new proof does not assume a positive radix before the existing argument
+recovers its sign. It also preserves the corrected transport convention
+$(K_0+4w)C=F+z(q-1)$; a different earlier convention uses $z+1$.
+
+\section{Exact sextic and octic reductions}
+\label{sec:elimination}
+
+These reductions are purely algebraic. Whenever a residual is
+$x-f(\text{other variables})$, deleting it and substituting $f$ everywhere
+gives a bijection of integer zero sets, with the explicit polynomial
+inverse restoring $x$. No divisibility or sign premise is needed.
+The verifier checks the identity at each step and also substitutes the
+complete final inverse into every original quartic row.
+
+\subsection{A sextic in 32 integers}
+
+First make the integral triangular change
+\[
+ \tau_{\rm old}=\tau_{\rm tail}+P-k.
+\]
+Then eliminate $P=k+E(c-\eta)$. The first Pell residual becomes
+\[
+ \tau_{\rm tail}^2+(2\tau_{\rm tail}-k)E(c-\eta)-1,
+\]
+which has degree three: its degree-four terms have cancelled exactly.
+Eliminate, in addition,
+\[
+ F_2=f^2,\quad g=y^2-V^2,\quad X=2u^2,
+ \quad N=q(L+1),\quad C_2=c^2.
+\]
+This removes six variables and six defining equations. The resulting 19
+residuals have degree at most three in 32 integers. Let $S_{32}$ be their
+sum of squares. The full inverse includes
+\[
+ \tau_{\rm old}=\tau_{\rm tail}+E(c-\eta).
+\]
+Only the retained strong-definition row
+$I-(2r+1)c^2$ contains $r$. Its square gives
+\[
+ [r^2c^4]S_{32}=4,
+\]
+so $\deg S_{32}=6$ for the authentic fixed tuple. The full literal list,
+expanded polynomial and inverse map are in
+\path{integer_forms/sextic32.json} and its companion files.
+
+\subsection{An octic in 27 integers, written out completely}
+
+This version removes 11 registers. It is short enough to state without
+any implicit source reference. Its 21 arithmetic unknowns are
+\[
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,y,\gamma,o,j,E,c,a,V,I,u,
+\]
+and its six guard unknowns are again $t_1,t_2,t_3,e_1,e_2,e_3$.
+Define only polynomial abbreviations
+\begin{align*}
+ q&=\beta J+1,&C&=q-F-\alpha,&k&=1-V+jc+hE,\\
+ H&=4a+3,&\Delta&=a^2+H,&B_1&=E(c-\eta),\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ \PhiG&=A_0B_0FC-(q-A_0F-B_0C)^2.
+\end{align*}
+Here $B_1$ is a polynomial abbreviation and is unrelated to the fixed
+native radix $B$. The 14 residuals are
+\begin{align}
+ s_1&=2u^2-4wq,\nonumber\\
+ s_2&=a-E-(2v+1)q^3,\nonumber\\
+ s_3&=E(2u^2+1)-2u^2a,\nonumber\\
+ s_4&=c-\eta-(a-E)k,\nonumber\\
+ s_5&=\tau^2-(k+B_1)B_1-1,\nonumber\\
+ s_6&=(2u^2+ac+\gamma H)^2-\Delta c^2-1,\nonumber\\
+ s_7&=-V+jc-R,\nonumber\\
+ s_8&=(K_0+4w)C-F-z(q-1),\nonumber\\
+ s_9&=V+c-fo,\nonumber\\
+ s_{10}&=I-(2r+1)c^2,\nonumber\\
+ s_{11}&=I^2-\Delta(f^2-1),\nonumber\\
+ s_{12}&=y^2-I^2(y^2-V^2)-1,\nonumber\\
+ s_{13}&=\PhiG-\Pos(t_1,t_2,t_3),\nonumber\\
+ s_{14}&=\eta(k-\eta)-\Pos(e_1,e_2,e_3).\label{eq:O27rows}
+\end{align}
+The explicit equation is
+\begin{equation}\label{eq:O27}
+ \boxed{O_{27}=s_1^2+\cdots+s_{14}^2=0,\qquad\mathbf x\in\Z^{27}.}
+\end{equation}
+This is one convenient answer if a low degree and unrestricted integer
+variables are preferred over the nine-positive high-degree construction.
+
+Restore the eliminated quartic coordinates by
+\begin{align*}
+ L&=q^2-1,&N&=q^3,&X&=2u^2,\\
+ C_2&=c^2,&F_2&=f^2,&g&=y^2-V^2,\\
+ B_a&=I^2,&D&=2u^2+ac+\gamma H,&\Delta&=a^2+4a+3,\\
+ \zeta&=k-\eta,&P&=k+E(c-\eta).&&
+\end{align*}
+These are integer polynomials. Substitution makes each original row
+identically zero or one of the 14 listed residuals, with a possible harmless
+sign change. Conversely projection recovers the octic coordinates.
+Every residual has degree at most four, and
+\[
+ [a^4f^4]O_{27}=1.
+\]
+Only the strong row $I^2-\Delta(f^2-1)$ can supply that monomial.
+Thus $\deg O_{27}=8$, not just an upper bound. Both eliminated forms inherit
+the existence equivalence of $Q_{38}$ by exact inverse maps.
+
+\input{positive12/section.tex}
+\input{nine_positive/section.tex}
+
+\section{Proof status, alternatives, and integration}
+\label{sec:scope}
+
+\subsection{The precise proof boundary}
+
+The new determinant lemma, its canonical coefficient bounds, and the
+integer elimination maps are elementary unbounded arguments. The two
+positive companions also include complete ordinary arguments, including
+the order in which denominator, sign, rank and divisibility facts are
+recovered. All use finite integer arithmetic, elementary real inequalities
+or standard number-theoretic lemmas that can be formalized in ZFC.
+
+The inherited statements are explicitly the following: the finite native
+encoding is sound for blank K215 accepting computations; every finite halt
+has the canonical padded and rank-tuned native witnesses; the cited Pell
+and ratio interfaces preserve existence; and the calibrated machine has a
+finite blank halt exactly when the fixed ZFC calculus has a finite
+refutation. The new code does not prove these facts by running a bounded
+machine search.
+
+The active repository distinguishes a closed generic nine-variable Lean
+equation from the optimized native circuits, for which the authentic native
+calibration in Lean and a derivation in the object-language ZFC calculus
+remain open \cite{active}. Here the native bridge is imported from the cited
+packages as an ordinary mathematical proof. This archive supplies
+\emph{no newly compiled end-to-end Lean or Rocq
+certificate}, and no exported derivation in the repository's object-level
+ZFC syntax. Ordinary mathematical composition and an object-language
+proof artifact are different deliverables. The statement in
+Theorem~\ref{thm:main} has the former evidence, together with exact finite
+certificates for its explicit data.
+
+Negating the proved existence equivalence gives the requested statement.
+It does not prove consistency. If ZFC is consistent, the new equations
+have no zeros in their stated domains; that conditional assertion does
+not entail a separate proof of their unsolvability inside ZFC.
+
+\subsection{What the finite checks establish}
+
+The root verification command rebuilds the coefficient tuple and polynomial
+packets and checks the following independent evidence:
+\begin{itemize}
+\item All 430 literal machine transitions reconstruct the exact 943-tile
+  list, and all four old coefficient bytes match their pinned hashes.
+\item The new scales, leading support, unique top convolution pair, and
+  strict carry and balancing hypotheses hold for those actual integers.
+\item The quartic, sextic and octic have exactly the stated live unknowns,
+  residual counts, exact degrees and nonzero leading coefficients.
+\item Every monic elimination and every complete inverse restoration is
+  an exact symbolic integer-polynomial identity.
+\item A separately written checker, without importing the primary sparse
+  engine, repeats the integer identities, coefficients and literal formulas.
+\item The twelve-positive circuit has the exact degree-110 certificate and
+  102 live operations. The nine-positive component checks all 11,616 source
+  coefficient comparisons, the 264-term majorant certificate, degree-defect
+  identities and an exact shared-power rewrite.
+\end{itemize}
+Finite sign boxes and modular evaluations are labeled as transcription
+diagnostics. They are not substituted for universal proofs. The checks
+also run with Python's \texttt{-O} flag; acceptance does not rely on
+removable assertions.
+
+\subsection{Why direct proof encoding was not promoted}
+
+The request allowed a route independent of K215 and Jones. That direction
+was investigated. Carl and Moroz give an explicit Diophantine representation
+of predicate-calculus provability and specialize it to finitely axiomatized
+G\"odel--Bernays set theory \cite{carlmoroz}. Their stated construction
+uses 3,639,528 positive witnesses before a four-square translation. It is
+a concrete alternative endpoint, but is not competitive with this
+repository's present size bounds. Merely replacing the words ``Turing
+machine'' by ``proof checker'' would not supply a smaller polynomial.
+
+The determinant reduction itself does not use Jones's universal polynomial
+or Sun's variable reduction; its low-degree forms inherit the native Pell
+source. The nine-positive companion retains the existing Jones-style
+ratio reduction. Sun's 2026 ten-integer result \cite{sun2026} remains
+relevant to the separate minimum-integer-variable frontier. No new
+eight-positive or nine-unrestricted-integer construction was obtained.
+
+\subsection{A useful next mathematical target}
+
+The structural lesson is specific: when canonical encoded quantities have
+fixed leading digits, one should first look for a low-degree definite-form
+region containing all those canonical values. Several independent
+positivity witnesses may then be replaced by one. Arbitrary source zeros
+need only map soundly; completeness can regenerate canonical witnesses.
+The present proof works because two input words have fixed leading digit
+positions and coefficients, unaffected by all padding and rank control.
+
+Extending that mechanism to other guards requires a new uniform canonical
+range theorem. The ratio $\eta/(\eta+\zeta)$ in the Pell part, for example,
+has not been given an adequate fixed-coefficient balancing theorem here.
+Dropping its remaining product guard would be unjustified. Similarly, a
+different native tuple needs a fresh leading-support and carry audit before
+using these two scales. This is a concrete research direction, not an
+additional claimed result.
+
+\subsection{Repository use and reproduction}
+
+The archive is an independent research package. It need not replace the
+active formally checked equation. Its root commands are
+\begin{quote}\ttfamily
+python3 verify\_all.py\\
+python3 -O verify\_all.py\\
+python3 build\_report.py
+\end{quote}
+The mathematical replay uses Python's standard library. A TeX Live
+installation is needed only to recompile the article. Each positive
+companion keeps its own complete coefficient binding: its ports must not
+be mixed with the main integer tuple or with each other. The repository
+snapshot, source identities, licenses, notices, deterministic polynomial
+packets and verification receipts are included. The next numbered package
+directory can be chosen at incorporation time.
+
+\appendix
+\section{Finite definition of the main native coefficients}
+\label{app:coeff}
+
+This appendix, together with the literal 943-tile JSON file, specifies
+every coefficient of the integer equations by bounded finite arithmetic.
+The original builder and independent raw hashes are supplied unchanged.
+Let the ordered tiles be $(x_{it})_{0\le i<943,\ 0\le t<4}$, with Start
+at index zero and Forbidden at index one. Put
+\[
+ e_t(j)=o_t+2j,\quad(o_0,o_1,o_2,o_3)=(1020,1000,980,960),
+ \qquad W_j=2^{10+2j}.
+\]
+The support is
+\[
+ \mathcal E=\{0,\ldots,942\}\cup\{e_t(j):t<4,j<10\}
+ \cup\{1063,1064,1095,1096,2195,3296\}.
+\]
+For each tile set
+\[
+ c_i=1+\sum_{t=0}^{3}\sum_{j=0}^{9}
+          \operatorname{bit}_j(x_{it}+512)W_{10t+j}
+          +\sum_{j=40}^{43}W_j.
+\]
+Set $c_{e_t(j)}=W_{10t+j}$, set the coefficients at
+1095,1096,2195,3296 to $W_{40},W_{41},W_{42},W_{43}$ respectively,
+and set $c_{1063}=c_{1064}=0$. Also put
+\[
+ \mu=1022+\sum_{j=0}^{43}W_j,\quad
+ Z_0=(2^{119}-1)\sum_{e=8792}^{8798}\rho^e+(2^{27}-1)\rho^{8799}.
+\]
+Then
+\begin{align*}
+ D_C={}&\rho^{40}+\rho^{41}+\rho^{1100}+\rho^{2200}
+       +\sum_{e\in\mathcal E}c_e(\rho^{4393-e}+\rho^{5495-e}),\\
+ D_R={}&\rho,\\
+ M_C={}&B-1-\sum_{\substack{e\in\mathcal E\\e\ne1}}\rho^e-2\rho^{1063},\\
+ M_{F,n}={}&4+\mu(\rho^{4393}+\rho^{5495})
+     +\sum_{j=0}^{9}(\rho^{1000+2j}+\rho^{1021+2j})
+     +\rho^{2195}+\rho^{3296}+Z_0.
+\end{align*}
+The four inherited ports are exactly
+\[
+ \beta=B-1,\qquad K_0=D_C+BD_R,\qquad M_C,
+ \qquad M_F=M_{F,n}+B-1.
+\]
+In particular $M_F$ is \emph{already shifted}. The two extra ports are
+\eqref{eq:scales}. The literals contain no undecided search or parameter
+that depends on whether ZFC is consistent. The compiler's finite
+geometry, parity and rank-control proof is retained separately; a tuple
+with the same rough numerical bounds would not be an adequate substitute.
+
+\begin{thebibliography}{99}
+\bibitem{p34} ProveIt, package 34, \emph{A mixed-radix, parity-separated,
+unrounded coefficient tuple}, coefficient proof and literal native data,
+at commit \pin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/34-integer14/coefficients/COEFFICIENT_PROOF.md}.
+\bibitem{p64} ProveIt, package 64, \emph{Structural reductions for explicit
+Diophantine consistency equations}, especially \texttt{integer41/PROOF41.md}
+and \texttt{PROOF44.md}, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions}.
+\bibitem{p62} ProveIt, package 62, \emph{Sign recovery and centered norms
+for explicit ZFC consistency equations}, especially the exact sextic/octic
+eliminations and shared-power rewrite, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/62-sign-and-norm}.
+\bibitem{p61} ProveIt, package 61, \emph{Congruence carriers}, positive
+13/12-variable proofs and signed-index lemma, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers}.
+\bibitem{p65} ProveIt, package 65, \emph{Shared taps and integral carriers},
+source tables and adaptive main-carrier proof, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps}.
+\bibitem{p63} ProveIt, package 63, \emph{Recovering signs and absorbing
+Pell quotients}, deflated seventh-order majorant, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/63-sign-recovery}.
+\bibitem{p67} ProveIt, package 67, \emph{Oriented guards}, wave-9 degree
+and operation comparison, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/con-zfc-diophantine-forms/67-oriented-guards}.
+\bibitem{active} ProveIt, \emph{A Diophantine equation for syntactic
+consistency of ZFC}, active formalization status, same commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/README.md}.
+\bibitem{carlmoroz} M. Carl and B. Z. Moroz, \emph{On a Diophantine
+representation of the predicate of provability}, MPIM preprint 2007-132;
+published in Zap. Nauchn. Sem. POMI 407 (2012), 77--104, English translation
+J. Math. Sci. 199 (2014), 36--52.
+\url{https://webdoc.sub.gwdg.de/ebook/serien/e/mpi_mathematik/2007/132.pdf}.
+\bibitem{sun2026} Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth
+problem over the integers}, arXiv:2609.01594v2, September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+\end{document}
+

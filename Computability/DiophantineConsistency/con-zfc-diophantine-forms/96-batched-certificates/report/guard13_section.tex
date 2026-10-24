@@ -1,0 +1,165 @@
+\section{A secondary reduction: thirteen integers at degree 1072}
+\label{sec:guard-supplement}
+
+This section concerns the separate, large-coefficient Pell construction in
+the incoming \file{ConZFC_13_Integer_Norms_2026-10-24.zip}.
+It is independent of the direct compiler developed above.
+The parent CRT construction has thirteen unrestricted integer variables,
+exact degree $1088$, and $195$ live binary arithmetic operations.
+One change to its joint positivity guard lowers the degree to $1072$,
+with the same thirteen variables, the same $195$ operations, and exactly
+the same six fixed integer coefficients. This is a degree-only improvement.
+
+\subsection{Moving the nonzero scale inside the guard}
+
+For integers $x,y,t$ put
+\[
+ \operatorname{Pair}(x,y,t)=xy-(t^2-x-y+1)^2,
+ \qquad
+ \operatorname{Pos}(p_1,p_2,p_3)
+ =1+p_1^2+p_2^2+p_3(p_3+1).
+\]
+The two elementary interfaces are
+\begin{align*}
+ x>0\ \land\ y>0
+ &\quad\Longleftrightarrow\quad
+ \exists t\in\mathbb Z\ \operatorname{Pair}(x,y,t)>0,\\
+ n>0
+ &\quad\Longleftrightarrow\quad
+ \exists p_1,p_2,p_3\in\mathbb Z\
+ n=\operatorname{Pos}(p_1,p_2,p_3).
+\end{align*}
+For the first, positivity implies $xy>0$; two negative arguments make the
+subtracted square exceed $xy$. For positive arguments, a nearest square
+to $N=x+y-1$ has squared error strictly less than $N\le xy$.
+The second follows from the three-square theorem applied to $4n-3$;
+its residue modulo four gives one odd square and two even squares.
+
+It follows that both equations
+\begin{align}
+ v^2\operatorname{Pair}(G,L,t)
+   &=\operatorname{Pos}(p_1,p_2,p_3),\label{eq:guard-old}\\
+ \operatorname{Pair}(v^2G,L,t)
+   &=\operatorname{Pos}(p_1,p_2,p_3)\label{eq:guard-new}
+\end{align}
+express exactly $v\ne0$, $G>0$, and $L>0$ after existential
+quantification of the four private guard variables. Their private
+witnesses need not be the same. The benefit is algebraic: when $L$
+has substantially higher degree than $v^2G$, the leading $L^2$ term
+in~\eqref{eq:guard-new} avoids the outer factor $v^2$.
+
+\subsection{Compatibility with the five-radical equation}
+
+Retain the parent's thirteen coordinates
+\[
+ j,C,z,h,r,v,w,T,c,n,t,p_2,p_3\in\mathbb Z
+\]
+and every native, transport, Pell, and carrier definition. In particular,
+\[
+ J=6j+1,\quad q=\beta J+1,\quad W=12w+4,\quad
+ X=qW,\quad Y=qv,\quad a=(X+1)Y,
+\]
+\[
+ H=4a+3,\quad \Delta=a^2+H,\quad
+ \eta=c-Yk,\quad \zeta=k-\eta,
+\]
+and
+\[
+ G=(A_{\rm cone}F)(B_{\rm cone}C)
+    -(q-A_{\rm cone}F-B_{\rm cone}C)^2.
+\]
+Replace only the guard radicand by
+\begin{equation}
+ A_{\rm g}^{\rm new}
+ =v^2G\eta\zeta-(t^2-v^2G-\eta\zeta+1)^2
+    -1-p_2^2-p_3(p_3+1).
+ \label{eq:guard-new-radicand}
+\end{equation}
+The single polynomial is the same cleared five-radical norm,
+\begin{equation}
+ \delta^{16}\mathcal F_{32}\!\left(
+ Z;M^2\Lambda^2D_{\rm m},U^2D_f,U^2D_\tau,
+ U^2A_{\rm g}^{\rm new},U^2C_y/\delta\right),
+ \label{eq:guard-new-norm}
+\end{equation}
+where $M=2q^2$, $\Lambda=4H+1$, and $U=MH$.
+Here $\mathcal F_{32}$ denotes the product over all thirty-two
+independent signs. The supplied arithmetic graph clears the denominator
+and eliminates the formal radicals; its operations are only $+,-,\times$.
+The complete front end, coefficients, and literal graph accompany this
+supplement, together with the complete unchanged parent package.
+
+The parent's unconditional exceptional-case proof still gives
+$U\ne0$, $\delta\ne0$, and four strictly positive non-guard radicands
+at every integer assignment, including $v=0$ and $c=0$.
+At a norm zero, a negative $A_{\rm g}^{\rm new}$ would therefore
+contribute the only nonzero imaginary summand of a vanishing conjugate
+factor. Thus $A_{\rm g}^{\rm new}\ge0$ and
+\[
+ \operatorname{Pair}(v^2G,\eta\zeta,t)
+ =A_{\rm g}^{\rm new}+1+p_2^2+p_3(p_3+1)>0.
+\]
+The guard lemma recovers $v\ne0$, $G>0$, and $\eta\zeta>0$ in
+the required order. In particular $c=0$ is impossible, because it would
+give $\eta\zeta=-Y(Y+1)k^2\le0$.
+
+The separation bound is unchanged. The parent proves $G<q^2$, while
+$\eta\zeta\le k^2/4$, so
+\[
+ \sqrt{A_{\rm g}^{\rm new}}
+ <|v|\sqrt{G\eta\zeta}<\frac{|v|\,|q|\,|k|}{2}.
+\]
+This is exactly its former bound for the guard radical. Consequently
+the same strict ordering of radical magnitudes, rational-square
+extraction, Pell descent, and two coprime congruences restore the same
+calibrated source kernel.
+
+For completeness start from a canonical source witness. Since $v^2G$
+and $\eta\zeta$ are positive, choose a new $t$ by the guard lemma and
+then a new positive representation with coordinates $p_1,p_2,p_3$.
+This makes~\eqref{eq:guard-new-radicand} equal to $p_1^2$.
+All other roots and source coordinates retain their values. The same
+integral choice of center,
+\[
+ n=\Lambda\gamma+f+\tau+p_1+y-V-(v-q^2)/M,
+\]
+makes one norm factor vanish. Thus the new and old equations are
+existence-equivalent over unrestricted integers. No identification of
+their arbitrary private guard assignments is asserted.
+
+\subsection{Exact degree, circuit size, and evidence}
+
+The degree-seven leading part $\eta_0$ of $\eta$ gives the new
+degree-twenty-eight guard component $-\eta_0^4$, replacing the old
+degree-thirty component $-v^2\eta_0^4$. Hence the scaled guard
+radicand $e=U^2A_{\rm g}^{\rm new}$ has degree forty rather than
+forty-two. The independently expanded biquadratic cut has component
+degree rows
+\[
+ (62,58,67,53),\qquad(134,120,129,125),\qquad
+ (268,254,263,259).
+\]
+Its unique highest component is scalar. The final two quadratic norms
+square it twice, giving exact total degree $4\cdot268=1072$.
+An explicit coefficient on the actual fixed-coefficient slice is
+\[
+ [j^{480}w^{160}v^{192}h^{32}r^{64}c^{128}z^{16}]P
+   =2^{976}3^{640}\beta^{480}>0.
+\]
+The exponent sum is $1072$, establishing attainment of the degree
+bound independently of the other coefficient values.
+
+The former multiplication $v^2\operatorname{Pair}(G,L,t)$ is
+replaced by $v^2G$. The literal evaluator still has $41$ additions,
+$122$ multiplications, and $32$ subtractions, totaling $195$.
+Normal and optimized Python verification authenticate the whole
+inherited source manifest, fixed numeral payloads, exact cut identities,
+leading coefficient, and literal graph regeneration. Modular evaluations
+against a separate conjugate-product evaluator are labeled transcription
+diagnostics, rather than universal proofs.
+
+The new theorem is this ordinary arithmetic existence reduction.
+Its Con(ZFC) interpretation inherits the parent's named native/Pell and
+K215 calibration arguments. The supplement supplies neither a new
+end-to-end proof-assistant certificate nor a new object-language ZFC
+derivation, and does not assert that the polynomial has no zero.

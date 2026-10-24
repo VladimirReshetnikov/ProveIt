@@ -1,0 +1,260 @@
+\section{An explicit family over unrestricted integers}\label{sec:integer}
+\subsection{Fixed coefficients and base coordinates}
+The six fixed coefficients are the coherent source-34 tuple
+\[
+ \beta=2^{1064921}-1,\quad K_0,\quad M_C,\quad M_F,
+ \quad A_c=2^{1113},\quad B_c=2^{666104}.
+\]
+Here $M_F$ already includes the native shift by $\beta$. The complete
+minimal little-endian numeral payloads and their binding file are supplied.
+They are not unspecified parameters. The retained finite tile recipe and
+source pin explain their mathematical origin; no choice based on halting
+is involved. Their uncompressed total is 615,883 bytes.
+
+Use the thirteen base coordinates
+\[
+ j,C,z,h,r,v,w,T,c,n,t,u_1,u_2\in\Z.
+\]
+Uppercase $C$ and lowercase $c$ are different coordinates. Set
+\begin{align}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\nonumber\\
+ X&=qW,&Y&=qv,&E&=XY,\nonumber\\
+ a&=(X+1)Y,&H&=4a+3,&\Delta&=(a+2)^2-1,\label{eq:front}\\
+ F&=(K_0+W)C-z(q-1),\nonumber\\
+ R&=[q(q-F)-C](q^2-1)+(M_C+qM_F)J,\nonumber\\
+ k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta,\label{eq:rank}\\
+ I&=(2r+1)c^2,&D_f&=1+\Delta I^2,\nonumber\\
+ D_\tau&=1+XY^2(XY^2+1)k^2,&D_m&=1+\Delta c^2,&b&=X+ac.
+ \label{eq:radicands}
+\end{align}
+Define the determinant and positivity polynomials
+\begin{align}
+ G&=(A_cF)(B_cC)-(q-A_cF-B_cC)^2,\nonumber\\
+ N&=G\eta\zeta-(t^2-G-\eta\zeta+1)^2,\nonumber\\
+ S&=24N-21-(6u_1-1)^2-(6u_2-1)^2.\label{eq:guard}
+\end{align}
+The carrier scales are $M=2q^2$ and $U=MH$.
+For the thirteen-variable equation put
+\[
+ Q=\Delta^2 I^2,\qquad V=D_f(cT-R)-c.
+\]
+For equations with a retained coordinate $f$, put instead
+\begin{equation}
+ Q=\Delta(f^2-1),\qquad V=f^2(cT-R)-c.\label{eq:retainedf}
+\end{equation}
+These agree when $f^2=D_f$. Finally set
+\begin{equation}
+ \delta=Q-1,\qquad C_y=QV^2-1,\qquad
+ Z=U(n+V)+Mb+H(v-q^2).\label{eq:carrier}
+\end{equation}
+
+\subsection{A finite polynomial definition of the radical merger}
+For $s$ radicands define the universal polynomial
+\[
+ \F_{2^s}(x;A_1,\ldots,A_s)=
+ \prod_{\varepsilon\in\{-1,1\}^s}
+ \left(x-\sum_{i=1}^s\varepsilon_i\sqrt{A_i}\right).
+\]
+Changing any radical sign permutes the factors, so this lies in
+$\Z[x,A_1,\ldots,A_s]$. Each radicand has exponent at most $2^{s-1}$.
+Write
+\[
+ \mathcal C_s(x;A_1,\ldots,A_{s-1};B,\delta)
+ =\delta^{2^{s-1}}\F_{2^s}(x;A_1,\ldots,A_{s-1},B/\delta).
+\]
+The denominator is canceled symbolically. This is a finite polynomial
+definition, including when $\delta=0$. The literal JSON circuits use
+only addition, subtraction, and multiplication.
+
+With $B_y=U^2C_y$, specialize
+\begin{align*}
+ N_5&=\mathcal C_5(Z;M^2D_m,9U^2D_f,81U^2D_\tau,729U^2S;B_y,\delta),\\
+ N_4&=\mathcal C_4(Z;M^2D_m,9U^2D_\tau,81U^2S;B_y,\delta),\\
+ N_3&=\mathcal C_3(Z;M^2D_m,9U^2D_\tau;B_y,\delta),\\
+ N_2&=\bigl[\delta(Z^2-M^2D_m)-B_y\bigr]^2-4\delta M^2D_mB_y.
+\end{align*}
+The weights change after retaining the strong root: there is no reason
+to preserve a vacant valuation position. This lowers the literal cost.
+Put
+\begin{align*}
+ F_f&=f^2-\Delta I^2=1+(f^2-D_f),\\
+ F_g&=g^2+22+(6u_1-1)^2+(6u_2-1)^2-24N=1+(g^2-S),\\
+ F_\tau&=\tau^2-XY^2(XY^2+1)k^2=1+(\tau^2-D_\tau).
+\end{align*}
+The four equations are
+\begin{align}
+ P_{13}&=N_5=0,\label{eq:p13}\\
+ P_{14}&=(1+N_4)F_f-1=0,\label{eq:p14}\\
+ P_{15}&=(1+N_3)F_fF_g-1=0,\label{eq:p15}\\
+ \boxed{P_{16}}&\boxed{=(1+N_2)F_fF_gF_\tau-1=0.}\label{eq:p16}
+\end{align}
+The added coordinates are none, $f$, $(f,g)$, and $(f,g,\tau)$,
+respectively. All coordinates are unrestricted integers. The last line,
+together with the polynomial abbreviations above, is the recommended
+modest-degree equation in this report.
+
+\subsection{Recovering retained equations by residues}
+The affine formulas imply that $q$ is even, $q\equiv2\pmod3$, and
+$W$ is a nonzero multiple of four with $W\equiv1\pmod3$. Thus $X$ is
+divisible by eight, $Y$ and $a$ are even, and $\Delta\equiv3\pmod4$.
+The integer $D_f$ is $0$ or $1\pmod4$, while $D_\tau\equiv1\pmod4$.
+Lemma~\ref{lem:positive} gives $S\equiv1\pmod4$. Therefore
+\[
+ F_f\equiv f^2+I^2\in\{0,1,2\},\quad
+ F_g\equiv g^2\in\{0,1\},\quad F_\tau\equiv\tau^2\in\{0,1\}\pmod4.
+\]
+None can equal $-1$.
+
+Both $M$ and $U$ are divisible by eight. Modulo four every norm monomial
+using a radicand vanishes, and
+\begin{equation}
+ N_s\equiv\delta^{2^{s-1}}Z^{2^s}\in\{0,1\}\pmod4\qquad(s\ge2).
+ \label{eq:normmod4}
+\end{equation}
+There is no assumption that $\delta$ is odd; it need not be.
+Lemma~\ref{lem:units} makes each product equation exactly its displayed
+simultaneous system. In particular $f^2=D_f$ is recovered before using
+\eqref{eq:retainedf} as the normalized strong Pell expression.
+
+\subsection{Square extraction before positivity}
+The order of the proof matters. Since $J\ne0$ and $\beta$ is large,
+$|q|\ge16$ and $|X|\ge64$. If $v=0$, then $a=0$ and $\Delta=3$.
+Otherwise $|Y|\ge16$ and $|a|=|X+1||Y|\ge1008$, so $\Delta>1$.
+Always $H\ne0$ and $\Delta\ge3$.
+
+After recovery of retained factors, if any, $Q=\Delta^2I^2$.
+For $c=0$, $Q=0$ and $\delta=-1$; for $c\ne0$, $Q>1$ and
+$\delta>0$. Thus the cleared norm can be interpreted as the product of
+conjugate linear factors. Alternatively, the universal congruence
+$\delta\equiv-1\pmod3$ already excludes a zero denominator.
+
+Modulo three we have $X\equiv2$, $a=(X+1)Y\equiv0$, and
+\[
+ H\equiv\Delta\equiv0,\quad
+ D_m\equiv D_f\equiv D_\tau\equiv S\equiv1,\quad
+ Q\equiv0,\quad\delta\equiv C_y\equiv-1.
+\]
+For $D_\tau$, use $XY^2(XY^2+1)\equiv0\pmod3$ for either possible
+residue of $Y^2$. Consequently $M$ is a unit at three and
+$e=\vp(U)=\vp(H)\ge1$. In the five-root case the valuations of the
+scaled radicands, in the order main, auxiliary, strong, first, guard, are
+\[
+ 0,\quad2e,\quad2e+2,\quad2e+4,\quad2e+6.
+\]
+In the retained-strong family they are $0,2e,2e+2,2e+4$, omitting
+any further retained roots. These are distinct even integers.
+The norm zero gives a rational signed sum. Lemma~\ref{lem:valuation}
+makes each unretained root rational, hence integer when its radicand is
+integer. The guard acquires a root in this way or has a retained root.
+Lemma~\ref{lem:positive} and the pair guard then give
+\begin{equation}
+ N>0,\qquad G>0,\qquad\eta\zeta>0.\label{eq:recoveredguard}
+\end{equation}
+If $c=0$, then $\eta\zeta=-Y(Y+1)k^2\le0$, a contradiction.
+Thus $c\ne0$ and $Q>1$ at every solution.
+
+\begin{lemma}[Adjacent-coefficient rational descent]\label{lem:descent}
+If $Q>1$ and $V$ are integers and $y\in\Q$ satisfies
+$QV^2-(Q-1)y^2=1$, then $y\in\Z$.
+\end{lemma}
+\begin{proof}
+Write $y=A/d$ in lowest terms; then $d^2\mid Q-1$.
+For $|V|=1$ the claim is immediate. After changing signs if needed, apply
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad y'=(2Q-1)y-2QV.
+\]
+The first coordinate is integral, the norm is unchanged, and the reduced
+denominator of the second remains $d$, since $2Q-1\equiv1\pmod d$.
+For $V>1$, the norm gives $y>V$ and $(Q-1)y<QV$, whence
+$-V<V'<V$; it also excludes $V'=0$. Descent on $|V|$ reaches one
+without changing the denominator.
+\end{proof}
+The auxiliary radical has square $C_y/\delta$ and supplies the rational
+$y$ in this lemma. It is therefore integral too.
+
+\subsection{The two congruences and their inverse map}
+The vanishing factor has the form
+\begin{equation}
+ Z=Md+UL,\qquad d^2=D_m,\quad L\in\Z,\label{eq:linearcarrier}
+\end{equation}
+where signs have been absorbed into the recovered roots. The integer
+$L$ is their appropriate weighted sum. Because
+$H=4(X+1)qv+3\equiv3\pmod q$, $H$ is odd, and $3\nmid q$,
+\[
+ \gcd(H,M)=\gcd(H,2q^2)=1.
+\]
+Modulo $M$, equation~\eqref{eq:linearcarrier} gives
+\[
+ v=q^2(2v_{\rm old}+1),\qquad
+ v_{\rm old}=\frac{v-q^2}{2q^2}\in\Z.
+\]
+Thus $v\ne0$ and $Y=(2v_{\rm old}+1)q^3$, with exactly the required
+odd quotient. Modulo $H$ it gives
+$\gamma=(d-b)/H\in\Z$. Neither conclusion was assumed in the
+valuation argument. Conversely choose
+\begin{equation}
+ n=\gamma+L-V-\frac{v-q^2}{M}\in\Z.\label{eq:choose-n}
+\end{equation}
+In the retained family $L=y+3\tau+9g$, omitting the terms whose roots
+are retained; in the five-root family $L=y+3f+9\tau+27g$.
+
+\subsection{The normalized source and its calibration}
+The restored source has the same front registers and
+\[
+ f^2=D_f,\quad\tau^2=D_\tau,\quad QV^2-(Q-1)y^2=1,\quad
+ (b+H\gamma)^2=D_m,\quad S=g^2,
+\]
+with $Y=(2v_{\rm old}+1)q^3$. The transport row holds identically
+by the definition of $F$. Put $i=2r+1$ and restore older coordinates by
+\begin{align*}
+ I_{\rm old}&=\Delta i c^2,&r_{\rm old}&=(\Delta i-1)/2,\\
+ o_{\rm old}&=f(cT-R),&j_{\rm old}&=D_fT-1-R\Delta i^2c^3.
+\end{align*}
+The first quotient is integral since $\Delta i$ is odd. Exact identities
+give $I_{\rm old}^2=\Delta(f^2-1)$ and
+$fo_{\rm old}-c=cj_{\rm old}-R=V$.
+To restore the older ternary positivity row, use $N>0$ to choose
+integers $b_1,b_2,b_3$ with
+$N=1+b_1^2+b_2^2+b_3(b_3+1)$, by the three-square theorem.
+These are reselected coordinates of the inherited source witness, not
+additional variables in the new polynomial.
+
+For completeness, the imported canonical native witness has
+$q=2^e$ with $e$ odd, $R\equiv3\pmod4$, $X=2^R$, and an odd positive
+quotient $Y/q^3$. Its native repunit satisfies $J\equiv1\pmod6$, and
+$X/(4q)\equiv1\pmod3$. Thus the affine choices $J=6j+1$ and
+$W=12w+4$ preserve canonical existence. These are properties of the
+same complete source-34 coefficient tuple, not assumptions on arbitrary
+integer assignments. Furthermore $c=\psi_A(R)$ with $A=a+2$ even
+and $c$ odd. Choose
+$I_*=\psi_A(Rc)$ and $f=\chi_A(Rc)$.
+Pell composition, or expansion of $(D+c\sqrt\Delta)^c$, gives
+$c^2\mid I_*$. The recurrence gives $I_*$ odd; hence $i=I_*/c^2$ is odd.
+The retained squared-modulus auxiliary lemma, using the established
+phase $R\equiv3\pmod4$, gives $V,y$ with
+$V\equiv-c\pmod{f^2}$ and $V\equiv-R\pmod c$. Since
+$f^2\equiv1\pmod c$, it supplies the integer
+\[
+ T=\frac{V+c+Rf^2}{cf^2}.
+\]
+The determinant and strip guards hold for that same canonical witness.
+Choose $t$ by the nearest-square argument, the pentagonal representation
+of $N$, and then $n$ by \eqref{eq:choose-n}.
+This is the same calibrated source family as the retained root-fusion and
+fixed-prime proposals, followed by the new algebraic finalizer.
+
+\begin{theorem}[Integer family]\label{thm:integer}
+Each polynomial \eqref{eq:p13}--\eqref{eq:p16}, with its stated fixed
+tuple and domain, has a zero exactly when the normalized native source
+has a witness. Composed with the inherited ordinary native/K215
+calibration, absence of zeros is provably equivalent in ZFC to
+$\Con(\mathrm{ZFC})$.
+\end{theorem}
+\begin{proof}
+The product finalizer recovers retained equations; valuation separation
+recovers other roots; descent recovers the auxiliary integer; the coprime
+carrier recovers the cubic scale and main congruence. The displayed
+restorations give the source. The preceding canonical construction proves
+the reverse implication. Compose the named ordinary calibration and
+negate. The imported compiler theorem is not replaced by numerical tests.
+\end{proof}

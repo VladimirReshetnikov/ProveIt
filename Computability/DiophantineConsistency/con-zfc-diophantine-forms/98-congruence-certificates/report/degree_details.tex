@@ -1,0 +1,118 @@
+The four integer forms have exact degrees, not merely syntactic upper
+bounds. Every fixed numeral has degree zero. For the retained-$f$ family,
+the relevant register degrees are
+\[
+\begin{array}{c|rrrrrrrrrrrr}
+\text{register}&a&H&\Delta&R&k&Q&V&C_y&U&Z&S&D_\tau\\\hline
+\deg&4&4&8&5&5&10&7&24&6&13&28&22.
+\end{array}
+\]
+The weighted radicands in $N_4$ have degrees $14,34,40$, with auxiliary
+numerator degree $36$ and denominator degree $10$.
+
+Write a subscript zero for the leading homogeneous part. Useful expressions are
+\begin{align*}
+q_0&=6\beta j,&W_0&=12w,&Y_0&=q_0v,&X_0&=q_0W_0,\\
+a_0&=X_0Y_0,&i_0&=2r,&R_0&=-q_0^3(W_0C-q_0z),&k_0&=R_0+ha_0,\\
+U_0&=8q_0^2a_0,&M_0&=2q_0^2,&Q_0&=a_0^2f^2,&V_0&=-f^2R_0,\\
+S_0&=-24Y_0^4k_0^4,&(D_\tau)_0&=X_0^2Y_0^4k_0^2.&&&
+\end{align*}
+
+\subsection{Four roots and three roots}
+In the four-root norm the guard root has degree 20, strictly exceeding
+the degrees 17, 7, 13 of the other roots and degree 13 of the center.
+Its leading term is therefore
+\[
+ (N_4)_{400}=Q_0^8(81U_0^2S_0)^8\ne0.
+\]
+Multiplication by $F_f$, of degree 14 with leading part
+$-a_0^2i_0^2c^4$, gives exact degree 414. A coefficient certificate is
+\[
+ [j^{196}w^{66}v^{98}h^{32}r^2f^{16}c^4]P_{14}
+ =-2^{402}3^{302}\beta^{196}\ne0.
+\]
+For three roots, the first Pell root is uniquely largest, with degree 17.
+Hence $N_3$ has degree $8\cdot17+4\cdot10=176$ and leading part
+\[
+ Q_0^4(9U_0^2(D_\tau)_0)^4.
+\]
+The factors $F_f,F_g$ add degrees 14 and 28. Thus $P_{15}$ has degree
+218, with the explicit coefficient
+\[
+ [j^{104}w^{38}v^{50}r^2f^8h^{12}c^4]P_{15}
+ =-2^{209}3^{151}\beta^{104}\ne0.
+\]
+These certificates remain nonzero on the actual fixed numerical tuple.
+
+\subsection{The two-root equation and degree 124}
+The center $Z$ contains the leading approximation to the auxiliary root.
+Write
+\[
+ Z=UV+s,\qquad s=Un+Mb+H(v-q^2),\qquad\deg s=7.
+\]
+Then the exact ring identity
+\begin{equation}
+ \delta(Z^2-M^2D_m)-U^2C_y
+ =\delta(s^2+2UVs-M^2D_m)-U^2(V^2-1)
+ \label{eq:centeridentity}
+\end{equation}
+lowers the degree of this inner expression to 30. Therefore $N_2$ has
+degree at most 60. Its complete degree-60 part is
+\[
+ 4Q_0^2U_0^2V_0^2(s_0^2-A_0),\quad
+ s_0=M_0a_0(4n+c),\quad A_0=M_0^2a_0^2c^2,
+\]
+equivalently
+\[
+ (N_2)_{60}=2^{13}q_0^8a_0^8f^8R_0^2n(2n+c)\ne0.
+\]
+The remaining factors have degrees 14, 28, and 22. Consequently
+\[
+ \deg P_{16}=60+14+28+22=124.
+\]
+For a single-coefficient certificate,
+\[
+ [j^{58}w^{18}v^{24}r^2h^6f^8z^2n^2c^4]P_{16}
+ =2^{113}3^{77}\beta^{58}>0.
+\]
+The powers $h^6,z^2,n^2$ isolate the corresponding terms in
+$k_0^6,R_0^2,n(2n+c)$ uniquely. This proves exact degree independently
+of any algebraic relations among the other five fixed coefficients.
+
+\subsection{Five roots and degree 1072}
+Without retaining $f$, the degrees change to
+$\deg Q=22$, $\deg V=19$, $\deg C_y=60$, $\deg Z=25$.
+The auxiliary radical satisfies
+\[
+ C_y/\delta=V^2+\frac{V^2-1}{Q-1}.
+\]
+For a rigorous homogeneous-degree computation, scale all inputs by a
+formal parameter and work in its Laurent-series extension. The two
+auxiliary roots are $\pm(V+\text{terms of degree }-3)$.
+After multiplication by $U$, their correction has degree 3.
+Sixteen conjugate factors retain the degree-25 auxiliary term; in the
+other sixteen it cancels the center's $UV$, leaving the guard root of
+degree 20 as the unique leading term. Clearing denominators contributes
+$16\cdot22$. Hence
+\[
+ \deg P_{13}=16(25+20+22)=1072.
+\]
+Its leading form is
+$Q_0^{16}(2U_0V_0)^{16}(729U_0^2S_0)^8$, now with
+$Q_0=a_0^4i_0^2c^4$ and $V_0=-a_0^2i_0^2c^4R_0$ from the
+unretained-strong definitions. The explicit certificate is
+\[
+ [j^{480}w^{160}v^{192}h^{32}r^{64}c^{128}z^{16}]P_{13}
+ =2^{1000}3^{696}\beta^{480}>0.
+\]
+
+\subsection{Literal arithmetic evaluation}
+The complete DAG counts are 195, 148, 130, and 118 operations for
+13, 14, 15, and 16 integers. They include the finalizer and all scalar
+products. The product factors are evaluated after cancellation of their
+constant terms, as displayed in Section~\ref{sec:integer}.
+The five-root evaluator also shares terms in the first biquadratic
+square when its two linear components coincide. These are exact ring
+identities, not on-solution substitutions. The circuit files enumerate
+every operation, and the verifier checks topology and liveness.
+

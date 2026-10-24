@@ -1,0 +1,392 @@
+\section{Eleven integers by intersective interpolation and parity}
+\label{sec:eleven-intersective-budget}
+
+The centered-budget guard can also replace the nearest-square guard in
+the late twelve-integer intersective construction. A shared Pell
+coordinate, an early main-root projection, and four odd radicands then
+remove all variable separating weights. The result is an ordinary
+polynomial in \textbf{eleven unrestricted integers, of exact degree
+$2240$, evaluated in $206$ live binary operations}. Its less-centered
+companions have degree $2272$ in $204$ operations and degree $2912$ in
+$200$ operations. The late intersective predecessor has twelve integers,
+degree $4832$, and $248$ operations. The twelve-integer degree-$1000$
+construction remains a lower-degree, lower-operation alternative.
+
+The intersective quintic, full-residue interpolation, and trace-before-
+separation have explicit prior sources in the supplied provenance; no
+novelty for those individual devices is claimed. The new composition
+uses the centered budget, an even shared strong ordinate, fixed
+$2$-adic separation, and integral norm centers. All comparisons concern
+these concrete equations, not global minimality or a new formal
+kernel certificate.
+
+\subsection{Complete definition}
+
+Supply exactly
+\[
+ j,C,z,h,r,v,w,T,c,n,s\in\mathbb Z.
+\]
+Use the same six authenticated source34/cone numerals
+$\beta,K_0,M_C,M_F,A_c,B_c$, with
+$\beta=2^{1064921}-1$, $A_c=2^{1113}$, $B_c=2^{666104}$, and
+$M_F$ already shifted. All remaining symbols are polynomial
+abbreviations, not additional coordinates:
+\begin{align*}
+ J&=6j+1,\quad  q=\beta J+1,\quad  W=12w+4,\quad X=qW,\\
+ Y&=(2v+1)q^3,\quad  E=XY,\quad a=(X+1)Y,\quad H=4a+3,\\
+ \Delta&=a^2+H,\quad F=(K_0+W)C-z(q-1),\quad \alpha=q-F-C,\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,\quad \eta=c-Yk,\quad L=XY^2k,\\
+ D_{\rm err}&=(A_cF-q)^2+(B_cC-q)^2,\\
+ \mathcal P&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ D_g&=1+4(3\mathcal P-4)s^2,\quad  I=2src^2,\\
+ D_f&=1+\Delta I^2,\quad Q=\Delta^2I^2,\quad \delta=Q-1,\\
+ V&=D_f(c-R+4IT)-c,\quad C_y=QV^2-1,\quad D_a=\delta C_y,\\
+ D_t&=1+L(L+k),\quad D_m=1+\Delta c^2,\quad b_0=X+ac.
+\end{align*}
+The subscript $a$ in $D_a$ denotes the auxiliary radical, not a new
+variable. Set $u=HT-b_0$ and define the two quadratic-algebra coefficients
+\begin{align*}
+ A_\pi={}&u^5+10u^3D_m+5uD_m^2
+       +32H^2(u^3+3uD_m)\\
+       &\quad+H^3(u^2+D_m)+31H^4u+31H^5,\\
+ B_\pi={}&5u^4+10u^2D_m+D_m^2
+       +32H^2(3u^2+D_m)+2H^3u+31H^4.
+\end{align*}
+In the formal algebra $d^2=D_m$ they satisfy
+\[
+ A_\pi+B_\pi d
+ =((u+d)^2+31H^2)((u+d)^3+H^2(u+d)+H^3).
+\]
+Finally put
+\[
+ S=IH^5,\qquad \Theta=(2Q-1)V+4L,\qquad
+ Z=S(n+\Theta)-A_\pi.
+\]
+For the integer polynomial $F_{32}$ defined by its $32$ formal signed
+linear factors, the equation is
+\begin{equation}
+\label{eq:eleven-parity-norm}
+ F_{32}\bigl(Z;
+ B_\pi^2D_m,\,4S^2D_a,\,S^2D_f,\,16S^2D_t,\,64S^2D_g\bigr)=0.
+\end{equation}
+Here every radicand is an integer polynomial and there is no denominator
+to clear. The literal circuit uses only binary addition, subtraction,
+and multiplication. The direct and auxiliary-only companions replace
+$\Theta$ by $0$ and $(2Q-1)V$, respectively. These are invertible
+integer-polynomial translations in $n$, not additional constraints.
+
+\subsection{The intersective polynomial and the zero-scale exclusion}
+
+The prior interpolation construction uses
+\[
+ \pi(x)=(x^2+31)(x^3+x+1)
+       =x^5+32x^3+x^2+31x+31.
+\]
+It has a root modulo every nonzero integer, no zero in a real extension
+of $\mathbb Q$ of degree at most two, and positive derivative on
+$\mathbb R$. For completeness, at an odd prime other than $31$, either
+the cubic has a root or its irreducible Frobenius $3$-cycle makes its
+discriminant $-31$ a square. These roots are simple. At $31$, the cubic
+has simple root $3$; at $2$, $-31\equiv1\pmod8$ is a $2$-adic square.
+Prime-power lifting and CRT give intersectivity. The quadratic has no
+real root and the cubic has no rational root, so neither factor has a
+zero in a real field of degree at most two. Finally
+\[
+ \pi'(x)=5x^4+96x^2+2x+31>0.
+\]
+For $H\ne0$, write $\Phi_H(x)=H^5\pi(x/H)$. Then
+$A_\pi\pm B_\pi\sqrt{D_m}=\Phi_H(u\pm\sqrt{D_m})$ are nonzero.
+Moreover $B_\pi>0$, either by monotonicity or by the exact certificate
+\[
+ B_\pi=5u^4+10u^2D_m+D_m^2+32H^2D_m
+       +95H^2u^2+H^2(u+H)^2+30H^4>0.
+\]
+
+For every integer input, $q$ is even, $|q|\ge16$, $|X|\ge64$,
+$|Y|\ge4096$, and $|a|\ge63\cdot4096$. Thus $H\ne0$,
+$\Delta>1$ is odd, and $D_m,D_f,D_t$ are positive. Also
+$Q=(\Delta I)^2\ne1$, so $\delta\ne0$. If $I=0$, $D_a=1$.
+If $I\ne0$, then $c\ne0$, $|I|\ge c^2$ and $D_f>|c|+1$.
+For the integer $b=c-R+4IT$, $V=D_fb-c$ has $|V|\ge1$.
+Therefore $C_y>0$ and $D_a>0$.
+
+At a zero of \eqref{eq:eleven-parity-norm}, $S=0$ would specialize the
+norm to $(A_\pi^2-B_\pi^2D_m)^{16}\ne0$. Hence $S\ne0$, and
+$I,s,r,c$ are nonzero. If $D_g<0$, a vanishing complex factor would
+have precisely one nonzero imaginary summand, with coefficient $8S$.
+This is impossible. Thus $D_g\ge0$, which for nonzero integer $s$
+forces $\mathcal P\ge2$. In particular
+\[
+ D_{\rm err}<q^2,\qquad |\eta/k|<\tfrac12.
+\]
+The disk inequality implies $0<A_cF/q<2$ and $0<B_cC/q<2$.
+Since $A_c,B_c\ge8$, $F,C,\alpha$ all have the same nonzero sign as
+$q$. Also
+\[
+ |k|(|Y|-\tfrac12)<|c|<|k|(|Y|+\tfrac12),
+ \qquad \operatorname{sign}(c)=\operatorname{sign}(kY).
+\]
+Positivity of $\eta$ has not been presumed.
+
+\subsection{Early main-root projection and parity extraction}
+
+A vanishing factor can be written, with independently signed roots, as
+\[
+ S(n+\Theta)=A_\pi+B_\pi d
+             +S(2\widetilde y+f+4\tau+8g).
+\]
+All five underlying radicands are nonnegative integers. Project this
+identity onto the rational squareclass. Every rational radical is an
+integer, while irrational squareclass terms have zero rational
+projection. If $d=\pm\sqrt{D_m}$ were irrational, it would follow that
+$S\mid A_\pi$, hence $H\mid A_\pi$.
+
+But $q\equiv2$, $W\equiv1$, and $X\equiv2\pmod3$, so
+\[
+ a\equiv H\equiv\Delta\equiv0,\qquad
+ b_0\equiv2,\quad u\equiv D_m\equiv1\pmod3.
+\]
+Consequently $A_\pi\equiv1+1+2\equiv1\pmod3$, contradicting
+$H\mid A_\pi$. Thus the actual signed main root $d$ is integral.
+Projecting again yields
+\[
+ IH^5\mid A_\pi+B_\pi d=\Phi_H(d-b_0+HT).
+\]
+Monicity forces $H\mid d-b_0$: if $p^e\Vert H$ and the argument had
+valuation $b<e$, its leading fifth power would have valuation $5b$,
+strictly lower than every other term, contradicting divisibility by
+$p^{5e}$. Hence $\gamma=(d-b_0)/H$ is integral.
+
+Now subtract the main-root contribution and divide by $S$. The signed
+sum $f+2\widetilde y+4\tau+8g$ is rational. All four radicands are odd:
+\[
+ D_f\equiv D_a\equiv D_g\equiv1\pmod4,
+ \qquad D_t\equiv1\pmod8.
+\]
+Indeed $I$ is even, $Q\equiv0\pmod4$ and
+$\delta\equiv C_y\equiv-1\pmod4$; $X$ is a multiple of $8$.
+A positive odd integer radicand is an odd square times an odd squarefree
+integer. Within any nontrivial squareclass, the participating signed
+coefficients therefore have distinct $2$-adic valuations from
+$0,1,2,3$. The unique least valuation cannot cancel. Independence of
+distinct squarefree radicals implies that all four roots are rational,
+and hence integers. No comparison of their magnitudes is required.
+
+The rational $y=\widetilde y/\delta$ satisfies
+$QV^2-(Q-1)y^2=1$ and is integral by adjacent-coefficient descent.
+Explicitly, a reduced denominator $b$ has $b^2\mid Q-1$; the
+norm-preserving transformation
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV
+\]
+keeps $V'$ integral and the denominator unchanged, while reducing
+$|V|$ to $1$. The terminal value has $|y|=1$, proving integrality.
+
+\subsection{Soundness with an even strong multiplier}
+
+The recovered equations and the exact definitions give
+\begin{gather*}
+ f^2-\Delta I^2=1,\qquad
+ \rho^2=\Delta(f^2-1),\qquad
+ \rho^2V^2-(\rho^2-1)y^2=1,\qquad \rho=\Delta I,\\
+ d=X+ac+H\gamma,\quad d^2-\Delta c^2=1,\quad
+ \tau^2-XY^2(XY^2+1)k^2=1,\\
+ V=fo-c=cj_{\rm aux}-R,\qquad k=R+1+hE,
+\end{gather*}
+where
+\[
+ o=f(c-R+4IT),\qquad
+ j_{\rm aux}=4\Delta s^2r^2c^3(c-R)+8srcD_fT.
+\]
+The incoming multiplier is even. We do not assert a nonintegral
+restoration such as $(2\Delta sr-1)/2$.
+
+Here is the exact modification of the centered source's signed rank
+proof. Its common-sign packing bounds give, for $Q_0=|q|$,
+\[
+ Q_0(Q_0^2-1)<R<Q_0^4-2,
+ \qquad |E|>3R+1.
+\]
+Put $B_0=|a+2|$ and $P_0=|2XY^2+1|$. First/main Pell classification,
+using only the already proved centered interval and sign identity,
+gives $|k|=2\psi_{P_0}(n_0)$, $|c|=\psi_{B_0}(p)$,
+$p>n_0\ge24$, and $|c|>2p,2R$. The first-index congruence has
+positive branch $n_0\ge(R+1)/2$ and negative branch $n_0>R$.
+
+The strong norm gives $|I|=\psi_{B_0}(m)$ and
+$|f|=\chi_{B_0}(m)$. Since $c^2\mid I$, strong divisibility first
+implies $p\mid m$. Write $m=pt$ and $D=\chi_{B_0}(p)$. Composition
+and binomial expansion give
+\[
+ |I|=|c|\psi_D(t),\quad D^2-1=\Delta c^2,\quad
+ \psi_D(t)\equiv tD^{t-1}\pmod{|c|}.
+\]
+Since $D$ is coprime to $c$, $|c|\mid t$. Thus $p|c|\mid m$ and
+$m>2p$. These are precisely the strong-rank inputs; oddness was not
+used.
+
+For the auxiliary parameter $|\rho|>1$, its Pell index $\ell$ is odd
+because $\chi_{|\rho|}(2t)\equiv(-1)^t\pmod{|\rho|}$, while its
+abscissa is divisible by $|\rho|$. The exact odd-index quotient
+identities, together with $V\equiv-c\pmod{|f|}$ and
+$V\equiv-R\pmod{|c|}$, yield
+\[
+ \psi_{B_0}(\ell)\equiv\pm\psi_{B_0}(p)\pmod{|f|},
+ \qquad \ell\equiv\pm R\pmod{|c|}.
+\]
+The signed abscissa step-down then gives
+$\ell\equiv\pm p\pmod m$. Since $|c|\mid m$ and
+$0<p,R<|c|/2$, $p=R$. The negative first-index branch is impossible;
+no-wrap gives $2n_0=R+1$. The unchanged sign-uniform ratio and main-root
+congruence prove $|Y|>2^R$ and $X=\operatorname{sign}(c)2^R$.
+Since $X\equiv2\pmod3$ and $R$ is odd, $X=2^R$, $c>0$;
+the surviving first-index sign then gives $k,Y>0$.
+
+The centered source's uniform half-binomial estimate now applies.
+Writing $R=2t+1$, it gives an even integer $M_{\rm bin}$ with
+\[
+ \frac{M_{\rm bin}}2<\frac ck<\frac{M_{\rm bin}}2+\frac14.
+\]
+Its proof bounds the reciprocal binomial tail by $1/8$ and the Pell
+ratio error by $12t/(2^R+1)<1/8$, uniformly for the prescribed $Y$.
+Since $|c/k-Y|<1/2$ and $Y$ is integral,
+$Y=M_{\rm bin}/2$ and $0<\eta/k<1/4$. Thus $\eta,k-\eta>0$.
+
+An exact old odd-coordinate chart can now be restored with fresh
+private witnesses, rather than by changing the parity of incoming $I$.
+Let $A_0=a+2$ and put
+$I_* =\psi_{A_0}(Rc)$, $f_* =\chi_{A_0}(Rc)$.
+Here $A_0$ is even, $R,c$ are odd, and composition gives $c^2\mid I_*$;
+therefore $I_*$ and $\rho_* =\Delta I_*$ are odd. If $t=(R-1)/2$ and
+$Q_t(z)=\chi_{\sqrt z}(2t+1)/\sqrt z$ is the odd-index quotient
+polynomial, choose
+\[
+ V_*=(-1)^{t+1}Q_t(\rho_*^2),\qquad y_*=\psi_{\rho_*}(R).
+\]
+Its two evaluations give $V_*\equiv-c\pmod{f_*^2}$ and
+$V_*\equiv-R\pmod c$. Hence the old strong and auxiliary coordinates
+are integral, with odd multiplier $\rho_*/c^2$, and preserve
+$k=R+1+hE$. The recovered positive guards and $X=2^R$ restore the
+remaining old rows. The pinned ordinary native/compiler and
+finite-refutation theorem therefore applies. This regeneration works
+for every odd $R$ on soundness, not only $R\equiv3\pmod4$.
+
+\subsection{Full-residue interpolation and canonical completeness}
+
+We use the prior full-residue lemma in its precise order: for even
+$A_0>1$, $R\equiv3\pmod4$, $c=\psi_{A_0}(R)\equiv R\pmod4$, and
+any prescribed $N>0$, one can first fix $I,f>0$ with
+\[
+ f^2-(A_0^2-1)I^2=1,\qquad 4Nc^2\mid I,
+\]
+such that \emph{every} residue class modulo this same $I$ contains a
+$T$ for which
+\[
+ V=f^2(c-R+4IT)-c,\qquad
+ ((A_0^2-1)I)^2V^2-
+ \bigl(((A_0^2-1)I)^2-1\bigr)y^2=1
+\]
+has an integer solution.
+
+For precision, finite order of the Pell recurrence modulo $4Nc^2$
+selects a positive even index $m_0$ and such a fixed $I,f$.
+The correct period modulo $f^2$ is $\lambda=4m_0f$, not merely
+$4m_0$. Indeed, with $\alpha=A_0+\sqrt{A_0^2-1}$,
+$\alpha^{4m_0}\equiv1-4f\alpha^{m_0}\pmod{f^2}$, whose $f$th power
+is $1$. Lucas lifting gives $v_p(I)\ge v_p(m_0)$ for $p\mid I$;
+at $2$ the exact formula is $v_2(I)=v_2(m_0)+v_2(A_0)$.
+Thus $\gcd(\lambda,4I^2)\mid4I$.
+
+For a requested class $T\equiv a\pmod I$, the congruences
+\[
+ \ell\equiv R\pmod\lambda,\qquad
+ \ell\equiv R-4Ia\pmod{4I^2}
+\]
+are compatible. Choose a positive solution, which is $3$ modulo $4$.
+For $S_0=(A_0^2-1)I$, put
+$V_0=\chi_{S_0}(\ell)/S_0$ and $y=\psi_{S_0}(\ell)$.
+The odd quotient identities give
+$V_0\equiv-c\pmod{f^2}$ and
+$V_0\equiv-\ell\pmod{4S_0^2}$, including the important factor $4$.
+Consequently
+\[
+ T=\frac{V_0+c-f^2(c-R)}{4If^2}
+\]
+is integral and is $a$ modulo $I$, since $f^2\equiv1\pmod I$.
+This proves the simultaneous fixed-strong-witness interpolation needed
+below; its full valuation proof is retained locally with the precursor.
+
+Start now with the authentic canonical source34 family. Its prescribed
+half-binomial $Y$ gives
+$D_{\rm err}\le q^2/2$ and $0<\eta/k<1/4$, so
+$\mathcal P>q^2k^2/4\ge64$. Put $D=3\mathcal P-4>0$.
+Since $D\equiv2\pmod3$, it is nonsquare. Square any positive Pell
+unit $g_0+u_0\sqrt D$ to obtain
+\[
+ g=g_0^2+Du_0^2,\qquad s=g_0u_0>0,
+ \qquad g^2-4Ds^2=1.
+\]
+Apply the interpolation lemma with $N=2s$; it fixes $I,f$ with
+$8sc^2\mid I$. Set $r=I/(2sc^2)$. Choose an intersective root
+$a$ modulo $I$ of $\pi(a+\gamma)$; the already fixed $I,f$ then
+supply $T\equiv a\pmod I$ and the auxiliary root $y$.
+With $\widetilde y=\delta y$, all five radicands are integer squares,
+and
+\[
+ A_\pi+B_\pi d=H^5\pi(T+\gamma)
+\]
+is divisible by $S$. Finally set
+\[
+ n=\frac{A_\pi+B_\pi d}{S}
+        +2\widetilde y+f+4\tau+8g-\Theta.
+\]
+This integer makes a norm factor vanish. The witness order is native
+data and budget, then $s$, then fixed $I,f,r$, then the intersective
+class and $T,y$, then $n$. Nothing chosen later changes the positive
+budget or reselects the strong witness after the desired class is known.
+
+\subsection{Exact metrics and the inherited conclusion}
+
+\begin{center}
+\begin{tabular}{lrrr}
+Center in the $n$ carrier & Integers & Exact degree & Binary operations\\
+\hline
+$0$ & $11$ & $2912$ & $200$\\
+$(2Q-1)V$ & $11$ & $2272$ & $204$\\
+$(2Q-1)V+4L$ & $11$ & $2240$ & $206$
+\end{tabular}
+\end{center}
+
+The degree certificates are independent of the existence proof.
+The exact identities behind the centers include
+\[
+ 4D_a-((2Q-1)V)^2=-V^2-4Q+4,\qquad
+ 16D_t-(4L)^2=16Lk+16.
+\]
+The supplied leading-form calculation gives degree $2240$ for the
+primary equation. On the actual fixed-numeral slice it has the
+nonzero coefficient
+\begin{align*}
+ &[j^{1176}w^{280}v^{296}h^{16}s^{120}r^{112}c^{224}T^{16}]\,P_{11}\\
+ &\hspace{2em}=2^{2592}3^{1460}\beta^{1176}>0.
+\end{align*}
+The exponent sum is $2240$. The exact sparse degree cut agrees with the
+formal root filtration $16\cdot91+8\cdot51+8\cdot47=2240$;
+the supplied coefficient proves that this upper bound is attained.
+The literal circuits and independent checkers
+report every live binary operation, with no uncounted division or root.
+
+Under the same explicitly inherited ordinary native/compiler and
+calibration theorems, ZFC proves
+\[
+ [\forall\mathbf x\in\mathbb Z^{11},\ P_{11}(\mathbf x)\ne0]
+ \quad\Longleftrightarrow\quad\operatorname{Con}(\mathrm{ZFC}).
+\]
+The result neither assumes nor proves consistency. The unbounded
+reduction, the inherited calibration, finite circuit and coefficient
+checks, and the separate proof-assistant/object-ZFC obligations remain
+distinct. The complete local source pins and retained notices identify
+which parts of the interpolation, centered-budget, and signed-Pell
+arguments are inherited.

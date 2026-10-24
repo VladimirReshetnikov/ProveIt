@@ -1,0 +1,232 @@
+\section{Inherited compiler contracts and the consistency endpoint}
+\label{sec:inherited-compiler-contracts}
+
+The new projection and factorial argument are composed with the following
+specific arithmetic interfaces.  All variables in this section range over
+$\mathbb N=\{0,1,\ldots\}$ unless indicated otherwise.  For the unrestricted
+integer equation, the sign-recovery certificate must first establish this
+natural domain.  The statements below concern every satisfying assignment;
+their use does not presume the intended values of intermediate witnesses.
+
+\subsection{Logical calibration and what is imported}
+
+The numerical source is the fixed twelve-branch calculus $C_{222}$, with
+truth code $0$ and falsity code $1$.  Its calibration is
+\[
+ C_{222}(1)
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\mathrm{ZF},\bot)
+ \ \longleftrightarrow\
+ \operatorname{BProv}(\mathrm{ZFC},\bot).
+\]
+The exact named results are
+\nolinkurl{KEndpoint.c222_iff_zf_refutation} and
+\nolinkurl{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+Their frozen files, relative to the direct-equation component, are
+\nolinkurl{provenance/upstream/calibration/KEndpoint.lean} and
+\nolinkurl{provenance/upstream/calibration/ConstructibleChoice.lean}.
+The source numerals and rules are in the adjacent
+\nolinkurl{Code254.lean} and \nolinkurl{KCode222.lean}.
+The repository paths are
+\nolinkurl{Computability/BusyBeaver/Lean/BusyBeaver/ZFC/}, at calibration
+commit \nolinkurl{08200eb10fde2db408c69dffd840d6920a569b1f}; exact file hashes
+are retained in the provenance ledgers.
+
+These are substantial imported mathematical results.  The first combines
+the soundness of the numerical calculus with its model-existence
+completeness argument; the second removes Choice by the constructible-model
+argument and first-order soundness/completeness.  No Turing-machine endpoint
+is used.  The appeal is to these theorems and their proofs formalizable in
+ZFC, not to an inference that every external Lean theorem is automatically
+a theorem of ZFC.  The complete transitive Lean development was not rebuilt
+for this contribution, and no new object-language ZFC proof term is claimed.
+
+The remaining passage from finite rule instances to a proof is the
+single-conclusion Horn-flow criterion.  Give $(p,q)\to v$ the vector
+$e_v-e_p-e_q$, with $e_0=0$.  A proof tree has total flow $e_1$.
+Conversely, if a finite nonnegative sum of rule vectors equals $e_1$,
+sum coordinates outside the least rule-closed set containing $0$.
+Each rule contributes at most zero outside that set; a missing target
+would contribute one, a contradiction.  Cycles do not invalidate this
+argument.
+
+For the accumulator-to-flow step, all restored labels lie in
+$[0,L]$, where $L=8m^2+8m+2$, and $M=(L+1)^t$, $t\ge1$.
+Telescoping the accumulator equations with endpoints $S_0=1+M$, $S_t=1$
+gives $P(M)=Q(M)$, where
+\[
+ P(X)=\prod_{i<t}(1+v_iX),\qquad
+ Q(X)=(1+X)\prod_{i<t}(1+p_iX)(1+q_iX).
+\]
+Since $P(M)<M^{t+1}$, nonnegativity first forces $\deg Q\le t$.
+Both products then have at most $t$ nonconstant factors, so every
+coefficient is strictly below $M$.  The least nonzero coefficient of
+$P-Q$ could not vanish on evaluation at $M$; hence $P=Q$.
+Unique factorization in $\mathbb Q[X]$ gives precisely the required flow.
+This is the bounded-factor argument in
+\nolinkurl{provenance/upstream/calibration/direct_flow_large_carrier_README.md}.
+Conversely, expand a proof tree and let $S_i$ be the product of the weights
+of its open obligations.  A finite CRT beta code gives
+$x=S_i+(1+(i+1)y)u_i$, choosing $y$ larger than every state and divisible
+by $1,\ldots,t+1$.  In soundness, the supplied bounds
+$S_i\le y<1+(i+1)y$ make these actual remainders and make adjacent
+rows agree.  Thus this encoding is an equivalence of existence predicates.
+
+\subsection{The bounded-row CRT contract}
+
+Let $E,F$ be polynomials with nonnegative integer coefficients in the row
+index, fixed outer parameters, and $r$ local coordinates.  In the present
+source $r=9$ and the coordinate bounds are
+\[
+ \mathbf u=(m,m,m,m,m,y,y,x,x).
+\]
+Suppose $t\ge1$ and
+\[
+ H\ge E(t,\mathbf u)+F(t,\mathbf u)+t+x+y+m+1.
+\]
+With the outer parameters suppressed, put
+$T=H!$, $d_i=1+(i+1)T$, and
+$\mathcal B=\prod_{i<t}d_i$.  Then the bounded family
+\[
+ \forall i<t\ \exists w\le\mathbf u:\ E(i,w)=F(i,w)
+\]
+is equivalent to the existence of natural $C,A_1,\ldots,A_r$ such that
+\begin{align*}
+ \mathcal B&\mid\binom{A_j}{u_j+1} &&(1\le j\le r),\\
+ \mathcal B&\mid 1+(C+1)T, &
+ E(C,A)&\equiv F(C,A)\pmod{\mathcal B}.
+\end{align*}
+The representatives $A_j$ may all be required positive, as they are in the
+literal compiler.
+
+For soundness, choose a prime $\ell\mid d_i$.  Since $d_i$ is coprime to
+$H!$, necessarily $\ell>H$.  Multiplying the range congruence by
+$(u_j+1)!$ gives a zero falling factorial modulo $\ell$, so
+$A_j\equiv w_j\pmod\ell$ for some $0\le w_j\le u_j$.
+The index congruence gives $C\equiv i\pmod\ell$ by cancellation of $T$.
+The two evaluations are congruent and both lie in $[0,H]$, hence are equal.
+For completeness, the $d_i$ are pairwise coprime: a common prime would
+divide $j-i$ and so divide $H!$, which is impossible.  CRT encodes the
+chosen row witnesses.  Each $(u_j+1)!$ divides $H!$ and is coprime to
+$\mathcal B$, so it cancels from the falling-factorial congruence.
+Positive representatives follow by adding multiples of $\mathcal B$.
+The literal evaluation congruence uses
+$E+\mathcal B q=F+\mathcal B v$ with natural $q,v$; arbitrary signed
+quotients are represented by choosing the common offset $v$ sufficiently
+large, so this orientation adds no restriction.
+
+The supplied majorant certificate checks 392 gate inequalities and bounds
+$E+F+t+x+y+m+1$ by $R_0^{6,893,174}$, where
+$R_0=2+t+x+y+m+M_0\ge2$.  The literal choice
+$H=R_0^{2^{23}}$ is therefore sufficient.  Each addition uses the exponent
+bound $\max(e_1,e_2)+1$, each multiplication uses $e_1+e_2$; induction on
+the actual nonnegative pair circuit proves the bound.  The factorial
+bootstrap supplies the genuine value of $T$ before this CRT theorem is
+invoked.
+
+The fixed-length modulus product is itself represented arithmetically.
+For $Q=(1+(t+1)T)^t+2$ and $D=TQ-1>0$,
+\[
+ \mathcal B=
+ \left(T^t\,t!\binom{Q+t}{t}\right)\bmod D.
+\]
+Indeed the numerator is $\prod_{i=1}^t(TQ+iT)$, congruent to
+$\prod_{i=1}^t(1+iT)$ modulo $D$.  The latter product is strictly smaller
+than $D$ by the defining bound on $Q$.  An ordinary quotient/remainder
+equation with remainder slack supplies this graph; no unbounded product
+operator remains in the polynomial.
+
+\subsection{One radix for all binomial requests}
+
+For the twelve actual requests $\binom{n_j}{k_j}$, all $n_j,k_j$ are
+positive.  Let $N$ be the sum of the distinct upper-argument circuit atoms
+and $q=2^N+1$.  Thus $q>2^{n_j}$.  With
+$L_j=q^{k_j}$ and $U_j=(q+1)^{n_j}$, the literal natural equations are
+\[
+ U_j=L_j(qh_j+C_j)+r_j,\qquad
+ L_j=r_j+s_j+1,\qquad q=C_j+d_j+1.
+\]
+They recover exactly digit $k_j$ of the carry-free base-$q$ expansion of
+$(q+1)^{n_j}$; therefore $C_j=\binom{n_j}{k_j}$, including $k_j>n_j$.
+Conversely ordinary division supplies all four natural auxiliary values.
+This theorem is simultaneous for arbitrary assigned argument values.
+In completeness, the shared radix is selected after all semantic upper
+arguments, including the chosen CRT representatives, have been fixed.
+
+\subsection{Shared Pell certificates for all positive powers}
+
+Write
+$(a+\sqrt{a^2-1})^j=X_j(a)+Y_j(a)\sqrt{a^2-1}$ for $a\ge2$.
+The imported number-theoretic ingredients are classification of natural
+Pell solutions and the finite Matiyasevich index criterion.  The exact
+repository interface is
+\nolinkurl{DiophantineConsistency.PellRepresentation.criterion_iff_pell},
+in \nolinkurl{provenance/upstream/calibration/PellRepresentation.lean},
+which invokes \nolinkurl{Pell.matiyasevic} from Mathlib's
+\nolinkurl{Mathlib/NumberTheory/PellMatiyasevic.lean}.
+
+For the 23 distinct power requests $(n,k,m)$, the common frame is
+\[
+ W=2+\sum\{\hbox{distinct base, exponent, and output atoms}\},\quad
+ Z=z+1,\quad A^2-W^3(W+2)Z^2=1.
+\]
+Each of the seven distinct bases has a natural $T_n$ satisfying
+$2An=T_n+n^2+1$.  This equation excludes $n=0$ before any factorial or
+power value is recovered.  Every exponent is syntactically positive.
+Pell classification applied at base $W+1$ gives
+$A=X_j(W+1)$ and $WZ=Y_j(W+1)$.
+Modulo $W$, the recurrences give $Y_j(W+1)\equiv j$; thus
+$j\ge W$.  Since $1\le n,k\le W<A$ and $m<W$, consequently
+\[
+ A\ge(W+1)^W>W^W,\qquad
+ T_n\ge2A-2>W^W\ge n^k,\qquad m<T_n.
+\]
+Conversely $j=W$ supplies a frame for any finite family of intended
+values.  The weaker inequality $A>W^2$ alone is insufficient for power
+recovery; the divisibility of the frame's Pell index is essential.
+
+For each of the eighteen exponent atoms $k_i$, use natural
+$X_i,Y_i,S_i,R_i,e_i,s_i,r_i$.  The literal shared index equations are
+\begin{align*}
+ Y_i&=k_i+e_i,&X_i^2-(A^2-1)Y_i^2&=1,\\
+ S_i^2-(B^2-1)R_i^2&=1,&S_i&=X_i+Us_i,\\
+ R_i&=k_i+4Y_ir_i,&U^2-(A^2-1)V^2&=1,\\
+ V&=\left(\prod_iY_i^2\right)(v_0+1),&
+ B&=1+4V(b_0+1)=A+Ub_1.
+\end{align*}
+They imply every hypothesis of the nonzero branch of the imported index
+criterion: $A,B>1$, $Y_i\ge k_i>0$, $V>0$, $Y_i^2\mid V$, and the four
+required congruences.  Hence $(X_i,Y_i)=(X_{k_i}(A),Y_{k_i}(A))$.
+For simultaneous completeness, set $L=4\prod_iY_i^2$ and choose a positive
+power of the unit $A+s$ equal to one in the finite ring
+$(\mathbb Z/L\mathbb Z)[s]/(s^2-(A^2-1))$.
+Its Pell coordinates give $U\equiv1\pmod L$, $V\equiv0\pmod L$, $V>0$,
+and $\gcd(U,4V)=1$.  CRT chooses $B>A$ with the displayed congruences.
+Set $S_i=X_{k_i}(B)$, $R_i=Y_{k_i}(B)$; recurrence congruences and
+monotonicity give all required natural quotients.
+
+Finally each request has one natural quotient $h$ and
+\[
+ X_i+nY_i=AY_i+m+T_nh.
+\]
+For $H_j=X_j(A)-(A-n)Y_j(A)$, the recurrence is
+$H_{j+1}=nH_j+T_nY_j(A)$, $H_0=1$.  Thus
+\[
+ H_k-n^k=T_n\sum_{j<k}n^{k-1-j}Y_j(A).
+\]
+Both $m$ and $n^k$ are in $[0,T_n)$, proving soundness; the displayed
+nonnegative sum supplies $h$ for completeness.  The finite-ring and
+recurrence arguments justify shared witnesses; merely identifying
+independently existential variables would not suffice.
+
+\paragraph{Composition inside ZFC.}
+These proofs use finite induction, integer/rational arithmetic, prime
+factorization, CRT, finite groups, the stated Pell theorems, and the
+identified logical calibration.  They can be carried out over ZFC's own
+$\omega$ and coded finite sequences, rather than only for externally
+standard numerals.  After the factorial fixed-point proof and exact
+polynomial projections are composed with these contracts, ZFC proves
+existence of a polynomial zero equivalent to a coded ZFC refutation;
+negating gives the asserted consistency biconditional.  Exact file checks
+verify the supplied finite circuits and coefficients.  They do not prove
+consistency or replace any imported semantic theorem.

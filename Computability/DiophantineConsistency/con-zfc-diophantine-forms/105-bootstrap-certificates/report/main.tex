@@ -1,0 +1,1058 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\definecolor{ink}{HTML}{183A51}
+\definecolor{linkblue}{HTML}{246188}
+\hypersetup{colorlinks=true,linkcolor=linkblue,urlcolor=linkblue,citecolor=linkblue,
+ pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},
+ pdftitle={Factorial fixed points and smaller Diophantine consistency equations}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Diophantine consistency equations}}
+\fancyhead[R]{\small October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!18},xleftmargin=3pt,xrightmargin=3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\ZF}{\mathrm{ZF}}
+\newcommand{\htp}{\operatorname{ht}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\proofpred}{\operatorname{Proof}_{\ZFC}}
+\input{metrics.tex}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.55in}
+{\large\sffamily\color{ink} A research submission for the ProveIt repository\par}
+\vspace{0.35in}
+{\Huge\bfseries Factorial fixed points\par}
+\vspace{0.10in}
+{\huge\bfseries and smaller Diophantine\par consistency equations\par}
+\vspace{0.35in}
+{\Large Explicit quartics, complete coefficient files,\par and shorter small-variable circuits\par}
+\vspace{0.45in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large AI-assisted mathematical exploration and exact algebra verification\par}
+{\large 24 October 2026\par}
+\vfill
+\begin{abstract}
+We give several completely materialized polynomial equations whose absence
+of solutions is equivalent in ZFC to $\Con(\ZFC)$, by composing new
+arithmetic equivalences with the repository's identified proof-calculus
+calibration. The principal new lemma characterizes $n!$ as the unique
+fixed point
+\[
+ F=\ceil{\frac{(F^2+1)^n}{\binom{F^2+n}{n}}},\qquad n,F\in\N.
+\]
+It permits a proposed factorial value to supply its own precision bound.
+One square replaces a separate variable-exponent radius certificate.
+Together with a smaller local rule certificate and exact sign inference,
+this gives a quartic in \IntVars\ unrestricted integer variables with
+\IntRows\ quadratic residuals, \IntTerms\ monomials, and explicitly listed
+coefficients. A companion in \SmallVars\ integers has \SmallTerms\
+monomials and coefficient height below $2^{26}$.
+Natural-domain variants use 467, 468, or 469 variables. Independent
+improvements give a 456-operation nine-positive-variable equation of
+degree $1\,376\,378$ and shorter exact radical norms.
+The archive contains all literal equations, proofs, generators,
+independent algebra checkers, source pins, and verification receipts.
+No global minimum, worldwide priority, proof of consistency, or new
+end-to-end proof-assistant certificate is asserted.
+\end{abstract}
+\vspace{0.25in}
+{\small Comparison snapshot: \texttt{\RepoPin}.\par
+All variable counts refer to the domain stated next to the equation.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{What has been constructed}
+\label{sec:results}
+
+There are several reasonable meanings of ``simplest'': few unknowns,
+low degree, a short arithmetic circuit, few expanded terms, small
+coefficients, or a short semantic proof. The delivered equations improve
+several of these measures, but they do not order all the measures at once.
+The main construction follows the direct C222 proof calculus. It uses
+neither a simulation of the K215 Turing machine nor Jones' universal
+polynomial. The separate small-variable improvements retain their own
+parent source encodings and are identified as such.
+
+Throughout, $\N=\{0,1,2,\ldots\}$, $\Z_{>0}=\{1,2,\ldots\}$,
+and an unqualified integer variable ranges over all of $\Z$.
+The height of an expanded integer polynomial is the maximum absolute
+value of its collected coefficients. A quadratic residual system
+$r_1=\cdots=r_s=0$ specifies the \emph{single} polynomial
+\begin{equation}\label{eq:sos-definition}
+                         P=\sum_{j=1}^{s}r_j^2.
+\end{equation}
+The residuals are polynomial abbreviations, not additional unknowns.
+Every listed coordinate, including every retained arithmetic gate, is
+included in the variable count.
+
+\begin{theorem}[Main explicit integer equations]\label{thm:main}
+Let $P_{956}$ be the polynomial specified by
+\file{integer/equations/integer956/polynomial.json}; equivalently it is
+the sum of the squares of the 510 literal residuals in the adjacent
+\file{equation.json}. It belongs to $\Z[X_0,\ldots,X_{955}]$, has exact
+degree four, 10,988 nonzero monomials, and height
+$2\,445\,790\,974\,704$. The ordinary mathematical proof in this
+submission, with its identified inherited calibration, proves in ZFC
+\begin{equation}\label{eq:main-con}
+ \Con(\ZFC)\quad\longleftrightarrow\quad
+ \forall (x_0,\ldots,x_{955})\in\Z^{956},\quad P_{956}(x)\ne0.
+\end{equation}
+The companion $P_{989}$ in
+\file{integer/equations/integer989/polynomial.json} satisfies the same
+biconditional with 989 integer unknowns. It has 543 quadratic residuals,
+7,705 monomials, exact degree four, and height $63\,910\,295<2^{26}$.
+\end{theorem}
+
+The proof is constructive at the level of finite encodings: a zero
+recovers a finite ZFC refutation, and a refutation supplies a zero.
+Thus the more informative form of the result is
+\[
+ \exists p\in\N\ \proofpred(p,\bot)
+ \quad\longleftrightarrow\quad
+ \exists x\in\Z^{956}\ P_{956}(x)=0.
+\]
+Negating this equivalence gives \eqref{eq:main-con}.
+No choice of coefficients depends on assuming consistency or
+inconsistency. No actual zero or proof of the absence of zeros is supplied.
+
+\subsection{The direct quartic tradeoffs}
+
+Table~\ref{tab:quartics} compares the new direct family with the latest
+relevant incoming direct constructions at the pinned snapshot. The
+older 2,088-integer conversion is \emph{not} used as the principal integer
+baseline: the incoming batched-certificate construction already has
+1,690 integer variables. The parent and domain of each comparison matter.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Construction & Domain & Variables & Rows & Monomials & Height\\
+\midrule
+Synchronized incoming & $\N$ & 522 & 400 & 20,225 & 83,900,628\\
+New, output-linear radius & $\N$ & 467 & 363 & 18,479 & 83,880,005\\
+New, square radius & $\N$ & 468 & 364 & 14,842 & 83,850,989\\
+New, smaller support & $\N$ & 469 & 365 & 12,051 & 83,850,757\\
+\addlinespace
+Batched incoming & $\Z$ & 1,690 & 842 & 21,381 & 2,649,643,805,758\\
+New, fewer variables & $\Z$ & 956 & 510 & 10,988 & 2,445,790,974,704\\
+New, smaller coefficients & $\Z$ & 989 & 543 & 7,705 & 63,910,295\\
+\bottomrule
+\end{tabular}
+\caption{Direct literal equations. Every degree is exactly four; ``rows''
+counts the quadratic residuals before the final squared sum.}
+\label{tab:quartics}
+\end{table}
+
+The 467-variable natural equation uses the radius $H^2F_H$; the 468-
+and 469-variable equations use $F_H^2$. The latter has a smaller raw
+parent and fewer expanded terms, although the deterministic elimination
+order leaves one more variable. This is a real tradeoff, so both complete
+variants are retained.
+
+Relative to the 1,690-variable direct integer baseline, $P_{956}$ removes
+734 variables and 10,393 monomials. These are reductions of about
+43.4\% and 48.6\%, respectively. It is not a claim that 956 is the
+smallest possible integer-variable count: the repository already contains
+much smaller variable counts with different degrees and coefficient
+representations.
+
+\subsection{Separate improvements at small variable counts}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Domain & Variables & Degree & Parent operations & New operations\\
+\midrule
+$\Z_{>0}$, original31 & 9 & 1,376,378 & 475 & 456\\
+$\Z_{>0}$, compact54 & 9 & 1,520,186 & 433\textsuperscript{a} & 442\\
+$\Z_{>0}$ & 11 & 211 & 111 & 110\\
+$\Z$ & 13 & 1,408 & 185 & 176\\
+$\Z$ & 13 & 1,392 & 186 & 177\\
+$\Z$ & 13 & 1,088 & 195 & 186\\
+$\Z$ & 13 & 1,072 & 195 & 186\\
+\bottomrule
+\end{tabular}
+\caption{Live binary arithmetic operations. Addition, subtraction,
+multiplication, squares, and scalar multiplication are charged; register
+reuse is free. \textsuperscript{a}The 433-operation parent has degree
+1,628,768, so this row is a cost--degree tradeoff.}
+\label{tab:small}
+\end{table}
+
+For the first row, the previous degree is $1\,379\,730$: both cost and
+degree improve. For the last five rows the entire polynomial is unchanged;
+only its evaluator is shorter. In particular, the degree-1,072 result
+improves the latest incoming 195-operation degree-1,072 equation, rather
+than claiming its parent's degree reduction anew.
+
+These arithmetic operation counts treat a fixed numeral as a leaf.
+The fixed leaves in the small-variable families can be very large.
+Their complete bytes and reconstruction bindings are included, but the
+cost measure is not a bit-operation or printed-digit complexity measure.
+The direct quartics instead provide ordinary, fully collected, modest-sized
+integer coefficients.
+
+\section{The factorial fixed point}
+\label{sec:factorial}
+
+The usual ceiling representation of a factorial chooses an independent
+radius large enough to make a rational approximation lie within one of
+$n!$. The new observation is that the unknown value can help select the
+radius, provided the resulting fixed point is proved unique. This removes
+an arithmetic graph rather than merely abbreviating its notation.
+
+For $n,R\in\N$, define
+\[
+ f_n(R)=\frac{(R+1)^n}{\binom{R+n}{n}}
+       =n!\prod_{j=1}^{n}\frac{R+1}{R+j}.
+\]
+Empty products are one. The denominator is positive.
+
+\begin{lemma}[Approximation and monotonicity]\label{lem:defect}
+For $n\ge2$ and real $R>0$, $f_n(R)$ is positive, nondecreasing in $R$,
+at most $n!$, and satisfies
+\begin{equation}\label{eq:defect}
+           0\le n!-f_n(R)<\frac{n!\,n(n-1)}{2R}.
+\end{equation}
+The formula for real $R$ here means the finite product, so no generalized
+binomial coefficient is needed.
+\end{lemma}
+
+\begin{proof}
+Each factor is positive and at most one. For $j\ge1$, the function
+$(R+1)/(R+j)$ is nondecreasing, by cross multiplication (or differentiation).
+Put $u_j=(j-1)/(R+j)$. Then $0\le u_j<1$, and induction on the finite
+product gives
+\[
+ 1-\prod_{j=1}^n(1-u_j)\le\sum_{j=1}^n u_j
+       <\frac1R\sum_{j=1}^n(j-1)=\frac{n(n-1)}{2R}.
+\]
+The strict inequality holds because $n\ge2$ gives a positive summand
+with denominator strictly greater than $R$. Multiply by $n!$.
+\end{proof}
+
+\begin{theorem}[Square-radius fixed point]\label{thm:fixedpoint}
+For all $n,F\in\N$,
+\begin{equation}\label{eq:fixedpoint}
+ F=\ceil{\frac{(F^2+1)^n}{\binom{F^2+n}{n}}}
+                   \quad\longleftrightarrow\quad F=n!.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $K=n!$ and suppose first that $F=\ceil{f_n(F^2)}$.
+The quotient is positive and at most $K$, so $1\le F\le K$.
+For $n\ge4$, monotonicity and $F^2\ge1$ give
+\[
+ f_n(F^2)\ge f_n(1)=\frac{2^n}{n+1}>n-1.
+\]
+The last inequality is $2^n>n^2-1$. It holds at $n=4$; its induction
+step follows from
+$2(n^2-1)-((n+1)^2-1)=n^2-2n-2>0$ for $n\ge4$.
+Consequently $F\ge n$.
+
+Apply \eqref{eq:defect} with $R=F^2$. First,
+\[
+ K-f_n(F^2)<\frac{K n(n-1)}{2F^2}<\frac K2,
+\]
+so $F\ge f_n(F^2)>K/2$. Applying the same estimate a second time,
+\[
+ K-f_n(F^2)
+ <\frac{K n(n-1)}{2F^2}
+ <\frac{2n(n-1)}K
+ =\frac{2}{(n-2)!}\le1.
+\]
+Thus $K-1<f_n(F^2)\le K$, and its ceiling is $K$.
+
+At $n=0,1$ the quotient is identically one. At $n=2$ and $F\ge1$,
+\[
+ f_2(F^2)=\frac{2(F^2+1)}{F^2+2}\in(1,2),
+\]
+so $F=2$. At $n=3$, the already established bound $1\le F\le6$
+leaves six exact rational values:
+\[
+\begin{array}{c|rrrrrr}
+ F&1&2&3&4&5&6\\\hline
+ \ceil{f_3(F^2)}&2&4&5&6&6&6.
+\end{array}
+\]
+Only $F=6$ is a fixed point. This proves soundness in every case.
+
+Conversely, set $F=K$. For $n\ge2$, \eqref{eq:defect} gives
+\[
+ 0\le K-f_n(K^2)<\frac{n(n-1)}{2K}
+                  =\frac{1}{2(n-2)!}\le\frac12.
+\]
+Hence its ceiling is $K$. The cases $n=0,1$ are immediate.
+\end{proof}
+
+This is an unrestricted elementary proof, not an experimental fixed-point
+search. The bounded calculations in the audit scripts check transcription
+and small cases; they are not the reason the theorem holds for arbitrary
+$n$.
+
+\subsection{A common radius for several factorials}
+
+\begin{corollary}[Shared radius]\label{cor:common-radius}
+Suppose $H\ge1$, the first ceiling certificate uses the argument $H$
+and radius $R=F_H^2$, and every later argument $n$ satisfies $0\le n\le H$.
+Then the first certificate forces $F_H=H!$, and the same radius correctly
+represents every later factorial by $F_n=\ceil{f_n(R)}$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:fixedpoint} handles the first certificate. For
+$2\le n\le H$, with $R=(H!)^2$,
+\[
+ 0\le n!-f_n(R)
+ <\frac{n!\,n(n-1)}{2(H!)^2}
+ \le\frac{H(H-1)}{2H!}
+ =\frac{1}{2(H-2)!}\le\frac12.
+\]
+The cases $n=0,1$ have quotient one, and if $H=1$ these are the only
+cases. Completeness uses the actual factorial values and their remainders.
+\end{proof}
+
+The concrete compiler requests $H!$ first and $t!$ second, with
+$H\ge t\ge1$. It uses one square $F_H^2$ for both.
+That same square already occurs in the base-modulus equation for the
+power request $F_H^t$, so it is shared in the final arithmetic circuit.
+
+\subsection{The exact polynomial ceiling graph}
+
+Let $N,C$ be positive naturals and let $F,r,s$ be naturals. Then
+\begin{equation}\label{eq:ceiling-graph}
+       N+C=CF+r+1,\qquad C=r+s+1
+\end{equation}
+is equivalent, existentially in $r,s$, to $F=\ceil{N/C}$.
+Indeed the second row gives $0\le r<C$, and the first gives
+$(F-1)C<N\le FC$. Conversely these strict and weak inequalities provide
+$r=N+C-CF-1\in[0,C-1]$ and $s=C-r-1$.
+
+In the factorial graph, $C=\binom{R+n}{n}$ and $N=(R+1)^n$.
+Their notation describes the semantics of separate finite polynomial
+graphs. No ceiling, factorial, binomial symbol, or variable exponent
+remains in \file{equation.json} or \file{polynomial.json}.
+
+\subsection{The retained output-linear alternative}
+
+An especially short fixed-point proof uses $R=n^2F$:
+\begin{equation}\label{eq:linear-radius}
+ F=\ceil{f_n(n^2F)}\quad\longleftrightarrow\quad F=n!.
+\end{equation}
+For $n\ge2$, a proposed fixed point has $1\le F\le K=n!$, and
+\[
+ K-f_n(n^2F)<\frac{K(n-1)}{2nF}<\frac{K}{2F}.
+\]
+Initially $F\ge1$ forces $f_n(n^2F)>K/2$, hence $F>K/2$.
+The same inequality then gives defect less than one, proving soundness.
+For $F=K$ the defect is less than $1/2$, proving completeness.
+The cases $n=0,1$ are immediate. With a dominant argument $H$, the
+shared radius $H^2F_H=H^2H!$ gives, for $2\le n\le H$, a defect
+strictly below $(H-1)/(2H)<1/2$.
+
+This alternative produces a 783-variable parent and the 467-variable
+natural contraction. The square-radius version has a 781-variable parent
+and better term counts. Both are compile-time choices of a single literal
+polynomial, not choices made by solutions of the equation.
+
+\section{A smaller direct certificate for the proof rules}
+\label{sec:source}
+
+The source is the inherited numerical calculus C222, with truth label
+$0$ and target falsity label $1$. Its numerical constructors include
+\begin{align*}
+ I(a,b)&=2(a+b)(a+b+1)+4b,& A(a,b)&=I(a,b)+2,\\
+ M(a,b)&=I(a,b)+1,& E(a,b)&=I(a,b)+3,\\
+ N(a)&=I(a,1),&X(a,b)&=N(A(a,N(b))).
+\end{align*}
+These are literal polynomials. Their complete axiom instances occur in
+\file{direct/code/hybrid_source.py}, and the constructor prefix is
+checked by exact syntax comparison with the inherited source. The
+calculus contains truth, eight unconditional axiom schemata, one guarded
+bundle schema, modus ponens, and generalization.
+
+\subsection{Eliminate premise labels inside each rule branch}
+
+Earlier local certificates carried independent premise labels $p,q$
+even though each selected branch determines them. The new bounded row
+uses just nine coordinates
+\[
+                      (v,a,b,c,d,S,S',u,u').
+\]
+Here $v$ is the conclusion, $a,b,c,d$ are schema parameters, $S,S'$ are
+successive accumulator values, and $u,u'$ are beta quotients.
+Let $h_1,\ldots,h_8$ be the eight inherited unconditional axiom
+polynomials and $h_B$ the bundle polynomial. Put
+\begin{align*}
+ G&=((c-a)(c-b))^2-(d+1)^2,\\
+ K&=v\prod_{j=1}^{8}(v-h_j),&
+ B&=(v-h_B)^2+G^2,\\
+ w(z)&=1+z\mathcal M,&\mathcal M&=M_0+1.
+\end{align*}
+Define the rule residuals and nonnegative branch tests by
+\begin{align*}
+ L_A&=S'w(v)-S,& Q_A&=K^2B+L_A^2,\\
+ L_M&=S'w(v)-S w(a)w(I(a,v)),\\
+ L_G&=S'w(v)-S w(b),&Q_G&=(v-A(a,b))^2+L_G^2.
+\end{align*}
+The local polynomial at index $i$ is
+\begin{align}\label{eq:local-source}
+ P_{\mathrm{loc}}={}&Q_A L_M^2 Q_G\notag\\
+ &+[x-S-(1+(i+1)y)u]^2\notag\\
+ &+[x-S'-(1+(i+2)y)u']^2.
+\end{align}
+Every displayed branch factor is nonnegative, including on real inputs.
+
+If $Q_A=0$, the conclusion is truth or one of the valid axiom instances;
+restore $p=q=0$. If $L_M=0$, restore $p=a$, $q=I(a,v)$: this is
+modus ponens with the correct accumulator equation. If $Q_G=0$, restore
+$p=b$, $q=0$, with $v=A(a,b)$: this is generalization. Conversely each
+valid old branch has this parameterization. Unused parameters can be
+zero. The proof makes no claim that parameters satisfy unselected
+branches. Existential quantification distributes over the finite
+disjunction represented by the product.
+
+The guard $G=0$ says
+$|(c-a)(c-b)|=d+1>0$, exactly the required pair of disequalities.
+Its natural witness exists whenever those disequalities hold.
+The branch-specific substitution therefore preserves the actual
+Horn rule relation, not merely some numerical evaluations of its source.
+
+\subsection{Restore the correct carrier bound}
+
+Bound $v,a,b,c,d$ by $m\ge1$. The restored second premise in modus
+ponens need not be bounded by $m$; it is bounded by $I(m,m)$. Hence use
+the label bound
+\[
+ L(m)=I(m,m)+2=8m^2+8m+2=2(2m+1)^2
+\]
+and impose
+\begin{equation}\label{eq:newcarrier}
+                       \mathcal M=(L(m)+1)^t,\qquad t\ge1.
+\end{equation}
+The inherited bounded-factor carrier theorem applies with $L(m)$.
+It converts the product identity at this sufficiently large carrier into
+the formal label-multiset identity used by the finite Horn-flow theorem.
+All active labels are in its stated bound; large evaluations in inactive
+axiom branches need not be label-bounded.
+
+The remaining local bounds are $S,S'\le y$ and $u,u'\le x$.
+They make the two beta reconstruction rows in \eqref{eq:local-source}
+have strict remainder bounds automatically. The endpoints are
+\begin{align*}
+ x&=M_0+2+(y+1)u_0,&y&=M_0+r_0+2,\\
+ x&=1+[1+(t+1)y]u_t.
+\end{align*}
+Thus the initial accumulator is $\mathcal M+1$ (target label one),
+the final accumulator is one, and the beta code links consecutive
+accumulators. Their product telescopes to the certified Horn flow.
+
+Given a finite proof, first choose sufficiently large $t,m$, then the
+carrier, the finite accumulator path, and beta data $y,x$. These are
+ordinary finite objects. No uniform bound on a possible ZFC refutation
+is assumed or needed.
+
+\subsection{The explicit majorant}
+
+Split the signed arithmetic circuit for $P_{\mathrm{loc}}$ into
+nonnegative-coefficient circuits $E-F$. Addition, subtraction, and
+multiplication on pairs use the exact ring identities
+\[
+ (e,f)+(g,h)=(e+g,f+h),\quad
+ (e,f)-(g,h)=(e+h,f+g),
+\]
+\[
+                    (e,f)(g,h)=(eg+fh,eh+fg).
+\]
+Evaluate at the index bound $t$ and coordinate bounds
+$(m,m,m,m,m,y,y,x,x)$. The actual stored DAG has a checked power
+majorant exponent $6\,893\,174$. Set
+\begin{equation}\label{eq:H}
+ H=(2+t+x+y+m+M_0)^{2^{23}}.
+\end{equation}
+Since $2^{23}=8\,388\,608$ is larger, $H$ bounds both sides, the
+index, and all local bounds with the required strict margin.
+Equation~\eqref{eq:H} takes exactly 23 successive squarings.
+
+The certificate checks this bound gate by gate. If the base is
+$R\ge2$, input atoms are at most $R$, a sum of quantities bounded by
+$R^a,R^b$ is at most $R^{\max(a,b)+1}$, and a product is at most
+$R^{a+b}$. Constants are bounded by a suitable fixed power of two.
+No semantic claim about a refutation is hidden in this numerical
+majorant.
+
+\input{compiler_contracts.tex}
+
+\subsection{Order of soundness and completeness}
+
+In soundness, first establish the natural domain and read the literal
+arithmetic gates. The unconditional base-modulus rows exclude zero power
+bases, and all exponents are syntactically positive. Apply the shared
+power theorem, then the common-radix theorem. Only then use the
+fixed-point theorem to identify $F_H$ and the shared-radius estimate to
+identify $F_t$. The bounded CRT, beta, carrier, and flow arguments now
+recover C222 and the calibrated refutation. In particular, the request
+$F_H^t$ does not assume $F_H=H!$ in order to prove it.
+
+In completeness, start from a finite proof. Choose its outer row and
+label bounds, carrier, accumulator path, and beta data; these determine
+$H$. Set the actual factorials $F_H=H!$ and $F_t=t!$ and their shared
+radius. Next choose the CRT column and index representatives, then the
+common binomial radix, then the true values of the finitely many powers.
+Finally choose the common Pell frame and index auxiliaries. The polynomial
+equations contain mutual references, but this construction of witnesses
+has no unresolved cycle.
+
+\section{From natural zeros to integer zeros with fewer guards}
+\label{sec:integer}
+
+The square-radius parent has 781 natural coordinates and 677 quadratic
+residuals. Guarding each coordinate independently with four squares
+would be wasteful: many signs are forced by rows already present.
+The construction instead supplies a finite, ordered sign derivation for
+every original coordinate. There is no inference from a variable's name
+or intended interpretation.
+
+\subsection{An exact ternary guard}
+
+Define, for unrestricted integers $a,b,c$,
+\[
+                     \mathcal H(a,b,c)=a^2+b^2+c(c+1).
+\]
+This is nonnegative because $c(c+1)\ge0$ for every integer $c$.
+Conversely, every $n\in\N$ is represented. Legendre's three-square
+theorem applies to $4n+1$, which is not of the excluded form
+$4^r(8s+7)$. Modulo four, exactly one of the three square roots is odd.
+Write the roots as $2a,2b,2c+1$ and divide by four to obtain
+$n=a^2+b^2+c(c+1)$. This representation is also explicitly formalized
+in the AFP entry \emph{Three Squares}~\cite{three-squares}.
+
+Appending $x=\mathcal H(a,b,c)$ is therefore an exact existential
+nonnegativity guard. It adds three integer unknowns and one quadratic
+row; it does not substitute a sum of squares into every occurrence of
+$x$ and increase their degrees.
+
+\subsection{Four sign rules}
+
+\paragraph{Nonnegative polynomial definitions.}
+Suppose a literal row says $x=f$, where $f$ has nonnegative integer
+coefficients. Each monomial is nonnegative if every variable occurring
+to an odd exponent in it has already been shown nonnegative. Even
+powers need no sign assumption. The checker compares the complete
+coefficient dictionary of the defining row and checks precisely these
+dependencies.
+
+\begin{lemma}[One guard for two coordinates]\label{lem:pair}
+For $x,y\in\Z$ with $x+y\ge-1$,
+\[
+ x\ge0\text{ and }y\ge0
+       \quad\longleftrightarrow\quad 2xy+x+y\ge0.
+\]
+\end{lemma}
+\begin{proof}
+The forward implication is immediate. Conversely,
+$(2x+1)(2y+1)=2(2xy+x+y)+1>0$. The two odd factors have the same
+sign. If both were negative, then $x,y\le-1$, contradicting
+$x+y\ge-1$. Thus both are positive and $x,y\ge0$.
+\end{proof}
+
+When a literal sum row proves $x+y\ge-1$, append the single row
+$2xy+x+y=\mathcal H(a,b,c)$. This is still quadratic and proves both
+signs. It is not an attempt to make two independent square
+representations share witnesses; it represents one nonnegative
+centered product.
+
+\begin{lemma}[A shifted quotient]\label{lem:quotient}
+If $A\ge0$, $B\ge1$, $q\in\Z$, and $A(q+1)=B$, then $q\ge0$.
+\end{lemma}
+\begin{proof}
+If $q\le-1$, the left side is nonpositive, a contradiction.
+\end{proof}
+
+For a binomial digit certificate, the literal rows unfold to
+\[
+ N=d(Qh+o)+r,\qquad d=r+s+1,\qquad Q=o+t+1.
+\]
+They give
+\begin{equation}\label{eq:quotientidentity}
+                     dQ(h+1)=N+dt+s+1.
+\end{equation}
+With all displayed dependencies nonnegative, Lemma~\ref{lem:quotient}
+proves $h\ge0$ without a guard. For residuals
+$R_1=N-d(Qh+o)-r$, $R_2=d-r-s-1$, and $R_3=Q-o-t-1$, the
+difference of the two sides in \eqref{eq:quotientidentity} is exactly
+$-R_1+dR_3+R_2$. Euclidean division has the analogous identity
+$d(q+1)=N+s+1$. The checker expands and compares these finite
+identities, including the necessary arithmetic definitions.
+
+\begin{lemma}[Orient a root before Pell classification]\label{lem:frame}
+Suppose the actual common frame gives
+\[
+ W=2+\sum\text{nonnegative atoms},\qquad
+ A^2=1+W^3(W+2)(z+1)^2,
+\]
+with $A,z\ge0$. Then $A>W^2$. If $n\le W$ and
+\[
+                       X+Yn=YA+m+Tq
+\]
+with $Y,m,T,q\ge0$, then $X\ge0$.
+\end{lemma}
+\begin{proof}
+Here $W\ge2$ and $(z+1)^2\ge1$, so
+$A^2\ge1+W^3(W+2)>W^4$. As $A\ge0$, $A>W^2\ge n$.
+Therefore $X=Y(A-n)+m+Tq\ge0$.
+\end{proof}
+
+This argument establishes the sign needed to apply the later Pell
+theorem; it does not assume the Pell classification while trying to
+prove one of its hypotheses. The certificate checks the exact frame
+norm, the sum defining $W$, the relevant base-modulus row, and a
+nonnegative-coefficient identity for $W-n$. All required signs occur
+earlier in its schedule.
+
+\subsection{The actual sign certificate}
+
+The frozen construction has 163 ordinary guards and eight paired guards.
+The latter seed 16 coordinate signs with only eight ternary
+representations. It then uses the rules in Table~\ref{tab:signs}.
+All 781 original coordinates are proved nonnegative. Guard auxiliary
+coordinates remain unrestricted, as they should.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Rule applications after ordinary guard seeds & Number\\
+\midrule
+Nonnegative polynomial evaluation & 571\\
+Shifted quotient & 13\\
+Centered pair (two conclusions each) & 8\\
+Common-frame root orientation & 18\\
+\bottomrule
+\end{tabular}
+\caption{Exact sign-certificate census. Counting conclusions gives
+$163+571+13+2\cdot8+18=781$.}
+\label{tab:signs}
+\end{table}
+
+There are $171=163+8$ ternary guard rows, giving
+$781+3\cdot171=1294$ unrestricted variables and
+$677+171=848$ residuals before projection.
+
+Starting from an arbitrary integer zero, the guards and the ordered
+sign proof show that its original 781 coordinates form a natural zero
+of the unchanged parent. Conversely, a natural parent zero makes
+every selected coordinate and centered product nonnegative.
+The ternary representation extends it to an integer zero of the guarded
+system. This proves both existential directions without searching for
+solutions or assuming that every sign is syntactically obvious.
+
+\subsection{Certified monic projection}
+
+Over $\Z$, a row $v-f(y)=0$ can be removed by substituting $f$ for $v$
+in every other row. The inverse uniquely restores $v=f(y)$, regardless
+of the signs of the coefficients of $f$. Each step checks that the
+chosen row is exactly monic, that $f$ does not contain $v$, and that
+\emph{every} remaining residual stays quadratic. Guards are substituted
+along with all other rows and are never discarded merely because
+their variable has been eliminated.
+
+For $P_{956}$, 338 coordinates and rows disappear: 223 affine
+restorations and 115 quadratic restorations, comprising 271 arithmetic
+gates and 67 other witnesses. Thus
+\[
+              1294-338=956,\qquad848-338=510.
+\]
+For $P_{989}$, restricting the support of a candidate restoration to at
+most four terms leaves 305 valid eliminations and therefore 989 variables
+and 543 rows. The support threshold controls the size of the resulting
+expression, not the mathematical validity of the projection.
+
+The final sum of squares is expanded with exact integer arithmetic.
+The collected dictionary contains degree-four terms and every counted
+coordinate occurs. This proves the advertised exact degree, support,
+and height. Composing the preceding two-way transformations with the
+direct source calibration proves Theorem~\ref{thm:main}.
+
+\input{../nine/notes.tex}
+
+\section{Shorter exact radical norms}
+\label{sec:norms}
+
+The final contribution changes only an evaluator, not its polynomial or
+zero set. It consequently transfers the parent's exact degree and
+semantic equivalence without a new witness transformation. All actual
+fixed numeral payloads are retained.
+
+Define the formal radical norm
+\[
+ F_m(x;a_1,\ldots,a_m)
+  =\prod_{\varepsilon\in\{\pm1\}^m}
+      \left(x+\sum_{j=1}^m\varepsilon_j\sqrt{a_j}\right).
+\]
+Conjugation shows that this is an integer polynomial in $x,a_1,\ldots,a_m$.
+To handle one rational radicand, use the cleared polynomial
+\[
+ \delta^{2^{m-1}}
+ F_m(x;a_1,\ldots,a_{m-1},C/\delta).
+\]
+The following are identities of integer polynomial rings, including at
+$\delta=0$ after clearing. Their literal circuits have neither radicals
+nor division. Any nonzero-denominator hypothesis in the parent's
+semantic interpretation is unchanged.
+
+\subsection{A polarized three-root norm}
+
+Set
+\[
+ z=x^2,\qquad G=\delta(z+a-b)-C,\qquad
+ U=\delta^2az,\qquad V=\delta bC.
+\]
+Then
+\begin{equation}\label{eq:norm3}
+ \delta^4 F_3(x;a,b,C/\delta)
+                  =[G^2+4(U-V)]^2-16UG^2.
+\end{equation}
+One can verify this by taking the two conjugates of the two-root norm,
+or by comparison with the symmetric form
+\[
+ [J^2-4(T+R(a+b))]^2-64TRx^2,
+\]
+where $J=\delta(x^2-a-b)-C$, $T=\delta^2ab$, and $R=\delta C$.
+The exact checker compares all 35 coefficients in the free variables
+$x,a,b,C,\delta$. Sharing the displayed products gives 18 operations,
+one fewer than the retained 19-operation implementation.
+
+\subsection{A four-root norm with shared inner products}
+
+Let $s=a+b$, $x_2=x^2$, and define
+\begin{align*}
+ q_0&=\delta(x_2+c-s)-C,&q_1&=-2\delta x,\\
+ T&=\delta^2ab,&R&=\delta C,&z&=64TR,\\
+ A_0&=q_0^2+cq_1^2-4(T+Rs),&A_1&=2q_0q_1,\\
+ f_0&=A_0^2+cA_1^2-z(x_2+c),&f_1&=2(A_0A_1+zx).
+\end{align*}
+In the quadratic algebra $u^2=c$, the inner cleared three-root norm
+at $x-u$ is $f_0+f_1u$. Its norm is therefore
+\[
+                              f_0^2-cf_1^2.
+\]
+This uses 38 operations rather than 43. All 495 free polynomial
+coefficients are compared. The archive supplies the generic identity;
+it does not claim an additional complete four-root endpoint in the
+comparison table.
+
+\subsection{Pair diagonal conjugates in the five-root norm}
+
+Work in the biquadratic algebra $u^2=c$, $v^2=d$. If the inner
+cleared norm is written
+\[
+                    f=f_0+2f_1u+2f_2v+2f_3uv,
+\]
+pair simultaneous sign reversal first. Direct multiplication gives
+\[
+ f(u,v)f(-u,-v)=G+4uvH,
+\]
+where
+\[
+ G=f_0^2+4(cd f_3^2-cf_1^2-df_2^2),\qquad
+ H=f_0f_3-2f_1f_2.
+\]
+The other two conjugates give $G-4uvH$. Thus
+\begin{equation}\label{eq:norm5core}
+                  \operatorname{Norm}(f)=G^2-16cdH^2.
+\end{equation}
+Keeping the odd components divided by two is the useful computational
+choice: there is no need to materialize all three factors of two before
+taking the norm.
+
+For completeness, the inner components are supplied by the following
+finite polynomial formulas. Set $t=x+u+v$, $s=c+d$, and
+\begin{align*}
+ q_0&=\delta(x^2+s-a-b)-C,&q_3&=2\delta,&q_1&=q_3x,\\
+ T&=\delta^2ab,&R&=\delta C,&z&=64TR,\\
+ A_0&=q_0^2+s q_1^2+cd q_3^2-4(T+R(a+b)),\\
+ A_1&=2q_1(q_0+dq_3),&A_2&=2q_1(q_0+cq_3),\\
+ A_3&=2(q_0q_3+q_1^2).
+\end{align*}
+Then
+\begin{align*}
+ f_0&=A_0^2+cA_1^2+dA_2^2+cd A_3^2-z(x^2+s),\\
+ f_1&=A_0A_1+dA_2A_3-zx,\\
+ f_2&=A_0A_2+cA_1A_3-zx,\\
+ f_3&=A_0A_3+A_1A_2-z.
+\end{align*}
+Indeed $q=\delta(t^2-a-b)-C=q_0+q_1u+q_1v+q_3uv$, and these
+are exactly the components of the cleared three-root polynomial
+$[q^2-4(T+R(a+b))]^2-zt^2$.
+
+The resulting five-root circuit uses 84 operations rather than 93.
+The checker compares all 20,349 coefficients of the free norm identity
+and verifies exact substitution into the seven complete boundary
+registers of each 13-integer parent. This proves equality of the
+\emph{whole} parent and child polynomials, not agreement on sampled
+inputs. It gives the four 13-variable improvements in
+Table~\ref{tab:small}; \eqref{eq:norm3} gives the 11-positive-variable
+improvement.
+
+\section{Literal specification, provenance, and proof status}
+\label{sec:artifacts}
+
+\subsection{What makes these equations explicit}
+
+The direct and integer equations are supplied twice: as literal
+quadratic residual arrays and as fully collected quartic coefficient
+dictionaries. A term is encoded as
+\begin{lstlisting}
+[coefficient, [zero_based_variable_indices]]
+\end{lstlisting}
+Repeated indices denote powers; an empty index list denotes a constant.
+For example, $-3X_2^2X_7$ is \texttt{[-3,[2,2,7]]}. Every coefficient
+is a literal signed integer. Variable names are annotations and do not
+alter the polynomial. The archive's manifest authenticates every byte.
+
+The small-variable equations are literal finite straight-line programs
+with addition, subtraction, and multiplication. Every fixed leaf is
+bound to the included exact numeral bytes, separately for each
+coherent source tuple. They are not parameterized families awaiting
+a choice of coefficients. Radical, factorial, power, finite-product,
+and proof-calculus notation occurs only in explanations and proofs.
+
+Printing 10,988 monomials in the article would obscure the definition
+without making it more exact. The coefficient file, its residual
+definition, the deterministic generator, and the independent expansion
+checker give four mutually checkable specifications. The full file is
+part of this submission, not an external dependency or an unspecified
+computable constant.
+
+\subsection{Important entry points in the archive}
+
+\begin{longtable}{@{}p{0.43\textwidth}p{0.53\textwidth}@{}}
+\toprule
+Path & Content\\
+\midrule\endhead
+\file{README.md} & Results, exact domains, commands, and proof scope.\\
+\file{report/main.tex} and \file{report/main.pdf} & This article, with its TeX inputs.\\
+\file{direct/equations/parent781/} & Frozen square-radius natural parent, macro ledger, and bound certificates.\\
+\file{direct/equations/natural467/} & Complete output-linear natural quartic and restoring maps.\\
+\file{direct/equations/natural468/} & Complete square-radius natural quartic.\\
+\file{direct/equations/natural469/} & Smaller-support natural alternative.\\
+\file{integer/equations/integer956/} & Main integer quartic, guarded parent, sign proof, restoring maps, and expansion.\\
+\file{integer/equations/integer989/} & Integer alternative with 26-bit coefficient height.\\
+\file{nine/equations/} & Two complete nine-positive-variable polynomial DAGs.\\
+\file{norms/equations/} & Five complete shorter polynomial evaluators.\\
+\file{direct/provenance/upstream/} & Identified inherited direct arithmetic and source-calibration materials.\\
+\file{BASELINES.md} & Exact comparison sources at the pinned repository snapshot.\\
+\file{verify.py} & Portable release checks, including all component checks.\\
+\file{checks/} & Release receipts and independent review scopes.\\
+\file{MANIFEST.json} & SHA-256 inventory of the delivered files.\\
+\bottomrule
+\end{longtable}
+
+\subsection{What the exact checks establish}
+
+The release checks rebuild both natural parents byte for byte, reproduce
+the natural contractions, replay every restoring substitution, and
+independently collect every squared residual. They authenticate source
+pins, actual fixed numeral bytes, and constructor and macro bindings.
+The integer checker imports neither its builder nor its projection
+optimizer: it independently verifies sign dependencies, coefficient
+identities, guard coverage, projections, and the final expansion.
+It rejects a missing pair guard, a false frame margin, an altered
+restoring polynomial, and an altered final coefficient.
+
+The nine-positive-variable checker verifies the exact majorant defect,
+its positivity certificate, all new register formulas, norm identities,
+literal source-prefix bindings, liveness, operation counts, and the
+cancellation-resolved exact degree. Its nonzero leading coefficients
+are also authenticated for the actual numeral specialization.
+The norm checker proves free polynomial identities by coefficient
+comparison and authenticates their substitutions into each complete
+parent.
+
+Normal Python and optimized Python runs are supplied. The mathematical
+checks use explicit exceptions, not removable \texttt{assert}
+statements as their acceptance condition. The component executables
+need only the Python standard library and local packaged files.
+No verification command searches for a solution of a consistency
+equation.
+
+\subsection{What the checks do not establish}
+
+Finite algebra checks do not replace the unbounded equivalence proofs.
+The factorial fixed-point proof, source reparameterization, integer
+sign rules, and nine-variable majorant argument are ordinary
+mathematical proofs formalizable in ZFC. Their interpretation as
+consistency equations also uses the identified inherited compiler,
+finite-flow, and C222-to-ZF-to-ZFC calibration theorems.
+
+This release does not claim a new complete Lean or Rocq proof term,
+nor a fully emitted derivation in an encoded object-language ZFC proof
+system. The retained Lean sources identify the calibration interfaces;
+the release's standard-library checkers do not invoke a proof-assistant
+kernel or rebuild the entire upstream formal development. A reader
+wanting that stronger assurance must formalize the new transformations
+and replay the identified upstream development.
+
+The distinctions are material: a correct coefficient transcript, a
+universal mathematical equivalence, a proof-assistant theorem, and an
+encoded internal proof object are different deliverables. This archive
+supplies the first two and identifies the inherited dependencies of
+the second. It does not label an experimental receipt as a proof of
+$\Con(\ZFC)$.
+
+\subsection{Reproduction}
+
+From the extracted archive root, run
+\begin{lstlisting}
+python3 verify.py
+python3 -O verify.py
+sh build_report.sh
+\end{lstlisting}
+The first two commands run the packaged checks in a temporary copy,
+so the verified delivered files are not rewritten. The report build
+requires a conventional LaTeX installation with the packages listed
+in \file{report/main.tex}. Mathematical validation does not require
+LaTeX or internet access.
+
+For a particular integer equation, the independent entry point is
+\begin{lstlisting}
+python3 integer/verify_integer.py \
+  --parent direct/equations/parent781/equation.json \
+  --equations integer/equations/integer956
+\end{lstlisting}
+For reconstruction, \file{integer/build_integer.py} accepts the
+literal natural parent and an output directory; the support caps
+16 and 4 give the two delivered integer variants. The source compiler
+accepts \texttt{--radius square} or \texttt{--radius linear}.
+
+\section{Assessment of the contribution}
+
+The most reusable result is Theorem~\ref{thm:fixedpoint}. A large
+independent precision parameter is often introduced in Diophantine
+approximations to an integer-valued function. Here a polynomial in
+the proposed output supplies that precision, and a two-stage lower
+bound proves uniqueness of the fixed point. The gain is not just
+the replacement of one displayed formula by another: one actual
+positive-power request, its distinct base-modulus machinery, and
+associated coordinates disappear from the emitted polynomial.
+
+The rule-branch reduction attacks a different source of size: two
+labels were kept as local bounded coordinates even though the
+selected inference rule already determined them. Eliminating them
+before the bounded-quantifier compiler saves more than eliminating
+two variables at the end. The enlarged carrier label bound is essential
+to that argument and is included explicitly.
+
+The integer reduction then uses consequences of the literal rows to
+avoid independent sign representations. The shifted-quotient and
+common-frame arguments are semantic facts about an integer zero
+of those rows; exact identities and an acyclic dependency schedule
+make those facts independently checkable. The resulting equation
+remains quartic throughout.
+
+The smaller-variable improvements pursue a separate goal. The
+nine-variable construction obtains a stricter majorant with controlled
+cost and exact degree, while the norm identities preserve entire
+polynomials and reduce their evaluation cost. These are concrete
+improvements over specified parents, with all coefficient choices
+fixed. None establishes a globally simplest consistency equation or
+certifies that the ideas have never appeared elsewhere.
+
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{proveit}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt}, repository snapshot
+\texttt{\RepoPin}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/8f8fac484b976ba0ab75fd173282e838ca5a3b85}.
+Relevant directories: \file{Computability/HilbertTenthProblem},
+\file{Computability/DiophantineConsistency/con-zfc-diophantine-forms},
+and \file{docs/incoming}.
+
+\bibitem{synchronized}
+ProveIt incoming submission,
+\emph{ConZFC Synchronized Certificates},
+\file{ConZFC_Synchronized_Certificates_2026-10-24.zip}, at the snapshot
+in~\cite{proveit}. The present direct parent imports its shared
+positive-power frame, product-index sharing, and direct source lineage.
+
+\bibitem{batched}
+ProveIt incoming submission,
+\emph{ConZFC batched certificates},
+\file{con_zfc_batched_certificates_2026-10-23.zip}, at the snapshot
+in~\cite{proveit}. Source of the 1,690-integer direct baseline,
+the degree-1,072 13-integer parent, and the monic projection adapter.
+
+\bibitem{normparents}
+ProveIt incoming submission,
+\emph{ConZFC 13 Integer Norms},
+\file{ConZFC_13_Integer_Norms_2026-10-24.zip}, at the snapshot
+in~\cite{proveit}. Exact retained parents and notices are included
+under \file{norms/upstream/}.
+
+\bibitem{three-squares}
+Anna Danilkin and Lo\"ic Chevalier,
+\emph{Three Squares}, Archive of Formal Proofs, 3 May 2023.
+\url{https://isa-afp.org/entries/Three_Squares.html}.
+Includes the integer nonnegativity representation
+$n=x^2+y^2+z^2+z$.
+
+\bibitem{jones}
+James P. Jones, \emph{Universal Diophantine equation},
+Journal of Symbolic Logic \textbf{47} (1982), 549--571.
+Background for the separate universal-polynomial line; it is not an
+ingredient of the new direct C222 quartic source.
+
+\bibitem{universal}
+Jonas Bayer, Marco David, Malte Ha\ss ler, Yuri Matiyasevich, and
+Dierk Schleicher,
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}, arXiv:2506.20909, version 3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909}.
+Background on keeping variable, degree, coefficient, and formalization
+claims separate.
+
+\end{thebibliography}
+\end{document}

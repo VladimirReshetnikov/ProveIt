@@ -1,0 +1,131 @@
+\section{Compatible sign recovery and low-degree integer equations}
+The incoming weighted-cone and residue-orientation arguments can be applied
+simultaneously, but this requires a completeness argument: both are
+restrictions on canonical witnesses, not identities on all old solutions.
+The resulting fixed-degree improvements are
+\[
+ (38,4)\longrightarrow(37,4),\qquad
+ (32,6)\longrightarrow(30,6),\qquad
+ (27,8)\longrightarrow(26,8),
+\]
+where each pair means number of unrestricted integer variables and total
+degree. Further exact projections give $(25,10)$, $(24,12)$ and $(23,16)$.
+All equations are sums of explicitly listed residual squares. Their literal
+packets, six actual coefficient payloads, full restoration maps and proofs
+are in \texttt{positivity/}.
+
+\subsection{The common quartic source}
+Use the whole source-34 coefficient tuple, including its already shifted
+mask $M_F$, and fixed weights $A=2^{1113}$, $B=2^{666104}$. Write
+\[
+ q=\beta J+1,\quad C=q-F-\alpha,\quad
+ T=AFBC-(q-AF-BC)^2,
+ \quad \operatorname{Pos}(p,q,r)=1+p^2+q^2+r(r+1).
+\]
+The source has the two sign rows $T=\operatorname{Pos}(\mathbf t)$ and
+$\eta\zeta=\operatorname{Pos}(\mathbf e)$, each using three private
+integer coordinates. If $T>0$, then $AF$ and $BC$ have one nonzero sign and
+\[
+ |q-AF-BC|<\sqrt{AFBC}\leq (|AF|+|BC|)/2.
+\]
+Since $A,B\geq2$, this forces $q,F,C,\alpha$ to share one strict sign.
+Thus the older positive products $F\alpha$ and $FC$ are recoverable.
+Conversely the retained canonical support-and-carry proof gives
+$q/2\leq AF<4q/5$ and $q/2\leq BC<3q/5$, uniformly under the permitted
+rank-tuning changes. Hence every canonical accepting witness has $T>0$.
+
+Now delete the square guard $X=2u^2$ and its private unknown $u$.
+The compact variant substitutes $X=3X_3-1$. The projection-friendly variant
+instead substitutes
+\[
+ J=3J_3+1,\qquad w_{\rm scale}=3w_3+1.
+\]
+Here $\beta=2^{1064921}-1\equiv1\pmod3$, so
+$q\equiv2$, $W=4(3w_3+1)\equiv1$, and $X=Wq\equiv2\pmod3$.
+The inherited signed Pell argument recovers $X=\epsilon2^R$ with $R$
+odd before imposing a sign on $X$. Its residue therefore selects
+$\epsilon=1$, restoring $u=2^{(R-1)/2}$. The determinant guard supplies
+exactly the older common-sign hypotheses needed by that argument.
+For the direct variant $X\ne0$ and $X=4q w_{\rm scale}$ give
+$|4w_{\rm scale}|\geq4$, as required by the same signed proof.
+
+Completeness of the combined restrictions is important. The canonical
+family has $q=2^t$ with $t$ odd and
+$w_{\rm scale}=2^{R-t-2}$ with nonnegative even exponent. Thus
+$J=w_{\rm scale}=1\pmod3$. The cone estimate is uniform over this
+same rank-tuned family, rather than over an incompatible family.
+Consequently both 37-variable quartics have the required consistency
+calibration. Their $\tau^4$ coefficient is one.
+
+\subsection{An ideal-preserving sextic projection}
+For the affine quartic let $k=\eta+\zeta$ and $H=4a+3$.
+Center two roots by
+\[
+ \tau_{\rm old}=\tau+E(c-\eta),\qquad D_{\rm old}=D+ac,
+\]
+and eliminate seven monic registers:
+\[
+ P=k+E(c-\eta),\quad X=Wq,\quad N=q(L+1),\quad C_2=c^2,
+ \quad\Delta=a^2+4a+3,\quad V=fo-c,\quad B_{\rm aux}=I^2.
+\]
+Keep $F_2=f^2$. Replace the restored row $V^2+g-y^2$ by
+\[
+ F_2o^2-2foc+c^2+g-y^2.
+\]
+Their difference is $o^2(F_2-f^2)$, a multiple of a retained equation.
+The two root translations give exact cancellations
+\begin{align*}
+ (\tau+E(c-\eta))^2-(k+E(c-\eta))E(c-\eta)-1
+ &=\tau^2+(2\tau-k)E(c-\eta)-1,\\
+ (D+ac)^2-(a^2+4a+3)c^2-1
+ &=D^2+2acD-(4a+3)c^2-1.
+\end{align*}
+All 17 resulting residuals are at most cubic, giving a sextic in
+$37-7=30$ unrestricted integers. The coefficient of $I^4g^2$ is one.
+The polynomial restorations, root translations and retained $F_2$ row
+prove an integer zero-set bijection, not just an equisatisfiable heuristic.
+
+\subsection{Transport pivots and a joint-positive-value row}
+The ordinary eleven-register projection of the affine quartic gives
+26 unknowns, 13 quartic residuals, and an octic. Put
+$k_0=1-V+jc+hE$; its two sign quantities are $T$ and
+$Z=\eta(k_0-\eta)$. The coefficient $[a^4f^4]$ of the octic is one.
+
+Replacing $\alpha$ by $C=q-F-\alpha$ makes the transport row monic:
+\[
+ (K_0+W)C-F-z(q-1)=0.
+\]
+Eliminate $F=(K_0+W)C-z(q-1)$ exactly. The packing polynomial becomes
+\[
+ (q-F)(q^3-q)-C(q^2-1)+(M_C+qM_F)(3J_3+1),
+\]
+of degree at most five. The result has 25 unknowns and degree ten;
+its coefficient at $w_3^2C^2J_3^6$ is $104976\beta^6>0$.
+
+For arbitrary integers $x,y$ the nearest-square lemma is
+\[
+ x,y>0\quad\Longleftrightarrow\quad
+ \exists t\in\mathbb Z:\quad
+ G(x,y,t):=xy-(t^2-x-y+1)^2>0.
+\]
+For soundness, $G>0$ implies $xy>0$, while two negative arguments make
+the squared term larger than $xy$. For completeness set $n=x+y-1$;
+then $1\leq n\leq xy$, and a nearest square has squared error less than
+$n$, unless the error is zero. This proves $G>0$.
+
+Replace the two independent sign triples in the 26-variable octic by
+\[
+ G(T,Z,t)=\operatorname{Pos}(p,q_0,r).
+\]
+There are now 24 unknowns and 12 residuals. Since $T$ is quadratic and
+$Z$ cubic, this equation has degree twelve, certified by the coefficient
+$[\eta^4j^4c^4]=1$. Applying the same transport pivot gives 23 unknowns
+and 11 residuals of total squared degree sixteen. Its coefficient
+$[w_3^8C^8]=429981696A^8$ is positive on the actual fixed tuple.
+These two sign substitutions preserve existence by explicit witness
+selection and restoration; they are not bijections on private witnesses.
+
+The component checks exact algebra, liveness, degree certificates, actual
+coefficient payloads and independently coded compact formulas. Those finite
+checks supplement the unbounded proofs; they do not establish native
+compiler semantics or an end-to-end proof-assistant theorem.

@@ -1,0 +1,265 @@
+\section{Denominator-free and centered three-root transport}
+\label{sec:pell-three-root}
+
+Two new eleven-positive-variable endpoints improve the inspected
+degree-$325$, $113$-operation construction of source~70:
+\[
+ \boxed{\deg P_{11}=277,\quad 111\text{ operations}},\qquad
+ \boxed{\deg \widetilde P_{11}=257,\quad 114\text{ operations}}.
+\]
+The first deletes a denominator guard using the adjacent-coefficient
+Pell descent of source~69.  The second additionally centers the auxiliary
+root and proves transport positivity by a new signed bootstrap.  They are
+different degree/cost choices.  Every multiplication by a numeral and every
+square is charged; fixed numeral leaves and register reuse are free.
+Neither construction changes the known nine-positive-variable bound or
+claims global optimality.  All native compiler and literal
+machine/refutation calibrations remain named inherited dependencies.
+
+\subsection{A denominator guard that can be deleted}
+
+The following elementary fact replaces the prime-support argument in
+source~70.
+
+\paragraph{Adjacent-coefficient descent.}
+If $Q>1$ and $V$ are integers, $y$ is rational, and
+\[
+ QV^2-(Q-1)y^2=1,
+\]
+then $y$ is an integer.  Indeed, replace both coordinates by their
+absolute values and write $y=a/m$ in lowest terms.  Then $m^2\mid Q-1$.
+For $V>1$ apply
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+Here $V'$ is integral, the same norm is preserved, and $y>V$ and
+$QV>(Q-1)y$ give $-V<V'<V$.  The norm excludes $V'=0$.
+Since $2Q-1\equiv1\pmod m$, the reduced denominator of $y'$ is still
+$m$.  Strong induction reaches $V=1$, where $y=1$, and proves $m=1$.
+
+Thus, after a sum-of-three-roots argument has made the auxiliary root
+rational, no denominator constraint involving the first transport modulus
+is needed.  In particular source~70's $I=iq(q-1)c^2$ can be replaced by
+$I=ic^2$, deleting two multiplication gates.  The unconditional separation
+proof used only $I\ge c^2$ and remains valid.
+
+\subsection{Complete polynomials}
+
+The eleven unknowns are
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma\in\mathbb Z_{>0}.
+\]
+The four fixed numeral ports are the complete compact44 tuple
+$\beta,K_0,M_C,M_F$, with $\beta=2^{590069}-1$ and $M_F$ already
+shifted.  They are not free parameters; their authenticated payloads and
+whole-tuple binding accompany the circuits.  Every other symbol below is
+a polynomial register, not another quantified variable.  Define
+\begin{gather*}
+ J=3j+1,\qquad q=\beta J+1,\qquad C=q-F-\alpha,\\
+ E=XY,\qquad k=\eta+\zeta,\qquad c=kY+\eta,\\
+ a=E+Y,\qquad H=4a+3,\qquad \Delta=a^2+H=(a+2)^2-1,\\
+ \ell=EkY,\qquad I=ic^2,\qquad M=q^3(q-1),\\
+ R=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ \widehat R=q^3(q+F+\alpha),\qquad B_t=(qK_0+X)C-qF,\\
+ D_\tau=\ell(\ell+k)+1,\qquad D_f=1+\Delta I^2,\\
+ Q=\Delta^2I^2,\qquad \delta=Q-1,\qquad V=D_f(cT-R)-c,\\
+ r_0=k-R-1,\qquad S=4qY,\qquad U=qS,\\
+ D_*=U(X+ac)+H(U\gamma+SX-r_0),\\
+ A_1=D_*^2-U^2(1+\Delta c^2).
+\end{gather*}
+
+For the degree-$277$ endpoint choose
+\[
+ L=3D_f(cT+\widehat R),\quad h_*=L,\quad
+ W=1+(q-1)h_*,\quad
+ Z=M(\ell+k+n+L)+(q-1)Y-q^3WB_t.
+\]
+For the degree-$257$ endpoint instead choose
+\begin{align*}
+ B_0&=cT+\widehat R,&L&=D_f+B_0,\\
+ h_*&=4qD_f+L,&W&=1+(q-1)h_*,\\
+ Z&=M(\ell+k+n+L+V)+(q-1)Y-q^3WB_t.
+\end{align*}
+The shared division-free final norm is
+\begin{align*}
+ A&=M^2D_\tau,&B_f&=M^2D_f,&C_y&=M^2(QV^2-1),\\
+ T_N&=\delta^2AB_f,&R_N&=\delta C_y,\\
+ J_N&=\delta(Z^2-A-B_f)-C_y,\\
+ N_c&=J_N^2-4\bigl(T_N+R_N(A+B_f)\bigr),\\
+ N_8&=N_c^2-64T_NR_NZ^2,\\
+ P&=N_8+A_1+N_8A_1.
+\end{align*}
+The literal graphs are \texttt{p11\_positive\_degree277.json} and
+\texttt{p11\_positive\_degree257.json}.
+
+\subsection{Three-root separation and the degree-277 lift}
+
+In proof only put $D_y=(QV^2-1)/(Q-1)$, and let
+$t=\sqrt{D_\tau}$, $f=\sqrt{D_f}$ and $y=\sqrt{D_y}$ be positive.
+For every positive input, independently of any equation or sign of $C$,
+\[
+ 1<D_\tau<D_f<Q,\qquad |V|>1,\qquad D_y>V^2.
+\]
+The radicand $D_y$ cannot equal either integer $D\in\{D_\tau,D_f\}$:
+that would give $Q(D-V^2)=D-1$ with $0<D-1<Q$.
+There is also strict root dominance.  Write $b=cT-R$.
+If $b=0$, then $V=-c$, $y<c+1$ and $f>t+y$.
+If $b\ne0$, then $|V|\ge D_f-c>2f>f+t$, hence $y>f+t$.
+These estimates use $I\ge c^2$, $c\ge3$ and
+$f>(a+1)I\ge3c^2$.  Thus no signed sum of the three roots is zero.
+
+The universal octic sum norm is
+\[
+ F_8(x;a,b,c)=
+ \bigl[(x^2-a-b-c)^2-4(ab+ac+bc)\bigr]^2-64abcx^2.
+\]
+It is the product of the eight signed-root factors.  The displayed
+$N_8$ is exactly $\delta^4F_8(Z;A,B_f,C_y/\delta)$.
+At $N_8=0$, therefore,
+\[
+ Z/M=\tau_*+f_*+y_*,\qquad
+ \tau_*^2=D_\tau,\quad f_*^2=D_f,\quad y_*^2=D_y.
+\]
+A rational signed sum of three distinct square roots, with no zero
+signed sum, forces each root rational.  One exact extraction is as follows:
+for signed roots $x_1,x_2,x_3$ with rational nonzero sum $s$ and squares
+$a,b,c$, put
+\[
+ u=(s^2-a-b-c)/2,\quad
+ v=(u^2-ab-ac-bc)/(2s),\quad
+ x_1=\frac{a(a+u)}{as+v}.
+\]
+The denominator is $x_1(x_1+x_2)(x_1+x_3)\ne0$; cycle the formula.
+Consequently $\tau_*,f_*$ are integers by rational-square integrality,
+and $y_*$ is an integer by the preceding Pell descent.
+
+For the $277$-degree construction, $L>f+y$ unconditionally.  Recover
+\[
+ r=n+L-f_*-y_*>0,\quad f_{\rm old}=|f_*|,\quad
+ i_{\rm old}=i,\quad u=|y_*|-V>0.
+\]
+These are precisely the weighted source equations.  Conversely choose
+canonical strong and auxiliary source witnesses first, then $L,W$ and
+the transport witness.  The inherited weighted theorem gives
+$r>qW-2k>L$, so $n=r-L+f+y>0$.  No stronger divisibility than
+$c^2\mid I$ is required.
+
+\subsection{The new centered sign bootstrap}
+
+The centered endpoint cannot assert $r>0$ before proving $V>0$.
+The following order resolves that issue.
+
+First recover all three integral roots as above.  Since $M\mid Z$,
+reduction modulo $q^3$ and $q-1$ gives
+\[
+ q^3\mid Y,\qquad q-1\mid B_t.
+\]
+No transport positivity is used here.  Also $A_1=0$ makes $D_*/U$
+integral; classify its \emph{absolute value} as a positive Pell root.
+Together with the first Pell root, this gives
+\[
+ c=\psi_{a+2}(p),\quad k=2\psi_{2XY^2+1}(m),\quad p,m\ge1.
+\]
+Here $c\ge3$ implies $p\ge2$.  The case $m=1$ would give $k=2$ and
+$c=2Y+1<2(a+2)$, a contradiction.  Hence
+\[
+ c>8XY^3\ge8q^9. \tag{*}
+\]
+
+The authentic mask bounds give $|R|<\widehat R$, hence
+$|V|<D_fB_0$, while $\delta>D_f$ and $D_f>f$.  Therefore
+\[
+ 0<y-|V|<|V|/\delta<B_0.
+\]
+In particular $L+V>f+y$ if $V>0$.
+
+Suppose now that $C\le0$.  Set $d=-C\ge0$ and
+$B=-B_t=(qK_0+X)d+qF>0$.  Since $K_0\ge1$ and
+$(M_C+qM_F)J<2q^2$, direct expansion gives
+\[
+ qB\ge q^2d+q^2F,\qquad R<qB+q^4+q^2.
+\]
+Writing $s=Y/q^3>0$, the root equality becomes
+\[
+ \tau_*+f_*+y_*=
+ \ell+k+n+L+V+s+\frac{WB}{q-1}. \tag{**}
+\]
+If $V>0$, the right side is greater than $t+f+y$, impossible.
+If $V<0$, then the integer $cT-R$ is nonpositive, so
+$R\ge cT\ge c>8q^9$.  Thus $q^4+q^2<R/2$ and $R<2qB$.
+Moreover $|V|<D_fR$, so $L+V-f-y>-2D_fR$, whereas
+\[
+ \frac{WB}{q-1}>4qD_fB>2D_fR.
+\]
+Again the right side of $(**)$ exceeds $t+f+y$.
+The impossible case $V=0$ was already excluded.  This proves $C>0$.
+
+Only now use the authentic bound $3q<R<q^4-2$.
+Together with $(*)$ it gives $V>1$, and therefore
+\[
+ r=n+L+V-f_*-y_*\ge n+L+V-f-y>n>0.
+\]
+The old positive strong and auxiliary coordinates are recovered exactly
+as before.  The weighted carrier soundness theorem now applies.
+
+For completeness choose canonical strong and auxiliary data before
+computing $L,h_*,W$.  Since $h_*>L+k$, the canonical transport variable
+satisfies $r>qW-2k>L$.  Set
+\[
+ n=r-L-V+f+y=r-L+f+u>0.
+\]
+This gives the displayed centered norm.  The old positive main-carrier
+coordinate $\gamma$ is unchanged.  This is an existence equivalence,
+not a bijection between every old and new zero set.
+
+Both $N_8$ and $A_1$ are squares modulo four.  Thus
+$(1+N_8)(1+A_1)=1$ forces both factors to be $1$, since $-1$ would
+require a residual $-2$.  The single equation is therefore equivalent
+to the two residual equations.  Under the inherited interfaces, positive
+solvability is equivalent to a finite ZFC refutation; negation gives
+the stated consistency equivalence.
+
+\subsection{Exact degrees and checks}
+
+For the uncentered construction the exact degrees of
+$I,D_f,Q,V,L,W,Z,N_c,N_8,A_1$ are respectively
+\[
+ 5,14,18,18,18,19,24,132,264,13.
+\]
+The coefficient of
+$j^{60}i^{24}\eta^{49}X^{42}Y^{85}\alpha^{16}\gamma$
+in the degree-$277$ polynomial is
+$2^7 3^8(3\beta)^{60}>0$.
+
+For the centered construction put $z=Z-MV$ in proof only.  The exact
+cancellation identity is
+\[
+ J_N=\delta\{z(z+2MV)-A-B_f\}-M^2(V^2-1).
+\]
+Here $\deg z=21$, $\deg Z=22$, and the five displayed summand degrees
+are $60,61,34,40,44$.  Thus $\deg J_N=61$,
+$\deg N_c=122$ and $\deg N_8=244$; the subtracted norm correction
+and tail have degrees $102$ and $198$, respectively.  The coefficient of
+\[
+ j^{52}i^{24}\eta^{49}X^{38}Y^{85}F^4\alpha^4\gamma
+\]
+is $2^{19}(3\beta)^{52}>0$, proving exact degree $257$ after actual
+fixed-port specialization.
+
+Both standard-library builders reproduce the literal graphs byte for
+byte.  Both exact checkers pass normally and under \texttt{python -O}:
+prefix identities, the eight-factor norm, rational extraction identities,
+main-carrier cancellation, centered cancellation, degree heads, selected
+coefficients, gate ledgers and fixed coefficient hashes.  Independent
+review receipts are kept separately.  These finite checks do not prove
+the unbounded native/compiler interfaces or the consistency of ZFC.
+
+\paragraph{Unfinished four-root direction.}
+A direct ten-variable extension is not established.  Distinct radicands
+and a nonzero full signed sum no longer ensure rationality root by root:
+$\sqrt2+\sqrt8-\sqrt{18}+100=100$, with four distinct radicands and
+no vanishing full signed sum.  Even a stronger separation argument would
+not remove the main-residue versus transport-modulus obstruction from
+the earlier attempted merger.  The negative controls in this component
+record both issues; no ten-variable endpoint is claimed.

@@ -1,0 +1,193 @@
+{
+  "audited_sha256": {
+    "finalizers/ABSORPTION_PROOF.md": "9798a50c5965a75ae802759fe2b65fc58ac82a0582827a7ec0b3c06efddeb182",
+    "finalizers/absorbed15_degree176.json": "51d147acd7c6d11d9a57464e366805ea5d104be83d58f0260228620fece8294e",
+    "finalizers/absorbed15_degree176_dag.json": "c5edaaec84457b46f8c10e2e6ae40e76d7c31780c2a77d55a08172d3d74ff4b8",
+    "guard/PROOF.md": "6d32be33263697b18501831e416e1ab14ff5cfb9ae8daa5eb2e3064b837bf6e5",
+    "guard/budget12_aux_centered.json": "b86f2041f4267cc226d5c7b971fb07f4be7278ff2ff18c812e8e4d3067370421",
+    "guard/budget12_tau_centered.json": "ebf7385ffc2e92558637fbf6c98aa11bfb9f0f266abbea06fa8ce3850165c68a"
+  },
+  "boundary": "Exact local algebra, authentic fixed-coefficient degree certificates, and literal gate audits. Universal semantic deductions are reviewed in REVIEW.md; no new verification of inherited native compiler or syntactic refutation calibration.",
+  "checks": {
+    "absorption_exact_local_dag_cuts": 36,
+    "absorption_metrics": {
+      "counts": {
+        "add": 24,
+        "mul": 72,
+        "sub": 29
+      },
+      "degree_certificate": {
+        "degree": 176,
+        "leading_coefficient": 215929316,
+        "method": "exact finite differences on independent line, with separately proved degree upper bound",
+        "prime": 1000000007,
+        "slopes": {
+          "C_native": 21,
+          "J3": 11,
+          "T": 317,
+          "c": 381,
+          "f": 59,
+          "gamma": 259,
+          "h": 87,
+          "pair_pos1": 527,
+          "pair_pos2": 609,
+          "pair_root": 451,
+          "r": 121,
+          "t_parity": 697,
+          "v_scale": 161,
+          "w3": 207,
+          "z": 37
+        }
+      },
+      "operations": 125,
+      "variables": 15
+    },
+    "budget12_aux_centered_metrics": {
+      "counts": {
+        "add": 38,
+        "mul": 112,
+        "sub": 29
+      },
+      "degree_certificate": {
+        "degree": 1024,
+        "leading_coefficient": 907282306,
+        "method": "exact finite differences on independent line, with separately proved degree upper bound",
+        "prime": 1000000007,
+        "slopes": {
+          "C": 21,
+          "T": 207,
+          "c": 259,
+          "h": 59,
+          "j": 11,
+          "n": 317,
+          "p2": 381,
+          "p3": 451,
+          "r": 87,
+          "v": 121,
+          "w": 161,
+          "z": 37
+        }
+      },
+      "operations": 179,
+      "variables": 12
+    },
+    "budget12_aux_centered_outer_register_cuts": 43,
+    "budget12_tau_centered_metrics": {
+      "counts": {
+        "add": 39,
+        "mul": 112,
+        "sub": 29
+      },
+      "degree_certificate": {
+        "degree": 1000,
+        "leading_coefficient": 268095725,
+        "method": "exact finite differences on independent line, with separately proved degree upper bound",
+        "prime": 1000000007,
+        "slopes": {
+          "C": 21,
+          "T": 207,
+          "c": 259,
+          "h": 59,
+          "j": 11,
+          "n": 317,
+          "p2": 381,
+          "p3": 451,
+          "r": 87,
+          "v": 121,
+          "w": 161,
+          "z": 37
+        }
+      },
+      "operations": 180,
+      "variables": 12
+    },
+    "budget12_tau_centered_outer_register_cuts": 43,
+    "generic_five_root_norm": {
+      "method": "literal 32-sign product in formal root variables, followed by exact even-exponent reduction",
+      "monomials": 20349
+    },
+    "generic_parity_norm": {
+      "monomials": 98,
+      "zero_radicands_allowed": true
+    },
+    "generic_restoration_and_bound_identities": 8,
+    "guard_degree_1000": {
+      "inner_component_weights": [
+        250,
+        240,
+        247,
+        243
+      ],
+      "upper_bound": 1000
+    },
+    "guard_degree_1024": {
+      "inner_component_weights": [
+        256,
+        238,
+        245,
+        243
+      ],
+      "upper_bound": 1024
+    },
+    "source_pins_and_coefficients": "pass"
+  },
+  "negative_controls": {
+    "adjacent_coefficient_needed": {
+      "equation": "5*1^2-16*(1/2)^2=1",
+      "nonintegral_rational_root": "1/2"
+    },
+    "main_residue_obstruction_needed": {
+      "H": 3,
+      "M": 2,
+      "b0": 0,
+      "main_square": 18,
+      "other_squares": [
+        2,
+        4,
+        1,
+        1
+      ],
+      "reason": "2*(3 sqrt(2))+6*(-sqrt(2)+2-1-1)=0 despite an irrational main root; the actual b0=2 modulo 3 forbids this pattern."
+    },
+    "penalty_is_needed": {
+      "B": 6,
+      "G": 4,
+      "Z": 4,
+      "k": 4,
+      "omitted_penalty_square": 25,
+      "penalized_B": -250,
+      "q": 4,
+      "residual_square_sum": 1
+    },
+    "terminal_inequality_necessary": {
+      "rational_signed_sum": 125,
+      "reason": "100+20+5+sqrt(2)-sqrt(2)=125, so three leading separations alone do not force rational terminal roots.",
+      "roots_squared": [
+        10000,
+        400,
+        25,
+        2,
+        2
+      ]
+    },
+    "unique_imaginary_guard_necessary": {
+      "rational_signed_sum": 125,
+      "reason": "Two imaginary roots can cancel; the positivity proof for every other radicand is essential.",
+      "roots_squared": [
+        10000,
+        400,
+        25,
+        -2,
+        -2
+      ]
+    },
+    "zero_auxiliary_is_real_case": {
+      "A": 1,
+      "B": 1,
+      "C": 0,
+      "t": 1
+    }
+  },
+  "python_optimized": true,
+  "status": "PASS"
+}

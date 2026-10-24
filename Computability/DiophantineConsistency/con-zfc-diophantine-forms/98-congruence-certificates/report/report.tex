@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,microtype,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr,listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+pdftitle={Congruence, Radical Norms, and Direct Proof Certificates for Diophantine ZFC Consistency},
+pdfauthor={AI-assisted research contribution prepared for Vladimir Reshetnikov},
+pdfsubject={Explicit Diophantine equations, ordinary proofs, and reproducible finite verification}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}\newcommand{\Q}{\mathbb Q}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\Pair}{\operatorname{Pair}}
+\newcommand{\F}{\mathcal F}\newcommand{\vp}{\nu_3}
+\newcommand{\repo}{\nolinkurl{a88aefd7ddab4771534bb049c67350e397c91b9a}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Diophantine consistency: arithmetic reductions}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\title{Congruence, Radical Norms, and Direct Proof Certificates\\for Diophantine ZFC Consistency}
+\author{Research contribution prepared for Vladimir Reshetnikov\\\small AI-assisted mathematical research and computational verification}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We supply explicit polynomial equations representing syntactic inconsistency
+of ZFC by simplifying two different existing constructions. A family over
+unrestricted integers combines congruence recovery, fixed-prime separation
+of radicals, and products of integer factors. Its principal member has
+16 variables, exact degree 124, and 118 arithmetic operations, improving
+the previous 16-variable degree-184, 135-operation point in both measures.
+A separate direct proof-certificate compiler produces smaller explicit
+quartics with modest numerical coefficients, using neither K215 nor a
+Jones universal polynomial. We also remove a congruence restriction from
+two positive-variable equations and prove a product-certificate lemma
+that computes its own coefficient bound.
+
+Every numerical claim concerns a supplied finite polynomial or arithmetic
+circuit. Ordinary proofs of the new reductions are distinguished from
+finite checks and inherited calibration theorems. There is no claim of a
+globally simplest equation, a new minimum-variable record, or a completed
+proof-assistant formalization of the entire ZFC equivalence.
+\end{abstract}
+\tableofcontents\newpage
+
+\section{Results, conventions, and the exact objective}
+The target is a fixed polynomial with integer coefficients for which
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists\boldsymbol{x}\in D^m\;P(\boldsymbol{x})=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}),
+\]
+with an explicitly stated domain $D$. Consistency means absence of a
+finite syntactic derivation of a contradiction in the calibrated calculus.
+No consistency or inconsistency assumption is used to choose a coefficient.
+Natural numbers include zero; positive integers do not.
+
+The comparison snapshot is \repo. We inspected the active research and
+recent incoming archives, rather than relying on the older summary of
+packages 31--75. The repository already contains nine-positive and
+ten-integer equations. Our modest-degree integer equations do not improve
+those variable counts. The direct route has much smaller numerical
+coefficients but many more variables. Several measures must be retained.
+\input{results.tex}
+
+An operation is one live binary addition, subtraction, or multiplication.
+Squaring and multiplication by a fixed numeral each count as one operation.
+Input and fixed-numeral leaves are free. Polynomial abbreviations are
+shared registers, not additional existential variables. For the direct
+quartics we give literal variable, residual, monomial, and coefficient
+counts; these do not substitute for arithmetic-circuit counts.
+
+\subsection{New results and imported calibration}
+The new algebraic reductions have ordinary proofs below. They identify
+solutions with explicitly stated parent systems. The final interpretation
+as refutability uses two inherited ordinary calibrations:
+\begin{enumerate}[leftmargin=*]
+\item The native branch uses the signed native/Pell compiler and literal
+K215 blank-run calibration, with the complete source-34 or compact44
+coefficient tuple appropriate to that branch.
+\item The direct branch uses the C222 proof calculus, Horn certificates,
+bounded-sequence coding, and the ordinary C222--ZF--ZFC finite-refutation
+translation. It uses no native tuple or K215 simulation.
+\end{enumerate}
+These theorems, their provenance, and their proof boundaries are retained
+in the package. The new arguments use finite arithmetic, induction,
+polynomial identities, Pell recurrences, and standard three-square
+arithmetic, all formalizable in ZFC. Composing ordinary ZFC proofs gives
+the target theorem. A new Lean/Rocq derivation, or a literal derivation in
+the repository's encoded object-language ZFC, is not supplied. Numerical
+checks do not independently establish the unbounded calibration theorems.
+
+\section{Three elementary tools}
+\subsection{A product of integer factors}
+\begin{lemma}[Product finalizer]\label{lem:units}
+Let integer-valued polynomials $E_1,\ldots,E_s$ satisfy
+$E_i(\boldsymbol{x})\not\equiv2\pmod4$ on every integer assignment. Then
+\[
+ \prod_{i=1}^s(1+E_i)-1=0
+ \quad\Longleftrightarrow\quad E_1=\cdots=E_s=0.
+\]
+\end{lemma}
+\begin{proof}
+An integer product equal to one has each factor equal to $1$ or $-1$.
+The latter would give $E_i=-2\equiv2\pmod4$. Every factor must therefore
+equal one. The converse is immediate.
+\end{proof}
+The residue hypothesis is essential: two arbitrary residuals equal to
+$-2$ would otherwise create a spurious zero.
+
+\subsection{A fixed prime separates square roots}
+\begin{lemma}[Valuation separation]\label{lem:valuation}
+Let $A_1,\ldots,A_s\in\Q^\times$ have pairwise distinct even $3$-adic
+valuations. If a signed sum of square roots of the $A_i$ is rational,
+every one of those roots is rational. Negative radicands are allowed.
+\end{lemma}
+\begin{proof}
+Group the radicands by their classes in $\Q^\times/(\Q^\times)^2$.
+Write roots in each class as $r_i\sqrt d$, with rational nonzero $r_i$.
+Distinct square classes give linearly independent radical monomials in
+the associated multiquadratic extension. In each nontrivial class the
+signed coefficient sum must vanish. But its rational coefficients have
+pairwise distinct valuations, half the differences of the original
+valuations. A sum with a unique term of least valuation cannot vanish.
+There is therefore no nontrivial class. This also applies to negative $d$.
+\end{proof}
+
+\subsection{Positivity with a fixed residue}
+Define $\Pair(x,y,t)=xy-(t^2-x-y+1)^2$. For integers $x,y$, some integer
+$t$ makes this positive exactly when $x,y>0$. Positivity implies $xy>0$;
+if both were negative, the subtracted square would exceed $xy$.
+Conversely, set $L=x+y-1$. The nearest square to $L$ has squared error
+strictly below $L\le xy$ unless $L$ itself is square, when the error is zero.
+
+\begin{lemma}[Pentagonal positivity]\label{lem:positive}
+For $N\in\Z$ put
+\[
+ S(N,u_1,u_2)=24N-21-(6u_1-1)^2-(6u_2-1)^2.
+\]
+Then $N>0$ if and only if some integers $u_1,u_2,g$ satisfy $S=g^2$.
+Always $S\equiv1\pmod3$ and $S\equiv1\pmod4$.
+\end{lemma}
+\begin{proof}
+The equation gives $24N-21\ge2$, hence $N\ge1$. Conversely, the
+classical theorem on three generalized pentagonal numbers gives
+\[
+ 24N-21=(6u_1-1)^2+(6u_2-1)^2+(6u_3-1)^2.
+\]
+It follows from the three-square theorem by an elementary norm-$9$
+lifting. Remove the largest power $9^e$ from $24N-21$, represent the
+remaining positive number, which is $3\pmod8$, as three odd squares,
+and choose signs before each application of
+\[
+ L=\begin{pmatrix}1&2&2\\2&1&-2\\-2&2&-1\end{pmatrix},
+ \qquad L^{\mathsf T}L=9I.
+\]
+The signs can make $x-y-z\not\equiv0\pmod3$ unless all three
+coordinates vanish modulo three. The resulting coordinates are all
+nonzero modulo three. This restores the removed powers of nine while
+preserving oddness. Choose final signs to make each coordinate $-1\pmod6$.
+This classical argument is discussed by Sun and Oh; neither it nor the
+matrix identity is new\cite{sunpent,oh}. The residues follow directly.
+\end{proof}
+
+\input{integer.tex}
+\section{Exact degrees and arithmetic cost}\label{sec:degrees}
+\input{degree_details.tex}
+\section{A direct quartic from proof certificates}\label{sec:direct}
+\input{direct.tex}
+\section{Removing an unnecessary congruence restriction}\label{sec:freej}
+\input{free_j.tex}
+\input{budget.tex}
+\input{verification.tex}
+\appendix
+\section{Files, provenance, and incorporation}
+\input{package.tex}
+\begin{thebibliography}{99}
+\bibitem{repo} V. Reshetnikov and contributors, \emph{ProveIt}, snapshot
+\repo. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/a88aefd7ddab4771534bb049c67350e397c91b9a}.
+Exact source files and archive hashes are recorded in the package.
+\bibitem{sunpent} Z.-W. Sun, \emph{On universal sums of polygonal numbers},
+Science China Mathematics \textbf{58} (2015), 1367--1396.
+\url{https://arxiv.org/abs/0905.0635}.
+\bibitem{oh} B.-K. Oh, \emph{Ternary universal sums of generalized
+pentagonal numbers}, Journal of the Korean Mathematical Society
+\textbf{48} (2011), 837--847. \url{https://arxiv.org/abs/0911.1181}.
+\bibitem{mr} Y. Matiyasevich and J. Robinson, \emph{Reduction of an
+arbitrary Diophantine equation to one in 13 unknowns}, Acta Arithmetica
+\textbf{27} (1975), 521--553. \url{https://doi.org/10.4064/aa-27-1-521-553}.
+\bibitem{sun10} Z.-W. Sun, \emph{Ten unknowns for Hilbert's tenth problem
+over the integers}, arXiv:2609.01594v2 (2 September 2026).
+\url{https://arxiv.org/abs/2609.01594}.
+\bibitem{bayer} J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich, and
+D. Schleicher, \emph{Diophantine equations over $\Z$: universal bounds
+and parallel formalization}, arXiv:2506.20909v3 (22 October 2026).
+\url{https://arxiv.org/abs/2506.20909}.
+\bibitem{mathlib} The mathlib contributors, \emph{PellMatiyasevic.lean},
+commit \nolinkurl{81a5d257c8e410db227a6665ed08f64fea08e997}.
+\url{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/NumberTheory/PellMatiyasevic.lean}.
+The exact source is retained with its license and hash.
+\end{thebibliography}
+\end{document}

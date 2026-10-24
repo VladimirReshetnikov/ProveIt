@@ -1,0 +1,257 @@
+\section{One Pell certificate for all positive powers}
+\label{sec:batched-powers}
+
+The principal new compression is at the level of existential certificates.
+Every requested power retains its own input and output, but the auxiliary
+number-theoretic environment is shared by the entire finite computation.
+This is stronger than reusing identical arithmetic subexpressions: it
+restricts independently chosen old witnesses to a common family, whose
+simultaneous completeness must be proved.
+
+For an integer $a\geq2$, let $\chi_a(t),\psi_a(t)\in\mathbb N$ be the Pell
+coordinates defined by
+\[
+ \chi_a(t)+\psi_a(t)\sqrt{a^2-1}
+       =(a+\sqrt{a^2-1})^t.
+\]
+These functions occur only in the proof. The emitted equation contains
+ordinary polynomial expressions and no Pell-function symbol. Write
+\[
+ \mathcal N(a,x,y):\quad x^2+y^2=1+a^2y^2.
+\]
+All variables in this section range over $\mathbb N=\{0,1,2,\ldots\}$.
+
+\subsection{The two established interfaces}
+
+We use the positive-index case of the classical Pell-index representation.
+For $a\geq2$ and $k>0$, the conjunction
+\begin{align}
+ &k\leq Y,\qquad \mathcal N(a,X,Y),\qquad
+   \mathcal N(a,U,V),\qquad \mathcal N(B,S,R),\label{eq:index-norms}\\
+ &B\geq2,\quad B\equiv1\pmod{4Y},\quad B\equiv a\pmod U,
+   \quad V>0,\quad Y^2\mid V,\label{eq:index-frame}\\
+ &S\equiv X\pmod U,\qquad R\equiv k\pmod{4Y}
+ \label{eq:index-congruences}
+\end{align}
+is equivalent to $X=\chi_a(k)$ and $Y=\psi_a(k)$. In particular the
+condition $k\leq Y$ makes $Y>0$ before any congruence modulus is used.
+
+The positive-power representation says that, for $n,k>0$, $m=n^k$ is
+equivalent to the existence of $W,a,T,Z,X,Y$ with $a\geq2$ satisfying
+\begin{align}
+ &X=\chi_a(k),\qquad Y=\psi_a(k),\label{eq:power-pell}\\
+ &X+Yn\equiv Ya+m\pmod T,\qquad 2an=T+n^2+1,\label{eq:power-local}\\
+ &m<T,\qquad n\leq W,\qquad k\leq W,
+   \qquad \mathcal N(W+1,a,WZ).\label{eq:power-global}
+\end{align}
+These are the interfaces formalized as \texttt{Pell.matiyasevic} and
+\texttt{Pell.eq\_pow\_of\_pell} in Mathlib's
+\texttt{PellMatiyasevic.lean}~\cite{pell}. The shifted congruence in
+\eqref{eq:power-local} avoids truncated subtraction. The standard proof
+derives $a\geq n$, so it is equivalent to the source formulation
+$X\equiv Y(a-n)+m\pmod T$.
+
+\subsection{The batched polynomial conditions}
+
+Consider a fixed nonempty list of power requests
+\[
+ (n_i,k_i,m_i),\qquad 1\leq i\leq s,
+\]
+whose bases and exponents are positive. Group identical exponent
+expressions into $e_1,\ldots,e_g$, writing $k_i=e_{j(i)}$. Equality of
+expressions is used here, not agreement at sampled numerical inputs.
+Let
+\[
+ W=1+\sum_{i=1}^s(n_i+k_i+m_i).
+ \label{eq:shared-W}
+\]
+Duplicate expressions may be included just once, provided the resulting
+natural sum remains strictly larger than every base, exponent, and output.
+Introduce a single frame $A,Z,U,V,B$, one quadruple
+$(X_j,Y_j,S_j,R_j)$ for each exponent group, and one local modulus $T_i$
+for each power request. Put
+\[
+ P=\prod_{j=1}^gY_j.
+\]
+The global conditions are
+\begin{align}
+ &A\geq2,\quad \mathcal N(W+1,A,WZ),\quad
+   \mathcal N(A,U,V),\label{eq:batch-global-norms}\\
+ &V=P^2(d+1),\qquad B=1+4Pq,
+   \qquad B\equiv A\pmod U.\label{eq:batch-pooled}
+\end{align}
+Here $d,q$ are natural witnesses. For each exponent group retain
+\begin{align}
+ &e_j\leq Y_j,\quad \mathcal N(A,X_j,Y_j),\quad
+     \mathcal N(B,S_j,R_j),\label{eq:batch-group-norms}\\
+ &S_j\equiv X_j\pmod U,
+       \qquad R_j\equiv e_j\pmod{4Y_j}.\label{eq:batch-group-congruences}
+\end{align}
+For each request retain only
+\begin{equation}
+ 2An_i=T_i+n_i^2+1,\qquad
+ X_{j(i)}+Y_{j(i)}n_i
+      \equiv Y_{j(i)}A+m_i\pmod{T_i}.
+ \label{eq:batch-local}
+\end{equation}
+The separate output-bound, $W$-bound, $B$-bound, local $V$-divisibility,
+and local $B$-congruence certificates have disappeared.
+
+\begin{theorem}[Simultaneous power certificate]
+\label{thm:simultaneous-powers}
+For every finite nonempty list of positive bases and exponents, the
+conditions \eqref{eq:batch-global-norms}--\eqref{eq:batch-local} have
+natural witnesses if and only if $m_i=n_i^{k_i}$ for every $i$.
+If at least one base is known to be at least two, the explicit guard
+$A\geq2$ may be omitted.
+\end{theorem}
+
+\begin{proof}[Soundness]
+First suppose $A\geq2$. The last norm excludes $Z=0$, since that would
+give $A=1$. Thus $Z\geq1$, and
+\[
+ A^2=1+(W^2+2W)W^2Z^2>W^2.
+\]
+Consequently $A>W$, which bounds every input and proposed output. Each
+$Y_j\geq e_j>0$, so $P>0$ and
+\[
+ V=P^2(d+1)\geq Y_j^2\geq Y_j>0.
+\]
+In particular $Y_j^2\mid V$ and $B\equiv1\pmod{4Y_j}$.
+
+The omitted guard $B\geq2$ follows from the retained equations. We have
+$B=1+4Pq\geq1$. If $B=1$, then $\mathcal N(B,S_j,R_j)$ gives $S_j=1$.
+The two norms with parameter $A$, together with $V\geq Y_j$, give
+$U\geq X_j\geq2$. The congruence $S_j\equiv X_j\pmod U$ would then
+imply $U\mid X_j-1$, although $0<X_j-1<U$. This is impossible.
+
+All hypotheses of the Pell-index representation now hold group by group,
+so $X_j=\chi_A(e_j)$ and $Y_j=\psi_A(e_j)$. For the omitted output bound,
+$A\geq n_i+1$ yields
+\[
+ T_i-A=(2n_i-1)A-n_i^2-1
+       \geq(n_i+2)(n_i-1)\geq0.
+\]
+Hence $m_i<W<A\leq T_i$. The standard positive-power representation
+applies separately to every request and proves $m_i=n_i^{k_i}$.
+
+Finally suppose the guard $A\geq2$ was omitted, but some $n_i\geq2$.
+The retained modulus definition gives
+$2An_i\geq n_i^2+1>2n_i$, and therefore $A>1$ before any preceding
+argument is used. In the actual compiler a literal base-two request gives
+the particularly simple equation $4A=T_i+5$.
+\end{proof}
+
+\begin{proof}[Simultaneous completeness]
+Assume $m_i=n_i^{k_i}$ for every request, and first form the finite natural
+number $W$ from these semantic inputs and outputs. Choose
+\[
+ A=\chi_{W+1}(W),\qquad
+ Z=\frac{\psi_{W+1}(W)}{W}.
+\]
+The quotient is an integer because
+$\psi_{W+1}(t)\equiv t\pmod W$. Also $W>0$, $A\geq2$, and
+$\mathcal N(W+1,A,WZ)$ holds. For each $i$,
+\[
+ n_i^{k_i}\leq n_i^W<(W+1)^W\leq A.
+\]
+The standard Pell power congruence therefore supplies a positive
+$T_i=2An_i-n_i^2-1>m_i$ and the local congruence
+\eqref{eq:batch-local}. This is the source proof of the power
+representation with a common upper bound in place of $\max(n_i,k_i)$.
+
+Set $X_j=\chi_A(e_j)$ and $Y_j=\psi_A(e_j)$, so all $Y_j>0$, and form
+$P=\prod_jY_j$. In the finite ring $\mathbb Z/(4P^2)$, the matrix
+\[
+ M=\begin{pmatrix}A&A^2-1\\1&A\end{pmatrix}
+\]
+is invertible because its determinant is one. Its powers belong to a
+finite group. Some positive power is therefore the identity. Taking a
+sufficiently large multiple $L$ of that period ensures $L>\max_j e_j$
+and $L>1$. Put $U=\chi_A(L)$ and $V=\psi_A(L)$. The Pell matrix formula
+gives
+\[
+ U\equiv1\pmod{4P^2},\qquad V\equiv0\pmod{4P^2}.
+\]
+Thus $V>0$, $P^2\mid V$, $U>A$, and $\gcd(U,4P)=1$.
+The Chinese remainder theorem gives $B\geq2$ with
+\[
+ B\equiv A\pmod U,\qquad B\equiv1\pmod{4P}.
+\]
+Indeed the least nonnegative solution is already at least $A$, since
+$A<U$. Define $d=V/P^2-1$ and $q=(B-1)/(4P)$.
+
+For each group choose $S_j=\chi_B(e_j)$ and $R_j=\psi_B(e_j)$.
+The recurrence with parameters congruent modulo $U$ yields
+$S_j\equiv X_j\pmod U$. The recurrence modulo $B-1$ yields
+$R_j\equiv e_j\pmod{4Y_j}$. All norms and bounds hold by construction,
+so every retained condition is satisfied simultaneously.
+\end{proof}
+
+The finite-group step is deliberately stated for modulus $4P^2$.
+Separately proving $Y_j^2\mid V$ for every $j$ would not prove
+$P^2\mid V$, because the $Y_j$ can share prime factors. The common
+period argument supplies the stronger divisibility actually used by the
+emitted certificate.
+
+\subsection{Compatibility with a common binomial radix}
+
+The direct compiler also replaces the separate digit-extraction radices of
+its finitely many binomial graphs by one radix. Given the positive upper arguments at the actual call sites,
+$a_1,\ldots,a_r\in\mathbb N$, choose
+\[
+ H=\sum_{\ell=1}^{r}a_\ell,\qquad Q=2^H+1.
+\]
+Then $Q>2^{a_\ell}$ for every $\ell$. Every coefficient in
+$(Q+1)^{a_\ell}$ is smaller than $Q$, since
+$\binom{a_\ell}{j}\leq2^{a_\ell}$. Consequently quotient and remainder
+equations for the digit at position $b_\ell$ recover
+$\binom{a_\ell}{b_\ell}$ exactly, including the value zero when
+$b_\ell>a_\ell$. Repeated lower arguments share the same power
+$Q^{b_\ell}$. This is an ordinary positional-notation identity, with no
+probabilistic or approximate digit extraction.
+
+This common-radix construction and Theorem~\ref{thm:simultaneous-powers}
+are compatible in a definite order. First choose a semantic solution of
+the parent certificate and the common radix. Its finite power-request
+list then has definite natural inputs and correct outputs. Next form
+$W$ including all those outputs and choose the common Pell frame.
+No Pell-frame coordinate enters the definition of the common radix or
+the list of semantic power requests. Conversely, any zero of the final
+equation yields all these natural values at once; the batched theorem
+forces every requested power to have its intended value before the
+binomial digit argument is invoked.
+
+Both implications concern all natural numbers, including arbitrarily
+large witnesses. A search over a finite numerical range is neither used
+nor offered as a substitute for these proofs. The argument consists of
+finite arithmetic, elementary Pell facts, finite-group periodicity, and
+the Chinese remainder theorem, all formalizable in ZFC. Composing it
+with the parent's direct C222 calibration preserves the stated
+ZFC-provable consistency equivalence; it does not establish a new
+kernel-checked or object-language ZFC derivation by itself.
+
+\subsection{Eliminating terminal quadratic coordinates}
+
+The final simplification acts on the literal quadratic residual system,
+independently of the Pell implementation. Suppose one residual is
+\[
+ v-f(\mathbf x)=0,
+\]
+where $f\in\mathbb N[\mathbf x]$ has degree at most two and does not
+contain $v$. If $f$ is affine, substitute it for $v$ everywhere. If $f$
+is quadratic, make the same substitution provided $v$ occurs only
+linearly in every other residual. Every new residual still has degree
+at most two. Deleting the defining row and the variable $v$ gives an
+exact bijection of natural zero sets: projection in one direction and
+the unique restoration $v=f(\mathbf x)\in\mathbb N$ in the other.
+The nonnegative coefficients are a sufficient, explicitly checked
+condition for preserving the natural domain; a signed linear-algebra
+elimination would not have this property automatically.
+
+Repeated application provides a compact certificate consisting of the
+deleted row, variable, and restoration polynomial at each step. Reading
+the certificate backwards reconstructs every removed coordinate. The
+verification checks exact polynomial identities, the domain condition,
+and degree preservation at every step. It is stronger than comparing
+the final polynomials at a selection of sample inputs.

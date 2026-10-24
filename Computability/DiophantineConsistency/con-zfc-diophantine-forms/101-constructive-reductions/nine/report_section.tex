@@ -1,0 +1,459 @@
+\section{Removing unused radix positions in nine-variable equations}
+\label{sec:radix-origin}
+
+This section gives three complete polynomial constructions in nine strictly
+positive integers.  The improvement has two parts: an exact translation of
+the finite coefficient layout, and a smaller evaluator for the translated
+polynomial.  The translation is an existence-preserving change of the
+encoding; the evaluator change is an identity of polynomials.  These two
+claims should be kept distinct.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Construction & Variables & Exact degree & Binary operations\\
+\hline
+Original31, simple majorant &9&1,472,168&420\\
+Original31, complete radical majorant &9&997,810&1,057\\
+Compact54, simple majorant &9&1,626,248&428\\
+\hline
+\end{tabular}
+\end{center}
+
+The respective incoming comparisons are the saturated H1868 simple form
+(1,474,688; 449 operations), its complete-radical form (999,518; 1,086), and
+the compact54 saturated form (1,628,768; 434).  Thus the reductions relative
+to those immediate predecessors are respectively 2,520 degrees and 29
+operations, 1,708 degrees and 29 operations, and 2,520 degrees and six
+operations.  The 420-operation form also has lower degree and fewer
+operations than the 434-operation compact form, but it has a larger
+coefficient payload.  These are improvements in stated measures within the
+inspected repository.  They do not establish global minimality or reduce
+the number of variables below nine.
+
+The first two predecessors are in
+\texttt{ConZFC\_Saturated\_Certificates\_2026-10-24.zip}; the third is in
+\texttt{con-zfc-saturation-and-projection-2026-10-23.zip}.
+The repository snapshot is
+\texttt{7e533c33819ee1f703b69f2778a767cdc069940d}.
+The included source ledger identifies these exact archives by SHA-256.
+
+\subsection{A translation lemma for sparse coefficient layouts}
+
+Let $\rho_1,\ldots,\rho_m$ be quadratic polynomials in $\nu$ variables,
+and suppose fixed coefficient polynomials $K_0(T),K_1(T),K_2(T)$, distinct
+nonnegative weights $w_i$, and distinct nonnegative target positions $q_j$
+satisfy
+\begin{equation}
+ [T^{q_j}]\sum_{d=0}^{2}K_d(T)U_{\mathbf p}(T)^d
+       =2\rho_j(\mathbf p),\qquad
+ U_{\mathbf p}(T)=\sum_{i=1}^{\nu}p_iT^{w_i}.
+ \label{eq:origin-extraction}
+\end{equation}
+The equality is a polynomial identity in all source coordinates, including
+coefficients of monomials absent from the desired residual.  It is stronger
+than a numerical identity at selected source tuples.
+
+\begin{lemma}[Translation of the layout]
+\label{lem:radix-origin}
+Let $r,s$ be nonnegative integers such that $w_i\ge r$, $q_j\ge s$, and
+every occupied exponent $e$ of $K_d$ satisfies $e+dr-s\ge0$.
+Set
+\[
+ w_i'=w_i-r,\quad q_j'=q_j-s,\quad
+ K_d'(T)=\sum_e [T^e]K_d(T)\,T^{e+dr-s}.
+\]
+Then these are ordinary polynomial data and satisfy the same extraction
+identities with primes on $w,q,K,U$.
+If $W=\max_iw_i$ and
+$H=\max_d(\deg K_d+dW)$, their new values are
+$W'=W-r$ and $H'=H-s$.
+\end{lemma}
+
+\begin{proof}
+As a temporary identity in Laurent polynomials,
+$U_{\mathbf p}'=T^{-r}U_{\mathbf p}$ and
+$K_d'=T^{dr-s}K_d$.  Therefore
+\[
+ \sum_d K_d'(U_{\mathbf p}')^d
+       =T^{-s}\sum_dK_dU_{\mathbf p}^d.
+\]
+Coefficient extraction proves the claim.  The hypotheses ensure that every
+exponent in the actual delivered data is nonnegative, so the construction
+contains no division by an unknown.  Finally
+$\deg K_d'+dW'=\deg K_d+dW-s$, proving the height identity.
+\end{proof}
+
+Apply the lemma with $(r,s)=(1,2)$.  Both inherited layouts have minimum
+coordinate weight one, minimum occupied linear-kernel exponent one, and
+minimum occupied quadratic-kernel exponent zero.  Their constant kernels
+begin above exponent two.  Consequently the transformation reads
+\begin{equation}
+ w_i'=w_i-1,\qquad q_j'=q_j-2,\qquad
+ K_2'=K_2,\quad K_1'=K_1/T,\quad K_0'=K_0/T^2.
+ \label{eq:origin-shift}
+\end{equation}
+The last two expressions denote removal of initial zero coefficients;
+the JSON tables and the final circuits use nonnegative exponents only.
+No source coordinate, source equation, or numerical coefficient changes.
+
+There is a useful restricted optimality statement.  Among translations of
+this form with $r,s\ge0$ and nonnegative resulting exponents, $r\le1$
+because the minimum original weight is one, and $s\le2r$ because the
+quadratic kernel has a nonzero constant coefficient.  Thus $(1,2)$ is
+maximal in both parameters for these fixed layouts.  This says nothing
+about changing the weights nonuniformly, changing the source residuals,
+or using a different encoding architecture.
+
+The translated coordinate weights, in source-variable order, are
+\[
+\begin{split}
+ &(0,6,60,35,15,84,19,66,42,10,33,12,95,79,28,49,\\
+ &\hspace{12mm}1,108,109,111,115,90,52,54,26,100,91,8,106,36,59).
+\end{split}
+\]
+For the original31 source, the target positions in row order are
+\[
+\begin{split}
+ &(1139,26,1435,1067,1834,1352,1812,612,265,1406,1401,\\
+ &\hspace{12mm}887,335,1585,411,671,1137,770,1129,1016,1053,83).
+\end{split}
+\]
+The source is the inherited positive system named \texttt{gapN86}, with
+31 coordinates and 22 quadratic residuals.  Its old coordinate maps are
+$P_{\rm old}=P+\eta+\zeta$ and $N_{\rm old}=N+1$; its recorded elementary
+row operations are retained unchanged.  The compact source is the
+separate \texttt{gapNq85} system.  Its tables and whole compact54 coefficient
+tuple are kept separately; substituting individual coefficient ports
+between the two systems is not justified.
+
+\subsection{Why a coordinate may occupy position zero}
+
+The choice $w_i>0$ was not needed by the positive-domain bit-mask argument.
+For distinct weights in $\{0,\ldots,W\}$, put
+\[
+ \ell=\sum_iB^{w_i},\qquad N_0=B^{W+1},\qquad
+ M_0=N_0-1-(b-1)\ell.
+\]
+Assume $b$ and $B$ are powers of two, with $b\mid B$ and $b\le B$.
+The radix-$B$ digits of $M_0$ are $B-b$ at selected positions and $B-1$
+elsewhere.  For $0\le g<N_0$, binary disjointness $g\mathbin{\&}M_0=0$
+is therefore equivalent to
+\begin{equation}
+ g=\sum_i z_iB^{w_i},\qquad 0\le z_i<b.
+ \label{eq:origin-mask}
+\end{equation}
+This digit argument includes position zero without any modification: the
+allowed bits there are precisely its bottom $\log_2b$ bits.  The recovered
+positive source coordinates are $p_i=z_i+1$.
+
+It is essential to check the next arithmetic interface rather than merely
+observe that the digit argument works.  The pinned Lean source
+\texttt{Diophantine/Paper1982/NineRatio.lean}, retained in the packet,
+states \texttt{Jones1982.Nine.ratio\_sound} and
+\texttt{ratio\_complete} with the numerical hypotheses
+\[
+ R,N\ge8,\quad 0<b\le R,N,
+\]
+and with the appropriate positive carrier, margin, central-binomial
+and power-of-two conditions.  Neither theorem assumes $b\mid g$ or
+$b\mid R+1$.  Hence the possible nonzero units digit introduced by
+\eqref{eq:origin-mask} does not violate an inherited premise.  This point
+is specific to the positive nine-variable interface; the signed
+Sun/Lucas construction has additional residue normalizations and is not
+changed here.
+
+The all-one source tuple is not a common zero: its fifth residual is one,
+independently of the four coefficient ports.  Thus every genuine source
+zero has at least one $p_i>1$, and its packed $g$ is positive even with a
+weight zero.  For all sufficiently large binary $b$, its digits satisfy
+\eqref{eq:origin-mask} and $g<bB^W$.  The cofinal completeness property
+survives the translation.
+
+\subsection{The fully recalibrated original31 prefix}
+
+For this paragraph all layout data are the translated original31 data.
+Write $K_d$ for their three kernels, and put
+\[
+ \kappa=2134939,\qquad B=2^\kappa b^2,\qquad
+ T_*=\sum_{j=1}^{22}B^{q_j},\qquad U_* =\ell+g.
+\]
+Define
+\begin{align}
+ G_*&=(K_2(B)U_*+K_1(B))U_*+K_0(B),\notag\\
+ N_0&=B^{116},& M_0&=N_0-1-(b-1)\ell,\notag\\
+ S_*&=g+N_0(2G_*+T_*),&
+ T_c&=M_0+N_0(B-2)T_*,\notag\\
+ L&=2bB^{1983},&
+ R&=L(S_*+T_c+1)-S_*-1,\notag\\
+ N&=2^{16012032}B^{1053},&t&=bB^{115}.
+ \label{eq:origin-prefix}
+\end{align}
+Every exponent here is fixed.  The kernel degrees are $(1406,1726,1636)$,
+so $W=115$, $H=1866$, and the largest target is $1834=H-32$.
+The leading kernel coefficients remain $-6,2,1$.
+
+The inherited coefficient bound is $M=2^{2134927}$, and
+$B=4096Mb^2$.  The exact artifact checker also verifies this bound on
+all actual fixed coefficients.  For positive $b,g$, one has
+$U_*\ge B^{115}$ and $K_2(B)>B^{1636}/2$.
+Relative to $B^{1636}U_*^2$, the possible negative linear and constant
+contributions are bounded by $2M/B^{25}$ and $2M/B^{460}$.
+Thus $G_*>0$ unconditionally.  The low mask lies in $[0,N_0)$, so
+$S_*,T_c\ge0$ and
+\[
+ R=(L-1)(S_*+T_c+1)+T_c\ge L-1\ge8.
+\]
+Also $b\le R,N$ and $N\ge8$.
+
+On the soundness range $g<4t$, let $Z_*=B^{1867}$.
+The same geometric-series estimate as in the inherited sparse-carry proof
+now gives
+\[
+ U_*<6bB^{115},\qquad
+ \frac{2G_*}{Z_*}<\frac{86Mb^2}{B-1}<\frac1{32}.
+\]
+The two target-mask bounds are unchanged because their headroom $H-Q=32$
+is unchanged.  Together with $g<N_0$ and $M_0<N_0$, they give
+\[
+ S_*+T_c<N_0Z_*=B^{1983}<L.
+\]
+Each source convolution coefficient has magnitude at most
+$993Mb^2<B/4$.  The retained signed-digit carry lemma therefore applies
+with exactly the same strict inequalities.  It identifies
+$S_*\mathbin{\&}T_c=0$ with a positive common source zero.
+
+For completeness, the threshold must be recalculated.  Write
+$b=2^k$, $B=2^v$, where $v=\kappa+2k$, and $L=2^u$.
+There are 116 low radix digits, 31 selected low positions, and 22 high
+mask digits.  Consequently
+\[
+ \operatorname{pop}(T_c)=138v-31k-22,\qquad
+ u=1+k+1983v.
+\]
+The two-block population identity gives
+\[
+ \operatorname{pop}(R)=u+\operatorname{pop}(T_c)-\tau,
+ \quad
+ \tau=\operatorname{pop}(S_*)+\operatorname{pop}(T_c)
+       -\operatorname{pop}(S_*+T_c)\ge0,
+\]
+with $\tau=0$ exactly for binary disjointness.  Now
+\begin{align*}
+ u+\operatorname{pop}(T_c)
+   &=2121\kappa+4212k-21\\
+   &=2\bigl(16012032+1053(\kappa+2k)\bigr)
+     =2\log_2N,
+\end{align*}
+since $15\kappa-21=32024064$.
+Legendre's formula therefore yields
+\begin{equation}
+ N^2\mid\binom{2R}{R}
+ \quad\Longleftrightarrow\quad S_*\mathbin{\&}T_c=0.
+ \label{eq:origin-calibration}
+\end{equation}
+The argument includes $b=1$.  At that value $M_0=N_0-1$ and
+$0<g<N_0$, so disjointness fails.  There is no exceptional accepted
+assignment at the endpoint.
+
+For the compact54 variant replace the source tables and the whole native
+coefficient tuple, and use
+\[
+ \kappa=864026,\quad H=2080,\quad Q=2048,\quad
+ L=bB^{2197},\quad N=2^{6480184}B^{1160},\quad t=bB^{115}.
+\]
+The kernel degrees are $(1625,1940,1850)$, the dominance gaps are 25 and
+455, and the coefficient bound is $2^{864014}$.  Its population calculation
+is $u+\operatorname{pop}(T_c)=2335\kappa+4640k-22=2\log_2N$.
+Thus the same proof applies.  The exact source audit checks all 22
+identities separately for each of these two genuinely different sources.
+
+\subsection{The actual nine-variable polynomials}
+
+The unknowns are
+\[
+       b,g,h,s,w,C,i,j,n\in\mathbb Z_{>0}.
+\]
+All other names in this subsection are abbreviations, not quantified
+variables.  Use either certified prefix above and define
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,\\
+ M&=RY,&P&=2M^2U,\\
+ K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,\\
+ J&=4A-5,&Q&=3W_1C-2(W_1^2-1),\\
+ m&=K^2(4t-g)-16t(C-KY)^2,&\Omega&=Jm,\\
+ E_0&=J(n+W_1^2)+Q,&V_0&=PK,\\
+ a_0&=(P^2-1)K^2+1,&D&=(A^2-1)C^2+1,\\
+ r_0&=iJC^2,&F&=(A^2-1)Dr_0^2+1,\\
+ \Lambda&=CD+1-A,&G&=A+F\Lambda,\\
+ Z&=B_1+(j-1)C,&&\\
+ H_1&=C+FZ,&I&=(G^2-1)H_1^2+1.
+\end{align*}
+For either simple construction set
+\[
+        a_1=DFI,\qquad V_1=ADr_0GH_1.
+\]
+For the complete-radical construction set
+\[
+ \sigma=1024C^5i,\qquad a_1=\sigma^2DFI,\qquad
+ V_1=\Pi(A,C,i,Z),
+\]
+where $\Pi$ is the fully specified inherited 333-term integer polynomial
+in \path{data/saturated_corrected_P.json}.
+Its exact identity certificate is retained; it is not an unspecified
+choice of a majorant.  Finally set
+\begin{equation}
+ \Theta=E_0-\Omega(V_0+V_1),\qquad
+ \boxed{\bigl(\Theta^2-\Omega^2(a_0+a_1)\bigr)^2
+                   -4\Omega^4a_0a_1=0.}
+ \label{eq:origin-nine}
+\end{equation}
+The three literal division-free DAGs, all fixed numerical leaves, and
+finite coefficient reconstruction recipes are included in the packet.
+
+\begin{theorem}[Preservation of the consistency encoding]
+The three positive-domain equations \eqref{eq:origin-nine} have a zero
+if and only if their respective inherited positive source systems have
+a common zero.  Composing with the retained native-source and
+machine/refutation calibration gives the same ordinary theorem
+formalizable in ZFC:
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists(b,g,h,s,w,C,i,j,n)\in\mathbb Z_{>0}^9:
+       \mathcal F=0\bigr)\ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+
+\begin{proof}
+The preceding arguments establish all the numerical prefix hypotheses,
+its soundness range, cofinal completeness, and the exact central-binomial
+calibration.  The source zero set is unchanged by
+Lemma~\ref{lem:radix-origin}.  The saturated positive ProductPell finalizer
+is retained unchanged.
+
+For clarity, its proof order matters.  Unconditional strict bounds
+$V_0>\sqrt{a_0}$ and $V_1>\sqrt{a_1}$ first force $m>0$ from a norm zero.
+They then give the carrier range and strict separation of the two
+radicands.  A nonzero rational sum of their signed square roots forces
+each root to be rational, hence integral.  This supplies the square
+conditions and $J\mid Q$.  The saturated ProductPell theorem recovers
+$C=\psi_A(2R+1)$, after which the original numerical ratio theorem
+recovers the binary base and \eqref{eq:origin-calibration}.  No inference
+about square roots is used prematurely to obtain the margin.
+Conversely a source zero supplies fresh ratio and Pell witnesses,
+and the inherited integral choice of $n>0$ makes one norm factor vanish.
+The recorded soundness and saturation proofs prove these steps in full.
+
+For the simple majorant the identity
+\[
+ (ADr_0)^2-DF=D(Dr_0^2-1)>0
+\]
+implies the required strict bound after multiplication by $G^2H_1^2$.
+For the complete majorant, the exact polynomial
+$\Pi^2-\sigma^2DFI$ has 36,309 strictly positive coefficients after
+$A=x+3,C=y+1,i=u+1,Z=v+1$, including a positive constant.
+The translated polynomial $\Pi$ itself also has positive coefficients.
+Thus the same majorant premise holds uniformly.  These are retained
+algebraic certificates, rechecked exactly on the present parameters.
+
+All new steps are elementary finite polynomial identities, integer digit
+arguments, or arithmetic statements with the same formalizable inherited
+interfaces.  The packet does not supply a new end-to-end Lean/Rocq proof
+or an exported object-language ZFC derivation; its calibration dependencies
+are explicit rather than inferred from finite testing.
+\end{proof}
+
+\subsection{Exact degrees and exact arithmetic-circuit checks}
+
+For the original31 prefix,
+\[
+ r=\deg R=7931,\quad \nu=\deg N=2106,\quad
+ a=\deg A=r+4\nu+2=16357.
+\]
+For compact54 these values are $8787,2320,18069$.
+The positive leading source term is $R\sim 2^{\lambda+1}bB^{2E-1}$,
+where $(E,\lambda)=(1983,1)$ or $(2197,0)$.
+Thus these bounds are attained on the actual fixed-coefficient instances.
+Write $\delta_0=V_0^2-a_0$, $\delta_1=V_1^2-a_1$, and
+\[
+ B_s=E_0^2-2E_0\Omega(V_0+V_1)+\Omega^2(\delta_0+\delta_1).
+\]
+The exact cancellation-resolved identity is
+\begin{equation}
+ \mathcal F=B_s^2+4\Omega^2V_0V_1B_s
+                  +4\Omega^4(\delta_0V_1^2+a_0\delta_1).
+ \label{eq:origin-degree-identity}
+\end{equation}
+One has
+\[
+ \deg\Omega=5a+2W+3,\quad \deg V_0=3a+r+1,\quad
+ \deg\delta_0=3a+r+2,\quad \deg E_0=a+4.
+\]
+For the simple majorant,
+$\deg V_1=18a+r+24$ and $\deg\delta_1=34a+2r+48$.
+The uniquely dominant term of \eqref{eq:origin-degree-identity} is
+$\Omega^4\delta_1^2$, giving
+\[
+                  \deg\mathcal F=88a+4r+8W+108.
+\]
+For the complete majorant, exact expansion gives
+\[
+ \deg V_1=18a+r+30,\qquad \deg\delta_1=18a+2r+60.
+\]
+Their unique leading monomials before composition are
+\[
+1048576A^{18}C^{24}i^6Z,\qquad
+624687054848A^{18}C^{48}i^{12}Z^2.
+\]
+The four contribution degrees in \eqref{eq:origin-degree-identity} are
+$948768,997810,989850,752426$.  The second is uniquely maximal, and its
+leading coefficient is positive, giving degree $997810$.
+Merely propagating maximum degrees through the unresolved norm would
+not establish these exact values.
+
+The evaluator uses one addition chain for every required power of $B$.
+The selected circuits evaluate $\ell$ and $T_*$ as sums of shared powers,
+and evaluate the three coefficient kernels in Horner form.  This saves
+26 multiplications for the original31 forms compared with using Horner
+form for both masks; it saves 25 for the compact profile.  The common
+power chain is a finite table of equalities $e=u+v$; its use costs one
+multiplication per live chain step.  Fixed numeral construction is excluded
+from this convention, but all live binary additions, subtractions,
+squares, and multiplications by numerals are counted.
+
+The supplied verifier does not import the builder.  It proves 54 or 55
+exact polynomial identities at the named registers of each DAG, including
+all complete-majorant coefficients.  It separately checks the variable
+set, acyclicity, liveness, operation counts, fixed-leaf recipes, and the
+final output.  A second independently implemented sparse ring checks all
+22 source identities including absent monomials, all 20,466 original31
+and 22,450 compact convolution interactions, the coefficient bounds, the
+positive majorant certificate, the population exponents, and the resolved
+degree.  Eight complete native coefficient byte strings are reconstructed
+from the retained literal finite inputs.  These checks support exact
+algebra and the numerical instances; they do not experimentally test
+consistency or substitute for the unbounded semantic calibration.
+
+The coefficient-size tradeoff is material.  The original31 tuple occupies
+533,099 raw bytes in its four ports, versus 215,492 for compact54.
+Its twelve live fixed leaves occupy 4,001,391 raw bytes and 53,739 gzip
+bytes, versus eleven leaves occupying 1,565,018 raw bytes and 23,481 gzip
+bytes for compact54.  The larger live-leaf total includes the fixed powers
+of two and derived coefficient products.  These are distinct measures
+from circuit length and from the size of the entire research archive.
+
+\subsection{Further questions suggested by the construction}
+
+The uniform translation is maximal for these fixed supports, but a joint
+optimization of coordinate weights, target positions, row operations and
+evaluator structure may improve all three circuits further.  Such a search
+should allow weight zero from its beginning and score the final polynomial
+rather than only the convolution height.  Another concrete target is a
+Lean proof of the general layout-translation and zero-position mask lemmas,
+composed with the existing ratio interfaces.  Finally, the exact register
+certificates suggest a small checked circuit verifier that accepts the
+whole finite DAG and the fixed numerical leaves without trusting the
+arithmetic-circuit producer.  None of these questions entails a claim that
+nine variables are necessary or that a different direct proof encoding
+cannot give a simpler equation.

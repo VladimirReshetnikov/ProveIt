@@ -1,0 +1,1816 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,microtype}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Compact proof certificates for ZFC consistency Round 13},pdfauthor={Prepared for Vladimir Reshetnikov},pdfsubject={Explicit Diophantine equations and reproducible ordinary mathematical reductions}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=1.7em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Compact proof certificates}
+\fancyhead[R]{\small Round 13}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\DeclareMathOperator{\Con}{Con}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Compact proof certificates for ZFC consistency\par}
+\vspace{5pt}
+{\large Round 13 research report and reproducible equations\par}
+\vspace{10pt}
+Prepared for Vladimir Reshetnikov\\
+24 October 2026
+\end{center}
+\vspace{4pt}
+\begin{abstract}
+We give a smaller explicit direct proof-certificate construction for a
+Diophantine formulation of the consistency of ZFC. The main equation is a
+quartic in $1859$ nonnegative integer variables; a distinct signed-quotient
+companion is a quartic in $3179$ unrestricted integer variables. Their
+coefficients have absolute value below $2^{26}$ and are supplied in full.
+The main variable reduction is from the independently recounted pinned
+$3443$-variable baseline, not an obsolete predecessor. The construction removes
+local beta remainder slacks, replaces copied bound circuits by fixed
+squaring chains, and makes canonical Pell witnesses point forward before
+eliminating their definitional coordinates. Its final synthesis composes
+these reductions with incoming eight-column projection and sign-orbit
+normalization, with those imported ideas credited explicitly.
+
+A separate inherited native-code route now yields a twelve-integer
+equation of exact degree $2048$ with $233$ arithmetic operations. Its
+new quintic-carrier synthesis uses a supplied full-residue interpolation
+theorem. Additional complete equations have variable/degree pairs
+$13/1072$, $14/378$, $15/172$, $15/170$ and $16/98$. Finally, four ten-integer norm circuits become shorter, while a
+leading-form argument proves degree $1080888$ optimal only within the
+specified final-coordinate translation family. None of these results is a
+global minimum or a proof that ZFC is consistent. The report distinguishes
+ordinary mathematical derivations, inherited calibration, exact finite
+polynomial checks, and the end-to-end formalization still to be completed.
+\end{abstract}
+
+\section{Results and the exact logical target}
+\label{sec:target}
+Fix the recursive ZFC axiom presentation and finite proof predicate used
+by the included calibration sources. Write
+\[
+ \Con(\mathrm{ZFC})\;:=\;
+ \neg\exists p\in\mathbb N\;\operatorname{Ref}_{\mathrm{ZFC}}(p).
+\]
+Here $\mathbb N=\{0,1,2,\ldots\}$ throughout. For every proposed polynomial
+one must specify its coefficient tuple and its domain; a count over
+$\mathbb N$ is not interchangeable with a count over $\mathbb Z$.
+The intended statement is a theorem of ZFC of the form
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\neg\exists x\in D^n\;P(x)=0\bigr)
+ \ \longleftrightarrow\ \Con(\mathrm{ZFC}),
+ \qquad D\in\{\mathbb N,\mathbb Z\}.
+\]
+Equivalently, the construction must internally identify existence of a
+zero with a finite refutation. It must not assume consistency in proving
+that identification. Nor does the identification prove either side of
+the displayed equivalence. The finite identities and witness
+transformations given here are ordinary arithmetic arguments formalizable
+in ZFC. Their composition uses the named inherited refutation calibration.
+The package is not a new kernel-checked proof of the complete display.
+
+The comparison snapshot is
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/7e533c33819ee1f703b69f2778a767cdc069940d}{ProveIt commit 7e533c33819ee1f703b69f2778a767cdc069940d},
+authored at 03:32:10 UTC on 24 October 2026. It is a fixed snapshot, not
+an assertion that the repository has stopped changing.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{llrrrr}
+\toprule
+Construction & Domain & Variables & Degree & Terms & Height\\
+\midrule
+Pinned direct baseline & $\mathbb N$ &3443&4&15754&127302193\\
+New direct variable focus & $\mathbb N$ &1859&4&12275&63924066\\
+New direct sparse option & $\mathbb N$ &2560&4&11074&63923744\\
+New direct integer companion & $\mathbb Z$ &3179&4&23157&63923766\\
+\bottomrule
+\end{tabular}
+\caption{Complete collected quartics. Height is the maximum absolute
+integer coefficient, after collecting equal monomials.}
+\end{table}
+
+For the other route, literal complete graph counts are as follows.
+A circuit operation is one live binary addition, subtraction or
+multiplication, including a square or scalar multiplication. Literal
+integer leaves and reuse are free. An abbreviation or circuit gate is
+not an additional unknown.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Family & Integer variables & Exact degree & Operations\\
+\midrule
+Quintic five-root carrier &12&2048&233\\
+Five-root coprime carrier &13&1072&192\\
+Four-root coprime carrier &14&378&145\\
+Three-root direct carrier &15&172&123\\
+Three-root centered carrier &15&170&134\\
+Two-root centered carrier &16&98&138\\
+Ten-integer polar norm &10&1245324&467\\
+Ten-integer linear translation &10&1179788&470\\
+Ten-integer cubic translation &10&1114252&473\\
+Ten-integer six-term translation &10&1080888&507\\
+\bottomrule
+\end{tabular}
+\end{center}
+These rows cannot be ranked by a single unstated meaning of ``simplest.''
+The direct route has small coefficient height and degree but many
+variables. The native route has very few variables and large fixed
+numerals. The centered fifteen-variable point trades eleven extra
+operations for two degrees relative to its direct sibling. We claim
+only the stated, audited tradeoffs.
+
+\subsection{What is new and what is inherited}
+The direct construction uses the numerical C222 proof calculus, its
+ZF-refutation calibration, and constructible-choice passage from ZF to
+ZFC refutations. It is independent of the K215/Jones/native coefficient
+route. The low-variable families retain the latter route's coherent
+coefficient tuple and its ordinary calibration. Keeping the two chains
+separate is essential: a short evaluator identity cannot replace an
+unbounded compiler or Pell theorem.
+
+The local work in this round consists of explicit source transformations,
+new carrier combinations, a credited projection and sign-normalization
+synthesis, polynomial identities, new exact circuits,
+and a restricted-family lower bound. The baseline comparison and all
+coefficient payloads are fixed before counts are made. Source files are
+retained with notices as inert mathematical provenance; no upstream
+executable is run by the release checks. The checkers supply finite
+implementation evidence, not a proof of consistency or a replacement
+for universal soundness and completeness.
+
+\subsection{How an explicit equation is specified here}
+For each direct equation the file \texttt{equation.json} gives an ordered
+list of variables and quadratic rows with literal integer coefficients.
+A row is encoded as a finite list $(c,\mu)$, where $\mu$ is a list of
+zero-based variable indices and denotes $c\prod_{i\in\mu}x_i$.
+The empty list denotes the constant monomial. The output is the sum of
+the squares of all rows. The accompanying
+\texttt{expanded\_polynomial.json} gives its collected integer polynomial,
+not just a hash or a recipe for missing coefficients.
+
+For a small-variable norm, the JSON specifies a finite acyclic graph with
+only literal or fixed-integer leaves and binary integer arithmetic. Every
+fixed-integer leaf has its actual byte payload in the archive, together
+with signedness, byte order and hashes. Hence these are ordinary fixed
+polynomials, not coefficient-parameter families. The factored displays
+below define the same equations more legibly than a huge monomial listing.
+
+
+\subsection{Comparison update from later incoming packages}
+After the fixed repository snapshot was reviewed, additional manuscripts
+and equation packets arrived. They change the comparison, but not the
+literal correctness of the equations in this report. They are not silently
+treated as files that were already present at the pinned commit.
+
+A separate literal audit re-expanded the complete sums of squares in
+those direct packets and checked every supplied collected coefficient.
+Among them are unrestricted-integer quartics with the following metrics:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Variables & Quadratic rows & Collected terms & Height\\
+\midrule
+3776&2015&20194&47959\\
+3671&1942&26271&3835369234\\
+\bottomrule
+\end{tabular}
+\end{center}
+The initial $4087$-integer checkpoint was therefore not a new smallest
+integer count among the incoming packets. The final targeted synthesis in
+Section~\ref{sec:projected-direct} instead gives $3179$ unrestricted
+integers, fewer than both rows. It also improves the second row's
+monomial count and height, but not the first row's small coefficients or
+monomial count. The $1859$-natural-variable construction is smaller in
+dimension than the later $2473$-natural quartic, whose literal audit gives
+$2089$ rows, $20580$ terms and height $127808289$. Projection and sign
+normalization from these incoming packages are credited prerequisites of
+that final synthesis, not claimed as independently new ideas here.
+These are domain-specific comparisons, not a total ordering.
+
+A later thirteen-integer graph has $190$ live binary operations and a
+claimed exact degree $1072$, compared with $192$ operations here. The
+operation count was independently verified; its cancellation-sensitive
+exact degree remains supported by its accompanying ordinary proof rather
+than that finite recount alone. Consequently the thirteen-variable row
+here is not presented as a current operation record.
+Two later twelve-integer graphs have $248$ and $223$ operations and
+reported degrees $4832$ and $16000$, respectively. Their syntactic degree
+upper bounds and operation counts were checked; exact attainment and
+the unbounded consistency calibration are separate authored claims.
+They provide further variable--degree tradeoffs rather than invalidating
+the smaller-degree thirteen- to sixteen-variable equations here.
+
+The comparison addendum, audit receipts and payload identities are retained under
+\texttt{late\_review/}. The original comparison archives and their separate checkers are not
+part of the compact offline suite; these receipts are comparison evidence,
+not a promise to reproduce omitted packages. The literal audit is not an
+independent reproof of all inherited calibrations or a claim that those
+later equations were derived in this round. We keep the principal
+$3443\to1859$ improvement explicitly tied to the stated fixed baseline.
+
+\section{Compressed direct proof-certificate quartics}
+\label{sec:round13-direct}
+
+The final selected direct construction gives a literal quartic in 1,859
+nonnegative variables and a literal quartic in 3,179 unrestricted integer
+variables.  The natural equation has 1,581 quadratic residuals, 12,275
+monomials and coefficient height 63,924,066.  The integer equation has
+2,074 residuals, 23,157 monomials and height 63,923,766.  Both heights are
+below $2^{26}$.  For its integer polynomial $Q_8$, the theorem is
+\[
+ \operatorname{Con}(\mathrm{ZFC})
+ \quad\Longleftrightarrow\quad
+ \neg\exists z\in\mathbb Z^{3179}\;Q_8(z)=0.
+\]
+This is a no-zero equivalence, not a proof that the polynomial has no zero,
+and not a new kernel-checked end-to-end translation.
+
+We first establish the arithmetic and an eleven-column intermediate
+source, then project to eight columns and normalize auxiliary signs in
+Section~\ref{sec:projected-direct}.  The reconstructible intermediate
+checkpoint has 2,170 natural variables or 4,087 integer variables; these
+are not the final selected counts.  A retained sparse alternative with
+2,560 natural variables and 11,074 monomials is also supplied.  Its smaller
+monomial count is a genuine tradeoff against the selected 1,859-variable
+natural polynomial.  The already improved baseline before this round has
+3,443 natural variables, 2,838 residuals, 15,754 monomials and coefficient
+height 127,302,193.  Late incoming integer comparisons and their advantages
+are stated at the end of this section.
+
+The construction follows the direct numerical C222 proof calculus,
+independently of universal-polynomial or small-machine routes.  Its
+calibration and indexed-Pell theorem are explicit inherited dependencies.
+All new transformations below are existence-preserving mathematical
+arguments, and the final files contain literal integer coefficients.
+
+\subsection{The exact direct source and the carrier argument}
+
+Write $I(x,y)=2(x+y)(x+y+1)+4y$, and define
+\[
+ A(x,y)=I(x,y)+2,\quad M(x,y)=I(x,y)+1,\quad
+ E(x,y)=I(x,y)+3,\quad \neg x=I(x,1).
+\]
+These are numerical constructors, not arithmetic assertions about sets.
+The four schema coordinates $a,b,c,d$ and twelve padded Horn branches are
+exactly the pinned numerical C222 source.  The target is code $1$ and the
+free truth code is $0$.  The explicit axiom constructors, including the
+bundled axiom and its disequality guard, occur literally in
+\texttt{build\_compact.py}; the inherited sparse source and calibration
+modules are retained in \texttt{sources/}.
+
+The dependency is the C222-to-ZF refutation theorem followed by the
+constructible-choice ZF-to-ZFC refutation theorem, not execution of a
+small universal machine.  In particular, no assumption that every natural
+number decodes a well-formed formula is silently added.
+
+For $N,m\ge1$, let $M=(m+1)^N$ and bound each rule label $p_i,q_i,v_i$
+by $m$.  The accumulator source is
+\[
+ S_0=M+1,\quad S_N=1,\qquad
+ S_{i+1}(1+v_iM)=S_i(1+p_iM)(1+q_iM),\quad i<N.
+ \tag{1}
+\]
+Every row also requires the pinned Horn rule $(p_i,q_i)\to v_i$.
+Telescoping gives an equality at $M$ between
+\[
+ F(X)=\prod_{i<N}(1+v_iX),\qquad
+ G(X)=(1+X)\prod_{i<N}(1+p_iX)(1+q_iX).
+\]
+If $\deg G\ge N+1$, nonnegative coefficients give
+$G(M)\ge M^{N+1}$, whereas
+\[
+ F(M)\le(1+mM)^N<((m+1)M)^N=M^{N+1}.
+\]
+Thus both products have at most $N$ nonconstant factors.  Their coefficient
+sums at $1$ are at most $(m+1)^N=M$, and every individual coefficient is
+strictly below $M$: a nonconstant product has its positive constant term
+and another positive coefficient, while the constant product is $1<M$.
+A nonzero polynomial $F-G$ cannot vanish at $M$, since its least nonzero
+coefficient would be a nonzero multiple of $M$ with absolute value below
+$M$.  Hence $F=G$.
+
+The distinct factors $1+jX$, $j>0$, now recover the exact nonnegative
+Horn flow balance for target $1$.  A finite single-conclusion flow implies
+derivability: if the target were not derivable, sum the flow coordinates
+outside the deductive closure.  Each valid rule contributes at most zero,
+but the target contributes one.  Conversely, expand a finite proof tree
+from the open obligation $1$ and let $S_i$ be the product of the weights
+of all open obligations.  This gives (1).  Truth padding has weight one.
+The proof uses single conclusions and nonnegative multiplicities; it does
+not justify arbitrary cyclic proofs or signed flows.
+
+\subsection{Eleven coordinates instead of thirteen}
+
+Use the beta sequence function
+\[
+ \beta(x,y,i)=x\bmod\bigl(1+(i+1)y\bigr).
+\]
+For every finite natural sequence, its scale $y$ may be chosen strictly
+larger than every sequence entry and divisible by $N!$.  The moduli for
+$i=0,\ldots,N$ are then pairwise coprime: a common divisor is coprime to
+$y$ and divides a positive index difference at most $N$, which divides
+$y$.  The Chinese remainder theorem supplies $x$.
+
+Parameterize
+\[
+ N=N_0+1,\quad m=m_0+1,\quad M=M_0+1=(m+1)^N,
+ \qquad y=M_0+2+y_0,
+\]
+with all displayed underlying parameters natural.  The two endpoint rows
+are simply
+\[
+ x=M_0+2+(y+1)u_0,
+ \qquad x=1+\bigl(1+(N+1)y\bigr)u_N. \tag{2}
+\]
+They are canonical remainder statements because $M_0+2\le y<y+1$ and
+$1<1+(N+1)y$.  The parameterization alone permits $S_0=y$; completeness
+chooses $y>S_0$, and the first bounded row also enforces this strict
+inequality.  No incorrect strict endpoint inequality is assumed.
+
+At row $i$, retain only
+\[
+ w=(p,q,v,a,b,c,d,S,S',u,u')\in\mathbb N^{11}.
+\]
+Besides the Horn condition and the accumulator row, require
+\[
+ x=S+\bigl(1+(i+1)y\bigr)u,
+ \qquad x=S'+\bigl(1+(i+2)y\bigr)u'. \tag{3}
+\]
+The CRT compiler bounds $p,q,v$ by $m$, bounds $S,S'$ by $y-1$, and
+bounds $a,b,c,d,u,u'$ by one independent $U$.  Therefore (3) already
+forces the canonical beta digits.  The two local remainder slack
+coordinates and their two binomial range certificates disappear.
+
+For completeness first choose the proof, $N,m,M$, and its finite
+accumulator sequence, then choose $y$ strictly above every state, then
+choose $x$ by CRT, and finally choose $U$ above the finitely many schema
+and quotient coordinates.  None of these choices depends on the later
+bounded-universal CRT encoding.  This order excludes circular bounds.
+
+\subsection{Factoring the common Horn conditions}
+
+Let $f_1,\ldots,f_8$ be the eight unconditional axiom codes, let $b_{\rm bundle}$ denote
+the bundled axiom code, and let
+\[
+ g=((c-a)(c-b))^2-(d+1)^2
+\]
+be its guard residual.  Here $b$ in the guard remains the schema coordinate.
+Put
+\[
+ J=v\prod_{r=1}^{8}(v-f_r),\qquad
+ K=(v-b_{\rm bundle})^2+g^2.
+\]
+The following fixed nonnegative polynomial has exactly the pinned Horn
+zero set:
+\[
+ H_{\rm Horn}=(q-I(p,v))^2
+ \left[q^2+(v-A(a,p))^2(p^2+J^2)(p^2+K)\right]. \tag{4}
+\]
+Indeed its first factor is modus ponens.  Otherwise the bracket vanishes
+exactly when $q=0$ and at least one of these alternatives holds:
+$v=A(a,p)$; or $p=0$ and $J=0$; or $p=0$ and $K=0$.
+These are generalization, truth or one of the eight unconditional axioms,
+and the guarded bundled axiom, respectively.  Every factor used in this
+argument is nonnegative.  This is an equivalence of zero sets, not an
+asserted polynomial identity with the old twelve-factor source.
+
+Let $P$ be (4) plus the squares of the accumulator residual and the two
+residuals in (3).  The signed arithmetic circuit is split as $P=E-F$,
+where $E,F$ have nonnegative coefficients, using
+\[
+ (e,f)+(g,h)=(e+g,f+h),\qquad
+ (e,f)(g,h)=(eg+fh,eh+fg),
+\]
+and $(e-f)^2=(e^2+f^2)-2ef$.  Thus $E=F$ holds exactly when every
+required local condition holds.
+
+\subsection{One small circuit for a very large majorant}
+
+It is unnecessary to evaluate a second full copy of the source circuit at
+all coordinate upper bounds.  Put
+\[
+ R=4+N+x+y+m+M_0+U.
+\]
+Every input at which the upper source is evaluated is at most $R$: the
+index is $N$, the label bounds are $m$, the six other private bounds are
+$U$, and $y$ is an upper bound for each state (slightly larger than its
+actual bound $y-1$).  The external inputs are also included in $R$.
+
+A structural exponent certificate bounds every nonnegative circuit node
+by a power of $R$.  An input receives exponent one.  A constant $c$
+receives the least $e$ with $c\le4^e$.  At addition take
+$\max(e_1,e_2)+1$, since $R\ge4\ge2$; at multiplication take $e_1+e_2$.
+Induction on the circuit proves the bound at every node.  For the actual
+factored source the root exponents are 6,893,154 and 6,893,148.
+Rounding upwards to $2^{23}=8,388,608$ gives
+\[
+ H=R^{2^{23}}\ge N,\qquad H\ge E(N,z,u),F(N,z,u). \tag{5}
+\]
+Here the upper state entries in $u$ may be taken to be $y$, as just noted.
+The literal compiler computes $H$ by exactly 23 successive squarings.
+There is no variable exponent or power-representation macro at this step.
+The larger numerical value of the bound has essentially no circuit cost.
+The exported exponent certificate records every abstract circuit node
+and every one of these 23 squarings.
+
+\subsection{One bounded-quantifier certificate with direct cancellation}
+
+Set
+\[
+ T=H!,\quad D_i=1+(i+1)T,\quad B=\prod_{i<N}D_i.
+\]
+For actual coordinate bounds
+$u=(m,m,m,U,U,U,U,y-1,y-1,U,U)$, the bounded row family is equivalent to
+existence of positive encoded columns $A_j$ and a natural encoded index $C$
+with
+\[
+ B\mid {A_j\choose u_j+1},\qquad
+ B\mid1+(C+1)T,\qquad E(C,z,A)\equiv F(C,z,A)\pmod B. \tag{6}
+\]
+In particular, the two state binomial lower arguments are exactly $y$;
+no subtraction is needed in the finite arithmetic circuit.
+
+For soundness fix $i<N$ and take a prime $p\mid D_i$.  It is coprime to
+$T=H!$, hence $p>H$.  The identity
+\[
+ (u_j+1)!{A_j\choose u_j+1}=\prod_{r=0}^{u_j}(A_j-r)
+\]
+implies that $A_j\equiv w_j\pmod p$ for some $0\le w_j\le u_j$.
+This remains true when $A_j\le u_j$, as one factor is zero.  The index
+condition gives $C\equiv i\pmod p$.  The evaluation congruence then holds
+for $E(i,z,w),F(i,z,w)$; both lie in $[0,H]$, so they are equal.
+
+For completeness the $D_i$ are pairwise coprime because $H\ge N$.
+The radius bound supplies more than needed for soundness: $H\ge R$ and
+$R\ge u_j+1$ for every coordinate.  Consequently
+$L_j=(u_j+1)!$ divides $H!=T$, and $\gcd(B,L_j)=1$.
+Choose ordinary CRT representatives
+$A_j\equiv w_j^{(i)}\pmod{D_i}$ and $C\equiv i\pmod{D_i}$.
+The falling-factorial numerator then vanishes modulo every $D_i$ and
+hence modulo $B$.  Cancelling $L_j$, which is coprime to $B$, gives
+$B\mid {A_j\choose u_j+1}$.  Adding a sufficiently large multiple of
+$B$ makes $A_j>0$, preserving the falling-product congruence and hence,
+by the same cancellation, the binomial divisibility.  The valid rows
+and polynomial congruence give the evaluation condition in (6).
+
+This final radius construction therefore needs neither prime-supported
+CRT lifts nor their proof-only products.  Those are necessary in the more
+general current-baseline theorem without a factorial-size guard, but the
+very cheap radius bound restores the simpler direct cancellation proof.
+There is no circularity: all coordinate bounds and $H$ are chosen before
+$T,B$ and the encoded columns.
+
+\subsection{All arithmetic operators are eliminated}
+
+The exact arithmetic identities are
+\[
+ Q_0=(1+(N+1)T)^N+2,\qquad
+ B=\left(T^N N!{Q_0+N\choose N}\right)\bmod(TQ_0-1), \tag{7}
+\]
+\[
+ {n\choose k}=
+ \left\lfloor\frac{(2^n+2)^n}{(2^n+1)^k}\right\rfloor\bmod(2^n+1), \tag{8}
+\]
+\[
+ r=(n+2)^{n+2},\quad C_0={r+n\choose n},\qquad
+ n!=\left\lfloor\frac{(r+1)^n+C_0-1}{C_0}\right\rfloor. \tag{9}
+\]
+For (7), reduction of the numerator modulo $TQ_0-1$ gives
+$\prod_{j=1}^N(1+jT)$, and the chosen $Q_0$ makes this product strictly
+smaller than the modulus.  Division uses $a=dq+r$ and $d=r+s+1$.
+The circuit for (8) combines its two divisions using one high-digit
+coordinate.  Formula (9) uses the equivalent equation
+$(r+1)^n+C_0=C_0 n!+r_0+1$, with $0\le r_0<C_0$.
+The included factorial and bounded-forall representation sources state
+these identities with their boundary cases.
+
+There are exactly 49 positive-power graph calls, 14 binomial calls, and
+two factorial calls.  Positivity is established before each call:
+$N,m\ge1$; $H\ge4$; encoded columns are parameterized as $A_j=\alpha_j+1$;
+range lower arguments are $m+1$, $U+1$, or $y\ge2$; all auxiliary
+factorial/binomial upper arguments and power bases are positive.
+Thus deleting zero-base and zero-exponent cases is licensed for this
+construction, not for the unrestricted exponentiation relation.
+
+\subsection{The parametric positive-power graph}
+
+For positive $n,k$, let $m$ be the proposed output.  There are twelve
+natural certificate coordinates
+\[
+ a_2,y_k,g,d,X,U,q_4,q_B,q_S,q_R,q_P,Z.
+\]
+Define, rather than allocate additional unconstrained coordinates,
+\begin{align*}
+ W&=n+k,& A&=a_2+2,& Y&=k+y_k,& T_0&=m+g+1,\\
+ V&=Y^2(d+1),& B_0&=1+4Y(q_4+1),&
+ S&=X+Uq_S,& R_0&=k+4Yq_R.
+\end{align*}
+Writing $\mathcal N(a,x,y)$ for
+$x^2+y^2-a^2y^2=1$, require precisely seven polynomial conditions:
+\begin{gather*}
+ \mathcal N(A,X,Y),\quad \mathcal N(A,U,V),\quad
+ \mathcal N(B_0,S,R_0),\\
+ B_0=A+Uq_B,\qquad
+ X+Yn=YA+m+T_0q_P,\qquad 2An=T_0+n^2+1,\\
+ \mathcal N(W+1,A,WZ). \tag{10}
+\end{gather*}
+These are circuit expressions; flattening their products gives quadratic
+residuals.  The explicitly assigned $B_0$ is strictly greater than one,
+including when $q_4=0$.  There is no missing bound on this Pell parameter.
+
+\paragraph{Soundness.}
+The definitions give $A>1$, $Y\ge k>0$, $V>0$, $Y^2\mid V$, and
+$B_0>1$.  The three forward congruence equations imply the three modular
+conditions of the pinned indexed-Pell criterion.  Thus $(X,Y)$ is the
+$k$th Pell solution for parameter $A$.  The last norm gives
+\[
+ A^2=1+W^3(W+2)Z^2.
+\]
+As $A\ge2$ and $W\ge1$, necessarily $Z\ge1$ and $A>W\ge n$.
+Therefore the rearranged power congruence uses the same ordinary
+subtraction as the pinned power theorem.  Also $m<T_0$, and the deleted
+common-bound slacks can be restored as $W-n=k$ and $W-k=n$.
+The positive-power criterion yields $m=n^k$.
+
+\paragraph{Completeness and the direction of every quotient.}
+Let $(X_a(j),Y_a(j))$ denote the natural Pell sequence.  At $W=n+k$ choose
+\[
+ A=X_{W+1}(W),\quad WZ=Y_{W+1}(W),\quad
+ T_0=2An-n^2-1,\quad X=X_A(k),\ Y=Y_A(k).
+\]
+The standard congruence $Y_{W+1}(W)\equiv W\pmod W$ supplies $Z$.
+The usual fixed-bound power construction gives $n^k<T_0$ and the power
+congruence.  For its direction set
+$F_j=X_A(j)-(A-n)Y_A(j)$.  Then
+$F_0=1,F_1=n,F_{j+1}=2AF_j-F_{j-1}$.  Inductively
+$F_j\ge F_{j-1}\ge0$ and
+$F_{j+1}\ge(2A-1)F_j\ge nF_j$, so $F_k\ge n^k$.
+Thus $q_P=(F_k-n^k)/T_0$ is natural.
+
+In the explicit completeness proof of the indexed-Pell criterion set
+$h=2kY$, $U=X_A(h)$, $V=Y_A(h)$, and choose $B_0$ by CRT with
+$B_0\equiv A\pmod U$ and $B_0\equiv1\pmod{4Y}$.
+That proof has $A<U$, so its natural CRT representative satisfies
+$B_0\ge A$.  Take $S=X_{B_0}(k)$ and $R_0=Y_{B_0}(k)$, at the same
+index $k$.  The Pell sequences are monotone in the parameter, hence
+$S\ge X$; also $R_0\ge k$.  Consequently all $q_B,q_S,q_R$ are natural.
+Because $B_0>1$ and $Y>0$, its quotient in $B_0=1+4Yq$ satisfies $q\ge1$,
+so write $q=q_4+1$.  The remaining slacks follow from the displayed
+inequalities and divisibility.  This proves completeness of (10), not
+merely its one-way soundness.  The separate orientation supplement
+records the monotonicity proof and exact pinned source lines.
+
+\subsection{Quartic flattening, sparse alternative, and integer domain}
+
+Every nonnegative arithmetic addition or multiplication receives a
+triangular defining row.  Nonnegative affine gate values may be
+substituted without raising residual degree; the implementation substitutes
+only expressions of support at most four, a size tradeoff rather than a
+semantic restriction.  The complete substitution map is supplied.
+The final polynomial is the sum of squares of all remaining quadratic
+rows.  Over either $\mathbb N$ or $\mathbb Z$, a sum of integer squares
+vanishes exactly when all rows vanish.  Exact expansion and collection
+give the reported quartics.
+
+The 2,560-variable sparse alternative retains semantic names for the Pell
+outputs rather than making all of (10)'s definitions affine substitutions.
+It has fewer collected monomials.  Its orientation, short-beta source,
+CRT block and radius bound are otherwise the same.  The intermediate
+shared-offset construction is also justified: finitely many signed
+quotients can be written $v_i-h$ with one common natural $h$, chosen after
+all other witnesses.  It is superseded by the forward form for the final
+natural variants, except that one final CRT congruence still uses two
+natural quotients.
+
+For the 4,087-variable integer companion, congruence quotients themselves
+need not be nonnegative.  There are exactly 197 unrestricted quotient
+coordinates: four per positive-power graph and one final CRT quotient.
+In (10), $S,R_0$ are retained as separate natural semantic coordinates,
+with their defining equalities, while $q_S,q_R$ may be signed.  The other
+parametric definitions are unchanged.  In particular $B_0>1$ still follows
+from $B_0=1+4Y(q_4+1)$ with natural $q_4$; it is not incorrectly inferred
+from signed $q_B$.  Soundness reads congruences directly and applies the
+same indexed-Pell and power theorems.  Completeness uses the natural
+witness construction already proved.  The final CRT quotient may be
+signed because (6) is a divisibility condition.
+
+Only 607 further nonnegativity assertions are necessary.  An exact sign
+certificate infers the other 44 of the 651 nonquotient semantic
+coordinates from polynomial equalities.  Each inference is of the form
+$c x=P$ with $c>0$ and $P$ having nonnegative coefficients; every variable
+occurring to an odd exponent in a monomial of $P$ must already be known
+nonnegative.  Even powers need no sign premise.  The supplied application
+order is an acyclic proof of all required signs.  Signed quotient gates
+are not asserted to be nonnegative.
+
+For each remaining seed $x$, append the quadratic residual
+\[
+ 2x-a(a+1)-b(b+1)-c(c+1)=0. \tag{11}
+\]
+For arbitrary integers $a,b,c$, each consecutive product is nonnegative,
+so (11) forces $x\ge0$.  Conversely every natural $x$ is a sum of three
+triangular numbers by Gauss's theorem.  Equivalently, apply Legendre's
+three-square theorem to $8x+3$: the three squares must all be odd modulo
+8, and subtracting their three units yields (11).
+The 607 seeds add 1,821 integer coordinates and 607 quadratic rows to
+the 2,266-coordinate mixed-domain template.  This proves the counts
+$2266+1821=4087$ and $1924+607=2531$, and preserves degree four.
+
+\subsection{Source pins, reproduction, and the claim boundary}
+
+The calibration files are pinned to
+\texttt{VladimirReshetnikov/ProveIt} commit
+\nolinkurl{08200eb10fde2db408c69dffd840d6920a569b1f};
+the comparison source is the fixed-power-bound candidate at commit
+\nolinkurl{7e533c33819ee1f703b69f2778a767cdc069940d}.
+The exact theorem names, file paths and SHA256 values are listed in
+\texttt{SOURCE\_PINS.json} and the inherited calibration inventory.
+The all-forward Pell proof additionally pins the official Mathlib file
+at commit \nolinkurl{4dc43842a11f257ffba2a611c943a133a65cb4b2},
+SHA256 \nolinkurl{5c5756cdf2fa70fb77af9daa9c7167c65749ac616bde8f5fdfeed2cb958b3ed5}.
+It is inspected as source text, not executed.
+
+The builders are newly authored standard-library Python implementations.
+No upstream executable was imported or run.  Their baseline mode
+independently reconstructs all five published numerical baseline metrics.
+The final release includes the exact sparse equations, every residual,
+raw circuits and macro bindings, affine restoration maps, structural
+radius certificates, integer sign certificates, source pins, and
+independent finite-audit receipts.  Reproduction commands are in
+\texttt{README.md} and the file whitelist is machine-readable.
+
+These finite checks establish literal polynomial and certificate facts,
+not consistency of ZFC and not the universal mathematical dependencies.
+The logical chain is: pinned numerical refutation calibration; finite
+single-conclusion proof flow and the carrier lemma; short-beta source;
+factored Horn zero set; bounded CRT with factorial cancellation; radius bound; explicit arithmetic
+identities and Pell graphs; quartic flattening; and, for unrestricted
+integers, sign closure and the three-triangular-number theorem.  No
+nonpolynomial operation remains in the final equation.
+
+\subsection{Final source projection: eight columns and no private bound}
+\label{sec:projected-direct}
+
+The source projection in this subsection is explicitly credited to the
+incoming \emph{ConZFC Direct Projection 7617} package, whose preprocessing
+proof is preserved as \nolinkurl{sources/INCOMING_PROJECTION_PROOF.md}.
+The new result here is its composition with the sharper carrier,
+parametric positive-power graphs, dyadic majorants, quotient bound $x$,
+and sign-normalized integer compilation.  We do not claim that eliminating
+these three label columns was first discovered in this construction.
+
+Each rule can be parameterized by just $a,b,c,d$:
+\[
+\begin{array}{c|c|c|c}
+ \text{rule}&p&q&v\\ \hline
+ \text{truth}&0&0&0\\
+ \text{eight ordinary axioms}&0&0&f_j(a,b,c,d)\\
+ \text{bundled axiom}&0&0&f_{\rm bundle}(a,b,c,d)\\
+ \text{modus ponens}&a&I(a,b)&b\\
+ \text{generalization}&b&0&A(a,b)
+\end{array}
+\]
+The bundled row additionally requires
+$((c-a)(c-b))^2=(d+1)^2$.  No other row has a guard.  These substitutions
+are exactly the pinned C222 rules, including the independent
+parameter and premise of generalization.
+
+For a chosen branch $j$, substitute its labels $(p_j,q_j,v_j)$ into the
+accumulator residual
+\[
+ L_j=S'(1+v_jM)-S(1+p_jM)(1+q_jM).
+\]
+Let $C_j=L_j^2$ except at the bundle, where
+$C_j=L_j^2+g^2$.  The new local polynomial is
+\[
+ P_8=\prod_{j=0}^{11}C_j
+ +\bigl(x-S-(1+(i+1)y)u\bigr)^2
+ +\bigl(x-S'-(1+(i+2)y)u'\bigr)^2. \tag{12}
+\]
+Its zero set is exactly one valid branch-specific update together with
+the two common beta reconstructions.  As all branch factors are
+nonnegative, the product implements the finite disjunction without
+selecting a rule by an extra coordinate.  This is existential projection
+of the three deterministic labels, not an assertion that the polynomial
+in (12) is algebraically identical to the eleven-coordinate source.
+
+\paragraph{Padding chooses the parameter bound before the carrier.}
+Given a finite proof-tree expansion, choose $N\ge1$ at least its length
+and at least every schema parameter in the expansion.  For modus ponens,
+this may include a very large formula code; no practical bound on the
+resulting $N$ is claimed.  Pad to exactly $N$ rows using truth, whose
+labels are $(0,0,0)$ and whose update leaves $S$ unchanged.  Thus all four
+parameters may be bounded by $N$ without changing refutability.
+
+Every branch label is a nonnegative-coefficient polynomial in those four
+parameters.  Apply the structural exponent certificate to its literal
+constructor DAG with radius $N+4$.  The largest certified exponent is
+3,445,903, so the fixed polynomial
+\[
+ m=(N+4)^{2^{22}} \tag{13}
+\]
+bounds every label.  It is computed by exactly 22 squarings, not by a
+variable-exponent graph and not by a duplicate evaluation of the bundled
+axiom.  It satisfies $m\ge1$.  Choose $M=(m+1)^N$ and $M_0=M-1$.
+The carrier proof already given applies verbatim to these labels.  The
+choice order is proof, padded $N$, then $m,M$, then the accumulator
+sequence, then $y,x$.  There is no self-referential bound.
+
+The eight local coordinates are
+\[
+ (a,b,c,d,S,S',u,u'),\qquad
+ \text{bounds }(N,N,N,N,y-1,y-1,x,x). \tag{14}
+\]
+The use of $x$ for the two quotient bounds is an additional simplification:
+canonical beta reconstructions have
+$x=S+Du$ with $S\ge0,D\ge1$, hence $u\le x$, and similarly for $u'$.
+No new private bound $U$ is needed.  Conversely, the state bounds in (14)
+make those reconstructions canonical, just as in the eleven-column proof.
+The endpoints and parameterization $y=M_0+2+y_0$ are unchanged.
+The four outer natural coordinates are $N_0,x,y_0,M_0$, with $N=N_0+1$.
+
+\paragraph{A second dyadic radius proves the shared CRT bound.}
+Split the actual signed circuit for (12) as $P_8=E_8-F_8$ and put
+\[
+ R=4+N+x+y+M_0,\qquad H=R^{2^{23}}. \tag{15}
+\]
+All inputs at the upper substitution of (14) are at most $R$; for the two
+states we safely use $y$ instead of $y-1$.  The two root exponents from
+the structural certificate are both 6,893,248, below $2^{23}$.
+Therefore $H$ bounds both source evaluations and $N$.  It also dominates
+every binomial cutoff $N+1,y,x+1$.  The same CRT theorem, with direct
+factorial cancellation, applies.  Only 23 successive squarings compute
+(15).  Notice that $m$ need not occur in this source radius: after label
+projection the local source computes its labels from the four bounded
+parameters and uses only $M_0$ as its carrier input.
+
+The final eight-column arithmetic uses exactly 40 positive-power graphs,
+11 binomial graphs and two factorial graphs.  The count is transparent:
+24 powers for the eight coordinate binomials, five for each of the two
+factorials, five other powers in the modulus product, and one carrier
+power.  In this accounting the five other product powers are its two
+explicit powers and the three powers of its extra binomial; the factorial
+at $N$ has already been counted.  No arithmetic macro, variable-length
+product or variable exponent remains after flattening.
+
+\subsection{Existential sign normalization for the final integer equation}
+
+The incoming signed-quartic package supplies the sign-orbit method
+and its two pivots per positive-power graph; its proof is preserved as
+\nolinkurl{sources/INCOMING_SIGN_NORMALIZATION_PROOF.md}.  The final
+application here is checked against the new projected parametric system,
+not assumed merely because it worked for a predecessor.
+
+For a family of residuals $r_j$, a diagonal sign action
+$x_i\mapsto(-1)^{\epsilon_i}x_i$ preserves the common zero set whenever
+all monomials of each row have equal parity against $\epsilon$.
+Then $r_j$ is changed to either $r_j$ or $-r_j$.
+For each of the 40 power calls there are two independent actions:
+\begin{itemize}
+\item Flip its auxiliary $Z$ and the product wire $WZ$.  The only other
+      use of that wire is through its square in the last norm.
+\item Flip its Pell coordinate $U$ and its two unrestricted quotients
+      $q_B,q_S$.  The products $Uq_B,Uq_S$ are unchanged, while the norm
+      uses $U$ only through $U^2$.
+\end{itemize}
+The actions leave every other semantic coordinate unchanged.  They
+commute, and do not change any retained sign guard.  At any integer zero,
+apply a pivot's action exactly when that pivot is negative.  This produces
+another zero in which all 80 pivots are nonnegative.  This is an
+existence-preserving normalization, not a claim that the original zero
+already had those signs.
+
+The released normalization certificate specifies all flipped raw and
+exported variables and the parity of every residual under each action.
+The separate independent checker verifies these finite identities; the
+argument above explains their universal meaning.  Gate values involving
+signed quotients remain allowed to be negative.  No signs of $X,S,R_0$
+are discarded by an unsupported symmetry argument.
+
+The mixed-domain template has 1,937 variables and 1,660 quadratic rows.
+It has 161 unrestricted congruence quotients: four per power call and
+one final CRT quotient.  There are 529 other semantic coordinates.
+Before normalization, exact polynomial sign closure requires 494 seeds
+and infers 35 more signs.  The 80 pivots are among these seeds and can
+instead be normalized.  Thus only
+\[
+ 414+80+35=529
+\]
+semantic signs need to be guarded, normalized, or inferred, respectively.
+The 414 three-triangular-number certificates add $3\cdot414=1242$
+integer variables and 414 quadratic rows.  Consequently the final
+integer counts are
+\[
+ 1937+1242=3179,\qquad 1660+414=2074.
+\]
+The resulting ordinary quartic $Q_8$ has 23,157 monomials and coefficient
+height 63,923,766.  The natural companion has 1,859 variables, 1,581 rows,
+12,275 monomials and height 63,924,066.  Both heights are below $2^{26}$.
+The literal files are \texttt{projected/expanded\_polynomial.json} and
+\texttt{projected\_integer/expanded\_polynomial.json}.
+
+\paragraph{Complete equivalence and comparisons.}
+A zero of the integer polynomial first yields an integer zero of the
+mixed template with the 414 guarded signs.  Normalize the 80 pivots and
+replay the 35 sign implications.  All nonquotient arithmetic inputs are
+then natural.  The parametric Pell certificates establish every required
+power; formulas (7)--(9) establish every other arithmetic macro; the CRT
+certificate recovers all eight-column rows; their parameter and label
+bounds license the sharp carrier and hence a C222 refutation.  The pinned
+calibration gives a ZFC refutation.  Conversely a finite refutation gives
+the padded source in (12)--(14), all arithmetic certificates, natural
+power witnesses, and the 414 triangular representations, hence an integer
+zero.  Therefore
+\[
+ \operatorname{Con}(\mathrm{ZFC})
+ \quad\Longleftrightarrow\quad
+ \neg\exists z\in\mathbb Z^{3179}\;Q_8(z)=0.
+\]
+All steps are ordinary mathematics formalizable in ZFC.  Finite artifact
+checks do not replace the stated unbounded arithmetic and calibration
+theorems, and no new proof-assistant certification or proof of consistency
+is claimed.
+
+The late incoming direct integer alternatives have 3,776 variables,
+20,194 monomials and height 47,959; and 3,671 variables, 26,271 monomials
+and height 3,835,369,234.  The new 3,179-variable equation improves the
+latter on variables, monomials and coefficient height, but does not
+improve the former's monomial count or its much smaller coefficients.
+It should not be described as dominating every current direct equation.
+The 2,560-natural-variable sparse companion likewise remains relevant
+because its 11,074 monomials are fewer than the projected natural
+companion's 12,275.  These are explicit tradeoffs, not an absolute
+minimality claim.
+
+\section{Measured alternative certificate architectures}
+\subsection{Negative CRT moduli as a valid alternative}
+
+Suppose the row condition is $\prod_j C_j=0$ and $R_0=0$, where all
+$C_j,R_0$ are sums of squares. Bound each $C_j$ and $R_0$ separately
+by $K$, with $K\ge4,N$ and all range cutoffs. Put
+\[
+ T=K!,\quad D_i=(i+1)T-1,\quad B=\prod_{i<N}D_i.
+\]
+The $D_i$ are pairwise coprime by the usual difference argument, and each
+is $3\pmod4$. Hence each has a prime divisor $p\equiv3\pmod4$;
+since $p\nmid K!$, necessarily $p>K$.
+Using the usual binomial range certificates, the index congruence
+$B\mid(C+1)T-1$, and
+\[
+ \left(\prod_jC_j(C,A)\right)^2+R_0(C,A)^2\equiv0\pmod B
+\]
+recovers every row. Indeed, over such a prime, a sum of two squares is
+zero only when both terms are zero. Primality then selects a vanishing
+$C_j$, and the separate bounds turn the selected branch and $R_0$ into
+exact zeros. Ordinary CRT proves completeness.
+
+No variable-length product remains in the output. With
+$Q=(1+(N+1)T)^N+2$ one has
+\[
+ B=\left(T^N N!\binom{Q+N}{N}\right)\bmod(TQ+1).
+\]
+The numerator is $\prod_{j=1}^N(TQ+jT)$, which reduces to
+$\prod_{j=1}^N(jT-1)$, and $B<Q<TQ+1$. For $N=0$ the product is
+$1$, the congruences modulo $1$ are vacuous, and the same identity holds.
+The rounded-radius negative-modulus benchmark has 2678 natural variables,
+six more than its matched positive-modulus comparison. It is a proved
+alternative, not the recommended minimum.
+
+\subsection{Factorial separation without a coefficient height}
+
+If $M\ge1$ and $\max(m-1,0)!\mid M$, then the numbers
+$1+jM$, $1\le j\le m$, are pairwise coprime. A common divisor for
+labels $j<k$ is coprime to $M$ and divides $k-j$, while $k-j$ divides
+$M$. Therefore it is $1$. Prime valuations now recover every positive
+label multiplicity from a product equality, for arbitrary proof length.
+The factors themselves need not be prime. Label zero contributes the
+unit factor and remains invisible. For $m=0$ the target factor $1+M>1$
+makes the equality impossible; for $m=1$ any positive $M$ works.
+
+Thus $M=m!$ is a correct replacement carrier when $m\ge1$. It is
+chosen before the obligation stream, never from its later CRT bound.
+The matched native-graph benchmark costs 2872 instead of 2672 variables:
+one extra factorial, one extra binomial and four extra power graphs.
+A completely fixed $M$ without a label restriction is unsound, as shown by
+$1+(M+2)M=(1+M)^2$ and the underivable single rule $(1,0)\to M+2$.
+
+All arguments above are finite arithmetic theorems formalizable in ZFC.
+They remain internal theorems in nonstandard models; they do not rely on
+external standardness of a proposed certificate. The included finite tests
+and literal polynomial replays verify implementation fidelity, not a new
+kernel proof of those all-input statements.
+
+\section{Coprime scale carriers and fixed prime separation}
+\label{sec:r13-radicals}
+
+A low-degree scale and fixed prime separation can be combined without
+adding a variable. The resulting complete integer equations are
+\begin{center}
+\begin{tabular}{lrrr}\toprule
+Construction & Variables & Exact degree & Binary operations\\\midrule
+Normalized five-root norm &13&1072&192\\
+Ordinary four-root norm &14&378&145\\
+Ordinary three-root norm &15&172&123\\
+Centered three-root norm &15&170&134\\
+Centered two-root norm &16&98&138\\\bottomrule
+\end{tabular}
+\end{center}
+All variables range over unrestricted integers. These are explicit
+cost--degree tradeoffs, not global minima. In particular, the first row
+improves the incoming $13/1088/195$ point; the second substantially lowers
+both degree and evaluation cost from the inspected $14/652/163$ point.
+The $16$-variable row lowers degree but increases cost relative to
+$16/108/132$.
+
+The source is the literal signed CRT parent
+\texttt{degree88\_17.json}, with its inherited ordinary native compiler
+and K215 calibration. We restore each of its five residuals below.
+This is not a new Lean/Rocq certificate, and it proves neither consistency
+nor a historical or global optimality claim.
+
+\subsection{Complete common prefix}
+The base thirteen coordinates are
+\[
+ j,C,z,h,r,v,w,T,c,n,t,p_2,p_3.
+\]
+The fixed six numerals are the coherent source-34 tuple
+$\beta,K_0,M_C,M_F$, with $M_F$ already shifted, and
+$A_{\rm cone}=2^{1113}$, $B_{\rm cone}=2^{666104}$.
+In particular $\beta=2^{1064921}-1$. All named registers below are
+polynomial abbreviations, not extra quantified variables:
+\begin{align*}
+J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+X&=qW,&Y&=qv,&E&=XY,\\
+a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+F&=(K_0+W)C-z(q-1),&&&\\
+R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,&&&\\
+k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta,\\
+u&=EYk,&A_\tau&=u(u+k)+1,&A_m&=1+\Delta c^2,\\
+b_0&=X+ac,&I&=(2r+1)c^2,&M&=2q^2,\\
+U&=MH,&e&=v-q^2.&&
+\end{align*}
+The determinant and guard radicand are
+\begin{align*}
+d&=(A_{\rm cone}F)(B_{\rm cone}C)
+ -(q-A_{\rm cone}F-B_{\rm cone}C)^2,\\
+A_g&=d\eta\zeta-(t^2-d-\eta\zeta+1)^2
+     -1-p_2^2-p_3(p_3+1).
+\end{align*}
+For the ordinary variants, add the coordinate $f$ and set
+\[
+ Q=I^2,\qquad S=Q-\Delta(f^2-1),\qquad
+ V=fcT-f^2R-c.
+\]
+For the thirteen-variable normalized variant instead use
+\[
+ A_f=1+\Delta I^2,\qquad Q=\Delta^2I^2,\qquad
+ V=A_f(cT-R)-c.
+\]
+In both cases put $\delta=Q-1$, $C_y=QV^2-1$. The rational expression
+$A_y=C_y/\delta$ is proof notation only, never a circuit division.
+Where the coordinate $\gamma$ is retained, write
+$D=(b_0+H\gamma)^2-A_m$. Where $p_1$ is retained, write
+$G=A_g-p_1^2$.
+
+\subsection{Five literal norm specifications}
+Let
+\[
+ \mathcal F_m(x;a_1,\ldots,a_m)
+ =\prod_{\varepsilon\in\{-1,1\}^m}
+   \left(x+\sum_i\varepsilon_i\sqrt{a_i}\right).
+\]
+Sign invariance proves that this is an integer polynomial. The following
+expressions are cleared symbolically; their JSON circuits use only binary
+addition, subtraction and multiplication.
+
+For thirteen variables take $Z=U(n+V)+Mb_0+He$ and
+\[
+ N_{13}=\delta^{16}\mathcal F_5\left(
+ Z;81U^2A_f,9U^2A_\tau,M^2A_m,729U^2A_g,
+ \frac{U^2C_y}{\delta}\right).
+\]
+The equation is $N_{13}=0$.
+
+For fourteen variables, add $f$, retain the same $Z$, and use
+\[
+ N_{14}=\delta^8\mathcal F_4\left(
+ Z;9U^2A_\tau,81U^2A_g,M^2A_m,
+ \frac{U^2C_y}{\delta}\right),\qquad
+ P_{14}=(1+N_{14})(1+S)-1.
+\]
+For fifteen variables, add $f,\gamma$, and use
+\[
+ N_{15}=\delta^4\mathcal F_3\left(
+ M(n+V)+e;9M^2A_\tau,81M^2A_g,
+ \frac{M^2C_y}{\delta}\right),
+ \qquad P_{15}=(1+N_{15})(1+S)(1+D)-1.
+\]
+
+The centered variants use $t_0=2u+k$, $\ell=k^2-4$.
+For fifteen variables add $f,p_1$ and set
+\begin{align*}
+ Z_c&=U(n+3t_0+2V)+2Mb_0+He,\\
+ N_{15c}&=\delta^4\mathcal F_3\left(
+ Z_c;36U^2A_\tau,4M^2A_m,\frac{4U^2C_y}{\delta}\right),\\
+ P_{15c}&=(1+N_{15c})(1+S)(1+4G)-1.
+\end{align*}
+For sixteen variables add $f,\gamma,p_1$, put $x=Mn+e$, and define
+\begin{align*}
+ j_0&=\delta\{x^2+M(6t_0+4V)x+9M^2\ell\}
+       -4M^2(V^2-1),\\
+ h_0&=12\delta t_0VM^2,\\
+ N_{16}&=j_0(j_0+2h_0)
+  +144\delta M^4\{4A_\tau(1-V^2)+\delta\ell V^2\},\\
+ P_{16}&=(1+N_{16})(1+S)(1+D)(1+4G)-1.
+\end{align*}
+The exact identity, valid also at $\delta=0$, is
+\[
+ N_{16}=\delta^2\mathcal F_2\left(
+ M(n+3t_0+2V)+e;36M^2A_\tau,
+ \frac{4M^2C_y}{\delta}\right)
+\]
+after symbolic clearing. An independent integer-coefficient check compares
+all $29$ nonzero terms in the centered identity.
+
+\subsection{Unit products recover the rows before denominator use}
+For integers, if residuals $R_i$ never equal $-2$, then
+\[
+ (1+N)\prod_i(1+R_i)=1
+ \quad\Longleftrightarrow\quad N=R_1=\cdots=R_s=0.
+\]
+Indeed every factor of the integer unit $1$ is $\pm1$. Each $R_i$ factor
+is $+1$, forcing the one unrestricted norm factor to be $+1$ too.
+There is no missing assumption on the norm modulo four.
+
+Here $a$ is even and $\Delta\equiv3\pmod4$. If $f$ is odd then
+$S\equiv I^2\pmod4$; if $f$ is even then $S\equiv I^2-1\pmod4$.
+Thus $S$ is never $2$ modulo four. The same is true of $D$: for even $c$
+its residues are $0,3$, and for odd $c$ they are $0,1$.
+Finally $4G\equiv0\pmod4$. All the stated finalizers therefore recover
+their individual residuals, in particular $S=0$, before interpreting a
+rational norm.
+
+Since $a\in6\mathbb Z$, $\Delta=(a+1)(a+3)\ge3$.
+In ordinary variants $S=0$ excludes $Q=1$, as it would give
+$\Delta(f^2-1)=1$. In the normalized variant $Q=\Delta^2I^2$ excludes
+$Q=1$ directly. Hence $\delta\ne0$ at every zero in question.
+
+\subsection{Prime separation before guard recovery}
+The fixed residues give
+\[
+ q\equiv X\equiv2\pmod3,\quad a\equiv H\equiv\Delta\equiv0\pmod3,
+ \quad A_\tau\equiv A_m\equiv1\pmod3.
+\]
+To check $A_\tau$, write $A_\tau=1+b(b+1)k^2$ with
+$b=XY^2\equiv0$ or $2$ modulo three.
+Also $H$ is nonzero and odd. Under $S=0$, the square $Q=I^2$ is divisible
+by three, hence by nine. The normalized $Q$ is already divisible by nine.
+Thus $A_y$ is a three-adic unit of residue one.
+
+The weighted roots used by the ordinary fourteen-variable norm have
+squared orders
+\[
+ -2v_3(H),\quad0,\quad2,\quad4+v_3(A_g)
+\]
+for $d_0/H,y,3\tau,9p_1$ respectively. The normalized construction
+inserts $9f$ of squared order four and uses $27p_1$ of squared order
+at least six. A zero guard root is harmless.
+
+Here is the precise separation argument. In any subset of at least two
+nonzero roots, the smallest squared order is unique and even. Divide
+out its power of three and multiply the putative zero sum over all signs
+of the remaining roots. The product is a polynomial in the rational
+squares and is a nonzero unit modulo three, a contradiction.
+Subtracting a Galois conjugate of a rational signed root sum would give
+exactly such a forbidden signed subsum. Every root is therefore rational.
+This argument allows negative radicands; their rationality subsequently
+rules that case out. No positivity guard is assumed beforehand.
+
+Roots of integer squares are integral. For the auxiliary root, $Q=0$
+gives $y=\pm1$. For $Q>1$, rational $y$ in
+$QV^2-(Q-1)y^2=1$ is integral by adjacent-Pell descent. In lowest terms
+$y=A/m$ gives $m^2\mid Q-1$. The transformation
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV
+\]
+preserves the norm and the denominator, and after taking positive signs
+satisfies $0<V'<V$ when $V>1$. The endpoint $|V|=1$ forces $m=1$.
+Thus the case $c=0$, and consequently $Q=0$, has not been silently excluded.
+
+\subsection{Coprime carriers and exact source restoration}
+Because $Y=qv$, we have $H\equiv3\pmod q$. Since $q\equiv2\pmod3$
+and $H$ is odd,
+\[
+ \gcd(H,2q^2)=1.
+\]
+After root recovery the ordinary fourteen-variable factor is
+\[
+ U(n+V)+Mb_0+He=Md_0+U(3\tau+y+9p_1).
+\]
+Reduction modulo $M$ and $H$ gives respectively
+\[
+ v=q^2(2v_{\rm old}+1),\qquad
+ \gamma=\frac{d_0-b_0}{H}\in\mathbb Z.
+\]
+The normalized case adds $9f$ and replaces $9p_1$ by $27p_1$;
+the same argument applies. The centered main carrier instead has
+$2M(d_0-b_0)$ modulo $H$, still invertible because $H$ is odd.
+The variants retaining $\gamma$ need only the first congruence.
+In all cases $Y=(2v_{\rm old}+1)q^3$ exactly, including its odd quotient.
+The removed $v^2$ guard multiplier is unnecessary: $v\ne0$ follows
+now from the recovered congruence, not from an assumed inequality.
+
+The integral guard root restores $G=0$, which implies $d>0$ and
+$\eta\zeta>0$ by the standard joint-positivity identity. For completeness,
+if both factors were negative their magnitudes $b,e>0$ would require
+$(t^2+b+e+1)^2<be$, which is impossible. Thus $c=0$ is impossible too,
+since it would give $\eta\zeta=-Y(Y+1)k^2\le0$.
+
+For the ordinary variants set old $J_3=2j$, old scale $v_{\rm old}$
+as above, and restore the two centered source coordinates by
+\[
+ \tau_{\rm old}=2\tau-(2u+k),\qquad y_{\rm gap}=y-V.
+\]
+The first and auxiliary parent residuals become exactly
+\begin{align*}
+ \tau_{\rm old}^2+2\tau_{\rm old}(2u+k)+k^2-4
+   &=4(\tau^2-A_\tau),\\
+ V^2+(1-Q)y_{\rm gap}(2V+y_{\rm gap})-1
+   &=QV^2-(Q-1)y^2-1.
+\end{align*}
+The other three rows are the main norm, $S$ and $G$.
+Every remaining parent abbreviation agrees literally. This restores the
+five-row signed CRT source directly, without inventing a new rank lemma.
+For normalized thirteen variables instead set
+\[
+ r_{\rm old}=\frac{\Delta(2r+1)-1}{2},\qquad
+ T_{\rm old}=fT.
+\]
+The first quotient is integral because $\Delta$ is odd. Then
+$I_{\rm old}=\Delta I$, the parent's $V$ agrees exactly, and its strong
+row follows from $f^2=A_f$.
+
+Conversely, the inherited canonical refutation witnesses have odd
+$J\equiv1\pmod3$, so $J=6j+1$. Put
+$v=q^2(2v_{\rm old}+1)$ and retain their guard witnesses.
+For example the ordinary fourteen-variable construction chooses
+\[
+ n=\gamma+3\tau+y+9p_1-V-e/M.
+\]
+The centered fifteen-variable construction chooses
+\[
+ n=6\tau+2y+2\gamma-3t_0-2V-e/M.
+\]
+The other formulas omit the coordinates not fused by their norms.
+All values are integers and make one conjugate factor vanish.
+The normalized thirteen-variable case uses the same canonical odd strong
+normalization and fresh auxiliary reconstruction proved in the incoming
+prime-separation package. Its ordinary calibration boundary is unchanged.
+
+\subsection{Universal degree bounds and actual coefficient certificates}
+Fix the six ports. The exact propagated prefix bounds are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{register}&H&k&u&A_\tau&A_g&Q&V&M&U&S,D\\\hline
+\text{degree}&4&5&11&22&28&6&7&2&6&10
+\end{array}
+\]
+in the ordinary case, with $\deg G=28$. The normalized case instead has
+$\deg A_f=14$, $\deg Q=22$ and $\deg V=19$.
+Direct degree propagation through the exact DAGs proves the final upper
+bounds $378,172,98$ for ordinary fourteen, ordinary fifteen and centered
+sixteen variables. Two cancellation-sensitive cases require more.
+
+\paragraph{Thirteen variables.}
+Pair the two signs of the auxiliary root first. Write
+\[
+ Z=UV+s,\qquad s=Un+Mb_0+H(v-q^2),
+\]
+and, for each of the sixteen sign choices, put
+\[
+ B=s\mathbin{\pm}9Uf\mathbin{\pm}3U\tau
+     \mathbin{\pm}Md_0\mathbin{\pm}27Up_1.
+\]
+Assign formal root weights $7,11,5,14$ to $f,\tau,d_0,p_1$.
+Each squared radicand has degree at most twice its root weight, so
+reduction in this formal root algebra never increases weighted degree.
+Thus $B$ has weight at most $20$. The paired factor is exactly
+\begin{align*}
+ \delta\{(UV+B)^2-U^2C_y/\delta\}
+ &=\delta B^2+2\delta UVB-U^2(V^2-1).
+\end{align*}
+The identity uses $C_y=(\delta+1)V^2-1$. Its three terms have bounds
+$62,67,50$. The sixteen-factor product therefore has degree at most
+$16\cdot67=1072$, and is exactly the cleared five-root norm.
+This argument is polynomial algebra, including all exceptional inputs.
+
+\paragraph{Centered fifteen variables.}
+Use the exact centered two-root identity with its scale $M$ replaced by
+$U$, and its carrier argument replaced by
+\[
+ x=Un+2Mb_0+H(v-q^2)\mathbin{\pm}2Md_0.
+\]
+With $d_0$ of weight five, $x$ has weight at most seven. Define
+\begin{align*}
+ j&=\delta\{x^2+U(6t_0+4V)x+9U^2\ell\}
+      -4U^2(V^2-1),\\
+ h&=12\delta t_0VU^2.
+\end{align*}
+Their weights are at most $30$ and $36$. Every term of
+\[
+ j^2+2hj+576\delta U^4A_\tau(1-V^2)
+       +144\delta^2U^4\ell V^2
+\]
+has weight at most $66$. The exact identity uses only
+$t_0^2=4A_\tau+\ell$, not a Pell zero. Taking the two main-root
+conjugates gives norm degree at most $132$; the strong and guard
+finalizers add $10+28$, yielding $170$.
+
+Independent modular-line certificates modulo $65521$ and $65519$, using
+the actual six numeral byte strings, attain every stated bound with a
+nonzero leading coefficient. They are rigorous lower certificates
+combined with the preceding universal upper proofs.
+All literal DAGs pass topology, variable closure, liveness and coefficient
+hash checks. An independent exact sparse-algebra audit verifies every
+prefix, carrier, radicand, norm and finalizer, using all $20\,349$
+coefficients of the generic five-root norm; deliberate corruptions are
+rejected. Signed modular diagnostics additionally include $c=0$, $v=0$
+and their intersection. These algebraic checks do not establish an
+unbounded compiler theorem: the named ordinary source calibration remains
+an explicit mathematical dependency.
+
+\section{Twelve integers at degree 2048}
+\label{sec:twelve2048}
+A late supplied interpolation theorem permits a further synthesis. The
+result is a literal polynomial in twelve unrestricted integer variables,
+of exact degree $2048$, evaluated in $233$ live binary operations
+($148$ multiplications, $53$ additions and $32$ subtractions).
+It improves the supplied twelve-variable $4832/248$ degree--cost point.
+The supplied $16000/223$ point remains a cheaper, higher-degree alternative.
+No fewest-variable or global optimality claim is made.
+
+The new changes are a coprime homogeneous quintic carrier, a guard Pell
+witness divisible by three, fixed prime separation in place of large
+size weights, and a doubled auxiliary-root center. The full-residue
+interpolation theorem and the direct normalized signed-kernel calibration
+are imported from \texttt{ConZFC\_Twelve\_Integer\_Interpolation\_2026-10-24}.
+Its exact proofs, provenance and notices are retained. In particular,
+this is not a literal restoration of the earlier odd-multiplier source
+chart, nor a new proof-assistant certificate.
+
+\subsection{Complete polynomial specification}
+The twelve coordinates are
+\[
+ j,C,z,h,r,v,w,T,c,n,t,s_0\in\mathbb Z.
+\]
+Use the same complete six fixed source-34/source-71 numerals as before.
+Define
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=qv,&E&=XY,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H,\\
+ F&=(K_0+W)C-z(q-1),&&&\\
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,&&&\\
+ k&=R+1+hE,&\eta&=c-Yk,&\zeta&=k-\eta.
+\end{align*}
+Put
+\begin{align*}
+ d_g&=(A_{\rm cone}F)(B_{\rm cone}C)
+          -(q-A_{\rm cone}F-B_{\rm cone}C)^2,\\
+ P&=d_g\eta\zeta-(t^2-d_g-\eta\zeta+1)^2,\\
+ s&=3s_0,&D_g&=(3P-4)s^2+1,&I&=src^2,\\
+ D_f&=1+\Delta I^2,&Q&=\Delta^2 I^2,&\delta&=Q-1,\\
+ V&=D_f(c-R+4IT)-c,&C_y&=QV^2-1,&D_a&=\delta C_y,\\
+ \ell&=EYk,&D_\tau&=1+\ell(\ell+k),&D_m&=1+\Delta c^2,\\
+ b_0&=X+ac,&M&=2q^2,&L&=MH,\\
+ e&=v-q^2,&\widetilde b&=Mb_0+He,&
+ u&=LT-\widetilde b,\\
+ \widetilde D&=M^2D_m.&&&
+\end{align*}
+For the fixed intersective quintic
+\[
+ \pi(x)=(x^2+31)(x^3+x+1),\qquad
+ \Phi_L(x)=L^5\pi(x/L),
+\]
+the following integer polynomials are its exact quadratic remainder:
+\begin{align*}
+ A={}&u^5+10u^3\widetilde D+5u\widetilde D^2
+       +32L^2(u^3+3u\widetilde D)\\
+    &+L^3(u^2+\widetilde D)+31L^4u+31L^5,\\
+ B={}&5u^4+10u^2\widetilde D+\widetilde D^2
+       +32L^2(3u^2+\widetilde D)+2L^3u+31L^4.
+\end{align*}
+Thus $A+B\widetilde d=\Phi_L(u+\widetilde d)$ when
+$\widetilde d^2=\widetilde D$. Finally set
+\[
+ S=IL^5,\qquad C_a=(2Q-1)V,\qquad Z=S(n+C_a)-A.
+\]
+With $\mathcal F_5$ denoting the ordinary $32$-sign norm polynomial,
+the complete equation is
+\[
+ \boxed{\mathcal P_{12}
+ =\mathcal F_5\bigl(Z;B^2\widetilde D,
+ 4S^2D_a,36S^2D_f,324S^2D_\tau,2916S^2D_g\bigr)=0.}
+\]
+There is no denominator clearing in this norm: all five radicands are
+integer polynomials. The displayed homogeneous notation is expanded in
+the actual DAG. No square root, division, variable exponent or additional
+quantified register occurs in the exported equation.
+
+\subsection{Exclude the entire zero multiplier branch first}
+For all integer inputs $q$ is nonzero, even and $2$ modulo three;
+$X\equiv2\pmod3$ and $a\in6\mathbb Z$. Hence
+$\Delta=(a+1)(a+3)\ge3$, and $H$ is nonzero, odd and divisible by three.
+Also $H\equiv3\pmod q$, so $\gcd(H,M)=1$ and $L\ne0$.
+Thus $D_m\ge1$ and $\widetilde D>0$, including $v=0$.
+
+The imported elementary quintic lemma says that $\pi$ has no zero in
+a real extension of $\mathbb Q$ of degree at most two. The quadratic
+factor has no real zero, while the cubic has degree three and is
+irreducible by the rational-root test. Consequently
+\[
+ A+B\sqrt{\widetilde D}\ne0,
+ \qquad A-B\sqrt{\widetilde D}\ne0.
+\]
+If $I=0$, then $S=0$, the last four norm radicands vanish, and the entire
+polynomial specializes to
+\[
+ (A^2-B^2\widetilde D)^{16}\ne0.
+\]
+Every zero therefore has $I,S,s_0,r,c\ne0$. This is established before
+dividing a factor relation by $S$. Since $Q=(\Delta I)^2$, at such a
+zero $Q>1$ and $\delta\ne0$.
+
+\subsection{Small fixed weights replace all size separators}
+Modulo three the new carrier has
+\[
+ M\equiv2,\quad L\equiv0,\quad b_0\equiv2,
+ \quad u\equiv2,\quad\widetilde D\equiv1.
+\]
+Thus $B\equiv5+10+1\equiv1\pmod3$. Also
+\[
+ D_f\equiv D_\tau\equiv D_a\equiv D_g\equiv1\pmod3.
+\]
+For $D_a$ use $Q\equiv0\pmod9$; for $D_g$ use $s=3s_0$.
+For $D_\tau$, the factorization
+$1+(XY^2)(XY^2+1)k^2$ has $XY^2\equiv0$ or $2$ modulo three.
+
+Divide a vanishing factor by the already nonzero $S$.
+The five weighted roots
+\[
+ \frac{BMd}{S},\quad 2\widetilde y,\quad6f,
+ \quad18\tau,\quad54g
+\]
+have squared three-adic orders respectively
+\[
+ -2v_3(S),\quad0,\quad2,\quad4,\quad6,
+\]
+where $d^2=D_m$, $\widetilde y^2=D_a$, $f^2=D_f$,
+$\tau^2=D_\tau$, $g^2=D_g$.
+Each subset of at least two has a unique even minimum. Normalize its
+smallest root by the corresponding power of three and multiply a putative
+zero sum over all signs of the other roots. The product is a polynomial
+in the rational squared roots and is a nonzero unit modulo three, a
+contradiction. Subtracting a Galois conjugate of the rational factor
+relation would give just such a forbidden signed subsum. All roots are
+therefore rational. The nonzero rational multiplier $BM/S$ causes no
+loss: $d$ is rational too. Roots of integer radicands are integral.
+No size estimate, radical positivity assumption or bound on $R$ was
+used for this extraction. Global monotonicity of the chosen quintic,
+although true, is not needed by this new proof: $B\equiv1\pmod3$
+already supplies its nonvanishing.
+
+Now $D_g=g^2\ge0$. Since $s\ne0$, the alternative $P\le0$ would give
+$D_g=(3P-4)s^2+1\le-3$. Thus $P>0$, and the joint-positivity identity
+gives $d_g>0$ and $\eta\zeta>0$.
+The rational value $y=\widetilde y/\delta$ satisfies
+\[
+ QV^2-(Q-1)y^2=1.
+\]
+Adjacent-coefficient Pell descent makes $y$ integral.
+
+\subsection{One monic carrier restores both congruences}
+After absorbing the factor signs into the integer roots, the norm relation
+gives
+\[
+ S\mid A+BMd=\Phi_L(Md-\widetilde b+LT).
+\]
+In particular $L^5$ divides this homogeneous monic quintic.
+For a prime with $p^a\Vert L$, if its argument had order $b<a$,
+the monic fifth-power term would have order $5b$, strictly below every
+other term. That contradicts divisibility by $p^{5a}$. Therefore
+\[
+ L\mid M(d-b_0)-He.
+\]
+Reduction modulo the coprime factors $M,H$ gives
+\[
+ M\mid e,\qquad H\mid d-b_0,
+ \qquad v=q^2(2v_{\rm old}+1),\qquad
+ \gamma=(d-b_0)/H\in\mathbb Z.
+\]
+Thus $Y=(2v_{\rm old}+1)q^3$ is recovered with its full odd quotient.
+Moreover the quintic argument divided by $L$ is exactly
+\[
+ T+\gamma-e/M.
+\]
+This proves both congruences without adding a variable or presupposing
+that $v$ is nonzero.
+
+The late source's direct normalized signed-kernel proof now applies.
+The physical coordinates satisfy its first, main and normalized strong
+Pell equations, strict guards and native transport/index equations.
+Its two auxiliary quotients are restored by
+\begin{align*}
+ o&=f(c-R+4IT),\\
+ j_{\rm aux}&=\Delta s^2r^2c^3(c-R)+4srcD_fT,
+\end{align*}
+so $V=fo-c=cj_{\rm aux}-R$. The normalized rank argument uses
+$c^2\mid I$ and does not require $I/c^2$ to be odd. Accordingly, we do
+not assert that the old coordinate $(\Delta sr-1)/2$ is integral.
+The inherited signed step-down, residue orientation and native compiler
+then produce a finite syntactic refutation, with their ordinary theorem
+status unchanged.
+
+\subsection{Completeness and the exceptional guard value}
+Start with the late source's canonical native witnesses and set
+$v=q^2(2v_{\rm old}+1)$. Choose its nearest-square coordinate $t$ so
+$P>0$. A crucial exception must be excluded before forcing $3\mid s$:
+if $P=1$, the guard equation would be $g^2+s^2=1$ and no nonzero
+multiple of three could serve as $s$.
+
+Here that exception is impossible. Both cone products and $q$ are even,
+so $d_g\equiv0\pmod4$. Therefore
+\[
+ P\equiv-(t^2-d_g-\eta\zeta+1)^2\equiv0\text{ or }3\pmod4.
+\]
+Positive $P$ is at least three. Thus $D=3P-4$ is positive and
+$2$ modulo three, hence nonsquare. Take a positive Pell pair
+$g_1^2-Ds_1^2=1$. Modulo three, $g_1^2+s_1^2=1$, so
+$3\mid g_1s_1$. Squaring the unit gives
+\[
+ g=g_1^2+Ds_1^2,\qquad s=2g_1s_1>0,
+ \qquad 3\mid s.
+\]
+Set $s_0=s/3$. No outer coordinate has changed.
+
+Invoke the imported full-residue interpolation lemma with $N=s$.
+It supplies a single normalized Pell pair $I,f$, with $4sc^2\mid I$,
+\emph{before} a residue is requested, and then realizes every class
+of $T$ modulo this same $I$ in
+\[
+ V=f^2(c-R+4IT)-c,\qquad
+ (\Delta I)^2V^2-((\Delta I)^2-1)y^2=1.
+\]
+Put $r=I/(sc^2)$. The lemma's hypotheses include even $a+2$,
+$R\equiv c\equiv3\pmod4$, all supplied by the canonical source.
+Its proof uses the corrected period $4n_0f$ modulo $f^2$ and the
+Lucas valuation bound $\gcd(4n_0f,4I^2)\mid4I$; mere infinitude of
+Pell solutions would not suffice.
+
+Choose an intersective residue for
+$\pi(T+\gamma-e/M)$ modulo $I$. Interpolation supplies $T,y$ in that
+class, leaving $I,f$ fixed. Hence
+\[
+ A+BMd=L^5\pi(T+\gamma-e/M)
+\]
+is divisible by $S=IL^5$. With $\widetilde y=\delta y$, choose
+\[
+ n=\frac{A+BMd}{S}+2\widetilde y+6f+18\tau+54g-(2Q-1)V.
+\]
+This is integral and makes one norm factor vanish. The witness order is
+native data, then $t,s,s_0$, then $I,f,r$, then the intersective residue
+and $T,y$, and finally $n$. There is no circular residue choice.
+
+\subsection{Exact degree 2048}
+The relevant polynomial degrees are
+\[
+\begin{array}{c|rrrrrrrrrr}
+\text{register}&H&\Delta&P&I&D_f&Q&V&D_a&D_g&L\\\hline
+\text{degree}&4&8&28&4&16&24&21&90&30&6
+\end{array}
+\]
+and
+\[
+ \deg A=35,\quad\deg B=28,\quad\deg S=34,
+ \quad\deg C_a=45,\quad\deg D_\tau=22,
+ \quad\deg\widetilde D=14.
+\]
+Pair the two auxiliary signs first. Let $B_*$ denote $Sn-A$ plus
+the four signed non-auxiliary radical terms. Their weights are
+$35,42,45,49$ for main, strong, first and guard, so $B_*$ has weight
+at most $49$. The paired factor is exactly
+\[
+ B_*^2+2SC_aB_*+S^2(V^2+4Q-4),
+\]
+because the polynomial identity
+\[
+ ((2Q-1)V)^2-4(Q-1)(QV^2-1)=V^2+4Q-4
+\]
+holds universally. Its term bounds are $98,128,110$. Taking sixteen
+sign choices proves degree at most $16\cdot128=2048$.
+The unique leading paired term is
+$2SC_a(\mathbin{\pm}54S\sqrt{D_g})$; the eight negative signs cancel.
+Thus the full leading form is
+\[
+ 108^{16}S_0^{32}(C_a)_0^{16}(D_g)_0^8\ne0.
+\]
+More explicitly, the coefficient of
+\[
+ j^{928}w^{288}v^{320}h^{32}s_0^{128}r^{112}c^{224}T^{16}
+\]
+is
+\[
+ \boxed{2^{2064}3^{1400}\beta^{928}>0.}
+\]
+The exponent sum is $2048$. The $h^{32}$ term uniquely selects
+$ha_0$ throughout the top part of $k^{32}$; $T^{16}$ then uniquely
+selects $4I_0T$ throughout $(4I_0T-R_0)^{16}$. The remaining factors
+are monomials, so no other fixed coefficient can cancel this term.
+
+Independent actual-coefficient line certificates modulo $65521$ and
+$65519$ also attain degree $2048$. The complete $233$-operation DAG
+has no dead gates or hidden input leaves. Independent arithmetic checks
+use a separate binomial quintic remainder and full $32$-sign product,
+including every intersection of the exceptional slices $s_0=0,r=0,c=0$.
+These finite checks do not replace the unbounded interpolation or
+native calibration proofs. The resulting consistency equivalence is an
+ordinary mathematical theorem composed with those explicitly retained
+sources, not a proof of consistency or a completed object-language
+ZFC derivation.
+
+\section{A sharp limit for final coordinate centering}
+The ten-integer equations now have the following literal circuit counts.
+The comparison uses the current pinned short-guard family, rather than an
+older incoming package. These changes preserve the corresponding
+polynomials exactly; they do not improve the variable counts or degrees.
+\begin{center}
+\begin{tabular}{lrrr}
+Variant & Prior operations & New operations & Exact degree\\\hline
+Polar &471&467&1,245,324\\
+Linear &475&470&1,179,788\\
+Cubic &478&473&1,114,252\\
+Six term &512&507&1,080,888
+\end{tabular}
+\end{center}
+Every live binary addition, subtraction and multiplication costs one,
+including squares and scalar products. Fixed integer leaves and reuse cost
+zero. The full graphs, actual coefficients and independent checks are in
+\texttt{norm/}; no intermediate register adds an unknown.
+
+The more substantive result is a limitation of this entire centering route.
+With the short-guard prefix fixed, no polynomial translation of the final
+coordinate alone can produce degree below $1{,}080{,}888$. This includes
+arbitrary real polynomial translations, not only the integral corrections
+previously considered. It is not a lower bound for different guards, norm
+carriers, source encodings, or changes of other coordinates.
+
+\subsection{The fixed norm and its leading forms}
+Retain the ten coordinates $(t,g_0,c_0,k_0,l,w,x,y,z,m)$ and the source
+registers from the supplied short-guard parent. In particular,
+\[
+ \Delta=g(\mathrm{cap}-g)K^2-\mathrm{cap}^2(C-KL)^2,
+ \qquad a_0=r+(9\Delta-3)(rz)^2,\qquad a_1=DFI.
+\]
+Set $Z=\Sigma m-\Theta$. The unpolarized final norm is
+\[
+ N=(Z^2-\Sigma^2(a_0+a_1))^2-4\Sigma^4a_0a_1.
+\]
+For a nonzero polynomial $P$, write $P_{\rm top}$ for its highest
+homogeneous part. The relevant degrees are
+\[
+\begin{array}{c|rrrrrrr}
+ P&g&\mathrm{cap}&K&L&r&a_0&a_1\\\hline
+ \deg P&2&233&28548&4220&114189&294382&458818.
+\end{array}
+\]
+The first term of $\Delta$ has degree $57331$, while its negative square
+term has degree $66002$. Therefore, with
+\[
+ U=3\,\mathrm{cap}_{\rm top}K_{\rm top}L_{\rm top}r_{\rm top}z,
+ \qquad V=(2AEGH)_{\rm top},
+\]
+we have
+\[
+ (a_0)_{\rm top}=-U^2,\qquad (a_1)_{\rm top}=V^2.
+\]
+The second identity also follows from the exact defect identity:
+$\deg(a_1-(2AEGH)^2)=426050<458818$. Both $U$ and $V$ are nonzero.
+Since $\deg\Sigma=81922$, the fixed cross term has degree
+\[
+ d=4(81922)+294382+458818=1080888
+\]
+and highest homogeneous part
+\[
+ (-4\Sigma^4a_0a_1)_{\rm top}=(2\Sigma_{\rm top}^{2}UV)^2.
+\]
+This is a nonzero square, not merely a coefficient whose sign was sampled.
+
+\subsection{The lower bound for every polynomial translation}
+Let $R$ be any real polynomial in the first nine coordinates, and define
+\[
+ B_R=[\Sigma(m+R)-\Theta]^2-\Sigma^2(a_0+a_1).
+\]
+The translated norm is $B_R^2-4\Sigma^4a_0a_1$. If
+$2\deg B_R>d$, its degree is $2\deg B_R>d$. If $2\deg B_R<d$, its
+degree is $d$. At equality, its degree-$d$ part is
+\[
+ (B_{R,\rm top})^2+(2\Sigma_{\rm top}^{2}UV)^2.
+\]
+A sum of squares of real polynomials can vanish identically only when
+both summands vanish identically. The second is nonzero, so cancellation
+is impossible. Thus every such translated norm has degree at least $d$.
+The six-term shift attains $d$, proving the restricted-family optimum.
+The old odd-degree argument does not apply after the short-guard change;
+this positive-leading-square argument replaces it.
+
+Further degree progress in this ten-variable family must therefore change
+more than the final polynomial translation: for example the guard, the norm
+carrier, the prefix, or another coordinate. This conclusion does not rule
+out any of those routes.
+
+\subsection{The exact arithmetic savings}
+Write $t_c=t_{c,0}-2$ in the unchanged source. Reuse
+\[
+ X_+=n_n(s_c+t_{c,0}-1)-s_c,
+ \quad X=X_+-1,
+ \quad K=X_++\mathrm{twice\_k}(P_{1/2}-1).
+\]
+This removes two unnecessary constant adjustments. Since $F=F_{-1}+1$,
+use $G=hF_{-1}-F$ instead of $(h-1)F_{-1}-1$. Share
+$S^3=SS^2$ and $S^5=S^2S^3$ between $\Sigma$ and $\Theta$.
+For the linear and cubic shifts, share $GH$ by writing
+$I=(GH)^2-H^2+1$.
+
+For the six-term shift put $u=C^2$, $h=A/2$ and $E_0=u\xi$. Its compact
+factorization uses
+\[
+ u^7\xi^4=u^3E_0^4,\qquad u\xi^2=E_0\xi.
+\]
+These save two multiplications without changing the existing shift.
+Together the exact identities account for the counts in the table.
+
+\subsection{Verification and mathematical boundary}
+The independent checker imports neither the producer nor its circuit
+helper. It checks exact local polynomial equalities for every retained
+source register and the complete norm, all actual coefficient payloads and
+recipes, topology, backward liveness, operation counts, the expanded radical
+defects, and nonzero actual-coefficient degree certificates. It also performs
+$360$ signed modular native replays per variant and rejects four final-sign
+mutations. Normal and optimized Python runs agree.
+
+The new algebra preserves the inherited ordinary mathematical equivalence
+to finite ZFC refutability. Its compiler, Pell and interpolation interfaces
+remain explicit dependencies. The result is not a consistency proof or a
+new end-to-end proof-assistant certificate. No new low-degree integer chart
+was established here: the incoming $23/10$ and $20/18$ points remain prior
+work rather than contributions of this iteration.
+
+\section{What the checks establish}
+\label{sec:checks}
+The release separates three different levels of evidence.
+\begin{enumerate}
+\item \textbf{Literal finite algebra.} Independent programs re-expand the
+quadratic rows of the selected direct quartics and compare every collected
+integer coefficient. They verify every retained variable, affine
+restoration, source binding, Pell macro, radius certificate, and the
+integer sign closure. Fixed norm payloads are authenticated and their
+arithmetic graphs checked for topology, liveness and operation counts.
+\item \textbf{Universal mathematical reductions.} The carrier bootstrap,
+beta reconstruction, prime-lift CRT, forward Pell witnesses, parametric
+elimination, unit-product finalizers, root separation and degree upper
+bounds are proofs about arbitrary inputs. Finite samples are not offered
+as substitutes for them. Exact modular leading coefficients, once an
+upper bound is proved, are valid certificates that the degree is attained.
+\item \textbf{Logical calibration.} The direct route retains the named
+numerical C222 and ZF/ZFC refutation interfaces. The low-variable route
+retains the native compiler and K215 interfaces. Their ordinary source
+proofs are included or identified at their explicitly recorded source pins. A new complete
+Lean or Rocq derivation is not claimed. The package does not search for,
+or decide the existence of, a zero of a consistency polynomial.
+\end{enumerate}
+
+The exact audit programs use explicit failures rather than removable
+Python assertions. The release driver invokes the selected suites both
+normally and with Python optimization enabled. It also regenerates the
+selected equations in temporary directories and compares their bytes,
+not merely their numerical summaries. Source and proof hashes, payload
+hashes, check outputs and timing receipts are recorded separately.
+Checks that write receipts are run on temporary copies, so verification
+does not silently invalidate the release manifest.
+
+The archive README lists the exact suite inventory and supported command.
+The runtime receipt records actual counts and elapsed times of the replay;
+it is not a promise about speed on another machine. Python 3 and SymPy
+are required for the complete suite. The direct, architecture and radical
+checks themselves use standard-library Python. No network access,
+repository checkout, Lean installation or earlier round's ZIP is required.
+Rebuilding this PDF additionally requires a conventional LaTeX setup.
+The PDF is delivered already rendered, so it is not needed to check the
+mathematics encoded in the JSON files.
+
+\subsection{Immediate dependency map}
+The root comparison pin and baseline recount are recorded under
+\texttt{review/}. The named direct calibration interfaces are
+\texttt{c222\_iff\_zf\_refutation} and
+\texttt{zf\_refutation\_iff\_zfc\_refutation}; the endpoint uses the
+selected \texttt{ZFCax\_s} proof predicate. The direct packet retains the exact constructor source,
+Horn branch inventory, C222 endpoint, constructible-choice bridge,
+Pell/power/factorial and bounded-quantifier interfaces under
+\texttt{direct/sources/}. The official Mathlib indexed-Pell completeness
+source is fixed independently by its own commit, Git blob and SHA256.
+Its source notice and Apache license are preserved.
+
+The radical packet retains the five-row seventeen-integer parent and its
+CRT and prime-separation proofs. Its six coefficient payloads are not
+interchangeable with a different native tuple. In particular, the
+already-shifted $M_F$ must not be shifted again. The ten-variable packet
+retains its twelve literal signed integer leaves, their source recipes,
+the exact short-guard parent graphs and the parent proof. Included source
+inventories distinguish a local dependency from a historical path
+mentioned in inherited prose. Historical source references are not
+runtime dependencies.
+
+\section{What to pursue next}
+\label{sec:next}
+The direct quartic is now substantially smaller without changing the
+logical endpoint. The remaining sign seeds and the repeated arithmetic
+macros are specific targets, but further compression must preserve
+simultaneous completeness. Merely orienting a congruence or sharing a
+bound because it looks harmless is insufficient.
+
+\begin{enumerate}
+\item \textbf{Extend the sign certificate before changing the integer
+encoding.} The current $414$ guarded signs, $80$ normalized pivots and $35$
+inferred signs establish all $529$ nonquotient semantic signs. A new universally valid implication that removes a seed
+saves three unrestricted integer coordinates. It must be checked against
+the literal residual and the dependency order; signed quotient cones
+must remain outside the natural arithmetic semantics.
+\item \textbf{Seek genuinely shared power certificates.} There are still
+$40$ positive-power calls. Any proposed shared Pell parameter must be
+chosen after all its finite input requirements and must satisfy the
+simultaneous index and final-norm conditions. A common large numerical
+bound alone does not prove that those Pell witnesses can be shared.
+A proof of this joint existence theorem would be more valuable than
+another local circuit reassociation.
+\item \textbf{Change the short guard or prefix for ten variables.} The
+proved $1080888$ lower bound closes the route consisting only of final
+polynomial translations. Further degree improvement in that family
+requires changing another structural element. The restriction is sharp
+and useful, but says nothing about arbitrary ten-variable equations.
+\item \textbf{Treat another eliminated guard coordinate as a new theorem.}
+The tempting replacement of
+$1+p_1^2+p_2^2+p_3(p_3+1)$ by
+$1+p_1^2+p_3(p_3+1)$ is not uniformly valid. For $d=1$ and
+$\eta\zeta=9$, the positive joint expression is
+$9-(t^2-9)^2$. Its only positive values occur at $t=\pm3$ and equal $9$.
+But $8$ is not a square plus $z(z+1)$: the only nonnegative consecutive
+products at most $8$ are $0,2,6$, leaving $8,6,2$, none a square.
+A twelve-variable proposal based on this shortcut therefore needs an
+additional canonical-witness tuning argument, not an omitted exception.
+This failed shortcut is not the interpolation construction of
+Section~\ref{sec:twelve2048}.
+\item \textbf{Formalize the smallest complete chain.} A useful next
+ProveIt milestone is a checked translation for the direct $1859$-variable
+quartic: first the fixed Horn factoring and degree-bootstrap carrier,
+then the short-beta and majorant transformations, then the parametric
+Pell compiler. The supplied finite checkers identify concrete interfaces
+but do not themselves create those universal formal theorems.
+\end{enumerate}
+
+\section{Reading and reproducing the archive}
+The archive is self-contained at the level claimed here. Its root contains
+this report's editable TeX and rendered PDF, a README, the release verifier,
+a SHA256 manifest, and a recorded full offline replay. The component
+directories contain only the selected equations and their immediate
+proof, coefficient and verification dependencies. Earlier complete
+incoming archives and redundant development variants are not bundled.
+
+Start with the README, then run \texttt{python verify.py}. This validates
+the manifest and executes the full offline check and deterministic
+rebuild suite. \texttt{python -O verify.py} provides the corresponding
+optimized-driver replay. Outputs made while checking go to an independent
+temporary directory; the release itself is left unchanged. To read a
+particular equation, use the domain and variant name in the tables above,
+not a mixed-domain intermediate template.
+
+The polynomial payloads are the authoritative exact artifacts. The
+human-readable proofs explain why they have the required existential
+meaning. Neither a successful run nor a small variable count should be
+read as a proof that the polynomial has no zero, as global optimality, or
+as a substitute for the fixed syntactic definition of consistency.
+\end{document}

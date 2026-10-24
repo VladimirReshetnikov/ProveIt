@@ -1,0 +1,226 @@
+{
+  "coefficient_binding": "coefficients/BINDING.json",
+  "degree_certificate": {
+    "final_degree": 204,
+    "final_leading_coefficient_mod_prime": 85468886,
+    "method": "safe multivariate degree bound plus exact univariate specialization modulo a prime",
+    "prime": 1000000007,
+    "residual_degree_bounds": [
+      14,
+      14,
+      176
+    ],
+    "residual_leading_coefficients_mod_prime": [
+      936967818,
+      857044153,
+      711634679
+    ],
+    "slopes": {
+      "C_native": 10,
+      "J3": 5,
+      "T": 122,
+      "c": 145,
+      "f": 26,
+      "gamma": 101,
+      "h": 37,
+      "pair_pos1": 197,
+      "pair_pos2": 226,
+      "pair_root": 170,
+      "r": 50,
+      "t_parity": 257,
+      "v_scale": 65,
+      "w3": 82,
+      "z": 17
+    }
+  },
+  "domain": "unrestricted integers",
+  "exact_degree": 204,
+  "factored_residuals": [
+    "D**2-Delta*c**2-1",
+    "I**2-Delta*(f**2-1)",
+    "norm15"
+  ],
+  "finalizer": "unit_product",
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "name": "parity15_unit_product",
+  "parent_sha256": "0ec2ef40f57d6d2b1a18a27e11dda1a06faa67fb97fe66b23576ab0680298698",
+  "polynomial_abbreviations": [
+    [
+      "Jnative",
+      "3*J3+1"
+    ],
+    [
+      "q",
+      "beta*Jnative+1"
+    ],
+    [
+      "W",
+      "4*(3*w3+1)"
+    ],
+    [
+      "C",
+      "C_native"
+    ],
+    [
+      "F",
+      "(K0+W)*C-z*(q-1)"
+    ],
+    [
+      "alpha",
+      "q-F-C"
+    ],
+    [
+      "X",
+      "q*W"
+    ],
+    [
+      "Y",
+      "(2*v_scale+1)*q**3"
+    ],
+    [
+      "R",
+      "(q*(q-F)-C)*(q**2-1)+(MC+q*MF)*Jnative"
+    ],
+    [
+      "E",
+      "X*Y"
+    ],
+    [
+      "a",
+      "E+Y"
+    ],
+    [
+      "H",
+      "4*a+3"
+    ],
+    [
+      "Delta",
+      "a**2+H"
+    ],
+    [
+      "k",
+      "R+1+h*E"
+    ],
+    [
+      "eta",
+      "c-k*Y"
+    ],
+    [
+      "zeta",
+      "k-eta"
+    ],
+    [
+      "P",
+      "k+E*(c-eta)"
+    ],
+    [
+      "D",
+      "X+a*c+H*gamma"
+    ],
+    [
+      "I",
+      "(2*r+1)*c**2"
+    ],
+    [
+      "Vcrt",
+      "f*c*T-f**2*R-c"
+    ],
+    [
+      "V",
+      "Vcrt"
+    ],
+    [
+      "G",
+      "cone_A*F*cone_B*C-(q-cone_A*F-cone_B*C)**2"
+    ],
+    [
+      "Zeta",
+      "eta*zeta"
+    ],
+    [
+      "A4",
+      "q*(3*w3+1)*Y**2*(X*Y**2+1)*k**2"
+    ],
+    [
+      "A",
+      "4*A4+1"
+    ],
+    [
+      "Q",
+      "I**2"
+    ],
+    [
+      "delta",
+      "Q-1"
+    ],
+    [
+      "r_aux",
+      "Q*V**2-1"
+    ],
+    [
+      "Caux",
+      "delta*r_aux"
+    ],
+    [
+      "b_guard",
+      "G*Zeta-(pair_root**2-G-Zeta+1)**2-1-pair_pos1**2-pair_pos2**2"
+    ],
+    [
+      "B_guard",
+      "4*b_guard+1"
+    ],
+    [
+      "x_parity",
+      "2*t_parity+1"
+    ],
+    [
+      "U15",
+      "t_parity*(t_parity+1)-A4-B_guard+4*Caux"
+    ],
+    [
+      "M15",
+      "U15**2+4*x_parity**2*Caux-A*B_guard"
+    ],
+    [
+      "norm15",
+      "M15**2-16*x_parity**2*U15**2*Caux"
+    ]
+  ],
+  "proof_status": "Ordinary universal proof relative to the named native/Pell/refutation calibration and rational Pell integrality lemma; no new kernel certificate.",
+  "radical_equation": "2*t_parity+1 = epsilon1*sqrt(A)+2*epsilon2*sqrt(B_guard)+4*epsilon3*sqrt(Caux)",
+  "radical_note": "This describes the norm proof only; no radicals occur in the literal polynomial.",
+  "residual_count": 3,
+  "restoration": {
+    "pair_pos3": "(guard_root-1)/2",
+    "tau": "2*tau_root-2*P+k",
+    "y_gap": "aux_root-V"
+  },
+  "restoration_note": "The norm and the squareclass parity argument force A and B_guard to be odd integer squares and Caux to be an integer square; aux_root=sqrt(Caux)/delta is rational and proved integral by the retained consecutive-Pell denominator lemma (Q=0 handled directly).",
+  "single_polynomial": "product(1+4*r_i for r_i in residuals)-1",
+  "source_parent": "parent/degree88_17.json",
+  "variable_count": 15,
+  "variables": [
+    "J3",
+    "C_native",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "gamma",
+    "T",
+    "c",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "t_parity"
+  ]
+}

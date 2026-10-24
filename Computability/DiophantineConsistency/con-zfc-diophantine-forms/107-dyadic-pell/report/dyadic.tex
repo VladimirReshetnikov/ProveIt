@@ -1,0 +1,805 @@
+\section{A degree-706 equation in ten positive integers}
+\label{dy:section}
+
+The first construction preserves the ten positive unknowns of the
+scaled-norm candidate in the pinned repository, while reducing its exact
+total degree from $816$ to $706$.  Its division-free circuit uses $133$
+binary arithmetic operations, compared with $124$ for that parent.
+This is a degree--operation tradeoff, rather than a claim that one measure
+of simplicity captures every consideration.  The coefficient tuple and
+its calibration remain those described in Section~\ref{sec:calibration}.
+The immediate mathematical parent is~\cite{parent816}; the source interface
+and the complete fixed coefficient binding are~\cite{source61,source44}.
+
+The main change is to make all four rational radicands units at the prime
+$2$.  Distinct powers of $2$ then separate their rational square classes.
+This removes a size-order condition on the strong Pell root and permits
+one factor to be removed from its ordinate.  Three centers in the carrier
+and a quadratic transport majorant account for the remaining reduction.
+We prove the new algebra and positivity arguments explicitly.  The
+inherited compiler/calibration and the stated Pell index lemmas retain
+precisely the status recorded in Section~\ref{sec:calibration}.
+
+\subsection{The polynomial and its fixed coefficients}
+\label{dy:definition}
+
+Write the four fixed integer coefficients as
+\[
+ \beta=2^{590069}-1,\qquad K_0,\qquad M_C,\qquad M_F.
+\]
+The complete binary payloads are supplied with the circuit and authenticated
+by their compressed and uncompressed SHA-256 digests.  Their verified
+bounds are
+\begin{equation}
+  K_0>0,\qquad 0<M_C<\beta<M_F<2\beta.
+  \label{dy:ports}
+\end{equation}
+Here $M_F$ is already the shifted high mask; it must not be shifted a
+second time.  None of these four constants is a quantified unknown.
+
+The ten unknowns are
+\begin{equation}
+ (j,F,\alpha,i,T,w,Y,n,\eta,\zeta)\in\Pos^{10},
+ \qquad \Pos=\{1,2,3,\ldots\}.
+ \label{dy:variables}
+\end{equation}
+Every register in the following definition is an integer polynomial in
+these unknowns and the four fixed constants.  Define the outer registers
+by
+\begin{align}
+ J&=2j+1,& q&=\beta J+1,& C&=q-F-\alpha, \notag\\
+ X&=wq,& a&=Y(X+1),& k&=\eta+\zeta, \notag\\
+ c&=kY+\eta,& \mu&=q^2+1,& \lambda&=2\mu.
+ \label{dy:outer}
+\end{align}
+The scaled main and first Pell parameters are
+\begin{align}
+ A&=\lambda(a+2)+1,& H&=4A-5,& \Delta&=A^2-1, \notag\\
+ a_-&=A-2,& V_0&=X\lambda^2Y^2,&
+ D_\tau&=V_0(V_0+1)k^2+1.
+ \label{dy:parameters}
+\end{align}
+The packed index, its excess and the transport numerator are
+\begin{align}
+ G&=(q-1)(q-F)+\alpha, \notag\\
+ R&=G(q^2-1)+(M_C+qM_F)J, \notag\\
+ e&=k-R-1, & B_t&=(K_0+w)C-F.
+ \label{dy:index}
+\end{align}
+For the strong and auxiliary Pell registers put
+\begin{align}
+ I&=ic^2,& D_f&=1+\Delta I^2,& Q&=\Delta^2I^2,
+       &\delta&=Q-1, \notag\\
+ T'&=T+\alpha,& b&=cT'-R,& V&=D_fb-c, \notag\\
+ D_y&=QV^2-1,& D_m&=\Delta c^2+1.
+ \label{dy:auxiliary}
+\end{align}
+In particular, $I$ has no factor $\mu$ other than any accidental
+divisibility of its value.  Define the centers and transport weight
+\begin{align}
+ C_f&=AI,& C_\tau&=V_0k, \notag\\
+ L&=(k+F+1)(T'+6),& W&=1+(q-1)L,
+ \label{dy:weight}
+\end{align}
+and the denominator-clearing registers
+\begin{align}
+ P_1&=q^3(q-1),& M&=P_1\mu^2H, \notag\\
+ Z&=P_1\mu^2\bigl[H(n+V+2C_f+4C_\tau)+8(X+a_-c)\bigr]
+       \notag\\
+  &\hspace{1.2em}+H\bigl[\mu^2((q-1)Y-q^3WB_t)-P_1e\bigr].
+ \label{dy:carrier}
+\end{align}
+For the final norm use the five polynomial arguments
+\begin{align}
+ s&=\delta Z^2,&
+ u_1&=16\delta M^2D_\tau,&
+ u_2&=4\delta M^2D_f, \notag\\
+ u_3&=M^2D_y,&
+ u_4&=64\delta(P_1\mu^2)^2D_m.
+ \label{dy:normargs}
+\end{align}
+
+Here is a compact fixed norm polynomial in five formal arguments.  Its
+letters $a,b,c,d$ are local formal arguments, independent of the similarly
+named registers above:
+\begin{align}
+ \sigma_1&=a+b+c,& \sigma_2&=ab+(a+b)c,& \sigma_3&=abc, \notag\\
+ U&=s+d,& P&=U-\sigma_1,& E&=P^2+4(sd-\sigma_2), \notag\\
+ G_*&=E^2+16(sdP^2-4\sigma_3U),&
+ O_*&=EP-16\sigma_3, \notag\\
+ \mathcal F_{16}(s;a,b,c,d)&=G_*^2-64sdO_*^2.
+ \label{dy:f16}
+\end{align}
+The equation delivered here is
+\begin{equation}
+ \boxed{\;N=\mathcal F_{16}(s;u_1,u_2,u_3,u_4)=0,\quad
+         (j,F,\alpha,i,T,w,Y,n,\eta,\zeta)\in\Pos^{10}.\;}
+ \label{dy:equation}
+\end{equation}
+The named registers are abbreviations for substitution, not additional
+unknowns.  Equations~\eqref{dy:outer}--\eqref{dy:f16} are consequently a
+finite, exact specification of one integer-coefficient polynomial.
+
+\begin{theorem}[Ten-positive equation]
+\label{dy:main}
+With the fixed coefficient binding and source calibration of
+Section~\ref{sec:calibration}, the polynomial $N$ has a zero in
+$\Pos^{10}$ if and only if ZFC has a finite syntactic refutation.
+The reduction is ordinary mathematics formalizable in ZFC.  Thus the
+source calibration gives
+\[
+ \mathrm{ZFC}\vdash
+ \bigl[(\forall\mathbf x\in\Pos^{10})\,N(\mathbf x)\ne0\bigr]
+       \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+The exact total degree of $N$ is $706$.  The supplied literal circuit has
+$133$ binary operations: $79$ multiplications, $33$ additions and $21$
+subtractions, including operations with small numerals.
+\end{theorem}
+
+\subsection{The norm identity}
+\label{dy:normproof}
+
+We include the conjugate-product calculation because it specifies exactly
+what the single polynomial equation asserts.
+
+\begin{lemma}[Sixteen conjugates]
+\label{dy:normlemma}
+In the polynomial ring over $\Z$,
+\begin{equation}
+ \mathcal F_{16}(x^2;r_1^2,r_2^2,r_3^2,r_4^2)
+ =\prod_{\varepsilon\in\{1,-1\}^4}
+       (x-\varepsilon_1r_1-\varepsilon_2r_2
+          -\varepsilon_3r_3-\varepsilon_4r_4).
+ \label{dy:normidentity}
+\end{equation}
+Moreover, $\mathcal F_{16}$ is homogeneous of degree $8$ in its five
+arguments and has leading coefficient $1$ in $s$.
+\end{lemma}
+
+\begin{proof}
+Put $a=r_1^2$, $b=r_2^2$, $c=r_3^2$ and $d=r_4^2$.
+Pairing the signs of $r_1$ and $r_2$, then the sign of $r_3$, gives the
+three-root identity
+\[
+ \prod_{\varepsilon_1,\varepsilon_2,\varepsilon_3}
+   (y-\varepsilon_1r_1-\varepsilon_2r_2-\varepsilon_3r_3)
+ =\bigl[(y^2-\sigma_1)^2-4\sigma_2\bigr]^2
+       -64\sigma_3y^2.
+\]
+For example the first pairing is
+$(y^2-a-b)^2-4ab$; substituting $y-r_3$ and $y+r_3$ and multiplying yields
+the displayed expression.
+
+Now fix the sign $\varepsilon$ of $r_4$ and set
+$y=x-\varepsilon r_4$, $s=x^2$ and $r=2xr_4$.  Then
+$y^2=U-\varepsilon r$ and $r^2=4sd$.  Consequently
+\[
+ (y^2-\sigma_1)^2-4\sigma_2=E-2\varepsilon rP.
+\]
+The three-root product becomes
+\[
+ (E-2\varepsilon rP)^2-64\sigma_3(U-\varepsilon r)
+       =G_*-4\varepsilon rO_*.
+\]
+Multiplication over the two values of $\varepsilon$ gives
+$G_*^2-16r^2O_*^2=G_*^2-64sdO_*^2$, as claimed.  The product identity also
+shows the homogeneity and the coefficient of $s^8$.
+\end{proof}
+
+For later use define positive real roots, whenever the positive input is
+fixed, by
+\begin{equation}
+ \tau=\sqrt{D_\tau},\qquad f=\sqrt{D_f},\qquad
+ y=\sqrt{D_y/\delta},\qquad D=\sqrt{D_m},\qquad d=D/H.
+ \label{dy:roots}
+\end{equation}
+Their existence for \emph{every} positive input is checked below, before
+any equation or transport sign is assumed.  Lemma~\ref{dy:normlemma}
+then yields
+\begin{equation}
+ N=\delta^8M^{16}
+    \prod_{\varepsilon\in\{1,-1\}^4}
+    \left(\frac ZM-4\varepsilon_1\tau-2\varepsilon_2f
+                       -\varepsilon_3y-8\varepsilon_4d\right).
+ \label{dy:factorization}
+\end{equation}
+Direct division of the definition of $Z$ gives the explanatory identity
+\begin{align}
+ \frac ZM={}&n+V+2C_f+4C_\tau+\frac{8(X+a_-c)}H
+       +\frac{Y}{q^3}-\frac{WB_t}{q-1}-\frac e{\mu^2}.
+ \label{dy:carrieridentity}
+\end{align}
+Only the polynomial definition~\eqref{dy:carrier}, not division, is used
+in evaluating $N$.
+
+\subsection{Square classes separated by powers of two}
+\label{dy:separation}
+
+\begin{lemma}[Dyadic separation]
+\label{dy:dyadic}
+Let $r_1,\ldots,r_m$ be positive real numbers with rational squares and
+$v_2(r_i^2)=0$.  Let $h_1,\ldots,h_m$ be distinct integers.  If, for some
+signs $\epsilon_i$, the sum
+$\sum_i\epsilon_i2^{h_i}r_i$ is rational, then all the $r_i$ are rational.
+\end{lemma}
+
+\begin{proof}
+The extension $K=\Q(r_1,\ldots,r_m)$ is a finite multiquadratic Galois
+extension.  Its group sends each $r_i$ to $\pm r_i$, defining a character
+$\chi_i$.  Two roots have the same character exactly when their ratio is
+rational; a character is trivial exactly when its root is rational.
+If some nontrivial character $\chi$ occurs, apply its projection
+\[
+  \frac1{|\operatorname{Gal}(K/\Q)|}
+  \sum_{g\in\operatorname{Gal}(K/\Q)}\chi(g)g
+\]
+to the rational relation.  It yields
+\[
+ \sum_{\chi_i=\chi}\epsilon_i2^{h_i}r_i=0.
+\]
+Divide by any root in this nonempty group.  The ratios are rational and
+have $2$-adic valuation zero, because their squares have valuation zero.
+The resulting rational summands have pairwise distinct valuations $h_i$.
+The term of least valuation cannot cancel.  Equivalently, clear the odd
+denominators and divide by the least power of two; one summand is odd and
+all the others are even.  This contradiction excludes every nontrivial
+character.
+\end{proof}
+
+The lemma uses valuations of rational ratios only.  It does not require
+an extension of the rational $2$-adic valuation to arbitrary irrational
+real numbers, and it imposes no relative-size assumption on the roots.
+
+\begin{lemma}[All-input positivity and units]
+\label{dy:allinput}
+For every input in $\Pos^{10}$, $\delta,D_y,H$ are positive and the four
+radicands in~\eqref{dy:roots} are positive rational numbers of $2$-adic
+valuation zero.
+\end{lemma}
+
+\begin{proof}
+The number $\beta$ is odd, as is $J$, so $q$ is even and $q\ge16$.
+Thus $\mu$ is odd, $\lambda$ is even, $A$ is odd, $\Delta$ is even,
+$V_0$ is even and $H$ is odd.  Also $k\ge2$, $c\ge3$, $I\ge c^2$ and
+$\Delta>\mu^2>1$.  In particular $Q>1$ and $\delta>0$.
+
+If the integer $b=cT'-R$ is zero, then $V=-c$ and $|V|\ge3$.
+If $b\ne0$, then
+\[
+ |V|=|D_fb-c|\ge D_f-c>1,
+\]
+since $D_f\ge1+\Delta c^4$.  Hence $D_y=QV^2-1>0$ in both cases.
+Every numerator and denominator in
+\[
+ D_\tau,\qquad D_f,\qquad \frac{D_y}{\delta},\qquad
+ \frac{D_m}{H^2}
+\]
+is odd: $D_\tau=1+V_0(V_0+1)k^2$, $D_f=1+\Delta I^2$,
+$Q=\Delta^2I^2$ is even, and $D_m=1+\Delta c^2$.
+All four rational numbers are therefore units at $2$.
+\end{proof}
+
+\begin{lemma}[Adjacent-coefficient descent]
+\label{dy:descent}
+Let $Q>1$ and $V$ be integers.  If $y\in\Q$ satisfies
+\[
+ QV^2-(Q-1)y^2=1,
+\]
+then $y$ is an integer.
+\end{lemma}
+
+\begin{proof}
+Replace $V,y$ by their absolute values.  Neither can be zero.
+Write $y=u/m$ in lowest terms, with $m>0$.  The equation implies
+$m^2\mid Q-1$.  When $V=1$, it gives $y=1$.
+For $V>1$ define
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+The first quantity is an integer because $m\mid Q-1$.  The identity
+$(2Q-1)^2-4Q(Q-1)=1$ gives
+\[
+ Q(V')^2-(Q-1)(y')^2=1.
+\]
+Furthermore
+\[
+ (Q-1)(y^2-V^2)=V^2-1>0
+\]
+shows $y>V$, whereas
+\[
+ (QV)^2-((Q-1)y)^2=QV^2+Q-1>0
+\]
+shows $QV>(Q-1)y$.  These inequalities imply $-V<V'<V$.
+The new equation excludes $V'=0$.  Since $2Q-1\equiv1\pmod m$,
+the reduced denominator of $y'$ is still $m$.
+Induction on the positive integer $|V|$, using $|V'|<V$, reaches $V=1$.
+Thus $m=1$.
+\end{proof}
+
+If $N=0$, equation~\eqref{dy:factorization} gives a rational signed
+sum of the roots with weights $(1,2,4,8)$ in the order $(y,f,\tau,d)$.
+Lemmas~\ref{dy:allinput} and~\ref{dy:dyadic} make all four roots rational.
+The roots $\tau,f,D$ have integer squares and hence are integers.
+Lemma~\ref{dy:descent} applied to
+$QV^2-(Q-1)y^2=1$ makes $y$ an integer as well.  This step is valid even
+when $V$ is still negative: the descent can use $|V|$.
+
+\subsection{Soundness: extracting transport and the canonical data}
+\label{dy:soundness}
+
+Assume $N=0$ at a positive input, and choose signs from a vanishing factor
+of~\eqref{dy:factorization}.  The first congruence is obtained before
+transport positivity.  Since $q$ is even,
+\[
+ \gcd(\mu^2,q^3(q-1))=1,
+ \qquad H=4\lambda(a+2)-1\equiv-1\pmod\mu.
+\]
+Thus $\mu^2$ is coprime to $q^3(q-1)H$.  Integer-valuedness of the
+signed roots in~\eqref{dy:carrieridentity} gives
+\[
+ \frac{8(X+a_-c-\varepsilon_4D)}H+\frac Y{q^3}
+           -\frac{WB_t}{q-1}-\frac e{\mu^2}\in\Z.
+\]
+Clearing the other denominators therefore gives $\mu^2\mid e$.
+Put
+\begin{equation}
+ \rho=\frac e{\mu^2}\in\Z,\qquad
+ g=\frac{\varepsilon_4D-X-a_-c}{H},\qquad
+ s_0=\frac Y{q^3}>0,\qquad t=\frac{B_t}{q-1}.
+ \label{dy:fractionnames}
+\end{equation}
+At this stage $g,s_0,t$ need not be integers.  The carrier identity is
+\begin{align}
+ n={}&4(\varepsilon_1\tau-C_\tau)
+       +2(\varepsilon_2 f-C_f)+(\varepsilon_3y-V)
+       +8g-s_0+Wt+\rho.
+ \label{dy:nequation}
+\end{align}
+
+Use the standard Pell notation
+\[
+ \chi_B(r)+\psi_B(r)\sqrt{B^2-1}
+       =(B+\sqrt{B^2-1})^r.
+\]
+The integer roots give, for positive indices,
+\begin{align}
+ \tau&=\chi_P(n_0),&k&=2\psi_P(n_0),&P&=2V_0+1,\notag\\
+ D&=\chi_A(p),&c&=\psi_A(p),\notag\\
+ f&=\chi_A(m),&I&=\psi_A(m).
+ \label{dy:pellindices}
+\end{align}
+For the first equation the fundamental solution of
+$x^2-V_0(V_0+1)k^2=1$ is $(2V_0+1,2)$: $k=1$ would require a square
+strictly between $V_0^2$ and $(V_0+1)^2$.
+If $n_0=1$, then $k=2$, $\eta=\zeta=1$ and $c=2Y+1$.
+But $\psi_A(1)=1$ and $\psi_A(p)\ge2A>2Y+1$ for $p\ge2$.
+Consequently $n_0\ge2$, and
+\begin{equation}
+ c>k\ge4P>8X\lambda^2Y^2>8q^5.
+ \label{dy:earlyc}
+\end{equation}
+
+The mask bound~\eqref{dy:ports} gives
+\[
+ 0<(M_C+qM_F)J<2q^2.
+\]
+If $F\ge q$, then $G\le\alpha$; if $F<q$, then
+$G<(q-1)^2+\alpha$.  In either case
+\begin{equation}
+ R<q^4+(\alpha+2)q^2.
+ \label{dy:Ronesided}
+\end{equation}
+Together with~\eqref{dy:earlyc}, this proves $c(T+\alpha)>R$.
+Hence $b\ge1$, $V=D_fb-c>1$ and $y>V$.
+No conclusion about $B_t$ has yet been used.
+
+\begin{lemma}[Quadratic transport bound]
+\label{dy:transport}
+Every positive zero of $N$ satisfies $B_t\ge0$.
+\end{lemma}
+
+\begin{proof}
+Before any sign restriction on $R$, the definition of $R$ gives
+\begin{equation}
+ |R|<q^4+Fq^3+(\alpha+2)q^2.
+ \label{dy:Rabsolute}
+\end{equation}
+As $q\ge16$ and $\mu^2>q^4$, it follows that
+\begin{equation}
+ \frac{|R|}{\mu^2}<F+\alpha+1,\qquad
+ |\rho|\le\frac{k+1+|R|}{\mu^2}<k+F+\alpha+1.
+ \label{dy:rhoestimate}
+\end{equation}
+The root centers satisfy the one-sided estimates
+\begin{equation}
+ \tau-C_\tau<k,\qquad f-C_f<0,\qquad 8g<k.
+ \label{dy:rootupper}
+\end{equation}
+For the first inequality, square the comparison with $(V_0+1)k$.
+For the second, $D_f=A^2I^2-I^2+1<A^2I^2$, since $I>1$.
+For the third, $D<Ac$ implies $g<2c/H$; now $c<2kY$ and $H>32Y$.
+These upper bounds apply to the corresponding signed roots in
+\eqref{dy:nequation} as well.
+
+Put $u=y-V$.  Since $y>V>1$,
+\begin{align*}
+ u&=\frac{V^2-1}{(Q-1)(y+V)}
+       <\frac{V}{2(Q-1)}
+       <\frac{D_fb}{2(Q-1)}<\frac b\Delta.
+\end{align*}
+The last inequality is equivalent to
+$\Delta D_f=Q+\Delta<2Q-2$, which holds because
+$Q=\Delta^2I^2>\Delta+2$.  Also $\Delta>\mu^2$ and
+$c<2kY<k\Delta$.  Thus
+\begin{equation}
+ u<kT'+F+\alpha+1.
+ \label{dy:gapupper}
+\end{equation}
+
+If the integer $B_t$ were negative, it would be at most $-1$, and
+$Wt\le-W/(q-1)<-L$.  Substituting
+\eqref{dy:rhoestimate}--\eqref{dy:gapupper} into
+\eqref{dy:nequation}, and using
+$\varepsilon_3y-V\le y-V$ and $s_0>0$, yields
+\[
+ n<kT'+6k+2F+2\alpha+2-L<0.
+\]
+Indeed
+\begin{align*}
+ L-(kT'+6k+2F+2\alpha+2)
+  &=(F+1)T'+4F+4-2\alpha\\
+  &=(F+1)T+(F-1)\alpha+4F+4>0.
+\end{align*}
+This contradicts the stipulated $n\ge1$.
+\end{proof}
+
+Now $(K_0+w)C\ge F>0$, so $C\ge1$.  The source outer estimates give
+\begin{equation}
+ 3q<R<q^4-2.
+ \label{dy:Router}
+\end{equation}
+For completeness, write
+$G=(q-1)C+q\alpha$ and use $C+\alpha=q-F\le q-1$.
+Its lower bound and the positive mask term imply the left inequality;
+$G\le q^2-q$ and the mask bound below $2q^2$ imply the right one.
+
+We record how the inherited index arguments apply; this is also a check
+that deleting the factor $\mu$ from $I$ changes no hypothesis.
+The first Pell congruence is
+\[
+ k\equiv2n_0\pmod{4V_0},\qquad \mu^2\mid4V_0.
+\]
+Together with $\mu^2\mid k-R-1$ and~\eqref{dy:Router}, it gives
+$2n_0\ge R+1$.  Equations~\eqref{dy:earlyc} and~\eqref{dy:Router}
+give $c>2R$; the main Pell equation gives $c>2p$.
+The rank lemma requires $c^2\mid I$, which holds exactly as written in
+\eqref{dy:auxiliary}.  It gives $c\mid m$ and $m>2p$.
+With $S=\Delta I$ the auxiliary data satisfy
+\[
+ S^2=\Delta(f^2-1)=Q,\qquad c\mid S,\qquad
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+The source index lemma therefore gives $p=R$.
+Since $P>A$, monotonicity of Pell ordinates gives $n_0<R$.
+The congruence $2n_0\equiv R+1\pmod{\mu^2}$, together with
+$R<q^4<\mu^2$, forces $2n_0=R+1$.  The fixed-minus parity lemma then
+implies $R\equiv3\pmod4$.
+
+Set $r=(R-1)/2$.  The parent ratio lemma is valid for every integer
+scaling $\lambda\ge1$ and hence for $\lambda=2\mu$.  In its notation,
+\begin{equation}
+ \xi=\frac{(X+1)^{2r}}{X^r},\qquad
+ \xi<\frac{\psi_A(2r+1)}{\psi_P(r+1)}
+       <\xi\left(1+\frac3a\right)^{2r}.
+ \label{dy:ratio}
+\end{equation}
+The defining interval $kY<c<k(Y+1)$ gives
+\begin{equation}
+ Y>\frac{X^r}{3},\qquad a>\frac{X^{r+1}}3,\qquad r\ge24.
+ \label{dy:Ybound}
+\end{equation}
+Before the exponent has been determined, clearing the three remaining
+fractions gives
+\[
+ H\mid8q^3(q-1)(X+a_-c-\varepsilon_4D).
+\]
+Because $H$ is odd, the factor $8$ cancels.  The main projection identities
+are
+\[
+ D-a_-c\equiv2^R\pmod H,\qquad
+ D+a_-c\equiv2^{-R}\pmod H.
+\]
+The parent Archimedean estimate, using~\eqref{dy:Ybound}, is
+\begin{equation}
+ q^4,2^{R+1}X<X^{r+1}<3a<H.
+ \label{dy:archimedean}
+\end{equation}
+If $\varepsilon_4=-1$, multiplication by $2^R$ would make
+$q^3(q-1)(2^RX+1)$ a positive multiple of $H$ smaller than $H$.
+This is impossible.  If $\varepsilon_4=+1$, the same estimate bounds
+$|q^3(q-1)(X-2^R)|$ strictly below $H$, so divisibility gives
+\begin{equation}
+ \varepsilon_4=+1,\qquad X=2^R.
+ \label{dy:exponent}
+\end{equation}
+In particular $g$ is an integer.  The remaining partial fractions now give
+$q^3\mid Y$ and $q-1\mid B_t$.
+
+The ratio estimate~\eqref{dy:ratio} and the half-binomial lemma yield
+\begin{equation}
+ Y=\frac12\sum_{h=0}^r\binom{2r}{r+h}X^h.
+ \label{dy:halfbinomial}
+\end{equation}
+To see the uniqueness mechanism, write
+\[
+ \xi=M_0+\theta,\qquad
+ M_0=\sum_{h=0}^r\binom{2r}{r+h}X^h,\qquad0<\theta<\tfrac14.
+\]
+Here $M_0$ is even because $X=2^{2r+1}$ and the central binomial
+coefficient is even.  The quantitative ratio estimate puts $c/k$ in
+$(M_0/2,M_0/2+1)$, while its defining interval is $(Y,Y+1)$.
+These two integer parts must agree.  The explicit estimates and source
+reconstruction are the ones in~\cite[Sections 6.17--6.18]{parent816};
+only their arbitrary positive scaling parameter has changed.
+
+Finally keep $J,F,\alpha,w,Y$ and set
+$s=Y/q^3$, $z=B_t/(q-1)+1$.
+Reconstruct fresh \emph{unscaled} Pell witnesses with main parameter
+$a+2$ and first parameter $2XY^2+1$, using
+\eqref{dy:exponent}, $R\equiv3\pmod4$ and~\eqref{dy:halfbinomial}.
+This is the source reconstruction of~\cite[Section 6.18]{parent816}:
+it requires only the recovered canonical data and supplies all fifteen
+positive witnesses of the calibrated source system.
+Theorem~\texttt{thm:source} of~\cite{source61} gives a finite syntactic
+refutation of ZFC.  This proves soundness relative to the calibrated
+interface.
+
+\subsection{Completeness and the positive sum coordinate}
+\label{dy:completeness}
+
+Suppose ZFC has a finite syntactic refutation.  The calibrated source
+provides a canonical positive solution with
+\[
+ q=B^N\text{ for odd }N>1,\quad R\equiv3\pmod4,\quad
+ X=2^R,\quad C>0,
+\]
+and $Y$ equal to~\eqref{dy:halfbinomial}.  Its odd $J$ gives the positive
+integer $j=(J-1)/2$.
+The parent ratio argument, valid for arbitrary positive integer scaling,
+constructs main and first Pell values for $\lambda=2\mu$:
+\[
+ c=\psi_A(R),\quad D=\chi_A(R),\quad
+ k=2\psi_P((R+1)/2),\quad \tau=\chi_P((R+1)/2).
+\]
+Set $\eta=c-kY$, $\zeta=k-\eta$; both are positive.
+The quantities
+\[
+ \rho=(k-R-1)/\mu^2,\qquad
+ g=(D-X-a_-c)/H,\qquad t=B_t/(q-1)
+\]
+are integers with $\rho,g\ge1$ and $t\ge0$, as in the parent
+completeness proof.
+
+For the strong Pell pair use the smaller index
+\begin{equation}
+ m=Rc,\qquad I=\psi_A(m),\qquad f=\chi_A(m).
+ \label{dy:strongcomplete}
+\end{equation}
+The multiplication formula and the standard Pell congruence give
+\[
+ \psi_A(Rc)=c\psi_D(c),\qquad
+ \psi_D(c)\equiv cD^{c-1}\pmod{D^2-1}.
+\]
+Since $c^2\mid D^2-1$, this implies $c\mid\psi_D(c)$ and therefore
+$c^2\mid I$.  Thus $i=I/c^2$ is a positive integer.
+No divisibility by $\mu$ is needed.
+
+Let $S=\Delta I$ and $Q=S^2$.  The explicit solution in the auxiliary
+completeness lemma has
+\begin{align}
+ V^*&=\frac{\chi_S(R)}S=Q_v(S^2),&y&=\psi_S(R),&v&=(R-1)/2,\notag\\
+ T^*&=\frac{V^*+c+Rf^2}{cf^2},&
+ Q(V^*)^2-(Q-1)y^2&=1.
+ \label{dy:auxcomplete}
+\end{align}
+The inherited lemma proves that $T^*$ is an integer.  The associated odd
+Pell polynomial obeys
+\[
+ Q_v(z)\ge(4z-3)^v\quad(z\ge1).
+\]
+Since $v\ge2$ here,
+\begin{equation}
+ V^*\ge(4Q-3)^v\ge(3Q)^v\ge9Q^2.
+ \label{dy:Vlarge}
+\end{equation}
+As $c<S$ and $f^2=D_f<Q$, it follows that
+\[
+ T^*>\frac{V^*}{S^3}\ge9S>\alpha.
+\]
+The last comparison uses the canonical $C>0$, hence
+$\alpha<q<S$.  Define $T=T^*-\alpha\ge1$; then $T'=T^*$ and
+$V=V^*$ as required.
+
+There is one new completeness issue: the center $C_f=AI$ lies above
+$f$, so its contribution to $n$ is negative.  The auxiliary gap has ample
+room to absorb it, with an explicit bound.
+
+\begin{lemma}[Canonical auxiliary gap]
+\label{dy:gaplower}
+For the witnesses just constructed, $u=y-V$ satisfies
+\[
+ u>2I+Y+1.
+\]
+\end{lemma}
+
+\begin{proof}
+Since $V\ge2$, $Q\ge3$ and $V<y<2V$,
+\[
+ u=\frac{V^2-1}{(Q-1)(y+V)}
+      >\frac V{4Q}
+      \ge\frac{9S^2}{4}>3S+1.
+\]
+For the first strict inequality one may use
+$V^2-1\ge\tfrac34V^2$ and
+$(Q-1)(y+V)<3QV$.  The second is~\eqref{dy:Vlarge}.
+Finally $Y<c<I<S$, so $3S+1>2I+Y+1$.
+\end{proof}
+
+Define the integer
+\begin{equation}
+ n=Wt+\rho+8g+4(\tau-C_\tau)+2(f-C_f)+u-Y/q^3.
+ \label{dy:ncomplete}
+\end{equation}
+The terms $Wt,\rho,g$ are nonnegative or positive, and $\tau>C_\tau$.
+Moreover $f>(A-1)I$, so $f-C_f>-I$, and $Y/q^3\le Y$.
+Lemma~\ref{dy:gaplower} therefore gives $n>0$, hence $n\in\Pos$.
+Substitution into~\eqref{dy:carrieridentity} yields
+\[
+ Z/M=4\tau+2f+y+8d.
+\]
+The all-positive sign factor in~\eqref{dy:factorization} vanishes, proving
+$N=0$.  This establishes completeness and the semantic part of
+Theorem~\ref{dy:main}.
+
+\subsection{A symbolic proof of the exact degree}
+\label{dy:degree}
+
+The literal circuit gives the conservative syntactic degree $832$.
+That estimate ignores cancellations caused by the three centers.  We
+prove the exact total degree using a formal parameter, so no numerical
+specialization is needed for the upper bound.
+
+Replace every unknown $x$ by $tx$, keeping the direction variables
+algebraically independent, and work over their rational function field
+$K$.  Degree below means degree in $t$ at infinity.  In $K((t^{-1}))$
+each relevant square root has a branch whose leading term is its center:
+this follows by the binomial expansion of $(1+h)^{1/2}$ when $h$ has
+negative degree.  For $y$, choose the branch with leading term $V$.
+These formal branches need not be positive real branches; the product
+over all signs is independent of that choice.
+
+The register and error degrees are
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Degree\\
+\midrule
+$\mu,\lambda$ & $2$\\
+$A,H,\Delta$ & $5,5,10$\\
+$I,Q,\delta$ & $5,30,30$\\
+$D_f,V,M$ & $20,24,13$\\
+$C_f,C_\tau$ & $10,9$\\
+$\tau-C_\tau$ & $1$\\
+$f-C_f$ & $0$\\
+$y-V$ & $-6$\\
+$d$ & $2$\\
+$L,W,B_t$ & $2,3,2$\\
+$Z/M-V-2C_f-4C_\tau$ & $4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example,
+\[
+ f^2-C_f^2=1-I^2
+\]
+has degree $10$, while $f+C_f$ has degree $10$.
+Similarly
+\[
+ (y-V)(y+V)=\frac{V^2-1}{Q-1}
+\]
+gives degree $48-30-24=-6$ for $y-V$.
+The degree-$4$ leading term of the remaining carrier is $-L_2(B_t)_2$,
+coming from $-WB_t/(q-1)$; its other terms have degree at most $2$.
+
+The sixteen factors in~\eqref{dy:factorization} have the following
+nonzero leading terms:
+\begin{center}
+\begin{tabular}{@{}p{0.47\linewidth}rrl@{}}
+\toprule
+Signs & Count & Degree & Leading term\\
+\midrule
+$\varepsilon_3=-1$ & $8$ & $24$ & $2V_{24}$\\
+$\varepsilon_3=1$, $\varepsilon_2=-1$ & $4$ & $10$ & $4(C_f)_{10}$\\
+$\varepsilon_3=\varepsilon_2=1$, $\varepsilon_1=-1$
+    & $2$ & $9$ & $8(C_\tau)_9$\\
+$\varepsilon_3=\varepsilon_2=\varepsilon_1=1$
+    & $2$ & $4$ & $-L_2(B_t)_2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Subscripts here denote leading homogeneous forms.  Their product has
+exact degree
+\[
+ 8\cdot24+4\cdot10+2\cdot9+2\cdot4=258.
+\]
+The prefactor $\delta^8M^{16}$ has degree
+$8\cdot30+16\cdot13=448$.  Thus
+\begin{equation}
+ \deg N=258+448=706.
+ \label{dy:exactdegree}
+\end{equation}
+
+For an explicit check that the leading form is nonzero, put
+\begin{align*}
+ q_0&=2\beta j,& k_0&=\eta+\zeta,& c_0&=k_0Y,\\
+ \lambda_0&=2q_0^2,& A_0&=\lambda_0wq_0Y,&\Delta_0&=A_0^2,\\
+ I_0&=ic_0^2,& Q_0&=\Delta_0^2I_0^2,\\
+ V_*&=-(\Delta_0I_0^2)q_0^3(q_0-F),\\
+ C_{f,0}&=A_0I_0,&
+ C_{\tau,0}&=wq_0\lambda_0^2Y^2k_0,\\
+ M_0&=4q_0^8A_0,& L_0&=(k_0+F)(T+\alpha),&
+ B_{t,0}&=w(q_0-F-\alpha).
+\end{align*}
+The degree-$706$ component is
+\begin{equation}
+ 2^{22}Q_0^8M_0^{16}V_*^8C_{f,0}^4C_{\tau,0}^2
+                    (L_0B_{t,0})^2.
+ \label{dy:leadingform}
+\end{equation}
+Every factor is a nonzero polynomial.  More concretely, on the diagonal
+where all ten unknowns equal $t$, put $q_0=2\beta$ as a fixed integer.
+The coefficient of $t^{706}$ is
+\begin{equation}
+ 9\cdot2^{202}q_0^{366}(q_0-1)^8(q_0-2)^2>0.
+ \label{dy:diagonal}
+\end{equation}
+This explicit coefficient supplies a lower-degree witness for the actual
+fixed coefficient tuple.  The three other coefficient ports occur only
+in lower-degree terms.
+
+\subsection{Circuit form, verification and limitations}
+\label{dy:verification}
+
+The proof uses $W$ as a convenient abbreviation.  The literal circuit
+does not materialize it: it distributes
+\begin{equation}
+ \frac{WB_t}{q-1}=LB_t+\frac{B_t}{q-1}.
+ \label{dy:weightsave}
+\end{equation}
+Thus the circuit subtracts $LB_t$ directly from
+$n+V+2C_f+4C_\tau$, and uses $B_t$ alone in the residual fractional
+numerator.  This exact identity saves one binary operation and leaves the
+polynomial unchanged.  The final count is $79+33+21=133$; all rows are
+live and every unknown and coefficient is used.
+
+The supplied build program checks the four compressed and raw coefficient
+hashes, their bit lengths and bounds, the circuit topology, liveness and
+operation counts, and deterministic regeneration of the JSON circuit.
+The audit evaluates the displayed formulas independently at modular
+points and computes complete degree-bounded univariate restrictions
+modulo two primes.  These restrictions have degree $706$ and the leading
+coefficient~\eqref{dy:leadingform}; the diagonal restrictions also match
+\eqref{dy:diagonal}.  Additional exact finite cases check the parity and
+majorant premises and the lower bound on the canonical auxiliary gap.
+These are implementation checks supporting the proof, rather than a
+substitute for it.
+
+The reduction is a measurable improvement in degree over the pinned
+parent, with a modest increase in circuit length.  It does not claim the
+least possible degree, the fewest possible unknowns, or the shortest
+possible equation.  It retains the inherited K215/native compiler route
+and its stated formalization boundary.  For a formulation over
+nonnegative integers, replacing each unknown $x$ by $x+1$ preserves the
+exact degree and adds at most ten additions to the literal evaluator.

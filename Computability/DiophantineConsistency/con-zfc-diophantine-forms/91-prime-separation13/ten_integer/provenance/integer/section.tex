@@ -1,0 +1,210 @@
+\subsection{Double centering and a transport pivot over the integers}
+\label{sec:integer-projections}
+
+The following five equations use unrestricted integer variables and the
+same six fixed coefficients throughout.  Each is a sum of squares of the
+residuals in its accompanying JSON packet.
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Packet & Variables & Residuals & Exact degree\\
+\hline
+\texttt{centered23\_degree10} &23&11&10\\
+\texttt{pivot21\_degree16} &21&9&16\\
+\texttt{pivot20\_degree20} &20&8&20\\
+\texttt{pivot19\_degree32} &19&7&32\\
+\texttt{pivot18\_degree88} &18&6&88\\
+\hline
+\end{tabular}
+\end{center}
+The inspected incoming Joint Guards package had the corresponding points
+$23/12$, $21/20$, $20/32$, and $19/88$. The incoming Radical Guard Descent
+$22/14$ form remains another useful tradeoff. These improvements do not
+lower the ten-integer high-degree variable bound.
+
+All new coordinate transformations below are integer-polynomial bijections
+of the indicated parent zero sets. Consequently they preserve the parents'
+ordinary, ZFC-formalizable equivalence with finite syntactic ZFC refutability.
+Their unsolvability is therefore ZFC-provably equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$. This is an ordinary mathematical
+composition; no new end-to-end kernel certificate or object-language ZFC
+derivation is claimed.
+
+The constituent two-root centering appears in incoming Budget and Centering,
+and the monic transport pivot appears in incoming Round11. The new result is
+their application to the newer Joint Guards systems. No historical priority
+or global optimality claim is made.
+
+\subsection{Fixed coefficients}
+The coherent tuple is
+\[
+ \beta=2^{1064921}-1,\quad K_0,M_C,M_F,\quad
+ A_*=2^{1113},\quad B_*=2^{666104}.
+\]
+Here $K_0,M_C,M_F$ are exactly the source-34
+\texttt{mixed-parity-unrounded-1064921} native tuple, with $M_F$ already
+shifted once. The six actual minimal unsigned little-endian byte strings
+are supplied, compressed with gzip, with a complete binding manifest. Their
+combined raw size is $615{,}883$ bytes. These are fixed numeral leaves,
+not quantified parameters.
+
+\subsection{The 23-variable equation}
+Take independent integer coordinates
+\[
+ (J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,\nu,\gamma,o,j,E,a,I,t,p_1,p_2,p_3).
+\]
+Define polynomial abbreviations only:
+\begin{align*}
+ q&=\beta(3J+1)+1,& W&=4(3w+1),& X&=qW,\\
+ Y&=a-E,& k&=\eta+\zeta,& c&=Yk+\eta,\\
+ V&=fo-c,& C&=q-F-\alpha,& H&=4a+3,\\
+ \Delta&=a^2+H,& T&=E(c-\eta),& S&=X+\gamma H.
+\end{align*}
+Also put
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)(3J+1),\\
+ G&=(A_*F)(B_*C)-(q-A_*F-B_*C)^2,\\
+ Z&=\eta\zeta,\qquad
+ \mathrm{Pos}=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{align*}
+The eleven residuals are
+\begin{align*}
+ B_1&=a-E-(2v+1)q^3,\\
+ B_2&=E-XY,\\
+ B_3&=\tau^2+(2\tau-k)T-1,\\
+ B_4&=2acS+S^2-Hc^2-1,\\
+ B_5&=k-1-hE-R,\\
+ B_6&=(K_0+W)C-F-z(q-1),\\
+ B_7&=I-(2r+1)c^2,\\
+ B_8&=I^2-\Delta(f^2-1),\\
+ B_9&=(V+\nu)^2-I^2\nu(2V+\nu)-1,\\
+ B_{10}&=V+k-1-cj-hE,\\
+ B_{11}&=GZ-(t^2-G-Z+1)^2-\mathrm{Pos}.
+\end{align*}
+Thus the complete ordinary polynomial equation is
+\[
+ \boxed{\displaystyle P_{23}=\sum_{i=1}^{11}B_i^2=0.}
+\]
+Every displayed abbreviation is inlined in the supplied packet; it
+introduces neither a variable nor a side condition.
+
+For the proof, the incoming 25-variable octic has independent $c,V,y$ and
+uses $k_0=1-V+jc+hE$ in its $c$ equation and first norm. It retains the
+row $L=k-k_0$. Replace $k_0$ by $k$ using polynomial multiples of this
+retained row. Then make the triangular root translations
+\[
+ \tau_{\mathrm{old}}=\tau+E(c-\eta),\qquad
+ y_{\mathrm{old}}=V+\nu,
+\]
+and eliminate the two monic definitions $c=(a-E)k+\eta$ and $V=fo-c$.
+The three cancellation identities are
+\begin{align*}
+ (\tau+T)^2-T(k+T)-1
+   &=\tau^2+(2\tau-k)T-1,\\
+ (ac+S)^2-(a^2+H)c^2-1
+   &=2acS+S^2-Hc^2-1,\\
+ I^2\bigl(V^2-(V+\nu)^2\bigr)+(V+\nu)^2-1
+   &=(V+\nu)^2-I^2\nu(2V+\nu)-1.
+\end{align*}
+In the literal parent order, its thirteen restored rows are exactly
+\[
+ B_1,B_2,(a-E)B_{10},B_3+TB_{10},B_4,B_5-B_{10},
+ B_6,0,B_7,B_8,B_9,B_{10},B_{11}.
+\]
+This gives both directions of the zero-set equivalence without any
+division. The inverse root translations and coordinate projection are
+unique. The residual degrees are
+\[
+ 4,3,4,5,4,2,5,4,5,3,4.
+\]
+Only $B_7$ contains $r$, and
+\[
+ [r^2a^4\eta^4]P_{23}=4.
+\]
+Hence the total degree is exactly ten on the actual fixed-coefficient slice.
+
+\subsection{A transport pivot that costs no dominant degree}
+All four remaining parents contain
+\[
+ (K_0+W)(q-F-\alpha)-F-z(q-1)=0.
+\]
+Change the complement coordinate by $C=q-F-\alpha$, then solve the
+now monic row for $F$:
+\[
+ F=(K_0+W)C-z(q-1),\qquad \alpha=q-F-C.
+\]
+Delete that row and $F$, and substitute everywhere else. Both the map and
+its inverse use only integer polynomials, so this is a bijection of integer
+zero sets. The packing register becomes
+\[
+ R=(q-F)(q^3-q)-C(q^2-1)+(M_C+qM_F)(3J+1),
+\]
+of degree at most five. The determinant $G$ has degree four, and its
+contribution to the joint-sign residual has degree at most eight.
+The larger Pell/sign residuals therefore already pay the resulting degree
+cost in the selected parents. This yields the $21/16$, $20/20$, $19/32$,
+and $18/88$ packets in the table.
+
+\subsection{The complete 18-variable endpoint}
+Take independent integer coordinates
+\[
+ (J,C,z,f,h,r,v,w,\tau,y,\gamma,o,j,c,t,p_1,p_2,p_3).
+\]
+In addition to $q,W,X$ and the transport pivot above, define
+\begin{align*}
+ Y&=(2v+1)q^3,& E&=XY,& a&=(X+1)Y,\\
+ V&=fo-c,& k&=1-V+jc+hE,& \eta&=c-Yk,\\
+ \zeta&=k-\eta,& H&=4a+3,& \Delta&=a^2+H,\\
+ I&=(2r+1)c^2,& T&=E(c-\eta),& D&=X+ac+\gamma H.
+\end{align*}
+Use the same $R,G,Z,\mathrm{Pos}$ definitions. The six residuals are
+\begin{align*}
+ A_1&=\tau^2-T(k+T)-1,\\
+ A_2&=D^2-\Delta c^2-1,\\
+ A_3&=cj-V-R,\\
+ A_4&=I^2-\Delta(f^2-1),\\
+ A_5&=I^2(V^2-y^2)+y^2-1,\\
+ A_6&=GZ-(t^2-G-Z+1)^2-\mathrm{Pos}.
+\end{align*}
+The equation is
+\[
+ \boxed{\displaystyle P_{18}=\sum_{i=1}^{6}A_i^2=0.}
+\]
+These six residuals are completely inlined in its packet, so the count
+18 includes all quantified variables. Retaining $\eta$ as a nineteenth
+independent coordinate and adding $c-\eta-Yk=0$ gives the degree-32 sibling.
+
+\subsection{Degree certificates and verification}
+The four pivot equations have the following exact nonzero coefficients:
+\begin{align*}
+ [a^4f^8o^4]P_{21}&=1,\\
+ [f^4v^4J^{12}]P_{20}&=2^4 3^{12}\beta^{12},\\
+ [\eta^4h^4w^4v^4J^{16}]P_{19}&=2^{12}3^{20}\beta^{16},\\
+ [h^8w^8v^{16}J^{56}]P_{18}&=2^{32}3^{64}\beta^{56}.
+\end{align*}
+For the last two, the leading forms are
+\[
+ E_{\mathrm{top}}=1944\beta^4J^4wv,
+ \qquad \eta_{\mathrm{top}}\big|_{P_{18}}
+   =-104976\beta^7hJ^7wv^2.
+\]
+In $P_{19}$, the dominant joint-sign part is
+$-(\eta hE_{\mathrm{top}})^2$ before the outer SOS square. In $P_{18}$,
+it is $-\eta_{\mathrm{top}}^4$. These are the unique contributions at
+the respective highest residual degrees. The first two certificates come
+from unchanged reduced-auxiliary and strong-Pell rows; the pivoted guard
+cannot contribute their selected monomials. Full derivations are given in
+the companion proof.
+
+The generator authenticates declaration closure, exact degrees and all
+leading coefficients. A separate checker imports no builder: it checks
+all thirteen centering identities, every literal pivot identity, the actual
+six coefficient byte strings and additional signed modular transcription
+diagnostics. The finite tests certify only the algebra and the data stated;
+the universal native/Pell/refutation calibration remains an explicitly
+inherited ordinary theorem.
+
+The next concrete targets are a positivity certificate that avoids squaring
+the degree-eight sign register in $P_{19}$, and an orientation theorem that
+avoids the degree-eleven $\eta$ substitution in $P_{18}$. Either would
+improve these equations more than further cosmetic factorization.

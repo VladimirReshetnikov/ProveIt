@@ -1,0 +1,172 @@
+% Integration-ready mathematical appendix. No standalone preamble.
+\section{A different source: fixed coprime formula labels}
+\label{sec:fermat-flow}
+
+This section supplies a new source-level alternative to the affine-factor
+and coefficient-budget sources inspected at commit
+\texttt{c1a102936aca437e9999530a0111e6ddab56dc6d}. It does not supply
+a smaller completed Diophantine equation. The change removes a freely
+chosen common multiple or a coefficient-height budget from the source;
+the cost of computing and retrieving its labels remains to be compiled.
+The closure argument itself is the single-conclusion Horn-flow lemma
+already used by package~68. The different ingredient here is a fixed,
+parameter-free sequence of pairwise coprime labels.
+
+\subsection{Coprime labels do not need to be primes}
+
+For $j\in\mathbb N$ put
+\[
+ F_j=2^{2^j}+1.
+\]
+The elementary identity
+\[
+ \prod_{i<j}F_i=F_j-2
+\]
+follows by induction, including the empty product at $j=0$.
+Consequently $F_j>1$ and the $F_j$ are pairwise coprime: a common divisor
+of $F_i,F_j$, with $i<j$, divides $F_j$ and $F_j-2$, and is odd.
+Primality is unnecessary; $F_5=641\cdot6700417$ is allowed.
+
+For any finitely supported vectors $a,b\in\mathbb N^{(\mathbb N)}$,
+\begin{equation}\label{eq:fermat-injective}
+ \prod_jF_j^{a_j}=\prod_jF_j^{b_j}
+ \quad\Longleftrightarrow\quad a=b.
+\end{equation}
+To prove the nontrivial implication, cancel the minimum of the two
+exponents at every index. If a positive exponent remains on one side,
+its factor $F_j>1$ is coprime to the whole other side, a contradiction.
+This proof requires no factorization algorithm or primality predicate.
+
+\subsection{An exact unordered proof certificate}
+
+Let $\mathcal R$ be any family of finitary Horn rules with natural-number
+labels, one conclusion $c_r$ and a finite premise multiset $P_r$.
+Zero-premise rules are axioms. Let $D$ be the least rule-closed set.
+Then for each target $t$ the following conditions are equivalent:
+\begin{enumerate}
+ \item $t\in D$.
+ \item Some finite list of valid rule instances satisfies
+ \begin{equation}\label{eq:fermat-product}
+  \prod_{i<N}F_{c_i}
+    =F_t\prod_{i<N}\prod_{p\in P_i}F_p.
+ \end{equation}
+ \item Some finite list of valid rule instances and natural numbers
+ $S_0,\ldots,S_N$ satisfy
+ \begin{equation}\label{eq:fermat-accumulator}
+  S_0=F_t,\qquad S_N=1,\qquad
+  S_{i+1}F_{c_i}=S_i\prod_{p\in P_i}F_p.
+ \end{equation}
+\end{enumerate}
+
+For completeness, expand a finite proof tree root first. Let $S_i$ be
+the product of the weights of the current open obligations. Expanding a
+node replaces its conclusion by its actual premises, giving
+\eqref{eq:fermat-accumulator}; the empty frontier has product one.
+
+For soundness of the product certificate,
+\eqref{eq:fermat-injective} gives the coordinate balance
+\[
+ \sum_{i<N}\left(e_{c_i}-\sum_{p\in P_i}e_p\right)=e_t.
+\]
+If $t\notin D$, sum the coordinates outside $D$. Each rule contributes
+at most zero: if its conclusion is outside $D$, at least one premise is
+outside $D$, while a conclusion inside $D$ contributes zero minus a
+nonnegative number. The right side is one, a contradiction. Thus cycles
+cannot create a false proof. A disconnected cycle can be present in a
+valid certificate, but it is harmless. Saturating the finitely many
+selected rules gives a finite proof DAG for the target; this can be
+unfolded to a proof tree.
+
+The accumulator conditions imply the product certificate by multiplying
+and cancelling. All $S_i$ are positive: this follows inductively from
+$S_0>0$ and positivity of every factor in
+\eqref{eq:fermat-accumulator}. No independent positivity guard is needed
+when the accumulators range over naturals. We do not claim that an
+arbitrary ordering of an arbitrary balanced multiset gives an integral
+accumulator path. Existence is enough: the recovered proof tree provides
+another valid list and path if necessary.
+
+Exactly one conclusion and nonnegative rule multiplicities are essential.
+The rule $a\longrightarrow\{a,t\}$ has balance $e_t$ without any axiom.
+Also, subtracting the vector for $a,a\longrightarrow b$ from that for
+$a\longrightarrow b$ gives $e_a$, although neither rule derives anything
+from the empty set. Those are excluded by the stated hypotheses.
+
+For the repository's target-one calculus, use the actual arity of each
+rule, so that truth code zero is a genuine zero-premise axiom. Then
+$F_0=3$ and the initial target weight is the fixed integer $F_1=5$.
+One must not simultaneously use $F_0=3$ and treat padded truth premises
+as free factors. A different, also sound convention sets the zero-label
+weight to one and retains Fermat weights only for positive labels, but
+requires a separate zero-label branch. The convention here avoids it.
+
+\subsection{A precise four-parameter bounded source}
+
+The double exponent in $F_j$ is not an ordinary polynomial. To make its
+remaining compilation cost concrete, define
+\[
+ \beta(x,y,j)=x\bmod(1+(j+1)y).
+\]
+Use four outer natural parameters $N,x_S,x_Q,y$, and put
+$S_i=\beta(x_S,y,i)$, $Q_i=\beta(x_Q,y,i)$.
+Impose the endpoints
+\[
+ S_0=5,\qquad S_N=1,\qquad Q_0=2.
+\]
+For every $i<N$, require simultaneously
+\[
+ Q_{i+1}=Q_i^2
+\]
+and one actual rule instance $P_i\longrightarrow c_i$, all of whose
+labels are strictly less than $N$, with
+\[
+ S_{i+1}\bigl(\beta(x_Q,y,c_i)+1\bigr)
+   =S_i\prod_{p\in P_i}\bigl(\beta(x_Q,y,p)+1\bigr).
+\]
+Allow identity rules $c\longrightarrow c$ as padding; their addition
+does not change derivability. These conditions use one bounded universal
+block, with existential local witnesses. Induction gives
+$Q_j=2^{2^j}$ for $0\le j\le N$, so every referenced label is authenticated.
+The preceding theorem proves soundness.
+
+For completeness, choose a finite proof tree and then a horizon $N$
+larger than all labels and at least its number of nodes. Pad the rule list
+by identities, keeping the terminal accumulator equal to one. Form the
+finite $S$ and $Q$ sequences first. Choose
+\[
+ y=N!\left(1+\max_{0\le i\le N}\{S_i,Q_i\}\right).
+\]
+The moduli $1+(i+1)y$ are pairwise coprime and exceed the desired entries.
+The finite Chinese remainder theorem supplies $x_S,x_Q$ with the same
+scale $y$. This factorial is used only to prove existence of CRT witnesses;
+it is not a function in the proposed final polynomial, and no source
+condition asserts that an unknown is a factorial. The choice order avoids
+any self-referential size bound.
+
+\subsection{What must still be charged}
+
+The preceding four-parameter source is a finite first-order arithmetic
+formula, not an ordinary fixed-dimensional polynomial. Its costs include
+the supplied Horn-rule recognizer, the two adjacent sequence entries,
+up to three indexed label lookups per binary rule, label-range witnesses,
+and the bounded-universal compiler. For example a lookup
+$u=\beta(x_Q,y,p)$ has the completely explicit quadratic graph
+\[
+ d=(p+1)y,\qquad x_Q=(d+1)k+u,\qquad u+s=d
+\]
+over naturals. These are three equations using four local witnesses
+$d,k,u,s$, one of which is the returned value $u$. A strict label bound
+is $p+b+1=N$ with one further natural witness $b$.
+Shared denominators and fixed zero-premise branches may save registers,
+but no unmeasured savings are assumed.
+
+Alternatively, one can define a label by two separately compiled
+exponentiation graphs. That removes the power sequence and introduces the
+corresponding graph witnesses. Both routes remove the source's common
+multiple or coefficient budget; neither has yet been shown to reduce the
+complete polynomial's variable count, degree or arithmetic cost.
+The finite script \texttt{alternative/verify.py} checks all rule-multiset cases
+listed in \texttt{alternative/VERIFICATION.json}, constructs proof trees and
+integer traces, verifies a small shared-CRT example, and includes the
+failure modes above. It is an adversarial regression, not a substitute
+for these universal proofs or the inherited calculus-to-ZFC calibration.

@@ -1,0 +1,513 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.83in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,microtype}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,citecolor=teal!65!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\definecolor{ink}{RGB}{27,43,62}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Shared arithmetic certificates}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=4pt,itemsep=2pt}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\repoPin}{\texttt{a88aefd7ddab4771534bb049c67350e397c91b9a}}
+\input{metrics.tex}
+\hypersetup{pdftitle={Shared arithmetic certificates for Diophantine consistency equations},
+ pdfauthor={AI-assisted research for Vladimir Reshetnikov's ProveIt project},
+ pdfsubject={Explicit fixed quartics and a 13-integer polynomial for syntactic ZFC consistency}}
+\title{\color{ink}\LARGE Shared arithmetic certificates for\\
+ Diophantine consistency equations\\[7pt]
+ \large A smaller direct quartic and a degree reduction\\
+ for the thirteen-integer construction}
+\author{Prepared for Vladimir Reshetnikov's ProveIt project\\
+ \small AI-assisted mathematical research with exact reproducible artifacts}
+\date{23 October 2026\\[3pt]\small Comparison snapshot: \repoPin}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a fixed quartic polynomial in \NatVars\ nonnegative integer
+unknowns, supplied both as \NatRows\ quadratic residuals and as a fully
+collected list of \NatTerms\ monomials. Its maximum absolute coefficient is
+\NatHeight. Existence of a zero is equivalent to existence of a finite
+ZFC refutation. The construction encodes the numerical proof calculus
+$C_{222}$ directly, using neither a K215 execution tableau nor Jones's
+universal polynomial. Relative to the incoming 3,614-variable direct
+quartic, the reduction gives every binomial test one common radix,
+all positive-power tests a common Pell certificate, and equal
+exponents shared Pell coordinates. Exact nonnegative polynomial
+substitutions then eliminate unnecessary coordinates.
+
+The substantive arithmetic step is a simultaneous-completeness theorem.
+A single dominating parameter bounds all proposed power outputs; a
+finite matrix period supplies one Pell solution divisible by the square
+of the product of all required ordinates. Thus independent local
+certificates can be replaced by compatible shared witnesses.
+An unrestricted-integer quartic is also supplied. A separate
+thirteen-integer polynomial has degree $1072$, down from $1088$, at the
+same $195$ arithmetic operations. All new equivalences have ordinary
+proofs formalizable in ZFC. The archive contains the literal equations,
+builders, exact algebra certificates, verification receipts and source
+dependencies. No global minimum or new end-to-end proof-assistant
+certificate is claimed.
+\end{abstract}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The result and its exact interpretation}
+\label{sec:result}
+
+Let $\operatorname{Ref}_{\ZFC}$ mean that there exists a finite derivation
+of contradiction from the fixed syntactic ZFC axiom predicate. Thus
+$\Con(\ZFC)=\neg\operatorname{Ref}_{\ZFC}$, with the usual coding
+of finite proofs. Our goal is a fixed explicit polynomial $P$ for which
+\[
+ \ZFC\vdash
+ \left(\neg\exists\mathbf x\in D^n\ P(\mathbf x)=0\right)
+ \longleftrightarrow \Con(\ZFC).
+\]
+The domain $D$ is part of the assertion. Throughout this report
+$\N=\{0,1,2,\ldots\}$. Strictly positive variables, natural variables
+and unrestricted integers are not interchangeable without a proved
+translation.
+
+\begin{theorem}[Delivered equations]
+\label{thm:main}
+The literal polynomials specified in this archive satisfy
+\begin{align*}
+ \ZFC&\vdash
+ \bigl(\exists\mathbf x\in\N^{\NatVars}\ P_{\mathrm{batch}}(\mathbf x)=0\bigr)
+       \longleftrightarrow\operatorname{Ref}_{\ZFC},\\
+ \ZFC&\vdash
+ \bigl(\exists\mathbf z\in\Z^{\IntVars}\ P_{\mathrm{integer}}(\mathbf z)=0\bigr)
+       \longleftrightarrow\operatorname{Ref}_{\ZFC},\\
+ \ZFC&\vdash
+ \bigl(\exists\mathbf u\in\Z^{13}\ Q_{1072}(\mathbf u)=0\bigr)
+       \longleftrightarrow\operatorname{Ref}_{\ZFC}.
+\end{align*}
+The two direct polynomials have exact degree four. The thirteen-integer
+polynomial has exact degree $1072$. Negating these equivalences gives the
+requested consistency formulations.
+\end{theorem}
+
+This is an ordinary mathematical theorem obtained from the arguments
+below and the explicitly identified inherited calculus and arithmetic
+theorems. It assumes neither consistency nor arithmetic soundness.
+The unbounded mathematical arguments are separate from the finite
+software checks. A complete new Lean or object-language ZFC derivation
+of the emitted coefficient dictionary has not been produced.
+
+\subsection{What has improved}
+
+The current repository already supplies nine-positive-variable and
+ten-integer equations in its high-degree families, as well as a
+thirty-seven-integer quartic \cite{latest,wave11}. Our direct construction
+addresses a different useful comparison: degree four, moderate explicit
+coefficients, and a proof-calculus interpretation without the native
+machine tableau. It is not a variable-count improvement over those
+thirty-seven or ten-variable equations.
+
+The direct baseline is the newest incoming
+\file{ConZFC_Shared_Certificates_2026-10-24.zip}, rather than the older
+16,036-natural-variable direct compiler. The incoming archive contains
+a completed $3,614$-natural-variable quartic, $2,954$ quadratic rows,
+$15,996$ monomials and coefficient height $127,778,545$.
+Its global inventory is $55$ power graphs, $16$ binomial
+graphs and two factorial graphs \cite{shared}.
+
+\input{comparison_table.tex}
+
+Height means the maximum absolute coefficient of the expanded
+polynomial. The support cap in the elimination pass exposes a tradeoff:
+removing more coordinates can increase the number of monomials and
+their coefficients. The low-height checkpoint is retained for that
+reason. Every listed new point is a completed fixed polynomial;
+no count describes only a fragment of an unfinished compiler.
+
+The second improvement keeps the incoming thirteen-integer norm
+architecture and its whole fixed coefficient tuple. Moving a square
+multiplier inside one positivity certificate lowers its exact degree
+from $1088$ to $1072$ at unchanged arithmetic cost.
+
+The baseline implementation allocates its Pell environment separately
+at every power call. The shared-power theorem gives a concrete
+improvement over that inspected implementation. No worldwide
+priority claim is made for sharing Diophantine witnesses.
+
+\subsection{An explicit polynomial}
+
+The primary natural equation is defined by the complete residual lists in
+\file{direct/output/compact667/equation.json}. If those fixed lists are
+$\mathcal L_0,\ldots,\mathcal L_{\NatRows-1}$, the equation is exactly
+\begin{equation}
+\boxed{\quad
+ P_{\mathrm{batch}}(X_0,\ldots,X_{\NatVars-1})
+ =
+ \sum_{\ell=0}^{\NatRows-1}
+ \left(\sum_{(c,\mu)\in\mathcal L_\ell}
+           c\prod_{j\in\mu}X_j\right)^2=0.
+ \quad}
+\label{eq:literal}
+\end{equation}
+Each $c$ is a supplied integer and each $\mu$ is a sorted list of
+at most two coordinate indices. The empty list is the constant
+monomial; a repeated index denotes a square. The variable list
+fixes the ordering.
+
+This finite notation specifies an ordinary polynomial with fixed
+integer coefficients. Its collected coefficient dictionary is also
+included as \file{direct/output/compact667/expanded_polynomial.json}.
+No variable exponent, factorial, binomial, remainder, bounded
+quantifier or unnamed numerical parameter survives. The builder
+reproduces data already delivered, rather than being the only
+specification of an as-yet-uncomputed polynomial.
+
+The integer equation has the same two representations in
+\file{integer}. The thirteen-integer equation is a division-free
+straight-line polynomial circuit in \file{guard13}; its fixed
+leaves and inherited coefficient provenance are included.
+
+\section{The compression principle}
+\label{sec:principle}
+
+An existential arithmetic certificate often chooses auxiliary numbers
+only to make them sufficiently large, divisible or congruent. Compiling
+each occurrence separately repeats those choices. We ask whether a
+single choice can serve an entire finite computation.
+
+Pointwise existence does not by itself justify this:
+$\forall i\,\exists a\,R_i(a)$ does not imply
+$\exists a\,\forall i\,R_i(a)$. We prove simultaneous completeness
+for the particular certificates here. Every binomial digit can use
+one sufficiently large radix. Every power graph can use one
+dominating Pell parameter. A finite matrix period meets all of the
+Pell-ordinate divisibility requirements at once.
+
+The dominating parameter includes the proposed power outputs:
+\[
+ W=1+\sum_i(n_i+k_i+m_i).
+\]
+At an arbitrary polynomial zero, the global Pell norm forces
+$A>W$, and the local modulus $T_i=2An_i-n_i^2-1$ then exceeds
+$m_i$. Consequently the separate strict output-bound
+certificates disappear.
+
+There is no self-referential bound. The semantic arithmetic
+values are chosen before the Pell witnesses. The new Pell
+coordinates and the common congruence offset do not occur in
+$W$. Numerically huge witnesses are compatible with a small
+fixed number of quantified coordinates.
+
+\section{One radix for every binomial coefficient}
+\label{sec:radix}
+
+For finitely many binomial requests $b_j=\binom{a_j}{r_j}$,
+put $H_0=\sum_j a_j$ and
+\[
+ Q=2^{H_0}+1,\qquad L_j=Q^{r_j},\qquad C_j=(Q+1)^{a_j}.
+\]
+Every actual upper and lower argument is positive; in
+particular $H_0>0$. Since $a_j\le H_0$, every coefficient
+in the binomial expansion of $C_j$ is at most $2^{a_j}<Q$.
+Its base-$Q$ digit in position $r_j$ is therefore exactly
+$\binom{a_j}{r_j}$, including zero if $r_j>a_j$.
+
+Four natural witnesses $h_j,u_j,v_j,w_j$ impose that digit:
+\begin{equation}
+ C_j=L_j(Qh_j+b_j)+u_j,\qquad
+ L_j=u_j+v_j+1,\qquad Q=b_j+w_j+1.
+\label{eq:shared-digit}
+\end{equation}
+The last two equations are the exact remainder and digit
+bounds. Uniqueness of quotient and remainder proves the
+equivalence.
+
+The baseline has sixteen binomial graphs, each using three
+powers. The shared construction uses sixteen numerator powers,
+four distinct denominator powers, and one radix power.
+Seven other powers remain unchanged. Thus the total inventory
+falls from $55$ to $28$ power requests before their Pell
+certificates are shared.
+
+Some upper arguments depend on earlier factorial or binomial
+outputs. The builder allocates those semantic outputs first,
+records all requests, and only then emits the common radix.
+For completeness choose the intended arithmetic values first;
+those determine all upper arguments. For soundness an
+arbitrary polynomial zero already assigns them values, and
+the power theorem followed by the digit theorem forces their
+identities. The radix is an auxiliary certificate parameter,
+not part of the definition of the binomial function.
+
+\section{One offset for signed congruence quotients}
+\label{sec:offset}
+
+The baseline represents $L_i\equiv R_i\pmod{D_i}$ by
+$L_i+D_i a_i=R_i+D_i b_i$, with two natural quotient
+coordinates. A fixed finite family needs only one common
+natural offset $b$:
+\begin{equation}
+ L_i+D_i a_i=R_i+D_i b\qquad\text{for every }i.
+\label{eq:shared-offset}
+\end{equation}
+The forward implication is immediate. Conversely write
+$L_i-R_i=D_i t_i$ with signed integer $t_i$, choose
+$b\ge\max(0,t_1,\ldots,t_s)$, and set $a_i=b-t_i$.
+If $D_i=0$, the congruence means $L_i=R_i$ and places
+no restriction on the offset. No coprimality hypothesis
+is involved.
+
+The common offset is chosen last and excluded from the
+power-dominating sum. The construction imposes no
+simultaneous congruence on the offset: it is simply an
+upper bound on finitely many signed quotients.
+
+\input{batched_powers.tex}
+\input{source_and_crt.tex}
+
+\section{The literal quartic and its integer companion}
+\label{sec:flatten}
+
+Intermediate expressions use natural inputs, nonnegative
+numeral leaves, addition and multiplication. Each signed
+identity is stored as equality of two such expressions.
+For a distinct arithmetic node introduce $z$ and impose
+$z-x-y=0$ or $z-xy=0$. The gate graph is ordered, so its
+values restore uniquely from semantic witnesses.
+Squaring and summing its residuals produces one quartic.
+
+The arithmetic gate graph remains acyclic when semantic
+power outputs are allocated before their certificates:
+those outputs are existential inputs of the graph,
+not undefined gate values. Their intended meanings are
+proved by the simultaneous theorem.
+
+The inherited affine pass removes $z=L$ when $L$ is
+affine with nonnegative coefficients. The new pass
+also removes $z=F$ for a nonnegative quadratic $F$ if
+$z$ occurs only linearly in every other remaining row.
+Every deletion has a unique natural restoration and
+preserves degree at most two in the residuals.
+The complete certificate records every row, coordinate
+and restoration polynomial. Its reverse order restores
+all deleted coordinates.
+
+\subsection{A safe unrestricted-integer translation}
+\label{sec:integer}
+
+For any natural coordinate $x$, the integer equation
+\begin{equation}
+ x=a^2+b^2+c(c+1)
+\label{eq:three-square}
+\end{equation}
+is an exact nonnegativity guard. Its right side is
+nonnegative for all integers $a,b,c$.
+Conversely the three-square theorem represents $4x+1$;
+modulo four exactly one of the three squares is odd
+and the other two are even. Dividing by four gives
+\eqref{eq:three-square}.
+
+We guard the semantic coordinates of the shared-frame
+checkpoint \emph{before} the final natural-coordinate
+elimination. Its retained gate coordinates are then
+nonnegative by topological induction from their
+nonnegative arithmetic definitions. The integer
+builder checks this entire dependency order.
+Guarding only the coordinates named as witnesses after
+a later elimination would require a new sign proof,
+because a restored witness can depend on retained
+gate values. We do not assume that inference.
+
+After the guards have been added, monic substitutions
+over $\Z$ can reduce the augmented quadratic system.
+They preserve its exact integer zero set and all
+remaining residual degrees. Their restoration
+polynomials need not preserve positivity, since that
+condition is already expressed by retained guard
+equations and their substitutions.
+The delivered integer polynomial has \IntVars\
+coordinates, \IntRows\ quadratic rows and exact
+degree four; it is supplied as residuals and as
+collected coefficients.
+
+\input{guard13_section.tex}
+
+\section{Verification and the logical boundary}
+\label{sec:verification}
+
+The verification has three roles. Ordinary mathematics
+proves the unbounded existence equivalences. Symbolic
+audits bind the implemented source and arithmetic
+graphs to those arguments. Exact coefficient
+collection and certificate replay bind the final
+polynomial to the graph. No finite check decides
+whether the consistency equation itself has a zero.
+
+The archive checks the fixed numerical calculus,
+all shared-radix requests, every positive-power call
+site, exact exponent grouping, the complete
+dominating sum, the product of ordinates, the common
+norms and congruences, every local modulus, and the
+exclusion of certificate coordinates from the
+dominating sum. It replays each elimination as an
+integer-polynomial identity and independently expands
+every delivered squared sum. Degree, coefficient
+height, coordinate closure and variable use are
+measured from the actual data.
+
+Fixtures supplement those identities. They exercise
+signed congruence quotients, binomial positions beyond
+the degree, shared Pell periods and false power
+outputs. They are small arithmetic examples, not
+purported ZFC refutations. The receipts distinguish
+normal and optimized Python runs. Required checks
+raise explicit errors rather than depending on
+assertions disabled by optimization.
+
+\subsection{Inherited mathematical interfaces}
+
+The direct source uses the calibrated equivalence
+\[
+ C_{222}(1)\longleftrightarrow
+ \operatorname{Ref}_{\mathrm{ZF}}\longleftrightarrow
+ \operatorname{Ref}_{\ZFC}.
+\]
+The named repository declarations are
+\begin{quote}\small
+\file{KEndpoint.c222_iff_zf_refutation}\\
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{quote}
+They concern the fixed syntactic predicates. The
+second uses constructible-universe equiconsistency;
+neither assumes consistency. Relevant source copies,
+notices and pins accompany the direct component.
+
+The classical Pell-index and positive-power
+representations are named interfaces in Mathlib
+and the repository's literal representation modules
+\cite{pell}. This contribution proves that their
+witnesses can be selected simultaneously. It does
+not reprove the full classical index theorem.
+
+The thirteen-integer supplement has a separate
+inherited native/Pell calibration. Packaging it
+beside the direct quartic does not remove or replace
+that dependency.
+
+\subsection{Formalizability and reproducibility}
+
+All new arguments use finite lists, polynomial
+identities, elementary inequalities, Pell
+recurrences, finite groups, finite CRT and finite
+proof transformations. The matrix-period step is
+a pigeonhole argument in a finite group. These
+arguments are available in ZFC for its internal
+natural numbers, with no restriction to standard
+witnesses. Composing them with the identified
+calibrations proves Theorem~\ref{thm:main}.
+
+This is not a proof of $\Con(\ZFC)$ or a new
+end-to-end formal-kernel certificate. Under the
+usual consistency hypothesis, the no-zero
+assertion is unprovable in ZFC by its equivalence
+with consistency and the second incompleteness
+theorem. No claim of two-sided independence from
+mere consistency alone is needed.
+
+The archive's \file{README.md} gives exact
+reproduction commands. Its top-level
+\file{verify.py} checks the delivered data and
+rebuilds selected artifacts in temporary
+directories. The TeX source compiles with
+\texttt{pdflatex -interaction=nonstopmode
+-halt-on-error report.tex}, run twice for
+references. The contribution is prepared for
+incorporation in ProveIt; it makes no remote
+repository change.
+
+\section{What this changes about the search}
+
+The direct compiler's repeated cost was largely
+the existential infrastructure for arithmetic
+functions. Optimizing that infrastructure as a
+finite family makes a substantial reduction
+possible before any generic flattening.
+The simultaneous-completeness proof is the
+reusable result: sharing is justified by common
+size bounds and finite periods, rather than
+assumed from separate existential statements.
+
+Further work could exploit proved relations
+between different exponents, establish more
+forced signs in the integer system, or translate
+the finite certificates into a proof-assistant
+development. None of those prospective gains
+is included in the present counts.
+
+The thirteen-integer equation retains very few
+variables with large inherited constants. The
+direct equation has degree four, moderate fixed
+coefficients and a proof-calculus interpretation.
+These are different useful improvements; no
+comparison here proves a global simplest
+Diophantine equation.
+
+\appendix
+\input{calculus.tex}
+
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{repo}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt}, comparison snapshot \repoPin.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/a88aefd7ddab4771534bb049c67350e397c91b9a}.
+\bibitem{latest}
+ProveIt, \emph{Later arrivals and current size reductions},
+\file{Computability/DiophantineConsistency/PROPOSAL_REVIEW_LATEST.md},
+at the comparison snapshot.
+\bibitem{wave11}
+ProveIt, \emph{Wave11 review and size-reduction decisions},
+\file{Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE11.md},
+at the comparison snapshot.
+\bibitem{shared}
+ProveIt incoming archive,
+\file{ConZFC_Shared_Certificates_2026-10-24.zip},
+\emph{Direct proof certificates and smaller Diophantine consistency equations}.
+The archive filename is preserved as a source identifier.
+Immediate source files, notices and hashes accompany this contribution.
+\bibitem{flow}
+ProveIt, \emph{A smaller complete source specification for direct proof flow},
+\file{Computability/DiophantineConsistency/candidates/direct-flow-large-carrier/README.md},
+at the comparison snapshot; and the inherited
+\file{COMMUTATIVE_CERTIFICATES.md}.
+\bibitem{pell}
+Mario Carneiro and Mathlib contributors,
+\emph{Pell's equation and Matiyasevic's theorem},
+\file{Mathlib/NumberTheory/PellMatiyasevic.lean},
+especially \file{Pell.matiyasevic} and
+\file{Pell.eq_pow_of_pell}.
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/PellMatiyasevic.html}.
+The archive includes the repository's pinned literal representation interfaces.
+\bibitem{norm13}
+ProveIt incoming archive,
+\file{ConZFC_13_Integer_Norms_2026-10-24.zip}.
+The unchanged parent package and its coefficient provenance
+are included with the thirteen-integer supplement.
+\end{thebibliography}
+\end{document}

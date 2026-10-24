@@ -1,0 +1,404 @@
+\section{Rational saturation and separated transport weights}
+\label{sec:positive-new}
+
+The two positive-domain companions below improve the wave-10 snapshot at
+eleven and twelve unknowns. They use the complete compact source-44 tuple
+\[
+ (\beta,K_0,M_C,M_F),\qquad \beta=2^{590069}-1,
+\]
+with the already shifted high mask. The tuple must not be mixed with the
+source-34 tuple used by some integer-domain constructions. Its inherited
+native compiler and syntactic-refutation calibration remain dependencies.
+The new work is an exact existence reduction on the normalized positive
+Pell source, rather than a new claim about those compiler theorems.
+
+The changes compose three mechanisms which were separate in wave 10:
+source 69's rational Pell saturation, source 70's three-root transport,
+and source 74's exact treatment of the possible common factor three in
+the adaptive main modulus. A fourth observation separates a polynomial
+which bounds signed roots from the multiplier which provides a positive
+inverse transport coordinate. They need not be the same polynomial.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Equation & Positive unknowns & Exact degree & Gates & System gates\\
+\hline
+Source 70 & 11 & 325 & 113 & 110\\
+$P_{11}^{\mathrm{new}}$ & 11 & 269 & 111 & 108\\
+Source 69 & 12 & 82 & 102 & 96\\
+$P_{12}^{\mathrm{new}}$ & 12 & 78 & 102 & 96\\
+\hline
+\end{tabular}
+\end{center}
+The eleven-variable result reduces degree by $56/325$, approximately
+$17.23\%$, and removes two arithmetic gates. The twelve-variable result
+reduces degree by $4/82$, approximately $4.88\%$, at unchanged cost.
+Every live binary addition, subtraction, and multiplication counts as one
+gate, including multiplication by a fixed integer. Polynomial register
+names do not add quantified variables.
+
+\subsection{Rational Pell saturation}
+
+We reproduce the elementary source-69 theorem because it removes an
+entire divisibility restriction from the eleven-variable construction.
+
+\begin{lemma}[Rational-coordinate saturation]
+\label{pp:saturation}
+If $Q>1$ and $V$ are integers and $y$ is rational, then
+\[
+ QV^2-(Q-1)y^2=1\quad\Longrightarrow\quad y\in\mathbb Z.
+\]
+\end{lemma}
+\begin{proof}
+The equation excludes $V=0$ and $y=0$. Change signs to assume both are
+positive. Write $y=a/m$ in lowest terms, $m>0$. Clearing denominators
+shows $m^2\mid Q-1$, so $(Q-1)y$ is integral. The map
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad y'=(2Q-1)y-2QV
+\]
+preserves the equation and makes $V'$ integral. When $V>1$, the identities
+\[
+ y^2-V^2=\frac{V^2-1}{Q-1}>0,
+ \qquad (QV)^2-((Q-1)y)^2=QV^2+Q-1>0
+\]
+give $-V<V'<V$. The norm excludes $V'=0$. Moreover, $Q\equiv1\pmod m$
+implies that the numerator of $y'$ over denominator $m$ is congruent to
+$a$ modulo $m$. Its reduced denominator is still exactly $m$.
+Replace the new coordinates by their absolute values and repeat. The
+positive integral first coordinate strictly decreases until it is one,
+where the equation forces $y^2=1$ and hence $m=1$. Since the reduced
+denominator was preserved, the initial $y$ was integral.
+\end{proof}
+
+This is an unbounded descent argument. It requires $Q$ and $V$ integral;
+it cannot be replaced by a claim that every rational Pell coordinate is
+integral. For example, $2\cdot1^2-4\cdot(1/2)^2=1$ shows why the adjacent
+coefficients $Q$ and $Q-1$ matter.
+
+\subsection{The weighted source interface and its adaptive modulus}
+
+The inherited normalized source supplies the following registers:
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,&\ell&=EkY,\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J.
+\end{align*}
+Here the supplied witnesses are strictly positive. The two scale
+divisibilities and two deleted quotient conditions are restored by
+carriers. Given any positive polynomial value $h$, define
+\begin{align}
+ W&=1+(q-1)h,&M&=q^3(q-1),\nonumber\\
+ B_t&=(qK_0+X)C-qF,\nonumber\\
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t,\nonumber\\
+ A_0&=Z^2-M^2\{\ell(\ell+k)+1\},                 \label{pp:first}\\
+ S&=qY,&U&=qS=q^2Y,&v&=k-R-1,\nonumber\\
+ D_*&=U(X+ac)+H(U\gamma+SX-v),\nonumber\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).                  \label{pp:main}
+\end{align}
+The other source equations are the normalized strong and auxiliary norms
+\begin{align}
+ f^2-\Delta i^2c^4&=1,\nonumber\\
+ QV^2-(Q-1)y^2&=1,\qquad
+ Q=\Delta(f^2-1),\quad V=f^2(cT-R)-c.            \label{pp:strongaux}
+\end{align}
+The signed auxiliary coordinate is harmless; after recovery its positive
+gap is $|y|-V>0$. The strong root is replaced by its absolute value when
+needed.
+
+For clarity, the exact index-recovery argument using the smaller modulus
+$U=q^2Y$ is recalled here. From $A_0=0$, the rational root $Z/M$ has an
+integer square and is integral. Reduction modulo $q^3$ and $q-1$ gives
+\[
+ q^3\mid Y,\quad q-1\mid B_t,\quad
+ \tau=\ell+k+r+s-Wt,\quad
+ s=Y/q^3>0,\quad t=B_t/(q-1).
+\]
+Since $|\tau|<\ell+k$, we have $Wt>r+s>0$. Thus $B_t>0$ and $C>0$.
+The authentic mask bounds now give $q\ge16$ and $3q<R<q^4-2$.
+The main numerator is positive, since
+$D_*>Uac-Hk>k(UaY-H)>0$. Rational-square integrality applied to
+$A_1=0$ gives a positive integral main Pell root.
+
+Write $A=a+2$ and $P_0=2XY^2+1$. The inherited Pell classification gives
+indices $n_0,p$ with
+\[
+ |\tau|=\chi_{P_0}(n_0),\quad k=2\psi_{P_0}(n_0),\qquad
+ D_*/U=\chi_A(p),\quad c=\psi_A(p).
+\]
+It gives $n_0<p$, $n_0\ge2$, $c>8XY^3\ge8q^9>2R$, and $c>2p$.
+The normalized strong norm makes $f=\chi_A(m)$ with $c\mid m$ and
+$m>2p$. For example, strong divisibility first gives $p\mid m$; writing
+$m=pv_0$ and reducing $\psi_{\chi_A(p)}(v_0)$ modulo $c$ shows
+$c\mid v_0$ from $c^2\mid ic^2$. The auxiliary congruences
+$V\equiv-c\pmod f$ and $V\equiv-R\pmod c$, together with its norm,
+then invoke the inherited signed auxiliary-index lemma to yield $p=R$.
+None of these steps assumes the deleted scale $q\mid X$.
+
+In both new constructions $J\equiv1\pmod3$; since $\beta\equiv1\pmod3$,
+$q\equiv2\pmod3$. Therefore $\gcd(q,H)=1$ and
+\[
+ g:=\gcd(H,U)=\gcd(3,Y)\in\{1,3\}.
+\]
+Crucially, $q^3\mid Y$ and $\gcd(q,g)=1$ imply $q^3\mid Y/g$. Hence
+\[
+ \mu=\frac{qY}{g}\ge q^4>R.
+\]
+The congruence $U\mid H(SX-v)$ gives $\mu\mid v$. The first recurrence
+gives $k\equiv2n_0\pmod{4XY^2}$, and $\mu\mid4XY^2$. Thus
+$\mu\mid2n_0-R-1$. The strict index bounds force $2n_0=R+1$.
+Consequently $v=k-2n_0$ is a positive multiple of $4XY^2$, and so of $U$.
+Only now does the main congruence give $q\mid HX$, and then $q\mid X$.
+The recovered source coordinates are
+\[
+ w=X/q>0,\quad h_{\rm index}=v/(XY)>0,\quad
+ \gamma_{\rm old}=\gamma+w-v/U>0.
+\]
+The last inequality follows from
+$H\gamma_{\rm old}=D_*/U-ac-X>c-X>0$.
+The first carrier restores the positive transport quotient. This is
+the same normalized compiler source as in the wave-10 packages.
+
+Conversely its canonical witnesses have $q=B^N$, $B=\beta+1$, with
+odd $N>1$, $R\equiv3\pmod4$, $X=2^R$, $q^3\mid Y$, and
+\[
+ t_0=B_t/(q-1)=q(z_{\rm source}-1)\ge q,\quad
+ s=Y/q^3<k,\quad \tau>\ell.
+\]
+For $h\ge k$ the choice
+\[
+ r=Wt_0+\tau-\ell-k-s>qW-2k>0
+\]
+restores the first carrier. The main coordinate
+$\gamma=\gamma_{\rm old}-w+v/U$ is positive, because
+$v/U\ge4XY/q^2>w$. These are the precise completeness facts used below.
+
+\subsection{The eleven-variable polynomial}
+
+Supply exactly
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma\in\mathbb Z_{>0},
+ \qquad J=3j+1.
+\]
+Use the common registers above and put
+\begin{align}
+ I&=ic^2,&D_f&=1+\Delta I^2,&Q&=\Delta(D_f-1),\nonumber\\
+ \delta&=Q-1,&V&=D_f(cT-R)-c,&D_y^{\rm num}&=QV^2-1,\nonumber\\
+ \widehat R&=q^3(q+F+\alpha),&\overline V&=D_f(cT+\widehat R),
+       &L&=3\overline V,\nonumber\\
+ h&=D_fcT,&W&=1+(q-1)h,\nonumber\\
+ \overline Z&=M(\ell+k+n+L)+(q-1)Y-q^3WB_t.       \label{pp:11regs}
+\end{align}
+Use $A_1$ from \eqref{pp:main} and define the octic norm schedule
+\begin{align}
+ \mathcal A&=M^2\{\ell(\ell+k)+1\},&
+ \mathcal B&=M^2D_f,&\mathcal C&=M^2D_y^{\rm num},\nonumber\\
+ T_n&=\delta^2\mathcal A\mathcal B,&R_n&=\delta\mathcal C,\nonumber\\
+ J_n&=\delta(\overline Z^2-\mathcal A-\mathcal B)-\mathcal C,\nonumber\\
+ N_*&=J_n^2-4\{T_n+R_n(\mathcal A+\mathcal B)\},\nonumber\\
+ N_8&=N_*^2-64T_nR_n\overline Z^2.              \label{pp:11norm}
+\end{align}
+The requested ordinary polynomial is
+\begin{equation}
+ \boxed{P_{11}^{\rm new}=N_8+A_1+N_8A_1.}       \label{pp:11poly}
+\end{equation}
+There are no divisions in this definition. Its literal evaluator is
+\texttt{p11\_positive\_degree269.json}.
+
+\begin{theorem}
+The polynomial \eqref{pp:11poly} has a strictly positive zero exactly when
+the inherited normalized compiler source has a positive solution.
+\end{theorem}
+\begin{proof}
+The equation is $(1+N_8)(1+A_1)=1$. As $N_8$ is a square modulo four,
+$N_8\ne-2$. The two integer factors therefore must both be one. Thus the
+single equation is equivalent to $N_8=A_1=0$. No parity restriction on
+$A_1$ is needed for this two-factor step.
+
+For the root extraction write
+$D_\tau=\ell(\ell+k)+1$ and $D_y=D_y^{\rm num}/\delta$ in the proof only.
+The standard eight-conjugate identity gives
+\[
+ N_8=\delta^4\prod_{\epsilon_1,\epsilon_2,\epsilon_3=\pm1}
+ \left(\overline Z-M\epsilon_1\sqrt{D_\tau}
+                   -M\epsilon_2\sqrt{D_f}-M\epsilon_3\sqrt{D_y}\right).
+\]
+Its radicands are positive before any equation is imposed. Indeed
+$1<D_\tau<D_f<Q$; also, writing $b=cT-R\in\mathbb Z$, either $b=0$
+and $V=-c$, or $|V|\ge D_f-c>1$. Therefore
+\[
+ D_y=V^2+\frac{V^2-1}{Q-1}>V^2>1.
+\]
+It cannot equal $D_\tau$ or $D_f$: equality to an integer $D$ with
+$1<D<Q$ would give $Q(D-V^2)=D-1$, an impossibility. Thus the three
+radicands are distinct.
+
+Their signed sum cannot be zero. With positive roots $t,f,y$, one has
+$t<(a+1)c$ and $f>(a+1)c^2$. If $b=0$, then $y<c+1$ and $f>t+y$.
+If $b\ne0$, then $y>|V|\ge f^2-c>2f>f+t$.
+Consequently a zero of the norm supplies signed roots with nonzero
+rational sum
+\[
+ \overline Z/M=\tau_*+f_*+y_*.
+\]
+For completeness, a nonzero rational sum of three signed roots of
+distinct positive rational numbers forces all three roots rational.
+To see this, let $d_i=x_i^2$ and $t=x_1+x_2+x_3\ne0$. Then
+\[
+ u=\frac{t^2-d_1-d_2-d_3}{2},\qquad
+ v=\frac{u^2-d_1d_2-d_1d_3-d_2d_3}{2t}
+\]
+are rational and equal respectively to the pairwise sum and product of
+the roots. The identities
+\[
+ d_1t+v=x_1(x_1+x_2)(x_1+x_3),\qquad
+ x_1=\frac{d_1(d_1+u)}{d_1t+v}
+\]
+recover $x_1$ rationally. The denominator is nonzero by distinctness of
+the positive $d_i$, and the cyclic formulas recover the other roots.
+
+Since $D_\tau,D_f$ are integers, $\tau_*,f_*$ are integers. The third
+root satisfies $QV^2-(Q-1)y_*^2=1$, with integral $Q>1$ and $V$.
+Lemma~\ref{pp:saturation} makes $y_*$ integral as well. This replaces
+source 70's coprimality argument and permits $I=ic^2$ throughout.
+
+The authentic mask inequalities $0<M_C<\beta$, $0<M_F<2\beta$ imply
+$|R|<\widehat R$. Thus $|V|<\overline V$, $f<\overline V$, and
+$y<2|V|<2\overline V$, so $L>f+y$. Set
+\[
+ r=n+L-f_*-y_*>0,\quad f_{\rm old}=|f_*|,\quad
+ y_{\rm old}=|y_*|,\quad u=y_{\rm old}-V>0.
+\]
+The first carrier becomes $Z=\overline Z-M(f_*+y_*)=M\tau_*$.
+The strong and auxiliary source norms hold by construction. All the
+weighted source witnesses are now positive, and $h=D_fcT>0$.
+The preceding adaptive argument restores the normalized source.
+
+Conversely choose canonical normalized source witnesses and its positive
+auxiliary reconstruction, with $f^2=D_f$, $y=V+u>0$. The latter can be
+constructed from the odd index $R\equiv3\pmod4$ using
+$y=\psi_{\Delta I}(R)$ and $V=\chi_{\Delta I}(R)/(\Delta I)$.
+The squared-modulus congruences make
+$T=(V+c+Rf^2)/(cf^2)$ a positive integer. No extra factor $q(q-1)$ in
+$I$ is required. Here $F+\alpha<q$ and $c>8q^9$, so
+\[
+ \widehat R<2q^4<c\le cT,\qquad L<6D_fcT=6h.
+\]
+Also $h>k$. For the canonical first carrier,
+\[
+ r>qW-2k>q+\{q(q-1)-2\}h>6h>L.
+\]
+Thus $n=r-L+f+y>0$, and substitution gives
+$\overline Z=M(\tau+f+y)$, so $N_8=0$. The adaptive main coordinate is
+positive by the earlier completeness argument. Finally the canonical
+repunit has $J\equiv1\pmod3$ and $J>1$, so $j=(J-1)/3>0$.
+\end{proof}
+
+\subsection{The twelve-variable polynomial}
+
+Supply exactly
+\[
+ j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma\in\mathbb Z_{>0},
+ \qquad J=6j+1.
+\]
+Use \eqref{pp:first} with $h=k$ and \eqref{pp:main}. Put
+\begin{align}
+ f&=t+1,&\rho&=f^2-1,&d&=\Delta c^4,\nonumber\\
+ Q&=\Delta\rho,&V&=f^2(cT-R)-c,\nonumber\\
+ a_*&=(V+n)^2-Q\{(V+n)^2-V^2\}-1,\nonumber\\
+ b_*&=2(1-Q)(V+n),&A_*&=da_*+(1-Q)\rho,\nonumber\\
+ N&=A_*^2-db_*^2\rho.                          \label{pp:12norm}
+\end{align}
+Define
+\begin{equation}
+ \boxed{P_{12}^{\rm new}=(1+A_0)(1+A_1)(1+N)-1.}\label{pp:12poly}
+\end{equation}
+This is precisely source 69's saturated merger with the smaller adaptive
+main modulus. The literal evaluator is
+\texttt{p12\_positive\_degree78.json}.
+
+\begin{theorem}
+The polynomial \eqref{pp:12poly} has a strictly positive zero exactly when
+the inherited normalized compiler source has a positive solution.
+\end{theorem}
+\begin{proof}
+Here $q$ is even, since $\beta$ and $J$ are odd. Therefore $A_0$ and
+$A_1$ are squares modulo four; so is $N$, because $b_*$ is even.
+The product equals one exactly when all three residuals vanish.
+
+The first and main carriers recover $C>0$ and $c>2R$ before the strong
+norm is used. Since $f\ge2$ and $T\ge1$,
+$V=f^2(cT-R)-c>c>1$. Thus $b_*\ne0$ at a candidate zero.
+Define rational candidates $i=A_* /(db_*)$ and $u=n-i$. The norm gives
+$di^2=\rho$. If
+\[
+ H_0(v)=(1-Q)v^2+2(1-Q)Vv+V^2-1,
+\]
+then direct expansion gives $H_0(n-i)=0$. Hence $y=V+u$ satisfies
+$QV^2-(Q-1)y^2=1$. Lemma~\ref{pp:saturation} gives $y,u,i\in\mathbb Z$.
+Replace $i$ by $|i|>0$ and the gap by $|y|-V>0$; the positivity of
+the latter follows from $y^2-V^2=(V^2-1)/(Q-1)>0$.
+These are the normalized strong and auxiliary source witnesses, and the
+adaptive carrier restores the remaining source quotients.
+
+Conversely, canonical normalized witnesses supply positive $f,i,u$;
+take $t=f-1>0$ and $n=i+u>0$. The identity
+\[
+ \left.N\right|_{\rho=di^2}
+   =d^2 H_0(n-i)H_0(n+i)
+\]
+gives $N=0$. The canonical first and adaptive main carriers vanish by
+the preceding reconstruction. The repunit has $J\equiv1\pmod6$ and
+$J>1$, so $j=(J-1)/6>0$. This proves completeness.
+\end{proof}
+
+\subsection{Exact degrees, coefficient certificates, and audit scope}
+
+Write $q_0=3\beta j$ for the eleven-variable polynomial and $q_0=6\beta j$
+for the twelve-variable one. In either case put
+\[
+ k_0=\eta+\zeta,\quad R_4=q_0^3(q_0-F),\quad
+ B_{t,2}=(K_0q_0+X)(q_0-F-\alpha)-q_0F.
+\]
+The cancellation in the main Pell norm gives
+\[
+ [A_1]_{13}=8q_0^2k_0X^2Y^4(q_0^2Y\gamma+R_4).
+\]
+For eleven variables, the exact degrees of the principal registers are
+\[
+ \deg I=5,\quad \deg D_f=14,\quad \deg Q=18,\quad
+ \deg h=17,\quad \deg L=18,\quad \deg\overline Z=23.
+\]
+If $D_{f,14}=i^2k_0^4X^2Y^6$ and $Q_{18}=i^2k_0^4X^4Y^8$, then
+\[
+ [\overline Z]_{23}=-q_0^4D_{f,14}k_0YT B_{t,2},\qquad
+ [N_8]_{256}=Q_{18}^4[\overline Z]_{23}^{\,8}.
+\]
+Multiplication by the displayed nonzero degree-13 main leader proves
+the upper bound 269 is attained. More specifically, the coefficient of
+\[
+ j^{36}i^{24}\eta^{57}X^{42}Y^{93}T^8\alpha^8\gamma
+\]
+is exactly $8(3\beta)^{36}>0$. The value is independent of $K_0,M_C,M_F$,
+so it remains nonzero after their actual fixed specialization.
+
+For twelve variables the residual degrees are $15,13,50$. Their leading
+forms are the main leader above together with
+\[
+ [A_0]_{15}=-2q_0^8k_0^2XY^2B_{t,2},\qquad
+ [N]_{50}=4k_0^8X^8Y^{16}t^8R_4^2n^2.
+\]
+The coefficient of
+$j^{18}F^2\eta^{11}X^{12}Y^{23}t^8n^2\gamma\alpha$ in
+$P_{12}^{\rm new}$ is $64(6\beta)^{18}>0$. Thus its degree is exactly 78.
+
+The included standard-library audits independently expand the literal
+polynomial formulas, prove the universal norm and descent identities,
+check all live inputs and gates, and compute these exact leading forms.
+The twelve-variable audit checks 13,128 terms in the first carrier and
+4,417 in the main carrier; it handles the merger as an exact 32-term
+polynomial cut. These finite computations do not decide consistency or
+replace the unbounded proofs. Composing the two existence equivalences
+with the fixed source calibration, and negating, yields the corresponding
+ZFC-provable no-positive-zero equivalences with $\operatorname{Con}(\mathrm{ZFC})$.

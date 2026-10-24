@@ -1,0 +1,14 @@
+{
+  "working_directory": "archive root",
+  "commands": [
+    "python3 late_direct_audit/check_projected.py direct/projected",
+    "python3 late_direct_audit/check_projected.py direct/projected_signed_template --integer direct/projected_integer",
+    "python3 late_direct_audit/negative_controls.py direct/projected direct/projected_signed_template direct/projected_integer",
+    "python3 -O late_direct_audit/check_projected.py direct/projected",
+    "python3 -O late_direct_audit/check_projected.py direct/projected_signed_template --integer direct/projected_integer",
+    "python3 -O late_direct_audit/negative_controls.py direct/projected direct/projected_signed_template direct/projected_integer"
+  ],
+  "required_shared_dependency": "direct_audit/check_exact.py",
+  "runs": 6,
+  "scope": "independent exact audits only; no candidate builder execution"
+}

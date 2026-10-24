@@ -1,0 +1,91 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "optimized": false,
+  "core_byte_matches": {
+    "circuit_integer.json": true,
+    "residuals_integer.json": true,
+    "equation_integer.json": true,
+    "summary_integer.json": true,
+    "row_source.json": true,
+    "source_circuit_before_pruning.json": true
+  },
+  "stages": [
+    {
+      "stage": "source_projection",
+      "exit_code": 0,
+      "expected_rejection": false,
+      "passed": true,
+      "stdout_sha256": "e70a0a249aa51adc2e8991c68f327dc1c03fa6b8ec15a088154e8efab072a35a"
+    },
+    {
+      "stage": "fresh_build",
+      "exit_code": 0,
+      "expected_rejection": false,
+      "passed": true,
+      "stdout_sha256": "cd6e9c233d2aacb4800e3294be460bd844eb11e5677d7198e50cda5516e34b4f"
+    },
+    {
+      "stage": "independent_expansion",
+      "exit_code": 0,
+      "expected_rejection": false,
+      "passed": true,
+      "stdout_sha256": "31aae74b0db081742b5b4f1864488a862df7ceab42b09e55dcffa9f8965d5838"
+    },
+    {
+      "stage": "independent_semantics",
+      "exit_code": 0,
+      "expected_rejection": false,
+      "passed": true,
+      "stdout_sha256": "1690f93eba7068ad8f350601f6abe3c2090517caffae47a106d894fb5566b291"
+    },
+    {
+      "stage": "reject_changed_polynomial_coefficient",
+      "exit_code": 1,
+      "expected_rejection": true,
+      "passed": true,
+      "stdout_sha256": "760194ed055584bbda81e8bcf0cbba850931b14c1a0603529d225edac42721a8"
+    },
+    {
+      "stage": "reject_missing_natural_guard",
+      "exit_code": 1,
+      "expected_rejection": true,
+      "passed": true,
+      "stdout_sha256": "d109b08dcaed93646bb015531381394abaab3c3780c57ad9f73097fe7a53aafd"
+    },
+    {
+      "stage": "reject_wrong_coordinate_bound",
+      "exit_code": 1,
+      "expected_rejection": true,
+      "passed": true,
+      "stdout_sha256": "9b9eaee697b9e091e1480a4a04ba4a5e1b7600d1af41b21567e933e496f3efa2"
+    }
+  ],
+  "metrics": {
+    "domain": "unrestricted integers",
+    "ordinary_polynomial_variables": 7617,
+    "ordinary_polynomial_degree": 4,
+    "ordinary_polynomial_monomials": 148220,
+    "input_existentials": 1268,
+    "unrestricted_semantic_inputs": 228,
+    "nonnegative_semantic_inputs": 1040,
+    "nonlinear_wires": 3198,
+    "retained_affine_wires": 31,
+    "max_substituted_affine_terms": 16,
+    "nonnegativity_witnesses": 3120,
+    "SOS_residuals": 4379,
+    "max_abs_coefficient": 8974652400619654748160,
+    "largest_residual_support": 209,
+    "calls": {
+      "power": 40,
+      "pell": 40,
+      "divmod": 27,
+      "factorial": 2,
+      "binomial": 11
+    },
+    "source_builder_sha256": "4b792e789fa95bc67a5645128daa6a48c1c1c5f091e88688d1a637cd5c89e51d",
+    "infer_quotient_signs": true
+  },
+  "polynomial_sha256": "af06bc5c92b9ab6b1cb4d0da94933c2280720537a3088585649f7793466da382",
+  "scope": "Exact finite source bindings, arithmetic interfaces, graph reconstruction, polynomial expansion and rebuild. The unbounded proofs and inherited logical/Pell theorems are separate mathematical inputs."
+}

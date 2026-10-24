@@ -1,0 +1,322 @@
+\section{A direct quartic in 780 unrestricted integers}\label{dc:section}
+
+The second construction reduces the direct $C_{222}$ quartic of
+\cite{direct407} from 888 to 780 integer unknowns.  It keeps degree four,
+reduces the collected support from 10,156 to 9,628 monomials, and leaves
+the maximum absolute expanded coefficient unchanged at
+$2\,445\,790\,974\,704$.  Its new ingredient is an order of proof:
+the signs of the private power quotients are recovered \emph{after}
+the power graphs have been shown correct.  This removes independent
+sign guards without weakening the final arithmetic specification.
+
+\subsection{Exact object and inherited source}
+
+Let $r_0,\ldots,r_{433}$ be the literal quadratic rows in this component's
+\texttt{equations/equation.json}, using its listed order of 780 variables.
+Define the fixed integer polynomial
+\begin{equation}\label{dc:polynomial}
+ P_{780}(x_0,\ldots,x_{779})=\sum_{j=0}^{433}r_j(x)^2.
+\end{equation}
+All 780 variables range over $\Z$.  The complete collected polynomial is
+also supplied as \texttt{expanded\_polynomial.json}; this is an ordinary
+polynomial with literal integer coefficients and fixed exponents.
+The coefficient of $x_0^4$ is 3, so its degree is exactly four.
+
+The pinned immediate source is the archive
+\texttt{ConZFC\_407\_888\_Quartics\_2026-10-24.zip}
+at ProveIt commit
+\texttt{ec80841c07e91be8956ce6ed4af9a9c0b782d3d9}.
+It is retained byte for byte, with its original notices; the separate
+\texttt{SOURCE\_PINS.json} records the archive digest and the exact members
+used.  Write $S(y)=0$ for its 606 quadratic source rows on $y\in\N^{690}$.
+The inherited arithmetic and logical calibration is
+\begin{equation}\label{dc:source}
+ \bigl(\exists y\in\N^{690}: S(y)=0\bigr)
+ \ \longleftrightarrow\ C_{222}(1)
+ \ \longleftrightarrow\
+ \exists p\;\operatorname{Prf}_{\mathrm{ZFC}}(p,\bot).
+\end{equation}
+The source report identifies the inherited calibration theorems
+\begin{quote}\small\ttfamily
+KEndpoint.c222\_iff\_zf\_refutation\\
+ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation
+\end{quote}
+Their calibration snapshot is
+\begin{center}\small
+\texttt{08200eb10fde2db408c69dffd840d6920a569b1f}.
+\end{center}
+Here we prove the new existence equivalence with $S$; the proof of
+\eqref{dc:source} is inherited from that explicitly identified source.
+
+\subsection{Guarded signs and a staged inference certificate}
+
+For a selected source coordinate $y_v$, three private integer unknowns
+enforce the quadratic guard
+\begin{equation}\label{dc:guard}
+ y_v=a_v^2+b_v^2+c_v(c_v+1).
+\end{equation}
+This forces $y_v\ge0$ for all integers $a_v,b_v,c_v$.  Conversely, every
+nonnegative integer has such a representation: apply Legendre's
+three-square theorem to $4y_v+1$, whose residue modulo four forces one
+of the three squares to be odd and the other two even, then subtract
+one and divide by four.  The parent used 167 such guards.  We use 131.
+
+Ordinary sign propagation is performed on the unchanged source rows.
+An oriented row is factored exactly as
+$a(\widehat y)y_v-b(\widehat y)=0$, with neither $a$ nor $b$ involving
+$y_v$.  Previously proved lower bounds $a\ge1$ and $b\ge0$ imply
+$y_v\ge0$; if $b\ge1$, integrality implies $y_v\ge1$.
+The checker establishes these bounds from sums of nonnegative
+monomials and exact affine squares.  Odd powers need an established
+nonnegative factor; even powers need no sign premise.  A monomial
+whose factors are all at least one contributes its coefficient to
+the constant lower bound.  This last rule can certify a polynomial
+with a negative constant.  Every premise must have been established
+earlier in the certificate.
+
+Starting from the 131 guards, these elementary inferences prove 623
+of the 690 source coordinates nonnegative.  They also prove that every
+power base and every exponent is at least one, and prove all sign
+premises for the frame below.  In particular, a factorial output used
+as a power base receives its strict sign from literal arithmetic rows;
+the proof does not first appeal to factorial correctness.
+
+\subsection{The frame bounds do not require power-quotient signs}
+
+There are 23 power calls $(n,k,m)$, nine distinct bases, and 47 distinct
+raw atoms occurring as a base, exponent, or proposed output.  Denote
+that set of atoms by $\mathcal A$.  The exact shared frame is
+\begin{equation}\label{dc:frame}
+ W=2+\sum_{a\in\mathcal A}a,
+ \qquad Z=z+1,
+ \qquad A^2-W^3(W+2)Z^2=1.
+\end{equation}
+At this point all atoms in $\mathcal A$ are known nonnegative,
+$n,k\ge1$, $A\ge0$ and $Z\ge1$.  Consequently
+$W\ge2$, $1\le n,k\le W$, $0\le m\le W$, and $A>W^2$.
+
+For $a\ge2$, define the Pell coordinates by
+\begin{align}
+ X_0(a)&=1,&Y_0(a)&=0,\nonumber\\
+ X_{j+1}(a)&=aX_j(a)+(a^2-1)Y_j(a),&
+ Y_{j+1}(a)&=X_j(a)+aY_j(a).\label{dc:pell}
+\end{align}
+The norm in \eqref{dc:frame} is also
+$A^2-((W+1)^2-1)(WZ)^2=1$.
+Pell-solution classification therefore gives
+$A=X_j(W+1)$ and $WZ=Y_j(W+1)$ for some $j>0$.
+Reducing \eqref{dc:pell} modulo $W$ gives
+$X_j(W+1)\equiv1$ and $Y_j(W+1)\equiv j\pmod W$.
+Thus $W\mid j$ and $j\ge W$, whence
+\begin{equation}\label{dc:exponentialbound}
+ A\ge(W+1)^j\ge(W+1)^W>W^W\ge n^k.
+\end{equation}
+
+For each distinct base the literal system defines
+\begin{equation}\label{dc:modulus}
+ T_n=2An-n^2-1,
+ \qquad D=A^2-1.
+\end{equation}
+Their signs have not been independently guarded.  Since
+$1\le n\le W<A$, the function $2An-n^2-1$ is increasing on this
+integer interval.  Therefore
+\begin{equation}\label{dc:modulusbound}
+ T_n\ge2A-2>W^W\ge n^k,
+ \qquad T_n>W\ge m,
+ \qquad D\ge1.
+\end{equation}
+We have recovered the nine modulus signs and the discriminant sign
+using only the frame and earlier elementary facts.  Elementary
+propagation from these facts raises the number of nonnegative source
+coordinates to 644.  No private power quotient was used in this step.
+
+\subsection{Index certification precedes power recovery}
+
+Fifteen seed exponents have individual witnesses
+$X_i,Y_i,S_i,R_i,e_i,s_i,r_i$, with a shared $U,V,B$ and auxiliary
+quotients $b,v,q$.  The exact equations are
+\begin{align}
+ Y_i&=k_i+e_i,& X_i^2-(A^2-1)Y_i^2&=1,\nonumber\\
+ S_i^2-(B^2-1)R_i^2&=1,& S_i&=X_i+Us_i,\nonumber\\
+ R_i&=k_i+4Y_i r_i,& U^2-(A^2-1)V^2&=1,\label{dc:index}\\
+ B&=A+Ub,&
+ V&=\left(\prod_{i=1}^{15}Y_i^2\right)(v+1),\nonumber\\
+ B&=1+4V(q+1).&&\nonumber
+\end{align}
+Every displayed witness has already been proved nonnegative, and
+$k_i\ge1$.  Hence $Y_i\ge1$, $V\ge1$, $B\ge5$,
+$Y_i^2\mid V$, and $4Y_i\mid(B-1)$.
+For each $i$ these equations satisfy the hypotheses of the inherited
+Matiyasevich Pell-index criterion
+\texttt{PellRepresentation.criterion\_iff\_pell}.  Thus
+\begin{equation}\label{dc:indexidentified}
+ X_i=X_{k_i}(A),\qquad Y_i=Y_{k_i}(A).
+\end{equation}
+The three remaining requested pairs are derived by shifts $s=1$ or
+$s=2$, using the exact polynomial identities
+\begin{equation}\label{dc:addition}
+ X_{k+s}=X_kX_s+DY_kY_s,
+ \qquad Y_{k+s}=X_kY_s+Y_kX_s,
+\end{equation}
+where $(X_1,Y_1)=(A,1)$ and $(X_2,Y_2)=(2D+1,2A)$.
+Their gate identities and exponent shifts are checked literally.
+All required Pell pairs are therefore identified before using the
+sign of any power quotient.
+
+\subsection{The quotient sign follows from the exact power}
+
+\begin{lemma}[Delayed power-quotient sign]\label{dc:quotientlemma}
+Suppose $A\ge2$, $n,k\ge1$, $T=2An-n^2-1>0$,
+$0\le m<T$ and $n^k<T$.  Suppose further that
+$X=X_k(A)$, $Y=Y_k(A)$, and that an integer $h$ satisfies
+\begin{equation}\label{dc:power}
+ X+nY=AY+m+Th.
+\end{equation}
+Then $m=n^k$ and
+\begin{equation}\label{dc:hformula}
+ h=\sum_{j=0}^{k-1}n^{k-1-j}Y_j(A)\ge0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $H_j=X_j(A)-(A-n)Y_j(A)$.  Direct substitution into
+\eqref{dc:pell} gives
+\[
+ H_0=1,\qquad H_{j+1}=nH_j+TY_j(A).
+\]
+Induction yields
+\begin{equation}\label{dc:Hformula}
+ H_k=n^k+T\sum_{j=0}^{k-1}n^{k-1-j}Y_j(A).
+\end{equation}
+Equations \eqref{dc:power} and \eqref{dc:Hformula} show
+$m\equiv n^k\pmod T$, independently of the sign of $h$.
+Both numbers lie in $[0,T)$, so $m=n^k$.
+Substitution and cancellation of $T\ne0$ then give
+\eqref{dc:hformula}.  All its summands are nonnegative.
+\end{proof}
+
+The exact recurrence already occurs in the inherited positive-power
+construction.  The new use is to apply its soundness argument with
+$h$ unrestricted and then recover its sign.  The preceding frame and
+index analysis verifies every hypothesis of Lemma~\ref{dc:quotientlemma}
+for all 23 calls.  We obtain 23 quotient signs; a final elementary pass
+obtains the remaining 23 product signs.  All 690 source coordinates
+are now nonnegative.
+
+\subsection{Literal interface and absence of circularity}
+
+The semantic interface is checked against the immutable raw gate ledger,
+which contains 1,301 coordinates and 1,217 rows.  Source elimination
+replaced 611 of these rows by zero identities; the other 606 become
+exactly the literal rows of $S$.  The independent checker reconstructs
+every omitted raw coordinate by its monic gate definition and verifies
+all these polynomial identities.  This reconstruction is valid at
+integer zeros, before any nonnegativity assumption on the restored
+coordinates.
+
+The interface file then binds \eqref{dc:frame}, \eqref{dc:modulus},
+every instance of \eqref{dc:index}, the three addition formulas, and all
+23 equations \eqref{dc:power} to exact raw rows and atoms.  Some named
+atoms are related by arithmetic gates---for example, both $t$ and
+$t+2$ occur in the distinct-atom sum.  Identity comparison preserves
+those gate equations; it does not incorrectly declare such atoms
+algebraically independent.
+
+The actual inference order, with checked counts, is
+\[
+\begin{array}{c|c}
+\text{Stage}&\text{Source coordinates known nonnegative}\\\hline
+131\text{ private guards and elementary propagation}&623\\
+\text{frame bounds and further elementary propagation}&644\\
+\text{index identification, power recovery, final propagation}&690.
+\end{array}
+\]
+All index premises are checked before invoking the power lemma.
+Power outputs enter $W$ as already nonnegative proposed values; no
+claim that they are correct is used to derive the frame bounds.
+This establishes the sign argument in an ordered form.
+
+\subsection{Integer projection and the resulting theorem}
+
+Let $G_{131}$ be the 606 source rows together with the 131 guards
+\eqref{dc:guard}, on 1,083 unrestricted integer coordinates.
+The sign proof shows that every integer zero of $G_{131}$ projects
+to a natural zero of $S$.  Conversely any natural zero of $S$ extends
+by 131 independent three-square representations.  Therefore
+\begin{equation}\label{dc:guardedequivalence}
+ \exists y\in\N^{690}\ S(y)=0
+ \quad\longleftrightarrow\quad
+ \exists z\in\Z^{1083}\ G_{131}(z)=0.
+\end{equation}
+
+Only after this conversion do we perform signed coordinate elimination.
+A row $z_v-f=0$, or its negative, with $f$ an integer polynomial not
+involving $z_v$, permits exact substitution everywhere.  Each reduced
+integer zero restores uniquely by $z_v=f$; positivity and divisibility
+conditions are unnecessary.  The independent checker expands every
+substitution and checks that the remaining rows are quadratic.
+There are 303 eliminations: 188 affine and 115 quadratic.  No
+unconstrained coordinates are discarded.  Reverse traversal restores
+the entire guarded solution uniquely, leaving exactly 780 coordinates
+and 434 residuals.  Thus
+\begin{equation}\label{dc:projectedequivalence}
+ \exists z\in\Z^{1083}\ G_{131}(z)=0
+ \quad\longleftrightarrow\quad
+ \exists x\in\Z^{780}\ P_{780}(x)=0.
+\end{equation}
+Uniqueness concerns the monic restoration; the initial three-square
+extensions need not be unique.
+
+\begin{theorem}\label{dc:main}
+Using the inherited calibration \eqref{dc:source}, the explicit
+polynomial \eqref{dc:polynomial} satisfies
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists x\in\Z^{780}:P_{780}(x)=0\bigr)
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+\end{theorem}
+\begin{proof}
+Compose \eqref{dc:source}, \eqref{dc:guardedequivalence}, and
+\eqref{dc:projectedequivalence}, using that an integer sum of squares
+is zero exactly when every summand is zero.  Negate the resulting
+existence equivalence.  The new reasoning is internalizable in ZFC
+using integer arithmetic, natural induction, standard Pell theory,
+and the three-square theorem; it assumes no consistency statement.
+\end{proof}
+
+The 36 guards removed from the immediate parent are the 23 private
+power quotients, nine moduli $T_n$, the discriminant $D$, and three
+coordinates handled by the stronger positive-factor rule:
+\texttt{endpoint.ut}, \texttt{factorial0.output}, and
+\texttt{crt.nonnegative\_quotient}.  Each guard costs three private
+integer coordinates, so the count decreases by $3\cdot36=108$.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Quantity&Parent&This construction\\\hline
+Independent guards&167&131\\
+Integer variables&888&780\\
+Quadratic residuals&470&434\\
+Collected monomials&10,156&9,628\\
+Exact degree&4&4\\
+Maximum absolute coefficient&$2\,445\,790\,974\,704$&$2\,445\,790\,974\,704$\\
+\hline
+\end{tabular}
+\end{center}
+The variable decrease is 12.16\% within this direct quartic family.
+Other repository constructions have fewer variables at different
+degrees or coefficient costs.  This result makes no claim of global
+minimality or worldwide priority.
+
+The independent finite checker imports neither the producer nor its
+elimination module.  It verifies source bytes, the staged sign facts,
+all semantic interfaces, every signed inverse substitution, and the
+complete collected polynomial.  Separate controls require deliberate
+coefficient, index, guard and restoration corruptions to be rejected;
+the build is reproduced byte for byte in an isolated directory.
+These checks authenticate the fixed instance of the proof.  The
+unbounded number-theoretic statements and inherited logical calibration
+remain the stated mathematical dependencies, and no new end-to-end
+Lean or object-ZFC proof object is claimed.

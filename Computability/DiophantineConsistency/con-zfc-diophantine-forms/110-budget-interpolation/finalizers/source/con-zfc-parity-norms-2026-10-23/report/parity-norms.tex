@@ -1,0 +1,907 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,microtype,xcolor}
+\usepackage{enumitem,listings,fancyhdr,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{26,45,69}
+\definecolor{light}{RGB}{243,246,250}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Parity norms for a ZFC consistency equation}
+\fancyhead[R]{\small 23 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Pos}{\operatorname{Pos}}
+\newcommand{\Nm}{\mathcal N}
+\newcommand{\file}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  keepspaces=true,backgroundcolor=\color{light},frame=single,
+  rulecolor=\color{black!15},showstringspaces=false}
+\title{\color{ink}\bfseries Parity norms for a smaller\\Diophantine consistency equation\\[7pt]
+\large Thirteen integer unknowns, degree 1,392,\\and 211 binary arithmetic operations}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical research for the ProveIt project}
+\date{23 October 2026\\
+\small Repository snapshot \texttt{cfbf118b4ad9b2c651fe96b571d9415261766328}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an explicit polynomial in thirteen unrestricted integer
+unknowns. Its exact total degree is \(1392\), and an attached straight-line
+program evaluates it in \(211\) binary additions, subtractions, and
+multiplications. Its absence of integer zeros is equivalent to
+\(\Con(\mathrm{ZFC})\), by a new arithmetic reduction composed with the
+retained ProveIt native/Pell/refutation calibration.
+
+The main device combines five square conditions with fixed powers of two.
+Odd squareclass coefficients cannot cancel when their powers of two are
+distinct. This replaces large real separating weights by a parity argument.
+The main Pell congruence is encoded in the center of the same norm, removing
+its separate witness. A polynomial change of the remaining norm coordinate
+then lowers degree from \(1888\) to \(1392\).
+
+The contribution is an ordinary proof, with exact algebraic and computational
+certificates. It does not supply a new end-to-end proof-assistant certificate
+for the inherited native compiler. It neither assumes ZFC consistency nor
+asserts global optimality or worldwide priority.
+\end{abstract}
+
+\section{Result, comparison, and evidence boundary}
+
+There is no single order called \emph{simplest} on Diophantine equations.
+Unknown count, degree, arithmetic circuit size, coefficient data, and proof
+complexity are separate measures. The principal new point is
+\[
+  \boxed{13\Z\text{-unknowns}\quad/\quad \deg 1392\quad/\quad
+          211\text{ binary operations}.}
+\]
+The unshifted version costs \(205\) operations at degree \(1888\). Both
+polynomials use the same six literal fixed integers. Their coefficient
+payloads total \(615{,}883\) uncompressed bytes; they are not hidden
+existential parameters.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Construction & Integer unknowns & Exact degree & Operations\\
+\midrule
+Placed source 67, Jones reduction &13&10,461,744&519\\
+New five-root norm, unshifted &13&1,888&205\\
+\textbf{New five-root norm, shifted}&\textbf{13}&\textbf{1,392}&\textbf{211}\\
+New four-root companion &14&862&150\\
+New three-root companion &15&204&128\\
+New centered two-root companion &16&120&123\\
+Incoming Pell-congruence parent &17&88&not used here\\
+\bottomrule
+\end{tabular}
+\caption{Like-domain comparisons. The new companions trade more unknowns
+for lower degree. Counts charge every live binary \(+,-,\times\), including
+squares and multiplication by fixed numerals. Reuse and fixed leaves are free.}
+\end{table}
+
+The main degree improves the placed thirteen-integer comparison by a factor
+of \(10{,}461{,}744/1392\), about \(7516\). Its operation count falls from
+\(519\) to \(211\), about \(59.3\%\). These statements concern these measured
+coordinates, not coefficient size or every construction in the repository.
+In particular, nine-positive and ten-integer equations remain available.
+A ten-positive incoming equation also exists. We do not claim a new record
+for the absolute number of unknowns.
+
+The repository was inspected at the snapshot printed on the title page.
+The source directories and all eleven incoming entries were inventoried.
+The new parent is the seventeen-integer degree-88 packet in
+\file{con_zfc_pell_congruences_2026-10-23.zip}, including its coherent
+source-34 coefficient tuple \cite{repo,parent,source67}. The archive contains
+the complete parent package, its proof dependencies, actual fixed numerals,
+and independent audits. New formulas are given in this report and in literal
+JSON arithmetic programs.
+
+\paragraph{Logical status.}
+The new square-combination, denominator, coordinate, and degree arguments
+below are proved for unbounded integer inputs. The native interpretation of
+the inherited source is imported with its ordinary mathematical proof.
+The resulting theorem is intended as a derivation formalizable in ZFC.
+The existing project's incomplete internal-model/compiler formalization is
+not completed by finite tests or by this report. This distinction matters:
+an ordinary proof composed with an existing theorem, a checked arithmetic
+identity, and a checked encoded ZFC derivation are different claims.
+
+\section{The exact thirteen-variable polynomial}
+
+\subsection{Variables and constants}
+
+There are exactly thirteen independently quantified variables:
+\[
+ j,\ C,\ z,\ h,\ r,\ v,\ w,\ T,\ c_0,\ s,\ p_1,\ p_2,\ t\in\Z .
+\]
+Every other symbol in this section is a polynomial abbreviation.
+In the machine-readable files the names \(C,v,w,s,t\) appear as
+\file{C_native}, \file{v_scale}, \file{w3}, \file{pair_root},
+and \file{t_parity}.
+
+There are six fixed positive integer coefficients
+\[
+ \beta,\quad K_0,\quad M_C,\quad M_F,\quad A_F,\quad A_C.
+\]
+They are the unchanged source-34 tuple and the source-71 determinant scales:
+\[
+ \beta=2^{1064921}-1,\qquad A_F=2^{1113},\qquad A_C=2^{666104}.
+\]
+The other three are fixed finite sums over the supplied literal K215 tile
+table, specified by the attached source-34 builder. Section~\ref{sec:coeff}
+explains their complete binding. In particular \(M_F\) is already shifted:
+\(M_F=M_F^{\rm native}+\beta\). It must not be shifted a second time.
+
+\Needspace{14\baselineskip}
+\subsection{Polynomial registers}
+
+Define, in the displayed order,
+\begin{align}
+ J&=6j+1,&q&=\beta J+1,&W&=4(3w+1),\nonumber\\
+ c&=2c_0+1,& i&=2r+1,&
+ F&=(K_0+W)C-z(q-1),                                      \label{eq:register1}\\
+ X&=qW,&Y&=(2v+1)q^3,&E&=XY,\nonumber\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\nonumber\\
+ R&=\bigl(q(q-F)-C\bigr)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ k&=R+1+hE,&\eta&=c-kY,&\zeta&=k-\eta.                      \label{eq:register2}
+\end{align}
+The normalized strong and auxiliary registers are
+\begin{align}
+ F_2&=1+\Delta i^2c^4,& I&=\Delta i c^2,\nonumber\\
+ V&=F_2(cT-R)-c,&Q&=I^2,&\delta&=Q-1,\nonumber\\
+ r_a&=QV^2-1,& C_a&=\delta r_a.                             \label{eq:register3}
+\end{align}
+The square radicands and the common-sign guard are
+\begin{align}
+ A_0&=1+XY^2(XY^2+1)k^2,\nonumber\\
+ G&=(A_FF)(A_CC)-(q-A_FF-A_CC)^2,&Z_\eta&=\eta\zeta,\nonumber\\
+ b_g&=GZ_\eta-(s^2-G-Z_\eta+1)^2-1-p_1^2-p_2^2,\nonumber\\
+ B_g&=4b_g+1,&D_0&=1+\Delta c^2,&b_0&=X+ac.                 \label{eq:register4}
+\end{align}
+Finally set
+\begin{align}
+ Z_0&=H(2t+1)+b_0,&
+ L&=8H(2Q-1)V,&Z&=Z_0+L,\nonumber\\
+ d_0&=H^2A_0,&d_1&=D_0,&d_2&=16H^2B_g,\nonumber\\
+ d_3&=16H^2F_2,&d_4&=256H^2C_a.                            \label{eq:register5}
+\end{align}
+
+\subsection{A polynomial-only norm definition}
+
+For fixed \(m\), let
+\[
+ \Nm_m(Z;d_0,\ldots,d_{m-1})
+   =\prod_{\varepsilon\in\{-1,1\}^m}
+     \left(Z+\sum_{\ell=0}^{m-1}\varepsilon_\ell\sqrt{d_\ell}\right).
+                                                               \label{eq:formalnorm}
+\]
+This displayed product explains the proof, but it is an ordinary polynomial
+with integer coefficients: changing any formal square-root sign permutes its
+factors, so only even powers of every formal root remain. Replacing each
+root square by \(d_\ell\) gives the polynomial. All signs and all limits are
+fixed finite sets.
+
+\begin{minipage}{\linewidth}
+For a definition without any radical notation at all, use the following
+four-root evaluator. For inputs \(x,a,b,c,d\), put
+\begin{align*}
+ p&=ab,&q_*&=cd,&u&=a+b,&v_*&=c+d,\\
+ \sigma&=x^2-u-v_*,&
+ K_*&=\sigma^2-4uv_*+4(p+q_*),\\
+ L_*&=-4(\sigma+2v_*),&
+ M_*&=-4(\sigma+2u),&N_*&=-8,\\
+ E_*&=K_*^2+pL_*^2-q_*(M_*^2+pN_*^2),\\
+ O_*&=2K_*L_*-2q_*M_*N_* .
+\end{align*}
+Then
+\[
+ \Nm_4(x;a,b,c,d)=E_*^2-pO_*^2.                              \tag{N4}
+\]
+\end{minipage}
+\medskip
+
+To obtain \(\Nm_5\), perform these same additions and multiplications on
+ordered pairs with the rules
+\[
+ (A,B)+(C,D)=(A+C,B+D),\qquad
+ (A,B)(C,D)=(AC+eBD,\,AD+BC).
+\]
+Evaluate (N4) at \(x=(Z,1)\), the four radicands
+\((d_0,0),\ldots,(d_3,0)\), and \(e=d_4\). If its result is the pair
+\((U_*,V_*)\), define
+\[
+ \boxed{\Nm_5(Z;d_0,\ldots,d_4)=U_*^2-d_4V_*^2.}              \tag{N5}
+\]
+These are finite polynomial definitions over \(\Z\). The pairs are
+arithmetic registers, not Diophantine unknowns. The evaluator never computes
+a square root, a quotient, or a variable exponent.
+
+The proposed equation is simply
+\begin{equation}
+ \boxed{P_{13}(j,C,z,h,r,v,w,T,c_0,s,p_1,p_2,t)
+       :=\Nm_5(Z;d_0,d_1,d_2,d_3,d_4)=0.}                   \label{eq:main}
+\end{equation}
+There is no additional equation, positivity requirement, or hidden quantified
+coordinate. The unshifted companion replaces \(Z\) by \(Z_0\).
+
+\section{Why parity makes the norm faithful}
+
+A norm equation alone generally does not force its constituent radicands
+to be squares. For example \(\sqrt5-\sqrt5+1=1\); an unweighted
+three-root norm can have an integer root even when two of its radicands are
+nonsquares. The following restricted lemma is the new useful mechanism.
+
+\begin{lemma}[Parity-separated squareclasses]\label{lem:parity}
+Let \(m\ge 2\), let \(a_0,\ldots,a_{m-2}\) be odd integers, and let \(a_{m-1}\) be an arbitrary
+integer. A rational value of a signed sum
+\[
+ \sum_{\ell=0}^{m-1}2^\ell\varepsilon_\ell\sqrt{a_\ell},
+ \qquad \varepsilon_\ell\in\{-1,1\},
+\]
+is possible only if every \(a_\ell\) is an integer square.
+Conversely, if they are all squares, its signed sums are integers, and all
+are odd.
+\end{lemma}
+
+\begin{proof}
+Each nonzero integer radicand has a unique expression \(d b^2\), with
+\(d\) a signed squarefree integer and \(b\) a positive integer.
+For an odd radicand, both \(d\) and \(b\) are odd.
+Group the signed radicals by \(d\). Distinct signed squareclasses are
+linearly independent over \(\Q\) in the multiquadratic field they generate.
+This follows, for example, by projecting onto the characters of its finite
+Galois group. Hence the coefficient of every nontrivial squareclass must
+vanish in a rational sum.
+
+But in any class containing one of the first \(m-1\) terms, its term with
+the smallest power of two has an odd coefficient after dividing by that
+power. All later terms have even coefficients. Their signed sum cannot
+vanish. A class containing only the last nonzero term cannot vanish either.
+Zero last radicands can be omitted. Therefore no nontrivial squareclass
+occurs. Negative radicands would have a nontrivial signed class too, so
+they are also excluded. Rational square roots of integers are integers.
+The first root is odd and all subsequent weighted roots are even, proving
+the converse parity statement.
+\end{proof}
+
+No order or positivity of the radicands is assumed in this lemma.
+It remains valid before the guard is known to be positive.
+The weights \(1,2,4,\ldots\) are constants, independent of the sizes of
+the radicands.
+
+For the actual five radicands,
+\[
+ d_0=H^2A_0,\quad
+ d_1=4(D_0/4),\quad
+ d_2=16H^2B_g,\quad
+ d_3=64(H^2F_2/4),\quad
+ d_4=256H^2C_a.
+\]
+The first four unweighted radicands are odd integers, as proved next.
+The divisions by four in this sentence are proof notation only; the
+literal polynomial uses \(D_0\) and \(16H^2F_2\) directly.
+
+\section{Unconditional arithmetic facts and denominator recovery}
+
+\begin{lemma}[Ambient congruences]\label{lem:ambient}
+For every assignment of the thirteen integer inputs,
+\[
+ q\equiv0\pmod2,\quad X\equiv Y\equiv a\equiv0\pmod8,\quad
+ \Delta\equiv3\pmod8,\quad H\text{ odd},
+\]
+\[
+ A_0\text{ odd},\qquad B_g\equiv1\pmod4,\qquad
+ D_0\equiv F_2\equiv4\pmod8.
+\]
+Moreover \(H\ne0\), \(\Delta>1\), \(I\ne0\), and \(Q>1\).
+\end{lemma}
+\begin{proof}
+The coefficient \(\beta\) and \(J=6j+1\) are odd, so \(q\) is even.
+The nonzero odd integer \(J\) has absolute value at least one, and the
+fixed \(\beta\) is very large; in particular \(q\ne0\) and \(|q|>4\).
+The integer \(W=4(3w+1)\) is a nonzero multiple of four.
+Thus \(X=qW\) is a multiple of eight, and the odd multiple
+\(Y=(2v+1)q^3\) is a nonzero multiple of eight.
+This gives \(a=Y(X+1)\equiv0\pmod8\).
+Since \(|Y|\ge|q|^3\) and \(X+1\ne0\), \(|a|\ge|q|^3>4\);
+hence \((a+2)^2-1>1\).
+Now \(c,i\) are odd and nonzero, so \(I=\Delta i c^2\ne0\) and
+\(|I|>1\).
+The remaining congruences follow by reducing the displayed definitions
+modulo eight, using \(c^2\equiv i^2\equiv c^4\equiv1\pmod8\).
+\end{proof}
+
+The rational auxiliary radicand \(r_a/\delta\) is multiplied by \(\delta^2\), giving \(C_a=\delta r_a\).
+Square recovery gives a rational auxiliary root; the following elementary
+lemma proves that it is integral.
+
+\begin{lemma}[Rational adjacent-Pell descent]\label{lem:descent}
+Let \(Q\ge2\) and \(V\in\Z\). If \(y\in\Q\) satisfies
+\[
+ QV^2-(Q-1)y^2=1,
+\]
+then \(y\in\Z\).
+\end{lemma}
+\begin{proof}
+Write \(y=a/b\) in lowest terms, \(b>0\).
+Then \(b^2\mid Q-1\), so \((Q-1)y\) is an integer.
+Take \(V>0,y\ge0\) by signs. The equation excludes \(V=0\), and
+\(V=1\) gives \(y=1\).
+For \(V\ge2\), \(y>V\). Define
+\[
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\]
+The first quantity is integral. Both satisfy the same norm equation.
+Also \(V'<V\), since \(y>V\). To see \(V'>0\), observe
+\[
+ (2Q-1)^2V^2-4(Q-1)^2y^2=V^2+4(Q-1)>0.
+\]
+Consequently repeated replacement by \((V',|y'|)\) strictly decreases
+the positive integer \(V\) until it reaches one.
+The transformation has an inverse with integer coefficients.
+At the terminal pair \(y=1\); reversing every step proves that the
+original rational \(y\) was integral.
+\end{proof}
+
+\begin{remark}
+No squarefreeness of \(Q-1\) is used. Merely clearing a denominator
+without this argument would leave a proof gap.
+\end{remark}
+
+\section{The imported source and the new reconstruction}
+
+\subsection{The parent interface}
+
+The retained seventeen-integer source uses the same \(\beta,K_0,M_C,M_F\),
+the same determinant scales, and the same polynomial transport
+\[
+ F=(K_0+W)C-z(q-1).
+\]
+Its free main root is represented by \(D=X+ac+H\gamma\).
+It has odd scale parameters in \(Y\) and in an ordinary strong coordinate
+\(I_{\rm old}=(2r_{\rm old}+1)c^2\).
+Besides its monic registers and transport, its relevant equations can be
+written
+\begin{align}
+ \tau^2&=A_0,&D^2&=1+\Delta c^2,\nonumber\\
+ I_{\rm old}^2&=\Delta(f^2-1),&
+ I_{\rm old}^2V^2-(I_{\rm old}^2-1)y^2&=1,                  \label{eq:parentnorms}\\
+ V&=fcT_{\rm old}-f^2R-c,\nonumber\\
+ GZ_\eta-(s^2-G-Z_\eta+1)^2
+    &=1+p_1^2+p_2^2+p_3(p_3+1).                           \label{eq:parentguard}
+\end{align}
+The packet centers its first and auxiliary roots; the inverse changes are
+\[
+ \tau_{\rm packet}=2\tau-2P+k,\qquad
+ y_{\rm gap}=y-V,\qquad P=k+XY^2k.
+\]
+These are integral polynomial expressions in the restored roots.
+
+The parent report proves that its integer zeros correspond to finite
+refutations of the specified ZFC calculus. Its main ingredients are
+the nearest-square joint-positivity guard, determinant sign recovery,
+signed Pell rank recovery, residue orientation of \(X\), a CRT
+compression of two auxiliary congruences, and the fixed native-window
+compiler \cite{parent,source34,source70,source71}.
+The new construction restores this exact interface rather than silently
+switching to another coefficient tuple.
+
+\subsection{Every new zero restores an integer parent witness}
+
+\begin{theorem}[Soundness of the new arithmetic reduction]\label{thm:sound}
+Every integer zero of~\eqref{eq:main} gives an integer zero of the retained
+seventeen-integer source.
+\end{theorem}
+\begin{proof}
+Let \(x=2t+1+8(2Q-1)V\), so \(Z=Hx+b_0\) and \(x\) is odd.
+The norm factorization and Lemmas~\ref{lem:parity}--\ref{lem:ambient}
+force all five radicands to be integer squares.
+Dividing their integer roots by the displayed square factors, using
+rational-square integrality, gives signed integers
+\[
+ \tau,\ D,\ d,\ f,\ z_a
+\]
+such that
+\[
+ \tau^2=A_0,\quad D^2=D_0,\quad d^2=B_g,\quad
+ f^2=F_2,\quad z_a^2=C_a.
+\]
+Signs can be chosen to make the vanishing factor read
+\begin{equation}
+ Hx+b_0=H\tau+D+4Hd+4Hf+16Hz_a.                            \label{eq:rootsum}
+\end{equation}
+In particular
+\[
+ \gamma=\frac{D-b_0}{H}=x-\tau-4d-4f-16z_a
+\]
+is an integer. Thus the actual main congruence is restored, not just
+the main square test. The root \(d\) is odd, so
+\(p_3=(d-1)/2\) is an integer. Its square identity gives exactly
+\eqref{eq:parentguard}.
+
+Set \(y=z_a/\delta\). Since \(z_a^2=\delta(QV^2-1)\),
+\[
+ QV^2-(Q-1)y^2=1.
+\]
+Lemma~\ref{lem:descent} makes \(y\) integral.
+For the ordinary strong source put
+\[
+ r_{\rm old}=\frac{\Delta i-1}{2},\qquad T_{\rm old}=fT.
+\]
+These are integers, since \(\Delta i\) is odd. Then
+\[
+ (2r_{\rm old}+1)c^2=I,\qquad
+ I^2=\Delta(F_2-1)=\Delta(f^2-1),
+\]
+and
+\[
+ fcT_{\rm old}-f^2R-c=f^2(cT-R)-c=V.
+\]
+The old affine \(J\)-coordinate is \(2j\); its old \(c\) coordinate is
+\(2c_0+1\). The centered-root inverses above complete all seventeen
+coordinates. Every parent residual is now zero.
+
+For completeness of the sign discussion, \eqref{eq:parentguard} has a
+strictly positive right side. The inherited nearest-square guard therefore
+gives \(G>0\) and \(\eta\zeta>0\), and the determinant guard recovers the
+required common sign of \(F,C,q-F-C\). Those conclusions are obtained
+before invoking the source's signed rank and native semantics.
+\end{proof}
+
+The proof never assumes that arbitrary inputs are positive, that the
+radicands are positive before extraction, or that a canceled denominator
+is nonzero without a reason.
+
+\section{Completeness without an extra congruence promise}
+
+The normalized chart is a genuine restriction of the set of parent
+witnesses. Thus a proof that every parent zero has a polynomial inverse
+would be incorrect. What is needed is that every hypothetical finite
+refutation supplies at least one canonical witness in this chart.
+We prove that statement explicitly.
+
+The retained source-34 canonical family has
+\[
+ q=2^\lambda,\quad \lambda=1064921N\text{ odd},\quad
+ R\equiv3\pmod4,\quad R>3q,
+\]
+\[
+ X=2^R,\quad Y/q^3\text{ odd},\quad
+ A=a+2\text{ even},\quad c=\psi_A(R)\text{ odd}.
+\]
+Here \(\chi_A(n)+\psi_A(n)\sqrt{A^2-1}
+=(A+\sqrt{A^2-1})^n\).
+It also supplies both the determinant guard and the source residue
+conditions simultaneously. In particular \(J\equiv1\pmod6\),
+and \(W=4(3w+1)\).
+These are documented properties of the actual same source-34 tuple,
+not a borrowed property of the smaller compact tuple.
+
+\begin{lemma}[An odd normalized strong witness]\label{lem:strongcomplete}
+For this canonical \(c=\psi_A(R)\), there are an odd positive integer \(i\)
+and an integer \(f>0\) satisfying \(f^2-\Delta i^2c^4=1\).
+\end{lemma}
+\begin{proof}
+Choose \(m=Rc\), \(f=\chi_A(m)\), and \(z_*=\psi_A(m)\).
+Let \(d=\chi_A(R)\). The composition identity gives
+\[
+ z_*=c\,\psi_d(c).
+\]
+Since \(d^2-1=\Delta c^2\), the binomial formula for the Pell sequence
+gives
+\[
+ \psi_d(c)\equiv c\,d^{\,c-1}\pmod{c^2}.
+\]
+Consequently \(c^2\mid z_*\).
+As \(A\) is even and \(m=Rc\) is odd, \(z_*\) is odd.
+Thus \(i=z_*/c^2\) is a positive odd integer, and the Pell identity
+is the required normalized strong equation.
+\end{proof}
+
+\begin{lemma}[The squared-modulus auxiliary choice]\label{lem:auxcomplete}
+With the preceding canonical witnesses, put \(S=\Delta i c^2\).
+There are positive integers \(T,V,y\) such that
+\[
+ V=f^2(cT-R)-c,\qquad S^2V^2-(S^2-1)y^2=1.
+\]
+\end{lemma}
+\begin{proof}
+Write \(R=2v_*+1\), where \(v_*\) is odd, and define
+\[
+ V_*=\chi_S(R)/S,\qquad y_*=\psi_S(R).
+\]
+The first expression is an integer polynomial \(Q_{v_*}(S^2)\), because
+\(\chi_S(R)\) is an odd polynomial in \(S\). The Pell identity supplies
+the stated auxiliary equation. The elementary odd-index polynomial
+identities are
+\[
+ Q_{v_*}(0)=(-1)^{v_*}R=-R,\qquad
+ Q_{v_*}(1-A^2)=(-1)^{v_*}\psi_A(R)=-c.
+\]
+They follow by the binomial formulas for \(\chi\) and \(\psi\), or by
+their recurrences. Since
+\(S^2=\Delta(f^2-1)\equiv1-A^2\pmod{f^2}\) and \(c\mid S\),
+\[
+ V_*\equiv-c\pmod{f^2},\qquad V_*\equiv-R\pmod c.
+\]
+Also \(f^2\equiv1\pmod c\), hence \(\gcd(c,f^2)=1\).
+Therefore
+\[
+ T=\frac{V_*+c+Rf^2}{cf^2}
+\]
+is a positive integer. It yields the asserted \(V=V_*\) and \(y=y_*\).
+This is precisely the squared-modulus reconstruction proved in the
+retained source-61 lemma \cite{source61}; it does not demand an
+unproved choice of arbitrary congruences.
+\end{proof}
+
+\begin{theorem}[Completeness of the new arithmetic reduction]\label{thm:complete}
+A finite refutation of the specified ZFC calculus yields a thirteen-integer
+zero of~\eqref{eq:main}.
+\end{theorem}
+\begin{proof}
+Take the simultaneous canonical native witnesses.
+Set \(j=(J-1)/6\), \(c_0=(c-1)/2\), and
+\(r=(i-1)/2\), using Lemma~\ref{lem:strongcomplete}.
+Reselect the auxiliary witnesses by Lemma~\ref{lem:auxcomplete}.
+Keep the native transport and guard coordinates.
+The ternary positive representation provides \(p_1,p_2,p_3\), and put
+\(d=2p_3+1\).
+Let \(\tau,D,\gamma\) be the canonical first and main roots and the main
+quotient.
+
+The congruences give \(\tau\) odd, \(D\) even, and \(b_0=X+ac\) even.
+Since \(H\) is odd, \(\gamma=(D-b_0)/H\) is even.
+Thus
+\[
+ x=\tau+\gamma+4d+4f+16\delta y
+\]
+is odd. Define
+\[
+ t=\frac{x-1}{2}-4(2Q-1)V\in\Z.
+\]
+Then \eqref{eq:rootsum} holds with these signs and
+\(z_a=\delta y\). A factor of the norm vanishes. This constructs an
+actual integer solution from the hypothetical finite certificate.
+\end{proof}
+
+\begin{corollary}[Consistency equivalence]\label{cor:con}
+Composing Theorems~\ref{thm:sound} and~\ref{thm:complete} with the retained
+native/Pell/refutation theorem gives, by ordinary mathematics formalizable
+in ZFC,
+\[
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\mathbf x\in\Z^{13}\;P_{13}(\mathbf x)=0\right)
+ \longleftrightarrow \Con(\mathrm{ZFC}).
+\]
+\end{corollary}
+There is no appeal to the truth of either consistency or inconsistency.
+All completeness choices are conditional constructions from a finite
+refutation. The theorem does not conflict with the second incompleteness
+theorem: it proves an equivalence, not either side of it.
+
+\section{The degree reduction and exact degree certificate}
+
+The unshifted norm uses \(Z_0\). The shifted version is obtained by the
+integer polynomial change
+\[
+ t_{\rm old}=t+4(2Q-1)V.
+\]
+All registers on the right are independent of \(t\), so this is a triangular
+polynomial bijection with inverse subtraction. Therefore the two
+thirteen-variable polynomials have equivalent zero sets, with no added
+number-theoretic condition.
+
+With inputs of degree one and fixed coefficients of degree zero,
+\[
+\begin{array}{c|rrrrrrrrrrrr}
+\text{register}&q&X&Y&E&a&\Delta&R&k&I&F_2&V&C_a\\ \hline
+\deg&1&2&4&6&6&12&5&7&15&18&23&106
+\end{array}
+\]
+The degrees of \(G,Z_\eta,B_g\) are \(4,22,44\), respectively.
+Thus the radicand degrees are
+\[
+ (\deg d_0,\ldots,\deg d_4)=(46,14,56,30,118).
+\]
+The carrier \(Z_0\) has degree seven. In the unshifted product, the last
+radicand strictly dominates; its sixteenth power gives exact degree
+\(16\cdot118=1888\).
+
+For the shifted norm, pair the two signs of its final radical first.
+For a signed sum \(S_4\) of the other four radicals, the paired factor is
+\[
+ (Z_0+L-S_4)^2-d_4.
+\]
+The critical identity is
+\begin{equation}
+ L^2-d_4=64H^2V^2+256H^2\delta.                            \label{eq:midpoint}
+\end{equation}
+It is an exact polynomial identity, since
+\((2Q-1)^2-4Q(Q-1)=1\). Therefore the paired factor equals
+\[
+ (Z_0-S_4)^2+2L(Z_0-S_4)+64H^2V^2+256H^2\delta.
+\]
+Use weights one-half of each radicand degree for its formal root.
+The largest root among the four is \(\sqrt{d_2}\), of weight \(28\);
+\(\deg L=59\). Every paired factor has weight at most \(87\), with
+unique highest term \(-2L(\pm\sqrt{d_2})\).
+There are sixteen paired factors. Their product has degree at most
+\(16\cdot87=1392\), and its highest homogeneous part is
+\[
+ \boxed{2^{16}[L]_{59}^{\,16}[d_2]_{56}^{\,8}.}
+\]
+This is nonzero for the actual fixed coefficient tuple.
+The attached independent certificate substitutes specified positive integer
+slopes times an indeterminate into every input and reduces the actual six
+coefficient numerals modulo \(1{,}000{,}000{,}007\). The degree-1392
+coefficient is
+\[
+ 756{,}708{,}762\ne0\pmod{1{,}000{,}000{,}007}.
+\]
+Together with the proved upper bound, this is an exact nonvanishing
+certificate, not a random estimate of degree. A separate finite-difference
+calculation reproduces it.
+
+\section{The smaller companion equations}
+
+The archive retains intermediate constructions because a higher unknown
+count can buy a much lower degree.
+
+\subsection{A two-root merger in sixteen integers}
+
+In the seventeen-variable parent, \(\tau^2=A=4a_4+1\) and
+\(\delta y^2=r_a\), with \(\delta\ne0\).
+For \(x=2t+1=\tau+2y\), clearing the two-root norm and dividing its
+fixed content gives
+\[
+ N_{16}=\bigl[\delta(t(t+1)-a_4)-r_a\bigr]^2-A\delta r_a.
+\]
+A zero gives
+\[
+ \tau=\frac{\delta(x^2+A)-4r_a}{2x\delta}\in\Q,\qquad
+ \tau^2=A.
+\]
+Thus \(\tau\) is an odd integer and \(y=(x-\tau)/2\) is an integer.
+This particular two-root version needs no adjacent-Pell descent.
+
+For the centered form put \(z_0=XY^2/4\), a polynomial because
+\(X=4q(3w+1)\), and substitute the even center \(4z_0k\) into \(x\).
+The resulting numerator is
+\[
+ \delta\bigl[t(t+1)+4z_0kt+2z_0k-z_0k^2\bigr]-r_a.
+\]
+Combining its norm with the three retained parent rows by a sum of squares
+gives degree \(120\) in sixteen integers, evaluated in \(123\) operations.
+
+\subsection{Three and four roots}
+
+The fifteen-integer companion also packs the guard root
+\(2p_3+1\) with weights \(1,2,4\).
+The three residual degrees are \(14,14,176\).
+For any integer residuals \(r_1,\ldots,r_n\),
+\[
+ \prod_{\ell=1}^n(1+4r_\ell)-1=0
+ \quad\Longleftrightarrow\quad r_1=\cdots=r_n=0,             \label{eq:unit}
+\]
+because every factor must be an integer unit, and no factor can equal
+\(-1\) modulo four. This yields degree \(204\) and \(128\) operations.
+
+The fourteen-integer companion uses the normalized strong chart, combines
+four roots, and retains the main congruence witness \(\gamma\).
+Its two residual degrees are \(14,848\); \eqref{eq:unit} gives degree
+\(862\) and \(150\) operations. The thirteen-integer construction then
+absorbs \(\gamma\) into the center and needs no residual finalizer.
+
+These intermediate results explain how the main construction was obtained.
+They do not make the final polynomial depend on an optimization search.
+
+\section{Fixed coefficient specification and provenance}\label{sec:coeff}
+
+The six values are genuine integer coefficients fixed before any question
+about halting is asked.
+Their storage and reproducibility are part of the mathematical artifact.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Coefficient&Bits&Uncompressed bytes\\\midrule
+\(\beta\)&1,064,921&133,116\\
+\(K_0\)&1,065,043&133,131\\
+\(M_C\)&1,064,921&133,116\\
+\(M_F\)&1,064,922&133,116\\
+\(A_F\)&1,114&140\\
+\(A_C\)&666,105&83,264\\\midrule
+Total&&615,883\\\bottomrule
+\end{tabular}
+\end{center}
+
+The files under \file{coefficients/payloads/} are minimal unsigned
+little-endian representations, gzip-compressed. The binding manifest gives
+both raw and compressed SHA-256 hashes. The source-34 recipe is included,
+with its literal \file{k215.tm} and \file{wang943_tiles.json}. The recipe
+checks all 430 transitions and all 943 generated tiles before constructing
+the coefficient sums.
+
+For a compact mathematical summary, it uses radix
+\(\rho=2^{121}\), block length \(8801\), and \(B=\rho^{8801}\).
+It builds the fixed selector weights, low mask, high mask, and convolution
+polynomial \(D_C\) from the authenticated tile list, with \(D_R=\rho\), then
+\[
+ \beta=B-1,\qquad K_0=D_C+BD_R,\qquad
+ M_F=M_F^{\rm native}+B-1.
+\]
+The two determinant scales are the powers of two already printed above.
+Every sum and loop in the builder has a fixed finite range; it never waits
+for K215 to halt. Its exact literal transition hash is
+\begin{center}\scriptsize\ttfamily
+fdbcef0825886035c3091c8537a69535bc96f9e265f0ae45863543d40ae70090
+\end{center}
+
+The parent packet is retained byte for byte.
+No coefficient from the compact source-44 or original source-31 tuple is
+substituted for a source-34 port. Equality of radix exponents would not
+justify such a substitution.
+
+The archive includes the complete incoming parent package as
+\file{upstream/pell-congruences-source/}, with its original notices and
+proofs. This retains the exact source semantics and canonical witness
+promises required above. A machine-readable source ledger pins
+the Git commit, archive hash, parent packet, and coefficient binding.
+
+\section{Verification and how to reproduce the result}
+
+The checks address concrete failure modes.
+
+\begin{enumerate}
+\item \textbf{Universal norm identities.}
+An independent generator expands the generic four- and five-root
+polynomials by Newton identities. Their \(495\) and \(20{,}349\) monomials
+agree exactly with the independently built multiquadratic norm circuits.
+The compact four-root evaluator is also checked by its biquadratic
+coefficient identity; lifting it to the final quadratic algebra proves
+the five-root evaluator.
+\item \textbf{Literal graph and coefficient checks.}
+The delivered program contains only live binary \(+,-,\times\) nodes.
+It has \(211\) operations: \(51\) additions, \(31\) subtractions,
+and \(129\) multiplications. All fixed coefficients are authenticated.
+Independent graph evaluation agrees with the separate source packets.
+The count is an attained upper bound, not a claim that no shorter circuit
+exists.
+\item \textbf{Exact degree.}
+Safe degree bounds, the cancellation-resolving identity
+\eqref{eq:midpoint}, a nonzero specialized leading coefficient, and
+independent finite differences agree on \(1392\).
+\item \textbf{Exceptional cases and negative controls.}
+Tests include signed radicands, zero guard candidates, cleared-denominator
+degeneracies, omitted oddness, and the false unweighted norm.
+The proof excludes each relevant false branch for unbounded inputs.
+The parent two/three-root companions explicitly handle \(Q=0\) when their
+broader charts allow it; the final normalized thirteen-variable chart has
+\(Q>1\) on every integer assignment.
+\item \textbf{Bounded diagnostics.}
+The independent generic checker examines \(119{,}000\) pair assignments,
+\(143{,}990\) triple assignments, \(3{,}360\) completeness witnesses, and
+\(7{,}059\) rational-Pell fibers. These are transcription and adversarial
+diagnostics, not evidence for ZFC consistency or substitutes for the proofs.
+\end{enumerate}
+
+From the archive root, the release runner rebuilds the equations,
+the compact arithmetic programs, and the independent certificates:
+\begin{lstlisting}
+python3 verify_release.py
+\end{lstlisting}
+All new mathematics/code requires only the Python standard library.
+The report builds with a conventional LaTeX installation:
+\begin{lstlisting}
+cd report
+latexmk -pdf -interaction=nonstopmode -halt-on-error parity-norms.tex
+\end{lstlisting}
+The exact paths and commands are recorded in the top-level README.
+The coefficient recipe and inherited release scripts keep their own
+original execution conventions; they are not silently relabeled as new
+proofs.
+
+\section{What is new, and what remains open}
+
+The useful new idea is a restricted constant-weight square-combination
+theorem, applied where the source already supplies the needed parities.
+The method has three parts:
+\begin{itemize}
+\item separate squareclass contributions by powers of two;
+\item make a norm center carry a congruence as well as a sum of roots;
+\item remove the leading auxiliary square by an exact midpoint shift.
+\end{itemize}
+The parity statement is proved here and appears absent from the inspected
+ProveIt source and incoming constructions in this role.
+We do not claim that the general algebra of multiquadratic norms is new,
+or that this is the first use of parity in Diophantine representation.
+Literature searches were not a proof of historical priority.
+
+The construction retains K215 as the inherited source of one concrete
+coefficient tuple and its refutation calibration. Its new compression
+does not use Jones's nine-variable reduction or Sun's ten-integer
+reduction. The square-combination lemma is independent of that source and
+may be reusable for other arithmetic encodings.
+Sun's ten-integer theorem and the universal-pair literature remain the
+appropriate broader comparisons \cite{sun,bayer}.
+
+The principal open tasks are precise:
+\begin{enumerate}
+\item Formalize the parity lemma, normalized chart, reconstruction, and
+midpoint identity inside the existing proof development.
+\item Close the inherited native/compiler/internal-model calibration if an
+end-to-end checked ZFC derivation is desired.
+\item Investigate whether another guarded congruence can be moved into the
+same center. The transport modulus \(q-1\) need not be coprime to \(H\);
+canceling it without a proof would be invalid.
+\item Reduce the guard's degree or its witnesses. A claimed two-variable
+replacement for the ternary positive representation needs its own
+surjectivity theorem.
+\end{enumerate}
+Neither absolute minimality nor a smaller-variable universal representation
+is established by the present result. The delivered thirteen-variable
+polynomial is a concrete, reproducible improvement at a different point
+of the repository's size--degree frontier.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+V.\ Reshetnikov et al., \emph{ProveIt}, snapshot
+\texttt{cfbf118b4ad9b2c651fe96b571d9415261766328}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+See \file{Computability/DiophantineConsistency/} and
+\file{Computability/HilbertTenthProblem/}.
+\bibitem{parent}
+ProveIt incoming package, \emph{Pell congruences, shared guards, and monic
+transport}, \file{con_zfc_pell_congruences_2026-10-23.zip}.
+The complete package is retained in this release; the principal parent
+is \file{transport/degree88_17.json}.
+\bibitem{source34}
+ProveIt source 34, \emph{A mixed-radix, parity-separated, unrounded
+coefficient tuple}. The exact coefficient builder and canonical odd-scale
+proof are retained in the incoming parent.
+\bibitem{source61}
+ProveIt source 61, \emph{Congruence carriers and a divided Pell norm},
+\file{61-congruence-carriers/report/congruence_carriers.tex},
+especially the normalized strong and squared-modulus auxiliary lemmas.
+\bibitem{source67}
+ProveIt source 67, \emph{Oriented guards},
+\file{67-oriented-guards/README.md} and its thirteen-integer companion.
+\bibitem{source70}
+ProveIt source 70, \emph{Residue orientation}, the signed source and
+removal of the separate \(X=2u^2\) witness.
+\bibitem{source71}
+ProveIt source 71, \emph{Determinant guards}, including canonical
+completeness for the six-port source-34 tuple.
+\bibitem{sun}
+Z.-W.\ Sun, \emph{Ten unknowns for Hilbert's tenth problem over the
+integers}, arXiv:2609.01594v2 (2026).
+\url{https://arxiv.org/abs/2609.01594}.
+\bibitem{bayer}
+J.\ Bayer, M.\ David, M.\ Hassler, Y.\ Matiyasevich, and D.\ Schleicher,
+\emph{Diophantine Equations over \(\Z\): Universal Bounds and Parallel
+Formalization}, arXiv:2506.20909v3 (2026 revision).
+\url{https://arxiv.org/abs/2506.20909}.
+\end{thebibliography}
+\end{document}
+

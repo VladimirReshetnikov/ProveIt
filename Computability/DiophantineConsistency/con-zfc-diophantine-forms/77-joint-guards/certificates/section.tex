@@ -1,0 +1,197 @@
+\section{Smaller local graphs for the direct checker}
+\label{sec:direct-local-wave11}
+
+The latest pinned repository supplies a complete numeric checker for the
+original sealed-ZFC calculus, independent of K215 and Jones finalization.
+Its $83{,}281$ raw and $76{,}313$ optimized primitive-recursive program nodes
+are not polynomial variable counts.  This section improves concrete local
+polynomial graphs used by that route, without changing its numeric codes.
+Every visible variable and witness below ranges over $\mathbb N$, including
+zero; every subtraction is ordinary integer-polynomial subtraction.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Local graph & Old witnesses/ops & New witnesses/ops & Degree\\
+\hline
+Max-square pair & $3/46$ & $2/39$ & $4$\\
+Pair, strict squared rows & $3/46$ & $2/42$ & $4$\\
+Either unpair projection & $4/46$ & $3/39$ & $4$\\
+Predecessor & $0/16$ & $0/10$ & $4$\\
+Tree left/right, list tail & $5/62$ & $4/49$ & $4$\\
+If-zero conditional & $2/32$ & $1/16$ & $4$\\
+Zero test & $1/20$ & $1/14$ & $4$\\
+Actual list head & $7/76$ & $5/59$ & $4$\\
+Pair, selector eliminated & $3/46$ (quartic) & $1/53$ & $6$\\
+\hline
+\end{tabular}
+\end{center}
+Operations count binary additions, subtractions and multiplications in the
+literal expression tree, including the final addition of zero, as in the
+baseline.  Repeated subtrees are counted repeatedly.  The artifacts also
+provide separate shared-DAG counts and full expanded integer coefficients.
+No local saving is advertised as a completed smaller consistency polynomial.
+
+\subsection{Remove the maximum-component witness}
+For natural $z,a,b,t,s$, put
+\[
+ B=t(t-1),\qquad L=a-b-s+t(2s+1),\qquad
+ E=4(z-a-b)-(a+b+s)^2+t,
+\]
+\[
+ \operatorname{Pair}(z,a,b;t,s)=B+L^2+E^2.
+\]
+Then
+\[
+ \exists t,s\in\mathbb N:\operatorname{Pair}=0
+ \quad\Longleftrightarrow\quad
+ z=\begin{cases}b^2+a,&a<b,\\a^2+a+b,&b\le a.\end{cases}
+\]
+Indeed $t(t-1)\ge0$ for every integer $t$, so a zero forces $t=0$ or
+$t=1$ and $L=E=0$.  At $t=0$, $a=b+s$ and $a+b+s=2a$; hence
+$z=a^2+a+b$.  At $t=1$, $b=a+s+1$ and $a+b+s=2b-1$; hence
+$z=b^2+a$.  Conversely these two branches choose respectively
+$(t,s)=(0,a-b)$ and $(1,b-a-1)$.  This covers ties and zero.
+The literal quartic has two witnesses, $39$ tree operations and $52$
+monomials.  Replacing $B$ by $B^2$ gives a strict sum of three squared
+quadratic rows, with $42$ operations and the same zero set.  This latter
+version fits the existing squared-row interface without a nonnegative-term
+extension.  Hiding the missing component yields either unpair projection
+with three witnesses.
+
+Solving the last row for the selector also gives the one-witness sextic
+\[
+ T=(a+b+s)^2-4(z-a-b),\qquad
+ T(T-1)+\bigl(a-b-s+T(2s+1)\bigr)^2=0.
+\]
+Here $T$ is an integer polynomial, not a new coordinate.  Its nonnegative
+first summand forces $T\in\{0,1\}$; the preceding branch proof then applies.
+This has $53$ tree operations and $86$ monomials, but raises degree to six.
+
+\subsection{Share the predecessor and remove branch selectors}
+The exact predecessor graph factors as
+\[
+ [n(p+1-n)]^2+[p(p+1-n)]^2=(n-p-1)^2(n^2+p^2).
+\]
+Its zero set is precisely $p=\max(n-1,0)$: either $n=p+1$ or $n=p=0$.
+Adding this product to $\operatorname{Pair}(p,a,b;t,s)$ gives either tree
+projection with four hidden coordinates and $49$ operations.  At $n=0$
+both components are zero, so the right projection is also the actual guarded
+list tail.
+
+A separate selector is unnecessary for a conditional.  The quartic
+\[
+ [n(c-b)]^2+[(c-a)(n-s-1)]^2=0
+\]
+with one natural witness $s$ is equivalent to $c=a$ if $n=0$, and $c=b$
+otherwise.  At zero, $n-s-1=-s-1\ne0$; at positive $n$, the first row
+forces $c=b$, and completeness chooses $s=n-1$.  Taking $a=1,b=0$ gives
+the $14$-operation zero test.  If an exact predecessor $p$ is already
+available, set $s=p$ and allocate no extra slack.
+
+For the actual found-head convention, with visible $n,c$ and witnesses
+$p,a,b,t,s$, use
+\[
+ \operatorname{Head}=\operatorname{Pair}(p,a,b;t,s)
+ +(n-p-1)^2(n^2+p^2+c^2)+[n(c-a-1)]^2.
+\]
+At $n=0$, its middle term forces $p=c=0$ and the pairing term forces
+$a=b=0$.  At $n>0$, it forces $p=n-1$, $c=a+1$, and the correct unpair
+components.  Conversely these choices make every term zero.  Thus nil is
+zero and a found zero-valued entry is one.  The ordinary quartic has five
+witnesses, $59$ operations and $72$ monomials.
+
+\subsection{Certificate status}
+The package supplies literal trees and full coefficient lists for eleven
+local polynomials.  Exact symbolic identities, counts and $1{,}845{,}448$
+finite controls pass in ordinary and optimized Python modes; checks remain
+active under \texttt{-O}.  Universal correctness follows from the arguments
+above, not from the finite controls.  These new proofs have not been checked
+by Lean, and the whole numeric checker, its bounded loops and its internal
+nonstandard-code interpretation still require integration.  Natural witness
+domains are essential; unrestricted integer witnesses need their own
+naturalness encoding.
+
+\section{Index-free inert-prime closure with a reused product scale}
+\label{sec:index-free-crt-wave11}
+
+Fix $m\ge1$, natural $n$, external natural parameters $x$, and fixed
+nonnegative-coefficient polynomials $e(i,w;x),f(i,w;x)$.  Set $P=e-f$ and
+choose a fixed $d\ge0$ bounding its degree in $i$; for $P=0$, $d=0$ is
+allowed.  For a natural witness bound $U$, define
+\[
+\begin{split}
+ H&=e(n,U,\ldots,U;x)+f(n,U,\ldots,U;x)+n+U+1,\\
+ T&=H!,\qquad D=4T,\qquad S=D^n n!,\qquad M=DS+1,\\
+ B&=\bigl(S\tbinom{S+n}{n}\bigr)\bmod M.
+\end{split}
+\]
+Writing $P(i,w;x)=\sum_{k=0}^dP_k(w;x)i^k$, set
+\[
+ R_D(A;x)=\sum_{k=0}^dP_k(A;x)D^{d-k}(1-D)^k.
+\]
+This is an ordinary polynomial.  Its inverse-looking shorthand
+$D^dP(D^{-1}-1,A;x)$ introduces no actual inverse or variable exponent.
+For a fixed nested binary norm $N$, obtained by repeatedly replacing a pair
+of subexpressions by the sum of their squares, the exact certificate is
+\[
+ \exists U,A_1,\ldots,A_m\in\mathbb N:\quad
+ B\mid N\left(\tbinom{A_1}{U+1},\ldots,
+                 \tbinom{A_m}{U+1},R_D(A;x)\right).
+\]
+It is equivalent to $\forall i<n\ \exists w\in\mathbb N^m:P(i,w;x)=0$.
+Binomial is total, with $\binom Ak=0$ for $A<k$.  Neither factorials nor
+binomials nor $D^n$ are being called ordinary polynomial notation.
+
+\paragraph{Why the product needs only one variable-power graph.}
+For $m_i=D(i+1)-1$,
+\[
+ S\binom{S+n}{n}=\prod_{j=1}^n(DS+Dj)
+ \equiv\prod_{j=1}^n(Dj-1)\pmod{DS+1}.
+\]
+For $n>0$ the positive product is smaller than $D^n n!=S<M$; at $n=0$
+it is one, still below $M$.  Hence $B=\prod_{i<n}m_i$.  The former
+independent bound $(Dn)^n+1$ is unnecessary: reuse $S$ itself.  This removes
+one complete variable-power graph, not merely its displayed abbreviation.
+
+\paragraph{Why the encoded index is unnecessary.}
+The integer polynomial $R_D-D^dP(i,A;x)$ is divisible by $D(i+1)-1$,
+by the difference-of-powers identity.  Thus modulo $m_i$, the cleared
+residual is exactly $D^dP(i,A;x)$.  The modulus already encodes the index
+as $D^{-1}-1$, so no CRT coordinate $c$ or index norm leaf is needed.
+
+Each $m_i$ is $3$ modulo $4$, all its prime factors exceed $H$, and the
+$m_i$ are pairwise coprime: a common divisor divides $j-i$, hence $H!$,
+but is coprime to $D$.  Choose a prime $p_i\equiv3\pmod4$ dividing $m_i$.
+Anisotropy of a binary sum of squares over $\mathbb F_{p_i}$ makes every
+norm leaf zero.  The binomial leaves recover residues $w_j\in[0,U]$;
+$D$ is invertible, so the last leaf gives $P(i,w;x)=0\pmod{p_i}$.
+Its original absolute value is smaller than $H<p_i$, hence it is zero
+as an integer.  The bound is applied after cancelling $D^d$, not to the
+large cleared residual.  Conversely CRT representatives of actual witnesses
+make every leaf divisible by every $m_i$, proving completeness.  The empty
+bound $n=0$ is handled by $B=1$.
+
+\paragraph{An exposed, conditional witness ledger.}
+Suppose chosen factorial, power and total-binomial graph polynomials use
+respectively $\nu_F,\nu_P,\nu_B$ internal witnesses beyond visible arguments
+and output.  Expose graph outputs
+\[
+ T=H!,\quad F=n!,\quad E=D^n,\quad C=\binom{EF+n}{n},\quad
+ L_j=\binom{A_j}{U+1}.
+\]
+Use ordinary expressions $S=EF$, $M=DS+1$, and natural $B,K,r,V$ satisfying
+\[
+ SC=B+MK,\qquad M=B+r+1,\qquad N(L_1,\ldots,L_m,R_D)=BV.
+\]
+There are exactly $2m+9$ exposed coordinates.  The complete conditional
+count is
+\[
+ 2m+9+2\nu_F+\nu_P+(m+1)\nu_B,
+\]
+versus $2m+11+2\nu_F+2\nu_P+(m+1)\nu_B$ for the preceding interface
+under the same convention.  The saving is exactly $\nu_P+2$, but no
+numerical values for these uncompiled graph costs have been asserted.
+This is a proved compiler simplification, not yet a smaller closed ordinary
+consistency polynomial.  Further quartic flattening and internal formalization
+have separate costs and proof obligations.

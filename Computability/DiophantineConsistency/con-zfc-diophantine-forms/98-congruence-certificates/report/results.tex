@@ -1,0 +1,45 @@
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Domain & Variables & Degree & Operations & Comparison\\
+\midrule
+$\Z$ & 13 & 1,072 & 195 & previous 1,088 / 195\\
+$\Z$ & 14 & 414 & 148 & previous 696 / 150\\
+$\Z$ & 15 & 218 & 130 & previous 214 / 139\\
+$\Z$ & \textbf{16} & \textbf{124} & \textbf{118} & previous 184 / 135\\
+$\Z_{>0}$ & 12 & 70 & 98 & previous 70 / 100\\
+$\Z_{>0}$ & 13 & 51 & 88 & previous 51 / 90\\
+\bottomrule
+\end{tabular}
+\caption{New literal native-family polynomials. Previous entries are selected
+relevant points in the inspected repository, not assertions of global optima.}
+\end{table}
+The 16-integer result lowers degree by $32.6\%$ and operations by $12.6\%$
+against the degree-184, 135-operation parent. It also improves the separate
+degree-192, 134-operation point in both measures. The 14-integer equation
+has a lower degree than both the 696/150 root-fusion equation and the
+652/230 fixed-prime equation. The 792/137 equation remains a lower-cost
+alternative. The 15-integer entry is a degree--cost tradeoff.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Direct quartic over $\N$ & Variables & Rows & Terms & Height & Degree\\
+\midrule
+Parent, affine elimination & 3,614 & 2,954 & 15,996 & 127,778,545 & 4\\
+New, affine elimination & \textbf{2,473} & 2,089 & 20,580 & 127,808,289 & 4\\
+Parent, retained affine rows & 6,183 & 5,523 & 17,430 & 1,993 & 4\\
+New, retained affine rows & \textbf{4,860} & 4,476 & 14,719 & \textbf{1,837} & 4\\
+\bottomrule
+\end{tabular}
+\caption{Fully expanded direct polynomials. Height is the maximum absolute
+coefficient. Rows are quadratic residuals before summing their squares.}
+\end{table}
+The first new direct equation has $31.6\%$ fewer variables than its parent,
+at the cost of more expanded monomials and a slightly larger coefficient
+height. The retained-row variant reduces the variable, row, and monomial
+counts and the coefficient height against its corresponding parent,
+while retaining degree four. Its coefficients need at most eleven magnitude bits.
+

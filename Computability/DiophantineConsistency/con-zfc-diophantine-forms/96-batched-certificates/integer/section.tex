@@ -1,0 +1,135 @@
+\section{An unrestricted-integer quartic companion}
+\label{sec:integer-companion}
+
+The direct shared-frame construction also admits a literal equation over
+unrestricted integers.  Starting from its $1\,153$ nonnegative coordinates,
+we obtain a polynomial
+\[
+ P_{\mathbb Z}\in\mathbb Z[z_1,\ldots,z_{1690}],\qquad
+ P_{\mathbb Z}=\sum_{j=1}^{842}r_j^2,
+ \qquad \deg r_j\leq 2.
+\]
+Its exact degree is four.  The delivered expansion has $21\,381$ nonzero
+monomials and maximum absolute coefficient $2\,649\,643\,805\,758$.
+The construction preserves solvability of the natural shared-frame
+equation, and therefore inherits its equivalence with
+$\neg\operatorname{Con}(\mathrm{ZFC})$.  The following argument treats the
+domain change before applying any coordinate eliminations.
+
+\subsection{Guarding only the original nongates}
+
+For integers $a,b,c$, put
+\[
+ H(a,b,c)=a^2+b^2+c(c+1).
+\]
+The image of $H$ is exactly $\mathbb N$, including zero.  Nonnegativity
+follows because $c$ and $c+1$ are consecutive integers.  For the converse,
+let $n\geq0$.  The integer $4n+1$ is not of the form $4^u(8v+7)$, so
+Legendre's three-square theorem gives a representation by three integer
+squares.  Modulo four, exactly one square is odd.  Writing its entry as
+$2c+1$, and the other entries as $2a$ and $2b$, gives
+\[
+ 4n+1=(2c+1)^2+(2a)^2+(2b)^2,
+ \qquad n=H(a,b,c).
+\]
+
+The frozen shared-frame system has $1\,153$ coordinates and $1\,021$
+quadratic residuals.  Of the coordinates, $795$ are arithmetic gate
+outputs and $358$ are nongates.  Every gate $g$ has an actual retained
+residual
+\[
+ g-f(\text{earlier coordinates})=0,
+\]
+where $f$ has nonnegative integer coefficients and all its coordinates
+have smaller indices in the fixed variable order.  There are $710$
+multiplication rows and $85$ addition rows of this form.
+The literal certificate identifies and independently checks all $795$
+rows, including the coefficient signs and strict index order.
+
+For every original nongate $x$, append three private signed coordinates
+$a_x,b_x,c_x$ and the residual
+\[
+ x-a_x^2-b_x^2-c_x^2-c_x=0.
+\]
+Keep all original coordinates and residuals.  The result has
+\[
+ 1\,153+3\cdot358=2\,227
+ \quad\hbox{integer coordinates},\qquad
+ 1\,021+358=1\,379
+ \quad\hbox{quadratic residuals}.
+\]
+Every natural solution extends to a signed solution by the representation
+above.  Conversely, in any signed solution all $358$ original nongates
+are nonnegative.  Induction along the original coordinate order then makes
+every arithmetic gate nonnegative, since its defining polynomial has
+nonnegative coefficients.  The original residuals still vanish.  Thus
+the signed checkpoint and the frozen natural parent are equisatisfiable.
+
+\subsection{Exact signed projection}
+
+If an integer polynomial system contains $v-f(\mathbf y)=0$, with $f$
+independent of $v$, deleting that equation and substituting
+$v=f(\mathbf y)$ in every other equation induces a bijection of integer
+zero sets.  The inverse restores the uniquely forced value $f(\mathbf y)$.
+The same holds if the defining residual is $f-v$.  Coefficient signs in
+$f$ are unrestricted: integrality is automatic for any integer
+polynomial on integer inputs.
+
+The terminal optimizer records every such restoration, with degree at
+most two, and retains a step only when all substituted residuals have
+degree at most two.  Affine restorations preserve this bound.  For a
+quadratic restoration, the optimizer requires the removed coordinate to
+occur only linearly outside its defining row.  Independently of this
+proposal rule, the checker performs every substitution and directly
+checks the degree of every resulting row.  At each step the restoration
+uses only still-live coordinates, so reverse chronological restoration
+is well defined.
+
+The delivered signed certificate contains $537$ eliminations: $308$
+affine and $229$ quadratic.  It removes $446$ original gates and $91$
+original witnesses; no free coordinates are discarded.  Exactly one
+residual is removed at every step.  Thus the endpoint has
+\[
+ 2\,227-537=1\,690\quad\hbox{coordinates},\qquad
+ 1\,379-537=842\quad\hbox{residuals}.
+\]
+Its sum of squared residuals is the stated $P_{\mathbb Z}$.
+
+The original sign constraints are preserved by this signed projection.
+In particular, the checker substitutes into all affected guard equations.
+Restoring every deleted coordinate recovers a zero of the complete
+$2\,227$-integer checkpoint, where the earlier induction proves that all
+original coordinates are natural.  This establishes
+\[
+ \exists\mathbf z\in\mathbb Z^{1690}\ P_{\mathbb Z}(\mathbf z)=0
+ \quad\Longleftrightarrow\quad
+ \exists\mathbf x\in\mathbb N^{1153}\ P_{\mathrm{shared\ frame}}(\mathbf x)=0.
+\]
+Combining this with the direct-calculus calibration proves within ZFC
+\[
+ \operatorname{Con}(\mathrm{ZFC})
+ \quad\Longleftrightarrow\quad
+ \forall\mathbf z\in\mathbb Z^{1690}\ P_{\mathbb Z}(\mathbf z)\ne0.
+\]
+No consistency assumption enters the transformations.
+
+\subsection{Finite certificates and the verification boundary}
+
+The integer companion component contains the frozen natural parent,
+the $2\,227$-integer checkpoint, both conversion certificates, and both
+the residual and fully expanded forms of the final polynomial.
+Canonical hashes bind each transformation to its actual input and output.
+The independent verifier imports neither the builder nor the optimizer.
+It checks complete coverage of all original gates and nongates, all $537$
+monic substitutions, every coefficient in the final expansion, the degree,
+the coordinate count, and the coefficient height.  Negative controls
+remove a sign guard or corrupt a restoration and require rejection.
+
+From that component directory, \texttt{python3 verify\_integer.py} and
+\texttt{python3 -O verify\_integer.py} run these checks offline.
+The additional option \texttt{--rebuild} reconstructs six primary files in
+a temporary directory and compares them byte for byte.  These finite
+checks certify the literal algebra and counts.  The universal
+proof-calculus and Pell theorems are inherited from the parent argument;
+this supplement supplies an ordinary proof and exact finite certificates,
+not a new end-to-end formal kernel proof.

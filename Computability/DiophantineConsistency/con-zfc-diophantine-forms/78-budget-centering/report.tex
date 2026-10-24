@@ -1,0 +1,377 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,microtype}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Smaller Diophantine Forms for Con(ZFC)},
+pdfauthor={Prepared for Vladimir Reshetnikov},
+pdfsubject={Pell-root translations, joint positivity, and coefficient-bounded proof certificates},
+pdfkeywords={Diophantine equations, ZFC consistency, Pell equations, proof certificates}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Diophantine forms for $\operatorname{Con}(\mathrm{ZFC})$}
+\fancyhead[R]{\small Pell translations and coefficient budgets}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Pos}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Smaller Diophantine Forms for $\Con(\ZFC)$\\[5pt]
+\large Two Pell-root translations, joint positivity, and\\coefficient-bounded proof certificates}
+\author{Research note prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical development with independent algebraic review}
+\date{October 23, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct explicit fixed-coefficient Diophantine equations whose lack of
+solutions is equivalent, by ordinary mathematics formalizable in ZFC, to
+syntactic $\Con(\ZFC)$. The principal integer constructions have 26 unrestricted
+variables at degree 8 and 24 at degree 10; a further restriction of the
+dyadic coordinate gives 23 at degree 16. The 24-variable equation is a sum
+of twelve squared residuals. Its reduction uses two integral translations
+of Pell roots before eliminating coordinates, together with an exact
+four-witness representation of two strict inequalities. Two positive-domain
+constructions have 11 variables, degree 277 and 111 arithmetic operations,
+and 12 variables, degree 78 and 103 operations.
+
+Separately, we prove a new coefficient-budget encoding of finite
+single-conclusion proof certificates. Products of linear factors recover
+exact proof-label balances when evaluated at a base exceeding an internally
+accumulated coefficient bound. This removes the earlier label-difference
+common-multiple requirement at the source level. We supply its local
+polynomial and tests, but do not claim a completed fixed-dimensional
+consistency equation from that architecture. All finished equations retain
+the cited native-source calibration. No global minimum, unconditional
+world-first claim, or new complete proof-assistant certificate is asserted.
+\end{abstract}
+
+\tableofcontents
+
+\section{Results, comparison, and the exact logical claim}
+\label{sec:scope}
+
+The input was the current ProveIt collection
+\path{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+The reviewed checkout is pinned to commit
+\begin{center}
+\texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}.
+\end{center}
+Its latest package reconciliation includes sources 68--75, the tenth wave. The review does
+not compare with an obsolete earlier wave. The repository already has
+nine-positive-variable and ten-integer equations of much higher degree,
+as well as a 38-integer quartic, a 32-integer sextic and a 27-integer
+octic\cite{frontier,source68,source69,source70,source71}.
+
+There is no agreed total ordering of simplicity. Variable count, domain,
+degree, circuit size, coefficient height and proof complexity measure
+different things. The present results improve several precise parts of
+that comparison; they do not supersede every earlier candidate.
+
+For broader context, the current general representation literature includes
+Sun's ten-integer result and the parallel formalization work of Bayer,
+David, Ha\ss ler, Matiyasevich and Schleicher\cite{sun2026,bayer2026}.
+Those universal bounds do not by themselves give a smaller low-degree
+specialization for this fixed consistency predicate. The positive
+representation and Pell methods used below also lie in the framework
+of Sun's earlier work\cite{sun2021}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Construction & Variables & Degree & Operations & Comparison\\
+\midrule
+Integer octic & 26 & 8 & -- & 27-variable degree-8 predecessor\\
+Integer decic & 24 & 10 & -- & new variable/degree tradeoff\\
+Integer degree-16 companion & 23 & 16 & -- & 26-variable degree-16 predecessor\\
+Positive equation $P_{11}$ & 11 & 277 & 111 & predecessor: 325 / 113\\
+Positive equation $P_{12}$ & 12 & 78 & 103 & predecessor: 82 / 102\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+An operation is a live binary addition, subtraction or multiplication;
+squares and multiplication by constants are charged. Fixed integer leaves
+and reuse of an already computed register are free in this convention.
+The integer systems are delivered as explicit residual lists and sparse
+expansions; their evaluator counts have not been optimized or compared.
+The last positive result trades one operation for four degrees.
+
+\subsection{Consistency convention and dependencies}
+
+Fix the recursively specified syntactic ZFC proof predicate used by the
+repository. Write $\operatorname{Ref}_{\ZFC}(p)$ for the statement that $p$
+is a finite refutation, and
+\[
+ \Con(\ZFC)\equiv\neg\exists p\in\N\;\operatorname{Ref}_{\ZFC}(p).
+\]
+The inherited native-source theorems identify the existence of their
+Diophantine witnesses with the existence of such a refutation. Those
+theorems include the Wang-tile/native compiler, Pell index reconstruction,
+and the fixed machine/calculus calibration. We use these as named
+mathematical inputs and preserve their coefficient conventions.
+
+For each finished equation $P$ with its stated domain $D$, the result is
+\begin{equation}
+ \ZFC\vdash
+ \bigl[\neg\exists\boldsymbol{x}\in D^n\;P(\boldsymbol{x})=0\bigr]
+ \;\longleftrightarrow\;\Con(\ZFC).
+ \label{eq:target}
+\end{equation}
+The new proofs establish both existence implications without assuming
+consistency. They then compose with the cited source calibration and
+negate the equivalence. Thus the argument is neither a bounded search
+for contradictions nor a proof that ZFC is consistent.
+
+Equation~\eqref{eq:target} is an ordinary mathematical provability claim.
+It is stronger than an assertion merely about a few computed witnesses.
+It is also distinct from delivering a checked term in the repository's
+internal first-order ZFC calculus. The latter development remains
+incomplete for these native-source endpoints\cite{objectzfc}. This archive
+adds explicit equations, reductions and exact algebra checks; it does not
+label finite Python checks as a formal proof of the unbounded semantic
+calibration.
+
+\subsection{What is new in this note}
+
+The nearest-square positivity lemma and determinant guard are inherited
+from different tenth-wave packages. Their composition gives the 26-variable
+octic. The more consequential algebraic step is to translate \emph{both}
+Pell roots before removing the $c$ and $V$ coordinates: this yields the
+24-variable degree-10 equation while keeping all eliminations integral.
+The degree-16 companion uses a separately justified divisibility restriction
+on the canonical dyadic coordinate.
+
+The positive-domain changes likewise combine results that were previously
+separate: the adjacent-coefficient descent makes a denominator-protection
+factor redundant, and the adaptive Pell carrier lowers a second degree.
+The coefficient-budget proof source is a further mechanism, developed
+here from the previous commutative-flow proposal. Its theorem is complete;
+its compilation into a competitive whole consistency polynomial is not.
+
+\input{integer/section.tex}
+\input{positive/section.tex}
+\input{direct/section.tex}
+
+\section{Coefficient specification and reproducibility}
+\label{sec:reproduce}
+
+The display letters for fixed coefficients are abbreviations for actual
+integers, not additional quantified unknowns and not a choice depending on
+the truth of consistency. The archive contains their complete compressed
+little-endian byte representations, exact sizes and SHA-256 digests. The
+integer component also reconstructs its coefficient tuple from the supplied
+943-tile list and fixed machine table and compares every byte.
+
+The integer equations use the whole
+\texttt{mixed-parity-unrounded-1064921} tuple:
+$\beta=2^{1064921}-1$, the inherited $K_0,M_C,M_F$, and
+the determinant scales $2^{1113}$ and $2^{666104}$. Their six minimal
+unsigned payloads total 615,883 raw bytes. The positive equations use the
+different whole compact44 tuple, with $\beta=2^{590069}-1$.
+The two tuples are never intermixed. In each, $M_F$ is already the shifted
+source mask; applying a second shift would specify a different equation.
+
+\subsection{Files that define the equations}
+
+The integer packets under \texttt{integer/generated/} give the ordered
+unknowns, residuals, fully expanded abbreviations and source restoration
+maps. For a packet with residuals $r_1,\ldots,r_s$, its single equation
+is exactly $\sum_{i=1}^s r_i^2=0$. Sparse expanded polynomial files are
+provided as additional representations over the fixed coefficient ports.
+Substituting the supplied fixed integers gives the required element of
+$\Z[x_1,\ldots,x_n]$.
+
+The positive packets are finite straight-line programs in the three binary
+operations $+,-,\times$. Their register names introduce no additional
+existential variables. Every operation is listed, and a designated final
+register defines the polynomial. There is no variable exponent, implicit
+division, unbounded product or uninterpreted predicate in any finished
+equation.
+
+\subsection{Checks and their mathematical scope}
+
+Run \texttt{python3 verify.py} at the archive root. The normal verification
+path uses the Python standard library. It checks authentic payloads,
+regeneration of all equation packets, exact polynomial identities,
+residual restoration, variable liveness, and the degree witnesses stated
+in the proofs. Optimized Python runs of the components were also checked;
+the checks do not disappear when \texttt{assert} is disabled.
+
+The additional \texttt{independent\_integer\_audit.py} uses SymPy and
+does not import the construction program or its polynomial engine. It
+independently restores every row of the joint-guard source and checks
+the exact lower-bound coefficients. An independent modular univariate
+specialization of the positive circuits supplies another check on their
+literal degree. These checks address transcription and algebra. The
+universal existence arguments are the written proofs, and the inherited
+native-source semantic theorems remain explicitly cited inputs.
+
+The direct component includes positive proof-tree examples, repeated and
+zero-premise cases, cycle controls, and a false large-base product collision.
+They test the source implementation. The general soundness argument uses
+coefficient bounds and finite Horn closure, not successful examples.
+
+For the document, run \texttt{pdflatex report.tex} twice or use the supplied
+\texttt{Makefile}. The archive carries source pins, notices and licenses
+for all reused material. It includes a content manifest; intermediate
+LaTeX files and Python caches are excluded from the release archive.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\begin{enumerate}
+\item \textbf{Can the coefficient-budget source be compiled efficiently?}
+The next decisive deliverable is a sharing-preserving arithmetic
+representation of its single bounded family of local checks, followed by
+a measured fixed-coefficient polynomial. The local witness count is not
+the final witness count. The generic bounded-universal compiler may
+reintroduce factorial or power representations internally; the present
+source theorem removes its own extra common-multiple block only.
+
+\item \textbf{Can 24 unrestricted variables be reached at degree 8?}
+The remaining degree-5 residuals in the decic have explicit origins:
+the centered main norm, the strong ordinate, and the centered auxiliary
+norm. A further integral coordinate change must control all three at once.
+Reducing a formal degree before a required substitution is not enough.
+
+\item \textbf{Can the 23-variable companion have degree below 16?}
+Its degree comes from the square of the new dyadic term in the main
+residual. Another order of elimination or a different coordinate used to
+carry the dyadic divisibility could reduce it. Any restriction must have
+a proved lift from authentic canonical source witnesses.
+
+\item \textbf{Can four Pell radicals replace another carrier variable?}
+Appendix~\ref{app:four} proves an unconditional separation fact for four
+radicals in the positive construction. The open difficulty is preserving
+two carrier congruences with one integer coordinate. Their denominators
+share powers of $q$, so a naive rational-sum merger allows cancellation
+and does not prove the desired divisibilities.
+
+\item \textbf{Can the native congruence move to a different root?}
+Supplying $F,\alpha,C$ directly makes positivity cheap, but the constraint
+$q\equiv\beta+1\pmod{3\beta}$ still needs to be enforced. Inserting it
+into the first root's rational offset can corrupt the transport congruence
+when denominators share factors. A useful solution would preserve the
+integer strong-root coordinate and allow the two-root descent to apply.
+
+\item \textbf{Can the whole proof become internally checked?}
+The latest repository already contains a closed numeric sealed-ZFC
+refutation checker. Its internal interpretation and the full native
+compiler calibration are separate formalization projects. The finite
+algebraic lemmas here are suitable small targets; they should not be
+confused with the much larger final consistency biconditional.
+\end{enumerate}
+
+\appendix
+\section{A four-radical separation lemma for a possible next merger}
+\label{app:four}
+
+This appendix records a proved ingredient for the open direction above.
+It does not define a new ten-positive-variable consistency equation.
+Use the eleven-positive construction's registers, with $I=ic^2$, and set
+\[
+ t=\sqrt{\ell(\ell+k)+1},\quad
+ g=\sqrt{1+\Delta c^2},\quad
+ f=\sqrt{1+\Delta I^2},\quad
+ y=\sqrt{\frac{QV^2-1}{Q-1}}.
+\]
+These are real positive roots for every positive input, before imposing
+any polynomial equation. Let $b=cT-R$, so $V=f^2b-c$.
+
+\begin{lemma}
+Every nonempty signed sum of a subset of $t,g,f,y$ is nonzero.
+Consequently, if a signed sum of all four is rational, then all four
+roots are rational.
+\end{lemma}
+\begin{proof}
+Here $a\ge2$, $c\ge3$, $I\ge c^2$ and
+\[
+ t<\ell+k<(a+1)c<g<(a+2)c,
+ \qquad f>(a+1)c^2>g+t.
+\]
+As in the three-root construction, $|V|>1$ and
+$y^2=V^2+(V^2-1)/(Q-1)$. The three integer radicands for $t,g,f$
+are strictly increasing and less than $Q$. If $y^2$ equalled any one
+of them, say $d$, then $Q(d-V^2)=d-1$ with $0<d-1<Q$, impossible.
+Thus all four roots are pairwise distinct.
+
+If $b\ne0$, then $y>|V|\ge f^2-c>2f>f+g+t$.
+Together with $f>g+t$ and $g>t$, this prevents every signed cancellation.
+If $b=0$, then $V=-c$ and $Q>c^2$, so $y<c+1$. Moreover
+\[
+ (a+1)c-(\ell+k)-(c+1)
+   =k(Y^2-1)+a\eta-1>0,
+\]
+which gives $g>t+y$. Finally
+\[
+ g+t+y<(2a+4)c+1<(a+1)c^2<f.
+\]
+The last strict inequality in the middle follows from $a\ge2,c\ge3$.
+Thus a subset containing $f$ cannot cancel; without $f$, a subset
+containing $g$ cannot cancel; and the remaining two distinct positive
+roots $t,y$ cannot cancel.
+
+For rationality, work in the finite multiquadratic field generated by
+the four roots. A rational signed sum is fixed by every automorphism.
+Subtract its image under any automorphism. If that automorphism changes
+any root's sign, the difference is twice a nonempty signed subset sum,
+which has just been excluded. Every automorphism therefore fixes every
+root. The fixed field is $\Q$, proving the claim.
+\end{proof}
+
+The lemma resolves radical separation, not carrier compatibility.
+The first transport modulus $q^3(q-1)$ and the main carrier modulus
+$4q^2Y$ share the factor $q^2$. Rationality of a sum of quotients with
+these denominators does not imply their separate integrality. An attempted
+ten-variable equation must supply a new argument at exactly this point.
+
+\begin{thebibliography}{20}
+\bibitem{frontier} ProveIt, \emph{Wave-ten proposals and the current targets},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/PROPOSAL_REVIEW_WAVE10.md}{pinned repository review}, 2026.
+\bibitem{source61} ProveIt, source 61, \emph{Congruence carriers},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers}{pinned package}, 2026.
+\bibitem{source64} ProveIt, source 64, \emph{Structural reductions},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions}{pinned package}, 2026.
+\bibitem{source68} ProveIt, source 68, \emph{Joint positivity and free Lucas coordinates},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/68-joint-positivity}{pinned package}, 2026.
+\bibitem{source69} ProveIt, source 69, \emph{Cones and Pell descent},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/69-cones-pell}{pinned package}, 2026.
+\bibitem{source70} ProveIt, source 70, \emph{Residue orientation and root transfer},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/70-residue-orientation}{pinned package}, 2026.
+\bibitem{source71} ProveIt, source 71, \emph{Calibrated determinant guards},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/con-zfc-diophantine-forms/71-determinant-guards}{pinned package}, 2026.
+\bibitem{objectzfc} ProveIt, \emph{Object-language ZFC boundary and complete numeric refutation checker},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/OBJECT_ZFC.md}{OBJECT\_ZFC.md} and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2605669a532342f153b13eb6b4a0af4b54f5fa37/Computability/DiophantineConsistency/ANNOTATED_REFUTATION_PR.md}{ANNOTATED\_REFUTATION\_PR.md}, 2026.
+\bibitem{sun2021} Zhi-Wei Sun, \emph{Further results on Hilbert's Tenth Problem},
+Science China Mathematics 64 (2021), 281--306,
+\href{https://arxiv.org/abs/1704.03504}{arXiv:1704.03504}, version 7.
+\bibitem{sun2026} Zhi-Wei Sun, \emph{Ten unknowns for Hilbert's tenth problem over the integers},
+\href{https://arxiv.org/abs/2609.01594}{arXiv:2609.01594}, version 1, 2026.
+\bibitem{bayer2026} Jonas Bayer, Marco David, Malte Ha\ss ler, Yuri Matiyasevich,
+and Dierk Schleicher, \emph{Diophantine equations over $\Z$: universal bounds and parallel formalization},
+\href{https://arxiv.org/abs/2506.20909}{arXiv:2506.20909}, version 3, 2026.
+\end{thebibliography}
+\end{document}

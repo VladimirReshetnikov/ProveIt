@@ -1,0 +1,740 @@
+{
+  "name": "center18_degree80",
+  "variables": [
+    "J3",
+    "C",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "w3",
+    "tau_center",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "c",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3"
+  ],
+  "fixed_ports": [
+    "beta",
+    "K0",
+    "MC",
+    "MF",
+    "cone_A",
+    "cone_B"
+  ],
+  "fixed_recipes": [],
+  "nodes": [
+    {
+      "id": "g:0",
+      "op": "mul",
+      "left": "v:tau_center",
+      "right": "v:tau_center"
+    },
+    {
+      "id": "g:1",
+      "op": "mul",
+      "left": "n:3",
+      "right": "v:J3"
+    },
+    {
+      "id": "g:2",
+      "op": "add",
+      "left": "g:1",
+      "right": "n:1"
+    },
+    {
+      "id": "g:3",
+      "op": "mul",
+      "left": "c:beta",
+      "right": "g:2"
+    },
+    {
+      "id": "g:4",
+      "op": "add",
+      "left": "g:3",
+      "right": "n:1"
+    },
+    {
+      "id": "g:5",
+      "op": "mul",
+      "left": "n:3",
+      "right": "v:w3"
+    },
+    {
+      "id": "g:6",
+      "op": "add",
+      "left": "g:5",
+      "right": "n:1"
+    },
+    {
+      "id": "g:7",
+      "op": "mul",
+      "left": "g:6",
+      "right": "n:4"
+    },
+    {
+      "id": "g:8",
+      "op": "mul",
+      "left": "g:4",
+      "right": "g:7"
+    },
+    {
+      "id": "g:9",
+      "op": "mul",
+      "left": "n:2",
+      "right": "v:v_scale"
+    },
+    {
+      "id": "g:10",
+      "op": "add",
+      "left": "g:9",
+      "right": "n:1"
+    },
+    {
+      "id": "g:11",
+      "op": "mul",
+      "left": "g:4",
+      "right": "g:4"
+    },
+    {
+      "id": "g:12",
+      "op": "mul",
+      "left": "g:11",
+      "right": "g:4"
+    },
+    {
+      "id": "g:13",
+      "op": "mul",
+      "left": "g:10",
+      "right": "g:12"
+    },
+    {
+      "id": "g:14",
+      "op": "mul",
+      "left": "g:13",
+      "right": "g:8"
+    },
+    {
+      "id": "g:15",
+      "op": "mul",
+      "left": "g:13",
+      "right": "g:14"
+    },
+    {
+      "id": "g:16",
+      "op": "mul",
+      "left": "v:f",
+      "right": "v:o"
+    },
+    {
+      "id": "g:17",
+      "op": "sub",
+      "left": "g:16",
+      "right": "v:c"
+    },
+    {
+      "id": "g:18",
+      "op": "sub",
+      "left": "n:1",
+      "right": "g:17"
+    },
+    {
+      "id": "g:19",
+      "op": "mul",
+      "left": "v:c",
+      "right": "v:j"
+    },
+    {
+      "id": "g:20",
+      "op": "add",
+      "left": "g:18",
+      "right": "g:19"
+    },
+    {
+      "id": "g:21",
+      "op": "mul",
+      "left": "g:14",
+      "right": "v:h"
+    },
+    {
+      "id": "g:22",
+      "op": "add",
+      "left": "g:20",
+      "right": "g:21"
+    },
+    {
+      "id": "g:23",
+      "op": "mul",
+      "left": "g:15",
+      "right": "g:22"
+    },
+    {
+      "id": "g:24",
+      "op": "mul",
+      "left": "g:23",
+      "right": "n:2"
+    },
+    {
+      "id": "g:25",
+      "op": "add",
+      "left": "g:22",
+      "right": "g:24"
+    },
+    {
+      "id": "g:26",
+      "op": "mul",
+      "left": "g:25",
+      "right": "n:2"
+    },
+    {
+      "id": "g:27",
+      "op": "mul",
+      "left": "g:26",
+      "right": "v:tau_center"
+    },
+    {
+      "id": "g:28",
+      "op": "add",
+      "left": "g:0",
+      "right": "g:27"
+    },
+    {
+      "id": "g:29",
+      "op": "mul",
+      "left": "g:22",
+      "right": "g:22"
+    },
+    {
+      "id": "g:30",
+      "op": "add",
+      "left": "g:28",
+      "right": "g:29"
+    },
+    {
+      "id": "g:31",
+      "op": "sub",
+      "left": "g:30",
+      "right": "n:4"
+    },
+    {
+      "id": "g:32",
+      "op": "add",
+      "left": "g:8",
+      "right": "n:1"
+    },
+    {
+      "id": "g:33",
+      "op": "mul",
+      "left": "g:13",
+      "right": "g:32"
+    },
+    {
+      "id": "g:34",
+      "op": "mul",
+      "left": "g:33",
+      "right": "v:c"
+    },
+    {
+      "id": "g:35",
+      "op": "add",
+      "left": "g:34",
+      "right": "g:8"
+    },
+    {
+      "id": "g:36",
+      "op": "mul",
+      "left": "g:33",
+      "right": "n:4"
+    },
+    {
+      "id": "g:37",
+      "op": "add",
+      "left": "g:36",
+      "right": "n:3"
+    },
+    {
+      "id": "g:38",
+      "op": "mul",
+      "left": "g:37",
+      "right": "v:gamma"
+    },
+    {
+      "id": "g:39",
+      "op": "add",
+      "left": "g:35",
+      "right": "g:38"
+    },
+    {
+      "id": "g:40",
+      "op": "mul",
+      "left": "g:39",
+      "right": "g:39"
+    },
+    {
+      "id": "g:41",
+      "op": "mul",
+      "left": "g:33",
+      "right": "g:33"
+    },
+    {
+      "id": "g:42",
+      "op": "add",
+      "left": "g:37",
+      "right": "g:41"
+    },
+    {
+      "id": "g:43",
+      "op": "mul",
+      "left": "v:c",
+      "right": "v:c"
+    },
+    {
+      "id": "g:44",
+      "op": "mul",
+      "left": "g:42",
+      "right": "g:43"
+    },
+    {
+      "id": "g:45",
+      "op": "sub",
+      "left": "g:40",
+      "right": "g:44"
+    },
+    {
+      "id": "g:46",
+      "op": "sub",
+      "left": "g:45",
+      "right": "n:1"
+    },
+    {
+      "id": "g:47",
+      "op": "sub",
+      "left": "g:19",
+      "right": "g:17"
+    },
+    {
+      "id": "g:48",
+      "op": "add",
+      "left": "c:K0",
+      "right": "g:7"
+    },
+    {
+      "id": "g:49",
+      "op": "mul",
+      "left": "g:48",
+      "right": "v:C"
+    },
+    {
+      "id": "g:50",
+      "op": "sub",
+      "left": "g:4",
+      "right": "n:1"
+    },
+    {
+      "id": "g:51",
+      "op": "mul",
+      "left": "g:50",
+      "right": "v:z"
+    },
+    {
+      "id": "g:52",
+      "op": "sub",
+      "left": "g:49",
+      "right": "g:51"
+    },
+    {
+      "id": "g:53",
+      "op": "sub",
+      "left": "g:4",
+      "right": "g:52"
+    },
+    {
+      "id": "g:54",
+      "op": "mul",
+      "left": "g:4",
+      "right": "g:53"
+    },
+    {
+      "id": "g:55",
+      "op": "sub",
+      "left": "g:54",
+      "right": "v:C"
+    },
+    {
+      "id": "g:56",
+      "op": "sub",
+      "left": "g:11",
+      "right": "n:1"
+    },
+    {
+      "id": "g:57",
+      "op": "mul",
+      "left": "g:55",
+      "right": "g:56"
+    },
+    {
+      "id": "g:58",
+      "op": "mul",
+      "left": "c:MF",
+      "right": "g:4"
+    },
+    {
+      "id": "g:59",
+      "op": "add",
+      "left": "c:MC",
+      "right": "g:58"
+    },
+    {
+      "id": "g:60",
+      "op": "mul",
+      "left": "g:2",
+      "right": "g:59"
+    },
+    {
+      "id": "g:61",
+      "op": "add",
+      "left": "g:57",
+      "right": "g:60"
+    },
+    {
+      "id": "g:62",
+      "op": "sub",
+      "left": "g:47",
+      "right": "g:61"
+    },
+    {
+      "id": "g:63",
+      "op": "mul",
+      "left": "n:2",
+      "right": "v:r"
+    },
+    {
+      "id": "g:64",
+      "op": "add",
+      "left": "g:63",
+      "right": "n:1"
+    },
+    {
+      "id": "g:65",
+      "op": "mul",
+      "left": "g:43",
+      "right": "g:64"
+    },
+    {
+      "id": "g:66",
+      "op": "mul",
+      "left": "g:65",
+      "right": "g:65"
+    },
+    {
+      "id": "g:67",
+      "op": "mul",
+      "left": "v:f",
+      "right": "v:f"
+    },
+    {
+      "id": "g:68",
+      "op": "sub",
+      "left": "g:67",
+      "right": "n:1"
+    },
+    {
+      "id": "g:69",
+      "op": "mul",
+      "left": "g:42",
+      "right": "g:68"
+    },
+    {
+      "id": "g:70",
+      "op": "sub",
+      "left": "g:66",
+      "right": "g:69"
+    },
+    {
+      "id": "g:71",
+      "op": "mul",
+      "left": "g:17",
+      "right": "g:17"
+    },
+    {
+      "id": "g:72",
+      "op": "mul",
+      "left": "v:y",
+      "right": "v:y"
+    },
+    {
+      "id": "g:73",
+      "op": "sub",
+      "left": "g:71",
+      "right": "g:72"
+    },
+    {
+      "id": "g:74",
+      "op": "mul",
+      "left": "g:66",
+      "right": "g:73"
+    },
+    {
+      "id": "g:75",
+      "op": "add",
+      "left": "g:72",
+      "right": "g:74"
+    },
+    {
+      "id": "g:76",
+      "op": "sub",
+      "left": "g:75",
+      "right": "n:1"
+    },
+    {
+      "id": "g:77",
+      "op": "mul",
+      "left": "c:cone_A",
+      "right": "g:52"
+    },
+    {
+      "id": "g:78",
+      "op": "mul",
+      "left": "c:cone_B",
+      "right": "v:C"
+    },
+    {
+      "id": "g:79",
+      "op": "mul",
+      "left": "g:77",
+      "right": "g:78"
+    },
+    {
+      "id": "g:80",
+      "op": "sub",
+      "left": "g:4",
+      "right": "g:77"
+    },
+    {
+      "id": "g:81",
+      "op": "sub",
+      "left": "g:80",
+      "right": "g:78"
+    },
+    {
+      "id": "g:82",
+      "op": "mul",
+      "left": "g:81",
+      "right": "g:81"
+    },
+    {
+      "id": "g:83",
+      "op": "sub",
+      "left": "g:79",
+      "right": "g:82"
+    },
+    {
+      "id": "g:84",
+      "op": "mul",
+      "left": "g:13",
+      "right": "g:22"
+    },
+    {
+      "id": "g:85",
+      "op": "sub",
+      "left": "v:c",
+      "right": "g:84"
+    },
+    {
+      "id": "g:86",
+      "op": "sub",
+      "left": "g:22",
+      "right": "g:85"
+    },
+    {
+      "id": "g:87",
+      "op": "mul",
+      "left": "g:85",
+      "right": "g:86"
+    },
+    {
+      "id": "g:88",
+      "op": "mul",
+      "left": "g:83",
+      "right": "g:87"
+    },
+    {
+      "id": "g:89",
+      "op": "mul",
+      "left": "v:pair_root",
+      "right": "v:pair_root"
+    },
+    {
+      "id": "g:90",
+      "op": "sub",
+      "left": "g:89",
+      "right": "g:83"
+    },
+    {
+      "id": "g:91",
+      "op": "sub",
+      "left": "g:90",
+      "right": "g:87"
+    },
+    {
+      "id": "g:92",
+      "op": "add",
+      "left": "g:91",
+      "right": "n:1"
+    },
+    {
+      "id": "g:93",
+      "op": "mul",
+      "left": "g:92",
+      "right": "g:92"
+    },
+    {
+      "id": "g:94",
+      "op": "sub",
+      "left": "g:88",
+      "right": "g:93"
+    },
+    {
+      "id": "g:95",
+      "op": "mul",
+      "left": "v:pair_pos1",
+      "right": "v:pair_pos1"
+    },
+    {
+      "id": "g:96",
+      "op": "add",
+      "left": "g:95",
+      "right": "n:1"
+    },
+    {
+      "id": "g:97",
+      "op": "mul",
+      "left": "v:pair_pos2",
+      "right": "v:pair_pos2"
+    },
+    {
+      "id": "g:98",
+      "op": "add",
+      "left": "g:96",
+      "right": "g:97"
+    },
+    {
+      "id": "g:99",
+      "op": "add",
+      "left": "n:1",
+      "right": "v:pair_pos3"
+    },
+    {
+      "id": "g:100",
+      "op": "mul",
+      "left": "g:99",
+      "right": "v:pair_pos3"
+    },
+    {
+      "id": "g:101",
+      "op": "add",
+      "left": "g:100",
+      "right": "g:98"
+    },
+    {
+      "id": "g:102",
+      "op": "sub",
+      "left": "g:94",
+      "right": "g:101"
+    },
+    {
+      "id": "g:103",
+      "op": "mul",
+      "left": "g:31",
+      "right": "g:31"
+    },
+    {
+      "id": "g:104",
+      "op": "mul",
+      "left": "g:46",
+      "right": "g:46"
+    },
+    {
+      "id": "g:105",
+      "op": "mul",
+      "left": "g:62",
+      "right": "g:62"
+    },
+    {
+      "id": "g:106",
+      "op": "mul",
+      "left": "g:70",
+      "right": "g:70"
+    },
+    {
+      "id": "g:107",
+      "op": "mul",
+      "left": "g:76",
+      "right": "g:76"
+    },
+    {
+      "id": "g:108",
+      "op": "add",
+      "left": "g:103",
+      "right": "g:104"
+    },
+    {
+      "id": "g:109",
+      "op": "add",
+      "left": "g:105",
+      "right": "g:108"
+    },
+    {
+      "id": "g:110",
+      "op": "add",
+      "left": "g:106",
+      "right": "g:109"
+    },
+    {
+      "id": "g:111",
+      "op": "add",
+      "left": "g:107",
+      "right": "g:110"
+    },
+    {
+      "id": "g:112",
+      "op": "add",
+      "left": "g:102",
+      "right": "g:111"
+    },
+    {
+      "id": "g:113",
+      "op": "mul",
+      "left": "g:102",
+      "right": "g:111"
+    },
+    {
+      "id": "g:114",
+      "op": "add",
+      "left": "g:112",
+      "right": "g:113"
+    }
+  ],
+  "residual_outputs": [
+    "g:31",
+    "g:46",
+    "g:62",
+    "g:70",
+    "g:76",
+    "g:102"
+  ],
+  "output": "g:114",
+  "operation_count": 115,
+  "operation_histogram": {
+    "add": 30,
+    "sub": 25,
+    "mul": 60
+  },
+  "count_convention": "one per live witness-dependent binary +,-,*; powers expanded to multiplications; fixed-numeral arithmetic precomputed; no minimality claim"
+}

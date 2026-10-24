@@ -1,0 +1,392 @@
+{
+  "groups": [
+    {
+      "name": "sources",
+      "commands": [
+        {
+          "label": "normal check_sources.py",
+          "argv": [
+            "check_sources.py"
+          ]
+        },
+        {
+          "label": "optimized check_sources.py",
+          "argv": [
+            "-O",
+            "check_sources.py"
+          ]
+        }
+      ],
+      "receipts": []
+    },
+    {
+      "name": "guard",
+      "commands": [
+        {
+          "label": "normal guard/build.py",
+          "argv": [
+            "guard/build.py"
+          ],
+          "byte_identical": [
+            "guard/budget12_aux_centered.json",
+            "guard/budget12_tau_centered.json",
+            "guard/METRICS.json"
+          ]
+        },
+        {
+          "label": "normal guard/check_degree.py",
+          "argv": [
+            "guard/check_degree.py"
+          ],
+          "byte_identical": [
+            "guard/DEGREE_CHECK.json"
+          ]
+        },
+        {
+          "label": "normal guard/check.py",
+          "argv": [
+            "guard/check.py"
+          ]
+        },
+        {
+          "label": "optimized guard/build.py",
+          "argv": [
+            "-O",
+            "guard/build.py"
+          ],
+          "byte_identical": [
+            "guard/budget12_aux_centered.json",
+            "guard/budget12_tau_centered.json",
+            "guard/METRICS.json"
+          ]
+        },
+        {
+          "label": "optimized guard/check_degree.py",
+          "argv": [
+            "-O",
+            "guard/check_degree.py"
+          ],
+          "byte_identical": [
+            "guard/DEGREE_CHECK.json"
+          ]
+        },
+        {
+          "label": "optimized guard/check.py",
+          "argv": [
+            "-O",
+            "guard/check.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "guard/CHECK_NORMAL.json",
+        "guard/CHECK_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "eleven",
+      "commands": [
+        {
+          "label": "normal eleven/build.py",
+          "argv": [
+            "eleven/build.py"
+          ],
+          "byte_identical": [
+            "eleven/budget_intersective11_degree2912.json",
+            "eleven/budget_intersective11_degree2272.json",
+            "eleven/budget_intersective11_degree2240.json",
+            "eleven/METRICS.json"
+          ]
+        },
+        {
+          "label": "normal eleven/check_degree.py",
+          "argv": [
+            "eleven/check_degree.py"
+          ],
+          "byte_identical": [
+            "eleven/DEGREE_CHECK.json"
+          ]
+        },
+        {
+          "label": "normal eleven/check.py",
+          "argv": [
+            "eleven/check.py"
+          ]
+        },
+        {
+          "label": "optimized eleven/build.py",
+          "argv": [
+            "-O",
+            "eleven/build.py"
+          ],
+          "byte_identical": [
+            "eleven/budget_intersective11_degree2912.json",
+            "eleven/budget_intersective11_degree2272.json",
+            "eleven/budget_intersective11_degree2240.json",
+            "eleven/METRICS.json"
+          ]
+        },
+        {
+          "label": "optimized eleven/check_degree.py",
+          "argv": [
+            "-O",
+            "eleven/check_degree.py"
+          ],
+          "byte_identical": [
+            "eleven/DEGREE_CHECK.json"
+          ]
+        },
+        {
+          "label": "optimized eleven/check.py",
+          "argv": [
+            "-O",
+            "eleven/check.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "eleven/CHECK_NORMAL.json",
+        "eleven/CHECK_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "absorption15",
+      "commands": [
+        {
+          "label": "normal finalizers/build_absorption.py",
+          "argv": [
+            "finalizers/build_absorption.py"
+          ],
+          "byte_identical": [
+            "finalizers/absorbed15_degree176.json",
+            "finalizers/absorbed15_degree176_dag.json",
+            "finalizers/ABSORPTION_METRICS.json"
+          ]
+        },
+        {
+          "label": "normal finalizers/check_absorption.py",
+          "argv": [
+            "finalizers/check_absorption.py"
+          ]
+        },
+        {
+          "label": "optimized finalizers/build_absorption.py",
+          "argv": [
+            "-O",
+            "finalizers/build_absorption.py"
+          ],
+          "byte_identical": [
+            "finalizers/absorbed15_degree176.json",
+            "finalizers/absorbed15_degree176_dag.json",
+            "finalizers/ABSORPTION_METRICS.json"
+          ]
+        },
+        {
+          "label": "optimized finalizers/check_absorption.py",
+          "argv": [
+            "-O",
+            "finalizers/check_absorption.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "finalizers/ABSORPTION_CHECKS.json"
+      ]
+    },
+    {
+      "name": "positive10",
+      "commands": [
+        {
+          "label": "normal positive/ten_centered/verify.py",
+          "argv": [
+            "positive/ten_centered/verify.py"
+          ],
+          "byte_identical": [
+            "positive/ten_centered/generated/p10_positive.json",
+            "positive/ten_centered/generated/p10_natural.json"
+          ]
+        },
+        {
+          "label": "optimized positive/ten_centered/verify.py",
+          "argv": [
+            "-O",
+            "positive/ten_centered/verify.py"
+          ],
+          "byte_identical": [
+            "positive/ten_centered/generated/p10_positive.json",
+            "positive/ten_centered/generated/p10_natural.json"
+          ]
+        }
+      ],
+      "receipts": [
+        "positive/ten_centered/generated/VERIFICATION_NORMAL.json",
+        "positive/ten_centered/generated/VERIFICATION_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "interfaces",
+      "commands": [
+        {
+          "label": "normal alternative/build_dag.py",
+          "argv": [
+            "alternative/build_dag.py"
+          ],
+          "byte_identical": [
+            "alternative/FOUR_TILE_DAG.json"
+          ]
+        },
+        {
+          "label": "normal alternative/build_interfaces.py",
+          "argv": [
+            "alternative/build_interfaces.py"
+          ],
+          "byte_identical": [
+            "alternative/THREE_POWERS_INTERFACE.json",
+            "alternative/TWO_POWERS_INTERFACE.json"
+          ]
+        },
+        {
+          "label": "normal alternative/check.py",
+          "argv": [
+            "alternative/check.py"
+          ]
+        },
+        {
+          "label": "optimized alternative/build_dag.py",
+          "argv": [
+            "-O",
+            "alternative/build_dag.py"
+          ],
+          "byte_identical": [
+            "alternative/FOUR_TILE_DAG.json"
+          ]
+        },
+        {
+          "label": "optimized alternative/build_interfaces.py",
+          "argv": [
+            "-O",
+            "alternative/build_interfaces.py"
+          ],
+          "byte_identical": [
+            "alternative/THREE_POWERS_INTERFACE.json",
+            "alternative/TWO_POWERS_INTERFACE.json"
+          ]
+        },
+        {
+          "label": "optimized alternative/check.py",
+          "argv": [
+            "-O",
+            "alternative/check.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "alternative/CHECK.json",
+        "alternative/CHECK_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "review_budget",
+      "commands": [
+        {
+          "label": "normal review/budget/audit_budget.py",
+          "argv": [
+            "review/budget/audit_budget.py"
+          ]
+        },
+        {
+          "label": "optimized review/budget/audit_budget.py",
+          "argv": [
+            "-O",
+            "review/budget/audit_budget.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "review/budget/RECEIPT_NORMAL.json",
+        "review/budget/RECEIPT_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "review_eleven",
+      "commands": [
+        {
+          "label": "normal review/eleven/independent_review.py",
+          "argv": [
+            "review/eleven/independent_review.py"
+          ]
+        },
+        {
+          "label": "optimized review/eleven/independent_review.py",
+          "argv": [
+            "-O",
+            "review/eleven/independent_review.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "review/eleven/RECEIPT_NORMAL.json",
+        "review/eleven/RECEIPT_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "review_positive",
+      "commands": [
+        {
+          "label": "normal review/positive/independent_review.py",
+          "argv": [
+            "review/positive/independent_review.py"
+          ]
+        },
+        {
+          "label": "optimized review/positive/independent_review.py",
+          "argv": [
+            "-O",
+            "review/positive/independent_review.py"
+          ]
+        }
+      ],
+      "receipts": [
+        "review/positive/REVIEW_NORMAL.json",
+        "review/positive/REVIEW_OPTIMIZED.json"
+      ]
+    },
+    {
+      "name": "prior_replays",
+      "commands": [
+        {
+          "label": "explicit prior normal and optimized replay",
+          "argv": [
+            "baseline/replay/run_upstream_audits.py",
+            "--parity-root",
+            "finalizers/source/con-zfc-parity-norms-2026-10-23",
+            "--output",
+            "{TEMP}/prior_replay"
+          ]
+        },
+        {
+          "label": "independent parity identity normal",
+          "argv": [
+            "baseline/replay/check_parity_identity.py",
+            "--output",
+            "{TEMP}/parity_identity_normal.json"
+          ]
+        },
+        {
+          "label": "independent parity identity optimized",
+          "argv": [
+            "-O",
+            "baseline/replay/check_parity_identity.py",
+            "--output",
+            "{TEMP}/parity_identity_optimized.json"
+          ]
+        }
+      ],
+      "receipts": [
+        "{TEMP}/prior_replay/REPLAY_SUMMARY.json",
+        "{TEMP}/parity_identity_normal.json",
+        "{TEMP}/parity_identity_optimized.json"
+      ]
+    }
+  ]
+}

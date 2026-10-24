@@ -1,0 +1,304 @@
+\section{An eleven-positive equation of degree 213}
+\label{sec:strong-pell-budget}
+
+This companion lowers the incoming centered eleven-positive equation from
+degree $257$ and $114$ operations to degree $213$ and $112$ operations.
+The incoming degree-$277$ equation still has one fewer operation
+\cite{joint}.  The new mechanism is to use growth forced by the strong
+Pell equation to bound the transport guard, then center the norm at
+\emph{both} the strong and auxiliary roots.  All statements in this
+section concern ordinary proofs formalizable in ZFC.  The compact44
+native compiler and the normalized source calibration are inherited;
+this is not a new end-to-end proof-assistant certificate.
+
+\subsection{The complete polynomial}
+
+The unknowns are
+\[
+ (j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma)\in\Zp^{11}.
+\]
+Use the entire compact44 coefficient tuple
+$(\beta,K_0,M_C,M_F)$, with $\beta=2^{590069}-1$ and the already shifted
+$M_F$.  The companion includes their actual integer payloads and binding;
+these ports are not interchangeable with a different native tuple.
+Every following name abbreviates a polynomial and adds no unknown:
+\begin{align*}
+ J&=3j+1,&q&=\beta J+1,&C&=q-F-\alpha,&E&=XY,\\
+ k&=\eta+\zeta,&c&=kY+\eta,&a&=E+Y,&H&=4a+3,\\
+ \Delta&=a^2+H,&\ell&=EkY,&I&=ic^2,&D_f&=1+\Delta I^2,\\
+ Q&=\Delta^2I^2,&\delta&=Q-1,&M&=q^3(q-1).
+\end{align*}
+Further put
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ B_t&=(qK_0+X)C-qF,&D_\tau&=\ell(\ell+k)+1,\\
+ V&=D_f(cT-R)-c,&\bar f&=(a+2)I,\\
+ h_*&=i^3+cT,&W&=1+(q-1)h_*,\\
+ \bar Z&=M(\ell+k+n+cT+V+\bar f)+(q-1)Y-q^3WB_t.
+\end{align*}
+The unchanged main carrier is
+\begin{align*}
+ v&=k-R-1,&S&=4qY,&U&=qS,\\
+ D_*&=U(X+ac)+H(U\gamma+SX-v),\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+\end{align*}
+The octic norm is evaluated by
+\begin{align*}
+ A_r&=M^2D_\tau,&B_r&=M^2D_f,&C_r&=M^2(QV^2-1),\\
+ T_N&=\delta^2A_rB_r,&R_N&=\delta C_r,\\
+ J_N&=\delta(\bar Z^2-A_r-B_r)-C_r,\\
+ N_c&=J_N^2-4\{T_N+R_N(A_r+B_r)\},\\
+ N_8&=N_c^2-64T_NR_N\bar Z^2.
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{\quad P_{11}=N_8+A_1+N_8A_1=0.\quad}
+ \label{eq:pell-budget11}
+\end{equation}
+It uses only fixed integer coefficients, fixed exponents, addition,
+subtraction, and multiplication.  Since $4\mid U$, both $A_1$ and $N_8$
+are squares modulo $4$.  Thus $(1+N_8)(1+A_1)=1$ forces both factors to
+be $1$: the alternative $(-1,-1)$ would require residues $-2$.
+Consequently \eqref{eq:pell-budget11} is exactly the conjunction
+$N_8=A_1=0$ on its stated domain.
+
+\subsection{Source boundary and recovery before positivity}
+
+The inherited weighted source theorem \cite{source70,joint} concerns
+positive coordinates satisfying the main residual, the strong norm,
+the auxiliary norm, and the first carrier
+\begin{align*}
+ f^2-\Delta(ic^2)^2&=1,\\
+ QV^2-(Q-1)(V+u)^2&=1,\\
+ Z^2&=M^2D_\tau,\\
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t.
+\end{align*}
+Its soundness holds for every positive integer $h_*$.  For canonical
+witnesses, after the strong and auxiliary pairs have been chosen, a
+chosen weight can be lifted by
+\[
+ r=Wt_0+\tau-\ell-k-s>qW-2k,
+ \qquad t_0\ge q,\quad 0<s<k,\quad \ell<\tau<\ell+k.
+\]
+The source has a positive zero precisely when the fixed ZFC calculus has
+a finite refutation.  The authentic mask bounds are
+\[
+ K_0\ge1,\quad 0<M_C<\beta,\quad0<M_F<2\beta,
+ \qquad 0<(M_C+qM_F)J<2q^2.
+\]
+Once $C>0$, these imply $3q<R<q^4-2$.
+
+Here is the part of the norm recovery that must precede $C>0$.
+For every positive input, $I\ge c^2$, $\Delta\ge15$, and
+\[
+ 1<D_\tau<D_f<Q,\qquad |V|>1.
+\]
+The rational radicand
+$D_y=(QV^2-1)/(Q-1)>V^2$ is distinct from $D_\tau,D_f$.
+Moreover, with $t=\sqrt{D_\tau}$, $f=\sqrt{D_f}$,
+$y=\sqrt{D_y}$, no signed sum of $t,f,y$ is zero.
+If $cT-R=0$, then $f>t+y$; otherwise $y>f+t$.
+These inequalities depend only on $I\ge c^2$, not on $C$ or a bound on
+$R$; their elementary proof is retained in the companion source audit.
+
+The universal three-root norm therefore gives, at $N_8=0$,
+\begin{equation}
+ \bar Z/M=\tau_*+f_*+y_*,\qquad
+ \tau_*^2=D_\tau,\quad f_*^2=D_f,\quad y_*^2=D_y.
+ \label{eq:budget-radical-recovery}
+\end{equation}
+All three roots are rational.  One can prove this without assuming
+independent square classes: for signed roots $x_1,x_2,x_3$ with rational
+nonzero sum $t_0$, put
+\[
+ u_0=(t_0^2-x_1^2-x_2^2-x_3^2)/2,
+ \qquad
+ v_0=\frac{u_0^2-x_1^2x_2^2-x_1^2x_3^2-x_2^2x_3^2}{2t_0}.
+\]
+Then $u_0$ and $v_0$ are rational and
+$x_1=x_1^2(x_1^2+u_0)/(x_1^2t_0+v_0)$.
+The denominator is $x_1(x_1+x_2)(x_1+x_3)\ne0$, by distinctness of
+the radicands; use the cyclic formulas as well.
+Thus $\tau_*,f_*$ are integers.  The adjacent-coefficient Pell descent
+from $QV^2-(Q-1)y_*^2=1$ makes $y_*$ an integer too
+\cite{joint}.  In particular $M\mid\bar Z$.
+
+Reduction modulo $q^3$ and $q-1$ now gives $q^3\mid Y$ and
+$q-1\mid B_t$, independently of the sign of $C$.
+The main residual makes $g=|D_*/U|$ an integer and
+$g^2-\Delta c^2=1$.  Writing
+\[
+ \chi_A(r)+\psi_A(r)\sqrt{A^2-1}
+       =(A+\sqrt{A^2-1})^r,
+\]
+Pell classification gives $c=\psi_{a+2}(p)$ and
+$k=2\psi_{2XY^2+1}(m_1)$.  Here $p\ge2$ and $m_1\ge2$:
+$m_1=1$ would give $k=2$, $c=2Y+1<2(a+2)$.
+Consequently, still before proving $C>0$,
+\begin{equation}
+ c>kY\ge4(2XY^2+1)Y>8XY^3\ge8q^9.
+ \label{eq:budget-c-growth}
+\end{equation}
+
+\subsection{The new conditional growth bound}
+
+\begin{lemma}[Strong-Pell growth budget]
+Suppose $q\ge2$, $Y\ge q^3$, $A\ge2Y+2$,
+$\Delta=A^2-1$, $c=\psi_A(p)\ge6$, and positive integers $f,i$
+satisfy $f^2-\Delta(ic^2)^2=1$.  Then
+\[
+ i>8q\Delta c^4,\qquad i^3>6qf^2,\qquad i^3>q^2,
+ \qquad Aic^2<i^2.
+\]
+If $0<k<c$, also $i^3>Aic^2+k$.
+\end{lemma}
+\begin{proof}
+Classify $f=\chi_A(m)$ and $ic^2=\psi_A(m)$.
+Strong divisibility gives $p\mid m$: the addition law and
+$\gcd(\chi_A(r),\psi_A(r))=1$ give the Euclidean identity
+$\gcd(\psi_A(r),\psi_A(s))=\psi_A(\gcd(r,s))$.
+Write $m=pv$ and $g=\chi_A(p)$.  Composition gives
+$ic=\psi_g(v)$.  As $g^2\equiv1\pmod c$, recurrence gives
+$\psi_g(v)\equiv vg^{v-1}\pmod c$; hence $c\mid v$.
+Thus $v\ge c\ge6$ and $ic>g^5$.  Since
+$g^2=1+\Delta c^2$ and $\Delta>4Y^2$,
+\[
+ i>\Delta^{5/2}c^4
+   >8Y^3\Delta c^4\ge8q^9\Delta c^4\ge8q\Delta c^4.
+\]
+Putting $H_0=\Delta c^4\ge15$ gives
+$i^3>8qH_0i^2>6q(H_0i^2+1)=6qf^2$.
+Also $i>q$, $i>Ac^2$, and $i>c>k$.
+Therefore $Aic^2<i^2$ and $i^3-i^2>k$.
+\end{proof}
+
+Apply the lemma after \eqref{eq:budget-radical-recovery}, with
+$A=a+2$ and $f^2=D_f$.  It gives
+\begin{equation}
+ i^3>6qD_f,\qquad i^3>q^2,\qquad i^3>\bar f+k.
+ \label{eq:budget-bounds}
+\end{equation}
+Also $\bar f>f$, since $\bar f^2-D_f=I^2-1>0$.
+These are consequences of the recovered Pell equations; no assertion
+of these bounds on arbitrary positive inputs is needed.
+
+\subsection{The noncircular positivity bootstrap}
+
+Suppose $C\le0$, put $d=-C$ and $B=-B_t>0$.  Then
+\[
+ B=(qK_0+X)d+qF,\qquad
+ R=[q(q-F)+d](q^2-1)+(M_C+qM_F)J.
+\]
+The mask bounds imply
+\begin{equation}
+ R<qB+q^4+q^2,\qquad R<0\Longrightarrow -R<q^2B.
+ \label{eq:budget-rank-bounds}
+\end{equation}
+Let $s=Y/q^3>0$.  Equation \eqref{eq:budget-radical-recovery} becomes
+\[
+ \tau_*+f_*+y_*
+  =\ell+k+n+cT+V+\bar f+s+\frac{WB}{q-1}.
+\]
+Its left side is at most $t+f+y$, with $t<\ell+k$.
+We derive a contradiction in both possible signs of $V$.
+
+As $\delta>D_f$,
+\[
+ 0<y-|V|=\frac{V^2-1}{\delta(y+|V|)}<\frac{|V|}{\delta}.
+\]
+If $V>0$, the integer $b=cT-R$ is positive, so $y-V<b$ and
+\[
+ cT+V+\bar f-f-y>cT-b=R.
+\]
+For $R\ge0$ the right side of the radical equality already exceeds
+$t+f+y$.  For $R<0$, the remaining term exceeds
+$h_*B\ge i^3B>q^2B>-R$, with the same contradiction.
+
+If $V<0$, then $R\ge cT\ge c>8q^9$.  Thus
+$q^4+q^2<R/2$ and \eqref{eq:budget-rank-bounds} gives $R<2qB$.
+We have $|V|<D_fR$ and $y-|V|<R$, whence
+\[
+ cT+V+\bar f-f-y>-(2D_f+1)R>-3D_fR.
+\]
+But $WB/(q-1)>h_*B\ge i^3B>6qD_fB>3D_fR$, again a
+contradiction.  The case $V=0$ was excluded earlier.  Therefore $C>0$.
+
+Now $3q<R<q^4-2$, and \eqref{eq:budget-c-growth} gives $c>2R$.
+Hence $V>1$ and the positive-gap estimate strengthens to
+\[
+ cT+V+\bar f-f-y>R>0.
+\]
+Restore positive source witnesses by
+\[
+ f_{\rm old}=f,\qquad u=y-V,\qquad
+ r=n+cT+V+\bar f-f_*-y_*.
+\]
+Here $u>0$ and $r>n>0$ for every permitted choice of signs.
+Subtracting $M(f_*+y_*)$ from $\bar Z$ gives exactly the first source
+carrier $Z=M\tau_*$.  All four source equations hold, so source
+soundness yields a finite ZFC refutation.
+
+Conversely, choose canonical outer, strong, and auxiliary source
+witnesses first, then set $h_*=i^3+cT$.
+By \eqref{eq:budget-bounds}, $h_*>cT+\bar f+k$; the weighted
+source construction supplies $r>qW-2k>cT+\bar f$.
+Take
+\[
+ n=r-cT-\bar f+f+u>0.
+\]
+Then $\bar Z=M(\tau+f+y)$, so $N_8=0$, and the unchanged canonical
+main carrier gives $A_1=0$.  No new congruence on the strong pair is
+required.  The witness choices have no dependence loop.
+Composing both implications with the inherited source calibration proves
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists\boldsymbol{x}\in\Zp^{11}\;
+       P_{11}(\boldsymbol{x})=0\bigr)\ \longleftrightarrow\ \ConZFC.
+\]
+
+\subsection{Exact degree and reproducible finite evidence}
+
+Put $e=I^2-1$ and $z=\bar Z-M(V+\bar f)$, so
+$D_f=\bar f^2-e$ and $\deg z=9$.
+Expand the universal norm using
+\[
+ x=M(V+t)+z,\quad A=M^2D,\quad B=M^2(t^2-e),\quad
+ C_{\rm num}=M^2(QV^2-1),\quad\delta=Q-1.
+\]
+With weights $(18,18,4,7,9,10,8)$ on $(Q,V,M,t,z,e,D)$,
+the exact $1110$-term integer expansion has degree $200$ and leading form
+\begin{equation}
+ 64M^6Q^4V^4t^2z^2.
+ \label{eq:budget-leading-norm}
+\end{equation}
+The checker expands this identity exactly; naive gate-degree propagation
+does not suffice.  Write $q_0=3\beta j$, $k_0=\eta+\zeta$, and
+\[
+ B_{t,0}=(K_0q_0+X)(q_0-F-\alpha)-q_0F.
+\]
+The relevant leading forms are
+\begin{align*}
+ D_{f,0}&=i^2k_0^4X^2Y^6,&Q_0&=i^2k_0^4X^4Y^8,\\
+ R_0&=q_0^3(q_0-F),&V_0&=-D_{f,0}R_0,\\
+ \bar f_0&=ik_0^2XY^3,&M_0&=q_0^4,\\
+ z_0&=-q_0^4(i^3+k_0YT)B_{t,0},\\
+ (A_1)_{13}&=32q_0^2k_0X^2Y^4
+       \{4q_0^2Y\gamma+q_0^3(q_0-F)\}.
+\end{align*}
+Therefore $\deg P_{11}\le213$.  Its coefficient at
+\[
+ j^{48}i^{24}\eta^{37}X^{30}Y^{67}F^4\alpha^2\gamma
+\]
+is exactly $2^{13}(3\beta)^{48}>0$.  The minimum $q_0$ degree and
+the maximum displayed $i$ degree select this coefficient uniquely in
+\eqref{eq:budget-leading-norm} times $(A_1)_{13}$; it is independent of
+$K_0,M_C,M_F$.  Thus the exact degree on the actual numeral tuple is
+$213$.
+
+The standard-library checker passes normally and with Python assertions
+disabled.  It checks the complete prefix, the octic conjugate identity,
+the weighted leading form, the nonzero degree certificate, coefficient
+hashes, deterministic rebuild, all eleven live inputs, and all $112$
+live arithmetic operations.  Constructed Pell examples supplement the
+unbounded proof above; they do not test consistency or replace the
+inherited semantic calibration.
