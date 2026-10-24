@@ -398,19 +398,20 @@ unsealed counts are not yet table entries. Lean remains paused.
 ## Maintained one-page display
 
 The [canonical PDF](equation.pdf) and [TeX](equation.tex) now use the
-checked10-positive105-operation degree408 equation. The full fixed-constant
-recipe remains verbatim from the preceding ten-positive page, including
-the436-character seed, corrected initializer and943 typed tiles. Separate
-peers checked uniform native/controller rebinding and independently rebuilt
-all four coefficient integers in both Python modes. The new quadratic
-projection has complete ordinary positive witness maps; its symmetric
-norm is a universal identity. The complete free-port
-front matches all105 literal gates, and the one-page9-point layout was
-visually inspected. [CURRENT_EQUATION.json](CURRENT_EQUATION.json) records
-the exact displayed hashes and preserves both earlier page links.
-Halved degree and18 fewer operations at the same ten-variable count is
-the selected improvement. No global minimum or completed Lean/
-internal-ZFC theorem is implied by this display choice.
+checked10-positive102-operation degree388 equation. The complete fixed
+recipe is verbatim from the preserved105/408 page, including the436-character
+seed, corrected initializer and943 typed tiles. The direct-J, shifted-strong
+and shorter-transport proofs provide full positive witness maps; the
+independent printed-front peer binds every102 gates over free coefficients.
+Whole coefficient regeneration and renderer/peer modes pass, and the
+one-page9-point layout was visually inspected. See the
+[new page packet](candidates/one-page-shifted10/README.md) and
+[root page review](reviews/shifted10-page-peer.md).
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the exact displayed
+hashes and earlier pages. This combined update saves three operations
+and lowers degree by20 without changing the number of unknowns or any
+printed constant. No global minimum or completed Lean/internal-ZFC
+theorem is implied; formalization remains paused.
 
 
 The [projected-radius integer companions](candidates/projected-radius-integers/README.md)
@@ -430,7 +431,7 @@ reduces147 to145 live operations at unchanged degree568. Two complete
 fixed coefficients. Root reviewed the literal checker, all node maps,
 normal/optimized replays and all30 sealed files. The lower-degree
 148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
-The current10-positive105/408 PDF and TeX are unchanged by this minor
+The then-current10-positive105/408 PDF and TeX are unchanged by this minor
 integer-domain simplification; Lean remains paused.
 
 
@@ -457,7 +458,7 @@ all six original coefficients, universal formula binding, literal35-term
 norm, exact leading form and normal/optimized replays pass independent
 and root review. This improves both cost and degree over14-integer
 137/792,145/568 and148/414, which remain preserved checkpoints. It has
-more variables and operations than the current10-positive105/408 page,
+more variables and operations than the then-current10-positive105/408 page,
 so that complete PDF/TeX remains the canonical display. Lean is paused.
 
 
@@ -498,7 +499,7 @@ directions. Root reviewed the entire ordinary proof and independent
 literal checker; all four normal/optimized checker/rebuild commands pass,
 including the full495-term norm, centered425-term degree calculation,
 authentic six ports and all138 original archive members. This improves
-both current13-integer cost and degree. The10-positive105/408 page remains
+both current13-integer cost and degree. At that checkpoint, the10-positive105/408 page remained
 a separate lower-variable/operation display. Lean is paused.
 
 

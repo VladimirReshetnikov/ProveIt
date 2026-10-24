@@ -396,7 +396,7 @@ reduces147 to145 live operations at unchanged degree568. Two complete
 fixed coefficients. Root reviewed the literal checker, all node maps,
 normal/optimized replays and all30 sealed files. The lower-degree
 148/414 and lower-cost137/792 alternatives remain useful tradeoffs.
-The current10-positive105/408 PDF and TeX are unchanged by this minor
+The then-current10-positive105/408 PDF and TeX are unchanged by this minor
 integer-domain simplification; Lean remains paused.
 
 
@@ -423,7 +423,7 @@ all six original coefficients, universal formula binding, literal35-term
 norm, exact leading form and normal/optimized replays pass independent
 and root review. This improves both cost and degree over14-integer
 137/792,145/568 and148/414, which remain preserved checkpoints. It has
-more variables and operations than the current10-positive105/408 page,
+more variables and operations than the then-current10-positive105/408 page,
 so that complete PDF/TeX remains the canonical display. Lean is paused.
 
 
@@ -464,7 +464,7 @@ directions. Root reviewed the entire ordinary proof and independent
 literal checker; all four normal/optimized checker/rebuild commands pass,
 including the full495-term norm, centered425-term degree calculation,
 authentic six ports and all138 original archive members. This improves
-both current13-integer cost and degree. The10-positive105/408 page remains
+both current13-integer cost and degree. At that checkpoint, the10-positive105/408 page remained
 a separate lower-variable/operation display. Lean is paused.
 
 
