@@ -57,7 +57,10 @@ by the direct checker, as well as the older enumerator's Cantor pairing.
 [Direct quadratic attachment](QUADRATIC_REGISTER_SYSTEM.md) now reduces each
 local max-square inverse projection to four witnesses and46 operations;
 guarded joint quotient/remainder needs one witness and16 operations. All
-have degree at most four. Recompiling the complete checker remains open.
+have degree at most four. [Composable tree/list graphs](QUADRATIC_TREE_CODE_GRAPHS.md)
+now cover the actual numeric checker's predecessor-based projections and
+guarded list tail at five witnesses and62 operations each. Recompiling the
+complete checker remains open.
 
 Wave-nine placement `a2cd79b912` has now been reviewed. All eight full normal
 release replays pass. Within the nine-positive branch, the next delivered
@@ -124,7 +127,9 @@ population and mask arguments now close the full forward bridge from the
 literal source to the [native arithmetic window](NATIVE_SOURCE_WINDOW.md),
 under explicit coefficient conditions. The [compact54 local decoder](NATIVE_CLAUSE54.md)
 now proves exact empty-cell or single-tile acceptance from arbitrary Boolean
-selectors, with no one-hot premise. Whole-tuple window/compiler
+selectors, with no one-hot premise. The [whole-stencil carry step](NATIVE_CONVOLUTION54.md)
+now derives pointwise mask tests with all temporal rotation phases retained.
+Assignment support, literal port/basis binding, phase synchronization and whole compiler
 calibration and the converse completeness direction remain open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,

@@ -103,3 +103,8 @@ These are concrete arithmetic building blocks for the direct checker. They
 introduce no smaller closed consistency equation and do not establish the
 internal object-ZFC unsolvability/consistency biconditional. That interpretation
 and the complete checker compiler remain separate obligations.
+
+The subsequent [composable tree/list graphs](QUADRATIC_TREE_CODE_GRAPHS.md)
+attach these schemes to existing register slots and cover the actual numeric
+checker's tree projections and list tail with5 witnesses/62 operations each.
+The comparison retains the previous witness/operation/degree tradeoff.

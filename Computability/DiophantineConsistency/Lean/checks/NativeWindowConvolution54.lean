@@ -1,0 +1,7 @@
+import DiophantineConsistency.NativeWindowConvolution54
+
+open DiophantineConsistency.NativeWindowConvolution54
+
+#print axioms source_F_lt_mersenne
+#print axioms source_temporal_word
+#print axioms source_convolution_mask_digits
