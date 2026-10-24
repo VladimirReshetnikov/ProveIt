@@ -1,7 +1,8 @@
 # Later arrivals and current size reductions
 
 This continues the [first wave11 review](PROPOSAL_REVIEW_WAVE11.md), with
-arrivals eae4f1952b,440dd03ab8,d42be5cd87 and43ac596e36. Lean remains
+arrivals eae4f1952b,440dd03ab8,d42be5cd87,43ac596e36,751bc067e2 and
+1072d31072. Lean remains
 paused. The entries below are ordinary mathematical results and exact
 finite artifact checks; they do not assert a completed internal-ZFC
 formalization or global simplicity optimum.
@@ -23,10 +24,14 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 10 | 471 | 1,245,324 | Round12 short guard; full replay and ordinary guard review |
 | Integers | 10 | **475 / 478 / 512** | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact older shears |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
-| Integers | 17 | 114 | 88 | Counted saturated-certificate version of the congruence interface |
-| Integers | 18 / 19 / 20 | not optimized in congruence packets | 32 / 28 / 20 | Signed coordinate/quotient reductions |
-| Nonnegative integers | 16,036 | not optimized | 4 | Direct C222 proof-certificate compiler |
-| Integers | 27,916 | not optimized | 4 | Same direct compiler, three-square input guards |
+| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,088 | Complete guard-first five-root fusion |
+| Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluators |
+| Integers | 15 | 131 | 344 | Root-fusion companion; newer parity point under review |
+| Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
+| Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
+| Nonnegative integers | 3,609 | not optimized | 4 | Prime-lift shared CRT;15,752 collected terms |
+| Nonnegative integers | 6,180 | not optimized | 4 | Retained-wire variant;coefficient height1,992 |
+| Integers | 8,619 | not optimized | 4 | Prime-lift shared CRT with semantic-input guards;39,811 terms |
 
 The nine-variable953/999,518 point improves both operations and degree over
 the earlier1,073/1,103,950 radical form; the latter's smaller compact54
@@ -98,6 +103,25 @@ other source tuples remain separate comparisons.
   not another variable/degree improvement. The16/184/135 and16/192/134
   pair remains a real cost/degree tradeoff.
 
+* [Thirteen-integer root fusion](PROPOSAL_REVIEW_ROOT_FUSION13.md) checks
+  positivity from the guard before rational-root extraction, signed subset
+  noncancellation, source residues and regenerated canonical witnesses.
+  All six norm equations and four quotient companions pass the full
+  normal/optimized release replay with the complete source34 tuple.
+* [Fixed-prime radicals](PROPOSAL_REVIEW_FIXED_PRIME_RADICALS.md) use
+  distinct even3-adic valuations to exclude signed cancellation within
+  each squareclass, including negative radicands before positivity.
+  The [compact evaluators](candidates/fixed-prime-compact-norms/README.md)
+  preserve every whole polynomial exactly while saving277 operations for
+  five roots and67 for four. Exact free-radicand coefficient identities,
+  full prefix/tail substitutions, all six fixed tuples and attained
+  degrees pass independent normal/optimized checks. The useful new
+  fourteen-integer tradeoffs are652/163,664/156 and748/148.
+* The [coordinate-family peer review](reviews/coordinate-family-peer.md)
+  verifies the complete polynomial row/inverse transformations and exact
+  leading forms. Twenty integer variables now reach degree18; this is a
+  coordinate reduction with its own complete source binding.
+
 The incoming archives remain immutable and retain their original names.
 Candidate provenance pins the actual arrival bytes. Scoped reviews are not
 silently relabeled as complete-release replays.
@@ -110,7 +134,7 @@ ZF↔ZFC-refutation interfaces through Horn flow, beta coding, uniform CRT,
 explicit arithmetic graphs and affine gate elimination. This construction
 uses no K215, native coefficient tuple or Jones universal equation.
 
-Its final integer quartic is actually supplied:27,916 variables,758,275
+Its original final integer quartic is actually supplied:27,916 variables,758,275
 monomials, maximum absolute coefficient320,307,372,009,918. Its natural
 companion has16,036 variables. The full52-stage normal/optimized authored
 allowlist passes in isolated scratch, authenticating318 files and exactly
@@ -120,12 +144,40 @@ mathematical review preserve their distinct scopes. A proof formalizable
 in ZFC is established by the ordinary argument; a new Lean or sealed
 object-ZFC derivation has not been emitted.
 
+The newer [shared-direct review](PROPOSAL_REVIEW_SHARED_CERTIFICATES_DIRECT.md)
+closes the ordinary shared-CRT construction at3,614 natural variables,
+including positivity of every arithmetic call and the factorial-free
+binomial range test. The full incoming replay and a separate direct-only
+normal/optimized reconstruction pass. No K215 or Jones encoding enters
+this route.
+
+The [prime-power CRT lift](candidates/shared-crt-prime-lift/README.md)
+removes the private-coordinate bound from the global factorial argument.
+For completeness it strengthens each CRT period by exactly the relevant
+prime part of the range factorial, then shifts by the stronger product.
+This covers the noncoprime case where shifting by the original product
+alone fails. The smaller natural polynomials have3,609 and6,180 variables;
+all expanded coefficients and residuals are supplied. The first has15,752
+monomials and coefficient height127,285,349; the second has17,421 terms
+and height1,992. Separate ordinary and exact finite peer reviews pass.
+
+Its [integer companion](candidates/shared-crt-prime-lift/integer/README.md)
+appends1,670 guards `x=a²+b²+c(c+1)`. Legendre's three-square theorem
+supplies all natural inputs; every unguarded arithmetic wire is forced
+natural by its actual monic nonnegative defining equation. The full
+integer quartic has8,619 variables,4,619 residuals and39,811 monomials at
+the same coefficient height127,285,349. Complete prefix/guard coverage,
+all1,939 retained gate definitions and exact collected expansion pass in
+normal and optimized Python. The proof remains ordinary ZFC-formalizable
+mathematics; no new Lean or sealed object-ZFC derivation is claimed.
+
 ## Newer arrivals still being assessed
 
-Main751bc067e2 adds `ConZFC_13_Integer_Norms_2026-10-24.zip` and
-`ConZFC_Shared_Certificates_2026-10-24.zip`. Their13-integer norm and
-3,614-natural direct-quartic claims are under review and are not yet
-counted in the table. The accompanying centered-compression dependency ZIP
-contains an existing joint-guards archive rather than a new equation.
-Research is already following the new direct sharing and radical-guard
-leads; it is not restricted to the older encodings.
+The prime-separation archive and both differently named parity archives
+arriving in8b328dc180 ande2b2f16765 remain under small-equation review.
+They are distinct proposals, so the second parity ZIP is not substituted
+for the first. Preliminary counts are not promoted to the accepted table.
+The centered-compression dependency ZIP contains a byte-identical existing
+joint-guards archive rather than a new equation. Further shared-CRT bound
+and Pell power-certificate reductions are being checked as separate
+candidates. Research continues across encodings while Lean remains paused.

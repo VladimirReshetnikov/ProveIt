@@ -68,13 +68,26 @@ restores the signed source and positive inverse. Separate ordinary review
 and exact normal/optimized algebra checks pass.
 
 The [direct C222 quartic](PROPOSAL_REVIEW_DIRECT_C222_ROUND12.md) is a
-complete ordinary alternative with27,916 integer variables,758,275 monomials
-and maximum absolute coefficient320,307,372,009,918. It uses no K215,
-native coefficient tuple or Jones universal equation. All52 normal/optimized
-authored replay stages pass, including36 byte-exact reconstructed artifacts.
-Its ordinary arithmetic/calculus proof has separate independent review;
-the new Lean/internal-ZFC compilation theorem remains open. Newer13-integer
-and shared-direct proposals are being assessed rather than assumed valid.
+complete ordinary alternative independent of K215, native coefficients
+and Jones. Its52-stage incoming replay and ordinary proof passed separate
+reviews. The newer [shared-direct construction](PROPOSAL_REVIEW_SHARED_CERTIFICATES_DIRECT.md)
+and [prime-power CRT lift](candidates/shared-crt-prime-lift/README.md)
+reduce the natural-variable count from16,036 to3,609. The complete
+[integer companion](candidates/shared-crt-prime-lift/integer/README.md)
+has8,619 variables,39,811 monomials and coefficient height127,285,349,
+compared with27,916 variables in the original. Full coefficient files,
+ordinary correctness arguments and independent normal/optimized checks
+are committed. The new Lean/internal-ZFC compilation theorem remains open.
+
+[Thirteen-integer root fusion](PROPOSAL_REVIEW_ROOT_FUSION13.md) and
+[fixed-prime radicals](PROPOSAL_REVIEW_FIXED_PRIME_RADICALS.md) now pass
+ordinary reviews and normal/optimized release replays. Exact
+[compact norm evaluators](candidates/fixed-prime-compact-norms/README.md)
+save277 operations for five roots and67 for four without changing any
+polynomial. Useful fourteen-integer points include148/748,156/664 and
+163/652; the root-fusion thirteen-integer points remain cheaper than the
+fixed-prime counterparts. Both newer parity archives and prime separation
+remain under review. No global optimality claim is made.
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
