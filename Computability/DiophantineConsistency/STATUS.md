@@ -530,3 +530,20 @@ polynomial has397 rows and10,335 terms at unchanged height2,445,790,974,704.
 Each matched973/714/688/686/685 checkpoint loses six variables and two
 rows. The retained-wire low-height family and canonical PDF/TeX remain
 separate tradeoffs. Lean stays paused.
+
+## Tightened nine-positive folding accepted
+
+The [tightened packet](research/nine-folded-saturation-tight/README.md)
+now gives409 operations / degree1,191,572 on the whole original31 tuple
+and417 /1,316,548 on the separate compact54-sharp tuple. It improves the
+frozen414/422-operation equations in both operation count and degree.
+The strong ordinate omits J, the auxiliary quotient uses positive j
+without a shift, the carrier is Jn+Q, and the first norm shares its
+majorant. A new strict-gap proof forces positive margin before root
+extraction; two finite matrix periods and a strict carrier bound construct
+all three changed positive witnesses. No tuple or domain is weakened.
+The [root review](reviews/nine-folded-tight-root-peer.md) records the full
+ordinary proof audit, exact degree argument, all four normal/optimized
+checks and rebuilds, and closed artifact seals. This nine-variable result
+is a separate tradeoff from the maintained ten-positive one-page equation.
+Lean remains paused; no new internal-ZFC endpoint is claimed.
