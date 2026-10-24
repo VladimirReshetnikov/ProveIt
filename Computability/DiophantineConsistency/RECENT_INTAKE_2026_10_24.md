@@ -777,3 +777,16 @@ controls; see the [root review](reviews/shifted-t-index-profile-root-peer.md).
 Earlier families remain preserved. This is the direct quartic lane; the
 fewer-variable norm/display tradeoffs remain separate. Lean stays paused
 and the canonical one-page equation is unchanged.
+
+## Squared-radius RAW prototype: complete finite checks accepted
+
+The [separate RAW prototype](research/squared-radius-source-prototype/README.md)
+changes only radius row75 and exchanges f>=2 for f>=K at the same guard
+triple. All12 complete equations, signed inverse certificates, quartics and
+censuses passed root normal/optimized checks and both deterministic rebuilds.
+The default prototype has594 variables and9,588 terms: one fewer variable
+and two more terms than595/9,586. No new consistency endpoint is inferred
+from that measurement. The complete ordinary source proof and fresh
+canonical completeness remain separate review obligations; see the
+[root finite review](reviews/squared-radius-prototype-root-peer.md).
+The accepted595-variable family, canonical page and Lean pause are unchanged.
