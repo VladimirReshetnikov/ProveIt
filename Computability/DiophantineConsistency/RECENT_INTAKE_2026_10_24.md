@@ -681,3 +681,19 @@ modified prefix/frame and independent74-predicate source peer are checked
 before semantic calibration; see the [root review](reviews/encoded-index-profile-root-peer.md).
 No count was extrapolated from a deleted guard. Earlier families remain
 preserved. Lean stays paused and the canonical one-page equation is unchanged.
+
+## Actual power-output sign is recovered:73 source predicates
+
+The [power-output proof](research/pow2-output-sign/PROOF.md) removes the
+raw104 sign guard. Exact early rows give B=raw104>=-1 and D=B+2>=1;
+the modified641-coordinate prefix and weak frame still bound every
+positive base/index. Under B=-1, actual indices t and k122=t+1 are
+consecutive. Sign-safe calls0/9 recover the paired seeds, then actual call2
+forces a positive residue strictly below its divisor, a contradiction.
+No local factorial semantics precede this sign recovery. Both existence
+maps reach the actual74-predicate parent before inheriting its theorem.
+Root read the full proof and checker and matched author/peer receipts in
+both modes; see the [root review](reviews/pow2-output-sign-root-peer.md).
+There are73 source predicates. Projected sizes require a separate complete
+materialization; the measured601-variable family, canonical PDF and Lean
+pause are unchanged.
