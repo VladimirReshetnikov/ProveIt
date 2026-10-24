@@ -33,6 +33,17 @@ The [98/360 predecessor](candidates/one-page-index-weight10/equation.pdf),
 its [TeX](candidates/one-page-index-weight10/equation.tex), and all earlier
 complete pages remain preserved.
 
+A separately reviewed [89-operation comparison page](candidates/one-page-uncentered89/equation.pdf),
+with its complete [standalone TeX](candidates/one-page-uncentered89/equation.tex),
+has the same ten-positive domain and exact degree 288. It saves three
+operations with five additional degrees. All constants still fit on one
+Letter page in 9-point type; the [root review](reviews/one-page-uncentered89-root-peer.md)
+binds every actual printed formula, constant and coefficient to the accepted
+whole source. The canonical 92/283 page is retained while further gains are batched.
+The [direct-carrier sharing extension](research/saturated-direct-carrier-cse/README.md)
+also saves one multiplication in each of five complete direct variants,
+including96/258,97/254 and94/262; their entire polynomials are preserved.
+
 The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),
 as are the earlier [degree816 page](candidates/one-page-scaled10/equation.pdf)

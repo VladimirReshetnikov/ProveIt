@@ -1156,3 +1156,41 @@ This is an ordinary guard-domain result, with no new materialized equation
 or projected count. Existing517/519 quartics and the complete92/283 PDF
 and TeX remain unchanged until separate complete candidate checks pass.
 Lean remains paused.
+
+## Complete 89-operation one-page alternative
+
+The separately preserved [PDF](candidates/one-page-uncentered89/equation.pdf)
+and [standalone TeX](candidates/one-page-uncentered89/equation.tex) print the
+entire ten-positive,89-operation,degree288 equation, including every fixed
+constant and the full436-character numeral. It fits on one Letter page in
+9-point type, with3,111 nonwhite extracted characters. Compared with the
+canonical92/283 page it saves three operations and increases degree by five.
+
+Independent actual-TeX/PDF review checks all31 definitions, all89 live gates,
+every rendered formula glyph, the whole constant body and both compressed
+and raw bytes of the complete indexed coefficient tuple. Root fully read
+the independent parser; fresh normal/optimized runs exactly match both
+retained peer receipts, rejecting13 actual printed mutations. All23 closed
+payload files and110 peer bindings pass. See the
+[root acceptance](reviews/one-page-uncentered89-root-peer.md).
+The canonical92/283 PDF and TeX remain stable while further gains are batched;
+Lean remains paused.
+
+## One multiplication shared across all five direct variants
+
+The [complete direct-carrier packet](research/saturated-direct-carrier-cse/README.md)
+reuses the already live qbJ=q*(q-1) in P1=q³*qbJ and deletes its private q⁴
+gate. Every whole output polynomial is unchanged. Operation/degree profiles
+become97/258 and98/254 for the saturated upper/sharp routes,96/258 and97/254
+for reused-b, and94/262 for uncentered transport. All independent positive
+inputs, both whole native tuples and the complete global degree proofs transfer
+by the free polynomial identity and induction through every remaining row.
+
+Root read the entire proof and executable closure and independently replayed
+all six normal/optimized producer/checker/artifact commands. Every receipt
+exactly matches the author;36 complete malformed artifacts are rejected per
+mode. All old/new rows, sole consumers, coefficient bytes and leading-form
+records are bound. The restricted associative search has no global minimality
+claim. See the [root acceptance](reviews/saturated-direct-carrier-cse-root-peer.md).
+These minor gains are batched; the canonical92/283 PDF and TeX remain unchanged,
+and Lean remains paused.
