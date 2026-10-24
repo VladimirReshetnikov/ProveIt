@@ -1,0 +1,81 @@
+{
+  "polynomial_path": "p14_degree24.json",
+  "polynomial_sha256": "91a307011482e1850b97ae4a4222f024bcbbde00a7a7850e6635e8b875729495",
+  "domain": "strictly positive integers",
+  "coefficient_tuple": "whole source44 compact tuple",
+  "source_manifest": "../SOURCE_MANIFEST.json",
+  "original_binding": "../positive13/native/COEFFICIENT_BINDING.json",
+  "ports": {
+    "beta": {
+      "path": "../positive13/native/coefficients/beta.bin.gz",
+      "encoding": "gzip of minimal unsigned little-endian bytes",
+      "bits": 590069,
+      "raw_bytes": 73759,
+      "sha256_raw": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d",
+      "sha256_gzip": "466796f146d60db9929fa0f0f62d70d5e6afbcea9940342764571f1ca6bea87c"
+    },
+    "K0": {
+      "path": "../positive13/native/coefficients/K.bin.gz",
+      "encoding": "gzip of minimal unsigned little-endian bytes",
+      "bits": 592884,
+      "raw_bytes": 74111,
+      "sha256_raw": "c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e",
+      "sha256_gzip": "b70752bb38570b1e93d480469c63ace9ed4b4552f94eb89d96bc600b1e2a4b6a"
+    },
+    "MC": {
+      "path": "../positive13/native/coefficients/MC.bin.gz",
+      "encoding": "gzip of minimal unsigned little-endian bytes",
+      "bits": 590069,
+      "raw_bytes": 73759,
+      "sha256_raw": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4",
+      "sha256_gzip": "271fabccdd555bda2c54c4c3a7379cc02eeba4893c07178bfd557a7683b74d5e"
+    },
+    "MF": {
+      "path": "../positive13/native/coefficients/MF_source.bin.gz",
+      "encoding": "gzip of minimal unsigned little-endian bytes",
+      "bits": 590070,
+      "raw_bytes": 73759,
+      "sha256_raw": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737",
+      "sha256_gzip": "935cd87f8b23f24a20fd742c48d2a9cbca6afd494b6b074445df72c98b0c6e3b"
+    }
+  },
+  "MF_convention": "Already shifted: MF=MF_native+beta. Do not add beta again.",
+  "derived_fixed_leaves": {
+    "B": [
+      "+",
+      "beta",
+      1
+    ],
+    "b": [
+      "*",
+      3,
+      "beta"
+    ],
+    "b2": [
+      "*",
+      "b",
+      "b"
+    ],
+    "L": [
+      "*",
+      "beta",
+      "b2"
+    ],
+    "Kfinal": [
+      "*",
+      "b2",
+      [
+        "*",
+        "L",
+        "L"
+      ]
+    ],
+    "four_beta": [
+      "*",
+      4,
+      "beta"
+    ]
+  },
+  "parent_polynomial_path": "../positive13/p13_degree28.json",
+  "parent_polynomial_sha256": "1968b1a0c887eb5a94794d8fdd7635f56432da4d235e81cf5ce4ab4790840d49"
+}

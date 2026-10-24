@@ -1,0 +1,98 @@
+{
+  "domain": "unrestricted integers",
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding": {
+    "manifest": "../integer_system_audit/BINDING.json",
+    "compiler_manifest": "../integer_system_audit/coefficients/COEFFICIENT_BINDING.json",
+    "transfer_proof": "../integer_system_audit/coefficients/COEFFICIENT_PROOF.md",
+    "mask_convention": "MF is the already shifted MF_source",
+    "ports": {
+      "beta": "../integer_system_audit/coefficients/beta.bin",
+      "K0": "../integer_system_audit/coefficients/K.bin",
+      "MC": "../integer_system_audit/coefficients/MC.bin",
+      "MF": "../integer_system_audit/coefficients/MF_source.bin"
+    },
+    "encoding": "minimal unsigned little-endian"
+  },
+  "name": "octic28_nearest_square_pair_guard",
+  "source_sha256": "91ee2d3d9a97d386fa2e8b939884d6cd846e866bb45b1efe945f11873e27b72c",
+  "variables": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "tau",
+    "eta",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "E",
+    "c",
+    "a",
+    "V",
+    "I",
+    "u",
+    "rho",
+    "EZ_pos1",
+    "EZ_pos2",
+    "EZ_pos3",
+    "pair_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3"
+  ],
+  "variable_count": 28,
+  "residuals": [
+    "8*rho**2 - 4*u**2 - 4*J*u**2*beta",
+    "-1 + a - E - 2*v_scale - 3*J*beta - 6*J*v_scale*beta - 3*J**2*beta**2 - 6*J**2*v_scale*beta**2 - J**3*beta**3 - 2*J**3*v_scale*beta**3",
+    "-8*a*rho**2 + E + 8*E*rho**2",
+    "-a + a*V + c + E - E*V - j*c*a + j*E*c - eta - h*E*a + h*E**2",
+    "-1 - E*c + E*c*V - E**2*c**2 - j*E*c**2 + eta*E - eta*E*V + 2*eta*E**2*c + eta*j*E*c - eta**2*E**2 + tau**2 - h*E**2*c + h*eta*E**2",
+    "-1 + 64*rho**4 + 16*c*a*rho**2 - 3*c**2 - 4*c**2*a + 48*gamma*rho**2 + 64*gamma*a*rho**2 + 6*gamma*c*a + 8*gamma*c*a**2 + 9*gamma**2 + 24*gamma**2*a + 16*gamma**2*a**2",
+    "-V + j*c - J*MF - J*MC - 2*J*alpha*beta - J**2*beta*MF - 2*J**2*beta**2 - J**2*alpha*beta**2 + 2*J**2*F*beta**2 - 3*J**3*beta**3 + J**3*F*beta**3 - J**4*beta**4",
+    "K0 + 4*u**2 - alpha*K0 - 4*alpha*u**2 - F - F*K0 - 4*F*u**2 + J*beta*K0 + 4*J*u**2*beta - J*z*beta",
+    "V + c - f*o",
+    "I - c**2 - 2*r*c**2",
+    "3 + I**2 + 4*a + a**2 - 3*f**2 - 4*f**2*a - f**2*a**2",
+    "-1 + V**2*I**2 + y**2 - y**2*I**2",
+    "-F**4 + 2*F**3*J*beta - F**3*alpha + 2*F**3 - F**2*J**2*beta**2 + F**2*J*alpha*beta - 2*F**2*J*beta - F**2*alpha**2 + F**2*alpha - 2*F**2*pair_root**2 - 3*F**2 + 2*F*J*beta*pair_root**2 + 2*F*J*beta + 2*F*pair_root**2 + 2*F - pair_pos1**2 - pair_pos2**2 - pair_pos3**2 - pair_pos3 - pair_root**4 - 2*pair_root**2 - 2",
+    "-1 - EZ_pos3 - EZ_pos3**2 - EZ_pos2**2 - EZ_pos1**2 + eta - eta*V + eta*j*c - eta**2 + h*eta*E"
+  ],
+  "equation_count": 14,
+  "residual_degrees": [
+    3,
+    4,
+    3,
+    3,
+    4,
+    4,
+    4,
+    3,
+    2,
+    3,
+    4,
+    4,
+    4,
+    3
+  ],
+  "single_polynomial": "sum of squares of all residuals",
+  "exact_degree": 8,
+  "exact_degree_certificate": {
+    "monomial": {
+      "a": 4,
+      "f": 4
+    },
+    "coefficient": 1
+  },
+  "proof": "PAIR_GUARD_PROOF.md"
+}

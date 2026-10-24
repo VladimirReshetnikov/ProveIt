@@ -1,0 +1,214 @@
+\section{A Pell descent and a degree-82 equation in twelve positive unknowns}
+\label{sec:pell-saturation}
+
+The principal new equation in this component has twelve strictly positive
+integer unknowns, exact total degree $82$, and $102$ live binary arithmetic
+operations.  The inspected package61 equation has the same domain and
+variable count, degree $118$, and $104$ operations.  Thus this construction
+reduces its degree by $30.5085\%$ and saves two operations.  The fixed
+coefficient tuple is unchanged.  The proof uses an elementary descent to
+show that a rational auxiliary Pell ordinate is automatically integral;
+this permits two source witnesses to be merged into one.
+
+\subsection{Rational ordinates of a particular Pell conic are integral}
+
+\paragraph{Lemma.}
+Let $Q>1$ be an integer.  If $V\in\mathbb Z$, $y\in\mathbb Q$, and
+\begin{equation}
+ QV^2-(Q-1)y^2=1,                                      \label{eq:sat-pell}
+\end{equation}
+then $y\in\mathbb Z$.
+
+\paragraph{Proof.}
+Neither coordinate vanishes, so sign changes let us take $V,y>0$.
+Write $y=a/m$ in lowest terms, $m>0$.  Equation~\eqref{eq:sat-pell}
+implies $m^2\mid Q-1$.  If $V=1$, then $y=1$ and $m=1$.
+For $V>1$, set
+\begin{align}
+ V'&=(2Q-1)V-2(Q-1)y,\nonumber\\
+ y'&=(2Q-1)y-2QV.                                      \label{eq:sat-step}
+\end{align}
+The first coordinate is an integer.  Since
+$(2Q-1)^2-4Q(Q-1)=1$, direct expansion gives
+$Q(V')^2-(Q-1)(y')^2=1$.  Furthermore
+\[
+ (Q-1)(y^2-V^2)=V^2-1>0,
+ \qquad
+ (QV)^2-((Q-1)y)^2=QV^2+Q-1>0.
+\]
+Thus $y>V$ and $QV>(Q-1)y$, so $-V<V'<V$.
+The norm excludes $V'=0$.  Finally $y'$ has exactly the same reduced
+denominator $m$, because $2Q-1\equiv1\pmod m$ and the other summand is
+integral.  Strong induction on the positive integer $V$, replacing the
+new coordinates by their absolute values, reaches $V=1$ without changing
+$m$.  Therefore $m=1$.\hfill$\square$
+
+The adjacent coefficients $Q,Q-1$ are essential to this proof.
+For example $2\cdot1^2-4\cdot(1/2)^2=1$ has a nonintegral rational
+ordinate.  No coprimality condition involving another equation is needed
+in the displayed lemma.
+
+\subsection{The exact norm merger}
+
+For positive integers $d,\rho,Q,V,n$ with $Q>1$, define
+\begin{align}
+ h(z)&=(1-Q)z^2+2(1-Q)Vz+V^2-1,\nonumber\\
+ a_N&=h(n),& b_N&=2(1-Q)(n+V),\nonumber\\
+ A_N&=d a_N+(1-Q)\rho,&
+ N&=A_N^2-d b_N^2\rho.                                 \label{eq:sat-norm}
+\end{align}
+Here $b_N\ne0$.  If $N=0$, the proof-only rational numbers
+\[
+ i=\frac{A_N}{d b_N},\qquad u=n-i
+\]
+satisfy $di^2=\rho$ and $h(u)=0$.  The second equality is
+$QV^2-(Q-1)(V+u)^2=1$.  The lemma makes $V+u$ integral; consequently
+$u$ and $i$ are integral as well.  Conversely $di^2=\rho$ and
+$h(u)=0$, with $n=i+u$, imply $N=0$.  The exact identity is
+\begin{equation}
+ N\big|_{\rho=di^2}=d^2h(n-i)h(n+i).                    \label{eq:sat-factor}
+\end{equation}
+The norm identity by itself gives rational coordinates.  The descent is
+the step that recovers integer coordinates.
+If $V>1$, the auxiliary norm gives $|V+u|>|V|$.  Thus a positive lift is
+obtained by replacing $i$ with $|i|$ and $u$ with $|V+u|-V$.
+
+\subsection{The complete polynomial}
+
+Supply exactly
+\begin{equation}
+ j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma\in\mathbb Z_{>0}.
+                                                               \label{eq:sat-vars}
+\end{equation}
+All subsequent symbols are polynomial abbreviations, not extra unknowns.
+The four fixed numerals are the complete compact44 tuple
+$\beta,K_0,M_C,M_F$, where $\beta=2^{590069}-1$ and $M_F$ is already
+the shifted high mask.  Define the retained carrier registers by
+\begin{align}
+ J&=6j+1,& q&=\beta J+1,& C&=q-F-\alpha,\nonumber\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,\nonumber\\
+ a&=E+Y,& H&=4a+3,& \Delta&=a^2+H=(a+2)^2-1,\nonumber\\
+ \ell&=EkY,& b_0&=X+ac,\nonumber\\
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\nonumber\\
+ v&=k-R-1,& U&=q^5,\nonumber\\
+ D_*&=Ub_0+H(U\gamma+q^4X-v),\nonumber\\
+ W&=(q-1)k+1,& M&=q^3(q-1),\nonumber\\
+ B_t&=(qK_0+X)C-qF,\nonumber\\
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t,\nonumber\\
+ A_0&=Z^2-M^2[\ell(\ell+k)+1],\nonumber\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).                         \label{eq:sat-carriers}
+\end{align}
+For the new norm put
+\begin{equation}
+ f=t+1,\quad \rho=f^2-1,\quad d=\Delta c^4,
+ \quad Q=\Delta\rho,\quad V=f^2(cT-R)-c,                 \label{eq:sat-inner}
+\end{equation}
+and use~\eqref{eq:sat-norm}.  The final equation is
+\begin{equation}
+ \boxed{P_{12}=(1+A_0)(1+A_1)(1+N)-1=0.}                \label{eq:sat-P12}
+\end{equation}
+The literal evaluator shares $s=V+n$ and computes
+$h(n)=s^2-Q(s^2-V^2)-1$.  Every operation is $+$, $-$, or
+multiplication; every exponent is fixed.
+
+\subsection{Soundness and the order of the inherited bounds}
+
+Since $J$ and $\beta$ are odd, $q$ is even.  Thus $A_0$ and $A_1$
+are squares modulo four.  The same is true of $N$ because $b_N$ is even.
+If~\eqref{eq:sat-P12} vanishes, each integer factor is $+1$ or $-1$.
+A factor $-1$ would require a residual $-2\equiv2\pmod4$, impossible
+for a square modulo four.  Therefore $A_0=A_1=N=0$.
+
+Package61's retained carrier argument, before it invokes either strong
+or auxiliary Pell equation, proves the following.  From $A_0=0$ it
+recovers $q^3\mid Y$, a positive transport quotient, and $C>0$.
+The authentic coefficient bounds then imply
+\[
+ q\ge16,\qquad 3q<R<q^4-2.
+\]
+The second carrier gives a positive main root and the first carrier a
+possibly signed first root.  Positive Pell classification gives indices
+$p,m_1\ge1$ with
+\[
+ c=\psi_{a+2}(p),\qquad
+ k=2\psi_{2XY^2+1}(m_1).
+\]
+The case $m_1=1$ would give $k=2$ and $c=2Y+1$, contradicting
+$c\ge2(a+2)\ge4Y+4$.  Hence $m_1\ge2$, and
+\begin{equation}
+ c>kY\ge4(2XY^2+1)Y>8XY^3\ge8q^9>2R.                 \label{eq:sat-bound}
+\end{equation}
+This uses only the two carriers; it does not presume the rank recovery
+that follows from the strong and auxiliary norms.  Because $f=t+1\ge2$
+and $T\ge1$, it now follows that
+\[
+ V=f^2(cT-R)-c>f^2c/2-c\ge c>1.
+\]
+The norm merger is therefore nondegenerate and gives positive restored
+coordinates $i_+,u_+$ satisfying
+\[
+ f^2-\Delta(i_+c^2)^2=1,
+ \qquad QV^2-(Q-1)(V+u_+)^2=1.
+\]
+Together with the carriers these are exactly package61's thirteen-positive
+equations, with its old $j$ coordinate equal to $2j$.  Its remaining rank
+recovery and compiler/refutation calibration apply unchanged.
+
+\subsection{Completeness}
+
+The parent's canonical compact witnesses have $B=2^{590069}$,
+$q=B^N$, and $J=1+B+\cdots+B^{N-1}$, where $N>1$ is odd.
+As $B$ is even, $J$ is odd; as $B=-1\pmod3$, $J=1\pmod3$.
+Thus $j=(J-1)/6$ is a positive integer.  Its normalized strong pair has
+$f>1$.  Take $t=f-1>0$ and $n=i+u>0$, retaining the other coordinates.
+Then $di^2=\rho$ and $h(u)=0$, so~\eqref{eq:sat-factor} gives $N=0$;
+both carriers already vanish.  No new congruence restriction or index
+doubling is necessary.
+
+Composing the two existence implications with the inherited source
+calibration proves, by ordinary mathematics formalizable in ZFC,
+\[
+ \neg\exists\boldsymbol{x}\in\mathbb Z_{>0}^{12}\,
+ P_{12}(\boldsymbol{x})=0
+ \quad\Longleftrightarrow\quad \operatorname{Con}(\mathrm{ZFC}).
+\]
+The new descent and elimination proofs are self-contained.  The native
+compiler and its syntactic ZFC endpoint remain the explicitly inherited
+semantic dependencies.  This component supplies neither a new complete
+proof-assistant certificate nor an exported object-language ZFC derivation.
+
+\subsection{Exact degree and verification}
+
+Set
+\[
+ q_0=6\beta j,\quad k_0=\eta+\zeta,\quad c_0=k_0Y,
+ \quad\Delta_0=X^2Y^2,\quad R_0=q_0^3(q_0-F),
+\]
+and $B_{t,0}=(K_0q_0+X)(q_0-F-\alpha)-q_0F$.
+The exact carrier cancellations give leading forms
+\[
+ (A_0)_{15}=-2q_0^8k_0^2XY^2B_{t,0},\qquad
+ (A_1)_{17}=8q_0^{10}k_0X^2Y^3\gamma.
+\]
+The degrees of $\rho,d,Q,V,a_N,b_N,A_N$ are respectively
+$2,12,6,6,13,12,25$.  Since $db_N^2\rho$ has degree $38$,
+\[
+ N_{50}=4\Delta_0^4c_0^8t^8R_0^2n^2.
+\]
+Only $A_0A_1N$ reaches degree $82$ in the final product, with
+\begin{equation}
+ (P_{12})_{82}=-64q_0^{24}(q_0-F)^2 k_0^{11}
+ X^{11}Y^{21}t^8n^2\gamma B_{t,0}.                     \label{eq:sat-leader}
+\end{equation}
+In particular the coefficient of
+$j^{24}F^2\eta^{11}X^{12}Y^{21}t^8n^2\gamma\alpha$
+is $64(6\beta)^{24}>0$, independently of the other three ports.
+Thus the degree is exactly $82$ on the supplied fixed coefficient slice.
+
+The standard-library checker independently expands both carriers, verifies
+the small norm and finalizer cuts exactly, proves the displayed leading
+coefficient, checks all $102$ live gates, authenticates the four coefficient
+payloads, and rebuilds both the circuit and coefficient tuple in isolated
+directories.  The independent native audit also passes.  Normal and
+optimized Python runs agree.  These finite checks support transcription
+and finite data; they do not replace the unbounded arguments above.

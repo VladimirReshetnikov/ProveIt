@@ -1,0 +1,61 @@
+{
+  "backend": "mixed-parity-unrounded-1064921",
+  "source_commit": "9cca523d9f27ad39d52993f4065cbd7e58f8bdd4",
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "ports": {
+    "beta": "payloads/beta.bin.gz",
+    "K0": "payloads/K.bin.gz",
+    "MC": "payloads/MC.bin.gz",
+    "MF": "payloads/MF_source.bin.gz"
+  },
+  "raw_ports": {
+    "beta": "payloads/beta.bin",
+    "K0": "payloads/K.bin",
+    "MC": "payloads/MC.bin",
+    "MF": "payloads/MF_source.bin"
+  },
+  "format": "gzip of minimal unsigned little-endian integer bytes",
+  "beta": "2^1064921-1",
+  "mask_convention": "MF=MF_native+beta; the supplied MF is already shifted.",
+  "policy": "Use this complete four-port tuple together; no cross-backend port substitutions.",
+  "tuple_sha256_scheme": "SHA256(prefix || each port name || NUL || 8-byte big-endian raw length || minimal unsigned little-endian bytes), in beta,K0,MC,MF order; prefix is ProveIt fixed Diophantine coefficient tuple v1 followed by NUL.",
+  "tuple_sha256": "b61ee51bdd2d9e4274db603b64cb1d092a8f5feeb83f510433876f21fea2c85f",
+  "payloads": {
+    "beta": {
+      "bits": 1064921,
+      "bytes": 133116,
+      "sha256": "6a029139964239dc65d716ccc186b40d9c5923ada0a4116cbb418d84534096ea",
+      "gzip_bytes": 164,
+      "gzip_sha256": "6728b9561f5b2a53a437d817d37785a8af5010872ac9fd7ac48283f98af4135b"
+    },
+    "K": {
+      "bits": 1065043,
+      "bytes": 133131,
+      "sha256": "18c40dd3b52b2882ee8346d098942ae487b54d0d040d9cd88f826b050794d1af",
+      "gzip_bytes": 9771,
+      "gzip_sha256": "56b512fa800afff8e1fdfae030a575ceb03dbda894729a812ceef8f0d6dcbc2f"
+    },
+    "MC": {
+      "bits": 1064921,
+      "bytes": 133116,
+      "sha256": "3fc17cf73716c7528a91d45dc2bfffa8b76fb86d6d14f5451cf32c125a588777",
+      "gzip_bytes": 270,
+      "gzip_sha256": "629617834ce75c575178fbad8736dd0ef2460a77c2e97f07fd47045d8b7373db"
+    },
+    "MF_source": {
+      "bits": 1064922,
+      "bytes": 133116,
+      "sha256": "78a7befe6b09c6f59bb325aec1ef35caa72bc6a7d2d01fa39071b9c6e8d92722",
+      "gzip_bytes": 261,
+      "gzip_sha256": "6c5f3c95869b319081ec7742c39e3203b5700aeea61350d9ae534f170e7e7c11"
+    }
+  },
+  "inherited_manifest": "upstream/source34/PAYLOAD_BINDING.json",
+  "coefficient_proof": "proofs/COEFFICIENT_PROOF.md",
+  "scope": "Exact finite coefficient materialization and full inherited compiler adapter; no new end-to-end formal certificate."
+}

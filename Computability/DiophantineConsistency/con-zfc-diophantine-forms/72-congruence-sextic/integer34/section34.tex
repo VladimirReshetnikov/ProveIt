@@ -1,0 +1,164 @@
+\section{A sextic in thirty-four unrestricted integers}
+\label{sec:sextic34}
+
+The second construction improves the inspected degree-six integer equation
+from $35$ unknowns and $20$ residuals to $34$ unknowns and $19$ residuals.
+Its starting point is the $41$-integer quartic of package~64 at the pinned
+repository revision.  The new step is an explicit bijection of its complete
+integer zero set, so no new Pell or positivity hypothesis is required.
+The inherited quartic's compiler and refutation calibration remain the
+semantic dependencies.  No global minimality or new kernel certificate is
+claimed.
+
+\subsection{Full polynomial specification}
+
+Use the whole source-34 coefficient tuple $(\beta,K_0,M_C,M_F)$, with
+$\beta=2^{1064921}-1$ and the already shifted high mask $M_F$.
+This is a different, coherent tuple from the compact tuple used in the
+thirteen-positive construction; individual ports are not interchanged.
+The $25$ arithmetic unknowns are
+\[
+ J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,
+ E,c,a,D,L,F_2,g,I,u.
+\]
+There are also three triples of unknowns
+$(a_1,a_2,a_3)$, $(b_1,b_2,b_3)$, and $(e_1,e_2,e_3)$.
+All $34$ unknowns range over \emph{unrestricted integers}.
+Define the abbreviation
+\[
+ \Pi(x,y,t)=1+x^2+y^2+t(t+1)
+\]
+and the polynomial registers
+\begin{align*}
+ q&=\beta J+1,& k&=\eta+\zeta,& C&=q-F-\alpha,& H&=4a+3,\\
+ R_L&=\bigl((q-1)(q-F)+\alpha\bigr)L+(M_C+qM_F)J.
+\end{align*}
+In particular $R_L$ uses the supplied coordinate $L$, not a substituted
+degree-two expression for it.  This choice is material to the degree bound.
+
+The first seven residuals are
+\begin{align*}
+ Q_1&=L-q^2+1,\\
+ Q_2&=2u^2-4wq,\\
+ Q_3&=a-E-(2v+1)q(L+1),\\
+ Q_4&=E(2u^2+1)-2u^2a,\\
+ Q_5&=c-\eta-(a-E)k,\\
+ Q_6&=\tau^2+(2\tau-k)E(c-\eta)-1,\\
+ Q_7&=D-2u^2-\gamma H.
+\end{align*}
+The next six are
+\begin{align*}
+ Q_8&=D^2+2acD-Hc^2-1,\\
+ Q_9&=k-1-hE-R_L,\\
+ Q_{10}&=(K_0+4w)C-F-z(q-1),\\
+ Q_{11}&=F_2-f^2,\\
+ Q_{12}&=fo-c-jc+k-1-hE,\\
+ Q_{13}&=g+F_2o^2-2foc+c^2-y^2.
+\end{align*}
+Finally put
+\begin{align*}
+ Q_{14}&=I-(2r+1)c^2,\\
+ Q_{15}&=I^2-(a^2+4a+3)(F_2-1),\\
+ Q_{16}&=y^2-I^2g-1,\\
+ Q_{17}&=F\alpha-\Pi(a_1,a_2,a_3),\\
+ Q_{18}&=FC-\Pi(b_1,b_2,b_3),\\
+ Q_{19}&=\eta\zeta-\Pi(e_1,e_2,e_3).
+\end{align*}
+The single equation is
+\begin{equation}
+ \boxed{\quad Q_{34}=\sum_{t=1}^{19}Q_t^2=0.\quad}
+ \label{eq:sextic34}
+\end{equation}
+The JSON packet calls $v,w$ respectively \texttt{v\_scale},
+\texttt{w\_scale}; its three guard triples are the corresponding
+\texttt{FA\_pos}, \texttt{FC\_pos}, and \texttt{eta\_zeta\_pos}
+coordinates.  The displayed $\tau,D$ are \emph{new} root coordinates,
+as the restoration formulas below specify.
+
+\subsection{Reversibility of the reduction}
+
+Set $B_0=E(c-\eta)$ for this proof.  Given a zero of
+\eqref{eq:sextic34}, restore the seven deleted source registers by
+\begin{align*}
+ P&=k+B_0,& X&=2u^2,& N&=q(L+1),\\
+ C_2&=c^2,&\Delta&=a^2+4a+3,&V&=fo-c,& B_{\rm aux}&=I^2,
+\end{align*}
+and restore the source roots by
+\[
+ \tau_{\rm old}=\tau+B_0,\qquad D_{\rm old}=D+ac.
+\]
+The source's scale coordinate is $w$ here, so its arithmetic occurrence
+of the old scale is $4w$, exactly as in package~64's quartic.
+Every restoration is an integer polynomial; no divisibility condition has
+been discarded.
+
+The seven defining source rows vanish identically.  The two root shears
+give the exact identities
+\begin{align*}
+ (\tau+B_0)^2-(k+B_0)B_0-1
+   &=\tau^2+(2\tau-k)B_0-1,\\
+ (D+ac)^2-(a^2+4a+3)c^2-1
+   &=D^2+2acD-(4a+3)c^2-1.
+\end{align*}
+Thus the apparent degree-four terms cancel before the sum of squares is
+formed.  The one remaining nontrivial row replacement is
+\begin{equation}
+ Q_{13}-\bigl((fo-c)^2+g-y^2\bigr)
+       =o^2(F_2-f^2)=o^2Q_{11}.
+ \label{eq:square-remainder}
+\end{equation}
+Because $Q_{11}$ is retained, the replaced row and its source row vanish
+together.  This is an invertible elementary row operation on the system,
+not division by a variable or passage to rational witnesses.  Every other
+restored source residual is exactly its listed $Q_t$.
+
+Conversely, given any integer zero of the source quartic, forget its seven
+defined registers, set
+\[
+ \tau=\tau_{\rm old}-E(c-\eta),\qquad D=D_{\rm old}-ac,
+\]
+and keep all other coordinates.  The same identities establish every
+listed residual.  These projection and restoration maps are inverse on
+the complete integer zero sets.  Therefore the inherited source theorem
+gives, by ordinary mathematics formalizable in ZFC,
+\[
+ \bigl(\exists\mathbf x\in\mathbb Z^{34}:Q_{34}(\mathbf x)=0\bigr)
+ \quad\Longleftrightarrow\quad
+ \text{there exists a finite syntactic ZFC refutation}.
+\]
+Negating yields the required unsolvability/consistency equivalence.
+
+\subsection{Why the degree is exactly six}
+
+All $Q_t$ have degree at most three when the four coefficient ports are
+fixed.  In particular retaining $F_2=f^2$ allows the square of $fo-c$ to
+be represented by $F_2o^2-2foc+c^2$, which is cubic.  Eliminating $F_2$
+instead would lose this saving.  The simultaneous shear of the main root
+allows $\Delta$ to be eliminated while retaining that square register.
+The construction deletes seven coordinates and seven equations from the
+$41$-coordinate, $26$-row source, giving the claimed $34$ and $19$.
+
+Only $Q_{16}=y^2-I^2g-1$ contains both $I$ and $g$.  Hence
+\[
+ [I^4g^2]Q_{34}=1.
+\]
+This certifies exact total degree six even after authentic specialization
+of all four fixed coefficients.  The expansion with coefficient ports
+kept symbolic contains $368$ terms.  No optimized arithmetic-gate claim is
+made for this endpoint.
+
+\subsection{Finite verification and proof boundary}
+
+The self-contained standard-library programs verify every source
+restoration, the correction \eqref{eq:square-remainder}, all $19$
+independently transcribed formulas, liveness of the $34$ variables, and the
+unit degree certificate.  They also reconstruct the entire four-numeral
+source-34 tuple from the literal $943$-tile list and compare its bytes with
+the retained payloads; the four raw integers occupy $532{,}479$ bytes.
+Normal and optimized Python runs both pass.
+
+These checks establish exact finite algebra and coefficient integrity.
+The unbounded compiler and consistency calibration are the named inherited
+mathematical results, and no new end-to-end proof-assistant certificate is
+claimed.  The improvement is one unrestricted variable at degree six,
+rather than a change in the fewest-variable high-degree bounds.

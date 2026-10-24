@@ -1,0 +1,130 @@
+\section{A different source: commutative proofs and affine products}
+\label{sec:commutative}
+The main architectural idea in this component is to discard proof order.
+The following result explains why a cycle check is unnecessary. It is a
+mathematical theorem, not a claim of historical priority for flow certificates.
+
+\paragraph{Single-conclusion flow theorem.}
+Let $F$ be a set of formula codes and $R$ a family of finitary rules, each
+having a premise multiset $P_r$ and exactly one conclusion $c_r$. Axioms
+have empty premise multisets. Write $D$ for the least rule-closed subset of
+$F$, and $e_f$ for the basis vector of $f$ in $\mathbb Z^{(F)}$. Then
+\[
+ t\in D\quad\Longleftrightarrow\quad
+ \exists(n_r)\in\mathbb N^{(R)}\quad
+ \sum_r n_r\left(e_{c_r}-\sum_{p\in P_r}e_p\right)=e_t.
+\]
+Completeness counts occurrences in a finite proof tree: every non-root
+occurrence cancels once. For soundness, suppose $t\notin D$, and sum the
+coordinates outside $D$. Each rule contributes at most zero: an
+underivable conclusion must have an underivable premise. The right-hand
+side contributes one, a contradiction. This argument even proves soundness
+for nonnegative rational multiplicities and a coordinatewise lower bound
+by $e_t$. A finite certificate can be converted constructively into a
+proof DAG by saturating its finite set of selected rules.
+
+The single-conclusion restriction is essential. The rule with premise $a$
+and two conclusions $a,t$ has balance $e_t$, without deriving either
+formula from no axioms. Thus the result is not a general Petri-net
+reachability criterion. Nonnegative multiplicities are likewise essential.
+
+\paragraph{Free truth and uniform arity.}
+In the calibrated C222 calculus, truth code $0$ is derivable. We may
+therefore ignore coordinate $0$, pad every axiom with two zero premises,
+and pad generalization with one zero premise. Every rule now has the form
+$(p,q)\longrightarrow v$. The target is code $1$. The inherited C222-to-ZF
+calibration, followed by the constructible-choice bridge from ZF to ZFC,
+shows in ZFC that existence of such a finite flow certificate is equivalent
+to $\neg\operatorname{Con}(\mathrm{ZFC})$.
+
+\paragraph{Coprime affine weights.}
+Choose $m\geq1$ bounding every label in a proposed certificate, and a
+positive common multiple $M$ of $1,\ldots,m$. Set
+\[
+ f(j)=1+jM\qquad(0\leq j\leq m).
+\]
+Then $f(0)=1$, and the positive-label weights are pairwise coprime.
+Indeed, a common divisor of $1+iM$ and $1+jM$ is coprime to $M$ and divides
+$j-i$; the latter divides $M$, forcing that common divisor to be one.
+Unique factorization consequently gives the exact equivalence
+\[
+ \prod_{i<N}(1+v_iM)
+ = (1+M)\prod_{i<N}(1+p_iM)(1+q_iM)
+\]
+if and only if the uniform rules have balance $e_1$ modulo coordinate $0$.
+No primality predicate and no exponentiation by a formula code appears.
+Taking $M=m!$ proves existence; factorial is not being treated as a polynomial.
+Merely taking an arbitrary large $M$ is not a substitute for the coprimality
+condition.
+
+\paragraph{A one-accumulator source.}
+A product certificate can be realized by a path
+\[
+ S_0=1+M,\qquad S_N=1,\qquad
+ S_{i+1}(1+v_iM)=S_i(1+p_iM)(1+q_iM).
+\]
+Multiplying these equations and cancelling the positive internal
+accumulators gives the product identity. Positivity follows inductively
+from $S_0>0$ and positivity of every factor. Conversely, expand the nodes
+of a proof tree, starting with its sole root obligation. Let $S_i$ be the
+product of the weights of the current open obligations. Expanding a node
+replaces its conclusion factor by its two premise factors and gives the
+specified update. Truth obligations have factor one. At the end the
+accumulator is one. The proof does not require an ordered stack, decoding
+of a whole stack, or ranks on proof nodes.
+
+\paragraph{Exact local polynomial.}
+Let $H(p,q,v;\boldsymbol z)$ be the branch-shared uniform-Horn polynomial
+in \texttt{horn\_shared\_source.json}. It is the product of twelve sums
+of squares, is nonnegative on all integer assignments, and uses seventeen
+natural local witnesses. Its exact degree is fifty. Set $M=M_0+1$ and
+introduce natural label slacks $d_p,d_q,d_v$. The local accumulator
+polynomial is exactly
+\begin{align*}
+ A={}&H(p,q,v;\boldsymbol z)\\
+ &+\bigl(S'(1+v(M_0+1))-S(1+p(M_0+1))(1+q(M_0+1))\bigr)^2\\
+ &+(p+d_p-m)^2+(q+d_q-m)^2+(v+d_v-m)^2.
+\end{align*}
+Its nonnegativity means $A=0$ enforces every displayed condition, including
+one genuine Horn rule. There are $17+3+3=23$ local witnesses: the Horn
+witnesses, three labels, and three slacks. The four exposed coordinates
+are $S,S',m,M_0$. The update has total degree five before squaring, so the
+whole polynomial still has degree fifty. This is a \emph{local} count,
+not the variable count of the eventual consistency equation.
+
+\paragraph{A closed, but uncompiled, constructor.}
+Define $\beta(x,y,i)=x\bmod(1+(i+1)y)$. The five outer natural coordinates
+are $t,x,y,m,M_0$. The exact input predicate for the supplied constructor is
+\begin{align*}
+ &\beta(x,y,0)=M_0+2,\qquad \beta(x,y,t)=1,\\
+ &\forall i<t\;\exists\boldsymbol w\in\mathbb N^{23}\quad
+ A\bigl(\beta(x,y,i),\beta(x,y,i+1),m,M_0;\boldsymbol w\bigr)=0,\\
+ &\forall j<m\;\exists k\in\mathbb N\quad M_0+1=(j+1)k.
+\end{align*}
+The last line supplies the common-multiple property directly. If $m=0$,
+all labels are zero and the positive accumulator cannot change, so the
+endpoints exclude this degenerate case. Similarly $t=0$ is excluded.
+For completeness, select $m$, then $M=m!$, then a finite accumulator path,
+and finally CRT witnesses $x,y$. The two bounded blocks are converted
+by the existing bounded-forall constructor; all remaining coordinates are
+existentially closed; the direct quartic compiler is applied before, and
+without, the Jones finalizer.
+
+\texttt{SharedAffineProductEquation.lean} specifies this entire constructor
+against the pinned APIs. It has not been elaborated or kernel checked,
+and its resulting ordinary polynomial has not been materialized or
+counted. The common multiple $M$, beta scale $y$, and the bounded-forall
+compiler's internal CRT/majorization scales are distinct witnesses.
+Identifying them could create a circular impossible bound, and is not
+part of this construction. The result therefore supplies a genuinely
+different source and a precise compilation target, not a claim that a
+smaller final consistency polynomial has already been obtained.
+
+\paragraph{Checks and scope.}
+The direct finite checks cover $340{,}878$ target/flow cases,
+$166{,}650$ pairwise-gcd cases, and $227{,}252$ product/balance comparisons.
+The shared local polynomial has twelve independently re-expanded
+sum-of-squares factors and $480$ modular local replays. Negative controls
+exhibit the dangers of multiple conclusions, signed multiplicities,
+insufficient radix, and missing coprimality. These are finite regressions,
+not replacements for the unbounded mathematical proofs or a Lean check.

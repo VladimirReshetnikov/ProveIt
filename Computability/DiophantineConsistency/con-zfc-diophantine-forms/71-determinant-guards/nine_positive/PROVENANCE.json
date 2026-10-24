@@ -1,0 +1,102 @@
+{
+  "commit": "9cca523d9f27ad39d52993f4065cbd7e58f8bdd4",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "base_path": "Computability/DiophantineConsistency/con-zfc-diophantine-forms",
+  "unchanged_imports": [
+    {
+      "path": "circuit.py",
+      "source": "65-shared-taps/nine/circuit.py",
+      "sha256": "eabf12242f4364fb484436fadc81adad68058fd0db844b68cae6a2efb51a54b9"
+    },
+    {
+      "path": "rewrite_powers.py",
+      "source": "62-sign-and-norm/nine/rewrite_powers.py",
+      "sha256": "088fdcf5e5f7d784bd8d50a4dc0006232d10891db66cfad1574e20ae22f9d7de"
+    },
+    {
+      "path": "upstream65_PROOF.md",
+      "source": "65-shared-taps/nine/PROOF.md",
+      "sha256": "e9f0e52245840470423c641f3036148439b6d3a2f1755096d8bed58ed19211d1"
+    },
+    {
+      "path": "upstream63_PROOF.md",
+      "source": "63-sign-recovery/nine/PROOF.md",
+      "sha256": "93f6ce75a8137e123c2be81a000057e92ebbdaab5c01ce23ff7ca6891266030e"
+    },
+    {
+      "path": "upstream59_PROOF.md",
+      "source": "59-degree-separated/nine_free_adjunct/PROOF.md",
+      "sha256": "763408bbf9ee9009902ec81091d49115f985fd03db75a1bcf7635479ef1ebaaa"
+    },
+    {
+      "path": "data/kernels.json",
+      "source": "65-shared-taps/nine/data/kernels.json",
+      "sha256": "0d694f61e7217bf0d9742ad7befe24d5854fbed32da35623472ac7bd4a6933ca"
+    },
+    {
+      "path": "data/layout.json",
+      "source": "65-shared-taps/nine/data/layout.json",
+      "sha256": "0edbd3e778f9f55834ab6dd13a85d72d828f59d74914bcb5a8a469af909c001a"
+    },
+    {
+      "path": "data/order7_majorant_positive_certificate.json",
+      "source": "63-sign-recovery/nine/data/order7_majorant_positive_certificate.json",
+      "sha256": "db20b452443af00816fed0f55b975b1ff6a13c2bbc2f2ec2bae86ff3601d32c5"
+    },
+    {
+      "path": "data/source_system65.json",
+      "source": "Computability/DiophantineConsistency/con-zfc-diophantine-forms/31-sun10/quartic31/upstream/quartic31_system.json",
+      "sha256": "3338193dfab9b409a198df086316a41a0dc987b4ba462d25e44c7de6fca62094"
+    },
+    {
+      "path": "coefficients/build_coefficients.py",
+      "source": "31-sun10/coefficients/build_coefficients.py",
+      "sha256": "d8e33ab484512ccf742a1f2998dfdb4294e082a0f68a887b81194c1543c07bad"
+    },
+    {
+      "path": "coefficients/COEFFICIENT_PROOF.md",
+      "source": "31-sun10/coefficients/COEFFICIENT_PROOF.md",
+      "sha256": "467ca5143223bb3cf2a490318956b2b417333e238801a6ddd183a42016a9a4bb"
+    },
+    {
+      "path": "coefficients/README.md",
+      "source": "31-sun10/coefficients/README.md",
+      "sha256": "8380d6c34bd686215352f43c2e615475f8ce8470db37e7cf8e2770398616b6bc"
+    },
+    {
+      "path": "coefficients/upstream/k215_transitions.json",
+      "source": "31-sun10/coefficients/upstream/k215_transitions.json",
+      "sha256": "880741dcb49494aab7c1f7d7e453764d573f9704882502b5849f1e3a84b81755"
+    },
+    {
+      "path": "coefficients/upstream/wang943_tiles.json",
+      "source": "31-sun10/coefficients/upstream/wang943_tiles.json",
+      "sha256": "66b55f1d11fca9fefc93b12fcfc8b4cabb75b08e9fd03311f9e894a1c5e5e81f"
+    },
+    {
+      "path": "LICENSE",
+      "source": "65-shared-taps/LICENSE",
+      "sha256": "1287271ea1f4b1fc1fe2ac82cfd39fb632b02615f50175ec915fa033c9cc64a2"
+    }
+  ],
+  "adaptations": [
+    {
+      "path": "build_composed.py",
+      "sources": [
+        "65-shared-taps/nine/construct.py",
+        "63-sign-recovery/nine/build.py"
+      ],
+      "changes": "Compose unchanged source65 andT7majorant63; invoke62globalrewrite; emit degree-certificate correction."
+    },
+    {
+      "path": "check_majorant.py",
+      "source": "63-sign-recovery/nine/check_exact.py",
+      "changes": "Weighted degree A18729\u219216425 and remainder187305\u2192164265."
+    },
+    {
+      "path": "check_composed.py",
+      "source": "65-shared-taps/nine/verify.py",
+      "changes": "Preserve exact source audit; add new formula, exact power structural audit, resolved degree, full binding and replay checks."
+    }
+  ]
+}

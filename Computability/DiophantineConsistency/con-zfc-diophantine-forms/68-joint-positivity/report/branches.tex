@@ -1,0 +1,123 @@
+\section{Disjunctive scratch-space reuse}
+\label{sec:branchscratch}
+This section gives a fully explicit improvement to the \emph{local} proof
+transition relation. It does not claim that a complete consistency equation
+with the following variable counts has been constructed. The remaining
+bounded-universal elimination is a separate cost.
+
+\paragraph{The elementary principle.}
+Suppose finitely many relations have presentations
+\[
+ R_j(\mathbf x)\iff\exists\mathbf z_j\in\mathbb N^{m_j}\quad
+ Q_j(\mathbf x,\mathbf z_j)=0.
+\]
+Put $m=\max_j m_j$. Then
+\[
+ \bigvee_j R_j(\mathbf x)\iff
+ \exists\mathbf z\in\mathbb N^m\quad
+ \prod_j Q_j(\mathbf x,z_1,\ldots,z_{m_j})=0.
+\]
+Indeed a product of integers is zero exactly when a factor is zero. Only
+one branch's scratch values need be correct; unselected branches impose
+no obligations. In contrast, flattening the whole arithmetic circuit
+before taking its zero set generally forces scratch equations for every
+branch and pays a sum rather than a maximum.
+
+\paragraph{Application to the one-stack source.}
+Use $I(a,b)=2(a+b)(a+b+1)+4b$, with membership, universal
+quantification, and equality obtained by adding $1,2,3$ respectively.
+Let $L(s,h,t)=2s-2-(h+t)(h+t+1)-2t$.
+The equation $L(s,h,t)=0$ expresses a stack cell with head $h$ and tail $t$.
+There are twelve alternatives: truth push, eight axiom-template pushes,
+the guarded seed-bundle push, modus ponens, and generalization. Each
+branch has its own arithmetic circuit, but the variable names
+$q_0,q_1,\ldots$ are reused across all branches.
+Each distinct constructor uses one nonnegative wire
+\[
+ q=(u+v)(u+v+1),\qquad I(u,v)=2q+4v.
+\]
+The four shared parameters are $a,b,c,d$. In the eighth axiom $d$ is the
+fourth schema parameter. In modus ponens it is the intermediate stack;
+in the bundle it certifies the guard. These roles need not agree between
+unselected alternatives.
+
+For the first construction the bundle guard is
+\[
+ q_{26}=(c-a)^2,\quad q_{27}=(c-b)^2,\quad
+ q_{26}q_{27}=(d+1)^2.
+\]
+All residuals are quadratic. The twelve sums of their squares have degree
+four, giving a product of degree $48$, with $28$ common wires and four
+parameters: $32$ local witnesses, compared with the previous $89$.
+The exposed stack coordinates are not included in these counts.
+
+\paragraph{The recommended local tradeoff.}
+Instead use the literal guard
+\[
+ ((c-a)(c-b))^2-(d+1)^2=0.
+\]
+Over natural parameters this holds for some $d$ precisely when $c\ne a,b$.
+It saves the two square wires. Also substitute the defining polynomial of
+the bundle's outermost constructor wire into its stack-cell residual and
+omit that wire equation. The substitution is exact and does not alter
+existential solvability. The bundle sum of squares now has degree eight;
+the eleven remaining factors still have degree four. Thus the product has
+exact degree $8+11\cdot4=52$ and only $25+4=29$ local witnesses.
+No expansion of the twelve-factor product is necessary: the attached
+JSON lists every residual and each expanded branch sum of squares, and
+specifies that their product is the final local polynomial.
+
+\paragraph{Correctness.}
+If the polynomial vanishes, one branch sum of squares vanishes, and hence
+each of its residuals vanishes. By induction through that branch's
+constructor circuit its wires have their intended values. The stack
+residuals therefore state the corresponding legal proof transition. The
+bundle guard gives the required disequalities. Conversely, for any legal
+transition choose its schema parameters and assign the selected branch's
+wires their ordinary nonnegative values; choose arbitrary values for
+unused common wires. All selected residuals vanish. Eliminating an
+outermost wire preserves both directions because its value is uniquely
+determined and nonnegative. This proves equality of the local relations,
+not merely agreement on tested examples.
+
+\paragraph{Limits and reproducibility.}
+The JSON files are literal ordinary integer polynomials, with no hidden
+variable exponents or unbounded products: the outer product has exactly
+twelve factors. The global equivalence to $\neg\operatorname{Con}(\mathrm{ZFC})$
+would follow by substituting this local relation in the established finite
+one-stack-run characterization and completing bounded-universal
+elimination. That global constructor is not executed here, so these local
+counts must not be compared directly with the existing nine- and
+ten-variable completed consistency equations. The independent checker
+reads the JSON without importing the generator, evaluates selected
+branches using a separate integer interpretation of the constructors,
+and rejects endpoint mutations. These tests supplement the algebraic
+argument; they are not kernel certificates.
+
+\paragraph{Dependency-aware refinement: seventeen local witnesses.}
+The previous paragraph can be improved without increasing the degree.
+Introduce a wire for the \emph{whole} constructor output
+$z=I(u,v)=2(u+v)(u+v+1)+4v$, rather than a wire only for
+$(u+v)(u+v+1)$. Whole-output wires prevent linear tails from propagating
+extra dependencies. The bundle now has $27$ constructor wires. In their
+undirected dependency graph, the set
+\[
+ \{1,3,4,5,7,9,12,15,17,19,21,22,24,26\}
+\]
+is independent. Substitute the defining quadratic of each selected wire
+and delete its defining residual. Since no selected wire depends on
+another selected wire, the substituted expressions have degree two, and
+each remaining residual has degree at most four. There are only $13$
+remaining wires, with the same four base parameters. The twelve-factor
+local transition polynomial therefore has $17$ witnesses and degree $52$.
+Its expanded bundle sum of squares has $1110$ monomials.
+The global correctness argument is unchanged: this is exact existential
+elimination of nonnegative, uniquely defined scratch values.
+
+For use in the proof-flow architecture, replace stack-cell residuals by
+$p=q=0,\ v=\rho$ in each axiom branch, by $q=I(p,v)$ in the modus-ponens
+branch, and by $q=0,\ v=\operatorname{All}(a,p)$ in the generalization
+branch. The truth branch is $p=q=v=0$. The resulting literal polynomial
+has three exposed formula labels, the same $17$ local witnesses, and
+degree $50$: the truth factor now has degree two rather than four.
+The independent-wire elimination uses the same fourteen-index set.

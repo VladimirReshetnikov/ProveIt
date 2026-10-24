@@ -1,0 +1,108 @@
+\section{A standalone asymmetric parity interface}
+\label{sec:parity}
+This component bypasses the inflated central-binomial index, but does
+\emph{not} yet constitute a new complete consistency equation. Its
+precise theorem concerns positive input integers $S,T$:
+\[
+ S\mathbin{\&}T=0\quad\Longleftrightarrow\quad
+ \exists\mathbf w\in\N^{12}\ P(S,T,\mathbf w)=0.
+\]
+The bit operation occurs only in this specification, not in the polynomial.
+The three-Pell quotient technique has a precedent in Jones--Sato--Wada--Wiens
+(1976), Section3.9. The specialization here uses odd-quotient proximity,
+rank locking, and a built-in congruence to remove one witness.
+
+Write $n=S+T$ and use the twelve nonnegative witnesses
+$y,r,c,p,l,i,j,u_0,u_1,u_2,u_3,v$. Define
+\begin{align*}
+ x&=2(y+1),&Y&=2r+1,\\
+ M&=128(n+1)(x+1)(Y+1),&A&=M(x+1),\\
+ C&=n+1+c,&K&=T+1+p(M-1),\\
+ L&=S+1+l(Mx-1),&D&=(A^2-1)C^2+1,\\
+ E&=2(i+1)DC^2,&F&=(A^2-1)E^2+1,\\
+ G&=A+F(F-A),&H&=C+F\bigl(n+1+(2j+1)C\bigr),\\
+ I&=(G^2-1)H^2+1.&&
+\end{align*}
+The five residuals are
+\begin{align*}
+ U_0&=u_0^2-\bigl((2n+6)^3(2n+8)(y+1)^2+1\bigr),\\
+ U_1&=u_1^2-\bigl((M^2-1)K^2+1\bigr),\\
+ U_2&=u_2^2-\bigl(((Mx)^2-1)L^2+1\bigr),\\
+ U_3&=u_3^2-DFI,\\
+ U_4&=K^2L^2-64(C-YKL)^2-v-1.
+\end{align*}
+Set $P=\sum_{a=0}^4U_a^2$. This is a literal ordinary polynomial of
+exact total degree 504, counting the two input coordinates as variables.
+The independent audit corrects an earlier draft's bound of 500.
+A thirteen-witness, six-equation version retains a separate divisibility
+witness and has degree368. These are distinct tradeoffs.
+
+\paragraph{Pell conventions and hypotheses.}
+Let $\psi_a(k)$ be the second coordinate of
+$(a+\sqrt{a^2-1})^k$. For $a>1$, every nonnegative solution of
+$(a^2-1)z^2+1=\square$ is such a coordinate. Also
+$\psi_a(k)\equiv k\pmod{a-1}$,
+$(2a-1)^{k-1}\le\psi_a(k)\le(2a)^{k-1}$, and
+\[
+ (2a)^q\left(1-\frac{q}{2a}\right)
+ \le\psi_a(q+1)\le(2a)^q.
+\]
+The growth-square theorem applied to $U_0$ gives $x>128\cdot2^n$.
+The indexed-Pell certificate of JSWW Lemma3.8 gives
+$C=\psi_A(n+1)$ from $C\ge n+1>1$, $DFI=\square$, and the
+prescribed two congruences of $H$. Here $F\equiv1\pmod{2C}$, so
+our formula for $H$ supplies $H\equiv n+1\pmod{2C}$ and
+$H\equiv C\pmod F$, with $H\ge n+1+2C$.
+
+\paragraph{Soundness and rank locking.}
+The Pell equations and congruences give
+\[
+ K=\psi_M\bigl(T+1+a(M-1)\bigr),\quad
+ L=\psi_{Mx}\bigl(S+1+b(Mx-1)\bigr),\qquad a,b\ge0.
+\]
+The last residual implies $|C/(KL)-Y|<1/8$ and therefore
+$C/(KL)>7/8$. If $a>0$, the lower growth bound gives
+$K\ge(2M-1)^{2n+1}>2(2A)^n\ge2C$, because
+$M-1\ge2n+1$ and $(2M-1)^2>2A$. The same argument applies to
+$L$ if $b>0$. Either case contradicts the proximity inequality.
+Thus both ranks are the intended ones.
+
+Set $\rho=(x+1)^n/x^S$, $\sigma=C/(KL)$, and
+$\epsilon=n/(2M)$. The relative Pell bounds place both normalized
+numerator and denominator in $[1-\epsilon,1]$, whence
+$|\rho-\sigma|\le\sigma\epsilon/(1-\epsilon)<1/128$.
+The binomial expansion gives $\rho=Q+f$ with integer
+$Q\equiv\binom nS\pmod x$ and $0\le f<2^n/x<1/128$.
+Consequently $|Y-Q|<1/8+1/128+1/128<1$. Hence $Y=Q$ is odd.
+Since $x$ is even, the binomial coefficient is odd. Lucas' binary
+criterion yields $S\mathbin{\&}T=0$.
+
+\paragraph{Completeness and the congruence compression.}
+For disjoint positive $S,T$, choose a growth-square witness $y$ and
+put $Y=\lfloor(x+1)^n/x^S\rfloor$, an odd positive integer. Define
+$M,A,C,K,L$ at their intended Pell ranks. Their congruences supply
+nonnegative $c,p,l$. The indexed-Pell theorem supplies $i$ and an
+initial coordinate $H_{\rm old}$ satisfying both congruences.
+Its coprimality identities separate $D,F,I_{\rm old}$ into squares,
+so $H_{\rm old}$ is a Pell coordinate for base $G$.
+The determinant-one Pell matrix is periodic modulo $2CF$.
+Increasing its index by multiples of a positive period preserves both
+congruences and gives arbitrarily large $H_{\rm new}$. Choose it at
+least $C+F(n+1+C)$. Writing $H_{\rm new}-C=Fq$ yields
+$q\equiv n+1+C\pmod{2C}$, hence
+$q=n+1+(2j+1)C$ with $j\ge0$. This proves completeness of the
+compressed formula for $H$, rather than assuming an unproved bound
+for a particular canonical witness.
+The same relative estimates give $|\sigma-Y|<1/64<1/8$, so the
+last positive integer slack exists. The square-root witnesses exist
+by construction. This completes both directions of the theorem.
+
+\paragraph{Exact degree and boundary.}
+The successive degrees of $M,A,C,D,E,F,G,H,I$ are
+$3,4,1,10,13,34,68,36,208$. Thus $DFI$ has degree252 and
+$U_3^2$ degree504, with a nonzero leading term; no other squared
+residual cancels it. The theorem assumes $S,T>0$ and all twelve
+witnesses nonnegative. Substituting a packed source would still need
+a separate proved recovery of the binary base. That missing step is
+not hidden in this theorem, and no completed global improvement is
+claimed for this component.

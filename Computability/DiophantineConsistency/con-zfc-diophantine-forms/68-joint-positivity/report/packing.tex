@@ -1,0 +1,43 @@
+\section{A compatible positive-gap shared-tap source}
+\label{sec:gapshared}
+This auxiliary improvement combines the source65 shared coefficient taps with
+the round9 positive-gap coordinate substitution.  It does not change the four
+native coefficients or claim a new universal-polynomial theorem.
+All31 source variables range over $\mathbb Z_{>0}$.
+The substitutions $P_{\rm old}=P+\eta+\zeta$ and $N_{\rm old}=N+1$ are
+bijections on the positive zero sets: the original equations imply
+$P_{\rm old}-\eta-\zeta=E(c-\eta)>0$ and $N_{\rm old}=q^3\ge8$.
+The original31 coefficient tuple is retained together and materialized.
+
+Let $w_i$ be the31 distinct positive weights, $q_j$ the22 targets and
+$U(T,x)=\sum_i x_iT^{w_i}$.  The serialized certificates prove the formal
+identities
+\[
+ [T^{q_j}]\bigl(D_2(T)U(T,x)^2+D_1(T)U(T,x)+D_0(T)\bigr)=2\rho_j(x)
+ \quad(1\le j\le22).
+\]
+Equal complete coefficient records may share one kernel position; they are
+not added together.  Exhaustive symbolic extraction checks every monomial,
+including the absent ones.  The primary source uses86 records and81 unique
+positions, compared with source65's89 records and84 positions.
+Its layer degrees are $(1384,1732,1641)$, with $W=116$, $Q=1841$ and
+$H=1873$.  Thus the packing removes three positions at unchanged height.
+The85-record alternative does not satisfy this layout and is not substituted
+silently for the primary source.
+
+The native kernel coefficient bound remains $M=2^{2134927}$, checked on the
+actual fixed integers.  For $B\ge4096Mb^2$ and
+$U=\sum_i B^{w_i}+g\ge B^{116}$, the quadratic leading coefficient is1.
+Its negative tail is less than half its leading term.  The possible negative
+linear and constant contributions, relative to $B^{1641}U^2$, are at most
+$2M/B^{25}$ and $2M/B^{489}$.  Consequently the source convolution is
+positive before digit recovery.  The margin $H-Q=32$ preserves the existing
+carry bounds.  Every weight is positive, so canonical encoded witnesses
+remain divisible by $B$, and in particular by $b^2$.
+
+The artifact auditor verifies110 exact target identities across five
+certificates, rejects five coefficient mutations, validates all four
+compressed and raw native coefficient hashes, and establishes that every
+materialized kernel coefficient has absolute value below$M$.
+These checks are finite algebraic certificates, not a new kernel-checked
+proof of the inherited source-to-consistency theorem.

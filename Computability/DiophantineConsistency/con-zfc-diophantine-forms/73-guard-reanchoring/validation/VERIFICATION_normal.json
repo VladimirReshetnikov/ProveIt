@@ -1,0 +1,132 @@
+{
+  "status": "PASS",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "optimized": false,
+  "offline": true,
+  "standard_library_only": true,
+  "literal_builders_reproduce_delivered_bytes": true,
+  "literal_sha256": {
+    "integer34/sextic34.json": "b3f23c4064153440e87777e027b2a4b9f975f8c6eb55cef800c51335a6096767",
+    "integer34/sextic34_compact.json": "3a0d1402dc1665479d82365688782dcaa605a7051cefe8cc375245a058813890",
+    "positive/p13_degree30.json": "e96cd6c8950711a6a26392b27c1ab531cb9df37277e0426cc40cdd1138846a5b",
+    "positive/p12_centered_product_split2.json": "5b98e86cc6e4e679e70835a961fcdb92aa4178af1d432cf6dd9fba1f0490345f",
+    "positive/p12_centered_sos_split2.json": "d125490b687a3479e311876bd93658bf29dc4e56cc62626866561d27d4c590d0"
+  },
+  "checks": [
+    {
+      "name": "build_integer34",
+      "arguments": [
+        "integer34/build_sextic34.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.028,
+      "log": "validation/normal/build_integer34.log",
+      "log_sha256": "beec03cc4d445a5d9029f6903699ea8c039540547b36360cdcb558c8e181121e"
+    },
+    {
+      "name": "check_integer34",
+      "arguments": [
+        "integer34/verify_sextic34.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.042,
+      "log": "validation/normal/check_integer34.log",
+      "log_sha256": "053a5ddd77f22507588925933c36d13c06f13aff665747cc57ec889b49d14c05"
+    },
+    {
+      "name": "bind_compact_integer34",
+      "arguments": [
+        "integer34/build_compact_instance.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.026,
+      "log": "validation/normal/bind_compact_integer34.log",
+      "log_sha256": "aea21e4d0668058c3c3712600c4c5f6e08b90eceb858db5670bdd804bed5824d"
+    },
+    {
+      "name": "compact_coefficients",
+      "arguments": [
+        "compact_coefficients/verify.py",
+        "--receipt",
+        "validation/compact_normal.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.267,
+      "log": "validation/normal/compact_coefficients.log",
+      "log_sha256": "3ab53edcff378876f182431469fcfd434f40a243d895209f023c18ef526994e5"
+    },
+    {
+      "name": "build_original_coefficients",
+      "arguments": [
+        "integer_coefficients/build_coefficients.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.187,
+      "log": "validation/normal/build_original_coefficients.log",
+      "log_sha256": "8b165785587ccf00faa7e33552f0a4a815a928d43e1b0e4fdd7843ce47d0eee4"
+    },
+    {
+      "name": "check_original_coefficients",
+      "arguments": [
+        "integer_coefficients/verify_coefficients.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.162,
+      "log": "validation/normal/check_original_coefficients.log",
+      "log_sha256": "06b75a3aa5ced4391a9cf1dbb784e6e2b6e0bd3832aa3bfa04f17044f593f0a7"
+    },
+    {
+      "name": "compact_integer_adapter",
+      "arguments": [
+        "integer34/verify_compact_adapter.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.032,
+      "log": "validation/normal/compact_integer_adapter.log",
+      "log_sha256": "3ba6c115f400b6bbfd17f8a5a5ac31468e0e815616948c2d7d675c7d6a4889b4"
+    },
+    {
+      "name": "build_positive13",
+      "arguments": [
+        "positive/build_adaptive13.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.025,
+      "log": "validation/normal/build_positive13.log",
+      "log_sha256": "a57ea35a833e121a2a372b4c231e10a605301fa99d6193be0efff5ec2b38026d"
+    },
+    {
+      "name": "build_positive12",
+      "arguments": [
+        "positive/build_centered12.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.023,
+      "log": "validation/normal/build_positive12.log",
+      "log_sha256": "05cd96baf130f62ceb44eedafc99d73ce4331e7b4131cc75e862f3dc343fba8c"
+    },
+    {
+      "name": "check_positive",
+      "arguments": [
+        "positive/check_new.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.458,
+      "log": "validation/normal/check_positive.log",
+      "log_sha256": "b40733888e8ed5936543e7dec04cf076320fae678a0491f1d41fadc8f145766f"
+    },
+    {
+      "name": "reusable_lemmas",
+      "arguments": [
+        "research/verify_reusable_lemmas.py",
+        "--output",
+        "validation/reusable_normal.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.247,
+      "log": "validation/normal/reusable_lemmas.log",
+      "log_sha256": "4133bbccd3e56f4b9f81395ae87249bb24cfc7f9340cc9bc8584045fc1d9a2bb"
+    }
+  ],
+  "scope": "Exact finite algebra, metrics, coefficient reconstruction and provenance. Universal Pell, native compiler and ZFC refutation equivalences are supplied by the written and inherited proofs."
+}

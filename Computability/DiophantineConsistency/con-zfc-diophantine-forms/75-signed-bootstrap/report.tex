@@ -1,0 +1,265 @@
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,longtable,booktabs,array,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={Signed-power recovery and inert-prime certificates for ZFC consistency},pdfauthor={OpenAI-assisted research for Vladimir Reshetnikov}}
+\renewcommand{\labelitemi}{$\bullet$}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\providecommand{\mathscr}[1]{\mathcal{#1}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\setlength{\emergencystretch}{4em}
+\title{Signed-power recovery and inert-prime\\certificates for ZFC consistency}
+\author{OpenAI-assisted research for Vladimir Reshetnikov and ProveIt}
+\date{23 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We test new mechanisms rather than only reoptimize positional weights. The
+strongest completed polynomial is a sextic in \textbf{34 unrestricted integer
+unknowns}, improving the reviewed 35-variable sextic. Its key step deliberately
+allows a negative power coordinate, recovers its absolute value by signed Pell
+orbits, and only then excludes the negative branch by a Mersenne congruence.
+A cleared transport equation absorbs a quotient without losing integrality.
+Two positive-domain compositions give degree 30 in 13 unknowns at 94 operations,
+and degree 114 in 12 unknowns at 105 operations. These are modest numerical
+improvements, not the large breakthrough sought.
+
+Two other mechanisms are proved at the interface level: inert-prime CRT
+batching for bounded universal certificates, and a fixed-input boundary
+absorbed by an existing affine coordinate. Neither has yet been compiled
+into a smaller complete ordinary polynomial. We give their precise remaining
+obligations, a failed attempt to merge two Pell roots, and dominated
+mixed-degree examples so that unsuccessful ideas are not mistaken for
+records. All consistency claims use explicit inherited arithmetic/compiler
+results; this is not a new end-to-end proof-assistant certificate.
+\end{abstract}
+\tableofcontents
+\section{Objective and what this iteration actually establishes}
+Let $\N=\{0,1,2,\ldots\}$ and $\N_{>0}=\{1,2,\ldots\}$. Our target is an
+explicit polynomial $P$ with fixed integer coefficients and a declared domain
+$D$ such that
+\[
+\mathrm{ZFC}\vdash
+\bigl(\neg\exists \boldsymbol{x}\in D^n\ P(\boldsymbol{x})=0\bigr)
+\longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+This is an equivalence, not a proof of either consistency or absence of zeros.
+The coefficient integers are not chosen depending on the truth of consistency.
+No unknown is hidden in a coefficient, function call, or register abbreviation.
+For the three completed constructions, the JSON files specify literal
+polynomials or arithmetic DAGs, and coefficient bindings identify the full
+inherited tuple. In contrast, special-function certificates below are
+explicitly not counted as ordinary polynomials.
+
+There is no single scalar notion of ``simplest.'' We compare the domain,
+number of unknowns, total degree, live arithmetic-gate count, coefficient
+size, and proof dependencies. The signed sextic wins one variable, not degree;
+the positive constructions lower degree at a one-operation cost. No global
+minimality or first-in-literature claim is made. ``New'' refers to the
+mechanism developed in this reviewed iteration, not an exhaustive priority
+search.
+
+\subsection{Immutable comparison scope}
+The eight incoming archives are pinned by Git blob hash, SHA256, and byte
+count in \texttt{INCOMING\_PINS.json}. Arrival was
+\texttt{0c6be9a074d8905b22015e93c5c9d28eda36e95e}; placement was
+\texttt{a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49}.
+The baseline replay ran all eight original root checkers in fresh copies,
+without changing the archived sources. Independent live-gate counting covered
+44 circuits. The formal-status review was pinned at
+\texttt{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}.
+The project lives at
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/DiophantineConsistency}.
+\end{center}
+The input packets are Gap Congruence, Positive Gap, Oriented Guards,
+Congruence Carriers, Sign and Norm, Sign Recovery, Structural Reductions,
+and Shared Taps/Carriers. The accompanying original ZIPs and review records
+make the comparison recoverable without trusting rounded prose metrics.
+
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Domain & Reviewed incoming point & Completed new point & Interpretation\\
+\midrule
+$\Z$ sextic &35 unknowns,20 residuals&34 unknowns,19 residuals&one fewer unknown\\
+$\Z$ quartic&41 unknowns&no improvement&retained incumbent\\
+$\Z$ octic&30 unknowns&30 unknowns&not a record\\
+$\N_{>0}^{13}$&degree 34,93 gates&degree 30,94 gates&degree/cost tradeoff\\
+$\N_{>0}^{12}$&degree 118,104 gates&degree 114,105 gates&degree/cost tradeoff\\
+\bottomrule
+\end{tabular}
+\end{center}
+The incoming nine-positive frontier already includes degree$1\,494\,006$/487
+and degree$1\,845\,940$/444. A late upstream candidate at
+\texttt{bdd86761badd498ca513f1656afba6b4b58ea614} reports the latter degree
+with 443 operations (450 over naturals), using an even radix and a complete
+compact54-sharp tuple. It is a reference, not our result; its late replay was
+not rerun here. Existing ten-integer Sun-based constructions also remain
+competitive. This iteration does not improve either of those variable-count
+frontiers, and the new sextic does not invoke Sun's reduction.
+
+\subsection{Three distinct levels of assurance}
+\begin{enumerate}
+\item Exact finite checks: symbolic identities, degrees, live-gate counts,
+coefficient hashes, and deliberately corrupted controls.
+\item Unbounded mathematical proofs: signed-power recovery, witness
+reconstruction, CRT soundness and completeness, and conditional boundary
+transport. These establish more than the finite tests alone can establish.
+\item Imported endpoint calibration: the inherited native compiler and
+Pell/source equivalences connect the arithmetic source to finite ZFC
+refutations. We identify these dependencies rather than replacing them by
+an unproved assertion that a universal machine ``exists.''
+\end{enumerate}
+None of these statements claims that the new composite endpoint has been
+accepted by Lean or Rocq. In particular finite tests cannot certify the
+nonexistence of a counterexample to an unbounded arithmetic lemma.
+\input{guards/section.tex}
+
+\section{A compact complete specification of the new sextic}
+This section gives the entire 19-residual equation, not only a recipe for
+finding it. The four fixed coefficient ports are
+$\beta,K_0,M_C,M_F$, bound as a complete inherited source34 tuple in the
+JSON artifact and its local upstream provenance. In particular
+$\beta=2^{1064921}-1$; the other ports are supplied by their authenticated
+coefficient payloads and exact recipes, not arbitrary parameters.
+
+The 34 unrestricted unknowns are
+\[
+\begin{gathered}
+J,F,\alpha,f,h,r,v,\tau,\eta,\zeta,y,\gamma,o,j,E,c,a,D,L,V,I,B,\Delta,u,Z,\\
+s_1,s_2,s_3,t_1,t_2,t_3,w_1,w_2,w_3.
+\end{gathered}
+\]
+Here $v$ is \texttt{v\_scale}, $B$ is \texttt{Baux}, and the three triples
+are respectively the JSON \texttt{FA\_pos}, \texttt{FC\_pos}, and
+\texttt{eta\_zeta\_pos} coordinates. Define polynomial abbreviations
+\[
+\begin{gathered}
+q=\beta J+1,\quad k=\eta+\zeta,\quad H=4a+3,\quad C=q-F-\alpha,\\
+X_*=D-ac-H\gamma,\qquad
+R_*=[(q-1)(q-F)+\alpha]L+J(M_C+qM_F),\\
+\Pi(x_1,x_2,x_3)=x_1^2+x_2^2+x_3^2+x_3+1.
+\end{gathered}
+\]
+The positive-value representation $\Pi$ is the inherited three-coordinate
+guard: its range on $\Z^3$ is exactly the positive integers. Its use here
+requires that precise theorem, not merely that every displayed value is
+positive.
+Let the residuals be
+\begin{align*}
+ e_1&=L-q^2+1,\\
+ e_2&=a-E-(2v+1)q(L+1),\\
+ e_3&=E(X_*+1)-aX_*,\\
+ e_4&=c-k(a-E)-\eta,\\
+ e_5&=\tau^2+(2\tau-k)E(c-\eta)-1,\\
+ e_6&=\Delta-a^2-4a-3,\\
+ e_7&=D^2-\Delta c^2-1,\\
+ e_8&=k-1-Eh-R_*,\\
+ e_9&=(K_0q+X_*)C-qF-Z(q-1),\\
+ e_{10}&=V+c-fo,\\
+ e_{11}&=V-cj+k-1-Eh,\\
+ e_{12}&=I-(2r+1)c^2,\\
+ e_{13}&=B-I^2,\\
+ e_{14}&=B-\Delta f^2+\Delta,\\
+ e_{15}&=BV^2-By^2+y^2-1,\\
+ e_{16}&=X_*-4qu^2,\\
+ e_{17}&=F\alpha-\Pi(s_1,s_2,s_3),\\
+ e_{18}&=FC-\Pi(t_1,t_2,t_3),\\
+ e_{19}&=\eta\zeta-\Pi(w_1,w_2,w_3).
+\end{align*}
+The requested single equation is
+\[
+\boxed{\quad P_{34}=\sum_{i=1}^{19}e_i^2=0,\qquad\boldsymbol{x}\in\Z^{34}.\quad}
+\]
+The abbreviations are to be expanded, not existentially quantified.
+Every residual has degree at most 3, including $e_9$: $X_*$ has degree2,
+while $C$ is affine. Hence $P_{34}$ has degree at most6. Its
+$r^2c^4$ coefficient is 4, so the degree is exactly 6. Over the integers,
+$P_{34}=0$ is equivalent to simultaneous vanishing of all 19 residuals.
+The prior section's two-way witness construction therefore yields the stated
+ZFC-provable equivalence, with the inherited endpoint theorem.
+
+The script \texttt{check\_displayed\_system.py} independently compares these
+compact expressions with all 19 literal JSON rows by symbolic expansion.
+This prevents an attractive printed abbreviation from silently changing
+the actual delivered polynomial.
+\input{low_degree/section.tex}
+\input{certificates/section.tex}
+\input{direct/section.tex}
+\input{mixed_source/section.tex}
+
+\section{What failed, what remains, and the recommended next attack}
+The signed-power technique is the completed advance: weakening a positivity
+constraint can lower the number of witnesses if a later arithmetic invariant
+recovers the sign. Its proof must establish rank bounds \emph{before} assuming
+that sign. Skipping that ordering would make the argument circular.
+
+The inert-prime certificate changes the bounded-quantifier mechanism itself.
+The next decisive experiment is not another small exponent search: instantiate
+its factorial, binomial, power and remainder graphs with shared wires, apply
+it directly to the small unflattened local refutation relation, and count the
+entire resulting polynomial. Both soundness and completeness must survive
+the chosen natural/integer-domain conversions. Until those graphs and all
+witnesses are explicit, there is no final variable saving to report.
+
+The fixed-input boundary could replace a large specialized transition
+alphabet by a small universal one. The missing objects are finite but
+substantial: a pinned machine table with the correct blank-background model,
+a constructive refuter-to-input compiler, the exact compiled input word,
+and all regenerated coefficient ports and rank-controller certificates.
+A theorem of universality by itself is not the required compiler. Input
+length enters the fixed coefficients and must be charged. No such endpoint
+is claimed in this packet.
+
+Mixed-degree projection is useful algebra but not a current record: the
+26-positive sextic and 21-positive octic are dominated by already archived
+25-positive sextic and20-positive octic constructions. Their value here is
+as checked source alternatives for future positional compression. Higher
+source degree can worsen the necessary radix exponent enough to erase the
+benefit of fewer coordinates.
+
+Finally, the attempted 11-variable outer-root merger fails to preserve two
+independent residue channels simultaneously. The explicit counterexample in
+\texttt{low\_degree/FAILED\_ROOT\_MERGER.md} blocks the proposed cancellation,
+not every conceivable 11-variable construction. Recording this obstruction
+is preferable to advertising a root deletion whose converse is unproved.
+
+\section{Formalization boundary and reproducibility}
+The latest reviewed Lean work proves important pieces of signed-index
+step-down and split-source existence. The signed-index interface admits
+signed auxiliary congruence coordinates and does not require an odd target
+index at entry. However our negative-$c$ branch still needs an explicit
+adapter to that interface. The new polynomial, its literal coefficient
+binding, native calibration, and the internal ZFC consistency statement
+have not been newly joined into one checked theorem here.
+The recent source-polynomial equivalence and counted arithmetic-DAG identity
+are also different obligations. Repository status and review prose differed
+on one late build claim, so this report does not silently upgrade it to a
+verified endpoint. See the pinned formal documents and late snapshot.
+
+The release includes the TeX and PDF, explicit JSON equations and DAGs,
+authenticated upstream coefficient dependencies, original incoming packets,
+mathematical proofs, independent audits, and replay scripts.
+Run \texttt{python3 verify.py} from the extracted release. The root checker
+validates the sealed file manifest and executes the documented component
+checks in an isolated copy. The recorded validation results distinguish
+algebraic reconstruction, finite diagnostics, and imported theorems.
+Run \texttt{python3 negative\_controls.py} for the packaged integrity controls.
+No check searches for a ZFC inconsistency or decides consistency.
+
+\paragraph{Sources.}
+All project sources are in Vladimir Reshetnikov's ProveIt repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+The archive manifest gives full immutable commits and Git blob IDs;
+\texttt{review/baseline} records comparison evidence,
+\texttt{review/signed34} the signed-power review,
+\texttt{review/positive} the positive/mixed-source review, and
+\texttt{review/interfaces} the two interface audits.
+The late reference candidate is
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/bdd86761badd498ca513f1656afba6b4b58ea614/Computability/DiophantineConsistency/candidates/gap2082-compact54/README.md}.
+These source references support the inherited results and comparison;
+new mathematical claims are proved in the body and accompanying proof files.
+\end{document}

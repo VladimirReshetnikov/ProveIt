@@ -1,0 +1,138 @@
+\section{An independent nine-variable improvement}
+\label{sec:nine-composition}
+
+The same snapshot permits a second result, obtained by composing three
+compatible previously separate constructions. Package~65 supplies the shared
+coefficient positions, package~63 supplies its deflated seventh-order root
+majorant, and package~62 supplies a shared addition chain for pure powers.
+The resulting single polynomial has nine strictly positive unknowns,
+\[
+ (b,g,h,s,w,C,i,j,n)\in\mathbb Z_{>0}^{9},
+ \qquad \deg F_9=1\,379\,730,
+\]
+and a division-free evaluator with 478 binary operations:
+286 multiplications, 163 additions, 29 subtractions. The nonnegative-coordinate
+translation has 485 operations and the same degree. This result improves
+package~67's lowest-degree nine-positive point, which has degree 1,494,006
+and 487 operations. Lower-operation entries with higher degree remain useful.
+
+\subsection{A fully specified polynomial}
+The three source kernels $D_0,D_1,D_2$, 31 weights $w_l$ and 22 targets $q_l$
+are the exact tables in \path{nine_positive/data/}. The four original31
+coefficient ports are supplied as binary integers, with a finite reconstruction
+algorithm. Set $a=2^{2134939}$ and $c=2^{17079501}$. Define
+\begin{align*}
+ B&=ab^2,& \ell&=\sum_l B^{w_l},& T_c^{\rm mark}&=\sum_l B^{q_l},\\
+ U_s&=\ell+g,& G_s&=(D_2(B)U_s+D_1(B))U_s+D_0(B),& N_0&=B^{117},\\
+ M_s&=N_0-1-(b-1)\ell,&
+ S_s&=g+N_0(2G_s+T_c^{\rm mark}),&&\\
+ T_s&=M_s+N_0(B-2)T_c^{\rm mark},&
+ L&=bB^{1991},&N&=cbB^{1057},\\
+ R&=L(S_s+T_s+1)-S_s-1,&t&=bB^{116}.&&
+\end{align*}
+The following are polynomial abbreviations, not additional unknowns:
+\begin{align*}
+ U&=N^2w,&Y&=N^2s,&M&=RY,\\
+ P&=2M^2U,&K&=R+1+h(P-1),&A&=M(U+1),\\
+ B_1&=2R+1,&W_1&=bw,&J&=4A-5.
+\end{align*}
+\begin{align*}
+ Q&=3W_1C-2(W_1^2-1),&D&=(A^2-1)C^2+1,\\
+ e&=iJC,&E&=eDC,\\
+ F&=(A^2-1)E^2+1,&L_m&=CD+1-A,\\
+ G&=A+FL_m,&H&=C+F(B_1+(j-1)C),\\
+ I&=(G^2-1)H^2+1,&a_0&=(P^2-1)K^2+1,\\
+ a_1&=4096^2DFI.&&
+\end{align*}
+Also put
+\begin{align*}
+ m&=K^2(4t-g)-16t(C-KY)^2,&V_0&=PK,\\
+ \Omega&=Jm,& E_0&=J(n+W_1^2)+Q,\\
+ N_*&=2G+L_m,&N_1&=2e^2D(D-1)L_m+3C,\\
+ N_2&=2e^2(D-1)L_m,&N_3&=2e^2(L_m-C),&N_4&=2e^2C.
+\end{align*}
+The majorant polynomial is
+\begin{align*}
+ T={}&e\bigl[(2048D^2-1024D-256)N_*-128N_1-80N_2-56N_3-42N_4\\
+ &\hspace{31mm}+i^2(1568-448A+288C)\bigr]+640i+4096.
+\end{align*}
+Finally set $V_1=TH$, $\Theta=E_0-\Omega(V_0+V_1)$. The equation is
+\begin{equation}\label{eq:nine-composed}
+ \boxed{F_9=\bigl(\Theta^2-\Omega^2(a_0+a_1)\bigr)^2
+                      -4\Omega^4a_0a_1=0.}
+\end{equation}
+All exponents are fixed and nonnegative. The literal arithmetic DAG,
+coefficient recipes and exact table entries remove any notational ambiguity.
+
+\subsection{Composition proof}
+The source 65 certificate proves 22 exact coefficient identities, including
+all absent monomials; 11,616 coefficient comparisons suffice. The 89 weighted
+records occupy 84 distinct positions. The weights have maximum 116 and the
+kernel degrees are $(1384,1739,1641)$, so the convolution height is 1873.
+Its unchanged positivity, weak-cap and signed-borrow estimates establish
+the exact source-to-binomial-divisibility interface required by the
+free-coordinate ratio finalizer.
+
+The majorant 63 theorem is uniform in $A\ge3$, $C,i\ge1$:
+\[
+ T>4096\sqrt{DF}\,G>0.
+\]
+It uses only the displayed Pell registers; it has no source-specific
+assumption on $R,N,t$. Its 264-term positive-coefficient certificate is
+included and independently re-expanded. Therefore $V_1>\sqrt{a_1}$ and
+$V_0>\sqrt{a_0}$ hold before decoding any zero.
+
+At a zero of~\eqref{eq:nine-composed}, $m\ne0$, since $m=0$ would give
+$F_9=E_0^4>0$. Real factorization gives
+\[
+ E_0/J=m(V_0+V_1+u_0+u_1),\qquad u_0^2=a_0,\quad u_1^2=a_1.
+\]
+The majorants force $m>0$. The inherited margin argument then recovers
+$C>K$ and $C>B_1+W_1$, hence $a_1>a_0$. The rational sum
+$u_0+u_1=\Theta/\Omega$ is nonzero; the identity
+$2(u_0+u_1)u_0=(u_0+u_1)^2+a_0-a_1$ makes each root rational and therefore
+integral. The same equation gives $J\mid Q$. These are exactly the ratio
+conditions that recover a binary source witness. Conversely, a source zero
+supplies the cofinal ratio witnesses, and
+\[
+ n=m\bigl(V_0+V_1+\sqrt{a_0}+\sqrt{a_1}\bigr)-W_1^2-Q/J
+\]
+is integral and strictly positive. It produces a zero of~\eqref{eq:nine-composed}.
+The unchanged native compiler and syntactic-refutation calibration then yield
+the required consistency equivalence in ordinary mathematics formalizable
+in ZFC. No new end-to-end proof-assistant derivation is claimed.
+
+\subsection{Exact degree and arithmetic cost}
+Write $r=\deg R=7963$, $q=\deg N=2115$, $W=116$. Then
+\[
+ \deg A=r+4q+2=16425,\quad\deg H=139373,\quad\deg\Omega=82360.
+\]
+The exact majorant remainder has leading monomial
+$2880A^{10}C^{12}i^3$. Its weighted degree is 164265. The corresponding
+defect identities give
+\[
+ \deg(T^2-4096^2DFG^2)=246399,\qquad
+ \deg(V_1^2-a_1)=525145.
+\]
+For $\delta_k=V_k^2-a_k$, put
+$B_*=E_0^2-2E_0\Omega(V_0+V_1)+\Omega^2(\delta_0+\delta_1)$.
+The exact identity
+\[
+ F_9=B_*^2+4\Omega^2V_0V_1B_*
+                  +4\Omega^4(\delta_0V_1^2+a_0\delta_1)
+\]
+resolves the apparent leading cancellation in the primary norm. Its first
+term alone has highest degree, so
+\[
+ \deg F_9=86r+328q+8W+264=1\,379\,730.
+\]
+The diagonal leading coefficient is
+$2025\cdot2^{188}a^{689526}c^{328}>0$, certifying that this upper bound is
+attained for the actual fixed coefficients. A separate degree-checking DAG
+computes $D^{20}F_9$; its larger size is not charged as the primary evaluator.
+
+The initial composition has 489 operations. The checked global power chain
+reduces this to 478. Each rewrite is certified by an integer equality
+$e=e_1+e_2$ and an exact structural comparison of the remaining DAG.
+Forty modular evaluations provide supplementary transcription diagnostics;
+the source, majorant, degree and rewrite identities are checked exactly.

@@ -1,0 +1,55 @@
+\section{Monic projection before positional encoding}
+A different architecture is to eliminate source registers before compressing
+source coordinates.  The transformed source need not remain quadratic.
+This yields a rigorously verified positive-domain low-degree tradeoff even
+before a compact positional code is found.
+
+Let $q=\beta J+1$.  From the frozen 31-coordinate source, eliminate
+\[
+ L=q^2-1,\quad N=q^3,\quad X=qw,\quad
+ \Delta=a^2+4a+3,\quad C_2=c^2,\quad F_2=f^2,
+\]
+\[
+ D=(4a+3)\gamma+ac+X,\quad B_{\rm aux}=I^2,
+ \quad P=E(c-\eta)+\eta+\zeta,
+ \quad V=jc+hE-\eta-\zeta+1.
+\]
+The first eight reconstructed coordinates are visibly positive. For the last
+two use the retained equations $a-E=sN$ and
+$c=(\eta+\zeta)(a-E)+\eta$, which imply $c>\eta+\zeta$.
+Each eliminated equation is monic, so substitution and reconstruction give
+inverse bijections of positive common-zero sets.
+The exact residual list in \texttt{source21.json} consists of 12 polynomials
+$r_j$ in 21 positive variables, with maximum degree 4 and 100 monomials in total.
+Thus the explicit equation
+\[
+                  \sum_{j=1}^{12}r_j^2=0
+\]
+is an octic in 21 positive unknowns with the inherited consistency equivalence.
+The compiler constants are coefficients, not unknowns. For the fixed instance,
+\texttt{COEFFICIENT\_BINDING.json} selects the complete inherited old31 tuple
+with $\beta=2^{1064921}-1$, with $K_0=K$ and the already-shifted $M_F$.
+The frozen source hash agrees with the prior package's explicit old31 selection;
+the separate adaptive-carrier compact44 tuple is not substituted here. This is a mathematical
+composition with the inherited source theorem, not a new kernel certificate.
+Deleting only $C_2,F_2,L,X,B_{\rm aux}$ instead gives 17 cubic residuals in 26
+positive unknowns, hence a sextic in 26 positive unknowns.
+Both are dominated in unknown count at the same degree by existing
+positive-domain endpoints: a 20-positive octic and a 25-positive sextic.
+They are source-transformation demonstrations, not new low-degree records.
+No minimum or improvement over every repository tradeoff is asserted.
+
+For mixed-degree positional compression, let $d$ be the maximum degree,
+$m=d!$, $W_\alpha=\sum_i\alpha_iw_i$, and $U=\sum_i x_iZ^{w_i}$. Set
+\[
+ D_e(Z)=\sum_{j,\,|\alpha|=e}
+ \frac{m}{e!}\Bigl(\prod_i\alpha_i!\Bigr)c_{j,\alpha}
+ Z^{q_j-W_\alpha}.
+\]
+Under same-degree isolation against \emph{every} degree-$e$ monomial,
+the coefficient at $q_j$ in $\sum_eD_eU^e$ equals $mr_j$ by the multinomial
+theorem. Different degree channels may overlap freely. This removes dummy
+homogenizing coordinates. However, decoded coordinates bounded by $b$ now
+require coefficient bounds of order $b^d$, not$b^2$. A new code must compensate
+for that increased radix exponent. The projection alone does not establish
+a better nine-variable finalizer.

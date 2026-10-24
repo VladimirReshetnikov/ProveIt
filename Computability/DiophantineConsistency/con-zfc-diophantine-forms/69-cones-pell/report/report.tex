@@ -1,0 +1,609 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,hyperref,xurl,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Weighted cones and rational Pell descent for ZFC consistency equations},pdfauthor={Research prepared for Vladimir Reshetnikov and ProveIt}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{Weighted cones and rational Pell descent}\fancyhead[R]{23 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\N}{\mathbb N}\newcommand{\Pos}{\operatorname{Pos}}\newcommand{\Cone}{\mathcal C}\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\repo}{\url{https://github.com/VladimirReshetnikov/ProveIt}}
+\newcommand{\pin}{\nolinkurl{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}}
+\newcommand{\Pcost}{102}
+\title{Weighted cones and rational Pell descent\\\large Four smaller Diophantine presentations of syntactic ZFC consistency}
+\author{Research note prepared for Vladimir Reshetnikov and ProveIt\\\small AI-assisted derivation, exact computation, and independent internal review}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two structural reductions of the current explicit consistency equations in ProveIt. A weighted quadratic cone replaces two separate positivity certificates because the native compiler's compulsory anchor digits put canonical witnesses in a fixed, narrow range. This gives a quartic in 38 unrestricted integers, with companions in 32 integers of degree six and 27 integers of degree eight. A second reduction proves an elementary rational-integrality lemma for the Pell equation $QV^2-(Q-1)y^2=1$. It permits two previously separate witnesses to be merged without a coprimality condition, giving one equation of exact degree 82 in twelve strictly positive integers, evaluated by \Pcost\ live binary arithmetic operations. The inspected comparison points are respectively $41/4$, $35/6$, $30/8$, and $12/118/104$.
+
+The new arguments have ordinary mathematical proofs and reproducible exact algebra certificates. Their ZFC-consistency calibration composes with specifically identified inherited native-compiler and Pell theorems. This note does not supply a new end-to-end Lean or Rocq certificate or a proof inside the repository's encoded ZFC calculus. It establishes neither a global simplicity minimum nor a new nine-variable or ten-variable record. All coefficients are fixed independently of whether ZFC is consistent; their complete numerical payloads and finite reconstruction recipes accompany the paper.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Results, comparison, and logical scope}
+
+The repository snapshot used throughout is \pin. It includes proposals 31--67, including the newly placed wave 9. The collection index still summarizes some earlier wave-8 frontiers; the comparisons here use the individual wave-9 proposals and their literal equations.
+
+\begin{center}\small
+\begin{tabular}{llrrrr}
+\toprule
+New equation & Domain & Unknowns & Degree & Rows & Prior point\\
+\midrule
+$Q_{38}$ & $\Z$ & 38 & 4 & 25 & 41, degree 4\\
+$Q_{32}$ & $\Z$ & 32 & 6 & 19 & 35, degree 6\\
+$Q_{27}$ & $\Z$ & 27 & 8 & 14 & 30, degree 8\\
+$P_{12}$ & $\Z_{>0}$ & 12 & 82 & 3 & 12, degree 118\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first three polynomials are sums of squares of the stated residual rows. The fourth combines its three residuals by a product, justified by a congruence modulo four. Package 64 supplies the 41-integer quartic; package 62 supplies the 35-integer sextic and 30-integer octic. Package 61 supplies the twelve-positive-variable degree-118 polynomial with 104 operations~\cite{q41,q62,p61}. Thus the new unrestricted equations save three variables in each of the displayed degree slices. The positive equation lowers degree by $36/118\approx30.51\%$ and saves two operations.
+
+These are different measures of simplicity; the broader variable/degree tradeoff is the subject of universal-pair research~\cite{bdhms}. The cone construction increases the stored fixed-coefficient payload from 532,479 to 881,696 raw bytes. The twelve-positive construction retains its parent's four-port, 295,388-byte compact tuple. Its \Pcost-operation count charges every live binary addition, subtraction, and multiplication, including multiplication by a fixed numeral and squaring; fixed leaves and register reuse are free. No minimum arithmetic-circuit size is claimed.
+
+\subsection{The precise consistency statement}
+
+Fix the recursive ZFC proof calculus used by ProveIt. Let $\operatorname{Ref}_{\mathrm{ZFC}}(p)$ mean that $p$ codes a finite derivation of falsity in this calculus, and write
+\[
+ \Con(\mathrm{ZFC})\;\equiv\;\neg\exists p\in\N\;\operatorname{Ref}_{\mathrm{ZFC}}(p).
+\]
+For each new polynomial and its indicated domain $D$, the mathematical chain is
+\begin{equation}\label{eq:goal}
+ \exists\boldsymbol x\in D\;P(\boldsymbol x)=0
+ \quad\Longleftrightarrow\quad
+ \exists p\in\N\;\operatorname{Ref}_{\mathrm{ZFC}}(p).
+\end{equation}
+Negating this equivalence gives the requested unsolvability statement. The new reductions are proved in this paper. The last link to refutations uses the inherited, explicitly pinned native-compiler/Pell calibration. These are ordinary mathematical arguments formalizable in ZFC; a separately generated object-language ZFC proof is not included.
+
+The repository also contains a closed, executable nine-natural-variable equation whose equivalence to syntactic consistency is checked in Lean~\cite{explicit}. Its formal status does not automatically transfer to a new, smaller literal circuit. Conversely, the absence of a new proof-assistant certificate is not a claim that the ordinary mathematical reductions below are merely numerical conjectures. The proof boundary is recorded precisely in Section~\ref{sec:status}.
+
+\subsection{What is different in this iteration}
+
+The cone reduction uses a property of \emph{canonical compiler witnesses}, rather than trying to preserve every zero of an old equation. Fixed anchor digits normalize three otherwise very differently sized coordinates. One quadratic positivity test can then replace two independent tests.
+
+The Pell reduction uses descent to recover integrality after eliminating witnesses over $\Q$. An algebraic norm identity alone would not justify this step. The descent supplies exactly the missing integrality statement and avoids the extra congruences and denominator factors in the earlier construction.
+
+Both mechanisms are new applications relative to the inspected proposals. This is not a claim of priority over all mathematical literature. Other possible routes through direct proof checking, groups, or alternate packing schemes were investigated but did not yield a better complete endpoint during this iteration. The completed equations still use the existing K215/native calibration; none requires Jones's universal Diophantine expression or Sun's ten-integer reduction.
+
+\section{A quadratic cone can replace two positivity certificates}\label{sec:cone}
+
+Define the integer polynomial
+\[
+ \Pos(u,v,w)=1+u^2+v^2+w(w+1).
+\]
+It is strictly positive for all $u,v,w\in\Z$ and represents every positive integer. Indeed, the three-square theorem applied to $4n-3>0$, which is congruent to one modulo four, gives one odd square and two even squares. Writing them as $(2w+1)^2,(2u)^2,(2v)^2$ gives $n=\Pos(u,v,w)$.
+
+The old quartic has two rows
+\begin{equation}\label{eq:oldguards}
+ F\alpha=\Pos(u_1,u_2,u_3),\qquad
+ FC=\Pos(v_1,v_2,v_3),\qquad
+ C=\beta J+1-F-\alpha.
+\end{equation}
+They use six private integer variables to ensure that $F,\alpha,C$ have a common nonzero sign. The inherited proof determines the sign of the radix later; no early positivity of $J$ or $q=\beta J+1$ may be assumed.
+
+Define
+\begin{equation}\label{eq:cone}
+ \Cone(x,y,z)=2xy+2xz+2yz-x^2-y^2-z^2.
+\end{equation}
+
+\begin{lemma}[Sign forcing]\label{lem:sign}
+If $\Cone(x,y,z)>0$ for real $x,y,z$, then $x,y,z$ have one common strict nonzero sign.
+\end{lemma}
+\begin{proof}
+Otherwise, a permutation and simultaneous change of all signs arrange $x,y\ge0$ and $z\le0$. But
+\[
+ \Cone(x,y,z)=-(x-y)^2+2z(x+y)-z^2\le0.
+\]
+The zero-coordinate cases are included.
+\end{proof}
+
+\begin{lemma}[A uniform box]\label{lem:box}
+If $L>0$ and $x,y,z\in[L,2L]$, then $\Cone(x,y,z)\ge3L^2>0$.
+\end{lemma}
+\begin{proof}
+Permute so that $x\le y\le z$. Since $z\le2L\le2x$ and $z\ge y$,
+\[
+ -x\le z-x-y\le x-y\le0.
+\]
+Thus $\Cone=4xy-(z-x-y)^2\ge4xy-x^2\ge3x^2\ge3L^2$.
+\end{proof}
+
+The converse to Lemma~\ref{lem:sign} is false: a very unbalanced positive triple can lie outside the cone. This is why merely replacing the old guards without inspecting compiler witnesses would be invalid. The next section supplies the required completeness argument.
+
+\section{The authentic native anchors supply the normalization}\label{sec:anchors}
+
+\subsection{Fixed integers and their exact source}
+
+Use the \emph{whole} source-34 tuple called \texttt{mixed-parity-unrounded-1064921}, retained by package 64~\cite{source34,q41}. Its four ports are $\beta,K_0,M_C,M_F$, with $M_F$ already shifted. Define fixed integers
+\begin{align*}
+ \rho&=2^{121}, & B&=\rho^{8801}, & \beta&=B-1,\\
+ A&=\rho^{3296}, & H_*&=\rho^{2196}, &
+ \mathcal T&=K_0-\beta\rho+1,\\
+ W_\alpha&=2\mathcal T A, &&& W_C&=\mathcal T\beta.
+\end{align*}
+The native recipe has $D_R=\rho$ and $K_0=D_C+BD_R$, so
+\[
+ \mathcal T=D_C+D_R+1>0.
+\]
+Only $W_\alpha,W_C$ are new coefficient leaves of the polynomial; $A,H_*,\rho,\mathcal T$ are fixed construction/proof registers. The file \texttt{integer/coefficients/COEFFICIENT\_BINDING.json} identifies all six actual coefficient payloads, their sizes and hashes. The native builder reconstructs $D_C$ from the literal K215 transition table and the exact ordered 943-tile list. There is no free machine index, unspecified coefficient, variable exponent, or search for a contradiction in these definitions.
+
+\subsection{Every canonical cell contains a large fixed digit}
+
+The canonical native tiling is occupied in every cell. Each cell contains anchors at positions $1095,1096,2195,3296$, all with digit one. Every other variable position is at most 1064. The dummy choices used for the rank controller leave the anchors unchanged. Hence the integer $c_i$ in any canonical cell satisfies
+\[
+ A\le c_i<A+H_*<2A.
+\]
+For example, allowing every digit below position 1097 to be as large as $\rho-1$ still gives
+\[
+ c_i-A\le\rho^{2195}+\rho^{1097}-1<\rho^{2196}=H_*.
+\]
+For $m$ cells put $q=B^m$ and $J=(q-1)/(B-1)$. Summing the cell bounds gives
+\begin{equation}\label{eq:Cbounds}
+ AJ\le C<(A+H_*)J<2AJ.
+\end{equation}
+Any whole-cell cyclic rotation of $C$ has the same bounds.
+
+\subsection{The output remainder has a corresponding anchor}
+
+Let $U$ and $V_*$ be the canonical spatial and temporal rotations. The actual rank controller makes the scale in the transport equation represent a whole-cell rotation modulo $q-1$. This is a property of the source controller, not a newly selected exponent. Consequently the source transport identity
+\[
+ (K_0+w_{\rm source})C=(q-1)z_{\rm transport}+F
+\]
+identifies $F$ with the residue of
+\[
+ D_C C+D_R U+V_*
+\]
+modulo $q-1$. The cell bounds give
+\begin{equation}\label{eq:Fboundsraw}
+ \mathcal T AJ\le D_C C+D_RU+V_*<\mathcal T(A+H_*)J.
+\end{equation}
+
+The required fixed numerical estimate is
+\begin{equation}\label{eq:fixedbound}
+ 2(\mathcal T+1)(A+H_*)<\beta.
+\end{equation}
+Here is a uniform proof. The native support has 989 positions. Each clause coefficient is less than $2^{97}$; the greatest exponent in $D_C$ is 5495. The total coefficient mass of $\mathcal T+1=D_C+D_R+2$ is at most
+\[
+ 7+2\cdot989(2^{97}-1)<2^{109}<\rho.
+\]
+It follows that $\mathcal T+1<\rho^{5496}$. Since $A+H_*<2\rho^{3296}$,
+\[
+ 2(\mathcal T+1)(A+H_*)<4\rho^{8792}<\rho^{8801}-1=\beta.
+\]
+The checker also verifies this inequality on the actual integer coefficients.
+
+By \eqref{eq:fixedbound}, the quantity in \eqref{eq:Fboundsraw} lies strictly between zero and $\beta J=q-1$. It is already the native remainder, with no additional wrap. Thus
+\[
+ \mathcal T AJ\le F<2\mathcal T AJ,\qquad
+ F+C<\frac{\beta J}{2},\qquad
+ \frac{\beta J}{2}<\alpha=q-F-C\le\beta J.
+\]
+The last upper bound uses the integer inequality $F+C\ge1$.
+
+Set $L=\mathcal T A\beta J>0$. Each member of the weighted triple
+\begin{equation}\label{eq:weightedtriple}
+ \beta F,\qquad W_\alpha\alpha=2\mathcal T A\alpha,\qquad
+ W_C C=\mathcal T\beta C
+\end{equation}
+belongs to $[L,2L]$. Lemma~\ref{lem:box} therefore makes its cone value a strictly positive integer.
+
+\section{An explicit quartic in 38 unrestricted integers}\label{sec:quartic}
+
+Delete the two old rows \eqref{eq:oldguards} and their six private coordinates. Replace them by the single row
+\begin{equation}\label{eq:newguard}
+ \Cone(\beta F,W_\alpha\alpha,W_C C)=\Pos(e_1,e_2,e_3).
+\end{equation}
+Retain every other source row, including the separate $\eta\zeta$ guard. The result has $41-6+3=38$ variables and $26-2+1=25$ quadratic residuals.
+
+\subsection{Complete register specification}
+
+The 38 unrestricted integer coordinates are
+\begin{align*}
+ &J,F,\alpha,z,f,h,r,v,w,\tau,\eta,\zeta,y,\gamma,o,j,\\
+ &N,E,P,c,a,X,D,C_2,L,F_2,V,g,I,B_a,\Delta,u,\\
+ &s_1,s_2,s_3,e_1,e_2,e_3.
+\end{align*}
+The names $v,w,B_a$ here correspond to \texttt{v\_scale}, \texttt{w\_scale}, \texttt{Baux} in the JSON. Define only the polynomial abbreviations
+\[
+ q=\beta J+1,\quad C=q-F-\alpha,\quad k=\eta+\zeta,
+\]
+and the \emph{quadratic} register
+\[
+ \widehat R=(q-F)(N-L-q)+\alpha L+(M_C+qM_F)J.
+\]
+When the first two residuals vanish, $L=q^2-1$, $N=q^3$, and this equals the usual native rank
+\[
+ ((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J.
+\]
+The 25 residuals are the left sides below:
+\begin{align}
+ r_1&=L-q^2+1, & r_2&=N-q(L+1),\nonumber\\
+ r_3&=X-4qw, & r_4&=a-E-(2v+1)N,\nonumber\\
+ r_5&=EX+E-Xa, & r_6&=c-\eta-k(a-E),\nonumber\\
+ r_7&=P-k-E(c-\eta), & r_8&=\tau^2-P^2+Pk-1,\nonumber\\
+ r_9&=D-X-ac-\gamma(4a+3), & r_{10}&=\Delta-a^2-4a-3,\nonumber\\
+ r_{11}&=C_2-c^2, & r_{12}&=D^2-\Delta C_2-1,\nonumber\\
+ r_{13}&=k-\widehat R-1-Eh, &
+ r_{14}&=(K_0+4w)C-F-(q-1)z,\nonumber\\
+ r_{15}&=F_2-f^2, & r_{16}&=V+c-fo,\nonumber\\
+ r_{17}&=V-cj+k-1-Eh, & r_{18}&=V^2+g-y^2,\nonumber\\
+ r_{19}&=I-(2r+1)C_2, & r_{20}&=B_a-I^2,\nonumber\\
+ r_{21}&=B_a-\Delta F_2+\Delta, & r_{22}&=-B_ag+y^2-1,\nonumber\\
+ r_{23}&=X-2u^2, & r_{24}&=\eta\zeta-\Pos(s_1,s_2,s_3).\label{eq:rows}
+\end{align}
+The final residual is
+\[
+ r_{25}=\Cone(\beta F,W_\alpha\alpha,W_C C)-\Pos(e_1,e_2,e_3).
+\]
+The advertised single equation is
+\begin{equation}\boxed{\displaystyle Q_{38}=\sum_{i=1}^{25}r_i^2=0.}\label{eq:Q38}\end{equation}
+All abbreviations above are polynomial expressions; they add no quantified variables. The exact literal JSON is \texttt{integer/quartic38.json}. Its ordering of the last two rows is immaterial to the sum of squares. The coefficient of $\tau^4$ is exactly one, proving degree four after the actual coefficients have been substituted.
+
+\begin{theorem}[Cone reduction]
+The equation $Q_{38}=0$ has an integer solution if and only if the repository's ZFC calculus has a finite refutation, using the inherited calibrated source-34/package-64 theorem.
+\end{theorem}
+\begin{proof}
+For soundness, a zero makes \eqref{eq:newguard} strictly positive. Lemma~\ref{lem:sign} gives $F\alpha>0$ and $FC>0$. Represent these two positive integers independently by $\Pos$, restoring all six discarded guard coordinates. Every old Q41 row then vanishes. The inherited soundness theorem gives a finite refutation. This argument applies to every new zero and does not presuppose a positive radix.
+
+For completeness, a refutation gives a canonical native tableau and the canonical Q41 witnesses. Section~\ref{sec:anchors} proves that their weighted cone is positive. Give it a three-variable $\Pos$ representation, retain all other coordinates, and discard the six old guard coordinates. This gives a zero of $Q_{38}$.
+\end{proof}
+
+The first transformation preserves \emph{existence}, not the complete old zero set. The next two transformations do give polynomial bijections of zero sets.
+
+\section{The degree-six and degree-eight companions}
+
+\subsection{A sextic in 32 integers}
+
+Starting from $Q_{38}$, eliminate six coordinates by
+\[
+ N=q(L+1),\quad X=4wq,\quad C_2=c^2,\quad F_2=f^2,
+ \quad B_a=I^2,\quad P=k+E(c-\eta).
+\]
+Replace the retained root coordinate by the integral change
+\[
+ \tau_{\rm old}=\tau_{\rm new}+E(c-\eta).
+\]
+Writing $b=E(c-\eta)$, the first Pell residual simplifies exactly to
+\[
+ (\tau+b)^2-(k+b)^2+(k+b)k-1
+ =\tau^2+(2\tau-k)b-1.
+\]
+It is cubic. All remaining residuals are at most cubic; the six definition rows vanish identically and are deleted. The resulting 19-row sum of squares in 32 integers is \texttt{integer/sextic32.json}. Its coefficient of $I^4g^2$ is one, from the square of $-I^2g+y^2-1$, proving exact degree six.
+
+Forgetting the six defined coordinates and subtracting $E(c-\eta)$ from the old root is inverse to the displayed restoration. Both maps are integer-polynomial maps on zero sets. Thus solvability and unsolvability are preserved without an extra sign or divisibility condition.
+
+\subsection{An octic in 27 integers}
+
+Instead define $k=1-V+jc+hE$ and eliminate eleven coordinates using
+\begin{align*}
+ L&=q^2-1,& N&=q^3,& X&=4wq,\\
+ C_2&=c^2,& F_2&=f^2,& B_a&=I^2,\\
+ g&=y^2-V^2,& \zeta&=k-\eta,& P&=k+E(c-\eta),\\
+ D&=4wq+ac+\gamma(4a+3),&&& \Delta&=a^2+4a+3.
+\end{align*}
+Here the root $\tau$ is unchanged. Every right side uses only retained coordinates. The eleven corresponding definition rows become identities. The remaining fourteen residuals have degree at most four. Their sum of squares is \texttt{integer/octic27.json}, with exact degree eight: the auxiliary row
+\[
+ I^2(V^2-y^2)+y^2-1
+\]
+gives coefficient one on $I^4V^4$ after squaring, and no other residual changes that coefficient. Forgetting and restoring the eleven coordinates are mutually inverse on zero sets.
+
+The three degree certificates are independent of the large coefficient values. The accompanying sparse-algebra checker verifies every deleted identity, every residual degree, the presence of every declared coordinate, and these literal coefficient-one certificates.
+
+\section{Rational Pell descent recovers a missing integer}\label{sec:descent}
+
+The second construction begins with a simple fact about two consecutive Pell coefficients. Its usefulness is that it converts a rational witness obtained by algebraic elimination into an integer witness.
+
+\begin{theorem}[Rational-coordinate integrality]\label{thm:saturation}
+Let $Q>1$ be an integer. If $V\in\Z$, $y\in\Q$, and
+\begin{equation}\label{eq:specialpell}
+ QV^2-(Q-1)y^2=1,
+\end{equation}
+then $y\in\Z$.
+\end{theorem}
+\begin{proof}
+The equation excludes $V=0$ and $y=0$. Change signs independently to assume $V>0$, $y>0$. Write $y=a/m$ in lowest terms with $m>0$. Clearing denominators gives
+\[
+ (Q-1)a^2=m^2(QV^2-1),
+\]
+so $m^2\mid Q-1$ and, in particular, $(Q-1)y$ is integral.
+
+Consider the norm-preserving transformation
+\begin{equation}\label{eq:descent}
+ V'=(2Q-1)V-2(Q-1)y,\qquad
+ y'=(2Q-1)y-2QV.
+\end{equation}
+The first coordinate is integral. The identity $(2Q-1)^2-4Q(Q-1)=1$ shows by expansion that $QV'^2-(Q-1)y'^2=1$.
+
+If $V>1$, then
+\[
+ y^2-V^2=\frac{V^2-1}{Q-1}>0,
+ \qquad
+ (QV)^2-((Q-1)y)^2=QV^2+Q-1>0.
+\]
+Thus $y>V$ and $QV>(Q-1)y$. Substituting into \eqref{eq:descent} gives
+\[
+ -V<V'<V.
+\]
+The preserved norm excludes $V'=0$.
+
+The numerator of $y'$ over denominator $m$ is $(2Q-1)a-2QVm$. Since $Q\equiv1\pmod m$, this numerator is congruent to $a$ modulo $m$ and is coprime to $m$. The reduced denominator remains exactly $m$.
+
+Apply absolute values again and repeat. A positive integer $|V|$ strictly decreases at each nonterminal step, while the reduced denominator stays fixed. The process reaches $|V|=1$, where the norm forces $y^2=1$ and hence $m=1$. Therefore the original $y$ was integral.
+\end{proof}
+
+No hypothesis that $Q$ is a square is needed. The integrality of $Q$ and $V$ is essential to the argument. The proof is an elementary descent, not a numerical extrapolation from small Pell solutions.
+
+\subsection{A two-witness merger}
+
+Let $d,\varrho>0$ and $Q>1$ be integers. For integer $V,n$, define
+\begin{align*}
+ h(u)&=(1-Q)u^2+2(1-Q)Vu+V^2-1,\\
+ a_*&=h(n),\qquad b_*=2(1-Q)(n+V),\\
+ A_*&=d a_*+(1-Q)\varrho,\\
+ \mathcal N&=A_*^2-d b_*^2\varrho.
+\end{align*}
+
+\begin{proposition}[Elimination with integral recovery]\label{prop:merger}
+Assume $b_*\ne0$. If $\mathcal N=0$, there are integers $i,u$ with
+\[
+ di^2=\varrho,\qquad h(u)=0,\qquad n=i+u.
+\]
+Conversely, those identities imply $\mathcal N=0$.
+\end{proposition}
+\begin{proof}
+From $\mathcal N=0$ define rational candidates
+\[
+ i=\frac{A_*}{d b_*},\qquad u=n-i.
+\]
+Then $di^2=\varrho$. Direct expansion gives
+\[
+ h(n-i)=a_*-b_*i+(1-Q)i^2=0.
+\]
+Writing $y=V+u$ turns this into $QV^2-(Q-1)y^2=1$. Theorem~\ref{thm:saturation} makes $y$, then $u$, then $i=n-u$, integral. The reverse implication follows from $A_*=d b_*i$.
+\end{proof}
+
+The supporting polynomial identity is
+\[
+ \left.\mathcal N\right|_{\varrho=di^2}
+ =d^2h(n-i)h(n+i).
+\]
+The identity alone does not establish the integer recovery; the descent is the decisive additional ingredient. Unlike a generic rational-root argument, it requires no coprimality between $d$ and $Q-1$.
+
+\section{One degree-82 equation in twelve positive integers}\label{sec:positive}
+
+\subsection{All inputs, coefficients, and registers}
+
+The twelve quantified unknowns are exactly
+\[
+ j,F,\alpha,t,T,X,Y,r,\eta,\zeta,n,\gamma\in\Z_{>0}.
+\]
+This family uses the \emph{whole compact source-44 tuple}, with $\beta=2^{590069}-1$~\cite{source44}. It is different from the source-34 tuple used by the integer family. Its $M_F$ is also already shifted. The four actual coefficient payloads and the finite reconstruction from the literal transition table are in \texttt{positive/native/}; no coefficient port remains unspecified.
+
+Define the following polynomial registers:
+\begin{align*}
+ J&=6j+1,& q&=\beta J+1,& C&=q-F-\alpha,\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,\\
+ a&=E+Y,& H&=4a+3,& \Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,& b_0&=X+ac.&&
+\end{align*}
+Set
+\begin{align*}
+ R&=((q-1)(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
+ r_0&=k-R-1,\qquad U=q^5,\\
+ D_*&=Ub_0+H(U\gamma+q^4X-r_0),\\
+ W&=(q-1)k+1,\qquad M=q^3(q-1),\\
+ B_t&=(qK_0+X)C-qF,\\
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t.
+\end{align*}
+The two inherited carrier residuals are
+\begin{align}
+ A_0&=Z^2-M^2\bigl(\ell(\ell+k)+1\bigr),\label{eq:A0}\\
+ A_1&=D_*^2-U^2\bigl(1+\Delta c^2\bigr).\label{eq:A1}
+\end{align}
+For the new merger put
+\begin{align*}
+ f&=t+1,& \varrho&=f^2-1,& d&=\Delta c^4,\\
+ Q&=\Delta\varrho,& V&=f^2(cT-R)-c,\\
+ a_*&=(1-Q)(n^2+2Vn)+V^2-1,\\
+ b_*&=2(1-Q)(n+V),\\
+ A_*&=d a_*+(1-Q)\varrho,\\
+ \mathcal N&=A_*^2-d b_*^2\varrho.
+\end{align*}
+The final single polynomial is
+\begin{equation}\boxed{\displaystyle
+ P_{12}=(1+A_0)(1+A_1)(1+\mathcal N)-1=0.}\label{eq:P12}\end{equation}
+Every operation in these formulas is addition, subtraction, or multiplication with a fixed nonnegative exponent. Named registers add no unknowns. The authoritative division-free circuit is \texttt{positive/equation.json}.
+
+\subsection{The product is equivalent to three equations}
+
+The fixed $\beta$ is odd and $J=6j+1$ is odd, so $q$ is even. Thus $M$ and $U$ are even. Equations \eqref{eq:A0}--\eqref{eq:A1} show that $A_0,A_1$ are squares modulo four. Also $b_*$ is even, so $\mathcal N$ is a square modulo four.
+
+If \eqref{eq:P12} holds, its three integer factors must each be $1$ or $-1$. A factor $-1$ would make its residual $-2\equiv2\pmod4$, impossible for a square modulo four. Hence
+\begin{equation}\label{eq:split}
+ P_{12}=0\quad\Longleftrightarrow\quad A_0=A_1=\mathcal N=0.
+\end{equation}
+This step does not assume that the residuals themselves are nonnegative.
+
+\subsection{Recovering the inherited positive witnesses}
+
+The key ordering of the carrier proof is summarized here; the complete retained source is package 61's \texttt{PROOF13.md} and \texttt{PROOF14.md}.
+
+From $A_0=0$, rational-square-root integrality gives $M\mid Z$ and a signed integer root $\tau=Z/M$. Reducing this divisibility modulo $q^3$ and modulo $q-1$ gives
+\[
+ q^3\mid Y,\qquad q-1\mid B_t.
+\]
+Write $s=Y/q^3>0$ and $b=B_t/(q-1)\in\Z$. The carrier identity becomes
+\[
+ \tau=\ell+k+r+s-Wb.
+\]
+Since $\tau^2=\ell(\ell+k)+1$ and $|\tau|<\ell+k$, positivity of $r,s,W$ implies $b>0$. Thus $B_t>0$. If $C\le0$, its defining formula would instead give $B_t<0$. Therefore $C>0$ is established at this early stage. The native bounds now give
+\[
+ 3q<R<q^4-2.
+\]
+
+The main carrier $A_1=0$ supplies an integral main Pell root. The first and main Pell classifications then imply, before either strong or auxiliary norm is used,
+\begin{equation}\label{eq:cbig}
+ c>8XY^3\ge8q^9>2R.
+\end{equation}
+For clarity, the first index cannot be one: that would force $k=2$, hence $c\le2Y+1$, while the main Pell ordinate has index at least two and is at least $2(a+2)>2Y+1$. The first index is consequently at least two, giving $k\ge4(2XY^2+1)$ and \eqref{eq:cbig}. The source proof verifies the main root's sign and the required divisibility before applying these classifications.
+
+In the new equation, $f=t+1\ge2$ and $T\ge1$. Therefore
+\[
+ V=f^2(cT-R)-c>\frac{f^2c}{2}-c\ge c>1.
+\]
+Since $n>0$ and $Q>1$, $b_*=2(1-Q)(n+V)<0$. In particular the denominator in Proposition~\ref{prop:merger} is nonzero at every candidate zero. There is no unchecked exceptional branch.
+
+The merger now yields integers $i,u$ satisfying
+\[
+ \Delta c^4i^2=f^2-1,\qquad
+ QV^2-(Q-1)(V+u)^2=1.
+\]
+The first gives the normalized strong Pell equation. The recovered $i,u$ need not initially be positive. Replace them by
+\[
+ i_+=|i|,\qquad u_+=|V+u|-V.
+\]
+Because $di^2=\varrho>0$, $i_+>0$. Moreover
+\[
+ (V+u)^2-V^2=\frac{V^2-1}{Q-1}>0,
+\]
+so $u_+>0$. The two Pell equations remain true. Together with the unchanged carrier coordinates, these give exactly a positive package-61 solution, using its parameter $j_{61}=2j$. Its inherited soundness theorem gives a finite ZFC refutation.
+
+\subsection{Completeness}
+
+A finite refutation supplies the canonical compact-source witnesses used by package 61. Its native base is $B=2^{590069}$ and its canonical number of cells is odd. Thus
+\[
+ J=1+B+\cdots+B^{m-1}
+\]
+is odd and, since $B\equiv-1\pmod3$ and $m$ is odd, satisfies $J\equiv1\pmod3$. Hence $J\equiv1\pmod6$. Canonical $J>1$, so $j=(J-1)/6$ is positive.
+
+Retain the canonical strong solution $f,i$ and positive auxiliary gap $u$. Set
+\[
+ t=f-1>0,\qquad n=i+u>0.
+\]
+The two carriers still vanish, while the converse of Proposition~\ref{prop:merger} gives $\mathcal N=0$. No doubling of the strong index and no new congruence condition on $f$ is needed. This proves completeness and therefore \eqref{eq:goal} for $P_{12}$.
+
+\section{Exact degree and arithmetic cost}\label{sec:degree}
+
+All twelve inputs have degree one; the four fixed coefficient ports have degree zero. The exact degrees of the three residuals are
+\[
+ \deg A_0=15,\qquad \deg A_1=17,\qquad \deg\mathcal N=50.
+\]
+Here the carrier degrees use genuine cancellations in their norm differences. A naive maximum-degree traversal of the unexpanded circuit is not an exact certificate.
+
+Write the leading forms
+\begin{align*}
+ q_0&=6\beta j,& k_0&=\eta+\zeta,& c_0&=k_0Y,\\
+ \Delta_0&=X^2Y^2,& R_0&=q_0^3(q_0-F),\\
+ B_{t,0}&=(K_0q_0+X)(q_0-F-\alpha)-q_0F.
+\end{align*}
+The relevant degree leaders are
+\begin{align*}
+ \operatorname{in}_{15}(A_0)&=-2q_0^8k_0^2XY^2B_{t,0},\\
+ \operatorname{in}_{17}(A_1)&=8q_0^{10}k_0X^2Y^3\gamma,\\
+ \operatorname{in}_{50}(\mathcal N)&=4\Delta_0^4c_0^8t^8R_0^2n^2.
+\end{align*}
+For the last identity, $d,\varrho,Q,V,a_*,b_*,A_*$ have degrees $12,2,6,6,13,12,25$. The term $db_*^2\varrho$ has degree 38, so it cannot cancel the degree-50 term of $A_*^2$.
+
+Multiplying the three nonzero leaders gives
+\begin{equation}\label{eq:top82}
+ \operatorname{in}_{82}(P_{12})=
+ -64q_0^{24}(q_0-F)^2k_0^{11}X^{11}Y^{21}t^8n^2\gamma B_{t,0}.
+\end{equation}
+In particular the coefficient of
+\[
+ j^{24}F^2\eta^{11}X^{12}Y^{21}t^8n^2\gamma\alpha
+\]
+is $64(6\beta)^{24}>0$. The displayed exponents sum to 82. This proves exact degree on the actual coefficient slice, independently of $K_0,M_C,M_F$.
+
+The delivered evaluator has \Pcost\ live binary operations. Its arithmetic registers are shared expressions, not additional Diophantine unknowns. The separate checker reconstructs the direct formulas, checks exact residual identities, proves the cancellation-sensitive leading forms, and checks all input and fixed-port occurrences. Rebuilding is deterministic apart from explicitly excluded PDF metadata or compression-header differences.
+
+The old degree-118/104-operation point and the new degree-82/\Pcost-operation point use the same twelve-positive domain and the same whole compact tuple. The comparison is therefore direct. It says nothing about unrestricted twelve-integer solvability, and it does not displace the separate nine-positive or ten-integer high-degree presentations.
+
+\section{Evidence, reproduction, and proof boundaries}\label{sec:status}
+
+\subsection{What the archive contains}
+
+The archive contains this complete \LaTeX\ source and compiled PDF; exact JSON specifications of all four polynomials; actual fixed integer payloads with hashes; source transition/tile data and coefficient builders; complete component proofs and independent internal reviews; exact verification scripts and their receipts; and the original source licenses and attribution notices.
+
+The polynomial files are ordinary finite recipes for integer polynomials. Neither square roots, rational division, inequalities, bit operations, nor auxiliary quantifiers occur in their actual evaluators. Such expressions occur only in proofs or the once-for-all construction of fixed coefficients.
+
+From the extracted root, run
+\begin{verbatim}
+python3 verify.py
+\end{verbatim}
+The root driver performs the component checks in temporary copies. Both components use only Python's standard library, with no symbolic-algebra package dependency. The included README gives the precise commands and dependency requirements. Recompile this paper from its directory with two runs of \texttt{pdflatex -interaction=nonstopmode -halt-on-error report.tex}.
+
+\subsection{What was verified computationally}
+
+The integer component reconstructs the authentic native tuple, verifies its pinned source hashes, materializes both cone weights, and checks the fixed numerical inequality. Exact sparse polynomial arithmetic checks all 17 eliminated coordinate definitions, the first-root cancellation, all residual degrees, all declared variables, and the three coefficient-one degree certificates. The positive component checks its exact norm identities and direct formulas, its carrier leaders and degree-82 certificate, its circuit cost, and its compact coefficient binding. Separate internal reviews examine the universal proofs and exceptional branches.
+
+Small sign, rotation, and rational-coordinate examples are diagnostics. They are not proofs of the unbounded compiler theorem or of ZFC consistency. No computation in this archive searches for a ZFC contradiction, and no claimed numerical check decides whether any of these final equations has a solution.
+
+\subsection{The inherited interface is explicit}
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.64\textwidth}}
+\toprule
+Layer & Status in this contribution\\
+\midrule
+Cone sign/box lemmas & Complete elementary proofs; independent internal review.\\
+Canonical anchor bounds & Derived from the pinned native layout/controller; exact fixed numeral bounds checked.\\
+Quartic and companions & Literal finite equations, exact polynomial identities and exact degree certificates.\\
+Rational Pell integrality & Complete denominator-preserving descent proof.\\
+Twelve-variable merger & Complete rational-to-integer recovery, nonzero-denominator and positive-lift proofs.\\
+Native/Pell to refutations & Inherited mathematical theorems; immediate source interfaces are retained, with transitive references fixed by the repository snapshot.\\
+New end-to-end Lean/Rocq proof & Not supplied. Existing checked repository endpoints are distinct.\\
+Encoded object-language ZFC proof & Not supplied; remains a separate formalization task.\\
+Global optimality or literature priority & Not established.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The equivalence to consistency is a composition of mathematical theorems; the finite tests do not replace any of its universal premises. The newly derived parts are complete enough to be formalized directly. A useful next formalization order is: the cone lemmas and canonical interval adapter; the integer-polynomial restoration maps; the rational Pell descent; the two-witness merger; then the exact fixed-coefficient instantiations.
+
+\section{Why these ideas may apply more broadly}
+
+\subsection{Use a canonical family instead of preserving all witnesses}
+
+A Diophantine presentation only needs to preserve the existence of a witness. If a compiler supplies a canonical family with fixed leading digits, different positive coordinates can be normalized by fixed weights into a common box. A cone can then impose their simultaneous sign condition with one universal positive-value representation. This reduces existential variables while preserving low degree. The necessary proof obligation is not just the cone's sign property; it is that \emph{every accepting computation has an appropriate canonical witness inside that cone}.
+
+The same distinction explains why several simpler-looking guard replacements fail. Positive numbers need not satisfy the cone inequality. An arbitrary affine normalization need not preserve the source masks or transport relation. Here the normalization is justified by actual immutable native anchors and the actual controller's whole-cell rotations.
+
+\subsection{Recover integrality before paying for a congruence}
+
+When a norm eliminates two witnesses, it often produces rational candidates. A generic repair introduces further congruence conditions or multiplies by large denominators, increasing degree. The special adjacent-coefficient Pell equation admits an integral descent, so one of its coordinates cannot have a nontrivial rational denominator when the other is integral. Once this fact is used, the recovered difference and the second merged witness are automatically integral as well.
+
+The descent theorem is independent of K215, ZFC, the native tuple, and Jones reduction. It can be reused wherever the same auxiliary norm occurs. The concrete reduction from degree 118 to degree 82 is one application; it is not a theorem that every Pell-based compiler admits the same variable saving.
+
+\subsection{What this iteration does and does not resolve}
+
+This iteration supplies four explicit new presentations and two structural proofs. It improves several current repository tradeoffs. It does not settle which single presentation is globally simplest, lower the broad nine-natural/ten-integer bounds, or replace the inherited semantic calibration with a new kernel-checked proof. The archive is intended as an additive, reviewable research contribution beside the current proposals.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo} Vladimir Reshetnikov, \emph{ProveIt}, comparison snapshot \pin. \repo. The collection is \texttt{Computability/DiophantineConsistency/con-zfc-diophantine-forms}.
+\bibitem{q41} ProveIt, package 64, \emph{Structural reductions}, especially \texttt{integer41/quartic41.json}, \texttt{PROOF41.md}, and \texttt{PROOF44.md}. Exact copies and Git-blob identities are retained in \texttt{integer/upstream/}.
+\bibitem{source34} ProveIt, package 34, \emph{A mixed-radix, parity-separated, unrounded coefficient tuple}, \texttt{coefficients/COEFFICIENT\_PROOF.md}, native builder, and retained Wang-language/compiler proofs. Exact copies are retained in \texttt{integer/upstream/coefficients/}.
+\bibitem{q62} ProveIt, package 62, \emph{Sign recovery and centered norms}, the degree-six 35-integer and degree-eight 30-integer comparison points. Pinned comparison metadata is included in the root review material.
+\bibitem{p61} ProveIt, package 61, \emph{Congruence carriers and a divided Pell norm}, particularly \texttt{positive/PROOF13.md}, \texttt{PROOF14.md}, and the report. Exact copies are retained in \texttt{positive/upstream/source61/}.
+\bibitem{source44} ProveIt, package 44, compact 590069-bit native tuple, \texttt{native/PROOF.md}, \texttt{build\_coefficients.py}, and \texttt{SOURCE\_PINS.json}. The archive retains the complete coefficient payloads and the pinned source dependencies.
+\bibitem{explicit} ProveIt active research, \texttt{EXPLICIT\_EQUATION.md}, \texttt{DIRECT\_GRAPH.md}, and \texttt{OBJECT\_ZFC.md}, for the distinction between closed executable checked equations and an internal object-language ZFC derivation.
+\bibitem{bdhms} Jonas Bayer, Marco David, Malte Ha\ss ler, Yuri Matiyasevich, and Dierk Schleicher, \emph{Diophantine equations over $\Z$: universal bounds and parallel formalization}, arXiv:2506.20909, version 3, 22 October 2026. \url{https://arxiv.org/abs/2506.20909}.
+\end{thebibliography}
+\end{document}

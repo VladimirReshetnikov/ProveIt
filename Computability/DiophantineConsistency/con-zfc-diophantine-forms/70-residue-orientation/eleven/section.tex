@@ -1,0 +1,422 @@
+\section{Three-root transport: eleven positive variables, degree 325}
+\label{rt11:section}
+
+There is a division-free polynomial in eleven strictly positive integer
+unknowns of exact total degree $325$, evaluated by $113$ binary arithmetic
+operations, whose lack of positive solutions is equivalent in ZFC to
+$\operatorname{Con}(\mathrm{ZFC})$. At the pinned repository state the
+eleven-positive equation in package~52 has degree $954$ and the same
+$113$-operation cost. The construction below removes $629$ degrees while
+retaining that operation count. Its two residuals have degrees $312$ and
+$13$ and together require $110$ operations.
+
+The new ingredient is a particular combination of the normalized positive
+auxiliary reconstruction, the weighted first carrier, and an elementary
+denominator argument. Conjugate norms, positive majorants, radical
+separation, quotient absorption and unit-product finalizers already occur
+in package~52 and its predecessors; those general methods are not claimed
+as new. In package~52 the auxiliary radicand depends on the signed strong
+Pell root and the main Pell root is eliminated inside the same norm.
+Here the normalized auxiliary expression depends only on its square.
+The first, strong and auxiliary roots therefore enter a direct octic
+sum norm, while the inexpensive adaptive main equation remains separate.
+
+\subsection{Fixed data and the literal equation}
+
+Use precisely the coherent tuple $(\beta,K_0,M_C,M_F)$ of
+Section~\ref{sec:root-transfer}, with $\beta=2^{590069}-1$ and the already
+shifted $M_F$. These are fixed integer numerals, not parameters.
+Their payloads and source hashes are supplied again in this component.
+The authentic mask inequalities used below are
+\[
+ 0<M_C<\beta,\qquad 0<M_F<2\beta,\qquad K_0>0.
+\]
+The eleven unknowns are exactly
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,\gamma\in\mathbb Z_{>0}.
+\]
+Define polynomial registers
+\begin{align*}
+ J&=3j+1,&q&=\beta J+1,&C&=q-F-\alpha,\\
+ E&=XY,&k&=\eta+\zeta,&c&=kY+\eta,\\
+ a&=E+Y,&H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,&M&=q^3(q-1),&B_t&=(qK_0+X)C-qF,\\
+ D_\tau&=\ell(\ell+k)+1.&&&
+\end{align*}
+Set
+\begin{align}
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)+(M_C+qM_F)J,
+       \label{rt11:R}\\
+ \widehat R&=q^3(q+F+\alpha),\nonumber
+\end{align}
+and then
+\begin{align}
+ I&=iq(q-1)c^2,&D_f&=1+\Delta I^2,&Q&=\Delta(D_f-1),
+       \label{rt11:strong}\\
+ \delta&=Q-1,&V&=D_f(cT-R)-c,&D_y^{\rm num}&=QV^2-1,
+       \nonumber\\
+ \overline V&=D_f(cT+\widehat R),&L&=3\overline V,&W&=1+(q-1)L.
+       \label{rt11:majorant}
+\end{align}
+The first transport register is
+\begin{equation}
+ \overline Z=M(\ell+k+n+L)+(q-1)Y-q^3WB_t.
+ \label{rt11:Z}
+\end{equation}
+The adaptive main carrier is unchanged:
+\begin{align}
+ r_0&=k-R-1,& S&=4qY,& U&=qS,\nonumber\\
+ D_*&=U(X+ac)+H(U\gamma+SX-r_0),\nonumber\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).
+ \label{rt11:main}
+\end{align}
+
+The following schedule evaluates the octic norm using only integer
+polynomial operations:
+\begin{align}
+ \mathcal A&=M^2D_\tau,&
+ \mathcal B&=M^2D_f,&
+ \mathcal C&=M^2D_y^{\rm num},\nonumber\\
+ T_n&=\delta^2\mathcal A\mathcal B,&
+ R_n&=\delta\mathcal C,&
+ J_n&=\delta(\overline Z^2-\mathcal A-\mathcal B)-\mathcal C,
+       \nonumber\\
+ N_*&=J_n^2-4\bigl(T_n+R_n(\mathcal A+\mathcal B)\bigr),
+       \nonumber\\
+ N_8&=N_*^2-64T_nR_n\overline Z^2.
+ \label{rt11:norm}
+\end{align}
+The equation is
+\begin{equation}
+ \boxed{\ P_{11}=N_8+A_1+N_8A_1=0.\ }
+ \label{rt11:equation}
+\end{equation}
+All the displayed registers are abbreviations, with no additional
+quantified witnesses. The supplied JSON is a literal binary
+$+,-,\times$ circuit; even multiplication by a small integer is charged.
+The rational quantity
+\[
+ D_y=\frac{D_y^{\rm num}}\delta
+\]
+is used only in the proof and is never evaluated by the polynomial circuit.
+
+\subsection{An elementary rational-root extraction lemma}
+
+\begin{lemma}
+\label{rt11:rational}
+Let $d_1,d_2,d_3$ be distinct positive rational numbers. Suppose signed
+real roots $x_s^2=d_s$ have a nonzero rational sum $t=x_1+x_2+x_3$.
+Then all three $x_s$ are rational.
+\end{lemma}
+\begin{proof}
+Put
+\[
+ u=\frac{t^2-d_1-d_2-d_3}{2},\qquad
+ v=\frac{u^2-d_1d_2-d_1d_3-d_2d_3}{2t}.
+\]
+These are rational. Expansion gives
+$u=x_1x_2+x_1x_3+x_2x_3$ and $v=x_1x_2x_3$. Consequently
+\[
+ d_1t+v=x_1(x_1+x_2)(x_1+x_3),\qquad
+ x_1=\frac{d_1(d_1+u)}{d_1t+v}.
+\]
+The denominator is nonzero. Indeed, $x_1\ne0$, while either
+$x_1=-x_2$ or $x_1=-x_3$ would contradict distinctness of the radicands.
+The two cyclic formulas recover $x_2,x_3$ as rational numbers as well.
+This proof accommodates every coincidence or dependence among square
+classes; it assumes no independent specialized Galois automorphisms.
+\end{proof}
+
+\subsection{Unconditional radical separation and the positive guard}
+
+All bounds in this subsection hold at every positive input tuple, before
+assuming any residual vanishes. In particular they do not assume $C>0$,
+$q^3\mid Y$, or a recovered Pell index. We have
+\[
+ q\ge16,\quad k\ge2,\quad c\ge3,\quad a\ge2,\quad
+ \Delta\ge15,\quad I\ge c^2,\quad \ell<ac,\quad k<c.
+\]
+Thus
+\[
+ \ell(\ell+k)<a(a+1)c^2<\Delta I^2,
+ \qquad 1<D_\tau<D_f<Q.
+\]
+Write $t=\sqrt{D_\tau}$ and $f=\sqrt{D_f}$ for positive real roots.
+Then
+\begin{equation}
+ t<\ell+k<(a+1)c,
+ \qquad f>(a+1)I\ge(a+1)c^2\ge3c^2.
+ \label{rt11:tf}
+\end{equation}
+
+The integer $b=cT-R$ determines two cases. If $b=0$, then $V=-c$.
+If $b\ne0$, then $|V|\ge D_f-c>1$. Hence $|V|>1$ in both cases and
+\begin{equation}
+ D_y=V^2+\frac{V^2-1}{Q-1}>V^2>1.
+ \label{rt11:Dy}
+\end{equation}
+The radicands $D_\tau,D_f,D_y$ are pairwise distinct. For if
+$D_y=D$ with $D\in\{D_\tau,D_f\}$, then
+\[
+ Q(D-V^2)=D-1,
+\]
+which is impossible because $0<D-1<Q$.
+
+Let $y=\sqrt{D_y}>0$. If $b=0$, then $Q>c^2$ implies
+$D_y<c^2+1$ and $y<c+1$, whereas \eqref{rt11:tf} gives
+\[
+ f-t>(a+1)c(c-1)>c+1.
+\]
+Thus $f>t+y$. If $b\ne0$, the bound $f>3c^2>c+2$ implies
+$f^2-c>2f$, so
+\[
+ y>|V|\ge D_f-c>2f>f+t.
+\]
+In either case one root exceeds the sum of the other two. Therefore no
+signed sum $\pm t\pm f\pm y$ is zero.
+
+It remains to check that the polynomial $L$ bounds the two roots to be
+transferred out of the positive coordinate. The authentic masks give
+\[
+ (M_C+qM_F)J<(q-1)(1+2q)<2q^2.
+\]
+The triangle inequality applied to \eqref{rt11:R} then gives
+\[
+ |R|<q^4+Fq^3+(\alpha+2)q^2
+     <q^3(q+F+\alpha)=\widehat R,
+\]
+because $\alpha(q-1)>2$. Both sides are integers, and $D_f>c$; hence
+\[
+ |V|\le D_f(cT+|R|)+c
+       <D_f(cT+\widehat R)=\overline V.
+\]
+Also $\overline V>D_f>f$ and, by \eqref{rt11:Dy},
+$y<2|V|<2\overline V$. We obtain the uniform bounds
+\begin{equation}
+ L=3\overline V>f+y,
+ \qquad L>c>k.
+ \label{rt11:Lbound}
+\end{equation}
+
+\subsection{What the cleared norm forces}
+
+The universal octic identity is
+\begin{align}
+ F_8(x;a,b,c)
+ &:=\bigl((x^2-a-b-c)^2-4(ab+ac+bc)\bigr)^2-64abcx^2
+       \nonumber\\
+ &=\prod_{\epsilon_1,\epsilon_2,\epsilon_3\in\{-1,1\}}
+       \bigl(x-\epsilon_1\sqrt a-\epsilon_2\sqrt b
+                    -\epsilon_3\sqrt c\bigr).
+ \label{rt11:genericnorm}
+\end{align}
+This is a polynomial identity, verified by multiplying the eight formal
+conjugates. The center in \eqref{rt11:norm} also equals
+\[
+ \delta^2\bigl((\overline Z^2-\mathcal A-\mathcal B)^2
+                       -4\mathcal A\mathcal B\bigr)
+ -2\delta\mathcal C(\overline Z^2+\mathcal A+\mathcal B)
+ +\mathcal C^2.
+\]
+Consequently
+\begin{equation}
+ N_8=\delta^4F_8
+       (\overline Z;M^2D_\tau,M^2D_f,M^2D_y).
+ \label{rt11:clearing}
+\end{equation}
+All three specialized radicands are positive, and $M,\delta>0$.
+If $N_8=0$, one of its eight real factors vanishes. There are signed
+roots satisfying
+\begin{equation}
+ \frac{\overline Z}{M}=\tau_*+f_*+y_*,
+ \qquad \tau_*^2=D_\tau,\quad f_*^2=D_f,\quad y_*^2=D_y.
+ \label{rt11:signedsum}
+\end{equation}
+The preceding separation proves that this rational sum is nonzero and
+its three radicands are distinct. Lemma~\ref{rt11:rational} makes all
+three signed roots rational. Since $D_\tau,D_f$ are integers,
+rational-square integrality yields $\tau_*,f_*\in\mathbb Z$.
+
+The auxiliary root becomes integral for a different, elementary reason.
+Let $d$ be its positive reduced denominator. Equation
+\eqref{rt11:signedsum} gives $d\mid M$, and
+$y_*^2=D_y^{\rm num}/\delta$ gives $d^2\mid\delta$.
+Every prime divisor of $M=q^3(q-1)$ divides $q(q-1)$ and therefore divides
+$I=iq(q-1)c^2$ and $Q=\Delta^2I^2$. It cannot divide $\delta=Q-1$.
+Thus
+\[
+ \gcd(M,\delta)=1,\qquad d=1,
+\]
+and $y_*$ is an integer. This uses only the prime support of $M$; no
+claim that $M\mid Q$ is needed.
+
+\subsection{Soundness and completeness}
+
+\begin{theorem}
+\label{rt11:theorem}
+The equation \eqref{rt11:equation} has a strictly positive solution if
+and only if the inherited normalized compiler has a strictly positive
+solution. Hence, using the same compiler and refutation calibration,
+ZFC proves that \eqref{rt11:equation} has no positive solution if and
+only if $\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+\begin{proof}
+First, the single equation is equivalent to $N_8=A_1=0$. Indeed,
+\[
+ P_{11}=(1+N_8)(1+A_1)-1.
+\]
+Both residuals are squares modulo $4$: this follows directly from
+\eqref{rt11:norm} and from $4\mid U$ in \eqref{rt11:main}.
+At a zero of $P_{11}$, the two integer factors are therefore both $1$;
+the alternative of both being $-1$ would force a residual to be
+$-2\equiv2\pmod4$. The converse is immediate.
+
+For soundness, recover the signed integral roots in
+\eqref{rt11:signedsum}, and set
+\[
+ i_{\rm old}=iq(q-1),\quad f_{\rm old}=|f_*|,\quad
+ y_{\rm old}=|y_*|,\quad u=y_{\rm old}-V,\quad
+ r=n+L-f_*-y_*.
+\]
+Equation \eqref{rt11:Dy} gives $y_{\rm old}>|V|$, so $u>0$.
+The uniform bound \eqref{rt11:Lbound} gives $r>0$ for every sign choice.
+The strong equation is
+\[
+ f_{\rm old}^2-\Delta(i_{\rm old}c^2)^2=1.
+\]
+The auxiliary root equation is exactly
+\[
+ y_{\rm old}^2-Q(y_{\rm old}^2-V^2)=1,
+\]
+which is the normalized auxiliary residual with $y_{\rm old}=V+u$.
+Finally the first transport register with weight $h_*=L$ becomes
+\[
+ Z=M(\ell+k+r)+(q-1)Y-q^3WB_t
+   =\overline Z-M(f_*+y_*)=M\tau_*.
+\]
+It satisfies $Z^2=M^2D_\tau$. The weighted transport and adaptive main
+carrier theorem from Section~\ref{sec:root-transfer} now applies, with
+all its witnesses positive, and recovers a normalized compiler solution.
+The signed roots must be retained in the definition of $r$; absolute
+values are taken only in the strong and auxiliary witnesses.
+
+For completeness, start with a canonical normalized compiler solution.
+Keep its outer quantities, including $q,X,Y,k,c,a,R$ and its first
+positive Pell root $\tau$. The canonical facts needed from the weighted
+transport theorem are
+\[
+ R\equiv3\pmod4,\quad c=\psi_{a+2}(R),\quad
+ t_0=\frac{B_t}{q-1}=q(z_{\rm source}-1)\ge q,
+ \quad s=\frac{Y}{q^3}<k,\quad \tau>\ell.
+\]
+We must choose the strong Pell solution with the additional divisibility
+$q(q-1)c^2\mid I$; this is not an assumption about a preselected source
+witness. Put $m_0=q(q-1)c^2$ and consider
+\[
+ U_0=\begin{pmatrix}a+2&\Delta\\1&a+2\end{pmatrix}.
+\]
+Its determinant is $1$, so its reduction belongs to the finite group
+$\mathrm{SL}_2(\mathbb Z/m_0\mathbb Z)$. A positive power is the
+identity. Since the top-left and lower-left entries of $U_0^v$ are
+$\chi_{a+2}(v)$ and $\psi_{a+2}(v)$, a positive multiple of that order
+gives positive integers $f,I$ with
+\[
+ f^2-\Delta I^2=1,\qquad m_0\mid I.
+\]
+Set $i=I/m_0>0$. The positive auxiliary reconstruction lemma in the
+pinned package~61 report (its label \texttt{lem:auxcomplete}) applies to
+every such strong solution: its hypotheses are $R\equiv3\pmod4$,
+$c=\psi_{a+2}(R)$ and $c\mid I$. It supplies positive $T,u$ and
+$y=V+u>0$ satisfying the normalized auxiliary equation. Thus the stronger
+divisibility preserves the required reconstruction promises.
+
+Only after choosing these roots and $T$ do we compute
+$\widehat R,\overline V,L,W$. Choose
+\[
+ r=Wt_0+\tau-\ell-k-s.
+\]
+Then
+\[
+ r>qW-2k=q+q(q-1)L-2k>L,
+\]
+using $q\ge16$ and $L>k$. Consequently
+\[
+ n=r-L+f+y>0.
+\]
+It follows that $\overline Z=M(\tau+f+y)$, so the norm vanishes.
+The unchanged adaptive main construction supplies positive $\gamma$
+with $A_1=0$. Its canonical repunit choice also gives $J=3j+1$ with
+$j>0$, as in Section~\ref{sec:root-transfer}. This completes the lift.
+The order of choices was the strong pair, the auxiliary pair, the
+majorant, and then the transport coordinate; there is no circular
+choice of witnesses or unproved enlargement of a special index.
+\end{proof}
+
+\subsection{Exact degree, circuit cost and verification boundary}
+
+The ordinary total degrees in the eleven supplied unknowns are
+\[
+\begin{array}{c|rrrrrrrrr}
+\text{register}&I&D_f&Q&V&L&W&\overline Z&D_y^{\rm num}&\mathcal C\\\hline
+\text{degree}&7&18&22&22&22&23&28&66&74
+\end{array}
+\]
+and $\deg\mathcal A=16$, $\deg\mathcal B=26$.
+In the expanded expression for $N_*$, the term
+$\delta^2\overline Z^4$ has degree $156$, while the other two groups
+have degrees at most $152$ and $148$. The norm tail has degree $238$,
+below $2\cdot156$. Thus the top part of $N_8$ is
+$Q_0^4\overline Z_0^8$, of degree $312$.
+
+For an explicit certificate, set
+\[
+ q_0=3\beta j,\qquad k_0=\eta+\zeta,\qquad
+ B_{t,0}=(K_0q_0+X)(q_0-F-\alpha)-q_0F.
+\]
+The relevant leading forms are
+\begin{align*}
+ Q_0&=i^2q_0^4k_0^4X^4Y^8,\\
+ \overline Z_0&=-3i^2q_0^{11}k_0^4X^2Y^6
+                      (q_0+F+\alpha)B_{t,0},\\
+ (A_1)_{13}&=32q_0^2k_0X^2Y^4
+                   \bigl(4q_0^2Y\gamma+q_0^3(q_0-F)\bigr).
+\end{align*}
+The apparent degree-$14$ terms of $A_1$ cancel; the last expression is
+verified by exact sparse polynomial expansion, not by gate-degree
+propagation. Therefore the degree-$325$ part of $P_{11}$ is
+\begin{align*}
+ 2^5 3^8\,i^{24}q_0^{106}k_0^{49}X^{34}Y^{84}
+ (q_0+F+\alpha)^8B_{t,0}^8
+ \bigl(4q_0^2Y\gamma+q_0^3(q_0-F)\bigr).
+\end{align*}
+Its coefficient of
+\begin{equation}
+ j^{108}i^{24}\eta^{49}X^{42}Y^{85}\alpha^{16}\gamma
+ \label{rt11:coefficientmonomial}
+\end{equation}
+is exactly
+\[
+ 2^7 3^8(3\beta)^{108}>0.
+\]
+Indeed the $\gamma$ term fixes the final factor, and minimum $j$ degree
+reduces the two remaining parenthesized powers to
+$X^8(F+\alpha)^{16}$, whose $\alpha^{16}$ coefficient is $1$.
+This certifies degree $325$ on the actual fixed coefficient slice; no
+specialization of $K_0,M_C,M_F$ can cancel the selected coefficient.
+
+The literal circuit has $67$ multiplications, $29$ additions and
+$17$ subtractions, for $113$ operations. Removing the three-operation
+finalizer leaves $110$ operations for the two-residual system. The
+normal and optimized-Python replay receipts check byte-identical circuit
+regeneration, input and gate liveness, every polynomial register contract,
+the formal octic identity, denominator clearing, rational-extraction
+identities, the main-Pell cancellation, the exact degree certificate,
+and the complete fixed payloads and retained source hashes.
+An independent audit uses a separate sparse-ring implementation and
+does not import the construction builder.
+
+These checks certify finite algebra and data integrity. The existence
+reduction is the proof above together with the preceding weighted carrier
+theorem; the unbounded compiler and K215 refutation calibration remain
+inherited mathematical dependencies. No end-to-end proof-assistant
+certificate, global minimality theorem, or proof of consistency is claimed.

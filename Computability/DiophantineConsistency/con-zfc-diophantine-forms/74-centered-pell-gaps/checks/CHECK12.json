@@ -1,0 +1,132 @@
+{
+  "status": "PASS",
+  "checker": "independent centered12 stdlib checker",
+  "builder_imported": false,
+  "upstream_programs_executed": false,
+  "coefficient_payloads": [
+    {
+      "port": "beta",
+      "bits": 590069,
+      "sha256": "0664a868cbfef9869ea05c40a1c445563f685ff857092594c1c1223bc4b21f9d"
+    },
+    {
+      "port": "K0",
+      "bits": 592884,
+      "sha256": "c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e"
+    },
+    {
+      "port": "MC",
+      "bits": 590069,
+      "sha256": "6007cabd5f5228618e8fb613f386d8fc3692a24520d6e4cd72af0262aae1ade4"
+    },
+    {
+      "port": "MF",
+      "bits": 590070,
+      "sha256": "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737"
+    }
+  ],
+  "local_examples": {
+    "canonical_abstract_pell_examples": 36,
+    "B_zero_exclusion_examples": 120,
+    "scope": "local elimination only; not complete compiler or refutation witnesses"
+  },
+  "circuits": [
+    {
+      "file": "circuits/positive12_product.json",
+      "sha256": "24bdaecb4fea661de89871946225ffeac029af64f926da22edde48540fa8ea5a",
+      "graph": {
+        "operations": 100,
+        "system_operations": 94,
+        "breakdown": {
+          "*": 55,
+          "+": 27,
+          "-": 18
+        }
+      },
+      "outer": {
+        "matched_outer_registers": 26,
+        "A0_terms": 13128,
+        "A1_terms": 4417,
+        "V_terms": 1978,
+        "residual_degrees": [
+          15,
+          13,
+          82
+        ]
+      },
+      "norm": {
+        "abstract_norm_variables": [
+          "a",
+          "I",
+          "V",
+          "n"
+        ],
+        "abstract_norm_terms": 276,
+        "weighted_degree": 82,
+        "unique_weighted_leading_term": "4*a^8*I^6*V^2",
+        "full_outer_norm_expanded": false
+      },
+      "finalizer": {
+        "mode": "product",
+        "exact_degree": 110,
+        "leading_terms": 936,
+        "nonzero_actual_coefficient_certificate": "64*(6*beta)^18 at j^18 F^2 alpha gamma i^10 X^16 Y^39 eta^23"
+      },
+      "numeric": {
+        "actual_tuple_modular_evaluations": 64,
+        "mod_four_positive_assignments": 128,
+        "diagnostics_are_not_consistency_tests": true
+      },
+      "malformed_controls_rejected": 5
+    },
+    {
+      "file": "circuits/positive12_sos.json",
+      "sha256": "6e6e8007c30f217578f40a086266102bc86b2012e2cd9eea1dc958a65fb02006",
+      "graph": {
+        "operations": 99,
+        "system_operations": 94,
+        "breakdown": {
+          "*": 56,
+          "+": 26,
+          "-": 17
+        }
+      },
+      "outer": {
+        "matched_outer_registers": 26,
+        "A0_terms": 13128,
+        "A1_terms": 4417,
+        "V_terms": 1978,
+        "residual_degrees": [
+          15,
+          13,
+          82
+        ]
+      },
+      "norm": {
+        "abstract_norm_variables": [
+          "a",
+          "I",
+          "V",
+          "n"
+        ],
+        "abstract_norm_terms": 276,
+        "weighted_degree": 82,
+        "unique_weighted_leading_term": "4*a^8*I^6*V^2",
+        "full_outer_norm_expanded": false
+      },
+      "finalizer": {
+        "mode": "sos",
+        "exact_degree": 164,
+        "leading_terms": 205,
+        "nonzero_actual_coefficient_certificate": "16*(6*beta)^12 at j^12 F^4 i^20 X^24 Y^64 eta^40"
+      },
+      "numeric": {
+        "actual_tuple_modular_evaluations": 64,
+        "mod_four_positive_assignments": 128,
+        "diagnostics_are_not_consistency_tests": true
+      },
+      "malformed_controls_rejected": 5
+    }
+  ],
+  "proof_boundary": "Finite algebra, exact degree and graph/data checks; the unbounded semantic equivalence uses the written proof and named inherited compiler/Pell results."
+}

@@ -1,0 +1,261 @@
+\section{Twelve positive variables: an adaptive carrier and a centered norm}
+\label{p12:section}
+
+This companion improves package 61's twelve-positive-variable equation
+from degree $118$ and $104$ binary operations to degree $110$ and $102$
+operations \cite{p61}. The first carrier is retained; the adaptive main carrier of package 65
+lowers one residual degree \cite{p65}, while a centered auxiliary norm
+eliminates two positive witnesses with a simpler completeness argument.
+The witness domain remains strictly positive integers.
+
+The coefficients in this section are the \emph{whole compact package-44
+native tuple}, independently of the source-34 tuple used by the integer
+constructions above:
+\[
+ B=2^{590069},\qquad \beta=B-1,\qquad
+ K_0=D_C+BD_R,\qquad M_C,\qquad M_F=M_F^{\rm native}+B-1.
+\]
+The last three numerals, their finite generator and their exact byte
+bindings are supplied in \path{positive12/native/}; $M_F$ is already
+shifted. All four ports must be specialized together. The inherited
+compact adapter supplies the native computation interpretation and
+canonical positive witnesses; the new steps below are elementary
+existence reductions on that interface.
+
+\begin{theorem}\label{p12:theorem}
+The polynomial $P_{12}$ defined below has twelve strictly positive
+unknowns, exact total degree $110$, and a literal evaluator with $102$
+live binary arithmetic operations. With its supplied compact coefficient
+binding, composition with the inherited compiler and syntactic-refutation
+calibration proves
+\[
+ \ZFC\vdash
+ \bigl(\neg\exists\boldsymbol{x}\in\Z_{>0}^{12}\;
+                  P_{12}(\boldsymbol{x})=0\bigr)
+       \longleftrightarrow\Con(\ZFC).
+\]
+This is an ordinary mathematical proof using the named inherited
+interface, not a newly exported end-to-end proof-assistant certificate.
+\end{theorem}
+
+\subsection{The complete polynomial}
+\label{p12:definition}
+
+Supply precisely
+\[
+ j,F,\alpha,i,T,X,Y,r,\eta,\zeta,n,\gamma\in\Z_{>0}.
+\]
+Every subsequent register is an integer polynomial abbreviation, not an
+additional existential unknown. Define
+\begin{align*}
+ J&=6j+1,& q&=\beta J+1,& C&=q-F-\alpha,\\
+ E&=XY,& k&=\eta+\zeta,& c&=kY+\eta,\\
+ a&=E+Y,& A&=a+2,& H&=4a+3,\\
+ \Delta&=a^2+H=A^2-1,& \ell&=EkY,& b_0&=X+ac,
+\end{align*}
+\[
+ R=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+                              +(M_C+qM_F)J,\qquad v=k-R-1.
+\]
+The two carriers are
+\begin{align}
+ W&=(q-1)k+1,& M_0&=q^3(q-1),\nonumber\\
+ B_t&=(qK_0+X)C-qF,\nonumber\\
+ Z&=M_0(\ell+k+r)+(q-1)Y-q^3WB_t,\nonumber\\
+ A_0&=Z^2-M_0^2\bigl(\ell(\ell+k)+1\bigr),
+                                                   \label{p12:first}\\
+ S&=4qY,& M&=qS,\nonumber\\
+ D_*&=Mb_0+H(M\gamma-v+SX),\nonumber\\
+ A_1&=D_*^2-M^2(1+\Delta c^2).             \label{p12:main}
+\end{align}
+For the centered norm put
+\begin{align}
+ I&=ic^2,& D&=1+\Delta I^2,& Q&=\Delta^2I^2,& d&=Q-1,
+                                                       \nonumber\\
+ b&=cT-R,& V&=Db-c,& t&=AI+n,               \label{p12:auxreg}\\
+ U&=d\bigl((V+t)^2+D\bigr)-QV^2+1,\nonumber\\
+ L&=2d(V+t),& N&=U^2-L^2D.                 \label{p12:norm}
+\end{align}
+The requested single equation is
+\begin{equation}
+ \boxed{P_{12}=(1+A_0)(1+A_1)(1+N)-1=0.}    \label{p12:equation}
+\end{equation}
+There are no variable powers, divisions or radical operations in this
+specification. The literal graph is
+\path{positive12/adaptive_centered12.json}.
+
+Since $\beta$ and $J$ are odd, $q$ is even. Thus $M_0$ is even, $M$ is
+divisible by four, and $L$ is even. Consequently
+\[
+ A_0\equiv Z^2,\qquad A_1\equiv D_*^2,\qquad N\equiv U^2\pmod4.
+\]
+If the product in \eqref{p12:equation} is one, each integer factor is
+$1$ or $-1$. The latter would make its residual $-2$, which is not a
+square residue modulo four. Hence, on the stated domain,
+\begin{equation}
+ P_{12}=0\quad\Longleftrightarrow\quad A_0=A_1=N=0.
+                                                        \label{p12:unit}
+\end{equation}
+No nonnegativity assumption on the three residuals is needed.
+
+\subsection{Why the centered norm restores positive witnesses}
+\label{p12:center}
+
+Unconditionally, $c\ge3$, $I\ge9$, $D>c+1$ and
+\[
+ t^2>(AI)^2>D,\qquad (AI)^2-D=I^2-1.
+\]
+At a zero of $N$, its denominator register $L$ cannot vanish. Otherwise
+$V+t=0$ and
+\[
+ U=dD-Qt^2+1<dD-QD+1=1-D<0,
+\]
+contrary to $N=U^2=0$. Therefore $f=U/L$ is rational with integer square
+$D$, and hence is an integer. Set $y=V+t-f$. Expanding its square gives
+\begin{equation}
+ QV^2-dy^2=1.                              \label{p12:recoveredaux}
+\end{equation}
+Both roots may have either sign. Nevertheless $|V|>1$: the integer
+$b\le0$ gives $V\le-c$, while $b\ge1$ gives $V\ge D-c>1$.
+Equation~\eqref{p12:recoveredaux} consequently implies
+$d(y^2-V^2)=V^2-1>0$. Thus
+\[
+ f_0=|f|>0,\qquad u=|y|-V>0
+\]
+restore exactly the normalized strong and auxiliary source equations:
+\begin{align*}
+ f_0^2-\Delta(ic^2)^2&=1,\\
+ (V+u)^2-\Delta(f_0^2-1)u(2V+u)&=1,\qquad
+ V=f_0^2(cT-R)-c.
+\end{align*}
+This handles every signed root branch. It proves an existence reduction,
+without asserting a bijection on arbitrary predecessor witnesses.
+
+For completeness, the canonical source allows fresh auxiliary witnesses
+\[
+ V=\frac{\chi_{\Delta I}(R)}{\Delta I},\qquad
+ y=\psi_{\Delta I}(R),\qquad R\equiv3\pmod4,
+\]
+where $\chi_s(m)+\psi_s(m)\sqrt{s^2-1}=(s+\sqrt{s^2-1})^m$.
+The retained odd-index identities give $V\equiv-c\pmod{f^2}$ and
+$V\equiv-R\pmod c$. Since $\gcd(c,f)=1$ and $f^2\equiv1\pmod c$,
+\begin{equation}
+ T=\frac{V+c+Rf^2}{cf^2}>0                 \label{p12:freshT}
+\end{equation}
+is an integer and realizes the required register $V$. These are the
+precise canonical guarantees used from package 61, including its signed
+index lemma, section 5.
+
+Take $n=f+y-V-AI$. Its positivity requires proof. The canonical $R\ge5$
+and $s_0=\Delta I\ge2$ give
+\[
+ V\ge\frac{\chi_{s_0}(5)}{s_0}
+   =16s_0^4-20s_0^2+5>s_0^4=Q^2.
+\]
+Also $f>(A-1)I$, so $AI-f<I$. From
+$d(y^2-V^2)=V^2-1$, with $y>V\ge2$ and $d=Q-1\ge3$, we obtain
+$y<2V$ and
+\begin{equation}
+ y-V=\frac{V^2-1}{d(y+V)}
+       >\frac{V}{4Q}>\frac Q4>I.           \label{p12:positivegap}
+\end{equation}
+The last inequality uses $Q=\Delta^2I^2$, $\Delta\ge3$, $I\ge9$.
+Therefore $n>0$. Now $t=f+y-V$ and \eqref{p12:recoveredaux} give $U=Lf$,
+hence $N=0$. This proof uses the actual positive gap; it needs no new
+ordinate-divisibility condition.
+
+\subsection{Ordered recovery from the adaptive carrier}
+\label{p12:adaptive}
+
+Here are the essential soundness and completeness steps, with the order
+of divisibility recovery explicit. The full source-interface argument is
+retained in \path{positive12/PROOF.md} and its pinned source proofs.
+
+First, $A_0=0$ makes $\tau=Z/M_0$ integral, by rational-square-root
+integrality. Reduction modulo $q^3$ and $q-1$ gives
+\[
+ s=Y/q^3\in\Z_{>0},\qquad z_t=B_t/(q-1)\in\Z,
+ \qquad \tau=\ell+k+r+s-Wz_t.
+\]
+Since $\tau^2=\ell(\ell+k)+1< (\ell+k)^2$, we have $Wz_t>r+s>0$.
+Thus $B_t>0$ and $C>0$, before $q\mid X$ is known. The authentic mask
+bounds now give $3q<R<q^4-2$.
+
+The compact radix has $\beta\equiv1\pmod3$, so $J=6j+1$ gives
+$q\equiv2\pmod3$. From $q^3\mid Y$ and $H=4Y(X+1)+3$,
+\[
+ \gcd(q,H)=1,\qquad \gcd(S,H)\mid3,
+ \qquad \mu:=\frac{S}{\gcd(S,H)}\ge\frac{4qY}{3}>R+1.
+\]
+Both $S$ and $M$ divide $4XY^2$ without assuming $q\mid X$.
+The equation $A_1=0$ makes $g=D_*/M$ integral. It is positive: $v<k$,
+$c>kY$ and $H<6a$ give $D_*>ak(MY-6)>0$. We therefore have
+\[
+ g^2-\Delta c^2=1,\qquad M\mid H(SX-v),\qquad \mu\mid v.
+\]
+
+The first and main Pell equations give indices $n_0<p$ such that
+$k=2\psi_{2XY^2+1}(n_0)$ and $c=\psi_A(p)$.
+The case $n_0=1$ would force $\eta=\zeta=1$ and
+$c=2Y+1<\psi_A(2)$, so $n_0\ge2$. Hence
+$c>8XY^3\ge8q^9>2R$, while Pell growth gives $c>2p$.
+The normalized strong equation restored above supplies an index $m$ with
+$c\mid m$ and $m>2p$. The signed auxiliary-index lemma then recovers
+$p=R$ from $V\equiv-c\pmod f$ and $V\equiv-R\pmod c$.
+Every half-interval hypothesis has thus been established before the
+missing index quotient is restored.
+
+The recurrence gives $k\equiv2n_0\pmod{4XY^2}$. Therefore
+$\mu\mid2n_0-R-1$, and $n_0<R$, $\mu>R+1$ force $2n_0=R+1$.
+It follows that $v=k-R-1$ is a positive multiple of $4XY^2$, hence of $M$.
+Only now does $M\mid H(SX-v)$ yield $q\mid HX$, and then $q\mid X$.
+The restored source coordinates are
+\[
+ w=X/q>0,\qquad h=v/(XY)>0,\qquad
+ \gamma_{\rm old}=\gamma+w-v/M.
+\]
+The last is integral and positive because
+$H\gamma_{\rm old}=g-ac-X>c-X>0$. The first carrier restores the positive
+transport coordinate, and the normalized strong and auxiliary witnesses
+were restored in Section~\ref{p12:center}. The inherited compact source
+therefore yields a finite syntactic ZFC refutation.
+
+Conversely, canonical source data have $q=B^N$ with odd $N>1$, so their
+repunit $J$ is $1$ modulo six. They have $X=2^R$, $Y=sq^3$, $w>q$ and
+$v$ a positive multiple of $4XY^2$. With $z_{\rm old}$ the original
+transport coordinate, set
+\[
+ z_t=q(z_{\rm old}-1)\ge q,\qquad
+ r=Wz_t+\tau-\ell-k-s>qW-2k>0.
+\]
+This gives $A_0=0$. Put $\gamma=\gamma_{\rm old}-w+v/M>0$:
+indeed $v/M\ge XY/q^2=wY/q\ge wq^2>w$. Then $A_1=0$.
+Choose $T,n$ by \eqref{p12:freshT}--\eqref{p12:positivegap}; these give
+$N=0$. This proves the reverse existence implication. Negation gives
+Theorem~\ref{p12:theorem}.
+
+\subsection{Exact degree and arithmetic size}
+\label{p12:degree}
+
+Let $q_0=6\beta j$, $k_0=\eta+\zeta$, $R_4=q_0^3(q_0-F)$ and
+$B_{t,2}=(K_0q_0+X)(q_0-F-\alpha)-q_0F$.
+Exact cancellation yields the highest homogeneous parts
+\begin{align*}
+ [A_0]_{15}&=-2q_0^8k_0^2XY^2B_{t,2},\\
+ [A_1]_{13}&=32q_0^2k_0X^2Y^4(4q_0^2Y\gamma+R_4),\\
+ [N]_{82}&=4i^{10}k_0^{20}X^{12}Y^{32}R_4^2.
+\end{align*}
+For the last identity, the exact expansion in
+$\Z[A,i,c,b,n]$, with weights $(2,1,2,4,1)$, has $455$ terms and
+leading form $4A^{12}i^{10}c^{20}b^2$. Substitution gives the displayed
+form. Their product is the degree-$110$ part of $P_{12}$; specifically,
+\[
+ [j^{18}\eta^{23}X^{16}Y^{39}i^{10}\alpha\gamma F^2]P_{12}
+       =1024(6\beta)^{18}>0.
+\]
+Thus the exact degree holds for the actual fixed coefficients.
+The delivered graph uses $57$ multiplications, $29$ additions and $16$
+subtractions. Its checker verifies exact identities, these leading forms,
+the nonzero coefficient, graph regeneration and all authentic coefficient
+bytes. The unbounded existence proof is the mathematical argument above;
+finite checks do not replace its inherited semantic dependencies.

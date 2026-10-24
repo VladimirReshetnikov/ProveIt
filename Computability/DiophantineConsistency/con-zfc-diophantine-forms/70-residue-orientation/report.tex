@@ -1,0 +1,489 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{microtype,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Residue orientation and root transfer}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\pos}{\operatorname{Pos}}
+\hypersetup{pdftitle={Residue Orientation and Root Transfer for Diophantine Consistency Equations},pdfauthor={AI-assisted research prepared for Vladimir Reshetnikov},pdfsubject={Explicit polynomial equations equivalent to syntactic inconsistency of ZFC}}
+\title{\textbf{Residue Orientation and Root Transfer}\\[5pt]
+\large Smaller explicit Diophantine equations for syntactic consistency of ZFC}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\
+\small A contribution for the ProveIt repository}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give two proof-driven reductions of explicit Diophantine consistency
+equations.  First, a signed Pell argument recovers a coordinate as
+$\pm2^R$ with $R$ odd; affine congruences then select the positive sign.
+This removes a dedicated square witness and gives a quartic in forty
+unrestricted integer variables.  Exact coordinate eliminations give a
+sextic in thirty-four and an octic in twenty-nine integer variables.
+Second, we transfer Pell roots into a transport gap.  A two-root norm
+gives twelve strictly positive variables of degree eighty-four in 103
+arithmetic operations.  A three-root extension uses a coprimality argument
+to recover an auxiliary integer root, giving eleven positive variables
+of degree 325 in 113 operations.  A thirteen-positive-variable companion
+has degree thirty in 94 operations.
+These improve specified points in the inspected repository snapshot.
+Every fixed coefficient is supplied exactly, with an offline verification
+recipe.  The new equivalences are proved by ordinary mathematics using
+explicitly named inherited compiler, Pell, and syntactic calibration
+theorems.  They are not new end-to-end proof-assistant certificates, and
+no global minimality or proof of consistency is asserted.
+\end{abstract}
+\vfill
+\noindent\textbf{Source snapshot.}\quad
+\texttt{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}\\
+\noindent\textbf{Primary deliverables.}\\
+\texttt{integer/quartic40\_direct.json}\\
+\texttt{eleven/p11\_positive\_degree325.json}\\
+\texttt{positive/p12\_positive\_degree84.json}\\
+\noindent\textbf{Reproduction.}\quad
+\texttt{python3 verify.py}; \texttt{python3 verify.py --optimized}.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Results, comparison, and the meaning of simplicity}
+\label{sec:results}
+
+Fix the repository's recursive syntactic proof predicate for ZFC.  In this
+article $\Con(\mathrm{ZFC})$ means that no finite derivation of falsity
+exists for that predicate.  The target is an explicitly specified
+polynomial $P\in\Z[x_1,\ldots,x_m]$, together with a stated domain $D$, for
+which ordinary mathematics formalizable in ZFC proves
+\begin{equation}
+ \bigl(\exists \mathbf x\in D^m\;P(\mathbf x)=0\bigr)
+ \quad\Longleftrightarrow\quad
+ \text{there is a finite syntactic ZFC refutation}.
+ \label{eq:target}
+\end{equation}
+Negating the two sides yields exactly the requested equivalence between
+unsolvability and $\Con(\mathrm{ZFC})$.  This establishes a relationship
+between two statements; it does not establish their truth or falsity.
+
+The phrase ``simplest equation'' has several competing meanings.  A
+reduction in variables can increase degree, and treating a large fixed
+integer as one arithmetic-circuit leaf can hide most of the written
+description.  We therefore report witness domain and count, exact total
+degree, number and degree of residuals, arithmetic operations when
+optimized, and fixed coefficient storage separately.  A named intermediate
+register is a polynomial abbreviation, never an additional quantified
+unknown.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}llrrl@{}}
+\toprule
+Equation & Witness domain & Variables & Degree & Binary operations\\
+\midrule
+$Q_{40}^{\mathrm{dir}}$ & $\Z$ & 40 & 4 & Not optimized\\
+$Q_{34}$ & $\Z$ & 34 & 6 & Not optimized\\
+$Q_{29}$ & $\Z$ & 29 & 8 & Not optimized\\
+$P_{11}$ & $\Z_{>0}$ & 11 & 325 & 113\\
+$P_{12}$ & $\Z_{>0}$ & 12 & 84 & 103\\
+$P_{13}$ & $\Z_{>0}$ & 13 & 30 & 94\\
+\bottomrule
+\end{tabular}
+\caption{New single polynomial equations.  The integer equations are
+sums of 25, 19, and 14 squared residuals, respectively.}
+\label{tab:new}
+\end{table}
+
+\begin{theorem}[The delivered consistency equations]
+Each polynomial in Table~\ref{tab:new}, with its own complete fixed
+coefficient tuple and stated witness domain, satisfies
+\eqref{eq:target}.  Its exact degree and number of variables are as
+listed.  The claims use the inherited source theorems identified in the
+proofs and provenance files; they do not introduce a consistency
+assumption.
+\end{theorem}
+
+The integer constructions improve the inspected degree-four, degree-six,
+and degree-eight counts from $41,35,30$ to $40,34,29$.  The parent quartic
+is package 64's $Q_{41}$; the two smaller-count comparison companions are
+package 62's sextic and octic.  The twelve-positive construction improves
+package 61's degree-$118$, 104-operation equation in both measures:
+$118\to84$ is a $28.81\%$ degree reduction, and $104\to103$ saves one
+operation.  The thirteen-positive comparison is a tradeoff:
+degree $34\to30$, with operations $93\to94$.  These are comparisons to
+literal artifacts in the pinned repository, not just to the collection
+README, which still described an earlier wave at the inspection time.
+Relevant comparison files and their hashes are retained in
+\texttt{baseline/} and \texttt{BASELINE.json}.
+
+The eleven-positive extension improves package 52's degree-$954$,
+113-operation point to degree $325$ at the same 113-operation cost.
+This is a $65.93\%$ degree reduction.  Its two residuals have degrees
+$312$ and $13$.  A modulo-four unit-product argument combines them
+without taking their sum of squares; the final polynomial has degree
+$312+13=325$.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}lll>{\raggedright\arraybackslash}p{4.0cm}@{}}
+\toprule
+Slice & Inspected predecessor & New result & Nature of the change\\
+\midrule
+Quartic over $\Z$ & 41 variables, package 64 & 40 & One sign witness removed\\
+Sextic over $\Z$ & 35 variables, package 62 & 34 & Same orientation, exact elimination\\
+Octic over $\Z$ & 30 variables, package 62 & 29 & Same orientation, exact elimination\\
+Eleven positive & Degree 954 / 113 ops, package 52 & 325 / 113 & Three roots in one transport carrier\\
+Twelve positive & Degree 118 / 104 ops, package 61 & 84 / 103 & A strong root is eliminated\\
+Thirteen positive & Degree 34 / 93 ops, package 61 & 30 / 94 & Adaptive modulus composition\\
+\bottomrule
+\end{tabular}
+\caption{A bounded comparison, with domains and costs kept distinct.}
+\end{table}
+
+The small-variable high-degree records remain separate: the repository
+already contains nine-positive and ten-unrestricted-integer constructions.
+The present work does not lower those counts.  Likewise, the fifteen-positive
+degree-$24$ and 66-operation constructions address different objectives.
+The recommended $Q_{40}^{\mathrm{dir}}$ has 393 expanded symbolic monomials, compared
+with 388 in its parent; the alternate projection parent has 614.
+No coefficient-height, expanded-length, or global circuit-cost reduction
+is claimed for that family.  A mathematically new mechanism can improve
+one boundary of the comparison without dominating every other equation.
+
+\subsection{What is new in this iteration}
+
+The first method changes the order in which signs are established.  A
+positive-square guard is usually imposed before a Pell argument.  Here
+the argument is proved with signed $X,Y,k,c$ throughout, and gives
+$X=\pm2^R$ with $R$ odd.  The already imposed congruence
+$X\equiv2\pmod3$ then rules out the negative branch.  The congruence is
+enforced most directly by $X_{\rm old}=3X_3-1$, so it needs no
+new witness and preserves quadratic residual degree.  A companion
+version restricts the two existing scale coordinates instead, retaining
+a monic $X$ definition for the sextic and octic projections.
+
+The second method exploits an existing free positive transport gap.
+Instead of keeping a strong root $f$ and a gap $r$ separately, use the
+coordinate $n=r-L+f$, with $L>|f|$, and eliminate $f$ by a norm.  The
+proof must handle both signed roots recovered by that norm.  A stronger
+transport multiplier guarantees the inverse map has $n>0$.  The
+remaining auxiliary relations use only $f^2$, so their degree remains
+controlled after substitution.
+
+The eleven-variable extension uses that normalization to make the three
+radicands independent of the signs of their roots.  It retains the
+adaptive main Pell equation separately and puts the first, strong, and
+auxiliary roots into the transport carrier.  Multiplying the normalized
+strong ordinate by $q(q-1)$ makes the auxiliary denominator coprime to
+the transport denominator, so a rational root recovered from the norm
+must be an integer.  Elementary separation bounds exclude every
+irrational cancellation.  Norms, positive majorants, and unit-product
+finalizers already appear in earlier packages; the new claim is this
+particular arithmetic composition and its measured endpoint.
+
+Both mechanisms are new relative to the inspected source packages.
+We make no literature-wide priority claim.  The thirteen-variable
+adaptive carrier and the low-degree coordinate eliminations explicitly
+reuse earlier ideas; their attribution is retained in the component
+notices.
+
+\subsection{Why the final constructions retain the native endpoint}
+
+The user permitted a fresh computational or logical source.  We examined
+direct provability encodings as well.  Carl and Moroz give an explicit
+Diophantine treatment of provability in predicate calculus and discuss
+set-theoretic applications~\cite{carlmoroz}.  Formisano, Gavazzi and
+Omodeo investigate a relational equational presentation of NBG; their
+2025 article describes preliminary work on its proper-axiom
+component~\cite{fgo}.  These are useful routes to smaller transparent
+proof checkers, but our inspection did not produce a fully materialized
+alternative with a competitive, proved coefficient and variable count.
+An uncompiled proof checker would not be a replacement for the requested
+explicit equation.
+
+The delivered constructions therefore retain the existing native
+K215-to-polynomial source and improve its arithmetic representation.
+They do not use Jones's universal polynomial or Sun's ten-integer
+finalizer.  Jones's work~\cite{jones} and Sun's recent ten-variable
+theorem~\cite{sun} explain relevant comparison boundaries, but are not
+newly invoked to justify these polynomial equations.  Native
+compiler semantics and K215 calibration remain explicit inherited
+dependencies.
+
+\input{integer/section.tex}
+\input{positive/section.tex}
+\input{eleven/section.tex}
+
+\section{Logical status, exact data, and reproducibility}
+\label{sec:evidence}
+
+\subsection{The proof chain and its limits}
+
+There are three logically different kinds of evidence in this release.
+First are ordinary unbounded mathematical proofs: the signed power
+recovery and residue orientation, the root-transfer lemma, adaptive
+congruence recovery, and soundness and completeness of the new
+equations.  Second are inherited mathematical theorems: the Pell
+rank/auxiliary interfaces, the native finite-window compiler, its fixed
+coefficient adapters, and the K215 equivalence with the specified
+syntactic refutation predicate.  Third are finite checks of literal
+polynomials and data.  None of the latter replace the first two.
+
+For $Q_{40}^{\mathrm{dir}}$ the proof restores the deleted square coordinate and hence
+a zero of the parent $Q_{41}$.  This deliberately keeps the native
+semantic interface unchanged.  The companion eliminations are exact
+integer-polynomial bijections of zero sets.  The affine restrictions
+used for completeness have a weaker and sufficient property: the
+canonical witness family lies in their image.  We do not claim that
+every parent zero lies in that image.
+
+For $P_{12}$ the norm recovers a signed integer root $f_*$ and a
+separate integer first root.  The gap uses $r=n+L-f_*$; the positive
+strong coordinate is $|f_*|$.  These two roles must not be conflated.
+The normalized source interface is then reconstructed with positive
+scale, transport, and main-root quotients.  No division is used in the
+literal equation, and every division appearing in the proof is
+justified before its result is used as a witness.
+
+For $P_{11}$ the analogous recovery uses three signed roots.  Pairwise
+distinct rational radicands and a nonzero rational sum force all three
+roots to be rational.  The first two are integral because their squares
+are integers.  For the third root, its reduced denominator divides
+$M=q^3(q-1)$ while the square of that denominator divides $Q-1$; the
+engineered condition $\gcd(M,Q-1)=1$ removes it.  The proof restores
+positive gap and auxiliary coordinates for every recovered sign choice.
+Canonical completeness follows from a finite Pell-matrix period, so the
+stronger divisibility is proved rather than presumed.
+
+The active repository separately reports checked Lean consistency
+equations and ongoing formalization of smaller arithmetic circuits.
+Its README explicitly distinguishes a Lean theorem about a syntactic
+predicate from an exported proof inside its object-language ZFC
+calculus~\cite{active}.  This release does not run a Lean or Rocq kernel,
+does not claim a new complete formal certificate, and does not transfer
+the formal status of an existing equation to a different literal
+polynomial.  The asserted equivalences are ordinary mathematical
+proofs formalizable in ZFC with the named inherited results.  The
+independent reviews here are internal AI-assisted reviews, not external
+peer review.
+
+\subsection{Complete coefficient bindings}
+
+Two different complete four-port tuples are used.  They must not be
+mixed.  The integer family uses the source-34 mixed-parity unrounded
+tuple with $\beta=2^{1064921}-1$.  The positive family uses the compact
+source-44 tuple with $\beta=2^{590069}-1$.  The tuple members are
+$\beta,K_0,M_C,M_F$; $M_F$ already includes the source's prescribed
+shift.  Reapplying that shift changes the equation.
+
+The supplied compressed integer payloads have exact, documented byte
+interpretations: after gzip decompression, bytes $b_0,\ldots,b_{m-1}$
+represent $\sum_{j=0}^{m-1}b_j256^j$.  Thus the four ``ports'' in the
+symbolic polynomial files are fixed ordinary integer coefficients,
+not free parameters or uncomputed choices.  Their recipes, byte hashes,
+and source pins are included.  No numeral is obtained by searching for
+a contradiction or by deciding a consistency statement.
+
+The four raw native payloads total 532,479 bytes for the integer family
+and 295,388 bytes for the positive family.  This is storage for the
+native inputs to the displayed polynomial recipes, not the size of a
+fully expanded specialized polynomial.  The new affine restrictions
+change small integer multipliers in the expanded equations.  Keeping
+the native tuple unchanged therefore does not mean that every expanded
+coefficient is unchanged.
+
+\subsection{What the verification programs establish}
+
+The root verification command authenticates the release manifest, makes
+an isolated copy, and runs the component verification there.  It compares
+regenerated literal equation artifacts with the delivered bytes.  Each
+component uses the Python standard library, with checks that remain
+active under \texttt{python3 -O}.  The checks cover:
+\begin{enumerate}[leftmargin=1.5em]
+\item exact affine substitutions from the pinned parent and deletion of
+      precisely the intended coordinate and residual;
+\item exact polynomial restoration maps for both integer companions;
+\item counts, complete coordinate use, residual degrees, and nonzero
+      monomial certificates of the claimed total degrees;
+\item literal positive arithmetic DAGs, their live operation counts,
+      cancellation-resolved degree identities, and fixed-numeral binding;
+\item source-file identities, coefficient payload integrity, and the
+      included finite native coefficient reconstruction.
+\end{enumerate}
+
+The integer audit also expands the sums of squares with the four fixed
+ports temporarily treated as symbolic coefficients.  Its special
+monomial certificates are independent of their large values.  The
+positive degree audit gives explicit nonzero leading coefficients after
+specialization to the actual positive $\beta$.  These lower bounds are
+necessary: a degree propagated through a circuit is only an upper bound
+until possible cancellation is addressed.
+
+No verification command runs an unbounded refutation search, supplies a
+zero of the consistency polynomial, or establishes unsolvability.
+The polynomial coefficients are completely materialized, while the
+existence equivalence is a theorem about all integer assignments.
+
+\subsection{Using and integrating the archive}
+
+The root directory contains this complete article as \texttt{report.tex}
+and \texttt{report.pdf}, the component files under \texttt{integer/},
+\texttt{positive/}, and \texttt{eleven/}, comparison provenance under \texttt{baseline/},
+checks and receipts, licenses, and a root verification driver.  Paths
+mentioned inside component proofs are relative to that component.
+The cover and \texttt{README.md} identify the three main literal packets.
+All residual systems in the integer JSON files define one equation by
+taking their sum of squares.  The twelve- and thirteen-positive JSON
+files include their sum-of-squares output nodes; the eleven-positive
+file uses the proved unit-product finalizer.
+
+Run \texttt{python3 verify.py} from the extracted root, or add
+\texttt{--optimized} to exercise the checks with Python optimization
+enabled.  Run \texttt{python3 build\_report.py} to compile the article
+twice with \texttt{pdflatex}.  The mathematical tests need no network
+access; the PDF build needs an ordinary TeX installation.  PDF metadata
+can vary on recompilation, so the report rebuild is separate from exact
+equation regeneration.
+
+The directory is prepared as an additive contribution.  It can be placed
+beside the earlier numbered packages at intake without changing their
+delivered content or the active Lean equation.  The source snapshot is
+fixed even if the repository subsequently advances.
+
+\section{Further research questions}
+\label{sec:future}
+
+\paragraph{Can more sign witnesses be replaced by residues?}
+The essential new theorem recovers a finite set of possible algebraic
+values before using a congruence to select one.  A next target is to
+classify which sign constraints in other low-degree Diophantine
+compilers have this property.  A proposed deletion must prove the full
+signed version of the earlier argument and preserve a canonical
+completeness family.  Checking that the intended witnesses satisfy a
+residue is insufficient to exclude unintended roots.
+
+\paragraph{Can the common-sign guard be removed?}
+The quartic still uses three coordinates to force
+$\eta\zeta>0$.  They supply the sharp interval
+$K(Z-1)<|c|<K(Z+1)$ needed for the rank comparison.  Replacing this
+guard would save more variables than the single square witness removed
+here, but the interval cannot simply be assumed after removing it.
+A useful intermediate theorem would recover a suitable ratio interval
+from retained congruences and norms alone.
+
+\paragraph{Can a fourth root be transferred equally cheaply?}
+The eleven-variable construction resolves the auxiliary integrality
+obstacle through coprimality.  Eliminating the separately retained main
+Pell carrier could improve another degree slice, but the three-root
+rationality lemma does not extend by the same hypotheses alone.
+For example,
+\[
+ 10+\sqrt2+\sqrt8-\sqrt{18}=10
+\]
+has pairwise distinct radicands and a root larger than the sum of the
+other three, yet three roots are irrational.  A four-root construction
+needs control of proper signed subsums or another extraction mechanism,
+as well as a new integrality and positive-completeness argument.  The
+larger nested norms in the predecessors provide a concrete comparison.
+
+\paragraph{Can the transport multiplier be made less expensive?}
+In the twelve-variable equation, $W=1+(q-1)ikc$ pays for the positive
+inverse gap.  The degree-$84$ leading form shows precisely where this
+cost enters.  A smaller sufficient polynomial majorant for $L-f$,
+compatible with the same congruence, could lower degree further.  Such
+an estimate must be uniform in the cofinal strong-Pell witness, not
+just true for a few small indices.
+
+\paragraph{Which reductions are best after fixing a description language?}
+Native tuple bytes, expanded monomials, circuit operations, and proof
+complexity are different objectives.  A useful next comparison would
+fix a concrete encoding of polynomial arithmetic DAGs and coefficients,
+then compare total description length.  The present release supplies
+enough literal data for that comparison; it does not infer it from
+variable count alone.
+
+\paragraph{Can a direct proof-language compiler become competitive?}
+Relational NBG and other finitely presented equiconsistent systems
+remain plausible alternatives to machine tableaux.  The missing
+deliverable is a complete source predicate, a proved bridge to the
+specific syntactic consistency statement, and a measured explicit
+polynomial after all bounded-sequence and exponentiation devices are
+compiled.  A smaller informal interpreter is not by itself a smaller
+Diophantine equation.
+
+\paragraph{What should be formalized next?}
+The signed power-recovery lemma is a focused target: its inputs are
+elementary Pell classifications, explicit magnitude bounds, and the
+already used rank interfaces.  The two-root transfer lemma is an even
+smaller independent target.  After those lemmas, the affine substitutions,
+restoration maps, and literal DAG identities can be connected to the
+repository's formal arithmetic syntax.  Completing the native semantic
+and object-language internalization boundaries remains a separate task.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov and contributors.
+\emph{ProveIt: DiophantineConsistency and delivered research packages}.
+Snapshot \texttt{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}, 23 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency}.
+Specific original paths and Git blob/SHA-256 identities are recorded in
+the component \texttt{SOURCE\_PINS.json} files and root \texttt{BASELINE.json}.
+
+\bibitem{active}
+ProveIt contributors.
+\emph{A Diophantine equation for syntactic consistency of ZFC}, active
+research README at the same snapshot; retained as
+\texttt{baseline/active\_research\_README.md}.
+The active explicit equation and small-circuit formalization status are
+distinct from the new equations in this release.
+
+\bibitem{jones}
+J. P. Jones.
+Universal Diophantine equation.
+\emph{Journal of Symbolic Logic} \textbf{47}(3), 549--571 (1982).
+\url{https://doi.org/10.2307/2273588}.
+
+\bibitem{carlmoroz}
+M. Carl and B. Z. Moroz.
+On a Diophantine representation of the predicate of provability.
+\emph{Zapiski Nauchnykh Seminarov POMI} \textbf{407}, 77--104 (2012);
+English translation, \emph{Journal of Mathematical Sciences}
+\textbf{199}(1), 36--52 (2014).
+\url{https://doi.org/10.1007/s10958-014-1830-2}.
+
+\bibitem{fgo}
+A. Formisano, I. Gavazzi, and E. G. Omodeo.
+Diophantine Modeling of Provability in Algebraic Logic.
+In \emph{CILC 2025}, CEUR Workshop Proceedings, vol. 4003, paper 13.
+\url{https://ceur-ws.org/Vol-4003/paper13.pdf}.
+
+\bibitem{sun}
+Z.-W. Sun.
+Ten unknowns for Hilbert's tenth problem over the integers.
+arXiv:2609.01594v1 (2026).
+\url{https://arxiv.org/abs/2609.01594v1}.
+\end{thebibliography}
+\end{document}

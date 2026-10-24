@@ -1,0 +1,277 @@
+\section{Positive source coordinates and a congruence inside a Pell root}
+\label{sec:positive-coordinate-carrier}
+
+The new equation has thirteen strictly positive unknowns, exact total degree
+$28$, and $98$ live binary arithmetic operations.  The degree-$34$,
+$93$-operation equation of package~61 is the comparison point.  The change
+is an existential coordinate transformation, not a same-coordinate identity.
+The inherited native compiler and Pell-index theorems remain explicitly
+identified dependencies.
+
+The central choice is to supply the positive gap $C$ instead of the native
+index $J$.  Set $q=F+\alpha+C$; the source bounds now hold as soon as the
+fixed congruence on $q$ is established.  That congruence is placed inside
+the normalized strong Pell root.  A monic square equation recovers the
+integrality of that root, and therefore the congruence.  This permits the
+transport quotient's sign to be recovered at the end, removing the
+predecessor's degree-two positivity multiplier.
+
+\subsection{Literal integer polynomial}
+
+The positive variables are
+\[
+ F,\alpha,C,f_0,i,T,X,Y,r,\eta,\zeta,u,\gamma.
+\]
+Use the whole compact source-44 tuple
+$(\beta,K_0,M_C,M_F)$, with $\beta=2^{590069}-1$ and the already shifted
+high mask $M_F$.  Put
+\[
+ B=\beta+1,\qquad b=3\beta,\qquad L=\beta b^2.
+\]
+These are fixed numerals.  The following names are polynomial abbreviations,
+not additional witnesses:
+\begin{align*}
+ q&=F+\alpha+C,& k&=\eta+\zeta,&c&=kY+\eta,\\
+ E&=XY,&\ell&=EkY,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,&I&=ic^2,\\
+ N_f&=bf_0+q-B,&F_2&=N_f^2,&M_0&=q^3(q-1),\\
+ S_\beta&=4\beta qY,&M_\beta&=qS_\beta.&&
+\end{align*}
+The remaining registers are
+\begin{align*}
+ G&=(q-1)(q-F)+\alpha,\\
+ \widehat R&=\beta G(q^2-1)+(M_C+qM_F)(q-1),\\
+ B_t&=(qK_0+X)C-qF,\\
+ Z&=M_0(\ell+r)+(q-1)Y-q^3B_t,\\
+ \widehat D&=M_\beta(X+ac)
+       +H\{M_\beta\gamma+S_\beta X-\beta(k-1)+\widehat R\},\\
+ \widehat V&=F_2(\beta cT-\widehat R)-Lc,\\
+ \widehat Y&=\widehat V+Lu.
+\end{align*}
+Define four integer residuals
+\begin{align}
+ A_0&=Z^2-M_0^2\{\ell(\ell+k)+1\},\label{eq:new-first}\\
+ A_1&=\widehat D^{\,2}-M_\beta^2(1+\Delta c^2),\label{eq:new-main}\\
+ A_a&=b^2\widehat Y^{\,2}
+       -\Delta(F_2-b^2)(\widehat Y^{\,2}-\widehat V^{\,2})-b^2L^2,
+       \label{eq:new-aux}\\
+ A_s&=F_2-b^2(1+\Delta I^2).\label{eq:new-strong}
+\end{align}
+The equation is
+\begin{equation}
+ \boxed{\;P_{13}=A_0^2+A_1^2+A_a^2+A_s^2=0.\;}
+ \label{eq:new-p13}
+\end{equation}
+Every coefficient in this definition is an integer.  There are no variable
+exponents or unspecified program parameters.
+
+For the proof only, use the rational abbreviations
+\begin{align*}
+ f&=N_f/b,&J&=(q-1)/\beta,&R&=\widehat R/\beta,\\
+ S&=4qY,&M&=qS=4q^2Y,&v&=k-R-1,\\
+ D_*&=M(X+ac)+H(M\gamma+SX-v),&&&\\
+ V&=f^2(cT-R)-c,&U&=\Delta(f^2-1).&&
+\end{align*}
+Then $\widehat D=\beta D_*$, $\widehat V=LV$, and the residuals have the
+exact interpretations
+\begin{align*}
+ A_s&=b^2(f^2-\Delta I^2-1),\\
+ A_1&=\beta^2\{D_*^2-M^2(1+\Delta c^2)\},\\
+ A_a&=b^2L^2\{(V+u)^2-Uu(2V+u)-1\}.
+\end{align*}
+These identities clear fixed denominators; they do not introduce divisions
+into the delivered polynomial.
+
+\subsection{Recovery of the native congruence}
+
+Suppose \eqref{eq:new-p13} holds.  All four residuals vanish separately.
+As $q\ge3$ and $f_0\ge1$,
+\[
+ N_f\ge2\beta+2>0.
+\]
+Equation \eqref{eq:new-strong} makes $(N_f/b)^2=1+\Delta I^2$ an integer.
+A rational square root of an integer is integral.  Hence $f=N_f/b$ is a
+positive integer and
+\[
+ q-\beta-1=3\beta j,\qquad J=3j+1
+\]
+for an integer $j$.  The inequality $q>0$ excludes $j<0$.  Thus $J\ge1$,
+$q\ge B\ge16$, and, since $\beta\equiv1\pmod3$,
+$q\equiv2\pmod3$.  Also $R$ is now integral with its exact native formula.
+
+All of $F,\alpha,C$ are positive and $q=F+\alpha+C$.  The authentic mask
+bounds give
+\begin{equation}
+ 3q<R<q^4-2.\label{eq:new-rbounds}
+\end{equation}
+For example, $G=q\alpha+(q-1)C$ lies between $q$ and $q^2-q$, while
+$0<(M_C+qM_F)J<(q-1)(1+2q)$.  These estimates use no transport quotient.
+
+\subsection{The first carrier and normalized rank recovery}
+
+Equation \eqref{eq:new-first} makes $\tau=Z/M_0$ an integer square root of
+$\ell(\ell+k)+1$, possibly with negative sign.  Reducing $M_0\mid Z$
+modulo $q^3$ and $q-1$ gives
+\[
+ q^3\mid Y,\qquad q-1\mid B_t.
+\]
+Write $s=Y/q^3>0$ and $t=B_t/(q-1)\in\mathbb Z$.  Thus
+\[
+ \tau=\ell+r+s-t,\qquad \tau^2-\ell(\ell+k)=1.
+\]
+Neither $t$ nor $\tau$ is assumed positive at this stage.
+
+Similarly, \eqref{eq:new-main} gives an integer
+$g=D_*/M$ with $g^2-\Delta c^2=1$.  It is positive: $v<k$, $c>kY$,
+$H<5a$, and $MY>5$ imply
+\[
+ D_*>Mac-Hk>ak(MY-5)>0.
+\]
+Put $A=a+2$ and $P_0=2XY^2+1$.  Pell classification supplies $n,p\ge1$:
+\[
+ |\tau|=\chi_{P_0}(n),\quad k=2\psi_{P_0}(n),\qquad
+ g=\chi_A(p),\quad c=\psi_A(p).
+\]
+The usual recurrence gives $P_0>A$; since $c>k$, monotonicity implies
+$n<p$.  If $n=1$, then $k=2$, $\eta=\zeta=1$, and $c=2Y+1$, whereas
+$p\ge2$ forces $c\ge2A\ge4Y+4$.  Hence $n\ge2$, and
+\[
+ c>kY\ge4P_0Y>8XY^3\ge8q^9>2R,\qquad c>2p.
+\]
+
+The \emph{normalized} strong equation is essential here.  It gives
+$f=\chi_A(m)$ and $I=\psi_A(m)$.  Since $I=ic^2$, strong divisibility
+gives $p\mid m$.  Write $m=pv_0$.  Composition and reduction modulo $c$
+give
+\[
+ I/c=\psi_g(v_0)\equiv v_0g^{v_0-1}\pmod c.
+\]
+Because $g^2\equiv1\pmod c$, it follows that $c\mid v_0$, hence
+$c\mid m$ and $m\ge pc>2p$.  This argument does not require the
+large-$c$ hypothesis of the separate ordinary-strong rank lemma.
+
+Set $M_a=\Delta I$.  Then $M_a^2=U$, $c\mid M_a$, and
+\eqref{eq:new-aux} becomes
+\[
+ M_a^2V^2-(M_a^2-1)(V+u)^2=1.
+\]
+Both displayed Pell coordinates are nonzero.  The definition of $V$ and
+$f^2\equiv1\pmod c$ give
+\[
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c.
+\]
+All hypotheses of the inherited signed auxiliary-index theorem are now
+established, including $0<p,R<c/2$ and $c\mid m$.  That theorem yields
+$p=R$.  No deleted quotient or transport sign has been used.
+
+\subsection{The adaptive congruence and transport sign}
+
+The main carrier gives $M\mid H(SX-v)$.  Since $q\mid Y$ and
+$q\equiv2\pmod3$, we have $\gcd(q,H)=1$.  Moreover, $H$ is odd and
+$\gcd(Y,H)\mid3$, so
+\[
+ \mu=\frac{S}{\gcd(S,H)}\ge\frac{4qY}{3}>q^4>R+1.
+\]
+Reduction modulo $S$ gives $\mu\mid v$.  Both $S$ and $M$ divide
+$4XY^2$ already, because $q^3\mid Y$; no assumption $q\mid X$ is needed.
+The first Pell recurrence gives $k\equiv2n\pmod{4XY^2}$.  Thus
+$\mu\mid2n-R-1$.  As $n<p=R$ and $|2n-R-1|<R<\mu$,
+\[
+ 2n=R+1.
+\]
+Therefore $v=k-2n$ is a positive multiple of $4XY^2$, in particular of
+$M$.  The main congruence now gives $q\mid HX$, hence $q\mid X$.
+The integers
+\[
+ w=X/q>0,\qquad h=v/E>0,\qquad
+ \gamma_{\rm old}=\gamma+w-v/M
+\]
+restore the source scale and index quotient.  The last one is positive:
+$n\ge2$ implies $c>X$, while $g>(a+1)c$, so
+$H\gamma_{\rm old}=g-ac-X>c-X>0$.
+
+After $X=qw$, $B_t=q((K_0+w)C-F)$.  As $q-1\mid B_t$ and
+$\gcd(q,q-1)=1$, the number
+\[
+ z_{\rm old}=\frac{(K_0+w)C+q-F-1}{q-1}
+\]
+is integral.  Its numerator is positive, since $K_0,w,C>0$ and
+$q-F=\alpha+C\ge2$.  Thus $z_{\rm old}>0$ and the authentic transport
+equation is restored.  This argument allows $z_{\rm old}-1=0$ and does
+not assume $w>q$ for arbitrary solutions.
+
+Finally $T_{\rm old}=fT$ and $y=|V+u|$ restore the remaining positive
+source coordinates.  The inherited native compiler extracts a finite
+syntactic ZFC refutation.
+
+\subsection{Constructive completeness}
+
+Conversely, start with canonical positive normalized source witnesses for
+a refutation.  Supply their $F,\alpha,C$ and put
+\[
+ j=(J-1)/3,\qquad f_0=f-j.
+\]
+The first is integral, and $f_0>0$ because
+$f\ge a+2>Y\ge q^3>q>j$.  This gives $N_f=bf$ and $A_s=0$.
+The canonical odd-index reconstruction from package~61 supplies fresh
+$T,u>0$ with
+\[
+ V_* =\frac{\chi_{M_a}(R)}{M_a},\quad y_* =\psi_{M_a}(R),\quad
+ T=\frac{V_*+c+Rf^2}{cf^2},\quad u=y_*-V_*.
+\]
+Its integrality uses the established squared-modulus congruences and
+$R\equiv3\pmod4$.  It gives $A_a=0$.
+
+Let $t=q(z_{\rm old}-1)\ge0$ and set
+\[
+ r=\tau-\ell-s+t,\qquad
+ \gamma=\gamma_{\rm old}+v/M-w.
+\]
+Both are positive.  For the first, $n\ge2$ gives
+$k\ge8XY^2+4>3s$, and
+\[
+ \tau^2-(\ell+k/3)^2
+ =k^2(XY^2/3-1/9)+1>0.
+\]
+Hence $\tau-\ell>k/3>s$.  For the second,
+$v$ is a positive multiple of $4XY^2$, so
+$v/M\ge XY/q^2=wY/q\ge wq^2>w$.
+Substitution gives $Z=M_0\tau$ and $D_*=Mg$, establishing $A_0=A_1=0$.
+This proves the reverse existence implication.  Composition with the
+native syntactic calibration and negation gives the claimed equivalence
+with $\operatorname{Con}(\mathrm{ZFC})$, by ordinary mathematics formalizable
+in ZFC.
+
+\subsection{Exact degree and finite verification}
+
+The cancellations
+\begin{align*}
+ Z&=M_0\ell+Z_t,\\
+ A_0&=2M_0\ell Z_t+Z_t^2-M_0^2(\ell k+1),\\
+ (X+ac+H\gamma)^2-(1+\Delta c^2)
+ &=2ac(X+H\gamma)+(X+H\gamma)^2-Hc^2-1,\\
+ \widehat Y^{\,2}-\widehat V^{\,2}&=Lu(2\widehat V+Lu)
+\end{align*}
+give residual degrees $(13,13,13,14)$.  The degree-$14$ homogeneous part
+of $A_s$ is
+\[
+ -9\beta^2i^2(\eta+\zeta)^4X^2Y^6.
+\]
+Only $A_s^2$ reaches degree $28$, so the leading form of $P_{13}$ is
+\[
+ \boxed{81\beta^4i^4(\eta+\zeta)^8X^4Y^{12}.}
+\]
+The coefficient of $i^4\eta^8X^4Y^{12}$ is $81\beta^4>0$ for the actual
+fixed instance.  The exact degree is therefore unaffected by specialization
+of the other three native ports.
+
+The independent standard-library checker expands the four literal
+residuals into respectively $1921$, $5565$, $26877$, and $81$ symbolic
+monomials, compares separately specified formulas, checks their exact
+witness degrees, and verifies the final sum of squares over independent
+residual indeterminates.  It also checks all wires and liveness.  The
+counts are $25$ additions, $16$ subtractions, and $57$ multiplications:
+$98$ operations, or $91$ for the four-residual system.  The normal and
+optimized Python runs both pass.  These finite checks certify the emitted
+algebra and counts; they neither decide consistency nor replace the
+unbounded mathematical argument and its named inherited dependencies.

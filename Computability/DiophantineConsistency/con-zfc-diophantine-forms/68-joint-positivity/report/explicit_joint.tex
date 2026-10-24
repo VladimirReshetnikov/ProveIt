@@ -1,0 +1,82 @@
+\section{A fully specified low-degree equation}
+For convenient paper use, the following is a compact presentation of the
+28-integer polynomial, equivalent term by term to the literal JSON. All
+letters in the list
+\[
+ J,F,\alpha,z,f,h,r,v,\tau,\eta,y,\gamma,o,j,E,c,a,V,I,u,\rho,
+ t,p,q,s,p_3,q_3,s_3
+\]
+are unrestricted integer unknowns. There are 28. Define abbreviations
+\[
+ Q=J\beta,\quad R=8\rho^2+(3+4a)\gamma,\quad
+ x=F\alpha,\quad x'=F(1+Q-F-\alpha),
+\]
+\[
+ x''=\eta(1-V+jc+hE-\eta),\qquad
+ \mathrm{Pos}(p,q,s)=1+p^2+q^2+s(s+1).
+\]
+The following twelve residuals are retained from the source:
+\begin{align*}
+ R_1={}&8\rho^2-4u^2(1+Q),\\
+ R_2={}&a-E-(1+2v)(1+Q)^3,\\
+ R_3={}&E+8\rho^2(E-a),\\
+ R_4={}&c-\eta+(a-E)(V-1-jc-hE),\\
+ R_5={}&\tau^2-1-E(c-\eta)(1-V+jc+hE)-E^2(c-\eta)^2,\\
+ R_6={}&R^2+2caR-(3+4a)c^2-1,\\
+ R_7={}&-V+jc-JM_C-JM_F(1+Q)\\
+       &+(Q+2)\bigl(FQ^2-\alpha Q-Q^2(Q+1)\bigr),\\
+ R_8={}&(1-\alpha-F+Q)(K_0+4u^2)-F-Qz,\\
+ R_9={}&V+c-fo,\\
+ R_{10}={}&I-(1+2r)c^2,\\
+ R_{11}={}&I^2+(1-f^2)(a^2+4a+3),\\
+ R_{12}={}&-1+V^2I^2+y^2-y^2I^2.
+\end{align*}
+Add two residuals
+\[
+ R_{13}=xx'-(t^2-x-x'+1)^2-\mathrm{Pos}(p,q,s),\qquad
+ R_{14}=x''-\mathrm{Pos}(p_3,q_3,s_3).
+\]
+The promised single ordinary equation is
+\[
+ \boxed{\quad P_{28}=\sum_{i=1}^{14}R_i^2=0.\quad}
+\]
+The letter $v$ here is the JSON variable \texttt{v\_scale}; the four
+new nearest-square/positivity variables are
+\texttt{pair\_root}, \texttt{pair\_pos1}, \texttt{pair\_pos2},
+\texttt{pair\_pos3}. The last three are \texttt{EZ\_pos1},
+\texttt{EZ\_pos2}, \texttt{EZ\_pos3}. Thus there is no implicit extra
+coordinate in this compact notation.
+
+\paragraph{Fixed coefficients.}
+The four constants are the whole authenticated source34 tuple:
+\[
+ \beta=2^{1064921}-1,\qquad K_0=K,\quad M_C=MC,\quad M_F=MF_{\rm source}.
+\]
+They are fixed integers, supplied as minimal unsigned little-endian
+payloads under \texttt{integer\_system\_audit/coefficients/}.
+The last port is already shifted; replacing it by the native unshifted
+mask is invalid. The binding gives hashes, bit lengths, the 943 ordered
+tiles, and the explicit bounded coefficient recipe. The independently
+authored checker reconstructs all four integers from that recipe and
+compares them with the materialized bytes. The total raw payload is
+532,479 bytes, or 10,466 bytes in the original compressed copies.
+
+\paragraph{The 26-integer companion.}
+Keep the first 21 variables and $R_1,\ldots,R_{12}$. Introduce only
+$t,t',p,q,s$ and set $g=xx'-(t^2-x-x'+1)^2$. The equation is
+\[
+ \boxed{\quad P_{26}=\sum_{i=1}^{12}R_i^2+
+ \bigl(gx''-(t'^2-g-x''+1)^2-\mathrm{Pos}(p,q,s)\bigr)^2=0.\quad}
+\]
+Its exact degree is sixteen. In ZFC one can prove, for each of these
+fixed polynomials,
+\[
+ \neg\exists\mathbf x\in\Z^n\ P_n(\mathbf x)=0
+ \quad\longleftrightarrow\quad\Con(\mathrm{ZFC}).
+\]
+The new proof is the explicit existential reduction to source30, not a
+claim that all of source30's inherited calibration has been re-proved
+in this packet. That dependence is made inspectable by retaining the
+source30/Q42X residual map, the sign-recovery proofs, compiler proof,
+and source34 coefficient evidence. Transitive proof-assistant imports
+remain references to the pinned repository.
