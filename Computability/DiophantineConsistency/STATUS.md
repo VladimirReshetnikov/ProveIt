@@ -1195,3 +1195,23 @@ and595/8,232/45,769,613 (variables/terms/height). The594-variable predecessor
 has69 fewer terms and is preserved. This is the direct quartic family;
 other domains and compact norm equations remain separate tradeoffs.
 The canonical ten-positive page is unchanged and Lean remains paused.
+
+
+## Squared output bounds give 575 integer unknowns
+
+The [64-predicate ordinary proof](research/range-output-square-frame/PROOF.md)
+replaces eight range output bounds by their squares, then derives their
+quotient signs after positive-power recovery. All earlier seed arguments
+keep their required signs; a retained positive ordinate is essential to the
+signed-output lemma. Fresh completeness rebuilds the entire new frame and
+private Pell data. The exact binding licenses all 24 checked
+[RAW/CSE quartics](research/squared-range-frame-source-prototype/README.md).
+Root's six ordinary replays, both complete finite checks and both
+rebuilds pass; see the [combined review](reviews/squared-range-frame-root-peer.md).
+
+The complete CSE/default equation has 575 integer unknowns, 7,225 terms and
+height 2,445,790,974,704 at degree 4: 16 fewer variables and 2,432 fewer terms
+than 591/9,657. Lower-height alternatives give 580/5,768/964,213 and
+579/5,832/45,769,613 (variables/terms/height). These improve the direct
+quartic family; compact norm equations remain separate. All predecessors
+are preserved, the canonical ten-positive page is unchanged and Lean is paused.

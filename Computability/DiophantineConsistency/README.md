@@ -99,14 +99,14 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
-The latest [common-radius quartic family](research/common-squared-radius-source-prototype/README.md)
-reaches591 integer unknowns with9,657 terms at degree4. It also offers596
-unknowns with coefficient height964,213, or595 with height45,769,613.
-The [complete ordinary source proof](research/common-factorial-square-radius/FULL_SOURCE.md)
+The latest [squared-output-frame quartic family](research/squared-range-frame-source-prototype/README.md)
+reaches 575 integer unknowns with 7,225 terms at degree 4. It also offers 580
+unknowns with coefficient height 964,213, or 579 with height 45,769,613.
+The [complete ordinary source proof](research/range-output-square-frame/FULL_SOURCE.md)
 is exactly bound to every checked integer inverse and complete quartic,
 including the invertible modulus-sharing step; see the
-[combined root review](reviews/common-squared-radius-root-peer.md).
-The preceding594-variable family has69 fewer terms and is preserved.
+[combined root review](reviews/squared-range-frame-root-peer.md).
+This saves 16 variables and 2,432 terms over 591/9,657 at the same height.
 
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
 now reaches607 integer variables, or612 with coefficient height964,213
@@ -1276,3 +1276,23 @@ and595/8,232/45,769,613 (variables/terms/height). The594-variable predecessor
 has69 fewer terms and is preserved. This is the direct quartic family;
 other domains and compact norm equations remain separate tradeoffs.
 The canonical ten-positive page is unchanged and Lean remains paused.
+
+
+## Squared output bounds give 575 integer unknowns
+
+The [64-predicate ordinary proof](research/range-output-square-frame/PROOF.md)
+replaces eight range output bounds by their squares, then derives their
+quotient signs after positive-power recovery. All earlier seed arguments
+keep their required signs; a retained positive ordinate is essential to the
+signed-output lemma. Fresh completeness rebuilds the entire new frame and
+private Pell data. The exact binding licenses all 24 checked
+[RAW/CSE quartics](research/squared-range-frame-source-prototype/README.md).
+Root's six ordinary replays, both complete finite checks and both
+rebuilds pass; see the [combined review](reviews/squared-range-frame-root-peer.md).
+
+The complete CSE/default equation has 575 integer unknowns, 7,225 terms and
+height 2,445,790,974,704 at degree 4: 16 fewer variables and 2,432 fewer terms
+than 591/9,657. Lower-height alternatives give 580/5,768/964,213 and
+579/5,832/45,769,613 (variables/terms/height). These improve the direct
+quartic family; compact norm equations remain separate. All predecessors
+are preserved, the canonical ten-positive page is unchanged and Lean is paused.

@@ -42,6 +42,9 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 575 | not optimized | 4 | Squared-output 64-guard CSE/default projection; 7,225 terms, height 2,445,790,974,704 |
+| Integers | 580 / 579 | not optimized | 4 | Squared-output 64-guard CSE projections; 5,768 / 5,832 terms, heights 964,213 / 45,769,613 |
+| Integers | 790 / 660 / 602 / 587 | not optimized | 4 | Squared-output 64-guard CSE low-height projections; heights 4,750 / 737,653 / 737,653 / 938,261 |
 | Integers | 591 | not optimized | 4 | Common-radius72-guard CSE/default projection;9,657 terms, height2,445,790,974,704 |
 | Integers | 596 / 595 | not optimized | 4 | Common-radius72-guard CSE projections;8,328 /8,232 terms, heights964,213 /45,769,613 |
 | Integers | 822 / 684 / 618 / 603 | not optimized | 4 | Common-radius72-guard CSE low-height projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -1112,3 +1115,23 @@ render/reconstruction receipts; every action, tile and coefficient byte
 remains exact. See the [root review](reviews/mixed-radix-seed-root-review.md).
 All three standalone PDF/TeX siblings are preserved. The canonical page
 remains the better tested display; this does not rule out other decoders.
+
+
+## Squared output bounds give 575 integer unknowns
+
+The [64-predicate ordinary proof](research/range-output-square-frame/PROOF.md)
+replaces eight range output bounds by their squares, then derives their
+quotient signs after positive-power recovery. All earlier seed arguments
+keep their required signs; a retained positive ordinate is essential to the
+signed-output lemma. Fresh completeness rebuilds the entire new frame and
+private Pell data. The exact binding licenses all 24 checked
+[RAW/CSE quartics](research/squared-range-frame-source-prototype/README.md).
+Root's six ordinary replays, both complete finite checks and both
+rebuilds pass; see the [combined review](reviews/squared-range-frame-root-peer.md).
+
+The complete CSE/default equation has 575 integer unknowns, 7,225 terms and
+height 2,445,790,974,704 at degree 4: 16 fewer variables and 2,432 fewer terms
+than 591/9,657. Lower-height alternatives give 580/5,768/964,213 and
+579/5,832/45,769,613 (variables/terms/height). These improve the direct
+quartic family; compact norm equations remain separate. All predecessors
+are preserved, the canonical ten-positive page is unchanged and Lean is paused.
