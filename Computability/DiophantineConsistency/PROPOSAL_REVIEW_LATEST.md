@@ -18,6 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
+| Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, canonical page retained |
 | Positive integers | 10 | **92** | **283** | Coprime saturated Pell product; complete canonical page and indexed constants |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
@@ -1550,3 +1551,21 @@ from the pinned Git arrival commit; selected adapters authenticate their
 whole bytes without restoring them into docs/incoming. This relocation
 does not itself approve any other incoming mathematical claims. The
 canonical ten-positive92/283 PDF and TeX remain unchanged.
+
+## Reusing the existing b saves one more multiplication
+
+The [complete reused-b extension](research/ten-positive-reused-b-weight/README.md)
+gives **91/283, 92/278, 97/258 and 98/254** operation/degree profiles
+with ten strictly positive unknowns. It replaces L=k(T+alpha) by the
+already evaluated b=c(T+alpha)-R. The ordinary proof bounds b before
+transport and constructs a fresh positive n. The changed remainder has
+degree six, below all existing center defects, so every exact degree
+and nonzero global leading form is preserved.
+
+Independent full proof/code review and six normal/optimized replays pass;
+all 152 interfaces and 378 gates, complete parent-row maps and both whole
+native tuples are bound. Twenty graph corruptions and 31 malformed
+artifacts are rejected. See the [root acceptance](reviews/ten-reused-b-root-peer.md).
+This one-operation gain is recorded separately while further changes are
+batched; the canonical complete92/283 PDF and TeX remain unchanged.
+Lean work remains paused.

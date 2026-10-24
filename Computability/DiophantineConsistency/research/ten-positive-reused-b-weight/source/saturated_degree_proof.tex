@@ -1,0 +1,161 @@
+\section{Exact degrees and highest homogeneous forms}
+\label{sec:saturated-two-root}
+
+This section proves the global degree bounds and their attainment for
+the four literal circuits.  Write $\gamma=\varepsilon$ for the fixed
+center choice; it is not another unknown.  The square-recovery argument
+and the complete witness constructions were proved in the preceding
+section.
+
+\subsection{Literal degrees and highest homogeneous forms}
+
+Set $q_0=\beta J$ and $k_0=\eta+\zeta$.  With the port values fixed
+as constants, the four exact results are
+\[
+\begin{array}{c|r|r}
+\text{circuit}&\text{live binary operations}&\text{total degree}\\\hline
+ X=wq,\ C_1=(A+1)UE&92&283\\
+ X=wq,\ C_0=AUE&93&278\\
+ X=q+x,\ C_1=(A+1)UE&98&258\\
+ X=q+x,\ C_0=AUE&99&254.
+\end{array}
+\]
+The operation counts refer to the supplied literal graphs after
+discarding unused nodes; they charge additions, subtractions and
+multiplications once each, including multiplication by a fixed integer.
+
+\paragraph{Exact-degree certificate.}
+For the $X=wq$ circuits, the highest homogeneous forms are
+\begin{align*}
+ [N_{2,1}]_{283}
+   &=2^{11}q_0^{149}w^{29}Y^{61}i^{10}k_0^{32}(q_0-F)^2,\\
+ [N_{2,0}]_{278}
+   &=2^{10}q_0^{146}w^{28}Y^{60}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+For the direct circuits, put $x_0=q_0+x$.  The highest forms are
+\begin{align*}
+ [N_{2,1}^{\rm dir}]_{258}
+   &=2^{11}q_0^{124}x_0^{29}Y^{61}i^{10}k_0^{32}(q_0-F)^2,\\
+ [N_{2,0}^{\rm dir}]_{254}
+   &=2^{10}q_0^{122}x_0^{28}Y^{60}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+These are nonzero polynomials for every fixed $\beta>0$.  Therefore
+they certify exact degrees for the actual coefficient tuple.
+
+\paragraph{Proof.}
+Scale all ten witnesses by $t$, keep the coefficient ports fixed, and
+work in the formal Laurent-series field at $t=\infty$ over the rational
+function field in the ten unscaled witnesses.  A series degree is the
+largest exponent of $t$.  For polynomials it is their ordinary total
+degree.  Choosing formal square roots with the indicated square leading
+forms is justified by the binomial series; each relative correction
+has negative degree.  No analytic convergence is used.
+
+In either source the literal numerator satisfies
+\[
+ Z:=Z_{\rm num}/M=V+C_\gamma+\mathcal E,
+\]
+where the rational remainder has degree at most $4$.
+For $X=wq$, it is
+\[
+ \mathcal E=n-LB_t+K_{\rm pos}/H+Y/q^3-B_t/(q-1)-e/\mu^2,
+ \quad L=k(T+\alpha),\quad H=4A-5,
+\]
+and $M=q^3(q-1)\mu^2H$.
+For $X=q+x$, replace the remainder by
+\[
+ \mathcal E=n-LB+K_{\rm pos}/H+Y/q^3
+                -B/[q(q-1)]-X/q^4-e/\mu^2,
+\]
+and retain the extra factor of $q$ in
+$M=q^4(q-1)\mu^2H$.  Both denominators have degree $13$.
+These rational identities are exact readings of the respective
+polynomial graphs, not additional defining equations.
+
+Choose formal roots $g^2=ED_f$ near $AUE$ and
+$y^2=D_y/\delta$ near $V$.  The two exact identities are
+\[
+ (AUE)^2-ED_f=U^2E^2-E,                         \tag{D1}
+\]
+and
+\[
+ (y-V)(y+V)=(V^2-1)/\delta.                       \tag{D2}
+\]
+The degrees controlling the argument are
+\[
+\begin{array}{c|rrrrrrrrrr}
+ &A&U&E&D_f&\delta&V&M&g&C_1-g&C_0-g\\\hline
+ X=wq&5&5&18&38&48&42&13&28&23&18\\
+ X=q+x&4&5&16&34&42&38&13&25&21&17.
+\end{array}
+\]
+Equation (D2) gives $\deg(y-V)=-6$ and $-4$, respectively.
+Equation (D1) gives
+\[
+ C_0-g=\frac{U^2E^2-E}{AUE+g},
+ \qquad C_1-g=UE+(C_0-g).
+\]
+The leading forms of these two defects are $u_0e_0/(2a_0)$ and
+$u_0e_0$, respectively, where the subscripts denote leading forms.
+In every case the defect degree is greater than $4$, so it dominates
+both $\mathcal E$ and $V-y$.
+
+The exact four-factor norm identity is
+\[
+ N_2=\delta^2M^4
+       \prod_{\sigma,\rho\in\{-1,1\}}(Z+\sigma y+\rho g).
+                                                               \tag{D3}
+\]
+The two factors with $\sigma=1$ have leading form $2v_0$.
+The factor with $\sigma=-1,\rho=1$ has leading form $2g_0$.
+The last factor has leading form $u_0e_0$ for $C_1$ and
+$u_0e_0/(2a_0)$ for $C_0$.
+Thus the four degree totals are exactly
+\begin{align*}
+ 2(48)+4(13)+2(42)+28+23&=283,\\
+ 2(48)+4(13)+2(42)+28+18&=278,\\
+ 2(42)+4(13)+2(38)+25+21&=258,\\
+ 2(42)+4(13)+2(38)+25+17&=254.
+\end{align*}
+
+To verify the coefficients without any large-numeral expansion, for
+$X=wq$ put
+\[
+ a_0=q_0^3wY,\quad u_0=ik_0^2Y^2,\quad
+ e_0=q_0^{10}w^2Y^4k_0^2,\quad r_0=q_0^3(q_0-F).
+\]
+Then
+\[
+ d_0=a_0^4u_0^2e_0,\quad m_0=4q_0^8a_0,\quad
+ v_0=-a_0^2u_0^2e_0r_0,\quad g_0=a_0u_0e_0.
+\]
+Multiplying the leading factors in (D3) gives
+\[
+ 8d_0^2m_0^4v_0^2g_0u_0e_0
+ \quad\hbox{or}\quad
+ 4d_0^2m_0^4v_0^2u_0^2e_0^2,
+\]
+respectively.  These simplify to the two asserted $X=wq$ forms.
+For the direct source replace
+\[
+ a_0=q_0^2x_0Y,\qquad
+ e_0=q_0^8x_0^2Y^4k_0^2,\qquad m_0=4q_0^9a_0;
+\]
+the remaining abbreviations retain their formulas.  The same products
+give the two direct forms.  Every displayed final top form is a nonzero
+polynomial, proving attainment as well as the upper bound.
+\hfill$\square$
+
+\paragraph{Independent exact polynomial replay.}
+The standard-library verifier evaluates every gate of each supplied
+graph as a univariate polynomial over the integers.  On the ray where
+all ten witnesses equal $t$ and
+$(\beta,K_0,M_C,M_F)=(2,3,5,7)$, it obtains, in table order,
+\[
+ 2^{192}t^{283},\qquad 2^{188}t^{278},\qquad
+ 2^{167}3^{29}t^{258},\qquad 2^{164}3^{28}t^{254}
+\]
+as the exact leading terms.  This is finite arithmetic verification of
+one specialization.  The global Laurent-series proof, including its
+explicit nonzero top homogeneous forms, is what establishes the claims
+for the real fixed coefficient tuple.

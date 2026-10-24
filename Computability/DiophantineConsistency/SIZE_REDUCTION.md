@@ -21,6 +21,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
+| Positive integers | 10 | 91 / 92 / 97 / 98 | 283 / 278 / 258 / 254 | Existing b transport; one-operation minor checkpoint, canonical page retained |
 | Positive integers | 10 | **92** | **283** | Coprime saturated Pell product; complete canonical page and indexed constants |
 | Positive integers | 10 | 93 | 278 | Sharp saturated center; lower-degree tradeoff |
 | Positive integers | 10 | 98 / 99 | 258 / 254 | Direct positive X and upper/sharp saturated centers |
@@ -1378,3 +1379,21 @@ from the pinned Git arrival commit; selected adapters authenticate their
 whole bytes without restoring them into docs/incoming. This relocation
 does not itself approve any other incoming mathematical claims. The
 canonical ten-positive92/283 PDF and TeX remain unchanged.
+
+## Reusing the existing b saves one more multiplication
+
+The [complete reused-b extension](research/ten-positive-reused-b-weight/README.md)
+gives **91/283, 92/278, 97/258 and 98/254** operation/degree profiles
+with ten strictly positive unknowns. It replaces L=k(T+alpha) by the
+already evaluated b=c(T+alpha)-R. The ordinary proof bounds b before
+transport and constructs a fresh positive n. The changed remainder has
+degree six, below all existing center defects, so every exact degree
+and nonzero global leading form is preserved.
+
+Independent full proof/code review and six normal/optimized replays pass;
+all 152 interfaces and 378 gates, complete parent-row maps and both whole
+native tuples are bound. Twenty graph corruptions and 31 malformed
+artifacts are rejected. See the [root acceptance](reviews/ten-reused-b-root-peer.md).
+This one-operation gain is recorded separately while further changes are
+batched; the canonical complete92/283 PDF and TeX remain unchanged.
+Lean work remains paused.

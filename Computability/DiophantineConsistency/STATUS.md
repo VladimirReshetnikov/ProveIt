@@ -1445,3 +1445,21 @@ from the pinned Git arrival commit; selected adapters authenticate their
 whole bytes without restoring them into docs/incoming. This relocation
 does not itself approve any other incoming mathematical claims. The
 canonical ten-positive92/283 PDF and TeX remain unchanged.
+
+## Reusing the existing b saves one more multiplication
+
+The [complete reused-b extension](research/ten-positive-reused-b-weight/README.md)
+gives **91/283, 92/278, 97/258 and 98/254** operation/degree profiles
+with ten strictly positive unknowns. It replaces L=k(T+alpha) by the
+already evaluated b=c(T+alpha)-R. The ordinary proof bounds b before
+transport and constructs a fresh positive n. The changed remainder has
+degree six, below all existing center defects, so every exact degree
+and nonzero global leading form is preserved.
+
+Independent full proof/code review and six normal/optimized replays pass;
+all 152 interfaces and 378 gates, complete parent-row maps and both whole
+native tuples are bound. Twenty graph corruptions and 31 malformed
+artifacts are rejected. See the [root acceptance](reviews/ten-reused-b-root-peer.md).
+This one-operation gain is recorded separately while further changes are
+batched; the canonical complete92/283 PDF and TeX remain unchanged.
+Lean work remains paused.
