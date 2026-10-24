@@ -264,9 +264,18 @@ Both complete scoped replays and the attained leading coefficient pass.
 
 ## Newer arrivals still being assessed
 
-The congruence-certificate,608-shared-Pell and twelve-integer interpolation
-archives arriving ina6269e4da6 remain under review. Preliminary claims
-are not promoted to the table. The earlier direct7617 projection is
+The [608-shared-Pell review](PROPOSAL_REVIEW_SHARED_PELL_608.md) is complete.
+Its608-natural/1,685-integer equations are dominated by current working
+points, but its self-bounding factorial is reusable: with `rho=f*n²`,
+the exact ceiling of `(rho+1)^n/binom(rho+n,n)` equals f if and only if
+f=n!. The ceiling rows exclude f=0 without assuming the intended value.
+This removes one power call per factorial. Both full normal/optimized
+replays and the independent ordinary/finite review pass. A new sibling
+is composing this lemma with the different synchronized engine.
+
+The congruence-certificate and twelve-integer interpolation archives
+arriving ina6269e4da6 remain under review. Preliminary claims are not
+promoted to the table. The earlier direct7617 projection is
 queued; its local-source ideas may compose with the newer frame engine.
 Further combinations are researched as separate candidates. Both
 differently named parity ZIPs remain distinct.
