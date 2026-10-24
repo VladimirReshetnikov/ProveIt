@@ -1295,3 +1295,15 @@ than 591/9,657. Lower-height alternatives give 580/5,768/964,213 and
 579/5,832/45,769,613 (variables/terms/height). These improve the direct
 quartic family; compact norm equations remain separate. All predecessors
 are preserved, the canonical ten-positive page is unchanged and Lean is paused.
+
+## Review of the compact-kernel next-steps note
+
+The note added in `0d0a01670f` supplies useful degree accounting and a
+one-word transport research direction, rather than a new equation. Its
+[current text](candidates/ten-positive-scaled-norm/NEXT_STEPS.md) corrects
+three overstatements: the suggested product of two quadratic factors has
+degree four; the current transport argument needs a bound on
+`W/(q-1)` before divisibility is known, not merely `W>f`; and the failure
+of a direct one-word substitution is not an impossibility theorem for
+all encodings. No degree floor or nine-variable lower bound has been
+proved. The canonical page and accepted metric tables are unchanged.
