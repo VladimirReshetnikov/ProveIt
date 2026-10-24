@@ -60,3 +60,17 @@ and root review. This improves both cost and degree over14-integer
 137/792,145/568 and148/414, which remain preserved checkpoints. It has
 more variables and operations than the current10-positive105/408 page,
 so that complete PDF/TeX remains the canonical display. Lean is paused.
+
+
+The [contracted mixed-bound family](candidates/projected-radius-mixed-bounds/README.md)
+now reaches988/729/703/701/700 unrestricted integer variables at degree4.
+All585 original body rows are unchanged. Restoring592 raw wires over
+integers licenses the four actual t,n,A,D row bounds;107 copied guard
+triples plus six fresh A/D witnesses give the literal reviewed994 zero.
+Every projection restores the entire988 parent first. Independent and
+full deterministic normal/optimized checks pass all1177 row identities,
+complete coefficients/inverses and15 corruption controls. The700-variable
+polynomial has10,437 terms and height2,445,790,974,704;729 retains lower
+height63,905,891. Each matched994/735/709/707/706 checkpoint loses six
+variables, two rows and28 terms. The710-variable retained-wire option
+has much smaller height938,261. Canonical PDF/TeX and Lean are unchanged.
