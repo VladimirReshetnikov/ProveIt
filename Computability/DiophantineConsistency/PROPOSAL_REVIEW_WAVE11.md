@@ -18,6 +18,7 @@ replace every previous candidate with one uniformly smaller equation.
 | Positive integers |11|114|257|Further degree/cost tradeoff |
 | Positive integers |12|100|70|Manuscript materialized and independently checked |
 | Positive integers |13|90|51|Our ordinary-norm improvement of90/55 |
+| Positive integers |14|73 /75|342 /293|Hilbert Tenth strong-root transfer, independently reviewed |
 | Integers |10|480|1,245,324|New saturated-Lucas H1868 choice |
 | Integers |37|unoptimized|4|New joint-sign quartic |
 | Integers |25|127|8|New joint octic |
@@ -77,6 +78,8 @@ forms use source34's six-port determinant tuple. Radical-nine uses the
 whole original31 tuple. Their fixed ports are not interchanged, and MF is
 not shifted twice. Our separate [771-digit complete page](SEED_COMPRESSION54.md)
 uses its own state-renamed compact54 tuple, with the changed K explicit.
+The new14-positive forms retain the separate whole package36 tuple,
+whose base exponent is1,012,115.
 
 Our [direct-flow source](candidates/direct-flow-large-carrier/README.md)
 uses a bounded-factor carrier and shared quadratic beta equations, giving
@@ -86,12 +89,13 @@ their literal nested beta constructors give roughly2.7trillion representation
 witnesses at the same stage. These unmaterialized compiler outputs remain
 separate from the finished small native equations.
 
-The user's pointer to`Computability/HilbertTenthProblem` led to a specific
-[strong-root elimination transfer](SIZE_RESEARCH_H10.md). Candidate local
-counts are14 positive unknowns at73/342 or75/293, pending the fixed-blank
-signed-positivity review and literal-construction check. They are not counted
-as calibrated endpoints here. Frozen helper programs and scientific arrays
-were read as inert metadata and were not executed.
+The user's pointer to`Computability/HilbertTenthProblem` led to a completed
+[strong-root elimination transfer](candidates/fixed-root-elimination/README.md).
+Both14-positive73/342 and75/293 circuits now have exact rebuilds and an
+independently reviewed fixed-blank signed-positivity proof. The genuine C=0
+boundary is retained until the signs are recovered; both unsquared auxiliary
+congruences are used after the actual mask proves R=3 modulo4. Frozen helper
+programs and scientific arrays were read as inert metadata, not executed.
 
 The ordinary arguments target a biconditional provable in ZFC without
 assuming consistency. Finite checks prove their stated algebra/data claims;

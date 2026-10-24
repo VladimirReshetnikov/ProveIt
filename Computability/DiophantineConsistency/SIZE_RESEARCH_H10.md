@@ -5,6 +5,15 @@ proofs in `Papers/research-wip/native-stream-queue`. All frozen emitters and
 scientific arrays were left unexecuted. The only Python inspection counted
 dependency edges in inert JSON source records. Lean remains paused.
 
+**Completed transfer:** the leads below are now materialized and
+independently reviewed in
+[`fixed-root-elimination`](candidates/fixed-root-elimination/README.md).
+Both14-positive forms,73/342 and75/293, have complete literal circuits,
+ordinary signed-T proofs, exact degree witnesses and normal/optimized
+checks. The earlier remaining-obligation discussion records what had to
+be proved; that fixed-blank specialization is now closed at the ordinary
+mathematical level. Native/internal-ZFC formalization remains separate.
+
 The universal bound **84 operations,18 positive witnesses, degree187** is
 distinct from the fixed consistency forms, including66/157 and our
 440-operation positive-nine equation. The separate74-operation result is a
@@ -51,11 +60,14 @@ slice. No circuit was emitted or evaluated here.
 On the retained positive domain,`D>c>0` and`b=c+R*D` cannot vanish for any
 integer`R`, so`B!=0`. The norm argument restores a unique nonzero integral
 `f`, and gives an exact projection onto the P67 zero set with **signed`f`**.
-The **remaining obligation** is to specialize the valid-compiler signed-`T`
-positivity theorem to this fixed blank source. The symmetry
+The **initial remaining obligation** was to specialize signed-`T`
+positivity to this fixed blank source. The symmetry
 `(f,T)->(-f,-T)` would then force the restored root positive. Until that
-hypothesis is proved, these are candidates, not consistency equations or
-new frontier records. This specialization is the next research task.
+hypothesis was proved, these were candidates rather than calibrated
+endpoints. The new [proof](candidates/fixed-root-elimination/PROOF.md)
+and [independent review](candidates/fixed-root-elimination/INDEPENDENT_REVIEW.md)
+now establish that specialization in dependency order, including C=0,
+actual fixed-blank mask binding and both unsquared auxiliary congruences.
 
 Applying the same idea directly to P66 is invalid: its squared-modulus
 reparameterization uses`T_old=f*T`, so`f` occurs only through`f²`.

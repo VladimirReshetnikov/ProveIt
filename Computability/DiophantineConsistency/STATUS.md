@@ -42,8 +42,11 @@ release/component scopes: accepted new points include eleven-positive
 111/277 and114/257, ten-integer480/1,245,324 and37-integer quartics.
 The separate report-only811-operation nine-variable claim lacks its
 referenced section/artifacts and is not counted as a checked endpoint.
-The [Hilbert Tenth transfer note](SIZE_RESEARCH_H10.md) identifies the next
-signed-root specialization to review, while all Lean work remains paused.
+The [Hilbert Tenth transfer](candidates/fixed-root-elimination/README.md)
+now gives14-positive73/342 and75/293 equations. Their signed-root
+specialization, full literal circuits and coefficient-independent degree
+witnesses pass separate ordinary review and normal/optimized checks.
+All Lean work remains paused.
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),

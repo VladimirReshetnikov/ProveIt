@@ -19,6 +19,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 99 / 100 | 164 / 70 | Ordinary-norm100/70 improves100/110 and102/82 |
 | Positive integers | 13 | 90 | 51 | Ordinary strong norm improves the90/55 unit product |
+| Positive integers | 14 | 73 / 75 | 342 / 293 | Hilbert Tenth strong-root transfer; lower-degree14-variable choices remain |
 | Positive integers | 11 | 111 / 114 | 277 / 257 | Reviewed ordinary three-root improvements |
 | Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
@@ -123,9 +124,11 @@ row maps, the whole fixed six-port tuple and an exact leading form are checked.
    complete global polynomial and its cost before comparing it with a
    finished endpoint; keep unbounded aggregation obligations explicit.
 
-The [Hilbert Tenth transfer note](SIZE_RESEARCH_H10.md) records specific
-strong-root deletion leads and their remaining signed-positivity obligation.
-Its frozen source emitters and arrays are being read as inert metadata.
+The [Hilbert Tenth transfer](candidates/fixed-root-elimination/README.md)
+now supplies14-positive73/342 and75/293 equations. Its signed-positivity
+obligation is closed by an ordinary fixed-blank proof and independent review;
+literal circuits, exact degree witnesses and normal/optimized checks pass.
+Frozen source emitters and arrays were read as inert metadata.
 
 Python algebra, explicit circuits and manuscript derivations remain useful
 validation tools. They do not replace the unbounded ordinary correctness

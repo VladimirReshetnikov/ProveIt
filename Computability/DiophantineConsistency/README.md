@@ -32,6 +32,9 @@ retained; native calibration and the internal-ZFC proof remain separate.
 Its [thirteen-positive companion](research/ordinary-unit-products/ORDINARY13.md)
 has90 operations and exact degree51, lowering the preceding90/55 form's
 degree at the same arithmetic cost.
+The [Hilbert Tenth root-elimination transfer](candidates/fixed-root-elimination/README.md)
+also gives fourteen-positive73-operation/degree342 and75-operation/degree293
+equations, with a separately reviewed signed-root reconstruction.
 Over unrestricted integers, a
 [centered joint-guard equation](candidates/joint22-centered/README.md)
 has22 unknowns, degree14 and119 operations. Its complete integer zero set
@@ -49,8 +52,8 @@ The new [wave11 review](PROPOSAL_REVIEW_WAVE11.md) covers arrivals
 `c1a102936a` and`9a33342a03`, including stronger eleven-positive forms,
 the saturated ten-integer equation and smaller signed-domain quartics.
 It distinguishes full release replays from selected component audits.
-The [Hilbert Tenth size leads](SIZE_RESEARCH_H10.md) record additional
-transferable root-elimination arguments under active review.
+The [Hilbert Tenth transfer note](SIZE_RESEARCH_H10.md) explains the
+root-elimination arguments and their completed fixed-blank specialization.
 
 Neither a K215 encoding nor a Jones universal equation is a requirement.
 Direct proof-certificate and arithmetic-trace encodings are separate research
