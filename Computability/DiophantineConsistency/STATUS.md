@@ -12,6 +12,9 @@ from443, with the exact same polynomial and degree1,845,940; the natural
 translation uses447 operations. Shared products and rank cancellation are
 checked by exact local ring identities and a complete gate remap. See
 [`gap2082-shared-products`](candidates/gap2082-shared-products/README.md).
+The lower-degree package71 branch also saves three gates, reaching475
+positive /482 natural operations at the unchanged degree1,379,730; see
+[`order7-shared-products`](candidates/order7-shared-products/README.md).
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),

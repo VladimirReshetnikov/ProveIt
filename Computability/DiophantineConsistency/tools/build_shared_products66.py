@@ -33,7 +33,8 @@ def encoded(data):
     return (json.dumps(data, indent=2) + "\n").encode()
 
 
-def transform(parent):
+def transform(parent, degree=1845940,
+              fixed_binding="../gap2082-compact54/fixed/BINDING.json"):
     """Build with CSE; leave every input and every coefficient unchanged."""
     old = parent["nodes"]
     n = parent["named_nodes"]
@@ -99,8 +100,7 @@ def transform(parent):
     result = copy.deepcopy(parent)
     result.update(nodes=nodes, output=output, named_nodes=names,
                   operation_counts=dict(sorted(counts.items())), total_operations=sum(counts.values()),
-                  exact_degree=1845940,
-                  fixed_binding="../gap2082-compact54/fixed/BINDING.json",
+                  exact_degree=degree, fixed_binding=fixed_binding,
                   algebraic_rewrite="shared M*U, shared C*D, cancellation of (R+1)")
     cert = dict(retained_remap={str(k): v for k, v in sorted(mapping.items())},
                 replacements=[dict(old_node=i, new_node=mapping[i],

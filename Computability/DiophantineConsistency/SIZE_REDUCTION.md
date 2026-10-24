@@ -20,7 +20,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 12 | 99 / 100 / 102 | 164 / 110 / 82 | Current degree/cost tradeoffs from packages74/69 |
 | Positive integers | 11 | 113 | 325 | Three-root transfer, package70 |
 | Positive integers | 9 | 440 | 1,845,940 | Shared-product reduction of the443-operation target |
-| Positive integers | 9 | 478 | 1,379,730 | Lower-degree alternative, package71 |
+| Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Integers | 10 | 481 | 1,576,864 | Free-Lucas finalizer, package68 |
 | Integers | 38 | not optimized | 4 | Cone/determinant alternatives, packages69/71 |
 
@@ -41,6 +41,11 @@ the440/447 positive/natural circuits equal their443/450 parents.
 Coefficients and named values are unchanged. Both normal and optimized
 Python replays check the deterministic artifacts, topology, liveness,
 actual-coefficient diagnostics and an identity-corruption control.
+
+The identical three-gate saving also applies to the lower-degree package71
+branch: [`order7-shared-products`](candidates/order7-shared-products/README.md)
+has475/482 positive/natural operations and the unchanged degree1,379,730.
+The complete original31 tuple is preserved on that branch.
 
 1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that

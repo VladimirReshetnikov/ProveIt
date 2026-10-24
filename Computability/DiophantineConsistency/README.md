@@ -101,6 +101,8 @@ An exact shared-product rewrite now reduces the compact54-sharp candidate
 from443 to440 operations, retaining degree1,845,940 and every coefficient;
 see [the new candidate](candidates/gap2082-shared-products/README.md).
 This is the current operation target in the nine-positive branch.
+The same algebra improves package71 to475 operations at degree1,379,730;
+see [the lower-degree rewrite](candidates/order7-shared-products/README.md).
 See [the combined wave-ten review](PROPOSAL_REVIEW_WAVE10.md)
 for the domain-preserving comparison, coefficient costs and proof boundaries.
 
