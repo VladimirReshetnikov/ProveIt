@@ -513,3 +513,20 @@ actual-coefficient homogeneous witness in both Python modes; both complete
 rebuilds pass and all packet seals are checked. Both cost and degree improve
 the matched419/427 parents. Lower-degree higher-cost alternatives remain
 separate, and canonical10-positive105/408 PDF/TeX is unchanged. Lean is paused.
+
+
+Two [exact private sign orbits](research/guard-sign-orbits/README.md)
+now replace the U and bootstrap-witness guards. Complete raw/contracted
+row identities negate U and its sixteen quotient partners together, or
+reflect Zminus1 with its two private wires. The independent A>=2 row
+bound excludes Z=0 before reflection; U=0 uses the identity branch.
+All100 remaining guard values and all643 semantic-prefix coordinates
+stay fixed. The [whole100-guard family](candidates/projected-radius-mixed-orbits/README.md)
+has967/708/682/680/679 integer variables at degree4. Normalize private
+values first, then six fresh witnesses give the literal973 equation;
+reverse all signed projections before that step. Root reviewed the full
+proofs/checkers and all normal/optimized checks/rebuilds pass. The679
+polynomial has397 rows and10,335 terms at unchanged height2,445,790,974,704.
+Each matched973/714/688/686/685 checkpoint loses six variables and two
+rows. The retained-wire low-height family and canonical PDF/TeX remain
+separate tradeoffs. Lean stays paused.

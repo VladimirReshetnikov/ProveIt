@@ -41,10 +41,10 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 714 | not optimized | 4 | Mixed-domain lower-height projection;5,916 terms, height63,905,891 |
+| Integers | 708 | not optimized | 4 | Mixed-domain lower-height projection;5,887 terms, height63,905,891 |
 | Integers | 1,580 / 933 | not optimized | 4 | Retained-wire mixed guards;5,392 /4,236 terms, heights427 /4,750 |
 | Integers | 788 / 724 / 710 | not optimized | 4 | Retained-wire mixed projections;6,000 /9,350 /9,314 terms, heights737,653 /737,653 /938,261 |
-| Integers | 685 / 686 / 688 | not optimized | 4 | Signed comparisons, seven derived guard signs and complete integer projection;10,364 /9,028 /8,933 terms, height2,445,790,974,704 |
+| Integers | 679 / 680 / 682 | not optimized | 4 | Signed comparisons, derived guards and private sign orbits;10,335 /8,999 /8,904 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
@@ -393,3 +393,20 @@ actual-coefficient homogeneous witness in both Python modes; both complete
 rebuilds pass and all packet seals are checked. Both cost and degree improve
 the matched419/427 parents. Lower-degree higher-cost alternatives remain
 separate, and canonical10-positive105/408 PDF/TeX is unchanged. Lean is paused.
+
+
+Two [exact private sign orbits](research/guard-sign-orbits/README.md)
+now replace the U and bootstrap-witness guards. Complete raw/contracted
+row identities negate U and its sixteen quotient partners together, or
+reflect Zminus1 with its two private wires. The independent A>=2 row
+bound excludes Z=0 before reflection; U=0 uses the identity branch.
+All100 remaining guard values and all643 semantic-prefix coordinates
+stay fixed. The [whole100-guard family](candidates/projected-radius-mixed-orbits/README.md)
+has967/708/682/680/679 integer variables at degree4. Normalize private
+values first, then six fresh witnesses give the literal973 equation;
+reverse all signed projections before that step. Root reviewed the full
+proofs/checkers and all normal/optimized checks/rebuilds pass. The679
+polynomial has397 rows and10,335 terms at unchanged height2,445,790,974,704.
+Each matched973/714/688/686/685 checkpoint loses six variables and two
+rows. The retained-wire low-height family and canonical PDF/TeX remain
+separate tradeoffs. Lean stays paused.
