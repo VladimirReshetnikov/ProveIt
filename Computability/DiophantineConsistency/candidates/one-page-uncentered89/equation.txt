@@ -1,0 +1,177 @@
+A complete ten-variable consistency equation
+Strictly positive integer unknowns; exact degree 288; an 89-operation evaluator.
+The only unknowns are
+J, F, α, i, T, w, Y, n, η, ζ ∈ Z>0.
+All other symbols in the equation are polynomial abbreviations:
+q− = βJ, q = q− + 1,
+C = q − F − α,
+X = wq, k = η + ζ, c = kY + η,
+µ = q2
++ 1, A = µY (X + 1), H = 4A − 1,
+∆ = A(A + 2), U = ic2
+,
+V0 = X(µY )2
+, ℓ = V0k, E = ℓ(ℓ + k) + 1,
+R = [q−(q − F) + α](q2
+− 1) + (MC + qMF )J,
+e = k − R − 1, Bt = (K + w)C − F,
+Df = 1 + ∆U2
+E, Q = ∆2
+U2
+E, δ = Q − 1,
+T′
+= T + α, b′
+= cT′
+− R, V = Df b′
+− c,
+Dy = QV 2
+− 1, K2 = X(3c − 2X) + 2,
+P1 = q3
+q−, M = P1µ2
+H,
+Z = P1µ2
+[H(n + V − b′
+Bt) + K2]
++H[µ2
+(q−Y − q3
+Bt) − P1e],
+S = δZ2
+, Ag = δM2
+EDf , Ay = M2
+Dy.
+The single equation is
+[S − (Ag + Ay)]2
+− 4AgAy = 0.
+The four fixed integers. Every index, set, sum, product and floor
+below defines a constant, not another unknown. Put
+ρ = 267
+, B = ρ8807
+, β = B − 1, Gm(x) =
+Xm−1
+j=0
+xj
+.
+Define
+E = {0, . . . , 942} ∪ {983, . . . , 992} ∪ {1003, . . . , 1011}
+∪ {1013, . . . , 1031} ∪ {1063, 1064, 1095, 2195, 3296}.
+Then
+MC = B − 1 −
+X
+e∈E\{1}
+ρe
+− 2ρ1063
+,
+MF = B − 1 + 4 + (251
+− 2)(ρ4393
++ ρ5495
+)
++ ρ1013
+G10(ρ) + ρ1065
+G9(ρ) + ρ2195
++ ρ3296
++ (265
+− 1)ρ8792
+G13(ρ) + (219
+− 1)ρ8805
+,
+K = ρ30
++ ρ62
++ ρ1100
++ ρ2201
++ ρ8849
++ (ρ4393
++ ρ5495
+)Φ(1/ρ),
+where
+Φ(x) = (1 + 251
+)G943(x) − 210
+X942
+i=0
+v(ti)xi
++
+X
+(b,e,m)∈C
+2b
+xe
+Gm(2x),
+C = {(10, 1023, 8), (18, 1013, 9), (27, 1003, 8),
+(35, 983, 9), (44, 1031, 1), (45, 1022, 1), (46, 1011, 1),
+(47, 992, 1), (48, 1095, 1), (49, 2195, 1), (50, 3296, 1)}.
+The rational intermediate in K cancels exactly; all four results are
+positive integers.
+The 943 indexed fixed tiles. Use the actions uj, vj, dj decoded
+below. Let
+h(q, b) = 2(q + 1) + b, R = {uj : dj = 1, 0 ≤ j < 430},
+L = {uj : dj = 0, 0 ≤ j < 430},
+rq = 6 + |R ∩ {0, . . . , q − 1}|, lq = 205 + |L ∩ {0, . . . , q − 1}|.
+An interval ending at −1 is empty. The table defines ti for 0 ≤ i ≤
+942; all index ranges are fixed:
+index i tile ti = (w, n, e, s)
+0, 1 (2, 435, 3, 1), (5, 0, 0, 0)
+j + 2 (j = 2q + b < 430) ((1 − dj)luj , h(q, b), djruj , vj)
+432 + b (b = 0, 1) (0, h(215, b), 0, h(215, b))
+434 + b (b = 0, 1) (0, b, 0, b)
+424 + 2rq + b (q ∈ R, b = 0, 1) (rq, b, 0, h(q, b))
+424 + 2lq + b (q ∈ L, b = 0, 1) (0, b, lq, h(q, b))
+924 + j (0 ≤ j < 4) (0, j + 430 ⌊j/2⌋ , 0, 438)
+928 (2, 434, 2, 0)
+929 (3, 436, 4, 4)
+930 (4, 436, 4, 0)
+497 + t (t = 434, 435, 436) (1, 438, 1, t)
+934+3a+b−6⌊a/4⌋
+a∈{0,1,4}, b=0,1,2 (a, 437, b, 437)
+For t = (w, n, e, s) put
+v(t) = w + 28
+n + 217
+e + 225
+s + 127 234
+.
+A closed decoder for the 430 actions. Put Db(A, k) =
+
+A/bk
+
+mod b, where a mod b = a − b ⌊a/b⌋. For 0 ≤ q < 215,
+b = 0, 1, j = 2q + b:
+N = A mod 2636
+, T0 =
+
+A/2636
+mod 21675
+,
+E0 =
+
+A/22311
+,
+νj = D2(N, j), σj =
+Xj−1
+k=0
+νk,
+mq = D2(N, 430 + q), τq =
+Xq−1
+k=0
+mk,
+Fq = 14(1 − mq) + mqD16(E0, τq),
+uj = νj(1 + σj) + (1 − νj)D216(T0, j − σj),
+vj = D2(Fq, 2b), dj = D2(Fq, 2b + 1).
+Empty sums are zero. Here (v0, d0, u0) = (1, 1, 1); the constructor
+tile uses this actual first target, including its state renaming.
+The integer A. The alphabet, in order of digit values 0, . . . , 61, is
+0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.
+Concatenate the following 436 characters as digits e0, . . . , e435; put
+A =
+P435
+j=0 ej62435−j
+.
+BxEnhvy6NipzkWmROo0GsA3uK3twWLxscLq20UTumy5Cdu461LwD6g7RDNzF8Y
+iYDFTpB8ehAypd7d6OsOL4APamnJeNXQypUezCmW9n4oXP6XfgmiWuAWZ8ZJ7U
+OP7gu4kVdlGZqZHULQMar1dXNeJW4i7oNVI8usp8BlovjjZbwPCovZI328fRUq
+4q92R81s5GjWQaQfGhkq9UYMK3rRMaBmsOIBkJqc2cj2VRIZ6mjzkBIOkW9SjZ
+FzeA6J5u4j3sBL3SdgwXzM9mHvQivu8EJ1TBTpRhHDqZIbmYgwQ8VqTAFotl6F
+We1YC554GKrVHsA8oUGKSA6F6k5KREBSD0Tgd7bFALY84LLbpw574BQyvdoHrl
+0Oe35uwDf15DpT6VJWZBjSbHPpPAINYTte0eUxnTFTKBlGj8Am6sb1gLldh8WZ
+8P
+The ordinary state/color-conjugacy, native and Pell arguments give unsolv-
+ability iff Con(ZFC). Native calibration and internal-ZFC formalization
+remain open in Lean. This page is a complete finite specification, not an
+unsolvability proof.
+
