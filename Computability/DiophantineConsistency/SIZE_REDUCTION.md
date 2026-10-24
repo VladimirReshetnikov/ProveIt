@@ -811,3 +811,16 @@ operations/degree, saving one operation and degree2. Root ordinary review
 and all four normal/optimized checker/rebuild replays passed; see the
 [root review](reviews/nine-reflected-root-peer.md). All source bindings and
 the canonical page are preserved; Lean remains paused.
+
+## One factorial bound replaces two more index guards
+
+The ordinary [factorial-radius guard proof](research/factorial-radius-guard/PROOF.md)
+replaces the retained K/shifted-K index slacks by f0>=2, reducing77 to76
+source predicates. A seed without its bound is either at its true index
+or has the exact collapsed coordinates X=A,Y=1. Literal digit/remainder
+and ceiling equations exclude every collapsed branch before factorial
+meaning is used. Both old slacks are then restored; conversely f0=K!>=6
+supplies the new bound. An independent ordinary/source peer and both
+normal/optimized root replays pass; see the
+[acceptance record](reviews/factorial-radius-guard-root-record.md). Projected
+counts remain separate. The canonical PDF and Lean sources are unchanged.
