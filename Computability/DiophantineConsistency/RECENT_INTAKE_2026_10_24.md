@@ -496,3 +496,16 @@ raw baseline order gives a possible613-variable/9661-term point at the
 same high coefficient height; a full separate package is under review.
 No new accepted frontier follows from this research measurement alone.
 Canonical101/368 PDF/TeX and paused Lean remain unchanged.
+
+## Default-affine raw613 support improvement accepted
+
+The complete [raw/default-affine613 quartic](candidates/retained-radius-default-affine/README.md)
+reduces the expanded support from10,013 to9,661 monomials at the same
+613 integer variables,375 quadratic rows, degree4 and coefficient height
+2,445,790,974,704. The exact unchanged1493 input uses support8 for both
+affine and quadratic restorations. All880 integer restorations and all
+9,661 coefficients were independently replayed in normal and optimized
+Python, along with both deterministic rebuilds; see the
+[root review](reviews/default-affine613-root-peer.md). All78 original
+guards remain. This is a new projection configuration, separate from the
+bootstrap guard exchange. The canonical one-page equation remains unchanged.

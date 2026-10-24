@@ -40,6 +40,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 1,493 / 846 | not optimized | 4 | Retained-wire78-guard equations;4,981 /3,813 terms, heights427 /4,750 |
 | Integers | 701 / 637 / 623 | not optimized | 4 | Retained-wire78-guard projections;5,575 /8,925 /8,889 terms, heights737,653 /737,653 /938,261 |
 | Integers | 613 / 614 / 616 | not optimized | 4 | Signed comparison-base lift and private sign orbits;10,013 /8,677 /8,582 terms, height2,445,790,974,704 |
+| Integers | 613 | not optimized | 4 | Raw/default-affine projection;9,661 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 The canonical [equation.pdf](equation.pdf) and standalone [TeX](equation.tex)
@@ -902,3 +903,16 @@ raw baseline order gives a possible613-variable/9661-term point at the
 same high coefficient height; a full separate package is under review.
 No new accepted frontier follows from this research measurement alone.
 Canonical101/368 PDF/TeX and paused Lean remain unchanged.
+
+## Default-affine raw613 support improvement accepted
+
+The complete [raw/default-affine613 quartic](candidates/retained-radius-default-affine/README.md)
+reduces the expanded support from10,013 to9,661 monomials at the same
+613 integer variables,375 quadratic rows, degree4 and coefficient height
+2,445,790,974,704. The exact unchanged1493 input uses support8 for both
+affine and quadratic restorations. All880 integer restorations and all
+9,661 coefficients were independently replayed in normal and optimized
+Python, along with both deterministic rebuilds; see the
+[root review](reviews/default-affine613-root-peer.md). All78 original
+guards remain. This is a new projection configuration, separate from the
+bootstrap guard exchange. The canonical one-page equation remains unchanged.
