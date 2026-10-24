@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "name": "generate-check",
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/build_synchronized_signed_projections.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 19.485,
+      "log": "verification/generate-check.log",
+      "log_sha256": "07ed957d50172c9f3f5e1e56afd9ff6ef295943bfd0dbbfb744a58d1a1a7a6ec"
+    },
+    {
+      "name": "generate-check-optimized",
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/build_synchronized_signed_projections.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 20.436,
+      "log": "verification/generate-check-optimized.log",
+      "log_sha256": "07ed957d50172c9f3f5e1e56afd9ff6ef295943bfd0dbbfb744a58d1a1a7a6ec"
+    },
+    {
+      "name": "independent-check",
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/candidates/synchronized-signed-projections/check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 16.47,
+      "log": "verification/independent-check.log",
+      "log_sha256": "42dd2d0d9454f417a586d726149570832d7efa5bf1cf05e707d1d990ced4bafa"
+    },
+    {
+      "name": "independent-check-optimized",
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/candidates/synchronized-signed-projections/check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 14.344,
+      "log": "verification/independent-check-optimized.log",
+      "log_sha256": "42dd2d0d9454f417a586d726149570832d7efa5bf1cf05e707d1d990ced4bafa"
+    }
+  ],
+  "scope": "No Lean or source compiler invoked; optimizer regeneration and independent signed/row-sign/full-quartic replays in normal and optimized Python."
+}
