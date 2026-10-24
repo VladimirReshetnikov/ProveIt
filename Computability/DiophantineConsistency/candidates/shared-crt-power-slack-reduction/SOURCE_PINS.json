@@ -1,0 +1,106 @@
+{
+  "parent": "candidates/shared-crt-fixed-power-bound",
+  "files": {
+    "build_equation.py": {
+      "parent_sha256": "c286c29e71678c905a9cc6c9628e7c0ffe10f994e0f29078c3d4c6e595ae9468",
+      "candidate_sha256": "63e2e707668285eef82d4591e908f7dcc6bad0bfa8e3ffa98b99338642a36033",
+      "exact_replacements": [
+        [
+          "        a2, yk, b2 = [self.new(tag + \".slack.\" + s) for s in (\"a2\", \"yk\", \"b2\")]\n",
+          "        yk = self.new(tag + \".slack.yk\")\n"
+        ],
+        [
+          "        self.eq(A, self.add(a2, TWO), tag + \".A_at_least_two\", e2)\n",
+          ""
+        ],
+        [
+          "        self.eq(B, self.add(b2, TWO), tag + \".B_at_least_two\", e2)\n",
+          ""
+        ],
+        [
+          "    H = b.sum([ep, fp, t])  # No local factorial cancellation is needed.\n",
+          "    H = b.sum([ep, fp])  # Literal beta square and endpoint imply H>=t.\n"
+        ]
+      ]
+    },
+    "direct_calculus.py": {
+      "parent_sha256": "68200f7a6a063c4ef8c3c1462f104f0e1f5b99e43f9fccb3db991ca1e80b9348",
+      "candidate_sha256": "68200f7a6a063c4ef8c3c1462f104f0e1f5b99e43f9fccb3db991ca1e80b9348",
+      "exact_replacements": []
+    },
+    "wire_eliminated_source.json": {
+      "parent_sha256": "1e7cf2f3ea9397e138c7543d47ccd00a967b8fbb2fd4c8d58f176c409033c1bb",
+      "candidate_sha256": "1e7cf2f3ea9397e138c7543d47ccd00a967b8fbb2fd4c8d58f176c409033c1bb",
+      "exact_replacements": []
+    },
+    "affine_shared_step.json": {
+      "parent_sha256": "c858ecd4f87f06e16d9f7b075ccdfe911af22d928e722a470ca292ec731fdc03",
+      "candidate_sha256": "c858ecd4f87f06e16d9f7b075ccdfe911af22d928e722a470ca292ec731fdc03",
+      "exact_replacements": []
+    },
+    "check_equation.py": {
+      "parent_sha256": "c9580e6d67bc5f10370fc2847d2064e6df14bae8a95979beb62236c3b70d43c4",
+      "candidate_sha256": "f2acb98bd5433bacf240caa058416be7e40d40cde84e890ff7405470f9d52944",
+      "exact_replacements": [
+        [
+          "                \"pow0.slack.a2\": z[\"A\"] - 2,\n",
+          ""
+        ],
+        [
+          "                \"pow0.slack.b2\": z[\"B\"] - 2,\n",
+          ""
+        ]
+      ]
+    },
+    "audit_power_graph.py": {
+      "parent_sha256": "762fe526a51ed2a13508cf8351fbffd81f81d68541bc0977c2f38e66f0cf76de",
+      "candidate_sha256": "2459bd6901f5a93b4ec90d9f8274e85ac7de9c52535ef041af7b0941da21d210",
+      "exact_replacements": [
+        [
+          "compare all 15 remaining\n",
+          "compare all 13 remaining\n"
+        ],
+        [
+          "        'A_at_least_two': A-named('slack.a2')-2,\n",
+          ""
+        ],
+        [
+          "        'B_at_least_two': B-named('slack.b2')-2,\n",
+          ""
+        ],
+        [
+          "    require(local_certificates == 24, 'fixed-bound positive certificate variable count')\n",
+          "    require(local_certificates == 22, 'redundant-lower-bound-free certificate variable count')\n"
+        ]
+      ]
+    },
+    "audit_calculus.py": {
+      "parent_sha256": "86a43d8499845070c24251f69f75af9e5292350173e6d53ee38c2ebbfadd49eb",
+      "candidate_sha256": "86a43d8499845070c24251f69f75af9e5292350173e6d53ee38c2ebbfadd49eb",
+      "exact_replacements": []
+    }
+  },
+  "copied_files": {
+    "FIXED_BOUND_PROOF.md": {
+      "source": "candidates/shared-crt-fixed-power-bound/PROOF.md",
+      "sha256": "98d13b60a327a02cc8daab49e02fbe7be9319820041fab0e41ae6290d43f5419"
+    },
+    "PRIME_LIFT_PROOF.md": {
+      "source": "candidates/shared-crt-prime-lift/PROOF.md",
+      "sha256": "91f8f7db5bbdf7fc26f56e9f7c06a88f467749a41735613ae0fee57a3e26b6c1"
+    },
+    "BETA_MAJORANT_PROOF.md": {
+      "source": "candidates/shared-crt-beta-majorant/PROOF.md",
+      "sha256": "62c07380b4b500be1f428653e6b7d96495e61e29f0ea5190ff4b5f6a991b069c"
+    },
+    "majorant_audit.py": {
+      "source": "candidates/shared-crt-beta-majorant/majorant_audit.py",
+      "sha256": "2a8dde92cf2b2ce2826d7423cd7fcf5f6a07ae838a0282d46c93e0eeb446d977"
+    }
+  },
+  "semantic_changes": [
+    "Inherited fixed W=n+k.",
+    "Delete A>=2 and B>=2 slacks/rows: positivity of T and the retained norm/congruence rows force both.",
+    "Replace H=E+F+t by literal E+F; actual beta square plus endpoint supplies H>=t."
+  ]
+}
