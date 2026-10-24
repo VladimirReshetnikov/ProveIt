@@ -1,0 +1,7 @@
+import DiophantineConsistency.NativeRadixDigits
+
+#print axioms DiophantineConsistency.NativeRadixDigits.digitArray_lt
+#print axioms DiophantineConsistency.NativeRadixDigits.word_digitArray
+#print axioms DiophantineConsistency.NativeRadixDigits.mask_capacity
+#print axioms DiophantineConsistency.NativeRadixDigits.decode_originMask
+#print axioms DiophantineConsistency.NativeRadixDigits.periodic_sum

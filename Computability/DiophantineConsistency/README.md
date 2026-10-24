@@ -41,11 +41,17 @@ rename and sealing programs too; see [ANNOTATED_SCHEMAS.md](ANNOTATED_SCHEMAS.md
 [Context validation, shifting and the assumption rule](ANNOTATED_CONTEXT_RULE.md)
 now have supplied numeric programs too, including soundness for arbitrary raw codes.
 [Shared validated coordinates and literal output/premise programs](ANNOTATED_RULE_COORDINATES.md)
-now cover all17 original rules. Their side conditions, backward references,
-axiom dispatch and full proof-line loop remain in progress.
+now cover all17 original rules.
+The [complete numeric logical scanner](ANNOTATED_LINE_SCANNER.md) now checks
+raw numeric proof lines and backward references for every original rule,
+with supplied primitive-recursive code and an exact acceptance/provability
+equivalence. Validating its sealed-ZFC axiom context remains open.
 The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
 ZFC derivation of its source/target no-zero equivalence over the entire
-internal omega. Internal verification of the full checker encoding remains open.
+internal omega. The [actual sharp pairing quartic](OBJECT_SHARP_PAIRING.md)
+now also has internal totality, functionality and surjectivity proofs,
+including unconditional derivations in ZFC. Internal verification of the
+full checker encoding remains open.
 A [complete one-page equation](candidates/one-page/README.md) now specifies
 the15-positive-variable P69 and every fixed coefficient using one1294-digit
 integer and fixed arithmetic formulas. The printed seed and all four coefficient
