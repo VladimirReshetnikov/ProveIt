@@ -18,7 +18,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 15 | 66 | 157 | Short-operation baseline |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
 | Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
-| Positive integers | 13 | 88 | 51 | Free positive J; canonical one-page90/51 version retained |
+| Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 123 | 816 | Scaled centered sixteen-fold norm with shared product |
@@ -51,11 +51,13 @@ exclude named polynomial abbreviations. Positive, natural and unrestricted
 integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
-The maintained [equation.pdf](equation.pdf) now displays the13-positive
-90-operation degree51 point in full, including every constant, with
-standalone [TeX](equation.tex). The15-positive69-operation degree155
-page is preserved as a different cost/coefficient tradeoff. Significant
-improvements will update this canonical display; minor changes need not.
+The maintained [equation.pdf](equation.pdf) now displays the10-positive
+123-operation degree816 equation in full, including every constant, with
+standalone [TeX](equation.tex). It uses the same complete fixed recipe as
+the preceding13-positive90/51 page, now preserved as the lower-degree/cost
+alternative. This is a significant three-variable reduction; it increases
+degree and operations. Minor evaluator changes in an identical polynomial
+need not trigger another rendering.
 
 ## Work now underway
 
@@ -232,8 +234,9 @@ The [projected direct review](PROPOSAL_REVIEW_QUARTICS407888.md) accepts
 height63,906,036 and6,986 terms. The502-natural self-bounding-radius
 sibling remains a verified checkpoint. Composing its radius with the
 new radix and optimizing the valuation norms are active next steps.
-An alternate complete ten-positive page is being prepared before any
-canonical display decision. Lean remains paused.
+The complete ten-positive page now passes the independent rebinding,
+formula and layout review and has become the canonical display. The prior
+thirteen-positive page is preserved. Lean remains paused.
 
 
 The [valuation shared-norm packet](candidates/valuation-shared-norms/README.md)

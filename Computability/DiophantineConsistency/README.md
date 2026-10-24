@@ -19,16 +19,23 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print a complete equation in **13 positive
-unknowns, exact degree51, with90 live arithmetic operations**. Every fixed
-constant is defined on the one Letter page, including the full436-character
-numeral, its alphabet and decoder. Compared with the previous
-15-positive69-operation degree155 page, this saves two unknowns and lowers
-degree, while adding21 operations and using a larger coherent compact44
-coefficient tuple. The [candidate proof and checks](candidates/one-page-ordinary13/README.md)
-include all943 tiles, the corrected initialization, every coefficient and
-the whole90-gate identity. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
-binds the displayed PDF/TeX to that candidate.
+[equation.tex](equation.tex) print the **entire equation in10 positive
+unknowns, exact degree816, with a123-operation evaluator**. Every fixed
+constant is defined on the same Letter page, including the full436-character
+numeral, alphabet, decoder and943 tiles. The body uses9-point type.
+Compared with the preceding13-positive90-operation degree51 display,
+this removes three unknowns, adds33 operations and raises degree. The
+same coherent BFS-renamed compact44 tuple is retained. The
+[page proof and checks](candidates/one-page-scaled10/README.md) include the
+complete free-port identity, corrected initializer, typed-color conjugacy,
+carry/controller conditions and independent whole coefficient reconstruction.
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the displayed files.
+
+The preceding [thirteen-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
+is preserved with its standalone [TeX](candidates/one-page-ordinary13/equation.tex).
+It uses fewer operations and lower degree, with three more unknowns; the
+new display is a variable-count improvement, not a claim of dominance in
+every simplicity measure.
 
 The previous [fifteen-positive page](candidates/one-page-compression/merged-mask-base62/equation.pdf)
 and its other notation variants remain available. Its corrected recipe

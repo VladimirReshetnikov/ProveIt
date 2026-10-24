@@ -10,36 +10,44 @@
 \newcommand{\rg}[2]{\{#1,\ldots,#2\}}
 \begin{document}
 \begin{center}
-{\large\bfseries A complete thirteen-variable consistency equation}\\[-1pt]
-{\small Strictly positive integer unknowns; exact degree 51; a 90-operation evaluator.}
+{\large\bfseries A complete ten-variable consistency equation}\\[-1pt]
+{\small Strictly positive integer unknowns; exact degree 816; a 123-operation evaluator.}
 \end{center}\vspace{-8pt}
 \begin{multicols}{2}
-\fontsize{9}{10}\selectfont
+\fontsize{9}{9.5}\selectfont
 The only unknowns are
 \[
-j_*,F,\alpha,f,i,T,X,Y,r,\eta,\zeta,u,\gamma\in\mathbb Z_{>0}.
+j_*,F,\alpha,i,T,w,Y,n,\eta,\zeta\in\mathbb Z_{>0}.
 \]
 All other symbols in the equation are polynomial abbreviations:
 \[
 \begin{gathered}
-J=3j_*+1,\quad \bar q=\beta J,\quad q=\bar q+1,\quad C=q-F-\alpha,\\
-E=XY,\quad k=\eta+\zeta,\quad c=kY+\eta,\quad a=E+Y,\\
-H=4a+3,\quad\Delta=a^2+H,\quad U=q^2Y,\\
-M=q^3\bar q,\quad\ell=E(kY),\quad W=\bar qk+1,\\
-B_t=(qK+X)C-qF,\\
-R=(\bar q(q-F)+\alpha)(q^2-1)+(M_C+qM_F)J,\\
-Z=M(\ell+k+r)+\bar qY-q^3WB_t,\\
-D=U(X+ac)+H\{U\gamma+qE-(k-R-1)\},\\
-A_0=Z^2-M^2\{\ell(\ell+k)+1\},\\
-A_1=D^2-U^2(\Delta c^2+1),\\
-Q=\Delta(f^2-1),\quad I=ic^2,\\
-V=f^2(cT-R)-c,\quad y=V+u,\\
-F_a=y^2-Q(y^2-V^2),\quad F_s=1+(I^2-Q).
+J=2j_*+1,\quad q=\beta J+1,\quad C=q-F-\alpha,\\
+X=wq,\quad k=\eta+\zeta,\quad c=kY+\eta,\quad a=XY+Y,\\
+\mu=q^2+1,\quad A=\mu(a+2),\quad H=4A-1,\\
+\Delta=A(A+2),\quad a'=A-1,\quad I=i\mu c^2,\\
+V_0=X(\mu Y)^2,\quad\ell=V_0k,\quad D_\tau=\ell(\ell+k)+1,\\
+R=[(q-1)(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
+e=k-R-1,\quad B_t=(K+w)C-F,\\
+D_f=1+\Delta I^2,\quad Q=\Delta^2I^2,\quad\delta=Q-1,\\
+T'=T+\alpha,\quad b'=cT'-R,\quad V=D_fb'-c,\\
+D_y=QV^2-1,\quad D_m=\Delta c^2+1,\\
+L=(4A)I+b'+cT',\quad W=1+(q-1)L,\\
+P_1=q^3(q-1),\quad M=P_1\mu^2H,\\
+Z=P_1\mu^2[H(n+V)+X+a'c]\\
+\qquad+H[\mu^2((q-1)Y-q^3WB_t)-P_1e],\\
+S=\delta Z^2,\quad A_\tau=\delta M^2D_\tau,\quad A_f=\delta M^2D_f,\\
+A_y=M^2D_y,\quad A_D=\delta(P_1\mu^2)^2D_m,\\
+\Sigma_1=A_\tau+A_f+A_y,\\
+\Sigma_2=A_\tau A_f+(A_\tau+A_f)A_y,\quad\Sigma_3=A_\tau A_fA_y,\\
+U=S+A_D,\quad P=U-\Sigma_1,\\
+E=P^2+4(SA_D-\Sigma_2),\\
+G_e=E^2+16(SA_DP^2-4\Sigma_3U),\quad G_o=EP-16\Sigma_3.
 \end{gathered}
 \]
 The single equation is
 \[
-\boxed{(1+A_0)(1+A_1)F_aF_s-1=0.}
+\boxed{G_e^2-64SA_DG_o^2=0.}
 \]
 
 \textbf{The four fixed integers.}

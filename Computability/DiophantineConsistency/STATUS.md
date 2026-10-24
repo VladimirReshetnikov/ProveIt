@@ -25,13 +25,15 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), now prints13 positive unknowns, exact degree51 and
-90 operations. It improves the preceding15-positive69-operation degree155
-display in variables and degree, with21 more operations and larger
-compact44 coefficients. All constants are printed on one page. Full
-typed tile conjugacy, the numerical controller and the literal90-gate
-identity pass ordinary review and exact normal/optimized checks; see
-the [candidate](candidates/one-page-ordinary13/README.md).
+[TeX](equation.tex), prints10 positive unknowns, exact degree816 and
+123 operations, including all constants on one Letter page in9-point type.
+This is three fewer unknowns than the preceding13-positive90/51 display,
+with33 additional operations and higher degree. The entire closed fixed
+recipe is unchanged. Free-port algebra, complete typed tile/native/controller
+transfer, independent coefficient regeneration, both renderer modes and
+visual layout pass review; see the [candidate](candidates/one-page-scaled10/README.md).
+The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
+remains a different tradeoff.
 
 The preserved fifteen-positive page prints a436-character base62 numeral
 with its entire alphabet and positional sum. Its complete coefficient
@@ -355,8 +357,8 @@ yields407 naturals or888 integers, with a917-integer lower-height alternative.
 The [502-natural radius composition](candidates/synchronized-factorial-radius/README.md)
 is also frozen and independently reviewed. Its further composition and the
 new valuation-circuit savings are underway. The ten-positive alternate
-one-page rendering is pending; the canonical13-positive90/51 page remains
-unchanged for now.
+page has now passed independent review and become the canonical display.
+The previous13-positive90/51 page is preserved.
 
 
 The [valuation shared-norm packet](candidates/valuation-shared-norms/README.md)

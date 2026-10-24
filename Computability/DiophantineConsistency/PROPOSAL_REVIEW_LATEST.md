@@ -21,7 +21,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 10 | 123 | 816 | Scaled centered sixteen-fold norm with shared product |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
-| Positive integers | 13 | **88** | **51** | Free positive J; canonical90/51 page retained |
+| Positive integers | 13 | **88** | **51** | Free positive J; previous90/51 page retained |
 | Positive integers | 14 | 73 / 74 / 75 / **76** | 342 / 312 / 293 / **191** | Hilbert Tenth root deletion and ordinate centers |
 | Integers | 10 | 471 | 1,245,324 | Round12 short guard; full replay and ordinary guard review |
 | Integers | 10 | **475 / 478 / 512** | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact older shears |
@@ -313,14 +313,16 @@ forms14/148/414,15/130/218 and16/118/124. The15-variable point is dominated
 by the retained128/204 parity form; the others add useful tradeoffs.
 All ten fixed payloads match their earlier whole tuples byte for byte;
 normal/optimized circuit and norm replays pass. These modest positive
-circuit improvements leave the canonical13-positive90/51 PDF unchanged.
+circuit improvements did not change the then-current13-positive90/51 PDF.
 
 The ten-positive124-operation degree816 candidate from8380e70262 now
 [passes ordinary and full replay review](reviews/ten-positive-scaled-norm-peer.md).
 The [complete shared-product sibling](candidates/ten-positive-scaled-norm-shared/README.md)
-saves one more operation, reaching123/816 by an exact identity. A complete
-alternate one-page rendering is being prepared; the canonical13-positive
-90/51 page retains its lower-degree/fewer-operation tradeoff.
+saves one more operation, reaching123/816 by an exact identity. Its complete
+[one-page rendering](candidates/one-page-scaled10/README.md) now passes the
+independent typed-tile/native/controller rebinding and printed-formula checks
+and has become the canonical display. The preceding13-positive90/51 page
+retains its lower-degree/fewer-operation tradeoff.
 
 
 ## Position zero, fixed-prime interpolation, and the new direct source
@@ -369,3 +371,19 @@ the product formula is used. All six literal quartics, raw exports and
 rational SOS restorations pass normal/optimized checks and root review.
 A new integer guard/projection family is being checked separately; its
 unsealed counts are not yet table entries. Lean remains paused.
+
+
+## Maintained one-page display
+
+The [canonical PDF](equation.pdf) and [TeX](equation.tex) now use the
+checked10-positive123-operation degree816 equation. The full fixed-constant
+recipe remains verbatim from the prior thirteen-positive page, including
+the436-character seed, corrected initializer and943 typed tiles. Separate
+peers checked uniform native/controller rebinding and independently rebuilt
+all four coefficient integers in both Python modes. The complete free-port
+front matches all123 literal gates, and the one-page9-point layout was
+visually inspected. [CURRENT_EQUATION.json](CURRENT_EQUATION.json) records
+the exact displayed hashes and preserves the earlier13-positive90/51 link.
+Three fewer unknowns is the selected improvement; higher degree and33
+more operations are explicit costs. No global minimum or completed Lean/
+internal-ZFC theorem is implied by this display choice.
