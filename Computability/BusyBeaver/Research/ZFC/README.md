@@ -1153,7 +1153,7 @@ proof-certificate sources over the C222 calculus, calibrated through
 `KEndpoint.c222_iff_zf_refutation` and
 `ConstructibleChoice.zf_refutation_iff_zfc_refutation`. Wave 11 finishes
 that route: explicit direct quartics with no coefficient tuple, down to 394
-naturals and 663 unrestricted integers (sources 87–89, 93–96, 98–110); the
+naturals and 663 unrestricted integers (sources 87, 89, 93–96, 98–109); the
 step "polynomial zero iff C222 derivation" is an ordinary proof in each
 package, not a Lean theorem.
 

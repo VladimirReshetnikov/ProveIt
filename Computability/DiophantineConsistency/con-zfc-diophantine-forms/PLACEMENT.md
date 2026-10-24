@@ -3524,7 +3524,7 @@ Total: 1192 members.
 ## Placement record: batch 227 (wave 11)
 
 Intake record, not a delivered file. The thirty-six archives that arrived in
-the nineteen commits `c1a102936a` (23 October 2026, 18:35) to `e13c748234`
+the seventeen commits `c1a102936a` (23 October 2026, 18:35) to `e13c748234`
 (24 October 2026, 12:14), all titled "Con(ZFC) in Diophantine form", were
 extracted straight from the committed ZIPs into numbered directories 76–110,
 in arrival order (archive-name order within one commit), with the single
@@ -3553,7 +3553,7 @@ Members not in this tree:
   outside this report (its `candidates/`, `research/`, `tools/` and worktree
   copies), and rewrites them. A member whose only repository copies lie there
   is kept, so that every package stays self-contained; the first placement
-  had omitted 1,119 such members, among them headline equation files, and
+  had omitted 1,119 such members (1,108 staged files), among them headline equation files, and
   they were restored in the next commit. Only matches to this report, to the
   arrival archives and to stable repository files (Lean sources, the Hilbert
   Tenth project, Busy Beaver research) are still omitted.

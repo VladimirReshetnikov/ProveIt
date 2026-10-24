@@ -30,7 +30,7 @@ circuit counts, proof assessments and its next formalization target:
   candidates on them; [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md)
   compares packages and candidates together. Several of its candidates
   dominate wave-11 packages the day they arrived (ten positive at
-  degree 368 in 99 operations; direct quartics below 400 variables).
+  degree 368 in 99 operations; direct quartics in 610 unrestricted integers).
 
 The delivered packages remain unchanged.
 
@@ -47,13 +47,13 @@ frontier, over the packages of this collection, is now:**
   degree 1,080,888 in 507 (106), via Sun's reduction;
 - **eleven unrestricted integers without Sun's reduction** at degree 2,240 in
   206 operations (110); twelve at degree 1,000 in 180 (110); thirteen at
-  degree 1,072 in 190 (97); fourteen at degree 378 in 145 (106); fifteen at
+  degree 1,072 in 186 (105); fourteen at degree 378 in 145 (106); fifteen at
   172 in 123 (106); sixteen at 98 in 138 (106) and 112 in 119 (93);
   seventeen at 88 in 110 (88);
 - **direct quartics in the numerical proof calculus C222**, with no
   coefficient tuple and without K215, Jones or Sun: 394 naturals (108) and
-  663 unrestricted integers (108), the first finished equations on that
-  route;
+  663 unrestricted integers (108); the route's first finished equations
+  are 87's and 89's;
 - **eleven positive unknowns** at degree 211 in 110 operations (105);
 - **twelve positive unknowns** at degree 70 in 98 operations (98), or in 89
   operations (57's 258 form);
@@ -105,11 +105,11 @@ their TeX author lines; 88 only in copied notices).
   23 October 2026. They are pinned to the wave-9 placement `a2cd79b912` or
   to the later merge `9cca523d9f`, which preceded the wave-9 README.
 
-- **Wave 11**, sources 76–110: batch 227 (nineteen arrivals `c1a102936a` to
+- **Wave 11**, sources 76–110: batch 227 (seventeen arrivals `c1a102936a` to
   `e13c748234`, placed in `240bf9e422` and `c16a89ad94`), pinned to
   `2605669a53`, `cf4a5218a5`, `9a33342a03`, `a88aefd7dd`, `08200eb10f`,
   `04a1d79222`, `7e533c3381` and `ec80841c07` among others.
-**Earlier waves are kept.** By Vladimir's direction, waves 6–10 are each
+**Earlier waves are kept.** By Vladimir's direction, waves 6–11 are each
 placed beside the earlier waves rather than replacing them. Wave-7 packages
 cite wave-5 and wave-6 packages by number; no wave-7 package cites another.
 In wave 8, only 59 cites a sibling: it reviews and builds on 56 and 57,
@@ -139,7 +139,7 @@ Until wave 11, every finished equation encoded the K215 blank run through
 the native compiler, and most also used Jones's reduction or Sun's;
 [The common theorem](#the-common-theorem) below describes that route. Wave
 11 adds a second finished route: direct quartics in the repository's
-numerical proof calculus C222 (87, 89, 93–96, 98–110, see the wave-11
+numerical proof calculus C222 (87, 89, 93–96, 98–109, see the wave-11
 section), with no coefficient tuple and without K215, Jones or Sun. Neither
 route is a rule. Part of the route has
 checked infrastructure here: the K215 endpoint in Lean and Rocq, and the
@@ -178,7 +178,7 @@ They remain in history:
 | 8 | 224 | `7331974b69` | `beb0192cb8` … (kept) | `46988b7869` |
 | 9 | 225 | `0c6be9a074` | `a2cd79b912` … (kept) | `f55088fc27` |
 | 10 | 226 | `9513bd88ce` | `d79b41884d` … (kept) | `3956ae57a3` |
-| 11 | 227 | `c1a102936a` … `e13c748234` (19 commits) | `240bf9e422`, `c16a89ad94` … | this file |
+| 11 | 227 | `c1a102936a` … `e13c748234` (17 commits) | `240bf9e422`, `c16a89ad94` … | this file |
 
 Until `ea8ae71167`, every one of these READMEs lived at
 `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/con-zfc-diophantine-forms/README.md`.
@@ -229,7 +229,8 @@ members are copies. Its omission rule is narrower than before: a member whose
 only repository copies are the research session's volatile files
 (`candidates/`, `research/`, worktree copies) is kept, because that session
 copies and rewrites arriving packages; the first placement had omitted
-1,119 such members and `c16a89ad94` restored them.
+1,119 such members (1,108 staged files; the rest are ignored ledgers and
+logs) and `c16a89ad94` restored them.
 
 ## The common theorem
 
@@ -349,8 +350,8 @@ figures agree with the claims. The mathematics was not re-derived, and
 every dominance statement assumes the competing proofs are correct. Only
 packages of this collection are ranked here. The active research session's
 own candidates, several of which dominate rows below (ten positive at
-degree 368 in 99 operations, eleven positive at 211 / 111, twelve positive
-at 70 / 96, 13ℤ at 536 / 135, direct quartics below 400 variables), are
+degree 368 in 99 operations, twelve positive at 70 / 96, 13ℤ at 536 / 135,
+direct quartics in 610 unrestricted integers), are
 compared in its [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
 
 - "u / e / d / o" means unknowns / equations / degree / operations; pairs
@@ -402,30 +403,30 @@ lower directory number counts as earlier.
 | 10ℤ (Sun's reduction), Pareto frontier | **1,245,324 / 467**, 1,179,788 / 470, 1,114,252 / 473, **1,080,888 / 507** (106, re-evaluating 87's 471 form and the research session's three shears of it). Other polynomials: 76's 480 / 1,245,324, 83's 484 / 1,179,788, 487 / 1,114,252 and 521 / 1,081,125, 87's 485, 496 and 545 / 1,080,888, 91's re-evaluations. All dominate 68's 1,576,864 / 481 | 76, 83, 87, 106 | 76 (degree), 87 (operations) |
 | 11ℤ, without Sun's reduction | **2,240 / 206**, 2,272 / 204, **2,912 / 200** — the first eleven-integer forms; the "fewest integers without Sun" row moves from 13ℤ (67, 59) to 11ℤ | 110 | 110 |
 | 12ℤ | **1,000 / 180**, 1,024 / 179 (110). Dominated: 104's 2,400 / 215 and 2,912 / 209, 109's 2,304 / 216, 108's 2,400 / 210 (104's form, n replaced by n + QV), 106's 2,048 / 233, 97's 4,832 / 248 and 16,000 / 223 (the first twelve-integer forms) | 97, 104, 106, 108, 109, 110 | 97 |
-| 13ℤ | **1,072 / 190** (97); 1,392 / 186 and 1,408 / 185 (88). Dominated: 88's 1,088 / 195, 96's 1,072 / 195 (88's polynomial reanchored), 98's 1,072 / 195, 106's 1,072 / 192, 90's 475 and 473, 91's 205, 92's 211 and 205, and 67's 10,461,744 / 519 | 88, 97 | 88 |
+| 13ℤ | **1,072 / 186**, 1,392 / 177 and 1,408 / 176 (105's evaluators of 88's polynomials). Dominated: 97's 1,072 / 190 (a different polynomial), 88's 1,088 / 195, 1,392 / 186 and 1,408 / 185, 96's 1,072 / 195 (88's polynomial reanchored), 98's 1,072 / 195, 106's 1,072 / 192, 90's 475 and 473, 91's 205, 92's 211 and 205, and 67's 10,461,744 / 519 | 88, 97, 105 | 88 |
 | 14ℤ | **378 / 145** (106); **792 / 137** (88). Dominated: 98's 414 / 148, 101's 568 / 147 and 540 / 160, 88's 696 / 150, 90's 652 / 230 and 664 / 223, 91's 696 / 151, 92's 862 / 150 | 88, 106 | 88 |
 | 15ℤ | **172 / 123** and 170 / 134 (106). Dominated: 92's 204 / 128 and 352 / 124, 110's 176 / 125, 98's 218 / 130, 90's 214 / 139, 91's 244 / 137, 93's 306 / 139, 88's 344 / 131 | 106 | 88 (first 15ℤ form, 344 / 131) |
 | 16ℤ, Pareto frontier | **98 / 138** (106); 108 / 132 (91); **112 / 119** (93); 124 / 118 (98); **160 / 115** (92). Dominated: 92's 152 / 120, 132 / 128 and 120 / 123, 93's 112 / 120, 86's 184 / 135 and 192 / 134 | 86, 91, 92, 93, 98, 106 | 86 |
 | 17ℤ | **88 / 110** (88). 82's and 86's 17ℤ / 88 forms are different polynomials (82 uncounted, 86 at 114); 84's 112 / 124 and 110 / 140 dominated | 82, 86, 88 | 82 |
-| 18ℤ–20ℤ | 18ℤ **32 / 112** (88; 82's 18ℤ / 32 uncounted, 84's 80 / 115 dominated); 19ℤ **28 / 116** (88; 82 uncounted; 89's 19ℤ / 40 and 83's 19ℤ / 32 dominated); 20ℤ **18 / 115** (93) and 20 / 111 (85; the pivot polynomial of 83, 84 and 85); 88's 24 / 120 dominated | 82, 83, 85, 88, 89, 93 | 82 (18ℤ, 19ℤ), 83 (20ℤ) |
+| 18ℤ–20ℤ | 18ℤ **32 / 112** (88) and 88 / 105 (85; 82's 18ℤ / 32 uncounted, 84's 80 / 115 and 77's 88 / 109 dominated); 19ℤ **28 / 116** (88) and 32 / 108 (85, the pivot polynomial of 83 and 84; 82 uncounted; 89's 19ℤ / 40 and 77's 32 / 112 dominated); 20ℤ **18 / 115** (93) and 20 / 111 (85; the pivot polynomial of 83 and 84; 88's 24 / 120 and 77's 32 / 112 dominated) | 82, 83, 85, 88, 89, 93 | 82 (18ℤ, 19ℤ), 83 (20ℤ) |
 | 21ℤ–24ℤ | 21ℤ / 16 (89, 9 residuals; 83 ≡ 84 ≡ 85 at 114 operations; 87, different); 22ℤ / 14 (79; 81 at 123) and 22ℤ / 16 / 118 (77); 23ℤ / 10 (83 ≡ 86 at 131) and 23ℤ / 12 (77 at 121; 79, 81, 82); 24ℤ / 10 (78; 81 at 135; 82). All beat 68's 26ℤ / 16 and 37's 24ℤ / 1,936 | 77, 78, 79, 81, 83, 86, 89 | 77 |
 | Integer octic | **25ℤ** in 127 operations (77). Dominated: the 26ℤ octics of 76, 77, 78, 79, 81, 82 and 68's 28ℤ, 69's and 71's 27ℤ | 77 | 77 |
 | Integer sextic | **30ℤ** (76). Dominated: the 31ℤ sextics of 77, 79, 81 (144 operations), 82, and the 32ℤ and 34ℤ sextics of waves 9–10 | 76 | 76 |
 | Integer quartic | **37ℤ** (76 ≡ 82, two variants; 77's four variants differ in one guard row). Dominated: 69's and 71's 38ℤ | 76, 77, 82 | 76 |
-| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **394 / 320 / 39,208 / 84,233,382** and **395 / 321 / 7,323 / 83,842,758** (108); 395 / 313 / 8,292 (109); 407 / 323 / 8,420 (100); 895 / 773 / **4,863** (95, fewest terms); 6,183 / 5,523 / 17,430 / **1,993** (89, lowest height). Lineage: 87 (27,916ℤ, 16,036ℕ) → 89 (3,614) → 95 (522) → 100 (407) → 108, 109 (395) | 89, 95, 100, 108, 109 | 87 (earliest), 89 (this lineage) |
-| Direct C222 quartic, ℤ | **663 / 397 / 7,268 / 2.45·10^12** and 687 / 421 / 5,602 / 63,906,013 (108); 1,190 / 600 / 26,411 / 83,900,628 (104); 1,685 / 850 / 12,082 / 79,827,802 (99); 3,292 / 2,887 / **11,218** / 14,869,246 (103, fewest terms); 3,776 / 2,015 / 20,194 / **47,959** (102); 7,058 / 5,297 / 24,277 / **1,992** (102, lowest height) | 99, 102, 103, 104, 108 | 87 |
+| Direct C222 quartic, ℕ (no K215, Jones, Sun or coefficient tuple) | **394 / 320 / 39,208 / 84,233,382** and **395 / 321 / 7,323 / 83,842,758** (108); 395 / 313 / 8,292 / 83,843,425 (109); 655 / 581 / **3,748** / 63,905,960 (108's uncontracted source, fewest terms; 100's 690-variable source has 3,762); 4,860 / 4,476 / 14,719 / **1,837** (98, lowest height). Dominated: 100's 407 (by 109's 395 in all four measures), 95's 522, 596 and 895, 96's 667, 99's 608, 89's 3,614 and 6,183, and every larger form. Lineage: 68 → 89 (3,614) → 95 (522) → 100 (407) → 108, 109 (395); 87 (27,916ℤ, 16,036ℕ) → 94 → 103 is the other lineage | 89, 95, 98, 100, 108, 109 | 87 (earliest), 89 (this lineage) |
+| Direct C222 quartic, ℤ | **663 / 397 / 7,268 / 2.45·10^12** and 687 / 421 / **5,602** / 63,906,013 (108, fewest terms); 3,776 / 2,015 / 20,194 / **47,959** (102); 7,058 / 5,297 / 24,277 / **1,992** (102, lowest height). Dominated: 104's 1,190, 99's 1,685, 96's 1,690, 103's 1,873 and 3,292, 95's 2,088, 102's 3,671, 94's 7,617, 93's 26,188 and 87's 27,916 | 102, 108 | 87 |
 | Eleven positive | **211 / 110** (105's evaluator of the research session's polynomial). Dominated: 83's 211 / 112, 86's 213 / 112, 87's 211 / 113, 82's 269 / 111, the 277 / 111 polynomial of 76, 77, 78, 79, 81, 77's 257 / 114, and 70's 325 / 113 | 83, 105 | 76 (277), 83 (211) |
 | Twelve positive, Pareto frontier | **70 / 98** (98's free-J form; 104 evaluates the 100-operation polynomial of 80 / 87 in 98 too); 57's **258 / 89**. Dominated: 76's 78 / 101 ≡ 82's 78 / 102, 78's ≡ 81's 78 / 103, 87's 70 / 100, 69's 82 / 102, 74's forms | 98; 57 | 80 (claim), 87 (first artifact), 98 |
-| Thirteen positive, Pareto frontier | **28 / 98** (72); **51 / 88** (98); **114 / 83** (62). Dominated: 73's and 74's 30 / 92, 70's and 75's 30 / 94, 61's 34 / 93 | 72; 98; 62 | — |
+| Thirteen positive, Pareto frontier | **28 / 98** (72); 30 / 92 (73; 74 evaluates the same polynomial in 93); **51 / 88** (98); **114 / 83** (62). Dominated: 70's and 75's 30 / 94, 61's 34 / 93 | 72; 73; 98; 62 | — |
 | Fourteen positive, Pareto frontier | unchanged: **24 / 101** (72); 65's 26 / 92; 64's 30 / 83; 55's and 59's **52 / 79** | 72; 65; 64; 55 | — |
 | Fifteen positive | unchanged: 66 ops (51's P66, degree 157); lowest degree 24 / 88 (66); Pareto frontier as after wave 9 | 51; 66 | — |
 | Twelve positive, systems | unchanged: 59's three-equation system at 94 operations | 59 | 59 |
 | Unchanged | the 59-op 16 / 7 / 24 system; the 31-unknown positive quartic system 60 / SOS 125. From wave 2 (history only, see the wave-2 README `5b0c9ae9fd`): 15's positive-domain sextic in 25 and octic in 20 unknowns, which still dominate 75's 26- and 21-unknown versions | waves 2, 5, 6 | — |
-| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1,837 to 10^21) | 54; 87–89 | 54 |
+| Smallest coefficients binding an equation | unchanged: **B = 2^429959** (54) among tuple-bound equations; 85, 86, 101 and 105 bind nine-positive forms to it. The direct quartics bind no tuple at all: their coefficients are the small integers of the expanded polynomial (heights from 1,837 to 9·10^21) | 54; 87–89 | 54 |
 
 ## Wave 11 (sources 76–110)
 
-Thirty-six archives arrived in nineteen commits between 23 October 2026,
+Thirty-six archives arrived in seventeen commits between 23 October 2026,
 18:35, and 24 October, 12:14 (`c1a102936a` to `e13c748234`), all titled
 "Con(ZFC) in Diophantine form". They were placed as one batch (227) in
 arrival order. The packages call themselves rounds 11, 12 and 13 of their
@@ -455,7 +456,7 @@ variables / residuals / expanded terms / coefficient height.
 | [`81-centered-pell-norms/`](81-centered-pell-norms/) | `con-zfc-centered-pell-norms.zip` | *Centered Pell norms and shared positivity: a degree-fourteen consistency equation in twenty-two integers* | **22ℤ / 14 / 123**, 23ℤ / 12 / 122, 24ℤ / 10 / 135, 26ℤ / 8 / 131, 31ℤ / 6 / 144, 25ℤ / 12 / 128; 11 / 277 / 111; 12 / 78 / 103 |
 | [`82-pell-congruences/`](82-pell-congruences/) | `con_zfc_pell_congruences_2026-10-23.zip` | *Pell Congruences, Shared Positivity, and Smaller Diophantine Consistency Equations* (README: *Pell congruences and smaller Diophantine consistency equations*) | **9 / 1,158,228 / 726**; **11 / 269 / 111**; 12 / 78 / 102; **20ℤ / 20, 19ℤ / 28, 18ℤ / 32, 17ℤ / 88** (no counts); 37ℤ quartic, 31ℤ sextic, 26ℤ octic, 24ℤ / 10, 23ℤ / 12, 22ℤ / 16 |
 | [`83-polynomial-shears/`](83-polynomial-shears/) | `ConZFC_Polynomial_Shears_2026-10-23.zip` | *Polynomial shears and sign recovery for Diophantine consistency* | 10ℤ 1,179,788 / 484, 1,114,252 / 487, 1,081,125 / 521; **11 / 211 / 112**; 23ℤ / 10, 21ℤ / 16, 20ℤ / 20, 19ℤ / 32, 18ℤ / 88 (no counts) |
-| [`84-radical-residue/`](84-radical-residue/) | `con-zfc-radical-residue-2026-10-23.zip` | *Ten-variable Diophantine consistency: four square roots and small rational residues* (README: *… by small rational residues*) | **10 / 1,152 / 131** (ℕ 141), the first ten-positive package equation; 17ℤ / 112 / 124, 17ℤ / 110 / 140, 18ℤ / 80 / 115; pivots 21ℤ–18ℤ (83's polynomials) |
+| [`84-radical-residue/`](84-radical-residue/) | `con-zfc-radical-residue-2026-10-23.zip` | *Ten-variable Diophantine consistency: four square roots, small rational residues, and a seventeen-integer companion* (title page; no `\title`; README: *… by small rational residues*) | **10 / 1,152 / 131** (ℕ 141), the first ten-positive package equation; 17ℤ / 112 / 124, 17ℤ / 110 / 140, 18ℤ / 80 / 115; pivots 21ℤ–18ℤ (83's polynomials) |
 | [`85-saturation-projection/`](85-saturation-projection/) | `con-zfc-saturation-and-projection-2026-10-23.zip` | *Smaller Diophantine consistency equations: Pell saturation, exact transport elimination, and coprime proof-flow certificates* | **9 / 1,628,768 / 434** (ℕ 441) and 9 / 1,103,950 / 1,074 on the 2^429959 tuple; 18ℤ / 88 / 105, 19ℤ / 32 / 108, 20ℤ / 20 / 111, 21ℤ / 16 / 114; coprime Horn-flow theorem (`alternative/`, not compiled) |
 | [`86-saturated-certificates/`](86-saturated-certificates/) | `ConZFC_Saturated_Certificates_2026-10-24.zip` | *Saturated Pell certificates and quotient recovery: eight explicit Diophantine equations for syntactic consistency of ZFC* (README: *… for Con(ZFC)*) | 9 / 1,628,768 / 435 (85's polynomial), **9 / 1,474,688 / 449**, **9 / 999,518 / 1,086** (31's tuple); 11 / 213 / 112; 23ℤ / 10 / 131 (83's polynomial), **17ℤ / 88 / 114**, 16ℤ / 192 / 134, 16ℤ / 184 / 135 |
 | [`87-direct-centered-round12/`](87-direct-centered-round12/) | `ConZFC_Direct_Centered_Round12_2026-10-24.zip` | *Direct and centered Diophantine consistency equations* | **direct C222 quartic, 27,916ℤ / 758,275 terms** (and a 16,036ℕ residual system), the earliest finished direct equation; **10ℤ 1,245,324 / 471**, 1,179,788 / 485, 1,114,252 / 496, **1,080,888 / 545**; 11 / 211 / 113; 12 / 70 / 100 (80's claim, materialized); 21ℤ / 16 and 20ℤ–18ℤ forms |
@@ -484,20 +485,23 @@ variables / residuals / expanded terms / coefficient height.
 | [`110-budget-interpolation/`](110-budget-interpolation/) | `ZFC_Diophantine_Budget_Interpolation_2026-10-24.zip` | *Budget constraints and radical compression for Diophantine consistency* (README: *Centered-budget Diophantine reductions: portable research release*) | **11ℤ 2,240 / 206**, 2,272 / 204, 2,912 / 200, the first eleven-integer forms; **12ℤ 1,000 / 180, 1,024 / 179**; 15ℤ 176 / 125; 10 / 912 / 126 (ℕ 136); bundles 88 and 92; tiling-certificate interfaces (`alternative/`, uncompiled) |
 
 Directory numbers follow arrival order, and archive-name order within one
-commit. 90's archive wraps `con-zfc-padic-compression`, 93's
-`con-zfc-parity-norms`, 96's `con-zfc-batched-certificates`, 97's
-`con_zfc_trace_and_interpolation`, 102's `conzfc_signed_quartic` and 103's
-`con_zfc_batched_pell`. 108's entry point is `README.txt`. Each other
-directory's `README.md` is its entry point.
+commit. Wrapper directories whose names differ from the archive stem are
+listed in `PLACEMENT.md`; the furthest from it are 79's
+`con-zfc-cross-guard-descent-2026-10-23`, 88's `con-zfc-root-fusion-2026-10-24`,
+90's `con-zfc-padic-compression`, 93's `con-zfc-parity-norms`, 96's
+`con-zfc-batched-certificates`, 97's `con_zfc_trace_and_interpolation`,
+102's `conzfc_signed_quartic` and 103's `con_zfc_batched_pell`. 108's entry
+point is `README.txt`. Each other directory's `README.md` is its entry
+point.
 
 ### Coefficient tuples
 
 Four fixed tuples occur, never mixed within one construction:
-- the compact44 four-port tuple, B = 2^590069 (positive forms of 76–87,
-  98, 104, 107, 109, 110);
+- the compact44 four-port tuple, B = 2^590069 (positive forms of 76–79,
+  81–84, 86, 87, 98, 104, 105, 107, 109, 110);
 - the six-payload source-34 tuple, B = 2^1064921 with two cone scales
-  (every unrestricted-integer form with 11–37 unknowns, in 76–79, 81–84,
-  86–93, 96–98, 104, 106, 108–110);
+  (every unrestricted-integer form with 11–37 unknowns, in 76–79, 81–93,
+  96–98, 101, 104–106, 108–110);
 - the original 31 tuple, B = 2^1064921 with its own masks (nine-positive
   and ten-integer forms of 76, 79, 82, 83, 86, 87, 91, 101, 105, 106);
 - the compact54 tuple, B = 2^429959 (nine-positive forms of 85, 86, 101,
@@ -510,10 +514,10 @@ decompresses to the repository's values; the dossiers checked them all.
 ### Encodings beyond K215 and Jones
 
 Wave 10 said of 68's `direct/` constructor that "its final polynomial is
-neither produced nor counted". Wave 11 finishes it, twice over. Eight
-packages (87's `direct/fixed_base`, 89, 94, 95, 96, 99, 102, 103; also
-100's and 106's quartics, see their rows) encode the repository's numerical
-proof calculus **C222** directly: a zero of the polynomial is a finite C222
+neither produced nor counted". Wave 11 finishes it, twice over. Sixteen
+packages (87's `direct/fixed_base`, 89, 93, 94, 95, 96, 98, 99, 100, 101,
+102, 103, 104, 105, 106, 107, 108 and 109) ship finished quartics that
+encode the repository's numerical proof calculus **C222** directly: a zero of the polynomial is a finite C222
 derivation of the contradiction code, which is a finite ZF refutation by the
 Lean theorem `KEndpoint.c222_iff_zf_refutation`
 (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean`), hence a
@@ -551,10 +555,14 @@ Two lineages, both rooted in 68:
 
 For these quartics the cost axes are variables, residuals, expanded terms
 and coefficient height at fixed degree 4; operation counts are not
-meaningful. The dossier re-expanded every shipped residual list and
-recovered every published expansion, term count and height exactly.
+meaningful. The dossiers re-expanded every shipped residual list and
+recovered every published expansion, term count and height exactly. The
+table below covers the two lineages at the time of their own arrivals
+(87, 89, 94, 95, 96, 99, 102, 103); the later packages 98, 100, 101 and
+104–109 reach fewer variables, and the combined frontier near the top of
+this README ranks all of them.
 
-| Domain | Fewest variables | Pareto points (variables / residuals / terms / height) |
+| Domain | Fewest variables in these eight | Pareto points among them (variables / residuals / terms / height) |
 |---|---|---|
 | ℕ | **522 / 400 / 20,225 / 83,900,628** (95) | 529 / 407 / 10,782 / 211,184,624 and 596 / 474 / 7,263 / 63,909,160 (95); 895 / 773 / 4,863 / 63,908,265 (95, fewest terms); 6,183 / 5,523 / 17,430 / 1,993 (89, lowest height) |
 | ℤ | **1,685 / 850 / 12,082 / 79,827,802** (99) | 3,292 / 2,887 / 11,218 / 14,869,246 (103, fewest terms); 3,776 / 2,015 / 20,194 / 47,959 (102); 7,058 / 5,297 / 24,277 / 1,992 (102, lowest height) |
@@ -564,14 +572,15 @@ recovered every published expansion, term count and height exactly.
 dominates 96's 1,690, 103's 1,873, 95's 2,088, 102's 3,671 and 94's 7,617
 in all three. The batching that saves the most variables (96, 103) raises
 the height by many orders of magnitude; 95 and 99 save variables without
-that. 94 (10-23 20:24) and 103 both inherit 94's source projection byte for
-byte. The research session has since pushed this route further in its own
-candidates (naturals 502 and below, integers 1,190 and below, and the
-72-predicate direct quartics down to 595 variables of `81b3e239a1`); those
-are not packages and are listed in its own comparison, not here.
+that. 103 inherits 94's source projection byte for byte. Later wave-11
+packages push this route further: 100 (407 naturals, 888 integers), 105
+(467 naturals, 956 integers), 107 (780 integers), 108 (394 and 395
+naturals, 663 integers) and 109 (395 naturals). The research session's own
+candidates (naturals 399, integers 610 and below) are not packages and are
+listed in its own comparison, not here.
 
-Bundled copies: 68's two local-step files recur byte for byte in 87, 89, 94,
-95, 96, 102 and 103; 96's `direct/upstream/` is 89's whole `direct/`, and
+Bundled copies: 68's two local-step files recur byte for byte in 76, 83, 87,
+89, 93, 94, 95, 96, 98, 102 and 103; 96's `direct/upstream/` is 89's whole `direct/`, and
 its `guard13/upstream/` is 88's complete archive.
 
 Other pieces outside the common route, none a finished equation: 76's
@@ -613,8 +622,8 @@ the packages' claims; no claimed count or degree was found wrong.
   78's and 81's 78 / 103 are another. 80's claimed 70 / 100 polynomial is
   materialized by 87 (100 operations), bundled by 98 and 104 (104 in 98
   operations); 98's 70 / 98 free-J polynomial is the research session's
-  96 / 70 candidate (identical), and is the 100-operation polynomial with
-  J replaced by 6j+1 — a restriction, not a shift.
+  96 / 70 candidate (identical); the 100-operation polynomial is 98's
+  free-J polynomial with J restricted to 6j+1 — a restriction, not a shift.
 - **Nine positive.** 85's 434 and 86's 435 evaluate one polynomial (also the
   research session's 433 evaluator and 105's bundled parent). 79's 1,753
   and 82's 726 are different polynomials of the same degree 1,158,228. 86's
@@ -627,10 +636,11 @@ the packages' claims; no claimed count or degree was found wrong.
   leaves. 91's 477 / 481 / 484 / 518 re-evaluate 83's and 76's polynomials;
   106's 467 / 470 / 473 / 507 re-evaluate 87's polar form and the research
   session's three shears of it.
-- **Integer forms with 12 to 37 unknowns.** Only three identities hold
+- **Integer forms with 12 to 37 unknowns.** Only four identities hold
   across packages: 76's 37ℤ quartics ≡ 82's (two variants each); 83's
   21ℤ–18ℤ pivots ≡ 84's ≡ 85's transports (85 ships the only counted
-  evaluators); 83's 23ℤ / 10 ≡ 86's (86 counts it, 131). Everything else of
+  evaluators); 83's 23ℤ / 10 ≡ 86's (86 counts it, 131); 105's four 13ℤ
+  circuits ≡ 88's polynomials (nine operations cheaper each). Everything else of
   equal size is a different polynomial: 77's four 37ℤ quartics differ from
   76's in one guard row; the three 13ℤ / 1,392 forms of 88, 90 and 91 and
   the three 17ℤ / 88 forms of 82, 86 and 88 have identical per-variable
@@ -647,7 +657,8 @@ the packages' claims; no claimed count or degree was found wrong.
   1,057 / 997,810 and 105's 456 / 1,376,378 are the new nine-positive
   frontier; 105's 11 / 211 / 110 dominates every other eleven-positive
   form; 98's 70 / 98 dominates every wave-10 twelve-positive polynomial;
-  110's 12ℤ 1,000 / 180 dominates every other twelve-integer form; 106's
+  110's 12ℤ 1,000 / 180 and 1,024 / 179 dominate every other twelve-integer
+  form; 106's
   15ℤ 172 / 123 and 16ℤ 98 / 138, 93's 16ℤ 112 / 119 and 92's 16ℤ 160 / 115
   are new Pareto points; 108's 394- and 395-variable and 663-variable
   direct quartics are the smallest direct equations in the batch. The
@@ -701,20 +712,23 @@ the packages' claims; no claimed count or degree was found wrong.
   from the arrival archives, as `PLACEMENT.md` explains. (The first
   placement had also omitted members matched only by research-session
   files, among them 95's headline residual lists and 103's signed-index
-  theorem; `c16a89ad94` restored those 1,119 members.) 77's and 82's
-  manifests are git-ignored (`SHA256SUMS*`). Writers in place: 78, 79, 84,
-  85, 86, 88, 90, 91 (receipt), 92, 93, 96 (`guard13/build_reanchored.py`
-  regenerates its equation), 101, 103, 108 (`render_residuals.py`), 109
-  (root verifier's default receipt path).
+  theorem; `c16a89ad94` restored those 1,119 members, 1,108 of them staged
+  files.) 77's and 82's
+  manifests are git-ignored (`SHA256SUMS*`). Writers in place: 78, 79, 81,
+  84, 85, 86, 88, 89 (`direct/audit_calculus.py`), 90, 91 (receipt), 92,
+  93, 96 (`guard13/build_reanchored.py` regenerates its equation), 103,
+  104 (`direct/build.py`), 108 (`render_residuals.py`), 109 (root
+  verifier's default receipt path).
 - **Dependencies.** SymPy: 76 (builders), 77 (required; refuses `-O`), 78
   (audit), 79 (optional), 83, 87, 98, 106 (Python ≥ 3.12), 110 (also three
   parallel jobs by default). All others are standard library. 82's positive
   driver drops `-O` for its children (research review).
 - **Titles.** PDF metadata title empty: 79, 92, 93, 95. README H1 differs
-  from the TeX title: 78 (three wordings), 82, 84, 89, 92, 94, 98, 100, 103,
-  104, 108, 110. No `\title`: 80, 84, 85, 106.
+  from the TeX title: 78 (three wordings), 82, 84, 86, 89, 92, 93, 94, 98,
+  100, 103, 104, 108, 110. No `\title`: 80, 84, 85, 106.
 - **Licence and attribution.** No root licence for new material: 77, 106,
-  109, 110. No root NOTICE: 85, 96, 101, 106, 110. No AI-assistance
+  109, 110. No root NOTICE: 77, 79, 85, 88, 96, 101, 102, 106, 107, 109,
+  110. No AI-assistance
   statement anywhere: 97, 102, 106, 110; statement only in the TeX author
   line: 77, 78, 101; only in copied notices: 88. 104's README is dated
   23 October while its sources are dated 24 October; 94's and 103's PDFs
@@ -722,8 +736,7 @@ the packages' claims; no claimed count or degree was found wrong.
 - **Inside packages.** 76's three `Height*CommutativeEquation.lean`
   constructors define objects and prove nothing. 85's README says the
   natural translation shifts one coordinate; the circuit shifts all nine.
-  88's `check_integrated.py` references unshipped inputs. 94's
-  `COMPARISON.json` gives 87's height as …918; it is …914. 96 ships a
+  88's `check_integrated.py` references unshipped inputs. 96 ships a
   1,702ℤ form absent from its table. 98 ships a 14ℤ 558 / 149 graph its
   `FAMILY.md` excludes. 106's replay authenticates 397 of 398 manifest
   entries. 107's `dyadic10/README.md` names a file with a stray space.
@@ -1884,7 +1897,7 @@ where waves 7–10 improve on it.
 ## Wave 5 (sources 31–37)
 
 Wave 5 is described as placed, with its frontier at that time. The
-combined frontier above supersedes it where waves 6–10 improve on it.
+combined frontier above supersedes it where waves 6–11 improve on it.
 
 ### Supersession of wave 4
 
@@ -2125,8 +2138,9 @@ The packages say, in their own words (exceptions noted):
   - Sun's reduction is not formalized anywhere in the repository (checked at
     intake: nothing in `Computability/HilbertTenthProblem`).
   - The active Lean research in `Computability/DiophantineConsistency/`
-    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-10
-    pins.
+    postdates the wave-5 and wave-6 pins, but not the wave-7 to wave-11
+    pins. Wave 11's packages build on its reviews and candidates, and its
+    candidates on them (see the wave-11 section).
   - Wave-7 46, 51 and 53 build their short forms on its checked circuits
     P69, P73 and P75.
   - Wave-8 54 cites its later closed executable equation (at
@@ -2254,7 +2268,7 @@ The packages say, in their own words (exceptions noted):
     them and on this repository's `ten-positive-scaled-norm`; its current
     comparison is [PROPOSAL_REVIEW_LATEST.md](../PROPOSAL_REVIEW_LATEST.md).
 - **Direct C222 route (wave 11).** The direct quartics of 87, 89, 93–96 and
-  98–110 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
+  98–109 rest on two Lean theorems, `KEndpoint.c222_iff_zf_refutation`
   (`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/KEndpoint.lean`) and
   `ConstructibleChoice.zf_refutation_iff_zfc_refutation`, and on the
   representation modules under `Computability/DiophantineConsistency/Lean/`
@@ -2280,6 +2294,7 @@ attribution file the packages ship is kept in place.
 | 8 | `4b4349064a750ba6347293b55874a7f92abdd0db` (54–57, 59); `6d375f2d2deac0519e659bbce5b48087023c1430` (58) | `7331974b69` | `beb0192cb8` |
 | 9 | `beb0192cb8dc36f78c369c080f2adfbc1887a486` | `0c6be9a074` | `a2cd79b912` |
 | 10 | `9cca523d9f27ad39d52993f4065cbd7e58f8bdd4` (68–73); `a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49` (74); both, and `bdd86761ba` (75) | `9513bd88ce` | `d79b41884d` |
+| 11 | `2605669a53` (76–81; components of 83–86); `cf4a5218a5` (82, 90, 91); `cfbf118b4a` (90–92); `9a33342a03` (87, 88); `08200eb10f` (89; calibration of 95, 98–100, 105, 106); `04a1d79222` (94, 97); `a88aefd7dd` (95, 96, 98); `8b328dc180` (99); `85ae407001` (100, 104); `7e533c3381` (101, 106, 110); `278bc68df1` (102); `b594a5e988` (103); `8f8fac484b` (105); `43ac596e36` (93); `ec80841c07` (107–110) | `c1a102936a` … `e13c748234` (17 commits) | `240bf9e422`, `c16a89ad94` |
 
 ## Files
 
