@@ -18,7 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 106 | 408 | Three-root norm and quadratic main-Pell projection |
+| Positive integers | 10 | 105 | 408 | Symmetric three-root norm and quadratic main-Pell projection |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | **88** | **51** | Free positive J; previous90/51 page retained |
@@ -340,7 +340,11 @@ equations by an all-index folding argument. A strict bound on the entire
 divisible projection product excludes mixed-prime branches. Complete
 positive witness maps, independent ordinary reviews and all literal
 normal/-O circuit/norm/leading-form checks pass. A new full page is being
-prepared for this significant degree and operation reduction.
+prepared for this significant degree and operation reduction. Its exact
+[symmetric-tail sibling](candidates/ten-positive-quadratic-projection-shared/README.md)
+saves a further multiplication, reaching105/408 with the same whole
+polynomial and positive domain. The proposed new page uses this105-gate
+form in that one significant update.
 
 
 ## Position zero, fixed-prime interpolation, and the new direct source
