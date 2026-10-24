@@ -35,10 +35,10 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 891 | not optimized | 4 | Lower-height projection;6,797 terms, height63,905,891 |
+| Integers | 735 | not optimized | 4 | Mixed-domain lower-height projection;6,017 terms, height63,905,891 |
 | Integers | 1,736 / 1,089 | not optimized | 4 | Retained-wire small coefficients;6,172 /5,016 terms, heights427 /4,750 |
 | Integers | 944 / 880 / 866 | not optimized | 4 | Retained-wire projections;6,780 /10,130 /10,094 terms, heights737,653 /737,653 /938,261 |
-| Integers | 862 / 863 / 865 | not optimized | 4 | Actual-row guards and signed projection;11,245 /9,909 /9,814 terms, height2,445,790,974,704 |
+| Integers | 706 / 707 / 709 | not optimized | 4 | Signed comparisons and complete integer projection;10,465 /9,129 /9,034 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
 The nine-variable953/999,518 point improves both operations and degree over

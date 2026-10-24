@@ -357,8 +357,8 @@ normal/optimized scoped checks pass. The [new direct source](PROPOSAL_REVIEW_QUA
 yields407 naturals or888 integers, with a917-integer lower-height alternative.
 The [projected factorial-radius composition](candidates/projected-factorial-radius/README.md)
 now reaches399 naturals, and its
-[signed projection](candidates/projected-radius-integers/README.md) reaches862
-integers, with an891-integer lower-height alternative. The ten-positive
+[mixed-domain projection](candidates/projected-radius-mixed-projections/README.md) reaches706
+integers, with a735-integer lower-height alternative. The ten-positive
 page has passed independent review and become the canonical display.
 The previous13-positive90/51 page is preserved.
 

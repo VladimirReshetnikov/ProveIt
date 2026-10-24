@@ -97,11 +97,12 @@ reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
 The direct C222 route now supplies complete
-[integer quartics in862/863/865 variables](candidates/projected-radius-integers/README.md),
-with11,245/9,909/9,814 terms and common height2,445,790,974,704. Its
-891-integer companion has6,797 terms and lower height63,905,891. Fresh
-actual-row sign certificates precede any semantic interpretation, and
-reverse signed restoration preserves every guard. The
+[integer quartics in706/707/709 variables](candidates/projected-radius-mixed-projections/README.md),
+with10,465/9,129/9,034 terms and common height2,445,790,974,704. Its
+735-integer companion has6,017 terms and lower height63,905,891. A
+complete mixed-domain theorem recovers the semantic prefix before
+interpreting powers, then replaces signed comparisons by fresh positive
+ones. Reverse integer restoration preserves every guard. The
 [natural factorial-radius family](candidates/projected-factorial-radius/README.md)
 now reaches399 variables,8,286 terms and height83,843,274, with complete
 support/height alternatives. All are exact quartics with ordinary literal
