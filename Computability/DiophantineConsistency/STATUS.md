@@ -758,3 +758,20 @@ all78 guard values stay fixed, while three fresh witnesses guard NEWq4
 in literal904. Its21-sign theorem then reaches967. All four root
 normal/optimized checker/rebuild replays, nested complete source checks
 and34 closed seals pass. The canonical101/368 page and Lean remain unchanged.
+
+## Complete78-guard low-height quartics and independent family peer
+
+The [retained-coefficient family](candidates/retained-radius-comparison-base/README.md)
+has1493/846/701/637/623 integer variables at exact degree4, with
+heights427/4750/737653/737653/938261. The623 profile has385 rows and
+8,889 terms; it saves three variables and one row at unchanged height
+against626. The [root review](reviews/comparison-base-raw-quartics-root-peer.md)
+records every1255 raw/guard row and901 restriction identity in the exact
+1493↔901 integer bijection. Only after complete restoration does the
+nonpointwise comparison lift reach904 with fresh NEWq4 witnesses, then967.
+All four root normal/optimized checker/rebuild runs and35 closed seals pass.
+The [separate family peer](reviews/comparison-base-families-peer.md) independently
+checks all ten compact/raw inverse certificates, all raw/guard identities
+and62 snapshot recipes. Both focused root replays reproduce its final
+receipts and reject nine corruptions. The compact613 family is a separate
+height tradeoff. Canonical101/368 PDF/TeX and paused Lean remain unchanged.

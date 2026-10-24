@@ -99,24 +99,26 @@ reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
 The direct C222 route now supplies complete
-[integer quartics in706/707/709 variables](candidates/projected-radius-mixed-projections/README.md),
-with10,465/9,129/9,034 terms and common height2,445,790,974,704. Its
-735-integer companion has6,017 terms and lower height63,905,891. A
-complete mixed-domain theorem recovers the semantic prefix before
-interpreting powers, then replaces signed comparisons by fresh positive
-ones. Reverse integer restoration preserves every guard. The
+[integer quartics in613/614/616 variables](candidates/projected-radius-comparison-base/README.md),
+with10,013/8,677/8,582 terms and common height2,445,790,974,704. Its
+642-integer companion has5,565 terms and lower height63,905,891. Complete
+integer restoration precedes the signed comparison-base theorem. A
+nonpointwise lift fixes all78 retained guard values and supplies fresh
+witnesses for the new positive comparison parameter before reaching the
+frozen904/967 equations. The
 [natural factorial-radius family](candidates/projected-factorial-radius/README.md)
 now reaches399 variables,8,286 terms and height83,843,274, with complete
 support/height alternatives. All are exact quartics with ordinary literal
 coefficients, independent of K215 and Jones.
 
 Retaining arithmetic wires now gives
-[integer quartics with coefficient height427](candidates/retained-radius-bounds/README.md):
-1,736 variables and6,172 terms. This dominates the older3776/7058
-low-height points in all four measured sizes. Further exact projections
-give1,089 variables/5,016 terms/height4,750, and944/880/866-variable
-choices with larger coefficients. These are coefficient/variable/support
-tradeoffs; the complete ten-positive page remains the displayed equation.
+[integer quartics with coefficient height427](candidates/retained-radius-comparison-base/README.md):
+1,493 variables and4,981 terms. Further exact projections give846
+variables/3,813 terms/height4,750, and701/637/623-variable choices with
+larger coefficients. The623-variable profile has8,889 terms and height
+938,261. The complete integer bijection and all signed inverse certificates
+are independently checked. These are coefficient/variable/support tradeoffs;
+the complete ten-positive page remains the displayed equation.
 
 The [407/888/917 review](PROPOSAL_REVIEW_QUARTICS407888.md),
 [1,190-integer projection](candidates/synchronized-signed-projections/README.md)
@@ -814,3 +816,20 @@ all78 guard values stay fixed, while three fresh witnesses guard NEWq4
 in literal904. Its21-sign theorem then reaches967. All four root
 normal/optimized checker/rebuild replays, nested complete source checks
 and34 closed seals pass. The canonical101/368 page and Lean remain unchanged.
+
+## Complete78-guard low-height quartics and independent family peer
+
+The [retained-coefficient family](candidates/retained-radius-comparison-base/README.md)
+has1493/846/701/637/623 integer variables at exact degree4, with
+heights427/4750/737653/737653/938261. The623 profile has385 rows and
+8,889 terms; it saves three variables and one row at unchanged height
+against626. The [root review](reviews/comparison-base-raw-quartics-root-peer.md)
+records every1255 raw/guard row and901 restriction identity in the exact
+1493↔901 integer bijection. Only after complete restoration does the
+nonpointwise comparison lift reach904 with fresh NEWq4 witnesses, then967.
+All four root normal/optimized checker/rebuild runs and35 closed seals pass.
+The [separate family peer](reviews/comparison-base-families-peer.md) independently
+checks all ten compact/raw inverse certificates, all raw/guard identities
+and62 snapshot recipes. Both focused root replays reproduce its final
+receipts and reject nine corruptions. The compact613 family is a separate
+height tradeoff. Canonical101/368 PDF/TeX and paused Lean remain unchanged.

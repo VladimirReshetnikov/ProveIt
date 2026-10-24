@@ -36,8 +36,8 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | 642 | not optimized | 4 | Comparison-base lift, lower-height projection;5,565 terms, height63,905,891 |
-| Integers | 1,496 / 849 | not optimized | 4 | Retained-wire79-guard equations;4,995 /3,827 terms, heights427 /4,750 |
-| Integers | 704 / 640 / 626 | not optimized | 4 | Retained-wire79-guard projections;5,590 /8,940 /8,904 terms, heights737,653 /737,653 /938,261 |
+| Integers | 1,493 / 846 | not optimized | 4 | Retained-wire78-guard equations;4,981 /3,813 terms, heights427 /4,750 |
+| Integers | 701 / 637 / 623 | not optimized | 4 | Retained-wire78-guard projections;5,575 /8,925 /8,889 terms, heights737,653 /737,653 /938,261 |
 | Integers | 613 / 614 / 616 | not optimized | 4 | Signed comparison-base lift and private sign orbits;10,013 /8,677 /8,582 terms, height2,445,790,974,704 |
 | Integers | 1,190 / 1,224 | not optimized | 4 | Preserved synchronized checkpoints, now dominated by917 |
 
@@ -797,3 +797,20 @@ all78 guard values stay fixed, while three fresh witnesses guard NEWq4
 in literal904. Its21-sign theorem then reaches967. All four root
 normal/optimized checker/rebuild replays, nested complete source checks
 and34 closed seals pass. The canonical101/368 page and Lean remain unchanged.
+
+## Complete78-guard low-height quartics and independent family peer
+
+The [retained-coefficient family](candidates/retained-radius-comparison-base/README.md)
+has1493/846/701/637/623 integer variables at exact degree4, with
+heights427/4750/737653/737653/938261. The623 profile has385 rows and
+8,889 terms; it saves three variables and one row at unchanged height
+against626. The [root review](reviews/comparison-base-raw-quartics-root-peer.md)
+records every1255 raw/guard row and901 restriction identity in the exact
+1493↔901 integer bijection. Only after complete restoration does the
+nonpointwise comparison lift reach904 with fresh NEWq4 witnesses, then967.
+All four root normal/optimized checker/rebuild runs and35 closed seals pass.
+The [separate family peer](reviews/comparison-base-families-peer.md) independently
+checks all ten compact/raw inverse certificates, all raw/guard identities
+and62 snapshot recipes. Both focused root replays reproduce its final
+receipts and reject nine corruptions. The compact613 family is a separate
+height tradeoff. Canonical101/368 PDF/TeX and paused Lean remain unchanged.
