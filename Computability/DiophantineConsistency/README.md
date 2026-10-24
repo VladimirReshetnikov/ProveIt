@@ -48,8 +48,9 @@ Preserve the previous page for comparison, and print the complete fixed
 constant recipe on the updated page; an external coefficient table or
 program is not a substitute for that recipe.
 
-A new [twelve-positive equation](research/ordinary-unit-products/README.md)
-has100 live operations and exact degree70. It materializes and checks an
+The [twelve-positive polarized equation](candidates/free-j-polarized-positive/README.md)
+has96 live operations and exact degree70, improving the earlier100-operation
+[ordinary-norm form](research/ordinary-unit-products/README.md). It materializes and checks an
 arriving manuscript's ordinary-norm reduction, including its early rank
 bound and two-way witness reconstruction. The coherent compact44 tuple is
 retained; native calibration and the internal-ZFC proof remain separate.
@@ -71,8 +72,13 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records a
 433-operation nine-positive equation at degree1,628,768, a lower-degree
 953-operation form at999,518, ten-positive131/1,152 and eleven-positive
 111/211. Guard-first root fusion supplies thirteen-integer185/1,408,
-186/1,392 and195/1,088 alternatives. Exact compact norm identities add
-fourteen-integer148/748,156/664 and163/652 tradeoffs.
+186/1,392 and the reviewed trace190/1,072 alternatives.
+[Intersective interpolation](PROPOSAL_REVIEW_TWELVE_INTERPOLATION.md) gives
+twelve-integer248/4,832 and223/16,000 equations.
+[CRT/valuation composition](reviews/congruence-certificates-peer.md) adds
+fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
+reduces the13-positive form to88/51 by freeing J. The displayed90/51 page
+is retained for this minor change.
 
 The direct C222 route now supplies a complete
 [quartic in1,190 unrestricted integers](candidates/synchronized-signed-projections/README.md),

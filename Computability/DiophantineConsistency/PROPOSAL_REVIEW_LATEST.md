@@ -20,14 +20,17 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | **953** | **999,518** | Saturated H1868 radical, D collection and identical norm rewrite |
 | Positive integers | 10 | **131** | 1,152 | Four-root radical/residue proposal |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
+| Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
+| Positive integers | 13 | **88** | **51** | Free positive J; canonical90/51 page retained |
 | Positive integers | 14 | 73 / 74 / 75 / **76** | 342 / 312 / 293 / **191** | Hilbert Tenth root deletion and ordinate centers |
 | Integers | 10 | 471 | 1,245,324 | Round12 short guard; full replay and ordinary guard review |
 | Integers | 10 | **475 / 478 / 512** | 1,179,788 / 1,114,252 / 1,080,888 | Short guard combined with compact older shears |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
-| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,072 | Guard-first fusion and reanchored positivity guard |
-| Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluators |
+| Integers | 12 | 248 / 223 | 4,832 / 16,000 | Intersective Pell interpolation; whole source34 tuple |
+| Integers | 13 | 185 / 186 / 190 | 1,408 / 1,392 / 1,072 | Guard-first fusion and trace recovery before separation |
+| Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
-| Integers | 16 | 115 / 119 / 132 | 160 / 112 / 108 | Parity/residue families and prime separation |
+| Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 522 | not optimized | 4 | Synchronized arithmetic;20,225 terms, height83,900,628 |
@@ -283,3 +286,32 @@ The centered-compression dependency ZIP contains a byte-identical existing
 joint-guards archive rather than a new equation. Further shared-CRT bound
 and Pell power-certificate reductions are being checked as separate
 candidates. Research continues across encodings while Lean remains paused.
+
+
+## Intersective interpolation and congruence composition
+
+The [twelve-integer review](PROPOSAL_REVIEW_TWELVE_INTERPOLATION.md) accepts
+12/248/4832 and12/223/16000, plus the trace13/190/1072 companion. The
+new all-residue Pell interpolation fixes its strong pair before choosing
+the intersective class; a squared-modulus period and a valuation bound
+justify CRT compatibility. Zero scale is excluded before guard recovery,
+and the generalized even strong multiplier is proved separately. All138
+arrival members,137 manifest entries,93 inherited files and all six source34
+ports are authenticated. Full normal/optimized release replays and root's
+independent local algebra/arithmetic review pass. No internal-ZFC or Lean
+endpoint is newly asserted.
+
+The [congruence review](reviews/congruence-certificates-peer.md) accepts
+a free positive J, keeping the possible gcd factor three until the power
+and fixed-Mersenne arguments exclude it. It gives13-positive88/51 and
+12-positive98/70. The [polarized norm](candidates/free-j-polarized-positive/README.md)
+then lowers the latter to96 operations by an exact identity of complete
+polynomials. The same incoming review accepts CRT/valuation integer
+forms14/148/414,15/130/218 and16/118/124. The15-variable point is dominated
+by the retained128/204 parity form; the others add useful tradeoffs.
+All ten fixed payloads match their earlier whole tuples byte for byte;
+normal/optimized circuit and norm replays pass. These modest positive
+circuit improvements leave the canonical13-positive90/51 PDF unchanged.
+
+A new ten-positive124-operation degree816 candidate arrived at8380e70262.
+It is under separate review and is not yet counted as an accepted point.

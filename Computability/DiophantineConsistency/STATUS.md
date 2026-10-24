@@ -45,7 +45,11 @@ information compression are distinguished in
 [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) supplies its ordinary conjugacy proof.
 
 The [ordinary-norm twelve-positive equation](research/ordinary-unit-products/README.md)
-now has a literal100-operation circuit of exact degree70. Its ordinary
+has a literal100-operation circuit of exact degree70. Its
+[free-J polarized successor](candidates/free-j-polarized-positive/README.md)
+now uses96 operations at the same degree. The congruence proof carries the
+possible factor three until power recovery, and the tail rewrite is an
+exact polynomial identity. Its ordinary
 proof establishes the strong-rank bound before using the norm merger;
 normal/optimized independent circuit, identity and degree checks pass.
 The101/78 and thirteen-positive90/55 checkpoints are retained in
@@ -328,3 +332,15 @@ remains open. The separate explicit route
 has now closed the coefficient-recipe obligation: see
 [EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md) and [DIRECT_PROGRAM.md](DIRECT_PROGRAM.md).
 Its enormous numerical coefficient payload has not been materialized.
+
+
+The [twelve-integer interpolation review](PROPOSAL_REVIEW_TWELVE_INTERPOLATION.md)
+accepts248 operations/degree4832 and223/16000. A compatible auxiliary
+Pell witness realizes every requested class after its strong pair is fixed.
+The trace companion improves13-integer195/1072 to190/1072. Both full
+release modes, all whole coefficient bytes and root's separate ordinary
+review pass. The [congruence family](reviews/congruence-certificates-peer.md)
+also adds14-integer148/414 and16-integer118/124 tradeoffs. Free positive J
+reduces13-positive90/51 to88/51; the canonical page remains90/51 under the
+policy of waiting for a significant displayed improvement. The incoming
+10-positive124/816 candidate is now under separate review.

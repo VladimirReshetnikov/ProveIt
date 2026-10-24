@@ -17,8 +17,8 @@ not establish the size of a complete consistency equation.
 |---|---:|---:|---:|---|
 | Positive integers | 15 | 66 | 157 | Short-operation baseline |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
-| Positive integers | 12 | 99 / 100 | 164 / 70 | Ordinary-norm100/70 improves100/110 and102/82 |
-| Positive integers | 13 | 90 | 51 | Ordinary strong norm improves the90/55 unit product |
+| Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
+| Positive integers | 13 | 88 | 51 | Free positive J; canonical one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 131 | 1,152 | Four-root radical/residue form |
@@ -34,9 +34,10 @@ not establish the size of a complete consistency equation.
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-operation checkpoint retained |
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational-root norm tradeoff |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated three-root norm |
-| Integers | 16 | 115 / 119 / 132 | 160 / 112 / 108 | Parity/residue and prime-separation two-root norms |
-| Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,072 | Guard-first fusion and reanchored positivity guard |
-| Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluator |
+| Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue and prime-separation two-root norms |
+| Integers | 12 | 248 / 223 | 4,832 / 16,000 | Intersective Pell interpolation; whole source34 tuple |
+| Integers | 13 | 185 / 186 / 190 | 1,408 / 1,392 / 1,072 | Guard-first fusion and trace recovery before separation |
+| Integers | 14 | 137 / 148 | 792 / 414 | Root fusion and CRT/valuation composition |
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 522 | not optimized | 4 | Synchronized frame;20,225 terms, height83,900,628 |
 | Nonnegative integers | 529 / 596 / 895 | not optimized | 4 | Support/height alternatives:10,782 /7,263 /4,863 terms |
@@ -203,3 +204,14 @@ these checks finished before the pause. Remaining unfinished files under
 `Lean/` are work in progress and are not evidence for a completed theorem.
 The one-page PDF and both TeX sources are committed. The requested full
 internal-ZFC consistency calibration remains a separate open obligation.
+
+
+The [interpolation review](PROPOSAL_REVIEW_TWELVE_INTERPOLATION.md) and
+[congruence review](reviews/congruence-certificates-peer.md) now pass their
+ordinary proofs and normal/optimized finite release checks. The former
+introduces12-integer equations and improves the13-integer1072-degree
+point to190 operations. The latter gives14-integer148/414 and a free
+positive J; an identical polarized tail composes with that positive
+change to give12-positive96/70. Complete tuples remain separated. The
+canonical13-positive90/51 page is retained for these minor circuit changes;
+the incoming10-positive124/816 candidate is being reviewed separately.
