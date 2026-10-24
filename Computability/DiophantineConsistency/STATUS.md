@@ -977,3 +977,16 @@ node/operand inventories, coefficients, norms and attained-degree checks
 passed both checker/rebuild modes under root replay; see the
 [root review](reviews/nine-shared-odd-rank-root-peer.md). The canonical
 page and Lean pause are unchanged.
+
+## Early output-sign recovery reduces the source to75 predicates
+
+The ordinary [output-sign extension](research/factorial-radius-output-sign/PROOF.md)
+removes the raw93 guard. The exact unconditional eight-row ideal gives
+N=f*r+(f-1)*s+f>=2 from the retained f>=2,r>=0,s>=0 predicates, before
+the prefix proof or any power meaning. This restores the sole missing
+early sign premise and reaches the actual76-predicate source; the reverse
+map forgets that triple. Root reviewed all source coefficients and both
+normal/optimized replays; see the
+[root review](reviews/factorial-radius-output-sign-root-peer.md). There
+are75 predicates before projection. Actual quartic sizes remain a separate
+measurement; no new Lean or canonical-page change is made.
