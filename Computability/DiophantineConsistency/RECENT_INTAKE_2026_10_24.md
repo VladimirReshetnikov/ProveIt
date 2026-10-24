@@ -13,7 +13,7 @@ internal object-ZFC proof remain distinct. Lean is paused.
 | Constructive Reductions, `37e6f0e8d4…` | **Nine-positive component only** accepted: full scoped normal/-O graph/source/radical/fixed-value replays. Norm-tail children419/1472168,1056/997810,427/1626248 frozen. Its integer14 and direct components are not reviewed here. |
 | Valuation and Signed Certificates, `11267f8970…` | **Integer12 only** accepted:215/2400 and209/2912, four complete scoped stages per mode. Direct1190 and positive98 supplements excluded from this review; those structures have separate reviews. Pointwise shared-norm children frozen at208/2400 and202/2912 with exact actual-gate leading certificates. |
 | Direct Quartics3776/3671, `91baf0ee4c…` | [Ordinary review and both full release modes accepted](PROPOSAL_REVIEW_QUARTICS3776.md). The3776-variable height47959 and7058-variable height1992 points are useful height tradeoffs;3671 is dominated by891. Composition with the newer retained source is ongoing and is not counted yet. |
-| Shared Pell1873, `22147cf44b…` | Queued as a separate coefficient/support tradeoff. No ordinary/finite acceptance implied by intake. |
+| Shared Pell1873, `22147cf44b…` | [Signed-index theorem and exact batching boundary accepted](PROPOSAL_REVIEW_SHARED_PELL1873_SIGNED.md), with root proof review and normal/-O controls. The expanded1873-variable polynomial is outside this scoped review. A mixed-domain composition with projected667 is ongoing; no reduced count is accepted yet. |
 
 The last five archives arrived at3635835b1e. Their complete hashes and
 inventories are recorded in the respective reviews as those are completed.
