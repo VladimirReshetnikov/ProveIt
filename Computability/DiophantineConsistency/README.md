@@ -82,7 +82,8 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 409/1,191,572 and compact54 417/1,316,548 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
 The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
-now reaches105/408. Its strong and auxiliary Pell equations recover the
+now reaches103/408 with [direct positive J](candidates/ten-positive-free-j/README.md).
+Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
 eleven-positive111/211 is a different tradeoff.
@@ -602,3 +603,21 @@ ordinary proof audit, exact degree argument, all four normal/optimized
 checks and rebuilds, and closed artifact seals. This nine-variable result
 is a separate tradeoff from the maintained ten-positive one-page equation.
 Lean remains paused; no new internal-ZFC endpoint is claimed.
+
+## Direct positive J in the ten-variable equation accepted
+
+The [free-J ten-positive equation](candidates/ten-positive-free-j/README.md)
+saves two operations, reaching103 at the same exact degree408 and ten
+positive unknowns. The enlarged positive J domain is sound: odd main
+index recovery gives p=R before q parity, then odd q would force even J
+and even R. Coprimality is used only after this contradiction recovers
+even q. The J=1 case constructs fresh positive source61 witnesses and
+uses its actual unrestricted-positive-J soundness statement. The whole
+original tuple and separately calibrated BFS tuple remain distinguished.
+The [root review](reviews/ten-positive-free-j-root-peer.md) and
+[independent ordinary review](reviews/ten-positive-free-j-ordinary-peer.md)
+record the proof and full literal affine-map/degree checks. All four
+normal/optimized checks and deterministic rebuilds passed. This minor
+two-operation saving does not trigger a new canonical PDF/TeX rendering;
+its complete105-operation page remains available pending a substantial
+improvement. Lean remains paused.

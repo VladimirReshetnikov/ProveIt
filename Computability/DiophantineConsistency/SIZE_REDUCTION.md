@@ -21,7 +21,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
-| Positive integers | 10 | 105 | 408 | Symmetric three-root norm and quadratic main-Pell projection |
+| Positive integers | 10 | 103 | 408 | Direct positive J, symmetric norm and quadratic main-Pell projection |
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
@@ -427,3 +427,21 @@ ordinary proof audit, exact degree argument, all four normal/optimized
 checks and rebuilds, and closed artifact seals. This nine-variable result
 is a separate tradeoff from the maintained ten-positive one-page equation.
 Lean remains paused; no new internal-ZFC endpoint is claimed.
+
+## Direct positive J in the ten-variable equation accepted
+
+The [free-J ten-positive equation](candidates/ten-positive-free-j/README.md)
+saves two operations, reaching103 at the same exact degree408 and ten
+positive unknowns. The enlarged positive J domain is sound: odd main
+index recovery gives p=R before q parity, then odd q would force even J
+and even R. Coprimality is used only after this contradiction recovers
+even q. The J=1 case constructs fresh positive source61 witnesses and
+uses its actual unrestricted-positive-J soundness statement. The whole
+original tuple and separately calibrated BFS tuple remain distinguished.
+The [root review](reviews/ten-positive-free-j-root-peer.md) and
+[independent ordinary review](reviews/ten-positive-free-j-ordinary-peer.md)
+record the proof and full literal affine-map/degree checks. All four
+normal/optimized checks and deterministic rebuilds passed. This minor
+two-operation saving does not trigger a new canonical PDF/TeX rendering;
+its complete105-operation page remains available pending a substantial
+improvement. Lean remains paused.
