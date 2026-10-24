@@ -181,3 +181,7 @@ import DiophantineConsistency.RegisterDivMod
 import DiophantineConsistency.GatesSemiring
 import DiophantineConsistency.QuarticSemiring
 import DiophantineConsistency.ObjectQuarticCompiler
+import DiophantineConsistency.AnnotatedContext
+import DiophantineConsistency.AnnotatedContextPR
+import DiophantineConsistency.AnnotatedContextLookup
+import DiophantineConsistency.AnnotatedAssumption

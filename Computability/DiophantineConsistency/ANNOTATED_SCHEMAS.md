@@ -109,3 +109,7 @@ and sealing operations. The new internal semiring results support those
 proofs but do not supply an automatic transfer principle. No full checker
 PR theorem, compiled closed polynomial, or new consistency equivalence is
 claimed by these schema modules alone.
+
+The next [context/rule checkpoint](ANNOTATED_CONTEXT_RULE.md) supplies exact
+context validation, shifting, lookup and the original assumption-rule validator.
+The other rules and full proof-line loop remain open.

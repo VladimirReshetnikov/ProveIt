@@ -38,7 +38,9 @@ The exact additive formula bound and universal sealing now also have supplied
 programs and numeric certificates; see [ANNOTATED_BOUND_SEAL.md](ANNOTATED_BOUND_SEAL.md).
 The actual Separation and Replacement schemas now have checked constructor,
 rename and sealing programs too; see [ANNOTATED_SCHEMAS.md](ANNOTATED_SCHEMAS.md).
-The axiom-tag dispatcher and full proof-line validator remain in progress.
+[Context validation, shifting and the assumption rule](ANNOTATED_CONTEXT_RULE.md)
+now have supplied numeric programs too, including soundness for arbitrary raw codes.
+The remaining rules, axiom-tag dispatcher and full proof-line loop remain in progress.
 The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
 ZFC derivation of its source/target no-zero equivalence over the entire
 internal omega. Internal verification of the full checker encoding remains open.
