@@ -833,3 +833,14 @@ checks all ten compact/raw inverse certificates, all raw/guard identities
 and62 snapshot recipes. Both focused root replays reproduce its final
 receipts and reject nine corruptions. The compact613 family is a separate
 height tradeoff. Canonical101/368 PDF/TeX and paused Lean remain unchanged.
+
+## Literal constructor prose correction
+
+The [constructor erratum](reviews/main-root-constructors-erratum.md) corrects
+two aliases in the frozen21-sign note: raw36=y+1>=1, and
+raw86=(t+x+y+M0+2)^(2^23)>=3. Root checked every cited original row.
+The431-step constructor certificate already uses those correct literal
+rows, so all exponent-positivity, guard and equation conclusions remain
+unchanged. Neither constructor has fixed parity from these premises.
+Frozen certificates and polynomials are preserved; subsequent proofs use
+the corrected descriptions. Lean remains paused.
