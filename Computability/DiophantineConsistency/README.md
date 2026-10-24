@@ -45,13 +45,21 @@ now cover all17 original rules.
 The [complete numeric logical scanner](ANNOTATED_LINE_SCANNER.md) now checks
 raw numeric proof lines and backward references for every original rule,
 with supplied primitive-recursive code and an exact acceptance/provability
-equivalence. Validating its sealed-ZFC axiom context remains open.
+equivalence. The [complete sealed-ZFC refutation checker](ANNOTATED_REFUTATION_PR.md)
+now includes actual axiom/schema dispatch, the full axiom-context scan and
+an exact existential acceptance/refutability equivalence. Its literal
+program has83281 nodes, or76313 after certified optimization. These are
+program-tree sizes; its smaller shared quadratic graph and internal-model
+interpretation remain in progress.
 The [literal quartic compiler](OBJECT_QUARTIC_COMPILER.md) now has an actual
 ZFC derivation of its source/target no-zero equivalence over the entire
 internal omega. The [actual sharp pairing quartic](OBJECT_SHARP_PAIRING.md)
 now also has internal totality, functionality and surjectivity proofs,
 including unconditional derivations in ZFC. Internal verification of the
-full checker encoding remains open.
+full checker encoding remains open. The [actual predecessor, tree projections
+and zero-test quartics](OBJECT_NUMERIC_WIRE.md) now also have exact semantics
+over every internal natural input, preserving the existing shared-register
+expressions and witness counts.
 A [complete one-page equation](candidates/one-page/README.md) now specifies
 the15-positive-variable P69 and every fixed coefficient using one1294-digit
 integer and fixed arithmetic formulas. The printed seed and all four coefficient
