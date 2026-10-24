@@ -27,11 +27,12 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 13 | 185 / 186 / 195 | 1,408 / 1,392 / 1,088 | Complete guard-first five-root fusion |
 | Integers | 14 | 137 / 148 / 150 / 156 / 163 | 792 / 748 / 696 / 664 / 652 | Root fusion and compact fixed-prime norm evaluators |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
-| Integers | 16 | 115 / 119 | 160 / 112 | Distinct parity/residue families |
+| Integers | 16 | 115 / 119 / 132 | 160 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 3,603 | not optimized | 4 | Shared CRT and beta majorant;15,670 collected terms |
-| Nonnegative integers | 6,179 | not optimized | 4 | Retained-wire beta-majorant variant;coefficient height1,992 |
+| Nonnegative integers | 3,443 | not optimized | 4 | Fixed positive-power bound;15,754 terms, slightly greater height |
+| Nonnegative integers | 5,960 | not optimized | 4 | Retained-wire fixed-bound variant;coefficient height1,992 |
 | Integers | 8,619 | not optimized | 4 | Prime-lift shared CRT with semantic-input guards;39,811 terms |
 
 The nine-variable953/999,518 point improves both operations and degree over
@@ -131,6 +132,13 @@ other source tuples remain separate comparisons.
   verifies the complete polynomial row/inverse transformations and exact
   leading forms. Twenty integer variables now reach degree18; this is a
   coordinate reduction with its own complete source binding.
+* [Prime separation](PROPOSAL_REVIEW_PRIME_SEPARATION.md) passes both full
+  release modes, complete fixed-coefficient reconstruction, all four
+  attained degrees and the literal sixteen-variable norm identity.
+  Every subset containing an old root has a unique even least3-adic
+  order; the fifth guard can have odd order without invalidating that
+  argument. The useful16/108/132 point lowers degree relative to parity
+  16/112/119 while adding thirteen operations.
 
 The incoming archives remain immutable and retain their original names.
 Candidate provenance pins the actual arrival bytes. Scoped reviews are not
@@ -193,12 +201,23 @@ majorant path, affine restoration and normal/optimized rebuilds pass,
 with separate ordinary peer review. The frozen8,619-integer equation
 still uses its3,609-variable parent and remains a distinct checkpoint.
 
+The [fixed power bound](candidates/shared-crt-fixed-power-bound/README.md)
+chooses `W=n+k` in all55 positive-power calls. The actual forward Pell
+construction works at every common bound `W>=n,k`; fresh witnesses
+therefore exist at that fixed value. Soundness restores the two deleted
+bound slacks by `wn=k,wk=n`. This removes165 semantic coordinates and
+gives3,443-natural and5,960-natural quartics, with full ordinary proof,
+independent review and normal/optimized exact checks. The affine form
+has15,754 monomials and height127,302,193, slightly above the frozen
+prime-lift parent in those metrics. No claim to dominate every metric
+is made. The retained-wire form has16,894 terms and unchanged height1,992.
+
 ## Newer arrivals still being assessed
 
-The prime-separation archive arriving in8b328dc180 remains under
-small-equation review. Both differently named parity archives are reviewed
-above as distinct proposals. The second parity ZIP is not substituted
-for the first.
+The prime-separation archive and both differently named parity archives
+are reviewed above. The second parity ZIP is not substituted for the
+first. New local slack deletions, composition of the direct reductions
+and fewer integer-domain guards remain under investigation.
 The centered-compression dependency ZIP contains a byte-identical existing
 joint-guards archive rather than a new equation. Further shared-CRT bound
 and Pell power-certificate reductions are being checked as separate

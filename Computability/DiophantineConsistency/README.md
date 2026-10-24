@@ -27,6 +27,14 @@ numeral notation reduces printed symbols. See
 [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) and
 [SEED_PREDICTORS54.md](SEED_PREDICTORS54.md) for those distinct gains.
 
+The displayed `equation.pdf` and its TeX source are maintained research
+outputs. After a substantial improvement to the displayed construction,
+update them to the checked new equation and state its exact domain and
+size tradeoffs. Minor circuit changes need not trigger a new rendering.
+Preserve the previous page for comparison, and print the complete fixed
+constant recipe on the updated page; an external coefficient table or
+program is not a substitute for that recipe.
+
 A new [twelve-positive equation](research/ordinary-unit-products/README.md)
 has100 live operations and exact degree70. It materializes and checks an
 arriving manuscript's ordinary-norm reduction, including its early rank

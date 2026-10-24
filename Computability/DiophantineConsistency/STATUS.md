@@ -92,8 +92,13 @@ polynomial. Useful fourteen-integer points include148/748,156/664 and
 fixed-prime counterparts. Both newer [parity families](PROPOSAL_REVIEW_PARITY_FAMILIES.md)
 now pass small-integer ordinary reviews and scoped normal/optimized
 replays, adding fifteen-integer128/204 and124/352, and sixteen-integer
-119/112 and115/160. Prime separation remains under review. No global
-optimality claim is made.
+119/112 and115/160. The [prime-separation review](PROPOSAL_REVIEW_PRIME_SEPARATION.md)
+adds16/108/132 as a lower-degree, greater-cost choice. Fixing the positive
+power bound to`W=n+k` gives direct quartics with3,443 or5,960 natural
+variables; its [ordinary proof](candidates/shared-crt-fixed-power-bound/PROOF.md)
+constructs fresh Pell witnesses at every common bound. Full literal and
+normal/optimized checks pass. These do not yet replace the frozen integer
+companion. No global optimality claim is made.
 
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
