@@ -18,7 +18,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Positive integers | 9 | 419 / 427 | 1,472,168 / 1,626,248 | Position-zero normalization; original31 / smaller compact54 tuples |
 | Positive integers | 9 | **722** | 1,158,228 | Collected original31 radical evaluator plus identical norm rewrite |
 | Positive integers | 9 | 953 / 1,056 | 999,518 / 997,810 | Collected radical / position-zero complete radical; cost-degree tradeoff |
-| Positive integers | 10 | 122 | 816 | Scaled centered sixteen-fold norm with shared product and reused alias |
+| Positive integers | 10 | 106 | 408 | Three-root norm and quadratic main-Pell projection |
 | Positive integers | 11 | **111** | **211** | Adaptive q²Y carrier combined with double center |
 | Positive integers | 12 | **96** | **70** | Free positive J and an identical polarized norm tail |
 | Positive integers | 13 | **88** | **51** | Free positive J; previous90/51 page retained |
@@ -332,6 +332,15 @@ gate remap and a universal polynomial identity. Independent normal/-O
 checks preserve all ten unknowns, four complete ports and degree816.
 The displayed123-operation page remains valid and is retained for this
 minor evaluator change.
+
+The [quadratic projection](candidates/ten-positive-quadratic-projection/README.md)
+now reduces the ten-positive equation to106 operations and exact degree408.
+The omitted main Pell ordinate is recovered from the strong/auxiliary
+equations by an all-index folding argument. A strict bound on the entire
+divisible projection product excludes mixed-prime branches. Complete
+positive witness maps, independent ordinary reviews and all literal
+normal/-O circuit/norm/leading-form checks pass. A new full page is being
+prepared for this significant degree and operation reduction.
 
 
 ## Position zero, fixed-prime interpolation, and the new direct source
