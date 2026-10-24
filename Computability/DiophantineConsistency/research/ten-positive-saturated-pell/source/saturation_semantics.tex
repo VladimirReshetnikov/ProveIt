@@ -1,0 +1,457 @@
+\section{An unbounded arithmetic proof of the saturation step}
+\label{sec:saturation-semantics}
+
+We prove the equivalence for both charts and for either of the two
+fixed centers $C_g=(A+\lambda)UE$, where $\lambda=\varepsilon\in\{0,1\}$.
+Write $K_{\rm pos}=K_+$ and $G=D_g=ED_f$.  The other notation is that of the complete
+equation above.  Throughout this section,
+all ten independent coordinates are strictly positive integers.  A
+``root'' denotes a positive real square root only inside the proof;
+the polynomial evaluator has no root operation.
+
+The inherited input is the accepted ten-positive zero-offset
+construction, together with its coherent native/controller/refutation
+calibration.  Its proof imports the universal Pell facts and the
+source61 lemmas named \texttt{lem:rank}, \texttt{lem:index}, and
+\texttt{lem:auxcomplete}.  We state their interfaces at the points
+where they are used.  The old strong witness is not retained literally:
+the proof will recover $I=U\sqrt E$ and, in the converse direction,
+choose a new strong Pell period.  The complete original port tuple
+and the complete BFS tuple are separate allowed calibrations;
+individual ports are never interchanged.
+
+\subsection{Two roots recover the three required Pell conditions}
+
+\begin{lemma}[Root recovery by a coprime product]
+\label{lem:saturation-root-recovery}
+At every positive integer zero of the displayed polynomial, there
+are positive integers $\tau,f,y$ such that
+\begin{equation}
+ E=\tau^2,\qquad D_f=f^2,\qquad
+ QV^2-(Q-1)y^2=1,
+ \label{eq:sat-three-identities}
+\end{equation}
+and
+\begin{equation}
+ \frac ZM=\varepsilon_g f\tau+\varepsilon_y y,
+ \qquad \varepsilon_g,\varepsilon_y\in\{-1,1\}.
+ \label{eq:sat-signed-factor}
+\end{equation}
+No sign restriction on $Z$ or $V$ is needed for this conclusion.
+\end{lemma}
+
+\begin{proof}
+Before using the equation, $E>1$, $D_f>c+1$, $Q>1$, $M>0$, and
+$\delta=Q-1>0$.  Since $V=D_fb-c$ and $b$ is an integer, either
+$b=0$ and $V=-c$, or $|V|\ge D_f-c>1$.  In particular $D_y>0$.
+Set
+\[
+ G=ED_f,\qquad Y_* =\frac{D_y}{\delta}
+       =\frac{QV^2-1}{Q-1}.
+\]
+The two positive rational numbers $G,Y_*$ cannot coincide.  Indeed,
+$G=Y_*$ would imply
+\[
+ Q(V^2-G)=1-G.
+\]
+Both $Q$ and $G$ are divisible by $E$, so this would give $E\mid1$.
+This simple obstruction replaces a radical size or sign separation.
+
+At a zero put $z=Z/M$.  The equation is exactly
+\[
+ (z^2-G-Y_*)^2=4GY_*.
+\]
+If $z=0$, then $G=Y_*$, which was excluded.  For $z\ne0$,
+\[
+ \left(\frac{z^2+G-Y_*}{2z}\right)^2=G.
+\]
+The complementary rational number has square $Y_*$.  Thus both
+positive roots are rational.  Since $G$ is an integer, it is an
+integer square.  Moreover
+\[
+ D_f=1+\Delta U^2E\quad\Longrightarrow\quad\gcd(E,D_f)=1.
+\]
+A square product of positive coprime integers has square factors.
+Write $E=\tau^2$, $D_f=f^2$, and $g=f\tau=\sqrt G$.
+
+For clarity, rational integrality of the remaining adjacent-Pell
+root has the following elementary descent.  If $y=a/m>0$ in lowest
+terms satisfies $Qv^2-(Q-1)y^2=1$ with integer $v>0$, then
+$m^2\mid Q-1$.  For $v>1$ use
+\[
+ v'=(2Q-1)v-2(Q-1)y,
+ \qquad y'=(2Q-1)y-2Qv.
+\]
+The first coordinate is integral, the same norm is preserved, and
+$v<y<Qv/(Q-1)$ gives $-v<v'<v$.  The new first coordinate cannot
+vanish.  After taking absolute values, its positive integer size
+has decreased.  The reduced denominator of $y'$ is still $m$:
+$2Q-1\equiv1\pmod m$ and $a$ is coprime to $m$.  Descent reaches
+$v=1$, where $y=1$, so $m=1$.  Apply this argument initially to
+$v=|V|$.  The signed factorization now gives
+\eqref{eq:sat-signed-factor}.
+\end{proof}
+
+\subsection{The old strong witness and the early inequalities}
+
+Define only inside the proof
+\begin{equation}
+ I=U\tau.
+ \label{eq:sat-proof-I}
+\end{equation}
+Then $I$ is a positive integer, $c^2\mid I$, and
+\begin{equation}
+ f^2-\Delta I^2=1,\qquad Q=(\Delta I)^2,
+ \qquad V=f^2(cT'-R)-c.
+ \label{eq:sat-restored-kernels}
+\end{equation}
+These are exactly the normalized strong and auxiliary identities
+of the accepted zero-offset proof.  Its old strong input could be
+$i_{\rm old}=I/c^2=i\tau$; it is not the new literal coordinate $i$.
+
+\begin{lemma}[Folding and size before transport]
+\label{lem:sat-early-fold}
+At every positive zero there are indices $p,n_0\ge1$, with $p$ odd,
+such that
+\[
+ c=\psi_A(p),\qquad
+ k=2\psi_{2V_0+1}(n_0),\qquad n_0\ge2.
+\]
+Consequently
+\begin{equation}
+ k\ge8V_0+4,
+ \qquad c>kY\ge k>8q^5,
+ \qquad K_{\rm pos}>0,
+ \qquad H>3X>0.
+ \label{eq:sat-early-sizes}
+\end{equation}
+These conclusions do not use the sign of the transport numerator.
+\end{lemma}
+
+\begin{proof}
+The inherited strong/auxiliary folding lemma is uniform for $A\ge3$.
+Its hypotheses are the strong norm, $c\le I$, $c^2\mid I$, the
+adjacent auxiliary norm, and $V\equiv-c\pmod f$.  They follow from
+\eqref{eq:sat-three-identities}--\eqref{eq:sat-restored-kernels}.
+It gives $c=\psi_A(p)$ for odd $p\ge1$.  The unchanged first norm
+gives the stated expression for $k$.  If $n_0=1$, then $k=2$;
+positivity forces $\eta=\zeta=1$, and $c=2Y+1$ lies strictly
+between $\psi_A(1)=1$ and $\psi_A(2)=2A$.  This is impossible.
+Thus $k\ge2\psi_{2V_0+1}(2)=8V_0+4$.
+The inequalities in \eqref{eq:sat-early-sizes} now use
+$V_0=X\mu^2Y^2$, $X\ge q$, and $\mu=q^2+1$.  In particular
+$c>2X$, so $K_{\rm pos}=X(3c-2X)+2>0$; the formula
+$H=4\mu Y(X+1)-1$ gives $H>3X$.
+\end{proof}
+
+The port bounds of the native mask give, for every positive assignment,
+\begin{align}
+ R&<q^4+(\alpha+2)q^2,\notag\\
+ |R|&<q^4+Fq^3+(\alpha+2)q^2,\notag\\
+ \frac{|R|}{\mu^2}&<F+\alpha+1.
+ \label{eq:sat-mask-bounds}
+\end{align}
+For the last inequality, multiplying by $\mu^2=(q^2+1)^2$ leaves
+the positive difference
+\[
+ F(q^4-q^3+2q^2+1)+\alpha(q^4+q^2+1)+1.
+\]
+The first bound and $c>8q^5$ show that
+$b=c(T+\alpha)-R>0$, hence $b\ge1$ and $V=D_fb-c>1$.
+Put
+\[
+ u=y-V>0,\qquad \rho=\frac{e}{\mu^2}.
+\]
+The adjacent norm and $\Delta D_f=Q+\Delta<2Q-2$ give
+\[
+ u=\frac{V^2-1}{(Q-1)(y+V)}
+   <\frac{V}{2(Q-1)}<\frac b\Delta.
+\]
+Using $c<2kY$, $\Delta>8Y$, $\Delta>\mu^2$, and
+\eqref{eq:sat-mask-bounds}, we obtain
+\begin{equation}
+ u<\frac{kT'}4+F+\alpha+1,
+ \qquad \rho<\frac{k}{\mu^2}+F+\alpha+1.
+ \label{eq:sat-general-u-rho}
+\end{equation}
+If $C=q-F-\alpha\ge1$, then
+$q(q-F)-C=q\alpha+(q-1)C>0$ and therefore $R>0$.
+In that case the sharper inequalities are
+\begin{equation}
+ u<\frac{kT'}4,
+ \qquad \rho<\frac{k}{\mu^2}.
+ \label{eq:sat-sharp-u-rho}
+\end{equation}
+At this stage $\rho$ may still be rational.  No denominator has yet
+been cancelled.
+
+\subsection{Why the product center suffices on both charts}
+
+\begin{lemma}[Upper and sharp centers]
+\label{lem:sat-centers}
+At every positive zero,
+\begin{equation}
+ g<C_g,
+ \qquad 0<C_g-g<(\lambda+1)UE\le2UE.
+ \label{eq:sat-center-loss}
+\end{equation}
+For the sharp center $C_0=AUE$, the stronger estimate
+\begin{equation}
+ C_0-g>\frac{UE}{4A}>X
+ \label{eq:sat-direct-gap}
+\end{equation}
+also holds.  In particular, for either center and either root sign,
+$\varepsilon_g g-C_g+X/q^4<0$.
+\end{lemma}
+
+\begin{proof}
+Since $I>1$ and $f^2=A^2I^2-I^2+1$,
+$(A-1)I<f<AI$.  Multiplication by $\tau$ proves
+\eqref{eq:sat-center-loss}.  For the sharper lower bound use
+\[
+ C_0^2-G=U^2E^2-E.
+\]
+Here $U^2E>2$ and $g<C_0$, so
+$(C_0-g)>UE/(4A)$.  The next estimate is unconditional on the
+positive coordinate domain: $k\ge2$, $c>kY$, $U\ge c^2$, and
+$E>V_0^2k^2$ imply
+\[
+ UE>V_0^2k^4Y^2\ge16V_0^2Y^2.
+\]
+Also $A=\mu Y(X+1)+1<4\mu XY$.  Hence
+\[
+ \frac{UE}{4A}>
+ \frac{V_0^2Y}{\mu X}=X\mu^3Y^5>X.
+\]
+In particular the direct estimate uses neither $q\mid X$ nor any
+decoded source information.
+\end{proof}
+
+\subsection{Transport soundness without a large majorant}
+
+On the ordinary chart write $W=1+(q-1)L$ and
+\[
+ t=\frac{B_t}{q-1},\qquad
+ s=\frac{Y}{q^3}>0,\qquad
+ \kappa=\frac{K_{\rm pos}}H>0.
+\]
+The exact normalized carrier and
+\eqref{eq:sat-signed-factor} give
+\[
+ n=(\varepsilon_g g-C_g)+(\varepsilon_y y-V)
+       -\kappa-s+Wt+\rho.
+\]
+By Lemma~\ref{lem:sat-centers}, every zero satisfies
+\begin{equation}
+ n<u+Wt+\rho.
+ \label{eq:sat-transport-upper}
+\end{equation}
+Suppose $B_t\le-1$.  If $C\ge1$, then $Wt<-L=-kT'$;
+\eqref{eq:sat-sharp-u-rho} gives
+\[
+ n<\frac{kT'}4+\frac{k}{\mu^2}-kT'<0.
+\]
+If $C\le0$, then $B_t=(K_0+w)C-F\le-F$ and $Wt<-FL$.
+By \eqref{eq:sat-general-u-rho},
+\[
+ n<\frac{kT'}4+\frac{k}{\mu^2}
+      +2F+2\alpha+2-FkT'<0.
+\]
+For completeness, the negative of the expression on the right is
+increasing in $F,T,\alpha\ge1$ when $k\ge8$; its minimum is
+$3k/2-k/\mu^2-6>0$.  Both cases contradict $n>0$.
+We have proved $B_t\ge0$, and then
+$(K_0+w)C\ge F>0$ gives $C>0$.
+
+On the direct chart put $W=1+q(q-1)L$.  The normalized carrier differs by the transport
+term $-WB/[q(q-1)]$ and the additional term $-X/q^4$.
+Lemma~\ref{lem:sat-centers} absorbs the resulting $+X/q^4$ in the
+equation for $n$.  Thus the same upper bound holds with
+$Wt$ replaced by $WB/[q(q-1)]$.  If $B\le-1$ and $C\ge1$,
+this term is smaller than $-L$.  If $C\le0$, then
+$B=(qK_0+X)C-qF\le-qF$, so it is smaller than
+$-qFL\le-FL$.  The identical two contradictions give $B\ge0$
+and $C>0$.  Neither argument assumes the divisibility $q\mid X$.
+
+\subsection{Licenses for the inherited index and projection proof}
+
+We record the order of implications because it prevents circular
+cancellation arguments.  Once transport is nonnegative, the native
+mask estimate gives $3q<R<q^4-2$.  The recovered strong witness
+satisfies $c^2\mid I$ and $c>2R$.  Since $c=\psi_A(p)>2$ and
+$A\ge3$, one also has $c>2p$.
+
+The source61 rank lemma says that $c=\psi_A(p)>2$,
+$f^2-\Delta I^2=1$, $f,I>0$, and $c^2\mid I$ imply
+\[
+ f=\chi_A(m),\quad I=\psi_A(m),\quad
+ pc\mid m,\quad c\mid m,\quad m>2p.
+\]
+Put $S=\Delta I$.  Then $S\ge2$, $c\mid S$, and
+$S^2=\Delta(f^2-1)$.  The two required auxiliary congruences are
+\[
+ V\equiv-c\pmod f,
+ \qquad V\equiv-R\pmod c;
+\]
+the second uses $f^2\equiv1\pmod c$.  The source61 index lemma,
+with $0<p,R<c/2$, now gives $p=R$.
+
+The index $R$ is odd.  If $q$ were odd, then $J$ would be even and
+the native mask formula would make $R$ even.  Thus $q$ is even
+and $J$ is odd.  Only now may one use
+\[
+ \gcd\bigl(\mu^2,q^3(q-1)H\bigr)=1
+ \quad\text{or, on the direct chart,}\quad
+ \gcd\bigl(\mu^2,q^4(q-1)H\bigr)=1.
+\]
+Indeed $H\equiv-1\pmod\mu$, and even $q$ makes
+$\gcd(q-1,\mu)=1$.  The signed carrier is integral, so the
+unchanged denominator argument gives $\mu^2\mid e$.
+
+All following uses of the zero-offset parent are now licensed:
+its first-index argument gives $n_0=(R+1)/2$; its offset-free
+ratio estimate gives the same half-binomial interval and size bound;
+and its whole-product projection gives $X=2^R$.  More explicitly,
+on the ordinary chart the integral carrier yields
+$H\mid q^3(q-1)K_{\rm pos}$.  Writing
+\[
+ K_{\rm quad}=X\bigl(X+2(A-2)c\bigr)-1,
+ \qquad K_{\rm pos}=HXc-2K_{\rm quad},
+\]
+one cancels only $2$ (since $H$ is odd).  The universal projection
+therefore yields
+\[
+ H\mid q^3(q-1)(X-2^R)(2^RX+1).
+\]
+The entire product has absolute value less than $H$ by the retained
+ratio and height bounds; hence $X=2^R$.  One does not cancel an
+unverified unit modulo $H$.  The direct parent supplies exactly
+the corresponding product argument with its extra carrier factor.
+
+The new center causes no change to these interfaces.  Both $C_g$
+and $g=f\tau$ are integers, so the only nonintegral terms remain
+the old fractions.  On the direct chart, after the main projection
+makes $K_{\rm pos}/H$ integral, the residual relation is
+\[
+ \frac{Y}{q^3}-\frac{WB}{q(q-1)}-\frac{X}{q^4}\in\mathbb Z.
+\]
+Its numerator modulo $q$ gives $q\mid X$.  Since $X=2^R$,
+$q$ is a power of two; $R>3q$ then gives $q^4\mid X$.
+Set $w=X/q$ and use $B=qB_t$ to finish the old source decoding.
+
+The remaining parent steps give $R\equiv3\pmod4$, the exact
+half-binomial value of $Y$, and all native source divisibilities.
+Its final reconstruction uses a \emph{fresh unscaled} source61
+parameter $A_{\rm source}=Y(X+1)+2$.  It neither divides the new
+strong witness nor identifies this unscaled parameter with $A$.
+The fixed native/controller calibration then produces a finite
+syntactic ZFC refutation.  This proves soundness for each new
+center and chart.
+
+\subsection{Completeness: choose a divisible Pell period}
+
+Suppose a finite ZFC refutation exists.  The parent's canonical
+construction gives the outer and first/main data, with
+\[
+ E=\tau^2,\quad c=\psi_A(R),\quad
+ R\equiv3\pmod4,\quad R>3q,
+\]
+and canonical integers $t\ge0$, $\rho\ge0$, $s>0$, and
+$\kappa>0$.  Choose the strong pair anew rather than reusing the
+parent's particular index.
+
+Let $N_0=c^2\tau$.  The determinant-one matrix
+\[
+ M_A=\begin{pmatrix}A&\Delta\\1&A\end{pmatrix}
+\]
+has finite positive order in the group of invertible matrices over
+$\mathbb Z/N_0\mathbb Z$.  At a positive multiple $m$ of that order,
+\[
+ I=\psi_A(m)>0,\qquad f=\chi_A(m)>0,
+ \qquad N_0\mid I,\qquad f^2-\Delta I^2=1.
+\]
+Set $i=I/(c^2\tau)>0$.  Then the literal $U=ic^2$ satisfies
+$U=I/\tau$, and the new $D_f,Q$ are exactly $f^2,(\Delta I)^2$.
+This construction requires divisibility of a Pell ordinate by a
+prescribed integer, which a finite period supplies.  It requires
+no intersection theorem for two unrelated Pell sequences.
+
+The source61 auxiliary-completeness lemma assumes only $A\ge2$,
+$R\ge3$, $R\equiv3\pmod4$, $c=\psi_A(R)$,
+$f^2-\Delta I^2=1$, $f,I>0$, and $c\mid I$.  All hold for this
+new pair.  In particular the lemma fixes neither the strong index
+nor the parity of $I/c^2$.  Its explicit witness, with
+$S=\Delta I$, $Q=S^2$, and $R=2v+1$, is
+\begin{align*}
+ V_*&=\chi_S(R)/S=Q_v(S^2),\qquad y=\psi_S(R),\\
+ T_*&=\frac{V_*+c+Rf^2}{cf^2},\qquad
+ QV_*^2-(Q-1)y^2=1.
+\end{align*}
+The lemma makes $T_*$ a positive integer.  Its usual Pell growth
+bound gives, since canonical $v\ge2$,
+\[
+ V_*\ge(4Q-3)^v\ge(3Q)^v\ge9Q^2.
+\]
+Because $c<S$, $f^2<Q$, and $\alpha<q<S$,
+\[
+ T_*>\frac{V_*}{cf^2}>\frac{V_*}{S^3}\ge9S>\alpha.
+\]
+Thus $T=T_*-\alpha$ is positive and the literal auxiliary register
+equals $V_*$.  For $u=y-V_*>0$, using $V_*\ge2$ and $y<2V_*$,
+\begin{equation}
+ u=\frac{V_*^2-1}{(Q-1)(y+V_*)}
+   >\frac{V_*}{4Q}\ge\frac94S^2
+   =\frac94\Delta^2I^2.
+ \label{eq:sat-complete-gap}
+\end{equation}
+
+Here $U=ic^2>1$, so $UE=I\tau<I^2$.  Also
+$\kappa<c<I$ and $s<Y<c<I$; the first bound follows from
+$K_{\rm pos}<3Xc$ and $H>3X$.  Define the integer
+\[
+ n=(g-C_g)+(y-V_*)-\kappa-s+Wt+\rho.
+\]
+Its total negative loss is less than
+\[
+ 2UE+\kappa+s<2I^2+2I<4I^2,
+\]
+whereas \eqref{eq:sat-complete-gap} exceeds $4I^2$, since
+$\Delta\ge3$.  Thus $n>0$.  The normalized center equals
+$g+y$, and one factor of the two-root norm vanishes.  This is
+completeness on the ordinary chart for both centers.  The explicit
+auxiliary witness provides the needed growth; no unproved
+cofinality assertion has been inserted.
+
+For the direct chart, transfer this newly constructed ordinary zero.
+It has $X=2^R>q$, $q^4\mid X$, and $t=B_t/(q-1)\ge0$.
+Set
+\begin{align*}
+ x&=X-q,\\
+ W_{\rm ord}&=1+(q-1)L,\qquad
+ W_{\rm dir}=1+q(q-1)L,\\
+ n_{\rm dir}&=n_{\rm ord}
+       +(W_{\rm dir}-W_{\rm ord})t+X/q^4.
+\end{align*}
+Every coordinate is positive.  All kernels and $C_g$ agree, and
+the normalized centers agree.  In fact
+$M_{\rm dir}=qM_{\rm ord}$ and $Z_{\rm dir}=qZ_{\rm ord}$,
+so the new norm scales by $q^4$ and remains zero.
+
+\begin{theorem}[Semantic equivalence of the four saturated equations]
+\label{thm:saturation-equivalence}
+For either fixed center and either chart, with any one complete
+coherent calibrated port tuple, the constructed polynomial has a
+zero in ten strictly positive integers if and only if there is a
+finite syntactic ZFC refutation.  Consequently ZFC proves that its
+lack of positive integer solutions is equivalent to
+$\operatorname{Con}(\mathrm{ZFC})$.
+\end{theorem}
+
+\begin{proof}
+Soundness and completeness were proved above, using the same
+arithmetizable source calibration as the parent.  Negating the
+resulting existence equivalence gives the asserted consistency
+equivalence.  The argument is ordinary mathematical proof
+formalizable in ZFC; it is not an assertion that a new Lean, Rocq,
+or encoded internal-ZFC proof artifact has been produced.
+\end{proof}

@@ -11,7 +11,7 @@
 \begin{document}
 \begin{center}
 {\large\bfseries A complete ten-variable consistency equation}\\[-1pt]
-{\small Strictly positive integer unknowns; exact degree 360; a 98-operation evaluator.}
+{\small Strictly positive integer unknowns; exact degree 283; a 92-operation evaluator.}
 \end{center}\vspace{-8pt}
 \begin{multicols}{2}
 \fontsize{9}{9.5}\selectfont
@@ -26,26 +26,23 @@ q_-=\beta J,\quad q=q_-+1,\\
 C=q-F-\alpha,\\
 X=wq,\quad k=\eta+\zeta,\quad c=kY+\eta,\\
 \mu=q^2+1,\quad A=\mu Y(X+1),\quad H=4A-1,\\
-\Delta=A(A+2),\quad I=ic^2,\\
-V_0=X(\mu Y)^2,\quad\ell=V_0k,\quad D_\tau=\ell(\ell+k)+1,\\
+\Delta=A(A+2),\quad U=ic^2,\\
+V_0=X(\mu Y)^2,\quad\ell=V_0k,\quad E=\ell(\ell+k)+1,\\
 R=[q_-(q-F)+\alpha](q^2-1)+(M_C+qM_F)J,\\
 e=k-R-1,\quad B_t=(K+w)C-F,\\
-D_f=1+\Delta I^2,\quad Q=\Delta^2I^2,\quad\delta=Q-1,\\
+D_f=1+\Delta U^2E,\quad Q=\Delta^2U^2E,\quad\delta=Q-1,\\
 T'=T+\alpha,\quad b'=cT'-R,\quad V=D_fb'-c,\\
 D_y=QV^2-1,\quad K_2=X(3c-2X)+2,\\
-L=kI+b',\\
+L=kT',\quad C_g=(A+2)UE,\\
 P_1=q^3q_-,\quad M=P_1\mu^2H,\\
-Z=P_1\mu^2[H(n+V-LB_t)+K_2]\\
+Z=P_1\mu^2[H(n+V+C_g-LB_t)+K_2]\\
 \qquad+H[\mu^2(q_-Y-q^3B_t)-P_1e],\\
-S=\delta Z^2,\quad A_\tau=9\delta M^2D_\tau,\quad A_f=\delta M^2D_f,\\
-A_y=M^2D_y,\quad\Sigma_1=S+A_y,\quad\Sigma_2=A_\tau+A_f,\\
-P=\Sigma_1-\Sigma_2,\quad U=SA_y,\quad V_N=A_\tau A_f,\\
-E=P^2-4(U+V_N).
+S=\delta Z^2,\quad A_g=\delta M^2ED_f,\quad A_y=M^2D_y.
 \end{gathered}
 \]
 The single equation is
 \[
-\boxed{E^2-64UV_N=0.}
+\boxed{[S-(A_g+A_y)]^2-4A_gA_y=0.}
 \]
 
 \textbf{The four fixed integers.}
@@ -76,7 +73,7 @@ where
 \[
 \begin{split}
 \Phi(x)={}&(1+2^{51})G_{943}(x)
- -2^{10}\sum_{t\in\mathcal T}v(t)x^{\varrho(t)}\\
+ -2^{10}\sum_{i=0}^{942}v(t_i)x^i\\
 &+\sum_{(b,e,m)\in\mathcal C}2^b x^e G_m(2x),\\
 \mathcal C={}&\{(10,1023,8),(18,1013,9),(27,1003,8),\\
 &(35,983,9),(44,1031,1),(45,1022,1),(46,1011,1),\\
@@ -85,7 +82,7 @@ where
 \]
 The rational intermediate in K cancels exactly; all four results are positive integers.
 
-\textbf{The 943 fixed tiles and their ranks.}
+\textbf{The 943 indexed fixed tiles.}
 Use the actions $u_j,v_j,d_j$ decoded below. Let
 \[
 \begin{gathered}
@@ -96,33 +93,28 @@ r_q=6+|\mathcal R\cap\rg0{q-1}|,\quad
 l_q=205+|\mathcal L\cap\rg0{q-1}|.
 \end{gathered}
 \]
-An interval ending at $-1$ is empty. The following union is $\mathcal T$;
-the index ranges in each row are fixed:
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le942$; all index ranges are fixed:
 \[
 \setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
-\text{range}&\text{tile }(w,n,e,s)\\\hline
-j=2q+b<430&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
-b=0,1&(0,h(215,b),0,h(215,b)),\ (0,b,0,b)\\
-q\in\mathcal R,\ b=0,1&(r_q,b,0,h(q,b))\\
-q\in\mathcal L,\ b=0,1&(0,b,l_q,h(q,b))\\
-t\in\{0,1,432,433\}&(0,t,0,438)\\
-&(2,434,2,0),\ (2,435,3,1)\\
-&(3,436,4,h(u_0,0)),\ (4,436,4,0),\ (5,0,0,0)\\
-t=434,435,436&(1,438,1,t)\\
-a\in\{0,1,4\},\ b=0,1,2&(a,437,b,437)
+\text{index }i&\text{tile }t_i=(w,n,e,s)\\\hline
+0,1&(2,435,3,1),\ (5,0,0,0)\\
+j+2\ (j=2q+b<430)&((1-d_j)l_{u_j},h(q,b),d_jr_{u_j},v_j)\\
+432+b\ (b=0,1)&(0,h(215,b),0,h(215,b))\\
+434+b\ (b=0,1)&(0,b,0,b)\\
+424+2r_q+b\ (q\in\mathcal R,b=0,1)&(r_q,b,0,h(q,b))\\
+424+2l_q+b\ (q\in\mathcal L,b=0,1)&(0,b,l_q,h(q,b))\\
+924+j\ (0\le j<4)&(0,j+430\fl{j/2},0,438)\\
+928&(2,434,2,0)\\
+929&(3,436,4,4)\\
+930&(4,436,4,0)\\
+497+t\ (t=434,435,436)&(1,438,1,t)\\
+\substack{934+3a+b-6\fl{a/4}\\a\in\{0,1,4\},\ b=0,1,2}&(a,437,b,437)
 \end{array}
 \]
-Put $s_*=(2,435,3,1)$, $f_*=(5,0,0,0)$, and $\mathcal T'=\mathcal T\setminus\{s_*,f_*\}$.
-For $t=(w,n,e,s)$ set
+For $t=(w,n,e,s)$ put
 \[
-\begin{gathered}
-\kappa(t)=2^{30}w+2^{20}n+2^{10}e+s,\\
-v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34},\\
-\varrho(s_*)=0,\quad\varrho(f_*)=1,\\
-\varrho(t)=2+\sum_{z\in\mathcal T'}
- \fl{\frac{2^{40}+\kappa(t)-\kappa(z)-1}{2^{40}}}
- \quad(t\in\mathcal T').
-\end{gathered}
+v(t)=w+2^8n+2^{17}e+2^{25}s+127\,2^{34}.
 \]
 
 \textbf{A closed decoder for the 430 actions.}

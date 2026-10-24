@@ -25,14 +25,13 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints10 positive unknowns, exact degree360 and
-98 operations, including all constants on one Letter page in9-point type.
-It saves three operations and lowers degree by8 compared with the preserved
-101/368 display. The entire closed fixed recipe is unchanged. Universal
-formula binding, independent parsing of the actual TeX, pre-transport index
-bounds, positive witness reconstruction, native/controller transfer,
-complete coefficient regeneration and both renderer modes pass review;
-see the [candidate](candidates/one-page-index-weight10/README.md).
+[TeX](equation.tex), prints ten positive unknowns, exact degree 283 and
+92 operations, including all fixed constants on one Letter page in
+9-point type. It saves six operations and lowers degree by 77 compared
+with the preserved 98/360 display. Ordinary saturated-Pell soundness and
+positive completeness, global exact degree, the whole indexed native
+composition and independent actual-TeX/PDF formula and constant checks
+pass review; see the [candidate](candidates/one-page-saturated10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
@@ -1381,3 +1380,26 @@ composes these finite results with the exact complete ordinary source
 theorem and native calibration. A finite polynomial check alone does not
 supply that interpretation. Earlier packets remain preserved. The
 compact ten-positive page and paused Lean work are unchanged by this result.
+
+## Significant compact-page improvement: 92 operations, degree 283
+
+The canonical [PDF](equation.pdf) and standalone [TeX](equation.tex) now
+print the [complete saturated Pell equation](candidates/one-page-saturated10/README.md):
+**ten strictly positive unknowns, 92 operations and exact degree 283**.
+This saves six operations and lowers degree by 77 from the preserved
+98/360 page. All constants, tiles, the decoder and complete 436-character
+numeral fit on the same Letter page in 9-point body type.
+
+The [ordinary proof](research/ten-positive-saturated-pell/PROOF.md)
+establishes both directions with fresh positive witnesses, coprime root
+recovery and a global attained degree proof. Its whole indexed native
+composition licenses the shorter fixed recipe jointly at all four ports.
+Independent actual-TeX parsing binds every displayed definition and the
+complete boxed equation to all 92 live gates, and verifies every rendered
+front glyph and the whole PDF constant body. Normal/optimized source,
+renderer, parser and artifact checks pass. See the
+[root promotion review](reviews/ten-saturated-pell-root-peer.md).
+
+Separate complete tradeoffs use 93 operations at degree 278 and direct
+positive X charts with 98/258 and 99/254. Earlier pages and complete source
+packets remain preserved. No global optimum or new Lean endpoint is claimed.
