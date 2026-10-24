@@ -1,0 +1,145 @@
+{
+  "schema": "reproduce_plan_v1",
+  "working_directory": "alternative",
+  "runtime": "Python3.11+ standard library; no network or installs",
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "build_pairguards.py",
+        "source",
+        "TEMP/paired"
+      ],
+      "generated_reference": "paired",
+      "deterministic_outputs": [
+        "METRICS.json",
+        "equation.json",
+        "expanded_polynomial.json",
+        "factored_source.json",
+        "factorization_certificate.json",
+        "pair_certificate.json",
+        "paired_source.json",
+        "presemantic_certificate.json",
+        "projection_certificate.json",
+        "terminal_elimination_certificate.json"
+      ]
+    },
+    {
+      "argv": [
+        "python",
+        "-O",
+        "build_pairguards.py",
+        "source",
+        "TEMP/paired_O"
+      ],
+      "generated_reference": "paired",
+      "deterministic_outputs": [
+        "METRICS.json",
+        "equation.json",
+        "expanded_polynomial.json",
+        "factored_source.json",
+        "factorization_certificate.json",
+        "pair_certificate.json",
+        "paired_source.json",
+        "presemantic_certificate.json",
+        "projection_certificate.json",
+        "terminal_elimination_certificate.json"
+      ]
+    },
+    {
+      "argv": [
+        "python",
+        "build_pairguards.py",
+        "source",
+        "TEMP/squared_paired",
+        "--squared-radius"
+      ],
+      "generated_reference": "squared_paired",
+      "deterministic_outputs": [
+        "METRICS.json",
+        "equation.json",
+        "expanded_polynomial.json",
+        "factored_source.json",
+        "factorization_certificate.json",
+        "pair_certificate.json",
+        "paired_source.json",
+        "presemantic_certificate.json",
+        "projection_certificate.json",
+        "terminal_elimination_certificate.json"
+      ]
+    },
+    {
+      "argv": [
+        "python",
+        "-O",
+        "build_pairguards.py",
+        "source",
+        "TEMP/squared_paired_O",
+        "--squared-radius"
+      ],
+      "generated_reference": "squared_paired",
+      "deterministic_outputs": [
+        "METRICS.json",
+        "equation.json",
+        "expanded_polynomial.json",
+        "factored_source.json",
+        "factorization_certificate.json",
+        "pair_certificate.json",
+        "paired_source.json",
+        "presemantic_certificate.json",
+        "projection_certificate.json",
+        "terminal_elimination_certificate.json"
+      ]
+    },
+    {
+      "argv": [
+        "python",
+        "check_components.py",
+        "--output",
+        "TEMP/components.json"
+      ],
+      "reference": "COMPONENT_CHECK.json"
+    },
+    {
+      "argv": [
+        "python",
+        "-O",
+        "check_components.py",
+        "--output",
+        "TEMP/components_O.json"
+      ],
+      "reference": "COMPONENT_CHECK_OPTIMIZED.json"
+    }
+  ],
+  "runtime_dependencies": [
+    "build_pairguards.py",
+    "check_components.py",
+    "vendor/terminal_elimination.py",
+    "vendor/factor_horn.py",
+    "source/mixed_source.json",
+    "source/domain_certificate.json"
+  ],
+  "proof_dependencies": [
+    "PROOF.md",
+    "section.tex",
+    "CALIBRATION.md",
+    "inherited_proofs/FACTORIAL_CARRIER_PROOF.md",
+    "inherited_proofs/DERIVED_LABEL_RANGE_PROOF.md",
+    "inherited_proofs/HYBRID_PROOF.md",
+    "inherited_proofs/section.tex",
+    "inherited_proofs/intake",
+    "inherited_proofs/late/shared-remainder-product-guards-root-peer.md"
+  ],
+  "artifact_notes": [
+    "terminal_elimination_certificate.json is an exact alias of projection_certificate.json to satisfy embedded equation metadata.",
+    "The squared-radius variant is a source-level existence reduction, not a same-tuple isomorphism with the old radius.",
+    "Projection/restoration certificates are complete literal polynomial equivalences.",
+    "Fresh presemantic certificates do not assume F>=0 or any removed digit-pair signs.",
+    "Calibration is inherited ordinary mathematics; complete Lean dependency closure is not newly rebuilt.",
+    "Late upstream59ee8f2 six-pair product-sign attribution is preserved; its unprojected1436-coordinate count is distinct from our projected493/489 counts."
+  ],
+  "source_files": {
+    "source/domain_certificate.json": "4cb7b950b007258ab38f542815610218a38f7c741e514ae3273a67ad6b1dab92",
+    "source/mixed_source.json": "67cd7a66c7fd09f0080e84f137d81339cb8d4bc7bdf0ff0ecc7a9cc5a6c39690"
+  }
+}

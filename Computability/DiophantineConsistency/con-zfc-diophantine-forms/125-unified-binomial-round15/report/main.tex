@@ -1,0 +1,43 @@
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,microtype}
+\usepackage{xcolor,enumitem,fancyvrb,fvextra}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{bookmark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\small,breaklines=true,breakanywhere=true,breaksymbolleft={},xleftmargin=1em}
+\hypersetup{pdftitle={Diophantine consistency equations with unified binomials and even Pell indices},pdfauthor={Research contribution prepared for Vladimir Reshetnikov}}
+\title{Diophantine consistency equations with unified binomials and even Pell indices\\[8pt]\large Round 15 research report and reproducible artifacts}
+\author{Prepared for Vladimir Reshetnikov and the ProveIt repository}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This iteration improves two fixed-polynomial constructions whose unsolvability, under explicitly retained ordinary calibration theorems, is equivalent in ZFC to $\Con(\mathrm{ZFC})$. The compact branch gives eleven unrestricted integer unknowns at exact degree $416$ with $125$ live binary arithmetic operations. Its degree/cost companions are $456/124$, $464/119$, and $488/118$. It composes coprime guard fusion, powered divisibility saturation, supported-modulus Pell interpolation, three-adic radical separation, and a cancellation-aware paired norm. The direct branch identifies the factorial denominator and reciprocal CRT product as one binomial. A new signed compilation uses selectively doubled Pell indices and remainder residues to orient powers; its principal quartic has $442$ unrestricted integer unknowns, $4652$ collected monomials, and coefficient height $128446$. A companion natural-domain quartic has $329$ nonnegative unknowns. These are measured improvements against pinned parents, not claims of global minimality. All new unbounded proofs, exact equations, complete coefficient payloads, source pins, licenses, and independent finite checks accompany this report. No new end-to-end Lean or Rocq endpoint or proof of consistency is claimed.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{overview.tex}
+\input{equations.tex}
+\input{scalar_full.tex}
+\input{norm_full.tex}
+\input{crt_full.tex}
+\input{weak_degree_full.tex}
+\input{architecture_full.tex}
+\input{direct_full.tex}
+\input{comparison.tex}
+\input{reproducibility.tex}
+\input{questions.tex}
+\end{document}

@@ -1,0 +1,503 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage{microtype,xcolor,hyperref,xurl,fancyhdr,enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black,pdftitle={Reusing witnesses in Diophantine consistency equations},pdfauthor={ChatGPT, prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Diophantine consistency: cofinal witnesses}\fancyhead[R]{\small 24 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Ccal}{C_{222}}\newcommand{\htop}{\operatorname{ht}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{Reusing witnesses in Diophantine consistency equations\\[5pt]\large Deterministic CRT moduli, cofinal horizons, and shorter Pell transport}
+\author{AI-assisted research prepared for Vladimir Reshetnikov\\\small ProveIt research program}
+\date{24 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This packet gives explicit ordinary integer polynomials representing finite
+refutability of ZFC, with complete coefficient data and ordinary proofs of the
+new transformations. The principal new idea is to reuse a power already
+certified by a proof-certificate construction as the size bound for its
+Chinese remainder encoding. A freely chosen encoding modulus can then be
+replaced by a deterministic polynomial in existing coordinates. Independently,
+the arbitrary padded proof horizon can be restricted to a cofinal family of
+squares, and the sign of a proposed factorial output can be recovered from
+existing power and ceiling equations. Choosing the modulus as a product of
+consecutive integers makes its sign unconditional. The principal result is an explicit quartic
+in 508 unrestricted integers with 6,545 monomials and coefficient height
+996,521, improving the matched 517-variable parent in variables, residuals,
+terms, and height. A separate positive-domain construction has ten unknowns,
+degree 288, and an 89-operation evaluator. A simpler 512-variable checkpoint
+and five degree/cost companions are retained. The direct construction
+encodes the numerical proof calculus $\Ccal$; it does not simulate K215 or
+instantiate Jones's universal polynomial. All claims of improvement are
+relative to the frozen ProveIt sources identified below. No global minimum,
+literature-wide priority, proof of consistency, or new end-to-end proof-assistant
+verification is asserted.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\newpage
+\section{Results, conventions, and comparison boundary}
+\label{sec:results}
+
+We use $\N=\{0,1,2,\ldots\}$. Unless a result explicitly says
+``strictly positive'', every unknown ranges independently over $\Z$.
+A polynomial abbreviation is an instruction to substitute an integer
+polynomial; it introduces no quantified unknown. Our equations contain no
+variable exponent, factorial operation, division, square-root operation, or
+unspecified coefficient in their final arithmetic representations.
+
+The repository was frozen at commit
+\begin{center}\small\file{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}.\end{center}
+Both the active candidates and the eight archives then present in
+\file{docs/incoming} were examined. This matters because the overview of the
+older manuscript collection is behind the most recent incoming constructions.
+In particular, the matched direct parent is the 517-variable integer quartic
+in the incoming Round 14 packet, rather than an older 569-, 604-, or
+663-variable construction \cite{round14,repo}.
+
+\input{results_table.tex}
+
+Here ``rows'' means integral quadratic polynomials $R_j$ in the representation
+$P=\sum_j R_j^2$, and coefficient height means the largest absolute coefficient
+after the full sum has been expanded and like monomials collected. Arithmetic
+operation counts for the compact equations count each live binary addition,
+subtraction, and multiplication, including squares and multiplication by a
+fixed constant. They do not measure bit complexity: those equations have very
+large fixed native coefficients.
+
+There is no single established meaning of ``simplest'' that orders all these
+equations. A few unknowns, low degree, small coefficients, few terms, short
+evaluation circuits, and short correctness proofs are different objectives.
+The direct quartics improve a modest-coefficient, independently encoded branch
+of the repository. They do not supersede the repository's separate
+37-integer quartic with large native coefficients, its ten-integer
+higher-degree constructions, or all of its positive-domain forms.
+
+\subsection{What is proved in ZFC}
+Fix the finite syntactic ZFC-refutation relation of the retained source
+calibration and write
+\[
+ \Con(\ZFC)\;:\Longleftrightarrow\;
+ \neg\exists p\in\N\;\operatorname{Prf}_{\ZFC}(p,\bot).
+\]
+For each asserted equation the target is the implication in both directions,
+\[
+ \ZFC\vdash
+ \left(\exists\mathbf z\in D^n\;P(\mathbf z)=0\right)
+ \longleftrightarrow
+ \left(\exists p\in\N\;\operatorname{Prf}_{\ZFC}(p,\bot)\right),
+ \tag{1}\label{eq:target}
+\]
+where $D$ is the stated domain. Negation gives the requested consistency
+equivalence. The proof is an ordinary mathematical proof formalizable in ZFC,
+composed with precisely identified inherited calculus and arithmetic theorems.
+No truth or soundness assumption about ZFC is used to infer a refutation from a
+polynomial zero. Conversely, a finite syntactic refutation is used as finite
+data for constructing integer witnesses.
+
+The artifact checks establish literal polynomial identities, coordinate maps,
+coefficient expansions, and numerical metrics. They do not establish
+unsolvability, decide consistency, or replace the unbounded arithmetic proofs.
+The supplied Lean interface files document the inherited calibration; their
+entire transitive import closure has not been rebuilt for this packet.
+
+\section{The direct proof-certificate interface}
+\label{sec:interface}
+
+The direct construction begins with the repository's numerical calculus
+$\Ccal$. Its implication, membership, universal-quantifier, and equality
+constructors are fixed integer polynomials in the schema parameters; it has
+finitely many axiom and inference branches, a truth code $0$, and a falsity
+code $1$. The complete constructor formulas and the guarded axiom condition
+are retained with the source documents. In the square-shell variant used
+here, the corresponding syntax is related to the original coding by the
+retained finite syntax-transfer argument; it is not an arbitrary relabeling.
+
+The inherited logical calibration is
+\[
+ \Ccal\text{ derives }1
+ \quad\Longleftrightarrow\quad
+ \mathrm{ZF}\text{ has a finite refutation}
+ \quad\Longleftrightarrow\quad
+ \ZFC\text{ has a finite refutation}.
+ \tag{2}\label{eq:calibration}
+\]
+The named interfaces are
+\file{KEndpoint.c222_iff_zf_refutation} and
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+The second uses the constructible-universe relative consistency argument.
+The filename of the first interface does not make the present arithmetic
+construction a simulation of a Turing machine.
+
+\subsection{The parent theorem used by the new reduction}
+The retained direct theorem has the following concrete properties.
+
+\begin{enumerate}
+\item A finite refutation can be expanded to a finite proof tree. After
+choosing any sufficiently large integer horizon $t\ge16$, truth steps pad
+the backward proof expansion to exactly $t$ rows. The lower bound on $t$
+depends only on finitely many proof-tree parameters and constructor labels,
+including the fixed truth-padding tuple.
+\item The semantic factorial is $F=t!$, and the label of code $j$ is assigned
+the positive weight $W_j=1+jF$ for $0\le j\le t$.
+\item A backward expansion uses positive accumulators $S_i$ and $S_{i+1}$,
+which are products of the weights of the currently pending formulas. A row
+with conclusion $v$ and premises $p,q$ satisfies
+\[
+ S_{i+1}W_v=S_iW_pW_q.
+ \tag{3}\label{eq:flow}
+\]
+Unused premises have code $0$, whose weight is $1$. The endpoints are
+$S_0=F+1$ and $S_t=1$.
+\item The first CRT encoding uses moduli $1+(i+1)y$, $0\le i\le t$,
+where $y$ is any sufficiently large positive multiple of $F$. In particular,
+$S_i\le y$ and $y\ge F+1$ suffice. The raw endpoint slack is
+$r_0=y-F-1\ge0$.
+\item The factorial module already certifies the power
+\[
+ \rho=Ft^2,\qquad V=(\rho+1)^t.
+ \tag{4}\label{eq:oldpower}
+\]
+Its noncircular signed-power and digit argument recovers $F=t!$ and the
+intended value of $V$ from every parent zero.
+\item A second, prime-power CRT encoding and shared Pell construction
+compile the bounded local conditions into a finite integral quadratic
+system. The integer version imposes a finite selected list of nonnegativity
+conditions with private three-variable representations. Exact monic
+elimination and integer translation produce the delivered 517-variable
+quartic.
+\end{enumerate}
+
+These are the actual completeness and soundness properties proved in
+\file{FACTORIAL_CARRIER_PROOF.md},
+\file{DERIVED_LABEL_RANGE_PROOF.md},
+\file{HYBRID_PROOF.md}, and the retained signed-source proof. They are
+included in the packet, together with the literal parent equation and its
+source ledger. The new argument does not replace any of these statements by
+an asymptotic assertion about an unspecified universal polynomial.
+
+\subsection{Why the multiplicative flow is sound}
+The positive weights $W_1,\ldots,W_t$ are pairwise coprime. Indeed, a prime
+dividing both $W_j$ and $W_k$ would divide $(j-k)F$ while not dividing $F$.
+It would therefore be at most $t$, hence would divide $F=t!$, a contradiction.
+Multiplying \eqref{eq:flow}, cancelling the overlapping positive accumulators,
+and taking a prime valuation private to each $W_j$ proves
+\[
+ \#\{\text{conclusions with label }j\}
+ -\#\{\text{premises with label }j\}
+ =\begin{cases}1&j=1,\\0&j>1.\end{cases}
+ \tag{5}\label{eq:balance}
+\]
+Cycles in the rule multiset cause no gap. Let $D$ be the closure of truth
+under its finitely many valid rule instances. If falsity were outside $D$,
+each rule concluding outside $D$ would have a premise outside $D$.
+The number of outside conclusions would be at most the number of outside
+premises, contradicting the sum of \eqref{eq:balance} over labels outside $D$.
+Thus falsity has a finite derivation. This is the logical reason the compact
+unordered certificate still represents refutability.
+
+\section{Cofinal witness restriction}
+\label{sec:cofinal}
+
+The new restriction is applied to a freely chosen part of a completeness
+construction. It is not a surjectivity claim for squares.
+
+\begin{lemma}[Cofinal selection]
+Suppose that every finite certificate $c$ has realizations with every integer
+parameter $t\ge L(c)$, with all later witnesses chosen after $t$. Let
+$\phi:\Z\to\N$ have unbounded image and let the extra equation
+$t=\phi(u)$ be expressible by the permitted polynomial system. If the
+original system is sound for every such $t$, the restricted system has a
+zero if and only if a finite certificate exists.
+\end{lemma}
+\begin{proof}
+A restricted zero is an original zero. Conversely choose $u$ with
+$\phi(u)\ge L(c)$ and then carry out the original completeness construction
+at that parameter. The order of choices is essential: witnesses depending on
+$t$ are regenerated after $u$ has been selected.
+\end{proof}
+
+For the present certificate, take
+\[
+ t=16+u^2. \tag{6}\label{eq:squarehorizon}
+\]
+There is no congruence condition on the padded proof horizon. Given the finite
+proof tree, choose $|u|$ large enough to dominate its step count, every local
+schema parameter, and every complete constructor-label bound. Padding by
+truth remains available. The factorial, weights, accumulators, both CRT
+encodings, and Pell witnesses are then constructed afresh.
+
+The original unrestricted-integer implementation used
+\[
+ t-16=a^2+b^2+c(c+1).
+\]
+Replacing it by \eqref{eq:squarehorizon} removes two private coordinates and
+keeps the row quadratic. The classical equivalence
+\[
+ n\ge0\quad\Longleftrightarrow\quad
+ \exists a,b,c\in\Z\;n=a^2+b^2+c(c+1)
+ \tag{7}\label{eq:three}
+\]
+follows from the three-square theorem applied to $4n+1$; see also the explicit
+formulation in \cite[Lemma 6.1]{bayer}. The reverse implication follows
+directly from $c(c+1)\ge0$ for integral $c$.
+
+\begin{remark}[The restriction is not valid for an arbitrary coordinate]
+An equation forcing a natural witness to equal $2$ has a solution, whereas
+forcing that witness to be a square destroys all its solutions. Similarly,
+an unbounded admissible set such as $\{4k+2:k\in\N\}$ contains no square.
+Unboundedness alone is insufficient. We use the parent's stronger fact that
+every sufficiently large horizon is admissible, with the other witnesses
+chosen afterwards.
+\end{remark}
+
+\section{A deterministic CRT modulus from an existing power}
+\label{sec:modulus}
+
+\begin{lemma}[Pending-product bound]
+Let a proof tree be expanded backwards for at most $t$ steps, with each
+step replacing one pending conclusion by at most two premises. Suppose all
+labels lie in $[0,t]$, $t\ge1$, and $F\ge1$. Put
+$A=1+Ft^2$ and $V=A^t$. Every accumulator in the expansion, including
+truth padding, is at most $V^2$.
+\end{lemma}
+\begin{proof}
+The initial pending multiset has one member. After $s$ steps its cardinality
+is at most $s+1$, hence at most $t+1$. Each factor is
+$W_j=1+jF\le1+tF\le A$. Consequently
+\[
+ S_i\le A^{t+1}\le A^{2t}=V^2.
+\]
+Truth has weight $1$ and leaves this bound unchanged.
+\end{proof}
+
+The expression $V^2$ already belongs to the same arithmetic certificate:
+the parent does not need a new exponentiation request to obtain it. Moreover,
+\[
+ V=(1+Ft^2)^t\equiv1\pmod F.
+ \tag{8}\label{eq:Vcong}
+\]
+This congruence permits a deterministic modulus with both a size property
+and the necessary divisibility property.
+
+\begin{proposition}[A family of polynomial moduli]
+Let integers $\kappa\ge2$ and $d\ge1$ satisfy $(\kappa-1)d\ge2$.
+Replace the freely chosen modulus and its slack by
+\[
+ F\ge d,\qquad y=V^2+\kappa F-1.
+ \tag{9}\label{eq:modfamily}
+\]
+For arbitrary signed $V$, these conditions imply
+$r_0=y-F-1=V^2+(\kappa-1)F-2\ge0$.
+For canonical $F=t!$ and $V$ from \eqref{eq:oldpower}, they also imply
+$F\mid y$ and $y>V^2$. Thus they supply every first-CRT condition required
+by the parent completeness construction.
+\end{proposition}
+\begin{proof}
+The slack inequality is immediate from the displayed formula and the
+condition on $d$. Congruence \eqref{eq:Vcong} gives
+$V^2+\kappa F-1\equiv0\pmod F$. Finally
+$\kappa F-1\ge1$, so the pending-product lemma implies every required
+accumulator is strictly smaller than $y$.
+\end{proof}
+
+The delivered 512-variable equation uses $\kappa=3,d=1$:
+\[
+ \boxed{\quad y=V^2+3F-1,\qquad F\ge1.\quad}
+ \tag{10}\label{eq:chosenmod}
+\]
+Strengthening the existing $F\ge0$ row to $F\ge1$ changes a constant
+but introduces no coordinate. The former three private witnesses for
+$r_0\ge0$ are deleted. The new modulus equation is a single quadratic
+row. There is no requirement to store $V^2$ as another unknown.
+
+\subsection{The CRT construction remains valid}
+For completeness, $F=t!\mid y$. Suppose a prime $p$ divides both
+$m_i=1+(i+1)y$ and $m_j=1+(j+1)y$, where $0\le i<j\le t$.
+It does not divide $y$, so $p\mid j-i$ and $p\le t$.
+But then $p\mid F\mid y$, a contradiction. Therefore these moduli are
+pairwise coprime. The Chinese remainder theorem supplies a nonnegative $x$
+with $x\equiv S_i\pmod {m_i}$ for all $i$. As
+$0<S_i\le y<m_i$, the corresponding Euclidean quotients are nonnegative.
+The initial and final residues are exactly $F+1$ and $1$.
+
+The order of the construction is
+\[
+ \text{finite proof}\ \longrightarrow\ t\ \longrightarrow\ F,V,y
+ \ \longrightarrow\ x\ \longrightarrow\text{second CRT and Pell witnesses}.
+\]
+In particular, the deterministic choice of $y$ has no dependence on the
+later code $x$. The second CRT construction still chooses its representatives
+at the original strengthened prime-power precision. No claim that one fixed
+small representative meets all amplified congruences is introduced.
+
+\section{The complete 512-variable integer quartic}
+\label{sec:512}
+
+Let $R_0,\ldots,R_{309}$ be the literal rows in
+\file{direct/equation512.json}, with variables
+$x_0,\ldots,x_{511}$ in the recorded order. Define
+\[
+ \boxed{P_{512}(x_0,\ldots,x_{511})
+       =\sum_{j=0}^{309}R_j(x_0,\ldots,x_{511})^2.}
+ \tag{11}\label{eq:P512}
+\]
+This defines one fixed integer polynomial, not a family indexed by a program
+or a theorem predicate. The complete collected coefficient list is
+\file{direct/polynomial512.json}.
+
+The parent is already in translated coordinates. Its semantic horizon is
+$t=15+x_0$, not $16+x_0$; the old nonnegative horizon slack is $x_0-1$.
+The new horizon row is therefore $x_0-1-u^2=0$, which is precisely
+\eqref{eq:squarehorizon}. The new rows before removing unused coordinates
+are recorded verbatim in \file{direct/specialization_certificate.json}.
+The exact old coordinate indices removed are
+\[
+ 329,\ 330,\ 343,\ 344,\ 345.
+\]
+Every other row is unchanged apart from the final order-preserving renumbering.
+No coordinate whose value is used elsewhere is deleted.
+
+\begin{theorem}
+The polynomial $P_{512}$ has exact degree four, 6,742 nonzero collected
+monomials, coefficient height 3,904,268, and exactly 512 occurring variables.
+ZFC proves
+\[
+ \bigl[\forall\mathbf x\in\Z^{512}\;P_{512}(\mathbf x)\ne0\bigr]
+ \longleftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+\begin{proof}
+If $P_{512}=0$, each integer square in \eqref{eq:P512} is zero. The
+new horizon row implies the old horizon inequality, the strengthened
+factorial row implies $F\ge1$, and \eqref{eq:chosenmod} gives
+$r_0=V^2+2F-2\ge0$ without knowing the meaning of $V$. By
+\eqref{eq:three}, the deleted private nonnegativity witnesses can be
+restored. The unchanged rows and the restored witnesses give a zero of the
+parent 517-variable system. The retained parent soundness theorem and
+\eqref{eq:calibration} yield a finite ZFC refutation.
+
+Conversely, translate a finite ZFC refutation into a finite $\Ccal$
+derivation using the inherited calibration. Expand it to a finite proof tree.
+Choose the cofinal horizon \eqref{eq:squarehorizon} beyond all finite bounds,
+then set $F=t!$ and $V=(Ft^2+1)^t$. The preceding section constructs the
+deterministic admissible modulus $y$ and the first CRT code. The parent's
+remaining constructive completeness proof supplies the second CRT data and
+all shared Pell witnesses. Since $F-1\ge0$, the strengthened factorial
+guard has three-square witnesses. These values satisfy every new row. Exact
+parent projection and translation then give a zero of $P_{512}$.
+
+The coefficient and row data establish the stated finite metrics by exact
+expansion. Degree four also follows intrinsically: a nonzero homogeneous
+quadratic part occurs among the residuals, and the sum of their squares
+cannot vanish identically over $\mathbb R$. The quantified transformations
+use finite syntax, induction, integer arithmetic, CRT, the three-square
+theorem, and the retained Pell/calibration results, all formalizable in ZFC.
+Negating the zero-existence equivalence gives the displayed statement.
+\end{proof}
+
+This is an equivalence of existence. An arbitrary old zero with a nonsquare
+horizon slack need not be a new zero. The converse rebuilds a certificate
+from the represented finite refutation. Confusing these two kinds of
+reduction would invalidate the completeness argument.
+
+\input{coupled_factorial.tex}
+\input{positive_companions.tex}
+
+\section{Verification, reproducibility, and evidence boundaries}
+\label{sec:verify}
+\input{verification.tex}
+
+\section{Further research questions}
+\label{sec:future}
+
+\textbf{Which other witnesses can be chosen canonically?}
+The useful criterion is constructive completeness with an explicit order of
+choices. Cofinality by itself is insufficient in the presence of residue
+conditions. A systematic pass over the remaining free bounds could identify
+parameters that can be replaced by existing powers or monotone polynomial
+families without introducing fresh coordinates.
+
+\textbf{Can the number of independent exponent certificates be reduced?}
+The direct construction shares a Pell frame but retains multiple certified
+indices. An identity between genuine requested powers can eliminate a
+certificate only if its signs, range bounds, and noncircular recovery order
+remain justified. The complete literal source is small enough for such
+changes to be measured rather than estimated.
+
+\textbf{Can proof-tree shape improve the accumulator bound?}
+The proof above uses the coarse bound $t+1$ on the number of pending
+formulas. Depth-first expansion bounds it more sharply in terms of proof-tree
+depth. Turning that observation into a smaller polynomial requires encoding
+or uniformly controlling that depth without spending more unknowns than are
+saved. It may be more useful for exponent size than for variable count.
+
+\textbf{Can the compact positive equations lower both degree and circuit cost?}
+The positive companions exchange transport and norm-centering costs for
+degree. Their constants, source calibration, and domains should remain fixed
+while comparing transformations. A low gate count with very large fixed
+coefficients should not be interpreted as a comparable bit-complexity result.
+
+\textbf{What is the best formalization target?}
+The new cofinal selection and modulus theorems are short and separable from
+the inherited compiler. Formalizing these lemmas and the exact finite
+coefficient checker would provide a useful next verification layer. A fully
+internal ZFC proof object or an end-to-end Lean/Rocq development remains a
+separate task from the ordinary proof delivered here.
+
+\textbf{How should simplicity be scored?}
+A reproducible comparison should retain the vector
+\[
+ (\text{domain},\ \text{variables},\ \text{degree},\
+   \text{height},\ \text{monomials},\ \text{live operations})
+\]
+and report which entries improve. The constructions here do not establish a
+global lower bound in any of these measures.
+
+\begin{thebibliography}{9}
+\bibitem{repo} Vladimir Reshetnikov, \emph{ProveIt: Diophantine consistency
+research}, snapshot
+\file{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}, 24 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6/Computability/DiophantineConsistency}.
+\bibitem{round14} \emph{Diophantine consistency equations with powered
+saturation and factorial carriers}, Round 14, 24 October 2026. Incoming
+archive \file{ConZFC_Powered_Saturation_Factorial_Carriers_Round14_2026-10-24.zip}
+at the snapshot in \cite{repo}. The exact ancestor files and hashes are
+retained in this packet's provenance records.
+\bibitem{saturated} \emph{ConZFC saturated Pell}, 24 October 2026. Incoming
+archive \file{ConZFC_Saturated_Pell_2026-10-24.zip} at the same snapshot.
+Its complete source coefficient binding and applicable proof documents are
+retained with the positive companions.
+\bibitem{structural} \emph{Removing Redundancy from Diophantine Consistency
+Equations}, 24 October 2026. Incoming archive
+\file{con-zfc-structural-compression-2026-10-24.zip}, same snapshot.
+\bibitem{bayer} Jonas Bayer, Marco David, Malte Ha\ss ler, Yuri Matiyasevich,
+and Dierk Schleicher, \emph{Diophantine equations over $\Z$: universal bounds
+and parallel formalization}, arXiv:2506.20909v3.
+\url{https://arxiv.org/html/2506.20909v3}. Used for context and the standard
+three-square representation, not as a substituted universal-polynomial
+parameter in the delivered direct equation.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\input{residuals.tex}
+
+\end{document}

@@ -1,0 +1,101 @@
+{
+  "commands": [
+    {
+      "command": "python3 verify.py",
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "result": {
+        "source_hashes_verified": 31,
+        "producer_modules_imported": false,
+        "receipts": [
+          {
+            "variant": "primary",
+            "verified": true,
+            "variables": 261,
+            "rows": 194,
+            "eliminations": 145,
+            "negative_coefficient_restorations": 2,
+            "exact_degree": 4,
+            "expanded_monomials": 31679,
+            "coefficient_height": 85566955,
+            "method": "independent rational square expansion and occurrence-list substitution"
+          },
+          {
+            "variant": "sparse",
+            "verified": true,
+            "variables": 292,
+            "rows": 225,
+            "eliminations": 143,
+            "negative_coefficient_restorations": 2,
+            "exact_degree": 4,
+            "expanded_monomials": 6140,
+            "coefficient_height": 83933334,
+            "method": "independent rational square expansion and occurrence-list substitution"
+          }
+        ]
+      }
+    },
+    {
+      "command": "python3 build.py --variant primary --output /tmp/cap_primary_portability",
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "result": {
+        "variant": "primary",
+        "output": "/tmp/cap_primary_portability",
+        "metrics": {
+          "verified": true,
+          "variables": 261,
+          "rows": 194,
+          "eliminations": 145,
+          "negative_coefficient_restorations": 2,
+          "exact_degree": 4,
+          "expanded_monomials": 31679,
+          "coefficient_height": 85566955,
+          "method": "independent rational square expansion and occurrence-list substitution"
+        },
+        "exact_rebuild_matches": [
+          "raw/equation.json",
+          "natural/equation.json",
+          "natural/elimination_certificate.json",
+          "natural/expanded_polynomial.json"
+        ]
+      }
+    },
+    {
+      "command": "python3 build.py --variant sparse --output /tmp/cap_sparse_portability",
+      "cwd": "/tmp",
+      "exit_code": 0,
+      "result": {
+        "variant": "sparse",
+        "output": "/tmp/cap_sparse_portability",
+        "metrics": {
+          "verified": true,
+          "variables": 292,
+          "rows": 225,
+          "eliminations": 143,
+          "negative_coefficient_restorations": 2,
+          "exact_degree": 4,
+          "expanded_monomials": 6140,
+          "coefficient_height": 83933334,
+          "method": "independent rational square expansion and occurrence-list substitution"
+        },
+        "exact_rebuild_matches": [
+          "raw/equation.json",
+          "natural/equation.json",
+          "natural/elimination_certificate.json",
+          "natural/expanded_polynomial.json"
+        ]
+      }
+    }
+  ],
+  "artifact_hashes": {
+    "equations/sparse/natural/elimination_certificate.json": "ddf34f6118e262eed1a0970374b5e5043c89a17bba2fee970ff2a8786e49dd8d",
+    "equations/sparse/natural/equation.json": "23abaa67d986c84f37adbc8640ecfc1a7d9f886bcd5ae67e0a51424efffc2b17",
+    "equations/sparse/natural/expanded_polynomial.json": "3b1b452965cab8322cee0a59aee4bccaeed6663754a1b7274a8fd68b1fb7d7bf",
+    "equations/sparse/natural/VERIFICATION.json": "3ab21798376a348e325a06d0fa37bb1afc1beed1a719bf06b965700f5300cf62",
+    "equations/primary/natural/elimination_certificate.json": "6dd7563dbbd1209b0c4a6eaba2952a2b574371287d1987a7afb0fc37804b8330",
+    "equations/primary/natural/equation.json": "ced9614222f0d83622a376ff46cced4890c5fcad292580fa963053d9c832f22c",
+    "equations/primary/natural/expanded_polynomial.json": "c8c377c335cb439b0326115b063b0b6ff8f8808ace595c20821f8b2a1836a332",
+    "equations/primary/natural/VERIFICATION.json": "e785afdb5bcecc907747a42e3f3dc23fe716f87570eb7864c218318704292bf3"
+  }
+}

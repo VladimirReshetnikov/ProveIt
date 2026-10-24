@@ -1,0 +1,106 @@
+\section{Calibration to syntactic consistency}\label{sec:calibration}
+
+It is useful to separate the two sources because they certify the same
+logical statement through different arithmetic representations.
+
+\subsection{The direct C222 source for the height-one quartic}
+
+The supplied \file{height_one/source/equation.json} fixes 519 integer
+variables and 321 quadratic residuals $R_j$. It is copied byte for byte
+from the centered direct endpoint in \cite{round14}. Its SHA-256 digest is
+\begin{center}
+\small\file{2a7dec9de97fdf80de1fdef4977b6cdf096bff5fc1dc7a586cdb5fede5333016}.
+\end{center}
+The inherited ordinary calibration is
+\begin{equation}
+ \ZFC\vdash
+ \left[\exists x\in\mathbb Z^{519}\;\bigwedge_{j=1}^{321}R_j(x)=0\right]
+ \longleftrightarrow
+ \left[\text{there is a finite C222 refutation}\right]
+ \longleftrightarrow\neg\Con(\ZFC).
+ \label{eq:source-calibration}
+\end{equation}
+The source uses a finite numerical proof calculus, a direct arithmetic
+encoding of its certificates, Pell and CRT arithmetic, integer sign
+representations, exact monic eliminations, and an integral translation.
+It does not use a simulation of K215 or a specialization of Jones's
+universal polynomial.
+
+The source logical endpoints are
+\begin{quote}
+\file{KEndpoint.c222_iff_zf_refutation}\\
+\file{ConstructibleChoice.zf_refutation_iff_zfc_refutation}.
+\end{quote}
+These are inherited source interfaces. The direct arithmetic bridge
+between the literal residuals and those endpoints is an ordinary proof,
+not a theorem newly checked by Lean in this packet. The source's main
+ordinary proof excerpt is retained in \file{height_one/source/section.tex};
+additional arithmetic and calculus proof dependencies are retained in
+\file{height_one/source/reading/}, with a reading order and exact source
+hashes. This curated supplement is not a full ancestor compiler replay or
+a transitive Lean dependency closure. In particular, the signed comparison
+index theorem is an ordinary extension of the natural-coordinate Pell
+criterion; the natural-coordinate theorem alone does not cover arbitrary
+signed comparison coordinates.
+
+The new coefficient compiler has an unconditional algebraic theorem
+relative to this literal input system. It proves an explicit bijection
+of zero sets and the exact value identity \eqref{eq:forward-value}.
+Consequently it does not require another assumption about proof coding,
+Pell completeness, or the consistency of any theory. Composing its
+finite proof with \eqref{eq:source-calibration} yields
+\eqref{eq:heightone-consistency}.
+
+\subsection{The native source for the eleven-variable equation}
+
+The eleven-variable construction inherits the coherent source34
+coefficient tuple and the ordinary native/Pell/refutation calibration
+retained by \cite{coprime}. The coefficient recipe fixes all six
+integers by finite computations and payload hashes. It neither asks
+whether ZFC is consistent nor searches for a refutation to choose a
+coefficient. Its semantic route includes the earlier native encoding
+and K215 calibration; it is distinct from the direct C222 route above.
+
+The new proof establishes both reductions needed to reuse that
+calibration. Starting from a zero, it proves nonzero conditions,
+positivity, radical integrality, the main Pell ordinate, rank and ratio
+bounds, the exact projection, and then reconstructs a valid old source
+witness. Starting from a source witness, it chooses a new guard unit,
+a fixed strong pair, an interpolated auxiliary residue, and the final
+integer $n$. It is an equivalence of zero existence with regenerated
+auxiliary witnesses. An equality of old and new polynomials is not
+asserted.
+
+\subsection{What is proved inside ZFC}
+
+Each finite polynomial is an explicitly specified object of integer
+arithmetic. ZFC proves the required facts about ordered integers,
+finite sequences, elementary Pell theory, divisibility, and the finite
+proof transformations used by the retained sources. Thus the combined
+ordinary arguments prove the equivalences \eqref{eq:target} for the
+stated polynomials. This formalizability claim is different from
+providing an encoded derivation in a particular implementation of ZFC
+or a transitive Lean/Rocq build.
+
+No consistency hypothesis is needed to state or prove the reductions.
+In the usual metamathematical reading, if ZFC is consistent then the
+equations have no integer zeros. The report does not prove that premise
+or the resulting nonvanishing statement outright. Equally, an integer
+zero would, through the specified reductions, encode a finite syntactic
+refutation. Numerical experiments cannot distinguish these alternatives.
+
+\subsection{Priority and attribution}
+
+The height-one block-and-cycle compiler was derived in this round and
+reviewed independently within the AI-assisted workflow. Its elementary
+energy identities are not claimed as new identities in mathematics.
+The concrete coefficient-height improvement is measured against the
+incoming height-two artifact, not against an exhaustive historical
+classification of restricted-coefficient Diophantine equations.
+
+The degree-464 equation combines the incoming coprime projection and
+powered saturation/interpolation results, with the explicitly stated
+guard and center refinements. These earlier mathematical contributions
+remain credited. The provided independent reviews are separate agent
+checks in this workflow; they are not external human endorsements or
+formal-kernel certificates. Inherited notices and licenses are retained.

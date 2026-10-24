@@ -1,0 +1,249 @@
+\section{A direct quartic in 478 integer variables}
+\label{sec:direct478}
+
+The preceding compact equations optimize the number of integer unknowns.
+There is also a concrete improvement at degree four using the separate
+direct C222 proof-certificate source.  Let $R_0,\ldots,R_{304}$ be the
+literal integral quadratic polynomials in
+\texttt{direct/equation.json}, in its specified coordinate order, and set
+\begin{equation}\label{eq:direct478}
+ \boxed{P_{478}(z_0,\ldots,z_{477})=\sum_{j=0}^{304}R_j(z)^2.}
+\end{equation}
+The companion \texttt{expanded\_polynomial.json} contains every collected
+coefficient.  A term $[c,[i_1,\ldots,i_d]]$ denotes
+$cz_{i_1}\cdots z_{i_d}$, with an empty index list denoting the constant
+monomial.  Every coefficient is a literal integer, and every variable
+ranges independently over $\Z$.
+
+\begin{theorem}\label{thm:direct478}
+The polynomial \eqref{eq:direct478} has exact degree four, 478 occurring
+variables, 5,484 collected monomials and coefficient height 511,326.
+The ordinary proofs below, composed with the explicitly retained direct
+C222/refutation calibration, establish
+\[
+ \mathrm{ZFC}\vdash
+ \bigl[\neg\exists z\in\Z^{478}\ P_{478}(z)=0\bigr]
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+\end{theorem}
+
+The matched predecessor is the derived-label square-shell endpoint in the
+incoming powered-saturation/factorial-carrier archive at the comparison
+snapshot.  Its metrics, and the new metrics, are:
+\begin{center}
+\begin{tabular}{lrrrr}
+ & Variables & Quadratic rows & Monomials & Height\\
+\hline
+Matched predecessor & 517 & 310 & 6,774 & 3,904,267\\
+New direct equation & 478 & 305 & 5,484 & 511,326
+\end{tabular}
+\end{center}
+This improves all four displayed metrics for that direct branch.  Other
+repository constructions have fewer variables with different degree or
+coefficient costs.  No global minimum is asserted.
+
+\subsection{The dependency order behind the saving}
+
+The source supplies a proposed factorial $F$, a horizon $t=t_0+16$,
+a proposed power $V$, and exact polynomial relations
+\begin{align}
+ &D=r+s+1, & DF&=V+s,\\
+ &q=D+o_0+1, &q&=B+o_1+1,\\
+ &B i=C+F^2+1, &&C\ge1.
+\end{align}
+Here $D$ and $B$ are proposed binomial outputs.  Their eventual meanings
+are not assumed in these identities.  The power interface requests
+\[
+ V=(Ft^2+1)^t,\qquad N=B^K,\qquad q=N(N+V+1)^K,
+ \qquad K=2(2+t+x+y+F),
+\]
+as well as the powers used for digit and range extraction.
+Before power recovery, retain $t_0,x\ge0$, the endpoint and encoded-input
+signs, and $o_0\ge0$.  Strengthen the existing factorial guard to $F\ge1$.
+It costs the same number of witnesses and holds for every genuine factorial.
+
+\begin{lemma}[Factorial signs after one power]\label{lem:early-fact-signs}
+Suppose $F\ge1$, $V>F$, $D=r+s+1$, $DF=V+s$ and $rs\ge0$.
+Then $r,s\ge0$ and $D\ge1$.
+\end{lemma}
+\begin{proof}
+Eliminate $D$ to obtain $V=Fr+(F-1)s+F$.  If either member of $(r,s)$
+were negative, product nonnegativity would make both nonpositive.
+The displayed expression would then give $V\le F$, a contradiction.
+This includes the cases where one member is zero.
+\end{proof}
+
+The base $Ft^2+1$ is already at least two.  The signed power certificate,
+whose frame is justified below independently of these signs, therefore
+recovers $V=(Ft^2+1)^t>F$ first.  Lemma~\ref{lem:early-fact-signs} proves
+$D\ge1$, and hence $q=D+o_0+1\ge2$.  Next require only $Bo_1\ge0$.
+The sum $B+o_1=q-1>0$ forces $B,o_1\ge0$; the reciprocal index identity
+excludes $B=0$, so $B\ge1$ before its power is interpreted.
+
+The two calls at index $K$ now orient their shared Pell pair.  The first
+either gives $N=B^K$ or has the exceptional inverse case $B=1,N=-1$.
+In both cases its second base $N+V+1$ is at least two.  That second call
+fixes the orientation and excludes the inverse case.  All remaining seed
+pairs have supporting calls at $q$ or $q+1$, both at least two.  The
+unchanged addition formula recovers the single derived $t+1$ pair.
+Thus all nineteen requested powers have their intended values.
+
+Only now recover the other delayed signs.  Both binomial remainder pairs
+and all ten range remainder pairs have exact sum equations
+\[
+ r_j+s_j=q^{\ell_j}-1>0,
+\]
+where the already positive exponent is $t,t+1,x+1$, or $y+1$.
+For each such pair, $r_js_j\ge0$ implies both coordinates are nonnegative.
+This replaces fourteen pairs of scalar predicates by fourteen product
+predicates.  No binomial, factorial or CRT interpretation is used to
+restore a sign that its own interpretation needs.
+
+For unrestricted integer witnesses, use
+\[
+ Q(a,b,c)=a^2+b^2+c(c+1).
+\]
+It represents exactly the nonnegative integers.  Nonnegativity is
+immediate, and surjectivity follows from the three-square theorem applied
+to $4n+1$: exactly one of the three squares is odd.
+Consequently $rs=Q(a,b,c)$ is one quadratic row expressing $rs\ge0$.
+The ordinary positive-sum/product observation is elementary and already
+used in earlier repository work; the new saving is its dependency-ordered
+application to this stronger source, enabled by the earlier factorial
+bootstrap.
+
+\subsection{One guard for orientation and a nonzero shared ordinate}
+
+Let $A$ be the main Pell base, and write the shared auxiliary ordinate as
+\[
+ V_* = \left(\prod_iY_i^2\right)(v+1).
+\]
+The retained seed slacks give $Y_i\ge k_i\ge1$ before any power is
+interpreted.  Separate guards on the frame orientation and on $v$ can be
+replaced by two quadratic rows involving four fresh coordinates:
+\begin{equation}\label{eq:joint-anchor}
+ u=(v+1)^2,\qquad
+ (A-1)u-1=\alpha^2+\beta^2+\gamma(\gamma+1).
+\end{equation}
+Since the right side is nonnegative, $(A-1)u\ge1$.  Thus $A\ge2$,
+$u\ge1$ and $v\ne-1$, so $V_*\ne0$.  The sign of $V_*$ is immaterial.
+Conversely, canonical positive Pell witnesses have $A\ge2,v\ge0$;
+the left side in the second equation is nonnegative and admits the required
+three-square witnesses.  This joins two useful conclusions in one predicate
+while keeping the final equation quartic.
+
+The unchanged auxiliary norm gives
+\[
+ U^2-(A^2-1)V_*^2=1,\qquad |U|\ge A.
+\]
+The comparison base $b$ satisfies
+\[
+ b=1+4V_*(q_4+1),\qquad b\equiv A\pmod U.
+\]
+We permit $q_4$ to have either sign.  The first equation gives
+$b\equiv1\pmod4$; the second excludes $b=1$ because
+$0<A-1<|U|$.  Therefore $|b|\ge3$.
+
+The signed comparison-base index theorem is inherited from the incoming
+quadratic-frames package, and its complete proofs are retained under
+\texttt{direct/source/}.  For completeness, the mechanism is as follows.
+Classify absolute Pell solutions at $A$ and signed solutions at $b$;
+polynomial dependence in the base transfers their congruences.
+Squared divisibility $Y_i^2\mid V_*$ gives $Y_i\mid h$ for the common
+auxiliary index $h$.  The abscissa residue identity gives the comparison
+index congruent to either sign of the main index modulo $2h$.
+The base-one ordinate congruence gives either sign of $k_i$ modulo $4Y_i$.
+Hence the main index is congruent to $\pm k_i$ modulo $2Y_i$.
+Both lie in $[1,Y_i]$, so they agree; the possible common endpoint also
+gives equality.  Thus
+\[
+ |X_i|=\chi_A(k_i),\qquad Y_i=\psi_A(k_i).
+\]
+This argument allows both signs of $V_*,U,b$ and the comparison coordinates.
+It never requires the removed private signs to be pointwise positive.
+
+\subsection{A frame that uses proved signs efficiently}
+
+The original power frame squared every atom.  The new frame uses
+\begin{equation}\label{eq:typed-frame}
+ W=2+\sum_{a\text{ already proved }\ge0}a
+       +\sum_{a\text{ of undetermined sign}}a^2.
+\end{equation}
+There are 41 distinct affine atoms: 18 enter linearly and 23 quadratically.
+Their signs are certified by 163 ordered polynomial deductions from 31
+retained scalar predicates.  The frame-definition row and every power
+interpretation are excluded from those deductions.
+For every integer $a$, $a^2\ge|a|$; hence $W\ge2$ and $W>|a|$ for every
+base, exponent and proposed output in the finite power interface.
+
+Writing $Z=Z_{\rm minus1}+1$, the unchanged frame norm is
+\[
+ A^2-W^3(W+2)Z^2=1.
+\]
+Use $\chi_a(j)+\psi_a(j)\sqrt{a^2-1}=(a+\sqrt{a^2-1})^j$.
+Equation~\eqref{eq:joint-anchor} gives $A\ge2$, so $Z\ne0$ even though
+its sign is unrestricted.  Pell classification at base $W+1$ and the
+recurrence $\psi_{W+1}(h)\equiv h\pmod W$ yield
+$A=\chi_{W+1}(h)$ with $h\ge W$.  Thus
+\[
+ A\ge(W+1)^W,\qquad
+ T_n=2An-n^2-1>W^W+W \quad(1\le n<W).
+\]
+For example $T_n\ge2A-2$, and the binomial expansion gives
+$(W+1)^W\ge2W^W$.  These bounds hold before any proposed output is
+interpreted or given a sign.
+
+At an indexed pair, the power row
+\[
+ X+(n-A)Y=m+T_nw
+\]
+gives $m\equiv n^k\pmod{T_n}$ for positive $X$, and
+$mn^k\equiv-1\pmod{T_n}$ for negative $X$.  The frame bounds give
+$|m-n^k|<T_n$ and $|mn^k+1|<T_n$.  A base $n\ge2$ excludes the
+inverse case and gives $m=n^k$ exactly, with no prior sign assumption
+on $m$.  This licenses the initial factorial call and the dependency order
+used above.
+
+\subsection{Both directions and the finite equation}
+
+Given a zero of the new system, the preceding arguments recover all powers
+and all semantic front signs.  The inherited self-bounding factorial,
+exact digit, reciprocal prime-power CRT, derived-label bound and
+pairwise-coprime Horn-flow proofs then recover a finite C222 refutation.
+Their full ordinary proof texts are included under \texttt{direct/source/}.
+The endpoint composition is
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} followed by
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+
+Conversely, start with the inherited arithmetic front supplied by any
+finite refutation.  It has $F=t!\ge1$ and nonnegative entries in every
+fused pair.  Construct its new $W$ by \eqref{eq:typed-frame}, choose the
+positive Pell solution at index $W$ for base $W+1$, and choose the main
+pairs at their required indices.  The order of a unit in a finite
+quadratic ring supplies a common positive auxiliary iterate divisible by
+the entire product $\prod_iY_i^2$.  CRT supplies a positive comparison
+base with the required two congruences.  Complete all comparison pairs
+and power quotients.  These canonical witnesses have $v\ge0$, so
+\eqref{eq:joint-anchor} and every product predicate admit their ordinary
+three-square witnesses.  No consistency assumption is used in this map.
+
+These are equivalences of existential zero assertions.  New private
+comparison coordinates need not solve the old positive-domain auxiliary
+rows; fresh old witnesses can be reconstructed after recovering the front.
+
+The complete new source has 690 integer coordinates and 515 quadratic
+rows.  The projection certificate records 210 integral monic restorations;
+two remaining unused coordinates are discarded with restoration zero.
+Every substitution keeps every residual quadratic.  This leaves 478
+coordinates and 305 rows.  The final explicitly recorded integral
+translations are bijections.  Expanding the sum of squares gives all 5,484
+nonzero terms of \eqref{eq:direct478} and proves the stated exact metrics.
+
+The portable builder regenerates all ten normative data files byte for
+byte.  One independent checker reconstructs every guard and frame row;
+a second checks all source hashes, transformations, projection inverses,
+translations and collected quartic coefficients.  Both pass under normal
+and optimized Python.  Their finite boundary controls support transcription
+and degeneration checks; they neither decide solvability nor replace the
+unbounded mathematical proof.  This branch uses the direct calculus,
+without a K215 execution encoding or Jones universal-polynomial parameter.

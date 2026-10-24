@@ -1,0 +1,444 @@
+\section{One binomial certificate for factorial and CRT arithmetic}
+\label{sec:direct319}
+
+The strongest direct result of this investigation is a literal quartic in
+319 nonnegative integers. It improves the latest inspected direct natural
+equation in four measured quantities at once:
+\[
+\begin{array}{lrrrr}
+ &\text{variables}&\text{quadratic rows}&\text{monomials}&\text{height}\\
+\text{Round 14 derived-label source}&349&268&12\,768&86\,915\,503\\
+\text{Merged factorial--CRT source}&319&254&10\,283&86\,842\,335.
+\end{array}
+\]
+Both single equations have exact degree four. The comparison concerns
+direct C222 equations with completely collected coefficients. It does not
+assert superiority to the repository's few-variable equations with different
+coefficient and degree costs.
+
+\begin{theorem}[Explicit direct equation]\label{thm:direct319}
+Let $R_1,\ldots,R_{254}\in\Z[z_0,\ldots,z_{318}]$ be the complete quadratic
+residual list in the delivered file
+\texttt{direct/equation319/natural/equation.json}, and put
+\[
+             P_{319}(z)=\sum_{j=1}^{254}R_j(z)^2.
+\]
+The supplied collected coefficient file defines the same polynomial.
+Its degree is four, it has $10\,283$ nonzero monomials, and its height is
+$86\,842\,335$. With the inherited numerical-calculus calibration,
+\[
+ \mathrm{ZFC}\vdash
+ \bigl(\nexists z\in\N^{319}:P_{319}(z)=0\bigr)
+       \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
+\]
+Here $\N=\{0,1,2,\ldots\}$; all coefficients are fixed, literal integers.
+\end{theorem}
+
+The ordinary proof is given below. Its arithmetic source has 465 natural
+coordinates and 400 quadratic rows; an independent exact certificate
+eliminates 146 coordinates, including a nonnegativity proof for every
+restoration. Expansion of all remaining squares verifies every final
+coefficient. These finite checks support the literal construction; the
+unbounded equivalence is proved mathematically, rather than inferred from
+tests. No new end-to-end Lean proof term or emitted object-language ZFC
+derivation is claimed.
+
+\subsection{The improvement and its mathematical provenance}
+
+The preceding reciprocal-CRT construction used $F=t!$ and
+\[
+ B=\binom{F^2+t}{t},
+\]
+but obtained the factorial through a different binomial,
+$\binom{Ft^2+t}{t}$. We align these two uses of binomial arithmetic.
+The squared-radius factorial fixed-point theorem was already established
+in package 105, \emph{Bootstrap certificates}, Section 2 of its
+\texttt{NEW\_RESULTS.md}; it is not a new theorem of this iteration.
+The common Pell-residue representation was already established in package
+108, \emph{Pell residues instead of power values}. The shared-factorial
+source, reciprocal prime-power CRT and derived-label range come from the
+latest Round 14 packet. These source proofs are retained in the archive.
+
+The completed contribution is their integration: the \emph{same} binomial
+output serves the factorial and CRT product; an independent radix bound
+validates that output before either semantic interpretation is assumed;
+common Pell residues eliminate eleven full numerator powers; and the
+entire construction is compiled, contracted and measured. This is a new
+complete equation relative to the inspected snapshot, without a claim of
+worldwide priority for the ingredients.
+
+\subsection{The inherited factorial identity, with an independent proof}
+
+\begin{lemma}[Squared-radius factorial]\label{lem:direct-factorial}
+For $t\ge6$ and positive integer $F$,
+\[
+ F=\left\lceil\frac{(F^2+1)^t}{\binom{F^2+t}{t}}\right\rceil
+       \quad\Longleftrightarrow\quad F=t!.
+\]
+\end{lemma}
+\begin{proof}
+Put
+\[
+ H_t(F)=t!\prod_{i=1}^{t}\frac{F^2+1}{F^2+i}.
+\]
+The ceiling assumption gives $H_t(F)\le F\le t!$. If $F<t$, monotonicity
+of each factor in its radius gives
+\[
+ H_t(F)\ge\frac{2^t}{t+1}>t>F,
+\]
+a contradiction. The middle inequality follows at $t=6$ and persists
+by induction. Thus $F\ge t$.
+
+Using $\prod(1-u_i)\ge1-\sum u_i$,
+\[
+ \prod_{i=1}^{t}\frac{F^2+1}{F^2+i}
+ >1-\frac{t(t-1)}{2F^2}>\frac12.
+\]
+If $F<t^2$, then $H_t(F)>t!/2>t^2>F$, again impossible. Here
+$t!>2t^2$ for $t\ge6$ follows immediately by induction. Hence $F\ge t^2$,
+and the stronger estimate is
+\[
+ H_t(F)>t!\left(1-\frac1{2F}\right).
+\]
+If $t!\ge F+1$, the right side is at least
+$(F+1)(1-1/(2F))=F+1/2-1/(2F)\ge F$, contradicting $H_t(F)\le F$.
+Therefore $F=t!$. Conversely, for $F=t!$, the same estimate gives
+$F-1/2<H_t(F)\le F$, so its ceiling is $F$.
+\end{proof}
+
+Package 105 proves the more general statement for every nonnegative input.
+The restricted proof above is enough here because the horizon is padded
+to at least 16. The ceiling has an exact natural graph:
+\begin{equation}\label{eq:direct-ceiling}
+ V+B=BF+r+1,\qquad B=r+s+1,\qquad r,s\in\N.
+\end{equation}
+For $B>0$ these rows give $V+s=BF$ and $0\le s<B$, hence
+$F=\lceil V/B\rceil$. If $V\ge1$ they also force $F\ge1$.
+
+\subsection{A radix that can be justified before the factorial}
+
+Define, using natural variables $t_0,x,y,F,b_0$,
+\begin{equation}\label{eq:direct-radix}
+ \begin{gathered}
+ t=t_0+16,\qquad R=2+t+x+y+F,\qquad K=2R,\\
+ B=b_0+2,\qquad N=B^K,\qquad q=N^K,\qquad V=(F^2+1)^t.
+ \end{gathered}
+\end{equation}
+These variable powers are explanatory requests: their final implementation
+uses the explicit indexed-Pell graph below. Once they have been recovered,
+the coordinate shift $B\ge2$ gives
+\begin{equation}\label{eq:direct-independent-radix}
+ N\ge2^K,\qquad q=B^{K^2}\ge2^{4R^2}.
+\end{equation}
+No interpretation of $B$ as a binomial is needed for this bound.
+
+For $n=F^2+t$ and $0\le j\le t$,
+\begin{equation}\label{eq:direct-first-digit-bound}
+ \binom nj\le n^t\le(R^2+R)^t
+       \le2^{2Rt}<2^{2R^2}<q.
+\end{equation}
+Use the zero convention if $j>n$. The elementary bound $R^2+R\le4^R$
+holds for $R\ge1$, and $t<R$. Thus the first exact digit graph can be
+validated \emph{before} any factorial or CRT meaning is available. It yields
+$B=\binom{F^2+t}{t}$; equations~\eqref{eq:direct-ceiling} and
+Lemma~\ref{lem:direct-factorial} then yield $F=t!$.
+
+This order removes the potential circularity in identifying the two
+binomials. The previous radix $N(N+V+1)^K$ is replaced by $N^K$; its
+bootstrap is supplied by an explicit lower bound on $B$, not by assuming
+the value of the very digit being tested.
+
+\subsection{Six exact powers and eleven modular Pell residues}
+
+For $a\ge2$, write
+\[
+ X_0(a)=1,\quad Y_0(a)=0,\quad
+ X_{j+1}=aX_j+(a^2-1)Y_j,\quad Y_{j+1}=X_j+aY_j.
+\]
+The retained compiler supplies indexed-Pell certificates for these pairs,
+sharing an auxiliary Pell solution and CRT base across all requested
+indices. The final system uses exactly six full power requests:
+\begin{equation}\label{eq:direct-six-powers}
+ \begin{aligned}
+ V&=(F^2+1)^t,& N&=B^K,&q&=N^K,\\
+ D_t&=q^t,&D_y&=q^{y+1},&D_x&=q^{x+1}.
+ \end{aligned}
+\end{equation}
+The denominator $D_{t+1}=qD_t$ is obtained by multiplication, so it needs
+no separate power request or Pell pair at index $t+1$.
+
+Let $W$ be two plus the sum of the distinct bases, exponents and outputs
+in~\eqref{eq:direct-six-powers}. The common frame is
+\begin{equation}\label{eq:direct-free-frame}
+ L^2-((W+1)^2-1)(WZ)^2=1,\qquad Z\ge1,\qquad A=L+\sigma.
+\end{equation}
+All coordinates are natural. Pell classification and
+$Y_e(W+1)\equiv e\pmod W$ imply $L>W^W$, hence $A>W^W$. Conversely the
+index $e=W$ supplies $L,Z$, after which every $A\ge L$ is allowed.
+
+For an exact request $m=n^k$, the compiler asserts
+\[
+ T_n=2An-n^2-1\ge0,\qquad
+ X_k(A)+nY_k(A)=AY_k(A)+m+T_nh,\quad h\ge0.
+\]
+The first row excludes $n=0$. The frame bounds $m$ and $n^k$ strictly
+below $T_n$, and the Pell recurrence gives their congruence modulo $T_n$,
+so $m=n^k$. Every exponent is positive by its literal definition.
+This is the inherited simultaneous positive-power theorem; separating
+the lower bound $L$ from the actual base $A$ permits the congruence below.
+
+Put
+\begin{equation}\label{eq:direct-root-modulus}
+ b=q+1,\qquad \mathcal M=qD_{t+1}D_xD_y
+                           =q^{t+x+y+4},
+\end{equation}
+and impose one natural-quotient equation
+\begin{equation}\label{eq:direct-common-root}
+              2A(q+1)=(q+1)^2+1+\mathcal M h_0.
+\end{equation}
+For every $n\ge0$ it yields
+\begin{equation}\label{eq:direct-residue}
+ \mathcal R_n=X_n(A)+(q+1-A)Y_n(A)
+                    \equiv(q+1)^n\pmod{\mathcal M}.
+\end{equation}
+Indeed the substitution $s=q+1-A$ respects $s^2=A^2-1$ modulo
+$\mathcal M$, and $(A+s)^n=X_n+Y_ns$. Moreover $\mathcal R_n>0$:
+for $n>0$, $X_n>(A-1)Y_n$, and for $n=0$ the value is 1.
+
+For every required denominator $d$, both $qd$ and $Nd$ divide
+$\mathcal M$: the first follows from its product definition and the
+second from $N\mid q$. The one exact binomial uses
+\begin{equation}\label{eq:direct-exact-digit}
+ \begin{aligned}
+ X_n+(q+1)Y_n&=AY_n+r+dB+qd h,\\
+ d&=r+s+1,&q&=B+o+1,
+ \end{aligned}
+\end{equation}
+where $n=F^2+t$, $d=D_t$. Every divisibility request
+$N\mid\binom nk$ instead uses
+\begin{equation}\label{eq:direct-div-digit}
+ X_n+(q+1)Y_n=AY_n+r+Nd h,\qquad d=r+s+1,
+ \qquad d=q^k.
+\end{equation}
+The binomial theorem identifies the digit or its divisibility once all
+lower coefficients are below $q$. Positivity of $\mathcal R_n$ ensures
+that the constructed quotients are nonnegative.
+
+Completeness of the common root is not automatic and must be checked.
+As $\mathcal M$ is a power of $q$,
+$\gcd(q+1,\mathcal M)=1$. Thus $\gcd(2(q+1),\mathcal M)$ is 1 or 2;
+in the second case $(q+1)^2+1$ is even. Equation~\eqref{eq:direct-common-root}
+therefore defines a soluble congruence class for $A$, containing arbitrarily
+large positive representatives. Choose one above $L$ and large enough to
+make $h_0\ge0$. Then supply the standard common-index witnesses at this
+base. All semantic values were fixed beforehand.
+
+There are eleven modular requests: one exact binomial and ten ranges.
+Their upper indices are positive and need not be included in $W$;
+the indexed-Pell graph certifies those indices directly. Fifteen independent
+indices suffice for the six exact powers and eleven residues together.
+
+\subsection{The explicit numerical source and its finite proof flow}
+
+For completeness, the arithmetic source is specified here before applying
+the inherited calibration. Its constructors are
+\[
+ \begin{aligned}
+ I(a,b)&=2(a+b)(a+b+1)+4b,& M(a,b)&=I(a,b)+1,\\
+ A(a,b)&=I(a,b)+2,&E(a,b)&=I(a,b)+3,\\
+ N_0(a)&=I(a,1),&X_0(a,b)&=N_0(A(a,N_0(b))).
+ \end{aligned}
+\]
+The subscript here distinguishes the formula constructors from the global
+CRT modulus $N$ and Pell abscissas. Define
+\[
+ \begin{aligned}
+ \operatorname{req}(a,k,m)
+   &=A(a,I(m,N_0(A(a,I(m,N_0(M(a,k))))))),\\
+ s(a,b,k)&=A(k,I(M(k,a),M(k,b))),\\
+ u(a,b,k,m)&=N_0(A(a,I(s(a,b,k),\operatorname{req}(b,k,m)))),\\
+ \operatorname{clos}(a,b,k,m)
+   &=A(b,I(M(b,k),N_0(A(a,I(m,u(a,b,k,m)))))),\\
+ v(a,b,c)&=I(M(a,b),A(c,M(a,b))),\\
+ h(a,b,c)&=A(c,I(\operatorname{clos}(a,b,c,c),
+                          N_0(\operatorname{req}(b,c,c)))),\\
+ \operatorname{bundle}(a,b,c)&=N_0(I(v(a,b,c),h(a,b,c))).
+ \end{aligned}
+\]
+The nine conclusion polynomials are
+\begin{align*}
+ c_1&=X_0(a,E(a,b)),\\
+ c_2&=I(A(a,I(b,c)),I(A(a,b),A(a,c))),\\
+ c_3&=I(E(a,b),I(M(c,a),M(c,b))),\\
+ c_4&=I(A(a,A(b,c)),A(b,A(a,c))),\\
+ c_5&=I(E(c,a),I(M(c,b),M(a,b))),\\
+ c_6&=I(X_0(a,A(a,b)),b),\\
+ c_7&=I(E(c,a),I(E(c,b),A(M(a,b),E(a,b)))),\\
+ c_8&=I(I(I(c,d),a),I(I(a,c),I(b,c))),\\
+ c_9&=\operatorname{bundle}(a,b,c).
+\end{align*}
+Their code definitions are matched to the retained C222 calculus.
+The first eight are unconditional axiom families. The ninth is admitted
+when $c\ne a,b$, represented by
+$G=(c-a)^2(c-b)^2-(d+1)^2=0$.
+
+Write $w(z)=1+Fz$. For the eight local columns
+$(a,b,c,d,S,S',u,v)$ define
+\begin{align*}
+ H={}&(S'-S)^2\prod_{j=1}^{8}(S'w(c_j)-S)^2\\
+ &\cdot\bigl((S'w(c_9)-S)^2+G^2\bigr)\\
+ &\cdot\bigl(S'w(b)-Sw(a)w(I(a,b))\bigr)^2
+       \bigl(S'w(A(a,b))-Sw(b)\bigr)^2,\\
+ \mathcal L(i)&=H+\bigl(x-S-(1+(i+1)y)u\bigr)^2
+                  +\bigl(x-S'-(1+(i+2)y)v\bigr)^2,\\
+ J&=\sum_{j=1}^{9}c_j+a+b+I(a,b)+A(a,b)+1.
+\end{align*}
+The local bounds are $(t,t,t,t,y,y,x,x)$, together with the derived
+condition $J\le t$. The endpoint equations are
+\[
+ x=F+1+(y+1)u_0,\qquad y=F+1+r_0,\qquad
+ x=1+(1+(t+1)y)u_t.
+\]
+Every factor of $H$ is nonnegative. A zero selects truth, a genuine
+axiom, modus ponens, or generalization, and gives the appropriate
+accumulator identity
+\[
+ S'w(\text{conclusion})=Sw(\text{premise}_1)w(\text{premise}_2).
+\]
+Unused premises have truth label 0 and weight one.
+
+Because $F=t!$, the weights $1+jF$ for $1\le j\le t$ are pairwise
+coprime: a prime common to weights $j\ne k$ would divide $j-k$, hence
+divide $F$, which is impossible. The beta equations identify overlapping
+accumulators by uniqueness of remainders bounded by $y$. Their positive
+initial value and positive weights propagate positivity. Multiplying the
+local identities and cancelling gives
+\[
+ \prod w(\text{conclusions})=w(1)\prod w(\text{premises}).
+\]
+Taking valuations at a prime of each positive label's weight gives a
+multiplicity excess of one at label 1 and zero at every other positive
+label. If 1 were outside the derivable closure, each selected rule with
+conclusion outside it would have a premise outside it. Counting these
+occurrences contradicts that excess. This argument allows cyclic or
+repeated selected rules; it does not assume the supplied flow is a tree.
+
+Conversely expand a finite refutation to a proof tree, choose the horizon
+above its length, parameters and all finite $J$-values, and pad with truth
+steps. Define $F=t!$ only after this choice. Expanding the pending proof
+multiset backwards gives the accumulator products. Choose $y$ large and
+divisible by $t!$, then choose $x$ by CRT for the beta moduli. This is the
+inherited complete proof-flow construction, with no dependence of the
+horizon on the later accumulator sizes.
+
+\subsection{Reciprocal prime-power decoding and the last carry bounds}
+
+With $F=t!$, let
+\[
+ d_i=1+F^2/i\quad(1\le i\le t),\qquad
+ B=\prod_{i=1}^{t}d_i=\binom{F^2+t}{t},\qquad N=B^K.
+\]
+The $d_i$ are integral, pairwise coprime, and have no prime divisors at
+most $t$. These facts follow from $i\mid F$ and
+$id_i-jd_j=i-j$. Introduce nine positive encoded representatives,
+the eight local columns $A_j$ and index $C$, satisfying
+\begin{equation}\label{eq:direct-crt-system}
+ \begin{gathered}
+ C+\sum_j A_j+g=9N^2,\qquad B\mid C+F^2+1,\\
+ N\mid\binom Ct,\qquad N\mid\binom{A_j}{b_j+1},\qquad
+ N\mid\mathcal L(C,A),\qquad N\mid\binom{J(A)}{t+1}.
+ \end{gathered}
+\end{equation}
+The $b_j$ are the local bounds. The derived value $J(A)$ is deliberately
+excluded from the aggregate bound.
+
+The elementary one-sided range lemma states
+\[
+             p^e\mid\binom ak\quad\Longrightarrow\quad
+                         a\bmod p^e<k.
+\]
+For $a\ge k$, the $p$-valuation of the binomial is the sum of
+$\lfloor a/p^j\rfloor-\lfloor(a-k)/p^j\rfloor-\lfloor k/p^j\rfloor$,
+each zero or one. If the interval $[a-k+1,a]$ had no multiple of $p^e$,
+all terms from $j=e$ onward would vanish, contradicting valuation at
+least $e$. The case $a<k$ is immediate. Its converse is false and is not
+used.
+
+Choose a prime $p\mid d_i$, write $m=v_p(d_i)$ and $e=Km$. The index
+congruence and $p>t$ identify $C\bmod p^e=i-1$. The other ranges give
+bounded residues for the local columns. A retained literal majorant
+certificate gives $\mathcal L,J<R^E$, where $E=2^{23}$. Since
+$R\ge16!>2^{44}$, elementary induction gives
+$R^E<2^R<2^K\le p^e$. Polynomial congruence now yields
+$\mathcal L(i-1,\text{local})=0$ and $J(\text{local})\le t$.
+
+For completeness choose the representatives by CRT at precision
+$d_i^{2K}$, so they lie in $[1,B^{2K}]=[1,N^2]$. Their falling factorial
+numerators have a factor of valuation at least $2Km$; division by $k!$
+loses at most $k-1\le K-1$. This proves the required divisibilities by
+$p^{Km}$, including the derived polynomial range. Precision $2K$ is
+essential to this argument; no false converse to the range lemma is used.
+
+The remaining digit bounds also remain strict for the new radix $q=N^K$.
+For $n\le9N^2$, $1\le k\le R-1$, and $j\le k$,
+\[
+ \binom nj\le n^k\le9^kN^{2k}
+      <2^{4R}N^{2k}\le N^{2k+2}\le N^K=q.
+\]
+For the derived argument the positive-DAG certificate gives
+$J(a,b,c,d)\le(n+1)^\ell$ when the four inputs are at most $n$,
+with $\ell=2^{22}$. Since $n\le9N^2$ and $N\ge10$, $J(A)\le N^{3\ell}$.
+The finite inequality $2\cdot16!\ge3\ell\cdot17$ persists by induction,
+so $3\ell(t+1)\le2F<K$. Therefore
+\[
+ \binom{J(A)}j\le J(A)^{t+1}
+                  \le N^{3\ell(t+1)}<N^K=q.
+\]
+This last strict inequality is necessary: using the old statement
+$N^K<q$ would be incorrect for the new radix.
+
+\subsection{Closing the theorem and reproducing the finite object}
+
+Soundness first recovers the six exact powers from the independent Pell
+frame. It then uses~\eqref{eq:direct-first-digit-bound} to interpret the
+single exact binomial and the factorial ceiling, before invoking any CRT
+or proof-label meaning. Only afterward are the ten ranges interpreted,
+the bounded local source decoded, and the Horn-flow theorem applied.
+The inherited ordinary calibration is
+\[
+ \mathrm{C222}(1)\ \longleftrightarrow\
+ \text{finite ZF refutation}\ \longleftrightarrow\
+ \text{finite ZFC refutation}.
+\]
+Its named interfaces are
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+The construction uses the numerical-calculus endpoint before the
+machine-specific theorem; it does not simulate K215 or instantiate a
+Jones universal polynomial.
+
+Completeness chooses, in order, the finite proof and padded horizon;
+the factorial, proof-flow and beta data; $B,R,K,N,q$ and the CRT
+representatives; the six powers and eleven true binomial residues; and
+finally a lower Pell frame and sufficiently large $A$ in the common-root
+congruence class. The common-index theorem supplies all auxiliary Pell
+witnesses. Every displayed natural quotient is then reconstructed.
+The checked natural projection gives a zero of $P_{319}$. Conversely
+its restoration certificate returns every deleted coordinate, so it
+preserves both existence directions.
+
+The optional square-shell companion has 320 natural variables, 255
+quadratic rows, $13\,828$ terms and coefficient height $15\,248\,812$.
+It trades one extra variable and more terms for smaller coefficients,
+using the retained constructor-preserving syntax transport. The main
+319-variable result stays with the original Cantor encoding.
+
+The complete source bundle uses only the Python 3 standard library.
+Normal and optimized-interpreter replays rebuild both equations and
+compare all twenty generated JSON files byte for byte. The independent
+checker verifies every restoration, every final coefficient, all live
+coordinates and deliberately corrupted controls. Separate finite
+regressions cover $18\,049$ factorial cases, 270 independent radix
+bounds, 49 growth budgets, $1\,530$ Pell-residue instances and 516 digit
+and divisibility instances. Those checks are arithmetic regressions,
+not proofs of unbounded statements or searches for a ZFC refutation.

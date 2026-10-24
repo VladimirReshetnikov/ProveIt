@@ -1,0 +1,1288 @@
+{
+  "status": "PASS",
+  "scope": "finite algebra, constants, topology and exact degree",
+  "identities": {
+    "norm_coefficients": 35,
+    "sign_product": true,
+    "centering": true,
+    "projector": true
+  },
+  "coefficients": {
+    "all_six_payloads": true,
+    "finite_recipe_rebuilt": true,
+    "beta_bits": 1064921
+  },
+  "equations": [
+    {
+      "name": "scalar11_original_direct",
+      "topology": {
+        "live_nodes": 147,
+        "operations": 121,
+        "counts": {
+          "mul": 77,
+          "add": 23,
+          "sub": 21
+        },
+        "syntactic_degree": 488
+      },
+      "all_registers": [
+        {
+          "register": "J",
+          "formula": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "formula": "beta*J"
+        },
+        {
+          "register": "q",
+          "formula": "qm+1"
+        },
+        {
+          "register": "q2",
+          "formula": "q*q"
+        },
+        {
+          "register": "q3",
+          "formula": "q*q*q"
+        },
+        {
+          "register": "W",
+          "formula": "12*w+4"
+        },
+        {
+          "register": "X",
+          "formula": "q*W"
+        },
+        {
+          "register": "Y",
+          "formula": "(2*v+1)*q**3"
+        },
+        {
+          "register": "E",
+          "formula": "X*Y"
+        },
+        {
+          "register": "a",
+          "formula": "(X+1)*Y"
+        },
+        {
+          "register": "H",
+          "formula": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "formula": "(a+2)**2-1"
+        },
+        {
+          "register": "F",
+          "formula": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "formula": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "k",
+          "formula": "R+1+h*E"
+        },
+        {
+          "register": "c2",
+          "formula": "c*c"
+        },
+        {
+          "register": "eta",
+          "formula": "c-Y*k"
+        },
+        {
+          "register": "Derr",
+          "formula": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "formula": "k*k*(q*q-Derr)-4*q*q*eta*eta"
+        },
+        {
+          "register": "ell",
+          "formula": "X*Y*Y"
+        },
+        {
+          "register": "L",
+          "formula": "ell*k"
+        },
+        {
+          "register": "Dt",
+          "formula": "1+ell*(ell+1)*k*k"
+        },
+        {
+          "register": "D",
+          "formula": "3*Budget-4"
+        },
+        {
+          "register": "tguard",
+          "formula": "2*Dt*s"
+        },
+        {
+          "register": "P",
+          "formula": "Dt*(1+4*D*Dt*s*s)"
+        },
+        {
+          "register": "I",
+          "formula": "2*r*c*c"
+        },
+        {
+          "register": "I2",
+          "formula": "I*I"
+        },
+        {
+          "register": "strong",
+          "formula": "Delta*I*I"
+        },
+        {
+          "register": "Df",
+          "formula": "1+Delta*I*I"
+        },
+        {
+          "register": "Q",
+          "formula": "Delta*Delta*I*I"
+        },
+        {
+          "register": "delta",
+          "formula": "Q-1"
+        },
+        {
+          "register": "b",
+          "formula": "c-R+4*I*T"
+        },
+        {
+          "register": "V",
+          "formula": "Df*b-c"
+        },
+        {
+          "register": "Cy",
+          "formula": "Q*V*V-1"
+        },
+        {
+          "register": "Da",
+          "formula": "(Q-1)*(Q*V*V-1)"
+        },
+        {
+          "register": "K",
+          "formula": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "formula": "H*H"
+        },
+        {
+          "register": "H3",
+          "formula": "H**3"
+        },
+        {
+          "register": "zc",
+          "formula": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "formula": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "formula": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "formula": "s*r*H"
+        },
+        {
+          "register": "S2",
+          "formula": "S*S"
+        },
+        {
+          "register": "B",
+          "formula": "S*n-Ac"
+        },
+        {
+          "register": "Z",
+          "formula": "S*n-Ac"
+        },
+        {
+          "register": "u",
+          "formula": "S*S*Df"
+        },
+        {
+          "register": "bnorm",
+          "formula": "4*S*S*Da"
+        },
+        {
+          "register": "e",
+          "formula": "16*S*S*P"
+        },
+        {
+          "register": "ub",
+          "formula": "u*bnorm"
+        },
+        {
+          "register": "ab",
+          "formula": "u+bnorm"
+        },
+        {
+          "register": "z2",
+          "formula": "Z*Z"
+        },
+        {
+          "register": "inner",
+          "formula": "(z2-u-bnorm-e)**2-4*(u*bnorm+u*e+bnorm*e)"
+        },
+        {
+          "register": "out",
+          "formula": "inner*inner-64*u*bnorm*e*z2"
+        }
+      ],
+      "degree": {
+        "degree": 488,
+        "monomial": {
+          "h": 0,
+          "z": 8,
+          "j": 256,
+          "w": 56,
+          "v": 56,
+          "s": 8,
+          "r": 40,
+          "c": 64,
+          "T": 0,
+          "C": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "2": 480,
+          "3": 312,
+          "beta": 256
+        },
+        "every_node_checked": 147,
+        "center_cut_used": false
+      }
+    },
+    {
+      "name": "scalar11_original_center",
+      "topology": {
+        "live_nodes": 151,
+        "operations": 125,
+        "counts": {
+          "mul": 79,
+          "add": 24,
+          "sub": 22
+        },
+        "syntactic_degree": 488
+      },
+      "all_registers": [
+        {
+          "register": "J",
+          "formula": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "formula": "beta*J"
+        },
+        {
+          "register": "q",
+          "formula": "qm+1"
+        },
+        {
+          "register": "q2",
+          "formula": "q*q"
+        },
+        {
+          "register": "q3",
+          "formula": "q*q*q"
+        },
+        {
+          "register": "W",
+          "formula": "12*w+4"
+        },
+        {
+          "register": "X",
+          "formula": "q*W"
+        },
+        {
+          "register": "Y",
+          "formula": "(2*v+1)*q**3"
+        },
+        {
+          "register": "E",
+          "formula": "X*Y"
+        },
+        {
+          "register": "a",
+          "formula": "(X+1)*Y"
+        },
+        {
+          "register": "H",
+          "formula": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "formula": "(a+2)**2-1"
+        },
+        {
+          "register": "F",
+          "formula": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "formula": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "k",
+          "formula": "R+1+h*E"
+        },
+        {
+          "register": "c2",
+          "formula": "c*c"
+        },
+        {
+          "register": "eta",
+          "formula": "c-Y*k"
+        },
+        {
+          "register": "Derr",
+          "formula": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "formula": "k*k*(q*q-Derr)-4*q*q*eta*eta"
+        },
+        {
+          "register": "ell",
+          "formula": "X*Y*Y"
+        },
+        {
+          "register": "L",
+          "formula": "ell*k"
+        },
+        {
+          "register": "Dt",
+          "formula": "1+ell*(ell+1)*k*k"
+        },
+        {
+          "register": "D",
+          "formula": "3*Budget-4"
+        },
+        {
+          "register": "tguard",
+          "formula": "2*Dt*s"
+        },
+        {
+          "register": "P",
+          "formula": "Dt*(1+4*D*Dt*s*s)"
+        },
+        {
+          "register": "I",
+          "formula": "2*r*c*c"
+        },
+        {
+          "register": "I2",
+          "formula": "I*I"
+        },
+        {
+          "register": "strong",
+          "formula": "Delta*I*I"
+        },
+        {
+          "register": "Df",
+          "formula": "1+Delta*I*I"
+        },
+        {
+          "register": "Q",
+          "formula": "Delta*Delta*I*I"
+        },
+        {
+          "register": "delta",
+          "formula": "Q-1"
+        },
+        {
+          "register": "b",
+          "formula": "c-R+4*I*T"
+        },
+        {
+          "register": "V",
+          "formula": "Df*b-c"
+        },
+        {
+          "register": "Cy",
+          "formula": "Q*V*V-1"
+        },
+        {
+          "register": "Da",
+          "formula": "(Q-1)*(Q*V*V-1)"
+        },
+        {
+          "register": "K",
+          "formula": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "formula": "H*H"
+        },
+        {
+          "register": "H3",
+          "formula": "H**3"
+        },
+        {
+          "register": "zc",
+          "formula": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "formula": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "formula": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "formula": "s*r*H"
+        },
+        {
+          "register": "S2",
+          "formula": "S*S"
+        },
+        {
+          "register": "shift",
+          "formula": "(2*Q-1)*V"
+        },
+        {
+          "register": "Z",
+          "formula": "S*(n+shift)-Ac"
+        },
+        {
+          "register": "u",
+          "formula": "S*S*Df"
+        },
+        {
+          "register": "bnorm",
+          "formula": "4*S*S*Da"
+        },
+        {
+          "register": "e",
+          "formula": "16*S*S*P"
+        },
+        {
+          "register": "ub",
+          "formula": "u*bnorm"
+        },
+        {
+          "register": "ab",
+          "formula": "u+bnorm"
+        },
+        {
+          "register": "z2",
+          "formula": "Z*Z"
+        },
+        {
+          "register": "inner",
+          "formula": "(z2-u-bnorm-e)**2-4*(u*bnorm+u*e+bnorm*e)"
+        },
+        {
+          "register": "out",
+          "formula": "inner*inner-64*u*bnorm*e*z2"
+        }
+      ],
+      "degree": {
+        "degree": 464,
+        "monomial": {
+          "h": 12,
+          "z": 4,
+          "j": 264,
+          "w": 52,
+          "v": 64,
+          "s": 12,
+          "r": 24,
+          "c": 32,
+          "T": 0,
+          "C": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "2": 488,
+          "3": 318,
+          "beta": 264
+        },
+        "every_node_checked": 151,
+        "center_cut_used": true
+      }
+    },
+    {
+      "name": "scalar11_original_center_reduced",
+      "topology": {
+        "live_nodes": 161,
+        "operations": 135,
+        "counts": {
+          "mul": 85,
+          "add": 27,
+          "sub": 23
+        },
+        "syntactic_degree": 464
+      },
+      "all_registers": [
+        {
+          "register": "J",
+          "formula": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "formula": "beta*J"
+        },
+        {
+          "register": "q",
+          "formula": "qm+1"
+        },
+        {
+          "register": "q2",
+          "formula": "q*q"
+        },
+        {
+          "register": "q3",
+          "formula": "q*q*q"
+        },
+        {
+          "register": "W",
+          "formula": "12*w+4"
+        },
+        {
+          "register": "X",
+          "formula": "q*W"
+        },
+        {
+          "register": "Y",
+          "formula": "(2*v+1)*q**3"
+        },
+        {
+          "register": "E",
+          "formula": "X*Y"
+        },
+        {
+          "register": "a",
+          "formula": "(X+1)*Y"
+        },
+        {
+          "register": "H",
+          "formula": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "formula": "(a+2)**2-1"
+        },
+        {
+          "register": "F",
+          "formula": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "formula": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "k",
+          "formula": "R+1+h*E"
+        },
+        {
+          "register": "c2",
+          "formula": "c*c"
+        },
+        {
+          "register": "eta",
+          "formula": "c-Y*k"
+        },
+        {
+          "register": "Derr",
+          "formula": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "formula": "k*k*(q*q-Derr)-4*q*q*eta*eta"
+        },
+        {
+          "register": "ell",
+          "formula": "X*Y*Y"
+        },
+        {
+          "register": "L",
+          "formula": "ell*k"
+        },
+        {
+          "register": "Dt",
+          "formula": "1+ell*(ell+1)*k*k"
+        },
+        {
+          "register": "D",
+          "formula": "3*Budget-4"
+        },
+        {
+          "register": "tguard",
+          "formula": "2*Dt*s"
+        },
+        {
+          "register": "P",
+          "formula": "Dt*(1+4*D*Dt*s*s)"
+        },
+        {
+          "register": "I",
+          "formula": "2*r*c*c"
+        },
+        {
+          "register": "I2",
+          "formula": "I*I"
+        },
+        {
+          "register": "strong",
+          "formula": "Delta*I*I"
+        },
+        {
+          "register": "Df",
+          "formula": "1+Delta*I*I"
+        },
+        {
+          "register": "Q",
+          "formula": "Delta*Delta*I*I"
+        },
+        {
+          "register": "delta",
+          "formula": "Q-1"
+        },
+        {
+          "register": "b",
+          "formula": "c-R+4*I*T"
+        },
+        {
+          "register": "V",
+          "formula": "Df*b-c"
+        },
+        {
+          "register": "Cy",
+          "formula": "Q*V*V-1"
+        },
+        {
+          "register": "Da",
+          "formula": "(Q-1)*(Q*V*V-1)"
+        },
+        {
+          "register": "K",
+          "formula": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "formula": "H*H"
+        },
+        {
+          "register": "H3",
+          "formula": "H**3"
+        },
+        {
+          "register": "zc",
+          "formula": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "formula": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "formula": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "formula": "s*r*H"
+        },
+        {
+          "register": "S2",
+          "formula": "S*S"
+        },
+        {
+          "register": "B",
+          "formula": "S*n-Ac"
+        },
+        {
+          "register": "shift",
+          "formula": "(2*Q-1)*V"
+        },
+        {
+          "register": "center_part",
+          "formula": "S*shift"
+        },
+        {
+          "register": "u",
+          "formula": "S*S*Df"
+        },
+        {
+          "register": "bnorm",
+          "formula": "4*S*S*Da"
+        },
+        {
+          "register": "e",
+          "formula": "16*S*S*P"
+        },
+        {
+          "register": "ub",
+          "formula": "u*bnorm"
+        },
+        {
+          "register": "ab",
+          "formula": "u+bnorm"
+        },
+        {
+          "register": "omega",
+          "formula": "B*B+2*B*center_part+S*S*(V*V+4*Q-4)"
+        },
+        {
+          "register": "z2",
+          "formula": "omega+bnorm"
+        },
+        {
+          "register": "inner",
+          "formula": "(omega-u-e)**2-4*(u*bnorm+u*e+bnorm*e)"
+        },
+        {
+          "register": "out",
+          "formula": "inner*inner-64*u*bnorm*e*z2"
+        }
+      ],
+      "degree": {
+        "degree": 464,
+        "monomial": {
+          "h": 12,
+          "z": 4,
+          "j": 264,
+          "w": 52,
+          "v": 64,
+          "s": 12,
+          "r": 24,
+          "c": 32,
+          "T": 0,
+          "C": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "2": 488,
+          "3": 318,
+          "beta": 264
+        },
+        "every_node_checked": 161,
+        "center_cut_used": false
+      }
+    },
+    {
+      "name": "scalar11_q4_center",
+      "topology": {
+        "live_nodes": 152,
+        "operations": 126,
+        "counts": {
+          "mul": 80,
+          "add": 24,
+          "sub": 22
+        },
+        "syntactic_degree": 488
+      },
+      "all_registers": [
+        {
+          "register": "J",
+          "formula": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "formula": "beta*J"
+        },
+        {
+          "register": "q",
+          "formula": "qm+1"
+        },
+        {
+          "register": "q2",
+          "formula": "q*q"
+        },
+        {
+          "register": "q3",
+          "formula": "q*q*q"
+        },
+        {
+          "register": "W",
+          "formula": "12*w+4"
+        },
+        {
+          "register": "X",
+          "formula": "q*W"
+        },
+        {
+          "register": "Y",
+          "formula": "(2*v+1)*q**3"
+        },
+        {
+          "register": "E",
+          "formula": "X*Y"
+        },
+        {
+          "register": "a",
+          "formula": "(X+1)*Y"
+        },
+        {
+          "register": "H",
+          "formula": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "formula": "(a+2)**2-1"
+        },
+        {
+          "register": "F",
+          "formula": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "formula": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "k",
+          "formula": "R+1+4*h*q**4"
+        },
+        {
+          "register": "c2",
+          "formula": "c*c"
+        },
+        {
+          "register": "eta",
+          "formula": "c-Y*k"
+        },
+        {
+          "register": "Derr",
+          "formula": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "formula": "k*k*(q*q-Derr)-4*q*q*eta*eta"
+        },
+        {
+          "register": "ell",
+          "formula": "X*Y*Y"
+        },
+        {
+          "register": "L",
+          "formula": "ell*k"
+        },
+        {
+          "register": "Dt",
+          "formula": "1+ell*(ell+1)*k*k"
+        },
+        {
+          "register": "D",
+          "formula": "3*Budget-4"
+        },
+        {
+          "register": "tguard",
+          "formula": "2*Dt*s"
+        },
+        {
+          "register": "P",
+          "formula": "Dt*(1+4*D*Dt*s*s)"
+        },
+        {
+          "register": "I",
+          "formula": "2*r*c*c"
+        },
+        {
+          "register": "I2",
+          "formula": "I*I"
+        },
+        {
+          "register": "strong",
+          "formula": "Delta*I*I"
+        },
+        {
+          "register": "Df",
+          "formula": "1+Delta*I*I"
+        },
+        {
+          "register": "Q",
+          "formula": "Delta*Delta*I*I"
+        },
+        {
+          "register": "delta",
+          "formula": "Q-1"
+        },
+        {
+          "register": "b",
+          "formula": "c-R+4*I*T"
+        },
+        {
+          "register": "V",
+          "formula": "Df*b-c"
+        },
+        {
+          "register": "Cy",
+          "formula": "Q*V*V-1"
+        },
+        {
+          "register": "Da",
+          "formula": "(Q-1)*(Q*V*V-1)"
+        },
+        {
+          "register": "K",
+          "formula": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "formula": "H*H"
+        },
+        {
+          "register": "H3",
+          "formula": "H**3"
+        },
+        {
+          "register": "zc",
+          "formula": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "formula": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "formula": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "formula": "s*r*H"
+        },
+        {
+          "register": "S2",
+          "formula": "S*S"
+        },
+        {
+          "register": "shift",
+          "formula": "(2*Q-1)*V"
+        },
+        {
+          "register": "Z",
+          "formula": "S*(n+shift)-Ac"
+        },
+        {
+          "register": "u",
+          "formula": "S*S*Df"
+        },
+        {
+          "register": "bnorm",
+          "formula": "4*S*S*Da"
+        },
+        {
+          "register": "e",
+          "formula": "16*S*S*P"
+        },
+        {
+          "register": "ub",
+          "formula": "u*bnorm"
+        },
+        {
+          "register": "ab",
+          "formula": "u+bnorm"
+        },
+        {
+          "register": "z2",
+          "formula": "Z*Z"
+        },
+        {
+          "register": "inner",
+          "formula": "(z2-u-bnorm-e)**2-4*(u*bnorm+u*e+bnorm*e)"
+        },
+        {
+          "register": "out",
+          "formula": "inner*inner-64*u*bnorm*e*z2"
+        }
+      ],
+      "degree": {
+        "degree": 440,
+        "monomial": {
+          "h": 12,
+          "z": 4,
+          "j": 264,
+          "w": 40,
+          "v": 52,
+          "s": 12,
+          "r": 24,
+          "c": 32,
+          "T": 0,
+          "C": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "2": 476,
+          "3": 306,
+          "beta": 264
+        },
+        "every_node_checked": 152,
+        "center_cut_used": true
+      }
+    },
+    {
+      "name": "scalar11_q4_center_reduced",
+      "topology": {
+        "live_nodes": 162,
+        "operations": 136,
+        "counts": {
+          "mul": 86,
+          "add": 27,
+          "sub": 23
+        },
+        "syntactic_degree": 440
+      },
+      "all_registers": [
+        {
+          "register": "J",
+          "formula": "6*j+1"
+        },
+        {
+          "register": "qm",
+          "formula": "beta*J"
+        },
+        {
+          "register": "q",
+          "formula": "qm+1"
+        },
+        {
+          "register": "q2",
+          "formula": "q*q"
+        },
+        {
+          "register": "q3",
+          "formula": "q*q*q"
+        },
+        {
+          "register": "W",
+          "formula": "12*w+4"
+        },
+        {
+          "register": "X",
+          "formula": "q*W"
+        },
+        {
+          "register": "Y",
+          "formula": "(2*v+1)*q**3"
+        },
+        {
+          "register": "E",
+          "formula": "X*Y"
+        },
+        {
+          "register": "a",
+          "formula": "(X+1)*Y"
+        },
+        {
+          "register": "H",
+          "formula": "4*a+3"
+        },
+        {
+          "register": "Delta",
+          "formula": "(a+2)**2-1"
+        },
+        {
+          "register": "F",
+          "formula": "(K0+W)*C-z*qm"
+        },
+        {
+          "register": "R",
+          "formula": "(q*(q-F)-C)*(q*q-1)+(MC+q*MF)*J"
+        },
+        {
+          "register": "k",
+          "formula": "R+1+4*h*q**4"
+        },
+        {
+          "register": "c2",
+          "formula": "c*c"
+        },
+        {
+          "register": "eta",
+          "formula": "c-Y*k"
+        },
+        {
+          "register": "Derr",
+          "formula": "(cone_A*F-q)**2+(cone_B*C-q)**2"
+        },
+        {
+          "register": "Budget",
+          "formula": "k*k*(q*q-Derr)-4*q*q*eta*eta"
+        },
+        {
+          "register": "ell",
+          "formula": "X*Y*Y"
+        },
+        {
+          "register": "L",
+          "formula": "ell*k"
+        },
+        {
+          "register": "Dt",
+          "formula": "1+ell*(ell+1)*k*k"
+        },
+        {
+          "register": "D",
+          "formula": "3*Budget-4"
+        },
+        {
+          "register": "tguard",
+          "formula": "2*Dt*s"
+        },
+        {
+          "register": "P",
+          "formula": "Dt*(1+4*D*Dt*s*s)"
+        },
+        {
+          "register": "I",
+          "formula": "2*r*c*c"
+        },
+        {
+          "register": "I2",
+          "formula": "I*I"
+        },
+        {
+          "register": "strong",
+          "formula": "Delta*I*I"
+        },
+        {
+          "register": "Df",
+          "formula": "1+Delta*I*I"
+        },
+        {
+          "register": "Q",
+          "formula": "Delta*Delta*I*I"
+        },
+        {
+          "register": "delta",
+          "formula": "Q-1"
+        },
+        {
+          "register": "b",
+          "formula": "c-R+4*I*T"
+        },
+        {
+          "register": "V",
+          "formula": "Df*b-c"
+        },
+        {
+          "register": "Cy",
+          "formula": "Q*V*V-1"
+        },
+        {
+          "register": "Da",
+          "formula": "(Q-1)*(Q*V*V-1)"
+        },
+        {
+          "register": "K",
+          "formula": "X*(3*c-2*X)+2"
+        },
+        {
+          "register": "H2",
+          "formula": "H*H"
+        },
+        {
+          "register": "H3",
+          "formula": "H**3"
+        },
+        {
+          "register": "zc",
+          "formula": "H*T+K"
+        },
+        {
+          "register": "zc2",
+          "formula": "zc*zc"
+        },
+        {
+          "register": "Ac",
+          "formula": "(zc*zc+3*H*H)*(zc**3-19*H**3)"
+        },
+        {
+          "register": "S",
+          "formula": "s*r*H"
+        },
+        {
+          "register": "S2",
+          "formula": "S*S"
+        },
+        {
+          "register": "B",
+          "formula": "S*n-Ac"
+        },
+        {
+          "register": "shift",
+          "formula": "(2*Q-1)*V"
+        },
+        {
+          "register": "center_part",
+          "formula": "S*shift"
+        },
+        {
+          "register": "u",
+          "formula": "S*S*Df"
+        },
+        {
+          "register": "bnorm",
+          "formula": "4*S*S*Da"
+        },
+        {
+          "register": "e",
+          "formula": "16*S*S*P"
+        },
+        {
+          "register": "ub",
+          "formula": "u*bnorm"
+        },
+        {
+          "register": "ab",
+          "formula": "u+bnorm"
+        },
+        {
+          "register": "omega",
+          "formula": "B*B+2*B*center_part+S*S*(V*V+4*Q-4)"
+        },
+        {
+          "register": "z2",
+          "formula": "omega+bnorm"
+        },
+        {
+          "register": "inner",
+          "formula": "(omega-u-e)**2-4*(u*bnorm+u*e+bnorm*e)"
+        },
+        {
+          "register": "out",
+          "formula": "inner*inner-64*u*bnorm*e*z2"
+        }
+      ],
+      "degree": {
+        "degree": 440,
+        "monomial": {
+          "h": 12,
+          "z": 4,
+          "j": 264,
+          "w": 40,
+          "v": 52,
+          "s": 12,
+          "r": 24,
+          "c": 32,
+          "T": 0,
+          "C": 0,
+          "n": 0
+        },
+        "coefficient": {
+          "sign": 1,
+          "2": 476,
+          "3": 306,
+          "beta": 264
+        },
+        "every_node_checked": 162,
+        "center_cut_used": false
+      }
+    }
+  ]
+}

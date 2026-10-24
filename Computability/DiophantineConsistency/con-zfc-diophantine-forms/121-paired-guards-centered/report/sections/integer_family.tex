@@ -1,0 +1,146 @@
+\section{Two coprime groups over eleven unrestricted integers}
+\label{sec:integer-two-groups}
+The new integer frontier is
+\[
+ (\deg,\mathrm{ops})\in\{(688,124),(728,120),(820,119),(964,118),(1632,112)\}.
+\]
+Every equation uses the same eleven unrestricted integer coordinates and six
+fully instantiated numeral coefficients. The degree-$820$ and $964$ points are new
+mathematical reductions; the other three evaluate the previous polynomials
+with two fewer binary operations. No ten-integer endpoint, degree below $688$,
+global optimum, proof of consistency, or new formal kernel certificate is claimed.
+
+The eleven independent coordinates, all in $\mathbb Z$, are
+\[
+ j,C,z,h,r,v,w,T,c,n,s.
+\]
+The six fixed integers are $\beta,K_0,M_C,M_F,A_F,A_C$, with
+\[
+ \beta=2^{1064921}-1,\qquad A_F=2^{1113},\qquad A_C=2^{666104}.
+\]
+Here $K_0,M_C,M_F$ are the actual authenticated numeral payloads in
+\path{integer/coefficients/BINDING.json}, not parameters; $M_F$ is
+already shifted. Their complete finite reconstruction (including the
+machine and tile data) is retained in \path{integer/coefficients/recipe/}.
+The checker rebuilds the full tuple and compares every payload byte.
+Define
+\begin{align*}
+ J&=6j+1,&q&=\beta J+1,&W&=12w+4,\\
+ X&=qW,&Y&=(2v+1)q^3,&E&=XY,\\
+ a&=E+Y,&A&=a+2,&H&=4a+3,\\
+ \Delta&=a^2+H=A^2-1,
+ &F&=(K_0+W)C-z(q-1).
+\end{align*}
+Further put
+\begin{align*}
+ R&=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ k&=R+1+hE,\qquad \eta=c-Yk,\\
+ D_{\rm err}&=(A_FF-q)^2+(A_CC-q)^2,\\
+ \mathrm{Budget}&=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ D&=3\mathrm{Budget}-4,\qquad \ell=XY^2,\qquad L=\ell k,\\
+ D_\tau&=1+L(L+k)=1+\ell(\ell+1)k^2.
+\end{align*}
+Every displayed symbol other than the eleven coordinates is a fixed
+numeral or polynomial abbreviation, not an additional unknown.
+The positivity group is
+\[
+ D_g=1+4DD_\tau s^2,\qquad
+ P=D_\tau D_g=D_\tau+D(2sD_\tau)^2.
+\]
+For the new pair put
+\[
+ D_m=1+\Delta c^2,\quad I=2src^2AD_m,\quad
+ D_f=1+\Delta I^2,\quad Q=\Delta^2I^2,\quad\delta=Q-1,
+\]
+\[
+ V=D_f(c-R+4IT)-c,\quad C_y=QV^2-1,\quad D_a=\delta C_y,
+\]
+\[
+ K=X(3c-2X)+2,\quad S=IH^5,\quad z_c=HT+K,
+\quad A_c=(z_c^2+3H^2)(z_c^3-19H^3),\quad Z=Sn-A_c.
+\]
+The new literal integer polynomials are
+\begin{align*}
+ N_{\rm int}&=(Z^2-S^2D_fD_a-4S^2P)^2-16S^4D_fD_aP,\\
+ N_{\rm rat}&=(\delta Z^2+4\delta S^2P-S^2D_fC_y)^2
+                  -16\delta^2S^2PZ^2.
+\end{align*}
+The latter is denominator-cleared, not a rational operation.
+
+\paragraph{Soundness.}
+At $I=0$, one has $S=Q=0$ and $\delta=-1$; thus the rational
+clearing factor $\delta^2$ equals one and both polynomials equal
+$A_c^4\ne0$, since
+$(t^2+3)(t^3-19)$ has no rational root and $H\ne0$.
+Thus $I,s,r,c\ne0$. The established bootstrap gives $D_f,D_a>0$.
+A vanishing conjugate has no sole nonzero imaginary term, hence $D_g>0$,
+which forces $\mathrm{Budget}\ge2$ and the centered signed packing bounds.
+For $N_{\rm int}$, a signed rational radical sum is
+$\sqrt{D_fD_a}+2\sqrt P$; for $N_{\rm rat}$, multiplication by $\delta$
+gives $\sqrt{D_fD_a}+2\delta\sqrt P$, with the conjugate signs understood.
+All underlying radicands and $\delta$ are odd. The distinct coefficient
+$2$-adic valuations force both products to be squares.
+Now $\gcd(D_\tau,D_g)=1$, while modulo $D_f$,
+\[
+ Q\equiv-\Delta,\quad \delta\equiv-A^2,\quad
+ V\equiv-c,\quad C_y\equiv-D_m,\quad D_a\equiv A^2D_m.
+\]
+Since $AD_m\mid I$, one has $\gcd(D_f,D_a)=1$.
+Each of $D_f,D_a,D_\tau,D_g$ is therefore a square.
+The retained adjacent-coefficient Pell descent makes
+$y=\sqrt{D_a}/\delta$ integral. Consequently $S\mid A_c$.
+Monic prime-adic comparison yields $H\mid K$, and
+$K=HXc-2[X(X+2ac)-1]$ restores the same main projection.
+The retained signed folding, nonodd strong-rank, whole-product,
+centered orientation, and odd-witness regeneration arguments apply with
+exactly their original hypotheses, yielding an old calibrated refutation witness.
+The full statements and every hypothesis check are in \texttt{integer/PROOF.md}.
+
+\paragraph{Completeness.}
+Fix canonical outer data first. Since $DD_\tau>0$ and
+$DD_\tau\equiv2\pmod3$, Pell existence provides $s,g>0$ with
+$g^2=1+4DD_\tau s^2$.
+Apply the retained full-residue interpolation theorem with $N=2sAD_m$.
+It fixes a single strong pair $I,f$ satisfying $8sAD_mc^2\mid I$,
+with every auxiliary $T$ class modulo $I$ still available.
+Set $r=I/(2sAD_mc^2)$. Since $H\mid K$, write $\kappa=K/H$.
+Intersectivity chooses a root of $(T+\kappa)^2+3$ times
+$(T+\kappa)^3-19$ modulo $I$, and interpolation realizes that class
+without changing $I,f$. Thus $A_c/S\in\mathbb Z$.
+Finally choose $n=A_c/S+f\delta y+2\tau g$ or
+$n=A_c/S+fy+2\tau g$, respectively.
+This proves both existence directions with the same explicitly inherited
+ordinary native/compiler/refutation calibration.
+
+\paragraph{Exact costs.}
+The degrees $\deg I=24$, $\deg S=54$, $\deg D_f=60$,
+$\deg Q=72$, $\deg V=85$, $\deg C_y=242$, $\deg D_a=314$
+give unique maximal terms $(S^2D_fD_a)^2$ and $(S^2D_fC_y)^2$.
+Their exact degrees are $964$ and $820$, at $118$ and $119$ operations.
+For the degree-$688$ and degree-$728$ endpoints, instead put $I=2src^2$ and
+recompute $D_f,Q,\delta,V,C_y,D_a,S$ from their displayed formulas.
+Set
+\[
+ u=S^2D_f,\quad b=4S^2D_a,\quad e=16S^2P,\qquad
+ Z=S(n+\sigma)-A_c,
+\]
+where $\sigma=0$ for degree $728$ and $\sigma=(2Q-1)V$ for degree $688$.
+The equation is the balanced octic
+\[
+ [ (Z^2+b-u-e)^2-4(Z^2b+ue)]^2-64(Z^2b)(ue)=0.
+\]
+The exact identity with the prior eight-conjugate polynomial and the
+direct expression for $P$ save two gates, giving $728/120$ and $688/124$.
+For the degree-$1632$ endpoint, put $I=2src^2PD_mA$, recompute the same
+downstream expressions, set $Z=Sn-A_c$, and use
+\[
+ \delta Z^2-S^2D_fPC_y=0.
+\]
+The multiplier makes $D_f,D_\tau,D_g,D_a$ pairwise coprime.
+Thus a square product recovers their individual squares, and the same
+signed soundness and fixed-pair interpolation proof applies.
+Sharing $P$ in both the multiplier and output gives $1632/112$.
+Independent standard-library audits bind every live register in a free
+polynomial ring, multiply all four/eight conjugates, rebuild the actual
+numerals, and certify exact leading monomials and centered cancellations;
+they pass unchanged under \texttt{python -O}.

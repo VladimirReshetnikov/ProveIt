@@ -1,0 +1,249 @@
+\section{A single product equation with 111 arithmetic operations}
+\label{sec:product-equation}
+The three-root norm can be replaced by one equality between products.
+The price is a higher total degree. The resulting two equations have
+eleven unrestricted integer variables, using the same entire source-34
+coefficient tuple as Section~\ref{sec:short-carrier}:
+\[
+\begin{array}{l|rr}
+\text{first-index modulus}&\text{degree}&\text{operations}\\\hline
+XY&966&111\\
+4q^4&882&112.
+\end{array}
+\]
+Both improve the inspected all-root fusion equation of degree 1632 in
+114 operations. The degree-440 construction remains the lower-degree
+alternative at a greater arithmetic cost.
+
+\subsection{Definition of the two polynomials}
+Keep the eleven inputs $(j,C,z,h,r,v,w,T,c,n,s)\in\Z^{11}$ and the
+common definitions through $P=D_\tau D_g$ in
+Section~\ref{sec:short-carrier}. For the 111-operation equation use
+$k=R+1+hXY$; for the 112-operation equation use $k=R+1+4hq^4$.
+Thus, in both cases,
+\[
+ D_\tau=1+XY^2(XY^2+1)k^2,
+ \qquad D_g=1+4(3\mathcal B-4)D_\tau s^2.
+\]
+Replace the strong and auxiliary definitions by
+\begin{align*}
+ A&=a+2,&D_m&=1+\Delta c^2,&U&=rc^2 A D_m,\\
+ D_f&=1+\Delta U^2P,&Q&=\Delta^2U^2P,&\delta&=Q-1,\\
+ b_0&=c-R+4UPT,&V&=D_fb_0-c,&C_y&=QV^2-1.
+\end{align*}
+Use the same short projector and scalar carrier,
+\begin{align*}
+ K&=X(3c-2X)+2,&S&=srH,&z_c&=HT+K,\\
+ \mathcal A&=(z_c^2+3H^2)(z_c^3-19H^3),&&
+ Z=Sn-\mathcal A.
+\end{align*}
+The requested equation is simply
+\begin{equation}\label{eq:single-product}
+ \boxed{\delta Z^2-S^2P D_f C_y=0.}
+\end{equation}
+All abbreviations are polynomials and introduce no extra variables.
+In the literal evaluator,
+\[
+ P=D_\tau+(3\mathcal B-4)(2D_\tau s)^2,
+\]
+The short-index graph reuses $4q^2$ from the budget to form
+$(4q^2)q^2=4q^4$, saving one more multiplication. The product $UP$ is shared between
+$\Delta U^2P=(\Delta U)(UP)$ and $b_0=c-R+4(UP)T$.
+The complete graphs are \code{lowops/product11\_degree966.json} and
+\code{lowops/product11\_degree882.json}. Each is bound to all six original
+fixed numerals; no coefficient parameter remains free.
+
+\begin{theorem}\label{thm:single-product}
+Each polynomial in~\eqref{eq:single-product} has an integer zero exactly
+when the retained native source has a finite refutation. Composing its
+ordinary source calibration gives
+\[
+ \ZFC\vdash
+ \bigl(\text{no zero of the specified polynomial in }\Z^{11}\bigr)
+ \longleftrightarrow\Con(\ZFC).
+\]
+The exact degrees and arithmetic counts are the two rows displayed above.
+\end{theorem}
+
+\subsection{Coprimality recovers the signs as well as the squares}
+The unconditional affine bounds from the preceding section give
+$A\ne0$, $H\ne0$ odd, $\Delta=A^2-1>1$, and $X\equiv0\pmod8$.
+For every integer $\ell$, $\ell(\ell+1)\ge0$. Therefore
+\[
+ D_\tau\ge1,\quad D_\tau\equiv1\pmod8,\quad
+ D_g\equiv1\pmod4,\quad P\equiv1\pmod4.
+\]
+In particular $P\ne0$. Neither $D_f$ nor $\delta$ can vanish, because
+$\Delta>1$. Also $C_y\ne0$: the integer identity $QV^2=1$ would force
+$Q=1$, which is impossible. Put $D_a=\delta C_y$; it too is nonzero.
+These statements do not assume that $P,Q$, or $D_f$ are positive.
+
+If $S=0$, the polynomial becomes $\delta\mathcal A^2$, which is nonzero.
+Indeed
+\[
+ \mathcal A=H^5\pi(T+K/H),\qquad
+ \pi(t)=(t^2+3)(t^3-19),
+\]
+and $\pi$ has no rational root. Thus a zero has $S\ne0$, so $s,r\ne0$.
+We deliberately leave $c=0$ open until the guard is recovered.
+
+The three integers $P,D_f,D_a$ are pairwise coprime. The first two
+congruence computations are immediate:
+\[
+ D_f\equiv1\pmod P,\qquad D_a\equiv1\pmod P.
+\]
+For the third, reduction modulo $D_f$ gives
+\[
+ Q\equiv-\Delta,\quad\delta\equiv-A^2,\quad
+ V\equiv-c,\quad C_y\equiv-D_m,\quad D_a\equiv A^2D_m.
+\]
+But $AD_m\mid U$, so $D_f\equiv1$ modulo both $A$ and $D_m$.
+Consequently $\gcd(D_f,D_a)=1$. All gcds refer to absolute values;
+the computations hold at negative inputs and at $U=0$.
+
+Multiply~\eqref{eq:single-product} by $\delta$ and divide by $S^2$:
+\begin{equation}\label{eq:coprime-square-product}
+ \left(\frac{\delta Z}{S}\right)^2=P D_fD_a.
+\end{equation}
+A rational square root of an integer is integral. Pairwise coprimality
+therefore makes $|P|,|D_f|,|D_a|$ separately squares. Since
+$P\equiv1\pmod4$, it cannot be a negative odd square. Hence $P>0$,
+then $D_f=1+\Delta U^2P>0$, and then~\eqref{eq:coprime-square-product}
+forces $D_a>0$. There are positive integers
+\[
+ p_0^2=P,\qquad f^2=D_f,\qquad e_0^2=D_a.
+\]
+The further identity $\gcd(D_\tau,D_g)=1$ splits $P$ once more:
+\[
+ D_\tau=\tau^2,\qquad D_g=g^2,\qquad p_0=\tau g.
+\]
+Because $s\ne0$, the inequality $\mathcal B\le1$ would imply
+$D_g\le1-4D_\tau<0$. Thus $\mathcal B\ge2$. The centered budget now
+gives the common source signs and $|c/k-Y|<1/2$. It also excludes $c=0$:
+at that value,
+\[
+ \mathcal B=k^2\bigl(q^2-D_{\rm err}-4q^2Y^2\bigr)\le0.
+\]
+We have obtained $c\ne0$ and $U\ne0$ without an initial assumption about
+the signs of the saturated radicands.
+
+\subsection{Recovering the original Pell witnesses}
+Define, only within the proof,
+\[
+ I=Up_0,\qquad T_{\rm old}=p_0T.
+\]
+These are integers, $I\ne0$, $c^2\mid I$, and $|I|\ge c^2$.
+The restored equalities are exact:
+\begin{align*}
+ f^2&=1+\Delta I^2,&Q&=(\Delta I)^2>1,\\
+ 4IT_{\rm old}&=4UPT,&
+ V&=f^2(c-R+4IT_{\rm old})-c.
+\end{align*}
+Moreover $y=e_0/\delta\in\Q$ satisfies
+$QV^2-(Q-1)y^2=1$. The adjacent-coefficient descent used in
+Section~\ref{sec:short-carrier} makes $y$ integral. Its hypotheses
+$Q>1$ and integer $V$ have now been established. Cancellation of the
+nonzero $\delta$ in~\eqref{eq:single-product} yields
+\[
+ Z^2=S^2p_0^2f^2y^2,
+\]
+so $Z/S$ is an integer. Hence $S\mid\mathcal A$ and $H\mid K^5$.
+
+The complete signed folding and rank argument now has its original
+hypotheses: the budget strip, the first Pell square, a nonzero strong
+ordinate divisible by $c^2$, and the auxiliary norm with
+$V\equiv-c\pmod f$, $V\equiv-R\pmod c$. Its use does not require
+an odd strong multiplier. In the $4q^4$ version the first-index argument
+is precisely the one already proved in Section~\ref{sec:short-carrier}.
+The exact index and orientation later restore
+$XY\mid k-R-1$, so the original quotient $h$ can be regenerated.
+
+The fifth-power height argument also applies unchanged. With
+$R=2t+1$, $t\ge24$, $x=|X|\ge2^{64}$ and
+\[
+ \Pi=(\operatorname{sign}(c)X-2^R)
+          (2^R\operatorname{sign}(c)X+1),
+\]
+it gives $H\mid\Pi^5$ and $|\Pi|^5<|H|$. Thus $\Pi=0$, the exact
+main projection is restored, and the signed half-binomial argument
+recovers every outer native condition. Fresh private witnesses supply
+an actual zero of the retained source. This proves the forward
+finite-refutation implication using the same source calibration.
+
+\subsection{Completeness and the extra interpolation factor}
+Start with a canonical outer source witness. It has $A>1$ even,
+$R\equiv3\pmod4$, $c=\psi_A(R)>0$, $c\equiv R\pmod4$,
+$D_\tau=\tau^2$, and the stronger budget $\mathcal B\ge64$.
+The positive nonsquare $(3\mathcal B-4)D_\tau\equiv2\pmod3$
+has a Pell unit. Squaring one supplies positive $s,g$ with
+$g^2=1+4(3\mathcal B-4)D_\tau s^2$. Fix them and put $p_0=\tau g$.
+
+Choose one positive strong pair $I,f$ satisfying
+\[
+ 4sAD_m p_0c^2\mid I,
+ \qquad f^2-\Delta I^2=1.
+\]
+Set $r=I/(AD_mp_0c^2)$ and $U=I/p_0$. The strong pair is now fixed.
+Every prime factor of $M=p_0sr$ divides $I$. The canonical projector
+gives $\kappa=K/H\in\Z$. Choose an intersective residue $a_0$ modulo
+$sr$ with $\pi(a_0+\kappa)\equiv0\pmod{sr}$. Supported-modulus
+interpolation, at this same fixed $I,f$, supplies the full auxiliary
+witness with
+\[
+ T_{\rm old}\equiv p_0a_0\pmod{p_0sr}.
+\]
+The extra factor $p_0$ in this modulus is essential. It makes
+$T=T_{\rm old}/p_0$ an integer and ensures $T\equiv a_0\pmod{sr}$.
+Therefore
+\[
+ \frac{\mathcal A}{S}
+     =\frac{H^4\pi(T+\kappa)}{sr}\in\Z.
+\]
+Finally set $n=\mathcal A/S+p_0fy$. Equation~\eqref{eq:single-product}
+vanishes. The order of choices is outer witness, $s,g$, one strong
+$I,f,r$, a residue, $T_{\rm old},T,y$, and $n$. No coprimality between
+these moduli is assumed, and the strong pair is never changed after
+the residue request. This proves the reverse implication.
+
+\subsection{Exact degree and finite validation}
+The key degrees in the two literal graphs are
+\[
+\begin{array}{c|rrrrrrrrrr}
+ &k&P&U&D_f&Q&b_0&V&C_y&S&\mathcal A\\\hline
+XY&7&94&23&152&164&118&270&704&8&35\\
+4q^4&5&82&23&140&152&106&246&644&8&35.
+\end{array}
+\]
+In both cases $\deg Z=35$. The summand $\delta Z^2$ has degree 234
+or 222, while $S^2PD_fC_y$ has degree 966 or 882. The latter therefore
+determines the full leading homogeneous part.
+
+Put $q_0=6\beta j$, $X_0=12q_0w$, $Y_0=2vq_0^3$,
+$a_0=X_0Y_0$, and
+\[
+ k_0=ha_0\quad\hbox{or}\quad
+ k_0=4hq_0^4-q_0^3(12wC-q_0z),
+\]
+respectively. Direct exact multiplication gives the leading form
+\[
+ 2^{36}3^7q_0^{14}X_0^{70}Y_0^{112}k_0^{42}
+       s^{16}r^{12}c^{40}T^2.
+\]
+For the native modulus its coefficient at
+$j^{588}w^{112}v^{154}h^{42}s^{16}r^{12}c^{40}T^2$ is
+$2^{1002}3^{707}\beta^{588}>0$. For the short modulus the coefficient
+at $j^{588}w^{70}v^{112}h^{42}s^{16}r^{12}c^{40}T^2$ is
+$2^{960}3^{665}\beta^{588}>0$. Their exponent sums give the two
+stated exact degrees. The latter coefficient is selected by the maximal
+$h$ power, so no cancellation from the other leading summands is possible.
+
+The independent checker uses only the Python standard library and
+does not import the producer. It verifies every local polynomial formula,
+all 135 or 136 live nodes, all six complete coefficient payloads,
+the coprimality remainder identities, both saturation identities,
+the new index-modulus identity, and exact leading monomials at every
+gate. Five altered mathematical formulas in each graph are rejected.
+Normal and optimized Python runs agree, and both graphs rebuild
+byte-for-byte. These finite checks certify the exported algebra and
+counts; the unbounded semantic argument is the proof above and its
+explicitly retained source lemmas.

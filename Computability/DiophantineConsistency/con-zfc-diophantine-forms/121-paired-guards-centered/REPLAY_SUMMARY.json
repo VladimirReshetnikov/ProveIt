@@ -1,0 +1,792 @@
+{
+  "schema": "frozen_research_replay_summary_v1",
+  "status": "PASS",
+  "date": "2026-10-24",
+  "python": "3.12.14",
+  "sympy": "1.14.0",
+  "purpose": "Manifest-covered summary of completed pre-distribution component and report-transcription replay. Fresh invocations produce their own external exact-command receipts; report rendering has separate QA.",
+  "modes": {
+    "normal": {
+      "status": "PASS",
+      "commands": [
+        {
+          "argv": [
+            "python",
+            "-B",
+            "integer/build_prior_optimized.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "a1f36b0cefa70ce1cef9b78da946d24f87332676b66d98103f97de73c733c26b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "integer/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "e29f4eed3314960946e2298167a525e118e47bd1aa43c8231ede241a91ddd247",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "lowdegree/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "09698b64765ee7a7c0e4c23fd9190687246e64516173c5a7d41e3229a9defce8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "lowdegree/twelve/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "265487b3994c31e11f89474c49b54ff0085353ab5b8b20823f88fd2ec7682e3f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "positive/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "9ac6da3fee6a148ddf38ea50e59b40c48bd7596160ab530e1604436bebdaac44",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "alternative/build_pairguards.py",
+            "alternative/source",
+            "alternative/paired"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "3aff853af3a61226900878da78892333a7af8ccddac9c86a4026bef33819a7bd",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "alternative/build_pairguards.py",
+            "alternative/source",
+            "alternative/squared_paired",
+            "--squared-radius"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "02959405a52aa6abdb6b6bb1c31bb1ef7fe323e26cd57d3cc6e19a8a6054e71c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "integer/check.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "43c69aca345040904e38edb483fde49943161e5330f18f138774adafdbb09b15",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "lowdegree/review/audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "04926a8dbc5dcde1020115e0a7d951210194b2238053c88b2601c3614c011273",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "lowdegree/twelve/review/audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "2d7fb42cb9b10c7bf7d26d5b0e2c3e009a1dcc123f434429fba75b8b3c4e4f02",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/lowdegree/independent_audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "41aeadb00f14d5cc0305d6be09550df10cf0bd91a0c1f8ea537375d097134de7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "positive/build.py",
+            "--check"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "9ac6da3fee6a148ddf38ea50e59b40c48bd7596160ab530e1604436bebdaac44",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "positive/check.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "2ad8debc74f73dae2182ca3f51258fc8cab9b70c8744d73ee60a468574be65ef",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "positive/check_ordinary.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "fbc6ed67e231c6011584c617a03e46ec86ccb72593652cb7af4d3d5d519f05df",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/positive/independent_audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "b06c73fddd13e87c9f48dd6af306468044c4e99396e2c7f3d5196bc16b38eae3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "alternative/check_components.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "e2a200c4fe2503dc9dd3d1a7262c9aa1ca73572831d713f5a7b912a362296f6d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/alternative/audit_paired_independent.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/paired",
+            "--output",
+            "replay_generated/paired"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "511f0b0feb9380fdbe9b4b8fd90418a06a698d545833c3ac7f3420c43b0a40da",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/alternative/check_negative_controls.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/paired",
+            "--output",
+            "replay_generated/paired/NEGATIVE_CONTROLS.json"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "08f239de0faa069037f1b00a7073b6ac04ccffffb0060099a677cc2d02244cf1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/alternative/audit_paired_independent.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/squared_paired",
+            "--output",
+            "replay_generated/squared_paired",
+            "--squared-radius"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "7366279647a33be96130d26f985e5019b33ae467c3ad9c265bb46e2b83ac405d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/alternative/check_negative_controls.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/squared_paired",
+            "--output",
+            "replay_generated/squared_paired/NEGATIVE_CONTROLS.json",
+            "--squared-radius"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "08f239de0faa069037f1b00a7073b6ac04ccffffb0060099a677cc2d02244cf1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "review/integer/check_independent.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "8afd7bd0fc34f9353daf6f38e48a1e27354e2fb22aee1248f63aafb2babbf1a7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "rebuild_coefficients.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "b9e3b104f5a05fe0c9ea6a494935637f407179026d3e642f35d37fb2dd5b66a4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "report/qa/check_editorial_math.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "447597b51517de0f06d7ecd69e7ec685d891736960d62e237165201d1034d3f2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "deterministic_byte_comparisons": [
+        "COEFFICIENT_CHECK.json",
+        "alternative/COMPONENT_CHECK.json",
+        "alternative/paired/METRICS.json",
+        "alternative/paired/equation.json",
+        "alternative/paired/expanded_polynomial.json",
+        "alternative/paired/factored_source.json",
+        "alternative/paired/factorization_certificate.json",
+        "alternative/paired/pair_certificate.json",
+        "alternative/paired/paired_source.json",
+        "alternative/paired/presemantic_certificate.json",
+        "alternative/paired/projection_certificate.json",
+        "alternative/paired/terminal_elimination_certificate.json",
+        "alternative/squared_paired/METRICS.json",
+        "alternative/squared_paired/equation.json",
+        "alternative/squared_paired/expanded_polynomial.json",
+        "alternative/squared_paired/factored_source.json",
+        "alternative/squared_paired/factorization_certificate.json",
+        "alternative/squared_paired/pair_certificate.json",
+        "alternative/squared_paired/paired_source.json",
+        "alternative/squared_paired/presemantic_certificate.json",
+        "alternative/squared_paired/projection_certificate.json",
+        "alternative/squared_paired/terminal_elimination_certificate.json",
+        "integer/CHECK.json",
+        "integer/METRICS.json",
+        "integer/METRICS_OPTIMIZED.json",
+        "integer/optimized_fused11_integral.json",
+        "integer/optimized_fused11_rational.json",
+        "integer/optimized_guard_fused11_aux.json",
+        "integer/optimized_guard_fused11_direct.json",
+        "integer/pair_fused11_integral.json",
+        "integer/pair_fused11_rational.json",
+        "integer/pair_fused11_rational_sharp.json",
+        "integer/pair_fused11_rational_strong.json",
+        "lowdegree/equation.json",
+        "lowdegree/review/CHECK.json",
+        "lowdegree/specification.json",
+        "lowdegree/twelve/equation.json",
+        "lowdegree/twelve/review/CHECK.json",
+        "positive/CHECK.json",
+        "positive/CHECK_ORDINARY.json",
+        "positive/ordinary_sharp.json",
+        "positive/ordinary_uncentered.json",
+        "positive/ordinary_upper.json",
+        "positive/sharp.json",
+        "positive/uncentered.json",
+        "positive/upper.json",
+        "report/qa/editorial_math_check.json",
+        "review/alternative/paired/NEGATIVE_CONTROLS.json",
+        "review/alternative/paired/PRESEMANTIC_BOUNDS.json",
+        "review/alternative/squared_paired/NEGATIVE_CONTROLS.json",
+        "review/alternative/squared_paired/PRESEMANTIC_BOUNDS.json",
+        "review/integer/INDEPENDENT_CHECK.json",
+        "review/lowdegree/INDEPENDENT_CHECK.json",
+        "review/positive/INDEPENDENT_CHECK.json"
+      ]
+    },
+    "optimized": {
+      "status": "PASS",
+      "commands": [
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "integer/build_prior_optimized.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "a1f36b0cefa70ce1cef9b78da946d24f87332676b66d98103f97de73c733c26b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "integer/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "e29f4eed3314960946e2298167a525e118e47bd1aa43c8231ede241a91ddd247",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "lowdegree/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "09698b64765ee7a7c0e4c23fd9190687246e64516173c5a7d41e3229a9defce8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "lowdegree/twelve/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "265487b3994c31e11f89474c49b54ff0085353ab5b8b20823f88fd2ec7682e3f",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "positive/build.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "9ac6da3fee6a148ddf38ea50e59b40c48bd7596160ab530e1604436bebdaac44",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "alternative/build_pairguards.py",
+            "alternative/source",
+            "alternative/paired"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "3aff853af3a61226900878da78892333a7af8ccddac9c86a4026bef33819a7bd",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "alternative/build_pairguards.py",
+            "alternative/source",
+            "alternative/squared_paired",
+            "--squared-radius"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "02959405a52aa6abdb6b6bb1c31bb1ef7fe323e26cd57d3cc6e19a8a6054e71c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "integer/check.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "43c69aca345040904e38edb483fde49943161e5330f18f138774adafdbb09b15",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "lowdegree/review/audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "04926a8dbc5dcde1020115e0a7d951210194b2238053c88b2601c3614c011273",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "lowdegree/twelve/review/audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "2d7fb42cb9b10c7bf7d26d5b0e2c3e009a1dcc123f434429fba75b8b3c4e4f02",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/lowdegree/independent_audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "41aeadb00f14d5cc0305d6be09550df10cf0bd91a0c1f8ea537375d097134de7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "positive/build.py",
+            "--check"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "9ac6da3fee6a148ddf38ea50e59b40c48bd7596160ab530e1604436bebdaac44",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "positive/check.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "2ad8debc74f73dae2182ca3f51258fc8cab9b70c8744d73ee60a468574be65ef",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "positive/check_ordinary.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "fbc6ed67e231c6011584c617a03e46ec86ccb72593652cb7af4d3d5d519f05df",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/positive/independent_audit.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "b06c73fddd13e87c9f48dd6af306468044c4e99396e2c7f3d5196bc16b38eae3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "alternative/check_components.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "e2a200c4fe2503dc9dd3d1a7262c9aa1ca73572831d713f5a7b912a362296f6d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/alternative/audit_paired_independent.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/paired",
+            "--output",
+            "replay_generated/paired"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "511f0b0feb9380fdbe9b4b8fd90418a06a698d545833c3ac7f3420c43b0a40da",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/alternative/check_negative_controls.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/paired",
+            "--output",
+            "replay_generated/paired/NEGATIVE_CONTROLS.json"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "08f239de0faa069037f1b00a7073b6ac04ccffffb0060099a677cc2d02244cf1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/alternative/audit_paired_independent.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/squared_paired",
+            "--output",
+            "replay_generated/squared_paired",
+            "--squared-radius"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "7366279647a33be96130d26f985e5019b33ae467c3ad9c265bb46e2b83ac405d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/alternative/check_negative_controls.py",
+            "--baseline",
+            "alternative/source",
+            "--candidate",
+            "alternative/squared_paired",
+            "--output",
+            "replay_generated/squared_paired/NEGATIVE_CONTROLS.json",
+            "--squared-radius"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "08f239de0faa069037f1b00a7073b6ac04ccffffb0060099a677cc2d02244cf1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "review/integer/check_independent.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "5f7b524f26c6170d96a813dd3700d36d0a7e8822615f26b9d40c5d667325340c",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "rebuild_coefficients.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "b9e3b104f5a05fe0c9ea6a494935637f407179026d3e642f35d37fb2dd5b66a4",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "python",
+            "-B",
+            "-O",
+            "report/qa/check_editorial_math.py"
+          ],
+          "returncode": 0,
+          "stdout_sha256": "447597b51517de0f06d7ecd69e7ec685d891736960d62e237165201d1034d3f2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "deterministic_byte_comparisons": [
+        "COEFFICIENT_CHECK.json",
+        "alternative/COMPONENT_CHECK_OPTIMIZED.json",
+        "alternative/paired/METRICS.json",
+        "alternative/paired/equation.json",
+        "alternative/paired/expanded_polynomial.json",
+        "alternative/paired/factored_source.json",
+        "alternative/paired/factorization_certificate.json",
+        "alternative/paired/pair_certificate.json",
+        "alternative/paired/paired_source.json",
+        "alternative/paired/presemantic_certificate.json",
+        "alternative/paired/projection_certificate.json",
+        "alternative/paired/terminal_elimination_certificate.json",
+        "alternative/squared_paired/METRICS.json",
+        "alternative/squared_paired/equation.json",
+        "alternative/squared_paired/expanded_polynomial.json",
+        "alternative/squared_paired/factored_source.json",
+        "alternative/squared_paired/factorization_certificate.json",
+        "alternative/squared_paired/pair_certificate.json",
+        "alternative/squared_paired/paired_source.json",
+        "alternative/squared_paired/presemantic_certificate.json",
+        "alternative/squared_paired/projection_certificate.json",
+        "alternative/squared_paired/terminal_elimination_certificate.json",
+        "integer/CHECK_OPTIMIZED.json",
+        "integer/METRICS.json",
+        "integer/METRICS_OPTIMIZED.json",
+        "integer/optimized_fused11_integral.json",
+        "integer/optimized_fused11_rational.json",
+        "integer/optimized_guard_fused11_aux.json",
+        "integer/optimized_guard_fused11_direct.json",
+        "integer/pair_fused11_integral.json",
+        "integer/pair_fused11_rational.json",
+        "integer/pair_fused11_rational_sharp.json",
+        "integer/pair_fused11_rational_strong.json",
+        "lowdegree/equation.json",
+        "lowdegree/review/CHECK.json",
+        "lowdegree/specification.json",
+        "lowdegree/twelve/equation.json",
+        "lowdegree/twelve/review/CHECK.json",
+        "positive/CHECK_OPTIMIZED.json",
+        "positive/CHECK_ORDINARY_OPTIMIZED.json",
+        "positive/ordinary_sharp.json",
+        "positive/ordinary_uncentered.json",
+        "positive/ordinary_upper.json",
+        "positive/sharp.json",
+        "positive/uncentered.json",
+        "positive/upper.json",
+        "report/qa/editorial_math_check_optimized.json",
+        "review/alternative/paired/NEGATIVE_CONTROLS.json",
+        "review/alternative/paired/PRESEMANTIC_BOUNDS.json",
+        "review/alternative/squared_paired/NEGATIVE_CONTROLS.json",
+        "review/alternative/squared_paired/PRESEMANTIC_BOUNDS.json",
+        "review/integer/INDEPENDENT_CHECK_OPTIMIZED.json",
+        "review/lowdegree/INDEPENDENT_CHECK.json",
+        "review/positive/INDEPENDENT_CHECK_OPTIMIZED.json"
+      ]
+    }
+  },
+  "exact_byte_comparison_sha256": {
+    "COEFFICIENT_CHECK.json": "b9e3b104f5a05fe0c9ea6a494935637f407179026d3e642f35d37fb2dd5b66a4",
+    "alternative/COMPONENT_CHECK.json": "e2a200c4fe2503dc9dd3d1a7262c9aa1ca73572831d713f5a7b912a362296f6d",
+    "alternative/COMPONENT_CHECK_OPTIMIZED.json": "e2a200c4fe2503dc9dd3d1a7262c9aa1ca73572831d713f5a7b912a362296f6d",
+    "alternative/paired/METRICS.json": "128933fa2cec5e4b1d76a523f29c245f36f1bd242a9a220fd32314a91872c02c",
+    "alternative/paired/equation.json": "e2da1a0da18718cc8208370878404d26db75f5e259d987fa4421958ba5e9f4ca",
+    "alternative/paired/expanded_polynomial.json": "9c7dfe682d95e6a9270198c417c19ab96a511ddc0eb99594ea3e3add01f99ef8",
+    "alternative/paired/factored_source.json": "8a013d3947e7d1218904fd8e76261afd75d46493727e90c13b230953f7acea4d",
+    "alternative/paired/factorization_certificate.json": "08c568a74bdfe9c53cb9a353e2b6664433c916e835f9321ca152131223851496",
+    "alternative/paired/pair_certificate.json": "dbed88647ff8df2bd70700f853bf2b8177ca1895635933e394f84a9910ca42f9",
+    "alternative/paired/paired_source.json": "d60ca91f06d7fa562e31db25f25987584d110e3dff1c7ddcfc26bc5c547514e5",
+    "alternative/paired/presemantic_certificate.json": "8ac306b80fa52e51f2d8390fac7740bc4dd07fb3f511f4e708e5faec0e78f475",
+    "alternative/paired/projection_certificate.json": "cf7c5eb555372bccc6c3c55646ffac47187663e657ffa7b079871940f9fbdd60",
+    "alternative/paired/terminal_elimination_certificate.json": "cf7c5eb555372bccc6c3c55646ffac47187663e657ffa7b079871940f9fbdd60",
+    "alternative/squared_paired/METRICS.json": "1f55b71bb646c03fd2105a199f996302a0a4aa6102fe1a725cf2f5bd157d43e0",
+    "alternative/squared_paired/equation.json": "167b24a35c507a9495b5c9431673ae80b2fb16f61da282ef6c06f070a854957c",
+    "alternative/squared_paired/expanded_polynomial.json": "d6b261fe7f8e569ea22089054dda2d23a8abada29edd46ade8dfd841ffae58ed",
+    "alternative/squared_paired/factored_source.json": "563d956534e06cb2d6f9a85b22934f335f895b42583b957ac2ed9383b725a15f",
+    "alternative/squared_paired/factorization_certificate.json": "ef275616724ca4a2232042f6d6992e7bd0934467c3919fcce1d03b5052abc0b9",
+    "alternative/squared_paired/pair_certificate.json": "0075ac6eff31573412d1b46f5cfcaf3ae18d662b42db682a97690f58adb60f5a",
+    "alternative/squared_paired/paired_source.json": "af0086e4133239359eb1a69888e1a122394f587bf50d81ebfdbb64982117b8ff",
+    "alternative/squared_paired/presemantic_certificate.json": "c84c86d39730ed171b2d422b24b4f249f96dbf38fee5df157336aff7ddfc7071",
+    "alternative/squared_paired/projection_certificate.json": "395ac4cec366d36c1a4738ce9b89be23e53896b124e06eb68fdb4798631d464c",
+    "alternative/squared_paired/terminal_elimination_certificate.json": "395ac4cec366d36c1a4738ce9b89be23e53896b124e06eb68fdb4798631d464c",
+    "integer/CHECK.json": "b6ff27adc42726417a45527c21fc096180a3a2f559f076b870095d4ff016406f",
+    "integer/CHECK_OPTIMIZED.json": "b6ff27adc42726417a45527c21fc096180a3a2f559f076b870095d4ff016406f",
+    "integer/METRICS.json": "e29f4eed3314960946e2298167a525e118e47bd1aa43c8231ede241a91ddd247",
+    "integer/METRICS_OPTIMIZED.json": "a1f36b0cefa70ce1cef9b78da946d24f87332676b66d98103f97de73c733c26b",
+    "integer/optimized_fused11_integral.json": "dfd389bd4a3880fcb0c2ae051306274dfab77c40f2ae24b28f1d6f2c78876575",
+    "integer/optimized_fused11_rational.json": "94a75956786aa7ce1cd68606b96030ba74455a54aa8f4806ca904881088c4047",
+    "integer/optimized_guard_fused11_aux.json": "3c30fcfb565360cf9ca32a0b942343135d6e396349a2005d743e8d6e36ec3337",
+    "integer/optimized_guard_fused11_direct.json": "4e7e13a71c817f78529ea08bccbff30eb09bf279385f2e6428267b153fac95c3",
+    "integer/pair_fused11_integral.json": "5e929acea363e1c8ecaec68ff9403b79b525ecf24a90ec27d3fa341a9cb909f5",
+    "integer/pair_fused11_rational.json": "3a18f99ad0f3950be64789e29aaeb775aef2352cfc43c4a768c3d97bb8fa9619",
+    "integer/pair_fused11_rational_sharp.json": "8ba0e0b44309788587ba36d26a78b2576408acab936ca838e42a66cf93da8054",
+    "integer/pair_fused11_rational_strong.json": "65645abff16a594eecb6f2752416edbe99af98da1748c74819c64a08c43d1739",
+    "lowdegree/equation.json": "18e89da4b0d5b9c45406e665bccbbdbf7d5a2dc15863a7a7ddddcabdc1e3b69d",
+    "lowdegree/review/CHECK.json": "d312f3439676b627b567f86f72c25b3563563bf188ca0d506fd1c913acb4a677",
+    "lowdegree/specification.json": "622fc32076d8e1ccba732c4b057d5bc19982638e8bb10021d24f8be48a8aa6cc",
+    "lowdegree/twelve/equation.json": "46e25865f3073e52265310896af52500ad5465c7eddce01e241ba93123a45507",
+    "lowdegree/twelve/review/CHECK.json": "2d7fb42cb9b10c7bf7d26d5b0e2c3e009a1dcc123f434429fba75b8b3c4e4f02",
+    "positive/CHECK.json": "2ad8debc74f73dae2182ca3f51258fc8cab9b70c8744d73ee60a468574be65ef",
+    "positive/CHECK_OPTIMIZED.json": "2ad8debc74f73dae2182ca3f51258fc8cab9b70c8744d73ee60a468574be65ef",
+    "positive/CHECK_ORDINARY.json": "fbc6ed67e231c6011584c617a03e46ec86ccb72593652cb7af4d3d5d519f05df",
+    "positive/CHECK_ORDINARY_OPTIMIZED.json": "fbc6ed67e231c6011584c617a03e46ec86ccb72593652cb7af4d3d5d519f05df",
+    "positive/ordinary_sharp.json": "6d20906602d52772e7b331b38fd759e720eace94d697fb64aebfc7fbda54d888",
+    "positive/ordinary_uncentered.json": "db369dda53a0b4f08591351f65e0dea6d8765f2fd7bb2166882f19707d3c7bce",
+    "positive/ordinary_upper.json": "90dac58035c3af0a0bc72ce79e659b365219fd7532cef4cb5edb84451b833ccb",
+    "positive/sharp.json": "158e7d2c47c432892c214100154cc284cc07e8ac1ed0f529376e691e6f7b3bec",
+    "positive/uncentered.json": "9ad6ce6a7cf5404f4f92ac5b20da7ea20c3fe22a4d5635148fa49b3672abe5e1",
+    "positive/upper.json": "a2fa6624f497e847e7cb5a61d3d495a602cc335e7124df222e840ad85028527b",
+    "report/qa/editorial_math_check.json": "447597b51517de0f06d7ecd69e7ec685d891736960d62e237165201d1034d3f2",
+    "report/qa/editorial_math_check_optimized.json": "447597b51517de0f06d7ecd69e7ec685d891736960d62e237165201d1034d3f2",
+    "review/alternative/paired/NEGATIVE_CONTROLS.json": "08f239de0faa069037f1b00a7073b6ac04ccffffb0060099a677cc2d02244cf1",
+    "review/alternative/paired/PRESEMANTIC_BOUNDS.json": "0876920cc4defa89a781dab860309b5c97aaf75b6f7534721ee81d41c9feebdc",
+    "review/alternative/squared_paired/NEGATIVE_CONTROLS.json": "08f239de0faa069037f1b00a7073b6ac04ccffffb0060099a677cc2d02244cf1",
+    "review/alternative/squared_paired/PRESEMANTIC_BOUNDS.json": "540648e426e5f2358542690ae87e19124a5a41a19578e05a0d7e56a021d262a6",
+    "review/integer/INDEPENDENT_CHECK.json": "5102aed21cc5d9a502dbbb2133d903baebadbee16c686d4e7fe6080f6c49bb07",
+    "review/integer/INDEPENDENT_CHECK_OPTIMIZED.json": "5102aed21cc5d9a502dbbb2133d903baebadbee16c686d4e7fe6080f6c49bb07",
+    "review/lowdegree/INDEPENDENT_CHECK.json": "41aeadb00f14d5cc0305d6be09550df10cf0bd91a0c1f8ea537375d097134de7",
+    "review/positive/INDEPENDENT_CHECK.json": "b06c73fddd13e87c9f48dd6af306468044c4e99396e2c7f3d5196bc16b38eae3",
+    "review/positive/INDEPENDENT_CHECK_OPTIMIZED.json": "b06c73fddd13e87c9f48dd6af306468044c4e99396e2c7f3d5196bc16b38eae3"
+  },
+  "preserved_coefficient_and_certificate_files_per_mode": 97,
+  "manifest_corruption_controls": [
+    {
+      "control": "one_byte_equation_corruption",
+      "status": "REJECTED"
+    },
+    {
+      "control": "missing_equation",
+      "status": "REJECTED"
+    },
+    {
+      "control": "coefficient_payload_corruption",
+      "status": "REJECTED"
+    }
+  ],
+  "zip_corruption_control": {
+    "control": "single_byte_stored_ZIP_payload_corruption",
+    "status": "REJECTED"
+  },
+  "prior_integrity": {
+    "status": "PASS",
+    "files": 370,
+    "scope": "Whole inherited release bytes checked. Prior release programs and inherited formal projects are not executed by this round."
+  },
+  "component_manifest_integrity": {
+    "integer": {
+      "status": "PASS",
+      "files": 134
+    },
+    "lowdegree": {
+      "status": "PASS",
+      "files": 43
+    },
+    "positive": {
+      "status": "PASS",
+      "files": 51
+    },
+    "alternative": {
+      "status": "PASS",
+      "files": 153
+    }
+  },
+  "scope": "Finite algebra, deterministic transcription, source integrity and corruption controls; not a consistency proof or a fresh end-to-end Lean/C222/native compiler theorem.",
+  "calibration_boundary": "Full incoming native/C222 literal-source binding and transitive signed-Pell/calculus theorems remain imported ordinary-proof dependencies, not independently re-established in full by this round.",
+  "report": {
+    "pdf_sha256": "3875b292c19921d83774644003107254e0b8b3f0198917c86748844f3dbffa0e",
+    "pages": 17,
+    "visual_QA": "report/QA_RECEIPT.json",
+    "editorial_audit": "72 display blocks and seven twelve-variable prefix formulas, both Python modes"
+  }
+}

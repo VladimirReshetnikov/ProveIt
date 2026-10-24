@@ -1,0 +1,225 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,
+ pdftitle={Coefficient height one and an eleven-integer degree-464 equation for Con(ZFC)},
+ pdfauthor={OpenAI-assisted research prepared for Vladimir Reshetnikov}}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Diophantine consistency equations}}
+\fancyhead[R]{\small 24 October 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\HeightOneVariables}{7431}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\Height}{\operatorname{ht}}
+\DeclareMathOperator{\sgn}{sgn}
+\title{\vspace{-10mm}\textbf{Coefficient height one and an eleven-integer\\[3pt]
+degree-464 equation for $\Con(\ZFC)$}}
+\author{Research prepared for Vladimir Reshetnikov and the ProveIt project\\[3pt]
+\small OpenAI-assisted mathematical development and independent agent review}
+\date{24 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give two explicit ordinary polynomial equations over unrestricted
+integers whose lack of solutions is provably equivalent in ZFC to
+syntactic consistency of ZFC, using the explicitly retained calibrations
+of the ProveIt repository. The first is a fully expanded quartic with
+7,431 variables and 34,086 nonzero coefficients, every one equal to $1$
+or $-1$. Its constant coefficient is one, and its individual variable
+degrees are at most two. A general block-and-cycle construction gives
+an exact bijection between its zero set and that of a supplied direct
+C222 quadratic system. This route does not simulate K215 and does not
+instantiate Jones's universal polynomial.
+
+The second equation has eleven variables, exact total degree 464, and
+a division-free circuit of 122 live binary arithmetic operations. It
+combines selective coprime radical fusion with powered divisibility,
+fixed-pair Pell interpolation, a reduced guard, and a shared auxiliary
+center. A direct companion has degree 488 in 121 operations. The
+eleven-variable construction retains the complete fixed native
+coefficient tuple. Both reductions have ordinary mathematical proofs;
+their finite certificates, source bytes, exact polynomial data, and
+reproducible checkers are supplied. No global simplicity minimum,
+worldwide priority, proof of consistency, or new end-to-end formal
+proof-assistant certificate is asserted.
+\end{abstract}
+
+\vspace{3mm}
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+New equation & Integer variables & Exact degree & Principal size objective\\
+\midrule
+Height-one quartic $\mathcal H$ & 7,431 & 4 & $\Height(\mathcal H)=1$\\
+Centered norm $\mathcal E_{464}$ & 11 & 464 & 122 arithmetic operations\\
+Direct norm $\mathcal E_{488}$ & 11 & 488 & 121 arithmetic operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Objective, comparison, and logical contract}
+
+The requested target is a fixed polynomial $P\in\mathbb Z[x_1,\ldots,x_n]$
+such that
+\begin{equation}
+ \ZFC\vdash
+ \left(\forall x_1,\ldots,x_n\in\mathbb Z\;P(x_1,\ldots,x_n)\ne0\right)
+ \longleftrightarrow\Con(\ZFC).
+ \label{eq:target}
+\end{equation}
+Here $\Con(\ZFC)$ means the absence of a finite syntactic proof of
+contradiction in the fixed standard proof system. Every variable in this
+report is unrestricted unless explicitly used in an intermediate lemma.
+Positive, nonnegative, and unrestricted variable counts are not
+interchanged.
+
+The classical Diophantine representation theorem establishes the
+availability of such equations in principle. Recent work on universal
+pairs and reductions over the integers refines the number of unknowns
+and degree \cite{bayer,sun}. Those general results do not select the
+smallest description for this particular consistency statement. A
+source-specific construction must also fix its coefficient tuple or
+literal residual list and establish its refutation calibration.
+
+There is no single agreed meaning of ``simplest.'' We measure the vector
+\[
+ (\text{domain},\ \text{variables},\ \text{degree},\ \text{coefficient height},
+ \ \text{support},\ \text{circuit operations},\ \text{coefficient storage}).
+\]
+The coefficient height used throughout is
+$\Height(P)=\max_\alpha|c_\alpha|$ for the \emph{collected} polynomial
+$P=\sum_\alpha c_\alpha x^\alpha$. It is not the weighted sum sometimes
+also called a height in experimental Diophantine searches. A circuit
+operation is a live binary addition, subtraction, or multiplication,
+including squares and multiplication by fixed constants; leaves and
+reuse are free. This count does not measure bit complexity.
+
+\subsection{Frozen sources}
+
+The comparison snapshot is the exact ProveIt commit
+\begin{center}
+\small\file{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}.
+\end{center}
+The audit included the active research summaries, the delivered forms
+through package 110, and all eight then-present incoming archives.
+The incoming archives matter: their results already improve on several
+numbers in the collection README. In particular, the direct source
+chosen here is the 519-variable equation in the powered-saturation
+archive, while the eleven-variable comparison comes from the coprime
+projection archive. Their immutable paths and SHA-256 hashes are
+retained with the artifacts.
+
+\begin{center}
+\begin{tabular}{lrrl}
+\toprule
+Compared construction & Variables & Degree & Additional metric\\
+\midrule
+Incoming height-two quartic \cite{heighttwo} & 3,564 & 4 & Height 2; 14,518 terms\\
+Incoming direct source \cite{round14} & 519 & 4 & Height 411,060; 6,253 terms\\
+New height-one quartic & 7,431 & 4 & Height 1; 34,086 terms\\
+\midrule
+Incoming centered coprime norm \cite{coprime} & 11 & 688 & 126 operations\\
+Incoming direct coprime norm \cite{coprime} & 11 & 728 & 122 operations\\
+New centered norm & 11 & 464 & 122 operations\\
+New direct norm & 11 & 488 & 121 operations\\
+\bottomrule
+\end{tabular}
+\end{center}
+All seven rows use unrestricted integer coordinates. The height-one
+construction improves the coefficient objective while increasing
+dimension and support. The centered norm lowers degree by
+$224/688\approx32.56\%$ and lowers operation count from 126 to 122
+relative to its matched centered source. Ten-integer equations and a
+native 37-integer quartic already occur in the inspected repository.
+Neither new equation is advertised as the smallest by variable count.
+
+\subsection{Three kinds of evidence}
+
+The report distinguishes ordinary unbounded proofs, exact finite
+artifact checks, and formal proof-assistant endpoints. The new
+mathematics below is proved by ordinary arguments formalizable in ZFC.
+The scripts verify literal polynomial identities, coefficients,
+dependency graphs, degree attainments, and source bindings. These checks
+do not decide whether any equation has an integer zero. No new complete
+Lean, Rocq, or object-language ZFC proof has been built in this round.
+Inherited formal endpoints are named as part of the provenance rather
+than described as newly checked.
+
+\input{height_one.tex}
+\input{eleven.tex}
+\input{calibration.tex}
+\input{artifacts.tex}
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+Vladimir Reshetnikov and ProveIt contributors,
+\emph{ProveIt: Diophantine consistency research}, snapshot
+\file{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}, 24 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6/Computability/DiophantineConsistency}{Immutable repository tree}.
+
+\bibitem{round14}
+ProveIt incoming research packet,
+\emph{Diophantine consistency equations with powered saturation and
+factorial carriers, Round 14}, 24 October 2026.
+Repository archive
+\file{ConZFC_Powered_Saturation_Factorial_Carriers_Round14_2026-10-24.zip};
+the source tuple, direct 519-variable system, and selected ordinary proof
+dependencies are identified in the supplied provenance files.
+
+\bibitem{coprime}
+ProveIt incoming research packet,
+\emph{Diophantine consistency equations by coprime projection},
+24 October 2026. Repository archive
+\file{ZFC_Diophantine_Coprime_Projection_2026-10-24.zip}, particularly
+\file{integer/PROOF.md} and its retained centered source proofs.
+
+\bibitem{heighttwo}
+ProveIt incoming research packet,
+\emph{Signed powers and coefficient height two}, 24 October 2026.
+Repository archive \file{ConZFC_Signed_Powers_Height_Two_2026-10-24.zip},
+\file{height_two/PROOF.md} and the \file{anchored/} endpoint.
+
+\bibitem{bayer}
+J. Bayer, M. David, M. Ha\ss ler, Y. Matiyasevich, and D. Schleicher,
+\emph{Diophantine equations over $\mathbb Z$: universal bounds and
+parallel formalization}, arXiv:2506.20909v3, 22 October 2026.
+\url{https://arxiv.org/abs/2506.20909}.
+
+\bibitem{sun}
+Z.-W. Sun,
+\emph{Ten unknowns for Hilbert's tenth problem over the integers},
+arXiv:2609.01594v2, 2 September 2026.
+\url{https://arxiv.org/abs/2609.01594}.
+\end{thebibliography}
+\end{document}

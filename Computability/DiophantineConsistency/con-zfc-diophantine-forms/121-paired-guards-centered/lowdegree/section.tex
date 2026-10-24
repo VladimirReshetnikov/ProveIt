@@ -1,0 +1,120 @@
+\section{A fully centered fifteen-integer carrier}
+\label{sec:centered15}
+The new endpoint uses fifteen unrestricted integer variables, has exact total degree
+$48$, and admits a $108$-gate division-free evaluator
+($61$ multiplications, $25$ additions, $22$ subtractions).
+The retained predecessor used degree $56$ and $110$ gates at the same variable count.
+This is an ordinary arithmetic equivalence to that predecessor; the inherited
+native/compiler/refutation theorem, not a new consistency proof or formalized
+object-language derivation, supplies the connection to $\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{Complete polynomial}
+The variables are
+\[
+ j,C,z,h,r,v,w,T,c,n,f,y,p_1,p_2,p_3\in\mathbb Z.
+\]
+The six numerals $\beta,K_0,M_C,M_F,A_c,B_c$ are the authenticated fixed
+payloads in the accompanying coefficient directory; $M_F$ is already shifted.
+All names below are polynomial abbreviations, not extra witnesses:
+\begin{gather*}
+ J=6j+1,\quad  q_m=\beta J,\quad q=q_m+1,\quad W=12w+4,\\
+ X=qW,\quad Y=qv,\quad  F=(K_0+W)C-zq_m,\\
+ R=(q(q-F)-C)(q^2-1)+(M_C+qM_F)J,\\
+ E=XY,\quad a=E+Y,\quad H=4a+3,\quad \Delta=a^2+H,\\
+ k=R+1+hE,\quad \eta=c-Yk,\quad L=EYk,\\
+ I=(2r+1)c^2,\quad Q=\Delta(f^2-1),\quad V=f^2(cT-R)-c,\\
+ M=2q^2,\quad U=MH,\quad K_{\rm lo}=2X^2-3Xc-2,\\
+ Z=Un+MK_{\rm lo}+H(v-q^2),\\
+ D_{\rm err}=(A_cF-q)^2+(B_cC-q)^2,\\
+ B_{\rm udget}=k^2(q^2-D_{\rm err})-4q^2\eta^2,\\
+ P_{\rm os}=1+p_1^2+p_2^2+p_3(p_3+1).
+\end{gather*}
+Define
+\begin{align*}
+ C_{\rm new}&=(Z+Uk)^2+4U(LZ-U),\\
+ B&=f^2-\Delta I^2-1,\\
+ C_{\rm aux}&=V^2-(Q-1)y(2V+y)-1,\\
+ G&=B_{\rm udget}-P_{\rm os}.
+\end{align*}
+The one equation is
+\[
+ \boxed{P=C_{\rm new}^2+B^2+C_{\rm aux}^2+G^2=0.}
+\]
+In particular, no inequality, rational-domain variable, division, or free
+coefficient port occurs in the literal final polynomial.
+
+\subsection{Monicity, parity, and exact inverse maps}
+The pinned $\beta=2^{1064921}-1$ is odd and $1\pmod 3$.
+Hence $q$ is nonzero, even, and $2\pmod3$.
+Also $H$ is nonzero and odd, and $H\equiv3\pmod q$.
+Thus $\gcd(H,2q^2)=1$ and $U\ne0$ on every signed assignment.
+At a zero of $P$, put $t=Z/U\in\mathbb Q$.
+The new carrier is equivalently
+\[
+ t^2+2(2L+k)t+k^2-4=0.
+\]
+Monicity gives $t\in\mathbb Z$ before any Pell or sign argument.
+Reducing $U\mid Z$ modulo the coprime factors $M,H$ yields
+\[
+ v_0=\frac{v-q^2}{M}\in\mathbb Z,\qquad
+ g=\frac{K_{\rm lo}}H\in\mathbb Z,\qquad t=n+g+v_0.
+\]
+Reduction of the monic equation modulo $2$ shows $t+k$ is even.
+Therefore $s=(t+k)/2$ is an integer. Equivalently,
+$(t+2L+k)^2=4[1+L(L+k)]$, and its integer square root is even.
+
+The predecessor differs only in its carrier and its $n$ coordinate:
+\[
+ C_{\rm old}=Z_{\rm old}^2+(2Z_{\rm old}-Uk)UL-U^2.
+\]
+The universal polynomial identity
+\[
+ C_{\rm new}(2Z_{\rm old}-Uk)=4C_{\rm old}(Z_{\rm old})
+\]
+proves both directions. From a new zero keep every other input and set
+\[
+ n_{\rm old}=\frac{n_{\rm new}-g-v_0+k}{2}
+             =s-g-v_0\in\mathbb Z.
+\]
+Then $Z_{\rm old}/U=s$ and $C_{\rm old}=0$.
+Conversely the old carrier is monic in $Z_{\rm old}/U$;
+it therefore licenses the same CRT offsets at every old zero. Set
+\[
+ n_{\rm new}=2n_{\rm old}+g+v_0-k.
+\]
+Then $Z_{\rm new}=2Z_{\rm old}-Uk$ and $C_{\rm new}=0$.
+The other three residuals do not involve $n$ and remain zero in both directions.
+These maps are mutually inverse on the zero sets. Divisions in the proof maps
+are licensed at zeros; none is hidden in the polynomial.
+
+\subsection{Exact degree and arithmetic accounting}
+The relevant degrees are
+\[
+ \deg U=6,\quad \deg Z=7,\quad \deg L=11,\quad \deg k=5.
+\]
+The unique degree-$24$ term of $C_{\rm new}$ is $4ULZ$.
+The four residual degrees are $24,14,18,16$, so $\deg P\le48$.
+Writing leading homogeneous parts with subscript $0$ gives
+\[
+ (C_{\rm new})_{24}=4U_0^2L_0n,\qquad
+ P_{48}=16U_0^4L_0^2n^2,
+\]
+where
+\begin{align*}
+ q_0&=6\beta j,& X_0&=12q_0w,&Y_0&=q_0v,\\
+ U_0&=8q_0^2X_0Y_0,&
+ L_0&=X_0Y_0^2(R_0+hX_0Y_0).
+\end{align*}
+Because $R$ is independent of $h$, the actual coefficient is
+\[
+ [j^{26}w^8v^{10}h^2n^2]P=2^{58}3^{34}\beta^{26}>0.
+\]
+Its exponents sum to $48$; the other squared residuals have smaller degree.
+This proves exact degree after the huge constants are fixed.
+
+The evaluator has $108$ live binary gates and all fifteen inputs are live.
+Squares and scalar multiplications are charged. Exact register-cut identities,
+source/payload hashes, leading forms, liveness, counts, and deliberately bad
+mutations are checked independently of the builder, under normal and optimized
+Python. These finite certificates do not replace the unbounded inherited
+compiler/refutation theorem or assert global minimality.

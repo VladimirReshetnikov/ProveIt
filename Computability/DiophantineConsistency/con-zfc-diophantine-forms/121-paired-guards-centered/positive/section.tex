@@ -1,0 +1,188 @@
+\section{Auxiliary-powered coprime Pell fusion}
+\label{sec:aux-fused}
+The auxiliary Pell solution supplies a transport bound large enough to remove a separate majorant from the coprime-fused construction. Combining this fact with upper or sharp centering gives the following six explicit equations. All counts charge every live binary addition, subtraction and multiplication, including multiplication by fixed integers.
+\begin{center}
+\begin{tabular}{lrrr}
+Chart and center & Positive unknowns & Operations & Exact degree\\\hline
+$X=qw$, no center &10&89&288\\
+$X=qw$, upper center &10&91&283\\
+$X=qw$, sharp center &10&92&278\\
+$X=q+x$, no center &10&94&262\\
+$X=q+x$, upper center &10&96&258\\
+$X=q+x$, sharp center &10&97&254
+\end{tabular}
+\end{center}
+The incoming saturated-Pell packet already has fusion and centering, and the incoming structural-compression packet already has the auxiliary index bound. The improvement here is their compatible combination, together with the direct-chart contraction $q^4(q-1)=q^3[q(q-1)]$. In particular the two centered direct circuits improve the incoming $98/258$ and $99/254$ counts by two operations each; the ordinary centered circuits improve $92/283$ and $93/278$ by one operation each. These are local improvements, not claims of a global minimum or a new nine-variable construction.
+
+\subsection{The complete equations}
+The ten unknowns are $J,F,\alpha,i,T,x,Y,n,\eta,\zeta>0$ on the direct chart. On the ordinary chart replace $x$ by $w>0$. The fixed ports are exactly the complete original compact44 tuple in \texttt{positive/coefficients/}; its $K_0$ is not the different incoming BFS $K_0$. Write
+\begin{align*}
+q&=\beta J+1,&X&=q+x\quad\hbox{or}\quad qw,&\mu&=q^2+1,\\
+A&=\mu Y(X+1)+1,&\Delta&=A^2-1,&H&=4A-5,\\
+k&=\eta+\zeta,&c&=kY+\eta,&v_0&=X\mu^2Y^2,\\
+D&=v_0(v_0+1)k^2+1,&E&=ic^2,&F_s&=1+\Delta DE^2,\\
+Q&=\Delta^2DE^2,&\delta&=Q-1,&C&=q-F-\alpha,\\
+G&=(q-1)(q-F)+\alpha,&R&=G(q^2-1)+(M_C+qM_F)J,&e&=k-R-1,\\
+b&=c(T+\alpha)-R,&V&=F_sb-c,&D_y&=QV^2-1,\\
+K_+&=X(3c-2X)+2.
+\end{align*}
+The fixed center is one of
+\[
+ S=0,\qquad S=(A+1)DE,\qquad S=ADE.
+\]
+On the direct chart set $B=(qK_0+X)C-qF$, $P=q^4(q-1)$ and
+\[
+ Z=P\mu^2\{H(n+V+S-bB)+K_+\}
+ +H\{\mu^2[q(q-1)Y-q^3B-(q-1)X]-Pe\}.
+\]
+On the ordinary chart set $B_t=(K_0+w)C-F$, $P=q^3(q-1)$ and
+\[
+ Z=P\mu^2\{H(n+V+S-bB_t)+K_+\}
+ +H\{\mu^2[(q-1)Y-q^3B_t]-Pe\}.
+\]
+For either chart put
+\[
+ M=P\mu^2H,\qquad s=\delta Z^2,\qquad
+ u=\delta M^2DF_s,\qquad v=M^2D_y,
+ \qquad \boxed{N=(s-v-u)^2-4uv=0.}
+\]
+Every displayed abbreviation is a polynomial, not an extra quantified unknown. The six JSON files give the full literal arithmetic circuits. The complete source proof and coefficient bindings are retained locally.
+
+\subsection{Root recovery before transport}
+On every positive input, $D>1$, $E\ge c^2$, $F_s>c+2$ and $\delta>0$. The integer $b$ is either zero, giving $V=-c$, or satisfies $|V|\ge F_s-c>1$. Thus $a=DF_s$ and $d_y=D_y/\delta$ are positive. They cannot be equal: $\delta a=D_y$ is impossible modulo $D$, since $D_y\equiv-1\pmod D$.
+
+The four-factor identity
+\[
+ (z^2-a-d_y)^2-4ad_y
+ =\prod_{\epsilon,\nu\in\{-1,1\}}
+       (z-\epsilon\sqrt a-\nu\sqrt{d_y})
+\]
+gives a rational signed sum at a zero. This sum is nonzero because the radicands differ. Squaring and solving linearly shows that both roots are rational. Since $a$ is an integer and $\gcd(D,F_s)=1$, the factors are squares:
+\[
+ D=\tau^2,\qquad F_s=f^2,\qquad I=\tau E,
+ \qquad f^2-\Delta I^2=1,\quad c^2\mid I,\quad Q=(\Delta I)^2.
+\]
+The adjacent-Pell descent makes $y=\sqrt{d_y}$ integral. Indeed, for $y=a/m$ in lowest terms, $m^2\mid Q-1$, and the norm-preserving transformation
+\[
+ v'=(2Q-1)v-2(Q-1)y,\qquad y'=(2Q-1)y-2Qv
+\]
+keeps $v'$ integral and the denominator $m$, while $0<|v'|<v$ for $v>1$. Descent from $v=|V|$ reaches $v=1,y=1$. Therefore
+\[
+ Z/M=\epsilon\tau f+\nu y. \tag{P1}
+\]
+
+The retained all-index folding lemma now gives $c=\psi_A(p)$ with $p$ odd. The first Pell equation gives $k=2\psi_{2v_0+1}(n_0)$. If $n_0=1$, then $\eta=\zeta=1$ and $c=2Y+1$ lies strictly between $\psi_A(1)$ and $\psi_A(2)$, a contradiction. Hence
+\[
+ k\ge8v_0+4,\quad c>kY,\quad c\ge\psi_A(3)=4\Delta+3.
+\]
+The unchanged pre-transport mask estimate is $R<c\alpha/4$. It gives
+\[
+ b>c(T+3\alpha/4)>c,\qquad V>1,\qquad K_+>0. \tag{P2}
+\]
+These steps do not assume transport nonnegativity, the main-index equality, evenness of $q$, or divisibility of $e$.
+
+\subsection{Why the auxiliary term alone suffices}
+Set $S_0=\Delta I$, so $Q=S_0^2$. Pell classification of the auxiliary norm gives $S_0V=\chi_{S_0}(\nu_0)$. Reduction modulo $S_0$ shows that $\nu_0$ is odd. By (P2),
+\[
+ V=F_sb-c>(F_s-1)c=\Delta I^2c>4Q.
+\]
+The indices $1$ and $3$ give $V=1$ and $V=4Q-3$, respectively. Thus $\nu_0\ge5$, and
+\[
+ V\ge16Q^2-20Q+5>8Q^2,\qquad
+ b=(V+c)/F_s>8Q. \tag{P3}
+\]
+Here $F_s<Q$. Also $Q-1>2F_s$, so
+\[
+ 0<y-V=\frac{V^2-1}{(Q-1)(y+V)}<\frac b4,
+ \qquad \frac e{\mu^2}<\frac b4. \tag{P4}
+\]
+The second inequality follows from $b-e=c(T+\alpha)-k+1>0$ and $\mu^2>4$; it is an upper bound even when $e<0$. Finally
+\[
+ \tau f<ADE<Q,\qquad X<D<Q,
+ \qquad \tau f+X/q^4<2Q<b/4. \tag{P5}
+\]
+
+On the direct chart the exact center is
+\[
+ \frac ZM=n+V+S+\frac{K_+}H+\frac Y{q^3}
+ -\frac{WB}{q(q-1)}-\frac X{q^4}-\frac e{\mu^2},
+ \qquad W=1+q(q-1)b.
+\]
+If $B\le-1$, then $WB/[q(q-1)]<-b$. Solve this relation and (P1) for $n$. Since $S\ge0$, (P4)--(P5) give
+\[
+ n<b/4+b/4+b/4-b=-b/4<0,
+\]
+a contradiction. Thus $B\ge0$. The ordinary chart has $W=1+(q-1)b$ and omits $X/q^4$; the same proof gives $B_t\ge0$.
+
+\subsection{Soundness and positive completeness}
+For the direct chart, the complete old fused polynomial is recovered by the universal substitution
+\[
+ n_{\rm old}=n+S+HDE\,B. \tag{P6}
+\]
+The old transport majorant was $HDE+b$, so (P6) makes the entire carrier and norm identical at every integer assignment. At a new positive zero, $B\ge0$, hence $n_{\rm old}>0$. The retained old soundness theorem therefore gives a finite syntactic refutation.
+
+For the ordinary chart, the now-licensed inherited proof gives successively $C>0$, $3q<R<q^4-2$, the main index $p=R$, even $q$, $\mu^2\mid e$, and the first index $(R+1)/2$. The exact ratio estimate and whole-product projection give
+\[
+ H\mid q^3(q-1)(X-2^R)(2^RX+1),
+\]
+with the complete product smaller than $H$ in absolute value; hence $X=2^R$. No potentially nonunit factor is canceled modulo $H$. The residual carrier fractions give $q^3\mid Y$ and $q-1\mid B_t$, while fixed-minus parity gives $R\equiv3\pmod4$. Fresh unscaled source reconstruction uses $A_{\rm source}=Y(X+1)+2$. The same coherent native calibration gives a finite refutation.
+
+Conversely, start with the retained canonical source witnesses from a finite refutation. They have $X=2^R$, $R\equiv3\pmod4$, $q^3\mid Y$, $q^4\mid X$, $D=\tau^2$, and positive first/main coordinates. Choose a positive Pell matrix period modulo $\tau c^2$, and set
+\[
+ I=\psi_A(m),\quad f=\chi_A(m),\quad
+ i=I/(\tau c^2)>0.
+\]
+The finite order of an invertible matrix over this finite residue ring guarantees such a period. The new literal kernels are then exactly $F_s=f^2$ and $Q=(\Delta I)^2$.
+
+Use the explicit auxiliary-completeness witness
+\[
+ V_*={\chi_{\Delta I}(R)\over\Delta I},\qquad
+ y=\psi_{\Delta I}(R),\qquad
+ T_*={V_*+c+Rf^2\over cf^2},\qquad T=T_*-\alpha.
+\]
+The retained lemma proves integrality. Its elementary growth estimate gives $V_*\ge9Q^2$ and $T_*>9\Delta I>\alpha$. Hence $T>0$, and
+\[
+ h_y:=y-V_*>{V_*\over4Q}\ge{9Q\over4}. \tag{P7}
+\]
+Write $\kappa=K_+/H$, $s_Y=Y/q^3$ and $\rho=e/\mu^2$; these are canonical integers, with $0<\kappa<c<I$, $0<s_Y<c<I$ and $\rho\ge0$. The canonical transport quotient $t$ is nonnegative. All three choices of center obey $S-\tau f<2DE<2I^2$. Define
+\[
+ n=Wt+\rho+\tau f-S+h_y-\kappa-s_Y
+       +\begin{cases}X/q^4,&\text{direct chart},\\0,&\text{ordinary chart}.\end{cases}
+\]
+The negative loss is less than $2I^2+2I<4I^2$, while (P7) exceeds $4I^2$. Thus $n>0$, even when $t=0$, and the center equals $\tau f+y$. This proves the converse with genuinely positive coordinates, not a presumed positive inverse of (P6).
+
+The equivalence to the absence of finite ZFC refutations inherits the exact retained source calibration. This ordinary mathematical argument does not assert that a new Lean endpoint, an internal encoded ZFC certificate, or a proof of consistency has been produced.
+
+\subsection{Exact degree, not a syntactic bound}
+Set $q_0=\beta J$, $k_0=\eta+\zeta$ and $X_0=q_0+x$. The direct leading homogeneous forms are
+\begin{align*}
+[N_0]_{262}&=-2^{10}q_0^{126}X_0^{30}Y^{62}i^{10}k_0^{32}(q_0-F)^2,\\
+[N_+]_{258}&=2^{11}q_0^{124}X_0^{29}Y^{61}i^{10}k_0^{32}(q_0-F)^2,\\
+[N_A]_{254}&=2^{10}q_0^{122}X_0^{28}Y^{60}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+The ordinary leading forms are
+\begin{align*}
+[N^{\rm ord}_0]_{288}&=-2^{10}q_0^{152}w^{30}Y^{62}i^{10}k_0^{32}(q_0-F)^2,\\
+[N^{\rm ord}_+]_{283}&=2^{11}q_0^{149}w^{29}Y^{61}i^{10}k_0^{32}(q_0-F)^2,\\
+[N^{\rm ord}_A]_{278}&=2^{10}q_0^{146}w^{28}Y^{60}i^{10}k_0^{32}(q_0-F)^2.
+\end{align*}
+They are nonzero for the actual coefficients because $\beta>0$.
+
+For an exact global certificate, scale every unknown by a formal $t$ and work in the Laurent-series field at $t=\infty$. Choose roots $g^2=DF_s$ near $ADE$ and $y^2=D_y/\delta$ near $V$. The identities
+\[
+ (ADE-g)(ADE+g)=D^2E^2-D,\qquad
+ (y-V)(y+V)=(V^2-1)/(Q-1)
+\]
+control all cancellations. On the direct chart the degrees of $(\delta,M,V,g)$ are $(42,13,38,25)$; the defects $ADE-g$ and $(A+1)DE-g$ have degrees $17$ and $21$. On the ordinary chart these are $(48,13,42,28)$ and $18,23$. The rational carrier remainder after $V+S$ has degree at most $6$, while $y-V$ has degree $-4$ or $-6$. The exact identity
+\[
+ N=\delta^2M^4\prod_{\epsilon,\nu\in\{-1,1\}}
+       (Z/M+\epsilon y+\nu g)
+\]
+therefore gives all six degrees and highest forms above. For example, direct sharp centering has degree
+\[
+ 2(42)+4(13)+2(38)+25+17=254.
+\]
+This proves the global upper bounds and attainment; exact univariate replay is an additional transcription check, not the degree proof itself.
+
+\subsection{Reproducible artifacts}
+The full proof, explicit canonical witnesses, coefficient payloads, all six live gate DAGs, and the exact builder are in \texttt{positive/}. Run \texttt{build.py --check}, \texttt{check.py} and \texttt{check\_ordinary.py}, both normally and with Python's \texttt{-O} flag. The recorded receipts pass coefficient hashes and bit lengths, whole graph inventories, liveness, universal carrier identities, exact integer ray expansions, actual-payload modular leading forms, independent formula evaluations and finite Pell-period controls. The unbounded proof is independent of those finite tests. All copied upstream material and its attribution remain in \texttt{positive/source/}.

@@ -1,0 +1,84 @@
+\section{A credited compact evaluator for the twelve-integer endpoint}
+The retained twelve-integer degree-$500$ carrier has a pointwise-identical
+$139$-gate evaluator, improving its prior $148$ gates without changing any zero.
+The count is $84$ multiplications, $32$ additions, and $23$ subtractions.
+This is an evaluator adaptation, not a new semantic twelve-variable reduction.
+
+Credit for the $28$-gate universal four-root norm schedule belongs to the
+existing repository proof at commit
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/84e16e43092614bae262ca59651cb9d77e31a255}{\texttt{84e16e430926}},
+\path{candidates/ten-positive-zero-offset/source/ORIGINAL_PROOF.md}.
+The received structural-compression addendum explains the schedule; both
+texts and the upstream license are retained. The new adaptation combines
+that schedule with the already verified lower-degree centered carrier.
+
+The twelve coordinates are
+\[
+ j,C,z,h,r,v,w,T,c,n,p_2,p_3\in\mathbb Z.
+\]
+Use the preceding section's definitions of $J,q_m,q,W,X,Y,F,R,E,a,H$,
+$\Delta,k,\eta,L,I,M,U,K_{\rm lo},Z,D_{\rm err}$ and
+$B_{\rm udget}$, with the same six fixed numerals. Replace its
+$f$-dependent definitions by
+\[
+ D_f=1+\Delta I^2,\qquad Q=\Delta(D_f-1),\qquad
+ V=D_f(cT-R)-c.
+\]
+Then put
+\begin{align*}
+ D_\tau&=1+L(L+k),&D_a&=(Q-1)(QV^2-1),\\
+ G_0&=B_{\rm udget}-1-p_2^2-p_3(p_3+1),\\
+ Z_{\rm total}&=Z+U\bigl(2L+k+6(a+2)I+9(2Q-1)V\bigr).
+\end{align*}
+These definitions reproduce the complete prefix in
+\path{lowdegree/twelve/specification.json}.
+
+For the norm evaluator only, introduce five local arguments
+\[
+ \widehat z=Z_{\rm total}^2,\quad \widehat a=4U^2D_\tau,
+ \quad \widehat b=36U^2D_f,\quad
+ \widehat c=324U^2D_a,\quad \widehat d=729U^2G_0.
+\]
+The hats distinguish these temporary arguments from the original coordinates
+and prefix abbreviations. Set
+\begin{align*}
+ \sigma_1&=\widehat a+\widehat b+\widehat c,
+ &\sigma_2&=\widehat a\widehat b+(\widehat a+\widehat b)\widehat c,
+ &\sigma_3&=\widehat a\widehat b\widehat c,\\
+ U_c&=\widehat z+\widehat d,&P_o&=U_c-\sigma_1,\\
+ P_e&=P_o^2+4(\widehat z\widehat d-\sigma_2),\\
+ G_e&=P_e^2+16(\widehat z\widehat dP_o^2-4\sigma_3U_c),\\
+ G_o&=P_eP_o-16\sigma_3.
+\end{align*}
+The compact output is
+\[
+ \boxed{N_c=G_e^2-64\widehat z\widehat dG_o^2.}
+\]
+Sharing $\widehat a+\widehat b$, $\widehat a\widehat b$, $P_o^2$ and
+$\widehat z\widehat d$ gives exactly $28$ binary gates in the tail;
+the unchanged prefix needs $111$.
+
+For the exact proof, the three-root norm is
+\[
+ N_3(\xi)=\big[(\xi-\sigma_1)^2-4\sigma_2\big]^2-64\sigma_3\xi.
+\]
+Put $\xi=U_c\pm\varrho$, where $\varrho^2=4\widehat z\widehat d$.
+Direct substitution gives
+$N_3(U_c\pm\varrho)=G_e\pm4\varrho G_o$. Their product is $N_c$,
+proving that the compact formula is the full sixteen-sign norm, including
+every singular specialization. It equals the predecessor's norm as a
+universal integer polynomial.
+
+The identity map on all twelve coordinates is therefore a two-way map
+between the new and predecessor zero sets. All inherited unbounded
+squareclass, CRT, guard, and native/compiler/refutation arguments remain
+unchanged. Exact degree $500$ and the genuine fixed-coefficient witness
+\[
+ [j^{228}w^{76}v^{84}h^8z^8r^{32}c^{64}]N_c
+   =2^{488}3^{332}\beta^{228}>0
+\]
+transfer by pointwise equality. An independent checker compares the exact
+live prefixes up to associative/commutative rewrites and all $495$ universal tail monomials, verifies live-node
+counts, and rejects a changed opcode at every one of the $139$ live gates.
+No claim of new consistency proof, global optimum, or new end-to-end
+proof-assistant certification is made.

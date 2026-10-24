@@ -1,0 +1,56 @@
+\section{Results and their precise interpretation}
+Throughout, $\N=\{0,1,2,\ldots\}$, whereas a positive integer is strictly greater than zero. All $\Z$ endpoints quantify every listed unknown over unrestricted integers. A named register is only a polynomial abbreviation. Coefficient height means the maximum absolute coefficient after complete collection; the number of residual rows is not an arithmetic-operation count.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+Endpoint and domain&Variables&Degree&Rows&Terms&Height\\\midrule
+Split carrier centered, $\Z$&11&416&---&not expanded&not measured\\
+Split carrier direct, $\Z$&11&456&---&not expanded&not measured\\
+Centered norm, $\Z$&11&464&---&not expanded&not measured\\
+Direct norm, $\Z$&11&488&---&not expanded&not measured\\
+Direct certificate, $\Z$&442&4&290&4652&128446\\
+Derived labels, $\N$&329&4&253&12210&86844780\\\bottomrule
+\end{tabular}\end{center}
+The split-carrier pair costs $125$ and $124$ operations, respectively, and trades a lower degree for a slightly higher cost. The four selected degree/cost points are $(416,125)$, $(456,124)$, $(464,119)$, and $(488,118)$. The lower-cost centered norm costs $119$ live binary operations: $74$ multiplications, $24$ additions, and $21$ subtractions. Its direct-coordinate companion costs one addition less. Squares and multiplication by scalar constants are charged; register reuse and fixed leaves are free. Neither polynomial has an unbound coefficient port. The six source34 payloads contain $4\,927\,026$ significant bits in total and $615\,883$ minimal raw bytes. Their large size is not hidden by the arithmetic-operation metric.
+
+Against the incoming eleven-integer $688/126$ and $728/122$ degree/cost points, the selected norm pair improves both degree and cost. Against the delivered round-14 $519$-integer quartic, the principal direct equation reduces the variables from $519$ to $442$, residuals from $321$ to $290$, monomials from $6253$ to $4652$, and height from $411060$ to $128446$. The $329$-natural equation improves the pinned $349$-natural parent in all four corresponding measures. Cross-domain comparisons are not used as dominance claims.
+
+\subsection{What the conclusion says}
+For each displayed endpoint $P$ on its stated domain $D$, the conclusion is
+\[
+ \mathrm{ZFC}\vdash
+ \left[\forall x\in D^n\;P(x)\ne0\right]
+ \longleftrightarrow\Con(\mathrm{ZFC}).
+\]
+The ordinary proof goes through
+\[
+ (\exists x\in D^n\;P(x)=0)
+ \longleftrightarrow
+ \text{there is a finite syntactic ZFC refutation}.
+\]
+No consistency assumption or proof of either side is asserted. Finite reconstruction proves statements about the supplied literal polynomials and certificates, not their unsolvability. The unbounded arithmetic reasoning is an ordinary proof, with inherited formalizability and logical calibration explicitly retained. There is no newly completed end-to-end Lean, Rocq, or encoded object-ZFC proof object in this release.
+
+\subsection{Source pins and calibration boundaries}
+The public comparison snapshot is ProveIt commit
+\begin{center}\small\texttt{45b399ec51dfbecb891dd51d8a9e4b6b7c361ac6}.\end{center}
+It was committed at 22:28:29 UTC on 24 October 2026 and adds eight incoming ZIP files. Addition to that directory is not integration or acceptance into active source. The active public equation still has ten strictly positive unknowns, exact degree $360$, $98$ live operations, and $295388$ raw coefficient bytes; it uses a different coherent tuple. The incoming positive frontier and unrestricted-integer frontier are distinguished below.
+
+The original coefficient recipe, imported round-14 comparison, and underlying direct C222 calibration retain the following respective pins:
+\begin{center}\small\begin{tabular}{l}\texttt{2605669a532342f153b13eb6b4a0af4b54f5fa37}\\
+\texttt{84e16e43092614bae262ca59651cb9d77e31a255}\\
+\texttt{08200eb10fde2db408c69dffd840d6920a569b1f}\end{tabular}\end{center} A new comparison pin does not rewrite the provenance of inherited code or proofs.
+
+The direct logical interfaces are named
+\texttt{KEndpoint.c222\_iff\_zf\_refutation} and
+\texttt{ConstructibleChoice.zf\_refutation\_iff\_zfc\_refutation}.
+The direct route does not simulate K215 or instantiate a universal-polynomial black box. Its simultaneous Pell power graph, source-rule syntax, Horn-flow interface, and exact natural contraction are inherited. The scalar route retains the source34/native/compiler/refutation calibration, adjacent-coefficient descent, signed folding, pre-projection rank bounds, and canonical outer witnesses. Complete retained proof texts and license notices are bundled. The source34 six-port tuple must not be replaced by the compact44/BFS tuple from the positive-variable lane.
+
+\subsection{A map of the new argument}
+The scalar branch starts with all eleven inputs signed. A nonzero carrier and a disk budget establish the hypotheses needed for three-adic radical separation. Coprimality splits the fused guard square. Signed Pell folding recovers ranks before fifth-power divisibility is used, and a strict separation bound restores the exact main projection. A single strong Pell pair supports every required auxiliary residue; completeness never changes it after choosing that residue. A paired norm identity, exact centering cancellation, and absorption of a constant guard weight produce the measured degree and operation counts.
+
+The direct branch first treats the proposed binomial output as uninterpreted. Raw ceiling rows and an independently valid power give $V<B^2$, so the pure radix is large enough to recover that binomial without circularity. A padded-horizon fixed-point proof then forces $F=t!$. The same binomial is the product of the reciprocal CRT moduli. Carry-free digits and valuation bounds decode every row. The signed compiler keeps two seed indices ordinary, doubles thirteen others, and enforces residue one through eleven existing remainders. The sign bootstrap precedes orientation. Completeness rebuilds private Pell witnesses rather than pretending the changed Pell certificate is a coordinate bijection.
+
+\subsection{Literal conventions}
+The scalar files are finite directed acyclic graphs over binary $+,-,\times$, integer literals, eleven variable leaves, and six authenticated fixed-coefficient leaves. Their output node defines the polynomial. For direct endpoints a term $[c,[i_1,\ldots,i_k]]$ denotes $c\prod_j x_{i_j}$ with zero-based variable indices; the empty index list denotes a constant. The equation is the sum of squares of \emph{every} listed residual. Full collected coefficient lists are supplied.
+
+The complete proof sections below use readable register notation when a long expression mirrors the executable artifact. In those displays, a caret denotes exponentiation; variable exponents occur only in proof explanations, never as primitives in a final polynomial. An asterisk denotes ordinary multiplication, and \texttt{sqrt} occurs only in proofs of polynomial identities or witness recovery, never as a primitive in a final equation. References to a source proof mark an inherited boundary; all new unbounded arithmetic steps are reproduced in this report rather than deferred to a Markdown file.

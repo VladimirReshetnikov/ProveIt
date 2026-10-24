@@ -1,0 +1,143 @@
+{
+  "status": "PASS",
+  "source_proof": "../scalar/CRT_CARRIER_PROOF.md",
+  "semantic_review": "CRT_CARRIER_AUDIT.md",
+  "identities": {
+    "full_norm_monomials": 35,
+    "full_norm_identity": true,
+    "paired_norm_identity": true,
+    "weighted_guard_identity": true,
+    "universal_centering_identity": true,
+    "source_centering_identity": true
+  },
+  "graphs": {
+    "weak_integral_centered_paired": {
+      "operations": 125,
+      "operation_counts": {
+        "mul": 79,
+        "add": 24,
+        "sub": 22
+      },
+      "syntactic_degree_bound": 456,
+      "verified_registers": 55,
+      "degree_upper_bound": 416,
+      "method": "proved universal source-center cut at vnorm, then whole-DAG propagation",
+      "omega_bound": 92,
+      "vnorm_bound": 94,
+      "prefix_degree_bounds": {
+        "Y": 2,
+        "a": 4,
+        "H": 4,
+        "Delta": 8,
+        "I": 3,
+        "Df": 14,
+        "Q": 22,
+        "V": 19,
+        "Cy": 60,
+        "Budget": 16,
+        "Dt": 22,
+        "Dg81": 40,
+        "P81": 62,
+        "M": 2,
+        "Dcar": 6,
+        "zc": 7,
+        "Ac": 35,
+        "S": 16,
+        "A": 46,
+        "B": 114,
+        "G": 94
+      },
+      "degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 416,
+        "leading_coefficient": 809968
+      },
+      "sha256": "1e66fcca913bda52b89777974d9721c841b74520fbfdb74c8a8c89b18c799544"
+    },
+    "weak_integral_direct_paired": {
+      "operations": 124,
+      "operation_counts": {
+        "mul": 79,
+        "add": 23,
+        "sub": 22
+      },
+      "syntactic_degree_bound": 456,
+      "verified_registers": 54,
+      "degree_upper_bound": 456,
+      "method": "syntactic degree",
+      "prefix_degree_bounds": {
+        "Y": 2,
+        "a": 4,
+        "H": 4,
+        "Delta": 8,
+        "I": 3,
+        "Df": 14,
+        "Q": 22,
+        "V": 19,
+        "Cy": 60,
+        "Budget": 16,
+        "Dt": 22,
+        "Dg81": 40,
+        "P81": 62,
+        "M": 2,
+        "Dcar": 6,
+        "zc": 7,
+        "Ac": 35,
+        "S": 16,
+        "A": 46,
+        "B": 114,
+        "G": 94
+      },
+      "degree_lower_bound": {
+        "prime": 1000003,
+        "substitution": "Every variable equals t; actual coefficient payloads reduced modulo p.",
+        "degree": 456,
+        "leading_coefficient": 576411
+      },
+      "sha256": "0b30042d2b93b05438a7a21461bd08a609ec5e1db87edac05bad3be58be7008b"
+    }
+  },
+  "mutation_controls": [
+    {
+      "name": "final norm minus changed to plus",
+      "rejected": true,
+      "reason": "register identity output"
+    },
+    {
+      "name": "I changes r to c",
+      "rejected": true,
+      "reason": "register identity I"
+    },
+    {
+      "name": "carrier constant sign changed",
+      "rejected": true,
+      "reason": "register identity K"
+    },
+    {
+      "name": "fusion guard sign changed",
+      "rejected": true,
+      "reason": "register identity Dg81"
+    },
+    {
+      "name": "three-adic coefficient 9 becomes 1",
+      "rejected": true,
+      "reason": "register identity A"
+    },
+    {
+      "name": "center QV becomes Q+V",
+      "rejected": true,
+      "reason": "register identity Cy"
+    },
+    {
+      "name": "carrier loses one M factor",
+      "rejected": true,
+      "reason": "register identity M4"
+    },
+    {
+      "name": "carrier base HM becomes H+M",
+      "rejected": true,
+      "reason": "register identity Dcar"
+    }
+  ]
+}
