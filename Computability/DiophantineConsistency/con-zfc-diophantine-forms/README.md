@@ -52,6 +52,15 @@ frontier is now:**
 - **the smallest native tuple binding an equation**, B = 2^429959 (54,
   unchanged).
 
+An in-repository result, not an intake package, has **ten positive
+unknowns** at exact degree 816 in 124 operations:
+[candidates/ten-positive-scaled-norm](../candidates/ten-positive-scaled-norm/README.md).
+Its proof is relative to package 61's interface and has two independent
+review rounds. The only earlier ten-positive equation has 131 operations
+at degree 1,152. It is in the radical-residue arrival `440dd03ab8`, which
+has not been placed yet and is reviewed in
+[PROPOSAL_REVIEW_RADICAL_RESIDUE_POSITIVE.md](../PROPOSAL_REVIEW_RADICAL_RESIDUE_POSITIVE.md).
+
 The report holds forty-five research packages; all but 60, 66 and 68 state
 AI assistance (74 only for its reviews).
 
