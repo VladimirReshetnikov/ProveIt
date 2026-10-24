@@ -323,15 +323,15 @@ The [complete shared-product sibling](candidates/ten-positive-scaled-norm-shared
 saves one more operation, reaching123/816 by an exact identity. Its complete
 [one-page rendering](candidates/one-page-scaled10/README.md) now passes the
 independent typed-tile/native/controller rebinding and printed-formula checks
-and has become the canonical display. The preceding13-positive90/51 page
+and became the preceding canonical display. The earlier13-positive90/51 page
 retains its lower-degree/fewer-operation tradeoff.
 
 The [122-operation sibling](candidates/ten-positive-scaled-norm-reuse/README.md)
 then deletes `q-1` by reusing the earlier `beta*J`, with a complete ordered
 gate remap and a universal polynomial identity. Independent normal/-O
 checks preserve all ten unknowns, four complete ports and degree816.
-The displayed123-operation page remains valid and is retained for this
-minor evaluator change.
+That123-operation page remained valid and was retained for this minor
+evaluator change; it is now preserved as the preceding degree816 display.
 
 The [quadratic projection](candidates/ten-positive-quadratic-projection/README.md)
 now reduces the ten-positive equation to106 operations and exact degree408.
@@ -339,8 +339,8 @@ The omitted main Pell ordinate is recovered from the strong/auxiliary
 equations by an all-index folding argument. A strict bound on the entire
 divisible projection product excludes mixed-prime branches. Complete
 positive witness maps, independent ordinary reviews and all literal
-normal/-O circuit/norm/leading-form checks pass. A new full page is being
-prepared for this significant degree and operation reduction. Its exact
+normal/-O circuit/norm/leading-form checks pass. A new full page is now
+checked for this significant degree and operation reduction. Its exact
 [symmetric-tail sibling](candidates/ten-positive-quadratic-projection-shared/README.md)
 saves a further multiplication, reaching105/408 with the same whole
 polynomial and positive domain. The proposed new page uses this105-gate
@@ -398,16 +398,18 @@ unsealed counts are not yet table entries. Lean remains paused.
 ## Maintained one-page display
 
 The [canonical PDF](equation.pdf) and [TeX](equation.tex) now use the
-checked10-positive123-operation degree816 equation. The full fixed-constant
-recipe remains verbatim from the prior thirteen-positive page, including
+checked10-positive105-operation degree408 equation. The full fixed-constant
+recipe remains verbatim from the preceding ten-positive page, including
 the436-character seed, corrected initializer and943 typed tiles. Separate
 peers checked uniform native/controller rebinding and independently rebuilt
-all four coefficient integers in both Python modes. The complete free-port
-front matches all123 literal gates, and the one-page9-point layout was
+all four coefficient integers in both Python modes. The new quadratic
+projection has complete ordinary positive witness maps; its symmetric
+norm is a universal identity. The complete free-port
+front matches all105 literal gates, and the one-page9-point layout was
 visually inspected. [CURRENT_EQUATION.json](CURRENT_EQUATION.json) records
-the exact displayed hashes and preserves the earlier13-positive90/51 link.
-Three fewer unknowns is the selected improvement; higher degree and33
-more operations are explicit costs. No global minimum or completed Lean/
+the exact displayed hashes and preserves both earlier page links.
+Halved degree and18 fewer operations at the same ten-variable count is
+the selected improvement. No global minimum or completed Lean/
 internal-ZFC theorem is implied by this display choice.
 
 

@@ -20,22 +20,24 @@ See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **entire equation in10 positive
-unknowns, exact degree816, with a123-operation evaluator**. Every fixed
+unknowns, exact degree408, with a105-operation evaluator**. Every fixed
 constant is defined on the same Letter page, including the full436-character
 numeral, alphabet, decoder and943 tiles. The body uses9-point type.
-Compared with the preceding13-positive90-operation degree51 display,
-this removes three unknowns, adds33 operations and raises degree. The
-same coherent BFS-renamed compact44 tuple is retained. The
-[page proof and checks](candidates/one-page-scaled10/README.md) include the
-complete free-port identity, corrected initializer, typed-color conjugacy,
-carry/controller conditions and independent whole coefficient reconstruction.
+Compared with the preceding ten-positive123-operation degree816 display,
+this halves degree and saves18 operations at the same unknown count.
+The same coherent BFS-renamed compact44 tuple and complete constant recipe
+are retained. The [page proof and checks](candidates/one-page-quadratic10/README.md)
+include the exact free-port identity, recovered main Pell ordinate, complete
+positive witness maps, inherited typed-color/native/controller proof and
+independent whole coefficient reconstruction.
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the displayed files.
 
-The preceding [thirteen-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
+The preceding [ten-positive degree816 page](candidates/one-page-scaled10/equation.pdf)
+is preserved, along with the earlier
+[thirteen-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 is preserved with its standalone [TeX](candidates/one-page-ordinary13/equation.tex).
 It uses fewer operations and lower degree, with three more unknowns; the
-new display is a variable-count improvement, not a claim of dominance in
-every simplicity measure.
+new display does not claim a global optimum across these tradeoffs.
 
 The previous [fifteen-positive page](candidates/one-page-compression/merged-mask-base62/equation.pdf)
 and its other notation variants remain available. Its corrected recipe
@@ -79,9 +81,10 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 [position-zero](candidates/position-zero-norm-sharing/README.md) nine-positive
 419/1,472,168 and compact54 427/1,626,248 forms, plus a lower-degree
 1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
-The [scaled ten-positive equation](candidates/ten-positive-scaled-norm-reuse/README.md)
-now reaches122/816 by reusing the already computed `beta*J`. The current
-page retains its valid123-operation evaluator for this minor improvement;
+The [quadratic ten-positive equation](candidates/ten-positive-quadratic-projection-shared/README.md)
+now reaches105/408. Its strong and auxiliary Pell equations recover the
+omitted main root; a strict bound on the entire projection product excludes
+extra branches. The former122/816 evaluator remains frozen;
 eleven-positive111/211 is a different tradeoff.
 Exact [shared norms](candidates/interpolation-shared-norms/README.md) give
 thirteen-integer184/1,072.

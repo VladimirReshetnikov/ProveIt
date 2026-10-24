@@ -25,13 +25,13 @@ compact54 coefficient tuples remain separate storage tradeoffs. See
 points include ten variables/131 operations/degree1,152 and eleven/111/211.
 
 The current [equation.pdf](equation.pdf), with standalone
-[TeX](equation.tex), prints10 positive unknowns, exact degree816 and
-123 operations, including all constants on one Letter page in9-point type.
-This is three fewer unknowns than the preceding13-positive90/51 display,
-with33 additional operations and higher degree. The entire closed fixed
+[TeX](equation.tex), prints10 positive unknowns, exact degree408 and
+105 operations, including all constants on one Letter page in9-point type.
+This halves degree and saves18 operations compared with the preceding
+ten-positive123/816 display. The entire closed fixed
 recipe is unchanged. Free-port algebra, complete typed tile/native/controller
 transfer, independent coefficient regeneration, both renderer modes and
-visual layout pass review; see the [candidate](candidates/one-page-scaled10/README.md).
+visual layout pass review; see the [candidate](candidates/one-page-quadratic10/README.md).
 The [13-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
 remains a different tradeoff.
 
@@ -346,12 +346,12 @@ also adds14-integer148/414 and16-integer118/124 tradeoffs. Free positive J
 reduces13-positive90/51 to88/51; that preserved page retains90/51. The
 ten-positive proposal now passes review; its identical shared-product
 sibling reaches123/816 and a further reused alias reaches122/816. The
-canonical page now displays the complete10-positive123/816 version.
+canonical page now displays the further quadratic10-positive105/408 version.
 
 
 The latest accepted reductions are9-positive419/1472168 and compact427/1626248
-(position-zero encoding plus an identical norm),10-positive122/816 (scaled
-centered norm),12-integer208/2400 or202/2912 (fixed-prime separation), and
+(position-zero encoding plus an identical norm),10-positive105/408 (quadratic
+projection and symmetric three-root norm),12-integer208/2400 or202/2912 (fixed-prime separation), and
 13-integer184/1072 (identical shared norms). Complete ordinary reviews and
 normal/optimized scoped checks pass. The [new direct source](PROPOSAL_REVIEW_QUARTICS407888.md)
 yields407 naturals or888 integers, with a917-integer lower-height alternative.

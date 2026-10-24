@@ -54,12 +54,12 @@ integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
 The maintained [equation.pdf](equation.pdf) now displays the10-positive
-123-operation degree816 equation in full, including every constant, with
+105-operation degree408 equation in full, including every constant, with
 standalone [TeX](equation.tex). It uses the same complete fixed recipe as
-the preceding13-positive90/51 page, now preserved as the lower-degree/cost
-alternative. This is a significant three-variable reduction; it increases
-degree and operations. A further identical122-operation evaluator is
-checked separately; this minor change does not trigger another rendering.
+the preceding ten-positive123/816 page, which remains preserved. It halves
+degree and saves18 operations at the same unknown count. The earlier
+13-positive90/51 page remains the lower-degree/cost alternative. A minor
+symmetric-tail saving is included in this one significant update.
 
 ## Work now underway
 
@@ -217,7 +217,7 @@ introduces12-integer equations and improves the13-integer1072-degree
 point to190 operations. The latter gives14-integer148/414 and a free
 positive J; an identical polarized tail composes with that positive
 change to give12-positive96/70. Complete tuples remain separated. The
-canonical13-positive90/51 page is retained for these minor circuit changes;
+then-canonical13-positive90/51 page was retained for these minor circuit changes;
 the ten-positive proposal is now reviewed and its identical shared-product
 sibling reaches123/816.
 
