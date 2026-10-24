@@ -32,6 +32,10 @@ retained; native calibration and the internal-ZFC proof remain separate.
 Its [thirteen-positive companion](research/ordinary-unit-products/ORDINARY13.md)
 has90 operations and exact degree51, lowering the preceding90/55 form's
 degree at the same arithmetic cost.
+Over unrestricted integers, a
+[centered joint-guard equation](candidates/joint22-centered/README.md)
+has22 unknowns, degree14 and119 operations. Its complete integer zero set
+is carried bijectively to the parent by an explicit polynomial shear.
 
 ## Approach and comparison
 

@@ -32,6 +32,11 @@ The ordinary strong-norm variant improves the thirteen-positive form to
 90 operations and exact degree51; see
 [ORDINARY13.md](research/ordinary-unit-products/ORDINARY13.md).
 
+The combined [centered joint22](candidates/joint22-centered/README.md)
+equation has22 unrestricted integer unknowns, exact degree14 and119 live
+gates. Complete inverse row transformations, the whole six-port binding,
+literal DAG and coefficient-independent leading form pass exact checks.
+
 The historical manuscript collection has moved from the Cardinals reports
 tree to [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md),
 at the repository owner's request. Live catalogue/intake/research links

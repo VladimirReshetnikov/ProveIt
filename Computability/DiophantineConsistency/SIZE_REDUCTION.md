@@ -25,6 +25,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 9 | 1,065 | 1,158,228 | D-register compression of the new radical-majorant equation |
 | Integers | 10 | 481 | 1,576,864 | Free-Lucas finalizer, package68 |
 | Integers | 38 | not optimized | 4 | Cone/determinant alternatives, packages69/71 |
+| Integers | 22 | 119 | 14 | Centered joint-guard combination;118 operations at degree16 is retained |
 
 Operations mean live binary `+`, `-`, and `*`, with squares and fixed-scalar
 multiplications charged and fixed numeral leaves free. Variable counts
@@ -91,6 +92,14 @@ into312, and exact polynomial substitution/remap certificates preserve
 the entire original polynomial. See
 [`radical-d-shared`](candidates/radical-d-shared/README.md) and
 [the nine-variable review](PROPOSAL_REVIEW_WAVE11_NINE.md).
+
+For unrestricted integers,
+[`joint22-centered`](candidates/joint22-centered/README.md) combines two new
+proposals by the invertible polynomial shear `y_old=y+f*o`. It needs only
+one extra addition in the118-operation joint22 circuit, while cancellation
+lowers degree16 to14. The result has22 integer unknowns and119 operations,
+improving the delivered degree14 evaluator by four gates. Complete inverse
+row maps, the whole fixed six-port tuple and an exact leading form are checked.
 
 1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that
