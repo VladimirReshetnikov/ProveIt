@@ -42,6 +42,9 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 601 | not optimized | 4 | Encoded-index74-guard raw/default projection;9,661 terms, height2,445,790,974,704 |
+| Integers | 606 / 605 | not optimized | 4 | Encoded-index74-guard raw projections;8,808 /8,724 terms, heights964,213 /45,769,499 |
+| Integers | 834 / 689 / 627 / 613 | not optimized | 4 | Encoded-index74-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 604 | not optimized | 4 | Output-sign75-guard raw/default-affine projection;9,676 terms, height2,445,790,974,704 |
 | Integers | 609 / 608 | not optimized | 4 | Output-sign75-guard raw projections;8,823 /8,739 terms, heights964,213 /45,769,499 |
 | Integers | 837 / 692 / 630 / 616 | not optimized | 4 | Output-sign75-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -923,3 +926,17 @@ checker/rebuild root replays pass; see the
 [root review](reviews/ten-expanded-transport-root-peer.md). Every parent
 positive witness and ordinary proof step transfers by identity. Lean remains
 paused; the canonical101/368 page is unchanged while minor gains are batched.
+
+## Complete74-predicate quartics reach601 integer unknowns
+
+The [encoded-index profile packet](research/encoded-index-sign-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches601
+variables,9,661 terms and height2,445,790,974,704. Lower-height alternatives
+reach606/8,808/964,213 and605/8,724/45,769,499 (variables/terms/height).
+Every original domain row, both directions of the full raw/compact integer
+bijection, every fresh signed inverse and every quartic coefficient passed
+normal/optimized root replay, along with both deterministic rebuilds. The
+modified prefix/frame and independent74-predicate source peer are checked
+before semantic calibration; see the [root review](reviews/encoded-index-profile-root-peer.md).
+No count was extrapolated from a deleted guard. Earlier families remain
+preserved. Lean stays paused and the canonical one-page equation is unchanged.

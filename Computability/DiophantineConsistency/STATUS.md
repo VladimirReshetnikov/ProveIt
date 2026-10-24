@@ -1033,3 +1033,17 @@ checker/rebuild root replays pass; see the
 [root review](reviews/ten-expanded-transport-root-peer.md). Every parent
 positive witness and ordinary proof step transfers by identity. Lean remains
 paused; the canonical101/368 page is unchanged while minor gains are batched.
+
+## Complete74-predicate quartics reach601 integer unknowns
+
+The [encoded-index profile packet](research/encoded-index-sign-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches601
+variables,9,661 terms and height2,445,790,974,704. Lower-height alternatives
+reach606/8,808/964,213 and605/8,724/45,769,499 (variables/terms/height).
+Every original domain row, both directions of the full raw/compact integer
+bijection, every fresh signed inverse and every quartic coefficient passed
+normal/optimized root replay, along with both deterministic rebuilds. The
+modified prefix/frame and independent74-predicate source peer are checked
+before semantic calibration; see the [root review](reviews/encoded-index-profile-root-peer.md).
+No count was extrapolated from a deleted guard. Earlier families remain
+preserved. Lean stays paused and the canonical one-page equation is unchanged.
