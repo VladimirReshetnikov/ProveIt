@@ -129,7 +129,7 @@ python3 tools/research_seed_compression54.py --render --collected-phi \
   --output-dir candidates/one-page-compression/bfs-collected
 ```
 
-Run these commands from this research directory. A `python3 -O` replay of the
+Run these commands from this research directory. A `python3 -O` replay of
 both variants also passes, producing identical seed, state permutation,
 standalone TeX and PDF bytes. Guards use explicit exceptions rather than
 removable assertions.

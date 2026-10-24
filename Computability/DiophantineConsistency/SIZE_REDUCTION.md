@@ -58,6 +58,15 @@ are checked. The new `K` differs from the old one, so this is a separate
 whole-tuple specification with an ordinary state-conjugacy argument.
 See [SEED_COMPRESSION54.md](SEED_COMPRESSION54.md) for its scope and replay.
 
+For the alternative direct-proof route,
+[`direct-flow-large-carrier`](candidates/direct-flow-large-carrier/README.md)
+removes the carrier's common-multiple block using the exact factor bound
+`M=(m+1)^t`. Combining this with quadratic beta-digit constraints reduces
+the specified source constructor from140,639,095,370 to47,439,839
+representation witnesses. These are **before** the final quartic compiler;
+no final polynomial count or new small-equation frontier point is claimed.
+The universal ordinary proof and count-only finite checks are included.
+
 1. Further optimize the literal440-operation circuit, preserving its exact
    polynomial. Search for shared powers and algebraic rearrangements that
    remove live gates, with local exact identities and independent modular
