@@ -965,3 +965,15 @@ deterministic root rebuilds; see the
 [root review](reviews/factorial-radius-profile-root-peer.md). Only after
 restoring the complete76-predicate parent is its ordinary theorem applied.
 No projected count was inferred from guard count. Lean remains paused.
+
+## Exact odd-rank sharing reaches405/413 operations
+
+The complete [shared odd-rank sibling](research/nine-folded-shared-odd-rank/README.md)
+reuses the literal source register RankPlusOne in B1=R+RankPlusOne, since
+R=RankPlusOne-1. It deletes one private multiplication and preserves the
+entire polynomial for every assignment. Both whole-tuple nine-positive
+circuits now have405/1,191,570 and413/1,316,546 operations/degree. Full
+node/operand inventories, coefficients, norms and attained-degree checks
+passed both checker/rebuild modes under root replay; see the
+[root review](reviews/nine-shared-odd-rank-root-peer.md). The canonical
+page and Lean pause are unchanged.
