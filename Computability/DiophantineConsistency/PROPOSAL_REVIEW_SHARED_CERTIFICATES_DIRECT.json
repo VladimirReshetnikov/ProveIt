@@ -1,0 +1,306 @@
+{
+  "status": "PASS",
+  "python_optimization": 0,
+  "arrival": {
+    "archive": "docs/incoming/ConZFC_Shared_Certificates_2026-10-24.zip",
+    "sha256": "61582dab90e880049e61ff1a5c49386747cd063de15e18411a20f327b9559ba1",
+    "files": 116,
+    "raw_bytes": 3618732,
+    "extract": "/tmp/dioph-new-arrivals-751bc067e2/ConZFC_Shared_Certificates_2026-10-24"
+  },
+  "authenticated_sources": [
+    {
+      "path": "direct/provenance/Code254.lean",
+      "relation": "byte-identical"
+    },
+    {
+      "path": "direct/provenance/KCode222.lean",
+      "relation": "byte-identical"
+    },
+    {
+      "path": "direct/provenance/KEndpoint.lean",
+      "relation": "byte-identical"
+    },
+    {
+      "path": "direct/provenance/ConstructibleChoice.lean",
+      "relation": "byte-identical"
+    },
+    {
+      "path": "direct/provenance/Bridge.lean",
+      "relation": "byte-identical"
+    },
+    {
+      "path": "direct/provenance/PowerRepresentation.lean",
+      "relation": "local copy has exactly one additional trailing LF byte"
+    },
+    {
+      "path": "direct/provenance/FactorialRepresentation.lean",
+      "relation": "local copy has exactly one additional trailing LF byte"
+    },
+    {
+      "path": "direct/provenance/BoundedForallCertificate.lean",
+      "relation": "local copy has exactly one additional trailing LF byte"
+    },
+    {
+      "path": "direct/provenance/PellRepresentation.lean",
+      "relation": "local copy has exactly one additional trailing LF byte"
+    },
+    {
+      "path": "direct/provenance/BoundedForallRepresentation.lean",
+      "relation": "local copy has exactly one additional trailing LF byte"
+    },
+    {
+      "path": "direct/provenance/COMMUTATIVE_CERTIFICATES.md",
+      "relation": "local copy has exactly one additional trailing LF byte"
+    },
+    {
+      "path": "direct/provenance/inherited_onestack_section.tex",
+      "relation": "byte-identical"
+    },
+    {
+      "path": "direct/provenance/direct_flow_large_carrier_README.md",
+      "relation": "byte-identical"
+    }
+  ],
+  "literal_results": {
+    "affine": {
+      "variables": 3614,
+      "quadratic_rows": 2954,
+      "quartic_terms": 15996,
+      "coefficient_height": 127778545,
+      "exact_degree": 4,
+      "all_variables_live": true,
+      "equation_sha256": "08aac662dfa89579936e620aaf4bd3cb89b36b816e08ab3518fc75218c94790b",
+      "expanded_sha256": "ef8bc35b9ee87d9a6030b75b47bcc67803d0b6bb89fa60b97cc227dd74655582"
+    },
+    "retained": {
+      "variables": 6183,
+      "quadratic_rows": 5523,
+      "quartic_terms": 17430,
+      "coefficient_height": 1993,
+      "exact_degree": 4,
+      "all_variables_live": true,
+      "equation_sha256": "963d36acd1bbfd9127ad59d3b84b5987f5e0c775fd4847b07df84d752cb76daf",
+      "expanded_sha256": "89ca15598a5ffa6ed00d2a986b0c256c136ef94e30f08e9d3f8391be6b8396ab"
+    }
+  },
+  "scoped_replay": {
+    "status": "PASS",
+    "results": [
+      {
+        "command": [
+          "python3",
+          "build_equation.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/rebuilt-default"
+        ],
+        "returncode": 0,
+        "seconds": 0.222,
+        "stdout_sha256": "36887e8513f7d60674652b159b1f3cd611aad4b132a69868c9801d06be16c49b",
+        "log": "0.log"
+      },
+      {
+        "command": [
+          "python3",
+          "build_equation.py",
+          "--keep-linear-wires",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/rebuilt-keep"
+        ],
+        "returncode": 0,
+        "seconds": 0.23,
+        "stdout_sha256": "c16dc0a6f7d0e98b1b04b3344774e7bd50df50fb7c3400ca0d0faf57d013d576",
+        "log": "1.log"
+      },
+      {
+        "command": [
+          "python3",
+          "check_equation.py",
+          "--directory",
+          "/tmp/proofs62ff-shared-direct-replay/direct",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/CHECK_DEFAULT.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.436,
+        "stdout_sha256": "97ac0400bca86474963a42875b55f0b2ad8c449eb17ffc38680dbeb4dea14789",
+        "log": "2.log"
+      },
+      {
+        "command": [
+          "python3",
+          "check_equation.py",
+          "--directory",
+          "/tmp/proofs62ff-shared-direct-replay/direct",
+          "--equation-directory",
+          "/tmp/proofs62ff-shared-direct-replay/direct/small_height",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/CHECK_KEEP.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.432,
+        "stdout_sha256": "a53de8c4c05378eabcd6c7d25307141d44ad97ea4982eb56b639450c2a91ef13",
+        "log": "3.log"
+      },
+      {
+        "command": [
+          "python3",
+          "audit_calculus.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.04,
+        "stdout_sha256": "73a3500cdb9702867b5084b901ef40f1b9ab7936d8720d67b8c71842edff490d",
+        "log": "4.log"
+      },
+      {
+        "command": [
+          "python3",
+          "audit_power_graph.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/POWER.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.043,
+        "stdout_sha256": "895e1210590f72a6d96cf7c94126639140a3edef8bcd2d79f9bc4230d867469d",
+        "log": "5.log"
+      },
+      {
+        "command": [
+          "python3",
+          "audit_literal.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/LITERAL.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.651,
+        "stdout_sha256": "6c3fd884a11147f99a513b38d8cd47e8629b93e5a3cc4e81f4dc7daf7fc526d5",
+        "log": "6.log"
+      },
+      {
+        "command": [
+          "python3",
+          "audit_source.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/SOURCE.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.581,
+        "stdout_sha256": "921d43ac5e11b710b3a7fc15f0d68d24ba6996c605f69030a746d11296936563",
+        "log": "7.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "build_equation.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/rebuilt-default"
+        ],
+        "returncode": 0,
+        "seconds": 0.224,
+        "stdout_sha256": "36887e8513f7d60674652b159b1f3cd611aad4b132a69868c9801d06be16c49b",
+        "log": "0-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "build_equation.py",
+          "--keep-linear-wires",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/rebuilt-keep"
+        ],
+        "returncode": 0,
+        "seconds": 0.243,
+        "stdout_sha256": "c16dc0a6f7d0e98b1b04b3344774e7bd50df50fb7c3400ca0d0faf57d013d576",
+        "log": "1-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "check_equation.py",
+          "--directory",
+          "/tmp/proofs62ff-shared-direct-replay/direct",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/CHECK_DEFAULT.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.363,
+        "stdout_sha256": "5b5a5ce2edde8f5e638d5917808f55f40e166722c5d41ce5d865ad1261e313be",
+        "log": "2-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "check_equation.py",
+          "--directory",
+          "/tmp/proofs62ff-shared-direct-replay/direct",
+          "--equation-directory",
+          "/tmp/proofs62ff-shared-direct-replay/direct/small_height",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/CHECK_KEEP.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.376,
+        "stdout_sha256": "a51f14628d8e3a5653b51804008f9e4d2dd56dfbfa54ce5ba165155349bd7e18",
+        "log": "3-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "audit_calculus.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.036,
+        "stdout_sha256": "73a3500cdb9702867b5084b901ef40f1b9ab7936d8720d67b8c71842edff490d",
+        "log": "4-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "audit_power_graph.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/POWER.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.04,
+        "stdout_sha256": "d76d7bacbaaf561aa6840aca1991f62d67b07eb0fc5d4c5eacea52bde3cd3418",
+        "log": "5-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "audit_literal.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/LITERAL.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.616,
+        "stdout_sha256": "c40cd292edfa30977ebb0184f99bd21cffb77460ee91e6fe945a1276ccfa54c9",
+        "log": "6-O.log"
+      },
+      {
+        "command": [
+          "python3",
+          "-O",
+          "audit_source.py",
+          "--output",
+          "/tmp/proofs62ff-shared-direct-replay/SOURCE.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.509,
+        "stdout_sha256": "921d43ac5e11b710b3a7fc15f0d68d24ba6996c605f69030a746d11296936563",
+        "log": "7-O.log"
+      }
+    ],
+    "byte_identical_rebuilt_files": 6,
+    "scope": "Inspected direct-only authored Python code normal/optimized in scratch. No inherited/reference program, Lean, TeX, network, pip, or coordinate-family replay."
+  },
+  "ordinary_review": "Shared factorial cancellation, heterogeneous bounds, source/calculus elimination, sharp carrier, positive-power inventory, and nonnegative affine restoration reviewed in companion note.",
+  "scope": "Incoming direct component only; no coordinate-family/native recalibration, inherited program execution, Lean build, or internal-ZFC proof."
+}
