@@ -42,6 +42,9 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 610 / 611 / 613 | not optimized | 4 | Paired77-guard projections;10,053 /8,717 /8,622 terms, height2,445,790,974,704 |
+| Integers | 639 | not optimized | 4 | Paired77-guard lower-height projection;5,605 terms, height63,905,891 |
+| Integers | 843 / 698 / 636 / 622 | not optimized | 4 | Paired77-guard raw projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 642 | not optimized | 4 | Comparison-base lift, lower-height projection;5,565 terms, height63,905,891 |
 | Integers | 1,493 / 846 | not optimized | 4 | Retained-wire78-guard equations;4,981 /3,813 terms, heights427 /4,750 |
 | Integers | 701 / 637 / 623 | not optimized | 4 | Retained-wire78-guard projections;5,575 /8,925 /8,889 terms, heights737,653 /737,653 /938,261 |
@@ -781,3 +784,18 @@ zero-existence directions and full source identities passed author,
 independent peer and root review in normal/optimized Python; see the
 [root acceptance](reviews/paired-index-guards-root-peer.md). Projected
 equation sizes remain a separate task; no count is inferred from this theorem.
+
+## Complete77-predicate quartic profiles accepted
+
+The [paired-guard profile packet](research/paired-index-guard-profile/README.md)
+contains20 complete equations, quartics and integer projection certificates.
+Its compact support32/16/8 choices have610/611/613 variables and
+10,053/8,717/8,622 terms, at common height2,445,790,974,704; the lower-height
+639-variable choice has5,605 terms at height63,905,891. Raw projections
+reach843/698/636/622 variables at heights4,750/737,653/737,653/938,261.
+Every source row, guard predicate, integer inverse and full quartic was
+checked before inheriting the77-guard proof. All four normal/optimized
+checker/rebuild replays passed; see the
+[root review](reviews/paired-guard-profile-root-peer.md). A product wire
+produces the same projected quartics. No variable saving is inferred merely
+from guard count. The canonical PDF and Lean sources remain unchanged.

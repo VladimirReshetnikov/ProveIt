@@ -98,6 +98,13 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
+The latest [paired-guard quartic family](research/paired-index-guard-profile/README.md)
+reaches610 integer unknowns with10,053 terms, or611/613 with8,717/8,622
+terms at the same coefficient height2,445,790,974,704. Its639-variable
+lower-height companion has5,605 terms at height63,905,891. Exact integer
+restoration and the ordinary77-guard proof precede the inherited source
+calibration. The earlier78-guard families remain preserved below.
+
 The direct C222 route now supplies complete
 [integer quartics in613/614/616 variables](candidates/projected-radius-comparison-base/README.md),
 with10,013/8,677/8,582 terms and common height2,445,790,974,704. Its
@@ -958,3 +965,18 @@ zero-existence directions and full source identities passed author,
 independent peer and root review in normal/optimized Python; see the
 [root acceptance](reviews/paired-index-guards-root-peer.md). Projected
 equation sizes remain a separate task; no count is inferred from this theorem.
+
+## Complete77-predicate quartic profiles accepted
+
+The [paired-guard profile packet](research/paired-index-guard-profile/README.md)
+contains20 complete equations, quartics and integer projection certificates.
+Its compact support32/16/8 choices have610/611/613 variables and
+10,053/8,717/8,622 terms, at common height2,445,790,974,704; the lower-height
+639-variable choice has5,605 terms at height63,905,891. Raw projections
+reach843/698/636/622 variables at heights4,750/737,653/737,653/938,261.
+Every source row, guard predicate, integer inverse and full quartic was
+checked before inheriting the77-guard proof. All four normal/optimized
+checker/rebuild replays passed; see the
+[root review](reviews/paired-guard-profile-root-peer.md). A product wire
+produces the same projected quartics. No variable saving is inferred merely
+from guard count. The canonical PDF and Lean sources remain unchanged.
