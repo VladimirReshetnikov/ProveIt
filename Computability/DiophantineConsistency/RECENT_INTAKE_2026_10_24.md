@@ -996,3 +996,22 @@ frontier are unchanged by intake alone. New shared-sum, quotient-frame
 and transport-majorant mechanisms are recorded as separate research leads.
 Lean remains paused; successful substantial compact improvements will
 replace the canonical PDF and its standalone TeX after full verification.
+
+## Complete shared-remainder compiler reaches 557 integer variables
+
+The [new complete finite family](research/shared-remainder-product-source-prototype/README.md)
+now realizes the separately approved 56-guard source theorem. Its best
+checked default has **557 unrestricted integer variables, 363 rows,
+6,937 quartic terms and height 2,445,790,974,704**. This saves twelve
+variables and 260 terms against the preserved 569-variable equation,
+at the same row count and height. All 24 RAW/CSE profiles, complete
+coefficient maps, inverse restorations and exact censuses pass fresh
+normal/optimized rebuilds and independent checks; 89 corruption controls
+are rejected. The default has 879 signed restorations and no unconstrained
+deletion. Actual deltas for every configuration are retained in the packet.
+
+The [root acceptance](reviews/shared-remainder-product-source-root-peer.md)
+composes these finite results with the exact complete ordinary source
+theorem and native calibration. A finite polynomial check alone does not
+supply that interpretation. Earlier packets remain preserved. The
+compact ten-positive page and paused Lean work are unchanged by this result.

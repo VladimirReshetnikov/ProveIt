@@ -46,7 +46,7 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
-| Integers | 569 | not optimized | 4 | Ten output squares, 62 guards, CSE/default projection; 7,197 terms, height 2,445,790,974,704 |
+| Integers | 557 | not optimized | 4 | Ten output squares, 56 guards, CSE/default projection; 6,937 terms, height 2,445,790,974,704 |
 | Integers | 577 / 576 | not optimized | 4 | Existing-square 63-guard CSE projections; 5,754 / 5,818 terms, heights 964,213 / 45,769,613 |
 | Integers | 787 / 657 / 599 / 584 | not optimized | 4 | Existing-square 63-guard lower-height CSE projections; heights 4,750 / 737,653 / 737,653 / 938,261 |
 | Integers | 575 | not optimized | 4 | Squared-output 64-guard CSE/default projection; 7,225 terms, height 2,445,790,974,704 |
@@ -1289,3 +1289,22 @@ frontier are unchanged by intake alone. New shared-sum, quotient-frame
 and transport-majorant mechanisms are recorded as separate research leads.
 Lean remains paused; successful substantial compact improvements will
 replace the canonical PDF and its standalone TeX after full verification.
+
+## Complete shared-remainder compiler reaches 557 integer variables
+
+The [new complete finite family](research/shared-remainder-product-source-prototype/README.md)
+now realizes the separately approved 56-guard source theorem. Its best
+checked default has **557 unrestricted integer variables, 363 rows,
+6,937 quartic terms and height 2,445,790,974,704**. This saves twelve
+variables and 260 terms against the preserved 569-variable equation,
+at the same row count and height. All 24 RAW/CSE profiles, complete
+coefficient maps, inverse restorations and exact censuses pass fresh
+normal/optimized rebuilds and independent checks; 89 corruption controls
+are rejected. The default has 879 signed restorations and no unconstrained
+deletion. Actual deltas for every configuration are retained in the packet.
+
+The [root acceptance](reviews/shared-remainder-product-source-root-peer.md)
+composes these finite results with the exact complete ordinary source
+theorem and native calibration. A finite polynomial check alone does not
+supply that interpretation. Earlier packets remain preserved. The
+compact ten-positive page and paused Lean work are unchanged by this result.
