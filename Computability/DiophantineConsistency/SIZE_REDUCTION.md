@@ -22,6 +22,7 @@ not establish the size of a complete consistency equation.
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 101 | 368 | Fixed root weight, unshifted multiplier and positive short projector |
+| Positive integers | 10 | 107 | 340 | Direct positive X and delayed divisibility carrier; cost/degree tradeoff |
 | Positive integers | 9 | 409 / 417 | 1,191,572 / 1,316,548 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
 | Positive integers | 9 | 475 | 1,379,730 | Shared-product reduction of package71 |
 | Positive integers | 9 | 722 | 1,158,228 | Collected J,D radical evaluator and identical norm rewrite |
@@ -681,3 +682,17 @@ removing the inner constant offset in the scaled main base. Its stronger
 ratio estimate suggests one fewer operation at unchanged degree; independent
 review and literal checks are pending. The canonical101/368 page and
 paused Lean remain unchanged.
+
+## Complete direct-base107/340 endpoint accepted
+
+The [direct-base candidate](candidates/ten-positive-direct-base/README.md)
+has ten positive unknowns,107 live operations and exact degree340. It
+replaces X=wq by X=q+x and recovers q divisibility from a new carrier
+after the whole-product projection removes H. The [root review](reviews/direct107-root-peer.md)
+and [ordinary peer](reviews/ten-positive-direct-base-ordinary-peer.md)
+verify the complete proof chronology and positive witness map. All four
+root normal/optimized checks and rebuilds pass, with61 closed seals,
+full four-port binding, universal center/norm identities and an attained
+nonzero degree340 coefficient. This lowers degree by28 at six extra
+operations relative to101/368. The cheaper complete canonical page stays
+unchanged; no global optimum or new Lean endpoint is claimed.

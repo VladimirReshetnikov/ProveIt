@@ -1,0 +1,53 @@
+{
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_direct_base.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "verification/generator-normal.txt",
+      "log_sha256": "52fd57c6dae3910d267f1d1420fd1734f01a702cb74d23ea5abd6f7c7394b6ce",
+      "wall_seconds_rounded": 0.048
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/candidates/ten-positive-direct-base/check.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/checker-normal.txt",
+      "log_sha256": "e9ec9228df1d21bf55998e5763a336fa4e150141db8f6acd21a0b21edd4abe85",
+      "wall_seconds_rounded": 0.266
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_direct_base.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "verification/generator-optimized.txt",
+      "log_sha256": "52fd57c6dae3910d267f1d1420fd1734f01a702cb74d23ea5abd6f7c7394b6ce",
+      "wall_seconds_rounded": 0.048
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/candidates/ten-positive-direct-base/check.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/checker-optimized.txt",
+      "log_sha256": "f28440c91b2244115e332ce9af3233822807d5497122a9da79a5012cfa58af73",
+      "wall_seconds_rounded": 0.271
+    }
+  ],
+  "status": "PASS"
+}
