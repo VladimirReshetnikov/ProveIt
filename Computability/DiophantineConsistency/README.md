@@ -466,3 +466,17 @@ independent and deterministic checks in both Python modes. Heights remain
 427/4,750/737,653/737,653/938,261; each matched159-guard sibling loses
 156 coordinates,52 rows and780 terms. The smaller706-variable, larger-height
 family remains a separate tradeoff. The canonical PDF/TeX and Lean are unchanged.
+
+
+The [signed main-root reduction](candidates/constructive-integer14-quadratic/README.md)
+now reaches14 unrestricted integer variables,121 operations and exact
+degree312. Absolute-value Pell folding recovers the missing main norm
+before the signed rank bootstrap; a whole-product absolute height bound
+resolves the quadratic projection for both signs of H. Explicit integer
+n maps preserve zero existence in both directions. The complete proof,
+all six original coefficients, universal formula binding, literal35-term
+norm, exact leading form and normal/optimized replays pass independent
+and root review. This improves both cost and degree over14-integer
+137/792,145/568 and148/414, which remain preserved checkpoints. It has
+more variables and operations than the current10-positive105/408 page,
+so that complete PDF/TeX remains the canonical display. Lean is paused.

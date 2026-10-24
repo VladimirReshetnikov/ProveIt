@@ -28,7 +28,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 16 | 134 / 135 | 192 / 184 | Separated rational norm and nonnegative guard finalizer |
 | Integers | 12 | 208 / 202 | 2,400 / 2,912 | Fixed-prime separation with identical shared norms |
 | Integers | 13 | 184 | 1,072 | Trace recovery and identical shared-norm evaluator |
-| Integers | 14 | 137 / 145 / 148 | 792 / 568 / 414 | Root fusion and four-root coprime carriers |
+| Integers | 14 | 121 | 312 | Signed main-root recovery and quadratic whole-product projection |
 | Integers | 15 | 124 / 128 | 352 / 204 | Parity-separated norm;204/128 improves344/131 |
 | Integers | 16 | 115 / 118 / 119 / 132 | 160 / 124 / 112 / 108 | Parity/residue families and prime separation |
 | Integers | 17 | 110 | 88 | Root-fusion quotient companion;114-gate checkpoint retained |
@@ -445,3 +445,17 @@ independent and deterministic checks in both Python modes. Heights remain
 427/4,750/737,653/737,653/938,261; each matched159-guard sibling loses
 156 coordinates,52 rows and780 terms. The smaller706-variable, larger-height
 family remains a separate tradeoff. The canonical PDF/TeX and Lean are unchanged.
+
+
+The [signed main-root reduction](candidates/constructive-integer14-quadratic/README.md)
+now reaches14 unrestricted integer variables,121 operations and exact
+degree312. Absolute-value Pell folding recovers the missing main norm
+before the signed rank bootstrap; a whole-product absolute height bound
+resolves the quadratic projection for both signs of H. Explicit integer
+n maps preserve zero existence in both directions. The complete proof,
+all six original coefficients, universal formula binding, literal35-term
+norm, exact leading form and normal/optimized replays pass independent
+and root review. This improves both cost and degree over14-integer
+137/792,145/568 and148/414, which remain preserved checkpoints. It has
+more variables and operations than the current10-positive105/408 page,
+so that complete PDF/TeX remains the canonical display. Lean is paused.
