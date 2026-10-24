@@ -42,6 +42,9 @@ not establish the size of a complete consistency equation.
 | Integers | 20 | not optimized | 18 | Coordinated polynomial projection |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 591 | not optimized | 4 | Common-radius72-guard CSE/default projection;9,657 terms, height2,445,790,974,704 |
+| Integers | 596 / 595 | not optimized | 4 | Common-radius72-guard CSE projections;8,328 /8,232 terms, heights964,213 /45,769,613 |
+| Integers | 822 / 684 / 618 / 603 | not optimized | 4 | Common-radius72-guard CSE low-height projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 594 | not optimized | 4 | Squared-radius72-guard raw/default projection;9,588 terms, height2,445,790,974,704 |
 | Integers | 598 / 597 | not optimized | 4 | Squared-radius72-guard raw projections;8,564 /8,504 terms, heights964,213 /45,769,495 |
 | Integers | 824 / 683 / 619 / 605 | not optimized | 4 | Squared-radius72-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -1078,3 +1081,22 @@ and597/8,504/45,769,495 (variables/terms/height). The595-variable predecessor
 has two fewer terms and is preserved. This resolves the preceding prototype's
 ordinary-proof obligation without changing its sealed finite-scope flags.
 The canonical ten-positive page remains unchanged; Lean remains paused.
+
+
+## Complete common-radius quartic:591 integer unknowns
+
+The [common factorial-radius proof](research/common-factorial-square-radius/PROOF.md)
+keeps72 predicates with both radii f² and the one joint guard f>=K+g.
+It derives g>=0 before f, repairs the t=1 shifted-seed argument using g<=f,
+and rebuilds every radix/frame/Pell witness for completeness. The exact
+RAW binding and a separate invertible integer row operation sharing the
+base moduli license all24 checked [RAW/CSE quartics](research/common-squared-radius-source-prototype/README.md).
+Root's four ordinary replays, both finite checks and both deterministic
+rebuilds all pass and match their seals; see the [combined review](reviews/common-squared-radius-root-peer.md).
+
+CSE support16/default gives591 integer variables,9,657 terms and height
+2,445,790,974,704 at degree4. Lower-height CSE choices include596/8,328/964,213
+and595/8,232/45,769,613 (variables/terms/height). The594-variable predecessor
+has69 fewer terms and is preserved. This is the direct quartic family;
+other domains and compact norm equations remain separate tradeoffs.
+The canonical ten-positive page is unchanged and Lean remains paused.

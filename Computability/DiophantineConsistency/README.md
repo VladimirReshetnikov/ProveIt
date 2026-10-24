@@ -99,13 +99,14 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
-The latest [squared-radius quartic family](research/squared-radius-source-prototype/README.md)
-reaches594 integer unknowns with9,588 terms at degree4. It also offers598
-unknowns with coefficient height964,213, or597 with height45,769,495.
-The [complete ordinary source proof](research/factorial-square-guard-exchange/FULL_SOURCE.md)
-is exactly bound to every checked integer inverse and complete quartic;
-see the [combined root review](reviews/factorial-square-calibration-root-peer.md).
-The preceding595-variable family has two fewer terms and is preserved.
+The latest [common-radius quartic family](research/common-squared-radius-source-prototype/README.md)
+reaches591 integer unknowns with9,657 terms at degree4. It also offers596
+unknowns with coefficient height964,213, or595 with height45,769,613.
+The [complete ordinary source proof](research/common-factorial-square-radius/FULL_SOURCE.md)
+is exactly bound to every checked integer inverse and complete quartic,
+including the invertible modulus-sharing step; see the
+[combined root review](reviews/common-squared-radius-root-peer.md).
+The preceding594-variable family has69 fewer terms and is preserved.
 
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
 now reaches607 integer variables, or612 with coefficient height964,213
@@ -1256,3 +1257,22 @@ and597/8,504/45,769,495 (variables/terms/height). The595-variable predecessor
 has two fewer terms and is preserved. This resolves the preceding prototype's
 ordinary-proof obligation without changing its sealed finite-scope flags.
 The canonical ten-positive page remains unchanged; Lean remains paused.
+
+
+## Complete common-radius quartic:591 integer unknowns
+
+The [common factorial-radius proof](research/common-factorial-square-radius/PROOF.md)
+keeps72 predicates with both radii f² and the one joint guard f>=K+g.
+It derives g>=0 before f, repairs the t=1 shifted-seed argument using g<=f,
+and rebuilds every radix/frame/Pell witness for completeness. The exact
+RAW binding and a separate invertible integer row operation sharing the
+base moduli license all24 checked [RAW/CSE quartics](research/common-squared-radius-source-prototype/README.md).
+Root's four ordinary replays, both finite checks and both deterministic
+rebuilds all pass and match their seals; see the [combined review](reviews/common-squared-radius-root-peer.md).
+
+CSE support16/default gives591 integer variables,9,657 terms and height
+2,445,790,974,704 at degree4. Lower-height CSE choices include596/8,328/964,213
+and595/8,232/45,769,613 (variables/terms/height). The594-variable predecessor
+has69 fewer terms and is preserved. This is the direct quartic family;
+other domains and compact norm equations remain separate tradeoffs.
+The canonical ten-positive page is unchanged and Lean remains paused.
