@@ -1,0 +1,1262 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+
+\definecolor{linkblue}{RGB}{25,62,100}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Congruence Carriers and a Sextic Reduction for Diophantine Consistency},
+  pdfauthor={Research contribution for the ProveIt repository},
+  pdfsubject={Explicit Diophantine forms of syntactic ZFC consistency}
+}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Explicit Diophantine consistency equations}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\setlist[itemize]{topsep=5pt,itemsep=3pt}
+\setlist[enumerate]{topsep=5pt,itemsep=3pt}
+\allowdisplaybreaks[1]
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zpos}{\mathbb Z_{>0}}
+\newcommand{\ZFC}{\mathrm{ZFC}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\ZFCRef}{\operatorname{Ref}}
+\newcommand{\Proof}{\operatorname{Proof}}
+\newcommand{\degw}{\operatorname{deg}_{\mathrm{wit}}}
+\newcommand{\snapshot}{\texttt{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}}
+\newcommand{\repofile}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9cca523d9f27ad39d52993f4065cbd7e58f8bdd4/Computability/DiophantineConsistency/#1}{#2}}
+\newcommand{\formfile}[2]{\repofile{con-zfc-diophantine-forms/#1}{#2}}
+
+\title{\textbf{Congruence Carriers and a Sextic Reduction}\\[3pt]
+  \textbf{for Diophantine Consistency}\\[8pt]
+  \large Thirteen positive unknowns in degree 28\\
+  Fourteen positive unknowns in degree 24\\
+  Thirty-four unrestricted unknowns in degree 6}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+  and the ProveIt repository}
+\date{23 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give three fixed integer polynomials whose lack of solutions, in their
+specified domains, is equivalent in ordinary ZFC mathematics to the
+nonexistence of a finite syntactic ZFC refutation.  The first has thirteen
+strictly positive unknowns, exact degree \(28\), and a literal circuit of
+\(98\) binary arithmetic operations.  Its comparison point in the inspected
+repository has degree \(34\) and \(93\) operations at the same number of
+unknowns.  Retaining one product as a fourteenth positive coordinate
+gives exact degree \(24\) in \(101\) operations, compared with the inspected
+fourteen-variable degree-\(26\), \(92\)-operation endpoint.
+The third is a sextic in thirty-four unrestricted integers,
+the sum of squares of nineteen cubic-or-lower residuals; the inspected
+sextic has thirty-five unknowns and twenty residuals.
+
+For the positive construction, an existing monic Pell equation carries
+the fixed congruence needed to make a source gap an independent positive
+coordinate.  This changes the order in which source bounds, divisibility,
+and signs become available.  For the sextic, two polynomial root changes
+and a row reduction modulo a retained square equation allow seven
+registers to be eliminated from the source quartic while keeping every
+remaining residual cubic.  We prove the new reductions and reproduce
+the signed auxiliary-index and squared-modulus completeness arguments.
+
+The archive specifies coherent fixed coefficient tuples, literal
+polynomials, exact checkers, and source provenance.  The consistency
+corollaries use the named inherited native compiler and refutation
+calibration.  Finite verification establishes algebra and data integrity;
+the exact object-language \texttt{BProv} obligation recorded by ProveIt
+remains a separate formalization task.  These are measured improvements
+over a pinned comparison snapshot, with no global minimality or global
+novelty claim.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\newpage
+
+\section{The target and the three completed endpoints}
+\label{sec:target}
+
+\subsection{A fixed syntactic consistency statement}
+
+Fix the effective proof calculus for ZFC used by the inherited refutation
+calibration.  Write
+\(\Proof_{\ZFC}(p,\ulcorner\bot\urcorner)\) for its finite proof-checking
+relation: \(p\) codes a syntactic derivation of contradiction from ZFC
+axioms.  A proof code includes the finite formulas and instances of the
+axiom schemata required to check that derivation.  Define
+\begin{equation}
+ \ZFCRef_{\ZFC}\;:\!\Longleftrightarrow\;
+ \exists p\in\N\;\Proof_{\ZFC}(p,\ulcorner\bot\urcorner),
+ \qquad
+ \Con(\ZFC)\;:\!\Longleftrightarrow\;\neg\ZFCRef_{\ZFC}.
+ \label{eq:syntactic-con}
+\end{equation}
+Thus the target is syntactic consistency.  It does not refer to a
+transitive model, correctness about all arithmetical statements, or an
+unbounded reflection principle.  The source calibration and its proof
+convention are part of the specification, not free choices made after
+examining a putative solution; see
+\cite{fixed-source,native-calibration,object-zfc}.
+
+A \emph{fixed} polynomial here has integer coefficients given by finite
+recipes and by authenticated numeral files.  The only quantified
+parameters are the variables in its displayed witness list.  Names for
+subexpressions are arithmetic registers, not additional existential
+variables.  Powers occurring in a recipe for a fixed coefficient have
+fixed finite exponents.
+
+Let \(P_{13}\) be the polynomial of
+Section~\ref{sec:positive-coordinate-carrier}, bound to the entire compact
+source-44 tuple, and let \(P_{14}\) be its product-register lift in
+Section~\ref{sec:positive14-degree24}, with the same entire tuple.
+Let \(Q_{34}\) be the polynomial of
+Section~\ref{sec:sextic34}, bound to the entire source-34 tuple.  In
+particular, the subscripts count unknowns, and the domains are different.
+
+\begin{theorem}[The completed polynomials]
+\label{thm:main}
+The following ordinary mathematical reductions hold.
+\begin{enumerate}
+ \item \(P_{13}\) has thirteen strictly positive unknowns, exact total
+ degree \(28\), and \(98\) live binary arithmetic gates.  Its positive
+ zeros give normalized native-source witnesses; conversely a finite
+ refutation, through the canonical native-source construction, gives a
+ positive zero of \(P_{13}\).
+ \item \(P_{14}\) has fourteen strictly positive unknowns, exact total
+ degree \(24\), and \(101\) live binary arithmetic gates.  Its zero set
+ is the graph of the uniquely determined positive coordinate \(E=XY\)
+ over the positive zero set of \(P_{13}\).
+ \item \(Q_{34}\) has thirty-four unrestricted integer unknowns and exact
+ degree \(6\).  Its nineteen residuals have degree at most three.  Its
+ complete integer zero set is in explicit polynomial bijection with
+ the zero set of the pinned forty-one-integer source quartic.
+\end{enumerate}
+Consequently, using the inherited source theorems identified in
+Section~\ref{sec:proof-status},
+\begin{align}
+ \exists\mathbf x\in\Zpos^{13}\;P_{13}(\mathbf x)=0
+ &\quad\Longleftrightarrow\quad\ZFCRef_{\ZFC},
+ \label{eq:main-pos-existence}\\
+ \exists\mathbf t\in\Zpos^{14}\;P_{14}(\mathbf t)=0
+ &\quad\Longleftrightarrow\quad\ZFCRef_{\ZFC},
+ \label{eq:main14-existence}\\
+ \exists\mathbf z\in\Z^{34}\;Q_{34}(\mathbf z)=0
+ &\quad\Longleftrightarrow\quad\ZFCRef_{\ZFC}.
+ \label{eq:main-int-existence}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The first reduction is proved by congruence recovery, Pell-index recovery,
+and constructive completeness in
+Section~\ref{sec:positive-coordinate-carrier}.  The elementary auxiliary
+lemmas used there are proved in Section~\ref{sec:signed-index}.
+The product-register lift is proved in
+Section~\ref{sec:positive14-degree24}.
+The sextic reduction follows from the two inverse coordinate maps and
+the retained-row identity in Section~\ref{sec:sextic34}.  Composing with
+the pinned native-source and finite-refutation equivalences gives
+\eqref{eq:main-pos-existence}--\eqref{eq:main-int-existence}.
+\end{proof}
+
+\Needspace{9\baselineskip}
+\begin{corollary}[Ordinary ZFC-provable consistency equivalences]
+\label{cor:zfc}
+With the fixed proof convention and coefficients just specified, the
+ordinary proofs, composed with the identified source proofs, establish
+\begin{align}
+ \ZFC\ \vdash\
+ \left(\forall\mathbf x\in\Zpos^{13}\;
+      P_{13}(\mathbf x)\ne0\right)
+ &\ \longleftrightarrow\ \Con(\ZFC),
+ \label{eq:zfc-pos}\\
+ \ZFC\ \vdash\
+ \left(\forall\mathbf t\in\Zpos^{14}\;
+      P_{14}(\mathbf t)\ne0\right)
+ &\ \longleftrightarrow\ \Con(\ZFC),
+ \label{eq:zfc-pos14}\\
+ \ZFC\ \vdash\
+ \left(\forall\mathbf z\in\Z^{34}\;
+      Q_{34}(\mathbf z)\ne0\right)
+ &\ \longleftrightarrow\ \Con(\ZFC).
+ \label{eq:zfc-int}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Negate the existence equivalences of Theorem~\ref{thm:main} and use
+\eqref{eq:syntactic-con}.  The coordinate manipulations, divisibility
+arguments, integer recurrences, and finite syntactic constructions are
+ordinary mathematics available in ZFC.  This composition uses the
+unbounded arithmetic source proofs, not an inference from finite
+numerical tests or merely from an external truth statement.
+\end{proof}
+
+The turnstiles in Corollary~\ref{cor:zfc} state the ordinary mathematical
+provability claim.  They do not assert that this archive contains an
+exported derivation in ProveIt's particular \texttt{SetTheory.Form}
+calculus.  Section~\ref{sec:object-language} records the exact distinction
+and the still-open formal endpoint.  Neither direction of the
+equivalence assumes that ZFC is consistent.
+
+\subsection{What is being optimized}
+
+The comparison repository is pinned at
+\begin{center}
+ \snapshot.
+\end{center}
+The following table reports the relevant inspected endpoints.  It is a
+comparison of specific artifacts, not a classification of all possible
+Diophantine representations.  The positive predecessor is package~61's
+principal thirteen-variable equation, not its fourteen-variable
+intermediate; the integer sextic predecessor is package~62
+\cite{source61,source62}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}lrrrX@{}}
+\toprule
+Domain & Unknowns & Degree & Gates & Endpoint or role\\
+\midrule
+\(\Zpos\) & 13 & 34 & 93 & Package 61; positive comparison point\\
+\(\Zpos\) & \textbf{13} & \textbf{28} & \textbf{98}
+ & This report, \(P_{13}\)\\
+\(\Zpos\) & 14 & 26 & 92 & Package 65; a distinct tradeoff\\
+\(\Zpos\) & \textbf{14} & \textbf{24} & \textbf{101}
+ & This report, \(P_{14}\)\\
+\(\Zpos\) & 15 & 24 & 89 & Package 60; a distinct tradeoff\\
+\addlinespace
+\(\Z\) & 41 & 4 & --- & Package 64; quartic source\\
+\(\Z\) & 35 & 6 & --- & Package 62; sextic comparison point\\
+\(\Z\) & \textbf{34} & \textbf{6} & --- & This report, \(Q_{34}\)\\
+\(\Z\) & 30 & 8 & --- & Package 62; a distinct tradeoff\\
+\bottomrule
+\end{tabularx}
+\caption{Measured local improvements and nearby inspected alternatives.
+A dash means that no optimized gate claim is being compared.  Source
+references: \cite{source61,source62,source64,source65,source60}.}
+\label{tab:comparison}
+\end{table}
+
+For thirteen positive unknowns the degree falls by \(6/34\), approximately
+\(17.65\%\), and the circuit gains five gates.  For degree six over
+\(\Z\), one unknown and one residual are removed from the comparison
+endpoint; the variable reduction is \(1/35\), approximately \(2.86\%\).
+The fourteen-coordinate lift lowers degree \(26\) to \(24\) with nine
+additional gates.  Relative to the fifteen-positive degree-\(24\),
+\(89\)-gate equation, it removes one unknown at a cost of twelve gates.
+The cheaper positive alternatives and the thirty-integer octic remain
+distinct tradeoffs.
+
+Every binary addition, subtraction, or multiplication is charged as one
+gate, including multiplication by a fixed scalar and squaring.
+Previously computed values may be reused.  Fixed numeral creation is
+free in this arithmetic-circuit model.  It is therefore a different
+measurement from bit complexity, coefficient height, expanded term
+count, or the length of a source-language expression.
+For \(Q_{34}\) the report claims exact variables, degree, residual count,
+and expanded term count, without a gate optimum.
+
+The pinned collection already contains equations with fewer unknowns at
+much higher degrees.  These endpoints do not improve those
+fewest-variable bounds and do not minimize every measure simultaneously.
+The contribution is the completed arithmetic transformations and their
+measured effect on the named comparison points.
+
+\section{Two general algebraic mechanisms}
+\label{sec:mechanisms}
+
+\subsection{A fixed congruence inside a monic root}
+
+An equation which already requires an integral root can enforce an
+additional fixed congruence without a separate quotient variable.  The
+following elementary observation states the exact integrality mechanism.
+
+\begin{lemma}[Monic fixed-congruence carrier]
+\label{lem:monic-carrier}
+Let \(m>0\) and \(r\) be fixed integers.  Let \(H(\mathbf x)\) be an
+integer polynomial, and let
+\[
+ F(T;\mathbf x)=T^d+
+     a_{d-1}(\mathbf x)T^{d-1}+\cdots+a_0(\mathbf x)
+ \in\Z[\mathbf x,T]
+\]
+be monic in \(T\).  Define the integer polynomial
+\[
+ G(t;\mathbf x)
+  =m^dF\!\left(t+\frac{H(\mathbf x)-r}{m};\mathbf x\right).
+\]
+At every integral zero of \(G\), one has
+\[
+ H(\mathbf x)\equiv r\pmod m,
+ \qquad
+ T=t+\frac{H(\mathbf x)-r}{m}\in\Z,
+ \qquad F(T;\mathbf x)=0.
+\]
+Conversely, an integral zero of \(F\) satisfying that congruence gives
+an integral zero of \(G\) by
+\(t=T-(H(\mathbf x)-r)/m\).
+For strictly positive coordinates this converse also requires \(t>0\).
+\end{lemma}
+
+\begin{proof}
+Multiplication by \(m^d\) clears all denominators, so \(G\) is an integer
+polynomial.  At a zero, the displayed rational value of \(T\) is a root
+of a monic polynomial with integer coefficients.  If \(T=a/b\) in
+lowest terms with \(b>0\), multiplying \(F(a/b;\mathbf x)=0\) by \(b^d\)
+shows that \(b\mid a^d\); hence \(b=1\).  Since \(t\in\Z\),
+\((H(\mathbf x)-r)/m\in\Z\), which is the required congruence.
+The converse is substitution, with the indicated domain condition.
+\end{proof}
+
+The simplest instance is a square equation:
+\begin{equation}
+ (mt+H-r)^2=m^2W(\mathbf x).
+ \label{eq:monic-square-carrier}
+\end{equation}
+Its quotient is a rational square root of an integer and is therefore an
+integer.  This conclusion does not require coprimality of \(m\) with
+\(H-r\), nor factoring \(W\).
+
+For \(P_{13}\), the already needed strong root is written
+\[
+ N_f=3\beta f_0+q-\beta-1,\qquad f=N_f/(3\beta),
+\]
+and the strong residual is
+\[
+ N_f^2-(3\beta)^2\{1+\Delta(ic^2)^2\}=0.
+\]
+Lemma~\ref{lem:monic-carrier} yields
+\[
+ q=\beta(3j+1)+1,\qquad J=(q-1)/\beta=3j+1.
+\]
+The supplied coordinates can consequently be \(F,\alpha,C\), with
+\(q=F+\alpha+C\), rather than \(F,\alpha,J\) with a gap whose sign still
+needs to be proved.
+
+This is useful because \(C>0\) immediately gives the source packing bounds
+once the congruence has been recovered.  The first carrier no longer
+needs to establish the transport quotient's sign before those bounds
+can be used.  The canonical source has \(J\equiv1\pmod3\) and a strong
+root large enough that \(f_0=f-(J-1)/3>0\), which supplies the converse
+domain condition.  The general lemma alone would not supply that
+positivity or the native source theorem.
+
+\subsection{Reduce a row modulo equations which are retained}
+
+The next mechanism concerns complete systems of equations.  Degree can
+fall when a residual is replaced by an equivalent representative modulo
+other residuals that remain in the system.
+
+\begin{lemma}[Retained-row degree reduction]
+\label{lem:retained-row}
+Let \(R_1,\ldots,R_s,G_1,\ldots,G_t\) be integer polynomials, and choose
+integer polynomials \(H_{ij}\).  Put
+\[
+ G'_i=G_i+\sum_{j=1}^{s}H_{ij}R_j
+ \qquad(1\le i\le t).
+\]
+The systems
+\[
+ R_1=\cdots=R_s=G_1=\cdots=G_t=0
+ \quad\hbox{and}\quad
+ R_1=\cdots=R_s=G'_1=\cdots=G'_t=0
+\]
+have the same zero set over \(\Z\), indeed over every commutative ring.
+If all retained \(R_j\) and replaced \(G'_i\) have degree at most \(d\),
+their sum of squares is an integer polynomial of degree at most \(2d\)
+whose integer zeros are exactly that common zero set.
+\end{lemma}
+
+\begin{proof}
+On the locus \(R_1=\cdots=R_s=0\), each \(G'_i\) equals \(G_i\).
+Equivalently, the change of rows is a triangular polynomial matrix
+with diagonal entries one and inverse obtained by replacing
+\(H_{ij}\) with \(-H_{ij}\).  The sum-of-squares assertion follows
+because a sum of integer squares is zero exactly when all its
+summands are zero.
+\end{proof}
+
+Only the last sum-of-squares assertion uses the ordered integer domain;
+the row-equivalence assertion does not.  The transformed sum of squares
+need not equal the original polynomial.  It has the same integer zero
+set, which is the property required here.
+
+A concrete saving is
+\begin{align}
+ R&=F_2-f^2, \notag\\
+ G&=(fo-c)^2+g-y^2, \notag\\
+ G'&=F_2o^2-2foc+c^2+g-y^2,
+ &G'-G&=o^2R.
+ \label{eq:retained-square-example}
+\end{align}
+The original \(G\) is quartic in the supplied variables; \(G'\) is cubic.
+The quadratic definition \(R=0\) is therefore valuable to retain, even
+while other definitions are eliminated.
+
+\subsection{Coordinate changes and the choice of registers}
+
+A defined register \(z=E(\mathbf x)\) can be deleted by substituting
+\(E(\mathbf x)\), with inverse restoration \(z=E(\mathbf x)\).
+This gives a bijection of zero sets, but the substituted degree may be
+larger.  A polynomial shift of one root,
+\[
+ t_{\mathrm{old}}=t+B(\mathbf x),
+\]
+is also reversible over \(\Z\) when \(B\) does not involve \(t\).
+Its purpose here is to cancel a known leading part of a norm before
+deleting a register.
+
+For the integer sextic, the two useful identities are
+\begin{align*}
+ (t+B)^2-(k+B)B-1
+   &=t^2+(2t-k)B-1,\\
+ (D+ac)^2-(a^2+4a+3)c^2-1
+   &=D^2+2acD-(4a+3)c^2-1.
+\end{align*}
+The second permits deletion of the discriminant register after changing
+the main root.  Retaining \(F_2\), and using
+\eqref{eq:retained-square-example}, then avoids a quartic auxiliary
+row.  Section~\ref{sec:sextic34} supplies every restored coordinate and
+every retained equation.
+
+The converse degree tradeoff is also useful.  In \(P_{13}\), the
+abbreviation \(E=XY\) occurs inside expressions which are subsequently
+squared.  Supplying \(E\) as one more positive coordinate and retaining
+the equation \(E-XY=0\) lowers those degrees.  Each positive old zero
+has exactly one new coordinate \(E=XY>0\); conversely the retained
+equation restores the old expression.  This graph construction produces
+\(P_{14}\) without an additional semantic assumption, as proved in
+Section~\ref{sec:positive14-degree24}.
+
+Monicity, polynomial coordinate changes, and elementary row operations
+are established algebraic tools.  The specific contribution here is
+their placement in these arithmetic systems, including the domain and
+completeness proofs which make the resulting variable and degree
+counts valid.  The report does not claim that these general algebraic
+facts were previously unknown.
+
+\section{Fixed coefficients and the native source interfaces}
+\label{sec:coefficients}
+
+\subsection{Two coherent tuples}
+
+All three endpoints use four named coefficient ports,
+\((\beta,K_0,M_C,M_F)\), but they use different entire tuples.  The compact
+positive tuple is source~44's complement-packed construction
+\cite{source44}; the unrestricted-integer tuple is source~34's
+mixed-radix, parity-separated construction \cite{source34}.
+The binding is summarized below.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}lrrX@{}}
+\toprule
+ & \(P_{13},P_{14}\) & \(Q_{34}\) & Meaning\\
+\midrule
+Native digit width & 67 & 121 & \(\rho=2^{\text{width}}\)\\
+Native cell length & 8,807 & 8,801 & Number of radix-\(\rho\) positions\\
+Binary cell width \(d\) & 590,069 & 1,064,921 & \(B=2^d\), \(\beta=B-1\)\\
+Permitted native positions & 986 & 989 & Selectors, copies, anchors, dummies\\
+Four raw numeral files & 295,388 bytes & 532,479 bytes & Before gzip packaging\\
+\bottomrule
+\end{tabularx}
+\caption{Complete coefficient bindings.  These fixed data are inherited
+from the exact recipes and payloads in \cite{source44,source34}.}
+\label{tab:coefficients}
+\end{table}
+
+In both recipes, if \(D_C,D_R\) denote the native current and shifted
+transport coefficients and \(M_{F,\mathrm{native}}\) the native high mask,
+the polynomial ports are
+\begin{equation}
+ \beta=B-1,\qquad K_0=D_C+BD_R,\qquad
+ M_C,\qquad M_F=M_{F,\mathrm{native}}+B-1.
+ \label{eq:four-port-binding}
+\end{equation}
+Thus the delivered \(M_F\) is already shifted.  Replacing it by the
+unshifted mask, shifting it again, or taking individual ports from the
+other tuple changes the polynomial and invalidates the stated binding.
+The binding in \path{positive14/ACTIVE_BINDING.json} selects the same
+four numeral payloads as \(P_{13}\); the added product register changes
+no coefficient.
+
+\subsection{Finite recipes, rather than an unspecified program parameter}
+
+Both recipes start from the same ordered list of \(943\) Wang tiles.
+The list is fixed; it is not generated by waiting for a machine to halt.
+The compiler sources also relate that literal list to the \(430\)
+literal transition actions of the chosen blank machine
+\cite{source34,source44,fixed-source}.
+
+For the compact recipe, a tile with ordered labels \((w,n,e,s)\) has
+payload
+\[
+ v_i=w+2^8n+2^{17}e+2^{25}s+127\cdot2^{34},
+ \qquad c_i=1+2^{10}(2^{41}-v_i).
+\]
+Copy and anchor positions supply the \(41\) individual payload bits.
+The low ten-bit test forces either no selector or exactly one selector.
+Conditional on one selector, a complement sum forces its payload to
+equal the copied label and anchor vector.  This is the local clause
+mechanism which permits the smaller digit width \cite{source44}.
+
+If \(E\) is that recipe's fixed support and \(c_e\) its specified weights,
+the current coefficient and low mask are
+\begin{align*}
+ D_C={}&\rho^{30}+\rho^{62}+\rho^{1100}+\rho^{2201}
+       +\sum_{e\in E}c_e
+          \bigl(\rho^{4393-e}+\rho^{5495-e}\bigr),\\
+ D_R={}&\rho^{42},\\
+ M_C={}&B-1-\sum_{\substack{e\in E\\e\ne1}}\rho^e
+                 -2\rho^{1063}.
+\end{align*}
+Its high mask uses the clause mask \(2^{51}-2\), the specified edge and
+anchor tests, and a finite upper padding mask.  The retained source
+recipe lists every copy position and every padding exponent.  The
+coefficient checkers reconstruct these fixed integers and compare
+their raw bytes; the displayed equation does not quantify over
+possible choices of \(E\) or of the weights.
+
+The source-34 recipe instead uses parity-separated copy positions
+\[
+ e_t(j)=o_t+2j,\qquad
+ (o_0,o_1,o_2,o_3)=(1020,1000,980,960),
+ \qquad 0\le j<10,
+\]
+and radix-four payload weights \(W_j=2^{10+2j}\).  The four edges are
+encoded by their occupied words, and four additional anchor fields
+are included.  Its current shifts are \(40,41,1100,2200\), its
+transport coefficient is \(D_R=\rho\), and its complete low and high
+masks are the ones in the source-34 recipe \cite{source34}.
+The different layout supports the ordinary source's integer
+normalizations; no assertion that the two layouts are interchangeable
+is needed.
+
+\subsection{What the coefficient adapter supplies}
+
+A coefficient recipe alone is not a proof that polynomial roots encode
+computations.  The inherited adapters establish the native carry
+bounds, the local tile clauses, whole-cell alignment, edge matching,
+and the relation between the actual packed rank and the canonical
+Pell construction.  Their completeness arguments use finite padding
+and a rank controller to arrange the required congruences
+\cite{source34,source44,pell-audit}.
+
+For the positive reduction, the canonical compact source in particular
+supplies
+\[
+ q=B^N,\qquad
+ J=1+B+\cdots+B^{N-1},\qquad
+ N\ \hbox{odd},\qquad R\equiv3\pmod4.
+\]
+Since \(B=2^{590069}\equiv-1\pmod3\), the odd geometric sum gives
+\(J\equiv1\pmod3\).  This exact canonical congruence is what allows the
+monic carrier of Lemma~\ref{lem:monic-carrier} to replace the supplied
+coordinate \(J\).  The arbitrary-zero soundness proof subsequently
+recovers the required integral \(J\); it does not assume the
+canonical representation \(q=B^N\) for an arbitrary input.
+
+For the integer construction, the new step is a polynomial bijection
+with a fixed source quartic.  All sign and native completeness
+obligations of that source are inherited intact; the new proof does
+not impose an extra restriction on its zeros.
+
+\section{Signed auxiliary-index recovery}
+\label{sec:signed-index}
+
+This section gives the coefficient-independent lemmas used by the
+positive construction.  The arguments follow the pinned signed-index
+note in package~61 and its explicitly identified Pell sources
+\cite{signed-index,pell-audit}.  We include the proofs because the order
+of index recovery, rather than just the final norm identities, is
+material to the reduction.
+
+\subsection{Pell notation and the elementary dependencies}
+
+For an integer \(A\ge2\), put \(\Delta=A^2-1\) and define
+\(\chi_A(n),\psi_A(n)\) by
+\[
+ \chi_A(n)+\psi_A(n)\sqrt{\Delta}
+       =(A+\sqrt{\Delta})^n\qquad(n\ge0).
+\]
+Equivalently each sequence satisfies
+\[
+ z(n+2)=2Az(n+1)-z(n),
+\]
+with \(\chi_A(0)=1,\chi_A(1)=A\) and
+\(\psi_A(0)=0,\psi_A(1)=1\).  All these values are integers.  The
+addition formulas give
+\begin{align*}
+ \chi_A(r+s)&=\chi_A(r)\chi_A(s)
+                 +\Delta\psi_A(r)\psi_A(s),\\
+ \psi_A(r+s)&=\psi_A(r)\chi_A(s)
+                 +\chi_A(r)\psi_A(s).
+\end{align*}
+We use positive integer-coordinate Pell classification and strong
+divisibility,
+\begin{equation}
+ \gcd\bigl(\psi_A(r),\psi_A(s)\bigr)
+       =\psi_A\bigl(\gcd(r,s)\bigr).
+ \label{eq:strong-divisibility}
+\end{equation}
+Here \((A,1)\) is the fundamental positive integer-coordinate solution
+of \(x^2-\Delta y^2=1\).  The inherited Pell audit collects precisely
+these classical ingredients \cite{pell-audit}.
+
+\begin{lemma}[Signed abscissa step-down]
+\label{lem:stepdown}
+Suppose \(A\ge2\), \(0<r<m\), and \(t\ge0\).  If
+\[
+ \chi_A(t)\equiv\chi_A(r)\pmod{\chi_A(m)},
+\]
+then \(t\equiv r\) or \(t\equiv-r\pmod{2m}\).
+\end{lemma}
+
+\begin{proof}
+Write \(F=\chi_A(m)\).  The addition formulas, together with
+\(\chi_A(2m)=2F^2-1\) and
+\(\psi_A(2m)=2F\psi_A(m)\), give
+\begin{align*}
+ \chi_A(j+2m)&\equiv-\chi_A(j)\pmod F,\\
+ \chi_A(2m-j)&\equiv-\chi_A(j)\pmod F.
+\end{align*}
+Reduce \(t\) modulo \(2m\), and reflect an index above \(m\).  Its
+abscissa residue has the form
+\(\epsilon\chi_A(s)\), where \(0\le s\le m\) and
+\(\epsilon\in\{-1,1\}\).
+The case \(s=m\) has residue zero, whereas
+\(0<\chi_A(r)<F\).
+
+If \(s<m\) and \(\epsilon=-1\), the congruence would force
+\(F\mid\chi_A(s)+\chi_A(r)\).  But \(m\ge2\), and the recurrence gives
+\[
+ 0<\chi_A(s)+\chi_A(r)
+       \le2\chi_A(m-1)<\chi_A(m)=F.
+\]
+Thus \(\epsilon=1\).  Equality modulo \(F\) of two positive integers
+strictly below \(F\) is equality, and strict growth gives \(s=r\).
+The index reductions change \(t\) only by a multiple of \(2m\) and by
+sign, proving the assertion.
+\end{proof}
+
+\subsection{The odd quotient polynomial}
+
+For \(v\ge0\), define the integer polynomial \(Q_v\) by
+\[
+ \chi_Z(2v+1)=ZQ_v(Z^2).
+\]
+The relevant formulas are
+\begin{align}
+ Q_0(x)&=1,\qquad Q_1(x)=4x-3, \notag\\
+ Q_{v+1}(x)&=(4x-2)Q_v(x)-Q_{v-1}(x),\label{eq:Q-recurrence}\\
+ Q_v(0)&=(-1)^v(2v+1),\label{eq:Q-zero}\\
+ Q_v(1-A^2)&=(-1)^v\psi_A(2v+1).\label{eq:Q-Pell}
+\end{align}
+The recurrence follows from the Pell addition formulas.  Substitution
+of \(x=0\) proves \eqref{eq:Q-zero} by induction.  Substitution of
+\(x=1-A^2\), with the odd-index recurrence for \(\psi_A\), proves
+\eqref{eq:Q-Pell}; the initial cases are \(1\) and \(1-4A^2\).
+These identities are polynomial identities over \(\Z\), so they can
+be reduced modulo any positive integer.
+
+\begin{lemma}[Signed auxiliary-index interface]
+\label{lem:signed-aux}
+Let \(A\ge2\), \(\Delta=A^2-1\), and let
+\(p,m,R,c,f,M\) be positive integers satisfying
+\begin{gather*}
+ c=\psi_A(p),\qquad f=\chi_A(m),\qquad c\mid m,\qquad m>2p,\\
+ M\ge2,\qquad c\mid M,\qquad M^2=\Delta(f^2-1),\\
+ 0<p<c/2,\qquad 0<R<c/2.
+\end{gather*}
+If \(V,y\in\Z\) satisfy
+\begin{equation}
+ M^2V^2-(M^2-1)y^2=1,\qquad
+ V\equiv-c\pmod f,\qquad V\equiv-R\pmod c,
+ \label{eq:aux-interface}
+\end{equation}
+then \(p=R\).  The signs of \(V\) and \(y\) are unrestricted.
+\end{lemma}
+
+\begin{proof}
+The norm equation excludes \(V=0\) and \(y=0\).  Apply positive Pell
+classification at parameter \(M\) to the positive coordinates
+\((M|V|,|y|)\).  There is an index \(\ell\ge1\) with
+\[
+ M|V|=\chi_M(\ell),\qquad |y|=\psi_M(\ell).
+\]
+For even indices, the recurrence gives
+\(\chi_M(2v)\equiv(-1)^v\pmod M\), which is not zero since \(M\ge2\).
+Thus \(\ell=2v+1\) is odd and
+\(|V|=Q_v(M^2)\).
+
+As \(M^2\equiv-\Delta=1-A^2\pmod f\), equations
+\eqref{eq:Q-Pell} and \eqref{eq:aux-interface} imply
+\[
+ \psi_A(\ell)\equiv c\quad\hbox{or}\quad-c\pmod f.
+\]
+Squaring and using
+\(\chi_A(2j)=1+2\Delta\psi_A(j)^2\), we obtain
+\[
+ \chi_A(2\ell)\equiv\chi_A(2p)\pmod{\chi_A(m)}.
+\]
+Lemma~\ref{lem:stepdown} applies because \(0<2p<m\).
+It gives \(2\ell\equiv\pm2p\pmod{2m}\), hence
+\(\ell\equiv\pm p\pmod m\), and therefore modulo \(c\).
+
+On the other hand \(c\mid M\), so \(M^2\equiv0\pmod c\).
+Equations \eqref{eq:Q-zero} and \eqref{eq:aux-interface} give
+\(\ell\equiv\pm R\pmod c\).  Combining the two conclusions yields
+\(p\equiv R\) or \(p\equiv-R\pmod c\).
+In the first case \(|p-R|<c\), so \(p=R\).
+The second case would make \(p+R\) a positive multiple of \(c\),
+although \(p+R<c\).  This is impossible.
+\end{proof}
+
+The lemma uses only its displayed hypotheses.  It does not require
+positivity of \(V\), a previously recovered transport quotient, or
+the main-root congruence used later in the positive construction.
+
+\begin{lemma}[Normalized strong norm supplies the divisibility]
+\label{lem:normalized-strong}
+Suppose \(A\ge2\), \(c=\psi_A(p)>2\), and \(f,I>0\) satisfy
+\[
+ f^2-(A^2-1)I^2=1,\qquad c^2\mid I.
+\]
+Then for some \(m\ge1\),
+\[
+ f=\chi_A(m),\quad I=\psi_A(m),\quad pc\mid m.
+\]
+In particular \(c\mid m\) and \(m>2p\).  Setting
+\(M=(A^2-1)I\) gives \(c\mid M\) and
+\(M^2=(A^2-1)(f^2-1)\).
+\end{lemma}
+
+\begin{proof}
+Pell classification supplies \(m\).
+By \eqref{eq:strong-divisibility} and \(c\mid I\), strict growth gives
+\(p\mid m\); write \(m=pv\).  With \(D=\chi_A(p)\), composition gives
+\[
+ I=c\psi_D(v).
+\]
+Since \(D^2\equiv1\pmod c\), induction in the recurrence yields
+\(\psi_D(v)\equiv vD^{v-1}\pmod c\) for \(v\ge1\).
+The integer \(D\) is invertible modulo \(c\), and \(c^2\mid I\);
+therefore \(c\mid v\).  This proves \(pc\mid m\), and
+\(m\ge pc>2p\).  The claims about \(M\) follow directly from the norm.
+\end{proof}
+
+This is the normalized argument used for \(P_{13}\), where \(I=ic^2\).
+An older lemma for a different ordinary strong norm has an additional
+large-\(c\) hypothesis; that hypothesis is not needed or assumed here
+\cite{signed-index,pell-audit}.
+
+\subsection{Squared-modulus completeness}
+
+\begin{lemma}[Explicit positive auxiliary reconstruction]
+\label{lem:squared-completeness}
+Let \(A\ge2\), \(\Delta=A^2-1\), and \(R\ge3\) with
+\(R\equiv3\pmod4\).  Suppose
+\[
+ c=\psi_A(R),\qquad f,I>0,\qquad
+ f^2-\Delta I^2=1,\qquad c\mid I.
+\]
+Put \(M=\Delta I\).  There exist \(T,u>0\) such that, for
+\(V=f^2(cT-R)-c\),
+\[
+ M^2V^2-(M^2-1)(V+u)^2=1.
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(R=2v+1\).  Then \(v\) is odd.  Define
+\[
+ V_*=\frac{\chi_M(R)}{M}=Q_v(M^2),
+ \qquad y_*=\psi_M(R).
+\]
+These are positive integers, and the Pell identity gives
+\[
+ M^2V_*^2-(M^2-1)y_*^2=1.
+\]
+Now \(M^2=\Delta(f^2-1)\equiv1-A^2\pmod{f^2}\).
+Since \(v\) is odd, \eqref{eq:Q-Pell} gives
+\[
+ V_*\equiv-c\pmod{f^2}.
+\]
+Also \(c\mid M\), so \eqref{eq:Q-zero} gives
+\(V_*\equiv-R\pmod c\).
+The strong norm gives \(f^2\equiv1\pmod c\), hence
+\(\gcd(c,f^2)=1\).  It follows that
+\[
+ T=\frac{V_*+c+Rf^2}{cf^2}
+\]
+is a positive integer: its numerator is divisible both by \(c\) and
+by \(f^2\).  Its definition gives \(f^2(cT-R)-c=V_*\).
+
+As \(R\ge3\) and \(M\ge2\),
+\(V_*\ge4M^2-3>1\).  Rearranging the norm gives
+\[
+ y_*^2-V_*^2=\frac{V_*^2-1}{M^2-1}>0.
+\]
+Thus \(u=y_*-V_*\) is a positive integer and \(V_*+u=y_*\),
+which completes the construction.
+\end{proof}
+
+The modulus \(f^2\) is the reason that the source quotient may be
+replaced by \(fT\) in the new positive equation.  Completeness is proved
+by constructing a fresh auxiliary solution with this congruence.
+No divisibility of an arbitrary pre-existing auxiliary quotient is
+assumed.
+
+\input{positive13/section13.tex}
+
+\input{positive14/section14.tex}
+
+\input{integer34/section34.tex}
+
+\section{Inherited theorems and the exact formalization boundary}
+\label{sec:proof-status}
+
+\subsection{The ordinary mathematical dependency chain}
+
+There are three distinct levels of justification in this package.
+First, the new algebraic reductions are stated and proved in this
+report.  The sextic reduction is a zero-set bijection over all integers;
+the positive reduction additionally uses classical Pell arithmetic and
+the canonical source witness promises explicitly listed above.
+Second, the arithmetic source interfaces relate their zeros to finite
+native tableaux.  Third, the literal machine/tableau calibration relates
+the permitted finite computations to finite syntactic refutations in
+the specified ZFC calculus
+\cite{source34,source44,source64,fixed-source}.
+
+The inherited components used in the consistency corollaries are:
+\begin{enumerate}
+ \item \textbf{The complete coefficient adapters.}
+ The recipes include carry bounds, exact native supports, local clauses,
+ alignment, matching conditions, and canonical rank control.  A numerical
+ inequality for each mask does not substitute for this whole interface.
+ \item \textbf{The Pell/native arithmetic kernel.}
+ Soundness decodes any source zero, while completeness constructs
+ suitable positive or signed source coordinates from a finite accepted
+ tableau.  The audit in \cite{pell-audit} identifies which Pell lemmas
+ are used and how normalized and ordinary strong equations differ.
+ \item \textbf{The syntactic refutation calibration.}
+ The fixed blank computation is calibrated to the actual finite
+ proof relation.  This is the semantic link needed for
+ \(\ZFCRef_{\ZFC}\), and is preserved by the new coordinate changes.
+\end{enumerate}
+
+The pinned native-calibration note also separates two formal milestones
+\cite{native-calibration}.  It records the external theorem
+\texttt{KEndpoint215.blank\_halts\_iff\_zfc\_refutation}, relating the
+literal blank machine to \texttt{BProv ZFCax\_s [] Form.fBot}.
+The formal bridge from the particular coherent native coefficient
+instance to that blank-halting predicate remains a distinct contract.
+The cited native and Pell sources give ordinary mathematical proofs;
+this report does not claim to complete that native Lean contract.
+
+This is a composition of ordinary mathematical proofs.  The report does
+not reprove every transitive source theorem, and the exact finite
+checkers do not discharge those unbounded dependencies.  The source
+manifest identifies the retained files and their pins so that this
+boundary is inspectable.  There is no requirement to choose a
+coefficient by deciding consistency or by running an unbounded search.
+
+\subsection{The exact \texttt{OBJECT\_ZFC} obligation}
+\label{sec:object-language}
+
+ProveIt's pinned \texttt{OBJECT\_ZFC.md} makes a precise distinction
+between an external Lean theorem and an internal derivation in its
+chosen ZFC calculus \cite{object-zfc}.  In that development, the external
+theorem \texttt{ExplicitZFC.noSyntaxZero\_iff\_conZFC} concerns the
+actual external predicate
+\[
+ \texttt{BProv ZFCax\_s [] Form.fBot}.
+\]
+It is not already an object-language derivation of a sentence expressing
+the same equivalence.
+
+The file records the still-open exact target, for that development's
+fixed nine-variable polynomial:
+\begin{quote}
+\small
+\begin{verbatim}
+BProv ZFCax_s []
+  (fIff ObjectCodeSeal.consistencySentence
+        ObjectEquation.unsolvabilitySentence).
+\end{verbatim}
+\end{quote}
+Both sides have been supplied as actual \texttt{SetTheory.Form}
+sentences, with arithmetic interpretation infrastructure.  The missing
+endpoint is the displayed derivation.  Our \(P_{13}\), \(P_{14}\), and \(Q_{34}\)
+are different supplied polynomials, so a corresponding certified
+endpoint for any of them would also have to instantiate its own equation
+sentence and prove the required internal interpretation.
+
+The obstacle cannot be removed by checking standard numerals alone.
+An internal ZFC model has its own natural numbers and its own proof
+codes, including nonstandard ones.  An external theorem quantified over
+the ambient natural numbers does not automatically give correctness
+for all those internal objects.  The pinned file identifies the needed
+route: establish the internal refutation-checking interpretation and
+the arithmetic representation in arbitrary models, or produce
+object-language derivations directly, then apply the available
+completeness machinery \cite{object-zfc}.
+
+Corollary~\ref{cor:zfc} is the ordinary mathematical claim obtained by
+the stated source composition.  This archive supplies no new
+end-to-end Lean/Rocq certificate and no exported
+\texttt{BProv ZFCax\_s []} proof of that claim.  The new algebra would be
+a small and explicit part of such a future formalization; the inherited
+compiler and internal proof-coding interpretation remain the larger
+obligations.
+
+\subsection{What exact finite verification establishes}
+
+For \(P_{13}\), the delivered circuit and independent symbolic
+interpretations establish the four exact residual identities, their
+degrees, the fixed-slice leading coefficient, all live inputs and
+gates, and the final sum of squares.  The four residual degrees are
+\[
+ (13,13,13,14),
+\]
+and their symbolic-port monomial counts are
+\[
+ (1921,5565,26877,81).
+\]
+The \(98\) operations consist of \(25\) additions, \(16\) subtractions,
+and \(57\) multiplications.  The leading form
+\[
+ 81\beta^4 i^4(\eta+\zeta)^8X^4Y^{12}
+\]
+shows exact degree \(28\) on the authentic fixed slice, not just a
+formal degree upper bound before coefficient specialization.
+
+For \(P_{14}\), the five residual degrees are
+\[
+ (12,11,12,12,2).
+\]
+The unique extension \(E=XY\) is checked against the thirteen-coordinate
+packet.  The coefficient of \(i^4\eta^8E^4Y^8\) is \(81\beta^4>0\),
+which proves exact degree \(24\).  Its \(101\) gates comprise \(26\)
+additions, \(17\) subtractions, and \(58\) multiplications; the
+five-residual system uses \(92\) gates before its finalizer.
+
+For \(Q_{34}\), exact expansion checks all nineteen independently
+specified residuals, the seven restored registers, both root changes,
+and the retained-row identity.  The coefficient
+\([I^4g^2]Q_{34}=1\) certifies exact degree six independently of the
+four fixed ports.  Its symbolic-port expansion has \(368\) terms.
+Complete tuple reconstruction and raw-byte comparisons establish the
+finite coefficient binding.
+
+The programs are ordinary executable algebra checks.  Their successful
+runs do not prove that the polynomial has no zero, exhaust its infinite
+domain, or settle \(\Con(\ZFC)\).  They verify the finite formulas and
+data to which the unbounded mathematical arguments apply.  The
+independent review notes are internal audits with their scope stated;
+they are not external peer review.
+
+\section{Other architectures considered}
+\label{sec:alternatives}
+
+The construction problem does not require a particular Turing machine
+or Jones' universal expression.  We considered routes which could change
+the representation more fundamentally.  None produced a stronger
+completed bound within this work.  The following distinctions explain
+why the proved reductions were retained as the deliverable.
+
+\subsection{A direct proof verifier instead of a blank machine}
+
+A finite ZFC proof checker can be treated as a syntactic computation
+without first selecting K215.  One could encode formula parsing,
+axiom-instance checking, substitution, and inference directly into
+local constraints, or first pass through a small rewriting or
+combinatory system.  Such a construction would target the desired
+finite-refutation predicate from the beginning.
+
+The size of a verifier description, however, does not directly determine
+the number or degree of its final Diophantine unknowns.  A complete
+improvement would need an explicit bounded local alphabet, a uniform
+packing theorem, sound handling of arbitrarily long proofs, and the
+actual fixed coefficients.  Replacing a machine constant while keeping
+the same arithmetic skeleton can change coefficient height without
+changing the witness count or degree at all.  We did not obtain a
+smaller fully calibrated polynomial by this route.  It remains useful
+for the internal proof-coding task described in
+Section~\ref{sec:object-language}.
+
+\subsection{Universal equations and integer-domain bounds}
+
+Universal Diophantine compilation is a classical baseline
+\cite{jones1982}.  Recent work by Bayer, David, Hassler, Matiyasevich,
+and Schleicher studies explicit universal bounds over the integers
+alongside formalization \cite{bayer2026}; Sun's pinned September 2026
+preprint proves undecidability with ten unrestricted integer unknowns
+\cite{sun2026}.  These are relevant to the high-degree, few-variable
+end of the subject.
+
+The endpoints proved here do not use a new Jones or Sun reduction.
+Their arithmetic skeletons still inherit the fixed native/refutation
+calibration.  An application of a universal theorem alone would not
+establish that its fixed consistency instance improves the degree,
+coefficient height, or literal circuit cost of the measured endpoints.
+The literature references provide context, not a novelty certificate
+for the transformations in this report.
+
+\subsection{Square carriers and free tableau padding}
+
+There is a tempting alternative for integer positivity guards.
+Every residue \(a\equiv1\pmod8\) has an odd square root modulo \(2^k\)
+for \(k\ge3\), and a chosen root gives arbitrarily large squares in
+that residue class.  The elementary lift follows because, for odd \(y\),
+\[
+ (y+2^{j-1})^2-y^2\equiv2^j\pmod{2^{j+1}}
+ \qquad(j\ge3).
+\]
+Thus, if a computation encoding ignored a sufficiently flexible high
+prefix, one might try to move a positivity requirement onto a square
+without an additional witness triple.
+
+The existing native word is constrained throughout its masked support.
+The source gap \(C\) is a bounded complete word, not merely a low
+residue with arbitrary unused high bits.  Arbitrary high digits in a
+square can violate local masks, copy fields, and transport relations.
+The harmless dummy coordinates used for canonical rank adjustment do
+not by themselves prove the freedom needed by this square argument.
+No positivity guard was removed on that unsupported premise.
+
+\subsection{Controlled packing collisions}
+
+Lemma~\ref{lem:retained-row} suggests a further direction: a packed
+coefficient need only recover a sufficient generating family of
+residual equations, rather than isolate every residual literally.
+If a collision contributes a polynomial multiple of an equation that
+is retained elsewhere, it may preserve the zero set.  This is a
+concrete algebraic possibility, as \eqref{eq:retained-square-example}
+demonstrates in the sextic.
+
+Extending the idea to a few-variable packing requires additional
+proofs about coefficient extraction, signs, and carries at the actual
+digit base.  Row-equivalence over a polynomial ring alone does not
+authorize a collision in an integer digit encoding.  No improved
+nine-variable equation is claimed from that prospective extension.
+The sextic gives a completed instance of the retained-equation
+principle with all inverse maps explicit.
+
+\section{Reproduction and review}
+\label{sec:reproduction}
+
+\subsection{Finite checks and document build}
+
+From the unpacked archive root, run
+\begin{quote}
+\small
+\begin{verbatim}
+python3 verify_all.py
+python3 -O verify_all.py
+\end{verbatim}
+\end{quote}
+The supplied checkers use the Python standard library.  Source identity,
+coefficient reconstruction, literal formula interpretation, exact
+degree certificates, and zero-set restoration checks are separate
+parts of the replay.  The optimized invocation checks that essential
+validation is not silently removed with Python assertions.
+The consolidated receipts are \path{VERIFICATION.json} and
+\path{VERIFICATION_OPTIMIZED.json}; the unchanged inherited files are
+identified in \path{SOURCE_MANIFEST.json}.
+
+The mathematical report is rebuilt by
+\begin{quote}
+\small
+\begin{verbatim}
+latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+\end{quote}
+A conventional LaTeX installation with the packages listed in the
+preamble is sufficient.  Rebuilding the PDF can change its metadata
+and delivery hash without changing the mathematical source.  The
+source and coefficient manifests remain the identity records for
+those components.
+
+\subsection{Suggested reading order}
+
+The central review question is whether each deletion or changed
+coordinate preserves the required integer domain in both directions.
+For \(P_{13}\), first inspect recovery of the strong-root congruence,
+then the source bounds, then the exact indices, and finally the deleted
+quotients and their signs.
+In particular, the modulus \(4qY/\gcd(4qY,H)\) is available before
+\(q\mid X\); normalized strong divisibility is available before
+recovering the old main-root quotient.  The constructive converse
+then checks every new positive coordinate.
+
+For \(Q_{34}\), inspect the restored source rows and the inverse root
+changes.  The row \(F_2-f^2=0\) is intentionally retained, and the
+replacement auxiliary row differs by exactly \(o^2(F_2-f^2)\).
+The coefficient of \(I^4g^2\) gives a short exact degree certificate.
+
+After these arguments, compare the literal JSON packets with the
+independent formulas and read the coefficient bindings and retained
+source proofs.  The archive's root README and source manifest give
+the file inventory and provenance.  This order keeps the mathematical
+equivalence, its finite representation, and the inherited compilation
+boundary separately reviewable.
+
+\begin{thebibliography}{99}
+\raggedright
+\small
+
+\bibitem{jones1982}
+James P. Jones.
+\emph{Universal Diophantine equation}.
+Journal of Symbolic Logic \textbf{47}(3) (1982), 549--571.
+\href{https://doi.org/10.2307/2273588}{doi:10.2307/2273588}.
+
+\bibitem{bayer2026}
+Jonas Bayer, Marco David, Malte Hassler, Yuri Matiyasevich, and
+Dierk Schleicher.
+\emph{Diophantine Equations over \(\mathbb Z\): Universal Bounds and
+Parallel Formalization}.
+\href{https://arxiv.org/abs/2506.20909v3}{arXiv:2506.20909v3},
+22 October 2026.  The version is pinned explicitly.
+
+\bibitem{sun2026}
+Zhi-Wei Sun.
+\emph{Ten unknowns for Hilbert's tenth problem over the integers}.
+\href{https://arxiv.org/abs/2609.01594v1}{arXiv:2609.01594v1},
+1 September 2026.  This is the specified first version, not an
+unversioned reference.
+
+\bibitem{source34}
+ProveIt repository, source 34.
+\emph{A mixed-radix, parity-separated, unrounded coefficient tuple}.
+\formfile{34-integer14/coefficients/COEFFICIENT_PROOF.md}
+{Coefficient proof and complete bounded recipe}.
+Repository snapshot \snapshot.
+
+\bibitem{source44}
+ProveIt repository, source 44.
+\emph{Complement-packed native clauses: a smaller complete coefficient
+tuple}.
+\formfile{44-b4-sparse/native/PROOF.md}
+{Native compiler adapter and coefficient recipe}.
+Repository snapshot \snapshot.
+
+\bibitem{pell-audit}
+ProveIt repository, source 36.
+\formfile{36-small-tuple/proofs/INHERITED_PELL_AUDIT.md}
+{\emph{Inherited Pell audit}}.
+Repository snapshot \snapshot.
+
+\bibitem{signed-index}
+ProveIt repository, source 61.
+\formfile{61-congruence-carriers/positive/SIGNED_INDEX_LEMMA.md}
+{\emph{Signed auxiliary-index recovery and canonical completeness}}.
+The note retains its own earlier source pins; the inspected file is
+at repository snapshot \snapshot.
+
+\bibitem{source61}
+ProveIt repository, source 61.
+\formfile{61-congruence-carriers/README.md}
+{\emph{Congruence carriers and a divided Pell norm}}.
+Principal thirteen-positive degree-34 equation and its literal
+93-gate circuit.  Repository snapshot \snapshot.
+
+\bibitem{source62}
+ProveIt repository, source 62.
+\formfile{62-sign-and-norm/README.md}
+{\emph{Sign recovery and centered norms for explicit ZFC consistency
+equations}}.
+Thirty-five-integer sextic and thirty-integer octic comparison
+artifacts.  Repository snapshot \snapshot.
+
+\bibitem{source64}
+ProveIt repository, source 64.
+\formfile{64-structural-reductions/README.md}
+{\emph{Structural reductions}} and
+\formfile{64-structural-reductions/integer41/PROOF41.md}
+{the forty-one-integer quartic proof}.
+Repository snapshot \snapshot.
+
+\bibitem{source65}
+ProveIt repository, source 65.
+\formfile{65-shared-taps/README.md}
+{\emph{Shared taps}, comparison results}.
+Fourteen-positive degree-26, 92-operation endpoint.
+Repository snapshot \snapshot.
+
+\bibitem{source58}
+ProveIt repository, source 58.
+\formfile{58-integral-root/README.md}
+{\emph{Integral-root construction}, comparison results}.
+Fifteen-positive degree-24, 90-operation endpoint.
+Repository snapshot \snapshot.
+
+\bibitem{source60}
+ProveIt repository, source 60.
+\formfile{60-positive-gap/README.md}
+{\emph{Positive-gap construction}, transport companion}.
+Fifteen-positive degree-24, 89-operation endpoint; its source-58
+parent has 90 operations \cite{source58}.
+Repository snapshot \snapshot.
+
+\bibitem{fixed-source}
+ProveIt repository.
+\formfile{31-sun10/sources/FIXED_BLANK_67_PROOF.md}
+{\emph{Fixed blank source proof}}.
+Native arithmetic and literal blank-machine finite-window semantics,
+with the transitive sources identified there.
+Repository snapshot \snapshot.
+
+\bibitem{native-calibration}
+ProveIt repository.
+\repofile{NATIVE_CALIBRATION52.md}
+{\emph{Native arithmetic and the remaining calibration contract}}.
+Identifies the external K215/refutation theorem and the remaining
+formal native-instance bridge.
+Repository snapshot \snapshot.
+
+\bibitem{object-zfc}
+ProveIt repository.
+\repofile{OBJECT_ZFC.md}{\emph{The object-language ZFC obligation}}.
+Exact distinction between the external equivalence and the internal
+\texttt{BProv} endpoint, including nonstandard-model obligations.
+Repository snapshot \snapshot.
+
+\end{thebibliography}
+
+\end{document}

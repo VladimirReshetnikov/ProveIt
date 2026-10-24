@@ -1,0 +1,308 @@
+% Standalone section for \input into a report using amsmath, amssymb, amsthm.
+% This is a research appendix, not a separately compiled report.
+\newtheorem{auxsyntaxthm}{Theorem}[section]
+\newtheorem{auxsyntaxlem}[auxsyntaxthm]{Lemma}
+\newtheorem{auxsyntaxprop}[auxsyntaxthm]{Proposition}
+
+\section{Two reusable arithmetic lemmas}
+\label{sec:reusable-arithmetic-lemmas}
+
+This appendix proves two independent tools.  The first permits a direct
+equational proof compiler to use a simple injective polynomial numbering
+without checking that every term code is in the numbering's image.  The
+second recovers an exact power of two from a pair of Pell ranks under
+weaker hypotheses than a radix-dependent formulation would suggest.
+Neither result, by itself, constructs a new equation for
+$\operatorname{Con}(\mathrm{ZFC})$.  No claim of historical priority is made.
+
+\subsection{Injective syntax and conservative extra constants}
+
+Throughout this subsection, $\mathbb N=\{0,1,2,\ldots\}$.  Fix the
+first-order equational signature $\Sigma$ consisting of constants
+$\epsilon,\iota$, binary function symbols $\mathsf U,\mathsf C$, and unary
+function symbols $\mathsf N,\mathsf V$.  A fixed theory $\mathcal E$ is a
+set of equations in finitely many variables; its axioms are understood
+through substitution instances.  The argument applies to any fixed such
+set, and in particular to a finite set.
+
+We use the ordinary equational calculus: substitution instances of the
+axioms, reflexivity, symmetry, transitivity, and congruence for each
+function symbol.  A proof of a closed equation can be taken to consist
+entirely of ground equations.  Indeed, replace every variable occurring
+in a given finite proof by the ground constant $\epsilon$.  This preserves
+the closed conclusion, sends axiom instances to axiom instances, and
+preserves every inference.  This observation concerns a specified
+syntactic calculus and requires no semantic completeness theorem.
+
+Define integer polynomials
+\begin{align}
+ J(a,b)&=(a+b)^2+a+1,\\
+ U(a,b)&=4J(a,b),& C(a,b)&=4J(a,b)+1,\\
+ N(a)&=4a+2,& V(a)&=4a+3.
+\end{align}
+The code of $\epsilon$ is $0$, and the code of $\iota$ is $1$.
+The code $\langle t\rangle$ of a ground $\Sigma$-term is obtained by
+applying the corresponding polynomial at every constructor.
+
+\begin{auxsyntaxlem}[Disjoint constructors and decreasing decoding]
+The pairing $J:\mathbb N^2\to\mathbb N$ is injective and satisfies
+$J(a,b)>\max(a,b)$.  The four constructor images are pairwise disjoint
+and disjoint from $\{0,1\}$.  Every argument of a constructor has a
+strictly smaller code than its value.
+\end{auxsyntaxlem}
+\begin{proof}
+Put $s=a+b$.  For a fixed $s$, the value of $J$ lies in
+$[s^2+1,s^2+s+1]$.  These intervals are disjoint because
+$(s+1)^2+1>s^2+s+1$.  The interval identifies $s$, after which
+$a=J-s^2-1$ and $b=s-a$ identify the arguments.  Also
+$J(a,b)\ge s^2+1>s$ for $s\ge1$, and the case $s=0$ is immediate.
+The four constructors have distinct residues modulo $4$; the two binary
+constructors have values at least $4$ and $5$, respectively.  The
+remaining assertions follow directly from their formulas.
+\end{proof}
+
+Let $\mathcal J$ be the set of natural numbers outside the four
+constructor images and $\{0,1\}$.  Enlarge $\Sigma$ by a distinct constant
+$\kappa_m$ for each $m\in\mathcal J$, obtaining $\Sigma^+$.  Strong
+recursion defines a decoding map
+$\delta:\mathbb N\to\operatorname{Term}(\Sigma^+)$: decode a constructor
+value using its unique arguments, decode $0,1$ as $\epsilon,\iota$, and
+decode $m\in\mathcal J$ as $\kappa_m$.  The preceding lemma proves that
+this definition terminates.  It also proves, for example,
+\[
+ \delta(U(a,b))=\mathsf U(\delta(a),\delta(b)),
+ \qquad \delta(N(a))=\mathsf N(\delta(a)),
+\]
+with analogous identities for the other constructors.  Induction gives
+$\delta(\langle t\rangle)=t$ for every original ground term $t$.
+
+For an axiom term $t(x_1,\ldots,x_h)$, let
+$\widehat t(n_1,\ldots,n_h)$ be its integer-polynomial evaluation under
+these arithmetic constructors.  Arbitrary natural values $n_i$ are
+allowed.  Constructor compatibility gives
+\[
+ \delta\bigl(\widehat t(\boldsymbol n)\bigr)
+   =t\bigl(\delta(n_1),\ldots,\delta(n_h)\bigr).
+\]
+Thus no test that $n_i$ belongs to the image of the original term
+numbering is needed.
+
+\begin{auxsyntaxthm}[Conservative interpretation of unused codes]
+\label{thm:syntax-retraction}
+Let $s=t$ be a closed $\Sigma$-equation.  There exists a finite arithmetic
+equational proof of
+$(\langle s\rangle,\langle t\rangle)$, using unrestricted natural term
+codes, polynomial evaluations of $\mathcal E$-instances, and the encoded
+equational rules, if and only if $\mathcal E\vdash s=t$ in the specified
+ordinary equational calculus.
+\end{auxsyntaxthm}
+\begin{proof}
+An ordinary ground proof can be encoded line by line, proving the
+reverse implication.  Conversely, apply $\delta$ to the two term codes
+on every line of an arithmetic proof.  The constructor identities show
+that it becomes an ordinary ground proof in the signature $\Sigma^+$.
+Every arithmetic axiom instance becomes an actual $\mathcal E$-instance
+with ground $\Sigma^+$-terms as substitutions.
+
+Now apply the term homomorphism
+$\rho:\operatorname{Term}(\Sigma^+)\to\operatorname{Term}(\Sigma)$
+which fixes every original symbol and sends every $\kappa_m$ to
+$\epsilon$.  It sends an axiom instance to an axiom instance and
+preserves each equational rule.  It fixes the closed terms $s,t$.
+Consequently the transformed finite proof is an original-signature
+proof of $s=t$.  This is a syntactic retraction argument; it assumes
+neither consistency nor arithmetic soundness of any theory.
+\end{proof}
+
+\subsubsection*{One explicit polynomial for local inference}
+
+Represent a conclusion by its pair of term codes $(a,b)$ and two premises
+by $(c,d)$ and $(e,f)$.  For one additional natural number $z$, put
+\begin{align}
+ R_0&=(a-b)^2,\\
+ T_0&=(c-e)^2+(a-d)^2+(b-f)^2,\\
+ B_0&=(a-U(c,e)-z)^2+(b-U(d,f)-z)^2,\\
+ W_0&=(a-4c-2-z)^2+(b-4d-2-z)^2,\\
+ I(a,b,c,d,e,f,z)&=z^2(z-1)^2+R_0T_0B_0W_0.
+ \label{eq:local-inference-poly}
+\end{align}
+Here $U$ in the two displayed occurrences is the already defined
+integer polynomial; these are abbreviations, not extra unknowns.
+
+\begin{auxsyntaxprop}[Exact local rule check]
+For natural term codes $a,b,c,d,e,f$, the equation $I=0$ holds precisely
+when $z\in\{0,1\}$ and at least one of the following holds:
+\begin{enumerate}
+ \item $a=b$, the reflexivity rule;
+ \item $c=e$, $a=d$, $b=f$, the rule taking $c=d$ and $c=f$ to $d=f$;
+ \item $(a,b)=(U(c,e),U(d,f))$ if $z=0$, or
+       $(a,b)=(C(c,e),C(d,f))$ if $z=1$;
+ \item $(a,b)=(N(c),N(d))$ if $z=0$, or
+       $(a,b)=(V(c),V(d))$ if $z=1$.
+\end{enumerate}
+The total degree of $I$ is exactly $10$.  The variable $z$ is its only
+local auxiliary coordinate beyond the six equation ports.
+\end{auxsyntaxprop}
+\begin{proof}
+Every displayed factor and summand is nonnegative.  Thus $I=0$ forces
+both $z^2(z-1)^2=0$ and $R_0T_0B_0W_0=0$.  The former is exactly the
+conjunction $z\in\{0,1\}$; the latter is exactly the disjunction of
+the four rule checks.  Each sum of squares vanishes precisely when all
+its summands vanish.  This also proves the converse.
+
+The four factors have degrees $2,2,4,2$, so $\deg I\le10$.
+Specializing gives the polynomial identity
+\[
+ I(t,0,t,0,0,0,0)
+ =2t^4\bigl((4t^2+3t+4)^2+16\bigr)
+       \bigl((3t+2)^2+4\bigr).
+\]
+Its leading coefficient is $288$, proving $\deg I=10$.
+\end{proof}
+
+The second rule and reflexivity derive symmetry: use the premises
+$c=d$ and $c=c$.  They then derive ordinary transitivity by first
+reversing $a=b$ and using $b=a$, $b=c$.  Binary congruence of both
+arguments includes one-argument congruence by using a reflexive second
+premise.  Hence these local rules generate the ordinary ground
+equational calculus when supplemented with the axiom instances.
+
+To make the finite-proof convention exact, seed the list by the valid
+reflexive equation $(0,0)$.  Each later line is either an axiom instance
+or has two earlier premise indices and a natural $z$ satisfying
+\eqref{eq:local-inference-poly}.  A one-premise rule may use the seed
+as its unused second premise.  This convention excludes circular
+justifications, including a purported first inference from itself.
+The premise-index restrictions and the unbounded list are part of the
+finite-certificate definition; they have \emph{not} been eliminated
+into the local polynomial $I$.
+
+\paragraph{What remains to obtain a consistency equation.}
+One must supply an explicit finite equational theory, prove the required
+bidirectional syntactic consistency translation, materialize its actual
+axiom terms, and compile the entire unbounded finite-proof certificate
+into a fixed Diophantine equation.  No variable count, degree bound, or
+arithmetic-operation improvement for that unconstructed endpoint follows
+from the local degree-$10$ calculation.
+
+\subsection{Exact Pell power recovery without an early radix bound}
+
+For an integer $b\ge2$, define the Pell sequences by
+\[
+ \chi_b(0)=1,\quad \psi_b(0)=0,\qquad
+ \begin{pmatrix}\chi_b(m+1)\\\psi_b(m+1)\end{pmatrix}
+ =
+ \begin{pmatrix}b&b^2-1\\1&b\end{pmatrix}
+ \begin{pmatrix}\chi_b(m)\\\psi_b(m)\end{pmatrix}.
+\]
+In particular, $\psi_b(1)=1$ and
+$\psi_b(m+2)=2b\psi_b(m+1)-\psi_b(m)$.
+
+\begin{auxsyntaxlem}[Recurrence bounds]
+For every $b\ge2$ and integer $m\ge1$,
+\[
+ (2b-1)^{m-1}\le\psi_b(m)\le(2b)^{m-1}.
+\]
+\end{auxsyntaxlem}
+\begin{proof}
+The sequence $\psi_b(m)$ is nonnegative and strictly increasing from
+$m=0$ onward.  This follows inductively from
+$\psi_b(0)=0$, $\psi_b(1)=1$ and the second-order recurrence.  For
+$m\ge1$, the same recurrence therefore gives
+\[
+ (2b-1)\psi_b(m)
+ \le\psi_b(m+1)
+ \le2b\psi_b(m).
+\]
+Iterating from $\psi_b(1)=1$ proves both bounds.
+\end{proof}
+
+\begin{auxsyntaxlem}[Exact quotient identity]
+\label{lem:pell-quotient-exact}
+Let $a\ge1$, $A=a+2$, and $H=4a+3$.  For every $m\ge0$,
+\[
+ \chi_A(m)-a\psi_A(m)
+ =2^m+H\sum_{j=0}^{m-1}2^{m-1-j}\psi_A(j),
+\]
+where the empty sum is zero.  In particular,
+$\chi_A(m)-a\psi_A(m)\equiv2^m\pmod H$.
+\end{auxsyntaxlem}
+\begin{proof}
+Put $W_m=\chi_A(m)-a\psi_A(m)$ and note that
+$A^2-1=a^2+H$.  The defining recurrences give
+\[
+ W_{m+1}
+ =(A-a)\chi_A(m)+(A^2-1-aA)\psi_A(m)
+ =2W_m+H\psi_A(m).
+\]
+Since $W_0=1$, iterating this identity yields the asserted formula.
+The sign is that of the positive sequence $\chi_A$; it is not a
+statement obtained by replacing a possibly signed Pell coordinate by
+its absolute value without further justification.
+\end{proof}
+
+\begin{auxsyntaxthm}[Power recovery]
+\label{thm:pell-power-recovery-clean}
+Let $X,Y$ be positive integers and $n\ge2$.  Put
+\[
+ R=2n-1,\quad a=(X+1)Y,\quad A=a+2,\quad
+ P=2XY^2+1,\quad H=4a+3.
+\]
+Suppose
+\[
+ c=\psi_A(R),\qquad k=2\psi_P(n),\qquad
+ kY<c<k(Y+1),
+\]
+and suppose the \emph{positive} main root
+$D=\chi_A(R)$ satisfies
+\[
+ D-ac\equiv X\pmod H.
+\]
+Then $X=2^R$.  No hypothesis involving a radix $q$, divisibility of $X$
+or $Y$ by $q$, or inequalities $X\ge q$, $Y\ge q^3$ is required.
+\end{auxsyntaxthm}
+\begin{proof}
+Both $A$ and $P$ are at least $2$.  Direct calculation gives
+\[
+ (2A-1)^2-8P
+ =4(X-1)^2Y^2+12(X+1)Y+1>0.
+\]
+Since $R-1=2(n-1)$, the recurrence bounds imply
+\begin{align*}
+ \frac ck
+ &\ge \frac{(2A-1)^{2(n-1)}}{2(2P)^{n-1}}\\
+ &=\frac12\left(\frac{(2A-1)^2}{2P}\right)^{n-1}
+ >\frac{4^{n-1}}2=2^{R-2}.
+\end{align*}
+The strict ratio bound $c/k<Y+1$ therefore gives
+$Y+1>2^{R-2}$.  Since $R\ge3$ and $Y$ is an integer,
+$Y\ge2^{R-2}$.  Consequently
+\[
+ H=4(X+1)Y+3\ge8Y+3\ge2^{R+1}+3>2^R.
+\]
+Also $0<X<H$ follows directly from $X,Y\ge1$.
+
+Lemma~\ref{lem:pell-quotient-exact} gives
+$D-ac\equiv2^R\pmod H$.  The hypothesis gives the same residue as $X$.
+Both $X$ and $2^R$ lie strictly between $0$ and $H$, so they are equal.
+\end{proof}
+
+The lower ratio bound $kY<c$ is natural in the intended applications,
+although this particular proof uses only the upper bound.  If the source
+instead supplies $D=X+ac+H\gamma$, then after power recovery the exact
+quotient formula identifies
+\[
+ \gamma=\sum_{j=0}^{R-1}2^{R-1-j}\psi_A(j)>0,
+\]
+because $R\ge3$.  Thus the same elementary identity also verifies the
+sign of the recovered quotient.  The hypotheses giving the ranks
+$R=2n-1$, the positive main root, and the strict ratio remain essential
+inputs to this lemma; they are not established by the lemma itself.
+
+\paragraph{Verification boundary.}
+The accompanying standard-library script checks constructor decoding and
+retraction, local-rule examples and negative controls, the exact
+degree-$10$ specialization, recurrence bounds, and the exact Pell
+quotient identity.  Those finite checks are reproducible corroboration.
+The unrestricted mathematical statements are established by the proofs
+above; no finite check establishes a consistency equivalence.

@@ -1,0 +1,287 @@
+% Main free-coordinate construction; source-specific metrics may be redefined by assembler.
+\providecommand{\FreeCMainDegree}{1\,629\,856}
+\providecommand{\FreeCMainOps}{517}
+\providecommand{\FreeCParameterDegree}{16\,976}
+\section{A free Lucas coordinate: removing the high-degree index carrier}
+\label{sec:free-lucas-coordinate}
+
+The central new construction has ten unrestricted integer unknowns.
+Its literal source-specific circuit has exact degree $\FreeCMainDegree$ and
+$\FreeCMainOps$ live binary arithmetic operations. The mathematical change
+is not a better addition chain or a different source layout. We prove that
+a high-degree defining congruence in the Lucas certificate is unnecessary
+on a fixed residue slice. Its former quotient coordinate becomes a direct,
+low-degree Lucas coordinate. The degree formula changes from
+$196a+260$ to $96a+160$, where $a=\deg A$.
+
+All statements here concern ordinary mathematics formalizable in ZFC.
+The native compiler/refutation equivalence, Pell classification and the
+identified Lucas index lemmas remain explicit dependencies. This is not a
+new Lean or Rocq certificate, a consistency decision, or a global minimality
+claim.
+
+\subsection{The literal source prefix}
+The selected positive-gap shared-tap certificate has $W=116$, $H=1873$,
+31 weights $w_i$, 22 targets $q_j$, and three kernel polynomials $D_j$.
+The complete finite lists are in \texttt{norm/final10/data/}; their
+coefficient-extraction identities are proved in the source section below.
+Put $\kappa=2134940$, $b=6t+4$, $g=bg_0$, and define
+\begin{gather*}
+ B=2^\kappa b^2,\quad \ell=\sum_{i=1}^{31}B^{w_i},\quad
+ U_c=\ell+g,\quad G_c=D_2(B)U_c^2+D_1(B)U_c+D_0(B),\\
+ A_T=\sum_{j=1}^{22}B^{q_j},\quad N_0=B^{117},\quad N=B^{1991},\\
+ \mathrm{mask}=N_0-1-(b-1)\ell,\quad J_c=2G_c+A_T,\\
+ S_c=g+N_0J_c,\quad T_c=\mathrm{mask}+N_0(B-2)A_T-2,\\
+ X=N(S_c+T_c+1)-S_c-1,\\
+ Y=2^{16\kappa-23}bB^{2114},\qquad\mathcal C=bB^{116}.
+\end{gather*}
+Every displayed sum has a fixed finite number of terms, and every exponent
+is a fixed integer. The whole native four-port tuple and the twelve
+materialized circuit leaves are bound independently; they must not be
+substituted by the different source34 tuple used in $P_{28}$ and $P_{26}$.
+The new degree bounds are $\deg X=7962$, $\deg Y=4229$ and
+$\deg A=16424$. The independently checked primary circuit uses 301
+multiplications, 155 additions and 25 subtractions, totaling 481.
+Compared with the incoming ten-integer degree-$3{,}327{,}556$/519-operation
+construction, both metrics decrease. It also improves the previous
+iteration's 494-operation, degree-$3{,}507{,}876$ variant.
+The new literal circuit treats the materialized threshold integer
+$2^{34159017}$ as one fixed leaf. Retaining the predecessor's five
+constant-building gates would give 486 operations, not 481. Both counts
+are reported to separate structural simplification from constant folding;
+neither is a bit-complexity or execution-time estimate.
+
+\subsection{The complete finalizer}
+
+Take the fixed source polynomials $X,Y,\mathcal C$ and its normalizations
+\[
+ f_{\rm old}=2t+1,\qquad b=6t+4,\qquad
+ g=bg_0,\qquad k=b(3k_0+2).
+\]
+The exact source prefix and all four coefficient ports are specified in the
+accompanying source section and literal data. Its universally valid
+congruences are
+\[
+ X\equiv1\pmod2,\quad X\equiv0\pmod3,\quad
+ b\mid X+1,\quad b\mid Y.
+\]
+The ten supplied variables are
+$(t,g_0,c_0,k_0,l,w,x,y,z,m)\in\mathbb Z^{10}$. Every other symbol below
+is a polynomial abbreviation. Define
+\begin{gather*}
+ L=lY,\quad U=2LX,\quad V=4gwY,\quad W=bw,\\
+ A_{1/2}=(LX)(V+1),\quad A=2A_{1/2},\quad B_1=2X+1,
+ \qquad \boxed{C=6c_0-1},\\
+ P_{1/2}=(LX)UV,\quad P=2P_{1/2},\quad
+ K=X+1+k(P-2),\\
+ S=2A-5,\quad T=3WC-2(W^2-1),\quad
+ Q=(P_{1/2}^2-1)K^2+1,\\
+ \Delta=8\mathcal C^3gK^2-g^2
+       \bigl(32(C-KL)^2\mathcal C^3+g^2K^2\bigr),\\
+ \xi=zx,\quad D=(A^2-4)C^2+4,\quad E=C^2D\xi,\\
+ F=4(A^2-4)E^2+1,\quad
+ G=2(A+2)(A-2)^2E^2-1,\\
+ \Omega=16E,\quad H=C+F(B_1-C+\Omega y),\quad
+ I=(G^2-1)H^2+1.
+\end{gather*}
+The circuit uses the identical expression
+$G=(A_{1/2}-1)(F-1)-1$ to share operations. The subscripts $1/2$ name
+explicit polynomial registers, not divisions in the equation.
+
+Keep the original one-modulus intersective finalizer:
+\begin{gather*}
+ \rho=T+Sy,\qquad \Sigma=\xi S^5,\\
+ \Theta=(\rho^3-\rho S^2-S^3)(\rho^2+23S^2),\\
+ r=bQ,\qquad \delta=9\Delta-3,\qquad
+ a_0=r+\delta(rz)^2,\quad a_1=DFI,\quad Z=\Sigma m-\Theta.
+\end{gather*}
+The single equation is
+\begin{equation}\label{eq:free-C-final}
+ \boxed{\bigl(Z^2-\Sigma^2(a_0+a_1)\bigr)^2
+             -4\Sigma^4a_0a_1=0.}
+\end{equation}
+Every exponent is fixed. There are no hidden quotient, root, binomial,
+variable-exponent, or bounded-universal operations. All fixed leaves are
+materialized integers with hashes. In particular the new parameterization
+has no requirement $(A-2)\mid C-B_1$ built into it.
+
+\subsection{A strengthened signed Lucas certificate}
+
+\paragraph{Lemma.}
+Suppose $A,B,C,\xi,y\in\mathbb Z$ satisfy
+\[
+ 6\mid A,\quad B\equiv3\pmod4,\quad
+ 1<B<|A|/2-1,\quad C\equiv5\pmod6,\quad\xi\ne0.
+\]
+Use $D,E,F,G,\Omega,H,I$ as above with $B$ in place of $B_1$.
+If $DFI$ is a square, then $C=u_B(A)$, where
+$u_0=0,u_1=1,u_{n+2}=Au_{n+1}-u_n$.
+No hypothesis $(A-2)\mid C-B$ is needed.
+
+\paragraph{Proof.}
+Here $C$ is odd and nonzero. Since $|A|>2$, the three integers $D,F,I$
+are positive. The certificate identities
+\[
+ F\equiv I\equiv1\pmod D,\qquad 4I\equiv D\pmod F
+\]
+and oddness of $F$ make them pairwise coprime, so they are separately
+squares. The usual Pell classification gives integers $s,\mu,t$ with
+\[
+ C=u_s(A),\qquad 4E=u_\mu(A),\qquad H=u_t(2G).
+\]
+Put $n=|\mu|>3$. The parity identities show that $n$ is even and $s,t$
+are odd. The Lucas index-separation lemma applied to the congruence modulo
+$F$ gives $s\equiv\pm t\pmod{2n}$. The rank-divisibility lemma applied
+to $C^2\mid u_n(A)$ gives $C\mid n$. Finally $H\equiv B\pmod\Omega$
+and $2G\equiv-2\pmod\Omega$ give $t\equiv B\pmod\Omega$.
+Thus
+\begin{equation}\label{eq:free-C-rank-residue}
+ s\equiv B\pmod{2C}\quad\hbox{or}\quad s\equiv-B\pmod{2C}.
+\end{equation}
+These are precisely the congruence-free classification and index steps of
+the modified certificate; the new work is to remove its exceptional ranks
+and sign without the old defining congruence.
+
+For every $j\ge1$, direct paired induction in the recurrence proves
+\begin{equation}\label{eq:free-C-paired-recurrence}
+ u_{2j}(A)\equiv(-1)^{j-1}jA\pmod{A^2},\qquad
+ u_{2j+1}(A)\equiv(-1)^j\pmod{A^2}.
+\end{equation}
+The base is $u_2=A,u_3=A^2-1$. The next two recurrence steps multiply the
+second congruence by $A$ and subtract the first, then multiply again by $A$
+and subtract the second. This works for negative $A$ as well.
+
+If $s=\pm1$, then $C=\pm1$ and $D=A^2$. Therefore $A^2\mid u_n(A)$.
+Writing $n=2j$, the first congruence in
+\eqref{eq:free-C-paired-recurrence} yields $A\mid j$.
+Consequently $2|A|$ divides both $2n$ and
+$\Omega=16A^2\xi$. Combining $s\equiv\pm t\pmod{2n}$ with
+$t\equiv B\pmod\Omega$ forces $B\equiv\pm1\pmod{2|A|}$,
+contradicting $1<B<|A|/2-1$.
+This argument does not assume the generally false divisibility $n\mid u_n(A)$.
+
+Hence $|s|\ge2$. Lucas growth gives
+$|C|=u_{|s|}(|A|)\ge|A|>B$ and $|s|\le|C|$.
+The two congruences in \eqref{eq:free-C-rank-residue} therefore force
+$s=B$ or $s=-B$: a nonzero multiple of $2C$ would be too large.
+Since $B\equiv3\pmod4$, the second congruence in
+\eqref{eq:free-C-paired-recurrence} gives $u_B(A)\equiv-1\pmod{A^2}$,
+and thus modulo3. The branch $s=-B$ would give $C\equiv1\pmod3$,
+contrary to $C\equiv5\pmod6$. Therefore $s=B$, as required.
+\hfill$\square$
+
+The odd, nonzero residue slice is essential: $A=12$, $B=3$, $C=0$, $\xi=1$, $y=0$ gives $DFI=4$, although $u_3(12)=143$.
+
+\paragraph{A reusable unsigned interface.}
+The mechanism is not restricted to this particular circuit. For even $A$,
+odd $C$, odd $B$ with $1<B<|A|/2-1$, and nonzero $\xi$, the same
+square-certificate index argument gives $C=\pm u_B(A)$ without assuming
+$A-2\mid C-B$. To handle both exceptional indices $s=\pm1$, use
+$C^2=1$: then $D=A^2$, $4E=4A^2\xi$ and the paired recurrence forces
+$2|A|\mid n$, just as above. Both exceptions contradict the range of $B$.
+For $|s|\ge3$, the growth and index congruences give $s=\pm B$.
+The fixed residue conditions $3\mid A$, $B\equiv3\pmod4$,
+$C\equiv-1\pmod3$ then select the positive index. Thus the primary
+construction is a corollary of a stronger arithmetic interface, not merely
+a shorter evaluation DAG. Its dependency on the standard Lucas index
+comparison is unchanged; no claim of literature priority is made.
+
+\subsection{Signed soundness of the ordinary equation}
+
+The source and $k$ normalization imply $b\mid K$, $3\mid K$, and
+\[
+ Q\equiv1\pmod{b^2},\qquad Q\equiv1\pmod3,\qquad \gcd(b,Q)=1.
+\]
+On every signed assignment $3\mid A$, $C\equiv-1\pmod3$, so $D\equiv0$
+modulo3 and $a_1\equiv0\pmod3$. In contrast $r=bQ\equiv1\pmod3$ and
+$\delta\equiv0\pmod3$, so $a_0\equiv1\pmod3$. Thus
+\emph{$a_0\ne a_1$ unconditionally}, before any positivity argument.
+
+The odd integer $S=2A-5$ is nonzero. The polynomial
+$\pi(v)=(v^3-v-1)(v^2+23)$ has no rational root; hence
+$\Theta=S^5\pi(\rho/S)\ne0$. A zero of
+\eqref{eq:free-C-final} therefore has $\Sigma\ne0$. With $q=Z/\Sigma$,
+the equation gives $(q^2-a_0-a_1)^2=4a_0a_1$.
+Since $a_0\ne a_1$, $q\ne0$. The rationals
+\[
+ u=\frac{q^2+a_0-a_1}{2q},\qquad v=q-u
+\]
+have squares $a_0,a_1$. Rational-square-root integrality makes $u,v$
+integers. Thus $a_0,a_1$ are squares and $\Sigma\mid\Theta$.
+A prime-valuation comparison in the homogeneous quintic yields $S\mid T$:
+if $v_p(T)<v_p(S)$, the two factors of $\Theta$ have valuations
+$3v_p(T)$ and $2v_p(T)$, contradicting $S^5\mid\Theta$.
+
+The factorization $a_0=r(1+\delta r z^2)$ has two coprime nonzero factors.
+Since $r\equiv1\pmod3$, the signed-square possibility makes $r$ and the
+bracket positive squares. Applying the same argument to $r=bQ$ gives
+$b,Q$ positive squares, hence $b\ge4$. If $\Delta\le0$, then
+$\delta=9\Delta-3\le-3$, making the bracket negative. Thus
+$\Delta>0$. Its defining inequality gives $K\ne0$ and $0<g<2\mathcal C$.
+If $l=0$ then $Q=1-K^2\le0$, a contradiction. Hence $l\ne0$;
+$f_{\rm old}=2t+1$ is already nonzero.
+
+The source bounds now give $X>3b$ and $Y>256$. Since $V+1$ is odd and
+nonzero,
+\[
+ |A|=2|l|XY|V+1|\ge2XY>2B_1+2.
+\]
+All hypotheses of the strengthened lemma hold: $6\mid A$,
+$B_1\equiv3\pmod4$, $C\equiv5\pmod6$, and $\xi\ne0$.
+It gives $C=u_{B_1}(A)$. The recurrence modulo $A-2$ then gives
+$(A-2)\mid C-B_1$ \emph{as a consequence}. Restore the proof-only integer
+$h=(C-B_1)/(A-2)$ and apply the unchanged reverse binomial bridge.
+The calibrated source decodes a positive source zero and hence a finite
+ZFC refutation. No sign of an arbitrary supplied auxiliary variable was
+silently assumed.
+
+\subsection{Completeness}
+
+Start from a positive source zero and its canonical arithmetic witnesses.
+They have $C=u_{B_1}(A)$, $6\mid A$, and $B_1\equiv3\pmod4$.
+Thus $C$ is odd and $C\equiv-1\pmod3$, giving the integer
+$c_0=(C+1)/6$. The old constructive congruences still supply $k_0$.
+Here $b,Q$ are positive squares and $\Delta>0$.
+The positive integer
+\[
+ \delta=3(3\Delta-1)
+\]
+has $3$-adic valuation exactly1, and is therefore nonsquare; the same holds
+for $\delta r$ since $r=bQ$ is a positive square.
+Pell's theorem supplies positive $u,z$ with
+$u^2-\delta r z^2=1$, making $a_0=ru^2$ square.
+
+The modified Lucas interpolation theorem first supplies a positive $\xi$
+divisible by this $z$, and then permits every residue class of $y$ modulo
+that fixed $\xi$ while retaining $DFI$ square. Put $x=\xi/z$.
+Since $S\mid T$, write $v_0=T/S$. The quintic $\pi$ has a root modulo every
+positive integer, so prescribe $y$ with $\pi(v_0+y)\equiv0\pmod\xi$.
+Then $\Sigma\mid\Theta$. Taking
+\[
+ m=\Theta/\Sigma+\sqrt{a_0}+\sqrt{a_1}
+\]
+gives an integer solution of \eqref{eq:free-C-final}.
+Thus the construction is existence-equivalent to the fixed source, and
+negating the two existence statements gives the required equivalence with
+$\operatorname{Con}(\mathrm{ZFC})$.
+
+\subsection{Exact degree and verification boundary}
+
+Let $a=\deg A$. Since $C$ now has degree1,
+\begin{align*}
+ \deg D&=2a+2,& \deg E&=2a+6,& \deg F&=6a+12,\\
+ \deg G&=7a+12,&\deg H&=8a+19,&\deg I&=30a+62,\\
+ \deg a_1&=38a+76,&\deg\Sigma&=5a+2.
+\end{align*}
+For the included compatible source, the guard and center have strictly
+lower degree than the dominant $\Sigma^4a_1^2$ term. Consequently
+\[
+ \deg F_{10}=4(5a+2)+2(38a+76)=96a+160.
+\]
+Exact nonzero diagonal leading coefficients are checked with the actual
+fixed tuple modulo three primes. They certify that the upper degree is
+attained; they are not sampled estimates of an unproved upper bound.
+Separate checks authenticate coefficient bytes, exact source extraction,
+full modular formulas, signed residue separation and live circuit topology.
+Finite checks do not replace the unbounded mathematical proof or its
+stated arithmetic/compiler dependencies.

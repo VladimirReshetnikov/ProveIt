@@ -1,0 +1,50 @@
+\section{Fourteen positive unknowns in degree twenty-four}
+\label{sec:positive14-degree24}
+
+An elementary register lift of $P_{13}$ gives a useful third endpoint:
+fourteen strictly positive unknowns, exact degree $24$, and $101$ live
+binary arithmetic operations.  Retain all thirteen variables from
+Section~\ref{sec:positive-coordinate-carrier} and introduce a positive
+variable $E$.  In that section's formulas, use this supplied $E$ wherever
+the abbreviation $E=XY$ occurred.  Thus
+\[
+ a=E+Y,\qquad \ell=E(\eta+\zeta)Y,
+ \qquad \Delta=(E+Y)^2+4(E+Y)+3.
+\]
+Let $\widetilde A_0,\widetilde A_1,\widetilde A_a,\widetilde A_s$ be the
+resulting four residuals, and set
+\begin{equation}
+ \boxed{\;P_{14}=\widetilde A_0^2+\widetilde A_1^2+
+   \widetilde A_a^2+\widetilde A_s^2+(E-XY)^2=0.\;}
+ \label{eq:positive14-degree24}
+\end{equation}
+The coefficient tuple is exactly the whole compact tuple already bound to
+$P_{13}$.
+
+\paragraph{Exact equivalence.}
+Every positive zero $x$ of $P_{13}$ extends to the positive zero $(x,XY)$
+of $P_{14}$.  Conversely, a positive zero of $P_{14}$ satisfies $E=XY$,
+since every squared residual vanishes separately.  Substitution then
+recovers $P_{13}(x)=0$.  The extension is unique, so these maps give a
+bijection of positive zero sets.  This elementary argument is formalizable
+in ZFC and adds no mathematical source assumption to the preceding
+consistency reduction.
+
+\paragraph{Degree and circuit size.}
+With $E$ independent, the five residual degrees are respectively
+\[
+ 12,\quad11,\quad12,\quad12,\quad2.
+\]
+Only $\widetilde A_s$ contains $i$, and its highest homogeneous part is
+\[
+ -9\beta^2 i^2(\eta+\zeta)^4Y^4(E+Y)^2.
+\]
+Consequently the coefficient of $i^4\eta^8E^4Y^8$ in $P_{14}$ is
+$81\beta^4\ne0$.  The exact total degree is therefore $24$.
+The former multiplication $XY$ remains live in the new defining residual.
+One subtraction, one square, and one addition extend the $98$-operation
+circuit to $101$ operations: $26$ additions, $17$ subtractions, and $58$
+multiplications.  The delivered JSON circuit, deterministic generator,
+exact symbolic checker, and independent audit make this tradeoff
+reproducible.  The register lift is elementary; the substantive new
+arithmetic mechanism remains the thirteen-variable construction.

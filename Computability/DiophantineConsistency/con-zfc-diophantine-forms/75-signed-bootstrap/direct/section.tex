@@ -1,0 +1,100 @@
+\section{A fixed input boundary without a variable-count penalty}
+\label{sec:fixedinput}
+This section proves a compiler-interface advance, not a newly instantiated
+small consistency equation. The unresolved work is an explicit small universal
+machine, its compiled refuter input, and the new complete coefficient tuple.
+
+\paragraph{The boundary lemma.}
+Suppose the native compiler recovers
+\[
+ C=\sum_{i=0}^{N-1}c_iB^i,\qquad 0\le c_i<B,
+\]
+where $B$ is fixed and increasing $i$ moves leftward from the marked cell.
+Let $t_0,\ldots,t_{m-1}$ be prescribed initializer tiles, encoded with all
+free dummy digits zero, and let
+\[
+ D=\sum_{i=0}^{m-1}\operatorname{enc}(t_i)B^i,
+ \qquad M=B^m.
+\]
+Assume the last digit is nonzero. Then the single linear equation
+\[
+ C=D+MV,\qquad V\in\mathbb Z,
+\]
+is equivalent to prescribing those $m$ digits. Indeed $0\le D<M$,
+$C\ge0$ imply $V\ge0$, and uniqueness of positional expansion proves
+both directions. Also $C\ge D\ge B^{m-1}$ forces $N\ge m$.
+The coefficient $M$ is fixed: no unknown occurs as an exponent.
+
+\paragraph{Affine absorption.}
+The lifted native source has $C=q-F-\alpha$ with
+$q=\beta J+1$ and an independent coordinate $\alpha$. Substitute
+\[
+ \boxed{\alpha:=q-F-D-MV}
+\]
+everywhere, including in every old positivity guard, and replace the
+coordinate $\alpha$ by $V$. There is no new residual. The new solutions
+are in bijection with the old solutions obeying the boundary constraint,
+via $V=(C-D)/M$. Affine substitution increases neither variable count nor
+maximum degree. In particular the existing unrestricted quartic architecture
+can accept fixed finite inputs without a variable-count or degree penalty.
+Its coefficients are not the old K215 coefficients: the entire new tuple
+must be regenerated. The bitlength of $M$ is $1+\lfloor m\log_2B\rfloor$ (equal to
+$1+m\log_2B$ when $B$ is a power of two), an explicit
+cost rather than an uncharged claim of compression.
+
+\paragraph{A constant-size initializer.}
+For an alphabet $\Gamma$ with blank $0$, use horizontal phases $L,D,R$,
+vertical reset symbols $I,Q$, and the tiles
+\[
+\begin{array}{ll}
+(L,I,L,0),\ (R,I,R,0),&\text{blank margins},\\
+(L,I,D,\operatorname{head}(q_0,a)),\ a\in\Gamma,
+ &\text{first symbol},\\
+(D,I,D,a),\ a\in\Gamma,&\text{remaining symbols},\\
+(D,Q,R,0),&\text{marked right delimiter}.
+\end{array}
+\]
+For input $a_0\cdots a_{\ell-1}$, prescribe the delimiter, the data tiles
+for $a_{\ell-1},\ldots,a_1$, and the first-symbol tile for $a_0$, in that
+right-to-left order. Thus $m=\ell+1$. An empty input is treated as the
+single blank symbol. Blank-phase matching and horizontal periodicity force
+blank margins ending at seams. The ordinary directed-signal transition,
+finish and reset argument then gives exactly a finite halting computation.
+The initializer uses $2|\Gamma|+3$ tiles, independently of input length.
+Including resets, seams and the impossible forbidden tile, a generous total
+bound is
+\[
+ ns+s(|S_R|+|S_L|)+6s+15,
+\]
+for $n$ working states and $s$ symbols. A total five-working-state,
+five-symbol machine with one extra halt state therefore needs at most
+$130$ tiles. This is a conditional bound, not a pinned 130-tile ZFC instance.
+
+\paragraph{The rank controller survives a frozen prefix.}
+The existing Boolean controller has an odd prime $\lambda$, $N=\lambda^n$, $T=N/\lambda$,
+$C_0=d\lambda$, $k=\lambda-1>1$, and the orbit identity
+\[
+ \{B^{kj}\bmod C_0T:0\le j<T\}
+ =\{1+C_0z\bmod C_0T:0\le z<T\}.
+\]
+Retain its coprimality hypotheses and $T>C_0$. Translate its mutable
+positions to $a+kj$ and the extra position $a+1$, with fixed $a\ge m$.
+To represent $r$, first divide by the unit $B^a$. Choose
+$\epsilon\in\{0,1\}$ so that $rB^{-a}-\epsilon B$ is nonzero modulo
+$\lambda$. Its residue $b$ modulo $C_0$ satisfies
+$1\le b<C_0<T$ and $\gcd(b,T)=1$. Write the remaining residue as
+$b+C_0u$. Solve
+\[
+ bz_0+\frac{b(b-1)}2\equiv u\pmod T
+\]
+and select the $b$ orbit coordinates $z_0,\ldots,z_0+b-1$, plus the extra
+position iff $\epsilon=1$. Their sum is $r$. They are distinct, and none
+lies in the frozen prefix. The maximal orbit position is $a+k(T-1)$,
+leaving margin $T+k-a$. Arbitrarily large independent padded widths and
+heights make the required translated positions fit as well. Consequently
+canonical rank and parity control remains compatible with the fixed input.
+
+The finite replay checks $113{,}748$ positional cases and $108$ instances
+of the translated Boolean controller, as well as $92$ finite initialization strips. These checks are not substitutes for
+the universal argument above. They do not instantiate the missing universal
+machine, input word, or regenerated arithmetic-controller certificate.

@@ -1,0 +1,365 @@
+\section{Transferring a strong Pell root into a transport gap}
+\label{sec:root-transfer}
+
+This section gives a polynomial in twelve strictly positive integer
+unknowns of exact degree $84$, with a literal $103$-operation arithmetic
+circuit.  Its predecessor in package 61 has degree $118$ and $104$
+operations.  A thirteen-positive-variable companion has degree $30$ and
+$94$ operations, against package 61's degree $34$ and $93$ operations.
+These comparisons concern the actual circuits, count all live binary
+additions, subtractions and multiplications, and treat the complete fixed
+coefficient numerals as leaves.
+
+The new twelve-variable construction removes the normalized strong Pell
+root through the first transport carrier.  A positive upper approximation
+to that root makes both recovered root signs harmless.  Strengthening an
+existing transport multiplier makes the inverse coordinate positive.
+Thus the construction does not require a new index congruence for the
+auxiliary Pell ordinate.  The smaller thirteen-variable companion combines
+package 61's transport carrier with the adaptive modulus of package 65.
+
+\subsection{Fixed coefficients and the precise inherited boundary}
+
+Use the whole compact coefficient tuple of package 44:
+\[
+ \beta=2^{590069}-1,\qquad K_0,\qquad M_C,\qquad M_F.
+\]
+The four integers are delivered as lossless payloads in
+\texttt{coefficients/}; $M_F$ is already the shifted source mask.
+They are constants, not existential parameters.  The fixed numerical
+binding and the unchanged source proof are recorded separately from the
+new reductions.
+
+We use package 61's normalized positive-source interface.  With positive
+coordinates $J,F,\alpha,z,f,h,i,T_{\rm old},s,w,\tau,\eta,\zeta,y,
+\gamma_{\rm old}$, define
+\begin{align*}
+ q&=\beta J+1,& C&=q-F-\alpha,\\
+ X&=wq,&Y&=sq^3,\\
+ E&=XY,& k&=\eta+\zeta,\\
+ c&=kY+\eta,&a&=E+Y,\\
+ H&=4a+3,&\Delta&=a^2+H=(a+2)^2-1,\\
+ \ell&=EkY,&I&=ic^2.
+\end{align*}
+\[
+ R=\big((q-1)(q-F)+\alpha\big)(q^2-1)+(M_C+qM_F)J.
+\]
+The six source equations are
+\begin{align}
+ \tau^2-\ell(\ell+k)&=1,&
+ D^2-\Delta c^2&=1,\qquad D=X+ac+H\gamma_{\rm old},\label{eq:rt-source-a}\\
+ f^2-\Delta I^2&=1,&
+ \Delta(f^2-1)(V^2-y^2)+y^2&=1,\label{eq:rt-source-b}\\
+ k-hE-R&=1,&
+ (K_0+w)C+(q-F)-z(q-1)&=1,\label{eq:rt-source-c}
+\end{align}
+where $V=c(T_{\rm old}f-1)-Rf^2$.
+The inherited compiler and K215 calibration identify existence of a
+positive solution with a finite syntactic ZFC refutation.  This source
+interface, rather than a finite experiment, is the semantic premise used
+below.
+
+Put $B=\beta+1$.  We use the source's canonical completeness promises
+\[
+ q=B^N,\quad J=1+B+\cdots+B^{N-1},\quad
+ N=581197^e>1,\quad R\equiv3\pmod4,\quad X=2^R.
+\]
+The first Pell index is $n_0=(R+1)/2\ge3$.  A normalized strong solution
+can be chosen together with a positive auxiliary solution of the form
+\[
+ V=f^2(cT-R)-c,\qquad y=V+u,\qquad T,u>0.
+\]
+This is the normalized source and canonical construction of package 61's report, Sections 2 and 6, together with its positive auxiliary reconstruction lemma (Section 3, source label \texttt{lem:auxcomplete});
+no stronger congruence for $y$ is required here.
+
+For arbitrary positive outer coordinates, once $C>0$ has been proved,
+the authentic masks give
+\begin{equation}
+ q\ge16,\qquad 3q<R<q^4-2.\label{eq:rt-Rbound}
+\end{equation}
+These bounds do not presuppose $q\mid X$.
+
+\subsection{A weighted transport carrier and the adaptive main carrier}
+
+Initially supply $X,Y$ directly.  Let $j,F,\alpha,f,i,T,X,Y,r,\eta,
+\zeta,u,\gamma$ be positive, put $J=3j+1$, and define the registers above.
+Let $h_*>0$ be an integer polynomial register, and set
+\begin{align}
+ W&=1+(q-1)h_*,&M&=q^3(q-1),\nonumber\\
+ B_t&=(qK_0+X)C-qF,&
+ Z&=M(\ell+k+r)+(q-1)Y-q^3WB_t,\label{eq:rt-transport}\\
+ A_0&=Z^2-M^2\bigl(\ell(\ell+k)+1\bigr).\nonumber
+\end{align}
+The adaptive main carrier is
+\begin{align}
+ S&=4qY,& U&=qS=4q^2Y,& r_0&=k-R-1,\nonumber\\
+ D_*&=U(X+ac)+H(U\gamma+SX-r_0),\label{eq:rt-main}\\
+ A_1&=D_*^2-U^2(1+\Delta c^2).\nonumber
+\end{align}
+Keep the other two residuals
+\begin{align}
+ A_s&=f^2-\Delta I^2-1,\nonumber\\
+ V&=f^2(cT-R)-c,\nonumber\\
+ A_a&=(V+u)^2-\Delta(f^2-1)u(2V+u)-1.\label{eq:rt-aux}
+\end{align}
+
+\paragraph{Weighted-carrier lemma.}
+Every positive simultaneous zero of $A_0,A_1,A_a,A_s$, with any positive
+integer $h_*$, reconstructs a positive solution of
+\eqref{eq:rt-source-a}--\eqref{eq:rt-source-c}.  Conversely, canonical
+source witnesses lift whenever the chosen multiplier satisfies $h_*\ge k$.
+
+\begin{proof}
+If a rational number has integral square, it is an integer.  Apply this
+to $Z/M$: $A_0=0$ supplies an integer $\tau$ with
+$\tau^2=\ell(\ell+k)+1$.  Since $M\mid Z$, reduction modulo $q^3$
+gives $q^3\mid Y$.  Reduction modulo $q-1$ gives $(q-1)\mid B_t$,
+because $W\equiv q^3\equiv1\pmod{q-1}$.  Define the proof-only integers
+$s=Y/q^3>0$ and $t=B_t/(q-1)$.  Dividing the carrier gives
+\[
+ \tau=\ell+k+r+s-Wt.
+\]
+As $|\tau|<\ell+k$, we obtain $Wt>r+s>0$, hence $t>0$ and $B_t>0$.
+If $C\le0$, then $B_t=(qK_0+X)C-qF<0$, a contradiction.  Thus $C>0$
+and \eqref{eq:rt-Rbound} is now available.
+
+Write $A=a+2$ and $P_0=2XY^2+1$.  The main numerator is positive before
+either $q\mid X$ or rank recovery: since $r_0<k$, $c>kY$ and
+$UaY>H$, we have $D_*>Uac-Hk>0$.  Thus $A_1=0$ gives a positive integer
+$D=D_*/U$ with $D^2-\Delta c^2=1$.
+Pell classification supplies
+\[
+ D=\chi_A(p),\quad c=\psi_A(p),\qquad
+ |\tau|=\chi_{P_0}(n_0),\quad k=2\psi_{P_0}(n_0).
+\]
+Here $p\ge2$ and $n_0\ge2$.  Indeed $n_0=1$ would give $k=2$ and
+$c=2Y+1<2A=\psi_A(2)$, which is impossible.  Consequently
+\[
+ k>8XY^2,\qquad c>8XY^3\ge8q^9>2R,\qquad n_0<p,\qquad c>2p.
+\]
+The normalized strong residual implies $f=\chi_A(m)$,
+$I=\psi_A(m)$, $c\mid m$, and $m>2p$; this is the normalized-rank
+lemma of package 61.  Put $S_*=\Delta I$.  The auxiliary residual gives
+\[
+ S_*^2V^2-(S_*^2-1)y^2=1,\qquad y=|V+u|>0,
+\]
+with $V\equiv-c\pmod f$ and $V\equiv-R\pmod c$.
+The signed auxiliary-index lemma, with $0<p,R<c/2$, yields $p=R$.
+The rank lemmas used here do not require the deleted scale or index
+quotient, nor the sign of $V$.
+
+It remains to extract the adaptive congruence without discarding a factor
+of three.  Since $590069$ is odd, $\beta\equiv1\pmod3$ and
+$J=3j+1$ imply $q\equiv2\pmod3$.  Because $q^3\mid Y$,
+$\gcd(q,H)=1$.  Moreover $H=4Y(X+1)+3$ is odd and
+$\gcd(H,Y)=\gcd(3,Y)$.  Hence
+\[
+ g:=\gcd(H,U)=\gcd(H,S)\in\{1,3\}.
+\]
+Integrality of $D_*/U$ gives $U/g\mid SX-r_0$, hence $S/g\mid r_0$.
+The first Pell recurrence gives
+\[
+ k\equiv2n_0\pmod{4XY^2}.
+\]
+Since $S\mid4XY^2$ and $S/g\ge4q^4/3>R+1$,
+the inequalities $1\le n_0<p=R$ force
+$2n_0-R-1=0$.  Thus $r_0=k-2n_0$ is a positive multiple of $4XY^2$.
+Also $U\mid4XY^2$, since $q^2\mid Y$; therefore $U\mid r_0$.
+It follows from $U/g\mid SX$ that $q\mid gX$.
+Because $g$ divides $3$ and $3\nmid q$, this gives $q\mid X$.
+
+Now $w=X/q>0$, $h=r_0/(XY)>0$, and
+$\gamma_{\rm old}=\gamma+w-r_0/U$ are integers.  Since
+$D>(a+1)c$ and $c>X$, the identity
+$H\gamma_{\rm old}=D-ac-X$ proves $\gamma_{\rm old}>0$.
+Since $B_t=q((K_0+w)C-F)>0$ and $(q-1)\mid B_t$, the integer
+$z_{\mathrm{new}}=((K_0+w)C-F)/(q-1)$ is positive; set $z=z_{\mathrm{new}}+1$.
+Finally replace $\tau$ by $|\tau|$, put $T_{\rm old}=fT$, and retain
+$y=|V+u|$.  These are the required source coordinates.
+
+For completeness, use canonical source witnesses.  Their odd repunit
+exponent gives $J\equiv1\pmod3$, so $j=(J-1)/3>0$ is integral.
+The source transport coordinate has $z\ge2$, hence
+$t=q(z-1)\ge q$.  Put
+\[
+ r=Wt+\tau-\ell-k-s.
+\]
+Since $\tau>\ell$, $s<k$, and $h_*\ge k$, this gives
+$r>qW-2k>0$.  It makes $A_0=0$.
+The canonical first index gives $r_0$ a positive multiple of $4XY^2$;
+take $\gamma=\gamma_{\rm old}-w+r_0/U$.
+It is positive because
+$r_0/U\ge XY/q^2=wY/q>w$.  Its substitution makes $A_1=0$.
+The positive auxiliary reconstruction supplies $T,u$, and the two
+remaining residuals vanish.
+\end{proof}
+
+Taking $h_*=k$ defines the thirteen-variable companion
+\[
+ P_{13}=A_0^2+A_1^2+A_a^2+A_s^2.
+\]
+Its residual degrees are respectively $15,13,13,14$, so its exact total
+degree is $30$.  The factor $4$ in $S=4qY$ is used in the proof:
+removing it without another argument loses the bound $S/g>R+1$.
+
+\subsection{The twelve-variable polynomial}
+
+Supply exactly
+\[
+ j,F,\alpha,i,T,X,Y,n,\eta,\zeta,u,\gamma\in\mathbb Z_{>0}.
+\]
+Use the same common registers, but now define
+\begin{align}
+ D_f&=1+\Delta I^2,& L&=(a+2)I,& h_*&=ikc,\nonumber\\
+ W&=1+(q-1)ikc,&
+ Z_0&=M(\ell+k+n)+(q-1)Y-q^3WB_t,\label{eq:rt-newregs}\\
+ \overline Z&=Z_0+ML,& D_\tau&=\ell(\ell+k)+1.\nonumber
+\end{align}
+The first residual is the ordinary polynomial
+\begin{equation}
+ N=\bigl(\overline Z^2-M^2(D_f+D_\tau)\bigr)^2
+                  -4M^4D_fD_\tau.\label{eq:rt-N}
+\end{equation}
+Retain $A_1$ from \eqref{eq:rt-main} and replace the auxiliary registers by
+\begin{equation}
+ V=D_f(cT-R)-c,\qquad Q=\Delta(D_f-1),\qquad
+ A_a=(V+u)^2-Qu(2V+u)-1.\label{eq:rt-newaux}
+\end{equation}
+The recommended equation is
+\begin{equation}
+ \boxed{P_{12}=N^2+A_1^2+A_a^2=0.}\label{eq:rt-P12}
+\end{equation}
+Every named register is a polynomial abbreviation.  There are twelve,
+not twelve plus the number of registers, quantified unknowns.
+
+\paragraph{Root-transfer theorem.}
+The polynomial \eqref{eq:rt-P12} has a strictly positive zero if and only
+if the inherited source has a strictly positive zero.  Consequently its
+lack of positive zeros is equivalent in ZFC to $\operatorname{Con}(\mathrm{ZFC})$,
+subject exactly to the inherited compiler/calibration interface above.
+
+\begin{proof}
+The inequalities needed to recover roots hold on every positive input,
+before any residual is assumed zero.  Since $\ell<ac$ and $k<c$,
+\[
+ \ell(\ell+k)<a(a+1)c^2<\Delta i^2c^4,
+\]
+and therefore $D_f>D_\tau>0$.  Also
+\[
+ L^2-D_f=I^2-1>0,
+\]
+because $c\ge3$ and $I=ic^2>1$.
+
+At a zero of $N$, $\overline Z=0$ is impossible: it would imply
+$M^4(D_f-D_\tau)^2=0$.  The identity
+\begin{align*}
+ N={}&\bigl(\overline Z^2+M^2(D_f-D_\tau)\bigr)^2
+                     -4M^2\overline Z^2D_f
+\end{align*}
+then shows that the rational number
+\[
+ f_*=\frac{\overline Z^2+M^2(D_f-D_\tau)}{2M\overline Z}
+\]
+has square $D_f$.  It is a nonzero integer by rational-square
+integrality.  Furthermore
+\[
+ \left(\frac{\overline Z-Mf_*}{M}\right)^2=D_\tau,
+\]
+so this second rational root is also an integer.
+Set $f=|f_*|$ and
+\[
+ r=n+L-f_*.
+\]
+The strict inequality $L>|f_*|$ gives $r>0$ for both signs of $f_*$.
+The first carrier becomes $Z=\overline Z-Mf_*$, so $A_0=0$.
+The strong residual is zero because $f^2=D_f$.
+All other registers involving the strong root use its square only;
+thus the supplied $A_1=A_a=0$ give the remaining weighted-carrier
+equations.  The lemma reconstructs a positive source solution.
+
+Conversely, use canonical source witnesses and their positive strong root
+$f$.  Choose $T,u$ by positive auxiliary reconstruction, and $r,\gamma$
+by the weighted-carrier lemma with $h_*=ikc$.  This multiplier is at least
+$k$.  The upper approximation gap satisfies
+\[
+ 0<L-f=\frac{I^2-1}{L+f}<\frac{I}{a}
+       =\frac{ic^2}{a}<ikc,
+\]
+because $c=kY+\eta<k(Y+1)\le ka$ for $X,Y\ge1$.
+The transport construction gives
+\[
+ r>qW-2k>ikc.
+\]
+The last inequality follows directly from
+$q\ge16$ and $ic\ge3$.
+Hence $n=r-L+f$ is a strictly positive integer.
+Its substitution gives $\overline Z=M(\tau+f)$, and the two source
+squares imply $N=0$.  The other two residuals already vanish.
+This proves completeness, including positivity of the new coordinate.
+\end{proof}
+
+The theorem proves an equivalence and does not decide either side.
+The norm is used with its zero-denominator exclusion and both signed-root
+branches; an abstract appeal to independent square classes would not
+supply these facts.
+
+\subsection{Exact degree, arithmetic cost, and finite certificates}
+
+Write
+\[
+ q_0=3\beta j,\quad k_0=\eta+\zeta,\quad
+ B_{t,0}=(K_0q_0+X)(q_0-F-\alpha)-q_0F.
+\]
+For the twelve-variable equation,
+\[
+ \deg M=4,\quad \deg L=7,\quad \deg D_f=14,\quad
+ \deg D_\tau=8,\quad \deg Z_0=10.
+\]
+The cancellation-resolved middle expression in \eqref{eq:rt-N} is
+\begin{equation}
+ \overline Z^2-M^2(D_f+D_\tau)
+ =Z_0^2+2MLZ_0-M^2(1-I^2+D_\tau).\label{eq:rt-centeridentity}
+\end{equation}
+It has degree $21$; only its middle summand reaches that degree.
+The subtracted norm tail $4M^4D_fD_\tau$ has degree $38$.  Thus $N$ has
+exact degree $42$, with leading homogeneous form
+\[
+ \operatorname{in}_{42}(N)
+ =4q_0^{16}i^4k_0^8X^2Y^8B_{t,0}^{\,2}.
+\]
+The other residual degrees are $13$ and $37$, respectively.  Consequently
+\begin{equation}
+ \operatorname{in}_{84}(P_{12})
+ =16q_0^{32}i^8k_0^{16}X^4Y^{16}B_{t,0}^{\,4}.
+ \label{eq:rt-leading84}
+\end{equation}
+In particular the coefficient of
+$j^{32}i^8\eta^{16}X^8Y^{16}\alpha^4$ is exactly
+$16(3\beta)^{32}>0$.  Choosing this minimum $j$ exponent forces the
+$-X\alpha$ term from each copy of $B_{t,0}$, so the other fixed ports
+cannot cancel it.  This proves exact degree after the actual coefficient
+specialization.
+
+For $P_{13}$, the unique highest residual degree is $15$ and
+\[
+ \operatorname{in}_{15}(A_0)=-2q_0^8k_0^2XY^2B_{t,0},\qquad
+ \operatorname{in}_{30}(P_{13})=4q_0^{16}k_0^4X^2Y^4B_{t,0}^{\,2}.
+\]
+Its coefficient of $j^{16}\eta^4X^4Y^4\alpha^2$ is
+$4(3\beta)^{16}>0$.
+
+The delivered twelve-variable evaluator uses $60$ multiplications,
+$27$ additions and $16$ subtractions, totaling $103$ live operations.
+The three-equation version uses $98$ operations and residual degrees
+$42,13,37$.  The thirteen-variable evaluator uses $94$ operations,
+or $87$ for its four-equation system.
+The JSON graphs contain no divisions or variable exponents.
+
+The verifier checks literal graph liveness, every fixed-payload digest,
+byte-identical circuit regeneration, exact prefix identities,
+independent cut-ring norm and finalizer identities, and the nonzero
+leading forms above.  These are finite certificates of algebra and data.
+The unbounded existence equivalence follows from the written proofs
+and the inherited source theorem, not from bounded tests.  No new
+end-to-end Lean/Rocq certificate or exported object-language ZFC
+derivation is claimed for these literal polynomials.

@@ -1,0 +1,101 @@
+\section{Signed powers and quotient absorption: a 34-integer sextic}
+The incoming quartic41 system uses both a global square guard
+$X=2u_0^2$ and a scale coordinate $w_0$ satisfying $X=4qw_0$.
+A new bootstrap allows us to replace these by the single cubic equation
+\[
+ X=4qu^2.
+\]
+Unlike an ordinary positivity guard, this permits a negative global power
+at the start. Its sign is recovered only after its absolute value is
+proved to be a power of two. Simultaneously replace the transport
+coordinate $z$ by $Z$ and use
+\[
+ (K_0q+X)(q-F-\alpha)-qF-Z(q-1)=0.
+\]
+Since $q\mid X$ and $\gcd(q,q-1)=1$, this equation itself forces $q\mid Z$.
+Thus $z=Z/q$ is recovered without a separate quotient coordinate.
+The intermediate system has 40 integer variables and 25 residuals.
+
+\paragraph{The new negative-power lemma.}
+All named coefficient ports are the complete source34 tuple, with
+$q=\beta J+1$ and $\beta=2^{1064921}-1$.
+The unchanged product guards give $Q=|q|\ge16$,
+$Q(Q^2-1)<R<Q^4-2$, and $\eta,\zeta$ the same nonzero sign.
+Put $Y=(2v+1)q^3$, $E=XY$, $a=(X+1)Y$, $A=a+2$,
+$H=4a+3$, and $k=\eta+\zeta$.
+The main norm modulo $H$ excludes $u=0$; hence
+$|X|\ge4Q$ and $|E|>3R+1$.
+
+Let $B=|A|$, $P_0=|2XY^2+1|$, $c_0=|c|$, and $k_0=|k|$.
+The Pell classifications give
+\[
+ k_0=2\psi_{P_0}(n),\qquad c_0=\psi_B(p),\qquad p>n\ge1.
+\]
+The inequality follows from $P_0>B$ and $c_0>k_0$.
+Modulo $|E|$, the first Pell recurrence gives
+$2n\equiv\epsilon(R+1)$, where
+$\epsilon=\operatorname{sgn}(k)$ for $X>0$ and
+$\epsilon=\operatorname{sgn}(k)(-1)^{n-1}$ for $X<0$.
+Either $n\ge(R+1)/2$, or $n>R$.
+These bounds justify the unchanged ordinary strong-rank and signed
+auxiliary step-down lemmas, yielding $p=R$.
+Consequently the latter branch is impossible and $R=2n-1$.
+This argument precedes all assumptions about the sign of $X$.
+
+Suppose $X=-x<0$, and put $Z_0=|Y|$, $r_0=(R-1)/2\ge1$.
+Then $x\ge64$, $Z_0\ge4096$, $B\ge(x-1)Z_0-2$, and
+$P_0=2xZ_0^2-1$.
+Elementary Pell growth gives
+\[
+ \frac{c_0}{k_0}
+ \ge\frac12\left(\frac{(2B-1)^2}{2P_0}\right)^{r_0}
+ >\frac{(x-3)^{r_0}}2.
+\]
+The strict comparison follows from the explicit positive difference
+\[
+ (2(x-1)Z_0-5)^2-(x-3)(4xZ_0^2-2)
+ =4(x+1)Z_0^2-20(x-1)Z_0+25+2(x-3)>0.
+\]
+Since $c_0/k_0<Z_0+1$, it follows that $Z_0>2^R$ and therefore
+$|H|>x2^R+1$ and $|H|>x+2^R$.
+
+For odd $R$ the signed Pell identities modulo $H$ imply, with
+$\sigma=\operatorname{sgn}(c)$, one of
+\[
+ \sigma X\equiv2^R\pmod H,
+ \qquad \sigma X2^R\equiv-1\pmod H.
+\]
+The strict bounds exclude the second and turn the first into equality.
+Thus $|X|=2^R$. But $\operatorname{sgn}(q)=\operatorname{sgn}(X)$,
+so $q=-2^t$ for some $t\ge0$. This contradicts
+$q\equiv1\pmod{2^{1064921}-1}$: the residue of $2^t$ is a positive
+power $2^r$, $0\le r<1064921$, never $-1$.
+Hence $X,q>0$.
+The positive branch now gives $\eta,\zeta>0$ and the inherited
+positive-power proof recovers $X=2^R$ and the native compiler endpoint.
+A literal quartic41 witness is restored by
+$w_0=u^2$, $u_0=2^{(R-1)/2}$, and $z=Z/q$.
+
+Conversely canonical witnesses have $q=2^t$ with $t$ odd,
+$R$ odd, and $R>3q$. Thus
+$u=2^{(R-t-2)/2}$ is integral and $X=4qu^2$; set $Z=qz$.
+This proves the same existential equivalence with finite ZFC refutation.
+It uses the inherited compiler and Pell results, not a new kernel
+certificate or a proof of consistency.
+
+\paragraph{Low-degree projection.}
+Set $\tau_{\rm old}=\tau_{\rm tail}+P-k$ and eliminate
+\[
+ P=k+E(c-\eta),\quad F_2=f^2,\quad g=y^2-V^2,\quad
+ N=q(L+1),\quad C_2=c^2,\quad X=D-ac-\gamma(4a+3).
+\]
+The first norm becomes
+$\tau_{\rm tail}^2+(2\tau_{\rm tail}-k)E(c-\eta)-1$.
+All 19 remaining residuals are cubic or lower in 34 unrestricted integer
+unknowns. Their sum of squares has exact degree six: its coefficient at
+$r^2c^4$ is four, contributed only by $I-(2r+1)c^2$.
+The projections have explicit polynomial inverse reconstructions.
+This improves the incoming 35-integer sextic by one unknown through a
+new signed-power bootstrap, not merely through another monic elimination.
+The straightforward octic companion still has 30 unknowns and is not a
+new octic variable record.

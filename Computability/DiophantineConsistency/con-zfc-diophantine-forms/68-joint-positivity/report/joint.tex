@@ -1,0 +1,72 @@
+\section{A nearest-square guard: 28 unrestricted integers at degree eight}
+The two independent positivity guards can be compressed without changing any
+Pell equation, compiler coefficient, or arithmetic register.
+For integer $x,y$, put
+\[
+ G(x,y,t)=xy-(t^2-x-y+1)^2.
+\]
+Then $x,y>0$ if and only if $G(x,y,t)>0$ for some integer $t$.
+Indeed, $G>0$ forces $xy>0$, while $x=-a,y=-b$ with $a,b>0$
+would give $(t^2+a+b+1)^2>ab$. Conversely, let $N=x+y-1$.
+Then $xy\geq N\geq1$. Writing $m=\lfloor\sqrt N\rfloor$, choose
+$t=m$ if $N-m^2\leq m$ and $t=m+1$ otherwise. The square error
+has absolute value at most $m$, and its square is strictly less than $N$
+(the exact-square case has error zero). Thus $G>0$.
+
+Every positive integer is
+$\operatorname{Pos}(p,q,r)=1+p^2+q^2+r(r+1)$ by the three-square theorem
+applied to $4n-3$. Therefore the single residual
+\[
+ xy-(t^2-x-y+1)^2-1-p^2-q^2-r(r+1)
+\]
+replaces two separate positive ternary forms, using four private integer
+coordinates rather than six. In the reviewed 30-integer octic, take
+$x=F\alpha$ and $y=F(\beta J+1-F-\alpha)$.
+Both are quadratic, so the new residual is quartic. All other residuals
+remain unchanged, including the guard on $\eta\zeta$.
+The resulting sum of 14 squared residuals has 28 unrestricted integer
+variables and degree exactly eight; the unchanged coefficient
+$[a^4f^4]=1$ certifies exactness.
+
+The equivalence is existential, not a bijection of witness tuples. From
+an old zero choose the nearest-square coordinate and a positive ternary
+representation of $G$. From a new zero restore independent positive
+ternary representations of $x$ and $y$. Composing these maps with the
+pinned source theorem gives the ZFC-provable equivalence between absence
+of integer zeros and $\operatorname{Con}(\mathrm{ZFC})$.
+No global minimality, external priority, or new proof-assistant certificate
+is asserted.
+
+A second application gives a higher-degree companion. With
+$z=\eta(1-V+jc+hE-\eta)$ and $g=G(x,y,t)$, replace all three old
+positive ternary guards by
+\[
+ gz-(u^2-g-z+1)^2=\operatorname{Pos}(p,q,r).
+\]
+Applying the proved lemma twice shows that this is equivalent to
+$x,y,z>0$. Nine private coordinates become five, leaving 26 integers
+and 13 residuals. The new residual has coefficient $-1$ at $t^8$,
+so its square has coefficient $1$ at $t^{16}$; the other residuals do
+not involve $t$. The exact total degree is therefore sixteen.
+
+\paragraph{A general joint-positivity construction.}
+For any fixed $n\ge1$, put $P_1=x_1$ and recursively
+\[
+ P_{k+1}=P_kx_{k+1}-(t_k^2-P_k-x_{k+1}+1)^2.
+\]
+Repeated application of the two-input lemma gives
+\[
+ (x_1>0\wedge\cdots\wedge x_n>0)
+ \iff\exists t_1,\ldots,t_{n-1}\in\Z\quad P_n>0.
+\]
+A final equation $P_n=\mathrm{Pos}(p,q,s)$ therefore uses only $n+2$
+private integer witnesses instead of $3n$. The price is increasing
+degree, potentially doubling at each nesting. The 28- and 26-integer
+constructions are the two- and three-input instances. This is a reusable
+consequence of the proved lemma, not a global optimality statement.
+The total $2n+2$ integer coordinates for $n$ original positive coordinates
+is consistent with the classical conversion attributed to Sun (1992) in
+Sun's 2026 introduction. The claim here is the explicit nearest-square
+application to these existing private guards, especially preservation of
+degree eight in the 28-variable construction, not discovery of that general
+variable-count conversion.

@@ -1,0 +1,110 @@
+\section{A different certificate mechanism: inert-prime CRT closure}
+\label{sec:inert-crt}
+The following is a new compiler-interface theorem within this comparison,
+not a new measured consistency polynomial. It changes the arithmetic
+certificate for bounded universal quantification, rather than the source
+Turing machine or a Jones packing weight. Its complete proof is elementary.
+The factorial, binomial and variable-exponent graphs have not been expanded
+and counted in a final ordinary polynomial; that limitation is essential.
+
+\paragraph{Input.}
+Fix $n\geq1$, natural parameters $x$, and polynomials
+$e(i,w;x),f(i,w;x)$ with nonnegative integer coefficients, where
+$w=(w_1,\ldots,w_m)$ and $m\geq1$. The target is
+\[
+ \forall i<n\;\exists w\in\mathbb N^m\quad e(i,w;x)=f(i,w;x).
+\]
+An integer-coefficient polynomial can first be split into positive and
+negative parts. For a nonempty fixed list, define a binary-tree norm by
+$\mathcal N([z])=z$ and
+$\mathcal N(L\mathbin{\|}R)=\mathcal N(L)^2+\mathcal N(R)^2$, with both
+children nonempty.
+
+\paragraph{Explicit certificate.}
+Existentially choose $U,A_1,\ldots,A_m,c\in\mathbb N$. Set
+\begin{align*}
+H&=e(n,U,\ldots,U;x)+f(n,U,\ldots,U;x)+n+U+1, & T&=H!,\\
+Q&=(4Tn)^n+1, & M&=4TQ+1,\\
+B&=\bigl((4T)^n n!\tbinom{Q+n}{n}\bigr)\bmod M,\\
+z_j&=\tbinom{A_j}{U+1}\quad(1\leq j\leq m),&
+z_{m+1}&=e(c,A;x)-f(c,A;x),\\
+z_{m+2}&=4T(c+1)-1.
+\end{align*}
+Then the target is equivalent to the single condition
+\[
+ B\mid\mathcal N(z_1,\ldots,z_{m+2}).
+\]
+Here $\binom{A}{k}=0$ for natural $A<k$. Any future graph replacement
+must implement that same total convention.
+These are an explicit special-function certificate, \emph{not yet ordinary
+polynomial equations}. Their functions can be replaced by supplied
+Diophantine graphs, but those graph witnesses must be counted.
+
+\paragraph{Product and prime facts.}
+Put $m_i=4T(i+1)-1$ for $0\leq i<n$. Then
+\[
+ (4T)^n n!\binom{Q+n}{n}
+ =\prod_{j=1}^n(4TQ+4Tj)
+ \equiv\prod_{j=1}^n(4Tj-1)\pmod M.
+\]
+The positive product is less than $(4Tn)^n<Q<M$, so
+$B=\prod_i m_i$. Distinct moduli are coprime: a common divisor divides
+$j-i$, is coprime to $4T$, and divides $T=H!$ because $j-i\leq n\leq H$.
+Each $m_i\equiv3\pmod4$ has a prime divisor $p_i\equiv3\pmod4$.
+Every prime divisor of every $m_i$ exceeds $H$, since a prime at most $H$
+divides $T$.
+
+\paragraph{Soundness.}
+Over $\mathbb F_p$ for $p\equiv3\pmod4$, the equation $a^2+b^2=0$
+forces $a=b=0$: otherwise it would make $-1$ a square.
+Induction through the norm tree makes every leaf zero modulo $p_i$.
+The index leaf gives $c\equiv i\pmod{p_i}$.
+The binomial leaves, multiplied by the invertible $(U+1)!$, give
+\[
+ \prod_{r=0}^{U}(A_j-r)\equiv0\pmod{p_i}.
+\]
+Primality supplies $w_j\in[0,U]$ congruent to $A_j$ modulo the
+\emph{same} prime $p_i$. Hence the local residual at $(i,w;x)$ vanishes
+modulo $p_i$. Its absolute value is at most
+$e(n,U,\ldots,U;x)+f(n,U,\ldots,U;x)<H<p_i$, by monotonicity.
+It is therefore exactly zero.
+
+\paragraph{Completeness.}
+Choose all finitely many local witnesses, and let $U$ bound them.
+The CRT supplies $c\equiv i$ and $A_j\equiv w_{ij}\pmod{m_i}$.
+Each $(U+1)!$ is invertible modulo every $m_i$, so the binomial leaves
+vanish modulo $m_i$; so does the local residual. Thus their norm and
+the index residual vanish modulo $B$. This proves both directions
+without assuming consistency or invoking a standard-model soundness claim.
+The argument is finitary and formalizable in ZFC.
+
+\paragraph{Why this is different from the incoming constructor.}
+The incoming one-stack source has five local parameters, but its proposed
+global constructor first introduces 84 nonlinear wires, then applies
+bounded closure to 89 local witnesses. Apply bounded closure to the
+original local polynomial instead, and delay degree reduction. Independently,
+the present theorem replaces separate coordinate bounds by one $U$, cancels
+all per-coordinate factorial factors, and combines $m$ range congruences
+and the evaluation and index congruences into a single norm congruence.
+At the certificate interface this removes $m-1$ bound coordinates and
+$m+1$ separate congruence tests. In an implementation using one integer
+quotient per congruence this also saves $m+1$ quotient slots, but natural-domain
+graphs may have different bookkeeping. It still needs $m$ binomial graphs.
+These are not final Diophantine-variable savings; omitted wires can return
+when the final equation is flattened.
+
+A balanced norm has degree at most $2^{\lceil\log_2(m+2)\rceil}$ in its
+leaves. Alternatively place the high-degree local residual immediately
+below the root, so that it is only squared once, and allow more depth for
+the range leaves. Shared arithmetic DAGs should be preserved throughout:
+naive substitution into expression trees can overwhelm the savings.
+
+\paragraph{Validation and remaining work.}
+The authored checker verifies 28 exact product/coprimality cases,
+2,030 anisotropy pairs, 111 local range/recovery cases and a CRT completeness
+fixture. Three negative controls demonstrate why ordinary sums of three
+squares, primes $1\bmod4$, and omitted residual bounds are invalid
+substitutes. These tests supplement rather than prove the theorem.
+The artifact does not provide a newly kernel-checked closure or a new
+ordinary-polynomial record. Full graph instantiation, coefficient output,
+final counts and endpoint calibration remain necessary.

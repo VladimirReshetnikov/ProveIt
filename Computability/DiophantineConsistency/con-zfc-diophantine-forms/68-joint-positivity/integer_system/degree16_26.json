@@ -1,0 +1,93 @@
+{
+  "domain": "unrestricted integers",
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "coefficient_binding": {
+    "manifest": "../integer_system_audit/BINDING.json",
+    "compiler_manifest": "../integer_system_audit/coefficients/COEFFICIENT_BINDING.json",
+    "transfer_proof": "../integer_system_audit/coefficients/COEFFICIENT_PROOF.md",
+    "mask_convention": "MF is the already shifted MF_source",
+    "ports": {
+      "beta": "../integer_system_audit/coefficients/beta.bin",
+      "K0": "../integer_system_audit/coefficients/K.bin",
+      "MC": "../integer_system_audit/coefficients/MC.bin",
+      "MF": "../integer_system_audit/coefficients/MF_source.bin"
+    },
+    "encoding": "minimal unsigned little-endian"
+  },
+  "name": "degree16_26_nearest_square_triple_guard",
+  "source_sha256": "91ee2d3d9a97d386fa2e8b939884d6cd846e866bb45b1efe945f11873e27b72c",
+  "variables": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "h",
+    "r",
+    "v_scale",
+    "tau",
+    "eta",
+    "y",
+    "gamma",
+    "o",
+    "j",
+    "E",
+    "c",
+    "a",
+    "V",
+    "I",
+    "u",
+    "rho",
+    "pair_root",
+    "second_root",
+    "pair_pos1",
+    "pair_pos2",
+    "pair_pos3"
+  ],
+  "variable_count": 26,
+  "residuals": [
+    "8*rho**2 - 4*u**2 - 4*J*u**2*beta",
+    "-1 + a - E - 2*v_scale - 3*J*beta - 6*J*v_scale*beta - 3*J**2*beta**2 - 6*J**2*v_scale*beta**2 - J**3*beta**3 - 2*J**3*v_scale*beta**3",
+    "-8*a*rho**2 + E + 8*E*rho**2",
+    "-a + a*V + c + E - E*V - j*c*a + j*E*c - eta - h*E*a + h*E**2",
+    "-1 - E*c + E*c*V - E**2*c**2 - j*E*c**2 + eta*E - eta*E*V + 2*eta*E**2*c + eta*j*E*c - eta**2*E**2 + tau**2 - h*E**2*c + h*eta*E**2",
+    "-1 + 64*rho**4 + 16*c*a*rho**2 - 3*c**2 - 4*c**2*a + 48*gamma*rho**2 + 64*gamma*a*rho**2 + 6*gamma*c*a + 8*gamma*c*a**2 + 9*gamma**2 + 24*gamma**2*a + 16*gamma**2*a**2",
+    "-V + j*c - J*MF - J*MC - 2*J*alpha*beta - J**2*beta*MF - 2*J**2*beta**2 - J**2*alpha*beta**2 + 2*J**2*F*beta**2 - 3*J**3*beta**3 + J**3*F*beta**3 - J**4*beta**4",
+    "K0 + 4*u**2 - alpha*K0 - 4*alpha*u**2 - F - F*K0 - 4*F*u**2 + J*beta*K0 + 4*J*u**2*beta - J*z*beta",
+    "V + c - f*o",
+    "I - c**2 - 2*r*c**2",
+    "3 + I**2 + 4*a + a**2 - 3*f**2 - 4*f**2*a - f**2*a**2",
+    "-1 + V**2*I**2 + y**2 - y**2*I**2",
+    "-E**2*eta**2*h**2 + E*F**4*eta*h - 2*E*F**3*J*beta*eta*h + E*F**3*alpha*eta*h - 2*E*F**3*eta*h + E*F**2*J**2*beta**2*eta*h - E*F**2*J*alpha*beta*eta*h + 2*E*F**2*J*beta*eta*h + E*F**2*alpha**2*eta*h - E*F**2*alpha*eta*h + 2*E*F**2*eta*h*pair_root**2 + 3*E*F**2*eta*h - 2*E*F*J*beta*eta*h*pair_root**2 - 2*E*F*J*beta*eta*h - 2*E*F*eta*h*pair_root**2 - 2*E*F*eta*h + 2*E*V*eta**2*h - 2*E*c*eta**2*h*j + 2*E*eta**3*h - 2*E*eta**2*h + E*eta*h*pair_root**4 + 2*E*eta*h*pair_root**2 + 2*E*eta*h*second_root**2 + 3*E*eta*h - F**8 + 4*F**7*J*beta - 2*F**7*alpha + 4*F**7 - 6*F**6*J**2*beta**2 + 6*F**6*J*alpha*beta - 12*F**6*J*beta - 3*F**6*alpha**2 + 6*F**6*alpha - 4*F**6*pair_root**2 - 10*F**6 + 4*F**5*J**3*beta**3 - 6*F**5*J**2*alpha*beta**2 + 12*F**5*J**2*beta**2 + 6*F**5*J*alpha**2*beta - 12*F**5*J*alpha*beta + 12*F**5*J*beta*pair_root**2 + 24*F**5*J*beta - 2*F**5*alpha**3 + 6*F**5*alpha**2 - 4*F**5*alpha*pair_root**2 - 10*F**5*alpha + 12*F**5*pair_root**2 + 16*F**5 - F**4*J**4*beta**4 + 2*F**4*J**3*alpha*beta**3 - 4*F**4*J**3*beta**3 - 3*F**4*J**2*alpha**2*beta**2 + 6*F**4*J**2*alpha*beta**2 - 12*F**4*J**2*beta**2*pair_root**2 - 18*F**4*J**2*beta**2 + 2*F**4*J*alpha**3*beta - 6*F**4*J*alpha**2*beta + 8*F**4*J*alpha*beta*pair_root**2 + 14*F**4*J*alpha*beta - 24*F**4*J*beta*pair_root**2 - 28*F**4*J*beta - F**4*V*eta - F**4*alpha**4 + 2*F**4*alpha**3 - 4*F**4*alpha**2*pair_root**2 - 7*F**4*alpha**2 + 8*F**4*alpha*pair_root**2 + 10*F**4*alpha + F**4*c*eta*j - F**4*eta**2 + F**4*eta - 6*F**4*pair_root**4 - 24*F**4*pair_root**2 - 2*F**4*second_root**2 - 21*F**4 + 4*F**3*J**3*beta**3*pair_root**2 + 4*F**3*J**3*beta**3 - 4*F**3*J**2*alpha*beta**2*pair_root**2 - 4*F**3*J**2*alpha*beta**2 + 12*F**3*J**2*beta**2*pair_root**2 + 12*F**3*J**2*beta**2 + 2*F**3*J*V*beta*eta + 4*F**3*J*alpha**2*beta*pair_root**2 + 4*F**3*J*alpha**2*beta - 8*F**3*J*alpha*beta*pair_root**2 - 8*F**3*J*alpha*beta - 2*F**3*J*beta*c*eta*j + 2*F**3*J*beta*eta**2 - 2*F**3*J*beta*eta + 12*F**3*J*beta*pair_root**4 + 36*F**3*J*beta*pair_root**2 + 4*F**3*J*beta*second_root**2 + 28*F**3*J*beta - F**3*V*alpha*eta + 2*F**3*V*eta + 4*F**3*alpha**2*pair_root**2 + 4*F**3*alpha**2 + F**3*alpha*c*eta*j - F**3*alpha*eta**2 + F**3*alpha*eta - 2*F**3*alpha*pair_root**4 - 8*F**3*alpha*pair_root**2 - 2*F**3*alpha*second_root**2 - 8*F**3*alpha - 2*F**3*c*eta*j + 2*F**3*eta**2 - 2*F**3*eta + 12*F**3*pair_root**4 + 28*F**3*pair_root**2 + 4*F**3*second_root**2 + 20*F**3 - F**2*J**2*V*beta**2*eta + F**2*J**2*beta**2*c*eta*j - F**2*J**2*beta**2*eta**2 + F**2*J**2*beta**2*eta - 6*F**2*J**2*beta**2*pair_root**4 - 12*F**2*J**2*beta**2*pair_root**2 - 2*F**2*J**2*beta**2*second_root**2 - 8*F**2*J**2*beta**2 + F**2*J*V*alpha*beta*eta - 2*F**2*J*V*beta*eta - F**2*J*alpha*beta*c*eta*j + F**2*J*alpha*beta*eta**2 - F**2*J*alpha*beta*eta + 2*F**2*J*alpha*beta*pair_root**4 + 4*F**2*J*alpha*beta*pair_root**2 + 2*F**2*J*alpha*beta*second_root**2 + 4*F**2*J*alpha*beta + 2*F**2*J*beta*c*eta*j - 2*F**2*J*beta*eta**2 + 2*F**2*J*beta*eta - 12*F**2*J*beta*pair_root**4 - 24*F**2*J*beta*pair_root**2 - 4*F**2*J*beta*second_root**2 - 16*F**2*J*beta - F**2*V*alpha**2*eta + F**2*V*alpha*eta - 2*F**2*V*eta*pair_root**2 - 3*F**2*V*eta + F**2*alpha**2*c*eta*j - F**2*alpha**2*eta**2 + F**2*alpha**2*eta - 2*F**2*alpha**2*pair_root**4 - 4*F**2*alpha**2*pair_root**2 - 2*F**2*alpha**2*second_root**2 - 4*F**2*alpha**2 - F**2*alpha*c*eta*j + F**2*alpha*eta**2 - F**2*alpha*eta + 2*F**2*alpha*pair_root**4 + 4*F**2*alpha*pair_root**2 + 2*F**2*alpha*second_root**2 + 4*F**2*alpha + 2*F**2*c*eta*j*pair_root**2 + 3*F**2*c*eta*j - 2*F**2*eta**2*pair_root**2 - 3*F**2*eta**2 + 2*F**2*eta*pair_root**2 + 3*F**2*eta - 4*F**2*pair_root**6 - 18*F**2*pair_root**4 - 4*F**2*pair_root**2*second_root**2 - 28*F**2*pair_root**2 - 6*F**2*second_root**2 - 16*F**2 + 2*F*J*V*beta*eta*pair_root**2 + 2*F*J*V*beta*eta - 2*F*J*beta*c*eta*j*pair_root**2 - 2*F*J*beta*c*eta*j + 2*F*J*beta*eta**2*pair_root**2 + 2*F*J*beta*eta**2 - 2*F*J*beta*eta*pair_root**2 - 2*F*J*beta*eta + 4*F*J*beta*pair_root**6 + 12*F*J*beta*pair_root**4 + 4*F*J*beta*pair_root**2*second_root**2 + 16*F*J*beta*pair_root**2 + 4*F*J*beta*second_root**2 + 8*F*J*beta + 2*F*V*eta*pair_root**2 + 2*F*V*eta - 2*F*c*eta*j*pair_root**2 - 2*F*c*eta*j + 2*F*eta**2*pair_root**2 + 2*F*eta**2 - 2*F*eta*pair_root**2 - 2*F*eta + 4*F*pair_root**6 + 12*F*pair_root**4 + 4*F*pair_root**2*second_root**2 + 16*F*pair_root**2 + 4*F*second_root**2 + 8*F - V**2*eta**2 + 2*V*c*eta**2*j - 2*V*eta**3 + 2*V*eta**2 - V*eta*pair_root**4 - 2*V*eta*pair_root**2 - 2*V*eta*second_root**2 - 3*V*eta - c**2*eta**2*j**2 + 2*c*eta**3*j - 2*c*eta**2*j + c*eta*j*pair_root**4 + 2*c*eta*j*pair_root**2 + 2*c*eta*j*second_root**2 + 3*c*eta*j - eta**4 + 2*eta**3 - eta**2*pair_root**4 - 2*eta**2*pair_root**2 - 2*eta**2*second_root**2 - 4*eta**2 + eta*pair_root**4 + 2*eta*pair_root**2 + 2*eta*second_root**2 + 3*eta - pair_pos1**2 - pair_pos2**2 - pair_pos3**2 - pair_pos3 - pair_root**8 - 4*pair_root**6 - 2*pair_root**4*second_root**2 - 8*pair_root**4 - 4*pair_root**2*second_root**2 - 8*pair_root**2 - second_root**4 - 4*second_root**2 - 5"
+  ],
+  "equation_count": 13,
+  "residual_degrees": [
+    3,
+    4,
+    3,
+    3,
+    4,
+    4,
+    4,
+    3,
+    2,
+    3,
+    4,
+    4,
+    8
+  ],
+  "single_polynomial": "sum of squares of all residuals",
+  "exact_degree": 16,
+  "exact_degree_certificate": {
+    "monomial": {
+      "pair_root": 16
+    },
+    "coefficient": 1
+  },
+  "proof": "PAIR_GUARD_PROOF.md, Section 5"
+}

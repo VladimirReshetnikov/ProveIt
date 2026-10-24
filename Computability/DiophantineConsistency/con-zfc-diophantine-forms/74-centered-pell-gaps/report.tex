@@ -1,0 +1,886 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+ urlcolor=blue!45!black,pdftitle={Centered Pell gaps and adaptive congruence moduli},
+ pdfauthor={Research contribution prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Zp}{\mathbb Z_{>0}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\pc}{\operatorname{pc}}
+\newcommand{\ini}{\operatorname{in}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\title{Centered Pell gaps and adaptive congruence moduli\\
+\large Explicit improvements for Diophantine consistency equations}
+\author{Research contribution prepared for Vladimir Reshetnikov\\
+\small ProveIt project}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give two concrete improvements to the latest supplied ProveIt constructions.
+A fixed polynomial in thirteen strictly positive integer unknowns has exact
+degree $30$ and a $93$-operation arithmetic circuit, improving the previous
+degree $34$ at the same circuit cost. A second fixed polynomial in twelve
+strictly positive integer unknowns has exact degree $110$ and $100$ operations,
+improving the preceding degree-$118$, $104$-operation construction on both
+measures. Their lack of positive integer solutions is equivalent to
+$\Con(\mathrm{ZFC})$ by ordinary mathematical proofs formalizable in ZFC,
+composed with the pinned native compiler and refutation calibration.
+
+The first improvement uses an already recovered divisibility condition to
+replace a fifth-power congruence modulus by a lower-degree adaptive modulus.
+The possible common divisor three is handled exactly. The second uses the
+small positive gap between two auxiliary Pell coordinates to merge the
+strong Pell root and auxiliary witness, and then centers the strong root
+before taking the norm. We prove that the exceptional zero denominator is
+impossible. The archive contains the four actual coefficient numerals, their
+reconstruction recipe, literal polynomial circuits, independent exact checks,
+and full proofs of the new reductions. These results do not lower the existing
+nine-positive-variable frontier or establish global minimality. They are
+specific improvements, not a claimed completely new consistency encoding.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Outcome, comparison, and scope}
+
+\subsection{What is improved}
+
+The comparison snapshot is ProveIt commit
+\texttt{a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49}, which places sources
+60--67 beside the earlier packages. In particular, source 61 already gives
+the strong twelve- and thirteen-positive-variable points used as our direct
+baselines \cite{source61}. The older collection summary alone would give a
+misleadingly weak baseline.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Construction & Unknowns & Degree & Operations & Residuals\\
+\midrule
+Source 61 & 13 & 34 & 93 & 4\\
+Adaptive modulus, this report & 13 & \textbf{30} & \textbf{93} & 4\\
+Source 61, product form & 12 & 118 & 104 & 3\\
+Centered gap, this report & 12 & \textbf{110} & \textbf{100} & 3\\
+Source 61, sum of squares & 12 & 172 & 103 & 3\\
+Centered gap, sum of squares & 12 & \textbf{164} & \textbf{99} & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first degree reduction is $4/34\approx11.76\%$. The primary twelve-variable
+degree reduction is $8/118\approx6.78\%$, accompanied by four fewer binary
+operations. All operations count: addition, subtraction, multiplication,
+squaring, and multiplication by a fixed numeral each cost one gate. Fixed
+integer leaves and reuse of a previously computed register are free. This is
+an arithmetic-circuit measure, not bit complexity.
+
+The current repository also contains nine-positive-variable constructions,
+ten-integer constructions, and much lower-degree equations with more
+variables. None is displaced merely by the table above. The best results of
+this iteration are at the twelve- and thirteen-positive-variable slices.
+In particular, source 64's $41$-integer quartic and source 62's $35$-integer
+sextic and $30$-integer octic remain better low-degree integer choices
+\cite{source62,source64}. A proposed combination of those sources was checked
+and found to double-count an already eliminated register; no additional
+variable reduction is claimed.
+Source 62 also retains a cheaper thirteen-positive-variable point of degree
+$114$ in $83$ operations. Our thirteen-variable result improves degree at
+the fixed $93$-operation source-61 baseline; it does not dominate every
+thirteen-variable tradeoff.
+
+\subsection{What ``provably equivalent'' means here}
+
+Fix the usual arithmetic proof predicate for finite ZFC refutations used by
+the repository, and write
+\[
+ \Con(\mathrm{ZFC})\equiv
+ \neg\exists p\,\operatorname{Prf}_{\mathrm{ZFC}}(p,\bot).
+\]
+The intended theorem for our primary polynomial $P_{12}$ is
+\begin{equation}
+ \mathrm{ZFC}\vdash
+ \left(\neg\exists\mathbf x\in\Zp^{12}\;P_{12}(\mathbf x)=0\right)
+ \longleftrightarrow \Con(\mathrm{ZFC}).
+ \label{eq:target}
+\end{equation}
+We establish the new reductions in ordinary mathematics, with explicit
+witness recovery in both directions. The native coefficient/compiler theorem
+and the fixed K215/refutation calibration are inherited mathematical inputs,
+identified in Section~\ref{sec:dependencies}; no new end-to-end Lean, Rocq,
+or object-language ZFC certificate is supplied. Exact symbolic checks verify
+the finite algebra and literal circuits. They do not replace the unbounded
+compiler proof. Equation~\eqref{eq:target} asserts an equivalence, not either
+consistency or inconsistency.
+
+The arithmetic construction uses the repository's native kernel. It does
+not use Jones's universal polynomial as its finalizer. Alternative source
+architectures were considered, but no complete replacement with a better
+measured endpoint was obtained. No claim of literature priority is made for
+elementary norm or Pell identities; the new contribution is the precise
+combination and its verified effect on these fixed equations.
+
+\section{Four fixed numerals, with no hidden parameter}
+\label{sec:coefficients}
+
+Every equation here uses the same complete source-44 compact tuple
+\cite{source44}:
+\[
+ (\beta,K_0,M_C,M_F),\qquad \beta=2^{590069}-1.
+\]
+The archive contains their actual bytes in four gzip files. A decompressed
+byte string $b_0,\ldots,b_{m-1}$ denotes the integer
+$\sum_{j<m}b_j256^j$. The port named $K_0$ is the payload named
+\texttt{K}; the port $M_F$ is \texttt{MF\_source}, which already includes
+the shift by $\beta$. One must use all four together.
+
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Port & Bit length & Raw bytes & Payload\\
+\midrule
+$\beta$ & 590069 & 73759 & \texttt{beta.bin.gz}\\
+$K_0$ & 592884 & 74111 & \texttt{K.bin.gz}\\
+$M_C$ & 590069 & 73759 & \texttt{MC.bin.gz}\\
+$M_F$ & 590070 & 73759 & \texttt{MF\_source.bin.gz}\\
+\midrule
+Total & & 295388 &\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are fixed positive integers, not extra quantified variables and not
+constants chosen according to the truth of consistency. The supplied
+\texttt{upstream/build\_coefficients.py} reconstructs them from the supplied
+430-row transition table, reconstructs the 943-tile language, and checks the
+finite packing certificate. Its generated raw numeral hashes are compared
+against the delivered binding by \texttt{verify.py}. This recipe is a
+finite computation, not an unbounded proof or halting search.
+
+The numerical magnitude is still large. This iteration reduces arithmetic
+degree and circuit size, not coefficient height. Naming a large numeral is
+legitimate in a polynomial but should not be advertised as reducing its
+binary description length. The supplied payloads and recipe make that cost
+visible and reproducible.
+
+\section{Common polynomial registers}
+\label{sec:common}
+
+For the thirteen-variable construction supply precisely
+\[
+ j,F,\alpha,f,i,T,X,Y,r,\eta,\zeta,u,\gamma\in\Zp.
+\]
+For the twelve-variable construction replace the pair $(f,u)$ by one
+positive input $n$:
+\[
+ j,F,\alpha,i,T,X,Y,r,\eta,\zeta,n,\gamma\in\Zp.
+\]
+All subsequent letters are polynomial abbreviations. They add no unknowns.
+For the thirteen-variable equation put $J=3j+1$; for the twelve-variable
+equation put $J=6j+1$. Define
+\begin{align}
+ q&=\beta J+1,& C&=q-F-\alpha,& E&=XY,\\
+ k&=\eta+\zeta,& c&=kY+\eta,& a&=E+Y,\\
+ H&=4a+3,& \Delta&=a^2+H=(a+2)^2-1,& I&=ic^2,\\
+ \ell&=EkY,& b_0&=X+ac,\\
+ R&=\bigl((q-1)(q-F)+\alpha\bigr)(q^2-1)
+                  +(M_C+qM_F)J.&&&\label{eq:R}
+\end{align}
+The index defect, adaptive modulus, and its numerator are
+\begin{align}
+ r_0&=k-R-1,& L&=qY,& U&=qL=q^2Y,\\
+ D_*&=Ub_0+H(U\gamma+LX-r_0).&&&\label{eq:Dstar}
+\end{align}
+For the first carrier put
+\begin{align}
+ W&=(q-1)k+1,& M_0&=q^3(q-1),\\
+ B_t&=(qK_0+X)C-qF,\\
+ Z&=M_0(\ell+k+r)+(q-1)Y-q^3WB_t.&&&\label{eq:Z}
+\end{align}
+Here and below $qF$ is multiplication by the supplied input $F$.
+The two carrier residuals are
+\begin{equation}
+ A_0=Z^2-M_0^2\bigl(\ell(\ell+k)+1\bigr),\qquad
+ A_1=D_*^2-U^2(1+\Delta c^2).
+ \label{eq:carriers}
+\end{equation}
+Every power in these definitions is a fixed nonnegative integer power.
+There are no variable exponents, divisions, roots, digit functions, or
+implicit witnesses in the actual polynomials.
+
+\section{The thirteen-variable equation}
+\label{sec:thirteen}
+
+With the common registers and $J=3j+1$, define
+\begin{align}
+ Q_f&=\Delta(f^2-1),& V_f&=f^2(cT-R)-c,\\
+ A_s&=f^2-\Delta I^2-1,\\
+ A_a&=(V_f+u)^2-Q_fu(2V_f+u)-1.
+\end{align}
+Our first equation is
+\begin{equation}
+ \boxed{\;P_{13}=A_0^2+A_1^2+A_a^2+A_s^2=0,\quad
+                 \mathbf x\in\Zp^{13}.\;}
+ \label{eq:P13}
+\end{equation}
+
+\begin{theorem}
+Equation~\eqref{eq:P13} has a positive integer solution exactly when the
+pinned native consistency kernel has one. Consequently its unsolvability
+is ZFC-provably equivalent to $\Con(\mathrm{ZFC})$. Its exact total degree
+is $30$, and the supplied literal evaluator has $93$ live binary operations.
+\end{theorem}
+
+We give the new argument in detail because a careless cancellation in its
+congruence step would invalidate the improvement.
+
+\subsection{Recover the first scale and the sign of the transport}
+
+At a positive zero all four residuals vanish. Since $M_0>0$, the equation
+$A_0=0$ says $Z/M_0$ is a rational square root of the integer
+$\ell(\ell+k)+1$. A rational square root of an integer is an integer.
+Thus $M_0\mid Z$. Reducing this divisibility modulo $q^3$, and then
+modulo $q-1$, gives
+\[
+ q^3\mid Y,\qquad q-1\mid B_t.
+\]
+The reductions use $\gcd(q,q-1)=1$ and $W\equiv1\pmod{q-1}$.
+Set $s=Y/q^3>0$, $t=B_t/(q-1)$, and $\tau=Z/M_0$. Then
+\begin{equation}
+ \tau^2=\ell(\ell+k)+1,\qquad
+ \tau=\ell+k+r+s-Wt.\label{eq:tau}
+\end{equation}
+Because $k\ge2$, one has $|\tau|<\ell+k$. Hence $Wt>r+s>0$,
+so $t>0$ and $B_t>0$. But $C\le0$ would give
+$(qK_0+X)C-qF<0$. We have proved $C>0$ before using any divisibility
+of $X$. The inherited compact-mask bounds now give
+\begin{equation}
+ q\ge16,\qquad 3q<R<q^4-2.\label{eq:outerbounds}
+\end{equation}
+
+Since $590069$ is odd, $\beta\equiv1\pmod3$. Our restriction on $J$
+gives $q\equiv2\pmod3$. Since $q\mid Y$,
+$H=4Y(X+1)+3\equiv3\pmod q$, and therefore
+\begin{equation}
+ \gcd(q,H)=1.\label{eq:qH}
+\end{equation}
+
+\subsection{Recover the main Pell index before the second scale}
+
+The numerator $D_*$ is positive: $r_0<k$, $c>kY$, and $U\ge q^5$ imply
+\[
+ D_*>Uac-Hk>k(UaY-H)>0.
+\]
+The last inequality follows immediately from $q\ge16$, $Y\ge q^3$,
+and $H=4a+3$. Applying rational-square integrality to $A_1=0$ gives
+an integer $g_0=D_*/U>0$ with
+\begin{equation}
+ g_0^2-\Delta c^2=1,\qquad U\mid H(LX-r_0).
+ \label{eq:adaptivecongruence}
+\end{equation}
+
+Write $A=a+2$ and $P_0=2XY^2+1$. Use the usual Pell sequences
+\[
+ \chi_b(m)+\psi_b(m)\sqrt{b^2-1}
+       =(b+\sqrt{b^2-1})^m.
+\]
+The source Pell classification supplies positive indices $p,n_0$ with
+\[
+ c=\psi_A(p),\quad g_0=\chi_A(p),\quad
+ k=2\psi_{P_0}(n_0),\quad |\tau|=\chi_{P_0}(n_0).
+\]
+Here $c>1$ excludes $p=1$, because $\psi_A(1)=1$.
+The case $n_0=1$ would give $k=2$, $\eta=\zeta=1$, and $c=2Y+1$,
+whereas $p\ge2$ gives $c\ge2A\ge4Y+4$. Therefore $n_0\ge2$, and
+\begin{equation}
+ c>kY>8XY^3\ge8q^9>2R,\qquad n_0<p,\qquad c>2p.
+ \label{eq:earlybounds}
+\end{equation}
+The comparison $n_0<p$ uses $P_0>A$ and $c>k$.
+
+The normalized strong equation $A_s=0$, with $I=ic^2$, gives
+$f=\chi_A(m)$, $I=\psi_A(m)$, $c\mid m$, and $m>2p$.
+For clarity, strong divisibility first gives $p\mid m$; writing $m=pv$,
+the composition formula yields $I/c=\psi_{g_0}(v)$. Since $c\mid I/c$
+and $g_0^2\equiv1\pmod c$, its recurrence gives
+$\psi_{g_0}(v)\equiv v g_0^{v-1}\pmod c$.
+The residue $g_0$ is invertible modulo $c$, so $c\mid v$.
+Thus $m\ge pc>2p$.
+
+Now $Q_f=(\Delta I)^2$ and $A_a=0$ yield
+\[
+ (\Delta I)^2V_f^2-\bigl((\Delta I)^2-1\bigr)|V_f+u|^2=1.
+\]
+Furthermore $V_f\equiv-c\pmod f$ and $V_f\equiv-R\pmod c$.
+Together with~\eqref{eq:earlybounds}, these are precisely the hypotheses
+of the retained signed auxiliary-index lemma \cite{source61}. It gives
+$p=R$. A complete retained proof is supplied in
+\texttt{upstream/SIGNED\_INDEX\_LEMMA.md}. This argument has not assumed
+$q\mid X$ or reconstructed the missing index quotient.
+
+\subsection{The adaptive modulus and its common divisor three}
+
+The old source uses $U=q^5$ and $L=q^4$. We use $U=q^2Y$ and $L=qY$.
+This decreases their formal degrees from $5,4$ to $3,2$ while preserving
+the size needed for index recovery. The precise reason is the already
+proved divisibility $q^3\mid Y$.
+Adaptive and successive congruence recovery already appear in sources 64
+and 65 \cite{source64,source65}. The contribution here is their exact
+integration with the source-61 thirteen-variable carrier, using the modulus
+$q^2Y$ and the following cofactor argument.
+
+Put
+\[
+ h_3=\gcd(H,U)=\gcd(H,Y)=\gcd(3,Y)\in\{1,3\},
+ \qquad \mu=\frac{qY}{h_3}.
+\]
+Since $\gcd(q,h_3)=1$, dividing $Y$ by $h_3$ preserves $q^3\mid Y/h_3$.
+In particular
+\begin{equation}
+ \mu\ge q^4>R.\label{eq:mu}
+\end{equation}
+Canceling exactly $h_3$ in~\eqref{eq:adaptivecongruence} shows
+$U/h_3\mid LX-r_0$, and reduction modulo $\mu=L/h_3$ gives
+$\mu\mid r_0$. The first Pell recurrence gives
+\[
+ k\equiv2n_0\pmod{4XY^2},
+\]
+and $\mu\mid4XY^2$. Thus $\mu\mid2n_0-R-1$.
+Since $1\le n_0<p=R<\mu$, the absolute value is smaller than $\mu$;
+therefore
+\begin{equation}
+ 2n_0=R+1.\label{eq:exactfirstindex}
+\end{equation}
+
+It follows that $r_0=k-2n_0$ is a positive multiple of $4XY^2$.
+Because $q^2\mid Y$, this is also a multiple of $U=q^2Y$.
+Equation~\eqref{eq:adaptivecongruence} now gives $U\mid HLX$;
+as $U=qL$, this implies $q\mid HX$. By~\eqref{eq:qH}, $q\mid X$.
+The important distinction is that the common factor three is removed from
+an already divisible scale. Merely estimating $qY/3\ge q^4/3$ would be
+too weak and would miss the actual argument.
+
+\subsection{Restore all deleted positive witnesses}
+
+Define
+\[
+ w=X/q,\qquad h=r_0/E,\qquad
+ \gamma_{\mathrm{old}}=\gamma+w-r_0/U.
+\]
+These are integers; the first two are positive. The main root satisfies
+$g_0=X+ac+H\gamma_{\mathrm{old}}$. Since
+$g_0>(a+1)c$ and $c>X$, it follows that
+$H\gamma_{\mathrm{old}}>c-X>0$, so the third is positive as well.
+
+Now $B_t=q[(K_0+w)C-F]$. Its positivity and its divisibility by $q-1$
+give a positive integer $z_{\mathrm{new}}$ with
+\[
+ (K_0+w)C-F=(q-1)z_{\mathrm{new}}.
+\]
+Set $z_{\mathrm{old}}=z_{\mathrm{new}}+1$; then
+\[
+ (K_0+w)C+(q-F)-z_{\mathrm{old}}(q-1)=1.
+\]
+With $T_{\mathrm{old}}=fT$, the roots $|\tau|,|V_f+u|$, and the
+restored index quotient $h$, this is the full retained normalized source
+interface. To use the ordinary strong-equation interface instead, put
+$i_{\mathrm{old}}=\Delta i$; then
+$(i_{\mathrm{old}}c^2)^2=\Delta(f^2-1)$.
+Source soundness gives a finite ZFC refutation.
+
+\subsection{Construct positive new witnesses from a refutation}
+
+A finite refutation supplies the canonical compact witness of the inherited
+compiler. It has $q=B^N$, $B=2^{590069}$, and
+$J=1+B+\cdots+B^{N-1}$ for odd $N>1$. Hence $J\equiv1\pmod3$,
+$j=(J-1)/3>0$, and $J$ is odd. Its other properties include
+\[
+ X=2^R,\quad w=X/q>q,\quad Y=sq^3,\quad R\equiv3\pmod4,
+ \quad \gamma_{\mathrm{old}}>w.
+\]
+The retained gap estimates and auxiliary construction are documented in
+source 58 and source 61 \cite{source58,source61}. In particular $r_0$ is
+a positive multiple of $4XY^2$, so
+\[
+ \gamma=\gamma_{\mathrm{old}}-w+r_0/U>0
+\]
+is integral and makes $D_*=Ug_0$. For the first carrier choose
+\[
+ t=q(z_{\mathrm{old}}-1),\qquad
+ r=Wt+\tau-\ell-k-s.
+\]
+Here $z_{\mathrm{old}}\ge2$ canonically, $t\ge q$, and
+$\tau>\ell$, $k>s$, so
+$r>qW-k-s>0$. Direct substitution gives $Z=M_0\tau$.
+Finally reselect the canonical squared-modulus auxiliary pair, retaining
+positive $f,i,T,u$. This gives $A_s=A_a=0$. All supplied coordinates are
+positive, completing the converse. No transformation of an arbitrary old
+witness is claimed; canonical witness reselection is sufficient for the
+existence equivalence.
+
+\section{A centered two-root elimination}
+\label{sec:norm}
+
+The following local lemma is the additional ingredient for twelve variables.
+It applies before any compiler reasoning and is useful independently.
+The two-root norm identity and the strategy of centering a root are already
+used in source 62, Sections 2--3 of its positive-thirteen proof
+\cite{source62}. That construction centers the first Pell root at $\ell$.
+Here we merge the strong root with the auxiliary gap and center it at
+$(a+2)I$. The distinct center, its positivity bound, and the exceptional-case
+exclusion produce the twelve-variable improvement below.
+
+\begin{lemma}[Centered Pell-gap norm]
+Let $a\ge2$, $c\ge3$, and $i\ge1$ be integers, and let $b$ be any integer.
+Put
+\begin{align}
+ \Delta&=(a+2)^2-1,& I&=ic^2,&D&=1+\Delta I^2,\\
+ Q&=\Delta^2I^2,&d&=Q-1,&f_0&=(a+2)I,\\
+ e&=1-I^2,&V&=Db-c.
+\end{align}
+For an integer $n$ define
+\begin{align}
+ x&=n+f_0+V,& E_a&=QV^2-1,\\
+ N&=\bigl(d(x^2-D)-E_a\bigr)^2-4dDE_a.
+ \label{eq:Nliteral}
+\end{align}
+If $N=0$, there exist positive integers $f,u$ with
+\begin{equation}
+ f^2=D,\qquad QV^2-d(V+u)^2=1.
+ \label{eq:restorednorms}
+\end{equation}
+Conversely, if a positive solution of~\eqref{eq:restorednorms} satisfies
+$u>f_0$, then $n=f-f_0+u$ is positive and makes $N=0$.
+\end{lemma}
+
+\begin{proof}
+The centered error is exactly $D-f_0^2=e=1-I^2$. Define the proof registers
+\[
+ B_n=2dx,\qquad H_n=d(n^2+2Vn+e)-V^2+1.
+\]
+Two elementary identities give
+\begin{align}
+ N&=\bigl(d(x^2+D)-E_a\bigr)^2-B_n^2D,\\
+ d(x^2+D)-E_a&=H_n+B_nf_0.
+\end{align}
+Consequently
+\begin{equation}
+ N=(H_n+B_nf_0)^2-B_n^2D
+   =H_n^2+2B_nf_0H_n-B_n^2e.
+ \label{eq:Ncentered}
+\end{equation}
+
+We must exclude $B_n=0$, rather than divide without justification.
+Since $d>0$, that case would give $x=0$ and
+\begin{align*}
+ H_n&=dD-QV^2+1\\
+    &=Q(D-V^2)-D+1\\
+    &=\Delta I^2\bigl(\Delta(D-V^2)-1\bigr)\ne0.
+\end{align*}
+The last inequality uses $\Delta>1$: no integer $D-V^2$ can have
+$\Delta(D-V^2)=1$. Hence $N=H_n^2\ne0$, a contradiction.
+
+For $N=0$, therefore,
+$f_*=(H_n+B_nf_0)/B_n$ is a rational square root of the integer $D$.
+It is an integer. Put $y_*=x-f_*$. Expanding the preceding identities gives
+\[
+ QV^2-dy_*^2=1.
+\]
+Also $|V|>1$. Indeed $D>c+1$; for $b\le0$, $V\le-c$, and for
+$b\ge1$, $V\ge D-c>1$. Therefore
+\[
+ d(y_*^2-V^2)=V^2-1>0,
+\]
+so $|y_*|>|V|$. The positive integers
+$f=|f_*|$ and $u=|y_*|-V$ satisfy~\eqref{eq:restorednorms}.
+
+Conversely put $n=f-f_0+u$. Then $x=f+(V+u)$, and substituting these
+two roots into the uncentered norm gives $N=0$. The stated gap bound
+ensures $n>0$.
+\end{proof}
+
+\begin{remark}
+The soundness direction does not require $n>0$ and allows both signs of
+the intermediate roots. Positivity is recovered afterwards. The converse
+does require room for the subtraction of $f_0$; this is supplied by the
+following canonical Pell estimate, not by an unchecked change of variables.
+\end{remark}
+
+\begin{lemma}[Canonical gap]
+For $M\ge2$ and odd $R\ge5$,
+\[
+ \psi_M(R)-\frac{\chi_M(R)}M
+   =\frac{\psi_M(R-1)}M\ge8M^2-4.
+\]
+Both terms on the left are integers.
+\end{lemma}
+\begin{proof}
+The recurrence identity $\chi_M(R)=M\psi_M(R)-\psi_M(R-1)$ proves the
+equality. For odd $R$, $\chi_M(R)$ is a multiple of $M$ by the odd-index
+Chebyshev recurrence. The sequence $\psi_M(t)$ increases for $t\ge0$;
+$R-1\ge4$ and $\psi_M(4)=8M^3-4M$ give the bound.
+\end{proof}
+
+The proof uses a very large canonical auxiliary gap to pay for the small
+polynomial center. It does not estimate the size of a ZFC refutation or
+assume that one exists.
+
+\section{The twelve-variable equation}
+\label{sec:twelve}
+
+Use the twelve positive inputs from Section~\ref{sec:common}, now with
+$J=6j+1$. Retain $A_0,A_1$ from~\eqref{eq:carriers}. Put
+\begin{align}
+ D&=1+\Delta I^2,& Q&=\Delta(D-1)=\Delta^2I^2,&d&=Q-1,\\
+ f_0&=(a+2)I,&V&=D(cT-R)-c,&x&=n+f_0+V,\\
+ E_a&=QV^2-1,&N&=\bigl(d(x^2-D)-E_a\bigr)^2-4dDE_a.
+\end{align}
+The primary equation is
+\begin{equation}
+ \boxed{\;P_{12}=(1+A_0)(1+A_1)(1+N)-1=0,
+                  \quad\mathbf x\in\Zp^{12}.\;}
+ \label{eq:P12}
+\end{equation}
+This is a single fixed integer polynomial, fully defined by the displayed
+registers and the four actual numerals in Section~\ref{sec:coefficients}.
+
+\begin{theorem}
+Equation~\eqref{eq:P12} has a positive integer zero if and only if there is
+a finite ZFC refutation. The proof is formalizable in ZFC using the retained
+calibration. The equation has exact total degree $110$ and a $100$-operation
+literal circuit.
+\end{theorem}
+
+\subsection{The product finalizer is exact}
+
+Because $J$ and $\beta$ are odd, $q$ is even. Thus $M_0$ and $U$ are
+even, and
+\[
+ A_0\equiv Z^2\pmod4,\qquad A_1\equiv D_*^2\pmod4.
+\]
+Also $N\equiv\bigl(d(x^2-D)-E_a\bigr)^2\pmod4$ directly from its
+definition. If $P_{12}=0$, its three integer factors multiply to $1$,
+so each is $+1$ or $-1$. A factor $-1$ would require its residual to be
+$-2\equiv2\pmod4$, which is not a square. All factors are therefore
+$+1$:
+\begin{equation}
+ P_{12}=0\quad\Longleftrightarrow\quad A_0=A_1=N=0.
+ \label{eq:productexact}
+\end{equation}
+No nonnegativity of the residuals is assumed. For a more familiar but
+higher-degree finalizer, the delivered companion is
+$A_0^2+A_1^2+N^2=0$.
+
+\subsection{Soundness and completeness}
+
+Given a positive zero of $P_{12}$, the local norm lemma with $b=cT-R$
+restores positive $f,u$ satisfying the strong and auxiliary residuals.
+The outer registers are unchanged. Set $j_{13}=2j$; then
+$3j_{13}+1=6j+1$, so the recovered tuple is a zero of the proved
+thirteen-variable polynomial. Its soundness gives a finite ZFC refutation.
+
+Conversely take the canonical source tuple for a refutation. Its repunit
+$J$ is odd and $1$ modulo $3$, hence $1$ modulo $6$; padding gives $J>1$.
+Thus $(J-1)/6$ is a positive integer. Use the adaptive-carrier construction
+above. For the normalized strong witness set $M=\Delta I$. The canonical
+auxiliary pair is
+\[
+ V=\chi_M(R)/M,\qquad y=\psi_M(R),
+\]
+with $R\equiv3\pmod4$ and $R>3q\ge48$. The squared-modulus source
+construction supplies positive integer $T$ with $V=D(cT-R)-c$.
+The canonical gap lemma gives
+\[
+ u=y-V\ge8M^2-4>f_0,
+\]
+because $f_0=(a+2)I<\Delta I=M$. Hence
+\[
+ n=f-f_0+u>0
+\]
+is an admissible new input. The norm lemma gives $N=0$, and the first two
+residuals already vanish. This proves the converse and therefore
+Equation~\eqref{eq:target}.
+
+\section{Exact degrees and circuit accounting}
+\label{sec:degree}
+
+All supplied unknowns have degree one and the four fixed numerals degree
+zero. The actual degree is often lower than naive degree propagation
+through the evaluation graph. The verifiers check the cancellations rather
+than reporting such propagation as an exact result.
+
+Put $q_*=3\beta j$ or $6\beta j$ as appropriate, and write
+\[
+ k_*=\eta+\zeta,\quad a_*=XY,\quad c_*=k_*Y,
+ \quad\Delta_*=X^2Y^2,\quad I_*=ik_*^2Y^2,
+\]
+\[
+ R_*=q_*^3(q_*-F),\qquad
+ B_{t,*}=(K_0q_*+X)(q_*-F-\alpha)-q_*F.
+\]
+The carrier leading forms, checked by full exact expansion of the
+low-degree residuals, are
+\begin{align}
+ \ini_{15}(A_0)&=-2q_*^8k_*^2XY^2B_{t,*},\label{eq:A0lead}\\
+ \ini_{13}(A_1)&=8q_*^2k_*X^2Y^4(q_*^2Y\gamma+R_*).
+ \label{eq:A1lead}
+\end{align}
+In particular the sign before $R_*$ in~\eqref{eq:A1lead} is positive.
+The other thirteen-variable residual degrees are $13$ and $14$.
+Only $A_0^2$ reaches degree $30$, giving
+\[
+ \ini_{30}(P_{13})=4q_*^{16}k_*^4X^2Y^4B_{t,*}^2.
+\]
+The coefficient of $j^{16}\eta^4X^4Y^4\alpha^2$ is
+$4(3\beta)^{16}>0$. Specializing the actual fixed numerals therefore
+cannot cancel this top degree.
+
+For the centered norm, the convenient degree certificate is
+Equation~\eqref{eq:Ncentered}, not the shorter literal evaluator.
+The degrees are
+\begin{center}
+\begin{tabular}{@{}lrrrrrrrr@{}}
+\toprule
+Register & $D$ & $Q,d$ & $V$ & $f_0$ & $e$ & $B_n$ & $H_n$ & $N$\\
+\midrule
+Degree & 14 & 18 & 18 & 7 & 10 & 36 & 37 & 82\\
+\bottomrule
+\end{tabular}
+\end{center}
+The three terms $H_n^2$, $2B_nf_0H_n$, and $-B_n^2e$ have degrees at
+most $74,80,82$. The last is uniquely highest, and
+\begin{equation}
+ \ini_{82}(N)=4\Delta_*^6I_*^{10}R_*^2\ne0.
+ \label{eq:Nlead}
+\end{equation}
+Thus the product finalizer has exact degree $15+13+82=110$, and the
+sum-of-squares companion has degree $164$. A specific nonzero coefficient
+in $P_{12}$ is
+\begin{equation}
+ [j^{18}F^2\alpha\gamma i^{10}X^{16}Y^{39}\eta^{23}]P_{12}
+       =64(6\beta)^{18}>0.
+ \label{eq:degreewitness}
+\end{equation}
+Its total exponent is $110$. The analogous top coefficient in the
+sum-of-squares companion is
+\[
+ [j^{12}F^4i^{20}X^{24}Y^{64}\eta^{40}]P_{12,\mathrm{sos}}
+       =16(6\beta)^{12}>0.
+\]
+
+The literal primary circuit evaluates $N$ by the shorter
+Equation~\eqref{eq:Nliteral}. The proof certificate uses the algebraically
+equal centered expression to expose degree cancellation. Neither expression
+introduces an additional witness. The graph is the exact polynomial
+definition; its registers are ordered abbreviations, and every gate and
+input is live.
+
+\section{Domains: positive, nonnegative, and unrestricted}
+
+The small variable counts above are over $\Zp$. They must not be relabeled
+as unrestricted integer counts. For nonnegative integers simply replace
+each of the twelve inputs by $x+1$. The delivered
+\texttt{circuits/natural12.json} has degree $110$ and $112$ gates.
+
+For an entirely unrestricted integer equation, define
+\[
+ \theta(a,b,c)=1+a^2+b^2+c(c+1).
+\]
+This takes exactly the positive integer values. Nonnegativity is immediate.
+For surjectivity, Legendre's three-square theorem applied to $4m+1$
+gives one odd and two even squares; write
+\[
+ 4m+1=(2a)^2+(2b)^2+(2c+1)^2,
+\]
+so $m=a^2+b^2+c(c+1)$. This familiar conversion is also recorded in
+Lemma 6.1 of Bayer et al.~\cite{bayer}.
+
+Applying $\theta$ to each input gives a fully specified equation in $36$
+unrestricted integers, of exact degree $220$ and $184$ gates. Its
+unsolvability has the same ZFC equivalence. It is included to remove any
+domain ambiguity, not as a new integer frontier point. Its degree is exact:
+the homogeneous leading substitution maps each original variable to a sum
+of three distinct squares; setting the second and third members of each
+triple to zero reduces to the injective substitution $x_i\mapsto a_i^2$.
+
+\section{A tempting shortcut that fails}
+\label{sec:barrier}
+
+One might try to replace $X=wq$, $Y=sq^3$ by $X=wq^2$, $Y=sq^2$,
+preserving $XY\ge q^4$ while lowering the first carrier's degree. The
+compiler does not depend only on the product $XY$.
+
+For $q=2^t$, its half-binomial encoding has a packed index
+\[
+ R=(q^2-S)(q^2-1)+T,\qquad \pc(T)=t+2.
+\]
+The relevant inverse-population lemma gives $\pc(R)\le3t+2$,
+with equality exactly when the required masks vanish. The corresponding
+ordinate valuation is $\pc(R)-2$. Thus $q^3\mid Y$ enforces the full
+threshold, whereas $q^2\mid Y$ does not. This role of the cubic scale is
+explicit in the retained source notes, cited with exact blobs in
+\texttt{research/SCALE\_BARRIER.md}.
+
+An exact local negative control is
+\[
+ q=16,\quad t=4,\quad S=32,\quad T=175,\quad R=57295.
+\]
+Here $\pc(T)=6=t+2$, $R\equiv3\pmod4$, but $\pc(R)=13<14=3t+2$
+and $S\mathbin{\&}T=32\ne0$. The weakened threshold $2t+2=10$ accepts
+this invalid local mask configuration. This is a counterexample to the
+weakened packing predicate, not a purported zero of the full consistency
+polynomial. Moving a factor of $q$ to $X$ cannot repair this missing
+population condition by a size estimate alone.
+
+A substantial further reduction will need a different local packing
+predicate, a lower-cost way to enforce that exact threshold, or a source
+formalism whose complete arithmetic compilation is smaller. Merely citing
+a smaller universal machine or the DPRM theorem does not supply the missing
+fixed polynomial or its coefficient binding.
+
+\section{Dependencies, verification, and integration}
+\label{sec:dependencies}
+
+\subsection{The proof boundary}
+
+The logical chain is
+\[
+ \begin{gathered}
+ \exists\mathbf x\in\Zp^{12}:P_{12}=0\\
+ \Longleftrightarrow\ \text{the normalized native kernel has a positive witness}\\
+ \Longleftrightarrow\ \exists p\,\operatorname{Prf}_{\mathrm{ZFC}}(p,\bot).
+ \end{gathered}
+\]
+The first equivalence is the new work: adaptive congruence recovery,
+centered-root elimination, exceptional-case exclusion, positivity, and
+canonical reconstruction. The second is the explicitly retained compiler
+and calibration. No finite computation establishes that second equivalence
+by searching for all possible roots.
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Input or verification & Exact role\\
+\midrule
+\endhead
+Source 44 compact proof & Whole-tuple native compiler adapter, mask bounds,
+canonical padding and finite coefficient recipe. Retained verbatim.\\
+Inherited ordinary proof and Pell audit & Native consistency kernel,
+power/half-binomial recovery, canonical normalized witnesses, and named
+K215/refutation calibration. Retained with source pins.\\
+Sources 58 and 61 & Squared-modulus auxiliary reselection, positive gaps,
+transport carrier, and signed index lemma. Retained and explicitly used.\\
+New adaptive-carrier proof & Replaces $q^5,q^4$ by $q^2Y,qY$; handles the
+factor three and proves the same existence equivalence.\\
+New centered-gap proof & Merges $f,u$ into $n$; proves integrality,
+positivity, the absence of the exceptional branch, and the converse.\\
+Exact finite checkers & Polynomial identities, leading forms, degree
+witnesses, gate liveness/counts, whole coefficient hashes and reconstruction.\\
+Formalization status & No newly compiled end-to-end Lean/Rocq proof of
+the changed literal polynomial is claimed.\\
+\bottomrule
+\end{longtable}
+
+The primary new checks use only the Python standard library. They expand
+the low-degree carrier residuals in all witnesses and symbolic ports, and
+verify the large norm through exact identities in independent abstract
+registers. This avoids an unnecessary full expansion of the degree-$110$
+polynomial while still proving the relevant polynomial identity. The
+nonzero coefficients in Section~\ref{sec:degree} certify degree after
+specialization to the actual huge fixed numerals.
+
+Separate small modular and bounded tests are diagnostics for transcription
+and the factor-three argument. They are labeled as such. They are not
+evidence of consistency, semantic completeness, or global minimality.
+Independent checks in this archive were conducted by separate AI-assisted
+workers in this research session; they are not external human peer review.
+
+\subsection{Archive layout and reproducibility}
+
+The main commands are
+\begin{verbatim}
+python3 verify.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+
+\begin{itemize}
+\item \texttt{report.tex}, \texttt{report.pdf}: this self-contained article.
+\item \texttt{build.py}, \texttt{build\_domains.py}: regenerate the
+twelve-variable primary, sum-of-squares, and domain companion circuits.
+\item \texttt{positive13/}: generator, literal circuit, full proof, and
+independent exact checker for the thirteen-variable reduction.
+\item \texttt{circuits/}: authoritative division-free graphs for the
+twelve-variable forms and standard domain companions.
+\item \texttt{coefficients/}: four actual numeral payloads and the complete
+unchanged compact44 binding.
+\item \texttt{evaluate.py}: evaluate any delivered circuit at supplied
+integers, optionally modulo a chosen integer; no zero search.
+\item \texttt{checks/}, \texttt{VERIFICATION.json}: finite verification
+scripts and receipts stating their exact scope.
+\item \texttt{upstream/}: pinned proof dependencies, coefficient generator,
+literal transition table, and license/attribution records.
+\item \texttt{research/}: independent mathematical audit, rejected scale
+shortcut, and the low-degree exploration with its corrected counts.
+\end{itemize}
+
+The new files can be placed as a contribution beside the existing sources.
+The current smaller-variable and lower-operation alternatives should remain
+available. This report establishes two new measured points and their proof
+obligations; it does not identify a unique simplest equation across all
+domains, degrees, circuit sizes, and coefficient heights.
+
+\begin{thebibliography}{9}
+\bibitem{source61}
+V. Reshetnikov et al., ProveIt, source 61, \emph{Congruence carriers},
+snapshot \texttt{a2cd79b9120}, 23 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49/Computability/DiophantineConsistency/con-zfc-diophantine-forms/61-congruence-carriers}{Pinned source directory}.
+The proof and baseline README are retained under \texttt{upstream/}.
+
+\bibitem{source44}
+ProveIt, source 44, \emph{Complement-packed native clauses: a smaller complete
+coefficient tuple}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49/Computability/DiophantineConsistency/con-zfc-diophantine-forms/44-b4-sparse/native}{Pinned native tuple and proof}.
+
+\bibitem{source58}
+ProveIt, source 58, \emph{Integral root}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49/Computability/DiophantineConsistency/con-zfc-diophantine-forms/58-integral-root}{Pinned source directory}.
+The report source is retained as \texttt{upstream/SOURCE58\_REPORT.tex}.
+
+\bibitem{source62}
+ProveIt, source 62, \emph{Sign and norm}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49/Computability/DiophantineConsistency/con-zfc-diophantine-forms/62-sign-and-norm}{Pinned source directory}.
+
+\bibitem{source64}
+ProveIt, source 64, \emph{Structural reductions}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49/Computability/DiophantineConsistency/con-zfc-diophantine-forms/64-structural-reductions}{Pinned source directory}.
+
+\bibitem{source65}
+ProveIt, source 65, \emph{Shared taps}, same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49/Computability/DiophantineConsistency/con-zfc-diophantine-forms/65-shared-taps}{Pinned source directory}.
+Its Pell component uses successive congruence recovery.
+
+\bibitem{bayer}
+J. Bayer, M. David, M. Ha{\ss}ler, Y. Matiyasevich, and D. Schleicher,
+\emph{Diophantine equations over $\Z$: universal bounds and parallel
+formalization}, arXiv:2506.20909, v2, 30 June 2025, Lemma 6.1.
+\url{https://arxiv.org/html/2506.20909v2}.
+The latest version observed during this work is v3, 22 October 2026;
+the cited elementary domain lemma is pinned to v2.
+\end{thebibliography}
+\end{document}

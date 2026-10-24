@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage{microtype,xcolor,hyperref,fancyvrb,fvextra}
+\hypersetup{colorlinks=true,urlcolor=blue!55!black,linkcolor=blue!45!black}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,fontsize=\small}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newtheorem{theorem}{Theorem}\newtheorem{lemma}{Lemma}
+\setlength{\emergencystretch}{3em}
+\title{Joint positivity, free Lucas coordinates, and commutative proof certificates\\\large A tenth synthesis of explicit Diophantine consistency constructions}
+\author{Research packet for the ProveIt repository}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This iteration separates two kinds of progress. First, a nearest-square
+identity compresses two strict-positivity requirements over unrestricted
+integers into one. Applied to the pinned source, it gives a single
+polynomial in 28 integers of degree eight, and a companion in 26 integers
+of degree sixteen. A second completed reduction removes a high-degree
+Lucas-coordinate parameterization by proving that its usual congruence
+is redundant on the actual source slice. Second, an alternative proof
+source dispenses with the ordered stack: single-conclusion derivability
+is characterized by a finite nonnegative flow, then by products of
+pairwise coprime affine integers. Its local polynomial is explicit,
+but its global Diophantine compilation is not yet materialized or counted.
+An asymmetric three-Pell parity interface is also proved independently.
+Every final claim distinguishes a completed consistency equation from
+a local module or a proposed compiler. No global minimality, new
+Lean/Rocq certificate, or historical priority is claimed.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+\section{Scope, source pin, and recommended reading}
+The target is an ordinary polynomial with fixed integer coefficients
+whose absence of solutions is provably equivalent, in ZFC, to
+$\Con(\mathrm{ZFC})$. In particular, no coefficient may depend on whether
+ZFC is consistent. Huge fixed integers are acceptable, but are part of
+the specification rather than hidden parameters. The artifacts include
+actual coefficient payloads, exact arithmetic circuits, mathematical
+proofs, source bindings, and independently authored finite checks.
+
+The reviewed repository is
+\url{https://github.com/VladimirReshetnikov/ProveIt}, main commit
+\texttt{9cca523d9f27ad39d52993f4065cbd7e58f8bdd4}.
+Eight newly integrated packages, source60 through source67, were reviewed
+as inert data. They were placed by commit
+\texttt{a2cd79b9120fc75f48dcbef6e38d0f8b18d64d49}.
+The detailed archive/member hashes and source paths appear in
+\texttt{review/SOURCE\_PINS.json} and \texttt{PROVENANCE.json}.
+No program from an incoming archive was executed.
+
+\paragraph{What ``simplest'' means here.}
+There is no single scalar objective. We keep the unknown domain, number
+of unknowns, total degree, and binary arithmetic-operation count separate.
+A square is a multiplication in the circuit ledger; named registers are
+abbreviations, not additional quantified variables. An unrestricted
+integer count is not interchangeable with a positive or nonnegative
+count. Local witnesses in a bounded computation are not the variable
+count of the fully compiled equation.
+
+\paragraph{Logical status.}
+A completed equation below has a mathematical equivalence proof, using
+explicitly named inherited source-calibration and Pell theorems. The
+new finite audits establish algebraic identities, literal counts, payload
+integrity, and regressions. They do not discharge the universal theorems
+inside a proof-assistant kernel. Nor does an equivalence to consistency
+prove consistency itself.
+
+\input{comparison.tex}
+\input{joint.tex}
+\input{explicit_joint.tex}
+\newcommand{\FreeCMainDegree}{1\,576\,864}
+\newcommand{\FreeCMainOps}{481}
+\newcommand{\FreeCParameterDegree}{16\,424}
+\input{free.tex}
+\input{packing.tex}
+\input{branches.tex}
+\input{direct.tex}
+\input{parity.tex}
+\input{verification.tex}
+\input{references.tex}
+\end{document}

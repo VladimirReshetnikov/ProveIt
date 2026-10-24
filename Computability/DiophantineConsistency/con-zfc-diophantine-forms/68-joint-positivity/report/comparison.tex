@@ -1,0 +1,47 @@
+\section{Comparison of the eight incoming constructions}
+\begin{center}\small
+\begin{tabular}{@{}p{29mm}p{45mm}p{71mm}@{}}\toprule
+Package & Representative completed frontier & Main reusable idea\\\midrule
+60: Positive Gap & $9$ positive, degree $1{,}797{,}796$, 465 operations; $15$ positive, degree24 & Positive gap coordinates; cofinal padding; sharper carry bounds.\\
+61: Congruence Carriers & $13$ positive, degree34, 93 operations; $37$ integers, degree6; $34$ integers, degree8 & Move congruences into already existing carriers rather than add witnesses.\\
+62: Sign and Norm & $42$ integers, degree4; $35$ integers, degree6; $30$ integers, degree8 & Square-class separation and sign recovery; positivity guards suitable for joint compression.\\
+63: Sign Recovery & $42$ integers, degree4; $14$ positive, degree34, 87 operations & Remove explicit signs by arithmetic information in existing factors.\\
+64: Structural Reductions & $41$ integers, degree4; $36$ integers, degree6; $31$ integers, degree8 & Delayed square substitution and a product positivity guard.\\
+65: Shared Taps & $9$ positive, degree $1{,}675{,}396$, 458 operations; $10$ integers, degree $7{,}428{,}120$, 525 operations & Equal complete coefficient records share kernel positions; height $1873$.\\
+66: Previous iteration & $9$ positive, degree $1{,}845{,}940$, 444 operations; $10$ integers, degree $3{,}507{,}876$, 494 operations & Gap congruences and shorter circuits; one-stack local proof source.\\
+67: Oriented Guards & $9$ positive, degree $1{,}494{,}006$, 487 operations; $10$ integers, degree $3{,}327{,}556$, 519 operations & Positivity-first orientation, signed square separation, suitable ten-integer finalizer.\\\bottomrule
+\end{tabular}\end{center}
+These are selected tradeoffs, not a claim that each dominates every other
+version in its package. In particular the incoming best quartic remains
+41 unrestricted integers and the incoming best sextic remains 35.
+Simply combining source64's elimination with source62's elimination
+cannot save another variable: the needed square row is absent in the
+41-coordinate source. Counting that nonexistent row would be invalid.
+
+The genuinely new complete reduction is the joint positivity lemma:
+it changes how inequalities are represented, not the coefficient placement
+or addition chain. The free-coordinate reduction is likewise structural:
+it removes a source-dependent divisibility obligation rather than merely
+encoding it more cheaply. The commutative proof architecture is a more
+radical change of source, but its final global cost is deliberately left
+unreported until compilation is completed.
+
+\paragraph{New completed low-degree tradeoffs.}
+The joint-positivity reduction takes the incoming 30-integer octic to
+28 integers at the same degree. Nesting it gives 26 integers at degree16.
+These preserve all arithmetic source residuals and all four fixed ports.
+They do not lower the existing quartic or sextic records. The free-Lucas
+construction keeps ten unrestricted integers; its primary gain is degree,
+not a claim to beat every incoming operation-count record. The archived
+literal circuits provide the exact source-specific operation accounting.
+
+\begin{center}
+\begin{tabular}{@{}lrrp{43mm}@{}}\toprule
+New completed equation & Integer unknowns & Exact degree & Live operations\\\midrule
+Joint positivity & 28 & 8 & residual-system specification\\
+Nested joint positivity & 26 & 16 & residual-system specification\\
+Free Lucas, shared-gap source & 10 & 1,576,864 & 481\\\bottomrule
+\end{tabular}
+\end{center}
+The first two are explicitly given sums of squared residuals; no operation
+count is assigned to an arbitrary expansion or evaluation order.

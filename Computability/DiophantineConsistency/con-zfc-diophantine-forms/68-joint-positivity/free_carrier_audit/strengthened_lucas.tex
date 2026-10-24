@@ -1,0 +1,66 @@
+% Audited standalone section; requires amsmath, amssymb, amsthm.
+\section{Eliminating the Lucas-coordinate congruence guard}
+\newtheorem{slicelemma}{Lemma}
+\begin{slicelemma}
+Let $A$ be even and divisible by $3$, and suppose
+\[
+ B\equiv3\pmod4,\qquad 1<B<|A|/2-1,\qquad C\equiv-1\pmod 3,\qquad C\text{ is odd}.
+\]
+Form $D,E,F,G,\Omega,H,I$ by Sun's modified Lucas certificate.
+If $\xi\ne0$ and $DFI$ is an integer square, then $C=u_B(A)$.
+In particular, the separate condition $A-2\mid C-B$ is unnecessary
+on this slice.
+\end{slicelemma}
+\begin{proof}
+Here $C$ is odd and nonzero. The standard coprimality identities for
+this certificate separate $DFI$ into three positive squares. The Lucas
+square characterization and index comparison give
+\[
+ C=u_s(A),\quad 4E=u_\mu(A),\quad H=u_t(2G),\quad n=|\mu|>3,
+\]
+where $s,t$ are odd, $n$ is even, and
+\[
+ s\equiv\pm t\pmod{2n},\qquad C\mid n,\qquad
+ t\equiv B\pmod\Omega.
+\]
+These steps of Sun's argument need odd, nonzero $C$, but do not need
+$A-2\mid C-B$. They imply $s\equiv\pm B\pmod{2C}$.
+
+The case $s=1$ is impossible since $C=1$ contradicts
+$C\equiv-1\pmod 3$. If $s=-1$, then $C=-1$,
+$D=A^2$, and $\Omega=16A^2\xi$. Write $n=2r$. Simultaneous
+induction in the Lucas recurrence gives
+\[
+ u_{2r}(A)\equiv(-1)^{r-1}rA\pmod{A^2},\qquad
+ u_{2r+1}(A)\equiv(-1)^r\pmod{A^2}.
+\]
+Since $u_n(A)=\pm4A^2\xi$, it follows that $A\mid r$ and hence
+$2A\mid n$. Thus $2|A|$ divides both $2n$ and $\Omega$; the
+congruences for $t$ force $B\equiv\pm1\pmod{2|A|}$, contrary to
+the stated range of $B$. This argument covers negative $A$ and $\xi$.
+
+Now $|s|\ge3$. Lucas growth gives $|C|\ge|A|>B$ and
+$|s|\le|C|$. Consequently $s\equiv\pm B\pmod{2C}$ forces the
+integer equality $s=\pm B$. As $B\equiv3\pmod4$ and $3\mid A$,
+the recurrence yields $u_B(A)\equiv-1\pmod 3$. The sign $s=-B$
+would give $C\equiv1\pmod 3$, again impossible. Therefore $s=B$.
+\end{proof}
+
+This permits the low-degree parameterization $C=6c_0-1$ rather than
+$C=B+(A-2)h$. Put $r=bQ$ and replace the Pell guard by
+\[
+ \delta=9\Delta-3,\qquad a=r+\delta(rz)^2.
+\]
+Since $r\equiv1\pmod3$ and $3\mid A$, we obtain
+$a\equiv1\pmod3$, whereas $D\equiv d\equiv0\pmod3$.
+Thus $a\ne d$ unconditionally, as needed for the norm finalizer.
+Once the guard recovers positive square $r$, its second coprime factor
+forces $\Delta>0$. Then $\delta r$ is positive nonsquare because
+$v_3(\delta)=1$ and $r$ is square. Pell existence and full residue-class
+interpolation complete the positive direction unchanged. The canonical
+odd Lucas value is $-1$ modulo $3$, so $(C+1)/6$ is integral.
+
+The slice restriction is essential to this argument: $A=12$, $B=3$,
+$C=0$, $\xi=1$, $y=0$ gives $DFI=4$, although $u_3(12)=143$.
+This is a mathematical lemma conditional on the cited Lucas inputs,
+not a new proof-assistant certificate.
