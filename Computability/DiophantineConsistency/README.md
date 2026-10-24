@@ -152,9 +152,13 @@ now proves exact empty-cell or single-tile acceptance from arbitrary Boolean
 selectors, with no one-hot premise. The [whole-stencil carry step](NATIVE_CONVOLUTION54.md)
 now derives pointwise mask tests with all temporal rotation phases retained.
 The [origin radix digit](NATIVE_ORIGIN54.md) is now forced to one from the
-actual source mask and exact low-MC recipe. Remaining assignment support,
-literal port/basis binding, phase synchronization and whole compiler
-calibration and the converse completeness direction remain open.
+actual source mask and exact low-MC recipe. The [sparse assignment](NATIVE_SPARSE_DIGITS54.md)
+is now reconstructed from the source, including the positive cell count,
+exact word, origin and Boolean/capacity bounds. The [literal clause bands](NATIVE_CLEAN_BANDS54.md)
+now equal the corresponding local coefficient sums plus the explicit
+temporal contribution, including cyclic collisions. High-mask binding,
+phase synchronization, whole compiler calibration and converse completeness
+remain open.
 
 The package-52 formalization now checks its literal 60-gate, 22-row source,
 all 136 quadratic coefficient records, exact selective positions, sharp

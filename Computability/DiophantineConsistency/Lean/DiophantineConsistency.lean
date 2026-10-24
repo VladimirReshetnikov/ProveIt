@@ -213,3 +213,6 @@ import DiophantineConsistency.ObjectPairingGraph
 import DiophantineConsistency.ObjectPairingSurjective
 import DiophantineConsistency.ObjectPairingInjective
 import DiophantineConsistency.ObjectUnpair
+import DiophantineConsistency.OnePageLowPort54
+import DiophantineConsistency.NativeSparseDigits54
+import DiophantineConsistency.NativeCleanBands54

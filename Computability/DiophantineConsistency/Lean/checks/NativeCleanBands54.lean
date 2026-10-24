@@ -1,0 +1,10 @@
+import DiophantineConsistency.NativeCleanBands54
+
+#print axioms DiophantineConsistency.NativeCleanBands54.entries_coarse
+#print axioms DiophantineConsistency.NativeCleanBands54.support_coarse
+#print axioms DiophantineConsistency.NativeCleanBands54.subtraction_residue
+#print axioms DiophantineConsistency.NativeCleanBands54.digit_zero_of_avoid
+#print axioms DiophantineConsistency.NativeCleanBands54.convolution_entries
+#print axioms DiophantineConsistency.NativeCleanBands54.convolution_left
+#print axioms DiophantineConsistency.NativeCleanBands54.convolution_right
+#print axioms DiophantineConsistency.NativeCleanBands54.source_clean_bands
