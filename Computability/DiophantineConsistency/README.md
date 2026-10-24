@@ -99,12 +99,13 @@ fourteen-integer148/414 and sixteen-integer118/124 tradeoffs. It also
 reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
-The latest [shifted-t quartic family](research/shifted-t-index-guard-profile/README.md)
-reaches595 integer unknowns with9,586 terms at degree4. It also offers600
-unknowns with coefficient height964,213, or599 with height45,769,499.
-All original source rows, guard predicates, integer inverses and complete
-coefficients were independently checked before applying the72-predicate
-ordinary source theorem. The earlier families below remain preserved.
+The latest [squared-radius quartic family](research/squared-radius-source-prototype/README.md)
+reaches594 integer unknowns with9,588 terms at degree4. It also offers598
+unknowns with coefficient height964,213, or597 with height45,769,495.
+The [complete ordinary source proof](research/factorial-square-guard-exchange/FULL_SOURCE.md)
+is exactly bound to every checked integer inverse and complete quartic;
+see the [combined root review](reviews/factorial-square-calibration-root-peer.md).
+The preceding595-variable family has two fewer terms and is preserved.
 
 The [factorial-bound quartic family](research/factorial-radius-guard-profile/README.md)
 now reaches607 integer variables, or612 with coefficient height964,213
@@ -1235,3 +1236,23 @@ from that measurement. The complete ordinary source proof and fresh
 canonical completeness remain separate review obligations; see the
 [root finite review](reviews/squared-radius-prototype-root-peer.md).
 The accepted595-variable family, canonical page and Lean pause are unchanged.
+
+
+## Complete squared-radius equations:594 integer unknowns
+
+The [complete ordinary source proof](research/factorial-square-guard-exchange/FULL_SOURCE.md)
+and its independent audit are now accepted and exactly bound to the
+[frozen RAW prototype](research/squared-radius-source-prototype/README.md).
+All12 materialized quartics therefore inherit the ordinary Con(ZFC)
+calibration. The first radius is f² and its one guard is f>=K; the second
+radius remains g*t². Direct bounds justify all8 range graphs before product
+semantics, and completeness recomputes every radix/frame/Pell witness.
+Root replayed both complete source audits in normal and optimized Python;
+all receipts match. See the [combined root review](reviews/factorial-square-calibration-root-peer.md).
+
+The default complete degree4 equation has594 integer unknowns,9,588 terms
+and height2,445,790,974,704. Lower-height alternatives are598/8,564/964,213
+and597/8,504/45,769,495 (variables/terms/height). The595-variable predecessor
+has two fewer terms and is preserved. This resolves the preceding prototype's
+ordinary-proof obligation without changing its sealed finite-scope flags.
+The canonical ten-positive page remains unchanged; Lean remains paused.

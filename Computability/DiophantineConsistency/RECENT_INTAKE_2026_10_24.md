@@ -790,3 +790,23 @@ from that measurement. The complete ordinary source proof and fresh
 canonical completeness remain separate review obligations; see the
 [root finite review](reviews/squared-radius-prototype-root-peer.md).
 The accepted595-variable family, canonical page and Lean pause are unchanged.
+
+
+## Complete squared-radius equations:594 integer unknowns
+
+The [complete ordinary source proof](research/factorial-square-guard-exchange/FULL_SOURCE.md)
+and its independent audit are now accepted and exactly bound to the
+[frozen RAW prototype](research/squared-radius-source-prototype/README.md).
+All12 materialized quartics therefore inherit the ordinary Con(ZFC)
+calibration. The first radius is f² and its one guard is f>=K; the second
+radius remains g*t². Direct bounds justify all8 range graphs before product
+semantics, and completeness recomputes every radix/frame/Pell witness.
+Root replayed both complete source audits in normal and optimized Python;
+all receipts match. See the [combined root review](reviews/factorial-square-calibration-root-peer.md).
+
+The default complete degree4 equation has594 integer unknowns,9,588 terms
+and height2,445,790,974,704. Lower-height alternatives are598/8,564/964,213
+and597/8,504/45,769,495 (variables/terms/height). The595-variable predecessor
+has two fewer terms and is preserved. This resolves the preceding prototype's
+ordinary-proof obligation without changing its sealed finite-scope flags.
+The canonical ten-positive page remains unchanged; Lean remains paused.
