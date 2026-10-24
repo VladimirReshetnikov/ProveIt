@@ -101,7 +101,7 @@ reduces the13-positive form to88/51 by freeing J. The preserved13-positive
 page retains its90/51 evaluator.
 
 The latest [ten-square-frame quartic family](research/power3-square-frame-source-prototype/README.md)
-reaches 557 integer unknowns with 6,937 terms at degree four. It also offers
+reaches 554 integer unknowns with 6,927 terms at degree four. It also offers
 574-variable/height-964,213 and 573-variable/height-45,769,613 choices. Its
 ordinary proof recovers a signed power output after orienting its actual
 Pell pair, then restores every delayed prefix condition. Full equations,
@@ -1546,3 +1546,22 @@ artifacts are rejected. See the [root acceptance](reviews/ten-reused-b-root-peer
 This one-operation gain is recorded separately while further changes are
 batched; the canonical complete92/283 PDF and TeX remain unchanged.
 Lean work remains paused.
+
+## The complete 55-guard source family reaches 554 variables
+
+The [new finite packet](research/shared-binomial-digit-product-source-prototype/README.md)
+materializes every RAW/CSE profile of the separately accepted seventh guard
+exchange. Its best default has **554 integer variables, 362 rows, 6,927
+quartic terms and height 2,445,790,974,704**. Against the preserved557
+family it saves three variables, one row and ten terms. Both root checker
+JSONs and all four normal/optimized full replay transcripts match the
+author exactly; every coefficient, signed inverse and census passes, and
+90 actual corruptions are rejected. An independent retained-set audit
+checks all24 old/new profiles and their actual three delta classes.
+
+The [root acceptance](reviews/shared-binomial-digit-product-source-root-peer.md)
+composes those finite results with the exact complete ordinary source
+theorem. All coefficient/term alternatives and earlier equations remain
+preserved. The separate Round14 family reaches517/519 variables; this
+554 result is progress within the older source pipeline. The canonical
+92/283 PDF and TeX and paused Lean work are unchanged.

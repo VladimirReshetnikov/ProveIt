@@ -46,6 +46,7 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
 | Integers | **517** | not optimized | **4** | Round14 derived factorial carrier; 310 rows, 6,774 terms, height 3,904,267 |
 | Integers | 519 | not optimized | 4 | Round14 lower-height alternative; 321 rows, 6,253 terms, height 411,060 |
+| Integers | 554 | not optimized | 4 | Ten output squares, 55 guards; 362 rows, 6,927 terms, height 2,445,790,974,704; earlier source pipeline |
 | Integers | 557 | not optimized | 4 | Ten output squares, 56 guards, CSE/default projection; 6,937 terms, height 2,445,790,974,704 |
 | Integers | 577 / 576 | not optimized | 4 | Existing-square 63-guard CSE projections; 5,754 / 5,818 terms, heights 964,213 / 45,769,613 |
 | Integers | 787 / 657 / 599 / 584 | not optimized | 4 | Existing-square 63-guard lower-height CSE projections; heights 4,750 / 737,653 / 737,653 / 938,261 |
@@ -1569,3 +1570,22 @@ artifacts are rejected. See the [root acceptance](reviews/ten-reused-b-root-peer
 This one-operation gain is recorded separately while further changes are
 batched; the canonical complete92/283 PDF and TeX remain unchanged.
 Lean work remains paused.
+
+## The complete 55-guard source family reaches 554 variables
+
+The [new finite packet](research/shared-binomial-digit-product-source-prototype/README.md)
+materializes every RAW/CSE profile of the separately accepted seventh guard
+exchange. Its best default has **554 integer variables, 362 rows, 6,927
+quartic terms and height 2,445,790,974,704**. Against the preserved557
+family it saves three variables, one row and ten terms. Both root checker
+JSONs and all four normal/optimized full replay transcripts match the
+author exactly; every coefficient, signed inverse and census passes, and
+90 actual corruptions are rejected. An independent retained-set audit
+checks all24 old/new profiles and their actual three delta classes.
+
+The [root acceptance](reviews/shared-binomial-digit-product-source-root-peer.md)
+composes those finite results with the exact complete ordinary source
+theorem. All coefficient/term alternatives and earlier equations remain
+preserved. The separate Round14 family reaches517/519 variables; this
+554 result is progress within the older source pipeline. The canonical
+92/283 PDF and TeX and paused Lean work are unchanged.
