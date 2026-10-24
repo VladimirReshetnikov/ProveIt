@@ -20,24 +20,24 @@ See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
 [equation.tex](equation.tex) print the **entire equation in10 positive
-unknowns, exact degree408, with a105-operation evaluator**. Every fixed
+unknowns, exact degree388, with a102-operation evaluator**. Every fixed
 constant is defined on the same Letter page, including the full436-character
 numeral, alphabet, decoder and943 tiles. The body uses9-point type.
-Compared with the preceding ten-positive123-operation degree816 display,
-this halves degree and saves18 operations at the same unknown count.
+Compared with the preceding ten-positive105-operation degree408 display,
+this saves three operations and lowers degree by20 at the same unknown count.
 The same coherent BFS-renamed compact44 tuple and complete constant recipe
-are retained. The [page proof and checks](candidates/one-page-quadratic10/README.md)
-include the exact free-port identity, recovered main Pell ordinate, complete
-positive witness maps, inherited typed-color/native/controller proof and
-independent whole coefficient reconstruction.
+are retained. The [page proof and checks](candidates/one-page-shifted10/README.md)
+include the exact universal formula binding, full positive witness maps for
+direct J, shifted strong input and shorter transport, inherited native/
+controller transfer, and independent whole coefficient reconstruction.
 [CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the displayed files.
 
-The preceding [ten-positive degree816 page](candidates/one-page-scaled10/equation.pdf)
-is preserved, along with the earlier
-[thirteen-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
-is preserved with its standalone [TeX](candidates/one-page-ordinary13/equation.tex).
-It uses fewer operations and lower degree, with three more unknowns; the
-new display does not claim a global optimum across these tradeoffs.
+The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
+is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),
+as are the earlier [degree816 page](candidates/one-page-scaled10/equation.pdf)
+and [thirteen-positive degree51 page](candidates/one-page-ordinary13/equation.pdf)
+with their standalone sources. The13-positive page uses fewer operations
+and lower degree, with three more unknowns; no global optimum is claimed.
 
 The previous [fifteen-positive page](candidates/one-page-compression/merged-mask-base62/equation.pdf)
 and its other notation variants remain available. Its corrected recipe
@@ -672,3 +672,20 @@ record the full proof, exact gate/degree/whole-tuple checks, four passing
 normal/optimized replays and closed seals. A new complete one-page display
 is being prepared for the combined gain over105/408; its predecessor
 will be preserved. Lean remains paused.
+
+## Canonical page updated to102/388
+
+The maintained [equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) now print the complete ten-positive102-operation,
+exact-degree388 equation, including every fixed constant, on one Letter
+page. This batches the direct-J, shifted-strong and shorter-transport
+improvements into one update over the preserved105/408 page: three fewer
+operations and degree20 lower. The complete436-character seed,62-character
+alphabet,943 tiles and closed arithmetic coefficient recipe are unchanged.
+The [new page packet](candidates/one-page-shifted10/README.md),
+[independent root page review](reviews/shifted10-page-peer.md) and
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the displayed bytes.
+Both independent peer modes, renderer replays and full coefficient
+reconstruction modes pass; the page was visually reviewed. The previous
+[105/408 PDF](candidates/one-page-quadratic10/equation.pdf) and its TeX
+remain preserved. Lean formalization remains paused.

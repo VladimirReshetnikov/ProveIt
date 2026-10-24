@@ -1,0 +1,80 @@
+{
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/render_shifted10_page.py",
+        "--render"
+      ],
+      "exit_code": 0,
+      "log": "verification/render-normal.txt",
+      "log_sha256": "e54801a2b4f92e30204f304608a0d1b1829d91ba3b58249a3aba812d543d9a55",
+      "wall_seconds_rounded": 0.273
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/verify_one_page_tuple44.py",
+        "--output",
+        "Computability/DiophantineConsistency/candidates/one-page-shifted10"
+      ],
+      "exit_code": 0,
+      "log": "verification/tuple-normal.txt",
+      "log_sha256": "d7ab8069ceded36aa765dd37485553ca9e0a6036fe10ff04bf5f56942b7dab08",
+      "wall_seconds_rounded": 4.575
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/render_shifted10_page.py",
+        "--render"
+      ],
+      "exit_code": 0,
+      "log": "verification/render-optimized.txt",
+      "log_sha256": "1c5bf139fe6cce7c48fd644aebd17928c968b908f13225bd4d0bb45e72affc15",
+      "wall_seconds_rounded": 0.27
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/verify_one_page_tuple44.py",
+        "--output",
+        "Computability/DiophantineConsistency/candidates/one-page-shifted10"
+      ],
+      "exit_code": 0,
+      "log": "verification/tuple-optimized.txt",
+      "log_sha256": "7f4fc0f8cbfc8946c24f62b278d71aeaeebda99d1751c1c805bab654c068dfde",
+      "wall_seconds_rounded": 4.612
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/render_shifted10_page.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/page-replay-normal.txt",
+      "log_sha256": "e54801a2b4f92e30204f304608a0d1b1829d91ba3b58249a3aba812d543d9a55",
+      "wall_seconds_rounded": 0.08
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/render_shifted10_page.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/page-replay-optimized.txt",
+      "log_sha256": "1c5bf139fe6cce7c48fd644aebd17928c968b908f13225bd4d0bb45e72affc15",
+      "wall_seconds_rounded": 0.08
+    }
+  ],
+  "status": "PASS"
+}

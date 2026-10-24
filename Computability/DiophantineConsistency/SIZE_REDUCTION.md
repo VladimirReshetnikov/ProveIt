@@ -54,12 +54,12 @@ integer domains are compared separately. These are useful points, not the
 complete frontier or a global optimality claim.
 
 The maintained [equation.pdf](equation.pdf) now displays the10-positive
-105-operation degree408 equation in full, including every constant, with
-standalone [TeX](equation.tex). It uses the same complete fixed recipe as
-the preceding ten-positive123/816 page, which remains preserved. It halves
-degree and saves18 operations at the same unknown count. The earlier
-13-positive90/51 page remains the lower-degree/cost alternative. A minor
-symmetric-tail saving is included in this one significant update.
+102-operation degree388 equation in full, including every constant, with
+standalone [TeX](equation.tex). It retains the full fixed recipe and saves
+three operations and degree20 against the preserved105/408 page. This one
+combined update includes direct J, shifted I and shorter transport, with
+full positive witness proofs. The earlier13-positive90/51 page remains a
+lower-degree/cost alternative with three more unknowns.
 
 ## Work now underway
 
@@ -496,3 +496,20 @@ record the full proof, exact gate/degree/whole-tuple checks, four passing
 normal/optimized replays and closed seals. A new complete one-page display
 is being prepared for the combined gain over105/408; its predecessor
 will be preserved. Lean remains paused.
+
+## Canonical page updated to102/388
+
+The maintained [equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) now print the complete ten-positive102-operation,
+exact-degree388 equation, including every fixed constant, on one Letter
+page. This batches the direct-J, shifted-strong and shorter-transport
+improvements into one update over the preserved105/408 page: three fewer
+operations and degree20 lower. The complete436-character seed,62-character
+alphabet,943 tiles and closed arithmetic coefficient recipe are unchanged.
+The [new page packet](candidates/one-page-shifted10/README.md),
+[independent root page review](reviews/shifted10-page-peer.md) and
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the displayed bytes.
+Both independent peer modes, renderer replays and full coefficient
+reconstruction modes pass; the page was visually reviewed. The previous
+[105/408 PDF](candidates/one-page-quadratic10/equation.pdf) and its TeX
+remain preserved. Lean formalization remains paused.

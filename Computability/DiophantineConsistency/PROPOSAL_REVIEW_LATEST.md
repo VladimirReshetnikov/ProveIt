@@ -650,3 +650,20 @@ record the full proof, exact gate/degree/whole-tuple checks, four passing
 normal/optimized replays and closed seals. A new complete one-page display
 is being prepared for the combined gain over105/408; its predecessor
 will be preserved. Lean remains paused.
+
+## Canonical page updated to102/388
+
+The maintained [equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) now print the complete ten-positive102-operation,
+exact-degree388 equation, including every fixed constant, on one Letter
+page. This batches the direct-J, shifted-strong and shorter-transport
+improvements into one update over the preserved105/408 page: three fewer
+operations and degree20 lower. The complete436-character seed,62-character
+alphabet,943 tiles and closed arithmetic coefficient recipe are unchanged.
+The [new page packet](candidates/one-page-shifted10/README.md),
+[independent root page review](reviews/shifted10-page-peer.md) and
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the displayed bytes.
+Both independent peer modes, renderer replays and full coefficient
+reconstruction modes pass; the page was visually reviewed. The previous
+[105/408 PDF](candidates/one-page-quadratic10/equation.pdf) and its TeX
+remain preserved. Lean formalization remains paused.
