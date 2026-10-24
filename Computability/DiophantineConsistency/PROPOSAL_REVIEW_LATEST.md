@@ -36,6 +36,9 @@ no unknowns. Domains and whole coefficient tuples remain separate.
 | Integers | 18 / 19 / 20 | not optimized in coordinate packets | 32 / 28 / 18 | Signed coordinate/quotient reductions |
 | Nonnegative integers | 399 | not optimized | 4 | Projected source, summed factorial radix and rational SOS contraction;8,286 terms |
 | Nonnegative integers | 402 / 403 / 453 / 667 | not optimized | 4 | Complete term/height alternatives;6,882 /8,229 /5,059 /3,632 terms |
+| Integers | 595 | not optimized | 4 | Shifted-t72-guard raw/default projection;9,586 terms, height2,445,790,974,704 |
+| Integers | 600 / 599 | not optimized | 4 | Shifted-t72-guard raw projections;8,770 /8,696 terms, heights964,213 /45,769,499 |
+| Integers | 828 / 683 / 621 / 607 | not optimized | 4 | Shifted-t72-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
 | Integers | 598 | not optimized | 4 | Power-output73-guard raw/default projection;9,600 terms, height2,445,790,974,704 |
 | Integers | 603 / 602 | not optimized | 4 | Power-output73-guard raw projections;8,794 /8,710 terms, heights964,213 /45,769,499 |
 | Integers | 831 / 686 / 624 / 610 | not optimized | 4 | Power-output73-guard raw low-height projections;heights4,750 /737,653 /737,653 /938,261 |
@@ -1183,3 +1186,19 @@ entire proof/checkers and matched author and independent peer receipts in
 both modes; see the [root review](reviews/shifted-t-index-guard-root-peer.md).
 There are72 predicates before projection. The measured598-variable family
 remains current until fresh complete profiles pass. Lean and page unchanged.
+
+## Complete72-predicate quartics reach595 integer unknowns
+
+The [shifted-t profile packet](research/shifted-t-index-guard-profile/README.md)
+contains17 complete degree4 equations. Raw/default support8/16 reaches595
+variables,9,586 terms and height2,445,790,974,704. Lower-height alternatives
+reach600/8,770/964,213 and599/8,696/45,769,499 (variables/terms/height).
+Only raw825's guard is deleted. Every domain row, both directions of all592
+raw/compact restorations, every fresh signed inverse and every quartic
+coefficient passed normal/optimized root replay and both deterministic
+rebuilds. Both the95-identity source checker and independent15-cut peer are
+pinned and replayed, with exact call7/t=1 chronology and50 corruption
+controls; see the [root review](reviews/shifted-t-index-profile-root-peer.md).
+Earlier families remain preserved. This is the direct quartic lane; the
+fewer-variable norm/display tradeoffs remain separate. Lean stays paused
+and the canonical one-page equation is unchanged.
