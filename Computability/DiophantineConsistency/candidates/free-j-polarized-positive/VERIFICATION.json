@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "name": "generate-check",
+      "command": [
+        "/tmp/proofs62ff-wave7-review-venv/bin/python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/build_free_j_polarized_positive.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.059,
+      "log": "verification/generate-check.log",
+      "log_sha256": "af03b3f9ae38b3ff428d2f06acbcc46930662f1d0d07ebc931d1ddd730fbdde5"
+    },
+    {
+      "name": "generate-check-optimized",
+      "command": [
+        "/tmp/proofs62ff-wave7-review-venv/bin/python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/build_free_j_polarized_positive.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.062,
+      "log": "verification/generate-check-optimized.log",
+      "log_sha256": "af03b3f9ae38b3ff428d2f06acbcc46930662f1d0d07ebc931d1ddd730fbdde5"
+    },
+    {
+      "name": "independent-check",
+      "command": [
+        "/tmp/proofs62ff-wave7-review-venv/bin/python",
+        "-B",
+        "Computability/DiophantineConsistency/candidates/free-j-polarized-positive/check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.59,
+      "log": "verification/independent-check.log",
+      "log_sha256": "964b2723f0f1c40fb62f1ffd68125dae3c4bafc805feade5e612c85f4b15ae16"
+    },
+    {
+      "name": "independent-check-optimized",
+      "command": [
+        "/tmp/proofs62ff-wave7-review-venv/bin/python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/candidates/free-j-polarized-positive/check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.589,
+      "log": "verification/independent-check-optimized.log",
+      "log_sha256": "59e4e91e7463b2a4b40a0b0427a446ea652d612af64a6eaa059a8540b55a0c46"
+    }
+  ],
+  "scope": "Exact free-J + polarization whole circuit, normal/optimized regeneration and independent checks; no Lean."
+}
