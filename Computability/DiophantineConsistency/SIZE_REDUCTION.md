@@ -21,6 +21,8 @@ not establish the size of a complete consistency equation.
 | Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
+| Positive integers | 10 | 98 | 360 | Positive index weight, zero-offset base; complete canonical one-page equation |
+| Positive integers | 10 | 103 | 332 | Positive index weight and direct positive X; degree tradeoff |
 | Positive integers | 10 | 98 | 368 | Zero-offset scaled base, shared muY and expanded transport |
 | Positive integers | 10 | 103 | 340 | Direct positive X, shared carrier and expanded transport |
 | Positive integers | 9 | 405 / 413 | 1,191,570 / 1,316,546 | Tight main folding and unshifted carrier; original31 / smaller compact54 tuples |
@@ -1158,3 +1160,24 @@ alternatives give 577/5,754/964,213 and 576/5,818/45,769,613
 (variables/terms/height). All 24 full polynomial checks, both independent
 checker modes and both root rebuilds pass. The compact canonical page
 is unchanged by this quartic step; Lean remains paused.
+
+
+## Canonical complete page: 98 operations and exact degree 360
+
+The [updated equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) now print the complete ten-positive equation
+at degree 360 in 98 operations, improving the preserved 101/368 page by
+three operations and eight degrees. The full constant body remains on the
+same Letter page in 9-point body type: all 436 seed characters, decoder,
+943 tiles and four coefficient recipes are retained verbatim.
+
+The [ordinary index-weight proof](research/ten-positive-index-weight/PROOF.md)
+uses the pre-transport inequality k>H to replace HI by kI. Its positive
+polynomial n shear proves completeness. A separate direct-base equation
+has 103 operations and degree 332. All six root source audits, actual-TeX
+parsing, both render modes and full tuple reconstructions pass; see the
+[root review](reviews/ten-index-weight-root-peer.md) and
+[page evidence](candidates/one-page-index-weight10/README.md).
+The selected nonzero homogeneous component proves exact degree rather
+than a sampled degree. Every earlier page, including its TeX, is preserved.
+Lean remains paused; no global simplicity minimum is claimed.

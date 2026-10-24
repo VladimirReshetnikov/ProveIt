@@ -1235,3 +1235,24 @@ alternatives give 577/5,754/964,213 and 576/5,818/45,769,613
 (variables/terms/height). All 24 full polynomial checks, both independent
 checker modes and both root rebuilds pass. The compact canonical page
 is unchanged by this quartic step; Lean remains paused.
+
+
+## Canonical complete page: 98 operations and exact degree 360
+
+The [updated equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) now print the complete ten-positive equation
+at degree 360 in 98 operations, improving the preserved 101/368 page by
+three operations and eight degrees. The full constant body remains on the
+same Letter page in 9-point body type: all 436 seed characters, decoder,
+943 tiles and four coefficient recipes are retained verbatim.
+
+The [ordinary index-weight proof](research/ten-positive-index-weight/PROOF.md)
+uses the pre-transport inequality k>H to replace HI by kI. Its positive
+polynomial n shear proves completeness. A separate direct-base equation
+has 103 operations and degree 332. All six root source audits, actual-TeX
+parsing, both render modes and full tuple reconstructions pass; see the
+[root review](reviews/ten-index-weight-root-peer.md) and
+[page evidence](candidates/one-page-index-weight10/README.md).
+The selected nonzero homogeneous component proves exact degree rather
+than a sampled degree. Every earlier page, including its TeX, is preserved.
+Lean remains paused; no global simplicity minimum is claimed.

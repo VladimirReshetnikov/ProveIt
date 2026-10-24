@@ -19,19 +19,20 @@ unfinished formalization files are not being extended during this phase.
 See [the active size-reduction plan](SIZE_REDUCTION.md).
 
 The current [equation.pdf](equation.pdf) and standalone
-[equation.tex](equation.tex) print the **entire equation in10 positive
-unknowns, exact degree368, with a101-operation evaluator**. Every fixed
-constant is defined on the same Letter page, including the full436-character
-numeral, alphabet, decoder and943 tiles. The body uses9-point type.
-Compared with the preceding102/388 display, this saves one operation and
-lowers degree by20 at the same unknown count. The same coherent BFS-renamed
-compact44 tuple and complete constant recipe are retained. The [page proof
-and checks](candidates/one-page-short10/README.md) include universal formula
-binding, full positive witness maps, the weighted root and short projector
-proofs, inherited native/controller transfer, and independent whole
-coefficient reconstruction. [CURRENT_EQUATION.json](CURRENT_EQUATION.json)
-binds the displayed files. The [102/388 predecessor](candidates/one-page-shifted10/equation.pdf)
-and all earlier complete pages remain preserved.
+[equation.tex](equation.tex) print the **entire equation in ten positive
+unknowns, exact degree 360, with a 98-operation evaluator**. Every fixed
+constant is defined on the same Letter page, including the full 436-character
+numeral, alphabet, decoder and 943 tiles. The body uses 9-point type.
+Compared with the preserved 101/368 display, this saves three operations
+and lowers degree by eight at the same unknown count and constant size.
+The [page proof and checks](candidates/one-page-index-weight10/README.md)
+include symbolic formula binding, independent parsing of the actual TeX,
+a pre-transport index bound and positive completeness map, inherited
+native/controller transfer, and full coefficient reconstruction.
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) binds the displayed files.
+The [101/368 predecessor](candidates/one-page-short10/equation.pdf), its
+[TeX](candidates/one-page-short10/equation.tex), and all earlier complete
+pages remain preserved.
 
 The preceding [ten-positive degree408 page](candidates/one-page-quadratic10/equation.pdf)
 is preserved with its [TeX](candidates/one-page-quadratic10/equation.tex),
@@ -82,9 +83,10 @@ The latest [size comparison](PROPOSAL_REVIEW_LATEST.md) records
 [shared odd-rank](research/nine-folded-shared-odd-rank/README.md) nine-positive
 405/1,191,570 and compact54 413/1,316,546 forms, plus a lower-degree
 [position-zero](candidates/position-zero-norm-sharing/README.md)1,056/997,810 choice. The earlier953/999,518 remains a different cost option.
-The [expanded-transport ten-positive equations](research/ten-positive-expanded-transport/README.md)
-reach98/368 with a zero-offset scaled base and shared muY, or103/340
-with a direct positive main-base input.
+The [index-weight ten-positive equations](research/ten-positive-index-weight/README.md)
+reach 98/360 with a zero-offset scaled base and shared muY, or 103/332
+with a direct positive main-base input. The earlier expanded-transport
+98/368 and 103/340 graphs remain preserved.
 Its strong and auxiliary Pell equations recover the
 omitted main root; a strict bound on the entire projection product excludes
 extra branches. The former122/816 evaluator remains frozen;
@@ -1316,3 +1318,24 @@ alternatives give 577/5,754/964,213 and 576/5,818/45,769,613
 (variables/terms/height). All 24 full polynomial checks, both independent
 checker modes and both root rebuilds pass. The compact canonical page
 is unchanged by this quartic step; Lean remains paused.
+
+
+## Canonical complete page: 98 operations and exact degree 360
+
+The [updated equation.pdf](equation.pdf) and standalone
+[equation.tex](equation.tex) now print the complete ten-positive equation
+at degree 360 in 98 operations, improving the preserved 101/368 page by
+three operations and eight degrees. The full constant body remains on the
+same Letter page in 9-point body type: all 436 seed characters, decoder,
+943 tiles and four coefficient recipes are retained verbatim.
+
+The [ordinary index-weight proof](research/ten-positive-index-weight/PROOF.md)
+uses the pre-transport inequality k>H to replace HI by kI. Its positive
+polynomial n shear proves completeness. A separate direct-base equation
+has 103 operations and degree 332. All six root source audits, actual-TeX
+parsing, both render modes and full tuple reconstructions pass; see the
+[root review](reviews/ten-index-weight-root-peer.md) and
+[page evidence](candidates/one-page-index-weight10/README.md).
+The selected nonzero homogeneous component proves exact degree rather
+than a sampled degree. Every earlier page, including its TeX, is preserved.
+Lean remains paused; no global simplicity minimum is claimed.

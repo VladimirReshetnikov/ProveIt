@@ -97,3 +97,17 @@ Sections 5–7).
    so this waits for his decision.
 
 Neither direction was started here.
+
+
+## 4. A subsequent lower-degree transport weight
+
+Continued research found the [positive index weight](../../research/ten-positive-index-weight/PROOF.md).
+The unchanged first Pell classification gives k>=8X(muY)^2+4>H before
+transport, so L=kI+b can replace HI+b while retaining the full argument.
+Although k is semantically larger on zeros, it has syntactic degree one.
+The resulting complete equations have 98 operations/degree 360 and
+103 operations/degree 332. The former is now the canonical one-page
+specification. The independent proof, positive witness map, complete
+literal graphs and degree certificates are retained in that packet.
+This result illustrates why the earlier degree accounting was not a
+lower-bound proof for every rearrangement of the same kernel.
