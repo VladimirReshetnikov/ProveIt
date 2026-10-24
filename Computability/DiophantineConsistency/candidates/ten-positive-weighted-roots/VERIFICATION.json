@@ -1,0 +1,53 @@
+{
+  "runs": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_weighted_roots.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "verification/generator-normal.txt",
+      "log_sha256": "1e540eca7210525aa5fb745dfd97f6103461cbe2b34daa166a7fe7f68a830c8f",
+      "wall_seconds_rounded": 0.048
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "Computability/DiophantineConsistency/candidates/ten-positive-weighted-roots/check.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/checker-normal.txt",
+      "log_sha256": "71f7d78b87c9931326c3eb54ee2c651fc1ce51a440fa540ba47afa8c55e9cc00",
+      "wall_seconds_rounded": 0.259
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/tools/build_ten_positive_weighted_roots.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "verification/generator-optimized.txt",
+      "log_sha256": "1e540eca7210525aa5fb745dfd97f6103461cbe2b34daa166a7fe7f68a830c8f",
+      "wall_seconds_rounded": 0.045
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-O",
+        "Computability/DiophantineConsistency/candidates/ten-positive-weighted-roots/check.py"
+      ],
+      "exit_code": 0,
+      "log": "verification/checker-optimized.txt",
+      "log_sha256": "c2f078f47c43fdf2f57e2bc4cf0dbcd14ae3fac4fb792413f849b156eacc6112",
+      "wall_seconds_rounded": 0.263
+    }
+  ],
+  "status": "PASS"
+}

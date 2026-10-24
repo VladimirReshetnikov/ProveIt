@@ -650,3 +650,20 @@ tuple,79 existing triples and63 fresh Legendre witnesses reach the literal
 frozen967 equation. Complete new quartics and signed projections are being
 materialized separately; no unverified projected count is added here.
 Lean and the current canonical PDF/TeX remain unchanged.
+
+## Fixed root weight lowers ten-positive degree to368
+
+The [weighted-root equation](candidates/ten-positive-weighted-roots/README.md)
+has ten positive unknowns,102 operations and exact degree368. It replaces
+the full-mu strong shift by I=i*c² and weights only the first root by3.
+All signed cancellations are excluded before root extraction: two pairs
+would imply mu|8, the third would equate an integer to -1/Delta, and a
+zero triple would imply mu|2025, then mu|25 despite mu>=1025. Main folding
+then gives the strict bound needed for weighted transport. Canonical
+completeness uses the explicit positive shifts i_new=i_old+q² and
+n_new=n_old+2*tau. The [root review](reviews/weighted10-root-peer.md) and
+[independent ordinary peer](reviews/ten-positive-weighted-roots-ordinary-peer.md)
+record the full proof and exact circuit/degree/whole-tuple checks. All four
+normal/optimized checks and rebuilds pass; the unique leading component
+has a positive selected coefficient2^28*beta^184. The prior102/388 packet
+is preserved; a complete new page is under review. Lean remains paused.
