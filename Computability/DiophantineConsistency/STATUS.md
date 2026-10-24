@@ -582,3 +582,20 @@ row identities, complete coefficient collections, four successful
 normal/optimized checks/rebuilds and closed seals. The contracted679
 quartic remains a different coefficient-height tradeoff. No new Lean
 endpoint is claimed and formalization remains paused.
+
+## Smaller signed fourteen-variable guard accepted
+
+The [guard-reduced equation](candidates/constructive-integer14-guard-reduced/README.md)
+has14 unrestricted integer unknowns,117 operations and exact degree312.
+It removes the explicit v-square factor from the guard. Its new proof
+excludes v=0 by rationalizing the remaining two roots and deriving an
+impossible CRT divisibility, before using any weak-scale estimate. Both
+integer witness maps regenerate only the four private guard coordinates;
+the entire degree256 norm and six fixed coefficients are unchanged.
+The full output difference has degree at most304, so the complete
+nonzero degree312 leading component survives. The
+[root review](reviews/integer14-guard-root-peer.md) records all node/guard/
+norm identities, four successful normal/optimized checks and rebuilds,
+and closed seals. The [initial research note](reviews/signed14-guard-research.md)
+also records why two tempting smaller positivity gadgets fail. Lean and
+the canonical ten-positive page remain unchanged.
